@@ -30,7 +30,6 @@ void BaseKnot::Dump( ) const
 	wcout << m_connections << endl;
 }
 
-
 void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 {
 	m_circle.SetPosition( newPos ); 

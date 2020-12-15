@@ -16,6 +16,7 @@
 #include "NNetModelWriterInterface.h"
 #include "BeaconAnimation.h"
 #include "NNetColors.h"
+#include "MonitorData.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "win32_NNetWindow.h"
@@ -38,7 +39,8 @@ void NNetWindow::Start
 	bool                       const bShowRefreshRateDialog,
 	NNetController           * const pController,
 	NNetModelReaderInterface * const pModelReaderInterface,
-	BeaconAnimation          * const pBeaconAnimation
+	BeaconAnimation          * const pBeaconAnimation,
+	MonitorData              * const pMonitorData
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -51,9 +53,11 @@ void NNetWindow::Start
 		nullptr
 	);
 	m_context.Start( hwnd );
-	m_pController           = pController;
-	m_pModelReaderInterface = pModelReaderInterface;
-	m_pBeaconAnimation      = pBeaconAnimation;
+	m_pController      = pController;
+	m_pMRI             = pModelReaderInterface;
+	m_pBeaconAnimation = pBeaconAnimation;
+	m_pMonitorData     = pMonitorData;
+
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
@@ -65,13 +69,13 @@ void NNetWindow::Stop( )
 
 NNetWindow::~NNetWindow( )
 {
-	m_pModelReaderInterface = nullptr;
-	m_pController           = nullptr;
+	m_pMRI        = nullptr;
+	m_pController = nullptr;
 }
 
 MicroMeterRect const NNetWindow::GetEnclosingRect() const 
 { 
-	return m_pModelReaderInterface->GetEnclosingRect(); 
+	return m_pMRI->GetEnclosingRect(); 
 }
 
 MicroMeterRect const NNetWindow::GetViewRect() const 
@@ -86,7 +90,7 @@ void NNetWindow::DrawInteriorInRect
 ) const
 {
 	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pModelReaderInterface->Apply2AllInRect<Shape>
+	m_pMRI->Apply2AllInRect<Shape>
 	(
 		GetCoord().Convert2MicroMeterRect( rect ),
 		[&](Shape const & s) { if (crit(s)) s.DrawInterior( m_context ); } 
@@ -96,7 +100,7 @@ void NNetWindow::DrawInteriorInRect
 void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 {
 	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pModelReaderInterface->Apply2AllInRect<Shape>
+	m_pMRI->Apply2AllInRect<Shape>
 	( 
 		GetCoord().Convert2MicroMeterRect( rect ),	
 		[&](Shape const & s) { s.DrawExterior( m_context ); } 
@@ -105,10 +109,21 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 
 void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 {
-	m_pModelReaderInterface->Apply2AllInRect<Neuron>
+	m_pMRI->Apply2AllInRect<Neuron>
 	( 
 		GetCoord().Convert2MicroMeterRect( rect ),
 		[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
+	);
+}
+
+void NNetWindow::DrawSensors( ) const
+{
+	m_pMonitorData->Apply2AllSignals
+	(
+		[&](SignalInterface const & signal)
+		{
+			signal.Draw( m_context );
+		}
 	);
 }
 
@@ -118,7 +133,7 @@ ShapeId const NNetWindow::FindShapeAt
 	ShapeCrit  const & crit 
 ) const
 {	
-	return m_pModelReaderInterface->FindShapeAt
+	return m_pMRI->FindShapeAt
 	( 
 		GetCoord().Convert2MicroMeterPointPos( pixPoint ), 
 		[&]( Shape const & s ) { return crit( s ); } 
@@ -145,7 +160,7 @@ void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 	ShapeId idBeacon { m_pBeaconAnimation->GetBeaconShapeId() };
 	if ( IsDefined( idBeacon ) )
 	{
-		assert( m_pModelReaderInterface->IsValidShapeId(idBeacon) );
+		assert( m_pMRI->IsValidShapeId(idBeacon) );
 
 		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
 		static MicroMeter const MAX_SIZE { NEURON_RADIUS * 2 };
@@ -154,7 +169,7 @@ void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
 		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
 		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
-		MicroMeterPoint   const umPos    { m_pModelReaderInterface->GetShapePos( idBeacon ) };
+		MicroMeterPoint   const umPos    { m_pMRI->GetShapePos( idBeacon ) };
 		if ( umPos.IsNotNull() )
 		{
 			MicroMeterCircle  const umCircle { umPos, umRadius };

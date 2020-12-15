@@ -67,7 +67,7 @@ private:
 	MainWindow               * m_pMainWindow             { nullptr };
 	WinManager               * m_pWinManager             { nullptr };
 	ComputeThread            * m_pComputeThread          { nullptr };
-	NNetModelReaderInterface * m_pModelReaderInterface   { nullptr };
+	NNetModelReaderInterface * m_pMRI   { nullptr };
 	NNetModelCommands        * m_pModelCommands          { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio        { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay       { nullptr };

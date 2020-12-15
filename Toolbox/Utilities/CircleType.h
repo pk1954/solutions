@@ -25,8 +25,8 @@ public:
 
     auto operator <=> (const CircleType &) const = default;
 
-    CircleType const operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
-    CircleType const operator-= (POS_TYPE const a) { m_position -= a.m_position; return * this; }
+    CircleType const operator+= (POS_TYPE const a) { m_position += a; return * this; }
+    CircleType const operator-= (POS_TYPE const a) { m_position -= a; return * this; }
 
     CircleType const operator*= (float const d) { m_radius *= d; return * this; }
     CircleType const operator/= (float const d) { m_radius /= d; return * this; }
@@ -78,9 +78,17 @@ public:
 
     friend wostream & operator<< ( wostream & out, CircleType const & param )
     {
-        out << param.m_position << param.m_radius.GetValue();
+        out << OPEN_BRACKET 
+            << param.m_position 
+            << SEPARATOR 
+            << param.m_radius.GetValue()
+            << CLOSE_BRACKET;
         return out;
     }
+
+    inline static wchar_t const SEPARATOR     { L',' };
+    inline static wchar_t const OPEN_BRACKET  { L'(' };
+    inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
     POS_TYPE  m_position;

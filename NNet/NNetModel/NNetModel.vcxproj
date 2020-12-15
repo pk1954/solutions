@@ -224,6 +224,7 @@
     <ClInclude Include="tParameter.h" />
     <ClInclude Include="ShapeType.h" />
     <ClInclude Include="Track.h" />
+    <ClInclude Include="TrackNr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />

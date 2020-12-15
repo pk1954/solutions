@@ -9,6 +9,7 @@
 #include "NNetModelReaderInterface.h"
 #include "win32_NNetWindow.h"
 
+class MonitorData;
 class BeaconAnimation;
 class NNetModelCommands;
 
@@ -26,7 +27,8 @@ public:
 		NNetModelCommands        * const,
 		Observable               * const,
 		Observable               * const,
-		BeaconAnimation          * const
+		BeaconAnimation          * const,
+		MonitorData              * const
 	);
 
 	void Stop( );

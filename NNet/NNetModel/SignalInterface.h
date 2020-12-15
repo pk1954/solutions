@@ -15,6 +15,11 @@
 
 using std::vector;
 
+class SignalInterface;
+
+using SignalFunc = function<void(SignalInterface const &)>;
+using SignalCrit = function<bool(SignalInterface const &)>;
+
 class SignalInterface : public ObserverInterface  // observes signal source 
 {
 public:
@@ -39,19 +44,26 @@ public:
     virtual float GetSignalValue()              const = 0;
     virtual void  Animate( bool const )         const = 0;
     virtual void  Draw( DrawContext const & )   const = 0;
+    virtual bool  MarkLineAboveThreshold( )     const = 0;
+
+    virtual bool Includes( MicroMeterPoint const pos ) const { return false; }
+    virtual void Move    ( MicroMeterPoint const & umDelta ) { }
+    virtual void Size    ( float const factor ) { }
+
+    virtual MicroMeterPoint const GetCenter() const = 0;
 
     void CheckSignal( );
 
 protected:
 
-    NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+    NNetModelReaderInterface const * m_pMRI      { nullptr };
     fMicroSecs                       m_timeStart { 0._MicroSecs };
     vector <float>                   m_data      { };
 
     void Reset( )
     {
         m_data.clear();
-        m_timeStart = m_pModelReaderInterface->GetSimulationTime( );
+        m_timeStart = m_pMRI->GetSimulationTime( );
     }
 
 private:

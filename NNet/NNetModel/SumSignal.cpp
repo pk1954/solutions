@@ -10,18 +10,16 @@
 
 void SumSignal::WriteSignalData( wostream & out ) const
 {
-	out << L" sum " << m_circle;
+	out << L"SumSignal " << m_circle;
 }
 
 void SumSignal::Draw( DrawContext const & context ) const
 {
-	context.FillCircle( m_circle, NNetColors::SELECTION_RECT );
-	context.DrawCircle
-	( 
-		m_circle * (1.0f - BORDER / 2.0f), 
-		NNetColors::SELECTION_RECT, 
-		m_circle.GetRadius() * (1.0f - BORDER) 
-	);
+	D2D1::ColorF color1 { D2D1::ColorF::Green  };
+	D2D1::ColorF color2 { D2D1::ColorF::Yellow };
+	color1.a = 0.8f;
+	color2.a = 0.4f;
+	context.FillGradientCircle( m_circle, color1, color2 );
 }
 
 void SumSignal::Animate( bool const ) const
@@ -34,7 +32,7 @@ float SumSignal::GetSignalValue( ) const
 	float fResult   { 0.0f };
 	float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
 
-	m_pModelReaderInterface->Apply2All<BaseKnot>
+	m_pMRI->Apply2All<BaseKnot>
 	( 		
 		[&](BaseKnot const & b) 
 		{  

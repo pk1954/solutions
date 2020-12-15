@@ -30,7 +30,7 @@ public:
 
 private:
     ComputeThread                  * m_pComputeThread        { nullptr };
-    NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+    NNetModelReaderInterface const * m_pMRI { nullptr };
     ActionTimer                    * m_pDisplayTimer         { nullptr };
     SlowMotionRatio          const * m_pSlowMotionRatio      { nullptr };
 

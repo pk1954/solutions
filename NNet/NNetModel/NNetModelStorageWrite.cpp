@@ -84,57 +84,57 @@ void NNetModelStorage::writeGlobalParameters( wostream & out )
 
 void NNetModelStorage::writeShapes( wostream & out )
 {
-    m_CompactIds.resize( m_pModelReaderInterface->GetSizeOfShapeList() );
+    m_CompactIds.resize( m_pMRI->GetSizeOfShapeList() );
     wcout << L"*** Before writeShapes ";
-    m_pModelReaderInterface->DumpModel();
+    m_pMRI->DumpModel();
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
     {
-        m_CompactIds[ i ] = m_pModelReaderInterface->GetConstShape( ShapeId( i ) )
+        m_CompactIds[ i ] = m_pMRI->GetConstShape( ShapeId( i ) )
             ? idCompact++
             : NO_SHAPE;
     }
     out << L"NrOfShapes = " << idCompact << endl;
     out << endl;
-    m_pModelWriterInterface->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { writeShape( out, shape ); } );
-    m_pModelWriterInterface->Apply2All<Pipe    >( [&]( Pipe     & shape ) { writeShape( out, shape ); } );
+    m_pMWI->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { writeShape( out, shape ); } );
+    m_pMWI->Apply2All<Pipe    >( [&]( Pipe     & shape ) { writeShape( out, shape ); } );
 }
 
 void NNetModelStorage::writeShapeParameters( wostream & out )
 {
-    m_pModelWriterInterface->Apply2All<InputNeuron>
-        (
-            [&]( InputNeuron & inpNeuron )
-            { 
-                out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
-                    << GetParameterName( tParameter::pulseRate ) 
-                    << L" = " << inpNeuron.GetPulseFrequency( )
-                    << endl; 
-            }
+    m_pMWI->Apply2All<InputNeuron>
+    (
+        [&]( InputNeuron & inpNeuron )
+        { 
+            out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
+                << GetParameterName( tParameter::pulseRate ) 
+                << L" = " << inpNeuron.GetPulseFrequency( )
+                << endl; 
+        }
     );
 }
 
 void NNetModelStorage::writeTriggerSounds( wostream & out )
 {
-    m_pModelWriterInterface->Apply2All<Neuron>
-        ( 
-            [&]( Neuron & neuron ) 
-            { 
-                if ( neuron.HasTriggerSound( ) )
-                {
-                    SoundDescr sound { neuron.GetTriggerSound() };
-                    out << L"TriggerSound " << getCompactIdVal( neuron.GetId() ) << L" "
-                        << sound.m_frequency << L" Hertz "
-                        << sound.m_duration  << L" msec "
-                        << endl; 
-                }
-            } 
+    m_pMWI->Apply2All<Neuron>
+    ( 
+        [&]( Neuron & neuron ) 
+        { 
+            if ( neuron.HasTriggerSound( ) )
+            {
+                SoundDescr sound { neuron.GetTriggerSound() };
+                out << L"TriggerSound " << getCompactIdVal( neuron.GetId() ) << L" "
+                    << sound.m_frequency << L" Hertz "
+                    << sound.m_duration  << L" msec "
+                    << endl; 
+            }
+        } 
     );
 }
 
 void NNetModelStorage::writeMonitorData( wostream & out )
 {
-    MonitorData const * const pMonitorData { m_pModelWriterInterface->GetMonitorData() };
+    MonitorData const * const pMonitorData { m_pMWI->GetMonitorData() };
 
     out << L"NrOfTracks " << pMonitorData->GetNrOfTracks() << endl;
 
@@ -142,9 +142,8 @@ void NNetModelStorage::writeMonitorData( wostream & out )
     ( 
         [&]( SignalId const idSignal )
         {
-            SignalInterface const & signal { pMonitorData->GetSignal( idSignal ) };
-            out << L"SignalInterface track " << idSignal.GetTrackNr() << L" source ";
-            signal.WriteSignalData( out );
+            pMonitorData->GetSignal( idSignal ).WriteSignalData( out );
+            WriteTrackNr( out, idSignal.GetTrackNr() );
             out << endl; 
         }
     );

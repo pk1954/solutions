@@ -5,11 +5,13 @@
 #pragma once
 
 #include "NamedType.h"
+#include "script.h"
 #include "Track.h"
+#include "TrackNr.h"
 
 using std::vector;
 
-using TrackNr = NamedType< int, struct TrackNrParam >;
+using SignalIdFunc = function<void(SignalId const &)>;
 
 class SignalId
 {

@@ -25,16 +25,38 @@ unique_ptr<SignalInterface> Track::RemoveSignal( SignalNr const signalNr )
 	return nullptr;
 }
 
-void Track::Apply2AllSignals( SignalFunc const & func ) const
+void Track::Apply2AllSignals( SignalNrFunc const & func ) const
 {
 	for ( int i = 0; i < m_signals.size(); ++i )
 		func( SignalNr( i) ); 
 }             
 
+void Track::Apply2AllSignals( SignalFunc const & func )
+{
+	for ( int i = 0; i < m_signals.size(); ++i )
+		func( GetSignal(SignalNr( i)) ); 
+}             
+
+SignalInterface * const Track::FindSignal( SignalCrit const & crit )
+{
+	for ( int i = 0; i < m_signals.size(); ++i )
+	{ 
+		SignalInterface & signal { GetSignal(SignalNr(i) ) };
+			if ( crit(signal) )
+				return & signal;  
+	}
+	return nullptr;
+}
+
 SignalInterface const & Track::GetSignal( SignalNr const signalNr ) const
 {
 	assert( IsValid( signalNr ) );
 	return * m_signals[signalNr.GetValue()].get();
+}
+
+SignalInterface & Track::GetSignal( SignalNr const signalNr ) // calling const version 
+{
+	return const_cast<SignalInterface&>(static_cast<const Track&>(*this).GetSignal( signalNr ));
 }
 
 bool const Track::IsValid( SignalNr const signalNr ) const

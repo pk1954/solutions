@@ -29,14 +29,14 @@ public:
 		int                              iPartInStatusBar
 	)
 	:	m_pStatusBar           (pStatusBar),
-		m_pModelReaderInterface(pModelInterface),
+		m_pMRI(pModelInterface),
 		m_iPartInStatusBar     (iPartInStatusBar)
 	{ 
 	}
 
 	virtual void Trigger( )
 	{
-		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
+		fMicroSecs const time = m_pMRI->GetSimulationTime( );
 		wstring wstrTime;
 		Format2wstring( time, wstrTime );
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, wstrTime );
@@ -44,7 +44,7 @@ public:
 
 private:
 	StatusBar                      * m_pStatusBar            { nullptr };
-	NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+	NNetModelReaderInterface const * m_pMRI { nullptr };
 	int                              m_iPartInStatusBar      { -1 };
 };
 

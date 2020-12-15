@@ -13,7 +13,7 @@
 
 using std::vector;
 
-using TrackFunc = function<void(TrackNr const)>;
+using TrackNrFunc = function<void(TrackNr const)>;
 
 class SignalFactory;
 
@@ -40,15 +40,20 @@ public:
 	void                    DeleteSignal( SignalId const & );
 	SignalId        const   MoveSignal  ( SignalId const &, TrackNr const );
 	SignalInterface const & GetSignal   ( SignalId const & ) const;
+	SignalInterface       & GetSignal   ( SignalId const & );
 	void                    Animation   ( SignalId const &, bool const );
 
-	void Apply2AllTracks        ( TrackFunc const & ) const;
-	void Apply2AllSignalsInTrack( TrackNr const, SignalFunc const & ) const;
-	void Apply2AllSignals       ( function<void(SignalId const &)> const & ) const;
+	void Apply2AllTracks        ( TrackNrFunc const & ) const;
+	void Apply2AllSignalsInTrack( TrackNr const, SignalNrFunc const & ) const;
+	void Apply2AllSignals       ( SignalIdFunc const & ) const;
+	void Apply2AllSignals       ( SignalFunc   const & ) const;
+
+	SignalInterface * const FindSignal( SignalCrit      const & );
+	SignalInterface * const FindSensor( MicroMeterPoint const & );
 
 private:
-	Track       & getTrack ( TrackNr const );
-	Track const & getTrackC( TrackNr const ) const;
+	Track       & getTrack( TrackNr const );
+	Track const & getTrack( TrackNr const ) const;
 	unique_ptr<SignalInterface> removeSignal( SignalId const & );
 	SignalNr const addSignal( TrackNr const, unique_ptr<SignalInterface> );
 

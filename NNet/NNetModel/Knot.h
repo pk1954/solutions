@@ -11,6 +11,7 @@
 #include "Pipe.h"
 
 class DrawContext;
+class PixelCoordsFp;
 class NNetModel;
 
 class Knot : public BaseKnot

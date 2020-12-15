@@ -83,7 +83,7 @@ void Measurement::emphasizedLineLeft( fPIXEL const fPixPosX ) const
 		m_fPixClientHeight 
 	};
 
-	m_pGraphics->DrawGradientRect( rect, COL_STRONG, COL_WEAK   );
+	m_pGraphics->FillGradientRect( rect, COL_STRONG, COL_WEAK   );
 }
 
 void Measurement::emphasizedLineRight( fPIXEL const fPixPosX ) const
@@ -96,7 +96,7 @@ void Measurement::emphasizedLineRight( fPIXEL const fPixPosX ) const
 		m_fPixClientHeight 
 	};
 
-	m_pGraphics->DrawGradientRect( rect, COL_WEAK, COL_STRONG );
+	m_pGraphics->FillGradientRect( rect, COL_WEAK, COL_STRONG );
 }
 
 void Measurement::measuringArea( ) const
@@ -108,7 +108,7 @@ void Measurement::measuringArea( ) const
 		m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPIXEL),
 		m_fPixClientHeight 
 	};
-	m_pGraphics->DrawRectangle( rect, COL_WEAK );
+	m_pGraphics->FillRectangle( rect, COL_WEAK );
 }
 
 void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
@@ -139,7 +139,7 @@ void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
 	static D2D1::ColorF const COLOR_TEXT     { D2D1::ColorF::Black }; 
 	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::AntiqueWhite };
 
-	m_pGraphics->DrawRectangle( Convert2fPixelRect(pixRect), COL_BACKGROUND );
+	m_pGraphics->FillRectangle( Convert2fPixelRect(pixRect), COL_BACKGROUND );
 	m_pGraphics->DisplayText( pixRect, wBuffer.str( ), COLOR_TEXT, m_pTextFormat );
 }
 

@@ -102,6 +102,13 @@ void MonitorWindow::AddSignal( ShapeId const id )
 	}
 }
 
+void MonitorWindow::AddSignal( MicroMeterCircle const & umCircle )
+{
+	m_pMonitorData->InsertTrack( TrackNr(0) );
+	m_pMonitorData->AddSignal( TrackNr(0), umCircle );
+	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+}
+
 void MonitorWindow::InsertTrack( TrackNr const trackNr )
 {
 	m_pMonitorData->InsertTrack( trackNr );
@@ -163,18 +170,23 @@ fPIXEL const MonitorWindow::calcTrackHeight( ) const
 
 void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 {
-	fPIXEL      const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
-	fPIXEL      const   fPixYoff     { getSignalOffset( idSignal ) };
-	fMicroSecs  const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs  const   usResolution { m_pParams->GetTimeResolution( ) };
-	float       const   fPointsInWin { usInWindow / usResolution };
-	fMicroSecs  const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fMicroSecs  const   usEnd        { m_pMRI->GetSimulationTime( ) };
-	mV          const   mVlimit      ( m_pParams->GetParameterValue( tParameter::threshold ) );
-	fPIXEL      const   fPixYlimit   { fPixYoff - yValue2fPIXEL(mVlimit.GetValue()) };
-	SignalInterface      const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
-	fMicroSecs  const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
-	fPixelPoint         prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
+	fPIXEL          const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
+	fPIXEL          const   fPixYoff     { getSignalOffset( idSignal ) };
+	fMicroSecs      const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
+	fMicroSecs      const   usResolution { m_pParams->GetTimeResolution( ) };
+	float           const   fPointsInWin { usInWindow / usResolution };
+	fMicroSecs      const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs      const   usEnd        { m_pMRI->GetSimulationTime( ) };
+	SignalInterface const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
+	fMicroSecs      const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
+	fPixelPoint             prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
+	fPIXEL                  fPixYlimit   { 0._fPIXEL };
+
+	if ( signal.MarkLineAboveThreshold() )
+	{
+		mV const mVlimit ( m_pParams->GetParameterValue( tParameter::threshold ) );
+		fPixYlimit = fPixYoff - yValue2fPIXEL(mVlimit.GetValue());
+	}
 
 	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
 	{
@@ -229,7 +241,7 @@ void MonitorWindow::doPaint( ) const
 		fPIXEL         const fPHeight { calcTrackHeight() };
 		fPixelPoint    const pos      {	0._fPIXEL, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
 		fPixelRectSize const size     {	m_fPixWinWidth, fPHeight };
-		m_graphics.DrawRectangle( fPixelRect( pos, size ), NNetColors::COL_BEACON );
+		m_graphics.FillRectangle( fPixelRect( pos, size ), NNetColors::COL_BEACON );
 	}
 
 	m_measurement.DisplayDynamicScale( m_fMicroSecsPerPixel );
@@ -250,7 +262,7 @@ void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
 	fPIXEL          const   fPixYoff     { getSignalOffset( idSignal ) };
 	fPIXEL          const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
 
-	m_graphics.DrawDiamond
+	m_graphics.FillDiamond
 	(
 		fPixelPoint( fPixMax, fPixYvalue ),
 		4.0_fPIXEL,

@@ -51,7 +51,7 @@ void NNetController::Initialize
     m_pStorage                = pStorage;
     m_pMainWindow             = pMainWindow;
     m_pWinManager             = pWinManager;
-    m_pModelReaderInterface   = pModelReaderInterface;
+    m_pMRI                    = pModelReaderInterface;
     m_pModelCommands          = pModelCommands;
     m_pSlowMotionRatio        = pSlowMotionRatio;
     m_pComputeThread          = pComputeThread;
@@ -67,19 +67,19 @@ void NNetController::Initialize
 
 NNetController::~NNetController( )
 {
-    m_pStorage              = nullptr;
-    m_pMainWindow           = nullptr;
-    m_pWinManager           = nullptr;
-    m_pModelReaderInterface = nullptr;
-    m_pModelCommands        = nullptr;
-    m_pSlowMotionRatio      = nullptr;
-    m_pComputeThread        = nullptr;
-    m_pStatusBarDisplay     = nullptr;
-    m_hCrsrWait             = nullptr;
-    m_pSound                = nullptr;
-    m_pPreferences          = nullptr;
-    m_pCommandStack         = nullptr;
-    m_pMonitorWindow        = nullptr;
+    m_pStorage          = nullptr;
+    m_pMainWindow       = nullptr;
+    m_pWinManager       = nullptr;
+    m_pMRI              = nullptr;
+    m_pModelCommands    = nullptr;
+    m_pSlowMotionRatio  = nullptr;
+    m_pComputeThread    = nullptr;
+    m_pStatusBarDisplay = nullptr;
+    m_hCrsrWait         = nullptr;
+    m_pSound            = nullptr;
+    m_pPreferences      = nullptr;
+    m_pCommandStack     = nullptr;
+    m_pMonitorWindow    = nullptr;
 }
 
 bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -172,7 +172,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 
 void NNetController::pulseRateDlg( ShapeId const id )
 {
-    fHertz  const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
+    fHertz  const fOldValue { m_pMRI->GetPulseFrequency( id ) };
     if ( fOldValue.IsNull() )
         return;
     HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
@@ -185,11 +185,11 @@ void NNetController::pulseRateDlg( ShapeId const id )
 
 void NNetController::triggerSoundDlg( ShapeId const id )
 {
-    ShapeType const type { m_pModelReaderInterface->GetShapeType(id) };
+    ShapeType const type { m_pMRI->GetShapeType(id) };
     if ( ! type.IsAnyNeuronType() )
         return;
 
-    TriggerSoundDialog dialog( m_pSound, m_pModelReaderInterface->GetTriggerSound( id ) );
+    TriggerSoundDialog dialog( m_pSound, m_pMRI->GetTriggerSound( id ) );
     dialog.Show( m_pMainWindow->GetWindowHandle() );
     m_pModelCommands->SetTriggerSound( id, dialog.GetSound() );
 }
@@ -305,13 +305,13 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
-    case IDD_ATTACH2MONITOR:
+    case IDD_NEW_SINGLE_SIGNAL:
         m_pMonitorWindow->AddSignal( m_pMainWindow->GetHighlightedShapeId() );
         ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 
     case IDD_NEW_SENSOR:
-        m_pModelCommands->NewSensor( umPoint );
+        m_pMonitorWindow->AddSignal( MicroMeterCircle(umPoint, NEURON_RADIUS * 5) );
         ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 

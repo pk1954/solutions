@@ -5,9 +5,11 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "Resource.h"
+#include "SumSignal.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
 void MainWindow::Start
@@ -20,7 +22,8 @@ void MainWindow::Start
 	NNetModelCommands        * const pNNetCommands,
 	Observable               * const pCursorObservable,
 	Observable               * const pCoordObservable,
-	BeaconAnimation          * const pBeaconAnimation
+	BeaconAnimation          * const pBeaconAnimation,
+	MonitorData              * const pMonitorData
 )
 {
 	NNetWindow::Start
@@ -30,7 +33,8 @@ void MainWindow::Start
 		bShowRefreshRateDialog,
 		pController,
 		pModelReaderInterface,
-		pBeaconAnimation
+		pBeaconAnimation,
+		pMonitorData
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 	m_pNNetCommands        = pNNetCommands;
@@ -52,7 +56,7 @@ void MainWindow::Reset( )
 
 long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
-	if ( m_pModelReaderInterface->AnyShapesSelected( ) )
+	if ( m_pMRI->AnyShapesSelected( ) )
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
@@ -63,23 +67,23 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_NEURON,         L"New neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SENSOR,         L"Create EEG sensor" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SENSOR,         L"New EEG sensor" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
 	}
-	else switch ( m_pModelReaderInterface->GetShapeType( m_shapeHighlighted ).GetValue() )
+	else switch ( m_pMRI->GetShapeType( m_shapeHighlighted ).GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
-		if ( ! m_pModelReaderInterface->HasOutgoing( m_shapeHighlighted ) )
+		if ( ! m_pMRI->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ATTACH2MONITOR,        L"Monitor" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SINGLE_SIGNAL,     L"Monitor" );
 		break;
 
 	case ShapeType::Value::neuron:
-		if ( ! m_pModelReaderInterface->HasOutgoing( m_shapeHighlighted ) )
+		if ( ! m_pMRI->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
@@ -87,23 +91,23 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SUBTREE,        L"Select subtree" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ATTACH2MONITOR,        L"Monitor" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SINGLE_SIGNAL,     L"Monitor" );
 		break;
 
 	case ShapeType::Value::knot:  
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
 		if ( 
-			(! m_pModelReaderInterface->HasOutgoing( m_shapeHighlighted )) || 
+			(! m_pMRI->HasOutgoing( m_shapeHighlighted )) || 
 			(
-				! m_pModelReaderInterface->HasIncoming( m_shapeHighlighted ) && 
-				( m_pModelReaderInterface->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
+				! m_pMRI->HasIncoming( m_shapeHighlighted ) && 
+				( m_pMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
 				) 
 			)
 			AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_NEURON, L"Add neuron" );
 		if ( 
-			( m_pModelReaderInterface->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
-			(! m_pModelReaderInterface->HasIncoming( m_shapeHighlighted )) 
+			( m_pMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
+			(! m_pMRI->HasIncoming( m_shapeHighlighted )) 
 			)
 			AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT, L"Disconnect" );
@@ -126,7 +130,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 
 	if ( IsDefined( m_shapeHighlighted ) )
 	{
-		if ( m_pModelReaderInterface->IsSelected( m_shapeHighlighted ) )
+		if ( m_pMRI->IsSelected( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_SHAPE, L"Deselect" );
 		else
 			AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SHAPE, L"Select" );
@@ -186,7 +190,7 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 
 void MainWindow::CenterModel( )
 {
-	CenterAndZoomRect( m_pModelReaderInterface->GetEnclosingRect( ), 1.2f ); // give 20% more space (looks better)
+	CenterAndZoomRect( m_pMRI->GetEnclosingRect( ), 1.2f ); // give 20% more space (looks better)
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -230,10 +234,14 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			m_shapeSuperHighlighted = NO_SHAPE;
 			if ( IsDefined( m_shapeHighlighted ) ) //-V1051
 			{
-				setSuperHighlightedShape( m_pModelReaderInterface->GetShapePos( m_shapeHighlighted ) );
+				setSuperHighlightedShape( m_pMRI->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
-			else if ( m_pModelReaderInterface->AnyShapesSelected( ) )   // move selected shapes 
+			else if ( SignalInterface * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
+			{
+				pSignal->Move( umCrsrPos - umLastPos );
+			}
+			else if ( m_pMRI->AnyShapesSelected( ) )   // move selected shapes 
 			{
 				m_pNNetCommands->MoveSelection( umCrsrPos - umLastPos );
 			}
@@ -289,9 +297,20 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	int        const iDelta     { GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA };
 	bool       const bDirection { iDelta > 0 };
 
-	for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
+	MicroMeterPoint const umCrsrPos { GetCoord().Convert2MicroMeterPointPos( ptCrsr ) };
+	if ( SignalInterface * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
 	{
-		ZoomStep( bDirection, & ptCrsr );
+		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
+		{
+			pSignal->Size( bDirection ? 1.1f : 0.9f );
+		}
+	}
+	else
+	{
+		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
+		{
+			ZoomStep( bDirection, & ptCrsr );
+		}
 	}
 }
 
@@ -341,7 +360,7 @@ void MainWindow::OnPaint( )
 bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
 {
 	static fHertz const INCREMENT { 0.01_fHertz };
-	fHertz const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
+	fHertz const fOldValue { m_pMRI->GetPulseFrequency( id ) };
 	if ( fOldValue.IsNull() )
 		return false;
 	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
@@ -380,36 +399,37 @@ void MainWindow::doPaint( )
 
 	if ( IsDefined( m_shapeSuperHighlighted ) ) // draw super highlighted shape again to be sure that it is visible
 	{
-		m_pModelReaderInterface->DrawExterior( m_shapeSuperHighlighted, context, tHighlightType::superHighlighted );
-		m_pModelReaderInterface->DrawInterior( m_shapeSuperHighlighted, context );
+		m_pMRI->DrawExterior( m_shapeSuperHighlighted, context, tHighlightType::superHighlighted );
+		m_pMRI->DrawInterior( m_shapeSuperHighlighted, context );
 	}
 
 	if ( IsDefined( m_shapeHighlighted ) )  // draw highlighted shape again to be sure that it is in foreground
 	{
-		m_pModelReaderInterface->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
-		m_pModelReaderInterface->DrawInterior( m_shapeHighlighted, context );
-		if ( m_pModelReaderInterface->IsOfType<Neuron>( m_shapeHighlighted ) )
-			m_pModelReaderInterface->DrawNeuronText( m_shapeHighlighted, context );
+		m_pMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
+		m_pMRI->DrawInterior( m_shapeHighlighted, context );
+		if ( m_pMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
+			m_pMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 
+	DrawSensors( );
 	AnimateBeacon( 30._fPIXEL);
 }
 
 void MainWindow::setSuperHighlightedShape( MicroMeterPoint const & umCrsrPos )
 {
-	if ( m_pModelReaderInterface->IsOfType<BaseKnot>( m_shapeHighlighted ) )
+	if ( m_pMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 	{
-		m_shapeSuperHighlighted = m_pModelReaderInterface->FindShapeAt
+		m_shapeSuperHighlighted = m_pMRI->FindShapeAt
 		( 
 			umCrsrPos,
-			[&]( Shape const & shape ) { return m_pModelReaderInterface->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+			[&]( Shape const & shape ) { return m_pMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 		);
 	}
 }
 
 void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 {
-	ShapeId const idHighlight { m_pModelReaderInterface->FindShapeAt( umCrsrPos, ShapeCritAlwaysTrue ) };
+	ShapeId const idHighlight { m_pMRI->FindShapeAt( umCrsrPos, ShapeCritAlwaysTrue ) };
 	if ( idHighlight != m_shapeHighlighted )
 	{
 		m_shapeHighlighted = idHighlight; 

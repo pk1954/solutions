@@ -178,7 +178,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_modelCommands,
 		& m_cursorPosObservable,
 		& m_coordObservable,
-		& m_beaconAnimation
+		& m_beaconAnimation,
+        & m_monitorData
 	);
 
 	m_miniNNetWindow.Start
@@ -188,7 +189,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 		true,
 		& m_NNetController,
 		& m_modelReaderInterface,
-		& m_beaconAnimation
+		& m_beaconAnimation,
+		& m_monitorData
 	);
 
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window

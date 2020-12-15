@@ -7,6 +7,7 @@
 #include <vector>
 #include "D2D_DrawContext.h"
 #include "Scale.h"
+#include "MoreTypes.h"
 #include "Measurement.h"
 #include "MonitorData.h"
 #include "win32_baseWindow.h"
@@ -36,6 +37,7 @@ public:
 	virtual long AddContextMenuEntries( HMENU const );
 
 	void AddSignal( ShapeId const );
+	void AddSignal( MicroMeterCircle const &  );
 	void InsertTrack( TrackNr const );
 
 private:

@@ -4,12 +4,8 @@
 
 #pragma once
 
+#include "SCRIPT.H"
 #include "NamedType.h"
-
-class Shape;
-class D2D_driver;
-class PixelCoordsFp;
-class NNetModel;
 
 using ShapeId = NamedType< long, struct ShapeIdParam >;
 
@@ -23,4 +19,10 @@ static bool IsDefined( ShapeId const id )
 static bool IsUndefined( ShapeId const id ) 
 { 
 	return id == NO_SHAPE; 
+}
+
+static ShapeId ScrReadShapeId( Script & script )
+{
+	ShapeId const id { static_cast<ShapeId>( script.ScrReadLong( ) ) };
+	return id;
 }

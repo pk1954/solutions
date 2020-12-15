@@ -30,8 +30,8 @@ public:
 	virtual void DoPaint( TextBuffer & );
 
 private:
-	MainWindow               const * m_pMainWindow           { nullptr };
-	NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+	MainWindow               const * m_pMainWindow { nullptr };
+	NNetModelReaderInterface const * m_pMRI        { nullptr };
 
 	void printMicroMeter( TextBuffer &,	MicroMeter const );
 	void printMilliSecs ( TextBuffer &, MilliSecs  const );

@@ -205,7 +205,7 @@ void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type 
 		context.DrawLine( umStartPoint, umEndPoint, m_width, colF );
 
 		if ( m_arrowSize > 0.0_MicroMeter )
-			context.DrawArrow
+			context.FillArrow
 			(
 				(umEndPoint * 2.f + umStartPoint) / 3.f , 
 				umEndPoint - umStartPoint, 

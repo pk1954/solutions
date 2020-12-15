@@ -81,6 +81,16 @@ public:
 		);
 	}
 
+	virtual void FillGradientCircle
+	(
+		MicroMeterCircle const & umCircle,
+		D2D1::ColorF     const   col1,  
+		D2D1::ColorF     const   col2  
+	) const
+	{
+		m_graphics.FillGradientCircle( m_coord.Convert2fPixelCircle( umCircle ), col1, col2 );
+	}
+
 	virtual void DrawCircle
 	(
 		MicroMeterCircle const & umCircle,
@@ -124,7 +134,7 @@ public:
 		);
 	}
 
-	virtual void DrawArrow
+	virtual void FillArrow
 	( 
 		MicroMeterPoint const & umPos, 
 		MicroMeterPoint const & umVector, 
@@ -133,7 +143,7 @@ public:
 		D2D1::ColorF    const   col
 	) const
 	{
-		m_graphics.DrawArrow
+		m_graphics.FillArrow
 		( 
 			m_coord.Convert2fPixelPos ( umPos ),
 			m_coord.Convert2fPixelSize( umVector ), 
@@ -143,16 +153,16 @@ public:
 		);
 	}
 
-	virtual void DrawRectangle( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
+	virtual void FillRectangle( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
 	{
-		m_graphics.DrawRectangle( m_coord.Convert2fPixelRect( umRect ), col );
+		m_graphics.FillRectangle( m_coord.Convert2fPixelRect( umRect ), col );
 	}
 
 	virtual void DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
 	{
 		if ( IsTooSmall( umRect ) )
 		{
-			m_graphics.DrawRectangle
+			m_graphics.FillRectangle
 			( 
 				fPixelRect
 				( 
@@ -161,7 +171,7 @@ public:
 				), 
 				col 
 			);
-			m_graphics.DrawRectangle
+			m_graphics.FillRectangle
 			( 
 				fPixelRect
 				( 
@@ -173,7 +183,7 @@ public:
 		}
 		else
 		{
-			m_graphics.DrawRectangle( m_coord.Convert2fPixelRect( umRect ), col );
+			m_graphics.FillRectangle( m_coord.Convert2fPixelRect( umRect ), col );
 		}
 	}
 

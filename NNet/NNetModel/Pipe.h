@@ -89,6 +89,8 @@ public:
 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 	inline static wstring    const SEPARATOR     { L"->" };
+	inline static wchar_t    const OPEN_BRACKET  { L'(' };
+	inline static wchar_t    const CLOSE_BRACKET { L')' };
 
 	friend wostream & operator<< ( wostream &, Pipe const & );
 

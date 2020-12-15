@@ -26,11 +26,14 @@ public:
         NNetModelReaderInterface const & modelReaderInterface,
         Param                    const & param,
         Observable                     & observable,
-        AnimationInterface             & animationInterface
+        AnimationInterface             & animationInterface,
+        ShapeId                  const   id
     ) :
       SignalInterface( modelReaderInterface, param, observable )
     {
         m_pAnimationInterface = & animationInterface;
+        m_SignalShapeId = id;
+        Reset();
     }
 
     virtual ~SingleSignal() {}
@@ -45,24 +48,25 @@ public:
 
     virtual void Draw( DrawContext const & ) const {};
 
+    virtual bool MarkLineAboveThreshold( ) const { return true; }
+
     void WriteSignalData( wostream & out ) const
     {
-        out << L" \"shape\" " << m_SignalShapeId;
+        out << L"SingleSignal " << m_SignalShapeId;
     }
 
     ShapeId const GetSignalSource( ) const { return m_SignalShapeId; }
 
-    void SetSignalSource( ShapeId const id )
+    virtual MicroMeterPoint const GetCenter( ) const
     {
-        m_SignalShapeId = id;
-        Reset();
+        return m_pMRI->GetShapePos( m_SignalShapeId );
     }
 
     void CheckSignal( ) 
     {
 #ifdef _DEBUG
         SignalInterface::CheckSignal();
-        if ( ! m_pModelReaderInterface->IsValidShapeId( m_SignalShapeId ) )
+        if ( ! m_pMRI->IsValidShapeId( m_SignalShapeId ) )
         {
             int x = 42;
         }
@@ -70,12 +74,12 @@ public:
     }
 
 private:
-    ShapeId              m_SignalShapeId    { NO_SHAPE };
+    ShapeId              m_SignalShapeId       { NO_SHAPE };
     AnimationInterface * m_pAnimationInterface { nullptr };
 
     virtual float GetSignalValue( ) const
     {
-        Neuron const * pNeuron { m_pModelReaderInterface->GetConstShapePtr<Neuron const *>( m_SignalShapeId ) };
+        Neuron const * pNeuron { m_pMRI->GetConstShapePtr<Neuron const *>( m_SignalShapeId ) };
         mV     const   voltage { pNeuron ? pNeuron->GetVoltage() : 0.0_mV };
         return voltage.GetValue();
     }

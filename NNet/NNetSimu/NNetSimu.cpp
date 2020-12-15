@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "commctrl.h"
-#include "win32_util.h"
 #include "win32_fatalError.h"
 #include "win32_stopwatch.h"
 #include "win32_messagePump.h"
@@ -23,8 +22,6 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER( lpCmdLine );
     UNREFERENCED_PARAMETER( nCmdShow );
 
-//	Util::StdOutConsole( );
-
 	NNetAppWindow App;
 
 	// SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
@@ -38,29 +35,15 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	int iRetVal;
-
-	//try
-	//{
-		Stopwatch   stopwatch;
-		MessagePump pump;
-		stopwatch.Start();
-		pump.SetAccelTable( hInstance, IDC_NNET_SIMU_MAIN );
-		App.Start( pump );
-		pump.RegisterWindow( App.GetWindowHandle(), false );
-		stopwatch.Stop( L"*** App.Start" );
-		wcout << endl;
-		iRetVal = pump.Run();
-	//}
-	//catch ( std::logic_error & err )
-	//{
-	//	FatalError::Happened( 999, err.what() );
-	//}
-	//catch ( ... )
-	//{
-	//	App.Stop();
-	//	FatalError::Happened( 1, "main thread" );
-	//}
+	Stopwatch   stopwatch;
+	MessagePump pump;
+	stopwatch.Start();
+	pump.SetAccelTable( hInstance, IDC_NNET_SIMU_MAIN );
+	App.Start( pump );
+	pump.RegisterWindow( App.GetWindowHandle(), false );
+	stopwatch.Stop( L"*** App.Start" );
+	wcout << endl;
+	int iRetVal = pump.Run();
 
 	return iRetVal;
 }

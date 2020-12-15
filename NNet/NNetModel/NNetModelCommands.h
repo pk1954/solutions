@@ -55,7 +55,6 @@ public:
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );
     void NewInputNeuron      ( MicroMeterPoint const & );
     void NewNeuron           ( MicroMeterPoint const & );
-    void NewSensor           ( MicroMeterPoint const & );
     void ReadModel           ( bool, wstring const );
     void ResetModel          ( );
     void SelectAll           ( tBoolOp const );

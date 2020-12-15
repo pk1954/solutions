@@ -5,13 +5,8 @@
 #include "stdafx.h"
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
+#include "ShapeId.h"
 #include "NNetWrapperHelpers.h"
-
-ShapeId ScrReadShapeId( Script & script )
-{
-	ShapeId const id { static_cast<ShapeId>( script.ScrReadLong( ) ) };
-	return id;
-}
 
 MicroMeter ScrReadMicroMeter( Script & script )
 {
@@ -33,7 +28,10 @@ MicroMeterPoint ScrReadMicroMeterPoint( Script & script )
 
 MicroMeterCircle ScrReadMicroMeterCircle( Script & script )
 {
+	script.ScrReadSpecial( MicroMeterCircle::OPEN_BRACKET );
 	MicroMeterPoint umCenter { ScrReadMicroMeterPoint( script ) };
+	script.ScrReadSpecial( MicroMeterCircle::SEPARATOR );
 	MicroMeter      umRadius { ScrReadMicroMeter( script ) };
+	script.ScrReadSpecial( MicroMeterCircle::CLOSE_BRACKET );
 	return MicroMeterCircle( umCenter, umRadius );
 }

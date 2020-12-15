@@ -24,33 +24,43 @@ public:
     ( 
         NNetModelReaderInterface const & modelReaderInterface,
         Param                    const & param,
-        Observable                     & observable
+        Observable                     & observable,
+        MicroMeterCircle         const & circle
     ) :
         SignalInterface( modelReaderInterface, param, observable )
-    {}
-
-    virtual ~SumSignal() {}
-
-    virtual void Animate( bool const ) const;
-
-    virtual void Draw( DrawContext const &  ) const;
-
-    virtual void WriteSignalData( wostream & ) const;
-
-    void SetSignalSource( MicroMeterCircle const circle )
     {
         m_circle = circle;
         Reset();
     }
 
-    bool IsInCircle( MicroMeterPoint const pos ) const 
+    virtual ~SumSignal() {}
+
+    virtual void Animate( bool const ) const;
+
+    virtual void Draw( DrawContext const & ) const;
+
+    virtual void WriteSignalData( wostream & ) const;
+
+    virtual void Move( MicroMeterPoint const & umDelta )
+    {
+        m_circle += umDelta;
+    }
+
+    virtual void Size( float const factor )
+    {
+        m_circle *= factor;
+    }
+
+    virtual bool Includes( MicroMeterPoint const pos ) const 
     { 
         return m_circle.Includes( pos ); 
     }
 
-    bool IsOnBorder( MicroMeterPoint const pos ) const
+    virtual bool MarkLineAboveThreshold( ) const { return false; }
+
+    virtual MicroMeterPoint const GetCenter( ) const
     {
-        return IsInCircle( pos )  && ! (m_circle * BORDER).Includes( pos );
+        return m_circle.GetPosition();
     }
 
     void Set2Null() { m_circle.Set2Null(); }
@@ -71,8 +81,6 @@ public:
     }
 
 private:
-    inline static const float BORDER { 0.8f };
-
     MicroMeterCircle m_circle { MicroMeterCircle::NULL_VAL() };
 
     virtual float GetSignalValue( ) const;

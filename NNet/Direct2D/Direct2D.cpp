@@ -161,7 +161,7 @@ void D2D_driver::EndFrame( )
 	}
 }
 
-void D2D_driver::DrawRectangle( fPixelRect const & rect, D2D1::ColorF const colF ) const
+void D2D_driver::FillRectangle( fPixelRect const & rect, D2D1::ColorF const colF ) const
 {
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	m_pRenderTarget->FillRectangle
@@ -178,7 +178,7 @@ void D2D_driver::DrawRectangle( fPixelRect const & rect, D2D1::ColorF const colF
 	SafeRelease( & pBrush );
 }
 
-void D2D_driver::DrawGradientRect
+void D2D_driver::FillGradientRect
 ( 
 	fPixelRect   const & rect, 
 	D2D1::ColorF const   colF1,
@@ -212,6 +212,51 @@ void D2D_driver::DrawGradientRect
 
 	SafeRelease( & m_pLinearGradientBrush );
 	SafeRelease( & pGradientStopColl );
+}
+
+void D2D_driver::FillGradientEllipse
+( 
+	fPixelEllipse const & fPE, 
+	D2D1::ColorF  const   colF1,
+	D2D1::ColorF  const   colF2 
+) const
+{
+	HRESULT hr;
+	ID2D1GradientStopCollection * pGradientStopColl = NULL;
+	D2D1_GRADIENT_STOP            gradientStops[2] { { 0.0f, colF1 }, { 1.0f, colF2 } };
+	hr = m_pRenderTarget->CreateGradientStopCollection(	gradientStops, 2, & pGradientStopColl );
+	assert( SUCCEEDED(hr) );
+
+	ID2D1RadialGradientBrush * m_pRadialGradientBrush;
+	hr = m_pRenderTarget->CreateRadialGradientBrush
+	(
+		D2D1::RadialGradientBrushProperties
+		( 
+			D2D1::Point2F(fPE.GetPosition().GetXvalue(), fPE.GetPosition().GetYvalue()), 
+			D2D1::Point2F(0, 0), 
+			fPE.GetRadiusX().GetValue(), 
+			fPE.GetRadiusY().GetValue() 
+		),
+
+		pGradientStopColl,
+		&m_pRadialGradientBrush
+	);
+	assert( SUCCEEDED(hr) );
+
+	m_pRenderTarget->FillEllipse( convertD2D(fPE), m_pRadialGradientBrush );
+
+	SafeRelease( & m_pRadialGradientBrush );
+	SafeRelease( & pGradientStopColl );
+}
+
+void D2D_driver::FillGradientCircle
+( 
+	fPixelCircle const & circle, 
+	D2D1::ColorF const   colF1,
+	D2D1::ColorF const   colF2 
+) const
+{
+	FillGradientEllipse( fPixelEllipse { circle }, colF1, colF2 );
 }
 
 void D2D_driver::DrawLine
@@ -277,7 +322,7 @@ void D2D_driver::DrawEllipse
 	SafeRelease( & pBrush );
 }
 
-void D2D_driver::DrawArrow
+void D2D_driver::FillArrow
 (
 	fPixelPoint  const ptPos,
 	fPixelPoint  const ptVector,
@@ -298,7 +343,7 @@ void D2D_driver::DrawArrow
 	}
 }
 
-void D2D_driver::DrawDiamond
+void D2D_driver::FillDiamond
 (
 	fPixelPoint  const ptPos,
 	fPIXEL       const fPixSize,  

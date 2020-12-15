@@ -18,6 +18,7 @@ using std::function;
 class Scale;
 class Observable;
 class ActionTimer;
+class MonitorData;
 class BeaconAnimation;
 class ObserverInterface;
 class ControllerInterface;
@@ -37,7 +38,8 @@ public:
 		bool                       const,
 		NNetController           * const,
 		NNetModelReaderInterface * const,
-		BeaconAnimation          * const
+		BeaconAnimation          * const,
+		MonitorData              * const
 	);
 
 	void Stop( );
@@ -54,6 +56,7 @@ public:
 	void          DrawInteriorInRect  ( PixelRect  const &, ShapeCrit const & ) const;
 	void          DrawExteriorInRect  ( PixelRect  const &                    ) const;
 	void          DrawNeuronTextInRect( PixelRect  const &                    ) const;
+	void          DrawSensors         ( ) const;
 
 protected:
 
@@ -66,7 +69,8 @@ protected:
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
+	NNetModelReaderInterface * m_pMRI         { nullptr };
+	MonitorData              * m_pMonitorData { nullptr };
 
 private:
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );

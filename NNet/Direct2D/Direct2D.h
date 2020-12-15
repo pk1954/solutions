@@ -38,15 +38,17 @@ public:
     void DisplayText( PixelRect const &, std::wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr ) const;
     void EndFrame( );
     void ShutDown( );
-    void DrawRectangle   ( fPixelRect const &, D2D1::ColorF const ) const;
-    void DrawGradientRect( fPixelRect const &, D2D1::ColorF const, D2D1::ColorF const ) const;
-    void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
+    void FillRectangle      ( fPixelRect    const &, D2D1::ColorF const ) const;
+    void FillGradientRect   ( fPixelRect    const &, D2D1::ColorF const, D2D1::ColorF const ) const;
+    void FillGradientEllipse( fPixelEllipse const &, D2D1::ColorF const, D2D1::ColorF const ) const;
+    void FillGradientCircle ( fPixelCircle  const &, D2D1::ColorF const, D2D1::ColorF const ) const;
+    void DrawLine   ( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
     void FillCircle ( fPixelCircle  const &, D2D1::ColorF const ) const;
     void DrawCircle ( fPixelCircle  const &, D2D1::ColorF const, fPIXEL const ) const;
     void FillEllipse( fPixelEllipse const &, D2D1::ColorF const ) const;
     void DrawEllipse( fPixelEllipse const &, D2D1::ColorF const, fPIXEL const ) const;
-    void DrawArrow( fPixelPoint const, fPixelPoint const, fPIXEL const, fPIXEL const, D2D1::ColorF const ) const;
-    void DrawDiamond( fPixelPoint const, fPIXEL const, D2D1::ColorF const ) const;
+    void FillArrow( fPixelPoint const, fPixelPoint const, fPIXEL const, fPIXEL const, D2D1::ColorF const ) const;
+    void FillDiamond( fPixelPoint const, fPIXEL const, D2D1::ColorF const ) const;
     void Resize( int const, int const );
 
     fPixelRectSize const GetClRectSize( ) const;

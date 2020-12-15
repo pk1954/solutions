@@ -29,29 +29,25 @@ public:
         AnimationInterface             & animationInterface
     )
     {
-        m_pModelReaderInterface = & modelReaderInterface;
-        m_pParams               = & param;
-        m_pObservable           = & observable;
-        m_pAnimationInterface   = & animationInterface;
+        m_pMRI                = & modelReaderInterface;
+        m_pParams             = & param;
+        m_pObservable         = & observable;
+        m_pAnimationInterface = & animationInterface;
     }
 
     unique_ptr<SingleSignal>MakeSignal( ShapeId const id )
     {
-        auto upSignal { make_unique<SingleSignal>( * m_pModelReaderInterface, * m_pParams, * m_pObservable, * m_pAnimationInterface ) };
-        upSignal->SetSignalSource( id );
-        return move( upSignal );
+        return make_unique<SingleSignal>( * m_pMRI, * m_pParams, * m_pObservable, * m_pAnimationInterface, id );
     }
 
     unique_ptr<SumSignal>MakeSignal( MicroMeterCircle const & umCircle )
     {
-        auto upSignal { make_unique<SumSignal>( * m_pModelReaderInterface, * m_pParams, * m_pObservable ) };
-        upSignal->SetSignalSource( umCircle );
-        return move( upSignal );
+        return make_unique<SumSignal>( * m_pMRI, * m_pParams, * m_pObservable, umCircle );
     }
 
 private:
-    Param                    const * m_pParams               { nullptr };
-    NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
-    Observable                     * m_pObservable           { nullptr };
-    AnimationInterface             * m_pAnimationInterface   { nullptr };
+    Param                    const * m_pParams             { nullptr };
+    NNetModelReaderInterface const * m_pMRI                { nullptr };
+    Observable                     * m_pObservable         { nullptr };
+    AnimationInterface             * m_pAnimationInterface { nullptr };
 };

@@ -12,7 +12,7 @@ SignalInterface::SignalInterface
     Observable                     & observable
 )
 {
-    m_pModelReaderInterface = & modelReaderInterface;
+    m_pMRI = & modelReaderInterface;
     m_pParams = & param;
     m_pObservable = & observable;
     m_pObservable->RegisterObserver( this );
@@ -72,8 +72,8 @@ void SignalInterface::Notify( bool const bImmediate )
 void SignalInterface::CheckSignal( ) 
 {
 #ifdef _DEBUG
-    assert( m_pModelReaderInterface );
-    if ( (unsigned long long)m_pModelReaderInterface == 0xdddddddddddddddd )
+    assert( m_pMRI );
+    if ( (unsigned long long)m_pMRI == 0xdddddddddddddddd )
     {
         int x = 42;
     }

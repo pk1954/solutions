@@ -13,6 +13,7 @@
 #include "ShapeType.h"
 #include "ShapeId.h"
 
+class Shape;
 class DrawContext;
 
 using std::remove_pointer;
@@ -71,9 +72,6 @@ public:
 	static void SetParam( Param const * const pParam ) { m_pParameters = pParam; }
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
-
-	inline static wchar_t const OPEN_BRACKET  { L'(' };
-	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 

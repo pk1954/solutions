@@ -65,7 +65,7 @@ void MonitorData::AddSignal( TrackNr const trackNr, ShapeId const idShape )
 {
 	if ( IsValid( trackNr ) )
 	{
-		unique_ptr<SingleSignal> upSignal { m_pSignalFactory->MakeSignal( idShape ) };
+		auto     upSignal { m_pSignalFactory->MakeSignal( idShape ) };
 		SignalNr signalNr { addSignal( trackNr, move(upSignal) ) };
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -75,7 +75,7 @@ void MonitorData::AddSignal( TrackNr const trackNr, MicroMeterCircle const & umC
 {
 	if ( IsValid( trackNr ) )
 	{
-		unique_ptr<SumSignal> upSignal { m_pSignalFactory->MakeSignal( umCircle ) };
+		auto     upSignal { m_pSignalFactory->MakeSignal( umCircle ) };
 		SignalNr signalNr { addSignal( trackNr, move(upSignal) ) };
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -109,25 +109,25 @@ void MonitorData::Animation( SignalId const& id, bool const bOn )
 	GetSignal( id ).Animate( bOn );
 }
 
-void MonitorData::Apply2AllTracks( TrackFunc const & func ) const
+void MonitorData::Apply2AllTracks( TrackNrFunc const & func ) const
 {
 	for ( int i = 0; i < m_tracks.size(); ++i )
 		func( TrackNr( i ) ); 
 }                        
 
-void MonitorData::Apply2AllSignalsInTrack( TrackNr const trackNr, SignalFunc const & func ) const
+void MonitorData::Apply2AllSignalsInTrack( TrackNr const trackNr, SignalNrFunc const & func ) const
 {
 	if ( IsValid( trackNr ) )
-		getTrackC(trackNr).Apply2AllSignals( func );
+		getTrack(trackNr).Apply2AllSignals( func );
 }                        
 
-void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & func ) const
+void MonitorData::Apply2AllSignals( SignalIdFunc const & func ) const
 {
 	Apply2AllTracks
 	( 
 		[&]( TrackNr const trackNr )
 		{
-			getTrackC(trackNr).Apply2AllSignals
+			getTrack(trackNr).Apply2AllSignals
 			(
 				[&](SignalNr const & signalNr){	func( SignalId(trackNr, signalNr) ); }
 			);
@@ -135,10 +135,42 @@ void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & fun
 	);
 }                        
 
+void MonitorData::Apply2AllSignals( SignalFunc const & func ) const
+{
+	Apply2AllTracks
+	( 
+		[&]( TrackNr const trackNr )
+		{
+			getTrack(trackNr).Apply2AllSignals
+			(
+				[&](SignalNr const & signalNr)
+				{	
+					SignalId        const   id     { SignalId(trackNr, signalNr) }; 
+					SignalInterface const & signal { GetSignal( id )  }; 
+					func( signal ); 
+				}
+			);
+		}
+	);
+}                        
+
+SignalInterface * const  MonitorData::FindSignal( SignalCrit const & crit )
+{
+	for ( Track & track: m_tracks ) 
+		if ( SignalInterface * const pSignal { track.FindSignal( crit ) } )
+			return pSignal;
+	return nullptr;
+}                        
+
 SignalInterface const & MonitorData::GetSignal( SignalId const & id ) const
 {
 	assert( IsValid( id.GetTrackNr() ) );
-	return getTrackC( id.GetTrackNr() ).GetSignal( id.GetSignalNr() );
+	return getTrack( id.GetTrackNr() ).GetSignal( id.GetSignalNr() );
+}
+
+SignalInterface & MonitorData::GetSignal( SignalId const & id ) // calling const version 
+{
+	return const_cast<SignalInterface&>(static_cast<const MonitorData&>(*this).GetSignal( id ));
 }
 
 bool const MonitorData::IsValid( TrackNr const trackNr ) const
@@ -148,7 +180,7 @@ bool const MonitorData::IsValid( TrackNr const trackNr ) const
 
 bool const MonitorData::IsValid( SignalId const & id ) const
 {
-	return IsValid(id.GetTrackNr()) && getTrackC(id.GetTrackNr()).IsValid(id.GetSignalNr());
+	return IsValid(id.GetTrackNr()) && getTrack(id.GetTrackNr()).IsValid(id.GetSignalNr());
 }
 
 void MonitorData::CheckTracks( ) const
@@ -159,14 +191,24 @@ void MonitorData::CheckTracks( ) const
 #endif
 }
 
-Track & MonitorData::getTrack( TrackNr const trackNr )
+Track const & MonitorData::getTrack( TrackNr const trackNr ) const
 {
 	assert( IsValid( trackNr ) );
 	return m_tracks[trackNr.GetValue()]; 
 }
 
-Track const & MonitorData::getTrackC( TrackNr const trackNr ) const
+Track & MonitorData::getTrack( TrackNr const trackNr ) // calling const version 
 {
-	assert( IsValid( trackNr ) );
-	return m_tracks[trackNr.GetValue()]; 
+	return const_cast<Track&>(static_cast<const MonitorData&>(*this).getTrack( trackNr ));
+}
+
+SignalInterface * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) 
+{
+	return FindSignal
+		   (
+			   [&](SignalInterface const & signal)
+			   { 
+				   return signal.Includes( umPos ); 
+			   }
+		   );
 }
