@@ -120,7 +120,7 @@ void NNetWindow::DrawSensors( ) const
 {
 	m_pMonitorData->Apply2AllSignals
 	(
-		[&](SignalInterface const & signal)
+		[&](Signal const & signal)
 		{
 			signal.Draw( m_context );
 		}

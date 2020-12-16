@@ -42,12 +42,12 @@ void MonitorData::InsertTrack( TrackNr const trackNr )
 	m_pStaticModelObservable->NotifyAll( true );
 }
 
-unique_ptr<SignalInterface> MonitorData::removeSignal( SignalId const & id )
+unique_ptr<Signal> MonitorData::removeSignal( SignalId const & id )
 { 
 	return getTrack( id.GetTrackNr() ).RemoveSignal( id.GetSignalNr() ); 
 };
 
-SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<SignalInterface> pSignal )
+SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<Signal> pSignal )
 {
 	return getTrack( trackNr ).AddSignal( move(pSignal) );
 }
@@ -76,8 +76,8 @@ SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const track
 	SignalId idNew { id };
 	if ( IsValid(id) && IsValid(trackNrNew) ) //-V1051
 	{
-		unique_ptr<SignalInterface> pSignal     { removeSignal( id ) };
-		SignalNr                    signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
+		unique_ptr<Signal> pSignal     { removeSignal( id ) };
+		SignalNr           signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
 		idNew = SignalId( trackNrNew, signalNrNew );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -135,8 +135,8 @@ void MonitorData::Apply2AllSignals( SignalFunc const & func ) const
 			(
 				[&](SignalNr const & signalNr)
 				{	
-					SignalId        const   id     { SignalId(trackNr, signalNr) }; 
-					SignalInterface const & signal { GetSignal( id )  }; 
+					SignalId const   id     { SignalId(trackNr, signalNr) }; 
+					Signal   const & signal { GetSignal( id )  }; 
 					func( signal ); 
 				}
 			);
@@ -144,23 +144,23 @@ void MonitorData::Apply2AllSignals( SignalFunc const & func ) const
 	);
 }                        
 
-SignalInterface * const  MonitorData::FindSignal( SignalCrit const & crit )
+Signal * const  MonitorData::FindSignal( SignalCrit const & crit )
 {
 	for ( Track & track: m_tracks ) 
-		if ( SignalInterface * const pSignal { track.FindSignal( crit ) } )
+		if ( Signal * const pSignal { track.FindSignal( crit ) } )
 			return pSignal;
 	return nullptr;
 }                        
 
-SignalInterface const & MonitorData::GetSignal( SignalId const & id ) const
+Signal const & MonitorData::GetSignal( SignalId const & id ) const
 {
 	assert( IsValid( id.GetTrackNr() ) );
 	return getTrack( id.GetTrackNr() ).GetSignal( id.GetSignalNr() );
 }
 
-SignalInterface & MonitorData::GetSignal( SignalId const & id ) // calling const version 
+Signal & MonitorData::GetSignal( SignalId const & id ) // calling const version 
 {
-	return const_cast<SignalInterface&>(static_cast<const MonitorData&>(*this).GetSignal( id ));
+	return const_cast<Signal&>(static_cast<const MonitorData&>(*this).GetSignal( id ));
 }
 
 bool const MonitorData::IsValid( TrackNr const trackNr ) const
@@ -192,11 +192,11 @@ Track & MonitorData::getTrack( TrackNr const trackNr ) // calling const version
 	return const_cast<Track&>(static_cast<const MonitorData&>(*this).getTrack( trackNr ));
 }
 
-SignalInterface * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) 
+Signal * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) 
 {
 	return FindSignal
 		   (
-			   [&](SignalInterface const & signal)
+			   [&](Signal const & signal)
 			   { 
 				   return signal.Includes( umPos ); 
 			   }

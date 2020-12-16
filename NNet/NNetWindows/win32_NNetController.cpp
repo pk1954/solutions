@@ -13,7 +13,7 @@
 #include "NNetModelStorage.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
-#include "SignalInterface.h"
+#include "Signal.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_sound.h"

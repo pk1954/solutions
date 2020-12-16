@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "scanner.h"
 #include <assert.h>
-#include "SignalInterface.h"
+#include "Signal.h"
 #include "Track.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"

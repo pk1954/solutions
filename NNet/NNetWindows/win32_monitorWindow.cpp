@@ -7,7 +7,7 @@
 #include <assert.h>
 #include "util.h"
 #include "scale.h"
-#include "SignalInterface.h"
+#include "Signal.h"
 #include "Track.h"
 #include "Resource.h"
 #include "BaseKnot.h"
@@ -160,58 +160,21 @@ fPIXEL const MonitorWindow::calcTrackHeight( ) const
 
 void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 {
-	fPIXEL          const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
-	fPIXEL          const   fPixYoff     { getSignalOffset( idSignal ) };
-	fMicroSecs      const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs      const   usResolution { m_pParams->GetTimeResolution( ) };
-	float           const   fPointsInWin { usInWindow / usResolution };
-	fMicroSecs      const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fMicroSecs      const   usEnd        { m_pMRI->GetSimulationTime( ) };
-	SignalInterface const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
-	fMicroSecs      const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
-	fPixelPoint             prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
-	fPIXEL                  fPixYlimit   { 0._fPIXEL };
-
-	if ( signal.MarkLineAboveThreshold() )
-	{
-		mV const mVlimit ( m_pParams->GetParameterValue( tParameter::threshold ) );
-		fPixYlimit = fPixYoff - yValue2fPIXEL(mVlimit.GetValue());
-	}
+	fPIXEL     const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
+	fPIXEL     const   fPixYoff     { getSignalOffset( idSignal ) };
+	fMicroSecs const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
+	fMicroSecs const   usResolution { m_pParams->GetTimeResolution( ) };
+	float      const   fPointsInWin { usInWindow / usResolution };
+	fMicroSecs const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs const   usEnd        { m_pMRI->GetSimulationTime( ) };
+	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
+	fMicroSecs const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
+	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
 
 	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
 	{
-		fPixelPoint const actPoint 
-		{ 
-			fMicroSecs2fPIXEL( time ), 
-			fPixYoff - getYvalue( signal, time ) 
-		};
-
-		if ( (prevPoint.GetY() >= fPixYlimit) && (actPoint.GetY() >= fPixYlimit) )  // line is completely below threshold
-		{
-			m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_BLACK );
-		}
-		else if ( (prevPoint.GetY() < fPixYlimit) && (actPoint.GetY() < fPixYlimit) )  // line is completely above threshold
-		{
-			m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_RED );
-		}
-		else // part of line is below threshhold. Interpolate at threshold and split into two lines
-		{
-			fPixelPoint fPixDelta  { actPoint - prevPoint };
-			float       fSlope     { fPixDelta.GetX() / fPixDelta.GetY() };
-			fPIXEL      fPixXlimit { (fPixYlimit - prevPoint.GetY()) * fSlope + prevPoint.GetX() };
-			fPixelPoint fPixLimit  { fPixXlimit, fPixYlimit };
-			if ( actPoint.GetY() < prevPoint.GetY() )
-			{
-				m_graphics.DrawLine( prevPoint, fPixLimit, fPixWidth, NNetColors::COL_BLACK );
-				m_graphics.DrawLine( fPixLimit, actPoint,  fPixWidth, NNetColors::COL_RED );
-			}
-			else
-			{
-				m_graphics.DrawLine( prevPoint, fPixLimit, fPixWidth, NNetColors::COL_RED );
-				m_graphics.DrawLine( fPixLimit, actPoint,  fPixWidth, NNetColors::COL_BLACK );
-			}
-		}
-
+		fPixelPoint const actPoint { fMicroSecs2fPIXEL( time ), fPixYoff - getYvalue( signal, time ) };
+		m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_BLACK );
 		prevPoint = actPoint;
 	}
 }
@@ -244,13 +207,13 @@ void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
 {
 	static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
 
-	SignalInterface const & signal       { m_pMonitorData->GetSignal( idSignal ) };
-	PixelPoint      const   pixPointCrsr { GetRelativeCrsrPosition( ) };
-	fPIXEL          const   fPixCrsrX    { Convert2fPIXEL( pixPointCrsr.GetX() ) };
-	fMicroSecs      const   usMax        { findNextMax( signal, fPixCrsrX ) };
-	fPIXEL          const   fPixMax      { fMicroSecs2fPIXEL( usMax ) };
-	fPIXEL          const   fPixYoff     { getSignalOffset( idSignal ) };
-	fPIXEL          const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
+	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) };
+	PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
+	fPIXEL     const   fPixCrsrX    { Convert2fPIXEL( pixPointCrsr.GetX() ) };
+	fMicroSecs const   usMax        { findNextMax( signal, fPixCrsrX ) };
+	fPIXEL     const   fPixMax      { fMicroSecs2fPIXEL( usMax ) };
+	fPIXEL     const   fPixYoff     { getSignalOffset( idSignal ) };
+	fPIXEL     const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
 
 	m_graphics.FillDiamond
 	(
@@ -283,7 +246,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 		trackNr,
 		[&](SignalNr const signalNr)
 		{
-			SignalInterface const & signal { m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ) };
+			Signal const & signal { m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ) };
 			if ( umTime >= signal.GetStartTime() )
 			{
 				fPIXEL const fPixAmplitude { getYvalue( signal, umTime ) };
@@ -468,7 +431,7 @@ void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lPar
 
 	if ( m_measurement.IsClose2LeftLimit( fPixCrsrX ) || m_measurement.IsClose2RightLimit( fPixCrsrX ) )
 	{
-		SignalInterface     const & signal  { m_pMonitorData->GetSignal( m_idSigSelected ) };
+		Signal     const & signal  { m_pMonitorData->GetSignal( m_idSigSelected ) };
 		fMicroSecs const   usMax   { findNextMax( signal, fPixCrsrX ) };
 		fPIXEL     const   fPixMax { fMicroSecs2fPIXEL( usMax ) };
 		m_measurement.MoveSelection( fPixMax );

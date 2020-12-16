@@ -69,12 +69,12 @@ private:
 		return fPixYvalue;
 	}
 
-	fPIXEL const getYvalue( SignalInterface const & signal, fMicroSecs const time ) const
+	fPIXEL const getYvalue( Signal const & signal, fMicroSecs const time ) const
 	{
 		return yValue2fPIXEL( signal.GetDataPoint( time ) );
 	}
 
-	fMicroSecs findNextMax( SignalInterface const & signal, fPIXEL const fPixX ) const
+	fMicroSecs findNextMax( Signal const & signal, fPIXEL const fPixX ) const
 	{
 		fMicroSecs const usParam { fPIXEL2fMicroSecs( fPixX ) };
 		fMicroSecs const usMax   { signal.FindNextMaximum( usParam ) };

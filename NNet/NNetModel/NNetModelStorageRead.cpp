@@ -217,17 +217,10 @@ private:
     NNetModelWriterInterface * m_pMWI;
 };
 
-class WrapSignal : public Script_Functor  // legacy
+class WrapSignal : public Script_Functor
 {
 public:
-    WrapSignal( NNetModelWriterInterface * const pNNetModel ) { };
-    virtual void operator() ( Script & script ) const {}
-};
-
-class WrapSumSignal : public Script_Functor
-{
-public:
-    WrapSumSignal( NNetModelWriterInterface * const pNNetModel ) :
+    WrapSignal( NNetModelWriterInterface * const pNNetModel ) :
         m_pMWI( pNNetModel )
     { };
 
@@ -254,8 +247,7 @@ void NNetModelStorage::prepareForReading( )
     DEF_NNET_FUNC( ShapeParameter );
     DEF_NNET_FUNC( TriggerSound );
     DEF_NNET_FUNC( NrOfTracks );
-    //DEF_NNET_FUNC( Signal );
-    DEF_NNET_FUNC( SumSignal );
+    DEF_NNET_FUNC( Signal );
 #undef DEF_NET_FUNC
 
     ShapeType::Apply2All

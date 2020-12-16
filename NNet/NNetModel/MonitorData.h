@@ -7,7 +7,7 @@
 #include <vector>
 #include "Observable.h"
 #include "NamedType.h"
-#include "SignalInterface.h"
+#include "Signal.h"
 #include "Track.h"
 #include "SignalId.h"
 
@@ -38,8 +38,8 @@ public:
 	void                    AddSignal   ( TrackNr const, MicroMeterCircle const & );
 	void                    DeleteSignal( SignalId const & );
 	SignalId        const   MoveSignal  ( SignalId const &, TrackNr const );
-	SignalInterface const & GetSignal   ( SignalId const & ) const;
-	SignalInterface       & GetSignal   ( SignalId const & );
+	Signal const & GetSignal   ( SignalId const & ) const;
+	Signal       & GetSignal   ( SignalId const & );
 	void                    Animation   ( SignalId const &, bool const );
 
 	void Apply2AllTracks        ( TrackNrFunc const & ) const;
@@ -47,14 +47,14 @@ public:
 	void Apply2AllSignals       ( SignalIdFunc const & ) const;
 	void Apply2AllSignals       ( SignalFunc   const & ) const;
 
-	SignalInterface * const FindSignal( SignalCrit      const & );
-	SignalInterface * const FindSensor( MicroMeterPoint const & );
+	Signal * const FindSignal( SignalCrit      const & );
+	Signal * const FindSensor( MicroMeterPoint const & );
 
 private:
 	Track       & getTrack( TrackNr const );
 	Track const & getTrack( TrackNr const ) const;
-	unique_ptr<SignalInterface> removeSignal( SignalId const & );
-	SignalNr const addSignal( TrackNr const, unique_ptr<SignalInterface> );
+	unique_ptr<Signal> removeSignal( SignalId const & );
+	SignalNr const addSignal( TrackNr const, unique_ptr<Signal> );
 
 	vector<Track>   m_tracks                 { };
 	Observable    * m_pStaticModelObservable { nullptr };

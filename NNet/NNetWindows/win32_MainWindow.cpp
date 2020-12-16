@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "Resource.h"
-#include "SumSignal.h"
+#include "Signal.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -235,7 +235,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				setSuperHighlightedShape( m_pMRI->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
-			else if ( SignalInterface * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
+			else if ( Signal * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
 			{
 				pSignal->Move( umCrsrPos - umLastPos );
 			}
@@ -296,7 +296,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	bool       const bDirection { iDelta > 0 };
 
 	MicroMeterPoint const umCrsrPos { GetCoord().Convert2MicroMeterPointPos( ptCrsr ) };
-	if ( SignalInterface * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
+	if ( Signal * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
 	{
 		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
 		{

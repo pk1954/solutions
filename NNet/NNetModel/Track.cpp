@@ -7,18 +7,18 @@
 
 using std::move;
 
-SignalNr const Track::AddSignal( unique_ptr<SignalInterface> pSignal )
+SignalNr const Track::AddSignal( unique_ptr<Signal> pSignal )
 {
 	m_signals.push_back( move(pSignal) );
 	return SignalNr( Cast2Int(m_signals.size() - 1) );
 }
 
-unique_ptr<SignalInterface> Track::RemoveSignal( SignalNr const signalNr )
+unique_ptr<Signal> Track::RemoveSignal( SignalNr const signalNr )
 {
 	if ( IsValid( signalNr ) )
 	{
-		vector<unique_ptr<SignalInterface>>::iterator itSignal { m_signals.begin() + signalNr.GetValue() };
-		unique_ptr<SignalInterface> pSignal { move(*itSignal) };
+		vector<unique_ptr<Signal>>::iterator itSignal { m_signals.begin() + signalNr.GetValue() };
+		unique_ptr<Signal> pSignal { move(*itSignal) };
 		m_signals.erase( itSignal );
 		return move(pSignal);
 	}
@@ -37,26 +37,26 @@ void Track::Apply2AllSignals( SignalFunc const & func )
 		func( GetSignal(SignalNr( i)) ); 
 }             
 
-SignalInterface * const Track::FindSignal( SignalCrit const & crit )
+Signal * const Track::FindSignal( SignalCrit const & crit )
 {
 	for ( int i = 0; i < m_signals.size(); ++i )
 	{ 
-		SignalInterface & signal { GetSignal(SignalNr(i) ) };
+		Signal & signal { GetSignal(SignalNr(i) ) };
 			if ( crit(signal) )
 				return & signal;  
 	}
 	return nullptr;
 }
 
-SignalInterface const & Track::GetSignal( SignalNr const signalNr ) const
+Signal const & Track::GetSignal( SignalNr const signalNr ) const
 {
 	assert( IsValid( signalNr ) );
 	return * m_signals[signalNr.GetValue()].get();
 }
 
-SignalInterface & Track::GetSignal( SignalNr const signalNr ) // calling const version 
+Signal & Track::GetSignal( SignalNr const signalNr ) // calling const version 
 {
-	return const_cast<SignalInterface&>(static_cast<const Track&>(*this).GetSignal( signalNr ));
+	return const_cast<Signal&>(static_cast<const Track&>(*this).GetSignal( signalNr ));
 }
 
 bool const Track::IsValid( SignalNr const signalNr ) const

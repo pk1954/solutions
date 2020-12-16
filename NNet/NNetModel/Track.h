@@ -8,7 +8,7 @@
 #include <vector>
 #include "Observable.h"
 #include "NamedType.h"
-#include "SignalInterface.h"
+#include "Signal.h"
 
 using std::vector;
 using std::unique_ptr;
@@ -23,18 +23,18 @@ class Track
 public:
 	void CheckSignals( ) const;
 
-	SignalNr              const AddSignal   ( unique_ptr<SignalInterface> );
-	unique_ptr<SignalInterface> RemoveSignal( SignalNr const );
+	SignalNr              const AddSignal   ( unique_ptr<Signal> );
+	unique_ptr<Signal> RemoveSignal( SignalNr const );
 
-	SignalInterface const & GetSignal( SignalNr const ) const;
-	SignalInterface       & GetSignal( SignalNr const );
+	Signal const & GetSignal( SignalNr const ) const;
+	Signal       & GetSignal( SignalNr const );
 	bool   const   IsValid  ( SignalNr const ) const;
 
 	void Apply2AllSignals( SignalNrFunc const & ) const;
 	void Apply2AllSignals( SignalFunc   const & );
-	SignalInterface * const FindSignal( SignalCrit const & );
+	Signal * const FindSignal( SignalCrit const & );
 
 private:
 
-	vector<unique_ptr<SignalInterface>> m_signals;
+	vector<unique_ptr<Signal>> m_signals;
 };
