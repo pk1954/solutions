@@ -79,7 +79,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SINGLE_SIGNAL,     L"Monitor" );
 		break;
 
 	case ShapeType::Value::neuron:
@@ -91,7 +90,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SUBTREE,        L"Select subtree" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SINGLE_SIGNAL,     L"Monitor" );
 		break;
 
 	case ShapeType::Value::knot:  
@@ -412,7 +410,6 @@ void MainWindow::doPaint( )
 	}
 
 	DrawSensors( );
-	AnimateBeaconSingle( 30._fPIXEL);
 	AnimateBeacon( 30._fPIXEL);
 }
 

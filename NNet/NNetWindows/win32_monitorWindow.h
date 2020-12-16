@@ -36,7 +36,6 @@ public:
 
 	virtual long AddContextMenuEntries( HMENU const );
 
-	void AddSignal( ShapeId const );
 	void AddSignal( MicroMeterCircle const &  );
 	void InsertTrack( TrackNr const );
 

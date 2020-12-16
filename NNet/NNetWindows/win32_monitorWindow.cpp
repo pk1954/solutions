@@ -92,16 +92,6 @@ long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
-void MonitorWindow::AddSignal( ShapeId const id )
-{
-	if ( m_pMRI->IsOfType<Neuron>( id ) )
-	{
-		m_pMonitorData->InsertTrack( TrackNr(0) );
-		m_pMonitorData->AddSignal( TrackNr(0), id );
-		m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-	}
-}
-
 void MonitorWindow::AddSignal( MicroMeterCircle const & umCircle )
 {
 	m_pMonitorData->InsertTrack( TrackNr(0) );

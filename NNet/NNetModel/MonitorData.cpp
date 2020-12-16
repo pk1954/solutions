@@ -61,16 +61,6 @@ void MonitorData::DeleteSignal( SignalId const & id )
 	}
 }
 
-void MonitorData::AddSignal( TrackNr const trackNr, ShapeId const idShape )
-{
-	if ( IsValid( trackNr ) )
-	{
-		auto     upSignal { m_pSignalFactory->MakeSignal( idShape ) };
-		SignalNr signalNr { addSignal( trackNr, move(upSignal) ) };
-		m_pStaticModelObservable->NotifyAll( true );
-	}
-}
-
 void MonitorData::AddSignal( TrackNr const trackNr, MicroMeterCircle const & umCircle )
 {
 	if ( IsValid( trackNr ) )

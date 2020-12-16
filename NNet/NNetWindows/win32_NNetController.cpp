@@ -305,11 +305,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
-    case IDD_NEW_SINGLE_SIGNAL:
-        m_pMonitorWindow->AddSignal( m_pMainWindow->GetHighlightedShapeId() );
-        ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
-        break;
-
     case IDD_NEW_SENSOR:
         m_pMonitorWindow->AddSignal( MicroMeterCircle(umPoint, NEURON_RADIUS * 5) );
         ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );

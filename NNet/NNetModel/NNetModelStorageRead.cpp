@@ -224,24 +224,6 @@ public:
     virtual void operator() ( Script & script ) const {}
 };
 
-class WrapSingleSignal : public Script_Functor
-{
-public:
-    WrapSingleSignal( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
-    { };
-
-    virtual void operator() ( Script & script ) const 
-    {
-        ShapeId const idShape { ScrReadShapeId(script) };
-        TrackNr const trackNr { ScrReadTrackNr(script) };
-        m_pMWI->GetMonitorData()->AddSignal( trackNr, idShape );
-    }
-
-private:
-    NNetModelWriterInterface * m_pMWI;
-};
-
 class WrapSumSignal : public Script_Functor
 {
 public:
@@ -272,8 +254,7 @@ void NNetModelStorage::prepareForReading( )
     DEF_NNET_FUNC( ShapeParameter );
     DEF_NNET_FUNC( TriggerSound );
     DEF_NNET_FUNC( NrOfTracks );
-    DEF_NNET_FUNC( Signal );
-    DEF_NNET_FUNC( SingleSignal );
+    //DEF_NNET_FUNC( Signal );
     DEF_NNET_FUNC( SumSignal );
 #undef DEF_NET_FUNC
 

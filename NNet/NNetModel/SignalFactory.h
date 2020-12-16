@@ -9,7 +9,6 @@
 #include "Observable.h"
 #include "ShapeId.h"
 #include "AnimationInterface.h"
-#include "SingleSignal.h"
 #include "SumSignal.h"
 
 using std::unique_ptr;
@@ -33,11 +32,6 @@ public:
         m_pParams             = & param;
         m_pObservable         = & observable;
         m_pAnimationInterface = & animationInterface;
-    }
-
-    unique_ptr<SingleSignal>MakeSignal( ShapeId const id )
-    {
-        return make_unique<SingleSignal>( * m_pMRI, * m_pParams, * m_pObservable, * m_pAnimationInterface, id );
     }
 
     unique_ptr<SumSignal>MakeSignal( MicroMeterCircle const & umCircle )

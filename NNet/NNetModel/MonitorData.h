@@ -35,7 +35,6 @@ public:
 	void InsertTrack( TrackNr const );
 	void DeleteTrack( TrackNr const );
 
-	void                    AddSignal   ( TrackNr const, ShapeId const );
 	void                    AddSignal   ( TrackNr const, MicroMeterCircle const & );
 	void                    DeleteSignal( SignalId const & );
 	SignalId        const   MoveSignal  ( SignalId const &, TrackNr const );

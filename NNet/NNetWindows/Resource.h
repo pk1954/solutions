@@ -68,7 +68,6 @@
 #define IDM_MINUS                192
 
 #define IDM_MONITOR_WINDOW       530
-#define IDD_NEW_SINGLE_SIGNAL    540
 #define IDD_NEW_SENSOR           545
 
 #define IDD_CONNECT              560

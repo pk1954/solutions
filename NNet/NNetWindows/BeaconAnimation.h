@@ -29,7 +29,6 @@ public:
 	virtual void Start( ShapeId const id )
 	{
 		reset();
-		m_idBeacon = id;
 		PostThreadMsg( 0, 0, 0 );
 	}
 
@@ -42,17 +41,12 @@ public:
 
 	virtual void Stop( )
 	{
-		m_idBeacon = NO_SHAPE;
+		m_circle.Set2Null();
 	}
 
 	PERCENT GetPercentage( ) const
 	{
 		return m_percentage;
-	}
-
-	ShapeId GetBeaconShapeId( ) const
-	{
-		return m_idBeacon;
 	}
 
 	MicroMeterCircle const & GetSensorCircle( ) const
@@ -63,7 +57,6 @@ public:
 private:
 	PERCENT          m_percentage  { };
 	PERCENT          m_increment   { 1_PERCENT };
-	ShapeId          m_idBeacon    { NO_SHAPE };
 	MicroMeterCircle m_circle      { MicroMeterCircle::NULL_VAL() };
 	Observable     * m_pObservable { nullptr };
 
@@ -81,7 +74,7 @@ private:
 		Sleep( 1 );
 		if ( m_pObservable )
 			m_pObservable->NotifyAll( false );
-		if ( IsDefined ( m_idBeacon ) || m_circle.IsNotNull() )
+		if ( m_circle.IsNotNull() )
 			PostThreadMsg( msg.message, msg.wParam, msg.lParam ); // do it again
 	}
 };
