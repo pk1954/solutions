@@ -412,6 +412,7 @@ void MainWindow::doPaint( )
 	}
 
 	DrawSensors( );
+	AnimateBeaconSingle( 30._fPIXEL);
 	AnimateBeacon( 30._fPIXEL);
 }
 

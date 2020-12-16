@@ -25,9 +25,10 @@ using std::wofstream;
 class Animation : public AnimationInterface
 {
 public:
-	void Initialize( Observable * const p ) {}
-	void Start( ShapeId const id ) 	{}
-	void Stop( ) {}
+	virtual void Initialize( Observable * const p ) {}
+	virtual void Start( ShapeId const id ) 	{}
+	virtual void Start( MicroMeterCircle const & circle ) {};
+	virtual void Stop( ) {}
 };
 
 class ConsReadModelResult : public ReadModelResult

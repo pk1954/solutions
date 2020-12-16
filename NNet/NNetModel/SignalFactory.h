@@ -42,7 +42,7 @@ public:
 
     unique_ptr<SumSignal>MakeSignal( MicroMeterCircle const & umCircle )
     {
-        return make_unique<SumSignal>( * m_pMRI, * m_pParams, * m_pObservable, umCircle );
+        return make_unique<SumSignal>( * m_pMRI, * m_pParams, * m_pObservable, * m_pAnimationInterface, umCircle );
     }
 
 private:

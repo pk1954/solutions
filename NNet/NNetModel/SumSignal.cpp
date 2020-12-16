@@ -22,9 +22,12 @@ void SumSignal::Draw( DrawContext const & context ) const
 	context.FillGradientCircle( m_circle, color1, color2 );
 }
 
-void SumSignal::Animate( bool const ) const
+void SumSignal::Animate( bool const bOn ) const
 {
-
+	if ( bOn )
+		m_pAnimationInterface->Start( m_circle );
+	else
+		m_pAnimationInterface->Stop( );
 }
 
 float SumSignal::GetSignalValue( ) const

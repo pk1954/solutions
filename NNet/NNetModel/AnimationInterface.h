@@ -12,6 +12,8 @@ public:
 
 	~AnimationInterface( ) {};
 
-	virtual void Start( ShapeId const id ) = 0;
-	virtual void Stop( )                   = 0;
+	virtual void Initialize( Observable * const   ) = 0;
+	virtual void Start( ShapeId           const   ) = 0;
+	virtual void Start( MicroMeterCircle  const & ) = 0;
+	virtual void Stop( )                            = 0;
 };

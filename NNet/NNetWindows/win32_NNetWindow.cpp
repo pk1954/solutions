@@ -155,7 +155,7 @@ void NNetWindow::OnPaint( )
 	}
 }
 
-void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
+void NNetWindow::AnimateBeaconSingle( fPIXEL const fPixBeaconRadius )
 {
 	ShapeId idBeacon { m_pBeaconAnimation->GetBeaconShapeId() };
 	if ( IsDefined( idBeacon ) )
@@ -170,6 +170,29 @@ void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
 		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
 		MicroMeterPoint   const umPos    { m_pMRI->GetShapePos( idBeacon ) };
+		if ( umPos.IsNotNull() )
+		{
+			MicroMeterCircle  const umCircle { umPos, umRadius };
+			D2D1::ColorF col { NNetColors::COL_BEACON };
+			col.a = 1.0f - fRelSize;
+			m_context.FillCircle( umCircle, col );
+		}
+	}
+}
+
+void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
+{
+	MicroMeterCircle const & circle { m_pBeaconAnimation->GetSensorCircle( ) };
+	if ( circle.IsNotNull() )
+	{
+		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
+		static MicroMeter const MAX_SIZE { circle.GetRadius() };
+
+		MicroMeter        const umMaxSize{ max( MAX_SIZE, GetCoord().Convert2MicroMeter( fPixBeaconRadius ) ) };
+		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
+		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
+		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
+		MicroMeterPoint   const umPos    { circle.GetPosition() };
 		if ( umPos.IsNotNull() )
 		{
 			MicroMeterCircle  const umCircle { umPos, umRadius };

@@ -9,6 +9,7 @@
 #include "Observable.h"
 #include "ObserverInterface.h"
 #include "MoreTypes.h"
+#include "AnimationInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "SignalInterface.h"
@@ -25,10 +26,12 @@ public:
         NNetModelReaderInterface const & modelReaderInterface,
         Param                    const & param,
         Observable                     & observable,
+        AnimationInterface             & animationInterface,
         MicroMeterCircle         const & circle
     ) :
         SignalInterface( modelReaderInterface, param, observable )
     {
+        m_pAnimationInterface = & animationInterface;
         m_circle = circle;
         Reset();
     }
@@ -81,6 +84,8 @@ public:
     }
 
 private:
+    AnimationInterface * m_pAnimationInterface { nullptr };
+
     MicroMeterCircle m_circle { MicroMeterCircle::NULL_VAL() };
 
     virtual float GetSignalValue( ) const;
