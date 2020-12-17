@@ -93,10 +93,10 @@ void MonitorData::DeleteTrack( TrackNr const trackNr )
 	}
 }
 
-void MonitorData::Animation( SignalId const& id, bool const bOn )
+void MonitorData::Animation( SignalId const & id, bool const bOn )
 {
 	if ( id.IsNotNull() )
-	GetSignal( id ).Animate( bOn );
+		GetSignal( id ).Animate( bOn );
 }
 
 void MonitorData::Apply2AllTracks( TrackNrFunc const & func ) const

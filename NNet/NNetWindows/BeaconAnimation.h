@@ -26,22 +26,16 @@ public:
 		TerminateNoWait();
 	}
 
-	virtual void Start( ShapeId const id )
+	virtual void Start( MicroMeterCircle const * const pCircle )
 	{
 		reset();
-		PostThreadMsg( 0, 0, 0 );
-	}
-
-	virtual void Start( MicroMeterCircle const & circle )
-	{
-		reset();
-		m_circle = circle;
+		m_pCircle = pCircle;
 		PostThreadMsg( 0, 0, 0 );
 	}
 
 	virtual void Stop( )
 	{
-		m_circle.Set2Null();
+		m_pCircle = nullptr;
 	}
 
 	PERCENT GetPercentage( ) const
@@ -49,16 +43,16 @@ public:
 		return m_percentage;
 	}
 
-	MicroMeterCircle const & GetSensorCircle( ) const
+	MicroMeterCircle const * const GetSensorCircle( ) const
 	{
-		return m_circle;
+		return m_pCircle;
 	}
 
 private:
-	PERCENT          m_percentage  { };
-	PERCENT          m_increment   { 1_PERCENT };
-	MicroMeterCircle m_circle      { MicroMeterCircle::NULL_VAL() };
-	Observable     * m_pObservable { nullptr };
+	PERCENT                  m_percentage  { };
+	PERCENT                  m_increment   { 1_PERCENT };
+	MicroMeterCircle const * m_pCircle     { nullptr };
+	Observable             * m_pObservable { nullptr };
 
 	void reset( )
 	{
@@ -74,7 +68,7 @@ private:
 		Sleep( 1 );
 		if ( m_pObservable )
 			m_pObservable->NotifyAll( false );
-		if ( m_circle.IsNotNull() )
+		if ( m_pCircle )
 			PostThreadMsg( msg.message, msg.wParam, msg.lParam ); // do it again
 	}
 };

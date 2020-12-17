@@ -14,7 +14,7 @@ Signal::Signal
     AnimationInterface             & animationInterface,
     MicroMeterCircle         const & circle
 ) :
-    m_pMRI(& modelReaderInterface),
+    m_pMRI( & modelReaderInterface ),
     m_pParams( & param ),
     m_pObservable( & observable ),
     m_pAnimationInterface(& animationInterface),
@@ -68,7 +68,7 @@ void Signal::Draw( DrawContext const & context ) const
 void Signal::Animate( bool const bOn ) const
 {
     if ( bOn )
-        m_pAnimationInterface->Start( m_circle );
+        m_pAnimationInterface->Start( & m_circle );
     else
         m_pAnimationInterface->Stop( );
 }

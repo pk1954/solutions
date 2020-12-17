@@ -157,17 +157,16 @@ void NNetWindow::OnPaint( )
 
 void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 {
-	MicroMeterCircle const & circle { m_pBeaconAnimation->GetSensorCircle( ) };
-	if ( circle.IsNotNull() )
+	if ( MicroMeterCircle const * const pCircle { m_pBeaconAnimation->GetSensorCircle( ) } )
 	{
 		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
-		static MicroMeter const MAX_SIZE { circle.GetRadius() };
+		static MicroMeter const MAX_SIZE { pCircle->GetRadius() };
 
 		MicroMeter        const umMaxSize{ max( MAX_SIZE, GetCoord().Convert2MicroMeter( fPixBeaconRadius ) ) };
 		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
 		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
 		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
-		MicroMeterPoint   const umPos    { circle.GetPosition() };
+		MicroMeterPoint   const umPos    { pCircle->GetPosition() };
 		if ( umPos.IsNotNull() )
 		{
 			MicroMeterCircle  const umCircle { umPos, umRadius };

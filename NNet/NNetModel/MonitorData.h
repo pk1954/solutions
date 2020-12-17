@@ -35,12 +35,12 @@ public:
 	void InsertTrack( TrackNr const );
 	void DeleteTrack( TrackNr const );
 
-	void                    AddSignal   ( TrackNr const, MicroMeterCircle const & );
-	void                    DeleteSignal( SignalId const & );
-	SignalId        const   MoveSignal  ( SignalId const &, TrackNr const );
-	Signal const & GetSignal   ( SignalId const & ) const;
-	Signal       & GetSignal   ( SignalId const & );
-	void                    Animation   ( SignalId const &, bool const );
+	void             AddSignal   ( TrackNr const, MicroMeterCircle const & );
+	void             DeleteSignal( SignalId const & );
+	SignalId const   MoveSignal  ( SignalId const &, TrackNr const );
+	Signal   const & GetSignal   ( SignalId const & ) const;
+	Signal         & GetSignal   ( SignalId const & );
+	void             Animation   ( SignalId const &, bool const );
 
 	void Apply2AllTracks        ( TrackNrFunc const & ) const;
 	void Apply2AllSignalsInTrack( TrackNr const, SignalNrFunc const & ) const;
@@ -51,10 +51,10 @@ public:
 	Signal * const FindSensor( MicroMeterPoint const & );
 
 private:
-	Track       & getTrack( TrackNr const );
-	Track const & getTrack( TrackNr const ) const;
+	Track            & getTrack( TrackNr const );
+	Track    const   & getTrack( TrackNr const ) const;
+	SignalNr const     addSignal( TrackNr const, unique_ptr<Signal> );
 	unique_ptr<Signal> removeSignal( SignalId const & );
-	SignalNr const addSignal( TrackNr const, unique_ptr<Signal> );
 
 	vector<Track>   m_tracks                 { };
 	Observable    * m_pStaticModelObservable { nullptr };

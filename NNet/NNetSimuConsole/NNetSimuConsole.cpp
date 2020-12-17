@@ -27,7 +27,7 @@ class Animation : public AnimationInterface
 public:
 	virtual void Initialize( Observable * const p ) {}
 	virtual void Start( ShapeId const id ) 	{}
-	virtual void Start( MicroMeterCircle const & circle ) {};
+	virtual void Start( MicroMeterCircle const * const pCircle ) {};
 	virtual void Stop( ) {}
 };
 
