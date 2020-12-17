@@ -84,8 +84,7 @@
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
-    <ClInclude Include="InsertKnotCommand.h" />
-    <ClInclude Include="InsertNeuronCommand.h" />
+    <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="MoveBaseKnotCommand.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovePipeCommand.h" />

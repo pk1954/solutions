@@ -18,8 +18,7 @@
 #include "CopySelectionCommand.h"
 #include "DeletePipeCommand.h"
 #include "DisconnectBaseKnotCommand.h"
-#include "InsertNeuronCommand.h"
-#include "InsertKnotCommand.h"
+#include "InsertBaseKnotCommand.h"
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
 #include "MoveSelectionCommand.h"
@@ -248,14 +247,14 @@ void NNetModelCommands::InsertKnot( ShapeId const id, MicroMeterPoint const & po
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand( make_unique<InsertKnotCommand>( id, pos ) );
+	m_pCmdStack->PushCommand( make_unique<InsertBaseKnotCommand<Knot>>( id, pos ) );
 }
 
 void NNetModelCommands::InsertNeuron( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand( make_unique<InsertNeuronCommand>( id, pos ) );
+	m_pCmdStack->PushCommand( make_unique<InsertBaseKnotCommand<Neuron>>( id, pos ) );
 }
 
 void NNetModelCommands::NewNeuron( MicroMeterPoint const & pos )

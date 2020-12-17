@@ -30,9 +30,6 @@
     <ClInclude Include="AddIncoming2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InsertNeuronCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveSelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,7 +117,7 @@
     <ClInclude Include="AppendNeuronCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InsertKnotCommand.h">
+    <ClInclude Include="InsertBaseKnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
