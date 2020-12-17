@@ -50,6 +50,7 @@ public:
     void DeleteSelection     ( );
     void DeleteShape         ( ShapeId const );
     void Disconnect          ( ShapeId const );
+    void InsertKnot          ( ShapeId const, MicroMeterPoint const & );
     void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
     void MoveSelection       ( MicroMeterPoint const & );
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );

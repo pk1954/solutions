@@ -269,6 +269,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->Disconnect( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
+    case IDD_INSERT_KNOT:
+        m_pModelCommands->InsertKnot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        break;
+
     case IDD_INSERT_NEURON:
         m_pModelCommands->InsertNeuron( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
