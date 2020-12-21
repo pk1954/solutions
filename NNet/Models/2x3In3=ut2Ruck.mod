@@ -941,6 +941,6 @@ TriggerSound 748 880 Hertz 100 msec
 TriggerSound 755 1720 Hertz 100 msec 
 
 NrOfTracks 2
-Signal ((-5583.09|-4435.56),250) track 0
-Signal ((-5806.42|-2202.28),622.885) track 1
+Signal track 0 source circle ((-5583.09|-4435.56),250) 
+Signal track 1 source circle ((-5806.42|-2202.28),622.885) 
 

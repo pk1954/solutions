@@ -22,5 +22,9 @@ void Knot::DrawInterior( DrawContext const & context ) const
 void Knot::CheckShape( ) const
 {
 	BaseKnot::CheckShape();
+	if ( m_connections.IsOrphan( ) )
+	{
+		int x = 42;
+	}
 	assert( ! m_connections.IsOrphan() );
 }

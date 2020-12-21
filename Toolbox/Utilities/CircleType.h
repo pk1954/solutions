@@ -13,10 +13,10 @@ class CircleType
     using POS_TYPE = PosType<BASE_TYPE>;
 
 public:
-    CircleType( ) 
-    { 
-        * this = ZERO_VAL(); 
-    }
+    CircleType( ) :
+        m_position(),
+        m_radius()
+    { }
 
     CircleType( POS_TYPE const & pos, BASE_TYPE const radius ) 
         : m_position( pos ),
@@ -50,7 +50,7 @@ public:
 
     static CircleType const & ZERO_VAL() 
     { 
-        static PointType res { CircleType( POS_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL() ) }; 
+        static CircleType res { CircleType( POS_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL() ) }; 
         return res;
     };
 

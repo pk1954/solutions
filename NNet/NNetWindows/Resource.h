@@ -22,7 +22,6 @@
 #define IDI_NNETSIMU			 120
 #define IDI_SMALL				 121
 #define IDC_NNETSIMU			 122
-#define IDM_SCRIPT_PROGRESS      123
 
 #define IDM_SLOWER               130
 #define IDM_FASTER               131
@@ -42,9 +41,10 @@
 #define IDM_ASK_AND_SAVE_MODEL   151
 #define IDM_SAVE_MODEL_AS        152
 #define IDM_OPEN_MODEL           153
-#define IDM_READ_MODEL_FINISHED  154
-#define IDM_CENTERING_FINISHED   155
-#define IDM_NEW_MODEL            156
+#define IDM_ADD_MODEL            154
+#define IDM_READ_MODEL_FINISHED  155
+#define IDM_CENTERING_FINISHED   156
+#define IDM_NEW_MODEL            157
 
 #define IDD_PULSE_RATE           160
 

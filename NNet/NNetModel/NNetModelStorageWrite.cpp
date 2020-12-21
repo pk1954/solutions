@@ -142,8 +142,10 @@ void NNetModelStorage::writeMonitorData( wostream & out )
     ( 
         [&]( SignalId const idSignal )
         {
-            pMonitorData->GetSignal( idSignal ).WriteSignalData( out );
+            out << L"Signal "; 
             WriteTrackNr( out, idSignal.GetTrackNr() );
+            out << L"source " << SIGSRC_CIRCLE; 
+            out << pMonitorData->GetSignal( idSignal ).GetCircle( );
             out << endl; 
         }
     );

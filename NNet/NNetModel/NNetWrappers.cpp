@@ -47,7 +47,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         wstring const wstrModelPath { script.ScrReadString( ) };
-        m_pCommands->ReadModel( false, wstrModelPath );
+        m_pCommands->ReadModel( false, true, wstrModelPath );
     }
 };
 

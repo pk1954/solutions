@@ -39,18 +39,19 @@ public:
     float      const GetDataPoint   ( fMicroSecs const ) const;
     fMicroSecs const FindNextMaximum( fMicroSecs const ) const;
 
-    void Notify( bool const );
-    void Animate( bool const ) const;
-    void Draw( DrawContext const & ) const;
+    void  Notify( bool const );
+    void  Animate( bool const ) const;
+    void  Draw( DrawContext const & ) const;
     float GetSignalValue( ) const;
     void  WriteSignalData( wostream & ) const;;
 
-    bool Includes( MicroMeterPoint const pos ) const { return m_circle.Includes( pos ); }
+    bool  Includes( MicroMeterPoint const pos ) const { return m_circle.Includes( pos ); }
 
-    void Move( MicroMeterPoint const & umDelta ) { m_circle += umDelta; }
-    void Size( float           const   factor  ) { m_circle *= factor; }
+    void  Move( MicroMeterPoint const & umDelta ) { m_circle += umDelta; }
+    void  Size( float           const   factor  ) { m_circle *= factor; }
 
-    MicroMeterPoint const GetCenter( ) const  { return m_circle.GetPosition(); }
+    MicroMeterPoint  const GetCenter( ) const  { return m_circle.GetPosition(); }
+    MicroMeterCircle const GetCircle( ) const  { return m_circle; }
 
     void Set2Null() { m_circle.Set2Null(); }
 

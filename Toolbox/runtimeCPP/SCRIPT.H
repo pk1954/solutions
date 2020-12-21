@@ -55,8 +55,9 @@ public:
 
 	Scanner & GetScanner( ) { return * m_pScanAct; }
 
-	long long GetFilePos ( ) { return m_pScanAct->GetFilePos( ); };
-	uintmax_t GetFileSize( ) { return m_fileSize; };
+	long long const GetFilePos    () const { return m_pScanAct->GetFilePos( ); };
+	uintmax_t const GetFileSize   () const { return m_fileSize; };
+	long      const GetPercentRead() const;
 
 	static bool ProcessScript( wstring const & );
     static void ScrSetWrapHook( Script_Functor const * const );

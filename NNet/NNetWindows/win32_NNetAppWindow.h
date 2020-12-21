@@ -103,7 +103,6 @@ private:
 	ReadModelResult         * m_pReadModelResult         { nullptr };
 	WinSound                  m_sound                    { };
 	int                       m_statusMessagePart        { };
-//	wofstream                 m_traceStream              { };
 	WinManager                m_WinManager               { };
 	StatusBar                 m_StatusBar                { };
 	Script                    m_script                   { };

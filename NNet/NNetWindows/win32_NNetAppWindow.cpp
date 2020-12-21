@@ -368,8 +368,8 @@ void NNetAppWindow::configureStatusBar( )
 	SlowMotionControl::Add( & m_StatusBar );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine, m_hwndApp );
-	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
+	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine, & m_script );
+	m_StatusBar.ClearPart( iPartScriptLine );
 	Script::ScrSetWrapHook( & m_ScriptHook );
 	m_statusBarDispFunctor.Initialize( & m_StatusBar, iPartScriptLine );
 	ModelAnalyzer::SetStatusBarDisplay( & m_statusBarDispFunctor );
@@ -407,10 +407,7 @@ void NNetAppWindow::OnClose( )
 	if ( m_bStarted )
 	{
 		m_computeThread.StopComputation( );
-//		m_computeThread.LockComputation( );
-		bool bRes { m_modelStorage.AskAndSave( ) };
-//		m_computeThread.ReleaseComputationLock( );
-		if ( bRes == false )
+		if ( ! m_modelStorage.AskAndSave( ) )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );
@@ -450,13 +447,8 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		);
 		break;
 
-	case IDM_SCRIPT_PROGRESS:
-		m_ScriptHook.DisplayScriptProgress( m_script );
-		break;
-
 	case IDM_NEW_MODEL:
 		m_computeThread.StopComputation( );
-//		m_computeThread.LockComputation( );  // will be restarted when centering complete
 		if ( m_modelStorage.AskAndSave( ) )
 		{
 			m_modelCommands.ResetModel( );
@@ -464,33 +456,39 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_mainNNetWindow.Reset();
 			m_mainNNetWindow.CenterModel( );
 		}
-//		else
-//			m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_OPEN_MODEL:
+	{
+		m_computeThread.StopComputation( );
+		bool bRes { m_modelStorage.AskAndSave( ) };
+		if ( bRes && m_modelStorage.AskModelFile() )
 		{
-			m_computeThread.StopComputation( );
-//			m_computeThread.LockComputation( );
-			bool bRes { m_modelStorage.AskAndSave( ) };
-//			m_computeThread.ReleaseComputationLock( );
-			if ( bRes && m_modelStorage.AskModelFile() )
-			{
-//				m_computeThread.LockComputation( );  // will be restarted later
-				m_mainNNetWindow.Reset();
-				m_modelStorage.ReadAsync( );         // will trigger IDM_READ_MODEL_FINISHED when done
-			}
+			m_mainNNetWindow.Reset();
+			m_modelStorage.ReadAsync( L"", true ); // will trigger IDM_READ_MODEL_FINISHED when done
 		}
-		break;
+	}
+	break;
+
+	case IDM_ADD_MODEL:
+	{
+		m_computeThread.StopComputation( );
+		if ( m_modelStorage.AskModelFile() )
+		{
+			m_mainNNetWindow.Reset();
+			m_modelStorage.Read( L"", false, false ); // will trigger IDM_READ_MODEL_FINISHED when done
+			// do **not** ReadAsync! Will fail if incomplete model is moved.
+		}
+	}
+	break;
 
 	case IDM_READ_MODEL_FINISHED:
 		{
 			bool bSuccess { static_cast<bool>(lParam) };
 			if ( bSuccess )
 			{
-				m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-//				m_preferences.WritePreferences( m_modelStorage.GetModelPath() );
 				m_mainNNetWindow.CenterModel( );  // computation will be started when done
+				m_StatusBar.ClearPart( m_statusMessagePart );
 			}
 			else
 			{

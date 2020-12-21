@@ -87,11 +87,11 @@ void NNetModelCommands::ResetModel( )
 	m_pMWI->CreateInitialShapes();
 }
 
-void NNetModelCommands::ReadModel( bool bConcurrently, wstring const wstrPath )
+void NNetModelCommands::ReadModel( bool const bAsync, bool const bReset, wstring const wstrPath )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << bConcurrently << L" " << wstrPath << endl;
-	m_pStorage->Read( bConcurrently, wstrPath );
+		TraceStream( ) << __func__ << L" " << bAsync << L" " << wstrPath << endl;
+	m_pStorage->Read( wstrPath, bAsync, bReset );
 	m_pCmdStack->Clear();
 }
 

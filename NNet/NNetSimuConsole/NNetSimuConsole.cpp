@@ -138,7 +138,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
 	}
 
-	m_modelStorage.Read( false, L"std.mod" );
+	m_modelStorage.Read( L"std.mod", false, true );
 
 	if ( ProcessNNetScript( & m_script, & m_modelWriterInterface, wstrInputFile ) )
 		wcout << L" *** NNetSimuConsole terminated successfully";

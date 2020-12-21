@@ -155,5 +155,10 @@ void StatusBar::Resize( ) const
 
 void StatusBar::DisplayInPart( int const iPart, wstring const wstrLine )
 {
-    (void)SendMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str( ) ) );
+	(void)SendMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str( ) ) );
+}
+
+void StatusBar::ClearPart( int const iPart )
+{
+	(void)SendMessage( SB_SETTEXT, iPart, (LPARAM)L"" );
 }

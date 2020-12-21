@@ -12,6 +12,7 @@
 #include <limits.h>  
 #include <string.h>
 #include <assert.h>
+#include "util.h"
 #include "scanner.h"
 #include "errhndl.h"
 #include "script.h"
@@ -490,4 +491,9 @@ void Script::Clear()
 {
 	ScrSetWrapHook( nullptr );
 	SymbolTable::Clear();
+}
+
+long const Script::GetPercentRead() const
+{
+    return (m_fileSize > 0) ? Cast2Long( GetFilePos() * 100 / m_fileSize ) : 0L;
 }

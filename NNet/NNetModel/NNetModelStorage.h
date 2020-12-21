@@ -9,6 +9,7 @@
 #include "ObserverInterface.h"
 #include "MoreTypes.h"
 #include "ShapeId.h"
+#include "NNetModelWriterInterface.h"
 
 using std::wostream;
 using std::wstring;
@@ -21,7 +22,6 @@ class Shape;
 class Observable;
 class ModelDescription;
 class NNetModelReaderInterface;
-class NNetModelWriterInterface;
 
 class ReadModelResult
 {
@@ -55,20 +55,37 @@ public:
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
 	void Write( wostream & );
-	bool Read( bool const, wstring const = L"" );
-	void ReadAsync( wstring const = L"" );
+	bool Read     ( wstring const, bool const, bool const );
+	void ReadAsync( wstring const, bool const );
 
 	bool    const UnsavedChanges( ) const { return m_bUnsavedChanges; }
 	wstring const GetModelPath  ( ) const { return m_wstrPathOfOpenModel; }
 
+	void AddDescription( wstring const wstr ) {	m_wstrDescription += wstr + L"\r\n"; }
+
+	NNetModelWriterInterface & GetWriterInterface() { return * m_pMWI; }
+	MonitorData              & GetMonitorData()     { return * m_pMWI->GetMonitorData(); }
+	template <typename T>
+	T GetShapePtr( ShapeId const id ) {	return GetWriterInterface().GetShapePtr<T>( id ); }
+
 	void ResetModelPath( );
-	bool AskAndSave  ( );
-	bool AskModelFile( );
-	bool SaveModel   ( );
-	bool SaveModelAs ( );
+	bool AskAndSave    ( );
+	bool AskModelFile  ( );
+	bool SaveModel     ( );
+	bool SaveModelAs   ( );
+
+	inline static unsigned long const SIGSRC_SHAPE_NR { 100 };  // legacy
+	inline static unsigned long const SIGSRC_CIRCLE   { 101 };
+
+	ShapeId ScrReadShapeId( Script & script )
+	{
+		return ShapeId { ::ScrReadShapeId( script ).GetValue() + m_lShapeIdOffset };
+	}
+
+	bool const AddMode() { return m_lShapeIdOffset > 0; }
 
 private:
-	inline static float const PROTOCOL_VERSION { 1.6f };
+	inline static double const PROTOCOL_VERSION { 1.7 };
 
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
@@ -85,9 +102,11 @@ private:
 	wstring         m_wstrPathOfOpenModel { L"" };
 	wstring         m_wstrPathOfNewModel  { L"" };
 	wstring         m_wstrDescription     { L"" };
+	double          m_dVersion            { 0.0 };
+	long            m_lShapeIdOffset      { 0L };
 	vector<ShapeId> m_CompactIds;
 
-	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
+	long const getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
 
 	void prepareForReading( );
 	bool readModel( );

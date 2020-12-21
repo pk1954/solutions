@@ -34,6 +34,7 @@ public:
 	void LastPart( );
 
 	void DisplayInPart( int const, wstring const );
+	void ClearPart( int const );
 
 private:
 

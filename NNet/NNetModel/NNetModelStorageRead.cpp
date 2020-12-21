@@ -21,6 +21,8 @@ using std::filesystem::exists;
 class WrapProtocol : public Script_Functor
 {
 public:
+    WrapProtocol( NNetModelStorage * const pNNetModelStorage ) { };
+
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadString( L"version" );
@@ -31,30 +33,31 @@ public:
 class WrapDescription : public Script_Functor
 {
 public:
-    WrapDescription( wstring * const pwstrDescription ) :
-        m_pwstrDescription( pwstrDescription )
+    WrapDescription( NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
         wstring const wstrDescription { script.ScrReadString( ) };
-        * m_pwstrDescription += wstrDescription + L"\r\n";
+        if ( ! m_pNMS->AddMode() )
+            m_pNMS->AddDescription( wstrDescription );
     }
 
 private:
-    wstring * m_pwstrDescription { nullptr };
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapCreateShape : public Script_Functor
 {
 public:
-    WrapCreateShape( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
+    WrapCreateShape( NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const
     {   
-        ShapeId   const idFromScript{ script.ScrReadLong() };
+        ShapeId   const idFromScript{ m_pNMS->ScrReadShapeId(script) };
         ShapeType const shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
         UPShape         upShape     { 
                                        shapeType.IsPipeType()
@@ -63,8 +66,11 @@ public:
                                     };
         if ( upShape )
         {
-            upShape.get()->SetId( idFromScript );
-            m_pMWI->SetInModel( idFromScript, move(upShape) );
+            Shape * pShape { upShape.get() };
+            pShape->SetId( idFromScript );
+            if ( m_pNMS->AddMode() )
+                pShape->Select( tBoolOp::opTrue );
+            m_pNMS->GetWriterInterface().SetInModel( idFromScript, move(upShape) );
         }
     }
 
@@ -73,10 +79,10 @@ private:
     UPShape createPipe( Script & script ) const
     {
         script.ScrReadSpecial( Pipe::OPEN_BRACKET );
-        ShapeId const idStart { script.ScrReadLong() };
+        ShapeId const idStart { m_pNMS->ScrReadShapeId(script) };
         for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
             script.ScrReadSpecial( Pipe::SEPARATOR[i] );
-        ShapeId const idEnd { script.ScrReadLong() };
+        ShapeId const idEnd { m_pNMS->ScrReadShapeId(script) };
         script.ScrReadSpecial( Pipe::CLOSE_BRACKET );
         if ( idStart == idEnd )
         {
@@ -87,8 +93,8 @@ private:
         }
         else
         { 
-            BaseKnot * const pKnotStart { m_pMWI->GetShapePtr<BaseKnot *>( idStart ) };
-            BaseKnot * const pKnotEnd   { m_pMWI->GetShapePtr<BaseKnot *>( idEnd   ) };
+            BaseKnot * const pKnotStart { m_pNMS->GetWriterInterface().GetShapePtr<BaseKnot *>( idStart ) };
+            BaseKnot * const pKnotEnd   { m_pNMS->GetWriterInterface().GetShapePtr<BaseKnot *>( idEnd   ) };
             unique_ptr<Pipe> upPipe { make_unique<Pipe>( pKnotStart, pKnotEnd ) };
             pKnotStart->m_connections.AddOutgoing( upPipe.get() );
             pKnotEnd  ->m_connections.AddIncoming( upPipe.get() );
@@ -116,14 +122,14 @@ private:
         }
     }
 
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapGlobalParameter : public Script_Functor
 {
 public:
-    WrapGlobalParameter( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
+    WrapGlobalParameter( NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
@@ -131,116 +137,140 @@ public:
         tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
         script.ScrReadSpecial( L'=' );
         float const fValue { Cast2Float( script.ScrReadFloat() ) };
-        m_pMWI->SetParam( param, fValue );
+        if ( ! m_pNMS->AddMode() )
+            m_pNMS->GetWriterInterface().SetParam( param, fValue );
     }
 
 private:
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapNrOfShapes : public Script_Functor
 {
 public:
-    WrapNrOfShapes( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
+    WrapNrOfShapes(NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadSpecial( L'=' );
-        m_pMWI->IncShapeList( script.ScrReadLong() );
+        m_pNMS->GetWriterInterface().IncShapeList( script.ScrReadLong() );
     }
 
 private:
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapShapeParameter : public Script_Functor
 {
 public:
-    WrapShapeParameter( NNetModelWriterInterface * const pModel ) :
-        m_pMWI( pModel )
+    WrapShapeParameter( NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadString( L"InputNeuron" );
-        ShapeId const id ( script.ScrReadUint() );
+        ShapeId    const id   ( m_pNMS->ScrReadShapeId(script) );
         tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
         assert( param == tParameter::pulseRate );
         script.ScrReadSpecial( L'=' );
         float const fValue { Cast2Float( script.ScrReadFloat() ) };
-        m_pMWI->GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
+        if ( ! m_pNMS->AddMode() )
+            m_pNMS->GetWriterInterface().GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
     }
 
 private:
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapTriggerSound : public Script_Functor
 {
 public:
-    WrapTriggerSound( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
+    WrapTriggerSound(NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
-        ShapeId const id      { script.ScrReadLong () };
-        Neuron      * pNeuron { m_pMWI->GetShapePtr<Neuron *>( id ) };
+        ShapeId const id      { m_pNMS->ScrReadShapeId(script) };
+        Neuron      * pNeuron { m_pNMS->GetShapePtr<Neuron *>( id ) };
         Hertz   const freq    { script.ScrReadUlong() };
         script.ScrReadString( L"Hertz" );
         MilliSecs const msec { script.ScrReadUlong() };
         script.ScrReadString( L"msec" );
-        SoundDescr oldValue { pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } ) };
+        if ( ! m_pNMS->AddMode() )
+            pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } );
     }
 
 private:
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapNrOfTracks : public Script_Functor
 {
 public:
-    WrapNrOfTracks( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
+    WrapNrOfTracks(NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
-        unsigned int  const uiNrOfTracks { script.ScrReadUint() };
-        MonitorData * const pMonitorData { m_pMWI->GetMonitorData() };
+        unsigned int const uiNrOfTracks { script.ScrReadUint() };
+        if ( m_pNMS->AddMode() )
+            return;
+        MonitorData      & monitorData { m_pNMS->GetMonitorData() };
         for ( unsigned int ui = 0; ui < uiNrOfTracks; ++ui )
-            pMonitorData->InsertTrack( TrackNr(0) );
+            monitorData.InsertTrack( TrackNr(0) );
     }
 private:
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 class WrapSignal : public Script_Functor
 {
 public:
-    WrapSignal( NNetModelWriterInterface * const pNNetModel ) :
-        m_pMWI( pNNetModel )
+    WrapSignal( NNetModelStorage * const pNNetModelStorage ) :
+        m_pNMS( pNNetModelStorage )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
-        MicroMeterCircle const umCircle { ScrReadMicroMeterCircle( script ) };
-        TrackNr          const trackNr  { ScrReadTrackNr(script) };
-        m_pMWI->GetMonitorData()->AddSignal( trackNr, umCircle );
+        unsigned long    ulSigSrc;
+        MicroMeterCircle umCircle;
+        TrackNr          trackNr;
+        trackNr  = ScrReadTrackNr(script);
+        script.ScrReadString( L"source" );
+        ulSigSrc = script.ScrReadUlong( );
+        if ( ulSigSrc == NNetModelStorage::SIGSRC_CIRCLE )
+        {
+            umCircle = ScrReadMicroMeterCircle( script );
+        }
+        else if ( ulSigSrc == NNetModelStorage::SIGSRC_SHAPE_NR )
+        {
+            m_pNMS->ScrReadShapeId(script);  ///// legacy
+        }
+        else
+        {
+            assert( false );  // unexpected signal source 
+        }
+        if ( ! m_pNMS->AddMode() )
+            m_pNMS->GetMonitorData().AddSignal( trackNr, umCircle );
     }
 
 private:
-    NNetModelWriterInterface * m_pMWI;
+    NNetModelStorage * m_pNMS;
 };
 
 void NNetModelStorage::prepareForReading( )
 {
-    SymbolTable::ScrDefConst( L"Description", new WrapDescription( & m_wstrDescription ) );
-    SymbolTable::ScrDefConst( L"Protocol"   , new WrapProtocol(  ) );
+    SymbolTable::ScrDefConst( L"shape",  SIGSRC_SHAPE_NR );  // legacy
+    SymbolTable::ScrDefConst( L"circle", SIGSRC_CIRCLE );
 
-#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pMWI ) )
+#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( this ) )
+    DEF_NNET_FUNC( Description );
+    DEF_NNET_FUNC( Protocol );
     DEF_NNET_FUNC( GlobalParameter );
     DEF_NNET_FUNC( NrOfShapes );
     DEF_NNET_FUNC( CreateShape );
@@ -284,13 +314,15 @@ void NNetModelStorage::prepareForReading( )
 
 bool NNetModelStorage::readModel( ) 
 {
+    if ( AddMode() )
+        m_pMWI->SelectAllShapes( tBoolOp::opFalse );
     if ( ProcessNNetScript( m_pScript, m_pMWI, m_wstrPathOfNewModel ) )
     {
         m_pMWI->RemoveOrphans();
         m_pDescription->SetDescription( m_wstrDescription );
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
         m_pMWI->StaticModelChanged();
-        setUnsavedChanges( false );
+        setUnsavedChanges( AddMode() ); // read new model or add module?
         m_pResult->Reaction( ReadModelResult::tResult::ok );
         return true;
     }
@@ -308,7 +340,12 @@ static unsigned int __stdcall readModelThreadProc( void * data )
     return 0;
 }
 
-bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
+bool NNetModelStorage::Read
+( 
+    wstring const wstrPath, 
+    bool    const bAsync,
+    bool    const bResetModel
+)
 {
     bool bRes { true };
     if ( ! m_bPreparedForReading )
@@ -317,10 +354,19 @@ bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     m_wstrPathOfNewModel = ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath;
     if ( exists( m_wstrPathOfNewModel ) )
     {
-        m_pMWI->ResetModel();
-        m_wstrDescription.clear();
+        if ( bResetModel )
+        {
+            m_pMWI->ResetModel();
+            m_lShapeIdOffset = 0L;
+            m_wstrDescription.clear();
+        }
+        else
+        {
+            m_lShapeIdOffset = Cast2Long(m_pMRI->GetSizeOfShapeList());
+        }
+
         wcout << L"*** Reading file " << m_wstrPathOfNewModel << endl;
-        if ( bConcurrently )
+        if ( bAsync )
         {
             UINT threadId { 0 };
             Util::RunAsAsyncThread( readModelThreadProc, static_cast<void *>(this), & threadId );
@@ -338,7 +384,7 @@ bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     return bRes;
 }
 
-void NNetModelStorage::ReadAsync( wstring const wstrPath )
+void NNetModelStorage::ReadAsync( wstring const wstrPath, bool const bReset )
 {
-    Read( true, wstrPath );
+    Read( wstrPath, true, bReset );
 }

@@ -78,7 +78,7 @@ public:
             if ( iRes != IDYES )
                 return;
         }
-        m_pNNetModelStorage->ReadAsync( wstrModelFile );
+        m_pNNetModelStorage->ReadAsync( wstrModelFile, true );
     }
 };
 

@@ -8,17 +8,24 @@
 #include "win32_status.h"
 #include "script.h"
 
+using std::to_wstring;
+
 class ScriptHook : public Script_Functor
 {
 public:
 	ScriptHook() { }
 
-	void Initialize( StatusBar * const pStatusBar, int iPart, HWND const hwndApp )
+	void Initialize
+	( 
+		StatusBar * const pStatusBar, 
+		int         const iPart, 
+		Script    * const pScript
+	)
 	{
 		m_pStatusBar     = pStatusBar;
 		m_iStatusBarPart = iPart;
-		m_hwndApp        = hwndApp;
-		m_pRefreshRate   = new refreshRate( m_hwndApp );
+		m_pScript        = pScript;
+		m_pRefreshRate   = new refreshRate( this );
 		m_pRefreshRate->SetRefreshRate( 300ms );
 		m_pStatusBar->AddCustomControl( 80 );  // nr of characters
 	}
@@ -28,22 +35,17 @@ public:
 		m_pRefreshRate->Notify( false );
 	}
 
-	void DisplayScriptProgress( Script & script ) // TODO: move function to better place
+	void DisplayScriptProgress( )
 	{
-		if ( ( m_pStatusBar != nullptr ) && ( script.IsActive() ) )
+		if ( ( m_pStatusBar != nullptr ) && ( m_pScript->IsActive() ) )
 		{
-			wstring   const & wstrPath  { script.GetActPath () };
-			long long const   llFilePos { script.GetFilePos () };
-			uintmax_t const   fileSize  { script.GetFileSize() };
-			if ( fileSize > 0 )
-			{
-				long const lPercentRead { Cast2Long( llFilePos * 100 / fileSize ) };
-				m_pStatusBar->DisplayInPart
-				( 
-					m_iStatusBarPart, 
-					L"Reading " + wstrPath + L" ... " + std::to_wstring( lPercentRead ) + L"%"  
-				);
-			}
+			wstring const & wstrPath     { m_pScript->GetActPath () };
+			long    const   lPercentRead { m_pScript->GetPercentRead() };
+			m_pStatusBar->DisplayInPart
+			( 
+				m_iStatusBarPart, 
+				L"Reading " + wstrPath + L" ... " + to_wstring( lPercentRead ) + L"%"  
+			);
 		}
 	}
 
@@ -51,21 +53,21 @@ private:
 	class refreshRate : public BaseRefreshRate
 	{
 	public:
-		refreshRate( HWND const hwndApp )
-			: m_hwndApp( hwndApp )
+		refreshRate( ScriptHook * const pScriptHook )
+			: m_pScriptHook( pScriptHook )
 		{ }
 
 		virtual void Trigger( )
 		{
-			SendMessage( m_hwndApp, WM_COMMAND, IDM_SCRIPT_PROGRESS, 0 );
+			m_pScriptHook->DisplayScriptProgress( );
 		}
 
 	private:
-		HWND const m_hwndApp;
+		ScriptHook * m_pScriptHook;
 	};
 
 	refreshRate * m_pRefreshRate   { nullptr };
-    StatusBar   * m_pStatusBar     { nullptr };
-	HWND          m_hwndApp        { nullptr };
+	StatusBar   * m_pStatusBar     { nullptr };
+	Script      * m_pScript        { nullptr };
 	int           m_iStatusBarPart { 0 };
 };
