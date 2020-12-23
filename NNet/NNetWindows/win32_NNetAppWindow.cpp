@@ -108,10 +108,7 @@ NNetAppWindow::NNetAppWindow( )
 	DefineNNetWinWrappers( & m_mainNNetWindow );
 };
 
-NNetAppWindow::~NNetAppWindow( )
-{
-//	m_traceStream.close();
-}
+NNetAppWindow::~NNetAppWindow( ) { }
 
 void NNetAppWindow::Start( MessagePump & pump )
 {
@@ -260,10 +257,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	Show( true );
 
-	//if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
-	//	m_modelCommands.ResetModel( );
-
-	// m_computeThread.RunComputation();
+	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
+		m_modelCommands.ResetModel( );
 
 	m_bStarted = true;
 }
