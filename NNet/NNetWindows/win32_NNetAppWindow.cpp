@@ -258,12 +258,12 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_appMenu.Notify( true );
 
-//	Show( true );
+	Show( true );
 
-	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
-		m_modelCommands.ResetModel( );
+	//if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
+	//	m_modelCommands.ResetModel( );
 
-	m_computeThread.RunComputation();
+	// m_computeThread.RunComputation();
 
 	m_bStarted = true;
 }
