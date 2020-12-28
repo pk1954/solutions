@@ -51,6 +51,35 @@ void NNetModel::Initialize
 	Shape::SetParam( pParam );
 }                     
 
+void NNetModel::CheckModel( ) const
+{
+#ifdef _DEBUG
+	m_Shapes.CheckShapeList( );
+#endif
+}
+
+Shape const * NNetModel::GetConstShape( ShapeId const id ) const 
+{	
+	if ( IsUndefined( id ) || ! m_Shapes.IsValidShapeId( id ) )
+	{
+		DumpModel();
+		m_Shapes.CallErrorHandler( id );  
+		return nullptr;
+	}
+	return m_Shapes.GetAt( id );
+}
+
+void NNetModel::SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
+{	
+	m_Shapes.SetShapeErrorHandler( pHandler );
+}
+
+void NNetModel::SetSimulationTime( fMicroSecs const newVal )	
+{ 
+	m_timeStamp = newVal; 
+	m_pModelTimeObservable->NotifyAll( false );
+}
+
 void NNetModel::StaticModelChanged( )
 { 
 	m_pStaticModelObservable->NotifyAll( false );

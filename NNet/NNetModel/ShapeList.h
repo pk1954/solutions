@@ -83,43 +83,6 @@ public:
 		return bResult;
 	}
 
-	//template <typename T>   // const version
-	//bool Apply2AllB( function<bool(T const &)> const & func ) const
-	//{
-	//	bool bResult { false };
-	//	for ( auto & it : m_list )
-	//	{
-	//		if ( it.get() )
-	//		{
-	//			if ( HasType<T>( * it.get() ) )	
-	//				bResult = func( static_cast<T const &>( * it.get() ) );
-	//			if ( bResult )
-	//				break;
-	//		}
-	//	}
-	//	return bResult;
-	//}
-
-	//template <typename T>
-	//void Apply2All( function<void(T &)> const & func ) const
-	//{
-	//	for ( auto & it : m_list )
-	//	{
-	//		if ( it.get() && ( HasType<T>( * it.get() ) ) )
-	//			func( static_cast<T &>( * it.get ) ); 
-	//	}
-	//}                        
-
-	//template <typename T>    // const version
-	//void Apply2All( function<void(T const &)> const & func ) const
-	//{
-	//	for ( auto & it : m_list )
-	//	{
-	//		if ( it.get() && ( HasType<T>( * it.get() ) ) )
-	//			func( static_cast<T const &>( * it.get ) ); 
-	//	}
-	//}                        
-
 private:
 	vector<UPShape>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };

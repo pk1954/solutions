@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <type_traits>
 #include <vector>
 #include <exception>
 #include "util.h"
@@ -25,6 +26,8 @@ class Param;
 
 using std::unique_ptr;
 using std::move;
+using std::is_base_of;
+using std::remove_pointer_t;
 
 class NNetModel
 {
@@ -42,43 +45,22 @@ public:
 
 	// readOnly functions
 
-	void CheckModel( ) const
-	{
-#ifdef _DEBUG
-		m_Shapes.CheckShapeList( );
-#endif
-	}
-
-	void DumpModel( ) const;
-
-	bool const IsShapeDefined( ShapeId const id ) const
-	{
-		return m_Shapes.GetAt( id ) == nullptr;
-	}
-
-	Shape const * GetConstShape( ShapeId const id ) const 
-	{	
-		if ( IsUndefined( id ) || ! m_Shapes.IsValidShapeId( id ) )
-		{
-			DumpModel();
-			m_Shapes.CallErrorHandler( id );  
-			return nullptr;
-		}
-		return m_Shapes.GetAt( id );
-	}
-
-	template <typename T>
+	template <typename T> requires is_base_of<Shape, remove_pointer_t<T>>::value
 	T GetShapeConstPtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { GetConstShape( id ) };
 		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
-	fHertz          const GetPulseRate( ShapeId const ) const;
-	MicroMeterPoint const GetShapePos ( ShapeId const ) const;
+	void CheckModel( ) const;
+	void DumpModel ( ) const;
 
-	fMicroSecs const GetSimulationTime ( ) const { return m_timeStamp; }
-	size_t     const GetSizeOfShapeList( ) const { return m_Shapes.Size(); }
+	Shape           const * GetConstShape( ShapeId const ) const;
+	fHertz          const   GetPulseRate ( ShapeId const ) const;
+	MicroMeterPoint const   GetShapePos  ( ShapeId const ) const;
+
+	fMicroSecs const GetSimulationTime ( )             const { return m_timeStamp; }
+	size_t     const GetSizeOfShapeList( )             const { return m_Shapes.Size(); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
@@ -86,42 +68,27 @@ public:
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	// manipulating functions
+	bool    const IsShapeDefined( ShapeId const id )   const { return m_Shapes.GetAt( id ) == nullptr; }
 
-	void SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs )	
-	{ 
-		m_timeStamp = newVal; 
-		m_pModelTimeObservable->NotifyAll( false );
-	}
+	// manipulating functions
 
 	virtual bool Compute( );
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
+	void  SetShapeErrorHandler( ShapeErrorHandler * const );
+	void  SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs );
 	void  ToggleStopOnTrigger( Neuron * );
 	void  RecalcAllShapes( );
 	void  ResetModel( );
 	float SetParam( tParameter const, float const );
-	void  IncShapeList( long const lNrOfShapes ) 
-	{ 
-		m_Shapes.Resize( m_Shapes.Size() + lNrOfShapes ); 
-	}
-
-	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
-
-	void SelectSubtree( BaseKnot * const, tBoolOp const );
-
-	template <typename T>
-	unique_ptr<T> PopFromModel( ) { return move(m_Shapes.Pop<T>()); }
-
-	void StaticModelChanged( );
-
-	void SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
-	{	
-		m_Shapes.SetShapeErrorHandler( pHandler );
-	}
+	void  SelectSubtree( BaseKnot * const, tBoolOp const );
+	void  StaticModelChanged( );
 
 	void SelectAllShapes( tBoolOp const op ) { m_Shapes.SelectAllShapes( op ); }
+	void IncShapeList   ( long    const nr ) { m_Shapes.Resize( m_Shapes.Size() + nr ); }
+
+	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
 	ShapeId const Push2Model( UPShape upShape ) 
 	{ 
@@ -129,6 +96,9 @@ public:
 		m_Shapes.Push( move(upShape) ); 
 		return idNewSlot;
 	}
+
+	template <typename T>
+	unique_ptr<T> PopFromModel( ) { return move(m_Shapes.Pop<T>()); }
 
 	template <typename OLD>
 	unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
