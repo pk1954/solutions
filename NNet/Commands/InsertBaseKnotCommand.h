@@ -10,7 +10,7 @@
 #include "Command.h"
 #include "BaseKnot.h"
 
-template <typename T>
+template <BaseKnot_t T>
 class InsertBaseKnotCommand : public Command
 {
 public:

@@ -16,6 +16,9 @@ class DrawContext;
 class NNetModel;
 class Pipe;
 
+template <typename T> 
+concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
+
 struct IDWriteTextFormat;
 
 class BaseKnot : public Shape

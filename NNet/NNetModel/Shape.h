@@ -16,14 +16,19 @@
 class Shape;
 class DrawContext;
 
+using std::is_base_of;
+using std::remove_pointer_t;
 using std::remove_pointer;
 using std::unique_ptr;
 using std::wostream;
 using std::wstring;
 
+template <typename T> 
+concept Shape_t = is_base_of<Shape, remove_pointer_t<T>>::value;
+
 using UPShape   = unique_ptr<Shape>;
 using ShapeCrit = function<bool(Shape const &)>;
-                  
+
 static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true; } };
 
 class Shape
@@ -95,7 +100,7 @@ private:
 	bool      m_bSelected  { false };
 };
 
-template <typename T> bool HasType( Shape const & shape ) 
+template <Shape_t T> bool HasType( Shape const & shape ) 
 { 
 	return remove_pointer<T>::type::TypeFits( shape.GetShapeType() ); 
 }

@@ -57,7 +57,7 @@ public:
 	void                 Apply2All           ( function<void(Shape       &)> const & );
 	void                 Append              ( ShapeList const & );
 
-	template <typename T>
+	template <Shape_t T>
 	unique_ptr<T> Pop( )
 	{
 		unique_ptr<T> upT { unique_ptr<T>( static_cast<T*>(m_list.back().release()) ) };
@@ -66,7 +66,7 @@ public:
 		return move( upT );
 	}
 
-	template <typename T>
+	template <Shape_t T>
 	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{
 		bool bResult { false };

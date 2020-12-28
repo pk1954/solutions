@@ -65,7 +65,7 @@ public:
 
 	NNetModelWriterInterface & GetWriterInterface() { return * m_pMWI; }
 	MonitorData              & GetMonitorData()     { return * m_pMWI->GetMonitorData(); }
-	template <typename T>
+	template <Shape_t T>
 	T GetShapePtr( ShapeId const id ) {	return GetWriterInterface().GetShapePtr<T>( id ); }
 
 	void ResetModelPath( );

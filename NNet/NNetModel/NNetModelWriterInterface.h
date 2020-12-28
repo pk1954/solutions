@@ -52,14 +52,14 @@ public:
 
     void StaticModelChanged( );
 
-    template <typename T>
+    template <Shape_t T>
     T GetShapePtr( ShapeId const id ) 
     {
         Shape * const pShape { GetShape( id ) };
         return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
     }
 
-    template <typename T>
+    template <Shape_t T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
         m_pModel->GetShapes().Apply2All
@@ -72,13 +72,13 @@ public:
         );
 	}                        
 
-    template <typename T>
+    template <Shape_t T>
     void Apply2AllSelected( function<void(T &)> const & func ) const
     {
     	Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
     }
 
-    template <typename T>
+    template <Shape_t T>
     void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
     {
         Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
@@ -108,16 +108,16 @@ public:
         m_pModel->SetInModel( id, move(upShape) );
     }
 
-    template <typename T>
+    template <Shape_t T>
     unique_ptr<T> PopFromModel( ) { return m_pModel->PopFromModel<T>(); }
 
-    template <typename NEW, typename OLD>
+    template <Shape_t NEW, typename OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     { 
         return m_pModel->ReplaceInModel<NEW, OLD>( move(up) ); 
     }
 
-    template <typename T>
+    template <Shape_t T>
     unique_ptr<T> RemoveFromModel( ShapeId const id ) 
     { 
         return m_pModel->RemoveFromModel<T>( id ); 

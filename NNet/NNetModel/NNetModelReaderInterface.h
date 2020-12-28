@@ -52,21 +52,21 @@ public:
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	template <typename T>
+	template <Shape_t T>
 	T const GetConstShapePtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { GetConstShape( id ) };
 		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
-	template <typename T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
-	template <typename T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
+	template <Shape_t T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
+	template <Shape_t T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
 
-	template <typename T>   // const version
+	template <Shape_t T>   // const version
 	bool Apply2AllB( function<bool(T const &)> const & func ) const
 	{
 		bool bResult { false };
-		for ( auto pShape : m_pModel->GetShapes() )
+		for ( Shape_t auto pShape : m_pModel->GetShapes() )
 		{
 			if ( pShape )
 			{
@@ -79,7 +79,7 @@ public:
 		return bResult;
 	}
 
-	template <typename T>    // const version
+	template <Shape_t T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
 		m_pModel->GetShapes().Apply2All
@@ -88,13 +88,13 @@ public:
 		);
 	}                        
 
-	template <typename T>   // const version
+	template <Shape_t T>   // const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
 	{
 		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}
 
-	template <typename T>  // const version
+	template <Shape_t T>  // const version
 	void Apply2AllSelected( function<void(T const &)> const & func ) const
 	{
 		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <type_traits>
 #include <vector>
 #include <exception>
 #include "util.h"
@@ -26,8 +25,6 @@ class Param;
 
 using std::unique_ptr;
 using std::move;
-using std::is_base_of;
-using std::remove_pointer_t;
 
 class NNetModel
 {
@@ -45,7 +42,7 @@ public:
 
 	// readOnly functions
 
-	template <typename T> requires is_base_of<Shape, remove_pointer_t<T>>::value
+	template <Shape_t T>
 	T GetShapeConstPtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { GetConstShape( id ) };
@@ -97,17 +94,17 @@ public:
 		return idNewSlot;
 	}
 
-	template <typename T>
+	template <Shape_t T>
 	unique_ptr<T> PopFromModel( ) { return move(m_Shapes.Pop<T>()); }
 
-	template <typename OLD>
+	template <Shape_t OLD>
 	unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
 	{ 
 		Shape * pShape { m_Shapes.RemoveShape( id ) }; 
 		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
 	}
 
-	template <typename NEW, typename OLD>
+	template <Shape_t NEW, Shape_t OLD>
 	unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
 	{
 		ShapeId const id     { up.get()->GetId() };

@@ -10,7 +10,6 @@
 
 using std::function;
 using std::wostream;
-
 class ShapeType
 {
 public:
