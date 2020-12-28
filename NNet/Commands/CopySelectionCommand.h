@@ -82,7 +82,9 @@ public:
 		}
 		nmwi.SelectAllShapes( tBoolOp::opFalse );
 		for ( auto & idShape : m_selectedShapeIds ) 
-			{ nmwi.SelectShape( idShape, tBoolOp::opTrue ); }
+		{ 
+			nmwi.SelectShape( idShape, tBoolOp::opTrue ); 
+		}
 	}
 
 private:

@@ -109,7 +109,7 @@ bool NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
-	m_Shapes.Reset();
+	m_Shapes.Clear();
 	m_pMonitorData->Reset();
 	Knot       ::ResetCounter();
 	Neuron     ::ResetCounter();

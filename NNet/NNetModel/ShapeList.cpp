@@ -27,6 +27,11 @@ void ShapeList::checkShape( Shape const & shape ) const
 	}
 }
 
+void ShapeList::SetShapeErrorHandler( ShapeErrorHandler * const p ) 
+{ 
+	m_pShapeErrorHandler = p; 
+}
+
 UPShape ShallowCopy( Shape const & shape )
 {
 	switch ( shape.GetShapeType().GetValue() )
@@ -70,6 +75,43 @@ bool ShapeList::operator==( ShapeList const & other ) const
 	return true;
 }
 
+Shape * const ShapeList::RemoveShape( ShapeId const id )	
+{
+	assert( IsDefined( id ) );
+	assert( IsValidShapeId( id ) );
+
+	if ( GetAt( id ) )
+		GetAt( id )->DecCounter();
+
+	return m_list[id.GetValue()].release();
+}
+
+void ShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for special situations
+{                                                        // read model from script
+	assert( IsDefined( id ) );                           // or copy model
+	assert( IsValidShapeId( id ) );
+	assert( IsEmptySlot( id ) );
+	assert( upShape );
+
+	upShape->IncCounter(); //-V522
+	m_list[id.GetValue()] = move(upShape);
+}
+
+Shape * const ShapeList::ReplaceShape( ShapeId const id, UPShape upT )	
+{
+	assert( IsDefined( id ) );
+	assert( IsValidShapeId( id ) );
+
+	if ( upT )
+		upT->IncCounter();
+	if ( GetAt( id ) )
+		GetAt( id )->DecCounter();
+
+	UPShape tmp = move(upT);
+	m_list[id.GetValue()].swap( tmp );
+	return tmp.release();
+}
+
 void ShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape const *)> const & dstFromSrc ) const
 {
 	if ( Shape * pShapeDst { dstFromSrc( & shapeSrc ) } )
@@ -92,6 +134,16 @@ void ShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape cons
 			srcConn.Apply2AllInPipes ([&](Pipe const & pipeSrc) {dstConn.AddIncoming( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
 		}
 	}
+}
+
+void ShapeList::Push( UPShape upShape )	
+{
+	if ( upShape )
+	{
+		upShape->SetId( IdNewSlot() );
+		upShape->IncCounter();
+	}
+	m_list.push_back( move(upShape) );
 }
 
 void ShapeList::copy( const ShapeList & rhs )
@@ -119,7 +171,7 @@ void ShapeList::copy( const ShapeList & rhs )
 
 ShapeList::~ShapeList()
 {
-	Reset( );
+	Clear( );
 }
 
 ShapeList::ShapeList( const ShapeList & rhs ) // copy constructor
@@ -134,7 +186,19 @@ ShapeList & ShapeList::operator= ( const ShapeList & rhs ) // copy assignment
 	return * this;
 }
 
-MicroMeterRect ShapeList::ComputeEnclosingRect( )
+void ShapeList::CheckShapeList( ) const
+{
+#ifdef _DEBUG
+	Apply2All( [&]( Shape const & shape ) { checkShape( shape ); } );
+#endif
+}
+
+void ShapeList::Dump( ) const
+{
+	Apply2All( [&]( Shape const & shape ) { shape.Dump( ); } );
+}
+
+MicroMeterRect const ShapeList::ComputeEnclosingRect( ) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( auto const & pShape : m_list )
@@ -155,4 +219,55 @@ ShapeId const ShapeList::FindShapeAt
 			return pShape->GetId();
 	};
 	return NO_SHAPE;
+}
+
+bool const ShapeList::AnyShapesSelected( ) const
+{
+	return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
+}
+
+void ShapeList::CallErrorHandler( ShapeId const id ) const
+{
+	if ( m_pShapeErrorHandler )
+	{
+		(* m_pShapeErrorHandler)( id );
+	}
+}
+
+void ShapeList::Apply2All( function<void(Shape const &)> const & func ) const
+{
+	for ( auto const & it : m_list )
+	{ 
+		if ( it.get() )
+			func( * it.get() ); 
+	}
+}                        
+
+void ShapeList::Apply2All( function<void(Shape &)> const & func )
+{
+	for ( auto & it : m_list )
+	{ 
+		if ( it.get() )
+			func( * it.get() ); 
+	}
+}                        
+
+bool const ShapeList::Apply2AllB( ShapeCrit const & func ) const
+{
+	for ( auto & it : m_list )
+	{ 
+		if ( it.get() && func( * it.get() ) )
+			return true;
+	}
+	return false;
+}
+
+void ShapeList::SelectAllShapes( tBoolOp const op ) 
+{ 
+	Apply2All( [&](Shape & s) { s.Select( op ); } ); 
+}
+
+void ShapeList::Append( ShapeList const &  list2Append )
+{
+//	XXXXXXXXX
 }
