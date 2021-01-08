@@ -152,9 +152,6 @@
     <ClInclude Include="UndoRedoMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UnsavedChangesObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_modelDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -168,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Measurement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_appTitle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

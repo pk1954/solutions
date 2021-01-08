@@ -18,7 +18,7 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.SelectAllShapes( m_op ); 
+		nmwi.GetShapes().SelectAllShapes( m_op ); 
 	}
 
 private:

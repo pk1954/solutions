@@ -11,7 +11,7 @@
 #include "symtab.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
-#include "NNetModelStorage.h"
+#include "NNetModelImport.h"
 #include "NNetParameters.h"
 #include "win32_NNetAppMenu.h"
 #include "Preferences.h"
@@ -23,8 +23,7 @@ using std::wcout;
 using std::endl;
 using std::filesystem::exists;
 
-static NNetModelStorage * m_pNNetModelStorage;
-static wstring            m_wstrPreferencesFile;
+static wstring m_wstrPreferencesFile;
 
 class WrapSetAutoOpen: public Script_Functor
 {
@@ -42,27 +41,30 @@ public:
 class WrapSetSound: public Script_Functor
 {
 public:
-    void SetSound( Sound * const pSound )
-    {
-        m_pSound = pSound;
-    }
+    WrapSetSound( Sound & sound )
+        : m_sound( sound )
+    {}
 
     virtual void operator() ( Script & script ) const
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if ( bMode )
-            m_pSound->On();
+            m_sound.On();
         else
-            m_pSound->Off();
+            m_sound.Off();
     }
 
 private:
-    Sound * m_pSound { nullptr };
+    Sound & m_sound;
 };
 
 class WrapReadModel: public Script_Functor
 {
 public:
+    WrapReadModel( NNetModelImport & modelImport )
+        : m_modelImport( modelImport)
+    {}
+
     virtual void operator() ( Script & script ) const
     {
         wstring wstrModelFile { script.ScrReadString() };
@@ -78,8 +80,11 @@ public:
             if ( iRes != IDYES )
                 return;
         }
-        m_pNNetModelStorage->ReadAsync( wstrModelFile, true );
+        m_modelImport.Import( wstrModelFile, nullptr, true );
     }
+
+private:
+    NNetModelImport & m_modelImport;
 };
 
 static wstring const PREF_ON  { L"ON"  };
@@ -87,10 +92,12 @@ static wstring const PREF_OFF { L"OFF" };
 
 wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
-void Preferences::Initialize( Sound * pSound )
+void Preferences::Initialize
+( 
+    Sound           & sound, 
+    NNetModelImport & modelImport
+)
 {
-    m_pSound = pSound;
-
     wchar_t szBuffer[MAX_PATH];
     DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer );
     assert( dwRes > 0 );
@@ -98,19 +105,18 @@ void Preferences::Initialize( Sound * pSound )
     m_wstrPreferencesFile = szBuffer;
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    DEF_FUNC( SetAutoOpen );
-    DEF_FUNC( SetSound );
-    DEF_FUNC( ReadModel );
-
-    WrapSetSound( m_pSound );
+    SymbolTable::ScrDefConst( L"SetAutoOpen", new WrapSetAutoOpen );
+    SymbolTable::ScrDefConst( L"SetSound",    new WrapSetSound (sound) );
+    SymbolTable::ScrDefConst( L"ReadModel",   new WrapReadModel(modelImport) );
 
     SymbolTable::ScrDefConst( PREF_OFF, 0L );
     SymbolTable::ScrDefConst( PREF_ON,  1L );
+
+    m_pSound = & sound;
 }
 
-bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
+bool Preferences::ReadPreferences( )
 {
-    m_pNNetModelStorage = pStorage;
     if ( exists( m_wstrPreferencesFile ) )
     {
         wcout << L"*** read preferences file " << m_wstrPreferencesFile << endl;

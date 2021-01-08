@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "CommandStack.h"
+#include "AddModelCommand.h"
 #include "AddIncoming2KnotCommand.h"
 #include "AddIncoming2PipeCommand.h"
 #include "AddOutgoing2KnotCommand.h"
@@ -24,6 +25,7 @@
 #include "MoveSelectionCommand.h"
 #include "NewInputNeuronCommand.h"
 #include "NewNeuronCommand.h"
+#include "NNetModelImport.h"
 #include "NNetModelStorage.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
@@ -50,13 +52,11 @@ void NNetModelCommands::Initialize
 	NNetModelWriterInterface * const pWriterInterface,
 	Param                    * const pParam,
 	CommandStack             * const pCmdStack,
-	NNetModelStorage         * const pStorage,
 	Observable               * const pDynamicModelObservable
 ) 
 { 
 	m_pMWI                    = pWriterInterface;
 	m_pCmdStack               = pCmdStack;
-	m_pStorage                = pStorage;
 	m_pParam                  = pParam;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 }
@@ -83,15 +83,19 @@ void NNetModelCommands::ResetModel( )
 		TraceStream( ) << __func__ << endl;
 	m_pMWI->ResetModel( );
 	m_pCmdStack->Clear();
-	m_pStorage->ResetModelPath( );
 	m_pMWI->CreateInitialShapes();
 }
 
-void NNetModelCommands::ReadModel( bool const bAsync, bool const bReset, wstring const wstrPath )
+void NNetModelCommands::ReadModel
+( 
+	wstring const wstrPath, 
+	bool    const bAsync, 
+	bool    const bReset
+)
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << bAsync << L" " << wstrPath << endl;
-	m_pStorage->Read( wstrPath, bAsync, bReset );
+	m_pModelImport->Import( wstrPath, nullptr, bAsync );
 	m_pCmdStack->Clear();
 }
 
@@ -213,6 +217,13 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << delta << endl;
 	m_pCmdStack->PushCommand( make_unique<MoveSelectionCommand>( delta ) );
+}
+
+void NNetModelCommands::AddModel( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( ) );
 }
 
 void NNetModelCommands::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )

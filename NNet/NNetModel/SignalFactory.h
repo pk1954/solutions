@@ -5,7 +5,6 @@
 #pragma once
 
 #include "NNetParameters.h"
-#include "NNetModelReaderInterface.h"
 #include "Observable.h"
 #include "ShapeId.h"
 #include "AnimationInterface.h"
@@ -14,13 +13,15 @@
 using std::unique_ptr;
 using std::make_unique;
 
+class NNetModelReaderInterface;
+
 class SignalFactory
 {
 public:
 
     virtual ~SignalFactory() {};
 
-    void Initialize
+    static void Initialize
     ( 
         NNetModelReaderInterface const & modelReaderInterface,
         Param                    const & param,
@@ -34,14 +35,19 @@ public:
         m_pAnimationInterface = & animationInterface;
     }
 
-    unique_ptr<Signal>MakeSignal( MicroMeterCircle const & umCircle )
+    static unique_ptr<Signal>MakeSignal( Signal const & src )
+    {
+        return make_unique<Signal>( src );
+    }
+
+    static unique_ptr<Signal>MakeSignal( MicroMeterCircle const & umCircle )
     {
         return make_unique<Signal>( * m_pMRI, * m_pParams, * m_pObservable, * m_pAnimationInterface, umCircle );
     }
 
 private:
-    Param                    const * m_pParams             { nullptr };
-    NNetModelReaderInterface const * m_pMRI                { nullptr };
-    Observable                     * m_pObservable         { nullptr };
-    AnimationInterface             * m_pAnimationInterface { nullptr };
+    inline static NNetModelReaderInterface const * m_pMRI                { nullptr };
+    inline static Param                    const * m_pParams             { nullptr };
+    inline static Observable                     * m_pObservable         { nullptr };
+    inline static AnimationInterface             * m_pAnimationInterface { nullptr };
 };

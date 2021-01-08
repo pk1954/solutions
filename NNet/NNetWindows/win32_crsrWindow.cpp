@@ -97,7 +97,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	ShapeId const id { m_pMainWindow->GetHighlightedShapeId() };
 
-	if ( IsUndefined( id ) )
+	if ( IsUndefined(id) )
 		return;
 
 	ShapeType const type { m_pMRI->GetShapeType( id ) };

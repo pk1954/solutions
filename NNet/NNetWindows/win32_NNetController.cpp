@@ -10,7 +10,7 @@
 #include "Analyzer.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
-#include "NNetModelStorage.h"
+#include "NNetModelExport.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
 #include "Signal.h"
@@ -32,7 +32,7 @@
 
 void NNetController::Initialize
 (
-    NNetModelStorage         * const pStorage,
+    NNetModelExport          * const pModelExport,
     MainWindow               * const pMainWindow,
     WinManager               * const pWinManager,
     NNetModelReaderInterface * const pModelReaderInterface,
@@ -48,7 +48,7 @@ void NNetController::Initialize
     Observable               * const pDynamicModelObservable
 ) 
 {
-    m_pStorage                = pStorage;
+    m_pModelExport            = pModelExport;
     m_pMainWindow             = pMainWindow;
     m_pWinManager             = pWinManager;
     m_pMRI                    = pModelReaderInterface;
@@ -67,7 +67,7 @@ void NNetController::Initialize
 
 NNetController::~NNetController( )
 {
-    m_pStorage          = nullptr;
+    m_pModelExport      = nullptr;
     m_pMainWindow       = nullptr;
     m_pWinManager       = nullptr;
     m_pMRI              = nullptr;
@@ -210,15 +210,15 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->RedoCommand();
         break;
 
-    case IDM_SAVE_MODEL:
-        if ( m_pStorage->SaveModel( ) )
-            m_pPreferences->WritePreferences( m_pStorage->GetModelPath() );
-        break;
+    case IDM_ADD_MODEL:
+        //if ( m_pModelStorage->AskModelFile() )
+        //{
+        //    //m_mainNNetWindow.Reset();
+        //    //m_modelStorage.Read( L"", false, nullptr ); // will trigger IDM_READ_MODEL_FINISHED when done
+        //    // do **not** ReadAsync! Will fail if incomplete model is moved.
+        //}
 
-    case IDM_SAVE_MODEL_AS:
-        m_pComputeThread->StopComputation( );
-        if ( m_pStorage->SaveModelAs( ) )
-            m_pPreferences->WritePreferences( m_pStorage->GetModelPath() );
+        //    m_pModelCommands->AddModel( );
         break;
 
     case IDM_COPY_SELECTION:
@@ -255,7 +255,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_DELETE:   // keyboard delete key
-        if ( m_pMainWindow->GetHighlightedShapeId() == NO_SHAPE )
+        if ( IsUndefined(m_pMainWindow->GetHighlightedShapeId()) )
             break;
         [[fallthrough]];
 

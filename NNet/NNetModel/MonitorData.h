@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include "Observable.h"
 #include "NamedType.h"
 #include "Signal.h"
 #include "Track.h"
@@ -15,15 +14,26 @@ using std::vector;
 
 using TrackNrFunc = function<void(TrackNr const)>;
 
-class SignalFactory;
-
 class MonitorData
 {
 public:
+	MonitorData()                                      = default;  // constructor   
+	~MonitorData()                                     = default;  // destructor
+	MonitorData( MonitorData&& rhs )                   = delete;   // move constructor
+	MonitorData & operator= ( const MonitorData& rhs ) = delete;   // copy assignment operator
+	MonitorData & operator= ( MonitorData&& rhs )      = delete;   // move assignment operator
+	
+	MonitorData( const MonitorData & rhs )  // copy constructor
+	{
+		for ( auto const & upTrack : m_tracks )
+			m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
+	}
+
+	bool operator== (MonitorData const & ) const;
 
 	void CheckTracks( ) const;  // for debugging
 
-	void Initialize( Observable * const, SignalFactory * const );
+	void Initialize( Observable * const );
 	void Reset( );
 
 	int  GetNrOfTracks( ) const;
@@ -56,7 +66,6 @@ private:
 	SignalNr const     addSignal( TrackNr const, unique_ptr<Signal> );
 	unique_ptr<Signal> removeSignal( SignalId const & );
 
-	vector<Track>   m_tracks                 { };
-	Observable    * m_pStaticModelObservable { nullptr };
-	SignalFactory * m_pSignalFactory         { nullptr };
+	vector<unique_ptr<Track>> m_tracks {};
+	Observable  * m_pStaticModelObservable { nullptr };
 };

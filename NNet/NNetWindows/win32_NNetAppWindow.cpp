@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Windows.h"
 #include <chrono>
+#include <filesystem>
 
 // Model interfaces
 
@@ -54,6 +55,7 @@ using namespace std::literals::chrono_literals;
 using std::wostringstream;
 using std::wstring;
 using std::wcout;
+using std::filesystem::path;
 
 class NNetReadModelResult : public ReadModelResult
 {
@@ -99,7 +101,7 @@ NNetAppWindow::NNetAppWindow( )
 	wcout << L"*** User name:     "       << Util::GetUserName()           << endl;
 	wcout << endl;
 
-	m_preferences.Initialize( & m_sound );
+	m_preferences.Initialize( m_sound, m_modelImport );
 	Neuron::SetSound( & m_sound );
 	NNetWindow::InitClass( & m_atDisplay );
 
@@ -122,22 +124,25 @@ void NNetAppWindow::Start( MessagePump & pump )
 		nullptr
 	);
 
+	SignalFactory::Initialize( m_nmri, m_parameters, m_dynamicModelObservable, m_beaconAnimation );
+
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
-	m_signalFactory  .Initialize( m_modelReaderInterface, m_parameters, m_dynamicModelObservable, m_beaconAnimation );
-	m_monitorData    .Initialize( &m_staticModelObservable, &m_signalFactory );
-	m_model          .Initialize( &m_monitorData, &m_parameters, &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable );
-	m_modelStorage   .Initialize( &m_modelReaderInterface, &m_modelWriterInterface, &m_parameters, &m_unsavedChangesObservable, &m_script, m_pReadModelResult, &m_descWindow );
-	m_modelCommands  .Initialize( &m_modelWriterInterface, &m_parameters, &m_cmdStack, &m_modelStorage, &m_dynamicModelObservable );
-	m_cmdStack       .Initialize( &m_modelWriterInterface, &m_commandStackObservable );
+	m_monitorData    .Initialize( &m_staticModelObservable );
+	m_model          .Initialize( &m_parameters, &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable, &m_unsavedChangesObservable );
+	m_modelImport    .Initialize( &m_nmwi, &m_script, m_pReadModelResult );
+	m_modelExport    .Initialize( &m_nmri );
+	m_modelCommands  .Initialize( &m_nmwi, &m_parameters, &m_cmdStack, &m_dynamicModelObservable );
+	m_cmdStack       .Initialize( &m_nmwi, &m_commandStackObservable );
 	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );
 	m_beaconAnimation.Initialize( &m_beaconObservable );
+	m_appTitle       .Initialize( m_hwndApp, &m_nmri );
 	m_NNetController .Initialize
 	( 
-		& m_modelStorage,
+		& m_modelExport,
 		& m_mainNNetWindow,
 		& m_WinManager,
-		& m_modelReaderInterface,
+		& m_nmri,
 		& m_modelCommands,
 		& m_computeThread,
 		& m_SlowMotionRatio,
@@ -157,12 +162,11 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
 
-	m_computeThread         .Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
-	m_appMenu               .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
-	m_StatusBar             .Start( m_hwndApp );
-	m_descWindow            .Start( m_hwndApp );
-	m_undoRedoMenu          .Start( & m_appMenu );
-	m_unsavedChangesObserver.Start( m_hwndApp, & m_modelStorage );
+	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
+	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
+	m_StatusBar    .Start( m_hwndApp );
+	m_descWindow   .Start( m_hwndApp );
+	m_undoRedoMenu .Start( & m_appMenu );
 	pump.RegisterWindow( m_descWindow.GetWindowHandle(), true );
 
 	m_mainNNetWindow.Start
@@ -171,7 +175,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		false,
 		& m_NNetController,
-		& m_modelReaderInterface,
+		& m_nmri,
 		& m_modelCommands,
 		& m_cursorPosObservable,
 		& m_coordObservable,
@@ -185,7 +189,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		true,
 		& m_NNetController,
-		& m_modelReaderInterface,
+		& m_nmri,
 		& m_beaconAnimation,
 		& m_monitorData
 	);
@@ -194,12 +198,12 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );
 
-	m_modelReaderInterface.Start( & m_model );
-	m_modelWriterInterface.Start( & m_model );
-	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
-	m_parameterDlg        .Start( m_hwndApp, & m_modelCommands, & m_parameters );
-	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow       .Start( m_hwndApp, & m_sound, & m_NNetController,	m_modelReaderInterface, m_parameters, m_monitorData );
+	m_nmri             .Start( & m_model );
+	m_nmwi             .Start( & m_model );
+	m_crsrWindow       .Start( m_hwndApp, & m_mainNNetWindow, & m_nmri );
+	m_parameterDlg     .Start( m_hwndApp, & m_modelCommands, & m_parameters );
+	m_performanceWindow.Start( m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
+	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_parameters, m_monitorData );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
@@ -211,16 +215,17 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false );
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false );
 
-	m_staticModelObservable    .RegisterObserver( & m_modelStorage );
 	m_blinkObservable          .RegisterObserver( & m_mainNNetWindow );
 	m_beaconObservable         .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_monitorWindow );
+	m_staticModelObservable    .RegisterObserver( & m_modelImport );
 	m_staticModelObservable    .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_miniNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_monitorWindow );
 	m_staticModelObservable    .RegisterObserver( & m_performanceWindow );
+	m_staticModelObservable    .RegisterObserver( & m_appTitle );
 	m_cursorPosObservable      .RegisterObserver( & m_crsrWindow );
 	m_performanceObservable    .RegisterObserver( & m_performanceWindow );
 	m_modelTimeObservable      .RegisterObserver( & m_timeDisplay );
@@ -229,7 +234,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_SlowMotionRatio          .RegisterObserver( & m_slowMotionDisplay );
 	m_parameters               .RegisterObserver( & m_parameterDlg );
 	m_parameters               .RegisterObserver( & m_computeThread );
-	m_unsavedChangesObservable .RegisterObserver( & m_unsavedChangesObserver );
+	m_unsavedChangesObservable .RegisterObserver( & m_appTitle );
 	m_soundOnObservable        .RegisterObserver( & m_appMenu );
 	m_commandStackObservable   .RegisterObserver( & m_undoRedoMenu );
 	m_coordObservable          .RegisterObserver( & m_miniNNetWindow );
@@ -257,7 +262,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	Show( true );
 
-	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
+	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( ) )
 		m_modelCommands.ResetModel( );
 
 	m_bStarted = true;
@@ -277,8 +282,8 @@ void NNetAppWindow::Stop()
 	m_performanceWindow   .Stop( );
 	m_parameterDlg        .Stop( );
 	m_StatusBar           .Stop( );
-	m_modelReaderInterface.Stop( );
-	m_modelWriterInterface.Stop( );
+	m_nmri                .Stop( );
+	m_nmwi                .Stop( );
 
 	m_staticModelObservable   .UnregisterAllObservers( );
 	m_blinkObservable         .UnregisterAllObservers( );
@@ -351,7 +356,7 @@ bool NNetAppWindow::UserProc
 void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
-	m_timeDisplay.Start( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
+	m_timeDisplay.Start( & m_StatusBar, & m_nmri, iPartScriptLine );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_simulationControl.Initialize( & m_StatusBar, & m_computeThread );
@@ -402,7 +407,7 @@ void NNetAppWindow::OnClose( )
 	if ( m_bStarted )
 	{
 		m_computeThread.StopComputation( );
-		if ( ! m_modelStorage.AskAndSave( ) )
+		if ( ! AskAndSave( ) )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );
@@ -437,57 +442,63 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		ProcessNNetScript
 		( 
 			& m_script, 
-			& m_modelWriterInterface, 
+			m_nmwi.GetShapes(), 
 			ScriptFile::AskForFileName( L"in", L"Script files", tFileMode::read )
 		);
 		break;
 
 	case IDM_NEW_MODEL:
 		m_computeThread.StopComputation( );
-		if ( m_modelStorage.AskAndSave( ) )
+		if ( AskAndSave( ) )
 		{
 			m_modelCommands.ResetModel( );
 			m_descWindow.ClearDescription( );
+			m_nmwi.SetUnsavedChanges( true );
 			m_mainNNetWindow.Reset();
 			m_mainNNetWindow.CenterModel( );
 		}
 		break;
 
+	case IDM_SAVE_MODEL:
+		if ( SaveModel( ) )
+			m_preferences.WritePreferences( m_nmri.GetModelFilePath() );
+		break;
+
+	case IDM_SAVE_MODEL_AS:
+		m_computeThread.StopComputation( );
+		if ( SaveModelAs( ) )
+			m_preferences.WritePreferences( m_nmri.GetModelFilePath() );
+		break;
+
 	case IDM_OPEN_MODEL:
 	{
 		m_computeThread.StopComputation( );
-		bool bRes { m_modelStorage.AskAndSave( ) };
-		if ( bRes && m_modelStorage.AskModelFile() )
+		bool bRes { AskAndSave( ) };
+		if ( bRes )
 		{
-			m_mainNNetWindow.Reset();
-			m_modelStorage.ReadAsync( L"", true ); // will trigger IDM_READ_MODEL_FINISHED when done
-		}
-	}
-	break;
-
-	case IDM_ADD_MODEL:
-	{
-		m_computeThread.StopComputation( );
-		if ( m_modelStorage.AskModelFile() )
-		{
-			m_mainNNetWindow.Reset();
-			m_modelStorage.Read( L"", false, false ); // will trigger IDM_READ_MODEL_FINISHED when done
-			// do **not** ReadAsync! Will fail if incomplete model is moved.
+			wstring wstrNewFile { AskModelFile() };
+			if ( ! wstrNewFile.empty() )
+			{
+				m_mainNNetWindow.Reset();
+				m_modelImport.Import( wstrNewFile, nullptr, true ); // will trigger IDM_READ_MODEL_FINISHED when done
+			}
 		}
 	}
 	break;
 
 	case IDM_READ_MODEL_FINISHED:
 		{
-			bool bSuccess { static_cast<bool>(lParam) };
+			bool    bSuccess      { static_cast<bool>(lParam) };
+			wstring wstrModelPath { m_nmri.GetModelFilePath() };
 			if ( bSuccess )
 			{
 				m_mainNNetWindow.CenterModel( );  // computation will be started when done
 				m_StatusBar.ClearPart( m_statusMessagePart );
+				m_nmwi.SetUnsavedChanges( false );
 			}
 			else
 			{
-				MessageBox( nullptr, m_modelStorage.GetModelPath().c_str(), L"Error in model file. Using default model.", MB_OK );
+				MessageBox( nullptr, wstrModelPath.c_str(), L"Error in model file. Using default model.", MB_OK );
 				OnCommand( IDM_NEW_MODEL, 0, PP_NULL );
 			}
 		}
@@ -503,4 +514,57 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	}
 
 	return BaseWindow::OnCommand( wParam, lParam, pixPoint );
+}
+
+bool NNetAppWindow::SaveModelAs( )
+{
+	wstring wstrModelPath { m_nmri.GetModelFilePath() };
+	if ( wstrModelPath == L"" )
+	{
+		wstrModelPath = path( ScriptFile::GetPathOfExecutable( ) ).parent_path();
+		wstrModelPath += L"\\std.mod";
+		m_nmwi.SetModelFilePath( wstrModelPath );
+		writeModel( );
+		return true;
+	}
+	else
+	{
+		wstrModelPath = ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::write );
+		bool const bRes = wstrModelPath != L"";
+		if ( bRes )
+		{
+			m_nmwi.SetModelFilePath( wstrModelPath );
+			writeModel( );
+		}
+		return bRes;
+	}
+}
+
+bool NNetAppWindow::SaveModel( )
+{
+	wstring wstrModelPath { m_nmri.GetModelFilePath() };
+	if ( wstrModelPath == L"" )
+	{
+		return SaveModelAs( );
+	}
+	else
+	{
+		writeModel( );
+		return true;
+	}
+}
+
+bool NNetAppWindow::AskAndSave( )
+{
+	if ( m_nmri.AnyUnsavedChanges() )
+	{
+		int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
+		if ( iRes == IDYES )
+			SaveModel( );
+		else if ( iRes == IDNO )
+			return true;
+		else if ( iRes == IDCANCEL )
+			return false;
+	}
+	return true;
 }

@@ -46,21 +46,8 @@ private:
 	TrackNr  const findTrack       ( PIXEL const ) const;
 	TrackNr  const findPos4NewTrack( PIXEL const ) const;
 
-	fMicroSecs const fPIXEL2fMicroSecs( fPIXEL const fPixX ) const
-	{
-		fMicroSecs const usEnd    { m_pMRI->GetSimulationTime( ) };
-		fPIXEL     const fTicks   { m_fPixWinWidth - fPixX };
-		fMicroSecs const usResult { usEnd - m_fMicroSecsPerPixel * fTicks.GetValue() };
-		return usResult;
-	}
-
-	fPIXEL const fMicroSecs2fPIXEL( fMicroSecs const usParam ) const
-	{
-		fMicroSecs const usEnd  { m_pMRI->GetSimulationTime( ) };
-		float      const fTicks { (usEnd - usParam) / m_fMicroSecsPerPixel };
-		fPIXEL     const fPixX  { m_fPixWinWidth - fPIXEL(fTicks) };
-		return fPixX;
-	}
+	fMicroSecs const fPIXEL2fMicroSecs( fPIXEL     const ) const;
+	fPIXEL     const fMicroSecs2fPIXEL( fMicroSecs const ) const;
 
 	fPIXEL const yValue2fPIXEL( float const fYvalue ) const
 	{

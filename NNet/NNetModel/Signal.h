@@ -9,13 +9,14 @@
 #include "Observable.h"
 #include "ObserverInterface.h"
 #include "MoreTypes.h"
-#include "AnimationInterface.h"
 #include "NNetParameters.h"
-#include "NNetModelReaderInterface.h"
 
 using std::vector;
 
 class Signal;
+class DrawContext;
+class AnimationInterface;
+class NNetModelReaderInterface;
 
 using SignalFunc = function<void(Signal const &)>;
 using SignalCrit = function<bool(Signal const &)>;
@@ -34,6 +35,11 @@ public:
     );
 
     virtual ~Signal();
+
+    bool operator==( Signal const & rhs ) const
+    {
+        return m_circle == rhs.m_circle;
+    }
 
     fMicroSecs const GetStartTime( ) const { return m_timeStart; }
     float      const GetDataPoint   ( fMicroSecs const ) const;
@@ -61,19 +67,14 @@ public:
 
 private:
 
-    NNetModelReaderInterface const * m_pMRI                { nullptr };
-    Param                    const * m_pParams             { nullptr };
-    Observable                     * m_pObservable         { nullptr };
-    AnimationInterface             * m_pAnimationInterface { nullptr };
-    MicroMeterCircle                 m_circle              { MicroMeterCircle::NULL_VAL() };
-    fMicroSecs                       m_timeStart           { 0._MicroSecs };
-    vector <float>                   m_data                { };
+    NNetModelReaderInterface const & m_nmri;
+    Param                    const & m_params;
+    Observable                     & m_observable;
+    AnimationInterface             & m_animationInterface;
 
-    void Reset( )
-    {
-        m_data.clear();
-        m_timeStart = m_pMRI->GetSimulationTime( );
-    }
+    MicroMeterCircle m_circle    { MicroMeterCircle::NULL_VAL() };
+    fMicroSecs       m_timeStart { 0._MicroSecs };
+    vector <float>   m_data      { };
 
     int        const time2index( fMicroSecs const ) const;
     fMicroSecs const index2time( int        const ) const;

@@ -8,6 +8,7 @@
 #include "script.h"
 #include "Track.h"
 #include "TrackNr.h"
+#include "SignalId.h"
 
 using std::vector;
 

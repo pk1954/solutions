@@ -12,6 +12,8 @@
 #include "Observable.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
+#include "MonitorData.h"
+#include "ModelDescription.h"
 #include "ShapeErrorHandler.h"
 #include "ShapeList.h"
 #include "InputNeuron.h"
@@ -20,7 +22,6 @@
 #include "Pipe.h"
 
 class EventInterface;
-class MonitorData;
 class Param;
 
 using std::unique_ptr;
@@ -33,10 +34,10 @@ public:
 
 	void Initialize
 	( 
-		MonitorData * const,
 		Param       * const,
 		Observable  * const, 
 		Observable  * const, 
+		Observable  * const,
 		Observable  * const 
 	);
 
@@ -56,8 +57,9 @@ public:
 	fHertz          const   GetPulseRate ( ShapeId const ) const;
 	MicroMeterPoint const   GetShapePos  ( ShapeId const ) const;
 
-	fMicroSecs const GetSimulationTime ( )             const { return m_timeStamp; }
-	size_t     const GetSizeOfShapeList( )             const { return m_Shapes.Size(); }
+	fMicroSecs const GetSimulationTime ( )         const { return m_timeStamp; }
+	size_t     const GetSizeOfShapeList( )         const { return m_Shapes.Size(); }
+	float      const GetParam(tParameter const p)  const { return m_pParam->GetParameterValue(p); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
@@ -65,7 +67,7 @@ public:
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	bool    const IsShapeDefined( ShapeId const id )   const { return m_Shapes.GetAt( id ) == nullptr; }
+	bool    const IsShapeDefined( ShapeId const id )   const { return m_Shapes.IsShapeDefined( id ); }
 
 	// manipulating functions
 
@@ -73,7 +75,6 @@ public:
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	void  SetShapeErrorHandler( ShapeErrorHandler * const );
 	void  SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs );
 	void  ToggleStopOnTrigger( Neuron * );
 	void  RecalcAllShapes( );
@@ -81,9 +82,6 @@ public:
 	float SetParam( tParameter const, float const );
 	void  SelectSubtree( BaseKnot * const, tBoolOp const );
 	void  StaticModelChanged( );
-
-	void SelectAllShapes( tBoolOp const op ) { m_Shapes.SelectAllShapes( op ); }
-	void IncShapeList   ( long    const nr ) { m_Shapes.Resize( m_Shapes.Size() + nr ); }
 
 	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
@@ -112,26 +110,38 @@ public:
 		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
 	}
 
-	void SetInModel( ShapeId const id, UPShape upShape )
-	{
-		m_Shapes.SetShape2Slot( id, move(upShape) );
-	}
-
 	ShapeList const & GetShapes( ) const { return m_Shapes; }
 	ShapeList       & GetShapes( )       { return m_Shapes; }
 
-    MonitorData * GetMonitorData( ) { return m_pMonitorData; }
+	MonitorData const * GetMonitorData( ) const { return & m_monitorData; }
+	MonitorData       * GetMonitorData( )       { return & m_monitorData; }
+
+	wstring const GetModelFilePath() const { return m_wstrModelFilePath; }
+	void          SetModelFilePath( wstring const wstr ) { m_wstrModelFilePath = wstr; }
+
+	void AddDescriptionLine( wstring const wstr ) {	m_description.AddDescriptionLine( wstr ); }
+
+	bool const AnyUnsavedChanges( ) const { return m_bUnsavedChanges; }
+	void SetUnsavedChanges( bool const bState )
+	{
+		m_bUnsavedChanges = bState;
+		m_pUnsavedChangesObservable->NotifyAll( false );
+	}
 
 private:
 
-	ShapeList      m_Shapes                  { };
-	fMicroSecs     m_timeStamp               { 0._MicroSecs };
-	Param        * m_pParam                  { nullptr };
-	Observable   * m_pModelTimeObservable    { nullptr };
-	Observable   * m_pStaticModelObservable  { nullptr };
-	Observable   * m_pDynamicModelObservable { nullptr };
-	MonitorData  * m_pMonitorData            { nullptr };
-	MicroMeterRect m_enclosingRect           { };
+	ShapeList        m_Shapes                    { };
+	fMicroSecs       m_timeStamp                 { 0._MicroSecs };
+	Param          * m_pParam                    { nullptr };
+	Observable     * m_pModelTimeObservable      { nullptr };
+	Observable     * m_pStaticModelObservable    { nullptr };
+	Observable     * m_pDynamicModelObservable   { nullptr };
+	Observable     * m_pUnsavedChangesObservable { nullptr };
+	MicroMeterRect   m_enclosingRect             { };
+	wstring          m_wstrModelFilePath         { L"" };
+	bool             m_bUnsavedChanges           { false }; 
+	ModelDescription m_description;
+	MonitorData      m_monitorData;
 
 	// local functions
 

@@ -45,8 +45,8 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
             m_startKnots.push_back( move(upKnotNew) );       // store new knot for later
         }                                                    // but do not touch m_pBaseKnot
     );  // Knots in m_startKnots have their outgoing pipe set
-    m_idEndKnots  .resize( m_endKnots  .size(), NO_SHAPE );
-    m_idStartKnots.resize( m_startKnots.size(), NO_SHAPE );
+    m_idEndKnots  .resize( m_endKnots  .size() );
+    m_idStartKnots.resize( m_startKnots.size() );
     if ( m_pBaseKnot->IsKnot() )
         m_bDelete = true;
     m_bInitialized = true;

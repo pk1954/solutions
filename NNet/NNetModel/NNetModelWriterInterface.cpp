@@ -39,16 +39,6 @@ Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )
 	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
 }
 
-void NNetModelWriterInterface::IncShapeList( long const lNrOfShapes ) 
-{ 
-	m_pModel->IncShapeList( lNrOfShapes );
-}
-
-void NNetModelWriterInterface::SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
-{	
-	m_pModel->SetShapeErrorHandler( pHandler );
-}
-
 void NNetModelWriterInterface::SelectShape( ShapeId const idShape, tBoolOp const op ) 
 { 
 	GetShapePtr<Shape *>( idShape )->Select( op ); 

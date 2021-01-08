@@ -54,8 +54,9 @@ public:
 	virtual bool IsInRect      ( MicroMeterRect  const & ) const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
 
-	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
-	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
+	virtual void Select( tBoolOp const op )    { ApplyOp( m_bSelected, op ); }
+	virtual void Clear ( )                     { m_mVinputBuffer = 0.0_mV; };
+	virtual void AddOffset(long const lOffset) { m_identifier += lOffset; };
 
 	bool IsSelected( ) const { return m_bSelected; }
 
@@ -96,8 +97,8 @@ protected:
 private:
 
 	ShapeType m_type       { ShapeType::Value::undefined };
-	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
+	ShapeId   m_identifier { };
 };
 
 template <Shape_t T> bool HasType( Shape const & shape ) 

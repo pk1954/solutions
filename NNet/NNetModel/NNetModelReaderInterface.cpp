@@ -33,7 +33,8 @@ size_t const NNetModelReaderInterface::GetNrOfSegments( ShapeId const id ) const
 
 SoundDescr const NNetModelReaderInterface::GetTriggerSound( ShapeId const id ) const
 {
-	return m_pModel->GetShapeConstPtr<Neuron const *>(id)->GetTriggerSound( ); 
+	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) }; 
+	return p ? p->GetTriggerSound( ) : SoundDescr(); 
 }
 
 mV const NNetModelReaderInterface::GetVoltage( ShapeId const id ) const
@@ -77,7 +78,7 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 	if ( idSrc == idDst )
 		return false;
 
-	if ( (idSrc == NO_SHAPE) || (idDst == NO_SHAPE) )
+	if ( IsUndefined(idSrc) || IsUndefined(idDst) )
 		return false;
 
 	if ( isConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect again

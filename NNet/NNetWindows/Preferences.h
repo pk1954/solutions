@@ -8,14 +8,14 @@
 
 using std::wstring;
 
-class NNetModelStorage;
+class NNetModelImport;
 class Sound;
 
 class Preferences
 {
 public:
-	void Initialize( Sound * );
-	bool ReadPreferences( NNetModelStorage * );
+	void Initialize( Sound &, NNetModelImport & );
+	bool ReadPreferences( );
 	bool WritePreferences( wstring const );
 
 private:

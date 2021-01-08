@@ -105,6 +105,22 @@ void MonitorWindow::InsertTrack( TrackNr const trackNr )
 	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 }
 
+fMicroSecs const MonitorWindow::fPIXEL2fMicroSecs( fPIXEL const fPixX ) const
+{
+	fMicroSecs const usEnd    { m_pMRI->GetSimulationTime( ) };
+	fPIXEL     const fTicks   { m_fPixWinWidth - fPixX };
+	fMicroSecs const usResult { usEnd - m_fMicroSecsPerPixel * fTicks.GetValue() };
+	return usResult;
+}
+
+fPIXEL const MonitorWindow::fMicroSecs2fPIXEL( fMicroSecs const usParam ) const
+{
+	fMicroSecs const usEnd  { m_pMRI->GetSimulationTime( ) };
+	float      const fTicks { (usEnd - usParam) / m_fMicroSecsPerPixel };
+	fPIXEL     const fPixX  { m_fPixWinWidth - fPIXEL(fTicks) };
+	return fPixX;
+}
+
 void MonitorWindow::selectSignal( SignalId const & idNew )
 {
 	if ( idNew != m_idSigSelected )

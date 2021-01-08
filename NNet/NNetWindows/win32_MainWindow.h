@@ -66,11 +66,12 @@ private:
 
 	SmoothMoveFp        m_smoothMove            { };       
 	MicroMeterRect      m_rectSelection         { };
-	ShapeId             m_shapeSuperHighlighted { NO_SHAPE };
-	ShapeId             m_shapeHighlighted      { NO_SHAPE };
+	ShapeId             m_shapeSuperHighlighted { };
+	ShapeId             m_shapeHighlighted      { };
 	Observable        * m_pCoordObservable      { nullptr };
 	Observable        * m_pCursorPosObservable  { nullptr };
 	NNetModelCommands * m_pNNetCommands         { nullptr };
+	MonitorData       * m_pMonitorData          { nullptr };
 	bool                m_bFocusMode            { false };
 
 	void setSuperHighlightedShape( MicroMeterPoint const & );

@@ -23,6 +23,5 @@ static bool IsUndefined( ShapeId const id )
 
 static ShapeId ScrReadShapeId( Script & script )
 {
-	ShapeId const id { static_cast<ShapeId>( script.ScrReadLong( ) ) };
-	return id;
+	return ShapeId(script.ScrReadLong());
 }

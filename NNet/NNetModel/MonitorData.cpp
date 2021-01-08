@@ -8,16 +8,18 @@
 #include "MonitorData.h"
 
 using std::distance;
+using std::make_unique;
 using std::move;
 
-void MonitorData::Initialize
-( 
-	Observable      * const pStaticModelObservable,
-	SignalFactory   * const pSignalFactory
-)
+bool MonitorData::operator==( MonitorData const & rhs ) const
+{
+	return (m_tracks                 == rhs.m_tracks) &&
+	       (m_pStaticModelObservable == rhs.m_pStaticModelObservable);
+}
+
+void MonitorData::Initialize( Observable * const pStaticModelObservable )
 {
 	m_pStaticModelObservable = pStaticModelObservable;
-	m_pSignalFactory         = pSignalFactory;
 }
 
 void MonitorData::Reset( )
@@ -38,7 +40,8 @@ bool MonitorData::NoTracks( ) const
 
 void MonitorData::InsertTrack( TrackNr const trackNr )
 {
-	m_tracks.insert( m_tracks.begin() + trackNr.GetValue(), Track() );
+	unique_ptr<Track> track = make_unique<Track>();
+	m_tracks.insert( m_tracks.begin() + trackNr.GetValue(), move(track) );
 	m_pStaticModelObservable->NotifyAll( true );
 }
 
@@ -61,12 +64,15 @@ void MonitorData::DeleteSignal( SignalId const & id )
 	}
 }
 
-void MonitorData::AddSignal( TrackNr const trackNr, MicroMeterCircle const & umCircle )
+void MonitorData::AddSignal
+( 
+	TrackNr          const   trackNr, 
+	MicroMeterCircle const & umCircle 
+)
 {
 	if ( IsValid( trackNr ) )
 	{
-		auto     upSignal { m_pSignalFactory->MakeSignal( umCircle ) };
-		SignalNr signalNr { addSignal( trackNr, move(upSignal) ) };
+		SignalNr signalNr { addSignal( trackNr, move(SignalFactory::MakeSignal(umCircle)) ) };
 		m_pStaticModelObservable->NotifyAll( true );
 	}
 }
@@ -146,8 +152,8 @@ void MonitorData::Apply2AllSignals( SignalFunc const & func ) const
 
 Signal * const  MonitorData::FindSignal( SignalCrit const & crit )
 {
-	for ( Track & track: m_tracks ) 
-		if ( Signal * const pSignal { track.FindSignal( crit ) } )
+	for ( unique_ptr<Track> & upTrack: m_tracks ) 
+		if ( Signal * const pSignal { upTrack->FindSignal( crit ) } )
 			return pSignal;
 	return nullptr;
 }                        
@@ -176,15 +182,15 @@ bool const MonitorData::IsValid( SignalId const & id ) const
 void MonitorData::CheckTracks( ) const
 {
 #ifdef _DEBUG
-	for ( Track const & track: m_tracks ) 
-		track.CheckSignals(); 
+	for ( unique_ptr<Track> const & upTrack: m_tracks ) 
+		upTrack->CheckSignals(); 
 #endif
 }
 
 Track const & MonitorData::getTrack( TrackNr const trackNr ) const
 {
 	assert( IsValid( trackNr ) );
-	return m_tracks[trackNr.GetValue()]; 
+	return *(m_tracks[trackNr.GetValue()]);
 }
 
 Track & MonitorData::getTrack( TrackNr const trackNr ) // calling const version 

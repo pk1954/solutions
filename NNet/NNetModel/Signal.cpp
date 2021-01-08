@@ -4,29 +4,32 @@
 
 #include "stdafx.h"
 #include "DrawContext.h"
+#include "AnimationInterface.h"
+#include "NNetModelReaderInterface.h"
 #include "Signal.h"
 
 Signal::Signal
 ( 
-    NNetModelReaderInterface const & modelReaderInterface,
+    NNetModelReaderInterface const & nmri,
     Param                    const & param,
     Observable                     & observable,
     AnimationInterface             & animationInterface,
     MicroMeterCircle         const & circle
 ) :
-    m_pMRI( & modelReaderInterface ),
-    m_pParams( & param ),
-    m_pObservable( & observable ),
-    m_pAnimationInterface(& animationInterface),
-    m_circle(circle)
+    m_nmri(nmri),
+    m_params(param ),
+    m_observable(observable ),
+    m_animationInterface(animationInterface),
+    m_circle(circle),
+    m_timeStart(nmri.GetSimulationTime())
 {
-    Reset();
-    m_pObservable->RegisterObserver( this );
+    m_data.clear();
+    m_observable.RegisterObserver( this );
 }
 
 Signal::~Signal( )
 {
-    m_pObservable->UnregisterObserver( this );
+    m_observable.UnregisterObserver( this );
 }
 
 float Signal::GetSignalValue( ) const
@@ -34,18 +37,18 @@ float Signal::GetSignalValue( ) const
     float fResult   { 0.0f };
     float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
 
-    m_pMRI->Apply2All<BaseKnot>
-        ( 		
-            [&](BaseKnot const & b) 
-            {  
-                float fDsBaseKnot { DistSquare( b.GetPosition(), m_circle.GetPosition() ) };
-                if ( fDsBaseKnot < fDsBorder )  // is b in circle?
-                {
-                    mV    voltage { b.GetVoltage() };
-                    float fFactor { 1.0f - fDsBaseKnot / fDsBorder };
-                    fResult += voltage.GetValue() * fFactor;
-                }
-            } 
+    m_nmri.Apply2All<BaseKnot>
+    ( 		
+        [&](BaseKnot const & b) 
+        {  
+            float fDsBaseKnot { DistSquare( b.GetPosition(), m_circle.GetPosition() ) };
+            if ( fDsBaseKnot < fDsBorder )  // is b in circle?
+            {
+                mV    voltage { b.GetVoltage() };
+                float fFactor { 1.0f - fDsBaseKnot / fDsBorder };
+                fResult += voltage.GetValue() * fFactor;
+            }
+        } 
     );
 
     return fResult;
@@ -68,15 +71,15 @@ void Signal::Draw( DrawContext const & context ) const
 void Signal::Animate( bool const bOn ) const
 {
     if ( bOn )
-        m_pAnimationInterface->Start( & m_circle );
+        m_animationInterface.Start( & m_circle );
     else
-        m_pAnimationInterface->Stop( );
+        m_animationInterface.Stop( );
 }
 
 int const Signal::time2index( fMicroSecs const usParam ) const
 {
     fMicroSecs const timeTilStart { usParam - m_timeStart };
-    float      const fNrOfPoints  { timeTilStart / m_pParams->GetTimeResolution( ) };
+    float      const fNrOfPoints  { timeTilStart / m_params.GetTimeResolution( ) };
     int              index        { static_cast<int>( roundf( fNrOfPoints ) ) };
     if ( index >= m_data.size() )
         index = Cast2UnsignedInt( m_data.size() - 1 );
@@ -86,7 +89,7 @@ int const Signal::time2index( fMicroSecs const usParam ) const
 fMicroSecs const Signal::index2time( int const index ) const
 {
     float      const fNrOfPoints  { static_cast<float>( index ) };
-    fMicroSecs const timeTilStart { m_pParams->GetTimeResolution( ) * fNrOfPoints };
+    fMicroSecs const timeTilStart { m_params.GetTimeResolution( ) * fNrOfPoints };
     fMicroSecs const usResult     { timeTilStart + m_timeStart };
     return usResult;
 }
@@ -122,11 +125,6 @@ void Signal::Notify( bool const bImmediate )
 void Signal::CheckSignal( ) 
 {
 #ifdef _DEBUG
-    assert( m_pMRI );
-    if ( (unsigned long long)m_pMRI == 0xdddddddddddddddd )
-    {
-        int x = 42;
-    }
     if ( m_circle.IsNull() )
     {
         int x = 42;

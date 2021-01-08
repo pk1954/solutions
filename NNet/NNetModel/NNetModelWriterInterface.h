@@ -28,6 +28,8 @@ public:
 
     void CreateInitialShapes();
 
+    ShapeList & GetShapes() { return m_pModel->GetShapes(); }
+
     NNetModel const & GetModel( )           const { return * m_pModel; }  // TODO: find better solution
     size_t    const   GetSizeOfShapeList( ) const { return m_pModel->GetSizeOfShapeList( ); }
 
@@ -47,9 +49,6 @@ public:
 
     void SelectBeepers();
     void SelectShape( ShapeId const, tBoolOp const );
-    void IncShapeList( long const );
-    void SetShapeErrorHandler( ShapeErrorHandler * const );
-
     void StaticModelChanged( );
 
     template <Shape_t T>
@@ -93,19 +92,9 @@ public:
         m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); 
     }
 
-    void SelectAllShapes( tBoolOp const op ) 
-    { 
-        m_pModel->SelectAllShapes( op ); 
-    }
-
     ShapeId const Push2Model( UPShape up ) 
     { 
         return m_pModel->Push2Model( move(up) ); 
-    }
-
-    void SetInModel( ShapeId const id, UPShape upShape )
-    {
-        m_pModel->SetInModel( id, move(upShape) );
     }
 
     template <Shape_t T>
@@ -131,6 +120,10 @@ public:
     void SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op ) { m_pModel->SelectSubtree( pBaseKnot, op ); }
 
     float SetParam( tParameter const param, float const fNewValue ) { return m_pModel->SetParam( param, fNewValue ); }
+
+    void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
+    void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
+    void  SetUnsavedChanges ( bool const bState )  { m_pModel->SetUnsavedChanges( bState ); }
 
     void ToggleStopOnTrigger( ShapeId const );
 

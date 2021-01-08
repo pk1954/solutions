@@ -198,6 +198,8 @@
     <ClInclude Include="NNetColors.h" />
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetModelCommands.h" />
+    <ClInclude Include="NNetModelExport.h" />
+    <ClInclude Include="NNetModelImport.h" />
     <ClInclude Include="NNetModelReaderInterface.h" />
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="NNetModelWriterInterface.h" />
@@ -238,10 +240,9 @@
       </EnableParallelCodeGeneration>
     </ClCompile>
     <ClCompile Include="NNetModelCommands.cpp" />
+    <ClCompile Include="NNetModelExport.cpp" />
+    <ClCompile Include="NNetModelImport.cpp" />
     <ClCompile Include="NNetModelReaderInterface.cpp" />
-    <ClCompile Include="NNetModelStorage.cpp" />
-    <ClCompile Include="NNetModelStorageRead.cpp" />
-    <ClCompile Include="NNetModelStorageWrite.cpp" />
     <ClCompile Include="NNetModelWriterInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />

@@ -28,7 +28,7 @@ private:
 		auto dstFromSrc = [&](Shape const * pSrc )
 		{ 
 			ShapeId idSrc { pSrc->GetId() };
-			if ( idSrc.IsNotNull() )
+			if ( IsDefined(idSrc) )
 			{
 				SelShapesIndex & ssi { indexList[pSrc->GetId().GetValue()] };
 				if ( ssi.IsNotNull() )
@@ -65,7 +65,7 @@ public:
 			init( nmwi );
 			m_bInitialized = true;
 		}
-		nmwi.SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );  // deselect all
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
 			nmwi.Push2Model( move(m_copies.back()) ); // add copies (which are already selected)
@@ -80,7 +80,7 @@ public:
 		{
 			m_copies.push_back(nmwi.PopFromModel<Shape>( ));
 		}
-		nmwi.SelectAllShapes( tBoolOp::opFalse );
+		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );
 		for ( auto & idShape : m_selectedShapeIds ) 
 		{ 
 			nmwi.SelectShape( idShape, tBoolOp::opTrue ); 

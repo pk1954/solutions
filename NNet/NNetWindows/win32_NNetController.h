@@ -10,7 +10,7 @@ class NNetModelReaderInterface;
 class NNetModelCommands;
 class SlowMotionRatio;
 class MonitorWindow;
-class NNetModelStorage;
+class NNetModelExport;
 class DisplayFunctor;
 class ComputeThread;
 class NNetAppMenu;
@@ -32,7 +32,7 @@ public:
 
 	void Initialize
 	( 
-		NNetModelStorage         * const,
+		NNetModelExport          * const,
 		MainWindow               * const,
 		WinManager               * const,
 		NNetModelReaderInterface * const,
@@ -63,11 +63,11 @@ private:
 
 	HCURSOR                    m_hCrsrWait               { nullptr };
 	Sound                    * m_pSound                  { nullptr };
-	NNetModelStorage         * m_pStorage                { nullptr };
+	NNetModelExport          * m_pModelExport            { nullptr };
 	MainWindow               * m_pMainWindow             { nullptr };
 	WinManager               * m_pWinManager             { nullptr };
 	ComputeThread            * m_pComputeThread          { nullptr };
-	NNetModelReaderInterface * m_pMRI   { nullptr };
+	NNetModelReaderInterface * m_pMRI                    { nullptr };
 	NNetModelCommands        * m_pModelCommands          { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio        { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay       { nullptr };

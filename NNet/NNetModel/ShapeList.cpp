@@ -27,7 +27,7 @@ void ShapeList::checkShape( Shape const & shape ) const
 	}
 }
 
-void ShapeList::SetShapeErrorHandler( ShapeErrorHandler * const p ) 
+void ShapeList::SetErrorHandler( ShapeErrorHandler * const p ) 
 { 
 	m_pShapeErrorHandler = p; 
 }
@@ -77,7 +77,7 @@ bool ShapeList::operator==( ShapeList const & other ) const
 
 Shape * const ShapeList::RemoveShape( ShapeId const id )	
 {
-	assert( IsDefined( id ) );
+	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
 
 	if ( GetAt( id ) )
@@ -88,7 +88,7 @@ Shape * const ShapeList::RemoveShape( ShapeId const id )
 
 void ShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for special situations
 {                                                        // read model from script
-	assert( IsDefined( id ) );                           // or copy model
+	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
 	assert( IsEmptySlot( id ) );
 	assert( upShape );
@@ -99,7 +99,7 @@ void ShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for 
 
 Shape * const ShapeList::ReplaceShape( ShapeId const id, UPShape upT )	
 {
-	assert( IsDefined( id ) );
+	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
 
 	if ( upT )
@@ -155,9 +155,7 @@ void ShapeList::copy( const ShapeList & rhs )
 	for ( auto const & pShapeSrc : rhs.m_list )
 	{
 		if ( pShapeSrc )
-		{
 			SetShape2Slot( pShapeSrc->GetId(), ShallowCopy( * pShapeSrc ) );
-		}
 	}
 
 	for ( auto const & pShapeSrc : rhs.m_list )
@@ -198,7 +196,7 @@ void ShapeList::Dump( ) const
 	Apply2All( [&]( Shape const & shape ) { shape.Dump( ); } );
 }
 
-MicroMeterRect const ShapeList::ComputeEnclosingRect( ) const
+MicroMeterRect const ShapeList::EnclosingRect( ) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( auto const & pShape : m_list )
@@ -218,7 +216,7 @@ ShapeId const ShapeList::FindShapeAt
 		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
 			return pShape->GetId();
 	};
-	return NO_SHAPE;
+	return ShapeId();
 }
 
 bool const ShapeList::AnyShapesSelected( ) const
@@ -267,7 +265,13 @@ void ShapeList::SelectAllShapes( tBoolOp const op )
 	Apply2All( [&](Shape & s) { s.Select( op ); } ); 
 }
 
-void ShapeList::Append( ShapeList const &  list2Append )
+void ShapeList::Append( ShapeList & list2Append )
 {
-//	XXXXXXXXX
+	long offset { Size() };
+	for ( auto & upShape : list2Append.m_list )
+	{
+		upShape->AddOffset(offset);
+		m_list.push_back( move(upShape) );
+	}
+	assert( list2Append.Size() == 0 );
 }

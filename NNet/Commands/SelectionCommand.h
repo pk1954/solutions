@@ -33,7 +33,8 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
-		nmwi.SelectAllShapes( tBoolOp::opFalse );
+		ShapeList & shapeList { nmwi.GetShapes() };
+		shapeList.SelectAllShapes( tBoolOp::opFalse );
 		for (Shape * const pShape : m_selectedShapes)    
 		{ 
 			if ( pShape )

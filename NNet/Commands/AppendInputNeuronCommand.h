@@ -42,6 +42,6 @@ public:
 private:
 	unique_ptr<InputNeuron> m_upInputNeuron { nullptr };
 	unique_ptr<Knot>        m_upKnot        { nullptr };
-	ShapeId                 m_idKnot        { NO_SHAPE };
 	bool                    m_bInitialized  { false };
+	ShapeId                 m_idKnot        { };
 };

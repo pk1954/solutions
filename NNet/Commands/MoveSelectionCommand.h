@@ -31,6 +31,6 @@ public:
 
 	virtual ShapeId const GetMovedShape( ) const
 	{
-		return NO_SHAPE;
+		return ShapeId();
 	}
 };

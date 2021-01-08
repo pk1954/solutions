@@ -10,10 +10,12 @@
 #include "CommandStack.h"
 #include "MonitorData.h"
 #include "SignalFactory.h"
+#include "ModelDescription.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetModelStorage.h"
+#include "NNetModelImport.h"
+#include "NNetModelExport.h"
 #include "NNetWrappers.h"
 #include "NNetError.h"
 
@@ -34,9 +36,7 @@ public:
 class ConsReadModelResult : public ReadModelResult
 {
 public:
-	ConsReadModelResult( NNetModelStorage const * const pStorage )
-		: m_pStorage( pStorage )
-	{ }
+	ConsReadModelResult( ) { }
 
 	virtual void Reaction( tResult const res, wstring const name )
 	{
@@ -61,7 +61,6 @@ public:
 	};
 
 private:
-	NNetModelStorage const * const m_pStorage;
 };
 
 int main( int argc, char * argv [ ], char * envp [ ] )
@@ -69,10 +68,11 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
 
-	NNetModelReaderInterface m_modelReaderInterface     { };
-	NNetModelWriterInterface m_modelWriterInterface     { };
+	NNetModelReaderInterface m_nmri                     { };
+	NNetModelWriterInterface m_nmwi                     { };
 	NNetModelCommands        m_modelCommands            { };
-	NNetModelStorage         m_modelStorage             { };
+	NNetModelImport          m_modelImport              { };
+	NNetModelExport          m_modelExport              { };
 	NNetModel                m_model                    { };
 	Param                    m_parameters               { };
 	Observable               m_modelTimeObservable      { };
@@ -82,17 +82,16 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	Script                   m_script                   { };
 	CommandStack             m_cmdStack                 { };
 	MonitorData              m_monitorData              { };
-	SignalFactory            m_signalFactory            { };
 	Animation                m_animationDummy           { };
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelCommands );
 
-	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
-	m_signalFactory.Initialize
+	m_pReadModelResult = new ConsReadModelResult( );
+	SignalFactory::Initialize
 	( 
-		m_modelReaderInterface, 
+		m_nmri,
 		m_parameters, 
 		m_dynamicModelObservable,
 		m_animationDummy
@@ -100,31 +99,27 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	);
 	m_modelCommands.Initialize
 	( 
-		& m_modelWriterInterface, 
+		& m_nmwi, 
 		& m_parameters, 
 		& m_cmdStack, 
-		& m_modelStorage, 
 		& m_dynamicModelObservable
 	);
 	m_model.Initialize
 	( 
-		& m_monitorData, 
 		& m_parameters, 
 		& m_staticModelObservable, 
 		& m_dynamicModelObservable, 
-		& m_modelTimeObservable 
+		& m_modelTimeObservable,
+		& m_unsavedChangesObservable
 	);
-	m_modelStorage.Initialize
-	( 
-		& m_modelReaderInterface, 
-		& m_modelWriterInterface, 
-		& m_parameters, 
-		& m_unsavedChangesObservable,
-		& m_script,
-		m_pReadModelResult,
-		nullptr  // TODO
+	m_modelImport.Initialize
+	(
+		& m_nmwi,
+		nullptr,
+		m_pReadModelResult
 	);
-	m_modelWriterInterface.Start( & m_model );
+	m_modelExport.Initialize( & m_nmri );
+	m_nmwi.Start( & m_model );
 
 	wstring wstrInputFile{} ; // = L"D:\\SW-projects\\Solutions\\NNet\\Tests\\test_1.in";
 
@@ -138,9 +133,9 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
 	}
 
-	m_modelStorage.Read( L"std.mod", false, true );
+	m_modelImport.Import( L"std.mod", nullptr, false );
 
-	if ( ProcessNNetScript( & m_script, & m_modelWriterInterface, wstrInputFile ) )
+	if ( ProcessNNetScript( & m_script, m_nmwi.GetShapes(), wstrInputFile ) )
 		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";

@@ -39,10 +39,14 @@ public:
 	bool            const   AnyShapesSelected( )               const { return m_pModel->GetShapes().AnyShapesSelected( ); }
 	bool            const   IsValidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
 	MicroMeterPoint const   GetShapePos   ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
-	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape  ( id ); }
+	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape               (id); }
 	size_t          const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }
 	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
 	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
+	MonitorData     const * GetMonitorData( )                  const { return m_pModel->GetMonitorData    ( ); }
+	float           const   GetParam( tParameter const param ) const { return m_pModel->GetParam( param ); }
+	wstring         const   GetModelFilePath()                 const { return m_pModel->GetModelFilePath(); }
+	bool            const   AnyUnsavedChanges( )               const { return m_pModel->AnyUnsavedChanges(); }
 
 	MicroMeterPoint const OrthoVector( ShapeId const ) const;
 

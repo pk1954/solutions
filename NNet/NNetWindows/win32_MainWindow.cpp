@@ -63,7 +63,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
-	else if ( IsUndefined( m_shapeHighlighted ) )  // no shape highlighted, cursor on background
+	else if ( IsUndefined(m_shapeHighlighted) )  // no shape highlighted, cursor on background
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_NEURON,         L"New neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
@@ -127,7 +127,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		assert( false );
 	}
 
-	if ( IsDefined( m_shapeHighlighted ) )
+	if ( IsDefined(m_shapeHighlighted) )
 	{
 		if ( m_pMRI->IsSelected( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_SHAPE, L"Deselect" );
@@ -231,7 +231,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			m_shapeSuperHighlighted = NO_SHAPE;
-			if ( IsDefined( m_shapeHighlighted ) ) //-V1051
+			if ( IsDefined(m_shapeHighlighted) ) //-V1051
 			{
 				setSuperHighlightedShape( m_pMRI->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
@@ -396,13 +396,13 @@ void MainWindow::doPaint( )
 	if ( context.GetPixelSize() <= 2.5_MicroMeter )
 		DrawNeuronTextInRect( pixRect );
 
-	if ( IsDefined( m_shapeSuperHighlighted ) ) // draw super highlighted shape again to be sure that it is visible
+	if ( IsDefined(m_shapeSuperHighlighted) ) // draw super highlighted shape again to be sure that it is visible
 	{
 		m_pMRI->DrawExterior( m_shapeSuperHighlighted, context, tHighlightType::superHighlighted );
 		m_pMRI->DrawInterior( m_shapeSuperHighlighted, context );
 	}
 
-	if ( IsDefined( m_shapeHighlighted ) )  // draw highlighted shape again to be sure that it is in foreground
+	if ( IsDefined(m_shapeHighlighted) )  // draw highlighted shape again to be sure that it is in foreground
 	{
 		m_pMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pMRI->DrawInterior( m_shapeHighlighted, context );

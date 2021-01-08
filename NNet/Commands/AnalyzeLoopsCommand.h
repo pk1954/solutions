@@ -14,7 +14,7 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.SelectAllShapes( tBoolOp::opFalse );
+		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );
 		if ( ModelAnalyzer::FindLoop( nmwi ) )
 			ModelAnalyzer::SelectLoopShapes( nmwi );
 	}

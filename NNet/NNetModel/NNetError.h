@@ -8,7 +8,7 @@
 #include "script.h"
 #include "errhndl.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetModel.h"
+#include "ShapeList.h"
 
 using std::to_wstring;
 using std::wcout;
@@ -21,31 +21,31 @@ struct ShapeException: public exception
 class NNetErrorHandler : public ShapeErrorHandler
 {
 public:
-    NNetErrorHandler( Script * const pScript, NNetModel const * const pModel )
+    NNetErrorHandler( Script * const pScript, ShapeList const * const pList )
         : m_pScript( pScript ),
-          m_pModel( pModel )
+          m_pList( pList )
     {}
 
     static void CheckShapeId
     ( 
         Script          & script, 
-        NNetModel const & model,
+        ShapeList const & list,
         ShapeId   const   id 
     )
     {        
         Scanner & scanner    { script.GetScanner() };
         wstring   strShapeId { to_wstring( id.GetValue() ) };
-        if ( IsUndefined( id ) )
+        if ( IsUndefined(id) )
         {
             scanner.SetExpectedToken( L"ShapeId != NO_SHAPE" );
             throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid shape id: " ) + strShapeId );
         }
-        else if ( ! model.GetShapes().IsValidShapeId( id ) )
+        else if ( ! list.IsValidShapeId( id ) )
         {
-            scanner.SetExpectedToken( L"id < " + to_wstring( model.GetSizeOfShapeList() ) );
+            scanner.SetExpectedToken( L"id < " + to_wstring( list.Size() ) );
             throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid shape id: " ) + strShapeId );
         }
-        else if ( model.IsShapeDefined( id ) )
+        else if ( list.IsShapeDefined( id ) )
         {
             scanner.SetExpectedToken( L"Defined ShapeId" );
             throw ScriptErrorHandler::ScriptException( 999, wstring( L"Shape is not defined: " ) + strShapeId );
@@ -54,27 +54,27 @@ public:
 
     virtual void operator()( ShapeId const id ) 
     {
-        CheckShapeId( * m_pScript, * m_pModel, id );
+        CheckShapeId( * m_pScript, * m_pList, id );
         throw ShapeException();
     }
 
 private:
     Script          * const m_pScript;
-    NNetModel const * const m_pModel;
+    ShapeList const * const m_pList;
 };
 
 inline bool ProcessNNetScript
 ( 
-    Script                   * pScript,
-    NNetModelWriterInterface * pModelInterface,
-    wstring            const & wstrPath
+    Script        * pScript,
+    ShapeList     & shapeList,
+    wstring const   wstrPath
 ) 
 {
     bool bSuccess { false };
     if ( ! wstrPath.empty( ) )
     {
-        NNetErrorHandler errHndl { pScript, & pModelInterface->GetModel() };
-        pModelInterface->SetShapeErrorHandler( & errHndl );
+        NNetErrorHandler errHndl { pScript, & shapeList };
+        shapeList.SetErrorHandler( & errHndl );
         try
         {
             wcout << L"*** Processing script file " << wstrPath << endl;
@@ -84,7 +84,7 @@ inline bool ProcessNNetScript
         { 
             return false;
         }
-        pModelInterface->SetShapeErrorHandler( nullptr );
+        shapeList.SetErrorHandler( nullptr );
     }
     return bSuccess;
 }

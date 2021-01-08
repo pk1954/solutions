@@ -9,7 +9,6 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
-#include "MonitorData.h"
 #include "ShapeType.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -24,30 +23,33 @@ using std::endl;
 bool NNetModel::operator==( NNetModel const & rhs ) const
 {
 	return
-	(m_Shapes                  == rhs.m_Shapes                  ) &&
-	(m_timeStamp               == rhs.m_timeStamp               ) &&
-	(m_pParam                  == rhs.m_pParam                  ) &&
-	(m_pModelTimeObservable    == rhs.m_pModelTimeObservable    ) &&
-	(m_pStaticModelObservable  == rhs.m_pStaticModelObservable  ) &&
-	(m_pDynamicModelObservable == rhs.m_pDynamicModelObservable ) &&
-	(m_pMonitorData            == rhs.m_pMonitorData            ) &&
-	(m_enclosingRect           == rhs.m_enclosingRect           );
+	(m_Shapes                    == rhs.m_Shapes                    ) &&
+	(m_timeStamp                 == rhs.m_timeStamp                 ) &&
+	(m_pParam                    == rhs.m_pParam                    ) &&
+	(m_pModelTimeObservable      == rhs.m_pModelTimeObservable      ) &&
+	(m_pStaticModelObservable    == rhs.m_pStaticModelObservable    ) &&
+	(m_pDynamicModelObservable   == rhs.m_pDynamicModelObservable   ) &&
+    (m_pUnsavedChangesObservable == rhs.m_pUnsavedChangesObservable ) &&
+//	(m_monitorData               == rhs.m_monitorData               ) &&
+	(m_enclosingRect             == rhs.m_enclosingRect             ) &&
+	(m_wstrModelFilePath         == rhs.m_wstrModelFilePath         ) &&
+	(m_description               == rhs.m_description               );
 }
 
 void NNetModel::Initialize
 (
-	MonitorData * const pMonitorData,
-	Param       * const pParam, 
-	Observable  * const pStaticModelObservable,
-	Observable  * const pDynamicModelObservable,
-	Observable  * const pModelTimeObservable
+	Param      * const pParam, 
+	Observable * const pStaticModelObservable,
+	Observable * const pDynamicModelObservable,
+	Observable * const pModelTimeObservable,
+	Observable * const pUnsavedChangesObservable
 )
 {				
-	m_pMonitorData            = pMonitorData;
-	m_pParam                  = pParam;
-	m_pStaticModelObservable  = pStaticModelObservable;
-    m_pDynamicModelObservable = pDynamicModelObservable;
-	m_pModelTimeObservable    = pModelTimeObservable;
+	m_pParam                    = pParam;
+	m_pStaticModelObservable    = pStaticModelObservable;
+    m_pDynamicModelObservable   = pDynamicModelObservable;
+	m_pModelTimeObservable      = pModelTimeObservable;
+	m_pUnsavedChangesObservable = pUnsavedChangesObservable;
 	Shape::SetParam( pParam );
 }                     
 
@@ -69,11 +71,6 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 	return m_Shapes.GetAt( id );
 }
 
-void NNetModel::SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
-{	
-	m_Shapes.SetShapeErrorHandler( pHandler );
-}
-
 void NNetModel::SetSimulationTime( fMicroSecs const newVal )	
 { 
 	m_timeStamp = newVal; 
@@ -83,7 +80,7 @@ void NNetModel::SetSimulationTime( fMicroSecs const newVal )
 void NNetModel::StaticModelChanged( )
 { 
 	m_pStaticModelObservable->NotifyAll( false );
-	m_enclosingRect = m_Shapes.ComputeEnclosingRect( );
+	m_enclosingRect = m_Shapes.EnclosingRect( );
 }
 
 void NNetModel::RecalcAllShapes( ) 
@@ -138,8 +135,9 @@ bool NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
+	m_wstrModelFilePath = L""; 
 	m_Shapes.Clear();
-	m_pMonitorData->Reset();
+	m_monitorData.Reset();
 	Knot       ::ResetCounter();
 	Neuron     ::ResetCounter();
 	InputNeuron::ResetCounter();

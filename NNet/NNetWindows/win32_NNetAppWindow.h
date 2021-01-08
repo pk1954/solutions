@@ -11,18 +11,18 @@
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
-#include "NNetModelStorage.h"
+#include "NNetModelImport.h"
+#include "NNetModelExport.h"
 #include "CommandStack.h"
 #include "DisplayFunctor.h"
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
 #include "BeaconAnimation.h"
-#include "UnsavedChangesObserver.h"
 #include "MonitorData.h"
-#include "SignalFactory.h"
 #include "win32_event.h"
 #include "win32_sound.h"
+#include "win32_appTitle.h"
 #include "win32_actionTimer.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
@@ -96,6 +96,31 @@ private:
 	void configureStatusBar( );
 	void adjustChildWindows( );
 
+	bool SaveModelAs( );
+	bool SaveModel( );
+	bool AskAndSave( );
+
+	void writeModel( )
+	{
+		m_modelExport.WriteModel( );
+		m_nmwi.SetUnsavedChanges( false );
+	}
+
+	wstring AskModelFile( )
+	{
+		return ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::read );
+	}
+
+	void setAppTitle( )
+	{
+		Util::SetApplicationTitle
+		( 
+			m_hwndApp, 
+			IDS_APP_TITLE, 
+			m_nmri.GetModelFilePath() + (m_nmri.AnyUnsavedChanges() ? L" * " : L"") 
+		);
+	}
+
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 
 	HWND                      m_hwndConsole              { nullptr };
@@ -106,6 +131,7 @@ private:
 	WinManager                m_WinManager               { };
 	StatusBar                 m_StatusBar                { };
 	Script                    m_script                   { };
+	AppTitle                  m_appTitle                 { };
 	NNetAppMenu               m_appMenu                  { };
 	ActionTimer               m_atComputation            { };
 	ActionTimer               m_atDisplay                { };
@@ -123,8 +149,8 @@ private:
 	Observable                m_unsavedChangesObservable { };
 	Observable                m_commandStackObservable   { };
 	Observable                m_coordObservable          { };
-	NNetModelReaderInterface  m_modelReaderInterface     { };
-	NNetModelWriterInterface  m_modelWriterInterface     { };
+	NNetModelReaderInterface  m_nmri                     { };
+	NNetModelWriterInterface  m_nmwi                     { };
 	NNetModelCommands         m_modelCommands            { };
 	ComputeThread             m_computeThread            { };
 	DescriptionWindow         m_descWindow               { };
@@ -135,7 +161,8 @@ private:
 	MonitorWindow             m_monitorWindow            { };
 	ParameterDialog           m_parameterDlg             { };
 	Param                     m_parameters               { };
-	NNetModelStorage          m_modelStorage             { };
+	NNetModelImport           m_modelImport              { };
+	NNetModelExport           m_modelExport              { };
 	StatusBarDisplayFunctor   m_statusBarDispFunctor     { };
 	NNetModel                 m_model                    { };
 	NNetColors                m_NNetColors               { };
@@ -146,11 +173,9 @@ private:
 	Preferences               m_preferences              { };
 	CommandStack              m_cmdStack                 { };
 	UndoRedoMenu              m_undoRedoMenu             { };
-	UnsavedChangesObserver    m_unsavedChangesObserver   { };
 	BeaconAnimation           m_beaconAnimation          { };
 	ScriptFile                m_scriptFile               { };
 	MonitorData               m_monitorData              { };
-	SignalFactory             m_signalFactory            { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

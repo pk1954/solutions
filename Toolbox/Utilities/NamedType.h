@@ -18,8 +18,6 @@ class NamedType
 public:
     NamedType( ) : m_value(0) {}
 		
-//    constexpr NamedType( NamedType const & value ) : m_value(value.GetValue()) {}
-
     constexpr explicit NamedType( BASE_TYPE const value ) : m_value(value) {}
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
@@ -41,11 +39,15 @@ public:
 	bool IsNegative   ( ) const { return m_value <  BASE_TYPE(0); };
 	bool IsNotNegative( ) const { return m_value >= BASE_TYPE(0); };
 
-    NamedType& operator+= (NamedType const other) { m_value += other.GetValue(); return * this; }
-    NamedType& operator-= (NamedType const other) { m_value -= other.GetValue(); return * this; }
-    NamedType& operator%= (NamedType const other) { m_value %= other.GetValue(); return * this; }
+	NamedType& operator+= (NamedType const other) { m_value += other.GetValue(); return * this; }
+	NamedType& operator-= (NamedType const other) { m_value -= other.GetValue(); return * this; }
+	NamedType& operator%= (NamedType const other) { m_value %= other.GetValue(); return * this; }
 
-    NamedType& operator*= (BASE_TYPE const i) { m_value *= i; return * this; }
+	NamedType& operator+= (BASE_TYPE const other) { m_value += other; return * this; }
+	NamedType& operator-= (BASE_TYPE const other) { m_value -= other; return * this; }
+	NamedType& operator%= (BASE_TYPE const other) { m_value %= other; return * this; }
+
+	NamedType& operator*= (BASE_TYPE const i) { m_value *= i; return * this; }
 	NamedType& operator/= (BASE_TYPE const i) { m_value /= i; return * this; }
 
 	NamedType  operator- () const { NamedType res { -m_value }; return res; }

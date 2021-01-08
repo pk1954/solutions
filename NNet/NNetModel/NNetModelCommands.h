@@ -14,7 +14,7 @@
 class Param;
 class Observable;
 class CommandStack;
-class NNetModelStorage;
+class NNetModelImport;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 
@@ -32,12 +32,12 @@ public:
         NNetModelWriterInterface * const,
         Param                    * const,
         CommandStack             * const,
-        NNetModelStorage         * const,
         Observable               * const
     );
 
     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void AddModel            ( );
     void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
     void AnalyzeAnomalies    ( );
@@ -56,7 +56,7 @@ public:
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );
     void NewInputNeuron      ( MicroMeterPoint const & );
     void NewNeuron           ( MicroMeterPoint const & );
-    void ReadModel           ( bool const, bool const, wstring const );
+    void ReadModel           ( wstring const, bool const, bool const );
     void ResetModel          ( );
     void SelectAll           ( tBoolOp const );
     void SelectAllBeepers    ( );
@@ -80,7 +80,7 @@ private:
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
     NNetModelWriterInterface * m_pMWI                    { nullptr };
-    NNetModelStorage         * m_pStorage                { nullptr };
+    NNetModelImport          * m_pModelImport            { nullptr };
     Param                    * m_pParam                  { nullptr };
     Observable               * m_pDynamicModelObservable { nullptr };
 };
