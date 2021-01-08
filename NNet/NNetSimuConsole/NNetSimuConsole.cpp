@@ -74,7 +74,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	NNetModelImport          m_modelImport              { };
 	NNetModelExport          m_modelExport              { };
 	NNetModel                m_model                    { };
-	Param                    m_parameters               { };
 	Observable               m_modelTimeObservable      { };
 	Observable               m_staticModelObservable    { };
 	Observable               m_dynamicModelObservable   { };
@@ -92,7 +91,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	SignalFactory::Initialize
 	( 
 		m_nmri,
-		m_parameters, 
 		m_dynamicModelObservable,
 		m_animationDummy
 		
@@ -100,18 +98,17 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	m_modelCommands.Initialize
 	( 
 		& m_nmwi, 
-		& m_parameters, 
 		& m_cmdStack, 
 		& m_dynamicModelObservable
 	);
 	m_model.Initialize
 	( 
-		& m_parameters, 
 		& m_staticModelObservable, 
 		& m_dynamicModelObservable, 
 		& m_modelTimeObservable,
 		& m_unsavedChangesObservable
 	);
+	Shape::SetParam( m_model.GetParams() );
 	m_modelImport.Initialize
 	(
 		& m_nmwi,

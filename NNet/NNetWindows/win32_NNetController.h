@@ -20,7 +20,6 @@ class WinManager;
 class Preferences;
 class CommandStack;
 class Signal;
-class Param;
 class Sound;
 
 using std::wstring;
@@ -44,7 +43,6 @@ public:
 		Preferences              * const,
 		CommandStack             * const,
 		MonitorWindow            * const,
-		Param                    * const,
 		Observable               * const
 	);
 
@@ -74,6 +72,5 @@ private:
 	Preferences              * m_pPreferences            { nullptr };
 	CommandStack             * m_pCommandStack           { nullptr };
 	MonitorWindow            * m_pMonitorWindow          { nullptr };
-	Param                    * m_pParam                  { nullptr };
 	Observable               * m_pDynamicModelObservable { nullptr };
 };				          

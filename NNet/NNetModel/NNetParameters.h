@@ -14,6 +14,8 @@ using namespace std::chrono;
 class Param : public Observable
 {
 public:
+	bool operator==( Param const & rhs ) const;
+
 	fMicroSecs const GetTimeResolution( ) const { return m_usResolution; }
 
 	float const GetParameterValue( tParameter const ) const;

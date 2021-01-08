@@ -5,6 +5,17 @@
 #include "stdafx.h"
 #include "NNetParameters.h"
 
+bool Param::operator==( Param const & rhs ) const
+{
+	return
+		(m_threshold     == rhs.m_threshold    ) && 
+		(m_peakVoltage   == rhs.m_peakVoltage  ) &&
+		(m_pulseWidth    == rhs.m_pulseWidth   ) &&
+		(m_refractPeriod == rhs.m_refractPeriod) &&
+		(m_pulseSpeed    == rhs.m_pulseSpeed   ) &&
+		(m_usResolution  == rhs.m_usResolution );
+}
+
 float const Param::GetParameterValue( tParameter const param ) const
 {
 	switch ( param )

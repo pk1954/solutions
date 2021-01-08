@@ -8,7 +8,6 @@
 #include "win32_hiResTimer.h"
 #include "win32_thread.h"
 
-class Param;
 class NNetModel;
 class Observable;
 class SlowMotionRatio;
@@ -20,7 +19,6 @@ public:
 	void Start
 	(
 		NNetModel       * const,
-		Param           * const,
 		SlowMotionRatio * const,
 		Observable      * const,
 		Observable      * const
@@ -45,7 +43,6 @@ public:
 private:
 
 	NNetModel       * m_pModel                 { nullptr };
-	Param           * m_pParam                 { nullptr };
 	SlowMotionRatio * m_pSlowMotionRatio       { nullptr };
 	Observable      * m_pRunObservable         { nullptr };
 	Observable      * m_pPerformanceObservable { nullptr };

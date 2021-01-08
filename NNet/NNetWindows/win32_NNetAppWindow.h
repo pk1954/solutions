@@ -160,7 +160,6 @@ private:
 	MiniWindow                m_miniNNetWindow           { };
 	MonitorWindow             m_monitorWindow            { };
 	ParameterDialog           m_parameterDlg             { };
-	Param                     m_parameters               { };
 	NNetModelImport           m_modelImport              { };
 	NNetModelExport           m_modelExport              { };
 	StatusBarDisplayFunctor   m_statusBarDispFunctor     { };

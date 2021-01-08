@@ -13,7 +13,6 @@
 #include "win32_baseWindow.h"
 #include "win32_NNetController.h"
 
-class Param;
 class BeaconAnimation;
 class NNetModelReaderInterface;
 
@@ -27,7 +26,6 @@ public:
 		Sound                  * const,
 		NNetController         * const,
 		NNetModelReaderInterface const &, 
-		Param                    const &,
 		MonitorData                    &
 	);
 
@@ -98,7 +96,6 @@ private:
 
 	Sound                          * m_pSound           { nullptr };
 	NNetController                 * m_pController      { nullptr };
-	Param                    const * m_pParams          { nullptr };
 	NNetModelReaderInterface const * m_pMRI             { nullptr };
 	MonitorData                    * m_pMonitorData     { nullptr };  
 

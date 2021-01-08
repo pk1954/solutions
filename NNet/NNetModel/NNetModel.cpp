@@ -7,7 +7,6 @@
 #include <vector>
 #include <unordered_map>
 #include "MoreTypes.h"
-#include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "ShapeType.h"
 #include "Knot.h"
@@ -25,32 +24,29 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	return
 	(m_Shapes                    == rhs.m_Shapes                    ) &&
 	(m_timeStamp                 == rhs.m_timeStamp                 ) &&
-	(m_pParam                    == rhs.m_pParam                    ) &&
 	(m_pModelTimeObservable      == rhs.m_pModelTimeObservable      ) &&
 	(m_pStaticModelObservable    == rhs.m_pStaticModelObservable    ) &&
 	(m_pDynamicModelObservable   == rhs.m_pDynamicModelObservable   ) &&
     (m_pUnsavedChangesObservable == rhs.m_pUnsavedChangesObservable ) &&
-//	(m_monitorData               == rhs.m_monitorData               ) &&
 	(m_enclosingRect             == rhs.m_enclosingRect             ) &&
 	(m_wstrModelFilePath         == rhs.m_wstrModelFilePath         ) &&
-	(m_description               == rhs.m_description               );
+	(m_description               == rhs.m_description               ) &&
+	(m_monitorData               == rhs.m_monitorData               ) &&
+	(m_param                     == rhs.m_param                     );
 }
 
 void NNetModel::Initialize
 (
-	Param      * const pParam, 
 	Observable * const pStaticModelObservable,
 	Observable * const pDynamicModelObservable,
 	Observable * const pModelTimeObservable,
 	Observable * const pUnsavedChangesObservable
 )
 {				
-	m_pParam                    = pParam;
 	m_pStaticModelObservable    = pStaticModelObservable;
     m_pDynamicModelObservable   = pDynamicModelObservable;
 	m_pModelTimeObservable      = pModelTimeObservable;
 	m_pUnsavedChangesObservable = pUnsavedChangesObservable;
-	Shape::SetParam( pParam );
 }                     
 
 void NNetModel::CheckModel( ) const
@@ -109,8 +105,8 @@ float NNetModel::SetParam
 	float      const fNewValue 
 )
 {
-	float fOldValue { m_pParam->GetParameterValue( param ) };
-	m_pParam->SetParameterValue( param, fNewValue );
+	float fOldValue { m_param.GetParameterValue( param ) };
+	m_param.SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
 	StaticModelChanged( );
 	return fOldValue;

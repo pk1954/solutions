@@ -35,7 +35,7 @@ void NNetController::Initialize
     NNetModelExport          * const pModelExport,
     MainWindow               * const pMainWindow,
     WinManager               * const pWinManager,
-    NNetModelReaderInterface * const pModelReaderInterface,
+    NNetModelReaderInterface * const pMRI,
     NNetModelCommands        * const pModelCommands,
     ComputeThread            * const pComputeThread,
     SlowMotionRatio          * const pSlowMotionRatio,
@@ -44,14 +44,13 @@ void NNetController::Initialize
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
     MonitorWindow            * const pMonitorWindow,
-    Param                    * const pParam,
     Observable               * const pDynamicModelObservable
 ) 
 {
     m_pModelExport            = pModelExport;
     m_pMainWindow             = pMainWindow;
     m_pWinManager             = pWinManager;
-    m_pMRI                    = pModelReaderInterface;
+    m_pMRI                    = pMRI;
     m_pModelCommands          = pModelCommands;
     m_pSlowMotionRatio        = pSlowMotionRatio;
     m_pComputeThread          = pComputeThread;
@@ -60,7 +59,6 @@ void NNetController::Initialize
     m_pPreferences            = pPreferences;
     m_pCommandStack           = pCommandStack;
     m_pMonitorWindow          = pMonitorWindow;
-    m_pParam                  = pParam;
     m_pDynamicModelObservable = pDynamicModelObservable;
     m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
 }

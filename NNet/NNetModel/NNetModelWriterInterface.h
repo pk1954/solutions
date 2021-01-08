@@ -29,6 +29,7 @@ public:
     void CreateInitialShapes();
 
     ShapeList & GetShapes() { return m_pModel->GetShapes(); }
+    Param     & GetParams() { return m_pModel->GetParams(); }
 
     NNetModel const & GetModel( )           const { return * m_pModel; }  // TODO: find better solution
     size_t    const   GetSizeOfShapeList( ) const { return m_pModel->GetSizeOfShapeList( ); }
@@ -83,7 +84,7 @@ public:
         Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
     }
 
-    MonitorData * GetMonitorData( ) { return m_pModel->GetMonitorData(); }
+    MonitorData & GetMonitorData( ) { return m_pModel->GetMonitorData(); }
 
     void CheckModel( ) { m_pModel->CheckModel(); }
     void ResetModel( ) { m_pModel->ResetModel(); }

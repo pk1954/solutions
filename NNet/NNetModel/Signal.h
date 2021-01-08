@@ -28,7 +28,6 @@ public:
     Signal
     ( 
         NNetModelReaderInterface const &,
-        Param                    const &,
         Observable                     &,
         AnimationInterface             &,
         MicroMeterCircle         const & 
@@ -68,7 +67,6 @@ public:
 private:
 
     NNetModelReaderInterface const & m_nmri;
-    Param                    const & m_params;
     Observable                     & m_observable;
     AnimationInterface             & m_animationInterface;
 

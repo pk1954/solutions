@@ -75,7 +75,7 @@ public:
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
-	static void SetParam( Param const * const pParam ) { m_pParameters = pParam; }
+	static void SetParam( Param const & param ) { m_pParameters = & param; }
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 

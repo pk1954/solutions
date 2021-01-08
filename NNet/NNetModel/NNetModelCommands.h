@@ -30,7 +30,6 @@ public:
     void Initialize
     ( 
         NNetModelWriterInterface * const,
-        Param                    * const,
         CommandStack             * const,
         Observable               * const
     );
@@ -81,6 +80,5 @@ private:
     CommandStack             * m_pCmdStack               { nullptr };
     NNetModelWriterInterface * m_pMWI                    { nullptr };
     NNetModelImport          * m_pModelImport            { nullptr };
-    Param                    * m_pParam                  { nullptr };
     Observable               * m_pDynamicModelObservable { nullptr };
 };

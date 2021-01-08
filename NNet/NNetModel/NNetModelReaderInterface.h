@@ -43,8 +43,9 @@ public:
 	size_t          const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }
 	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
 	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
-	MonitorData     const * GetMonitorData( )                  const { return m_pModel->GetMonitorData    ( ); }
-	float           const   GetParam( tParameter const param ) const { return m_pModel->GetParam( param ); }
+	MonitorData     const & GetMonitorData( )                  const { return m_pModel->GetMonitorData    ( ); }
+	float           const   GetParameter( tParameter const p ) const { return m_pModel->GetParameter( p ); }
+	fMicroSecs      const   GetTimeResolution( )               const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring         const   GetModelFilePath()                 const { return m_pModel->GetModelFilePath(); }
 	bool            const   AnyUnsavedChanges( )               const { return m_pModel->AnyUnsavedChanges(); }
 

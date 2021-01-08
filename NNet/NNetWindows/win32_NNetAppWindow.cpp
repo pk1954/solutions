@@ -124,14 +124,14 @@ void NNetAppWindow::Start( MessagePump & pump )
 		nullptr
 	);
 
-	SignalFactory::Initialize( m_nmri, m_parameters, m_dynamicModelObservable, m_beaconAnimation );
+	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable, m_beaconAnimation );
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
 	m_monitorData    .Initialize( &m_staticModelObservable );
-	m_model          .Initialize( &m_parameters, &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable, &m_unsavedChangesObservable );
+	m_model          .Initialize( &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable, &m_unsavedChangesObservable );
 	m_modelImport    .Initialize( &m_nmwi, &m_script, m_pReadModelResult );
 	m_modelExport    .Initialize( &m_nmri );
-	m_modelCommands  .Initialize( &m_nmwi, &m_parameters, &m_cmdStack, &m_dynamicModelObservable );
+	m_modelCommands  .Initialize( &m_nmwi, &m_cmdStack, &m_dynamicModelObservable );
 	m_cmdStack       .Initialize( &m_nmwi, &m_commandStackObservable );
 	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );
@@ -151,9 +151,9 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_preferences,
 		& m_cmdStack,
 		& m_monitorWindow,
-		& m_parameters,
 		& m_dynamicModelObservable
 	);
+	Shape::SetParam( m_model.GetParams() );
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate( 200ms );
@@ -162,7 +162,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
 
-	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
+	m_computeThread.Start( & m_model, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar    .Start( m_hwndApp );
 	m_descWindow   .Start( m_hwndApp );
@@ -201,9 +201,9 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_nmri             .Start( & m_model );
 	m_nmwi             .Start( & m_model );
 	m_crsrWindow       .Start( m_hwndApp, & m_mainNNetWindow, & m_nmri );
-	m_parameterDlg     .Start( m_hwndApp, & m_modelCommands, & m_parameters );
+	m_parameterDlg     .Start( m_hwndApp, & m_modelCommands, & m_model.GetParams() );
 	m_performanceWindow.Start( m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_parameters, m_monitorData );
+	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_monitorData );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
@@ -232,8 +232,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_runObservable            .RegisterObserver( & m_simulationControl );
 	m_SlowMotionRatio          .RegisterObserver( & m_computeThread );
 	m_SlowMotionRatio          .RegisterObserver( & m_slowMotionDisplay );
-	m_parameters               .RegisterObserver( & m_parameterDlg );
-	m_parameters               .RegisterObserver( & m_computeThread );
+	m_model.GetParams()        .RegisterObserver( & m_parameterDlg );
+	m_model.GetParams()        .RegisterObserver( & m_computeThread );
 	m_unsavedChangesObservable .RegisterObserver( & m_appTitle );
 	m_soundOnObservable        .RegisterObserver( & m_appMenu );
 	m_commandStackObservable   .RegisterObserver( & m_undoRedoMenu );
@@ -293,7 +293,7 @@ void NNetAppWindow::Stop()
 	m_modelTimeObservable     .UnregisterAllObservers( );
 	m_runObservable           .UnregisterAllObservers( );
 	m_SlowMotionRatio         .UnregisterAllObservers( );
-	m_parameters              .UnregisterAllObservers( );
+	m_model.GetParams()       .UnregisterAllObservers( );
 	m_unsavedChangesObservable.UnregisterAllObservers( );
 	m_soundOnObservable       .UnregisterAllObservers( );
 	m_commandStackObservable  .UnregisterAllObservers( );

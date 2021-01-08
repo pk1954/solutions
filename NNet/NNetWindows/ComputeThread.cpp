@@ -13,14 +13,12 @@
 void ComputeThread::Start
 (
 	NNetModel       * const pModel,
-	Param           * const pParam,
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
 	Observable      * const pPerformanceObservable
 ) 
 {
 	m_pModel                 = pModel;
-	m_pParam                 = pParam;
 	m_pRunObservable         = pRunObservable;
 	m_pPerformanceObservable = pPerformanceObservable;
 	m_pSlowMotionRatio       = pSlowMotionRatio;
@@ -42,7 +40,7 @@ void ComputeThread::reset( )
 	m_usSimuTimeAtLastReset = m_pModel->GetSimulationTime( );
 	m_ticksNetRunning       = Ticks( 0 );
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
-	m_usSimuTimeResolution  = m_pParam->GetTimeResolution(); 
+	m_usSimuTimeResolution  = m_pModel->GetParams().GetTimeResolution(); 
 	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime( m_usSimuTimeResolution ); 
 	ReleaseComputationLock( );
 }

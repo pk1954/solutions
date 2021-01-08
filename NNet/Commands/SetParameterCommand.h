@@ -14,27 +14,27 @@ class SetParameterCommand : public Command
 public:
 	SetParameterCommand
 	( 
-		Param      const * pParam,
-		tParameter const   param, 
+		Param      const & param,
+		tParameter const   parameter, 
 		float      const   fNewValue 
 	)
-	  : m_param( param ),
+	  : m_parameter( parameter ),
 		m_fNewValue( fNewValue ),
-		m_fOldValue( pParam->GetParameterValue( m_param ))
+		m_fOldValue( param.GetParameterValue( parameter ))
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
-		model.SetParam( m_param, m_fNewValue ); 
+		model.SetParam( m_parameter, m_fNewValue ); 
 	}
 
 	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
-		model.SetParam( m_param, m_fOldValue ); 
+		model.SetParam( m_parameter, m_fOldValue ); 
 	}
 
 private:
-	tParameter const m_param;
+	tParameter const m_parameter;
 	float      const m_fOldValue;
 	float      const m_fNewValue;
 };

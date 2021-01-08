@@ -26,7 +26,6 @@ void MonitorWindow::Start
 	Sound                  * const   pSound,
 	NNetController         * const   pController,
 	NNetModelReaderInterface const & model,
-	Param                    const & params,
 	MonitorData                    & monitorData  
 )
 {
@@ -41,7 +40,6 @@ void MonitorWindow::Start
 	);
 	m_pSound           =   pSound;
 	m_pController      =   pController;
-	m_pParams          = & params;
 	m_pMRI             = & model;
 	m_pMonitorData     = & monitorData;
 	m_graphics.Initialize( hwnd );
@@ -64,7 +62,6 @@ void MonitorWindow::Reset( )
 void MonitorWindow::Stop( )
 {
 	Reset( );
-	m_pParams          = nullptr;
 	m_pMRI             = nullptr;
 	m_pMonitorData     = nullptr;
 	m_graphics.ShutDown( );
@@ -179,7 +176,7 @@ void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 	fPIXEL     const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
 	fPIXEL     const   fPixYoff     { getSignalOffset( idSignal ) };
 	fMicroSecs const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs const   usResolution { m_pParams->GetTimeResolution( ) };
+	fMicroSecs const   usResolution { m_pMRI->GetTimeResolution( ) };
 	float      const   fPointsInWin { usInWindow / usResolution };
 	fMicroSecs const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
 	fMicroSecs const   usEnd        { m_pMRI->GetSimulationTime( ) };

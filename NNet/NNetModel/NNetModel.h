@@ -11,6 +11,7 @@
 #include "MoreTypes.h"
 #include "Observable.h"
 #include "tParameter.h"
+#include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
@@ -22,7 +23,6 @@
 #include "Pipe.h"
 
 class EventInterface;
-class Param;
 
 using std::unique_ptr;
 using std::move;
@@ -34,11 +34,10 @@ public:
 
 	void Initialize
 	( 
-		Param       * const,
-		Observable  * const, 
-		Observable  * const, 
-		Observable  * const,
-		Observable  * const 
+		Observable * const, 
+		Observable * const, 
+		Observable * const,
+		Observable * const 
 	);
 
 	// readOnly functions
@@ -57,9 +56,9 @@ public:
 	fHertz          const   GetPulseRate ( ShapeId const ) const;
 	MicroMeterPoint const   GetShapePos  ( ShapeId const ) const;
 
-	fMicroSecs const GetSimulationTime ( )         const { return m_timeStamp; }
-	size_t     const GetSizeOfShapeList( )         const { return m_Shapes.Size(); }
-	float      const GetParam(tParameter const p)  const { return m_pParam->GetParameterValue(p); }
+	fMicroSecs const GetSimulationTime ( )             const { return m_timeStamp; }
+	size_t     const GetSizeOfShapeList( )             const { return m_Shapes.Size(); }
+	float      const GetParameter(tParameter const p)  const { return m_param.GetParameterValue(p); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
@@ -110,11 +109,14 @@ public:
 		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
 	}
 
-	ShapeList const & GetShapes( ) const { return m_Shapes; }
-	ShapeList       & GetShapes( )       { return m_Shapes; }
+	ShapeList   const & GetShapes( )      const { return m_Shapes; }
+	ShapeList         & GetShapes( )            { return m_Shapes; }
 
-	MonitorData const * GetMonitorData( ) const { return & m_monitorData; }
-	MonitorData       * GetMonitorData( )       { return & m_monitorData; }
+	MonitorData const & GetMonitorData( ) const { return m_monitorData; }
+	MonitorData       & GetMonitorData( )       { return m_monitorData; }
+
+	Param       const & GetParams()       const { return m_param; }
+	Param             & GetParams()             { return m_param; }
 
 	wstring const GetModelFilePath() const { return m_wstrModelFilePath; }
 	void          SetModelFilePath( wstring const wstr ) { m_wstrModelFilePath = wstr; }
@@ -132,7 +134,6 @@ private:
 
 	ShapeList        m_Shapes                    { };
 	fMicroSecs       m_timeStamp                 { 0._MicroSecs };
-	Param          * m_pParam                    { nullptr };
 	Observable     * m_pModelTimeObservable      { nullptr };
 	Observable     * m_pStaticModelObservable    { nullptr };
 	Observable     * m_pDynamicModelObservable   { nullptr };
@@ -142,12 +143,13 @@ private:
 	bool             m_bUnsavedChanges           { false }; 
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
+	Param            m_param;
 
 	// local functions
 
 	void incTimeStamp( )
 	{
-		m_timeStamp += m_pParam->GetTimeResolution( );
+		m_timeStamp += m_param.GetTimeResolution( );
 		m_pModelTimeObservable->NotifyAll( false );
 	}
 

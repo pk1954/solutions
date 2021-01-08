@@ -50,14 +50,12 @@ using std::unique_ptr;
 void NNetModelCommands::Initialize
 ( 
 	NNetModelWriterInterface * const pWriterInterface,
-	Param                    * const pParam,
 	CommandStack             * const pCmdStack,
 	Observable               * const pDynamicModelObservable
 ) 
 { 
 	m_pMWI                    = pWriterInterface;
 	m_pCmdStack               = pCmdStack;
-	m_pParam                  = pParam;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 }
 
@@ -197,7 +195,7 @@ void NNetModelCommands::SetParameter( tParameter const param, float const fNewVa
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
-	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pParam, param, fNewValue ) ) );
+	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pMWI->GetParams(), param, fNewValue ) ) );
 }
 
 void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
