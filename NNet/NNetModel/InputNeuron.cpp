@@ -6,6 +6,7 @@
 #include <iomanip>
 #include "DrawContext.h"
 #include "tHighlightType.h"
+#include "ParameterType.h"
 #include "ShapeType.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
@@ -36,7 +37,7 @@ bool InputNeuron::operator==( Shape const & rhs ) const
 
 void InputNeuron::Recalc( )
 {
-	m_mvFactor = mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );
+	m_mvFactor = mV( m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage ) / m_pulseDuration.GetValue() );
 }
 
 fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
@@ -98,7 +99,7 @@ void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 	m_wBuffer << fixed << setprecision(2) 
 		      << GetPulseFrequency().GetValue() 
 		      << L" " 
-		      << GetParameterUnit( tParameter::pulseRate );
+		      << ParameterType::GetUnit( ParameterType::Value::pulseRate );
 
 	DisplayText( context, GetRect4Text(), m_wBuffer.str( ) );
 }

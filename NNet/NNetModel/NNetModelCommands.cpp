@@ -50,13 +50,11 @@ using std::unique_ptr;
 void NNetModelCommands::Initialize
 ( 
 	NNetModelWriterInterface * const pWriterInterface,
-	CommandStack             * const pCmdStack,
-	Observable               * const pDynamicModelObservable
+	CommandStack             * const pCmdStack
 ) 
 { 
-	m_pMWI                    = pWriterInterface;
-	m_pCmdStack               = pCmdStack;
-	m_pDynamicModelObservable = pDynamicModelObservable;
+	m_pMWI      = pWriterInterface;
+	m_pCmdStack = pCmdStack;
 }
 
 void NNetModelCommands::UndoCommand( )
@@ -93,7 +91,7 @@ void NNetModelCommands::ReadModel
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << bAsync << L" " << wstrPath << endl;
-	m_pModelImport->Import( wstrPath, nullptr, bAsync );
+	m_pModelImport->Import( wstrPath, bAsync );
 	m_pCmdStack->Clear();
 }
 
@@ -112,16 +110,6 @@ void NNetModelCommands::DeleteSelection( )
 		TraceStream( ) << __func__ << L" " << endl;
 	m_pCmdStack->OpenSeries();
 	{
-		//m_pMWI->Apply2All<Shape>                   
-		//(                                                        
-		//	[&]( Shape const & s )
-		//	{
-		//		if ( s.IsSelected() )
-		//			deleteShape( s.GetId() );
-		//	} 
-		//); 
-
-
 		vector<ShapeId> list;                         // detour with secondary list is neccessary!
 		m_pMWI->Apply2All<Shape>                      // cannot delete shapes directly in Apply2All
 		(                                                        
@@ -191,10 +179,10 @@ void NNetModelCommands::SetTriggerSound( ShapeId const id, SoundDescr const & so
 	m_pCmdStack->PushCommand( make_unique<SetTriggerSoundCommand>( id, sound ) );
 }
 
-void NNetModelCommands::SetParameter( tParameter const param, float const fNewValue )
+void NNetModelCommands::SetParameter( ParameterType::Value const param, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
+		TraceStream( ) << __func__ << L" " << ParameterType::GetName( param ) << L" " << fNewValue << endl;
 	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pMWI->GetParams(), param, fNewValue ) ) );
 }
 

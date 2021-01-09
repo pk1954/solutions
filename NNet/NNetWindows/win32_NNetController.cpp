@@ -43,8 +43,7 @@ void NNetController::Initialize
     Sound                    * const pSound,
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
-    MonitorWindow            * const pMonitorWindow,
-    Observable               * const pDynamicModelObservable
+    MonitorWindow            * const pMonitorWindow
 ) 
 {
     m_pModelExport            = pModelExport;
@@ -59,7 +58,6 @@ void NNetController::Initialize
     m_pPreferences            = pPreferences;
     m_pCommandStack           = pCommandStack;
     m_pMonitorWindow          = pMonitorWindow;
-    m_pDynamicModelObservable = pDynamicModelObservable;
     m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
 }
 
@@ -174,8 +172,8 @@ void NNetController::pulseRateDlg( ShapeId const id )
     if ( fOldValue.IsNull() )
         return;
     HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
-    wstring const header     { GetParameterName ( tParameter::pulseRate ) }; 
-    wstring const unit       { GetParameterUnit ( tParameter::pulseRate ) };
+    wstring const header     { ParameterType::GetName ( ParameterType::Value::pulseRate ) }; 
+    wstring const unit       { ParameterType::GetUnit ( ParameterType::Value::pulseRate ) };
     fHertz  const fNewValue  { StdDialogBox::Show( hwndParent, fOldValue.GetValue(), header, unit ) };
     if ( fNewValue != fOldValue )
         m_pModelCommands->SetPulseRate( id, fNewValue );

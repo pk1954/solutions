@@ -35,11 +35,11 @@ private:
 	HWND m_hwndPulseSpeed      { nullptr };
 		
 	HWND createButton     ( HWND const, wchar_t const * const, int const, int const, int const, int const, HMENU const );
-	HWND createEditField  ( HWND const, tParameter      const, int &,     int const, int const );
+	HWND createEditField  ( HWND const, ParameterType::Value      const, int &,     int const, int const );
 	HWND createStaticField( HWND const, wchar_t const * const, int &,     int const, int const );
-	void resetParameter   ( HWND const, tParameter const );
-	void applyParameter   ( HWND const, tParameter const );
-	HWND addParameter     ( HWND const, tParameter const, int & );
+	void resetParameter   ( HWND const, ParameterType::Value const );
+	void applyParameter   ( HWND const, ParameterType::Value const );
+	HWND addParameter     ( HWND const, ParameterType::Value const, int & );
 	void applyParameters();
 	void resetParameters();
 

@@ -24,7 +24,6 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	return
 	(m_Shapes                    == rhs.m_Shapes                    ) &&
 	(m_timeStamp                 == rhs.m_timeStamp                 ) &&
-	(m_pModelTimeObservable      == rhs.m_pModelTimeObservable      ) &&
 	(m_pStaticModelObservable    == rhs.m_pStaticModelObservable    ) &&
 	(m_pDynamicModelObservable   == rhs.m_pDynamicModelObservable   ) &&
     (m_pUnsavedChangesObservable == rhs.m_pUnsavedChangesObservable ) &&
@@ -39,13 +38,11 @@ void NNetModel::Initialize
 (
 	Observable * const pStaticModelObservable,
 	Observable * const pDynamicModelObservable,
-	Observable * const pModelTimeObservable,
 	Observable * const pUnsavedChangesObservable
 )
 {				
 	m_pStaticModelObservable    = pStaticModelObservable;
     m_pDynamicModelObservable   = pDynamicModelObservable;
-	m_pModelTimeObservable      = pModelTimeObservable;
 	m_pUnsavedChangesObservable = pUnsavedChangesObservable;
 }                     
 
@@ -70,7 +67,7 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 void NNetModel::SetSimulationTime( fMicroSecs const newVal )	
 { 
 	m_timeStamp = newVal; 
-	m_pModelTimeObservable->NotifyAll( false );
+	m_pDynamicModelObservable->NotifyAll( false );
 }
 
 void NNetModel::StaticModelChanged( )
@@ -82,13 +79,12 @@ void NNetModel::StaticModelChanged( )
 void NNetModel::RecalcAllShapes( ) 
 { 
 	m_Shapes.Apply2All( [&]( Shape & shape ) { shape.Recalc( ); } );
-	dynamicModelChanged( );
 } 
 
 void NNetModel::ToggleStopOnTrigger( Neuron * pNeuron )
 {
 	pNeuron->StopOnTrigger( tBoolOp::opToggle );
-	dynamicModelChanged( );
+	m_pStaticModelObservable->NotifyAll( false );
 }
 
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
@@ -101,7 +97,7 @@ fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 
 float NNetModel::SetParam
 ( 
-	tParameter const param, 
+	ParameterType::Value const param, 
 	float      const fNewValue 
 )
 {
@@ -122,10 +118,10 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 bool NNetModel::Compute( )
 {
 	bool bStop {false };
-	incTimeStamp( );
+	m_timeStamp += m_param.GetTimeResolution( );
 	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare( ); } );
 	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep( ) ) bStop = true; } );
-	dynamicModelChanged();
+	m_pDynamicModelObservable->NotifyAll( false );
 	return bStop;
 }
 

@@ -54,11 +54,11 @@ void NNetModelExport::writeHeader( wostream & out )
 
 void NNetModelExport::writeGlobalParameters( wostream & out )
 {
-    Apply2GlobalParameters
+    ParameterType::Apply2GlobalParameters
     ( 
-        [&]( tParameter const & par ) 
+        [&]( ParameterType::Value const & par ) 
         {
-            out << L"GlobalParameter " << GetParameterName( par ) << L" = "
+            out << L"GlobalParameter " << ParameterType::GetName( par ) << L" = "
                 << m_pMRI->GetParameter( par ) 
                 << endl; 
         }
@@ -90,7 +90,7 @@ void NNetModelExport::writeShapeParameters( wostream & out )
         [&]( InputNeuron const & inpNeuron )
         { 
             out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
-                << GetParameterName( tParameter::pulseRate ) 
+                << ParameterType::GetName( ParameterType::Value::pulseRate ) 
                 << L" = " << inpNeuron.GetPulseFrequency( )
                 << endl; 
         }

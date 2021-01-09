@@ -82,7 +82,7 @@ void Pipe::Recalc( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( tParameter::pulseSpeed ) ) };
+		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( ParameterType::Value::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
 		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, Cast2UnsignedInt(round(pipeLength / segmentLength)) ) };

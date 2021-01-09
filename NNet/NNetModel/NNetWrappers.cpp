@@ -212,7 +212,7 @@ class WrapSetParameter: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        tParameter const param  { static_cast<tParameter>( script.ScrReadUlong( ) ) };
+        ParameterType::Value const param  { static_cast<ParameterType::Value>( script.ScrReadUlong( ) ) };
         float      const fValue { Cast2Float( script.ScrReadFloat( ) ) };
         m_pCommands->SetParameter( param, fValue );
     }
@@ -390,11 +390,11 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(RedoCommand);
     DEF_FUNC(Break );
 
-    Apply2GlobalParameters
+    ParameterType::Apply2GlobalParameters
     (  
-        [&]( tParameter const & param ) 
+        [&]( ParameterType::Value const & param ) 
         {
-            SymbolTable::ScrDefConst( GetParameterName( param ), static_cast<unsigned long>( param ) );
+            SymbolTable::ScrDefConst( ParameterType::GetName( param ), static_cast<unsigned long>( param ) );
         }
     );
 }

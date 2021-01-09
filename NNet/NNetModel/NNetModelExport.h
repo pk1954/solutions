@@ -26,7 +26,6 @@ class NNetModelExport
 {
 public:
 	void Initialize( NNetModelReaderInterface * const );
-
 	void WriteModel( );
 
 private:
@@ -34,7 +33,6 @@ private:
 	ModelDescription         * m_pDescription             { nullptr };
 	Observable               * m_unsavedChangesObservable { nullptr };
 
-	bool            m_bPreparedForReading { false };
 	vector<ShapeId> m_CompactIds;
 
 	long const getCompactIdVal(ShapeId const id) { return m_CompactIds[id.GetValue()].GetValue(); }

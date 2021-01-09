@@ -44,7 +44,7 @@ public:
 	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
 	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
 	MonitorData     const & GetMonitorData( )                  const { return m_pModel->GetMonitorData    ( ); }
-	float           const   GetParameter( tParameter const p ) const { return m_pModel->GetParameter( p ); }
+	float           const   GetParameter( ParameterType::Value const p ) const { return m_pModel->GetParameter( p ); }
 	fMicroSecs      const   GetTimeResolution( )               const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring         const   GetModelFilePath()                 const { return m_pModel->GetModelFilePath(); }
 	bool            const   AnyUnsavedChanges( )               const { return m_pModel->AnyUnsavedChanges(); }

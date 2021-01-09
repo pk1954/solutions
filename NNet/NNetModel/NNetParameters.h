@@ -7,7 +7,7 @@
 #include <chrono>
 #include "Observable.h"
 #include "MoreTypes.h"
-#include "tParameter.h"
+#include "ParameterType.h"
 
 using namespace std::chrono;
 
@@ -18,8 +18,8 @@ public:
 
 	fMicroSecs const GetTimeResolution( ) const { return m_usResolution; }
 
-	float const GetParameterValue( tParameter const ) const;
-	void        SetParameterValue( tParameter const, float const );
+	float const GetParameterValue( ParameterType::Value const ) const;
+	void        SetParameterValue( ParameterType::Value const, float const );
 
 private:
 	mV          m_threshold    { 20._mV            };

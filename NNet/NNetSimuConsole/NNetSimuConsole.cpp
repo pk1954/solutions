@@ -74,7 +74,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	NNetModelImport          m_modelImport              { };
 	NNetModelExport          m_modelExport              { };
 	NNetModel                m_model                    { };
-	Observable               m_modelTimeObservable      { };
 	Observable               m_staticModelObservable    { };
 	Observable               m_dynamicModelObservable   { };
 	Observable               m_unsavedChangesObservable { };
@@ -98,20 +97,17 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	m_modelCommands.Initialize
 	( 
 		& m_nmwi, 
-		& m_cmdStack, 
-		& m_dynamicModelObservable
+		& m_cmdStack
 	);
 	m_model.Initialize
 	( 
 		& m_staticModelObservable, 
 		& m_dynamicModelObservable, 
-		& m_modelTimeObservable,
 		& m_unsavedChangesObservable
 	);
 	Shape::SetParam( m_model.GetParams() );
 	m_modelImport.Initialize
 	(
-		& m_nmwi,
 		nullptr,
 		m_pReadModelResult
 	);
@@ -130,7 +126,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
 	}
 
-	m_modelImport.Import( L"std.mod", nullptr, false );
+	m_modelImport.Import( L"std.mod", false );
 
 	if ( ProcessNNetScript( & m_script, m_nmwi.GetShapes(), wstrInputFile ) )
 		wcout << L" *** NNetSimuConsole terminated successfully";

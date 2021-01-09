@@ -71,7 +71,7 @@ void NNetModelWriterInterface::RemoveOrphans( )
 		[&]( Knot const & knot )                  
 		{
 			if ( knot.IsOrphanedKnot() )
-				m_pModel->RemoveFromModel<Knot>( knot.GetId() );
+				RemoveFromModel<Knot>( knot.GetId() );
 		} 
 	); 
 }

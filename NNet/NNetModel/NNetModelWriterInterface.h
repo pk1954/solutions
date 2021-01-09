@@ -6,7 +6,7 @@
 
 #include <string>
 #include "boolOp.h"
-#include "tParameter.h"
+#include "ParameterType.h"
 #include "MoreTypes.h"
 #include "ShapeId.h"
 #include "NNetModel.h"
@@ -93,24 +93,30 @@ public:
         m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); 
     }
 
-    ShapeId const Push2Model( UPShape up ) 
+    ShapeId const Push2Model( UPShape upShape ) 
     { 
-        return m_pModel->Push2Model( move(up) ); 
+        ShapeList & list { m_pModel->GetShapes() };
+        ShapeId idNewSlot { list.IdNewSlot( ) };
+        list.Push( move(upShape) ); 
+        return idNewSlot;
     }
 
     template <Shape_t T>
-    unique_ptr<T> PopFromModel( ) { return m_pModel->PopFromModel<T>(); }
+    unique_ptr<T> PopFromModel( ) { return move(m_pModel->GetShapes().Pop<T>()); }
 
-    template <Shape_t NEW, typename OLD>
+    template <Shape_t NEW, Shape_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
-    { 
-        return m_pModel->ReplaceInModel<NEW, OLD>( move(up) ); 
+    {
+        ShapeId const id     { up.get()->GetId() };
+        Shape       * pShape { m_pModel->GetShapes().ReplaceShape( id, move(up) ) }; 
+        return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }
 
-    template <Shape_t T>
-    unique_ptr<T> RemoveFromModel( ShapeId const id ) 
+    template <Shape_t OLD>
+    unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
     { 
-        return m_pModel->RemoveFromModel<T>( id ); 
+        Shape * pShape { m_pModel->GetShapes().RemoveShape( id ) }; 
+        return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
@@ -120,7 +126,7 @@ public:
 
     void SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op ) { m_pModel->SelectSubtree( pBaseKnot, op ); }
 
-    float SetParam( tParameter const param, float const fNewValue ) { return m_pModel->SetParam( param, fNewValue ); }
+    float SetParam( ParameterType::Value const param, float const fNewValue ) { return m_pModel->SetParam( param, fNewValue ); }
 
     void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
     void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }

@@ -6,7 +6,7 @@
 
 #include <string>
 #include "boolOp.h"
-#include "tParameter.h"
+#include "ParameterType.h"
 #include "MoreTypes.h"
 #include "MonitorData.h"
 #include "ShapeId.h"
@@ -27,12 +27,7 @@ using std::wostream;
 class NNetModelCommands
 {
 public:
-    void Initialize
-    ( 
-        NNetModelWriterInterface * const,
-        CommandStack             * const,
-        Observable               * const
-    );
+    void Initialize( NNetModelWriterInterface * const, CommandStack * const );
 
     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
@@ -62,7 +57,7 @@ public:
     void SelectShape         ( ShapeId const, tBoolOp const );
     void SelectShapesInRect  ( MicroMeterRect const & );
     void SelectSubtree       ( ShapeId const, tBoolOp const );
-    void SetParameter        ( tParameter const, float const );
+    void SetParameter        ( ParameterType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );
     void SetTriggerSound     ( ShapeId const, SoundDescr const & );
     void ToggleStopOnTrigger ( ShapeId const );
@@ -80,5 +75,4 @@ private:
     CommandStack             * m_pCmdStack               { nullptr };
     NNetModelWriterInterface * m_pMWI                    { nullptr };
     NNetModelImport          * m_pModelImport            { nullptr };
-    Observable               * m_pDynamicModelObservable { nullptr };
 };

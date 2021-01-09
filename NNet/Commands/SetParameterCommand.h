@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "tParameter.h"
+#include "ParameterType.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
@@ -14,9 +14,9 @@ class SetParameterCommand : public Command
 public:
 	SetParameterCommand
 	( 
-		Param      const & param,
-		tParameter const   parameter, 
-		float      const   fNewValue 
+		Param                const & param,
+		ParameterType::Value const   parameter, 
+		float                const   fNewValue 
 	)
 	  : m_parameter( parameter ),
 		m_fNewValue( fNewValue ),
@@ -34,7 +34,7 @@ public:
 	}
 
 private:
-	tParameter const m_parameter;
+	ParameterType::Value const m_parameter;
 	float      const m_fOldValue;
 	float      const m_fNewValue;
 };

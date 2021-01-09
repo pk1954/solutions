@@ -32,7 +32,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 	}
 	else  // normal mode
 	{
-		mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( tParameter::peakVoltage )) };
+		mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage )) };
 		float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
 		return D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
 	}
@@ -56,7 +56,7 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 
 float Shape::GetFillLevel( mV const voltageInput ) const
 {
-	return voltageInput.GetValue() / m_pParameters->GetParameterValue( tParameter::threshold );
+	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParameterType::Value::threshold );
 }
 
 void Shape::CheckShape( ) const

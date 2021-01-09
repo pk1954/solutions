@@ -42,8 +42,7 @@ public:
 		Sound                    * const,
 		Preferences              * const,
 		CommandStack             * const,
-		MonitorWindow            * const,
-		Observable               * const
+		MonitorWindow            * const
 	);
 
 	virtual ~NNetController( );
@@ -72,5 +71,4 @@ private:
 	Preferences              * m_pPreferences            { nullptr };
 	CommandStack             * m_pCommandStack           { nullptr };
 	MonitorWindow            * m_pMonitorWindow          { nullptr };
-	Observable               * m_pDynamicModelObservable { nullptr };
 };				          

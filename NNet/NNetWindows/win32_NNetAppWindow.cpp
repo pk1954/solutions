@@ -101,7 +101,6 @@ NNetAppWindow::NNetAppWindow( )
 	wcout << L"*** User name:     "       << Util::GetUserName()           << endl;
 	wcout << endl;
 
-	m_preferences.Initialize( m_sound, m_modelImport );
 	Neuron::SetSound( & m_sound );
 	NNetWindow::InitClass( & m_atDisplay );
 
@@ -128,15 +127,16 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
 	m_monitorData    .Initialize( &m_staticModelObservable );
-	m_model          .Initialize( &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable, &m_unsavedChangesObservable );
-	m_modelImport    .Initialize( &m_nmwi, &m_script, m_pReadModelResult );
+	m_model          .Initialize( &m_staticModelObservable, &m_dynamicModelObservable, &m_unsavedChangesObservable );
+	m_modelImport    .Initialize( &m_script, m_pReadModelResult );
 	m_modelExport    .Initialize( &m_nmri );
-	m_modelCommands  .Initialize( &m_nmwi, &m_cmdStack, &m_dynamicModelObservable );
+	m_modelCommands  .Initialize( &m_nmwi, &m_cmdStack );
 	m_cmdStack       .Initialize( &m_nmwi, &m_commandStackObservable );
 	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );
 	m_beaconAnimation.Initialize( &m_beaconObservable );
 	m_appTitle       .Initialize( m_hwndApp, &m_nmri );
+	m_preferences    .Initialize( m_sound, m_modelImport );
 	m_NNetController .Initialize
 	( 
 		& m_modelExport,
@@ -150,8 +150,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_sound,
 		& m_preferences,
 		& m_cmdStack,
-		& m_monitorWindow,
-		& m_dynamicModelObservable
+		& m_monitorWindow
 	);
 	Shape::SetParam( m_model.GetParams() );
 
@@ -220,6 +219,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_dynamicModelObservable   .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_monitorWindow );
+	m_dynamicModelObservable   .RegisterObserver( & m_timeDisplay );
 	m_staticModelObservable    .RegisterObserver( & m_modelImport );
 	m_staticModelObservable    .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_miniNNetWindow );
@@ -228,7 +228,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_staticModelObservable    .RegisterObserver( & m_appTitle );
 	m_cursorPosObservable      .RegisterObserver( & m_crsrWindow );
 	m_performanceObservable    .RegisterObserver( & m_performanceWindow );
-	m_modelTimeObservable      .RegisterObserver( & m_timeDisplay );
 	m_runObservable            .RegisterObserver( & m_simulationControl );
 	m_SlowMotionRatio          .RegisterObserver( & m_computeThread );
 	m_SlowMotionRatio          .RegisterObserver( & m_slowMotionDisplay );
@@ -290,7 +289,6 @@ void NNetAppWindow::Stop()
 	m_dynamicModelObservable  .UnregisterAllObservers( );
 	m_cursorPosObservable     .UnregisterAllObservers( );
 	m_performanceObservable   .UnregisterAllObservers( );
-	m_modelTimeObservable     .UnregisterAllObservers( );
 	m_runObservable           .UnregisterAllObservers( );
 	m_SlowMotionRatio         .UnregisterAllObservers( );
 	m_model.GetParams()       .UnregisterAllObservers( );
@@ -480,7 +478,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			if ( ! wstrNewFile.empty() )
 			{
 				m_mainNNetWindow.Reset();
-				m_modelImport.Import( wstrNewFile, nullptr, true ); // will trigger IDM_READ_MODEL_FINISHED when done
+				m_modelImport.Import( wstrNewFile, true ); // will trigger IDM_READ_MODEL_FINISHED when done
 			}
 		}
 	}

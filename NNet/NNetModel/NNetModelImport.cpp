@@ -17,11 +17,23 @@
 #include "NNetModelImport.h"
 
 using std::filesystem::exists;
+using std::make_unique;
 
-class WrapProtocol : public Script_Functor
+class WrapBase : public Script_Functor
 {
 public:
-    WrapProtocol( ) { };
+    WrapBase( NNetModelImport & modelImport ) :
+        m_modelImport( modelImport )
+    { };
+
+protected:
+    NNetModelImport & m_modelImport;
+};
+
+class WrapProtocol : public WrapBase
+{
+public:
+    WrapProtocol(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const 
     {
@@ -30,29 +42,22 @@ public:
     }
 };
 
-class WrapDescription : public Script_Functor
+class WrapDescription : public WrapBase
 {
 public:
-    WrapDescription( NNetModelWriterInterface & nmwi ) :
-        m_nmwi( nmwi )
-    { };
+    WrapDescription(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const 
     {
         wstring const wstrDescription { script.ScrReadString( ) };
-        m_nmwi.AddDescriptionLine( wstrDescription );
+        m_modelImport.GetWriterInterface().AddDescriptionLine( wstrDescription );
     }
-
-private:
-    NNetModelWriterInterface & m_nmwi;
 };
 
-class WrapCreateShape : public Script_Functor
+class WrapCreateShape : public WrapBase
 {
 public:
-    WrapCreateShape( NNetModelWriterInterface & nmwi ) :
-        m_nmwi( nmwi )
-    { };
+    WrapCreateShape(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const
     {   
@@ -67,7 +72,7 @@ public:
         {
             upShape->SetId( idFromScript );
             upShape->Select( tBoolOp::opTrue );
-            m_nmwi.GetShapes().SetShape2Slot( idFromScript, move(upShape) );
+            m_modelImport.GetShapes().SetShape2Slot( idFromScript, move(upShape) );
         }
     }
 
@@ -90,8 +95,8 @@ private:
         }
         else
         { 
-            BaseKnot * const pKnotStart { m_nmwi.GetShapePtr<BaseKnot *>( idStart ) };
-            BaseKnot * const pKnotEnd   { m_nmwi.GetShapePtr<BaseKnot *>( idEnd   ) };
+            BaseKnot * const pKnotStart { m_modelImport.GetWriterInterface().GetShapePtr<BaseKnot *>( idStart ) };
+            BaseKnot * const pKnotEnd   { m_modelImport.GetWriterInterface().GetShapePtr<BaseKnot *>( idEnd   ) };
             unique_ptr<Pipe> upPipe { make_unique<Pipe>( pKnotStart, pKnotEnd ) };
             pKnotStart->m_connections.AddOutgoing( upPipe.get() );
             pKnotEnd  ->m_connections.AddIncoming( upPipe.get() );
@@ -118,114 +123,91 @@ private:
             return nullptr;
         }
     }
-
-    NNetModelWriterInterface & m_nmwi;
 };
 
-class WrapGlobalParameter : public Script_Functor
+class WrapGlobalParameter : public WrapBase
 {
 public:
-    WrapGlobalParameter( NNetModelWriterInterface & nmwi ) :
-        m_nmwi( nmwi )
-    { };
+    WrapGlobalParameter(NNetModelImport & m) : WrapBase(m) { };
+
 
     virtual void operator() ( Script & script ) const 
     {
-        tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
+        ParameterType::Value const param( static_cast< ParameterType::Value >( script.ScrReadUint() ) );
         script.ScrReadSpecial( L'=' );
         float const fValue { Cast2Float( script.ScrReadFloat() ) };
-        m_nmwi.SetParam( param, fValue );
+        m_modelImport.GetWriterInterface().SetParam( param, fValue );
     }
 
-private:
-    NNetModelWriterInterface & m_nmwi;
 };
 
-class WrapNrOfShapes : public Script_Functor
+class WrapNrOfShapes : public WrapBase
 {
 public:
-    WrapNrOfShapes(ShapeList & shapeList ) :
-        m_shapeList( shapeList )
-    { };
+    WrapNrOfShapes(NNetModelImport & m) : WrapBase(m) { };
+
 
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadSpecial( L'=' );
         long lNrOfShapes { script.ScrReadLong() };
-        m_shapeList.Resize( m_shapeList.Size() + lNrOfShapes );
+        m_modelImport.GetShapes().Resize( m_modelImport.GetShapes().Size() + lNrOfShapes );
     }
 
-private:
-    ShapeList & m_shapeList;
 };
 
-class WrapShapeParameter : public Script_Functor
+class WrapShapeParameter : public WrapBase
 {
 public:
-    WrapShapeParameter( NNetModelWriterInterface & nmwi ) :
-        m_nmwi( nmwi )
-    { };
+    WrapShapeParameter(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadString( L"InputNeuron" );
         ShapeId    const id   ( ScrReadShapeId(script) );
-        tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
-        assert( param == tParameter::pulseRate );
+        ParameterType::Value const param( static_cast< ParameterType::Value >( script.ScrReadUint() ) );
+        assert( param == ParameterType::Value::pulseRate );
         script.ScrReadSpecial( L'=' );
         float const fValue { Cast2Float( script.ScrReadFloat() ) };
-        m_nmwi.GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
+        m_modelImport.GetWriterInterface().GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
     }
-
-private:
-    NNetModelWriterInterface & m_nmwi;
 };
 
-class WrapTriggerSound : public Script_Functor
+class WrapTriggerSound : public WrapBase
 {
 public:
-    WrapTriggerSound( NNetModelWriterInterface & nmwi ) :
-        m_nmwi( nmwi )
-    { };
+    WrapTriggerSound(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const 
     {
         ShapeId const id      { ScrReadShapeId(script) };
-        Neuron      * pNeuron { m_nmwi.GetShapePtr<Neuron *>( id ) };
+        Neuron      * pNeuron { m_modelImport.GetWriterInterface().GetShapePtr<Neuron *>( id ) };
         Hertz   const freq    { script.ScrReadUlong() };
         script.ScrReadString( L"Hertz" );
         MilliSecs const msec { script.ScrReadUlong() };
         script.ScrReadString( L"msec" );
         pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } );
     }
-
-private:
-    NNetModelWriterInterface & m_nmwi;
 };
 
-class WrapNrOfTracks : public Script_Functor
+class WrapNrOfTracks : public WrapBase
 {
 public:
-    WrapNrOfTracks( MonitorData & data ) :
-        m_monitorData( data )
-    { };
+    WrapNrOfTracks(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const 
     {
         unsigned int const uiNrOfTracks { script.ScrReadUint() };
         for ( unsigned int ui = 0; ui < uiNrOfTracks; ++ui )
-            m_monitorData.InsertTrack( TrackNr(0) );
+            m_modelImport.GetMonitorData().InsertTrack( TrackNr(0) );
     }
-private:
-    MonitorData & m_monitorData;
+
 };
 
-class WrapSignal : public Script_Functor
+class WrapSignal : public WrapBase
 {
 public:
-    WrapSignal( MonitorData & data ) :
-        m_monitorData( data )
-    { };
+    WrapSignal(NNetModelImport & m) : WrapBase(m) { };
 
     virtual void operator() ( Script & script ) const 
     {
@@ -245,38 +227,34 @@ public:
         {
             assert( false );  // unexpected signal source 
         }
-        m_monitorData.AddSignal( trackNr, umCircle );
+        m_modelImport.GetMonitorData().AddSignal( trackNr, umCircle );
     }
-
-private:
-    MonitorData & m_monitorData;
 };
 
 void NNetModelImport::Initialize
 (
-    NNetModelWriterInterface * const pNMWI, 
-    Script                   * const pScript,       
-    ReadModelResult          * const pResult
+    Script          * const pScript,       
+    ReadModelResult * const pResult
 )
 {
-    m_pMWI    = pNMWI;
     m_pScript = pScript;
     m_pResult = pResult;
+    prepareForReading( );
 }
 
 void NNetModelImport::prepareForReading( )
 {
     SymbolTable::ScrDefConst( L"shape",           NNetModelStorage::SIGSRC_SHAPE_NR );  // legacy
     SymbolTable::ScrDefConst( L"circle",          NNetModelStorage::SIGSRC_CIRCLE   );
-    SymbolTable::ScrDefConst( L"Description",     new WrapDescription    ( GetWriterInterface() ) );
-    SymbolTable::ScrDefConst( L"Protocol",        new WrapProtocol       ( ) );
-    SymbolTable::ScrDefConst( L"GlobalParameter", new WrapGlobalParameter( GetWriterInterface() ) );
-    SymbolTable::ScrDefConst( L"NrOfShapes",      new WrapNrOfShapes     ( GetWriterInterface().GetShapes() ) );
-    SymbolTable::ScrDefConst( L"CreateShape",     new WrapCreateShape    ( GetWriterInterface() ) );
-    SymbolTable::ScrDefConst( L"ShapeParameter",  new WrapShapeParameter ( GetWriterInterface() ) );
-    SymbolTable::ScrDefConst( L"TriggerSound",    new WrapTriggerSound   ( GetWriterInterface() ) );
-    SymbolTable::ScrDefConst( L"NrOfTracks",      new WrapNrOfTracks     ( GetMonitorData() ) );
-    SymbolTable::ScrDefConst( L"Signal",          new WrapSignal         ( GetMonitorData() ) );
+    SymbolTable::ScrDefConst( L"Description",     new WrapDescription    ( * this ) );
+    SymbolTable::ScrDefConst( L"Protocol",        new WrapProtocol       ( * this ) );
+    SymbolTable::ScrDefConst( L"GlobalParameter", new WrapGlobalParameter( * this ) );
+    SymbolTable::ScrDefConst( L"NrOfShapes",      new WrapNrOfShapes     ( * this ) );
+    SymbolTable::ScrDefConst( L"CreateShape",     new WrapCreateShape    ( * this ) );
+    SymbolTable::ScrDefConst( L"ShapeParameter",  new WrapShapeParameter ( * this ) );
+    SymbolTable::ScrDefConst( L"TriggerSound",    new WrapTriggerSound   ( * this ) );
+    SymbolTable::ScrDefConst( L"NrOfTracks",      new WrapNrOfTracks     ( * this ) );
+    SymbolTable::ScrDefConst( L"Signal",          new WrapSignal         ( * this ) );
 
     ShapeType::Apply2All
     ( 
@@ -293,21 +271,19 @@ void NNetModelImport::prepareForReading( )
     ///// Legacy /////
     SymbolTable::ScrDefConst( L"pipeline", static_cast<unsigned long>(ShapeType::Value::pipe) );  // support older protocol version
                                                                                                   ///// end Legacy /////
-    Apply2AllParameters
+    ParameterType::Apply2AllParameters
     ( 
-        [&]( tParameter const & param ) 
+        [&]( ParameterType::Value const & param ) 
         {
             SymbolTable::ScrDefConst
             ( 
-                GetParameterName( param ), 
+                ParameterType::GetName( param ), 
                 static_cast<unsigned long>( param ) 
             );
         }
     );
 
 #undef DEF_NNET_FUNC
-
-    m_bPreparedForReading = true;
 }
 
 bool NNetModelImport::readModel( wstring const wstrPath, NNetModelWriterInterface & nmwi ) 
@@ -335,30 +311,23 @@ static unsigned int __stdcall readModelThreadProc( void * data )
     return 0;
 }
 
-bool NNetModelImport::Import
+unique_ptr<NNetModel> NNetModelImport::Import
 ( 
-    wstring     const wstrPath, 
-    ShapeList * const pShapeList,
-    bool        const bAsync
+    wstring const wstrPath, 
+    bool    const bAsync
 )
 {
 // prepare new architecture /////
-    NNetModel newModel;
-    newModel.Initialize
+    unique_ptr<NNetModel> upNewModel { make_unique<NNetModel>() };
+    upNewModel->Initialize
     (
-        nullptr,
         nullptr,
         nullptr,
         nullptr
     );
 
     NNetModelWriterInterface newNMWI;
-    newNMWI.Start( & newModel );
-// end new architecture ///
-
-    bool bRes { true };
-    if ( ! m_bPreparedForReading )
-        prepareForReading( );
+    newNMWI.Start( upNewModel.get() );
 
     //m_wstrPathOfNewModel = ( wstrPath == L"" ) ? m_pModelStorage->GetModelPath() : wstrPath;
     //if ( exists( m_wstrPathOfNewModel ) )
@@ -382,5 +351,6 @@ bool NNetModelImport::Import
     //    m_pResult->Reaction( ReadModelResult::tResult::fileNotFound, wstrPath );
     //    bRes = false;
     //}
-    return bRes;
+
+    return move(upNewModel);
 }

@@ -10,7 +10,7 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Observable.h"
-#include "tParameter.h"
+#include "ParameterType.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "MonitorData.h"
@@ -36,7 +36,6 @@ public:
 	( 
 		Observable * const, 
 		Observable * const, 
-		Observable * const,
 		Observable * const 
 	);
 
@@ -58,7 +57,7 @@ public:
 
 	fMicroSecs const GetSimulationTime ( )             const { return m_timeStamp; }
 	size_t     const GetSizeOfShapeList( )             const { return m_Shapes.Size(); }
-	float      const GetParameter(tParameter const p)  const { return m_param.GetParameterValue(p); }
+	float      const GetParameter(ParameterType::Value const p)  const { return m_param.GetParameterValue(p); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
@@ -78,36 +77,11 @@ public:
 	void  ToggleStopOnTrigger( Neuron * );
 	void  RecalcAllShapes( );
 	void  ResetModel( );
-	float SetParam( tParameter const, float const );
+	float SetParam( ParameterType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, tBoolOp const );
 	void  StaticModelChanged( );
 
 	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
-
-	ShapeId const Push2Model( UPShape upShape ) 
-	{ 
-		ShapeId idNewSlot { m_Shapes.IdNewSlot( ) };
-		m_Shapes.Push( move(upShape) ); 
-		return idNewSlot;
-	}
-
-	template <Shape_t T>
-	unique_ptr<T> PopFromModel( ) { return move(m_Shapes.Pop<T>()); }
-
-	template <Shape_t OLD>
-	unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
-	{ 
-		Shape * pShape { m_Shapes.RemoveShape( id ) }; 
-		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
-	}
-
-	template <Shape_t NEW, Shape_t OLD>
-	unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
-	{
-		ShapeId const id     { up.get()->GetId() };
-		Shape       * pShape { m_Shapes.ReplaceShape( id, move(up) ) }; 
-		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
-	}
 
 	ShapeList   const & GetShapes( )      const { return m_Shapes; }
 	ShapeList         & GetShapes( )            { return m_Shapes; }
@@ -132,29 +106,15 @@ public:
 
 private:
 
-	ShapeList        m_Shapes                    { };
+	ShapeList        m_Shapes;
+	ModelDescription m_description;
+	MonitorData      m_monitorData;
+	Param            m_param;
 	fMicroSecs       m_timeStamp                 { 0._MicroSecs };
-	Observable     * m_pModelTimeObservable      { nullptr };
 	Observable     * m_pStaticModelObservable    { nullptr };
 	Observable     * m_pDynamicModelObservable   { nullptr };
 	Observable     * m_pUnsavedChangesObservable { nullptr };
 	MicroMeterRect   m_enclosingRect             { };
 	wstring          m_wstrModelFilePath         { L"" };
 	bool             m_bUnsavedChanges           { false }; 
-	ModelDescription m_description;
-	MonitorData      m_monitorData;
-	Param            m_param;
-
-	// local functions
-
-	void incTimeStamp( )
-	{
-		m_timeStamp += m_param.GetTimeResolution( );
-		m_pModelTimeObservable->NotifyAll( false );
-	}
-
-	void dynamicModelChanged( ) const 
-	{ 
-		m_pDynamicModelObservable->NotifyAll( false );
-	}
 };

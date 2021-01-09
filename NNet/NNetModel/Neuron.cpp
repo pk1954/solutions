@@ -95,22 +95,22 @@ SoundDescr const Neuron::SetTriggerSound( SoundDescr const & sound )
 
 fMicroSecs Neuron::PulseWidth() const 
 { 
-	return fMicroSecs( m_pParameters->GetParameterValue( tParameter::pulseWidth ) ); 
+	return fMicroSecs( m_pParameters->GetParameterValue( ParameterType::Value::pulseWidth ) ); 
 }
 
 fMicroSecs Neuron::RefractPeriod() const 
 { 
-	return fMicroSecs( m_pParameters->GetParameterValue( tParameter::refractPeriod ) ); 
+	return fMicroSecs( m_pParameters->GetParameterValue( ParameterType::Value::refractPeriod ) ); 
 }
 
 mV Neuron::Threshold() const 
 { 
-	return mV( m_pParameters->GetParameterValue( tParameter::threshold ) ); 
+	return mV( m_pParameters->GetParameterValue( ParameterType::Value::threshold ) ); 
 }
 
 mV Neuron::PeakVoltage() const 
 { 
-	return mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) ); 
+	return mV( m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage ) ); 
 }
 
 void Neuron::Recalc( ) 

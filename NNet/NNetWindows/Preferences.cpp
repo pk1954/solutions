@@ -22,6 +22,7 @@ using std::string;
 using std::wcout;
 using std::endl;
 using std::filesystem::exists;
+using std::filesystem::path;
 
 static wstring m_wstrPreferencesFile;
 
@@ -68,7 +69,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         wstring wstrModelFile { script.ScrReadString() };
-        if ( std::filesystem::path( wstrModelFile).extension() != L".mod" )
+        if ( path( wstrModelFile).extension() != L".mod" )
         {
             int iRes = MessageBox
             ( 
@@ -80,7 +81,7 @@ public:
             if ( iRes != IDYES )
                 return;
         }
-        m_modelImport.Import( wstrModelFile, nullptr, true );
+        m_modelImport.Import( wstrModelFile, true );
     }
 
 private:
