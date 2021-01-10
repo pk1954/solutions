@@ -57,27 +57,27 @@ using std::wstring;
 using std::wcout;
 using std::filesystem::path;
 
-class NNetReadModelResult : public ReadModelResult
+class NNetImportTermination : public ImportTermination
 {
 public:
-	NNetReadModelResult( HWND hwndApp )
+	NNetImportTermination( HWND hwndApp )
 	  : m_hwndApp( hwndApp )
 	{ }
 
-	virtual void Reaction( tResult const res, wstring const name )
+	virtual void Reaction( Result const res, wstring const name )
 	{
 		switch ( res )
 		{
-		case ReadModelResult::tResult::ok:
+		case ImportTermination::Result::ok:
 			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( true ) );
 			break;
 
-		case ReadModelResult::tResult::fileNotFound:
+		case ImportTermination::Result::fileNotFound:
 			MessageBox( nullptr, name.c_str(), L"Could not find model file", MB_OK );
 			PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
 			break;
 
-		case ReadModelResult::tResult::errorInFile:
+		case ImportTermination::Result::errorInFile:
 			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( false ) );
 			break;
 
@@ -125,21 +125,20 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable, m_beaconAnimation );
 
-	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
-	m_monitorData    .Initialize( &m_staticModelObservable );
+	m_pImportTermination = new NNetImportTermination( m_hwndApp );
 	m_model          .Initialize( &m_staticModelObservable, &m_dynamicModelObservable, &m_unsavedChangesObservable );
-	m_modelImport    .Initialize( &m_script, m_pReadModelResult );
-	m_modelExport    .Initialize( &m_nmri );
-	m_modelCommands  .Initialize( &m_nmwi, &m_cmdStack );
+	m_modelImporter  .Initialize( &m_script, m_pImportTermination );
+	m_modelExporter  .Initialize( &m_nmri );
+	m_modelCommands  .Initialize( &m_nmri, &m_nmwi, &m_cmdStack );
 	m_cmdStack       .Initialize( &m_nmwi, &m_commandStackObservable );
 	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );
 	m_beaconAnimation.Initialize( &m_beaconObservable );
 	m_appTitle       .Initialize( m_hwndApp, &m_nmri );
-	m_preferences    .Initialize( m_sound, m_modelImport );
+	m_preferences    .Initialize( m_sound, m_modelImporter );
 	m_NNetController .Initialize
 	( 
-		& m_modelExport,
+		& m_modelExporter,
 		& m_mainNNetWindow,
 		& m_WinManager,
 		& m_nmri,
@@ -161,6 +160,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
 
+	m_nmri         .Start( & m_model );
+	m_nmwi         .Start( & m_model );
 	m_computeThread.Start( & m_model, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar    .Start( m_hwndApp );
@@ -178,8 +179,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_modelCommands,
 		& m_cursorPosObservable,
 		& m_coordObservable,
-		& m_beaconAnimation,
-        & m_monitorData
+		& m_beaconAnimation
 	);
 
 	m_miniNNetWindow.Start
@@ -189,20 +189,17 @@ void NNetAppWindow::Start( MessagePump & pump )
 		true,
 		& m_NNetController,
 		& m_nmri,
-		& m_beaconAnimation,
-		& m_monitorData
+		& m_beaconAnimation
 	);
 
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );
 
-	m_nmri             .Start( & m_model );
-	m_nmwi             .Start( & m_model );
 	m_crsrWindow       .Start( m_hwndApp, & m_mainNNetWindow, & m_nmri );
 	m_parameterDlg     .Start( m_hwndApp, & m_modelCommands, & m_model.GetParams() );
 	m_performanceWindow.Start( m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_monitorData );
+	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_model.GetMonitorData() );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
@@ -220,7 +217,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_dynamicModelObservable   .RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_monitorWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_timeDisplay );
-	m_staticModelObservable    .RegisterObserver( & m_modelImport );
+	m_staticModelObservable    .RegisterObserver( & m_modelImporter );
 	m_staticModelObservable    .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_miniNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_monitorWindow );
@@ -298,8 +295,8 @@ void NNetAppWindow::Stop()
 
 	m_WinManager.RemoveAll( );
 
-	delete m_pReadModelResult;
-	m_pReadModelResult = nullptr;
+	delete m_pImportTermination;
+	m_pImportTermination = nullptr;
 }
 
 bool NNetAppWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
@@ -478,7 +475,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			if ( ! wstrNewFile.empty() )
 			{
 				m_mainNNetWindow.Reset();
-				m_modelImport.Import( wstrNewFile, true ); // will trigger IDM_READ_MODEL_FINISHED when done
+				m_modelImporter.Import( wstrNewFile, true ); // will trigger IDM_READ_MODEL_FINISHED when done
 			}
 		}
 	}

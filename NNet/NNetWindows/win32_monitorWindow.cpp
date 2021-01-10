@@ -40,7 +40,7 @@ void MonitorWindow::Start
 	);
 	m_pSound           =   pSound;
 	m_pController      =   pController;
-	m_pMRI             = & model;
+	m_pNMRI             = & model;
 	m_pMonitorData     = & monitorData;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
@@ -62,7 +62,7 @@ void MonitorWindow::Reset( )
 void MonitorWindow::Stop( )
 {
 	Reset( );
-	m_pMRI             = nullptr;
+	m_pNMRI             = nullptr;
 	m_pMonitorData     = nullptr;
 	m_graphics.ShutDown( );
 	DestroyWindow( );
@@ -104,7 +104,7 @@ void MonitorWindow::InsertTrack( TrackNr const trackNr )
 
 fMicroSecs const MonitorWindow::fPIXEL2fMicroSecs( fPIXEL const fPixX ) const
 {
-	fMicroSecs const usEnd    { m_pMRI->GetSimulationTime( ) };
+	fMicroSecs const usEnd    { m_pNMRI->GetSimulationTime( ) };
 	fPIXEL     const fTicks   { m_fPixWinWidth - fPixX };
 	fMicroSecs const usResult { usEnd - m_fMicroSecsPerPixel * fTicks.GetValue() };
 	return usResult;
@@ -112,7 +112,7 @@ fMicroSecs const MonitorWindow::fPIXEL2fMicroSecs( fPIXEL const fPixX ) const
 
 fPIXEL const MonitorWindow::fMicroSecs2fPIXEL( fMicroSecs const usParam ) const
 {
-	fMicroSecs const usEnd  { m_pMRI->GetSimulationTime( ) };
+	fMicroSecs const usEnd  { m_pNMRI->GetSimulationTime( ) };
 	float      const fTicks { (usEnd - usParam) / m_fMicroSecsPerPixel };
 	fPIXEL     const fPixX  { m_fPixWinWidth - fPIXEL(fTicks) };
 	return fPixX;
@@ -176,10 +176,10 @@ void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 	fPIXEL     const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
 	fPIXEL     const   fPixYoff     { getSignalOffset( idSignal ) };
 	fMicroSecs const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs const   usResolution { m_pMRI->GetTimeResolution( ) };
+	fMicroSecs const   usResolution { m_pNMRI->GetTimeResolution( ) };
 	float      const   fPointsInWin { usInWindow / usResolution };
 	fMicroSecs const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fMicroSecs const   usEnd        { m_pMRI->GetSimulationTime( ) };
+	fMicroSecs const   usEnd        { m_pNMRI->GetSimulationTime( ) };
 	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
 	fMicroSecs const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
 	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };

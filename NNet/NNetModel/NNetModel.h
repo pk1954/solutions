@@ -55,17 +55,15 @@ public:
 	fHertz          const   GetPulseRate ( ShapeId const ) const;
 	MicroMeterPoint const   GetShapePos  ( ShapeId const ) const;
 
-	fMicroSecs const GetSimulationTime ( )             const { return m_timeStamp; }
-	size_t     const GetSizeOfShapeList( )             const { return m_Shapes.Size(); }
-	float      const GetParameter(ParameterType::Value const p)  const { return m_param.GetParameterValue(p); }
+	fMicroSecs const GetSimulationTime ( ) const { return m_timeStamp; }
+
+	float const GetParameter(ParameterType::Value const p) const { return m_param.GetParameterValue(p); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
 
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
-
-	bool    const IsShapeDefined( ShapeId const id )   const { return m_Shapes.IsShapeDefined( id ); }
 
 	// manipulating functions
 
@@ -100,6 +98,7 @@ public:
 	bool const AnyUnsavedChanges( ) const { return m_bUnsavedChanges; }
 	void SetUnsavedChanges( bool const bState )
 	{
+		assert( m_pUnsavedChangesObservable );
 		m_bUnsavedChanges = bState;
 		m_pUnsavedChangesObservable->NotifyAll( false );
 	}

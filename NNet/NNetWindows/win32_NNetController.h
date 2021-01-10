@@ -10,7 +10,7 @@ class NNetModelReaderInterface;
 class NNetModelCommands;
 class SlowMotionRatio;
 class MonitorWindow;
-class NNetModelExport;
+class NNetModelExporter;
 class DisplayFunctor;
 class ComputeThread;
 class NNetAppMenu;
@@ -31,7 +31,7 @@ public:
 
 	void Initialize
 	( 
-		NNetModelExport          * const,
+		NNetModelExporter        * const,
 		MainWindow               * const,
 		WinManager               * const,
 		NNetModelReaderInterface * const,
@@ -58,17 +58,17 @@ private:
 
 	ArrowAnimation m_arrowAnimation;
 
-	HCURSOR                    m_hCrsrWait               { nullptr };
-	Sound                    * m_pSound                  { nullptr };
-	NNetModelExport          * m_pModelExport            { nullptr };
-	MainWindow               * m_pMainWindow             { nullptr };
-	WinManager               * m_pWinManager             { nullptr };
-	ComputeThread            * m_pComputeThread          { nullptr };
-	NNetModelReaderInterface * m_pMRI                    { nullptr };
-	NNetModelCommands        * m_pModelCommands          { nullptr };
-	SlowMotionRatio          * m_pSlowMotionRatio        { nullptr };
-	DisplayFunctor           * m_pStatusBarDisplay       { nullptr };
-	Preferences              * m_pPreferences            { nullptr };
-	CommandStack             * m_pCommandStack           { nullptr };
-	MonitorWindow            * m_pMonitorWindow          { nullptr };
+	HCURSOR                    m_hCrsrWait         { nullptr };
+	Sound                    * m_pSound            { nullptr };
+	NNetModelExporter        * m_pModelExporter    { nullptr };
+	MainWindow               * m_pMainWindow       { nullptr };
+	WinManager               * m_pWinManager       { nullptr };
+	ComputeThread            * m_pComputeThread    { nullptr };
+	NNetModelReaderInterface * m_pNMRI              { nullptr };
+	NNetModelCommands        * m_pModelCommands    { nullptr };
+	SlowMotionRatio          * m_pSlowMotionRatio  { nullptr };
+	DisplayFunctor           * m_pStatusBarDisplay { nullptr };
+	Preferences              * m_pPreferences      { nullptr };
+	CommandStack             * m_pCommandStack     { nullptr };
+	MonitorWindow            * m_pMonitorWindow    { nullptr };
 };				          

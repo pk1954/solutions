@@ -14,7 +14,7 @@
 class Param;
 class Observable;
 class CommandStack;
-class NNetModelImport;
+class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 
@@ -27,7 +27,12 @@ using std::wostream;
 class NNetModelCommands
 {
 public:
-    void Initialize( NNetModelWriterInterface * const, CommandStack * const );
+    void Initialize
+    ( 
+        NNetModelReaderInterface * const, 
+        NNetModelWriterInterface * const, 
+        CommandStack * const 
+    );
 
     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
@@ -71,8 +76,9 @@ private:
     bool       IsTraceOn  ( ) const { return m_bTrace; }
     wostream & TraceStream( )       { return wcout; }
 
-    bool                       m_bTrace                  { true };
-    CommandStack             * m_pCmdStack               { nullptr };
-    NNetModelWriterInterface * m_pMWI                    { nullptr };
-    NNetModelImport          * m_pModelImport            { nullptr };
+    bool                       m_bTrace         { true };
+    CommandStack             * m_pCmdStack      { nullptr };
+    NNetModelReaderInterface * m_pNMRI          { nullptr };
+    NNetModelWriterInterface * m_pNMWI          { nullptr };
+    NNetModelImporter        * m_pModelImporter { nullptr };
 };

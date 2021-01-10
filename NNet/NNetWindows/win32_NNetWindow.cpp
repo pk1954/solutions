@@ -39,8 +39,7 @@ void NNetWindow::Start
 	bool                       const bShowRefreshRateDialog,
 	NNetController           * const pController,
 	NNetModelReaderInterface * const pModelReaderInterface,
-	BeaconAnimation          * const pBeaconAnimation,
-	MonitorData              * const pMonitorData
+	BeaconAnimation          * const pBeaconAnimation
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -54,9 +53,8 @@ void NNetWindow::Start
 	);
 	m_context.Start( hwnd );
 	m_pController      = pController;
-	m_pMRI             = pModelReaderInterface;
+	m_pNMRI             = pModelReaderInterface;
 	m_pBeaconAnimation = pBeaconAnimation;
-	m_pMonitorData     = pMonitorData;
 
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
@@ -69,13 +67,13 @@ void NNetWindow::Stop( )
 
 NNetWindow::~NNetWindow( )
 {
-	m_pMRI        = nullptr;
+	m_pNMRI        = nullptr;
 	m_pController = nullptr;
 }
 
 MicroMeterRect const NNetWindow::GetEnclosingRect() const 
 { 
-	return m_pMRI->GetEnclosingRect(); 
+	return m_pNMRI->GetEnclosingRect(); 
 }
 
 MicroMeterRect const NNetWindow::GetViewRect() const 
@@ -90,7 +88,7 @@ void NNetWindow::DrawInteriorInRect
 ) const
 {
 	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pMRI->Apply2AllInRect<Shape>
+	m_pNMRI->Apply2AllInRect<Shape>
 	(
 		GetCoord().Convert2MicroMeterRect( rect ),
 		[&](Shape const & s) { if (crit(s)) s.DrawInterior( m_context ); } 
@@ -100,7 +98,7 @@ void NNetWindow::DrawInteriorInRect
 void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 {
 	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pMRI->Apply2AllInRect<Shape>
+	m_pNMRI->Apply2AllInRect<Shape>
 	( 
 		GetCoord().Convert2MicroMeterRect( rect ),	
 		[&](Shape const & s) { s.DrawExterior( m_context ); } 
@@ -109,7 +107,7 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 
 void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 {
-	m_pMRI->Apply2AllInRect<Neuron>
+	m_pNMRI->Apply2AllInRect<Neuron>
 	( 
 		GetCoord().Convert2MicroMeterRect( rect ),
 		[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
@@ -118,7 +116,7 @@ void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 
 void NNetWindow::DrawSensors( ) const
 {
-	m_pMonitorData->Apply2AllSignals
+	m_pNMRI->GetMonitorData().Apply2AllSignals
 	(
 		[&](Signal const & signal)
 		{
@@ -133,7 +131,7 @@ ShapeId const NNetWindow::FindShapeAt
 	ShapeCrit  const & crit 
 ) const
 {	
-	return m_pMRI->FindShapeAt
+	return m_pNMRI->FindShapeAt
 	( 
 		GetCoord().Convert2MicroMeterPointPos( pixPoint ), 
 		[&]( Shape const & s ) { return crit( s ); } 

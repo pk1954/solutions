@@ -39,7 +39,7 @@ void PerformanceWindow::Start
 	m_pSlowMotionRatio      = pSlowMotionRatio;
 	m_pComputeThread        = pComputeThread;
 	m_pDisplayTimer         = pDisplayTimer;
-	m_pMRI = pModelInterface;
+	m_pNMRI = pModelInterface;
 }
 
 void PerformanceWindow::Stop( )
@@ -116,15 +116,15 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printMicroSecLine( textBuf, L"spent time:",    spent );
 		printFloatLine   ( textBuf, L"workload:",      Cast2Float( (spent / avail) * 100.0f ), L"%" );
 		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo( ), L"" );
-		printIntLine     ( textBuf, L"# Input  : ",    m_pMRI->GetNrOf<InputNeuron>() );
-		printIntLine     ( textBuf, L"# Neurons: ",    m_pMRI->GetNrOf<Neuron>() );
-		printIntLine     ( textBuf, L"# Knots  : ",    m_pMRI->GetNrOf<Knot>() );
-		printIntLine     ( textBuf, L"# Pipes  : ",    m_pMRI->GetNrOf<Pipe>() );
+		printIntLine     ( textBuf, L"# Input  : ",    m_pNMRI->GetNrOf<InputNeuron>() );
+		printIntLine     ( textBuf, L"# Neurons: ",    m_pNMRI->GetNrOf<Neuron>() );
+		printIntLine     ( textBuf, L"# Knots  : ",    m_pNMRI->GetNrOf<Knot>() );
+		printIntLine     ( textBuf, L"# Pipes  : ",    m_pNMRI->GetNrOf<Pipe>() );
 		printIntLine     ( textBuf, L"# Shapes : ", 
-			m_pMRI->GetNrOf<InputNeuron>() +
-		    m_pMRI->GetNrOf<Neuron>() +
-		    m_pMRI->GetNrOf<Knot>() +
-		    m_pMRI->GetNrOf<Pipe>() 
+			m_pNMRI->GetNrOf<InputNeuron>() +
+		    m_pNMRI->GetNrOf<Neuron>() +
+		    m_pNMRI->GetNrOf<Knot>() +
+		    m_pNMRI->GetNrOf<Pipe>() 
 		);
 	}
 }

@@ -9,8 +9,8 @@
 #include "AddIncoming2PipeCommand.h"
 #include "AddOutgoing2KnotCommand.h"
 #include "AddOutgoing2PipeCommand.h"
-#include "AnalyzeAnomaliesCommand.h"
-#include "AnalyzeLoopsCommand.h"
+#include "AnalyzeCommand.h"
+#include "Analyzer.h"
 #include "AppendNeuronCommand.h"
 #include "AppendInputNeuronCommand.h"
 #include "ClearBeepersCommand.h"
@@ -25,7 +25,7 @@
 #include "MoveSelectionCommand.h"
 #include "NewInputNeuronCommand.h"
 #include "NewNeuronCommand.h"
-#include "NNetModelImport.h"
+#include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
@@ -49,11 +49,13 @@ using std::unique_ptr;
 
 void NNetModelCommands::Initialize
 ( 
-	NNetModelWriterInterface * const pWriterInterface,
+	NNetModelReaderInterface * const pNMRI,
+	NNetModelWriterInterface * const pNMWI,
 	CommandStack             * const pCmdStack
 ) 
 { 
-	m_pMWI      = pWriterInterface;
+	m_pNMRI     = pNMRI;
+	m_pNMWI     = pNMWI;
 	m_pCmdStack = pCmdStack;
 }
 
@@ -77,9 +79,9 @@ void NNetModelCommands::ResetModel( )
 { 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pMWI->ResetModel( );
+	m_pNMWI->ResetModel( );
 	m_pCmdStack->Clear();
-	m_pMWI->CreateInitialShapes();
+	m_pNMWI->CreateInitialShapes();
 }
 
 void NNetModelCommands::ReadModel
@@ -91,7 +93,7 @@ void NNetModelCommands::ReadModel
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << bAsync << L" " << wstrPath << endl;
-	m_pModelImport->Import( wstrPath, bAsync );
+	m_pModelImporter->Import( wstrPath, bAsync );
 	m_pCmdStack->Clear();
 }
 
@@ -111,7 +113,7 @@ void NNetModelCommands::DeleteSelection( )
 	m_pCmdStack->OpenSeries();
 	{
 		vector<ShapeId> list;                         // detour with secondary list is neccessary!
-		m_pMWI->Apply2All<Shape>                      // cannot delete shapes directly in Apply2All
+		m_pNMWI->Apply2All<Shape>                      // cannot delete shapes directly in Apply2All
 		(                                                        
 			[&]( Shape const & s )                    // first construct list
 			{
@@ -134,7 +136,7 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << idSrc << L" " << idDst << endl;
 	unique_ptr<Command> pCmd;
-	if ( m_pMWI->IsPipe( idDst ) ) 
+	if ( m_pNMWI->IsPipe( idDst ) ) 
 		pCmd = make_unique<Connect2PipeCommand>( idSrc, idDst );
 	else
 		pCmd = make_unique<Connect2BaseKnotCommand>( idSrc, idDst );
@@ -144,7 +146,7 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 void NNetModelCommands::deleteShape( ShapeId const id )
 {
 	unique_ptr<Command> pCmd;
-	if ( m_pMWI->IsPipe( id )  ) 
+	if ( m_pNMWI->IsPipe( id )  ) 
 		pCmd = make_unique<DeletePipeCommand>( id ) ;
 	else 
 		pCmd = make_unique<DisconnectBaseKnotCommand>( id, true );
@@ -183,7 +185,7 @@ void NNetModelCommands::SetParameter( ParameterType::Value const param, float co
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << ParameterType::GetName( param ) << L" " << fNewValue << endl;
-	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pMWI->GetParams(), param, fNewValue ) ) );
+	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pNMWI->GetParams(), param, fNewValue ) ) );
 }
 
 void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
@@ -191,7 +193,7 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id << L" " << delta << endl;
 	unique_ptr<Command> pCmd;
-	if ( m_pMWI->IsPipe( id ) ) 
+	if ( m_pNMWI->IsPipe( id ) ) 
 		pCmd = make_unique<MovePipeCommand>( id, delta );
 	else 
 		pCmd = make_unique<MoveBaseKnotCommand>( id, delta );
@@ -337,12 +339,12 @@ void NNetModelCommands::AnalyzeLoops( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AnalyzeLoopsCommand>( ) );
+	m_pCmdStack->PushCommand( make_unique<AnalyzeCommand>( ModelAnalyzer::FindLoop(*m_pNMRI) ) );
 }
 
 void NNetModelCommands::AnalyzeAnomalies( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AnalyzeAnomaliesCommand>( ) );
+	m_pCmdStack->PushCommand( make_unique<AnalyzeCommand>( ModelAnalyzer::FindAnomaly(*m_pNMRI) ) );
 }

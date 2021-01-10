@@ -38,8 +38,7 @@ public:
 		bool                       const,
 		NNetController           * const,
 		NNetModelReaderInterface * const,
-		BeaconAnimation          * const,
-		MonitorData              * const
+		BeaconAnimation          * const
 	);
 
 	void Stop( );
@@ -69,8 +68,7 @@ protected:
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	NNetModelReaderInterface * m_pMRI         { nullptr };
-	MonitorData              * m_pMonitorData { nullptr };
+	NNetModelReaderInterface * m_pNMRI { nullptr };
 
 private:
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );

@@ -31,8 +31,7 @@ public:
     ShapeList & GetShapes() { return m_pModel->GetShapes(); }
     Param     & GetParams() { return m_pModel->GetParams(); }
 
-    NNetModel const & GetModel( )           const { return * m_pModel; }  // TODO: find better solution
-    size_t    const   GetSizeOfShapeList( ) const { return m_pModel->GetSizeOfShapeList( ); }
+    NNetModel const & GetModel() const { return * m_pModel; }  // TODO: find better solution
 
     Shape * const GetShape( ShapeId const );
 

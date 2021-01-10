@@ -31,7 +31,7 @@ public:
 
 private:
 	MainWindow               const * m_pMainWindow { nullptr };
-	NNetModelReaderInterface const * m_pMRI        { nullptr };
+	NNetModelReaderInterface const * m_pNMRI        { nullptr };
 
 	void printMicroMeter( TextBuffer &,	MicroMeter const );
 	void printMilliSecs ( TextBuffer &, MilliSecs  const );

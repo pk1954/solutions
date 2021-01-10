@@ -13,11 +13,14 @@
 
 class Knot;
 class Shape;
+class NNetModelReadInterface;
 class NNetModelWriterInterface;
 
 using std::vector;
 using std::wostream;
 using std::wstring;
+
+using ShapeStack = vector<Shape const *>;
 
 class ModelAnalyzer
 {
@@ -25,9 +28,8 @@ public:
 	static void SetStatusBarDisplay( DisplayFunctor * const func ) { m_pStatusBarDisplay = func; }
 	static void SetEscFunc ( bool (* func )( ) ) { m_pEscFunc = func; }
 
-	static bool FindLoop        ( NNetModelWriterInterface const & );
-	static bool FindAnomaly     ( NNetModelWriterInterface const & );
-	static void SelectLoopShapes( NNetModelWriterInterface & );
+	static ShapeStack const FindLoop   ( NNetModelReaderInterface const & );
+	static ShapeStack const FindAnomaly( NNetModelReaderInterface const & );
 
 	static MicroMeterRect GetEnclosingRect( );
 
@@ -36,12 +38,12 @@ private:
 	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };
 	inline static bool             m_bStop		       { false };
 	inline static int              m_iRecDepth	       { 0 };
-	inline static vector<Shape *>  m_shapeStack        { };
+	inline static ShapeStack       m_shapeStack        { };
 
 	inline static bool (* m_pEscFunc )( ) { nullptr };
 
-	static bool findLoop( Shape * const );
-	static bool hasAnomaly( Knot & );
+	static bool findLoop( Shape const & );
+	static bool hasAnomaly( Knot const & );
 
 	static void statusDisplay( wstring const str ) 
 	{ 

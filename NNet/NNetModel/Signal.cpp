@@ -35,7 +35,7 @@ float Signal::GetSignalValue( ) const
     float fResult   { 0.0f };
     float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
 
-    m_nmri.Apply2All<BaseKnot>
+    m_nmri.GetShapes().Apply2All<BaseKnot>
     ( 		
         [&](BaseKnot const & b) 
         {  

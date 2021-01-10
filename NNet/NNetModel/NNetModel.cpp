@@ -44,6 +44,7 @@ void NNetModel::Initialize
 	m_pStaticModelObservable    = pStaticModelObservable;
     m_pDynamicModelObservable   = pDynamicModelObservable;
 	m_pUnsavedChangesObservable = pUnsavedChangesObservable;
+	m_monitorData.Initialize( m_pStaticModelObservable );
 }                     
 
 void NNetModel::CheckModel( ) const
@@ -66,12 +67,14 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 
 void NNetModel::SetSimulationTime( fMicroSecs const newVal )	
 { 
+	assert( m_pDynamicModelObservable );
 	m_timeStamp = newVal; 
 	m_pDynamicModelObservable->NotifyAll( false );
 }
 
 void NNetModel::StaticModelChanged( )
 { 
+	assert( m_pStaticModelObservable );
 	m_pStaticModelObservable->NotifyAll( false );
 	m_enclosingRect = m_Shapes.EnclosingRect( );
 }
@@ -83,6 +86,7 @@ void NNetModel::RecalcAllShapes( )
 
 void NNetModel::ToggleStopOnTrigger( Neuron * pNeuron )
 {
+	assert( m_pStaticModelObservable );
 	pNeuron->StopOnTrigger( tBoolOp::opToggle );
 	m_pStaticModelObservable->NotifyAll( false );
 }
@@ -117,6 +121,7 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 
 bool NNetModel::Compute( )
 {
+	assert( m_pDynamicModelObservable );
 	bool bStop {false };
 	m_timeStamp += m_param.GetTimeResolution( );
 	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare( ); } );

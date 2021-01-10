@@ -10,7 +10,7 @@
 #include "Analyzer.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
-#include "NNetModelExport.h"
+#include "NNetModelExporter.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
 #include "Signal.h"
@@ -32,7 +32,7 @@
 
 void NNetController::Initialize
 (
-    NNetModelExport          * const pModelExport,
+    NNetModelExporter        * const pModelExporter,
     MainWindow               * const pMainWindow,
     WinManager               * const pWinManager,
     NNetModelReaderInterface * const pMRI,
@@ -46,10 +46,10 @@ void NNetController::Initialize
     MonitorWindow            * const pMonitorWindow
 ) 
 {
-    m_pModelExport            = pModelExport;
+    m_pModelExporter          = pModelExporter;
     m_pMainWindow             = pMainWindow;
     m_pWinManager             = pWinManager;
-    m_pMRI                    = pMRI;
+    m_pNMRI                    = pMRI;
     m_pModelCommands          = pModelCommands;
     m_pSlowMotionRatio        = pSlowMotionRatio;
     m_pComputeThread          = pComputeThread;
@@ -63,10 +63,10 @@ void NNetController::Initialize
 
 NNetController::~NNetController( )
 {
-    m_pModelExport      = nullptr;
+    m_pModelExporter    = nullptr;
     m_pMainWindow       = nullptr;
     m_pWinManager       = nullptr;
-    m_pMRI              = nullptr;
+    m_pNMRI              = nullptr;
     m_pModelCommands    = nullptr;
     m_pSlowMotionRatio  = nullptr;
     m_pComputeThread    = nullptr;
@@ -168,7 +168,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 
 void NNetController::pulseRateDlg( ShapeId const id )
 {
-    fHertz  const fOldValue { m_pMRI->GetPulseFrequency( id ) };
+    fHertz  const fOldValue { m_pNMRI->GetPulseFrequency( id ) };
     if ( fOldValue.IsNull() )
         return;
     HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
@@ -181,11 +181,11 @@ void NNetController::pulseRateDlg( ShapeId const id )
 
 void NNetController::triggerSoundDlg( ShapeId const id )
 {
-    ShapeType const type { m_pMRI->GetShapeType(id) };
+    ShapeType const type { m_pNMRI->GetShapeType(id) };
     if ( ! type.IsAnyNeuronType() )
         return;
 
-    TriggerSoundDialog dialog( m_pSound, m_pMRI->GetTriggerSound( id ) );
+    TriggerSoundDialog dialog( m_pSound, m_pNMRI->GetTriggerSound( id ) );
     dialog.Show( m_pMainWindow->GetWindowHandle() );
     m_pModelCommands->SetTriggerSound( id, dialog.GetSound() );
 }

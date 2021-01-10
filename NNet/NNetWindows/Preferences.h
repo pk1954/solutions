@@ -8,13 +8,13 @@
 
 using std::wstring;
 
-class NNetModelImport;
+class NNetModelImporter;
 class Sound;
 
 class Preferences
 {
 public:
-	void Initialize( Sound &, NNetModelImport & );
+	void Initialize( Sound &, NNetModelImporter & );
 	bool ReadPreferences( );
 	bool WritePreferences( wstring const );
 

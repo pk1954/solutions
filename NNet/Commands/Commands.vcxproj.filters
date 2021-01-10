@@ -54,12 +54,6 @@
     <ClInclude Include="NewNeuronCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AnalyzeAnomaliesCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnalyzeLoopsCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SetTriggerSoundCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -118,6 +112,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InsertBaseKnotCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnalyzeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,8 @@ public:
 
 	void DumpModel( ) const { m_pModel->DumpModel(); }
 
+	ShapeList const & GetShapes() const { return m_pModel->GetShapes(); }
+
 	bool            const IsSelected                ( ShapeId const ) const;
 	ShapeType       const GetShapeType              ( ShapeId const ) const;
 	fHertz          const GetPulseFrequency         ( ShapeId const ) const;
@@ -40,7 +42,7 @@ public:
 	bool            const   IsValidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
 	MicroMeterPoint const   GetShapePos   ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
 	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape               (id); }
-	size_t          const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }
+	size_t          const   GetSizeOfShapeList( )              const { return m_pModel->GetShapes().Size(); }
 	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
 	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
 	MonitorData     const & GetMonitorData( )                  const { return m_pModel->GetMonitorData    ( ); }
@@ -68,41 +70,15 @@ public:
 	template <Shape_t T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
 
 	template <Shape_t T>   // const version
-	bool Apply2AllB( function<bool(T const &)> const & func ) const
-	{
-		bool bResult { false };
-		for ( Shape_t auto pShape : m_pModel->GetShapes() )
-		{
-			if ( pShape )
-			{
-				if ( HasType<T>( * pShape ) )	
-					bResult = func( static_cast<T const &>( * pShape ) );
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
-	}
-
-	template <Shape_t T>    // const version
-	void Apply2All( function<void(T const &)> const & func ) const
-	{
-		m_pModel->GetShapes().Apply2All
-		( 
-			[&](Shape const & s) { if ( HasType<T>(s) ) func( static_cast<T const &>(s) ); }
-		);
-	}                        
-
-	template <Shape_t T>   // const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
 	{
-		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+		GetShapes().Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}
 
 	template <Shape_t T>  // const version
 	void Apply2AllSelected( function<void(T const &)> const & func ) const
 	{
-		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
+		GetShapes().Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
 	}
 
 	void CheckModel() 

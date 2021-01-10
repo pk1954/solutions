@@ -36,7 +36,7 @@ void CrsrWindow::Start
 ) 
 {
 	m_pMainWindow           = pNNetWindow;
-	m_pMRI = pModelInterface;
+	m_pNMRI = pModelInterface;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -100,7 +100,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	if ( IsUndefined(id) )
 		return;
 
-	ShapeType const type { m_pMRI->GetShapeType( id ) };
+	ShapeType const type { m_pNMRI->GetShapeType( id ) };
 
 	textBuf.printString( L"Shape #" );
 	textBuf.printNumber( id.GetValue() );
@@ -113,12 +113,12 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	if ( type.IsPipeType( ) )
 	{
 		textBuf.printString( L"# segments:" );
-		textBuf.printNumber( m_pMRI->GetNrOfSegments( id ) );
-		potential = m_pMRI->GetVoltage( id, umPoint );
+		textBuf.printNumber( m_pNMRI->GetNrOfSegments( id ) );
+		potential = m_pNMRI->GetVoltage( id, umPoint );
 	}
 	else 
 	{
-		potential = m_pMRI->GetVoltage( id );
+		potential = m_pNMRI->GetVoltage( id );
 	}
 
 	textBuf.nextLine( L"potential " );
@@ -128,7 +128,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	if ( type.IsAnyNeuronType( ) )
 	{
-		SoundDescr sound { m_pMRI->GetTriggerSound( id ) };
+		SoundDescr sound { m_pNMRI->GetTriggerSound( id ) };
 		if ( sound.m_bOn )
 		{
 			textBuf.nextLine( L"trigger sound:" );
@@ -140,7 +140,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		if ( type.IsInputNeuronType( ) )
 		{
 			textBuf.printString( L"pulse freq: " );
-			printFrequency( textBuf, m_pMRI->GetPulseFrequency( id ) );
+			printFrequency( textBuf, m_pNMRI->GetPulseFrequency( id ) );
 			textBuf.nextLine();
 		}
 	}

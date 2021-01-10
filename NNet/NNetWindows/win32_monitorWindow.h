@@ -96,7 +96,7 @@ private:
 
 	Sound                          * m_pSound           { nullptr };
 	NNetController                 * m_pController      { nullptr };
-	NNetModelReaderInterface const * m_pMRI             { nullptr };
+	NNetModelReaderInterface const * m_pNMRI             { nullptr };
 	MonitorData                    * m_pMonitorData     { nullptr };  
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };

@@ -11,8 +11,8 @@
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
-#include "NNetModelImport.h"
-#include "NNetModelExport.h"
+#include "NNetModelImporter.h"
+#include "NNetModelExporter.h"
 #include "CommandStack.h"
 #include "DisplayFunctor.h"
 #include "TimeDisplay.h"
@@ -102,7 +102,7 @@ private:
 
 	void writeModel( )
 	{
-		m_modelExport.WriteModel( );
+		m_modelExporter.WriteModel( );
 		m_nmwi.SetUnsavedChanges( false );
 	}
 
@@ -125,7 +125,7 @@ private:
 
 	HWND                      m_hwndConsole              { nullptr };
 	HWND                      m_hwndApp                  { nullptr };
-	ReadModelResult         * m_pReadModelResult         { nullptr };
+	ImportTermination       * m_pImportTermination       { nullptr };
 	WinSound                  m_sound                    { };
 	int                       m_statusMessagePart        { };
 	WinManager                m_WinManager               { };
@@ -159,8 +159,8 @@ private:
 	MiniWindow                m_miniNNetWindow           { };
 	MonitorWindow             m_monitorWindow            { };
 	ParameterDialog           m_parameterDlg             { };
-	NNetModelImport           m_modelImport              { };
-	NNetModelExport           m_modelExport              { };
+	NNetModelImporter         m_modelImporter            { };
+	NNetModelExporter         m_modelExporter            { };
 	StatusBarDisplayFunctor   m_statusBarDispFunctor     { };
 	NNetModel                 m_model                    { };
 	NNetColors                m_NNetColors               { };
@@ -173,7 +173,6 @@ private:
 	UndoRedoMenu              m_undoRedoMenu             { };
 	BeaconAnimation           m_beaconAnimation          { };
 	ScriptFile                m_scriptFile               { };
-	MonitorData               m_monitorData              { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

@@ -11,7 +11,7 @@
 #include "symtab.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
-#include "NNetModelImport.h"
+#include "NNetModelImporter.h"
 #include "NNetParameters.h"
 #include "win32_NNetAppMenu.h"
 #include "Preferences.h"
@@ -62,8 +62,8 @@ private:
 class WrapReadModel: public Script_Functor
 {
 public:
-    WrapReadModel( NNetModelImport & modelImport )
-        : m_modelImport( modelImport)
+    WrapReadModel( NNetModelImporter & modelImporter )
+        : m_modelImporter( modelImporter )
     {}
 
     virtual void operator() ( Script & script ) const
@@ -81,11 +81,11 @@ public:
             if ( iRes != IDYES )
                 return;
         }
-        m_modelImport.Import( wstrModelFile, true );
+        m_modelImporter.Import( wstrModelFile, true );
     }
 
 private:
-    NNetModelImport & m_modelImport;
+    NNetModelImporter & m_modelImporter;
 };
 
 static wstring const PREF_ON  { L"ON"  };
@@ -95,8 +95,8 @@ wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
 void Preferences::Initialize
 ( 
-    Sound           & sound, 
-    NNetModelImport & modelImport
+    Sound             & sound, 
+    NNetModelImporter & modelImporter
 )
 {
     wchar_t szBuffer[MAX_PATH];
@@ -108,7 +108,7 @@ void Preferences::Initialize
     
     SymbolTable::ScrDefConst( L"SetAutoOpen", new WrapSetAutoOpen );
     SymbolTable::ScrDefConst( L"SetSound",    new WrapSetSound (sound) );
-    SymbolTable::ScrDefConst( L"ReadModel",   new WrapReadModel(modelImport) );
+    SymbolTable::ScrDefConst( L"ReadModel",   new WrapReadModel(modelImporter) );
 
     SymbolTable::ScrDefConst( PREF_OFF, 0L );
     SymbolTable::ScrDefConst( PREF_ON,  1L );

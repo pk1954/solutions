@@ -68,6 +68,16 @@ public:
 		return move( upT );
 	}
 
+	template <Shape_t T>    // const version
+	void Apply2All( function<void(T const &)> const & func ) const
+	{
+		for ( auto & it : m_list )
+		{ 
+			if ( HasType<T>( * it.get() ) ) 
+				func( static_cast<T const &>( * it.get() ) );
+		};
+	}                        
+
 	template <Shape_t T>
 	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{

@@ -22,8 +22,8 @@ private:
 
 		static SelShapesIndex const SSI_NULL( SelShapesIndex::NULL_VAL() );
 
-		size_t        sizeOfModel { nmwi.GetSizeOfShapeList() };
-		SSIndexVector indexList   ( sizeOfModel, SSI_NULL );      // indices into m_copies
+		long          lSizeOfModel { nmwi.GetShapes().Size() };
+		SSIndexVector indexList( lSizeOfModel, SSI_NULL );      // indices into m_copies
 
 		auto dstFromSrc = [&](Shape const * pSrc )
 		{ 
@@ -37,7 +37,7 @@ private:
 			return (Shape *)0;
 		};
 
-		ShapeId idShapeCopy { ShapeId( Cast2Long(sizeOfModel) ) };
+		ShapeId idShapeCopy { ShapeId( lSizeOfModel ) };
 
 		nmwi.Apply2AllSelected<Shape>
 		(
