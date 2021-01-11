@@ -285,19 +285,19 @@ void NNetModelImporter::prepareForReading( )
 
 void NNetModelImporter::readModel( ) 
 {
-    wstring                   wstrModelFile { m_nmwi.GetModel().GetModelFilePath() };
     ImportTermination::Result res;
 
-    if ( ProcessNNetScript( m_pScript, m_nmwi.GetShapes(), wstrModelFile ) )
+    if ( ProcessNNetScript( m_pScript, m_ImportedNMWI.GetShapes(), m_wstrFile2Read ) )
     {
-        m_nmwi.RemoveOrphans();
+        m_ImportedNMWI.RemoveOrphans();
+        m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
         res = ImportTermination::Result::ok;
     }
     else
     {
         res = ImportTermination::Result::errorInFile;
     }
-    m_pTermination->Reaction( res, wstrModelFile );
+    m_pTermination->Reaction( res, m_wstrFile2Read );
 }
 
 static unsigned int __stdcall readModelThreadProc( void * data ) 
@@ -314,15 +314,15 @@ bool NNetModelImporter::Import
     bool    const bAsync
 )
 {
-    if ( m_upModel.get() ) 
+    if ( m_upImportedModel.get() ) 
         return false;       // another import is already running
 
     if ( ! exists( wstrPath ) )
         m_pTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );
 
-    m_upModel = make_unique<NNetModel>(); // do not initialize here
-    m_nmwi.Start( m_upModel.get() );
-    m_nmwi.SetModelFilePath( wstrPath );
+    m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
+    m_ImportedNMWI.Start( m_upImportedModel.get() );
+    m_wstrFile2Read = wstrPath;
     wcout << L"*** Reading file " << wstrPath << endl;
     if ( bAsync )
     {
@@ -338,5 +338,5 @@ bool NNetModelImporter::Import
 
 unique_ptr<NNetModel> NNetModelImporter::GetImportedModel( ) 
 { 
-    return move( m_upModel ); 
+    return move( m_upImportedModel ); 
 }

@@ -51,7 +51,7 @@ private:
 		for ( UPShape & upShapeDst : m_copies )  // link shapes
 		{
 			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
-			nmwi.GetModel().GetShapes().LinkShape( shapeSrc, dstFromSrc );
+			nmwi.GetShapes().LinkShape( shapeSrc, dstFromSrc );
 			upShapeDst->SetId( idShapeCopy++ );
 		}
 		m_iSizeOfSelection = Cast2Int(m_copies.size());

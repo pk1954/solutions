@@ -43,8 +43,9 @@
 #define IDM_OPEN_MODEL           153
 #define IDM_ADD_MODEL            154
 #define IDM_READ_MODEL_FINISHED  155
-#define IDM_CENTERING_FINISHED   156
-#define IDM_NEW_MODEL            157
+#define IDM_READ_MODEL_FAILED    156
+#define IDM_CENTERING_FINISHED   157
+#define IDM_NEW_MODEL            158
 
 #define IDD_PULSE_RATE           160
 

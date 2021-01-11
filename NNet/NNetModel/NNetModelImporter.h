@@ -51,11 +51,14 @@ public:
 
 	unique_ptr<NNetModel> GetImportedModel( );
 
-private:
-	NNetModelWriterInterface & getWriterInterface() { return m_nmwi; }
+	wstring const GetFilePath() { return m_wstrFile2Read; }
 
-	unique_ptr<NNetModel>    m_upModel;
-	NNetModelWriterInterface m_nmwi;
+private:
+	NNetModelWriterInterface & getWriterInterface() { return m_ImportedNMWI; }
+
+	unique_ptr<NNetModel>    m_upImportedModel;
+	NNetModelWriterInterface m_ImportedNMWI;
+	wstring                  m_wstrFile2Read;
 	Script                 * m_pScript      { nullptr };
 	ImportTermination      * m_pTermination { nullptr };
 

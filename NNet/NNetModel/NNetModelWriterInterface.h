@@ -21,20 +21,31 @@ using std::move;
 class NNetModelWriterInterface
 {
 public:
-	void Start( NNetModel * const );
-	void Stop(); 
-
+	void          Start( NNetModel * const );
+	void          Stop(); 
     void          CreateInitialShapes();
     void          RemoveOrphans( );
     void          SelectBeepers();
     void          SelectShape( ShapeId const, tBoolOp const );
+    void          ToggleStopOnTrigger( ShapeId const );
     Shape * const GetShape( ShapeId const );
 
-    ShapeList & GetShapes() { return m_pModel->GetShapes(); }
-    Param     & GetParams() { return m_pModel->GetParams(); }
+    ShapeList   & GetShapes()      { return m_pModel->GetShapes(); }
+    Param       & GetParams()      { return m_pModel->GetParams(); }
+    MonitorData & GetMonitorData() { return m_pModel->GetMonitorData(); }
 
-    void              DumpModel( ) const { m_pModel->DumpModel(); }
-    NNetModel const & GetModel( )  const { return * m_pModel; }  // TODO: find better solution
+    void CheckModel( ) { m_pModel->CheckModel(); }
+    void ResetModel( ) { m_pModel->ResetModel(); }
+    void ClearModel( ) { m_pModel->GetShapes().Apply2All([&](Shape & s) { s.Clear( ); }); }
+
+    void DumpModel( ) const { m_pModel->DumpModel(); }
+
+    void  SelectSubtree(BaseKnot* const p, tBoolOp const o) { m_pModel->SelectSubtree(p, o); }
+    float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
+    void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
+    void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
+
+    wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
     bool const IsPipe( ShapeId const id )
     {
@@ -55,12 +66,6 @@ public:
         return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
     }
 
-    MonitorData & GetMonitorData( ) { return m_pModel->GetMonitorData(); }
-
-    void CheckModel( ) { m_pModel->CheckModel(); }
-    void ResetModel( ) { m_pModel->ResetModel(); }
-    void ClearModel( ) { m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); }
-
     template <Shape_t NEW, Shape_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
@@ -80,15 +85,9 @@ public:
         return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector(), NEURON_RADIUS*2.f );
     }
 
-    void SelectSubtree(BaseKnot* const p, tBoolOp const o) { m_pModel->SelectSubtree(p, o); }
-
-    float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
-
-    void SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
-    void AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
-
-    void ToggleStopOnTrigger( ShapeId const );
-
+#ifdef _DEBUG
+    NNetModel const & GetModel( )  const { return * m_pModel; }  // TODO: find better solution
+#endif
 private:
 
     NNetModel * m_pModel { nullptr };

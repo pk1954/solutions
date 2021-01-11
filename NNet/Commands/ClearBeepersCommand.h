@@ -43,7 +43,7 @@ public:
 			);
 			m_bInitialized = true;
 		}
-		if ( nmwi.GetModel().GetShapes().AnyShapesSelected() )
+		if ( nmwi.GetShapes().AnyShapesSelected() )
 			clearAllSelected( nmwi );
 		else
 			clearAll( nmwi );

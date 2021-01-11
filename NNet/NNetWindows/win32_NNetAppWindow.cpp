@@ -69,16 +69,15 @@ public:
 		switch ( res )
 		{
 		case ImportTermination::Result::ok:
-			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( true ) );
+			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, 0 );
 			break;
 
 		case ImportTermination::Result::fileNotFound:
 			MessageBox( nullptr, name.c_str(), L"Could not find model file", MB_OK );
-			PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
 			break;
 
 		case ImportTermination::Result::errorInFile:
-			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( false ) );
+			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FAILED, 0 );
 			break;
 
 		default:
@@ -486,22 +485,20 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	break;
 
 	case IDM_READ_MODEL_FINISHED:
-		{
-			bool bSuccess { static_cast<bool>(lParam) };
-			if ( bSuccess )
-			{
-				m_model = move(* m_modelImporter.GetImportedModel());
-				m_mainNNetWindow.CenterModel( );
-				m_StatusBar.ClearPart( m_statusMessagePart );
-				m_appTitle.SetUnsavedChanges( false );
-			}
-			else
-			{
-				wstring wstrModelPath { m_nmri.GetModelFilePath() };
-				MessageBox( nullptr, wstrModelPath.c_str(), L"Error in model file. Using default model.", MB_OK );
-				OnCommand( IDM_NEW_MODEL, 0, PP_NULL );
-			}
-		}
+		m_model = move(* m_modelImporter.GetImportedModel());
+		m_StatusBar.ClearPart( m_statusMessagePart );
+		m_mainNNetWindow.CenterModel( );
+		m_appTitle.SetUnsavedChanges( false );
+		break;
+
+	case IDM_READ_MODEL_FAILED:
+		MessageBox
+		( 
+			nullptr, 
+			m_modelImporter.GetFilePath().c_str(), 
+			L"Error in model file. See main_trace.out for details", 
+			MB_OK 
+		);
 		break;
 
 	case IDM_CENTERING_FINISHED:
