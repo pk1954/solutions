@@ -25,7 +25,6 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	(m_Shapes                    == rhs.m_Shapes                    ) &&
 	(m_timeStamp                 == rhs.m_timeStamp                 ) &&
 	(m_pStaticModelObservable    == rhs.m_pStaticModelObservable    ) &&
-	(m_pDynamicModelObservable   == rhs.m_pDynamicModelObservable   ) &&
 	(m_enclosingRect             == rhs.m_enclosingRect             ) &&
 	(m_wstrModelFilePath         == rhs.m_wstrModelFilePath         ) &&
 	(m_description               == rhs.m_description               ) &&
@@ -35,12 +34,10 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 
 void NNetModel::Initialize
 (
-	Observable * const pStaticModelObservable,
-	Observable * const pDynamicModelObservable
+	Observable * const pStaticModelObservable
 )
 {				
 	m_pStaticModelObservable  = pStaticModelObservable;
-    m_pDynamicModelObservable = pDynamicModelObservable;
 	m_monitorData.Initialize( m_pStaticModelObservable );
 }                     
 
@@ -60,13 +57,6 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 		return nullptr;
 	}
 	return m_Shapes.GetAt( id );
-}
-
-void NNetModel::SetSimulationTime( fMicroSecs const newVal )	
-{ 
-	assert( m_pDynamicModelObservable );
-	m_timeStamp = newVal; 
-	m_pDynamicModelObservable->NotifyAll( false );
 }
 
 void NNetModel::StaticModelChanged( )
@@ -119,12 +109,10 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 
 bool NNetModel::Compute( )
 {
-	assert( m_pDynamicModelObservable );
 	bool bStop {false };
 	m_timeStamp += m_param.GetTimeResolution( );
 	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare( ); } );
 	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep( ) ) bStop = true; } );
-	m_pDynamicModelObservable->NotifyAll( false );
 	return bStop;
 }
 

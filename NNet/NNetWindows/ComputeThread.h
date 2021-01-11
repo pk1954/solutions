@@ -21,6 +21,7 @@ public:
 		NNetModel       * const,
 		SlowMotionRatio * const,
 		Observable      * const,
+		Observable      * const,
 		Observable      * const
 	);
 
@@ -42,10 +43,12 @@ public:
 
 private:
 
-	NNetModel       * m_pModel                 { nullptr };
-	SlowMotionRatio * m_pSlowMotionRatio       { nullptr };
-	Observable      * m_pRunObservable         { nullptr };
-	Observable      * m_pPerformanceObservable { nullptr };
+	NNetModel       * m_pModel                  { nullptr };
+	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
+	Observable      * m_pRunObservable          { nullptr };
+	Observable      * m_pPerformanceObservable  { nullptr };
+	Observable      * m_pDynamicModelObservable { nullptr };
+	
 	bool              m_bStopped               { true };          // visible to UI
 	bool              m_bComputationLocked     { true };          // internal lock (short time)
 	HiResTimer        m_hrTimer                { };

@@ -52,13 +52,15 @@ void NNetModelCommands::Initialize
 	NNetModelReaderInterface * const pNMRI,
 	NNetModelWriterInterface * const pNMWI,
 	NNetModelImporter        * const pModelImporter,
+	Observable               * const pDynamicModelObservable,
 	CommandStack             * const pCmdStack
 ) 
 { 
-	m_pNMRI          = pNMRI;
-	m_pNMWI          = pNMWI;
-	m_pModelImporter = pModelImporter;
-	m_pCmdStack      = pCmdStack;
+	m_pNMRI                   = pNMRI;
+	m_pNMWI                   = pNMWI;
+	m_pModelImporter          = pModelImporter;
+	m_pDynamicModelObservable = pDynamicModelObservable;
+	m_pCmdStack               = pCmdStack;
 }
 
 void NNetModelCommands::UndoCommand( )
@@ -84,6 +86,7 @@ void NNetModelCommands::ResetModel( )
 	m_pNMWI->ResetModel( );
 	m_pCmdStack->Clear();
 	m_pNMWI->CreateInitialShapes();
+	m_pDynamicModelObservable->NotifyAll( false );
 }
 
 void NNetModelCommands::ReadModel

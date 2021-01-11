@@ -32,7 +32,8 @@ public:
         NNetModelReaderInterface * const, 
         NNetModelWriterInterface * const,
         NNetModelImporter        * const,
-        CommandStack * const 
+        Observable               * const,
+        CommandStack             * const 
     );
 
     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
@@ -77,9 +78,10 @@ private:
     bool       IsTraceOn  ( ) const { return m_bTrace; }
     wostream & TraceStream( )       { return wcout; }
 
-    bool                       m_bTrace         { true };
-    CommandStack             * m_pCmdStack      { nullptr };
-    NNetModelReaderInterface * m_pNMRI          { nullptr };
-    NNetModelWriterInterface * m_pNMWI          { nullptr };
-    NNetModelImporter        * m_pModelImporter { nullptr };
+    bool                       m_bTrace                  { true };
+    CommandStack             * m_pCmdStack               { nullptr };
+    NNetModelReaderInterface * m_pNMRI                   { nullptr };
+    NNetModelWriterInterface * m_pNMWI                   { nullptr };
+    NNetModelImporter        * m_pModelImporter          { nullptr };
+    Observable               * m_pDynamicModelObservable { nullptr };
 };

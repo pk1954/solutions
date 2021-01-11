@@ -127,10 +127,10 @@ void NNetAppWindow::Start( MessagePump & pump )
 	Shape::Initialize( m_model.GetParams() );
 
 	m_pImportTermination = new NNetImportTermination( m_hwndApp );
-	m_model          .Initialize( &m_staticModelObservable, &m_dynamicModelObservable );
+	m_model          .Initialize( &m_staticModelObservable );
 	m_modelImporter  .Initialize( &m_script, m_pImportTermination );
 	m_modelExporter  .Initialize( &m_nmri );
-	m_modelCommands  .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_cmdStack );
+	m_modelCommands  .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
 	m_cmdStack       .Initialize( &m_nmwi, &m_commandStackObservable );
 	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );
@@ -162,12 +162,20 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_nmri         .Start( & m_model );
 	m_nmwi         .Start( & m_model );
-	m_computeThread.Start( & m_model, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar    .Start( m_hwndApp );
 	m_descWindow   .Start( m_hwndApp );
 	m_undoRedoMenu .Start( & m_appMenu );
 	pump.RegisterWindow( m_descWindow.GetWindowHandle(), true );
+
+	m_computeThread.Start
+	( 
+		& m_model, 
+		& m_SlowMotionRatio, 
+		& m_runObservable, 
+		& m_performanceObservable, 
+		& m_dynamicModelObservable 
+	);
 
 	m_mainNNetWindow.Start
 	( 
@@ -257,7 +265,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	Show( true );
 
 	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( ) )
-		m_modelCommands.ResetModel( );
+		m_modelCommands.ResetModel();
 
 	m_bStarted = true;
 }

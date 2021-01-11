@@ -15,14 +15,17 @@ void ComputeThread::Start
 	NNetModel       * const pModel,
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
-	Observable      * const pPerformanceObservable
+	Observable      * const pPerformanceObservable,
+	Observable      * const pDynamicModelObservable
 ) 
 {
-	m_pModel                 = pModel;
-	m_pRunObservable         = pRunObservable;
-	m_pPerformanceObservable = pPerformanceObservable;
-	m_pSlowMotionRatio       = pSlowMotionRatio;
+	m_pModel                  = pModel;
+	m_pRunObservable          = pRunObservable;
+	m_pPerformanceObservable  = pPerformanceObservable;
+	m_pDynamicModelObservable = pDynamicModelObservable;
+	m_pSlowMotionRatio        = pSlowMotionRatio;
 	m_pModel->SetSimulationTime( );
+	m_pPerformanceObservable->NotifyAll( false );
 	reset( );
 	AcquireSRWLockExclusive( & m_srwlStopped );
 	BeginThread( L"ComputeThread" ); 
@@ -121,6 +124,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 					m_bStopped = true;
 					m_pRunObservable->NotifyAll( false ); // notify observers, that computation stopped
 				}
+				m_pDynamicModelObservable->NotifyAll( false );
 				++lCyclesDone;
 			}
 			Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
@@ -145,6 +149,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 void ComputeThread::SingleStep( ) 
 { 
 	m_pModel->Compute( );
+	m_pDynamicModelObservable->NotifyAll( false );
 }
 
 fMicroSecs const ComputeThread::simuTimeSinceLastReset()

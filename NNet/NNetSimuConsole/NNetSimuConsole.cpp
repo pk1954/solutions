@@ -85,8 +85,8 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable, m_animationDummy );
 	Shape::Initialize( m_model.GetParams() );
 
-	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_cmdStack	);
-	m_model        .Initialize( & m_staticModelObservable, & m_dynamicModelObservable );
+	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_dynamicModelObservable, & m_cmdStack	);
+	m_model        .Initialize( & m_staticModelObservable );
 	m_modelImporter.Initialize(	nullptr, m_pImportTermination );
 	m_modelExporter.Initialize( & m_nmri );
 
