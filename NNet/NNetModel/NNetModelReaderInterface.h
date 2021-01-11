@@ -22,8 +22,7 @@ public:
 	void Stop ( )                          { m_pModel = nullptr; }
 
 	void DumpModel( ) const { m_pModel->DumpModel(); }
-
-	ShapeList const & GetShapes() const { return m_pModel->GetShapes(); }
+	void CheckModel() const { m_pModel->CheckModel(); };
 
 	bool            const IsSelected                ( ShapeId const ) const;
 	ShapeType       const GetShapeType              ( ShapeId const ) const;
@@ -38,54 +37,28 @@ public:
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
-	bool            const   AnyShapesSelected( )               const { return m_pModel->GetShapes().AnyShapesSelected( ); }
-	bool            const   IsValidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
-	MicroMeterPoint const   GetShapePos   ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
-	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape               (id); }
-	size_t          const   GetSizeOfShapeList( )              const { return m_pModel->GetShapes().Size(); }
-	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
-	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
-	MonitorData     const & GetMonitorData( )                  const { return m_pModel->GetMonitorData    ( ); }
-	float           const   GetParameter( ParameterType::Value const p ) const { return m_pModel->GetParameter( p ); }
-	fMicroSecs      const   GetTimeResolution( )               const { return m_pModel->GetParams().GetTimeResolution(); };
-	wstring         const   GetModelFilePath()                 const { return m_pModel->GetModelFilePath(); }
+	ShapeList       const & GetShapes()                                const { return m_pModel->GetShapes(); }
+	bool            const   AnyShapesSelected( )                       const { return m_pModel->GetShapes().AnyShapesSelected( ); }
+	bool            const   IsValidShapeId( ShapeId const id )         const { return m_pModel->GetShapes().IsValidShapeId  (id); }
+	MicroMeterPoint const   GetShapePos   ( ShapeId const id )         const { return m_pModel->GetShapePos                 (id); }
+	Shape           const * GetConstShape ( ShapeId const id )         const { return m_pModel->GetConstShape               (id); }
+	size_t          const   GetSizeOfShapeList( )                      const { return m_pModel->GetShapes().Size(); }
+	fMicroSecs      const   GetSimulationTime( )                       const { return m_pModel->GetSimulationTime ( ); }
+	MicroMeterRect  const   GetEnclosingRect( )                        const { return m_pModel->GetEnclosingRect  ( ); }
+	MonitorData     const & GetMonitorData( )                          const { return m_pModel->GetMonitorData    ( ); }
+	fMicroSecs      const   GetTimeResolution( )                       const { return m_pModel->GetParams().GetTimeResolution(); };
+	wstring         const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
+	float           const   GetParameter(ParameterType::Value const p) const { return m_pModel->GetParameter( p ); }
 
 	MicroMeterPoint const OrthoVector( ShapeId const ) const;
+	ShapeId         const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior  ( ShapeId const, DrawContext const & ) const;
 	void DrawNeuronText( ShapeId const, DrawContext const & ) const;
 
-	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
-
-	template <Shape_t T>
-	T const GetConstShapePtr( ShapeId const id ) const
-	{
-		Shape const * const pShape { GetConstShape( id ) };
-		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
-	}
-
 	template <Shape_t T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
 	template <Shape_t T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
-
-	template <Shape_t T>   // const version
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
-	{
-		GetShapes().Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
-	}
-
-	template <Shape_t T>  // const version
-	void Apply2AllSelected( function<void(T const &)> const & func ) const
-	{
-		GetShapes().Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
-	}
-
-	void CheckModel() 
-	{ 
-#ifdef _DEBUG
-		m_pModel->CheckModel(); 
-#endif
-	};
 
 private:
 	NNetModel const * m_pModel;

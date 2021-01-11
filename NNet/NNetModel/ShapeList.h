@@ -78,6 +78,12 @@ public:
 		};
 	}                        
 
+	template <Shape_t T>   // const version
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
+	{
+		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+	}
+
 	template <Shape_t T>
 	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{

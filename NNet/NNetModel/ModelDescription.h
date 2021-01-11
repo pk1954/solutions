@@ -17,7 +17,7 @@ public:
 	{
 		if ( m_lines.size() != rhs.m_lines.size()  )
 			return false;
-		for ( int i = 0; i <= m_lines.size(); ++i )
+		for ( int i = 0; i < m_lines.size(); ++i )
 			if ( m_lines[i] != rhs.m_lines[i] )
 				return false;
 		return true;

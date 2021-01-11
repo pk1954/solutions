@@ -102,8 +102,6 @@ void NNetModelCommands::ReadModel
 	m_pCmdStack->Clear();
 }
 
-///////////////////// xxxxxx commands /////////////////////////////
-
 void NNetModelCommands::DeleteShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
@@ -133,8 +131,6 @@ void NNetModelCommands::DeleteSelection( )
 	}
 	m_pCmdStack->CloseSeries();
 }
-
-///////////////////// undoable commands /////////////////////////////
 
 void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 {

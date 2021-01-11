@@ -320,7 +320,7 @@ bool NNetModelImporter::Import
 )
 {
     if ( m_upModel.get() ) 
-        return false;       // import running
+        return false;       // another import is already running
 
     if ( ! exists( wstrPath ) )
         m_pTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );

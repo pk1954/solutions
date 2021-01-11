@@ -488,10 +488,12 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDM_READ_MODEL_FINISHED:
 		{
-			bool    bSuccess      { static_cast<bool>(lParam) };
+			bool bSuccess { static_cast<bool>(lParam) };
 			if ( bSuccess )
 			{
 				m_model = move(* m_modelImporter.GetImportedModel());
+				m_model.Initialize( & m_staticModelObservable );
+				m_model.StaticModelChanged( );
 				m_mainNNetWindow.CenterModel( );  // computation will be started when done
 				m_StatusBar.ClearPart( m_statusMessagePart );
 				m_appTitle.SetUnsavedChanges( false );
