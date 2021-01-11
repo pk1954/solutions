@@ -97,14 +97,6 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	return bResult;
 }
 
-MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
-{
-	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
-	for ( auto const & pShape : m_shapeStack )
-		Expand( rect, pShape );
-	return rect;
-}
-
 bool ModelAnalyzer::hasAnomaly( Knot const & knot )
 {
 	bool bFoundAnomaly { false };

@@ -50,11 +50,11 @@ private:
     class OpenBracket  : public Command { };
     class CloseBracket : public Command { };
 
-    vector<unique_ptr<Command>> m_CommandStack    { };
-    size_t                      m_iIndex          { 0 };     // index into m_Commandstack
-    bool                        m_bIndexInSeries  { false }; // index in series?
-    NNetModelWriterInterface  * m_pNMWI           { nullptr };
-    Observable                * m_pObservable     { nullptr };
+    vector<unique_ptr<Command>> m_CommandStack           { };
+    size_t                      m_iIndex                 { 0 };     // index into m_Commandstack
+    bool                        m_bIndexInSeries         { false }; // index in series?
+    NNetModelWriterInterface  * m_pNMWI                  { nullptr };
+    Observable                * m_pStaticModelObservable { nullptr };
 
     Command & getCurrentCmd( ) { return * m_CommandStack.at( m_iIndex ); }
 

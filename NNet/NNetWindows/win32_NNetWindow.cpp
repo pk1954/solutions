@@ -71,11 +71,6 @@ NNetWindow::~NNetWindow( )
 	m_pController = nullptr;
 }
 
-MicroMeterRect const NNetWindow::GetEnclosingRect() const 
-{ 
-	return m_pNMRI->GetEnclosingRect(); 
-}
-
 MicroMeterRect const NNetWindow::GetViewRect() const 
 { 
 	return GetCoord().Convert2MicroMeterRect( GetClPixelRect() ); 

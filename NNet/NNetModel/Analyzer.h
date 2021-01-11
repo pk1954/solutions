@@ -31,8 +31,6 @@ public:
 	static ShapeStack const FindLoop   ( NNetModelReaderInterface const & );
 	static ShapeStack const FindAnomaly( NNetModelReaderInterface const & );
 
-	static MicroMeterRect GetEnclosingRect( );
-
 private:
 
 	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };

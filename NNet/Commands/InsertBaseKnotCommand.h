@@ -38,23 +38,24 @@ public:
 		}
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
 		m_pPipe2Split->SetStartKnot( m_upBaseKnot.get() );
-		nmwi.Push2Model( move(m_upBaseKnot) );
-		nmwi.Push2Model( move(m_upPipeNew) );
+		nmwi.GetShapes().Push( move(m_upBaseKnot) );
+		nmwi.GetShapes().Push( move(m_upPipeNew) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upPipeNew  = nmwi.PopFromModel<Pipe>();
-		m_upBaseKnot = nmwi.PopFromModel<T>();
+		m_upPipeNew  = nmwi.GetShapes().Pop<Pipe>();
+		m_upBaseKnot = nmwi.GetShapes().Pop<T>();
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 	}
 
 private:
-	Pipe            * m_pPipe2Split { nullptr };
-	BaseKnot        * m_pStartKnot  { nullptr };
-	unique_ptr<Pipe>  m_upPipeNew   { nullptr };
-	unique_ptr<T>     m_upBaseKnot  { nullptr };
+	Pipe     * m_pPipe2Split { nullptr };
+	BaseKnot * m_pStartKnot  { nullptr };
+
+	unique_ptr<Pipe> m_upPipeNew;
+	unique_ptr<T>    m_upBaseKnot;
 
 	ShapeId         const m_idPipe;
 	MicroMeterPoint const m_umSplitPoint; 

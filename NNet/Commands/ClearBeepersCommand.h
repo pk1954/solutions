@@ -21,19 +21,19 @@ public:
 
 	void clearAll( NNetModelWriterInterface & nmwi ) const
 	{
-		nmwi.Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.GetShapes().Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
 	void clearAllSelected( NNetModelWriterInterface & nmwi ) const
 	{
-		nmwi.Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.GetShapes().Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		if ( ! m_bInitialized )
 		{
-			nmwi.Apply2All<Neuron>
+			nmwi.GetShapes().Apply2All<Neuron>
 			( 
 				[&]( Neuron & neuron ) 
 				{ 

@@ -135,7 +135,6 @@ private:
 	Observable                m_dynamicModelObservable   { };
 	Observable                m_runObservable            { };
 	Observable                m_performanceObservable    { };
-	Observable                m_commandStackObservable   { };
 	Observable                m_coordObservable          { };
 	NNetModelReaderInterface  m_nmri                     { };
 	NNetModelWriterInterface  m_nmwi                     { };

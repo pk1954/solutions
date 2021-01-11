@@ -136,14 +136,16 @@ void ShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape cons
 	}
 }
 
-void ShapeList::Push( UPShape upShape )	
+ShapeId const ShapeList::Push( UPShape upShape )	
 {
+	ShapeId idNewSlot { IdNewSlot( ) };
 	if ( upShape )
 	{
 		upShape->SetId( IdNewSlot() );
 		upShape->IncCounter();
 	}
 	m_list.push_back( move(upShape) );
+	return idNewSlot;
 }
 
 void ShapeList::copy( const ShapeList & rhs )
@@ -196,11 +198,12 @@ void ShapeList::Dump( ) const
 	Apply2All( [&]( Shape const & shape ) { shape.Dump( ); } );
 }
 
-MicroMeterRect const ShapeList::EnclosingRect( ) const
+MicroMeterRect const ShapeList::CalcEnclosingRect( SelMode const mode ) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( auto const & pShape : m_list )
-		Expand( rect, pShape.get() );
+		if ( (mode == SelMode::allShapes) || pShape->IsSelected( ) )
+			Expand( rect, pShape.get() );
 	return rect;
 }
 

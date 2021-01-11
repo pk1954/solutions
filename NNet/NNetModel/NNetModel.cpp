@@ -22,21 +22,13 @@ using std::endl;
 bool NNetModel::operator==( NNetModel const & rhs ) const
 {
 	return
-	(m_Shapes                 == rhs.m_Shapes                    ) &&
-	(m_timeStamp              == rhs.m_timeStamp                 ) &&
-	(m_pStaticModelObservable == rhs.m_pStaticModelObservable    ) &&
-	(m_enclosingRect          == rhs.m_enclosingRect             ) &&
-	(m_wstrModelFilePath      == rhs.m_wstrModelFilePath         ) &&
-	(m_description            == rhs.m_description               ) &&
-	(m_monitorData            == rhs.m_monitorData               ) &&
-	(m_param                  == rhs.m_param                     );
+	(m_Shapes            == rhs.m_Shapes            ) &&
+	(m_timeStamp         == rhs.m_timeStamp         ) &&
+	(m_wstrModelFilePath == rhs.m_wstrModelFilePath ) &&
+	(m_description       == rhs.m_description       ) &&
+	(m_monitorData       == rhs.m_monitorData       ) &&
+	(m_param             == rhs.m_param             );
 }
-
-void NNetModel::Initialize(	Observable * const pStaticModelObservable )
-{				
-	m_pStaticModelObservable  = pStaticModelObservable;
-	m_monitorData.Initialize( m_pStaticModelObservable );
-}                     
 
 void NNetModel::CheckModel( ) const
 {
@@ -56,25 +48,10 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 	return m_Shapes.GetAt( id );
 }
 
-void NNetModel::StaticModelChanged( )
-{ 
-	if ( m_pStaticModelObservable )
-	{
-		m_pStaticModelObservable->NotifyAll( false );
-		m_enclosingRect = m_Shapes.EnclosingRect( );
-	}
-}
-
 void NNetModel::RecalcAllShapes( ) 
 { 
 	m_Shapes.Apply2All( [&]( Shape & shape ) { shape.Recalc( ); } );
 } 
-
-void NNetModel::ToggleStopOnTrigger( Neuron * pNeuron )
-{
-	pNeuron->StopOnTrigger( tBoolOp::opToggle );
-	StaticModelChanged( );
-}
 
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 {
@@ -93,7 +70,6 @@ float NNetModel::SetParam
 	float fOldValue { m_param.GetParameterValue( param ) };
 	m_param.SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
-	StaticModelChanged( );
 	return fOldValue;
 }
 
@@ -123,7 +99,6 @@ void NNetModel::ResetModel( )
 	InputNeuron::ResetCounter();
 	Pipe       ::ResetCounter();
 	SetSimulationTime();
-	StaticModelChanged( );
 }
 
 void NNetModel::SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )

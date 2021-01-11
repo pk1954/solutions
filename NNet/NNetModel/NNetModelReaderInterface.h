@@ -44,7 +44,6 @@ public:
 	Shape           const * GetConstShape ( ShapeId const id )         const { return m_pModel->GetConstShape               (id); }
 	size_t          const   GetSizeOfShapeList( )                      const { return m_pModel->GetShapes().Size(); }
 	fMicroSecs      const   GetSimulationTime( )                       const { return m_pModel->GetSimulationTime ( ); }
-	MicroMeterRect  const   GetEnclosingRect( )                        const { return m_pModel->GetEnclosingRect  ( ); }
 	MonitorData     const & GetMonitorData( )                          const { return m_pModel->GetMonitorData    ( ); }
 	fMicroSecs      const   GetTimeResolution( )                       const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring         const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }

@@ -16,10 +16,10 @@ public:
        : MoveCommand( -delta )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		MicroMeterPoint const delta = - m_delta;
-		model.Apply2AllSelected<BaseKnot>
+		nmwi.GetShapes().Apply2AllSelected<BaseKnot>
 		( 
 			[&]( BaseKnot & knot ) 
 			{ 

@@ -41,23 +41,25 @@ public:
 	void          Clear         ( )                        { m_list.clear( ); }
 	void          Increase      ( long    const nr )       { m_list.resize( m_list.size() + nr ); }
 
-	void                 SetErrorHandler  ( ShapeErrorHandler * const );
-	void                 SelectAllShapes  ( tBoolOp const );
-	Shape *        const RemoveShape      ( ShapeId const );	
-	Shape *        const ReplaceShape     ( ShapeId const, UPShape );	
-	void                 SetShape2Slot    ( ShapeId const, UPShape );	 // only for special situations
-	void                 Push             ( UPShape );
-	void                 CheckShapeList   ( )                                                           const;
-	void                 Dump             ( )                                                           const;
-	void                 LinkShape        ( Shape const &, function< Shape * (Shape const *)> const & ) const;
-	MicroMeterRect const EnclosingRect    ( )                                                           const;
-	bool           const AnyShapesSelected( )                                                           const;
-	void                 CallErrorHandler ( ShapeId const )                                             const;
-	ShapeId        const FindShapeAt      ( MicroMeterPoint const, ShapeCrit const & )                  const;
-	bool           const Apply2AllB       (                        ShapeCrit const & )                  const;
-	void                 Apply2All        ( function<void(Shape const &)> const & )                     const;
-	void                 Apply2All        ( function<void(Shape       &)> const & );
-	void                 Append           ( ShapeList & );
+	void          SetErrorHandler  ( ShapeErrorHandler * const );
+	void          SelectAllShapes  ( tBoolOp const );
+	Shape * const RemoveShape      ( ShapeId const );	
+	Shape * const ReplaceShape     ( ShapeId const, UPShape );	
+	void          SetShape2Slot    ( ShapeId const, UPShape );	 // only for special situations
+	ShapeId const Push             ( UPShape );
+	void          CheckShapeList   ( )                                                         const;
+	void          Dump             ( )                                                         const;
+	void          LinkShape        ( Shape const &, function<Shape* (Shape const *)> const & ) const;
+	bool    const AnyShapesSelected( )                                                         const;
+	void          CallErrorHandler ( ShapeId const )                                           const;
+	ShapeId const FindShapeAt      ( MicroMeterPoint const, ShapeCrit const & )                const;
+	bool    const Apply2AllB       (                        ShapeCrit const & )                const;
+	void          Apply2All        ( function<void(Shape const &)> const & )                   const;
+	void          Apply2All        ( function<void(Shape       &)> const & );
+	void          Append           ( ShapeList & );
+
+	enum class SelMode { allShapes,	selectedShapes };
+	MicroMeterRect const CalcEnclosingRect( SelMode const = SelMode::allShapes ) const;
 
 	template <Shape_t T>
 	unique_ptr<T> Pop( )
@@ -71,17 +73,45 @@ public:
 	template <Shape_t T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
-		for ( auto & it : m_list )
+		for ( auto const & it : m_list )
 		{ 
-			if ( HasType<T>( * it.get() ) ) 
+			if ( it.get() && HasType<T>( * it.get() ) ) 
 				func( static_cast<T const &>( * it.get() ) );
 		};
 	}                        
+
+	template <Shape_t T>    // non const version
+	void Apply2All( function<void(T &)> const & func )
+	{
+		for ( auto & it : m_list )
+		{ 
+			if ( it.get() && HasType<T>( * it.get() ) ) 
+				func( static_cast<T &>( * it.get() ) );
+		};
+	}                        
+
+	template <Shape_t T>    // const version
+	void Apply2AllSelected( function<void(T const &)> const & func ) const
+	{
+		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
+	}
+
+	template <Shape_t T>    // non const version
+	void Apply2AllSelected( function<void(T &)> const & func ) 
+	{
+		Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
+	}
 
 	template <Shape_t T>   // const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
 	{
 		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+	}
+
+	template <Shape_t T>   // non const version
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
+	{
+		Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}
 
 	template <Shape_t T>

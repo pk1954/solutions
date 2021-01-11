@@ -19,7 +19,7 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			nmwi.Apply2All<Shape>
+			nmwi.GetShapes().Apply2All<Shape>
 			( 
 				[&]( Shape & s )
 				{ 

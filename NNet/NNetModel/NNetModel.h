@@ -30,11 +30,9 @@ using std::move;
 class NNetModel
 {
 public:
+	// const functions
+
 	bool operator==( NNetModel const & ) const;
-
-	void Initialize( Observable * const );
-
-	// readOnly functions
 
 	template <Shape_t T>
 	T GetShapeConstPtr( ShapeId const id ) const
@@ -60,32 +58,27 @@ public:
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	ShapeList   const & GetShapes( )      const { return m_Shapes; }
-	MonitorData const & GetMonitorData( ) const { return m_monitorData; }
-	Param       const & GetParams()       const { return m_param; }
+	ShapeList   const & GetShapes( )       const { return m_Shapes; }
+	MonitorData const & GetMonitorData( )  const { return m_monitorData; }
+	Param       const & GetParams()        const { return m_param; }
+	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	// manipulating functions
+	// non const functions
 
 	virtual bool Compute( );
 
-	void  ToggleStopOnTrigger( Neuron * );
 	void  RecalcAllShapes( );
 	void  ResetModel( );
 	float SetParam( ParameterType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, tBoolOp const );
-	void  StaticModelChanged( );
-
-	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
 	ShapeList   & GetShapes()      { return m_Shapes; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
-	wstring const GetModelFilePath() const { return m_wstrModelFilePath; }
-	void          SetModelFilePath( wstring const wstr ) { m_wstrModelFilePath = wstr; }
-
+	void SetModelFilePath  ( wstring const wstr ) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine( wstring const wstr ) {	m_description.AddDescriptionLine( wstr ); }
 	void SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs ) { m_timeStamp = newVal; }
 
@@ -95,8 +88,6 @@ private:
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;
-	fMicroSecs       m_timeStamp              { 0._MicroSecs };
-	Observable     * m_pStaticModelObservable { nullptr };
-	MicroMeterRect   m_enclosingRect          { };
-	wstring          m_wstrModelFilePath      { L"" };
+	fMicroSecs       m_timeStamp         { 0._MicroSecs };
+	wstring          m_wstrModelFilePath { L"" };
 };

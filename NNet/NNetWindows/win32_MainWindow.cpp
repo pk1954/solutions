@@ -187,7 +187,16 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 
 void MainWindow::CenterModel( )
 {
-	CenterAndZoomRect( m_pNMRI->GetEnclosingRect( ), 1.2f ); // give 20% more space (looks better)
+	MicroMeterRect rect { m_pNMRI->GetShapes().CalcEnclosingRect( ShapeList::SelMode::allShapes ) };
+	if ( rect.IsNotEmpty() )
+		CenterAndZoomRect( rect, 1.2f ); // give 20% more space (looks better)
+}
+
+void MainWindow::CenterSelection( )
+{
+	MicroMeterRect rect { m_pNMRI->GetShapes().CalcEnclosingRect( ShapeList::SelMode::selectedShapes ) };
+	if ( rect.IsNotEmpty() )
+		CenterAndZoomRect( rect, 2.0f );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )

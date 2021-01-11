@@ -42,10 +42,10 @@ void MiniWindow::Notify( bool const bImmediately )
 {
 	if ( m_pObservedNNetWindow )
 	{
-		float          const EXTRA_SPACE_FACTOR { 1.2f };                          // give 20% more space (looks better)
-		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() }; // current position of main window view 
-		MicroMeterRect const umRectModel { GetEnclosingRect() };                   // current extension of model
-		MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };     // all this should be visible  
+		float          const EXTRA_SPACE_FACTOR { 1.2f };                                // give 20% more space (looks better)
+		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };       // current position of main window view 
+		MicroMeterRect const umRectModel { m_pNMRI->GetShapes().CalcEnclosingRect() }; // current extension of model
+		MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };           // all this should be visible  
 		fPixelPoint    const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
 		MicroMeter      umPixelSizeTarget;
 		MicroMeterPoint umPntCenterTarget { NP_ZERO };

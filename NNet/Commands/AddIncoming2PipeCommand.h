@@ -41,18 +41,18 @@ public:
 		}
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_upPipeExt.get() );
 		m_pPipeOld->SetStartKnot( m_upKnotInsert.get() );
-		nmwi.Push2Model( move(m_upKnotOrtho) );
-		nmwi.Push2Model( move(m_upKnotInsert) );
-		nmwi.Push2Model( move(m_upPipeOrtho) );
-		nmwi.Push2Model( move(m_upPipeExt) );
+		nmwi.GetShapes().Push( move(m_upKnotOrtho) );
+		nmwi.GetShapes().Push( move(m_upKnotInsert) );
+		nmwi.GetShapes().Push( move(m_upPipeOrtho) );
+		nmwi.GetShapes().Push( move(m_upPipeExt) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upPipeExt    = nmwi.PopFromModel<Pipe>();
-		m_upPipeOrtho  = nmwi.PopFromModel<Pipe>();
-		m_upKnotInsert = nmwi.PopFromModel<Knot>();
-		m_upKnotOrtho  = nmwi.PopFromModel<Knot>();
+		m_upPipeExt    = nmwi.GetShapes().Pop<Pipe>();
+		m_upPipeOrtho  = nmwi.GetShapes().Pop<Pipe>();
+		m_upKnotInsert = nmwi.GetShapes().Pop<Knot>();
+		m_upKnotOrtho  = nmwi.GetShapes().Pop<Knot>();
 		m_pPipeOld->SetStartKnot( m_pStartKnotOld );
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_upPipeExt.get(), m_pPipeOld );
 	}

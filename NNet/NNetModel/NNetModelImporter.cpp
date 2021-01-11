@@ -154,7 +154,6 @@ public:
         long lNrOfShapes { script.ScrReadLong() };
         GetShapes().Resize( GetShapes().Size() + lNrOfShapes );
     }
-
 };
 
 class WrapShapeParameter : public WrapBase
@@ -202,7 +201,6 @@ public:
         for ( unsigned int ui = 0; ui < uiNrOfTracks; ++ui )
             GetMonitorData().InsertTrack( TrackNr(0) );
     }
-
 };
 
 class WrapSignal : public WrapBase
@@ -283,8 +281,6 @@ void NNetModelImporter::prepareForReading( )
             );
         }
     );
-
-#undef DEF_NNET_FUNC
 }
 
 void NNetModelImporter::readModel( ) 
@@ -295,7 +291,6 @@ void NNetModelImporter::readModel( )
     if ( ProcessNNetScript( m_pScript, m_nmwi.GetShapes(), wstrModelFile ) )
     {
         m_nmwi.RemoveOrphans();
-        m_nmwi.StaticModelChanged();
         res = ImportTermination::Result::ok;
     }
     else

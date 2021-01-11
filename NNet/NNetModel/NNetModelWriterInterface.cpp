@@ -23,15 +23,9 @@ void NNetModelWriterInterface::CreateInitialShapes( )
 	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upNeuron.get() ) };
 	upInputNeuron->m_connections.AddOutgoing( upNewPipe.get() );
 	upNeuron     ->m_connections.AddIncoming( upNewPipe.get() );
-	Push2Model( move(upInputNeuron) );
-	Push2Model( move(upNeuron) );       
-	Push2Model( move(upNewPipe) );      
-	StaticModelChanged( );
-}
-
-void NNetModelWriterInterface::StaticModelChanged( ) 
-{ 
-	m_pModel->StaticModelChanged(); 
+	GetShapes().Push( move(upInputNeuron) );
+	GetShapes().Push( move(upNeuron) );       
+	GetShapes().Push( move(upNewPipe) );      
 }
 
 Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )     
@@ -47,14 +41,12 @@ void NNetModelWriterInterface::SelectShape( ShapeId const idShape, tBoolOp const
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 {
 	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( id ) } )
-	{
-		m_pModel->ToggleStopOnTrigger( pNeuron );
-	}
+		pNeuron->StopOnTrigger( tBoolOp::opToggle );
 }
 
 void NNetModelWriterInterface::SelectBeepers() 
 { 
-	Apply2All<Neuron>
+	GetShapes().Apply2All<Neuron>
 	( 
 		[&](Neuron &n) 
 		{ 
@@ -66,7 +58,7 @@ void NNetModelWriterInterface::SelectBeepers()
 
 void NNetModelWriterInterface::RemoveOrphans( )
 {
-	Apply2All<Knot>                              
+	GetShapes().Apply2All<Knot>                              
 	(                                                        
 		[&]( Knot const & knot )                  
 		{

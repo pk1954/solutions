@@ -24,16 +24,17 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
-    void DumpModel( ) const { m_pModel->DumpModel(); }
-
-    void CreateInitialShapes();
+    void          CreateInitialShapes();
+    void          RemoveOrphans( );
+    void          SelectBeepers();
+    void          SelectShape( ShapeId const, tBoolOp const );
+    Shape * const GetShape( ShapeId const );
 
     ShapeList & GetShapes() { return m_pModel->GetShapes(); }
     Param     & GetParams() { return m_pModel->GetParams(); }
 
-    NNetModel const & GetModel() const { return * m_pModel; }  // TODO: find better solution
-
-    Shape * const GetShape( ShapeId const );
+    void              DumpModel( ) const { m_pModel->DumpModel(); }
+    NNetModel const & GetModel( )  const { return * m_pModel; }  // TODO: find better solution
 
     bool const IsPipe( ShapeId const id )
     {
@@ -47,10 +48,6 @@ public:
         return pShape && pShape->IsKnot( );
     }
 
-    void SelectBeepers();
-    void SelectShape( ShapeId const, tBoolOp const );
-    void StaticModelChanged( );
-
     template <Shape_t T>
     T GetShapePtr( ShapeId const id ) 
     {
@@ -58,50 +55,11 @@ public:
         return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
     }
 
-    template <Shape_t T>
-	void Apply2All( function<void(T &)> const & func ) const
-	{
-        m_pModel->GetShapes().Apply2All
-        ( 
-            [&](Shape & s) 
-            {  
-                if ( HasType<T>(s) ) 
-                    func( static_cast<T &>(s) ); 
-            }
-        );
-	}                        
-
-    template <Shape_t T>
-    void Apply2AllSelected( function<void(T &)> const & func ) const
-    {
-    	Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
-    }
-
-    template <Shape_t T>
-    void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
-    {
-        Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
-    }
-
     MonitorData & GetMonitorData( ) { return m_pModel->GetMonitorData(); }
 
     void CheckModel( ) { m_pModel->CheckModel(); }
     void ResetModel( ) { m_pModel->ResetModel(); }
-    void ClearModel( ) 
-    {
-        m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); 
-    }
-
-    ShapeId const Push2Model( UPShape upShape ) 
-    { 
-        ShapeList & list { m_pModel->GetShapes() };
-        ShapeId idNewSlot { list.IdNewSlot( ) };
-        list.Push( move(upShape) ); 
-        return idNewSlot;
-    }
-
-    template <Shape_t T>
-    unique_ptr<T> PopFromModel( ) { return move(m_pModel->GetShapes().Pop<T>()); }
+    void ClearModel( ) { m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); }
 
     template <Shape_t NEW, Shape_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
@@ -122,16 +80,14 @@ public:
         return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector(), NEURON_RADIUS*2.f );
     }
 
-    void SelectSubtree( BaseKnot * const p, tBoolOp const o ) { m_pModel->SelectSubtree(p, o); }
+    void SelectSubtree(BaseKnot* const p, tBoolOp const o) { m_pModel->SelectSubtree(p, o); }
 
-    float SetParam( ParameterType::Value const p, float const f ) { return m_pModel->SetParam(p, f); }
+    float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
     void SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
     void AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
 
     void ToggleStopOnTrigger( ShapeId const );
-
-    void RemoveOrphans( );
 
 private:
 

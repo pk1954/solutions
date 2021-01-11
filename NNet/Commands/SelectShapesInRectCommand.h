@@ -18,7 +18,7 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.Apply2AllInRect<Shape>
+		nmwi.GetShapes().Apply2AllInRect<Shape>
 		( 
 			m_rect, 
 			[&]( Shape & shape ) 

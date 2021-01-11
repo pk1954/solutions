@@ -47,6 +47,7 @@ public:
 	MicroMeterPoint const GetCursorPos( ) const;
 
 	void CenterModel( );
+	void CenterSelection( );
 
 	virtual void CenterAndZoomRect( MicroMeterRect const &, float const );
 

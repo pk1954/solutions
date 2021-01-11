@@ -22,11 +22,11 @@ bool canBeCombined( Command const & A, Command const & B )
 void CommandStack::Initialize
 ( 
     NNetModelWriterInterface * const pModel, 
-    Observable               * const pObservable 
+    Observable               * const pStaticModelObservable 
 )
 {
     m_pNMWI = pModel;
-    m_pObservable = pObservable;
+    m_pStaticModelObservable = pStaticModelObservable;
 }
 
 void CommandStack::Clear( )
@@ -69,8 +69,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     pCmd->Do( * m_pNMWI );
     m_pNMWI->CheckModel();
     pushNewCommand( move(pCmd) );
-    m_pNMWI->StaticModelChanged( );
-    m_pObservable->NotifyAll( true );
+    m_pStaticModelObservable->NotifyAll( true );
 
 #ifdef _DEBUG
     NNetModel modelSave2( model );
@@ -118,8 +117,7 @@ bool CommandStack::UndoCommand( )
         undoCmd( );                         // of one command
         m_pNMWI->CheckModel();
     }
-    m_pNMWI->StaticModelChanged( );
-    m_pObservable->NotifyAll( true );
+    m_pStaticModelObservable->NotifyAll( true );
     return true;
 }
 
@@ -150,7 +148,6 @@ bool CommandStack::RedoCommand( )
         doAndSet2YoungerCmd();              // of one command
     }
 
-    m_pNMWI->StaticModelChanged( );
-    m_pObservable->NotifyAll( true );
+    m_pStaticModelObservable->NotifyAll( true );
     return true;
 }

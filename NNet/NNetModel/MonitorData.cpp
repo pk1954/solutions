@@ -13,19 +13,12 @@ using std::move;
 
 bool MonitorData::operator==( MonitorData const & rhs ) const
 {
-	return (m_tracks                 == rhs.m_tracks) &&
-	       (m_pStaticModelObservable == rhs.m_pStaticModelObservable);
-}
-
-void MonitorData::Initialize( Observable * const pStaticModelObservable )
-{
-	m_pStaticModelObservable = pStaticModelObservable;
+	return m_tracks == rhs.m_tracks;
 }
 
 void MonitorData::Reset( )
 {
 	m_tracks.clear();
-	m_pStaticModelObservable->NotifyAll( true );
 }
 
 int MonitorData::GetNrOfTracks( ) const
@@ -42,7 +35,6 @@ void MonitorData::InsertTrack( TrackNr const trackNr )
 {
 	unique_ptr<Track> track = make_unique<Track>();
 	m_tracks.insert( m_tracks.begin() + trackNr.GetValue(), move(track) );
-	m_pStaticModelObservable->NotifyAll( true );
 }
 
 unique_ptr<Signal> MonitorData::removeSignal( SignalId const & id )
@@ -58,10 +50,7 @@ SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<Signal>
 void MonitorData::DeleteSignal( SignalId const & id )
 {
 	if ( IsValid( id.GetTrackNr() ) )
-	{
 		removeSignal( id );
-		m_pStaticModelObservable->NotifyAll( true );
-	}
 }
 
 void MonitorData::AddSignal
@@ -71,10 +60,7 @@ void MonitorData::AddSignal
 )
 {
 	if ( IsValid( trackNr ) )
-	{
-		SignalNr signalNr { addSignal( trackNr, move(SignalFactory::MakeSignal(umCircle)) ) };
-		m_pStaticModelObservable->NotifyAll( true );
-	}
+		addSignal( trackNr, move(SignalFactory::MakeSignal(umCircle)) );
 }
 
 SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const trackNrNew )
@@ -85,7 +71,6 @@ SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const track
 		unique_ptr<Signal> pSignal     { removeSignal( id ) };
 		SignalNr           signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
 		idNew = SignalId( trackNrNew, signalNrNew );
-		m_pStaticModelObservable->NotifyAll( true );
 	}
 	return idNew;
 }
@@ -93,10 +78,7 @@ SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const track
 void MonitorData::DeleteTrack( TrackNr const trackNr )
 {
 	if ( IsValid( trackNr ) )
-	{
 		m_tracks.erase( m_tracks.begin() + trackNr.GetValue() );
-		m_pStaticModelObservable->NotifyAll( true );
-	}
 }
 
 void MonitorData::Animation( SignalId const & id, bool const bOn )

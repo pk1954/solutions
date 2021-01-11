@@ -29,7 +29,7 @@ concept Shape_t = is_base_of<Shape, remove_pointer_t<T>>::value;
 using UPShape   = unique_ptr<Shape>;
 using ShapeCrit = function<bool(Shape const &)>;
 
-static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true; } };
+static ShapeCrit const ShapeCritAlwaysTrue { [&](Shape const & s) { return true; } };
 
 class Shape
 {

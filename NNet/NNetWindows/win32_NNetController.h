@@ -19,6 +19,7 @@ class MainWindow;
 class WinManager;
 class Preferences;
 class CommandStack;
+class Observable;
 class Signal;
 class Sound;
 
@@ -42,7 +43,8 @@ public:
 		Sound                    * const,
 		Preferences              * const,
 		CommandStack             * const,
-		MonitorWindow            * const
+		MonitorWindow            * const,
+		Observable               * const
 	);
 
 	virtual ~NNetController( );
@@ -58,17 +60,18 @@ private:
 
 	ArrowAnimation m_arrowAnimation;
 
-	HCURSOR                    m_hCrsrWait         { nullptr };
-	Sound                    * m_pSound            { nullptr };
-	NNetModelExporter        * m_pModelExporter    { nullptr };
-	MainWindow               * m_pMainWindow       { nullptr };
-	WinManager               * m_pWinManager       { nullptr };
-	ComputeThread            * m_pComputeThread    { nullptr };
-	NNetModelReaderInterface * m_pNMRI              { nullptr };
-	NNetModelCommands        * m_pModelCommands    { nullptr };
-	SlowMotionRatio          * m_pSlowMotionRatio  { nullptr };
-	DisplayFunctor           * m_pStatusBarDisplay { nullptr };
-	Preferences              * m_pPreferences      { nullptr };
-	CommandStack             * m_pCommandStack     { nullptr };
-	MonitorWindow            * m_pMonitorWindow    { nullptr };
+	HCURSOR                    m_hCrsrWait              { nullptr };
+	Sound                    * m_pSound                 { nullptr };
+	NNetModelExporter        * m_pModelExporter         { nullptr };
+	MainWindow               * m_pMainWindow            { nullptr };
+	WinManager               * m_pWinManager            { nullptr };
+	ComputeThread            * m_pComputeThread         { nullptr };
+	NNetModelReaderInterface * m_pNMRI                  { nullptr };
+	NNetModelCommands        * m_pModelCommands         { nullptr };
+	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
+	DisplayFunctor           * m_pStatusBarDisplay      { nullptr };
+	Preferences              * m_pPreferences           { nullptr };
+	CommandStack             * m_pCommandStack          { nullptr };
+	MonitorWindow            * m_pMonitorWindow         { nullptr };
+	Observable               * m_pStaticModelObservable { nullptr };
 };				          

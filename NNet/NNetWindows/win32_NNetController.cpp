@@ -8,6 +8,7 @@
 #include "Resource.h"
 #include "BoolOp.h"
 #include "Analyzer.h"
+#include "Observable.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "NNetModelExporter.h"
@@ -43,39 +44,42 @@ void NNetController::Initialize
     Sound                    * const pSound,
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
-    MonitorWindow            * const pMonitorWindow
+    MonitorWindow            * const pMonitorWindow,
+    Observable               * const pStaticModelObservable
 ) 
 {
-    m_pModelExporter    = pModelExporter;
-    m_pMainWindow       = pMainWindow;
-    m_pWinManager       = pWinManager;
-    m_pNMRI             = pMRI;
-    m_pModelCommands    = pModelCommands;
-    m_pSlowMotionRatio  = pSlowMotionRatio;
-    m_pComputeThread    = pComputeThread;
-    m_pStatusBarDisplay = func;
-    m_pSound            = pSound;
-    m_pPreferences      = pPreferences;
-    m_pCommandStack     = pCommandStack;
-    m_pMonitorWindow    = pMonitorWindow;
-    m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
+    m_pModelExporter         = pModelExporter;
+    m_pMainWindow            = pMainWindow;
+    m_pWinManager            = pWinManager;
+    m_pNMRI                  = pMRI;
+    m_pModelCommands         = pModelCommands;
+    m_pSlowMotionRatio       = pSlowMotionRatio;
+    m_pComputeThread         = pComputeThread;
+    m_pStatusBarDisplay      = func;
+    m_pSound                 = pSound;
+    m_pPreferences           = pPreferences;
+    m_pCommandStack          = pCommandStack;
+    m_pMonitorWindow         = pMonitorWindow;
+    m_pStaticModelObservable = pStaticModelObservable;
+    m_hCrsrWait              = LoadCursor( NULL, IDC_WAIT );
 }
 
 NNetController::~NNetController( )
 {
-    m_pModelExporter    = nullptr;
-    m_pMainWindow       = nullptr;
-    m_pWinManager       = nullptr;
-    m_pNMRI             = nullptr;
-    m_pModelCommands    = nullptr;
-    m_pSlowMotionRatio  = nullptr;
-    m_pComputeThread    = nullptr;
-    m_pStatusBarDisplay = nullptr;
-    m_hCrsrWait         = nullptr;
-    m_pSound            = nullptr;
-    m_pPreferences      = nullptr;
-    m_pCommandStack     = nullptr;
-    m_pMonitorWindow    = nullptr;
+    m_pModelExporter         = nullptr;
+    m_pMainWindow            = nullptr;
+    m_pWinManager            = nullptr;
+    m_pNMRI                  = nullptr;
+    m_pModelCommands         = nullptr;
+    m_pSlowMotionRatio       = nullptr;
+    m_pComputeThread         = nullptr;
+    m_pStatusBarDisplay      = nullptr;
+    m_hCrsrWait              = nullptr;
+    m_pSound                 = nullptr;
+    m_pPreferences           = nullptr;
+    m_pCommandStack          = nullptr;
+    m_pMonitorWindow         = nullptr;
+    m_pStaticModelObservable = nullptr;
 }
 
 bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -92,6 +96,7 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
 
     m_pComputeThread->LockComputation( );
     bRes = processModelCommand( wmId, lParam, umPoint );
+    m_pStaticModelObservable->NotifyAll( false );
     m_pComputeThread->ReleaseComputationLock( );
 
     return bRes;
@@ -101,6 +106,9 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 {
     switch ( wmId )
     {
+    case IDM_ABOUT:
+        ShowAboutBox( m_pMainWindow->GetWindowHandle() );
+        break;
 
     case IDM_PERF_WINDOW:
     case IDM_CRSR_WINDOW:
@@ -150,11 +158,6 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         AutoOpen::Off();
         break;
 
-    case IDD_STOP_ON_TRIGGER:                 // effects model, but seems to be secure  
-        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
-        break;
-
     case IDM_REFRESH:
         m_pMainWindow->Notify( lParam != 0 );
         break;
@@ -194,10 +197,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 {
     switch ( wmId )
     {
-    case IDM_ABOUT:
-        ShowAboutBox( m_pMainWindow->GetWindowHandle() );
-        break;
-
     case IDM_UNDO:
         m_pModelCommands->UndoCommand();
         break;
@@ -311,21 +310,13 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_ANALYZE_LOOPS:
-    {
         m_pModelCommands->AnalyzeLoops( );
-        MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
-        if ( rect.IsNotEmpty() )
-            m_pMainWindow->CenterAndZoomRect( rect, 2.0f );
-    }
-    break;
+        m_pMainWindow->CenterSelection( );
+        break;
 
     case IDM_ANALYZE_ANOMALIES:
-        {
-            m_pModelCommands->AnalyzeAnomalies( );
-            MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
-            if ( rect.IsNotEmpty() )
-                m_pMainWindow->CenterAndZoomRect( rect, 2.0f );
-        }
+        m_pModelCommands->AnalyzeAnomalies( );
+        m_pMainWindow->CenterSelection( );
         break;
 
     case IDM_DESELECT_ALL:
@@ -348,6 +339,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDM_SELECT_SUBTREE:
         m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
+        break;
+
+    case IDD_STOP_ON_TRIGGER:
+        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+        m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     default:

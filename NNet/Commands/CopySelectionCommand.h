@@ -39,7 +39,7 @@ private:
 
 		ShapeId idShapeCopy { ShapeId( lSizeOfModel ) };
 
-		nmwi.Apply2AllSelected<Shape>
+		nmwi.GetShapes().Apply2AllSelected<Shape>
 		(
 			[&]( Shape & s )
 			{
@@ -68,7 +68,7 @@ public:
 		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );  // deselect all
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			nmwi.Push2Model( move(m_copies.back()) ); // add copies (which are already selected)
+			nmwi.GetShapes().Push( move(m_copies.back()) ); // add copies (which are already selected)
 			m_copies.pop_back();
 		}
 		assert( m_copies.empty() );
@@ -78,7 +78,7 @@ public:
 	{ 
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			m_copies.push_back(nmwi.PopFromModel<Shape>( ));
+			m_copies.push_back(nmwi.GetShapes().Pop<Shape>( ));
 		}
 		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );
 		for ( auto & idShape : m_selectedShapeIds ) 

@@ -17,10 +17,10 @@ using TrackNrFunc = function<void(TrackNr const)>;
 class MonitorData
 {
 public:
-	MonitorData()                                 = default;  // constructor   
-	~MonitorData()                                = default;  // destructor
-	MonitorData( MonitorData&& rhs )              = delete;   // move constructor
-	MonitorData& operator=( const MonitorData& )  = delete; // copy assignment operator
+	MonitorData()                                = default;  // constructor   
+	~MonitorData()                               = default;  // destructor
+	MonitorData( MonitorData&& rhs )             = delete;   // move constructor
+	MonitorData& operator=( const MonitorData& ) = delete; // copy assignment operator
 	
 	MonitorData(const MonitorData& rhs)  // copy constructor
 	{
@@ -43,7 +43,6 @@ public:
 
 	void CheckTracks( ) const;  // for debugging
 
-	void Initialize( Observable * const );
 	void Reset( );
 
 	int  GetNrOfTracks( ) const;
@@ -77,5 +76,4 @@ private:
 	unique_ptr<Signal> removeSignal( SignalId const & );
 
 	vector<unique_ptr<Track>> m_tracks {};
-	Observable  * m_pStaticModelObservable { nullptr };
 };
