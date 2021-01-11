@@ -72,7 +72,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	NNetModel                m_model                    { };
 	Observable               m_staticModelObservable    { };
 	Observable               m_dynamicModelObservable   { };
-	Observable               m_unsavedChangesObservable { };
 	Script                   m_script                   { };
 	CommandStack             m_cmdStack                 { };
 	MonitorData              m_monitorData              { };
@@ -83,32 +82,14 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	DefineNNetWrappers( & m_modelCommands );
 
 	m_pImportTermination = new ConsImportTermination( );
-	SignalFactory::Initialize
-	( 
-		m_nmri,
-		m_dynamicModelObservable,
-		m_animationDummy
-		
-	);
-	m_modelCommands.Initialize
-	( 
-		& m_nmri, 
-		& m_nmwi, 
-		& m_cmdStack
-	);
-	m_model.Initialize
-	( 
-		& m_staticModelObservable, 
-		& m_dynamicModelObservable, 
-		& m_unsavedChangesObservable
-	);
-	Shape::SetParam( m_model.GetParams() );
-	m_modelImporter.Initialize
-	(
-		nullptr,
-		m_pImportTermination
-	);
+	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable, m_animationDummy );
+	Shape::Initialize( m_model.GetParams() );
+
+	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_cmdStack	);
+	m_model        .Initialize( & m_staticModelObservable, & m_dynamicModelObservable );
+	m_modelImporter.Initialize(	nullptr, m_pImportTermination );
 	m_modelExporter.Initialize( & m_nmri );
+
 	m_nmwi.Start( & m_model );
 
 	wstring wstrInputFile{} ; // = L"D:\\SW-projects\\Solutions\\NNet\\Tests\\test_1.in";

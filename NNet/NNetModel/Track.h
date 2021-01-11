@@ -31,7 +31,7 @@ public:
 
 	Track( const Track & rhs ) // copy constructor
 	{
-		for ( auto const & upSignal : m_signals )
+		for ( auto const & upSignal : rhs.m_signals )
 			AddSignal( move(SignalFactory::MakeSignal(*upSignal.get())) );
 	}
 

@@ -150,9 +150,9 @@ void MonitorData::Apply2AllSignals( SignalFunc const & func ) const
 	);
 }                        
 
-Signal * const  MonitorData::FindSignal( SignalCrit const & crit )
+Signal * const  MonitorData::FindSignal( SignalCrit const & crit ) const
 {
-	for ( unique_ptr<Track> & upTrack: m_tracks ) 
+	for ( unique_ptr<Track> const & upTrack: m_tracks ) 
 		if ( Signal * const pSignal { upTrack->FindSignal( crit ) } )
 			return pSignal;
 	return nullptr;
@@ -198,7 +198,7 @@ Track & MonitorData::getTrack( TrackNr const trackNr ) // calling const version
 	return const_cast<Track&>(static_cast<const MonitorData&>(*this).getTrack( trackNr ));
 }
 
-Signal * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) 
+Signal * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) const
 {
 	return FindSignal
 		   (

@@ -69,7 +69,6 @@ private:
 	Observable        * m_pCoordObservable      { nullptr };
 	Observable        * m_pCursorPosObservable  { nullptr };
 	NNetModelCommands * m_pNNetCommands         { nullptr };
-	MonitorData       * m_pMonitorData          { nullptr };
 	bool                m_bFocusMode            { false };
 
 	void setSuperHighlightedShape( MicroMeterPoint const & );

@@ -94,10 +94,10 @@ private:
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };
 
-	Sound                          * m_pSound           { nullptr };
-	NNetController                 * m_pController      { nullptr };
-	NNetModelReaderInterface const * m_pNMRI             { nullptr };
-	MonitorData                    * m_pMonitorData     { nullptr };  
+	Sound                          * m_pSound       { nullptr };
+	NNetController                 * m_pController  { nullptr };
+	NNetModelReaderInterface const * m_pNMRI        { nullptr };
+	MonitorData                    * m_pMonitorData { nullptr };  
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 

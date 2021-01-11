@@ -106,8 +106,7 @@ public:
     template <Shape_t NEW, Shape_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
-        ShapeId const id     { up.get()->GetId() };
-        Shape       * pShape { m_pModel->GetShapes().ReplaceShape( id, move(up) ) }; 
+        Shape * pShape { m_pModel->GetShapes().ReplaceShape( up.get()->GetId(), move(up) ) }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }
 
@@ -120,16 +119,15 @@ public:
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
     {
-        return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
+        return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector(), NEURON_RADIUS*2.f );
     }
 
-    void SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op ) { m_pModel->SelectSubtree( pBaseKnot, op ); }
+    void SelectSubtree( BaseKnot * const p, tBoolOp const o ) { m_pModel->SelectSubtree(p, o); }
 
-    float SetParam( ParameterType::Value const param, float const fNewValue ) { return m_pModel->SetParam( param, fNewValue ); }
+    float SetParam( ParameterType::Value const p, float const f ) { return m_pModel->SetParam(p, f); }
 
-    void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
-    void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
-    void  SetUnsavedChanges ( bool const bState )  { m_pModel->SetUnsavedChanges( bState ); }
+    void SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
+    void AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
 
     void ToggleStopOnTrigger( ShapeId const );
 

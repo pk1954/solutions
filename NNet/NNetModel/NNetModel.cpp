@@ -26,7 +26,6 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	(m_timeStamp                 == rhs.m_timeStamp                 ) &&
 	(m_pStaticModelObservable    == rhs.m_pStaticModelObservable    ) &&
 	(m_pDynamicModelObservable   == rhs.m_pDynamicModelObservable   ) &&
-    (m_pUnsavedChangesObservable == rhs.m_pUnsavedChangesObservable ) &&
 	(m_enclosingRect             == rhs.m_enclosingRect             ) &&
 	(m_wstrModelFilePath         == rhs.m_wstrModelFilePath         ) &&
 	(m_description               == rhs.m_description               ) &&
@@ -37,13 +36,11 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 void NNetModel::Initialize
 (
 	Observable * const pStaticModelObservable,
-	Observable * const pDynamicModelObservable,
-	Observable * const pUnsavedChangesObservable
+	Observable * const pDynamicModelObservable
 )
 {				
-	m_pStaticModelObservable    = pStaticModelObservable;
-    m_pDynamicModelObservable   = pDynamicModelObservable;
-	m_pUnsavedChangesObservable = pUnsavedChangesObservable;
+	m_pStaticModelObservable  = pStaticModelObservable;
+    m_pDynamicModelObservable = pDynamicModelObservable;
 	m_monitorData.Initialize( m_pStaticModelObservable );
 }                     
 
@@ -74,9 +71,11 @@ void NNetModel::SetSimulationTime( fMicroSecs const newVal )
 
 void NNetModel::StaticModelChanged( )
 { 
-	assert( m_pStaticModelObservable );
-	m_pStaticModelObservable->NotifyAll( false );
-	m_enclosingRect = m_Shapes.EnclosingRect( );
+	if ( m_pStaticModelObservable )
+	{
+		m_pStaticModelObservable->NotifyAll( false );
+		m_enclosingRect = m_Shapes.EnclosingRect( );
+	}
 }
 
 void NNetModel::RecalcAllShapes( ) 
@@ -86,9 +85,8 @@ void NNetModel::RecalcAllShapes( )
 
 void NNetModel::ToggleStopOnTrigger( Neuron * pNeuron )
 {
-	assert( m_pStaticModelObservable );
 	pNeuron->StopOnTrigger( tBoolOp::opToggle );
-	m_pStaticModelObservable->NotifyAll( false );
+	StaticModelChanged( );
 }
 
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const

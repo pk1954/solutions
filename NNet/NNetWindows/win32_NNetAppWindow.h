@@ -103,7 +103,7 @@ private:
 	void writeModel( )
 	{
 		m_modelExporter.WriteModel( );
-		m_nmwi.SetUnsavedChanges( false );
+		m_appTitle.SetUnsavedChanges( false );
 	}
 
 	wstring AskModelFile( )
@@ -111,17 +111,7 @@ private:
 		return ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::read );
 	}
 
-	void setAppTitle( )
-	{
-		Util::SetApplicationTitle
-		( 
-			m_hwndApp, 
-			IDS_APP_TITLE, 
-			m_nmri.GetModelFilePath() + (m_nmri.AnyUnsavedChanges() ? L" * " : L"") 
-		);
-	}
-
-	bool m_bStarted { false }; // if true, model is visible, all functions available
+	bool m_bStarted       { false }; // if true, model is visible, all functions available
 
 	HWND                      m_hwndConsole              { nullptr };
 	HWND                      m_hwndApp                  { nullptr };
@@ -145,7 +135,6 @@ private:
 	Observable                m_dynamicModelObservable   { };
 	Observable                m_runObservable            { };
 	Observable                m_performanceObservable    { };
-	Observable                m_unsavedChangesObservable { };
 	Observable                m_commandStackObservable   { };
 	Observable                m_coordObservable          { };
 	NNetModelReaderInterface  m_nmri                     { };

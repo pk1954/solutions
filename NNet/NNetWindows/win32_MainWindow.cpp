@@ -234,7 +234,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				setSuperHighlightedShape( m_pNMRI->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
-			else if ( Signal * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
+			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
 			{
 				pSignal->Move( umCrsrPos - umLastPos );
 			}
@@ -295,7 +295,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	bool       const bDirection { iDelta > 0 };
 
 	MicroMeterPoint const umCrsrPos { GetCoord().Convert2MicroMeterPointPos( ptCrsr ) };
-	if ( Signal * const pSignal { m_pMonitorData->FindSensor( umCrsrPos ) } )
+	if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
 	{
 		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
 		{

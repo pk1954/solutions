@@ -30,7 +30,8 @@ public:
     void Initialize
     ( 
         NNetModelReaderInterface * const, 
-        NNetModelWriterInterface * const, 
+        NNetModelWriterInterface * const,
+        NNetModelImporter        * const,
         CommandStack * const 
     );
 

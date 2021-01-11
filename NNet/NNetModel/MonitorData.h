@@ -17,16 +17,26 @@ using TrackNrFunc = function<void(TrackNr const)>;
 class MonitorData
 {
 public:
-	MonitorData()                                      = default;  // constructor   
-	~MonitorData()                                     = default;  // destructor
-	MonitorData( MonitorData&& rhs )                   = delete;   // move constructor
-	MonitorData & operator= ( const MonitorData& rhs ) = delete;   // copy assignment operator
-	MonitorData & operator= ( MonitorData&& rhs )      = delete;   // move assignment operator
+	MonitorData()                                 = default;  // constructor   
+	~MonitorData()                                = default;  // destructor
+	MonitorData( MonitorData&& rhs )              = delete;   // move constructor
+	MonitorData& operator=( const MonitorData& )  = delete; // copy assignment operator
 	
-	MonitorData( const MonitorData & rhs )  // copy constructor
+	MonitorData(const MonitorData& rhs)  // copy constructor
 	{
-		for ( auto const & upTrack : m_tracks )
+		for ( auto const & upTrack : rhs.m_tracks )
 			m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
+	}
+
+	MonitorData& operator=(MonitorData&& rhs)  // move assignment operator
+	{
+		if (this != &rhs)
+		{
+			m_tracks.clear();
+			for ( auto const & upTrack : rhs.m_tracks )
+				m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
+		}
+		return * this;
 	}
 
 	bool operator== (MonitorData const & ) const;
@@ -57,8 +67,8 @@ public:
 	void Apply2AllSignals       ( SignalIdFunc const & ) const;
 	void Apply2AllSignals       ( SignalFunc   const & ) const;
 
-	Signal * const FindSignal( SignalCrit      const & );
-	Signal * const FindSensor( MicroMeterPoint const & );
+	Signal * const FindSignal( SignalCrit      const & ) const;
+	Signal * const FindSensor( MicroMeterPoint const & ) const;
 
 private:
 	Track            & getTrack( TrackNr const );

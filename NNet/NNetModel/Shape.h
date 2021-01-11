@@ -37,6 +37,9 @@ public:
 	Shape( ShapeType const );
 	virtual ~Shape() { }
 
+	static void Initialize( Param const & param ) { m_pParameters = & param; }
+	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
+
 	virtual void CheckShape() const;
 	virtual void Dump() const;
 
@@ -74,10 +77,6 @@ public:
 	bool IsUndefined  () const { return m_type.IsUndefinedType  ( ); }
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
-
-	static void SetParam( Param const & param ) { m_pParameters = & param; }
-
-	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 

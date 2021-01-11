@@ -46,19 +46,19 @@ void NNetController::Initialize
     MonitorWindow            * const pMonitorWindow
 ) 
 {
-    m_pModelExporter          = pModelExporter;
-    m_pMainWindow             = pMainWindow;
-    m_pWinManager             = pWinManager;
-    m_pNMRI                    = pMRI;
-    m_pModelCommands          = pModelCommands;
-    m_pSlowMotionRatio        = pSlowMotionRatio;
-    m_pComputeThread          = pComputeThread;
-    m_pStatusBarDisplay       = func;
-    m_pSound                  = pSound;
-    m_pPreferences            = pPreferences;
-    m_pCommandStack           = pCommandStack;
-    m_pMonitorWindow          = pMonitorWindow;
-    m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
+    m_pModelExporter    = pModelExporter;
+    m_pMainWindow       = pMainWindow;
+    m_pWinManager       = pWinManager;
+    m_pNMRI             = pMRI;
+    m_pModelCommands    = pModelCommands;
+    m_pSlowMotionRatio  = pSlowMotionRatio;
+    m_pComputeThread    = pComputeThread;
+    m_pStatusBarDisplay = func;
+    m_pSound            = pSound;
+    m_pPreferences      = pPreferences;
+    m_pCommandStack     = pCommandStack;
+    m_pMonitorWindow    = pMonitorWindow;
+    m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
 }
 
 NNetController::~NNetController( )
@@ -66,7 +66,7 @@ NNetController::~NNetController( )
     m_pModelExporter    = nullptr;
     m_pMainWindow       = nullptr;
     m_pWinManager       = nullptr;
-    m_pNMRI              = nullptr;
+    m_pNMRI             = nullptr;
     m_pModelCommands    = nullptr;
     m_pSlowMotionRatio  = nullptr;
     m_pComputeThread    = nullptr;

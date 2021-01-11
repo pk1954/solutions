@@ -38,10 +38,10 @@ void MonitorWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_pSound           =   pSound;
-	m_pController      =   pController;
-	m_pNMRI             = & model;
-	m_pMonitorData     = & monitorData;
+	m_pSound       =   pSound;
+	m_pController  =   pController;
+	m_pNMRI        = & model;
+	m_pMonitorData = & monitorData;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
@@ -62,8 +62,8 @@ void MonitorWindow::Reset( )
 void MonitorWindow::Stop( )
 {
 	Reset( );
-	m_pNMRI             = nullptr;
-	m_pMonitorData     = nullptr;
+	m_pNMRI        = nullptr;
+	m_pMonitorData = nullptr;
 	m_graphics.ShutDown( );
 	DestroyWindow( );
 }

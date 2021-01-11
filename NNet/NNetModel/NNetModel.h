@@ -35,7 +35,6 @@ public:
 	void Initialize
 	( 
 		Observable * const, 
-		Observable * const, 
 		Observable * const 
 	);
 
@@ -95,25 +94,15 @@ public:
 
 	void AddDescriptionLine( wstring const wstr ) {	m_description.AddDescriptionLine( wstr ); }
 
-	bool const AnyUnsavedChanges( ) const { return m_bUnsavedChanges; }
-	void SetUnsavedChanges( bool const bState )
-	{
-		assert( m_pUnsavedChangesObservable );
-		m_bUnsavedChanges = bState;
-		m_pUnsavedChangesObservable->NotifyAll( false );
-	}
-
 private:
 
 	ShapeList        m_Shapes;
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;
-	fMicroSecs       m_timeStamp                 { 0._MicroSecs };
-	Observable     * m_pStaticModelObservable    { nullptr };
-	Observable     * m_pDynamicModelObservable   { nullptr };
-	Observable     * m_pUnsavedChangesObservable { nullptr };
-	MicroMeterRect   m_enclosingRect             { };
-	wstring          m_wstrModelFilePath         { L"" };
-	bool             m_bUnsavedChanges           { false }; 
+	fMicroSecs       m_timeStamp               { 0._MicroSecs };
+	Observable     * m_pStaticModelObservable  { nullptr };
+	Observable     * m_pDynamicModelObservable { nullptr };
+	MicroMeterRect   m_enclosingRect           { };
+	wstring          m_wstrModelFilePath       { L"" };
 };

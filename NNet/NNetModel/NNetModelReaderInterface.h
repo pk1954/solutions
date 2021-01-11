@@ -49,7 +49,6 @@ public:
 	float           const   GetParameter( ParameterType::Value const p ) const { return m_pModel->GetParameter( p ); }
 	fMicroSecs      const   GetTimeResolution( )               const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring         const   GetModelFilePath()                 const { return m_pModel->GetModelFilePath(); }
-	bool            const   AnyUnsavedChanges( )               const { return m_pModel->AnyUnsavedChanges(); }
 
 	MicroMeterPoint const OrthoVector( ShapeId const ) const;
 

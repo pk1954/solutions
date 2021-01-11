@@ -51,12 +51,14 @@ void NNetModelCommands::Initialize
 ( 
 	NNetModelReaderInterface * const pNMRI,
 	NNetModelWriterInterface * const pNMWI,
+	NNetModelImporter        * const pModelImporter,
 	CommandStack             * const pCmdStack
 ) 
 { 
-	m_pNMRI     = pNMRI;
-	m_pNMWI     = pNMWI;
-	m_pCmdStack = pCmdStack;
+	m_pNMRI          = pNMRI;
+	m_pNMWI          = pNMWI;
+	m_pModelImporter = pModelImporter;
+	m_pCmdStack      = pCmdStack;
 }
 
 void NNetModelCommands::UndoCommand( )
