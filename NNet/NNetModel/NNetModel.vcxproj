@@ -186,6 +186,7 @@
   <ItemGroup>
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="AnimationInterface.h" />
+    <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="Connections.h" />
     <ClInclude Include="DrawContext.h" />

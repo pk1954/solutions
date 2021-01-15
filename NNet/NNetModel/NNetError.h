@@ -65,20 +65,20 @@ private:
 
 inline bool ProcessNNetScript
 ( 
-    Script        * pScript,
-    ShapeList     & shapeList,
-    wstring const   wstrPath
+    Script      & script,
+    ShapeList   & shapeList,
+    wstring const wstrPath
 ) 
 {
     bool bSuccess { false };
     if ( ! wstrPath.empty( ) )
     {
-        NNetErrorHandler errHndl { pScript, & shapeList };
+        NNetErrorHandler errHndl { & script, & shapeList };
         shapeList.SetErrorHandler( & errHndl );
         try
         {
             wcout << L"*** Processing script file " << wstrPath << endl;
-            bSuccess = pScript->ScrProcess( wstrPath );
+            bSuccess = script.ScrProcess( wstrPath );
         }
         catch ( ShapeException e ) 
         { 

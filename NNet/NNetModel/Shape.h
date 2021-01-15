@@ -57,9 +57,8 @@ public:
 	virtual bool IsInRect      ( MicroMeterRect  const & ) const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
 
-	virtual void Select( tBoolOp const op )    { ApplyOp( m_bSelected, op ); }
-	virtual void Clear ( )                     { m_mVinputBuffer = 0.0_mV; };
-	virtual void AddOffset(long const lOffset) { m_identifier += lOffset; };
+	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
+	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
 
 	bool IsSelected( ) const { return m_bSelected; }
 

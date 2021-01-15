@@ -64,29 +64,27 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
 
-	NNetModelReaderInterface m_nmri                     { };
-	NNetModelWriterInterface m_nmwi                     { };
-	NNetModelCommands        m_modelCommands            { };
-	NNetModelImporter        m_modelImporter            { };
-	NNetModelExporter        m_modelExporter            { };
-	NNetModel                m_model                    { };
-	Observable               m_staticModelObservable    { };
-	Observable               m_dynamicModelObservable   { };
-	Script                   m_script                   { };
-	CommandStack             m_cmdStack                 { };
-	MonitorData              m_monitorData              { };
-	Animation                m_animationDummy           { };
-	ConsImportTermination  * m_pImportTermination       { nullptr };
+	NNetModelReaderInterface m_nmri                   { };
+	NNetModelWriterInterface m_nmwi                   { };
+	NNetModelCommands        m_modelCommands          { };
+	NNetModelImporter        m_modelImporter          { };
+	NNetModelExporter        m_modelExporter          { };
+	NNetModel                m_model                  { };
+	Observable               m_staticModelObservable  { };
+	Observable               m_dynamicModelObservable { };
+	Script                   m_script                 { };
+	CommandStack             m_cmdStack               { };
+	MonitorData              m_monitorData            { };
+	Animation                m_animationDummy         { };
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelCommands );
 
-	m_pImportTermination = new ConsImportTermination( );
 	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable, m_animationDummy );
 	Shape::Initialize( m_model.GetParams() );
 
 	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_dynamicModelObservable, & m_cmdStack	);
-	m_modelImporter.Initialize(	nullptr, m_pImportTermination );
+	m_modelImporter.Initialize(	nullptr );
 	m_modelExporter.Initialize( & m_nmri );
 
 	m_nmwi.Start( & m_model );
@@ -103,9 +101,9 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
 	}
 
-	m_modelImporter.Import( L"std.mod", false );
+	m_modelImporter.Import( L"std.mod", make_unique<ConsImportTermination>() );
 
-	if ( ProcessNNetScript( & m_script, m_nmwi.GetShapes(), wstrInputFile ) )
+	if ( ProcessNNetScript( m_script, m_nmwi.GetShapes(), wstrInputFile ) )
 		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";

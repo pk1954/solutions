@@ -40,23 +40,24 @@ public:
 	void          Resize        ( long    const nr )       { m_list.resize( nr );	}
 	void          Clear         ( )                        { m_list.clear( ); }
 	void          Increase      ( long    const nr )       { m_list.resize( m_list.size() + nr ); }
-
-	void          SetErrorHandler  ( ShapeErrorHandler * const );
-	void          SelectAllShapes  ( tBoolOp const );
-	Shape * const RemoveShape      ( ShapeId const );	
-	Shape * const ReplaceShape     ( ShapeId const, UPShape );	
-	void          SetShape2Slot    ( ShapeId const, UPShape );	 // only for special situations
-	ShapeId const Push             ( UPShape );
-	void          CheckShapeList   ( )                                                         const;
-	void          Dump             ( )                                                         const;
-	void          LinkShape        ( Shape const &, function<Shape* (Shape const *)> const & ) const;
-	bool    const AnyShapesSelected( )                                                         const;
-	void          CallErrorHandler ( ShapeId const )                                           const;
-	ShapeId const FindShapeAt      ( MicroMeterPoint const, ShapeCrit const & )                const;
-	bool    const Apply2AllB       (                        ShapeCrit const & )                const;
-	void          Apply2All        ( function<void(Shape const &)> const & )                   const;
-	void          Apply2All        ( function<void(Shape       &)> const & );
-	void          Append           ( ShapeList & );
+				    
+	void            SetErrorHandler  ( ShapeErrorHandler * const );
+	void            SelectAllShapes  ( tBoolOp const );
+	UPShape         ExtractShape     ( ShapeId const );	
+	Shape * const   ReplaceShape     ( ShapeId const, UPShape );	
+	void            SetShape2Slot    ( ShapeId const, UPShape );	 // only for special situations
+	ShapeId const   Push             ( UPShape );
+	void            CheckShapeList   ( )                                                         const;
+	void            Dump             ( )                                                         const;
+	void            LinkShape        ( Shape const &, function<Shape* (Shape const *)> const & ) const;
+	bool    const   AnyShapesSelected( )                                                         const;
+	void            CallErrorHandler ( ShapeId const )                                           const;
+	ShapeId const   FindShapeAt      ( MicroMeterPoint const, ShapeCrit const & )                const;
+	bool    const   Apply2AllB       (                        ShapeCrit const & )                const;
+	void            Apply2All        ( function<void(Shape const &)> const & )                   const;
+	void            Apply2All        ( function<void(Shape       &)> const & );
+	vector<ShapeId> Append           ( ShapeList & );
+	ShapeList       ExtractShapes    ( vector<ShapeId> );
 
 	enum class SelMode { allShapes,	selectedShapes };
 	MicroMeterRect const CalcEnclosingRect( SelMode const = SelMode::allShapes ) const;

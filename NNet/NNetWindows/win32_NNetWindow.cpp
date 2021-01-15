@@ -102,11 +102,14 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 
 void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 {
-	m_pNMRI->GetShapes().Apply2AllInRect<Neuron>
-	( 
-		GetCoord().Convert2MicroMeterRect( rect ),
-		[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
-	);
+	if ( PixelSize() <= 2.5_MicroMeter )
+	{
+		m_pNMRI->GetShapes().Apply2AllInRect<Neuron>
+		( 
+			GetCoord().Convert2MicroMeterRect( rect ),
+			[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
+		);
+	}
 }
 
 void NNetWindow::DrawSensors( ) const

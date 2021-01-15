@@ -68,8 +68,8 @@ void NNetModelExporter::writeGlobalParameters( wostream & out )
 void NNetModelExporter::writeShapes( wostream & out )
 {
     m_CompactIds.resize( m_pNMRI->GetSizeOfShapeList() );
-    wcout << L"*** Before writeShapes ";
-    m_pNMRI->DumpModel();
+    //wcout << L"*** Before writeShapes ";
+    //m_pNMRI->DumpModel();
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
     {
@@ -77,8 +77,8 @@ void NNetModelExporter::writeShapes( wostream & out )
             ? idCompact++
             : ShapeId();
     }
-    out << L"NrOfShapes = " << idCompact << endl;
-    out << endl;
+    //out << L"NrOfShapes = " << idCompact << endl;
+    //out << endl;
     m_pNMRI->GetShapes().Apply2All<BaseKnot>( [&]( BaseKnot const & shape ) { writeShape( out, shape ); } );
     m_pNMRI->GetShapes().Apply2All<Pipe    >( [&]( Pipe     const & shape ) { writeShape( out, shape ); } );
 }
@@ -138,7 +138,7 @@ void NNetModelExporter::writeDescription( wostream & out )
 {
     wstring wstrLine;
     int iLineNr = 0;
-    while ( m_pDescription->GetDescriptionLine( iLineNr++, wstrLine ) )
+    while ( m_pNMRI->GetDescription().GetDescriptionLine( iLineNr++, wstrLine ) )
     {
         out << L"Description \"" << wstrLine << "\"" << endl;
     }

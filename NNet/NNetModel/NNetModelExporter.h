@@ -29,8 +29,7 @@ public:
 	void WriteModel( );
 
 private:
-	NNetModelReaderInterface * m_pNMRI                     { nullptr };
-	ModelDescription         * m_pDescription             { nullptr };
+	NNetModelReaderInterface * m_pNMRI                    { nullptr };
 	Observable               * m_unsavedChangesObservable { nullptr };
 
 	vector<ShapeId> m_CompactIds;

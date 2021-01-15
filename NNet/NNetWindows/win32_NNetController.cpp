@@ -205,15 +205,8 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->RedoCommand();
         break;
 
-    case IDM_ADD_MODEL:
-        //if ( m_pModelStorage->AskModelFile() )
-        //{
-        //    //m_mainNNetWindow.Reset();
-        //    //m_modelStorage.Read( L"", false, nullptr ); // will trigger IDM_READ_MODEL_FINISHED when done
-        //    // do **not** ReadAsync! Will fail if incomplete model is moved.
-        //}
-
-        //    m_pModelCommands->AddModel( );
+    case IDM_ADD_IMPORTED_MODEL:
+        m_pModelCommands->AddModel( );
         break;
 
     case IDM_COPY_SELECTION:

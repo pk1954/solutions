@@ -75,7 +75,7 @@ bool ShapeList::operator==( ShapeList const & other ) const
 	return true;
 }
 
-Shape * const ShapeList::RemoveShape( ShapeId const id )	
+UPShape ShapeList::ExtractShape( ShapeId const id )	
 {
 	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
@@ -83,7 +83,7 @@ Shape * const ShapeList::RemoveShape( ShapeId const id )
 	if ( GetAt( id ) )
 		GetAt( id )->DecCounter();
 
-	return m_list[id.GetValue()].release();
+	return move( m_list[id.GetValue()] );
 }
 
 void ShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for special situations
@@ -182,7 +182,10 @@ ShapeList::ShapeList( const ShapeList & rhs ) // copy constructor
 ShapeList & ShapeList::operator= ( const ShapeList & rhs ) // copy assignment
 {
 	if (this != &rhs)
+	{
+		Clear( );
 		copy( rhs );
+	}
 	return * this;
 }
 
@@ -219,7 +222,7 @@ ShapeId const ShapeList::FindShapeAt
 		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
 			return pShape->GetId();
 	};
-	return ShapeId();
+	return ShapeId( NO_SHAPE );
 }
 
 bool const ShapeList::AnyShapesSelected( ) const
@@ -268,13 +271,26 @@ void ShapeList::SelectAllShapes( tBoolOp const op )
 	Apply2All( [&](Shape & s) { s.Select( op ); } ); 
 }
 
-void ShapeList::Append( ShapeList & list2Append )
+vector<ShapeId> ShapeList::Append( ShapeList & list2Append )
 {
+	vector<ShapeId> idList;
 	long offset { Size() };
 	for ( auto & upShape : list2Append.m_list )
 	{
-		upShape->AddOffset(offset);
+		ShapeId id { upShape->GetId() + offset };
+		upShape->SetId( id );
 		m_list.push_back( move(upShape) );
+		idList.push_back( id );
 	}
-	assert( list2Append.Size() == 0 );
+	return idList;
+}
+
+ShapeList ShapeList::ExtractShapes( vector<ShapeId> idList )
+{
+	ShapeList shapeList;
+	for ( auto & id : idList )
+	{
+		shapeList.Push( ExtractShape( id ) );
+	}
+	return shapeList;
 }

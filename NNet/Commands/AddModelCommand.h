@@ -12,26 +12,26 @@ class AddModelCommand : public SelectionCommand
 {
 public:
 
-	AddModelCommand(  )
+	AddModelCommand( ShapeList const & list )
 	{ 
+		m_shapeList = list;
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pNMWI ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		ShapeList & shapeListModel { pNMWI->GetShapes() };
-		SelectionCommand::Do( * pNMWI );
-		shapeListModel.SelectAllShapes( tBoolOp::opFalse );
-		shapeListModel.Append( m_list );
+		SelectionCommand::Do( nmwi );
+		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );
+		m_idList = nmwi.GetShapes().Append( m_shapeList );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pNMWI ) 
+	virtual void Undo( NNetModelWriterInterface  & nmwi ) 
 	{ 
-		SelectionCommand::Undo( * pNMWI );
-		ShapeList & shapeListModel { pNMWI->GetShapes() };
-
+		m_shapeList = nmwi.GetShapes().ExtractShapes( m_idList );
+		SelectionCommand::Undo( nmwi );
 	}
 
 private:
-	ShapeList m_list;
+	ShapeList       m_shapeList;
+	vector<ShapeId> m_idList;
 };
 

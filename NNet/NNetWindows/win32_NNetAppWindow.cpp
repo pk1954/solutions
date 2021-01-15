@@ -23,6 +23,7 @@
 #include "util.h"
 #include "ObserverInterface.h"
 #include "win32_messagePump.h"
+#include "win32_importTermination.h"
 #include "NNetError.h"
 
 // scripting and tracing
@@ -56,38 +57,6 @@ using std::wostringstream;
 using std::wstring;
 using std::wcout;
 using std::filesystem::path;
-
-class NNetImportTermination : public ImportTermination
-{
-public:
-	NNetImportTermination( HWND hwndApp )
-	  : m_hwndApp( hwndApp )
-	{ }
-
-	virtual void Reaction( Result const res, wstring const name )
-	{
-		switch ( res )
-		{
-		case ImportTermination::Result::ok:
-			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, 0 );
-			break;
-
-		case ImportTermination::Result::fileNotFound:
-			MessageBox( nullptr, name.c_str(), L"Could not find model file", MB_OK );
-			break;
-
-		case ImportTermination::Result::errorInFile:
-			SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FAILED, 0 );
-			break;
-
-		default:
-			assert( false );
-		}
-	};
-
-private:
-	HWND m_hwndApp;
-};
 
 NNetAppWindow::NNetAppWindow( )
 {
@@ -125,8 +94,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable, m_beaconAnimation );
 	Shape::Initialize( m_model.GetParams() );
 
-	m_pImportTermination = new NNetImportTermination( m_hwndApp );
-	m_modelImporter  .Initialize( &m_script, m_pImportTermination );
+	m_modelImporter  .Initialize( &m_script );
 	m_modelExporter  .Initialize( &m_nmri );
 	m_modelCommands  .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
 	m_cmdStack       .Initialize( &m_nmwi, &m_staticModelObservable );
@@ -134,7 +102,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_sound          .Initialize( &m_soundOnObservable );
 	m_beaconAnimation.Initialize( &m_beaconObservable );	
 	m_appTitle       .Initialize( m_hwndApp, &m_nmri );
-	m_preferences    .Initialize( m_sound, m_modelImporter );
+	m_preferences    .Initialize( m_sound, m_modelImporter, m_hwndApp );
 	m_NNetController .Initialize
 	( 
 		& m_modelExporter,
@@ -297,9 +265,6 @@ void NNetAppWindow::Stop()
 	m_soundOnObservable     .UnregisterAllObservers( );
 
 	m_WinManager.RemoveAll( );
-
-	delete m_pImportTermination;
-	m_pImportTermination = nullptr;
 }
 
 bool NNetAppWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
@@ -439,20 +404,19 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		m_computeThread.StopComputation( );
 		ProcessNNetScript
 		( 
-			& m_script, 
+		    m_script, 
 			m_nmwi.GetShapes(), 
 			ScriptFile::AskForFileName( L"in", L"Script files", tFileMode::read )
 		);
 		break;
 
 	case IDM_NEW_MODEL:
-		m_computeThread.StopComputation( );
 		if ( AskAndSave( ) )
 		{
-			m_modelCommands.ResetModel( );
-			m_descWindow.ClearDescription( );
-			m_appTitle.SetUnsavedChanges( true );
+			m_computeThread.StopComputation( );
 			m_mainNNetWindow.Reset();
+			m_modelCommands.ResetModel( );
+			m_appTitle.SetUnsavedChanges( true );
 			m_mainNNetWindow.CenterModel( );
 		}
 		break;
@@ -469,36 +433,31 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_OPEN_MODEL:
-	{
-		m_computeThread.StopComputation( );
-		bool bRes { AskAndSave( ) };
-		if ( bRes )
-		{
-			wstring wstrNewFile { AskModelFile() };
-			if ( ! wstrNewFile.empty() )
-			{
-				m_mainNNetWindow.Reset();
-				m_modelImporter.Import( wstrNewFile, true ); // will trigger IDM_READ_MODEL_FINISHED when done
-			}
-		}
-	}
-	break;
-
-	case IDM_READ_MODEL_FINISHED:
-		m_model = move(* m_modelImporter.GetImportedModel());
-		m_StatusBar.ClearPart( m_statusMessagePart );
-		m_mainNNetWindow.CenterModel( );
-		m_appTitle.SetUnsavedChanges( false );
+		m_modelImporter.Import
+		( 
+			AskModelFile(), 
+			make_unique<NNetImportTermination>( m_hwndApp, IDM_REPLACE_MODEL )
+		); 
 		break;
 
-	case IDM_READ_MODEL_FAILED:
-		MessageBox
+	case IDM_ADD_MODEL:
+		m_modelImporter.Import
 		( 
-			nullptr, 
-			m_modelImporter.GetFilePath().c_str(), 
-			L"Error in model file. See main_trace.out for details", 
-			MB_OK 
-		);
+			AskModelFile(), 
+			make_unique<NNetImportTermination>( m_hwndApp, IDM_ADD_IMPORTED_MODEL )
+		); 
+		break;
+
+	case IDM_REPLACE_MODEL:
+		m_StatusBar.ClearPart( m_statusMessagePart );
+		if ( AskAndSave( ) )
+		{
+			m_computeThread.StopComputation( );
+			m_mainNNetWindow.Reset();
+			m_model = move(* m_modelImporter.GetImportedModel());
+			m_appTitle.SetUnsavedChanges( false );
+			m_mainNNetWindow.CenterModel( );
+		}
 		break;
 
 	case IDM_CENTERING_FINISHED:

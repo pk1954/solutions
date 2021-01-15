@@ -37,17 +37,18 @@ public:
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
-	ShapeList       const & GetShapes()                                const { return m_pModel->GetShapes(); }
-	bool            const   AnyShapesSelected( )                       const { return m_pModel->GetShapes().AnyShapesSelected( ); }
-	bool            const   IsValidShapeId( ShapeId const id )         const { return m_pModel->GetShapes().IsValidShapeId  (id); }
-	MicroMeterPoint const   GetShapePos   ( ShapeId const id )         const { return m_pModel->GetShapePos                 (id); }
-	Shape           const * GetConstShape ( ShapeId const id )         const { return m_pModel->GetConstShape               (id); }
-	size_t          const   GetSizeOfShapeList( )                      const { return m_pModel->GetShapes().Size(); }
-	fMicroSecs      const   GetSimulationTime( )                       const { return m_pModel->GetSimulationTime ( ); }
-	MonitorData     const & GetMonitorData( )                          const { return m_pModel->GetMonitorData    ( ); }
-	fMicroSecs      const   GetTimeResolution( )                       const { return m_pModel->GetParams().GetTimeResolution(); };
-	wstring         const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
-	float           const   GetParameter(ParameterType::Value const p) const { return m_pModel->GetParameter( p ); }
+	ShapeList        const & GetShapes()                                const { return m_pModel->GetShapes(); }
+	bool             const   AnyShapesSelected( )                       const { return m_pModel->GetShapes().AnyShapesSelected( ); }
+	bool             const   IsValidShapeId( ShapeId const id )         const { return m_pModel->GetShapes().IsValidShapeId  (id); }
+	MicroMeterPoint  const   GetShapePos   ( ShapeId const id )         const { return m_pModel->GetShapePos                 (id); }
+	Shape            const * GetConstShape ( ShapeId const id )         const { return m_pModel->GetConstShape               (id); }
+	size_t           const   GetSizeOfShapeList( )                      const { return m_pModel->GetShapes().Size(); }
+	fMicroSecs       const   GetSimulationTime( )                       const { return m_pModel->GetSimulationTime ( ); }
+	MonitorData      const & GetMonitorData( )                          const { return m_pModel->GetMonitorData    ( ); }
+	fMicroSecs       const   GetTimeResolution( )                       const { return m_pModel->GetParams().GetTimeResolution(); };
+	wstring          const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
+	float            const   GetParameter(ParameterType::Value const p) const { return m_pModel->GetParameter( p ); }
+	ModelDescription const & GetDescription( )                          const { return m_pModel->GetDescription( ); }
 
 	MicroMeterPoint const OrthoVector( ShapeId const ) const;
 	ShapeId         const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;

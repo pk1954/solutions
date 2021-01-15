@@ -188,15 +188,13 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 void MainWindow::CenterModel( )
 {
 	MicroMeterRect rect { m_pNMRI->GetShapes().CalcEnclosingRect( ShapeList::SelMode::allShapes ) };
-	if ( rect.IsNotEmpty() )
-		CenterAndZoomRect( rect, 1.2f ); // give 20% more space (looks better)
+	CenterAndZoomRect( rect, 1.2f ); // give 20% more space (looks better)
 }
 
 void MainWindow::CenterSelection( )
 {
 	MicroMeterRect rect { m_pNMRI->GetShapes().CalcEnclosingRect( ShapeList::SelMode::selectedShapes ) };
-	if ( rect.IsNotEmpty() )
-		CenterAndZoomRect( rect, 2.0f );
+	CenterAndZoomRect( rect, 2.0f );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -386,8 +384,8 @@ void MainWindow::OnChar( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::doPaint( ) 
 {
-	PixelRect const pixRect { GetClPixelRect( ) };
-	DrawContext   & context { GetDrawContext() };
+	PixelRect   const   pixRect { GetClPixelRect( ) };
+	DrawContext const & context { GetDrawContext() };
 
 	if ( m_rectSelection.IsNotEmpty( ) )
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
@@ -400,8 +398,7 @@ void MainWindow::doPaint( )
 
 	context.ShowScale( GetClRectSize() );
 
-	if ( context.GetPixelSize() <= 2.5_MicroMeter )
-		DrawNeuronTextInRect( pixRect );
+	DrawNeuronTextInRect( pixRect );
 
 	if ( IsDefined(m_shapeSuperHighlighted) ) // draw super highlighted shape again to be sure that it is visible
 	{
@@ -413,8 +410,8 @@ void MainWindow::doPaint( )
 	{
 		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pNMRI->DrawInterior( m_shapeHighlighted, context );
-		if ( m_pNMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
-			m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
+		//if ( m_pNMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
+		//	m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 
 	DrawSensors( );

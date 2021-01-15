@@ -80,6 +80,20 @@ public:
 		return res; 
 	}
 
+	friend NamedType operator+ (NamedType const a, BASE_TYPE const b )
+	{ 
+		NamedType res { a };
+		res += b; 
+		return res; 
+	}
+
+	friend NamedType operator- (NamedType const a, BASE_TYPE const b )
+	{ 
+		NamedType res { a };
+		res -= b; 
+		return res; 
+	}
+
 	friend NamedType operator* (NamedType const a, BASE_TYPE const i )
 	{ 
 		NamedType res { a };

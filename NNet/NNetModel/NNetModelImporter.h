@@ -45,9 +45,9 @@ class NNetModelImporter
 {
 public:
 
-	void Initialize( Script * const, ImportTermination * const );
+	void Initialize( Script * const );
 
-	bool Import( wstring const, bool const );
+	bool Import( wstring const, unique_ptr<ImportTermination> );
 
 	unique_ptr<NNetModel> GetImportedModel( );
 
@@ -56,16 +56,15 @@ public:
 private:
 	NNetModelWriterInterface & getWriterInterface() { return m_ImportedNMWI; }
 
-	unique_ptr<NNetModel>    m_upImportedModel;
-	NNetModelWriterInterface m_ImportedNMWI;
-	wstring                  m_wstrFile2Read;
-	Script                 * m_pScript      { nullptr };
-	ImportTermination      * m_pTermination { nullptr };
+	unique_ptr<ImportTermination> m_upTermination;
+	unique_ptr<NNetModel>         m_upImportedModel;
+	NNetModelWriterInterface      m_ImportedNMWI;
+	wstring                       m_wstrFile2Read;
+	Script                      * m_pScript       { nullptr };
 
-	void prepareForReading( );
-	void readModel( );
+	void import( );
 
-	friend static unsigned int __stdcall readModelThreadProc( void * );
+	friend static unsigned int __stdcall importModelThreadProc( void * );
 
 	friend WrapBase;
 };

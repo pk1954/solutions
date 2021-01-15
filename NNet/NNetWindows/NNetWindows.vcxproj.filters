@@ -98,9 +98,6 @@
     <ClInclude Include="Preferences.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AutoOpen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_NNetAppMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -168,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_appTitle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_importTermination.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

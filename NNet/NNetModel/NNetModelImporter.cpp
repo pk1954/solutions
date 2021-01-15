@@ -230,19 +230,9 @@ public:
     }
 };
 
-void NNetModelImporter::Initialize
-(
-    Script            * const pScript,       
-    ImportTermination * const pTermination
-)
+void NNetModelImporter::Initialize( Script * const pScript )
 {
     m_pScript = pScript;
-    m_pTermination = pTermination;
-    prepareForReading( );
-}
-
-void NNetModelImporter::prepareForReading( )
-{
     SymbolTable::ScrDefConst( L"shape",           NNetModelStorage::SIGSRC_SHAPE_NR );  // legacy
     SymbolTable::ScrDefConst( L"circle",          NNetModelStorage::SIGSRC_CIRCLE   );
     SymbolTable::ScrDefConst( L"Description",     new WrapDescription    ( * this ) );
@@ -283,11 +273,11 @@ void NNetModelImporter::prepareForReading( )
     );
 }
 
-void NNetModelImporter::readModel( ) 
+void NNetModelImporter::import( ) 
 {
     ImportTermination::Result res;
 
-    if ( ProcessNNetScript( m_pScript, m_ImportedNMWI.GetShapes(), m_wstrFile2Read ) )
+    if ( ProcessNNetScript( * m_pScript, m_ImportedNMWI.GetShapes(), m_wstrFile2Read ) )
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
@@ -297,42 +287,41 @@ void NNetModelImporter::readModel( )
     {
         res = ImportTermination::Result::errorInFile;
     }
-    m_pTermination->Reaction( res, m_wstrFile2Read );
+    m_upTermination->Reaction( res, m_wstrFile2Read );
 }
 
-static unsigned int __stdcall readModelThreadProc( void * data ) 
+static unsigned int __stdcall importModelThreadProc( void * data ) 
 {
-    SetThreadDescription( GetCurrentThread(), L"ReadModel" );
+    SetThreadDescription( GetCurrentThread(), L"ImportModel" );
     NNetModelImporter * pModelImporter { reinterpret_cast<NNetModelImporter *>( data ) };
-    pModelImporter->readModel( );
+    pModelImporter->import( );
     return 0;
 }
 
 bool NNetModelImporter::Import
 ( 
-    wstring const wstrPath, 
-    bool    const bAsync
+    wstring                 const wstrPath,
+    unique_ptr<ImportTermination> upTermination
 )
 {
+    if ( wstrPath.empty() )
+        return false;
+
     if ( m_upImportedModel.get() ) 
         return false;       // another import is already running
 
     if ( ! exists( wstrPath ) )
-        m_pTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );
+    {
+        m_upTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );
+        return false;
+    }
 
+    m_upTermination   = move(upTermination);
     m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
     m_ImportedNMWI.Start( m_upImportedModel.get() );
     m_wstrFile2Read = wstrPath;
     wcout << L"*** Reading file " << wstrPath << endl;
-    if ( bAsync )
-    {
-        UINT threadId { 0 };
-        Util::RunAsAsyncThread( readModelThreadProc, static_cast<void *>(this), & threadId );
-    }
-    else
-    {
-        readModel( );
-    }
+    Util::RunAsAsyncThread( importModelThreadProc, static_cast<void *>(this) );
     return true;
 }
 

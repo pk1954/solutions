@@ -41,16 +41,6 @@ public:
     }
 };
 
-class WrapReadModel: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        wstring const wstrModelPath { script.ScrReadString( ) };
-        m_pCommands->ReadModel( wstrModelPath, false, true );
-    }
-};
-
 class WrapConnect: public Script_Functor
 {
 public:
@@ -375,7 +365,6 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(MoveShape);          
     DEF_FUNC(NewInputNeuron);     
     DEF_FUNC(NewNeuron);          
-    DEF_FUNC(ReadModel);          
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          
     DEF_FUNC(SelectAllBeepers);   

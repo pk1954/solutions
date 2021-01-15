@@ -593,7 +593,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrowAnimation.h" />
-    <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BeaconAnimation.h" />
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="D2D_DrawContext.h" />
@@ -608,6 +607,7 @@
     <ClInclude Include="UndoRedoMenu.h" />
     <ClInclude Include="win32_appTitle.h" />
     <ClInclude Include="win32_crsrWindow.h" />
+    <ClInclude Include="win32_importTermination.h" />
     <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="win32_MiniWindow.h" />
     <ClInclude Include="win32_modelDescription.h" />

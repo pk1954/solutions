@@ -58,10 +58,11 @@ public:
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	ShapeList   const & GetShapes( )       const { return m_Shapes; }
-	MonitorData const & GetMonitorData( )  const { return m_monitorData; }
-	Param       const & GetParams()        const { return m_param; }
-	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
+	ShapeList        const & GetShapes( )       const { return m_Shapes; }
+	MonitorData      const & GetMonitorData( )  const { return m_monitorData; }
+	ModelDescription const & GetDescription( )  const { return m_description; }
+	Param            const & GetParams()        const { return m_param; }
+	wstring          const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 

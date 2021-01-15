@@ -41,6 +41,7 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 {	
 	if ( IsUndefined( id ) || ! m_Shapes.IsValidShapeId( id ) )
 	{
+		wcout << L"# **** GetConstShape failed. Id = " << id << endl;
 		DumpModel();
 		m_Shapes.CallErrorHandler( id );  
 		return nullptr;
@@ -94,6 +95,7 @@ void NNetModel::ResetModel( )
 	m_wstrModelFilePath = L""; 
 	m_Shapes.Clear();
 	m_monitorData.Reset();
+	m_description.ClearDescription();
 	Knot       ::ResetCounter();
 	Neuron     ::ResetCounter();
 	InputNeuron::ResetCounter();

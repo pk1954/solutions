@@ -9,10 +9,12 @@
 #include "Script.h"
 #include "errhndl.h"
 #include "symtab.h"
+#include "Resource.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
 #include "NNetModelImporter.h"
 #include "NNetParameters.h"
+#include "win32_importTermination.h"
 #include "win32_NNetAppMenu.h"
 #include "Preferences.h"
 
@@ -62,30 +64,25 @@ private:
 class WrapReadModel: public Script_Functor
 {
 public:
-    WrapReadModel( NNetModelImporter & modelImporter )
+    WrapReadModel( NNetModelImporter & modelImporter, HWND const hwndApp )
         : m_modelImporter( modelImporter )
-    {}
+    {
+        m_hwndApp = hwndApp;
+    }
 
     virtual void operator() ( Script & script ) const
     {
-        wstring wstrModelFile { script.ScrReadString() };
-        if ( path( wstrModelFile).extension() != L".mod" )
+        wstring wstrFile    { script.ScrReadString() };
+        auto    termination { make_unique<NNetImportTermination>( m_hwndApp, IDM_REPLACE_MODEL ) };
+        if ( ! m_modelImporter.Import( wstrFile, move(termination) ) )
         {
-            int iRes = MessageBox
-            ( 
-                nullptr, 
-                L"Model file has non standard extension. Read anyway?", 
-                wstrModelFile.c_str(), 
-                MB_YESNO 
-            );
-            if ( iRes != IDYES )
-                return;
+            SendMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
         }
-        m_modelImporter.Import( wstrModelFile, true );
-    }
+     }
 
 private:
     NNetModelImporter & m_modelImporter;
+    HWND                m_hwndApp;
 };
 
 static wstring const PREF_ON  { L"ON"  };
@@ -96,9 +93,13 @@ wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 void Preferences::Initialize
 ( 
     Sound             & sound, 
-    NNetModelImporter & modelImporter
+    NNetModelImporter & modelImporter,
+    HWND                hwndApp
 )
 {
+    m_pSound  = & sound;
+    m_hwndApp = hwndApp;
+
     wchar_t szBuffer[MAX_PATH];
     DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer );
     assert( dwRes > 0 );
@@ -106,14 +107,12 @@ void Preferences::Initialize
     m_wstrPreferencesFile = szBuffer;
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    SymbolTable::ScrDefConst( L"SetAutoOpen", new WrapSetAutoOpen );
-    SymbolTable::ScrDefConst( L"SetSound",    new WrapSetSound (sound) );
-    SymbolTable::ScrDefConst( L"ReadModel",   new WrapReadModel(modelImporter) );
+    SymbolTable::ScrDefConst( L"SetAutoOpen", new WrapSetAutoOpen( ) );
+    SymbolTable::ScrDefConst( L"SetSound",    new WrapSetSound ( sound ) );
+    SymbolTable::ScrDefConst( L"ReadModel",   new WrapReadModel( modelImporter, m_hwndApp ) );
 
     SymbolTable::ScrDefConst( PREF_OFF, 0L );
     SymbolTable::ScrDefConst( PREF_ON,  1L );
-
-    m_pSound = & sound;
 }
 
 bool Preferences::ReadPreferences( )

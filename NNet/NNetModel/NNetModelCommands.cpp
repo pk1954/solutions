@@ -89,19 +89,6 @@ void NNetModelCommands::ResetModel( )
 	m_pDynamicModelObservable->NotifyAll( false );
 }
 
-void NNetModelCommands::ReadModel
-( 
-	wstring const wstrPath, 
-	bool    const bAsync, 
-	bool    const bReset
-)
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << bAsync << L" " << wstrPath << endl;
-	m_pModelImporter->Import( wstrPath, bAsync );
-	m_pCmdStack->Clear();
-}
-
 void NNetModelCommands::DeleteShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
@@ -212,7 +199,7 @@ void NNetModelCommands::AddModel( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( ) );
+	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetShapes() ) );
 }
 
 void NNetModelCommands::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )
