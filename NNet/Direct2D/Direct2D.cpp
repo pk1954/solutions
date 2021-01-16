@@ -331,10 +331,10 @@ void D2D_driver::FillArrow
 	D2D1::ColorF const colF
 	) const
 {
-	if ( ! IsCloseToZero( ptVector ) )
+	if ( ! ptVector.IsCloseToZero() )
 	{
 		fPixelPoint const ptVectorScaled { ptVector * ( fPixSize / Hypot( ptVector ) )  };
-		fPixelPoint const ptOrtho        { OrthoVector( ptVectorScaled, fPixSize ) };
+		fPixelPoint const ptOrtho        { ptVectorScaled.OrthoVector( fPixSize ) };
 		fPixelPoint const ptEndPoint1    { ptPos - ptVectorScaled + ptOrtho };
 		fPixelPoint const ptEndPoint2    { ptPos - ptVectorScaled - ptOrtho };
 

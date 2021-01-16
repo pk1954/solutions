@@ -77,8 +77,8 @@ void NNetModelExporter::writeShapes( wostream & out )
             ? idCompact++
             : ShapeId();
     }
-    //out << L"NrOfShapes = " << idCompact << endl;
-    //out << endl;
+    out << L"NrOfShapes = " << idCompact << endl;
+    out << endl;
     m_pNMRI->GetShapes().Apply2All<BaseKnot>( [&]( BaseKnot const & shape ) { writeShape( out, shape ); } );
     m_pNMRI->GetShapes().Apply2All<Pipe    >( [&]( Pipe     const & shape ) { writeShape( out, shape ); } );
 }

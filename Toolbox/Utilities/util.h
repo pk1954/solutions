@@ -33,7 +33,7 @@ using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 //    return (SOURCE_TYPE(0) < val) - (val < SOURCE_TYPE(0));
 //}
 
-inline bool IsCloseToZero( float const f )
+inline bool const IsCloseToZero( float const f )
 {
 	return abs( f ) < 1.e-10f;
 }

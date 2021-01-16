@@ -31,7 +31,7 @@ void ParameterDialog::resetParameter   // refresh edit field with data from mode
 
 void ParameterDialog::applyParameter  // read out edit field and write data to model
 (
-	HWND       const hwndEditField,
+	HWND                 const hwndEditField,
 	ParameterType::Value const parameter
 )
 {

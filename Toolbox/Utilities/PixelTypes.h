@@ -51,18 +51,6 @@ inline static fPIXEL Hypot( fPixelPoint const pt )
 	return fPIXEL( std::hypotf(pt.GetXvalue(), pt.GetYvalue() ) );
 };
 
-inline static fPixelPoint OrthoVector( fPixelPoint const & vect, fPIXEL const width )
-{
-	fPIXEL fHypot = Hypot( vect );
-	assert( ! IsCloseToZero( fHypot.GetValue() ) );
-	return fPixelPoint( vect.GetY(), - vect.GetX() ) * (width / fHypot);
-}
-
-inline bool IsCloseToZero( fPixelPoint const vect )
-{
-	return IsCloseToZero( vect.GetXvalue() ) && IsCloseToZero( vect.GetYvalue() );
-}
-
 /////////////////// conversions ///////////////////////////////////
 
 static PIXEL Convert2PIXEL( fPIXEL const fPixel )

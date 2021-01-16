@@ -83,7 +83,8 @@ public:
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
     {
-        return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector(), NEURON_RADIUS*2.f );
+        MicroMeterPoint vector { m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector() };
+        return vector.OrthoVector( NEURON_RADIUS*2.f );
     }
 
 #ifdef _DEBUG

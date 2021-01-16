@@ -153,9 +153,7 @@ void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 
 void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
-	MicroMeterPoint const umVector { GetVector( ) };
-	MicroMeterPoint const umNewPnt { OrthoVector( umVector, dislocation ) };
-	pBaseKnot->MoveShape( umNewPnt );
+	pBaseKnot->MoveShape( GetVector().OrthoVector( dislocation ) );
 	Recalc( );
 }
 
@@ -177,9 +175,9 @@ MicroMeter Pipe::GetLength( ) const
 bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 {
 	MicroMeterPoint const umVector{ GetEndPoint( ) - GetStartPoint( ) };
-	if ( IsCloseToZero( umVector ) )
+	if ( umVector.IsCloseToZero() )
 		return false;
-	MicroMeterPoint const umOrthoScaled{ OrthoVector( umVector, m_width ) };
+	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector( m_width ) };
 	MicroMeterPoint       umPoint1     { GetStartPoint( ) };
 	MicroMeterPoint const umPoint2     { umPoint1 + umVector };
 	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
@@ -190,7 +188,7 @@ MicroMeterPoint Pipe::GetVector( ) const
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	MicroMeterPoint const umvector{ umEndPoint - umStartPoint };
-	assert( ! IsCloseToZero( umvector ) );
+	assert( ! umvector.IsCloseToZero() );
 	return umvector;
 }
 
@@ -219,7 +217,7 @@ void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type 
 void Pipe::DrawInterior( DrawContext const & context ) const
 {
 	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
-	if ( ! IsCloseToZero( umVector ) )
+	if ( ! umVector.IsCloseToZero() )
 	{
 		size_t          const nrOfSegments { m_potential.size() };
 		MicroMeterPoint const umSegVec     { umVector / Cast2Float(nrOfSegments) };
@@ -244,11 +242,11 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 {
 	mV mVresult { 0._mV };
 	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
-	if ( ! IsCloseToZero( umVector ) )
+	if ( ! umVector.IsCloseToZero() )
 	{
 		size_t          const nrOfSegments  { m_potential.size() };
 		MicroMeterPoint const umSegVec      { umVector / Cast2Float(nrOfSegments) };
-		MicroMeterPoint const umOrthoScaled { OrthoVector( umVector, m_width ) };
+		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector( m_width ) };
 		MicroMeterPoint       umPoint       { GetStartPoint( ) };
 		size_t          const potIndex      { m_potIndex };
 		size_t                index         { potIndex }; 

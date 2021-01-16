@@ -34,4 +34,3 @@ private:
 	ShapeList       m_shapeList;
 	vector<ShapeId> m_idList;
 };
-

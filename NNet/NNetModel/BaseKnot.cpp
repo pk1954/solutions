@@ -19,9 +19,9 @@ bool BaseKnot::operator==( Shape const & rhs ) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
 	return 
-	( this->Shape::operator== (rhs) )                                &&
-	( IsCloseToZero( GetPosition () - baseKnotRhs.GetPosition () ) ) &&
-	( IsCloseToZero( GetExtension() - baseKnotRhs.GetExtension() ) );
+	( this->Shape::operator== (rhs) )                    &&
+	GetPosition ().IsCloseTo(baseKnotRhs.GetPosition ()) &&
+	GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
 }
 
 void BaseKnot::Dump( ) const

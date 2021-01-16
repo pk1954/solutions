@@ -66,6 +66,28 @@ public:
     bool IsZero   ( ) const { return * this == ZERO_VAL(); };
     bool IsNotZero( ) const { return * this != ZERO_VAL(); };
 
+	friend BASE_TYPE Distance( PointType const & npA, PointType const & npB )
+	{
+		return Hypot( npA - npB );
+	}
+
+	bool const IsCloseToZero( ) const
+	{
+		return ::IsCloseToZero( GetXvalue() ) && ::IsCloseToZero( GetYvalue() );
+	}
+
+	bool const IsCloseTo( PointType const & pt ) const
+	{
+		return (*this - pt).IsCloseToZero();
+	}
+
+	PointType OrthoVector( BASE_TYPE const width ) const
+	{
+		BASE_TYPE fHypot = Hypot( * this );
+		assert( ! ::IsCloseToZero( fHypot.GetValue() ) );
+		return PointType( GetY(), - GetX() ) * (width / fHypot);
+	}
+
 	friend PointType const operator+ (PointType const a, PointType const b) 
 	{ 
 		PointType res { a }; 

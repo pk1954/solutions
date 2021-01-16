@@ -41,7 +41,8 @@ public:
 	fHertz const SetPulseFrequency( fHertz const );
 
 private:
-	void drawInputNeuron( DrawContext const &, D2D1::ColorF const, float const ) const;
+//	void drawInputNeuron( DrawContext const &, D2D1::ColorF const, float const ) const;
+	void drawInputShape( DrawContext const &, float const, float const, float const, float const, D2D1::ColorF const ) const;
 
 	mV         m_mvFactor;       // precomputed value for optimization
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other

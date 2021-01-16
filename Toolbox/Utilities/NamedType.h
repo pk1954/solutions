@@ -59,6 +59,9 @@ public:
 	NamedType  operator++(int) { NamedType tmp { *this }; operator++(); return tmp; }
 	NamedType  operator--(int) { NamedType tmp { *this }; operator--(); return tmp; }
 
+	bool const IsCloseToZero()            const { return ::IsCloseToZero( GetValue() ); }
+	bool const IsCloseTo(NamedType other) const { return (*this - other).IsCloseToZero(); }
+
 	friend NamedType operator+ (NamedType const a, NamedType const b )
 	{ 
 		NamedType res { a };
