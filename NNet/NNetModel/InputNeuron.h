@@ -42,12 +42,12 @@ public:
 
 private:
 //	void drawInputNeuron( DrawContext const &, D2D1::ColorF const, float const ) const;
-	void drawInputShape( DrawContext const &, float const, float const, float const, float const, D2D1::ColorF const ) const;
+	void drawRectangularNeuron( DrawContext const &, float const, float const, float const, float const, float const, float const, D2D1::ColorF const ) const;
 
 	mV         m_mvFactor;       // precomputed value for optimization
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
-	                             // floating point rounding effects, both are stored
+                                 // floating point rounding effects, both are stored
 
 	inline static unsigned long m_counter { 0L };
 };	

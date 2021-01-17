@@ -17,7 +17,7 @@ wchar_t const * ShapeType::GetName( ShapeType::Value const val )
 		{ ShapeType::Value::undefined,   L"undefined"   },
 		{ ShapeType::Value::inputNeuron, L"inputNeuron" },
 		{ ShapeType::Value::neuron,      L"neuron"      },
-		{ ShapeType::Value::pipe,        L"pipe"    },
+		{ ShapeType::Value::pipe,        L"pipe"        },
 		{ ShapeType::Value::knot,        L"knot"        }
 	};				  
 

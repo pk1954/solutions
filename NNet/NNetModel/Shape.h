@@ -67,13 +67,13 @@ public:
 	ShapeType       GetShapeType( ) const { return m_type; }
 	ShapeId         GetId       ( ) const { return m_identifier; }
 
-	bool IsPipe       () const { return m_type.IsPipeType       ( ); }
-	bool IsKnot       () const { return m_type.IsKnotType       ( ); }
-	bool IsNeuron     () const { return m_type.IsNeuronType     ( ); }
-	bool IsInputNeuron() const { return m_type.IsInputNeuronType( ); }
-	bool IsAnyNeuron  () const { return m_type.IsAnyNeuronType  ( ); }
-	bool IsBaseKnot   () const { return m_type.IsBaseKnotType   ( ); }
-	bool IsUndefined  () const { return m_type.IsUndefinedType  ( ); }
+	bool IsPipe        () const { return m_type.IsPipeType        ( ); }
+	bool IsKnot        () const { return m_type.IsKnotType        ( ); }
+	bool IsNeuron      () const { return m_type.IsNeuronType      ( ); }
+	bool IsInputNeuron () const { return m_type.IsInputNeuronType ( ); }
+	bool IsAnyNeuron   () const { return m_type.IsAnyNeuronType   ( ); }
+	bool IsBaseKnot    () const { return m_type.IsBaseKnotType    ( ); }
+	bool IsUndefined   () const { return m_type.IsUndefinedType   ( ); }
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 

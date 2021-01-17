@@ -48,6 +48,7 @@
 #include "win32_aboutBox.h"
 #include "Analyzer.h"
 #include "AutoOpen.h"
+#include "Neuron.h"
 #include "UndoRedoMenu.h"
 #include "win32_NNetAppWindow.h"
 

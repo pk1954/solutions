@@ -571,6 +571,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ComputeThread.cpp" />
+    <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />

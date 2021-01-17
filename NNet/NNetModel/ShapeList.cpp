@@ -4,6 +4,11 @@
 
 #include "stdafx.h"
 #include "ModelUtilities.h"
+#include "Knot.h"
+#include "Pipe.h"
+#include "BaseKnot.h"
+#include "Neuron.h"
+#include "InputNeuron.h"
 #include "ShapeList.h"
 
 using std::move;

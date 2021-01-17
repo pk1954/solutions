@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "Shape.h"
 #include "NNetModel.h"
+#include "Neuron.h"
+#include "InputNeuron.h"
 #include "NNetModelReaderInterface.h"
 
 bool const NNetModelReaderInterface::IsSelected( ShapeId const id ) const

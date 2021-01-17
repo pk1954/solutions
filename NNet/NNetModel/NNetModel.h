@@ -17,10 +17,8 @@
 #include "ModelDescription.h"
 #include "ShapeErrorHandler.h"
 #include "ShapeList.h"
-#include "InputNeuron.h"
-#include "Neuron.h"
-#include "Knot.h"
 #include "Pipe.h"
+#include "BaseKnot.h"
 
 class EventInterface;
 

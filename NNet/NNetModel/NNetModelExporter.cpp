@@ -8,6 +8,8 @@
 #include <filesystem>
 #include "Signal.h"
 #include "Track.h"
+#include "InputNeuron.h"
+#include "BaseKnot.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
 #include "NNetModelReaderInterface.h"

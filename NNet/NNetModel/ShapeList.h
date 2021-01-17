@@ -6,11 +6,7 @@
 
 #include <vector>
 #include "Shape.h"
-#include "Knot.h"
-#include "Pipe.h"
-#include "BaseKnot.h"
-#include "Neuron.h"
-#include "InputNeuron.h"
+#include "ShapeId.h"
 #include "Connections.h"
 #include "ShapeErrorHandler.h"
 

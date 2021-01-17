@@ -10,6 +10,7 @@
 #include "ShapeType.h"
 #include "ShapeId.h"
 #include "NNetModel.h"
+#include "SoundInterface.h"
 #include "tHighlightType.h"
 
 class Shape;

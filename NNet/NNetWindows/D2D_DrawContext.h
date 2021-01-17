@@ -11,205 +11,87 @@
 #include "ShapeId.h"
 #include "scale.h"
 
-inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
-
 class D2D_DrawContext: public DrawContext
 {
 public:
 
-	void Start( HWND const hwnd )
-	{
-		DrawContext::Initialize( );
-		m_graphics.Initialize( hwnd );
-		SetStdFontSize( STD_FONT_SIZE );
-		m_scale.Initialize( & m_graphics, L"m" );
-	}
+	void Start( HWND const );
+	void Stop( );
 
-	void Stop( )
-	{
-		m_graphics.ShutDown( );
-	}
+	bool StartFrame( HDC const hDC ) { return m_graphics.StartFrame( hDC );	}
+	void EndFrame( ) { m_graphics.EndFrame( ); }
 
-	bool StartFrame( HDC const hDC )
-	{
-		return m_graphics.StartFrame( hDC );
-	}
-
-	void EndFrame( )
-	{
-		m_graphics.EndFrame( );
-	}
-
-	void Resize( int const width, int const height )
-	{
-		m_graphics.Resize( width, height );
-		m_scale.SetClientRectSize( PIXEL(width), PIXEL(height) );
-	}
-
-	void SetStdFontSize( MicroMeter const & size )
-	{
-		m_graphics.SetStdFontSize( m_coord.Convert2fPixel( size ).GetValue() );
-	}
+	void Resize( int const, int const );
+	void SetStdFontSize( MicroMeter const & );
 
 	virtual void DrawLine
 	( 
-		MicroMeterPoint const & umStartPoint, 
-		MicroMeterPoint const & umEndPoint, 
-		MicroMeter      const   umWidth, 
-		D2D1::ColorF    const   col
-	) const
-	{
-		m_graphics.DrawLine
-		( 
-			m_coord.Convert2fPixelPos( umStartPoint ),
-			m_coord.Convert2fPixelPos( umEndPoint   ),
-			m_coord.Convert2fPixel   ( umWidth      ),
-			m_bNoColors ? NNetColors::COL_BLACK : col 
-		);
-	}
+		MicroMeterPoint const &, 
+		MicroMeterPoint const &,
+		MicroMeter      const  ,
+		D2D1::ColorF    const  
+	) const;
 
 	virtual void FillCircle
 	(
-		MicroMeterCircle const & umCircle,
-		D2D1::ColorF     const   col  
-	) const
-	{
-		m_graphics.FillCircle
-		( 
-			m_coord.Convert2fPixelCircle( umCircle ), 
-			m_bNoColors ? NNetColors::COL_BLACK : col 
-		);
-	}
+		MicroMeterCircle const &,
+		D2D1::ColorF     const    
+	) const;
 
 	virtual void FillGradientCircle
 	(
-		MicroMeterCircle const & umCircle,
-		D2D1::ColorF     const   col1,  
-		D2D1::ColorF     const   col2  
-	) const
-	{
-		m_graphics.FillGradientCircle( m_coord.Convert2fPixelCircle( umCircle ), col1, col2 );
-	}
+		MicroMeterCircle const &,
+		D2D1::ColorF     const,  
+		D2D1::ColorF     const  
+	) const;
 
 	virtual void DrawCircle
 	(
-		MicroMeterCircle const & umCircle,
-		D2D1::ColorF     const   col,
-		MicroMeter       const   umWidth
-	) const
-	{
-		m_graphics.DrawCircle
-		( 
-			m_coord.Convert2fPixelCircle( umCircle ), 
-			m_bNoColors ? NNetColors::COL_BLACK : col,
-			m_coord.Convert2fPixel( umWidth )
-		);
-	}
+		MicroMeterCircle const &,
+		D2D1::ColorF     const,
+		MicroMeter       const
+	) const;
 
 	virtual void FillEllipse
 	(
-		MicroMeterEllipse const & umEllipse,
-		D2D1::ColorF      const   col  
-	) const
-	{
-		m_graphics.FillEllipse
-		( 
-			m_coord.Convert2fPixelEllipse( umEllipse ), 
-			m_bNoColors ? NNetColors::COL_BLACK : col 
-		);
-	}
+		MicroMeterEllipse const &,
+		D2D1::ColorF      const  
+	) const;
 
 	virtual void DrawEllipse
 	(
-		MicroMeterEllipse const & umEllipse,
-		D2D1::ColorF     const   col,
-		MicroMeter       const   umWidth
-	) const
-	{
-		m_graphics.DrawEllipse
-		( 
-			m_coord.Convert2fPixelEllipse( umEllipse ), 
-			m_bNoColors ? NNetColors::COL_BLACK : col,
-			m_coord.Convert2fPixel( umWidth )
-		);
-	}
+		MicroMeterEllipse const &,
+		D2D1::ColorF      const,
+		MicroMeter        const   
+	) const;
 
 	virtual void FillArrow
 	( 
-		MicroMeterPoint const & umPos, 
-		MicroMeterPoint const & umVector, 
-		MicroMeter      const   umSize, 
-		MicroMeter      const   umWidth, 
-		D2D1::ColorF    const   col
-	) const
-	{
-		m_graphics.FillArrow
-		( 
-			m_coord.Convert2fPixelPos ( umPos ),
-			m_coord.Convert2fPixelSize( umVector ), 
-			m_coord.Convert2fPixel    ( umSize ),
-			m_coord.Convert2fPixel    ( umWidth ),
-			m_bNoColors ? NNetColors::COL_BLACK : col 
-		);
-	}
+		MicroMeterPoint const &,
+		MicroMeterPoint const &,
+		MicroMeter      const,
+		MicroMeter      const,
+		D2D1::ColorF    const  
+	) const;
 
-	virtual void FillRectangle( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
-	{
-		m_graphics.FillRectangle( m_coord.Convert2fPixelRect( umRect ), col );
-	}
+	virtual void FillRectangle ( MicroMeterRect const &, D2D1::ColorF ) const; 
+	virtual void DrawTranspRect( MicroMeterRect const &, D2D1::ColorF ) const; 
 
-	virtual void DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
-	{
-		if ( IsTooSmall( umRect ) )
-		{
-			m_graphics.FillRectangle
-			( 
-				fPixelRect
-				( 
-					fPP_ZERO,
-					m_coord.Convert2fPixelPos(umRect.GetEndPoint()) 
-				), 
-				col 
-			);
-			m_graphics.FillRectangle
-			( 
-				fPixelRect
-				( 
-					m_coord.Convert2fPixelPos(umRect.GetStartPoint()), 
-					m_graphics.GetClRectSize() 
-				), 
-				col 
-			);
-		}
-		else
-		{
-			m_graphics.FillRectangle( m_coord.Convert2fPixelRect( umRect ), col );
-		}
-	}
+	void SetPixelSize( MicroMeter const ); 
 
-	void SetPixelSize( MicroMeter const s ) 
-	{
-		DrawContext::SetPixelSize( s );
-		m_scale.SetHorzPixelSize( s.GetValue() );
-	}
-
-	virtual void ShowScale( PixelRectSize const & pixRectSize ) const 
-	{
-		m_scale.DisplayStaticScale( );
-	}
+	virtual void ShowScale( PixelRectSize const & ) const;
 
 	virtual void DisplayText
 	(
-		MicroMeterRect      const & umRect,
-		std::wstring        const & wstr,
-		D2D1::ColorF        const   colF,
-		IDWriteTextFormat * const   pTextFormat = nullptr
-	) const
-	{
-		m_graphics.DisplayText( m_coord.Convert2PixelRect( umRect ), wstr, colF, pTextFormat );
-	}
+		MicroMeterRect      const &,
+		std::wstring        const &,
+		D2D1::ColorF        const,
+		IDWriteTextFormat * const = nullptr
+	) const;
 
 private:
+	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
+
 	D2D_driver m_graphics;
 	Scale      m_scale;
 };

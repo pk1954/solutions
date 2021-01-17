@@ -55,24 +55,21 @@ public:
 	static wchar_t          const * GetName( ShapeType::Value const );
 	static ShapeType::Value const   GetTypeFromName( wchar_t const * const );
 
-	bool IsPipeType       ( ) const { return m_value == Value::pipe;    }
-	bool IsDefinedType    ( ) const { return m_value != Value::undefined;   }
-	bool IsUndefinedType  ( ) const { return m_value == Value::undefined;   }
-	bool IsKnotType       ( ) const { return m_value == Value::knot;        }
-	bool IsNeuronType     ( ) const { return m_value == Value::neuron;      }
-	bool IsInputNeuronType( ) const { return m_value == Value::inputNeuron; }
+	bool IsPipeType        ( ) const { return m_value == Value::pipe;         }
+	bool IsDefinedType     ( ) const { return m_value != Value::undefined;    }
+	bool IsUndefinedType   ( ) const { return m_value == Value::undefined;    }
+	bool IsKnotType        ( ) const { return m_value == Value::knot;         }
+	bool IsNeuronType      ( ) const { return m_value == Value::neuron;       }
+	bool IsInputNeuronType ( ) const { return m_value == Value::inputNeuron;  }
 
 	bool IsAnyNeuronType  ( ) const
 	{
-		return (m_value == Value::neuron)      || 
-			   (m_value == Value::inputNeuron);
+		return (m_value == Value::neuron) || (m_value == Value::inputNeuron);
 	}
 
 	bool IsBaseKnotType( ) const
 	{
-		return (m_value == Value::knot)        || 
-			   (m_value == Value::neuron)      || 
-			   (m_value == Value::inputNeuron);
+		return IsAnyNeuronType() || (m_value == Value::knot);
 	}
 
 	Value GetValue() const { return m_value; }

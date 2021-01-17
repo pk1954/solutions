@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <assert.h>
 #include "SignalFactory.h"
+#include "Knot.h"
 #include "MonitorData.h"
 #include "NNetError.h"
 #include "NNetWrapperHelpers.h"

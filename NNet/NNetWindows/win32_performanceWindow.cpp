@@ -121,10 +121,10 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printIntLine     ( textBuf, L"# Knots  : ",    m_pNMRI->GetNrOf<Knot>() );
 		printIntLine     ( textBuf, L"# Pipes  : ",    m_pNMRI->GetNrOf<Pipe>() );
 		printIntLine     ( textBuf, L"# Shapes : ", 
-			m_pNMRI->GetNrOf<InputNeuron>() +
-		    m_pNMRI->GetNrOf<Neuron>() +
-		    m_pNMRI->GetNrOf<Knot>() +
-		    m_pNMRI->GetNrOf<Pipe>() 
-		);
+							m_pNMRI->GetNrOf<InputNeuron>() +
+							m_pNMRI->GetNrOf<Neuron>() +
+							m_pNMRI->GetNrOf<Knot>() +
+							m_pNMRI->GetNrOf<Pipe>() 
+                         );
 	}
 }

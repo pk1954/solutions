@@ -3,7 +3,10 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Pipe.h"
+#include "Knot.h"
 #include "Neuron.h"
+#include "InputNeuron.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::Start( NNetModel * const pModel )
@@ -21,8 +24,8 @@ void NNetModelWriterInterface::CreateInitialShapes( )
 	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
 	unique_ptr<Neuron>      upNeuron      { make_unique<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
 	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upNeuron.get() ) };
-	upInputNeuron->m_connections.AddOutgoing( upNewPipe.get() );
-	upNeuron     ->m_connections.AddIncoming( upNewPipe.get() );
+	upInputNeuron ->m_connections.AddOutgoing( upNewPipe.get() );
+	upNeuron->m_connections.AddIncoming( upNewPipe.get() );
 	GetShapes().Push( move(upInputNeuron) );
 	GetShapes().Push( move(upNeuron) );       
 	GetShapes().Push( move(upNewPipe) );      
