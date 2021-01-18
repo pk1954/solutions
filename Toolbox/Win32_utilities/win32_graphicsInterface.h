@@ -28,9 +28,9 @@ public:
 	virtual void      EndFrame( HWND const ) = 0;
 	virtual void      ShutDown( ) = 0;
 
-	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const ) = 0;
-	virtual void      DrawPolygon( int const, fPixelPoint const, COLORREF const, fPIXEL const ) = 0;
-	virtual void      StartPipeline( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const ) = 0;
+	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPixel const, COLORREF const ) = 0;
+	virtual void      DrawPolygon( int const, fPixelPoint const, COLORREF const, fPixel const ) = 0;
+	virtual void      StartPipeline( fPixelPoint const &, fPixelPoint const &, fPixel const, COLORREF const ) = 0;
 	virtual void      AddPipelinePoint( fPixelPoint const &, COLORREF const ) = 0;
 	virtual void      RenderPipeline( ) = 0;
 

@@ -13,24 +13,24 @@ class PixelCoordsFp
 public:
 
 	PixelCoordsFp()
-	  : m_fPixOffset( 0.0_fPIXEL ),
+	  : m_fPixOffset( 0.0_fPixel ),
 		m_pixelSize ( DEFAULT_PIXEL_SIZE )
 	{}
 
 	void Reset( )
 	{
-		m_fPixOffset = 0.0_fPIXEL;
+		m_fPixOffset = 0.0_fPixel;
 		m_pixelSize  = DEFAULT_PIXEL_SIZE;
 	}
 
 	//////// transformations MicroMeter <---> fPixel ////////
 
-	fPIXEL const Convert2fPixel( MicroMeter const param ) const
+	fPixel const Convert2fPixel( MicroMeter const param ) const
 	{ 
-		return fPIXEL( param / m_pixelSize );
+		return fPixel( param / m_pixelSize );
 	}
 
-	MicroMeter const Convert2MicroMeter( fPIXEL const fPixel ) const
+	MicroMeter const Convert2MicroMeter( fPixel const fPixel ) const
 	{ 
 		return m_pixelSize * fPixel.GetValue();
 	}
@@ -140,8 +140,8 @@ public:
 	{
 		return fPixelRectSize
 		( 
-			Convert2fPIXEL( siz.GetX() ), 
-			Convert2fPIXEL( siz.GetY() ) 
+			::Convert2fPixel( siz.GetX() ), 
+			::Convert2fPixel( siz.GetY() ) 
 		);
 	}
 
@@ -149,7 +149,7 @@ public:
 
 	MicroMeter Convert2MicroMeter( PIXEL const pix ) const
 	{ 
-		return Convert2MicroMeter( Convert2fPIXEL( pix ) );
+		return Convert2MicroMeter( ::Convert2fPixel( pix ) );
 	}
 
 	MicroMeterPoint Convert2MicroMeterPointSize( PixelPoint const & pnt ) const

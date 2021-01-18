@@ -15,9 +15,9 @@ PIXEL ScrReadPixel( Script & script )
     return PIXEL( script.ScrReadLong() );
 }
 
-fPIXEL ScrReadfPixel( Script & script )
+fPixel ScrReadfPixel( Script & script )
 {
-    return fPIXEL( Cast2Float(script.ScrReadFloat()) );
+    return fPixel( Cast2Float(script.ScrReadFloat()) );
 }
 
 PixelPoint ScrReadPixelPoint( Script & script )
@@ -30,9 +30,9 @@ PixelPoint ScrReadPixelPoint( Script & script )
 fPixelPoint ScrReadfPixelPoint( Script & script )
 {
     script.ScrReadSpecial( L'(' );
-    fPIXEL const x( ScrReadfPixel( script ) );
+    fPixel const x( ScrReadfPixel( script ) );
     script.ScrReadSpecial( L'/' );
-    fPIXEL const y( ScrReadfPixel( script ) );
+    fPixel const y( ScrReadfPixel( script ) );
     script.ScrReadSpecial( L')' );
     return fPixelPoint( x, y );
 }

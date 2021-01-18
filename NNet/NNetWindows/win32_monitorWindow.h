@@ -40,37 +40,37 @@ public:
 private:
 
 	SignalNr const findSignal      ( TrackNr const, PixelPoint const & ) const;
-	fPIXEL   const calcTrackHeight ( ) const;
+	fPixel   const calcTrackHeight ( ) const;
 	TrackNr  const findTrack       ( PIXEL const ) const;
 	TrackNr  const findPos4NewTrack( PIXEL const ) const;
 
-	fMicroSecs const fPIXEL2fMicroSecs( fPIXEL     const ) const;
-	fPIXEL     const fMicroSecs2fPIXEL( fMicroSecs const ) const;
+	fMicroSecs const fPixel2fMicroSecs( fPixel     const ) const;
+	fPixel     const fMicroSecs2fPixel( fMicroSecs const ) const;
 
-	fPIXEL const yValue2fPIXEL( float const fYvalue ) const
+	fPixel const yValue2fPixel( float const fYvalue ) const
 	{
-		fPIXEL const fPixYvalue { fYvalue / m_fYvaluesPerPixel };
+		fPixel const fPixYvalue { fYvalue / m_fYvaluesPerPixel };
 		assert( fPixYvalue.GetValue() < 10000.0f );
 		return fPixYvalue;
 	}
 
-	fPIXEL const getYvalue( Signal const & signal, fMicroSecs const time ) const
+	fPixel const getYvalue( Signal const & signal, fMicroSecs const time ) const
 	{
-		return yValue2fPIXEL( signal.GetDataPoint( time ) );
+		return yValue2fPixel( signal.GetDataPoint( time ) );
 	}
 
-	fMicroSecs findNextMax( Signal const & signal, fPIXEL const fPixX ) const
+	fMicroSecs findNextMax( Signal const & signal, fPixel const fPixX ) const
 	{
-		fMicroSecs const usParam { fPIXEL2fMicroSecs( fPixX ) };
+		fMicroSecs const usParam { fPixel2fMicroSecs( fPixX ) };
 		fMicroSecs const usMax   { signal.FindNextMaximum( usParam ) };
 		return usMax;
 	}
 
-	fPIXEL getSignalOffset( SignalId const & idSignal ) const
+	fPixel getSignalOffset( SignalId const & idSignal ) const
 	{ 
-		fPIXEL fPixOffset { calcTrackHeight() * Cast2Float(idSignal.GetTrackNr().GetValue()+1) }; 
+		fPixel fPixOffset { calcTrackHeight() * Cast2Float(idSignal.GetTrackNr().GetValue()+1) }; 
 		if ( idSignal == m_idSigSelected )  
-			fPixOffset += Convert2fPIXEL( m_pixMoveOffsetY );  // may have move offset
+			fPixOffset += Convert2fPixel( m_pixMoveOffsetY );  // may have move offset
 		return fPixOffset;
 	};
 
@@ -108,7 +108,7 @@ private:
 	TrackNr     m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint  m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL       m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
-	fPIXEL      m_fPixWinWidth       { 0.0_fPIXEL };
+	fPixel      m_fPixWinWidth       { 0.0_fPixel };
 	bool        m_bShowScale         { false };
 	bool        m_bSignalLocked      { false };
 	Measurement m_measurement;

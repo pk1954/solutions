@@ -151,7 +151,7 @@ void NNetWindow::OnPaint( )
 	}
 }
 
-void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
+void NNetWindow::AnimateBeacon( fPixel const fPixBeaconRadius )
 {
 	if ( MicroMeterCircle const * const pCircle { m_pBeaconAnimation->GetSensorCircle( ) } )
 	{

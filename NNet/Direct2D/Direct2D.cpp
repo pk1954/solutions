@@ -263,7 +263,7 @@ void D2D_driver::DrawLine
 ( 
 	fPixelPoint  const & fpp1, 
 	fPixelPoint  const & fpp2, 
-	fPIXEL       const   fpixWidth, 
+	fPixel       const   fpixWidth, 
 	D2D1::ColorF const   colF
 ) const
 {
@@ -293,7 +293,7 @@ void D2D_driver::DrawCircle
 (
 	fPixelCircle const & circle,
 	D2D1::ColorF const   colF,
-	fPIXEL       const   fPixWidth
+	fPixel       const   fPixWidth
 ) const
 {
 	DrawEllipse( fPixelEllipse { circle }, colF, fPixWidth );
@@ -314,7 +314,7 @@ void D2D_driver::DrawEllipse
 (
 	fPixelEllipse const & fPE,
 	D2D1::ColorF  const   colF,
-	fPIXEL        const   fPixWidth
+	fPixel        const   fPixWidth
 ) const
 {
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
@@ -326,8 +326,8 @@ void D2D_driver::FillArrow
 (
 	fPixelPoint  const ptPos,
 	fPixelPoint  const ptVector,
-	fPIXEL       const fPixSize,  
-	fPIXEL       const fPixWidth, 
+	fPixel       const fPixSize,  
+	fPixel       const fPixWidth, 
 	D2D1::ColorF const colF
 	) const
 {
@@ -346,7 +346,7 @@ void D2D_driver::FillArrow
 void D2D_driver::FillDiamond
 (
 	fPixelPoint  const ptPos,
-	fPIXEL       const fPixSize,  
+	fPixel       const fPixSize,  
 	D2D1::ColorF const colF
 ) const
 {

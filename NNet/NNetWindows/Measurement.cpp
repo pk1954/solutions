@@ -33,12 +33,12 @@ void Measurement::ResetLimits( )
 
 void Measurement::SetClientRectSize( PIXEL const width, PIXEL const height )
 {
-	m_fPixClientWidth  = Convert2fPIXEL( width );
-	m_fPixClientHeight = Convert2fPIXEL( height );
+	m_fPixClientWidth  = Convert2fPixel( width );
+	m_fPixClientHeight = Convert2fPixel( height );
 	ResetLimits( );
 }
 
-bool Measurement::Select( fPIXEL const fPix )
+bool Measurement::Select( fPixel const fPix )
 {
 	if ( m_bActive )
 	{
@@ -50,7 +50,7 @@ bool Measurement::Select( fPIXEL const fPix )
 	return false;
 }
 
-void Measurement::MoveSelection( fPIXEL const fPix )
+void Measurement::MoveSelection( fPixel const fPix )
 {
 	if ( m_bActive )
 	{
@@ -62,23 +62,23 @@ void Measurement::MoveSelection( fPIXEL const fPix )
 	}
 }
 
-void Measurement::verticalLine( fPIXEL const fPixPosX ) const
+void Measurement::verticalLine( fPixel const fPixPosX ) const
 {
 	m_pGraphics->DrawLine
 	( 
-		fPixelPoint( fPixPosX, 0._fPIXEL ), 
+		fPixelPoint( fPixPosX, 0._fPixel ), 
 		fPixelPoint( fPixPosX, m_fPixClientHeight ), 
-		1._fPIXEL, 
+		1._fPixel, 
 		RGB( 0, 0, 0 )  
 	);
 }
 
-void Measurement::emphasizedLineLeft( fPIXEL const fPixPosX ) const
+void Measurement::emphasizedLineLeft( fPixel const fPixPosX ) const
 {
 	fPixelRect const rect
 	{ 
 		fPixPosX, 
-		0._fPIXEL, 
+		0._fPixel, 
 		fPixPosX + GRADIENT_WIDTH, 
 		m_fPixClientHeight 
 	};
@@ -86,12 +86,12 @@ void Measurement::emphasizedLineLeft( fPIXEL const fPixPosX ) const
 	m_pGraphics->FillGradientRect( rect, COL_STRONG, COL_WEAK   );
 }
 
-void Measurement::emphasizedLineRight( fPIXEL const fPixPosX ) const
+void Measurement::emphasizedLineRight( fPixel const fPixPosX ) const
 {
 	fPixelRect const rect
 	{ 
 		fPixPosX - GRADIENT_WIDTH, 
-		0._fPIXEL, 
+		0._fPixel, 
 		fPixPosX, 
 		m_fPixClientHeight 
 	};
@@ -103,9 +103,9 @@ void Measurement::measuringArea( ) const
 {
 	fPixelRect const rect
 	{ 
-		m_fPixLeftLimit + (m_bSelectedLeft ? GRADIENT_WIDTH : 0.0_fPIXEL), 
-		0._fPIXEL, 
-		m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPIXEL),
+		m_fPixLeftLimit + (m_bSelectedLeft ? GRADIENT_WIDTH : 0.0_fPixel), 
+		0._fPixel, 
+		m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPixel),
 		m_fPixClientHeight 
 	};
 	m_pGraphics->FillRectangle( rect, COL_WEAK );
@@ -114,7 +114,7 @@ void Measurement::measuringArea( ) const
 void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
 {
 	static COLORREF const COLOR        { RGB( 0, 0, 0 ) };  // CLR_BLACK
-	fPIXEL          const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
+	fPixel          const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
 	fMicroSecs      const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
 	fHertz          const frequency    { Frequency( usMeasured) };
 
@@ -143,12 +143,12 @@ void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
 	m_pGraphics->DisplayText( pixRect, wBuffer.str( ), COLOR_TEXT, m_pTextFormat );
 }
 
-bool Measurement::IsClose2LeftLimit ( fPIXEL const fPix ) const 
+bool Measurement::IsClose2LeftLimit ( fPixel const fPix ) const 
 { 
 	return (m_fPixLeftLimit <= fPix) && (fPix <= m_fPixLeftLimit + GRADIENT_WIDTH);
 }
 
-bool Measurement::IsClose2RightLimit( fPIXEL const fPix ) const 
+bool Measurement::IsClose2RightLimit( fPixel const fPix ) const 
 { 
 	return (m_fPixRightLimit - GRADIENT_WIDTH <= fPix) && (fPix <= m_fPixRightLimit);
 }

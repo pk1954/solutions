@@ -64,7 +64,7 @@ protected:
 
 	virtual void doPaint( ) = 0;
 
-	void AnimateBeacon( fPIXEL const );
+	void AnimateBeacon( fPixel const );
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 

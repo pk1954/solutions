@@ -27,9 +27,9 @@ private:
 
 	inline static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
 
-	fPIXEL m_fPixClientWidth { 0.0_fPIXEL };
-	fPIXEL m_fPixClientHeight{ 0.0_fPIXEL };
-	fPIXEL m_fPixVertPos     { 0.0_fPIXEL };
+	fPixel m_fPixClientWidth { 0.0_fPixel };
+	fPixel m_fPixClientHeight{ 0.0_fPixel };
+	fPixel m_fPixVertPos     { 0.0_fPixel };
 
 	D2D_driver        * m_pGraphics   { nullptr }; 
 	IDWriteTextFormat * m_pTextFormat { nullptr };

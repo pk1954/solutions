@@ -65,7 +65,7 @@ public:
 
 	bool IsTooSmall( MicroMeterRect const & rect ) const
 	{
-		MicroMeter const umMin { m_coord.Convert2MicroMeter(10._fPIXEL) };
+		MicroMeter const umMin { m_coord.Convert2MicroMeter(10._fPixel) };
 		return (rect.GetHeight() < umMin) || (rect.GetWidth() < umMin);
 	}
 

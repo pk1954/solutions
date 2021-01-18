@@ -402,7 +402,7 @@ void MainWindow::doPaint( )
 	}
 
 	DrawSensors( );
-	AnimateBeacon( 30._fPIXEL);
+	AnimateBeacon( 30._fPixel);
 }
 
 void MainWindow::setSuperHighlightedShape( MicroMeterPoint const & umCrsrPos )
