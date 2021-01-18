@@ -6,6 +6,7 @@
 #include "MoreTypes.h"
 #include "Resource.h"
 #include "Signal.h"
+#include "Neuron.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -136,22 +137,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
 }
 
-void MainWindow::NNetMove( MicroMeterPoint const & umDelta )	
-{ 
-	GetDrawContext().Move( umDelta ); 
-	Notify( true );  
-	if ( m_pCoordObservable )
-		m_pCoordObservable->NotifyAll( false );
-}
-
-void MainWindow::NNetMove( PixelPoint const & pixDelta ) 
-{ 
-	GetDrawContext().Move( pixDelta ); 
-	Notify( true );  
-	if ( m_pCoordObservable )
-		m_pCoordObservable->NotifyAll( false );
-}
-
 MicroMeterPoint const MainWindow::GetCursorPos( ) const
 {
 	PixelPoint const pixPoint { GetRelativeCrsrPosition( ) };
@@ -225,6 +210,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
 			m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
+			Notify( false ); 
 		}
 		else                           // first time here after RBUTTON pressed
 		{
@@ -393,12 +379,13 @@ void MainWindow::doPaint( )
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 		DrawExteriorInRect( pixRect );
 
+	context.ShowScale( GetClRectSize() );
+
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } );
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot(); } );
 
-	context.ShowScale( GetClRectSize() );
-
-	DrawNeuronTextInRect( pixRect );
+	if ( context.GetPixelSize() <= 2.5_MicroMeter )
+		DrawNeuronTextInRect( pixRect );
 
 	if ( IsDefined(m_shapeSuperHighlighted) ) // draw super highlighted shape again to be sure that it is visible
 	{
@@ -410,8 +397,8 @@ void MainWindow::doPaint( )
 	{
 		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pNMRI->DrawInterior( m_shapeHighlighted, context );
-		//if ( m_pNMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
-		//	m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
+		if ( m_pNMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
+			m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 
 	DrawSensors( );

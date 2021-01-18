@@ -56,10 +56,10 @@ public:
 
 	void SetPixelSize  ( MicroMeter      const s ) { m_coord.SetPixelSize  ( s ); }
 	void SetPixelOffset( fPixelPoint     const f ) { m_coord.SetPixelOffset( f ); }
-	void Move          ( PixelPoint      const d ) { m_coord.Move          ( d ); }
-	void Move          ( MicroMeterPoint const p ) { m_coord.Move          ( p ); }
 	bool Zoom          ( MicroMeter      const s ) { return m_coord.Zoom   ( s ); }
 	void Center        ( MicroMeterPoint const u, fPixelPoint const f ) { m_coord.Center( u, f ); }
+
+	template <typename T> void Move(T const d) { m_coord.Move(d); }
 
 	void SetNoColors( bool const bMode ) { m_bNoColors = bMode; }
 

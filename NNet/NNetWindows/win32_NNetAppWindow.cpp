@@ -99,7 +99,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_modelExporter  .Initialize( &m_nmri );
 	m_modelCommands  .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
 	m_cmdStack       .Initialize( &m_nmwi, &m_staticModelObservable );
-	m_NNetColors     .Initialize( &m_blinkObservable );
+//	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );
 	m_beaconAnimation.Initialize( &m_beaconObservable );	
 	m_appTitle       .Initialize( m_hwndApp, &m_nmri );

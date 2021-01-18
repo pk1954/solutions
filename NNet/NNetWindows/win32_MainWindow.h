@@ -41,8 +41,14 @@ public:
 
 	void ZoomStep( bool const, PixelPoint const * const );
 
-	void NNetMove( MicroMeterPoint const & );
-	void NNetMove( PixelPoint      const & ); 
+	template <typename T>
+	void NNetMove( T const & delta )	
+	{ 
+		GetDrawContext().Move( delta ); 
+		Notify( true );  
+		if ( m_pCoordObservable )
+			m_pCoordObservable->NotifyAll( false );
+	}
 
 	MicroMeterPoint const GetCursorPos( ) const;
 

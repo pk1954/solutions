@@ -28,7 +28,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
 	if ( m_bSelected )
 	{
-		return NNetColors::m_colSelected;
+		return NNetColors::INT_HIGHLIGHT;
 	}
 	else  // normal mode
 	{
