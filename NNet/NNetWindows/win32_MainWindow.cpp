@@ -141,7 +141,7 @@ MicroMeterPoint const MainWindow::GetCursorPos( ) const
 {
 	PixelPoint const pixPoint { GetRelativeCrsrPosition( ) };
 	return IsInClientRect( pixPoint )
-		? GetCoord().Convert2MicroMeterPointPos( pixPoint )
+		? GetCoord().Transform2MicroMeterPointPos( pixPoint )
 		: NP_ZERO;
 }
 
@@ -149,7 +149,7 @@ bool MainWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPn
 {
 	PixelPoint      const pixPntCenter    { pPixPntCenter ? * pPixPntCenter : GetClRectCenter() };
 	fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };                      // compute center
-	MicroMeterPoint const umPointcenter   { GetCoord().Convert2MicroMeterPointPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
+	MicroMeterPoint const umPointcenter   { GetCoord().Transform2MicroMeterPointPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
 	if ( GetDrawContext().Zoom( newSize )  )
 	{
 		GetDrawContext().Center( umPointcenter, fPixPointCenter ); 
@@ -199,8 +199,8 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
-	MicroMeterPoint const umCrsrPos { GetCoord().Convert2MicroMeterPointPos( ptCrsr   ) };
-	MicroMeterPoint const umLastPos { GetCoord().Convert2MicroMeterPointPos( m_ptLast ) };
+	MicroMeterPoint const umCrsrPos { GetCoord().Transform2MicroMeterPointPos( ptCrsr   ) };
+	MicroMeterPoint const umLastPos { GetCoord().Transform2MicroMeterPointPos( m_ptLast ) };
 
 	if ( m_pCursorPosObservable )
 		m_pCursorPosObservable->NotifyAll( false );
@@ -287,7 +287,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	int        const iDelta     { GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA };
 	bool       const bDirection { iDelta > 0 };
 
-	MicroMeterPoint const umCrsrPos { GetCoord().Convert2MicroMeterPointPos( ptCrsr ) };
+	MicroMeterPoint const umCrsrPos { GetCoord().Transform2MicroMeterPointPos( ptCrsr ) };
 	if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
 	{
 		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
@@ -319,7 +319,7 @@ void MainWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const f
 	m_smoothMove.SetUp
 	(
 		GetCoord().GetPixelSize(),                                   // actual pixel size 
-		GetCoord().Convert2MicroMeterPointPos( GetClRectCenter() ),  // actual center 
+		GetCoord().Transform2MicroMeterPointPos( GetClRectCenter() ),  // actual center 
 		umPixelSizeTarget,
 		umPntCenterTarget
 	);

@@ -26,7 +26,7 @@ void D2D_DrawContext::Resize( int const width, int const height )
 
 void D2D_DrawContext::SetStdFontSize( MicroMeter const & size )
 {
-	m_graphics.SetStdFontSize( m_coord.Convert2fPixel( size ).GetValue() );
+	m_graphics.SetStdFontSize( m_coord.Transform2fPixel( size ).GetValue() );
 }
 
 void D2D_DrawContext::DrawLine
@@ -39,9 +39,9 @@ void D2D_DrawContext::DrawLine
 {
 	m_graphics.DrawLine
 	( 
-		m_coord.Convert2fPixelPos( umStartPoint ),
-		m_coord.Convert2fPixelPos( umEndPoint   ),
-		m_coord.Convert2fPixel   ( umWidth      ),
+		m_coord.Transform2fPixelPos( umStartPoint ),
+		m_coord.Transform2fPixelPos( umEndPoint   ),
+		m_coord.Transform2fPixel   ( umWidth      ),
 		m_bNoColors ? NNetColors::COL_BLACK : col 
 	);
 }
@@ -54,7 +54,7 @@ void D2D_DrawContext::FillCircle
 {
 	m_graphics.FillCircle
 	( 
-		m_coord.Convert2fPixelCircle( umCircle ), 
+		m_coord.Transform2fPixelCircle( umCircle ), 
 		m_bNoColors ? NNetColors::COL_BLACK : col 
 	);
 }
@@ -66,7 +66,7 @@ void D2D_DrawContext::FillGradientCircle
 	D2D1::ColorF     const   col2  
 ) const
 {
-	m_graphics.FillGradientCircle( m_coord.Convert2fPixelCircle( umCircle ), col1, col2 );
+	m_graphics.FillGradientCircle( m_coord.Transform2fPixelCircle( umCircle ), col1, col2 );
 }
 
 void D2D_DrawContext::DrawCircle
@@ -78,9 +78,9 @@ void D2D_DrawContext::DrawCircle
 {
 	m_graphics.DrawCircle
 	( 
-		m_coord.Convert2fPixelCircle( umCircle ), 
+		m_coord.Transform2fPixelCircle( umCircle ), 
 		m_bNoColors ? NNetColors::COL_BLACK : col,
-		m_coord.Convert2fPixel( umWidth )
+		m_coord.Transform2fPixel( umWidth )
 	);
 }
 
@@ -92,7 +92,7 @@ void D2D_DrawContext::FillEllipse
 {
 	m_graphics.FillEllipse
 	( 
-		m_coord.Convert2fPixelEllipse( umEllipse ), 
+		m_coord.Transform2fPixelEllipse( umEllipse ), 
 		m_bNoColors ? NNetColors::COL_BLACK : col 
 	);
 }
@@ -106,9 +106,9 @@ void D2D_DrawContext::DrawEllipse
 {
 	m_graphics.DrawEllipse
 	( 
-		m_coord.Convert2fPixelEllipse( umEllipse ), 
+		m_coord.Transform2fPixelEllipse( umEllipse ), 
 		m_bNoColors ? NNetColors::COL_BLACK : col,
-		m_coord.Convert2fPixel( umWidth )
+		m_coord.Transform2fPixel( umWidth )
 	);
 }
 
@@ -123,17 +123,17 @@ void D2D_DrawContext::FillArrow
 {
 	m_graphics.FillArrow
 	( 
-		m_coord.Convert2fPixelPos ( umPos ),
-		m_coord.Convert2fPixelSize( umVector ), 
-		m_coord.Convert2fPixel    ( umSize ),
-		m_coord.Convert2fPixel    ( umWidth ),
+		m_coord.Transform2fPixelPos ( umPos ),
+		m_coord.Transform2fPixelSize( umVector ), 
+		m_coord.Transform2fPixel    ( umSize ),
+		m_coord.Transform2fPixel    ( umWidth ),
 		m_bNoColors ? NNetColors::COL_BLACK : col 
 	);
 }
 
 void D2D_DrawContext::FillRectangle( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
 {
-	m_graphics.FillRectangle( m_coord.Convert2fPixelRect( umRect ), col );
+	m_graphics.FillRectangle( m_coord.Transform2fPixelRect( umRect ), col );
 }
 
 void D2D_DrawContext::DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
@@ -145,7 +145,7 @@ void D2D_DrawContext::DrawTranspRect( MicroMeterRect const & umRect, D2D1::Color
 			fPixelRect
 			( 
 				fPP_ZERO,
-				m_coord.Convert2fPixelPos(umRect.GetEndPoint()) 
+				m_coord.Transform2fPixelPos(umRect.GetEndPoint()) 
 			), 
 			col 
 		);
@@ -153,7 +153,7 @@ void D2D_DrawContext::DrawTranspRect( MicroMeterRect const & umRect, D2D1::Color
 		( 
 			fPixelRect
 			( 
-				m_coord.Convert2fPixelPos(umRect.GetStartPoint()), 
+				m_coord.Transform2fPixelPos(umRect.GetStartPoint()), 
 				m_graphics.GetClRectSize() 
 			), 
 			col 
@@ -161,7 +161,7 @@ void D2D_DrawContext::DrawTranspRect( MicroMeterRect const & umRect, D2D1::Color
 	}
 	else
 	{
-		m_graphics.FillRectangle( m_coord.Convert2fPixelRect( umRect ), col );
+		m_graphics.FillRectangle( m_coord.Transform2fPixelRect( umRect ), col );
 	}
 }
 
@@ -184,5 +184,5 @@ void D2D_DrawContext::DisplayText
 	IDWriteTextFormat * const   pTextFormat
 ) const
 {
-	m_graphics.DisplayText( m_coord.Convert2PixelRect( umRect ), wstr, colF, pTextFormat );
+	m_graphics.DisplayText( m_coord.Transform2PixelRect( umRect ), wstr, colF, pTextFormat );
 }
