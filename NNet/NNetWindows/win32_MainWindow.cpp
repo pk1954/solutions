@@ -49,8 +49,8 @@ void MainWindow::Stop( )
 
 void MainWindow::Reset( )
 { 
-	m_shapeHighlighted      = NO_SHAPE; 
-	m_shapeSuperHighlighted = NO_SHAPE; 
+	m_shapeHighlighted = NO_SHAPE; 
+	m_shapeTarget      = NO_SHAPE; 
 }
 
 long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
@@ -62,7 +62,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
-	else if ( IsUndefined(m_shapeHighlighted) )  // no shape highlighted, cursor on background
+	else if ( IsUndefined(m_shapeHighlighted) )  // no shape selected, cursor on background
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_NEURON,         L"New neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
@@ -221,10 +221,10 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			m_shapeSuperHighlighted = NO_SHAPE;
+			m_shapeTarget = NO_SHAPE;
 			if ( IsDefined(m_shapeHighlighted) ) //-V1051
 			{
-				setSuperHighlightedShape( m_pNMRI->GetShapePos( m_shapeHighlighted ) );
+				setTargetShape( m_pNMRI->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
 			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
@@ -257,10 +257,10 @@ void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 
 void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeSuperHighlighted ) )
+	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeTarget ) )
 	{ 
 		SendCommand2Application( IDD_CONNECT, 0	);
-		m_shapeSuperHighlighted = NO_SHAPE;
+		m_shapeTarget = NO_SHAPE;
 	}
 }
 
@@ -387,15 +387,15 @@ void MainWindow::doPaint( )
 	if ( context.GetPixelSize() <= 2.5_MicroMeter )
 		DrawNeuronTextInRect( pixRect );
 
-	if ( IsDefined(m_shapeSuperHighlighted) ) // draw super highlighted shape again to be sure that it is visible
+	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
 	{
-		m_pNMRI->DrawExterior( m_shapeSuperHighlighted, context, tHighlightType::superHighlighted );
-		m_pNMRI->DrawInterior( m_shapeSuperHighlighted, context );
+		m_pNMRI->DrawExterior( m_shapeTarget, context, tHighlightType::target );
+		m_pNMRI->DrawInterior( m_shapeTarget, context );
 	}
 
-	if ( IsDefined(m_shapeHighlighted) )  // draw highlighted shape again to be sure that it is in foreground
+	if ( IsDefined(m_shapeHighlighted) )  // draw selected shape again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
+		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::selected );
 		m_pNMRI->DrawInterior( m_shapeHighlighted, context );
 		if ( m_pNMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
 			m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
@@ -405,11 +405,11 @@ void MainWindow::doPaint( )
 	AnimateBeacon( 30._fPixel);
 }
 
-void MainWindow::setSuperHighlightedShape( MicroMeterPoint const & umCrsrPos )
+void MainWindow::setTargetShape( MicroMeterPoint const & umCrsrPos )
 {
 	if ( m_pNMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 	{
-		m_shapeSuperHighlighted = m_pNMRI->FindShapeAt
+		m_shapeTarget = m_pNMRI->FindShapeAt
 		( 
 			umCrsrPos,
 			[&]( Shape const & shape ) { return m_pNMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 

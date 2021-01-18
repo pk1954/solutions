@@ -239,7 +239,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_CONNECT:
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetSuperHighlightedShapeId() );
+        m_pModelCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetTargetShapeId() );
         break;
 
     case IDM_DELETE:   // keyboard delete key

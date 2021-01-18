@@ -28,7 +28,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
 	if ( m_bSelected )
 	{
-		return NNetColors::INT_HIGHLIGHT;
+		return NNetColors::INT_SELECTED;
 	}
 	else  // normal mode
 	{
@@ -44,13 +44,13 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 	{
 		return NNetColors::EXT_NORMAL;
 	}
-	else if (type == tHighlightType::highlighted)
+	else if (type == tHighlightType::selected)
 	{
-		return NNetColors::EXT_HIGHLIGHT;
+		return NNetColors::EXT_SELECTED;
 	}
 	else 
 	{
-		return NNetColors::EXT_SUPER_HIGHLIGHT;
+		return NNetColors::EXT_TARGET;
 	}
 };
 

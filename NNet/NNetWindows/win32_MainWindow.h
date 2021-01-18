@@ -34,8 +34,8 @@ public:
 
 	virtual long AddContextMenuEntries( HMENU const );
 
-	ShapeId const GetSuperHighlightedShapeId( ) const { return m_shapeSuperHighlighted; }
-	ShapeId const GetHighlightedShapeId( )      const { return m_shapeHighlighted; }
+	ShapeId const GetTargetShapeId     ( ) const { return m_shapeTarget; }
+	ShapeId const GetHighlightedShapeId( ) const { return m_shapeHighlighted; }
 
 	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
 
@@ -69,18 +69,18 @@ public:
 
 private:
 
-	SmoothMoveFp        m_smoothMove            { };       
-	MicroMeterRect      m_rectSelection         { };
-	ShapeId             m_shapeSuperHighlighted { };
-	ShapeId             m_shapeHighlighted      { };
-	Observable        * m_pCoordObservable      { nullptr };
-	Observable        * m_pCursorPosObservable  { nullptr };
-	NNetModelCommands * m_pNNetCommands         { nullptr };
-	bool                m_bFocusMode            { false };
+	SmoothMoveFp        m_smoothMove           { };       
+	MicroMeterRect      m_rectSelection        { };
+	ShapeId             m_shapeTarget          { };
+	ShapeId             m_shapeHighlighted     { };
+	Observable        * m_pCoordObservable     { nullptr };
+	Observable        * m_pCursorPosObservable { nullptr };
+	NNetModelCommands * m_pNNetCommands        { nullptr };
+	bool                m_bFocusMode           { false };
 
-	void setSuperHighlightedShape( MicroMeterPoint const & );
-	void setHighlightedShape     ( MicroMeterPoint const & );
-	bool changePulseRate         ( ShapeId const, bool const );
+	void setTargetShape     ( MicroMeterPoint const & );
+	void setHighlightedShape( MicroMeterPoint const & );
+	bool changePulseRate    ( ShapeId const, bool const );
 
 	virtual void doPaint( );
 };

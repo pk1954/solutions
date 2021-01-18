@@ -235,7 +235,6 @@
     <ClCompile Include="ModelUtilities.cpp" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="NNetColors.cpp" />
     <ClCompile Include="NNetModel.cpp">
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </EnableParallelCodeGeneration>

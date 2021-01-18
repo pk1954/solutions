@@ -7,6 +7,6 @@
 enum class tHighlightType
 {
 	normal,
-	highlighted,
-	superHighlighted
+	selected,
+	target
 };
