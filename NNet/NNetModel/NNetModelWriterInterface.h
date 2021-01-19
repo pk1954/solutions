@@ -69,7 +69,8 @@ public:
     template <Shape_t NEW, Shape_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
-        Shape * pShape { m_pModel->GetShapes().ReplaceShape( up.get()->GetId(), move(up) ) }; 
+        ShapeId id     { up.get()->GetId() };
+        Shape * pShape { m_pModel->GetShapes().ReplaceShape( id, move(up) ) }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }
 

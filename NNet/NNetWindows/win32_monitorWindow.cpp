@@ -187,7 +187,7 @@ void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
 	{
 		fPixelPoint const actPoint { fMicroSecs2fPixel( time ), fPixYoff - getYvalue( signal, time ) };
-		m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_BLACK );
+		m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, D2D1::ColorF::Black );
 		prevPoint = actPoint;
 	}
 }
@@ -218,8 +218,6 @@ void MonitorWindow::doPaint( ) const
 
 void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
 {
-	static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
-
 	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) };
 	PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
 	fPixel     const   fPixCrsrX    { Convert2fPixel( pixPointCrsr.GetX() ) };
@@ -232,7 +230,7 @@ void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
 	(
 		fPixelPoint( fPixMax, fPixYvalue ),
 		4.0_fPixel,
-		COL_DIAMOND
+		NNetColors::COL_DIAMOND
 	);
 }
 

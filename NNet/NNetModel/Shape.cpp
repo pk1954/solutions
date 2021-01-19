@@ -26,32 +26,27 @@ bool Shape::operator==( Shape const & rhs ) const
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	if ( m_bSelected )
-	{
-		return NNetColors::INT_SELECTED;
-	}
-	else  // normal mode
-	{
-		mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage )) };
-		float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
-		return D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
-	}
+	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage )) };
+	float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
+	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
 }
 
-D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const 
+D2D1::ColorF Shape::GetExteriorColor( tHighlightType const type ) const 
 { 
-	if (type == tHighlightType::normal)
-	{
-		return NNetColors::EXT_NORMAL;
-	}
-	else if (type == tHighlightType::selected)
-	{
-		return NNetColors::EXT_SELECTED;
-	}
-	else 
-	{
-		return NNetColors::EXT_TARGET;
-	}
+	return ::IsNormal(type)
+		? NNetColors::EXT_NORMAL
+		: ::IsSelected(type)
+		? NNetColors::EXT_SELECTED
+		: NNetColors::EXT_TARGET;
+};
+
+D2D1::ColorF Shape::GetInteriorColor( tHighlightType const type ) const 
+{ 
+	return ::IsNormal(type)
+		? NNetColors::INT_NORMAL
+		: ::IsSelected(type)
+		? NNetColors::INT_SELECTED
+		: NNetColors::INT_TARGET;
 };
 
 float Shape::GetFillLevel( mV const voltageInput ) const

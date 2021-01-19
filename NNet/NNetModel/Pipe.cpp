@@ -196,45 +196,49 @@ void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type 
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
-	if ( umStartPoint != umEndPoint )
-	{
-		D2D1::ColorF const colF { GetFrameColor( type ) };
+	D2D1::ColorF const colF { GetExteriorColor( type ) };
 
-		context.DrawLine( umStartPoint, umEndPoint, m_width, colF );
+	context.DrawLine( umStartPoint, umEndPoint, m_width, colF );
 
-		if ( m_arrowSize > 0.0_MicroMeter )
-			context.FillArrow
-			(
-				(umEndPoint * 2.f + umStartPoint) / 3.f , 
-				umEndPoint - umStartPoint, 
-				m_arrowSize,
-				m_width / 2, 
-				colF
-			);
-	}
+	if ( m_arrowSize > 0.0_MicroMeter )
+		context.FillArrow
+		(
+			(umEndPoint * 2.f + umStartPoint) / 3.f , 
+			umEndPoint - umStartPoint, 
+			m_arrowSize,
+			m_width / 2, 
+			colF
+		);
 }
 
-void Pipe::DrawInterior( DrawContext const & context ) const
+void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
-	if ( ! umVector.IsCloseToZero() )
+	MicroMeter const umWidth { m_width * PIPE_INTERIOR };
+	if ( ::IsSelected(type) )
 	{
-		size_t          const nrOfSegments { m_potential.size() };
-		MicroMeterPoint const umSegVec     { umVector / Cast2Float(nrOfSegments) };
-		MicroMeter      const umWidth      { m_width * PIPE_INTERIOR };
-		MicroMeterPoint       umPoint      { GetStartPoint( ) };
-		size_t          const potIndex     { m_potIndex };
-		size_t                index        { potIndex }; 
-		do 
+		context.DrawLine( GetStartPoint(), GetEndPoint(), umWidth, NNetColors::INT_SELECTED );
+	}
+	else
+	{
+		MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
+		if ( ! umVector.IsCloseToZero() )
 		{
-			if (++index == m_potential.size()) 
-				index = 0; 
+			size_t          const nrOfSegments { m_potential.size() };
+			MicroMeterPoint const umSegVec     { umVector / Cast2Float(nrOfSegments) };
+			MicroMeterPoint       umPoint      { GetStartPoint( ) };
+			size_t          const potIndex     { m_potIndex };
+			size_t                index        { potIndex }; 
+			do 
+			{
+				if (++index == m_potential.size()) 
+					index = 0; 
 
-			MicroMeterPoint const umPointNext { umPoint + umSegVec };
-			context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor( m_potential[index] ) );
-			umPoint = umPointNext;
+				MicroMeterPoint const umPointNext { umPoint + umSegVec };
+				context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor( m_potential[index] ) );
+				umPoint = umPointNext;
 
-		} while (index != potIndex );
+			} while (index != potIndex );
+		}
 	}
 }
 

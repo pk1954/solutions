@@ -49,8 +49,10 @@ public:
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
 		m_pBaseKnotDst->SetConnections( m_upDstConnections.get() );  // restore dst connections
+		assert( m_upBaseKnotSrc );
 		m_upBaseKnotSrc->Reconnect( );
 		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move( m_upBaseKnotSrc ) ); // reconnect src  
+		assert( m_upBaseKnotSrc );
 		//std::wcout << L"*** After Undo Connect2BaseKnot" << endl; 
 		//nmwi.DumpModel();
 	}

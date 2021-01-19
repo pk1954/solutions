@@ -82,7 +82,7 @@ bool InputNeuron::CompStep( )
 //
 //void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 //{
-//	drawInputNeuron( context, GetFrameColor( type ), 1.0f );
+//	drawInputNeuron( context, GetExteriorColor( type ), 1.0f );
 //}
 
 //void InputNeuron::DrawInterior( DrawContext const & context ) const
@@ -119,12 +119,12 @@ void InputNeuron::drawRectangularNeuron
 }
 void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawRectangularNeuron( context, 2.0f, 0.6f, 1.0f, 0.2f, 1.0f, 1.0f, GetFrameColor( type ) );
+	drawRectangularNeuron( context, 2.0f, 0.6f, 1.0f, 0.2f, 1.0f, 1.0f, GetExteriorColor( type ) );
 }
 
-void InputNeuron::DrawInterior( DrawContext const & context ) const
+void InputNeuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawRectangularNeuron( context, 1.6f, 0.2f, 0.8f, 0.0f, 0.8f, 0.8f, GetInteriorColor() );
+	drawRectangularNeuron( context, 1.6f, 0.2f, 0.8f, 0.0f, 0.8f, 0.8f, GetInteriorColor( type ) );
 }
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 { 

@@ -158,9 +158,8 @@ mV Neuron::GetNextOutput( ) const
 
 void const Neuron::DisplayText( DrawContext const & context, MicroMeterRect const & umRect, wstring const text ) const
 {
-	static D2D1::ColorF const colF { 0.0f, 255.0f, 0.0f, 1.0f };
-
-	context.DisplayText( umRect, text, colF );
+	MicroMeterPoint const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
+	context.DisplayText( umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow );
 }
 
 void Neuron::DrawNeuronText( DrawContext const & context ) const
@@ -182,17 +181,17 @@ void Neuron::DrawExterior( DrawContext const & context, tHighlightType const typ
 {
 	if ( m_bStopOnTrigger )
 	{
-		context.FillCircle( GetCircle() * 1.4f, GetFrameColor( type ) );
+		context.FillCircle( GetCircle() * 1.4f, GetExteriorColor( type ) );
 		context.FillCircle( GetCircle() * 1.2f, NNetColors::INT_TRIGGER );
 	}
-	context.FillCircle( GetCircle(), GetFrameColor( type ) );
+	context.FillCircle( GetCircle(), GetExteriorColor( type ) );
 	if ( HasAxon() )
-		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * 0.5f ), GetFrameColor( type ) );
+		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * 0.5f ), GetExteriorColor( type ) );
 }
 
-void Neuron::DrawInterior( DrawContext const & context ) const
+void Neuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 { 
-	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( ) };
+	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( type ) };
 	context.FillCircle( GetCircle() * NEURON_INTERIOR, color );
 	if ( HasAxon() )
 		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f) ), color );

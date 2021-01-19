@@ -15,6 +15,7 @@ public:
 	AddModelCommand( ShapeList const & list )
 	{ 
 		m_shapeList = list;
+		m_shapeList.SelectAllShapes( tBoolOp::opTrue );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 

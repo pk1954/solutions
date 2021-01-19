@@ -48,8 +48,8 @@ public:
 	virtual void IncCounter( ) = 0;
 	virtual void DecCounter( ) = 0;
 
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const = 0;
-	virtual void DrawInterior  ( DrawContext const & )     const = 0;
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const = 0;
+	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const = 0;
 	virtual void Prepare       ( )                               = 0;
 	virtual bool CompStep      ( )                               = 0;
 	virtual void Recalc        ( )                               = 0;
@@ -85,7 +85,8 @@ protected:
 
 	inline static Param const * m_pParameters{ nullptr };
 
-	D2D1::ColorF GetFrameColor( tHighlightType const ) const;
+	D2D1::ColorF GetExteriorColor( tHighlightType const ) const;
+	D2D1::ColorF GetInteriorColor( tHighlightType const ) const;
 	D2D1::ColorF GetInteriorColor( mV const ) const;
 	D2D1::ColorF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
 

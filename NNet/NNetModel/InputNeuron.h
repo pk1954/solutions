@@ -32,8 +32,8 @@ public:
 	}
 
 	virtual bool CompStep( );
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const;
-	virtual void DrawInterior  ( DrawContext const & ) const;
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
+	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 

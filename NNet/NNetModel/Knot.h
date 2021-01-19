@@ -36,8 +36,8 @@ public:
 	mV GetNextOutput( ) const { return m_mVinputBuffer; }
 
 	virtual bool CompStep    ( ) { return false; }
-	virtual void DrawExterior( DrawContext const &, tHighlightType const = tHighlightType::normal ) const;
-	virtual void DrawInterior( DrawContext const & ) const;
+	virtual void DrawExterior( DrawContext const &, tHighlightType const ) const;
+	virtual void DrawInterior( DrawContext const &, tHighlightType const ) const;
 	virtual void Recalc      ( ) { };
 
 	virtual void DrawNeuronText( PixelCoordsFp const & ) const {};

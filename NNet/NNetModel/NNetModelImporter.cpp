@@ -76,7 +76,6 @@ public:
         if ( upShape )
         {
             upShape->SetId( idFromScript );
-            upShape->Select( tBoolOp::opTrue );
             GetShapes().SetShape2Slot( idFromScript, move(upShape) );
         }
     }

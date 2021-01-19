@@ -78,15 +78,19 @@ MicroMeterRect const NNetWindow::GetViewRect() const
 
 void NNetWindow::DrawInteriorInRect
 ( 
-	PixelRect   const & rect, 
-	ShapeCrit   const & crit 
+	PixelRect const & rect, 
+	ShapeCrit const & crit 
 ) const
 {
 	MicroMeterRect umRect { GetCoord().Transform2MicroMeterRect( rect ) }; 
 	m_pNMRI->GetShapes().Apply2AllInRect<Shape>
 	(
 		GetCoord().Transform2MicroMeterRect( rect ),
-		[&](Shape const & s) { if (crit(s)) s.DrawInterior( m_context ); } 
+		[&](Shape const & s) 
+		{ 
+			if (crit(s)) 
+				s.DrawInterior( m_context, s.IsSelected() ? tHighlightType::selectedPerm : tHighlightType::normal ); 
+		} 
 	);
 }
 
@@ -96,7 +100,10 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 	m_pNMRI->GetShapes().Apply2AllInRect<Shape>
 	( 
 		GetCoord().Transform2MicroMeterRect( rect ),	
-		[&](Shape const & s) { s.DrawExterior( m_context ); } 
+		[&](Shape const & s) 
+		{ 
+			s.DrawExterior( m_context, s.IsSelected() ? tHighlightType::selectedPerm : tHighlightType::normal ); 
+		} 
 	);
 }
 

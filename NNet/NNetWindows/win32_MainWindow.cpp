@@ -196,6 +196,18 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return true;
 }
 
+void MainWindow::setTargetShape( MicroMeterPoint const & umCrsrPos )
+{
+	if ( m_pNMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
+	{
+		m_shapeTarget = m_pNMRI->FindShapeAt
+		( 
+			umCrsrPos,
+			[&]( Shape const & shape ) { return m_pNMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+		);
+	}
+}
+
 void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
@@ -224,16 +236,16 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			m_shapeTarget = NO_SHAPE;
 			if ( IsDefined(m_shapeHighlighted) ) //-V1051
 			{
-				setTargetShape( m_pNMRI->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
-			}
-			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
-			{
-				pSignal->Move( umCrsrPos - umLastPos );
+				setTargetShape( m_pNMRI->GetShapePos( m_shapeHighlighted ) );
 			}
 			else if ( m_pNMRI->AnyShapesSelected( ) )   // move selected shapes 
 			{
 				m_pNNetCommands->MoveSelection( umCrsrPos - umLastPos );
+			}
+			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
+			{
+				pSignal->Move( umCrsrPos - umLastPos );
 			}
 			else  // move view by manipulating coordinate system 
 			{
@@ -390,31 +402,18 @@ void MainWindow::doPaint( )
 	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
 	{
 		m_pNMRI->DrawExterior( m_shapeTarget, context, tHighlightType::target );
-		m_pNMRI->DrawInterior( m_shapeTarget, context );
+		m_pNMRI->DrawInterior( m_shapeTarget, context, tHighlightType::target );
 	}
 
 	if ( IsDefined(m_shapeHighlighted) )  // draw selected shape again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::selected );
-		m_pNMRI->DrawInterior( m_shapeHighlighted, context );
-		if ( m_pNMRI->IsOfType<Neuron>( m_shapeHighlighted ) )
-			m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
+		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::selectedTemp );
+		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlightType::selectedTemp );
+		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 
 	DrawSensors( );
 	AnimateBeacon( 30._fPixel);
-}
-
-void MainWindow::setTargetShape( MicroMeterPoint const & umCrsrPos )
-{
-	if ( m_pNMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
-	{
-		m_shapeTarget = m_pNMRI->FindShapeAt
-		( 
-			umCrsrPos,
-			[&]( Shape const & shape ) { return m_pNMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
-		);
-	}
 }
 
 void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )

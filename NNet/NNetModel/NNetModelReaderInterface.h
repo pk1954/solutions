@@ -55,7 +55,7 @@ public:
 	ShapeId         const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
-	void DrawInterior  ( ShapeId const, DrawContext const & ) const;
+	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawNeuronText( ShapeId const, DrawContext const & ) const;
 
 	template <Shape_t T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }

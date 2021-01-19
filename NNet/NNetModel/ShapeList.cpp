@@ -282,10 +282,13 @@ vector<ShapeId> ShapeList::Append( ShapeList & list2Append )
 	long offset { Size() };
 	for ( auto & upShape : list2Append.m_list )
 	{
-		ShapeId id { upShape->GetId() + offset };
-		upShape->SetId( id );
+		if ( upShape )
+		{
+			ShapeId id { upShape->GetId() + offset };
+			upShape->SetId( id );
+			idList.push_back( id );
+		}
 		m_list.push_back( move(upShape) );
-		idList.push_back( id );
 	}
 	return idList;
 }

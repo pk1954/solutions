@@ -173,22 +173,23 @@ void NNetModelReaderInterface::DrawExterior
 ( 
 	ShapeId        const   id,
 	DrawContext    const & context,
-	tHighlightType const   highlightType
+	tHighlightType const   type
 ) const
 {
 	if ( Shape const * const p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
-		p->DrawExterior( context, highlightType );
+		p->DrawExterior( context, type );
 }
 
 void NNetModelReaderInterface::DrawInterior
 ( 
-	ShapeId     const   id, 
-	DrawContext const & context
+	ShapeId        const   id, 
+	DrawContext    const & context,
+	tHighlightType const   type
 ) 
 const
 {
 	if ( auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
-		p->DrawInterior( context );
+		p->DrawInterior( context, type );
 }
 
 void NNetModelReaderInterface::DrawNeuronText

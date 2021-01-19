@@ -3,6 +3,7 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include "d2d1helper.h"
 #include "D2D_DrawContext.h"
 
 void D2D_DrawContext::Start( HWND const hwnd )
@@ -37,13 +38,16 @@ void D2D_DrawContext::DrawLine
 	D2D1::ColorF    const   col
 ) const
 {
-	m_graphics.DrawLine
-	( 
-		m_coord.Transform2fPixelPos( umStartPoint ),
-		m_coord.Transform2fPixelPos( umEndPoint   ),
-		m_coord.Transform2fPixel   ( umWidth      ),
-		m_bNoColors ? NNetColors::COL_BLACK : col 
-	);
+	if ( umStartPoint != umEndPoint )
+	{
+		m_graphics.DrawLine
+		( 
+			m_coord.Transform2fPixelPos( umStartPoint ),
+			m_coord.Transform2fPixelPos( umEndPoint   ),
+			m_coord.Transform2fPixel   ( umWidth      ),
+			m_bNoColors ? D2D1::ColorF::Black : col 
+		);
+	}
 }
 
 void D2D_DrawContext::FillCircle
@@ -55,7 +59,7 @@ void D2D_DrawContext::FillCircle
 	m_graphics.FillCircle
 	( 
 		m_coord.Transform2fPixelCircle( umCircle ), 
-		m_bNoColors ? NNetColors::COL_BLACK : col 
+		m_bNoColors ? D2D1::ColorF::Black : col 
 	);
 }
 
@@ -79,7 +83,7 @@ void D2D_DrawContext::DrawCircle
 	m_graphics.DrawCircle
 	( 
 		m_coord.Transform2fPixelCircle( umCircle ), 
-		m_bNoColors ? NNetColors::COL_BLACK : col,
+		m_bNoColors ? D2D1::ColorF::Black : col,
 		m_coord.Transform2fPixel( umWidth )
 	);
 }
@@ -93,7 +97,7 @@ void D2D_DrawContext::FillEllipse
 	m_graphics.FillEllipse
 	( 
 		m_coord.Transform2fPixelEllipse( umEllipse ), 
-		m_bNoColors ? NNetColors::COL_BLACK : col 
+		m_bNoColors ? D2D1::ColorF::Black : col 
 	);
 }
 
@@ -107,7 +111,7 @@ void D2D_DrawContext::DrawEllipse
 	m_graphics.DrawEllipse
 	( 
 		m_coord.Transform2fPixelEllipse( umEllipse ), 
-		m_bNoColors ? NNetColors::COL_BLACK : col,
+		m_bNoColors ? D2D1::ColorF::Black : col,
 		m_coord.Transform2fPixel( umWidth )
 	);
 }
@@ -127,7 +131,7 @@ void D2D_DrawContext::FillArrow
 		m_coord.Transform2fPixelSize( umVector ), 
 		m_coord.Transform2fPixel    ( umSize ),
 		m_coord.Transform2fPixel    ( umWidth ),
-		m_bNoColors ? NNetColors::COL_BLACK : col 
+		m_bNoColors ? D2D1::ColorF::Black : col 
 	);
 }
 
