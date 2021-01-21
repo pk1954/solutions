@@ -226,7 +226,8 @@ public:
     {
         MicroMeterPoint const umPntStart { ScrReadMicroMeterPoint( script ) };
         MicroMeterPoint const umPntEnd   { ScrReadMicroMeterPoint( script ) };
-        m_pCommands->SelectShapesInRect( MicroMeterRect( umPntStart, umPntEnd ) );
+        bool            const bClear     { script.ScrReadUint() != 0 };
+        m_pCommands->SelectShapesInRect( MicroMeterRect(umPntStart, umPntEnd), bClear );
     }
 };
 

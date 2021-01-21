@@ -43,12 +43,10 @@
 #define IDM_OPEN_MODEL           153
 #define IDM_ADD_MODEL            154
 #define IDM_REPLACE_MODEL        155
-#define IDM_ADD_IMPORTED_MODEL   156
-#define IDM_CENTERING_FINISHED   157
-#define IDM_NEW_MODEL            158
+#define IDM_NEW_MODEL            156
+#define IDM_ADD_IMPORTED_MODEL   157
 
 #define IDD_PULSE_RATE           160
-
 #define IDD_ARROWS_ON            161
 #define IDD_ARROWS_OFF           162
 #define IDD_RULER_ON             163
@@ -67,6 +65,8 @@
 
 #define IDM_PLUS                 191
 #define IDM_MINUS                192
+
+#define IDM_CENTERING_FINISHED   300
 
 #define IDM_MONITOR_WINDOW       530
 #define IDD_NEW_SENSOR           545

@@ -124,10 +124,12 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << idSrc << L" " << idDst << endl;
 	unique_ptr<Command> pCmd;
-	if ( m_pNMWI->IsPipe( idDst ) ) 
-		pCmd = make_unique<Connect2PipeCommand>( idSrc, idDst );
+	BaseKnot * m_pBaseKnotSrc { m_pNMWI->GetShapePtr<BaseKnot *>( idSrc ) };
+	Shape    * m_pShapeDst    { m_pNMWI->GetShapePtr<Shape    *>( idDst ) };
+	if ( m_pShapeDst->IsPipe() ) 
+		pCmd = make_unique<Connect2PipeCommand    >( m_pBaseKnotSrc, static_cast<Pipe     *>(m_pShapeDst) );
 	else
-		pCmd = make_unique<Connect2BaseKnotCommand>( idSrc, idDst );
+		pCmd = make_unique<Connect2BaseKnotCommand>( m_pBaseKnotSrc, static_cast<BaseKnot *>(m_pShapeDst) );
 	m_pCmdStack->PushCommand( move( pCmd ) );
 }
 
@@ -316,11 +318,11 @@ void NNetModelCommands::SelectSubtree( ShapeId const id, tBoolOp const op )
 	m_pCmdStack->PushCommand( make_unique<SelectSubtreeCommand>( id, op ) );
 }
 
-void NNetModelCommands::SelectShapesInRect( MicroMeterRect const & rect )
+void NNetModelCommands::SelectShapesInRect( MicroMeterRect const & rect, bool const bClear )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << rect << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectShapesInRectCommand>( rect ) );
+		TraceStream( ) << __func__ << L" " << rect << bClear << endl;
+	m_pCmdStack->PushCommand( make_unique<SelectShapesInRectCommand>(rect, bClear) );
 }
 
 void NNetModelCommands::AnalyzeLoops( )

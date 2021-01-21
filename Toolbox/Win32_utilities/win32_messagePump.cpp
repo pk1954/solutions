@@ -18,7 +18,7 @@ void MessagePump::RegisterWindow( HWND const hwnd, bool const bIsDialog )
 
 bool MessagePump::accelerator(  MSG & msg )
 {
-	for ( auto entry : m_accEntries )
+	for ( AccEntry const & entry : m_accEntries )
 	{
 		if ( entry.m_hwnd == msg.hwnd || IsChild( entry.m_hwnd, msg.hwnd ) ) 
 		{

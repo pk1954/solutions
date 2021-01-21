@@ -55,8 +55,6 @@ public:
 	void CenterModel( );
 	void CenterSelection( );
 
-	virtual void CenterAndZoomRect( MicroMeterRect const &, float const );
-
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
@@ -76,11 +74,15 @@ private:
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pNNetCommands        { nullptr };
-	bool                m_bFocusMode           { false };
 
+	void centeringStep      ( );
 	void setTargetShape     ( MicroMeterPoint const & );
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );
+	void centerAndZoomRect  ( ShapeList::SelMode const, float const );
 
 	virtual void doPaint( );
+
+	friend void CALLBACK timerProc( HWND, UINT, UINT, DWORD );
+
 };

@@ -31,8 +31,8 @@ public:
 			MessageBox
 			( 
 				nullptr, 
-				L"Error in model file", 
-				L"See main_trace.out for details", 
+				L"Error in model file\r\nSee main_trace.out for details", 
+				L"Error", 
 				MB_OK 
 			);
 			break;

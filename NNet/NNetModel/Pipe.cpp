@@ -214,11 +214,7 @@ void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type 
 void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
 	MicroMeter const umWidth { m_width * PIPE_INTERIOR };
-	if ( ::IsSelected(type) )
-	{
-		context.DrawLine( GetStartPoint(), GetEndPoint(), umWidth, NNetColors::INT_SELECTED );
-	}
-	else
+	if ( ::IsNormal(type) )
 	{
 		MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
 		if ( ! umVector.IsCloseToZero() )
@@ -239,6 +235,10 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type 
 
 			} while (index != potIndex );
 		}
+	}
+	else
+	{
+		context.DrawLine( GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type) );
 	}
 }
 

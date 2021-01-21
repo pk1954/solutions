@@ -6,6 +6,7 @@
 
 #include "MoreTypes.h"
 #include "PixelTypes.h"
+#include "PixelCoordsFp.h"
 
 class SmoothMoveFp
 {
@@ -13,14 +14,25 @@ public:
 
     void SetUp
     ( 
-        MicroMeter      const umPixelSizeStart, 
-        MicroMeterPoint const umPntCenterStart, 
-        MicroMeter      const umPixelSizeTarget, 
-        MicroMeterPoint const umPntCenterTarget 
+        MicroMeterRect const & umRect,      
+        float          const   fRatioFactor,
+        PixelRect      const & pixRect,
+        PixelCoordsFp  const & coord
     )
     {
-        m_umPixelSizeStart = umPixelSizeStart;
-        m_umPntCenterStart = umPntCenterStart;
+        MicroMeterPoint const umPntCenterTarget { umRect.GetCenter() };
+        MicroMeter      const umPixelSizeTarget 
+        {
+            coord.ComputeZoom
+            ( 
+                umRect.Scale( NEURON_RADIUS ), 
+                pixRect.GetSize(),
+                fRatioFactor
+            )
+        };
+        m_pCoord           = & coord;
+        m_umPixelSizeStart = coord.GetPixelSize();
+        m_umPntCenterStart = coord.Transform2MicroMeterPointPos(pixRect.GetCenter());
         m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
         m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
         m_fPos = START_POINT;
@@ -52,6 +64,11 @@ public:
         return m_umPntCenterStart + m_umPntCenterDelta * m_fPos;
     }
 
+    int const GetNrOfSteps( )
+    {
+        return static_cast<int>(NR_OF_STEPS);
+    }
+
 private:
     inline static float const START_POINT { 0.0f };
     inline static float const END_POINT   { 1.0f };
@@ -61,6 +78,8 @@ private:
     inline static float const NR_OF_STEPS  { 20.0f };
     inline static float const ACCELERATION { ( 4.0f * DISTANCE ) / (NR_OF_STEPS * NR_OF_STEPS) };
 
+    PixelCoordsFp const * m_pCoord    { nullptr };
+       
     float           m_fPos      { START_POINT };       // runs from START_POINT to END_POINT
     float           m_fVelocity { 0.0f };
 
@@ -68,5 +87,4 @@ private:
     MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; 
     MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };      
     MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      
-
 };

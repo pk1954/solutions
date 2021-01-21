@@ -79,7 +79,7 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
     }
     m_pBaseKnot->ClearConnections();
     if ( m_bDelete )
-        m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>( m_pBaseKnot->GetId() );
+        m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>( * m_pBaseKnot );
 }
 
 void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )

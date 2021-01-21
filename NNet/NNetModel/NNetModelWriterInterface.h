@@ -75,9 +75,9 @@ public:
     }
 
     template <Shape_t OLD>
-    unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
+    unique_ptr<OLD> RemoveFromModel( Shape const & shape ) 
     { 
-        UPShape upShape { m_pModel->GetShapes().ExtractShape(id) }; 
+        UPShape upShape { m_pModel->GetShapes().ExtractShape(shape.GetId()) }; 
         auto    pShape  { upShape.release() }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }

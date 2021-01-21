@@ -61,7 +61,7 @@ public:
     void SelectAll           ( tBoolOp const );
     void SelectAllBeepers    ( );
     void SelectShape         ( ShapeId const, tBoolOp const );
-    void SelectShapesInRect  ( MicroMeterRect const & );
+    void SelectShapesInRect  ( MicroMeterRect const &, bool const );
     void SelectSubtree       ( ShapeId const, tBoolOp const );
     void SetParameter        ( ParameterType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );

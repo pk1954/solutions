@@ -172,14 +172,12 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 
 void MainWindow::CenterModel( )
 {
-	MicroMeterRect rect { m_pNMRI->GetShapes().CalcEnclosingRect( ShapeList::SelMode::allShapes ) };
-	CenterAndZoomRect( rect, 1.2f ); // give 20% more space (looks better)
+	centerAndZoomRect( ShapeList::SelMode::allShapes, 1.2f ); // give 20% more space (looks better)
 }
 
 void MainWindow::CenterSelection( )
 {
-	MicroMeterRect rect { m_pNMRI->GetShapes().CalcEnclosingRect( ShapeList::SelMode::selectedShapes ) };
-	CenterAndZoomRect( rect, 2.0f );
+	centerAndZoomRect( ShapeList::SelMode::selectedShapes, 2.0f );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -281,7 +279,8 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 	bool bMadeSelection { m_rectSelection.IsNotEmpty() };
 	if ( bMadeSelection )
 	{
-		m_pNNetCommands->SelectShapesInRect( m_rectSelection );
+		bool const bClear { ! (GetAsyncKeyState(VK_CONTROL) & 0x01) };
+		m_pNNetCommands->SelectShapesInRect( m_rectSelection, bClear );
 		m_rectSelection.SetZero();
 	}
 	return bMadeSelection;
@@ -316,46 +315,56 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
-void MainWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor )
+void CALLBACK timerProc
+( 
+	HWND  hwnd,        // handle to window for timer messages 
+	UINT  message,     // WM_TIMER message 
+	UINT  idTimer,     // timer identifier 
+	DWORD dwTime       // current system time 
+)
+{ 
+	if ( MainWindow * pMainWin = reinterpret_cast<MainWindow*>(GetRootWindow( hwnd )) )
+	{
+		pMainWin->centeringStep();
+	}
+}
+
+void MainWindow::centeringStep( )
 {
-	MicroMeter      umPixelSizeTarget;
-	MicroMeterPoint umPntCenterTarget { NP_ZERO };
-	GetCoord().ComputeCenterAndZoom
-	( 
-		umRect.Scale( NEURON_RADIUS ), 
-		fRatioFactor, 
-		GetClRectSize(),
-		umPixelSizeTarget, 
-		umPntCenterTarget 
-	);
+	bool        const bTargetReached { m_smoothMove.Next() };
+	fPixelPoint const fpCenter       { Convert2fPixelPoint( GetClRectCenter( ) ) };
+	GetDrawContext().Zoom  ( m_smoothMove.GetNewSize() );
+	GetDrawContext().Center( m_smoothMove.GetNewCenter(), fpCenter );
+	Notify( true );                               // cause immediate repaint
+	m_pCoordObservable->NotifyAll( false );
+	if ( bTargetReached )
+	{
+		KillTimer( GetWindowHandle(), 4711 );
+		SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
+	}
+}
+
+void MainWindow::centerAndZoomRect
+( 
+	ShapeList::SelMode const mode, 
+	float              const fRatioFactor 
+)
+{
+	MicroMeterRect umRect { m_pNMRI->GetShapes().CalcEnclosingRect( mode ) };
 	m_smoothMove.SetUp
 	(
-		GetCoord().GetPixelSize(),                                   // actual pixel size 
-		GetCoord().Transform2MicroMeterPointPos( GetClRectCenter() ),  // actual center 
-		umPixelSizeTarget,
-		umPntCenterTarget
+		umRect.Scale( NEURON_RADIUS ), 
+		fRatioFactor, 
+		GetClPixelRect(),
+		GetCoord()
 	);
-	m_bFocusMode = true;
+	SetTimer( GetWindowHandle(), 4711, 50, (TIMERPROC)timerProc );
 }
 
 void MainWindow::OnPaint( )
 {
 	m_pDisplayTimer->TimerStart( );
 	NNetWindow::OnPaint( );
-	if ( m_bFocusMode )
-	{
-		bool        const bTargetReached { m_smoothMove.Next() };
-		fPixelPoint const fpCenter       { Convert2fPixelPoint( GetClRectCenter( ) ) };
-		GetDrawContext().Zoom  ( m_smoothMove.GetNewSize() );
-		GetDrawContext().Center( m_smoothMove.GetNewCenter(), fpCenter );
-		Notify( true );                               // cause immediate repaint
-		m_pCoordObservable->NotifyAll( false );
-		if ( bTargetReached )
-		{
-			m_bFocusMode = false;
-			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-		}
-	}
 	m_pDisplayTimer->TimerStop( );
 }
 

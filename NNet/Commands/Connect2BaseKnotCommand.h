@@ -16,34 +16,25 @@ class Connect2BaseKnotCommand : public Command
 public:
 	Connect2BaseKnotCommand
 	( 
-		ShapeId const idSrc,
-		ShapeId const idDst 
+		BaseKnot * pBaseKnotSrc,
+		BaseKnot * pBaseKnotDst
 	)
-	  :	m_idSrc( idSrc ),
-		m_idDst( idDst )
-	{ }
+	  :	m_pBaseKnotSrc( pBaseKnotSrc ),
+		m_pBaseKnotDst( pBaseKnotDst )
+	{ 
+		if ( m_pBaseKnotDst->IsKnot() ) // if a Neuron is connected to a Knot, the Knot would survive
+			swap( m_pBaseKnotDst, m_pBaseKnotSrc ); // swap makes sure, that the Neuron survives
+		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
+	}
 
 	~Connect2BaseKnotCommand( )	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
-		//std::wcout << L"*** Before Do Connect2BaseKnot(" << m_idSrc << L")" << endl; 
-		//nmwi.DumpModel();
 
-		if ( ! m_bInitialized )
-		{
-			if ( nmwi.IsKnot( m_idDst ) ) // if a Neuron is connected to a Knot, the Knot would survive
-				swap( m_idDst, m_idSrc ); // swap makes sure, that the Neuron survives
-			m_pBaseKnotDst     = nmwi.GetShapePtr<BaseKnot *>( m_idDst );
-			m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
-			m_bInitialized = true;
-		}
-
-		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(m_idSrc); 
+		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>( * m_pBaseKnotSrc ); 
 		assert( m_upBaseKnotSrc );
 		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() ); // double connections?
-		//std::wcout << L"*** After Do Connect2BaseKnot(" << m_idSrc << L")" << endl; 
-		//nmwi.DumpModel();
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
@@ -52,18 +43,13 @@ public:
 		assert( m_upBaseKnotSrc );
 		m_upBaseKnotSrc->Reconnect( );
 		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move( m_upBaseKnotSrc ) ); // reconnect src  
-		assert( m_upBaseKnotSrc );
-		//std::wcout << L"*** After Undo Connect2BaseKnot" << endl; 
-		//nmwi.DumpModel();
 	}
 
 private:
-	ShapeId m_idSrc;
-	ShapeId m_idDst; 
 
-	BaseKnot              * m_pBaseKnotDst     { nullptr };
+	BaseKnot * m_pBaseKnotSrc;
+	BaseKnot * m_pBaseKnotDst;
+
 	unique_ptr<BaseKnot>    m_upBaseKnotSrc    { nullptr };
 	unique_ptr<Connections> m_upDstConnections { nullptr };
-
-	bool m_bInitialized { false };
 };

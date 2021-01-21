@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
+#include "PixelCoordsFp.h"
 #include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
 
@@ -42,21 +43,21 @@ void MiniWindow::Notify( bool const bImmediately )
 {
 	if ( m_pObservedNNetWindow )
 	{
-		float          const EXTRA_SPACE_FACTOR { 1.2f };                                // give 20% more space (looks better)
-		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };       // current position of main window view 
-		MicroMeterRect const umRectModel { m_pNMRI->GetShapes().CalcEnclosingRect() }; // current extension of model
-		MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };           // all this should be visible  
-		fPixelPoint    const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
-		MicroMeter      umPixelSizeTarget;
-		MicroMeterPoint umPntCenterTarget { NP_ZERO };
-		GetCoord().ComputeCenterAndZoom
-		( 
-			umRectShow.Scale( NEURON_RADIUS ), 
-			EXTRA_SPACE_FACTOR, 
-			GetClRectSize(),
-			umPixelSizeTarget, 
-			umPntCenterTarget 
-		);
+		float           const EXTRA_SPACE_FACTOR { 1.2f };                                // give 20% more space (looks better)
+		MicroMeterRect  const umRectMain  { m_pObservedNNetWindow->GetViewRect() };       // current position of main window view 
+		MicroMeterRect  const umRectModel { m_pNMRI->GetShapes().CalcEnclosingRect() };   // current extension of model
+		MicroMeterRect  const umRectShow  { Union( umRectMain, umRectModel ) };           // all this should be visible  
+		fPixelPoint     const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
+		MicroMeterPoint const umPntCenterTarget { umRectShow.GetCenter() };
+		MicroMeter      const umPixelSizeTarget
+		{
+			GetCoord().ComputeZoom
+			( 
+				umRectShow.Scale( NEURON_RADIUS ), 
+				GetClRectSize(),
+				EXTRA_SPACE_FACTOR
+			)
+		};
 		GetDrawContext().Zoom( umPixelSizeTarget );
 		GetDrawContext().Center( umPntCenterTarget, fpCenter );
 		NNetWindow::Notify( bImmediately );

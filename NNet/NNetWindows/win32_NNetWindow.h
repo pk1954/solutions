@@ -60,7 +60,9 @@ public:
 protected:
 
 	virtual void OnPaint( );
-	virtual bool OnSize( WPARAM const, LPARAM const );
+	virtual bool OnSize       ( WPARAM const, LPARAM const );
+	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
+	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
 
 	virtual void doPaint( ) = 0;
 
@@ -71,8 +73,6 @@ protected:
 	NNetModelReaderInterface * m_pNMRI { nullptr };
 
 private:
-	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
-	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 

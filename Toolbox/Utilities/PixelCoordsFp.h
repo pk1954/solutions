@@ -241,13 +241,11 @@ public:
 		SetPixelOffset( Transform2fPixelSize( umPntCenter ) - fPntPix );
 	}
 
-	void ComputeCenterAndZoom
+	MicroMeter const ComputeZoom
 	(
-		MicroMeterRect const & umRect,             // input
-		float          const   fRatioFactor,       // input
-		PixelRectSize  const   pixRectSize,        // input
-		MicroMeter           & umPixelSizeTarget,  // output
-		MicroMeterPoint      & umPntCenterTarget   // output
+		MicroMeterRect const & umRect,     
+		PixelRectSize  const   pixRectSize,
+		float          const   fRatioFactor
 	) const
 	{
 		MicroMeterRectSize const umRectSize       { Transform2MicroMeterRectSize( pixRectSize ) };
@@ -256,8 +254,7 @@ public:
 		float              const fMaxRatio        { max( fVerticalRatio, fHorizontalRatio ) };
 		float              const fDesiredRatio    { fMaxRatio * fRatioFactor };
 		MicroMeter         const sizeDesired      { GetPixelSize() * fDesiredRatio };
-		umPixelSizeTarget = ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
-		umPntCenterTarget = umRect.GetCenter();
+		return ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
 	}
 
 private:
