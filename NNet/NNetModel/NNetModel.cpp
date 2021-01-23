@@ -25,7 +25,7 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	(m_Shapes            == rhs.m_Shapes            ) &&
 	(m_timeStamp         == rhs.m_timeStamp         ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath ) &&
-	(m_description       == rhs.m_description       ) &&
+//	(m_description       == rhs.m_description       ) &&  // not neccessary
 	(m_monitorData       == rhs.m_monitorData       ) &&
 	(m_param             == rhs.m_param             );
 }
@@ -60,6 +60,11 @@ fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 	return ( pInputNeuron )
 		   ? pInputNeuron->GetPulseFrequency( )
 	       : fHertz::NULL_VAL();
+}
+
+bool const NNetModel::GetDescriptionLine( int const iLine, wstring & wstrLine ) const
+{
+	return m_description.GetDescriptionLine( iLine, wstrLine );
 }
 
 float NNetModel::SetParam

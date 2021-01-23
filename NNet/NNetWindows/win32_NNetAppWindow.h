@@ -33,7 +33,7 @@
 #include "win32_NNetController.h"
 #include "win32_parameterDlg.h"
 #include "win32_crsrWindow.h"
-#include "win32_modelDescription.h"
+#include "win32_descriptionWindow.h"
 #include "win32_performanceWindow.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"

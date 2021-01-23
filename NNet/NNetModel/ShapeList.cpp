@@ -92,7 +92,7 @@ UPShape ShapeList::ExtractShape( ShapeId const id )
 }
 
 void ShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for special situations
-{                                                        // read model from script
+{                                                                    // read model from script
 	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
 	assert( IsEmptySlot( id ) );

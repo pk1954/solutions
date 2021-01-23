@@ -281,6 +281,7 @@ void NNetModelImporter::import( )
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
+        m_ImportedNMWI.DescriptionComplete( );
         res = ImportTermination::Result::ok;
     }
     else

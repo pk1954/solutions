@@ -66,9 +66,6 @@
     <ClCompile Include="win32_MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_modelDescription.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_monitorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,6 +73,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D2D_DrawContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_descriptionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,9 +152,6 @@
     <ClInclude Include="UndoRedoMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_modelDescription.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_monitorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_importTermination.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_descriptionWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

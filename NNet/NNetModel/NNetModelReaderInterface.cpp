@@ -75,6 +75,11 @@ bool const NNetModelReaderInterface::HasOutgoing( ShapeId const id ) const
 	return p ? p->m_connections.HasOutgoing( ) : false; 
 }
 
+bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstring & wstrLine ) const 
+{
+	return m_pModel->GetDescriptionLine( iLine, wstrLine );
+};
+
 bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) const
 {
 	if ( idSrc == idDst )

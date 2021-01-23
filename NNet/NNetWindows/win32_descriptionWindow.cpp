@@ -1,13 +1,13 @@
-// win32_modelDescription.cpp
+// win32_descriptionWindow.cpp
 //
 // NNetWindows
 
 #include "stdafx.h"
 #include "Richedit.h"
 #include "Resource.h"
-#include "win32_modelDescription.h"
+#include "win32_descriptionWindow.h"
 
-static HMENU const ID_EDIT_CTRL { (HMENU)1 };
+static WORD const ID_EDIT_CTRL { 42 };
 
 void DescriptionWindow::Start( HWND const hwndParent )
 {
@@ -24,17 +24,29 @@ void DescriptionWindow::Start( HWND const hwndParent )
 
     SetWindowText( hwndDlg, L"Model description" );
 
-    m_hwndEdit = CreateWindow
+    m_hwndEdit = CreateWindowEx
     ( 
+        0,
         L"EDIT",                 // predefined class 
         NULL,        
         WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOHSCROLL|ES_AUTOVSCROLL, 
         0, 0, 0, 0,              // set size in WM_SIZE message 
         hwndDlg,                 // parent window 
-        ID_EDIT_CTRL,
+        (HMENU)ID_EDIT_CTRL,     // control id
         GetModuleHandle( nullptr ), 
         NULL
     );          
+    //m_hwndEdit = CreateWindow
+    //( 
+    //    L"EDIT",                 // predefined class 
+    //    NULL,        
+    //    WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOHSCROLL|ES_AUTOVSCROLL, 
+    //    0, 0, 0, 0,              // set size in WM_SIZE message 
+    //    hwndDlg,                 // parent window 
+    //    (HMENU)ID_EDIT_CTRL,     // control id
+    //    GetModuleHandle( nullptr ), 
+    //    NULL
+    //);          
 }
 
 void DescriptionWindow::Stop( )
@@ -52,22 +64,44 @@ void DescriptionWindow::SetDescription( wstring const wstrDesc )
     Edit_SetText( m_hwndEdit, wstrDesc.c_str() );
 }
 
-bool DescriptionWindow::GetDescriptionLine( int const iLineNr, wstring & wstrDst ) const
+int const DescriptionWindow::GetLineCount( ) const
 {
-    static const int BUFLEN { 1024 };
-    alignas(int) wchar_t buffer[BUFLEN];  // Edit_GetLine interpretes begin of buffer as int
-    int iLineCount  = Edit_GetLineCount( m_hwndEdit );
-    if ( iLineNr >= iLineCount )
-        return false;
-    int iLineIndex  = Edit_LineIndex ( m_hwndEdit, iLineNr );
-    int iLineLength = Edit_LineLength( m_hwndEdit, iLineIndex );
-    int iCharsRead  = Edit_GetLine   ( m_hwndEdit, iLineNr, buffer, BUFLEN );
-    wstrDst.assign( buffer, iCharsRead );
-    return true;
+    return Edit_GetLineCount( m_hwndEdit );
+}
+
+bool const DescriptionWindow::GetDescriptionLine( int const iLineNr, wstring & wstrDst ) const
+{
+    if ( iLineNr < GetLineCount() )
+    {
+        static const int BUFLEN { 1024 };
+        alignas(int) wchar_t buffer[BUFLEN];  // Edit_GetLine interpretes begin of buffer as int
+        int iLineIndex  = Edit_LineIndex ( m_hwndEdit, iLineNr );
+        int iLineLength = Edit_LineLength( m_hwndEdit, iLineIndex );
+        int iCharsRead  = Edit_GetLine   ( m_hwndEdit, iLineNr, buffer, BUFLEN );
+        for ( int i = 0; i < iCharsRead; ++i )  // copy line to wstrDst 
+        {                                       // removing CR and LF characters
+            wchar_t c { buffer[i] };
+            if ( (c != L'\r') &&(c != L'\n') )
+                wstrDst += c;
+         }
+            
+        return true;
+    }
+    return false;
 }
 
 bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
+    // control notifications
+
+    if ( (LOWORD(wParam) == ID_EDIT_CTRL) && (HIWORD(wParam) == EN_CHANGE) )
+    {
+        m_bDirty = true;
+        return true; 
+    }
+
+    // other commands
+
     int const wmId = LOWORD( wParam );
 
     switch (wmId) 
@@ -76,7 +110,7 @@ bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, Pix
         Edit_SetSel( m_hwndEdit, 0, -1 ); 
         return true; 
 
-     case IDM_DELETE: 
+    case IDM_DELETE: 
          {
              DWORD dwSelStart { 0L };
              DWORD dwSelEnd   { 0L };

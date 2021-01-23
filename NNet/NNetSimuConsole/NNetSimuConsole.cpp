@@ -10,7 +10,6 @@
 #include "CommandStack.h"
 #include "MonitorData.h"
 #include "SignalFactory.h"
-#include "ModelDescription.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"

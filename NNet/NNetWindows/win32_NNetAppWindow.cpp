@@ -94,6 +94,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable, m_beaconAnimation );
 	Shape::Initialize( m_model.GetParams() );
+	m_model.SetDescriptionUI( m_descWindow );
 
 	m_modelImporter  .Initialize( &m_script );
 	m_modelExporter  .Initialize( &m_nmri );
@@ -457,6 +458,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_computeThread.StopComputation( );
 			m_mainNNetWindow.Reset();
 			m_model = move(* m_modelImporter.GetImportedModel());
+			m_model.SetDescriptionUI( m_descWindow );
 			m_appTitle.SetUnsavedChanges( false );
 			m_mainNNetWindow.CenterModel( );
 		}

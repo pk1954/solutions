@@ -140,7 +140,7 @@ void NNetModelExporter::writeDescription( wostream & out )
 {
     wstring wstrLine;
     int iLineNr = 0;
-    while ( m_pNMRI->GetDescription().GetDescriptionLine( iLineNr++, wstrLine ) )
+    while ( m_pNMRI->GetDescriptionLine( iLineNr++, wstrLine ) )
     {
         out << L"Description \"" << wstrLine << "\"" << endl;
     }
