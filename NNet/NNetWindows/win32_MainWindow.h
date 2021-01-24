@@ -69,7 +69,8 @@ public:
 
 private:
 	 
-	UINT_PTR                 m_idTimer              { 0 };
+	static UINT_PTR const ID_COORD_TIMER { 1024 };
+
 	Animation<PixelCoordsFp> m_animation            { };       
 	MicroMeterRect           m_rectSelection        { };
 	ShapeId                  m_shapeTarget          { };

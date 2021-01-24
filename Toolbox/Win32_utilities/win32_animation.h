@@ -5,6 +5,7 @@
 #pragma once
 
 #include "windows.h"
+#include "MoreTypes.h"
 #include "SmoothMoveFp.h"
 
 template <typename T>
@@ -12,20 +13,23 @@ class Animation
 {
 public:
 
-    UINT_PTR SetUp
+    void SetUp
     ( 
-        HWND const hwnd,
-        T    const target,
-        T        & actual
+        HWND         const hwnd,
+        T                & actual,
+        T            const target,
+        UINT_PTR     const idTimer,
+        unsigned int const uiNrOfSteps,
+        MilliSecs    const ms
     )
     {
+        m_hwnd    = hwnd;
         m_pActual = & actual;
         m_start   = actual;
         m_delta   = target - m_start;
-        m_hwnd    = hwnd;
-        m_smoothMove.SetUp();
-        SetTimer( m_hwnd, m_idTimer, 50, nullptr );
-        return m_idTimer;
+        m_idTimer = idTimer;
+        m_smoothMove.SetUp( uiNrOfSteps );
+        SetTimer( m_hwnd, m_idTimer, ms.GetValue(), nullptr );
     }
 
     bool Next( ) // returns true if target reached
@@ -43,10 +47,10 @@ public:
     }
 
 private:
-    HWND                m_hwnd;
-    UINT_PTR            m_idTimer { 4711 };
-    SmoothMoveFp<float> m_smoothMove;
-    T                 * m_pActual;
+    UINT_PTR            m_idTimer { 0 };
+    HWND                m_hwnd    { nullptr };
+    T                 * m_pActual { nullptr };
     T                   m_start;
     T                   m_delta;
+    SmoothMoveFp<float> m_smoothMove;
 };

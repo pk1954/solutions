@@ -11,10 +11,12 @@ class SmoothMoveFp
 {
 public:
 
-    void SetUp()
+    void SetUp( unsigned int const uiNrOfSteps )
     {
-        m_pos = START_POINT;
-        m_velocity = static_cast<T>(0);
+        m_pos          = START_POINT;
+        m_uiNrOfSteps  = uiNrOfSteps;
+        m_velocity     = static_cast<T>(0);
+        m_acceleration = (static_cast<T>(4) * DISTANCE) / static_cast<T>(m_uiNrOfSteps * m_uiNrOfSteps);
     }
 
     T const GetPos() const { return m_pos; }
@@ -22,9 +24,9 @@ public:
     bool Next( ) // returns true if target reached
     {
         if ( m_pos <= BREAK_POINT )
-            m_velocity += ACCELERATION;
+            m_velocity += m_acceleration;
         else 
-            m_velocity -= ACCELERATION;
+            m_velocity -= m_acceleration;
         m_pos += m_velocity;
         if ( m_pos >= END_POINT * static_cast<T>(0.99f) )
         {
@@ -34,20 +36,15 @@ public:
         return false;
     }
 
-    int const GetNrOfSteps() const 
-    {
-        return static_cast<int>(NR_OF_STEPS);
-    }
-
 private:
     inline static T const START_POINT { static_cast<T>(0) };
-    inline static T const END_POINT   { static_cast<T>(1) };
-                 
-    inline static T const DISTANCE     { END_POINT - START_POINT };
-    inline static T const BREAK_POINT  { START_POINT + DISTANCE / static_cast<T>(2) };
-    inline static T const NR_OF_STEPS  { 20 };
-    inline static T const ACCELERATION { ( static_cast<T>(4) * DISTANCE ) / (static_cast<T>(NR_OF_STEPS) * static_cast<T>(NR_OF_STEPS)) };
+    inline static T const END_POINT   { static_cast<T>(1) };            
+    inline static T const DISTANCE    { END_POINT - START_POINT };
+    inline static T const BREAK_POINT { START_POINT + DISTANCE / static_cast<T>(2) };
 
-    T m_pos      { START_POINT };       // runs from START_POINT to END_POINT
-    T m_velocity { 0.0f };
+    unsigned int m_uiNrOfSteps   { 0 };
+
+    T   m_pos          { START_POINT };       // runs from START_POINT to END_POINT
+    T   m_velocity     { 0.0f };
+    T   m_acceleration { 0.0f };
 };

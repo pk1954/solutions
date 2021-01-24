@@ -322,7 +322,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( wParam == m_idTimer )
+	if ( wParam == ID_COORD_TIMER )
 		centeringStep();
 	return true;
 }
@@ -352,7 +352,7 @@ void MainWindow::centerAndZoomRect
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
 
-	m_idTimer = m_animation.SetUp(	GetWindowHandle(), coordTarget, GetCoord() );
+	m_animation.SetUp(GetWindowHandle(), GetCoord(), coordTarget, ID_COORD_TIMER, 20, 50_MilliSecs );
 }
 
 void MainWindow::OnPaint( )
