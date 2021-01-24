@@ -7,7 +7,7 @@
 #include "Resource.h"
 #include "BaseKnot.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_smoothCoordsFp.h"
+#include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
 class BeaconAnimation;
@@ -69,14 +69,14 @@ public:
 
 private:
 	 
-	UINT_PTR            m_idTimer              { 0 };
-	SmoothCoordsFp      m_smoothMove           { };       
-	MicroMeterRect      m_rectSelection        { };
-	ShapeId             m_shapeTarget          { };
-	ShapeId             m_shapeHighlighted     { };
-	Observable        * m_pCoordObservable     { nullptr };
-	Observable        * m_pCursorPosObservable { nullptr };
-	NNetModelCommands * m_pNNetCommands        { nullptr };
+	UINT_PTR                 m_idTimer              { 0 };
+	Animation<PixelCoordsFp> m_animation            { };       
+	MicroMeterRect           m_rectSelection        { };
+	ShapeId                  m_shapeTarget          { };
+	ShapeId                  m_shapeHighlighted     { };
+	Observable             * m_pCoordObservable     { nullptr };
+	Observable             * m_pCursorPosObservable { nullptr };
+	NNetModelCommands      * m_pNNetCommands        { nullptr };
 
 	void centeringStep      ( );
 	void setTargetShape     ( MicroMeterPoint const & );

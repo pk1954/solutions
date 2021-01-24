@@ -329,7 +329,7 @@ bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::centeringStep( )
 {
-	if ( m_smoothMove.Next() )
+	if ( m_animation.Next() )
 		SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
 	m_pCoordObservable->NotifyAll( false );
 }
@@ -352,7 +352,7 @@ void MainWindow::centerAndZoomRect
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
 
-	m_idTimer = m_smoothMove.SetUp(	GetWindowHandle(), coordTarget, GetCoord() );
+	m_idTimer = m_animation.SetUp(	GetWindowHandle(), coordTarget, GetCoord() );
 }
 
 void MainWindow::OnPaint( )
