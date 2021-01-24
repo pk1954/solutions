@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "BaseKnot.h"
 #include "NNetModelReaderInterface.h"
+#include "win32_smoothCoordsFp.h"
 #include "win32_NNetWindow.h"
 
 class BeaconAnimation;
@@ -55,6 +56,7 @@ public:
 	void CenterModel( );
 	void CenterSelection( );
 
+	virtual bool OnTimer             ( WPARAM const, LPARAM const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
@@ -66,8 +68,9 @@ public:
 	virtual void OnPaint             ( );
 
 private:
-
-	SmoothMoveFp        m_smoothMove           { };       
+	 
+	UINT_PTR            m_idTimer              { 0 };
+	SmoothCoordsFp      m_smoothMove           { };       
 	MicroMeterRect      m_rectSelection        { };
 	ShapeId             m_shapeTarget          { };
 	ShapeId             m_shapeHighlighted     { };
@@ -82,7 +85,4 @@ private:
 	void centerAndZoomRect  ( ShapeList::SelMode const, float const );
 
 	virtual void doPaint( );
-
-	friend void CALLBACK timerProc( HWND, UINT, UINT, DWORD );
-
 };

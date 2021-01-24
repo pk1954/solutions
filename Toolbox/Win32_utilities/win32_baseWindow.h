@@ -39,6 +39,7 @@ protected:
 	virtual bool OnShow              ( WPARAM const, LPARAM const ) { return false; };
 	virtual bool OnMouseLeave        ( WPARAM const, LPARAM const ) { return false; };
 	virtual bool OnSetCursor         ( WPARAM const, LPARAM const ) { return false; };
+	virtual bool OnTimer             ( WPARAM const, LPARAM const ) { return false; };
 
 	virtual void OnPaint( ) = 0;
 

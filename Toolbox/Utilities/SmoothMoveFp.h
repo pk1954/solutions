@@ -4,87 +4,50 @@
 
 #pragma once
 
-#include "MoreTypes.h"
-#include "PixelTypes.h"
-#include "PixelCoordsFp.h"
+#include <type_traits>
 
+template <typename T> requires std::is_floating_point_v<T>
 class SmoothMoveFp
 {
 public:
 
-    void SetUp
-    ( 
-        MicroMeterRect const & umRect,      
-        float          const   fRatioFactor,
-        PixelRect      const & pixRect,
-        PixelCoordsFp  const & coord
-    )
+    void SetUp()
     {
-        MicroMeterPoint const umPntCenterTarget { umRect.GetCenter() };
-        MicroMeter      const umPixelSizeTarget 
-        {
-            coord.ComputeZoom
-            ( 
-                umRect.Scale( NEURON_RADIUS ), 
-                pixRect.GetSize(),
-                fRatioFactor
-            )
-        };
-        m_pCoord           = & coord;
-        m_umPixelSizeStart = coord.GetPixelSize();
-        m_umPntCenterStart = coord.Transform2MicroMeterPointPos(pixRect.GetCenter());
-        m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
-        m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
-        m_fPos = START_POINT;
-        m_fVelocity = 0.0f;
+        m_pos = START_POINT;
+        m_velocity = static_cast<T>(0);
     }
+
+    T const GetPos() const { return m_pos; }
 
     bool Next( ) // returns true if target reached
     {
-        if ( m_fPos <= BREAK_POINT )
-            m_fVelocity += ACCELERATION;
+        if ( m_pos <= BREAK_POINT )
+            m_velocity += ACCELERATION;
         else 
-            m_fVelocity -= ACCELERATION;
-        m_fPos += m_fVelocity;
-        if ( m_fPos >= END_POINT * 0.99f )
+            m_velocity -= ACCELERATION;
+        m_pos += m_velocity;
+        if ( m_pos >= END_POINT * static_cast<T>(0.99f) )
         {
-            m_fPos = END_POINT;
+            m_pos = END_POINT;
             return true;
         }
         return false;
     }
 
-    MicroMeter const GetNewSize( )
-    {
-        return m_umPixelSizeStart + m_umPixelSizeDelta * m_fPos ;
-    }
-
-    MicroMeterPoint const GetNewCenter( )
-    {
-        return m_umPntCenterStart + m_umPntCenterDelta * m_fPos;
-    }
-
-    int const GetNrOfSteps( )
+    int const GetNrOfSteps() const 
     {
         return static_cast<int>(NR_OF_STEPS);
     }
 
 private:
-    inline static float const START_POINT { 0.0f };
-    inline static float const END_POINT   { 1.0f };
+    inline static T const START_POINT { static_cast<T>(0) };
+    inline static T const END_POINT   { static_cast<T>(1) };
+                 
+    inline static T const DISTANCE     { END_POINT - START_POINT };
+    inline static T const BREAK_POINT  { START_POINT + DISTANCE / static_cast<T>(2) };
+    inline static T const NR_OF_STEPS  { 20 };
+    inline static T const ACCELERATION { ( static_cast<T>(4) * DISTANCE ) / (static_cast<T>(NR_OF_STEPS) * static_cast<T>(NR_OF_STEPS)) };
 
-    inline static float const DISTANCE     { END_POINT - START_POINT };
-    inline static float const BREAK_POINT  { START_POINT + DISTANCE / 2.0f };
-    inline static float const NR_OF_STEPS  { 20.0f };
-    inline static float const ACCELERATION { ( 4.0f * DISTANCE ) / (NR_OF_STEPS * NR_OF_STEPS) };
-
-    PixelCoordsFp const * m_pCoord    { nullptr };
-       
-    float           m_fPos      { START_POINT };       // runs from START_POINT to END_POINT
-    float           m_fVelocity { 0.0f };
-
-    MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; 
-    MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; 
-    MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };      
-    MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      
+    T m_pos      { START_POINT };       // runs from START_POINT to END_POINT
+    T m_velocity { 0.0f };
 };

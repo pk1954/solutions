@@ -159,6 +159,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="win32_aboutBox.h" />
     <ClInclude Include="win32_actionTimer.h" />
+    <ClInclude Include="win32_animation.h" />
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="win32_fatalError.h" />
     <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_modelWindow.h" />
+    <ClInclude Include="win32_smoothCoordsFp.h" />
     <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_stdDialogBox.h" />
     <ClInclude Include="win32_textBuffer.h" />

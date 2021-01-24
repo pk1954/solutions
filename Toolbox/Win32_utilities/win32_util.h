@@ -24,6 +24,8 @@ namespace Util
 
     RECT ScrReadRECT( Script & );
 
+    inline bool CtrlKeyDown() { return GetAsyncKeyState(VK_CONTROL) & 0x01; }
+
 	union U64Bit
 	{
         struct twoFloats

@@ -72,6 +72,10 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
     case WM_ERASEBKGND:
         return true;			// Do not erase background
 
+    case WM_TIMER:
+        OnTimer( wParam, lParam );
+        return false;
+
     case WM_PAINT:
         OnPaint( );
         return false;

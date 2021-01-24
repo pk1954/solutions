@@ -262,7 +262,13 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( IsDefined( m_shapeHighlighted ) )
-		m_pNNetCommands->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+	{
+		m_pNNetCommands->SelectShape
+		( 
+			m_shapeHighlighted, 
+			Util::CtrlKeyDown() ? tBoolOp::opToggle : tBoolOp::opTrue
+		);
+	}
 }
 
 void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
@@ -279,8 +285,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 	bool bMadeSelection { m_rectSelection.IsNotEmpty() };
 	if ( bMadeSelection )
 	{
-		bool const bClear { ! (GetAsyncKeyState(VK_CONTROL) & 0x01) };
-		m_pNNetCommands->SelectShapesInRect( m_rectSelection, bClear );
+		m_pNNetCommands->SelectShapesInRect( m_rectSelection, !Util::CtrlKeyDown() );
 		m_rectSelection.SetZero();
 	}
 	return bMadeSelection;
@@ -315,18 +320,11 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
-void CALLBACK timerProc
-( 
-	HWND  hwnd,        // handle to window for timer messages 
-	UINT  message,     // WM_TIMER message 
-	UINT  idTimer,     // timer identifier 
-	DWORD dwTime       // current system time 
-)
-{ 
-	if ( MainWindow * pMainWin = reinterpret_cast<MainWindow*>(GetRootWindow( hwnd )) )
-	{
-		pMainWin->centeringStep();
-	}
+bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
+{
+	if ( wParam == m_idTimer )
+		centeringStep();
+	return true;
 }
 
 void MainWindow::centeringStep( )
@@ -338,10 +336,7 @@ void MainWindow::centeringStep( )
 	Notify( true );                               // cause immediate repaint
 	m_pCoordObservable->NotifyAll( false );
 	if ( bTargetReached )
-	{
-		KillTimer( GetWindowHandle(), 4711 );
 		SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-	}
 }
 
 void MainWindow::centerAndZoomRect
@@ -351,14 +346,14 @@ void MainWindow::centerAndZoomRect
 )
 {
 	MicroMeterRect umRect { m_pNMRI->GetShapes().CalcEnclosingRect( mode ) };
-	m_smoothMove.SetUp
+	m_idTimer = m_smoothMove.SetUp
 	(
+		GetWindowHandle(),
 		umRect.Scale( NEURON_RADIUS ), 
 		fRatioFactor, 
 		GetClPixelRect(),
 		GetCoord()
 	);
-	SetTimer( GetWindowHandle(), 4711, 50, (TIMERPROC)timerProc );
 }
 
 void MainWindow::OnPaint( )
