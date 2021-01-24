@@ -204,25 +204,11 @@ public:
 
 	//////// manipulation functions ////////
 
-	void SetPixelSize( MicroMeter const pixelSize )
-	{
-		m_pixelSize = pixelSize;
-	}
+	void SetPixelSize  (MicroMeter  const pixelSize ) { m_pixelSize  = pixelSize;  }
+	void SetPixelOffset(fPixelPoint const fPixOffset) { m_fPixOffset = fPixOffset; }
 
-	void SetPixelOffset( fPixelPoint const fPixOffset )
-	{
-		m_fPixOffset = fPixOffset;
-	}
-
-	void Move( PixelPoint const pntDelta )
-	{
-		m_fPixOffset -= ::Convert2fPixelPoint( pntDelta );
-	}
-
-	void Move( MicroMeterPoint const umDelta )
-	{
-		m_fPixOffset -= Transform2fPixelSize( umDelta );
-	}
+	void Move(PixelPoint      const pntDelta) { m_fPixOffset -= ::Convert2fPixelPoint(pntDelta); }
+	void Move(MicroMeterPoint const umDelta ) { m_fPixOffset -= Transform2fPixelSize (umDelta ); }
 
 	bool Zoom( MicroMeter const pixelSize )
 	{
@@ -256,6 +242,48 @@ public:
 		MicroMeter         const sizeDesired      { GetPixelSize() * fDesiredRatio };
 		return ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
 	}
+
+	PixelCoordsFp const operator+= (PixelCoordsFp const a) 
+	{ 
+		m_fPixOffset += a.m_fPixOffset;
+		m_pixelSize  += a.m_pixelSize; 
+		return * this; 
+	}
+
+	PixelCoordsFp const operator-= (PixelCoordsFp const a) 
+	{ 
+		m_fPixOffset -= a.m_fPixOffset;
+		m_pixelSize  -= a.m_pixelSize; 
+		return * this; 
+	}
+
+	PixelCoordsFp const operator*= (float const factor) 
+	{ 
+		m_fPixOffset *= factor;
+		m_pixelSize  *= factor; 
+		return * this; 
+	}
+
+	friend PixelCoordsFp const operator+ (PixelCoordsFp const a, PixelCoordsFp const b) 
+	{ 
+		PixelCoordsFp res { a }; 
+		res += b; 
+		return res; 
+	};
+
+	friend PixelCoordsFp const operator- (PixelCoordsFp const a, PixelCoordsFp const b) 
+	{ 
+		PixelCoordsFp res { a }; 
+		res -= b; 
+		return res; 
+	};
+
+	friend PixelCoordsFp const operator* (PixelCoordsFp const a, float const factor) 
+	{ 
+		PixelCoordsFp res { a }; 
+		res *= factor; 
+		return res; 
+	};
 
 private:
 

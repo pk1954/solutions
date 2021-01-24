@@ -341,13 +341,18 @@ void MainWindow::centerAndZoomRect
 )
 {
 	MicroMeterRect umRect { m_pNMRI->GetShapes().CalcEnclosingRect( mode ) };
-	m_idTimer = m_smoothMove.SetUp
-	(
-		GetWindowHandle(),
-		umRect.Scale( NEURON_RADIUS ), 
-		fRatioFactor, 
-		GetCoord()
+	PixelCoordsFp  coordTarget;
+	coordTarget.SetPixelSize
+	( 
+		GetCoord().ComputeZoom( umRect.Scale( NEURON_RADIUS ), GetClRectSize(), fRatioFactor ) 
 	);
+	coordTarget.SetPixelOffset
+	( 
+		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) - 
+		Convert2fPixelPoint( GetClRectCenter() ) 
+	);
+
+	m_idTimer = m_smoothMove.SetUp(	GetWindowHandle(), coordTarget, GetCoord() );
 }
 
 void MainWindow::OnPaint( )
