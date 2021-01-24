@@ -73,7 +73,7 @@ NNetWindow::~NNetWindow( )
 
 MicroMeterRect const NNetWindow::GetViewRect() const 
 { 
-	return GetCoord().Transform2MicroMeterRect( GetClPixelRect() ); 
+	return GetCoordC().Transform2MicroMeterRect( GetClPixelRect() ); 
 };
 
 void NNetWindow::DrawInteriorInRect
@@ -82,10 +82,9 @@ void NNetWindow::DrawInteriorInRect
 	ShapeCrit const & crit 
 ) const
 {
-	MicroMeterRect umRect { GetCoord().Transform2MicroMeterRect( rect ) }; 
 	m_pNMRI->GetShapes().Apply2AllInRect<Shape>
 	(
-		GetCoord().Transform2MicroMeterRect( rect ),
+		GetCoordC().Transform2MicroMeterRect( rect ),
 		[&](Shape const & s) 
 		{ 
 			if (crit(s)) 
@@ -96,10 +95,9 @@ void NNetWindow::DrawInteriorInRect
 
 void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 {
-	MicroMeterRect umRect { GetCoord().Transform2MicroMeterRect( rect ) }; 
 	m_pNMRI->GetShapes().Apply2AllInRect<Shape>
 	( 
-		GetCoord().Transform2MicroMeterRect( rect ),	
+		GetCoordC().Transform2MicroMeterRect( rect ),	
 		[&](Shape const & s) 
 		{ 
 			s.DrawExterior( m_context, s.IsSelected() ? tHighlightType::selectedPerm : tHighlightType::normal ); 
@@ -113,7 +111,7 @@ void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 	{
 		m_pNMRI->GetShapes().Apply2AllInRect<Neuron>
 		( 
-			GetCoord().Transform2MicroMeterRect( rect ),
+			GetCoordC().Transform2MicroMeterRect( rect ),
 			[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
 		);
 	}
@@ -138,7 +136,7 @@ ShapeId const NNetWindow::FindShapeAt
 {	
 	return m_pNMRI->FindShapeAt
 	( 
-		GetCoord().Transform2MicroMeterPointPos( pixPoint ), 
+		GetCoordC().Transform2MicroMeterPointPos( pixPoint ), 
 		[&]( Shape const & s ) { return crit( s ); } 
 	);
 }
@@ -165,7 +163,7 @@ void NNetWindow::AnimateBeacon( fPixel const fPixBeaconRadius )
 		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
 		static MicroMeter const MAX_SIZE { pCircle->GetRadius() };
 
-		MicroMeter        const umMaxSize{ max( MAX_SIZE, GetCoord().Transform2MicroMeter( fPixBeaconRadius ) ) };
+		MicroMeter        const umMaxSize{ max( MAX_SIZE, GetCoordC().Transform2MicroMeter( fPixBeaconRadius ) ) };
 		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
 		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
 		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
@@ -191,7 +189,7 @@ bool NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	MicroMeterPoint const umPoint { GetCoord().Transform2MicroMeterPointPos( pixPoint ) };
+	MicroMeterPoint const umPoint { GetCoordC().Transform2MicroMeterPointPos( pixPoint ) };
 	if ( m_pController->HandleCommand( LOWORD( wParam ), lParam, umPoint ) )
 		return true;
 

@@ -50,6 +50,7 @@ public:
 	) const = 0;
 
 	PixelCoordsFp const & GetCoordC( ) const { return m_coord; }
+	PixelCoordsFp       & GetCoord ( )       { return m_coord; }
 
 	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
