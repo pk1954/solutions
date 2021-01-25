@@ -56,6 +56,7 @@ public:
 	void          DrawInteriorInRect  ( PixelRect  const &, ShapeCrit const & ) const;
 	void          DrawExteriorInRect  ( PixelRect  const &                    ) const;
 	void          DrawNeuronTextInRect( PixelRect  const &                    ) const;
+	void          DrawArrowsInRect    ( PixelRect  const &, MicroMeter const  ) const;
 	void          DrawSensors         ( ) const;
 
 protected:

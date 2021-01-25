@@ -135,11 +135,11 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDD_ARROWS_ON:
-        m_arrowAnimation.SetTarget( Pipe::STD_ARROW_SIZE );
+        m_pMainWindow->ShowArrows( tBoolOp::opTrue );
         break;
 
     case IDD_ARROWS_OFF:
-        m_arrowAnimation.SetTarget( 0.0_MicroMeter );
+        m_pMainWindow->ShowArrows( tBoolOp::opFalse );
         break;
 
     case IDD_SOUND_ON:

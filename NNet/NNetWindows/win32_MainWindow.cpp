@@ -116,7 +116,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_INSERT_NEURON,     L"Insert neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_INSERT_KNOT,       L"Insert knot" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,      L"Delete" );
-		if ( Pipe::GetArrowSize( ) > 0.0_MicroMeter )
+		if ( m_arrowSizeTarget > 0.0_MicroMeter )
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ARROWS_OFF,    L"Arrows off" );
 		else
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ARROWS_ON,     L"Arrows on" );
@@ -179,6 +179,40 @@ void MainWindow::CenterSelection( )
 {
 	centerAndZoomRect( ShapeList::SelMode::selectedShapes, 2.0f );
 }
+
+bool const MainWindow::ShowArrows( ) const
+{
+	return m_arrowSizeTarget > 0._MicroMeter;
+}
+
+void MainWindow::ShowArrows( tBoolOp const op )
+{
+	MicroMeter olVal { m_arrowSizeTarget };
+	switch ( op )
+	{
+	case tBoolOp::opFalse:
+		m_arrowSizeTarget = 0._MicroMeter;
+		break;
+
+	case tBoolOp::opNoChange:
+		break;
+
+	case tBoolOp::opToggle:
+		m_arrowSizeTarget = (m_arrowSizeTarget > 0._MicroMeter) ? STD_ARROW_SIZE : 0._MicroMeter;
+		break;
+
+	case tBoolOp::opTrue:
+		m_arrowSizeTarget = STD_ARROW_SIZE;
+		break;
+
+	default:
+		assert( false );
+	}
+
+	if ( m_arrowSizeTarget != olVal )
+		m_arrowAnimation.SetUp(GetWindowHandle(), m_arrowSize, m_arrowSizeTarget, ID_ARROW_TIMER, 20, 50_MilliSecs );
+}
+
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 //{
@@ -266,7 +300,7 @@ void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 		m_pNNetCommands->SelectShape
 		( 
 			m_shapeHighlighted, 
-			Util::CtrlKeyDown() ? tBoolOp::opToggle : tBoolOp::opTrue
+			Util::CtrlKeyDown() ? tBoolOp::opTrue : tBoolOp::opToggle
 		);
 	}
 }
@@ -322,16 +356,20 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( wParam == ID_COORD_TIMER )
-		centeringStep();
-	return true;
-}
+	switch (wParam)
+	{
+	case ID_COORD_TIMER:
+		if ( m_coordAnimation.Next() )
+			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
+		m_pCoordObservable->NotifyAll( false );
+		break;
 
-void MainWindow::centeringStep( )
-{
-	if ( m_animation.Next() )
-		SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-	m_pCoordObservable->NotifyAll( false );
+	case ID_ARROW_TIMER:
+		m_arrowAnimation.Next();
+		Notify( false ); 
+		break;
+	}
+	return true;
 }
 
 void MainWindow::centerAndZoomRect
@@ -352,7 +390,7 @@ void MainWindow::centerAndZoomRect
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
 
-	m_animation.SetUp(GetWindowHandle(), GetCoord(), coordTarget, ID_COORD_TIMER, 20, 50_MilliSecs );
+	m_coordAnimation.SetUp(GetWindowHandle(), GetCoord(), coordTarget, ID_COORD_TIMER, 20, 50_MilliSecs );
 }
 
 void MainWindow::OnPaint( )
@@ -392,7 +430,10 @@ void MainWindow::doPaint( )
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
 	if ( context.GetPixelSize() <= 5._MicroMeter )
+	{
 		DrawExteriorInRect( pixRect );
+		DrawArrowsInRect( pixRect, m_arrowSize );
+	}
 
 	context.ShowScale( GetClRectSize() );
 

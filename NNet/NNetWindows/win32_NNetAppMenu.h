@@ -9,6 +9,7 @@
 
 using std::wstring;
 
+class MainWindow;
 class WinManager;
 class CommandStack;
 class ComputeThread;
@@ -21,11 +22,12 @@ public:
 
 	void Start
 	( 
-		HWND                  const, 
-		ComputeThread const * const, 
-		WinManager    const * const,
-		CommandStack  const * const,
-		Sound         const * const 
+		HWND          const, 
+		ComputeThread const &, 
+		WinManager    const &,
+		CommandStack  const &,
+		Sound         const &,
+		MainWindow    const &
 	);
 
 	void AdjustUndoRedo( );
@@ -73,6 +75,7 @@ private:
 	HWND                  m_hwndApp        { nullptr };
 	HMENU                 m_hMenu          { nullptr };
 	ComputeThread const * m_pComputeThread { nullptr };
+	MainWindow    const * m_pMainWindow    { nullptr };
 	WinManager    const * m_pWinManager    { nullptr };
 	CommandStack  const * m_pCommandStack  { nullptr };
 	Sound         const * m_pSound         { nullptr };

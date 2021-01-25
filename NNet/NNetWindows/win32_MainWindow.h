@@ -56,6 +56,9 @@ public:
 	void CenterModel( );
 	void CenterSelection( );
 
+	void       ShowArrows( tBoolOp const );
+	bool const ShowArrows( ) const; 
+
 	virtual bool OnTimer             ( WPARAM const, LPARAM const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
@@ -70,8 +73,15 @@ public:
 private:
 	 
 	static UINT_PTR const ID_COORD_TIMER { 1024 };
+	static UINT_PTR const ID_ARROW_TIMER { 1025 };
 
-	Animation<PixelCoordsFp> m_animation            { };       
+	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
+	
+	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
+	MicroMeter m_arrowSize       { m_arrowSizeTarget };
+
+	Animation<MicroMeter>    m_arrowAnimation       { };       
+	Animation<PixelCoordsFp> m_coordAnimation       { };       
 	MicroMeterRect           m_rectSelection        { };
 	ShapeId                  m_shapeTarget          { };
 	ShapeId                  m_shapeHighlighted     { };
@@ -79,7 +89,6 @@ private:
 	Observable             * m_pCursorPosObservable { nullptr };
 	NNetModelCommands      * m_pNNetCommands        { nullptr };
 
-	void centeringStep      ( );
 	void setTargetShape     ( MicroMeterPoint const & );
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );

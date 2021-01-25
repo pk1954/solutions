@@ -131,7 +131,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_nmri         .Start( & m_model );
 	m_nmwi         .Start( & m_model );
-	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
+	m_appMenu      .Start( m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow );
 	m_StatusBar    .Start( m_hwndApp );
 	m_descWindow   .Start( m_hwndApp );
 	m_undoRedoMenu .Start( & m_appMenu );

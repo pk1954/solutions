@@ -155,9 +155,6 @@
     <ClInclude Include="win32_monitorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ArrowAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BeaconAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -44,7 +44,7 @@ private:
 
     unsigned int m_uiNrOfSteps   { 0 };
 
-    T   m_pos          { START_POINT };       // runs from START_POINT to END_POINT
-    T   m_velocity     { 0.0f };
-    T   m_acceleration { 0.0f };
+    T m_pos          { START_POINT };       // runs from START_POINT to END_POINT
+    T m_velocity     { 0.0f };
+    T m_acceleration { 0.0f };
 };

@@ -75,6 +75,7 @@ public:
 	mV GetNextOutput( ) const { return m_potential[ m_potIndex ]; }
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
+	virtual void DrawArrows    ( DrawContext const &, tHighlightType const, MicroMeter const  ) const;
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
@@ -84,19 +85,14 @@ public:
 	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
 	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH ); }
 
-	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
-	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
-
-	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
-	inline static wstring    const SEPARATOR     { L"->" };
-	inline static wchar_t    const OPEN_BRACKET  { L'(' };
-	inline static wchar_t    const CLOSE_BRACKET { L')' };
+	inline static wstring const SEPARATOR     { L"->" };
+	inline static wchar_t const OPEN_BRACKET  { L'(' };
+	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 	friend wostream & operator<< ( wostream &, Pipe const & );
 
 private:
 	
-	inline static MicroMeter    m_arrowSize { STD_ARROW_SIZE };
 	inline static unsigned long m_counter   { 0L };
 
 	typedef vector<mV> tPotentialVector;

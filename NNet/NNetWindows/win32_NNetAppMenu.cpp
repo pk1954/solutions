@@ -10,6 +10,7 @@
 #include "ComputeThread.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
+#include "win32_MainWindow.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
 
@@ -35,20 +36,22 @@ NNetAppMenu::~NNetAppMenu( )
 
 void NNetAppMenu::Start
 ( 
-	HWND                  const hwndApp,
-	ComputeThread const * const pComputeThread,
-	WinManager    const * const pWinManager,
-	CommandStack  const * const pCommandStack,
-	Sound         const * const pSound
+	HWND          const   hwndApp,
+	ComputeThread const & computeThread,
+	WinManager    const & winManager,
+	CommandStack  const & commandStack,
+	Sound         const & sound,
+    MainWindow    const & mainWindow
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
 	m_hwndApp        = hwndApp;
-	m_pComputeThread = pComputeThread;
-	m_pWinManager    = pWinManager;
-	m_pCommandStack  = pCommandStack;
-	m_pSound         = pSound;
+	m_pComputeThread = & computeThread;
+	m_pWinManager    = & winManager;
+	m_pCommandStack  = & commandStack;
+	m_pSound         = & sound;
+    m_pMainWindow    = & mainWindow;
 
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
@@ -142,7 +145,7 @@ void NNetAppMenu::Notify( bool const bImmediately )
     enable( IDM_PARAM_WINDOW,   m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
     enable( IDM_PERF_WINDOW,    m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
 
-    m_pOnOffArrows   ->enableOnOff( Pipe::GetArrowSize() == Pipe::STD_ARROW_SIZE );
+    m_pOnOffArrows   ->enableOnOff( m_pMainWindow->ShowArrows() );
     m_pOnOffSound    ->enableOnOff( m_pSound->IsOn() );
     m_pOnOffAutoOpen ->enableOnOff( AutoOpen::IsOn() );
 

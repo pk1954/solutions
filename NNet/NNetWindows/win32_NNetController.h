@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "ArrowAnimation.h"
-
 class NNetModelReaderInterface;
 class NNetModelCommands;
 class SlowMotionRatio;
@@ -57,8 +55,6 @@ private:
 	void triggerSoundDlg    ( ShapeId const );
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
-
-	ArrowAnimation m_arrowAnimation;
 
 	HCURSOR                    m_hCrsrWait              { nullptr };
 	Sound                    * m_pSound                 { nullptr };

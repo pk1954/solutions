@@ -192,23 +192,31 @@ MicroMeterPoint Pipe::GetVector( ) const
 	return umvector;
 }
 
-void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type ) const
+void Pipe::DrawArrows
+( 
+	DrawContext    const & context, 
+	tHighlightType const   type, 
+	MicroMeter     const   umSize
+) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
-	D2D1::ColorF const colF { GetExteriorColor( type ) };
+	D2D1::ColorF    const colF         { GetExteriorColor( type ) };
 
-	context.DrawLine( umStartPoint, umEndPoint, m_width, colF );
-
-	if ( m_arrowSize > 0.0_MicroMeter )
+	if ( umSize > 0.0_MicroMeter )
 		context.FillArrow
 		(
 			(umEndPoint * 2.f + umStartPoint) / 3.f , 
 			umEndPoint - umStartPoint, 
-			m_arrowSize,
+			umSize,
 			m_width / 2, 
 			colF
 		);
+}
+
+void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type ) const
+{
+	context.DrawLine( GetStartPoint(), GetEndPoint(), m_width, GetExteriorColor(type) );
 }
 
 void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type ) const
