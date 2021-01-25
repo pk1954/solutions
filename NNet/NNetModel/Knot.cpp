@@ -10,7 +10,7 @@
 
 void Knot::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	MicroMeter const umRadius { (type == tHighlightType::selectedTemp) ? 30.0_MicroMeter : GetExtension() };
+	MicroMeter const umRadius { (type == tHighlightType::highlighted) ? 30.0_MicroMeter : GetExtension() };
 	context.FillCircle( MicroMeterCircle( GetPosition(), umRadius ), GetExteriorColor( type )	);
 }
 

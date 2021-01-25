@@ -297,11 +297,7 @@ void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 {
 	if ( IsDefined( m_shapeHighlighted ) )
 	{
-		m_pNNetCommands->SelectShape
-		( 
-			m_shapeHighlighted, 
-			Util::CtrlKeyDown() ? tBoolOp::opTrue : tBoolOp::opToggle
-		);
+		m_pNNetCommands->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
 	}
 }
 
@@ -429,19 +425,18 @@ void MainWindow::doPaint( )
 	if ( m_rectSelection.IsNotEmpty( ) )
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
+	context.ShowScale( GetClRectSize() );
+
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 	{
 		DrawExteriorInRect( pixRect );
-		DrawArrowsInRect( pixRect, m_arrowSize );
+		if ( m_arrowSize > 0.0_MicroMeter )
+			DrawArrowsInRect( pixRect, m_arrowSize );
 	}
 
-	context.ShowScale( GetClRectSize() );
-
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } );
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot(); } );
-
-	if ( context.GetPixelSize() <= 2.5_MicroMeter )
-		DrawNeuronTextInRect( pixRect );
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } ); 
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot(); } ); // draw BaseKnots OVER Pipes
+	DrawNeuronTextInRect( pixRect );
 
 	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
 	{
@@ -451,8 +446,8 @@ void MainWindow::doPaint( )
 
 	if ( IsDefined(m_shapeHighlighted) )  // draw selected shape again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::selectedTemp );
-		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlightType::selectedTemp );
+		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
+		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 

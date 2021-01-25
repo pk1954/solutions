@@ -32,21 +32,27 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 }
 
 D2D1::ColorF Shape::GetExteriorColor( tHighlightType const type ) const 
-{ 
-	return ::IsNormal(type)
-		? NNetColors::EXT_NORMAL
-		: ::IsSelected(type)
-		? NNetColors::EXT_SELECTED
-		: NNetColors::EXT_TARGET;
+{
+	switch ( type )
+	{
+	case tHighlightType::normal:      return NNetColors::EXT_NORMAL;
+	case tHighlightType::highlighted: return NNetColors::EXT_HIGHLIGHTED;
+	case tHighlightType::target:      return NNetColors::EXT_NORMAL;
+	}
+	assert( false );
+	return NNetColors::EXT_NORMAL;
 };
 
 D2D1::ColorF Shape::GetInteriorColor( tHighlightType const type ) const 
 { 
-	return ::IsNormal(type)
-		? NNetColors::INT_NORMAL
-		: ::IsSelected(type)
-		? NNetColors::INT_SELECTED
-		: NNetColors::INT_TARGET;
+	switch ( type )
+	{
+	case tHighlightType::normal:      return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
+	case tHighlightType::highlighted: return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
+	case tHighlightType::target:      return NNetColors::INT_TARGET;
+	}
+	assert( false );
+	return NNetColors::INT_NORMAL;
 };
 
 float Shape::GetFillLevel( mV const voltageInput ) const

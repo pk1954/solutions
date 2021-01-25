@@ -29,9 +29,8 @@ Pipe::Pipe( Pipe const & src ) :  // copy constructor
 	Shape       ( src ),
     m_pKnotStart( nullptr ),
 	m_pKnotEnd  ( nullptr ),
-	m_width     ( src.m_width      ),
-	m_potIndex  ( src.m_potIndex   ),
-	m_potential ( src.m_potential  )
+	m_potIndex  ( src.m_potIndex  ),
+	m_potential ( src.m_potential )
 { }
 
 Pipe::~Pipe( ) { }
@@ -47,7 +46,6 @@ void Pipe::init( const Pipe & rhs )
 	Shape::operator=( rhs );
 	m_pKnotStart = nullptr;
 	m_pKnotEnd   = nullptr;
-	m_width      = rhs.m_width;
 	m_potIndex   = rhs.m_potIndex;
 	m_potential  = rhs.m_potential;
 }
@@ -58,8 +56,7 @@ bool Pipe::operator==( Shape const & rhs ) const
 	return
 	( this->Shape::operator== (rhs) )                          && 
 	( m_pKnotStart->GetId() == pipeRhs.m_pKnotStart->GetId() ) &&
-	( m_pKnotEnd  ->GetId() == pipeRhs.m_pKnotEnd  ->GetId() ) &&
-	( m_width               == pipeRhs.m_width );
+	( m_pKnotEnd  ->GetId() == pipeRhs.m_pKnotEnd  ->GetId() );
 }
 
 ShapeId Pipe::GetStartKnotId() const 
@@ -101,13 +98,6 @@ void Pipe::CheckShape( ) const
 void Pipe::Prepare( )
 {
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
-}
-
-void Pipe::Select( tBoolOp const op ) 
-{ 
-	Shape::Select( op );
-	m_pKnotStart->Select( op );
-	m_pKnotEnd  ->Select( op );
 }
 
 void Pipe::MoveShape( MicroMeterPoint const & delta )
@@ -177,7 +167,7 @@ bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 	MicroMeterPoint const umVector{ GetEndPoint( ) - GetStartPoint( ) };
 	if ( umVector.IsCloseToZero() )
 		return false;
-	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector( m_width ) };
+	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector( PIPE_WIDTH ) };
 	MicroMeterPoint       umPoint1     { GetStartPoint( ) };
 	MicroMeterPoint const umPoint2     { umPoint1 + umVector };
 	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
@@ -201,28 +191,27 @@ void Pipe::DrawArrows
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
-	D2D1::ColorF    const colF         { GetExteriorColor( type ) };
 
-	if ( umSize > 0.0_MicroMeter )
-		context.FillArrow
-		(
-			(umEndPoint * 2.f + umStartPoint) / 3.f , 
-			umEndPoint - umStartPoint, 
-			umSize,
-			m_width / 2, 
-			colF
-		);
+	context.FillArrow
+	(
+		(umEndPoint * 2.f + umStartPoint) / 3.f , 
+		umEndPoint - umStartPoint, 
+		umSize,
+		PIPE_WIDTH / 2, 
+		GetExteriorColor( type )
+	);
 }
 
 void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	context.DrawLine( GetStartPoint(), GetEndPoint(), m_width, GetExteriorColor(type) );
+	context.DrawLine( GetStartPoint(), GetEndPoint(), PIPE_WIDTH, GetExteriorColor(type) );
 }
 
 void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	MicroMeter const umWidth { m_width * PIPE_INTERIOR };
-	if ( ::IsNormal(type) )
+	static MicroMeter const umWidth { PIPE_WIDTH * PIPE_INTERIOR };
+
+	if ( IsNormal(type) && ! IsSelected() )
 	{
 		MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
 		if ( ! umVector.IsCloseToZero() )
@@ -238,9 +227,8 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type 
 					index = 0; 
 
 				MicroMeterPoint const umPointNext { umPoint + umSegVec };
-				context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor( m_potential[index] ) );
+				context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]) );
 				umPoint = umPointNext;
-
 			} while (index != potIndex );
 		}
 	}
@@ -258,7 +246,7 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 	{
 		size_t          const nrOfSegments  { m_potential.size() };
 		MicroMeterPoint const umSegVec      { umVector / Cast2Float(nrOfSegments) };
-		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector( m_width ) };
+		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector( PIPE_WIDTH ) };
 		MicroMeterPoint       umPoint       { GetStartPoint( ) };
 		size_t          const potIndex      { m_potIndex };
 		size_t                index         { potIndex }; 

@@ -23,12 +23,14 @@ public:
 	inline static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
 
 	// colors for neuron/pipe boundary
-	inline static D2D1::ColorF const EXT_NORMAL     { 0.0f, 0.5f, 1.0f, 1.0f };
-	inline static D2D1::ColorF const INT_NORMAL     { D2D1::ColorF::Black };
-	inline static D2D1::ColorF const EXT_SELECTED   { EXT_NORMAL };
-	inline static D2D1::ColorF const INT_SELECTED   { 1.0f, 0.6f, 0.1f, 1.0f };
-	inline static D2D1::ColorF const EXT_TARGET     { 0.0f, 0.6f, 0.0f, 1.0f };  // dark green
-	inline static D2D1::ColorF const INT_TARGET     { 0.0f, 1.0f, 0.0f, 1.0f };  // green
+	inline static D2D1::ColorF const EXT_NORMAL      { 0.0f, 0.5f, 1.0f, 1.0f };
+	inline static D2D1::ColorF const INT_NORMAL      { D2D1::ColorF::Black };
+	inline static D2D1::ColorF const EXT_HIGHLIGHTED { 0.4f, 0.8f, 0.8f, 1.0f  };
+	inline static D2D1::ColorF const INT_HIGHLIGHTED { INT_NORMAL };
+	inline static D2D1::ColorF const EXT_SELECTED    { EXT_NORMAL };
+	inline static D2D1::ColorF const INT_SELECTED    { 1.0f, 0.6f, 0.1f, 1.0f };
+	inline static D2D1::ColorF const EXT_TARGET      { 0.0f, 0.6f, 0.0f, 1.0f };  // dark green
+	inline static D2D1::ColorF const INT_TARGET      { 0.0f, 1.0f, 0.0f, 1.0f };  // green
 
 	// color used when neurons trigger
 	inline static D2D1::ColorF const INT_TRIGGER    { 1.0f, 1.0f, 0.0f, 1.0f };

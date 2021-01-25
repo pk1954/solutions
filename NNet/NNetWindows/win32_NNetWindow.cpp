@@ -88,7 +88,7 @@ void NNetWindow::DrawInteriorInRect
 		[&](Shape const & s) 
 		{ 
 			if (crit(s)) 
-				s.DrawInterior( m_context, s.IsSelected() ? tHighlightType::selectedPerm : tHighlightType::normal ); 
+				s.DrawInterior( m_context, tHighlightType::normal ); 
 		} 
 	);
 }
@@ -96,24 +96,24 @@ void NNetWindow::DrawInteriorInRect
 void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 {
 	m_pNMRI->GetShapes().Apply2AllInRect<Shape>
-		( 
-			GetCoordC().Transform2MicroMeterRect( rect ),	
-			[&](Shape const & s) 
-			{ 
-				s.DrawExterior( m_context, s.IsSelected() ? tHighlightType::selectedPerm : tHighlightType::normal ); 
-			} 
+	( 
+		GetCoordC().Transform2MicroMeterRect( rect ),	
+		[&](Shape const & s) 
+		{ 
+			s.DrawExterior( m_context, tHighlightType::normal ); 
+		} 
 	);
 }
 
 void NNetWindow::DrawArrowsInRect( PixelRect const & rect, MicroMeter const umSize ) const
 {
 	m_pNMRI->GetShapes().Apply2AllInRect<Pipe>
-		( 
-			GetCoordC().Transform2MicroMeterRect( rect ),	
-			[&](Pipe const & s) 
-			{ 
-				s.DrawArrows( m_context, s.IsSelected() ? tHighlightType::selectedPerm : tHighlightType::normal, umSize ); 
-			} 
+	( 
+		GetCoordC().Transform2MicroMeterRect( rect ),	
+		[&](Pipe const & s) 
+		{ 
+			s.DrawArrows( m_context, tHighlightType::normal, umSize ); 
+		} 
 	);
 }
 

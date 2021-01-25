@@ -53,14 +53,12 @@ public:
 	MicroMeter      GetLength     ( ) const;
 	MicroMeterPoint GetVector     ( ) const; 
 
-	size_t     GetNrOfSegments( ) const { return m_potential.size(); }
-	MicroMeter GetWidth       ( ) const { return m_width; }
+	size_t GetNrOfSegments( ) const { return m_potential.size(); }
 
 	virtual bool IsInRect( MicroMeterRect const & ) const;
 
 	virtual void CheckShape( ) const;
 	virtual void Prepare( );
-	virtual void Select( tBoolOp const );
 	virtual void MoveShape( MicroMeterPoint const & );
 	virtual bool CompStep( )
 	{
@@ -93,13 +91,12 @@ public:
 
 private:
 	
-	inline static unsigned long m_counter   { 0L };
+	inline static unsigned long m_counter { 0L };
 
 	typedef vector<mV> tPotentialVector;
 
 	BaseKnot       * m_pKnotStart { nullptr };
 	BaseKnot       * m_pKnotEnd   { nullptr };
-	MicroMeter       m_width      { PIPE_WIDTH };
 	size_t           m_potIndex   { 0 };
 	tPotentialVector m_potential  { };
 

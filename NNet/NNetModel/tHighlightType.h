@@ -7,14 +7,13 @@
 enum class tHighlightType
 {
 	normal,
-	selectedTemp,  // temporarily selected, cursor over shape
-	selectedPerm,  // permenently selected
+	highlighted,
 	target
 };
 
-static bool const IsSelected( tHighlightType const type )
+static bool const IsHighlighted( tHighlightType const type )
 {
-	return (type == tHighlightType::selectedTemp) || (type == tHighlightType::selectedPerm);
+	return type == tHighlightType::highlighted;
 }
 
 static bool const IsNormal( tHighlightType const type )
