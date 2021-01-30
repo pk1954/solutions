@@ -12,6 +12,7 @@
 class NNetModelWriterInterface;
 
 using std::wstring;
+using std::vector;
 
 class StatusBar : public RootWindow
 {
@@ -42,7 +43,7 @@ private:
 
 	HWND WINAPI addControl( LPCTSTR const, LPCTSTR const, int const, DWORD const, HMENU const );
 
-	std::vector< PIXEL > m_statWidths;
+	vector<PIXEL> m_statWidths;
 
 	PIXEL m_pixClientHeight { 0_PIXEL };
     PIXEL m_pixBorderX      { 0_PIXEL };

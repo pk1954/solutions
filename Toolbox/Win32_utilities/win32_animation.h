@@ -15,8 +15,6 @@ T * GetWinPtr( HWND hwnd )
     return reinterpret_cast<T *>(GetUserDataPtr( hwnd ));
 }
 
-using FINISHPROC = void (* )();
-
 template <typename T>
 class Animation
 {
@@ -76,11 +74,10 @@ private:
 
     SmoothMoveFp<float> m_smoothMove;
 
-    TIMERPROC  m_pTimerProc  { nullptr };
-    FINISHPROC m_pFinishProc { nullptr };
-    UINT_PTR   m_idTimer     { 0 };
-    HWND       m_hwnd        { nullptr };
-    T        * m_pActual     { nullptr };
-    T          m_start;
-    T          m_target;
+    TIMERPROC m_pTimerProc { nullptr };
+    UINT_PTR  m_idTimer    { 0 };
+    HWND      m_hwnd       { nullptr };
+    T       * m_pActual    { nullptr };
+    T         m_start;
+    T         m_target;
 };

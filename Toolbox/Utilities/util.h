@@ -84,14 +84,14 @@ constexpr const unsigned int Cast2UnsignedInt( SOURCE_TYPE const value )
 }
 
 template<typename SOURCE_TYPE>
-constexpr const int Cast2Long( SOURCE_TYPE const value ) 
+constexpr const long Cast2Long( SOURCE_TYPE const value ) 
 {
 	AssertLong( value );
 	return static_cast<long>( value );
 }
 
 template<typename SOURCE_TYPE>
-constexpr const unsigned int Cast2UnsignedLong( SOURCE_TYPE const value ) 
+constexpr const unsigned long Cast2UnsignedLong( SOURCE_TYPE const value ) 
 {
 	AssertUnsignedLong( value );
 	return static_cast<unsigned long>( value );
