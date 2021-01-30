@@ -116,7 +116,6 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDM_CENTER_MODEL:
-        m_pComputeThread->LockComputation( );
         m_pMainWindow->CenterModel( );
         break;
 

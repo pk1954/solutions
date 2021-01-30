@@ -463,10 +463,6 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		}
 		break;
 
-	case IDM_CENTERING_FINISHED:
-		m_computeThread.ReleaseComputationLock( );
-		break;
-
 	default:
 		if ( m_NNetController.HandleCommand( wmId, lParam, NP_NULL ) )
 			return true;

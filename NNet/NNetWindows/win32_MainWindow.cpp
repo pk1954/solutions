@@ -365,24 +365,6 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
-//bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
-//{
-//	switch (wParam)
-//	{
-//	case ID_COORD_TIMER:
-//		if ( m_coordAnimation.Next() )
-//			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-//		m_pCoordObservable->NotifyAll( false );
-//		break;
-//
-//	case ID_ARROW_TIMER:
-//		m_arrowAnimation.Next();
-//		Notify( false ); 
-//		break;
-//	}
-//	return NNetWindow::OnTimer( wParam, lParam );
-//}
-
 void MainWindow::centerAndZoomRect
 ( 
 	ShapeList::SelMode const mode, 
@@ -410,8 +392,7 @@ void MainWindow::centerAndZoomRect
 		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
 		{
 			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-			if ( pMainWin->m_coordAnimation.Next() )
-				pMainWin->SendCommand2Application( IDM_CENTERING_FINISHED, 0 );
+			pMainWin->m_coordAnimation.Next();
 			pMainWin->m_pCoordObservable->NotifyAll( false );
 		}
 	);

@@ -64,8 +64,6 @@
 #define IDM_PLUS                 191
 #define IDM_MINUS                192
 
-#define IDM_CENTERING_FINISHED   300
-
 #define IDM_MONITOR_WINDOW       530
 #define IDD_NEW_SENSOR           545
 #define IDD_CONNECT              550
