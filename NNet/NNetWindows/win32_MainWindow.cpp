@@ -188,13 +188,6 @@ bool const MainWindow::ShowArrows( ) const
 	return m_arrowSizeTarget > 0._MicroMeter;
 }
 
-void TimerprocArrow( HWND hwnd,	UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
-{
-	MainWindow * pMainWin { reinterpret_cast<MainWindow *>(GetUserDataPtr( hwnd )) };
-	pMainWin->m_arrowAnimation.Next();
-	pMainWin->Notify( false ); 
-}
-
 void MainWindow::ShowArrows( tBoolOp const op )
 {
 	MicroMeter olVal { m_arrowSizeTarget };
@@ -220,7 +213,19 @@ void MainWindow::ShowArrows( tBoolOp const op )
 	}
 
 	if ( m_arrowSizeTarget != olVal )
-		m_arrowAnimation.Start(GetWindowHandle(), m_arrowSize, m_arrowSizeTarget, ID_ARROW_TIMER, TimerprocArrow);
+		m_arrowAnimation.Start
+		(
+			GetWindowHandle(), 
+			m_arrowSize, 
+			m_arrowSizeTarget, 
+			ID_ARROW_TIMER, 
+			[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+			{
+				auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
+				pMainWin->m_arrowAnimation.Next();
+				pMainWin->Notify( false ); 
+			}
+		);
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -379,14 +384,6 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 //	return NNetWindow::OnTimer( wParam, lParam );
 //}
 
-void TimerprocCoord( HWND hwnd,	UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
-{
-	MainWindow * pMainWin { reinterpret_cast<MainWindow *>(GetUserDataPtr( hwnd )) };
-	if ( pMainWin->m_coordAnimation.Next() )
-		pMainWin->SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-	pMainWin->m_pCoordObservable->NotifyAll( false );
-}
-
 void MainWindow::centerAndZoomRect
 ( 
 	ShapeList::SelMode const mode, 
@@ -405,7 +402,20 @@ void MainWindow::centerAndZoomRect
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
 
-	m_coordAnimation.Start(GetWindowHandle(), GetCoord(), coordTarget, ID_COORD_TIMER, TimerprocCoord);
+	m_coordAnimation.Start
+	(
+		GetWindowHandle(), 
+		GetCoord(), 
+		coordTarget, 
+		ID_COORD_TIMER, 
+		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+		{
+			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
+			if ( pMainWin->m_coordAnimation.Next() )
+				pMainWin->SendCommand2Application( IDM_CENTERING_FINISHED, 0 );
+			pMainWin->m_pCoordObservable->NotifyAll( false );
+		}
+	);
 }
 
 void MainWindow::OnPaint( )

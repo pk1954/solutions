@@ -88,6 +88,4 @@ private:
 	float                 m_fRelBeaconSize { 0.0f };
 	Animation<float>      m_beaconAnimation;
 	fPixel                m_fPixRadiusLimit;
-
-	friend void TimerprocBeacon( HWND, UINT, UINT_PTR, DWORD );
 };

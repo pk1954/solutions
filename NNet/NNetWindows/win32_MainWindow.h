@@ -95,7 +95,4 @@ private:
 	void centerAndZoomRect  ( ShapeList::SelMode const, float const );
 
 	virtual void doPaint( );
-
-	friend void TimerprocCoord(	HWND, UINT, UINT_PTR, DWORD	);
-	friend void TimerprocArrow(	HWND, UINT, UINT_PTR, DWORD	);
 };

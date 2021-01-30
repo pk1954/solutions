@@ -31,14 +31,6 @@ NNetWindow::NNetWindow( ) :
 	ModelWindow( )
 { }
 
-void TimerprocBeacon( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
-{
-	NNetWindow * pNNetWin { reinterpret_cast<NNetWindow *>(GetUserDataPtr( hwnd )) };
-	if ( pNNetWin->m_beaconAnimation.Next( false ) )
-		pNNetWin->m_fRelBeaconSize = 0.0f;
-	pNNetWin->Notify( false );
-}
-
 void NNetWindow::Start
 ( 
 	HWND                     const   hwndApp, 
@@ -64,7 +56,20 @@ void NNetWindow::Start
 	m_pMonitorWindow  = & monitorWindow;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
-	m_beaconAnimation.Start(GetWindowHandle(), m_fRelBeaconSize, 1.0f, ID_BEACON_TIMER, TimerprocBeacon);
+	m_beaconAnimation.Start
+	(
+		GetWindowHandle(), 
+		m_fRelBeaconSize, 
+		1.0f, 
+		ID_BEACON_TIMER, 
+        [](HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart)
+		{
+			auto pNNetWin { GetWinPtr<NNetWindow>( hwnd ) };
+        	if ( pNNetWin->m_beaconAnimation.Next( false ) )
+        		pNNetWin->m_fRelBeaconSize = 0.0f;
+           	pNNetWin->Notify( false );
+		}
+	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
