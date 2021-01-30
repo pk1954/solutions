@@ -67,7 +67,6 @@ void NNetWindow::Start
 			auto pNNetWin { GetWinPtr<NNetWindow>( hwnd ) };
         	if ( pNNetWin->m_beaconAnimation.Next( false ) )
         		pNNetWin->m_fRelBeaconSize = 0.0f;
-           	pNNetWin->Notify( false );
 		}
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
@@ -81,7 +80,7 @@ void NNetWindow::Stop( )
 
 NNetWindow::~NNetWindow( )
 {
-	m_pNMRI        = nullptr;
+	m_pNMRI       = nullptr;
 	m_pController = nullptr;
 }
 

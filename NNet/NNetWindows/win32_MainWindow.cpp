@@ -223,7 +223,6 @@ void MainWindow::ShowArrows( tBoolOp const op )
 			{
 				auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
 				pMainWin->m_arrowAnimation.Next();
-				pMainWin->Notify( false ); 
 			}
 		);
 }
