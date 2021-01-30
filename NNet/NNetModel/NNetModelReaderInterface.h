@@ -49,11 +49,9 @@ public:
 	fMicroSecs       const   GetTimeResolution( )                       const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring          const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
 	float            const   GetParameter(ParameterType::Value const p) const { return m_pModel->GetParameter( p ); }
-//	ModelDescription const & GetDescription( )                          const { return m_pModel->GetDescription( ); }
 
-	bool            const GetDescriptionLine( int const, wstring & )                const;
-	MicroMeterPoint const OrthoVector( ShapeId const )                              const;
-	ShapeId         const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
+	bool    const GetDescriptionLine( int const, wstring & )                const;
+	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;

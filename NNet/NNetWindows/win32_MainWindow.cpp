@@ -15,15 +15,16 @@
 
 void MainWindow::Start
 (
-	HWND                       const hwndApp, 
-	DWORD                      const dwStyle,
-	bool                       const bShowRefreshRateDialog,
-	NNetController           * const pController,
-	NNetModelReaderInterface * const pModelReaderInterface,
-	NNetModelCommands        * const pNNetCommands,
-	Observable               * const pCursorObservable,
-	Observable               * const pCoordObservable,
-	BeaconAnimation          * const pBeaconAnimation
+	HWND                     const   hwndApp, 
+	DWORD                    const   dwStyle,
+	bool                     const   bShowRefreshRateDialog,
+	fPixel                   const   fPixBeaconLimit,
+	NNetModelReaderInterface const & modelReaderInterface,
+	MonitorWindow            const & monitorWindow,
+	NNetController                 & controller,
+	NNetModelCommands              & commands,
+	Observable                     & cursorObservable,
+	Observable                     & coordObservable
 )
 {
 	NNetWindow::Start
@@ -31,14 +32,15 @@ void MainWindow::Start
 		hwndApp, 
 		dwStyle,
 		bShowRefreshRateDialog,
-		pController,
-		pModelReaderInterface,
-		pBeaconAnimation
+		fPixBeaconLimit,
+		modelReaderInterface,
+		monitorWindow,
+		controller
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
-	m_pNNetCommands        = pNNetCommands;
-	m_pCursorPosObservable = pCursorObservable;
-	m_pCoordObservable     = pCoordObservable;
+	m_pNNetCommands        = & commands;
+	m_pCursorPosObservable = & cursorObservable;
+	m_pCoordObservable     = & coordObservable;
 }
 
 void MainWindow::Stop( )
@@ -60,6 +62,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_SELECTION,  L"Align selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
 	else if ( IsUndefined(m_shapeHighlighted) )  // no shape selected, cursor on background
@@ -185,6 +188,13 @@ bool const MainWindow::ShowArrows( ) const
 	return m_arrowSizeTarget > 0._MicroMeter;
 }
 
+void TimerprocArrow( HWND hwnd,	UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+{
+	MainWindow * pMainWin { reinterpret_cast<MainWindow *>(GetUserDataPtr( hwnd )) };
+	pMainWin->m_arrowAnimation.Next();
+	pMainWin->Notify( false ); 
+}
+
 void MainWindow::ShowArrows( tBoolOp const op )
 {
 	MicroMeter olVal { m_arrowSizeTarget };
@@ -210,9 +220,8 @@ void MainWindow::ShowArrows( tBoolOp const op )
 	}
 
 	if ( m_arrowSizeTarget != olVal )
-		m_arrowAnimation.SetUp(GetWindowHandle(), m_arrowSize, m_arrowSizeTarget, ID_ARROW_TIMER, 20, 50_MilliSecs );
+		m_arrowAnimation.Start(GetWindowHandle(), m_arrowSize, m_arrowSizeTarget, ID_ARROW_TIMER, TimerprocArrow);
 }
-
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 //{
@@ -228,14 +237,14 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return true;
 }
 
-void MainWindow::setTargetShape( MicroMeterPoint const & umCrsrPos )
+void MainWindow::setTargetShape( )
 {
 	if ( m_pNMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 	{
 		m_shapeTarget = m_pNMRI->FindShapeAt
 		( 
-			umCrsrPos,
-			[&]( Shape const & shape ) { return m_pNMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+			m_pNMRI->GetShapePos( m_shapeHighlighted ),
+			[&](Shape const & shape) { return m_pNMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 		);
 	}
 }
@@ -266,18 +275,19 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			m_shapeTarget = NO_SHAPE;
-			if ( IsDefined(m_shapeHighlighted) ) //-V1051
+			if ( IsDefined(m_shapeHighlighted) )
 			{
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
-				setTargetShape( m_pNMRI->GetShapePos( m_shapeHighlighted ) );
-			}
-			else if ( m_pNMRI->AnyShapesSelected( ) )   // move selected shapes 
-			{
-				m_pNNetCommands->MoveSelection( umCrsrPos - umLastPos );
+				setTargetShape( );
 			}
 			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
 			{
 				pSignal->Move( umCrsrPos - umLastPos );
+				Notify( false ); 
+			}
+			else if ( m_pNMRI->AnyShapesSelected( ) )   // move selected shapes 
+			{
+				m_pNNetCommands->MoveSelection( umCrsrPos - umLastPos );
 			}
 			else  // move view by manipulating coordinate system 
 			{
@@ -312,13 +322,13 @@ void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	bool bMadeSelection { m_rectSelection.IsNotEmpty() };
-	if ( bMadeSelection )
+	bool const bSelection { m_rectSelection.IsNotEmpty() };
+	if ( bSelection )
 	{
-		m_pNNetCommands->SelectShapesInRect( m_rectSelection, !Util::CtrlKeyDown() );
+		m_pNNetCommands->SelectShapesInRect( m_rectSelection, !(wParam & MK_CONTROL) );
 		m_rectSelection.SetZero();
 	}
-	return bMadeSelection;
+	return bSelection; // let base class handle other cases
 }
 
 bool MainWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
@@ -339,6 +349,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
 		{
 			pSignal->Size( bDirection ? 1.1f : 0.9f );
+			Notify( false ); 
 		}
 	}
 	else
@@ -350,22 +361,30 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
-bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
-{
-	switch (wParam)
-	{
-	case ID_COORD_TIMER:
-		if ( m_coordAnimation.Next() )
-			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-		m_pCoordObservable->NotifyAll( false );
-		break;
+//bool MainWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
+//{
+//	switch (wParam)
+//	{
+//	case ID_COORD_TIMER:
+//		if ( m_coordAnimation.Next() )
+//			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
+//		m_pCoordObservable->NotifyAll( false );
+//		break;
+//
+//	case ID_ARROW_TIMER:
+//		m_arrowAnimation.Next();
+//		Notify( false ); 
+//		break;
+//	}
+//	return NNetWindow::OnTimer( wParam, lParam );
+//}
 
-	case ID_ARROW_TIMER:
-		m_arrowAnimation.Next();
-		Notify( false ); 
-		break;
-	}
-	return true;
+void TimerprocCoord( HWND hwnd,	UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+{
+	MainWindow * pMainWin { reinterpret_cast<MainWindow *>(GetUserDataPtr( hwnd )) };
+	if ( pMainWin->m_coordAnimation.Next() )
+		pMainWin->SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
+	pMainWin->m_pCoordObservable->NotifyAll( false );
 }
 
 void MainWindow::centerAndZoomRect
@@ -386,7 +405,7 @@ void MainWindow::centerAndZoomRect
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
 
-	m_coordAnimation.SetUp(GetWindowHandle(), GetCoord(), coordTarget, ID_COORD_TIMER, 20, 50_MilliSecs );
+	m_coordAnimation.Start(GetWindowHandle(), GetCoord(), coordTarget, ID_COORD_TIMER, TimerprocCoord);
 }
 
 void MainWindow::OnPaint( )
@@ -452,7 +471,7 @@ void MainWindow::doPaint( )
 	}
 
 	DrawSensors( );
-	AnimateBeacon( 30._fPixel);
+	DrawBeacon( );
 }
 
 void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )

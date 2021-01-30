@@ -24,13 +24,11 @@ public:
     static void Initialize
     ( 
         NNetModelReaderInterface const & modelReaderInterface,
-        Observable                     & observable,
-        AnimationInterface             & animationInterface
+        Observable                     & observable
     )
     {
-        m_pNMRI                = & modelReaderInterface;
-        m_pObservable         = & observable;
-        m_pAnimationInterface = & animationInterface;
+        m_pNMRI       = & modelReaderInterface;
+        m_pObservable = & observable;
     }
 
     static unique_ptr<Signal>MakeSignal( Signal const & src )
@@ -40,11 +38,10 @@ public:
 
     static unique_ptr<Signal>MakeSignal( MicroMeterCircle const & umCircle )
     {
-        return make_unique<Signal>( * m_pNMRI, * m_pObservable, * m_pAnimationInterface, umCircle );
+        return make_unique<Signal>( * m_pNMRI, * m_pObservable, umCircle );
     }
 
 private:
-    inline static NNetModelReaderInterface const * m_pNMRI                { nullptr };
-    inline static Observable                     * m_pObservable         { nullptr };
-    inline static AnimationInterface             * m_pAnimationInterface { nullptr };
+    inline static NNetModelReaderInterface const * m_pNMRI       { nullptr };
+    inline static Observable                     * m_pObservable { nullptr };
 };

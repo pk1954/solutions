@@ -9,6 +9,7 @@
 #include "D2D_DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
+#include "win32_animation.h"
 #include "win32_NNetController.h"
 #include "win32_modelWindow.h"
 
@@ -18,8 +19,7 @@ using std::function;
 class Scale;
 class Observable;
 class ActionTimer;
-class MonitorData;
-class BeaconAnimation;
+class MonitorWindow;
 class ObserverInterface;
 class ControllerInterface;
 class NNetModelReaderInterface;
@@ -33,12 +33,13 @@ public:
 
 	void Start
 	( 
-		HWND                       const, 
-		DWORD                      const,
-		bool                       const,
-		NNetController           * const,
-		NNetModelReaderInterface * const,
-		BeaconAnimation          * const
+		HWND                     const, 
+		DWORD                    const,
+		bool                     const,
+		fPixel                   const,
+		NNetModelReaderInterface const &,
+		MonitorWindow            const &,
+		NNetController                 &
 	);
 
 	void Stop( );
@@ -62,24 +63,31 @@ public:
 protected:
 
 	virtual void OnPaint( );
+	//virtual bool OnTimer      ( WPARAM const, LPARAM const );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
 
 	virtual void doPaint( ) = 0;
 
-	void AnimateBeacon( fPixel const );
+	void DrawBeacon( );
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	NNetModelReaderInterface * m_pNMRI { nullptr };
+	NNetModelReaderInterface const * m_pNMRI { nullptr };
 
 private:
+	static UINT_PTR const ID_BEACON_TIMER { 512 };
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	D2D_DrawContext   m_context          { };
-	NNetController  * m_pController      { nullptr };
-	BeaconAnimation * m_pBeaconAnimation { nullptr };
+	MonitorWindow const * m_pMonitorWindow { nullptr };
+	NNetController      * m_pController    { nullptr };
+	D2D_DrawContext       m_context        { };
+	float                 m_fRelBeaconSize { 0.0f };
+	Animation<float>      m_beaconAnimation;
+	fPixel                m_fPixRadiusLimit;
+
+	friend void TimerprocBeacon( HWND, UINT, UINT_PTR, DWORD );
 };

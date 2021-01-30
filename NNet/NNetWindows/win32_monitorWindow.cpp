@@ -11,7 +11,7 @@
 #include "Track.h"
 #include "Resource.h"
 #include "BaseKnot.h"
-#include "BeaconAnimation.h"
+#include "Observable.h"
 #include "MonitorData.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
@@ -26,7 +26,8 @@ void MonitorWindow::Start
 	Sound                  * const   pSound,
 	NNetController         * const   pController,
 	NNetModelReaderInterface const & model,
-	MonitorData                    & monitorData  
+	MonitorData                    & monitorData, 
+	Observable                     & signalObservable
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -38,10 +39,11 @@ void MonitorWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_pSound       =   pSound;
-	m_pController  =   pController;
-	m_pNMRI        = & model;
-	m_pMonitorData = & monitorData;
+	m_pSound            =   pSound;
+	m_pController       =   pController;
+	m_pNMRI             = & model;
+	m_pMonitorData      = & monitorData;
+	m_pSignalObservable = & signalObservable;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
@@ -102,6 +104,16 @@ void MonitorWindow::InsertTrack( TrackNr const trackNr )
 	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 }
 
+MicroMeterCircle const & MonitorWindow::GetSelectedSignalCircle() const
+{
+	if ( m_idSigSelected.IsNotNull() )
+	{
+		if ( Signal * pSignal = & m_pMonitorData->GetSignal( m_idSigSelected ) )
+			return pSignal->GetCircle();
+	}
+	return MicroMeterCircle::NULL_VAL();
+}
+
 fMicroSecs const MonitorWindow::fPixel2fMicroSecs( fPixel const fPixX ) const
 {
 	fMicroSecs const usEnd    { m_pNMRI->GetSimulationTime( ) };
@@ -122,11 +134,11 @@ void MonitorWindow::selectSignal( SignalId const & idNew )
 {
 	if ( idNew != m_idSigSelected )
 	{
-		m_pMonitorData->Animation( m_idSigSelected, false );
+//		m_pMonitorData->Animation( m_idSigSelected, false );
 
 		if ( m_pMonitorData->IsValid( idNew ) )
 		{
-			m_pMonitorData->Animation( idNew, true );
+//			m_pMonitorData->Animation( idNew, true );
 			m_idSigSelected = idNew;
 		}
 		else
@@ -371,11 +383,11 @@ bool MonitorWindow::OnShow( WPARAM const wParam, LPARAM const lParam )
 	if ( bShow )
 	{
 		m_measurement.ResetLimits( );
-		if ( m_idSigSelected != SignalIdNull )
-			m_pMonitorData->Animation( m_idSigSelected, true );
+		//if ( m_idSigSelected != SignalIdNull )
+		//	m_pMonitorData->Animation( m_idSigSelected, true );
 	}
-	else 
-		m_pMonitorData->Animation( m_idSigSelected, false );
+	//else 
+	//	m_pMonitorData->Animation( m_idSigSelected, false );
 	return false;
 }
 

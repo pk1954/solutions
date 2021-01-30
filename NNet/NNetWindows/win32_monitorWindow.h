@@ -13,7 +13,7 @@
 #include "win32_baseWindow.h"
 #include "win32_NNetController.h"
 
-class BeaconAnimation;
+class Observable;
 class NNetModelReaderInterface;
 
 class MonitorWindow : public BaseWindow
@@ -26,7 +26,8 @@ public:
 		Sound                  * const,
 		NNetController         * const,
 		NNetModelReaderInterface const &, 
-		MonitorData                    &
+		MonitorData                    &,
+		Observable                     &
 	);
 
 	void Reset( );
@@ -36,6 +37,8 @@ public:
 
 	void AddSignal( MicroMeterCircle const &  );
 	void InsertTrack( TrackNr const );
+
+	MicroMeterCircle const & GetSelectedSignalCircle() const;
 
 private:
 
@@ -101,16 +104,17 @@ private:
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
-	D2D_driver  m_graphics           { };
-	fMicroSecs  m_fMicroSecsPerPixel { 100.0_MicroSecs };
-	float       m_fYvaluesPerPixel   { 0.2f };
-	SignalId    m_idSigSelected      { };
-	TrackNr     m_trackNrHighlighted { TrackNr::NULL_VAL() };
-	PixelPoint  m_pixLast            { PP_NULL };     // last cursor position during selection 
-	PIXEL       m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
-	fPixel      m_fPixWinWidth       { 0.0_fPixel };
-	bool        m_bShowScale         { false };
-	bool        m_bSignalLocked      { false };
-	Measurement m_measurement;
-	Scale       m_scale;
+	D2D_driver   m_graphics           { };
+	fMicroSecs   m_fMicroSecsPerPixel { 100.0_MicroSecs };
+	float        m_fYvaluesPerPixel   { 0.2f };
+	SignalId     m_idSigSelected      { };
+	TrackNr      m_trackNrHighlighted { TrackNr::NULL_VAL() };
+	PixelPoint   m_pixLast            { PP_NULL };     // last cursor position during selection 
+	PIXEL        m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
+	fPixel       m_fPixWinWidth       { 0.0_fPixel };
+	bool         m_bShowScale         { false };
+	bool         m_bSignalLocked      { false };
+	Observable * m_pSignalObservable  { nullptr };
+	Measurement  m_measurement;
+	Scale        m_scale;
 };

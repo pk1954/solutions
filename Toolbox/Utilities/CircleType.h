@@ -23,7 +23,10 @@ public:
           m_radius( radius )
     {}
 
-    auto operator <=> (const CircleType &) const = default;
+    bool const operator==(CircleType const & a) const 
+    { 
+        return (m_position == a.m_position) && (m_radius == a.m_radius); 
+    }
 
     CircleType const operator+= (POS_TYPE const a) { m_position += a; return * this; }
     CircleType const operator-= (POS_TYPE const a) { m_position -= a; return * this; }

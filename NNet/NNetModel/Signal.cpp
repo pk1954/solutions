@@ -12,12 +12,10 @@ Signal::Signal
 ( 
     NNetModelReaderInterface const & nmri,
     Observable                     & observable,
-    AnimationInterface             & animationInterface,
     MicroMeterCircle         const & circle
 ) :
     m_nmri(nmri),
     m_observable(observable ),
-    m_animationInterface(animationInterface),
     m_circle(circle),
     m_timeStart(nmri.GetSimulationTime())
 {
@@ -64,14 +62,6 @@ void Signal::Draw( DrawContext const & context ) const
     color1.a = 0.8f;
     color2.a = 0.4f;
     context.FillGradientCircle( m_circle, color1, color2 );
-}
-
-void Signal::Animate( bool const bOn ) const
-{
-    if ( bOn )
-        m_animationInterface.Start( & m_circle );
-    else
-        m_animationInterface.Stop( );
 }
 
 int const Signal::time2index( fMicroSecs const usParam ) const

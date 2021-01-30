@@ -44,42 +44,39 @@ void NNetController::Initialize
     Sound                    * const pSound,
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
-    MonitorWindow            * const pMonitorWindow,
-    Observable               * const pStaticModelObservable
+    MonitorWindow            * const pMonitorWindow
 ) 
 {
-    m_pModelExporter         = pModelExporter;
-    m_pMainWindow            = pMainWindow;
-    m_pWinManager            = pWinManager;
-    m_pNMRI                  = pMRI;
-    m_pModelCommands         = pModelCommands;
-    m_pSlowMotionRatio       = pSlowMotionRatio;
-    m_pComputeThread         = pComputeThread;
-    m_pStatusBarDisplay      = func;
-    m_pSound                 = pSound;
-    m_pPreferences           = pPreferences;
-    m_pCommandStack          = pCommandStack;
-    m_pMonitorWindow         = pMonitorWindow;
-    m_pStaticModelObservable = pStaticModelObservable;
-    m_hCrsrWait              = LoadCursor( NULL, IDC_WAIT );
+    m_pModelExporter    = pModelExporter;
+    m_pMainWindow       = pMainWindow;
+    m_pWinManager       = pWinManager;
+    m_pNMRI             = pMRI;
+    m_pModelCommands    = pModelCommands;
+    m_pSlowMotionRatio  = pSlowMotionRatio;
+    m_pComputeThread    = pComputeThread;
+    m_pStatusBarDisplay = func;
+    m_pSound            = pSound;
+    m_pPreferences      = pPreferences;
+    m_pCommandStack     = pCommandStack;
+    m_pMonitorWindow    = pMonitorWindow;
+    m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
 }
 
 NNetController::~NNetController( )
 {
-    m_pModelExporter         = nullptr;
-    m_pMainWindow            = nullptr;
-    m_pWinManager            = nullptr;
-    m_pNMRI                  = nullptr;
-    m_pModelCommands         = nullptr;
-    m_pSlowMotionRatio       = nullptr;
-    m_pComputeThread         = nullptr;
-    m_pStatusBarDisplay      = nullptr;
-    m_hCrsrWait              = nullptr;
-    m_pSound                 = nullptr;
-    m_pPreferences           = nullptr;
-    m_pCommandStack          = nullptr;
-    m_pMonitorWindow         = nullptr;
-    m_pStaticModelObservable = nullptr;
+    m_pModelExporter    = nullptr;
+    m_pMainWindow       = nullptr;
+    m_pWinManager       = nullptr;
+    m_pNMRI             = nullptr;
+    m_pModelCommands    = nullptr;
+    m_pSlowMotionRatio  = nullptr;
+    m_pComputeThread    = nullptr;
+    m_pStatusBarDisplay = nullptr;
+    m_hCrsrWait         = nullptr;
+    m_pSound            = nullptr;
+    m_pPreferences      = nullptr;
+    m_pCommandStack     = nullptr;
+    m_pMonitorWindow    = nullptr;
 }
 
 bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -96,7 +93,6 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
 
     m_pComputeThread->LockComputation( );
     bRes = processModelCommand( wmId, lParam, umPoint );
-    m_pStaticModelObservable->NotifyAll( false );
     m_pComputeThread->ReleaseComputationLock( );
 
     return bRes;
@@ -207,6 +203,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDM_ADD_IMPORTED_MODEL:
         m_pModelCommands->AddModel( );
+        break;
+
+    case IDM_ALIGN_SELECTION:
+        m_pModelCommands->Align( );
         break;
 
     case IDM_COPY_SELECTION:

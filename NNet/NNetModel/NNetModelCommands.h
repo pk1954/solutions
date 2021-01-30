@@ -41,6 +41,7 @@ public:
     void AddModel            ( );
     void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void Align               ( );
     void AnalyzeAnomalies    ( );
     void AnalyzeLoops        ( );
     void AppendInputNeuron   ( ShapeId const );

@@ -17,45 +17,36 @@ public:
 		* this = ZERO_VAL(); 
 	}
 
-  //  RectType( RectType const & rect ) :
-  //      m_Left  (rect.m_Left),
-  //      m_Bottom(rect.m_Bottom),
-  //      m_Right (rect.m_Right),
-  //      m_Top   (rect.m_Top)
-  //  {
-		//assert( m_Bottom >= m_Top );
-  //  };
-
-    RectType
+ 	RectType
 	( 
 		POS_TYPE const & pt1, 
 		POS_TYPE const & pt2 
 	)
-    { 
-        if ( pt1.GetX() < pt2.GetX() )
-        {
-            m_Left  = pt1.GetX();
-            m_Right = pt2.GetX();
-        }
-        else
-        {
-            m_Left  = pt2.GetX();
-            m_Right = pt1.GetX();
-        }
-        if ( pt1.GetY() > pt2.GetY() )
-        {
-            m_Bottom = pt1.GetY();
-            m_Top    = pt2.GetY();
-        }
-        else
-        {
-            m_Bottom = pt2.GetY();
-            m_Top    = pt1.GetY();
-        }
+	{ 
+		if ( pt1.GetX() > pt2.GetX() )
+		{
+			m_Left  = pt2.GetX();
+			m_Right = pt1.GetX();
+		}
+		else
+		{
+			m_Left  = pt1.GetX();
+			m_Right = pt2.GetX();
+		}
+		if ( pt1.GetY() > pt2.GetY() )
+		{
+			m_Bottom = pt1.GetY();
+			m_Top    = pt2.GetY();
+		}
+		else
+		{
+			m_Bottom = pt2.GetY();
+			m_Top    = pt1.GetY();
+		}
 		assert( m_Bottom >= m_Top );
-    };
+	};
 
-    RectType
+	RectType
 	( 
 		BASE_TYPE const pixLeft, 
 		BASE_TYPE const pixTop, 

@@ -165,7 +165,7 @@ void D2D_DrawContext::DrawTranspRect( MicroMeterRect const & umRect, D2D1::Color
 	}
 	else
 	{
-		m_graphics.FillRectangle( m_coord.Transform2fPixelRect( umRect ), col );
+		m_graphics.FillRectangle( m_coord.Transform2fPixelRect(umRect), col );
 	}
 }
 

@@ -81,12 +81,6 @@ void MonitorData::DeleteTrack( TrackNr const trackNr )
 		m_tracks.erase( m_tracks.begin() + trackNr.GetValue() );
 }
 
-void MonitorData::Animation( SignalId const & id, bool const bOn )
-{
-	if ( id.IsNotNull() )
-		GetSignal( id ).Animate( bOn );
-}
-
 void MonitorData::Apply2AllTracks( TrackNrFunc const & func ) const
 {
 	for ( int i = 0; i < m_tracks.size(); ++i )

@@ -18,7 +18,6 @@
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
-#include "BeaconAnimation.h"
 #include "MonitorData.h"
 #include "win32_event.h"
 #include "win32_sound.h"
@@ -128,8 +127,7 @@ private:
 	SlowMotionRatio          m_SlowMotionRatio        { };
 	Observable               m_soundOnObservable      { };
 	Observable               m_cursorPosObservable    { };
-	Observable               m_blinkObservable        { };
-	Observable               m_beaconObservable       { };
+	Observable               m_signalObservable       { }; // selected signal changes
 	Observable               m_staticModelObservable  { };
 	Observable               m_dynamicModelObservable { };
 	Observable               m_runObservable          { };
@@ -158,7 +156,6 @@ private:
 	Preferences              m_preferences            { };
 	CommandStack             m_cmdStack               { };
 	UndoRedoMenu             m_undoRedoMenu           { };
-	BeaconAnimation          m_beaconAnimation        { };
 	ScriptFile               m_scriptFile             { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );

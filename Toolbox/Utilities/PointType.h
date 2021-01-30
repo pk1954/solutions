@@ -25,7 +25,7 @@ public:
 	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
 	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : m_x(_x), m_y(_y) {}
 
-	auto operator <=> (const PointType &) const = default;
+	bool const operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
 
     PointType const operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
     PointType const operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
@@ -71,6 +71,12 @@ public:
 		return Hypot( npA - npB );
 	}
 
+	friend float const DistSquare( PointType const pntA, PointType const pntB )
+	{
+		PointType delta {pntA - pntB};
+		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
+	}
+
 	bool const IsCloseToZero( ) const
 	{
 		return ::IsCloseToZero( GetXvalue() ) && ::IsCloseToZero( GetYvalue() );
@@ -80,6 +86,11 @@ public:
 	{
 		return (*this - pt).IsCloseToZero();
 	}
+
+	friend BASE_TYPE const Hypot( PointType const pt ) 
+	{ 
+		return BASE_TYPE( std::hypot(pt.GetXvalue(), pt.GetYvalue()) );
+	};
 
 	PointType OrthoVector( BASE_TYPE const width ) const
 	{
@@ -164,12 +175,6 @@ public:
 		res /= i; 
 		return res; 
 	};
-
-	friend float const DistSquare( PointType const pntA, PointType const pntB )
-	{
-		PointType delta {pntA - pntB};
-		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
-	}
 
 	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
 	{

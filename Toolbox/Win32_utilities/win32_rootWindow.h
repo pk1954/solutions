@@ -210,12 +210,12 @@ private:
 
 	class WindowRefreshRate;
 
-	HWND                  m_hwnd                 { nullptr };
-	HWND                  m_hwndApp              { nullptr };
-	WindowRefreshRate   * m_pRefreshRate         { nullptr };
-	tOnOffAuto            m_visibilityMode       { tOnOffAuto::on };
-	function<bool()>      m_visibilityCriterion  { nullptr };
-	bool                  m_bShowRefreshRateDlg  { true };
+	HWND                m_hwnd                { nullptr };
+	HWND                m_hwndApp             { nullptr };
+	WindowRefreshRate * m_pRefreshRate        { nullptr };
+	tOnOffAuto          m_visibilityMode      { tOnOffAuto::on };
+	function<bool()>    m_visibilityCriterion { nullptr };
+	bool                m_bShowRefreshRateDlg { true };
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;

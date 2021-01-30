@@ -77,11 +77,11 @@ public:
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
-	void SetModelFilePath    ( wstring const wstr )   { m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine  ( wstring const wstr )   {	m_description.AddDescriptionLine( wstr ); }
-	void DescriptionComplete()                        { m_description.DescriptionComplete( ); }
-	void SetDescriptionUI( DescriptionUI & i) { m_description.SetDescriptionUI( i ); }
-	void SetSimulationTime   ( fMicroSecs const newVal = 0._MicroSecs ) { m_timeStamp = newVal; }
+	void SetModelFilePath   (wstring const wstr) { m_wstrModelFilePath = wstr; }
+	void AddDescriptionLine (wstring const wstr) { m_description.AddDescriptionLine( wstr ); }
+	void DescriptionComplete()                   { m_description.DescriptionComplete( ); }
+	void SetDescriptionUI   (DescriptionUI & i)  { m_description.SetDescriptionUI( i ); }
+	void SetSimulationTime  (fMicroSecs const newVal = 0._MicroSecs) { m_timeStamp = newVal; }
 
 private:
 

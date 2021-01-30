@@ -74,12 +74,11 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	Script                   m_script                 { };
 	CommandStack             m_cmdStack               { };
 	MonitorData              m_monitorData            { };
-	Animation                m_animationDummy         { };
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelCommands );
 
-	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable, m_animationDummy );
+	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable );
 	Shape::Initialize( m_model.GetParams() );
 
 	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_dynamicModelObservable, & m_cmdStack	);

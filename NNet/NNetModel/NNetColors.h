@@ -34,4 +34,11 @@ public:
 
 	// color used when neurons trigger
 	inline static D2D1::ColorF const INT_TRIGGER    { 1.0f, 1.0f, 0.0f, 1.0f };
+
+	// construct color with given alpha channel
+	static D2D1::ColorF const SetAlpha( D2D1::ColorF col, float const alpha )
+	{
+		col.a = alpha;
+		return col;
+	}
 };

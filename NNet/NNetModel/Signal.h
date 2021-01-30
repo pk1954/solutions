@@ -15,7 +15,6 @@ using std::vector;
 
 class Signal;
 class DrawContext;
-class AnimationInterface;
 class NNetModelReaderInterface;
 
 using SignalFunc = function<void(Signal const &)>;
@@ -29,13 +28,12 @@ public:
     ( 
         NNetModelReaderInterface const &,
         Observable                     &,
-        AnimationInterface             &,
         MicroMeterCircle         const & 
     );
 
     virtual ~Signal();
 
-    bool operator==( Signal const & rhs ) const
+    bool const operator==( Signal const & rhs ) const
     {
         return m_circle == rhs.m_circle;
     }
@@ -45,7 +43,6 @@ public:
     fMicroSecs const FindNextMaximum( fMicroSecs const ) const;
 
     void  Notify( bool const );
-    void  Animate( bool const ) const;
     void  Draw( DrawContext const & ) const;
     float GetSignalValue( ) const;
     void  WriteSignalData( wostream & ) const;;
@@ -55,8 +52,8 @@ public:
     void  Move( MicroMeterPoint const & umDelta ) { m_circle += umDelta; }
     void  Size( float           const   factor  ) { m_circle *= factor; }
 
-    MicroMeterPoint  const GetCenter( ) const  { return m_circle.GetPosition(); }
-    MicroMeterCircle const GetCircle( ) const  { return m_circle; }
+    MicroMeterPoint  const & GetCenter( ) const { return m_circle.GetPosition(); }
+    MicroMeterCircle const & GetCircle( ) const { return m_circle; }
 
     void Set2Null() { m_circle.Set2Null(); }
 
@@ -68,7 +65,6 @@ private:
 
     NNetModelReaderInterface const & m_nmri;
     Observable                     & m_observable;
-    AnimationInterface             & m_animationInterface;
 
     MicroMeterCircle m_circle    { MicroMeterCircle::NULL_VAL() };
     fMicroSecs       m_timeStart { 0._MicroSecs };

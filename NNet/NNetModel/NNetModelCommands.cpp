@@ -23,6 +23,7 @@
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
 #include "MoveSelectionCommand.h"
+#include "AlignCommand.h"
 #include "NewInputNeuronCommand.h"
 #include "NewNeuronCommand.h"
 #include "NNetModelImporter.h"
@@ -195,6 +196,13 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << delta << endl;
 	m_pCmdStack->PushCommand( make_unique<MoveSelectionCommand>( delta ) );
+}
+
+void NNetModelCommands::Align( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pCmdStack->PushCommand( make_unique<AlignCommand>( * m_pNMWI ) );
 }
 
 void NNetModelCommands::AddModel( )

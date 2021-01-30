@@ -44,7 +44,7 @@ public:
     float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
     void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
     void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
-    void DescriptionComplete()                     { m_pModel->DescriptionComplete( ); }
+    void  DescriptionComplete()                    { m_pModel->DescriptionComplete( ); }
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 

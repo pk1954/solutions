@@ -14,11 +14,10 @@
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
-#include "BeaconAnimation.h"
 #include "NNetColors.h"
 #include "MonitorData.h"
 #include "win32_sound.h"
-#include "win32_tooltip.h"
+#include "win32_monitorWindow.h"
 #include "win32_NNetWindow.h"
 
 using std::function;
@@ -32,14 +31,23 @@ NNetWindow::NNetWindow( ) :
 	ModelWindow( )
 { }
 
+void TimerprocBeacon( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+{
+	NNetWindow * pNNetWin { reinterpret_cast<NNetWindow *>(GetUserDataPtr( hwnd )) };
+	if ( pNNetWin->m_beaconAnimation.Next( false ) )
+		pNNetWin->m_fRelBeaconSize = 0.0f;
+	pNNetWin->Notify( false );
+}
+
 void NNetWindow::Start
 ( 
-	HWND                       const hwndApp, 
-	DWORD                      const dwStyle,
-	bool                       const bShowRefreshRateDialog,
-	NNetController           * const pController,
-	NNetModelReaderInterface * const pModelReaderInterface,
-	BeaconAnimation          * const pBeaconAnimation
+	HWND                     const   hwndApp, 
+	DWORD                    const   dwStyle,
+	bool                     const   bShowRefreshRateDialog,
+	fPixel                   const   fPixLimit,
+	NNetModelReaderInterface const & modelReaderInterface,
+	MonitorWindow            const & monitorWindow,
+	NNetController                 & controller
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -52,10 +60,11 @@ void NNetWindow::Start
 		nullptr
 	);
 	m_context.Start( hwnd );
-	m_pController      = pController;
-	m_pNMRI             = pModelReaderInterface;
-	m_pBeaconAnimation = pBeaconAnimation;
-
+	m_pNMRI           = & modelReaderInterface;
+	m_pMonitorWindow  = & monitorWindow;
+	m_pController     = & controller;
+	m_fPixRadiusLimit = fPixLimit;
+	m_beaconAnimation.Start(GetWindowHandle(), m_fRelBeaconSize, 1.0f, ID_BEACON_TIMER, TimerprocBeacon);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
@@ -168,25 +177,20 @@ void NNetWindow::OnPaint( )
 	}
 }
 
-void NNetWindow::AnimateBeacon( fPixel const fPixBeaconRadius )
+void NNetWindow::DrawBeacon( )
 {
-	if ( MicroMeterCircle const * const pCircle { m_pBeaconAnimation->GetSensorCircle( ) } )
+	MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
+	if ( umCircleBeacon.IsNotNull() )
 	{
-		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
-		static MicroMeter const MAX_SIZE { pCircle->GetRadius() };
-
-		MicroMeter        const umMaxSize{ max( MAX_SIZE, GetCoordC().Transform2MicroMeter( fPixBeaconRadius ) ) };
-		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
-		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
-		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
-		MicroMeterPoint   const umPos    { pCircle->GetPosition() };
-		if ( umPos.IsNotNull() )
-		{
-			MicroMeterCircle  const umCircle { umPos, umRadius };
-			D2D1::ColorF col { NNetColors::COL_BEACON };
-			col.a = 1.0f - fRelSize;
-			m_context.FillCircle( umCircle, col );
-		}
+		MicroMeter const umRadiusLimit { GetCoordC().Transform2MicroMeter( m_fPixRadiusLimit ) };
+		MicroMeter const umMaxRadius   { max( umCircleBeacon.GetRadius(), umRadiusLimit ) };
+		MicroMeter const umSpan        { umMaxRadius - NEURON_RADIUS };
+		umCircleBeacon.SetRadius( NEURON_RADIUS + (umSpan * m_fRelBeaconSize)  );
+		m_context.FillCircle
+		( 
+			umCircleBeacon, 
+			NNetColors::SetAlpha( NNetColors::COL_BEACON, 0.8f * (1.0f - m_fRelBeaconSize) )
+		);
 	}
 }
 
@@ -207,3 +211,17 @@ bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 	return ModelWindow::OnCommand( wParam, lParam, pixPoint );
 }
+
+//bool NNetWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
+//{
+//	switch (wParam)
+//	{
+//	case ID_BEACON_TIMER:
+//		if ( m_beaconAnimation.Next( false ) )
+//			m_fRelBeaconSize = 0.0f;
+//		Notify( false );
+//		break;
+//	}
+//	return ModelWindow::OnTimer( wParam, lParam );
+//}
+

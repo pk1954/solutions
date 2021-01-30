@@ -10,7 +10,6 @@
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
-class BeaconAnimation;
 class NNetModelCommands;
 
 class MainWindow : public NNetWindow
@@ -19,15 +18,16 @@ public:
 
 	void Start
 	(
-		HWND                       const,
-		DWORD                      const,
-		bool                       const,
-		NNetController           * const,
-		NNetModelReaderInterface * const,
-		NNetModelCommands        * const,
-		Observable               * const,
-		Observable               * const,
-		BeaconAnimation          * const
+		HWND                     const,
+		DWORD                    const,
+		bool                     const,
+		fPixel                   const,
+		NNetModelReaderInterface const &,
+		MonitorWindow            const &, 
+		NNetController                 &,
+		NNetModelCommands              &,
+		Observable                     &,
+		Observable                     &
 	);
 
 	void Stop( );
@@ -59,7 +59,7 @@ public:
 	void       ShowArrows( tBoolOp const );
 	bool const ShowArrows( ) const; 
 
-	virtual bool OnTimer             ( WPARAM const, LPARAM const );
+	//virtual bool OnTimer             ( WPARAM const, LPARAM const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
@@ -89,10 +89,13 @@ private:
 	Observable             * m_pCursorPosObservable { nullptr };
 	NNetModelCommands      * m_pNNetCommands        { nullptr };
 
-	void setTargetShape     ( MicroMeterPoint const & );
+	void setTargetShape     ( );
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );
 	void centerAndZoomRect  ( ShapeList::SelMode const, float const );
 
 	virtual void doPaint( );
+
+	friend void TimerprocCoord(	HWND, UINT, UINT_PTR, DWORD	);
+	friend void TimerprocArrow(	HWND, UINT, UINT_PTR, DWORD	);
 };

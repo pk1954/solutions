@@ -92,20 +92,18 @@ void NNetAppWindow::Start( MessagePump & pump )
 		nullptr
 	);
 
-	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable, m_beaconAnimation );
+	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable );
 	Shape::Initialize( m_model.GetParams() );
 	m_model.SetDescriptionUI( m_descWindow );
 
-	m_modelImporter  .Initialize( &m_script );
-	m_modelExporter  .Initialize( &m_nmri );
-	m_modelCommands  .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
-	m_cmdStack       .Initialize( &m_nmwi, &m_staticModelObservable );
-//	m_NNetColors     .Initialize( &m_blinkObservable );
-	m_sound          .Initialize( &m_soundOnObservable );
-	m_beaconAnimation.Initialize( &m_beaconObservable );	
-	m_appTitle       .Initialize( m_hwndApp, &m_nmri );
-	m_preferences    .Initialize( m_sound, m_modelImporter, m_hwndApp );
-	m_NNetController .Initialize
+	m_modelImporter .Initialize( &m_script );
+	m_modelExporter .Initialize( &m_nmri );
+	m_modelCommands .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
+	m_cmdStack      .Initialize( &m_nmwi, & m_staticModelObservable );
+	m_sound         .Initialize( &m_soundOnObservable );
+	m_appTitle      .Initialize( m_hwndApp, &m_nmri );
+	m_preferences   .Initialize( m_sound, m_modelImporter, m_hwndApp );
+	m_NNetController.Initialize
 	( 
 		& m_modelExporter,
 		& m_mainNNetWindow,
@@ -118,8 +116,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_sound,
 		& m_preferences,
 		& m_cmdStack,
-		& m_monitorWindow,
-		& m_staticModelObservable
+		& m_monitorWindow
 	);
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
@@ -129,12 +126,12 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
 
-	m_nmri         .Start( & m_model );
-	m_nmwi         .Start( & m_model );
-	m_appMenu      .Start( m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow );
-	m_StatusBar    .Start( m_hwndApp );
-	m_descWindow   .Start( m_hwndApp );
-	m_undoRedoMenu .Start( & m_appMenu );
+	m_nmri        .Start( & m_model );
+	m_nmwi        .Start( & m_model );
+	m_appMenu     .Start( m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow );
+	m_StatusBar   .Start( m_hwndApp );
+	m_descWindow  .Start( m_hwndApp );
+	m_undoRedoMenu.Start( & m_appMenu );
 	pump.RegisterWindow( m_descWindow.GetWindowHandle(), true );
 
 	m_computeThread.Start
@@ -151,12 +148,13 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		false,
-		& m_NNetController,
-		& m_nmri,
-		& m_modelCommands,
-		& m_cursorPosObservable,
-		& m_coordObservable,
-		& m_beaconAnimation
+		30._fPixel,
+		m_nmri,
+		m_monitorWindow,
+		m_NNetController,
+		m_modelCommands,
+		m_cursorPosObservable,
+		m_coordObservable
 	);
 
 	m_miniNNetWindow.Start
@@ -164,9 +162,10 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_hwndApp, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		true,
-		& m_NNetController,
-		& m_nmri,
-		& m_beaconAnimation
+		5._fPixel,
+		m_nmri,
+		m_monitorWindow,
+		m_NNetController
 	);
 
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
@@ -176,7 +175,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_crsrWindow       .Start( m_hwndApp, & m_mainNNetWindow, & m_nmri );
 	m_parameterDlg     .Start( m_hwndApp, & m_modelCommands, & m_model.GetParams() );
 	m_performanceWindow.Start( m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_model.GetMonitorData() );
+	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_model.GetMonitorData(), m_signalObservable );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
@@ -188,8 +187,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false );
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false );
 
-	m_blinkObservable       .RegisterObserver( & m_mainNNetWindow );
-	m_beaconObservable      .RegisterObserver( & m_mainNNetWindow );
+	m_signalObservable      .RegisterObserver( & m_mainNNetWindow );
+	m_signalObservable      .RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable.RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable.RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable.RegisterObserver( & m_monitorWindow );
@@ -258,7 +257,6 @@ void NNetAppWindow::Stop()
 	m_nmwi                .Stop( );
 
 	m_staticModelObservable .UnregisterAllObservers( );
-	m_blinkObservable       .UnregisterAllObservers( );
 	m_dynamicModelObservable.UnregisterAllObservers( );
 	m_cursorPosObservable   .UnregisterAllObservers( );
 	m_performanceObservable .UnregisterAllObservers( );

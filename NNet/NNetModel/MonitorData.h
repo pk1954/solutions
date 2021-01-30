@@ -20,7 +20,7 @@ public:
 	MonitorData()                                = default;  // constructor   
 	~MonitorData()                               = default;  // destructor
 	MonitorData( MonitorData&& rhs )             = delete;   // move constructor
-	MonitorData& operator=( const MonitorData& ) = delete; // copy assignment operator
+	MonitorData& operator=( const MonitorData& ) = delete;   // copy assignment operator
 	
 	MonitorData(const MonitorData& rhs)  // copy constructor
 	{
@@ -59,7 +59,6 @@ public:
 	SignalId const   MoveSignal  ( SignalId const &, TrackNr const );
 	Signal   const & GetSignal   ( SignalId const & ) const;
 	Signal         & GetSignal   ( SignalId const & );
-	void             Animation   ( SignalId const &, bool const );
 
 	void Apply2AllTracks        ( TrackNrFunc const & ) const;
 	void Apply2AllSignalsInTrack( TrackNr const, SignalNrFunc const & ) const;

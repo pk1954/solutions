@@ -117,7 +117,6 @@ bool CommandStack::UndoCommand( )
         undoCmd( );                         // of one command
         m_pNMWI->CheckModel();
     }
-    m_pStaticModelObservable->NotifyAll( true );
     return true;
 }
 
@@ -147,7 +146,5 @@ bool CommandStack::RedoCommand( )
     {                                       // normal processing
         doAndSet2YoungerCmd();              // of one command
     }
-
-    m_pStaticModelObservable->NotifyAll( true );
     return true;
 }

@@ -81,11 +81,15 @@ public:
 
 	fPixelRect const Transform2fPixelRect( MicroMeterRect const & umRect ) const
 	{
-		return fPixelRect
-		( 
-			Transform2fPixelPos( umRect.GetStartPoint() ), 
-			Transform2fPixelPos( umRect.GetEndPoint  () ) 
-		);
+		fPixelPoint fpStart { Transform2fPixelPos( umRect.GetStartPoint() ) };
+		fPixelPoint fpEnd   { Transform2fPixelPos( umRect.GetEndPoint  () ) };
+		fPixelRect fPixRectResult { fPixelRect( fpStart, fpEnd ) };
+		return fPixRectResult;
+		//return fPixelRect
+		//( 
+		//	Transform2fPixelPos( umRect.GetStartPoint() ), 
+		//	Transform2fPixelPos( umRect.GetEndPoint  () ) 
+		//);
 	}
 
 	MicroMeterCircle const Transform2MicroMeterCircle( fPixelCircle const & fPixCircle ) const

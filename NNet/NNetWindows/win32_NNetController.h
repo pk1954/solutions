@@ -41,8 +41,7 @@ public:
 		Sound                    * const,
 		Preferences              * const,
 		CommandStack             * const,
-		MonitorWindow            * const,
-		Observable               * const
+		MonitorWindow            * const
 	);
 
 	virtual ~NNetController( );

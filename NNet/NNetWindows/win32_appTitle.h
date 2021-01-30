@@ -24,7 +24,7 @@ public:
 
     virtual void Notify( bool const bImmediate ) 
     { 
-		setAppTitle();
+		SetUnsavedChanges( true );
 	}
 
 	void SetUnsavedChanges( bool const bState )
@@ -33,7 +33,10 @@ public:
 		setAppTitle( );
 	}
 
-	bool AnyUnsavedChanges( ) const { return m_bUnsavedChanges; }
+	bool AnyUnsavedChanges( ) const 
+	{ 
+		return m_bUnsavedChanges; 
+	}
 
 private:
 	void setAppTitle( )
