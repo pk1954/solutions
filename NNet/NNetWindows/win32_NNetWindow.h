@@ -77,8 +77,6 @@ protected:
 	NNetModelReaderInterface const * m_pNMRI { nullptr };
 
 private:
-	static UINT_PTR const ID_BEACON_TIMER { 512 };
-
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 

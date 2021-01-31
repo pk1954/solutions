@@ -218,7 +218,6 @@ void MainWindow::ShowArrows( tBoolOp const op )
 			GetWindowHandle(), 
 			m_arrowSize, 
 			m_arrowSizeTarget, 
-			ID_ARROW_TIMER, 
 			[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
 			{
 				auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
@@ -388,7 +387,6 @@ void MainWindow::centerAndZoomRect
 		GetWindowHandle(), 
 		GetCoord(), 
 		coordTarget, 
-		ID_COORD_TIMER, 
 		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
 		{
 			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };

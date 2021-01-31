@@ -196,6 +196,8 @@ public:
 
 	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
 
+	UINT_PTR const GetTimerId() { return ++m_idTimerLastUsed; }
+
 protected:
 
 	void SetWindowHandle( HWND const );
@@ -216,6 +218,7 @@ private:
 	tOnOffAuto          m_visibilityMode      { tOnOffAuto::on };
 	function<bool()>    m_visibilityCriterion { nullptr };
 	bool                m_bShowRefreshRateDlg { true };
+	UINT_PTR            m_idTimerLastUsed     { 0 };
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;

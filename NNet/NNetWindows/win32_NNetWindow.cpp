@@ -61,12 +61,15 @@ void NNetWindow::Start
 		GetWindowHandle(), 
 		m_fRelBeaconSize, 
 		1.0f, 
-		ID_BEACON_TIMER, 
         [](HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart)
 		{
 			auto pNNetWin { GetWinPtr<NNetWindow>( hwnd ) };
-        	if ( pNNetWin->m_beaconAnimation.Next( false ) )
+        	pNNetWin->m_beaconAnimation.Next();
+			if ( pNNetWin->m_beaconAnimation.TargetReached() )
+			{
         		pNNetWin->m_fRelBeaconSize = 0.0f;
+				pNNetWin->m_beaconAnimation.Restart();
+			}
 		}
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
@@ -215,17 +218,3 @@ bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 	return ModelWindow::OnCommand( wParam, lParam, pixPoint );
 }
-
-//bool NNetWindow::OnTimer( WPARAM const wParam, LPARAM const lParam )
-//{
-//	switch (wParam)
-//	{
-//	case ID_BEACON_TIMER:
-//		if ( m_beaconAnimation.Next( false ) )
-//			m_fRelBeaconSize = 0.0f;
-//		Notify( false );
-//		break;
-//	}
-//	return ModelWindow::OnTimer( wParam, lParam );
-//}
-

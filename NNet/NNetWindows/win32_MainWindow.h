@@ -72,9 +72,6 @@ public:
 
 private:
 	 
-	static UINT_PTR const ID_COORD_TIMER { 1024 };
-	static UINT_PTR const ID_ARROW_TIMER { 1025 };
-
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 	
 	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
