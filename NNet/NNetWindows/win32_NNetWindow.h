@@ -15,6 +15,7 @@
 
 using std::wstring;
 using std::function;
+using std::make_unique;
 
 class Scale;
 class Observable;
@@ -79,10 +80,13 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	Animation<float>    * m_pBeaconAnimation { nullptr };
-	MonitorWindow const * m_pMonitorWindow   { nullptr };
-	NNetController      * m_pController      { nullptr };
-	D2D_DrawContext       m_context          { };
-	float                 m_fRelBeaconSize   { 0.0f };
+	using BeaconAnimation = Animation<float, NNetWindow>;
+
+	unique_ptr<BeaconAnimation> m_upBeaconAnimation;
+
+	MonitorWindow const * m_pMonitorWindow { nullptr };
+	NNetController      * m_pController    { nullptr };
+	D2D_DrawContext       m_context        { };
+	float                 m_fRelBeaconSize { 0.0f };
 	fPixel                m_fPixRadiusLimit;
 };

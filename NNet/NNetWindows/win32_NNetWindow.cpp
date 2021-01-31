@@ -52,21 +52,21 @@ void NNetWindow::Start
 		nullptr
 	);
 	m_context.Start( hwnd );
-	m_pNMRI           = & modelReaderInterface;
-	m_pMonitorWindow  = & monitorWindow;
-	m_pController     = & controller;
-	m_fPixRadiusLimit = fPixLimit;
-	m_pBeaconAnimation = new Animation<float> 
+	m_pNMRI             = & modelReaderInterface;
+	m_pMonitorWindow    = & monitorWindow;
+	m_pController       = & controller;
+	m_fPixRadiusLimit   = fPixLimit;
+	m_upBeaconAnimation = make_unique<BeaconAnimation>
 	(
 		GetWindowHandle(), 
 		m_fRelBeaconSize, 
-        [](HWND const hwnd, bool const bTargetReached)
+        [](NNetWindow * const pWin, bool const bTargetReached)
 		{
 			if ( bTargetReached )
-				GetWinPtr<NNetWindow>(hwnd)->m_pBeaconAnimation->Start( 0.0f, 1.0f );
+				pWin->m_upBeaconAnimation->Start( 0.0f, 1.0f );
 		}
 	);
-	m_pBeaconAnimation->Start( 0.0f, 1.0f );
+	m_upBeaconAnimation->Start( 0.0f, 1.0f );
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 

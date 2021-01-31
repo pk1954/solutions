@@ -84,9 +84,12 @@ private:
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pNNetCommands        { nullptr };
+	
+	using ArrowAnimation = Animation<MicroMeter, MainWindow>;
+	using CoordAnimation = Animation<PixelCoordsFp, MainWindow>;
 
-	unique_ptr<Animation<MicroMeter>>    m_upArrowAnimation;
-	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
+	unique_ptr<ArrowAnimation> m_upArrowAnimation;
+	unique_ptr<CoordAnimation> m_upCoordAnimation;
 
 	void setTargetShape     ( );
 	void setHighlightedShape( MicroMeterPoint const & );

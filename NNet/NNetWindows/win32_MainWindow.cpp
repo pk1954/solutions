@@ -43,20 +43,20 @@ void MainWindow::Start
 	m_pNNetCommands        = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_upArrowAnimation     = make_unique<Animation<MicroMeter>>
+	m_upArrowAnimation     = make_unique<ArrowAnimation>
 	( 
 		GetWindowHandle(), 
 		m_arrowSize,
 		nullptr
 	);
 
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
+	m_upCoordAnimation = make_unique<CoordAnimation>
 	(
 		GetWindowHandle(), 
 		GetCoord(), 
-		[](HWND const hwnd, bool const bTargetReached) 
+		[](MainWindow * const pWin, bool const bTargetReached) 
 		{
-			GetWinPtr<MainWindow>(hwnd)->m_pCoordObservable->NotifyAll(false); 
+			pWin->m_pCoordObservable->NotifyAll(false); 
 		}
 	);
 
