@@ -12,6 +12,8 @@
 
 class NNetModelCommands;
 
+using std::unique_ptr;
+
 class MainWindow : public NNetWindow
 {
 public:
@@ -82,8 +84,9 @@ private:
 	Observable               * m_pCoordObservable     { nullptr };
 	Observable               * m_pCursorPosObservable { nullptr };
 	NNetModelCommands        * m_pNNetCommands        { nullptr };
-	Animation<MicroMeter>    * m_pArrowAnimation      { nullptr };
-	Animation<PixelCoordsFp> * m_pCoordAnimation      { nullptr };
+
+	unique_ptr<Animation<MicroMeter>>    m_upArrowAnimation;
+	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	void setTargetShape     ( );
 	void setHighlightedShape( MicroMeterPoint const & );

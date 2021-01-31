@@ -13,6 +13,8 @@
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
+using std::make_unique;
+
 void MainWindow::Start
 (
 	HWND                     const   hwndApp, 
@@ -41,25 +43,25 @@ void MainWindow::Start
 	m_pNNetCommands        = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_pArrowAnimation      = new Animation<MicroMeter>
+	m_upArrowAnimation     = make_unique<Animation<MicroMeter>>
 	( 
 		GetWindowHandle(), 
 		m_arrowSize, 
 		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
 		{
 			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-			pMainWin->m_pArrowAnimation->Next();
+			pMainWin->m_upArrowAnimation->Next();
 		}
 	);
 
-	m_pCoordAnimation = new Animation<PixelCoordsFp>
+	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
 	(
 		GetWindowHandle(), 
 		GetCoord(), 
 		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
 		{
 			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-			pMainWin->m_pCoordAnimation->Next();
+			pMainWin->m_upCoordAnimation->Next();
 			pMainWin->m_pCoordObservable->NotifyAll( false );
 		}
 	);
@@ -220,7 +222,7 @@ void MainWindow::ShowArrows( bool const op )
 		m_arrowSizeTarget = 0._MicroMeter;
 
 	if ( m_arrowSizeTarget != olVal )
-		m_pArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
+		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -378,7 +380,7 @@ void MainWindow::centerAndZoomRect
 		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) - 
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
-	m_pCoordAnimation->Start( GetCoord(), coordTarget );
+	m_upCoordAnimation->Start( GetCoord(), coordTarget );
 }
 
 void MainWindow::OnPaint( )
