@@ -56,10 +56,9 @@ public:
 	void CenterModel( );
 	void CenterSelection( );
 
-	void       ShowArrows( tBoolOp const );
-	bool const ShowArrows( ) const; 
+	void       ShowArrows( bool const );
+	bool const ArrowsVisible( ) const; 
 
-	//virtual bool OnTimer             ( WPARAM const, LPARAM const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
@@ -77,14 +76,14 @@ private:
 	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter m_arrowSize       { m_arrowSizeTarget };
 
-	Animation<MicroMeter>    m_arrowAnimation       { };       
-	Animation<PixelCoordsFp> m_coordAnimation       { };       
-	MicroMeterRect           m_rectSelection        { };
-	ShapeId                  m_shapeTarget          { };
-	ShapeId                  m_shapeHighlighted     { };
-	Observable             * m_pCoordObservable     { nullptr };
-	Observable             * m_pCursorPosObservable { nullptr };
-	NNetModelCommands      * m_pNNetCommands        { nullptr };
+	MicroMeterRect             m_rectSelection        { };
+	ShapeId                    m_shapeTarget          { };
+	ShapeId                    m_shapeHighlighted     { };
+	Observable               * m_pCoordObservable     { nullptr };
+	Observable               * m_pCursorPosObservable { nullptr };
+	NNetModelCommands        * m_pNNetCommands        { nullptr };
+	Animation<MicroMeter>    * m_pArrowAnimation      { nullptr };
+	Animation<PixelCoordsFp> * m_pCoordAnimation      { nullptr };
 
 	void setTargetShape     ( );
 	void setHighlightedShape( MicroMeterPoint const & );

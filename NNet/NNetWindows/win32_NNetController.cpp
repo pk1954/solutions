@@ -130,11 +130,11 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDD_ARROWS_ON:
-        m_pMainWindow->ShowArrows( tBoolOp::opTrue );
+        m_pMainWindow->ShowArrows( true );
         break;
 
     case IDD_ARROWS_OFF:
-        m_pMainWindow->ShowArrows( tBoolOp::opFalse );
+        m_pMainWindow->ShowArrows( false );
         break;
 
     case IDD_SOUND_ON:

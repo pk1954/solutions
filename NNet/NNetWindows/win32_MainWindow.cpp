@@ -41,6 +41,29 @@ void MainWindow::Start
 	m_pNNetCommands        = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
+	m_pArrowAnimation      = new Animation<MicroMeter>
+	( 
+		GetWindowHandle(), 
+		m_arrowSize, 
+		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+		{
+			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
+			pMainWin->m_pArrowAnimation->Next();
+		}
+	);
+
+	m_pCoordAnimation = new Animation<PixelCoordsFp>
+	(
+		GetWindowHandle(), 
+		GetCoord(), 
+		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+		{
+			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
+			pMainWin->m_pCoordAnimation->Next();
+			pMainWin->m_pCoordObservable->NotifyAll( false );
+		}
+	);
+
 }
 
 void MainWindow::Stop( )
@@ -183,47 +206,21 @@ void MainWindow::CenterSelection( )
 	centerAndZoomRect( ShapeList::SelMode::selectedShapes, 2.0f );
 }
 
-bool const MainWindow::ShowArrows( ) const
+bool const MainWindow::ArrowsVisible( ) const
 {
 	return m_arrowSizeTarget > 0._MicroMeter;
 }
 
-void MainWindow::ShowArrows( tBoolOp const op )
+void MainWindow::ShowArrows( bool const op )
 {
 	MicroMeter olVal { m_arrowSizeTarget };
-	switch ( op )
-	{
-	case tBoolOp::opFalse:
-		m_arrowSizeTarget = 0._MicroMeter;
-		break;
-
-	case tBoolOp::opNoChange:
-		break;
-
-	case tBoolOp::opToggle:
-		m_arrowSizeTarget = (m_arrowSizeTarget > 0._MicroMeter) ? STD_ARROW_SIZE : 0._MicroMeter;
-		break;
-
-	case tBoolOp::opTrue:
+	if ( op )
 		m_arrowSizeTarget = STD_ARROW_SIZE;
-		break;
-
-	default:
-		assert( false );
-	}
+	else 
+		m_arrowSizeTarget = 0._MicroMeter;
 
 	if ( m_arrowSizeTarget != olVal )
-		m_arrowAnimation.Start
-		(
-			GetWindowHandle(), 
-			m_arrowSize, 
-			m_arrowSizeTarget, 
-			[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
-			{
-				auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-				pMainWin->m_arrowAnimation.Next();
-			}
-		);
+		m_pArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -381,19 +378,7 @@ void MainWindow::centerAndZoomRect
 		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) - 
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
-
-	m_coordAnimation.Start
-	(
-		GetWindowHandle(), 
-		GetCoord(), 
-		coordTarget, 
-		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
-		{
-			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-			pMainWin->m_coordAnimation.Next();
-			pMainWin->m_pCoordObservable->NotifyAll( false );
-		}
-	);
+	m_pCoordAnimation->Start( GetCoord(), coordTarget );
 }
 
 void MainWindow::OnPaint( )

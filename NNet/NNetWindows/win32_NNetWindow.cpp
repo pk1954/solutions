@@ -56,22 +56,18 @@ void NNetWindow::Start
 	m_pMonitorWindow  = & monitorWindow;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
-	m_beaconAnimation.Start
+	m_pBeaconAnimation = new Animation<float> 
 	(
 		GetWindowHandle(), 
 		m_fRelBeaconSize, 
-		1.0f, 
         [](HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart)
 		{
 			auto pNNetWin { GetWinPtr<NNetWindow>( hwnd ) };
-        	pNNetWin->m_beaconAnimation.Next();
-			if ( pNNetWin->m_beaconAnimation.TargetReached() )
-			{
-        		pNNetWin->m_fRelBeaconSize = 0.0f;
-				pNNetWin->m_beaconAnimation.Restart();
-			}
+			if ( pNNetWin->m_pBeaconAnimation->Next() )
+				pNNetWin->m_pBeaconAnimation->Start( 0.0f, 1.0f );
 		}
 	);
+	m_pBeaconAnimation->Start( 0.0f, 1.0f );
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 

@@ -145,7 +145,7 @@ void NNetAppMenu::Notify( bool const bImmediately )
     enable( IDM_PARAM_WINDOW,   m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
     enable( IDM_PERF_WINDOW,    m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
 
-    m_pOnOffArrows   ->enableOnOff( m_pMainWindow->ShowArrows() );
+    m_pOnOffArrows   ->enableOnOff( m_pMainWindow->ArrowsVisible() );
     m_pOnOffSound    ->enableOnOff( m_pSound->IsOn() );
     m_pOnOffAutoOpen ->enableOnOff( AutoOpen::IsOn() );
 

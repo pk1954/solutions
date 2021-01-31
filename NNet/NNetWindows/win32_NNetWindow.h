@@ -62,8 +62,7 @@ public:
 
 protected:
 
-	virtual void OnPaint( );
-	//virtual bool OnTimer      ( WPARAM const, LPARAM const );
+	virtual void OnPaint      ( );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
@@ -80,10 +79,10 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	MonitorWindow const * m_pMonitorWindow { nullptr };
-	NNetController      * m_pController    { nullptr };
-	D2D_DrawContext       m_context        { };
-	float                 m_fRelBeaconSize { 0.0f };
-	Animation<float>      m_beaconAnimation;
+	Animation<float>    * m_pBeaconAnimation { nullptr };
+	MonitorWindow const * m_pMonitorWindow   { nullptr };
+	NNetController      * m_pController      { nullptr };
+	D2D_DrawContext       m_context          { };
+	float                 m_fRelBeaconSize   { 0.0f };
 	fPixel                m_fPixRadiusLimit;
 };
