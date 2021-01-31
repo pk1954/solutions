@@ -46,23 +46,17 @@ void MainWindow::Start
 	m_upArrowAnimation     = make_unique<Animation<MicroMeter>>
 	( 
 		GetWindowHandle(), 
-		m_arrowSize, 
-		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
-		{
-			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-			pMainWin->m_upArrowAnimation->Next();
-		}
+		m_arrowSize,
+		nullptr
 	);
 
 	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
 	(
 		GetWindowHandle(), 
 		GetCoord(), 
-		[]( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+		[](HWND const hwnd, bool const bTargetReached) 
 		{
-			auto pMainWin { GetWinPtr<MainWindow>( hwnd ) };
-			pMainWin->m_upCoordAnimation->Next();
-			pMainWin->m_pCoordObservable->NotifyAll( false );
+			GetWinPtr<MainWindow>(hwnd)->m_pCoordObservable->NotifyAll(false); 
 		}
 	);
 
@@ -371,13 +365,13 @@ void MainWindow::centerAndZoomRect
 {
 	MicroMeterRect umRect { m_pNMRI->GetShapes().CalcEnclosingRect( mode ) };
 	PixelCoordsFp  coordTarget;
-	coordTarget.SetPixelSize
+	coordTarget.SetPixelSize  // do not change order!
 	( 
 		GetCoord().ComputeZoom( umRect.Scale( NEURON_RADIUS ), GetClRectSize(), fRatioFactor ) 
 	);
-	coordTarget.SetPixelOffset
+	coordTarget.SetPixelOffset // do not change order! 
 	( 
-		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) - 
+		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) -  // SetPixelSize result is used here  
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
 	m_upCoordAnimation->Start( GetCoord(), coordTarget );

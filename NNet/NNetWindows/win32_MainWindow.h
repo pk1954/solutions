@@ -78,12 +78,12 @@ private:
 	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter m_arrowSize       { m_arrowSizeTarget };
 
-	MicroMeterRect             m_rectSelection        { };
-	ShapeId                    m_shapeTarget          { };
-	ShapeId                    m_shapeHighlighted     { };
-	Observable               * m_pCoordObservable     { nullptr };
-	Observable               * m_pCursorPosObservable { nullptr };
-	NNetModelCommands        * m_pNNetCommands        { nullptr };
+	MicroMeterRect      m_rectSelection        { };
+	ShapeId             m_shapeTarget          { };
+	ShapeId             m_shapeHighlighted     { };
+	Observable        * m_pCoordObservable     { nullptr };
+	Observable        * m_pCursorPosObservable { nullptr };
+	NNetModelCommands * m_pNNetCommands        { nullptr };
 
 	unique_ptr<Animation<MicroMeter>>    m_upArrowAnimation;
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;

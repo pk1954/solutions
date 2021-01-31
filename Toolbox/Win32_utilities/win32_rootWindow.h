@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include <vector>
 #include "Windowsx.h"
 #include "commctrl.h"
 #include "PixelTypes.h"
@@ -14,6 +15,7 @@
 
 using std::chrono::milliseconds;
 using std::function;
+using std::vector;
 
 inline LONG_PTR GetUserDataPtr( HWND hwnd )               { return GetWindowLongPtr( hwnd, GWLP_USERDATA ); }
 inline void     SetUserDataPtr( HWND hwnd, LONG_PTR ptr ) { (void) SetWindowLongPtr( hwnd, GWLP_USERDATA, ptr ); }
@@ -196,7 +198,15 @@ public:
 
 	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
 
-	UINT_PTR const GetTimerId() { return ++m_idTimerLastUsed; }
+	unsigned int const AddSlot( void * const pVoid )
+	{ 
+		m_appDefinedSlots.push_back(pVoid);
+		return Cast2UnsignedInt(m_appDefinedSlots.size());
+	}
+	void * GetSlot( UINT_PTR const uiSlotNr ) 
+	{ 
+		return m_appDefinedSlots.at(uiSlotNr-1); 
+	}
 
 protected:
 
@@ -218,7 +228,7 @@ private:
 	tOnOffAuto          m_visibilityMode      { tOnOffAuto::on };
 	function<bool()>    m_visibilityCriterion { nullptr };
 	bool                m_bShowRefreshRateDlg { true };
-	UINT_PTR            m_idTimerLastUsed     { 0 };
+	vector<void *>      m_appDefinedSlots     {};
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;
@@ -233,3 +243,4 @@ private:
 };
 
 RootWindow * GetRootWindow( HWND const );
+void       * GetSlot(HWND const, UINT_PTR const);

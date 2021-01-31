@@ -60,11 +60,10 @@ void NNetWindow::Start
 	(
 		GetWindowHandle(), 
 		m_fRelBeaconSize, 
-        [](HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart)
+        [](HWND const hwnd, bool const bTargetReached)
 		{
-			auto pNNetWin { GetWinPtr<NNetWindow>( hwnd ) };
-			if ( pNNetWin->m_pBeaconAnimation->Next() )
-				pNNetWin->m_pBeaconAnimation->Start( 0.0f, 1.0f );
+			if ( bTargetReached )
+				GetWinPtr<NNetWindow>(hwnd)->m_pBeaconAnimation->Start( 0.0f, 1.0f );
 		}
 	);
 	m_pBeaconAnimation->Start( 0.0f, 1.0f );

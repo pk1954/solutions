@@ -13,8 +13,17 @@ class PixelCoordsFp
 public:
 
 	PixelCoordsFp()
-	  : m_fPixOffset( 0.0_fPixel ),
-		m_pixelSize ( DEFAULT_PIXEL_SIZE )
+		: m_fPixOffset( 0.0_fPixel ),
+		  m_pixelSize ( DEFAULT_PIXEL_SIZE )
+	{}
+
+	PixelCoordsFp
+	(	
+		fPixelPoint const fPixOffset,
+		MicroMeter  const pixelSize
+	)
+		: m_fPixOffset(fPixOffset),
+		  m_pixelSize ()
 	{}
 
 	void Reset( )
