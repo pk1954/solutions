@@ -39,6 +39,24 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
+	virtual BaseKnot & operator*=(float const f)
+	{
+		m_circle *= f;
+		return * this;
+	}
+
+	virtual BaseKnot & operator+=(BaseKnot const &rhs)
+	{
+		m_circle += rhs.GetPosition();
+		return * this;
+	}
+
+	virtual BaseKnot & operator-=(BaseKnot const &rhs)
+	{
+		m_circle += rhs.GetPosition();
+		return * this;
+	}
+
 	virtual void Dump         ( ) const;
 	virtual void CheckShape   ( ) const;
 	virtual void Prepare      ( );

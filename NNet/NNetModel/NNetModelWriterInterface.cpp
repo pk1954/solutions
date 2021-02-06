@@ -26,9 +26,9 @@ void NNetModelWriterInterface::CreateInitialShapes( )
 	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upNeuron.get() ) };
 	upInputNeuron ->m_connections.AddOutgoing( upNewPipe.get() );
 	upNeuron->m_connections.AddIncoming( upNewPipe.get() );
-	GetShapes().Push( move(upInputNeuron) );
-	GetShapes().Push( move(upNeuron) );       
-	GetShapes().Push( move(upNewPipe) );      
+	GetUPShapes().Push( move(upInputNeuron) );
+	GetUPShapes().Push( move(upNeuron) );       
+	GetUPShapes().Push( move(upNewPipe) );      
 }
 
 Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )     
@@ -49,7 +49,7 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 
 void NNetModelWriterInterface::SelectBeepers() 
 { 
-	GetShapes().Apply2All<Neuron>
+	GetUPShapes().Apply2All<Neuron>
 	( 
 		[&](Neuron &n) 
 		{ 
@@ -61,7 +61,7 @@ void NNetModelWriterInterface::SelectBeepers()
 
 void NNetModelWriterInterface::RemoveOrphans( )
 {
-	GetShapes().Apply2All<Knot>                              
+	GetUPShapes().Apply2All<Knot>                              
 	(                                                        
 		[&]( Knot const & knot )                  
 		{

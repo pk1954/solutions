@@ -17,6 +17,7 @@ class CommandStack;
 class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
+class MicroMeterPointVector;
 
 struct SoundDescr;
 
@@ -41,7 +42,6 @@ public:
     void AddModel            ( );
     void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
-    void Align               ( );
     void AnalyzeAnomalies    ( );
     void AnalyzeLoops        ( );
     void AppendInputNeuron   ( ShapeId const );
@@ -64,6 +64,7 @@ public:
     void SelectShape         ( ShapeId const, tBoolOp const );
     void SelectShapesInRect  ( MicroMeterRect const &, bool const );
     void SelectSubtree       ( ShapeId const, tBoolOp const );
+    void SetBaseKnots        ( MicroMeterPointVector & );
     void SetParameter        ( ParameterType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );
     void SetTriggerSound     ( ShapeId const, SoundDescr const & );
@@ -71,6 +72,9 @@ public:
 
     void UndoCommand();
     void RedoCommand();
+
+    void OpenSeries ();
+    void CloseSeries();
 
 private:
     void deleteShape( ShapeId const );

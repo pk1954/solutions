@@ -40,7 +40,8 @@ public:
     {
         POS_TYPE p01 { p0     - l.m_p1 };
         POS_TYPE p12 { l.m_p1 - l.m_p2 };
-        return p01.GetX() * p12.GetYvalue() - p01.GetY() * p12.GetXvalue() / l.Length();
+        BASE_TYPE res =  p01.GetX() * p12.GetYvalue() - p01.GetY() * p12.GetXvalue() / l.Length();
+        return res;
     }
 
 private:

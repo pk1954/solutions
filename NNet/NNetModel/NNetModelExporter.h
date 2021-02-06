@@ -17,7 +17,7 @@ class Param;
 class Script;
 class Pipe;
 class Shape;
-class ShapeList;
+class UPShapeList;
 class Observable;
 class ModelDescription;
 class NNetModelReaderInterface;

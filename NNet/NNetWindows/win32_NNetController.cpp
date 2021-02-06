@@ -201,27 +201,27 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_ADD_IMPORTED_MODEL:
-        m_pModelCommands->AddModel( );
+        m_pModelCommands->AddModel();
         break;
 
     case IDM_ALIGN_SELECTION:
-        m_pModelCommands->Align( );
+        m_pMainWindow->AlignSelection();
         break;
 
     case IDM_COPY_SELECTION:
-        m_pModelCommands->CopySelection( );
+        m_pModelCommands->CopySelection();
         break;
 
     case IDM_DELETE_SELECTION:
-        m_pModelCommands->DeleteSelection( );
+        m_pModelCommands->DeleteSelection();
         break;
 
     case IDM_CLEAR_BEEPERS:
-        m_pModelCommands->ClearBeepers( );
+        m_pModelCommands->ClearBeepers();
         break;
 
     case IDM_SELECT_ALL_BEEPERS:
-        m_pModelCommands->SelectAllBeepers( );
+        m_pModelCommands->SelectAllBeepers();
         break;
 
     case IDD_PULSE_RATE:

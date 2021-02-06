@@ -8,7 +8,7 @@
 #include "script.h"
 #include "errhndl.h"
 #include "NNetModelWriterInterface.h"
-#include "ShapeList.h"
+#include "UPShapeList.h"
 
 using std::to_wstring;
 using std::wcout;
@@ -21,16 +21,16 @@ struct ShapeException: public exception
 class NNetErrorHandler : public ShapeErrorHandler
 {
 public:
-    NNetErrorHandler( Script * const pScript, ShapeList const * const pList )
+    NNetErrorHandler( Script * const pScript, UPShapeList const * const pList )
         : m_pScript( pScript ),
           m_pList( pList )
     {}
 
     static void CheckShapeId
     ( 
-        Script          & script, 
-        ShapeList const & list,
-        ShapeId   const   id 
+        Script            & script, 
+        UPShapeList const & list,
+        ShapeId     const   id 
     )
     {        
         Scanner & scanner    { script.GetScanner() };
@@ -59,15 +59,15 @@ public:
     }
 
 private:
-    Script          * const m_pScript;
-    ShapeList const * const m_pList;
+    Script            * const m_pScript;
+    UPShapeList const * const m_pList;
 };
 
 inline bool ProcessNNetScript
 ( 
-    Script      & script,
-    ShapeList   & shapeList,
-    wstring const wstrPath
+    Script        & script,
+    UPShapeList   & shapeList,
+    wstring   const wstrPath
 ) 
 {
     bool bSuccess { false };

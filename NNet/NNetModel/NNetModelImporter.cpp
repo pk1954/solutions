@@ -30,7 +30,7 @@ public:
 protected:
     NNetModelWriterInterface & GetWriterInterface() const { return m_modelImporter.getWriterInterface(); }
     MonitorData              & GetMonitorData()     const { return m_modelImporter.getWriterInterface().GetMonitorData(); }
-    ShapeList                & GetShapes()          const { return m_modelImporter.getWriterInterface().GetShapes(); }
+    UPShapeList              & GetUPShapes()        const { return m_modelImporter.getWriterInterface().GetUPShapes(); }
 
     NNetModelImporter & m_modelImporter;
 };
@@ -76,7 +76,7 @@ public:
         if ( upShape )
         {
             upShape->SetId( idFromScript );
-            GetShapes().SetShape2Slot( idFromScript, move(upShape) );
+            GetUPShapes().SetShape2Slot( idFromScript, move(upShape) );
         }
     }
 
@@ -152,7 +152,7 @@ public:
     {
         script.ScrReadSpecial( L'=' );
         long lNrOfShapes { script.ScrReadLong() };
-        GetShapes().Resize( GetShapes().Size() + lNrOfShapes );
+        GetUPShapes().Resize( GetUPShapes().Size() + lNrOfShapes );
     }
 };
 
@@ -277,7 +277,7 @@ void NNetModelImporter::import( )
 {
     ImportTermination::Result res;
 
-    if ( ProcessNNetScript( * m_pScript, m_ImportedNMWI.GetShapes(), m_wstrFile2Read ) )
+    if ( ProcessNNetScript( * m_pScript, m_ImportedNMWI.GetUPShapes(), m_wstrFile2Read ) )
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );

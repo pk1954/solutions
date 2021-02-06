@@ -22,7 +22,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		ShapeList & list { nmwi.GetShapes() };
+		UPShapeList & list { nmwi.GetUPShapes() };
 		SelectionCommand::Do( nmwi );
 		if ( m_bClearSelection )
 			list.SelectAllShapes( tBoolOp::opFalse );

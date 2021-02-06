@@ -6,12 +6,16 @@
 #include "MoreTypes.h"
 #include "Resource.h"
 #include "Signal.h"
+#include "MicroMeterPointVector.h"
 #include "Neuron.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
+
+#include "LineType.h"
+#include "NNetModelWriterInterface.h"
 
 using std::make_unique;
 
@@ -43,7 +47,8 @@ void MainWindow::Start
 	m_pNNetCommands        = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_upArrowAnimation     = make_unique<ArrowAnimation>
+
+	m_upArrowAnimation = make_unique<ArrowAnimation>
 	( 
 		GetWindowHandle(), 
 		m_arrowSize,
@@ -57,6 +62,18 @@ void MainWindow::Start
 		[](MainWindow * const pWin, bool const bTargetReached) 
 		{
 			pWin->m_pCoordObservable->NotifyAll(false); 
+		}
+	);
+
+	m_upShapeAnimation = make_unique<ShapeAnimation>
+	(
+		GetWindowHandle(), 
+		m_shapes2Animate,
+		[](MainWindow * const pWin, bool const bTargetReached) 
+		{
+			pWin->m_pNNetCommands->SetBaseKnots( pWin->m_shapes2Animate );
+			//if ( bTargetReached )
+			//	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 		}
 	);
 
@@ -194,12 +211,112 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 
 void MainWindow::CenterModel( )
 {
-	centerAndZoomRect( ShapeList::SelMode::allShapes, 1.2f ); // give 20% more space (looks better)
+	centerAndZoomRect( UPShapeList::SelMode::allShapes, 1.2f ); // give 20% more space (looks better)
 }
 
 void MainWindow::CenterSelection( )
 {
-	centerAndZoomRect( ShapeList::SelMode::selectedShapes, 2.0f );
+	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
+}
+
+void MainWindow::AlignSelection( )
+{
+	m_shapes2Animate.Clear();
+	m_pNMRI->GetUPShapes().Apply2AllSelected<BaseKnot>
+	( 
+		[&](BaseKnot const & k) { m_shapes2Animate.Add(k.GetPosition()); } 
+	);
+	m_upShapeAnimation = make_unique<ShapeAnimation>
+	(
+		GetWindowHandle(), 
+		m_shapes2Animate,
+		[](MainWindow * const pWin, bool const bTargetReached) 
+		{
+			pWin->m_pNNetCommands->SetBaseKnots( pWin->m_shapes2Animate );
+			if ( bTargetReached )
+			{
+				pWin->m_pNNetCommands->CloseSeries();
+			//	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+			}
+		}
+	);
+
+	MicroMeterPointVector target { alignedShapes() };
+
+	m_pNNetCommands->OpenSeries();
+	m_upShapeAnimation->Start( m_shapes2Animate, target );
+}
+
+MicroMeterPointVector MainWindow::alignedShapes( )
+{
+	BaseKnot const * pStart { nullptr };
+	BaseKnot const * pEnd   { nullptr };
+
+	MicroMeterPointVector origin;
+	MicroMeterPointVector target;
+
+	struct AL_PNT
+	{
+		BaseKnot const * pBaseKnot;
+		MicroMeter umDist;
+	};
+	vector<AL_PNT> points;
+
+	// make lokal copy of selection, sorting out pipes
+	m_pNMRI->GetUPShapes().Apply2All<Shape>
+	( 
+		[&](Shape const & s)
+		{ 
+			if ( s.IsSelected() && s.IsAnyNeuron() )
+				points.push_back( AL_PNT{ static_cast<BaseKnot const *>(&s), 0.0_MicroMeter } );
+		} 
+	);
+
+	if ( points.size() > 3 )
+	{
+		// find 2 baseknots (START/END) with maximum distance
+
+		MicroMeter umMaxDist { 0.0_MicroMeter };
+		for ( auto & it1 : points )
+			for ( auto & it2 : points )
+			{
+				MicroMeter umDist { Distance( it1.pBaseKnot->GetPosition(), it2.pBaseKnot->GetPosition() ) };
+				if ( umDist > umMaxDist )
+				{
+					umMaxDist = umDist;
+					pStart = it1.pBaseKnot;
+					pEnd   = it2.pBaseKnot;
+				}
+			}
+
+		// for every other baseknot compute position on line START to END
+
+		LineType<MicroMeter> line      { pStart->GetPosition(), pEnd->GetPosition() };
+		LineType<MicroMeter> orthoLine { pStart->GetPosition(), line.OrthoVector() };
+		for ( auto & it : points )
+			it.umDist = PointToLine( orthoLine, it.pBaseKnot->GetPosition() );
+
+		// sort baseknots according to position
+
+		sort( points.begin(), points.end(), [](auto p1, auto p2){ return p1.umDist < p2.umDist; } );
+
+		for ( auto & it : points )
+			origin.Add( it.pBaseKnot->GetPosition() );
+
+		// compute tightly packed positions
+
+		float           fNrOfPoints       { Cast2Float(points.size()) };
+		MicroMeter      umOriginLength    { line.Length() };
+		MicroMeter      umTargetLength    { NEURON_RADIUS * 2.0f * fNrOfPoints };
+		MicroMeterPoint umPntPackedSingle { line.GetVector() * (umTargetLength / umOriginLength) / fNrOfPoints };
+		MicroMeterPoint umPntTargetCenter { (pEnd->GetPosition() + pStart->GetPosition()) * 0.5f };
+		MicroMeterPoint umPntTargetStart  { umPntTargetCenter - umPntPackedSingle * fNrOfPoints * 0.5f };
+		MicroMeterPoint umPntTargetEnd    { umPntTargetCenter + umPntPackedSingle * fNrOfPoints * 0.5f };
+
+		for ( int i = 0; i < points.size(); ++i )
+			target.Add( umPntTargetStart + umPntPackedSingle * static_cast<float>(i) );
+	}
+	return target;
 }
 
 bool const MainWindow::ArrowsVisible( ) const
@@ -359,11 +476,11 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::centerAndZoomRect
 ( 
-	ShapeList::SelMode const mode, 
-	float              const fRatioFactor 
+	UPShapeList::SelMode const mode, 
+	float                const fRatioFactor 
 )
 {
-	MicroMeterRect umRect { m_pNMRI->GetShapes().CalcEnclosingRect( mode ) };
+	MicroMeterRect umRect { m_pNMRI->GetUPShapes().CalcEnclosingRect( mode ) };
 	PixelCoordsFp  coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	( 

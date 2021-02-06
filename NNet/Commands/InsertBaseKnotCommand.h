@@ -38,14 +38,14 @@ public:
 		}
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
 		m_pPipe2Split->SetStartKnot( m_upBaseKnot.get() );
-		nmwi.GetShapes().Push( move(m_upBaseKnot) );
-		nmwi.GetShapes().Push( move(m_upPipeNew) );
+		nmwi.GetUPShapes().Push( move(m_upBaseKnot) );
+		nmwi.GetUPShapes().Push( move(m_upPipeNew) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upPipeNew  = nmwi.GetShapes().Pop<Pipe>();
-		m_upBaseKnot = nmwi.GetShapes().Pop<T>();
+		m_upPipeNew  = nmwi.GetUPShapes().Pop<Pipe>();
+		m_upBaseKnot = nmwi.GetUPShapes().Pop<T>();
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 	}

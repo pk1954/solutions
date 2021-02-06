@@ -34,6 +34,7 @@
 #include "SelectShapeCommand.h"
 #include "SelectShapesInRectCommand.h"
 #include "SelectSubtreeCommand.h"
+#include "SetBaseKnotsCommand.h"
 #include "SetParameterCommand.h"
 #include "SetPulseRateCommand.h"
 #include "SetTriggerSoundCommand.h"
@@ -62,6 +63,16 @@ void NNetModelCommands::Initialize
 	m_pModelImporter          = pModelImporter;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pCmdStack               = pCmdStack;
+}
+
+void NNetModelCommands::OpenSeries() 
+{ 
+	m_pCmdStack->OpenSeries (); 
+}
+
+void NNetModelCommands::CloseSeries() 
+{ 
+	m_pCmdStack->CloseSeries(); 
 }
 
 void NNetModelCommands::UndoCommand( )
@@ -101,10 +112,10 @@ void NNetModelCommands::DeleteSelection( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << endl;
-	m_pCmdStack->OpenSeries();
+	OpenSeries();
 	{
 		vector<ShapeId> list;                  // detour with secondary list is neccessary!
-		m_pNMWI->GetShapes().Apply2All<Shape>  // cannot delete shapes directly in Apply2All
+		m_pNMWI->GetUPShapes().Apply2All<Shape>  // cannot delete shapes directly in Apply2All
 		(                                                 
 			[&]( Shape const & s )             // first construct list
 			{
@@ -117,7 +128,7 @@ void NNetModelCommands::DeleteSelection( )
 			deleteShape( id );                 // and delete shapes in model
 		}                                      // using ids from list
 	}
-	m_pCmdStack->CloseSeries();
+	CloseSeries();
 }
 
 void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
@@ -198,18 +209,18 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 	m_pCmdStack->PushCommand( make_unique<MoveSelectionCommand>( delta ) );
 }
 
-void NNetModelCommands::Align( )
+void NNetModelCommands::SetBaseKnots( MicroMeterPointVector & list )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AlignCommand>( * m_pNMWI ) );
+	m_pCmdStack->PushCommand( make_unique<SetBaseKnotsCommand>( * m_pNMWI, list ) );
 }
 
 void NNetModelCommands::AddModel( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetShapes() ) );
+	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetUPShapes() ) );
 }
 
 void NNetModelCommands::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )

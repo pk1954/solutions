@@ -24,7 +24,7 @@ class Script;
 class Pipe;
 class Shape;
 class NNetModel;
-class ShapeList;
+class UPShapeList;
 class Observable;
 class WrapBase;
 

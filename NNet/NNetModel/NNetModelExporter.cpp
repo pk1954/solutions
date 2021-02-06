@@ -81,13 +81,13 @@ void NNetModelExporter::writeShapes( wostream & out )
     }
     out << L"NrOfShapes = " << idCompact << endl;
     out << endl;
-    m_pNMRI->GetShapes().Apply2All<BaseKnot>( [&]( BaseKnot const & shape ) { writeShape( out, shape ); } );
-    m_pNMRI->GetShapes().Apply2All<Pipe    >( [&]( Pipe     const & shape ) { writeShape( out, shape ); } );
+    m_pNMRI->GetUPShapes().Apply2All<BaseKnot>( [&]( BaseKnot const & shape ) { writeShape( out, shape ); } );
+    m_pNMRI->GetUPShapes().Apply2All<Pipe    >( [&]( Pipe     const & shape ) { writeShape( out, shape ); } );
 }
 
 void NNetModelExporter::writeShapeParameters( wostream & out )
 {
-    m_pNMRI->GetShapes().Apply2All<InputNeuron>
+    m_pNMRI->GetUPShapes().Apply2All<InputNeuron>
     (
         [&]( InputNeuron const & inpNeuron )
         { 
@@ -101,7 +101,7 @@ void NNetModelExporter::writeShapeParameters( wostream & out )
 
 void NNetModelExporter::writeTriggerSounds( wostream & out )
 {
-    m_pNMRI->GetShapes().Apply2All<Neuron>
+    m_pNMRI->GetUPShapes().Apply2All<Neuron>
     ( 
         [&]( Neuron const & neuron ) 
         { 

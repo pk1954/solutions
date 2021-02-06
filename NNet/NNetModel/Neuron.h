@@ -14,6 +14,9 @@
 
 class DrawContext;
 
+using std::unique_ptr;
+using std::make_unique;
+
 class Neuron : public BaseKnot
 {
 public:
@@ -25,10 +28,7 @@ public:
 
 	virtual ~Neuron();
 
-	static void SetSound( Sound * const pSound )
-	{
-		m_pSound = pSound;
-	}
+	//virtual unique_ptr<Neuron> MakeCopy() const { return make_unique<Neuron>(*this); };
 
 	virtual bool operator==( Shape const & ) const override;
 
@@ -59,6 +59,8 @@ public:
 	virtual void Clear( );
 	virtual bool CompStep( );
 	virtual mV   GetNextOutput( ) const;
+
+	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };

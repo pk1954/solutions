@@ -188,6 +188,7 @@
     <ClInclude Include="AnimationInterface.h" />
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
+    <ClInclude Include="MicroMeterPointVector.h" />
     <ClInclude Include="Connections.h" />
     <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="DrawContext.h" />
@@ -211,7 +212,6 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PipeList.h" />
     <ClInclude Include="ShapeErrorHandler.h" />
-    <ClInclude Include="ShapeList.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
     <ClInclude Include="scale.h" />
@@ -227,6 +227,7 @@
     <ClInclude Include="ShapeType.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="TrackNr.h" />
+    <ClInclude Include="UPShapeList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
@@ -251,11 +252,11 @@
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="ShapeList.cpp" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="ShapeType.cpp" />
     <ClCompile Include="Track.cpp" />
+    <ClCompile Include="UPShapeList.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

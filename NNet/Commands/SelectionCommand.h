@@ -19,7 +19,7 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			nmwi.GetShapes().Apply2All<Shape>
+			nmwi.GetUPShapes().Apply2All<Shape>
 			( 
 				[&]( Shape & s )
 				{ 
@@ -33,7 +33,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
-		ShapeList & shapeList { nmwi.GetShapes() };
+		UPShapeList & shapeList { nmwi.GetUPShapes() };
 		shapeList.SelectAllShapes( tBoolOp::opFalse );
 		for (Shape * const pShape : m_selectedShapes)    
 		{ 

@@ -14,14 +14,19 @@ class DrawContext;
 class PixelCoordsFp;
 class NNetModel;
 
+using std::unique_ptr;
+using std::make_unique;
+
 class Knot : public BaseKnot
 {
 public:
 	Knot( MicroMeterPoint const center )
-	  : BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
+		: BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
 	{ }
 
 	virtual ~Knot() {}
+
+	//virtual unique_ptr<Knot> MakeCopy() const { return make_unique<Knot>(*this); };
 
 	void CheckShape( ) const;
 

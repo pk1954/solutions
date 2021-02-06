@@ -16,7 +16,7 @@
 #include "ModelDescription.h"
 #include "MonitorData.h"
 #include "ShapeErrorHandler.h"
-#include "ShapeList.h"
+#include "UPShapeList.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
 
@@ -56,7 +56,7 @@ public:
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	ShapeList   const & GetShapes( )       const { return m_Shapes; }
+	UPShapeList const & GetUPShapes( )     const { return m_Shapes; }
 	MonitorData const & GetMonitorData( )  const { return m_monitorData; }
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
@@ -73,7 +73,7 @@ public:
 	float SetParam( ParameterType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, tBoolOp const );
 
-	ShapeList   & GetShapes()      { return m_Shapes; }
+	UPShapeList & GetUPShapes()    { return m_Shapes; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
@@ -85,7 +85,7 @@ public:
 
 private:
 
-	ShapeList        m_Shapes;
+	UPShapeList      m_Shapes;
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;

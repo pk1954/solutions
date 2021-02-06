@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "ShapeList.h"
+#include "UPShapeList.h"
 #include "SelectionCommand.h"
 #include "NNetModelWriterInterface.h"
 
@@ -12,26 +12,26 @@ class AddModelCommand : public SelectionCommand
 {
 public:
 
-	AddModelCommand( ShapeList const & list )
+	AddModelCommand( UPShapeList const & list )
 	{ 
-		m_shapeList = list;
-		m_shapeList.SelectAllShapes( tBoolOp::opTrue );
+		m_UPShapeList = list;
+		m_UPShapeList.SelectAllShapes( tBoolOp::opTrue );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );
-		m_idList = nmwi.GetShapes().Append( m_shapeList );
+		nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );
+		m_idList = nmwi.GetUPShapes().Append( m_UPShapeList );
 	}
 
 	virtual void Undo( NNetModelWriterInterface  & nmwi ) 
 	{ 
-		m_shapeList = nmwi.GetShapes().ExtractShapes( m_idList );
+		m_UPShapeList = nmwi.GetUPShapes().ExtractShapes( m_idList );
 		SelectionCommand::Undo( nmwi );
 	}
 
 private:
-	ShapeList       m_shapeList;
+	UPShapeList     m_UPShapeList;
 	vector<ShapeId> m_idList;
 };

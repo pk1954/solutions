@@ -22,7 +22,7 @@ private:
 
 		static SelShapesIndex const SSI_NULL( SelShapesIndex::NULL_VAL() );
 
-		long          lSizeOfModel { nmwi.GetShapes().Size() };
+		long          lSizeOfModel { nmwi.GetUPShapes().Size() };
 		SSIndexVector indexList( lSizeOfModel, SSI_NULL );      // indices into m_copies
 
 		auto dstFromSrc = [&](Shape const * pSrc )
@@ -39,7 +39,7 @@ private:
 
 		ShapeId idShapeCopy { ShapeId( lSizeOfModel ) };
 
-		nmwi.GetShapes().Apply2AllSelected<Shape>
+		nmwi.GetUPShapes().Apply2AllSelected<Shape>
 		(
 			[&]( Shape & s )
 			{
@@ -51,7 +51,7 @@ private:
 		for ( UPShape & upShapeDst : m_copies )  // link shapes
 		{
 			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
-			nmwi.GetShapes().LinkShape( shapeSrc, dstFromSrc );
+			nmwi.GetUPShapes().LinkShape( shapeSrc, dstFromSrc );
 			upShapeDst->SetId( idShapeCopy++ );
 		}
 		m_iSizeOfSelection = Cast2Int(m_copies.size());
@@ -65,10 +65,10 @@ public:
 			init( nmwi );
 			m_bInitialized = true;
 		}
-		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );  // deselect all
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			nmwi.GetShapes().Push( move(m_copies.back()) ); // add copies (which are already selected)
+			nmwi.GetUPShapes().Push( move(m_copies.back()) ); // add copies (which are already selected)
 			m_copies.pop_back();
 		}
 		assert( m_copies.empty() );
@@ -78,9 +78,9 @@ public:
 	{ 
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			m_copies.push_back(nmwi.GetShapes().Pop<Shape>( ));
+			m_copies.push_back(nmwi.GetUPShapes().Pop<Shape>( ));
 		}
-		nmwi.GetShapes().SelectAllShapes( tBoolOp::opFalse );
+		nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );
 		for ( auto & idShape : m_selectedShapeIds ) 
 		{ 
 			nmwi.SelectShape( idShape, tBoolOp::opTrue ); 

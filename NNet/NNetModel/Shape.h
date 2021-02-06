@@ -34,17 +34,19 @@ static ShapeCrit const ShapeCritAlwaysTrue { [&](Shape const & s) { return true;
 class Shape
 {
 public:
+	static void Initialize( Param const & param ) { m_pParameters = & param; }
+	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
+
 	Shape( ShapeType const );
 	virtual ~Shape() { }
 
-	static void Initialize( Param const & param ) { m_pParameters = & param; }
-	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
+	//virtual UPShape MakeCopy( UPShape const ups ) const = 0;
 
 	virtual void CheckShape() const;
 	virtual void Dump() const;
 
 	virtual bool operator==( Shape const & ) const;
-	
+
 	virtual void IncCounter( ) = 0;
 	virtual void DecCounter( ) = 0;
 
@@ -57,10 +59,7 @@ public:
 	virtual bool IsInRect      ( MicroMeterRect  const & ) const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
 
-	virtual void Select( tBoolOp const op ) 
-	{ 
-		ApplyOp( m_bSelected, op ); 
-	}
+	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
 
 	bool IsSelected( ) const { return m_bSelected; }

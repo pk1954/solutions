@@ -21,12 +21,12 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.GetShapes().Push( move(m_upNeuron) );
+		nmwi.GetUPShapes().Push( move(m_upNeuron) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuron = nmwi.GetShapes().Pop<Neuron>( );
+		m_upNeuron = nmwi.GetUPShapes().Pop<Neuron>( );
 	}
 
 private:

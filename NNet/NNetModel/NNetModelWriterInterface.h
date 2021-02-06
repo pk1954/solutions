@@ -30,13 +30,13 @@ public:
     void          ToggleStopOnTrigger( ShapeId const );
     Shape * const GetShape( ShapeId const );
 
-    ShapeList   & GetShapes()      { return m_pModel->GetShapes(); }
+    UPShapeList & GetUPShapes()    { return m_pModel->GetUPShapes(); }
     Param       & GetParams()      { return m_pModel->GetParams(); }
     MonitorData & GetMonitorData() { return m_pModel->GetMonitorData(); }
 
     void CheckModel( ) { m_pModel->CheckModel(); }
     void ResetModel( ) { m_pModel->ResetModel(); }
-    void ClearModel( ) { m_pModel->GetShapes().Apply2All([&](Shape & s) { s.Clear( ); }); }
+    void ClearModel( ) { m_pModel->GetUPShapes().Apply2All([&](Shape & s) { s.Clear( ); }); }
 
     void DumpModel( ) const { m_pModel->DumpModel(); }
 
@@ -71,14 +71,14 @@ public:
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
         ShapeId id     { up.get()->GetId() };
-        Shape * pShape { m_pModel->GetShapes().ReplaceShape( id, move(up) ) }; 
+        Shape * pShape { m_pModel->GetUPShapes().ReplaceShape( id, move(up) ) }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }
 
     template <Shape_t OLD>
     unique_ptr<OLD> RemoveFromModel( Shape const & shape ) 
     { 
-        UPShape upShape { m_pModel->GetShapes().ExtractShape(shape.GetId()) }; 
+        UPShape upShape { m_pModel->GetUPShapes().ExtractShape(shape.GetId()) }; 
         auto    pShape  { upShape.release() }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }

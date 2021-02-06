@@ -24,7 +24,7 @@ ShapeStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri 
 		m_bStop     = false;
 		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
 		m_shapeStack.clear();
-		if ( nmri.GetShapes().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop( b ); } ) )
+		if ( nmri.GetUPShapes().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop( b ); } ) )
 		{
 			if ( m_bStop )  
 			{
@@ -121,7 +121,7 @@ bool ModelAnalyzer::hasAnomaly( Knot const & knot )
 ShapeStack const ModelAnalyzer::FindAnomaly( NNetModelReaderInterface const & nmri)
 {
 	m_shapeStack.clear();
-	bool const bFound { nmri.GetShapes().Apply2AllB<Knot>( [&](Knot const & k) { return hasAnomaly(k); } ) };
+	bool const bFound { nmri.GetUPShapes().Apply2AllB<Knot>( [&](Knot const & k) { return hasAnomaly(k); } ) };
 	if ( ! bFound )
 		statusDisplay( L"no anomalies found" );
 	return m_shapeStack;

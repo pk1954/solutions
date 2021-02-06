@@ -120,6 +120,9 @@
     <ClInclude Include="AlignCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SetBaseKnotsCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

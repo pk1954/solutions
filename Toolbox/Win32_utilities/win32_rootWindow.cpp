@@ -39,14 +39,12 @@ private:
 
 RootWindow::RootWindow( )
 {
-	m_pRefreshRate = new WindowRefreshRate( this );
+	m_upRefreshRate = std::make_unique<WindowRefreshRate>( this );
 }
 
 RootWindow::~RootWindow( ) 
 { 
-	delete m_pRefreshRate;
-	m_pRefreshRate = nullptr;
-	m_hwnd         = nullptr; 
+	m_hwnd = nullptr; 
 }
 
 void RootWindow::StartRootWindow( function<bool()> const visibilityCriterion )
@@ -122,12 +120,12 @@ void RootWindow::SetWindowHandle( HWND const hwnd )
 
 void RootWindow::SetRefreshRate( milliseconds const msRate ) 
 { 
-	m_pRefreshRate->SetRefreshRate( msRate ); 
+	m_upRefreshRate->SetRefreshRate( msRate ); 
 }
 
 void RootWindow::Notify( bool const bImmediately )
 {
-	m_pRefreshRate->Notify( bImmediately );
+	m_upRefreshRate->Notify( bImmediately );
 }
 
 void RootWindow::SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
@@ -180,7 +178,7 @@ bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		break;
 
 	case IDD_REFRESH_RATE_DIALOG:
-		m_pRefreshRate->RefreshRateDialog( m_hwnd );
+		m_upRefreshRate->RefreshRateDialog( m_hwnd );
 		break;
 
 	default:

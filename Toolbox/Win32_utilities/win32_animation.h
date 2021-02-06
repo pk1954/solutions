@@ -46,7 +46,7 @@ public:
         SetTimer( m_hwnd, m_idTimer, DEFAULT_MILLISECS, timerProc );
     }
 
-    bool          const TargetReached() const { return m_bTargetReached; }
+    bool     const TargetReached() const { return m_bTargetReached; }
     ANIM_PAR const GetTarget()     const { return m_target; }
 
 private:
@@ -55,7 +55,7 @@ private:
 
     void next( )
     {
-        auto pRootWin { GetRootWindow( m_hwnd ) };
+        auto pRootWin { GetRootWindow(m_hwnd) };
         m_bTargetReached = m_smoothMove.Next();
         m_actual = m_start + (m_target - m_start) * m_smoothMove.GetPos();
         if ( m_bTargetReached )

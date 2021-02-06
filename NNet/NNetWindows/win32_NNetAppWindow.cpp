@@ -407,7 +407,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		ProcessNNetScript
 		( 
 		    m_script, 
-			m_nmwi.GetShapes(), 
+			m_nmwi.GetUPShapes(), 
 			ScriptFile::AskForFileName( L"in", L"Script files", tFileMode::read )
 		);
 		break;

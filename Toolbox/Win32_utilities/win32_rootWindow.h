@@ -14,6 +14,7 @@
 #include "win32_util.h"
 
 using std::chrono::milliseconds;
+using std::unique_ptr;
 using std::function;
 using std::vector;
 
@@ -221,10 +222,10 @@ protected:
 private:
 
 	class WindowRefreshRate;
+	unique_ptr<WindowRefreshRate> m_upRefreshRate;
 
 	HWND                m_hwnd                { nullptr };
 	HWND                m_hwndApp             { nullptr };
-	WindowRefreshRate * m_pRefreshRate        { nullptr };
 	tOnOffAuto          m_visibilityMode      { tOnOffAuto::on };
 	function<bool()>    m_visibilityCriterion { nullptr };
 	bool                m_bShowRefreshRateDlg { true };

@@ -23,15 +23,6 @@ using std::endl;
 using std::string;
 using std::wofstream;
 
-class Animation : public AnimationInterface
-{
-public:
-	virtual void Initialize( Observable * const p ) {}
-	virtual void Start( ShapeId const id ) 	{}
-	virtual void Start( MicroMeterCircle const * const pCircle ) {};
-	virtual void Stop( ) {}
-};
-
 class ConsImportTermination : public ImportTermination
 {
 public:
@@ -101,7 +92,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	m_modelImporter.Import( L"std.mod", make_unique<ConsImportTermination>() );
 
-	if ( ProcessNNetScript( m_script, m_nmwi.GetShapes(), wstrInputFile ) )
+	if ( ProcessNNetScript( m_script, m_nmwi.GetUPShapes(), wstrInputFile ) )
 		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";
