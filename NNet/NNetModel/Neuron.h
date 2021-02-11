@@ -28,8 +28,6 @@ public:
 
 	virtual ~Neuron();
 
-	//virtual unique_ptr<Neuron> MakeCopy() const { return make_unique<Neuron>(*this); };
-
 	virtual bool operator==( Shape const & ) const override;
 
 	static unsigned long GetCounter  ( ) { return m_counter; }
@@ -52,8 +50,11 @@ public:
 
 	void       StopOnTrigger( tBoolOp const op ) { ApplyOp( m_bStopOnTrigger, op ); }
 
-	virtual void DrawExterior( DrawContext const &, tHighlightType const ) const;
-	virtual void DrawInterior( DrawContext const &, tHighlightType const ) const;
+	virtual void DrawRectExterior( DrawContext const &, tHighlightType const, MicroMeterPoint const  ) const;
+	virtual void DrawRectInterior( DrawContext const &, tHighlightType const, MicroMeterPoint const  ) const;
+
+	virtual void DrawExterior( DrawContext const &, tHighlightType const) const;
+	virtual void DrawInterior( DrawContext const &, tHighlightType const) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
@@ -80,6 +81,8 @@ private:
 
 	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
 	MicroMeterPoint getAxonHillockPos( ) const;
+
+	void drawRectangularNeuron( DrawContext const &, MicroMeterPoint const &, float const, float const, D2D1::ColorF const ) const;
 
 	inline static unsigned long m_counter { 0L };
 	inline static Sound       * m_pSound  { nullptr };

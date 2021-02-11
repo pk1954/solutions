@@ -51,7 +51,8 @@ void NNetWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_context.Start( hwnd );
+	m_graphics.Initialize( hwnd );
+	m_context.Start( & m_graphics );
 	m_pNMRI             = & modelReaderInterface;
 	m_pMonitorWindow    = & monitorWindow;
 	m_pController       = & controller;

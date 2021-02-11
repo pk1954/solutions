@@ -23,7 +23,6 @@
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
 #include "MoveSelectionCommand.h"
-#include "AlignCommand.h"
 #include "NewInputNeuronCommand.h"
 #include "NewNeuronCommand.h"
 #include "NNetModelImporter.h"

@@ -1,6 +1,6 @@
 // scale.cpp
 //
-// NNetModel
+// NNetWindows
 
 #include "stdafx.h"
 #include <sstream> 

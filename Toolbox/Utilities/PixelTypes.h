@@ -31,11 +31,11 @@ constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 
 /////////////////// fPixel ///////////////////////////////////
 
-using fPixel         = NamedType  < float, struct fPixel_Parameter >;
-using fPixelPoint    = PosType    < fPixel >;
-using fPixelRectSize = SizeType   < fPixel >;
-using fPixelRect     = RectType   < fPixel >;
-using fPixelCircle   = CircleType < fPixel >;
+using fPixel         = NamedType   < float, struct fPixel_Parameter >;
+using fPixelPoint    = PosType     < fPixel >;
+using fPixelRectSize = SizeType    < fPixel >;
+using fPixelRect     = RectType    < fPixel >;
+using fPixelCircle   = CircleType  < fPixel >;
 using fPixelEllipse  = EllipseType < fPixel >;
 
 inline static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!

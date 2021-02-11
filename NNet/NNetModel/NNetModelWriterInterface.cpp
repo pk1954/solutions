@@ -54,7 +54,7 @@ void NNetModelWriterInterface::SelectBeepers()
 		[&](Neuron &n) 
 		{ 
 			if (n.HasTriggerSound()) 
-				n.Select( tBoolOp::opTrue ); 
+				n.Select(); 
 		} 
 	); 
 }

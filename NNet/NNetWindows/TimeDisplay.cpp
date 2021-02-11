@@ -43,9 +43,9 @@ public:
 	}
 
 private:
-	StatusBar                      * m_pStatusBar            { nullptr };
-	NNetModelReaderInterface const * m_pNMRI { nullptr };
-	int                              m_iPartInStatusBar      { -1 };
+	StatusBar                      * m_pStatusBar       { nullptr };
+	NNetModelReaderInterface const * m_pNMRI            { nullptr };
+	int                              m_iPartInStatusBar { -1 };
 };
 
 /////// functions of class TimeDisplay ///////

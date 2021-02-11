@@ -65,7 +65,7 @@ public:
 			init( nmwi );
 			m_bInitialized = true;
 		}
-		nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		nmwi.GetUPShapes().DeselectAllShapes();  
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
 			nmwi.GetUPShapes().Push( move(m_copies.back()) ); // add copies (which are already selected)
@@ -78,12 +78,12 @@ public:
 	{ 
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			m_copies.push_back(nmwi.GetUPShapes().Pop<Shape>( ));
+			m_copies.push_back(nmwi.GetUPShapes().Pop<Shape>());
 		}
-		nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );
+		nmwi.GetUPShapes().DeselectAllShapes();
 		for ( auto & idShape : m_selectedShapeIds ) 
 		{ 
-			nmwi.SelectShape( idShape, tBoolOp::opTrue ); 
+			nmwi.SelectShape(idShape); 
 		}
 	}
 

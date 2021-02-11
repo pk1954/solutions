@@ -245,16 +245,16 @@ void NNetAppWindow::Stop()
 
 	m_computeThread.LockComputation();
 
-	m_timeDisplay         .Stop( );
-	m_mainNNetWindow      .Stop( );
-	m_miniNNetWindow      .Stop( );
-	m_monitorWindow       .Stop( );
-	m_crsrWindow          .Stop( );
-	m_performanceWindow   .Stop( );
-	m_parameterDlg        .Stop( );
-	m_StatusBar           .Stop( );
-	m_nmri                .Stop( );
-	m_nmwi                .Stop( );
+	m_timeDisplay      .Stop( );
+	m_mainNNetWindow   .Stop( );
+	m_miniNNetWindow   .Stop( );
+	m_monitorWindow    .Stop( );
+	m_crsrWindow       .Stop( );
+	m_performanceWindow.Stop( );
+	m_parameterDlg     .Stop( );
+	m_StatusBar        .Stop( );
+	m_nmri             .Stop( );
+	m_nmwi             .Stop( );
 
 	m_staticModelObservable .UnregisterAllObservers( );
 	m_dynamicModelObservable.UnregisterAllObservers( );

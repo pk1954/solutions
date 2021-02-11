@@ -14,8 +14,8 @@
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
-#include "LineType.h"
-#include "NNetModelWriterInterface.h"
+//#include "LineType.h"
+//#include "NNetModelWriterInterface.h"
 
 using std::make_unique;
 
@@ -47,6 +47,7 @@ void MainWindow::Start
 	m_pNNetCommands        = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
+	m_scale.Initialize( & m_graphics, L"m" );
 
 	m_upArrowAnimation = make_unique<ArrowAnimation>
 	( 
@@ -187,7 +188,7 @@ MicroMeterPoint const MainWindow::GetCursorPos( ) const
 bool MainWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPntCenter )
 {
 	PixelPoint      const pixPntCenter    { pPixPntCenter ? * pPixPntCenter : GetClRectCenter() };
-	fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };                      // compute center
+	fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };                         // compute center
 	MicroMeterPoint const umPointcenter   { GetCoordC().Transform2MicroMeterPointPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
 	if ( GetDrawContext().Zoom( newSize )  )
 	{
@@ -195,6 +196,7 @@ bool MainWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPn
 		Notify( false ); 
 		if ( m_pCoordObservable )
 			m_pCoordObservable->NotifyAll( false );
+		m_scale.SetHorzPixelSize( newSize.GetValue() );
 		return true;
 	}
 	else
@@ -291,8 +293,8 @@ MicroMeterPointVector MainWindow::alignedShapes( )
 
 		// for every other baseknot compute position on line START to END
 
-		LineType<MicroMeter> line      { pStart->GetPosition(), pEnd->GetPosition() };
-		LineType<MicroMeter> orthoLine { pStart->GetPosition(), line.OrthoVector() };
+		MicroMeterLine line      { pStart->GetPosition(), pEnd->GetPosition() };
+		MicroMeterLine orthoLine { pStart->GetPosition(), line.OrthoVector() };
 		for ( auto & it : points )
 			it.umDist = PointToLine( orthoLine, it.pBaseKnot->GetPosition() );
 
@@ -347,6 +349,9 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
 	NNetWindow::OnSize( wParam, lParam );
 	m_pCoordObservable->NotifyAll( false );
+	UINT width  = LOWORD(lParam);
+	UINT height = HIWORD(lParam);
+	m_scale.SetClientRectSize( PIXEL(width), PIXEL(height) );
 	return true;
 }
 
@@ -530,7 +535,7 @@ void MainWindow::doPaint( )
 	if ( m_rectSelection.IsNotEmpty( ) )
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
-	context.ShowScale( GetClRectSize() );
+	m_scale.DisplayStaticScale( );
 
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 	{

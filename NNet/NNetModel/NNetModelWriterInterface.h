@@ -26,7 +26,7 @@ public:
     void          CreateInitialShapes();
     void          RemoveOrphans( );
     void          SelectBeepers();
-    void          SelectShape( ShapeId const, tBoolOp const );
+    void          SelectShape( ShapeId const, tBoolOp const = tBoolOp::opTrue );
     void          ToggleStopOnTrigger( ShapeId const );
     Shape * const GetShape( ShapeId const );
 

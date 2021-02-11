@@ -58,47 +58,11 @@ bool InputNeuron::CompStep( )
 	return m_bStopOnTrigger && bTrigger;
 }
 
-//void InputNeuron::drawInputNeuron
-//( 
-//	DrawContext   const & context,  
-//	D2D1::ColorF  const   colF,
-//	float         const   fReductionFactor
-//) const
-//{
-//	MicroMeterPoint const axonVector
-//	{
-//		HasAxon()
-//		? m_connections.GetFirstOutgoing().GetVector( )
-//	    : MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-//	};
-//	MicroMeter      const umHypot    { Hypot( axonVector ) };
-//	MicroMeterPoint const umExtVector{ axonVector * (GetExtension() / umHypot) };
-//	MicroMeterPoint const umCenter   { GetPosition() };
-//	MicroMeterPoint const umStartPnt { umCenter + umExtVector * fReductionFactor };
-//	MicroMeterPoint const umEndPnt   { umCenter - umExtVector };
-//
-//	context.DrawLine( umStartPnt, umEndPnt, GetExtension() * fReductionFactor * 2, colF );
-//}
-//
-//void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
-//{
-//	drawInputNeuron( context, GetExteriorColor( type ), 1.0f );
-//}
-
-//void InputNeuron::DrawInterior( DrawContext const & context ) const
-//{ 
-////	drawInputNeuron( context, GetInteriorColor( ), NEURON_INTERIOR );
-//}
-
 void InputNeuron::drawRectangularNeuron
 ( 
 	DrawContext  const & context, 
 	float        const   M,       // overall width/height                        
-	float        const   W,       // width of left/right section                 
-	float        const   VSM,     // vertical offset of start point (all sections )  
 	float        const   VEM,     // vertical offset of end point middle section 
-	float        const   VSS,     // vertical offset of endpoint left/right sections  
-	float        const   VES,     // vertical offset of endpoint left/right sections  
 	D2D1::ColorF const   colF
 ) const
 {
@@ -108,24 +72,29 @@ void InputNeuron::drawRectangularNeuron
 		? m_connections.GetFirstOutgoing().GetVector( )
 		: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
 	};
-	MicroMeter      const umHypot      { Hypot( axonVector ) };
-	MicroMeterPoint const umExtVector  { axonVector * (GetExtension() / umHypot) };
+	MicroMeterPoint const umExtVector  { Normalize(axonVector) * GetExtension().GetValue() };
 	MicroMeterPoint const umCenter     { GetPosition() };
 	MicroMeterPoint const umOrthoVector{ umExtVector.OrthoVector( GetExtension() ) * 0.7f };
+	MicroMeterPoint const umExtVectorVS{ umExtVector * M * 0.5f };
+	MicroMeter      const umWidthLR    { GetExtension() * (M - 1.4f) };  // width of left/right section                 
+	MicroMeterPoint const umPosL       { umCenter + umExtVectorVS };
+	MicroMeterPoint const umPosR       { umCenter - umExtVectorVS };
 
-	context.DrawLine( umCenter + umExtVector * VSM                , umCenter - umExtVector * VEM                , GetExtension() * M, colF );
-	context.DrawLine( umCenter + umExtVector * VSS + umOrthoVector, umCenter - umExtVector * VES + umOrthoVector, GetExtension() * W, colF );
-	context.DrawLine( umCenter + umExtVector * VSS - umOrthoVector, umCenter - umExtVector * VES - umOrthoVector, GetExtension() * W, colF );
+	context.DrawLine( umPosL,                 umCenter - umExtVector * VEM, GetExtension() * M, colF );
+	context.DrawLine( umPosL + umOrthoVector, umPosR + umOrthoVector,       umWidthLR,          colF );
+	context.DrawLine( umPosL - umOrthoVector, umPosR - umOrthoVector,       umWidthLR,          colF );
 }
+
 void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawRectangularNeuron( context, 2.0f, 0.6f, 1.0f, 0.2f, 1.0f, 1.0f, GetExteriorColor( type ) );
+	drawRectangularNeuron( context, 2.0f, 0.2f, GetExteriorColor( type ) );
 }
 
 void InputNeuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawRectangularNeuron( context, 1.6f, 0.2f, 0.8f, 0.0f, 0.8f, 0.8f, GetInteriorColor( type ) );
+	drawRectangularNeuron( context, 1.6f, 0.0f, GetInteriorColor( type ) );
 }
+
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 { 
 	wostringstream m_wBuffer;

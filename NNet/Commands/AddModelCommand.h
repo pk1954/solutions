@@ -21,7 +21,7 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );
+		nmwi.GetUPShapes().SelectAllShapes();
 		m_idList = nmwi.GetUPShapes().Append( m_UPShapeList );
 	}
 

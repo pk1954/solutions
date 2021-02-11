@@ -9,12 +9,15 @@
 #include "util.h"
 #include "NamedType.h"
 #include "PointType.h"
+#include "LineType.h"
 #include "RectType.h"
 #include "CircleType.h"
 #include "EllipseType.h"
 
 using std::chrono::microseconds;
+using std::numeric_limits;
 using std::wstring;
+using std::hypotf;
 
 ////////////// fMicroSecs /////////////////////////////////////
 
@@ -77,7 +80,7 @@ Hertz constexpr operator"" _Hertz( unsigned long long ull )
 static microseconds const PulseDuration( Hertz const freq )
 {
 	return (freq.GetValue() == 0) 
-		? microseconds( (std::numeric_limits<long long>::max)() )
+		? microseconds( (numeric_limits<long long>::max)() )
 		: microseconds( 1000000L / freq.GetValue() );
 }
 
@@ -93,14 +96,14 @@ fHertz constexpr operator"" _fHertz( long double dl )
 static fMicroSecs const PulseDuration( fHertz const freq )
 {
 	return IsCloseToZero(freq.GetValue()) 
-		? fMicroSecs( (std::numeric_limits<float>::max)() )
+		? fMicroSecs( (numeric_limits<float>::max)() )
 		: fMicroSecs( 1e6f / freq.GetValue() );
 }
 
 static fHertz const Frequency( fMicroSecs const us )
 {
 	return IsCloseToZero(us.GetValue())
-		? fHertz( (std::numeric_limits<float>::max)() )
+		? fHertz( (numeric_limits<float>::max)() )
 		: fHertz( 1e6f / us.GetValue() );
 }
 
@@ -111,11 +114,6 @@ using MicroMeterPoint = PosType< MicroMeter >;
 inline static MicroMeterPoint const NP_NULL( MicroMeterPoint::NULL_VAL() );   // compiler generates call!
 inline static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   // compiler generates call!
 
-inline static MicroMeter Hypot( MicroMeterPoint const pt ) 
-{ 
-	return MicroMeter( std::hypotf(pt.GetXvalue(), pt.GetYvalue() ) );
-};
-
 using NNetPointFunc     = function<void (MicroMeterPoint const)>;
 using NNetPointBoolFunc = function<bool (MicroMeterPoint const)>;
 
@@ -125,6 +123,10 @@ using MicroMeterRect     = RectType< MicroMeter >;
 using MicroMeterRectSize = SizeType < MicroMeter >;
 
 MicroMeterPoint const MicroMeterRect::GetCenter( ) const { return ( GetStartPoint() + GetEndPoint() ) * 0.5f; }
+
+////////////// MicroMeterLine          //////////////////////////
+
+using MicroMeterLine = LineType<MicroMeter>;
 
 ////////////// MicroMeterCircle/Ellipse //////////////////////////
 

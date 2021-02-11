@@ -15,11 +15,11 @@ class D2D_DrawContext: public DrawContext
 {
 public:
 
-	void Start( HWND const );
+	void Start( D2D_driver * const );
 	void Stop( );
 
-	bool StartFrame( HDC const hDC ) { return m_graphics.StartFrame( hDC );	}
-	void EndFrame( ) { m_graphics.EndFrame( ); }
+	bool StartFrame( HDC const hDC ) { return m_pGraphics->StartFrame( hDC );	}
+	void EndFrame( ) { m_pGraphics->EndFrame( ); }
 
 	void Resize( int const, int const );
 	void SetStdFontSize( MicroMeter const & );
@@ -79,8 +79,6 @@ public:
 
 	void SetPixelSize( MicroMeter const ); 
 
-	virtual void ShowScale( PixelRectSize const & ) const;
-
 	virtual void DisplayText
 	(
 		MicroMeterRect      const &,
@@ -92,6 +90,5 @@ public:
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
-	D2D_driver m_graphics;
-	Scale      m_scale;
+	D2D_driver * m_pGraphics;
 };

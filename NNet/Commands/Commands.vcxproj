@@ -72,7 +72,6 @@
     <ClInclude Include="AddModelCommand.h" />
     <ClInclude Include="AddOutgoing2KnotCommand.h" />
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
-    <ClInclude Include="AlignCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />
     <ClInclude Include="AppendInputNeuronCommand.h" />
     <ClInclude Include="AppendNeuronCommand.h" />

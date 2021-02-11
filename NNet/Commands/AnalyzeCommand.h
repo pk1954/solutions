@@ -20,9 +20,9 @@ public:
 		SelectionCommand::Do( nmwi );
 		if ( ! m_result.empty() )
 		{
-			nmwi.GetUPShapes().SelectAllShapes( tBoolOp::opFalse );
+			nmwi.GetUPShapes().DeselectAllShapes();
 			for ( auto it : m_result )
-				nmwi.SelectShape( it->GetId(), tBoolOp::opTrue );
+				nmwi.SelectShape(it->GetId());
 		}
 	}
 

@@ -8,6 +8,7 @@
 #include "ObserverInterface.h"
 
 using std::wstring;
+using std::unique_ptr;
 
 class MainWindow;
 class WinManager;
@@ -18,7 +19,7 @@ class NNetAppMenu : public ObserverInterface
 {
 public:
 	NNetAppMenu();
-	virtual ~NNetAppMenu();
+	virtual ~NNetAppMenu(){};
 
 	void Start
 	( 
@@ -80,7 +81,7 @@ private:
 	CommandStack  const * m_pCommandStack  { nullptr };
 	Sound         const * m_pSound         { nullptr };
 
-	OnOffPair * m_pOnOffArrows;
-	OnOffPair * m_pOnOffSound;
-	OnOffPair * m_pOnOffAutoOpen;
+	unique_ptr<OnOffPair> m_upOnOffArrows;
+	unique_ptr<OnOffPair> m_upOnOffSound;
+	unique_ptr<OnOffPair> m_upOnOffAutoOpen;
 };

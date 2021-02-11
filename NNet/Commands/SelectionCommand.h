@@ -19,13 +19,9 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			nmwi.GetUPShapes().Apply2All<Shape>
+			nmwi.GetUPShapes().Apply2AllSelected<Shape>
 			( 
-				[&]( Shape & s )
-				{ 
-					if ( s.IsSelected() )
-						m_selectedShapes.push_back( & s );
-				} 
+				[&](Shape &s) { m_selectedShapes.push_back(&s); } 
 			);
 			m_bInitialized = true;
 		}
@@ -34,11 +30,11 @@ public:
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
 		UPShapeList & shapeList { nmwi.GetUPShapes() };
-		shapeList.SelectAllShapes( tBoolOp::opFalse );
-		for (Shape * const pShape : m_selectedShapes)    
+		shapeList.DeselectAllShapes();
+		for (auto pShape : m_selectedShapes)    
 		{ 
-			if ( pShape )
-				pShape->Select( tBoolOp::opTrue ); 
+			if (pShape)
+				pShape->Select(); 
 		}
 	}
 

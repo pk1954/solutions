@@ -14,6 +14,8 @@
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
 
+using std::make_unique;
+
 HMENU NNetAppMenu::popupMenu( HMENU const hMenuParent, LPCTSTR const text )
 {
     HMENU hMenuPopup = CreatePopupMenu();
@@ -22,17 +24,10 @@ HMENU NNetAppMenu::popupMenu( HMENU const hMenuParent, LPCTSTR const text )
 }
 
 NNetAppMenu::NNetAppMenu( )
-  : m_pOnOffArrows  ( new OnOffPair( this, IDD_ARROWS_ON,    IDD_ARROWS_OFF    ) ),
-    m_pOnOffSound   ( new OnOffPair( this, IDD_SOUND_ON,     IDD_SOUND_OFF     ) ),
-    m_pOnOffAutoOpen( new OnOffPair( this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF ) )
+  : m_upOnOffArrows  ( make_unique<OnOffPair>( this, IDD_ARROWS_ON,    IDD_ARROWS_OFF    ) ),
+    m_upOnOffSound   ( make_unique<OnOffPair>( this, IDD_SOUND_ON,     IDD_SOUND_OFF     ) ),
+    m_upOnOffAutoOpen( make_unique<OnOffPair>( this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF ) )
 { }
-
-NNetAppMenu::~NNetAppMenu( )
-{
-    delete m_pOnOffArrows;
-    delete m_pOnOffSound;
-    delete m_pOnOffAutoOpen;
-}
 
 void NNetAppMenu::Start
 ( 
@@ -110,12 +105,12 @@ void NNetAppMenu::Start
             AppendMenu( hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window" );
             AppendMenu( hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window" );
         }
-        m_pOnOffArrows->appendOnOffMenu( hMenuView, L"&Arrows" );
+        m_upOnOffArrows->appendOnOffMenu( hMenuView, L"&Arrows" );
     }
     HMENU hMenuOptions = popupMenu( m_hMenu, L"&Options" );
     {
-        m_pOnOffSound   ->appendOnOffMenu( hMenuOptions, L"&Sound" );
-        m_pOnOffAutoOpen->appendOnOffMenu( hMenuOptions, L"Auto&Open" );
+        m_upOnOffSound   ->appendOnOffMenu( hMenuOptions, L"&Sound" );
+        m_upOnOffAutoOpen->appendOnOffMenu( hMenuOptions, L"Auto&Open" );
     }
     HMENU hMenuHelp = popupMenu( m_hMenu, L"&Help" );
     {
@@ -145,9 +140,9 @@ void NNetAppMenu::Notify( bool const bImmediately )
     enable( IDM_PARAM_WINDOW,   m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
     enable( IDM_PERF_WINDOW,    m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
 
-    m_pOnOffArrows   ->enableOnOff( m_pMainWindow->ArrowsVisible() );
-    m_pOnOffSound    ->enableOnOff( m_pSound->IsOn() );
-    m_pOnOffAutoOpen ->enableOnOff( AutoOpen::IsOn() );
+    m_upOnOffArrows   ->enableOnOff( m_pMainWindow->ArrowsVisible() );
+    m_upOnOffSound    ->enableOnOff( m_pSound->IsOn() );
+    m_upOnOffAutoOpen ->enableOnOff( AutoOpen::IsOn() );
 
     DrawMenuBar( m_hwndApp );
 }

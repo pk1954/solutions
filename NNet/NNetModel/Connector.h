@@ -1,44 +1,23 @@
-// Shape.h
+// Connector.h
 //
 // NNetModel
 
 #pragma once
 
-#include <type_traits>   
-#include "d2d1helper.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "NNetParameters.h"
-#include "ShapeType.h"
-#include "ShapeId.h"
 
-class Shape;
-class DrawContext;
-
-using std::is_base_of;
-using std::remove_pointer_t;
-using std::remove_pointer;
-using std::unique_ptr;
-using std::wostream;
-using std::wstring;
-
-template <typename T> 
-concept Shape_t = is_base_of<Shape, remove_pointer_t<T>>::value;
-
-using UPShape   = unique_ptr<Shape>;
-using ShapeCrit = function<bool(Shape const &)>;
-
-static ShapeCrit const ShapeCritAlwaysTrue { [&](Shape const & s) { return true; } };
-
-class Shape
+class Connector
 {
 public:
+
 	static void Initialize( Param const & param ) { m_pParameters = & param; }
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
-	Shape( ShapeType const );
-	virtual ~Shape() { }
+	Connector( ShapeType const );
+	virtual ~Connector() { }
 
 	virtual void CheckShape() const;
 	virtual void Dump() const;
@@ -79,28 +58,8 @@ public:
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 
-protected:
-
-	mV m_mVinputBuffer { 0._mV };
+private:
 
 	inline static Param const * m_pParameters{ nullptr };
 
-	D2D1::ColorF GetExteriorColor( tHighlightType const ) const;
-	D2D1::ColorF GetInteriorColor( tHighlightType const ) const;
-	D2D1::ColorF GetInteriorColor( mV const ) const;
-	D2D1::ColorF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
-
-	float GetFillLevel( mV const ) const;
-	float GetFillLevel( ) const { return GetFillLevel( m_mVinputBuffer ); };
-
-private:
-
-	ShapeType m_type       { ShapeType::Value::undefined };
-	bool      m_bSelected  { false };
-	ShapeId   m_identifier { };
 };
-
-template <Shape_t T> bool HasType( Shape const & shape ) 
-{ 
-	return remove_pointer<T>::type::TypeFits( shape.GetShapeType() ); 
-}

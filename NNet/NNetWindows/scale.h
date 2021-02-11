@@ -1,6 +1,6 @@
 // scale.h
 //
-// NNetModel
+// NNetWindows
 
 #pragma once
 
@@ -22,6 +22,7 @@ public:
 	void SetHorzPixelSize( float const );
 
 	void DisplayStaticScale( ) const;
+
 private:
 	using LogUnits = float;
 

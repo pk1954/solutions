@@ -26,8 +26,6 @@ public:
 
 	virtual ~Knot() {}
 
-	//virtual unique_ptr<Knot> MakeCopy() const { return make_unique<Knot>(*this); };
-
 	void CheckShape( ) const;
 
 	static  unsigned long GetCounter  ( ) { return m_counter; }

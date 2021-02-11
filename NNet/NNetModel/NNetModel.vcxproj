@@ -188,6 +188,7 @@
     <ClInclude Include="AnimationInterface.h" />
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
+    <ClInclude Include="Connector.h" />
     <ClInclude Include="MicroMeterPointVector.h" />
     <ClInclude Include="Connections.h" />
     <ClInclude Include="DescriptionUI.h" />
@@ -214,7 +215,6 @@
     <ClInclude Include="ShapeErrorHandler.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
-    <ClInclude Include="scale.h" />
     <ClInclude Include="NNetError.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />
@@ -250,7 +250,6 @@
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="scale.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "scale.h"
 #include "BaseKnot.h"
 #include "MicroMeterPointVector.h"
 #include "NNetModelReaderInterface.h"
@@ -77,6 +78,8 @@ private:
 	 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 	
+	Scale      m_scale;
+
 	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter m_arrowSize       { m_arrowSizeTarget };
 

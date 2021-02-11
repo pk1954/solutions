@@ -15,6 +15,7 @@ using std::abs;
 using std::max;
 using std::setw;
 using std::wostream;
+using std::hypot;
 
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
@@ -89,7 +90,12 @@ public:
 
 	friend BASE_TYPE const Hypot( PointType const pt ) 
 	{ 
-		return BASE_TYPE( std::hypot(pt.GetXvalue(), pt.GetYvalue()) );
+		return BASE_TYPE( hypot(pt.GetXvalue(), pt.GetYvalue()) );
+	};
+
+	friend PointType const Normalize( PointType const pt ) 
+	{ 
+		return pt / Hypot(pt).GetValue();
 	};
 
 	PointType OrthoVector( BASE_TYPE const width ) const

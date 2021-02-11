@@ -198,6 +198,45 @@ void Neuron::DrawInterior( DrawContext const & context, tHighlightType const typ
 	m_bTriggered = false;
 }
 
+void Neuron::DrawRectExterior
+( 
+	DrawContext     const & context, 
+	tHighlightType  const   type, 
+	MicroMeterPoint const   direction
+) const
+{
+	drawRectangularNeuron( context, direction, 0.8f, 0.8f, GetExteriorColor( type ) );
+}
+
+void Neuron::DrawRectInterior
+( 
+	DrawContext     const & context, 
+	tHighlightType  const   type, 
+	MicroMeterPoint const   direction
+) const
+{
+	drawRectangularNeuron( context, direction, 0.4f, 0.6f, GetInteriorColor( type ) );
+}
+
+void Neuron::drawRectangularNeuron
+( 
+	DrawContext     const & context, 
+	MicroMeterPoint const & axonVector,
+	float           const   M,       // overall width/height                        
+	float           const   VSM,     // vertical offset of start point (all sections)  
+	D2D1::ColorF    const   colF
+) const
+{
+	MicroMeterPoint const umExtVector { Normalize(axonVector) * GetExtension().GetValue() };
+	MicroMeterPoint const umCenter    { GetPosition() };
+	float           const W           { M + 1.2f };       // width of left/right section                 
+	float           const VSS         { VSM - 0.8f };     // vertical offset of startpoint left/right sections  
+	MicroMeterPoint const umP         { umCenter - umExtVector * (W * 0.5f) };
+
+	context.DrawLine( umCenter + umExtVector * VSM, umP, GetExtension() * M, colF );
+	context.DrawLine( umCenter + umExtVector * VSS, umP, GetExtension() * W, colF );
+}
+
 Neuron const * Cast2Neuron( Shape const * pShape )
 {
 	assert( pShape->IsAnyNeuron() );

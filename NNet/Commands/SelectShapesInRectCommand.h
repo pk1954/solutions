@@ -25,8 +25,8 @@ public:
 		UPShapeList & list { nmwi.GetUPShapes() };
 		SelectionCommand::Do( nmwi );
 		if ( m_bClearSelection )
-			list.SelectAllShapes( tBoolOp::opFalse );
-		list.Apply2AllInRect<Shape>(m_rect, [&](Shape& s){ s.Select(tBoolOp::opTrue); });
+			list.DeselectAllShapes();
+		list.Apply2AllInRect<Shape>(m_rect, [&](Shape& s){ s.Select(); });
 	}
 
 private:
