@@ -82,7 +82,14 @@ private:
 	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
 	MicroMeterPoint getAxonHillockPos( ) const;
 
-	void drawRectangularNeuron( DrawContext const &, MicroMeterPoint const &, float const, float const, D2D1::ColorF const ) const;
+	void drawPlug
+	( 
+		DrawContext     const &, 
+		float           const, 
+		float           const, 
+		D2D1::ColorF    const, 
+		MicroMeterPoint const * = nullptr
+	) const;
 
 	inline static unsigned long m_counter { 0L };
 	inline static Sound       * m_pSound  { nullptr };

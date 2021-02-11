@@ -41,7 +41,14 @@ public:
 	fHertz const SetPulseFrequency( fHertz const );
 
 private:
-	void drawRectangularNeuron( DrawContext const &, float const, float const, D2D1::ColorF const ) const;
+	void drawSocket
+	( 
+		DrawContext     const &, 
+		float           const, 
+		float           const, 
+		D2D1::ColorF    const, 
+		MicroMeterPoint const * = nullptr
+	) const;
 
 	mV         m_mvFactor;       // precomputed value for optimization
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other

@@ -58,19 +58,22 @@ bool InputNeuron::CompStep( )
 	return m_bStopOnTrigger && bTrigger;
 }
 
-void InputNeuron::drawRectangularNeuron
+void InputNeuron::drawSocket
 ( 
-	DrawContext  const & context, 
-	float        const   M,       // overall width/height                        
-	float        const   VEM,     // vertical offset of end point middle section 
-	D2D1::ColorF const   colF
+	DrawContext     const & context, 
+	float           const   M,       // overall width/height                        
+	float           const   VEM,     // vertical offset of end point middle section 
+	D2D1::ColorF    const   colF,
+	MicroMeterPoint const * pumVector
 ) const
 {
 	MicroMeterPoint const axonVector
 	{
-		HasAxon()
-		? m_connections.GetFirstOutgoing().GetVector( )
-		: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
+		pumVector 
+		? * pumVector
+		: HasAxon()
+			? m_connections.GetFirstOutgoing().GetVector( )
+			: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
 	};
 	MicroMeterPoint const umExtVector  { Normalize(axonVector) * GetExtension().GetValue() };
 	MicroMeterPoint const umCenter     { GetPosition() };
@@ -87,12 +90,12 @@ void InputNeuron::drawRectangularNeuron
 
 void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawRectangularNeuron( context, 2.0f, 0.2f, GetExteriorColor( type ) );
+	drawSocket( context, 2.0f, 0.2f, GetExteriorColor( type ) );
 }
 
 void InputNeuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawRectangularNeuron( context, 1.6f, 0.0f, GetInteriorColor( type ) );
+	drawSocket( context, 1.6f, 0.0f, GetInteriorColor( type ) );
 }
 
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const
