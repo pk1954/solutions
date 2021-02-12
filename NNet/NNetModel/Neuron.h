@@ -37,7 +37,7 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 
-	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing();	}
+	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing(); }
 	bool       const HasTriggerSound ( ) const { return m_triggerSound.m_bOn; }
 	SoundDescr const GetTriggerSound ( ) const { return m_triggerSound; }
 
@@ -50,8 +50,8 @@ public:
 
 	void       StopOnTrigger( tBoolOp const op ) { ApplyOp( m_bStopOnTrigger, op ); }
 
-	virtual void DrawRectExterior( DrawContext const &, tHighlightType const, MicroMeterPoint const  ) const;
-	virtual void DrawRectInterior( DrawContext const &, tHighlightType const, MicroMeterPoint const  ) const;
+	virtual void DrawRectExterior( DrawContext const &, tHighlightType const, MicroMeterPoint const * = nullptr ) const;
+	virtual void DrawRectInterior( DrawContext const &, tHighlightType const, MicroMeterPoint const * = nullptr ) const;
 
 	virtual void DrawExterior( DrawContext const &, tHighlightType const) const;
 	virtual void DrawInterior( DrawContext const &, tHighlightType const) const;

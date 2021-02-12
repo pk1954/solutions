@@ -189,20 +189,24 @@ void Neuron::DrawExterior( DrawContext const & context, tHighlightType const typ
 		context.FillCircle( GetCircle(), GetExteriorColor( type ) );
 		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * 0.5f ), GetExteriorColor( type ) );
 	}
-	else 
-		drawPlug( context, 0.8f, 0.8f, GetExteriorColor( type ) );
+	else if ( m_connections.HasIncoming() )
+		DrawRectExterior( context, type );
+	else
+		context.FillCircle( GetCircle(), GetExteriorColor( type ) );
 }
 
 void Neuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 { 
 	if ( HasAxon() )
 	{
-		D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( type ) };
+		D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor(type) };
 		context.FillCircle( GetCircle() * NEURON_INTERIOR, color );
 		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f) ), color );
 	}
+	else if ( m_connections.HasIncoming() )
+		DrawRectInterior( context, type );
 	else
-		drawPlug( context, 0.4f, 0.6f, GetInteriorColor( type ) );
+		context.FillCircle( GetCircle() * NEURON_INTERIOR, GetInteriorColor(type) );
 	m_bTriggered = false;
 }
 
@@ -210,27 +214,27 @@ void Neuron::DrawRectExterior
 ( 
 	DrawContext     const & context, 
 	tHighlightType  const   type, 
-	MicroMeterPoint const   direction
+	MicroMeterPoint const * pumVector
 ) const
 {
-	drawPlug( context, 0.8f, 0.8f, GetExteriorColor( type ), & direction );
+	drawPlug( context, 0.8f, 0.8f, GetExteriorColor( type ), pumVector );
 }
 
 void Neuron::DrawRectInterior
 ( 
 	DrawContext     const & context, 
 	tHighlightType  const   type, 
-	MicroMeterPoint const   direction
+	MicroMeterPoint const * pumVector
 ) const
 {
-	drawPlug( context, 0.4f, 0.6f, GetInteriorColor( type ), & direction );
+	drawPlug( context, 0.4f, 0.6f, GetInteriorColor( type ), pumVector );
 }
 
 void Neuron::drawPlug
 ( 
 	DrawContext     const & context, 
 	float           const   M,       // overall width/height                        
-	float           const   VSM,     // vertical offset of start point (all sections)  
+	float           const   V,
 	D2D1::ColorF    const   colF,
 	MicroMeterPoint const * pumVector
 ) const
@@ -246,11 +250,12 @@ void Neuron::drawPlug
 	MicroMeterPoint const umExtVector { Normalize(umVector) * GetExtension().GetValue() };
 	MicroMeterPoint const umCenter    { GetPosition() };
 	float           const W           { M + 1.2f };       // width of left/right section                 
-	float           const VSS         { VSM - 0.8f };     // vertical offset of startpoint left/right sections  
-	MicroMeterPoint const umP         { umCenter - umExtVector * (W * 0.5f) };
+	float           const fOffset     { -0.8f };
+	MicroMeterPoint const umP1        { umCenter + umExtVector * (V - fOffset) };
+	MicroMeterPoint const umP2        { umCenter - umExtVector * (W * 0.5f + fOffset) };
 
-	context.DrawLine( umCenter + umExtVector * VSM, umP, GetExtension() * M, colF );
-	context.DrawLine( umCenter + umExtVector * VSS, umP, GetExtension() * W, colF );
+	context.DrawLine( umP1,                      umP2, GetExtension() * M, colF );
+	context.DrawLine( umP1 - umExtVector * 0.8f, umP2, GetExtension() * W, colF );
 }
 
 Neuron const * Cast2Neuron( Shape const * pShape )
