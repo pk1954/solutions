@@ -38,6 +38,11 @@ void Remove( T * const pShape )
 	m_list.erase( res );
 }
 
+void RemoveLast( )
+{
+	m_list.pop_back( );
+}
+
 void Replace( T * const pDel, T * const pAdd )
 {
 	replace( begin(m_list), end(m_list), pDel, pAdd );

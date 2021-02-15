@@ -18,11 +18,10 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do( nmwi );
-		if ( ! m_result.empty() )
+		if ( ! m_result.IsEmpty() )
 		{
 			nmwi.GetUPShapes().DeselectAllShapes();
-			for ( auto it : m_result )
-				nmwi.SelectShape(it->GetId());
+			m_result.Apply2All([&](Shape const &s){ nmwi.SelectShape(s.GetId()); }	);
 		}
 	}
 

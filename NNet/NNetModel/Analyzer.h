@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "NNetModel.h"
+#include "ShapePtrList.h"
 #include "DisplayFunctor.h"
 
 class Knot;
@@ -20,7 +21,7 @@ using std::vector;
 using std::wostream;
 using std::wstring;
 
-using ShapeStack = vector<Shape const *>;
+using ShapeStack = ShapePtrList<Shape const>;
 
 class ModelAnalyzer
 {
