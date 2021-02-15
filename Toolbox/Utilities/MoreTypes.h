@@ -114,9 +114,6 @@ using MicroMeterPoint = PosType< MicroMeter >;
 inline static MicroMeterPoint const NP_NULL( MicroMeterPoint::NULL_VAL() );   // compiler generates call!
 inline static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   // compiler generates call!
 
-using NNetPointFunc     = function<void (MicroMeterPoint const)>;
-using NNetPointBoolFunc = function<bool (MicroMeterPoint const)>;
-
 ////////////// MicroMeterRect /////////////////////////////////////
 
 using MicroMeterRect     = RectType< MicroMeter >;

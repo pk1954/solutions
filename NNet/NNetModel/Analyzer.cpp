@@ -66,7 +66,7 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	bool bResult { false };
 
 	if ( 
-		  ( m_shapeStack.size() > 1 ) &&                        // we are beyond the initial shape
+		  ( m_shapeStack.size() > 1 ) &&                      // we are beyond the initial shape
 	      ( shape.GetId() == m_shapeStack.front()->GetId() )  // and found the same shape again
 	   )
 	{
@@ -80,7 +80,7 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	{
 		bResult = static_cast<BaseKnot const &>(shape).m_connections.Apply2AllOutPipesB
 		( 
-			[&]( Pipe & pipe ) 
+			[&]( Pipe const & pipe ) 
 			{ 
 				return findLoop( pipe ); 
 			} 

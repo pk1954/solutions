@@ -211,7 +211,7 @@
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="Pipe.h" />
-    <ClInclude Include="PipeList.h" />
+    <ClInclude Include="ShapePtrList.h" />
     <ClInclude Include="ShapeErrorHandler.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />

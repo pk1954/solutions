@@ -5,7 +5,8 @@
 #pragma once
 
 #include "scanner.h"
-#include "PipeList.h"
+#include "Pipe.h"
+#include "ShapePtrList.h"
 
 using std::endl;
 using std::unique_ptr;
@@ -14,6 +15,9 @@ using std::make_unique;
 class Connections
 {
 public:
+	using PipeFunc = function<void(Pipe &)>;
+	using PipeCrit = function<bool(Pipe const &)>;
+
 	unique_ptr<Connections> Clone( ) const 
 	{
 		unique_ptr<Connections> upCopy { make_unique<Connections>() };
@@ -28,14 +32,14 @@ public:
 	Pipe const & GetFirstOutgoing() const { return m_outgoing.GetFirst(); }
 	Pipe const & GetFirstIncoming() const { return m_incoming.GetFirst(); }
 
-	void AddIncoming( Pipe * const p ) { m_incoming.AddPipe( p ); }
-	void AddOutgoing( Pipe * const p ) { m_outgoing.AddPipe( p ); }
+	void AddIncoming( Pipe * const p ) { m_incoming.Add( p ); }
+	void AddOutgoing( Pipe * const p ) { m_outgoing.Add( p ); }
 
-	void RemoveIncoming( Pipe * const p ) { m_incoming.RemovePipe( p ); }
-	void RemoveOutgoing( Pipe * const p ) { m_outgoing.RemovePipe( p ); }
+	void RemoveIncoming( Pipe * const p ) { m_incoming.Remove( p ); }
+	void RemoveOutgoing( Pipe * const p ) { m_outgoing.Remove( p ); }
 
-	void ReplaceIncoming( Pipe * const pDel, Pipe * const pAdd ) { m_incoming.ReplacePipe( pDel, pAdd ); }
-	void ReplaceOutgoing( Pipe * const pDel, Pipe * const pAdd ) { m_outgoing.ReplacePipe( pDel, pAdd ); }
+	void ReplaceIncoming( Pipe * const pDel, Pipe * const pAdd ) { m_incoming.Replace( pDel, pAdd ); }
+	void ReplaceOutgoing( Pipe * const pDel, Pipe * const pAdd ) { m_outgoing.Replace( pDel, pAdd ); }
 
 	bool   HasIncoming( )                const { return ! m_incoming.IsEmpty(); }
 	bool   HasOutgoing( )                const { return ! m_outgoing.IsEmpty(); }
@@ -44,14 +48,14 @@ public:
 	size_t GetNrOfConnections( )         const { return m_incoming.Size() + m_outgoing.Size(); }
 	bool   IsOrphan( )                   const { return m_incoming.IsEmpty() && m_outgoing.IsEmpty(); }
 
-	void ClearIncoming( ) { m_incoming.ClearPipeList( ); }
-	void ClearOutgoing( ) { m_outgoing.ClearPipeList( ); }
+	void ClearIncoming( ) { m_incoming.Clear( ); }
+	void ClearOutgoing( ) { m_outgoing.Clear( ); }
 
-	void Apply2AllInPipes ( PipeFunc const & func ) const { m_incoming.Apply2AllPipesInList( func ); }
-	void Apply2AllOutPipes( PipeFunc const & func ) const { m_outgoing.Apply2AllPipesInList( func ); }
+	void Apply2AllInPipes ( PipeFunc const & func ) const { m_incoming.Apply2All( func ); }
+	void Apply2AllOutPipes( PipeFunc const & func ) const { m_outgoing.Apply2All( func ); }
 
-	bool Apply2AllInPipesB ( PipeCrit const & func ) const { return m_incoming.Apply2AllPipesInListB( func ); }
-	bool Apply2AllOutPipesB( PipeCrit const & func ) const { return m_outgoing.Apply2AllPipesInListB( func ); }
+	bool Apply2AllInPipesB ( PipeCrit const & func ) const { return m_incoming.Apply2AllB( func ); }
+	bool Apply2AllOutPipesB( PipeCrit const & func ) const { return m_outgoing.Apply2AllB( func ); }
 
 	void Apply2AllConnectedPipes( PipeFunc const & func )
 	{
@@ -61,8 +65,8 @@ public:
 
 	void Apply2AllConnectedPipesB( PipeCrit const & func )
 	{
-		Apply2AllInPipesB ( [&]( Pipe & pipe ) { return func( pipe ); } );
-		Apply2AllOutPipesB( [&]( Pipe & pipe ) { return func( pipe ); } );
+		Apply2AllInPipesB ( [&]( Pipe const & pipe ) { return func( pipe ); } );
+		Apply2AllOutPipesB( [&]( Pipe const & pipe ) { return func( pipe ); } );
 	}
 
 	void Reconnect( BaseKnot * const pBaseKnot )
@@ -79,18 +83,16 @@ public:
 
 	void Recalc( )
 	{
-		Apply2AllConnectedPipes( [&]( Pipe & pipe ) { pipe.Recalc( ); } );
+		Apply2AllConnectedPipes( [&]( Pipe & pipe ) { pipe.Recalc(); } );
 	}
 
 	friend wostream & operator<< ( wostream & out, Connections const & con )
 	{
 		out << L" " << con.m_incoming << L" " << con.m_outgoing;
-		//out << Scanner::COMMENT_SYMBOL << L" in  " << con.m_incoming << endl;
-		//out << Scanner::COMMENT_SYMBOL << L" out " << con.m_outgoing << endl;
 		return out;
 	}
 
 private:
-	PipeList m_incoming;
-	PipeList m_outgoing;
+	ShapePtrList<Pipe> m_incoming;
+	ShapePtrList<Pipe> m_outgoing;
 };
