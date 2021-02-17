@@ -204,6 +204,7 @@ public:
 		m_appDefinedSlots.push_back(pVoid);
 		return Cast2UnsignedInt(m_appDefinedSlots.size());
 	}
+
 	void * GetSlot( UINT_PTR const uiSlotNr ) 
 	{ 
 		return m_appDefinedSlots.at(uiSlotNr-1); 

@@ -34,11 +34,11 @@ public:
     Param       & GetParams()      { return m_pModel->GetParams(); }
     MonitorData & GetMonitorData() { return m_pModel->GetMonitorData(); }
 
-    void CheckModel( ) { m_pModel->CheckModel(); }
-    void ResetModel( ) { m_pModel->ResetModel(); }
-    void ClearModel( ) { m_pModel->GetUPShapes().Apply2All([&](Shape & s) { s.Clear( ); }); }
+    void CheckModel() { m_pModel->CheckModel(); }
+    void ResetModel() { m_pModel->ResetModel(); }
+    void ClearModel() { m_pModel->GetUPShapes().Apply2All([&](Shape & s) { s.Clear( ); }); }
 
-    void DumpModel( ) const { m_pModel->DumpModel(); }
+    void DumpModel() const { m_pModel->DumpModel(); }
 
     void  SelectSubtree(BaseKnot* const p, tBoolOp const o) { m_pModel->SelectSubtree(p, o); }
     float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }

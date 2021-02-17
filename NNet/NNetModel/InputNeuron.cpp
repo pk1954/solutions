@@ -67,14 +67,15 @@ void InputNeuron::drawSocket
 	MicroMeterPoint const * pumVector
 ) const
 {
-	MicroMeterPoint const axonVector
-	{
-		pumVector 
-		? * pumVector
-		: HasAxon()
-			? m_connections.GetFirstOutgoing().GetVector( )
-			: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-	};
+	//MicroMeterPoint const axonVector
+	//{
+	//	pumVector 
+	//	? * pumVector
+	//	: HasAxon()
+	//	? m_connections.GetFirstOutgoing().GetVector( )
+	//	: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
+	//};
+	MicroMeterPoint const axonVector { MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } };
 	MicroMeterPoint const umExtVector  { Normalize(axonVector) * GetExtension().GetValue() };
 	MicroMeterPoint const umCenter     { GetPosition() };
 	MicroMeterPoint const umOrthoVector{ umExtVector.OrthoVector( GetExtension() ) * 0.7f };

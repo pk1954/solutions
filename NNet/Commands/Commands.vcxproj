@@ -85,6 +85,7 @@
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="MoveBaseKnotCommand.h" />
+    <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="SetBaseKnotsCommand.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovePipeCommand.h" />

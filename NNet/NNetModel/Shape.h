@@ -60,22 +60,21 @@ public:
 	virtual void Select(tBoolOp const op = tBoolOp::opTrue) { ApplyOp(m_bSelected, op); }
 	virtual void Clear () { m_mVinputBuffer = 0.0_mV; };
 
-	bool IsSelected() const { return m_bSelected; }
+	virtual bool            IsSelected  () const { return m_bSelected; }
+	virtual bool            IsDefined   () const { return ::IsDefined( m_identifier ); }
+	virtual wchar_t const * GetName     () const { return ShapeType::GetName( m_type.GetValue() ); }
+	virtual ShapeType       GetShapeType() const { return m_type; }
+	virtual ShapeId         GetId       () const { return m_identifier; }
 
-	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
-	wchar_t const * GetName     ( ) const { return ShapeType::GetName( m_type.GetValue() ); }
-	ShapeType       GetShapeType( ) const { return m_type; }
-	ShapeId         GetId       ( ) const { return m_identifier; }
+	virtual bool IsPipe       () const { return m_type.IsPipeType        ( ); }
+	virtual bool IsKnot       () const { return m_type.IsKnotType        ( ); }
+	virtual bool IsNeuron     () const { return m_type.IsNeuronType      ( ); }
+	virtual bool IsInputNeuron() const { return m_type.IsInputNeuronType ( ); }
+	virtual bool IsAnyNeuron  () const { return m_type.IsAnyNeuronType   ( ); }
+	virtual bool IsBaseKnot   () const { return m_type.IsBaseKnotType    ( ); }
+	virtual bool IsUndefined  () const { return m_type.IsUndefinedType   ( ); }
 
-	bool IsPipe        () const { return m_type.IsPipeType        ( ); }
-	bool IsKnot        () const { return m_type.IsKnotType        ( ); }
-	bool IsNeuron      () const { return m_type.IsNeuronType      ( ); }
-	bool IsInputNeuron () const { return m_type.IsInputNeuronType ( ); }
-	bool IsAnyNeuron   () const { return m_type.IsAnyNeuronType   ( ); }
-	bool IsBaseKnot    () const { return m_type.IsBaseKnotType    ( ); }
-	bool IsUndefined   () const { return m_type.IsUndefinedType   ( ); }
-
-	void SetId( ShapeId const id ) { m_identifier = id;	}
+	virtual void SetId( ShapeId const id ) { m_identifier = id;	}
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 

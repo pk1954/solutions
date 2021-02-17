@@ -208,6 +208,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pMainWindow->AlignSelection();
         break;
 
+    case IDM_MAKE_CONNECTOR:
+        m_pMainWindow->MakeConnector();
+        break;
+
     case IDM_COPY_SELECTION:
         m_pModelCommands->CopySelection();
         break;

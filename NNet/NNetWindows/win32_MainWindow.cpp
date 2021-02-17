@@ -99,6 +99,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_MAKE_CONNECTOR,   L"Make connector" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_SELECTION,  L"Align selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
@@ -221,13 +222,14 @@ void MainWindow::CenterSelection( )
 	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
 }
 
+void MainWindow::MakeConnector( )
+{
+}
+
 void MainWindow::AlignSelection( )
 {
-	m_shapes2Animate.Clear();
-	m_pNMRI->GetUPShapes().Apply2AllSelected<BaseKnot>
-	( 
-		[&](BaseKnot const & k) { m_shapes2Animate.Add(k.GetPosition()); } 
-	);
+//	m_pNNetCommands->OpenSeries();
+	m_pNNetCommands->RestrictSelection( ShapeType::Value::inputNeuron );
 	m_upShapeAnimation = make_unique<ShapeAnimation>
 	(
 		GetWindowHandle(), 
@@ -237,87 +239,86 @@ void MainWindow::AlignSelection( )
 			pWin->m_pNNetCommands->SetBaseKnots( pWin->m_shapes2Animate );
 			if ( bTargetReached )
 			{
-				pWin->m_pNNetCommands->CloseSeries();
+//				pWin->m_pNNetCommands->CloseSeries();
 			//	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 			}
 		}
 	);
 
-	MicroMeterPointVector target { alignedShapes() };
-
-	m_pNNetCommands->OpenSeries();
-	m_upShapeAnimation->Start( m_shapes2Animate, target );
+	m_upShapeAnimation->Start( m_shapes2Animate, alignedShapes() );
 }
 
 MicroMeterPointVector MainWindow::alignedShapes( )
 {
-	BaseKnot const * pStart { nullptr };
-	BaseKnot const * pEnd   { nullptr };
-
-	MicroMeterPointVector origin;
-	MicroMeterPointVector target;
-
 	struct AL_PNT
 	{
 		BaseKnot const * pBaseKnot;
-		MicroMeter umDist;
+		MicroMeterPoint  umPntTarget;
+		MicroMeter       umDist;
 	};
 	vector<AL_PNT> points;
 
-	// make lokal copy of selection, sorting out pipes
-	m_pNMRI->GetUPShapes().Apply2All<Shape>
+	m_shapes2Animate.Clear();
+
+	m_pNMRI->GetUPShapes().Apply2AllSelected<BaseKnot>
 	( 
-		[&](Shape const & s)
+		[&](BaseKnot const & b)
 		{ 
-			if ( s.IsSelected() && s.IsAnyNeuron() )
-				points.push_back( AL_PNT{ static_cast<BaseKnot const *>(&s), 0.0_MicroMeter } );
+			if ( b.IsAnyNeuron() )
+			{
+				m_shapes2Animate.Add( b.GetPosition() );
+				points.push_back( AL_PNT{ & b } );
+			}
 		} 
 	);
 
-	if ( points.size() > 3 )
-	{
-		// find 2 baseknots (START/END) with maximum distance
+	BaseKnot const * pStart { nullptr };
+	BaseKnot const * pEnd   { nullptr };
 
-		MicroMeter umMaxDist { 0.0_MicroMeter };
-		for ( auto & it1 : points )
-			for ( auto & it2 : points )
+	// find 2 baseknots (START/END) with maximum distance
+
+	MicroMeter maxDist { 0.0_MicroMeter };
+	for ( auto & it1 : points )
+		for ( auto & it2 : points )
+		{
+			MicroMeter dist { Distance( it1.pBaseKnot->GetPosition(), it2.pBaseKnot->GetPosition() ) };
+			if ( dist > maxDist )
 			{
-				MicroMeter umDist { Distance( it1.pBaseKnot->GetPosition(), it2.pBaseKnot->GetPosition() ) };
-				if ( umDist > umMaxDist )
-				{
-					umMaxDist = umDist;
-					pStart = it1.pBaseKnot;
-					pEnd   = it2.pBaseKnot;
-				}
+				maxDist = dist;
+				pStart = it1.pBaseKnot;
+				pEnd   = it2.pBaseKnot;
 			}
+		}
 
-		// for every other baseknot compute position on line START to END
+	// for every other baseknot compute position on line START to END
 
-		MicroMeterLine line      { pStart->GetPosition(), pEnd->GetPosition() };
-		MicroMeterLine orthoLine { pStart->GetPosition(), line.OrthoVector() };
-		for ( auto & it : points )
-			it.umDist = PointToLine( orthoLine, it.pBaseKnot->GetPosition() );
+	MicroMeterLine line      { pStart->GetPosition(), pEnd->GetPosition() };
+	MicroMeterLine orthoLine { pStart->GetPosition(), line.OrthoVector() };
+	for ( auto & it : points )
+		it.umDist = PointToLine( orthoLine, it.pBaseKnot->GetPosition() );
 
-		// sort baseknots according to position
+	// compute tightly packed positions
 
-		sort( points.begin(), points.end(), [](auto p1, auto p2){ return p1.umDist < p2.umDist; } );
+	float           fNrOfPoints       { Cast2Float(points.size()) };
+	MicroMeter      umOriginLength    { line.Length() };
+	MicroMeter      umTargetLength    { NEURON_RADIUS * 2.0f * fNrOfPoints };
+	MicroMeterPoint umPntPackedSingle { line.GetVector() * (umTargetLength / umOriginLength) / fNrOfPoints };
+	MicroMeterPoint umPntTargetCenter { (pEnd->GetPosition() + pStart->GetPosition()) * 0.5f };
+	MicroMeterPoint umPntTargetStart  { umPntTargetCenter - umPntPackedSingle * fNrOfPoints * 0.5f };
+	MicroMeterPoint umPntTargetEnd    { umPntTargetCenter + umPntPackedSingle * fNrOfPoints * 0.5f };
 
-		for ( auto & it : points )
-			origin.Add( it.pBaseKnot->GetPosition() );
+	for ( int i = 0; i < points.size(); ++i )
+		points[i].umPntTarget = umPntTargetStart + umPntPackedSingle * static_cast<float>(i);
 
-		// compute tightly packed positions
+	// sort baseknots according to position
 
-		float           fNrOfPoints       { Cast2Float(points.size()) };
-		MicroMeter      umOriginLength    { line.Length() };
-		MicroMeter      umTargetLength    { NEURON_RADIUS * 2.0f * fNrOfPoints };
-		MicroMeterPoint umPntPackedSingle { line.GetVector() * (umTargetLength / umOriginLength) / fNrOfPoints };
-		MicroMeterPoint umPntTargetCenter { (pEnd->GetPosition() + pStart->GetPosition()) * 0.5f };
-		MicroMeterPoint umPntTargetStart  { umPntTargetCenter - umPntPackedSingle * fNrOfPoints * 0.5f };
-		MicroMeterPoint umPntTargetEnd    { umPntTargetCenter + umPntPackedSingle * fNrOfPoints * 0.5f };
+	sort( points.begin(), points.end(), [](auto p1, auto p2){ return p1.umDist < p2.umDist; } );
 
-		for ( int i = 0; i < points.size(); ++i )
-			target.Add( umPntTargetStart + umPntPackedSingle * static_cast<float>(i) );
-	}
+	MicroMeterPointVector target;
+
+	for ( auto & it : points )
+		target.Add( it.umPntTarget );
+
 	return target;
 }
 

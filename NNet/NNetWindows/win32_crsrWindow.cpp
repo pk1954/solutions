@@ -105,7 +105,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	textBuf.printString( L"Shape #" );
 	textBuf.printNumber( id.GetValue() );
 	textBuf.nextLine( );
-	textBuf.printString( L"Shape type:" ); 
+	textBuf.printString( L"type:" ); 
 	textBuf.printString( ShapeType::GetName( type.GetValue() ) ); 
 	textBuf.nextLine( );
 

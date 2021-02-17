@@ -60,6 +60,7 @@ public:
 	void CenterModel( );
 	void CenterSelection( );
 	void AlignSelection( );
+	void MakeConnector( );
 
 	void       ShowArrows( bool const );
 	bool const ArrowsVisible( ) const; 
@@ -83,7 +84,7 @@ private:
 	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter m_arrowSize       { m_arrowSizeTarget };
 
-	MicroMeterPointVector m_shapes2Animate;
+	MicroMeterPointVector m_shapes2Animate       { };
 	MicroMeterRect        m_rectSelection        { };
 	ShapeId               m_shapeTarget          { };
 	ShapeId               m_shapeHighlighted     { };

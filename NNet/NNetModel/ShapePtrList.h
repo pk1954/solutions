@@ -20,7 +20,17 @@ bool   const IsEmpty() const { return m_list.empty(); }
 T       & GetFirst()       { return * m_list.at( 0 ); }
 T const & GetFirst() const { return * m_list.at( 0 ); }
 
-void Clear( ) {	m_list.clear(); }
+void Check() const
+{
+	m_list.Apply2All( [&](Shape &s) { s.CheckShape(); } );
+}
+
+void Clear()      {	m_list.clear(); }
+void RemoveLast() {	m_list.pop_back( ); }
+void Replace(T * const pDel, T * const pAdd) 
+{ 
+	replace( begin(m_list), end(m_list), pDel, pAdd ); 
+}
 
 void Add( T * const pShape )
 {
@@ -38,15 +48,6 @@ void Remove( T * const pShape )
 	m_list.erase( res );
 }
 
-void RemoveLast( )
-{
-	m_list.pop_back( );
-}
-
-void Replace( T * const pDel, T * const pAdd )
-{
-	replace( begin(m_list), end(m_list), pDel, pAdd );
-}
 
 void Apply2All( function<void(T &)> const & func ) const
 {
@@ -69,6 +70,16 @@ bool Apply2AllB( function<bool(T const &)> const & func ) const
 		}
 	}
 	return false;
+}
+
+bool operator==(ShapePtrList const & rhs) const
+{
+	if ( Size() != rhs.Size() )
+		return false;
+	for ( int i = 0; i < Size(); ++i )
+		if ( m_list[i] != rhs.m_list[i] )
+			return false;
+	return true;
 }
 
 friend wostream & operator<< ( wostream & out, ShapePtrList<T> const & list )

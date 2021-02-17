@@ -4,12 +4,9 @@
 
 #pragma once
 
-#include <vector>
 #include "NNetModelWriterInterface.h"
-#include "Shape.h"
+#include "ShapePtrList.h"
 #include "Command.h"
-
-using std::vector;
 
 class SelectionCommand : public Command
 {
@@ -21,7 +18,7 @@ public:
 		{ 
 			nmwi.GetUPShapes().Apply2AllSelected<Shape>
 			( 
-				[&](Shape &s) { m_selectedShapes.push_back(&s); } 
+				[&](Shape &s) { m_selectedShapes.Add(&s); } 
 			);
 			m_bInitialized = true;
 		}
@@ -29,17 +26,12 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
-		UPShapeList & shapeList { nmwi.GetUPShapes() };
-		shapeList.DeselectAllShapes();
-		for (auto pShape : m_selectedShapes)    
-		{ 
-			if (pShape)
-				pShape->Select(); 
-		}
+		nmwi.GetUPShapes().DeselectAllShapes();
+		m_selectedShapes.Apply2All([&](Shape &s){ s.Select(); });
 	}
 
 protected:
-	vector<Shape *> m_selectedShapes;
-	bool            m_bInitialized { false };
+	ShapePtrList<Shape> m_selectedShapes;
+	bool                m_bInitialized { false };
 };
 

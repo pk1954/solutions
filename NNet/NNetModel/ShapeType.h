@@ -6,15 +6,19 @@
 
 #include <assert.h>
 #include <functional>
+#include <bitset>
 #include "debug.h"
 
 using std::function;
 using std::wostream;
+using std::size_t;
+
 class ShapeType
 {
 public:
 	enum class Value
 	{
+		connector,
 		inputNeuron,
 		neuron,
 		pipe,
@@ -22,6 +26,8 @@ public:
 		shapeTypeLast = knot,
 		undefined
 	};
+
+	static size_t const NR_OF_SHAPE_TYPES { static_cast<size_t>(Value::shapeTypeLast) + 1 };
 
 	ShapeType( )
 		:	m_value( Value::undefined )
@@ -55,14 +61,15 @@ public:
 	static wchar_t          const * GetName( ShapeType::Value const );
 	static ShapeType::Value const   GetTypeFromName( wchar_t const * const );
 
-	bool IsPipeType        ( ) const { return m_value == Value::pipe;         }
-	bool IsDefinedType     ( ) const { return m_value != Value::undefined;    }
-	bool IsUndefinedType   ( ) const { return m_value == Value::undefined;    }
-	bool IsKnotType        ( ) const { return m_value == Value::knot;         }
-	bool IsNeuronType      ( ) const { return m_value == Value::neuron;       }
-	bool IsInputNeuronType ( ) const { return m_value == Value::inputNeuron;  }
+	bool IsPipeType       () const { return m_value == Value::pipe;         }
+	bool IsDefinedType    () const { return m_value != Value::undefined;    }
+	bool IsUndefinedType  () const { return m_value == Value::undefined;    }
+	bool IsKnotType       () const { return m_value == Value::knot;         }
+	bool IsNeuronType     () const { return m_value == Value::neuron;       }
+	bool IsInputNeuronType() const { return m_value == Value::inputNeuron;  }
+	bool IsConnectorType  () const { return m_value == Value::connector;    }
 
-	bool IsAnyNeuronType  ( ) const
+	bool IsAnyNeuronType() const
 	{
 		return (m_value == Value::neuron) || (m_value == Value::inputNeuron);
 	}
@@ -80,3 +87,26 @@ private:
 	Value m_value;
 };
 
+using std::bitset;
+
+class ShapeTypeFilter
+{
+public:
+	ShapeTypeFilter() = default;
+	ShapeTypeFilter(ShapeType::Value val) : m_bits(bitSet(val)) {}
+	ShapeTypeFilter(const ShapeTypeFilter& other) : m_bits(other.m_bits) {}
+
+	bool const Any()  const { return m_bits.any();  }
+	bool const All()  const { return m_bits.all();  }
+	bool const None() const { return m_bits.none(); }
+
+	bool const Test (ShapeType::Value val) const { return m_bits.test (bitSet(val)); }
+	void const Set  (ShapeType::Value val)       {        m_bits.set  (bitSet(val)); }
+	void const Unset(ShapeType::Value val)       {        m_bits.reset(bitSet(val)); }
+
+private:
+	
+	static unsigned int const bitSet(ShapeType::Value const val) { return 1 << static_cast<unsigned int>(val); }
+
+	bitset<ShapeType::NR_OF_SHAPE_TYPES> m_bits;
+};

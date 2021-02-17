@@ -194,7 +194,6 @@
     <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="DrawContext.h" />
     <ClInclude Include="InputNeuron.h" />
-    <ClInclude Include="ModuleInterface.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="ModelUtilities.h" />
     <ClInclude Include="MonitorData.h" />

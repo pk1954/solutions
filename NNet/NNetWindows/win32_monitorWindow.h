@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <vector>
 #include "D2D_DrawContext.h"
 #include "Scale.h"
 #include "MoreTypes.h"

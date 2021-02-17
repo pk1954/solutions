@@ -27,6 +27,7 @@
 #include "NewNeuronCommand.h"
 #include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
+#include "RestrictSelectionCommand.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
@@ -306,6 +307,13 @@ void NNetModelCommands::CopySelection( )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 	m_pCmdStack->PushCommand( make_unique<CopySelectionCommand>( ) );
+}
+
+void NNetModelCommands::RestrictSelection( ShapeType::Value const val )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << val << endl;
+	m_pCmdStack->PushCommand( make_unique<RestrictSelectionCommand>( val ) );
 }
 
 void NNetModelCommands::SelectAllBeepers( )

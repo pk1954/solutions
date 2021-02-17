@@ -26,7 +26,7 @@ public:
 		unsigned int ui = 0;
 		nmwi.GetUPShapes().Apply2AllSelected<BaseKnot>
 		( 
-			[&]( BaseKnot & knot ) 
+			[&]( BaseKnot & knot )
 			{ 
 				MicroMeterPoint umPnt { knot.GetPosition() };
 				knot.SetPosition( m_list.GetPos(ui) );
