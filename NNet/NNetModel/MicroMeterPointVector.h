@@ -27,7 +27,7 @@ public:
         return m_list[ui];
     }
 
-    void SetPos( unsigned int const ui, MicroMeterPoint const & umPnt )
+    void SetPosition( unsigned int const ui, MicroMeterPoint const & umPnt )
     {
         assert( ui < Size() );
         m_list[ui] = umPnt;
@@ -36,6 +36,11 @@ public:
     void Clear()
     {
         m_list.clear();
+    }
+
+    void Resize( size_t const size )
+    {
+        m_list.resize( size );
     }
 
     void Add( MicroMeterPoint const & umPnt )

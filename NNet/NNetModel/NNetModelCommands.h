@@ -9,10 +9,12 @@
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "MonitorData.h"
+#include "ShapePtrList.h"
 #include "ShapeType.h"
 #include "ShapeId.h"
 
 class Param;
+class BaseKnot;
 class Observable;
 class CommandStack;
 class NNetModelImporter;
@@ -66,7 +68,7 @@ public:
     void SelectShape        ( ShapeId const, tBoolOp const );
     void SelectShapesInRect ( MicroMeterRect const &, bool const );
     void SelectSubtree      ( ShapeId const, tBoolOp const );
-    void SetBaseKnots       ( MicroMeterPointVector & );
+    void SetBaseKnots       ( MicroMeterPointVector &, ShapePtrList<BaseKnot> & );
     void SetParameter       ( ParameterType::Value const, float const );
     void SetPulseRate       ( ShapeId    const, fHertz const );
     void SetTriggerSound    ( ShapeId const, SoundDescr const & );

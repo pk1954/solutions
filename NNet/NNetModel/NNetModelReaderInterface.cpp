@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Shape.h"
+#include "DrawContext.h"
 #include "NNetModel.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
@@ -200,4 +201,13 @@ const
 {
 	if ( auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) } )
 		p->DrawNeuronText( context );
+}
+
+void NNetModelReaderInterface::DrawLine
+( 
+	MicroMeterLine const & umLine, 
+	DrawContext    const & context 
+) const
+{
+	context.DrawLine( umLine.GetStartPoint(), umLine.GetEndPoint(), 10.0_MicroMeter, D2D1::ColorF::Brown );
 }

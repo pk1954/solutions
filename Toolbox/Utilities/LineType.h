@@ -21,6 +21,39 @@ public:
         m_p2(p2)
     {}
 
+    LineType(LineType const & l)
+      : m_p1(l.m_p1),
+        m_p2(l.m_p2)
+    {}
+
+    LineType() {}
+
+    bool const operator==(LineType const & a) const { return (m_p1 == a.m_p1) && (m_p2 == a.m_p2); }
+    bool const operator!=(LineType const & a) const { return (m_p1 != a.m_p1) || (m_p2 != a.m_p2); }
+
+    LineType const operator+= (POS_TYPE const a) { m_p1 += a; m_p2 += a; return * this; }
+    LineType const operator-= (POS_TYPE const a) { m_p1 -= a; m_p2 -= a; return * this; }
+
+    friend LineType const operator+ (LineType const l, POS_TYPE const p) 
+    { 
+        LineType res { l }; 
+        res += p; 
+        return res; 
+    };
+
+    friend LineType const operator- (LineType const l, POS_TYPE const p) 
+    { 
+        LineType res { l }; 
+        res -= p; 
+        return res; 
+    };
+
+    void SetPoints( POS_TYPE const & p1, POS_TYPE const & p2 ) 
+    { 
+        m_p1 = p1; 
+        m_p2 = p2; 
+    }
+
     BASE_TYPE const Length( ) const
     {
         return Distance( m_p1, m_p2 );
@@ -31,9 +64,17 @@ public:
         return m_p2 - m_p1;
     }
 
-    POS_TYPE const OrthoVector( ) const
+    POS_TYPE const GetStartPoint() const { return m_p1; }
+    POS_TYPE const GetEndPoint  () const { return m_p2; }
+
+    POS_TYPE const OrthoVector() const
     {
         return GetVector().OrthoVector( 1.0_MicroMeter );
+    }
+
+    LineType const OrthoLine( ) const
+    {
+        return LineType( m_p1, m_p1 + OrthoVector() );
     }
 
     friend BASE_TYPE const PointToLine( LineType const & l, POS_TYPE const & p0 )
@@ -43,6 +84,26 @@ public:
         BASE_TYPE res =  p01.GetX() * p12.GetYvalue() - p01.GetY() * p12.GetXvalue() / l.Length();
         return res;
     }
+
+    static LineType const & NULL_VAL() 
+    { 
+        static LineType res { LineType( BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ) }; 
+        return res;
+    };
+
+    static LineType const & ZERO_VAL() 
+    { 
+        static LineType res { LineType( BASE_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL() ) }; 
+        return res;
+    };
+
+    void Set2Zero() { * this = ZERO_VAL(); }
+    void Set2Null() { * this = NULL_VAL(); }
+
+    bool IsNull   () const { return * this == NULL_VAL(); };
+    bool IsNotNull() const { return * this != NULL_VAL(); };
+    bool IsZero   () const { return * this == ZERO_VAL(); };
+    bool IsNotZero() const { return * this != ZERO_VAL(); };
 
 private:
     POS_TYPE m_p1;

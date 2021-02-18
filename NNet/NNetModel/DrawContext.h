@@ -39,7 +39,6 @@ public:
 	virtual void FillRectangle     ( MicroMeterRect    const &, D2D1::ColorF const ) const = 0;
 	virtual void FillGradientCircle( MicroMeterCircle  const &, D2D1::ColorF const, D2D1::ColorF const ) const = 0;
 	virtual void DrawTranspRect    ( MicroMeterRect    const &, D2D1::ColorF const ) const = 0;
-//	virtual void ShowScale         ( PixelRectSize     const &                     ) const = 0;
 	virtual void DisplayText
 	(
 		MicroMeterRect      const &,

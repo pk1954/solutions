@@ -79,33 +79,37 @@ private:
 	 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 	
-	Scale      m_scale;
+	Scale m_scale;
 
-	MicroMeter m_arrowSizeTarget { STD_ARROW_SIZE };
-	MicroMeter m_arrowSize       { m_arrowSizeTarget };
-
-	MicroMeterPointVector m_shapes2Animate       { };
-	MicroMeterRect        m_rectSelection        { };
-	ShapeId               m_shapeTarget          { };
-	ShapeId               m_shapeHighlighted     { };
-	Observable          * m_pCoordObservable     { nullptr };
-	Observable          * m_pCursorPosObservable { nullptr };
-	NNetModelCommands   * m_pNNetCommands        { nullptr };
-	
 	using ArrowAnimation = Animation<MicroMeter,            MainWindow>;
 	using CoordAnimation = Animation<PixelCoordsFp,         MainWindow>;
 	using ShapeAnimation = Animation<MicroMeterPointVector, MainWindow>;
 
 	unique_ptr<ArrowAnimation> m_upArrowAnimation;
-	unique_ptr<CoordAnimation> m_upCoordAnimation;
-	unique_ptr<ShapeAnimation> m_upShapeAnimation;
+	MicroMeter                 m_arrowSizeTarget { STD_ARROW_SIZE };
+	MicroMeter                 m_arrowSizeRun    { m_arrowSizeTarget };
 
+	unique_ptr<ShapeAnimation> m_upShapeAnimation;
+	ShapePtrList<BaseKnot>     m_shapesAnimated;
+	MicroMeterPointVector      m_umPntVectorRun;
+	MicroMeterPointVector      m_umPntVectorTarget;
+
+	unique_ptr<CoordAnimation> m_upCoordAnimation;
+
+	MicroMeterRect      m_rectSelection        { };
+	ShapeId             m_shapeTarget          { };
+	ShapeId             m_shapeHighlighted     { };
+	Observable        * m_pCoordObservable     { nullptr };
+	Observable        * m_pCursorPosObservable { nullptr };
+	NNetModelCommands * m_pNNetCommands        { nullptr };
+	
 	void setTargetShape     ( );
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );
 	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
 
-	MicroMeterPointVector alignedShapes();
+	void alignedShapes();
+	void setBaseKnots();
 
 	virtual void doPaint();
 };

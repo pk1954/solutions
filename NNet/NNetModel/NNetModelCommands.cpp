@@ -209,11 +209,15 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 	m_pCmdStack->PushCommand( make_unique<MoveSelectionCommand>( delta ) );
 }
 
-void NNetModelCommands::SetBaseKnots( MicroMeterPointVector & list )
+void NNetModelCommands::SetBaseKnots
+( 
+	MicroMeterPointVector  & umPntVectorRun,
+	ShapePtrList<BaseKnot> & shapes2Animate 
+)
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<SetBaseKnotsCommand>( * m_pNMWI, list ) );
+	m_pCmdStack->PushCommand( make_unique<SetBaseKnotsCommand>( umPntVectorRun, shapes2Animate ) );
 }
 
 void NNetModelCommands::AddModel( )

@@ -7,6 +7,7 @@
 #include "MoreTypes.h"
 #include "MicroMeterPointVector.h"
 #include "NNetModelWriterInterface.h"
+#include "ShapePtrList.h"
 #include "Command.h"
 #include "BaseKnot.h"
 
@@ -15,27 +16,29 @@ class SetBaseKnotsCommand : public Command
 public:
 	SetBaseKnotsCommand
 	( 
-		NNetModelWriterInterface & nmwi, 
-		MicroMeterPointVector    & list 
+		MicroMeterPointVector  & umPntVectorRun,
+		ShapePtrList<BaseKnot> & shapes2Animate
 	)
-		: m_list(list)
+	  : m_umPntVectorRun(umPntVectorRun),
+		m_shapes2Animate(shapes2Animate)
 	{}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		unsigned int ui = 0;
-		nmwi.GetUPShapes().Apply2AllSelected<BaseKnot>
-		( 
-			[&]( BaseKnot & knot )
-			{ 
-				MicroMeterPoint umPnt { knot.GetPosition() };
-				knot.SetPosition( m_list.GetPos(ui) );
-				m_list.SetPos( ui, umPnt );
+		m_shapes2Animate.Apply2All
+		(
+			[&](BaseKnot & baseKnot)
+			{
+				MicroMeterPoint umPnt { baseKnot.GetPosition() };
+				baseKnot.SetPosition( m_umPntVectorRun.GetPos(ui) );
+				m_umPntVectorRun.SetPosition( ui, umPnt );
 				++ui;
-			} 
+			}
 		);
 	}
 
 private:
-	MicroMeterPointVector m_list;
+	MicroMeterPointVector  m_umPntVectorRun;
+	ShapePtrList<BaseKnot> m_shapes2Animate;
 };

@@ -56,6 +56,8 @@ public:
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawNeuronText( ShapeId const, DrawContext const & ) const;
+	
+	void DrawLine( MicroMeterLine const &, DrawContext const & ) const;
 
 	template <Shape_t T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
 	template <Shape_t T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }

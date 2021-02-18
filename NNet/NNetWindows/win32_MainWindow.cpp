@@ -52,7 +52,7 @@ void MainWindow::Start
 	m_upArrowAnimation = make_unique<ArrowAnimation>
 	( 
 		GetWindowHandle(), 
-		m_arrowSize,
+		m_arrowSizeRun,
 		nullptr
 	);
 
@@ -69,16 +69,17 @@ void MainWindow::Start
 	m_upShapeAnimation = make_unique<ShapeAnimation>
 	(
 		GetWindowHandle(), 
-		m_shapes2Animate,
+		m_umPntVectorRun,
 		[](MainWindow * const pWin, bool const bTargetReached) 
 		{
-			pWin->m_pNNetCommands->SetBaseKnots( pWin->m_shapes2Animate );
+			pWin->setBaseKnots();
 			//if ( bTargetReached )
 			//	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 		}
 	);
-
 }
+
+void MainWindow::setBaseKnots() { m_pNNetCommands->SetBaseKnots(m_umPntVectorRun, m_shapesAnimated ); }
 
 void MainWindow::Stop( )
 {
@@ -229,45 +230,28 @@ void MainWindow::MakeConnector( )
 void MainWindow::AlignSelection( )
 {
 //	m_pNNetCommands->OpenSeries();
-	m_pNNetCommands->RestrictSelection( ShapeType::Value::inputNeuron );
-	m_upShapeAnimation = make_unique<ShapeAnimation>
-	(
-		GetWindowHandle(), 
-		m_shapes2Animate,
-		[](MainWindow * const pWin, bool const bTargetReached) 
-		{
-			pWin->m_pNNetCommands->SetBaseKnots( pWin->m_shapes2Animate );
-			if ( bTargetReached )
-			{
-//				pWin->m_pNNetCommands->CloseSeries();
-			//	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-			}
-		}
-	);
-
-	m_upShapeAnimation->Start( m_shapes2Animate, alignedShapes() );
+	m_pNNetCommands->RestrictSelection( ShapeType::Value::inputNeuron ); /// TODO: 
+	alignedShapes();
+	m_upShapeAnimation->Start( m_umPntVectorRun, m_umPntVectorTarget );
 }
 
-MicroMeterPointVector MainWindow::alignedShapes( )
+void MainWindow::alignedShapes( )
 {
 	struct AL_PNT
 	{
-		BaseKnot const * pBaseKnot;
-		MicroMeterPoint  umPntTarget;
-		MicroMeter       umDist;
+		BaseKnot * pBaseKnot;
+		MicroMeter umDist;
 	};
 	vector<AL_PNT> points;
-
-	m_shapes2Animate.Clear();
 
 	m_pNMRI->GetUPShapes().Apply2AllSelected<BaseKnot>
 	( 
 		[&](BaseKnot const & b)
 		{ 
-			if ( b.IsAnyNeuron() )
+			if ( b.IsAnyNeuron() )  // TODO: const_cast find better solution
 			{
-				m_shapes2Animate.Add( b.GetPosition() );
-				points.push_back( AL_PNT{ & b } );
+				BaseKnot * pBaseKnot { const_cast<BaseKnot *>(& b) };
+				points.push_back( AL_PNT{ pBaseKnot } );
 			}
 		} 
 	);
@@ -293,9 +277,13 @@ MicroMeterPointVector MainWindow::alignedShapes( )
 	// for every other baseknot compute position on line START to END
 
 	MicroMeterLine line      { pStart->GetPosition(), pEnd->GetPosition() };
-	MicroMeterLine orthoLine { pStart->GetPosition(), line.OrthoVector() };
+	MicroMeterLine orthoLine { line.OrthoLine() };
 	for ( auto & it : points )
 		it.umDist = PointToLine( orthoLine, it.pBaseKnot->GetPosition() );
+
+	// sort baseknots according to position
+
+	sort( points.begin(), points.end(), [](auto & p1, auto & p2){ return p1.umDist < p2.umDist; } );
 
 	// compute tightly packed positions
 
@@ -307,19 +295,18 @@ MicroMeterPointVector MainWindow::alignedShapes( )
 	MicroMeterPoint umPntTargetStart  { umPntTargetCenter - umPntPackedSingle * fNrOfPoints * 0.5f };
 	MicroMeterPoint umPntTargetEnd    { umPntTargetCenter + umPntPackedSingle * fNrOfPoints * 0.5f };
 
+	// fill animation vectors
+
+	m_umPntVectorTarget.Clear();
+	m_umPntVectorRun.Clear();
+	m_shapesAnimated.Clear();
+
 	for ( int i = 0; i < points.size(); ++i )
-		points[i].umPntTarget = umPntTargetStart + umPntPackedSingle * static_cast<float>(i);
-
-	// sort baseknots according to position
-
-	sort( points.begin(), points.end(), [](auto p1, auto p2){ return p1.umDist < p2.umDist; } );
-
-	MicroMeterPointVector target;
-
-	for ( auto & it : points )
-		target.Add( it.umPntTarget );
-
-	return target;
+	{
+		m_umPntVectorTarget.Add( umPntTargetStart + umPntPackedSingle * static_cast<float>(i) );
+		m_shapesAnimated.Add( points[i].pBaseKnot );
+		m_umPntVectorRun.Add( points[i].pBaseKnot->GetPosition() );
+	}
 }
 
 bool const MainWindow::ArrowsVisible( ) const
@@ -329,14 +316,10 @@ bool const MainWindow::ArrowsVisible( ) const
 
 void MainWindow::ShowArrows( bool const op )
 {
-	MicroMeter olVal { m_arrowSizeTarget };
-	if ( op )
-		m_arrowSizeTarget = STD_ARROW_SIZE;
-	else 
-		m_arrowSizeTarget = 0._MicroMeter;
-
-	if ( m_arrowSizeTarget != olVal )
-		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
+	MicroMeter oldVal { m_arrowSizeTarget };
+	m_arrowSizeTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
+	if ( m_arrowSizeTarget != oldVal )
+		m_upArrowAnimation->Start( m_arrowSizeRun, m_arrowSizeTarget );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -541,8 +524,8 @@ void MainWindow::doPaint( )
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 	{
 		DrawExteriorInRect( pixRect );
-		if ( m_arrowSize > 0.0_MicroMeter )
-			DrawArrowsInRect( pixRect, m_arrowSize );
+		if ( m_arrowSizeRun > 0.0_MicroMeter )
+			DrawArrowsInRect( pixRect, m_arrowSizeRun );
 	}
 
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } ); 
@@ -561,6 +544,19 @@ void MainWindow::doPaint( )
 		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
+
+	//if ( line.IsNotNull() )
+	//	m_pNMRI->DrawLine( line, context );
+
+	//if ( orthoLine.IsNotNull() )
+	//{
+	//	MicroMeterLine orto
+	//	{
+	//		line.GetStartPoint(),
+	//		line.GetStartPoint() + line.OrthoVector() * 1000.0f
+	//	};
+	//	m_pNMRI->DrawLine( orto, context );
+	//}
 
 	DrawSensors( );
 	DrawBeacon( );
