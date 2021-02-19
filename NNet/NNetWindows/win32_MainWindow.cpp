@@ -66,20 +66,23 @@ void MainWindow::Start
 		}
 	);
 
-	m_upShapeAnimation = make_unique<ShapeAnimation>
+	m_upConnectorAnimation = make_unique<ShapeAnimation>
 	(
 		GetWindowHandle(), 
 		m_umPntVectorRun,
 		[](MainWindow * const pWin, bool const bTargetReached) 
 		{
-			pWin->setBaseKnots();
-			//if ( bTargetReached )
-			//	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+			pWin->setBaseKnots( bTargetReached );
 		}
 	);
 }
 
-void MainWindow::setBaseKnots() { m_pNNetCommands->SetBaseKnots(m_umPntVectorRun, m_shapesAnimated ); }
+void MainWindow::setBaseKnots( bool const bTargetReached ) 
+{ 
+	m_pNNetCommands->SetBaseKnots(m_umPntVectorRun, m_shapesAnimated ); 
+	if ( bTargetReached )
+		SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 
+}
 
 void MainWindow::Stop( )
 {
@@ -229,10 +232,9 @@ void MainWindow::MakeConnector( )
 
 void MainWindow::AlignSelection( )
 {
-//	m_pNNetCommands->OpenSeries();
 	m_pNNetCommands->RestrictSelection( ShapeType::Value::inputNeuron ); /// TODO: 
 	alignedShapes();
-	m_upShapeAnimation->Start( m_umPntVectorRun, m_umPntVectorTarget );
+	m_upConnectorAnimation->Start( m_umPntVectorRun, m_umPntVectorTarget );
 }
 
 void MainWindow::alignedShapes( )

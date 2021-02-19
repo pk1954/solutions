@@ -60,18 +60,17 @@ bool InputNeuron::CompStep( )
 
 void InputNeuron::drawSocket
 ( 
-	DrawContext     const & context, 
-	float           const   M,       // overall width/height                        
-	float           const   VEM,     // vertical offset of end point middle section 
-	D2D1::ColorF    const   colF,
-	MicroMeterPoint const * pumVector
+	DrawContext  const & context, 
+	float        const   M,       // overall width/height                        
+	float        const   VEM,     // vertical offset of end point middle section 
+	D2D1::ColorF const   colF
 ) const
 {
 	MicroMeterPoint const axonVector
 	{
-		pumVector 
-		? * pumVector
-		: HasAxon()
+		m_umVector.IsNotNull()
+		? m_umVector
+	    : HasAxon()
 		? m_connections.GetFirstOutgoing().GetVector( )
 		: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
 	};
@@ -88,34 +87,24 @@ void InputNeuron::drawSocket
 	context.DrawLine( umPosL - umOrthoVector, umPosR - umOrthoVector,       umWidthLR,          colF );
 }
 
-void InputNeuron::drawSocketExterior( DrawContext const & context, tHighlightType const type, MicroMeterPoint const * pumVector ) const
+void InputNeuron::drawSocketExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawSocket( context, 2.0f, 0.2f, GetExteriorColor(type), pumVector );
+	drawSocket( context, 2.0f, 0.2f, GetExteriorColor(type) );
 }
 
-void InputNeuron::drawSocketInterior( DrawContext const & context, tHighlightType const type, MicroMeterPoint const * pumVector ) const
+void InputNeuron::drawSocketInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type), pumVector );
+	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
 }
 
 void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawSocketExterior( context, type, nullptr );
+	drawSocketExterior( context, type );
 }
 
 void InputNeuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawSocketInterior( context, type, nullptr );
-}
-
-void InputNeuron::DrawSocketExterior( DrawContext const & context, tHighlightType const type, MicroMeterPoint const & umVector ) const
-{
-	drawSocketExterior( context, type, & umVector );
-}
-
-void InputNeuron::DrawSocketInterior( DrawContext const & context, tHighlightType const type, MicroMeterPoint const & umVector) const
-{
-	drawSocketInterior( context, type, & umVector );
+	drawSocketInterior( context, type );
 }
 
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const

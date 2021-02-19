@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "DrawContext.h"
-#include "AnimationInterface.h"
 #include "NNetModelReaderInterface.h"
 #include "Signal.h"
 

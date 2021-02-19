@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <corecrt.h>
-
 #include <vector>
 #include <assert.h>   
 #include "MoreTypes.h"

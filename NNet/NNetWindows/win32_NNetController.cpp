@@ -240,6 +240,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pMainWindow->PostMessage( WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0 );
         break;
 
+    case IDX_PLAY_SOUND:
+        m_pSound->Play( reinterpret_cast<wchar_t *>(lParam) ); 
+        break;
+
     case IDD_CONNECT:
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         m_pModelCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetTargetShapeId() );

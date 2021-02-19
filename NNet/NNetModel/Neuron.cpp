@@ -210,38 +210,40 @@ void Neuron::DrawInterior( DrawContext const & context, tHighlightType const typ
 	m_bTriggered = false;
 }
 
+void Neuron::SetDirection( MicroMeterPoint const& umPntDir )
+{
+	m_umVector = umPntDir;
+}
+
 void Neuron::DrawRectExterior
 ( 
-	DrawContext     const & context, 
-	tHighlightType  const   type, 
-	MicroMeterPoint const * pumVector
+	DrawContext    const & context, 
+	tHighlightType const   type
 ) const
 {
-	drawPlug( context, 0.8f, 0.8f, GetExteriorColor( type ), pumVector );
+	drawPlug( context, 0.8f, 0.8f, GetExteriorColor(type) );
 }
 
 void Neuron::DrawRectInterior
 ( 
-	DrawContext     const & context, 
-	tHighlightType  const   type, 
-	MicroMeterPoint const * pumVector
+	DrawContext    const & context, 
+	tHighlightType const   type
 ) const
 {
-	drawPlug( context, 0.4f, 0.6f, GetInteriorColor( type ), pumVector );
+	drawPlug( context, 0.4f, 0.6f, GetInteriorColor(type) );
 }
 
 void Neuron::drawPlug
 ( 
-	DrawContext     const & context, 
-	float           const   M,       // overall width/height                        
-	float           const   V,
-	D2D1::ColorF    const   colF,
-	MicroMeterPoint const * pumVector
+	DrawContext  const & context, 
+	float        const   M,       // overall width/height                        
+	float        const   V,
+	D2D1::ColorF const   colF
 ) const
 {
 	MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };
-	if (pumVector) 
-		umVector = * pumVector;
+	if (m_umVector.IsNotNull()) 
+		umVector = m_umVector;
 	else if	(m_connections.GetNrOfIncomingConnections() > 0)
 		m_connections.Apply2AllInPipes( [&](Pipe & pipe) { umVector += pipe.GetVector(); } );
 	else

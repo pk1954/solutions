@@ -43,18 +43,20 @@ public:
 
 	SoundDescr const SetTriggerSound( SoundDescr const & );
 
-	fMicroSecs PulseWidth   ( ) const;
-	fMicroSecs RefractPeriod( ) const;
-	mV         Threshold    ( ) const;
-	mV         PeakVoltage  ( ) const;
+	fMicroSecs   PulseWidth   () const;
+	fMicroSecs   RefractPeriod() const;
+	mV           Threshold    () const;
+	mV           PeakVoltage  () const;
 
-	void       StopOnTrigger( tBoolOp const op ) { ApplyOp( m_bStopOnTrigger, op ); }
+	void         StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
 
-	virtual void DrawRectExterior( DrawContext const &, tHighlightType const, MicroMeterPoint const * = nullptr ) const;
-	virtual void DrawRectInterior( DrawContext const &, tHighlightType const, MicroMeterPoint const * = nullptr ) const;
+	virtual void SetDirection(MicroMeterPoint const &);
+		
+	virtual void DrawRectExterior( DrawContext const &, tHighlightType const ) const;
+	virtual void DrawRectInterior( DrawContext const &, tHighlightType const ) const;
 
-	virtual void DrawExterior( DrawContext const &, tHighlightType const) const;
-	virtual void DrawInterior( DrawContext const &, tHighlightType const) const;
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const) const;
+	virtual void DrawInterior  ( DrawContext const &, tHighlightType const) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
@@ -64,6 +66,8 @@ public:
 	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
 
 protected:
+	MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of neuron if plug or socket
+
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 	bool       m_bStopOnTrigger     { false };
 
@@ -84,11 +88,10 @@ private:
 
 	void drawPlug
 	( 
-		DrawContext     const &, 
-		float           const, 
-		float           const, 
-		D2D1::ColorF    const, 
-		MicroMeterPoint const * = nullptr
+		DrawContext  const &, 
+		float        const, 
+		float        const, 
+		D2D1::ColorF const
 	) const;
 
 	inline static unsigned long m_counter { 0L };

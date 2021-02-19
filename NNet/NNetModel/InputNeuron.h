@@ -37,34 +37,28 @@ public:
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 
-	void DrawSocketExterior( DrawContext const &, tHighlightType const, MicroMeterPoint const & ) const;
-	void DrawSocketInterior( DrawContext const &, tHighlightType const, MicroMeterPoint const & ) const;
-
 	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
 	fHertz const SetPulseFrequency( fHertz const );
 
 private:
 	void drawSocket
 	( 
-		DrawContext     const &, 
-		float           const, 
-		float           const, 
-		D2D1::ColorF    const, 
-		MicroMeterPoint const * = nullptr
+		DrawContext  const &, 
+		float        const, 
+		float        const, 
+		D2D1::ColorF const
 	) const;
 
 	void drawSocketExterior
 	( 
-		DrawContext     const &, 
-		tHighlightType  const, 
-		MicroMeterPoint const *
+		DrawContext    const &, 
+		tHighlightType const
 	) const;
 
 	void drawSocketInterior
 	( 
-		DrawContext     const &, 
-		tHighlightType  const, 
-		MicroMeterPoint const *
+		DrawContext    const &, 
+		tHighlightType const
 	) const;
 
 	mV         m_mvFactor;       // precomputed value for optimization

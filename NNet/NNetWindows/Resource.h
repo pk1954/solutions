@@ -57,6 +57,7 @@
 
 #define IDD_SOUND_ON             171
 #define IDD_SOUND_OFF            172
+#define IDX_PLAY_SOUND           173
 
 #define IDD_AUTO_OPEN_ON         181
 #define IDD_AUTO_OPEN_OFF        182

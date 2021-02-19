@@ -7,7 +7,6 @@
 #include "NNetParameters.h"
 #include "Observable.h"
 #include "ShapeId.h"
-#include "AnimationInterface.h"
 #include "Signal.h"
 
 using std::unique_ptr;

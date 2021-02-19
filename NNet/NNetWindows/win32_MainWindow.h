@@ -89,7 +89,7 @@ private:
 	MicroMeter                 m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter                 m_arrowSizeRun    { m_arrowSizeTarget };
 
-	unique_ptr<ShapeAnimation> m_upShapeAnimation;
+	unique_ptr<ShapeAnimation> m_upConnectorAnimation;
 	ShapePtrList<BaseKnot>     m_shapesAnimated;
 	MicroMeterPointVector      m_umPntVectorRun;
 	MicroMeterPointVector      m_umPntVectorTarget;
@@ -109,7 +109,7 @@ private:
 	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
 
 	void alignedShapes();
-	void setBaseKnots();
+	void setBaseKnots( bool const );
 
 	virtual void doPaint();
 };
