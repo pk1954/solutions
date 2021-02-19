@@ -15,14 +15,14 @@ public:
 
 	InputNeuron( MicroMeterPoint const );
 
-	virtual ~InputNeuron( );
+	virtual ~InputNeuron();
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static unsigned long GetCounter  ( ) { return m_counter; }
-	static   void        ResetCounter( ) { m_counter = 0L; }
-	virtual  void        IncCounter  ( ) { ++ m_counter; }
-	virtual  void        DecCounter  ( ) { -- m_counter; }
+	static unsigned long GetCounter  () { return m_counter; }
+	static   void        ResetCounter() { m_counter = 0L; }
+	virtual  void        IncCounter  () { ++ m_counter; }
+	virtual  void        DecCounter  () { -- m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
 
@@ -37,6 +37,9 @@ public:
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 
+	void DrawSocketExterior( DrawContext const &, tHighlightType const, MicroMeterPoint const & ) const;
+	void DrawSocketInterior( DrawContext const &, tHighlightType const, MicroMeterPoint const & ) const;
+
 	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
 	fHertz const SetPulseFrequency( fHertz const );
 
@@ -48,6 +51,20 @@ private:
 		float           const, 
 		D2D1::ColorF    const, 
 		MicroMeterPoint const * = nullptr
+	) const;
+
+	void drawSocketExterior
+	( 
+		DrawContext     const &, 
+		tHighlightType  const, 
+		MicroMeterPoint const *
+	) const;
+
+	void drawSocketInterior
+	( 
+		DrawContext     const &, 
+		tHighlightType  const, 
+		MicroMeterPoint const *
 	) const;
 
 	mV         m_mvFactor;       // precomputed value for optimization

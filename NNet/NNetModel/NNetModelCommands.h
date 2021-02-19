@@ -52,6 +52,7 @@ public:
     void ClearBeepers       ( );
     void Connect            ( ShapeId const, ShapeId const );
     void CopySelection      ( );
+    void CreateInitialShapes( );
     void DeleteSelection    ( );
     void DeleteShape        ( ShapeId const );
     void Disconnect         ( ShapeId const );

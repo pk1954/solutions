@@ -73,7 +73,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         wstring wstrFile    { script.ScrReadString() };
-        auto    termination { make_unique<NNetImportTermination>( m_hwndApp, IDM_REPLACE_MODEL ) };
+        auto    termination { make_unique<NNetImportTermination>( m_hwndApp, IDX_REPLACE_MODEL ) };
         if ( ! m_modelImporter.Import( wstrFile, move(termination) ) )
         {
             SendMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );

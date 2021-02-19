@@ -41,6 +41,15 @@ public:
     }
 };
 
+class WrapCreateInitialShapes: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        m_pCommands->CreateInitialShapes( );
+    }
+};
+
 class WrapConnect: public Script_Functor
 {
 public:
@@ -356,8 +365,9 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(AddOutgoing2Knot);   
     DEF_FUNC(AddOutgoing2Pipe);   
     DEF_FUNC(ClearBeepers);       
-    DEF_FUNC(Connect);            
+    DEF_FUNC(Connect);
     DEF_FUNC(CopySelection);      
+    DEF_FUNC(CreateInitialShapes);
     DEF_FUNC(DeleteSelection);    
     DEF_FUNC(DeleteShape);        
     DEF_FUNC(Disconnect);         

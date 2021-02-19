@@ -246,8 +246,8 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 	{
 		size_t          const nrOfSegments  { m_potential.size() };
 		MicroMeterPoint const umSegVec      { umVector / Cast2Float(nrOfSegments) };
-		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector( PIPE_WIDTH ) };
-		MicroMeterPoint       umPoint       { GetStartPoint( ) };
+		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector(PIPE_WIDTH) };
+		MicroMeterPoint       umPoint       { GetStartPoint() };
 		size_t          const potIndex      { m_potIndex };
 		size_t                index         { potIndex }; 
 		do 
@@ -255,8 +255,8 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 			if (++index == m_potential.size()) 
 				index = 0; 
 
-			MicroMeterPoint const umPoint2 { umPoint  + umSegVec };
-			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint, umPoint2, umOrthoScaled ) )
+			MicroMeterPoint const umPoint2 { umPoint + umSegVec };
+			if ( IsPointInRect2<MicroMeterPoint>( point, umPoint, umPoint2, umOrthoScaled ) )
 			{
 				mVresult = m_potential[index];
 				break;

@@ -97,6 +97,13 @@ void NNetModelCommands::ResetModel( )
 		TraceStream( ) << __func__ << endl;
 	m_pNMWI->ResetModel( );
 	m_pCmdStack->Clear();
+	m_pDynamicModelObservable->NotifyAll( false );
+}
+
+void NNetModelCommands::CreateInitialShapes( )
+{ 
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
 	m_pNMWI->CreateInitialShapes();
 	m_pDynamicModelObservable->NotifyAll( false );
 }

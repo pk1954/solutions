@@ -33,6 +33,7 @@ void CommandStack::Clear( )
 {
     m_iIndex = 0;
     clearRedoStack();
+    m_pStaticModelObservable->NotifyAll( true );
 }
 
 void CommandStack::clearRedoStack( )
@@ -58,12 +59,12 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
 
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
-#ifdef _DEBUG
-    NNetModel const & model { m_pNMWI->GetModel( ) };
-    m_pNMWI->CheckModel();
-    NNetModel modelSave1( model );
-    m_pNMWI->CheckModel();
-#endif
+//#ifdef _DEBUG
+//    NNetModel const & model { m_pNMWI->GetModel( ) };
+//    m_pNMWI->CheckModel();
+//    NNetModel modelSave1( model );
+//    m_pNMWI->CheckModel();
+//#endif
     clearRedoStack( );
     assert( * pCmd );
     pCmd->Do( * m_pNMWI );
@@ -71,24 +72,24 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     pushNewCommand( move(pCmd) );
     m_pStaticModelObservable->NotifyAll( true );
 
-#ifdef _DEBUG
-    NNetModel modelSave2( model );
-    modelSave2.CheckModel();
-    m_pNMWI->CheckModel();
-    UndoCommand();
-    m_pNMWI->CheckModel();
-    if ( !(model == modelSave1) )
-    {
-        int x = 42;
-    }
-    m_pNMWI->CheckModel();
-    RedoCommand();
-    m_pNMWI->CheckModel();
-    if ( !(model == modelSave2) )
-    {
-        int x = 42;
-    }
-#endif
+//#ifdef _DEBUG
+//    NNetModel modelSave2( model );
+//    modelSave2.CheckModel();
+//    m_pNMWI->CheckModel();
+//    UndoCommand();
+//    m_pNMWI->CheckModel();
+//    if ( !(model == modelSave1) )
+//    {
+//        int x = 42;
+//    }
+//    m_pNMWI->CheckModel();
+//    RedoCommand();
+//    m_pNMWI->CheckModel();
+//    if ( !(model == modelSave2) )
+//    {
+//        int x = 42;
+//    }
+//#endif
 }
 
 bool CommandStack::UndoCommand( )
@@ -117,6 +118,7 @@ bool CommandStack::UndoCommand( )
         undoCmd( );                         // of one command
         m_pNMWI->CheckModel();
     }
+    m_pStaticModelObservable->NotifyAll( true );
     return true;
 }
 
@@ -146,5 +148,6 @@ bool CommandStack::RedoCommand( )
     {                                       // normal processing
         doAndSet2YoungerCmd();              // of one command
     }
+    m_pStaticModelObservable->NotifyAll( true );
     return true;
 }

@@ -230,11 +230,15 @@ void NNetAppWindow::Start( MessagePump & pump )
 		Util::Show( m_hwndApp, true );
 
 	m_appMenu.Notify( true );
+	m_undoRedoMenu.Notify( true );
 
 	Show( true );
 
 	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( ) )
+	{
 		m_modelCommands.ResetModel();
+		m_modelCommands.CreateInitialShapes();
+	}
 
 	m_bStarted = true;
 }
@@ -418,6 +422,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_computeThread.StopComputation( );
 			m_mainNNetWindow.Reset();
 			m_modelCommands.ResetModel( );
+			m_modelCommands.CreateInitialShapes( );
 			m_appTitle.SetUnsavedChanges( true );
 			m_mainNNetWindow.CenterModel( );
 		}
@@ -435,11 +440,12 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_OPEN_MODEL:
+		m_cmdStack.Clear();
 		m_modelImporter.Import
 		( 
 			AskModelFile(), 
-			make_unique<NNetImportTermination>( m_hwndApp, IDM_REPLACE_MODEL )
-		); 
+			make_unique<NNetImportTermination>( m_hwndApp, IDX_REPLACE_MODEL )
+		);
 		break;
 
 	case IDM_ADD_MODEL:
@@ -450,7 +456,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		); 
 		break;
 
-	case IDM_REPLACE_MODEL:
+	case IDX_REPLACE_MODEL:  //no user command, only internal usage
 		m_StatusBar.ClearPart( m_statusMessagePart );
 		if ( AskAndSave( ) )
 		{

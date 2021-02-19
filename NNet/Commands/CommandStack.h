@@ -25,8 +25,15 @@ public:
 
     void Initialize( NNetModelWriterInterface * const, Observable * const );
 
-    bool UndoStackEmpty() const { return m_iIndex == 0; }
-    bool RedoStackEmpty() const { return m_iIndex == m_CommandStack.size(); }
+    bool UndoStackEmpty() const 
+    { 
+        return m_iIndex == 0; 
+    }
+
+    bool RedoStackEmpty() const 
+    { 
+        return m_iIndex == m_CommandStack.size(); 
+    }
 
     void OpenSeries( )
     {
@@ -86,6 +93,7 @@ private:
         assert( m_iIndex < m_CommandStack.size() );
         ++m_iIndex;
     }
+
     void pushNewCommand( unique_ptr<Command> );
 
     void clearRedoStack   ( );

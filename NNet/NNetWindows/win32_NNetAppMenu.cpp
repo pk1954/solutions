@@ -123,32 +123,33 @@ void NNetAppMenu::Start
 
 void NNetAppMenu::enable( unsigned int const id, bool const bCrit )
 {
-    EnableMenuItem( m_hMenu, id, bCrit ? MF_GRAYED : MF_ENABLED );
+    EnableMenuItem( m_hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED );
 }
 
 void NNetAppMenu::Notify( bool const bImmediately )
 {
-    enable( IDM_FORWARD, m_pComputeThread->IsRunning() );
-    enable( IDM_RESET,   m_pComputeThread->IsRunning() );
-    enable( IDM_RUN,     m_pComputeThread->IsRunning() );
-    enable( IDM_STOP,  ! m_pComputeThread->IsRunning() );
+    enable( IDM_FORWARD, ! m_pComputeThread->IsRunning() );
+    enable( IDM_RESET,   ! m_pComputeThread->IsRunning() );
+    enable( IDM_RUN,     ! m_pComputeThread->IsRunning() );
+    enable( IDM_STOP,      m_pComputeThread->IsRunning() );
 
-    enable( IDM_DESC_WINDOW,    m_pWinManager->IsVisible( IDM_DESC_WINDOW    ) );
-    enable( IDM_CRSR_WINDOW,    m_pWinManager->IsVisible( IDM_CRSR_WINDOW    ) );
-    enable( IDM_MINI_WINDOW,    m_pWinManager->IsVisible( IDM_MINI_WINDOW    ) );
-    enable( IDM_MONITOR_WINDOW, m_pWinManager->IsVisible( IDM_MONITOR_WINDOW ) );
-    enable( IDM_PARAM_WINDOW,   m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
-    enable( IDM_PERF_WINDOW,    m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
+    enable( IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible( IDM_DESC_WINDOW    ) );
+    enable( IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible( IDM_CRSR_WINDOW    ) );
+    enable( IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible( IDM_MINI_WINDOW    ) );
+    enable( IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible( IDM_MONITOR_WINDOW ) );
+    enable( IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
+    enable( IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
 
-    m_upOnOffArrows   ->enableOnOff( m_pMainWindow->ArrowsVisible() );
-    m_upOnOffSound    ->enableOnOff( m_pSound->IsOn() );
-    m_upOnOffAutoOpen ->enableOnOff( AutoOpen::IsOn() );
+    m_upOnOffArrows  ->enableOnOff( m_pMainWindow->ArrowsVisible() );
+    m_upOnOffSound   ->enableOnOff( m_pSound->IsOn() );
+    m_upOnOffAutoOpen->enableOnOff( AutoOpen::IsOn() );
 
     DrawMenuBar( m_hwndApp );
 }
 
 void NNetAppMenu::AdjustUndoRedo( )
 {
-    enable( IDM_UNDO, m_pCommandStack->UndoStackEmpty() );
-    enable( IDM_REDO, m_pCommandStack->RedoStackEmpty() );
+    enable( IDM_UNDO, ! m_pCommandStack->UndoStackEmpty() );
+    enable( IDM_REDO, ! m_pCommandStack->RedoStackEmpty() );
+    DrawMenuBar( m_hwndApp );
 }
