@@ -16,10 +16,10 @@ class SetBaseKnotsCommand : public Command
 public:
 	SetBaseKnotsCommand
 	( 
-		MicroMeterPointVector  & umPntVectorRun,
-		ShapePtrList<BaseKnot> & shapes2Animate
+		MicroMeterPointVector  const & umPntVector,
+		ShapePtrList<BaseKnot>       & shapes2Animate
 	)
-	  : m_umPntVectorRun(umPntVectorRun),
+	  : m_umPntVector(umPntVector),
 		m_shapes2Animate(shapes2Animate)
 	{}
 
@@ -31,14 +31,14 @@ public:
 			[&](BaseKnot & baseKnot)
 			{
 				MicroMeterPoint umPnt { baseKnot.GetPosition() };
-				baseKnot.SetPosition( m_umPntVectorRun.GetPos(ui) );
-				m_umPntVectorRun.SetPosition( ui, umPnt );
+				baseKnot.SetPosition( m_umPntVector.GetPos(ui) );
+				m_umPntVector.SetPosition( ui, umPnt );
 				++ui;
 			}
 		);
 	}
 
 private:
-	MicroMeterPointVector  m_umPntVectorRun;
+	MicroMeterPointVector  m_umPntVector;
 	ShapePtrList<BaseKnot> m_shapes2Animate;
 };

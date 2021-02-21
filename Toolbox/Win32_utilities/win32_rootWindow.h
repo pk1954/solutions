@@ -199,17 +199,6 @@ public:
 
 	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
 
-	unsigned int const AddSlot( void * const pVoid )
-	{ 
-		m_appDefinedSlots.push_back(pVoid);
-		return Cast2UnsignedInt(m_appDefinedSlots.size());
-	}
-
-	void * GetSlot( UINT_PTR const uiSlotNr ) 
-	{ 
-		return m_appDefinedSlots.at(uiSlotNr-1); 
-	}
-
 protected:
 
 	void SetWindowHandle( HWND const );
@@ -225,12 +214,11 @@ private:
 	class WindowRefreshRate;
 	unique_ptr<WindowRefreshRate> m_upRefreshRate;
 
-	HWND                m_hwnd                { nullptr };
-	HWND                m_hwndApp             { nullptr };
-	tOnOffAuto          m_visibilityMode      { tOnOffAuto::on };
-	function<bool()>    m_visibilityCriterion { nullptr };
-	bool                m_bShowRefreshRateDlg { true };
-	vector<void *>      m_appDefinedSlots     {};
+	HWND             m_hwnd                { nullptr };
+	HWND             m_hwndApp             { nullptr };
+	tOnOffAuto       m_visibilityMode      { tOnOffAuto::on };
+	function<bool()> m_visibilityCriterion { nullptr };
+	bool             m_bShowRefreshRateDlg { true };
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;
@@ -245,4 +233,3 @@ private:
 };
 
 RootWindow * GetRootWindow( HWND const );
-void       * GetSlot(HWND const, UINT_PTR const);

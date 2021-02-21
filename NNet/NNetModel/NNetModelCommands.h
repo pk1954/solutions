@@ -69,7 +69,7 @@ public:
     void SelectShape        ( ShapeId const, tBoolOp const );
     void SelectShapesInRect ( MicroMeterRect const &, bool const );
     void SelectSubtree      ( ShapeId const, tBoolOp const );
-    void SetBaseKnots       ( MicroMeterPointVector &, ShapePtrList<BaseKnot> & );
+    void SetBaseKnots       ( MicroMeterPointVector const &, ShapePtrList<BaseKnot> & );
     void SetParameter       ( ParameterType::Value const, float const );
     void SetPulseRate       ( ShapeId    const, fHertz const );
     void SetTriggerSound    ( ShapeId const, SoundDescr const & );

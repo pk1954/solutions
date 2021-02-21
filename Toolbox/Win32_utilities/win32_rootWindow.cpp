@@ -16,11 +16,6 @@ RootWindow * GetRootWindow( HWND const hwnd )
 		   : nullptr;
 }
 
-void * GetSlot(HWND const hwnd, UINT_PTR const id) 
-{
-	return GetRootWindow(hwnd)->GetSlot(id);
-};
-
 class RootWindow::WindowRefreshRate : public BaseRefreshRate
 {
 public:

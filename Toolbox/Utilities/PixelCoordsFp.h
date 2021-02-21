@@ -217,8 +217,9 @@ public:
 
 	//////// manipulation functions ////////
 
-	void SetPixelSize  (MicroMeter  const pixelSize ) { m_pixelSize  = pixelSize;  }
-	void SetPixelOffset(fPixelPoint const fPixOffset) { m_fPixOffset = fPixOffset; }
+	void SetPixelSize  (MicroMeter    const pixelSize ) { m_pixelSize  = pixelSize;  }
+	void SetPixelOffset(fPixelPoint   const fPixOffset) { m_fPixOffset = fPixOffset; }
+	void Set           (PixelCoordsFp const newVals   ) { * this = newVals; }
 
 	void Move(PixelPoint      const pntDelta) { m_fPixOffset -= ::Convert2fPixelPoint(pntDelta); }
 	void Move(MicroMeterPoint const umDelta ) { m_fPixOffset -= Transform2fPixelSize (umDelta ); }

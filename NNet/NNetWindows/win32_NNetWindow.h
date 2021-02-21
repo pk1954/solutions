@@ -81,13 +81,11 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	using BeaconAnimation = Animation<float, NNetWindow>;
-
-	unique_ptr<BeaconAnimation> m_upBeaconAnimation;
+	unique_ptr<Animation<float>> m_upBeaconAnimation;
+	float                        m_fRelBeaconSize;
 
 	MonitorWindow const * m_pMonitorWindow { nullptr };
 	NNetController      * m_pController    { nullptr };
 	D2D_DrawContext       m_context        { };
-	float                 m_fRelBeaconSize { 0.0f };
 	fPixel                m_fPixRadiusLimit;
 };

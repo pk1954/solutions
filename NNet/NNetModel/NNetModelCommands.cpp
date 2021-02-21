@@ -218,8 +218,8 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 
 void NNetModelCommands::SetBaseKnots
 ( 
-	MicroMeterPointVector  & umPntVectorRun,
-	ShapePtrList<BaseKnot> & shapes2Animate 
+	MicroMeterPointVector const & umPntVectorRun,
+	ShapePtrList<BaseKnot>      & shapes2Animate 
 )
 {
 	if ( IsTraceOn( ) )

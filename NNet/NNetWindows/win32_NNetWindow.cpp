@@ -53,18 +53,18 @@ void NNetWindow::Start
 	);
 	m_graphics.Initialize( hwnd );
 	m_context.Start( & m_graphics );
-	m_pNMRI             = & modelReaderInterface;
-	m_pMonitorWindow    = & monitorWindow;
-	m_pController       = & controller;
-	m_fPixRadiusLimit   = fPixLimit;
-	m_upBeaconAnimation = make_unique<BeaconAnimation>
+	m_pNMRI           = & modelReaderInterface;
+	m_pMonitorWindow  = & monitorWindow;
+	m_pController     = & controller;
+	m_fPixRadiusLimit = fPixLimit;
+	
+	m_upBeaconAnimation = make_unique<Animation<float>>
 	(
-		GetWindowHandle(), 
-		m_fRelBeaconSize, 
-        [](NNetWindow * const pWin, bool const bTargetReached)
+		[&](bool const bTargetReached)
 		{
 			if ( bTargetReached )
-				pWin->m_upBeaconAnimation->Start( 0.0f, 1.0f );
+				m_upBeaconAnimation->Start( 0.0f, 1.0f );
+			Notify( false );
 		}
 	);
 	m_upBeaconAnimation->Start( 0.0f, 1.0f );
@@ -119,14 +119,17 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 
 void NNetWindow::DrawArrowsInRect( PixelRect const & rect, MicroMeter const umSize ) const
 {
-	m_pNMRI->GetUPShapes().Apply2AllInRect<Pipe>
-	( 
-		GetCoordC().Transform2MicroMeterRect( rect ),	
-		[&](Pipe const & s) 
-		{ 
-			s.DrawArrows( m_context, tHighlightType::normal, umSize ); 
-		} 
-	);
+	if ( umSize > 0.0_MicroMeter )
+	{
+		m_pNMRI->GetUPShapes().Apply2AllInRect<Pipe>
+		( 
+			GetCoordC().Transform2MicroMeterRect( rect ),	
+			[&](Pipe const & s) 
+			{ 
+				s.DrawArrows( m_context, tHighlightType::normal, umSize ); 
+			} 
+		);
+	}
 }
 
 void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
@@ -185,14 +188,15 @@ void NNetWindow::DrawBeacon( )
 	MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
 	if ( umCircleBeacon.IsNotNull() )
 	{
-		MicroMeter const umRadiusLimit { GetCoordC().Transform2MicroMeter( m_fPixRadiusLimit ) };
-		MicroMeter const umMaxRadius   { max( umCircleBeacon.GetRadius(), umRadiusLimit ) };
-		MicroMeter const umSpan        { umMaxRadius - NEURON_RADIUS };
-		umCircleBeacon.SetRadius( NEURON_RADIUS + (umSpan * m_fRelBeaconSize)  );
+		MicroMeter const umRadiusLimit  { GetCoordC().Transform2MicroMeter( m_fPixRadiusLimit ) };
+		MicroMeter const umMaxRadius    { max( umCircleBeacon.GetRadius(), umRadiusLimit ) };
+		MicroMeter const umSpan         { umMaxRadius - NEURON_RADIUS };
+		float            fRelBeaconSize = m_upBeaconAnimation->GetActual();
+		umCircleBeacon.SetRadius( NEURON_RADIUS + (umSpan * fRelBeaconSize)  );
 		m_context.FillCircle
 		( 
 			umCircleBeacon, 
-			NNetColors::SetAlpha( NNetColors::COL_BEACON, 0.8f * (1.0f - m_fRelBeaconSize) )
+			NNetColors::SetAlpha( NNetColors::COL_BEACON, 0.8f * (1.0f - fRelBeaconSize) )
 		);
 	}
 }

@@ -4,82 +4,72 @@
 
 #pragma once
 
+#include <functional>
 #include "windows.h"
 #include "MoreTypes.h"
 #include "win32_rootWindow.h"
 #include "SmoothMoveFp.h"
 
-template <typename T>
-T * GetWinPtr( HWND hwnd )
-{
-    return reinterpret_cast<T *>(GetUserDataPtr( hwnd ));
-}
-
-template <typename ANIM_PAR, typename WIN_PAR>
+template <typename ANIM_PAR>
 class Animation
 {
 public:
 
-    using APP_PROC = void (*)(WIN_PAR * const, bool const);
+    using APP_PROC = function<void(bool const)>;
 
-    Animation
-    ( 
-        HWND     const hwnd,
-        ANIM_PAR     & actual,
-        APP_PROC const appProc
-    )
-      : m_hwnd(hwnd),
-        m_actual(actual),
-        m_pAppProc(appProc),
-        m_bTargetReached(false)
+    Animation( APP_PROC const & appProc )
+      : m_appProc(appProc)
     {
-        m_idTimer = GetRootWindow(hwnd)->AddSlot( reinterpret_cast<void *>(this) );
+        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
     }
 
     void Start( ANIM_PAR const origin, ANIM_PAR const target )
     {
-        m_start          = origin;
-        m_target         = target;
-        m_actual         = m_start;
-        m_bTargetReached = false;
+        FILETIME fileTime { DEFAULT_MILLISECS, 0 };
+        m_start    = origin;
+        m_distance = target - origin;
+        m_actual   = m_start;
         m_smoothMove.Start( DEFAULT_NR_OF_STEPS );
-        SetTimer( m_hwnd, m_idTimer, DEFAULT_MILLISECS, timerProc );
+        SetThreadpoolTimer( m_pTpTimer, &fileTime, DEFAULT_MILLISECS, 50L );
     }
 
-    bool     const TargetReached() const { return m_bTargetReached; }
-    ANIM_PAR const GetTarget()     const { return m_target; }
+    ANIM_PAR const GetActual()
+    {
+        ANIM_PAR result;
+        AcquireSRWLockExclusive( & m_srwl );
+        result = m_actual;
+        ReleaseSRWLockExclusive( & m_srwl );
+        return result;
+    }
 
 private:
     static unsigned int const DEFAULT_NR_OF_STEPS { 20 };
     static unsigned int const DEFAULT_MILLISECS   { 50 };
 
-    void next( )
+    void next()
     {
-        auto pRootWin { GetRootWindow(m_hwnd) };
-        m_bTargetReached = m_smoothMove.Next();
-        m_actual = m_start + (m_target - m_start) * m_smoothMove.GetPos();
-        if ( m_bTargetReached )
-            KillTimer( m_hwnd, m_idTimer );
-        pRootWin->Notify( false );
-        if (m_pAppProc)
-            (*m_pAppProc)( GetWinPtr<WIN_PAR>(m_hwnd), m_bTargetReached );
+        bool bTargetReached = m_smoothMove.Next();
+        AcquireSRWLockExclusive( & m_srwl );
+        m_actual = m_start + m_distance * m_smoothMove.GetPos();
+        ReleaseSRWLockExclusive( & m_srwl );
+        if ( bTargetReached )
+            SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
+        (m_appProc)(bTargetReached);
     }
 
-    static void timerProc( HWND hwnd, UINT msgTimer, UINT_PTR idTimer, DWORD msSinceStart )
+    static void CALLBACK timerProc(PTP_CALLBACK_INSTANCE i, PVOID pContext, PTP_TIMER p)
     {
-        auto pAnimation { reinterpret_cast<Animation<ANIM_PAR, WIN_PAR> *>(GetSlot(hwnd,idTimer)) };
-        pAnimation->next();
+        reinterpret_cast<Animation<ANIM_PAR> *>(pContext)->next();
     }
-
-    friend void timerProc( HWND, UINT, UINT_PTR, DWORD );
 
     SmoothMoveFp<float> m_smoothMove;
 
-    HWND       m_hwnd;
-    ANIM_PAR & m_actual;
-    APP_PROC   m_pAppProc;
-    bool       m_bTargetReached;
-    UINT_PTR   m_idTimer { 0 };
-    ANIM_PAR   m_start   {};
-    ANIM_PAR   m_target  {};
+    TP_TIMER     * m_pTpTimer { nullptr };
+    APP_PROC const m_appProc;
+
+    SRWLOCK  m_srwl { SRWLOCK_INIT };
+
+    ANIM_PAR m_actual;
+    ANIM_PAR m_start    {};
+    ANIM_PAR m_distance {};
 };

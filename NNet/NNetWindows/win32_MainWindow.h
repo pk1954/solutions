@@ -81,20 +81,15 @@ private:
 	
 	Scale m_scale;
 
-	using ArrowAnimation = Animation<MicroMeter,            MainWindow>;
-	using CoordAnimation = Animation<PixelCoordsFp,         MainWindow>;
-	using ShapeAnimation = Animation<MicroMeterPointVector, MainWindow>;
+	unique_ptr<Animation<MicroMeter>> m_upArrowAnimation;
+	MicroMeter                        m_arrowSizeTarget { STD_ARROW_SIZE };
+	MicroMeter                        m_arrowSizeRun    { m_arrowSizeTarget };
 
-	unique_ptr<ArrowAnimation> m_upArrowAnimation;
-	MicroMeter                 m_arrowSizeTarget { STD_ARROW_SIZE };
-	MicroMeter                 m_arrowSizeRun    { m_arrowSizeTarget };
+	unique_ptr<Animation<MicroMeterPointVector>> m_upConnectorAnimation;
 
-	unique_ptr<ShapeAnimation> m_upConnectorAnimation;
-	ShapePtrList<BaseKnot>     m_shapesAnimated;
-	MicroMeterPointVector      m_umPntVectorRun;
-	MicroMeterPointVector      m_umPntVectorTarget;
+	ShapePtrList<BaseKnot> m_shapesAnimated;
 
-	unique_ptr<CoordAnimation> m_upCoordAnimation;
+	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
 	ShapeId             m_shapeTarget          { };
@@ -107,9 +102,6 @@ private:
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );
 	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
-
-	void alignedShapes();
-	void setBaseKnots( bool const );
 
 	virtual void doPaint();
 };
