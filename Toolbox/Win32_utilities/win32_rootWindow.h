@@ -100,17 +100,37 @@ public:
 		return ::CreateCompatibleBitmap( hDC, rectSize.GetXvalue(), rectSize.GetYvalue() );
 	}
 	
+	LRESULT const PostCommand( WPARAM const wParam, LPARAM const lParam = 0 ) const
+	{
+		return PostMessage( WM_COMMAND, wParam, lParam );
+	}
+
+	LRESULT const SendCommand( WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return SendMessage( WM_COMMAND, wParam, lParam );
+	}
+
+	LRESULT const SendNotifyCommand( WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return SendNotifyMessage( WM_COMMAND, wParam, lParam );
+	}
+
 	LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
-    {
-        return ::PostMessage( m_hwnd, msg, wParam, lParam );
-    }
+	{
+		return ::PostMessage( m_hwnd, msg, wParam, lParam );
+	}
 
-    LRESULT const SendMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
-    {
-        return ::SendMessage( m_hwnd, msg, wParam, lParam );
-    }
+	LRESULT const SendMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+	{
+		return ::SendMessage( m_hwnd, msg, wParam, lParam );
+	}
 
-    LRESULT const SendDlgItemMessage( int const iItem, UINT msg, WPARAM wParam, LPARAM lParam ) const
+	LRESULT const SendNotifyMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+	{
+		return ::SendNotifyMessage( m_hwnd, msg, wParam, lParam );
+	}
+
+	LRESULT const SendDlgItemMessage( int const iItem, UINT msg, WPARAM wParam, LPARAM lParam ) const
     {
         return ::SendDlgItemMessage( m_hwnd, iItem, msg, wParam, lParam );
     }

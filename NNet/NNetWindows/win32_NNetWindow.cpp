@@ -58,15 +58,7 @@ void NNetWindow::Start
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
 	
-	m_upBeaconAnimation = make_unique<Animation<float>>
-	(
-		[&](bool const bTargetReached)
-		{
-			if ( bTargetReached )
-				m_upBeaconAnimation->Start( 0.0f, 1.0f );
-			Notify( false );
-		}
-	);
+	m_upBeaconAnimation = make_unique<Animation<float>>(nullptr, ANIMATION_RECURRING);
 	m_upBeaconAnimation->Start( 0.0f, 1.0f );
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }

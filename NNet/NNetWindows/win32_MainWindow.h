@@ -65,6 +65,7 @@ public:
 	void       ShowArrows( bool const );
 	bool const ArrowsVisible( ) const; 
 
+	virtual bool OnCommand           ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );

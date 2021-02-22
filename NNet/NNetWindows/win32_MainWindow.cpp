@@ -49,36 +49,18 @@ void MainWindow::Start
 	m_pCoordObservable     = & coordObservable;
 	m_scale.Initialize( & m_graphics, L"m" );
 
-	m_upArrowAnimation = make_unique<Animation<MicroMeter>>( nullptr );
-
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
-	(
-		[&](bool const bTargetReached) 
-		{
-			GetCoord().Set( m_upCoordAnimation->GetActual() );
-			m_pCoordObservable->NotifyAll(false); 
-			Notify( false );
-		}
-	);
-
-	m_upConnectorAnimation = make_unique<Animation<MicroMeterPointVector>>
-	(
-		[&](bool const bTargetReached) 
-		{
-			m_pNNetCommands->SetBaseKnots(m_upConnectorAnimation->GetActual(), m_shapesAnimated); 
-			if ( bTargetReached )
-				SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 
-		}
-	);
+	m_upArrowAnimation     = make_unique<Animation<MicroMeter>>           (nullptr);
+	m_upCoordAnimation     = make_unique<Animation<PixelCoordsFp>>        (IDX_COORD_ANIMATION,     GetWindowHandle() );
+	m_upConnectorAnimation = make_unique<Animation<MicroMeterPointVector>>(IDX_CONNECTOR_ANIMATION, GetWindowHandle() ); 
 }
 
-void MainWindow::Stop( )
+void MainWindow::Stop()
 {
-	Reset( );
+	Reset();
 	NNetWindow::Stop();
 }
 
-void MainWindow::Reset( )
+void MainWindow::Reset()
 { 
 	m_shapeHighlighted = NO_SHAPE; 
 	m_shapeTarget      = NO_SHAPE; 
@@ -86,7 +68,7 @@ void MainWindow::Reset( )
 
 long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
-	if ( m_pNMRI->AnyShapesSelected( ) )
+	if ( m_pNMRI->AnyShapesSelected() )
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
@@ -559,4 +541,29 @@ void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 		m_shapeHighlighted = idHighlight; 
 		Notify( true );     // cause immediate repaint
 	}
+}
+
+bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+{
+	int const wmId = LOWORD( wParam );
+
+	switch (wmId)
+	{
+	case IDX_COORD_ANIMATION:
+		GetCoord().Set( m_upCoordAnimation->GetActual() );
+		m_pCoordObservable->NotifyAll(false); 
+		break;
+
+	case IDX_CONNECTOR_ANIMATION:
+		m_pNNetCommands->SetBaseKnots(m_upConnectorAnimation->GetActual(), m_shapesAnimated);
+		Notify( true );
+		if ( lParam )
+			SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 
+		break;
+
+	default:
+		break;
+	}
+
+	return NNetWindow::OnCommand( wParam, lParam, pixPoint );
 }

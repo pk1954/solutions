@@ -25,15 +25,17 @@
 
 #define IDM_SLOWER               130
 #define IDM_FASTER               131
-								 
+
 #define IDM_ESCAPE               140
 #define IDM_RESET                141
+#define IDM_SELECT_ALL           142
 #define IDM_SELECT_SUBTREE       143
 #define IDM_SELECT_SHAPE         144
 #define IDM_DESELECT_ALL         145
 #define IDM_DESELECT_SUBTREE     146
 #define IDM_DESELECT_SHAPE       147
 #define IDM_SELECTION            148
+#define IDM_DELETE               149
 
 #define IDM_SAVE_MODEL           150
 #define IDM_ASK_AND_SAVE_MODEL   151
@@ -106,5 +108,5 @@
 #define IDM_CLEAR_BEEPERS        654
 #define IDM_SELECT_ALL_BEEPERS   655
 
-#define IDM_SELECT_ALL           142
-#define IDM_DELETE               139
+#define IDX_COORD_ANIMATION      700
+#define IDX_CONNECTOR_ANIMATION  701
