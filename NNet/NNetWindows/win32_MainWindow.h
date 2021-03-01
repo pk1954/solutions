@@ -9,6 +9,7 @@
 #include "BaseKnot.h"
 #include "MicroMeterPointVector.h"
 #include "NNetModelReaderInterface.h"
+#include "AlignAnimation.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
@@ -59,7 +60,7 @@ public:
 
 	void CenterModel( );
 	void CenterSelection( );
-	void AlignSelection( );
+	bool AlignSelection( ) { return m_upAlignAnimation->AlignSelection(); }
 	void MakeConnector( );
 
 	void       ShowArrows( bool const );
@@ -86,10 +87,7 @@ private:
 	MicroMeter                        m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter                        m_arrowSizeRun    { m_arrowSizeTarget };
 
-	unique_ptr<Animation<MicroMeterPointVector>> m_upConnectorAnimation;
-
-	ShapePtrList<BaseKnot> m_shapesAnimated;
-
+	unique_ptr<AlignAnimation>           m_upAlignAnimation;
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };

@@ -132,6 +132,20 @@ public:
 		return bResult;
 	}
 
+	int CountInSelection( ShapeType const shapeType ) const
+	{
+		int iNr { 0 };
+		Apply2AllSelected<Shape>
+		( 
+			[&](Shape const & s)
+			{ 
+				if ( s.GetShapeType() == shapeType )
+					++iNr;
+			} 
+		);
+		return iNr;
+	}
+
 private:
 	vector<UPShape>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
