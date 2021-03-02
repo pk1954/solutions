@@ -33,4 +33,6 @@ private:
 	NNetModelCommands                          * m_pNNetCommands { nullptr };
 	unique_ptr<Animation<MicroMeterPointVector>> m_upConnectorAnimation;
 	ShapePtrList<BaseKnot>                       m_shapesAnimated;
+
+	ShapeType const determineShapeType();
 };

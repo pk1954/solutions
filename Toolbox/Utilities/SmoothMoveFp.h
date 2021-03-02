@@ -21,7 +21,7 @@ public:
 
     T const GetPos() const { return m_pos; }
 
-    bool Next( ) // returns true if target reached
+    bool Next() // returns true if target reached
     {
         if ( m_pos <= BREAK_POINT )
             m_velocity += m_acceleration;

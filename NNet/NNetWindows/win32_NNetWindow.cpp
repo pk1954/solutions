@@ -27,7 +27,7 @@ void NNetWindow::InitClass( ActionTimer * const pActionTimer )
 	ModelWindow::InitClass( pActionTimer );
 }
 
-NNetWindow::NNetWindow( ) :
+NNetWindow::NNetWindow() :
 	ModelWindow( )
 { }
 
@@ -58,8 +58,8 @@ void NNetWindow::Start
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
 	
-	m_upBeaconAnimation = make_unique<Animation<float>>(nullptr, ANIMATION_RECURRING);
-	m_upBeaconAnimation->Start( 0.0f, 1.0f );
+	//m_upBeaconAnimation = make_unique<Animation<float>>(nullptr, ANIMATION_RECURRING);
+	//m_upBeaconAnimation->Start( 0.0f, 1.0f );
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
@@ -177,20 +177,20 @@ void NNetWindow::OnPaint( )
 
 void NNetWindow::DrawBeacon( )
 {
-	MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
-	if ( umCircleBeacon.IsNotNull() )
-	{
-		MicroMeter const umRadiusLimit  { GetCoordC().Transform2MicroMeter( m_fPixRadiusLimit ) };
-		MicroMeter const umMaxRadius    { max( umCircleBeacon.GetRadius(), umRadiusLimit ) };
-		MicroMeter const umSpan         { umMaxRadius - NEURON_RADIUS };
-		float            fRelBeaconSize = m_upBeaconAnimation->GetActual();
-		umCircleBeacon.SetRadius( NEURON_RADIUS + (umSpan * fRelBeaconSize)  );
-		m_context.FillCircle
-		( 
-			umCircleBeacon, 
-			NNetColors::SetAlpha( NNetColors::COL_BEACON, 0.8f * (1.0f - fRelBeaconSize) )
-		);
-	}
+	//MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
+	//if ( umCircleBeacon.IsNotNull() )
+	//{
+	//	MicroMeter const umRadiusLimit  { GetCoordC().Transform2MicroMeter( m_fPixRadiusLimit ) };
+	//	MicroMeter const umMaxRadius    { max( umCircleBeacon.GetRadius(), umRadiusLimit ) };
+	//	MicroMeter const umSpan         { umMaxRadius - NEURON_RADIUS };
+	//	float            fRelBeaconSize = m_upBeaconAnimation->GetActual();
+	//	umCircleBeacon.SetRadius( NEURON_RADIUS + (umSpan * fRelBeaconSize)  );
+	//	m_context.FillCircle
+	//	( 
+	//		umCircleBeacon, 
+	//		NNetColors::SetAlpha( NNetColors::COL_BEACON, 0.8f * (1.0f - fRelBeaconSize) )
+	//	);
+	//}
 }
 
 bool NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )

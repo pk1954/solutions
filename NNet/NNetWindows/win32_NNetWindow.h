@@ -82,7 +82,7 @@ private:
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
 	unique_ptr<Animation<float>> m_upBeaconAnimation;
-	float                        m_fRelBeaconSize;
+	float                        m_fRelBeaconSize { 0.0f }; 
 
 	MonitorWindow const * m_pMonitorWindow { nullptr };
 	NNetController      * m_pController    { nullptr };

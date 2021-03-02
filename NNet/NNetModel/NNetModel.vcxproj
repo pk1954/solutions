@@ -194,6 +194,7 @@
     <ClInclude Include="DrawContext.h" />
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
+    <ClInclude Include="MicroMeterPosDir.h" />
     <ClInclude Include="ModelUtilities.h" />
     <ClInclude Include="MonitorData.h" />
     <ClInclude Include="Neuron.h" />

@@ -144,6 +144,20 @@ static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const tim
 	return MicroMeter( speed.GetValue() * time.GetValue() );
 }
 
+////////////// degree /////////////////////////////////////////
+
+using Degrees = NamedType<float, struct degrees_Parameter >;
+
+constexpr const Degrees operator"" _Degrees( const long double d )
+{
+	return Degrees( Cast2Float( d ) );
+}
+
+static void Normalize( Degrees & d )
+{
+	d = Degrees( fmod(d.GetValue(), 360.0f ) );
+}
+
 ////////////// Formatting /////////////////////////////////////
 
 void Format2wstring( fMicroSecs const, wstring & );

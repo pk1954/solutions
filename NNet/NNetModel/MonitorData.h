@@ -41,12 +41,12 @@ public:
 
 	bool operator== (MonitorData const & ) const;
 
-	void CheckTracks( ) const;  // for debugging
+	void CheckTracks() const;  // for debugging
 
-	void Reset( );
+	void Reset();
 
-	int  GetNrOfTracks( ) const;
-	bool NoTracks     ( ) const;
+	int  GetNrOfTracks() const;
+	bool NoTracks     () const;
 
 	bool const IsValid( TrackNr const trackNr ) const;
 	bool const IsValid( SignalId const & ) const;

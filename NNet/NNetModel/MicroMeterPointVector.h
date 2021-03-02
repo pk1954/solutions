@@ -8,6 +8,7 @@
 #include <assert.h>   
 #include "MoreTypes.h"
 #include "PointType.h"
+#include "MicroMeterPosDir.h"
 
 using std::vector;
 using std::unique_ptr;
@@ -17,18 +18,18 @@ class MicroMeterPointVector
 {
 public:
 
-    unsigned int Size() { return Cast2UnsignedInt(m_list.size()); }
+    unsigned int Size() const { return Cast2UnsignedInt(m_list.size()); }
 
-    MicroMeterPoint const & GetPos( unsigned int const ui )
+    MicroMeterPoint const GetPos(unsigned int const ui) const
     {
         assert( ui < Size() );
-        return m_list[ui];
+        return m_list[ui].GetPos();
     }
 
     void SetPosition( unsigned int const ui, MicroMeterPoint const & umPnt )
     {
         assert( ui < Size() );
-        m_list[ui] = umPnt;
+        m_list[ui].SetPos( umPnt );
     }
 
     void Clear()
@@ -41,17 +42,13 @@ public:
         m_list.resize( size );
     }
 
-    void Add( MicroMeterPoint const & umPnt )
+    void Add( MicroMeterPoint const & pos, Degrees const dir )
     {
-        m_list.push_back( umPnt );
+        m_list.push_back( MicroMeterPosDir(pos, dir) );
     }
 
     MicroMeterPointVector& operator+= (MicroMeterPointVector const & rhs) 
     { 
-        if ( m_list.size() != rhs.m_list.size() )
-        {
-            int x = 42;
-        }
         assert( m_list.size() == rhs.m_list.size() );
         for ( int i = 0; i < m_list.size(); ++i )
             m_list[i] += rhs.m_list[i];
@@ -95,5 +92,5 @@ public:
     };
 
 private:
-    vector<MicroMeterPoint> m_list;
+    vector<MicroMeterPosDir> m_list;
 };

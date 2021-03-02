@@ -21,20 +21,16 @@ public:
     using APP_PROC = function<void(bool const)>;
 
     Animation( APP_PROC const & appProc, DWORD const dwFlags = 0 )
-        : m_appProc(appProc),
+      : m_appProc(appProc),
         m_dwFlags(dwFlags)
-    {
-        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
-    }
+    {}
 
     Animation( int const idMsg, HWND const hwnd, DWORD const dwFlags = 0 )
       : m_idMsg(idMsg),
         m_hwnd(hwnd),
         m_dwFlags(dwFlags|ANIMATION_SEND_COMMAND),
         m_appProc(nullptr)
-    {
-        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
-    }
+    {}
 
     void Start( ANIM_PAR const origin, ANIM_PAR const target )
     {
@@ -44,7 +40,20 @@ public:
         m_distance = target - origin;
         m_actual   = m_start;
         m_smoothMove.Start( DEFAULT_NR_OF_STEPS );
+        assert( ! m_pTpTimer );
+        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
         SetThreadpoolTimer( m_pTpTimer, &fileTime, DEFAULT_MILLISECS, 50L );
+    }
+
+    void Stop()
+    {
+        if ( m_pTpTimer )
+        {
+            SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
+            WaitForThreadpoolTimerCallbacks( m_pTpTimer, true );
+            CloseThreadpoolTimer( m_pTpTimer );
+            m_pTpTimer = nullptr;
+        }
     }
 
     ANIM_PAR const GetActual()
@@ -60,18 +69,23 @@ private:
     static unsigned int const DEFAULT_NR_OF_STEPS { 20 };
     static unsigned int const DEFAULT_MILLISECS   { 50 };
 
+    void setActual( ANIM_PAR const newVal )
+    {
+        AcquireSRWLockExclusive( & m_srwl );
+        m_actual = newVal;
+        ReleaseSRWLockExclusive( & m_srwl );
+    }
+
     void next()
     {
         bool bTargetReached = m_smoothMove.Next();
-        AcquireSRWLockExclusive( & m_srwl );
-        m_actual = m_start + m_distance * m_smoothMove.GetPos();
-        ReleaseSRWLockExclusive( & m_srwl );
+        setActual( m_start + m_distance * m_smoothMove.GetPos() );
         if ( bTargetReached )
         {
             if ( m_dwFlags & ANIMATION_RECURRING )
-                Start( m_start, m_target);
-            else
-                SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
+                m_actual = m_start;
+            else 
+                Stop();
         }
         if (m_appProc)
             (m_appProc)(bTargetReached);
