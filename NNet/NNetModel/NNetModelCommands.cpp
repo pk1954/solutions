@@ -23,8 +23,7 @@
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
 #include "MoveSelectionCommand.h"
-#include "NewInputNeuronCommand.h"
-#include "NewNeuronCommand.h"
+#include "NewNeuronCommandT.h"
 #include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
 #include "RestrictSelectionCommand.h"
@@ -146,9 +145,9 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 	BaseKnot * m_pBaseKnotSrc { m_pNMWI->GetShapePtr<BaseKnot *>( idSrc ) };
 	Shape    * m_pShapeDst    { m_pNMWI->GetShapePtr<Shape    *>( idDst ) };
 	if ( m_pShapeDst->IsPipe() ) 
-		pCmd = make_unique<Connect2PipeCommand    >( m_pBaseKnotSrc, static_cast<Pipe     *>(m_pShapeDst) );
+		pCmd = make_unique<Connect2PipeCommand    >(m_pBaseKnotSrc, static_cast<Pipe     *>(m_pShapeDst) );
 	else
-		pCmd = make_unique<Connect2BaseKnotCommand>( m_pBaseKnotSrc, static_cast<BaseKnot *>(m_pShapeDst) );
+		pCmd = make_unique<Connect2BaseKnotCommand>(m_pBaseKnotSrc, static_cast<BaseKnot *>(m_pShapeDst) );
 	m_pCmdStack->PushCommand( move( pCmd ) );
 }
 
@@ -288,6 +287,13 @@ void NNetModelCommands::NewInputNeuron( MicroMeterPoint const & pos )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<NewInputNeuronCommand>( pos ) );
+}
+
+void NNetModelCommands::NewOutputNeuron( MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << pos << endl;
+	m_pCmdStack->PushCommand( make_unique<NewOutputNeuronCommand>( pos ) );
 }
 
 void NNetModelCommands::AppendNeuron( ShapeId const id )

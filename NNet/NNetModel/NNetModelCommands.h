@@ -62,6 +62,7 @@ public:
     void MoveShape          ( ShapeId const, MicroMeterPoint const & );
     void NewInputNeuron     ( MicroMeterPoint const & );
     void NewNeuron          ( MicroMeterPoint const & );
+    void NewOutputNeuron    ( MicroMeterPoint const & );
     void ResetModel         ( );
     void RestrictSelection  ( ShapeType::Value const );
     void SelectAll          ( tBoolOp const );

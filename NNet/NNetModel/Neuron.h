@@ -24,6 +24,8 @@ public:
 
 	Neuron( Neuron const & );   // copy constructor
 
+	virtual void CheckShape() const;
+
 	Neuron & operator=( Neuron const & ); // copy assignment operator
 
 	virtual ~Neuron();
@@ -49,12 +51,10 @@ public:
 	mV           PeakVoltage  () const;
 
 	void         StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
+	void         Transform2OutputNeuron() { SetType(ShapeType::Value::outputNeuron); }
 
 	virtual void SetDirection(MicroMeterPoint const &);
 		
-	virtual void DrawRectExterior( DrawContext const &, tHighlightType const ) const;
-	virtual void DrawRectInterior( DrawContext const &, tHighlightType const ) const;
-
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const) const;
 	virtual void DrawInterior  ( DrawContext const &, tHighlightType const) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
@@ -85,14 +85,6 @@ private:
 
 	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
 	MicroMeterPoint getAxonHillockPos( ) const;
-
-	void drawPlug
-	( 
-		DrawContext  const &, 
-		float        const, 
-		float        const, 
-		D2D1::ColorF const
-	) const;
 
 	inline static unsigned long m_counter { 0L };
 	inline static Sound       * m_pSound  { nullptr };

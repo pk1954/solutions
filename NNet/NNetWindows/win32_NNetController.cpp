@@ -280,6 +280,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->NewInputNeuron( umPoint );
         break;
 
+    case IDD_NEW_OUTPUT_NEURON:
+        m_pModelCommands->NewOutputNeuron( umPoint );
+        break;
+
     case IDD_APPEND_INPUT_NEURON:
         m_pModelCommands->AppendInputNeuron( m_pMainWindow->GetHighlightedShapeId() );
         break;

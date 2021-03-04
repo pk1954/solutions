@@ -23,7 +23,13 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	SetPulseFrequency( STD_PULSE_FREQ );
 }
 
-InputNeuron::~InputNeuron( ) { }
+InputNeuron::~InputNeuron() { }
+
+void InputNeuron::CheckShape( ) const
+{
+	Neuron::CheckShape();
+	assert( ! m_connections.HasIncoming() );
+}
 
 bool InputNeuron::operator==( Shape const & rhs ) const
 {
@@ -87,24 +93,14 @@ void InputNeuron::drawSocket
 	context.DrawLine( umPosL - umOrthoVector, umPosR - umOrthoVector,       umWidthLR,          colF );
 }
 
-void InputNeuron::drawSocketExterior( DrawContext const & context, tHighlightType const type ) const
+void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
 	drawSocket( context, 2.0f, 0.2f, GetExteriorColor(type) );
 }
 
-void InputNeuron::drawSocketInterior( DrawContext const & context, tHighlightType const type ) const
-{
-	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
-}
-
-void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
-{
-	drawSocketExterior( context, type );
-}
-
 void InputNeuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawSocketInterior( context, type );
+	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
 }
 
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const
@@ -121,16 +117,3 @@ void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 	DisplayText( context, GetRect4Text(), m_wBuffer.str( ) );
 }
 
-InputNeuron const * Cast2InputNeuron( Shape const * pShape )
-{
-	assert( pShape != nullptr );
-	assert( pShape->IsInputNeuron() );
-	return static_cast<InputNeuron const *>(pShape);
-}
-
-InputNeuron * Cast2InputNeuron( Shape * pShape )
-{
-	assert( pShape != nullptr );
-	assert( pShape->IsInputNeuron() );
-	return static_cast<InputNeuron *>(pShape);
-}

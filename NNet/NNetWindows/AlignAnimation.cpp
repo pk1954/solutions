@@ -23,23 +23,13 @@ AlignAnimation::AlignAnimation
 
 ShapeType const AlignAnimation::determineShapeType()
 {
-	int iNrOfInputNeurons  { m_pNMRI->GetUPShapes().CountInSelection( ShapeType::Value::inputNeuron ) };
-	int iNrOfOutputNeurons { 0 };
-	m_pNMRI->GetUPShapes().Apply2AllSelected<Neuron>
-	( 
-		[&](Neuron const & b)
-		{ 
-			if ( ! b.m_connections.HasOutgoing() )
-				++iNrOfOutputNeurons;
-		} 
-	);
-
-	return 
-	((iNrOfInputNeurons == 0) && (iNrOfOutputNeurons == 0))
-	? ShapeType::Value::undefined
-	: (iNrOfInputNeurons > iNrOfOutputNeurons) 
-		? ShapeType::Value::inputNeuron 
-		: ShapeType::Value::neuron;
+	int iNrOfInputNeurons  { m_pNMRI->GetUPShapes().CountInSelection( ShapeType::Value::inputNeuron  ) };
+	int iNrOfOutputNeurons { m_pNMRI->GetUPShapes().CountInSelection( ShapeType::Value::outputNeuron ) };
+	return ((iNrOfInputNeurons == 0) && (iNrOfOutputNeurons == 0))
+           ? ShapeType::Value::undefined
+		   : (iNrOfInputNeurons > iNrOfOutputNeurons) 
+			  ? ShapeType::Value::inputNeuron 
+			  : ShapeType::Value::outputNeuron;
 }
 
 bool AlignAnimation::AlignSelection( )

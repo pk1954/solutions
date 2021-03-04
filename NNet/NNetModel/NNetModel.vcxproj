@@ -209,6 +209,7 @@
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="NNetWrappers.h" />
+    <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="ShapePtrList.h" />
     <ClInclude Include="ShapeErrorHandler.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
+    <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Signal.cpp" />

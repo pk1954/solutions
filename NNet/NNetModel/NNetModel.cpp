@@ -12,6 +12,7 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "NNetModel.h"
 
 using namespace std::chrono;
@@ -104,6 +105,7 @@ void NNetModel::ResetModel( )
 	Knot        ::ResetCounter();
 	Neuron      ::ResetCounter();
 	InputNeuron ::ResetCounter();
+	OutputNeuron::ResetCounter();
 	Pipe        ::ResetCounter();
 	SetSimulationTime();
 }

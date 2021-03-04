@@ -92,6 +92,8 @@ protected:
 	float GetFillLevel( mV const ) const;
 	float GetFillLevel( ) const { return GetFillLevel( m_mVinputBuffer ); };
 
+	void SetType(ShapeType const type) { m_type = type; }
+
 private:
 
 	ShapeType m_type       { ShapeType::Value::undefined };

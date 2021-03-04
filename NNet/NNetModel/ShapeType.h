@@ -20,11 +20,13 @@ public:
 	{
 		connector,
 		inputNeuron,
+		outputNeuron,
 		neuron,
 		pipe,
 		knot,
-		shapeTypeLast = knot,
-		undefined
+		undefined,
+		shapeTypeLast  = knot,
+		shapeTypeFirst = connector
 	};
 
 	static size_t const NR_OF_SHAPE_TYPES { static_cast<size_t>(Value::shapeTypeLast) + 1 };
@@ -42,14 +44,14 @@ public:
 		return m_value == rhs.m_value;
 	}
 
-	bool operator!=( ShapeType const & rhs ) const
+	bool operator!=(ShapeType const & rhs) const
 	{
 		return m_value != rhs.m_value;
 	}
 
-	void Check( ) const
+	void Check() const
 	{
-		AssertLimits<int>( (int)m_value, (int)Value::inputNeuron, (int)Value::undefined );
+		AssertLimits<int>( (int)m_value, (int)Value::shapeTypeFirst, (int)Value::undefined );
 	}
 
 	static void Apply2All( function<void(Value const &)> const & func )
@@ -61,20 +63,23 @@ public:
 	static wchar_t          const * GetName( ShapeType::Value const );
 	static ShapeType::Value const   GetTypeFromName( wchar_t const * const );
 
-	bool IsPipeType       () const { return m_value == Value::pipe;         }
-	bool IsDefinedType    () const { return m_value != Value::undefined;    }
-	bool IsUndefinedType  () const { return m_value == Value::undefined;    }
-	bool IsKnotType       () const { return m_value == Value::knot;         }
-	bool IsNeuronType     () const { return m_value == Value::neuron;       }
-	bool IsInputNeuronType() const { return m_value == Value::inputNeuron;  }
-	bool IsConnectorType  () const { return m_value == Value::connector;    }
+	bool IsPipeType        () const { return m_value == Value::pipe;         }
+	bool IsDefinedType     () const { return m_value != Value::undefined;    }
+	bool IsUndefinedType   () const { return m_value == Value::undefined;    }
+	bool IsKnotType        () const { return m_value == Value::knot;         }
+	bool IsNeuronType      () const { return m_value == Value::neuron;       }
+	bool IsInputNeuronType () const { return m_value == Value::inputNeuron;  }
+	bool IsOutputNeuronType() const { return m_value == Value::outputNeuron; }
+	bool IsConnectorType   () const { return m_value == Value::connector;    }
 
 	bool IsAnyNeuronType() const
 	{
-		return (m_value == Value::neuron) || (m_value == Value::inputNeuron);
+		return (m_value == Value::neuron)      || 
+			   (m_value == Value::inputNeuron) || 
+			   (m_value == Value::outputNeuron);
 	}
 
-	bool IsBaseKnotType( ) const
+	bool IsBaseKnotType() const
 	{
 		return IsAnyNeuronType() || (m_value == Value::knot);
 	}

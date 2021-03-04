@@ -8,6 +8,7 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "Pipe.h"
 #include "Shape.h"
 #include "ComputeThread.h"
@@ -117,12 +118,14 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printFloatLine   ( textBuf, L"workload:",      Cast2Float( (spent / avail) * 100.0f ), L"%" );
 		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo( ), L"" );
 		printIntLine     ( textBuf, L"# Input  : ",    m_pNMRI->GetNrOf<InputNeuron>() );
+		printIntLine     ( textBuf, L"# Output : ",    m_pNMRI->GetNrOf<OutputNeuron>() );
 		printIntLine     ( textBuf, L"# Neurons: ",    m_pNMRI->GetNrOf<Neuron>() );
 		printIntLine     ( textBuf, L"# Knots  : ",    m_pNMRI->GetNrOf<Knot>() );
 		printIntLine     ( textBuf, L"# Pipes  : ",    m_pNMRI->GetNrOf<Pipe>() );
 		printIntLine     ( textBuf, L"# Shapes : ", 
 							m_pNMRI->GetNrOf<InputNeuron>() +
-							m_pNMRI->GetNrOf<Neuron>() +
+							m_pNMRI->GetNrOf<OutputNeuron>() +
+			                m_pNMRI->GetNrOf<Neuron>() +
 							m_pNMRI->GetNrOf<Knot>() +
 							m_pNMRI->GetNrOf<Pipe>() 
                          );

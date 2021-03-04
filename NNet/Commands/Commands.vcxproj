@@ -85,13 +85,12 @@
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="MoveBaseKnotCommand.h" />
+    <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="SetBaseKnotsCommand.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovePipeCommand.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
-    <ClInclude Include="NewInputNeuronCommand.h" />
-    <ClInclude Include="NewNeuronCommand.h" />
     <ClInclude Include="SelectAllBeepersCommand.h" />
     <ClInclude Include="SelectAllCommand.h" />
     <ClInclude Include="SelectionCommand.h" />

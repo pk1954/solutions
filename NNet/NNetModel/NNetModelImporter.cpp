@@ -12,6 +12,7 @@
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "NNetModelStorage.h"
@@ -115,6 +116,9 @@ private:
         {
         case ShapeType::Value::inputNeuron:
             return make_unique<InputNeuron>( umPosition );
+
+        case ShapeType::Value::outputNeuron:
+            return make_unique<OutputNeuron>( umPosition );
 
         case ShapeType::Value::neuron:
             return make_unique<Neuron>( umPosition );
@@ -283,6 +287,14 @@ void NNetModelImporter::import( )
         m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
         m_ImportedNMWI.DescriptionComplete( );
         res = ImportTermination::Result::ok;
+        m_ImportedNMWI.GetUPShapes().Apply2All<Neuron>
+        (
+            [](Neuron & neuron)
+            {
+                if ( ! neuron.m_connections.HasOutgoing() )
+                    neuron.Transform2OutputNeuron();
+            }
+        );
     }
     else
     {

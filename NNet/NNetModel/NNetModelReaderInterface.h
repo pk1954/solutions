@@ -67,4 +67,9 @@ private:
 
 	bool const isConnectedTo    ( ShapeId const, ShapeId const ) const;
 	bool const isConnectedToPipe( ShapeId const, ShapeId const ) const;
+
+	bool const onlyOneAxon( ShapeId const idSrc, ShapeId const idDst ) const
+	{
+		return (GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst) <= 1);
+	}
 };

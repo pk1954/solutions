@@ -92,26 +92,27 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 	if ( isConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect again
 		return false;
 
-	ShapeType const typeSrc { GetShapeType( idSrc ) };
-	ShapeType const typeDst { GetShapeType( idDst ) };
+	ShapeType::Value const typeSrc { GetShapeType(idSrc).GetValue() };
+	ShapeType::Value const typeDst { GetShapeType(idDst).GetValue() };
 
-	switch ( typeSrc.GetValue( ) )
+	switch ( typeSrc )
 	{
 	case ShapeType::Value::pipe:
 		return false;
 
 	case ShapeType::Value::knot:
-		switch ( typeDst.GetValue( ) )
+		switch ( typeDst )
 		{
 		case ShapeType::Value::pipe:
 		case ShapeType::Value::knot:
 			return true;
 
-		case ShapeType::Value::neuron:
-			return (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1);
+		case ShapeType::Value::outputNeuron:
+			return (! HasOutgoing(idSrc));
 
 		case ShapeType::Value::inputNeuron:
-			return (GetNrOfOutgoingConnections( idDst ) == 0);
+		case ShapeType::Value::neuron:
+			return onlyOneAxon(idSrc, idDst);
 
 		default:
 			break;
@@ -119,14 +120,17 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 		break;
 
 	case ShapeType::Value::neuron:
-		switch ( typeDst.GetValue( ) )
+		switch ( typeDst )
 		{
 		case ShapeType::Value::pipe:
 			return true;
 
 		case ShapeType::Value::knot:
 		case ShapeType::Value::neuron:
-			return (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1);
+			return onlyOneAxon(idSrc, idDst);
+
+		case ShapeType::Value::outputNeuron:
+			return (! HasOutgoing(idSrc));
 
 		case ShapeType::Value::inputNeuron:
 			return false;
@@ -137,9 +141,39 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 		break;
 
 	case ShapeType::Value::inputNeuron:
-		return ( typeDst.IsAnyNeuronType() )
-	           ? (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1) && ! HasIncoming( idSrc )
-			   : false;
+		switch ( typeDst )
+		{
+		case ShapeType::Value::pipe:
+		case ShapeType::Value::knot:
+			return false;
+
+		case ShapeType::Value::neuron:
+		case ShapeType::Value::outputNeuron:
+		case ShapeType::Value::inputNeuron:
+			return onlyOneAxon(idSrc, idDst) && ! HasIncoming(idSrc);
+
+		default:
+			break;
+		}
+		break;
+
+	case ShapeType::Value::outputNeuron:
+		switch ( typeDst )
+		{
+		case ShapeType::Value::pipe:
+		case ShapeType::Value::inputNeuron:
+			return false;
+
+		case ShapeType::Value::outputNeuron:
+			return false;
+
+		case ShapeType::Value::knot:
+		case ShapeType::Value::neuron:
+			return onlyOneAxon(idSrc, idDst);
+
+		default:
+			break;
+		}
 		break;
 
 	default:

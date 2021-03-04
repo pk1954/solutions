@@ -163,6 +163,7 @@ void NNetModelExporter::writeShape( wostream & out, Shape const & shape )
         switch ( shape.GetShapeType( ).GetValue() )
         {
         case ShapeType::Value::inputNeuron:
+        case ShapeType::Value::outputNeuron:
         case ShapeType::Value::neuron:
         case ShapeType::Value::knot:
             out << static_cast<BaseKnot const &>( shape ).GetPosition();

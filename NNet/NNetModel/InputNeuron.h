@@ -17,6 +17,8 @@ public:
 
 	virtual ~InputNeuron();
 
+	virtual void CheckShape() const;
+
 	virtual bool operator==( Shape const & ) const override;
 
 	static unsigned long GetCounter  () { return m_counter; }
@@ -49,18 +51,6 @@ private:
 		D2D1::ColorF const
 	) const;
 
-	void drawSocketExterior
-	( 
-		DrawContext    const &, 
-		tHighlightType const
-	) const;
-
-	void drawSocketInterior
-	( 
-		DrawContext    const &, 
-		tHighlightType const
-	) const;
-
 	mV         m_mvFactor;       // precomputed value for optimization
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
@@ -68,6 +58,3 @@ private:
 
 	inline static unsigned long m_counter { 0L };
 };	
-
-InputNeuron const * Cast2InputNeuron( Shape const * );
-InputNeuron       * Cast2InputNeuron( Shape       * );

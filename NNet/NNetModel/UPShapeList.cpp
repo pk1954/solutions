@@ -9,6 +9,7 @@
 #include "BaseKnot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "UPShapeList.h"
 
 using std::move;
@@ -18,6 +19,7 @@ void UPShapeList::checkShape( Shape const & shape ) const
 	switch ( shape.GetShapeType().GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
+	case ShapeType::Value::outputNeuron:
 	case ShapeType::Value::neuron:
 	case ShapeType::Value::knot:
 		static_cast<BaseKnot const &>( shape ).CheckShape();
@@ -43,6 +45,9 @@ UPShape ShallowCopy( Shape const & shape )
 	{
 	case ShapeType::Value::inputNeuron:
 		return make_unique<InputNeuron>( static_cast<InputNeuron const &>( shape ) );
+
+	case ShapeType::Value::outputNeuron:
+		return make_unique<OutputNeuron>( static_cast<OutputNeuron const &>( shape ) );
 
 	case ShapeType::Value::knot:
 		return make_unique<Knot>( static_cast<Knot const &>( shape ) );

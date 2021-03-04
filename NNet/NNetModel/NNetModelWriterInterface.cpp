@@ -7,6 +7,7 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::Start( NNetModel * const pModel )
@@ -22,12 +23,12 @@ void NNetModelWriterInterface::Stop( )
 void NNetModelWriterInterface::CreateInitialShapes( )
 {
 	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
-	unique_ptr<Neuron>      upNeuron      { make_unique<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
-	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upNeuron.get() ) };
+	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
+	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upOutputNeuron.get() ) };
 	upInputNeuron ->m_connections.AddOutgoing( upNewPipe.get() );
-	upNeuron->m_connections.AddIncoming( upNewPipe.get() );
+	upOutputNeuron->m_connections.AddIncoming( upNewPipe.get() );
 	GetUPShapes().Push( move(upInputNeuron) );
-	GetUPShapes().Push( move(upNeuron) );       
+	GetUPShapes().Push( move(upOutputNeuron) );       
 	GetUPShapes().Push( move(upNewPipe) );      
 }
 
