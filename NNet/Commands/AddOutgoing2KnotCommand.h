@@ -38,8 +38,6 @@ public:
 		m_pStart->m_connections.AddOutgoing( m_upPipe.get() );
 		nmwi.GetUPShapes().Push( move( m_upKnotNew ) );
 		nmwi.GetUPShapes().Push( move( m_upPipe ) );
-		//std::wcout << L"*** After AddOutgoing2Knot" << endl; 
-		//nmwi.DumpModel();
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
@@ -47,8 +45,6 @@ public:
 		m_upPipe    = nmwi.GetUPShapes().Pop<Pipe>();
 		m_upKnotNew = nmwi.GetUPShapes().Pop<Knot>();
 		m_pStart->m_connections.RemoveOutgoing( m_upPipe.get() );
-		//std::wcout << L"*** After Undo AddOutgoing2Knot" << endl; 
-		//nmwi.DumpModel();
 	}
 
 private:

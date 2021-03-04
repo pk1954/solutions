@@ -64,6 +64,16 @@ bool InputNeuron::CompStep( )
 	return m_bStopOnTrigger && bTrigger;
 }
 
+void InputNeuron::DrawExterior(DrawContext const & context, tHighlightType const type) const
+{
+	drawSocket( context, 2.0f, 0.2f, GetExteriorColor(type) );
+}
+
+void InputNeuron::DrawInterior(DrawContext const & context, tHighlightType const type) const
+{
+	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
+}
+
 void InputNeuron::drawSocket
 ( 
 	DrawContext  const & context, 
@@ -72,16 +82,9 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const axonVector
-	{
-		m_umVector.IsNotNull()
-		? m_umVector
-	    : HasAxon()
-		? m_connections.GetFirstOutgoing().GetVector( )
-		: MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-	};
-	MicroMeterPoint const umExtVector  { Normalize(axonVector) * GetExtension().GetValue() };
+	MicroMeterPoint const umExtVector  { DetermineVector(Connections::Type::out) };
 	MicroMeterPoint const umCenter     { GetPosition() };
+
 	MicroMeterPoint const umOrthoVector{ umExtVector.OrthoVector( GetExtension() ) * 0.7f };
 	MicroMeterPoint const umExtVectorVS{ umExtVector * M * 0.5f };
 	MicroMeter      const umWidthLR    { GetExtension() * (M - 1.4f) };  // width of left/right section                 
@@ -91,16 +94,6 @@ void InputNeuron::drawSocket
 	context.DrawLine( umPosL,                 umCenter - umExtVector * VEM, GetExtension() * M, colF );
 	context.DrawLine( umPosL + umOrthoVector, umPosR + umOrthoVector,       umWidthLR,          colF );
 	context.DrawLine( umPosL - umOrthoVector, umPosR - umOrthoVector,       umWidthLR,          colF );
-}
-
-void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
-{
-	drawSocket( context, 2.0f, 0.2f, GetExteriorColor(type) );
-}
-
-void InputNeuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
-{
-	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
 }
 
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const

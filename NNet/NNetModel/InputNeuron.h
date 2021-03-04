@@ -28,14 +28,15 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
 
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
+	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
+
 	virtual void Prepare( )
 	{
 		m_mVinputBuffer = m_mvFactor * m_timeSinceLastPulse.GetValue();
 	}
 
 	virtual bool CompStep( );
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
-	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 

@@ -26,10 +26,22 @@ public:
         return m_list[ui].GetPos();
     }
 
+    Degrees const GetDir(unsigned int const ui) const
+    {
+        assert( ui < Size() );
+        return m_list[ui].GetDir();
+    }
+
     void SetPosition( unsigned int const ui, MicroMeterPoint const & umPnt )
     {
         assert( ui < Size() );
         m_list[ui].SetPos( umPnt );
+    }
+
+    void SetDirection( unsigned int const ui, Degrees const & degrees )
+    {
+        assert( ui < Size() );
+        m_list[ui].SetDir( degrees );
     }
 
     void Clear()

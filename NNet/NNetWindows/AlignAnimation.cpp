@@ -18,7 +18,7 @@ AlignAnimation::AlignAnimation
   :	m_pNMRI(&nmri),
 	m_pNNetCommands(&commands)
 {
-	m_upConnectorAnimation = make_unique<Animation<MicroMeterPointVector>>(idMsg, hwnd); 
+	m_upConnectorAnimation = make_unique<ConnectorAnimation>(idMsg, hwnd); 
 }
 
 ShapeType const AlignAnimation::determineShapeType()

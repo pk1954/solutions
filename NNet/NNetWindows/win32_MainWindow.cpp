@@ -96,6 +96,14 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
 		break;
 
+	case ShapeType::Value::outputNeuron:
+		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
+		break;
+
 	case ShapeType::Value::neuron:
 		if ( ! m_pNMRI->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
@@ -111,18 +119,18 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
 		if ( 
-			(! m_pNMRI->HasOutgoing( m_shapeHighlighted )) || 
-			(
-				! m_pNMRI->HasIncoming( m_shapeHighlighted ) && 
-				( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
-				) 
-			)
-			AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_NEURON, L"Add neuron" );
+			  (! m_pNMRI->HasOutgoing( m_shapeHighlighted )) || 
+			  (
+				 ( ! m_pNMRI->HasIncoming( m_shapeHighlighted ) ) && 
+				 ( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
+			  ) 
+		   )
+		   AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_NEURON, L"Add neuron" );
 		if ( 
-			( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
-			(! m_pNMRI->HasIncoming( m_shapeHighlighted )) 
-			)
-			AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
+			  ( ! m_pNMRI->HasIncoming( m_shapeHighlighted ) ) &&
+			  ( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )
+		   )
+		   AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT, L"Disconnect" );
 		break;
 

@@ -15,6 +15,8 @@ using std::make_unique;
 class Connections
 {
 public:
+	enum class Type	{ in, out, all };
+
 	using PipeFunc = function<void(Pipe &)>;
 	using PipeCrit = function<bool(Pipe const &)>;
 
@@ -41,12 +43,22 @@ public:
 	void ReplaceIncoming( Pipe * const pDel, Pipe * const pAdd ) { m_incoming.Replace( pDel, pAdd ); }
 	void ReplaceOutgoing( Pipe * const pDel, Pipe * const pAdd ) { m_outgoing.Replace( pDel, pAdd ); }
 
-	bool   HasIncoming( )                const { return ! m_incoming.IsEmpty(); }
-	bool   HasOutgoing( )                const { return ! m_outgoing.IsEmpty(); }
+	bool const HasIncoming() const { return ! m_incoming.IsEmpty(); }
+	bool const HasOutgoing() const { return ! m_outgoing.IsEmpty(); }
+	bool const HasConnection(Type const type) const
+	{
+		if ( type == Type::in )
+			return HasIncoming();
+		else if ( type == Type::out )
+			return HasOutgoing();
+		else
+			return HasIncoming() || HasOutgoing();
+	}
+
 	size_t GetNrOfIncomingConnections( ) const { return m_incoming.Size(); }
 	size_t GetNrOfOutgoingConnections( ) const { return m_outgoing.Size(); }
 	size_t GetNrOfConnections( )         const { return m_incoming.Size() + m_outgoing.Size(); }
-	bool   IsOrphan( )                   const { return m_incoming.IsEmpty() && m_outgoing.IsEmpty(); }
+	bool   IsOrphan( )                   const { return ! HasConnection( Type::all ); }
 
 	void ClearIncoming( ) { m_incoming.Clear( ); }
 	void ClearOutgoing( ) { m_outgoing.Clear( ); }
@@ -54,10 +66,20 @@ public:
 	void Apply2AllInPipes ( PipeFunc const & func ) const { m_incoming.Apply2All( func ); }
 	void Apply2AllOutPipes( PipeFunc const & func ) const { m_outgoing.Apply2All( func ); }
 
+	void Apply2AllPipes( Type const type, PipeFunc const & func ) const
+	{
+		if ( type == Type::in )
+			Apply2AllInPipes( func );
+		else if ( type == Type::out )
+			Apply2AllOutPipes( func );
+		else
+			Apply2AllConnectedPipes( func );
+	}
+
 	bool Apply2AllInPipesB ( PipeCrit const & func ) const { return m_incoming.Apply2AllB( func ); }
 	bool Apply2AllOutPipesB( PipeCrit const & func ) const { return m_outgoing.Apply2AllB( func ); }
 
-	void Apply2AllConnectedPipes( PipeFunc const & func )
+	void Apply2AllConnectedPipes( PipeFunc const & func ) const
 	{
 		Apply2AllInPipes ( [&]( Pipe & pipe ) { func( pipe ); } );
 		Apply2AllOutPipes( [&]( Pipe & pipe ) { func( pipe ); } );

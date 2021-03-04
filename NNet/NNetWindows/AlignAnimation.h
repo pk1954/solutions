@@ -28,11 +28,12 @@ public:
 	void AnimationStep();
 
 private:
+	using ConnectorAnimation = Animation<MicroMeterPointVector>;
 
-	NNetModelReaderInterface             const * m_pNMRI         { nullptr };
-	NNetModelCommands                          * m_pNNetCommands { nullptr };
-	unique_ptr<Animation<MicroMeterPointVector>> m_upConnectorAnimation;
-	ShapePtrList<BaseKnot>                       m_shapesAnimated;
+	NNetModelReaderInterface const * m_pNMRI         { nullptr };
+	NNetModelCommands              * m_pNNetCommands { nullptr };
+	unique_ptr<ConnectorAnimation>   m_upConnectorAnimation;
+	ShapePtrList<BaseKnot>           m_shapesAnimated;
 
 	ShapeType const determineShapeType();
 };
