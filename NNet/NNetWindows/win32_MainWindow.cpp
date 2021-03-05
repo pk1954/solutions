@@ -480,7 +480,7 @@ void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 	if ( idHighlight != m_shapeHighlighted )
 	{
 		m_shapeHighlighted = idHighlight; 
-		Notify( true );     // cause immediate repaint
+		Notify( false );
 	}
 }
 
@@ -497,7 +497,7 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 	case IDX_CONNECTOR_ANIMATION:
 		m_upAlignAnimation->AnimationStep();
-		Notify( true );
+		Notify( false );
 		if ( lParam )
 			SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 
 		break;

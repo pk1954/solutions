@@ -45,10 +45,10 @@ void MiniWindow::Notify( bool const bImmediately )
 	{
 		float           const EXTRA_SPACE_FACTOR { 1.2f };                                // give 20% more space (looks better)
 		MicroMeterRect  const umRectMain  { m_pObservedNNetWindow->GetViewRect() };       // current position of main window view 
-		MicroMeterRect  const umRectModel { m_pNMRI->GetUPShapes().CalcEnclosingRect() };   // current extension of model
+		MicroMeterRect  const umRectModel { m_pNMRI->GetUPShapes().CalcEnclosingRect() }; // current extension of model
 		MicroMeterRect  const umRectShow  { Union( umRectMain, umRectModel ) };           // all this should be visible  
 		fPixelPoint     const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
-		MicroMeterPoint const umPntCenterTarget { umRectShow.GetCenter() };
+		MicroMeterPoint const umPntTarget { umRectShow.GetCenter() };
 		MicroMeter      const umPixelSizeTarget
 		{
 			GetCoordC().ComputeZoom
@@ -59,8 +59,8 @@ void MiniWindow::Notify( bool const bImmediately )
 			)
 		};
 		GetDrawContext().Zoom( umPixelSizeTarget );
-		GetDrawContext().Center( umPntCenterTarget, fpCenter );
-		NNetWindow::Notify( bImmediately );
+		GetDrawContext().Center( umPntTarget, fpCenter );
+		NNetWindow::Notify( false );
 	}
 }
 
