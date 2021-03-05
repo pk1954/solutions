@@ -63,7 +63,7 @@ void MainWindow::Stop()
 void MainWindow::Reset()
 { 
 	m_shapeHighlighted = NO_SHAPE; 
-	m_shapeTarget      = NO_SHAPE; 
+	setNoTarget(); 
 }
 
 long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
@@ -239,15 +239,23 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return true;
 }
 
-void MainWindow::setTargetShape( )
+void MainWindow::setTargetShape()
 {
 	if ( m_pNMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 	{
 		m_shapeTarget = m_pNMRI->FindShapeAt
-		( 
+		(
 			m_pNMRI->GetShapePos( m_shapeHighlighted ),
-			[&](Shape const & shape) { return m_pNMRI->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+			[&](Shape const & s)
+			{ 
+				if (s.GetId() == m_shapeHighlighted)
+					return false; 
+				if (m_pNMRI->IsConnectedTo(s.GetId(), m_shapeHighlighted))
+					return false;
+				return true;
+			}
 		);
+		m_bTargetFits = m_pNMRI->CanConnectTo( m_shapeHighlighted, m_shapeTarget ); 
 	}
 }
 
@@ -276,20 +284,24 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			m_shapeTarget = NO_SHAPE;
+			MicroMeterPoint umDelta = umCrsrPos - umLastPos;
+			setNoTarget();
 			if ( IsDefined(m_shapeHighlighted) )
 			{
-				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
-				setTargetShape( );
+				if (umDelta.IsNotZero())
+				{
+					m_pNNetCommands->MoveShape( m_shapeHighlighted, umDelta );
+					setTargetShape();
+				}
 			}
 			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
 			{
-				pSignal->Move( umCrsrPos - umLastPos );
+				pSignal->Move( umDelta );
 				Notify( false ); 
 			}
 			else if ( m_pNMRI->AnyShapesSelected( ) )   // move selected shapes 
 			{
-				m_pNNetCommands->MoveSelection( umCrsrPos - umLastPos );
+				m_pNNetCommands->MoveSelection( umDelta );
 			}
 			else  // move view by manipulating coordinate system 
 			{
@@ -315,10 +327,10 @@ void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 
 void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeTarget ) )
+	if ( IsDefined(m_shapeHighlighted) && IsDefined(m_shapeTarget) && m_bTargetFits )
 	{ 
 		SendCommand2Application( IDD_CONNECT, 0	);
-		m_shapeTarget = NO_SHAPE;
+		setNoTarget();
 	}
 }
 
@@ -433,8 +445,9 @@ void MainWindow::doPaint( )
 
 	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
 	{
-		m_pNMRI->DrawExterior( m_shapeTarget, context, tHighlightType::target );
-		m_pNMRI->DrawInterior( m_shapeTarget, context, tHighlightType::target );
+		tHighlightType type { m_bTargetFits ? tHighlightType::targetFit : tHighlightType::targetNoFit };
+		m_pNMRI->DrawExterior( m_shapeTarget, context, type );
+		m_pNMRI->DrawInterior( m_shapeTarget, context, type );
 	}
 
 	if ( IsDefined(m_shapeHighlighted) )  // draw selected shape again to be sure that it is in foreground

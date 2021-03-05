@@ -136,13 +136,13 @@ ShapeId const NNetModel::FindShapeAt
 	ShapeId idRes { NO_SHAPE };
 
 	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
-		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
-
-	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes
-		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
-
-	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
-		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
+		idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsAnyNeuron() && crit(s); });
+																									   
+	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes								   
+		idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsKnot     () && crit(s); }); 	
+																									   
+	if ( idRes == NO_SHAPE )   // if nothing found, try pipes										   
+		idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsPipe     () && crit(s); });
 
 	return idRes;
 }

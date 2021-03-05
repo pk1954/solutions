@@ -91,8 +91,9 @@ private:
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
-	ShapeId             m_shapeTarget          { };
 	ShapeId             m_shapeHighlighted     { };
+	ShapeId             m_shapeTarget          { };
+	bool                m_bTargetFits          { false };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pNNetCommands        { nullptr };
@@ -101,6 +102,12 @@ private:
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );
 	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
+
+	void setNoTarget()
+	{
+		m_shapeTarget = NO_SHAPE;
+		m_bTargetFits = false;
+	}
 
 	virtual void doPaint();
 };

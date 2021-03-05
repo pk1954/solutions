@@ -27,12 +27,11 @@ public:
 		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
 	}
 
-	~Connect2BaseKnotCommand( )	{ }
+	~Connect2BaseKnotCommand()	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
-
-		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>( * m_pBaseKnotSrc ); 
+		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(*m_pBaseKnotSrc); 
 		assert( m_upBaseKnotSrc );
 		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() ); // double connections?
 	}

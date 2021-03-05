@@ -27,16 +27,13 @@ public:
 		{
 			m_pBaseKnot      = nmwi.GetShapePtr<BaseKnot *>( m_idBaseKnot );
 			m_posBaseKnotOld = m_pBaseKnot->GetPosition();
-			//		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand: old pos = " << m_posBaseKnotOld << endl; 
 		}
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld + m_delta );
-//		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand.Do: pos = " << m_posBaseKnotOld + m_delta << endl; 
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld );
-//		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand.Undo: pos = " << m_posBaseKnotOld << endl;
 	}
 
 	virtual ShapeId const GetMovedShape( ) const

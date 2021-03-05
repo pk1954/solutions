@@ -37,7 +37,8 @@ D2D1::ColorF Shape::GetExteriorColor( tHighlightType const type ) const
 	{
 	case tHighlightType::normal:      return NNetColors::EXT_NORMAL;
 	case tHighlightType::highlighted: return NNetColors::EXT_HIGHLIGHTED;
-	case tHighlightType::target:      return NNetColors::EXT_NORMAL;
+	case tHighlightType::targetFit:   return NNetColors::EXT_NORMAL;
+	case tHighlightType::targetNoFit: return NNetColors::EXT_NORMAL;
 	}
 	assert( false );
 	return NNetColors::EXT_NORMAL;
@@ -49,7 +50,8 @@ D2D1::ColorF Shape::GetInteriorColor( tHighlightType const type ) const
 	{
 	case tHighlightType::normal:      return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
 	case tHighlightType::highlighted: return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
-	case tHighlightType::target:      return NNetColors::INT_TARGET;
+	case tHighlightType::targetFit:   return NNetColors::INT_TARGET_FIT;
+	case tHighlightType::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
 	}
 	assert( false );
 	return NNetColors::INT_NORMAL;

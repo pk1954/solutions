@@ -25,6 +25,8 @@ public:
 	void DumpModel( ) const { m_pModel->DumpModel(); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
+	bool            const CanConnectTo              ( ShapeId const, ShapeId const ) const;
+	bool            const IsConnectedTo             ( ShapeId const, ShapeId const ) const;
 	bool            const IsSelected                ( ShapeId const ) const;
 	ShapeType       const GetShapeType              ( ShapeId const ) const;
 	fHertz          const GetPulseFrequency         ( ShapeId const ) const;
@@ -34,7 +36,6 @@ public:
 	bool            const HasOutgoing               ( ShapeId const ) const;
 	size_t          const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t          const GetNrOfIncomingConnections( ShapeId const ) const;
-	bool            const ConnectsTo ( ShapeId const, ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
@@ -50,8 +51,13 @@ public:
 	wstring         const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
 	float           const   GetParameter(ParameterType::Value const p) const { return m_pModel->GetParameter( p ); }
 
-	bool    const GetDescriptionLine( int const, wstring & )                const;
-	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
+	bool    const GetDescriptionLine( int const, wstring & ) const;
+
+	ShapeId const FindShapeAt
+	( 
+		MicroMeterPoint const &, 
+		ShapeCrit       const & = ShapeCritAlwaysTrue 
+	) const;
 
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
@@ -65,9 +71,7 @@ public:
 private:
 	NNetModel const * m_pModel;
 
-	bool const isConnectedTo    ( ShapeId const, ShapeId const ) const;
 	bool const isConnectedToPipe( ShapeId const, ShapeId const ) const;
-
 	bool const onlyOneAxon( ShapeId const idSrc, ShapeId const idDst ) const
 	{
 		return (GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst) <= 1);

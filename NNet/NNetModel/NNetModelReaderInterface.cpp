@@ -81,7 +81,7 @@ bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstrin
 	return m_pModel->GetDescriptionLine( iLine, wstrLine );
 };
 
-bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) const
+bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId const idDst ) const
 {
 	if ( idSrc == idDst )
 		return false;
@@ -89,7 +89,7 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 	if ( IsUndefined(idSrc) || IsUndefined(idDst) )
 		return false;
 
-	if ( isConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect again
+	if ( IsConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect againI
 		return false;
 
 	ShapeType::Value const typeSrc { GetShapeType(idSrc).GetValue() };
@@ -145,10 +145,10 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 		{
 		case ShapeType::Value::pipe:
 		case ShapeType::Value::knot:
+		case ShapeType::Value::outputNeuron:
 			return false;
 
 		case ShapeType::Value::neuron:
-		case ShapeType::Value::outputNeuron:
 		case ShapeType::Value::inputNeuron:
 			return onlyOneAxon(idSrc, idDst) && ! HasIncoming(idSrc);
 
@@ -165,7 +165,7 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 			return false;
 
 		case ShapeType::Value::outputNeuron:
-			return false;
+			return true;
 
 		case ShapeType::Value::knot:
 		case ShapeType::Value::neuron:
@@ -183,7 +183,7 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 	return false;
 }
 
-bool const NNetModelReaderInterface::isConnectedTo( ShapeId const idSrc, ShapeId const idDst ) const
+bool const NNetModelReaderInterface::IsConnectedTo( ShapeId const idSrc, ShapeId const idDst ) const
 {
 	if ( GetShapeType( idSrc ).IsPipeType() )
 		return isConnectedToPipe( idDst, idSrc );

@@ -8,7 +8,8 @@ enum class tHighlightType
 {
 	normal,
 	highlighted,
-	target
+	targetFit,
+	targetNoFit
 };
 
 static bool const IsHighlighted( tHighlightType const type )
@@ -21,7 +22,7 @@ static bool const IsNormal( tHighlightType const type )
 	return type == tHighlightType::normal;
 }
 
-static bool const IsTarget( tHighlightType const type )
-{
-	return type == tHighlightType::target;
-}
+//static bool const IsTarget( tHighlightType const type )
+//{
+//	return type == tHighlightType::target;
+//}
