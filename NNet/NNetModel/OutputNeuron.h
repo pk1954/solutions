@@ -7,9 +7,9 @@
 #include <chrono>
 #include <sstream> 
 #include "MoreTypes.h"
-#include "Neuron.h"
+#include "ConnectionNeuron.h"
 
-class OutputNeuron : public Neuron
+class OutputNeuron : public ConnectionNeuron
 {
 public:
 

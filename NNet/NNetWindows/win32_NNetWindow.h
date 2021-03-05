@@ -54,12 +54,11 @@ public:
 	PixelCoordsFp        & GetCoord      ()       { return m_context.GetCoord (); }
 	MicroMeter     const   PixelSize     () const { return m_context.GetPixelSize(); }
 
-	ShapeId const FindShapeAt         ( PixelPoint const &, ShapeCrit const & ) const;
-	void          DrawInteriorInRect  ( PixelRect  const &, ShapeCrit const & ) const;
-	void          DrawExteriorInRect  ( PixelRect  const &                    ) const;
-	void          DrawNeuronTextInRect( PixelRect  const &                    ) const;
-	void          DrawArrowsInRect    ( PixelRect  const &, MicroMeter const  ) const;
-	void          DrawSensors         ( ) const;
+	void DrawInteriorInRect  ( PixelRect  const &, ShapeCrit const & ) const;
+	void DrawExteriorInRect  ( PixelRect  const &                    ) const;
+	void DrawNeuronTextInRect( PixelRect  const &                    ) const;
+	void DrawArrowsInRect    ( PixelRect  const &, MicroMeter const  ) const;
+	void DrawSensors         ( ) const;
 
 protected:
 

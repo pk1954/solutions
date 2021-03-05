@@ -147,19 +147,6 @@ void NNetWindow::DrawSensors( ) const
 	);
 }
 
-ShapeId const NNetWindow::FindShapeAt
-( 
-	PixelPoint const & pixPoint, 
-	ShapeCrit  const & crit 
-) const
-{	
-	return m_pNMRI->FindShapeAt
-	( 
-		GetCoordC().Transform2MicroMeterPointPos( pixPoint ), 
-		[&]( Shape const & s ) { return crit( s ); } 
-	);
-}
-
 void NNetWindow::OnPaint( )
 {
 	if ( IsWindowVisible() )

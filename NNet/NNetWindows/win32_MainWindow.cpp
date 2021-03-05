@@ -246,16 +246,9 @@ void MainWindow::setTargetShape()
 		m_shapeTarget = m_pNMRI->FindShapeAt
 		(
 			m_pNMRI->GetShapePos( m_shapeHighlighted ),
-			[&](Shape const & s)
-			{ 
-				if (s.GetId() == m_shapeHighlighted)
-					return false; 
-				if (m_pNMRI->IsConnectedTo(s.GetId(), m_shapeHighlighted))
-					return false;
-				return true;
-			}
+			[&](Shape const & s) { return m_pNMRI->IsConnectionCandidate(s.GetId(), m_shapeHighlighted); }
 		);
-		m_bTargetFits = m_pNMRI->CanConnectTo( m_shapeHighlighted, m_shapeTarget ); 
+		m_bTargetFits = IsDefined(m_shapeTarget) && m_pNMRI->CanConnectTo( m_shapeHighlighted, m_shapeTarget ); 
 	}
 }
 
@@ -285,7 +278,6 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			MicroMeterPoint umDelta = umCrsrPos - umLastPos;
-			setNoTarget();
 			if ( IsDefined(m_shapeHighlighted) )
 			{
 				if (umDelta.IsNotZero())
@@ -476,7 +468,7 @@ void MainWindow::doPaint( )
 
 void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 {
-	ShapeId const idHighlight { m_pNMRI->FindShapeAt( umCrsrPos, ShapeCritAlwaysTrue ) };
+	ShapeId const idHighlight { m_pNMRI->FindShapeAt( umCrsrPos ) };
 	if ( idHighlight != m_shapeHighlighted )
 	{
 		m_shapeHighlighted = idHighlight; 

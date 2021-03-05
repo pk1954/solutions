@@ -25,6 +25,7 @@ public:
 	void DumpModel( ) const { m_pModel->DumpModel(); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
+	bool            const IsConnectionCandidate     ( ShapeId const, ShapeId const ) const;
 	bool            const CanConnectTo              ( ShapeId const, ShapeId const ) const;
 	bool            const IsConnectedTo             ( ShapeId const, ShapeId const ) const;
 	bool            const IsSelected                ( ShapeId const ) const;

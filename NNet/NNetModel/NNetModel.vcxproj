@@ -187,6 +187,7 @@
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
+    <ClInclude Include="ConnectionNeuron.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="MicroMeterPointVector.h" />
     <ClInclude Include="Connections.h" />

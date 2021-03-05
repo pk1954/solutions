@@ -7,7 +7,7 @@
 #include "OutputNeuron.h"
 
 OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
-	: Neuron( upCenter, ShapeType::Value::outputNeuron )
+	: ConnectionNeuron( upCenter, ShapeType::Value::outputNeuron )
 { }
 
 void OutputNeuron::CheckShape( ) const

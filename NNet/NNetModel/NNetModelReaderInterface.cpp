@@ -81,16 +81,21 @@ bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstrin
 	return m_pModel->GetDescriptionLine( iLine, wstrLine );
 };
 
+bool const NNetModelReaderInterface::IsConnectionCandidate( ShapeId const idSrc, ShapeId const idDst ) const
+{
+	if (idSrc == idDst)
+		return false; 
+	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
+		return false;
+	return true;
+}
+
 bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId const idDst ) const
 {
-	if ( idSrc == idDst )
-		return false;
-
-	if ( IsUndefined(idSrc) || IsUndefined(idDst) )
-		return false;
-
-	if ( IsConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect againI
-		return false;
+	assert(idSrc != idDst);
+	assert(IsDefined(idSrc));
+	assert(IsDefined(idDst));
+	assert(!IsConnectedTo(idSrc, idDst));
 
 	ShapeType::Value const typeSrc { GetShapeType(idSrc).GetValue() };
 	ShapeType::Value const typeDst { GetShapeType(idDst).GetValue() };

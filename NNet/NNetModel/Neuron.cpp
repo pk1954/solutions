@@ -219,18 +219,3 @@ Neuron * Cast2Neuron( Shape * pShape )
 	assert( pShape->IsAnyNeuron() );
 	return static_cast<Neuron *>(pShape);
 }
-
-MicroMeterPoint const Neuron::DetermineVector(Connections::Type const conType) const
-{
-	MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };
-
-	if (m_umVector.IsNotNull())
-		umVector = m_umVector;
-	else if ( m_connections.HasConnection(conType) )
-		m_connections.Apply2AllPipes( conType, [&](Pipe & pipe) { umVector += pipe.GetVector(); } );
-	else
-		umVector = { 0._MicroMeter, 1._MicroMeter };
-
-	return Normalize(umVector) * GetExtension().GetValue();
-}
-

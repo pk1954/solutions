@@ -75,8 +75,6 @@ protected:
 
 	void const DisplayText( DrawContext const &, MicroMeterRect const &, wstring const ) const;
 
-	MicroMeterPoint const DetermineVector(Connections::Type const) const;
-
 private:
 	mutable bool m_bTriggered { false };
 
