@@ -53,8 +53,6 @@ public:
 	void         StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
 	void         Transform2OutputNeuron() { SetType(ShapeType::Value::outputNeuron); }
 
-	virtual void SetDirection(MicroMeterPoint const &);
-		
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const) const;
 	virtual void DrawInterior  ( DrawContext const &, tHighlightType const) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
@@ -66,8 +64,6 @@ public:
 	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
 
 protected:
-	MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of neuron if plug or socket
-
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 	bool       m_bStopOnTrigger     { false };
 

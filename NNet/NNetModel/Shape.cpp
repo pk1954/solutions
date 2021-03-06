@@ -28,7 +28,8 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
 	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage )) };
 	float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
-	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
+	float const fAlphaChannel  { m_bSelected ? 0.7f : 1.0f };
+	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, fAlphaChannel );
 }
 
 D2D1::ColorF Shape::GetExteriorColor( tHighlightType const type ) const 
@@ -48,7 +49,7 @@ D2D1::ColorF Shape::GetInteriorColor( tHighlightType const type ) const
 { 
 	switch ( type )
 	{
-	case tHighlightType::normal:      return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
+	case tHighlightType::normal:      return IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
 	case tHighlightType::highlighted: return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
 	case tHighlightType::targetFit:   return NNetColors::INT_TARGET_FIT;
 	case tHighlightType::targetNoFit: return NNetColors::INT_TARGET_NOFIT;

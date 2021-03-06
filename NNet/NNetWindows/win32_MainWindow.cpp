@@ -49,9 +49,9 @@ void MainWindow::Start
 	m_pCoordObservable     = & coordObservable;
 	m_scale.Initialize( & m_graphics, L"m" );
 
-	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (nullptr);
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION, GetWindowHandle());
-	m_upAlignAnimation = make_unique<AlignAnimation>(modelReaderInterface, commands, GetWindowHandle(), IDX_CONNECTOR_ANIMATION); 
+	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION,     GetWindowHandle());
+	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION,     GetWindowHandle());
+	m_upAlignAnimation = make_unique<AlignAnimation>          (IDX_CONNECTOR_ANIMATION, GetWindowHandle(), modelReaderInterface, commands); 
 }
 
 void MainWindow::Stop()
@@ -140,7 +140,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_INSERT_NEURON,     L"Insert neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_INSERT_KNOT,       L"Insert knot" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,      L"Delete" );
-		if ( m_arrowSizeTarget > 0.0_MicroMeter )
+		if ( ArrowsVisible() )
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ARROWS_OFF,    L"Arrows off" );
 		else
 			AppendMenu( hPopupMenu, MF_STRING, IDD_ARROWS_ON,     L"Arrows on" );
@@ -195,31 +195,31 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 	Zoom( GetCoordC().ComputeNewPixelSize( bZoomIn ), pPixPntCenter );
 }
 
-void MainWindow::CenterModel( )
+void MainWindow::CenterModel()
 {
 	centerAndZoomRect( UPShapeList::SelMode::allShapes, 1.2f ); // give 20% more space (looks better)
 }
 
-void MainWindow::CenterSelection( )
+void MainWindow::CenterSelection()
 {
 	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
 }
 
-void MainWindow::MakeConnector( )
+void MainWindow::MakeConnector()
 {
 }
 
-bool const MainWindow::ArrowsVisible( ) const
+bool const MainWindow::ArrowsVisible() const
 {
-	return m_arrowSizeTarget > 0._MicroMeter;
+	return m_arrowSize > 0._MicroMeter;
 }
 
 void MainWindow::ShowArrows( bool const op )
 {
-	MicroMeter oldVal { m_arrowSizeTarget };
+	MicroMeter oldVal { m_arrowSize };
 	m_arrowSizeTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
 	if ( m_arrowSizeTarget != oldVal )
-		m_upArrowAnimation->Start( m_arrowSizeRun, m_arrowSizeTarget );
+		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -428,7 +428,8 @@ void MainWindow::doPaint( )
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 	{
 		DrawExteriorInRect( pixRect );
-		DrawArrowsInRect( pixRect, m_upArrowAnimation->GetActual() );
+		if ( ArrowsVisible() )
+			DrawArrowsInRect( pixRect, m_arrowSize );
 	}
 
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } ); 
@@ -482,6 +483,11 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 	switch (wmId)
 	{
+	case IDX_ARROW_ANIMATION:
+		m_arrowSize = m_upArrowAnimation->GetActual();
+		Notify( false );
+		break;
+
 	case IDX_COORD_ANIMATION:
 		GetCoord().Set( m_upCoordAnimation->GetActual() );
 		m_pCoordObservable->NotifyAll(false); 

@@ -85,7 +85,7 @@ private:
 
 	unique_ptr<Animation<MicroMeter>> m_upArrowAnimation;
 	MicroMeter                        m_arrowSizeTarget { STD_ARROW_SIZE };
-	MicroMeter                        m_arrowSizeRun    { m_arrowSizeTarget };
+	MicroMeter                        m_arrowSize       { m_arrowSizeTarget };
 
 	unique_ptr<AlignAnimation>           m_upAlignAnimation;
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;

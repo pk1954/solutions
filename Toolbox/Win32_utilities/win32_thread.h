@@ -25,25 +25,9 @@ namespace Util
 		void BeginThread( wstring const & );
 		void StartThread( wstring const &, bool const );
 
-		void SetThreadAffinityMask( DWORD_PTR mask )
-		{
-			::SetThreadAffinityMask( m_handle, mask );
-		}
+		void SetThreadAffinityMask( DWORD_PTR const );
 
-		void PostThreadMsg( UINT uiMsg, WPARAM const wParam = 0, LPARAM const lParam = 0 )
-		{
-			if ( m_bAsync )
-			{
-				assert( m_threadId != 0 );
-				bool const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
-//				DWORD err = GetLastError( );
-				assert( bRes );
-			}
-			else
-			{
-				ThreadMsgDispatcher( MSG { nullptr, uiMsg, wParam, lParam } );
-			}
-		}
+		void PostThreadMsg( UINT, WPARAM const = 0, LPARAM const = 0 );
 
 		void Terminate( ); // Waits until thread has stopped
 		void TerminateNoWait( ) { PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); }// PostQuitMessage( 0 );  doesn't work
@@ -55,11 +39,11 @@ namespace Util
 		virtual void ThreadShutDownFunc( ) {};
 
 	private:
-		HANDLE  m_handle   { nullptr };
-		UINT    m_threadId { 0 };
-		bool    m_bAsync   { false };
+		HANDLE  m_handle             { nullptr };
+		UINT    m_threadId           { 0 };
+		bool    m_bAsync             { false };
 		Event   m_eventThreadStarter { };
-		wstring m_strThreadName { };
+		wstring m_strThreadName      { };
 
 		friend static unsigned int __stdcall Util::ThreadProc( void * );
 	};

@@ -15,7 +15,10 @@ public:
 	{ }
 
 protected:
-	MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of neuron if plug or socket
+	void SetDirection( MicroMeterPoint const& umPntDir )
+	{
+		m_umVector = umPntDir;
+	}
 
 	MicroMeterPoint const DetermineVector(Connections::Type const conType) const
 	{
@@ -32,4 +35,5 @@ protected:
 	}
 
 private:
+	MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of ConnectionNeuron
 };

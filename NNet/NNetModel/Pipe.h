@@ -73,7 +73,7 @@ public:
 	mV GetNextOutput( ) const { return m_potential[ m_potIndex ]; }
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
-	virtual void DrawArrows    ( DrawContext const &, tHighlightType const, MicroMeter const  ) const;
+	virtual void DrawArrows    ( DrawContext const &, MicroMeter     const ) const;
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;

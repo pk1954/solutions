@@ -111,17 +111,11 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 
 void NNetWindow::DrawArrowsInRect( PixelRect const & rect, MicroMeter const umSize ) const
 {
-	if ( umSize > 0.0_MicroMeter )
-	{
-		m_pNMRI->GetUPShapes().Apply2AllInRect<Pipe>
-		( 
-			GetCoordC().Transform2MicroMeterRect( rect ),	
-			[&](Pipe const & s) 
-			{ 
-				s.DrawArrows( m_context, tHighlightType::normal, umSize ); 
-			} 
-		);
-	}
+	m_pNMRI->GetUPShapes().Apply2AllInRect<Pipe>
+	( 
+		GetCoordC().Transform2MicroMeterRect(rect),	
+		[&](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
+	);
 }
 
 void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const

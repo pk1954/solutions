@@ -10,10 +10,10 @@
 
 AlignAnimation::AlignAnimation
 ( 
-	NNetModelReaderInterface const & nmri,
-	NNetModelCommands              & commands,
+	int                      const   idMsg,
 	HWND                     const   hwnd,
-	int                      const   idMsg
+	NNetModelReaderInterface const & nmri,
+	NNetModelCommands              & commands
 )
   :	m_pNMRI(&nmri),
 	m_pNNetCommands(&commands)

@@ -203,11 +203,6 @@ void Neuron::DrawInterior( DrawContext const & context, tHighlightType const typ
 	m_bTriggered = false;
 }
 
-void Neuron::SetDirection( MicroMeterPoint const& umPntDir )
-{
-	m_umVector = umPntDir;
-}
-
 Neuron const * Cast2Neuron( Shape const * pShape )
 {
 	assert( pShape->IsAnyNeuron() );

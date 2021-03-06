@@ -18,10 +18,10 @@ class AlignAnimation
 public:
 	AlignAnimation
 	( 
-		NNetModelReaderInterface const &,
-		NNetModelCommands &,
+		int  const,
 		HWND const,
-		int  const
+		NNetModelReaderInterface const &,
+		NNetModelCommands &
 	);
 
 	bool AlignSelection();

@@ -185,7 +185,6 @@ MicroMeterPoint Pipe::GetVector( ) const
 void Pipe::DrawArrows
 ( 
 	DrawContext    const & context, 
-	tHighlightType const   type, 
 	MicroMeter     const   umSize
 ) const
 {
@@ -198,7 +197,7 @@ void Pipe::DrawArrows
 		umEndPoint - umStartPoint, 
 		umSize,
 		PIPE_WIDTH / 2, 
-		GetExteriorColor( type )
+		NNetColors::EXT_NORMAL
 	);
 }
 

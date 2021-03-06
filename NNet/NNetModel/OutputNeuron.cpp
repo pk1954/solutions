@@ -41,7 +41,6 @@ void OutputNeuron::drawPlug
 {
 	MicroMeterPoint const umExtVector { DetermineVector(Connections::Type::in) };
 	MicroMeterPoint const umCenter    { GetPosition() };
-
 	float           const W           { M + 1.2f };       // width of left/right section                 
 	float           const fOffset     { -0.8f };
 	MicroMeterPoint const umP1        { umCenter + umExtVector * (V - fOffset) };

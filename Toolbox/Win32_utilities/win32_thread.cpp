@@ -30,6 +30,11 @@ void Util::Thread::BeginThread
 	assert( m_handle != nullptr );
 }
 
+void Util::Thread::SetThreadAffinityMask( DWORD_PTR const mask )
+{
+	::SetThreadAffinityMask( m_handle, mask );
+}
+
 void Util::Thread::StartThread
 (  
 	wstring const & strName, // for debugging only
@@ -41,6 +46,21 @@ void Util::Thread::StartThread
 	{
 		BeginThread( strName );
 		m_eventThreadStarter.Wait();
+	}
+}
+
+void Util::Thread::PostThreadMsg( UINT uiMsg, WPARAM const wParam, LPARAM const lParam )
+{
+	if ( m_bAsync )
+	{
+		assert( m_threadId != 0 );
+		bool const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
+		//				DWORD err = GetLastError( );
+		assert( bRes );
+	}
+	else
+	{
+		ThreadMsgDispatcher( MSG { nullptr, uiMsg, wParam, lParam } );
 	}
 }
 

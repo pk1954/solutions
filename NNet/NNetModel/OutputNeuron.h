@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <chrono>
-#include <sstream> 
 #include "MoreTypes.h"
 #include "ConnectionNeuron.h"
 

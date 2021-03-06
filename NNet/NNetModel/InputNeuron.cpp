@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <iomanip>
+#include <sstream> 
 #include "DrawContext.h"
 #include "tHighlightType.h"
 #include "ParameterType.h"
@@ -82,14 +83,13 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umExtVector  { DetermineVector(Connections::Type::out) };
-	MicroMeterPoint const umCenter     { GetPosition() };
-
-	MicroMeterPoint const umOrthoVector{ umExtVector.OrthoVector( GetExtension() ) * 0.7f };
-	MicroMeterPoint const umExtVectorVS{ umExtVector * M * 0.5f };
-	MicroMeter      const umWidthLR    { GetExtension() * (M - 1.4f) };  // width of left/right section                 
-	MicroMeterPoint const umPosL       { umCenter + umExtVectorVS };
-	MicroMeterPoint const umPosR       { umCenter - umExtVectorVS };
+	MicroMeterPoint const umExtVector   { DetermineVector(Connections::Type::out) };
+	MicroMeterPoint const umCenter      { GetPosition() };
+	MicroMeterPoint const umOrthoVector { umExtVector.OrthoVector( GetExtension() ) * 0.7f };
+	MicroMeterPoint const umExtVectorVS { umExtVector * M * 0.5f };
+	MicroMeter      const umWidthLR     { GetExtension() * (M - 1.4f) };  // width of left/right section                 
+	MicroMeterPoint const umPosL        { umCenter + umExtVectorVS };
+	MicroMeterPoint const umPosR        { umCenter - umExtVectorVS };
 
 	context.DrawLine( umPosL,                 umCenter - umExtVector * VEM, GetExtension() * M, colF );
 	context.DrawLine( umPosL + umOrthoVector, umPosR + umOrthoVector,       umWidthLR,          colF );
