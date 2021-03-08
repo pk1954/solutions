@@ -276,7 +276,7 @@ void UPShapeList::CallErrorHandler( ShapeId const id ) const
 	}
 }
 
-void UPShapeList::Apply2All( function<void(Shape const &)> const & func ) const
+void UPShapeList::Apply2All( ShapeFuncC const & func ) const
 {
 	for ( auto const & it : m_list )
 	{ 
@@ -285,7 +285,7 @@ void UPShapeList::Apply2All( function<void(Shape const &)> const & func ) const
 	}
 }                        
 
-void UPShapeList::Apply2All( function<void(Shape &)> const & func )
+void UPShapeList::Apply2All( ShapeFunc const & func )
 {
 	for ( auto & it : m_list )
 	{ 
@@ -302,6 +302,16 @@ bool const UPShapeList::Apply2AllB( ShapeCrit const & func ) const
 			return true;
 	}
 	return false;
+}
+
+void UPShapeList::Apply2AllSelected( ShapeType const type, ShapeFunc const & func )
+{
+	Apply2All( { [&](Shape & s) { if (s.IsSelected() && (s.GetShapeType() == type)) func(s); } } );
+}
+
+void UPShapeList::Apply2AllSelected( ShapeType const type, ShapeFuncC const & func ) const
+{
+	Apply2All( { [&](Shape const & s) { if (s.IsSelected() && (s.GetShapeType() == type)) func(s); } } );
 }
 
 void UPShapeList::SelectAllShapes( tBoolOp const op ) 
@@ -334,4 +344,15 @@ UPShapeList UPShapeList::ExtractShapes( vector<ShapeId> idList )
 		shapeList.Push( ExtractShape( id ) );
 	}
 	return shapeList;
+}
+
+ShapeType const UPShapeList::DetermineShapeType() const
+{
+	int iNrOfInputNeurons  { CountInSelection( ShapeType::Value::inputNeuron  ) };
+	int iNrOfOutputNeurons { CountInSelection( ShapeType::Value::outputNeuron ) };
+	return ((iNrOfInputNeurons == 0) && (iNrOfOutputNeurons == 0))
+		? ShapeType::Value::undefined
+		: (iNrOfInputNeurons > iNrOfOutputNeurons) 
+		? ShapeType::Value::inputNeuron 
+		: ShapeType::Value::outputNeuron;
 }

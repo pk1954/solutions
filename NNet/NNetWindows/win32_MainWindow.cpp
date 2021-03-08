@@ -14,9 +14,6 @@
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
-//#include "LineType.h"
-//#include "NNetModelWriterInterface.h"
-
 using std::make_unique;
 
 void MainWindow::Start
@@ -30,7 +27,9 @@ void MainWindow::Start
 	NNetController                 & controller,
 	NNetModelCommands              & commands,
 	Observable                     & cursorObservable,
-	Observable                     & coordObservable
+	Observable                     & coordObservable,
+	AlignAnimation                 & alignAnimation
+
 )
 {
 	NNetWindow::Start
@@ -47,11 +46,12 @@ void MainWindow::Start
 	m_pNNetCommands        = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
+	m_pAlignAnimation      = & alignAnimation;
 	m_scale.Initialize( & m_graphics, L"m" );
 
-	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION,     GetWindowHandle());
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION,     GetWindowHandle());
-	m_upAlignAnimation = make_unique<AlignAnimation>          (IDX_CONNECTOR_ANIMATION, GetWindowHandle(), modelReaderInterface, commands); 
+	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION, GetWindowHandle());
+	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION, GetWindowHandle());
+	
 }
 
 void MainWindow::Stop()
@@ -450,19 +450,6 @@ void MainWindow::doPaint( )
 		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 
-	//if ( line.IsNotNull() )
-	//	m_pNMRI->DrawLine( line, context );
-
-	//if ( orthoLine.IsNotNull() )
-	//{
-	//	MicroMeterLine orto
-	//	{
-	//		line.GetStartPoint(),
-	//		line.GetStartPoint() + line.OrthoVector() * 1000.0f
-	//	};
-	//	m_pNMRI->DrawLine( orto, context );
-	//}
-
 	DrawSensors( );
 	DrawBeacon( );
 }
@@ -494,7 +481,7 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		break;
 
 	case IDX_CONNECTOR_ANIMATION:
-		m_upAlignAnimation->AnimationStep();
+		m_pAlignAnimation->AnimationStep();
 		Notify( false );
 		if ( lParam )
 			SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 

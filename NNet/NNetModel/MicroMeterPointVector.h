@@ -20,28 +20,16 @@ public:
 
     unsigned int Size() const { return Cast2UnsignedInt(m_list.size()); }
 
-    MicroMeterPoint const GetPos(unsigned int const ui) const
+    MicroMeterPosDir const GetPosDir( unsigned int const ui) const
     {
         assert( ui < Size() );
-        return m_list[ui].GetPos();
+        return m_list[ui];
     }
 
-    Degrees const GetDir(unsigned int const ui) const
+    void SetPosDir( unsigned int const ui, MicroMeterPosDir const & posDir )
     {
         assert( ui < Size() );
-        return m_list[ui].GetDir();
-    }
-
-    void SetPosition( unsigned int const ui, MicroMeterPoint const & umPnt )
-    {
-        assert( ui < Size() );
-        m_list[ui].SetPos( umPnt );
-    }
-
-    void SetDirection( unsigned int const ui, Degrees const & degrees )
-    {
-        assert( ui < Size() );
-        m_list[ui].SetDir( degrees );
+        m_list[ui] = posDir;
     }
 
     void Clear()
@@ -54,9 +42,14 @@ public:
         m_list.resize( size );
     }
 
-    void Add( MicroMeterPoint const & pos, Degrees const dir )
+    void Add( MicroMeterPoint const & pos, Radian const dir )
     {
         m_list.push_back( MicroMeterPosDir(pos, dir) );
+    }
+
+    void Add( MicroMeterPosDir const & posDir )
+    {
+        m_list.push_back( posDir );
     }
 
     MicroMeterPointVector& operator+= (MicroMeterPointVector const & rhs) 

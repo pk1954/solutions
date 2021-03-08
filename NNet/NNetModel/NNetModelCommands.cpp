@@ -33,7 +33,7 @@
 #include "SelectShapeCommand.h"
 #include "SelectShapesInRectCommand.h"
 #include "SelectSubtreeCommand.h"
-#include "SetBaseKnotsCommand.h"
+#include "SetConnectionNeuronsCommand.h"
 #include "SetParameterCommand.h"
 #include "SetPulseRateCommand.h"
 #include "SetTriggerSoundCommand.h"
@@ -215,15 +215,15 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 	m_pCmdStack->PushCommand( make_unique<MoveSelectionCommand>( delta ) );
 }
 
-void NNetModelCommands::SetBaseKnots
+void NNetModelCommands::SetConnectionNeurons
 ( 
-	MicroMeterPointVector const & umPntVectorRun,
-	ShapePtrList<BaseKnot>      & shapes2Animate 
+	MicroMeterPointVector    const & umPntVectorRun,
+	ShapePtrList<ConnectionNeuron> & shapes2Animate 
 )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<SetBaseKnotsCommand>( umPntVectorRun, shapes2Animate ) );
+	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>( umPntVectorRun, shapes2Animate ) );
 }
 
 void NNetModelCommands::AddModel( )

@@ -4,23 +4,22 @@
 
 #pragma once
 
-#include "BaseKnot.h"
+#include "ConnectionNeuron.h"
 #include "MicroMeterPointVector.h"
 #include "win32_animation.h"
 
 using std::unique_ptr;
 
-class NNetModelReaderInterface;
+class NNetModelWriterInterface;
 class NNetModelCommands;
 
 class AlignAnimation
 {
 public:
-	AlignAnimation
+	void Initialize
 	( 
-		int  const,
 		HWND const,
-		NNetModelReaderInterface const &,
+		NNetModelWriterInterface &,
 		NNetModelCommands &
 	);
 
@@ -28,12 +27,22 @@ public:
 	void AnimationStep();
 
 private:
+
+	struct ALIGN_PNT
+	{
+		ConnectionNeuron * pConnectionNeuron;
+		MicroMeter         umDist;
+	};
+
+	using ALIGN_VECTOR = vector<ALIGN_PNT>;
+
 	using ConnectorAnimation = Animation<MicroMeterPointVector>;
 
-	NNetModelReaderInterface const * m_pNMRI         { nullptr };
-	NNetModelCommands              * m_pNNetCommands { nullptr };
-	unique_ptr<ConnectorAnimation>   m_upConnectorAnimation;
-	ShapePtrList<BaseKnot>           m_shapesAnimated;
+	NNetModelWriterInterface     * m_pNMWI         { nullptr };
+	NNetModelCommands            * m_pNNetCommands { nullptr };
+	unique_ptr<ConnectorAnimation> m_upConnectorAnimation;
+	ShapePtrList<ConnectionNeuron> m_shapesAnimated;
 
-	ShapeType const determineShapeType();
+	static MicroMeterLine const calcMaxDistLine(ALIGN_VECTOR const &);
+	static MicroMeterLine const prepareData(ShapePtrList<ConnectionNeuron> &, UPShapeList &);
 };

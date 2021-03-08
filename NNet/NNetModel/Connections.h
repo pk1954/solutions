@@ -45,7 +45,7 @@ public:
 
 	bool const HasIncoming() const { return ! m_incoming.IsEmpty(); }
 	bool const HasOutgoing() const { return ! m_outgoing.IsEmpty(); }
-	bool const HasConnection(Type const type) const
+	bool const HasConnection(Type const type = Type::all) const
 	{
 		if ( type == Type::in )
 			return HasIncoming();

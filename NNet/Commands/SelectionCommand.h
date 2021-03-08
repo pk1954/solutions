@@ -16,10 +16,7 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			nmwi.GetUPShapes().Apply2AllSelected<Shape>
-			( 
-				[&](Shape &s) { m_selectedShapes.Add(&s); } 
-			);
+			nmwi.GetUPShapes().Apply2AllSelected<Shape>( [&](Shape & s) { m_selectedShapes.Add(&s); } );
 			m_bInitialized = true;
 		}
 	}

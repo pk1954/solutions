@@ -74,8 +74,8 @@ public:
 		assert( m_Bottom >= m_Top );
 	}
 
-    bool IsEmpty   ( ) const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
-	bool IsNotEmpty( ) const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
+    bool IsEmpty   () const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
+	bool IsNotEmpty() const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
 
 	BASE_TYPE const GetLeft  () const { return m_Left;   };
     BASE_TYPE const GetTop   () const { return m_Top;    };
@@ -87,9 +87,9 @@ public:
 
     SIZE_TYPE const GetSize() const { return SIZE_TYPE( GetWidth(), GetHeight() ); }
 
-    POS_TYPE const GetStartPoint( ) const { return POS_TYPE( GetLeft(),  GetTop()  ); }
-    POS_TYPE const GetEndPoint  ( ) const { return POS_TYPE( GetRight(), GetBottom() ); }
-    POS_TYPE const GetCenter    ( ) const { return ( GetStartPoint() + GetEndPoint() ) / 2; }
+    POS_TYPE const GetStartPoint() const { return POS_TYPE(GetLeft (), GetTop   ()); }
+    POS_TYPE const GetEndPoint  () const { return POS_TYPE(GetRight(), GetBottom()); }
+    POS_TYPE const GetCenter    () const { return (GetStartPoint() + GetEndPoint()) / 2; }
 
 	bool Includes( POS_TYPE const pnt ) const
 	{

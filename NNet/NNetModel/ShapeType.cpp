@@ -10,9 +10,9 @@
 using std::unordered_map;
 using std::wstring;
 
-wchar_t const * ShapeType::GetName( ShapeType::Value const val )
+wstring const ShapeType::GetName( ShapeType::Value const val )
 {
-	static unordered_map < ShapeType::Value, wchar_t const * const > mapShape =
+	static unordered_map < ShapeType::Value, wstring const > mapShape =
 	{
 		{ ShapeType::Value::undefined,    L"undefined"    },
 		{ ShapeType::Value::connector,    L"connector"    },
@@ -22,13 +22,12 @@ wchar_t const * ShapeType::GetName( ShapeType::Value const val )
 		{ ShapeType::Value::pipe,         L"pipe"         },
 		{ ShapeType::Value::knot,         L"knot"         }
 	};				  
-
 	return mapShape.at( val );
 }
 
-ShapeType::Value const ShapeType::GetTypeFromName( wchar_t const * const name )
+ShapeType::Value const ShapeType::GetTypeFromName( wstring const & name )
 {
-	static unordered_map < wchar_t const *, ShapeType::Value > mapShape =
+	static unordered_map < wstring, ShapeType::Value > mapShape =
 	{
 		{ L"undefined",    ShapeType::Value::undefined    },
 		{ L"connector",    ShapeType::Value::connector    },
@@ -38,7 +37,6 @@ ShapeType::Value const ShapeType::GetTypeFromName( wchar_t const * const name )
 	    { L"pipe",         ShapeType::Value::pipe	      },
 	    { L"knot",         ShapeType::Value::knot         }
 	};				  
-
 	return mapShape.at( name );
 }
 

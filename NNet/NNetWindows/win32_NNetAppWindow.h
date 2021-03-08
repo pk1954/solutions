@@ -9,6 +9,7 @@
 #include "SCRIPT.H"
 #include "NNetModel.h"
 #include "Preferences.h"
+#include "AlignAnimation.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
 #include "NNetModelImporter.h"
@@ -157,6 +158,7 @@ private:
 	CommandStack             m_cmdStack               { };
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
+	AlignAnimation           m_alignAnimation         { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

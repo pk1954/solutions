@@ -36,9 +36,10 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsKnotType( ); }
 
-	mV GetNextOutput( ) const { return m_mVinputBuffer; }
+	mV const GetNextOutput( ) const { return m_mVinputBuffer; }
 
-	virtual bool CompStep    ( ) { return false; }
+	virtual bool const CompStep ( ) { return false; }
+
 	virtual void DrawExterior( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawInterior( DrawContext const &, tHighlightType const ) const;
 	virtual void Recalc      ( ) { };

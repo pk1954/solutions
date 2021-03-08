@@ -32,12 +32,12 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static unsigned long GetCounter  ( ) { return m_counter; }
-	static   void        ResetCounter( ) { m_counter = 0L; }
-	virtual  void        IncCounter  ( ) { ++ m_counter; }
-	virtual  void        DecCounter  ( ) { -- m_counter; }
+	static  unsigned long const GetCounter  ( ) { return m_counter; }
+	static  void                ResetCounter( ) { m_counter = 0L; }
+	virtual void                IncCounter  ( ) { ++ m_counter; }
+	virtual void                DecCounter  ( ) { -- m_counter; }
 
-	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
+	static bool const TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 
 	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing(); }
 	bool       const HasTriggerSound ( ) const { return m_triggerSound.m_bOn; }
@@ -45,21 +45,21 @@ public:
 
 	SoundDescr const SetTriggerSound( SoundDescr const & );
 
-	fMicroSecs   PulseWidth   () const;
-	fMicroSecs   RefractPeriod() const;
-	mV           Threshold    () const;
-	mV           PeakVoltage  () const;
+	fMicroSecs const PulseWidth   () const;
+	fMicroSecs const RefractPeriod() const;
+	mV         const Threshold    () const;
+	mV         const PeakVoltage  () const;
 
-	void         StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
-	void         Transform2OutputNeuron() { SetType(ShapeType::Value::outputNeuron); }
+	void StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
+	void Transform2OutputNeuron() { SetType(ShapeType::Value::outputNeuron); }
 
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const) const;
-	virtual void DrawInterior  ( DrawContext const &, tHighlightType const) const;
-	virtual void DrawNeuronText( DrawContext const & ) const;
-	virtual void Recalc( );
-	virtual void Clear( );
-	virtual bool CompStep( );
-	virtual mV   GetNextOutput( ) const;
+	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const) const;
+	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const) const;
+	virtual void       DrawNeuronText( DrawContext const & ) const;
+	virtual void       Recalc( );
+	virtual void       Clear( );
+	virtual bool const CompStep( );
+	virtual mV   const GetNextOutput( ) const;
 
 	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
 

@@ -32,7 +32,8 @@ public:
 		NNetController                 &,
 		NNetModelCommands              &,
 		Observable                     &,
-		Observable                     &
+		Observable                     &,
+		AlignAnimation                 &
 	);
 
 	void Stop( );
@@ -60,7 +61,7 @@ public:
 
 	void CenterModel( );
 	void CenterSelection( );
-	bool AlignSelection( ) { return m_upAlignAnimation->AlignSelection(); }
+	bool AlignSelection( ) { return m_pAlignAnimation->AlignSelection(); }
 	void MakeConnector( );
 
 	void       ShowArrows( bool const );
@@ -87,7 +88,6 @@ private:
 	MicroMeter                        m_arrowSizeTarget { STD_ARROW_SIZE };
 	MicroMeter                        m_arrowSize       { m_arrowSizeTarget };
 
-	unique_ptr<AlignAnimation>           m_upAlignAnimation;
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
@@ -97,7 +97,8 @@ private:
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pNNetCommands        { nullptr };
-	
+	AlignAnimation    * m_pAlignAnimation      { nullptr };
+
 	void setTargetShape     ( );
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );

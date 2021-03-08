@@ -233,6 +233,7 @@
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="BaseKnot.cpp" />
+    <ClCompile Include="ConnectionNeuron.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="ModelUtilities.cpp" />

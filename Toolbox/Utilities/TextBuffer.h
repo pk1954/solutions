@@ -10,6 +10,7 @@
 #include "PixelTypes.h"
 
 using std::wstring;
+using std::wostringstream;
 
 using TEXT_POSITION = NamedType< int, struct TEXT_POSITION_Parameter >;
 
@@ -57,7 +58,7 @@ public:
 		printString( data );
 	}
 
-	void printString     ( wstring const );
+	void printString     ( wstring const & );
     void printNumber     ( int const );
     void printNumber     ( unsigned int const );
 	void printNumber     ( long const );
@@ -76,7 +77,7 @@ private:
 	PIXEL const LEFT_MARGIN { 30_PIXEL };
 	PIXEL const TOP_MARGIN  {  5_PIXEL };
 
-    std::wostringstream m_wBuffer;
+    wostringstream m_wBuffer;
 
 	PixelRect m_pixRect; // text buffer area 
     PIXEL     m_pixHorizontalPos;  

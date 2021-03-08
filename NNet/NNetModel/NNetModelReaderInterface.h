@@ -66,8 +66,8 @@ public:
 	
 	void DrawLine( MicroMeterLine const &, DrawContext const & ) const;
 
-	template <Shape_t T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
-	template <Shape_t T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
+	template <Shape_t T> unsigned long const GetNrOf ()                 const { return T::GetCounter(); }
+	template <Shape_t T> bool          const IsOfType(ShapeId const id) const { return T::TypeFits(GetShapeType(id)); }
 
 private:
 	NNetModel const * m_pModel;

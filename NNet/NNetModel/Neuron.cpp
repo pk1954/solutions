@@ -98,22 +98,22 @@ SoundDescr const Neuron::SetTriggerSound( SoundDescr const & sound )
 	return oldValue;
 }
 
-fMicroSecs Neuron::PulseWidth() const 
+fMicroSecs const Neuron::PulseWidth() const 
 { 
 	return fMicroSecs( m_pParameters->GetParameterValue( ParameterType::Value::pulseWidth ) ); 
 }
 
-fMicroSecs Neuron::RefractPeriod() const 
+fMicroSecs const Neuron::RefractPeriod() const 
 { 
 	return fMicroSecs( m_pParameters->GetParameterValue( ParameterType::Value::refractPeriod ) ); 
 }
 
-mV Neuron::Threshold() const 
+mV const Neuron::Threshold() const 
 { 
 	return mV( m_pParameters->GetParameterValue( ParameterType::Value::threshold ) ); 
 }
 
-mV Neuron::PeakVoltage() const 
+mV const Neuron::PeakVoltage() const 
 { 
 	return mV( m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage ) ); 
 }
@@ -135,7 +135,7 @@ void Neuron::Clear( )
 	Shape::Clear( );
 }
 
-bool Neuron::CompStep( )
+bool const Neuron::CompStep( )
 {
 	bool bTrigger { (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) };
 
@@ -154,7 +154,7 @@ bool Neuron::CompStep( )
 	return m_bStopOnTrigger && bTrigger;
 }
 
-mV Neuron::GetNextOutput( ) const
+mV const Neuron::GetNextOutput( ) const
 {
 	return ( m_timeSinceLastPulse <= PulseWidth() )
 		   ? waveFunction( m_timeSinceLastPulse )

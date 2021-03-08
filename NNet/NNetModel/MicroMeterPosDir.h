@@ -22,22 +22,27 @@ public:
         m_dir()
     {}
 
-    MicroMeterPosDir( MicroMeterPoint const & pos, Degrees const & dir )
-        : m_pos(pos),
-          m_dir(dir)
+    MicroMeterPosDir( MicroMeterPoint const & pos, Radian const & dir )
+      : m_pos(pos),
+        m_dir(dir)
     {}
 
     MicroMeterPoint const GetPos() const { return m_pos; }
-    Degrees         const GetDir() const { return m_dir; }
+    Radian          const GetDir() const { return m_dir; }
 
     void SetPos(MicroMeterPoint const & pos) { m_pos = pos; }
-    void SetDir(Degrees         const & dir) { m_dir = dir; }
+    void SetDir(Radian          const & dir) { m_dir = dir; }
+
+    MicroMeterPosDir& operator+= (MicroMeterPoint const & pnt) 
+    { 
+        m_pos += pnt;
+        return * this; 
+    }
 
     MicroMeterPosDir& operator+= (MicroMeterPosDir const & rhs) 
     { 
         m_pos += rhs.m_pos;
         m_dir += rhs.m_dir;
-        Normalize( m_dir );
         return * this; 
     }
 
@@ -45,7 +50,6 @@ public:
     { 
         m_pos -= rhs.m_pos;
         m_dir -= rhs.m_dir;
-        Normalize( m_dir );
         return * this; 
     }
 
@@ -53,7 +57,6 @@ public:
     { 
         m_pos *= factor;
         m_dir *= factor;
-        Normalize( m_dir );
         return * this; 
     }
     
@@ -80,5 +83,5 @@ public:
 
 private:
     MicroMeterPoint m_pos;
-    Degrees         m_dir;
+    Radian          m_dir;
 };

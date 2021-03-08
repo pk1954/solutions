@@ -56,7 +56,7 @@ fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
 	return fOldValue;
 }
 
-bool InputNeuron::CompStep( )
+bool const InputNeuron::CompStep( )
 {
 	m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
 	bool bTrigger { m_timeSinceLastPulse >= m_pulseDuration };
@@ -83,7 +83,7 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umExtVector   { DetermineVector(Connections::Type::out) };
+	MicroMeterPoint const umExtVector   { GetDirVector() };
 	MicroMeterPoint const umCenter      { GetPosition() };
 	MicroMeterPoint const umOrthoVector { umExtVector.OrthoVector( GetExtension() ) * 0.7f };
 	MicroMeterPoint const umExtVectorVS { umExtVector * M * 0.5f };

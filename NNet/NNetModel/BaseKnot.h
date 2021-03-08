@@ -57,13 +57,16 @@ public:
 		return * this;
 	}
 
-	virtual void Dump         ( ) const;
-	virtual void CheckShape   ( ) const;
-	virtual void Prepare      ( );
- 	virtual mV   GetNextOutput( ) const = 0;
-	virtual void MoveShape    ( MicroMeterPoint const & );
-	virtual void SetPosition  ( MicroMeterPoint const & );
-	virtual bool IsInRect     ( MicroMeterRect  const & umRect ) const { return umRect.Includes( GetPosition() ); }
+	virtual void       Dump         ( ) const;
+	virtual void       CheckShape   ( ) const;
+	virtual void       Prepare      ( );
+ 	virtual mV   const GetNextOutput( ) const = 0;
+	virtual void       MoveShape    ( MicroMeterPoint const & );
+	virtual void       SetPosition  ( MicroMeterPoint const & );
+	virtual bool const IsInRect     ( MicroMeterRect  const & umRect ) const 
+	{ 
+		return umRect.Includes( GetPosition() ); 
+	}
 
 	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 

@@ -87,7 +87,7 @@
     <ClInclude Include="MoveBaseKnotCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
-    <ClInclude Include="SetBaseKnotsCommand.h" />
+    <ClInclude Include="SetConnectionNeuronsCommand.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovePipeCommand.h" />
     <ClInclude Include="MoveSelectionCommand.h" />

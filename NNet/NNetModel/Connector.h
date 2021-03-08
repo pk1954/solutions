@@ -46,14 +46,14 @@ public:
 	virtual void IncCounter( ) = 0;
 	virtual void DecCounter( ) = 0;
 
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const = 0;
-	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const = 0;
-	virtual void Prepare       ( )                               = 0;
-	virtual bool CompStep      ( )                               = 0;
-	virtual void Recalc        ( )                               = 0;
-	virtual void MoveShape     ( MicroMeterPoint const & )       = 0;
-	virtual bool IsInRect      ( MicroMeterRect  const & ) const = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
+	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const ) const = 0;
+	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const ) const = 0;
+	virtual void       Prepare       ( )                               = 0;
+	virtual bool const CompStep      ( )                               = 0;
+	virtual void       Recalc        ( )                               = 0;
+	virtual void       MoveShape     ( MicroMeterPoint const & )       = 0;
+	virtual bool const IsInRect      ( MicroMeterRect  const & ) const = 0;
+	virtual bool       IsPointInShape( MicroMeterPoint const & ) const = 0;
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 

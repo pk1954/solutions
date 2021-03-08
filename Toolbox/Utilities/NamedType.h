@@ -32,12 +32,12 @@ public:
     bool const operator>= (NamedType const other) const { return m_value >= other.GetValue(); }
     bool const operator>  (NamedType const other) const { return m_value >  other.GetValue(); }
 
-	bool IsZero       ( ) const { return m_value == BASE_TYPE(0); };
-	bool IsNotZero    ( ) const { return m_value != BASE_TYPE(0); };
-	bool IsPositive   ( ) const { return m_value >  BASE_TYPE(0); };
-	bool IsNotPositive( ) const { return m_value <= BASE_TYPE(0); };
-	bool IsNegative   ( ) const { return m_value <  BASE_TYPE(0); };
-	bool IsNotNegative( ) const { return m_value >= BASE_TYPE(0); };
+	bool const IsZero       () const { return m_value == BASE_TYPE(0); };
+	bool const IsNotZero    () const { return m_value != BASE_TYPE(0); };
+	bool const IsPositive   () const { return m_value >  BASE_TYPE(0); };
+	bool const IsNotPositive() const { return m_value <= BASE_TYPE(0); };
+	bool const IsNegative   () const { return m_value <  BASE_TYPE(0); };
+	bool const IsNotNegative() const { return m_value >= BASE_TYPE(0); };
 
 	NamedType& operator+= (NamedType const other) { m_value += other.GetValue(); return * this; }
 	NamedType& operator-= (NamedType const other) { m_value -= other.GetValue(); return * this; }

@@ -13,7 +13,7 @@
 template <typename BASE_TYPE> 
 class LineType
 {
-    using POS_TYPE  = PosType<BASE_TYPE>;
+    using POS_TYPE = PosType<BASE_TYPE>;
 
 public:
     LineType( POS_TYPE const & p1, POS_TYPE const & p2 )
@@ -66,6 +66,7 @@ public:
 
     POS_TYPE const GetStartPoint() const { return m_p1; }
     POS_TYPE const GetEndPoint  () const { return m_p2; }
+    POS_TYPE const GetCenter    () const { return (m_p1 + m_p2) * 0.5f; }
 
     POS_TYPE const OrthoVector() const
     {

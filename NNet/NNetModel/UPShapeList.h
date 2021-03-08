@@ -40,24 +40,28 @@ public:
 	void          Clear         ( )                        { m_list.clear( ); }
 	void          Increase      ( long    const nr )       { m_list.resize( m_list.size() + nr ); }
 				    
-	void            SetErrorHandler  ( ShapeErrorHandler * const );
-	void            SelectAllShapes  ( tBoolOp const = tBoolOp::opTrue );
-	void            DeselectAllShapes() { SelectAllShapes(tBoolOp::opFalse); }
-	UPShape         ExtractShape     ( ShapeId const );	
-	Shape * const   ReplaceShape     ( ShapeId const, UPShape );	
-	void            SetShape2Slot    ( ShapeId const, UPShape );	 // only for special situations
-	ShapeId const   Push             ( UPShape );
-	void            CheckShapeList   ( )                                                         const;
-	void            Dump             ( )                                                         const;
-	void            LinkShape        ( Shape const &, function<Shape* (Shape const *)> const & ) const;
-	bool    const   AnyShapesSelected( )                                                         const;
-	void            CallErrorHandler ( ShapeId const )                                           const;
-	ShapeId const   FindShapeAt      ( MicroMeterPoint const, ShapeCrit const & )                const;
-	bool    const   Apply2AllB       (                        ShapeCrit const & )                const;
-	void            Apply2All        ( function<void(Shape const &)> const & )                   const;
-	void            Apply2All        ( function<void(Shape       &)> const & );
-	vector<ShapeId> Append           ( UPShapeList & );
-	UPShapeList     ExtractShapes    ( vector<ShapeId> );
+	void            SetErrorHandler   ( ShapeErrorHandler * const );
+	void            SelectAllShapes   ( tBoolOp const = tBoolOp::opTrue );
+	void            DeselectAllShapes () { SelectAllShapes(tBoolOp::opFalse); }
+	UPShape         ExtractShape      ( ShapeId const );	
+	Shape   * const ReplaceShape      ( ShapeId const, UPShape );	
+	void            SetShape2Slot     ( ShapeId const, UPShape );	 // only for special situations
+	ShapeId   const Push              ( UPShape );
+	ShapeType const DetermineShapeType( )                                                         const;
+	void            CheckShapeList    ( )                                                         const;
+	void            Dump              ( )                                                         const;
+	void            LinkShape         ( Shape const &, function<Shape* (Shape const *)> const & ) const;
+	bool      const AnyShapesSelected ( )                                                         const;
+	void            CallErrorHandler  ( ShapeId const )                                           const;
+	ShapeId   const FindShapeAt       ( MicroMeterPoint const, ShapeCrit const & )                const;
+	bool      const Apply2AllB        (                        ShapeCrit const & )                const;
+	void            Apply2All         ( ShapeFuncC const & )                                      const;
+	void            Apply2All         ( ShapeFunc  const & );
+	void            Apply2AllSelected ( ShapeType const, ShapeFuncC const & )                     const;
+	void            Apply2AllSelected ( ShapeType const, ShapeFunc  const & );
+
+	vector<ShapeId> Append            ( UPShapeList & );
+	UPShapeList     ExtractShapes     ( vector<ShapeId> );
 
 	enum class SelMode { allShapes,	selectedShapes };
 	MicroMeterRect const CalcEnclosingRect( SelMode const = SelMode::allShapes ) const;
@@ -94,25 +98,25 @@ public:
 	template <Shape_t T>    // const version
 	void Apply2AllSelected( function<void(T const &)> const & func ) const
 	{
-		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
+		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) func(s); } } );
 	}
 
 	template <Shape_t T>    // non const version
 	void Apply2AllSelected( function<void(T &)> const & func ) 
 	{
-		Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
+		Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) func(s); } } );
 	}
 
 	template <Shape_t T>   // const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
 	{
-		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) func(s); } );
 	}
 
 	template <Shape_t T>   // non const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
 	{
-		Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+		Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) func(s); } );
 	}
 
 	template <Shape_t T>
@@ -135,14 +139,7 @@ public:
 	int CountInSelection( ShapeType const shapeType ) const
 	{
 		int iNr { 0 };
-		Apply2AllSelected<Shape>
-		( 
-			[&](Shape const & s)
-			{ 
-				if ( s.GetShapeType() == shapeType )
-					++iNr;
-			} 
-		);
+		Apply2AllSelected( shapeType, [&](auto & s) { ++iNr; } );
 		return iNr;
 	}
 

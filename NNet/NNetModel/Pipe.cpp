@@ -110,7 +110,7 @@ void Pipe::MoveShape( MicroMeterPoint const & delta )
 // It doesn't calculate exactly if the pipe intersects umRect, but eliminites a lot of cases with a simple and fast check
 // The rest is left over for the clipping algorithm of the graphics subsystem
 
-bool Pipe::IsInRect( MicroMeterRect const & umRect ) const 
+bool const Pipe::IsInRect( MicroMeterRect const & umRect ) const 
 { 
 	if ( (m_pKnotStart->GetPosition().GetX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosition().GetX() < umRect.GetLeft()) )
 		return false;
@@ -237,7 +237,7 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type 
 	}
 }
 
-mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
+mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const
 {
 	mV mVresult { 0._mV };
 	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };

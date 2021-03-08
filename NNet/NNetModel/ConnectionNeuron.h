@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "MicroMeterPosDir.h"
 #include "Neuron.h"
 
 class ConnectionNeuron : public Neuron
@@ -14,26 +15,36 @@ public:
 		: Neuron( upCenter, type )
 	{ }
 
-protected:
-	void SetDirection( MicroMeterPoint const& umPntDir )
+	MicroMeterPoint const GetDirVector() const
 	{
-		m_umVector = umPntDir;
+		if ( m_umVector.IsNull() )
+			SetDirection( determineVector() );
+		return m_umVector;
 	}
 
-	MicroMeterPoint const DetermineVector(Connections::Type const conType) const
+	MicroMeterPosDir const GetPosDir( ) const
 	{
-		MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };
+		return MicroMeterPosDir( GetPosition(), Vector2Radian(GetDirVector()) );
+	}
 
-		if (m_umVector.IsNotNull())
-			umVector = m_umVector;
-		else if ( m_connections.HasConnection(conType) )
-			m_connections.Apply2AllPipes( conType, [&](Pipe & pipe) { umVector += pipe.GetVector(); } );
-		else
-			umVector = { 0._MicroMeter, 1._MicroMeter };
+	void SetPosDir( MicroMeterPosDir const posDir )
+	{
+		SetDirection( posDir.GetDir() );
+		SetPosition ( posDir.GetPos() );
+	}
 
-		return Normalize(umVector) * GetExtension().GetValue();
+	void SetDirection( MicroMeterPoint const umPnt ) const 
+	{
+		m_umVector = Normalize(umPnt) * GetExtension().GetValue();
+	}
+
+	void SetDirection( Radian const rad )
+	{
+		SetDirection(Radian2Vector( rad ));
 	}
 
 private:
-	MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of ConnectionNeuron
+	MicroMeterPoint const determineVector() const;
+
+	mutable MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of ConnectionNeuron
 };

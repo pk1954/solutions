@@ -4,6 +4,8 @@
 
 #pragma once
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <limits>
 #include <chrono>
 #include "util.h"
@@ -119,7 +121,7 @@ inline static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   //
 using MicroMeterRect     = RectType< MicroMeter >;
 using MicroMeterRectSize = SizeType < MicroMeter >;
 
-MicroMeterPoint const MicroMeterRect::GetCenter( ) const { return ( GetStartPoint() + GetEndPoint() ) * 0.5f; }
+MicroMeterPoint const MicroMeterRect::GetCenter() const { return (GetStartPoint() + GetEndPoint()) * 0.5f; }
 
 ////////////// MicroMeterLine          //////////////////////////
 
@@ -144,18 +146,33 @@ static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const tim
 	return MicroMeter( speed.GetValue() * time.GetValue() );
 }
 
-////////////// degree /////////////////////////////////////////
+////////////// Radian/Degrees /////////////////////////////////////////
 
+using Radian  = NamedType<float, struct radian_Parameter >;
 using Degrees = NamedType<float, struct degrees_Parameter >;
 
-constexpr const Degrees operator"" _Degrees( const long double d )
+constexpr const Radian  operator"" _Radian (const long double r) { return Radian (Cast2Float(r)); }
+constexpr const Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
+
+float const RADIAN_FACTOR { 180.0f/static_cast<float>(M_PI) };
+
+static Radian  const Degrees2Radian(Degrees const d) { return Radian (d.GetValue() / RADIAN_FACTOR); }
+static Degrees const Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
+
+static void Normalize(Radian  & r) { r = Radian ( fmod(r.GetValue(), RADIAN_FACTOR * 2.0f ) ); }
+static void Normalize(Degrees & d) { d = Degrees( fmod(d.GetValue(), 360.0f ) ); }
+
+static MicroMeter const Cos(Radian const r) { return MicroMeter( cos(r.GetValue()) ); } 
+static MicroMeter const Sin(Radian const r) { return MicroMeter( sin(r.GetValue()) ); } 
+
+static MicroMeterPoint const Radian2Vector(Radian const r)
 {
-	return Degrees( Cast2Float( d ) );
+	return MicroMeterPoint(Cos(r), Sin(r));
 }
 
-static void Normalize( Degrees & d )
+static Radian const Vector2Radian( MicroMeterPoint const & umPnt )
 {
-	d = Degrees( fmod(d.GetValue(), 360.0f ) );
+	return Radian( atan(umPnt.GetXvalue() / umPnt.GetYvalue()) );
 }
 
 ////////////// Formatting /////////////////////////////////////

@@ -11,6 +11,7 @@
 
 using std::function;
 using std::wostream;
+using std::wstring;
 using std::size_t;
 
 class ShapeType
@@ -39,12 +40,12 @@ public:
 		:	m_value( val )
 	{}
 
-	bool operator==( ShapeType const & rhs ) const
+	bool const operator==( ShapeType const & rhs ) const
 	{
 		return m_value == rhs.m_value;
 	}
 
-	bool operator!=(ShapeType const & rhs) const
+	bool const operator!=(ShapeType const & rhs) const
 	{
 		return m_value != rhs.m_value;
 	}
@@ -60,31 +61,31 @@ public:
 			func( static_cast<Value>( i ) );
 	}
 
-	static wchar_t          const * GetName( ShapeType::Value const );
-	static ShapeType::Value const   GetTypeFromName( wchar_t const * const );
+	static wstring          const GetName( ShapeType::Value const );
+	static ShapeType::Value const GetTypeFromName( wstring const & );
 
-	bool IsPipeType        () const { return m_value == Value::pipe;         }
-	bool IsDefinedType     () const { return m_value != Value::undefined;    }
-	bool IsUndefinedType   () const { return m_value == Value::undefined;    }
-	bool IsKnotType        () const { return m_value == Value::knot;         }
-	bool IsNeuronType      () const { return m_value == Value::neuron;       }
-	bool IsInputNeuronType () const { return m_value == Value::inputNeuron;  }
-	bool IsOutputNeuronType() const { return m_value == Value::outputNeuron; }
-	bool IsConnectorType   () const { return m_value == Value::connector;    }
+	bool const IsPipeType        () const { return m_value == Value::pipe;         }
+	bool const IsDefinedType     () const { return m_value != Value::undefined;    }
+	bool const IsUndefinedType   () const { return m_value == Value::undefined;    }
+	bool const IsKnotType        () const { return m_value == Value::knot;         }
+	bool const IsNeuronType      () const { return m_value == Value::neuron;       }
+	bool const IsInputNeuronType () const { return m_value == Value::inputNeuron;  }
+	bool const IsOutputNeuronType() const { return m_value == Value::outputNeuron; }
+	bool const IsConnectorType   () const { return m_value == Value::connector;    }
 
-	bool IsAnyNeuronType() const
+	bool const IsAnyNeuronType() const
 	{
 		return (m_value == Value::neuron)      || 
 			   (m_value == Value::inputNeuron) || 
 			   (m_value == Value::outputNeuron);
 	}
 
-	bool IsBaseKnotType() const
+	bool const IsBaseKnotType() const
 	{
 		return IsAnyNeuronType() || (m_value == Value::knot);
 	}
 
-	Value GetValue() const { return m_value; }
+	Value const GetValue() const { return m_value; }
 
 	friend wostream & operator<< ( wostream &, ShapeType const & shapeType );
 

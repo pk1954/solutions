@@ -34,9 +34,9 @@ public:
 		m_mVinputBuffer = m_mvFactor * m_timeSinceLastPulse.GetValue();
 	}
 
-	virtual bool CompStep( );
-	virtual void DrawNeuronText( DrawContext const & ) const;
-	virtual void Recalc( );   // Recalculate precalculated values
+	virtual bool const CompStep( );
+	virtual void       DrawNeuronText( DrawContext const & ) const;
+	virtual void       Recalc( );   // Recalculate precalculated values
 
 	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
 	fHertz const SetPulseFrequency( fHertz const );

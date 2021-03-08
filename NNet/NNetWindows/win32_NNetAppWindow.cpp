@@ -54,6 +54,8 @@
 
 using namespace std::literals::chrono_literals;
 
+using std::unique_ptr;
+using std::make_unique;
 using std::wostringstream;
 using std::wstring;
 using std::wcout;
@@ -154,7 +156,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_NNetController,
 		m_modelCommands,
 		m_cursorPosObservable,
-		m_coordObservable
+		m_coordObservable,
+		m_alignAnimation
 	);
 
 	m_miniNNetWindow.Start
@@ -168,6 +171,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_NNetController
 	);
 
+	m_alignAnimation.Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );

@@ -39,7 +39,7 @@ void TextBuffer::printBuffer( )
     m_pixHorizontalPos += m_pixHorRaster;
 };
 
-void TextBuffer::printString( wstring const data )
+void TextBuffer::printString( wstring const & data )
 { 
 	m_wBuffer << data;
 	printBuffer( );

@@ -3,113 +3,109 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "NNetModelReaderInterface.h"
+#include "Resource.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
-#include "Neuron.h"
 #include "AlignAnimation.h"
 
-AlignAnimation::AlignAnimation
+void AlignAnimation::Initialize
 ( 
-	int                      const   idMsg,
-	HWND                     const   hwnd,
-	NNetModelReaderInterface const & nmri,
-	NNetModelCommands              & commands
+	HWND               const   hwnd,
+	NNetModelWriterInterface & nmwi,
+	NNetModelCommands        & commands
 )
-  :	m_pNMRI(&nmri),
-	m_pNNetCommands(&commands)
 {
-	m_upConnectorAnimation = make_unique<ConnectorAnimation>(idMsg, hwnd); 
+	m_pNMWI         = & nmwi;
+	m_pNNetCommands = & commands;
+	m_upConnectorAnimation = make_unique<ConnectorAnimation>(IDX_CONNECTOR_ANIMATION, hwnd); 
 }
 
-ShapeType const AlignAnimation::determineShapeType()
+MicroMeterLine const AlignAnimation::calcMaxDistLine(ALIGN_VECTOR const & points)
 {
-	int iNrOfInputNeurons  { m_pNMRI->GetUPShapes().CountInSelection( ShapeType::Value::inputNeuron  ) };
-	int iNrOfOutputNeurons { m_pNMRI->GetUPShapes().CountInSelection( ShapeType::Value::outputNeuron ) };
-	return ((iNrOfInputNeurons == 0) && (iNrOfOutputNeurons == 0))
-           ? ShapeType::Value::undefined
-		   : (iNrOfInputNeurons > iNrOfOutputNeurons) 
-			  ? ShapeType::Value::inputNeuron 
-			  : ShapeType::Value::outputNeuron;
+	ConnectionNeuron const * pStart { nullptr };
+	ConnectionNeuron const * pEnd   { nullptr };
+
+	MicroMeter maxDist { 0.0_MicroMeter };   	// find 2 ConnectionNeurons (START/END) with maximum distance
+
+	for ( auto & it1 : points )
+	for ( auto & it2 : points )
+	{
+		MicroMeter dist { Distance( it1.pConnectionNeuron->GetPosition(), it2.pConnectionNeuron->GetPosition() ) };
+		if ( dist > maxDist )
+		{
+			maxDist = dist;
+			pStart = it1.pConnectionNeuron;
+			pEnd   = it2.pConnectionNeuron;
+		}
+	}
+
+	return MicroMeterLine( pStart->GetPosition(), pEnd->GetPosition());
+}
+
+MicroMeterLine const AlignAnimation::prepareData
+( 
+	ShapePtrList<ConnectionNeuron> & shapesAnimated,
+	UPShapeList                    & shapes
+)
+{
+	ShapeType const shapeType { shapes.DetermineShapeType() };
+
+	if ( shapeType.IsUndefinedType() )
+		return MicroMeterLine::NULL_VAL();
+
+	ALIGN_VECTOR points;
+
+	shapes.Apply2AllSelected
+	( 
+		shapeType,
+		[&](Shape & s)
+		{ 
+			points.push_back( ALIGN_PNT { static_cast<ConnectionNeuron *>(&s) } );
+		} 
+	);
+
+	MicroMeterLine line      { calcMaxDistLine( points ) };
+	MicroMeterLine orthoLine { line.OrthoLine() };
+
+	for ( auto & it : points )
+		it.umDist = PointToLine( orthoLine, it.pConnectionNeuron->GetPosition() );
+
+	// sort ConnectionNeurons according to position related to ortholine
+
+	sort( points.begin(), points.end(), [](auto & p1, auto & p2) { return p1.umDist < p2.umDist; } );
+
+	shapesAnimated.Clear();
+	for ( auto & it : points )
+		shapesAnimated.Add( it.pConnectionNeuron );
+
+	return line;
 }
 
 bool AlignAnimation::AlignSelection( )
 {
-	struct AL_PNT
-	{
-		BaseKnot * pBaseKnot;
-		MicroMeter umDist;
-	};
-
-	vector<AL_PNT> points;
-	ShapeType const shapeType { determineShapeType() };
-
-	if ( shapeType.IsUndefinedType() )
-		return false;
-
-	m_pNMRI->GetUPShapes().Apply2AllSelected<BaseKnot>
-	( 
-		[&](BaseKnot const & b)
-		{ 
-			if ( b.GetShapeType() == shapeType )  // TODO: const_cast find better solution
-			{
-				BaseKnot * pBaseKnot { const_cast<BaseKnot *>(& b) };
-				points.push_back( AL_PNT{ pBaseKnot } );
-			}
-		} 
-	);
-
-	BaseKnot const * pStart { nullptr };
-	BaseKnot const * pEnd   { nullptr };
-
-	// find 2 baseknots (START/END) with maximum distance
-
-	MicroMeter maxDist { 0.0_MicroMeter };
-	for ( auto & it1 : points )
-		for ( auto & it2 : points )
-		{
-			MicroMeter dist { Distance( it1.pBaseKnot->GetPosition(), it2.pBaseKnot->GetPosition() ) };
-			if ( dist > maxDist )
-			{
-				maxDist = dist;
-				pStart = it1.pBaseKnot;
-				pEnd   = it2.pBaseKnot;
-			}
-		}
-
-	// for every other baseknot compute position on line START to END
-
-	MicroMeterLine line      { pStart->GetPosition(), pEnd->GetPosition() };
-	MicroMeterLine orthoLine { line.OrthoLine() };
-	for ( auto & it : points )
-		it.umDist = PointToLine( orthoLine, it.pBaseKnot->GetPosition() );
-
-	// sort baseknots according to position
-
-	sort( points.begin(), points.end(), [](auto & p1, auto & p2){ return p1.umDist < p2.umDist; } );
+	MicroMeterLine line { prepareData( m_shapesAnimated, m_pNMWI->GetUPShapes() ) };
 
 	// compute tightly packed positions
 
-	float           fNrOfPoints       { Cast2Float(points.size()) };
-	MicroMeter      umOriginLength    { line.Length() };
-	MicroMeter      umTargetLength    { NEURON_RADIUS * 2.0f * fNrOfPoints };
-	MicroMeterPoint umPntPackedSingle { line.GetVector() * (umTargetLength / umOriginLength) / fNrOfPoints };
-	MicroMeterPoint umPntTargetCenter { (pEnd->GetPosition() + pStart->GetPosition()) * 0.5f };
-	MicroMeterPoint umPntTargetStart  { umPntTargetCenter - umPntPackedSingle * fNrOfPoints * 0.5f };
-	MicroMeterPoint umPntTargetEnd    { umPntTargetCenter + umPntPackedSingle * fNrOfPoints * 0.5f };
+	MicroMeterPoint umPntPackedSingle { line.GetVector() * (NEURON_RADIUS * 2.0f / line.Length()) };
+	MicroMeterPoint umPntTargetStart  { line.GetCenter() - umPntPackedSingle * Cast2Float(m_shapesAnimated.Size()) * 0.5f };
 
 	// fill animation vectors
 
 	MicroMeterPointVector umPntVectorActual;
 	MicroMeterPointVector umPntVectorTarget;
 
-	m_shapesAnimated.Clear();
+	MicroMeterPosDir posDirTarget { umPntTargetStart, -Vector2Radian(line.OrthoLine().GetVector()) };
 
-	for ( int i = 0; i < points.size(); ++i )
-	{
-		umPntVectorTarget.Add( umPntTargetStart + umPntPackedSingle * static_cast<float>(i), Degrees::ZERO_VAL() );
-		umPntVectorActual.Add( points[i].pBaseKnot->GetPosition(), Degrees::ZERO_VAL() );
-		m_shapesAnimated.Add( points[i].pBaseKnot );
-	}
+	m_shapesAnimated.Apply2All
+	(	
+		[&](ConnectionNeuron const & c)	
+		{ 
+			umPntVectorActual.Add( c.GetPosDir() );
+			umPntVectorTarget.Add( posDirTarget );
+			posDirTarget += umPntPackedSingle;
+		}	
+	);
 
 	m_upConnectorAnimation->Start( umPntVectorActual, umPntVectorTarget );
 	return true;
@@ -117,7 +113,7 @@ bool AlignAnimation::AlignSelection( )
 
 void AlignAnimation::AnimationStep( )
 {
-	m_pNNetCommands->SetBaseKnots
+	m_pNNetCommands->SetConnectionNeurons
 	(
 		m_upConnectorAnimation->GetActual(), 
 		m_shapesAnimated

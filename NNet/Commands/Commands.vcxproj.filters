@@ -111,13 +111,13 @@
     <ClInclude Include="AnalyzeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetBaseKnotsCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RestrictSelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NewNeuronCommandT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetConnectionNeuronsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

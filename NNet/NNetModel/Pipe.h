@@ -55,12 +55,13 @@ public:
 
 	size_t GetNrOfSegments( ) const { return m_potential.size(); }
 
-	virtual bool IsInRect( MicroMeterRect const & ) const;
+	virtual bool const IsInRect( MicroMeterRect const & ) const;
 
 	virtual void CheckShape( ) const;
 	virtual void Prepare( );
 	virtual void MoveShape( MicroMeterPoint const & );
-	virtual bool CompStep( )
+
+	virtual bool const CompStep( )
 	{
 		m_potential[ m_potIndex ] = m_mVinputBuffer;
 		if ( m_potIndex == 0 )
@@ -70,8 +71,8 @@ public:
 		return false;
 	}
 
-	mV GetNextOutput( ) const { return m_potential[ m_potIndex ]; }
-	mV GetVoltage( MicroMeterPoint const & ) const;
+	mV const GetNextOutput( ) const { return m_potential[ m_potIndex ]; }
+	mV const GetVoltage( MicroMeterPoint const & ) const;
 
 	virtual void DrawArrows    ( DrawContext const &, MicroMeter     const ) const;
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
