@@ -32,13 +32,8 @@ public:
 
 	virtual void Dump() const;
 
-	static unsigned long GetCounter  ( ) { return m_counter; }
-	static   void        ResetCounter( ) { m_counter = 0L; }
-
-	virtual  void        IncCounter  ( ) { ++ m_counter; }
-	virtual  void        DecCounter  ( ) { -- m_counter; }
-
-	static bool TypeFits( ShapeType const type ) { return type.IsPipeType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsPipeType( ); }
+	static ShapeType const GetShapeType() { return ShapeType::Value::pipe; }
 
 	void SetStartKnot( BaseKnot * const );
 	void SetEndKnot  ( BaseKnot * const );
@@ -92,8 +87,6 @@ public:
 
 private:
 	
-	inline static unsigned long m_counter { 0L };
-
 	typedef vector<mV> tPotentialVector;
 
 	BaseKnot       * m_pKnotStart { nullptr };

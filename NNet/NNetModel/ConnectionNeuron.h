@@ -11,15 +11,13 @@
 class ConnectionNeuron : public Neuron
 {
 public:
-	ConnectionNeuron( MicroMeterPoint const upCenter, ShapeType const type )
+	ConnectionNeuron( MicroMeterPoint const & upCenter, ShapeType const type )
 		: Neuron( upCenter, type )
-	{ }
+	{}
 
 	MicroMeterPoint const GetDirVector() const
 	{
-		if ( m_umVector.IsNull() )
-			SetDirection( determineVector() );
-		return m_umVector;
+		return m_umVector.IsNull() ? determineVector() : m_umVector;
 	}
 
 	MicroMeterPosDir const GetPosDir( ) const
@@ -33,7 +31,7 @@ public:
 		SetPosition ( posDir.GetPos() );
 	}
 
-	void SetDirection( MicroMeterPoint const umPnt ) const 
+	void SetDirection( MicroMeterPoint const umPnt ) 
 	{
 		m_umVector = Normalize(umPnt) * GetExtension().GetValue();
 	}
@@ -43,8 +41,13 @@ public:
 		SetDirection(Radian2Vector( rad ));
 	}
 
+	void UnlockDirection() 
+	{
+		m_umVector = MicroMeterPoint::NULL_VAL();
+	}
+
 private:
 	MicroMeterPoint const determineVector() const;
 
-	mutable MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of ConnectionNeuron
+	MicroMeterPoint m_umVector { MicroMeterPoint::NULL_VAL() };  // direction of ConnectionNeuron
 };

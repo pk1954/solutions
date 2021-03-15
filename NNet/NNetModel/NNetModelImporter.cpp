@@ -277,6 +277,24 @@ void NNetModelImporter::Initialize( Script * const pScript )
     );
 }
 
+void NNetModelImporter::fixOutputNeurons()
+{
+    m_ImportedNMWI.GetUPShapes().Apply2All<Neuron>  
+    (
+        [&](Neuron & neuron)
+        {
+            if ( ! neuron.m_connections.HasOutgoing() )
+            {
+                m_ImportedNMWI.GetUPShapes().ReplaceShape
+                ( 
+                    neuron.GetId(), 
+                    move(make_unique<OutputNeuron>(neuron)) // special constructor! 
+                );
+            }
+        }
+    );
+}
+
 void NNetModelImporter::import( ) 
 {
     ImportTermination::Result res;
@@ -287,14 +305,7 @@ void NNetModelImporter::import( )
         m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
         m_ImportedNMWI.DescriptionComplete( );
         res = ImportTermination::Result::ok;
-        m_ImportedNMWI.GetUPShapes().Apply2All<Neuron>
-        (
-            [](Neuron & neuron)
-            {
-                if ( ! neuron.m_connections.HasOutgoing() )
-                    neuron.Transform2OutputNeuron();
-            }
-        );
+        fixOutputNeurons();  // legacy: in old models no explicit OutputNeurons
     }
     else
     {

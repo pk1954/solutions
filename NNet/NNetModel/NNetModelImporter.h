@@ -60,9 +60,10 @@ private:
 	unique_ptr<NNetModel>         m_upImportedModel;
 	NNetModelWriterInterface      m_ImportedNMWI;
 	wstring                       m_wstrFile2Read;
-	Script                      * m_pScript       { nullptr };
+	Script                      * m_pScript { nullptr };
 
 	void import( );
+	void fixOutputNeurons();
 
 	friend static unsigned int __stdcall importModelThreadProc( void * );
 

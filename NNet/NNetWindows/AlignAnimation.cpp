@@ -87,8 +87,10 @@ bool AlignAnimation::AlignSelection( )
 
 	// compute tightly packed positions
 
-	MicroMeterPoint umPntPackedSingle { line.GetVector() * (NEURON_RADIUS * 2.0f / line.Length()) };
-	MicroMeterPoint umPntTargetStart  { line.GetCenter() - umPntPackedSingle * Cast2Float(m_shapesAnimated.Size()) * 0.5f };
+//	MicroMeterPoint umPntPackedSingle { line.GetVector() * (NEURON_RADIUS * 2.0f / line.Length()) };
+//	MicroMeterPoint umPntTargetStart  { line.GetCenter() - umPntPackedSingle * Cast2Float(m_shapesAnimated.Size()) * 0.5f };
+	MicroMeterPoint umPntPackedSingle { line.GetVector() / Cast2Float(m_shapesAnimated.Size()-1) };
+	MicroMeterPoint umPntTargetStart  { line.GetCenter() - line.GetVector() * 0.5f };
 
 	// fill animation vectors
 
@@ -103,6 +105,7 @@ bool AlignAnimation::AlignSelection( )
 		{ 
 			umPntVectorActual.Add( c.GetPosDir() );
 			umPntVectorTarget.Add( posDirTarget );
+//			umPntVectorTarget.Add( MicroMeterPosDir(posDirTarget.GetPos(), Vector2Radian(c.GetDirVector())) );
 			posDirTarget += umPntPackedSingle;
 		}	
 	);

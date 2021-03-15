@@ -102,11 +102,6 @@ void NNetModel::ResetModel( )
 	m_Shapes.Clear();
 	m_monitorData.Reset();
 	m_description.ClearDescription();
-	Knot        ::ResetCounter();
-	Neuron      ::ResetCounter();
-	InputNeuron ::ResetCounter();
-	OutputNeuron::ResetCounter();
-	Pipe        ::ResetCounter();
 	SetSimulationTime();
 }
 

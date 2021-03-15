@@ -30,8 +30,8 @@ static void CALLBACK BeepFunc
 	Neuron::m_pSound->Beep( pNeuron->GetTriggerSound() );
 }
 
-Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
-  : BaseKnot( upCenter, type, NEURON_RADIUS )
+Neuron::Neuron( MicroMeterPoint const & upCenter, ShapeType const type )
+	: BaseKnot( upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
 }
@@ -54,8 +54,8 @@ void Neuron::init( const Neuron & rhs )
 		      : nullptr;
 }
 
-Neuron::Neuron( Neuron const & src ) :  // copy constructor
-	BaseKnot( src )
+Neuron::Neuron( Neuron const & src )  // copy constructor
+   : BaseKnot( src )
 { 
 	init( src );
 }
@@ -164,7 +164,7 @@ mV const Neuron::GetNextOutput( ) const
 void const Neuron::DisplayText( DrawContext const & context, MicroMeterRect const & umRect, wstring const text ) const
 {
 	MicroMeterPoint const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
-	context.DisplayText( umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow );
+//	context.DisplayText( umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow );
 }
 
 void Neuron::DrawNeuronText( DrawContext const & context ) const

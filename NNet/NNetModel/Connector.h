@@ -18,7 +18,8 @@ class Connector : public Shape
 {
 public:
 
-	static bool TypeFits( ShapeType const type ) { return type.IsConnectorType(); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsConnectorType(); }
+	static ShapeType const GetShapeType() { return ShapeType::Value::connector; }
 
 	Connector() {};
 	virtual ~Connector() { }
@@ -42,9 +43,6 @@ public:
 	{
 		return m_list == rhs.m_list;
 	}
-
-	virtual void IncCounter( ) = 0;
-	virtual void DecCounter( ) = 0;
 
 	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const ) const = 0;
 	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const ) const = 0;

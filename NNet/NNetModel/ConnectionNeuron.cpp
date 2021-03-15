@@ -7,15 +7,15 @@
 
 MicroMeterPoint const ConnectionNeuron::determineVector() const
 {
-	MicroMeterPoint umVector { 0._MicroMeter, 1._MicroMeter };
+	MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };
 
-	if ( m_connections.HasConnection() )
-	{
-		Radian rad { 0._Radian };
-		m_connections.Apply2AllConnectedPipes( [&](Pipe & pipe) { rad += Vector2Radian(pipe.GetVector()); } );
-		rad /= Cast2Float(m_connections.GetNrOfConnections());
-		umVector = Radian2Vector(rad);
-	}
+	m_connections.Apply2AllConnectedPipes
+	( 
+		[&](Pipe & pipe) { umVector += Normalize(pipe.GetVector());	} 
+	);
 
-	return umVector;
+	if ( umVector.IsZero() )
+		umVector = MicroMeterPoint( 0.0_MicroMeter, 1.0_MicroMeter );
+
+	return Normalize(umVector) * GetExtension().GetValue();
 }

@@ -28,13 +28,8 @@ public:
 
 	void CheckShape( ) const;
 
-	static  unsigned long GetCounter  ( ) { return m_counter; }
-	static  void          ResetCounter( ) { m_counter = 0L; }
-
-	virtual void IncCounter( ) { ++ m_counter; }
-	virtual void DecCounter( ) { -- m_counter; }
-
-	static bool TypeFits( ShapeType const type ) { return type.IsKnotType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsKnotType( ); }
+	static ShapeType const GetShapeType() { return ShapeType::Value::knot; }
 
 	mV const GetNextOutput( ) const { return m_mVinputBuffer; }
 
@@ -47,5 +42,4 @@ public:
 	virtual void DrawNeuronText( PixelCoordsFp const & ) const {};
 
 private: 
-	inline static unsigned long m_counter { 0L };
 };

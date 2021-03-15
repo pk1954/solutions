@@ -1,5 +1,5 @@
 # NNetModel
-# Created Fri Mar  5 21:57:53 2021
+# Created Mon Mar 15 13:20:00 2021
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -16,20 +16,17 @@ GlobalParameter PeakVoltage = 10
 GlobalParameter RefractoryPeriod = 500
 GlobalParameter TimeResolution = 100
 
-NrOfShapes = 9
+NrOfShapes = 8
 
-CreateShape 0 outputNeuron(341.173|62.6437)
-CreateShape 1 outputNeuron(196.637|152.032)
-CreateShape 2 inputNeuron(130.659|-118.814)
-CreateShape 3 inputNeuron(441.944|-101.06)
-CreateShape 6 neuron(593.814|-123.137)
-CreateShape 7 knot(598.599|-6.86806)
+CreateShape 0 outputNeuron(196.637|152.032)
+CreateShape 2 knot(92.184|-107.968)
+CreateShape 3 knot(240.063|-49.9719)
+CreateShape 5 neuron(4.84362|134.544)
+CreateShape 6 knot(-29.5993|-55.2864)
+CreateShape 1 pipe(2->0)
 CreateShape 4 pipe(3->0)
-CreateShape 5 pipe(2->1)
-CreateShape 8 pipe(6->7)
+CreateShape 7 pipe(6->5)
 
-ShapeParameter InputNeuron 2 PulseRate = 50
-ShapeParameter InputNeuron 3 PulseRate = 50
 
 
 NrOfTracks 0

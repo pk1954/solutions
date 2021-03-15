@@ -20,8 +20,8 @@ using std::make_unique;
 class Neuron : public BaseKnot
 {
 public:
-	Neuron( MicroMeterPoint const, ShapeType const = ShapeType::Value::neuron );
-
+	Neuron( MicroMeterPoint const &, ShapeType const = ShapeType::Value::neuron );
+ 
 	Neuron( Neuron const & );   // copy constructor
 
 	virtual void CheckShape() const;
@@ -32,12 +32,8 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static  unsigned long const GetCounter  ( ) { return m_counter; }
-	static  void                ResetCounter( ) { m_counter = 0L; }
-	virtual void                IncCounter  ( ) { ++ m_counter; }
-	virtual void                DecCounter  ( ) { -- m_counter; }
-
-	static bool const TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
+	static ShapeType const GetShapeType() { return ShapeType::Value::neuron; }
 
 	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing(); }
 	bool       const HasTriggerSound ( ) const { return m_triggerSound.m_bOn; }
@@ -51,7 +47,6 @@ public:
 	mV         const PeakVoltage  () const;
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
-	void Transform2OutputNeuron() { SetType(ShapeType::Value::outputNeuron); }
 
 	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const) const;
 	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const) const;
@@ -82,8 +77,7 @@ private:
 	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
 	MicroMeterPoint getAxonHillockPos( ) const;
 
-	inline static unsigned long m_counter { 0L };
-	inline static Sound       * m_pSound  { nullptr };
+	inline static Sound * m_pSound  { nullptr };
 
 	void init( const Neuron & );
 

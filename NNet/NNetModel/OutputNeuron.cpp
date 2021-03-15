@@ -6,9 +6,23 @@
 #include "DrawContext.h"
 #include "OutputNeuron.h"
 
-OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
+using std::fixed;
+using std::wstring;
+using std::wostringstream;
+using std::fill;
+using std::wcout;
+using std::endl;
+
+OutputNeuron::OutputNeuron( MicroMeterPoint const & upCenter )
 	: ConnectionNeuron( upCenter, ShapeType::Value::outputNeuron )
-{ }
+{}
+
+OutputNeuron::OutputNeuron( Neuron const & neuron )
+	: ConnectionNeuron( neuron.GetPosition(), ShapeType::Value::outputNeuron )
+{
+	static_cast<Neuron &>(*this) = neuron;      // use all data from Neuron to construct OutputNeuron
+	SetType( ShapeType::Value::outputNeuron );  // fix neuron type
+}
 
 void OutputNeuron::CheckShape( ) const
 {
@@ -49,4 +63,3 @@ void OutputNeuron::drawPlug
 	context.DrawLine( umP1,                      umP2, GetExtension() * M, colF );
 	context.DrawLine( umP1 - umExtVector * 0.8f, umP2, GetExtension() * W, colF );
 }
-

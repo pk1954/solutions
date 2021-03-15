@@ -423,12 +423,13 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	case IDM_NEW_MODEL:
 		if ( AskAndSave( ) )
 		{
-			m_computeThread.StopComputation( );
+			m_computeThread.StopComputation();
 			m_mainNNetWindow.Reset();
-			m_modelCommands.ResetModel( );
+			m_modelCommands.ResetModel();
 			m_modelCommands.CreateInitialShapes( );
+			m_staticModelObservable.NotifyAll( false );
 			m_appTitle.SetUnsavedChanges( true );
-			m_mainNNetWindow.CenterModel( );
+			m_mainNNetWindow.CenterModel();
 		}
 		break;
 
@@ -467,6 +468,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_computeThread.StopComputation( );
 			m_mainNNetWindow.Reset();
 			m_model = move(* m_modelImporter.GetImportedModel());
+			m_staticModelObservable.NotifyAll( false );
 			m_model.SetDescriptionUI( m_descWindow );
 			m_appTitle.SetUnsavedChanges( false );
 			m_mainNNetWindow.CenterModel( );

@@ -4,13 +4,17 @@
 
 #pragma once
 
+#include <array>
 #include <vector>
+#include <numeric>
 #include "Shape.h"
 #include "ShapeId.h"
 #include "Connections.h"
 #include "ShapeErrorHandler.h"
 
+using std::array;
 using std::vector;
+using std::accumulate;
 using std::unique_ptr;
 using std::make_unique;
 
@@ -25,9 +29,6 @@ public:
 	UPShapeList & operator=  ( UPShapeList const & );
 	bool        operator== ( UPShapeList const & ) const;
 
-	//UPShapeList const operator*= (float const);
-	//UPShapeList const operator+= (UPShapeList const &); 
-
 	long    const Size          ( )                  const { return Cast2Long( m_list.size() ); }
 	ShapeId const IdNewSlot     ( )	                 const { return ShapeId( Cast2Long(m_list.size()) ); }
 	bool    const IsShapeDefined( ShapeId const id ) const { return GetAt( id ) == nullptr; }
@@ -37,12 +38,12 @@ public:
 	Shape * const GetAt         ( ShapeId const id ) const { return   m_list[id.GetValue()].get();	}
 	Shape       & GetRef        ( ShapeId const id )       { return * m_list[id.GetValue()]; }
 	void          Resize        ( long    const nr )       { m_list.resize( nr );	}
-	void          Clear         ( )                        { m_list.clear( ); }
 	void          Increase      ( long    const nr )       { m_list.resize( m_list.size() + nr ); }
 				    
+	void            Clear             ( );
 	void            SetErrorHandler   ( ShapeErrorHandler * const );
 	void            SelectAllShapes   ( tBoolOp const = tBoolOp::opTrue );
-	void            DeselectAllShapes () { SelectAllShapes(tBoolOp::opFalse); }
+	void            DeselectAllShapes ( ) { SelectAllShapes(tBoolOp::opFalse); }
 	UPShape         ExtractShape      ( ShapeId const );	
 	Shape   * const ReplaceShape      ( ShapeId const, UPShape );	
 	void            SetShape2Slot     ( ShapeId const, UPShape );	 // only for special situations
@@ -70,7 +71,7 @@ public:
 	unique_ptr<T> Pop( )
 	{
 		unique_ptr<T> upT { unique_ptr<T>( static_cast<T*>(m_list.back().release()) ) };
-		upT->DecCounter();
+		decCounter( upT->GetShapeType() );
 		m_list.pop_back( );
 		return move( upT );
 	}
@@ -136,15 +137,59 @@ public:
 		return bResult;
 	}
 
-	int CountInSelection( ShapeType const shapeType ) const
+	unsigned int CountInSelection( ShapeType const shapeType ) const
 	{
-		int iNr { 0 };
-		Apply2AllSelected( shapeType, [&](auto & s) { ++iNr; } );
-		return iNr;
+		unsigned int uiNr { 0 };
+		Apply2AllSelected( shapeType, [&](auto & s) { ++uiNr; } );
+		return uiNr;
+	}
+
+	unsigned int const GetCounter(ShapeType const t) const { return counter(t); }
+	unsigned int const GetCounter() const 
+	{ 
+		return accumulate( m_shapesOfType.begin(), m_shapesOfType.end(), 0 ); 
 	}
 
 private:
-	vector<UPShape>     m_list;
+
+	unsigned int const & counter(ShapeType const t) const { return m_shapesOfType[static_cast<unsigned int>(t.GetValue())]; }
+	unsigned int       & counter(ShapeType const t)       { return const_cast<unsigned int &>(static_cast<const UPShapeList&>(*this).counter(t)); }
+
+	void incCounter(ShapeType const t) { ++counter(t); }
+	void decCounter(ShapeType const t) { --counter(t); }
+
+	void incCounter(Shape const * const ps) 
+	{ 
+		if (ps)
+			incCounter(ps->GetShapeType()); 
+	}
+	void decCounter(Shape const * const ps) 
+	{ 
+		if (ps)
+			decCounter(ps->GetShapeType()); 
+	}
+
+	void incCounter(UPShape const & ups) { incCounter(ups.get()); }
+	void decCounter(UPShape const & ups) { decCounter(ups.get()); }
+
+	void incCounter(ShapeId const & id)	{ incCounter(GetAt(id)); }
+	void decCounter(ShapeId const & id) { decCounter(GetAt(id)); }
+
+	void countShapes()
+	{
+		m_shapesOfType.fill( 0 );
+		for ( auto & it : m_list )
+		{ 
+			ShapeType    const type  { it->GetShapeType() };
+			unsigned int const index { static_cast<unsigned int>(type.GetValue()) };
+			++m_shapesOfType[index];
+		};
+	}
+
+	vector<UPShape> m_list;
+
+	array<unsigned int, ShapeType::NR_OF_SHAPE_TYPES> m_shapesOfType;
+
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
 	void copy      ( UPShapeList const & );

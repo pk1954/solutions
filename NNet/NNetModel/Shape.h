@@ -48,9 +48,6 @@ public:
 
 	virtual bool operator==( Shape const & ) const;
 
-	virtual void IncCounter( ) = 0;
-	virtual void DecCounter( ) = 0;
-
 	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const ) const = 0;
 	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const ) const = 0;
 	virtual void       Prepare       ( )                                                 = 0;
@@ -60,7 +57,7 @@ public:
 	virtual bool const IsInRect      ( MicroMeterRect  const & )                   const = 0;
 	virtual bool       IsPointInShape( MicroMeterPoint const & )                   const = 0;
 
-	virtual void Clear () { m_mVinputBuffer = 0.0_mV; };
+	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
 	void Select(tBoolOp const op = tBoolOp::opTrue) { ApplyOp(m_bSelected, op); }
 

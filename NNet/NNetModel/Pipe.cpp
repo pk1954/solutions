@@ -12,6 +12,12 @@
 #include "BaseKnot.h"
 #include "Pipe.h"
 
+using std::fixed;
+using std::wstring;
+using std::wostringstream;
+
+#include <sstream> 
+#include <iomanip>
 using std::fill;
 using std::wcout;
 using std::endl;

@@ -19,12 +19,8 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static unsigned long GetCounter  () { return m_counter; }
-	static   void        ResetCounter() { m_counter = 0L; }
-	virtual  void        IncCounter  () { ++ m_counter; }
-	virtual  void        DecCounter  () { -- m_counter; }
-
-	static bool TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
+	static ShapeType const GetShapeType() { return ShapeType::Value::inputNeuron; }
 
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
@@ -54,6 +50,4 @@ private:
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
                                  // floating point rounding effects, both are stored
-
-	inline static unsigned long m_counter { 0L };
 };	

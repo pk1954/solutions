@@ -14,6 +14,12 @@
 
 using std::move;
 
+void UPShapeList::Clear()
+{ 
+	m_list.clear(); 
+	m_shapesOfType.fill( 0 );
+}
+
 void UPShapeList::checkShape( Shape const & shape ) const
 {
 	switch ( shape.GetShapeType().GetValue() )
@@ -118,8 +124,7 @@ UPShape UPShapeList::ExtractShape( ShapeId const id )
 	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
 
-	if ( GetAt( id ) )
-		GetAt( id )->DecCounter();
+	decCounter(id);
 
 	return move( m_list[id.GetValue()] );
 }
@@ -131,7 +136,7 @@ void UPShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only fo
 	assert( IsEmptySlot( id ) );
 	assert( upShape );
 
-	upShape->IncCounter(); //-V522
+	incCounter(upShape);
 	m_list[id.GetValue()] = move(upShape);
 }
 
@@ -140,10 +145,8 @@ Shape * const UPShapeList::ReplaceShape( ShapeId const id, UPShape upT )
 	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
 
-	if ( upT )
-		upT->IncCounter();
-	if ( GetAt( id ) )
-		GetAt( id )->DecCounter();
+	incCounter(upT);
+	decCounter(id);
 
 	UPShape tmp = move(upT);
 	m_list[id.GetValue()].swap( tmp );
@@ -180,7 +183,7 @@ ShapeId const UPShapeList::Push( UPShape upShape )
 	if ( upShape )
 	{
 		upShape->SetId( IdNewSlot() );
-		upShape->IncCounter();
+		incCounter(upShape);
 	}
 	m_list.push_back( move(upShape) );
 	return idNewSlot;
@@ -348,11 +351,11 @@ UPShapeList UPShapeList::ExtractShapes( vector<ShapeId> idList )
 
 ShapeType const UPShapeList::DetermineShapeType() const
 {
-	int iNrOfInputNeurons  { CountInSelection( ShapeType::Value::inputNeuron  ) };
-	int iNrOfOutputNeurons { CountInSelection( ShapeType::Value::outputNeuron ) };
-	return ((iNrOfInputNeurons == 0) && (iNrOfOutputNeurons == 0))
+	unsigned int uiNrOfInputNeurons  { CountInSelection( ShapeType::Value::inputNeuron  ) };
+	unsigned int uiNrOfOutputNeurons { CountInSelection( ShapeType::Value::outputNeuron ) };
+	return ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
 		? ShapeType::Value::undefined
-		: (iNrOfInputNeurons > iNrOfOutputNeurons) 
+		: (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
 		? ShapeType::Value::inputNeuron 
 		: ShapeType::Value::outputNeuron;
 }

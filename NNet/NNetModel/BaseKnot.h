@@ -27,9 +27,9 @@ public:
 
 	BaseKnot
 	( 
-		MicroMeterPoint const center,
-		ShapeType       const type,
-		MicroMeter      const extension
+		MicroMeterPoint const & center,
+		ShapeType       const   type,
+		MicroMeter      const   extension
 	)
 	  : Shape( type ),
 		m_circle( center, extension )
@@ -68,7 +68,7 @@ public:
 		return umRect.Includes( GetPosition() ); 
 	}
 
-	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
+	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
 	MicroMeterCircle const GetCircle   ( ) const { return m_circle; }
 	MicroMeterPoint  const GetPosition ( ) const { return m_circle.GetPosition(); }
