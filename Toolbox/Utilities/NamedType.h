@@ -124,14 +124,14 @@ public:
 
 	static NamedType const MAX_VAL()
 	{
-		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no MAX_VAL"	);
+		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no MAX_VAL" );
 		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::max)() };
 		return res;
 	}
 
 	static NamedType const NULL_VAL()
 	{
-		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL"	);
+		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL" );
 		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::min)() };
 		return res;
 	}

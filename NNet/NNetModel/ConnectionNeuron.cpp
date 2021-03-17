@@ -17,5 +17,5 @@ MicroMeterPoint const ConnectionNeuron::determineVector() const
 	if ( umVector.IsZero() )
 		umVector = MicroMeterPoint( 0.0_MicroMeter, 1.0_MicroMeter );
 
-	return Normalize(umVector) * GetExtension().GetValue();
+	return umVector;
 }

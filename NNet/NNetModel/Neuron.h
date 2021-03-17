@@ -32,7 +32,7 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsNeuronType( ); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::neuron; }
 
 	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing(); }

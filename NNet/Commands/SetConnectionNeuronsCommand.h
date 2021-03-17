@@ -15,7 +15,7 @@ class SetConnectionNeuronsCommand : public Command
 {
 public:
 	SetConnectionNeuronsCommand
-	( 
+	(
 		MicroMeterPointVector    const & umPntVector,
 		ShapePtrList<ConnectionNeuron> & shapes2Animate
 	)

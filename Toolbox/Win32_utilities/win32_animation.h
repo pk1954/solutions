@@ -59,9 +59,7 @@ public:
     ANIM_PAR const GetActual()
     {
         ANIM_PAR result;
-        AcquireSRWLockExclusive( & m_srwl );
-        result = m_actual;
-        ReleaseSRWLockExclusive( & m_srwl );
+        protect( [&](){ result = m_actual; } );
         return result;
     }
 
@@ -71,9 +69,7 @@ private:
 
     void setActual( ANIM_PAR const newVal )
     {
-        AcquireSRWLockExclusive( & m_srwl );
-        m_actual = newVal;
-        ReleaseSRWLockExclusive( & m_srwl );
+        protect( [&](){ m_actual = newVal; } );
     }
 
     void next()
@@ -103,7 +99,14 @@ private:
     TP_TIMER     * m_pTpTimer { nullptr };
     APP_PROC const m_appProc;
 
-    SRWLOCK  m_srwl { SRWLOCK_INIT };
+    SRWLOCK m_srwl { SRWLOCK_INIT };
+
+    void protect( function<void()> func )
+    {
+        AcquireSRWLockExclusive( & m_srwl );
+        (func)();
+        ReleaseSRWLockExclusive( & m_srwl );
+    }
 
     ANIM_PAR m_actual   {};
     ANIM_PAR m_start    {};
