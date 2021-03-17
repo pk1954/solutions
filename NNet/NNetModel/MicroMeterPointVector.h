@@ -10,6 +10,7 @@
 #include "PointType.h"
 #include "MicroMeterPosDir.h"
 
+using std::endl;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
@@ -95,6 +96,13 @@ public:
         res *= f; 
         return res; 
     };
+
+    friend wostream & operator<< ( wostream & out, MicroMeterPointVector const & v )
+    {
+        for ( auto & it: v.m_list )
+            out << it << endl;
+        return out; 
+    }
 
 private:
     vector<MicroMeterPosDir> m_list;

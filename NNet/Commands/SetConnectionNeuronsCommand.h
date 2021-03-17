@@ -21,7 +21,10 @@ public:
 	)
 	  : m_umPntVector(umPntVector),
 		m_shapes2Animate(shapes2Animate)
-	{}
+	{
+		wcout << __func__ << endl;
+		wcout << umPntVector;
+	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 

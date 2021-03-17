@@ -8,6 +8,8 @@
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
+using std::endl;
+
 class PixelCoordsFp
 {
 public:
@@ -298,6 +300,12 @@ public:
 		res *= factor; 
 		return res; 
 	};
+
+	friend wostream & operator<< ( wostream & out, PixelCoordsFp const & c )
+	{
+		out << c.m_fPixOffset << L", " << c.m_pixelSize << endl;
+		return out; 
+	}
 
 private:
 

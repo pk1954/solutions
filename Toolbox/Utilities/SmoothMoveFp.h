@@ -28,9 +28,11 @@ public:
         else 
             m_velocity -= m_acceleration;
         m_pos += m_velocity;
-        if ( m_pos >= END_POINT * static_cast<T>(0.98f) )
+        if ( m_pos >= END_POINT * static_cast<T>(0.999f) )
         {
-            m_pos = END_POINT;
+            m_pos          = END_POINT;
+            m_velocity     = static_cast<T>(0);
+            m_acceleration = static_cast<T>(0);
             return true;
         }
         return false;

@@ -81,31 +81,15 @@ MicroMeterLine const AlignAnimation::prepareData
 	return line;
 }
 
-bool AlignAnimation::AlignSelection( )
+MicroMeterPoint const AlignAnimation::calcOrthoVector
+(
+	ShapePtrList<ConnectionNeuron> const & list,
+	MicroMeterLine                 const & line
+)
 {
-	MicroMeterLine line { prepareData( m_shapesAnimated, m_pNMWI->GetUPShapes() ) };
-
-	// compute tightly packed positions
-
-	MicroMeterPoint umPntPackedSingle { line.GetVector() * (NEURON_RADIUS * 2.0f / line.Length()) };
-	MicroMeterPoint umPntTargetStart  { line.GetCenter() - umPntPackedSingle * Cast2Float(m_shapesAnimated.Size()) * 0.5f };
-
-	// fill animation vectors
-
-	MicroMeterPointVector umPntVectorActual;
-	MicroMeterPointVector umPntVectorTarget;
-
-	//MicroMeterPoint vector = line.GetVector();
-	//Radian          rad         = Vector2Radian( vector );
-	//Degrees         deg         = Radian2Degrees( rad );
-
-	//MicroMeterPoint orthoVector = line.OrthoVector();
-	//Radian          orthoRad    = Vector2Radian( orthoVector );
-	//Degrees         orthoDeg    = Radian2Degrees( orthoRad );
-
 	unsigned int uiLeftConnections  { 0 };
 	unsigned int uiRightConnections { 0 };
-	m_shapesAnimated.Apply2All
+	list.Apply2All
 	(	
 		[&](ConnectionNeuron const & c)	
 		{ 
@@ -137,14 +121,33 @@ bool AlignAnimation::AlignSelection( )
 	MicroMeterPoint orthoVector = line.OrthoVector();
 	if ( uiRightConnections < uiLeftConnections )
 		orthoVector = -orthoVector;
-	MicroMeterPosDir posDirTarget { umPntTargetStart, Vector2Radian(orthoVector) };
+	return orthoVector;
+}
 
+bool AlignAnimation::AlignSelection( )
+{
+	MicroMeterLine  const line        { prepareData( m_shapesAnimated, m_pNMWI->GetUPShapes() ) };
+	MicroMeterPoint const orthoVector { calcOrthoVector(m_shapesAnimated, line) };
+
+	// compute tightly packed positions
+
+	MicroMeterPoint umPntPackedSingle { line.GetVector() * (NEURON_RADIUS * 2.0f / line.Length()) };
+	MicroMeterPoint umPntTargetStart  { line.GetCenter() - umPntPackedSingle * Cast2Float(m_shapesAnimated.Size()) * 0.5f };
+
+	// fill animation vectors
+
+	MicroMeterPosDir      posDirTarget { umPntTargetStart, Vector2Radian(orthoVector) };
+	MicroMeterPointVector umPntVectorActual;
+	MicroMeterPointVector umPntVectorTarget;
+
+	wcout << L"target:" << endl;
 	m_shapesAnimated.Apply2All
 	(	
 		[&](ConnectionNeuron const & c)	
 		{ 
 			umPntVectorActual.Add( c.GetPosDir() );
 			umPntVectorTarget.Add( posDirTarget );
+			wcout << __func__ << posDirTarget << endl;
 			posDirTarget += umPntPackedSingle;
 		}	
 	);

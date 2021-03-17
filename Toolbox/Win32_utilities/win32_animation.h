@@ -35,10 +35,11 @@ public:
     void Start( ANIM_PAR const origin, ANIM_PAR const target )
     {
         FILETIME fileTime { DEFAULT_MILLISECS, 0 };
-        m_start    = origin;
-        m_target   = target;
-        m_distance = target - origin;
-        m_actual   = m_start;
+        m_start          = origin;
+        m_target         = target;
+        m_distance       = target - origin;
+        m_bTargetReached = false;
+        setActual(m_start);
         m_smoothMove.Start( DEFAULT_NR_OF_STEPS );
         assert( ! m_pTpTimer );
         m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
@@ -47,6 +48,7 @@ public:
 
     void Stop()
     {
+        m_bTargetReached = true;
         if ( m_pTpTimer )
         {
             SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
@@ -60,6 +62,8 @@ public:
     {
         ANIM_PAR result;
         protect( [&](){ result = m_actual; } );
+        wcout << __func__ << endl;
+        wcout << result;
         return result;
     }
 
@@ -69,24 +73,35 @@ private:
 
     void setActual( ANIM_PAR const newVal )
     {
-        protect( [&](){ m_actual = newVal; } );
+        protect
+        ( 
+            [&]()
+            { 
+                wcout << L"setActual" << endl;
+                wcout << newVal;
+                m_actual = newVal; 
+            } 
+        );
     }
 
     void next()
     {
-        bool bTargetReached = m_smoothMove.Next();
-        setActual( m_start + m_distance * m_smoothMove.GetPos() );
-        if ( bTargetReached )
+        if ( ! m_bTargetReached )
         {
-            if ( m_dwFlags & ANIMATION_RECURRING )
-                m_actual = m_start;
-            else 
-                Stop();
+            m_bTargetReached = m_smoothMove.Next();
+            setActual(m_start + m_distance * m_smoothMove.GetPos());
+            if (m_appProc)
+                (m_appProc)(m_bTargetReached);
+            else if (m_dwFlags & ANIMATION_SEND_COMMAND)
+                ::SendNotifyMessage(m_hwnd, WM_COMMAND, m_idMsg, m_bTargetReached );     
+            if ( m_bTargetReached )
+            {
+                if ( m_dwFlags & ANIMATION_RECURRING )
+                    setActual(m_start);
+                else 
+                    Stop();
+            }
         }
-        if (m_appProc)
-            (m_appProc)(bTargetReached);
-        else if (m_dwFlags & ANIMATION_SEND_COMMAND)
-            ::SendNotifyMessage(m_hwnd, WM_COMMAND, m_idMsg, bTargetReached );     
     }
 
     static void CALLBACK timerProc(PTP_CALLBACK_INSTANCE i, PVOID pContext, PTP_TIMER p)
@@ -113,7 +128,8 @@ private:
     ANIM_PAR m_target   {};
     ANIM_PAR m_distance {};
 
-    DWORD m_dwFlags { 0 };
-    int   m_idMsg   { 0 };
-    HWND  m_hwnd    { nullptr };
+    DWORD m_dwFlags        { 0 };
+    int   m_idMsg          { 0 };
+    HWND  m_hwnd           { nullptr };
+    bool  m_bTargetReached { false };
 };

@@ -43,6 +43,7 @@ private:
 	unique_ptr<ConnectorAnimation> m_upConnectorAnimation;
 	ShapePtrList<ConnectionNeuron> m_shapesAnimated;
 
-	static MicroMeterLine const calcMaxDistLine(ALIGN_VECTOR const &);
-	static MicroMeterLine const prepareData(ShapePtrList<ConnectionNeuron> &, UPShapeList &);
+	static MicroMeterLine  const calcMaxDistLine(ALIGN_VECTOR const &);
+	static MicroMeterLine  const prepareData(ShapePtrList<ConnectionNeuron> &, UPShapeList &);
+	static MicroMeterPoint const calcOrthoVector(ShapePtrList<ConnectionNeuron> const &, MicroMeterLine const &);
 };
