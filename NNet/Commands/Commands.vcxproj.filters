@@ -60,16 +60,10 @@
     <ClInclude Include="AddIncoming2KnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveBaseKnotCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectShapesInRectCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MovePipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CopySelectionCommand.h">
@@ -85,9 +79,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectShapeCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CommandStack.h">
@@ -123,7 +114,7 @@
     <ClInclude Include="CreateConnectorCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveConnectorCommand.h">
+    <ClInclude Include="MoveShapeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

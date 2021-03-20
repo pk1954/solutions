@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "ShapeId.h"
+
 class NNetModelWriterInterface;
 
 class Command
@@ -27,4 +29,9 @@ public:
     { 
         return false; 
     };
+
+    virtual ShapeId const GetMovedShape( ) const
+    {
+        return ShapeId();
+    }
 };

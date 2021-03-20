@@ -10,13 +10,9 @@
 using std::wcout;
 using std::endl;
 
-bool canBeCombined( Command const & A, Command const & B )
+bool canBeCombined(Command const & A, Command const & B)
 {
-    return A.IsMoveCommand( ) && (typeid(A) == typeid(B)) &&
-    ( 
-        static_cast<MoveCommand const &>(A).GetMovedShape() == 
-        static_cast<MoveCommand const &>(B).GetMovedShape() 
-    );
+    return A.IsMoveCommand() && (typeid(A) == typeid(B)) && (A.GetMovedShape() == B.GetMovedShape());
 }
 
 void CommandStack::Initialize

@@ -21,9 +21,7 @@
 #include "DeletePipeCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertBaseKnotCommand.h"
-#include "MoveBaseKnotCommand.h"
-#include "MoveConnectorCommand.h"
-#include "MovePipeCommand.h"
+#include "MoveShapeCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NewNeuronCommandT.h"
 #include "NNetModelImporter.h"
@@ -199,13 +197,7 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id << L" " << delta << endl;
 	unique_ptr<Command> pCmd;
-	if ( m_pNMWI->IsPipe( id ) ) 
-		pCmd = make_unique<MovePipeCommand>( id, delta );
-	else if ( m_pNMWI->IsConnector( id ) )
-		pCmd = make_unique<MoveConnectorCommand>( id, delta );
-	else
-		pCmd = make_unique<MoveBaseKnotCommand>( id, delta );
-	m_pCmdStack->PushCommand( move( pCmd ) );
+	m_pCmdStack->PushCommand( make_unique<MoveShapeCommand>(id, delta) );
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )

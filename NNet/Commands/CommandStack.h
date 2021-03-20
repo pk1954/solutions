@@ -11,7 +11,6 @@
 #include "BoolOp.h"
 #include "Observable.h"
 #include "Command.h"
-#include "MoveCommand.h"
 
 using std::vector;
 using std::unique_ptr;

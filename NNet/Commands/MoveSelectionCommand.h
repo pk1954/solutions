@@ -6,14 +6,13 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "MoveCommand.h"
 #include "BaseKnot.h"
 
-class MoveSelectionCommand : public MoveCommand
+class MoveSelectionCommand : public Command
 {
 public:
 	MoveSelectionCommand( MicroMeterPoint const & delta )
-       : MoveCommand( -delta )
+       : m_delta( -delta )
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
@@ -29,8 +28,11 @@ public:
 		m_delta = delta;
 	}
 
-	virtual ShapeId const GetMovedShape( ) const
-	{
-		return ShapeId();
-	}
+	virtual bool IsMoveCommand( ) const
+	{ 
+		return true; 
+	};
+
+private:
+	MicroMeterPoint m_delta;
 };
