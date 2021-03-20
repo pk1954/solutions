@@ -81,10 +81,12 @@
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
+    <ClInclude Include="CreateConnectorCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="MoveBaseKnotCommand.h" />
+    <ClInclude Include="MoveConnectorCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="SetConnectionNeuronsCommand.h" />

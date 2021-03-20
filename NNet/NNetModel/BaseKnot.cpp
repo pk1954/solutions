@@ -36,6 +36,16 @@ void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 	m_connections.Recalc();
 }
 
+bool const BaseKnot::IsInRect( MicroMeterRect const & umRect ) const 
+{ 
+	return umRect.Includes( GetPosition() ); 
+}
+
+void BaseKnot::Expand( MicroMeterRect & umRect ) const
+{
+	umRect.Expand( GetPosition() );
+}
+
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
 	SetPosition( GetPosition() + delta );

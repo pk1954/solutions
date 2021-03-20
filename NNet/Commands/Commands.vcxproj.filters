@@ -120,6 +120,12 @@
     <ClInclude Include="SetConnectionNeuronsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CreateConnectorCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveConnectorCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

@@ -40,8 +40,8 @@ public:
 	{
 		m_pBaseKnotDst->SetConnections( m_upDstConnections.get() );  // restore dst connections
 		assert( m_upBaseKnotSrc );
-		m_upBaseKnotSrc->Reconnect( );
-		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move( m_upBaseKnotSrc ) ); // reconnect src  
+		m_upBaseKnotSrc->Reconnect();
+		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotSrc)); // reconnect src  
 	}
 
 private:

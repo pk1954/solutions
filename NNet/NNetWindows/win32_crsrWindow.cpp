@@ -102,18 +102,18 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	ShapeType const type { m_pNMRI->GetShapeType( id ) };
 
-	textBuf.printString( L"Shape #" );
-	textBuf.printNumber( id.GetValue() );
+	textBuf.AlignRight(); textBuf.printString( L"Shape #" );
+	textBuf.AlignLeft();  textBuf.printNumber( id.GetValue() );
 	textBuf.nextLine( );
-	textBuf.printString( L"type:" ); 
-	textBuf.printString( ShapeType::GetName( type.GetValue() ) ); 
+	textBuf.AlignRight(); textBuf.printString( L"type:" ); 
+	textBuf.AlignLeft();  textBuf.printString( ShapeType::GetName( type.GetValue() ) ); 
 	textBuf.nextLine( );
 
 	mV potential { 0.0_mV };
 	if ( type.IsPipeType( ) )
 	{
-		textBuf.printString( L"# segments:" );
-		textBuf.printNumber( m_pNMRI->GetNrOfSegments( id ) );
+		textBuf.AlignRight(); textBuf.printString( L"# segments:" );
+		textBuf.AlignLeft();  textBuf.printNumber( m_pNMRI->GetNrOfSegments( id ) );
 		potential = m_pNMRI->GetVoltage( id, umPoint );
 	}
 	else 
@@ -121,9 +121,9 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		potential = m_pNMRI->GetVoltage( id );
 	}
 
-	textBuf.nextLine( L"potential " );
-	textBuf.printFloat( potential.GetValue() );
-	textBuf.printString( L" mV" );
+	textBuf.AlignRight(); textBuf.nextLine( L"potential " );
+	textBuf.AlignLeft();  textBuf.printFloat( potential.GetValue() );
+	                      textBuf.printString( L" mV" );
 	textBuf.nextLine( );
 
 	if ( type.IsAnyNeuronType( ) )
@@ -131,16 +131,16 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		SoundDescr sound { m_pNMRI->GetTriggerSound( id ) };
 		if ( sound.m_bOn )
 		{
-			textBuf.nextLine( L"trigger sound:" );
-			printFrequency( textBuf, sound.m_frequency );
-			printMilliSecs( textBuf, sound.m_duration );
-			textBuf.printString( L" msec" );
+			textBuf.AlignRight(); textBuf.nextLine( L"trigger sound:" );
+			textBuf.AlignLeft();  printFrequency( textBuf, sound.m_frequency );
+			                      printMilliSecs( textBuf, sound.m_duration );
+			                      textBuf.printString( L" msec" );
 			textBuf.nextLine( );
 		}
 		if ( type.IsInputNeuronType( ) )
 		{
-			textBuf.printString( L"pulse freq: " );
-			printFrequency( textBuf, m_pNMRI->GetPulseFrequency( id ) );
+			textBuf.AlignRight(); textBuf.printString( L"pulse freq: " );
+			textBuf.AlignLeft();  printFrequency( textBuf, m_pNMRI->GetPulseFrequency( id ) );
 			textBuf.nextLine();
 		}
 	}

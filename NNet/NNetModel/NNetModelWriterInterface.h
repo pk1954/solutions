@@ -48,6 +48,12 @@ public:
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
+    bool const IsConnector( ShapeId const id )
+    {
+        Shape * pShape { GetShapePtr<Shape *>( id ) };
+        return pShape && pShape->IsConnector( );
+    }
+
     bool const IsPipe( ShapeId const id )
     {
         Shape * pShape { GetShapePtr<Shape *>( id ) };

@@ -205,11 +205,13 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_ALIGN_SELECTION:
-        m_pMainWindow->AlignSelection();
+        if ( !m_pMainWindow->AlignSelection() )
+            m_pSound->Play( TEXT("NOT_POSSIBLE_SOUND") ); 
         break;
 
     case IDM_MAKE_CONNECTOR:
-        m_pMainWindow->MakeConnector();
+        if ( !m_pMainWindow->MakeConnector() )
+            m_pSound->Play( TEXT("NOT_POSSIBLE_SOUND") );
         break;
 
     case IDM_COPY_SELECTION:

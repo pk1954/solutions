@@ -51,7 +51,6 @@ void MainWindow::Start
 
 	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION, GetWindowHandle());
 	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION, GetWindowHandle());
-	
 }
 
 void MainWindow::Stop()
@@ -205,8 +204,14 @@ void MainWindow::CenterSelection()
 	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
 }
 
-void MainWindow::MakeConnector()
+bool const MainWindow::MakeConnector()
 {
+	return m_pAlignAnimation->AlignSelection(AlignAnimation::ALIGN_DIRECTION); 
+}
+
+bool const MainWindow::AlignSelection() 
+{ 
+	return m_pAlignAnimation->AlignSelection(AlignAnimation::CREATE_CONNECTOR); 
 }
 
 bool const MainWindow::ArrowsVisible() const
@@ -432,8 +437,9 @@ void MainWindow::doPaint( )
 			DrawArrowsInRect( pixRect, m_arrowSize );
 	}
 
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } ); 
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot(); } ); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe     (); } ); 
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot (); } ); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsConnector(); } ); 
 	DrawNeuronTextInRect( pixRect );
 
 	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
@@ -481,10 +487,9 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		break;
 
 	case IDX_CONNECTOR_ANIMATION:
-		m_pAlignAnimation->AnimationStep();
-		Notify( false );
-		if ( lParam )
+		if ( m_pAlignAnimation->AnimationStep(lParam != 0) )
 			SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 
+		Notify( false );
 		break;
 
 	default:

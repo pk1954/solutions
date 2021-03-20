@@ -63,10 +63,8 @@ public:
  	virtual mV   const GetNextOutput( ) const = 0;
 	virtual void       MoveShape    ( MicroMeterPoint const & );
 	virtual void       SetPosition  ( MicroMeterPoint const & );
-	virtual bool const IsInRect     ( MicroMeterRect  const & umRect ) const 
-	{ 
-		return umRect.Includes( GetPosition() ); 
-	}
+	virtual bool const IsInRect     ( MicroMeterRect  const & ) const; 
+	virtual void       Expand       ( MicroMeterRect        & ) const;
 
 	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 

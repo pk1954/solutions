@@ -8,6 +8,8 @@
 #include <assert.h>   
 #include "MoreTypes.h"
 #include "PointType.h"
+#include "ShapePtrList.h"
+#include "ConnectionNeuron.h"
 #include "MicroMeterPosDir.h"
 
 using std::endl;
@@ -18,6 +20,13 @@ using std::make_unique;
 class MicroMeterPointVector
 {
 public:
+
+    MicroMeterPointVector() {}
+
+    MicroMeterPointVector( ShapePtrList<ConnectionNeuron> const& shapeList )
+    {
+        shapeList.Apply2All( [&](ConnectionNeuron const & c) { Add( c.GetPosDir() ); } );
+    }
 
     unsigned int Size() const { return Cast2UnsignedInt(m_list.size()); }
 

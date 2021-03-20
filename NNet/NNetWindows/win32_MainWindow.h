@@ -59,10 +59,10 @@ public:
 
 	MicroMeterPoint const GetCursorPos( ) const;
 
-	void CenterModel( );
-	void CenterSelection( );
-	bool AlignSelection( ) { return m_pAlignAnimation->AlignSelection(); }
-	void MakeConnector( );
+	void       CenterModel();
+	void       CenterSelection();
+	bool const AlignSelection();
+	bool const MakeConnector();
 
 	void       ShowArrows( bool const );
 	bool const ArrowsVisible( ) const; 

@@ -130,9 +130,12 @@ ShapeId const NNetModel::FindShapeAt
 {	
 	ShapeId idRes { NO_SHAPE };
 
-	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
+	if ( idRes == NO_SHAPE )   // first test all connectors
+		idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsConnector() && crit(s); });
+
+	if ( idRes == NO_SHAPE )   // if nothing found, test all typesof neurons
 		idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsAnyNeuron() && crit(s); });
-																									   
+
 	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes								   
 		idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsKnot     () && crit(s); }); 	
 																									   

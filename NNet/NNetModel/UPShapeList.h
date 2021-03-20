@@ -27,8 +27,9 @@ public:
 	~UPShapeList();
 
 	UPShapeList & operator=  ( UPShapeList const & );
-	bool        operator== ( UPShapeList const & ) const;
+	bool          operator== ( UPShapeList const & ) const;
 
+	bool    const IsEmpty       ( )                  const { return m_list.size() == 0; }
 	long    const Size          ( )                  const { return Cast2Long( m_list.size() ); }
 	ShapeId const IdNewSlot     ( )	                 const { return ShapeId( Cast2Long(m_list.size()) ); }
 	bool    const IsShapeDefined( ShapeId const id ) const { return GetAt( id ) == nullptr; }
@@ -44,10 +45,11 @@ public:
 	void            SetErrorHandler   ( ShapeErrorHandler * const );
 	void            SelectAllShapes   ( tBoolOp const = tBoolOp::opTrue );
 	void            DeselectAllShapes ( ) { SelectAllShapes(tBoolOp::opFalse); }
+	ShapeId   const Push              ( UPShape );
 	UPShape         ExtractShape      ( ShapeId const );	
 	Shape   * const ReplaceShape      ( ShapeId const, UPShape );	
 	void            SetShape2Slot     ( ShapeId const, UPShape );	 // only for special situations
-	ShapeId   const Push              ( UPShape );
+	void            SetShape2Slot     ( UPShape );               	 // only for special situations
 	ShapeType const DetermineShapeType( )                                                         const;
 	void            CheckShapeList    ( )                                                         const;
 	void            Dump              ( )                                                         const;
@@ -68,7 +70,7 @@ public:
 	MicroMeterRect const CalcEnclosingRect( SelMode const = SelMode::allShapes ) const;
 
 	template <Shape_t T>
-	unique_ptr<T> Pop( )
+	unique_ptr<T> Pop()
 	{
 		unique_ptr<T> upT { unique_ptr<T>( static_cast<T*>(m_list.back().release()) ) };
 		decCounter( upT->GetShapeType() );
@@ -188,7 +190,7 @@ private:
 
 	vector<UPShape> m_list;
 
-	array<unsigned int, ShapeType::NR_OF_SHAPE_TYPES> m_shapesOfType;
+	array<unsigned int, ShapeType::NR_OF_SHAPE_TYPES> m_shapesOfType {};
 
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 

@@ -9,6 +9,7 @@
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "MonitorData.h"
+#include "ConnectionNeuron.h"
 #include "ShapePtrList.h"
 #include "ShapeType.h"
 #include "ShapeId.h"
@@ -16,7 +17,6 @@
 class Param;
 class Observable;
 class CommandStack;
-class ConnectionNeuron;
 class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
@@ -52,6 +52,7 @@ public:
     void ClearBeepers        ( );
     void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ( );
+    void CreateConnector     ( ShapePtrList<ConnectionNeuron> & );
     void CreateInitialShapes ( );
     void DeleteSelection     ( );
     void DeleteShape         ( ShapeId const );

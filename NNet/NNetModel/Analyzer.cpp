@@ -6,8 +6,8 @@
 #include "MoreTypes.h"
 #include "RectType.h"
 #include "win32_util.h"
-#include "ModelUtilities.h"
 #include "NNetModelReaderInterface.h"
+#include "Knot.h"
 #include "Analyzer.h"
 
 using std::endl;

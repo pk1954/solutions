@@ -56,6 +56,7 @@ public:
 	virtual void       MoveShape     ( MicroMeterPoint const & )                         = 0;
 	virtual bool const IsInRect      ( MicroMeterRect  const & )                   const = 0;
 	virtual bool       IsPointInShape( MicroMeterPoint const & )                   const = 0;
+	virtual void       Expand        ( MicroMeterRect & )                          const = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
@@ -69,6 +70,7 @@ public:
 
 	bool const HasType(ShapeType const type) const { return m_type == type; }
 
+	bool const IsConnector  () const { return m_type.IsConnectorType   ( ); }
 	bool const IsPipe       () const { return m_type.IsPipeType        ( ); }
 	bool const IsKnot       () const { return m_type.IsKnotType        ( ); }
 	bool const IsNeuron     () const { return m_type.IsNeuronType      ( ); }

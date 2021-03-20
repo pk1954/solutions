@@ -3,11 +3,11 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "ModelUtilities.h"
 #include "Knot.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
 #include "Neuron.h"
+#include "Connector.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "UPShapeList.h"
@@ -33,6 +33,10 @@ void UPShapeList::checkShape( Shape const & shape ) const
 
 	case ShapeType::Value::pipe:
 		static_cast<Pipe const &>( shape ).CheckShape();
+		break;
+
+	case ShapeType::Value::connector:
+		static_cast<Connector const &>( shape ).CheckShape();
 		break;
 
 	default:
@@ -91,34 +95,6 @@ bool UPShapeList::operator==( UPShapeList const & other ) const
 	return true;
 }
 
-//UPShapeList const UPShapeList::operator*= (float const f) 
-//{ 
-//	Apply2All<BaseKnot>([&](BaseKnot & pB) { pB *= f; });
-//	return * this; 
-//}
-//
-//UPShapeList const UPShapeList::operator+= (UPShapeList const &rhs) 
-//{ 
-//	if ( Size() == rhs.Size() )
-//	{
-//		for ( int i = 0; i < Size( ); ++i )
-//		{
-//			Shape * pShape    {     m_list[i].get() };
-//			Shape * pShapeRhs { rhs.m_list[i].get() };
-//			if ( 
-//				 (pShape->GetShapeType() == pShapeRhs->GetShapeType()) &&
-//				 pShape->IsBaseKnot()
-//			   )
-//			{
-//				BaseKnot * pBaseKnot    { static_cast<BaseKnot *>(pShape)    };
-//				BaseKnot * pBaseKnotRhs { static_cast<BaseKnot *>(pShapeRhs) };
-//				*pBaseKnot += *pBaseKnotRhs;
-//			}
-//		}
-//	}
-//	return * this; 
-//}
-
 UPShape UPShapeList::ExtractShape( ShapeId const id )	
 {
 	assert( IsDefined(id) );
@@ -129,7 +105,8 @@ UPShape UPShapeList::ExtractShape( ShapeId const id )
 	return move( m_list[id.GetValue()] );
 }
 
-void UPShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for special situations
+
+void UPShapeList::SetShape2Slot( ShapeId const id, UPShape upShape ) // only for special situations
 {                                                                    // read model from script
 	assert( IsDefined(id) );
 	assert( IsValidShapeId( id ) );
@@ -138,6 +115,12 @@ void UPShapeList::SetShape2Slot( ShapeId const id, UPShape upShape )	 // only fo
 
 	incCounter(upShape);
 	m_list[id.GetValue()] = move(upShape);
+}
+
+void UPShapeList::SetShape2Slot( UPShape upShape )	 // only for special situations
+{                 
+	ShapeId const id { upShape->GetId() };
+	SetShape2Slot(id, move(upShape));
 }
 
 Shape * const UPShapeList::ReplaceShape( ShapeId const id, UPShape upT )	
@@ -246,8 +229,8 @@ MicroMeterRect const UPShapeList::CalcEnclosingRect( SelMode const mode ) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( auto const & pShape : m_list )
-		if ( (mode == SelMode::allShapes) || pShape->IsSelected( ) )
-			Expand( rect, pShape.get() );
+		if ( pShape && ((mode == SelMode::allShapes) || pShape->IsSelected()) )
+			pShape->Expand( rect );
 	return rect;
 }
 

@@ -101,6 +101,12 @@ void Pipe::CheckShape( ) const
 	assert( m_pKnotEnd  ->IsSuccessorOf( * this ) );
 }
 
+void Pipe::Expand( MicroMeterRect & umRect ) const
+{
+	umRect.Expand( GetStartPoint() );
+	umRect.Expand( GetEndPoint  () );
+}
+
 void Pipe::Prepare( )
 {
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );

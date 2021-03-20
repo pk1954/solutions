@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "CommandStack.h"
 #include "AddModelCommand.h"
 #include "AddIncoming2KnotCommand.h"
 #include "AddIncoming2PipeCommand.h"
@@ -14,13 +13,16 @@
 #include "AppendNeuronCommand.h"
 #include "AppendInputNeuronCommand.h"
 #include "ClearBeepersCommand.h"
+#include "CommandStack.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
 #include "CopySelectionCommand.h"
+#include "CreateConnectorCommand.h"
 #include "DeletePipeCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertBaseKnotCommand.h"
 #include "MoveBaseKnotCommand.h"
+#include "MoveConnectorCommand.h"
 #include "MovePipeCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NewNeuronCommandT.h"
@@ -120,14 +122,10 @@ void NNetModelCommands::DeleteSelection( )
 		TraceStream( ) << __func__ << L" " << endl;
 	OpenSeries();
 	{
-		vector<ShapeId> list;                  // detour with secondary list is neccessary!
-		m_pNMWI->GetUPShapes().Apply2All<Shape>  // cannot delete shapes directly in Apply2All
+		vector<ShapeId> list;                            // detour with secondary list is neccessary!
+		m_pNMWI->GetUPShapes().Apply2AllSelected<Shape>  // cannot delete shapes directly in Apply2All
 		(                                                 
-			[&]( Shape const & s )             // first construct list
-			{
-				if ( s.IsSelected() )
-					list.push_back( s.GetId() );
-			} 
+			[&](Shape const & s) { list.push_back( s.GetId() );	} // first construct list
 		); 
 		for ( ShapeId const id : list )        // then run through list 
 		{
@@ -203,7 +201,9 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 	unique_ptr<Command> pCmd;
 	if ( m_pNMWI->IsPipe( id ) ) 
 		pCmd = make_unique<MovePipeCommand>( id, delta );
-	else 
+	else if ( m_pNMWI->IsConnector( id ) )
+		pCmd = make_unique<MoveConnectorCommand>( id, delta );
+	else
 		pCmd = make_unique<MoveBaseKnotCommand>( id, delta );
 	m_pCmdStack->PushCommand( move( pCmd ) );
 }
@@ -224,6 +224,13 @@ void NNetModelCommands::SetConnectionNeurons
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>( umPntVectorRun, shapes2Animate ) );
+}
+
+void NNetModelCommands::CreateConnector(ShapePtrList<ConnectionNeuron> & shapes)
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(shapes) );
 }
 
 void NNetModelCommands::AddModel( )

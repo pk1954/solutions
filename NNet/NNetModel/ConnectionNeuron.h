@@ -20,6 +20,11 @@ public:
 		wcout << __func__ << L"(" << upCenter << L", " << type << L")" << endl;
 	}
 
+	void Check() const
+	{
+		Neuron::CheckShape();
+	}
+
 	MicroMeterPoint const GetDirVector() const
 	{
 		MicroMeterPoint umVector { m_direction.IsNull() ? determineVector() : Radian2Vector(m_direction) };
