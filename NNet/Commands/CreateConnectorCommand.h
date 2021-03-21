@@ -22,6 +22,7 @@ public:
 	  : m_shapes4connector(list)
 	{
 		m_upConnector = make_unique<Connector>();
+		m_upConnector->Select( tBoolOp::opTrue );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
@@ -30,6 +31,7 @@ public:
 		(
 			[&](ConnectionNeuron & n)
 			{
+				n.SetParent( m_upConnector.get() );
 				m_upConnector->Push(move(nmwi.RemoveFromModel<ConnectionNeuron>(n)));
 			}
 		);
@@ -40,7 +42,12 @@ public:
 	{
 		m_upConnector = nmwi.RemoveFromModel<Connector>(* nmwi.GetShapePtr<Connector *>(m_idConnector));
 		while (m_upConnector->IsNotEmpty())
-			nmwi.GetUPShapes().SetShape2Slot(move(m_upConnector->Pop()));
+		{
+			unique_ptr<ConnectionNeuron> upConnectionNeuron { move(m_upConnector->Pop()) };
+			upConnectionNeuron->SetParent( nullptr );
+//			upConnectionNeuron->Select( tBoolOp::opTrue );
+			nmwi.GetUPShapes().SetShape2Slot(move(upConnectionNeuron));
+		}
 	}
 
 private:

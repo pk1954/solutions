@@ -51,6 +51,8 @@ public:
 	virtual bool       IsPointInShape(MicroMeterPoint const &) const;
 	virtual void       Expand        (MicroMeterRect        &) const;
 
+	virtual void Select(tBoolOp const = tBoolOp::opTrue);
+
 	void Apply2All( function<void(unique_ptr<ConnectionNeuron> &)> const & func )
 	{
 		for (auto & it : m_list) { func( it ); };

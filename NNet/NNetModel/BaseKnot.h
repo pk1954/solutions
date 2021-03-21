@@ -66,6 +66,9 @@ public:
 	virtual bool const IsInRect     ( MicroMeterRect  const & ) const; 
 	virtual void       Expand       ( MicroMeterRect        & ) const;
 
+	void MoveShapeFromParent( MicroMeterPoint const & );
+	void SetParent(Shape * const pParent) { m_pShapeParent = pParent; }
+
 	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
 	MicroMeterCircle const GetCircle   ( ) const { return m_circle; }
@@ -108,8 +111,11 @@ protected:
 
 	MicroMeterRect const GetRect4Text( ) const;
 
+	void moveShape( MicroMeterPoint const & );
+
 private:
 
+	Shape          * m_pShapeParent { nullptr };
 	MicroMeterCircle m_circle;
 };
 

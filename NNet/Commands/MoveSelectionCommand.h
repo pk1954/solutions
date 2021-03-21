@@ -18,11 +18,12 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		MicroMeterPoint const delta = - m_delta;
-		nmwi.GetUPShapes().Apply2AllSelected<BaseKnot>
+		nmwi.GetUPShapes().Apply2AllSelected<Shape>
 		( 
-			[&]( BaseKnot & knot ) 
+			[&](Shape & shape) 
 			{ 
-				knot.MoveShape( delta ); 
+				if ( shape.IsBaseKnot() || shape.IsConnector() )
+					shape.MoveShape( delta ); 
 			} 
 		);
 		m_delta = delta;

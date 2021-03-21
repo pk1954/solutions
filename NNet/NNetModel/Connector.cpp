@@ -50,7 +50,7 @@ void Connector::Recalc()
 
 void Connector::MoveShape(MicroMeterPoint const & delta)       
 {
-    for (auto & ups : m_list) { ups->MoveShape(delta); }
+    for (auto & ups : m_list) { ups->MoveShapeFromParent(delta); }
 }
 
 bool const Connector::IsInRect(MicroMeterRect const & umRect) const 
@@ -76,6 +76,12 @@ void Connector::Expand( MicroMeterRect & umRect ) const
             umRect.Expand( upConnectionNeuron->GetPosition() );
         }
     );
+}
+
+void Connector::Select(tBoolOp const op) 
+{ 
+    Shape::Select( op );
+    Apply2All( [&](unique_ptr<ConnectionNeuron> const & n) { n->Select( op ); } );
 }
 
 Connector const * Cast2Connector( Shape const * pShape )

@@ -104,6 +104,8 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	textBuf.AlignRight(); textBuf.printString( L"Shape #" );
 	textBuf.AlignLeft();  textBuf.printNumber( id.GetValue() );
+	if ( m_pNMRI->IsSelected(id) )
+		textBuf.printString( L" selected" );
 	textBuf.nextLine( );
 	textBuf.AlignRight(); textBuf.printString( L"type:" ); 
 	textBuf.AlignLeft();  textBuf.printString( ShapeType::GetName( type.GetValue() ) ); 

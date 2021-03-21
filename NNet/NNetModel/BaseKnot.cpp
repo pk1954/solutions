@@ -46,9 +46,22 @@ void BaseKnot::Expand( MicroMeterRect & umRect ) const
 	umRect.Expand( GetPosition() );
 }
 
-void BaseKnot::MoveShape( MicroMeterPoint const & delta )
+void BaseKnot::moveShape( MicroMeterPoint const & delta )
 {
 	SetPosition( GetPosition() + delta );
+}
+
+void BaseKnot::MoveShapeFromParent( MicroMeterPoint const & delta )
+{
+	moveShape( delta );
+}
+
+void BaseKnot::MoveShape( MicroMeterPoint const & delta )
+{
+	if ( m_pShapeParent )
+		m_pShapeParent->MoveShape( delta );
+	else 
+		moveShape( delta );
 }
 
 void BaseKnot::CheckShape( ) const
