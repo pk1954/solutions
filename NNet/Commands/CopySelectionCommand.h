@@ -53,6 +53,8 @@ private:
 			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
 			nmwi.GetUPShapes().LinkShape( shapeSrc, dstFromSrc );
 			upShapeDst->SetId( idShapeCopy++ );
+			if ( upShapeDst->GetShapeType().IsBaseKnotType( ) )
+				upShapeDst->MoveShape( PIPE_WIDTH ); 
 		}
 		m_iSizeOfSelection = Cast2Int(m_copies.size());
 	}

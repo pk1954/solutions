@@ -68,7 +68,7 @@ bool const InputNeuron::CompStep( )
 
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlightType const type) const
 {
-	drawSocket( context, 2.0f, 0.2f, GetExteriorColor(type) );
+	drawSocket( context, 2.0f, 0.1f, GetExteriorColor(type) );
 }
 
 void InputNeuron::DrawInterior(DrawContext const & context, tHighlightType const type) const
@@ -99,16 +99,16 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umDirVector    { GetDirVector() };
-	MicroMeter      const umSize         { GetExtension() * M };
-	MicroMeterPoint const umOrthoVector  { getOffset().OrthoVector() };
-	MicroMeterPoint const umExtVectorVS  { umDirVector * M * 0.5f };
-	MicroMeter      const umWidthLR      { umSize - GetExtension() * 1.4f };  // width of left/right section                 
-	MicroMeterPoint const umCenter       { getCenter() };
-	MicroMeterPoint const umStart        { umCenter + umExtVectorVS };
-	MicroMeterPoint const umEndLR        { umCenter - umExtVectorVS };
-	MicroMeterPoint const umEndCenter    { umCenter - umDirVector * VEM };
-	MicroMeterLine  const umLine         { umStart, umEndLR };
+	MicroMeterPoint const umDirVector   { GetDirVector() * M };
+	MicroMeter      const umSize        { GetExtension() * M };
+	MicroMeterPoint const umOrthoVector { getOffset().OrthoVector() };
+	MicroMeterPoint const umDirVectorVS { umDirVector * 0.5f };
+	MicroMeter      const umWidthLR     { umSize - GetExtension() * 1.4f };  // width of left/right section                 
+	MicroMeterPoint const umCenter      { getCenter() };
+	MicroMeterPoint const umStart       { umCenter + umDirVectorVS };
+	MicroMeterPoint const umEndLR       { umCenter - umDirVectorVS };
+	MicroMeterPoint const umEndCenter   { umCenter - umDirVector * VEM };
+	MicroMeterLine  const umLine        { umStart, umEndLR };
 
 	context.DrawLine( umStart, umEndCenter,   umSize,    colF );
 	context.DrawLine( umLine + umOrthoVector, umWidthLR, colF );
