@@ -22,24 +22,24 @@ class Knot : public BaseKnot
 public:
 	Knot( MicroMeterPoint const center )
 		: BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
-	{ }
+	{}
 
 	virtual ~Knot() {}
 
-	void CheckShape( ) const;
+	void CheckShape() const;
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsKnotType( ); }
+	static bool      const TypeFits(ShapeType const type) { return type.IsKnotType( ); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::knot; }
 
-	mV const GetNextOutput( ) const { return m_mVinputBuffer; }
+	mV const GetNextOutput() const { return m_mVinputBuffer; }
 
-	virtual bool const CompStep ( ) { return false; }
+	virtual bool const CompStep() { return false; }
 
-	virtual void DrawExterior( DrawContext const &, tHighlightType const ) const;
-	virtual void DrawInterior( DrawContext const &, tHighlightType const ) const;
-	virtual void Recalc      ( ) { };
+	virtual void DrawExterior(DrawContext const &, tHighlightType const) const;
+	virtual void DrawInterior(DrawContext const &, tHighlightType const) const;
+	virtual void Recalc      () { };
 
-	virtual void DrawNeuronText( PixelCoordsFp const & ) const {};
+	virtual void DrawNeuronText(PixelCoordsFp const &) const {};
 
 private: 
 };

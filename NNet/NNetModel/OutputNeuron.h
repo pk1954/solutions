@@ -26,7 +26,10 @@ public:
 	virtual void DrawExterior( DrawContext const &, tHighlightType const ) const;
 	virtual void DrawInterior( DrawContext const &, tHighlightType const ) const;
 
+	virtual bool const IsPointInShape( MicroMeterPoint const & ) const;
+
 private:
+
 	void drawPlug
 	( 
 		DrawContext  const &, 

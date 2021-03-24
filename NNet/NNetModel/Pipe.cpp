@@ -155,7 +155,7 @@ void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 
 void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
-	pBaseKnot->MoveShape( GetVector().OrthoVector( dislocation ) );
+	pBaseKnot->MoveShape( GetVector().OrthoVector().ScaledTo( dislocation ) );
 	Recalc( );
 }
 
@@ -174,12 +174,12 @@ MicroMeter Pipe::GetLength( ) const
 	return Distance( GetStartPoint( ), GetEndPoint( ) );
 }
 
-bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
+bool const Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 {
 	MicroMeterPoint const umVector{ GetEndPoint( ) - GetStartPoint( ) };
 	if ( umVector.IsCloseToZero() )
 		return false;
-	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector( PIPE_WIDTH ) };
+	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
 	MicroMeterPoint       umPoint1     { GetStartPoint( ) };
 	MicroMeterPoint const umPoint2     { umPoint1 + umVector };
 	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
@@ -257,7 +257,7 @@ mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const
 	{
 		size_t          const nrOfSegments  { m_potential.size() };
 		MicroMeterPoint const umSegVec      { umVector / Cast2Float(nrOfSegments) };
-		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector(PIPE_WIDTH) };
+		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
 		MicroMeterPoint       umPoint       { GetStartPoint() };
 		size_t          const potIndex      { m_potIndex };
 		size_t                index         { potIndex }; 

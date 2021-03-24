@@ -48,6 +48,16 @@ void D2D_DrawContext::DrawLine
 	}
 }
 
+void D2D_DrawContext::DrawLine
+( 
+	MicroMeterLine const & umLine, 
+	MicroMeter     const   umWidth, 
+	D2D1::ColorF   const   col
+) const
+{
+	DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), umWidth, col	);
+}
+
 void D2D_DrawContext::FillCircle
 (
 	MicroMeterCircle const & umCircle,

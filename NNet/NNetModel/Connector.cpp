@@ -60,7 +60,7 @@ bool const Connector::IsInRect(MicroMeterRect const & umRect) const
     return bRes;
 }
 
-bool Connector::IsPointInShape(MicroMeterPoint const & umPnt) const
+bool const Connector::IsPointInShape(MicroMeterPoint const & umPnt) const
 {
     bool bRes { false };
     for (auto & ups : m_list) { if (ups->IsPointInShape(umPnt)) bRes = true; }

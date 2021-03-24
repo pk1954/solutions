@@ -37,7 +37,13 @@ public:
 	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
 	fHertz const SetPulseFrequency( fHertz const );
 
+	virtual bool const IsPointInShape( MicroMeterPoint const & ) const;
+
 private:
+
+	MicroMeterPoint const getOffset() const;
+	MicroMeterPoint const getCenter() const;
+
 	void drawSocket
 	( 
 		DrawContext  const &, 

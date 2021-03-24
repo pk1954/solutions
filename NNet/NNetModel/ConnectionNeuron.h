@@ -16,9 +16,7 @@ class ConnectionNeuron : public Neuron
 public:
 	ConnectionNeuron( MicroMeterPoint const & upCenter, ShapeType const type )
 		: Neuron( upCenter, type )
-	{
-		wcout << __func__ << L"(" << upCenter << L", " << type << L")" << endl;
-	}
+	{}
 
 	void Check() const
 	{
@@ -38,7 +36,6 @@ public:
 
 	void SetPosDir( MicroMeterPosDir const posDir )
 	{
-		wcout << __func__ << posDir << endl;
 		m_direction = posDir.GetDir();
 		SetPosition ( posDir.GetPos() );
 	}
@@ -47,6 +44,9 @@ public:
 	{
 		m_direction.Set2Null();
 	}
+
+protected:
+	MicroMeterPoint const GetScaledDirVector() const;
 
 private:
 	MicroMeterPoint const determineVector() const;

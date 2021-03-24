@@ -92,11 +92,11 @@ public:
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
     {
         MicroMeterPoint vector { m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector() };
-        return vector.OrthoVector( NEURON_RADIUS*2.f );
+        return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
 #ifdef _DEBUG
-    NNetModel const & GetModel( )  const { return * m_pModel; }  // TODO: find better solution
+    NNetModel const & GetModel()  const { return * m_pModel; }  // TODO: find better solution
 #endif
 private:
 

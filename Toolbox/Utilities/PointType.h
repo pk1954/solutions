@@ -94,16 +94,21 @@ public:
 		return BASE_TYPE( hypot(pt.GetXvalue(), pt.GetYvalue()) );
 	};
 
-	friend PointType const Normalize( PointType const pt ) 
+	friend PointType const Normalize( PointType const & pt ) 
 	{ 
-		return pt / Hypot(pt).GetValue();
+		BASE_TYPE fHypot { Hypot( pt ) };
+		assert( ! ::IsCloseToZero( fHypot.GetValue() ) );
+		return pt / fHypot.GetValue();
 	};
 
-	PointType OrthoVector( BASE_TYPE const width ) const
+	PointType ScaledTo( BASE_TYPE const length ) const
 	{
-		BASE_TYPE fHypot = Hypot( * this );
-		assert( ! ::IsCloseToZero( fHypot.GetValue() ) );
-		return PointType( GetY(), - GetX() ) * (width / fHypot);
+		return Normalize( * this ) * length.GetValue();
+	}
+
+	PointType OrthoVector() const
+	{
+		return PointType(GetY(), -GetX());
 	}
 
 	friend PointType const operator+ (PointType const a, PointType const b) 

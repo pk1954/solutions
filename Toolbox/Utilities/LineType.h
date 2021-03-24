@@ -70,10 +70,10 @@ public:
 
     POS_TYPE const OrthoVector() const
     {
-        return GetVector().OrthoVector( 1.0_MicroMeter );
+        return GetVector().OrthoVector().ScaledTo(1.0_MicroMeter);
     }
 
-    LineType const OrthoLine( ) const
+    LineType const OrthoLine() const
     {
         return LineType( m_p1, m_p1 + OrthoVector() );
     }

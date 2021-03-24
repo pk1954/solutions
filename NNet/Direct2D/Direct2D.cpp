@@ -333,8 +333,8 @@ void D2D_driver::FillArrow
 {
 	if ( ! ptVector.IsCloseToZero() )
 	{
-		fPixelPoint const ptVectorScaled { ptVector * ( fPixSize / Hypot( ptVector ) )  };
-		fPixelPoint const ptOrtho        { ptVectorScaled.OrthoVector( fPixSize ) };
+		fPixelPoint const ptVectorScaled { ptVector.ScaledTo(fPixSize) };
+		fPixelPoint const ptOrtho        { ptVectorScaled.OrthoVector() };
 		fPixelPoint const ptEndPoint1    { ptPos - ptVectorScaled + ptOrtho };
 		fPixelPoint const ptEndPoint2    { ptPos - ptVectorScaled - ptOrtho };
 

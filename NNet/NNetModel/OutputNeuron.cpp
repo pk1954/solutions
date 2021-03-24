@@ -45,6 +45,12 @@ void OutputNeuron::DrawInterior(DrawContext const & context, tHighlightType cons
 	drawPlug( context, 0.4f, 0.6f, GetInteriorColor(type) );
 }
 
+bool const OutputNeuron::IsPointInShape( MicroMeterPoint const & point ) const
+{
+	MicroMeterPoint const umCenter { GetPosition() + GetScaledDirVector() * 0.5f };
+	return Distance( point, umCenter ) <= GetExtension();
+}
+
 void OutputNeuron::drawPlug
 ( 
 	DrawContext  const & context, 
@@ -53,13 +59,10 @@ void OutputNeuron::drawPlug
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umExtVector { GetDirVector() };
-	MicroMeterPoint const umCenter    { GetPosition() };
-	float           const W           { M + 1.2f };       // width of left/right section                 
-	float           const fOffset     { -0.8f };
-	MicroMeterPoint const umP1        { umCenter + umExtVector * (V - fOffset) };
-	MicroMeterPoint const umP2        { umCenter - umExtVector * (W * 0.5f + fOffset) };
+	MicroMeterPoint const umDirVector { GetDirVector() };
+	MicroMeterPoint const umCenter    { GetPosition() - GetScaledDirVector() * 0.1f };
+	MicroMeterPoint const umP         { umCenter - umDirVector * (M * 0.5f - 0.2f) };
 
-	context.DrawLine( umP1,                      umP2, GetExtension() * M, colF );
-	context.DrawLine( umP1 - umExtVector * 0.8f, umP2, GetExtension() * W, colF );
+	context.DrawLine( umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,          colF );
+	context.DrawLine( umCenter + umDirVector *  V,         umP, GetExtension() * (M + 1.2f ), colF );
 }

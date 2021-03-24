@@ -57,30 +57,30 @@ public:
 		return * this;
 	}
 
-	virtual void       Dump         ( ) const;
-	virtual void       CheckShape   ( ) const;
-	virtual void       Prepare      ( );
- 	virtual mV   const GetNextOutput( ) const = 0;
-	virtual void       MoveShape    ( MicroMeterPoint const & );
-	virtual void       SetPosition  ( MicroMeterPoint const & );
-	virtual bool const IsInRect     ( MicroMeterRect  const & ) const; 
-	virtual void       Expand       ( MicroMeterRect        & ) const;
+	virtual void       Dump         () const;
+	virtual void       CheckShape   () const;
+	virtual void       Prepare      ();
+ 	virtual mV   const GetNextOutput() const = 0;
+	virtual void       MoveShape    (MicroMeterPoint const &);
+	virtual void       SetPosition  (MicroMeterPoint const &);
+	virtual bool const IsInRect     (MicroMeterRect  const &) const; 
+	virtual void       Expand       (MicroMeterRect        &) const;
 
 	void MoveShapeFromParent( MicroMeterPoint const & );
 	void SetParent(Shape * const pParent) { m_pShapeParent = pParent; }
 
 	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
-	MicroMeterCircle const GetCircle   ( ) const { return m_circle; }
-	MicroMeterPoint  const GetPosition ( ) const { return m_circle.GetPosition(); }
-	MicroMeter       const GetExtension( ) const { return m_circle.GetRadius(); }
-	mV               const GetVoltage  ( ) const { return m_mVinputBuffer; }
+	MicroMeterCircle const GetCircle   () const { return m_circle; }
+	MicroMeterPoint  const GetPosition () const { return m_circle.GetPosition(); }
+	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
+	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
 	bool IsOrphanedKnot( ) const { return IsKnot() && m_connections.IsOrphan(); }
 
-	bool IsPointInShape( MicroMeterPoint const & ) const;
-	bool IsPrecursorOf( Pipe const & ) const;
-	bool IsSuccessorOf( Pipe const & ) const ;
+	bool const IsPointInShape( MicroMeterPoint const & ) const;
+	bool const IsPrecursorOf( Pipe const & ) const;
+	bool const IsSuccessorOf( Pipe const & ) const ;
 
 	void Reconnect() { m_connections.Reconnect( this );	}
 	

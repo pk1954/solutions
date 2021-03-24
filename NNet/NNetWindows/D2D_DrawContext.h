@@ -28,8 +28,15 @@ public:
 	( 
 		MicroMeterPoint const &, 
 		MicroMeterPoint const &,
-		MicroMeter      const  ,
+		MicroMeter      const,
 		D2D1::ColorF    const  
+	) const;
+
+	virtual void DrawLine
+	( 
+		MicroMeterLine const &, 
+		MicroMeter     const,
+		D2D1::ColorF   const  
 	) const;
 
 	virtual void FillCircle

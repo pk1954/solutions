@@ -48,7 +48,7 @@ public:
 	virtual void       Recalc        ();
 	virtual void       MoveShape     (MicroMeterPoint const &);
 	virtual bool const IsInRect      (MicroMeterRect  const &) const;
-	virtual bool       IsPointInShape(MicroMeterPoint const &) const;
+	virtual bool const IsPointInShape(MicroMeterPoint const &) const;
 	virtual void       Expand        (MicroMeterRect        &) const;
 
 	virtual void Select(tBoolOp const = tBoolOp::opTrue);

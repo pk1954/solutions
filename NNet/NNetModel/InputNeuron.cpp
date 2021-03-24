@@ -11,6 +11,7 @@
 #include "ShapeType.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
+#include "Knot.h"
 #include "InputNeuron.h"
 
 using std::chrono::microseconds;
@@ -75,6 +76,21 @@ void InputNeuron::DrawInterior(DrawContext const & context, tHighlightType const
 	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
 }
 
+MicroMeterPoint const InputNeuron::getOffset() const
+{
+	return GetScaledDirVector() * 0.7f;
+}
+
+MicroMeterPoint const InputNeuron::getCenter() const
+{
+	return GetPosition() - getOffset();
+}
+
+bool const InputNeuron::IsPointInShape( MicroMeterPoint const & point ) const
+{
+	return Distance( point, getCenter() ) <= GetExtension();
+}
+
 void InputNeuron::drawSocket
 ( 
 	DrawContext  const & context, 
@@ -83,17 +99,20 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umExtVector   { GetDirVector() };
-	MicroMeterPoint const umCenter      { GetPosition() };
-	MicroMeterPoint const umOrthoVector { umExtVector.OrthoVector( GetExtension() ) * 0.7f };
-	MicroMeterPoint const umExtVectorVS { umExtVector * M * 0.5f };
-	MicroMeter      const umWidthLR     { GetExtension() * (M - 1.4f) };  // width of left/right section                 
-	MicroMeterPoint const umPosL        { umCenter + umExtVectorVS };
-	MicroMeterPoint const umPosR        { umCenter - umExtVectorVS };
+	MicroMeterPoint const umDirVector    { GetDirVector() };
+	MicroMeter      const umSize         { GetExtension() * M };
+	MicroMeterPoint const umOrthoVector  { getOffset().OrthoVector() };
+	MicroMeterPoint const umExtVectorVS  { umDirVector * M * 0.5f };
+	MicroMeter      const umWidthLR      { umSize - GetExtension() * 1.4f };  // width of left/right section                 
+	MicroMeterPoint const umCenter       { getCenter() };
+	MicroMeterPoint const umStart        { umCenter + umExtVectorVS };
+	MicroMeterPoint const umEndLR        { umCenter - umExtVectorVS };
+	MicroMeterPoint const umEndCenter    { umCenter - umDirVector * VEM };
+	MicroMeterLine  const umLine         { umStart, umEndLR };
 
-	context.DrawLine( umPosL,                 umCenter - umExtVector * VEM, GetExtension() * M, colF );
-	context.DrawLine( umPosL + umOrthoVector, umPosR + umOrthoVector,       umWidthLR,          colF );
-	context.DrawLine( umPosL - umOrthoVector, umPosR - umOrthoVector,       umWidthLR,          colF );
+	context.DrawLine( umStart, umEndCenter,   umSize,    colF );
+	context.DrawLine( umLine + umOrthoVector, umWidthLR, colF );
+	context.DrawLine( umLine - umOrthoVector, umWidthLR, colF );
 }
 
 void InputNeuron::DrawNeuronText( DrawContext const & context ) const

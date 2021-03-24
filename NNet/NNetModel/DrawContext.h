@@ -23,6 +23,13 @@ public:
 		D2D1::ColorF    const
 	) const = 0;
 
+	virtual void DrawLine
+	( 
+		MicroMeterLine const &, 
+		MicroMeter     const, 
+		D2D1::ColorF   const
+	) const = 0;
+
 	virtual void FillArrow
 	( 
 		MicroMeterPoint const &, 

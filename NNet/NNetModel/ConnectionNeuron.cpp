@@ -5,6 +5,11 @@
 #include "stdafx.h"
 #include "ConnectionNeuron.h"
 
+MicroMeterPoint const ConnectionNeuron::GetScaledDirVector() const
+{
+	return GetDirVector().ScaledTo(GetExtension());
+}
+
 MicroMeterPoint const ConnectionNeuron::determineVector() const
 {
 	MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };

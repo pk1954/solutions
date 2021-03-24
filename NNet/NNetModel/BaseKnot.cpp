@@ -84,19 +84,19 @@ void BaseKnot::Prepare( )
 	m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_mVinputBuffer += pipe.GetNextOutput( ); } ); // slow !!
 }
 
-bool BaseKnot::IsPrecursorOf( Pipe const & pipeSucc ) const 
+bool const BaseKnot::IsPrecursorOf( Pipe const & pipeSucc ) const 
 {
 	return m_connections.Apply2AllOutPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipeSucc; } ); 
 }
 
-bool BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
+bool const BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 {
 	return m_connections.Apply2AllInPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipePred; } );
 }
 
-bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
+bool const BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	return Distance( point, GetPosition() ) <= m_circle.GetRadius();
+	return Distance( point, GetPosition() ) <= GetExtension();
 }
 
 MicroMeterRect const BaseKnot::GetRect4Text( ) const
