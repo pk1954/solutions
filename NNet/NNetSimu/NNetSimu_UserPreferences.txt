@@ -1,3 +1,3 @@
 SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\Models\test.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\Models\test1.mod"

@@ -133,17 +133,16 @@ bool const AlignAnimation::AlignSelection( DWORD const dwOptions )
 		return false;
 	calcOrthoVector( m_shapesAnimated );
 
-	MicroMeter const umShapeDist   
-	{ 
-		m_bPackShapes 
-		? NEURON_RADIUS * 2.0f 
-		: m_line.Length() / Cast2Float(m_shapesAnimated.Size()) 
-	};
+	float      const fGapCount          { Cast2Float(m_shapesAnimated.Size() - 1) };
+	MicroMeter const umUnpackedDistance { m_line.Length() / fGapCount };
+	MicroMeter const umShapeDistTarget  { m_bPackShapes ? NEURON_RADIUS * 2.0f : umUnpackedDistance };
+	MicroMeter const umLineLengthTarget { umShapeDistTarget * fGapCount };
 
-	// compute tightly packed positions
+	// compute target positions (packed if PACK_SHAPES is active)
 
-	MicroMeterPoint umPntSingleVector { m_line.GetVector() * (umShapeDist / m_line.Length()) };
-	MicroMeterPoint umPntTargetStart  { m_line.GetCenter() - umPntSingleVector * Cast2Float(m_shapesAnimated.Size()) * 0.5f };
+	MicroMeterPoint umPntSingleVector { m_line.GetVector().ScaledTo(umShapeDistTarget) };
+	MicroMeterPoint umPntLineTarget   { m_line.GetVector().ScaledTo(umLineLengthTarget) };
+	MicroMeterPoint umPntTargetStart  { m_line.GetCenter() - umPntLineTarget * 0.5f };
 
 	// fill animation vectors
 

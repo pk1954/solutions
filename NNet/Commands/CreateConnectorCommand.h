@@ -40,12 +40,11 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-		m_upConnector = nmwi.RemoveFromModel<Connector>(* nmwi.GetShapePtr<Connector *>(m_idConnector));
+		m_upConnector = nmwi.GetUPShapes().Pop<Connector>();
 		while (m_upConnector->IsNotEmpty())
 		{
 			unique_ptr<ConnectionNeuron> upConnectionNeuron { move(m_upConnector->Pop()) };
 			upConnectionNeuron->SetParent( nullptr );
-//			upConnectionNeuron->Select( tBoolOp::opTrue );
 			nmwi.GetUPShapes().SetShape2Slot(move(upConnectionNeuron));
 		}
 	}
