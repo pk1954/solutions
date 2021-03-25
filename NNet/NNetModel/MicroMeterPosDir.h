@@ -85,7 +85,7 @@ public:
     {
         out << posDir.m_pos << L", " 
             << posDir.m_dir.GetValue() << L"rad, " 
-            << Radian2Degrees(posDir.m_dir) << L" deg";
+            << Radian2Degrees(posDir.m_dir) << L"deg";
         return out;
     }
 

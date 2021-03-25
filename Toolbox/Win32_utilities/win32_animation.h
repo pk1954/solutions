@@ -62,8 +62,6 @@ public:
     {
         ANIM_PAR result;
         protect( [&](){ result = m_actual; } );
-        wcout << __func__ << endl;
-        wcout << result;
         return result;
     }
 
@@ -73,15 +71,7 @@ private:
 
     void setActual( ANIM_PAR const newVal )
     {
-        protect
-        ( 
-            [&]()
-            { 
-                wcout << L"setActual" << endl;
-                wcout << newVal;
-                m_actual = newVal; 
-            } 
-        );
+        protect( [&](){ m_actual = newVal; } );
     }
 
     void next()

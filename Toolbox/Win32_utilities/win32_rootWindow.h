@@ -218,6 +218,7 @@ public:
 	virtual void Trigger( )	{ Invalidate( false ); }
 
 	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
+	void SetWindowVisibility( tOnOffAuto const );
 
 protected:
 

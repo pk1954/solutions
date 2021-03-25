@@ -70,7 +70,7 @@ public:
 
 	INT const GetIdFromRootWindow( HWND const hwnd )
 	{
-		for ( auto pp : m_map )
+		for ( auto & pp : m_map )
 			if ( pp.second.m_hwnd == hwnd )
 				return pp.first; 
 

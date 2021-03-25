@@ -214,14 +214,14 @@ void NNetModelCommands::SetConnectionNeurons
 )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
+		TraceStream( ) << __func__ << endl << umPntVectorRun << shapes2Animate << endl;
 	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>( umPntVectorRun, shapes2Animate ) );
 }
 
 void NNetModelCommands::CreateConnector(ShapePtrList<ConnectionNeuron> & shapes)
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
+		TraceStream( ) << __func__ << endl << shapes << endl;
 	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(shapes) );
 }
 

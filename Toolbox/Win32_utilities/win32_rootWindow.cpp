@@ -151,6 +151,12 @@ void RootWindow::SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG c
 	);
 }
 
+void RootWindow::SetWindowVisibility( tOnOffAuto const mode )
+{
+	m_visibilityMode = mode;
+	Show( ApplyAutoCriterion( m_visibilityMode, m_visibilityCriterion ) );
+}
+
 bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
 	UINT const uiCmdId  = LOWORD( wParam );
@@ -158,18 +164,15 @@ bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	switch ( uiCmdId )
 	{
 	case IDM_WINDOW_ON:
-		m_visibilityMode = tOnOffAuto::on;
-		Show( true );
+		SetWindowVisibility( tOnOffAuto::on );
 		break;
 
 	case IDM_WINDOW_OFF:
-		m_visibilityMode = tOnOffAuto::off;
-		Show( false );
+		SetWindowVisibility( tOnOffAuto::off );
 		break;
 
 	case IDM_WINDOW_AUTO:
-		m_visibilityMode = tOnOffAuto::automatic;
-		Show( ApplyAutoCriterion( tOnOffAuto::automatic, m_visibilityCriterion ) );
+		SetWindowVisibility( tOnOffAuto::automatic );
 		break;
 
 	case IDD_REFRESH_RATE_DIALOG:

@@ -312,7 +312,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_NEW_SENSOR:
         m_pMonitorWindow->AddSignal( MicroMeterCircle(umPoint, NEURON_RADIUS * 5) );
-        ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 
     case IDM_ANALYZE_LOOPS:

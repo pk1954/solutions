@@ -95,6 +95,8 @@ void MonitorWindow::AddSignal( MicroMeterCircle const & umCircle )
 {
 	m_pMonitorData->InsertTrack( TrackNr(0) );
 	m_pMonitorData->AddSignal( TrackNr(0), umCircle );
+	SetWindowVisibility( tOnOffAuto::on );
+	m_pSignalObservable->NotifyAll( false );
 	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 }
 
@@ -134,11 +136,8 @@ void MonitorWindow::selectSignal( SignalId const & idNew )
 {
 	if ( idNew != m_idSigSelected )
 	{
-//		m_pMonitorData->Animation( m_idSigSelected, false );
-
 		if ( m_pMonitorData->IsValid( idNew ) )
 		{
-//			m_pMonitorData->Animation( idNew, true );
 			m_idSigSelected = idNew;
 		}
 		else
