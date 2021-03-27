@@ -84,8 +84,11 @@
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="CreateConnectorCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
+    <ClInclude Include="DeleteSignalCommand.h" />
+    <ClInclude Include="DeleteTrackCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
+    <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MoveShapeCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />

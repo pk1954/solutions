@@ -120,6 +120,15 @@
     <ClInclude Include="AddSignalCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DeleteSignalCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteTrackCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InsertTrackCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

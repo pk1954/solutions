@@ -53,7 +53,6 @@
 #define IDD_RULER_OFF            164
 #define IDD_MEASUREMENT_ON       165
 #define IDD_MEASUREMENT_OFF      166
-#define IDD_DELETE_SIGNAL        167
 #define IDD_ADD_TRACK            168
 #define IDD_DELETE_TRACK         169
 
@@ -68,7 +67,8 @@
 #define IDM_MINUS                192
 
 #define IDM_MONITOR_WINDOW       530
-#define IDD_NEW_SENSOR           545
+#define IDD_ADD_SIGNAL           545
+#define IDD_DELETE_SIGNAL        546
 #define IDD_CONNECT              550
 
 #define IDD_INSERT_KNOT          560

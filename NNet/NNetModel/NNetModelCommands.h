@@ -43,6 +43,7 @@ public:
     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
     void AddModel            ( );
+    void AddSignal           ( MicroMeterCircle const &, TrackNr const );
     void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
     void AnalyzeAnomalies    ( );
@@ -55,10 +56,13 @@ public:
     void CreateConnector     ( ShapePtrList<ConnectionNeuron> & );
     void CreateInitialShapes ( );
     void DeleteSelection     ( );
-    void DeleteShape         ( ShapeId const );
-    void Disconnect          ( ShapeId const );
-    void InsertKnot          ( ShapeId const, MicroMeterPoint const & );
-    void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
+    void DeleteShape         ( ShapeId  const );
+    void DeleteSignal        ( SignalId const );
+    void DeleteTrack         ( TrackNr  const );
+    void Disconnect          ( ShapeId  const );
+    void InsertKnot          ( ShapeId  const, MicroMeterPoint const & );
+    void InsertNeuron        ( ShapeId  const, MicroMeterPoint const & );
+    void InsertTrack         ( TrackNr  const );
     void MoveSelection       ( MicroMeterPoint const & );
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );
     void NewInputNeuron      ( MicroMeterPoint const & );

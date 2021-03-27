@@ -81,7 +81,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_NEURON,         L"New neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_OUTPUT_NEURON,  L"New output neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SENSOR,         L"New EEG sensor" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_SIGNAL,         L"New EEG sensor" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
 	}

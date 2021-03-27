@@ -73,7 +73,6 @@ public:
 		for ( auto & pp : m_map )
 			if ( pp.second.m_hwnd == hwnd )
 				return pp.first; 
-
 		return -1;
 	}
 

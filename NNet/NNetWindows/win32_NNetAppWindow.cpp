@@ -179,7 +179,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_crsrWindow       .Start( m_hwndApp, & m_mainNNetWindow, & m_nmri );
 	m_parameterDlg     .Start( m_hwndApp, & m_modelCommands, & m_model.GetParams() );
 	m_performanceWindow.Start( m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, m_nmri, m_model.GetMonitorData(), m_signalObservable );
+	m_monitorWindow    .Start( m_hwndApp, & m_sound, & m_NNetController, & m_modelCommands, m_nmri, m_model.GetMonitorData() );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
@@ -191,8 +191,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false );
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false );
 
-	m_signalObservable      .RegisterObserver( & m_mainNNetWindow );
-	m_signalObservable      .RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable.RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable.RegisterObserver( & m_miniNNetWindow );
 	m_dynamicModelObservable.RegisterObserver( & m_monitorWindow );

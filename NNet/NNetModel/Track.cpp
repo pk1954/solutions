@@ -7,6 +7,17 @@
 
 using std::move;
 
+Track::Track( const Track & rhs ) // copy constructor
+{
+	for ( auto const & upSignal : rhs.m_signals )
+		AddSignal( move(SignalFactory::MakeSignal(*upSignal.get())) );
+}
+
+bool Track::operator==( Track const & rhs ) const
+{
+	return m_signals == rhs.m_signals;
+}
+
 SignalNr const Track::AddSignal( unique_ptr<Signal> pSignal )
 {
 	m_signals.push_back( move(pSignal) );
@@ -28,35 +39,35 @@ unique_ptr<Signal> Track::RemoveSignal( SignalNr const signalNr )
 void Track::Apply2AllSignals( SignalNrFunc const & func ) const
 {
 	for ( int i = 0; i < m_signals.size(); ++i )
-		func( SignalNr( i) ); 
+		func( SignalNr(i) ); 
 }             
 
-void Track::Apply2AllSignals( SignalFunc const & func )
+void Track::Apply2AllSignals( SignalFunc const & func ) const
 {
 	for ( int i = 0; i < m_signals.size(); ++i )
-		func( GetSignal(SignalNr( i)) ); 
+		if (Signal const * const pSignal { GetSignalPtr(SignalNr(i)) } )
+			func( * pSignal ); 
 }             
 
 Signal * const Track::FindSignal( SignalCrit const & crit )
 {
 	for ( int i = 0; i < m_signals.size(); ++i )
 	{ 
-		Signal & signal { GetSignal(SignalNr(i) ) };
-			if ( crit(signal) )
-				return & signal;  
+		Signal * const pSignal { GetSignalPtr(SignalNr(i)) };
+		if ( pSignal && crit(*pSignal) )
+			return pSignal;  
 	}
 	return nullptr;
 }
 
-Signal const & Track::GetSignal( SignalNr const signalNr ) const
+Signal const * const Track::GetSignalPtr( SignalNr const signalNr ) const
 {
-	assert( IsValid( signalNr ) );
-	return * m_signals[signalNr.GetValue()].get();
+	return IsValid(signalNr) ? m_signals[signalNr.GetValue()].get() : nullptr;
 }
 
-Signal & Track::GetSignal( SignalNr const signalNr ) // calling const version 
+Signal * const Track::GetSignalPtr( SignalNr const signalNr ) // calling const version 
 {
-	return const_cast<Signal&>(static_cast<const Track&>(*this).GetSignal( signalNr ));
+	return const_cast<Signal*>(static_cast<const Track&>(*this).GetSignalPtr(signalNr));
 }
 
 bool const Track::IsValid( SignalNr const signalNr ) const

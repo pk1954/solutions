@@ -22,22 +22,8 @@ public:
 	MonitorData( MonitorData&& rhs )             = delete;   // move constructor
 	MonitorData& operator=( const MonitorData& ) = delete;   // copy assignment operator
 	
-	MonitorData(const MonitorData& rhs)  // copy constructor
-	{
-		for ( auto const & upTrack : rhs.m_tracks )
-			m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
-	}
-
-	MonitorData& operator=(MonitorData&& rhs)  // move assignment operator
-	{
-		if (this != &rhs)
-		{
-			m_tracks.clear();
-			for ( auto const & upTrack : rhs.m_tracks )
-				m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
-		}
-		return * this;
-	}
+	MonitorData(const MonitorData& );                        // copy constructor
+	MonitorData& operator=(MonitorData&&) noexcept;          // move assignment operator
 
 	bool operator== (MonitorData const & ) const;
 
@@ -54,11 +40,18 @@ public:
 	void InsertTrack( TrackNr const );
 	void DeleteTrack( TrackNr const );
 
-	void             AddSignal   ( TrackNr const, MicroMeterCircle const & );
-	void             DeleteSignal( SignalId const & );
-	SignalId const   MoveSignal  ( SignalId const &, TrackNr const );
-	Signal   const & GetSignal   ( SignalId const & ) const;
-	Signal         & GetSignal   ( SignalId const & );
+	SignalId const SetSelectedSignalId( SignalId const );
+	SignalId const ResetSelectedSignal();
+
+	SignalNr       const AddSignal   ( TrackNr  const, MicroMeterCircle const & );
+	SignalNr       const AddSignal   ( TrackNr  const, unique_ptr<Signal> );
+	SignalId       const MoveSelectedSignal( TrackNr const );
+	Signal const * const GetSignalPtr( SignalId const & ) const;
+	Signal       * const GetSignalPtr( SignalId const & );
+	Signal const * const GetSelectedSignalPtr() const;
+	Signal       * const GetSelectedSignalPtr();
+
+	unique_ptr<Signal> DeleteSignal( SignalId const & );
 
 	void Apply2AllTracks        ( TrackNrFunc const & ) const;
 	void Apply2AllSignalsInTrack( TrackNr const, SignalNrFunc const & ) const;
@@ -68,11 +61,18 @@ public:
 	Signal * const FindSignal( SignalCrit      const & ) const;
 	Signal * const FindSensor( MicroMeterPoint const & ) const;
 
+	SignalId const GetSelectedSignalId()          const { return m_idSigSelected; }
+	TrackNr  const GetSelectedTrackNr ()          const { return m_idSigSelected.GetTrackNr(); }
+	bool     const IsAnySignalSelected()          const { return m_idSigSelected != SignalIdNull; }
+	bool     const IsSelected(SignalId const &id) const { return m_idSigSelected == id; }
+
+	bool const IsEmptyTrack(TrackNr const) const;
+
 private:
-	Track            & getTrack( TrackNr const );
-	Track    const   & getTrack( TrackNr const ) const;
-	SignalNr const     addSignal( TrackNr const, unique_ptr<Signal> );
+	Track       * const getTrack( TrackNr const );
+	Track const * const getTrack( TrackNr const ) const;
 	unique_ptr<Signal> removeSignal( SignalId const & );
 
-	vector<unique_ptr<Track>> m_tracks {};
+	SignalId                  m_idSigSelected {};
+	vector<unique_ptr<Track>> m_tracks        {};
 };

@@ -23,34 +23,28 @@ class Track
 {
 public:
 
-	Track()                                 = default;  // constructor   
-	~Track()                                = default;  // destructor
-	Track( Track&& rhs )                    = delete;   // move constructor
-	Track & operator= ( const Track&  rhs ) = delete;   // copy assignment operator
-	Track & operator= (       Track&& rhs ) = delete;   // move assignment operator
+	Track()                           = default;  // constructor   
+	~Track()                          = default;  // destructor
+	Track             (      Track&&) = delete;   // move constructor
+	Track & operator= (const Track& ) = delete;   // copy assignment operator
+	Track & operator= (      Track&&) = delete;   // move assignment operator
+	Track             (const Track& );            // copy constructor
 
-	Track( const Track & rhs ) // copy constructor
-	{
-		for ( auto const & upSignal : rhs.m_signals )
-			AddSignal( move(SignalFactory::MakeSignal(*upSignal.get())) );
-	}
+	bool operator==(Track const &) const;
 
-	bool operator==( Track const & rhs ) const
-	{
-		return m_signals == rhs.m_signals;
-	}
-
-	void CheckSignals( ) const;
+	void CheckSignals() const;
 
 	SignalNr     const AddSignal   ( unique_ptr<Signal> );
 	unique_ptr<Signal> RemoveSignal( SignalNr const );
 
-	Signal const & GetSignal( SignalNr const ) const;
-	Signal       & GetSignal( SignalNr const );
-	bool   const   IsValid  ( SignalNr const ) const;
+	Signal const * const GetSignalPtr( SignalNr const ) const;
+	Signal       * const GetSignalPtr( SignalNr const );
+	bool           const IsValid     ( SignalNr const ) const;
+	bool           const IsEmpty     () const { return m_signals.empty(); }
 
 	void Apply2AllSignals( SignalNrFunc const & ) const;
-	void Apply2AllSignals( SignalFunc   const & );
+	void Apply2AllSignals( SignalFunc   const & ) const;
+
 	Signal * const FindSignal( SignalCrit const & );
 
 private:

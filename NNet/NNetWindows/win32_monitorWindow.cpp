@@ -11,10 +11,10 @@
 #include "Track.h"
 #include "Resource.h"
 #include "BaseKnot.h"
-#include "Observable.h"
 #include "MonitorData.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
+#include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_monitorWindow.h"
 
@@ -25,9 +25,9 @@ void MonitorWindow::Start
 	HWND                     const   hwndParent,
 	Sound                  * const   pSound,
 	NNetController         * const   pController,
+	NNetModelCommands      * const   pModelCommands,
 	NNetModelReaderInterface const & model,
-	MonitorData                    & monitorData, 
-	Observable                     & signalObservable
+	MonitorData                    & monitorData 
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -39,11 +39,11 @@ void MonitorWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_pSound            =   pSound;
-	m_pController       =   pController;
-	m_pNMRI             = & model;
-	m_pMonitorData      = & monitorData;
-	m_pSignalObservable = & signalObservable;
+	m_pSound         =   pSound;
+	m_pController    =   pController;
+	m_pModelCommands =   pModelCommands;
+	m_pNMRI          = & model;
+	m_pMonitorData   = & monitorData;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
@@ -56,14 +56,15 @@ void MonitorWindow::Start
 
 void MonitorWindow::Reset( )
 {
-	deselectSignal( );
+	m_pMonitorData->Reset();
 	m_trackStruct.hwndTrack = HWND(0);
+	m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
 	(void)TrackMouseEvent( & m_trackStruct );
 }
 
 void MonitorWindow::Stop( )
 {
-	Reset( );
+	Reset();
 	m_pNMRI        = nullptr;
 	m_pMonitorData = nullptr;
 	m_graphics.ShutDown( );
@@ -82,38 +83,21 @@ long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	else
 		AppendMenu( hPopupMenu, MF_STRING, IDD_MEASUREMENT_ON,  L"Measurement on" );
 
-	AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track" );
+	if ( m_pMonitorData->IsEmptyTrack(m_trackNrHighlighted) )
+		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track" );
+	
 	AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_TRACK,    L"Add track" );
 
-	if ( m_idSigSelected.GetSignalNr().IsNotNull() )
+	if ( m_pMonitorData->IsAnySignalSelected() )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal" );
 
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
-void MonitorWindow::AddSignal( MicroMeterCircle const & umCircle )
-{
-	m_pMonitorData->InsertTrack( TrackNr(0) );
-	m_pMonitorData->AddSignal( TrackNr(0), umCircle );
-	SetWindowVisibility( tOnOffAuto::on );
-	m_pSignalObservable->NotifyAll( false );
-	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-}
-
-void MonitorWindow::InsertTrack( TrackNr const trackNr )
-{
-	m_pMonitorData->InsertTrack( trackNr );
-	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-}
-
 MicroMeterCircle const & MonitorWindow::GetSelectedSignalCircle() const
 {
-	if ( m_idSigSelected.IsNotNull() )
-	{
-		if ( Signal * pSignal = & m_pMonitorData->GetSignal( m_idSigSelected ) )
-			return pSignal->GetCircle();
-	}
-	return MicroMeterCircle::NULL_VAL();
+	Signal const * const pSignal { m_pMonitorData->GetSelectedSignalPtr() };
+	return pSignal ? pSignal->GetCircle() : MicroMeterCircle::NULL_VAL();
 }
 
 fMicroSecs const MonitorWindow::fPixel2fMicroSecs( fPixel const fPixX ) const
@@ -132,29 +116,52 @@ fPixel const MonitorWindow::fMicroSecs2fPixel( fMicroSecs const usParam ) const
 	return fPixX;
 }
 
-void MonitorWindow::selectSignal( SignalId const & idNew )
+fPixel const MonitorWindow::yValue2fPixel( float const fYvalue ) const
 {
-	if ( idNew != m_idSigSelected )
+	fPixel const fPixYvalue { fYvalue / m_fYvaluesPerPixel };
+	assert( fPixYvalue.GetValue() < 10000.0f );
+	return fPixYvalue;
+}
+
+fPixel const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time ) const
+{
+	return yValue2fPixel( signal.GetDataPoint( time ) );
+}
+
+fMicroSecs const MonitorWindow::findNextMax( Signal const & signal, fPixel const fPixX ) const
+{
+	fMicroSecs const usParam { fPixel2fMicroSecs( fPixX ) };
+	fMicroSecs const usMax   { signal.FindNextMaximum( usParam ) };
+	return usMax;
+}
+
+fPixel const MonitorWindow::getSignalOffset( SignalId const & idSignal ) const
+{ 
+	fPixel fPixOffset { calcTrackHeight() * Cast2Float(idSignal.GetTrackNr().GetValue()+1) }; 
+	if ( m_pMonitorData->IsSelected(idSignal) )  
+		fPixOffset += Convert2fPixel( m_pixMoveOffsetY );  // may have move offset
+	return fPixOffset;
+}
+
+SignalId const MonitorWindow::selectSignal( SignalId const & idNew )
+{
+	SignalId const idOld { m_pMonitorData->GetSelectedSignalId() };
+	if ( ! m_pMonitorData->IsSelected(idNew) )
 	{
 		if ( m_pMonitorData->IsValid( idNew ) )
 		{
-			m_idSigSelected = idNew;
+			m_pMonitorData->SetSelectedSignalId(idNew);
 		}
 		else
 		{
-			m_idSigSelected.Set2Null();
+			m_pMonitorData->ResetSelectedSignal();
 			m_pixLast.Set2Null();
 		}
 
 		m_pixMoveOffsetY = 0_PIXEL;
 		Trigger( );   // cause repaint
 	}
-}
-
-void MonitorWindow::deselectSignal( )
-{
-	selectSignal( SignalIdNull );
-	m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
+	return idOld;
 }
 
 TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
@@ -163,7 +170,7 @@ TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
 	fPixel const fPixCrsrYpos     { Convert2fPixel( pixCrsrPosY ) };
 	int    const iTrackNr         { Cast2Int( fPixCrsrYpos / fPixTrackHeight ) };
 	fPixel const fPixTrackCenterY { fPixTrackHeight * (Cast2Float(iTrackNr) + 0.5f) };
-	TrackNr      trackNr          { m_idSigSelected.GetTrackNr() };
+	TrackNr      trackNr          { m_trackNrHighlighted };  // { m_pMonitorData->GetSelectedTrackNr() };
 	if ( fPixCrsrYpos > fPixTrackCenterY )
 		++trackNr;
 	return trackNr;
@@ -184,31 +191,34 @@ fPixel const MonitorWindow::calcTrackHeight( ) const
 
 void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 {
-	fPixel     const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPixel : 2.0_fPixel) : 1.0_fPixel };  // emphasize selected signal 
-	fPixel     const   fPixYoff     { getSignalOffset( idSignal ) };
-	fMicroSecs const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs const   usResolution { m_pNMRI->GetTimeResolution( ) };
-	float      const   fPointsInWin { usInWindow / usResolution };
-	fMicroSecs const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fMicroSecs const   usEnd        { m_pNMRI->GetSimulationTime( ) };
-	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
-	fMicroSecs const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
-	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
+	Signal const * const pSignal { m_pMonitorData->GetSignalPtr( idSignal ) };
+	if ( pSignal == nullptr )
+		return;
+
+	fPixel     const fPixWidth    { m_pMonitorData->IsSelected(idSignal) ? (m_bSignalLocked ? 3.0_fPixel : 2.0_fPixel) : 1.0_fPixel };  // emphasize selected signal 
+	fPixel     const fPixYoff     { getSignalOffset( idSignal ) };
+	fMicroSecs const usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
+	fMicroSecs const usResolution { m_pNMRI->GetTimeResolution( ) };
+	float      const fPointsInWin { usInWindow / usResolution };
+	fMicroSecs const usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs const usEnd        { m_pNMRI->GetSimulationTime( ) };
+	fMicroSecs const timeStart    { max( usEnd - usInWindow, pSignal->GetStartTime() ) };
+	fPixelPoint      prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(*pSignal, usEnd) };
 
 	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
 	{
-		fPixelPoint const actPoint { fMicroSecs2fPixel( time ), fPixYoff - getYvalue( signal, time ) };
+		fPixelPoint const actPoint { fMicroSecs2fPixel( time ), fPixYoff - getYvalue(*pSignal, time) };
 		m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, D2D1::ColorF::Black );
 		prevPoint = actPoint;
 	}
 }
 
-void MonitorWindow::doPaint( ) const
+void MonitorWindow::doPaint() const
 {
 	if ( m_pMonitorData->NoTracks() )
 		return;
 
-	m_pMonitorData->Apply2AllSignals( [&]( SignalId const id ) { paintSignal( id ); } );
+	m_pMonitorData->Apply2AllSignals( [&](SignalId const id) { paintSignal(id ); } );
 
 	if ( m_bShowScale )
 		m_scale.DisplayStaticScale( );
@@ -223,26 +233,29 @@ void MonitorWindow::doPaint( ) const
 
 	m_measurement.DisplayDynamicScale( m_fMicroSecsPerPixel );
 
-	if ( m_idSigSelected != SignalIdNull )
-		drawDiamond( m_idSigSelected );
+	if ( m_pMonitorData->IsAnySignalSelected() )
+		drawDiamond();
 }
 
-void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
+void MonitorWindow::drawDiamond() const
 {
-	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) };
-	PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
-	fPixel     const   fPixCrsrX    { Convert2fPixel( pixPointCrsr.GetX() ) };
-	fMicroSecs const   usMax        { findNextMax( signal, fPixCrsrX ) };
-	fPixel     const   fPixMax      { fMicroSecs2fPixel( usMax ) };
-	fPixel     const   fPixYoff     { getSignalOffset( idSignal ) };
-	fPixel     const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
+	SignalId   const & idSignal { m_pMonitorData->GetSelectedSignalId() };
+	if (Signal const * pSignal { m_pMonitorData->GetSignalPtr(idSignal) } )
+	{
+		PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
+		fPixel     const   fPixCrsrX    { Convert2fPixel( pixPointCrsr.GetX() ) };
+		fMicroSecs const   usMax        { findNextMax( *pSignal, fPixCrsrX ) };
+		fPixel     const   fPixMax      { fMicroSecs2fPixel( usMax ) };
+		fPixel     const   fPixYoff     { getSignalOffset( idSignal ) };
+		fPixel     const   fPixYvalue   { fPixYoff - getYvalue( *pSignal, usMax ) };
 
-	m_graphics.FillDiamond
-	(
-		fPixelPoint( fPixMax, fPixYvalue ),
-		4.0_fPixel,
-		NNetColors::COL_DIAMOND
-	);
+		m_graphics.FillDiamond
+		(
+			fPixelPoint( fPixMax, fPixYvalue ),
+			4.0_fPixel,
+			NNetColors::COL_DIAMOND
+		);
+	}
 }
 
 SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint const & ptCrsr ) const
@@ -268,7 +281,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 		trackNr,
 		[&](SignalNr const signalNr)
 		{
-			Signal const & signal { m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ) };
+			Signal const & signal { * m_pMonitorData->GetSignalPtr( SignalId(trackNr, signalNr) ) };
 			if ( umTime >= signal.GetStartTime() )
 			{
 				fPixel const fPixAmplitude { getYvalue( signal, umTime ) };
@@ -332,18 +345,19 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_SIGNAL:
-		m_pMonitorData->DeleteSignal( m_idSigSelected );
-		deselectSignal( );
+		m_pModelCommands->DeleteSignal( m_pMonitorData->GetSelectedSignalId() );
+		m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
 		break;
 
 	case IDD_ADD_TRACK:
-		InsertTrack( findPos4NewTrack( pixPoint.GetY() ) );
+		m_pModelCommands->InsertTrack( findPos4NewTrack( pixPoint.GetY() ) );
+		m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 		Show( true );            // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:
-		m_pMonitorData->DeleteTrack( m_trackNrHighlighted );
-		deselectSignal( );
+		m_pModelCommands->DeleteTrack( m_trackNrHighlighted );
+		m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
 		if ( m_pMonitorData->NoTracks() )
 			SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
 		break;
@@ -378,15 +392,8 @@ bool MonitorWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 bool MonitorWindow::OnShow( WPARAM const wParam, LPARAM const lParam )
 {
-	bool bShow { static_cast<bool>(wParam) };
-	if ( bShow )
-	{
+	if ( static_cast<bool>(wParam) )
 		m_measurement.ResetLimits( );
-		//if ( m_idSigSelected != SignalIdNull )
-		//	m_pMonitorData->Animation( m_idSigSelected, true );
-	}
-	//else 
-	//	m_pMonitorData->Animation( m_idSigSelected, false );
 	return false;
 }
 
@@ -415,7 +422,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			}
 			else 
 			{
-				if ( m_idSigSelected.GetSignalNr().IsNotNull() && ! m_bSignalLocked )
+				if ( m_pMonitorData->IsAnySignalSelected() && ! m_bSignalLocked )
 				{
 					m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
 					SetCursor( m_hCrsrNS );
@@ -445,7 +452,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam ) 
 {
-	if ( m_idSigSelected == SignalIdNull )
+	if ( ! m_pMonitorData->IsAnySignalSelected() )
 		return;
 
 	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam( lParam ) };
@@ -453,7 +460,7 @@ void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lPar
 
 	if ( m_measurement.IsClose2LeftLimit( fPixCrsrX ) || m_measurement.IsClose2RightLimit( fPixCrsrX ) )
 	{
-		Signal     const & signal  { m_pMonitorData->GetSignal( m_idSigSelected ) };
+		Signal     const & signal  { * m_pMonitorData->GetSelectedSignalPtr() };
 		fMicroSecs const   usMax   { findNextMax( signal, fPixCrsrX ) };
 		fPixel     const   fPixMax { fMicroSecs2fPixel( usMax ) };
 		m_measurement.MoveSelection( fPixMax );
@@ -470,12 +477,12 @@ void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lPar
 void MonitorWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam ) 
 {
 	if ( 
-		 (m_idSigSelected.GetTrackNr() != m_trackNrHighlighted) && 
+		 (m_pMonitorData->GetSelectedTrackNr() != m_trackNrHighlighted) && 
 		 (! m_measurement.TrackingActive()) && 
 		 (! m_bSignalLocked) 
 	   )
 	{
-		m_idSigSelected = m_pMonitorData->MoveSignal( m_idSigSelected, m_trackNrHighlighted );
+		m_pMonitorData->MoveSelectedSignal( m_trackNrHighlighted );
 	}
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLast.Set2Null();

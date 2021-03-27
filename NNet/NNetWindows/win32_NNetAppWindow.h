@@ -128,7 +128,6 @@ private:
 	SlowMotionRatio          m_SlowMotionRatio        { };
 	Observable               m_soundOnObservable      { };
 	Observable               m_cursorPosObservable    { };
-	Observable               m_signalObservable       { }; // selected signal changes
 	Observable               m_staticModelObservable  { };
 	Observable               m_dynamicModelObservable { };
 	Observable               m_runObservable          { };

@@ -16,9 +16,27 @@ bool MonitorData::operator==( MonitorData const & rhs ) const
 	return m_tracks == rhs.m_tracks;
 }
 
+MonitorData::MonitorData(const MonitorData& rhs)  // copy constructor
+{
+	for ( auto const & upTrack : rhs.m_tracks )
+		m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
+}
+
+MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignment operator
+{
+	if (this != &rhs)
+	{
+		m_tracks.clear();
+		for ( auto const & upTrack : rhs.m_tracks )
+			m_tracks.push_back( move(make_unique<Track>(*upTrack.get())) );
+	}
+	return * this;
+}
+
 void MonitorData::Reset( )
 {
 	m_tracks.clear();
+	m_idSigSelected.Set2Null();
 }
 
 int MonitorData::GetNrOfTracks( ) const
@@ -39,40 +57,57 @@ void MonitorData::InsertTrack( TrackNr const trackNr )
 
 unique_ptr<Signal> MonitorData::removeSignal( SignalId const & id )
 { 
-	return getTrack( id.GetTrackNr() ).RemoveSignal( id.GetSignalNr() ); 
+	return getTrack(id.GetTrackNr())->RemoveSignal( id.GetSignalNr() ); 
 };
 
-SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<Signal> pSignal )
+SignalId const MonitorData::SetSelectedSignalId( SignalId const id )
 {
-	return getTrack( trackNr ).AddSignal( move(pSignal) );
+	SignalId const idOld { m_idSigSelected };
+	m_idSigSelected = id;
+	return idOld;
 }
 
-void MonitorData::DeleteSignal( SignalId const & id )
+SignalId const MonitorData::ResetSelectedSignal( )
 {
-	if ( IsValid( id.GetTrackNr() ) )
-		removeSignal( id );
+	SignalId const idOld { m_idSigSelected };
+	m_idSigSelected.Set2Null();
+	return idOld;
 }
 
-void MonitorData::AddSignal
+SignalNr const MonitorData::AddSignal
+( 
+	TrackNr      const trackNr, 
+	unique_ptr<Signal> pSignal 
+)
+{
+	return getTrack(trackNr)->AddSignal(move(pSignal));
+}
+
+unique_ptr<Signal> MonitorData::DeleteSignal( SignalId const & id )
+{
+	return IsValid(id.GetTrackNr())	? move(removeSignal(id)) : nullptr; 
+}
+
+SignalNr const MonitorData::AddSignal
 ( 
 	TrackNr          const   trackNr, 
 	MicroMeterCircle const & umCircle 
 )
 {
-	if ( IsValid( trackNr ) )
-		addSignal( trackNr, move(SignalFactory::MakeSignal(umCircle)) );
+	return ( IsValid(trackNr) )
+	? AddSignal( trackNr, move(SignalFactory::MakeSignal(umCircle)) )
+	: SignalNr::NULL_VAL();
 }
 
-SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const trackNrNew )
+SignalId const MonitorData::MoveSelectedSignal(	TrackNr const trackNrNew )
 {
-	SignalId idNew { id };
-	if ( IsValid(id) && IsValid(trackNrNew) ) //-V1051
+	if ( IsValid(m_idSigSelected) && IsValid(trackNrNew) ) //-V1051
 	{
-		unique_ptr<Signal> pSignal     { removeSignal( id ) };
-		SignalNr           signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
-		idNew = SignalId( trackNrNew, signalNrNew );
+		unique_ptr<Signal> pSignal     { removeSignal( m_idSigSelected ) };
+		SignalNr           signalNrNew { AddSignal( trackNrNew, move(pSignal) ) };
+		m_idSigSelected = SignalId( trackNrNew, signalNrNew );
 	}
-	return idNew;
+	return m_idSigSelected;
 }
 
 void MonitorData::DeleteTrack( TrackNr const trackNr )
@@ -81,49 +116,38 @@ void MonitorData::DeleteTrack( TrackNr const trackNr )
 		m_tracks.erase( m_tracks.begin() + trackNr.GetValue() );
 }
 
-void MonitorData::Apply2AllTracks( TrackNrFunc const & func ) const
+void MonitorData::Apply2AllTracks(TrackNrFunc const & func) const
 {
-	for ( int i = 0; i < m_tracks.size(); ++i )
-		func( TrackNr( i ) ); 
+	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+		func( trackNr ); 
 }                        
 
 void MonitorData::Apply2AllSignalsInTrack( TrackNr const trackNr, SignalNrFunc const & func ) const
 {
-	if ( IsValid( trackNr ) )
-		getTrack(trackNr).Apply2AllSignals( func );
+	if ( Track const * pTrack { getTrack(trackNr) } )
+		pTrack->Apply2AllSignals( func );
 }                        
 
 void MonitorData::Apply2AllSignals( SignalIdFunc const & func ) const
 {
-	Apply2AllTracks
-	( 
-		[&]( TrackNr const trackNr )
+	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+	{ 
+		if ( Track const * pTrack { getTrack(trackNr) } )
 		{
-			getTrack(trackNr).Apply2AllSignals
-			(
-				[&](SignalNr const & signalNr){	func( SignalId(trackNr, signalNr) ); }
-			);
+			pTrack->Apply2AllSignals( [&](SignalNr const & signalNr){ func( SignalId(trackNr, signalNr) ); } );
 		}
-	);
+	}
 }                        
 
 void MonitorData::Apply2AllSignals( SignalFunc const & func ) const
 {
-	Apply2AllTracks
-	( 
-		[&]( TrackNr const trackNr )
+	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+	{ 
+		if ( Track const * pTrack { getTrack(trackNr) } )
 		{
-			getTrack(trackNr).Apply2AllSignals
-			(
-				[&](SignalNr const & signalNr)
-				{	
-					SignalId const   id     { SignalId(trackNr, signalNr) }; 
-					Signal   const & signal { GetSignal( id )  }; 
-					func( signal ); 
-				}
-			);
+			pTrack->Apply2AllSignals([&](Signal const & signal)	{ func(signal); } );
 		}
-	);
+	}
 }                        
 
 Signal * const  MonitorData::FindSignal( SignalCrit const & crit ) const
@@ -134,15 +158,29 @@ Signal * const  MonitorData::FindSignal( SignalCrit const & crit ) const
 	return nullptr;
 }                        
 
-Signal const & MonitorData::GetSignal( SignalId const & id ) const
+Signal * const MonitorData::GetSignalPtr( SignalId const & id )
 {
-	assert( IsValid( id.GetTrackNr() ) );
-	return getTrack( id.GetTrackNr() ).GetSignal( id.GetSignalNr() );
+	TrackNr const trackNr { id.GetTrackNr() };
+	return IsValid(trackNr) ? getTrack(trackNr)->GetSignalPtr(id.GetSignalNr()) : nullptr;
 }
 
-Signal & MonitorData::GetSignal( SignalId const & id ) // calling const version 
+Signal const * const MonitorData::GetSignalPtr( SignalId const & id ) const
 {
-	return const_cast<Signal&>(static_cast<const MonitorData&>(*this).GetSignal( id ));
+	TrackNr const trackNr { id.GetTrackNr() };
+	return IsValid(trackNr) ? getTrack(trackNr)->GetSignalPtr(id.GetSignalNr()) : nullptr;
+}
+
+Signal * const MonitorData::GetSelectedSignalPtr()
+{
+	TrackNr const trackNr { m_idSigSelected.GetTrackNr() };
+	return IsValid(trackNr)
+		   ? getTrack(trackNr)->GetSignalPtr(m_idSigSelected.GetSignalNr())
+		   : nullptr;
+}
+
+Signal const * const MonitorData::GetSelectedSignalPtr() const
+{
+	return GetSignalPtr( m_idSigSelected );
 }
 
 bool const MonitorData::IsValid( TrackNr const trackNr ) const
@@ -152,7 +190,7 @@ bool const MonitorData::IsValid( TrackNr const trackNr ) const
 
 bool const MonitorData::IsValid( SignalId const & id ) const
 {
-	return IsValid(id.GetTrackNr()) && getTrack(id.GetTrackNr()).IsValid(id.GetSignalNr());
+	return IsValid(id.GetTrackNr()) && getTrack(id.GetTrackNr())->IsValid(id.GetSignalNr());
 }
 
 void MonitorData::CheckTracks( ) const
@@ -163,24 +201,22 @@ void MonitorData::CheckTracks( ) const
 #endif
 }
 
-Track const & MonitorData::getTrack( TrackNr const trackNr ) const
+Track const * const MonitorData::getTrack(TrackNr const trackNr) const
 {
-	assert( IsValid( trackNr ) );
-	return *(m_tracks[trackNr.GetValue()]);
+	return IsValid(trackNr) ? m_tracks[trackNr.GetValue()].get() : nullptr;
 }
 
-Track & MonitorData::getTrack( TrackNr const trackNr ) // calling const version 
+Track * const MonitorData::getTrack(TrackNr const trackNr) // calling const version 
 {
-	return const_cast<Track&>(static_cast<const MonitorData&>(*this).getTrack( trackNr ));
+	return const_cast<Track *>(static_cast<const MonitorData&>(*this).getTrack( trackNr ));
+}
+
+bool const MonitorData::IsEmptyTrack(TrackNr const trackNr) const 
+{ 
+	return IsValid(trackNr) ? getTrack(trackNr)->IsEmpty() : true; 
 }
 
 Signal * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) const
 {
-	return FindSignal
-		   (
-			   [&](Signal const & signal)
-			   { 
-				   return signal.Includes( umPos ); 
-			   }
-		   );
+	return FindSignal( [&](Signal const & s) { return s.Includes(umPos); } );
 }

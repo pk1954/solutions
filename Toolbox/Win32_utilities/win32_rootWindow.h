@@ -215,7 +215,7 @@ public:
 	virtual long AddContextMenuEntries( HMENU const ) { return 0L; }
 	virtual void Notify( bool const );
 
-	virtual void Trigger( )	{ Invalidate( false ); }
+	virtual void Trigger()	{ Invalidate( false ); }
 
 	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
 	void SetWindowVisibility( tOnOffAuto const );

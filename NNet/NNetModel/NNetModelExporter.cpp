@@ -127,10 +127,12 @@ void NNetModelExporter::writeMonitorData( wostream & out )
     ( 
         [&]( SignalId const idSignal )
         {
+            Signal const * const pSignal { monitorData.GetSignalPtr(idSignal) };
             out << L"Signal "; 
             WriteTrackNr( out, idSignal.GetTrackNr() );
             out << L"source " << NNetModelStorage::SIGSRC_CIRCLE; 
-            out << monitorData.GetSignal( idSignal ).GetCircle( );
+            if ( pSignal )
+                out << pSignal->GetCircle( );
             out << endl; 
         }
     );

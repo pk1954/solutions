@@ -8,6 +8,7 @@
 #include "AddIncoming2PipeCommand.h"
 #include "AddOutgoing2KnotCommand.h"
 #include "AddOutgoing2PipeCommand.h"
+#include "AddSignalCommand.h"
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "AppendNeuronCommand.h"
@@ -19,8 +20,11 @@
 #include "CopySelectionCommand.h"
 #include "CreateConnectorCommand.h"
 #include "DeletePipeCommand.h"
+#include "DeleteSignalCommand.h"
+#include "DeleteTrackCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertBaseKnotCommand.h"
+#include "InsertTrackCommand.h"
 #include "MoveShapeCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NewNeuronCommandT.h"
@@ -97,6 +101,38 @@ void NNetModelCommands::ResetModel( )
 	m_pNMWI->ResetModel( );
 	m_pCmdStack->Clear();
 	m_pDynamicModelObservable->NotifyAll( false );
+}
+
+void NNetModelCommands::AddSignal
+( 
+	MicroMeterCircle const & umCircle,
+	TrackNr          const   trackNr
+)
+{ 
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << umCircle << L" " << trackNr << endl;
+	m_pCmdStack->PushCommand( make_unique<AddSignalCommand>(umCircle, trackNr) );
+}
+
+void NNetModelCommands::DeleteSignal( SignalId const id )
+{ 
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << id << endl;
+	m_pCmdStack->PushCommand( make_unique<DeleteSignalCommand>(id) );
+}
+
+void NNetModelCommands::DeleteTrack( TrackNr const nr )
+{ 
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << nr << endl;
+	m_pCmdStack->PushCommand( make_unique<DeleteTrackCommand>(nr) );
+}
+
+void NNetModelCommands::InsertTrack( TrackNr const nr )
+{ 
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << nr << endl;
+	m_pCmdStack->PushCommand( make_unique<InsertTrackCommand>(nr) );
 }
 
 void NNetModelCommands::CreateInitialShapes( )

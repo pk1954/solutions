@@ -54,17 +54,17 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
 
-	NNetModelReaderInterface m_nmri                   { };
-	NNetModelWriterInterface m_nmwi                   { };
-	NNetModelCommands        m_modelCommands          { };
-	NNetModelImporter        m_modelImporter          { };
-	NNetModelExporter        m_modelExporter          { };
-	NNetModel                m_model                  { };
-	Observable               m_staticModelObservable  { };
-	Observable               m_dynamicModelObservable { };
-	Script                   m_script                 { };
-	CommandStack             m_cmdStack               { };
-	MonitorData              m_monitorData            { };
+	NNetModelReaderInterface m_nmri                   {};
+	NNetModelWriterInterface m_nmwi                   {};
+	NNetModelCommands        m_modelCommands          {};
+	NNetModelImporter        m_modelImporter          {};
+	NNetModelExporter        m_modelExporter          {};
+	NNetModel                m_model                  {};
+	Observable               m_staticModelObservable  {};
+	Observable               m_dynamicModelObservable {};
+	Script                   m_script                 {};
+	CommandStack             m_cmdStack               {};
+	MonitorData              m_monitorData            {};
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelCommands );

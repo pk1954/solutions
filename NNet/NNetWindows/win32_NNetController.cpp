@@ -276,6 +276,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_NEW_NEURON:
         m_pModelCommands->NewNeuron( umPoint );
+        m_pMonitorWindow->SetWindowVisibility( tOnOffAuto::on );
         break;
 
     case IDD_NEW_INPUT_NEURON:
@@ -310,8 +311,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
-    case IDD_NEW_SENSOR:
-        m_pMonitorWindow->AddSignal( MicroMeterCircle(umPoint, NEURON_RADIUS * 5) );
+    case IDD_ADD_SIGNAL:
+        m_pModelCommands->AddSignal( MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0) );
+        m_pMonitorWindow->Show( true );
+        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         break;
 
     case IDM_ANALYZE_LOOPS:
@@ -347,8 +350,8 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_STOP_ON_TRIGGER:
-        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
+        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         break;
 
     default:

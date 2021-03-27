@@ -138,10 +138,7 @@ void NNetWindow::DrawSensors( ) const
 {
 	m_pNMRI->GetMonitorData().Apply2AllSignals
 	(
-		[&](Signal const & signal)
-		{
-			signal.Draw( m_context );
-		}
+		[&](Signal const & signal) { signal.Draw( m_context ); }
 	);
 }
 
