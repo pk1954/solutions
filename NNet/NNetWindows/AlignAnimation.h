@@ -4,10 +4,12 @@
 
 #pragma once
 
+#include <vector>
 #include "ConnectionNeuron.h"
 #include "MicroMeterPointVector.h"
 #include "win32_animation.h"
 
+using std::vector;
 using std::unique_ptr;
 
 class NNetModelWriterInterface;
@@ -26,9 +28,11 @@ public:
 	static DWORD const ALIGN_DIRECTION  { 0x01 };
 	static DWORD const ALIGN_SHAPES     { 0x02 };
 	static DWORD const PACK_SHAPES      { 0x04 };
-	static DWORD const CREATE_CONNECTOR { 0x0f };  // includes all other options
+	static DWORD const CREATE_CONNECTOR { 0x08 };
 
-	bool const AlignSelection( DWORD const );
+	using Script = vector<DWORD>;
+
+	bool const AlignSelection( AlignAnimation::Script const & );
 	bool const AnimationStep( bool const );
 
 private:
@@ -43,16 +47,14 @@ private:
 
 	using ConnectorAnimation = Animation<MicroMeterPointVector>;
 
-	NNetModelWriterInterface * m_pNMWI           { nullptr };
-	NNetModelCommands        * m_pNNetCommands   { nullptr };
-	MicroMeterLine             m_line            { MicroMeterLine::NULL_VAL() };
-	MicroMeterPoint            m_orthoVector     { MicroMeterPoint::NULL_VAL() };
-	DWORD                      m_animationPhase  { AlignAnimation::ALIGN_DIRECTION };
+	NNetModelWriterInterface * m_pNMWI          { nullptr };
+	NNetModelCommands        * m_pNNetCommands  { nullptr };
+	MicroMeterLine             m_line           { MicroMeterLine::NULL_VAL() };
+	MicroMeterPoint            m_orthoVector    { MicroMeterPoint::NULL_VAL() };
+	DWORD                      m_animationPhase { AlignAnimation::ALIGN_DIRECTION };
 
-	bool m_bAlignDirection  { false };
-	bool m_bAlignShapes     { false };
-	bool m_bPackShapes      { false };
-	bool m_bCreateConnector { false };
+	AlignAnimation::Script const * m_pScript { nullptr };
+	int                            m_iScriptStep { -1 };
 
 	unique_ptr<ConnectorAnimation> m_upConnectorAnimation;
 	ShapePtrList<ConnectionNeuron> m_shapesAnimated;
@@ -62,4 +64,5 @@ private:
 	void       sortDistances  (ALIGN_VECTOR &);
 	bool const calcMaxDistLine(ALIGN_VECTOR const &);
 	void       calcOrthoVector(ShapePtrList<ConnectionNeuron> const &);
+	void       scriptStep     (DWORD const);
 };

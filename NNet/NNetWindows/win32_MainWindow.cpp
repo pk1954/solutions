@@ -14,6 +14,7 @@
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
+using std::unique_ptr;
 using std::make_unique;
 
 void MainWindow::Start
@@ -206,12 +207,24 @@ void MainWindow::CenterSelection()
 
 bool const MainWindow::MakeConnector()
 {
-	return m_pAlignAnimation->AlignSelection(AlignAnimation::ALIGN_DIRECTION); 
+	static AlignAnimation::Script script 
+	{
+	   AlignAnimation::ALIGN_DIRECTION,  
+	   AlignAnimation::ALIGN_SHAPES,     
+	   AlignAnimation::PACK_SHAPES,      
+	   AlignAnimation::CREATE_CONNECTOR 
+	};
+	return m_pAlignAnimation->AlignSelection( script ); 
 }
 
 bool const MainWindow::AlignSelection() 
 { 
-	return m_pAlignAnimation->AlignSelection(AlignAnimation::CREATE_CONNECTOR); 
+	static AlignAnimation::Script script 
+	{
+		AlignAnimation::ALIGN_DIRECTION,  
+		AlignAnimation::ALIGN_SHAPES
+	};
+	return m_pAlignAnimation->AlignSelection( script ); 
 }
 
 bool const MainWindow::ArrowsVisible() const

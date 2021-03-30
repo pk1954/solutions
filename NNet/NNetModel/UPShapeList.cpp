@@ -339,6 +339,6 @@ ShapeType const UPShapeList::DetermineShapeType() const
 	return ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
 		? ShapeType::Value::undefined
 		: (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-		? ShapeType::Value::inputNeuron 
-		: ShapeType::Value::outputNeuron;
+	      ? ShapeType::Value::inputNeuron 
+		  : ShapeType::Value::outputNeuron;
 }

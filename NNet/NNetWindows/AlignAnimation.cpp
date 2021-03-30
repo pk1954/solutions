@@ -74,6 +74,7 @@ bool const AlignAnimation::prepareData()
 
 	if ( ! calcMaxDistLine( points ) )
 		return false;
+
 	calcDistances( points );
 	sortDistances( points );
 
@@ -122,20 +123,29 @@ void AlignAnimation::calcOrthoVector( ShapePtrList<ConnectionNeuron> const & lis
 		m_orthoVector = -m_orthoVector;
 }
 
-bool const AlignAnimation::AlignSelection( DWORD const dwOptions )
+bool const AlignAnimation::AlignSelection( AlignAnimation::Script const & script )
 {
-	m_bAlignDirection  = dwOptions & ALIGN_DIRECTION;
-	m_bAlignShapes     = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
-	m_bPackShapes      = dwOptions & PACK_SHAPES;
-	m_bCreateConnector = dwOptions & CREATE_CONNECTOR;
+	m_pScript = & script;
+	m_iScriptStep = 0;
 
 	if ( ! prepareData() )
 		return false;
+
+	scriptStep( m_pScript->at(m_iScriptStep) );
+	return true;
+}
+
+void AlignAnimation::scriptStep(DWORD const dwOptions)
+{
+	bool bAlignDirection  = dwOptions & ALIGN_DIRECTION;
+	bool bAlignShapes     = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
+	bool bPackShapes      = dwOptions & PACK_SHAPES;
+
 	calcOrthoVector( m_shapesAnimated );
 
 	float      const fGapCount          { Cast2Float(m_shapesAnimated.Size() - 1) };
 	MicroMeter const umUnpackedDistance { m_line.Length() / fGapCount };
-	MicroMeter const umShapeDistTarget  { m_bPackShapes ? NEURON_RADIUS * 2.0f : umUnpackedDistance };
+	MicroMeter const umShapeDistTarget  { bPackShapes ? NEURON_RADIUS * 2.0f : umUnpackedDistance };
 	MicroMeter const umLineLengthTarget { umShapeDistTarget * fGapCount };
 
 	// compute target positions (packed if PACK_SHAPES is active)
@@ -155,8 +165,8 @@ bool const AlignAnimation::AlignSelection( DWORD const dwOptions )
 		{ 
 			MicroMeterPosDir posDir 
 			{
-				m_bAlignShapes    ? posDirTarget.GetPos() : c.GetPosition(), 
-				m_bAlignDirection ? posDirTarget.GetDir() : Vector2Radian(c.GetDirVector()) 
+				bAlignShapes    ? posDirTarget.GetPos() : c.GetPosition(), 
+				bAlignDirection ? posDirTarget.GetDir() : Vector2Radian(c.GetDirVector()) 
 			};
 			umPntVectorTarget.Add( posDir );
 			posDirTarget += umPntSingleVector;
@@ -164,8 +174,6 @@ bool const AlignAnimation::AlignSelection( DWORD const dwOptions )
 	);
 
 	m_upConnectorAnimation->Start( MicroMeterPointVector(m_shapesAnimated), umPntVectorTarget );
-
-	return true;
 }
 
 bool const AlignAnimation::AnimationStep(bool const bTargetReached)
@@ -175,20 +183,22 @@ bool const AlignAnimation::AnimationStep(bool const bTargetReached)
 		m_upConnectorAnimation->GetActual(), 
 		m_shapesAnimated
 	);
+
 	if ( bTargetReached )
 	{
-		if (m_animationPhase == AlignAnimation::PACK_SHAPES)
+		if (++m_iScriptStep == m_pScript->size())
+			return true;
+		DWORD dwOptions { m_pScript->at(m_iScriptStep) };
+		if (dwOptions & CREATE_CONNECTOR)
 		{
-			if ( m_bCreateConnector )
-				m_pNNetCommands->CreateConnector( m_shapesAnimated );
-			m_animationPhase = AlignAnimation::ALIGN_DIRECTION;
+			assert(m_iScriptStep == m_pScript->size() - 1);  // assumption: Create connector is last step
+			m_pNNetCommands->CreateConnector( m_shapesAnimated );
 			return true;
 		}
-		
-		m_animationPhase = (m_animationPhase == AlignAnimation::ALIGN_DIRECTION)
-			? AlignAnimation::ALIGN_SHAPES
-			: AlignAnimation::PACK_SHAPES;
-		AlignSelection(m_animationPhase); 
+		else
+		{
+			scriptStep( dwOptions );
+		}
 	}
 	return false;
 }
