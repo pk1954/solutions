@@ -198,4 +198,7 @@ private:
 	void checkShape( Shape const & ) const;
 };
 
-UPShape ShallowCopy( Shape const & );
+UPShape ShallowCopy(Shape const &);
+
+template <Shape_t T>
+UPShape Copy(Shape const & shape) { return make_unique<T>( static_cast<T const &>(shape) ); }

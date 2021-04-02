@@ -8,6 +8,7 @@
 #include "Signal.h"
 #include "MicroMeterPointVector.h"
 #include "Neuron.h"
+#include "Connector.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -259,7 +260,7 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::setTargetShape()
 {
-	if ( m_pNMRI->IsOfType<BaseKnot>( m_shapeHighlighted ) )
+	if ( ! m_pNMRI->IsOfType<Pipe>(m_shapeHighlighted) )
 	{
 		m_shapeTarget = m_pNMRI->FindShapeAt
 		(

@@ -27,12 +27,16 @@ public:
 	virtual void CheckShape() const;
 	virtual void Dump      () const;
 
-	void Push(unique_ptr<ConnectionNeuron> ups) { m_list.push_back( move(ups) ); }
-	unique_ptr<ConnectionNeuron> Pop() 
+	void Push(ConnectionNeuron * const p) 
 	{ 
-		unique_ptr<ConnectionNeuron> upRet { move(m_list.back()) };
+		m_list.push_back(p); 
+	}
+
+	ConnectionNeuron * const Pop() 
+	{ 
+		ConnectionNeuron * pRet { m_list.back() };
 		m_list.pop_back();
-		return move(upRet);
+		return pRet;
 	}
 
 	size_t const Size()       const { return m_list.size(); }
@@ -53,21 +57,23 @@ public:
 
 	virtual void Select(tBoolOp const = tBoolOp::opTrue);
 
-	void Apply2All( function<void(unique_ptr<ConnectionNeuron> &)> const & func )
+	void Apply2All(function<void(ConnectionNeuron &)> const & func)
 	{
-		for (auto & it : m_list) { func( it ); };
+		for (ConnectionNeuron * const p : m_list) { func(*p); };
 	}                        
 
-	void Apply2All( function<void(unique_ptr<ConnectionNeuron> const &)> const & func ) const
+	void Apply2All(function<void(ConnectionNeuron const &)> const & func) const
 	{
-		for (auto const & it : m_list) { func( it ); };
+		for (ConnectionNeuron const * const p : m_list) { func(*p); };
 	}                        
 
-	friend wostream & operator<< (wostream &, Shape const &);
+	inline static wstring const SEPARATOR     { L", " };
+	inline static wchar_t const OPEN_BRACKET  { L'{' };
+	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
 private:
 
-	vector<unique_ptr<ConnectionNeuron>> m_list {};
+	vector<ConnectionNeuron *> m_list {};
 };
 
 Connector const * Cast2Connector( Shape const * );

@@ -7,12 +7,14 @@
 #include <assert.h>
 #include "SignalFactory.h"
 #include "Knot.h"
+#include "Connector.h"
 #include "MonitorData.h"
 #include "NNetError.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
+#include "ConnectionNeuron.h"
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "NNetModelStorage.h"
@@ -67,35 +69,50 @@ public:
 
     virtual void operator() ( Script & script ) const
     {   
-        ShapeId   const idFromScript{ ScrReadShapeId(script) };
-        ShapeType const shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
-        UPShape         upShape     { 
-                                       shapeType.IsPipeType()
-                                       ? createPipe( script )
-                                       : createBaseKnot( script, shapeType ) 
-                                    };
-        if ( upShape )
-        {
-            upShape->SetId( idFromScript );
-            GetUPShapes().SetShape2Slot( idFromScript, move(upShape) );
-        }
+        createShape(script);
     }
 
 private:
+
+    Shape * const createShape( Script & script ) const
+    {   
+        ShapeId   const   idFromScript{ ScrReadShapeId(script) };
+        ShapeType const   shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
+        Shape           * pShape      { nullptr };
+        UPShape           upShape     
+        { 
+            shapeType.IsConnectorType()
+            ? createConnector(script)
+            : shapeType.IsPipeType()
+            ? createPipe(script)
+            : createBaseKnot(script, shapeType) 
+        };
+        if ( upShape )
+        {
+            upShape->SetId( idFromScript );
+            pShape = upShape.get();
+            GetUPShapes().SetShape2Slot( idFromScript, move(upShape) );
+        }
+        return pShape;
+    }
 
     UPShape createPipe( Script & script ) const
     {
         script.ScrReadSpecial( Pipe::OPEN_BRACKET );
         ShapeId const idStart { ScrReadShapeId(script) };
+//        script.ScrReadString( Pipe::SEPARATOR );
         for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
-            script.ScrReadSpecial( Pipe::SEPARATOR[i] );
+            script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
         ShapeId const idEnd { ScrReadShapeId(script) };
         script.ScrReadSpecial( Pipe::CLOSE_BRACKET );
+        NNetErrorHandler::CheckShapeId(script, GetWriterInterface().GetUPShapes(), idStart);
+        NNetErrorHandler::CheckShapeId(script, GetWriterInterface().GetUPShapes(), idEnd);
         if ( idStart == idEnd )
         {
             wcout << "+++ Pipe has identical start and end point" << endl;
             wcout << "+++ " << L": " << idStart << L" -> " << idEnd << endl;
             wcout << "+++ Pipe ignored" << endl;
+            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Error reading Pipe" )  );
             return nullptr;
         }
         else
@@ -130,6 +147,29 @@ private:
             assert( false );
             return nullptr;
         }
+    }
+
+    UPShape createConnector(Script & script) const 
+    {
+        unique_ptr<Connector> upConnector { make_unique<Connector>() };
+        script.ScrReadSpecial( Connector::OPEN_BRACKET );
+        int const iNrOfElements { script.ScrReadInt() };
+        int iElem { 0 };
+        for (;;)
+        {
+            Shape * const pShape { createShape(script) };
+            if ( ! pShape->GetShapeType().IsConnectorNeuronType() )
+                throw ScriptErrorHandler::ScriptException( 999, wstring( L"Element has wrong type" ) );
+            upConnector->Push(static_cast<ConnectionNeuron *>(pShape));
+            if ( iElem++ == iNrOfElements )
+                break;
+//            script.ScrReadString( Connector::SEPARATOR );
+            for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
+                script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
+        }
+        ShapeId const idEnd { ScrReadShapeId(script) };
+        script.ScrReadSpecial( Connector::CLOSE_BRACKET );
+        return move(upConnector);
     }
 };
 

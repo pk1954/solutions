@@ -28,15 +28,15 @@ void UPShapeList::checkShape( Shape const & shape ) const
 	case ShapeType::Value::outputNeuron:
 	case ShapeType::Value::neuron:
 	case ShapeType::Value::knot:
-		static_cast<BaseKnot const &>( shape ).CheckShape();
+		static_cast<BaseKnot const &>(shape).CheckShape();
 		break;
 
 	case ShapeType::Value::pipe:
-		static_cast<Pipe const &>( shape ).CheckShape();
+		static_cast<Pipe const &>(shape).CheckShape();
 		break;
 
 	case ShapeType::Value::connector:
-		static_cast<Connector const &>( shape ).CheckShape();
+		static_cast<Connector const &>(shape).CheckShape();
 		break;
 
 	default:
@@ -54,19 +54,19 @@ UPShape ShallowCopy( Shape const & shape )
 	switch ( shape.GetShapeType().GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
-		return make_unique<InputNeuron>( static_cast<InputNeuron const &>( shape ) );
+		return Copy<InputNeuron>(shape);
 
 	case ShapeType::Value::outputNeuron:
-		return make_unique<OutputNeuron>( static_cast<OutputNeuron const &>( shape ) );
+		return Copy<OutputNeuron>(shape);
 
 	case ShapeType::Value::knot:
-		return make_unique<Knot>( static_cast<Knot const &>( shape ) );
+		return Copy<Knot>(shape);
 
 	case ShapeType::Value::neuron:
-		return make_unique<Neuron>( static_cast<Neuron const &>( shape ) );
+		return Copy<Neuron>(shape);
 
 	case ShapeType::Value::pipe:
-		return make_unique<Pipe>( static_cast<Pipe const &>( shape ) );
+		return Copy<Pipe>(shape);
 
 	default:
 		assert( false );
@@ -145,8 +145,12 @@ void UPShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape co
 		{
 			Pipe const & pipeSrc { static_cast<Pipe const &>( shapeSrc ) };
 			Pipe       & pipeDst { static_cast<Pipe       &>( shapeDst ) };
-			pipeDst.SetStartKnot( static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) );
-			pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) );
+			BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) };
+			BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) };
+			assert(pBaseKnotStart);
+			pipeDst.SetStartKnot(pBaseKnotStart);
+			assert(pBaseKnotEnd);
+			pipeDst.SetEndKnot  (pBaseKnotEnd);
 		}
 		else
 		{
@@ -162,7 +166,7 @@ void UPShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape co
 
 ShapeId const UPShapeList::Push( UPShape upShape )	
 {
-	ShapeId idNewSlot { IdNewSlot( ) };
+	ShapeId idNewSlot { IdNewSlot() };
 	if ( upShape )
 	{
 		upShape->SetId( IdNewSlot() );
@@ -187,7 +191,7 @@ void UPShapeList::copy( const UPShapeList & rhs )
 	for ( auto const & pShapeSrc : rhs.m_list )
 	{
 		if ( pShapeSrc )
-			LinkShape( * pShapeSrc, [&](Shape const * pSrc){ return GetAt(pSrc->GetId()); });
+			LinkShape(*pShapeSrc, [&](Shape const *pSrc){ return GetAt(pSrc->GetId()); });
 	}
 
 	m_pShapeErrorHandler = rhs.m_pShapeErrorHandler;
@@ -195,7 +199,7 @@ void UPShapeList::copy( const UPShapeList & rhs )
 
 UPShapeList::~UPShapeList()
 {
-	Clear( );
+	Clear();
 }
 
 UPShapeList::UPShapeList( const UPShapeList & rhs ) // copy constructor
@@ -207,7 +211,7 @@ UPShapeList & UPShapeList::operator= ( const UPShapeList & rhs ) // copy assignm
 {
 	if (this != &rhs)
 	{
-		Clear( );
+		Clear();
 		copy( rhs );
 	}
 	return * this;
@@ -216,7 +220,7 @@ UPShapeList & UPShapeList::operator= ( const UPShapeList & rhs ) // copy assignm
 void UPShapeList::CheckShapeList( ) const
 {
 #ifdef _DEBUG
-	Apply2All( [&]( Shape const & shape ) { checkShape( shape ); } );
+	Apply2All( [&]( Shape const & shape ) { checkShape(shape); } );
 #endif
 }
 

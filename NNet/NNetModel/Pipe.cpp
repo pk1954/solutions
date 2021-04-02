@@ -169,6 +169,16 @@ MicroMeterPoint Pipe::GetEndPoint( ) const
 	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
+void Pipe::Select(tBoolOp const op) 
+{ 
+	Shape::Select( op );
+	if ( m_pKnotStart->IsKnot() )
+		m_pKnotStart->Select( op );
+	if ( m_pKnotEnd->IsKnot() )
+		m_pKnotEnd->Select( op );
+}
+
+
 MicroMeter Pipe::GetLength( ) const
 {
 	return Distance( GetStartPoint( ), GetEndPoint( ) );

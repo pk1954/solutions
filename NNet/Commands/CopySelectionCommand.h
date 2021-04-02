@@ -32,7 +32,7 @@ private:
 			{
 				SelShapesIndex & ssi { indexList[pSrc->GetId().GetValue()] };
 				if ( ssi.IsNotNull() )
-					return  m_copies[ssi.GetValue()].get();
+					return m_copies[ssi.GetValue()].get();
 			}
 			return (Shape *)0;
 		};
@@ -41,13 +41,50 @@ private:
 
 		nmwi.GetUPShapes().Apply2AllSelected<Shape>
 		(
-			[&]( Shape & s )
+			[&](Shape & shape)
 			{
-				m_selectedShapeIds.push_back( s.GetId() );
-				indexList[s.GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()) );
-				m_copies.push_back( ShallowCopy( s ) );
+				m_selectedShapeIds.push_back(shape.GetId());
+				indexList[shape.GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
+				m_copies.push_back( ShallowCopy(shape) );
 			}
 		);
+		int const iSize { Cast2Int(m_copies.size()) };
+		for ( int i = 0; i < iSize; ++i )
+		{
+			UPShape & upShapeDst { m_copies[i] };
+			Shape & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
+			if ( Shape * pShapeDst { dstFromSrc( & shapeSrc ) } )
+			{
+				Shape & shapeDst { * pShapeDst };
+				if ( shapeSrc.IsPipe( ) )
+				{
+					Pipe & pipeSrc { static_cast<Pipe &>( shapeSrc ) };
+					Pipe & pipeDst { static_cast<Pipe &>( shapeDst ) };
+					BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) };
+					BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) };
+					if (pBaseKnotStart == nullptr)
+					{
+						BaseKnot * pBaseKnot { pipeSrc.GetStartKnotPtr() };
+						unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPosition()) };
+						upKnot->SetId( pBaseKnot->GetId() );
+						//upKnot->m_connections.AddOutgoing( & pipeSrc );
+						//pipeSrc.SetStartKnot(pBaseKnot);
+						indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
+						m_copies.push_back(move(upKnot));
+					}
+					if (pBaseKnotEnd == nullptr)
+					{
+						BaseKnot * pBaseKnot { pipeSrc.GetEndKnotPtr() };
+						unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPosition()) };
+						upKnot->SetId( pBaseKnot->GetId() );
+						//upKnot->m_connections.AddIncoming( & pipeSrc );
+						//pipeSrc.SetEndKnot(pBaseKnot);
+						indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
+						m_copies.push_back(move(upKnot));
+					}
+				}
+			}
+		}
 		for ( UPShape & upShapeDst : m_copies )  // link shapes
 		{
 			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };

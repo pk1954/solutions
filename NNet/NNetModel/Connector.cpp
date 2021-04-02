@@ -18,52 +18,52 @@ void Connector::CheckShape() const
 void Connector::Dump() const
 {
     Shape::Dump();
-    for (auto & ups : m_list) { wcout << ups << endl; }
+    for (auto ps : m_list) { wcout << ps << endl; }
 }
 
 void Connector::DrawExterior(DrawContext const & context, tHighlightType const type) const
 {
-    for (auto & ups : m_list) { ups->DrawExterior(context, type); }
+    for (auto ps : m_list) { ps->DrawExterior(context, type); }
 }
 
 void Connector::DrawInterior(DrawContext const & context, tHighlightType const type) const
 {
-    for (auto & ups : m_list) { ups->DrawInterior(context, type); }
+    for (auto ps : m_list) { ps->DrawInterior(context, type); }
 }
 
 void Connector::Prepare()
 {
-    for (auto & ups : m_list) { ups->Prepare(); }
+    for (auto ps : m_list) { ps->Prepare(); }
 }
 
 bool const Connector::CompStep()
 {
     bool bStop { false };
-    for (auto & ups : m_list) { if (ups->CompStep()) bStop = true; }
+    for (auto ps : m_list) { if (ps->CompStep()) bStop = true; }
     return bStop;
 }
 
 void Connector::Recalc()
 {
-    for (auto & ups : m_list) { ups->Recalc(); }
+    for (auto ps : m_list) { ps->Recalc(); }
 }
 
 void Connector::MoveShape(MicroMeterPoint const & delta)       
 {
-    for (auto & ups : m_list) { ups->MoveShapeFromParent(delta); }
+    for (auto ps : m_list) { ps->MoveShapeFromParent(delta); }
 }
 
 bool const Connector::IsInRect(MicroMeterRect const & umRect) const 
 {
     bool bRes { false };
-    for (auto & ups : m_list) { if (ups->IsInRect(umRect)) bRes = true; }
+    for (auto ps : m_list) { if (ps->IsInRect(umRect)) bRes = true; }
     return bRes;
 }
 
 bool const Connector::IsPointInShape(MicroMeterPoint const & umPnt) const
 {
     bool bRes { false };
-    for (auto & ups : m_list) { if (ups->IsPointInShape(umPnt)) bRes = true; }
+    for (auto ps : m_list) { if (ps->IsPointInShape(umPnt)) bRes = true; }
     return bRes;
 }
 
@@ -71,9 +71,9 @@ void Connector::Expand( MicroMeterRect & umRect ) const
 {
     Apply2All
     (
-        [&]( unique_ptr<ConnectionNeuron> const & upConnectionNeuron )
+        [&](ConnectionNeuron const & n)
         {
-            umRect.Expand( upConnectionNeuron->GetPosition() );
+            umRect.Expand( n.GetPosition() );
         }
     );
 }
@@ -81,7 +81,7 @@ void Connector::Expand( MicroMeterRect & umRect ) const
 void Connector::Select(tBoolOp const op) 
 { 
     Shape::Select( op );
-    Apply2All( [&](unique_ptr<ConnectionNeuron> const & n) { n->Select( op ); } );
+    Apply2All( [&](ConnectionNeuron & n) { n.Select( op ); } );
 }
 
 Connector const * Cast2Connector( Shape const * pShape )

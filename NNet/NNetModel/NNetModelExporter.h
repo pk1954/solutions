@@ -17,6 +17,7 @@ class Param;
 class Script;
 class Pipe;
 class Shape;
+class Connector;
 class UPShapeList;
 class Observable;
 class ModelDescription;
@@ -36,8 +37,9 @@ private:
 
 	long const getCompactIdVal(ShapeId const id) { return m_CompactIds[id.GetValue()].GetValue(); }
 
-	void writeShape( wostream &, Shape const & );
-	void writePipe ( wostream &, Pipe  const & );
+	void writeShape    ( wostream &, Shape     const & );
+	void writePipe     ( wostream &, Pipe      const & );
+	void writeConnector( wostream &, Connector const & );
 	void writeDescription( wostream & );
 	void writeMonitorData( wostream & );
 	void writeTriggerSounds( wostream & );

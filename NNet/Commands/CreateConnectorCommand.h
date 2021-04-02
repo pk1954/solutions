@@ -32,7 +32,7 @@ public:
 			[&](ConnectionNeuron & n)
 			{
 				n.SetParent( m_upConnector.get() );
-				m_upConnector->Push(move(nmwi.RemoveFromModel<ConnectionNeuron>(n)));
+				m_upConnector->Push(&n);
 			}
 		);
 		m_idConnector = nmwi.GetUPShapes().Push( move(m_upConnector) );
@@ -43,9 +43,8 @@ public:
 		m_upConnector = nmwi.GetUPShapes().Pop<Connector>();
 		while (m_upConnector->IsNotEmpty())
 		{
-			unique_ptr<ConnectionNeuron> upConnectionNeuron { move(m_upConnector->Pop()) };
-			upConnectionNeuron->SetParent( nullptr );
-			nmwi.GetUPShapes().SetShape2Slot(move(upConnectionNeuron));
+			ConnectionNeuron * const pConnectionNeuron { m_upConnector->Pop() };
+			pConnectionNeuron->SetParent( nullptr );
 		}
 	}
 

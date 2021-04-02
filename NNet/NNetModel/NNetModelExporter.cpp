@@ -10,6 +10,7 @@
 #include "Track.h"
 #include "InputNeuron.h"
 #include "BaseKnot.h"
+#include "Connector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
 #include "NNetModelReaderInterface.h"
@@ -157,6 +158,22 @@ void NNetModelExporter::writePipe( wostream & out, Pipe const & pipe )
         << Pipe::CLOSE_BRACKET;
 }
 
+void NNetModelExporter::writeConnector( wostream & out, Connector const & connector )
+{
+    out << Connector::OPEN_BRACKET << endl;
+    out << L" " << connector.Size() << L" elements" << endl;
+    connector.Apply2All
+    (
+        [&](ConnectionNeuron const & connectionNeuron)
+        {
+            writeShape(out, connectionNeuron);
+            out << Connector::SEPARATOR << endl;
+        }
+    );
+    
+    out << Connector::CLOSE_BRACKET << endl;;
+}
+
 void NNetModelExporter::writeShape( wostream & out, Shape const & shape )
 {
     if ( shape.IsDefined() )
@@ -168,11 +185,15 @@ void NNetModelExporter::writeShape( wostream & out, Shape const & shape )
         case ShapeType::Value::outputNeuron:
         case ShapeType::Value::neuron:
         case ShapeType::Value::knot:
-            out << static_cast<BaseKnot const &>( shape ).GetPosition();
+            out << static_cast<BaseKnot const &>(shape).GetPosition();
             break;
 
         case ShapeType::Value::pipe:
-            writePipe( out, static_cast<Pipe const &>( shape ) );
+            writePipe( out, static_cast<Pipe const &>(shape) );
+            break;
+
+        case ShapeType::Value::connector:
+            writeConnector( out, static_cast<Connector const &>(shape) );
             break;
 
         default:

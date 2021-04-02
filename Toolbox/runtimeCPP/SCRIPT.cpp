@@ -452,7 +452,7 @@ bool Script::ScrProcess
                 if ( symbol.GetSymbolType( ) != tSTYPE::Function )
                    ScriptErrorHandler::typeError( );          // wrong symbol type 
 
-                symbol.GetFunction( )( * this );              // call wrapper function 
+                symbol.GetFunction()( * this );              // call wrapper function 
 
                 m_pScanAct = & scan;
             }   

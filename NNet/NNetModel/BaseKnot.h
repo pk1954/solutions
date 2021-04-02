@@ -76,7 +76,7 @@ public:
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
 	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
-	bool IsOrphanedKnot( ) const { return IsKnot() && m_connections.IsOrphan(); }
+	bool IsOrphanedKnot() const { return IsKnot() && m_connections.IsOrphan(); }
 
 	bool const IsPointInShape( MicroMeterPoint const & ) const;
 	bool const IsPrecursorOf( Pipe const & ) const;

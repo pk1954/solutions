@@ -102,6 +102,9 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 
 	switch ( typeSrc )
 	{
+	case ShapeType::Value::connector:
+		return typeDst == ShapeType::Value::connector;
+
 	case ShapeType::Value::pipe:
 		return false;
 
