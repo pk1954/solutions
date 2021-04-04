@@ -18,14 +18,16 @@ public:
 		ShapeId const id, 
 		tBoolOp const op 
 	)
-	  :	m_idShape( id ),
-		m_op( op )
+	  :	m_idShape(id),
+		m_op(op)
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.GetShapePtr<Shape *>( m_idShape )->Select( m_op ); 
+		Shape * pShape { nmwi.GetShapePtr<Shape *>(m_idShape) };
+		bool const bOn { ApplyOp2(pShape->IsSelected(), m_op) };
+		pShape->Select(bOn, true);  // true: apply recursive 
 	}
 
 private:

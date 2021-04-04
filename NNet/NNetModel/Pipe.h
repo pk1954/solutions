@@ -50,35 +50,22 @@ public:
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
-	virtual bool const IsInRect(MicroMeterRect const &) const;
-
-	virtual void CheckShape() const;
-	virtual void Prepare();
-	virtual void MoveShape( MicroMeterPoint const & );
-
-	virtual bool const CompStep()
-	{
-		m_potential[m_potIndex] = m_mVinputBuffer;
-		if ( m_potIndex == 0 )
-			m_potIndex = m_potential.size() - 1;  // caution!
-		else                                      // modification if m_potIndex
-		    --m_potIndex;                         // must be atomic
-		return false;
-	}
+	virtual bool const IsInRect      (MicroMeterRect  const &)                   const;
+	virtual bool const IsPointInShape(MicroMeterPoint const &)                   const;
+	virtual void       CheckShape    ()                                          const;
+	virtual void       DrawArrows    (DrawContext const &, MicroMeter     const) const;
+	virtual void       DrawExterior  (DrawContext const &, tHighlightType const) const;
+	virtual void       DrawInterior  (DrawContext const &, tHighlightType const) const;
+	virtual void       Expand( MicroMeterRect & ) const;
+	virtual void       Select(bool const, bool const);
+	virtual void       MoveShape( MicroMeterPoint const & );
+	virtual void       Prepare();
+	virtual bool const CompStep();
+	virtual void       Recalc();
+	virtual void       Clear();
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPoint const & ) const;
-
-	virtual void Select(tBoolOp const op = tBoolOp::opTrue);
-
-	virtual bool const IsPointInShape( MicroMeterPoint const & ) const;
-
-	virtual void DrawArrows  ( DrawContext const &, MicroMeter     const ) const;
-	virtual void DrawExterior( DrawContext const &, tHighlightType const ) const;
-	virtual void DrawInterior( DrawContext const &, tHighlightType const ) const;
-	virtual void Recalc();
-	virtual void Clear();
-	virtual void Expand( MicroMeterRect & ) const;
 
 	void DislocateEndPoint  () { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
 	void DislocateStartPoint() { dislocate( GetStartKnotPtr(), -PIPE_WIDTH ); }

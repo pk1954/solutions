@@ -43,8 +43,8 @@ public:
 				    
 	void            Clear             ( );
 	void            SetErrorHandler   ( ShapeErrorHandler * const );
-	void            SelectAllShapes   ( tBoolOp const = tBoolOp::opTrue );
-	void            DeselectAllShapes ( ) { SelectAllShapes(tBoolOp::opFalse); }
+	void            SelectAllShapes   ( bool const );
+	void            DeselectAllShapes ( ) { SelectAllShapes(false); }
 	ShapeId   const Push              ( UPShape );
 	UPShape         ExtractShape      ( ShapeId const );	
 	Shape   * const ReplaceShape      ( ShapeId const, UPShape );	

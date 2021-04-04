@@ -15,8 +15,8 @@ void AlignAnimation::Initialize
 	NNetModelCommands        & commands
 )
 {
-	m_pNMWI         = & nmwi;
-	m_pNNetCommands = & commands;
+	m_pNMWI          = & nmwi;
+	m_pModelCommands = & commands;
 	m_upConnectorAnimation = make_unique<ConnectorAnimation>(IDX_CONNECTOR_ANIMATION, hwnd); 
 }
 
@@ -178,7 +178,7 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 
 bool const AlignAnimation::AnimationStep(bool const bTargetReached)
 {
-	m_pNNetCommands->SetConnectionNeurons
+	m_pModelCommands->SetConnectionNeurons
 	(
 		m_upConnectorAnimation->GetActual(), 
 		m_shapesAnimated
@@ -192,7 +192,7 @@ bool const AlignAnimation::AnimationStep(bool const bTargetReached)
 		if (dwOptions & CREATE_CONNECTOR)
 		{
 			assert(m_iScriptStep == m_pScript->size() - 1);  // assumption: Create connector is last step
-			m_pNNetCommands->CreateConnector( m_shapesAnimated );
+			m_pModelCommands->CreateConnector( m_shapesAnimated );
 			return true;
 		}
 		else

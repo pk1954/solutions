@@ -104,8 +104,8 @@ class WrapSelectAll: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pCommands->SelectAll( op );
+        bool const bOn { script.ScrReadInt() != 0 };
+        m_pCommands->SelectAll(bOn);
     }
 };
 
@@ -114,9 +114,9 @@ class WrapSelectSubtree: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
-        tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pCommands->SelectSubtree( id, op );
+        ShapeId const id  { ScrReadShapeId(script) };
+        bool    const bOn { script.ScrReadInt() != 0 };
+        m_pCommands->SelectSubtree(id, bOn);
     }
 };
 
@@ -235,8 +235,8 @@ public:
     {
         MicroMeterPoint const umPntStart { ScrReadMicroMeterPoint( script ) };
         MicroMeterPoint const umPntEnd   { ScrReadMicroMeterPoint( script ) };
-        bool            const bClear     { script.ScrReadUint() != 0 };
-        m_pCommands->SelectShapesInRect( MicroMeterRect(umPntStart, umPntEnd), bClear );
+        bool            const bOn        { script.ScrReadUint() != 0 };
+        m_pCommands->SelectShapesInRect( MicroMeterRect(umPntStart, umPntEnd), bOn );
     }
 };
 

@@ -14,22 +14,22 @@ public:
 	SelectShapesInRectCommand
 	( 
 		MicroMeterRect const & rect,
-		bool           const   bClear
+		bool           const   bAdd2Selection
 	)
 	  :	m_rect( rect ),
-		m_bClearSelection( bClear )
+		m_bAdd2Selection( bAdd2Selection )
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
 		UPShapeList & list { nmwi.GetUPShapes() };
 		SelectionCommand::Do( nmwi );
-		if ( m_bClearSelection )
+		if ( ! m_bAdd2Selection )
 			list.DeselectAllShapes();
-		list.Apply2AllInRect<Shape>(m_rect, [&](Shape& s){ s.Select(); });
+		list.Apply2AllInRect<Shape>(m_rect, [&](Shape& s){ s.Select(true, true); });
 	}
 
 private:
 	MicroMeterRect const m_rect;
-	bool           const m_bClearSelection;
+	bool           const m_bAdd2Selection;
 };

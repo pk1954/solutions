@@ -48,7 +48,7 @@ private:
 	using ConnectorAnimation = Animation<MicroMeterPointVector>;
 
 	NNetModelWriterInterface * m_pNMWI          { nullptr };
-	NNetModelCommands        * m_pNNetCommands  { nullptr };
+	NNetModelCommands        * m_pModelCommands { nullptr };
 	MicroMeterLine             m_line           { MicroMeterLine::NULL_VAL() };
 	MicroMeterPoint            m_orthoVector    { MicroMeterPoint::NULL_VAL() };
 	DWORD                      m_animationPhase { AlignAnimation::ALIGN_DIRECTION };

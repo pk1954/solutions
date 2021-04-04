@@ -37,6 +37,7 @@ public:
 
 	virtual void DrawExterior(DrawContext const &, tHighlightType const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlightType const) const;
+	virtual void Select      (bool const, bool const);
 	virtual void Recalc      () { };
 
 	virtual void DrawNeuronText(PixelCoordsFp const &) const {};

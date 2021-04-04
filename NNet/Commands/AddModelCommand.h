@@ -15,13 +15,13 @@ public:
 	AddModelCommand( UPShapeList const & list )
 	{ 
 		m_UPShapeList = list;
-		m_UPShapeList.SelectAllShapes( tBoolOp::opTrue );
+		m_UPShapeList.SelectAllShapes(true);
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		SelectionCommand::Do( nmwi );
-		nmwi.GetUPShapes().SelectAllShapes();
+		SelectionCommand::Do(nmwi);
+		nmwi.GetUPShapes().SelectAllShapes(true);
 		m_idList = nmwi.GetUPShapes().Append( m_UPShapeList );
 	}
 

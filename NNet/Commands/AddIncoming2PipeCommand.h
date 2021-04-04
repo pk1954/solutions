@@ -30,6 +30,7 @@ public:
 			m_pPipeOld      = nmwi.GetShapePtr<Pipe *>( m_idPipe );
 			m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr( );
 			m_upKnotInsert  = make_unique<Knot>( m_pos );                                
+			m_upKnotInsert->Select( m_pPipeOld->IsSelected(), false );
 			m_upKnotOrtho   = make_unique<Knot>( m_pos - nmwi.OrthoVector( m_idPipe ) );
 			m_upPipeOrtho   = make_unique<Pipe>( m_upKnotOrtho.get(), m_upKnotInsert.get() );		
 			m_upPipeExt     = make_unique<Pipe>( m_pStartKnotOld,     m_upKnotInsert.get() );   	

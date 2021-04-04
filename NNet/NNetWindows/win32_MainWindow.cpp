@@ -45,7 +45,7 @@ void MainWindow::Start
 		controller
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
-	m_pNNetCommands        = & commands;
+	m_pModelCommands       = & commands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pAlignAnimation      = & alignAnimation;
@@ -301,7 +301,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			{
 				if (umDelta.IsNotZero())
 				{
-					m_pNNetCommands->MoveShape( m_shapeHighlighted, umDelta );
+					m_pModelCommands->MoveShape( m_shapeHighlighted, umDelta );
 					setTargetShape();
 				}
 			}
@@ -312,7 +312,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			}
 			else if ( m_pNMRI->AnyShapesSelected( ) )   // move selected shapes 
 			{
-				m_pNNetCommands->MoveSelection( umDelta );
+				m_pModelCommands->MoveSelection( umDelta );
 			}
 			else  // move view by manipulating coordinate system 
 			{
@@ -332,7 +332,7 @@ void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 {
 	if ( IsDefined( m_shapeHighlighted ) )
 	{
-		m_pNNetCommands->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+		m_pModelCommands->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
 	}
 }
 
@@ -350,7 +350,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 	bool const bSelection { m_rectSelection.IsNotEmpty() };
 	if ( bSelection )
 	{
-		m_pNNetCommands->SelectShapesInRect( m_rectSelection, !(wParam & MK_CONTROL) );
+		m_pModelCommands->SelectShapesInRect(m_rectSelection, wParam & MK_CONTROL);
 		m_rectSelection.SetZero();
 	}
 	return bSelection; // let base class handle other cases
@@ -420,7 +420,7 @@ bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
 	if ( fOldValue.IsNull() )
 		return false;
 	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-	m_pNNetCommands->SetPulseRate( id, fNewValue );
+	m_pModelCommands->SetPulseRate( id, fNewValue );
 	return true;
 }
 

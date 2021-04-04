@@ -37,9 +37,9 @@ Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )
 	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
 }
 
-void NNetModelWriterInterface::SelectShape( ShapeId const idShape, tBoolOp const op ) 
+void NNetModelWriterInterface::SelectShape(ShapeId const idShape, bool const bOn) 
 { 
-	GetShapePtr<Shape *>( idShape )->Select( op ); 
+	GetShapePtr<Shape *>(idShape)->Select(bOn, false); 
 }
 
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
@@ -55,12 +55,12 @@ void NNetModelWriterInterface::SelectBeepers()
 		[&](Neuron &n) 
 		{ 
 			if (n.HasTriggerSound()) 
-				n.Select(); 
+				n.Select(true, false); 
 		} 
 	); 
 }
 
-void NNetModelWriterInterface::RemoveOrphans( )
+void NNetModelWriterInterface::RemoveOrphans()
 {
 	GetUPShapes().Apply2All<Knot>                              
 	(                                                        

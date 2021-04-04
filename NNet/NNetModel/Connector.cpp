@@ -78,10 +78,11 @@ void Connector::Expand( MicroMeterRect & umRect ) const
     );
 }
 
-void Connector::Select(tBoolOp const op) 
+void Connector::Select(bool const bOn, bool const bRecursive) 
 { 
-    Shape::Select( op );
-    Apply2All( [&](ConnectionNeuron & n) { n.Select( op ); } );
+    Shape::Select(bOn, false);
+    if (bRecursive)
+        Apply2All( [&](ConnectionNeuron & n) { n.Select(bOn, false); } );
 }
 
 Connector const * Cast2Connector( Shape const * pShape )

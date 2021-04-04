@@ -16,20 +16,20 @@ public:
 	SelectSubtreeCommand
 	( 
 		ShapeId const id, 
-		tBoolOp const op 
+		bool    const bOn
 	)
-	  :	m_idShape( id ),
-		m_op( op )
+	  :	m_idShape(id),
+		m_bOn(bOn)
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		SelectionCommand::Do( nmwi );
-		nmwi.SelectSubtree( nmwi.GetShapePtr<BaseKnot *>( m_idShape ), m_op );
+		SelectionCommand::Do(nmwi);
+		nmwi.SelectSubtree(nmwi.GetShapePtr<BaseKnot *>(m_idShape), m_bOn);
 	}
 
 private:
 	ShapeId const m_idShape;
-	tBoolOp const m_op;
+	bool    const m_bOn;
 };
 

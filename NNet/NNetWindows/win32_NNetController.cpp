@@ -329,7 +329,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDM_DESELECT_ALL:
     case IDM_ESCAPE:
-        m_pModelCommands->SelectAll( tBoolOp::opFalse );
+        m_pModelCommands->SelectAll(false);
         Script::StopProcessing();
         break;
 
@@ -342,11 +342,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SELECT_ALL:
-        m_pModelCommands->SelectAll( tBoolOp::opTrue );
+        m_pModelCommands->SelectAll(true);
         break;
 
     case IDM_SELECT_SUBTREE:
-        m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
+        m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedShapeId(), true );
         break;
 
     case IDD_STOP_ON_TRIGGER:

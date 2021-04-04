@@ -96,7 +96,7 @@ private:
 	bool                m_bTargetFits          { false };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
-	NNetModelCommands * m_pNNetCommands        { nullptr };
+	NNetModelCommands * m_pModelCommands       { nullptr };
 	AlignAnimation    * m_pAlignAnimation      { nullptr };
 
 	void setTargetShape     ( );

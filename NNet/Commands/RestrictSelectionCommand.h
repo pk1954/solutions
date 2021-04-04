@@ -20,10 +20,10 @@ public:
 		SelectionCommand::Do( nmwi );
 		nmwi.GetUPShapes().Apply2AllSelected<Shape>
 		( 
-			[&](Shape& s)
+			[&](Shape & s)
 			{ 
 				if ( s.GetShapeType() != m_val ) 
-					s.Select(tBoolOp::opFalse); 
+					s.Select(false, false); 
 			}
 		);
 	}

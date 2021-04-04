@@ -15,74 +15,56 @@ using std::make_unique;
 class CopySelectionCommand : public Command
 {
 private:
+
+	void addMissingKnot(BaseKnot * pBaseKnot, function<Shape * (Shape const *)> const & dstFromSrc)
+	{
+		if ( ! dstFromSrc(pBaseKnot))
+		{
+			unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPosition()) };
+			upKnot->SetId( pBaseKnot->GetId() );
+			m_indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
+			m_copies.push_back(move(upKnot));
+		}
+	}
+
 	void init( NNetModelWriterInterface & nmwi )
 	{ 
-		using SelShapesIndex = NamedType < int, struct SelShapesIndex_Parameter >;
-		using SSIndexVector  = vector<SelShapesIndex>;
-
-		static SelShapesIndex const SSI_NULL( SelShapesIndex::NULL_VAL() );
-
-		long          lSizeOfModel { nmwi.GetUPShapes().Size() };
-		SSIndexVector indexList( lSizeOfModel, SSI_NULL );      // indices into m_copies
-
 		auto dstFromSrc = [&](Shape const * pSrc )
 		{ 
 			ShapeId idSrc { pSrc->GetId() };
 			if ( IsDefined(idSrc) )
 			{
-				SelShapesIndex & ssi { indexList[pSrc->GetId().GetValue()] };
+				SelShapesIndex & ssi { m_indexList[pSrc->GetId().GetValue()] };
 				if ( ssi.IsNotNull() )
 					return m_copies[ssi.GetValue()].get();
 			}
 			return (Shape *)0;
 		};
 
-		ShapeId idShapeCopy { ShapeId( lSizeOfModel ) };
+		long const lSizeOfModel { nmwi.GetUPShapes().Size() };
+		ShapeId    idShapeCopy  { ShapeId( lSizeOfModel ) };
+
+		m_indexList.resize( lSizeOfModel, SelShapesIndex::NULL_VAL() ); 
 
 		nmwi.GetUPShapes().Apply2AllSelected<Shape>
 		(
 			[&](Shape & shape)
 			{
 				m_selectedShapeIds.push_back(shape.GetId());
-				indexList[shape.GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
-				m_copies.push_back( ShallowCopy(shape) );
+				UPShape upShapeCopy { ShallowCopy(shape) };
+				m_indexList[upShapeCopy->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
+				m_copies.push_back( move(upShapeCopy) );
 			}
 		);
 		int const iSize { Cast2Int(m_copies.size()) };
-		for ( int i = 0; i < iSize; ++i )
+		for ( int i = 0; i < iSize; ++i ) // cannot use range-based loop. m_copies changed in loop.
 		{
-			UPShape & upShapeDst { m_copies[i] };
-			Shape & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
-			if ( Shape * pShapeDst { dstFromSrc( & shapeSrc ) } )
+			Shape * const pShapeSrc { nmwi.GetShape( m_copies[i]->GetId() ) };
+			if ( pShapeSrc->IsPipe( ) )
 			{
-				Shape & shapeDst { * pShapeDst };
-				if ( shapeSrc.IsPipe( ) )
-				{
-					Pipe & pipeSrc { static_cast<Pipe &>( shapeSrc ) };
-					Pipe & pipeDst { static_cast<Pipe &>( shapeDst ) };
-					BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) };
-					BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) };
-					if (pBaseKnotStart == nullptr)
-					{
-						BaseKnot * pBaseKnot { pipeSrc.GetStartKnotPtr() };
-						unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPosition()) };
-						upKnot->SetId( pBaseKnot->GetId() );
-						//upKnot->m_connections.AddOutgoing( & pipeSrc );
-						//pipeSrc.SetStartKnot(pBaseKnot);
-						indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
-						m_copies.push_back(move(upKnot));
-					}
-					if (pBaseKnotEnd == nullptr)
-					{
-						BaseKnot * pBaseKnot { pipeSrc.GetEndKnotPtr() };
-						unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPosition()) };
-						upKnot->SetId( pBaseKnot->GetId() );
-						//upKnot->m_connections.AddIncoming( & pipeSrc );
-						//pipeSrc.SetEndKnot(pBaseKnot);
-						indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
-						m_copies.push_back(move(upKnot));
-					}
-				}
+				Pipe * const pPipeSrc { static_cast<Pipe *>(pShapeSrc) };
+				addMissingKnot(pPipeSrc->GetStartKnotPtr(), dstFromSrc);
+				addMissingKnot(pPipeSrc->GetEndKnotPtr  (), dstFromSrc);
 			}
 		}
 		for ( UPShape & upShapeDst : m_copies )  // link shapes
@@ -122,14 +104,18 @@ public:
 		nmwi.GetUPShapes().DeselectAllShapes();
 		for ( auto & idShape : m_selectedShapeIds ) 
 		{ 
-			nmwi.SelectShape(idShape); 
+			nmwi.SelectShape(idShape, true); 
 		}
 	}
 
 private:
+	using SelShapesIndex = NamedType <int, struct SelShapesIndex_Parameter>;
+	using SSIndexVector  = vector<SelShapesIndex>;
+
+	bool            m_bInitialized     { false };
 	int             m_iSizeOfSelection { 0 };
-	vector<UPShape> m_copies;
-	vector<ShapeId> m_selectedShapeIds;
-	bool            m_bInitialized { false };
+	SSIndexVector   m_indexList        {};     // indices into m_copies
+	vector<UPShape> m_copies           {};
+	vector<ShapeId> m_selectedShapeIds {};
 };
 

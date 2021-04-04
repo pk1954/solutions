@@ -22,6 +22,7 @@ public:
 	{
 		m_pStartKnot = m_pPipe->GetStartKnotPtr( );
 		m_upNewPipe  = make_unique<Pipe>( m_pStartKnot, m_pBaseKnot );
+		m_upNewPipe->Select( m_pPipe->IsSelected(), true );
 	}
 
 	~Connect2PipeCommand( )	{ }

@@ -21,14 +21,14 @@ using std::move;
 class NNetModelWriterInterface
 {
 public:
-	void          Start( NNetModel * const );
+	void          Start(NNetModel * const);
 	void          Stop(); 
     void          CreateInitialShapes();
-    void          RemoveOrphans( );
+    void          RemoveOrphans();
     void          SelectBeepers();
-    void          SelectShape( ShapeId const, tBoolOp const = tBoolOp::opTrue );
-    void          ToggleStopOnTrigger( ShapeId const );
-    Shape * const GetShape( ShapeId const );
+    void          SelectShape(ShapeId const, bool const);
+    void          ToggleStopOnTrigger(ShapeId const);
+    Shape * const GetShape(ShapeId const);
 
     UPShapeList & GetUPShapes()    { return m_pModel->GetUPShapes(); }
     Param       & GetParams()      { return m_pModel->GetParams(); }
@@ -40,7 +40,7 @@ public:
 
     void DumpModel() const { m_pModel->DumpModel(); }
 
-    void  SelectSubtree(BaseKnot* const p, tBoolOp const o) { m_pModel->SelectSubtree(p, o); }
+    void  SelectSubtree(BaseKnot* const p, bool const b) { m_pModel->SelectSubtree(p, b); }
     float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
     void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
     void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }

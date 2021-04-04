@@ -60,7 +60,8 @@ public:
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
-	virtual void Select(tBoolOp const op = tBoolOp::opTrue) { ApplyOp(m_bSelected, op); }
+	virtual void Select(tBoolOp const op)                { ApplyOp(m_bSelected, op); }
+	virtual void Select(bool const bOn, bool const bRec) { m_bSelected = bOn; }
 
 	bool      const IsSelected  () const { return m_bSelected; }
 	bool      const IsDefined   () const { return ::IsDefined( m_identifier ); }

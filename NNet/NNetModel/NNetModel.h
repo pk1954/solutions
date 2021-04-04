@@ -71,7 +71,7 @@ public:
 	void  RecalcAllShapes( );
 	void  ResetModel( );
 	float SetParam( ParameterType::Value const, float const );
-	void  SelectSubtree( BaseKnot * const, tBoolOp const );
+	void  SelectSubtree( BaseKnot * const, bool const );
 
 	UPShapeList & GetUPShapes()    { return m_Shapes; }
 	MonitorData & GetMonitorData() { return m_monitorData; }

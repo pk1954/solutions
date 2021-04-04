@@ -21,7 +21,7 @@ public:
 		if ( ! m_result.IsEmpty() )
 		{
 			nmwi.GetUPShapes().DeselectAllShapes();
-			m_result.Apply2All([&](Shape const &s){ nmwi.SelectShape(s.GetId()); }	);
+			m_result.Apply2All([&](Shape const &s){ nmwi.SelectShape(s.GetId(), true); }	);
 		}
 	}
 

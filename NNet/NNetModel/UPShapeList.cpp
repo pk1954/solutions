@@ -136,7 +136,7 @@ Shape * const UPShapeList::ReplaceShape( ShapeId const id, UPShape upT )
 	return tmp.release();
 }
 
-void UPShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape const *)> const & dstFromSrc ) const
+void UPShapeList::LinkShape( Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc ) const
 {
 	if ( Shape * pShapeDst { dstFromSrc( & shapeSrc ) } )
 	{
@@ -304,9 +304,9 @@ void UPShapeList::Apply2AllSelected( ShapeType const type, ShapeFuncC const & fu
 	Apply2All( { [&](Shape const & s) { if (s.IsSelected() && (s.GetShapeType() == type)) func(s); } } );
 }
 
-void UPShapeList::SelectAllShapes( tBoolOp const op ) 
+void UPShapeList::SelectAllShapes(bool const bOn) 
 { 
-	Apply2All( [&](Shape & s) { s.Select( op ); } ); 
+	Apply2All( [&](Shape & s) { s.Select(bOn, false); } ); 
 }
 
 vector<ShapeId> UPShapeList::Append( UPShapeList & list2Append )

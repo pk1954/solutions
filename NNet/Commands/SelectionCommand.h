@@ -16,7 +16,7 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			nmwi.GetUPShapes().Apply2AllSelected<Shape>( [&](Shape & s) { m_selectedShapes.Add(&s); } );
+			nmwi.GetUPShapes().Apply2AllSelected<Shape>([&](Shape & s) { m_selectedShapes.Add(&s); });
 			m_bInitialized = true;
 		}
 	}
@@ -24,7 +24,7 @@ public:
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
 		nmwi.GetUPShapes().DeselectAllShapes();
-		m_selectedShapes.Apply2All([&](Shape &s){ s.Select(); });
+		m_selectedShapes.Apply2All([&](Shape &s){ s.Select(true, false); });
 	}
 
 protected:

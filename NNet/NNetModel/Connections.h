@@ -47,7 +47,7 @@ public:
 	bool const HasOutgoing() const { return ! m_outgoing.IsEmpty(); }
 	bool const HasConnection(Type const type = Type::all) const
 	{
-		if ( type == Type::in )
+		if (type == Type::in)
 			return HasIncoming();
 		else if ( type == Type::out )
 			return HasOutgoing();
@@ -55,16 +55,16 @@ public:
 			return HasIncoming() || HasOutgoing();
 	}
 
-	size_t GetNrOfIncomingConnections( ) const { return m_incoming.Size(); }
-	size_t GetNrOfOutgoingConnections( ) const { return m_outgoing.Size(); }
-	size_t GetNrOfConnections( )         const { return m_incoming.Size() + m_outgoing.Size(); }
-	bool   IsOrphan( )                   const { return ! HasConnection( Type::all ); }
+	size_t GetNrOfIncomingConnections() const { return m_incoming.Size(); }
+	size_t GetNrOfOutgoingConnections() const { return m_outgoing.Size(); }
+	size_t GetNrOfConnections()         const { return m_incoming.Size() + m_outgoing.Size(); }
+	bool   IsOrphan()                   const { return ! HasConnection(Type::all); }
 
 	void ClearIncoming( ) { m_incoming.Clear( ); }
 	void ClearOutgoing( ) { m_outgoing.Clear( ); }
 
-	void Apply2AllInPipes ( PipeFunc const & func ) const { m_incoming.Apply2All( func ); }
-	void Apply2AllOutPipes( PipeFunc const & func ) const { m_outgoing.Apply2All( func ); }
+	void Apply2AllInPipes (PipeFunc const &f) const { m_incoming.Apply2All(f); }
+	void Apply2AllOutPipes(PipeFunc const &f) const { m_outgoing.Apply2All(f); }
 
 	void Apply2AllPipes( Type const type, PipeFunc const & func ) const
 	{
@@ -76,13 +76,13 @@ public:
 			Apply2AllConnectedPipes( func );
 	}
 
-	bool Apply2AllInPipesB ( PipeCrit const & func ) const { return m_incoming.Apply2AllB( func ); }
-	bool Apply2AllOutPipesB( PipeCrit const & func ) const { return m_outgoing.Apply2AllB( func ); }
+	bool Apply2AllInPipesB (PipeCrit const &f) const { return m_incoming.Apply2AllB(f); }
+	bool Apply2AllOutPipesB(PipeCrit const &f) const { return m_outgoing.Apply2AllB(f); }
 
 	void Apply2AllConnectedPipes( PipeFunc const & func ) const
 	{
-		Apply2AllInPipes ( [&]( Pipe & pipe ) { func( pipe ); } );
-		Apply2AllOutPipes( [&]( Pipe & pipe ) { func( pipe ); } );
+		Apply2AllInPipes ([&](Pipe &pipe) { func(pipe); });
+		Apply2AllOutPipes([&](Pipe &pipe) { func(pipe); });
 	}
 
 	void Apply2AllConnectedPipesB( PipeCrit const & func )

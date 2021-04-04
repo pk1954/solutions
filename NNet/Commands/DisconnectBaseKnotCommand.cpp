@@ -25,13 +25,13 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
-//    wcout << L"DisconnectBaseKnotCommand " << L" shapeId = " << m_pBaseKnot->GetId( ) << endl;
     MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
     m_pBaseKnot->m_connections.Apply2AllInPipes
     ( 
         [&]( Pipe & pipe ) // every incoming pipe needs a new end knot
         { 
             auto upKnotNew { make_unique<Knot>( umPos ) };
+            upKnotNew->Select( pipe.IsSelected(), false );
             upKnotNew->m_connections.AddIncoming( & pipe );  // prepare new knot as far as possible
             m_endKnots.push_back( move(upKnotNew) );         // store new knot for later
         }                                                    // but do not touch m_pBaseKnot
@@ -41,6 +41,7 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
         [&]( Pipe & pipe ) // every outgoing pipe needs a new start knot
         { 
             auto upKnotNew { make_unique<Knot>( umPos ) };
+            upKnotNew->Select( pipe.IsSelected(), false );
             upKnotNew->m_connections.AddOutgoing( & pipe );  // prepare new knot as far as possible
             m_startKnots.push_back( move(upKnotNew) );       // store new knot for later
         }                                                    // but do not touch m_pBaseKnot
@@ -60,7 +61,6 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
-    //    wcout << L"DisconnectBaseKnotCommand " << L"Do " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
     for ( int i = 0; i < m_startKnots.size(); ++i )
     {
         unique_ptr<Knot> & upKnot  { m_startKnots[i] };

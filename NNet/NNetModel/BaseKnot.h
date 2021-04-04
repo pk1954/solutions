@@ -93,7 +93,7 @@ public:
 	void SetConnections( Connections * const pSrc ) 
 	{ 
 		m_connections = * pSrc;
-		Reconnect( );
+		Reconnect();
 	}
 
 	void ClearConnections( )
@@ -109,7 +109,7 @@ protected:
 	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeterCircle const ) const;
 	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeter       const ) const;
 
-	MicroMeterRect const GetRect4Text( ) const;
+	MicroMeterRect const GetRect4Text() const;
 
 	void moveShape( MicroMeterPoint const & );
 

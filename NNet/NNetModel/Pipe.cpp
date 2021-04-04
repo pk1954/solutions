@@ -156,37 +156,36 @@ void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
 	pBaseKnot->MoveShape( GetVector().OrthoVector().ScaledTo( dislocation ) );
-	Recalc( );
+	Recalc();
 }
 
-MicroMeterPoint Pipe::GetStartPoint( ) const 
+MicroMeterPoint Pipe::GetStartPoint() const 
 { 
 	return m_pKnotStart ? m_pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
-MicroMeterPoint Pipe::GetEndPoint( ) const 
+MicroMeterPoint Pipe::GetEndPoint() const 
 { 
 	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
-void Pipe::Select(tBoolOp const op) 
+void Pipe::Select(bool const bOn, bool const bRecursive) 
 { 
-	Shape::Select( op );
-	if ( m_pKnotStart->IsKnot() )
-		m_pKnotStart->Select( op );
-	if ( m_pKnotEnd->IsKnot() )
-		m_pKnotEnd->Select( op );
+	Shape::Select(bOn, false);
+	if ( m_pKnotStart->IsKnot() && (bRecursive || (m_pKnotStart->m_connections.GetNrOfConnections() == 1)) )
+		m_pKnotStart->Select(bOn, false);
+	if ( m_pKnotEnd  ->IsKnot() && (bRecursive || (m_pKnotEnd  ->m_connections.GetNrOfConnections() == 1)) )
+		m_pKnotEnd->Select(bOn, false);
 }
 
-
-MicroMeter Pipe::GetLength( ) const
+MicroMeter Pipe::GetLength() const
 {
-	return Distance( GetStartPoint( ), GetEndPoint( ) );
+	return Distance(GetStartPoint(), GetEndPoint());
 }
 
 bool const Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	MicroMeterPoint const umVector{ GetEndPoint( ) - GetStartPoint( ) };
+	MicroMeterPoint const umVector{ GetEndPoint() - GetStartPoint() };
 	if ( umVector.IsCloseToZero() )
 		return false;
 	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
@@ -257,6 +256,16 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type 
 	{
 		context.DrawLine( GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type) );
 	}
+}
+
+bool const Pipe::CompStep()
+{
+	m_potential[m_potIndex] = m_mVinputBuffer;
+	if ( m_potIndex == 0 )
+		m_potIndex = m_potential.size() - 1;  // caution!
+	else                                      // modification if m_potIndex
+		--m_potIndex;                         // must be atomic
+	return false;
 }
 
 mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const

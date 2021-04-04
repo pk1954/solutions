@@ -382,25 +382,25 @@ void NNetModelCommands::SelectShape( ShapeId const id, tBoolOp const op )
 	m_pCmdStack->PushCommand( make_unique<SelectShapeCommand>( id, op ) );
 }
 
-void NNetModelCommands::SelectAll( tBoolOp const op )
+void NNetModelCommands::SelectAll(bool const bOn)
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << op << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectAllCommand>( op  ) );
+		TraceStream( ) << __func__ << L" " << bOn << endl;
+	m_pCmdStack->PushCommand( make_unique<SelectAllCommand>(bOn) );
 }
 
-void NNetModelCommands::SelectSubtree( ShapeId const id, tBoolOp const op )
+void NNetModelCommands::SelectSubtree( ShapeId const id, bool  const bOn )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id << L" " << op << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectSubtreeCommand>( id, op ) );
+		TraceStream( ) << __func__ << L" " << id << L" " << bOn << endl;
+	m_pCmdStack->PushCommand( make_unique<SelectSubtreeCommand>( id, bOn ) );
 }
 
-void NNetModelCommands::SelectShapesInRect( MicroMeterRect const & rect, bool const bClear )
+void NNetModelCommands::SelectShapesInRect( MicroMeterRect const & rect, bool const bAdd2Selection )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << rect << bClear << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectShapesInRectCommand>(rect, bClear) );
+		TraceStream( ) << __func__ << L" " << rect << bAdd2Selection << endl;
+	m_pCmdStack->PushCommand( make_unique<SelectShapesInRectCommand>(rect, bAdd2Selection) );
 }
 
 void NNetModelCommands::AnalyzeLoops( )

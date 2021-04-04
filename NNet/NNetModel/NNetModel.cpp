@@ -105,18 +105,18 @@ void NNetModel::ResetModel( )
 	SetSimulationTime();
 }
 
-void NNetModel::SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
+void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 {
 	if ( pBaseKnot )
 	{
-		pBaseKnot->Select( op );
+		pBaseKnot->Select(bOn, false);
 		pBaseKnot->m_connections.Apply2AllOutPipes
 		( 
 			[&]( Pipe & pipe ) 
 			{ 
-				pipe.Select( op ); 
+				pipe.Select(bOn, false); 
 				if ( pipe.GetEndKnotPtr()->IsKnot() )
-					SelectSubtree( pipe.GetEndKnotPtr(), op ); 
+					SelectSubtree(pipe.GetEndKnotPtr(), bOn); 
 			} 
 		);
 	}

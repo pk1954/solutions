@@ -22,7 +22,7 @@ public:
 	  : m_shapes4connector(list)
 	{
 		m_upConnector = make_unique<Connector>();
-		m_upConnector->Select( tBoolOp::opTrue );
+		m_upConnector->Select(true, false);
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 

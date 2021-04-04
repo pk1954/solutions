@@ -70,11 +70,11 @@ public:
     void NewOutputNeuron     ( MicroMeterPoint const & );
     void ResetModel          ( );
     void RestrictSelection   ( ShapeType::Value const );
-    void SelectAll           ( tBoolOp const );
+    void SelectAll           ( bool const );
     void SelectAllBeepers    ( );
     void SelectShape         ( ShapeId const, tBoolOp const );
     void SelectShapesInRect  ( MicroMeterRect const &, bool const );
-    void SelectSubtree       ( ShapeId const, tBoolOp const );
+    void SelectSubtree       ( ShapeId const, bool const );
     void SetConnectionNeurons( MicroMeterPointVector const &, ShapePtrList<ConnectionNeuron> & );
     void SetParameter        ( ParameterType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );

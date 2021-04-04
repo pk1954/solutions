@@ -55,7 +55,7 @@ public:
 	virtual bool const IsPointInShape(MicroMeterPoint const &) const;
 	virtual void       Expand        (MicroMeterRect        &) const;
 
-	virtual void Select(tBoolOp const = tBoolOp::opTrue);
+	virtual void Select(bool const, bool const);
 
 	void Apply2All(function<void(ConnectionNeuron &)> const & func)
 	{
