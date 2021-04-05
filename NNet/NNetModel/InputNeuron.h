@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "ConnectionNeuron.h"
 
-class InputNeuron : public ConnectionNeuron
+class InputNeuron : public ConnNeuron
 {
 public:
 
@@ -22,8 +22,8 @@ public:
 	static bool      const TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::inputNeuron; }
 
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const ) const;
-	virtual void DrawInterior  ( DrawContext const &, tHighlightType const ) const;
+	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
+	virtual void DrawInterior( DrawContext const &, tHighlight const ) const;
 
 	virtual void Prepare( )
 	{

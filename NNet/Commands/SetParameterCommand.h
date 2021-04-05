@@ -14,9 +14,9 @@ class SetParameterCommand : public Command
 public:
 	SetParameterCommand
 	( 
-		Param                const & param,
-		ParameterType::Value const   parameter, 
-		float                const   fNewValue 
+		Param            const & param,
+		ParamType::Value const   parameter, 
+		float            const   fNewValue 
 	)
 	  : m_parameter( parameter ),
 		m_fNewValue( fNewValue ),
@@ -34,7 +34,7 @@ public:
 	}
 
 private:
-	ParameterType::Value const m_parameter;
-	float      const m_fOldValue;
-	float      const m_fNewValue;
+	ParamType::Value const m_parameter;
+	float            const m_fOldValue;
+	float            const m_fNewValue;
 };

@@ -221,11 +221,11 @@ void NNetModelCommands::SetTriggerSound( ShapeId const id, SoundDescr const & so
 	m_pCmdStack->PushCommand( make_unique<SetTriggerSoundCommand>( id, sound ) );
 }
 
-void NNetModelCommands::SetParameter( ParameterType::Value const param, float const fNewValue )
+void NNetModelCommands::SetParameter( ParamType::Value const param, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << ParameterType::GetName( param ) << L" " << fNewValue << endl;
-	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pNMWI->GetParams(), param, fNewValue ) ) );
+		TraceStream() << __func__ << L" " << ParamType::GetName(param) << L" " << fNewValue << endl;
+	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>(SetParameterCommand(m_pNMWI->GetParams(), param, fNewValue)) );
 }
 
 void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
@@ -245,8 +245,8 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 
 void NNetModelCommands::SetConnectionNeurons
 ( 
-	MicroMeterPointVector    const & umPntVectorRun,
-	ShapePtrList<ConnectionNeuron> & shapes2Animate 
+	MicroMeterPointVector const & umPntVectorRun,
+	ShapePtrList<ConnNeuron>    & shapes2Animate 
 )
 {
 	if ( IsTraceOn( ) )
@@ -254,7 +254,7 @@ void NNetModelCommands::SetConnectionNeurons
 	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>( umPntVectorRun, shapes2Animate ) );
 }
 
-void NNetModelCommands::CreateConnector(ShapePtrList<ConnectionNeuron> & shapes)
+void NNetModelCommands::CreateConnector(ShapePtrList<ConnNeuron> & shapes)
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl << shapes << endl;

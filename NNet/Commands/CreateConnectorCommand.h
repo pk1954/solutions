@@ -18,39 +18,26 @@ using std::make_unique;
 class CreateConnectorCommand : public Command
 {
 public:
-	CreateConnectorCommand(ShapePtrList<ConnectionNeuron> & list)
-	  : m_shapes4connector(list)
+	CreateConnectorCommand(ShapePtrList<ConnNeuron> & list)
 	{
 		m_upConnector = make_unique<Connector>();
 		m_upConnector->Select(true, false);
+		list.Apply2All(	[&](ConnNeuron & n)	{ m_upConnector->Push(&n); } );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_shapes4connector.Apply2All
-		(
-			[&](ConnectionNeuron & n)
-			{
-				n.SetParent( m_upConnector.get() );
-				m_upConnector->Push(&n);
-			}
-		);
-		m_idConnector = nmwi.GetUPShapes().Push( move(m_upConnector) );
+		m_upConnector->Apply2All([&](CNPtr & p) { p->SetParent(m_upConnector.get()); });
+		nmwi.GetUPShapes().Push( move(m_upConnector) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
 		m_upConnector = nmwi.GetUPShapes().Pop<Connector>();
-		while (m_upConnector->IsNotEmpty())
-		{
-			ConnectionNeuron * const pConnectionNeuron { m_upConnector->Pop() };
-			pConnectionNeuron->SetParent( nullptr );
-		}
+		m_upConnector->Apply2All([&](CNPtr & p) { p->SetParent(nullptr); });
 	}
 
 private:
 
-	ShapePtrList<ConnectionNeuron> m_shapes4connector;
-	unique_ptr  <Connector>        m_upConnector {};
-	ShapeId                        m_idConnector {};
+	unique_ptr<Connector> m_upConnector {};  
 };

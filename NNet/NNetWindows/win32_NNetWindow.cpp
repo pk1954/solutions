@@ -93,7 +93,7 @@ void NNetWindow::DrawInteriorInRect
 		[&](Shape const & s) 
 		{ 
 			if (crit(s)) 
-				s.DrawInterior( m_context, tHighlightType::normal ); 
+				s.DrawInterior( m_context, tHighlight::normal ); 
 		} 
 	);
 }
@@ -106,7 +106,7 @@ void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 		umRect,
 		[&](Shape const & s) 
 		{ 
-			s.DrawExterior( m_context, tHighlightType::normal ); 
+			s.DrawExterior( m_context, tHighlight::normal ); 
 		} 
 	);
 }

@@ -8,18 +8,18 @@
 #include "DrawContext.h"
 #include "Knot.h"
 
-void Knot::DrawExterior( DrawContext const & context, tHighlightType const type ) const
+void Knot::DrawExterior( DrawContext const & context, tHighlight const type ) const
 {
 	MicroMeter const umRadius 
 	{ 
-		(type == tHighlightType::highlighted) 
+		(type == tHighlight::highlighted) 
 		? 30.0_MicroMeter 
 		: GetExtension() 
 	};
 	context.FillCircle(MicroMeterCircle(GetPosition(), umRadius), GetExteriorColor(type));
 }
 
-void Knot::DrawInterior( DrawContext const & context, tHighlightType const type ) const
+void Knot::DrawInterior( DrawContext const & context, tHighlight const type ) const
 {
 	context.FillCircle( GetCircle() * PIPE_INTERIOR, GetInteriorColor(type) );
 }

@@ -53,6 +53,9 @@ UPShape ShallowCopy( Shape const & shape )
 {
 	switch ( shape.GetShapeType().GetValue() )
 	{
+	case ShapeType::Value::connector:
+		return Copy<Connector>(shape);
+
 	case ShapeType::Value::inputNeuron:
 		return Copy<InputNeuron>(shape);
 
@@ -136,30 +139,33 @@ Shape * const UPShapeList::ReplaceShape( ShapeId const id, UPShape upT )
 	return tmp.release();
 }
 
-void UPShapeList::LinkShape( Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc ) const
+void UPShapeList::LinkShape(Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc) const
 {
-	if ( Shape * pShapeDst { dstFromSrc( & shapeSrc ) } )
+	if ( Shape * pShapeDst { dstFromSrc(& shapeSrc) } )
 	{
 		Shape & shapeDst { * pShapeDst };
-		if ( shapeSrc.IsPipe( ) )
+		if (shapeSrc.IsPipe())
 		{
-			Pipe const & pipeSrc { static_cast<Pipe const &>( shapeSrc ) };
-			Pipe       & pipeDst { static_cast<Pipe       &>( shapeDst ) };
-			BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) };
-			BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) };
-			assert(pBaseKnotStart);
+			Pipe const & pipeSrc { static_cast<Pipe const &>(shapeSrc) };
+			Pipe       & pipeDst { static_cast<Pipe       &>(shapeDst) };
+			BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
+			BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
 			pipeDst.SetStartKnot(pBaseKnotStart);
-			assert(pBaseKnotEnd);
 			pipeDst.SetEndKnot  (pBaseKnotEnd);
 		}
-		else
+		else if (shapeSrc.IsConnector())
 		{
-			Connections const & srcConn { static_cast<BaseKnot const &>( shapeSrc ).m_connections };
-			Connections       & dstConn { static_cast<BaseKnot       &>( shapeDst ).m_connections };
+			Connector & connectorDst { static_cast<Connector &>(shapeDst) };
+			connectorDst.Apply2All( [&](CNPtr & p) { p = static_cast<CNPtr>(dstFromSrc(p)); } );
+		}
+		else  // BaseKnot
+		{
+			Connections const & srcConn { static_cast<BaseKnot const &>(shapeSrc).m_connections };
+			Connections       & dstConn { static_cast<BaseKnot       &>(shapeDst).m_connections };
 			dstConn.ClearOutgoing();
 			dstConn.ClearIncoming();
-			srcConn.Apply2AllOutPipes([&](Pipe const & pipeSrc) {dstConn.AddOutgoing( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
-			srcConn.Apply2AllInPipes ([&](Pipe const & pipeSrc) {dstConn.AddIncoming( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
+			srcConn.Apply2AllOutPipes([&](Pipe const &p){dstConn.AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
+			srcConn.Apply2AllInPipes ([&](Pipe const &p){dstConn.AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
 		}
 	}
 }
@@ -220,13 +226,13 @@ UPShapeList & UPShapeList::operator= ( const UPShapeList & rhs ) // copy assignm
 void UPShapeList::CheckShapeList( ) const
 {
 #ifdef _DEBUG
-	Apply2All( [&]( Shape const & shape ) { checkShape(shape); } );
+	Apply2All( [&](Shape const & shape) { checkShape(shape); } );
 #endif
 }
 
 void UPShapeList::Dump( ) const
 {
-	Apply2All( [&]( Shape const & shape ) { shape.Dump( ); } );
+	Apply2All( [&](Shape const & shape) { shape.Dump(); } );
 }
 
 MicroMeterRect const UPShapeList::CalcEnclosingRect( SelMode const mode ) const
@@ -247,8 +253,18 @@ ShapeId const UPShapeList::FindShapeAt
 	for ( size_t i = m_list.size(); i --> 0; )	
 	{
 		Shape * pShape = m_list[i].get();
-		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
-			return pShape->GetId();
+		if ( pShape )
+		{
+			bool bCrit { crit(* pShape) };
+			if ( bCrit )
+			{
+				bool bPointInShape { pShape->IsPointInShape(pnt) };
+				if ( bPointInShape )
+					return pShape->GetId();
+			}
+		}
+		//if ( pShape && crit(* pShape) && pShape->IsPointInShape(pnt) ) 
+		//	return pShape->GetId();
 	};
 	return ShapeId( NO_SHAPE );
 }

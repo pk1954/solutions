@@ -100,7 +100,6 @@ private:
     {
         script.ScrReadSpecial( Pipe::OPEN_BRACKET );
         ShapeId const idStart { ScrReadShapeId(script) };
-//        script.ScrReadString( Pipe::SEPARATOR );
         for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
             script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
         ShapeId const idEnd { ScrReadShapeId(script) };
@@ -154,20 +153,16 @@ private:
         unique_ptr<Connector> upConnector { make_unique<Connector>() };
         script.ScrReadSpecial( Connector::OPEN_BRACKET );
         int const iNrOfElements { script.ScrReadInt() };
-        int iElem { 0 };
-        for (;;)
+        script.ScrReadSpecial( Connector::SEPARATOR );
+        for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
         {
-            Shape * const pShape { createShape(script) };
-            if ( ! pShape->GetShapeType().IsConnectorNeuronType() )
+            ShapeId const id          { script.ScrReadInt() };
+            CNPtr   const pConnNeuron { GetWriterInterface().GetShapePtr<CNPtr>(id) };
+            if ( ! pConnNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"Element has wrong type" ) );
-            upConnector->Push(static_cast<ConnectionNeuron *>(pShape));
-            if ( iElem++ == iNrOfElements )
-                break;
-//            script.ScrReadString( Connector::SEPARATOR );
-            for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
-                script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
+            pConnNeuron->SetParent( upConnector.get() );
+            upConnector->Push(pConnNeuron);
         }
-        ShapeId const idEnd { ScrReadShapeId(script) };
         script.ScrReadSpecial( Connector::CLOSE_BRACKET );
         return move(upConnector);
     }
@@ -180,7 +175,7 @@ public:
 
     virtual void operator() ( Script & script ) const
     {
-        ParameterType::Value const param( static_cast< ParameterType::Value >( script.ScrReadUint() ) );
+        ParamType::Value const param( static_cast<ParamType::Value>(script.ScrReadUint()) );
         script.ScrReadSpecial( L'=' );
         float const fValue { Cast2Float( script.ScrReadFloat() ) };
         GetWriterInterface().SetParam( param, fValue );
@@ -208,9 +203,9 @@ public:
     virtual void operator() ( Script & script ) const
     {
         script.ScrReadString( L"InputNeuron" );
-        ShapeId    const id   ( ScrReadShapeId(script) );
-        ParameterType::Value const param( static_cast< ParameterType::Value >( script.ScrReadUint() ) );
-        assert( param == ParameterType::Value::pulseRate );
+        ShapeId          const id   ( ScrReadShapeId(script) );
+        ParamType::Value const param( static_cast< ParamType::Value >( script.ScrReadUint() ) );
+        assert( param == ParamType::Value::pulseRate );
         script.ScrReadSpecial( L'=' );
         float const fValue { Cast2Float( script.ScrReadFloat() ) };
         GetWriterInterface().GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
@@ -304,13 +299,13 @@ void NNetModelImporter::Initialize( Script * const pScript )
     ///// Legacy /////
     SymbolTable::ScrDefConst( L"pipeline", static_cast<unsigned long>(ShapeType::Value::pipe) );  // support older protocol version
                                                                                                   ///// end Legacy /////
-    ParameterType::Apply2AllParameters
+    ParamType::Apply2AllParameters
     ( 
-        [&]( ParameterType::Value const & param ) 
+        [&]( ParamType::Value const & param ) 
         {
             SymbolTable::ScrDefConst
             ( 
-                ParameterType::GetName( param ), 
+                ParamType::GetName( param ), 
                 static_cast<unsigned long>( param ) 
             );
         }
@@ -376,7 +371,7 @@ bool NNetModelImporter::Import
 
     if ( ! exists( wstrPath ) )
     {
-        m_upTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );
+        upTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );
         return false;
     }
 

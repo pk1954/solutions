@@ -35,8 +35,8 @@ public:
 
 	virtual bool const CompStep() { return false; }
 
-	virtual void DrawExterior(DrawContext const &, tHighlightType const) const;
-	virtual void DrawInterior(DrawContext const &, tHighlightType const) const;
+	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
+	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
 	virtual void Select      (bool const, bool const);
 	virtual void Recalc      () { };
 

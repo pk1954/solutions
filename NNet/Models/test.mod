@@ -1,5 +1,5 @@
 # NNetModel
-# Created Tue Mar 30 19:44:53 2021
+# Created Mon Apr  5 23:45:13 2021
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -8,41 +8,47 @@ Protocol version 1.7
 
 
 
-GlobalParameter PulseSpeed = 0.1
+GlobalParameter PulseSpeed = 120
 GlobalParameter PulseWidth = 2000
 GlobalParameter SignalLoss = 0
-GlobalParameter Threshold = 14
+GlobalParameter Threshold = 20
 GlobalParameter PeakVoltage = 10
 GlobalParameter RefractoryPeriod = 500
 GlobalParameter TimeResolution = 100
 
-NrOfShapes = 26
+NrOfShapes = 20
 
-CreateShape 1 knot(728.291|712.025)
-CreateShape 2 knot(319.787|385.565)
-CreateShape 4 knot(13.9884|401.022)
-CreateShape 6 knot(206.298|608.189)
-CreateShape 8 knot(524.495|482.083)
-CreateShape 10 knot(867.621|372.107)
-CreateShape 12 knot(358.798|490.882)
-CreateShape 15 knot(940.491|-361.056)
-CreateShape 17 knot(786.572|-318.831)
-CreateShape 19 knot(549.564|-358.332)
-CreateShape 21 knot(580.893|-264.346)
-CreateShape 23 knot(349.333|-331.09)
-CreateShape 0 pipe(1->0)
-CreateShape 3 pipe(2->0)
-CreateShape 5 pipe(4->0)
-CreateShape 7 pipe(6->0)
-CreateShape 9 pipe(8->0)
-CreateShape 11 pipe(10->0)
-CreateShape 13 pipe(12->0)
-CreateShape 16 pipe(0->15)
-CreateShape 18 pipe(0->17)
-CreateShape 20 pipe(0->19)
-CreateShape 22 pipe(0->21)
-CreateShape 24 pipe(0->23)
+CreateShape 0 inputNeuron(306.603|480.91)
+CreateShape 1 outputNeuron(349.289|749.289)
+CreateShape 4 outputNeuron(420|820)
+CreateShape 5 inputNeuron(377.31|551.625)
+CreateShape 6 inputNeuron(448.017|622.339)
+CreateShape 7 outputNeuron(490.711|890.711)
+CreateShape 10 outputNeuron(599.776|441.076)
+CreateShape 11 inputNeuron(758.095|409.758)
+CreateShape 12 inputNeuron(635.914|249.059)
+CreateShape 13 outputNeuron(529.073|370.357)
+CreateShape 16 outputNeuron(458.371|299.638)
+CreateShape 17 inputNeuron(551.616|190.043)
+CreateShape 2 pipe(0->1)
+CreateShape 3 pipe(5->4)
+CreateShape 8 pipe(6->7)
+CreateShape 9 pipe(11->10)
+CreateShape 14 pipe(12->13)
+CreateShape 15 pipe(17->16)
+CreateShape 18 connector{
+ 3: 10 13 16 }
 
+CreateShape 19 connector{
+ 3: 0 5 6 }
+
+
+ShapeParameter InputNeuron 0 PulseRate = 50
+ShapeParameter InputNeuron 5 PulseRate = 50
+ShapeParameter InputNeuron 6 PulseRate = 50
+ShapeParameter InputNeuron 11 PulseRate = 50
+ShapeParameter InputNeuron 12 PulseRate = 50
+ShapeParameter InputNeuron 17 PulseRate = 50
 
 
 NrOfTracks 0

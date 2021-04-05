@@ -57,12 +57,12 @@ void NNetModelExporter::writeHeader( wostream & out )
 
 void NNetModelExporter::writeGlobalParameters( wostream & out )
 {
-    ParameterType::Apply2GlobalParameters
+    ParamType::Apply2GlobalParameters
     ( 
-        [&]( ParameterType::Value const & par ) 
+        [&]( ParamType::Value const & par ) 
         {
-            out << L"GlobalParameter " << ParameterType::GetName( par ) << L" = "
-                << m_pNMRI->GetParameter( par ) 
+            out << L"GlobalParameter " << ParamType::GetName(par) << L" = "
+                << m_pNMRI->GetParameter(par) 
                 << endl; 
         }
     );
@@ -82,8 +82,9 @@ void NNetModelExporter::writeShapes( wostream & out )
     }
     out << L"NrOfShapes = " << idCompact << endl;
     out << endl;
-    m_pNMRI->GetUPShapes().Apply2All<BaseKnot>( [&]( BaseKnot const & shape ) { writeShape( out, shape ); } );
-    m_pNMRI->GetUPShapes().Apply2All<Pipe    >( [&]( Pipe     const & shape ) { writeShape( out, shape ); } );
+    m_pNMRI->GetUPShapes().Apply2All<BaseKnot >([&](BaseKnot  const & s) { writeShape(out, s); });
+    m_pNMRI->GetUPShapes().Apply2All<Pipe     >([&](Pipe      const & s) { writeShape(out, s); });
+    m_pNMRI->GetUPShapes().Apply2All<Connector>([&](Connector const & s) { writeShape(out, s); });
 }
 
 void NNetModelExporter::writeShapeParameters( wostream & out )
@@ -92,9 +93,10 @@ void NNetModelExporter::writeShapeParameters( wostream & out )
     (
         [&]( InputNeuron const & inpNeuron )
         { 
-            out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
-                << ParameterType::GetName( ParameterType::Value::pulseRate ) 
-                << L" = " << inpNeuron.GetPulseFrequency( )
+            out << L"ShapeParameter InputNeuron " 
+                << getCompactIdVal( inpNeuron.GetId() ) << L" "
+                << ParamType::GetName(ParamType::Value::pulseRate) 
+                << L" = " << inpNeuron.GetPulseFrequency()
                 << endl; 
         }
     );
@@ -158,20 +160,11 @@ void NNetModelExporter::writePipe( wostream & out, Pipe const & pipe )
         << Pipe::CLOSE_BRACKET;
 }
 
-void NNetModelExporter::writeConnector( wostream & out, Connector const & connector )
+void NNetModelExporter::writeConnector(wostream & out, Connector const & connector)
 {
-    out << Connector::OPEN_BRACKET << endl;
-    out << L" " << connector.Size() << L" elements" << endl;
-    connector.Apply2All
-    (
-        [&](ConnectionNeuron const & connectionNeuron)
-        {
-            writeShape(out, connectionNeuron);
-            out << Connector::SEPARATOR << endl;
-        }
-    );
-    
-    out << Connector::CLOSE_BRACKET << endl;;
+    out << Connector::OPEN_BRACKET << L" " << connector.Size() << Connector::SEPARATOR << L" ";
+    connector.Apply2All( [&](CNPtr const & p) { out << p->GetId() << L" "; } );
+    out << Connector::CLOSE_BRACKET << endl;
 }
 
 void NNetModelExporter::writeShape( wostream & out, Shape const & shape )
@@ -179,7 +172,7 @@ void NNetModelExporter::writeShape( wostream & out, Shape const & shape )
     if ( shape.IsDefined() )
     {
         out << L"CreateShape " << getCompactIdVal( shape.GetId() ) << L" " << shape.GetName();
-        switch ( shape.GetShapeType( ).GetValue() )
+        switch ( shape.GetShapeType().GetValue() )
         {
         case ShapeType::Value::inputNeuron:
         case ShapeType::Value::outputNeuron:

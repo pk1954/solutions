@@ -100,22 +100,22 @@ SoundDescr const Neuron::SetTriggerSound( SoundDescr const & sound )
 
 fMicroSecs const Neuron::PulseWidth() const 
 { 
-	return fMicroSecs( m_pParameters->GetParameterValue( ParameterType::Value::pulseWidth ) ); 
+	return fMicroSecs( m_pParameters->GetParameterValue( ParamType::Value::pulseWidth ) ); 
 }
 
 fMicroSecs const Neuron::RefractPeriod() const 
 { 
-	return fMicroSecs( m_pParameters->GetParameterValue( ParameterType::Value::refractPeriod ) ); 
+	return fMicroSecs( m_pParameters->GetParameterValue( ParamType::Value::refractPeriod ) ); 
 }
 
 mV const Neuron::Threshold() const 
 { 
-	return mV( m_pParameters->GetParameterValue( ParameterType::Value::threshold ) ); 
+	return mV( m_pParameters->GetParameterValue( ParamType::Value::threshold ) ); 
 }
 
 mV const Neuron::PeakVoltage() const 
 { 
-	return mV( m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage ) ); 
+	return mV( m_pParameters->GetParameterValue( ParamType::Value::peakVoltage ) ); 
 }
 
 void Neuron::Recalc( ) 
@@ -182,7 +182,7 @@ MicroMeterPoint Neuron::getAxonHillockPos( ) const
 	return GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 }
 
-void Neuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
+void Neuron::DrawExterior( DrawContext const & context, tHighlight const type ) const
 {
 	if ( m_bStopOnTrigger )
 	{
@@ -194,7 +194,7 @@ void Neuron::DrawExterior( DrawContext const & context, tHighlightType const typ
 		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * 0.5f ), GetExteriorColor( type ) );
 }
 
-void Neuron::DrawInterior( DrawContext const & context, tHighlightType const type ) const
+void Neuron::DrawInterior( DrawContext const & context, tHighlight const type ) const
 { 
 	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor(type) };
 	context.FillCircle( GetCircle() * NEURON_INTERIOR, color );

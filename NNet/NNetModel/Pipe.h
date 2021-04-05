@@ -50,19 +50,20 @@ public:
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
-	virtual bool const IsInRect      (MicroMeterRect  const &)                   const;
-	virtual bool const IsPointInShape(MicroMeterPoint const &)                   const;
-	virtual void       CheckShape    ()                                          const;
-	virtual void       DrawArrows    (DrawContext const &, MicroMeter     const) const;
-	virtual void       DrawExterior  (DrawContext const &, tHighlightType const) const;
-	virtual void       DrawInterior  (DrawContext const &, tHighlightType const) const;
-	virtual void       Expand( MicroMeterRect & ) const;
-	virtual void       Select(bool const, bool const);
-	virtual void       MoveShape( MicroMeterPoint const & );
-	virtual void       Prepare();
-	virtual bool const CompStep();
-	virtual void       Recalc();
-	virtual void       Clear();
+	virtual MicroMeterPoint const GetPosition   ()                                      const;
+	virtual bool            const IsInRect      (MicroMeterRect  const &)               const;
+	virtual bool            const IsPointInShape(MicroMeterPoint const &)               const;
+	virtual void                  CheckShape    ()                                      const;
+	virtual void                  DrawArrows    (DrawContext const &, MicroMeter const) const;
+	virtual void                  DrawExterior  (DrawContext const &, tHighlight const) const;
+	virtual void                  DrawInterior  (DrawContext const &, tHighlight const) const;
+	virtual void                  Expand( MicroMeterRect & ) const;
+	virtual void                  Select(bool const, bool const);
+	virtual void                  MoveShape( MicroMeterPoint const & );
+	virtual void                  Prepare();
+	virtual bool            const CompStep();
+	virtual void                  Recalc();
+	virtual void                  Clear();
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPoint const & ) const;

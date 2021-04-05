@@ -75,6 +75,11 @@ ShapeId Pipe::GetEndKnotId() const
 	return m_pKnotEnd->GetId(); 
 }
 
+MicroMeterPoint const Pipe::GetPosition() const 
+{ 
+	return (m_pKnotStart->GetPosition() + m_pKnotEnd->GetPosition()) / 2.0f; 
+}
+
 void Pipe::Clear( )
 {
 	Shape::Clear( );
@@ -85,7 +90,7 @@ void Pipe::Recalc( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( ParameterType::Value::pulseSpeed ) ) };
+		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( ParamType::Value::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
 		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, Cast2UnsignedInt(round(pipeLength / segmentLength)) ) };
@@ -222,12 +227,12 @@ void Pipe::DrawArrows
 	);
 }
 
-void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type ) const
+void Pipe::DrawExterior( DrawContext const & context, tHighlight const type ) const
 {
 	context.DrawLine( GetStartPoint(), GetEndPoint(), PIPE_WIDTH, GetExteriorColor(type) );
 }
 
-void Pipe::DrawInterior( DrawContext const & context, tHighlightType const type ) const
+void Pipe::DrawInterior( DrawContext const & context, tHighlight const type ) const
 {
 	static MicroMeter const umWidth { PIPE_WIDTH * PIPE_INTERIOR };
 

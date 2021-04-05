@@ -260,15 +260,12 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::setTargetShape()
 {
-	if ( ! m_pNMRI->IsOfType<Pipe>(m_shapeHighlighted) )
-	{
-		m_shapeTarget = m_pNMRI->FindShapeAt
-		(
-			m_pNMRI->GetShapePos( m_shapeHighlighted ),
-			[&](Shape const & s) { return m_pNMRI->IsConnectionCandidate(s.GetId(), m_shapeHighlighted); }
-		);
-		m_bTargetFits = IsDefined(m_shapeTarget) && m_pNMRI->CanConnectTo( m_shapeHighlighted, m_shapeTarget ); 
-	}
+	m_shapeTarget = m_pNMRI->FindShapeAt
+	(
+		m_pNMRI->GetShapePos( m_shapeHighlighted ),
+		[&](Shape const & s) { return m_pNMRI->IsConnectionCandidate(s.GetId(), m_shapeHighlighted); }
+	);
+	m_bTargetFits = IsDefined(m_shapeTarget) && m_pNMRI->CanConnectTo(m_shapeHighlighted, m_shapeTarget); 
 }
 
 void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -305,12 +302,12 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 					setTargetShape();
 				}
 			}
-			else if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
+			else if (Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor(umCrsrPos) })
 			{
 				pSignal->Move( umDelta );
 				Notify( false ); 
 			}
-			else if ( m_pNMRI->AnyShapesSelected( ) )   // move selected shapes 
+			else if (m_pNMRI->AnyShapesSelected())   // move selected shapes 
 			{
 				m_pModelCommands->MoveSelection( umDelta );
 			}
@@ -458,15 +455,15 @@ void MainWindow::doPaint( )
 
 	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
 	{
-		tHighlightType type { m_bTargetFits ? tHighlightType::targetFit : tHighlightType::targetNoFit };
+		tHighlight type { m_bTargetFits ? tHighlight::targetFit : tHighlight::targetNoFit };
 		m_pNMRI->DrawExterior( m_shapeTarget, context, type );
 		m_pNMRI->DrawInterior( m_shapeTarget, context, type );
 	}
 
 	if ( IsDefined(m_shapeHighlighted) )  // draw selected shape again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
-		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlightType::highlighted );
+		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlight::highlighted );
+		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlight::highlighted );
 		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 

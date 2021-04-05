@@ -53,7 +53,7 @@ public:
     void ClearBeepers        ( );
     void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ( );
-    void CreateConnector     ( ShapePtrList<ConnectionNeuron> & );
+    void CreateConnector     ( ShapePtrList<ConnNeuron> & );
     void CreateInitialShapes ( );
     void DeleteSelection     ( );
     void DeleteShape         ( ShapeId  const );
@@ -75,8 +75,8 @@ public:
     void SelectShape         ( ShapeId const, tBoolOp const );
     void SelectShapesInRect  ( MicroMeterRect const &, bool const );
     void SelectSubtree       ( ShapeId const, bool const );
-    void SetConnectionNeurons( MicroMeterPointVector const &, ShapePtrList<ConnectionNeuron> & );
-    void SetParameter        ( ParameterType::Value const, float const );
+    void SetConnectionNeurons( MicroMeterPointVector const &, ShapePtrList<ConnNeuron> & );
+    void SetParameter        ( ParamType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );
     void SetTriggerSound     ( ShapeId const, SoundDescr const & );
     void ToggleStopOnTrigger ( ShapeId const );

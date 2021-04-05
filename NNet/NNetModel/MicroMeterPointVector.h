@@ -23,9 +23,9 @@ public:
 
     MicroMeterPointVector() {}
 
-    MicroMeterPointVector( ShapePtrList<ConnectionNeuron> const& shapeList )
+    MicroMeterPointVector( ShapePtrList<ConnNeuron> const& shapeList )
     {
-        shapeList.Apply2All( [&](ConnectionNeuron const & c) { Add( c.GetPosDir() ); } );
+        shapeList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
     }
 
     unsigned int Size() const { return Cast2UnsignedInt(m_list.size()); }

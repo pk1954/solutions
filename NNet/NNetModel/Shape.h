@@ -48,15 +48,16 @@ public:
 
 	virtual bool operator==( Shape const & ) const;
 
-	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const ) const = 0;
-	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const ) const = 0;
-	virtual void       Prepare       ( )                                                 = 0;
-	virtual bool const CompStep      ( )                                                 = 0;
-	virtual void       Recalc        ( )                                                 = 0;
-	virtual void       MoveShape     ( MicroMeterPoint const & )                         = 0;
-	virtual bool const IsInRect      ( MicroMeterRect  const & )                   const = 0;
-	virtual bool const IsPointInShape( MicroMeterPoint const & )                   const = 0;
-	virtual void       Expand        ( MicroMeterRect & )                          const = 0;
+	virtual MicroMeterPoint const GetPosition   ()                                      const = 0;
+	virtual void                  DrawExterior  (DrawContext const &, tHighlight const) const = 0;
+	virtual void                  DrawInterior  (DrawContext const &, tHighlight const) const = 0;
+	virtual void                  Prepare       ()                                            = 0;
+	virtual bool            const CompStep      ()                                            = 0;
+	virtual void                  Recalc        ()                                            = 0;
+	virtual void                  MoveShape     (MicroMeterPoint const &)                     = 0;
+	virtual bool            const IsInRect      (MicroMeterRect  const &)               const = 0;
+	virtual bool            const IsPointInShape(MicroMeterPoint const &)               const = 0;
+	virtual void                  Expand        (MicroMeterRect &)                      const = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
@@ -71,14 +72,14 @@ public:
 
 	bool const HasType(ShapeType const type) const { return m_type == type; }
 
-	bool const IsConnector  () const { return m_type.IsConnectorType   ( ); }
-	bool const IsPipe       () const { return m_type.IsPipeType        ( ); }
-	bool const IsKnot       () const { return m_type.IsKnotType        ( ); }
-	bool const IsNeuron     () const { return m_type.IsNeuronType      ( ); }
-	bool const IsInputNeuron() const { return m_type.IsInputNeuronType ( ); }
-	bool const IsAnyNeuron  () const { return m_type.IsAnyNeuronType   ( ); }
-	bool const IsBaseKnot   () const { return m_type.IsBaseKnotType    ( ); }
-	bool const IsUndefined  () const { return m_type.IsUndefinedType   ( ); }
+	bool const IsConnector  () const { return m_type.IsConnectorType   (); }
+	bool const IsPipe       () const { return m_type.IsPipeType        (); }
+	bool const IsKnot       () const { return m_type.IsKnotType        (); }
+	bool const IsNeuron     () const { return m_type.IsNeuronType      (); }
+	bool const IsInputNeuron() const { return m_type.IsInputNeuronType (); }
+	bool const IsAnyNeuron  () const { return m_type.IsAnyNeuronType   (); }
+	bool const IsBaseKnot   () const { return m_type.IsBaseKnotType    (); }
+	bool const IsUndefined  () const { return m_type.IsUndefinedType   (); }
 
 	virtual void SetId( ShapeId const id ) { m_identifier = id;	}
 
@@ -90,13 +91,13 @@ protected:
 
 	inline static Param const * m_pParameters{ nullptr };
 
-	D2D1::ColorF GetExteriorColor( tHighlightType const ) const;
-	D2D1::ColorF GetInteriorColor( tHighlightType const ) const;
-	D2D1::ColorF GetInteriorColor( mV const ) const;
-	D2D1::ColorF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
+	D2D1::ColorF GetExteriorColor(tHighlight const) const;
+	D2D1::ColorF GetInteriorColor(tHighlight const) const;
+	D2D1::ColorF GetInteriorColor(mV const) const;
+	D2D1::ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	float GetFillLevel( mV const ) const;
-	float GetFillLevel( ) const { return GetFillLevel( m_mVinputBuffer ); };
+	float GetFillLevel( ) const { return GetFillLevel(m_mVinputBuffer); };
 
 	void SetType(ShapeType const type) { m_type = type; }
 

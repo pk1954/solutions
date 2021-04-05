@@ -22,8 +22,8 @@ ParameterDialog::~ParameterDialog( )
 
 void ParameterDialog::resetParameter   // refresh edit field with data from model
 (
-	HWND       const hwndEditField,
-	ParameterType::Value const parameter
+	HWND             const hwndEditField,
+	ParamType::Value const parameter
 )
 {
 	StdDialogBox::SetParameterValue( hwndEditField, m_pParams->GetParameterValue( parameter ) );
@@ -31,8 +31,8 @@ void ParameterDialog::resetParameter   // refresh edit field with data from mode
 
 void ParameterDialog::applyParameter  // read out edit field and write data to model
 (
-	HWND                 const hwndEditField,
-	ParameterType::Value const parameter
+	HWND             const hwndEditField,
+	ParamType::Value const parameter
 )
 {
 	float const fOldValue { m_pParams->GetParameterValue( parameter ) }; 
@@ -48,7 +48,7 @@ HWND ParameterDialog::createStaticField( HWND const hwndParent, wchar_t const * 
 	return hwnd;
 }
 
-HWND ParameterDialog::createEditField( HWND const hwndParent, ParameterType::Value const parameter, int & iXpos, int const iYpos, int const iWidth )
+HWND ParameterDialog::createEditField( HWND const hwndParent, ParamType::Value const parameter, int & iXpos, int const iYpos, int const iWidth )
 {
 	HWND hwnd =  CreateWindow( L"Edit", 0, STYLE|ES_RIGHT, iXpos, iYpos, iWidth, HEIGHT, hwndParent, 0, GetModuleHandle( nullptr ), 0 );
 	resetParameter( hwnd, parameter );
@@ -58,16 +58,16 @@ HWND ParameterDialog::createEditField( HWND const hwndParent, ParameterType::Val
 
 HWND ParameterDialog::addParameter
 (
-	HWND       const hwndDlg,
-	ParameterType::Value const parameter,
-	int            & iYpos
+	HWND             const hwndDlg,
+	ParamType::Value const parameter,
+	int                  & iYpos
 )
 {
 	int  iXpos { 10 }; 
 
-	HWND hwndName = createStaticField( hwndDlg, ParameterType::GetName( parameter ), iXpos, iYpos, 120 );
+	HWND hwndName = createStaticField( hwndDlg, ParamType::GetName( parameter ), iXpos, iYpos, 120 );
 	HWND hwndEdit = createEditField  ( hwndDlg, parameter,                           iXpos, iYpos,  60 );
-	HWND hwndUnit = createStaticField( hwndDlg, ParameterType::GetUnit( parameter ), iXpos, iYpos,  40 );
+	HWND hwndUnit = createStaticField( hwndDlg, ParamType::GetUnit( parameter ), iXpos, iYpos,  40 );
 
 	iYpos += HEIGHT + VERT_SPACE;
 
@@ -76,22 +76,22 @@ HWND ParameterDialog::addParameter
 
 void ParameterDialog::resetParameters( )  // refresh edit fields with data from model
 {
-	resetParameter( m_hwndPeakVoltage,      ParameterType::Value::peakVoltage    );
-	resetParameter( m_hwndThreshold,        ParameterType::Value::threshold      );
-	resetParameter( m_hwndPulseWidth,       ParameterType::Value::pulseWidth     );
-	resetParameter( m_hwndRefractoryPeriod, ParameterType::Value::refractPeriod  );
-	resetParameter( m_hwndTimeResolution,   ParameterType::Value::timeResolution );
-	resetParameter( m_hwndPulseSpeed,       ParameterType::Value::pulseSpeed     );
+	resetParameter( m_hwndPeakVoltage,      ParamType::Value::peakVoltage    );
+	resetParameter( m_hwndThreshold,        ParamType::Value::threshold      );
+	resetParameter( m_hwndPulseWidth,       ParamType::Value::pulseWidth     );
+	resetParameter( m_hwndRefractoryPeriod, ParamType::Value::refractPeriod  );
+	resetParameter( m_hwndTimeResolution,   ParamType::Value::timeResolution );
+	resetParameter( m_hwndPulseSpeed,       ParamType::Value::pulseSpeed     );
 }
 
 void ParameterDialog::applyParameters( )  // read out edit field and write data to model
 {
-	applyParameter( m_hwndPeakVoltage,      ParameterType::Value::peakVoltage    );
-	applyParameter( m_hwndThreshold,        ParameterType::Value::threshold      );
-	applyParameter( m_hwndPulseWidth,       ParameterType::Value::pulseWidth     );
-	applyParameter( m_hwndRefractoryPeriod, ParameterType::Value::refractPeriod  );
-	applyParameter( m_hwndTimeResolution,   ParameterType::Value::timeResolution );
-	applyParameter( m_hwndPulseSpeed,       ParameterType::Value::pulseSpeed     );
+	applyParameter( m_hwndPeakVoltage,      ParamType::Value::peakVoltage    );
+	applyParameter( m_hwndThreshold,        ParamType::Value::threshold      );
+	applyParameter( m_hwndPulseWidth,       ParamType::Value::pulseWidth     );
+	applyParameter( m_hwndRefractoryPeriod, ParamType::Value::refractPeriod  );
+	applyParameter( m_hwndTimeResolution,   ParamType::Value::timeResolution );
+	applyParameter( m_hwndPulseSpeed,       ParamType::Value::pulseSpeed     );
 }
 
 HWND ParameterDialog::createButton( HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, HMENU const id )
@@ -114,12 +114,12 @@ void ParameterDialog::Start
 	m_pParams   = pParams;
 
 	int iYpos { 10 };
-	m_hwndPeakVoltage      = addParameter( hwndDlg, ParameterType::Value::peakVoltage,    iYpos ); 
-	m_hwndThreshold        = addParameter( hwndDlg, ParameterType::Value::threshold,      iYpos ); 
-	m_hwndPulseWidth       = addParameter( hwndDlg, ParameterType::Value::pulseWidth,     iYpos ); 
-	m_hwndRefractoryPeriod = addParameter( hwndDlg, ParameterType::Value::refractPeriod,  iYpos ); 
-	m_hwndTimeResolution   = addParameter( hwndDlg, ParameterType::Value::timeResolution, iYpos ); 
-	m_hwndPulseSpeed       = addParameter( hwndDlg, ParameterType::Value::pulseSpeed,     iYpos ); 
+	m_hwndPeakVoltage      = addParameter( hwndDlg, ParamType::Value::peakVoltage,    iYpos ); 
+	m_hwndThreshold        = addParameter( hwndDlg, ParamType::Value::threshold,      iYpos ); 
+	m_hwndPulseWidth       = addParameter( hwndDlg, ParamType::Value::pulseWidth,     iYpos ); 
+	m_hwndRefractoryPeriod = addParameter( hwndDlg, ParamType::Value::refractPeriod,  iYpos ); 
+	m_hwndTimeResolution   = addParameter( hwndDlg, ParamType::Value::timeResolution, iYpos ); 
+	m_hwndPulseSpeed       = addParameter( hwndDlg, ParamType::Value::pulseSpeed,     iYpos ); 
 
 	createButton( hwndDlg, L"Apply", 140, iYpos, 50, 20, (HMENU)IDD_APPLY_PARAMETERS );
 	createButton( hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS );

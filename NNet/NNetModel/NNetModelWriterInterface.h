@@ -40,8 +40,8 @@ public:
 
     void DumpModel() const { m_pModel->DumpModel(); }
 
-    void  SelectSubtree(BaseKnot* const p, bool const b) { m_pModel->SelectSubtree(p, b); }
-    float SetParam(ParameterType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
+    void  SelectSubtree(BaseKnot  * const p, bool  const b) { m_pModel->SelectSubtree(p, b); }
+    float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
     void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
     void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
     void  DescriptionComplete()                    { m_pModel->DescriptionComplete( ); }

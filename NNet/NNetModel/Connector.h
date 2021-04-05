@@ -27,14 +27,14 @@ public:
 	virtual void CheckShape() const;
 	virtual void Dump      () const;
 
-	void Push(ConnectionNeuron * const p) 
+	void Push(CNPtr const p) 
 	{ 
 		m_list.push_back(p); 
 	}
 
-	ConnectionNeuron * const Pop() 
+	CNPtr const Pop() 
 	{ 
-		ConnectionNeuron * pRet { m_list.back() };
+		CNPtr pRet { m_list.back() };
 		m_list.pop_back();
 		return pRet;
 	}
@@ -45,35 +45,36 @@ public:
 
 	virtual bool operator==(Connector const & rhs) const { return m_list == rhs.m_list;	}
 
-	virtual void       DrawExterior  (DrawContext const &, tHighlightType const) const;
-	virtual void       DrawInterior  (DrawContext const &, tHighlightType const) const;
-	virtual void       Prepare       ();
-	virtual bool const CompStep      ();
-	virtual void       Recalc        ();
-	virtual void       MoveShape     (MicroMeterPoint const &);
-	virtual bool const IsInRect      (MicroMeterRect  const &) const;
-	virtual bool const IsPointInShape(MicroMeterPoint const &) const;
-	virtual void       Expand        (MicroMeterRect        &) const;
+	virtual MicroMeterPoint const GetPosition   ()                                      const;
+	virtual void                  DrawExterior  (DrawContext const &, tHighlight const) const;
+	virtual void                  DrawInterior  (DrawContext const &, tHighlight const) const;
+	virtual void                  Prepare       ();
+	virtual bool            const CompStep      ();
+	virtual void                  Recalc        ();
+	virtual void                  MoveShape     (MicroMeterPoint const &);
+	virtual bool            const IsInRect      (MicroMeterRect  const &) const;
+	virtual bool            const IsPointInShape(MicroMeterPoint const &) const;
+	virtual void                  Expand        (MicroMeterRect        &) const;
 
 	virtual void Select(bool const, bool const);
 
-	void Apply2All(function<void(ConnectionNeuron &)> const & func)
+	void Apply2All(function<void(CNPtr const &)> const & func) const
 	{
-		for (ConnectionNeuron * const p : m_list) { func(*p); };
+		for (CNPtr const & p : m_list) { func(p); };
 	}                        
 
-	void Apply2All(function<void(ConnectionNeuron const &)> const & func) const
+	void Apply2All(function<void(CNPtr &)> const & func)
 	{
-		for (ConnectionNeuron const * const p : m_list) { func(*p); };
+		for (CNPtr & p : m_list) { func(p); };
 	}                        
 
-	inline static wstring const SEPARATOR     { L", " };
+	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
 private:
 
-	vector<ConnectionNeuron *> m_list {};
+	vector<CNPtr> m_list {};
 };
 
 Connector const * Cast2Connector( Shape const * );

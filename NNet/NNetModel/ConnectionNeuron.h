@@ -11,10 +11,12 @@
 using std::wcout;
 using std::endl;
 
-class ConnectionNeuron : public Neuron
+class ConnNeuron : public Neuron
 {
 public:
-	ConnectionNeuron( MicroMeterPoint const & upCenter, ShapeType const type )
+	static bool const TypeFits(ShapeType const type) { return type.IsConnNeuronType(); }
+
+	ConnNeuron( MicroMeterPoint const & upCenter, ShapeType const type )
 		: Neuron( upCenter, type )
 	{}
 
@@ -53,3 +55,5 @@ private:
 
 	Radian m_direction { Radian::NULL_VAL() };
 };
+
+using CNPtr = ConnNeuron *;

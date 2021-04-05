@@ -41,16 +41,16 @@ public:
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
 	UPShapeList     const & GetUPShapes()                              const { return m_pModel->GetUPShapes(); }
-	bool            const   AnyShapesSelected( )                       const { return m_pModel->GetUPShapes().AnyShapesSelected( ); }
-	bool            const   IsValidShapeId( ShapeId const id )         const { return m_pModel->GetUPShapes().IsValidShapeId  (id); }
+	bool            const   AnyShapesSelected( )                       const { return m_pModel->GetUPShapes().AnyShapesSelected(); }
+	bool            const   IsValidShapeId( ShapeId const id )         const { return m_pModel->GetUPShapes().IsValidShapeId(id); }
 	MicroMeterPoint const   GetShapePos   ( ShapeId const id )         const { return m_pModel->GetShapePos                 (id); }
 	Shape           const * GetConstShape ( ShapeId const id )         const { return m_pModel->GetConstShape               (id); }
 	size_t          const   GetSizeOfShapeList( )                      const { return m_pModel->GetUPShapes().Size(); }
-	fMicroSecs      const   GetSimulationTime( )                       const { return m_pModel->GetSimulationTime ( ); }
-	MonitorData     const & GetMonitorData( )                          const { return m_pModel->GetMonitorData    ( ); }
+	fMicroSecs      const   GetSimulationTime( )                       const { return m_pModel->GetSimulationTime (); }
+	MonitorData     const & GetMonitorData( )                          const { return m_pModel->GetMonitorData    (); }
 	fMicroSecs      const   GetTimeResolution( )                       const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring         const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
-	float           const   GetParameter(ParameterType::Value const p) const { return m_pModel->GetParameter( p ); }
+	float           const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 
 	bool    const GetDescriptionLine( int const, wstring & ) const;
 
@@ -60,8 +60,8 @@ public:
 		ShapeCrit       const & = ShapeCritAlwaysTrue 
 	) const;
 
-	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
-	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
+	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlight const ) const;
+	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlight const ) const;
 	void DrawNeuronText( ShapeId const, DrawContext const & ) const;
 	
 	void DrawLine( MicroMeterLine const &, DrawContext const & ) const;

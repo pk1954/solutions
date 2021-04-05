@@ -39,19 +39,19 @@ public:
 		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
-	void CheckModel( ) const;
-	void DumpModel ( ) const;
+	void CheckModel() const;
+	void DumpModel () const;
 
-	Shape           const * GetConstShape( ShapeId const ) const;
-	fHertz          const   GetPulseRate ( ShapeId const ) const;
-	MicroMeterPoint const   GetShapePos  ( ShapeId const ) const;
+	Shape  const * GetConstShape( ShapeId const ) const;
+	fHertz const   GetPulseRate ( ShapeId const ) const;
 
 	fMicroSecs const GetSimulationTime ( ) const { return m_timeStamp; }
 
-	float const GetParameter(ParameterType::Value const p) const { return m_param.GetParameterValue(p); }
+	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
-	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
+	MicroMeterPoint const GetShapePos    (ShapeId const id) const {	return GetShapeConstPtr<Shape const *>(id)->GetPosition    (); }
+	BaseKnot      * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe  const *>(id)->GetStartKnotPtr(); }
+	BaseKnot      * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe  const *>(id)->GetEndKnotPtr  (); }
 
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
@@ -70,7 +70,7 @@ public:
 
 	void  RecalcAllShapes( );
 	void  ResetModel( );
-	float SetParam( ParameterType::Value const, float const );
+	float SetParam( ParamType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, bool const );
 
 	UPShapeList & GetUPShapes()    { return m_Shapes; }

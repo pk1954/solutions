@@ -39,13 +39,13 @@ private:
 
 	struct ALIGN_PNT
 	{
-		ConnectionNeuron * pConnectionNeuron;
-		MicroMeter         umDist;
+		CNPtr      pConnectionNeuron;
+		MicroMeter umDist;
 	};
 
 	using ALIGN_VECTOR = vector<ALIGN_PNT>;
 
-	using ConnectorAnimation = Animation<MicroMeterPointVector>;
+	using ConnAnimation = Animation<MicroMeterPointVector>;
 
 	NNetModelWriterInterface * m_pNMWI          { nullptr };
 	NNetModelCommands        * m_pModelCommands { nullptr };
@@ -56,13 +56,13 @@ private:
 	AlignAnimation::Script const * m_pScript { nullptr };
 	int                            m_iScriptStep { -1 };
 
-	unique_ptr<ConnectorAnimation> m_upConnectorAnimation;
-	ShapePtrList<ConnectionNeuron> m_shapesAnimated;
+	unique_ptr<ConnAnimation> m_upConnAnimation;
+	ShapePtrList<ConnNeuron>  m_shapesAnimated;
 
 	bool const prepareData();
 	void       calcDistances  (ALIGN_VECTOR &);
 	void       sortDistances  (ALIGN_VECTOR &);
 	bool const calcMaxDistLine(ALIGN_VECTOR const &);
-	void       calcOrthoVector(ShapePtrList<ConnectionNeuron> const &);
+	void       calcOrthoVector(ShapePtrList<ConnNeuron> const &);
 	void       scriptStep     (DWORD const);
 };

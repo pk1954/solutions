@@ -73,14 +73,14 @@ public:
 	bool const IsOutputNeuronType() const { return m_value == Value::outputNeuron; }
 	bool const IsConnectorType   () const { return m_value == Value::connector;    }
 
-	bool const IsConnectorNeuronType() const
+	bool const IsConnNeuronType() const
 	{
 		return (m_value == Value::inputNeuron) || (m_value == Value::outputNeuron);
 	}
 
 	bool const IsAnyNeuronType() const
 	{
-		return (m_value == Value::neuron) || IsConnectorNeuronType();
+		return (m_value == Value::neuron) || IsConnNeuronType();
 	}
 
 	bool const IsBaseKnotType() const

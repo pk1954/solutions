@@ -170,8 +170,8 @@ void NNetController::pulseRateDlg( ShapeId const id )
     if ( fOldValue.IsNull() )
         return;
     HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
-    wstring const header     { ParameterType::GetName ( ParameterType::Value::pulseRate ) }; 
-    wstring const unit       { ParameterType::GetUnit ( ParameterType::Value::pulseRate ) };
+    wstring const header     { ParamType::GetName( ParamType::Value::pulseRate ) }; 
+    wstring const unit       { ParamType::GetUnit( ParamType::Value::pulseRate ) };
     fHertz  const fNewValue  { StdDialogBox::Show( hwndParent, fOldValue.GetValue(), header, unit ) };
     if ( fNewValue != fOldValue )
         m_pModelCommands->SetPulseRate( id, fNewValue );

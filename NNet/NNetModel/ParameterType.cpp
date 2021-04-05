@@ -1,4 +1,4 @@
-// ParameterType::Value.cpp
+// ParamType::Value.cpp
 //
 // NNetModel
 
@@ -9,54 +9,54 @@
 
 using std::unordered_map;
 
-void ParameterType::Apply2GlobalParameters( function<void(ParameterType::Value const &)> const & func )
+void ParamType::Apply2GlobalParameters( function<void(ParamType::Value const &)> const & func )
 {
-	for ( int i = 0; i <= static_cast<int>(ParameterType::Value::tParameterLastGlobal); ++i )
-		func( static_cast<ParameterType::Value>( i ) );
+	for ( int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLastGlobal); ++i )
+		func( static_cast<ParamType::Value>( i ) );
 }
 
-void ParameterType::Apply2AllParameters( function<void(ParameterType::Value const &)> const & func )
+void ParamType::Apply2AllParameters( function<void(ParamType::Value const &)> const & func )
 {
-	for ( int i = 0; i <= static_cast<int>(ParameterType::Value::tParameterLast); ++i )
-		func( static_cast<ParameterType::Value>( i ) );
+	for ( int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLast); ++i )
+		func( static_cast<ParamType::Value>( i ) );
 }
 
-wchar_t const * const ParameterType::GetName( ParameterType::Value const p )
+wchar_t const * const ParamType::GetName( ParamType::Value const p )
 {
-	static unordered_map < ParameterType::Value, wchar_t const * const > mapParam =
+	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
-		{ ParameterType::Value::pulseRate,      L"PulseRate"        },
-		{ ParameterType::Value::pulseSpeed,     L"PulseSpeed"       },
-		{ ParameterType::Value::pulseWidth,     L"PulseWidth"       },
-		{ ParameterType::Value::signalLoss,     L"SignalLoss"       },
-		{ ParameterType::Value::threshold,      L"Threshold"        },
-		{ ParameterType::Value::peakVoltage,    L"PeakVoltage"      },
-    	{ ParameterType::Value::refractPeriod,  L"RefractoryPeriod" },
-	    { ParameterType::Value::timeResolution, L"TimeResolution"   }
+		{ ParamType::Value::pulseRate,      L"PulseRate"        },
+		{ ParamType::Value::pulseSpeed,     L"PulseSpeed"       },
+		{ ParamType::Value::pulseWidth,     L"PulseWidth"       },
+		{ ParamType::Value::signalLoss,     L"SignalLoss"       },
+		{ ParamType::Value::threshold,      L"Threshold"        },
+		{ ParamType::Value::peakVoltage,    L"PeakVoltage"      },
+    	{ ParamType::Value::refractPeriod,  L"RefractoryPeriod" },
+	    { ParamType::Value::timeResolution, L"TimeResolution"   }
 	};				  
 	
 	return mapParam.at( p );
 }
 
-wchar_t const * const ParameterType::GetUnit( ParameterType::Value const p )
+wchar_t const * const ParamType::GetUnit( ParamType::Value const p )
 {
-	static unordered_map < ParameterType::Value, wchar_t const * const > mapParam =
+	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
-		{ ParameterType::Value::pulseRate,      L"Hz"    },
-		{ ParameterType::Value::pulseSpeed,     L"m/sec" },
-		{ ParameterType::Value::pulseWidth,     L"µs"    },
-		{ ParameterType::Value::signalLoss,     L"1/µm"  },
-		{ ParameterType::Value::threshold,      L"mV"    },
-		{ ParameterType::Value::peakVoltage,    L"mV"    },
-    	{ ParameterType::Value::refractPeriod,  L"µs"    },
-	    { ParameterType::Value::timeResolution, L"µs"    }
+		{ ParamType::Value::pulseRate,      L"Hz"    },
+		{ ParamType::Value::pulseSpeed,     L"m/sec" },
+		{ ParamType::Value::pulseWidth,     L"µs"    },
+		{ ParamType::Value::signalLoss,     L"1/µm"  },
+		{ ParamType::Value::threshold,      L"mV"    },
+		{ ParamType::Value::peakVoltage,    L"mV"    },
+    	{ ParamType::Value::refractPeriod,  L"µs"    },
+	    { ParamType::Value::timeResolution, L"µs"    }
 	};				  
 
 	return mapParam.at( p );
 }
 
-wostream & operator << ( wostream & out, ParameterType::Value const p )
+wostream & operator << ( wostream & out, ParamType::Value const p )
 {
-	out << L" " << ParameterType::GetName( p );
+	out << L" " << ParamType::GetName( p );
 	return out;
 }

@@ -26,33 +26,33 @@ bool Shape::operator==( Shape const & rhs ) const
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage )) };
+	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParamType::Value::peakVoltage )) };
 	float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
 	float const fAlphaChannel  { m_bSelected ? 0.7f : 1.0f };
 	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, fAlphaChannel );
 }
 
-D2D1::ColorF Shape::GetExteriorColor( tHighlightType const type ) const 
+D2D1::ColorF Shape::GetExteriorColor( tHighlight const type ) const 
 {
 	switch ( type )
 	{
-	case tHighlightType::normal:      return NNetColors::EXT_NORMAL;
-	case tHighlightType::highlighted: return NNetColors::EXT_HIGHLIGHTED;
-	case tHighlightType::targetFit:   return NNetColors::EXT_NORMAL;
-	case tHighlightType::targetNoFit: return NNetColors::EXT_NORMAL;
+	case tHighlight::normal:      return NNetColors::EXT_NORMAL;
+	case tHighlight::highlighted: return NNetColors::EXT_HIGHLIGHTED;
+	case tHighlight::targetFit:   return NNetColors::EXT_NORMAL;
+	case tHighlight::targetNoFit: return NNetColors::EXT_NORMAL;
 	}
 	assert( false );
 	return NNetColors::EXT_NORMAL;
 };
 
-D2D1::ColorF Shape::GetInteriorColor( tHighlightType const type ) const 
+D2D1::ColorF Shape::GetInteriorColor( tHighlight const type ) const 
 { 
 	switch ( type )
 	{
-	case tHighlightType::normal:      return IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
-	case tHighlightType::highlighted: return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
-	case tHighlightType::targetFit:   return NNetColors::INT_TARGET_FIT;
-	case tHighlightType::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
+	case tHighlight::normal:      return IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
+	case tHighlight::highlighted: return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
+	case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
+	case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
 	}
 	assert( false );
 	return NNetColors::INT_NORMAL;
@@ -60,7 +60,7 @@ D2D1::ColorF Shape::GetInteriorColor( tHighlightType const type ) const
 
 float Shape::GetFillLevel( mV const voltageInput ) const
 {
-	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParameterType::Value::threshold );
+	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParamType::Value::threshold );
 }
 
 void Shape::CheckShape( ) const

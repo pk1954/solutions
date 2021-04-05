@@ -20,14 +20,14 @@ using std::setprecision;
 using std::fixed;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-	: ConnectionNeuron( upCenter, ShapeType::Value::inputNeuron )
+	: ConnNeuron( upCenter, ShapeType::Value::inputNeuron )
 { 
-	SetPulseFrequency( STD_PULSE_FREQ );
+	SetPulseFrequency(STD_PULSE_FREQ);
 }
 
 InputNeuron::~InputNeuron() { }
 
-void InputNeuron::CheckShape( ) const
+void InputNeuron::CheckShape() const
 {
 	Neuron::CheckShape();
 	assert( ! m_connections.HasIncoming() );
@@ -45,7 +45,7 @@ bool InputNeuron::operator==( Shape const & rhs ) const
 
 void InputNeuron::Recalc( )
 {
-	m_mvFactor = mV( m_pParameters->GetParameterValue( ParameterType::Value::peakVoltage ) / m_pulseDuration.GetValue() );
+	m_mvFactor = mV( m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) / m_pulseDuration.GetValue() );
 }
 
 fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
@@ -66,12 +66,12 @@ bool const InputNeuron::CompStep( )
 	return m_bStopOnTrigger && bTrigger;
 }
 
-void InputNeuron::DrawExterior(DrawContext const & context, tHighlightType const type) const
+void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket( context, 2.0f, 0.1f, GetExteriorColor(type) );
 }
 
-void InputNeuron::DrawInterior(DrawContext const & context, tHighlightType const type) const
+void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
 }
@@ -124,8 +124,8 @@ void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 	m_wBuffer << fixed << setprecision(2) 
 		      << GetPulseFrequency().GetValue() 
 		      << L" " 
-		      << ParameterType::GetUnit( ParameterType::Value::pulseRate );
+		      << ParamType::GetUnit(ParamType::Value::pulseRate);
 
-	DisplayText( context, GetRect4Text(), m_wBuffer.str( ) );
+	DisplayText( context, GetRect4Text(), m_wBuffer.str() );
 }
 

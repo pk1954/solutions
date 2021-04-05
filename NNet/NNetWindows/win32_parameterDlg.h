@@ -34,12 +34,12 @@ private:
 	HWND m_hwndTimeResolution  { nullptr };
 	HWND m_hwndPulseSpeed      { nullptr };
 		
-	HWND createButton     ( HWND const, wchar_t const * const, int const, int const, int const, int const, HMENU const );
-	HWND createEditField  ( HWND const, ParameterType::Value      const, int &,     int const, int const );
-	HWND createStaticField( HWND const, wchar_t const * const, int &,     int const, int const );
-	void resetParameter   ( HWND const, ParameterType::Value const );
-	void applyParameter   ( HWND const, ParameterType::Value const );
-	HWND addParameter     ( HWND const, ParameterType::Value const, int & );
+	HWND createButton     ( HWND const, wchar_t  const * const, int const, int const, int const, int const, HMENU const );
+	HWND createEditField  ( HWND const, ParamType::Value const, int &,     int const, int const );
+	HWND createStaticField( HWND const, wchar_t  const * const, int &,     int const, int const );
+	void resetParameter   ( HWND const, ParamType::Value const );
+	void applyParameter   ( HWND const, ParamType::Value const );
+	HWND addParameter     ( HWND const, ParamType::Value const, int & );
 	void applyParameters();
 	void resetParameters();
 

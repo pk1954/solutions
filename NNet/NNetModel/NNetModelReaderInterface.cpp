@@ -81,6 +81,8 @@ bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstrin
 	return m_pModel->GetDescriptionLine( iLine, wstrLine );
 };
 
+// IsConnectionCandidate: Sort out obvious non-candidates
+
 bool const NNetModelReaderInterface::IsConnectionCandidate( ShapeId const idSrc, ShapeId const idDst ) const
 {
 	if (idSrc == idDst)
@@ -193,10 +195,10 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 
 bool const NNetModelReaderInterface::IsConnectedTo( ShapeId const idSrc, ShapeId const idDst ) const
 {
-	if ( GetShapeType( idSrc ).IsPipeType() )
-		return isConnectedToPipe( idDst, idSrc );
-	if ( GetShapeType( idDst ).IsPipeType() )
-		return isConnectedToPipe( idSrc, idDst );
+	if ( GetShapeType(idSrc).IsPipeType() )
+		return isConnectedToPipe(idDst, idSrc);
+	if ( GetShapeType(idDst).IsPipeType() )
+		return isConnectedToPipe(idSrc, idDst );
 	else
 		return false;
 }
@@ -213,9 +215,9 @@ ShapeId const NNetModelReaderInterface::FindShapeAt( MicroMeterPoint const & umP
 
 void NNetModelReaderInterface::DrawExterior
 ( 
-	ShapeId        const   id,
-	DrawContext    const & context,
-	tHighlightType const   type
+	ShapeId     const   id,
+	DrawContext const & context,
+	tHighlight  const   type
 ) const
 {
 	if ( Shape const * const p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
@@ -224,9 +226,9 @@ void NNetModelReaderInterface::DrawExterior
 
 void NNetModelReaderInterface::DrawInterior
 ( 
-	ShapeId        const   id, 
-	DrawContext    const & context,
-	tHighlightType const   type
+	ShapeId     const   id, 
+	DrawContext const & context,
+	tHighlight  const   type
 ) 
 const
 {

@@ -70,7 +70,7 @@ bool const NNetModel::GetDescriptionLine( int const iLine, wstring & wstrLine ) 
 
 float NNetModel::SetParam
 ( 
-	ParameterType::Value const param, 
+	ParamType::Value const param, 
 	float      const fNewValue 
 )
 {
@@ -80,19 +80,12 @@ float NNetModel::SetParam
 	return fOldValue;
 }
 
-MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
-{
-	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
-		return pBaseKnot->GetPosition();
-	return NP_NULL;
-}
-
 bool NNetModel::Compute( )
 {
-	bool bStop {false };
-	m_timeStamp += m_param.GetTimeResolution( );
-	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare( ); } );
-	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep( ) ) bStop = true; } );
+	bool bStop {false};
+	m_timeStamp += m_param.GetTimeResolution();
+	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare(); } );
+	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep() ) bStop = true; } );
 	return bStop;
 }
 

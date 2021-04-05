@@ -18,8 +18,8 @@ public:
 
 	fMicroSecs const GetTimeResolution( ) const { return m_usResolution; }
 
-	float const GetParameterValue( ParameterType::Value const ) const;
-	void        SetParameterValue( ParameterType::Value const, float const );
+	float const GetParameterValue( ParamType::Value const ) const;
+	void        SetParameterValue( ParamType::Value const, float const );
 
 private:
 	mV          m_threshold    { 20._mV            };

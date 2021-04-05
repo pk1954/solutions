@@ -1,4 +1,4 @@
-// ParameterType::Value.h
+// ParameterType.h
 //
 // NNetModel
 
@@ -9,7 +9,7 @@
 using std::function;
 using std::wostream;
 
-class ParameterType
+class ParamType
 {
 public:
 	enum class Value
@@ -26,13 +26,13 @@ public:
 		tParameterLast = pulseRate
 	};
 
-	static wchar_t const * const GetName( ParameterType::Value const );
-	static wchar_t const * const GetUnit( ParameterType::Value const );
+	static wchar_t const * const GetName( ParamType::Value const );
+	static wchar_t const * const GetUnit( ParamType::Value const );
 
-	static void Apply2GlobalParameters( function<void(ParameterType::Value const &)> const & );
-	static void Apply2AllParameters   ( function<void(ParameterType::Value const &)> const & );
+	static void Apply2GlobalParameters( function<void(ParamType::Value const &)> const & );
+	static void Apply2AllParameters   ( function<void(ParamType::Value const &)> const & );
 
-	friend wostream & operator << ( wostream &, ParameterType const & );
+	friend wostream & operator << ( wostream &, ParamType const & );
 
 private:
 	Value m_value;

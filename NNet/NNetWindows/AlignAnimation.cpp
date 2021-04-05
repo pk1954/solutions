@@ -15,9 +15,9 @@ void AlignAnimation::Initialize
 	NNetModelCommands        & commands
 )
 {
-	m_pNMWI          = & nmwi;
-	m_pModelCommands = & commands;
-	m_upConnectorAnimation = make_unique<ConnectorAnimation>(IDX_CONNECTOR_ANIMATION, hwnd); 
+	m_pNMWI           = & nmwi;
+	m_pModelCommands  = & commands;
+	m_upConnAnimation = make_unique<ConnAnimation>(IDX_CONNECTOR_ANIMATION, hwnd); 
 }
 
 bool const AlignAnimation::calcMaxDistLine(ALIGN_VECTOR const & points)
@@ -69,7 +69,7 @@ bool const AlignAnimation::prepareData()
 	m_pNMWI->GetUPShapes().Apply2AllSelected
 	( 
 		shapeType,
-		[&points](Shape & s) { points.push_back( ALIGN_PNT { static_cast<ConnectionNeuron *>(&s) } ); } 
+		[&points](Shape & s) { points.push_back( ALIGN_PNT { static_cast<CNPtr>(&s) } ); } 
 	);
 
 	if ( ! calcMaxDistLine( points ) )
@@ -85,13 +85,13 @@ bool const AlignAnimation::prepareData()
 	return true;
 }
 
-void AlignAnimation::calcOrthoVector( ShapePtrList<ConnectionNeuron> const & list )
+void AlignAnimation::calcOrthoVector( ShapePtrList<ConnNeuron> const & list )
 {
 	unsigned int uiLeftConnections  { 0 };
 	unsigned int uiRightConnections { 0 };
 	list.Apply2All
 	(	
-		[&](ConnectionNeuron const & c)	
+		[&](ConnNeuron const & c)	
 		{ 
 			c.m_connections.Apply2AllInPipes
 			( 
@@ -161,7 +161,7 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 
 	m_shapesAnimated.Apply2All
 	(	
-		[&](ConnectionNeuron const & c)	
+		[&](ConnNeuron const & c)	
 		{ 
 			MicroMeterPosDir posDir 
 			{
@@ -173,14 +173,14 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 		}	
 	);
 
-	m_upConnectorAnimation->Start( MicroMeterPointVector(m_shapesAnimated), umPntVectorTarget );
+	m_upConnAnimation->Start( MicroMeterPointVector(m_shapesAnimated), umPntVectorTarget );
 }
 
 bool const AlignAnimation::AnimationStep(bool const bTargetReached)
 {
 	m_pModelCommands->SetConnectionNeurons
 	(
-		m_upConnectorAnimation->GetActual(), 
+		m_upConnAnimation->GetActual(), 
 		m_shapesAnimated
 	);
 

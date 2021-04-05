@@ -57,7 +57,7 @@ private:
 			}
 		);
 		int const iSize { Cast2Int(m_copies.size()) };
-		for ( int i = 0; i < iSize; ++i ) // cannot use range-based loop. m_copies changed in loop.
+		for (int i = 0; i < iSize; ++i) // cannot use range-based loop. m_copies changed in loop.
 		{
 			Shape * const pShapeSrc { nmwi.GetShape( m_copies[i]->GetId() ) };
 			if ( pShapeSrc->IsPipe( ) )

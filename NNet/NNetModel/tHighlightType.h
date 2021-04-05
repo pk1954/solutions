@@ -4,7 +4,7 @@
 
 #pragma once
 
-enum class tHighlightType
+enum class tHighlight
 {
 	normal,
 	highlighted,
@@ -12,17 +12,17 @@ enum class tHighlightType
 	targetNoFit
 };
 
-static bool const IsHighlighted( tHighlightType const type )
+static bool const IsHighlighted( tHighlight const type )
 {
-	return type == tHighlightType::highlighted;
+	return type == tHighlight::highlighted;
 }
 
-static bool const IsNormal( tHighlightType const type )
+static bool const IsNormal( tHighlight const type )
 {
-	return type == tHighlightType::normal;
+	return type == tHighlight::normal;
 }
 
-//static bool const IsTarget( tHighlightType const type )
+//static bool const IsTarget( tHighlight const type )
 //{
-//	return type == tHighlightType::target;
+//	return type == tHighlight::target;
 //}

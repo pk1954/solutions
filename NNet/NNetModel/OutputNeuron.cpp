@@ -14,11 +14,11 @@ using std::wcout;
 using std::endl;
 
 OutputNeuron::OutputNeuron( MicroMeterPoint const & upCenter )
-	: ConnectionNeuron( upCenter, ShapeType::Value::outputNeuron )
+	: ConnNeuron( upCenter, ShapeType::Value::outputNeuron )
 {}
 
 OutputNeuron::OutputNeuron( Neuron const & neuron )
-	: ConnectionNeuron( neuron.GetPosition(), ShapeType::Value::outputNeuron )
+	: ConnNeuron( neuron.GetPosition(), ShapeType::Value::outputNeuron )
 {
 	static_cast<Neuron &>(*this) = neuron;      // use all data from Neuron to construct OutputNeuron
 	SetType( ShapeType::Value::outputNeuron );  // fix neuron type
@@ -35,12 +35,12 @@ bool OutputNeuron::operator==( Shape const & rhs ) const
 	return this->Neuron::operator== (static_cast<OutputNeuron const &>(rhs));
 }
 
-void OutputNeuron::DrawExterior(DrawContext const & context, tHighlightType const type) const
+void OutputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawPlug( context, 0.8f, 0.8f, GetExteriorColor(type) );
 }
 
-void OutputNeuron::DrawInterior(DrawContext const & context, tHighlightType const type) const
+void OutputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
 	drawPlug( context, 0.4f, 0.6f, GetInteriorColor(type) );
 }

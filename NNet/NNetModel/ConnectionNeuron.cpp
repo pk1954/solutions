@@ -1,16 +1,16 @@
-// ConnectionNeuron.cpp 
+// ConnNeuron.cpp 
 //
 // NNetModel
 
 #include "stdafx.h"
 #include "ConnectionNeuron.h"
 
-MicroMeterPoint const ConnectionNeuron::GetScaledDirVector() const
+MicroMeterPoint const ConnNeuron::GetScaledDirVector() const
 {
 	return GetDirVector().ScaledTo(GetExtension());
 }
 
-MicroMeterPoint const ConnectionNeuron::determineVector() const
+MicroMeterPoint const ConnNeuron::determineVector() const
 {
 	MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };
 

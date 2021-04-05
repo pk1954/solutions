@@ -48,8 +48,8 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
 
-	virtual void       DrawExterior  ( DrawContext const &, tHighlightType const) const;
-	virtual void       DrawInterior  ( DrawContext const &, tHighlightType const) const;
+	virtual void       DrawExterior  ( DrawContext const &, tHighlight const) const;
+	virtual void       DrawInterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawNeuronText( DrawContext const & ) const;
 	virtual void       Recalc( );
 	virtual void       Clear( );

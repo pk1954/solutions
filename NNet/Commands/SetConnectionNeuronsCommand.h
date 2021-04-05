@@ -16,8 +16,8 @@ class SetConnectionNeuronsCommand : public Command
 public:
 	SetConnectionNeuronsCommand
 	(
-		MicroMeterPointVector    const & umPntVector,
-		ShapePtrList<ConnectionNeuron> & shapes2Animate
+		MicroMeterPointVector const & umPntVector,
+		ShapePtrList<ConnNeuron>    & shapes2Animate
 	)
 	  : m_umPntVector(umPntVector),
 		m_shapes2Animate(shapes2Animate)
@@ -28,10 +28,10 @@ public:
 		unsigned int ui = 0;
 		m_shapes2Animate.Apply2All
 		(
-			[&](ConnectionNeuron & connectionNeuron)
+			[&](ConnNeuron & n)
 			{
-				MicroMeterPosDir const posDir { connectionNeuron.GetPosDir() };
-				connectionNeuron.SetPosDir( m_umPntVector.GetPosDir(ui) );
+				MicroMeterPosDir const posDir { n.GetPosDir() };
+				n.SetPosDir( m_umPntVector.GetPosDir(ui) );
 				m_umPntVector.SetPosDir( ui, posDir );
 				++ui;
 			}
@@ -39,6 +39,6 @@ public:
 	}
 
 private:
-	MicroMeterPointVector          m_umPntVector;
-	ShapePtrList<ConnectionNeuron> m_shapes2Animate;
+	MicroMeterPointVector    m_umPntVector;
+	ShapePtrList<ConnNeuron> m_shapes2Animate;
 };
