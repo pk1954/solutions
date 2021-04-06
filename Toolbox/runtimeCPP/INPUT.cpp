@@ -13,18 +13,18 @@
 #include "Input.h"
 #include "errhndl.h"
 
-InputBuffer::InputBuffer( ) 
-  :  m_wstrLine( ),
-     m_ifstream( )
+InputBuffer::InputBuffer() 
+  :  m_wstrLine(),
+     m_ifstream()
 {
     m_wstrLine.clear();
     m_wstrLine  += L'\0';
     m_pwchStart  = nullptr;
-    m_pwchRead   = &m_wstrLine.front( );
+    m_pwchRead   = &m_wstrLine.front();
     m_iLineNr    = 0;
 }                                                  // end OpenInputBuffer 
 
-InputBuffer::~InputBuffer( ) 
+InputBuffer::~InputBuffer() 
 {
     m_pwchStart = nullptr;
     m_pwchRead  = nullptr;
@@ -39,7 +39,7 @@ void InputBuffer::Open( wstring const & wstrFile )  // path of file to be opened
 {
     m_ifstream.open( wstrFile, std::ios::in );
     if ( ! m_ifstream )
-        ScriptErrorHandler::inputFileError( );
+        ScriptErrorHandler::inputFileError();
 }                                                  // end OpenInputBuffer 
 
 // ReadNextChar: Read next character from script file
@@ -52,7 +52,7 @@ void InputBuffer::Open( wstring const & wstrFile )  // path of file to be opened
 //                     File error
 //                     Line too long
 
-wchar_t InputBuffer::ReadNextChar( )
+wchar_t InputBuffer::ReadNextChar()
 {             
    assert( m_ifstream );
    
@@ -62,7 +62,7 @@ wchar_t InputBuffer::ReadNextChar( )
       m_wstrLine += L'\n'; 
 
       if ( m_ifstream.bad() )
-          ScriptErrorHandler::inputFileError( );
+          ScriptErrorHandler::inputFileError();
 
       else if ( m_ifstream.eof() )  // end of file reached
          return L'\0';
@@ -70,7 +70,7 @@ wchar_t InputBuffer::ReadNextChar( )
       else // new line successfully read
       {         
          m_iLineNr++;
-         m_pwchRead = &m_wstrLine.front( );
+         m_pwchRead = &m_wstrLine.front();
       }   
    }
 
@@ -90,7 +90,7 @@ wchar_t InputBuffer::ReadNextChar( )
 //                 
 //   Error conditions: ---
 
-bool InputBuffer::IsFloat( ) const
+bool InputBuffer::IsFloat() const
 {             
    wchar_t const * pwchRun = m_pwchRead;
 
@@ -113,7 +113,7 @@ bool InputBuffer::IsFloat( ) const
 // Writes to: pchRead           
 
 
-double InputBuffer::ReadFloat( )
+double InputBuffer::ReadFloat()
 {
    wchar_t const * const pwchRun = m_pwchRead - 1;
    wchar_t       *       pwchStop;
@@ -127,7 +127,7 @@ double InputBuffer::ReadFloat( )
 //
 //   Writes to: pchRead           
   
-unsigned long InputBuffer::ReadNumber( )
+unsigned long InputBuffer::ReadNumber()
 {
    wchar_t const * const pwchRun = m_pwchRead - 1;
    wchar_t       *       pwchStop;
@@ -139,31 +139,31 @@ unsigned long InputBuffer::ReadNumber( )
 // SetStartMarker: Mark start of token in input line
 //                 Used for display in case of error in script file
 
-void InputBuffer::SetStartMarker( )
+void InputBuffer::SetStartMarker()
 {
    m_pwchStart = m_pwchRead-1;
 }                                          
 
 // UnreadLastChar:
 
-void InputBuffer::UnreadLastChar( )
+void InputBuffer::UnreadLastChar()
 {
-    assert( m_pwchRead > &m_wstrLine.front( ) );
+    assert( m_pwchRead > &m_wstrLine.front() );
     --m_pwchRead;
 }
 
-int InputBuffer::GetActStartPos( ) const
+int InputBuffer::GetActStartPos() const
 {
     if ( m_pwchStart == nullptr )
         return -1;
 
     assert( m_wstrLine[0] != L'\0' );
-    assert( m_pwchRead > &m_wstrLine.front( ) );
+    assert( m_pwchRead > &m_wstrLine.front() );
 
-    return static_cast<int>(m_pwchStart - &m_wstrLine.front( ));
+    return static_cast<int>(m_pwchStart - &m_wstrLine.front());
 }          
 
-int InputBuffer::GetActEndPos( ) const
+int InputBuffer::GetActEndPos() const
 {
     if ( m_pwchStart == nullptr )
         return -1;
@@ -171,14 +171,14 @@ int InputBuffer::GetActEndPos( ) const
     assert( m_wstrLine[0] != L'\0' );
     assert( m_pwchRead > &m_wstrLine[0] );
 
-    return static_cast<int>(m_pwchRead - &m_wstrLine.front( ));
+    return static_cast<int>(m_pwchRead - &m_wstrLine.front());
 }                  
 
-void InputBuffer::Close( )
+void InputBuffer::Close()
 {
     try
     {
-        m_ifstream.close( );
+        m_ifstream.close();
     }
     catch ( ... )
     {

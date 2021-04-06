@@ -66,7 +66,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	CommandStack             m_cmdStack               {};
 	MonitorData              m_monitorData            {};
 
-	DefineUtilityWrapperFunctions( );
+	DefineUtilityWrapperFunctions();
 	DefineNNetWrappers( & m_modelCommands );
 
 	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable );

@@ -20,10 +20,13 @@ public:
 	T       & GetFirst()       { return * m_list.at( 0 ); }
 	T const & GetFirst() const { return * m_list.at( 0 ); }
 
+	T       & GetLast()       { return * m_list.back(); }
+	T const & GetLast() const { return * m_list.back(); }
+
 	void Check() const { for (auto & it : m_list) { it->CheckShape(); }; }
 
 	void Clear()      {	m_list.clear(); }
-	void RemoveLast() {	m_list.pop_back( ); }
+	void RemoveLast() {	m_list.pop_back(); }
 	void Replace(T * const pDel, T * const pAdd) 
 	{ 
 		replace( begin(m_list), end(m_list), pDel, pAdd ); 
@@ -82,7 +85,7 @@ public:
 	friend wostream & operator<< ( wostream & out, ShapePtrList<T> const & list )
 	{
 		out << L"(";
-		if ( ! list.IsEmpty( ) )
+		if ( ! list.IsEmpty() )
 		{
 			out << list.m_list[0]->GetId();
 			for ( int i = 1; i < list.m_list.size(); ++i )

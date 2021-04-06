@@ -57,7 +57,7 @@ public:
 
     virtual void operator() ( Script & script ) const
     {
-        wstring const wstrDescription { script.ScrReadString( ) };
+        wstring const wstrDescription { script.ScrReadString() };
         GetWriterInterface().AddDescriptionLine( wstrDescription );
     }
 };
@@ -77,7 +77,7 @@ private:
     Shape * const createShape( Script & script ) const
     {   
         ShapeId   const   idFromScript{ ScrReadShapeId(script) };
-        ShapeType const   shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
+        ShapeType const   shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt()) };
         Shape           * pShape      { nullptr };
         UPShape           upShape     
         { 
@@ -93,6 +93,10 @@ private:
             pShape = upShape.get();
             GetUPShapes().SetShape2Slot( idFromScript, move(upShape) );
         }
+        if ( shapeType.IsConnectorType() )
+        {
+            static_cast<Connector *>(pShape)->SetParentPointers();
+        }
         return pShape;
     }
 
@@ -100,7 +104,7 @@ private:
     {
         script.ScrReadSpecial( Pipe::OPEN_BRACKET );
         ShapeId const idStart { ScrReadShapeId(script) };
-        for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
+        for ( int i = 0; i < Pipe::SEPARATOR.length(); i++ )
             script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
         ShapeId const idEnd { ScrReadShapeId(script) };
         script.ScrReadSpecial( Pipe::CLOSE_BRACKET );
@@ -156,14 +160,14 @@ private:
         script.ScrReadSpecial( Connector::SEPARATOR );
         for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
         {
-            ShapeId const id          { script.ScrReadInt() };
-            CNPtr   const pConnNeuron { GetWriterInterface().GetShapePtr<CNPtr>(id) };
+            ShapeId      const id          { script.ScrReadInt() };
+            ConnNeuron * const pConnNeuron { GetWriterInterface().GetShapePtr<ConnNeuron *>(id) };
             if ( ! pConnNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"Element has wrong type" ) );
-            pConnNeuron->SetParent( upConnector.get() );
             upConnector->Push(pConnNeuron);
         }
         script.ScrReadSpecial( Connector::CLOSE_BRACKET );
+        upConnector->AlignDirection();
         return move(upConnector);
     }
 };
@@ -252,7 +256,7 @@ public:
         MicroMeterCircle umCircle;
         TrackNr          trackNr { ScrReadTrackNr(script) };
         script.ScrReadString( L"source" );
-        unsigned long    ulSigSrc { script.ScrReadUlong( ) };
+        unsigned long    ulSigSrc { script.ScrReadUlong() };
         if ( ulSigSrc == NNetModelStorage::SIGSRC_CIRCLE )
         {
             umCircle = ScrReadMicroMeterCircle( script );
@@ -330,7 +334,7 @@ void NNetModelImporter::fixOutputNeurons()
     );
 }
 
-void NNetModelImporter::import( ) 
+void NNetModelImporter::import() 
 {
     ImportTermination::Result res;
 
@@ -338,7 +342,7 @@ void NNetModelImporter::import( )
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
-        m_ImportedNMWI.DescriptionComplete( );
+        m_ImportedNMWI.DescriptionComplete();
         res = ImportTermination::Result::ok;
         fixOutputNeurons();  // legacy: in old models no explicit OutputNeurons
     }
@@ -353,7 +357,7 @@ static unsigned int __stdcall importModelThreadProc( void * data )
 {
     SetThreadDescription( GetCurrentThread(), L"ImportModel" );
     NNetModelImporter * pModelImporter { reinterpret_cast<NNetModelImporter *>( data ) };
-    pModelImporter->import( );
+    pModelImporter->import();
     return 0;
 }
 
@@ -384,7 +388,7 @@ bool NNetModelImporter::Import
     return true;
 }
 
-unique_ptr<NNetModel> NNetModelImporter::GetImportedModel( ) 
+unique_ptr<NNetModel> NNetModelImporter::GetImportedModel() 
 { 
     return move( m_upImportedModel ); 
 }

@@ -21,7 +21,7 @@ public:
 		: m_idPipe( idPipe )
 	{}
 
-	~DeletePipeCommand( ){ }
+	~DeletePipeCommand(){ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
@@ -31,14 +31,14 @@ public:
 			m_pStartKnot = m_pPipe->GetStartKnotPtr();
 			m_pEndKnot   = m_pPipe->GetEndKnotPtr();
 		}
-//		wcout << L"DeletePipeCommand " << L"Do " << L"shapeId = " << m_pPipe->GetId( ) << endl;
+//		wcout << L"DeletePipeCommand " << L"Do " << L"shapeId = " << m_pPipe->GetId() << endl;
 		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
-		if ( m_pStartKnot->IsOrphanedKnot( ) )
+		if ( m_pStartKnot->IsOrphanedKnot() )
 			m_upStartKnot = nmwi.RemoveFromModel<Knot>( * m_pStartKnot );
 
 		m_pEndKnot->m_connections.RemoveIncoming( m_pPipe );
-		if ( m_pEndKnot->IsOrphanedKnot( ) )
+		if ( m_pEndKnot->IsOrphanedKnot() )
 			m_upEndKnot = nmwi.RemoveFromModel<Knot>( * m_pEndKnot );
 
 		m_upPipe = nmwi.RemoveFromModel<Pipe>( * m_pPipe );
@@ -46,7 +46,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-//		wcout << L"DeletePipeCommand " << L"Undo " << L"shapeId = " << m_pPipe->GetId( ) << endl;
+//		wcout << L"DeletePipeCommand " << L"Undo " << L"shapeId = " << m_pPipe->GetId() << endl;
 		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
 		if ( m_upStartKnot )

@@ -10,7 +10,7 @@
 class Int24  
 {
 public:
-	Int24( )
+	Int24()
 	{
 		m_byte[0] = 0;
 		m_byte[1] = 0;

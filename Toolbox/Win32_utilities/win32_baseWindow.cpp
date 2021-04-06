@@ -38,7 +38,7 @@ HWND BaseWindow::StartBaseWindow
 
     if ( atom == 0 )
     {
-        DWORD const dwErr = GetLastError( );
+        DWORD const dwErr = GetLastError();
         assert( dwErr == ERROR_CLASS_ALREADY_EXISTS );
     }
 
@@ -77,7 +77,7 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
         return false;
 
     case WM_PAINT:
-        OnPaint( );
+        OnPaint();
         return false;
 
     case WM_SHOWWINDOW :

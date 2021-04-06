@@ -22,7 +22,7 @@ constexpr TEXT_POSITION operator"" _TEXT_POSITION( unsigned long long ull )
 class TextBuffer
 {
 public:
-	virtual ~TextBuffer( ) {}
+	virtual ~TextBuffer() {}
 
     void Initialize( PIXEL const,	PIXEL const );
 
@@ -31,7 +31,7 @@ public:
 	virtual void AlignLeft() = 0;
 	virtual void AlignRight() = 0;
 
-	virtual void StartPainting( );
+	virtual void StartPainting();
 
     void nextLine( TEXT_POSITION iHorPos = 1_TEXT_POSITION )     
     { 
@@ -53,7 +53,7 @@ public:
 
 	void header( wstring data )
 	{
-		nextLine( );
+		nextLine();
 		AlignLeft();
 		printString( data );
 	}

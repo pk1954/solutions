@@ -13,11 +13,11 @@
 
 using std::wstring;
 
-ParameterDialog::ParameterDialog( ) 
-  : BaseDialog( )
+ParameterDialog::ParameterDialog() 
+  : BaseDialog()
 { }
 
-ParameterDialog::~ParameterDialog( )
+ParameterDialog::~ParameterDialog()
 { }
 
 void ParameterDialog::resetParameter   // refresh edit field with data from model
@@ -74,7 +74,7 @@ HWND ParameterDialog::addParameter
 	return hwndEdit;
 }
 
-void ParameterDialog::resetParameters( )  // refresh edit fields with data from model
+void ParameterDialog::resetParameters()  // refresh edit fields with data from model
 {
 	resetParameter( m_hwndPeakVoltage,      ParamType::Value::peakVoltage    );
 	resetParameter( m_hwndThreshold,        ParamType::Value::threshold      );
@@ -84,7 +84,7 @@ void ParameterDialog::resetParameters( )  // refresh edit fields with data from 
 	resetParameter( m_hwndPulseSpeed,       ParamType::Value::pulseSpeed     );
 }
 
-void ParameterDialog::applyParameters( )  // read out edit field and write data to model
+void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {
 	applyParameter( m_hwndPeakVoltage,      ParamType::Value::peakVoltage    );
 	applyParameter( m_hwndThreshold,        ParamType::Value::threshold      );
@@ -125,11 +125,11 @@ void ParameterDialog::Start
 	createButton( hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS );
 }
 
-void ParameterDialog::Stop( )
+void ParameterDialog::Stop()
 {
 	m_pCommands = nullptr;
 	m_pParams   = nullptr;
-	DestroyWindow( );
+	DestroyWindow();
 }
 
 bool ParameterDialog::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
@@ -138,11 +138,11 @@ bool ParameterDialog::OnCommand( WPARAM const wParam, LPARAM const lParam, Pixel
 	switch ( wId )
 	{
 	case IDD_APPLY_PARAMETERS:
-		applyParameters( );
+		applyParameters();
 		return true;
 
 	case IDD_RESET_PARAMETERS:
-		resetParameters( );
+		resetParameters();
 		return true;
 
 	default:
@@ -155,7 +155,7 @@ bool ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 {
 	if ( message == WM_PAINT )
 	{
-		resetParameters( );
+		resetParameters();
 		return false;
 	}
 

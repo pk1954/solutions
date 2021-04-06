@@ -15,48 +15,48 @@ using Ticks = NamedType< long long, struct Ticks_Parameter >;
 class HiResTimer
 {
 public:
-    HiResTimer( );
-    ~HiResTimer( ) {};
+    HiResTimer();
+    ~HiResTimer() {};
 
-	Ticks const ReadHiResTimer( ) const
+	Ticks const ReadHiResTimer() const
 	{
 		LARGE_INTEGER value;
 		(void)QueryPerformanceCounter( & value );
 		return Ticks( value.QuadPart );
 	}
 
-	void Start( )
+	void Start()
 	{
 		if ( ! m_bStarted )
-			m_ticksOnStart = ReadHiResTimer( );
+			m_ticksOnStart = ReadHiResTimer();
 		m_bStarted = true;
 	}
 
-	void Stop( )
+	void Stop()
 	{
 		if ( m_bStarted )
-			m_ticksAccumulated += GetTicksTilStart( );
+			m_ticksAccumulated += GetTicksTilStart();
 		m_bStarted = false;
 	}
 
-	void Restart( )
+	void Restart()
 	{
 		m_ticksAccumulated = Ticks( 0 );
-		m_ticksOnStart = ReadHiResTimer( );
+		m_ticksOnStart = ReadHiResTimer();
 		m_bStarted = true;
 	}
 
-	Ticks const GetTicksTilStart( ) const
+	Ticks const GetTicksTilStart() const
 	{
-		return ReadHiResTimer( ) - m_ticksOnStart;
+		return ReadHiResTimer() - m_ticksOnStart;
 	}
 
-	fMicroSecs const GetMicroSecsTilStart( ) const
+	fMicroSecs const GetMicroSecsTilStart() const
 	{
 		return TicksToMicroSecs( GetTicksTilStart() );
 	}
 
-	microseconds const GetDuration( )
+	microseconds const GetDuration()
 	{
 		assert( ! m_bStarted );
 

@@ -24,7 +24,7 @@ OutputNeuron::OutputNeuron( Neuron const & neuron )
 	SetType( ShapeType::Value::outputNeuron );  // fix neuron type
 }
 
-void OutputNeuron::CheckShape( ) const
+void OutputNeuron::CheckShape() const
 {
 	Neuron::CheckShape();
 	assert( ! m_connections.HasOutgoing() );
@@ -45,10 +45,10 @@ void OutputNeuron::DrawInterior(DrawContext const & context, tHighlight const ty
 	drawPlug( context, 0.4f, 0.6f, GetInteriorColor(type) );
 }
 
-bool const OutputNeuron::IsPointInShape( MicroMeterPoint const & point ) const
+bool const OutputNeuron::Includes(MicroMeterPoint const & point) const
 {
 	MicroMeterPoint const umCenter { GetPosition() + GetScaledDirVector() * 0.5f };
-	return Distance( point, umCenter ) <= GetExtension();
+	return Distance(point, umCenter) <= GetExtension();
 }
 
 void OutputNeuron::drawPlug

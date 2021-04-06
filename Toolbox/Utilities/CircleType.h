@@ -13,7 +13,7 @@ class CircleType
     using POS_TYPE = PosType<BASE_TYPE>;
 
 public:
-    CircleType( ) :
+    CircleType() :
         m_position(),
         m_radius()
     { }
@@ -57,13 +57,13 @@ public:
         return res;
     };
 
-    void Set2Zero( ) { * this = ZERO_VAL(); }
-    void Set2Null( ) { * this = NULL_VAL(); }
+    void Set2Zero() { * this = ZERO_VAL(); }
+    void Set2Null() { * this = NULL_VAL(); }
 
-    bool IsNull   ( ) const { return * this == NULL_VAL(); };
-    bool IsNotNull( ) const { return * this != NULL_VAL(); };
-    bool IsZero   ( ) const { return * this == ZERO_VAL(); };
-    bool IsNotZero( ) const { return * this != ZERO_VAL(); };
+    bool IsNull   () const { return * this == NULL_VAL(); };
+    bool IsNotNull() const { return * this != NULL_VAL(); };
+    bool IsZero   () const { return * this == ZERO_VAL(); };
+    bool IsNotZero() const { return * this != ZERO_VAL(); };
 
     friend CircleType const operator* (CircleType const a,  float const d) 
     { 

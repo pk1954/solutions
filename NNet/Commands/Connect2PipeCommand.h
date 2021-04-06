@@ -20,12 +20,12 @@ public:
 	:	m_pBaseKnot( pBaseKnot ),
 		m_pPipe    ( pPipe )
 	{
-		m_pStartKnot = m_pPipe->GetStartKnotPtr( );
+		m_pStartKnot = m_pPipe->GetStartKnotPtr();
 		m_upNewPipe  = make_unique<Pipe>( m_pStartKnot, m_pBaseKnot );
 		m_upNewPipe->Select( m_pPipe->IsSelected(), true );
 	}
 
-	~Connect2PipeCommand( )	{ }
+	~Connect2PipeCommand()	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
@@ -38,7 +38,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-		m_upNewPipe = nmwi.GetUPShapes().Pop<Pipe>( );
+		m_upNewPipe = nmwi.GetUPShapes().Pop<Pipe>();
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_upNewPipe.get(), m_pPipe );
 		m_pBaseKnot ->m_connections.RemoveIncoming( m_upNewPipe.get() );
 		m_pBaseKnot ->m_connections.RemoveOutgoing( m_pPipe );

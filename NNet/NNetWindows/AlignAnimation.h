@@ -39,8 +39,8 @@ private:
 
 	struct ALIGN_PNT
 	{
-		CNPtr      pConnectionNeuron;
-		MicroMeter umDist;
+		ConnNeuron * pConnectionNeuron;
+		MicroMeter   umDist;
 	};
 
 	using ALIGN_VECTOR = vector<ALIGN_PNT>;
@@ -63,6 +63,6 @@ private:
 	void       calcDistances  (ALIGN_VECTOR &);
 	void       sortDistances  (ALIGN_VECTOR &);
 	bool const calcMaxDistLine(ALIGN_VECTOR const &);
-	void       calcOrthoVector(ShapePtrList<ConnNeuron> const &);
 	void       scriptStep     (DWORD const);
+
 };

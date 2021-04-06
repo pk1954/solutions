@@ -28,7 +28,7 @@ void NNetWindow::InitClass( ActionTimer * const pActionTimer )
 }
 
 NNetWindow::NNetWindow() :
-	ModelWindow( )
+	ModelWindow()
 { }
 
 void NNetWindow::Start
@@ -63,13 +63,13 @@ void NNetWindow::Start
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
-void NNetWindow::Stop( )
+void NNetWindow::Stop()
 {
 	m_context.Stop();
-	DestroyWindow( );
+	DestroyWindow();
 }
 
-NNetWindow::~NNetWindow( )
+NNetWindow::~NNetWindow()
 {
 	m_pNMRI       = nullptr;
 	m_pController = nullptr;
@@ -134,7 +134,7 @@ void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 	}
 }
 
-void NNetWindow::DrawSensors( ) const
+void NNetWindow::DrawSensors() const
 {
 	m_pNMRI->GetMonitorData().Apply2AllSignals
 	(
@@ -142,7 +142,7 @@ void NNetWindow::DrawSensors( ) const
 	);
 }
 
-void NNetWindow::OnPaint( )
+void NNetWindow::OnPaint()
 {
 	if ( IsWindowVisible() )
 	{
@@ -150,14 +150,14 @@ void NNetWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_context.StartFrame( hDC ) )
 		{
-			doPaint( );
-			m_context.EndFrame( );
+			doPaint();
+			m_context.EndFrame();
 		}
 		EndPaint( &ps );
 	}
 }
 
-void NNetWindow::DrawBeacon( )
+void NNetWindow::DrawBeacon()
 {
 	//MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
 	//if ( umCircleBeacon.IsNotNull() )

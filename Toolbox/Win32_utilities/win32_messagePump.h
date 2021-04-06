@@ -15,7 +15,7 @@ public:
 
 	void RegisterWindow( HWND const, bool const );
 	
-	int Run( );
+	int Run();
 
 private:
 	struct AccEntry

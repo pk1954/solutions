@@ -23,7 +23,7 @@ HMENU NNetAppMenu::popupMenu( HMENU const hMenuParent, LPCTSTR const text )
     return hMenuPopup;
 }
 
-NNetAppMenu::NNetAppMenu( )
+NNetAppMenu::NNetAppMenu()
   : m_upOnOffArrows  ( make_unique<OnOffPair>( this, IDD_ARROWS_ON,    IDD_ARROWS_OFF    ) ),
     m_upOnOffSound   ( make_unique<OnOffPair>( this, IDD_SOUND_ON,     IDD_SOUND_OFF     ) ),
     m_upOnOffAutoOpen( make_unique<OnOffPair>( this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF ) )
@@ -51,7 +51,7 @@ void NNetAppMenu::Start
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
 
-    m_hMenu = CreateMenu( );
+    m_hMenu = CreateMenu();
 
 	HBITMAP hBitmapUndo { LoadBitmap( hInstance, L"UNDO_BITMAP" ) };
 	HBITMAP hBitmapRedo { LoadBitmap( hInstance, L"REDO_BITMAP" ) };
@@ -147,7 +147,7 @@ void NNetAppMenu::Notify( bool const bImmediately )
     DrawMenuBar( m_hwndApp );
 }
 
-void NNetAppMenu::AdjustUndoRedo( )
+void NNetAppMenu::AdjustUndoRedo()
 {
     enable( IDM_UNDO, ! m_pCommandStack->UndoStackEmpty() );
     enable( IDM_REDO, ! m_pCommandStack->RedoStackEmpty() );

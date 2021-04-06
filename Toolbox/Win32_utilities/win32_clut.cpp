@@ -9,24 +9,24 @@
 void CLUT::Allocate( CLUT_INDEX const uiMaxIndex )
 {
     m_data.resize( static_cast<size_t>(uiMaxIndex.GetValue()) + 1 );
-    setTableValues( );
+    setTableValues();
 }
 
 void CLUT::SetClutBase( CLUT_INDEX const uiMinLevel )
 {
     m_uiBase = uiMinLevel;
-    setTableValues( );
+    setTableValues();
 }
     
 void CLUT::SetColorHi( COLORREF const colorHi )
 {
     m_colorHi = colorHi;
-    setTableValues( );
+    setTableValues();
 }
     
-void CLUT::setTableValues( )
+void CLUT::setTableValues()
 {
-	UINT const uiMaxIndex = GetSize( ) - 1;
+	UINT const uiMaxIndex = GetSize() - 1;
 
     UINT const uiRedHi = GetRValue ( m_colorHi ); 
     UINT const uiGreHi = GetGValue ( m_colorHi ); 

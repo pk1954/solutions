@@ -116,6 +116,11 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
 		break;
 
+	case ShapeType::Value::connector:
+//		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
+		break;
+
 	case ShapeType::Value::knot:  
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
@@ -162,9 +167,9 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
 }
 
-MicroMeterPoint const MainWindow::GetCursorPos( ) const
+MicroMeterPoint const MainWindow::GetCursorPos() const
 {
-	PixelPoint const pixPoint { GetRelativeCrsrPosition( ) };
+	PixelPoint const pixPoint { GetRelativeCrsrPosition() };
 	return IsInClientRect( pixPoint )
 		? GetCoordC().Transform2MicroMeterPointPos( pixPoint )
 		: NP_ZERO;
@@ -258,6 +263,12 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return true;
 }
 
+void MainWindow::setNoTarget()
+{
+	m_shapeTarget = NO_SHAPE;
+	m_bTargetFits = false;
+}
+
 void MainWindow::setTargetShape()
 {
 	m_shapeTarget = m_pNMRI->FindShapeAt
@@ -340,6 +351,7 @@ void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 		SendCommand2Application( IDD_CONNECT, 0	);
 		setNoTarget();
 	}
+	setNoTarget();
 }
 
 bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
@@ -355,7 +367,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool MainWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
-	SetFocus( );
+	SetFocus();
 	return false;
 }
 
@@ -403,11 +415,11 @@ void MainWindow::centerAndZoomRect
 	m_upCoordAnimation->Start( GetCoord(), coordTarget );
 }
 
-void MainWindow::OnPaint( )
+void MainWindow::OnPaint()
 {
-	m_pDisplayTimer->TimerStart( );
-	NNetWindow::OnPaint( );
-	m_pDisplayTimer->TimerStop( );
+	m_pDisplayTimer->TimerStart();
+	NNetWindow::OnPaint();
+	m_pDisplayTimer->TimerStop();
 }
 
 bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
@@ -431,15 +443,15 @@ void MainWindow::OnChar( WPARAM const wParam, LPARAM const lParam )
 
 /////////////////////// local functions ////////////////////////////////
 
-void MainWindow::doPaint( ) 
+void MainWindow::doPaint() 
 {
-	PixelRect   const   pixRect { GetClPixelRect( ) };
+	PixelRect   const   pixRect { GetClPixelRect() };
 	DrawContext const & context { GetDrawContext() };
 
-	if ( m_rectSelection.IsNotEmpty( ) )
+	if ( m_rectSelection.IsNotEmpty() )
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
-	m_scale.DisplayStaticScale( );
+	m_scale.DisplayStaticScale();
 
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 	{
@@ -467,8 +479,8 @@ void MainWindow::doPaint( )
 		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
 	}
 
-	DrawSensors( );
-	DrawBeacon( );
+	DrawSensors();
+	DrawBeacon();
 }
 
 void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )

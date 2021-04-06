@@ -25,24 +25,24 @@ class RootWindow : public ObserverInterface
 {
 public:
 
-    RootWindow( );
-    virtual ~RootWindow( );
+    RootWindow();
+    virtual ~RootWindow();
 
 	void StartRootWindow( function<bool()> const );
 
-    HWND GetWindowHandle( ) const { return m_hwnd; };
+    HWND GetWindowHandle() const { return m_hwnd; };
 
-    PIXEL         const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
-    PIXEL         const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
-    PIXEL         const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
-    PixelRectSize const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
-    PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
-    PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
-    PIXEL         const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
-    PIXEL         const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
-    bool          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
-    PixelPoint    const GetRelativeCrsrPosition( ) const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
-    PixelPoint    const GetClRectCenter( )         const { return Util::GetClRectCenter        ( m_hwnd ); }
+    PIXEL         const GetWindowTop()            const { return Util::GetWindowTop           ( m_hwnd ); }
+    PIXEL         const GetWindowWidth()          const { return Util::GetWindowWidth         ( m_hwnd ); }
+    PIXEL         const GetWindowHeight()         const { return Util::GetWindowHeight        ( m_hwnd ); }
+    PixelRectSize const GetWindowSize()           const { return Util::GetWindowSize          ( m_hwnd ); }
+    PixelRectSize const GetClRectSize()           const { return Util::GetClRectSize          ( m_hwnd ); }
+    PixelRect     const GetClPixelRect()          const { return Util::GetClPixelRect         ( m_hwnd ); }
+    PIXEL         const GetClientWindowHeight()   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
+    PIXEL         const GetClientWindowWidth()    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
+    bool          const CrsrInClientRect()        const { return Util::CrsrInClientRect       ( m_hwnd ); }
+    PixelPoint    const GetRelativeCrsrPosition() const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
+    PixelPoint    const GetClRectCenter()         const { return Util::GetClRectCenter        ( m_hwnd ); }
 
 	PixelPoint    const Client2Screen( PixelPoint  const & p ) const { return Util::Client2Screen ( m_hwnd, p ); }
 	PixelPoint    const Screen2Client( PixelPoint  const & p ) const { return Util::Screen2Client ( m_hwnd, p ); }
@@ -50,12 +50,12 @@ public:
 	bool          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
 	bool          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
 
-	bool          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
-	HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }
-    HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
+	bool          const IsWindowVisible()            const { return ::IsWindowVisible( m_hwnd ); }
+	HWND          const SetCapture()                 const { return ::SetCapture     ( m_hwnd ); }
+    HWND          const SetFocus()                   const { return ::SetFocus       ( m_hwnd ); }
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
-    bool          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
-	int			  const GetWindowTextLength( )        const { return ::GetWindowTextLength( m_hwnd ); }        
+    bool          const IsCaptured()                 const { return ::GetCapture() == m_hwnd; }
+	int			  const GetWindowTextLength()        const { return ::GetWindowTextLength( m_hwnd ); }        
 
 	void SetRefreshRate( milliseconds const );
 	
@@ -68,7 +68,7 @@ public:
 	void SetTrackBarPos( INT const, LONG const ) const;
 	void SetTrackBarRange( INT const, LONG const, LONG const ) const;
 
-	void const DestroyWindow( ) 
+	void const DestroyWindow() 
 	{ 
 		::DestroyWindow( m_hwnd );
 		m_hwnd = nullptr;
@@ -96,7 +96,7 @@ public:
 
 	HBITMAP const CreateCompatibleBitmap( HDC const hDC )
 	{
-		PixelRectSize rectSize = GetClRectSize( );
+		PixelRectSize rectSize = GetClRectSize();
 		return ::CreateCompatibleBitmap( hDC, rectSize.GetXvalue(), rectSize.GetYvalue() );
 	}
 	
@@ -226,7 +226,7 @@ protected:
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 	virtual bool OnSize   ( WPARAM const, LPARAM const );
-	virtual void OnClose( );
+	virtual void OnClose();
 
 	virtual bool CommonMessageHandler( UINT const, WPARAM const, LPARAM const );
 

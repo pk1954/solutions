@@ -51,7 +51,7 @@ ShapeStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri 
 
 bool ModelAnalyzer::findLoop( Shape const & shape )
 {
-	if ( ( * m_pEscFunc )( ) )
+	if ( ( * m_pEscFunc )() )
 		m_bStop = true;
 
 	if ( m_bStop )
@@ -74,7 +74,7 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	}
 	else if ( shape.IsPipe() )
 	{
-		bResult = findLoop( * static_cast<Pipe const &>(shape).GetEndKnotPtr( ) );  // recursion
+		bResult = findLoop( * static_cast<Pipe const &>(shape).GetEndKnotPtr() );  // recursion
 	}
 	else if ( shape.IsBaseKnot() )
 	{
@@ -92,7 +92,7 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	}
 
 	if ( ! bResult )
-		m_shapeStack.RemoveLast( ); // no loop in this branch
+		m_shapeStack.RemoveLast(); // no loop in this branch
 
 	return bResult;
 }
@@ -101,12 +101,12 @@ bool ModelAnalyzer::hasAnomaly( Knot const & knot )
 {
 	bool bFoundAnomaly { false };
 
-	if ( ! knot.m_connections.HasIncoming( ) )
+	if ( ! knot.m_connections.HasIncoming() )
 	{
 		knot.m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_shapeStack.Add( & pipe ); } );
 		bFoundAnomaly = true;
 	}
-	else if ( ! knot.m_connections.HasOutgoing( ) )
+	else if ( ! knot.m_connections.HasOutgoing() )
 	{
 		knot.m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_shapeStack.Add( & pipe ); } );
 		bFoundAnomaly = true;

@@ -12,18 +12,18 @@ class RefreshTimer;
 class TextWindow : public BaseWindow
 {
 public:
-    TextWindow( );
-	virtual ~TextWindow( ) { };
+    TextWindow();
+	virtual ~TextWindow() { };
 
     void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, bool const, function<bool()> const );
-	void StopTextWindow( );
+	void StopTextWindow();
 
     virtual void DoPaint( TextBuffer & ) = 0;
-	virtual void Trigger( );
+	virtual void Trigger();
 
 private:
 
-	virtual void OnPaint ( );
+	virtual void OnPaint ();
 
 	RefreshTimer     * m_pRefreshTimer;
 	TextWindowThread * m_pTextWindowThread;

@@ -23,7 +23,7 @@ class DisconnectBaseKnotCommand : public Command
 public:
     DisconnectBaseKnotCommand( ShapeId const, bool const );
 
-    ~DisconnectBaseKnotCommand( ) {}
+    ~DisconnectBaseKnotCommand() {}
 
     virtual void Do  ( NNetModelWriterInterface & );
     virtual void Undo( NNetModelWriterInterface & );

@@ -17,4 +17,4 @@ extern PixelRect     ScrReadPixelRect    ( Script & );
 extern fPixel        ScrReadfPixel       ( Script & );
 extern fPixelPoint   ScrReadfPixelPoint  ( Script & );
 
-extern void DefineUtilityWrapperFunctions( );
+extern void DefineUtilityWrapperFunctions();

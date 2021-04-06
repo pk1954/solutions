@@ -44,7 +44,7 @@ public:
 		MonitorWindow            * const
 	);
 
-	virtual ~NNetController( );
+	virtual ~NNetController();
 
 	bool HandleCommand( int const, LPARAM const, MicroMeterPoint const = NP_NULL );
 

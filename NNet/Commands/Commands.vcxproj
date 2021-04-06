@@ -87,6 +87,7 @@
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DeleteTrackCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
+    <ClInclude Include="DisconnectConnectorCommand.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MoveShapeCommand.h" />

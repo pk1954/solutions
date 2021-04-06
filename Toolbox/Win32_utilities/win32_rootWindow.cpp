@@ -11,7 +11,7 @@
 RootWindow * GetRootWindow( HWND const hwnd )
 {
 	RootWindow * pRootWin = reinterpret_cast<RootWindow *>(GetUserDataPtr( hwnd ));
-	return ( pRootWin && pRootWin->GetWindowHandle( ) )
+	return ( pRootWin && pRootWin->GetWindowHandle() )
 		   ? pRootWin
 		   : nullptr;
 }
@@ -23,21 +23,21 @@ public:
 		: m_pRootWin( pRootWin )
 	{ }
 
-	virtual void Trigger( )
+	virtual void Trigger()
 	{
-		m_pRootWin->Trigger( );
+		m_pRootWin->Trigger();
 	}
 
 private:
 	RootWindow * const m_pRootWin;
 };
 
-RootWindow::RootWindow( )
+RootWindow::RootWindow()
 {
 	m_upRefreshRate = std::make_unique<WindowRefreshRate>( this );
 }
 
-RootWindow::~RootWindow( ) 
+RootWindow::~RootWindow() 
 { 
 	m_hwnd = nullptr; 
 }
@@ -48,7 +48,7 @@ void RootWindow::StartRootWindow( function<bool()> const visibilityCriterion )
 
 	m_visibilityMode = m_visibilityCriterion 
 		? tOnOffAuto::automatic 
-		: IsWindowVisible( ) 
+		: IsWindowVisible() 
           ? tOnOffAuto::on 
 		  : tOnOffAuto::off;
 }
@@ -83,12 +83,12 @@ void RootWindow::contextMenu( PixelPoint const & crsrPosScreen ) // crsr pos in 
 	}
 
 	// TODO
-	//if ( m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate( ) > 0ms) )
+	//if ( m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate() > 0ms) )
 	//{
 	//	(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	//}
 
-	(void)SetForegroundWindow( GetWindowHandle( ) );
+	(void)SetForegroundWindow( GetWindowHandle() );
 
 	UINT const uiID = (UINT)TrackPopupMenu
 	( 
@@ -96,7 +96,7 @@ void RootWindow::contextMenu( PixelPoint const & crsrPosScreen ) // crsr pos in 
 		TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
 		crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
 		0, 
-		GetWindowHandle( ),
+		GetWindowHandle(),
 		nullptr 
 	);        
 
@@ -186,7 +186,7 @@ bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	return true;
 }
 
-void RootWindow::OnClose( )
+void RootWindow::OnClose()
 {
 	SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
 }
@@ -214,7 +214,7 @@ bool RootWindow::CommonMessageHandler( UINT const message, WPARAM const wParam, 
 		break;
 
 	case WM_CLOSE:
-		OnClose( );
+		OnClose();
 		return true;
 
 	case WM_SIZE:

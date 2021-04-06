@@ -25,6 +25,11 @@ public:
 		Neuron::CheckShape();
 	}
 
+	void SetDirVector(MicroMeterPoint const umVector)
+	{
+		m_direction = Vector2Radian(umVector);
+	}
+
 	MicroMeterPoint const GetDirVector() const
 	{
 		MicroMeterPoint umVector { m_direction.IsNull() ? determineVector() : Radian2Vector(m_direction) };
@@ -39,7 +44,7 @@ public:
 	void SetPosDir( MicroMeterPosDir const posDir )
 	{
 		m_direction = posDir.GetDir();
-		SetPosition ( posDir.GetPos() );
+		SetPosition( posDir.GetPos() );
 	}
 
 	void UnlockDirection() 
@@ -55,5 +60,3 @@ private:
 
 	Radian m_direction { Radian::NULL_VAL() };
 };
-
-using CNPtr = ConnNeuron *;

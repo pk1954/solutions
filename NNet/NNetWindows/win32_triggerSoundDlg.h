@@ -19,7 +19,7 @@ public:
 		m_soundDesc( soundDesc )
 	{};
 
-	~TriggerSoundDialog( ) {};
+	~TriggerSoundDialog() {};
 
 	void Show( HWND const );
 

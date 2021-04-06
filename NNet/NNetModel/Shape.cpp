@@ -63,7 +63,7 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParamType::Value::threshold );
 }
 
-void Shape::CheckShape( ) const
+void Shape::CheckShape() const
 {
 #ifdef _DEBUG
 	m_type.Check();
@@ -71,7 +71,7 @@ void Shape::CheckShape( ) const
 #endif
 }
 
-void Shape::Dump( ) const
+void Shape::Dump() const
 {
 	wcout << Scanner::COMMENT_SYMBOL << *this;
 }

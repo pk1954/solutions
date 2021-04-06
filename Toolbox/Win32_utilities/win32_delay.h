@@ -22,12 +22,12 @@ public:
 	  : m_msGenerationDelay( DEFAULT_DELAY )
 	{}
 
-	milliseconds GetDelay( )
+	milliseconds GetDelay()
 	{
 		return m_msGenerationDelay;
 	};
 
-	bool IsMaxSpeed( ) const
+	bool IsMaxSpeed() const
 	{
 		return m_msGenerationDelay == milliseconds::zero();
 	};
@@ -38,7 +38,7 @@ public:
 		NotifyAll( false );
 	};
 
-	void SleepDelay( ) const
+	void SleepDelay() const
 	{
 		if ( m_msGenerationDelay > milliseconds::zero() )
 			Sleep( Cast2UnsignedLong(m_msGenerationDelay.count()) );

@@ -43,31 +43,31 @@ public:
 	void           ScrReadSpecial( wchar_t const ); 
 
 // Helper routines for error handlers 
-	wstring const GetActPath         ( ) const { return m_pScanAct->GetActPath      ( ); }
-	wstring const GetActLine         ( ) const { return m_pScanAct->GetActLine      ( ); }
-	int     const GetActLineNr       ( ) const { return m_pScanAct->GetActLineNr    ( ); }
-	int     const GetActStartPos     ( ) const { return m_pScanAct->GetActStartPos  ( ); }
-	int     const GetActEndPos       ( ) const { return m_pScanAct->GetActEndPos    ( ); }
-	wstring const GetActExpectedToken( ) const { return m_pScanAct->GetExpectedToken( ); }
-	bool    const IsActive           ( ) const { return m_pScanAct != nullptr;           }
+	wstring const GetActPath         () const { return m_pScanAct->GetActPath      (); }
+	wstring const GetActLine         () const { return m_pScanAct->GetActLine      (); }
+	int     const GetActLineNr       () const { return m_pScanAct->GetActLineNr    (); }
+	int     const GetActStartPos     () const { return m_pScanAct->GetActStartPos  (); }
+	int     const GetActEndPos       () const { return m_pScanAct->GetActEndPos    (); }
+	wstring const GetActExpectedToken() const { return m_pScanAct->GetExpectedToken(); }
+	bool    const IsActive           () const { return m_pScanAct != nullptr;           }
 
 // utility functions
 
-	Scanner & GetScanner( ) { return * m_pScanAct; }
+	Scanner & GetScanner() { return * m_pScanAct; }
 
-	long long const GetFilePos    () const { return m_pScanAct->GetFilePos( ); };
+	long long const GetFilePos    () const { return m_pScanAct->GetFilePos(); };
 	uintmax_t const GetFileSize   () const { return m_fileSize; };
 	long      const GetPercentRead() const;
 
 	static bool ProcessScript( wstring const & );
     static void ScrSetWrapHook( Script_Functor const * const );
-	static void Clear( );
+	static void Clear();
 
 // script processing
 
     bool ScrProcess( wstring const & );
 
-	static void StopProcessing( ) { m_bStop = true; }
+	static void StopProcessing() { m_bStop = true; }
 
 private:
 

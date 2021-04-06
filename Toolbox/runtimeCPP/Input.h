@@ -17,25 +17,25 @@ class InputBuffer
 {
 public:
 
-    explicit InputBuffer( );
+    explicit InputBuffer();
     void Open( wstring const & );
-    void Close( );
-    ~InputBuffer( );
+    void Close();
+    ~InputBuffer();
 
-    void            SetStartMarker  ( );
-    void            UnreadLastChar  ( );
-    wchar_t         ReadNextChar    ( );
-    bool            IsFloat         ( ) const;
-    double          ReadFloat       ( );
-    unsigned long   ReadNumber      ( );
+    void            SetStartMarker  ();
+    void            UnreadLastChar  ();
+    wchar_t         ReadNextChar    ();
+    bool            IsFloat         () const;
+    double          ReadFloat       ();
+    unsigned long   ReadNumber      ();
 
-    wstring const & GetActLine      ( ) const { return m_wstrLine; };
-    int             GetActLineNr    ( ) const { return m_iLineNr; };
+    wstring const & GetActLine      () const { return m_wstrLine; };
+    int             GetActLineNr    () const { return m_iLineNr; };
 
-    int             GetActStartPos  ( ) const;
-    int             GetActEndPos    ( ) const;
+    int             GetActStartPos  () const;
+    int             GetActEndPos    () const;
 
-    std::streampos  GetFilePos      ( ) { return m_ifstream.tellg(); };
+    std::streampos  GetFilePos      () { return m_ifstream.tellg(); };
 
 
 private:

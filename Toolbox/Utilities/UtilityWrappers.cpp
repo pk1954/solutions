@@ -52,7 +52,7 @@ PixelRect ScrReadPixelRect( Script & script )
 
 tBoolOp ScrReadBoolOp( Script & script )
 {
-    unsigned long ulBoolOp( script.ScrReadUlong( ) );
+    unsigned long ulBoolOp( script.ScrReadUlong() );
     return static_cast<tBoolOp>( ulBoolOp );
 }
 
@@ -61,11 +61,11 @@ class WrapOpenTraceFile : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-		OpenTraceFile( script.ScrReadString( ) );
+		OpenTraceFile( script.ScrReadString() );
     }
 };
 
-void DefineUtilityWrapperFunctions( )
+void DefineUtilityWrapperFunctions()
 {
     DEF_FUNC( OpenTraceFile );
 

@@ -21,18 +21,18 @@ using std::setprecision;
 using std::left;
 using std::right;
 
-void Stopwatch::Start( )
+void Stopwatch::Start()
 {
 	++m_iLevel; 
-	m_hrtimer.Start( );
+	m_hrtimer.Start();
 }
 
 void Stopwatch::Stop( wstring const wstr )
 {
 	assert( m_iLevel > 0 );  // no Stop without Start
 
-	m_hrtimer.Stop( );
-	microseconds microSecs = m_hrtimer.GetDuration( );
+	m_hrtimer.Stop();
+	microseconds microSecs = m_hrtimer.GetDuration();
 	float        millisecs = Cast2Float( microSecs.count() ) / 1000.0f;
 	--m_iLevel;
 	for ( int i = 0; i < m_iLevel; ++i )

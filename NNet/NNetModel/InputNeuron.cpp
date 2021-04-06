@@ -43,7 +43,7 @@ bool InputNeuron::operator==( Shape const & rhs ) const
 	( m_pulseDuration  == inputNeuronRhs.m_pulseDuration );
 }
 
-void InputNeuron::Recalc( )
+void InputNeuron::Recalc()
 {
 	m_mvFactor = mV( m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) / m_pulseDuration.GetValue() );
 }
@@ -53,13 +53,13 @@ fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
 	fHertz const fOldValue { m_pulseFrequency };
 	m_pulseFrequency = freq;
 	m_pulseDuration  = PulseDuration( m_pulseFrequency );
-	Recalc( );
+	Recalc();
 	return fOldValue;
 }
 
-bool const InputNeuron::CompStep( )
+bool const InputNeuron::CompStep()
 {
-	m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
+	m_timeSinceLastPulse += m_pParameters->GetTimeResolution();
 	bool bTrigger { m_timeSinceLastPulse >= m_pulseDuration };
 	if ( bTrigger )
 		m_timeSinceLastPulse = 0._MicroSecs;   
@@ -86,9 +86,9 @@ MicroMeterPoint const InputNeuron::getCenter() const
 	return GetPosition() - getOffset();
 }
 
-bool const InputNeuron::IsPointInShape( MicroMeterPoint const & point ) const
+bool const InputNeuron::Includes(MicroMeterPoint const & point) const
 {
-	return Distance( point, getCenter() ) <= GetExtension();
+	return Distance(point, getCenter()) <= GetExtension();
 }
 
 void InputNeuron::drawSocket
@@ -119,7 +119,7 @@ void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 { 
 	wostringstream m_wBuffer;
 
-	m_wBuffer.clear( );
+	m_wBuffer.clear();
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer << fixed << setprecision(2) 
 		      << GetPulseFrequency().GetValue() 

@@ -26,7 +26,7 @@ class Symbol
 {
 public:
 
-    Symbol( );
+    Symbol();
 
     explicit Symbol( Script_Functor const * const pFunc ) : m_type( tSTYPE::Function    ), m_pFunc( pFunc   ), m_lValue( 0 ), m_ulValue( 0  ), m_wstrValue( L""  ), m_dValue( .0 ) { };
     explicit Symbol( long                   const l     ) : m_type( tSTYPE::LongConst   ), m_pFunc( nullptr ), m_lValue( l ), m_ulValue( 0  ), m_wstrValue( L""  ), m_dValue( .0 ) { };
@@ -36,12 +36,12 @@ public:
 
     bool operator< ( const Symbol & ) const;
 
-    tSTYPE         const   GetSymbolType ( ) const { return m_type; };
-    double         const   GetFloatConst ( ) const { assert( m_type == tSTYPE::FloatConst  ); return   m_dValue;    };
-    Script_Functor const & GetFunction   ( ) const { assert( m_type == tSTYPE::Function    ); return * m_pFunc;     };
-    wstring        const & GetStringConst( ) const { assert( m_type == tSTYPE::StringConst ); return   m_wstrValue; };
-    long           const   GetLongConst  ( ) const { assert( m_type == tSTYPE::LongConst   ); return   m_lValue;    };
-    unsigned long  const   GetUlongConst ( ) const { assert( m_type == tSTYPE::ULongConst  ); return   m_ulValue;   };
+    tSTYPE         const   GetSymbolType () const { return m_type; };
+    double         const   GetFloatConst () const { assert( m_type == tSTYPE::FloatConst  ); return   m_dValue;    };
+    Script_Functor const & GetFunction   () const { assert( m_type == tSTYPE::Function    ); return * m_pFunc;     };
+    wstring        const & GetStringConst() const { assert( m_type == tSTYPE::StringConst ); return   m_wstrValue; };
+    long           const   GetLongConst  () const { assert( m_type == tSTYPE::LongConst   ); return   m_lValue;    };
+    unsigned long  const   GetUlongConst () const { assert( m_type == tSTYPE::ULongConst  ); return   m_ulValue;   };
 
 private:
     tSTYPE                 m_type;
@@ -65,7 +65,7 @@ public:
     static Symbol  const & GetSymbolFromName( wstring const & );
     static wstring const & GetSymbolName    ( Symbol  const & );
 
-	static void Clear( );
+	static void Clear();
 
 private:
     static void addSymbol( wstring const &, Symbol const & );

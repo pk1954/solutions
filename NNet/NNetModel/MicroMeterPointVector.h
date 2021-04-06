@@ -106,7 +106,7 @@ public:
         return res; 
     };
 
-    friend wostream & operator<< ( wostream & out, MicroMeterPointVector const & v )
+    friend wostream & operator<< (wostream & out, MicroMeterPointVector const & v)
     {
         for ( auto & it: v.m_list )
             out << it << endl;

@@ -31,10 +31,10 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	(m_param             == rhs.m_param             );
 }
 
-void NNetModel::CheckModel( ) const
+void NNetModel::CheckModel() const
 {
 #ifdef _DEBUG
-	m_Shapes.CheckShapeList( );
+	m_Shapes.CheckShapeList();
 #endif
 }
 
@@ -50,16 +50,16 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 	return m_Shapes.GetAt( id );
 }
 
-void NNetModel::RecalcAllShapes( ) 
+void NNetModel::RecalcAllShapes() 
 { 
-	m_Shapes.Apply2All( [&]( Shape & shape ) { shape.Recalc( ); } );
+	m_Shapes.Apply2All( [&]( Shape & shape ) { shape.Recalc(); } );
 } 
 
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 {
 	InputNeuron const * const pInputNeuron { GetShapeConstPtr<InputNeuron const *>( id ) };
 	return ( pInputNeuron )
-		   ? pInputNeuron->GetPulseFrequency( )
+		   ? pInputNeuron->GetPulseFrequency()
 	       : fHertz::NULL_VAL();
 }
 
@@ -76,11 +76,11 @@ float NNetModel::SetParam
 {
 	float fOldValue { m_param.GetParameterValue( param ) };
 	m_param.SetParameterValue( param, fNewValue );
-	RecalcAllShapes( );
+	RecalcAllShapes();
 	return fOldValue;
 }
 
-bool NNetModel::Compute( )
+bool NNetModel::Compute()
 {
 	bool bStop {false};
 	m_timeStamp += m_param.GetTimeResolution();
@@ -89,7 +89,7 @@ bool NNetModel::Compute( )
 	return bStop;
 }
 
-void NNetModel::ResetModel( )
+void NNetModel::ResetModel()
 {
 	m_wstrModelFilePath = L""; 
 	m_Shapes.Clear();
@@ -138,7 +138,7 @@ ShapeId const NNetModel::FindShapeAt
 	return idRes;
 }
 
-void NNetModel::DumpModel( ) const
+void NNetModel::DumpModel() const
 {
 	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump start ------------" << endl;
 	m_Shapes.Dump();

@@ -8,15 +8,15 @@
 #include "ShapeId.h"
 #include "NNetWrapperHelpers.h"
 
-MicroMeter ScrReadMicroMeter( Script & script )
+MicroMeter ScrReadMicroMeter(Script & script)
 {
-	float const fValue = Cast2Float( script.ScrReadFloat( ) );
+	float const fValue = Cast2Float( script.ScrReadFloat() );
 	if ( fabs(fValue) > MAX_MICRO_METER.GetValue() )
 		throw ScriptErrorHandler::ScriptException( 777, L"MicroMeter value too big" );
 	return MicroMeter( fValue );
 }
 
-MicroMeterPoint ScrReadMicroMeterPoint( Script & script )
+MicroMeterPoint ScrReadMicroMeterPoint(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterPoint::OPEN_BRACKET );
 	MicroMeter const x(ScrReadMicroMeter( script ));
@@ -26,7 +26,7 @@ MicroMeterPoint ScrReadMicroMeterPoint( Script & script )
 	return MicroMeterPoint( x, y );
 }
 
-MicroMeterCircle ScrReadMicroMeterCircle( Script & script )
+MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterCircle::OPEN_BRACKET );
 	MicroMeterPoint umCenter { ScrReadMicroMeterPoint( script ) };
@@ -34,4 +34,11 @@ MicroMeterCircle ScrReadMicroMeterCircle( Script & script )
 	MicroMeter      umRadius { ScrReadMicroMeter( script ) };
 	script.ScrReadSpecial( MicroMeterCircle::CLOSE_BRACKET );
 	return MicroMeterCircle( umCenter, umRadius );
+}
+
+MicroMeterPointVector ScrReadMicroMeterPointVector(Script& script)
+{
+	MicroMeterPointVector umPntVector;
+	// TODO
+	return umPntVector;
 }

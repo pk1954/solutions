@@ -19,7 +19,7 @@ public:
 
 	virtual void Notify( bool const bImmediatelly )
 	{
-		m_pAppMenu->AdjustUndoRedo( );
+		m_pAppMenu->AdjustUndoRedo();
 	}
 
 private:

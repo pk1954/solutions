@@ -54,7 +54,7 @@ void MonitorWindow::Start
 	m_hCrsrWE = LoadCursor( NULL, IDC_SIZEWE );
 }
 
-void MonitorWindow::Reset( )
+void MonitorWindow::Reset()
 {
 	m_pMonitorData->Reset();
 	m_trackStruct.hwndTrack = HWND(0);
@@ -62,13 +62,13 @@ void MonitorWindow::Reset( )
 	(void)TrackMouseEvent( & m_trackStruct );
 }
 
-void MonitorWindow::Stop( )
+void MonitorWindow::Stop()
 {
 	Reset();
 	m_pNMRI        = nullptr;
 	m_pMonitorData = nullptr;
-	m_graphics.ShutDown( );
-	DestroyWindow( );
+	m_graphics.ShutDown();
+	DestroyWindow();
 }
 
 long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
@@ -102,7 +102,7 @@ MicroMeterCircle const & MonitorWindow::GetSelectedSignalCircle() const
 
 fMicroSecs const MonitorWindow::fPixel2fMicroSecs( fPixel const fPixX ) const
 {
-	fMicroSecs const usEnd    { m_pNMRI->GetSimulationTime( ) };
+	fMicroSecs const usEnd    { m_pNMRI->GetSimulationTime() };
 	fPixel     const fTicks   { m_fPixWinWidth - fPixX };
 	fMicroSecs const usResult { usEnd - m_fMicroSecsPerPixel * fTicks.GetValue() };
 	return usResult;
@@ -110,7 +110,7 @@ fMicroSecs const MonitorWindow::fPixel2fMicroSecs( fPixel const fPixX ) const
 
 fPixel const MonitorWindow::fMicroSecs2fPixel( fMicroSecs const usParam ) const
 {
-	fMicroSecs const usEnd  { m_pNMRI->GetSimulationTime( ) };
+	fMicroSecs const usEnd  { m_pNMRI->GetSimulationTime() };
 	float      const fTicks { (usEnd - usParam) / m_fMicroSecsPerPixel };
 	fPixel     const fPixX  { m_fPixWinWidth - fPixel(fTicks) };
 	return fPixX;
@@ -159,7 +159,7 @@ SignalId const MonitorWindow::selectSignal( SignalId const & idNew )
 		}
 
 		m_pixMoveOffsetY = 0_PIXEL;
-		Trigger( );   // cause repaint
+		Trigger();   // cause repaint
 	}
 	return idOld;
 }
@@ -176,9 +176,9 @@ TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
 	return trackNr;
 }
 
-fPixel const MonitorWindow::calcTrackHeight( ) const
+fPixel const MonitorWindow::calcTrackHeight() const
 {
-	PIXEL const pixRectHeight  { GetClientWindowHeight( ) };
+	PIXEL const pixRectHeight  { GetClientWindowHeight() };
 	PIXEL const pixExtraSpace  { m_bShowScale ? 60_PIXEL : 10_PIXEL };
 	PIXEL const pixFreeHeight  { pixRectHeight - pixExtraSpace };
 	PIXEL const pixTrackHeight { 
@@ -198,10 +198,10 @@ void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 	fPixel     const fPixWidth    { m_pMonitorData->IsSelected(idSignal) ? (m_bSignalLocked ? 3.0_fPixel : 2.0_fPixel) : 1.0_fPixel };  // emphasize selected signal 
 	fPixel     const fPixYoff     { getSignalOffset( idSignal ) };
 	fMicroSecs const usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs const usResolution { m_pNMRI->GetTimeResolution( ) };
+	fMicroSecs const usResolution { m_pNMRI->GetTimeResolution() };
 	float      const fPointsInWin { usInWindow / usResolution };
 	fMicroSecs const usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fMicroSecs const usEnd        { m_pNMRI->GetSimulationTime( ) };
+	fMicroSecs const usEnd        { m_pNMRI->GetSimulationTime() };
 	fMicroSecs const timeStart    { max( usEnd - usInWindow, pSignal->GetStartTime() ) };
 	fPixelPoint      prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(*pSignal, usEnd) };
 
@@ -221,7 +221,7 @@ void MonitorWindow::doPaint() const
 	m_pMonitorData->Apply2AllSignals( [&](SignalId const id) { paintSignal(id ); } );
 
 	if ( m_bShowScale )
-		m_scale.DisplayStaticScale( );
+		m_scale.DisplayStaticScale();
 
 	if ( m_trackNrHighlighted.IsNotNull() )  // paint background of selected track
 	{
@@ -242,7 +242,7 @@ void MonitorWindow::drawDiamond() const
 	SignalId   const & idSignal { m_pMonitorData->GetSelectedSignalId() };
 	if (Signal const * pSignal { m_pMonitorData->GetSignalPtr(idSignal) } )
 	{
-		PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
+		PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition() };
 		fPixel     const   fPixCrsrX    { Convert2fPixel( pixPointCrsr.GetX() ) };
 		fMicroSecs const   usMax        { findNextMax( *pSignal, fPixCrsrX ) };
 		fPixel     const   fPixMax      { fMicroSecs2fPixel( usMax ) };
@@ -286,7 +286,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 			{
 				fPixel const fPixAmplitude { getYvalue( signal, umTime ) };
 				fPixel const fPixDelta     { fPixAmplitude - fPixCrsrY };
-				fPixel const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
+				fPixel const fPixDeltaAbs  { fPixDelta.GetAbs() };
 				if ( fPixDeltaAbs < fPixBestDelta )
 				{
 					fPixBestDelta = fPixDeltaAbs;
@@ -306,7 +306,7 @@ TrackNr const MonitorWindow::findTrack( PIXEL const pixPosY ) const
 	return m_pMonitorData->IsValid( trackNr ) ? trackNr : TrackNr::NULL_VAL();
 }
 
-void MonitorWindow::OnPaint( )
+void MonitorWindow::OnPaint()
 {
 	if ( IsWindowVisible() )
 	{
@@ -314,8 +314,8 @@ void MonitorWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_graphics.StartFrame( hDC ) )
 		{
-			doPaint( );
-			m_graphics.EndFrame( );
+			doPaint();
+			m_graphics.EndFrame();
 		}
 		EndPaint( &ps );
 	}
@@ -367,7 +367,7 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	}
 
 	bool bRes = BaseWindow::OnCommand( wParam, lParam, pixPoint );
-	Trigger( );
+	Trigger();
 
 	return bRes; 
 }
@@ -393,7 +393,7 @@ bool MonitorWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 bool MonitorWindow::OnShow( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( static_cast<bool>(wParam) )
-		m_measurement.ResetLimits( );
+		m_measurement.ResetLimits();
 	return false;
 }
 
@@ -407,13 +407,13 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( trackNrFound != m_trackNrHighlighted )
 		{
 			m_trackNrHighlighted = trackNrFound;
-			Trigger( );   // cause repaint
+			Trigger();   // cause repaint
 		}
 	}
 		
 	if ( wParam & MK_LBUTTON )
 	{
-		if ( m_pixLast.IsNotNull( ) )
+		if ( m_pixLast.IsNotNull() )
 		{
 			if ( m_measurement.TrackingActive() )
 			{
@@ -430,7 +430,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			}
 		}
 		m_pixLast = pixCrsrPos;
-		Trigger( );   // cause repaint
+		Trigger();   // cause repaint
 	}
 	else  // left button not pressed: select
 	{
@@ -443,7 +443,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		else if ( m_measurement.Select( Convert2fPixel( pixCrsrPos.GetX() ) ) )
 		{
 			SetCursor( m_hCrsrWE );
-			Trigger( );
+			Trigger();
 		}
 
 	}

@@ -15,8 +15,8 @@ class NNetModelReaderInterface;
 class CrsrWindow: public TextWindow
 {
 public:
-	CrsrWindow( );
-	virtual ~CrsrWindow( );
+	CrsrWindow();
+	virtual ~CrsrWindow();
 
 	void Start
 	( 
@@ -25,7 +25,7 @@ public:
 		NNetModelReaderInterface const * const
 	);
 
-	void Stop( );
+	void Stop();
 
 	virtual void DoPaint( TextBuffer & );
 
@@ -41,7 +41,7 @@ private:
 		wostringstream wBuffer;
 		wBuffer << freq.GetValue() << L" Hz";
 		textBuf.printString( wBuffer.str() );
-		textBuf.nextLine( );
+		textBuf.nextLine();
 	}
 
 };

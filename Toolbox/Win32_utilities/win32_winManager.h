@@ -19,8 +19,8 @@ class RootWindow;
 class WinManager
 {
 public:
-    WinManager( );
-    virtual ~WinManager( ) { };
+    WinManager();
+    virtual ~WinManager() { };
 
 	void AddWindow( wstring const, UINT const, HWND,               bool const, bool const );
 	void AddWindow( wstring const, UINT const, BaseWindow const &, bool const, bool const );
@@ -31,7 +31,7 @@ public:
 		m_map.erase( id );
 	}
 
-	void RemoveAll( )
+	void RemoveAll()
 	{
 		m_map.clear ();
 	}
@@ -101,13 +101,13 @@ public:
         m_strWindowConfigurationFile = fileName; 
     };
 
-    void IncNrOfMonitorConfigurations( ) 
+    void IncNrOfMonitorConfigurations() 
     { 
         ++m_iNrOfMonitorConfigurations; 
     };
 
-    bool GetWindowConfiguration( );
-    void StoreWindowConfiguration( );
+    bool GetWindowConfiguration();
+    void StoreWindowConfiguration();
 
 private:
     wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
@@ -129,8 +129,8 @@ private:
 
 	ScriptErrorHandler::ScriptException m_errorInfo {};
 
-    void dumpMonitorConfiguration( ) const;
-    void dumpWindowCoordinates( ) const;
+    void dumpMonitorConfiguration() const;
+    void dumpWindowCoordinates() const;
 
 	void addWindow
 	( 

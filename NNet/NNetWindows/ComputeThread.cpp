@@ -24,31 +24,31 @@ void ComputeThread::Start
 	m_pPerformanceObservable  = pPerformanceObservable;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
-	m_pModel->SetSimulationTime( );
+	m_pModel->SetSimulationTime();
 	m_pPerformanceObservable->NotifyAll( false );
-	reset( );
+	reset();
 	AcquireSRWLockExclusive( & m_srwlStopped );
 	BeginThread( L"ComputeThread" ); 
 }
 
 void ComputeThread::Notify( bool const bImmediate ) // slowmo ratio or parameters have changed
 {
-	reset( );
+	reset();
 	m_pRunObservable->NotifyAll( false);
 }
 
-void ComputeThread::reset( )
+void ComputeThread::reset()
 {
-	LockComputation( );
-	m_usSimuTimeAtLastReset = m_pModel->GetSimulationTime( );
+	LockComputation();
+	m_usSimuTimeAtLastReset = m_pModel->GetSimulationTime();
 	m_ticksNetRunning       = Ticks( 0 );
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
 	m_usSimuTimeResolution  = m_pModel->GetParams().GetTimeResolution(); 
 	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime( m_usSimuTimeResolution ); 
-	ReleaseComputationLock( );
+	ReleaseComputationLock();
 }
 
-void ComputeThread::ReleaseComputationLock( )
+void ComputeThread::ReleaseComputationLock()
 {
 	if ( m_bComputationLocked )
 	{
@@ -58,7 +58,7 @@ void ComputeThread::ReleaseComputationLock( )
 	}
 }
 
-void ComputeThread::LockComputation( )
+void ComputeThread::LockComputation()
 {
 	if ( ! m_bComputationLocked )
 	{
@@ -68,7 +68,7 @@ void ComputeThread::LockComputation( )
 	}
 }
 
-void ComputeThread::RunComputation( )
+void ComputeThread::RunComputation()
 {
 	if ( m_bStopped )
 	{
@@ -78,7 +78,7 @@ void ComputeThread::RunComputation( )
 	}
 }
 
-void ComputeThread::StopComputation( )
+void ComputeThread::StopComputation()
 {
 	if ( ! m_bStopped )
 	{
@@ -88,21 +88,21 @@ void ComputeThread::StopComputation( )
 	}
 }
 
-void ComputeThread::runComputation( )
+void ComputeThread::runComputation()
 {
 	m_ticksAtLastRun = m_hrTimer.ReadHiResTimer();
 	m_pRunObservable->NotifyAll( false);
 	ReleaseSRWLockExclusive( & m_srwlStopped ); // allow ComputeThread to run
 }
 
-void ComputeThread::stopComputation( )
+void ComputeThread::stopComputation()
 {
 	AcquireSRWLockExclusive( & m_srwlStopped ); // wait until ComputeThread has finished activities
 	m_ticksNetRunning += m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun;
 	m_pRunObservable->NotifyAll( false );
 }
 
-void ComputeThread::ThreadStartupFunc( )  // everything happens in startup function
+void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
 {                                         // no thread messages used
 	for (;;)
 	{
@@ -110,7 +110,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 
 		while ( ! (m_bStopped || m_bComputationLocked) )
 		{
-			fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( netRealTimeSinceLastReset( ) ) };
+			fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( netRealTimeSinceLastReset() ) };
 			fMicroSecs const usMissingSimuTime { usNominalSimuTime - simuTimeSinceLastReset() };           // compute missing simulation time
 			long       const lCycles           { Cast2Long(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
 			long       const lCyclesTodo       { max( 0, lCycles ) };
@@ -119,7 +119,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
 			while ( (lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked) )
 			{
-				if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
+				if ( m_pModel->Compute() ) // returns true, if stop on trigger fires
 				{
 					m_bStopped = true;
 					m_pRunObservable->NotifyAll( false ); // notify observers, that computation stopped
@@ -132,7 +132,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			if ( lCyclesDone > 0 )
 			{
 				m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs( ticksInLoop / lCyclesDone );
-				m_fEffectiveSlowMo        = netRealTimeSinceLastReset( ) / simuTimeSinceLastReset();
+				m_fEffectiveSlowMo        = netRealTimeSinceLastReset() / simuTimeSinceLastReset();
 				m_pPerformanceObservable->NotifyAll( false);
 			}
 
@@ -146,9 +146,9 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 	}
 }
 
-void ComputeThread::SingleStep( ) 
+void ComputeThread::SingleStep() 
 { 
-	m_pModel->Compute( );
+	m_pModel->Compute();
 	m_pDynamicModelObservable->NotifyAll( false );
 }
 
@@ -157,7 +157,7 @@ fMicroSecs const ComputeThread::simuTimeSinceLastReset()
 	return m_pModel->GetSimulationTime() - m_usSimuTimeAtLastReset; 
 };
 
-fMicroSecs const ComputeThread::netRealTimeSinceLastReset( )
+fMicroSecs const ComputeThread::netRealTimeSinceLastReset()
 {
 	Ticks      ticksNet      { m_ticksNetRunning - m_ticksAtLastRun + m_hrTimer.ReadHiResTimer() };
 	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs( ticksNet ) };

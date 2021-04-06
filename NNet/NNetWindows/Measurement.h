@@ -19,11 +19,11 @@ public:
 	void DisplayDynamicScale( fMicroSecs const ) const;
 	void MoveSelection( fPixel const );
 	bool Select( fPixel const );
-	void ResetLimits( );
+	void ResetLimits();
 
 	void SetActive( bool const bState ) { m_bActive = bState; }
-	bool IsActive( )                    { return m_bActive; }
-	bool TrackingActive( )              { return m_bSelectedLeft || m_bSelectedRight; }
+	bool IsActive()                    { return m_bActive; }
+	bool TrackingActive()              { return m_bSelectedLeft || m_bSelectedRight; }
 
 	bool IsClose2LeftLimit ( fPixel const ) const;
 	bool IsClose2RightLimit( fPixel const ) const;
@@ -49,6 +49,6 @@ private:
 	void emphasizedLineLeft ( fPixel const ) const;
 	void emphasizedLineRight( fPixel const ) const;
 	void verticalLine       ( fPixel const ) const;
-	void measuringArea      ( ) const;
+	void measuringArea      () const;
 	void textArea           ( fMicroSecs const ) const;
 };

@@ -36,13 +36,13 @@ public:
 		AlignAnimation                 &
 	);
 
-	void Stop( );
-	void Reset( );
+	void Stop();
+	void Reset();
 
 	virtual long AddContextMenuEntries( HMENU const );
 
-	ShapeId const GetTargetShapeId     ( ) const { return m_shapeTarget; }
-	ShapeId const GetHighlightedShapeId( ) const { return m_shapeHighlighted; }
+	ShapeId const GetTargetShapeId     () const { return m_shapeTarget; }
+	ShapeId const GetHighlightedShapeId() const { return m_shapeHighlighted; }
 
 	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
 
@@ -57,7 +57,7 @@ public:
 			m_pCoordObservable->NotifyAll( false );
 	}
 
-	MicroMeterPoint const GetCursorPos( ) const;
+	MicroMeterPoint const GetCursorPos() const;
 
 	void       CenterModel();
 	void       CenterSelection();
@@ -65,7 +65,7 @@ public:
 	bool const MakeConnector();
 
 	void       ShowArrows( bool const );
-	bool const ArrowsVisible( ) const; 
+	bool const ArrowsVisible() const; 
 
 	virtual bool OnCommand           ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
@@ -76,7 +76,7 @@ public:
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnChar              ( WPARAM const, LPARAM const );
-	virtual void OnPaint             ( );
+	virtual void OnPaint             ();
 
 private:
 	 
@@ -99,16 +99,11 @@ private:
 	NNetModelCommands * m_pModelCommands       { nullptr };
 	AlignAnimation    * m_pAlignAnimation      { nullptr };
 
-	void setTargetShape     ( );
+	void setNoTarget        ();
+	void setTargetShape     ();
 	void setHighlightedShape( MicroMeterPoint const & );
 	bool changePulseRate    ( ShapeId const, bool const );
 	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
-
-	void setNoTarget()
-	{
-		m_shapeTarget = NO_SHAPE;
-		m_bTargetFits = false;
-	}
 
 	virtual void doPaint();
 };

@@ -32,7 +32,7 @@ public:
 
 	static size_t const NR_OF_SHAPE_TYPES { static_cast<size_t>(Value::shapeTypeLast) + 1 };
 
-	ShapeType( )
+	ShapeType()
 		:	m_value( Value::undefined )
 	{}
 

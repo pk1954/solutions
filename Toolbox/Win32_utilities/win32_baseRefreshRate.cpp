@@ -9,23 +9,23 @@
 using std::wstring;
 using std::to_wstring;
 
-BaseRefreshRate::BaseRefreshRate( )
+BaseRefreshRate::BaseRefreshRate()
 {}
 
-BaseRefreshRate::~BaseRefreshRate( )
+BaseRefreshRate::~BaseRefreshRate()
 {
-	deleteTimer( );
+	deleteTimer();
 	m_hTimer = nullptr;
 }
 
 void BaseRefreshRate::SetRefreshRate( milliseconds const msRate ) 
 { 
 	m_msRefreshRate = msRate; 
-	deleteTimer( );
+	deleteTimer();
 	startTimer( msRate );
 }
 
-milliseconds BaseRefreshRate::GetRefreshRate( )
+milliseconds BaseRefreshRate::GetRefreshRate()
 { 
 	return m_msRefreshRate; 
 }
@@ -37,7 +37,7 @@ void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 	double dNewValue = StdDialogBox::Show
 	( 
 		hwnd,
-		static_cast<float>( GetRefreshRate( ).count() ),
+		static_cast<float>( GetRefreshRate().count() ),
 		L"Refresh Rate",
 		L"milliseconds"
 	);
@@ -66,7 +66,7 @@ void BaseRefreshRate::startTimer( milliseconds const msTimer )
 	assert( m_hTimer != nullptr );
 }
 
-void BaseRefreshRate::deleteTimer( )
+void BaseRefreshRate::deleteTimer()
 {
 	if ( m_hTimer != nullptr )
 	{
@@ -79,5 +79,5 @@ void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, bool const Timer
 {
 	BaseRefreshRate * const pRefreshRate = reinterpret_cast<BaseRefreshRate *>( lpParam );
 	if ( pRefreshRate->m_bDirty )
-		pRefreshRate->trigger( );
+		pRefreshRate->trigger();
 }

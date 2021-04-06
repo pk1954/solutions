@@ -43,9 +43,9 @@ void PerformanceWindow::Start
 	m_pNMRI = pModelInterface;
 }
 
-void PerformanceWindow::Stop( )
+void PerformanceWindow::Stop()
 {
-	TextWindow::StopTextWindow( );
+	TextWindow::StopTextWindow();
 	Show( false );
 }
 
@@ -62,7 +62,7 @@ void PerformanceWindow::printMicroSecLine
 	textBuf.printString( pwch1 );
 	textBuf.printString( L"" );
 	textBuf.printString( wBuffer.str() );
-	textBuf.nextLine   ( );
+	textBuf.nextLine   ();
 }
 
 void PerformanceWindow::printIntLine
@@ -77,7 +77,7 @@ void PerformanceWindow::printIntLine
 	textBuf.printString( pwchBefore );
 	textBuf.printString( L"" );
 	textBuf.printString( wBuffer.str() );
-	textBuf.nextLine   ( );
+	textBuf.nextLine   ();
 }
 
 void PerformanceWindow::printFloatLine
@@ -93,30 +93,30 @@ void PerformanceWindow::printFloatLine
 	textBuf.printString( pwchBefore );
 	textBuf.printString( L"" );
 	textBuf.printString( wBuffer.str() );
-	textBuf.nextLine   ( );
+	textBuf.nextLine   ();
 }
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
 	if ( m_pDisplayTimer )
 	{
-		microseconds const usDisplayTime = m_pDisplayTimer->GetSingleActionTime( );
+		microseconds const usDisplayTime = m_pDisplayTimer->GetSingleActionTime();
 		textBuf.printString( L"Display:" );
 		textBuf.printString( L"" );
 		textBuf.printAsMillisecs( usDisplayTime );
-		textBuf.nextLine( );
+		textBuf.nextLine();
 	}
 
 	if ( m_pComputeThread )
 	{
-		fMicroSecs avail { m_pComputeThread->GetTimeAvailPerCycle( ) };
-		fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle( ) };
-		printMicroSecLine( textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution( ) );
-		printFloatLine   ( textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetRatio( ), L"" );
+		fMicroSecs avail { m_pComputeThread->GetTimeAvailPerCycle() };
+		fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle() };
+		printMicroSecLine( textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution() );
+		printFloatLine   ( textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetRatio(), L"" );
 		printMicroSecLine( textBuf, L"avail time:",    avail );
 		printMicroSecLine( textBuf, L"spent time:",    spent );
 		printFloatLine   ( textBuf, L"workload:",      Cast2Float( (spent / avail) * 100.0f ), L"%" );
-		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo( ), L"" );
+		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"" );
 		ShapeType::Apply2All
 		( 
 			[&](ShapeType const & type)

@@ -49,12 +49,12 @@ void DescriptionWindow::Start( HWND const hwndParent )
     //);          
 }
 
-void DescriptionWindow::Stop( )
+void DescriptionWindow::Stop()
 {
-    DestroyWindow( );
+    DestroyWindow();
 }
 
-void DescriptionWindow::ClearDescription( )
+void DescriptionWindow::ClearDescription()
 {
     Edit_SetText( m_hwndEdit, L"" );
 }
@@ -64,7 +64,7 @@ void DescriptionWindow::SetDescription( wstring const wstrDesc )
     Edit_SetText( m_hwndEdit, wstrDesc.c_str() );
 }
 
-int const DescriptionWindow::GetLineCount( ) const
+int const DescriptionWindow::GetLineCount() const
 {
     return Edit_GetLineCount( m_hwndEdit );
 }

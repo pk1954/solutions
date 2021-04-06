@@ -11,7 +11,7 @@ class NNetModelWriterInterface;
 class Command
 {
 public:
-    virtual ~Command( )
+    virtual ~Command()
     {
         int x = 42;
     }
@@ -25,12 +25,12 @@ public:
         Do( nmwi ); 
     };
 
-    virtual bool IsMoveCommand( ) const
+    virtual bool IsMoveCommand() const
     { 
         return false; 
     };
 
-    virtual ShapeId const GetMovedShape( ) const
+    virtual ShapeId const GetMovedShape() const
     {
         return ShapeId();
     }

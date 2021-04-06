@@ -33,14 +33,14 @@ public:
 
 	virtual ~TextWindowThread()	{ }
 
-	virtual void Trigger( )
+	virtual void Trigger()
 	{
 		PostThreadMsg( anyMessageWillDo );
 	}
 
 	virtual void ThreadMsgDispatcher( MSG const msg )
 	{
-        m_pTextBuffer->StartPainting( );
+        m_pTextBuffer->StartPainting();
 		m_textWindow.DoPaint( * m_pTextBuffer );
 		m_textWindow.Invalidate( false );
 	}

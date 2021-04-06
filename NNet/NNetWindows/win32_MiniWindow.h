@@ -28,7 +28,7 @@ public:
 
 private:
 
-	virtual void doPaint( );
+	virtual void doPaint();
 
 	MainWindow * m_pObservedNNetWindow { nullptr }; // Observed NNetWindow (or nullptr)
 };

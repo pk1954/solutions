@@ -36,7 +36,7 @@ public:
 
     void CheckModel() { m_pModel->CheckModel(); }
     void ResetModel() { m_pModel->ResetModel(); }
-    void ClearModel() { m_pModel->GetUPShapes().Apply2All([&](Shape & s) { s.Clear( ); }); }
+    void ClearModel() { m_pModel->GetUPShapes().Apply2All([&](Shape & s) { s.Clear(); }); }
 
     void DumpModel() const { m_pModel->DumpModel(); }
 
@@ -44,26 +44,26 @@ public:
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
     void  SetModelFilePath  ( wstring const wstr ) { m_pModel->SetModelFilePath  ( wstr ); }
     void  AddDescriptionLine( wstring const wstr ) { m_pModel->AddDescriptionLine( wstr ); }
-    void  DescriptionComplete()                    { m_pModel->DescriptionComplete( ); }
+    void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
     bool const IsConnector( ShapeId const id )
     {
         Shape * pShape { GetShapePtr<Shape *>( id ) };
-        return pShape && pShape->IsConnector( );
+        return pShape && pShape->IsConnector();
     }
 
     bool const IsPipe( ShapeId const id )
     {
         Shape * pShape { GetShapePtr<Shape *>( id ) };
-        return pShape && pShape->IsPipe( );
+        return pShape && pShape->IsPipe();
     }
 
     bool const IsKnot( ShapeId const id )
     {
         Shape * pShape { GetShapePtr<Shape *>( id ) };
-        return pShape && pShape->IsKnot( );
+        return pShape && pShape->IsKnot();
     }
 
     template <Shape_t T>
@@ -84,7 +84,13 @@ public:
     template <Shape_t OLD>
     unique_ptr<OLD> RemoveFromModel( Shape const & shape ) 
     { 
-        UPShape upShape { m_pModel->GetUPShapes().ExtractShape(shape.GetId()) }; 
+        return RemoveFromModel<OLD>(shape.GetId());
+    }
+
+    template <Shape_t OLD>
+    unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
+    { 
+        UPShape upShape { m_pModel->GetUPShapes().ExtractShape(id) }; 
         auto    pShape  { upShape.release() }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
     }

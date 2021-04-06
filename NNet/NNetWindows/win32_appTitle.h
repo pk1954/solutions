@@ -30,16 +30,16 @@ public:
 	void SetUnsavedChanges( bool const bState )
 	{
 		m_bUnsavedChanges = bState;
-		setAppTitle( );
+		setAppTitle();
 	}
 
-	bool AnyUnsavedChanges( ) const 
+	bool AnyUnsavedChanges() const 
 	{ 
 		return m_bUnsavedChanges; 
 	}
 
 private:
-	void setAppTitle( )
+	void setAppTitle()
 	{
 		Util::SetApplicationTitle
 		( 

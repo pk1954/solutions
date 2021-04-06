@@ -34,23 +34,23 @@ public:
         return m_iIndex == m_CommandStack.size(); 
     }
 
-    void OpenSeries( )
+    void OpenSeries()
     {
-        push( make_unique<OpenBracket>( OpenBracket( ) ) );
+        push( make_unique<OpenBracket>( OpenBracket() ) );
         m_bIndexInSeries = true;
     }
 
-    void CloseSeries( )
+    void CloseSeries()
     {
-        push( make_unique<CloseBracket>( CloseBracket( ) ) ); 
+        push( make_unique<CloseBracket>( CloseBracket() ) ); 
         m_bIndexInSeries = false;
     }
 
     void PushCommand( unique_ptr<Command> );
-    bool UndoCommand( );
-    bool RedoCommand( );
+    bool UndoCommand();
+    bool RedoCommand();
 
-    void Clear( );
+    void Clear();
 
 private:
     class OpenBracket  : public Command { };
@@ -62,7 +62,7 @@ private:
     NNetModelWriterInterface  * m_pNMWI                  { nullptr };
     Observable                * m_pStaticModelObservable { nullptr };
 
-    Command & getCurrentCmd( ) { return * m_CommandStack.at( m_iIndex ); }
+    Command & getCurrentCmd() { return * m_CommandStack.at( m_iIndex ); }
 
     void undoCmd() 
     { 
@@ -81,13 +81,13 @@ private:
         ++m_iIndex;
     }
 
-    void set2OlderCmd( )
+    void set2OlderCmd()
     {
         assert( ! UndoStackEmpty() );
         --m_iIndex;
     }
 
-    void set2YoungerCmd( )
+    void set2YoungerCmd()
     {
         assert( m_iIndex < m_CommandStack.size() );
         ++m_iIndex;
@@ -95,8 +95,8 @@ private:
 
     void pushNewCommand( unique_ptr<Command> );
 
-    void clearRedoStack   ( );
-    bool isOpenBracketCmd ( ) { return typeid( getCurrentCmd() ) == typeid(OpenBracket ); }
-    bool isCloseBracketCmd( ) { return typeid( getCurrentCmd() ) == typeid(CloseBracket); }
-    bool isBracketCmd     ( ) { return isOpenBracketCmd() || isCloseBracketCmd(); }
+    void clearRedoStack   ();
+    bool isOpenBracketCmd () { return typeid( getCurrentCmd() ) == typeid(OpenBracket ); }
+    bool isCloseBracketCmd() { return typeid( getCurrentCmd() ) == typeid(CloseBracket); }
+    bool isBracketCmd     () { return isOpenBracketCmd() || isCloseBracketCmd(); }
 };

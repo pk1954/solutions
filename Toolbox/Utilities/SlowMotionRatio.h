@@ -14,12 +14,12 @@ class SlowMotionRatio : public Observable
 {
 public:
 
-	float GetRatio( ) const
+	float GetRatio() const
 	{
 		return m_fRatio;
 	}
 
-	bool IncRatio( )
+	bool IncRatio()
 	{
 		if ( m_ratioIndex < MAX_INDEX )
 		{
@@ -30,7 +30,7 @@ public:
 			return false;
 	}
 
-	bool DecRatio( )
+	bool DecRatio()
 	{
 		if ( m_ratioIndex > 0 )
 		{

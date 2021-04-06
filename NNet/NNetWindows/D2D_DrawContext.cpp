@@ -8,14 +8,14 @@
 
 void D2D_DrawContext::Start( D2D_driver * const pGraphics )
 {
-	DrawContext::Initialize( );
+	DrawContext::Initialize();
 	m_pGraphics = pGraphics;
 	SetStdFontSize( STD_FONT_SIZE );
 }
 
-void D2D_DrawContext::Stop( )
+void D2D_DrawContext::Stop()
 {
-	m_pGraphics->ShutDown( );
+	m_pGraphics->ShutDown();
 }
 
 void D2D_DrawContext::Resize( int const width, int const height )

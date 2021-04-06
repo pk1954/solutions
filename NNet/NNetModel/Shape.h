@@ -48,27 +48,32 @@ public:
 
 	virtual bool operator==( Shape const & ) const;
 
-	virtual MicroMeterPoint const GetPosition   ()                                      const = 0;
-	virtual void                  DrawExterior  (DrawContext const &, tHighlight const) const = 0;
-	virtual void                  DrawInterior  (DrawContext const &, tHighlight const) const = 0;
-	virtual void                  Prepare       ()                                            = 0;
-	virtual bool            const CompStep      ()                                            = 0;
-	virtual void                  Recalc        ()                                            = 0;
-	virtual void                  MoveShape     (MicroMeterPoint const &)                     = 0;
-	virtual bool            const IsInRect      (MicroMeterRect  const &)               const = 0;
-	virtual bool            const IsPointInShape(MicroMeterPoint const &)               const = 0;
-	virtual void                  Expand        (MicroMeterRect &)                      const = 0;
+	virtual MicroMeterPoint const GetPosition ()                                      const = 0;
+	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void                  Prepare     ()                                            = 0;
+	virtual bool            const CompStep    ()                                            = 0;
+	virtual void                  Recalc      ()                                            = 0;
+	virtual void                  MoveShape   (MicroMeterPoint const &)                     = 0;
+	virtual bool            const Includes    (MicroMeterRect  const &)               const = 0;
+	virtual bool            const Includes    (MicroMeterPoint const &)               const = 0;
+	virtual void                  Expand      (MicroMeterRect &)                      const = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
 	virtual void Select(tBoolOp const op)                { ApplyOp(m_bSelected, op); }
-	virtual void Select(bool const bOn, bool const bRec) { m_bSelected = bOn; }
+	virtual void Select(bool const bOn, bool const bRec) { Select(bOn); }
+	
+	void Select(bool const bOn) { m_bSelected = bOn; }
 
 	bool      const IsSelected  () const { return m_bSelected; }
 	bool      const IsDefined   () const { return ::IsDefined( m_identifier ); }
 	wstring   const GetName     () const { return ShapeType::GetName( m_type.GetValue() ); }
 	ShapeType const GetShapeType() const { return m_type; }
 	ShapeId   const GetId       () const { return m_identifier; }
+
+	MicroMeter const GetPosX() const { return GetPosition().GetX(); }
+	MicroMeter const GetPosY() const { return GetPosition().GetY(); }
 
 	bool const HasType(ShapeType const type) const { return m_type == type; }
 
@@ -97,7 +102,7 @@ protected:
 	D2D1::ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	float GetFillLevel( mV const ) const;
-	float GetFillLevel( ) const { return GetFillLevel(m_mVinputBuffer); };
+	float GetFillLevel() const { return GetFillLevel(m_mVinputBuffer); };
 
 	void SetType(ShapeType const type) { m_type = type; }
 

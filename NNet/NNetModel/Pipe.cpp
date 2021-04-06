@@ -39,9 +39,9 @@ Pipe::Pipe( Pipe const & src ) :  // copy constructor
 	m_potential ( src.m_potential )
 { }
 
-Pipe::~Pipe( ) { }
+Pipe::~Pipe() { }
 
-void Pipe::Dump( ) const
+void Pipe::Dump() const
 {
 	Shape::Dump();
 	wcout << L' ' << * this << endl;
@@ -80,18 +80,18 @@ MicroMeterPoint const Pipe::GetPosition() const
 	return (m_pKnotStart->GetPosition() + m_pKnotEnd->GetPosition()) / 2.0f; 
 }
 
-void Pipe::Clear( )
+void Pipe::Clear()
 {
-	Shape::Clear( );
+	Shape::Clear();
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
 }
 
-void Pipe::Recalc( )
+void Pipe::Recalc()
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
 		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( ParamType::Value::pulseSpeed ) ) };
-		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
+		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution() ) };
 		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, Cast2UnsignedInt(round(pipeLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
@@ -99,7 +99,7 @@ void Pipe::Recalc( )
 	}
 }
 
-void Pipe::CheckShape( ) const
+void Pipe::CheckShape() const
 {
 	Shape::CheckShape();
 	assert( m_pKnotStart->IsPrecursorOf( * this ) );
@@ -112,9 +112,9 @@ void Pipe::Expand( MicroMeterRect & umRect ) const
 	umRect.Expand( GetEndPoint  () );
 }
 
-void Pipe::Prepare( )
+void Pipe::Prepare()
 {
-	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
+	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
 }
 
 void Pipe::MoveShape( MicroMeterPoint const & delta )
@@ -123,22 +123,22 @@ void Pipe::MoveShape( MicroMeterPoint const & delta )
 	m_pKnotEnd  ->MoveShape( delta );
 }
 
-// IsInrect should be called IsPossiblyInRect
-// It doesn't calculate exactly if the pipe intersects umRect, but eliminites a lot of cases with a simple and fast check
-// The rest is left over for the clipping algorithm of the graphics subsystem
+// Includes should be called IsPossiblyInRect
+// It doesn't calculate exactly if the pipe intersects umRect, but eliminites a lot of cases with a 
+// simple and fast check. The rest is left over for the clipping algorithm of the graphics subsystem
 
-bool const Pipe::IsInRect( MicroMeterRect const & umRect ) const 
+bool const Pipe::Includes( MicroMeterRect const & umRect ) const 
 { 
-	if ( (m_pKnotStart->GetPosition().GetX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosition().GetX() < umRect.GetLeft()) )
+	if ( (m_pKnotStart->GetPosX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosX() < umRect.GetLeft()) )
 		return false;
 
-	if ( (m_pKnotStart->GetPosition().GetX() > umRect.GetRight()) && (m_pKnotEnd->GetPosition().GetX() > umRect.GetRight()) )
+	if ( (m_pKnotStart->GetPosX() > umRect.GetRight()) && (m_pKnotEnd->GetPosX() > umRect.GetRight()) )
 		return false;
 
-	if ( (m_pKnotStart->GetPosition().GetY() > umRect.GetBottom()) && (m_pKnotEnd->GetPosition().GetY() > umRect.GetBottom()) )
+	if ( (m_pKnotStart->GetPosY() > umRect.GetBottom()) && (m_pKnotEnd->GetPosY() > umRect.GetBottom()) )
 		return false;
 
-	if ( (m_pKnotStart->GetPosition().GetY() < umRect.GetTop()) && (m_pKnotEnd->GetPosition().GetY() < umRect.GetTop()) )
+	if ( (m_pKnotStart->GetPosY() < umRect.GetTop()) && (m_pKnotEnd->GetPosY() < umRect.GetTop()) )
 		return false;
 
 	return true;
@@ -188,21 +188,21 @@ MicroMeter Pipe::GetLength() const
 	return Distance(GetStartPoint(), GetEndPoint());
 }
 
-bool const Pipe::IsPointInShape( MicroMeterPoint const & point ) const
+bool const Pipe::Includes( MicroMeterPoint const & point ) const
 {
 	MicroMeterPoint const umVector{ GetEndPoint() - GetStartPoint() };
 	if ( umVector.IsCloseToZero() )
 		return false;
 	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
-	MicroMeterPoint       umPoint1     { GetStartPoint( ) };
+	MicroMeterPoint       umPoint1     { GetStartPoint() };
 	MicroMeterPoint const umPoint2     { umPoint1 + umVector };
 	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
 }
 
-MicroMeterPoint Pipe::GetVector( ) const
+MicroMeterPoint Pipe::GetVector() const
 {
-	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
-	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
+	MicroMeterPoint const umStartPoint { GetStartPoint() };
+	MicroMeterPoint const umEndPoint   { GetEndPoint  () };
 	MicroMeterPoint const umvector{ umEndPoint - umStartPoint };
 	assert( ! umvector.IsCloseToZero() );
 	return umvector;
@@ -214,8 +214,8 @@ void Pipe::DrawArrows
 	MicroMeter     const   umSize
 ) const
 {
-	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
-	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
+	MicroMeterPoint const umStartPoint { GetStartPoint() };
+	MicroMeterPoint const umEndPoint   { GetEndPoint  () };
 
 	context.FillArrow
 	(
@@ -238,12 +238,12 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlight const type ) co
 
 	if ( IsNormal(type) && ! IsSelected() )
 	{
-		MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
+		MicroMeterPoint const umVector { GetEndPoint() - GetStartPoint() };
 		if ( ! umVector.IsCloseToZero() )
 		{
 			size_t          const nrOfSegments { m_potential.size() };
 			MicroMeterPoint const umSegVec     { umVector / Cast2Float(nrOfSegments) };
-			MicroMeterPoint       umPoint      { GetStartPoint( ) };
+			MicroMeterPoint       umPoint      { GetStartPoint() };
 			size_t          const potIndex     { m_potIndex };
 			size_t                index        { potIndex }; 
 			do 
@@ -276,7 +276,7 @@ bool const Pipe::CompStep()
 mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const
 {
 	mV mVresult { 0._mV };
-	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
+	MicroMeterPoint const umVector { GetEndPoint() - GetStartPoint() };
 	if ( ! umVector.IsCloseToZero() )
 	{
 		size_t          const nrOfSegments  { m_potential.size() };

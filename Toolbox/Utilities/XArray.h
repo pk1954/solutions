@@ -26,12 +26,12 @@ void DivNonZero( std::array<T, SIZE> & a, std::array<T, SIZE> const & div )
 template <typename T, size_t SIZE> class XArray
 {
 public:
-    XArray( )
+    XArray()
     {
-        zero( );
+        zero();
     }
     
-    void zero( )
+    void zero()
     {
         m_tGeneral = 0;
         m_tArray.fill( 0 );

@@ -12,8 +12,8 @@
 
 using std::function;
 
-TextWindow::TextWindow( ) :  
-    BaseWindow( ),
+TextWindow::TextWindow() :  
+    BaseWindow(),
 	m_pTextWindowThread( nullptr ),
 	m_pRefreshTimer( nullptr ),
 	m_hDC_Memory( 0 ),
@@ -59,10 +59,10 @@ void TextWindow::StartTextWindow
 	);
 }
 
-void TextWindow::StopTextWindow( )
+void TextWindow::StopTextWindow()
 {
     if ( m_pTextWindowThread )
-	    m_pTextWindowThread->Terminate( );
+	    m_pTextWindowThread->Terminate();
 	delete m_pTextWindowThread;
 	m_pTextWindowThread = nullptr;
 
@@ -73,17 +73,17 @@ void TextWindow::StopTextWindow( )
 	m_hDC_Memory = 0;
 }
 
-void TextWindow::Trigger( )
+void TextWindow::Trigger()
 {
 	if ( m_pTextWindowThread )
-		m_pTextWindowThread->Trigger( );
+		m_pTextWindowThread->Trigger();
 }
 
-void TextWindow::OnPaint( )
+void TextWindow::OnPaint()
 {
 	PAINTSTRUCT   ps;
 	HDC           hDC      { BeginPaint( &ps ) };
-	PixelRectSize rectSize { GetClRectSize( ) };
+	PixelRectSize rectSize { GetClRectSize() };
 	BitBlt( hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY );
 	(void)EndPaint( &ps );
 }

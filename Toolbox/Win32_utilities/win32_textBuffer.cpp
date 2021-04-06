@@ -34,12 +34,12 @@ void Win32_TextBuffer::StartPainting()
 	TextBuffer::StartPainting();
 }
 
-void Win32_TextBuffer::AlignLeft( )
+void Win32_TextBuffer::AlignLeft()
 {
 	SetTextAlign( m_hDC, TA_LEFT );
 }
 
-void Win32_TextBuffer::AlignRight( )
+void Win32_TextBuffer::AlignRight()
 {
 	SetTextAlign( m_hDC, TA_RIGHT );
 }

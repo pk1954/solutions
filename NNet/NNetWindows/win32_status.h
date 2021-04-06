@@ -19,10 +19,10 @@ class StatusBar : public RootWindow
 public:
 
 	void Start( HWND const );
-	void Stop( );
+	void Stop();
 
-	PIXEL GetHeight( ) const;
-    void  Resize( ) const;
+	PIXEL GetHeight() const;
+    void  Resize() const;
 
 	HWND WINAPI AddStaticControl( int const );
 	HWND WINAPI AddStaticControl( LPCTSTR const );
@@ -31,8 +31,8 @@ public:
 
 	void AddCustomControl( int const );
 
-	int  NewPart( );
-	void LastPart( );
+	int  NewPart();
+	void LastPart();
 
 	void DisplayInPart( int const, wstring const );
 	void ClearPart( int const );

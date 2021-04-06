@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "CalcOrthoVector.h"
 #include "ConnectionNeuron.h"
 #include "Connector.h"
 
@@ -18,70 +19,92 @@ void Connector::CheckShape() const
 void Connector::Dump() const
 {
     Shape::Dump();
-    for (auto ps : m_list) { wcout << ps << endl; }
+    m_list.Apply2All([&](ConnNeuron & n){ wcout << n << endl; } );
+}
+
+void Connector::AlignDirection()
+{
+    MicroMeterLine  const umLine(m_list.GetFirst().GetPosition(), m_list.GetLast().GetPosition());
+    MicroMeterPoint const umPntDir { CalcOrthoVector(umLine, m_list) };
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetDirVector(umPntDir); } );
 }
 
 MicroMeterPoint const Connector::GetPosition() const 
 { 
-    return (m_list.front()->GetPosition() + m_list.back()->GetPosition()) / 2.0f; 
+    return (m_list.GetFirst().GetPosition() + m_list.GetLast().GetPosition()) / 2.0f; 
 }
 
 void Connector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-    for (auto ps : m_list) { ps->DrawExterior(context, type); }
+    m_list.Apply2All([&](ConnNeuron & n){ n.DrawExterior(context, type); } );
 }
 
 void Connector::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-    for (auto ps : m_list) { ps->DrawInterior(context, type); }
+    m_list.Apply2All([&](ConnNeuron & n){ n.DrawInterior(context, type); } );
 }
 
 void Connector::Prepare()
 {
-    for (auto ps : m_list) { ps->Prepare(); }
+    m_list.Apply2All([&](ConnNeuron & n){ n.Prepare(); } );
 }
 
 bool const Connector::CompStep()
 {
     bool bStop { false };
-    for (auto ps : m_list) { if (ps->CompStep()) bStop = true; }
+    m_list.Apply2All([&](ConnNeuron & n){ if (n.CompStep()) bStop = true; } );
     return bStop;
 }
 
 void Connector::Recalc()
 {
-    for (auto ps : m_list) { ps->Recalc(); }
+    m_list.Apply2All([&](ConnNeuron & n){ n.Recalc(); } );
 }
 
 void Connector::MoveShape(MicroMeterPoint const & delta)       
 {
-    for (auto ps : m_list) { ps->MoveShapeFromParent(delta); }
+    m_list.Apply2All([&](ConnNeuron & n){ n.MoveShapeFromParent(delta); } );
 }
 
-bool const Connector::IsInRect(MicroMeterRect const & umRect) const 
+void Connector::SetParentPointers()
+{
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetParent(this); } );
+}
+
+void Connector::ClearParentPointers()
+{
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetParent(nullptr); } );
+}
+
+void Connector::Apply2All(function<void(ConnNeuron const *)> const & func) const
+{
+    m_list.Apply2All([&](ConnNeuron & n){ func(&n); } );
+}                        
+
+bool const Connector::Includes(MicroMeterRect const & umRect) const 
 {
     bool bRes { false };
-    for (auto ps : m_list) { if (ps->IsInRect(umRect)) bRes = true; }
+    m_list.Apply2All([&](ConnNeuron & n){ if (n.Includes(umRect)) bRes = true; } );
     return bRes;
 }
 
-bool const Connector::IsPointInShape(MicroMeterPoint const & umPnt) const
+bool const Connector::Includes(MicroMeterPoint const & umPnt) const
 {
     bool bRes { false };
-    for (auto ps : m_list) { if (ps->IsPointInShape(umPnt)) bRes = true; }
-    return bRes;
+    m_list.Apply2All([&](ConnNeuron & n){ if (n.Includes(umPnt)) bRes = true; } );
+    return false;
 }
 
 void Connector::Expand(MicroMeterRect & umRect) const
 {
-    Apply2All( [&](CNPtr const & p) { umRect.Expand(p->GetPosition()); } );
+    m_list.Apply2All([&](ConnNeuron & n){ umRect.Expand(n.GetPosition()); } );
 }
 
 void Connector::Select(bool const bOn, bool const bRecursive) 
 { 
     Shape::Select(bOn, false);
     if (bRecursive)
-        Apply2All( [&](CNPtr & p) { p->Select(bOn, false); } );
+        m_list.Apply2All([&](ConnNeuron & n){ n.Select(bOn, false); } );
 }
 
 Connector const * Cast2Connector( Shape const * pShape )

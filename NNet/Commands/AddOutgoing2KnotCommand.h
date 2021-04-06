@@ -24,7 +24,7 @@ public:
 		m_pos(pos)
 	{ }
 
-	~AddOutgoing2KnotCommand( ) {}
+	~AddOutgoing2KnotCommand() {}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 

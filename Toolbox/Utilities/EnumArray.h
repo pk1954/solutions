@@ -35,12 +35,12 @@ public:
 		return m_tArray.at( static_cast<unsigned short>( index ) ); 
 	}
 
-	T * begin( )
+	T * begin()
 	{ 
 		return m_tArray.begin();
 	}
 
-	T * end( )
+	T * end()
 	{ 
 		return m_tArray.end(); 
 	}

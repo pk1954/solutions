@@ -22,12 +22,12 @@ Signal::Signal
     m_observable.RegisterObserver( this );
 }
 
-Signal::~Signal( )
+Signal::~Signal()
 {
     m_observable.UnregisterObserver( this );
 }
 
-float Signal::GetSignalValue( ) const
+float Signal::GetSignalValue() const
 {
     float fResult   { 0.0f };
     float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
@@ -66,7 +66,7 @@ void Signal::Draw( DrawContext const & context ) const
 int const Signal::time2index( fMicroSecs const usParam ) const
 {
     fMicroSecs const timeTilStart { usParam - m_timeStart };
-    float      const fNrOfPoints  { timeTilStart / m_nmri.GetTimeResolution( ) };
+    float      const fNrOfPoints  { timeTilStart / m_nmri.GetTimeResolution() };
     int              index        { static_cast<int>( roundf( fNrOfPoints ) ) };
     if ( index >= m_data.size() )
         index = Cast2UnsignedInt( m_data.size() - 1 );
@@ -76,7 +76,7 @@ int const Signal::time2index( fMicroSecs const usParam ) const
 fMicroSecs const Signal::index2time( int const index ) const
 {
     float      const fNrOfPoints  { static_cast<float>( index ) };
-    fMicroSecs const timeTilStart { m_nmri.GetTimeResolution( ) * fNrOfPoints };
+    fMicroSecs const timeTilStart { m_nmri.GetTimeResolution() * fNrOfPoints };
     fMicroSecs const usResult     { timeTilStart + m_timeStart };
     return usResult;
 }
@@ -109,7 +109,7 @@ void Signal::Notify( bool const bImmediate )
     m_data.push_back( GetSignalValue() );
 }
 
-void Signal::CheckSignal( ) 
+void Signal::CheckSignal() 
 {
 #ifdef _DEBUG
     if ( m_circle.IsNull() )

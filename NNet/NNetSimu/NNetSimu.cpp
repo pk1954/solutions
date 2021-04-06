@@ -24,7 +24,7 @@ int APIENTRY wWinMain
 
 	NNetAppWindow App;
 
-	// SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
+	// SetThreadAffinityMask( GetCurrentThread(), 0x0001 );
 
 	INITCOMMONCONTROLSEX icex // load common control's DLL 
 	{

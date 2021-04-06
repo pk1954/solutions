@@ -55,7 +55,7 @@ void Util::Thread::PostThreadMsg( UINT uiMsg, WPARAM const wParam, LPARAM const 
 	{
 		assert( m_threadId != 0 );
 		bool const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
-		//				DWORD err = GetLastError( );
+		//				DWORD err = GetLastError();
 		assert( bRes );
 	}
 	else
@@ -64,11 +64,11 @@ void Util::Thread::PostThreadMsg( UINT uiMsg, WPARAM const wParam, LPARAM const 
 	}
 }
 
-void Util::Thread::Terminate( )   // to be called from different thread
+void Util::Thread::Terminate()   // to be called from different thread
 {
 	if ( m_bAsync )
 	{
-		TerminateNoWait( );
+		TerminateNoWait();
 		WaitForSingleObject( m_handle, INFINITE );      // wait until thread has stopped
 		CloseHandle( m_handle );
 	}
@@ -85,7 +85,7 @@ static unsigned int __stdcall Util::ThreadProc( void * data )
 
 	pThread->m_eventThreadStarter.Continue();   // trigger waiting thread to continue
 
-	pThread->ThreadStartupFunc( );
+	pThread->ThreadStartupFunc();
 
 	while ( iRes = GetMessage( &msg, nullptr, 0, 0 ) )  // loop ends at WM_QUIT 
 	{
@@ -93,7 +93,7 @@ static unsigned int __stdcall Util::ThreadProc( void * data )
 		pThread->ThreadMsgDispatcher( msg );
 	} 
 
-	pThread->ThreadShutDownFunc( );
+	pThread->ThreadShutDownFunc();
 
 	return iRes;
 }

@@ -29,7 +29,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuronT = nmwi.GetUPShapes().Pop<T>( );
+		m_upNeuronT = nmwi.GetUPShapes().Pop<T>();
 	}
 
 private:

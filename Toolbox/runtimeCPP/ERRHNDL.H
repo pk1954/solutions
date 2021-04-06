@@ -40,7 +40,7 @@ public:
 
     struct ScriptException: public exception
     {
-        ScriptException( ) {};
+        ScriptException() {};
         ScriptException( short const sErrNr, wstring const msg )
           : m_sErrNr(sErrNr),
             m_wstrMessage( msg )

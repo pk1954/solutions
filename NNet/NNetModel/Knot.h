@@ -28,7 +28,7 @@ public:
 
 	void CheckShape() const;
 
-	static bool      const TypeFits(ShapeType const type) { return type.IsKnotType( ); }
+	static bool      const TypeFits(ShapeType const type) { return type.IsKnotType(); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::knot; }
 
 	mV const GetNextOutput() const { return m_mVinputBuffer; }

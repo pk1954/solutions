@@ -42,7 +42,7 @@ public:
 		}
 	}
 
-	void Clear( )
+	void Clear()
 	{
 		m_aView.clear();
 	}

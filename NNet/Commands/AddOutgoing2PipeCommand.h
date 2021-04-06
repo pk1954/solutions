@@ -22,14 +22,14 @@ public:
 		m_pos(pos)
 	{ }
 
-	~AddOutgoing2PipeCommand( )	{}
+	~AddOutgoing2PipeCommand()	{}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		if ( ! m_upKnotInsert )
 		{
 			m_pPipeOld      = nmwi.GetShapePtr<Pipe *>( m_idPipe );
-			m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr( );
+			m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr();
 			m_upKnotInsert  = make_unique<Knot>( m_pos );
 			m_upKnotInsert->Select( m_pPipeOld->IsSelected(), false );
 			m_upKnotOrtho   = make_unique<Knot>( m_pos + nmwi.OrthoVector( m_idPipe ) );

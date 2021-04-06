@@ -44,7 +44,7 @@ void StatusBar::Start( HWND const hwndParent )
 
 	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ))) + 10_PIXEL;
 	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
-	m_pixClientHeight = GetHeight( ) - m_pixBorderY;
+	m_pixClientHeight = GetHeight() - m_pixBorderY;
 }
 
 void StatusBar::AddCustomControl
@@ -56,7 +56,7 @@ void StatusBar::AddCustomControl
 	m_pixPosX += FONT_WIDTH * width;
 }
 
-int StatusBar::NewPart( )
+int StatusBar::NewPart()
 {
 	m_pixPosX += m_pixBorderX;
 	m_statWidths.push_back( m_pixPosX );
@@ -64,17 +64,17 @@ int StatusBar::NewPart( )
 	return static_cast<int>(m_statWidths.size());
 }
 
-void StatusBar::LastPart( )
+void StatusBar::LastPart()
 {
-	NewPart( );
+	NewPart();
 	m_statWidths.push_back( -1_PIXEL  ); // Stop
 	(void)SendMessage( SB_SETPARTS, m_statWidths.size(), (LPARAM)( m_statWidths.data() ) );
 }
 
-void StatusBar::Stop( )
+void StatusBar::Stop()
 {
 	Show( false );
-	DestroyWindow( );
+	DestroyWindow();
 }
 
 LRESULT StatusBar::UserProc
@@ -109,7 +109,7 @@ HWND WINAPI StatusBar::addControl
 			m_pixBorderY.GetValue(),         // y position 
 			pixWidth.GetValue(),             // width
 			m_pixClientHeight.GetValue(),    // height
-			GetWindowHandle( ),              // parent window 
+			GetWindowHandle(),              // parent window 
 			hMenu,                           // control identifier 
 			GetModuleHandle( nullptr ),      // instance 
 			nullptr                          // no WM_CREATE parameter 
@@ -143,19 +143,19 @@ HWND WINAPI StatusBar::AddTrackBar( HMENU hMenu )
 	return hwnd;
 };
 
-PIXEL StatusBar::GetHeight( ) const
+PIXEL StatusBar::GetHeight() const
 {
     return STATUS_BAR_HEIGHT;
 }
     
-void StatusBar::Resize( ) const 
+void StatusBar::Resize() const 
 {
     (void)SendMessage( WM_SIZE, 0, 0 );
 }
 
 void StatusBar::DisplayInPart( int const iPart, wstring const wstrLine )
 {
-	(void)SendMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str( ) ) );
+	(void)SendMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str() ) );
 }
 
 void StatusBar::ClearPart( int const iPart )

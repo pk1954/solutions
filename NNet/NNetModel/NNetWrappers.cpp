@@ -19,7 +19,7 @@ class WrapAnalyzeAnomalies: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->AnalyzeAnomalies( );
+        m_pCommands->AnalyzeAnomalies();
     }
 };
 
@@ -28,7 +28,7 @@ class WrapAnalyzeLoops: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->AnalyzeLoops( );
+        m_pCommands->AnalyzeLoops();
     }
 };
 
@@ -37,7 +37,7 @@ class WrapResetModel: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->ResetModel( );
+        m_pCommands->ResetModel();
     }
 };
 
@@ -46,7 +46,7 @@ class WrapCreateInitialShapes: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->CreateInitialShapes( );
+        m_pCommands->CreateInitialShapes();
     }
 };
 
@@ -86,7 +86,7 @@ class WrapClearBeepers: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->ClearBeepers( );
+        m_pCommands->ClearBeepers();
     }
 };
 
@@ -95,7 +95,7 @@ class WrapCopySelection: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->CopySelection( );
+        m_pCommands->CopySelection();
     }
 };
 
@@ -162,7 +162,7 @@ class WrapSelectAllBeepers: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->SelectAllBeepers( );
+        m_pCommands->SelectAllBeepers();
     }
 };
 
@@ -171,7 +171,7 @@ class WrapDeleteSelection: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->DeleteSelection( );
+        m_pCommands->DeleteSelection();
     }
 };
 
@@ -201,8 +201,20 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id     { ScrReadShapeId( script ) };
-        float   const fValue { Cast2Float( script.ScrReadFloat( ) ) };
+        float   const fValue { Cast2Float( script.ScrReadFloat() ) };
         m_pCommands->SetPulseRate( id, fHertz{ fValue } );
+    }
+};
+
+class WrapSetConnectionNeurons: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        MicroMeterPointVector    umPntVector;
+        ShapePtrList<ConnNeuron> shapeList;
+        // TODO
+        m_pCommands->SetConnectionNeurons( umPntVector, shapeList );
     }
 };
 
@@ -211,8 +223,8 @@ class WrapSetParameter: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ParamType::Value const param  { static_cast<ParamType::Value>( script.ScrReadUlong( ) ) };
-        float            const fValue { Cast2Float( script.ScrReadFloat( ) ) };
+        ParamType::Value const param  { static_cast<ParamType::Value>( script.ScrReadUlong() ) };
+        float            const fValue { Cast2Float( script.ScrReadFloat() ) };
         m_pCommands->SetParameter( param, fValue );
     }
 };
@@ -330,7 +342,7 @@ class WrapUndoCommand: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->UndoCommand( );
+        m_pCommands->UndoCommand();
     }
 };
 
@@ -339,7 +351,7 @@ class WrapRedoCommand: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->RedoCommand( );
+        m_pCommands->RedoCommand();
     }
 };
 
@@ -385,6 +397,7 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(SetParameter);    
     DEF_FUNC(SetPulseRate); 
     DEF_FUNC(SetTriggerSound);
+    DEF_FUNC(SetConnectionNeurons);
     DEF_FUNC(ToggleStopOnTrigger);
     DEF_FUNC(UndoCommand);
     DEF_FUNC(RedoCommand);

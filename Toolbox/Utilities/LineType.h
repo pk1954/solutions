@@ -54,12 +54,12 @@ public:
         m_p2 = p2; 
     }
 
-    BASE_TYPE const Length( ) const
+    BASE_TYPE const Length() const
     {
         return Distance( m_p1, m_p2 );
     }
 
-    POS_TYPE const GetVector( ) const 
+    POS_TYPE const GetVector() const 
     {
         return m_p2 - m_p1;
     }

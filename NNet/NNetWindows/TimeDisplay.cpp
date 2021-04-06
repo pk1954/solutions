@@ -34,9 +34,9 @@ public:
 	{ 
 	}
 
-	virtual void Trigger( )
+	virtual void Trigger()
 	{
-		fMicroSecs const time = m_pNMRI->GetSimulationTime( );
+		fMicroSecs const time = m_pNMRI->GetSimulationTime();
 		wstring wstrTime;
 		Format2wstring( time, wstrTime );
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, wstrTime );
@@ -67,7 +67,7 @@ void TimeDisplay::Start
 	pStatusBar->AddCustomControl( 8 );        // nr of characters 
 }
 
-void TimeDisplay::Stop( )
+void TimeDisplay::Stop()
 {
 	delete m_pRefreshRate;
 	m_pRefreshRate = nullptr;

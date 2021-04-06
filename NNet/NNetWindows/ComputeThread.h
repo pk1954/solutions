@@ -25,21 +25,21 @@ public:
 		Observable      * const
 	);
 
-	virtual void ThreadStartupFunc( );
+	virtual void ThreadStartupFunc();
 	virtual void ThreadMsgDispatcher( MSG const ) { }
 	virtual void Notify( bool const );
 
-	void SingleStep( );
-	void ReleaseComputationLock( );
-	void LockComputation( );
-	void RunComputation( );
-	void StopComputation( );
+	void SingleStep();
+	void ReleaseComputationLock();
+	void LockComputation();
+	void RunComputation();
+	void StopComputation();
 	bool IsRunning() const { return ! m_bStopped; }
 
-	fMicroSecs GetSimuTimeResolution( ) const { return m_usSimuTimeResolution; };
-	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
-	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usTimeAvailPerCycle; };
-	float      GetEffectiveSlowmo   ( ) const { return m_fEffectiveSlowMo; };
+	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
+	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
+	fMicroSecs GetTimeAvailPerCycle () const { return m_usTimeAvailPerCycle; };
+	float      GetEffectiveSlowmo   () const { return m_fEffectiveSlowMo; };
 
 private:
 
@@ -64,9 +64,9 @@ private:
 
 	float             m_fEffectiveSlowMo { 0.0f };
 
-	void runComputation( );
-	void stopComputation( );
-	void reset( );
+	void runComputation();
+	void stopComputation();
+	void reset();
 
 	fMicroSecs const simuTimeSinceLastReset();
 	fMicroSecs const netRealTimeSinceLastReset();

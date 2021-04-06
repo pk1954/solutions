@@ -8,17 +8,17 @@ class AutoOpen
 {
 public:
 
-	static void On ( ) 
+	static void On () 
 	{ 
 		m_bActive = true; 
 	}
 
-	static void Off( ) 
+	static void Off() 
 	{ 
 		m_bActive = false; 
 	}
 
-	static bool IsOn( ) 
+	static bool IsOn() 
 	{ 
 		return m_bActive; 
 	}

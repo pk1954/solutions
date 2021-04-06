@@ -15,10 +15,10 @@ using std::ostream;
 RECT Util::ScrReadRECT( Script & script )
 {
     RECT rect;
-    rect.left   = script.ScrReadLong( );
-    rect.top    = script.ScrReadLong( );
-    rect.right  = script.ScrReadLong( );
-    rect.bottom = script.ScrReadLong( );
+    rect.left   = script.ScrReadLong();
+    rect.top    = script.ScrReadLong();
+    rect.right  = script.ScrReadLong();
+    rect.bottom = script.ScrReadLong();
     return rect;
 }
 
@@ -105,14 +105,14 @@ DWORD Util::GetNrOfCPUs( void )
     return siSysInfo.dwNumberOfProcessors; 
 }
 
-ULONGLONG Util::GetPhysicalMemory( )  // in bytes
+ULONGLONG Util::GetPhysicalMemory()  // in bytes
 {
     ULONGLONG ramKB;
     (void)GetPhysicallyInstalledSystemMemory( &ramKB );   // get physical memory in KB
     return ramKB * 1024;                                  // compute number of bytes
 }
 
-wstring Util::GetCurrentDateAndTime( )
+wstring Util::GetCurrentDateAndTime()
 {
     __time64_t long_time;  
     _time64( & long_time ); 
@@ -123,7 +123,7 @@ wstring Util::GetCurrentDateAndTime( )
     return wstring( buffer );
 }
 
-wstring Util::GetComputerName( )
+wstring Util::GetComputerName()
 {
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];
@@ -132,7 +132,7 @@ wstring Util::GetComputerName( )
     return wstring( buffer );
 }
 
-wstring Util::GetUserName( )
+wstring Util::GetUserName()
 {
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];
@@ -157,10 +157,10 @@ void Util::SetApplicationTitle
     SetWindowText( hwndApp, newTitle.c_str() );
 }
 
-void Util::StdOutConsole( )
+void Util::StdOutConsole()
 {
     FILE  * fp;
-    bool    bRes = AllocConsole( );
+    bool    bRes = AllocConsole();
     errno_t res  = _wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
     wcout << L"Console started" << endl;
     HWND hwnd = ::GetConsoleWindow();

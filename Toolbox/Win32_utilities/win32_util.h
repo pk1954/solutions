@@ -360,12 +360,12 @@ namespace Util
     bool MoveWindowAbsolute( HWND const, PixelRect  const &, bool const );
     bool MoveWindowAbsolute( HWND const, PixelPoint const &, bool const );
 	
-    DWORD     GetNrOfCPUs( );
-    ULONGLONG GetPhysicalMemory( );
-    wstring   GetCurrentDateAndTime( );
-    wstring   GetComputerName( );
-    wstring   GetUserName( );
+    DWORD     GetNrOfCPUs();
+    ULONGLONG GetPhysicalMemory();
+    wstring   GetCurrentDateAndTime();
+    wstring   GetComputerName();
+    wstring   GetUserName();
     void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
-    void      StdOutConsole( );
+    void      StdOutConsole();
     bool      EscapeKeyPressed();
 };

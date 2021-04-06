@@ -7,7 +7,7 @@
 #include "NamedType.h"
 #include "win32_HiResTimer.h"
 
-HiResTimer::HiResTimer( )
+HiResTimer::HiResTimer()
 {
     if ( m_frequency == 0_Hertz )                  // frequency is constant for given CPU
     {                                              // first time in application the constructor is called
@@ -42,11 +42,11 @@ void HiResTimer::BusyWait( microseconds const us, Ticks & ticks )
 {
 	Ticks ticksToWait = MicroSecondsToTicks( us );
 	if ( ticks == Ticks( 0 ) )  //-V1051
-		ticks = ReadHiResTimer( );
+		ticks = ReadHiResTimer();
 	Ticks ticksTarget = ticks + ticksToWait;
 
 	do
 	{ 
-		ticks = ReadHiResTimer( );
+		ticks = ReadHiResTimer();
 	} while ( ticks < ticksTarget );
 }

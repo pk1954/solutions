@@ -29,7 +29,7 @@ public:
 
     virtual void operator() ( Script & script ) const
     {
-	    UINT uiResId = script.ScrReadUint( );
+	    UINT uiResId = script.ScrReadUint();
 
 		if ( uiResId > 0 )
 		{
@@ -65,8 +65,8 @@ public:
 
     virtual void operator() ( Script & script ) const
     {
-	    UINT const uiResId  = script.ScrReadUint( );
-		INT const  iCmdShow = script.ScrReadInt( );  // WM_HIDE, WM_SHOW, ...
+	    UINT const uiResId  = script.ScrReadUint();
+		INT const  iCmdShow = script.ScrReadInt();  // WM_HIDE, WM_SHOW, ...
 		if ( uiResId > 0 )
 			ShowWindow( m_pWinManager->GetHWND( uiResId ), iCmdShow );
     }
@@ -95,7 +95,7 @@ static MONITORINFO ScrReadMonitorInfo( Script & script )
     monInfo.cbSize    = sizeof( MONITORINFO );
     monInfo.rcMonitor = Util::ScrReadRECT( script );
     monInfo.rcWork    = Util::ScrReadRECT( script );
-    monInfo.dwFlags   = script.ScrReadUlong( );
+    monInfo.dwFlags   = script.ScrReadUlong();
 
     return monInfo;
 }
@@ -113,7 +113,7 @@ static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT
     {  
         Script * pScript = pMonStruct->m_pScript;
 
-        pMonStruct->m_iMonFromScript = pScript->ScrReadInt( );
+        pMonStruct->m_iMonFromScript = pScript->ScrReadInt();
 
         if ( pMonStruct->m_iMonFromScript == 0 )
         {                                        // m_script describes less monitors than current configuration  
@@ -165,7 +165,7 @@ public:
         CHECK_MON_STRUCT monStruct;
         monStruct.m_pScript = & script;
 
-        wstring wstrFileName = script.ScrReadString( );             // read window configuration file name
+        wstring wstrFileName = script.ScrReadString();             // read window configuration file name
 
         EnumDisplayMonitors( nullptr, nullptr, CheckMonitorInfo, (LPARAM)&monStruct );
         if ( monStruct.m_errorInfo.m_sErrNr != 0 )                  // exception handling not passed through C function
@@ -173,14 +173,14 @@ public:
 
         if ( monStruct.m_iMonFromScript != 0 )                      // could be 0, if m_script describes less monitors than current configuration
         {
-            monStruct.m_iMonFromScript = script.ScrReadInt( );      // read monitor number 0 indicating end of monitor list
+            monStruct.m_iMonFromScript = script.ScrReadInt();      // read monitor number 0 indicating end of monitor list
 
             if ( monStruct.m_iMonFromScript != 0 )                  // wasn't 0: m_script describes more monitors than current configuration
             {                           
                 do                                                  // skip remaining monitor descriptions in m_script
                 {
                     (void)ScrReadMonitorInfo( script );
-                } while ( script.ScrReadInt( ) != 0 );
+                } while ( script.ScrReadInt() != 0 );
                 monStruct.m_bCheckResult = false;                   // this is not the right configuration
             }
         }
@@ -188,14 +188,14 @@ public:
         if ( monStruct.m_bCheckResult )
             m_pWinManager->SetWindowConfigurationFile( wstrFileName );
 
-        m_pWinManager->IncNrOfMonitorConfigurations( );
+        m_pWinManager->IncNrOfMonitorConfigurations();
     }
 
 private:
     WinManager * m_pWinManager;
 };
 
-bool WinManager::GetWindowConfiguration( )
+bool WinManager::GetWindowConfiguration()
 {
     bool bRes { false };
 
@@ -262,7 +262,7 @@ static BOOL CALLBACK DumpMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
     return true;
 }
 
-void WinManager::dumpMonitorConfiguration( ) const
+void WinManager::dumpMonitorConfiguration() const
 {
     wofstream ostr( MONITOR_CONFIG_FILE, wofstream::app );
 	
@@ -272,10 +272,10 @@ void WinManager::dumpMonitorConfiguration( ) const
     EnumDisplayMonitors( nullptr, nullptr, DumpMonitorInfo, (LPARAM)&monStruct );
     ostr << L"0   # end of MonitorConfiguration" << endl << endl;
 
-    ostr.close( );
+    ostr.close();
 }
 
-void WinManager::dumpWindowCoordinates( ) const
+void WinManager::dumpWindowCoordinates() const
 {
     wofstream ostr( m_strWindowConfigurationFile, wofstream::out );
     
@@ -302,22 +302,22 @@ void WinManager::dumpWindowCoordinates( ) const
 		}
 	}
 
-    ostr.close( );
+    ostr.close();
 }
 
-void WinManager::StoreWindowConfiguration( )
+void WinManager::StoreWindowConfiguration()
 {
-    if ( m_strWindowConfigurationFile.empty( ) )
+    if ( m_strWindowConfigurationFile.empty() )
     {
         m_strWindowConfigurationFile = WINDOW_CONFIG_FILE_STUB + to_wstring( ++m_iNrOfMonitorConfigurations ) + L".cnf";
 
-        dumpMonitorConfiguration( );
+        dumpMonitorConfiguration();
     }
 
-    dumpWindowCoordinates( );    // Write window configuration to window configuration file
+    dumpWindowCoordinates();    // Write window configuration to window configuration file
 }
 
-WinManager::WinManager( ) :
+WinManager::WinManager() :
     m_strWindowConfigurationFile( L"" ),
     m_iNrOfMonitorConfigurations( 0 )
 {

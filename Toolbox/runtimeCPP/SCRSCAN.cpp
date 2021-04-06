@@ -17,14 +17,14 @@
 #define IS_ONE_OF(S,C)  (((C)!=L'\0')&&(wcschr((S),static_cast<int>(C))!=nullptr))
 #define HEX2DIGIT(C)    ((C)-(isdigit(C)?'0':(((C)>='a')?'a':'A')))
                                     
-Scanner::Scanner( )
+Scanner::Scanner()
 : m_wstrPath( L"" ),
-  m_wstrToken( ),
-  m_inbuf( ),
+  m_wstrToken(),
+  m_inbuf(),
   m_ulValue( 0 ),
   m_wchValue( L'\0' ),
   m_dValue( 0.0 ),
-  m_wstrExpected( )
+  m_wstrExpected()
 { }
 
 // OpenInputFile
@@ -38,9 +38,9 @@ void Scanner::OpenInputFile( wstring const & wstrFile ) // (path) name of file t
     m_inbuf.Open( m_wstrPath );
 }                                           
 
-void Scanner::CloseInputFile( )
+void Scanner::CloseInputFile()
 {
-    m_inbuf.Close( );
+    m_inbuf.Close();
 }
 
 Scanner::~Scanner(  )
@@ -50,7 +50,7 @@ Scanner::~Scanner(  )
 // SkipSpace: Skips white space, newlines and comments 
 // returns (char)0 or some significant character
 
-wchar_t Scanner::SkipSpace( )
+wchar_t Scanner::SkipSpace()
 {
    static wchar_t const * const wszDelimiters = L" \t\f\n\r";
 
@@ -58,13 +58,13 @@ wchar_t Scanner::SkipSpace( )
    for (;;)
    {
       do 
-         wchAct = m_inbuf.ReadNextChar( );
+         wchAct = m_inbuf.ReadNextChar();
       while ( IS_ONE_OF( wszDelimiters, wchAct ) );
       if ( wchAct == COMMENT_SYMBOL )
       { 
          do                          // loop until end of line/file 
          {
-            wchAct = m_inbuf.ReadNextChar( );
+            wchAct = m_inbuf.ReadNextChar();
             if ( wchAct == L'\0' )
                return wchAct;         // end of file reached         
          } while( wchAct != L'\n' );
@@ -87,7 +87,7 @@ tTOKEN Scanner::ScanName(
       wchAct = m_inbuf.ReadNextChar(  );
    } while ( isalnum( wchAct ) || ( wchAct == '_' ) || ( wchAct == ':' ) );
 
-   m_inbuf.UnreadLastChar( );
+   m_inbuf.UnreadLastChar();
 
    return tTOKEN::Name;
 }
@@ -95,26 +95,26 @@ tTOKEN Scanner::ScanName(
 // precondition:  digit has been read
 // postcondition: last character of numeric value has been read
 
-tTOKEN Scanner::ScanUnsigned( )
+tTOKEN Scanner::ScanUnsigned()
 {
    int const iErrnoSav = errno;  // standard C runtime lib
    tTOKEN    tokRes;
 
    errno = 0;
 
-   if ( m_inbuf.IsFloat( ) )
+   if ( m_inbuf.IsFloat() )
    {
       tokRes = tTOKEN::Float;
-      m_dValue = m_inbuf.ReadFloat( );
+      m_dValue = m_inbuf.ReadFloat();
    }
    else
    {
       tokRes = tTOKEN::Number;
-      m_ulValue = m_inbuf.ReadNumber( );
+      m_ulValue = m_inbuf.ReadNumber();
    }
 
    if ( errno )
-       ScriptErrorHandler::numericValueError( );
+       ScriptErrorHandler::numericValueError();
 
    errno = iErrnoSav;
    return tokRes;
@@ -123,18 +123,18 @@ tTOKEN Scanner::ScanUnsigned( )
 // precondition:  opening " has been read
 // postcondition: closing " has been read
 
-tTOKEN Scanner::ScanString( )
+tTOKEN Scanner::ScanString()
 {                        
    for (;;)
    {
-      wchar_t wchAct = m_inbuf.ReadNextChar( );
+      wchar_t wchAct = m_inbuf.ReadNextChar();
       if ( (wchAct == L'\n') || (wchAct == L'\0') )
-          ScriptErrorHandler::stringConstError( );
+          ScriptErrorHandler::stringConstError();
       else if ( wchAct == '"' )
          break;                       // closing "" found
       if ( wchAct == L'\\' )          // special handling of backslash  
       {
-         wchAct = m_inbuf.ReadNextChar( );   // see what comes after backslash
+         wchAct = m_inbuf.ReadNextChar();   // see what comes after backslash
          if ( wchAct != L'"' )        // " in string must be preceded by backslash 
             m_wstrToken += L'\\';     // other characters leave backslash unchanged 
       }
@@ -147,23 +147,23 @@ tTOKEN Scanner::ScanString( )
 // precondition:  opening ' has been read
 // postcondition: closing ' has been read
 
-tTOKEN Scanner::ScanCharacter( )
+tTOKEN Scanner::ScanCharacter()
 {  
-   wchar_t wchAct = m_inbuf.ReadNextChar( );
+   wchar_t wchAct = m_inbuf.ReadNextChar();
    m_wstrToken += L'\'';  
    m_wstrToken += wchAct;
    if ( wchAct == L'\\' )
    {
-      switch ( wchAct = m_inbuf.ReadNextChar( ) )
+      switch ( wchAct = m_inbuf.ReadNextChar() )
       {
          case L'x' : 
          {
-            wchar_t wch = m_inbuf.ReadNextChar( );
+            wchar_t wch = m_inbuf.ReadNextChar();
             if ( isxdigit( wch ) )
             {                                  
                wchar_t wchValue = HEX2DIGIT( wch );   
                wchValue *= 16;
-               wch = m_inbuf.ReadNextChar( );
+               wch = m_inbuf.ReadNextChar();
                if ( isxdigit( wch ) )
                {
                   wchValue += HEX2DIGIT( wch );
@@ -171,8 +171,8 @@ tTOKEN Scanner::ScanCharacter( )
                   break;
                }
             }       
-            m_inbuf.SetStartMarker( );
-            ScriptErrorHandler::hexCharError( );
+            m_inbuf.SetStartMarker();
+            ScriptErrorHandler::hexCharError();
             break;
          }   
          case L'n'  : m_wchValue = L'\n';  break;
@@ -193,10 +193,10 @@ tTOKEN Scanner::ScanCharacter( )
       m_wchValue = wchAct;
    }
 
-   if ( m_inbuf.ReadNextChar( ) != L'\'')
+   if ( m_inbuf.ReadNextChar() != L'\'')
    {
-      m_inbuf.SetStartMarker( );
-      ScriptErrorHandler::charConstError( );
+      m_inbuf.SetStartMarker();
+      ScriptErrorHandler::charConstError();
    }
     
    return tTOKEN::Character;
@@ -213,20 +213,20 @@ wchar_t Scanner::ReadOneOf( wstring const & strValid )
 	switch ( NextToken( true ) )
 	{
 		case tTOKEN::End:         // end of file reached 
-            ScriptErrorHandler::eofError( );
+            ScriptErrorHandler::eofError();
 			break;
       
 		case tTOKEN::Special:
 			{
-				chRes = GetCharacter( );                      
+				chRes = GetCharacter();                      
 				if ( strValid.find( chRes ) == wstring::npos )
-					ScriptErrorHandler::charError( );
+					ScriptErrorHandler::charError();
 				break;
 			}
 			break;
          
 		default: 
-			ScriptErrorHandler::tokenError( );
+			ScriptErrorHandler::tokenError();
 			break;
 	}
 
@@ -241,17 +241,17 @@ wchar_t Scanner::ReadOneOf( wstring const & strValid )
 
 tTOKEN Scanner::NextToken( bool const fStartMarker )
 {
-   wchar_t const wchAct = SkipSpace( );         // try to find new token 
+   wchar_t const wchAct = SkipSpace();         // try to find new token 
    
    if ( fStartMarker )
-      m_inbuf.SetStartMarker( ); // mark start of token in input buffer  
+      m_inbuf.SetStartMarker(); // mark start of token in input buffer  
 
    if ( wchAct == L'\0' )  
    {
       return tTOKEN::End;       // end of file found     
    }
 
-   m_wstrToken.clear( );
+   m_wstrToken.clear();
 
    if ( isalpha( wchAct ) || (wchAct == L'_') )
    {           
@@ -259,15 +259,15 @@ tTOKEN Scanner::NextToken( bool const fStartMarker )
    }
    else if ( isdigit( wchAct ) )
    {                                   
-      return ScanUnsigned( );
+      return ScanUnsigned();
    }
    else if ( wchAct == L'"' )                 
    {
-      return ScanString( );
+      return ScanString();
    }   
    else if ( wchAct == L'\'' )
    {
-      return ScanCharacter( );
+      return ScanCharacter();
    }
    else // any other character 
    {

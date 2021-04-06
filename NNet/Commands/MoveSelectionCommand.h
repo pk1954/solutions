@@ -29,7 +29,7 @@ public:
 		m_delta = delta;
 	}
 
-	virtual bool IsMoveCommand( ) const
+	virtual bool IsMoveCommand() const
 	{ 
 		return true; 
 	};

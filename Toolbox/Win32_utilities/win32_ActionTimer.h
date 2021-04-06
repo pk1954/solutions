@@ -17,28 +17,28 @@ class ActionTimer : public Observable
 {
 public:
 	ActionTimer()
-		: m_hrtimerSingleAction( ),
+		: m_hrtimerSingleAction(),
 	      m_usSingleActionTime( 0 ),
-		  m_hrtimerOverall( ),
+		  m_hrtimerOverall(),
 		  m_dwCounter( 0 )
 	{
-		m_hrtimerOverall.Start( );
+		m_hrtimerOverall.Start();
 	}
 
-	void TimerStart( )
+	void TimerStart()
 	{
-		m_hrtimerSingleAction.Start( );
+		m_hrtimerSingleAction.Start();
 	};
 
-	void TimerStop( )
+	void TimerStop()
 	{
-		m_hrtimerSingleAction.Stop( );
-		m_usSingleActionTime = m_hrtimerSingleAction.GetDuration( );
+		m_hrtimerSingleAction.Stop();
+		m_usSingleActionTime = m_hrtimerSingleAction.GetDuration();
 		++m_dwCounter;
 		NotifyAll( false );
 	};
 
-	microseconds GetSingleActionTime( )
+	microseconds GetSingleActionTime()
 	{
 		return m_usSingleActionTime;
 	}
@@ -54,13 +54,13 @@ public:
 		return Hertz( Cast2Long(ullFrequency) );
 	}
 
-	Hertz GetMeasuredPerformance( )
+	Hertz GetMeasuredPerformance()
 	{
-		m_hrtimerOverall.Stop( );
-		microseconds usOverallTime = m_hrtimerOverall.GetDuration( );
+		m_hrtimerOverall.Stop();
+		microseconds usOverallTime = m_hrtimerOverall.GetDuration();
 		Hertz        result        = CalcActionFrequency( usOverallTime, m_dwCounter );
 		m_dwCounter = 0;
-		m_hrtimerOverall.Restart( );
+		m_hrtimerOverall.Restart();
 		return result;
 	}
 

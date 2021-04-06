@@ -13,15 +13,15 @@ using std::wstring;
 class Stopwatch
 {
 public:
-	void Start( );
+	void Start();
 	void Stop( wstring const wstr );
 
 void Clock
 ( 
-	wstring const wstr, function<void( )> code
+	wstring const wstr, function<void()> code
 )
 {
-	Start( );
+	Start();
 	code();
 	Stop( wstr );
 };

@@ -50,16 +50,16 @@ public:
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
-	virtual MicroMeterPoint const GetPosition   ()                                      const;
-	virtual bool            const IsInRect      (MicroMeterRect  const &)               const;
-	virtual bool            const IsPointInShape(MicroMeterPoint const &)               const;
-	virtual void                  CheckShape    ()                                      const;
-	virtual void                  DrawArrows    (DrawContext const &, MicroMeter const) const;
-	virtual void                  DrawExterior  (DrawContext const &, tHighlight const) const;
-	virtual void                  DrawInterior  (DrawContext const &, tHighlight const) const;
-	virtual void                  Expand( MicroMeterRect & ) const;
-	virtual void                  Select(bool const, bool const);
-	virtual void                  MoveShape( MicroMeterPoint const & );
+	virtual MicroMeterPoint const GetPosition ()                                      const;
+	virtual bool            const Includes    (MicroMeterRect  const &)               const;
+	virtual bool            const Includes    (MicroMeterPoint const &)               const;
+	virtual void                  CheckShape  ()                                      const;
+	virtual void                  DrawArrows  (DrawContext const &, MicroMeter const) const;
+	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
+	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const;
+	virtual void                  Expand      (MicroMeterRect &)                      const;
+	virtual void                  Select      (bool const, bool const);
+	virtual void                  MoveShape   (MicroMeterPoint const &);
 	virtual void                  Prepare();
 	virtual bool            const CompStep();
 	virtual void                  Recalc();

@@ -20,7 +20,7 @@ using std::wstring;
 using std::wostringstream;
 using std::endl;
 
-wstring const ScriptFile::GetPathOfExecutable( )
+wstring const ScriptFile::GetPathOfExecutable()
 {
 	int iBufSize { 256 };
 	vector<wchar_t> buffer;
@@ -33,13 +33,13 @@ wstring const ScriptFile::GetPathOfExecutable( )
 	return wstring( buffer.data() );
 }
 
-ScriptFile::ScriptFile( )
+ScriptFile::ScriptFile()
 {
     HRESULT hr = CoInitializeEx( NULL, COINIT_APARTMENTTHREADED|COINIT_DISABLE_OLE1DDE );
     assert( SUCCEEDED(hr) );
 }
 
-ScriptFile::~ScriptFile( )
+ScriptFile::~ScriptFile()
 {
     CoUninitialize();
 }

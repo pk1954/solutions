@@ -10,7 +10,7 @@
 class Observable
 {
 public:
-	virtual ~Observable( ) {};
+	virtual ~Observable() {};
 
 	void RegisterObserver( ObserverInterface * const pObserver )
 	{
@@ -22,7 +22,7 @@ public:
 		m_observers.Unregister( pObserver );
 	}
 
-	void UnregisterAllObservers( )
+	void UnregisterAllObservers()
 	{
 		m_observers.Clear();
 	}

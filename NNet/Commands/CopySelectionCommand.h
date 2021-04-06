@@ -31,8 +31,7 @@ private:
 	{ 
 		auto dstFromSrc = [&](Shape const * pSrc )
 		{ 
-			ShapeId idSrc { pSrc->GetId() };
-			if ( IsDefined(idSrc) )
+			if ( pSrc && IsDefined(pSrc->GetId()) )
 			{
 				SelShapesIndex & ssi { m_indexList[pSrc->GetId().GetValue()] };
 				if ( ssi.IsNotNull() )
@@ -60,7 +59,7 @@ private:
 		for (int i = 0; i < iSize; ++i) // cannot use range-based loop. m_copies changed in loop.
 		{
 			Shape * const pShapeSrc { nmwi.GetShape( m_copies[i]->GetId() ) };
-			if ( pShapeSrc->IsPipe( ) )
+			if ( pShapeSrc->IsPipe() )
 			{
 				Pipe * const pPipeSrc { static_cast<Pipe *>(pShapeSrc) };
 				addMissingKnot(pPipeSrc->GetStartKnotPtr(), dstFromSrc);
@@ -72,7 +71,7 @@ private:
 			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
 			nmwi.GetUPShapes().LinkShape( shapeSrc, dstFromSrc );
 			upShapeDst->SetId( idShapeCopy++ );
-			if ( upShapeDst->GetShapeType().IsBaseKnotType( ) )
+			if ( upShapeDst->GetShapeType().IsBaseKnotType() )
 				upShapeDst->MoveShape( PIPE_WIDTH ); 
 		}
 		m_iSizeOfSelection = Cast2Int(m_copies.size());

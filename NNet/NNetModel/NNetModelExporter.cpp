@@ -74,7 +74,7 @@ void NNetModelExporter::writeShapes( wostream & out )
     //wcout << L"*** Before writeShapes ";
     //m_pNMRI->DumpModel();
     ShapeId idCompact( 0 );
-    for ( int i = 0; i < m_CompactIds.size( ); ++i )
+    for ( int i = 0; i < m_CompactIds.size(); ++i )
     {
         m_CompactIds[ i ] = m_pNMRI->GetConstShape( ShapeId( i ) )
             ? idCompact++
@@ -108,7 +108,7 @@ void NNetModelExporter::writeTriggerSounds( wostream & out )
     ( 
         [&]( Neuron const & neuron ) 
         { 
-            if ( neuron.HasTriggerSound( ) )
+            if ( neuron.HasTriggerSound() )
             {
                 SoundDescr sound { neuron.GetTriggerSound() };
                 out << L"TriggerSound " << getCompactIdVal( neuron.GetId() ) << L" "
@@ -135,7 +135,7 @@ void NNetModelExporter::writeMonitorData( wostream & out )
             WriteTrackNr( out, idSignal.GetTrackNr() );
             out << L"source " << NNetModelStorage::SIGSRC_CIRCLE; 
             if ( pSignal )
-                out << pSignal->GetCircle( );
+                out << pSignal->GetCircle();
             out << endl; 
         }
     );
@@ -163,7 +163,7 @@ void NNetModelExporter::writePipe( wostream & out, Pipe const & pipe )
 void NNetModelExporter::writeConnector(wostream & out, Connector const & connector)
 {
     out << Connector::OPEN_BRACKET << L" " << connector.Size() << Connector::SEPARATOR << L" ";
-    connector.Apply2All( [&](CNPtr const & p) { out << p->GetId() << L" "; } );
+    connector.Apply2All( [&](ConnNeuron const * p) { out << p->GetId() << L" "; } );
     out << Connector::CLOSE_BRACKET << endl;
 }
 
@@ -218,12 +218,12 @@ void NNetModelExporter::write( wostream & out )
     out << endl;
 
     timer.Stop();
-    fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
+    fMicroSecs const usTilStart { timer.GetMicroSecsTilStart() }; //for tests only
 }
 
-void NNetModelExporter::WriteModel( )
+void NNetModelExporter::WriteModel()
 {
     wofstream modelFile( m_pNMRI->GetModelFilePath() );
     write( modelFile );
-    modelFile.close( );
+    modelFile.close();
 }

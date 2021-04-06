@@ -36,7 +36,7 @@ Neuron::Neuron( MicroMeterPoint const & upCenter, ShapeType const type )
 	Recalc();
 }
 
-void Neuron::CheckShape( ) const
+void Neuron::CheckShape() const
 {
 	BaseKnot::CheckShape();
 }
@@ -67,7 +67,7 @@ Neuron & Neuron::operator=( Neuron const & rhs )
 	return * this;
 }
 
-Neuron::~Neuron( ) { }
+Neuron::~Neuron() { }
 
 bool Neuron::operator==( Shape const & rhs ) const
 {
@@ -118,7 +118,7 @@ mV const Neuron::PeakVoltage() const
 	return mV( m_pParameters->GetParameterValue( ParamType::Value::peakVoltage ) ); 
 }
 
-void Neuron::Recalc( ) 
+void Neuron::Recalc() 
 {
 	m_factorW = 1.0f / PulseWidth().GetValue();
 	m_factorU = 4.0f * m_factorW * PeakVoltage().GetValue();
@@ -129,15 +129,15 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
-void Neuron::Clear( )
+void Neuron::Clear()
 {
 	m_timeSinceLastPulse = 0._MicroSecs;   
-	Shape::Clear( );
+	Shape::Clear();
 }
 
-bool const Neuron::CompStep( )
+bool const Neuron::CompStep()
 {
-	bool bTrigger { (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) };
+	bool bTrigger { (m_mVinputBuffer >= Threshold()) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) };
 
 	if ( bTrigger )
 	{
@@ -148,13 +148,13 @@ bool const Neuron::CompStep( )
 	}
 	else
 	{
-		m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
+		m_timeSinceLastPulse += m_pParameters->GetTimeResolution();
 	}
 
 	return m_bStopOnTrigger && bTrigger;
 }
 
-mV const Neuron::GetNextOutput( ) const
+mV const Neuron::GetNextOutput() const
 {
 	return ( m_timeSinceLastPulse <= PulseWidth() )
 		   ? waveFunction( m_timeSinceLastPulse )
@@ -172,14 +172,14 @@ void Neuron::DrawNeuronText( DrawContext const & context ) const
 	wostringstream m_wBuffer;
 	m_wBuffer.precision(2);
 	m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
-	DisplayText( context, GetRect4Text( ), m_wBuffer.str( ) );
+	DisplayText( context, GetRect4Text(), m_wBuffer.str() );
 }
 
-MicroMeterPoint Neuron::getAxonHillockPos( ) const
+MicroMeterPoint Neuron::getAxonHillockPos() const
 {
 	Pipe            const & axon         { m_connections.GetFirstOutgoing() };
 	MicroMeterPoint const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
-	return GetPosition( ) + vectorScaled * NEURON_INTERIOR;
+	return GetPosition() + vectorScaled * NEURON_INTERIOR;
 }
 
 void Neuron::DrawExterior( DrawContext const & context, tHighlight const type ) const

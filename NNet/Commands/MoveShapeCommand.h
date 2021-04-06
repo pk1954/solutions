@@ -33,12 +33,12 @@ public:
 		m_pShape->MoveShape(-m_delta);
 	}
 
-	virtual ShapeId const GetMovedShape( ) const
+	virtual ShapeId const GetMovedShape() const
 	{
 		return m_idShape;
 	}
 
-	virtual bool IsMoveCommand( ) const
+	virtual bool IsMoveCommand() const
 	{ 
 		return true; 
 	};

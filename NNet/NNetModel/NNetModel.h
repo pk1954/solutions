@@ -45,7 +45,7 @@ public:
 	Shape  const * GetConstShape( ShapeId const ) const;
 	fHertz const   GetPulseRate ( ShapeId const ) const;
 
-	fMicroSecs const GetSimulationTime ( ) const { return m_timeStamp; }
+	fMicroSecs const GetSimulationTime () const { return m_timeStamp; }
 
 	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
@@ -56,8 +56,8 @@ public:
 	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	UPShapeList const & GetUPShapes( )     const { return m_Shapes; }
-	MonitorData const & GetMonitorData( )  const { return m_monitorData; }
+	UPShapeList const & GetUPShapes()     const { return m_Shapes; }
+	MonitorData const & GetMonitorData()  const { return m_monitorData; }
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
@@ -66,10 +66,10 @@ public:
 
 	// non const functions
 
-	virtual bool Compute( );
+	virtual bool Compute();
 
-	void  RecalcAllShapes( );
-	void  ResetModel( );
+	void  RecalcAllShapes();
+	void  ResetModel();
 	float SetParam( ParamType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, bool const );
 
@@ -79,7 +79,7 @@ public:
 
 	void SetModelFilePath   (wstring const wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine (wstring const wstr) { m_description.AddDescriptionLine( wstr ); }
-	void DescriptionComplete()                   { m_description.DescriptionComplete( ); }
+	void DescriptionComplete()                   { m_description.DescriptionComplete(); }
 	void SetDescriptionUI   (DescriptionUI & i)  { m_description.SetDescriptionUI( i ); }
 	void SetSimulationTime  (fMicroSecs const newVal = 0._MicroSecs) { m_timeStamp = newVal; }
 

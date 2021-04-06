@@ -18,53 +18,53 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-void ScriptErrorHandler::inputFileError( )
+void ScriptErrorHandler::inputFileError()
 {   
     throw ScriptException( 102, L"error reading input file" );
 }
     
-void ScriptErrorHandler::charConstError( )
+void ScriptErrorHandler::charConstError()
 {   
     throw ScriptException( 2021, L"character constant: closing ' expected" );
 }
   
-void ScriptErrorHandler::stringConstError( )
+void ScriptErrorHandler::stringConstError()
 {   
     throw ScriptException( 2010, L"newline or end of file in string constant" );
 }
   
-void ScriptErrorHandler::hexCharError( )
+void ScriptErrorHandler::hexCharError()
 {   
     throw ScriptException( 2020, L"bad char in hex notation for char const" );
 }
   
-void ScriptErrorHandler::numericValueError( )
+void ScriptErrorHandler::numericValueError()
 {   
     throw ScriptException( 2000, L"illegal numeric value" );
 }
                
 //   eofError: Unexpected end of file in script file
 
-void ScriptErrorHandler::eofError( )
+void ScriptErrorHandler::eofError()
 {                    
    throw ScriptException( 900, L"unexpected end of file" );
 }                                   
              
 //   charError: Unknown character in script file
 
-void ScriptErrorHandler::charError( )
+void ScriptErrorHandler::charError()
 {                    
 	throw ScriptException( 930, L"unknown character" );
 }
 
-void ScriptErrorHandler::stringError( )
+void ScriptErrorHandler::stringError()
 {                    
 	throw ScriptException( 940, L"unexpected string" );
 }
 
 //   ScriptTokenError: Unexpected token in script file
 
-void ScriptErrorHandler::tokenError( )
+void ScriptErrorHandler::tokenError()
 {  
    throw ScriptException( 950, L"unexpected token" );
 }
@@ -78,28 +78,28 @@ void ScriptErrorHandler::symbolError( wstring const & wstrKey )
 
 //   typeError: Unexpected type of symbolic const in script file
 
-void ScriptErrorHandler::typeError( )
+void ScriptErrorHandler::typeError()
 {  
    throw ScriptException( 960, L"bad type of symbolic const" );
 }
             
 //   numericError: Bad numeric value in script file
 
-void ScriptErrorHandler::numericError( )
+void ScriptErrorHandler::numericError()
 {                    
    throw ScriptException( 980, L"number too big" );
 }
              
 //   negativeError: Unexpected negative value in script file
 
-void ScriptErrorHandler::negativeError( )
+void ScriptErrorHandler::negativeError()
 {                    
    throw ScriptException( 990, L"negative value found" );
 }
              
 //   funcNameError: Unknown function name in script file
 
-void ScriptErrorHandler::funcNameError( )
+void ScriptErrorHandler::funcNameError()
 {                    
    throw ScriptException( 4000, L"unknown function name" );
 }
@@ -111,8 +111,8 @@ void ScriptErrorHandler::ScrSetOutputStream( std::wostream * const out )
 
 void ScriptErrorHandler::PrintMarkerLine( Scanner const & scanner )
 {
-    int const iStartPos = scanner.GetActStartPos( );
-    int const iEndPos   = scanner.GetActEndPos( );
+    int const iStartPos = scanner.GetActStartPos();
+    int const iEndPos   = scanner.GetActEndPos();
     int       iRun;
 
     for ( iRun = 0; iRun < iStartPos; iRun++ ) 
@@ -140,14 +140,14 @@ void ScriptErrorHandler::printErrorMsg
     wstring const   m_wstrMessage 
 )
 {
-    * m_pScriptTrace << L" in file " << scanner.GetActPath( ).c_str() << endl;
+    * m_pScriptTrace << L" in file " << scanner.GetActPath().c_str() << endl;
 
-    int const iLineNr = scanner.GetActLineNr( );
+    int const iLineNr = scanner.GetActLineNr();
     if ( iLineNr > 0 )
         * m_pScriptTrace << L"+++ line " << iLineNr << endl;
 
-    wstring const wstrActLine = scanner.GetActLine( );
-    if ( ! wstrActLine.empty( ) )
+    wstring const wstrActLine = scanner.GetActLine();
+    if ( ! wstrActLine.empty() )
         * m_pScriptTrace << wstrActLine;
 
     PrintMarkerLine( scanner );
@@ -160,5 +160,5 @@ void ScriptErrorHandler::printErrorMsg
 
     * m_pScriptTrace << L"+++ error exit" << endl;
 
-    (void)m_pScriptTrace->flush( );
+    (void)m_pScriptTrace->flush();
 }

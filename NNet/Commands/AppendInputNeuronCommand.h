@@ -17,7 +17,7 @@ public:
 		: m_idKnot( idKnot )
 	{ }
 
-	~AppendInputNeuronCommand( ) {}
+	~AppendInputNeuronCommand() {}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
@@ -29,13 +29,13 @@ public:
 			m_upInputNeuron->SetId( m_idKnot );
 			m_bInitialized = true;
 		}
-		m_upInputNeuron->Reconnect( );
+		m_upInputNeuron->Reconnect();
 		m_upKnot = nmwi.ReplaceInModel<InputNeuron, Knot>( move(m_upInputNeuron) ); 
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upKnot->Reconnect( );
+		m_upKnot->Reconnect();
 		m_upInputNeuron = nmwi.ReplaceInModel<Knot, InputNeuron>( move( m_upKnot ) ); 
 	}
 

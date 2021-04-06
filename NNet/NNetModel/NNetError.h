@@ -71,7 +71,7 @@ inline bool ProcessNNetScript
 ) 
 {
     bool bSuccess { false };
-    if ( ! wstrPath.empty( ) )
+    if ( ! wstrPath.empty() )
     {
         NNetErrorHandler errHndl { & script, & shapeList };
         shapeList.SetErrorHandler( & errHndl );

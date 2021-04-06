@@ -14,19 +14,19 @@ class BaseRefreshRate
 {
 public:
 
-	BaseRefreshRate( );
-	~BaseRefreshRate( );
+	BaseRefreshRate();
+	~BaseRefreshRate();
 
-	virtual void Trigger( ) = 0;
+	virtual void Trigger() = 0;
 
 	void SetRefreshRate( milliseconds const );
-	milliseconds GetRefreshRate( );
+	milliseconds GetRefreshRate();
 
 	void Notify( bool const bImmediately )
 	{
 		m_bDirty = true;
 		if ( bImmediately || (m_msRefreshRate == 0ms) )
-			trigger( );
+			trigger();
 	}
 
 	void RefreshRateDialog( HWND const );
@@ -37,10 +37,10 @@ private:
 	bool         m_bDirty        { true };
 
 	void startTimer( milliseconds const );
-	void deleteTimer( );
-	void trigger( )
+	void deleteTimer();
+	void trigger()
 	{
-		Trigger( );
+		Trigger();
 		m_bDirty = false;
 	}
 

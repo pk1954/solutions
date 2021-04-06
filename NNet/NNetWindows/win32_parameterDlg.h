@@ -12,11 +12,11 @@ class NNetModelWriterInterface;
 class ParameterDialog : public BaseDialog
 {
 public:
-	ParameterDialog( );
-	~ParameterDialog( );
+	ParameterDialog();
+	~ParameterDialog();
 
 	void Start( HWND const, NNetModelCommands * const, Param * const );
-	void Stop( );
+	void Stop();
 
 private:
 	static DWORD const STYLE { WS_CHILD | WS_VISIBLE };

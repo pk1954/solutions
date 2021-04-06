@@ -25,7 +25,7 @@ void CommandStack::Initialize
     m_pStaticModelObservable = pStaticModelObservable;
 }
 
-void CommandStack::Clear( )
+void CommandStack::Clear()
 {
     m_iIndex = 0;
     m_bIndexInSeries = false;
@@ -33,7 +33,7 @@ void CommandStack::Clear( )
     m_pStaticModelObservable->NotifyAll( true );
 }
 
-void CommandStack::clearRedoStack( )
+void CommandStack::clearRedoStack()
 {
     m_CommandStack.erase( m_CommandStack.begin() + m_iIndex, m_CommandStack.end() );
     assert( RedoStackEmpty() );
@@ -45,11 +45,11 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
     {
         assert( m_iIndex > 0 );
         if ( ! canBeCombined( * pCmd, * m_CommandStack[m_iIndex-1] ) )
-            CloseSeries( ); 
+            CloseSeries(); 
     }
 
-    if ( pCmd->IsMoveCommand( ) && ! m_bIndexInSeries )
-        OpenSeries( ); 
+    if ( pCmd->IsMoveCommand() && ! m_bIndexInSeries )
+        OpenSeries(); 
 
     push( move(pCmd) );
 }
@@ -57,12 +57,12 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
 #ifdef _DEBUG
-    NNetModel const & model { m_pNMWI->GetModel( ) };
+    NNetModel const & model { m_pNMWI->GetModel() };
     m_pNMWI->CheckModel();
     NNetModel modelSave1( model );
     m_pNMWI->CheckModel();
 #endif
-    clearRedoStack( );
+    clearRedoStack();
     assert( * pCmd );
     pCmd->Do( * m_pNMWI );
     m_pNMWI->CheckModel();
@@ -89,7 +89,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 #endif
 }
 
-bool CommandStack::UndoCommand( )
+bool CommandStack::UndoCommand()
 {
 //    wcout << Scanner::COMMENT_SYMBOL << L" CommandStack::UndoCommand " << L"index =" << m_iIndex << endl;
     if ( UndoStackEmpty() )
@@ -104,7 +104,7 @@ bool CommandStack::UndoCommand( )
     {                                       // because we just found closing bracket 
         do                                  // or we are at top of stack
         {
-            undoCmd( );                     // undo all commands in series
+            undoCmd();                      // undo all commands in series
             m_pNMWI->CheckModel();
             set2OlderCmd();
         } while ( ! isOpenBracketCmd() );   // until opening bracket is reached
@@ -112,14 +112,14 @@ bool CommandStack::UndoCommand( )
     }
     else                                    // we are not in a series
     {                                       // normal processing
-        undoCmd( );                         // of one command
+        undoCmd();                          // of one command
         m_pNMWI->CheckModel();
     }
     m_pStaticModelObservable->NotifyAll( true );
     return true;
 }
 
-bool CommandStack::RedoCommand( )
+bool CommandStack::RedoCommand()
 {
 //    wcout << Scanner::COMMENT_SYMBOL << L" CommandStack::RedoCommand " << L"index =" << m_iIndex << endl;
     if ( RedoStackEmpty() ) 

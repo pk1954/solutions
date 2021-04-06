@@ -24,7 +24,7 @@ public:
 	ScriptFile();
 	~ScriptFile();
 
-	static wstring const GetPathOfExecutable( );
+	static wstring const GetPathOfExecutable();
 	static wstring const AskForFileName( wstring const, wstring const, tFileMode const );
 
 private:

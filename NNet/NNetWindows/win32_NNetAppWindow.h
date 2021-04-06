@@ -77,11 +77,11 @@ private:
 class NNetAppWindow : public BaseWindow
 {
 public:
-	NNetAppWindow( );
-	~NNetAppWindow( );
+	NNetAppWindow();
+	~NNetAppWindow();
 
 	virtual void Start( MessagePump & );
-	virtual void Stop( );
+	virtual void Stop();
 
 	NNetAppWindow             ( NNetAppWindow const & ) = delete;  // noncopyable class 
 	NNetAppWindow & operator= ( NNetAppWindow const & ) = delete;  // noncopyable class 
@@ -90,23 +90,23 @@ private:
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
 	virtual bool OnSize   ( WPARAM const, LPARAM const );
-	virtual void OnClose( );
-	virtual void OnPaint( );
+	virtual void OnClose();
+	virtual void OnPaint();
 
-	void configureStatusBar( );
-	void adjustChildWindows( );
+	void configureStatusBar();
+	void adjustChildWindows();
 
-	bool SaveModelAs( );
-	bool SaveModel( );
-	bool AskAndSave( );
+	bool SaveModelAs();
+	bool SaveModel();
+	bool AskAndSave();
 
-	void writeModel( )
+	void writeModel()
 	{
-		m_modelExporter.WriteModel( );
+		m_modelExporter.WriteModel();
 		m_appTitle.SetUnsavedChanges( false );
 	}
 
-	wstring AskModelFile( )
+	wstring AskModelFile()
 	{
 		return ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::read );
 	}

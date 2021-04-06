@@ -41,7 +41,7 @@ protected:
 	virtual bool OnSetCursor         ( WPARAM const, LPARAM const ) { return false; };
 	virtual bool OnTimer             ( WPARAM const, LPARAM const ) { return false; };
 
-	virtual void OnPaint( ) = 0;
+	virtual void OnPaint() = 0;
 
 private:
 	

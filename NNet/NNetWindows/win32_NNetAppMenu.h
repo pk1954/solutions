@@ -31,7 +31,7 @@ public:
 		MainWindow    const &
 	);
 
-	void AdjustUndoRedo( );
+	void AdjustUndoRedo();
 
 	virtual void Notify( bool const );
 

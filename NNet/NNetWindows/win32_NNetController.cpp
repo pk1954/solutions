@@ -62,7 +62,7 @@ void NNetController::Initialize
     m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
 }
 
-NNetController::~NNetController( )
+NNetController::~NNetController()
 {
     m_pModelExporter    = nullptr;
     m_pMainWindow       = nullptr;
@@ -91,9 +91,9 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
     if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
         return true;                        // but do not concern the model  
 
-    m_pComputeThread->LockComputation( );
+    m_pComputeThread->LockComputation();
     bRes = processModelCommand( wmId, lParam, umPoint );
-    m_pComputeThread->ReleaseComputationLock( );
+    m_pComputeThread->ReleaseComputationLock();
 
     return bRes;
 }
@@ -116,16 +116,16 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDM_CENTER_MODEL:
-        m_pMainWindow->CenterModel( );
+        m_pMainWindow->CenterModel();
         break;
 
     case IDM_SLOWER:
-        if ( ! m_pSlowMotionRatio->IncRatio( ) )
+        if ( ! m_pSlowMotionRatio->IncRatio() )
             MessageBeep( MB_ICONWARNING );
         break;
 
     case IDM_FASTER:
-        if ( ! m_pSlowMotionRatio->DecRatio( ) )
+        if ( ! m_pSlowMotionRatio->DecRatio() )
             MessageBeep( MB_ICONWARNING );
         break;
 
@@ -318,13 +318,13 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_ANALYZE_LOOPS:
-        m_pModelCommands->AnalyzeLoops( );
-        m_pMainWindow->CenterSelection( );
+        m_pModelCommands->AnalyzeLoops();
+        m_pMainWindow->CenterSelection();
         break;
 
     case IDM_ANALYZE_ANOMALIES:
-        m_pModelCommands->AnalyzeAnomalies( );
-        m_pMainWindow->CenterSelection( );
+        m_pModelCommands->AnalyzeAnomalies();
+        m_pMainWindow->CenterSelection();
         break;
 
     case IDM_DESELECT_ALL:

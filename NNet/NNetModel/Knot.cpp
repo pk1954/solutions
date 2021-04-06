@@ -27,7 +27,7 @@ void Knot::DrawInterior( DrawContext const & context, tHighlight const type ) co
 void Knot::CheckShape() const
 {
 	BaseKnot::CheckShape();
-	if ( m_connections.IsOrphan( ) )
+	if ( m_connections.IsOrphan() )
 	{
 		int x = 42;
 	}
@@ -36,7 +36,11 @@ void Knot::CheckShape() const
 
 void Knot::Select(bool const bOn, bool const bRecursive) 
 { 
-	Shape::Select(bOn, false);
+	bool bAnyConnectedPipeSelected = m_connections.Apply2AllConnectedPipesB
+	(
+		[&](Pipe const &p){ return p.IsSelected(); }
+	);
+	Shape::Select( bOn || bAnyConnectedPipeSelected );
 	if (bRecursive)
 		m_connections.Apply2AllConnectedPipes([&](Pipe &p){ p.Select(bOn, false); });
 }

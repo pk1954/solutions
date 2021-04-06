@@ -11,7 +11,7 @@ namespace Util
 	class Event : public EventInterface
 	{
 	public:
-		Event( )
+		Event()
 		  : m_eventHandle
 		    ( 
 				CreateEvent
@@ -24,19 +24,19 @@ namespace Util
 			)
 		{ }
 
-		~Event( )
+		~Event()
 		{
 			(void)CloseHandle( m_eventHandle );
 			m_eventHandle = nullptr;
 		}
 
-		virtual void Wait( )
+		virtual void Wait()
 		{
 			(void)ResetEvent( m_eventHandle );
 			(void)WaitForSingleObject( m_eventHandle, INFINITE );
 		}
 
-		virtual void Continue( )
+		virtual void Continue()
 		{
 			(void)SetEvent( m_eventHandle );
 		}

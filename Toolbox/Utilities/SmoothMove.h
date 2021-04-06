@@ -8,7 +8,7 @@
 class SmoothMove
 {
 public:
-    SmoothMove( );
+    SmoothMove();
 
     PixelPoint Step( PixelPoint, PixelPoint );
     

@@ -14,7 +14,7 @@ class CLUT
 {
 public:
 
-    CLUT( ) 
+    CLUT() 
     { 
         m_uiBase  = CLUT_INDEX(0);
         m_colorHi = RGB( 255, 255, 255 );
@@ -32,18 +32,18 @@ public:
         return m_data[ index.GetValue() ]; 
     };
 
-    UINT GetSize( ) const 
+    UINT GetSize() const 
     { 
         return static_cast<UINT>(m_data.size());
     };
 
-    COLORREF GetColorHi( ) const 
+    COLORREF GetColorHi() const 
     { 
         return m_colorHi;
     };
 
 private:
-    void setTableValues( );
+    void setTableValues();
 
     CLUT_INDEX    m_uiBase;
     vector<DWORD> m_data;

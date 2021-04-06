@@ -24,7 +24,7 @@ public:
         ActionTimer                    * const 
     );
 
-	void Stop( );
+	void Stop();
 
     virtual void DoPaint( TextBuffer & );
 

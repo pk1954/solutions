@@ -27,7 +27,7 @@ class ModelAnalyzer
 {
 public:
 	static void SetStatusBarDisplay( DisplayFunctor * const func ) { m_pStatusBarDisplay = func; }
-	static void SetEscFunc ( bool (* func )( ) ) { m_pEscFunc = func; }
+	static void SetEscFunc ( bool (* func )() ) { m_pEscFunc = func; }
 
 	static ShapeStack const FindLoop   ( NNetModelReaderInterface const & );
 	static ShapeStack const FindAnomaly( NNetModelReaderInterface const & );
@@ -39,7 +39,7 @@ private:
 	inline static int              m_iRecDepth	       { 0 };
 	inline static ShapeStack       m_shapeStack        { };
 
-	inline static bool (* m_pEscFunc )( ) { nullptr };
+	inline static bool (* m_pEscFunc )() { nullptr };
 
 	static bool findLoop( Shape const & );
 	static bool hasAnomaly( Knot const & );

@@ -30,12 +30,12 @@ public:
 		m_pStatusBar->AddCustomControl( 80 );  // nr of characters
 	}
 
-	virtual void operator( ) ( Script & script ) const
+	virtual void operator() ( Script & script ) const
 	{
 		m_pRefreshRate->Notify( false );
 	}
 
-	void DisplayScriptProgress( )
+	void DisplayScriptProgress()
 	{
 		if ( ( m_pStatusBar != nullptr ) && ( m_pScript->IsActive() ) )
 		{
@@ -57,9 +57,9 @@ private:
 			: m_pScriptHook( pScriptHook )
 		{ }
 
-		virtual void Trigger( )
+		virtual void Trigger()
 		{
-			m_pScriptHook->DisplayScriptProgress( );
+			m_pScriptHook->DisplayScriptProgress();
 		}
 
 	private:

@@ -20,7 +20,7 @@ public:
 		double      const dDefault
 	)
 	{ 
-		HWND hwndStatusBar = pStatusBar->GetWindowHandle( );
+		HWND hwndStatusBar = pStatusBar->GetWindowHandle();
 
 		pStatusBar->AddStaticControl( L"Size" );
 		pStatusBar->AddButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT, BS_PUSHBUTTON ); 

@@ -15,12 +15,12 @@ void NNetModelWriterInterface::Start( NNetModel * const pModel )
 	m_pModel = pModel;
 }
 
-void NNetModelWriterInterface::Stop( )
+void NNetModelWriterInterface::Stop()
 {
 	m_pModel = nullptr;
 }
 
-void NNetModelWriterInterface::CreateInitialShapes( )
+void NNetModelWriterInterface::CreateInitialShapes()
 {
 	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
 	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };

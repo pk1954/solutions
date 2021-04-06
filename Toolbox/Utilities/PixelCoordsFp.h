@@ -28,7 +28,7 @@ public:
 		  m_pixelSize ()
 	{}
 
-	void Reset( )
+	void Reset()
 	{
 		m_fPixOffset = 0.0_fPixel;
 		m_pixelSize  = DEFAULT_PIXEL_SIZE;
@@ -204,9 +204,9 @@ public:
 	
 	//////// queries ////////
 
-	MicroMeter  GetPixelSize( )   const { return m_pixelSize; };
+	MicroMeter  GetPixelSize()   const { return m_pixelSize; };
 	
-	fPixelPoint GetPixelOffset( ) const { return m_fPixOffset; }
+	fPixelPoint GetPixelOffset() const { return m_fPixOffset; }
 
 	MicroMeter ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
 	{

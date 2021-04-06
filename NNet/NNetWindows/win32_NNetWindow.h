@@ -30,7 +30,7 @@ class NNetWindow : public ModelWindow
 public:
 	static void InitClass( ActionTimer * const );
 
-	NNetWindow( );
+	NNetWindow();
 
 	void Start
 	( 
@@ -43,9 +43,9 @@ public:
 		NNetController                 &
 	);
 
-	void Stop( );
+	void Stop();
 
-	virtual ~NNetWindow( );
+	virtual ~NNetWindow();
 
 	MicroMeterRect const GetViewRect() const;
 
@@ -58,18 +58,18 @@ public:
 	void DrawExteriorInRect  ( PixelRect  const &                    ) const;
 	void DrawNeuronTextInRect( PixelRect  const &                    ) const;
 	void DrawArrowsInRect    ( PixelRect  const &, MicroMeter const  ) const;
-	void DrawSensors         ( ) const;
+	void DrawSensors         () const;
 
 protected:
 
-	virtual void OnPaint      ( );
+	virtual void OnPaint      ();
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
 
-	virtual void doPaint( ) = 0;
+	virtual void doPaint() = 0;
 
-	void DrawBeacon( );
+	void DrawBeacon();
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 

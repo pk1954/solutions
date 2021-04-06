@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
+#include "CalcOrthoVector.h"
 #include "AlignAnimation.h"
 
 void AlignAnimation::Initialize
@@ -69,7 +70,7 @@ bool const AlignAnimation::prepareData()
 	m_pNMWI->GetUPShapes().Apply2AllSelected
 	( 
 		shapeType,
-		[&points](Shape & s) { points.push_back( ALIGN_PNT { static_cast<CNPtr>(&s) } ); } 
+		[&points](Shape & s) { points.push_back( ALIGN_PNT { static_cast<ConnNeuron *>(&s) } ); } 
 	);
 
 	if ( ! calcMaxDistLine( points ) )
@@ -83,44 +84,6 @@ bool const AlignAnimation::prepareData()
 		m_shapesAnimated.Add( it.pConnectionNeuron );
 
 	return true;
-}
-
-void AlignAnimation::calcOrthoVector( ShapePtrList<ConnNeuron> const & list )
-{
-	unsigned int uiLeftConnections  { 0 };
-	unsigned int uiRightConnections { 0 };
-	list.Apply2All
-	(	
-		[&](ConnNeuron const & c)	
-		{ 
-			c.m_connections.Apply2AllInPipes
-			( 
-				[&](Pipe & pipe) 
-				{ 
-					MicroMeterPoint pnt { pipe.GetStartPoint() };
-					if ( PointToLine( m_line, pnt ) < 0.0_MicroMeter )
-						++uiLeftConnections;
-					else
-						++uiRightConnections;
-				}
-			);
-			c.m_connections.Apply2AllOutPipes
-			( 
-				[&](Pipe & pipe) 
-				{ 
-					MicroMeterPoint pnt { pipe.GetEndPoint() };
-					if ( PointToLine( m_line, pnt ) < 0.0_MicroMeter )
-						++uiRightConnections;
-					else
-						++uiLeftConnections;
-				}
-			);
-		}	
-	);
-
-	m_orthoVector = m_line.OrthoVector();
-	if ( uiRightConnections < uiLeftConnections )
-		m_orthoVector = -m_orthoVector;
 }
 
 bool const AlignAnimation::AlignSelection( AlignAnimation::Script const & script )
@@ -141,7 +104,7 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 	bool bAlignShapes     = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
 	bool bPackShapes      = dwOptions & PACK_SHAPES;
 
-	calcOrthoVector( m_shapesAnimated );
+	m_orthoVector = CalcOrthoVector(m_line, m_shapesAnimated);
 
 	float      const fGapCount          { Cast2Float(m_shapesAnimated.Size() - 1) };
 	MicroMeter const umUnpackedDistance { m_line.Length() / fGapCount };
@@ -191,7 +154,7 @@ bool const AlignAnimation::AnimationStep(bool const bTargetReached)
 		DWORD dwOptions { m_pScript->at(m_iScriptStep) };
 		if (dwOptions & CREATE_CONNECTOR)
 		{
-			assert(m_iScriptStep == m_pScript->size() - 1);  // assumption: Create connector is last step
+			assert(m_iScriptStep == m_pScript->size() - 1);  // assumption: Create Connector is last step
 			m_pModelCommands->CreateConnector( m_shapesAnimated );
 			return true;
 		}

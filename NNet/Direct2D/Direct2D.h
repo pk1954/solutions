@@ -36,8 +36,8 @@ public:
     bool StartFrame( HDC const );
     void SetStdFontSize( float const );
     void DisplayText( PixelRect const &, std::wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr ) const;
-    void EndFrame( );
-    void ShutDown( );
+    void EndFrame();
+    void ShutDown();
     void FillRectangle      ( fPixelRect    const &, D2D1::ColorF const ) const;
     void FillGradientRect   ( fPixelRect    const &, D2D1::ColorF const, D2D1::ColorF const ) const;
     void FillGradientEllipse( fPixelEllipse const &, D2D1::ColorF const, D2D1::ColorF const ) const;
@@ -51,7 +51,7 @@ public:
     void FillDiamond( fPixelPoint const, fPixel const, D2D1::ColorF const ) const;
     void Resize( int const, int const );
 
-    fPixelRectSize const GetClRectSize( ) const;
+    fPixelRectSize const GetClRectSize() const;
 
     IDWriteTextFormat * NewTextFormat( float const ) const;
 
@@ -66,8 +66,8 @@ private:
     IDWriteTextFormat     * m_pTextFormat;
 
     ID2D1SolidColorBrush * createBrush( D2D1::ColorF const ) const;
-    void createResources( );
-    void discardResources( );
+    void createResources();
+    void discardResources();
 
     friend D2D1_POINT_2F convertD2D( fPixelPoint   const & );
     friend D2D1_ELLIPSE  convertD2D( fPixelEllipse const & );

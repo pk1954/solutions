@@ -16,10 +16,10 @@ class D2D_DrawContext: public DrawContext
 public:
 
 	void Start( D2D_driver * const );
-	void Stop( );
+	void Stop();
 
 	bool StartFrame( HDC const hDC ) { return m_pGraphics->StartFrame( hDC );	}
-	void EndFrame( ) { m_pGraphics->EndFrame( ); }
+	void EndFrame() { m_pGraphics->EndFrame(); }
 
 	void Resize( int const, int const );
 	void SetStdFontSize( MicroMeter const & );

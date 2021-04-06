@@ -27,7 +27,7 @@ class NNetModelExporter
 {
 public:
 	void Initialize( NNetModelReaderInterface * const );
-	void WriteModel( );
+	void WriteModel();
 
 private:
 	NNetModelReaderInterface * m_pNMRI                    { nullptr };

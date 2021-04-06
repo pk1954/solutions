@@ -61,7 +61,7 @@ using std::wstring;
 using std::wcout;
 using std::filesystem::path;
 
-NNetAppWindow::NNetAppWindow( )
+NNetAppWindow::NNetAppWindow()
 {
 	Stopwatch stopwatch;
 
@@ -75,12 +75,12 @@ NNetAppWindow::NNetAppWindow( )
 	Neuron::SetSound( & m_sound );
 	NNetWindow::InitClass( & m_atDisplay );
 
-	DefineUtilityWrapperFunctions( );
+	DefineUtilityWrapperFunctions();
 	DefineNNetWrappers( & m_modelCommands );
 	DefineNNetWinWrappers( & m_mainNNetWindow );
 };
 
-NNetAppWindow::~NNetAppWindow( ) { }
+NNetAppWindow::~NNetAppWindow() { }
 
 void NNetAppWindow::Start( MessagePump & pump )
 {
@@ -212,8 +212,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_coordObservable       .RegisterObserver( & m_miniNNetWindow );
 	m_coordObservable       .RegisterObserver( & m_mainNNetWindow );
 
-	configureStatusBar( );
-	adjustChildWindows( );
+	configureStatusBar();
+	adjustChildWindows();
 
 	m_monitorWindow .Move( PixelRect{ 200_PIXEL, 0_PIXEL, 300_PIXEL, 200_PIXEL }, true );
 	m_miniNNetWindow.Move( PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
@@ -228,7 +228,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow.Show( true );
 	m_descWindow       .Show( true );
 
-	if ( ! m_WinManager.GetWindowConfiguration( ) )
+	if ( ! m_WinManager.GetWindowConfiguration() )
 		Util::Show( m_hwndApp, true );
 
 	m_appMenu.Notify( true );
@@ -236,7 +236,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	Show( true );
 
-	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( ) )
+	if ( ! AutoOpen::IsOn() || ! m_preferences.ReadPreferences() )
 	{
 		m_modelCommands.ResetModel();
 		m_modelCommands.CreateInitialShapes();
@@ -251,36 +251,36 @@ void NNetAppWindow::Stop()
 
 	m_computeThread.LockComputation();
 
-	m_timeDisplay      .Stop( );
-	m_mainNNetWindow   .Stop( );
-	m_miniNNetWindow   .Stop( );
-	m_monitorWindow    .Stop( );
-	m_crsrWindow       .Stop( );
-	m_performanceWindow.Stop( );
-	m_parameterDlg     .Stop( );
-	m_StatusBar        .Stop( );
-	m_nmri             .Stop( );
-	m_nmwi             .Stop( );
+	m_timeDisplay      .Stop();
+	m_mainNNetWindow   .Stop();
+	m_miniNNetWindow   .Stop();
+	m_monitorWindow    .Stop();
+	m_crsrWindow       .Stop();
+	m_performanceWindow.Stop();
+	m_parameterDlg     .Stop();
+	m_StatusBar        .Stop();
+	m_nmri             .Stop();
+	m_nmwi             .Stop();
 
-	m_staticModelObservable .UnregisterAllObservers( );
-	m_dynamicModelObservable.UnregisterAllObservers( );
-	m_cursorPosObservable   .UnregisterAllObservers( );
-	m_performanceObservable .UnregisterAllObservers( );
-	m_runObservable         .UnregisterAllObservers( );
-	m_SlowMotionRatio       .UnregisterAllObservers( );
-	m_model.GetParams()     .UnregisterAllObservers( );
-	m_soundOnObservable     .UnregisterAllObservers( );
+	m_staticModelObservable .UnregisterAllObservers();
+	m_dynamicModelObservable.UnregisterAllObservers();
+	m_cursorPosObservable   .UnregisterAllObservers();
+	m_performanceObservable .UnregisterAllObservers();
+	m_runObservable         .UnregisterAllObservers();
+	m_SlowMotionRatio       .UnregisterAllObservers();
+	m_model.GetParams()     .UnregisterAllObservers();
+	m_soundOnObservable     .UnregisterAllObservers();
 
-	m_WinManager.RemoveAll( );
+	m_WinManager.RemoveAll();
 }
 
 bool NNetAppWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
-	adjustChildWindows( );
+	adjustChildWindows();
 	return true;
 }
 
-void NNetAppWindow::OnPaint( )
+void NNetAppWindow::OnPaint()
 {
 	PAINTSTRUCT   ps;
 	HDC           hDC = BeginPaint( &ps );
@@ -305,7 +305,7 @@ bool NNetAppWindow::UserProc
 		break;
 
 	case WM_MOVE:
-		adjustChildWindows( );
+		adjustChildWindows();
 		break;
 
 	case WM_CHAR:
@@ -323,21 +323,21 @@ bool NNetAppWindow::UserProc
 	return BaseWindow::UserProc( message, wParam, lParam );
 }
 
-void NNetAppWindow::configureStatusBar( )
+void NNetAppWindow::configureStatusBar()
 {
 	int iPartScriptLine = 0;
 	m_timeDisplay.Start( & m_StatusBar, & m_nmri, iPartScriptLine );
 
-	iPartScriptLine = m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart();
 	m_simulationControl.Initialize( & m_StatusBar, & m_computeThread );
 
-	iPartScriptLine = m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart();
 	m_slowMotionDisplay.Initialize( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
 
-	iPartScriptLine = m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart();
 	SlowMotionControl::Add( & m_StatusBar );
 
-	iPartScriptLine = m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart();
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine, & m_script );
 	m_StatusBar.ClearPart( iPartScriptLine );
 	Script::ScrSetWrapHook( & m_ScriptHook );
@@ -346,20 +346,20 @@ void NNetAppWindow::configureStatusBar( )
 	ModelAnalyzer::SetEscFunc         ( & Util::EscapeKeyPressed );
 	m_statusMessagePart = iPartScriptLine;
 
-	m_StatusBar.LastPart( );
+	m_StatusBar.LastPart();
 	m_timeDisplay.Notify( true );
 	m_slowMotionDisplay.Notify( true );
 }
 
-void NNetAppWindow::adjustChildWindows( )
+void NNetAppWindow::adjustChildWindows()
 {
 	PixelRectSize pntAppClientSize( Util::GetClRectSize( m_hwndApp ) );
-	if ( pntAppClientSize.IsNotZero( ) )
+	if ( pntAppClientSize.IsNotZero() )
 	{
 		PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
 		PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
-		m_StatusBar.Resize( );
-		pixAppClientWinHeight -= m_StatusBar.GetHeight( );
+		m_StatusBar.Resize();
+		pixAppClientWinHeight -= m_StatusBar.GetHeight();
 
 		m_mainNNetWindow.Move  // use all available space for model window
 		( 
@@ -372,17 +372,17 @@ void NNetAppWindow::adjustChildWindows( )
 	}
 }
 
-void NNetAppWindow::OnClose( )
+void NNetAppWindow::OnClose()
 {
 	if ( m_bStarted )
 	{
-		m_computeThread.StopComputation( );
-		if ( ! AskAndSave( ) )
+		m_computeThread.StopComputation();
+		if ( ! AskAndSave() )
 			return;
-		m_WinManager.StoreWindowConfiguration( );
-		Stop( );
+		m_WinManager.StoreWindowConfiguration();
+		Stop();
 	}
-	DestroyWindow( );
+	DestroyWindow();
 }
 
 bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
@@ -396,20 +396,20 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_FORWARD:
-		m_computeThread.SingleStep( );
+		m_computeThread.SingleStep();
 		break;
 
 	case IDM_RUN:
-		m_computeThread.RunComputation( );
+		m_computeThread.RunComputation();
 		break;
 
 	case IDM_STOP:
-		m_computeThread.StopComputation( );
+		m_computeThread.StopComputation();
 		m_nmwi.ClearModel();
 		break;
 
 	case IDM_SCRIPT_DIALOG:
-		m_computeThread.StopComputation( );
+		m_computeThread.StopComputation();
 		ProcessNNetScript
 		( 
 		    m_script, 
@@ -419,12 +419,12 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_NEW_MODEL:
-		if ( AskAndSave( ) )
+		if ( AskAndSave() )
 		{
 			m_computeThread.StopComputation();
 			m_mainNNetWindow.Reset();
 			m_modelCommands.ResetModel();
-			m_modelCommands.CreateInitialShapes( );
+			m_modelCommands.CreateInitialShapes();
 			m_staticModelObservable.NotifyAll( false );
 			m_appTitle.SetUnsavedChanges( true );
 			m_mainNNetWindow.CenterModel();
@@ -432,13 +432,13 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_SAVE_MODEL:
-		if ( SaveModel( ) )
+		if ( SaveModel() )
 			m_preferences.WritePreferences( m_nmri.GetModelFilePath() );
 		break;
 
 	case IDM_SAVE_MODEL_AS:
-		m_computeThread.StopComputation( );
-		if ( SaveModelAs( ) )
+		m_computeThread.StopComputation();
+		if ( SaveModelAs() )
 			m_preferences.WritePreferences( m_nmri.GetModelFilePath() );
 		break;
 
@@ -461,15 +461,15 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDX_REPLACE_MODEL:  //no user command, only internal usage
 		m_StatusBar.ClearPart( m_statusMessagePart );
-		if ( AskAndSave( ) )
+		if ( AskAndSave() )
 		{
-			m_computeThread.StopComputation( );
+			m_computeThread.StopComputation();
 			m_mainNNetWindow.Reset();
 			m_model = move(* m_modelImporter.GetImportedModel());
 			m_staticModelObservable.NotifyAll( false );
 			m_model.SetDescriptionUI( m_descWindow );
 			m_appTitle.SetUnsavedChanges( false );
-			m_mainNNetWindow.CenterModel( );
+			m_mainNNetWindow.CenterModel();
 		}
 		break;
 
@@ -481,15 +481,15 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 }
 
-bool NNetAppWindow::SaveModelAs( )
+bool NNetAppWindow::SaveModelAs()
 {
 	wstring wstrModelPath { m_nmri.GetModelFilePath() };
 	if ( wstrModelPath == L"" )
 	{
-		wstrModelPath = path( ScriptFile::GetPathOfExecutable( ) ).parent_path();
+		wstrModelPath = path( ScriptFile::GetPathOfExecutable() ).parent_path();
 		wstrModelPath += L"\\std.mod";
 		m_nmwi.SetModelFilePath( wstrModelPath );
-		writeModel( );
+		writeModel();
 		return true;
 	}
 	else
@@ -499,33 +499,33 @@ bool NNetAppWindow::SaveModelAs( )
 		if ( bRes )
 		{
 			m_nmwi.SetModelFilePath( wstrModelPath );
-			writeModel( );
+			writeModel();
 		}
 		return bRes;
 	}
 }
 
-bool NNetAppWindow::SaveModel( )
+bool NNetAppWindow::SaveModel()
 {
 	wstring wstrModelPath { m_nmri.GetModelFilePath() };
 	if ( wstrModelPath == L"" )
 	{
-		return SaveModelAs( );
+		return SaveModelAs();
 	}
 	else
 	{
-		writeModel( );
+		writeModel();
 		return true;
 	}
 }
 
-bool NNetAppWindow::AskAndSave( )
+bool NNetAppWindow::AskAndSave()
 {
 	if ( m_appTitle.AnyUnsavedChanges() )
 	{
 		int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
 		if ( iRes == IDYES )
-			SaveModel( );
+			SaveModel();
 		else if ( iRes == IDNO )
 			return true;
 		else if ( iRes == IDCANCEL )

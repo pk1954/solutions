@@ -34,16 +34,16 @@ void Script::ScrReadSpecial( wchar_t const wchExpected )
 	switch ( m_pScanAct->NextToken( true ) )
 	{
 	case tTOKEN::End:         // end of file reached 
-		ScriptErrorHandler::eofError( );
+		ScriptErrorHandler::eofError();
 		break;
 
 	case tTOKEN::Special:
-		if ( m_pScanAct->GetCharacter( ) != wchExpected )
-			ScriptErrorHandler::tokenError( );
+		if ( m_pScanAct->GetCharacter() != wchExpected )
+			ScriptErrorHandler::tokenError();
 		break;
 
 	default: 
-		ScriptErrorHandler::tokenError( );
+		ScriptErrorHandler::tokenError();
 	}             
 }
 
@@ -54,24 +54,24 @@ void Script::ScrReadString( wstring const wstrExpected )
 	switch ( m_pScanAct->NextToken( true ) )
 	{
 	case tTOKEN::End:         // end of file reached 
-		ScriptErrorHandler::eofError( );
+		ScriptErrorHandler::eofError();
 		break;
 
 	case tTOKEN::Name:
 		if ( m_pScanAct->GetString() != wstrExpected )
-			ScriptErrorHandler::stringError( );
+			ScriptErrorHandler::stringError();
 		break;
 
 	default: 
-		ScriptErrorHandler::stringError( );
+		ScriptErrorHandler::stringError();
 	}             
 }
 
 //   readSign: Read '+' or '-'
 
-bool Script::readSign( )
+bool Script::readSign()
 {
-   wchar_t const wch  = m_pScanAct->GetCharacter( );
+   wchar_t const wch  = m_pScanAct->GetCharacter();
    bool          fNeg = false;   
 
    if ( (wch == L'+') || (wch == L'-') )
@@ -82,22 +82,22 @@ bool Script::readSign( )
       switch ( m_pScanAct->NextToken( false ) )
       {
          case tTOKEN::End:         // end of file reached 
-             ScriptErrorHandler::eofError( );
+             ScriptErrorHandler::eofError();
             break;
                      
          case tTOKEN::Number:     // unsigned integer constant 
             break;
          
 		 case tTOKEN::Special:
-             ScriptErrorHandler::charError( );
+             ScriptErrorHandler::charError();
             break;
                      
          default: 
-             ScriptErrorHandler::tokenError( );
+             ScriptErrorHandler::tokenError();
       }             
    }
    else
-       ScriptErrorHandler::charError( );
+       ScriptErrorHandler::charError();
       
    return fNeg;   
 }   
@@ -121,50 +121,50 @@ unsigned long Script::numeric
    switch ( m_pScanAct->NextToken( true ) )    
    {
       case tTOKEN::End:         // end of file reached 
-         ScriptErrorHandler::eofError( );
+         ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::Number:    // unsigned integer constant 
-         ulValue = m_pScanAct->GetUlong( );      
+         ulValue = m_pScanAct->GetUlong();      
          break;
 
       case tTOKEN::Special:
-         *pfNeg  = readSign( );
-         ulValue = m_pScanAct->GetUlong( );      
+         *pfNeg  = readSign();
+         ulValue = m_pScanAct->GetUlong();      
          break;
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString( ) );
-            switch ( symbol.GetSymbolType( ) )
+            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString() );
+            switch ( symbol.GetSymbolType() )
             {
                case tSTYPE::ULongConst:
-                  ulValue = symbol.GetUlongConst( );
+                  ulValue = symbol.GetUlongConst();
                   break;
 
                case tSTYPE::LongConst:
                   {
-                     long const lValue = symbol.GetLongConst( );
+                     long const lValue = symbol.GetLongConst();
                      *pfNeg  = lValue < 0L;
                      ulValue = static_cast<unsigned long>( *pfNeg ? -lValue : lValue );
                   }
                   break;
 
                default:
-                   ScriptErrorHandler::typeError( );
+                   ScriptErrorHandler::typeError();
             }
          }
          break;
          
       default: 
-          ScriptErrorHandler::tokenError( );
+          ScriptErrorHandler::tokenError();
    }            
    
    if ( ulValue > ulMax )
-       ScriptErrorHandler::numericError( );
+       ScriptErrorHandler::numericError();
 
    if ( *pfNeg && !fNegAllowed )
-       ScriptErrorHandler::negativeError( );
+       ScriptErrorHandler::negativeError();
 
    return ulValue;
 }
@@ -181,43 +181,43 @@ double Script::ScrReadFloat( void )
    switch ( m_pScanAct->NextToken( true ) )
    {
       case tTOKEN::End:            // end of file reached 
-          ScriptErrorHandler::eofError( );
+          ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString( ) );
-            switch ( symbol.GetSymbolType( ) )
+            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString() );
+            switch ( symbol.GetSymbolType() )
             {
                case tSTYPE::ULongConst:
-                  dRes = symbol.GetUlongConst( );
+                  dRes = symbol.GetUlongConst();
                   break;
 
                case tSTYPE::LongConst:
-                  dRes = symbol.GetLongConst( );
+                  dRes = symbol.GetLongConst();
                   break;
 
                case tSTYPE::FloatConst:
-                  dRes = symbol.GetFloatConst( );
+                  dRes = symbol.GetFloatConst();
                   break;
 
                default:
-                   ScriptErrorHandler::typeError( );
+                   ScriptErrorHandler::typeError();
             }
          }
          break;
          
       case tTOKEN::Number:     // unsigned integer constant
-         dRes = static_cast<double>(m_pScanAct->GetUlong( ));
+         dRes = static_cast<double>(m_pScanAct->GetUlong());
          break;
          
       case tTOKEN::Float:       // floating point constant 
-         dRes = m_pScanAct->GetFloat( );
+         dRes = m_pScanAct->GetFloat();
          break;
 
       case tTOKEN::Special:
          {
-            wchar_t const wch = m_pScanAct->GetCharacter( );
+            wchar_t const wch = m_pScanAct->GetCharacter();
             if ( (wch == L'+') || (wch == L'-') )
             {
                if ( wch == L'-' )
@@ -225,35 +225,35 @@ double Script::ScrReadFloat( void )
                switch ( m_pScanAct->NextToken( false ) )
                {
                   case tTOKEN::End:         // end of file reached 
-                     ScriptErrorHandler::eofError( );
+                     ScriptErrorHandler::eofError();
                      break;
                      
                   case tTOKEN::Number:     // unsigned integer constant
-                     dRes = m_pScanAct->GetUlong( );
+                     dRes = m_pScanAct->GetUlong();
                      break;
          
                   case tTOKEN::Float:       // floating point constant 
-                     dRes = m_pScanAct->GetFloat( );
+                     dRes = m_pScanAct->GetFloat();
                      break;
 
                   case tTOKEN::Special:
-                     ScriptErrorHandler::charError( );
+                     ScriptErrorHandler::charError();
                      break;
                      
                   default: 
-                     ScriptErrorHandler::tokenError( );
+                     ScriptErrorHandler::tokenError();
                }             
 
                if ( fNeg )
                   dRes = -dRes;
             }
             else
-               ScriptErrorHandler::charError( );
+               ScriptErrorHandler::charError();
          }   
          break;
          
       default: 
-          ScriptErrorHandler::tokenError( );
+          ScriptErrorHandler::tokenError();
    }
 
    return dRes; 
@@ -346,23 +346,23 @@ wchar_t Script::ScrReadChar( void )
    switch ( m_pScanAct->NextToken( true ) )
    {
       case tTOKEN::End:         // end of file reached 
-         ScriptErrorHandler::eofError( );
+         ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::Character:   // character constant found  
-         wchRes = m_pScanAct->GetCharacter( );
+         wchRes = m_pScanAct->GetCharacter();
          break;
 
       case tTOKEN::Special:
-         fNeg = readSign( );
+         fNeg = readSign();
          //lint -fallthrough
 
       case tTOKEN::Number:    // unsigned integer constant 
       {
-         unsigned long const ulValue = m_pScanAct->GetUlong( );
+         unsigned long const ulValue = m_pScanAct->GetUlong();
    
          if ( ulValue > CHAR_MAX )
-            ScriptErrorHandler::numericError( );
+            ScriptErrorHandler::numericError();
 
          wchRes = static_cast<wchar_t>(ulValue);
          if ( fNeg )
@@ -372,7 +372,7 @@ wchar_t Script::ScrReadChar( void )
       }
       
       default: 
-         ScriptErrorHandler::tokenError( );
+         ScriptErrorHandler::tokenError();
    }
 
    return wchRes; 
@@ -389,27 +389,27 @@ wstring const Script::ScrReadString( void )
    switch ( m_pScanAct->NextToken( true ) )
    {
       case tTOKEN::End:         // end of file reached 
-         ScriptErrorHandler::eofError( );
+         ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::String:      // string constant 
-         return m_pScanAct->GetString( );
+         return m_pScanAct->GetString();
 
       case tTOKEN::Special:
-         ScriptErrorHandler::charError( );
+         ScriptErrorHandler::charError();
          break;
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString( ) );
-            if ( symbol.GetSymbolType( ) != tSTYPE::StringConst )
-                ScriptErrorHandler::typeError( );
-            return symbol.GetStringConst( );
+            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString() );
+            if ( symbol.GetSymbolType() != tSTYPE::StringConst )
+                ScriptErrorHandler::typeError();
+            return symbol.GetStringConst();
          }
          //lint -fallthrough
          
       default: 
-         ScriptErrorHandler::tokenError( );
+         ScriptErrorHandler::tokenError();
          break;
    }
 
@@ -442,15 +442,15 @@ bool Script::ScrProcess
 
             if ( token == tTOKEN::Name )
             {
-                wstring const & wstrName = m_pScanAct->GetString( );
+                wstring const & wstrName = m_pScanAct->GetString();
 
 				if ( m_pWrapHook )
                     (* m_pWrapHook)( * this );                // call hook function 
             
                 Symbol const & symbol = SymbolTable::GetSymbolFromName( wstrName ); // find entry in symbol table 
 
-                if ( symbol.GetSymbolType( ) != tSTYPE::Function )
-                   ScriptErrorHandler::typeError( );          // wrong symbol type 
+                if ( symbol.GetSymbolType() != tSTYPE::Function )
+                   ScriptErrorHandler::typeError();          // wrong symbol type 
 
                 symbol.GetFunction()( * this );              // call wrapper function 
 
@@ -460,13 +460,13 @@ bool Script::ScrProcess
                 break;                                        // normal termination 
 
             else if ( token == tTOKEN::Special )
-                ScriptErrorHandler::charError( );
+                ScriptErrorHandler::charError();
 
             else
-                ScriptErrorHandler::tokenError( );
+                ScriptErrorHandler::tokenError();
         }         
 
-        scan.CloseInputFile( );
+        scan.CloseInputFile();
         m_pScanAct = nullptr;
 		if ( m_pWrapHook != nullptr )
 			(* m_pWrapHook)( * this );                // call hook function 

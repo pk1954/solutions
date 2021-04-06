@@ -29,14 +29,14 @@ namespace Util
 
 		void PostThreadMsg( UINT, WPARAM const = 0, LPARAM const = 0 );
 
-		void Terminate( ); // Waits until thread has stopped
-		void TerminateNoWait( ) { PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); }// PostQuitMessage( 0 );  doesn't work
+		void Terminate(); // Waits until thread has stopped
+		void TerminateNoWait() { PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); }// PostQuitMessage( 0 );  doesn't work
 
-		bool IsAsyncThread( ) { return m_bAsync; }
+		bool IsAsyncThread() { return m_bAsync; }
 
-		virtual void ThreadStartupFunc( ) {};
+		virtual void ThreadStartupFunc() {};
 		virtual void ThreadMsgDispatcher( MSG const ) = 0;
-		virtual void ThreadShutDownFunc( ) {};
+		virtual void ThreadShutDownFunc() {};
 
 	private:
 		HANDLE  m_handle             { nullptr };

@@ -32,12 +32,12 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsNeuronType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsNeuronType(); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::neuron; }
 
-	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing(); }
-	bool       const HasTriggerSound ( ) const { return m_triggerSound.m_bOn; }
-	SoundDescr const GetTriggerSound ( ) const { return m_triggerSound; }
+	bool       const HasAxon         () const { return m_connections.HasOutgoing(); }
+	bool       const HasTriggerSound () const { return m_triggerSound.m_bOn; }
+	SoundDescr const GetTriggerSound () const { return m_triggerSound; }
 
 	SoundDescr const SetTriggerSound( SoundDescr const & );
 
@@ -51,10 +51,10 @@ public:
 	virtual void       DrawExterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawInterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawNeuronText( DrawContext const & ) const;
-	virtual void       Recalc( );
-	virtual void       Clear( );
-	virtual bool const CompStep( );
-	virtual mV   const GetNextOutput( ) const;
+	virtual void       Recalc();
+	virtual void       Clear();
+	virtual bool const CompStep();
+	virtual mV   const GetNextOutput() const;
 
 	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
 
@@ -75,7 +75,7 @@ private:
 	SoundDescr m_triggerSound {};
 
 	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
-	MicroMeterPoint getAxonHillockPos( ) const;
+	MicroMeterPoint getAxonHillockPos() const;
 
 	inline static Sound * m_pSound  { nullptr };
 

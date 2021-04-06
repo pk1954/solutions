@@ -24,14 +24,14 @@ void TextBuffer::Initialize
     m_wBuffer.imbue(std::locale(""));
 }
 
-void TextBuffer::StartPainting( ) 
+void TextBuffer::StartPainting() 
 { 
-	AlignRight( );
+	AlignRight();
 	setHorizontalPos( 1_TEXT_POSITION );
     m_pixVerticalPos = TOP_MARGIN;
 }
 
-void TextBuffer::printBuffer( )
+void TextBuffer::printBuffer()
 { 
 	PrintBuffer( & m_wBuffer, m_pixHorizontalPos, m_pixVerticalPos );
 	m_wBuffer.str( wstring() );
@@ -42,7 +42,7 @@ void TextBuffer::printBuffer( )
 void TextBuffer::printString( wstring const & data )
 { 
 	m_wBuffer << data;
-	printBuffer( );
+	printBuffer();
 }
 
 void TextBuffer::printNumber( int const data )
@@ -114,5 +114,5 @@ void TextBuffer::printAsMillisecs( microseconds const microSecs )
 {
 	float millisecs = Cast2Float( microSecs.count() ) / 1000.0f;
 	m_wBuffer << std::fixed << std::setprecision(2) << millisecs << L"ms";
-	printBuffer( );
+	printBuffer();
 }

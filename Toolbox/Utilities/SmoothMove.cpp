@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "SmoothMove.h"
 
-SmoothMove::SmoothMove( ) :
+SmoothMove::SmoothMove() :
     m_pixVelocity( 0 )
 {}
 

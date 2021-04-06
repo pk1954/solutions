@@ -23,14 +23,14 @@ public:
 		m_umSplitPoint(umSplitPoint)
 	{ }
 
-	~InsertBaseKnotCommand( ) {}
+	~InsertBaseKnotCommand() {}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		if ( ! m_upBaseKnot )
 		{ 
 			m_pPipe2Split = nmwi.GetShapePtr<Pipe *>( m_idPipe );
-			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr( );
+			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
 			m_upBaseKnot  = make_unique<T>   ( m_umSplitPoint );
 			m_upPipeNew   = make_unique<Pipe>( m_pStartKnot, m_upBaseKnot.get() );
 			m_upBaseKnot->m_connections.AddOutgoing( m_pPipe2Split );

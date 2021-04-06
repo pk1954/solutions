@@ -8,7 +8,7 @@
 #include "errhndl.h"
 #include "symtab.h"
 
-Symbol::Symbol( ) :
+Symbol::Symbol() :
     m_type(tSTYPE::UnknownSTYPE  ),
     m_pFunc( nullptr ),
     m_lValue( 0L ),    
@@ -61,7 +61,7 @@ wstring const & SymbolTable::GetSymbolName( Symbol const & symbol )
 {
     auto const iter = m_ReverseTab.find( symbol );
 
-    assert( iter != m_ReverseTab.end( ) );
+    assert( iter != m_ReverseTab.end() );
 
     return iter->second;
 }

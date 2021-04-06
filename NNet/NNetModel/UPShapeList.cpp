@@ -101,7 +101,7 @@ bool UPShapeList::operator==( UPShapeList const & other ) const
 UPShape UPShapeList::ExtractShape( ShapeId const id )	
 {
 	assert( IsDefined(id) );
-	assert( IsValidShapeId( id ) );
+	assert( IsValidShapeId(id) );
 
 	decCounter(id);
 
@@ -112,8 +112,8 @@ UPShape UPShapeList::ExtractShape( ShapeId const id )
 void UPShapeList::SetShape2Slot( ShapeId const id, UPShape upShape ) // only for special situations
 {                                                                    // read model from script
 	assert( IsDefined(id) );
-	assert( IsValidShapeId( id ) );
-	assert( IsEmptySlot( id ) );
+	assert( IsValidShapeId(id) );
+	assert( IsEmptySlot(id) );
 	assert( upShape );
 
 	incCounter(upShape);
@@ -139,7 +139,11 @@ Shape * const UPShapeList::ReplaceShape( ShapeId const id, UPShape upT )
 	return tmp.release();
 }
 
-void UPShapeList::LinkShape(Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc) const
+void UPShapeList::LinkShape
+(
+	Shape                             const & shapeSrc, 
+	function<Shape * (Shape const *)> const & dstFromSrc
+) const
 {
 	if ( Shape * pShapeDst { dstFromSrc(& shapeSrc) } )
 	{
@@ -155,17 +159,29 @@ void UPShapeList::LinkShape(Shape const & shapeSrc, function<Shape * (Shape cons
 		}
 		else if (shapeSrc.IsConnector())
 		{
-			Connector & connectorDst { static_cast<Connector &>(shapeDst) };
-			connectorDst.Apply2All( [&](CNPtr & p) { p = static_cast<CNPtr>(dstFromSrc(p)); } );
+			Connector const & connectorSrc { static_cast<Connector const &>(shapeSrc) };
+			Connector       & connectorDst { static_cast<Connector       &>(shapeDst) };
+			connectorDst.Clear();
+			connectorSrc.Apply2All
+			(
+				[&](ConnNeuron const * p) 
+				{ 
+					connectorDst.Push(static_cast<ConnNeuron *>(dstFromSrc(p))); 
+				} 
+			);
 		}
 		else  // BaseKnot
 		{
-			Connections const & srcConn { static_cast<BaseKnot const &>(shapeSrc).m_connections };
-			Connections       & dstConn { static_cast<BaseKnot       &>(shapeDst).m_connections };
+			BaseKnot    const & baseKnotSrc { static_cast<BaseKnot const &>(shapeSrc) };
+			BaseKnot          & baseKnotDst { static_cast<BaseKnot       &>(shapeDst) };
+			Connections const & srcConn { baseKnotSrc.m_connections };
+			Connections       & dstConn { baseKnotDst.m_connections };
 			dstConn.ClearOutgoing();
 			dstConn.ClearIncoming();
 			srcConn.Apply2AllOutPipes([&](Pipe const &p){dstConn.AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
 			srcConn.Apply2AllInPipes ([&](Pipe const &p){dstConn.AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
+			if ( baseKnotSrc.GetParent() )
+				baseKnotDst.SetParent(dstFromSrc(baseKnotSrc.GetParent()));
 		}
 	}
 }
@@ -223,14 +239,14 @@ UPShapeList & UPShapeList::operator= ( const UPShapeList & rhs ) // copy assignm
 	return * this;
 }
 
-void UPShapeList::CheckShapeList( ) const
+void UPShapeList::CheckShapeList() const
 {
 #ifdef _DEBUG
 	Apply2All( [&](Shape const & shape) { checkShape(shape); } );
 #endif
 }
 
-void UPShapeList::Dump( ) const
+void UPShapeList::Dump() const
 {
 	Apply2All( [&](Shape const & shape) { shape.Dump(); } );
 }
@@ -250,7 +266,7 @@ ShapeId const UPShapeList::FindShapeAt
 	ShapeCrit       const & crit 
 ) const
 {
-	for ( size_t i = m_list.size(); i --> 0; )	
+	for (size_t i = m_list.size(); i --> 0;)	
 	{
 		Shape * pShape = m_list[i].get();
 		if ( pShape )
@@ -258,23 +274,23 @@ ShapeId const UPShapeList::FindShapeAt
 			bool bCrit { crit(* pShape) };
 			if ( bCrit )
 			{
-				bool bPointInShape { pShape->IsPointInShape(pnt) };
+				bool bPointInShape { pShape->Includes(pnt) };
 				if ( bPointInShape )
 					return pShape->GetId();
 			}
 		}
-		//if ( pShape && crit(* pShape) && pShape->IsPointInShape(pnt) ) 
+		//if ( pShape && crit(* pShape) && pShape->Includes(pnt) ) 
 		//	return pShape->GetId();
 	};
 	return ShapeId( NO_SHAPE );
 }
 
-bool const UPShapeList::AnyShapesSelected( ) const
+bool const UPShapeList::AnyShapesSelected() const
 {
-	return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
+	return Apply2AllB<Shape>([&](Shape const & s) { return s.IsSelected(); });
 }
 
-void UPShapeList::CallErrorHandler( ShapeId const id ) const
+void UPShapeList::CallErrorHandler(ShapeId const id) const
 {
 	if ( m_pShapeErrorHandler )
 	{

@@ -20,7 +20,7 @@ RingBuffer( size_t size )
 	m_iter = m_ringbuf.begin();
 }
 
-~RingBuffer( ) {}
+~RingBuffer() {}
 
 void Add( double const dValue )
 {
@@ -31,7 +31,7 @@ void Add( double const dValue )
 		m_iter = m_ringbuf.begin();
 }
 
-double GetAverage( )
+double GetAverage()
 {
 	assert( m_ringbuf.size() > 0 );
 	return m_ringbufSum / m_ringbuf.size();

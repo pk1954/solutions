@@ -12,7 +12,7 @@ class RectType
 
 public:
 
-    RectType( ) 
+    RectType() 
 	{ 
 		* this = ZERO_VAL(); 
 	}
@@ -110,16 +110,16 @@ public:
 
 	void Expand( POS_TYPE const & pnt )
 	{
-		if ( * this == ZERO_VAL( ) )
+		if ( * this == ZERO_VAL() )
 		{
 			* this = RectType( pnt, pnt );
 		}
 		else
 		{
-			if      ( pnt.GetX() < m_Left   ) m_Left   = pnt.GetX( );
-			else if ( pnt.GetX() > m_Right  ) m_Right  = pnt.GetX( );
-			if      ( pnt.GetY() < m_Top    ) m_Top    = pnt.GetY( );
-			else if ( pnt.GetY() > m_Bottom ) m_Bottom = pnt.GetY( );
+			if      ( pnt.GetX() < m_Left   ) m_Left   = pnt.GetX();
+			else if ( pnt.GetX() > m_Right  ) m_Right  = pnt.GetX();
+			if      ( pnt.GetY() < m_Top    ) m_Top    = pnt.GetY();
+			else if ( pnt.GetY() > m_Bottom ) m_Bottom = pnt.GetY();
 		}
 	}
 
@@ -164,7 +164,7 @@ public:
 		return * this;
 	}
 
-	void SetZero( )
+	void SetZero()
 	{
 		* this = ZERO_VAL();
 	}

@@ -29,19 +29,19 @@ public:
 
 	virtual void Beep( SoundDescr const & ) const = 0;
 
-	void On ( ) 
+	void On () 
 	{ 
 		m_bActive = true;
 		m_pObservable->NotifyAll( true );
 	}
 
-	void Off( ) 
+	void Off() 
 	{ 
 		m_bActive = false; 
 		m_pObservable->NotifyAll( true );
 	}
 
-	bool IsOn( ) const { return m_bActive; }
+	bool IsOn() const { return m_bActive; }
 
 private:
 

@@ -16,7 +16,7 @@ template <typename BASE_TYPE, typename Parameter>
 class NamedType
 {
 public:
-    NamedType( ) : m_value(0) {}
+    NamedType() : m_value(0) {}
 		
     constexpr explicit NamedType( BASE_TYPE const value ) : m_value(value) {}
 
@@ -142,11 +142,11 @@ public:
 		return res;
 	}
 
-	void Set2Null( ) { * this = NULL_VAL(); }
-	void Set2Zero( ) { * this = ZERO_VAL(); }
+	void Set2Null() { * this = NULL_VAL(); }
+	void Set2Zero() { * this = ZERO_VAL(); }
 
-    bool IsNull   ( ) const { return * this == NULL_VAL(); };
-    bool IsNotNull( ) const { return * this != NULL_VAL(); };
+    bool IsNull   () const { return * this == NULL_VAL(); };
+    bool IsNotNull() const { return * this != NULL_VAL(); };
 
 private:
     BASE_TYPE m_value;

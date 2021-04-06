@@ -13,37 +13,37 @@
 bool const NNetModelReaderInterface::IsSelected( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
-	return p ? p->IsSelected( ) : false; 
+	return p ? p->IsSelected() : false; 
 }
 
 ShapeType const NNetModelReaderInterface::GetShapeType( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
-	return p ? p->GetShapeType( ) : ShapeType::Value::undefined; 
+	return p ? p->GetShapeType() : ShapeType::Value::undefined; 
 }
 
 fHertz const NNetModelReaderInterface::GetPulseFrequency( ShapeId const id ) const 
 { 
 	auto p { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
-	return p ? p->GetPulseFrequency( ) : fHertz::NULL_VAL(); 
+	return p ? p->GetPulseFrequency() : fHertz::NULL_VAL(); 
 }
 
 size_t const NNetModelReaderInterface::GetNrOfSegments( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Pipe const *>(id) };
-	return p ? p->GetNrOfSegments( ) : 0; 
+	return p ? p->GetNrOfSegments() : 0; 
 }
 
 SoundDescr const NNetModelReaderInterface::GetTriggerSound( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) }; 
-	return p ? p->GetTriggerSound( ) : SoundDescr(); 
+	return p ? p->GetTriggerSound() : SoundDescr(); 
 }
 
 mV const NNetModelReaderInterface::GetVoltage( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->GetVoltage( ) : mV::NULL_VAL(); 
+	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 
 mV const NNetModelReaderInterface::GetVoltage( ShapeId const id, MicroMeterPoint const & umPoint ) const
@@ -55,25 +55,25 @@ mV const NNetModelReaderInterface::GetVoltage( ShapeId const id, MicroMeterPoint
 size_t const NNetModelReaderInterface::GetNrOfOutgoingConnections( ShapeId const id ) const 
 { 
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->m_connections.GetNrOfOutgoingConnections( ) : -1;
+	return p ? p->m_connections.GetNrOfOutgoingConnections() : -1;
 }
 
 size_t const NNetModelReaderInterface::GetNrOfIncomingConnections( ShapeId const id ) const 
 { 
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->m_connections.GetNrOfIncomingConnections( ) : -1;
+	return p ? p->m_connections.GetNrOfIncomingConnections() : -1;
 }
 
 bool const NNetModelReaderInterface::HasIncoming( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->m_connections.HasIncoming( ) : false; 
+	return p ? p->m_connections.HasIncoming() : false; 
 }
 
 bool const NNetModelReaderInterface::HasOutgoing( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->m_connections.HasOutgoing( ) : false; 
+	return p ? p->m_connections.HasOutgoing() : false; 
 }
 
 bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstring & wstrLine ) const 
@@ -83,10 +83,12 @@ bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstrin
 
 // IsConnectionCandidate: Sort out obvious non-candidates
 
-bool const NNetModelReaderInterface::IsConnectionCandidate( ShapeId const idSrc, ShapeId const idDst ) const
+bool const NNetModelReaderInterface::IsConnectionCandidate(ShapeId const idSrc, ShapeId const idDst) const
 {
 	if (idSrc == idDst)
 		return false; 
+	if (GetShapeType(idSrc).IsConnectorType() && !GetShapeType(idDst).IsConnectorType())
+		return false;
 	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
 		return false;
 	return true;
@@ -102,7 +104,7 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 	ShapeType::Value const typeSrc { GetShapeType(idSrc).GetValue() };
 	ShapeType::Value const typeDst { GetShapeType(idDst).GetValue() };
 
-	switch ( typeSrc )
+	switch (typeSrc)
 	{
 	case ShapeType::Value::connector:
 		return typeDst == ShapeType::Value::connector;

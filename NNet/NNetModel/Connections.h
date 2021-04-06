@@ -20,7 +20,7 @@ public:
 	using PipeFunc = function<void(Pipe &)>;
 	using PipeCrit = function<bool(Pipe const &)>;
 
-	unique_ptr<Connections> Clone( ) const 
+	unique_ptr<Connections> Clone() const 
 	{
 		unique_ptr<Connections> upCopy { make_unique<Connections>() };
 		upCopy->m_incoming = m_incoming;
@@ -60,8 +60,8 @@ public:
 	size_t GetNrOfConnections()         const { return m_incoming.Size() + m_outgoing.Size(); }
 	bool   IsOrphan()                   const { return ! HasConnection(Type::all); }
 
-	void ClearIncoming( ) { m_incoming.Clear( ); }
-	void ClearOutgoing( ) { m_outgoing.Clear( ); }
+	void ClearIncoming() { m_incoming.Clear(); }
+	void ClearOutgoing() { m_outgoing.Clear(); }
 
 	void Apply2AllInPipes (PipeFunc const &f) const { m_incoming.Apply2All(f); }
 	void Apply2AllOutPipes(PipeFunc const &f) const { m_outgoing.Apply2All(f); }
@@ -85,10 +85,13 @@ public:
 		Apply2AllOutPipes([&](Pipe &pipe) { func(pipe); });
 	}
 
-	void Apply2AllConnectedPipesB( PipeCrit const & func )
+	bool Apply2AllConnectedPipesB( PipeCrit const & func )
 	{
-		Apply2AllInPipesB ( [&]( Pipe const & pipe ) { return func( pipe ); } );
-		Apply2AllOutPipesB( [&]( Pipe const & pipe ) { return func( pipe ); } );
+		if (Apply2AllInPipesB ([&](Pipe const & pipe) { return func(pipe); }))
+			return true;
+		if (Apply2AllOutPipesB([&](Pipe const & pipe) { return func(pipe); }))
+			return true;
+		return false;
 	}
 
 	void Reconnect( BaseKnot * const pBaseKnot )
@@ -103,7 +106,7 @@ public:
 		src.Apply2AllOutPipes( [&]( Pipe & pipe ) { AddOutgoing( & pipe ); } );
 	}
 
-	void Recalc( )
+	void Recalc()
 	{
 		Apply2AllConnectedPipes( [&]( Pipe & pipe ) { pipe.Recalc(); } );
 	}

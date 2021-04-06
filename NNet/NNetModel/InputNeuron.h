@@ -19,25 +19,25 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
+	static bool      const TypeFits( ShapeType const type ) { return type.IsInputNeuronType(); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::inputNeuron; }
 
 	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
 	virtual void DrawInterior( DrawContext const &, tHighlight const ) const;
 
-	virtual void Prepare( )
+	virtual void Prepare()
 	{
 		m_mVinputBuffer = m_mvFactor * m_timeSinceLastPulse.GetValue();
 	}
 
-	virtual bool const CompStep( );
+	virtual bool const CompStep();
 	virtual void       DrawNeuronText( DrawContext const & ) const;
-	virtual void       Recalc( );   // Recalculate precalculated values
+	virtual void       Recalc();   // Recalculate precalculated values
 
-	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
+	fHertz const GetPulseFrequency() const { return m_pulseFrequency; }
 	fHertz const SetPulseFrequency( fHertz const );
 
-	virtual bool const IsPointInShape( MicroMeterPoint const & ) const;
+	virtual bool const Includes( MicroMeterPoint const & ) const;
 
 private:
 

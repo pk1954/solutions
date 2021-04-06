@@ -31,7 +31,7 @@ bool MessagePump::accelerator(  MSG & msg )
 	return false;
 }
 
-int MessagePump::Run( )
+int MessagePump::Run()
 {
 	MSG  msg;
 	BOOL bRet;

@@ -12,8 +12,8 @@ class ActionTimer;
 class ModelWindow : public BaseWindow
 {
 public:
-	ModelWindow( ) :
-		BaseWindow( )
+	ModelWindow() :
+		BaseWindow()
 	{ }
 
 	static void InitClass( ActionTimer * const pActionTimer	)

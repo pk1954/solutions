@@ -28,8 +28,8 @@ public:
 		MonitorData                    &
 	);
 
-	void Reset( );
-	void Stop( );
+	void Reset();
+	void Stop();
 
 	virtual long AddContextMenuEntries( HMENU const );
 
@@ -38,7 +38,7 @@ public:
 private:
 
 	SignalNr const findSignal      ( TrackNr const, PixelPoint const & ) const;
-	fPixel   const calcTrackHeight ( ) const;
+	fPixel   const calcTrackHeight () const;
 	TrackNr  const findTrack       ( PIXEL const ) const;
 	TrackNr  const findPos4NewTrack( PIXEL const ) const;
 
@@ -52,11 +52,11 @@ private:
 
 	SignalId const selectSignal( SignalId const & );
 
-	void doPaint( ) const;
+	void doPaint() const;
 	void paintSignal( SignalId const & ) const;
-	void drawDiamond( ) const;
+	void drawDiamond() const;
 
-	virtual void OnPaint( );
+	virtual void OnPaint();
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );

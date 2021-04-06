@@ -10,7 +10,7 @@
 class DrawContext
 {
 public:
-	void Initialize( )
+	void Initialize()
 	{
 		m_coord.Reset();
 	}
@@ -54,11 +54,11 @@ public:
 		IDWriteTextFormat * const = nullptr
 	) const = 0;
 
-	PixelCoordsFp const & GetCoordC( ) const { return m_coord; }
-	PixelCoordsFp       & GetCoord ( )       { return m_coord; }
+	PixelCoordsFp const & GetCoordC() const { return m_coord; }
+	PixelCoordsFp       & GetCoord ()       { return m_coord; }
 
-	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
-	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
+	MicroMeter  GetPixelSize  () const { return m_coord.GetPixelSize  (); }
+	fPixelPoint GetPixelOffset() const { return m_coord.GetPixelOffset(); }
 
 	void SetPixelSize  ( MicroMeter      const s ) { m_coord.SetPixelSize  ( s ); }
 	void SetPixelOffset( fPixelPoint     const f ) { m_coord.SetPixelOffset( f ); }

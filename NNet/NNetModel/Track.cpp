@@ -75,7 +75,7 @@ bool const Track::IsValid( SignalNr const signalNr ) const
 	return (0 <= signalNr.GetValue()) && (signalNr.GetValue() < m_signals.size());
 }
 
-void Track::CheckSignals( ) const
+void Track::CheckSignals() const
 {
 #ifdef _DEBUG
 	for (const auto & pSignal : m_signals )

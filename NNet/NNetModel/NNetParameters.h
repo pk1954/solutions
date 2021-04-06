@@ -16,7 +16,7 @@ class Param : public Observable
 public:
 	bool operator==( Param const & rhs ) const;
 
-	fMicroSecs const GetTimeResolution( ) const { return m_usResolution; }
+	fMicroSecs const GetTimeResolution() const { return m_usResolution; }
 
 	float const GetParameterValue( ParamType::Value const ) const;
 	void        SetParameterValue( ParamType::Value const, float const );

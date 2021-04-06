@@ -107,7 +107,7 @@ void Preferences::Initialize
     m_wstrPreferencesFile = szBuffer;
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    SymbolTable::ScrDefConst( L"SetAutoOpen", new WrapSetAutoOpen( ) );
+    SymbolTable::ScrDefConst( L"SetAutoOpen", new WrapSetAutoOpen() );
     SymbolTable::ScrDefConst( L"SetSound",    new WrapSetSound ( sound ) );
     SymbolTable::ScrDefConst( L"ReadModel",   new WrapReadModel( modelImporter, m_hwndApp ) );
 
@@ -115,7 +115,7 @@ void Preferences::Initialize
     SymbolTable::ScrDefConst( PREF_ON,  1L );
 }
 
-bool Preferences::ReadPreferences( )
+bool Preferences::ReadPreferences()
 {
     if ( exists( m_wstrPreferencesFile ) )
     {
@@ -136,7 +136,7 @@ bool Preferences::WritePreferences( wstring const wstrModelPath )
     prefFile << L"SetSound "    << (m_pSound->IsOn() ? PREF_ON : PREF_OFF) << endl;
 	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
     prefFile << L"ReadModel \"" << wstrModelPath << L"\"" << endl;
-    prefFile.close( );
+    prefFile.close();
     wcout << L"*** preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;
 }

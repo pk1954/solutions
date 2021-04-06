@@ -29,7 +29,7 @@ public:
 		terminate();
 	}
 
-	static void Provoke( )
+	static void Provoke()
 	{
 		long long x = 5;
 		int * pi = (int *)(x); //-V566

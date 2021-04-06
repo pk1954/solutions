@@ -24,7 +24,7 @@ bool BaseKnot::operator==( Shape const & rhs ) const
 	GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
 }
 
-void BaseKnot::Dump( ) const
+void BaseKnot::Dump() const
 {
 	Shape::Dump();
 	wcout << m_connections << endl;
@@ -36,7 +36,7 @@ void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 	m_connections.Recalc();
 }
 
-bool const BaseKnot::IsInRect( MicroMeterRect const & umRect ) const 
+bool const BaseKnot::Includes( MicroMeterRect const & umRect ) const 
 { 
 	return umRect.Includes( GetPosition() ); 
 }
@@ -64,24 +64,24 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 		moveShape( delta );
 }
 
-void BaseKnot::CheckShape( ) const
+void BaseKnot::CheckShape() const
 {
 	Shape::CheckShape();
-	m_connections.Apply2AllInPipes ( [&]( Pipe & pipe ) { assert( pipe.GetEndKnotId  () == GetId() ); } );
-	m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { assert( pipe.GetStartKnotId() == GetId() ); } );
+	m_connections.Apply2AllInPipes ([&](Pipe & p) { assert(p.GetEndKnotId  () == GetId()); });
+	m_connections.Apply2AllOutPipes([&](Pipe & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 
-void BaseKnot::Prepare( )
+void BaseKnot::Prepare()
 {
 	m_mVinputBuffer = 0._mV;
 
 	//for ( Pipe * pPipe : m_incoming ) 
 	//{ 
 	//	if ( pPipe != nullptr )
-	//		m_mVinputBuffer += pPipe->GetNextOutput( );
+	//		m_mVinputBuffer += pPipe->GetNextOutput();
 	//}
 
-	m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_mVinputBuffer += pipe.GetNextOutput( ); } ); // slow !!
+	m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_mVinputBuffer += pipe.GetNextOutput(); } ); // slow !!
 }
 
 bool const BaseKnot::IsPrecursorOf( Pipe const & pipeSucc ) const 
@@ -94,19 +94,19 @@ bool const BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 	return m_connections.Apply2AllInPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipePred; } );
 }
 
-bool const BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
+bool const BaseKnot::Includes( MicroMeterPoint const & point ) const
 {
-	return Distance( point, GetPosition() ) <= GetExtension();
+	return Distance(point, GetPosition()) <= GetExtension();
 }
 
-MicroMeterRect const BaseKnot::GetRect4Text( ) const
+MicroMeterRect const BaseKnot::GetRect4Text() const
 {
 	return MicroMeterRect
 	{
-		GetPosition().GetX() - GetExtension(),      // left
-		GetPosition().GetY() - GetExtension() / 2,  // top
-		GetPosition().GetX() + GetExtension(),      // right
-		GetPosition().GetY() + GetExtension()       // bottom
+		GetPosX() - GetExtension(),      // left
+		GetPosY() - GetExtension() / 2,  // top
+		GetPosX() + GetExtension(),      // right
+		GetPosY() + GetExtension()       // bottom
 	};
 }
 

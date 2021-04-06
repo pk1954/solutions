@@ -22,7 +22,7 @@ void Measurement::Initialize( D2D_driver * const pGraphics )
 	m_pTextFormat = pGraphics->NewTextFormat( 12.f );
 }
 
-void Measurement::ResetLimits( )
+void Measurement::ResetLimits()
 {
 	if ( m_fPixClientWidth.IsNotNull() )
 	{
@@ -35,7 +35,7 @@ void Measurement::SetClientRectSize( PIXEL const width, PIXEL const height )
 {
 	m_fPixClientWidth  = Convert2fPixel( width );
 	m_fPixClientHeight = Convert2fPixel( height );
-	ResetLimits( );
+	ResetLimits();
 }
 
 bool Measurement::Select( fPixel const fPix )
@@ -99,7 +99,7 @@ void Measurement::emphasizedLineRight( fPixel const fPixPosX ) const
 	m_pGraphics->FillGradientRect( rect, COL_WEAK, COL_STRONG );
 }
 
-void Measurement::measuringArea( ) const
+void Measurement::measuringArea() const
 {
 	fPixelRect const rect
 	{ 
@@ -140,7 +140,7 @@ void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
 	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::AntiqueWhite };
 
 	m_pGraphics->FillRectangle( Convert2fPixelRect(pixRect), COL_BACKGROUND );
-	m_pGraphics->DisplayText( pixRect, wBuffer.str( ), COLOR_TEXT, m_pTextFormat );
+	m_pGraphics->DisplayText( pixRect, wBuffer.str(), COLOR_TEXT, m_pTextFormat );
 }
 
 bool Measurement::IsClose2LeftLimit ( fPixel const fPix ) const 
@@ -159,7 +159,7 @@ void Measurement::DisplayDynamicScale( fMicroSecs const fMicroSecsPerPixel ) con
 	{
 		emphasizedLineLeft( m_fPixLeftLimit );
 		verticalLine( m_fPixLeftLimit );
-		measuringArea( );
+		measuringArea();
 		emphasizedLineRight( m_fPixRightLimit );
 		verticalLine( m_fPixRightLimit );
 		textArea( fMicroSecsPerPixel );

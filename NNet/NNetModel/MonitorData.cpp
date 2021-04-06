@@ -33,18 +33,18 @@ MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignme
 	return * this;
 }
 
-void MonitorData::Reset( )
+void MonitorData::Reset()
 {
 	m_tracks.clear();
 	m_idSigSelected.Set2Null();
 }
 
-int MonitorData::GetNrOfTracks( ) const
+int MonitorData::GetNrOfTracks() const
 {
 	return Cast2Int(m_tracks.size());
 }
 
-bool MonitorData::NoTracks( ) const
+bool MonitorData::NoTracks() const
 {
 	return m_tracks.size() == 0;
 }
@@ -67,7 +67,7 @@ SignalId const MonitorData::SetSelectedSignalId( SignalId const id )
 	return idOld;
 }
 
-SignalId const MonitorData::ResetSelectedSignal( )
+SignalId const MonitorData::ResetSelectedSignal()
 {
 	SignalId const idOld { m_idSigSelected };
 	m_idSigSelected.Set2Null();
@@ -193,7 +193,7 @@ bool const MonitorData::IsValid( SignalId const & id ) const
 	return IsValid(id.GetTrackNr()) && getTrack(id.GetTrackNr())->IsValid(id.GetSignalNr());
 }
 
-void MonitorData::CheckTracks( ) const
+void MonitorData::CheckTracks() const
 {
 #ifdef _DEBUG
 	for ( unique_ptr<Track> const & upTrack: m_tracks ) 

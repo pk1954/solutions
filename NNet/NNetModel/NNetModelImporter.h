@@ -49,7 +49,7 @@ public:
 
 	bool Import( wstring const, unique_ptr<ImportTermination> );
 
-	unique_ptr<NNetModel> GetImportedModel( );
+	unique_ptr<NNetModel> GetImportedModel();
 
 	wstring const GetFilePath() { return m_wstrFile2Read; }
 
@@ -62,7 +62,7 @@ private:
 	wstring                       m_wstrFile2Read;
 	Script                      * m_pScript { nullptr };
 
-	void import( );
+	void import();
 	void fixOutputNeurons();
 
 	friend static unsigned int __stdcall importModelThreadProc( void * );

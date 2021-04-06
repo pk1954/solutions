@@ -10,7 +10,7 @@
 #include "PixelTypes.h"
 #include "Direct2D.h"
 
-D2D_driver::D2D_driver( ):
+D2D_driver::D2D_driver():
 	m_pD2DFactory( nullptr ),
 	m_pRenderTarget( nullptr ),
 	m_pDWriteFactory( nullptr ),
@@ -22,10 +22,10 @@ D2D_driver::D2D_driver( ):
 
 D2D_driver::~D2D_driver()
 {
-	discardResources( );
+	discardResources();
 }
 
-void D2D_driver::createResources( ) 
+void D2D_driver::createResources() 
 {
 	m_hr = D2D1CreateFactory
 	(
@@ -57,7 +57,7 @@ void D2D_driver::createResources( )
 	//	m_pRenderTarget->SetTransform( D2D1::Matrix3x2F::Identity() );
 }
 
-void D2D_driver::discardResources( ) 
+void D2D_driver::discardResources() 
 {
 	SafeRelease( & m_pD2DFactory );
 	SafeRelease( & m_pDWriteFactory );
@@ -68,7 +68,7 @@ void D2D_driver::discardResources( )
 void D2D_driver::Initialize( HWND const hwnd ) 
 {
 	m_hwnd = hwnd;
-	createResources( );
+	createResources();
 }
 
 void D2D_driver::Resize( int const iWidth, int const iHeight )
@@ -79,14 +79,14 @@ void D2D_driver::Resize( int const iWidth, int const iHeight )
 	}
 }
 
-fPixelRectSize const D2D_driver::GetClRectSize( ) const 
+fPixelRectSize const D2D_driver::GetClRectSize() const 
 { 
 	return Convert2fPixelRectSize(Util::GetClRectSize( m_hwnd ));
 }
 
-void D2D_driver::ShutDown( )
+void D2D_driver::ShutDown()
 {
-	discardResources( );
+	discardResources();
 }
 
 IDWriteTextFormat * D2D_driver::NewTextFormat( float const fSize ) const
@@ -122,7 +122,7 @@ void D2D_driver::SetStdFontSize( float const fSize )
 bool D2D_driver::StartFrame( HDC const hdc )
 {
 	if ( ! m_pRenderTarget )
-		createResources( );
+		createResources();
 	m_pRenderTarget->BeginDraw();
 	m_pRenderTarget->Clear( D2D1::ColorF(D2D1::ColorF::Azure) );
 	return true;
@@ -151,13 +151,13 @@ void D2D_driver::DisplayText
 
 // Finish rendering; page flip.
 
-void D2D_driver::EndFrame( )
+void D2D_driver::EndFrame()
 {
 	m_hr = m_pRenderTarget->EndDraw();
 	if (m_hr == D2DERR_RECREATE_TARGET)
 	{
 		m_hr = S_OK;
-		discardResources( );
+		discardResources();
 	}
 }
 

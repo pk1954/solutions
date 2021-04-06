@@ -8,16 +8,16 @@
 class Random
 {
 public:
-	Random( )
+	Random()
 	{
-		Initialize( );
+		Initialize();
 	}
 
-    virtual ~Random( ) {};
+    virtual ~Random() {};
 
 	static unsigned int const MAX_VAL = 0x7fff;
 	
-	void Initialize( )
+	void Initialize()
 	{
 		m_ulRandomSeed = 0L;
 		m_bValid       = false;
@@ -31,12 +31,12 @@ public:
 
 	bool NextBooleanValue( void )
 	{
-		return NextRandomNumber( ) > (MAX_VAL / 2);
+		return NextRandomNumber() > (MAX_VAL / 2);
 	}
 
 	unsigned int NextRandomNumberScaledTo( unsigned int const uiFactor )
 	{
-		unsigned int const uiRandom  = NextRandomNumber( );
+		unsigned int const uiRandom  = NextRandomNumber();
 		unsigned int const uiProduct = uiRandom * uiFactor;
 		unsigned int const uiResult  = uiProduct >> 15;
 		return uiResult;

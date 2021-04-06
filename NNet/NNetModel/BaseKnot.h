@@ -57,28 +57,33 @@ public:
 		return * this;
 	}
 
+	virtual MicroMeterPoint const GetPosition() const 
+	{ 
+		return m_circle.GetPosition(); 
+	}
+
 	virtual void       Dump         () const;
 	virtual void       CheckShape   () const;
 	virtual void       Prepare      ();
  	virtual mV   const GetNextOutput() const = 0;
 	virtual void       MoveShape    (MicroMeterPoint const &);
 	virtual void       SetPosition  (MicroMeterPoint const &);
-	virtual bool const IsInRect     (MicroMeterRect  const &) const; 
+	virtual bool const Includes     (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
 
 	void MoveShapeFromParent( MicroMeterPoint const & );
 	void SetParent(Shape * const pParent) { m_pShapeParent = pParent; }
+	Shape const * const GetParent() const { return m_pShapeParent; }
 
-	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
+	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType(); }
 
 	MicroMeterCircle const GetCircle   () const { return m_circle; }
-	MicroMeterPoint  const GetPosition () const { return m_circle.GetPosition(); }
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
 	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
 	bool IsOrphanedKnot() const { return IsKnot() && m_connections.IsOrphan(); }
 
-	bool const IsPointInShape( MicroMeterPoint const & ) const;
+	bool const Includes( MicroMeterPoint const & ) const;
 	bool const IsPrecursorOf( Pipe const & ) const;
 	bool const IsSuccessorOf( Pipe const & ) const ;
 
@@ -87,7 +92,7 @@ public:
 	void AddConnections( BaseKnot * const pSrc ) 
 	{ 
 		m_connections.Add( pSrc->m_connections );
-		Reconnect( );
+		Reconnect();
 	}
 
 	void SetConnections( Connections * const pSrc ) 
@@ -96,7 +101,7 @@ public:
 		Reconnect();
 	}
 
-	void ClearConnections( )
+	void ClearConnections()
 	{
 		m_connections.ClearIncoming();
 		m_connections.ClearOutgoing();
@@ -106,8 +111,8 @@ public:
 
 protected:
 
-	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeterCircle const ) const;
-	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeter       const ) const;
+	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeterCircle const) const;
+	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeter       const) const;
 
 	MicroMeterRect const GetRect4Text() const;
 
@@ -119,5 +124,5 @@ private:
 	MicroMeterCircle m_circle;
 };
 
-BaseKnot const * Cast2BaseKnot( Shape const * );
-BaseKnot       * Cast2BaseKnot( Shape       * );
+BaseKnot const * Cast2BaseKnot(Shape const *);
+BaseKnot       * Cast2BaseKnot(Shape       *);

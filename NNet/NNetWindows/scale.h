@@ -21,7 +21,7 @@ public:
 	void SetClientRectSize( PIXEL const, PIXEL const );
 	void SetHorzPixelSize( float const );
 
-	void DisplayStaticScale( ) const;
+	void DisplayStaticScale() const;
 
 private:
 	using LogUnits = float;

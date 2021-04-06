@@ -35,7 +35,7 @@ void Scale::SetHorzPixelSize( float const fSize )
 	calcScaleParams();
 };
 
-void Scale::calcScaleParams( )
+void Scale::calcScaleParams()
 {
 	LogUnits logLengthMax    { m_fPixClientWidth.GetValue() * m_fHorzPixelSize * 0.9f };
 	float    fFractPart      { modff( log10f( logLengthMax ), & m_fIntegerPart ) };
@@ -48,7 +48,7 @@ void Scale::calcScaleParams( )
 	m_fPixPntEnd   = fPixelPoint( fPixHorzOffset + fPixScaleLength, m_fPixVertPos );
 }
 
-void Scale::DisplayStaticScale( ) const
+void Scale::DisplayStaticScale() const
 {
 	m_pGraphics->DrawLine( m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR );
 	displayTicks    ( m_fPixPntStart, m_fPixPntEnd, m_fIntegerPart, m_iFirstDigit );
@@ -165,7 +165,7 @@ void Scale::displayScaleNumber
 			wBuffer << L"0";
 	}
 
-	m_pGraphics->DisplayText( pixRect, wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
+	m_pGraphics->DisplayText( pixRect, wBuffer.str(), SCALE_COLOR, m_pTextFormat );
 }
 
 void Scale::displayScaleText
@@ -198,5 +198,5 @@ void Scale::displayScaleText
 		wBuffer << L"m";
 	wBuffer << m_wstrLogUnit;
 
-	m_pGraphics->DisplayText( pixRect, wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
+	m_pGraphics->DisplayText( pixRect, wBuffer.str(), SCALE_COLOR, m_pTextFormat );
 }
