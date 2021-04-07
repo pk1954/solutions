@@ -123,11 +123,11 @@ void Pipe::MoveShape( MicroMeterPoint const & delta )
 	m_pKnotEnd  ->MoveShape( delta );
 }
 
-// Includes should be called IsPossiblyInRect
+// IsIncludedIn should be called IsPossiblyIncludedIn
 // It doesn't calculate exactly if the pipe intersects umRect, but eliminites a lot of cases with a 
 // simple and fast check. The rest is left over for the clipping algorithm of the graphics subsystem
 
-bool const Pipe::Includes( MicroMeterRect const & umRect ) const 
+bool const Pipe::IsIncludedIn( MicroMeterRect const & umRect ) const 
 { 
 	if ( (m_pKnotStart->GetPosX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosX() < umRect.GetLeft()) )
 		return false;

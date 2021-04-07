@@ -113,13 +113,13 @@ public:
 	template <Shape_t T>   // const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
 	{
-		Apply2All<T>( [&](T const & s) { if ( s.Includes(r) ) func(s); } );
+		Apply2All<T>( [&](T const & s) { if ( s.IsIncludedIn(r) ) func(s); } );
 	}
 
 	template <Shape_t T>   // non const version
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
 	{
-		Apply2All<T>( [&](T & s) { if ( s.Includes(r) ) func(s); } );
+		Apply2All<T>( [&](T & s) { if ( s.IsIncludedIn(r) ) func(s); } );
 	}
 
 	template <Shape_t T>

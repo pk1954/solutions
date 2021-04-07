@@ -3,21 +3,22 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Pipe.h"
 #include "CalcOrthoVector.h"
 
 MicroMeterPoint const CalcOrthoVector
 (
-	MicroMeterLine           const & line,
-	ShapePtrList<ConnNeuron> const & list
+	MicroMeterLine         const & line,
+	ShapePtrList<BaseKnot> const & list
 )
 {
 	unsigned int uiLeftConnections  { 0 };
 	unsigned int uiRightConnections { 0 };
 	list.Apply2All
 	(	
-		[&](ConnNeuron const & c)	
+		[&](BaseKnot const & baseKnot)
 		{ 
-			c.m_connections.Apply2AllInPipes
+			baseKnot.m_connections.Apply2AllInPipes
 			( 
 				[&](Pipe & pipe) 
 				{ 
@@ -28,7 +29,7 @@ MicroMeterPoint const CalcOrthoVector
 						++uiRightConnections;
 				}
 			);
-			c.m_connections.Apply2AllOutPipes
+			baseKnot.m_connections.Apply2AllOutPipes
 			( 
 				[&](Pipe & pipe) 
 				{ 

@@ -6,7 +6,7 @@
 
 #include "MoreTypes.h"
 #include "LineType.h"
+#include "BaseKnot.h"
 #include "ShapePtrList.h"
-#include "ConnectionNeuron.h"
 
-MicroMeterPoint const CalcOrthoVector(MicroMeterLine const &, ShapePtrList<ConnNeuron> const &);
+MicroMeterPoint const CalcOrthoVector(MicroMeterLine const &, ShapePtrList<BaseKnot> const &);

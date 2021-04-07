@@ -66,14 +66,10 @@ public:
 	virtual void       CheckShape   () const;
 	virtual void       Prepare      ();
  	virtual mV   const GetNextOutput() const = 0;
-	virtual void       MoveShape    (MicroMeterPoint const &);
 	virtual void       SetPosition  (MicroMeterPoint const &);
-	virtual bool const Includes     (MicroMeterRect  const &) const; 
+	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
-
-	void MoveShapeFromParent( MicroMeterPoint const & );
-	void SetParent(Shape * const pParent) { m_pShapeParent = pParent; }
-	Shape const * const GetParent() const { return m_pShapeParent; }
+	virtual void       MoveShape    (MicroMeterPoint const &);
 
 	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType(); }
 
@@ -120,7 +116,6 @@ protected:
 
 private:
 
-	Shape          * m_pShapeParent { nullptr };
 	MicroMeterCircle m_circle;
 };
 

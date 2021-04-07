@@ -162,13 +162,7 @@ void UPShapeList::LinkShape
 			Connector const & connectorSrc { static_cast<Connector const &>(shapeSrc) };
 			Connector       & connectorDst { static_cast<Connector       &>(shapeDst) };
 			connectorDst.Clear();
-			connectorSrc.Apply2All
-			(
-				[&](ConnNeuron const * p) 
-				{ 
-					connectorDst.Push(static_cast<ConnNeuron *>(dstFromSrc(p))); 
-				} 
-			);
+			connectorSrc.Apply2All([&](ConnNeuron const & c) { connectorDst.Push(dstFromSrc(& c)); });
 		}
 		else  // BaseKnot
 		{
@@ -269,18 +263,18 @@ ShapeId const UPShapeList::FindShapeAt
 	for (size_t i = m_list.size(); i --> 0;)	
 	{
 		Shape * pShape = m_list[i].get();
-		if ( pShape )
-		{
-			bool bCrit { crit(* pShape) };
-			if ( bCrit )
-			{
-				bool bPointInShape { pShape->Includes(pnt) };
-				if ( bPointInShape )
-					return pShape->GetId();
-			}
-		}
-		//if ( pShape && crit(* pShape) && pShape->Includes(pnt) ) 
-		//	return pShape->GetId();
+		//if ( pShape )
+		//{
+		//	bool bCrit { crit(* pShape) };
+		//	if ( bCrit )
+		//	{
+		//		bool bPointInShape { pShape->Includes(pnt) };
+		//		if ( bPointInShape )
+		//			return pShape->GetId();
+		//	}
+		//}
+		if ( pShape && crit(* pShape) && pShape->Includes(pnt) ) 
+			return pShape->GetId();
 	};
 	return ShapeId( NO_SHAPE );
 }

@@ -14,6 +14,8 @@ class ShapePtrList
 {
 public:
 
+	virtual ~ShapePtrList() {}
+
 	size_t const Size()    const { return m_list.size(); }
 	bool   const IsEmpty() const { return m_list.empty(); }
 

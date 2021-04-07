@@ -51,7 +51,7 @@ public:
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
 	virtual MicroMeterPoint const GetPosition ()                                      const;
-	virtual bool            const Includes    (MicroMeterRect  const &)               const;
+	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool            const Includes    (MicroMeterPoint const &)               const;
 	virtual void                  CheckShape  ()                                      const;
 	virtual void                  DrawArrows  (DrawContext const &, MicroMeter const) const;

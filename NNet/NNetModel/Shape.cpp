@@ -63,6 +63,19 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParamType::Value::threshold );
 }
 
+void Shape::MoveShape( MicroMeterPoint const & delta )
+{
+	if ( HasParent() )
+		GetParent()->MoveShape( delta );
+	else 
+		MoveShape( delta );
+}
+
+void Shape::MoveShapeFromParent( MicroMeterPoint const & delta )
+{
+	MoveShape( delta );
+}
+
 void Shape::CheckShape() const
 {
 #ifdef _DEBUG

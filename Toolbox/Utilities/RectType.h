@@ -108,6 +108,11 @@ public:
 			   (m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
 	}
 
+	bool IsIncludedIn( RectType const & rect ) const
+	{
+		return rect.Includes( this );
+	}
+
 	void Expand( POS_TYPE const & pnt )
 	{
 		if ( * this == ZERO_VAL() )

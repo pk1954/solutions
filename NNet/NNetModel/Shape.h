@@ -54,17 +54,19 @@ public:
 	virtual void                  Prepare     ()                                            = 0;
 	virtual bool            const CompStep    ()                                            = 0;
 	virtual void                  Recalc      ()                                            = 0;
-	virtual void                  MoveShape   (MicroMeterPoint const &)                     = 0;
-	virtual bool            const Includes    (MicroMeterRect  const &)               const = 0;
+	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const = 0;
 	virtual bool            const Includes    (MicroMeterPoint const &)               const = 0;
 	virtual void                  Expand      (MicroMeterRect &)                      const = 0;
+	virtual void                  MoveShape   (MicroMeterPoint const &)                     = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
-	virtual void Select(tBoolOp const op)                { ApplyOp(m_bSelected, op); }
+	virtual void Select(tBoolOp const op) { ApplyOp(m_bSelected, op); }
 	virtual void Select(bool const bOn, bool const bRec) { Select(bOn); }
 	
 	void Select(bool const bOn) { m_bSelected = bOn; }
+
+	void MoveShapeFromParent( MicroMeterPoint const & );
 
 	bool      const IsSelected  () const { return m_bSelected; }
 	bool      const IsDefined   () const { return ::IsDefined( m_identifier ); }
@@ -90,6 +92,10 @@ public:
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 
+	bool    const HasParent() const          { return m_pShapeParent != nullptr; }
+	Shape * const GetParent() const          { return m_pShapeParent; }
+	void          SetParent(Shape * const p) { m_pShapeParent = p; }
+
 protected:
 
 	mV m_mVinputBuffer { 0._mV };
@@ -107,10 +113,12 @@ protected:
 	void SetType(ShapeType const type) { m_type = type; }
 
 private:
+	void moveShape(MicroMeterPoint const &);
 
-	ShapeType m_type       { ShapeType::Value::undefined };
-	bool      m_bSelected  { false };
-	ShapeId   m_identifier { };
+	ShapeType m_type         { ShapeType::Value::undefined };
+	bool      m_bSelected    { false };
+	ShapeId   m_identifier   { };
+	Shape   * m_pShapeParent { nullptr };
 };
 
 template <Shape_t T> bool HasType( Shape const & shape ) 

@@ -100,11 +100,13 @@ bool const AlignAnimation::AlignSelection( AlignAnimation::Script const & script
 
 void AlignAnimation::scriptStep(DWORD const dwOptions)
 {
-	bool bAlignDirection  = dwOptions & ALIGN_DIRECTION;
-	bool bAlignShapes     = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
-	bool bPackShapes      = dwOptions & PACK_SHAPES;
+	bool bAlignDirection = dwOptions & ALIGN_DIRECTION;
+	bool bAlignShapes    = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
+	bool bPackShapes     = dwOptions & PACK_SHAPES;
 
-	m_orthoVector = CalcOrthoVector(m_line, m_shapesAnimated);
+	ShapePtrList<BaseKnot> list;
+	m_shapesAnimated.Apply2All([&](Shape & s) { list.Add(static_cast<BaseKnot *>(&s)); } );
+	m_orthoVector = CalcOrthoVector(m_line, list);
 
 	float      const fGapCount          { Cast2Float(m_shapesAnimated.Size() - 1) };
 	MicroMeter const umUnpackedDistance { m_line.Length() / fGapCount };
@@ -136,7 +138,7 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 		}	
 	);
 
-	m_upConnAnimation->Start( MicroMeterPointVector(m_shapesAnimated), umPntVectorTarget );
+	m_upConnAnimation->Start( MicroMeterPointVector(m_shapesAnimated), umPntVectorTarget);
 }
 
 bool const AlignAnimation::AnimationStep(bool const bTargetReached)
