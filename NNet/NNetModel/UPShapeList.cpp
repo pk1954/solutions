@@ -364,11 +364,18 @@ UPShapeList UPShapeList::ExtractShapes( vector<ShapeId> idList )
 
 ShapeType const UPShapeList::DetermineShapeType() const
 {
+	unsigned int uiNrOfConnectors { CountInSelection( ShapeType::Value::connector ) };
+	
+	if ( uiNrOfConnectors > 0 )
+		return ShapeType::Value::undefined;
+
 	unsigned int uiNrOfInputNeurons  { CountInSelection( ShapeType::Value::inputNeuron  ) };
 	unsigned int uiNrOfOutputNeurons { CountInSelection( ShapeType::Value::outputNeuron ) };
-	return ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
-		? ShapeType::Value::undefined
-		: (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-	      ? ShapeType::Value::inputNeuron 
-		  : ShapeType::Value::outputNeuron;
+	
+	if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
+		return ShapeType::Value::undefined;
+
+	return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
+	       ? ShapeType::Value::inputNeuron 
+		   : ShapeType::Value::outputNeuron;
 }

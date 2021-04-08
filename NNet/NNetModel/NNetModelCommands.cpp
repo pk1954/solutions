@@ -178,7 +178,7 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 	BaseKnot * m_pBaseKnotSrc { m_pNMWI->GetShapePtr<BaseKnot *>( idSrc ) };
 	Shape    * m_pShapeDst    { m_pNMWI->GetShapePtr<Shape    *>( idDst ) };
 	if ( m_pShapeDst->IsPipe() ) 
-		pCmd = make_unique<Connect2PipeCommand    >(m_pBaseKnotSrc, static_cast<Pipe     *>(m_pShapeDst) );
+		pCmd = make_unique<Connect2PipeCommand>(m_pBaseKnotSrc, static_cast<Pipe *>(m_pShapeDst) );
 	else if ( m_pShapeDst->IsConnector() )
 		assert( false );
 	else
