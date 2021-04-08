@@ -25,6 +25,8 @@ public:
 		Neuron::CheckShape();
 	}
 
+	virtual void DrawBracket (DrawContext const &) const = 0;
+
 	void SetDirVector(MicroMeterPoint const umVector)
 	{
 		m_direction = Vector2Radian(umVector);
@@ -34,6 +36,11 @@ public:
 	{
 		MicroMeterPoint umVector { m_direction.IsNull() ? determineVector() : Radian2Vector(m_direction) };
 		return Normalize(umVector) * GetExtension().GetValue();
+	}
+
+	MicroMeterPosDir const GetRawPosDir() const
+	{
+		return MicroMeterPosDir( GetPosition(), m_direction );
 	}
 
 	MicroMeterPosDir const GetPosDir() const
@@ -51,8 +58,6 @@ public:
 	{
 		m_direction.Set2Null();
 	}
-
-	virtual void DrawBracket ( DrawContext const & ) const = 0;
 
 protected:
 	MicroMeterPoint const GetScaledDirVector() const;

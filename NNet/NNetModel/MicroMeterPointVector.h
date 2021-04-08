@@ -28,6 +28,12 @@ public:
         shapeList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
     }
 
+    void Apply2All(function<void(MicroMeterPosDir const &)> const & func)
+    {
+        for (auto & elem: m_list)
+            func(elem);
+    }
+
     unsigned int Size() const { return Cast2UnsignedInt(m_list.size()); }
 
     MicroMeterPosDir const GetPosDir( unsigned int const ui) const

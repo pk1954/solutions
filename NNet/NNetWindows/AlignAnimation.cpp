@@ -138,7 +138,30 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 		}	
 	);
 
-	m_upConnAnimation->Start( MicroMeterPointVector(m_shapesAnimated), umPntVectorTarget);
+	MicroMeterPointVector umPntVectorStart( m_shapesAnimated );
+	MicroMeterPointVector umPntVectorDiff { umPntVectorTarget - m_shapesAnimated };
+
+	Radian     radDiffMax;
+	MicroMeter umDiffMax;
+	umPntVectorDiff.Apply2All
+	(
+		[&](MicroMeterPosDir const & elem)
+		{
+			if (elem.GetDir() > radDiffMax)
+				radDiffMax = elem.GetDir();
+			MicroMeter umDiff { Hypot(elem.GetPos()) };
+			if (umDiff > umDiffMax)
+				umDiffMax = umDiff;
+		}
+	);
+	Radian     const radPerStep     { Degrees2Radian(6.0_Degrees) };
+	MicroMeter const umPerStep      { NEURON_RADIUS / 5.0f };
+	float      const fStepsFromRot  { radDiffMax / radPerStep };
+	float      const fStepsFromMove { umDiffMax / umPerStep };
+	float      const fSteps         { max(fStepsFromRot, fStepsFromMove) };
+
+	m_upConnAnimation->SetNrOfSteps( Cast2UnsignedInt(fSteps) + 1 );
+	m_upConnAnimation->Start( umPntVectorStart, umPntVectorTarget);
 }
 
 bool const AlignAnimation::AnimationStep(bool const bTargetReached)

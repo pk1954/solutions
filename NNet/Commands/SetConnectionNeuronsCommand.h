@@ -30,7 +30,7 @@ public:
 		(
 			[&](ConnNeuron & n)
 			{
-				MicroMeterPosDir const posDir { n.GetPosDir() };
+				MicroMeterPosDir const posDir { n.GetRawPosDir() };
 				n.SetPosDir( m_umPntVector.GetPosDir(ui) );
 				m_umPntVector.SetPosDir( ui, posDir );
 				++ui;
