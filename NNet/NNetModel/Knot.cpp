@@ -36,11 +36,13 @@ void Knot::CheckShape() const
 
 void Knot::Select(bool const bOn, bool const bRecursive) 
 { 
-	bool bAnyConnectedPipeSelected = m_connections.Apply2AllConnectedPipesB
-	(
-		[&](Pipe const &p){ return p.IsSelected(); }
-	);
-	Shape::Select( bOn || bAnyConnectedPipeSelected );
 	if (bRecursive)
-		m_connections.Apply2AllConnectedPipes([&](Pipe &p){ p.Select(bOn, false); });
+		m_connections.Apply2AllConnectedPipes([&](Pipe &p){ p.Select(bOn, true); });
+
+	bool bAnyConnectedPipeSelected = m_connections.Apply2AllConnectedPipesB
+	( 
+		[&](Pipe const &p) { return p.IsSelected(); }   // if any connected pipe is selected
+	);                                                  // knot must also be selected
+
+	Shape::Select( bOn || bAnyConnectedPipeSelected );
 }

@@ -61,7 +61,7 @@ void Compound::Expand(MicroMeterRect & umRect) const
 
 void Compound::Select(bool const bOn, bool const bRecursive) 
 { 
-    Shape::Select(bOn, false);
+    Shape::Select(bOn);
     if (bRecursive)
         Apply2All([&](Shape & s){ s.Select(bOn, false); } );
 }

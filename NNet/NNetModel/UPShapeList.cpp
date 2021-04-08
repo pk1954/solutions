@@ -332,7 +332,7 @@ void UPShapeList::Apply2AllSelected( ShapeType const type, ShapeFuncC const & fu
 
 void UPShapeList::SelectAllShapes(bool const bOn) 
 { 
-	Apply2All( [&](Shape & s) { s.Select(bOn, false); } ); 
+	Apply2All( [&](Shape & s) { s.Select(bOn); } ); 
 }
 
 vector<ShapeId> UPShapeList::Append( UPShapeList & list2Append )

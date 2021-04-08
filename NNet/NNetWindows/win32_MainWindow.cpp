@@ -460,7 +460,8 @@ void MainWindow::doPaint()
 			DrawArrowsInRect( pixRect, m_arrowSize );
 	}
 
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe     (); } ); 
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe() && ! s.IsSelected(); } ); 
+	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe() &&   s.IsSelected(); } ); 
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot (); } ); // draw BaseKnots OVER Pipes
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsConnector(); } ); 
 	DrawNeuronTextInRect( pixRect );
@@ -472,7 +473,7 @@ void MainWindow::doPaint()
 		m_pNMRI->DrawInterior( m_shapeTarget, context, type );
 	}
 
-	if ( IsDefined(m_shapeHighlighted) )  // draw selected shape again to be sure that it is in foreground
+	if ( IsDefined(m_shapeHighlighted) )  // draw highlighted shape again to be sure that it is in foreground
 	{
 		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlight::highlighted );
 		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlight::highlighted );

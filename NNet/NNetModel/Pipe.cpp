@@ -176,11 +176,14 @@ MicroMeterPoint Pipe::GetEndPoint() const
 
 void Pipe::Select(bool const bOn, bool const bRecursive) 
 { 
-	Shape::Select(bOn, false);
-	if ( m_pKnotStart->IsKnot() && (bRecursive || (m_pKnotStart->m_connections.GetNrOfConnections() == 1)) )
-		m_pKnotStart->Select(bOn, false);
-	if ( m_pKnotEnd  ->IsKnot() && (bRecursive || (m_pKnotEnd  ->m_connections.GetNrOfConnections() == 1)) )
-		m_pKnotEnd->Select(bOn, false);
+	Shape::Select(bOn);
+	if ( bRecursive )
+	{
+		if ( m_pKnotStart->IsKnot() )
+			m_pKnotStart->Select(bOn, false);
+		if ( m_pKnotEnd  ->IsKnot() )
+			m_pKnotEnd->Select(bOn, false);
+	}
 }
 
 MicroMeter Pipe::GetLength() const

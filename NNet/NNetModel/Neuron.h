@@ -48,6 +48,7 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
 
+	virtual void       Select(bool const bOn, bool const bRec) { Shape::Select(bOn); };
 	virtual void       DrawExterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawInterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawNeuronText( DrawContext const & ) const;
