@@ -52,6 +52,8 @@ public:
 		m_direction.Set2Null();
 	}
 
+	virtual void DrawBracket ( DrawContext const & ) const = 0;
+
 protected:
 	MicroMeterPoint const GetScaledDirVector() const;
 

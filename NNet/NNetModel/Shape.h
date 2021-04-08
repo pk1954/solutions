@@ -36,17 +36,17 @@ static ShapeCrit const ShapeCritAlwaysTrue { [](auto & s) { return true; } };
 class Shape
 {
 public:
-	static void Initialize( Param const & param ) { m_pParameters = & param; }
+	static void Initialize(Param const & param) { m_pParameters = & param; }
 
-	static bool const TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
+	static bool const TypeFits(ShapeType const type) { return true; }  // every shape type is a Shape
 
 	Shape( ShapeType const );
-	virtual ~Shape() { }
+	virtual ~Shape() {}
 
 	virtual void CheckShape() const;
 	virtual void Dump() const;
 
-	virtual bool operator==( Shape const & ) const;
+	virtual bool operator==(Shape const &) const;
 
 	virtual MicroMeterPoint const GetPosition ()                                      const = 0;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const = 0;

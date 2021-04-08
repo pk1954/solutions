@@ -31,6 +31,7 @@ public:
 	virtual void                  Recalc      ();
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &) const;
 	virtual bool            const Includes    (MicroMeterPoint const &) const;
+	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
 
 	void Apply2All(function<void(ConnNeuron const &)> const & func) const;
 

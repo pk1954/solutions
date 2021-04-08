@@ -35,6 +35,12 @@ MicroMeterPoint const Connector::GetPosition() const
     return (GetFirst().GetPosition() + GetLast().GetPosition()) / 2.0f; 
 }
 
+void Connector::DrawExterior(DrawContext const & context, tHighlight const type) const
+{
+    Apply2All([&](ConnNeuron const & c){ c.DrawBracket(context); } );
+    Compound::DrawExterior(context, type );
+}
+
 void Connector::Prepare()
 {
     apply2All([&](ConnNeuron & n){ n.Prepare(); } );

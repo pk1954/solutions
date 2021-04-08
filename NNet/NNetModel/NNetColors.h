@@ -19,6 +19,9 @@ public:
 	// color of beacon 
 	inline static D2D1::ColorF const COL_BEACON     { 0.0f, 0.0f, 1.0f, 0.4f };
 
+	// color of connector bracket 
+	inline static D2D1::ColorF const COL_CONNECTOR_BG { D2D1::ColorF::Purple };
+
 	// colors EEG-Monitor
 	inline static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
 
