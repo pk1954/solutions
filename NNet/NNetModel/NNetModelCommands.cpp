@@ -33,6 +33,7 @@
 #include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
 #include "RestrictSelectionCommand.h"
+#include "RotateConnectorCommand.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
@@ -258,6 +259,19 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
 	unique_ptr<Command> pCmd;
 	m_pCmdStack->PushCommand( make_unique<MoveShapeCommand>(id, delta) );
+}
+
+void NNetModelCommands::RotateConnector
+( 
+	ShapeId         const   id, 
+	MicroMeterPoint const & umPntOld, 
+	MicroMeterPoint const & umPntNew 
+)
+{
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << L" " << id << L" " << umPntOld << L" " << umPntNew << endl;
+	unique_ptr<Command> pCmd;
+	m_pCmdStack->PushCommand( make_unique<RotateConnectorCommand>(id, umPntOld, umPntNew) );
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )

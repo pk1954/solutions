@@ -32,6 +32,9 @@ public:
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &) const;
 	virtual bool            const Includes    (MicroMeterPoint const &) const;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
+	virtual void                  RotateShape (MicroMeterPoint const &, Radian const);
+
+	void Rotate(MicroMeterPoint const &, MicroMeterPoint const &);
 
 	void Apply2All(function<void(ConnNeuron const &)> const & func) const;
 

@@ -65,6 +65,8 @@ public:
 	virtual void                  Recalc();
 	virtual void                  Clear();
 
+	virtual void RotateShape(MicroMeterPoint const &, Radian const) {}
+
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPoint const & ) const;
 

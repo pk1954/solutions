@@ -41,6 +41,18 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 	SetPosition( GetPosition() + delta );
 }
 
+void BaseKnot::RotateShape( MicroMeterPoint const & umPntPivot, Radian const radDelta )
+{
+	MicroMeterPoint const umPntVectorOld    { GetPosition() - umPntPivot };
+	Radian          const radOld            { Vector2Radian(umPntVectorOld) };
+	Radian          const radNew            { radOld + radDelta };
+	MicroMeterPoint const umPntVectorNew    { Radian2Vector(radNew) };
+	MicroMeter      const umDistFromPivot   { Hypot(umPntVectorOld) };
+	MicroMeterPoint const umPntVectorScaled { umPntVectorNew.ScaledTo( umDistFromPivot) };
+	MicroMeterPoint const umPntPosNew       { umPntPivot + umPntVectorScaled };
+	SetPosition( umPntPosNew );
+}
+
 bool const BaseKnot::IsIncludedIn( MicroMeterRect const & umRect ) const 
 { 
 	return umRect.Includes( GetPosition() ); 

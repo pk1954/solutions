@@ -57,6 +57,8 @@ public:
 
 	ShapePtrList<Shape> const & GetList() { return m_list; }
 
+	void Rotate(MicroMeterPoint const &, Radian const);
+
 private:
 
     ShapePtrList<Shape> m_list {};

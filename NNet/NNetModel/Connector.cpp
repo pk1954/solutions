@@ -63,6 +63,20 @@ void Connector::Apply2All(function<void(ConnNeuron const &)> const & func) const
     apply2All([&](ConnNeuron const & n){ func(n); } );
 }                        
 
+void Connector::RotateShape(MicroMeterPoint const & umPntPivot, Radian const radDelta)
+{
+    apply2All([&](ConnNeuron & n){ n.RotateShape(umPntPivot, radDelta); } );
+}
+
+void Connector::Rotate(MicroMeterPoint const & umPntOld, MicroMeterPoint const & umPntNew)
+{
+    MicroMeterPoint const umPntPivot { GetPosition() };
+    Radian          const radOld     { Vector2Radian(umPntOld - umPntPivot) };
+    Radian          const radNew     { Vector2Radian(umPntNew - umPntPivot) };
+    Radian          const radDelta   { radNew - radOld };
+    RotateShape(umPntPivot, radDelta);
+}                        
+
 bool const Connector::IsIncludedIn(MicroMeterRect const & umRect) const 
 {
     bool bRes { false };

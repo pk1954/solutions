@@ -54,6 +54,11 @@ void Compound::MoveShape(MicroMeterPoint const & delta)
     Apply2All([&](Shape & s){ s.MoveShapeFromParent(delta); } );
 }
 
+void Compound::Rotate(MicroMeterPoint const & umPntPivot, Radian const radDelta)
+{
+    Apply2All([&](Shape & s){ RotateShape(umPntPivot, radDelta); } );
+}                        
+
 void Compound::Expand(MicroMeterRect & umRect) const
 {
     Apply2All([&](Shape const & s){ umRect.Expand(s.GetPosition()); } );

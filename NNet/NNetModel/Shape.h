@@ -58,12 +58,11 @@ public:
 	virtual bool            const Includes    (MicroMeterPoint const &)               const = 0;
 	virtual void                  Expand      (MicroMeterRect &)                      const = 0;
 	virtual void                  MoveShape   (MicroMeterPoint const &)                     = 0;
+	virtual void                  RotateShape (MicroMeterPoint const &, Radian const)       = 0;
 	virtual void                  Select      (bool const, bool const)                      = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
-	//virtual void Select(tBoolOp const op) { ApplyOp(m_bSelected, op); }
-	
 	void Select(bool const bOn) { m_bSelected = bOn; }
 
 	void MoveShapeFromParent( MicroMeterPoint const & );

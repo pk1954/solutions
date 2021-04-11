@@ -117,7 +117,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case ShapeType::Value::connector:
-AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
 		break;
 
@@ -305,16 +305,23 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			MicroMeterPoint umDelta = umCrsrPos - umLastPos;
-			if ( IsDefined(m_shapeHighlighted) )
+			if ( IsDefined(m_shapeHighlighted) )    // move highligthted shape
 			{
 				if (umDelta.IsNotZero())
 				{
-					m_pModelCommands->MoveShape( m_shapeHighlighted, umDelta );
-					setTargetShape();
+					if ((wParam & MK_CONTROL) && m_pNMRI->GetConstShape(m_shapeHighlighted)->IsConnector())
+					{
+						m_pModelCommands->RotateConnector(m_shapeHighlighted, umLastPos, umCrsrPos);
+					}
+					else
+					{
+						m_pModelCommands->MoveShape(m_shapeHighlighted, umDelta);
+						setTargetShape();
+					}
 				}
 			}
 			else if (Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor(umCrsrPos) })
-			{
+			{                                // move signal
 				pSignal->Move( umDelta );
 				Notify( false ); 
 			}

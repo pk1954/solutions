@@ -6,6 +6,7 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
+#include "Command.h"
 #include "ShapeId.h"
 #include "Shape.h"
 
