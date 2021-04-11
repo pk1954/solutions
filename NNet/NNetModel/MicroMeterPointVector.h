@@ -114,10 +114,21 @@ public:
 
     friend wostream & operator<< (wostream & out, MicroMeterPointVector const & v)
     {
+        out << OPEN_BRACKET << v.m_list.size() << L":";
         for ( auto & it: v.m_list )
-            out << it << endl;
+        {
+            out << it;
+            if ( &it == &v.m_list.back() )
+                break;
+            out << SEPARATOR;
+        }
+        out << CLOSE_BRACKET;
         return out; 
     }
+
+    inline static wchar_t const OPEN_BRACKET  { L'(' };
+    inline static wchar_t const SEPARATOR     { L',' };
+    inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
     vector<MicroMeterPosDir> m_list;

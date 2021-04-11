@@ -33,7 +33,9 @@ public:
 	using Script = vector<DWORD>;
 
 	bool const AlignSelection( AlignAnimation::Script const & );
-	bool const AnimationStep( bool const );
+	void       AnimationStep();
+	bool const NextStep();
+	wchar_t const * const DoNextStep();
 
 private:
 
@@ -63,6 +65,6 @@ private:
 	void       calcDistances  (ALIGN_VECTOR &);
 	void       sortDistances  (ALIGN_VECTOR &);
 	bool const calcMaxDistLine(ALIGN_VECTOR const &);
-	void       scriptStep     (DWORD const);
+	void       scriptStep     ();
 
 };

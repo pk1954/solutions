@@ -15,19 +15,20 @@
 using std::unique_ptr;
 using std::make_unique;
 
-class CreateConnectorCommand : public Command
+class CreateConnectorCommand : public SelectionCommand
 {
 public:
 	CreateConnectorCommand(ShapePtrList<ConnNeuron> & list)
 	{
 		m_upConnector = make_unique<Connector>();
-		m_upConnector->Select(true, false);
+		//m_upConnector->Select(true, false);
 		list.Apply2All(	[&](ConnNeuron & n)	{ m_upConnector->Push(&n); } );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		m_upConnector->SetParentPointers();
+		m_upConnector->Select(false, true);
 		nmwi.GetUPShapes().Push( move(m_upConnector) );
 	}
 

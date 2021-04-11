@@ -8,6 +8,7 @@
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
 #include "ShapeId.h"
+#include "ShapeIdList.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 
@@ -36,8 +37,8 @@ private:
 
     vector<unique_ptr<Knot>> m_startKnots  { };
     vector<unique_ptr<Knot>> m_endKnots    { };
-    vector<ShapeId>          m_idStartKnots{ };
-    vector<ShapeId>          m_idEndKnots  { };
+    ShapeIdList              m_idStartKnots{ };
+    ShapeIdList              m_idEndKnots  { };
 
     ShapeId            const m_idBaseKnot;
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only

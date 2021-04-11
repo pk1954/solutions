@@ -10,6 +10,7 @@
 #include "Connector.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
+#include "ShapeIdList.h"
 #include "UPShapeList.h"
 
 using std::move;
@@ -263,16 +264,6 @@ ShapeId const UPShapeList::FindShapeAt
 	for (size_t i = m_list.size(); i --> 0;)	
 	{
 		Shape * pShape = m_list[i].get();
-		//if ( pShape )
-		//{
-		//	bool bCrit { crit(* pShape) };
-		//	if ( bCrit )
-		//	{
-		//		bool bPointInShape { pShape->Includes(pnt) };
-		//		if ( bPointInShape )
-		//			return pShape->GetId();
-		//	}
-		//}
 		if ( pShape && crit(* pShape) && pShape->Includes(pnt) ) 
 			return pShape->GetId();
 	};
@@ -335,9 +326,9 @@ void UPShapeList::SelectAllShapes(bool const bOn)
 	Apply2All( [&](Shape & s) { s.Select(bOn); } ); 
 }
 
-vector<ShapeId> UPShapeList::Append( UPShapeList & list2Append )
+ShapeIdList UPShapeList::Append( UPShapeList & list2Append )
 {
-	vector<ShapeId> idList;
+	ShapeIdList idList;
 	long offset { Size() };
 	for ( auto & upShape : list2Append.m_list )
 	{
@@ -345,20 +336,17 @@ vector<ShapeId> UPShapeList::Append( UPShapeList & list2Append )
 		{
 			ShapeId id { upShape->GetId() + offset };
 			upShape->SetId( id );
-			idList.push_back( id );
+			idList.Add( id );
 		}
 		m_list.push_back( move(upShape) );
 	}
 	return idList;
 }
 
-UPShapeList UPShapeList::ExtractShapes( vector<ShapeId> idList )
+UPShapeList UPShapeList::ExtractShapes(ShapeIdList idList)
 {
 	UPShapeList shapeList;
-	for ( auto & id : idList )
-	{
-		shapeList.Push( ExtractShape( id ) );
-	}
+	idList.Apply2All([&](ShapeId const &id){ shapeList.Push(ExtractShape(id)); } );
 	return shapeList;
 }
 

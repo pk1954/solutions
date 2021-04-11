@@ -117,7 +117,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case ShapeType::Value::connector:
-//		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
+AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
 		break;
 
@@ -511,8 +511,12 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		break;
 
 	case IDX_CONNECTOR_ANIMATION:
-		if ( m_pAlignAnimation->AnimationStep(lParam != 0) )
-			SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)L"SNAP_IN_SOUND" ); 
+		m_pAlignAnimation->AnimationStep();
+		if ( (lParam != 0) && m_pAlignAnimation->NextStep() )
+		{
+			if (wchar_t const * const strSound = m_pAlignAnimation->DoNextStep())
+				SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)strSound ); 
+		}
 		Notify( false );
 		break;
 

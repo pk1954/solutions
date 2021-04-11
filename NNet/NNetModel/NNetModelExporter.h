@@ -8,6 +8,7 @@
 #include <fstream>
 #include "MoreTypes.h"
 #include "ShapeId.h"
+#include "ShapeIdList.h"
 
 using std::wostream;
 using std::wstring;
@@ -33,9 +34,9 @@ private:
 	NNetModelReaderInterface * m_pNMRI                    { nullptr };
 	Observable               * m_unsavedChangesObservable { nullptr };
 
-	vector<ShapeId> m_CompactIds;
+	ShapeIdList m_CompactIds;
 
-	long const getCompactIdVal(ShapeId const id) { return m_CompactIds[id.GetValue()].GetValue(); }
+	long const getCompactIdVal(ShapeId const);
 
 	void writeShape    ( wostream &, Shape     const & );
 	void writePipe     ( wostream &, Pipe      const & );

@@ -16,6 +16,7 @@
 
 class Param;
 class Observable;
+class ShapeIdList;
 class CommandStack;
 class NNetModelImporter;
 class NNetModelReaderInterface;
@@ -27,6 +28,8 @@ struct SoundDescr;
 using std::wcout;
 using std::wstring;
 using std::wostream;
+using std::vector;
+using std::unique_ptr;
 
 class NNetModelCommands
 {
@@ -54,6 +57,7 @@ public:
     void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ();
     void CreateConnector     ( ShapePtrList<ConnNeuron> & );
+    void CreateConnector     ( unique_ptr<ShapeIdList> );
     void CreateInitialShapes ();
     void DeleteSelection     ();
     void DeleteShape         ( ShapeId  const );
@@ -75,7 +79,7 @@ public:
     void SelectShape         ( ShapeId const, tBoolOp const );
     void SelectShapesInRect  ( MicroMeterRect const &, bool const );
     void SelectSubtree       ( ShapeId const, bool const );
-    void SetConnectionNeurons( MicroMeterPointVector const &, ShapePtrList<ConnNeuron> & );
+    void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<ShapeIdList> );
     void SetParameter        ( ParamType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );
     void SetTriggerSound     ( ShapeId const, SoundDescr const & );

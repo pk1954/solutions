@@ -17,21 +17,22 @@ public:
 	SetConnectionNeuronsCommand
 	(
 		MicroMeterPointVector const & umPntVector,
-		ShapePtrList<ConnNeuron>    & shapes2Animate
+		unique_ptr<ShapeIdList>   upShapeIds
 	)
 	  : m_umPntVector(umPntVector),
-		m_shapes2Animate(shapes2Animate)
+		m_upShapeIds(move(upShapeIds))
 	{}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		unsigned int ui = 0;
-		m_shapes2Animate.Apply2All
+		m_upShapeIds->Apply2All
 		(
-			[&](ConnNeuron & n)
+			[&](ShapeId const & id)
 			{
-				MicroMeterPosDir const posDir { n.GetRawPosDir() };
-				n.SetPosDir( m_umPntVector.GetPosDir(ui) );
+				ConnNeuron     * const pConnNeuron { nmwi.GetShapePtr<ConnNeuron *>(id) };
+				MicroMeterPosDir const posDir      { pConnNeuron->GetRawPosDir() };
+				pConnNeuron->SetPosDir( m_umPntVector.GetPosDir(ui) );
 				m_umPntVector.SetPosDir( ui, posDir );
 				++ui;
 			}
@@ -39,6 +40,6 @@ public:
 	}
 
 private:
-	MicroMeterPointVector    m_umPntVector;
-	ShapePtrList<ConnNeuron> m_shapes2Animate;
+	MicroMeterPointVector       m_umPntVector;
+	unique_ptr<ShapeIdList> m_upShapeIds;
 };

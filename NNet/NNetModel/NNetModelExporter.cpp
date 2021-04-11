@@ -32,6 +32,11 @@ void NNetModelExporter::Initialize( NNetModelReaderInterface * const pNMRI )
     m_pNMRI = pNMRI;
 }
 
+long const NNetModelExporter::getCompactIdVal(ShapeId const id) 
+{ 
+    return m_CompactIds.Get(id.GetValue()).GetValue(); 
+}
+
 void NNetModelExporter::writeHeader( wostream & out )
 {
     static int const BUF_SIZE { 128 };
@@ -70,15 +75,15 @@ void NNetModelExporter::writeGlobalParameters( wostream & out )
 
 void NNetModelExporter::writeShapes( wostream & out )
 {
-    m_CompactIds.resize( m_pNMRI->GetSizeOfShapeList() );
-    //wcout << L"*** Before writeShapes ";
-    //m_pNMRI->DumpModel();
+    m_CompactIds.Resize( m_pNMRI->GetSizeOfShapeList() );
     ShapeId idCompact( 0 );
-    for ( int i = 0; i < m_CompactIds.size(); ++i )
+    for ( int i = 0; i < m_CompactIds.Size(); ++i )
     {
-        m_CompactIds[ i ] = m_pNMRI->GetConstShape( ShapeId( i ) )
-            ? idCompact++
-            : ShapeId();
+        m_CompactIds.SetAt
+        (
+            i, 
+            m_pNMRI->GetConstShape(ShapeId(i)) ? idCompact++ : ShapeId()
+        );
     }
     out << L"NrOfShapes = " << idCompact << endl;
     out << endl;

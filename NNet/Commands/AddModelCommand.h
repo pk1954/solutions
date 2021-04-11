@@ -5,6 +5,7 @@
 #pragma once
 
 #include "UPShapeList.h"
+#include "ShapeIdList.h"
 #include "SelectionCommand.h"
 #include "NNetModelWriterInterface.h"
 
@@ -32,6 +33,6 @@ public:
 	}
 
 private:
-	UPShapeList     m_UPShapeList;
-	vector<ShapeId> m_idList;
+	UPShapeList m_UPShapeList;
+	ShapeIdList m_idList;
 };

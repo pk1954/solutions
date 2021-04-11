@@ -36,9 +36,46 @@ MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 	return MicroMeterCircle( umCenter, umRadius );
 }
 
+MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
+{
+	script.ScrReadSpecial( MicroMeterPosDir::OPEN_BRACKET );
+	MicroMeterPoint const umPnt(ScrReadMicroMeterPoint( script ));
+	script.ScrReadSpecial( MicroMeterPosDir::SEPARATOR );
+	Radian const rad(Cast2Float(script.ScrReadFloat()));
+	script.ScrReadSpecial( MicroMeterPosDir::CLOSE_BRACKET );
+	return MicroMeterPosDir( umPnt, rad );
+}
+
 MicroMeterPointVector ScrReadMicroMeterPointVector(Script& script)
 {
 	MicroMeterPointVector umPntVector;
-	// TODO
+	script.ScrReadSpecial( MicroMeterPointVector::OPEN_BRACKET );
+	int const iNrOfElements { script.ScrReadInt() };
+	script.ScrReadSpecial( L':' );
+	for (int i = 0;;)
+	{
+		umPntVector.Add( ScrReadMicroMeterPosDir(script) );
+		if (++i == iNrOfElements )
+			break;
+		script.ScrReadSpecial( MicroMeterPointVector::SEPARATOR );
+	}
+	script.ScrReadSpecial( MicroMeterPointVector::CLOSE_BRACKET );
 	return umPntVector;
+}
+
+unique_ptr<ShapeIdList> ScrReadShapeIdList(Script& script)
+{
+	unique_ptr<ShapeIdList> upShapeIds  { make_unique<ShapeIdList>() };
+	script.ScrReadSpecial( ShapeIdList::OPEN_BRACKET );
+	int const iNrOfElements { script.ScrReadInt() };
+	script.ScrReadSpecial( L':' );
+	for (int i = 0;;)
+	{
+		upShapeIds->Add( ScrReadShapeId(script) );
+		if (++i == iNrOfElements )
+			break;
+		script.ScrReadSpecial( ShapeIdList::SEPARATOR );
+	}
+	script.ScrReadSpecial( ShapeIdList::CLOSE_BRACKET );
+	return move(upShapeIds);
 }

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "symtab.h"
+#include "ShapeIdList.h"
 #include "SoundInterface.h"
 #include "win32_util.h"
 #include "UtilityWrappers.h"
@@ -47,6 +48,15 @@ public:
     virtual void operator() ( Script & script ) const
     {
         m_pCommands->CreateInitialShapes();
+    }
+};
+
+class WrapCreateConnector: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        m_pCommands->CreateConnector(ScrReadShapeIdList(script));
     }
 };
 
@@ -211,10 +221,9 @@ class WrapSetConnectionNeurons: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        MicroMeterPointVector    umPntVector;
-        ShapePtrList<ConnNeuron> shapeList;
-        // TODO
-        m_pCommands->SetConnectionNeurons( umPntVector, shapeList );
+        unique_ptr<ShapeIdList> upShapeIds  { ScrReadShapeIdList(script) };
+        MicroMeterPointVector   umPntVector { ScrReadMicroMeterPointVector(script) };
+        m_pCommands->SetConnectionNeurons( umPntVector, move(upShapeIds) );
     }
 };
 
@@ -379,6 +388,7 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(ClearBeepers);       
     DEF_FUNC(Connect);
     DEF_FUNC(CopySelection);      
+    DEF_FUNC(CreateConnector);
     DEF_FUNC(CreateInitialShapes);
     DEF_FUNC(DeleteSelection);    
     DEF_FUNC(DeleteShape);        

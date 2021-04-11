@@ -83,11 +83,15 @@ public:
 
     friend wostream & operator<< ( wostream & out, MicroMeterPosDir const & posDir )
     {
-        out << posDir.m_pos << L", " 
-            << posDir.m_dir.GetValue() << L"rad, " 
-            << Radian2Degrees(posDir.m_dir) << L"deg";
+        out << OPEN_BRACKET  << posDir.m_pos 
+            << SEPARATOR     << posDir.m_dir.GetValue() 
+            << CLOSE_BRACKET;
         return out;
     }
+
+    inline static wchar_t const OPEN_BRACKET  { L'(' };
+    inline static wchar_t const SEPARATOR     { L',' };
+    inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
     MicroMeterPoint m_pos;

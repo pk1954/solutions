@@ -49,7 +49,7 @@ private:
 		(
 			[&](Shape & shape)
 			{
-				m_selectedShapeIds.push_back(shape.GetId());
+				m_selectedShapeIds.Add(shape);
 				UPShape upShapeCopy { ShallowCopy(shape) };
 				m_indexList[upShapeCopy->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
 				m_copies.push_back( move(upShapeCopy) );
@@ -101,10 +101,7 @@ public:
 			m_copies.push_back(nmwi.GetUPShapes().Pop<Shape>());
 		}
 		nmwi.GetUPShapes().DeselectAllShapes();
-		for ( auto & idShape : m_selectedShapeIds ) 
-		{ 
-			nmwi.SelectShape(idShape, true); 
-		}
+		m_selectedShapeIds.Apply2All([&](ShapeId const &id) { nmwi.SelectShape(id, true); });
 	}
 
 private:
@@ -115,6 +112,6 @@ private:
 	int             m_iSizeOfSelection { 0 };
 	SSIndexVector   m_indexList        {};     // indices into m_copies
 	vector<UPShape> m_copies           {};
-	vector<ShapeId> m_selectedShapeIds {};
+	ShapeIdList m_selectedShapeIds {};
 };
 

@@ -18,6 +18,8 @@ using std::accumulate;
 using std::unique_ptr;
 using std::make_unique;
 
+class ShapeIdList;
+
 class UPShapeList
 {
 public:
@@ -36,8 +38,10 @@ public:
 	bool    const IsValidShapeId(ShapeId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
 	bool    const IsEmptySlot   (ShapeId const id) const { return GetAt( id ) == nullptr; }
 	Shape * const Front         ()                 const { return   m_list[0].get(); }
-	Shape * const GetAt         (ShapeId const id) const { return   m_list[id.GetValue()].get();	}
-	Shape       & GetRef        (ShapeId const id)       { return * m_list[id.GetValue()]; }
+	Shape * const GetAt         (int     const i ) const { return   m_list[i].get(); }
+	Shape * const GetAt         (ShapeId const id) const { return   GetAt(id.GetValue()); }
+	Shape       & GetRef        (int     const i )       { return * m_list[i]; }
+	Shape       & GetRef        (ShapeId const id)       { return   GetRef(id.GetValue()); }
 	void          Resize        (long    const nr)       { m_list.resize( nr );	}
 	void          Increase      (long    const nr)       { m_list.resize( m_list.size() + nr ); }
 				    
@@ -63,8 +67,8 @@ public:
 	void            Apply2AllSelected (ShapeType const, ShapeFuncC const &)                     const;
 	void            Apply2AllSelected (ShapeType const, ShapeFunc  const &);
 
-	vector<ShapeId> Append            (UPShapeList &);
-	UPShapeList     ExtractShapes     (vector<ShapeId>);
+	ShapeIdList Append       (UPShapeList &);
+	UPShapeList ExtractShapes(ShapeIdList);
 
 	enum class SelMode { allShapes,	selectedShapes };
 	MicroMeterRect const CalcEnclosingRect(SelMode const = SelMode::allShapes) const;

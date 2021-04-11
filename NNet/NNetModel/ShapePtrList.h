@@ -84,18 +84,23 @@ public:
 		return true;
 	}
 
-	friend wostream & operator<< ( wostream & out, ShapePtrList<T> const & list )
+	friend wostream & operator<< (wostream & out, ShapePtrList<T> const & v)
 	{
-		out << L"(";
-		if ( ! list.IsEmpty() )
+		out << OPEN_BRACKET << v.m_list.size() << L":";
+		for ( auto & it: v.m_list )
 		{
-			out << list.m_list[0]->GetId();
-			for ( int i = 1; i < list.m_list.size(); ++i )
-				out << L',' << list.m_list[i]->GetId();
+			out << it->GetId();
+			if ( &it == &v.m_list.back() )
+				break;
+			out << SEPARATOR;
 		}
-		out << L")";
+		out << CLOSE_BRACKET;
 		return out;
 	}
+
+	inline static wchar_t const OPEN_BRACKET  { L'(' };
+	inline static wchar_t const SEPARATOR     { L',' };
+	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
 	vector<T *> m_list;

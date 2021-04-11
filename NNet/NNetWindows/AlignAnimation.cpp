@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Resource.h"
+#include "ShapeIdList.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
 #include "CalcOrthoVector.h"
@@ -94,12 +95,13 @@ bool const AlignAnimation::AlignSelection( AlignAnimation::Script const & script
 	if ( ! prepareData() )
 		return false;
 
-	scriptStep( m_pScript->at(m_iScriptStep) );
+	scriptStep();
 	return true;
 }
 
-void AlignAnimation::scriptStep(DWORD const dwOptions)
+void AlignAnimation::scriptStep()
 {
+	DWORD const dwOptions { m_pScript->at(m_iScriptStep) };
 	bool bAlignDirection = dwOptions & ALIGN_DIRECTION;
 	bool bAlignShapes    = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
 	bool bPackShapes     = dwOptions & PACK_SHAPES;
@@ -139,7 +141,7 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 	);
 
 	MicroMeterPointVector umPntVectorStart( m_shapesAnimated );
-	MicroMeterPointVector umPntVectorDiff { umPntVectorTarget - m_shapesAnimated };
+	MicroMeterPointVector umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
 
 	Radian     radDiffMax;
 	MicroMeter umDiffMax;
@@ -164,29 +166,33 @@ void AlignAnimation::scriptStep(DWORD const dwOptions)
 	m_upConnAnimation->Start( umPntVectorStart, umPntVectorTarget);
 }
 
-bool const AlignAnimation::AnimationStep(bool const bTargetReached)
+void AlignAnimation::AnimationStep()
 {
+	unique_ptr<ShapeIdList> upShapeIds { make_unique<ShapeIdList>() };
+	m_shapesAnimated.Apply2All([&](Shape & s) { upShapeIds->Add(s.GetId()); } );
+
 	m_pModelCommands->SetConnectionNeurons
 	(
 		m_upConnAnimation->GetActual(), 
-		m_shapesAnimated
+		move(upShapeIds)
 	);
+}
 
-	if ( bTargetReached )
+bool const AlignAnimation::NextStep()
+{
+	return ++m_iScriptStep < m_pScript->size();
+}
+
+wchar_t const * const AlignAnimation::DoNextStep()
+{
+	if (m_pScript->at(m_iScriptStep) & CREATE_CONNECTOR)
 	{
-		if (++m_iScriptStep == m_pScript->size())
-			return true;
-		DWORD dwOptions { m_pScript->at(m_iScriptStep) };
-		if (dwOptions & CREATE_CONNECTOR)
-		{
-			assert(m_iScriptStep == m_pScript->size() - 1);  // assumption: Create Connector is last step
-			m_pModelCommands->CreateConnector( m_shapesAnimated );
-			return true;
-		}
-		else
-		{
-			scriptStep( dwOptions );
-		}
+		m_pModelCommands->CreateConnector( m_shapesAnimated );
+		return L"SNAP_IN_SOUND";
 	}
-	return false;
+	else
+	{
+		scriptStep();
+		return nullptr;
+	}
 }

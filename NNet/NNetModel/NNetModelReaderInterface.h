@@ -40,16 +40,16 @@ public:
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
-	UPShapeList     const & GetUPShapes()                              const { return m_pModel->GetUPShapes(); }
-	bool            const   AnyShapesSelected()                       const { return m_pModel->GetUPShapes().AnyShapesSelected(); }
-	bool            const   IsValidShapeId( ShapeId const id )         const { return m_pModel->GetUPShapes().IsValidShapeId(id); }
-	MicroMeterPoint const   GetShapePos   ( ShapeId const id )         const { return m_pModel->GetShapePos                 (id); }
-	Shape           const * GetConstShape ( ShapeId const id )         const { return m_pModel->GetConstShape               (id); }
-	size_t          const   GetSizeOfShapeList()                      const { return m_pModel->GetUPShapes().Size(); }
-	fMicroSecs      const   GetSimulationTime()                       const { return m_pModel->GetSimulationTime (); }
-	MonitorData     const & GetMonitorData()                          const { return m_pModel->GetMonitorData    (); }
-	fMicroSecs      const   GetTimeResolution()                       const { return m_pModel->GetParams().GetTimeResolution(); };
-	wstring         const   GetModelFilePath()                         const { return m_pModel->GetModelFilePath(); }
+	UPShapeList     const & GetUPShapes()                          const { return m_pModel->GetUPShapes(); }
+	bool            const   AnyShapesSelected()                    const { return m_pModel->GetUPShapes().AnyShapesSelected(); }
+	bool            const   IsValidShapeId( ShapeId const id )     const { return m_pModel->GetUPShapes().IsValidShapeId(id); }
+	MicroMeterPoint const   GetShapePos   ( ShapeId const id )     const { return m_pModel->GetShapePos                 (id); }
+	Shape           const * GetConstShape ( ShapeId const id )     const { return m_pModel->GetConstShape               (id); }
+	size_t          const   GetSizeOfShapeList()                   const { return m_pModel->GetUPShapes().Size(); }
+	fMicroSecs      const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime (); }
+	MonitorData     const & GetMonitorData()                       const { return m_pModel->GetMonitorData    (); }
+	fMicroSecs      const   GetTimeResolution()                    const { return m_pModel->GetParams().GetTimeResolution(); };
+	wstring         const   GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float           const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 
 	bool    const GetDescriptionLine( int const, wstring & ) const;

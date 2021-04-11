@@ -213,6 +213,7 @@
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="ShapeIdList.h" />
     <ClInclude Include="ShapePtrList.h" />
     <ClInclude Include="ShapeErrorHandler.h" />
     <ClInclude Include="SignalFactory.h" />
