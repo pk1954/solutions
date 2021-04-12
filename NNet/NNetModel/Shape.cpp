@@ -36,10 +36,10 @@ D2D1::ColorF Shape::GetExteriorColor( tHighlight const type ) const
 {
 	switch ( type )
 	{
-	case tHighlight::normal:      return NNetColors::EXT_NORMAL;
 	case tHighlight::highlighted: return NNetColors::EXT_HIGHLIGHTED;
-	case tHighlight::targetFit:   return NNetColors::EXT_NORMAL;
-	case tHighlight::targetNoFit: return NNetColors::EXT_NORMAL;
+	case tHighlight::normal:      
+	case tHighlight::targetFit:   
+	case tHighlight::targetNoFit: return HasParent() ? NNetColors::COL_CONNECTOR_BG : NNetColors::EXT_NORMAL;
 	}
 	assert( false );
 	return NNetColors::EXT_NORMAL;

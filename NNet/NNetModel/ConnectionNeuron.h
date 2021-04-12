@@ -25,7 +25,6 @@ public:
 		Neuron::CheckShape();
 	}
 
-	virtual void DrawBracket(DrawContext const &) const = 0;
 	virtual void RotateShape(MicroMeterPoint const &, Radian const);
 
 	void SetDirVector(MicroMeterPoint const umVector)

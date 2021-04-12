@@ -35,20 +35,6 @@ bool OutputNeuron::operator==( Shape const & rhs ) const
 	return this->Neuron::operator== (static_cast<OutputNeuron const &>(rhs));
 }
 
-void OutputNeuron::DrawBracket(DrawContext const & context) const
-{
-	MicroMeterPoint const umDirVector { GetDirVector() };
-	MicroMeterPoint const umCenter    { GetPosition() - GetScaledDirVector() * 0.1f };
-
-	context.DrawLine
-	( 
-		umCenter + umDirVector * 0.9f, 
-		umCenter - umDirVector * 0.3f, 
-		GetExtension() * 2.2f, 
-		NNetColors::COL_CONNECTOR_BG 
-	);
-}
-
 void OutputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawPlug( context, 0.8f, 0.8f, GetExteriorColor(type) );

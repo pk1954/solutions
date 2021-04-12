@@ -23,7 +23,6 @@ public:
 	static bool      const TypeFits( ShapeType const type ) { return type.IsOutputNeuronType(); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::outputNeuron; }
 
-	virtual void DrawBracket ( DrawContext const & )                   const;
 	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
 	virtual void DrawInterior( DrawContext const &, tHighlight const ) const;
 

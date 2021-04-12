@@ -66,20 +66,6 @@ bool const InputNeuron::CompStep()
 	return m_bStopOnTrigger && bTrigger;
 }
 
-void InputNeuron::DrawBracket(DrawContext const & context) const
-{
-	MicroMeterPoint const umDirVector { GetDirVector() };
-	MicroMeterPoint const umCenter    { GetPosition() - GetScaledDirVector() * 0.1f };
-
-	context.DrawLine
-	( 
-		umCenter + umDirVector * 0.5f, 
-		umCenter - umDirVector * 0.9f, 
-		GetExtension() * 2.2f, 
-		NNetColors::COL_CONNECTOR_BG 
-	);
-}
-
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket( context, 2.0f, 0.1f, GetExteriorColor(type) );

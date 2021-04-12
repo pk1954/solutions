@@ -112,7 +112,7 @@ void AlignAnimation::scriptStep()
 
 	float      const fGapCount          { Cast2Float(m_shapesAnimated.Size() - 1) };
 	MicroMeter const umUnpackedDistance { m_line.Length() / fGapCount };
-	MicroMeter const umShapeDistTarget  { bPackShapes ? NEURON_RADIUS * 2.0f : umUnpackedDistance };
+	MicroMeter const umShapeDistTarget  { bPackShapes ? NEURON_RADIUS * 1.8f : umUnpackedDistance };
 	MicroMeter const umLineLengthTarget { umShapeDistTarget * fGapCount };
 
 	// compute target positions (packed if PACK_SHAPES is active)
