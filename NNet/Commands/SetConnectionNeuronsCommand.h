@@ -40,6 +40,6 @@ public:
 	}
 
 private:
-	MicroMeterPointVector       m_umPntVector;
+	MicroMeterPointVector   m_umPntVector;
 	unique_ptr<ShapeIdList> m_upShapeIds;
 };

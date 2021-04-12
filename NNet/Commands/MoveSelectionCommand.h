@@ -22,8 +22,8 @@ public:
 		( 
 			[&](Shape & shape) 
 			{ 
-				if ( shape.IsBaseKnot() || shape.IsConnector() )
-					shape.MoveShape( delta ); 
+				if (shape.IsBaseKnot())
+					shape.MoveShape(delta);
 			} 
 		);
 		m_delta = delta;

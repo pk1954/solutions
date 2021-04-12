@@ -87,7 +87,7 @@ bool const AlignAnimation::prepareData()
 	return true;
 }
 
-bool const AlignAnimation::AlignSelection( AlignAnimation::Script const & script )
+bool const AlignAnimation::AlignSelection( AnimationScript const & script )
 {
 	m_pScript = & script;
 	m_iScriptStep = 0;

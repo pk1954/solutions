@@ -213,7 +213,7 @@ void MainWindow::CenterSelection()
 
 bool const MainWindow::MakeConnector()
 {
-	static AlignAnimation::Script script 
+	static AnimationScript script 
 	{
 	   AlignAnimation::ALIGN_DIRECTION,  
 	   AlignAnimation::ALIGN_SHAPES,     
@@ -225,7 +225,7 @@ bool const MainWindow::MakeConnector()
 
 bool const MainWindow::AlignSelection() 
 { 
-	static AlignAnimation::Script script 
+	static AnimationScript script 
 	{
 		AlignAnimation::ALIGN_DIRECTION,  
 		AlignAnimation::ALIGN_SHAPES

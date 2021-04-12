@@ -10,6 +10,8 @@
 #include "win32_rootWindow.h"
 #include "SmoothMoveFp.h"
 
+using AnimationScript = vector<DWORD>;
+
 DWORD const ANIMATION_RECURRING    { 0x1L };
 DWORD const ANIMATION_SEND_COMMAND { 0x2L };
 

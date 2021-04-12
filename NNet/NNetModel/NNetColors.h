@@ -19,11 +19,8 @@ public:
 	// color of beacon 
 	inline static D2D1::ColorF const COL_BEACON     { 0.0f, 0.0f, 1.0f, 0.4f };
 
-	// color of connector bracket 
-	inline static D2D1::ColorF const COL_CONNECTOR_BG { 0.75f, 0.0f, 0.75f, 1.0f };
-
 	// colors EEG-Monitor
-	inline static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
+	inline static D2D1::ColorF const COL_DIAMOND    { 0.0f, 1.0f, 0.0f, 1.0f };
 
 	// colors for neuron/pipe boundary
 	inline static D2D1::ColorF const EXT_NORMAL       { 0.0f, 0.5f, 1.0f, 1.0f };
@@ -35,6 +32,7 @@ public:
 	inline static D2D1::ColorF const EXT_TARGET       { 0.0f, 0.6f, 0.0f, 1.0f };  // dark green
 	inline static D2D1::ColorF const INT_TARGET_FIT   { 0.0f, 1.0f, 0.0f, 1.0f };  // green
 	inline static D2D1::ColorF const INT_TARGET_NOFIT { 1.0f, 0.0f, 0.0f, 1.0f };  // red
+	inline static D2D1::ColorF const EXT_CONNECTOR    { 0.75f, 0.0f, 0.75f, 1.0f };
 
 	// color used when neurons trigger
 	inline static D2D1::ColorF const INT_TRIGGER    { 1.0f, 1.0f, 0.0f, 1.0f };

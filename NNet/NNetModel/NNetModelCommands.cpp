@@ -43,6 +43,7 @@
 #include "SetConnectionNeuronsCommand.h"
 #include "SetParameterCommand.h"
 #include "SetPulseRateCommand.h"
+#include "SetShapeCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "ToggleStopOnTriggerCommand.h"
 #include "NNetModelWriterInterface.h"
@@ -272,6 +273,14 @@ void NNetModelCommands::RotateConnector
 		TraceStream() << __func__ << L" " << id << L" " << umPntOld << L" " << umPntNew << endl;
 	unique_ptr<Command> pCmd;
 	m_pCmdStack->PushCommand( make_unique<RotateConnectorCommand>(id, umPntOld, umPntNew) );
+}
+
+void NNetModelCommands::SetShape( ShapeId const id, MicroMeterPosDir const posDir )
+{
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << L" " << id << L" " << posDir << endl;
+	unique_ptr<Command> pCmd;
+	m_pCmdStack->PushCommand( make_unique<SetShapeCommand>(id, posDir) );
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )

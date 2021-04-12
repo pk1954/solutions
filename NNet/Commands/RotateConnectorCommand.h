@@ -1,4 +1,4 @@
-// RotateShapeCommand.h
+// RotateConnectorCommand.h
 //
 // Commands
 

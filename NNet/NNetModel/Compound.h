@@ -52,7 +52,6 @@ public:
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
 	virtual void Expand      (MicroMeterRect        &)               const;
-	virtual void MoveShape   (MicroMeterPoint const &);
 	virtual void Select      (bool const, bool const);
 
 	ShapePtrList<Shape> const & GetList() { return m_list; }

@@ -32,6 +32,7 @@ public:
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &) const;
 	virtual bool            const Includes    (MicroMeterPoint const &) const;
 	virtual void                  RotateShape (MicroMeterPoint const &, Radian const);
+	virtual void                  MoveShape   (MicroMeterPoint const &);
 
 	void Rotate(MicroMeterPoint const &, MicroMeterPoint const &);
 

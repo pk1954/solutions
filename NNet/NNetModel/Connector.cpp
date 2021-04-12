@@ -57,6 +57,11 @@ void Connector::Apply2All(function<void(ConnNeuron const &)> const & func) const
     apply2All([&](ConnNeuron const & n){ func(n); } );
 }                        
 
+void Connector::MoveShape(MicroMeterPoint const & delta)       
+{
+    apply2All([&](Shape & s){ s.MoveShapeFromParent(delta); } );
+}
+
 void Connector::RotateShape(MicroMeterPoint const & umPntPivot, Radian const radDelta)
 {
     apply2All([&](ConnNeuron & n){ n.RotateShape(umPntPivot, radDelta); } );

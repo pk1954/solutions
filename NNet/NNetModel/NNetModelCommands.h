@@ -83,6 +83,7 @@ public:
     void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<ShapeIdList> );
     void SetParameter        ( ParamType::Value const, float const );
     void SetPulseRate        ( ShapeId    const, fHertz const );
+    void SetShape            ( ShapeId const, MicroMeterPosDir const );
     void SetTriggerSound     ( ShapeId const, SoundDescr const & );
     void ToggleStopOnTrigger ( ShapeId const );
 

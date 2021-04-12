@@ -30,11 +30,9 @@ public:
 	static DWORD const PACK_SHAPES      { 0x04 };
 	static DWORD const CREATE_CONNECTOR { 0x08 };
 
-	using Script = vector<DWORD>;
-
-	bool const AlignSelection( AlignAnimation::Script const & );
-	void       AnimationStep();
-	bool const NextStep();
+	bool            const AlignSelection( AnimationScript const & );
+	void                  AnimationStep();
+	bool            const NextStep();
 	wchar_t const * const DoNextStep();
 
 private:
@@ -55,8 +53,8 @@ private:
 	MicroMeterPoint            m_orthoVector    { MicroMeterPoint::NULL_VAL() };
 	DWORD                      m_animationPhase { AlignAnimation::ALIGN_DIRECTION };
 
-	AlignAnimation::Script const * m_pScript { nullptr };
-	int                            m_iScriptStep { -1 };
+	AnimationScript    const * m_pScript { nullptr };
+	int                        m_iScriptStep { -1 };
 
 	unique_ptr<ConnAnimation> m_upConnAnimation;
 	ShapePtrList<ConnNeuron>  m_shapesAnimated;

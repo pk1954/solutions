@@ -39,7 +39,7 @@ D2D1::ColorF Shape::GetExteriorColor( tHighlight const type ) const
 	case tHighlight::highlighted: return NNetColors::EXT_HIGHLIGHTED;
 	case tHighlight::normal:      
 	case tHighlight::targetFit:   
-	case tHighlight::targetNoFit: return HasParent() ? NNetColors::COL_CONNECTOR_BG : NNetColors::EXT_NORMAL;
+	case tHighlight::targetNoFit: return HasParent() ? NNetColors::EXT_CONNECTOR : NNetColors::EXT_NORMAL;
 	}
 	assert( false );
 	return NNetColors::EXT_NORMAL;
@@ -66,7 +66,7 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 void Shape::MoveShape( MicroMeterPoint const & delta )
 {
 	if ( HasParent() )
-		GetParent()->MoveShape( delta );
+		GetParent()->MoveShape( delta ); // parent will move all siblings
 	else 
 		MoveShape( delta );
 }
