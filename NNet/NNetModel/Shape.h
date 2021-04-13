@@ -65,8 +65,6 @@ public:
 
 	void Select(bool const bOn) { m_bSelected = bOn; }
 
-	void MoveShapeFromParent( MicroMeterPoint const & );
-
 	bool      const IsSelected  () const { return m_bSelected; }
 	bool      const IsDefined   () const { return ::IsDefined( m_identifier ); }
 	wstring   const GetName     () const { return ShapeType::GetName( m_type.GetValue() ); }
@@ -112,7 +110,6 @@ protected:
 	void SetType(ShapeType const type) { m_type = type; }
 
 private:
-	void moveShape(MicroMeterPoint const &);
 
 	ShapeType m_type         { ShapeType::Value::undefined };
 	bool      m_bSelected    { false };

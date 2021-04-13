@@ -49,11 +49,6 @@ void Compound::DrawInterior(DrawContext const & context, tHighlight const type) 
     Apply2All([&](Shape const & s){ s.DrawInterior(context, type); } );
 }
 
-//void Compound::MoveShape(MicroMeterPoint const & delta)       
-//{
-//    Apply2All([&](Shape & s){ s.MoveShapeFromParent(delta); } );
-//}
-
 void Compound::Rotate(MicroMeterPoint const & umPntPivot, Radian const radDelta)
 {
     Apply2All([&](Shape & s){ RotateShape(umPntPivot, radDelta); } );

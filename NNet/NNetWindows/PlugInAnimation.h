@@ -21,9 +21,8 @@ public:
 		NNetModelCommands &
 	);
 
-	static DWORD const ALIGN_DIRECTION   { 0x01 };
-	static DWORD const MOVE_TO_START_POS { 0x02 };
-	static DWORD const PLUG_IN           { 0x04 };
+	static DWORD const MOVE_TO_START_POS { 0x01 };
+	static DWORD const PLUG_IN           { 0x02 };
 
 	bool            const AlignSelection( AnimationScript const & );
 	void                  AnimationStep();
