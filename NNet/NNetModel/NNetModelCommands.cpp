@@ -201,7 +201,7 @@ void NNetModelCommands::deleteShape( ShapeId const id )
 		OpenSeries();
 		ShapeIdList list;
 		Connector const * pConnector { static_cast<Connector const *>(m_pNMRI->GetConstShape(id)) };
-		pConnector->Apply2All([&](ConnNeuron const & c) { list.Add(c); } );
+		pConnector->Apply2All([&](Shape const & c) { list.Add(c); } );
 		m_pCmdStack->PushCommand(make_unique<DisconnectConnectorCommand>(id));
 		list.Apply2All([&](ShapeId const & id) { deleteShape(id); });
 		CloseSeries();

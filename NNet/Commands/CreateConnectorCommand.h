@@ -21,7 +21,6 @@ public:
 	CreateConnectorCommand(ShapePtrList<ConnNeuron> & list)
 	{
 		m_upConnector = make_unique<Connector>();
-		//m_upConnector->Select(true, false);
 		list.Apply2All(	[&](ConnNeuron & n)	{ m_upConnector->Push(&n); } );
 	}
 

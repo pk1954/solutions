@@ -168,7 +168,7 @@ void NNetModelExporter::writePipe( wostream & out, Pipe const & pipe )
 void NNetModelExporter::writeConnector(wostream & out, Connector const & connector)
 {
     out << Connector::OPEN_BRACKET << L" " << connector.Size() << Connector::SEPARATOR << L" ";
-    connector.Apply2All( [&](ConnNeuron const & n) { out << n.GetId() << L" "; } );
+    connector.Apply2All( [&](Shape const & n) { out << n.GetId() << L" "; } );
     out << Connector::CLOSE_BRACKET;
 }
 

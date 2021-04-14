@@ -163,7 +163,7 @@ void UPShapeList::LinkShape
 			Connector const & connectorSrc { static_cast<Connector const &>(shapeSrc) };
 			Connector       & connectorDst { static_cast<Connector       &>(shapeDst) };
 			connectorDst.Clear();
-			connectorSrc.Apply2All([&](ConnNeuron const & c) { connectorDst.Push(dstFromSrc(& c)); });
+			connectorSrc.Apply2All([&](Shape const & c) { connectorDst.Push(dstFromSrc(& c)); });
 		}
 		else  // BaseKnot
 		{
