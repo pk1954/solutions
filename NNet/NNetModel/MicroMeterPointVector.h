@@ -8,8 +8,8 @@
 #include <assert.h>   
 #include "MoreTypes.h"
 #include "PointType.h"
-#include "ShapePtrList.h"
 #include "ConnectionNeuron.h"
+#include "ShapePtrList.h"
 #include "MicroMeterPosDir.h"
 
 using std::endl;

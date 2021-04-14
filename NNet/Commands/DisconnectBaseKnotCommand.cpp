@@ -21,6 +21,8 @@ DisconnectBaseKnotCommand::DisconnectBaseKnotCommand
 void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
 { 
     m_pBaseKnot = nmwi.GetShapePtr<BaseKnot *>( m_idBaseKnot );
+    m_idEndKnots  .Resize( m_pBaseKnot->m_connections.GetNrOfIncomingConnections() );
+    m_idStartKnots.Resize( m_pBaseKnot->m_connections.GetNrOfOutgoingConnections() );
     
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
@@ -46,8 +48,6 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
             m_startKnots.push_back( move(upKnotNew) );       // store new knot for later
         }                                                    // but do not touch m_pBaseKnot
     );  // Knots in m_startKnots have their outgoing pipe set
-    m_idEndKnots  .Resize( m_endKnots  .size() );
-    m_idStartKnots.Resize( m_startKnots.size() );
     if ( m_pBaseKnot->IsKnot() )
         m_bDelete = true;
     m_bInitialized = true;

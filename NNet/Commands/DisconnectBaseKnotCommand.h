@@ -35,10 +35,10 @@ private:
     BaseKnot               * m_pBaseKnot { nullptr };
     unique_ptr<BaseKnot>     m_upBaseKnot;
 
-    vector<unique_ptr<Knot>> m_startKnots  { };
-    vector<unique_ptr<Knot>> m_endKnots    { };
-    ShapeIdList              m_idStartKnots{ };
-    ShapeIdList              m_idEndKnots  { };
+    vector<unique_ptr<Knot>> m_startKnots  {};
+    vector<unique_ptr<Knot>> m_endKnots    {};
+    ShapeIdList              m_idStartKnots{};
+    ShapeIdList              m_idEndKnots  {};
 
     ShapeId            const m_idBaseKnot;
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only

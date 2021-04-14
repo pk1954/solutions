@@ -7,8 +7,10 @@
 #include <vector>
 #include "util.h"
 #include "Shape.h"
-#include "UPShapeList.h"
 #include "ShapeId.h"
+#include "ShapePtrList.h"
+#include "ConnectionNeuron.h"
+#include "UPShapeList.h"
 
 using std::vector;
 using std::endl;
@@ -17,6 +19,8 @@ class ShapeIdList
 {
 public:
     ShapeIdList() {}
+    ShapeIdList(ShapePtrList<ConnNeuron> const &);
+
     virtual ~ShapeIdList() {}
 
     void          Add   (ShapeId const   id   ) { m_list.push_back(id); }
@@ -26,25 +30,9 @@ public:
     int     const Size() { return Cast2Int(m_list.size()); }
     ShapeId const Get(int const index) { return m_list.at(index); }
 
-    void Apply2All( function<void(ShapeId const &)> const& func ) const
-    {
-        for (ShapeId const & id : m_list)
-            func(id);
-    }
+    void Apply2All( function<void(ShapeId const &)> const& func ) const;
 
-    friend wostream & operator<< (wostream & out, ShapeIdList const & v)
-    {
-        out << OPEN_BRACKET << v.m_list.size() << L":";
-        for (auto & it : v.m_list)
-        {
-            out << it;
-            if ( &it == &v.m_list.back() )
-                break;
-            out << SEPARATOR;
-        }
-        out << CLOSE_BRACKET;
-        return out; 
-    }
+    friend wostream & operator<< (wostream &, ShapeIdList const &);
 
     inline static wchar_t const OPEN_BRACKET  { L'(' };
     inline static wchar_t const SEPARATOR     { L',' };

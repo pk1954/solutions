@@ -168,8 +168,7 @@ void AlignAnimation::scriptStep()
 
 void AlignAnimation::AnimationStep()
 {
-	unique_ptr<ShapeIdList> upShapeIds { make_unique<ShapeIdList>() };
-	m_shapesAnimated.Apply2All([&](Shape & s) { upShapeIds->Add(s.GetId()); } );
+	unique_ptr<ShapeIdList> upShapeIds { make_unique<ShapeIdList>(m_shapesAnimated) };
 
 	m_pModelCommands->SetConnectionNeurons
 	(
