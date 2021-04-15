@@ -6,14 +6,14 @@
 
 #include <vector>
 #include "util.h"
-#include "Shape.h"
 #include "ShapeId.h"
 #include "ShapePtrList.h"
 #include "ConnectionNeuron.h"
-#include "UPShapeList.h"
 
 using std::vector;
 using std::endl;
+
+class Shape;
 
 class ShapeIdList
 {

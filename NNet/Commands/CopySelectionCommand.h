@@ -20,7 +20,7 @@ private:
 	{
 		if ( ! dstFromSrc(pBaseKnot))
 		{
-			unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPosition()) };
+			unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPos()) };
 			upKnot->SetId( pBaseKnot->GetId() );
 			m_indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
 			m_copies.push_back(move(upKnot));

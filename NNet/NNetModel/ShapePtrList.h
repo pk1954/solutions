@@ -5,9 +5,11 @@
 #pragma once
 
 #include <vector>
+#include "MoreTypes.h"
 #include "Shape.h"
 
 using std::vector;
+using std::sort;
 
 template <Shape_t T>
 class ShapePtrList
@@ -96,6 +98,36 @@ public:
 		}
 		out << CLOSE_BRACKET;
 		return out;
+	}
+
+	MicroMeterLine const CalcMaxDistLine() // find two shapes with maximum distance
+	{
+		MicroMeter     maxDist { 0.0_MicroMeter };   	
+		MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
+		for ( T * it1 : m_list )
+		for ( T * it2 : m_list )
+		{
+			auto const line { MicroMeterLine( it1->GetPos(), it2->GetPos() ) };
+			auto const dist { line.Length() };
+			if ( dist > maxDist )
+			{
+				maxDist = dist;
+				lineMax = line;
+			}
+		}
+		return lineMax;
+	}
+
+	void SortAccToDistFromLine(MicroMeterLine const & line)
+	{
+		sort
+		( 
+			m_list.begin(), m_list.end(),
+			[&](auto & p1, auto & p2) 
+			{ 
+				return PointToLine(line, p1->GetPos()) < PointToLine(line, p2->GetPos()); 
+			} 
+		);
 	}
 
 	inline static wchar_t const OPEN_BRACKET  { L'(' };

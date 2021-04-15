@@ -30,6 +30,7 @@ void MainWindow::Start
 	NNetModelCommands              & commands,
 	Observable                     & cursorObservable,
 	Observable                     & coordObservable,
+//	RotationAnimation              & rotationAnimation,
 	AlignAnimation                 & alignAnimation
 
 )
@@ -49,6 +50,7 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pAlignAnimation      = & alignAnimation;
+//	m_pRotationAnimation   = & rotationAnimation;
 	m_scale.Initialize( & m_graphics, L"m" );
 
 	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION, GetWindowHandle());
@@ -515,6 +517,11 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	case IDX_COORD_ANIMATION:
 		GetCoord().Set( m_upCoordAnimation->GetActual() );
 		m_pCoordObservable->NotifyAll(false); 
+		break;
+
+	case IDX_ROTATION_ANIMATION:
+		m_pRotationAnimation->AnimationStep();
+		Notify( false );
 		break;
 
 	case IDX_CONNECTOR_ANIMATION:

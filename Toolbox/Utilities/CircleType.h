@@ -34,11 +34,11 @@ public:
     CircleType const operator*= (float const d) { m_radius *= d; return * this; }
     CircleType const operator/= (float const d) { m_radius /= d; return * this; }
 
-    POS_TYPE  const & GetPosition() const { return m_position; }
+    POS_TYPE  const & GetPos() const { return m_position; }
     BASE_TYPE const & GetRadius  () const { return m_radius; }
 
-    void SetPosition( POS_TYPE  const & newPos    ) { m_position = newPos; }
-    void SetRadius  ( BASE_TYPE const   newRadius ) { m_radius   = newRadius; }
+    void SetPos   ( POS_TYPE  const & newPos    ) { m_position = newPos; }
+    void SetRadius( BASE_TYPE const   newRadius ) { m_radius   = newRadius; }
 
     bool Includes( POS_TYPE const pos ) const
     {

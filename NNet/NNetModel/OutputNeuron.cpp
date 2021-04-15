@@ -18,7 +18,7 @@ OutputNeuron::OutputNeuron( MicroMeterPoint const & upCenter )
 {}
 
 OutputNeuron::OutputNeuron( Neuron const & neuron )
-	: ConnNeuron( neuron.GetPosition(), ShapeType::Value::outputNeuron )
+	: ConnNeuron( neuron.GetPos(), ShapeType::Value::outputNeuron )
 {
 	static_cast<Neuron &>(*this) = neuron;      // use all data from Neuron to construct OutputNeuron
 	SetType( ShapeType::Value::outputNeuron );  // fix neuron type
@@ -47,7 +47,7 @@ void OutputNeuron::DrawInterior(DrawContext const & context, tHighlight const ty
 
 bool const OutputNeuron::Includes(MicroMeterPoint const & point) const
 {
-	MicroMeterPoint const umCenter { GetPosition() + GetScaledDirVector() * 0.5f };
+	MicroMeterPoint const umCenter { GetPos() + GetScaledDirVector() * 0.5f };
 	return Distance(point, umCenter) <= GetExtension();
 }
 
@@ -60,7 +60,7 @@ void OutputNeuron::drawPlug
 ) const
 {
 	MicroMeterPoint const umDirVector { GetDirVector() };
-	MicroMeterPoint const umCenter    { GetPosition() - GetScaledDirVector() * 0.1f };
+	MicroMeterPoint const umCenter    { GetPos() - GetScaledDirVector() * 0.1f };
 	MicroMeterPoint const umP         { umCenter - umDirVector * (M * 0.5f - 0.2f) };
 
 	context.DrawLine( umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,          colF );

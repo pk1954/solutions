@@ -48,7 +48,7 @@ public:
 
 	virtual bool operator==(Shape const &) const;
 
-	virtual MicroMeterPoint const GetPosition ()                                      const = 0;
+	virtual MicroMeterPoint const GetPos ()                                      const = 0;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const = 0;
 	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const = 0;
 	virtual void                  Prepare     ()                                            = 0;
@@ -71,8 +71,8 @@ public:
 	ShapeType const GetShapeType() const { return m_type; }
 	ShapeId   const GetId       () const { return m_identifier; }
 
-	MicroMeter const GetPosX() const { return GetPosition().GetX(); }
-	MicroMeter const GetPosY() const { return GetPosition().GetY(); }
+	MicroMeter const GetPosX() const { return GetPos().GetX(); }
+	MicroMeter const GetPosY() const { return GetPos().GetY(); }
 
 	bool const HasType(ShapeType const type) const { return m_type == type; }
 

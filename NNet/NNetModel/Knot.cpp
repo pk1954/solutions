@@ -16,7 +16,7 @@ void Knot::DrawExterior( DrawContext const & context, tHighlight const type ) co
 		? 30.0_MicroMeter 
 		: GetExtension() 
 	};
-	context.FillCircle(MicroMeterCircle(GetPosition(), umRadius), GetExteriorColor(type));
+	context.FillCircle(MicroMeterCircle(GetPos(), umRadius), GetExteriorColor(type));
 }
 
 void Knot::DrawInterior( DrawContext const & context, tHighlight const type ) const

@@ -36,7 +36,7 @@ float Signal::GetSignalValue() const
     ( 		
         [&](BaseKnot const & b) 
         {  
-            float fDsBaseKnot { DistSquare( b.GetPosition(), m_circle.GetPosition() ) };
+            float fDsBaseKnot { DistSquare( b.GetPos(), m_circle.GetPos() ) };
             if ( fDsBaseKnot < fDsBorder )  // is b in circle?
             {
                 mV    voltage { b.GetVoltage() };

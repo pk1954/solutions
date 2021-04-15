@@ -232,7 +232,7 @@ void D2D_driver::FillGradientEllipse
 	(
 		D2D1::RadialGradientBrushProperties
 		( 
-			D2D1::Point2F(fPE.GetPosition().GetXvalue(), fPE.GetPosition().GetYvalue()), 
+			D2D1::Point2F(fPE.GetPos().GetXvalue(), fPE.GetPos().GetYvalue()), 
 			D2D1::Point2F(0, 0), 
 			fPE.GetRadiusX().GetValue(), 
 			fPE.GetRadiusY().GetValue() 
@@ -373,7 +373,7 @@ D2D1_ELLIPSE convertD2D( fPixelEllipse const & fPE )
 {
 	return D2D1_ELLIPSE
 	{ 
-		convertD2D(fPE.GetPosition()), 
+		convertD2D(fPE.GetPos()), 
 		fPE.GetRadiusX().GetValue(), 
 		fPE.GetRadiusY().GetValue() 
 	}; 

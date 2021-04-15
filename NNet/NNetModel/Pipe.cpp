@@ -75,9 +75,9 @@ ShapeId Pipe::GetEndKnotId() const
 	return m_pKnotEnd->GetId(); 
 }
 
-MicroMeterPoint const Pipe::GetPosition() const 
+MicroMeterPoint const Pipe::GetPos() const 
 { 
-	return (m_pKnotStart->GetPosition() + m_pKnotEnd->GetPosition()) / 2.0f; 
+	return (m_pKnotStart->GetPos() + m_pKnotEnd->GetPos()) / 2.0f; 
 }
 
 void Pipe::Clear()
@@ -92,7 +92,7 @@ void Pipe::Recalc()
 	{
 		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( ParamType::Value::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution() ) };
-		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
+		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPos(), m_pKnotEnd->GetPos() ) };
 		unsigned int const iNrOfSegments { max( 1, Cast2UnsignedInt(round(pipeLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIndex = 0;
@@ -166,12 +166,12 @@ void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 
 MicroMeterPoint Pipe::GetStartPoint() const 
 { 
-	return m_pKnotStart ? m_pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
+	return m_pKnotStart ? m_pKnotStart->GetPos() : MicroMeterPoint::NULL_VAL(); 
 }
 
 MicroMeterPoint Pipe::GetEndPoint() const 
 { 
-	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
+	return m_pKnotEnd ? m_pKnotEnd->GetPos() : MicroMeterPoint::NULL_VAL();
 }
 
 void Pipe::Select(bool const bOn, bool const bRecursive) 

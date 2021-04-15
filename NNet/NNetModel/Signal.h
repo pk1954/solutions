@@ -52,7 +52,7 @@ public:
     void  Move( MicroMeterPoint const & umDelta ) { m_circle += umDelta; }
     void  Size( float           const   factor  ) { m_circle *= factor; }
 
-    MicroMeterPoint  const & GetCenter() const { return m_circle.GetPosition(); }
+    MicroMeterPoint  const & GetCenter() const { return m_circle.GetPos(); }
     MicroMeterCircle const & GetCircle() const { return m_circle; }
 
     void Set2Null() { m_circle.Set2Null(); }

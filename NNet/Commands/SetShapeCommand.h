@@ -28,14 +28,14 @@ public:
 	{ 
 		if ( ! m_pShape )
 			m_pShape = nmwi.GetShapePtr<Shape *>( m_idShape );
-		m_pShape->RotateShape(m_pShape->GetPosition(), m_posDir.GetDir());
-		m_pShape->MoveShape  (m_posDir.GetPos() - m_pShape->GetPosition());
+		m_pShape->RotateShape(m_pShape->GetPos(), m_posDir.GetDir());
+		m_pShape->MoveShape  (m_posDir.GetPos() - m_pShape->GetPos());
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pShape->RotateShape(m_pShape->GetPosition(), -m_posDir.GetDir());
-		m_pShape->MoveShape  (m_pShape->GetPosition() - m_posDir.GetPos());
+		m_pShape->RotateShape(m_pShape->GetPos(), -m_posDir.GetDir());
+		m_pShape->MoveShape  (m_pShape->GetPos() - m_posDir.GetPos());
 	}
 
 private:

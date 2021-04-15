@@ -23,7 +23,7 @@ public:
 		if ( ! m_upNeuron )
 		{     
 			Knot const * pKnot { nmwi.GetShapePtr<Knot *>(m_idKnot) };
-			m_upNeuron = make_unique<Neuron>( pKnot->GetPosition() );
+			m_upNeuron = make_unique<Neuron>( pKnot->GetPos() );
 			m_upNeuron->m_connections = pKnot->m_connections;
 			m_upNeuron->SetId( m_idKnot );
 		}

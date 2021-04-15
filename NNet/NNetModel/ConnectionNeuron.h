@@ -45,18 +45,18 @@ public:
 
 	MicroMeterPosDir const GetRawPosDir() const
 	{
-		return MicroMeterPosDir( GetPosition(), m_radDirection );
+		return MicroMeterPosDir( GetPos(), m_radDirection );
 	}
 
 	MicroMeterPosDir const GetPosDir() const
 	{
-		return MicroMeterPosDir( GetPosition(), Vector2Radian(GetDirVector()) );
+		return MicroMeterPosDir( GetPos(), Vector2Radian(GetDirVector()) );
 	}
 
 	void SetPosDir( MicroMeterPosDir const posDir )
 	{
 		m_radDirection = posDir.GetDir();
-		SetPosition( posDir.GetPos() );
+		SetPos( posDir.GetPos() );
 	}
 
 	void UnlockDirection() 

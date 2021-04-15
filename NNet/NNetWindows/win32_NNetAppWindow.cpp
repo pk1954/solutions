@@ -157,7 +157,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_modelCommands,
 		m_cursorPosObservable,
 		m_coordObservable,
-		m_alignAnimation
+		m_alignAnimation //,
+//		m_rotationAnimation
 	);
 
 	m_miniNNetWindow.Start
@@ -171,7 +172,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_NNetController
 	);
 
-	m_alignAnimation.Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
+	m_alignAnimation   .Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
+	m_rotationAnimation.Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );

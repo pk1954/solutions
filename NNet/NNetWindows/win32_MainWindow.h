@@ -10,6 +10,7 @@
 #include "MicroMeterPointVector.h"
 #include "NNetModelReaderInterface.h"
 #include "AlignAnimation.h"
+#include "RotationAnimation.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
@@ -33,7 +34,8 @@ public:
 		NNetModelCommands              &,
 		Observable                     &,
 		Observable                     &,
-		AlignAnimation                 &
+		AlignAnimation                 & //,
+//		RotationAnimation              &
 	);
 
 	void Stop();
@@ -98,6 +100,7 @@ private:
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
 	AlignAnimation    * m_pAlignAnimation      { nullptr };
+	RotationAnimation * m_pRotationAnimation   { nullptr };
 
 	void setNoTarget        ();
 	void setTargetShape     ();

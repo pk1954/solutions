@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Shape.h"
 #include "ShapeIdList.h"
 
 ShapeIdList::ShapeIdList(ShapePtrList<ConnNeuron> const& list) 

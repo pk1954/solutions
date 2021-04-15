@@ -32,14 +32,14 @@ void Connector::AlignDirection()
 {
     ShapePtrList<BaseKnot> list;
     m_list.Apply2All([&](Shape & s) { list.Add(static_cast<BaseKnot *>(&s)); } );
-    MicroMeterLine  const umLine(m_list.GetFirst().GetPosition(), m_list.GetLast().GetPosition());
+    MicroMeterLine  const umLine(m_list.GetFirst().GetPos(), m_list.GetLast().GetPos());
     MicroMeterPoint const umPntDir { CalcOrthoVector(umLine, list) };
     m_list.Apply2All([&](Shape & c){ static_cast<ConnNeuron &>(c).SetDirVector(umPntDir); } );
 }
 
-MicroMeterPoint const Connector::GetPosition() const 
+MicroMeterPoint const Connector::GetPos() const 
 { 
-    return (m_list.GetFirst().GetPosition() + m_list.GetLast().GetPosition()) / 2.0f; 
+    return (m_list.GetFirst().GetPos() + m_list.GetLast().GetPos()) / 2.0f; 
 }
 
 void Connector::SetParentPointers()
@@ -91,7 +91,7 @@ void Connector::Rotate(MicroMeterPoint const & umPntPivot, Radian const radDelta
 
 void Connector::Rotate(MicroMeterPoint const & umPntOld, MicroMeterPoint const & umPntNew)
 {
-    MicroMeterPoint const umPntPivot { GetPosition() };
+    MicroMeterPoint const umPntPivot { GetPos() };
     Radian          const radOld     { Vector2Radian(umPntOld - umPntPivot) };
     Radian          const radNew     { Vector2Radian(umPntNew - umPntPivot) };
     Radian          const radDelta   { radNew - radOld };
@@ -131,7 +131,7 @@ void Connector::DrawInterior(DrawContext const & context, tHighlight const type)
 
 void Connector::Expand(MicroMeterRect & umRect) const
 {
-    m_list.Apply2All([&](Shape const & s){ umRect.Expand(s.GetPosition()); } );
+    m_list.Apply2All([&](Shape const & s){ umRect.Expand(s.GetPos()); } );
 }
 
 Connector const * Cast2Connector( Shape const * pShape )

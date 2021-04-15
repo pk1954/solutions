@@ -22,68 +22,21 @@ void AlignAnimation::Initialize
 	m_upConnAnimation = make_unique<ConnAnimation>(IDX_CONNECTOR_ANIMATION, hwnd); 
 }
 
-bool const AlignAnimation::calcMaxDistLine(ALIGN_VECTOR const & points)
-{
-	MicroMeter maxDist { 0.0_MicroMeter };   	// find 2 ConnectionNeurons (START/END) with maximum distance
-	m_line = MicroMeterLine::NULL_VAL();
-	for ( auto & it1 : points )
-	for ( auto & it2 : points )
-	{
-		auto const line { MicroMeterLine( it1.pConnectionNeuron->GetPosition(), it2.pConnectionNeuron->GetPosition() ) };
-		auto const dist { line.Length() };
-		if ( dist > maxDist )
-		{
-			maxDist = dist;
-			m_line = line;
-		}
-	}
-	return m_line.IsNotNull();
-}
-
-void AlignAnimation::calcDistances( ALIGN_VECTOR & points)
-{
-	MicroMeterLine orthoLine { m_line.OrthoLine() };
-	for ( auto & it : points )
-		it.umDist = PointToLine( orthoLine, it.pConnectionNeuron->GetPosition() );
-}
-
-void AlignAnimation::sortDistances( ALIGN_VECTOR & points) // sort ConnectionNeurons according to 
-{                                                          // position related to ortholine
-	sort
-	( 
-		points.begin(), points.end(),                              // all elements
-		[](auto & p1, auto & p2) { return p1.umDist < p2.umDist; } // sort criterion
-	);
-}
-
 bool const AlignAnimation::prepareData()
 {
+	m_line.Set2Null();
+
 	ShapeType const shapeType { m_pNMWI->GetUPShapes().DetermineShapeType() };
-
 	if ( shapeType.IsUndefinedType() )
-	{
-		m_line = MicroMeterLine::NULL_VAL();
-		return false;
-	}
-
-	ALIGN_VECTOR points;
-
-	m_pNMWI->GetUPShapes().Apply2AllSelected
-	( 
-		shapeType,
-		[&points](Shape & s) { points.push_back( ALIGN_PNT { static_cast<ConnNeuron *>(&s) } ); } 
-	);
-
-	if ( ! calcMaxDistLine( points ) )
 		return false;
 
-	calcDistances( points );
-	sortDistances( points );
+	m_shapesAnimated = m_pNMWI->GetUPShapes().GetAllSelected<ConnNeuron>();
+	m_line = m_shapesAnimated.CalcMaxDistLine();
+	if ( m_line.IsNull() )
+		return false;
 
-	m_shapesAnimated.Clear();
-	for ( auto & it : points )
-		m_shapesAnimated.Add( it.pConnectionNeuron );
-
+	MicroMeterLine orthoLine { m_line.OrthoLine() };
+	m_shapesAnimated.SortAccToDistFromLine( orthoLine );
 	return true;
 }
 
@@ -132,7 +85,7 @@ void AlignAnimation::scriptStep()
 		{ 
 			MicroMeterPosDir posDir 
 			{
-				bAlignShapes    ? posDirTarget.GetPos() : c.GetPosition(), 
+				bAlignShapes    ? posDirTarget.GetPos() : c.GetPos(), 
 				bAlignDirection ? posDirTarget.GetDir() : Vector2Radian(c.GetDirVector()) 
 			};
 			umPntVectorTarget.Add( posDir );
@@ -143,19 +96,8 @@ void AlignAnimation::scriptStep()
 	MicroMeterPointVector umPntVectorStart( m_shapesAnimated );
 	MicroMeterPointVector umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
 
-	Radian     radDiffMax;
-	MicroMeter umDiffMax;
-	umPntVectorDiff.Apply2All
-	(
-		[&](MicroMeterPosDir const & elem)
-		{
-			if (elem.GetDir() > radDiffMax)
-				radDiffMax = elem.GetDir();
-			MicroMeter umDiff { Hypot(elem.GetPos()) };
-			if (umDiff > umDiffMax)
-				umDiffMax = umDiff;
-		}
-	);
+	Radian     const radDiffMax     { umPntVectorDiff.FindMaxRadian() };
+	MicroMeter const umDiffMax      { umPntVectorDiff.FindMaxPos() };
 	Radian     const radPerStep     { Degrees2Radian(6.0_Degrees) };
 	MicroMeter const umPerStep      { NEURON_RADIUS / 5.0f };
 	float      const fStepsFromRot  { radDiffMax / radPerStep };
@@ -172,6 +114,7 @@ void AlignAnimation::AnimationStep()
 
 	m_pModelCommands->SetConnectionNeurons
 	(
+	
 		m_upConnAnimation->GetActual(), 
 		move(upShapeIds)
 	);

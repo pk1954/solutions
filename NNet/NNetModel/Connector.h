@@ -25,7 +25,7 @@ public:
 	virtual void CheckShape() const;
 	virtual void Dump      () const;
 
-	virtual MicroMeterPoint const GetPosition() const;
+	virtual MicroMeterPoint const GetPos() const;
 
 	virtual void       DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void       DrawInterior(DrawContext const &, tHighlight const) const;

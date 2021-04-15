@@ -83,7 +83,7 @@ MicroMeterPoint const InputNeuron::getOffset() const
 
 MicroMeterPoint const InputNeuron::getCenter() const
 {
-	return GetPosition() - getOffset();
+	return GetPos() - getOffset();
 }
 
 bool const InputNeuron::Includes(MicroMeterPoint const & point) const

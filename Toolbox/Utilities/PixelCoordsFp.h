@@ -107,7 +107,7 @@ public:
 	{
 		return MicroMeterCircle
 		( 
-			Transform2MicroMeterPointPos( fPixCircle.GetPosition() ),
+			Transform2MicroMeterPointPos( fPixCircle.GetPos() ),
 			Transform2MicroMeter        ( fPixCircle.GetRadius  () )
 		);
 	}
@@ -116,7 +116,7 @@ public:
 	{
 		return fPixelCircle
 		( 
-			Transform2fPixelPos( umCircle.GetPosition() ),
+			Transform2fPixelPos( umCircle.GetPos() ),
 			Transform2fPixel   ( umCircle.GetRadius() )
 		);
 	}
@@ -125,7 +125,7 @@ public:
 	{
 		return fPixelEllipse
 		( 
-			Transform2fPixelPos( umEllipse.GetPosition() ),
+			Transform2fPixelPos( umEllipse.GetPos() ),
 			Transform2fPixel   ( umEllipse.GetRadiusX() ),
 			Transform2fPixel   ( umEllipse.GetRadiusY() )
 		);

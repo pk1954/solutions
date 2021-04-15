@@ -60,9 +60,5 @@ private:
 	ShapePtrList<ConnNeuron>  m_shapesAnimated;
 
 	bool const prepareData();
-	void       calcDistances  (ALIGN_VECTOR &);
-	void       sortDistances  (ALIGN_VECTOR &);
-	bool const calcMaxDistLine(ALIGN_VECTOR const &);
-	void       scriptStep     ();
-
+	void       scriptStep();
 };

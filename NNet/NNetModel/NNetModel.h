@@ -49,7 +49,7 @@ public:
 
 	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	MicroMeterPoint const GetShapePos    (ShapeId const id) const {	return GetShapeConstPtr<Shape const *>(id)->GetPosition    (); }
+	MicroMeterPoint const GetShapePos    (ShapeId const id) const {	return GetShapeConstPtr<Shape const *>(id)->GetPos    (); }
 	BaseKnot      * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe  const *>(id)->GetStartKnotPtr(); }
 	BaseKnot      * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe  const *>(id)->GetEndKnotPtr  (); }
 

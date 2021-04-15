@@ -158,6 +158,7 @@ private:
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
 	AlignAnimation           m_alignAnimation         { };
+	RotationAnimation        m_rotationAnimation      { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

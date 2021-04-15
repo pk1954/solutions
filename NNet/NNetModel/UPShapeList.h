@@ -9,9 +9,11 @@
 #include <numeric>
 #include "Shape.h"
 #include "ShapeId.h"
+#include "ShapePtrList.h"
 #include "Connections.h"
 #include "ShapeErrorHandler.h"
 
+using std::move;
 using std::array;
 using std::vector;
 using std::accumulate;
@@ -127,7 +129,7 @@ public:
 	}
 
 	template <Shape_t T>
-	bool Apply2AllB( function<bool(T &)> const & func ) const
+	bool Apply2AllB( function<bool(T &)> const & crit ) const
 	{
 		bool bResult { false };
 		for ( auto & it : m_list )
@@ -135,12 +137,26 @@ public:
 			if ( it.get() )
 			{
 				if ( HasType<T>( * it.get() ) )	
-					bResult = func( static_cast<T &>( * it.get() ) );
+					bResult = crit( static_cast<T &>( * it.get() ) );
 				if ( bResult )
 					break;
 			}
 		}
 		return bResult;
+	}
+
+	template <Shape_t T>
+	ShapePtrList<T> GetAll(function<bool(T &)> const & crit)
+	{
+		ShapePtrList<T> shapePtrList;
+		Apply2All<T>( [&](T &s)	{ if (crit(s)) shapePtrList.Add(&s); } );
+		return move(shapePtrList);
+	}
+
+	template <Shape_t T>
+	ShapePtrList<T> GetAllSelected()
+	{
+		return GetAll<T>( [&](T &s) { return s.IsSelected(); } );
 	}
 
 	unsigned int CountInSelection( ShapeType const shapeType ) const

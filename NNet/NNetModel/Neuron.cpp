@@ -179,7 +179,7 @@ MicroMeterPoint Neuron::getAxonHillockPos() const
 {
 	Pipe            const & axon         { m_connections.GetFirstOutgoing() };
 	MicroMeterPoint const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
-	return GetPosition() + vectorScaled * NEURON_INTERIOR;
+	return GetPos() + vectorScaled * NEURON_INTERIOR;
 }
 
 void Neuron::DrawExterior( DrawContext const & context, tHighlight const type ) const

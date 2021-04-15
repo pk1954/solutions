@@ -20,7 +20,7 @@ bool BaseKnot::operator==( Shape const & rhs ) const
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
 	return 
 	( this->Shape::operator== (rhs) )                    &&
-	GetPosition ().IsCloseTo(baseKnotRhs.GetPosition ()) &&
+	GetPos ().IsCloseTo(baseKnotRhs.GetPos ()) &&
 	GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
 }
 
@@ -30,37 +30,37 @@ void BaseKnot::Dump() const
 	wcout << m_connections << endl;
 }
 
-void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
+void BaseKnot::SetPos( MicroMeterPoint const & newPos )
 {
-	m_circle.SetPosition( newPos ); 
+	m_circle.SetPos( newPos ); 
 	m_connections.Recalc();
 }
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
-	SetPosition( GetPosition() + delta );
+	SetPos( GetPos() + delta );
 }
 
 void BaseKnot::RotateShape( MicroMeterPoint const & umPntPivot, Radian const radDelta )
 {
-	MicroMeterPoint const umPntVectorOld    { GetPosition() - umPntPivot };
+	MicroMeterPoint const umPntVectorOld    { GetPos() - umPntPivot };
 	Radian          const radOld            { Vector2Radian(umPntVectorOld) };
 	Radian          const radNew            { radOld + radDelta };
 	MicroMeterPoint const umPntVectorNew    { Radian2Vector(radNew) };
 	MicroMeter      const umDistFromPivot   { Hypot(umPntVectorOld) };
 	MicroMeterPoint const umPntVectorScaled { umPntVectorNew.ScaledTo( umDistFromPivot) };
 	MicroMeterPoint const umPntPosNew       { umPntPivot + umPntVectorScaled };
-	SetPosition( umPntPosNew );
+	SetPos( umPntPosNew );
 }
 
 bool const BaseKnot::IsIncludedIn( MicroMeterRect const & umRect ) const 
 { 
-	return umRect.Includes( GetPosition() ); 
+	return umRect.Includes( GetPos() ); 
 }
 
 void BaseKnot::Expand( MicroMeterRect & umRect ) const
 {
-	umRect.Expand( GetPosition() );
+	umRect.Expand( GetPos() );
 }
 
 void BaseKnot::CheckShape() const
@@ -95,7 +95,7 @@ bool const BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 
 bool const BaseKnot::Includes( MicroMeterPoint const & point ) const
 {
-	return Distance(point, GetPosition()) <= GetExtension();
+	return Distance(point, GetPos()) <= GetExtension();
 }
 
 MicroMeterRect const BaseKnot::GetRect4Text() const
@@ -126,7 +126,7 @@ void BaseKnot::drawCircle
 	MicroMeter   const   umWidth
 ) const
 {
-	context.FillCircle( MicroMeterCircle( GetPosition(), umWidth ),	colF );
+	context.FillCircle( MicroMeterCircle( GetPos(), umWidth ),	colF );
 }
 
 BaseKnot const * Cast2BaseKnot( Shape const * shape )

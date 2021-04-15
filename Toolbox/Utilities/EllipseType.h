@@ -27,7 +27,7 @@ public:
     {}
 
     EllipseType( CircleType<BASE_TYPE> const & circle ) 
-        : m_position( circle.GetPosition() ),
+        : m_position( circle.GetPos() ),
         m_radiusX( circle.GetRadius() ),
         m_radiusY( circle.GetRadius() )
     {}
@@ -52,13 +52,13 @@ public:
     EllipseType const operator*= (float const d) { m_radiusX *= d; m_radiusY *= d; return * this; }
     EllipseType const operator/= (float const d) { m_radiusX /= d; m_radiusY /= d; return * this; }
 
-    POS_TYPE  const & GetPosition() const { return m_position; }
+    POS_TYPE  const & GetPos() const { return m_position; }
     BASE_TYPE const & GetRadiusX () const { return m_radiusX; }
     BASE_TYPE const & GetRadiusY () const { return m_radiusY; }
 
-    void SetPosition( POS_TYPE  const & newPos  ) { m_position = newPos; }
-    void SetRadiusX ( BASE_TYPE const   newRadX ) { m_radiusX  = newRadX; }
-    void SetRadiusY ( BASE_TYPE const   newRadY ) { m_radiusY  = newRadY; }
+    void SetPos    ( POS_TYPE  const & newPos  ) { m_position = newPos; }
+    void SetRadiusX( BASE_TYPE const   newRadX ) { m_radiusX  = newRadX; }
+    void SetRadiusY( BASE_TYPE const   newRadY ) { m_radiusY  = newRadY; }
 
     static EllipseType const & NULL_VAL() 
     { 

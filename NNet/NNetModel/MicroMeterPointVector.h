@@ -16,6 +16,7 @@ using std::endl;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
+using std::max_element;
 
 class MicroMeterPointVector
 {
@@ -126,10 +127,37 @@ public:
         return out; 
     }
 
+    Radian const FindMaxRadian()
+    {
+        MicroMeterPosDir const maxElement = * std::max_element
+        (
+            m_list.begin(), m_list.end(), 
+            [](MicroMeterPosDir & a, MicroMeterPosDir & b)
+            { 
+                return a.GetDir() < b.GetDir(); 
+            }
+        );
+        return maxElement.GetDir();
+    }
+
+    MicroMeter const FindMaxPos()
+    {
+        MicroMeterPosDir const maxElement = * std::max_element
+        (
+            m_list.begin(), m_list.end(), 
+            [](MicroMeterPosDir & a, MicroMeterPosDir & b)
+            { 
+                return Hypot(a.GetPos()) < Hypot(b.GetPos()); 
+            }
+        );
+        return Hypot(maxElement.GetPos());
+    }
+
     inline static wchar_t const OPEN_BRACKET  { L'(' };
     inline static wchar_t const SEPARATOR     { L',' };
     inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
+
     vector<MicroMeterPosDir> m_list;
 };

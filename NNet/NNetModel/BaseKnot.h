@@ -47,26 +47,26 @@ public:
 
 	virtual BaseKnot & operator+=(BaseKnot const &rhs)
 	{
-		m_circle += rhs.GetPosition();
+		m_circle += rhs.GetPos();
 		return * this;
 	}
 
 	virtual BaseKnot & operator-=(BaseKnot const &rhs)
 	{
-		m_circle += rhs.GetPosition();
+		m_circle += rhs.GetPos();
 		return * this;
 	}
 
-	virtual MicroMeterPoint const GetPosition() const 
+	virtual MicroMeterPoint const GetPos() const 
 	{ 
-		return m_circle.GetPosition(); 
+		return m_circle.GetPos(); 
 	}
 
 	virtual void       Dump         () const;
 	virtual void       CheckShape   () const;
 	virtual void       Prepare      ();
  	virtual mV   const GetNextOutput() const = 0;
-	virtual void       SetPosition  (MicroMeterPoint const &);
+	virtual void       SetPos       (MicroMeterPoint const &);
 	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
 	virtual void       MoveShape    (MicroMeterPoint const &);

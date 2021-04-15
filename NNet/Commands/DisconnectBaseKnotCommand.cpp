@@ -27,7 +27,7 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
-    MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
+    MicroMeterPoint umPos { m_pBaseKnot->GetPos() };
     m_pBaseKnot->m_connections.Apply2AllInPipes
     ( 
         [&]( Pipe & pipe ) // every incoming pipe needs a new end knot

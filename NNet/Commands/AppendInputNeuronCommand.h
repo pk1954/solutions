@@ -24,7 +24,7 @@ public:
 		if ( ! m_bInitialized )
 		{
 			Knot * pKnot { nmwi.GetShapePtr<Knot *>(m_idKnot) };
-			m_upInputNeuron = make_unique<InputNeuron>( pKnot->GetPosition() );
+			m_upInputNeuron = make_unique<InputNeuron>( pKnot->GetPos() );
 			m_upInputNeuron->m_connections = pKnot->m_connections;
 			m_upInputNeuron->SetId( m_idKnot );
 			m_bInitialized = true;
