@@ -8,6 +8,7 @@
 #include "util.h"
 #include "ShapeId.h"
 #include "ShapePtrList.h"
+#include "Connector.h"
 #include "ConnectionNeuron.h"
 
 using std::vector;
@@ -19,6 +20,8 @@ class ShapeIdList
 {
 public:
     ShapeIdList() {}
+    ShapeIdList(Connector                const &);
+    ShapeIdList(ShapePtrList<Shape>      const &);
     ShapeIdList(ShapePtrList<ConnNeuron> const &);
 
     virtual ~ShapeIdList() {}

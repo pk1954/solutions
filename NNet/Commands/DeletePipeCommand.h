@@ -31,7 +31,6 @@ public:
 			m_pStartKnot = m_pPipe->GetStartKnotPtr();
 			m_pEndKnot   = m_pPipe->GetEndKnotPtr();
 		}
-//		wcout << L"DeletePipeCommand " << L"Do " << L"shapeId = " << m_pPipe->GetId() << endl;
 		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 		if ( m_pStartKnot->IsOrphanedKnot() )
@@ -46,7 +45,6 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-//		wcout << L"DeletePipeCommand " << L"Undo " << L"shapeId = " << m_pPipe->GetId() << endl;
 		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
 		if ( m_upStartKnot )

@@ -44,8 +44,19 @@ public:
 		return true; 
 	};
 
+	virtual bool const Combine(Command const & src) 
+	{ 
+		if (typeid(src) != typeid(*this))
+			return false;
+		MoveShapeCommand const & srcCmd { static_cast<MoveShapeCommand const &>(src) };
+		if (m_idShape != srcCmd.m_idShape)
+			return false;
+		m_delta += srcCmd.m_delta;
+		return true; 
+	};
+
 private:
-	MicroMeterPoint const m_delta;
+	MicroMeterPoint       m_delta;
 	ShapeId         const m_idShape;
 	Shape               * m_pShape { nullptr };
 };

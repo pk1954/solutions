@@ -16,13 +16,18 @@ public:
         int x = 42;
     }
 
-    virtual void Do( NNetModelWriterInterface & nmwi) 
+    virtual void Do(NNetModelWriterInterface & nmwi) 
     { 
     };
     
-    virtual void Undo( NNetModelWriterInterface & nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     { 
         Do( nmwi ); 
+    };
+
+    virtual bool const Combine(Command const & src) 
+    { 
+        return false; 
     };
 
     virtual bool IsMoveCommand() const

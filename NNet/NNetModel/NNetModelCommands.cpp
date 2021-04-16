@@ -21,6 +21,7 @@
 #include "CreateConnectorCommand.h"
 #include "DeleteConnectorCommand.h"
 #include "DeletePipeCommand.h"
+#include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
 #include "DisconnectBaseKnotCommand.h"
@@ -72,15 +73,15 @@ void NNetModelCommands::Initialize
 	m_pCmdStack               = pCmdStack;
 }
 
-void NNetModelCommands::OpenSeries() 
-{ 
-	m_pCmdStack->OpenSeries (); 
-}
-
-void NNetModelCommands::CloseSeries() 
-{ 
-	m_pCmdStack->CloseSeries(); 
-}
+//void NNetModelCommands::OpenSeries() 
+//{ 
+//	m_pCmdStack->OpenSeries (); 
+//}
+//
+//void NNetModelCommands::CloseSeries() 
+//{ 
+//	m_pCmdStack->CloseSeries(); 
+//}
 
 void NNetModelCommands::UndoCommand()
 {
@@ -158,15 +159,7 @@ void NNetModelCommands::DeleteSelection()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << endl;
-	OpenSeries();
-	ShapeIdList list;                                // detour with secondary list is neccessary!
-	m_pNMWI->GetUPShapes().Apply2AllSelected<Shape>  // cannot delete shapes directly in Apply2All
-	(                                                 
-		[&](Shape const & s) { list.Add(s);	}                        // first construct list
-	); 
-		                                                             // then run through list 
-	list.Apply2All([&](ShapeId const & id){ deleteShape( id ); } );  // and delete shapes in model
-	CloseSeries();                                                   // using ids from list
+	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>() );
 }
 
 void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
@@ -192,23 +185,22 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 
 void NNetModelCommands::deleteShape( ShapeId const id )
 {
-	if (m_pNMWI->IsPipe(id)) 
+	if ( Shape * pShape { m_pNMWI->GetShape(id) } )
 	{
-		m_pCmdStack->PushCommand(make_unique<DeletePipeCommand>(id));
-	}
-	else if (m_pNMWI->IsConnector(id)) 
-	{
-		OpenSeries();
-		ShapeIdList list;
-		Connector const * pConnector { static_cast<Connector const *>(m_pNMRI->GetConstShape(id)) };
-		pConnector->Apply2All([&](Shape const & c) { list.Add(c); } );
-		m_pCmdStack->PushCommand(make_unique<DisconnectConnectorCommand>(id));
-		list.Apply2All([&](ShapeId const & id) { deleteShape(id); });
-		CloseSeries();
-	}
-	else 
-	{
-		m_pCmdStack->PushCommand(make_unique<DisconnectBaseKnotCommand>(id, true));
+		if (pShape->IsPipe()) 
+		{
+			m_pCmdStack->PushCommand(make_unique<DeletePipeCommand>(id));
+		}
+		else if (pShape->IsConnector()) 
+		{
+			ShapeIdList list(static_cast<Connector const &>(*m_pNMRI->GetConstShape(id)));
+			m_pCmdStack->PushCommand(make_unique<DisconnectConnectorCommand>(id));
+			list.Apply2All([&](ShapeId const & id) { deleteShape(id); });
+		}
+		else 
+		{
+			m_pCmdStack->PushCommand(make_unique<DisconnectBaseKnotCommand>(id, true));
+		}
 	}
 }
 
@@ -258,7 +250,6 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
-	unique_ptr<Command> pCmd;
 	m_pCmdStack->PushCommand( make_unique<MoveShapeCommand>(id, delta) );
 }
 
@@ -271,7 +262,6 @@ void NNetModelCommands::RotateConnector
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << umPntOld << L" " << umPntNew << endl;
-	unique_ptr<Command> pCmd;
 	m_pCmdStack->PushCommand( make_unique<RotateConnectorCommand>(id, umPntOld, umPntNew) );
 }
 
@@ -279,7 +269,6 @@ void NNetModelCommands::SetShape( ShapeId const id, MicroMeterPosDir const posDi
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << posDir << endl;
-	unique_ptr<Command> pCmd;
 	m_pCmdStack->PushCommand( make_unique<SetShapeCommand>(id, posDir) );
 }
 

@@ -90,8 +90,8 @@ public:
     void UndoCommand();
     void RedoCommand();
 
-    void OpenSeries ();
-    void CloseSeries();
+    //void OpenSeries ();
+    //void CloseSeries();
 
 private:
     void deleteShape( ShapeId const );

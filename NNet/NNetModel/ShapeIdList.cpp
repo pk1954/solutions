@@ -6,7 +6,17 @@
 #include "Shape.h"
 #include "ShapeIdList.h"
 
+ShapeIdList::ShapeIdList(Connector const & connector) 
+{
+    connector.Apply2All([&](Shape const & s) { Add(s.GetId()); } );
+}
+
 ShapeIdList::ShapeIdList(ShapePtrList<ConnNeuron> const& list) 
+{
+    list.Apply2All([&](Shape & s) { Add(s.GetId()); } );
+}
+
+ShapeIdList::ShapeIdList(ShapePtrList<Shape> const& list) 
 {
     list.Apply2All([&](Shape & s) { Add(s.GetId()); } );
 }

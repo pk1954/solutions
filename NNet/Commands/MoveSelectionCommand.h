@@ -6,6 +6,7 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
+#include "Command.h"
 #include "BaseKnot.h"
 
 class MoveSelectionCommand : public Command
@@ -31,6 +32,14 @@ public:
 
 	virtual bool IsMoveCommand() const
 	{ 
+		return true; 
+	};
+
+	virtual bool const Combine(Command const & src) 
+	{ 
+		if (typeid(src) != typeid(this))
+			return false;
+		m_delta += static_cast<MoveSelectionCommand const &>(src).m_delta;
 		return true; 
 	};
 
