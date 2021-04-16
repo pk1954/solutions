@@ -35,5 +35,5 @@ public:
 	}
 
 private:
-	
+	ShapeIdList m_idList;
 };

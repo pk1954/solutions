@@ -16,6 +16,7 @@ class ShapePtrList
 {
 public:
 
+	ShapePtrList() {}
 	virtual ~ShapePtrList() {}
 
 	size_t const Size()    const { return m_list.size(); }

@@ -7,7 +7,6 @@
 #include <vector>
 #include "util.h"
 #include "ShapeId.h"
-#include "ShapePtrList.h"
 #include "Connector.h"
 #include "ConnectionNeuron.h"
 

@@ -193,9 +193,7 @@ void NNetModelCommands::deleteShape( ShapeId const id )
 		}
 		else if (pShape->IsConnector()) 
 		{
-			ShapeIdList list(static_cast<Connector const &>(*m_pNMRI->GetConstShape(id)));
-			m_pCmdStack->PushCommand(make_unique<DisconnectConnectorCommand>(id));
-			list.Apply2All([&](ShapeId const & id) { deleteShape(id); });
+			m_pCmdStack->PushCommand(make_unique<DisconnectConnectorCommand>(id, true));
 		}
 		else 
 		{
@@ -212,7 +210,7 @@ void NNetModelCommands::Disconnect( ShapeId const id )
 	if (m_pNMWI->IsPipe(id)) 
 		assert( false );
 	else if (m_pNMWI->IsConnector(id)) 
-		pCmd = make_unique<DisconnectConnectorCommand>(id);
+		pCmd = make_unique<DisconnectConnectorCommand>(id, false);
 	else 
 		pCmd = make_unique<DisconnectBaseKnotCommand>(id, false);
 	m_pCmdStack->PushCommand( move( pCmd ) );
