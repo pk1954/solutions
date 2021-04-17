@@ -19,7 +19,6 @@
 #include "Connect2PipeCommand.h"
 #include "CopySelectionCommand.h"
 #include "CreateConnectorCommand.h"
-#include "DeleteConnectorCommand.h"
 #include "DeletePipeCommand.h"
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
@@ -187,18 +186,20 @@ void NNetModelCommands::deleteShape( ShapeId const id )
 {
 	if ( Shape * pShape { m_pNMWI->GetShape(id) } )
 	{
+		unique_ptr<Command> pCmd;
 		if (pShape->IsPipe()) 
 		{
-			m_pCmdStack->PushCommand(make_unique<DeletePipeCommand>(id));
+			pCmd = make_unique<DeletePipeCommand>(id);
 		}
 		else if (pShape->IsConnector()) 
 		{
-			m_pCmdStack->PushCommand(make_unique<DisconnectConnectorCommand>(id, true));
+			pCmd = make_unique<DisconnectConnectorCommand>(id, true);
 		}
 		else 
 		{
-			m_pCmdStack->PushCommand(make_unique<DisconnectBaseKnotCommand>(id, true));
+			pCmd = make_unique<DisconnectBaseKnotCommand>(id, true);
 		}
+		m_pCmdStack->PushCommand( move( pCmd ) );
 	}
 }
 

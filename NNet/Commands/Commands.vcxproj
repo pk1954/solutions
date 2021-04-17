@@ -83,7 +83,6 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="CreateConnectorCommand.h" />
-    <ClInclude Include="DeleteConnectorCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />

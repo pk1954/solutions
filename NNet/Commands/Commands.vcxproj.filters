@@ -132,9 +132,6 @@
     <ClInclude Include="DisconnectConnectorCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeleteConnectorCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RotateConnectorCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>

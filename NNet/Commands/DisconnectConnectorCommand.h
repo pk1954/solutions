@@ -38,7 +38,7 @@ public:
             (
                 [&](ShapeId const & id) 
                 { 
-                    m_upConnNeurons.Push(nmwi.RemoveFromModel<ConnNeuron>(id));
+                    m_upConnNeurons.push_back(move(nmwi.RemoveFromModel<ConnNeuron>(id)));
                 }
             );
         }
@@ -50,15 +50,19 @@ public:
         nmwi.GetUPShapes().SetShape2Slot( move(m_upConnector) );
         if (m_bDelete)
         {
-            while (!m_upConnNeurons.IsEmpty())
-                nmwi.ReplaceInModel<ConnNeuron,ConnNeuron>( m_upConnNeurons.Pop<ConnNeuron>() ); 
+            while (!m_upConnNeurons.empty())
+            {
+                auto upConnNeuron { move(m_upConnNeurons.back().release()) };
+                nmwi.ReplaceInModel<ConnNeuron,ConnNeuron>( move(upConnNeuron) ); 
+                m_upConnNeurons.pop_back();
+           }
         }
     }
 
 private:
 
-    ShapeId         const m_idConnector;
-    UPShapeList           m_upConnNeurons;
-    unique_ptr<Connector> m_upConnector {};  
-    bool                  m_bDelete; // true: delete Connector, false: disconnect only
+    ShapeId                  const m_idConnector;
+    vector<unique_ptr<ConnNeuron>> m_upConnNeurons;  // intentionally no UPShapeList!
+    unique_ptr<Connector>          m_upConnector {};  
+    bool                           m_bDelete;        // true: delete Connector, false: disconnect only
 };
