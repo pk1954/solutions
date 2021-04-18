@@ -21,12 +21,12 @@ DisconnectBaseKnotCommand::DisconnectBaseKnotCommand
 void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
 { 
     m_pBaseKnot = nmwi.GetShapePtr<BaseKnot *>( m_idBaseKnot );
-    m_idEndKnots  .Resize( m_pBaseKnot->m_connections.GetNrOfIncomingConnections() );
-    m_idStartKnots.Resize( m_pBaseKnot->m_connections.GetNrOfOutgoingConnections() );
-    
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
+    m_idEndKnots  .Resize( m_pBaseKnot->m_connections.GetNrOfIncomingConnections() );
+    m_idStartKnots.Resize( m_pBaseKnot->m_connections.GetNrOfOutgoingConnections() );
+    
     MicroMeterPoint umPos { m_pBaseKnot->GetPos() };
     m_pBaseKnot->m_connections.Apply2AllInPipes
     ( 
@@ -50,32 +50,40 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
     );  // Knots in m_startKnots have their outgoing pipe set
     if ( m_pBaseKnot->IsKnot() )
         m_bDelete = true;
-    m_bInitialized = true;
 }
 
 void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
 {
     if ( ! m_bInitialized )
+    {
         init( nmwi );
+        m_bInitialized = true;
+    }
 
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
     for ( int i = 0; i < m_startKnots.size(); ++i )
     {
-        unique_ptr<Knot> & upKnot  { m_startKnots[i] };
-        Pipe             & pipeOut { upKnot->m_connections.GetFirstOutgoing() };
-        pipeOut.SetStartKnot( upKnot.get() );
-        pipeOut.DislocateStartPoint();                     // dislocate new knot
-        m_idStartKnots.SetAt(i, nmwi.GetUPShapes().Push(move(upKnot)));
+        unique_ptr<Knot> & upKnot { m_startKnots[i] };
+        if ( upKnot.get() )
+        {
+            Pipe & pipeOut { upKnot->m_connections.GetFirstOutgoing() };
+            pipeOut.SetStartKnot( upKnot.get() );
+            pipeOut.DislocateStartPoint();                     // dislocate new knot
+            m_idStartKnots.SetAt(i, nmwi.GetUPShapes().Push(move(upKnot)));
+        }
     }
     for ( int i = 0; i < m_endKnots.size(); ++i )
     {
         unique_ptr<Knot> & upKnot { m_endKnots[i] };
-        Pipe             & pipeIn { upKnot->m_connections.GetFirstIncoming() };
-        pipeIn.SetEndKnot( upKnot.get() );
-        pipeIn.DislocateEndPoint();                       // dislocate new knot 
-        m_idEndKnots.SetAt(i, nmwi.GetUPShapes().Push(move(upKnot)));
+        if ( upKnot.get() )
+        {
+            Pipe & pipeIn { upKnot->m_connections.GetFirstIncoming() };
+            pipeIn.SetEndKnot( upKnot.get() );
+            pipeIn.DislocateEndPoint();                       // dislocate new knot 
+            m_idEndKnots.SetAt(i, nmwi.GetUPShapes().Push(move(upKnot)));
+        }
     }
     m_pBaseKnot->ClearConnections();
     if ( m_bDelete )

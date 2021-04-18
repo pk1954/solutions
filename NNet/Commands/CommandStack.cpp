@@ -29,7 +29,7 @@ void CommandStack::Clear()
 {
     m_iIndex = 0;
     clearRedoStack();
-    m_pStaticModelObservable->NotifyAll( true );
+    notify();
 }
 
 void CommandStack::clearRedoStack()
@@ -38,7 +38,7 @@ void CommandStack::clearRedoStack()
     assert( RedoStackEmpty() );
 }
 
-void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
+void CommandStack::Push( unique_ptr<Command> pCmd )
 {
     if ( UndoStackEmpty() || ! previousCmd().Combine(*pCmd) )
     {
@@ -49,37 +49,37 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
 
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
-//#ifdef _DEBUG
-//    NNetModel const & model { m_pNMWI->GetModel() };
-//    m_pNMWI->CheckModel();
-//    NNetModel modelSave1( model );
-//    m_pNMWI->CheckModel();
-//#endif
+#ifdef _DEBUG
+    NNetModel const & model { m_pNMWI->GetModel() };
+    m_pNMWI->CheckModel();
+    NNetModel modelSave1( model );
+    m_pNMWI->CheckModel();
+#endif
     clearRedoStack();
     assert( * pCmd );
     pCmd->Do( * m_pNMWI );
     m_pNMWI->CheckModel();
-    pushNewCommand( move(pCmd) );
-    m_pStaticModelObservable->NotifyAll( true );
+    Push( move(pCmd) );
+    notify();
 
-//#ifdef _DEBUG
-//    NNetModel modelSave2( model );
-//    modelSave2.CheckModel();
-//    m_pNMWI->CheckModel();
-//    currentCmd().Undo(*m_pNMWI);
-//    m_pNMWI->CheckModel();
-//    if ( !(model == modelSave1) )
-//    {
-//        int x = 42;
-//    }
-//    m_pNMWI->CheckModel();
-//    RedoCommand();
-//    m_pNMWI->CheckModel();
-//    if ( !(model == modelSave2) )
-//    {
-//        int x = 42;
-//    }
-//#endif
+#ifdef _DEBUG
+    NNetModel modelSave2( model );
+    modelSave2.CheckModel();
+    m_pNMWI->CheckModel();
+    UndoCommand();
+    m_pNMWI->CheckModel();
+    if ( !(model == modelSave1) )
+    {
+        int x = 42;
+    }
+    m_pNMWI->CheckModel();
+    RedoCommand();
+    m_pNMWI->CheckModel();
+    if ( !(model == modelSave2) )
+    {
+        int x = 42;
+    }
+#endif
 }
 
 bool CommandStack::UndoCommand()
@@ -89,7 +89,7 @@ bool CommandStack::UndoCommand()
     set2OlderCmd();
     currentCmd().Undo(*m_pNMWI);
     m_pNMWI->CheckModel();
-    m_pStaticModelObservable->NotifyAll( true );
+    notify();
     return true;
 }
 
@@ -99,6 +99,6 @@ bool CommandStack::RedoCommand()
         return false;
     currentCmd().Do(*m_pNMWI);
     set2YoungerCmd();
-    m_pStaticModelObservable->NotifyAll( true );
+    notify();
     return true;
 }

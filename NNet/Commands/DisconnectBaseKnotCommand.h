@@ -16,8 +16,8 @@ using std::vector;
 using std::unique_ptr;
 
 // DisconnectBaseKnot and DeleteBaseKnot are nearly identical.
-// For Delete... functioniality create DisconnectBaseKnot 
-// with 3rd parameter set to true.
+// For Delete... functionality create DisconnectBaseKnot 
+// with bool parameter set to true.
 
 class DisconnectBaseKnotCommand : public Command
 {

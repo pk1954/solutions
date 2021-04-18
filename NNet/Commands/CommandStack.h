@@ -35,11 +35,25 @@ public:
         return m_iIndex == m_CommandStack.size(); 
     }
 
+    void Push( unique_ptr<Command> );
+
     void PushCommand( unique_ptr<Command> );
     bool UndoCommand();
     bool RedoCommand();
 
     void Clear();
+
+    void DoAll( )
+    {
+        for ( size_t i = 0; i < m_CommandStack.size(); ++i )
+            m_CommandStack[i]->Do(*m_pNMWI);
+    }
+
+    void UndoAll( )
+    {
+        for ( size_t i = m_CommandStack.size(); i --> 0; )
+            m_CommandStack[i]->Undo(*m_pNMWI);
+    }
 
 private:
 
@@ -63,6 +77,11 @@ private:
         ++m_iIndex;
     }
 
-    void pushNewCommand( unique_ptr<Command> );
-    void clearRedoStack   ();
+    void notify( )
+    {
+        if (m_pStaticModelObservable)
+            m_pStaticModelObservable->NotifyAll( true );
+    }
+
+    void clearRedoStack();
 };

@@ -94,7 +94,6 @@ public:
     //void CloseSeries();
 
 private:
-    void deleteShape( ShapeId const );
 
     bool       IsTraceOn  () const { return m_bTrace; }
     wostream & TraceStream()       { return wcout; }

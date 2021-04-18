@@ -163,7 +163,7 @@ private:
             ShapeId      const id          { script.ScrReadInt() };
             ConnNeuron * const pConnNeuron { GetWriterInterface().GetShapePtr<ConnNeuron *>(id) };
             if ( ! pConnNeuron )
-                throw ScriptErrorHandler::ScriptException( 999, wstring( L"Element has wrong type" ) );
+                throw ScriptErrorHandler::ScriptException( 999, wstring( L"ShapeId not found" ) );
             upConnector->Push(pConnNeuron);
         }
         script.ScrReadSpecial( Connector::CLOSE_BRACKET );

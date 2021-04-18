@@ -23,25 +23,21 @@ public:
     )
       : m_idConnector(idConnector),
         m_bDelete(bDelete)
-    {
-    }
+    {}
 
     ~DisconnectConnectorCommand() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
+        if ( ! m_bInitialized )
+        {
+            init(nmwi);
+            m_bInitialized = true;
+        }
         m_upConnector = nmwi.RemoveFromModel<Connector>(m_idConnector);
         m_upConnector->ClearParentPointers();
         if (m_bDelete)
-        {
-            ShapeIdList(*m_upConnector.get()).Apply2All
-            (
-                [&](ShapeId const & id) 
-                { 
-                    m_upConnNeurons.push_back(move(nmwi.RemoveFromModel<ConnNeuron>(id)));
-                }
-            );
-        }
+            m_cmdStack.DoAll();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
@@ -49,20 +45,29 @@ public:
         m_upConnector->SetParentPointers();
         nmwi.GetUPShapes().SetShape2Slot( move(m_upConnector) );
         if (m_bDelete)
-        {
-            while (!m_upConnNeurons.empty())
-            {
-                auto upConnNeuron { move(m_upConnNeurons.back().release()) };
-                nmwi.ReplaceInModel<ConnNeuron,ConnNeuron>( move(upConnNeuron) ); 
-                m_upConnNeurons.pop_back();
-           }
-        }
+            m_cmdStack.UndoAll();
     }
 
 private:
 
-    ShapeId                  const m_idConnector;
-    vector<unique_ptr<ConnNeuron>> m_upConnNeurons;  // intentionally no UPShapeList!
-    unique_ptr<Connector>          m_upConnector {};  
-    bool                           m_bDelete;        // true: delete Connector, false: disconnect only
+    void init(NNetModelWriterInterface & nmwi) 
+    { 
+        m_cmdStack.Initialize(&nmwi, nullptr);
+        if (m_bDelete)
+        {
+            nmwi.GetShapePtr<Connector *>(m_idConnector)->Apply2All
+            (
+                [&](Shape const & s) 
+                { 
+                    m_cmdStack.Push(move(make_unique<DisconnectBaseKnotCommand>(s.GetId(), true)));
+                }
+            );
+        }
+    }
+
+    ShapeId         const m_idConnector;
+    bool            const m_bDelete;     // true: delete Connector, false: disconnect only
+    CommandStack          m_cmdStack {};
+    unique_ptr<Connector> m_upConnector  {};  
+    bool                  m_bInitialized { false };
 };

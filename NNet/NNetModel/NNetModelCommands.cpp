@@ -72,16 +72,6 @@ void NNetModelCommands::Initialize
 	m_pCmdStack               = pCmdStack;
 }
 
-//void NNetModelCommands::OpenSeries() 
-//{ 
-//	m_pCmdStack->OpenSeries (); 
-//}
-//
-//void NNetModelCommands::CloseSeries() 
-//{ 
-//	m_pCmdStack->CloseSeries(); 
-//}
-
 void NNetModelCommands::UndoCommand()
 {
 	if ( IsTraceOn() )
@@ -151,7 +141,23 @@ void NNetModelCommands::DeleteShape( ShapeId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	deleteShape( id );
+	if ( Shape * pShape { m_pNMWI->GetShape(id) } )
+	{
+		unique_ptr<Command> pCmd;
+		if (pShape->IsPipe()) 
+		{
+			pCmd = make_unique<DeletePipeCommand>(id);
+		}
+		else if (pShape->IsConnector()) 
+		{
+			pCmd = make_unique<DisconnectConnectorCommand>(id, true);
+		}
+		else 
+		{
+			pCmd = make_unique<DisconnectBaseKnotCommand>(id, true);
+		}
+		m_pCmdStack->PushCommand( move( pCmd ) );
+	}
 }
 
 void NNetModelCommands::DeleteSelection()
@@ -179,27 +185,6 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 	else
 	{
 		m_pCmdStack->PushCommand(make_unique<Connect2BaseKnotCommand>(m_pBaseKnotSrc, static_cast<BaseKnot *>(m_pShapeDst) ));
-	}
-}
-
-void NNetModelCommands::deleteShape( ShapeId const id )
-{
-	if ( Shape * pShape { m_pNMWI->GetShape(id) } )
-	{
-		unique_ptr<Command> pCmd;
-		if (pShape->IsPipe()) 
-		{
-			pCmd = make_unique<DeletePipeCommand>(id);
-		}
-		else if (pShape->IsConnector()) 
-		{
-			pCmd = make_unique<DisconnectConnectorCommand>(id, true);
-		}
-		else 
-		{
-			pCmd = make_unique<DisconnectBaseKnotCommand>(id, true);
-		}
-		m_pCmdStack->PushCommand( move( pCmd ) );
 	}
 }
 
