@@ -8,6 +8,7 @@
 #include "ShapeId.h"
 #include "Command.h"
 #include "BaseKnot.h"
+#include "Knot.h"
 #include "Pipe.h"
 
 using std::wcout;

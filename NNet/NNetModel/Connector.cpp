@@ -22,6 +22,12 @@ void Connector::Dump() const
     m_list.Apply2All([&](Shape const & s){ wcout << s << endl; } );
 }
 
+void Connector::Link(Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc)
+{
+    Clear();
+    static_cast<Connector const &>(shapeSrc).Apply2All([&](Shape const & c) { Push(dstFromSrc(& c)); });
+}
+
 void Connector::Clear( )
 {
     Shape::Clear();

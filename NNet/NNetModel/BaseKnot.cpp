@@ -41,6 +41,18 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 	SetPos( GetPos() + delta );
 }
 
+void BaseKnot::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> const & dstFromSrc)
+{
+	BaseKnot    const & baseKnotSrc { static_cast<BaseKnot const &>(shapeSrc) };
+	Connections const & srcConn { baseKnotSrc.m_connections };
+	m_connections.ClearOutgoing();
+	m_connections.ClearIncoming();
+	srcConn.Apply2AllOutPipes([&](Pipe const &p){m_connections.AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
+	srcConn.Apply2AllInPipes ([&](Pipe const &p){m_connections.AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
+	if ( baseKnotSrc.GetParent() )
+		SetParent(dstFromSrc(baseKnotSrc.GetParent()));
+}
+
 void BaseKnot::RotateShape( MicroMeterPoint const & umPntPivot, Radian const radDelta )
 {
 	MicroMeterPoint const umPntVectorOld    { GetPos() - umPntPivot };

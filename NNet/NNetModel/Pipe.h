@@ -60,12 +60,12 @@ public:
 	virtual void                  Expand      (MicroMeterRect &)                      const;
 	virtual void                  Select      (bool const, bool const);
 	virtual void                  MoveShape   (MicroMeterPoint const &);
+	virtual void                  Link        (Shape const &, function<Shape * (Shape const *)> const &);
+	virtual void                  RotateShape (MicroMeterPoint const &, Radian const) {}
 	virtual void                  Prepare();
 	virtual bool            const CompStep();
 	virtual void                  Recalc();
 	virtual void                  Clear();
-
-	virtual void RotateShape(MicroMeterPoint const &, Radian const) {}
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPoint const & ) const;

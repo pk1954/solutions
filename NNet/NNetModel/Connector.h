@@ -39,6 +39,7 @@ public:
 	virtual bool const CompStep    ();
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
+	virtual void       Link        (Shape const &, function<Shape * (Shape const *)> const &);
 
 	void Push(Shape * const p) { m_list.Add(p); }
 

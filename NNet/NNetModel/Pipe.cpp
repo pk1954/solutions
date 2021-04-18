@@ -98,6 +98,14 @@ void Pipe::Recalc()
 		m_potIndex = 0;
 	}
 }
+void Pipe::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> const & dstFromSrc)
+{
+	Pipe const & pipeSrc { static_cast<Pipe const &>(shapeSrc) };
+	BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
+	BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
+	SetStartKnot(pBaseKnotStart);
+	SetEndKnot  (pBaseKnotEnd);
+}
 
 void Pipe::CheckShape() const
 {

@@ -71,6 +71,7 @@ public:
 	virtual void       Expand       (MicroMeterRect        &) const;
 	virtual void       MoveShape    (MicroMeterPoint const &);
 	virtual void       RotateShape  (MicroMeterPoint const &, Radian const);
+	virtual void       Link         (Shape const &, function<Shape * (Shape const *)> const &);
 
 	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType(); }
 

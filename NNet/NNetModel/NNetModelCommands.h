@@ -90,9 +90,6 @@ public:
     void UndoCommand();
     void RedoCommand();
 
-    //void OpenSeries ();
-    //void CloseSeries();
-
 private:
 
     bool       IsTraceOn  () const { return m_bTrace; }

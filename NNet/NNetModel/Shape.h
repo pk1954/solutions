@@ -48,18 +48,19 @@ public:
 
 	virtual bool operator==(Shape const &) const;
 
-	virtual MicroMeterPoint const GetPos ()                                      const = 0;
-	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const = 0;
-	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const = 0;
-	virtual void                  Prepare     ()                                            = 0;
-	virtual bool            const CompStep    ()                                            = 0;
-	virtual void                  Recalc      ()                                            = 0;
-	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const = 0;
-	virtual bool            const Includes    (MicroMeterPoint const &)               const = 0;
-	virtual void                  Expand      (MicroMeterRect &)                      const = 0;
-	virtual void                  MoveShape   (MicroMeterPoint const &)                     = 0;
-	virtual void                  RotateShape (MicroMeterPoint const &, Radian const)       = 0;
-	virtual void                  Select      (bool const, bool const)                      = 0;
+	virtual MicroMeterPoint const GetPos ()                                                        const = 0;
+	virtual void                  DrawExterior(DrawContext const &, tHighlight const)              const = 0;
+	virtual void                  DrawInterior(DrawContext const &, tHighlight const)              const = 0;
+	virtual void                  Prepare     ()                                                         = 0;
+	virtual bool            const CompStep    ()                                                         = 0;
+	virtual void                  Recalc      ()                                                         = 0;
+	virtual bool            const IsIncludedIn(MicroMeterRect  const &)                            const = 0;
+	virtual bool            const Includes    (MicroMeterPoint const &)                            const = 0;
+	virtual void                  Expand      (MicroMeterRect &)                                   const = 0;
+	virtual void                  MoveShape   (MicroMeterPoint const &)                                  = 0;
+	virtual void                  RotateShape (MicroMeterPoint const &, Radian const)                    = 0;
+	virtual void                  Select      (bool const, bool const)                                   = 0;
+	virtual void                  Link        (Shape const &, function<Shape * (Shape const *)> const &) = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 

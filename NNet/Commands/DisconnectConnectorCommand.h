@@ -6,7 +6,9 @@
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
+#include "DisconnectBaseKnotCommand.h"
 #include "Command.h"
+#include "CommandStack.h"
 #include "ShapeId.h"
 #include "UpShapeList.h"
 #include "Connector.h"

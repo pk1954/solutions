@@ -15,16 +15,12 @@
 #include "AppendInputNeuronCommand.h"
 #include "ClearBeepersCommand.h"
 #include "CommandStack.h"
-#include "Connect2BaseKnotCommand.h"
-#include "Connect2PipeCommand.h"
+#include "CommandFunctions.h"
 #include "CopySelectionCommand.h"
 #include "CreateConnectorCommand.h"
-#include "DeletePipeCommand.h"
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
-#include "DisconnectBaseKnotCommand.h"
-#include "DisconnectConnectorCommand.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
 #include "MoveShapeCommand.h"
@@ -143,20 +139,7 @@ void NNetModelCommands::DeleteShape( ShapeId const id )
 		TraceStream() << __func__ << L" " << id << endl;
 	if ( Shape * pShape { m_pNMWI->GetShape(id) } )
 	{
-		unique_ptr<Command> pCmd;
-		if (pShape->IsPipe()) 
-		{
-			pCmd = make_unique<DeletePipeCommand>(id);
-		}
-		else if (pShape->IsConnector()) 
-		{
-			pCmd = make_unique<DisconnectConnectorCommand>(id, true);
-		}
-		else 
-		{
-			pCmd = make_unique<DisconnectBaseKnotCommand>(id, true);
-		}
-		m_pCmdStack->PushCommand( move( pCmd ) );
+		m_pCmdStack->PushCommand( move( MakeDeleteCommand(*pShape) ) );
 	}
 }
 
@@ -171,21 +154,14 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
-	unique_ptr<Command> pCmd;
-	BaseKnot * m_pBaseKnotSrc { m_pNMWI->GetShapePtr<BaseKnot *>( idSrc ) };
-	Shape    * m_pShapeDst    { m_pNMWI->GetShapePtr<Shape    *>( idDst ) };
-	if ( m_pShapeDst->IsPipe() ) 
-	{
-		m_pCmdStack->PushCommand(make_unique<Connect2PipeCommand>(m_pBaseKnotSrc, static_cast<Pipe *>(m_pShapeDst) ));
-	}
-	else if ( m_pShapeDst->IsConnector() )
-	{
-		assert( false );
-	}
-	else
-	{
-		m_pCmdStack->PushCommand(make_unique<Connect2BaseKnotCommand>(m_pBaseKnotSrc, static_cast<BaseKnot *>(m_pShapeDst) ));
-	}
+	m_pCmdStack->PushCommand
+	(
+		MakeConnectCommand
+		(
+			* m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
+			* m_pNMWI->GetShapePtr<Shape    *>(idDst)
+		) 
+	);
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )
@@ -193,13 +169,7 @@ void NNetModelCommands::Disconnect( ShapeId const id )
 	unique_ptr<Command> pCmd;
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	if (m_pNMWI->IsPipe(id)) 
-		assert( false );
-	else if (m_pNMWI->IsConnector(id)) 
-		pCmd = make_unique<DisconnectConnectorCommand>(id, false);
-	else 
-		pCmd = make_unique<DisconnectBaseKnotCommand>(id, false);
-	m_pCmdStack->PushCommand( move( pCmd ) );
+	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI->GetShape(id)) ) );
 }
 
 void NNetModelCommands::ToggleStopOnTrigger( ShapeId const id )

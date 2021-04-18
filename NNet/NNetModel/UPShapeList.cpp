@@ -147,38 +147,7 @@ void UPShapeList::LinkShape
 ) const
 {
 	if ( Shape * pShapeDst { dstFromSrc(& shapeSrc) } )
-	{
-		Shape & shapeDst { * pShapeDst };
-		if (shapeSrc.IsPipe())
-		{
-			Pipe const & pipeSrc { static_cast<Pipe const &>(shapeSrc) };
-			Pipe       & pipeDst { static_cast<Pipe       &>(shapeDst) };
-			BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
-			BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
-			pipeDst.SetStartKnot(pBaseKnotStart);
-			pipeDst.SetEndKnot  (pBaseKnotEnd);
-		}
-		else if (shapeSrc.IsConnector())
-		{
-			Connector const & connectorSrc { static_cast<Connector const &>(shapeSrc) };
-			Connector       & connectorDst { static_cast<Connector       &>(shapeDst) };
-			connectorDst.Clear();
-			connectorSrc.Apply2All([&](Shape const & c) { connectorDst.Push(dstFromSrc(& c)); });
-		}
-		else  // BaseKnot
-		{
-			BaseKnot    const & baseKnotSrc { static_cast<BaseKnot const &>(shapeSrc) };
-			BaseKnot          & baseKnotDst { static_cast<BaseKnot       &>(shapeDst) };
-			Connections const & srcConn { baseKnotSrc.m_connections };
-			Connections       & dstConn { baseKnotDst.m_connections };
-			dstConn.ClearOutgoing();
-			dstConn.ClearIncoming();
-			srcConn.Apply2AllOutPipes([&](Pipe const &p){dstConn.AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
-			srcConn.Apply2AllInPipes ([&](Pipe const &p){dstConn.AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
-			if ( baseKnotSrc.GetParent() )
-				baseKnotDst.SetParent(dstFromSrc(baseKnotSrc.GetParent()));
-		}
-	}
+		pShapeDst->Link(shapeSrc, dstFromSrc);
 }
 
 ShapeId const UPShapeList::Push( UPShape upShape )	

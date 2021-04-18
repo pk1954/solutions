@@ -78,6 +78,7 @@
     <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
@@ -111,6 +112,11 @@
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandFunctions.cpp">
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
     <ClCompile Include="CommandStack.cpp">
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
