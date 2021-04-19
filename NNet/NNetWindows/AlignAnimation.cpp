@@ -35,8 +35,7 @@ bool const AlignAnimation::prepareData()
 	if ( m_line.IsNull() )
 		return false;
 
-	MicroMeterLine orthoLine { m_line.OrthoLine() };
-	m_shapesAnimated.SortAccToDistFromLine( orthoLine );
+	m_shapesAnimated.SortAccToDistFromLine( m_line.OrthoLine() );
 	return true;
 }
 
@@ -59,10 +58,6 @@ void AlignAnimation::scriptStep()
 	bool bAlignShapes    = dwOptions & (ALIGN_SHAPES|PACK_SHAPES);
 	bool bPackShapes     = dwOptions & PACK_SHAPES;
 
-	ShapePtrList<BaseKnot> list;
-	m_shapesAnimated.Apply2All([&](Shape & s) { list.Add(static_cast<BaseKnot *>(&s)); } );
-	m_orthoVector = CalcOrthoVector(m_line, list);
-
 	float      const fGapCount          { Cast2Float(m_shapesAnimated.Size() - 1) };
 	MicroMeter const umUnpackedDistance { m_line.Length() / fGapCount };
 	MicroMeter const umShapeDistTarget  { bPackShapes ? NEURON_RADIUS * 1.8f : umUnpackedDistance };
@@ -76,9 +71,9 @@ void AlignAnimation::scriptStep()
 
 	// fill animation vectors
 
-	MicroMeterPosDir      posDirTarget { umPntTargetStart, Vector2Radian(m_orthoVector) };
+	MicroMeterPoint       orthoVector { CalcOrthoVector(m_line, m_shapesAnimated) };
+	MicroMeterPosDir      posDirTarget { umPntTargetStart, Vector2Radian(orthoVector) };
 	MicroMeterPointVector umPntVectorTarget {};
-
 	m_shapesAnimated.Apply2All
 	(	
 		[&](ConnNeuron const & c)	
@@ -92,20 +87,29 @@ void AlignAnimation::scriptStep()
 			posDirTarget += umPntSingleVector;
 		}	
 	);
-
 	MicroMeterPointVector umPntVectorStart( m_shapesAnimated );
-	MicroMeterPointVector umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
+	m_upConnAnimation->SetNrOfSteps( calcNrOfSteps(umPntVectorStart, umPntVectorTarget) );
+	m_upConnAnimation->Start(umPntVectorStart, umPntVectorTarget);
+}
 
-	Radian     const radDiffMax     { umPntVectorDiff.FindMaxRadian() };
-	MicroMeter const umDiffMax      { umPntVectorDiff.FindMaxPos() };
-	Radian     const radPerStep     { Degrees2Radian(6.0_Degrees) };
-	MicroMeter const umPerStep      { NEURON_RADIUS / 5.0f };
-	float      const fStepsFromRot  { radDiffMax / radPerStep };
-	float      const fStepsFromMove { umDiffMax / umPerStep };
-	float      const fSteps         { max(fStepsFromRot, fStepsFromMove) };
+unsigned int const AlignAnimation::calcNrOfSteps
+(
+	MicroMeterPointVector const & umPntVectorStart,
+	MicroMeterPointVector const & umPntVectorTarget
+) const
+{
+	MicroMeterPointVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
+	Radian                const radDiffMax      { umPntVectorDiff.FindMaxRadian() };
+	Radian                const radPerStep      { Degrees2Radian(6.0_Degrees) };
+	float                 const fStepsFromRot   { radDiffMax / radPerStep };
 
-	m_upConnAnimation->SetNrOfSteps( Cast2UnsignedInt(fSteps) + 1 );
-	m_upConnAnimation->Start( umPntVectorStart, umPntVectorTarget);
+	MicroMeter            const umDiffMax       { umPntVectorDiff.FindMaxPos() };
+	MicroMeter            const umPerStep       { NEURON_RADIUS / 5.0f };
+	float                 const fStepsFromMove  { umDiffMax / umPerStep };
+
+	float                 const fSteps          { max(fStepsFromRot, fStepsFromMove) };
+	unsigned int          const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
+	return uiSteps;
 }
 
 void AlignAnimation::AnimationStep()
@@ -114,7 +118,6 @@ void AlignAnimation::AnimationStep()
 
 	m_pModelCommands->SetConnectionNeurons
 	(
-	
 		m_upConnAnimation->GetActual(), 
 		move(upShapeIds)
 	);

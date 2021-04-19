@@ -36,10 +36,8 @@ void Connector::Clear( )
 
 void Connector::AlignDirection()
 {
-    ShapePtrList<BaseKnot> list;
-    m_list.Apply2All([&](Shape & s) { list.Add(static_cast<BaseKnot *>(&s)); } );
     MicroMeterLine  const umLine(m_list.GetFirst().GetPos(), m_list.GetLast().GetPos());
-    MicroMeterPoint const umPntDir { CalcOrthoVector(umLine, list) };
+    MicroMeterPoint const umPntDir { CalcOrthoVector(umLine, m_list) };
     m_list.Apply2All([&](Shape & c){ static_cast<ConnNeuron &>(c).SetDirVector(umPntDir); } );
 }
 

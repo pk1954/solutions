@@ -50,7 +50,6 @@ private:
 	NNetModelWriterInterface * m_pNMWI          { nullptr };
 	NNetModelCommands        * m_pModelCommands { nullptr };
 	MicroMeterLine             m_line           { MicroMeterLine::NULL_VAL() };
-	MicroMeterPoint            m_orthoVector    { MicroMeterPoint::NULL_VAL() };
 	DWORD                      m_animationPhase { AlignAnimation::ALIGN_DIRECTION };
 
 	AnimationScript    const * m_pScript { nullptr };
@@ -59,6 +58,7 @@ private:
 	unique_ptr<ConnAnimation> m_upConnAnimation;
 	ShapePtrList<ConnNeuron>  m_shapesAnimated;
 
-	bool const prepareData();
-	void       scriptStep();
+	bool         const prepareData();
+	void               scriptStep();
+	unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
 };

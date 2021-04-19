@@ -127,12 +127,12 @@ public:
         return out; 
     }
 
-    Radian const FindMaxRadian()
+    Radian const FindMaxRadian() const 
     {
         MicroMeterPosDir const maxElement = * std::max_element
         (
             m_list.begin(), m_list.end(), 
-            [](MicroMeterPosDir & a, MicroMeterPosDir & b)
+            [](MicroMeterPosDir const & a, MicroMeterPosDir const & b)
             { 
                 return a.GetDir() < b.GetDir(); 
             }
@@ -140,12 +140,12 @@ public:
         return maxElement.GetDir();
     }
 
-    MicroMeter const FindMaxPos()
+    MicroMeter const FindMaxPos() const
     {
         MicroMeterPosDir const maxElement = * std::max_element
         (
             m_list.begin(), m_list.end(), 
-            [](MicroMeterPosDir & a, MicroMeterPosDir & b)
+            [](MicroMeterPosDir const & a, MicroMeterPosDir const & b)
             { 
                 return Hypot(a.GetPos()) < Hypot(b.GetPos()); 
             }

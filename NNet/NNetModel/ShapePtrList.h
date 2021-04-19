@@ -53,7 +53,6 @@ public:
 		m_list.erase( res );
 	}
 
-
 	void Apply2All( function<void(T &)> const & func ) const
 	{
 		for ( auto pShape : m_list ) 

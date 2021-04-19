@@ -234,7 +234,6 @@
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="BaseKnot.cpp" />
-    <ClCompile Include="CalcOrthoVector.cpp" />
     <ClCompile Include="ConnectionNeuron.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
