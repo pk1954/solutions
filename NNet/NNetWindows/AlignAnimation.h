@@ -14,6 +14,7 @@ using std::unique_ptr;
 
 class NNetModelWriterInterface;
 class NNetModelCommands;
+class Sound;
 
 class AlignAnimation
 {
@@ -22,7 +23,8 @@ public:
 	( 
 		HWND const,
 		NNetModelWriterInterface &,
-		NNetModelCommands &
+		NNetModelCommands &,
+		Sound *
 	);
 
 	static DWORD const ALIGN_DIRECTION  { 0x01 };
@@ -30,9 +32,9 @@ public:
 	static DWORD const PACK_SHAPES      { 0x04 };
 	static DWORD const CREATE_CONNECTOR { 0x08 };
 
-	bool            const AlignSelection( AnimationScript const & );
+	void                  AlignSelection( AnimationScript const & );
 	void                  AnimationStep();
-	bool            const NextStep();
+	bool            const NextScriptStep();
 	wchar_t const * const DoNextStep();
 
 private:
@@ -51,6 +53,7 @@ private:
 	NNetModelCommands        * m_pModelCommands { nullptr };
 	MicroMeterLine             m_line           { MicroMeterLine::NULL_VAL() };
 	DWORD                      m_animationPhase { AlignAnimation::ALIGN_DIRECTION };
+	Sound                   *  m_pSound         { nullptr };
 
 	AnimationScript    const * m_pScript { nullptr };
 	int                        m_iScriptStep { -1 };

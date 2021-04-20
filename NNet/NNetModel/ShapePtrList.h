@@ -105,7 +105,7 @@ public:
 		MicroMeter     maxDist { 0.0_MicroMeter };   	
 		MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
 		for ( T * it1 : m_list )
-		for ( T * it2 : m_list )
+		for ( T * it2 : m_list )    //TODO: optimize
 		{
 			auto const line { MicroMeterLine( it1->GetPos(), it2->GetPos() ) };
 			auto const dist { line.Length() };

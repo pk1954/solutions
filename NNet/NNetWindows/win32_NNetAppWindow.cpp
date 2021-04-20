@@ -118,7 +118,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_sound,
 		& m_preferences,
 		& m_cmdStack,
-		& m_monitorWindow
+		& m_monitorWindow,
+		& m_alignAnimation
 	);
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
@@ -172,7 +173,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_NNetController
 	);
 
-	m_alignAnimation   .Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
+	m_alignAnimation   .Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands, &m_sound);
 	m_rotationAnimation.Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 

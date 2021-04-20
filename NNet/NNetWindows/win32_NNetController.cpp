@@ -16,6 +16,7 @@
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
+#include "MakeConnectorCommand.h"
 #include "win32_util.h"
 #include "win32_sound.h"
 #include "win32_script.h"
@@ -44,7 +45,8 @@ void NNetController::Initialize
     Sound                    * const pSound,
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
-    MonitorWindow            * const pMonitorWindow
+    MonitorWindow            * const pMonitorWindow,
+    AlignAnimation           * const pAlignAnimation
 ) 
 {
     m_pModelExporter    = pModelExporter;
@@ -59,6 +61,7 @@ void NNetController::Initialize
     m_pPreferences      = pPreferences;
     m_pCommandStack     = pCommandStack;
     m_pMonitorWindow    = pMonitorWindow;
+    m_pAlignAnimation   = pAlignAnimation;
     m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
 }
 
@@ -204,14 +207,14 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AddModel();
         break;
 
-    case IDM_ALIGN_SELECTION:
-        if ( !m_pMainWindow->AlignSelection() )
-            m_pSound->Play( TEXT("NOT_POSSIBLE_SOUND") ); 
-        break;
+    //case IDM_ALIGN_SELECTION:
+    //    m_pModelCommands->AlignSelection();
+    //    break;
 
     case IDM_MAKE_CONNECTOR:
-        if ( !m_pMainWindow->MakeConnector() )
-            m_pSound->Play( TEXT("NOT_POSSIBLE_SOUND") );
+        if ( IsTraceOn() )
+            TraceStream() << __func__ << endl ;
+        m_pModelCommands->PushCommand( make_unique<MakeConnectorCommand>(*m_pAlignAnimation) );
         break;
 
     case IDM_COPY_SELECTION:

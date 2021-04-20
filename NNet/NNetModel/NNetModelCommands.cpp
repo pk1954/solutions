@@ -84,6 +84,11 @@ void NNetModelCommands::RedoCommand()
 		MessageBeep( MB_ICONWARNING );
 }
 
+void NNetModelCommands::PushCommand( unique_ptr<Command> upCmd )
+{
+	m_pCmdStack->PushCommand( move(upCmd) );
+}
+
 void NNetModelCommands::ResetModel()
 { 
 	if ( IsTraceOn() )
@@ -251,7 +256,7 @@ void NNetModelCommands::CreateConnector(ShapePtrList<ConnNeuron> & shapes)
 	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(shapes) );
 }
 
-void NNetModelCommands::CreateConnector(unique_ptr<ShapeIdList> upList)
+void NNetModelCommands::CreateConnector(unique_ptr<ShapeIdList> upList)  // only used in wrapper function
 {
 	unique_ptr<ShapePtrList<ConnNeuron>> upShapes { make_unique<ShapePtrList<ConnNeuron>>() };
 	upList->Apply2All([&](ShapeId const id) { upShapes->Add(m_pNMWI->GetShapePtr<ConnNeuron*>(id)); });

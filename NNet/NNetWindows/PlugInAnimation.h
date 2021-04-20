@@ -26,7 +26,7 @@ public:
 
 	bool            const AlignSelection( AnimationScript const & );
 	void                  AnimationStep();
-	bool            const NextStep();
+	bool            const NextScriptStep();
 	wchar_t const * const DoNextStep();
 
 private:

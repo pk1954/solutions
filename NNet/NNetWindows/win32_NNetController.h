@@ -6,6 +6,7 @@
 
 class NNetModelReaderInterface;
 class NNetModelCommands;
+class AlignAnimation;
 class SlowMotionRatio;
 class MonitorWindow;
 class NNetModelExporter;
@@ -41,7 +42,8 @@ public:
 		Sound                    * const,
 		Preferences              * const,
 		CommandStack             * const,
-		MonitorWindow            * const
+		MonitorWindow            * const,
+		AlignAnimation           * const
 	);
 
 	virtual ~NNetController();
@@ -50,11 +52,15 @@ public:
 
 private:
 
+	bool       IsTraceOn  () const { return m_bTrace; }
+	wostream & TraceStream()       { return wcout; }
+
 	void pulseRateDlg       ( ShapeId const );
 	void triggerSoundDlg    ( ShapeId const );
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
+	bool                       m_bTrace                 { true };
 	HCURSOR                    m_hCrsrWait              { nullptr };
 	Sound                    * m_pSound                 { nullptr };
 	NNetModelExporter        * m_pModelExporter         { nullptr };
@@ -69,4 +75,5 @@ private:
 	CommandStack             * m_pCommandStack          { nullptr };
 	MonitorWindow            * m_pMonitorWindow         { nullptr };
 	Observable               * m_pStaticModelObservable { nullptr };
+	AlignAnimation           * m_pAlignAnimation        { nullptr };
 };				          

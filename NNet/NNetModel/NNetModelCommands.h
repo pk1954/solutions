@@ -15,9 +15,11 @@
 #include "ShapeId.h"
 
 class Param;
+class Command;
 class Observable;
 class ShapeIdList;
 class CommandStack;
+class AlignAnimation;
 class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
@@ -89,6 +91,8 @@ public:
 
     void UndoCommand();
     void RedoCommand();
+
+    void PushCommand(unique_ptr<Command>);
 
 private:
 

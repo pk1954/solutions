@@ -54,6 +54,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NNetWindows", "NNetWindows\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Commands", "Commands\Commands.vcxproj", "{5F8877E6-8159-4CD4-84AC-53AA018885AC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7C1B51ED-011D-4B73-867C-AC23F0A9E6D1} = {7C1B51ED-011D-4B73-867C-AC23F0A9E6D1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{B9FA0D15-A9A8-4578-92FD-849CEAEF518A}"
 EndProject

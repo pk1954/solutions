@@ -29,7 +29,7 @@ public:
         shapeList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
     }
 
-    void Apply2All(function<void(MicroMeterPosDir const &)> const & func)
+    void Apply2All(function<void(MicroMeterPosDir &)> const & func)
     {
         for (auto & elem: m_list)
             func(elem);
@@ -47,6 +47,11 @@ public:
     {
         assert( ui < Size() );
         m_list[ui] = posDir;
+    }
+
+    void SetDir(Radian const radian)
+    {
+        Apply2All( [&](MicroMeterPosDir & umPosDir) { umPosDir.SetDir(radian); } );
     }
 
     void Clear()
@@ -151,6 +156,30 @@ public:
             }
         );
         return Hypot(maxElement.GetPos());
+    }
+
+    void Align( MicroMeterPoint const& umPntStart, MicroMeterPoint const& umPntOffset )
+    {	
+        MicroMeterPoint umPnt { umPntStart };
+        Apply2All
+        (	
+            [&](MicroMeterPosDir & posDir)	
+            { 
+                posDir.SetPos(umPnt);
+                umPnt += umPntOffset;
+            }	
+        );
+    }
+
+    void Align( MicroMeterLine const umLine, MicroMeter umDist )
+    {
+        float           const fGapCount          { Cast2Float(Size() - 1) };
+        MicroMeterPoint const umVector           { umLine.GetVector() };
+        MicroMeter      const umLineLengthTarget { umDist * fGapCount };
+        MicroMeterPoint const umPntSingleVector  { umVector.ScaledTo(umDist) };
+        MicroMeterPoint const umPntLineTarget    { umVector.ScaledTo(umLineLengthTarget) };
+        MicroMeterPoint const umPntTargetStart   { umLine.GetCenter() - umPntLineTarget * 0.5f };
+        Align(umPntTargetStart, umPntSingleVector);
     }
 
     inline static wchar_t const OPEN_BRACKET  { L'(' };

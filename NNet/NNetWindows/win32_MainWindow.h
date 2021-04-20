@@ -63,9 +63,7 @@ public:
 
 	void       CenterModel();
 	void       CenterSelection();
-	bool const AlignSelection();
-	bool const MakeConnector();
-
+	void       AlignSelection();
 	void       ShowArrows( bool const );
 	bool const ArrowsVisible() const; 
 

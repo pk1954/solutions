@@ -32,7 +32,6 @@ void MainWindow::Start
 	Observable                     & coordObservable,
 //	RotationAnimation              & rotationAnimation,
 	AlignAnimation                 & alignAnimation
-
 )
 {
 	NNetWindow::Start
@@ -213,26 +212,14 @@ void MainWindow::CenterSelection()
 	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
 }
 
-bool const MainWindow::MakeConnector()
-{
-	static AnimationScript script 
-	{
-	   AlignAnimation::ALIGN_DIRECTION,  
-	   AlignAnimation::ALIGN_SHAPES,     
-	   AlignAnimation::PACK_SHAPES,      
-	   AlignAnimation::CREATE_CONNECTOR 
-	};
-	return m_pAlignAnimation->AlignSelection( script ); 
-}
-
-bool const MainWindow::AlignSelection() 
+void MainWindow::AlignSelection() 
 { 
 	static AnimationScript script 
 	{
 		AlignAnimation::ALIGN_DIRECTION,  
 		AlignAnimation::ALIGN_SHAPES
 	};
-	return m_pAlignAnimation->AlignSelection( script ); 
+    m_pAlignAnimation->AlignSelection( script ); 
 }
 
 bool const MainWindow::ArrowsVisible() const
@@ -526,7 +513,7 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 	case IDX_CONNECTOR_ANIMATION:
 		m_pAlignAnimation->AnimationStep();
-		if ( (lParam != 0) && m_pAlignAnimation->NextStep() )
+		if ( (lParam != 0) && m_pAlignAnimation->NextScriptStep() )
 		{
 			if (wchar_t const * const strSound = m_pAlignAnimation->DoNextStep())
 				SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)strSound ); 

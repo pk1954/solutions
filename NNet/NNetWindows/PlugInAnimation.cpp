@@ -41,7 +41,7 @@ void PlugInAnimation::AnimationStep()
 //	m_pModelCommands->SetShape(m_idShape, );
 }
 
-bool const PlugInAnimation::NextStep()
+bool const PlugInAnimation::NextScriptStep()
 {
 	return ++m_iScriptStep < m_pScript->size();
 }

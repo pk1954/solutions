@@ -159,14 +159,24 @@ public:
 		return GetAll<T>( [&](T &s) { return s.IsSelected(); } );
 	}
 
-	unsigned int CountInSelection( ShapeType const shapeType ) const
+	template <Shape_t T>
+	ShapePtrList<T> GetAllSelected(ShapeType const shapeType)
+	{
+		return GetAll<T>( [&](T &s) { return s.IsSelected() && s.HasType(shapeType); } );
+	}
+
+	unsigned int CountInSelection(ShapeType const shapeType) const
 	{
 		unsigned int uiNr { 0 };
 		Apply2AllSelected( shapeType, [&](auto & s) { ++uiNr; } );
 		return uiNr;
 	}
 
-	unsigned int const GetCounter(ShapeType const t) const { return counter(t); }
+	unsigned int const GetCounter(ShapeType const t) const 
+	{ 
+		return counter(t); 
+	}
+
 	unsigned int const GetCounter() const 
 	{ 
 		return accumulate( m_shapesOfType.begin(), m_shapesOfType.end(), 0 ); 
@@ -174,8 +184,15 @@ public:
 
 private:
 
-	unsigned int const & counter(ShapeType const t) const { return m_shapesOfType[static_cast<unsigned int>(t.GetValue())]; }
-	unsigned int       & counter(ShapeType const t)       { return const_cast<unsigned int &>(static_cast<const UPShapeList&>(*this).counter(t)); }
+	unsigned int const & counter(ShapeType const t) const 
+	{ 
+		return m_shapesOfType[static_cast<unsigned int>(t.GetValue())]; 
+	}
+
+	unsigned int & counter(ShapeType const t)       
+	{ 
+		return const_cast<unsigned int &>(static_cast<const UPShapeList&>(*this).counter(t)); 
+	}
 
 	void incCounter(ShapeType const t) { ++counter(t); }
 	void decCounter(ShapeType const t) { --counter(t); }
