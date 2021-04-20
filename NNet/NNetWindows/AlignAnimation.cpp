@@ -35,7 +35,7 @@ bool const AlignAnimation::prepareData()
 
 	m_shapesAnimated = m_pNMWI->GetUPShapes().GetAllSelected<ConnNeuron>(shapeType);
 	m_line = m_shapesAnimated.CalcMaxDistLine();
-	if ( m_line.IsNull() )
+	if ( m_line.IsZero() )
 		return false;
 
 	m_shapesAnimated.SortAccToDistFromLine( m_line.OrthoLine() );
