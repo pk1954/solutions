@@ -65,13 +65,11 @@ void AlignAnimation::scriptStep()
 	}
 	else if ( dwOptions & ALIGN_SHAPES )
 	{
-		float      const fGapCount         { Cast2Float(umPntVectorTarget.Size() - 1) };
-		MicroMeter const umShapeDistTarget { m_line.Length() / fGapCount };
-		umPntVectorTarget.Align(m_line, umShapeDistTarget);
+		umPntVectorTarget.Align(m_line);
 	}
 	else if ( dwOptions & PACK_SHAPES )
 	{		
-		umPntVectorTarget.Align(m_line, NEURON_RADIUS * 1.8f);
+		umPntVectorTarget.Pack(NEURON_RADIUS * 1.8f);
 	}
 
 	m_upConnAnimation->SetNrOfSteps( calcNrOfSteps(umPntVectorStart, umPntVectorTarget) );

@@ -158,6 +158,11 @@ public:
         return Hypot(maxElement.GetPos());
     }
 
+    MicroMeterLine const GetLine()
+    {
+        return MicroMeterLine(m_list.front().GetPos(), m_list.back().GetPos());
+    }
+
     void Align( MicroMeterPoint const& umPntStart, MicroMeterPoint const& umPntOffset )
     {	
         MicroMeterPoint umPnt { umPntStart };
@@ -173,13 +178,22 @@ public:
 
     void Align( MicroMeterLine const umLine, MicroMeter umDist )
     {
-        float           const fGapCount          { Cast2Float(Size() - 1) };
         MicroMeterPoint const umVector           { umLine.GetVector() };
-        MicroMeter      const umLineLengthTarget { umDist * fGapCount };
+        MicroMeter      const umLineLengthTarget { umDist * gapCount() };
         MicroMeterPoint const umPntSingleVector  { umVector.ScaledTo(umDist) };
         MicroMeterPoint const umPntLineTarget    { umVector.ScaledTo(umLineLengthTarget) };
         MicroMeterPoint const umPntTargetStart   { umLine.GetCenter() - umPntLineTarget * 0.5f };
         Align(umPntTargetStart, umPntSingleVector);
+    }
+
+    void Align( MicroMeterLine const umLine )
+    {
+        Align(umLine, umLine.Length() / gapCount());
+    }
+
+    void Pack( MicroMeter umDist )
+    {
+        Align(GetLine(), umDist);
     }
 
     inline static wchar_t const OPEN_BRACKET  { L'(' };
@@ -187,6 +201,7 @@ public:
     inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
+    float const gapCount() { return Cast2Float(Size() - 1); };
 
     vector<MicroMeterPosDir> m_list;
 };
