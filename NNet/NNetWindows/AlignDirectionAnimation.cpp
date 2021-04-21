@@ -1,4 +1,4 @@
-// AlignAnimation.cpp
+// AlignDirectionAnimation.cpp
 //
 // NNetWindows
 
@@ -8,10 +8,9 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
 #include "CalcOrthoVector.h"
-#include "win32_sound.h"
-#include "AlignAnimation.h"
+#include "AlignDirectionAnimation.h"
 
-void AlignAnimation::Initialize
+void AlignDirectionAnimation::Initialize
 ( 
 	HWND               const   hwnd,
 	NNetModelWriterInterface & nmwi,
@@ -25,7 +24,7 @@ void AlignAnimation::Initialize
 	m_pSound          = pSound;
 }
 
-bool const AlignAnimation::prepareData()
+bool const AlignDirectionAnimation::prepareData()
 {
 	m_line.Set2Null();
 
@@ -42,41 +41,28 @@ bool const AlignAnimation::prepareData()
 	return true;
 }
 
-void AlignAnimation::StartAnimation( AnimationScript const & script )
+void AlignDirectionAnimation::StartAnimation()
 {
-	m_pScript = & script;
-	m_iScriptStep = 0;
-
-	if ( prepareData() )
-		doAnimation();
-	else 
+	if ( ! prepareData() )
+	{
 		m_pSound->Play( TEXT("NOT_POSSIBLE_SOUND") );
+		return;
+	}
+	doAnimation();
 }
 
-void AlignAnimation::doAnimation()
+void AlignDirectionAnimation::doAnimation()
 {
 	MicroMeterPointVector const umPntVectorStart (m_shapesAnimated);
 	MicroMeterPointVector       umPntVectorTarget(m_shapesAnimated);
 
-	DWORD const dwOptions { m_pScript->at(m_iScriptStep) };
-	if (dwOptions & ALIGN_DIRECTION)
-	{
-		umPntVectorTarget.SetDir(Vector2Radian(CalcOrthoVector(m_line, m_shapesAnimated)));
-	}
-	else if ( dwOptions & ALIGN_SHAPES )
-	{
-		umPntVectorTarget.Align(m_line);
-	}
-	else if ( dwOptions & PACK_SHAPES )
-	{		
-		umPntVectorTarget.Pack(NEURON_RADIUS * 1.8f);
-	}
+	umPntVectorTarget.SetDir(Vector2Radian(CalcOrthoVector(m_line, m_shapesAnimated)));
 
 	m_upConnAnimation->SetNrOfSteps( calcNrOfSteps(umPntVectorStart, umPntVectorTarget) );
 	m_upConnAnimation->Start(umPntVectorStart, umPntVectorTarget);
 }
 
-unsigned int const AlignAnimation::calcNrOfSteps
+unsigned int const AlignDirectionAnimation::calcNrOfSteps
 (
 	MicroMeterPointVector const & umPntVectorStart,
 	MicroMeterPointVector const & umPntVectorTarget
@@ -85,18 +71,12 @@ unsigned int const AlignAnimation::calcNrOfSteps
 	MicroMeterPointVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
 	Radian                const radDiffMax      { umPntVectorDiff.FindMaxRadian() };
 	Radian                const radPerStep      { Degrees2Radian(6.0_Degrees) };
-	float                 const fStepsFromRot   { radDiffMax / radPerStep };
-
-	MicroMeter            const umDiffMax       { umPntVectorDiff.FindMaxPos() };
-	MicroMeter            const umPerStep       { NEURON_RADIUS / 5.0f };
-	float                 const fStepsFromMove  { umDiffMax / umPerStep };
-
-	float                 const fSteps          { max(fStepsFromRot, fStepsFromMove) };
+	float                 const fSteps          { radDiffMax / radPerStep };
 	unsigned int          const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
 	return uiSteps;
 }
 
-void AlignAnimation::AnimationStep()
+void AlignDirectionAnimation::AnimationStep()
 {
 	unique_ptr<ShapeIdList> upShapeIds { make_unique<ShapeIdList>(m_shapesAnimated) };
 
@@ -105,23 +85,4 @@ void AlignAnimation::AnimationStep()
 		m_upConnAnimation->GetActual(), 
 		move(upShapeIds)
 	);
-}
-
-bool const AlignAnimation::NextScriptStep()
-{
-	return ++m_iScriptStep < m_pScript->size();
-}
-
-wchar_t const * const AlignAnimation::DoNextStep()
-{
-	if (m_pScript->at(m_iScriptStep) & CREATE_CONNECTOR)
-	{
-		m_pModelCommands->CreateConnector( m_shapesAnimated );
-		return L"SNAP_IN_SOUND";
-	}
-	else
-	{
-		doAnimation();
-		return nullptr;
-	}
 }

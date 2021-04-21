@@ -219,7 +219,7 @@ void MainWindow::AlignSelection()
 		AlignAnimation::ALIGN_DIRECTION,  
 		AlignAnimation::ALIGN_SHAPES
 	};
-    m_pAlignAnimation->AlignSelection( script ); 
+    m_pAlignAnimation->StartAnimation( script ); 
 }
 
 bool const MainWindow::ArrowsVisible() const

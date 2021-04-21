@@ -43,6 +43,11 @@ public:
 		return umVector.ScaledTo(GetExtension());
 	}
 
+	Radian const GetRad() const
+	{
+		return m_radDirection.IsNull() ? Vector2Radian(determineVector()) : m_radDirection;
+	}
+
 	MicroMeterPosDir const GetRawPosDir() const
 	{
 		return MicroMeterPosDir( GetPos(), m_radDirection );

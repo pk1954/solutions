@@ -17,7 +17,7 @@ public:
 
     virtual void Do( NNetModelWriterInterface& nmwi )
     {
-        m_pAlignAnimation->AlignSelection(SCRIPT);
+        m_pAlignAnimation->StartAnimation(SCRIPT);
     }
 
     virtual void Undo( NNetModelWriterInterface& nmwi )

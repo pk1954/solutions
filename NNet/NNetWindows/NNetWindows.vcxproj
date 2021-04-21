@@ -571,6 +571,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlignAnimation.cpp" />
+    <ClCompile Include="AlignDirectionAnimation.cpp" />
+    <ClCompile Include="AlignPositionAnimation.cpp" />
     <ClCompile Include="ComputeThread.cpp" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
@@ -598,6 +600,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlignAnimation.h" />
+    <ClInclude Include="AlignDirectionAnimation.h" />
+    <ClInclude Include="AlignPositionAnimation.h" />
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="MakeConnectorCommand.h" />

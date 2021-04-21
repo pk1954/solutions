@@ -24,7 +24,7 @@ public:
 	static DWORD const MOVE_TO_START_POS { 0x01 };
 	static DWORD const PLUG_IN           { 0x02 };
 
-	bool            const AlignSelection( AnimationScript const & );
+	bool            const StartAnimation( AnimationScript const & );
 	void                  AnimationStep();
 	bool            const NextScriptStep();
 	wchar_t const * const DoNextStep();

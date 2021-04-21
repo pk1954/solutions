@@ -27,7 +27,7 @@ void PlugInAnimation::scriptStep( )
 	// TODO
 }
 
-bool const PlugInAnimation::AlignSelection( AnimationScript const & script )
+bool const PlugInAnimation::StartAnimation( AnimationScript const & script )
 {
 	m_pScript = & script;
 	m_iScriptStep = 0;
