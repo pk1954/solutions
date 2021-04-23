@@ -16,9 +16,9 @@ void PlugInAnimation::Initialize
 	NNetModelCommands        & commands
 )
 {
-	m_pNMWI           = & nmwi;
-	m_pModelCommands  = & commands;
-	m_upConnAnimation = make_unique<ConnAnimation>(IDX_PLUG_IN_ANIMATION, hwnd); 
+	//m_pNMWI           = & nmwi;
+	//m_pModelCommands  = & commands;
+	//m_upConnAnimation = make_unique<ConnAnimation>(IDX_PLUG_IN_ANIMATION, hwnd); 
 }
 
 

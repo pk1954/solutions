@@ -22,6 +22,7 @@
 
 #include "util.h"
 #include "ObserverInterface.h"
+#include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"
 #include "win32_importTermination.h"
 #include "NNetError.h"
@@ -101,6 +102,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_modelImporter .Initialize( &m_script );
 	m_modelExporter .Initialize( &m_nmri );
 	m_modelCommands .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
+	m_winCommands   .Initialize( &m_cmdStack, &m_modelCommands );
 	m_cmdStack      .Initialize( &m_nmwi, & m_staticModelObservable );
 	m_sound         .Initialize( &m_soundOnObservable );
 	m_appTitle      .Initialize( m_hwndApp, &m_nmri );
@@ -112,14 +114,14 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_WinManager,
 		& m_nmri,
 		& m_modelCommands,
+		& m_winCommands,
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_statusBarDispFunctor,
 		& m_sound,
 		& m_preferences,
 		& m_cmdStack,
-		& m_monitorWindow,
-		& m_alignAnimation
+		& m_monitorWindow
 	);
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
@@ -156,10 +158,9 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_monitorWindow,
 		m_NNetController,
 		m_modelCommands,
+		m_winCommands,
 		m_cursorPosObservable,
-		m_coordObservable,
-		m_alignAnimation //,
-//		m_rotationAnimation
+		m_coordObservable
 	);
 
 	m_miniNNetWindow.Start
@@ -173,7 +174,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 		m_NNetController
 	);
 
-	m_alignAnimation   .Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands, &m_sound);
 	m_rotationAnimation.Initialize(m_mainNNetWindow.GetWindowHandle(), m_nmwi, m_modelCommands);
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 

@@ -12,6 +12,7 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "win32_Commands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
@@ -27,11 +28,10 @@ void MainWindow::Start
 	NNetModelReaderInterface const & modelReaderInterface,
 	MonitorWindow            const & monitorWindow,
 	NNetController                 & controller,
-	NNetModelCommands              & commands,
+	NNetModelCommands              & modelCommands,
+	WinCommands                    & winCommands,  
 	Observable                     & cursorObservable,
-	Observable                     & coordObservable,
-//	RotationAnimation              & rotationAnimation,
-	AlignAnimation                 & alignAnimation
+	Observable                     & coordObservable
 )
 {
 	NNetWindow::Start
@@ -45,15 +45,14 @@ void MainWindow::Start
 		controller
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
-	m_pModelCommands       = & commands;
+	m_pWinCommands         = & winCommands;
+	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_pAlignAnimation      = & alignAnimation;
-//	m_pRotationAnimation   = & rotationAnimation;
 	m_scale.Initialize( & m_graphics, L"m" );
 
-	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION, GetWindowHandle());
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION, GetWindowHandle());
+	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION, GetWindowHandle(), 0);
+	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION, GetWindowHandle(), 0 );
 }
 
 void MainWindow::Stop()
@@ -210,16 +209,6 @@ void MainWindow::CenterModel()
 void MainWindow::CenterSelection()
 {
 	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
-}
-
-void MainWindow::AlignSelection() 
-{ 
-	static AnimationScript script 
-	{
-		AlignAnimation::ALIGN_DIRECTION,  
-		AlignAnimation::ALIGN_SHAPES
-	};
-    m_pAlignAnimation->StartAnimation( script ); 
 }
 
 bool const MainWindow::ArrowsVisible() const
@@ -511,14 +500,19 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		Notify( false );
 		break;
 
-	case IDX_CONNECTOR_ANIMATION:
-		m_pAlignAnimation->AnimationStep();
-		if ( (lParam != 0) && m_pAlignAnimation->NextScriptStep() )
-		{
-			if (wchar_t const * const strSound = m_pAlignAnimation->DoNextStep())
-				SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)strSound ); 
-		}
-		Notify( false );
+	//case IDX_CONNECTOR_ANIMATION:
+	//	SendCommand2Application( wParam, lParam );
+	//	//		m_pAlignAnimation->AnimationStep();
+	//	//if ( (lParam != 0) && m_pAlignAnimation->NextScriptStep() )
+	//	//{
+	//	//	if (wchar_t const * const strSound = m_pAlignAnimation->DoNextStep())
+	//	//		SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)strSound ); 
+	//	//}
+	//	Notify( false );
+	//	break;
+
+	case IDM_ALIGN_SELECTION:
+		m_pWinCommands->AlignShapes(this);
 		break;
 
 	default:

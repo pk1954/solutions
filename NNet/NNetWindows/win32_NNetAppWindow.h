@@ -41,6 +41,7 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
+#include "win32_Commands.h"
 #include "NNetColors.h"
 
 class ReadModelResult;
@@ -136,6 +137,7 @@ private:
 	NNetModelReaderInterface m_nmri                   { };
 	NNetModelWriterInterface m_nmwi                   { };
 	NNetModelCommands        m_modelCommands          { };
+	WinCommands              m_winCommands            { };
 	ComputeThread            m_computeThread          { };
 	DescriptionWindow        m_descWindow             { };
 	CrsrWindow               m_crsrWindow             { };
@@ -157,7 +159,6 @@ private:
 	CommandStack             m_cmdStack               { };
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
-	AlignAnimation           m_alignAnimation         { };
 	RotationAnimation        m_rotationAnimation      { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );

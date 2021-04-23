@@ -8,12 +8,14 @@
 #include "boolOp.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
+#include "ConnectionNeuron.h"
 #include "ShapeId.h"
 #include "NNetModel.h"
 
 class Pipe;
 class BaseKnot;
 class ShapeErrorHandler;
+class MicroMeterPointVector;
 
 using std::unique_ptr;
 using std::move;
@@ -100,6 +102,9 @@ public:
         MicroMeterPoint vector { m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector() };
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
+
+    void SetConnNeurons(MicroMeterPointVector &, ShapeIdList const &);
+    void SetConnNeurons(MicroMeterPointVector const &, ShapePtrList<ConnNeuron> const &);
 
 #ifdef _DEBUG
     NNetModel const & GetModel()  const { return * m_pModel; }  // TODO: find better solution

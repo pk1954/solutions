@@ -8,6 +8,8 @@
 #include "Neuron.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
+#include "ShapeIdList.h"
+#include "MicroMeterPointVector.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::Start( NNetModel * const pModel )
@@ -70,4 +72,38 @@ void NNetModelWriterInterface::RemoveOrphans()
 				RemoveFromModel<Knot>( knot );
 		} 
 	); 
+}
+
+void NNetModelWriterInterface::SetConnNeurons
+(
+	MicroMeterPointVector & umPntVector, 
+	ShapeIdList     const & shapeIds
+)
+{
+	unsigned int ui = 0;
+	shapeIds.Apply2All
+	(
+		[&](ShapeId const & id)
+		{
+			ConnNeuron     * const pConnNeuron { GetShapePtr<ConnNeuron *>(id) };
+			MicroMeterPosDir const posDir      { pConnNeuron->GetRawPosDir() };
+			pConnNeuron->SetPosDir( umPntVector.GetPosDir(ui) );
+			umPntVector.SetPosDir( ui, posDir );
+			++ui;
+		}
+	);
+}
+
+void NNetModelWriterInterface::SetConnNeurons
+(
+	MicroMeterPointVector    const & umPntVector, 
+	ShapePtrList<ConnNeuron> const & shapePtrList
+)
+{
+	unsigned int ui = 0;
+	shapePtrList.Apply2All
+	(
+		[&](ConnNeuron & c)	
+		{ c.SetPosDir( umPntVector.GetPosDir(ui++) ); }
+	);
 }

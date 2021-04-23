@@ -571,9 +571,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlignAnimation.cpp" />
-    <ClCompile Include="AlignDirectionAnimation.cpp" />
-    <ClCompile Include="AlignPositionAnimation.cpp" />
     <ClCompile Include="ComputeThread.cpp" />
+    <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
@@ -583,6 +582,7 @@
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
+    <ClCompile Include="win32_Commands.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_descriptionWindow.cpp" />
     <ClCompile Include="win32_MainWindow.cpp" />
@@ -600,11 +600,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlignAnimation.h" />
-    <ClInclude Include="AlignDirectionAnimation.h" />
-    <ClInclude Include="AlignPositionAnimation.h" />
+    <ClInclude Include="AlignDirectionCommand.h" />
+    <ClInclude Include="AlignShapesCommand.h" />
     <ClInclude Include="ComputeThread.h" />
+    <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="MakeConnectorCommand.h" />
+    <ClInclude Include="PackShapesCommand.h" />
     <ClInclude Include="RotationAnimation.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="NNetWinWrappers.h" />
@@ -618,6 +620,7 @@
     <ClInclude Include="TimeDisplay.h" />
     <ClInclude Include="UndoRedoMenu.h" />
     <ClInclude Include="win32_appTitle.h" />
+    <ClInclude Include="win32_Commands.h" />
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_importTermination.h" />
     <ClInclude Include="win32_MainWindow.h" />

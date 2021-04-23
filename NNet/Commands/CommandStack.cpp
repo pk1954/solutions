@@ -50,10 +50,10 @@ void CommandStack::Push( unique_ptr<Command> pCmd )
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
 #ifdef _DEBUG
-    NNetModel const & model { m_pNMWI->GetModel() };
-    m_pNMWI->CheckModel();
-    NNetModel modelSave1( model );
-    m_pNMWI->CheckModel();
+    //NNetModel const & model { m_pNMWI->GetModel() };
+    //m_pNMWI->CheckModel();
+    //NNetModel modelSave1( model );
+    //m_pNMWI->CheckModel();
 #endif
     clearRedoStack();
     assert( * pCmd );
@@ -63,22 +63,22 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     notify();
 
 #ifdef _DEBUG
-    NNetModel modelSave2( model );
-    modelSave2.CheckModel();
-    m_pNMWI->CheckModel();
-    UndoCommand();
-    m_pNMWI->CheckModel();
-    if ( !(model == modelSave1) )
-    {
-        int x = 42;
-    }
-    m_pNMWI->CheckModel();
-    RedoCommand();
-    m_pNMWI->CheckModel();
-    if ( !(model == modelSave2) )
-    {
-        int x = 42;
-    }
+    //NNetModel modelSave2( model );
+    //modelSave2.CheckModel();
+    //m_pNMWI->CheckModel();
+    //UndoCommand();
+    //m_pNMWI->CheckModel();
+    //if ( !(model == modelSave1) )
+    //{
+    //    int x = 42;
+    //}
+    //m_pNMWI->CheckModel();
+    //RedoCommand();
+    //m_pNMWI->CheckModel();
+    //if ( !(model == modelSave2) )
+    //{
+    //    int x = 42;
+    //}
 #endif
 }
 

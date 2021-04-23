@@ -25,18 +25,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		unsigned int ui = 0;
-		m_upShapeIds->Apply2All
-		(
-			[&](ShapeId const & id)
-			{
-				ConnNeuron     * const pConnNeuron { nmwi.GetShapePtr<ConnNeuron *>(id) };
-				MicroMeterPosDir const posDir      { pConnNeuron->GetRawPosDir() };
-				pConnNeuron->SetPosDir( m_umPntVector.GetPosDir(ui) );
-				m_umPntVector.SetPosDir( ui, posDir );
-				++ui;
-			}
-		);
+		nmwi.SetConnNeurons(m_umPntVector, *m_upShapeIds.get());
 	}
 
 private:

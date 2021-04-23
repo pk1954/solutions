@@ -29,6 +29,7 @@
 #include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelCommands.h"
+#include "win32_Commands.h"
 #include "win32_monitorWindow.h"
 #include "win32_NNetController.h"
 
@@ -39,14 +40,14 @@ void NNetController::Initialize
     WinManager               * const pWinManager,
     NNetModelReaderInterface * const pMRI,
     NNetModelCommands        * const pModelCommands,
+    WinCommands              * const pWinCommands,
     ComputeThread            * const pComputeThread,
     SlowMotionRatio          * const pSlowMotionRatio,
     DisplayFunctor           * const func,
     Sound                    * const pSound,
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
-    MonitorWindow            * const pMonitorWindow,
-    AlignAnimation           * const pAlignAnimation
+    MonitorWindow            * const pMonitorWindow
 ) 
 {
     m_pModelExporter    = pModelExporter;
@@ -54,6 +55,7 @@ void NNetController::Initialize
     m_pWinManager       = pWinManager;
     m_pNMRI             = pMRI;
     m_pModelCommands    = pModelCommands;
+    m_pWinCommands      = pWinCommands;
     m_pSlowMotionRatio  = pSlowMotionRatio;
     m_pComputeThread    = pComputeThread;
     m_pStatusBarDisplay = func;
@@ -61,7 +63,6 @@ void NNetController::Initialize
     m_pPreferences      = pPreferences;
     m_pCommandStack     = pCommandStack;
     m_pMonitorWindow    = pMonitorWindow;
-    m_pAlignAnimation   = pAlignAnimation;
     m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
 }
 
@@ -207,15 +208,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AddModel();
         break;
 
-    //case IDM_ALIGN_SELECTION:
-    //    m_pModelCommands->AlignSelection();
+    //case IDM_MAKE_CONNECTOR:
+    //    if ( IsTraceOn() )
+    //        TraceStream() << __func__ << endl ;
+    //    m_pModelCommands->PushCommand( make_unique<MakeConnectorCommand>(*m_pAlignAnimation) );
     //    break;
-
-    case IDM_MAKE_CONNECTOR:
-        if ( IsTraceOn() )
-            TraceStream() << __func__ << endl ;
-        m_pModelCommands->PushCommand( make_unique<MakeConnectorCommand>(*m_pAlignAnimation) );
-        break;
 
     case IDM_COPY_SELECTION:
         m_pModelCommands->CopySelection();

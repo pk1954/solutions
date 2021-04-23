@@ -14,6 +14,7 @@
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
+class WinCommands;
 class NNetModelCommands;
 
 using std::unique_ptr;
@@ -32,10 +33,9 @@ public:
 		MonitorWindow            const &, 
 		NNetController                 &,
 		NNetModelCommands              &,
+		WinCommands                    &,
 		Observable                     &,
-		Observable                     &,
-		AlignAnimation                 & //,
-//		RotationAnimation              &
+		Observable                     &
 	);
 
 	void Stop();
@@ -63,7 +63,6 @@ public:
 
 	void       CenterModel();
 	void       CenterSelection();
-	void       AlignSelection();
 	void       ShowArrows( bool const );
 	bool const ArrowsVisible() const; 
 
@@ -97,7 +96,7 @@ private:
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
-	AlignAnimation    * m_pAlignAnimation      { nullptr };
+	WinCommands       * m_pWinCommands         { nullptr };
 	RotationAnimation * m_pRotationAnimation   { nullptr };
 
 	void setNoTarget        ();

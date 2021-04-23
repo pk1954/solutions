@@ -90,10 +90,10 @@
     <ClCompile Include="RotationAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlignDirectionAnimation.cpp">
+    <ClCompile Include="win32_Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlignPositionAnimation.cpp">
+    <ClCompile Include="ConnAnimationCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,10 +200,19 @@
     <ClInclude Include="MakeConnectorCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AlignDirectionAnimation.h">
+    <ClInclude Include="AlignDirectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AlignPositionAnimation.h">
+    <ClInclude Include="PackShapesCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnAnimationCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_Commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AlignShapesCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

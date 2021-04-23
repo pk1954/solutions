@@ -6,7 +6,7 @@
 
 class NNetModelReaderInterface;
 class NNetModelCommands;
-class AlignAnimation;
+class WinCommands;
 class SlowMotionRatio;
 class MonitorWindow;
 class NNetModelExporter;
@@ -36,14 +36,14 @@ public:
 		WinManager               * const,
 		NNetModelReaderInterface * const,
 		NNetModelCommands        * const,
+		WinCommands              * const,
 		ComputeThread            * const,
 		SlowMotionRatio          * const,
 		DisplayFunctor           * const,
 		Sound                    * const,
 		Preferences              * const,
 		CommandStack             * const,
-		MonitorWindow            * const,
-		AlignAnimation           * const
+		MonitorWindow            * const
 	);
 
 	virtual ~NNetController();
@@ -69,11 +69,11 @@ private:
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
 	NNetModelCommands        * m_pModelCommands         { nullptr };
+	WinCommands              * m_pWinCommands           { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay      { nullptr };
 	Preferences              * m_pPreferences           { nullptr };
 	CommandStack             * m_pCommandStack          { nullptr };
 	MonitorWindow            * m_pMonitorWindow         { nullptr };
 	Observable               * m_pStaticModelObservable { nullptr };
-	AlignAnimation           * m_pAlignAnimation        { nullptr };
 };				          

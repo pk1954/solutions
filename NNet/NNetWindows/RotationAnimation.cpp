@@ -17,9 +17,9 @@ void RotationAnimation::Initialize
 	NNetModelCommands        & commands
 )
 {
-	m_pNMWI           = & nmwi;
-	m_pModelCommands  = & commands;
-	m_upRotAnimation  = make_unique<RotAnimation>(IDX_ROTATION_ANIMATION, hwnd); 
+	//m_pNMWI           = & nmwi;
+	//m_pModelCommands  = & commands;
+	//m_upRotAnimation  = make_unique<RotAnimation>(IDX_ROTATION_ANIMATION, hwnd); 
 }
 
 bool const RotationAnimation::prepareData()

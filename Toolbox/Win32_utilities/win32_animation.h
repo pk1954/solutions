@@ -24,14 +24,16 @@ public:
 
     Animation( APP_PROC const & appProc, DWORD const dwFlags = 0 )
       : m_appProc(appProc),
-        m_dwFlags(dwFlags)
+        m_dwFlags(dwFlags),
+        m_lParam(0)
     {}
 
-    Animation( int const idMsg, HWND const hwnd, DWORD const dwFlags = 0 )
+    Animation( int const idMsg, HWND const hwnd, LPARAM const lParam, DWORD const dwFlags = 0 )
       : m_idMsg(idMsg),
         m_hwnd(hwnd),
         m_dwFlags(dwFlags|ANIMATION_SEND_COMMAND),
-        m_appProc(nullptr)
+        m_appProc(nullptr),
+        m_lParam(lParam )
     {}
 
     void Start( ANIM_PAR const origin, ANIM_PAR const target )
@@ -67,6 +69,8 @@ public:
         return result;
     }
 
+    bool const TargetReached() { return m_bTargetReached; }
+
     void SetNrOfSteps( unsigned int const uiNrOfSteps )
     {
         m_uiMsPeriod = uiNrOfSteps;
@@ -83,7 +87,7 @@ private:
         protect( [&](){ m_actual = newVal; } );
     }
 
-    void next()
+    void next() // runs in animation thread
     {
         if ( ! m_bTargetReached )
         {
@@ -92,7 +96,7 @@ private:
             if (m_appProc)
                 (m_appProc)(m_bTargetReached);
             else if (m_dwFlags & ANIMATION_SEND_COMMAND)
-                ::SendNotifyMessage(m_hwnd, WM_COMMAND, m_idMsg, m_bTargetReached );     
+                ::SendNotifyMessage(m_hwnd, WM_COMMAND, m_idMsg, m_lParam );     
             if ( m_bTargetReached )
             {
                 if ( m_dwFlags & ANIMATION_RECURRING )
@@ -133,4 +137,5 @@ private:
     int          m_idMsg          { 0 };
     HWND         m_hwnd           { nullptr };
     bool         m_bTargetReached { false };
+    LPARAM       m_lParam;
 };
