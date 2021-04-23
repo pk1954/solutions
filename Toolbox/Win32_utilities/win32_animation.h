@@ -12,8 +12,7 @@
 
 using AnimationScript = vector<DWORD>;
 
-DWORD const ANIMATION_RECURRING    { 0x1L };
-DWORD const ANIMATION_SEND_COMMAND { 0x2L };
+DWORD const ANIMATION_RECURRING { 0x1L };
 
 template <typename ANIM_PAR>
 class Animation
@@ -24,16 +23,7 @@ public:
 
     Animation( APP_PROC const & appProc, DWORD const dwFlags = 0 )
       : m_appProc(appProc),
-        m_dwFlags(dwFlags),
-        m_lParam(0)
-    {}
-
-    Animation( int const idMsg, HWND const hwnd, LPARAM const lParam, DWORD const dwFlags = 0 )
-      : m_idMsg(idMsg),
-        m_hwnd(hwnd),
-        m_dwFlags(dwFlags|ANIMATION_SEND_COMMAND),
-        m_appProc(nullptr),
-        m_lParam(lParam )
+        m_dwFlags(dwFlags)
     {}
 
     void Start( ANIM_PAR const origin, ANIM_PAR const target )
@@ -82,6 +72,28 @@ public:
     }
 
 private:
+    ANIM_PAR m_actual   {};
+    ANIM_PAR m_start    {};
+    ANIM_PAR m_target   {};
+    ANIM_PAR m_distance {};
+
+    SmoothMoveFp<float> m_smoothMove;
+    APP_PROC const      m_appProc;
+    DWORD    const      m_dwFlags;
+    TP_TIMER          * m_pTpTimer       { nullptr };
+    unsigned int        m_uiMsPeriod     { 20 };
+    unsigned int        m_uiMillisecs    { 50 };
+    HWND                m_hwnd           { nullptr };
+    bool                m_bTargetReached { false };
+    SRWLOCK             m_srwl           { SRWLOCK_INIT };
+
+    void protect( function<void()> func )
+    {
+        AcquireSRWLockExclusive( & m_srwl );
+        (func)();
+        ReleaseSRWLockExclusive( & m_srwl );
+    }
+
     void setActual( ANIM_PAR const newVal )
     {
         protect( [&](){ m_actual = newVal; } );
@@ -95,8 +107,6 @@ private:
             setActual(m_start + m_distance * m_smoothMove.GetPos());
             if (m_appProc)
                 (m_appProc)(m_bTargetReached);
-            else if (m_dwFlags & ANIMATION_SEND_COMMAND)
-                ::SendNotifyMessage(m_hwnd, WM_COMMAND, m_idMsg, m_lParam );     
             if ( m_bTargetReached )
             {
                 if ( m_dwFlags & ANIMATION_RECURRING )
@@ -111,31 +121,4 @@ private:
     {
         reinterpret_cast<Animation<ANIM_PAR> *>(pContext)->next();
     }
-
-    SmoothMoveFp<float> m_smoothMove;
-
-    TP_TIMER     * m_pTpTimer { nullptr };
-    APP_PROC const m_appProc;
-
-    SRWLOCK m_srwl { SRWLOCK_INIT };
-
-    void protect( function<void()> func )
-    {
-        AcquireSRWLockExclusive( & m_srwl );
-        (func)();
-        ReleaseSRWLockExclusive( & m_srwl );
-    }
-
-    ANIM_PAR m_actual   {};
-    ANIM_PAR m_start    {};
-    ANIM_PAR m_target   {};
-    ANIM_PAR m_distance {};
-
-    unsigned int m_uiMsPeriod     { 20 };
-    unsigned int m_uiMillisecs    { 50 };
-    DWORD        m_dwFlags        { 0 };
-    int          m_idMsg          { 0 };
-    HWND         m_hwnd           { nullptr };
-    bool         m_bTargetReached { false };
-    LPARAM       m_lParam;
 };

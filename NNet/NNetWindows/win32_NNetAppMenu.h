@@ -60,8 +60,8 @@ private:
 
 		void enableOnOff( bool const bCrit )
 		{
-			m_pAppMenu->enable( m_iOn,    bCrit );
-			m_pAppMenu->enable( m_iOff, ! bCrit );
+			m_pAppMenu->enable( m_iOn,  ! bCrit );
+			m_pAppMenu->enable( m_iOff,   bCrit );
 		}
 
 	private:

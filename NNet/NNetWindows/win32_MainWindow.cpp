@@ -51,8 +51,22 @@ void MainWindow::Start
 	m_pCoordObservable     = & coordObservable;
 	m_scale.Initialize( & m_graphics, L"m" );
 
-	m_upArrowAnimation = make_unique<Animation<MicroMeter>>   (IDX_ARROW_ANIMATION, GetWindowHandle(), 0);
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>(IDX_COORD_ANIMATION, GetWindowHandle(), 0 );
+	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
+	(
+		[&](bool const bTargetReached)
+		{ 
+			GetCoord().Set( m_upCoordAnimation->GetActual() );
+			Notify(false);
+		}
+	);
+	m_upArrowAnimation = make_unique<Animation<MicroMeter>>
+	(
+		[&](bool const bTargetReached)
+		{ 
+			m_arrowSize = m_upArrowAnimation->GetActual();
+			Notify(false);
+		}
+	);
 }
 
 void MainWindow::Stop()
@@ -485,31 +499,11 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 	switch (wmId)
 	{
-	case IDX_ARROW_ANIMATION:
-		m_arrowSize = m_upArrowAnimation->GetActual();
-		Notify( false );
-		break;
-
-	case IDX_COORD_ANIMATION:
-		GetCoord().Set( m_upCoordAnimation->GetActual() );
-		m_pCoordObservable->NotifyAll(false); 
-		break;
 
 	case IDX_ROTATION_ANIMATION:
 		m_pRotationAnimation->AnimationStep();
 		Notify( false );
 		break;
-
-	//case IDX_CONNECTOR_ANIMATION:
-	//	SendCommand2Application( wParam, lParam );
-	//	//		m_pAlignAnimation->AnimationStep();
-	//	//if ( (lParam != 0) && m_pAlignAnimation->NextScriptStep() )
-	//	//{
-	//	//	if (wchar_t const * const strSound = m_pAlignAnimation->DoNextStep())
-	//	//		SendCommand2Application( IDX_PLAY_SOUND, (LPARAM)strSound ); 
-	//	//}
-	//	Notify( false );
-	//	break;
 
 	case IDM_ALIGN_SELECTION:
 		m_pWinCommands->AlignShapes(this);
