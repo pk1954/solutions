@@ -14,26 +14,30 @@ using std::make_unique;
 
 ConnAnimationCommand::ConnAnimationCommand
 ( 
-    RootWindow        * const pWindow,
-    NNetModelCommands * const pCmds
+    unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
+    RootWindow                   * const pWindow,
+    function<void()>               const finFunc
 )
-  : m_pModelCommands(pCmds),
-    m_pWindow(pWindow)
+  : m_upShapesAnimated(move(upShapesAnimated)),
+    m_pWindow(pWindow),
+    m_finFunc(finFunc)
 {}
 
 void ConnAnimationCommand::initialize( NNetModelWriterInterface& nmwi )
 {
-    m_upConnAnimation = make_unique<ConnAnimation>
+    m_upConnAnimation = make_unique<Animation<MicroMeterPointVector>>
     (
         [&](bool const bTargetReached)
         { 
-            nmwi.SetConnNeurons(m_upConnAnimation->GetActual(), m_shapesAnimated);
+            nmwi.SetConnNeurons(m_upConnAnimation->GetActual(), * m_upShapesAnimated.get());
             m_pWindow->Notify(false);
+            if (bTargetReached)
+                (m_finFunc)();
         }
     );
     prepareData(nmwi);
-    m_umPntVectorStart  = MicroMeterPointVector(m_shapesAnimated);
-    m_umPntVectorTarget = MicroMeterPointVector(m_shapesAnimated);
+    m_umPntVectorStart  = MicroMeterPointVector(*m_upShapesAnimated.get());
+    m_umPntVectorTarget = MicroMeterPointVector(*m_upShapesAnimated.get());
     DefineTarget();
     m_upConnAnimation->SetNrOfSteps( calcNrOfSteps(m_umPntVectorStart, m_umPntVectorTarget) );
     m_bInitialized = true;
@@ -74,16 +78,10 @@ unsigned int const ConnAnimationCommand::calcNrOfSteps
 bool const ConnAnimationCommand::prepareData(NNetModelWriterInterface& nmwi)
 {
     m_line.Set2Null();
-
-    ShapeType const shapeType { nmwi.GetUPShapes().DetermineShapeType() };
-    if ( shapeType.IsUndefinedType() )
-        return false;
-
-    m_shapesAnimated = nmwi.GetUPShapes().GetAllSelected<ConnNeuron>(shapeType);
-    m_line = m_shapesAnimated.CalcMaxDistLine();
+    m_line = m_upShapesAnimated->CalcMaxDistLine();
     if ( m_line.IsZero() )
         return false;
 
-    m_shapesAnimated.SortAccToDistFromLine( m_line.OrthoLine() );
+    m_upShapesAnimated->SortAccToDistFromLine( m_line.OrthoLine() );
     return true;
 }

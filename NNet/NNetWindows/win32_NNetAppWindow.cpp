@@ -102,7 +102,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_modelImporter .Initialize( &m_script );
 	m_modelExporter .Initialize( &m_nmri );
 	m_modelCommands .Initialize( &m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack );
-	m_winCommands   .Initialize( &m_cmdStack, &m_modelCommands );
+	m_winCommands   .Initialize( &m_cmdStack, &m_modelCommands, &m_nmwi );
 	m_cmdStack      .Initialize( &m_nmwi, & m_staticModelObservable );
 	m_sound         .Initialize( &m_soundOnObservable );
 	m_appTitle      .Initialize( m_hwndApp, &m_nmri );

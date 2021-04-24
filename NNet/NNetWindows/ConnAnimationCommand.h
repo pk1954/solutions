@@ -17,7 +17,12 @@ class RootWindow;
 class ConnAnimationCommand : public Command
 {
 public:
-    ConnAnimationCommand(RootWindow * const, NNetModelCommands * const);
+    ConnAnimationCommand
+    (
+        unique_ptr<ShapePtrList<ConnNeuron>> const,
+        RootWindow                         * const, 
+        function<void()>                     const
+    );
     virtual ~ConnAnimationCommand() {};
 
     virtual void Do  (NNetModelWriterInterface&);
@@ -28,20 +33,19 @@ public:
     bool const TargetReached() { return m_upConnAnimation->TargetReached(); }
 
 protected:
-    using ConnAnimation = Animation<MicroMeterPointVector>;
-
-    MicroMeterPointVector     m_umPntVectorTarget;
-    MicroMeterLine            m_line { MicroMeterLine::NULL_VAL() };
-    ShapePtrList<ConnNeuron>  m_shapesAnimated;
+    MicroMeterPointVector                m_umPntVectorTarget;
+    MicroMeterLine                       m_line { MicroMeterLine::NULL_VAL() };
+    unique_ptr<ShapePtrList<ConnNeuron>> m_upShapesAnimated;
 
 private:
-    RootWindow              * m_pWindow        { nullptr };
-    bool                      m_bInitialized   { false };
-    NNetModelCommands       * m_pModelCommands { nullptr };
-    MicroMeterPointVector     m_umPntVectorStart;
-    unique_ptr<ConnAnimation> m_upConnAnimation;
+    RootWindow                                 * m_pWindow      { nullptr };
+    bool                                         m_bInitialized { false };
+    MicroMeterPointVector                        m_umPntVectorStart;
+    unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
+    function<void()> const                       m_finFunc;
 
     void               initialize(NNetModelWriterInterface&);
-    bool         const prepareData(NNetModelWriterInterface&);
-    unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
+
+    bool               const prepareData(NNetModelWriterInterface&);
+    unsigned int       const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
 };

@@ -11,8 +11,13 @@ class RootWindow;
 class PackShapesCommand : public ConnAnimationCommand
 {
 public:
-    PackShapesCommand(RootWindow * const pWin, NNetModelCommands * const pCmds)
-        : ConnAnimationCommand(pWin, pCmds)
+    PackShapesCommand
+    (
+        unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
+        RootWindow                 * const   pWin, 
+        function<void()>             const & finFunc
+    )
+        : ConnAnimationCommand(move(upShapesAnimated), pWin, finFunc)
     {}
 
 private:

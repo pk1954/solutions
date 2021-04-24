@@ -12,13 +12,18 @@ class RootWindow;
 class AlignDirectionCommand : public ConnAnimationCommand
 {
 public:
-    AlignDirectionCommand(RootWindow * const pWin, NNetModelCommands * const pCmds)
-        : ConnAnimationCommand(pWin, pCmds)
+    AlignDirectionCommand
+    (
+        unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
+        RootWindow                 * const   pWin, 
+        function<void()>             const & finFunc
+    )
+    : ConnAnimationCommand(move(upShapesAnimated), pWin, finFunc)
     {}
 
 private:
     virtual void DefineTarget()
     {
-        m_umPntVectorTarget.SetDir(Vector2Radian(CalcOrthoVector(m_line, m_shapesAnimated)));
+        m_umPntVectorTarget.SetDir(Vector2Radian(CalcOrthoVector(m_line, *m_upShapesAnimated.get())));
     }
 };

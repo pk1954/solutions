@@ -6,6 +6,7 @@
 #include "AlignDirectionCommand.h"
 #include "AlignShapesCommand.h"
 #include "PackShapesCommand.h"
+#include "CreateConnectorCommand.h"
 #include "NNetModelWriterInterface.h"
 #include "CommandStack.h"
 #include "win32_Commands.h"
@@ -18,31 +19,49 @@ using std::unique_ptr;
 
 void WinCommands::Initialize
 ( 
-	CommandStack      * const pCmdStack,
-	NNetModelCommands * const pCmds
+	CommandStack             * const pCmdStack,
+	NNetModelCommands        * const pCmds,
+	NNetModelWriterInterface * const pNMWI
 ) 
 { 
 	m_pCmdStack = pCmdStack;
 	m_pCommands = pCmds;
+	m_pNMWI     = pNMWI;
 }
 
-void WinCommands::AlignDirection(RootWindow * const pWin)
+unique_ptr<ShapePtrList<ConnNeuron>> WinCommands::CreateShapeList()
+{
+	unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated;
+	ShapeType          const shapeType { m_pNMWI->GetUPShapes().DetermineShapeType() };
+	if ( ! shapeType.IsUndefinedType() )
+		return make_unique<ShapePtrList<ConnNeuron>>(m_pNMWI->GetUPShapes().GetAllSelected<ConnNeuron>(shapeType));
+	return nullptr;
+}
+
+void WinCommands::AlignDirection(RootWindow * const pWin, function<void()> const & finFunc)
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AlignDirectionCommand>(pWin, m_pCommands) );
+	m_pCmdStack->PushCommand( make_unique<AlignDirectionCommand>(move(CreateShapeList()), pWin, finFunc) );
 }
 
-void WinCommands::AlignShapes(RootWindow * const pWin)
+void WinCommands::AlignShapes(RootWindow * const pWin, function<void()> const & finFunc)
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AlignShapesCommand>(pWin, m_pCommands) );
+	m_pCmdStack->PushCommand( make_unique<AlignShapesCommand>(move(CreateShapeList()), pWin, finFunc) );
 }
 
-void WinCommands::PackShapes(RootWindow * const pWin)
+void WinCommands::PackShapes(RootWindow * const pWin, function<void()> const & finFunc)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<PackShapesCommand>(pWin, m_pCommands) );
+	m_pCmdStack->PushCommand( make_unique<PackShapesCommand>(move(CreateShapeList()), pWin, finFunc) );
+}
+
+void WinCommands::CreateConnector(RootWindow * const pWin)
+{
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(CreateShapeList())) );
 }

@@ -9,7 +9,6 @@
 #include "SCRIPT.H"
 #include "NNetModel.h"
 #include "Preferences.h"
-#include "AlignAnimation.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
 #include "NNetModelImporter.h"

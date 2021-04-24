@@ -249,18 +249,18 @@ void NNetModelCommands::SetConnectionNeurons
 	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>(umPntVectorRun, move(upShapeIds)) );
 }
 
-void NNetModelCommands::CreateConnector(ShapePtrList<ConnNeuron> & shapes)
+void NNetModelCommands::CreateConnector(unique_ptr<ShapePtrList<ConnNeuron>> upShapes)
 {
 	if ( IsTraceOn() )
-		TraceStream() << __func__ << shapes << endl;
-	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(shapes) );
+		TraceStream() << __func__ << upShapes << endl;
+	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(upShapes)) );
 }
 
 void NNetModelCommands::CreateConnector(unique_ptr<ShapeIdList> upList)  // only used in wrapper function
 {
 	unique_ptr<ShapePtrList<ConnNeuron>> upShapes { make_unique<ShapePtrList<ConnNeuron>>() };
 	upList->Apply2All([&](ShapeId const id) { upShapes->Add(m_pNMWI->GetShapePtr<ConnNeuron*>(id)); });
-	CreateConnector( * upShapes.get() );
+	CreateConnector( move(upShapes) );
 }
 
 void NNetModelCommands::AddModel()

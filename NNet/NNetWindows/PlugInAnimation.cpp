@@ -18,7 +18,7 @@ void PlugInAnimation::Initialize
 {
 	//m_pNMWI           = & nmwi;
 	//m_pModelCommands  = & commands;
-	//m_upConnAnimation = make_unique<ConnAnimation>(IDX_PLUG_IN_ANIMATION, hwnd); 
+	//m_upConnAnimation = make_unique<Animation<MicroMeterPointVector>>(IDX_PLUG_IN_ANIMATION, hwnd); 
 }
 
 

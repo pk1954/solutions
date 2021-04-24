@@ -9,7 +9,6 @@
 #include "BaseKnot.h"
 #include "MicroMeterPointVector.h"
 #include "NNetModelReaderInterface.h"
-#include "AlignAnimation.h"
 #include "RotationAnimation.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"

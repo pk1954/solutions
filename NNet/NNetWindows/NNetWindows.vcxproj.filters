@@ -81,9 +81,6 @@
     <ClCompile Include="scale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlignAnimation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlugInAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -186,9 +183,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scale.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AlignAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlugInAnimation.h">

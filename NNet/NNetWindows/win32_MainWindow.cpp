@@ -88,8 +88,8 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_MAKE_CONNECTOR,   L"Make connector" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_SELECTION,  L"Align selected objects" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_CREATE_CONNECTOR,   L"Make connector" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_POSITIONS,  L"Align selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
 	else if ( IsUndefined(m_shapeHighlighted) )  // no shape selected, cursor on background
@@ -495,19 +495,38 @@ void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 
 bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
+	vector<unsigned int> CMD_CHAIN
+	{
+		IDM_ALIGN_POSITIONS,
+		IDM_ALIGN_DIRECTIONS,
+		IDM_PACK_SHAPES
+	};
+
 	int const wmId = LOWORD( wParam );
 
 	switch (wmId)
 	{
-
-	case IDX_ROTATION_ANIMATION:
-		m_pRotationAnimation->AnimationStep();
-		Notify( false );
+	case IDM_ALIGN_POSITIONS:
+		m_pWinCommands->AlignShapes(this, [&](){ PostCommand(IDM_ALIGN_DIRECTIONS); });
 		break;
 
-	case IDM_ALIGN_SELECTION:
-		m_pWinCommands->AlignShapes(this);
+	case IDM_ALIGN_DIRECTIONS:
+		m_pWinCommands->AlignDirection(this, [&](){ PostCommand(IDM_PACK_SHAPES); });
 		break;
+
+	case IDM_PACK_SHAPES:
+		m_pWinCommands->PackShapes(this, [&](){ });
+		break;
+
+	case IDM_CREATE_CONNECTOR:
+		m_pWinCommands->CreateConnector(this);
+		break;
+
+	//case IDM_MAKE_CONNECTOR:
+	//	if ( IsTraceOn() )
+	//		TraceStream() << __func__ << endl ;
+	//	m_pModelCommands->PushCommand( make_unique<MakeConnectorCommand>(*m_pAlignAnimation) );
+	//	break;
 
 	default:
 		break;

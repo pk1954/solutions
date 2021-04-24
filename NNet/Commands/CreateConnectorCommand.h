@@ -10,6 +10,7 @@
 #include "ShapePtrList.h"
 #include "Command.h"
 #include "Connector.h"
+#include "SelectionCommand.h"
 #include "ConnectionNeuron.h"
 
 using std::unique_ptr;
@@ -18,10 +19,10 @@ using std::make_unique;
 class CreateConnectorCommand : public SelectionCommand
 {
 public:
-	CreateConnectorCommand(ShapePtrList<ConnNeuron> & list)
+	CreateConnectorCommand(unique_ptr<ShapePtrList<ConnNeuron>> upList)
 	{
 		m_upConnector = make_unique<Connector>();
-		list.Apply2All(	[&](ConnNeuron & n)	{ m_upConnector->Push(&n); } );
+		upList->Apply2All(	[&](ConnNeuron & n)	{ m_upConnector->Push(&n); } );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 

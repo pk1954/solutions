@@ -208,12 +208,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AddModel();
         break;
 
-    //case IDM_MAKE_CONNECTOR:
-    //    if ( IsTraceOn() )
-    //        TraceStream() << __func__ << endl ;
-    //    m_pModelCommands->PushCommand( make_unique<MakeConnectorCommand>(*m_pAlignAnimation) );
-    //    break;
-
     case IDM_COPY_SELECTION:
         m_pModelCommands->CopySelection();
         break;

@@ -31,8 +31,6 @@ public:
 
 private:
 
-	using ConnAnimation = Animation<MicroMeterPosDir>;
-
 	AnimationScript    const * m_pScript { nullptr };
 	int                        m_iScriptStep { -1 };
 
@@ -41,7 +39,7 @@ private:
 	NNetModelCommands        * m_pModelCommands    { nullptr };
 	MicroMeterPosDir           m_umPosDirAnimation { };
 
-	unique_ptr<ConnAnimation>  m_upConnAnimation;
+	unique_ptr<Animation<MicroMeterPointVector>>  m_upConnAnimation;
 
 	void scriptStep();
 };

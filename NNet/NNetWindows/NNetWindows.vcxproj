@@ -570,7 +570,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlignAnimation.cpp" />
     <ClCompile Include="ComputeThread.cpp" />
     <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="D2D_DrawContext.cpp" />
@@ -599,7 +598,6 @@
     <ClCompile Include="win32_triggerSoundDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlignAnimation.h" />
     <ClInclude Include="AlignDirectionCommand.h" />
     <ClInclude Include="AlignShapesCommand.h" />
     <ClInclude Include="ComputeThread.h" />

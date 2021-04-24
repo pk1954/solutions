@@ -11,8 +11,13 @@ class RootWindow;
 class AlignShapesCommand : public ConnAnimationCommand
 {
 public:
-    AlignShapesCommand(RootWindow * const pWin, NNetModelCommands * const pCmds)
-        : ConnAnimationCommand(pWin, pCmds)
+    AlignShapesCommand
+    (
+        unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
+        RootWindow                 * const   pWin, 
+        function<void()>             const & finFunc
+    )
+        : ConnAnimationCommand(move(upShapesAnimated), pWin, finFunc)
     {}
 
 private:
