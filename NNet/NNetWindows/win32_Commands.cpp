@@ -38,30 +38,30 @@ unique_ptr<ShapePtrList<ConnNeuron>> WinCommands::CreateShapeList()
 	return nullptr;
 }
 
-void WinCommands::AlignDirection(RootWindow * const pWin, function<void()> const & finFunc)
+void WinCommands::AlignDirection(RootWindow * const pWin, function<void(bool const)> const & finFunc)
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
 	m_pCmdStack->PushCommand( make_unique<AlignDirectionCommand>(move(CreateShapeList()), pWin, finFunc) );
 }
 
-void WinCommands::AlignShapes(RootWindow * const pWin, function<void()> const & finFunc)
+void WinCommands::AlignShapes(RootWindow * const pWin, function<void(bool const)> const & finFunc)
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
 	m_pCmdStack->PushCommand( make_unique<AlignShapesCommand>(move(CreateShapeList()), pWin, finFunc) );
 }
 
-void WinCommands::PackShapes(RootWindow * const pWin, function<void()> const & finFunc)
+void WinCommands::PackShapes(RootWindow * const pWin, function<void(bool const)> const & finFunc)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
 	m_pCmdStack->PushCommand( make_unique<PackShapesCommand>(move(CreateShapeList()), pWin, finFunc) );
 }
 
-void WinCommands::CreateConnector(RootWindow * const pWin)
+void WinCommands::CreateConnector(RootWindow * const pWin, function<void(bool const)> const & finFunc)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(CreateShapeList())) );
+	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(CreateShapeList()), pWin, finFunc) );
 }

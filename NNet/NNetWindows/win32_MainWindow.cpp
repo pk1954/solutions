@@ -53,7 +53,7 @@ void MainWindow::Start
 
 	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
 	(
-		[&](bool const bTargetReached)
+		[&](bool const bTargetReached, bool const bForward)
 		{ 
 			GetCoord().Set( m_upCoordAnimation->GetActual() );
 			Notify(false);
@@ -61,7 +61,7 @@ void MainWindow::Start
 	);
 	m_upArrowAnimation = make_unique<Animation<MicroMeter>>
 	(
-		[&](bool const bTargetReached)
+		[&](bool const bTargetReached, bool const bForward)
 		{ 
 			m_arrowSize = m_upArrowAnimation->GetActual();
 			Notify(false);
@@ -235,7 +235,7 @@ void MainWindow::ShowArrows( bool const op )
 	MicroMeter oldVal { m_arrowSize };
 	m_arrowSizeTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
 	if ( m_arrowSizeTarget != oldVal )
-		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
+		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget, true );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -411,7 +411,7 @@ void MainWindow::centerAndZoomRect
 		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) -  // SetPixelSize result is used here  
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
-	m_upCoordAnimation->Start( GetCoord(), coordTarget );
+	m_upCoordAnimation->Start( GetCoord(), coordTarget, true );
 }
 
 void MainWindow::OnPaint()
@@ -495,31 +495,54 @@ void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 
 bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	vector<unsigned int> CMD_CHAIN
-	{
-		IDM_ALIGN_POSITIONS,
-		IDM_ALIGN_DIRECTIONS,
-		IDM_PACK_SHAPES
-	};
-
 	int const wmId = LOWORD( wParam );
 
 	switch (wmId)
 	{
 	case IDM_ALIGN_POSITIONS:
-		m_pWinCommands->AlignShapes(this, [&](){ PostCommand(IDM_ALIGN_DIRECTIONS); });
+		m_pWinCommands->AlignShapes
+		(
+			this, 
+			[&](bool const bForwards)
+			{ 
+				if (bForwards)
+					PostCommand(IDM_ALIGN_DIRECTIONS); 
+			}
+		);
 		break;
 
 	case IDM_ALIGN_DIRECTIONS:
-		m_pWinCommands->AlignDirection(this, [&](){ PostCommand(IDM_PACK_SHAPES); });
+		m_pWinCommands->AlignDirection
+		(
+			this, 
+			[&](bool const bForwards)
+			{ 
+				PostCommand(bForwards ? IDM_PACK_SHAPES : IDM_UNDO); 
+			}
+		);
 		break;
 
 	case IDM_PACK_SHAPES:
-		m_pWinCommands->PackShapes(this, [&](){ });
+		m_pWinCommands->PackShapes
+		(
+			this, 
+			[&](bool const bForwards)
+			{ 
+				PostCommand(bForwards ? IDM_CREATE_CONNECTOR : IDM_UNDO); 
+			}
+		);
 		break;
 
 	case IDM_CREATE_CONNECTOR:
-		m_pWinCommands->CreateConnector(this);
+		m_pWinCommands->CreateConnector
+		(
+			this, 
+			[&](bool const bForwards)
+			{ 
+				if ( !bForwards )
+					PostCommand(IDM_UNDO); 
+			}
+		);
 		break;
 
 	//case IDM_MAKE_CONNECTOR:

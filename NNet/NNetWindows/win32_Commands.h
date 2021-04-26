@@ -26,10 +26,10 @@ public:
         NNetModelWriterInterface * const
     );
 
-    void AlignDirection (RootWindow * const, function<void()> const &);
-    void AlignShapes    (RootWindow * const, function<void()> const &);
-    void PackShapes     (RootWindow * const, function<void()> const &);
-    void CreateConnector(RootWindow * const);
+    void AlignDirection (RootWindow * const, function<void(bool const)> const &);
+    void AlignShapes    (RootWindow * const, function<void(bool const)> const &);
+    void PackShapes     (RootWindow * const, function<void(bool const)> const &);
+    void CreateConnector(RootWindow * const, function<void(bool const)> const &);
     
     unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
 

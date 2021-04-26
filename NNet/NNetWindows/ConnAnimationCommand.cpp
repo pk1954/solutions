@@ -16,23 +16,28 @@ ConnAnimationCommand::ConnAnimationCommand
 ( 
     unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
     RootWindow                   * const pWindow,
-    function<void()>               const finFunc
+    function<void(bool const)>     const finFunc
 )
   : m_upShapesAnimated(move(upShapesAnimated)),
     m_pWindow(pWindow),
     m_finFunc(finFunc)
-{}
+{
+    if ( m_upShapesAnimated.get( ) == nullptr )
+    {
+        int x = 42;
+    }
+}
 
 void ConnAnimationCommand::initialize( NNetModelWriterInterface& nmwi )
 {
     m_upConnAnimation = make_unique<Animation<MicroMeterPointVector>>
     (
-        [&](bool const bTargetReached)
+        [&](bool const bTargetReached, bool const bForwards)
         { 
             nmwi.SetConnNeurons(m_upConnAnimation->GetActual(), * m_upShapesAnimated.get());
             m_pWindow->Notify(false);
             if (bTargetReached)
-                (m_finFunc)();
+                (m_finFunc)(bForwards);
         }
     );
     prepareData(nmwi);
@@ -47,12 +52,12 @@ void ConnAnimationCommand::Do( NNetModelWriterInterface& nmwi )
 {
     if ( ! m_bInitialized )
         initialize(nmwi);
-    m_upConnAnimation->Start(m_umPntVectorStart, m_umPntVectorTarget);
+    m_upConnAnimation->Start(m_umPntVectorStart, m_umPntVectorTarget, true);
 }
 
 void ConnAnimationCommand::Undo( NNetModelWriterInterface& nmwi )
 {
-    m_upConnAnimation->Start(m_umPntVectorTarget, m_umPntVectorStart);
+    m_upConnAnimation->Start(m_umPntVectorTarget, m_umPntVectorStart, false);
 }
 
 unsigned int const ConnAnimationCommand::calcNrOfSteps

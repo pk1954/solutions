@@ -21,7 +21,7 @@ public:
     (
         unique_ptr<ShapePtrList<ConnNeuron>> const,
         RootWindow                         * const, 
-        function<void()>                     const
+        function<void(bool const)>           const
     );
     virtual ~ConnAnimationCommand() {};
 
@@ -42,7 +42,7 @@ private:
     bool                                         m_bInitialized { false };
     MicroMeterPointVector                        m_umPntVectorStart;
     unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
-    function<void()> const                       m_finFunc;
+    function<void(bool const)> const             m_finFunc;
 
     void               initialize(NNetModelWriterInterface&);
 

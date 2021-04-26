@@ -15,7 +15,7 @@ public:
     (
         unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
         RootWindow                 * const   pWin, 
-        function<void()>             const & finFunc
+        function<void(bool const)>   const & finFunc
     )
         : ConnAnimationCommand(move(upShapesAnimated), pWin, finFunc)
     {}
