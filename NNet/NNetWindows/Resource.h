@@ -114,3 +114,8 @@
 
 #define IDX_ANIMATION_STEP       701
 #define IDX_PLUG_IN_ANIMATION    703
+#define IDX_ALIGN_POSITIONS      710
+#define IDX_ALIGN_DIRECTIONS     711
+#define IDX_PACK_SHAPES          712
+#define IDX_CREATE_CONNECTOR     713
+

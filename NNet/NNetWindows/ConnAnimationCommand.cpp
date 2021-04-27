@@ -15,11 +15,9 @@ using std::make_unique;
 ConnAnimationCommand::ConnAnimationCommand
 ( 
     unique_ptr<ShapePtrList<ConnNeuron>>               upShapesAnimated,
-    RootWindow                                 * const pWindow,
     function<void(ConnAnimationCommand const *)> const func
 )
   : m_upShapesAnimated(move(upShapesAnimated)),
-    m_pWindow(pWindow),
     m_func(func)
 {
 }

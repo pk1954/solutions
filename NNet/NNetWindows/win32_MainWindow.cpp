@@ -89,7 +89,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_CREATE_CONNECTOR,   L"Make connector" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_CREATE_CONNECTOR, L"Make connector" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_POSITIONS,  L"Align selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
@@ -494,60 +494,90 @@ void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 	}
 }
 
-bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+bool MainWindow::UserProc
+( 
+	UINT   const uMsg, 
+	WPARAM const wParam, 
+	LPARAM const lParam 
+)
+{
+	return (uMsg == WM_USER)
+		? handleAnimationMsg( wParam, lParam )
+		: NNetWindow::UserProc(uMsg, wParam, lParam);
+}
+
+void MainWindow::animationMsg
+(
+	ConnAnimationCommand const * pCAC,
+	int                  const   iNextMsg, 
+	bool                 const   bBackwards
+)
+{
+	if (pCAC)
+	{
+		PostMessage(WM_USER, IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
+		if (pCAC->TargetReached())
+		{
+			if (pCAC->Forwards())
+			{
+				if (iNextMsg)
+					PostMessage(WM_USER, iNextMsg, 0); 
+			}
+			else
+			{
+				if (bBackwards)
+					PostCommand(IDM_UNDO);
+			}
+		}
+	}
+}
+
+bool MainWindow::handleAnimationMsg
+( 
+	WPARAM const wParam, 
+	LPARAM const lParam 
+)
 {
 	int const wmId = LOWORD( wParam );
 
 	switch (wmId)
 	{
-	case IDM_ALIGN_POSITIONS:
+	case IDX_ALIGN_POSITIONS:
 		m_pWinCommands->AlignShapes
 		(
-			this, 
 			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
 			{ 
-				PostCommand(IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
-				if (pCAC->TargetReached() && pCAC->Forwards())
-					PostCommand(IDM_ALIGN_DIRECTIONS); 
+				animationMsg(pCAC, IDX_ALIGN_DIRECTIONS, false);
 			}
 		);
 		break;
 
-	case IDM_ALIGN_DIRECTIONS:
+	case IDX_ALIGN_DIRECTIONS:
 		m_pWinCommands->AlignDirection
 		(
-			this, 
 			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
 			{ 
-				PostCommand(IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
-				if (pCAC->TargetReached())
-					PostCommand(pCAC->Forwards() ? IDM_PACK_SHAPES : IDM_UNDO); 
+				animationMsg(pCAC, IDX_PACK_SHAPES, true);
 			}
 		);
 		break;
 
-	case IDM_PACK_SHAPES:
+	case IDX_PACK_SHAPES:
 		m_pWinCommands->PackShapes
 		(
-			this, 
 			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
 			{ 
-				PostCommand(IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
-				if (pCAC->TargetReached())
-					PostCommand(pCAC->Forwards() ? IDM_CREATE_CONNECTOR : IDM_UNDO); 
+				animationMsg(pCAC, IDX_CREATE_CONNECTOR, true);
 			}
 		);
 		break;
 
-	case IDM_CREATE_CONNECTOR:
+	case IDX_CREATE_CONNECTOR:
 		m_pWinCommands->CreateConnector
 		(
-			this, 
 			[&](bool const bForwards)  // runs in animation thread
 			{ 
-				PostCommand(IDX_ANIMATION_STEP, 0);
-				if (!bForwards)
-					PostCommand(IDM_UNDO); 
+				animationMsg(nullptr, 0, true);
 			}
 		);
 		break;
@@ -555,6 +585,25 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	case IDX_ANIMATION_STEP:
 		m_pWinCommands->Update(reinterpret_cast<ConnAnimationCommand * const>(lParam));
 		Notify(false);
+		break;
+
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+
+bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+{
+	int const wmId = LOWORD( wParam );
+
+	switch (wmId)
+	{
+
+	case IDM_CREATE_CONNECTOR:
+		PostMessage(WM_USER, IDX_ALIGN_POSITIONS, 0 );
 		break;
 
 	default:

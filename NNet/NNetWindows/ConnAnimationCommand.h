@@ -20,7 +20,6 @@ public:
     ConnAnimationCommand
     (
         unique_ptr<ShapePtrList<ConnNeuron>>         const,
-        RootWindow                                 * const, 
         function<void(ConnAnimationCommand const *)> const
     );
     virtual ~ConnAnimationCommand() {};
@@ -42,7 +41,6 @@ protected:
     unique_ptr<ShapePtrList<ConnNeuron>> m_upShapesAnimated;
 
 private:
-    RootWindow                                 * m_pWindow      { nullptr };
     bool                                         m_bInitialized { false };
     bool                                         m_bForwards    { false };
     MicroMeterPointVector                        m_umPntVectorStart;

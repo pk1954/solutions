@@ -14,10 +14,9 @@ public:
     PackShapesCommand
     (
         unique_ptr<ShapePtrList<ConnNeuron>>                upShapesAnimated,
-        RootWindow                                 * const   pWin, 
         function<void(ConnAnimationCommand const *)> const & func
     )
-        : ConnAnimationCommand(move(upShapesAnimated), pWin, func)
+        : ConnAnimationCommand(move(upShapesAnimated), func)
     {}
 
 private:

@@ -24,7 +24,6 @@ public:
 	CreateConnectorCommand
 	(
 		unique_ptr<ShapePtrList<ConnNeuron>> upList,
-		RootWindow                 * const   pWin, 
 		function<void(bool const)>   const & finFunc
 	)
 		: m_finFunc(finFunc)

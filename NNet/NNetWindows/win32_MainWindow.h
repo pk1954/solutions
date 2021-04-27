@@ -15,6 +15,7 @@
 
 class WinCommands;
 class NNetModelCommands;
+class ConnAnimationCommand;
 
 using std::unique_ptr;
 
@@ -105,4 +106,10 @@ private:
 	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
 
 	virtual void doPaint();
+
+	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+	
+	bool handleAnimationMsg( WPARAM const, LPARAM const );
+	void animationMsg(ConnAnimationCommand const *,	int const, bool const);
+
 };

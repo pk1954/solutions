@@ -29,10 +29,10 @@ public:
     );
 
     void Update(ConnAnimationCommand * const);
-    void AlignDirection (RootWindow * const, function<void(ConnAnimationCommand const *)> const &);
-    void AlignShapes    (RootWindow * const, function<void(ConnAnimationCommand const *)> const &);
-    void PackShapes     (RootWindow * const, function<void(ConnAnimationCommand const *)> const &);
-    void CreateConnector(RootWindow * const, function<void(bool const)> const &);
+    void AlignDirection (function<void(ConnAnimationCommand const *)> const &);
+    void AlignShapes    (function<void(ConnAnimationCommand const *)> const &);
+    void PackShapes     (function<void(ConnAnimationCommand const *)> const &);
+    void CreateConnector(function<void(bool const)> const &);
     
     unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
 
