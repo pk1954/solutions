@@ -13,10 +13,12 @@ class PackShapesCommand : public ConnAnimationCommand
 public:
     PackShapesCommand
     (
-        unique_ptr<ShapePtrList<ConnNeuron>>                upShapesAnimated,
-        function<void(ConnAnimationCommand const *)> const & func
+        unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
+        RootWindow                   const * pWin,
+        int                          const   iMsg,
+        bool                         const   bBackwards
     )
-        : ConnAnimationCommand(move(upShapesAnimated), func)
+        : ConnAnimationCommand(move(upShapesAnimated), pWin, iMsg, bBackwards)
     {}
 
 private:

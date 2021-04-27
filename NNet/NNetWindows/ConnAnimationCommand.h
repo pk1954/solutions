@@ -12,6 +12,7 @@
 
 class NNetModelWriterInterface;
 class NNetModelCommands;
+class ConnAnimationCommand;
 class RootWindow;
 
 class ConnAnimationCommand : public Command
@@ -19,8 +20,10 @@ class ConnAnimationCommand : public Command
 public:
     ConnAnimationCommand
     (
-        unique_ptr<ShapePtrList<ConnNeuron>>         const,
-        function<void(ConnAnimationCommand const *)> const
+        unique_ptr<ShapePtrList<ConnNeuron>> const,
+        RootWindow                           const *,
+        int                                  const,
+        bool                                 const
     );
     virtual ~ConnAnimationCommand() {};
 
@@ -45,7 +48,10 @@ private:
     bool                                         m_bForwards    { false };
     MicroMeterPointVector                        m_umPntVectorStart;
     unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
-    function<void(ConnAnimationCommand const *)> const m_func;
+
+    RootWindow    const * m_pWin;
+    int           const   m_iMsg;
+    bool          const   m_bBackwards;
 
     void               initialize(NNetModelWriterInterface&);
 

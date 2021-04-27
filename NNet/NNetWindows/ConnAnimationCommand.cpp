@@ -14,19 +14,38 @@ using std::make_unique;
 
 ConnAnimationCommand::ConnAnimationCommand
 ( 
-    unique_ptr<ShapePtrList<ConnNeuron>>               upShapesAnimated,
-    function<void(ConnAnimationCommand const *)> const func
+    unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
+    RootWindow                   const * pWin,
+    int                          const   iMsg,
+    bool                         const   bBackwards
 )
   : m_upShapesAnimated(move(upShapesAnimated)),
-    m_func(func)
-{
-}
+    m_pWin(pWin),
+    m_iMsg(iMsg),
+    m_bBackwards(bBackwards)
+{}
 
 void ConnAnimationCommand::initialize( NNetModelWriterInterface& nmwi )
 {
     m_upConnAnimation = make_unique<Animation<MicroMeterPointVector>>
     (
-        [&](bool const bTargetReached) { (m_func(this)); }
+        [&](bool const bTargetReached) 
+        { 
+            m_pWin->PostMessage(WM_USER, IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(this));
+            if (TargetReached())
+            {
+                if (Forwards())
+                {
+                    if (m_iMsg)
+                        m_pWin->PostMessage(WM_USER, m_iMsg, 0); 
+                }
+                else
+                {
+                    if (m_bBackwards)
+                        m_pWin->PostCommand(IDM_UNDO);
+                }
+            }
+        }
     );
     prepareData(nmwi);
     m_umPntVectorStart  = MicroMeterPointVector(*m_upShapesAnimated.get());

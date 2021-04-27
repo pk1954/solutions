@@ -109,7 +109,5 @@ private:
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 	
-	bool handleAnimationMsg( WPARAM const, LPARAM const );
-	void animationMsg(ConnAnimationCommand const *,	int const, bool const);
-
+	bool makeConnectorMsg( WPARAM const, LPARAM const );
 };

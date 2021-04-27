@@ -253,7 +253,7 @@ void NNetModelCommands::CreateConnector(unique_ptr<ShapePtrList<ConnNeuron>> upS
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << upShapes << endl;
-	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(upShapes), [&](bool const){}));
+	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(upShapes)) );
 }
 
 void NNetModelCommands::CreateConnector(unique_ptr<ShapeIdList> upList)  // only used in wrapper function

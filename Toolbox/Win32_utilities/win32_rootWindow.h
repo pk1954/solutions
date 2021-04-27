@@ -115,12 +115,12 @@ public:
 		return SendNotifyMessage( WM_COMMAND, wParam, lParam );
 	}
 
-	LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+	LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return ::PostMessage( m_hwnd, msg, wParam, lParam );
 	}
 
-	LRESULT const SendMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+	LRESULT const SendMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return ::SendMessage( m_hwnd, msg, wParam, lParam );
 	}

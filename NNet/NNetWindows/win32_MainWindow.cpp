@@ -502,37 +502,11 @@ bool MainWindow::UserProc
 )
 {
 	return (uMsg == WM_USER)
-		? handleAnimationMsg( wParam, lParam )
+		? makeConnectorMsg( wParam, lParam )
 		: NNetWindow::UserProc(uMsg, wParam, lParam);
 }
 
-void MainWindow::animationMsg
-(
-	ConnAnimationCommand const * pCAC,
-	int                  const   iNextMsg, 
-	bool                 const   bBackwards
-)
-{
-	if (pCAC)
-	{
-		PostMessage(WM_USER, IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
-		if (pCAC->TargetReached())
-		{
-			if (pCAC->Forwards())
-			{
-				if (iNextMsg)
-					PostMessage(WM_USER, iNextMsg, 0); 
-			}
-			else
-			{
-				if (bBackwards)
-					PostCommand(IDM_UNDO);
-			}
-		}
-	}
-}
-
-bool MainWindow::handleAnimationMsg
+bool MainWindow::makeConnectorMsg
 ( 
 	WPARAM const wParam, 
 	LPARAM const lParam 
@@ -542,44 +516,20 @@ bool MainWindow::handleAnimationMsg
 
 	switch (wmId)
 	{
-	case IDX_ALIGN_POSITIONS:
-		m_pWinCommands->AlignShapes
-		(
-			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
-			{ 
-				animationMsg(pCAC, IDX_ALIGN_DIRECTIONS, false);
-			}
-		);
+	case IDX_MAKE_CON_STEP1:
+		m_pWinCommands->AlignShapes(this, IDX_MAKE_CON_STEP2, false);
 		break;
 
-	case IDX_ALIGN_DIRECTIONS:
-		m_pWinCommands->AlignDirection
-		(
-			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
-			{ 
-				animationMsg(pCAC, IDX_PACK_SHAPES, true);
-			}
-		);
+	case IDX_MAKE_CON_STEP2:
+		m_pWinCommands->AlignDirection(this, IDX_MAKE_CON_STEP3, true);
 		break;
 
-	case IDX_PACK_SHAPES:
-		m_pWinCommands->PackShapes
-		(
-			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
-			{ 
-				animationMsg(pCAC, IDX_CREATE_CONNECTOR, true);
-			}
-		);
+	case IDX_MAKE_CON_STEP3:
+		m_pWinCommands->PackShapes(this, IDX_MAKE_CON_STEP4, true);
 		break;
 
-	case IDX_CREATE_CONNECTOR:
-		m_pWinCommands->CreateConnector
-		(
-			[&](bool const bForwards)  // runs in animation thread
-			{ 
-				animationMsg(nullptr, 0, true);
-			}
-		);
+	case IDX_MAKE_CON_STEP4:
+		m_pWinCommands->CreateConnector();
 		break;
 
 	case IDX_ANIMATION_STEP:
@@ -603,7 +553,7 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	{
 
 	case IDM_CREATE_CONNECTOR:
-		PostMessage(WM_USER, IDX_ALIGN_POSITIONS, 0 );
+		PostMessage(WM_USER, IDX_MAKE_CON_STEP1 );
 		break;
 
 	default:

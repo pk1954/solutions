@@ -5,12 +5,11 @@
 #pragma once
 
 #include <string>
+#include "ConnAnimationCommand.h"
 
 class Command;
 class CommandStack;
-
 class NNetModelCommands;
-class ConnAnimationCommand;
 class NNetModelWriterInterface;
 class RootWindow;
 
@@ -29,10 +28,10 @@ public:
     );
 
     void Update(ConnAnimationCommand * const);
-    void AlignDirection (function<void(ConnAnimationCommand const *)> const &);
-    void AlignShapes    (function<void(ConnAnimationCommand const *)> const &);
-    void PackShapes     (function<void(ConnAnimationCommand const *)> const &);
-    void CreateConnector(function<void(bool const)> const &);
+    void AlignDirection (RootWindow const *, int const, bool const);
+    void AlignShapes    (RootWindow const *, int const, bool const);
+    void PackShapes     (RootWindow const *, int const, bool const);
+    void CreateConnector();
     
     unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
 

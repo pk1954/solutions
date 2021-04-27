@@ -44,30 +44,30 @@ unique_ptr<ShapePtrList<ConnNeuron>> WinCommands::CreateShapeList()
 	return nullptr;
 }
 
-void WinCommands::AlignDirection(function<void(ConnAnimationCommand const *)> const & func)
+void WinCommands::AlignDirection(RootWindow const * pWin, int const iMsg, bool const bBackwards)
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AlignDirectionCommand>(move(CreateShapeList()), func) );
+	m_pCmdStack->PushCommand( make_unique<AlignDirectionCommand>(move(CreateShapeList()), pWin, iMsg, bBackwards) );
 }
 
-void WinCommands::AlignShapes(function<void(ConnAnimationCommand const *)> const & func)
+void WinCommands::AlignShapes(RootWindow const * pWin, int const iMsg, bool const bBackwards)
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AlignShapesCommand>(move(CreateShapeList()), func) );
+	m_pCmdStack->PushCommand( make_unique<AlignShapesCommand>(move(CreateShapeList()), pWin, iMsg, bBackwards) );
 }
 
-void WinCommands::PackShapes(function<void(ConnAnimationCommand const *)> const & func)
+void WinCommands::PackShapes(RootWindow const * pWin, int const iMsg, bool const bBackwards)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<PackShapesCommand>(move(CreateShapeList()), func) );
+	m_pCmdStack->PushCommand( make_unique<PackShapesCommand>(move(CreateShapeList()), pWin, iMsg, bBackwards) );
 }
 
-void WinCommands::CreateConnector(function<void(bool const)> const & func)
+void WinCommands::CreateConnector()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(CreateShapeList()), func) );
+	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(CreateShapeList())) );
 }
