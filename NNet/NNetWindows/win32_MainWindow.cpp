@@ -501,49 +501,33 @@ bool MainWindow::UserProc
 	LPARAM const lParam 
 )
 {
-	return (uMsg == WM_USER)
-		? makeConnectorMsg( wParam, lParam )
-		: NNetWindow::UserProc(uMsg, wParam, lParam);
-}
-
-bool MainWindow::makeConnectorMsg
-( 
-	WPARAM const wParam, 
-	LPARAM const lParam 
-)
-{
-	int const wmId = LOWORD( wParam );
-
-	switch (wmId)
+	if ( uMsg == WM_USER )
 	{
-	case IDX_MAKE_CON_STEP1:
-		m_pWinCommands->AlignShapes(this, IDX_MAKE_CON_STEP2, false);
-		break;
+		int iMsg { LOWORD(wParam) };
+		switch ( iMsg )
+		{
+		case IDX_MAKE_CON_STEP:
+			switch (lParam)
+			{
+				case 1:	m_pWinCommands->AlignShapes   (this, 2, false); break;
+				case 2:	m_pWinCommands->AlignDirection(this, 3, true);	break;
+				case 3:	m_pWinCommands->PackShapes    (this, 4, true);	break;
+				case 4:	m_pWinCommands->CreateConnector();      		break;
+				default: break;
+			}
+			break;
 
-	case IDX_MAKE_CON_STEP2:
-		m_pWinCommands->AlignDirection(this, IDX_MAKE_CON_STEP3, true);
-		break;
+		case IDX_ANIMATION_STEP:
+			m_pWinCommands->Update(reinterpret_cast<ConnAnimationCommand * const>(lParam));
+			Notify(false);
+			break;
 
-	case IDX_MAKE_CON_STEP3:
-		m_pWinCommands->PackShapes(this, IDX_MAKE_CON_STEP4, true);
-		break;
-
-	case IDX_MAKE_CON_STEP4:
-		m_pWinCommands->CreateConnector();
-		break;
-
-	case IDX_ANIMATION_STEP:
-		m_pWinCommands->Update(reinterpret_cast<ConnAnimationCommand * const>(lParam));
-		Notify(false);
-		break;
-
-	default:
-		break;
+		default:
+			break;
+		}
 	}
-
-	return 0;
+	return NNetWindow::UserProc(uMsg, wParam, lParam); 
 }
-
 
 bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
@@ -552,8 +536,12 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	switch (wmId)
 	{
 
+	case IDM_ALIGN_POSITIONS:
+	    m_pWinCommands->AlignShapes(this, 0, false);
+		break;
+
 	case IDM_CREATE_CONNECTOR:
-		PostMessage(WM_USER, IDX_MAKE_CON_STEP1 );
+		PostMessage(WM_USER, IDX_MAKE_CON_STEP, 1);
 		break;
 
 	default:

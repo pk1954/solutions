@@ -158,7 +158,6 @@ private:
 	CommandStack             m_cmdStack               { };
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
-	RotationAnimation        m_rotationAnimation      { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

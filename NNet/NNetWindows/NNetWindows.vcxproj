@@ -577,7 +577,6 @@
     <ClCompile Include="NNetWinWrappers.cpp" />
     <ClCompile Include="PlugInAnimation.cpp" />
     <ClCompile Include="Preferences.cpp" />
-    <ClCompile Include="RotationAnimation.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
@@ -605,10 +604,8 @@
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="MakeConnectorCommand.h" />
     <ClInclude Include="PackShapesCommand.h" />
-    <ClInclude Include="RotationAnimation.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="NNetWinWrappers.h" />
-    <ClInclude Include="PlugInAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="scale.h" />

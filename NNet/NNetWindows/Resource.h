@@ -114,8 +114,4 @@
 
 #define IDX_ANIMATION_STEP       701
 #define IDX_PLUG_IN_ANIMATION    703
-#define IDX_MAKE_CON_STEP1      710
-#define IDX_MAKE_CON_STEP2     711
-#define IDX_MAKE_CON_STEP3          712
-#define IDX_MAKE_CON_STEP4     713
-
+#define IDX_MAKE_CON_STEP        710

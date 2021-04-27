@@ -9,7 +9,6 @@
 #include "BaseKnot.h"
 #include "MicroMeterPointVector.h"
 #include "NNetModelReaderInterface.h"
-#include "RotationAnimation.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
@@ -97,7 +96,6 @@ private:
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
 	WinCommands       * m_pWinCommands         { nullptr };
-	RotationAnimation * m_pRotationAnimation   { nullptr };
 
 	void setNoTarget        ();
 	void setTargetShape     ();
@@ -108,6 +106,4 @@ private:
 	virtual void doPaint();
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
-	
-	bool makeConnectorMsg( WPARAM const, LPARAM const );
 };

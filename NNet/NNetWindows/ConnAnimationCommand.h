@@ -50,7 +50,7 @@ private:
     unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
 
     RootWindow    const * m_pWin;
-    int           const   m_iMsg;
+    int           const   m_iStep;
     bool          const   m_bBackwards;
 
     void               initialize(NNetModelWriterInterface&);

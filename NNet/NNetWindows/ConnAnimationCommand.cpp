@@ -16,12 +16,12 @@ ConnAnimationCommand::ConnAnimationCommand
 ( 
     unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
     RootWindow                   const * pWin,
-    int                          const   iMsg,
+    int                          const   iStep,
     bool                         const   bBackwards
 )
   : m_upShapesAnimated(move(upShapesAnimated)),
     m_pWin(pWin),
-    m_iMsg(iMsg),
+    m_iStep(iStep),
     m_bBackwards(bBackwards)
 {}
 
@@ -36,8 +36,8 @@ void ConnAnimationCommand::initialize( NNetModelWriterInterface& nmwi )
             {
                 if (Forwards())
                 {
-                    if (m_iMsg)
-                        m_pWin->PostMessage(WM_USER, m_iMsg, 0); 
+                    if (m_iStep)
+                        m_pWin->PostMessage(WM_USER, IDX_MAKE_CON_STEP, m_iStep);
                 }
                 else
                 {
