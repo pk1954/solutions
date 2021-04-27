@@ -112,4 +112,5 @@
 #define IDM_PACK_SHAPES          673
 #define IDM_CREATE_CONNECTOR     674
 
+#define IDX_ANIMATION_STEP       701
 #define IDX_PLUG_IN_ANIMATION    703

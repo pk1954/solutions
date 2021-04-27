@@ -12,6 +12,7 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "ConnAnimationCommand.h"
 #include "win32_Commands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
@@ -53,7 +54,7 @@ void MainWindow::Start
 
 	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
 	(
-		[&](bool const bTargetReached, bool const bForward)
+		[&](bool const bTargetReached)
 		{ 
 			GetCoord().Set( m_upCoordAnimation->GetActual() );
 			Notify(false);
@@ -61,7 +62,7 @@ void MainWindow::Start
 	);
 	m_upArrowAnimation = make_unique<Animation<MicroMeter>>
 	(
-		[&](bool const bTargetReached, bool const bForward)
+		[&](bool const bTargetReached)
 		{ 
 			m_arrowSize = m_upArrowAnimation->GetActual();
 			Notify(false);
@@ -235,7 +236,7 @@ void MainWindow::ShowArrows( bool const op )
 	MicroMeter oldVal { m_arrowSize };
 	m_arrowSizeTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
 	if ( m_arrowSizeTarget != oldVal )
-		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget, true );
+		m_upArrowAnimation->Start( m_arrowSize, m_arrowSizeTarget );
 }
 
 //void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -411,7 +412,7 @@ void MainWindow::centerAndZoomRect
 		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) -  // SetPixelSize result is used here  
 		Convert2fPixelPoint( GetClRectCenter() ) 
 	);
-	m_upCoordAnimation->Start( GetCoord(), coordTarget, true );
+	m_upCoordAnimation->Start( GetCoord(), coordTarget );
 }
 
 void MainWindow::OnPaint()
@@ -503,9 +504,10 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		m_pWinCommands->AlignShapes
 		(
 			this, 
-			[&](bool const bForwards)
+			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
 			{ 
-				if (bForwards)
+				PostCommand(IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
+				if (pCAC->TargetReached() && pCAC->Forwards())
 					PostCommand(IDM_ALIGN_DIRECTIONS); 
 			}
 		);
@@ -515,9 +517,11 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		m_pWinCommands->AlignDirection
 		(
 			this, 
-			[&](bool const bForwards)
+			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
 			{ 
-				PostCommand(bForwards ? IDM_PACK_SHAPES : IDM_UNDO); 
+				PostCommand(IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
+				if (pCAC->TargetReached())
+					PostCommand(pCAC->Forwards() ? IDM_PACK_SHAPES : IDM_UNDO); 
 			}
 		);
 		break;
@@ -526,9 +530,11 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		m_pWinCommands->PackShapes
 		(
 			this, 
-			[&](bool const bForwards)
+			[&](ConnAnimationCommand const * pCAC) // runs in animation thread
 			{ 
-				PostCommand(bForwards ? IDM_CREATE_CONNECTOR : IDM_UNDO); 
+				PostCommand(IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(pCAC));
+				if (pCAC->TargetReached())
+					PostCommand(pCAC->Forwards() ? IDM_CREATE_CONNECTOR : IDM_UNDO); 
 			}
 		);
 		break;
@@ -537,19 +543,19 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		m_pWinCommands->CreateConnector
 		(
 			this, 
-			[&](bool const bForwards)
+			[&](bool const bForwards)  // runs in animation thread
 			{ 
-				if ( !bForwards )
+				PostCommand(IDX_ANIMATION_STEP, 0);
+				if (!bForwards)
 					PostCommand(IDM_UNDO); 
 			}
 		);
 		break;
 
-	//case IDM_MAKE_CONNECTOR:
-	//	if ( IsTraceOn() )
-	//		TraceStream() << __func__ << endl ;
-	//	m_pModelCommands->PushCommand( make_unique<MakeConnectorCommand>(*m_pAlignAnimation) );
-	//	break;
+	case IDX_ANIMATION_STEP:
+		m_pWinCommands->Update(reinterpret_cast<ConnAnimationCommand * const>(lParam));
+		Notify(false);
+		break;
 
 	default:
 		break;

@@ -8,7 +8,9 @@
 
 class Command;
 class CommandStack;
+
 class NNetModelCommands;
+class ConnAnimationCommand;
 class NNetModelWriterInterface;
 class RootWindow;
 
@@ -26,9 +28,10 @@ public:
         NNetModelWriterInterface * const
     );
 
-    void AlignDirection (RootWindow * const, function<void(bool const)> const &);
-    void AlignShapes    (RootWindow * const, function<void(bool const)> const &);
-    void PackShapes     (RootWindow * const, function<void(bool const)> const &);
+    void Update(ConnAnimationCommand * const);
+    void AlignDirection (RootWindow * const, function<void(ConnAnimationCommand const *)> const &);
+    void AlignShapes    (RootWindow * const, function<void(ConnAnimationCommand const *)> const &);
+    void PackShapes     (RootWindow * const, function<void(ConnAnimationCommand const *)> const &);
     void CreateConnector(RootWindow * const, function<void(bool const)> const &);
     
     unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();

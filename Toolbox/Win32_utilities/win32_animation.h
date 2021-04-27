@@ -19,21 +19,20 @@ class Animation
 {
 public:
 
-    using APP_PROC = function<void(bool const, bool const)>;
+    using APP_PROC = function<void(bool const)>;
 
     Animation( APP_PROC const & appProc, DWORD const dwFlags = 0 )
       : m_appProc(appProc),
         m_dwFlags(dwFlags)
     {}
 
-    void Start(ANIM_PAR const origin, ANIM_PAR const target, bool bForwards)
+    void Start(ANIM_PAR const origin, ANIM_PAR const target)
     {
         FILETIME fileTime { m_uiMillisecs, 0 };
         m_start          = origin;
         m_target         = target;
         m_distance       = target - origin;
         m_bTargetReached = false;
-        m_bForwards      = bForwards;
         setActual(m_start);
         m_smoothMove.Start( m_uiMsPeriod );
         assert( ! m_pTpTimer );
@@ -57,7 +56,7 @@ public:
     {
         ANIM_PAR result;
         protect( [&](){ result = m_actual; } );
-        return result;
+        return move(result);
     }
 
     bool const TargetReached() { return m_bTargetReached; }
@@ -87,7 +86,6 @@ private:
     unsigned int        m_uiMillisecs    { 50 };
     HWND                m_hwnd           { nullptr };
     bool                m_bTargetReached { false };
-    bool                m_bForwards;
 
     void protect( function<void()> func )
     {
@@ -108,7 +106,7 @@ private:
             m_bTargetReached = m_smoothMove.Next();
             setActual(m_start + m_distance * m_smoothMove.GetPos());
             if (m_appProc)
-                (m_appProc)(m_bTargetReached, m_bForwards);
+                (m_appProc)(m_bTargetReached);
             if ( m_bTargetReached )
             {
                 if ( m_dwFlags & ANIMATION_RECURRING )

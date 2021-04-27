@@ -14,11 +14,11 @@ class AlignDirectionCommand : public ConnAnimationCommand
 public:
     AlignDirectionCommand
     (
-        unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
-        RootWindow                 * const   pWin, 
-        function<void(bool const)>   const & finFunc
+        unique_ptr<ShapePtrList<ConnNeuron>>                 upShapesAnimated,
+        RootWindow                                 * const   pWin, 
+        function<void(ConnAnimationCommand const *)> const & func
     )
-    : ConnAnimationCommand(move(upShapesAnimated), pWin, finFunc)
+    : ConnAnimationCommand(move(upShapesAnimated), pWin, func)
     {}
 
 private:

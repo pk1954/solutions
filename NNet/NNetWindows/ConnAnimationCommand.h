@@ -19,9 +19,9 @@ class ConnAnimationCommand : public Command
 public:
     ConnAnimationCommand
     (
-        unique_ptr<ShapePtrList<ConnNeuron>> const,
-        RootWindow                         * const, 
-        function<void(bool const)>           const
+        unique_ptr<ShapePtrList<ConnNeuron>>         const,
+        RootWindow                                 * const, 
+        function<void(ConnAnimationCommand const *)> const
     );
     virtual ~ConnAnimationCommand() {};
 
@@ -30,7 +30,11 @@ public:
 
     virtual void DefineTarget() = 0;
 
-    bool const TargetReached() { return m_upConnAnimation->TargetReached(); }
+    MicroMeterPointVector    const   GetActual()         { return m_upConnAnimation->GetActual(); }
+    ShapePtrList<ConnNeuron> const & GetAnimatedShapes() { return * m_upShapesAnimated.get(); }
+
+    bool const TargetReached() const { return m_upConnAnimation->TargetReached(); }
+    bool const Forwards     () const { return m_bForwards; }
 
 protected:
     MicroMeterPointVector                m_umPntVectorTarget;
@@ -40,9 +44,10 @@ protected:
 private:
     RootWindow                                 * m_pWindow      { nullptr };
     bool                                         m_bInitialized { false };
+    bool                                         m_bForwards    { false };
     MicroMeterPointVector                        m_umPntVectorStart;
     unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
-    function<void(bool const)> const             m_finFunc;
+    function<void(ConnAnimationCommand const *)> const m_func;
 
     void               initialize(NNetModelWriterInterface&);
 

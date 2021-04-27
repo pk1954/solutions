@@ -53,5 +53,5 @@ public:
 private:
 
 	function<void(bool const)> const m_finFunc;
-	unique_ptr<Connector>            m_upConnector {};  
+	unique_ptr<Connector>                        m_upConnector {};  
 };
