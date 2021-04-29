@@ -34,7 +34,7 @@ public:
 	{ 
 		SelectionCommand::Do( nmwi );
 		m_upConnector->SetParentPointers();
-		m_upConnector->Select(false, true);
+//		m_upConnector->Select(false, true);
 		nmwi.GetUPShapes().Push( move(m_upConnector) );
 	}
 
