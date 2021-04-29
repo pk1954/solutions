@@ -1,4 +1,4 @@
-// PackShapesCommand.h
+// AlignPositionsCommand.h
 //
 // NNetWindows
 
@@ -9,15 +9,15 @@
 
 class RootWindow;
 
-class PackShapesCommand : public ConnAnimationCommand
+class AlignPositionsCommand : public ConnAnimationCommand
 {
 public:
-    PackShapesCommand
+    AlignPositionsCommand
     (
         RootWindow  * pWin,
         WinCommands & cmds,
-        int   const   iMsg,
-        bool  const   bBackwards
+        int     const iMsg,
+        bool    const bBackwards
     )
         : ConnAnimationCommand(move(cmds.CreateShapeList()), pWin, cmds, iMsg, bBackwards)
     {}
@@ -25,6 +25,6 @@ public:
 private:
     virtual void DefineTarget()
     {
-        m_umPntVectorTarget.Pack(NEURON_RADIUS * 1.8f);
+        m_umPntVectorTarget.Align(m_line);
     }
 };

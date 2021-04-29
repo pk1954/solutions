@@ -517,7 +517,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -575,7 +575,6 @@
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
-    <ClCompile Include="PlugInAnimation.cpp" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
@@ -598,7 +597,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlignDirectionCommand.h" />
-    <ClInclude Include="AlignShapesCommand.h" />
+    <ClInclude Include="AlignPositionsCommand.h" />
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="D2D_DrawContext.h" />

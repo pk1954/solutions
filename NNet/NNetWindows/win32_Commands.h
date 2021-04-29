@@ -28,11 +28,16 @@ public:
     );
 
     void Update(ConnAnimationCommand * const);
-    void AlignDirection (RootWindow const *, int const, bool const);
-    void AlignShapes    (RootWindow const *, int const, bool const);
-    void PackShapes     (RootWindow const *, int const, bool const);
-    void CreateConnector();
+    //void AlignDirection  (RootWindow *, int const, bool const);
+    //void AlignPositions  (RootWindow *, int const, bool const);
+    //void PackShapes      (RootWindow *, int const, bool const);
+    void AlignShapes     (RootWindow *);
+    void MakeConnector   (RootWindow *);
+    void ConnectConnector(RootWindow *);
+//    void CreateConnector();
     
+    CommandStack & GetCommandStack() { return * m_pCmdStack; }
+    NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
     unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
 
 private:

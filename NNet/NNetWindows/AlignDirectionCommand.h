@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "win32_Commands.h"
 #include "CalcOrthoVector.h"
 #include "ConnAnimationCommand.h"
 
@@ -14,12 +15,12 @@ class AlignDirectionCommand : public ConnAnimationCommand
 public:
     AlignDirectionCommand
     (
-        unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
-        RootWindow                   const * pWin,
-        int                          const   iMsg,
-        bool                         const   bBackwards
+        RootWindow  * pWin,
+        WinCommands & cmds,
+        int   const   iMsg,
+        bool  const   bBackwards
     )
-    : ConnAnimationCommand(move(upShapesAnimated), pWin, iMsg, bBackwards)
+    : ConnAnimationCommand(move(cmds.CreateShapeList()), pWin, cmds, iMsg, bBackwards)
     {}
 
 private:

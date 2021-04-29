@@ -5,6 +5,12 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "win32_rootWindow.h"
+#include "win32_Commands.h"
+#include "AlignDirectionCommand.h"
+#include "AlignPositionsCommand.h"
+#include "PackShapesCommand.h"
+#include "CreateConnectorCommand.h"
+#include "CommandStack.h"
 #include "ShapeIdList.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
@@ -15,12 +21,14 @@ using std::make_unique;
 ConnAnimationCommand::ConnAnimationCommand
 ( 
     unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated,
-    RootWindow                   const * pWin,
+    RootWindow                         * pWin,
+    WinCommands                        & cmds,
     int                          const   iStep,
     bool                         const   bBackwards
 )
   : m_upShapesAnimated(move(upShapesAnimated)),
     m_pWin(pWin),
+    m_winCommands(cmds),
     m_iStep(iStep),
     m_bBackwards(bBackwards)
 {}
@@ -31,13 +39,35 @@ void ConnAnimationCommand::initialize( NNetModelWriterInterface& nmwi )
     (
         [&](bool const bTargetReached) 
         { 
-            m_pWin->PostMessage(WM_USER, IDX_ANIMATION_STEP, reinterpret_cast<LPARAM>(this));
+            m_callable.Call_UI_thread
+            (
+                [&]()
+                {
+                    m_winCommands.Update(this);
+                    m_pWin->Notify(false);
+                }
+            );
             if (TargetReached())
             {
                 if (Forwards())
                 {
                     if (m_iStep)
-                        m_pWin->PostMessage(WM_USER, IDX_MAKE_CON_STEP, m_iStep);
+                    {
+                        m_callable.Call_UI_thread
+                        (
+                            [&]()
+                            {
+                                switch (m_iStep)
+                                {
+                                case 1:	AlignPositions(m_pWin, 2, false); break;
+                                case 2:	AlignDirection(m_pWin, 3, true);	break;
+                                case 3:	PackShapes    (m_pWin, 4, true);	break;
+                                case 4:	CreateConnector();      		    break;
+                                default: break;
+                                }
+                            }
+                        );
+                    }
                 }
                 else
                 {
@@ -67,6 +97,35 @@ void ConnAnimationCommand::Undo( NNetModelWriterInterface& nmwi )
 {
     m_bForwards = false;
     m_upConnAnimation->Start(m_umPntVectorTarget, m_umPntVectorStart);
+}
+
+void ConnAnimationCommand::AlignPositions(RootWindow * pWin, int const iMsg, bool const bBackwards)
+{ 
+    m_winCommands.GetCommandStack().PushCommand( make_unique<AlignPositionsCommand>(pWin, m_winCommands, iMsg, bBackwards) );
+}
+
+void ConnAnimationCommand::AlignDirection(RootWindow * pWin, int const iMsg, bool const bBackwards)
+{ 
+    m_winCommands.GetCommandStack().PushCommand( make_unique<AlignDirectionCommand>(pWin, m_winCommands, iMsg, bBackwards) );
+}
+
+void ConnAnimationCommand::PackShapes(RootWindow * pWin, int const iMsg, bool const bBackwards)
+{
+    m_winCommands.GetCommandStack().PushCommand( make_unique<PackShapesCommand>(pWin, m_winCommands, iMsg, bBackwards) );
+}
+
+void ConnAnimationCommand::CreateConnector()
+{
+    m_winCommands.GetCommandStack().PushCommand( make_unique<CreateConnectorCommand>(move(CreateShapeList())) );
+}
+
+unique_ptr<ShapePtrList<ConnNeuron>> ConnAnimationCommand::CreateShapeList()
+{
+    unique_ptr<ShapePtrList<ConnNeuron>> upShapesAnimated;
+    ShapeType          const shapeType { m_winCommands.GetNMWI().GetUPShapes().DetermineShapeType() };
+    if ( ! shapeType.IsUndefinedType() )
+        return make_unique<ShapePtrList<ConnNeuron>>(m_winCommands.GetNMWI().GetUPShapes().GetAllSelected<ConnNeuron>(shapeType));
+    return nullptr;
 }
 
 unsigned int const ConnAnimationCommand::calcNrOfSteps

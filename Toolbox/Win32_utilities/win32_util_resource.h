@@ -8,6 +8,10 @@
 #define IDC_STATIC				-1
 #endif
 
+// application defined window messages
+
+#define WM_APP_UI_CALL              WM_APP
+
 // identifiers below 100 are reserved for win32_utilities
 
 #define IDS_APP_TITLE                   1

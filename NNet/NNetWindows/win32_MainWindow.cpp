@@ -13,6 +13,7 @@
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "ConnAnimationCommand.h"
+#include "win32_callable.h"
 #include "win32_Commands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
@@ -89,8 +90,8 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_CREATE_CONNECTOR, L"Make connector" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_POSITIONS,  L"Align selected objects" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_MAKE_CONNECTOR,   L"Make connector" );
+		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_SHAPES,     L"Align selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
 	else if ( IsUndefined(m_shapeHighlighted) )  // no shape selected, cursor on background
@@ -349,7 +350,6 @@ void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 	if ( IsDefined(m_shapeHighlighted) && IsDefined(m_shapeTarget) && m_bTargetFits )
 	{ 
 		SendCommand2Application( IDD_CONNECT, 0	);
-		setNoTarget();
 	}
 	setNoTarget();
 }
@@ -501,30 +501,10 @@ bool MainWindow::UserProc
 	LPARAM const lParam 
 )
 {
-	if ( uMsg == WM_USER )
-	{
-		int iMsg { LOWORD(wParam) };
-		switch ( iMsg )
-		{
-		case IDX_MAKE_CON_STEP:
-			switch (lParam)
-			{
-				case 1:	m_pWinCommands->AlignShapes   (this, 2, false); break;
-				case 2:	m_pWinCommands->AlignDirection(this, 3, true);	break;
-				case 3:	m_pWinCommands->PackShapes    (this, 4, true);	break;
-				case 4:	m_pWinCommands->CreateConnector();      		break;
-				default: break;
-			}
-			break;
-
-		case IDX_ANIMATION_STEP:
-			m_pWinCommands->Update(reinterpret_cast<ConnAnimationCommand * const>(lParam));
-			Notify(false);
-			break;
-
-		default:
-			break;
-		}
+	if ( uMsg == WM_APP_UI_CALL )
+	{ 
+		Callable::DoCall(lParam);
+		return 0;
 	}
 	return NNetWindow::UserProc(uMsg, wParam, lParam); 
 }
@@ -536,12 +516,16 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	switch (wmId)
 	{
 
-	case IDM_ALIGN_POSITIONS:
-	    m_pWinCommands->AlignShapes(this, 0, false);
+	case IDM_ALIGN_SHAPES:
+	    m_pWinCommands->AlignShapes(this);
 		break;
 
-	case IDM_CREATE_CONNECTOR:
-		PostMessage(WM_USER, IDX_MAKE_CON_STEP, 1);
+	case IDM_MAKE_CONNECTOR:
+		m_pWinCommands->MakeConnector(this);
+		break;
+
+	case IDM_CONNECT_CONNECTOR:
+		m_pWinCommands->ConnectConnector(this);
 		break;
 
 	default:

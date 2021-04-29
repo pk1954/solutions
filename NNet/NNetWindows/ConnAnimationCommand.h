@@ -8,11 +8,13 @@
 #include "Command.h"
 #include "ShapePtrList.h"
 #include "MicroMeterPointVector.h"
+#include "win32_callable.h"
 #include "win32_animation.h"
 
 class NNetModelWriterInterface;
 class NNetModelCommands;
 class ConnAnimationCommand;
+class WinCommands;
 class RootWindow;
 
 class ConnAnimationCommand : public Command
@@ -21,7 +23,8 @@ public:
     ConnAnimationCommand
     (
         unique_ptr<ShapePtrList<ConnNeuron>> const,
-        RootWindow                           const *,
+        RootWindow                                 *,
+        WinCommands                                &,
         int                                  const,
         bool                                 const
     );
@@ -31,6 +34,11 @@ public:
     virtual void Undo(NNetModelWriterInterface&);
 
     virtual void DefineTarget() = 0;
+
+    void AlignDirection  (RootWindow *, int const, bool const);
+    void AlignPositions  (RootWindow *, int const, bool const);
+    void PackShapes      (RootWindow *, int const, bool const);
+    void CreateConnector();
 
     MicroMeterPointVector    const   GetActual()         { return m_upConnAnimation->GetActual(); }
     ShapePtrList<ConnNeuron> const & GetAnimatedShapes() { return * m_upShapesAnimated.get(); }
@@ -49,11 +57,15 @@ private:
     MicroMeterPointVector                        m_umPntVectorStart;
     unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
 
-    RootWindow    const * m_pWin;
+    WinCommands         & m_winCommands;
+    RootWindow          * m_pWin;
     int           const   m_iStep;
     bool          const   m_bBackwards;
+    Callable              m_callable;
 
     void               initialize(NNetModelWriterInterface&);
+
+    unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
 
     bool               const prepareData(NNetModelWriterInterface&);
     unsigned int       const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;

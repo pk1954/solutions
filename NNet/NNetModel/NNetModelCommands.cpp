@@ -159,14 +159,34 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
-	m_pCmdStack->PushCommand
-	(
-		MakeConnectCommand
+	Shape & shapeDst { * m_pNMWI->GetShapePtr<Shape *>(idDst) };
+
+	if (shapeDst.IsPipe())
+		m_pCmdStack->PushCommand
 		(
-			* m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
-			* m_pNMWI->GetShapePtr<Shape    *>(idDst)
-		) 
-	);
+			MakeConnectCommand
+			(
+				* m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
+				shapeDst
+			) 
+		);
+	else if (shapeDst.IsBaseKnot())
+		m_pCmdStack->PushCommand
+		(
+			MakeConnectCommand
+			(
+				* m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
+				shapeDst
+			) 
+		);
+	else if ( shapeDst.IsConnector( ) )
+	{
+
+	}
+	else
+	{ 
+		assert(false);
+	}
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )

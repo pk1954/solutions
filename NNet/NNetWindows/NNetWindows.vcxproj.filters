@@ -81,9 +81,6 @@
     <ClCompile Include="scale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlugInAnimation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -197,7 +194,7 @@
     <ClInclude Include="win32_Commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AlignShapesCommand.h">
+    <ClInclude Include="AlignPositionsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
