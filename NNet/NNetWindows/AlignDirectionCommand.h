@@ -15,12 +15,12 @@ class AlignDirectionCommand : public ConnAnimationCommand
 public:
     AlignDirectionCommand
     (
-        RootWindow  * pWin,
+        RootWindow  & win,
         WinCommands & cmds,
         int   const   iMsg,
         bool  const   bBackwards
     )
-    : ConnAnimationCommand(move(cmds.CreateShapeList()), pWin, cmds, iMsg, bBackwards)
+    : ConnAnimationCommand(win, cmds, iMsg, bBackwards)
     {}
 
 private:

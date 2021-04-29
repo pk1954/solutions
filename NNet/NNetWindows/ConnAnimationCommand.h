@@ -22,11 +22,10 @@ class ConnAnimationCommand : public Command
 public:
     ConnAnimationCommand
     (
-        unique_ptr<ShapePtrList<ConnNeuron>> const,
-        RootWindow                                 *,
-        WinCommands                                &,
-        int                                  const,
-        bool                                 const
+        RootWindow  &,
+        WinCommands &,
+        int  const,
+        bool const
     );
     virtual ~ConnAnimationCommand() {};
 
@@ -35,9 +34,9 @@ public:
 
     virtual void DefineTarget() = 0;
 
-    void AlignDirection  (RootWindow *, int const, bool const);
-    void AlignPositions  (RootWindow *, int const, bool const);
-    void PackShapes      (RootWindow *, int const, bool const);
+    void AlignDirection  (RootWindow &, int const, bool const);
+    void AlignPositions  (RootWindow &, int const, bool const);
+    void PackShapes      (RootWindow &, int const, bool const);
     void CreateConnector();
 
     MicroMeterPointVector    const   GetActual()         { return m_upConnAnimation->GetActual(); }
@@ -49,7 +48,9 @@ public:
 protected:
     MicroMeterPointVector                m_umPntVectorTarget;
     MicroMeterLine                       m_line { MicroMeterLine::NULL_VAL() };
-    unique_ptr<ShapePtrList<ConnNeuron>> m_upShapesAnimated;
+    unique_ptr<ShapePtrList<ConnNeuron>> m_upShapesAnimated {};
+
+    unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
 
 private:
     bool                                         m_bInitialized { false };
@@ -57,16 +58,13 @@ private:
     MicroMeterPointVector                        m_umPntVectorStart;
     unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
 
-    WinCommands         & m_winCommands;
-    RootWindow          * m_pWin;
-    int           const   m_iStep;
-    bool          const   m_bBackwards;
-    Callable              m_callable;
+    WinCommands & m_winCommands;
+    RootWindow  & m_win;
+    int     const m_iStep;
+    bool    const m_bBackwards;
+    Callable      m_callable;
 
     void               initialize(NNetModelWriterInterface&);
-
-    unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
-
-    bool               const prepareData(NNetModelWriterInterface&);
-    unsigned int       const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
+    bool         const prepareData(NNetModelWriterInterface&);
+    unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
 };

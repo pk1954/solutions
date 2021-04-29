@@ -14,12 +14,12 @@ class PackShapesCommand : public ConnAnimationCommand
 public:
     PackShapesCommand
     (
-        RootWindow  * pWin,
+        RootWindow  & win,
         WinCommands & cmds,
         int   const   iMsg,
         bool  const   bBackwards
     )
-        : ConnAnimationCommand(move(cmds.CreateShapeList()), pWin, cmds, iMsg, bBackwards)
+        : ConnAnimationCommand(win, cmds, iMsg, bBackwards)
     {}
 
 private:
