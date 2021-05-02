@@ -111,9 +111,6 @@
     <ClInclude Include="SetConnectionNeuronsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CreateConnectorCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveShapeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>

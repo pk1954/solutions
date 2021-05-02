@@ -54,6 +54,20 @@ public:
         Apply2All( [&](MicroMeterPosDir & umPosDir) { umPosDir.SetDir(radian); } );
     }
 
+    void SetDir(MicroMeterPointVector const rhs)
+    {
+        assert(rhs.Size() == Size());
+        for ( int i = 0; i < m_list.size(); ++i )
+            m_list[i].SetDir( rhs.GetPosDir(i).GetDir() );
+    }
+
+    void SetPos(MicroMeterPointVector const rhs)
+    {
+        assert(rhs.Size() == Size());
+        for ( int i = 0; i < m_list.size(); ++i )
+            m_list[i].SetPos( rhs.GetPosDir(i).GetPos() );
+    }
+
     void Clear()
     {
         m_list.clear();
@@ -72,6 +86,15 @@ public:
     void Add( MicroMeterPosDir const & posDir )
     {
         m_list.push_back( posDir );
+    }
+
+    bool operator==( MicroMeterPointVector const& rhs ) const
+    {
+        assert( m_list.size() == rhs.m_list.size() );
+        for ( int i = 0; i < m_list.size(); ++i )
+            if (m_list[i] != rhs.m_list[i])
+                return false;
+        return true; 
     }
 
     MicroMeterPointVector& operator+= (MicroMeterPointVector const & rhs) 

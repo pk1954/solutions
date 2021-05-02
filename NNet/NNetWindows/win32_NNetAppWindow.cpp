@@ -78,7 +78,7 @@ NNetAppWindow::NNetAppWindow()
 
 	DefineUtilityWrapperFunctions();
 	DefineNNetWrappers( & m_modelCommands );
-	DefineNNetWinWrappers( & m_mainNNetWindow );
+	DefineNNetWinWrappers( & m_mainNNetWindow, & m_winCommands );
 };
 
 NNetAppWindow::~NNetAppWindow() { }

@@ -16,7 +16,6 @@
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
-#include "MakeConnectorCommand.h"
 #include "win32_util.h"
 #include "win32_sound.h"
 #include "win32_script.h"

@@ -84,7 +84,6 @@
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
-    <ClInclude Include="CreateConnectorCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />

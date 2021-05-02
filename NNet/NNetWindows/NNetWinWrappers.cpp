@@ -6,12 +6,14 @@
 #include "symtab.h"
 #include "Resource.h"
 #include "win32_util.h"
+#include "win32_Commands.h"
 #include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
 #include "DrawContext.h"
 #include "win32_MainWindow.h"
 
-static MainWindow * m_pMainWindow;
+static MainWindow  * m_pMainWindow;
+static WinCommands * m_pWinCommands;
 
 class WrapSetPixelOffset: public Script_Functor
 {
@@ -33,9 +35,10 @@ public:
     }
 };
 
-void DefineNNetWinWrappers( MainWindow * const pMainWindow )
+void DefineNNetWinWrappers( MainWindow * const pMainWindow, WinCommands * const pWinCommands )
 {
     m_pMainWindow = pMainWindow;
+    m_pWinCommands = pWinCommands;
 
     DEF_FUNC( SetPixelOffset );
     DEF_FUNC( SetPixelSize );

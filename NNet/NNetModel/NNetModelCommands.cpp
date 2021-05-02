@@ -17,7 +17,6 @@
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "CopySelectionCommand.h"
-#include "CreateConnectorCommand.h"
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
@@ -267,20 +266,6 @@ void NNetModelCommands::SetConnectionNeurons
 	if ( IsTraceOn() )
 		TraceStream() << __func__<< * upShapeIds << umPntVectorRun << endl ;
 	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>(umPntVectorRun, move(upShapeIds)) );
-}
-
-void NNetModelCommands::CreateConnector(unique_ptr<ShapePtrList<ConnNeuron>> upShapes)
-{
-	if ( IsTraceOn() )
-		TraceStream() << __func__ << upShapes << endl;
-	m_pCmdStack->PushCommand( make_unique<CreateConnectorCommand>(move(upShapes)) );
-}
-
-void NNetModelCommands::CreateConnector(unique_ptr<ShapeIdList> upList)  // only used in wrapper function
-{
-	unique_ptr<ShapePtrList<ConnNeuron>> upShapes { make_unique<ShapePtrList<ConnNeuron>>() };
-	upList->Apply2All([&](ShapeId const id) { upShapes->Add(m_pNMWI->GetShapePtr<ConnNeuron*>(id)); });
-	CreateConnector( move(upShapes) );
 }
 
 void NNetModelCommands::AddModel()

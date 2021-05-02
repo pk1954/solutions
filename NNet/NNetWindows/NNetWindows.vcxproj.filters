@@ -179,22 +179,10 @@
     <ClInclude Include="scale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MakeConnectorCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AlignDirectionCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PackShapesCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConnAnimationCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_Commands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AlignPositionsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

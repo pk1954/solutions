@@ -58,8 +58,6 @@ public:
     void ClearBeepers        ();
     void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ();
-    void CreateConnector     ( unique_ptr<ShapePtrList<ConnNeuron>> );
-    void CreateConnector     ( unique_ptr<ShapeIdList> );
     void CreateInitialShapes ();
     void DeleteSelection     ();
     void DeleteShape         ( ShapeId  const );

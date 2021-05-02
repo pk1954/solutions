@@ -1,6 +1,6 @@
 // NNetWrappers.cpp : wrapper functions for unit tests and scripting of NNet
 //
-// NNetSimu
+// NNetWindows
 
 #include "stdafx.h"
 #include "symtab.h"
@@ -48,15 +48,6 @@ public:
     virtual void operator() ( Script & script ) const
     {
         m_pCommands->CreateInitialShapes();
-    }
-};
-
-class WrapCreateConnector: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        m_pCommands->CreateConnector(ScrReadShapeIdList(script));
     }
 };
 
@@ -388,7 +379,6 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(ClearBeepers);       
     DEF_FUNC(Connect);
     DEF_FUNC(CopySelection);      
-    DEF_FUNC(CreateConnector);
     DEF_FUNC(CreateInitialShapes);
     DEF_FUNC(DeleteSelection);    
     DEF_FUNC(DeleteShape);        

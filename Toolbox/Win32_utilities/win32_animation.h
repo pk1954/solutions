@@ -28,16 +28,16 @@ public:
 
     void Start(ANIM_PAR const origin, ANIM_PAR const target)
     {
-        FILETIME fileTime { m_uiMillisecs, 0 };
+        FILETIME fileTime { m_uiMsPeriod, 0 };
         m_start          = origin;
         m_target         = target;
         m_distance       = target - origin;
         m_bTargetReached = false;
         setActual(m_start);
-        m_smoothMove.Start( m_uiMsPeriod );
+        m_smoothMove.Start( m_uiNrOfSteps );
         assert( ! m_pTpTimer );
         m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
-        SetThreadpoolTimer( m_pTpTimer, &fileTime, m_uiMillisecs, 50L );
+        SetThreadpoolTimer( m_pTpTimer, &fileTime, m_uiMsPeriod, 50L );
     }
 
     void Stop()
@@ -63,7 +63,7 @@ public:
 
     void SetNrOfSteps( unsigned int const uiNrOfSteps )
     {
-        m_uiMsPeriod = uiNrOfSteps;
+        m_uiNrOfSteps = uiNrOfSteps;
     }
 
     void SetMsPeriod( unsigned int const uiMsPeriod )
@@ -82,8 +82,8 @@ private:
     DWORD    const      m_dwFlags;
     SRWLOCK             m_srwl           { SRWLOCK_INIT };
     TP_TIMER          * m_pTpTimer       { nullptr };
-    unsigned int        m_uiMsPeriod     { 20 };
-    unsigned int        m_uiMillisecs    { 50 };
+    unsigned int        m_uiMsPeriod     { 50 };
+    unsigned int        m_uiNrOfSteps    { 20 };
     HWND                m_hwnd           { nullptr };
     bool                m_bTargetReached { false };
 

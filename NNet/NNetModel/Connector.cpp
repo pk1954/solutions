@@ -11,6 +11,12 @@ Connector::Connector()
   :	Shape(ShapeType::Value::connector)
 {};
 
+Connector::Connector( ShapePtrList<ConnNeuron> const & src )
+  :	Shape(ShapeType::Value::connector)
+{
+    src.Apply2All([&](ConnNeuron & n) { Push(&n); });
+}
+
 void Connector::CheckShape() const
 {
     Shape::CheckShape();

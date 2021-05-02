@@ -6,6 +6,7 @@
 
 #include "MoreTypes.h"
 #include "Command.h"
+#include "Connector.h"
 #include "ShapePtrList.h"
 #include "MicroMeterPointVector.h"
 #include "win32_callable.h"
@@ -23,48 +24,49 @@ public:
     ConnAnimationCommand
     (
         RootWindow  &,
-        WinCommands &,
-        int  const,
-        bool const
+        WinCommands &
     );
     virtual ~ConnAnimationCommand() {};
 
     virtual void Do  (NNetModelWriterInterface&);
     virtual void Undo(NNetModelWriterInterface&);
 
-    virtual void DefineTarget() = 0;
-
-    void AlignDirection  (RootWindow &, int const, bool const);
-    void AlignPositions  (RootWindow &, int const, bool const);
-    void PackShapes      (RootWindow &, int const, bool const);
-    void CreateConnector();
-
-    MicroMeterPointVector    const   GetActual()         { return m_upConnAnimation->GetActual(); }
-    ShapePtrList<ConnNeuron> const & GetAnimatedShapes() { return * m_upShapesAnimated.get(); }
-
-    bool const TargetReached() const { return m_upConnAnimation->TargetReached(); }
-    bool const Forwards     () const { return m_bForwards; }
-
-protected:
-    MicroMeterPointVector                m_umPntVectorTarget;
-    MicroMeterLine                       m_line { MicroMeterLine::NULL_VAL() };
-    unique_ptr<ShapePtrList<ConnNeuron>> m_upShapesAnimated {};
-
-    unique_ptr<ShapePtrList<ConnNeuron>> CreateShapeList();
-
 private:
-    bool                                         m_bInitialized { false };
-    bool                                         m_bForwards    { false };
-    MicroMeterPointVector                        m_umPntVectorStart;
-    unique_ptr<Animation<MicroMeterPointVector>> m_upConnAnimation;
 
-    WinCommands & m_winCommands;
-    RootWindow  & m_win;
-    int     const m_iStep;
-    bool    const m_bBackwards;
-    Callable      m_callable;
+    enum class Mode
+    {
+        mode_do,
+        mode_undo
+    };
+    
+    Mode                             m_mode { Mode::mode_do };
+    UPShapeList                    * m_pShapeList;
+    WinCommands                    & m_winCommands;
+    RootWindow                     & m_win;
+    Radian                           m_radianTarget;
+    int                              m_iPhase { 0 };
+    Callable                         m_callable;
+    unique_ptr<Connector>            m_upConnector {};  
+    MicroMeterLine                   m_line { MicroMeterLine::NULL_VAL() };
+    MicroMeterPointVector            m_umPntVectorOriginal;
+    MicroMeterPointVector            m_umPntVectorAligned;
+    ShapePtrList<ConnNeuron>         m_shapesAnimated {};
+    Animation<MicroMeterPointVector> m_connAnimation 
+    {
+        Animation<MicroMeterPointVector>
+        (
+            [&](bool const bTargetReached) 
+            { 
+                m_callable.Call_UI_thread([&](){updateUI();});
+                if (bTargetReached)
+                    m_callable.Call_UI_thread([&](){ nextAnimationPhase(); });
+            }
+        )
+    };
 
-    void               initialize(NNetModelWriterInterface&);
-    bool         const prepareData(NNetModelWriterInterface&);
+
+    ShapeType    const determineShapeType() const;
     unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
+    void               nextAnimationPhase();
+    void               updateUI();
 };

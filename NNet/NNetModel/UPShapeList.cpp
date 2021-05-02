@@ -318,21 +318,3 @@ UPShapeList UPShapeList::ExtractShapes(ShapeIdList idList)
 	idList.Apply2All([&](ShapeId const &id){ shapeList.Push(ExtractShape(id)); } );
 	return shapeList;
 }
-
-ShapeType const UPShapeList::DetermineShapeType() const
-{
-	unsigned int uiNrOfConnectors { CountInSelection( ShapeType::Value::connector ) };
-	
-	if ( uiNrOfConnectors > 0 )
-		return ShapeType::Value::undefined;
-
-	unsigned int uiNrOfInputNeurons  { CountInSelection( ShapeType::Value::inputNeuron  ) };
-	unsigned int uiNrOfOutputNeurons { CountInSelection( ShapeType::Value::outputNeuron ) };
-	
-	if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
-		return ShapeType::Value::undefined;
-
-	return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-	       ? ShapeType::Value::inputNeuron 
-		   : ShapeType::Value::outputNeuron;
-}

@@ -56,7 +56,6 @@ public:
 	Shape   * const ReplaceShape      (ShapeId const, UPShape);	
 	void            SetShape2Slot     (ShapeId const, UPShape);	 // only for special situations
 	void            SetShape2Slot     (UPShape);                 // only for special situations
-	ShapeType const DetermineShapeType()                                                        const;
 	void            CheckShapeList    ()                                                        const;
 	void            Dump              ()                                                        const;
 	void            LinkShape         (Shape const &, function<Shape* (Shape const *)> const &) const;

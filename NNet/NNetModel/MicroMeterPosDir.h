@@ -33,6 +33,11 @@ public:
     void SetPos(MicroMeterPoint const & pos) { m_pos = pos; }
     void SetDir(Radian          const & dir) { m_dir = dir; }
 
+    bool operator==(MicroMeterPosDir const& rhs) const
+    {
+        return (m_pos == rhs.m_pos) && (m_dir == rhs.m_dir); 
+    }
+
     MicroMeterPosDir& operator+= (MicroMeterPoint const & pnt) 
     { 
         m_pos += pnt;

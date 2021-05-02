@@ -516,10 +516,6 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	switch (wmId)
 	{
 
-	case IDM_ALIGN_SHAPES:
-	    m_pWinCommands->AlignShapes(*this);
-		break;
-
 	case IDM_MAKE_CONNECTOR:
 		m_pWinCommands->MakeConnector(*this);
 		break;

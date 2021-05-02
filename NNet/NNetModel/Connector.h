@@ -19,6 +19,7 @@ public:
 	static ShapeType const GetShapeType() { return ShapeType::Value::connector; }
 
 	Connector();
+	Connector(ShapePtrList<ConnNeuron> const &);
 
 	virtual ~Connector() {}
 

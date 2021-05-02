@@ -9,6 +9,7 @@
 
 class Command;
 class CommandStack;
+class ShapeIdList;
 class NNetModelCommands;
 class NNetModelWriterInterface;
 class RootWindow;
@@ -27,12 +28,9 @@ public:
         NNetModelWriterInterface * const
     );
 
-    void Update(ConnAnimationCommand * const);
-    void AlignShapes     (RootWindow &);
     void MakeConnector   (RootWindow &);
     void ConnectConnector(RootWindow &);
-    
-    CommandStack & GetCommandStack() { return * m_pCmdStack; }
+
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
 
 private:
