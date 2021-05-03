@@ -21,24 +21,34 @@ ConnAnimationCommand::ConnAnimationCommand
     WinCommands & cmds
 )
   : m_win(win),
-    m_winCommands(cmds),
+    m_NMWI(cmds.GetNMWI()),
     m_callable(win.GetWindowHandle())
 {
-    m_pModelShapes = & m_winCommands.GetNMWI().GetUPShapes();
+    m_pModelShapes = &m_NMWI.GetUPShapes();
     ShapeType const shapeType { determineShapeType() };
     if ( shapeType.IsUndefinedType() )
         return;
     
     m_shapesAnimated = ShapePtrList<ConnNeuron>(m_pModelShapes->GetAllSelected<ConnNeuron>(shapeType));
 
-    m_line.Set2Null();
-    m_line = m_shapesAnimated.CalcMaxDistLine();
-    if ( m_line.IsZero() )
+    MicroMeterLine line { MicroMeterLine::NULL_VAL() };
+    line = m_shapesAnimated.CalcMaxDistLine();
+    if ( line.IsZero() )
         return;
 
-    m_shapesAnimated.SortAccToDistFromLine( m_line.OrthoLine() );
+    m_shapesAnimated.SortAccToDistFromLine( line.OrthoLine() );
     m_upConnector  = make_unique<Connector>( m_shapesAnimated );
-    m_radianTarget = Vector2Radian(CalcOrthoVector(m_line, m_shapesAnimated));
+    
+    m_umPntVectorOriginal = MicroMeterPointVector( m_shapesAnimated );
+
+    m_umPntVectorTarget1  = m_umPntVectorOriginal;
+    m_umPntVectorTarget1.Align(line);
+
+    m_umPntVectorTarget2  = m_umPntVectorTarget1;
+    m_umPntVectorTarget2.SetDir(Vector2Radian(CalcOrthoVector(line, m_shapesAnimated)));
+
+    m_umPntVectorTarget3  = m_umPntVectorTarget2;
+    m_umPntVectorTarget3.Pack(NEURON_RADIUS * 1.8f);
 }
 
 ShapeType const ConnAnimationCommand::determineShapeType() const
@@ -61,7 +71,7 @@ ShapeType const ConnAnimationCommand::determineShapeType() const
 
 void ConnAnimationCommand::updateUI()  // runs in animation thread
 {
-    m_winCommands.GetNMWI().SetConnNeurons
+    m_NMWI.SetConnNeurons
     (
         m_connAnimation.GetActual(), 
         m_shapesAnimated
@@ -72,7 +82,7 @@ void ConnAnimationCommand::updateUI()  // runs in animation thread
 void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
 {
     MicroMeterPointVector umPntVectorStart  = MicroMeterPointVector( m_shapesAnimated );
-    MicroMeterPointVector umPntVectorTarget = MicroMeterPointVector( m_shapesAnimated );
+    MicroMeterPointVector umPntVectorTarget;
 
     int iPhase { m_iPhase };
 
@@ -83,15 +93,9 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         switch (iPhase)
         {
         case 1:  blockUI();
-                 m_umPntVectorOriginal = umPntVectorTarget;
-                 umPntVectorTarget.Align(m_line);
-                 m_umPntVectorTarget1 = umPntVectorTarget;
-                 break;
-        case 2:	 umPntVectorTarget.SetDir(m_radianTarget);    
-                 m_umPntVectorTarget2 = umPntVectorTarget;     
-                 break;
-        case 3:  umPntVectorTarget.Pack(NEURON_RADIUS * 1.8f);
-                 break;
+                 umPntVectorTarget = m_umPntVectorTarget1; break;
+        case 2:	 umPntVectorTarget = m_umPntVectorTarget2; break;
+        case 3:  umPntVectorTarget = m_umPntVectorTarget3; break;
         case 4:	 m_upConnector->SetParentPointers();
                  m_pModelShapes->Push( move(m_upConnector) );
                  unblockUI();

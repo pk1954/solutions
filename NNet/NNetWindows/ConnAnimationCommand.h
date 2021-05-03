@@ -41,16 +41,15 @@ private:
     
     Mode                             m_mode { Mode::mode_do };
     UPShapeList                    * m_pModelShapes;
-    WinCommands                    & m_winCommands;
+    NNetModelWriterInterface       & m_NMWI;
     RootWindow                     & m_win;
-    Radian                           m_radianTarget;
     int                              m_iPhase { 0 };
     Callable                         m_callable;
     unique_ptr<Connector>            m_upConnector {};  
-    MicroMeterLine                   m_line { MicroMeterLine::NULL_VAL() };
-    MicroMeterPointVector            m_umPntVectorOriginal;
-    MicroMeterPointVector            m_umPntVectorTarget1;
-    MicroMeterPointVector            m_umPntVectorTarget2;
+    MicroMeterPointVector            m_umPntVectorOriginal;  // befor animation
+    MicroMeterPointVector            m_umPntVectorTarget1;   // after position alignment
+    MicroMeterPointVector            m_umPntVectorTarget2;   // after direction alignment
+    MicroMeterPointVector            m_umPntVectorTarget3;   // after packing
     ShapePtrList<ConnNeuron>         m_shapesAnimated {};
     Animation<MicroMeterPointVector> m_connAnimation 
     {
