@@ -28,18 +28,16 @@ public:
 
     void Start(ANIM_PAR const origin, ANIM_PAR const target)  // runs in UI thread
     {
-//        AcquireSRWLockExclusive( & m_srwlData );
         m_start          = origin;
         m_target         = target;
         m_distance       = target - origin;
         m_bTargetReached = false;
-        m_actual         = m_start;
+        setActual(m_start);
         m_smoothMove.Start( m_uiNrOfSteps );
         if ( m_pTpTimer )
         {
             int x = 42;
         }
-//        ReleaseSRWLockExclusive( & m_srwlData );
         startTimer();
     }
 
@@ -78,24 +76,29 @@ private:
     HWND                m_hwnd           { nullptr };
     bool                m_bTargetReached { false };
 
+    void setActual( ANIM_PAR const newVal )
+    {
+        AcquireSRWLockExclusive( & m_srwlData );
+        m_actual = newVal;
+        ReleaseSRWLockExclusive( & m_srwlData );
+    }
+
     void next() // runs in animation thread
     {
-//        AcquireSRWLockExclusive( & m_srwlData );
         if ( ! m_bTargetReached )
         {
             m_bTargetReached = m_smoothMove.Next();
-            m_actual = m_start + m_distance * m_smoothMove.GetPos();
+            setActual(m_start + m_distance * m_smoothMove.GetPos());
             if ( m_bTargetReached )
             {
                 if ( m_dwFlags & ANIMATION_RECURRING )
-                    m_actual = m_start;
+                    setActual(m_start);
                 else 
                     stopTimer();
             }
             if (m_appProc)
                 (m_appProc)(m_bTargetReached);
         }
-//        ReleaseSRWLockExclusive( & m_srwlData );
     }
 
     void startTimer()  // runs in UI thread
@@ -107,7 +110,7 @@ private:
 
     void stopTimer()  // runs in animation thread
     { 
-        SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
+//        SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
 //        WaitForThreadpoolTimerCallbacks( m_pTpTimer, true );
         CloseThreadpoolTimer( m_pTpTimer );
         m_pTpTimer = nullptr;
