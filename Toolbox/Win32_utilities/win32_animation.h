@@ -26,40 +26,31 @@ public:
         m_dwFlags(dwFlags)
     {}
 
-    void Start(ANIM_PAR const origin, ANIM_PAR const target)
+    void Start(ANIM_PAR const origin, ANIM_PAR const target)  // runs in UI thread
     {
-        FILETIME fileTime { m_uiMsPeriod, 0 };
+//        AcquireSRWLockExclusive( & m_srwlData );
         m_start          = origin;
         m_target         = target;
         m_distance       = target - origin;
         m_bTargetReached = false;
-        setActual(m_start);
+        m_actual         = m_start;
         m_smoothMove.Start( m_uiNrOfSteps );
-        assert( ! m_pTpTimer );
-        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
-        SetThreadpoolTimer( m_pTpTimer, &fileTime, m_uiMsPeriod, 50L );
-    }
-
-    void Stop()
-    {
-        m_bTargetReached = true;
         if ( m_pTpTimer )
         {
-            SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
-            WaitForThreadpoolTimerCallbacks( m_pTpTimer, true );
-            CloseThreadpoolTimer( m_pTpTimer );
-            m_pTpTimer = nullptr;
+            int x = 42;
         }
+//        ReleaseSRWLockExclusive( & m_srwlData );
+        startTimer();
     }
 
     ANIM_PAR const GetActual()
     {
         ANIM_PAR result;
-        protect( [&](){ result = m_actual; } );
+        AcquireSRWLockExclusive( & m_srwlData );
+        result = m_actual;
+        ReleaseSRWLockExclusive( & m_srwlData );
         return move(result);
     }
-
-    bool const TargetReached() { return m_bTargetReached; }
 
     void SetNrOfSteps( unsigned int const uiNrOfSteps )
     {
@@ -80,42 +71,47 @@ private:
     SmoothMoveFp<float> m_smoothMove;
     APP_PROC const      m_appProc;
     DWORD    const      m_dwFlags;
-    SRWLOCK             m_srwl           { SRWLOCK_INIT };
+    SRWLOCK             m_srwlData       { SRWLOCK_INIT };
     TP_TIMER          * m_pTpTimer       { nullptr };
     unsigned int        m_uiMsPeriod     { 50 };
     unsigned int        m_uiNrOfSteps    { 20 };
     HWND                m_hwnd           { nullptr };
     bool                m_bTargetReached { false };
 
-    void protect( function<void()> func )
-    {
-        AcquireSRWLockExclusive( & m_srwl );
-        (func)();
-        ReleaseSRWLockExclusive( & m_srwl );
-    }
-
-    void setActual( ANIM_PAR const newVal )
-    {
-        protect( [&](){ m_actual = newVal; } );
-    }
-
     void next() // runs in animation thread
     {
+//        AcquireSRWLockExclusive( & m_srwlData );
         if ( ! m_bTargetReached )
         {
             m_bTargetReached = m_smoothMove.Next();
-            setActual(m_start + m_distance * m_smoothMove.GetPos());
-            if (m_appProc)
-                (m_appProc)(m_bTargetReached);
+            m_actual = m_start + m_distance * m_smoothMove.GetPos();
             if ( m_bTargetReached )
             {
                 if ( m_dwFlags & ANIMATION_RECURRING )
-                    setActual(m_start);
+                    m_actual = m_start;
                 else 
-                    Stop();
+                    stopTimer();
             }
+            if (m_appProc)
+                (m_appProc)(m_bTargetReached);
         }
+//        ReleaseSRWLockExclusive( & m_srwlData );
     }
+
+    void startTimer()  // runs in UI thread
+    {
+        FILETIME fileTime { m_uiMsPeriod, 0 };
+        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
+        SetThreadpoolTimer( m_pTpTimer, &fileTime, m_uiMsPeriod, 50L );
+    }
+
+    void stopTimer()  // runs in animation thread
+    { 
+        SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
+//        WaitForThreadpoolTimerCallbacks( m_pTpTimer, true );
+        CloseThreadpoolTimer( m_pTpTimer );
+        m_pTpTimer = nullptr;
+    } 
 
     static void CALLBACK timerProc(PTP_CALLBACK_INSTANCE i, PVOID pContext, PTP_TIMER p)
     {

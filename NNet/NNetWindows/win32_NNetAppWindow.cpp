@@ -298,11 +298,11 @@ bool NNetAppWindow::UserProc
 	LPARAM const lParam 
 )
 {
-	switch ( message )
+	switch (message)
 	{
 
 	case WM_ENTERMENULOOP:
-		if ( wParam == false )
+		if (wParam == false)
 			m_appMenu.Notify( true );
 		break;
 
@@ -311,18 +311,18 @@ bool NNetAppWindow::UserProc
 		break;
 
 	case WM_CHAR:
-		m_mainNNetWindow.OnChar( wParam, lParam );
+		m_mainNNetWindow.OnChar(wParam, lParam);
 		return true;  
 
 	case WM_DESTROY:
-		PostQuitMessage( 0 );
+		PostQuitMessage(0);
 		break;
 
 	default:
 		break;
 	}
 
-	return BaseWindow::UserProc( message, wParam, lParam );
+	return BaseWindow::UserProc(message, wParam, lParam);
 }
 
 void NNetAppWindow::configureStatusBar()

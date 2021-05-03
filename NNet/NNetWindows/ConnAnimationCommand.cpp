@@ -24,12 +24,12 @@ ConnAnimationCommand::ConnAnimationCommand
     m_winCommands(cmds),
     m_callable(win.GetWindowHandle())
 {
-    m_pShapeList = & m_winCommands.GetNMWI().GetUPShapes();
+    m_pModelShapes = & m_winCommands.GetNMWI().GetUPShapes();
     ShapeType const shapeType { determineShapeType() };
     if ( shapeType.IsUndefinedType() )
         return;
     
-    m_shapesAnimated = ShapePtrList<ConnNeuron>(m_pShapeList->GetAllSelected<ConnNeuron>(shapeType));
+    m_shapesAnimated = ShapePtrList<ConnNeuron>(m_pModelShapes->GetAllSelected<ConnNeuron>(shapeType));
 
     m_line.Set2Null();
     m_line = m_shapesAnimated.CalcMaxDistLine();
@@ -37,21 +37,19 @@ ConnAnimationCommand::ConnAnimationCommand
         return;
 
     m_shapesAnimated.SortAccToDistFromLine( m_line.OrthoLine() );
-    m_umPntVectorOriginal = MicroMeterPointVector( m_shapesAnimated );
-    m_upConnector         = make_unique<Connector>( m_shapesAnimated );
-    m_radianTarget        = Vector2Radian(CalcOrthoVector(m_line, m_shapesAnimated));
-
+    m_upConnector  = make_unique<Connector>( m_shapesAnimated );
+    m_radianTarget = Vector2Radian(CalcOrthoVector(m_line, m_shapesAnimated));
 }
 
 ShapeType const ConnAnimationCommand::determineShapeType() const
 {
-    unsigned int uiNrOfConnectors { m_pShapeList->CountInSelection( ShapeType::Value::connector ) };
+    unsigned int uiNrOfConnectors { m_pModelShapes->CountInSelection( ShapeType::Value::connector ) };
 
     if ( uiNrOfConnectors > 0 )
         return ShapeType::Value::undefined;
 
-    unsigned int uiNrOfInputNeurons  { m_pShapeList->CountInSelection( ShapeType::Value::inputNeuron  ) };
-    unsigned int uiNrOfOutputNeurons { m_pShapeList->CountInSelection( ShapeType::Value::outputNeuron ) };
+    unsigned int uiNrOfInputNeurons  { m_pModelShapes->CountInSelection( ShapeType::Value::inputNeuron  ) };
+    unsigned int uiNrOfOutputNeurons { m_pModelShapes->CountInSelection( ShapeType::Value::outputNeuron ) };
 
     if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
         return ShapeType::Value::undefined;
@@ -76,37 +74,48 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
     MicroMeterPointVector umPntVectorStart  = MicroMeterPointVector( m_shapesAnimated );
     MicroMeterPointVector umPntVectorTarget = MicroMeterPointVector( m_shapesAnimated );
 
+    int iPhase { m_iPhase };
+
     if (m_mode == Mode::mode_do)
     {
-        switch (m_iPhase)
-        {
-        case 1:  umPntVectorTarget.Align(m_line);
-                 m_umPntVectorAligned = umPntVectorTarget;     break;
-        case 2:	 umPntVectorTarget.SetDir(m_radianTarget);     break;
-        case 3:  umPntVectorTarget.Pack(NEURON_RADIUS * 1.8f); break;
-        case 4:	 m_upConnector->SetParentPointers();
-                 m_pShapeList->Push( move(m_upConnector) );
-                 m_iPhase = 0;
-                 return;  // do not start animation
-        default: return;
-        }
+        wcout << L"mode_do phase " << iPhase << endl;
         ++m_iPhase;
+        switch (iPhase)
+        {
+        case 1:  blockUI();
+                 m_umPntVectorOriginal = umPntVectorTarget;
+                 umPntVectorTarget.Align(m_line);
+                 m_umPntVectorTarget1 = umPntVectorTarget;
+                 break;
+        case 2:	 umPntVectorTarget.SetDir(m_radianTarget);    
+                 m_umPntVectorTarget2 = umPntVectorTarget;     
+                 break;
+        case 3:  umPntVectorTarget.Pack(NEURON_RADIUS * 1.8f);
+                 break;
+        case 4:	 m_upConnector->SetParentPointers();
+                 m_pModelShapes->Push( move(m_upConnector) );
+                 unblockUI();
+                 [[fallthrough]]; 
+        default: return;        // do not start animation
+        }
     }
     else
     {
-        switch (m_iPhase)
-        {
-        case 1:	 umPntVectorTarget = m_umPntVectorOriginal;       break;
-        case 2:	 umPntVectorTarget.SetDir(m_umPntVectorOriginal); break;
-        case 3:	 umPntVectorTarget.SetPos(m_umPntVectorAligned);  break;
-        case 4:	 m_upConnector = m_pShapeList->Pop<Connector>();
-                 m_upConnector->ClearParentPointers();
-                 m_iPhase = 3;
-                 nextAnimationPhase();
-                 return;  // do not start animation
-        default: return;
-        }
+        wcout << L"mode_undo phase " << iPhase << endl;
         --m_iPhase;
+        switch (iPhase)
+        {
+        case 4:	 blockUI();
+                 m_upConnector = m_pModelShapes->Pop<Connector>();
+                 m_upConnector->ClearParentPointers();
+                 [[fallthrough]]; 
+        case 3:	 umPntVectorTarget = m_umPntVectorTarget2;  break;
+        case 2:	 umPntVectorTarget = m_umPntVectorTarget1;  break;
+        case 1:	 umPntVectorTarget = m_umPntVectorOriginal; break;
+        case 0:  unblockUI();
+                 [[fallthrough]]; 
+        default: return;                // do not start animation
+        }
     }
     m_connAnimation.SetNrOfSteps( calcNrOfSteps(umPntVectorStart, umPntVectorTarget) );
     m_connAnimation.Start(umPntVectorStart, umPntVectorTarget);

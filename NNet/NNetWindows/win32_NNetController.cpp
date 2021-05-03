@@ -90,13 +90,20 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
     {
         FatalError::Happened( static_cast<long>(lParam), "unknown" );
     }
+    else if ( wmId == IDM_BLOCK_UI )
+    {
+        m_bBlockedUI = (lParam != 0);
+    }
 
     if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
         return true;                        // but do not concern the model  
 
-    m_pComputeThread->LockComputation();
-    bRes = processModelCommand( wmId, lParam, umPoint );
-    m_pComputeThread->ReleaseComputationLock();
+    if ( ! m_bBlockedUI )
+    {
+        m_pComputeThread->LockComputation();
+        bRes = processModelCommand( wmId, lParam, umPoint );
+        m_pComputeThread->ReleaseComputationLock();
+    }
 
     return bRes;
 }

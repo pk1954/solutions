@@ -61,6 +61,7 @@ private:
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
 	bool                       m_bTrace                 { true };
+	bool                       m_bBlockedUI             { false };
 	HCURSOR                    m_hCrsrWait              { nullptr };
 	Sound                    * m_pSound                 { nullptr };
 	NNetModelExporter        * m_pModelExporter         { nullptr };

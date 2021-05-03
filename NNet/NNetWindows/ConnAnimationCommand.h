@@ -40,7 +40,7 @@ private:
     };
     
     Mode                             m_mode { Mode::mode_do };
-    UPShapeList                    * m_pShapeList;
+    UPShapeList                    * m_pModelShapes;
     WinCommands                    & m_winCommands;
     RootWindow                     & m_win;
     Radian                           m_radianTarget;
@@ -49,7 +49,8 @@ private:
     unique_ptr<Connector>            m_upConnector {};  
     MicroMeterLine                   m_line { MicroMeterLine::NULL_VAL() };
     MicroMeterPointVector            m_umPntVectorOriginal;
-    MicroMeterPointVector            m_umPntVectorAligned;
+    MicroMeterPointVector            m_umPntVectorTarget1;
+    MicroMeterPointVector            m_umPntVectorTarget2;
     ShapePtrList<ConnNeuron>         m_shapesAnimated {};
     Animation<MicroMeterPointVector> m_connAnimation 
     {
@@ -64,9 +65,10 @@ private:
         )
     };
 
-
     ShapeType    const determineShapeType() const;
     unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
     void               nextAnimationPhase();
     void               updateUI();
+    void               blockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true); };
+    void               unblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
 };
