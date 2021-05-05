@@ -247,7 +247,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_CONNECT:
-        m_pModelCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetTargetShapeId() );
+        m_pWinCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetTargetShapeId(), * m_pMainWindow );
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         break;
 

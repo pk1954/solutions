@@ -146,4 +146,10 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 			textBuf.nextLine();
 		}
 	}
+	if ( type.IsConnectorType() )
+	{
+		textBuf.AlignRight(); textBuf.printString( L"direction: " );
+		textBuf.AlignLeft();  printDegrees( textBuf, m_pNMRI->GetDirection( id ) );
+		textBuf.nextLine();
+	}
 }

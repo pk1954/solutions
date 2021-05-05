@@ -51,17 +51,6 @@ public:
     }
 };
 
-class WrapConnect: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        ShapeId const idSrc { ScrReadShapeId( script ) };
-        ShapeId const idDst { ScrReadShapeId( script ) };
-        m_pCommands->Connect( idSrc, idDst );
-    }
-};
-
 class WrapAppendInputNeuron: public Script_Functor
 {
 public:
@@ -377,7 +366,6 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(AddOutgoing2Knot);   
     DEF_FUNC(AddOutgoing2Pipe);   
     DEF_FUNC(ClearBeepers);       
-    DEF_FUNC(Connect);
     DEF_FUNC(CopySelection);      
     DEF_FUNC(CreateInitialShapes);
     DEF_FUNC(DeleteSelection);    

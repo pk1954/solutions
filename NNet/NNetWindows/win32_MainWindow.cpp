@@ -520,10 +520,6 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 		m_pWinCommands->MakeConnector(*this);
 		break;
 
-	case IDM_CONNECT_CONNECTOR:
-		m_pWinCommands->ConnectConnector(*this);
-		break;
-
 	default:
 		break;
 	}

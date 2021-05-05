@@ -6,6 +6,7 @@
 
 #include "BoolOp.h"
 #include "MoreTypes.h"
+#include "MicroMeterPosDir.h"
 #include "ShapeType.h"
 #include "UPShapeList.h"
 #include "ShapePtrList.h"
@@ -16,7 +17,7 @@ class Connector: public Shape
 public:
 
 	static bool      const TypeFits( ShapeType const type ) { return type.IsConnectorType(); }
-	static ShapeType const GetShapeType() { return ShapeType::Value::connector; }
+	static ShapeType const GetShapeType()                   { return ShapeType::Value::connector; }
 
 	Connector();
 	Connector(ShapePtrList<ConnNeuron> const &);
@@ -42,11 +43,11 @@ public:
 	virtual void       Clear       ();
 	virtual void       Link        (Shape const &, function<Shape * (Shape const *)> const &);
 
-	void Push(Shape * const p) { m_list.Add(p); }
+	void Push(ConnNeuron * const p) { m_list.Add(p); }
 
-	Shape * const Pop() 
+	ConnNeuron * const Pop() 
 	{ 
-		Shape * pRet { & m_list.GetLast() };
+		ConnNeuron * pRet { & m_list.GetLast() };
 		m_list.RemoveLast();
 		return pRet;
 	}
@@ -57,17 +58,24 @@ public:
 	void ClearParentPointers();
 	void AlignDirection();
 
-	void Rotate(MicroMeterPoint const &, Radian const);
+//	void Rotate(MicroMeterPoint const &, Radian const);
 	void Rotate(MicroMeterPoint const &, MicroMeterPoint const &);
 
-	void Apply2All(function<void(Shape const &)> const & func) const;
+	MicroMeterPosDir const GetPosDir() const;
+	Radian           const GetDir()    const;
+
+	void SetDir   (Radian           const  );
+	void SetPos   (MicroMeterPoint  const &);
+	void SetPosDir(MicroMeterPosDir const &);
+
+	void Apply2All(function<void(ConnNeuron const &)> const & func) const;
 
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
 private:
-	ShapePtrList<Shape> m_list {};
+	ShapePtrList<ConnNeuron> m_list {};
 };
 
 Connector const * Cast2Connector( Shape const * );

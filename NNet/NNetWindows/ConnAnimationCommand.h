@@ -14,7 +14,6 @@
 
 class NNetModelWriterInterface;
 class NNetModelCommands;
-class ConnAnimationCommand;
 class WinCommands;
 class RootWindow;
 
@@ -46,7 +45,7 @@ private:
     int                              m_iPhase { 0 };
     Callable                         m_callable;
     unique_ptr<Connector>            m_upConnector {};  
-    MicroMeterPointVector            m_umPntVectorOriginal;  // befor animation
+    MicroMeterPointVector            m_umPntVectorOriginal;  // before animation
     MicroMeterPointVector            m_umPntVectorTarget1;   // after position alignment
     MicroMeterPointVector            m_umPntVectorTarget2;   // after direction alignment
     MicroMeterPointVector            m_umPntVectorTarget3;   // after packing

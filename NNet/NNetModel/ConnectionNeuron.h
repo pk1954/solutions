@@ -27,9 +27,14 @@ public:
 
 	virtual void RotateShape(MicroMeterPoint const &, Radian const);
 
+	void SetDir(Radian const radian)
+	{
+		m_radDirection = radian;
+	}
+
 	void SetDirVector(MicroMeterPoint const umVector)
 	{
-		m_radDirection = Vector2Radian(umVector);
+		SetDir(Vector2Radian(umVector));
 	}
 
 	MicroMeterPoint const GetDirVector() const

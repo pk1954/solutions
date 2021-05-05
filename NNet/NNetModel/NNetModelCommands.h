@@ -56,7 +56,6 @@ public:
     void AppendInputNeuron   ( ShapeId const );
     void AppendNeuron        ( ShapeId const );
     void ClearBeepers        ();
-    void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ();
     void CreateInitialShapes ();
     void DeleteSelection     ();

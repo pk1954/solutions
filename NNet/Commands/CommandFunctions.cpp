@@ -3,8 +3,6 @@
 // Commands
 
 #include "stdafx.h"
-#include "Connect2PipeCommand.h"
-#include "Connect2BaseKnotCommand.h"
 #include "DeletePipeCommand.h"
 #include "DisconnectConnectorCommand.h"
 #include "DisconnectBaseKnotCommand.h"
@@ -36,17 +34,5 @@ unique_ptr<Command> MakeDisconnectCommand(Shape const & shape)
 		upCmd = make_unique<DisconnectConnectorCommand>(id, false);
 	else 
 		upCmd = make_unique<DisconnectBaseKnotCommand>(id, false);
-	return move(upCmd);
-}
-
-unique_ptr<Command> MakeConnectCommand(BaseKnot & baseKnotSrc, Shape & shapeDst)
-{
-	unique_ptr<Command> upCmd;
-	if (shapeDst.IsPipe()) 
-		upCmd = make_unique<Connect2PipeCommand>(&baseKnotSrc, static_cast<Pipe *>(&shapeDst) );
-	else if (shapeDst.IsBaseKnot()) 
-		upCmd = make_unique<Connect2BaseKnotCommand>(&baseKnotSrc, static_cast<BaseKnot *>(&shapeDst));
-	else 
-		assert( false );
 	return move(upCmd);
 }

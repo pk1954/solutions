@@ -39,7 +39,8 @@ public:
 	size_t          const GetNrOfIncomingConnections( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
-			        
+	Degrees         const GetDirection              ( ShapeId const ) const; 
+
 	UPShapeList     const & GetUPShapes()                          const { return m_pModel->GetUPShapes(); }
 	bool            const   AnyShapesSelected()                    const { return m_pModel->GetUPShapes().AnyShapesSelected(); }
 	bool            const   IsValidShapeId( ShapeId const id )     const { return m_pModel->GetUPShapes().IsValidShapeId(id); }

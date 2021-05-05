@@ -1,6 +1,8 @@
 // win32_Commands.h
 //
 // NNetWindows
+//
+// Handle commands with animations
 
 #pragma once
 
@@ -11,8 +13,9 @@ class Command;
 class CommandStack;
 class ShapeIdList;
 class NNetModelCommands;
+class NNetModelReaderInterface;
 class NNetModelWriterInterface;
-class RootWindow;
+class MainWindow;
 
 using std::wcout;
 using std::wostream;
@@ -25,11 +28,12 @@ public:
     ( 
         CommandStack             * const, 
         NNetModelCommands        * const,
+        NNetModelReaderInterface * const,
         NNetModelWriterInterface * const
     );
 
-    void MakeConnector   (RootWindow &);
-    void ConnectConnector(RootWindow &);
+    void Connect      (ShapeId const, ShapeId const, MainWindow &);
+    void MakeConnector(RootWindow &);
 
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
 
@@ -41,5 +45,6 @@ private:
     bool                       m_bTrace    { true };
     CommandStack             * m_pCmdStack { nullptr };
     NNetModelCommands        * m_pCommands { nullptr };
+    NNetModelReaderInterface * m_pNMRI     { nullptr };
     NNetModelWriterInterface * m_pNMWI     { nullptr };
 };

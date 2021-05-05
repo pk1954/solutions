@@ -6,6 +6,7 @@
 #include "Shape.h"
 #include "DrawContext.h"
 #include "NNetModel.h"
+#include "Connector.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
 #include "NNetModelReaderInterface.h"
@@ -20,6 +21,12 @@ ShapeType const NNetModelReaderInterface::GetShapeType( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
 	return p ? p->GetShapeType() : ShapeType::Value::undefined; 
+}
+
+Degrees const NNetModelReaderInterface::GetDirection( ShapeId const id ) const 
+{ 
+	auto p { m_pModel->GetShapeConstPtr<Connector const *>(id) };
+	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
 fHertz const NNetModelReaderInterface::GetPulseFrequency( ShapeId const id ) const 

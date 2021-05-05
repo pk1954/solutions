@@ -81,16 +81,12 @@ void ConnAnimationCommand::updateUI()  // runs in animation thread
 
 void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
 {
-    MicroMeterPointVector umPntVectorStart  = MicroMeterPointVector( m_shapesAnimated );
+    MicroMeterPointVector umPntVectorStart { MicroMeterPointVector( m_shapesAnimated ) };
     MicroMeterPointVector umPntVectorTarget;
-
-    int iPhase { m_iPhase };
 
     if (m_mode == Mode::mode_do)
     {
-        wcout << L"mode_do phase " << iPhase << endl;
-        ++m_iPhase;
-        switch (iPhase)
+        switch (m_iPhase++)
         {
         case 1:  blockUI();
                  umPntVectorTarget = m_umPntVectorTarget1; break;
@@ -105,9 +101,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
     }
     else
     {
-        wcout << L"mode_undo phase " << iPhase << endl;
-        --m_iPhase;
-        switch (iPhase)
+        switch (m_iPhase--)
         {
         case 4:	 blockUI();
                  m_upConnector = m_pModelShapes->Pop<Connector>();

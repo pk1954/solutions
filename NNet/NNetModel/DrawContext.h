@@ -65,7 +65,7 @@ public:
 	bool Zoom          ( MicroMeter      const s ) { return m_coord.Zoom   ( s ); }
 	void Center        ( MicroMeterPoint const u, fPixelPoint const f ) { m_coord.Center( u, f ); }
 
-	template <typename T> void Move(T const d) { m_coord.Move(d); }
+	void Move(auto const d) { m_coord.Move(d); }
 
 	void SetNoColors( bool const bMode ) { m_bNoColors = bMode; }
 

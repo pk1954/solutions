@@ -44,4 +44,12 @@ private:
 		textBuf.nextLine();
 	}
 
+	template <typename T> void printDegrees( TextBuffer & textBuf, T const degrees )
+	{
+		wostringstream wBuffer;
+		wBuffer << degrees.GetValue() << L"°";
+		textBuf.printString( wBuffer.str() );
+		textBuf.nextLine();
+	}
+
 };

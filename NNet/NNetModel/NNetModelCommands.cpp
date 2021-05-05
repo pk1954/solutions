@@ -154,40 +154,6 @@ void NNetModelCommands::DeleteSelection()
 	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>() );
 }
 
-void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
-{
-	if ( IsTraceOn() )
-		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
-	Shape & shapeDst { * m_pNMWI->GetShapePtr<Shape *>(idDst) };
-
-	if (shapeDst.IsPipe())
-		m_pCmdStack->PushCommand
-		(
-			MakeConnectCommand
-			(
-				* m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
-				shapeDst
-			) 
-		);
-	else if (shapeDst.IsBaseKnot())
-		m_pCmdStack->PushCommand
-		(
-			MakeConnectCommand
-			(
-				* m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
-				shapeDst
-			) 
-		);
-	else if ( shapeDst.IsConnector( ) )
-	{
-
-	}
-	else
-	{ 
-		assert(false);
-	}
-}
-
 void NNetModelCommands::Disconnect( ShapeId const id )
 {
 	unique_ptr<Command> pCmd;

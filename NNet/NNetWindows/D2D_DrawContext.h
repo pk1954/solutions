@@ -84,8 +84,6 @@ public:
 	virtual void FillRectangle ( MicroMeterRect const &, D2D1::ColorF ) const; 
 	virtual void DrawTranspRect( MicroMeterRect const &, D2D1::ColorF ) const; 
 
-	void SetPixelSize( MicroMeter const ); 
-
 	virtual void DisplayText
 	(
 		MicroMeterRect      const &,

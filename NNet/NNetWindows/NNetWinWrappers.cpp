@@ -35,11 +35,27 @@ public:
     }
 };
 
-void DefineNNetWinWrappers( MainWindow * const pMainWindow, WinCommands * const pWinCommands )
+class WrapConnect: public Script_Functor
 {
-    m_pMainWindow = pMainWindow;
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        ShapeId const idSrc { ScrReadShapeId( script ) };
+        ShapeId const idDst { ScrReadShapeId( script ) };
+        m_pWinCommands->Connect( idSrc, idDst, * m_pMainWindow );
+    }
+};
+
+void DefineNNetWinWrappers
+( 
+    MainWindow  * const pMainWindow, 
+    WinCommands * const pWinCommands
+)
+{
+    m_pMainWindow  = pMainWindow;
     m_pWinCommands = pWinCommands;
 
+    DEF_FUNC( Connect );
     DEF_FUNC( SetPixelOffset );
     DEF_FUNC( SetPixelSize );
 
