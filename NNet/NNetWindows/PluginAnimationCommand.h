@@ -8,6 +8,7 @@
 #include "MoreTypes.h"
 #include "Command.h"
 #include "Connector.h"
+#include "ClosedConnector.h"
 #include "ShapePtrList.h"
 #include "win32_mainWindow.h"
 #include "win32_callable.h"
@@ -52,6 +53,7 @@ private:
     Connector                 & m_connAnimated;
     array<MicroMeterPosDir,3>   m_umPosDirTarget;  
     Connector                   m_connectorAnimated {};
+    unique_ptr<ClosedConnector> m_upClosedConnector {};
     Animation<MicroMeterPosDir> m_pluginAnimation 
     {
         Animation<MicroMeterPosDir>

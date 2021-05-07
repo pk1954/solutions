@@ -20,6 +20,7 @@ public:
 	enum class Value
 	{
 		connector,
+		closedConnector,
 		inputNeuron,
 		outputNeuron,
 		neuron,
@@ -64,14 +65,15 @@ public:
 	static wstring          const GetName( ShapeType::Value const );
 	static ShapeType::Value const GetTypeFromName( wstring const & );
 
-	bool const IsPipeType        () const { return m_value == Value::pipe;         }
-	bool const IsDefinedType     () const { return m_value != Value::undefined;    }
-	bool const IsUndefinedType   () const { return m_value == Value::undefined;    }
-	bool const IsKnotType        () const { return m_value == Value::knot;         }
-	bool const IsNeuronType      () const { return m_value == Value::neuron;       }
-	bool const IsInputNeuronType () const { return m_value == Value::inputNeuron;  }
-	bool const IsOutputNeuronType() const { return m_value == Value::outputNeuron; }
-	bool const IsConnectorType   () const { return m_value == Value::connector;    }
+	bool const IsPipeType           () const { return m_value == Value::pipe;            }
+	bool const IsDefinedType        () const { return m_value != Value::undefined;       }
+	bool const IsUndefinedType      () const { return m_value == Value::undefined;       }
+	bool const IsKnotType           () const { return m_value == Value::knot;            }
+	bool const IsNeuronType         () const { return m_value == Value::neuron;          }
+	bool const IsInputNeuronType    () const { return m_value == Value::inputNeuron;     }
+	bool const IsOutputNeuronType   () const { return m_value == Value::outputNeuron;    }
+	bool const IsConnectorType      () const { return m_value == Value::connector;       }
+	bool const IsClosedConnectorType() const { return m_value == Value::closedConnector; }
 
 	bool const IsConnNeuronType() const
 	{

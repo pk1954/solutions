@@ -93,7 +93,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 2:	 umPntVectorTarget = m_umPntVectorTarget2; break;
         case 3:  umPntVectorTarget = m_umPntVectorTarget3; break;
         case 4:	 m_upConnector->SetParentPointers();
-                 m_pModelShapes->Push( move(m_upConnector) );
+                 m_pModelShapes->Push(move(m_upConnector));
                  unblockUI();
                  [[fallthrough]]; 
         default: return;        // do not start animation

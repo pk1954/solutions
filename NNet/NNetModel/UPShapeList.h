@@ -231,7 +231,7 @@ private:
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
 	void copy      ( UPShapeList const & );
-	void checkShape( Shape const & ) const;
+//	void checkShape( Shape const & ) const;
 };
 
 UPShape ShallowCopy(Shape const &);

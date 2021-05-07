@@ -3,6 +3,7 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include <unordered_map>
 #include "MoreTypes.h"
 #include "Resource.h"
 #include "Signal.h"
@@ -18,6 +19,7 @@
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
+using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
 
@@ -83,63 +85,105 @@ void MainWindow::Reset()
 	setNoTarget(); 
 }
 
+void appendMenu(HMENU const hPopupMenu, int const idCommand)
+{
+	static unordered_map <int, LPCWSTR const> mapCommands =
+	{
+		{ IDD_ADD_INCOMING2KNOT,   L"Add incoming dendrite"                 },
+		{ IDD_ADD_INCOMING2PIPE,   L"Add incoming dendrite"                 },
+		{ IDD_ADD_OUTGOING2KNOT,   L"Add outgoing dendrite"                 },
+		{ IDD_ADD_OUTGOING2PIPE,   L"Add outgoing dendrite"                 },
+		{ IDD_ADD_SIGNAL,          L"New EEG sensor" 					    },
+		{ IDM_ALIGN_SHAPES,        L"Align selected objects"                },
+		{ IDD_APPEND_INPUT_NEURON, L"Add input neuron"                      },
+		{ IDD_APPEND_NEURON,       L"Add neuron"                            },
+		{ IDD_ARROWS_OFF,          L"Arrows off"                            },
+		{ IDD_ARROWS_ON,           L"Arrows on"                             },
+		{ IDM_CLEAR_BEEPERS,       L"Clear selected trigger sounds"         },
+		{ IDM_COPY_SELECTION,      L"Copy selection"                        },
+		{ IDM_DELETE_SELECTION,    L"Delete selected objects"               },
+		{ IDD_DELETE_SHAPE,        L"Delete"                                },
+		{ IDM_DESELECT_ALL,        L"Deselect all"                          },
+		{ IDM_DESELECT_SHAPE,      L"Deselect"                              },
+		{ IDD_DISCONNECT,          L"Disconnect"                            },
+		{ IDD_INSERT_KNOT,         L"Insert knot"                           },
+		{ IDD_INSERT_NEURON,       L"Insert neuron"                         },
+		{ IDM_MAKE_CONNECTOR,      L"Make connector"                        },
+		{ IDD_NEW_INPUT_NEURON,    L"New input neuron" 					    },
+		{ IDD_NEW_NEURON,          L"New neuron"                            },
+		{ IDD_NEW_OUTPUT_NEURON,   L"New output neuron"					    },
+		{ IDD_PULSE_RATE,          L"Pulse rate"                            },
+		{ IDM_SELECT_ALL_BEEPERS,  L"Select all neurons with trigger sound" }, 
+		{ IDM_SELECT_SHAPE,        L"Select"                                },
+		{ IDM_SELECT_SUBTREE,      L"Select subtree"                        },
+		{ IDD_STOP_ON_TRIGGER,     L"Stop on trigger on/off"                },
+		{ IDD_TRIGGER_SOUND_DLG,   L"Trigger sound"                         }
+	};
+	AppendMenu( hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand) );
+}
+
 long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	if ( m_pNMRI->AnyShapesSelected() )
 	{
-		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_MAKE_CONNECTOR,   L"Make connector" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_ALIGN_SHAPES,     L"Align selected objects" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
+		appendMenu( hPopupMenu, IDM_DESELECT_ALL     );
+		appendMenu( hPopupMenu, IDM_COPY_SELECTION   );
+		appendMenu( hPopupMenu, IDM_DELETE_SELECTION );
+		appendMenu( hPopupMenu, IDM_MAKE_CONNECTOR   );
+		appendMenu( hPopupMenu, IDM_ALIGN_SHAPES     );
+		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS    );
 	}
 	else if ( IsUndefined(m_shapeHighlighted) )  // no shape selected, cursor on background
 	{
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_NEURON,         L"New neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_OUTPUT_NEURON,  L"New output neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_SIGNAL,         L"New EEG sensor" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
+		appendMenu( hPopupMenu, IDD_NEW_NEURON         );
+		appendMenu( hPopupMenu, IDD_NEW_INPUT_NEURON   );
+		appendMenu( hPopupMenu, IDD_NEW_OUTPUT_NEURON  );
+		appendMenu( hPopupMenu, IDD_ADD_SIGNAL         );
+		appendMenu( hPopupMenu, IDM_SELECT_ALL_BEEPERS );
+		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS      );
 	}
 	else switch ( m_pNMRI->GetShapeType( m_shapeHighlighted ).GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
 		if ( ! m_pNMRI->HasOutgoing( m_shapeHighlighted ) )
-			AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_PULSE_RATE,            L"Pulse rate" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
+			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
+		appendMenu( hPopupMenu, IDD_PULSE_RATE );         
+		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );
+		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
 	case ShapeType::Value::outputNeuron:
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
+		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
+		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );   
+		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
+		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );   
 		break;
 
 	case ShapeType::Value::neuron:
 		if ( ! m_pNMRI->HasOutgoing( m_shapeHighlighted ) )
-			AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SUBTREE,        L"Select subtree" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
+			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
+		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
+		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );   
+		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
+		appendMenu( hPopupMenu, IDM_SELECT_SUBTREE );   
+		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );      
 		break;
 
 	case ShapeType::Value::connector:
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
+		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );     
+		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		break;
+
+	case ShapeType::Value::closedConnector:
+		//appendMenu( hPopupMenu, IDD_DELETE_SHAPE );     
+		//appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
 	case ShapeType::Value::knot:  
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
+		appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
+		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
 		if ( 
 			  (! m_pNMRI->HasOutgoing( m_shapeHighlighted )) || 
 			  (
@@ -147,25 +191,25 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 				 ( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
 			  ) 
 		   )
-		   AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_NEURON, L"Add neuron" );
+		   appendMenu( hPopupMenu, IDD_APPEND_NEURON );
 		if ( 
 			  ( ! m_pNMRI->HasIncoming( m_shapeHighlighted ) ) &&
 			  ( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )
 		   )
-		   AppendMenu( hPopupMenu, MF_STRING, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT, L"Disconnect" );
+		   appendMenu( hPopupMenu, IDD_APPEND_INPUT_NEURON );
+		appendMenu( hPopupMenu, IDD_DISCONNECT );
 		break;
 
 	case ShapeType::Value::pipe:
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_OUTGOING2PIPE, L"Add outgoing dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2PIPE, L"Add incoming dendrite" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_INSERT_NEURON,     L"Insert neuron" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_INSERT_KNOT,       L"Insert knot" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,      L"Delete" );
+		appendMenu( hPopupMenu, IDD_ADD_OUTGOING2PIPE );
+		appendMenu( hPopupMenu, IDD_ADD_INCOMING2PIPE );
+		appendMenu( hPopupMenu, IDD_INSERT_NEURON );
+		appendMenu( hPopupMenu, IDD_INSERT_KNOT );   
+		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );     
 		if ( ArrowsVisible() )
-			AppendMenu( hPopupMenu, MF_STRING, IDD_ARROWS_OFF,    L"Arrows off" );
+			appendMenu( hPopupMenu, IDD_ARROWS_OFF );    
 		else
-			AppendMenu( hPopupMenu, MF_STRING, IDD_ARROWS_ON,     L"Arrows on" );
+			appendMenu( hPopupMenu, IDD_ARROWS_ON );  
 		break;
 
 	default:
@@ -175,9 +219,9 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	if ( IsDefined(m_shapeHighlighted) )
 	{
 		if ( m_pNMRI->IsSelected( m_shapeHighlighted ) )
-			AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_SHAPE, L"Deselect" );
+			appendMenu( hPopupMenu, IDM_DESELECT_SHAPE );
 		else
-			AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SHAPE, L"Select" );
+			appendMenu( hPopupMenu, IDM_SELECT_SHAPE );
 	}	
 
 	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand

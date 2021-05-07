@@ -30,7 +30,6 @@ PluginAnimationCommand::PluginAnimationCommand
 {
     m_pModelShapes = &m_NMWI.GetUPShapes();
 
-
     Radian          const radianTarget { m_connTarget.GetDir() };
     MicroMeterPoint const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
     
@@ -44,6 +43,8 @@ PluginAnimationCommand::PluginAnimationCommand
         MicroMeterPoint const umPosTarget { m_connTarget.GetPos() - umPosOffset };
         m_umPosDirTarget[i] = MicroMeterPosDir( umPosTarget, radianTarget );
     }
+
+    m_upClosedConnector = make_unique<ClosedConnector>(m_connTarget, m_connAnimated);
 }
 
 void PluginAnimationCommand::updateUI()  // runs in animation thread
@@ -64,7 +65,9 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 1:  blockUI();
                  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
-        case 3:  unblockUI();
+        case 3:  m_upClosedConnector->SetParentPointers();
+                 m_pModelShapes->Push(move(m_upClosedConnector));
+        case 4:  unblockUI();
                  [[fallthrough]]; 
         default: return;        // do not start animation
         }
@@ -73,8 +76,11 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
     {
         switch (m_iPhase--)
         {
-        case 2:  blockUI();	 
-                 umPosDirTarget = m_umPosDirTarget[1];  break;
+        case 3:  blockUI();
+                 m_upClosedConnector = m_pModelShapes->Pop<ClosedConnector>();
+                 m_upClosedConnector->ClearParentPointers();
+                 break;
+        case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
         case 0:  unblockUI();
                  [[fallthrough]]; 
@@ -96,7 +102,7 @@ void PluginAnimationCommand::Do( NNetModelWriterInterface& nmwi )
 void PluginAnimationCommand::Undo( NNetModelWriterInterface& nmwi )
 {
     m_mode = Mode::mode_undo;
-    m_iPhase = 2;
+    m_iPhase = 3;
     nextAnimationPhase();
 }
 

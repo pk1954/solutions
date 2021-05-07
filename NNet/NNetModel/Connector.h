@@ -16,8 +16,8 @@ class Connector: public Shape
 {
 public:
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsConnectorType(); }
-	static ShapeType const GetShapeType()                   { return ShapeType::Value::connector; }
+	static bool      const TypeFits(ShapeType const type) { return type.IsConnectorType(); }
+	static ShapeType const GetShapeType()                 { return ShapeType::Value::connector; }
 
 	Connector();
 	Connector(ShapePtrList<ConnNeuron> const &);
@@ -52,13 +52,15 @@ public:
 		return pRet;
 	}
 
+	bool const IsInputConnector () const { return m_list.GetFirst().IsInputNeuron (); }
+	bool const IsOutputConnector() const { return m_list.GetFirst().IsOutputNeuron(); }
+
 	size_t const Size() const { return m_list.Size(); }
 
 	void SetParentPointers();
 	void ClearParentPointers();
 	void AlignDirection();
 
-//	void Rotate(MicroMeterPoint const &, Radian const);
 	void Rotate(MicroMeterPoint const &, MicroMeterPoint const &);
 
 	MicroMeterPosDir const GetPosDir() const;
