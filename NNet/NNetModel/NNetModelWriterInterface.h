@@ -32,9 +32,10 @@ public:
     void          ToggleStopOnTrigger(ShapeId const);
     Shape * const GetShape(ShapeId const);
 
-    UPShapeList & GetUPShapes()    { return m_pModel->GetUPShapes(); }
-    Param       & GetParams()      { return m_pModel->GetParams(); }
-    MonitorData & GetMonitorData() { return m_pModel->GetMonitorData(); }
+    UPShapeList       & GetUPShapes()    { return m_pModel->GetUPShapes(); }
+    Param             & GetParams()      { return m_pModel->GetParams(); }
+    MonitorData       & GetMonitorData() { return m_pModel->GetMonitorData(); }
+    ShapePtrList<Shape> GetSelection()   { return GetUPShapes().GetAllSelected<Shape>(); }
 
     void CheckModel() { m_pModel->CheckModel(); }
     void ResetModel() { m_pModel->ResetModel(); }
@@ -103,7 +104,7 @@ public:
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
-    void SetConnNeurons(MicroMeterPointVector &, ShapeIdList const &);
+    void SetConnNeurons(MicroMeterPointVector       &, ShapeIdList              const &);
     void SetConnNeurons(MicroMeterPointVector const &, ShapePtrList<ConnNeuron> const &);
 
 #ifdef _DEBUG

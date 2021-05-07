@@ -295,3 +295,41 @@ UPShapeList UPShapeList::ExtractShapes(ShapeIdList idList)
 	idList.Apply2All([&](ShapeId const &id){ shapeList.Push(ExtractShape(id)); } );
 	return shapeList;
 }
+
+unsigned int const UPShapeList::CountInSelection(ShapeType const shapeType) const
+{
+	unsigned int uiNr { 0 };
+	Apply2AllSelected( shapeType, [&](auto & s) { ++uiNr; } );
+	return uiNr;
+}
+
+unsigned int const UPShapeList::GetCounter(ShapeType const t) const 
+{ 
+	return counter(t); 
+}
+
+unsigned int const UPShapeList::GetCounter() const 
+{ 
+	return accumulate( m_shapesOfType.begin(), m_shapesOfType.end(), 0 ); 
+}
+
+unsigned int const & UPShapeList::counter(ShapeType const t) const 
+{ 
+	return m_shapesOfType[static_cast<unsigned int>(t.GetValue())]; 
+}
+
+unsigned int & UPShapeList::counter(ShapeType const t)       
+{ 
+	return const_cast<unsigned int &>(static_cast<const UPShapeList&>(*this).counter(t)); 
+}
+
+void UPShapeList::countShapes()
+{
+	m_shapesOfType.fill( 0 );
+	for ( auto & it : m_list )
+	{ 
+		ShapeType    const type  { it->GetShapeType() };
+		unsigned int const index { static_cast<unsigned int>(type.GetValue()) };
+		++m_shapesOfType[index];
+	};
+}

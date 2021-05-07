@@ -36,9 +36,9 @@ public:
 	bool    const IsEmpty       ()                 const { return m_list.size() == 0; }
 	long    const Size          ()                 const { return Cast2Long( m_list.size() ); }
 	ShapeId const IdNewSlot     ()	               const { return ShapeId( Cast2Long(m_list.size()) ); }
-	bool    const IsShapeDefined(ShapeId const id) const { return GetAt( id ) == nullptr; }
+	bool    const IsEmptySlot   (ShapeId const id) const { return GetAt(id) == nullptr; }
+	bool    const IsShapeDefined(ShapeId const id) const { return GetAt(id) != nullptr; }
 	bool    const IsValidShapeId(ShapeId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
-	bool    const IsEmptySlot   (ShapeId const id) const { return GetAt( id ) == nullptr; }
 	Shape * const Front         ()                 const { return   m_list[0].get(); }
 	Shape * const GetAt         (int     const i ) const { return   m_list[i].get(); }
 	Shape * const GetAt         (ShapeId const id) const { return   GetAt(id.GetValue()); }
@@ -47,26 +47,30 @@ public:
 	void          Resize        (long    const nr)       { m_list.resize( nr );	}
 	void          Increase      (long    const nr)       { m_list.resize( m_list.size() + nr ); }
 				    
-	void            Clear             ();
-	void            SetErrorHandler   (ShapeErrorHandler * const);
-	void            SelectAllShapes   (bool const);
-	void            DeselectAllShapes () { SelectAllShapes(false); }
-	ShapeId   const Push              (UPShape);
-	UPShape         ExtractShape      (ShapeId const);	
-	Shape   * const ReplaceShape      (ShapeId const, UPShape);	
-	void            SetShape2Slot     (ShapeId const, UPShape);	 // only for special situations
-	void            SetShape2Slot     (UPShape);                 // only for special situations
-	void            CheckShapeList    ()                                                        const;
-	void            Dump              ()                                                        const;
-	void            LinkShape         (Shape const &, function<Shape* (Shape const *)> const &) const;
-	bool      const AnyShapesSelected ()                                                        const;
-	void            CallErrorHandler  (ShapeId const )                                          const;
-	ShapeId   const FindShapeAt       (MicroMeterPoint const, ShapeCrit const &)                const;
-	bool      const Apply2AllB        (                       ShapeCrit const &)                const;
-	void            Apply2All         (ShapeFuncC const & )                                     const;
-	void            Apply2All         (ShapeFunc  const & );
-	void            Apply2AllSelected (ShapeType const, ShapeFuncC const &)                     const;
-	void            Apply2AllSelected (ShapeType const, ShapeFunc  const &);
+	void               Clear             ();
+	void               SetErrorHandler   (ShapeErrorHandler * const);
+	void               SelectAllShapes   (bool const);
+	void               DeselectAllShapes () { SelectAllShapes(false); }
+	ShapeId      const Push              (UPShape);
+	UPShape            ExtractShape      (ShapeId const);	
+	Shape      * const ReplaceShape      (ShapeId const, UPShape);	
+	void               SetShape2Slot     (ShapeId const, UPShape); // only for special situations
+	void               SetShape2Slot     (UPShape);                // only for special situations
+	void               CheckShapeList    ()                                                        const;
+	void               Dump              ()                                                        const;
+	void               LinkShape         (Shape const &, function<Shape* (Shape const *)> const &) const;
+	bool         const AnyShapesSelected ()                                                        const;
+	void               CallErrorHandler  (ShapeId const )                                          const;
+	unsigned int const CountInSelection  (ShapeType const)                                         const;
+	unsigned int const GetCounter        (ShapeType const)                                         const;
+	unsigned int const GetCounter        ()                                                        const;
+	ShapeId      const FindShapeAt       (MicroMeterPoint const, ShapeCrit const &)                const;
+	bool         const Apply2AllB        (                       ShapeCrit const &)                const;
+	void               Apply2All         (ShapeFuncC const & )                                     const;
+	void               Apply2All         (ShapeFunc  const & );
+	void               Apply2AllSelected (ShapeType const, ShapeFuncC const &)                     const;
+	void               Apply2AllSelected (ShapeType const, ShapeFunc  const &);
+
 
 	ShapeIdList Append       (UPShapeList &);
 	UPShapeList ExtractShapes(ShapeIdList);
@@ -164,48 +168,16 @@ public:
 		return GetAll<T>( [&](T &s) { return s.IsSelected() && s.HasType(shapeType); } );
 	}
 
-	unsigned int CountInSelection(ShapeType const shapeType) const
-	{
-		unsigned int uiNr { 0 };
-		Apply2AllSelected( shapeType, [&](auto & s) { ++uiNr; } );
-		return uiNr;
-	}
-
-	unsigned int const GetCounter(ShapeType const t) const 
-	{ 
-		return counter(t); 
-	}
-
-	unsigned int const GetCounter() const 
-	{ 
-		return accumulate( m_shapesOfType.begin(), m_shapesOfType.end(), 0 ); 
-	}
-
 private:
 
-	unsigned int const & counter(ShapeType const t) const 
-	{ 
-		return m_shapesOfType[static_cast<unsigned int>(t.GetValue())]; 
-	}
-
-	unsigned int & counter(ShapeType const t)       
-	{ 
-		return const_cast<unsigned int &>(static_cast<const UPShapeList&>(*this).counter(t)); 
-	}
+	unsigned int const & counter(ShapeType const) const;
+	unsigned int       & counter(ShapeType const);
 
 	void incCounter(ShapeType const t) { ++counter(t); }
 	void decCounter(ShapeType const t) { --counter(t); }
 
-	void incCounter(Shape const * const ps) 
-	{ 
-		if (ps)
-			incCounter(ps->GetShapeType()); 
-	}
-	void decCounter(Shape const * const ps) 
-	{ 
-		if (ps)
-			decCounter(ps->GetShapeType()); 
-	}
+	void incCounter(Shape const * const ps) { if (ps) incCounter(ps->GetShapeType()); }
+	void decCounter(Shape const * const ps) { if (ps) decCounter(ps->GetShapeType()); }
 
 	void incCounter(UPShape const & ups) { incCounter(ups.get()); }
 	void decCounter(UPShape const & ups) { decCounter(ups.get()); }
@@ -213,24 +185,12 @@ private:
 	void incCounter(ShapeId const & id)	{ incCounter(GetAt(id)); }
 	void decCounter(ShapeId const & id) { decCounter(GetAt(id)); }
 
-	void countShapes()
-	{
-		m_shapesOfType.fill( 0 );
-		for ( auto & it : m_list )
-		{ 
-			ShapeType    const type  { it->GetShapeType() };
-			unsigned int const index { static_cast<unsigned int>(type.GetValue()) };
-			++m_shapesOfType[index];
-		};
-	}
-
-	vector<UPShape> m_list;
-
-	array<unsigned int, ShapeType::NR_OF_SHAPE_TYPES> m_shapesOfType {};
-
-	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
-
+	void countShapes();
 	void copy( UPShapeList const & );
+
+	vector<UPShape>                                   m_list               {};
+	array<unsigned int, ShapeType::NR_OF_SHAPE_TYPES> m_shapesOfType       {};
+	ShapeErrorHandler                               * m_pShapeErrorHandler { nullptr };
 };
 
 UPShape ShallowCopy(Shape const &);

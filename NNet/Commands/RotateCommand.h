@@ -14,7 +14,7 @@ class RotateCommand : public Command
 public:
 	RotateCommand
 	( 
-		Shape                 & shape, 
+		Shape                 & shape,
 		MicroMeterPoint const & umPntOld, 
 		MicroMeterPoint const & umPntNew
 	)

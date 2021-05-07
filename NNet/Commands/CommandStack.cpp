@@ -52,11 +52,6 @@ void CommandStack::Push( unique_ptr<Command> pCmd )
         set2YoungerCmd();
         return;
     }
-    //if ( UndoStackEmpty() || ! previousCmd().Combine(*pCmd) )
-    //{
-    //    m_CommandStack.push_back( move(pCmd) );
-    //    set2YoungerCmd();
-    //}
 }
 
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )

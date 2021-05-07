@@ -45,7 +45,7 @@ public:
             scanner.SetExpectedToken( L"id < " + to_wstring( list.Size() ) );
             throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid shape id: " ) + strShapeId );
         }
-        else if ( list.IsShapeDefined( id ) )
+        else if ( ! list.IsShapeDefined( id ) )
         {
             scanner.SetExpectedToken( L"Defined ShapeId" );
             throw ScriptErrorHandler::ScriptException( 999, wstring( L"Shape is not defined: " ) + strShapeId );
