@@ -28,7 +28,7 @@
 #include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
 #include "RestrictSelectionCommand.h"
-#include "RotateConnectorCommand.h"
+#include "RotateCommand.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
@@ -194,10 +194,10 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
-	m_pCmdStack->PushCommand( make_unique<MoveShapeCommand>(id, delta) );
+	m_pCmdStack->PushCommand( make_unique<MoveShapeCommand>(*m_pNMWI->GetShape(id), delta) );
 }
 
-void NNetModelCommands::RotateConnector
+void NNetModelCommands::Rotate
 ( 
 	ShapeId         const   id, 
 	MicroMeterPoint const & umPntOld, 
@@ -206,14 +206,14 @@ void NNetModelCommands::RotateConnector
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << umPntOld << L" " << umPntNew << endl;
-	m_pCmdStack->PushCommand( make_unique<RotateConnectorCommand>(id, umPntOld, umPntNew) );
+	m_pCmdStack->PushCommand( make_unique<RotateCommand>(*m_pNMWI->GetShape(id), umPntOld, umPntNew) );
 }
 
 void NNetModelCommands::SetShape( ShapeId const id, MicroMeterPosDir const posDir )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << posDir << endl;
-	m_pCmdStack->PushCommand( make_unique<SetShapeCommand>(id, posDir) );
+	m_pCmdStack->PushCommand( make_unique<SetShapeCommand>(*m_pNMWI->GetShape(id), posDir) );
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )

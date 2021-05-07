@@ -347,9 +347,9 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			{
 				if (umDelta.IsNotZero())
 				{
-					if ((wParam & MK_CONTROL) && m_pNMRI->GetConstShape(m_shapeHighlighted)->IsConnector())
+					if ((wParam & MK_CONTROL) && m_pNMRI->GetConstShape(m_shapeHighlighted)->IsAnyConnector())
 					{
-						m_pModelCommands->RotateConnector(m_shapeHighlighted, umLastPos, umCrsrPos);
+						m_pModelCommands->Rotate(m_shapeHighlighted, umLastPos, umCrsrPos);
 					}
 					else
 					{

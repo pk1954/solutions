@@ -17,29 +17,26 @@ class SetShapeCommand : public Command
 public:
 	SetShapeCommand
 	( 
-		ShapeId          const idShape, 
+		Shape                & shape, 
 		MicroMeterPosDir const posDir
 	)
-      : m_idShape(idShape),
+      : m_shape(shape),
 		m_posDir(posDir)
 	{}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		if ( ! m_pShape )
-			m_pShape = nmwi.GetShapePtr<Shape *>( m_idShape );
-		m_pShape->RotateShape(m_pShape->GetPos(), m_posDir.GetDir());
-		m_pShape->MoveShape  (m_posDir.GetPos() - m_pShape->GetPos());
+		m_shape.RotateShape(m_shape .GetPos(), m_posDir.GetDir());
+		m_shape.MoveShape  (m_posDir.GetPos() - m_shape.GetPos());
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pShape->RotateShape(m_pShape->GetPos(), -m_posDir.GetDir());
-		m_pShape->MoveShape  (m_pShape->GetPos() - m_posDir.GetPos());
+		m_shape.RotateShape(m_shape.GetPos(), -m_posDir.GetDir());
+		m_shape.MoveShape  (m_shape.GetPos() - m_posDir.GetPos());
 	}
 
 private:
-	ShapeId          const m_idShape;
 	MicroMeterPosDir const m_posDir;
-	Shape                * m_pShape { nullptr };
+	Shape                & m_shape;
 };

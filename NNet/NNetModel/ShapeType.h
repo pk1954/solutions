@@ -75,6 +75,11 @@ public:
 	bool const IsConnectorType      () const { return m_value == Value::connector;       }
 	bool const IsClosedConnectorType() const { return m_value == Value::closedConnector; }
 
+	bool const IsAnyConnectorType() const
+	{
+		return IsConnectorType() || IsClosedConnectorType();
+	}
+
 	bool const IsConnNeuronType() const
 	{
 		return (m_value == Value::inputNeuron) || (m_value == Value::outputNeuron);

@@ -15,28 +15,26 @@ class MoveShapeCommand : public Command
 public:
 	MoveShapeCommand
 	( 
-		ShapeId         const   idShape, 
+		Shape                 & shape, 
 		MicroMeterPoint const & delta 
 	)
 	  : m_delta( delta ),
-		m_idShape( idShape )
+		m_shape( shape )
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		if ( ! m_pShape )
-			m_pShape = nmwi.GetShapePtr<Shape *>( m_idShape );
-		m_pShape->MoveShape(m_delta);
+		m_shape.MoveShape(m_delta);
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pShape->MoveShape(-m_delta);
+		m_shape.MoveShape(-m_delta);
 	}
 
 	virtual ShapeId const GetMovedShape() const
 	{
-		return m_idShape;
+		return m_shape.GetId();
 	}
 
 	virtual bool IsMoveCommand() const
@@ -49,14 +47,13 @@ public:
 		if (typeid(src) != typeid(*this))
 			return false;
 		MoveShapeCommand const & srcCmd { static_cast<MoveShapeCommand const &>(src) };
-		if (m_idShape != srcCmd.m_idShape)
+		if (m_shape.GetId() != srcCmd.m_shape.GetId())
 			return false;
 		m_delta += srcCmd.m_delta;
 		return true; 
 	};
 
 private:
-	MicroMeterPoint       m_delta;
-	ShapeId         const m_idShape;
-	Shape               * m_pShape { nullptr };
+	MicroMeterPoint m_delta;
+	Shape         & m_shape;
 };

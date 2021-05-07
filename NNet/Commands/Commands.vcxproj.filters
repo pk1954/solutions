@@ -129,9 +129,6 @@
     <ClInclude Include="DisconnectConnectorCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RotateConnectorCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SetShapeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -142,6 +139,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimationChainCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

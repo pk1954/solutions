@@ -78,6 +78,7 @@ public:
 	bool const HasType(ShapeType const type) const { return m_type == type; }
 
 	bool const IsClosedConnector() const { return m_type.IsClosedConnectorType(); }
+	bool const IsAnyConnector   () const { return m_type.IsAnyConnectorType   (); }
 	bool const IsConnector      () const { return m_type.IsConnectorType      (); }
 	bool const IsPipe           () const { return m_type.IsPipeType           (); }
 	bool const IsKnot           () const { return m_type.IsKnotType           (); }

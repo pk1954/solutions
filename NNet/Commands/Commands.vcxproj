@@ -95,7 +95,7 @@
     <ClInclude Include="MoveShapeCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
-    <ClInclude Include="RotateConnectorCommand.h" />
+    <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="SetShapeCommand.h" />
     <ClInclude Include="SetConnectionNeuronsCommand.h" />
     <ClInclude Include="MoveSelectionCommand.h" />

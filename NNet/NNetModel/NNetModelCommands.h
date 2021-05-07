@@ -73,7 +73,7 @@ public:
     void NewOutputNeuron     ( MicroMeterPoint const & );
     void ResetModel          ();
     void RestrictSelection   ( ShapeType::Value const );
-    void RotateConnector     ( ShapeId const, MicroMeterPoint const &, MicroMeterPoint const & );
+    void Rotate              ( ShapeId const, MicroMeterPoint const &, MicroMeterPoint const & );
     void SelectAll           ( bool const );
     void SelectAllBeepers    ();
     void SelectShape         ( ShapeId const, tBoolOp const );

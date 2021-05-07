@@ -276,7 +276,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_NEW_NEURON:
         m_pModelCommands->NewNeuron( umPoint );
-        m_pMonitorWindow->SetWindowVisibility( tOnOffAuto::on );
         break;
 
     case IDD_NEW_INPUT_NEURON:
