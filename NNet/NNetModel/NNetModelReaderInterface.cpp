@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "Shape.h"
+#include "Nob.h"
 #include "DrawContext.h"
 #include "NNetModel.h"
 #include "Connector.h"
@@ -11,75 +11,75 @@
 #include "InputNeuron.h"
 #include "NNetModelReaderInterface.h"
 
-bool const NNetModelReaderInterface::IsSelected( ShapeId const id ) const
+bool const NNetModelReaderInterface::IsSelected( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
 	return p ? p->IsSelected() : false; 
 }
 
-ShapeType const NNetModelReaderInterface::GetShapeType( ShapeId const id ) const
+NobType const NNetModelReaderInterface::GetNobType( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
-	return p ? p->GetShapeType() : ShapeType::Value::undefined; 
+	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
+	return p ? p->GetNobType() : NobType::Value::undefined; 
 }
 
-Degrees const NNetModelReaderInterface::GetDirection( ShapeId const id ) const 
+Degrees const NNetModelReaderInterface::GetDirection( NobId const id ) const 
 { 
-	auto p { m_pModel->GetShapeConstPtr<Connector const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<Connector const *>(id) };
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
-fHertz const NNetModelReaderInterface::GetPulseFrequency( ShapeId const id ) const 
+fHertz const NNetModelReaderInterface::GetPulseFrequency( NobId const id ) const 
 { 
-	auto p { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
 	return p ? p->GetPulseFrequency() : fHertz::NULL_VAL(); 
 }
 
-size_t const NNetModelReaderInterface::GetNrOfSegments( ShapeId const id ) const
+size_t const NNetModelReaderInterface::GetNrOfSegments( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<Pipe const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
 	return p ? p->GetNrOfSegments() : 0; 
 }
 
-SoundDescr const NNetModelReaderInterface::GetTriggerSound( ShapeId const id ) const
+SoundDescr const NNetModelReaderInterface::GetTriggerSound( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) }; 
+	auto p { m_pModel->GetNobConstPtr<Neuron const *>(id) }; 
 	return p ? p->GetTriggerSound() : SoundDescr(); 
 }
 
-mV const NNetModelReaderInterface::GetVoltage( ShapeId const id ) const
+mV const NNetModelReaderInterface::GetVoltage( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 
-mV const NNetModelReaderInterface::GetVoltage( ShapeId const id, MicroMeterPoint const & umPoint ) const
+mV const NNetModelReaderInterface::GetVoltage( NobId const id, MicroMeterPoint const & umPoint ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<Pipe const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
 	return p ? p->GetVoltage( umPoint ) : mV::NULL_VAL(); 
 }
 
-size_t const NNetModelReaderInterface::GetNrOfOutgoingConnections( ShapeId const id ) const 
+size_t const NNetModelReaderInterface::GetNrOfOutgoingConnections( NobId const id ) const 
 { 
-	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->m_connections.GetNrOfOutgoingConnections() : -1;
 }
 
-size_t const NNetModelReaderInterface::GetNrOfIncomingConnections( ShapeId const id ) const 
+size_t const NNetModelReaderInterface::GetNrOfIncomingConnections( NobId const id ) const 
 { 
-	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->m_connections.GetNrOfIncomingConnections() : -1;
 }
 
-bool const NNetModelReaderInterface::HasIncoming( ShapeId const id ) const
+bool const NNetModelReaderInterface::HasIncoming( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->m_connections.HasIncoming() : false; 
 }
 
-bool const NNetModelReaderInterface::HasOutgoing( ShapeId const id ) const
+bool const NNetModelReaderInterface::HasOutgoing( NobId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->m_connections.HasOutgoing() : false; 
 }
 
@@ -90,47 +90,47 @@ bool const NNetModelReaderInterface::GetDescriptionLine( int const iLine, wstrin
 
 // IsConnectionCandidate: Sort out obvious non-candidates
 
-bool const NNetModelReaderInterface::IsConnectionCandidate(ShapeId const idSrc, ShapeId const idDst) const
+bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, NobId const idDst) const
 {
 	if (idSrc == idDst)
 		return false; 
-	if (GetShapeType(idSrc).IsConnectorType() && !GetShapeType(idDst).IsConnectorType())
+	if (GetNobType(idSrc).IsConnectorType() && !GetNobType(idDst).IsConnectorType())
 		return false;
 	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
 		return false;
 	return true;
 }
 
-bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId const idDst ) const
+bool const NNetModelReaderInterface::CanConnectTo( NobId const idSrc, NobId const idDst ) const
 {
 	assert(idSrc != idDst);
 	assert(IsDefined(idSrc));
 	assert(IsDefined(idDst));
 	assert(!IsConnectedTo(idSrc, idDst));
 
-	ShapeType::Value const typeSrc { GetShapeType(idSrc).GetValue() };
-	ShapeType::Value const typeDst { GetShapeType(idDst).GetValue() };
+	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
+	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
 
 	switch (typeSrc)
 	{
-	case ShapeType::Value::connector:
-		return typeDst == ShapeType::Value::connector;
+	case NobType::Value::connector:
+		return typeDst == NobType::Value::connector;
 
-	case ShapeType::Value::pipe:
+	case NobType::Value::pipe:
 		return false;
 
-	case ShapeType::Value::knot:
+	case NobType::Value::knot:
 		switch ( typeDst )
 		{
-		case ShapeType::Value::pipe:
-		case ShapeType::Value::knot:
+		case NobType::Value::pipe:
+		case NobType::Value::knot:
 			return true;
 
-		case ShapeType::Value::outputNeuron:
+		case NobType::Value::outputNeuron:
 			return (! HasOutgoing(idSrc));
 
-		case ShapeType::Value::inputNeuron:
-		case ShapeType::Value::neuron:
+		case NobType::Value::inputNeuron:
+		case NobType::Value::neuron:
 			return onlyOneAxon(idSrc, idDst);
 
 		default:
@@ -138,20 +138,20 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 		}
 		break;
 
-	case ShapeType::Value::neuron:
+	case NobType::Value::neuron:
 		switch ( typeDst )
 		{
-		case ShapeType::Value::pipe:
+		case NobType::Value::pipe:
 			return true;
 
-		case ShapeType::Value::knot:
-		case ShapeType::Value::neuron:
+		case NobType::Value::knot:
+		case NobType::Value::neuron:
 			return onlyOneAxon(idSrc, idDst);
 
-		case ShapeType::Value::outputNeuron:
+		case NobType::Value::outputNeuron:
 			return (! HasOutgoing(idSrc));
 
-		case ShapeType::Value::inputNeuron:
+		case NobType::Value::inputNeuron:
 			return false;
 
 		default:
@@ -159,16 +159,16 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 		}
 		break;
 
-	case ShapeType::Value::inputNeuron:
+	case NobType::Value::inputNeuron:
 		switch ( typeDst )
 		{
-		case ShapeType::Value::pipe:
-		case ShapeType::Value::knot:
-		case ShapeType::Value::outputNeuron:
+		case NobType::Value::pipe:
+		case NobType::Value::knot:
+		case NobType::Value::outputNeuron:
 			return false;
 
-		case ShapeType::Value::neuron:
-		case ShapeType::Value::inputNeuron:
+		case NobType::Value::neuron:
+		case NobType::Value::inputNeuron:
 			return onlyOneAxon(idSrc, idDst) && ! HasIncoming(idSrc);
 
 		default:
@@ -176,18 +176,18 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 		}
 		break;
 
-	case ShapeType::Value::outputNeuron:
+	case NobType::Value::outputNeuron:
 		switch ( typeDst )
 		{
-		case ShapeType::Value::pipe:
-		case ShapeType::Value::inputNeuron:
+		case NobType::Value::pipe:
+		case NobType::Value::inputNeuron:
 			return false;
 
-		case ShapeType::Value::outputNeuron:
+		case NobType::Value::outputNeuron:
 			return true;
 
-		case ShapeType::Value::knot:
-		case ShapeType::Value::neuron:
+		case NobType::Value::knot:
+		case NobType::Value::neuron:
 			return onlyOneAxon(idSrc, idDst);
 
 		default:
@@ -202,57 +202,57 @@ bool const NNetModelReaderInterface::CanConnectTo( ShapeId const idSrc, ShapeId 
 	return false;
 }
 
-bool const NNetModelReaderInterface::IsConnectedTo( ShapeId const idSrc, ShapeId const idDst ) const
+bool const NNetModelReaderInterface::IsConnectedTo( NobId const idSrc, NobId const idDst ) const
 {
-	if ( GetShapeType(idSrc).IsPipeType() )
+	if ( GetNobType(idSrc).IsPipeType() )
 		return isConnectedToPipe(idDst, idSrc);
-	if ( GetShapeType(idDst).IsPipeType() )
+	if ( GetNobType(idDst).IsPipeType() )
 		return isConnectedToPipe(idSrc, idDst );
 	else
 		return false;
 }
 
-bool const NNetModelReaderInterface::isConnectedToPipe( ShapeId const idShape, ShapeId const idPipe ) const
+bool const NNetModelReaderInterface::isConnectedToPipe( NobId const idNob, NobId const idPipe ) const
 {
-	return (idShape == m_pModel->GetStartKnotId(idPipe)) || (idShape == m_pModel->GetEndKnotId(idPipe));
+	return (idNob == m_pModel->GetStartKnotId(idPipe)) || (idNob == m_pModel->GetEndKnotId(idPipe));
 }
 
-ShapeId const NNetModelReaderInterface::FindShapeAt( MicroMeterPoint const & umPnt, ShapeCrit const & crit ) const
+NobId const NNetModelReaderInterface::FindNobAt( MicroMeterPoint const & umPnt, NobCrit const & crit ) const
 {
-	return m_pModel->FindShapeAt( umPnt, crit );
+	return m_pModel->FindNobAt( umPnt, crit );
 }
 
 void NNetModelReaderInterface::DrawExterior
 ( 
-	ShapeId     const   id,
+	NobId     const   id,
 	DrawContext const & context,
 	tHighlight  const   type
 ) const
 {
-	if ( Shape const * const p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
+	if ( Nob const * const p { m_pModel->GetNobConstPtr<Nob const *>(id) } )
 		p->DrawExterior( context, type );
 }
 
 void NNetModelReaderInterface::DrawInterior
 ( 
-	ShapeId     const   id, 
+	NobId     const   id, 
 	DrawContext const & context,
 	tHighlight  const   type
 ) 
 const
 {
-	if ( auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
+	if ( auto p { m_pModel->GetNobConstPtr<Nob const *>(id) } )
 		p->DrawInterior( context, type );
 }
 
 void NNetModelReaderInterface::DrawNeuronText
 ( 
-	ShapeId     const   id, 
+	NobId     const   id, 
 	DrawContext const & context
 ) 
 const
 {
-	if ( auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) } )
+	if ( auto p { m_pModel->GetNobConstPtr<Neuron const *>(id) } )
 		p->DrawNeuronText( context );
 }
 

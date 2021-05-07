@@ -9,12 +9,12 @@
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "ConnectionNeuron.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "NNetModel.h"
 
 class Pipe;
 class BaseKnot;
-class ShapeErrorHandler;
+class NobErrorHandler;
 class MicroMeterPointVector;
 
 using std::unique_ptr;
@@ -25,21 +25,21 @@ class NNetModelWriterInterface
 public:
 	void          Start(NNetModel * const);
 	void          Stop(); 
-    void          CreateInitialShapes();
+    void          CreateInitialNobs();
     void          RemoveOrphans();
     void          SelectBeepers();
-    void          SelectShape(ShapeId const, bool const);
-    void          ToggleStopOnTrigger(ShapeId const);
-    Shape * const GetShape(ShapeId const);
+    void          SelectNob(NobId const, bool const);
+    void          ToggleStopOnTrigger(NobId const);
+    Nob * const GetNob(NobId const);
 
-    UPShapeList       & GetUPShapes()    { return m_pModel->GetUPShapes(); }
+    UPNobList       & GetUPNobs()    { return m_pModel->GetUPNobs(); }
     Param             & GetParams()      { return m_pModel->GetParams(); }
     MonitorData       & GetMonitorData() { return m_pModel->GetMonitorData(); }
-    ShapePtrList<Shape> GetSelection()   { return GetUPShapes().GetAllSelected<Shape>(); }
+    NobPtrList<Nob> GetSelection()   { return GetUPNobs().GetAllSelected<Nob>(); }
 
     void CheckModel() { m_pModel->CheckModel(); }
     void ResetModel() { m_pModel->ResetModel(); }
-    void ClearModel() { m_pModel->GetUPShapes().Apply2All([&](Shape & s) { s.Clear(); }); }
+    void ClearModel() { m_pModel->GetUPNobs().Apply2All([&](Nob & s) { s.Clear(); }); }
 
     void DumpModel() const { m_pModel->DumpModel(); }
 
@@ -51,61 +51,61 @@ public:
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
-    bool const IsConnector( ShapeId const id )
+    bool const IsConnector( NobId const id )
     {
-        Shape * pShape { GetShapePtr<Shape *>( id ) };
-        return pShape && pShape->IsConnector();
+        Nob * pNob { GetNobPtr<Nob *>( id ) };
+        return pNob && pNob->IsConnector();
     }
 
-    bool const IsPipe( ShapeId const id )
+    bool const IsPipe( NobId const id )
     {
-        Shape * pShape { GetShapePtr<Shape *>( id ) };
-        return pShape && pShape->IsPipe();
+        Nob * pNob { GetNobPtr<Nob *>( id ) };
+        return pNob && pNob->IsPipe();
     }
 
-    bool const IsKnot( ShapeId const id )
+    bool const IsKnot( NobId const id )
     {
-        Shape * pShape { GetShapePtr<Shape *>( id ) };
-        return pShape && pShape->IsKnot();
+        Nob * pNob { GetNobPtr<Nob *>( id ) };
+        return pNob && pNob->IsKnot();
     }
 
-    template <Shape_t T>
-    T GetShapePtr( ShapeId const id ) 
+    template <Nob_t T>
+    T GetNobPtr( NobId const id ) 
     {
-        Shape * const pShape { GetShape( id ) };
-        return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
+        Nob * const pNob { GetNob( id ) };
+        return (pNob && HasType<T>( * pNob )) ? static_cast<T>( pNob ) : nullptr;
     }
 
-    template <Shape_t NEW, Shape_t OLD>
+    template <Nob_t NEW, Nob_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
-        ShapeId id     { up.get()->GetId() };
-        Shape * pShape { m_pModel->GetUPShapes().ReplaceShape( id, move(up) ) }; 
-        return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
+        NobId id     { up.get()->GetId() };
+        Nob * pNob { m_pModel->GetUPNobs().ReplaceNob( id, move(up) ) }; 
+        return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
-    template <Shape_t OLD>
-    unique_ptr<OLD> RemoveFromModel( Shape const & shape ) 
+    template <Nob_t OLD>
+    unique_ptr<OLD> RemoveFromModel( Nob const & nob ) 
     { 
-        return RemoveFromModel<OLD>(shape.GetId());
+        return RemoveFromModel<OLD>(nob.GetId());
     }
 
-    template <Shape_t OLD>
-    unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
+    template <Nob_t OLD>
+    unique_ptr<OLD> RemoveFromModel( NobId const id ) 
     { 
-        UPShape upShape { m_pModel->GetUPShapes().ExtractShape(id) }; 
-        auto    pShape  { upShape.release() }; 
-        return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
+        UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
+        auto    pNob  { upNob.release() }; 
+        return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
-    MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
+    MicroMeterPoint const OrthoVector( NobId const idPipe ) const
     {
-        MicroMeterPoint vector { m_pModel->GetShapeConstPtr<Pipe const *>(idPipe)->GetVector() };
+        MicroMeterPoint vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
-    void SetConnNeurons(MicroMeterPointVector       &, ShapeIdList              const &);
-    void SetConnNeurons(MicroMeterPointVector const &, ShapePtrList<ConnNeuron> const &);
+    void SetConnNeurons(MicroMeterPointVector       &, NobIdList              const &);
+    void SetConnNeurons(MicroMeterPointVector const &, NobPtrList<ConnNeuron> const &);
 
 #ifdef _DEBUG
     NNetModel const & GetModel()  const { return * m_pModel; }  // TODO: find better solution

@@ -42,8 +42,8 @@ public:
 
 	virtual long AddContextMenuEntries( HMENU const );
 
-	ShapeId const GetTargetShapeId     () const { return m_shapeTarget; }
-	ShapeId const GetHighlightedShapeId() const { return m_shapeHighlighted; }
+	NobId const GetTargetNobId     () const { return m_nobTarget; }
+	NobId const GetHighlightedNobId() const { return m_nobHighlighted; }
 
 	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
 
@@ -89,8 +89,8 @@ private:
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
-	ShapeId             m_shapeHighlighted     { };
-	ShapeId             m_shapeTarget          { };
+	NobId             m_nobHighlighted     { };
+	NobId             m_nobTarget          { };
 	bool                m_bTargetFits          { false };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
@@ -98,10 +98,10 @@ private:
 	WinCommands       * m_pWinCommands         { nullptr };
 
 	void setNoTarget        ();
-	void setTargetShape     ();
-	void setHighlightedShape( MicroMeterPoint const & );
-	bool changePulseRate    ( ShapeId const, bool const );
-	void centerAndZoomRect  ( UPShapeList::SelMode const, float const );
+	void setTargetNob     ();
+	void setHighlightedNob( MicroMeterPoint const & );
+	bool changePulseRate    ( NobId const, bool const );
+	void centerAndZoomRect  ( UPNobList::SelMode const, float const );
 
 	virtual void doPaint();
 

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "NNetWrapperHelpers.h"
 
 MicroMeter ScrReadMicroMeter(Script & script)
@@ -63,19 +63,19 @@ MicroMeterPointVector ScrReadMicroMeterPointVector(Script& script)
 	return umPntVector;
 }
 
-unique_ptr<ShapeIdList> ScrReadShapeIdList(Script& script)
+unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 {
-	unique_ptr<ShapeIdList> upShapeIds  { make_unique<ShapeIdList>() };
-	script.ScrReadSpecial( ShapeIdList::OPEN_BRACKET );
+	unique_ptr<NobIdList> upNobIds  { make_unique<NobIdList>() };
+	script.ScrReadSpecial( NobIdList::OPEN_BRACKET );
 	int const iNrOfElements { script.ScrReadInt() };
 	script.ScrReadSpecial( L':' );
 	for (int i = 0;;)
 	{
-		upShapeIds->Add( ScrReadShapeId(script) );
+		upNobIds->Add( ScrReadNobId(script) );
 		if (++i == iNrOfElements )
 			break;
-		script.ScrReadSpecial( ShapeIdList::SEPARATOR );
+		script.ScrReadSpecial( NobIdList::SEPARATOR );
 	}
-	script.ScrReadSpecial( ShapeIdList::CLOSE_BRACKET );
-	return move(upShapeIds);
+	script.ScrReadSpecial( NobIdList::CLOSE_BRACKET );
+	return move(upNobIds);
 }

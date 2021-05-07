@@ -6,7 +6,7 @@
 
 #include "NNetModelWriterInterface.h"
 #include "SoundInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 #include "Neuron.h"
 
@@ -15,7 +15,7 @@ class SetTriggerSoundCommand : public Command
 public:
 	SetTriggerSoundCommand
 	( 
-		ShapeId    const   id, 
+		NobId    const   id, 
 		SoundDescr const & sound
 	)
 	  : m_idNeuron( id ),
@@ -24,11 +24,11 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		m_sound = nmwi.GetShapePtr<Neuron *>( m_idNeuron )->SetTriggerSound( m_sound );
+		m_sound = nmwi.GetNobPtr<Neuron *>( m_idNeuron )->SetTriggerSound( m_sound );
 		nmwi.ClearModel();
 	}
 
 private:
-	ShapeId const m_idNeuron;
+	NobId const m_idNeuron;
 	SoundDescr    m_sound;
 };

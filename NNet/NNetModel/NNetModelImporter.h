@@ -9,7 +9,7 @@
 #include <string>
 #include "ObserverInterface.h"
 #include "MoreTypes.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "NNetModelStorage.h"
 #include "NNetModelWriterInterface.h"
 
@@ -22,9 +22,9 @@ using std::wstring;
 class Param;
 class Script;
 class Pipe;
-class Shape;
+class Nob;
 class NNetModel;
-class UPShapeList;
+class UPNobList;
 class Observable;
 class WrapBase;
 

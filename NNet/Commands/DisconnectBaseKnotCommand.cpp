@@ -11,7 +11,7 @@ using std::move;
 
 DisconnectBaseKnotCommand::DisconnectBaseKnotCommand
 ( 
-    ShapeId const idBaseKnot, 
+    NobId const idBaseKnot, 
     bool    const bDelete 
 )
   : m_idBaseKnot(idBaseKnot),
@@ -20,7 +20,7 @@ DisconnectBaseKnotCommand::DisconnectBaseKnotCommand
 
 void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
 { 
-    m_pBaseKnot = nmwi.GetShapePtr<BaseKnot *>( m_idBaseKnot );
+    m_pBaseKnot = nmwi.GetNobPtr<BaseKnot *>( m_idBaseKnot );
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
@@ -71,7 +71,7 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
             Pipe & pipeOut { upKnot->m_connections.GetFirstOutgoing() };
             pipeOut.SetStartKnot( upKnot.get() );
             pipeOut.DislocateStartPoint();                     // dislocate new knot
-            m_idStartKnots.SetAt(i, nmwi.GetUPShapes().Push(move(upKnot)));
+            m_idStartKnots.SetAt(i, nmwi.GetUPNobs().Push(move(upKnot)));
         }
     }
     for ( int i = 0; i < m_endKnots.size(); ++i )
@@ -82,7 +82,7 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
             Pipe & pipeIn { upKnot->m_connections.GetFirstIncoming() };
             pipeIn.SetEndKnot( upKnot.get() );
             pipeIn.DislocateEndPoint();                       // dislocate new knot 
-            m_idEndKnots.SetAt(i, nmwi.GetUPShapes().Push(move(upKnot)));
+            m_idEndKnots.SetAt(i, nmwi.GetUPNobs().Push(move(upKnot)));
         }
     }
     m_pBaseKnot->ClearConnections();
@@ -97,21 +97,21 @@ void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )
 
     for ( int i = Cast2Int(m_idEndKnots.Size()) - 1; i >= 0; --i )
     {
-        ShapeId idEndKnot { m_idEndKnots.Get(i) };
-        Knot  & knotEnd   { * nmwi.GetShapePtr<Knot *>(idEndKnot) };
+        NobId idEndKnot { m_idEndKnots.Get(i) };
+        Knot  & knotEnd   { * nmwi.GetNobPtr<Knot *>(idEndKnot) };
         Pipe  & pipeIn    { knotEnd.m_connections.GetFirstIncoming() };
         pipeIn.SetEndKnot( m_pBaseKnot );
         m_pBaseKnot->m_connections.AddIncoming( & pipeIn );
-        m_endKnots[i] = nmwi.GetUPShapes().Pop<Knot>();
+        m_endKnots[i] = nmwi.GetUPNobs().Pop<Knot>();
     }
     for ( int i = Cast2Int(m_startKnots.size()) - 1; i >= 0; --i )
     {
-        ShapeId idStartKnot { m_idStartKnots.Get(i) };
-        Knot  & knotStart   { * nmwi.GetShapePtr<Knot *>(idStartKnot) };
+        NobId idStartKnot { m_idStartKnots.Get(i) };
+        Knot  & knotStart   { * nmwi.GetNobPtr<Knot *>(idStartKnot) };
         Pipe  & pipeOut     { knotStart.m_connections.GetFirstOutgoing() };
         pipeOut.SetStartKnot( m_pBaseKnot );
         m_pBaseKnot->m_connections.AddOutgoing( & pipeOut );
-        m_startKnots[i] = nmwi.GetUPShapes().Pop<Knot>();
+        m_startKnots[i] = nmwi.GetUPNobs().Pop<Knot>();
     }
     if ( m_bDelete ) 
         m_upBaseKnot = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnot));

@@ -81,7 +81,7 @@ void MainWindow::Stop()
 
 void MainWindow::Reset()
 { 
-	m_shapeHighlighted = NO_SHAPE; 
+	m_nobHighlighted = NO_NOB; 
 	setNoTarget(); 
 }
 
@@ -94,7 +94,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_ADD_OUTGOING2KNOT,   L"Add outgoing dendrite"                 },
 		{ IDD_ADD_OUTGOING2PIPE,   L"Add outgoing dendrite"                 },
 		{ IDD_ADD_SIGNAL,          L"New EEG sensor" 					    },
-		{ IDM_ALIGN_SHAPES,        L"Align selected objects"                },
+		{ IDM_ALIGN_NOBS,        L"Align selected objects"                },
 		{ IDD_APPEND_INPUT_NEURON, L"Add input neuron"                      },
 		{ IDD_APPEND_NEURON,       L"Add neuron"                            },
 		{ IDD_ARROWS_OFF,          L"Arrows off"                            },
@@ -102,9 +102,9 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_CLEAR_BEEPERS,       L"Clear selected trigger sounds"         },
 		{ IDM_COPY_SELECTION,      L"Copy selection"                        },
 		{ IDM_DELETE_SELECTION,    L"Delete selected objects"               },
-		{ IDD_DELETE_SHAPE,        L"Delete"                                },
+		{ IDD_DELETE_NOB,        L"Delete"                                },
 		{ IDM_DESELECT_ALL,        L"Deselect all"                          },
-		{ IDM_DESELECT_SHAPE,      L"Deselect"                              },
+		{ IDM_DESELECT_NOB,      L"Deselect"                              },
 		{ IDD_DISCONNECT,          L"Disconnect"                            },
 		{ IDD_INSERT_KNOT,         L"Insert knot"                           },
 		{ IDD_INSERT_NEURON,       L"Insert neuron"                         },
@@ -114,7 +114,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_NEW_OUTPUT_NEURON,   L"New output neuron"					    },
 		{ IDD_PULSE_RATE,          L"Pulse rate"                            },
 		{ IDM_SELECT_ALL_BEEPERS,  L"Select all neurons with trigger sound" }, 
-		{ IDM_SELECT_SHAPE,        L"Select"                                },
+		{ IDM_SELECT_NOB,        L"Select"                                },
 		{ IDM_SELECT_SUBTREE,      L"Select subtree"                        },
 		{ IDD_STOP_ON_TRIGGER,     L"Stop on trigger on/off"                },
 		{ IDD_TRIGGER_SOUND_DLG,   L"Trigger sound"                         }
@@ -124,16 +124,16 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 
 long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
-	if ( m_pNMRI->AnyShapesSelected() )
+	if ( m_pNMRI->AnyNobsSelected() )
 	{
 		appendMenu( hPopupMenu, IDM_DESELECT_ALL     );
 		appendMenu( hPopupMenu, IDM_COPY_SELECTION   );
 		appendMenu( hPopupMenu, IDM_DELETE_SELECTION );
 		appendMenu( hPopupMenu, IDM_MAKE_CONNECTOR   );
-		appendMenu( hPopupMenu, IDM_ALIGN_SHAPES     );
+		appendMenu( hPopupMenu, IDM_ALIGN_NOBS     );
 		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS    );
 	}
-	else if ( IsUndefined(m_shapeHighlighted) )  // no shape selected, cursor on background
+	else if ( IsUndefined(m_nobHighlighted) )  // no nob selected, cursor on background
 	{
 		appendMenu( hPopupMenu, IDD_NEW_NEURON         );
 		appendMenu( hPopupMenu, IDD_NEW_INPUT_NEURON   );
@@ -142,70 +142,70 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDM_SELECT_ALL_BEEPERS );
 		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS      );
 	}
-	else switch ( m_pNMRI->GetShapeType( m_shapeHighlighted ).GetValue() )
+	else switch ( m_pNMRI->GetNobType( m_nobHighlighted ).GetValue() )
 	{
-	case ShapeType::Value::inputNeuron:
-		if ( ! m_pNMRI->HasOutgoing( m_shapeHighlighted ) )
+	case NobType::Value::inputNeuron:
+		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_PULSE_RATE );         
-		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
-	case ShapeType::Value::outputNeuron:
+	case NobType::Value::outputNeuron:
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
-		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );   
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );   
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
 		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );   
 		break;
 
-	case ShapeType::Value::neuron:
-		if ( ! m_pNMRI->HasOutgoing( m_shapeHighlighted ) )
+	case NobType::Value::neuron:
+		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
-		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );   
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );   
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
 		appendMenu( hPopupMenu, IDM_SELECT_SUBTREE );   
 		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );      
 		break;
 
-	case ShapeType::Value::connector:
-		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );     
+	case NobType::Value::connector:
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
-	case ShapeType::Value::closedConnector:
-		//appendMenu( hPopupMenu, IDD_DELETE_SHAPE );     
+	case NobType::Value::closedConnector:
+		//appendMenu( hPopupMenu, IDD_DELETE_NOB );     
 		//appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
-	case ShapeType::Value::knot:  
+	case NobType::Value::knot:  
 		appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
 		if ( 
-			  (! m_pNMRI->HasOutgoing( m_shapeHighlighted )) || 
+			  (! m_pNMRI->HasOutgoing( m_nobHighlighted )) || 
 			  (
-				 ( ! m_pNMRI->HasIncoming( m_shapeHighlighted ) ) && 
-				 ( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
+				 ( ! m_pNMRI->HasIncoming( m_nobHighlighted ) ) && 
+				 ( m_pNMRI->GetNrOfOutgoingConnections( m_nobHighlighted ) <= 1 )  
 			  ) 
 		   )
 		   appendMenu( hPopupMenu, IDD_APPEND_NEURON );
 		if ( 
-			  ( ! m_pNMRI->HasIncoming( m_shapeHighlighted ) ) &&
-			  ( m_pNMRI->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )
+			  ( ! m_pNMRI->HasIncoming( m_nobHighlighted ) ) &&
+			  ( m_pNMRI->GetNrOfOutgoingConnections( m_nobHighlighted ) <= 1 )
 		   )
 		   appendMenu( hPopupMenu, IDD_APPEND_INPUT_NEURON );
 		appendMenu( hPopupMenu, IDD_DISCONNECT );
 		break;
 
-	case ShapeType::Value::pipe:
+	case NobType::Value::pipe:
 		appendMenu( hPopupMenu, IDD_ADD_OUTGOING2PIPE );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2PIPE );
 		appendMenu( hPopupMenu, IDD_INSERT_NEURON );
 		appendMenu( hPopupMenu, IDD_INSERT_KNOT );   
-		appendMenu( hPopupMenu, IDD_DELETE_SHAPE );     
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
 		if ( ArrowsVisible() )
 			appendMenu( hPopupMenu, IDD_ARROWS_OFF );    
 		else
@@ -216,15 +216,15 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		assert( false );
 	}
 
-	if ( IsDefined(m_shapeHighlighted) )
+	if ( IsDefined(m_nobHighlighted) )
 	{
-		if ( m_pNMRI->IsSelected( m_shapeHighlighted ) )
-			appendMenu( hPopupMenu, IDM_DESELECT_SHAPE );
+		if ( m_pNMRI->IsSelected( m_nobHighlighted ) )
+			appendMenu( hPopupMenu, IDM_DESELECT_NOB );
 		else
-			appendMenu( hPopupMenu, IDM_SELECT_SHAPE );
+			appendMenu( hPopupMenu, IDM_SELECT_NOB );
 	}	
 
-	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
+	return m_nobHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
 }
 
 MicroMeterPoint const MainWindow::GetCursorPos() const
@@ -263,12 +263,12 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 
 void MainWindow::CenterModel()
 {
-	centerAndZoomRect( UPShapeList::SelMode::allShapes, 1.2f ); // give 20% more space (looks better)
+	centerAndZoomRect( UPNobList::SelMode::allNobs, 1.2f ); // give 20% more space (looks better)
 }
 
 void MainWindow::CenterSelection()
 {
-	centerAndZoomRect( UPShapeList::SelMode::selectedShapes, 2.0f );
+	centerAndZoomRect( UPNobList::SelMode::selectedNobs, 2.0f );
 }
 
 bool const MainWindow::ArrowsVisible() const
@@ -303,18 +303,18 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::setNoTarget()
 {
-	m_shapeTarget = NO_SHAPE;
+	m_nobTarget = NO_NOB;
 	m_bTargetFits = false;
 }
 
-void MainWindow::setTargetShape()
+void MainWindow::setTargetNob()
 {
-	m_shapeTarget = m_pNMRI->FindShapeAt
+	m_nobTarget = m_pNMRI->FindNobAt
 	(
-		m_pNMRI->GetShapePos( m_shapeHighlighted ),
-		[&](Shape const & s) { return m_pNMRI->IsConnectionCandidate(s.GetId(), m_shapeHighlighted); }
+		m_pNMRI->GetNobPos( m_nobHighlighted ),
+		[&](Nob const & s) { return m_pNMRI->IsConnectionCandidate(s.GetId(), m_nobHighlighted); }
 	);
-	m_bTargetFits = IsDefined(m_shapeTarget) && m_pNMRI->CanConnectTo(m_shapeHighlighted, m_shapeTarget); 
+	m_bTargetFits = IsDefined(m_nobTarget) && m_pNMRI->CanConnectTo(m_nobHighlighted, m_nobTarget); 
 }
 
 void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -343,18 +343,18 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			MicroMeterPoint umDelta = umCrsrPos - umLastPos;
-			if ( IsDefined(m_shapeHighlighted) )    // move highligthted shape
+			if ( IsDefined(m_nobHighlighted) )    // move highligthted nob
 			{
 				if (umDelta.IsNotZero())
 				{
-					if ((wParam & MK_CONTROL) && m_pNMRI->GetConstShape(m_shapeHighlighted)->IsAnyConnector())
+					if ((wParam & MK_CONTROL) && m_pNMRI->GetConstNob(m_nobHighlighted)->IsAnyConnector())
 					{
-						m_pModelCommands->Rotate(m_shapeHighlighted, umLastPos, umCrsrPos);
+						m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
 					}
 					else
 					{
-						m_pModelCommands->MoveShape(m_shapeHighlighted, umDelta);
-						setTargetShape();
+						m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
+						setTargetNob();
 					}
 				}
 			}
@@ -363,7 +363,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				pSignal->Move( umDelta );
 				Notify( false ); 
 			}
-			else if (m_pNMRI->AnyShapesSelected())   // move selected shapes 
+			else if (m_pNMRI->AnyNobsSelected())   // move selected nobs 
 			{
 				m_pModelCommands->MoveSelection( umDelta );
 			}
@@ -376,22 +376,22 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else  // no mouse button pressed
 	{                         
-		setHighlightedShape( umCrsrPos );
+		setHighlightedNob( umCrsrPos );
 		m_ptLast.Set2Null();   // make m_ptLast invalid
 	}
 }
 
 void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( IsDefined( m_shapeHighlighted ) )
+	if ( IsDefined( m_nobHighlighted ) )
 	{
-		m_pModelCommands->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+		m_pModelCommands->SelectNob( m_nobHighlighted, tBoolOp::opToggle );
 	}
 }
 
 void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( IsDefined(m_shapeHighlighted) && IsDefined(m_shapeTarget) && m_bTargetFits )
+	if ( IsDefined(m_nobHighlighted) && IsDefined(m_nobTarget) && m_bTargetFits )
 	{ 
 		SendCommand2Application( IDD_CONNECT, 0	);
 	}
@@ -403,7 +403,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 	bool const bSelection { m_rectSelection.IsNotEmpty() };
 	if ( bSelection )
 	{
-		m_pModelCommands->SelectShapesInRect(m_rectSelection, wParam & MK_CONTROL);
+		m_pModelCommands->SelectNobsInRect(m_rectSelection, wParam & MK_CONTROL);
 		m_rectSelection.SetZero();
 	}
 	return bSelection; // let base class handle other cases
@@ -441,11 +441,11 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::centerAndZoomRect
 ( 
-	UPShapeList::SelMode const mode, 
+	UPNobList::SelMode const mode, 
 	float                const fRatioFactor 
 )
 {
-	MicroMeterRect umRect { m_pNMRI->GetUPShapes().CalcEnclosingRect( mode ) };
+	MicroMeterRect umRect { m_pNMRI->GetUPNobs().CalcEnclosingRect( mode ) };
 	PixelCoordsFp  coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	( 
@@ -466,7 +466,7 @@ void MainWindow::OnPaint()
 	m_pDisplayTimer->TimerStop();
 }
 
-bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
+bool MainWindow::changePulseRate( NobId const id, bool const bDirection )
 {
 	static fHertz const INCREMENT { 0.01_fHertz };
 	fHertz const fOldValue { m_pNMRI->GetPulseFrequency( id ) };
@@ -480,9 +480,9 @@ bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
 void MainWindow::OnChar( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( wParam == '+' )
-		changePulseRate( m_shapeHighlighted, true );
+		changePulseRate( m_nobHighlighted, true );
 	else if ( wParam == '-' )
-		changePulseRate( m_shapeHighlighted, false );
+		changePulseRate( m_nobHighlighted, false );
 }
 
 /////////////////////// local functions ////////////////////////////////
@@ -504,36 +504,36 @@ void MainWindow::doPaint()
 			DrawArrowsInRect( pixRect, m_arrowSize );
 	}
 
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe() && ! s.IsSelected(); } ); 
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe() &&   s.IsSelected(); } ); 
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot (); } ); // draw BaseKnots OVER Pipes
-	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsConnector(); } ); 
+	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsPipe() && ! s.IsSelected(); } ); 
+	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsPipe() &&   s.IsSelected(); } ); 
+	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsBaseKnot (); } ); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsConnector(); } ); 
 	DrawNeuronTextInRect( pixRect );
 
-	if ( IsDefined(m_shapeTarget) ) // draw target shape again to be sure that it is visible
+	if ( IsDefined(m_nobTarget) ) // draw target nob again to be sure that it is visible
 	{
 		tHighlight type { m_bTargetFits ? tHighlight::targetFit : tHighlight::targetNoFit };
-		m_pNMRI->DrawExterior( m_shapeTarget, context, type );
-		m_pNMRI->DrawInterior( m_shapeTarget, context, type );
+		m_pNMRI->DrawExterior( m_nobTarget, context, type );
+		m_pNMRI->DrawInterior( m_nobTarget, context, type );
 	}
 
-	if ( IsDefined(m_shapeHighlighted) )  // draw highlighted shape again to be sure that it is in foreground
+	if ( IsDefined(m_nobHighlighted) )  // draw highlighted nob again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior( m_shapeHighlighted, context, tHighlight::highlighted );
-		m_pNMRI->DrawInterior( m_shapeHighlighted, context, tHighlight::highlighted );
-		m_pNMRI->DrawNeuronText( m_shapeHighlighted, context );
+		m_pNMRI->DrawExterior( m_nobHighlighted, context, tHighlight::highlighted );
+		m_pNMRI->DrawInterior( m_nobHighlighted, context, tHighlight::highlighted );
+		m_pNMRI->DrawNeuronText( m_nobHighlighted, context );
 	}
 
 	DrawSensors();
 	DrawBeacon();
 }
 
-void MainWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
+void MainWindow::setHighlightedNob( MicroMeterPoint const & umCrsrPos )
 {
-	ShapeId const idHighlight { m_pNMRI->FindShapeAt( umCrsrPos ) };
-	if ( idHighlight != m_shapeHighlighted )
+	NobId const idHighlight { m_pNMRI->FindNobAt( umCrsrPos ) };
+	if ( idHighlight != m_nobHighlighted )
 	{
-		m_shapeHighlighted = idHighlight; 
+		m_nobHighlighted = idHighlight; 
 		Notify( false );
 	}
 }

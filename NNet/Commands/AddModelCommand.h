@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "UPShapeList.h"
-#include "ShapeIdList.h"
+#include "UPNobList.h"
+#include "NobIdList.h"
 #include "SelectionCommand.h"
 #include "NNetModelWriterInterface.h"
 
@@ -13,26 +13,26 @@ class AddModelCommand : public SelectionCommand
 {
 public:
 
-	AddModelCommand( UPShapeList const & list )
+	AddModelCommand( UPNobList const & list )
 	{ 
-		m_UPShapeList = list;
-		m_UPShapeList.SelectAllShapes(true);
+		m_UPNobList = list;
+		m_UPNobList.SelectAllNobs(true);
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do(nmwi);
-		nmwi.GetUPShapes().SelectAllShapes(true);
-		m_idList = nmwi.GetUPShapes().Append( m_UPShapeList );
+		nmwi.GetUPNobs().SelectAllNobs(true);
+		m_idList = nmwi.GetUPNobs().Append( m_UPNobList );
 	}
 
 	virtual void Undo( NNetModelWriterInterface  & nmwi ) 
 	{ 
-		m_UPShapeList = nmwi.GetUPShapes().ExtractShapes( m_idList );
+		m_UPNobList = nmwi.GetUPNobs().ExtractNobs( m_idList );
 		SelectionCommand::Undo( nmwi );
 	}
 
 private:
-	UPShapeList m_UPShapeList;
-	ShapeIdList m_idList;
+	UPNobList m_UPNobList;
+	NobIdList m_idList;
 };

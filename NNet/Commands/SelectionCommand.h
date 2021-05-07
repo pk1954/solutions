@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 #include "Command.h"
 
 class SelectionCommand : public Command
@@ -16,19 +16,19 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			m_selectedShapes = nmwi.GetSelection();
+			m_selectedNobs = nmwi.GetSelection();
 			m_bInitialized = true;
 		}
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
-		nmwi.GetUPShapes().DeselectAllShapes();
-		m_selectedShapes.Apply2All([&](Shape &s){ s.Select(true, false); });
+		nmwi.GetUPNobs().DeselectAllNobs();
+		m_selectedNobs.Apply2All([&](Nob &s){ s.Select(true, false); });
 	}
 
 protected:
-	ShapePtrList<Shape> m_selectedShapes;
+	NobPtrList<Nob> m_selectedNobs;
 	bool                m_bInitialized { false };
 };
 

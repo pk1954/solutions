@@ -6,7 +6,7 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 #include "BaseKnot.h"
 
@@ -15,7 +15,7 @@ class AddOutgoing2PipeCommand : public Command
 public:
 	AddOutgoing2PipeCommand
 	( 
-		ShapeId         const   idPipe, 
+		NobId         const   idPipe, 
 		MicroMeterPoint const & pos 
 	)
 	  :	m_idPipe(idPipe),
@@ -28,7 +28,7 @@ public:
 	{ 
 		if ( ! m_upKnotInsert )
 		{
-			m_pPipeOld      = nmwi.GetShapePtr<Pipe *>( m_idPipe );
+			m_pPipeOld      = nmwi.GetNobPtr<Pipe *>( m_idPipe );
 			m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr();
 			m_upKnotInsert  = make_unique<Knot>( m_pos );
 			m_upKnotInsert->Select( m_pPipeOld->IsSelected(), false );
@@ -43,18 +43,18 @@ public:
 		}
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_upPipeExt.get() );
 		m_pPipeOld->SetStartKnot( m_upKnotInsert.get() );
-		nmwi.GetUPShapes().Push( move(m_upKnotOrtho ) );
-		nmwi.GetUPShapes().Push( move(m_upKnotInsert) );
-		nmwi.GetUPShapes().Push( move(m_upPipeOrtho ) );
-		nmwi.GetUPShapes().Push( move(m_upPipeExt   ) );
+		nmwi.GetUPNobs().Push( move(m_upKnotOrtho ) );
+		nmwi.GetUPNobs().Push( move(m_upKnotInsert) );
+		nmwi.GetUPNobs().Push( move(m_upPipeOrtho ) );
+		nmwi.GetUPNobs().Push( move(m_upPipeExt   ) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upPipeExt    = nmwi.GetUPShapes().Pop<Pipe>();
-		m_upPipeOrtho  = nmwi.GetUPShapes().Pop<Pipe>();
-		m_upKnotInsert = nmwi.GetUPShapes().Pop<Knot>();
-		m_upKnotOrtho  = nmwi.GetUPShapes().Pop<Knot>();
+		m_upPipeExt    = nmwi.GetUPNobs().Pop<Pipe>();
+		m_upPipeOrtho  = nmwi.GetUPNobs().Pop<Pipe>();
+		m_upKnotInsert = nmwi.GetUPNobs().Pop<Knot>();
+		m_upKnotOrtho  = nmwi.GetUPNobs().Pop<Knot>();
 		m_pPipeOld->SetStartKnot( m_pStartKnotOld );
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_upPipeExt.get(), m_pPipeOld );
 	}
@@ -66,6 +66,6 @@ private:
 	unique_ptr<Pipe> m_upPipeOrtho   { nullptr };
 	unique_ptr<Knot> m_upKnotInsert  { nullptr };
 	unique_ptr<Knot> m_upKnotOrtho   { nullptr }; 
-	ShapeId          const m_idPipe;
+	NobId          const m_idPipe;
 	MicroMeterPoint  const m_pos; 
 };

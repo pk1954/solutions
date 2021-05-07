@@ -10,7 +10,7 @@
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "Pipe.h"
-#include "Shape.h"
+#include "Nob.h"
 #include "ComputeThread.h"
 #include "SlowMotionRatio.h"
 #include "NNetModelReaderInterface.h"
@@ -117,11 +117,11 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printMicroSecLine( textBuf, L"spent time:",    spent );
 		printFloatLine   ( textBuf, L"workload:",      Cast2Float( (spent / avail) * 100.0f ), L"%" );
 		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"" );
-		ShapeType::Apply2All
+		NobType::Apply2All
 		( 
-			[&](ShapeType const & type)
-			{ printIntLine( textBuf, (ShapeType::GetName(type.GetValue()) + L":").c_str(), m_pNMRI->GetNrOf(type) ); }
+			[&](NobType const & type)
+			{ printIntLine( textBuf, (NobType::GetName(type.GetValue()) + L":").c_str(), m_pNMRI->GetNrOf(type) ); }
 		);
-		printIntLine( textBuf, L"Shapes:", m_pNMRI->GetNrOfShapes() );
+		printIntLine( textBuf, L"Nobs:", m_pNMRI->GetNrOfNobs() );
 	}
 }

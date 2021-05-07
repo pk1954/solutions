@@ -8,7 +8,7 @@
 #include "Neuron.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
-#include "ShapeIdList.h"
+#include "NobIdList.h"
 #include "MicroMeterPointVector.h"
 #include "NNetModelWriterInterface.h"
 
@@ -22,37 +22,37 @@ void NNetModelWriterInterface::Stop()
 	m_pModel = nullptr;
 }
 
-void NNetModelWriterInterface::CreateInitialShapes()
+void NNetModelWriterInterface::CreateInitialNobs()
 {
 	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
 	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
 	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upOutputNeuron.get() ) };
 	upInputNeuron ->m_connections.AddOutgoing( upNewPipe.get() );
 	upOutputNeuron->m_connections.AddIncoming( upNewPipe.get() );
-	GetUPShapes().Push( move(upInputNeuron) );
-	GetUPShapes().Push( move(upOutputNeuron) );       
-	GetUPShapes().Push( move(upNewPipe) );      
+	GetUPNobs().Push( move(upInputNeuron) );
+	GetUPNobs().Push( move(upOutputNeuron) );       
+	GetUPNobs().Push( move(upNewPipe) );      
 }
 
-Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )     
+Nob * const NNetModelWriterInterface::GetNob( NobId const id )     
 { 
-	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
+	return const_cast<Nob *>(m_pModel->GetConstNob( id ) );
 }
 
-void NNetModelWriterInterface::SelectShape(ShapeId const idShape, bool const bOn) 
+void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
 { 
-	GetShapePtr<Shape *>(idShape)->Select(bOn, false); 
+	GetNobPtr<Nob *>(idNob)->Select(bOn, false); 
 }
 
-void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
+void NNetModelWriterInterface::ToggleStopOnTrigger( NobId const id )
 {
-	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( id ) } )
+	if ( Neuron * pNeuron { GetNobPtr<Neuron *>( id ) } )
 		pNeuron->StopOnTrigger( tBoolOp::opToggle );
 }
 
 void NNetModelWriterInterface::SelectBeepers() 
 { 
-	GetUPShapes().Apply2All<Neuron>
+	GetUPNobs().Apply2All<Neuron>
 	( 
 		[&](Neuron &n) 
 		{ 
@@ -64,7 +64,7 @@ void NNetModelWriterInterface::SelectBeepers()
 
 void NNetModelWriterInterface::RemoveOrphans()
 {
-	GetUPShapes().Apply2All<Knot>                              
+	GetUPNobs().Apply2All<Knot>                              
 	(                                                        
 		[&]( Knot const & knot )                  
 		{
@@ -77,15 +77,15 @@ void NNetModelWriterInterface::RemoveOrphans()
 void NNetModelWriterInterface::SetConnNeurons
 (
 	MicroMeterPointVector & umPntVector, 
-	ShapeIdList     const & shapeIds
+	NobIdList     const & nobIds
 )
 {
 	unsigned int ui = 0;
-	shapeIds.Apply2All
+	nobIds.Apply2All
 	(
-		[&](ShapeId const & id)
+		[&](NobId const & id)
 		{
-			ConnNeuron     * const pConnNeuron { GetShapePtr<ConnNeuron *>(id) };
+			ConnNeuron     * const pConnNeuron { GetNobPtr<ConnNeuron *>(id) };
 			MicroMeterPosDir const posDir      { pConnNeuron->GetRawPosDir() };
 			pConnNeuron->SetPosDir( umPntVector.GetPosDir(ui) );
 			umPntVector.SetPosDir( ui, posDir );
@@ -97,11 +97,11 @@ void NNetModelWriterInterface::SetConnNeurons
 void NNetModelWriterInterface::SetConnNeurons
 (
 	MicroMeterPointVector    const & umPntVector, 
-	ShapePtrList<ConnNeuron> const & shapePtrList
+	NobPtrList<ConnNeuron> const & nobPtrList
 )
 {
 	unsigned int ui = 0;
-	shapePtrList.Apply2All
+	nobPtrList.Apply2All
 	(
 		[&](ConnNeuron & c)	
 		{ c.SetPosDir( umPntVector.GetPosDir(ui++) ); }

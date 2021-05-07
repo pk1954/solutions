@@ -10,14 +10,14 @@
 #include "MoreTypes.h"
 #include "MonitorData.h"
 #include "ConnectionNeuron.h"
-#include "ShapePtrList.h"
-#include "ShapeType.h"
-#include "ShapeId.h"
+#include "NobPtrList.h"
+#include "NobType.h"
+#include "NobId.h"
 
 class Param;
 class Command;
 class Observable;
-class ShapeIdList;
+class NobIdList;
 class CommandStack;
 class AlignAnimation;
 class NNetModelImporter;
@@ -45,46 +45,46 @@ public:
         CommandStack             * const 
     );
 
-    void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
-    void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void AddIncoming2Knot    ( NobId const, MicroMeterPoint const & );
+    void AddIncoming2Pipe    ( NobId const, MicroMeterPoint const & );
     void AddModel            ();
     void AddSignal           ( MicroMeterCircle const &, TrackNr const );
-    void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
-    void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void AddOutgoing2Knot    ( NobId const, MicroMeterPoint const & );
+    void AddOutgoing2Pipe    ( NobId const, MicroMeterPoint const & );
     void AnalyzeAnomalies    ();
     void AnalyzeLoops        ();
-    void AppendInputNeuron   ( ShapeId const );
-    void AppendNeuron        ( ShapeId const );
+    void AppendInputNeuron   ( NobId const );
+    void AppendNeuron        ( NobId const );
     void ClearBeepers        ();
     void CopySelection       ();
-    void CreateInitialShapes ();
+    void CreateInitialNobs ();
     void DeleteSelection     ();
-    void DeleteShape         ( ShapeId  const );
+    void DeleteNob         ( NobId  const );
     void DeleteSignal        ( SignalId const );
     void DeleteTrack         ( TrackNr  const );
-    void Disconnect          ( ShapeId  const );
-    void InsertKnot          ( ShapeId  const, MicroMeterPoint const & );
-    void InsertNeuron        ( ShapeId  const, MicroMeterPoint const & );
+    void Disconnect          ( NobId  const );
+    void InsertKnot          ( NobId  const, MicroMeterPoint const & );
+    void InsertNeuron        ( NobId  const, MicroMeterPoint const & );
     void InsertTrack         ( TrackNr  const );
     void MoveSelection       ( MicroMeterPoint const & );
-    void MoveShape           ( ShapeId const, MicroMeterPoint const & );
+    void MoveNob           ( NobId const, MicroMeterPoint const & );
     void NewInputNeuron      ( MicroMeterPoint const & );
     void NewNeuron           ( MicroMeterPoint const & );
     void NewOutputNeuron     ( MicroMeterPoint const & );
     void ResetModel          ();
-    void RestrictSelection   ( ShapeType::Value const );
-    void Rotate              ( ShapeId const, MicroMeterPoint const &, MicroMeterPoint const & );
+    void RestrictSelection   ( NobType::Value const );
+    void Rotate              ( NobId const, MicroMeterPoint const &, MicroMeterPoint const & );
     void SelectAll           ( bool const );
     void SelectAllBeepers    ();
-    void SelectShape         ( ShapeId const, tBoolOp const );
-    void SelectShapesInRect  ( MicroMeterRect const &, bool const );
-    void SelectSubtree       ( ShapeId const, bool const );
-    void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<ShapeIdList> );
+    void SelectNob         ( NobId const, tBoolOp const );
+    void SelectNobsInRect  ( MicroMeterRect const &, bool const );
+    void SelectSubtree       ( NobId const, bool const );
+    void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<NobIdList> );
     void SetParameter        ( ParamType::Value const, float const );
-    void SetPulseRate        ( ShapeId    const, fHertz const );
-    void SetShape            ( ShapeId const, MicroMeterPosDir const );
-    void SetTriggerSound     ( ShapeId const, SoundDescr const & );
-    void ToggleStopOnTrigger ( ShapeId const );
+    void SetPulseRate        ( NobId    const, fHertz const );
+    void SetNob            ( NobId const, MicroMeterPosDir const );
+    void SetTriggerSound     ( NobId const, SoundDescr const & );
+    void ToggleStopOnTrigger ( NobId const );
 
     void UndoCommand();
     void RedoCommand();

@@ -9,7 +9,7 @@
 #include "MoreTypes.h"
 #include "PointType.h"
 #include "ConnectionNeuron.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 #include "MicroMeterPosDir.h"
 
 using std::endl;
@@ -24,9 +24,9 @@ public:
 
     MicroMeterPointVector() {}
 
-    MicroMeterPointVector( ShapePtrList<ConnNeuron> const& shapeList )
+    MicroMeterPointVector( NobPtrList<ConnNeuron> const& nobList )
     {
-        shapeList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
+        nobList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
     }
 
     void Apply2All(function<void(MicroMeterPosDir &)> const & func)

@@ -70,7 +70,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	DefineNNetWrappers( & m_modelCommands );
 
 	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable );
-	Shape::Initialize( m_model.GetParams() );
+	Nob::Initialize( m_model.GetParams() );
 
 	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_dynamicModelObservable, & m_cmdStack	);
 	m_modelImporter.Initialize(	nullptr );
@@ -92,7 +92,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	m_modelImporter.Import( L"std.mod", make_unique<ConsImportTermination>() );
 
-	if ( ProcessNNetScript( m_script, m_nmwi.GetUPShapes(), wstrInputFile ) )
+	if ( ProcessNNetScript( m_script, m_nmwi.GetUPNobs(), wstrInputFile ) )
 		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";

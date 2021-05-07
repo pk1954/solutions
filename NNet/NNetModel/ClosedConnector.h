@@ -7,17 +7,17 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "MicroMeterPosDir.h"
-#include "ShapeType.h"
-#include "UPShapeList.h"
-#include "ShapePtrList.h"
+#include "NobType.h"
+#include "UPNobList.h"
+#include "NobPtrList.h"
 #include "Connector.h"
 
-class ClosedConnector: public Shape
+class ClosedConnector: public Nob
 {
 public:
 
-	static bool      const TypeFits(ShapeType const type) { return type.IsClosedConnectorType(); }
-	static ShapeType const GetShapeType()                 { return ShapeType::Value::closedConnector; }
+	static bool      const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
+	static NobType const GetNobType()                 { return NobType::Value::closedConnector; }
 
 	ClosedConnector(Connector &, Connector &);
 	virtual ~ClosedConnector() {}
@@ -32,14 +32,14 @@ public:
 	virtual void       Expand      (MicroMeterRect        &)               const;
 	virtual bool const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool const Includes    (MicroMeterPoint const &)               const;
-	virtual void       RotateShape (MicroMeterPoint const &, Radian const);
-	virtual void       MoveShape   (MicroMeterPoint const &);
+	virtual void       RotateNob (MicroMeterPoint const &, Radian const);
+	virtual void       MoveNob   (MicroMeterPoint const &);
 	virtual void       Select      (bool const, bool const); 
 	virtual void       Prepare     ();
 	virtual bool const CompStep    ();
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
-	virtual void       Link        (Shape const &, function<Shape * (Shape const *)> const &);
+	virtual void       Link        (Nob const &, function<Nob * (Nob const *)> const &);
 
 	void SetParentPointers();
 	void ClearParentPointers();
@@ -59,5 +59,5 @@ private:
 	Connector * m_pOutputConnector { nullptr };
 };
 
-ClosedConnector const * Cast2ClosedConnector(Shape const *);
-ClosedConnector       * Cast2ClosedConnector(Shape       *);
+ClosedConnector const * Cast2ClosedConnector(Nob const *);
+ClosedConnector       * Cast2ClosedConnector(Nob       *);

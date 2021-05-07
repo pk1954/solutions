@@ -9,8 +9,8 @@
 #include "DisconnectBaseKnotCommand.h"
 #include "Command.h"
 #include "CommandStack.h"
-#include "ShapeId.h"
-#include "UpShapeList.h"
+#include "NobId.h"
+#include "UpNobList.h"
 #include "Connector.h"
 
 using std::unique_ptr;
@@ -20,7 +20,7 @@ class DisconnectConnectorCommand : public Command
 public:
     DisconnectConnectorCommand
     (
-        ShapeId const idConnector,
+        NobId const idConnector,
         bool    const bDelete 
     )
       : m_idConnector(idConnector),
@@ -45,7 +45,7 @@ public:
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
         m_upConnector->SetParentPointers();
-        nmwi.GetUPShapes().SetShape2Slot( move(m_upConnector) );
+        nmwi.GetUPNobs().SetNob2Slot( move(m_upConnector) );
         if (m_bDelete)
             m_cmdStack.UndoAll();
     }
@@ -57,9 +57,9 @@ private:
         m_cmdStack.Initialize(&nmwi, nullptr);
         if (m_bDelete)
         {
-            nmwi.GetShapePtr<Connector *>(m_idConnector)->Apply2All
+            nmwi.GetNobPtr<Connector *>(m_idConnector)->Apply2All
             (
-                [&](Shape const & s) 
+                [&](Nob const & s) 
                 { 
                     m_cmdStack.Push(move(make_unique<DisconnectBaseKnotCommand>(s.GetId(), true)));
                 }
@@ -67,7 +67,7 @@ private:
         }
     }
 
-    ShapeId         const m_idConnector;
+    NobId         const m_idConnector;
     bool            const m_bDelete;     // true: delete Connector, false: disconnect only
     CommandStack          m_cmdStack {};
     unique_ptr<Connector> m_upConnector  {};  

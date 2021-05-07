@@ -17,10 +17,10 @@ public:
 
 	virtual void Check() const;
 
-	virtual bool operator==( Shape const & ) const override;
+	virtual bool operator==( Nob const & ) const override;
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsInputNeuronType(); }
-	static ShapeType const GetShapeType() { return ShapeType::Value::inputNeuron; }
+	static bool      const TypeFits( NobType const type ) { return type.IsInputNeuronType(); }
+	static NobType const GetNobType() { return NobType::Value::inputNeuron; }
 
 	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
 	virtual void DrawInterior( DrawContext const &, tHighlight const ) const;

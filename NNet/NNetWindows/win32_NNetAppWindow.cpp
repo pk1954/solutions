@@ -96,7 +96,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	);
 
 	SignalFactory::Initialize( m_nmri, m_dynamicModelObservable );
-	Shape::Initialize( m_model.GetParams() );
+	Nob::Initialize( m_model.GetParams() );
 	m_model.SetDescriptionUI( m_descWindow );
 
 	m_modelImporter .Initialize( &m_script );
@@ -241,7 +241,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	if ( ! AutoOpen::IsOn() || ! m_preferences.ReadPreferences() )
 	{
 		m_modelCommands.ResetModel();
-		m_modelCommands.CreateInitialShapes();
+		m_modelCommands.CreateInitialNobs();
 	}
 
 	m_bStarted = true;
@@ -415,7 +415,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		ProcessNNetScript
 		( 
 		    m_script, 
-			m_nmwi.GetUPShapes(), 
+			m_nmwi.GetUPNobs(), 
 			ScriptFile::AskForFileName( L"in", L"Script files", tFileMode::read )
 		);
 		break;
@@ -426,7 +426,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_computeThread.StopComputation();
 			m_mainNNetWindow.Reset();
 			m_modelCommands.ResetModel();
-			m_modelCommands.CreateInitialShapes();
+			m_modelCommands.CreateInitialNobs();
 			m_staticModelObservable.NotifyAll( false );
 			m_appTitle.SetUnsavedChanges( true );
 			m_mainNNetWindow.CenterModel();

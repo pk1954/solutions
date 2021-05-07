@@ -11,7 +11,7 @@
 
 class Command;
 class CommandStack;
-class ShapeIdList;
+class NobIdList;
 class NNetModelCommands;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
@@ -32,7 +32,7 @@ public:
         NNetModelWriterInterface * const
     );
 
-    void Connect      (ShapeId const, ShapeId const, MainWindow &);
+    void Connect      (NobId const, NobId const, MainWindow &);
     void MakeConnector(RootWindow &);
 
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "D2D_DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
@@ -54,7 +54,7 @@ public:
 	PixelCoordsFp        & GetCoord      ()       { return m_context.GetCoord (); }
 	MicroMeter     const   PixelSize     () const { return m_context.GetPixelSize(); }
 
-	void DrawInteriorInRect  ( PixelRect  const &, ShapeCrit const & ) const;
+	void DrawInteriorInRect  ( PixelRect  const &, NobCrit const & ) const;
 	void DrawExteriorInRect  ( PixelRect  const &                    ) const;
 	void DrawNeuronTextInRect( PixelRect  const &                    ) const;
 	void DrawArrowsInRect    ( PixelRect  const &, MicroMeter const  ) const;

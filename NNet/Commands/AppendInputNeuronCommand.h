@@ -13,7 +13,7 @@
 class AppendInputNeuronCommand : public Command
 {
 public:
-	AppendInputNeuronCommand( ShapeId const idKnot )
+	AppendInputNeuronCommand( NobId const idKnot )
 		: m_idKnot( idKnot )
 	{ }
 
@@ -23,7 +23,7 @@ public:
 	{ 
 		if ( ! m_bInitialized )
 		{
-			Knot * pKnot { nmwi.GetShapePtr<Knot *>(m_idKnot) };
+			Knot * pKnot { nmwi.GetNobPtr<Knot *>(m_idKnot) };
 			m_upInputNeuron = make_unique<InputNeuron>( pKnot->GetPos() );
 			m_upInputNeuron->m_connections = pKnot->m_connections;
 			m_upInputNeuron->SetId( m_idKnot );
@@ -43,5 +43,5 @@ private:
 	unique_ptr<InputNeuron> m_upInputNeuron { nullptr };
 	unique_ptr<Knot>        m_upKnot        { nullptr };
 	bool                    m_bInitialized  { false };
-	ShapeId                 m_idKnot        { };
+	NobId                 m_idKnot        { };
 };

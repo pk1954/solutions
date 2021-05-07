@@ -1,4 +1,4 @@
-// ShapePtrList.h
+// NobPtrList.h
 //
 // NNetModel
 
@@ -6,18 +6,18 @@
 
 #include <vector>
 #include "MoreTypes.h"
-#include "Shape.h"
+#include "Nob.h"
 
 using std::vector;
 using std::sort;
 
-template <Shape_t T>
-class ShapePtrList
+template <Nob_t T>
+class NobPtrList
 {
 public:
 
-	ShapePtrList() {}
-	virtual ~ShapePtrList() {}
+	NobPtrList() {}
+	virtual ~NobPtrList() {}
 
 	size_t const Size()    const { return m_list.size(); }
 	bool   const IsEmpty() const { return m_list.empty(); }
@@ -37,46 +37,46 @@ public:
 		replace( begin(m_list), end(m_list), pDel, pAdd ); 
 	}
 
-	void Add( T * const pShape )
+	void Add( T * const pNob )
 	{
-		if ( pShape != nullptr )
+		if ( pNob != nullptr )
 		{
-			assert( find( begin(m_list), end(m_list), pShape ) == end(m_list) );
-			m_list.push_back( pShape );
+			assert( find( begin(m_list), end(m_list), pNob ) == end(m_list) );
+			m_list.push_back( pNob );
 		}
 	}
 
-	void Remove( T * const pShape )
+	void Remove( T * const pNob )
 	{
-		auto res = find( begin(m_list), end(m_list), pShape );
+		auto res = find( begin(m_list), end(m_list), pNob );
 		assert( res != end(m_list) );
 		m_list.erase( res );
 	}
 
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-		for ( auto pShape : m_list ) 
+		for ( auto pNob : m_list ) 
 		{ 
-			if ( pShape != nullptr )
-				func( * pShape );
+			if ( pNob != nullptr )
+				func( * pNob );
 		}
 	}
 
 	bool Apply2AllB( function<bool(T const &)> const & func ) const 
 	{
 		bool bResult { false };
-		for ( auto pShape : m_list ) 
+		for ( auto pNob : m_list ) 
 		{ 
-			if ( pShape != nullptr )
+			if ( pNob != nullptr )
 			{
-				if ( func( * pShape ) )
+				if ( func( * pNob ) )
 					return true;
 			}
 		}
 		return false;
 	}
 
-	bool operator==(ShapePtrList const & rhs) const
+	bool operator==(NobPtrList const & rhs) const
 	{
 		if ( Size() != rhs.Size() )
 			return false;
@@ -86,7 +86,7 @@ public:
 		return true;
 	}
 
-	friend wostream & operator<< (wostream & out, ShapePtrList<T> const & v)
+	friend wostream & operator<< (wostream & out, NobPtrList<T> const & v)
 	{
 		out << OPEN_BRACKET << v.m_list.size() << L":";
 		for ( auto & it: v.m_list )
@@ -100,7 +100,7 @@ public:
 		return out;
 	}
 
-	MicroMeterLine const CalcMaxDistLine() // find two shapes with maximum distance
+	MicroMeterLine const CalcMaxDistLine() // find two nobs with maximum distance
 	{
 		MicroMeter     maxDist { 0.0_MicroMeter };   	
 		MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };

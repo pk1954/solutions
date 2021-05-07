@@ -6,9 +6,9 @@
 
 using std::unique_ptr;
 
-class Shape;
+class Nob;
 class BaseKnot;
 class MainWindow;
 
-unique_ptr<Command> MakeDeleteCommand    (Shape const &);
-unique_ptr<Command> MakeDisconnectCommand(Shape const &);
+unique_ptr<Command> MakeDeleteCommand    (Nob const &);
+unique_ptr<Command> MakeDisconnectCommand(Nob const &);

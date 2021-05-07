@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "ShapeId.h"
+#include "NobId.h"
 
 class NNetModelWriterInterface;
 
@@ -35,8 +35,8 @@ public:
         return false; 
     };
 
-    virtual ShapeId const GetMovedShape() const
+    virtual NobId const GetMovedNob() const
     {
-        return ShapeId();
+        return NobId();
     }
 };

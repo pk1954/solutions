@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "CommandFunctions.h"
-#include "ShapeIdList.h"
+#include "NobIdList.h"
 #include "CommandStack.h"
 #include "Command.h"
 
@@ -35,16 +35,16 @@ private:
 	{ 
 		m_cmdStack.Initialize(&nmwi, nullptr);
 
-		nmwi.GetUPShapes().Apply2AllSelected<Shape>
+		nmwi.GetUPNobs().Apply2AllSelected<Nob>
 		(
-			[&](Shape & shape) 
+			[&](Nob & nob) 
 			{ 
-				m_cmdStack.Push( move( MakeDeleteCommand(shape) ) );
+				m_cmdStack.Push( move( MakeDeleteCommand(nob) ) );
 			}
 		); 
 	}
 
 	CommandStack m_cmdStack     {};
-	ShapeIdList  m_idList       {};
+	NobIdList  m_idList       {};
 	bool         m_bInitialized { false };
 };

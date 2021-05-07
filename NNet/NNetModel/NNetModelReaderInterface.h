@@ -7,13 +7,13 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "ShapeType.h"
-#include "ShapeId.h"
+#include "NobType.h"
+#include "NobId.h"
 #include "NNetModel.h"
 #include "SoundInterface.h"
 #include "tHighlightType.h"
 
-class Shape;
+class Nob;
 
 class NNetModelReaderInterface
 {
@@ -25,28 +25,28 @@ public:
 	void DumpModel() const { m_pModel->DumpModel(); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
-	bool            const IsConnectionCandidate     ( ShapeId const, ShapeId const ) const;
-	bool            const CanConnectTo              ( ShapeId const, ShapeId const ) const;
-	bool            const IsConnectedTo             ( ShapeId const, ShapeId const ) const;
-	bool            const IsSelected                ( ShapeId const ) const;
-	ShapeType       const GetShapeType              ( ShapeId const ) const;
-	fHertz          const GetPulseFrequency         ( ShapeId const ) const;
-	size_t          const GetNrOfSegments           ( ShapeId const ) const;
-	SoundDescr      const GetTriggerSound           ( ShapeId const ) const;
-	bool            const HasIncoming               ( ShapeId const ) const;
-	bool            const HasOutgoing               ( ShapeId const ) const;
-	size_t          const GetNrOfOutgoingConnections( ShapeId const ) const;
-	size_t          const GetNrOfIncomingConnections( ShapeId const ) const;
-	mV              const GetVoltage                ( ShapeId const ) const;
-	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
-	Degrees         const GetDirection              ( ShapeId const ) const; 
+	bool            const IsConnectionCandidate     ( NobId const, NobId const ) const;
+	bool            const CanConnectTo              ( NobId const, NobId const ) const;
+	bool            const IsConnectedTo             ( NobId const, NobId const ) const;
+	bool            const IsSelected                ( NobId const ) const;
+	NobType       const GetNobType              ( NobId const ) const;
+	fHertz          const GetPulseFrequency         ( NobId const ) const;
+	size_t          const GetNrOfSegments           ( NobId const ) const;
+	SoundDescr      const GetTriggerSound           ( NobId const ) const;
+	bool            const HasIncoming               ( NobId const ) const;
+	bool            const HasOutgoing               ( NobId const ) const;
+	size_t          const GetNrOfOutgoingConnections( NobId const ) const;
+	size_t          const GetNrOfIncomingConnections( NobId const ) const;
+	mV              const GetVoltage                ( NobId const ) const;
+	mV              const GetVoltage                ( NobId const, MicroMeterPoint const & ) const;
+	Degrees         const GetDirection              ( NobId const ) const; 
 
-	UPShapeList     const & GetUPShapes()                          const { return m_pModel->GetUPShapes(); }
-	bool            const   AnyShapesSelected()                    const { return m_pModel->GetUPShapes().AnyShapesSelected(); }
-	bool            const   IsValidShapeId( ShapeId const id )     const { return m_pModel->GetUPShapes().IsValidShapeId(id); }
-	MicroMeterPoint const   GetShapePos   ( ShapeId const id )     const { return m_pModel->GetShapePos                 (id); }
-	Shape           const * GetConstShape ( ShapeId const id )     const { return m_pModel->GetConstShape               (id); }
-	size_t          const   GetSizeOfShapeList()                   const { return m_pModel->GetUPShapes().Size(); }
+	UPNobList     const & GetUPNobs()                          const { return m_pModel->GetUPNobs(); }
+	bool            const   AnyNobsSelected()                    const { return m_pModel->GetUPNobs().AnyNobsSelected(); }
+	bool            const   IsValidNobId( NobId const id )     const { return m_pModel->GetUPNobs().IsValidNobId(id); }
+	MicroMeterPoint const   GetNobPos   ( NobId const id )     const { return m_pModel->GetNobPos                 (id); }
+	Nob           const * GetConstNob ( NobId const id )     const { return m_pModel->GetConstNob               (id); }
+	size_t          const   GetSizeOfNobList()                   const { return m_pModel->GetUPNobs().Size(); }
 	fMicroSecs      const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime (); }
 	MonitorData     const & GetMonitorData()                       const { return m_pModel->GetMonitorData    (); }
 	fMicroSecs      const   GetTimeResolution()                    const { return m_pModel->GetParams().GetTimeResolution(); };
@@ -55,28 +55,28 @@ public:
 
 	bool    const GetDescriptionLine( int const, wstring & ) const;
 
-	ShapeId const FindShapeAt
+	NobId const FindNobAt
 	( 
 		MicroMeterPoint const &, 
-		ShapeCrit       const & = ShapeCritAlwaysTrue 
+		NobCrit       const & = NobCritAlwaysTrue 
 	) const;
 
-	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlight const ) const;
-	void DrawInterior  ( ShapeId const, DrawContext const &, tHighlight const ) const;
-	void DrawNeuronText( ShapeId const, DrawContext const & ) const;
+	void DrawExterior  ( NobId const, DrawContext const &, tHighlight const ) const;
+	void DrawInterior  ( NobId const, DrawContext const &, tHighlight const ) const;
+	void DrawNeuronText( NobId const, DrawContext const & ) const;
 	
 	void DrawLine( MicroMeterLine const &, DrawContext const & ) const;
 
-	unsigned int const GetNrOf(ShapeType const type) const { return m_pModel->GetUPShapes().GetCounter(type); }
-	unsigned int const GetNrOfShapes()               const { return m_pModel->GetUPShapes().GetCounter(); }
+	unsigned int const GetNrOf(NobType const type) const { return m_pModel->GetUPNobs().GetCounter(type); }
+	unsigned int const GetNrOfNobs()               const { return m_pModel->GetUPNobs().GetCounter(); }
 
-	template <Shape_t T> bool const IsOfType(ShapeId const id) const { return T::TypeFits(GetShapeType(id)); }
+	template <Nob_t T> bool const IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
 
 private:
 	NNetModel const * m_pModel;
 
-	bool const isConnectedToPipe( ShapeId const, ShapeId const ) const;
-	bool const onlyOneAxon( ShapeId const idSrc, ShapeId const idDst ) const
+	bool const isConnectedToPipe( NobId const, NobId const ) const;
+	bool const onlyOneAxon( NobId const idSrc, NobId const idDst ) const
 	{
 		return (GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst) <= 1);
 	}

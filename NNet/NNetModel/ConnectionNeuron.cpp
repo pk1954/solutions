@@ -25,9 +25,9 @@ MicroMeterPoint const ConnNeuron::determineVector() const
 	return umVector;
 }
 
-void ConnNeuron::RotateShape( MicroMeterPoint const & umPntPivot, Radian const radDelta )
+void ConnNeuron::RotateNob( MicroMeterPoint const & umPntPivot, Radian const radDelta )
 {
-	BaseKnot::RotateShape(umPntPivot, radDelta);
+	BaseKnot::RotateNob(umPntPivot, radDelta);
 	m_radDirection += radDelta;
 }
 

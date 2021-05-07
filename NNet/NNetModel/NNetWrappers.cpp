@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "symtab.h"
-#include "ShapeIdList.h"
+#include "NobIdList.h"
 #include "SoundInterface.h"
 #include "win32_util.h"
 #include "UtilityWrappers.h"
@@ -42,12 +42,12 @@ public:
     }
 };
 
-class WrapCreateInitialShapes: public Script_Functor
+class WrapCreateInitialNobs: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCommands->CreateInitialShapes();
+        m_pCommands->CreateInitialNobs();
     }
 };
 
@@ -56,7 +56,7 @@ class WrapAppendInputNeuron: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
+        NobId const id { ScrReadNobId( script ) };
         m_pCommands->AppendInputNeuron( id );
     }
 };
@@ -66,7 +66,7 @@ class WrapAppendNeuron: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
+        NobId const id { ScrReadNobId( script ) };
         m_pCommands->AppendNeuron( id );
     }
 };
@@ -104,20 +104,20 @@ class WrapSelectSubtree: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id  { ScrReadShapeId(script) };
+        NobId const id  { ScrReadNobId(script) };
         bool    const bOn { script.ScrReadInt() != 0 };
         m_pCommands->SelectSubtree(id, bOn);
     }
 };
 
-class WrapSelectShape: public Script_Functor
+class WrapSelectNob: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
+        NobId const id { ScrReadNobId( script ) };
         tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pCommands->SelectShape( id, op );
+        m_pCommands->SelectNob( id, op );
     }
 };
 
@@ -126,7 +126,7 @@ class WrapSetTriggerSound: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
+        NobId const id { ScrReadNobId( script ) };
         SoundDescr desc 
         {
             script.ScrReadInt() != 0,
@@ -142,7 +142,7 @@ class WrapToggleStopOnTrigger: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
+        NobId const id { ScrReadNobId( script ) };
         m_pCommands->ToggleStopOnTrigger( id );
     }
 };
@@ -165,13 +165,13 @@ public:
     }
 };
 
-class WrapDeleteShape: public Script_Functor
+class WrapDeleteNob: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
-        m_pCommands->DeleteShape( id );
+        NobId const id { ScrReadNobId( script ) };
+        m_pCommands->DeleteNob( id );
     }
 };
 
@@ -180,7 +180,7 @@ class WrapDisconnect: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id { ScrReadShapeId( script ) };
+        NobId const id { ScrReadNobId( script ) };
         m_pCommands->Disconnect( id );
     }
 };
@@ -190,7 +190,7 @@ class WrapSetPulseRate: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId const id     { ScrReadShapeId( script ) };
+        NobId const id     { ScrReadNobId( script ) };
         float   const fValue { Cast2Float( script.ScrReadFloat() ) };
         m_pCommands->SetPulseRate( id, fHertz{ fValue } );
     }
@@ -201,9 +201,9 @@ class WrapSetConnectionNeurons: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        unique_ptr<ShapeIdList> upShapeIds  { ScrReadShapeIdList(script) };
+        unique_ptr<NobIdList> upNobIds  { ScrReadNobIdList(script) };
         MicroMeterPointVector   umPntVector { ScrReadMicroMeterPointVector(script) };
-        m_pCommands->SetConnectionNeurons( umPntVector, move(upShapeIds) );
+        m_pCommands->SetConnectionNeurons( umPntVector, move(upNobIds) );
     }
 };
 
@@ -218,18 +218,18 @@ public:
     }
 };
 
-class WrapMoveShape: public Script_Functor
+class WrapMoveNob: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId         const id      { ScrReadShapeId( script ) };
+        NobId         const id      { ScrReadNobId( script ) };
         MicroMeterPoint const umDelta { ScrReadMicroMeterPoint( script ) };
-        m_pCommands->MoveShape( id, umDelta );
+        m_pCommands->MoveNob( id, umDelta );
     }
 };
 
-class WrapSelectShapesInRect: public Script_Functor
+class WrapSelectNobsInRect: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
@@ -237,7 +237,7 @@ public:
         MicroMeterPoint const umPntStart { ScrReadMicroMeterPoint( script ) };
         MicroMeterPoint const umPntEnd   { ScrReadMicroMeterPoint( script ) };
         bool            const bOn        { script.ScrReadUint() != 0 };
-        m_pCommands->SelectShapesInRect( MicroMeterRect(umPntStart, umPntEnd), bOn );
+        m_pCommands->SelectNobsInRect( MicroMeterRect(umPntStart, umPntEnd), bOn );
     }
 };
 
@@ -256,7 +256,7 @@ class WrapInsertNeuron: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId         const id    { ScrReadShapeId( script ) };
+        NobId         const id    { ScrReadNobId( script ) };
         MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
         m_pCommands->InsertNeuron( id, umPos );
     }
@@ -267,9 +267,9 @@ class WrapAddOutgoing2Knot: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId         const idShape { ScrReadShapeId( script ) };
+        NobId         const idNob { ScrReadNobId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pCommands->AddOutgoing2Knot( idShape, umPos );
+        m_pCommands->AddOutgoing2Knot( idNob, umPos );
     }
 };
 
@@ -278,9 +278,9 @@ class WrapAddIncoming2Knot: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId         const idShape { ScrReadShapeId( script ) };
+        NobId         const idNob { ScrReadNobId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pCommands->AddIncoming2Knot( idShape, umPos );
+        m_pCommands->AddIncoming2Knot( idNob, umPos );
     }
 };
 
@@ -289,9 +289,9 @@ class WrapAddOutgoing2Pipe: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId         const idShape { ScrReadShapeId( script ) };
+        NobId         const idNob { ScrReadNobId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pCommands->AddOutgoing2Pipe( idShape, umPos );
+        m_pCommands->AddOutgoing2Pipe( idNob, umPos );
     }
 };
 
@@ -300,9 +300,9 @@ class WrapAddIncoming2Pipe: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        ShapeId         const idShape { ScrReadShapeId( script ) };
+        NobId         const idNob { ScrReadNobId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pCommands->AddIncoming2Pipe( idShape, umPos );
+        m_pCommands->AddIncoming2Pipe( idNob, umPos );
     }
 };
 
@@ -367,20 +367,20 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(AddOutgoing2Pipe);   
     DEF_FUNC(ClearBeepers);       
     DEF_FUNC(CopySelection);      
-    DEF_FUNC(CreateInitialShapes);
+    DEF_FUNC(CreateInitialNobs);
     DEF_FUNC(DeleteSelection);    
-    DEF_FUNC(DeleteShape);        
+    DEF_FUNC(DeleteNob);        
     DEF_FUNC(Disconnect);         
     DEF_FUNC(InsertNeuron);       
     DEF_FUNC(MoveSelection);      
-    DEF_FUNC(MoveShape);          
+    DEF_FUNC(MoveNob);          
     DEF_FUNC(NewInputNeuron);     
     DEF_FUNC(NewNeuron);          
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          
     DEF_FUNC(SelectAllBeepers);   
-    DEF_FUNC(SelectShape);        
-    DEF_FUNC(SelectShapesInRect); 
+    DEF_FUNC(SelectNob);        
+    DEF_FUNC(SelectNobsInRect); 
     DEF_FUNC(SelectSubtree);      
     DEF_FUNC(SetParameter);    
     DEF_FUNC(SetPulseRate); 

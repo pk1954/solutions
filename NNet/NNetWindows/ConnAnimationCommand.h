@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "Command.h"
 #include "Connector.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 #include "MicroMeterPointVector.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
@@ -39,7 +39,7 @@ private:
     };
     
     Mode                             m_mode { Mode::mode_do };
-    UPShapeList                    * m_pModelShapes;
+    UPNobList                    * m_pModelNobs;
     NNetModelWriterInterface       & m_NMWI;
     RootWindow                     & m_win;
     int                              m_iPhase { 0 };
@@ -49,7 +49,7 @@ private:
     MicroMeterPointVector            m_umPntVectorTarget1;   // after position alignment
     MicroMeterPointVector            m_umPntVectorTarget2;   // after direction alignment
     MicroMeterPointVector            m_umPntVectorTarget3;   // after packing
-    ShapePtrList<ConnNeuron>         m_shapesAnimated {};
+    NobPtrList<ConnNeuron>         m_nobsAnimated {};
     Animation<MicroMeterPointVector> m_connAnimation 
     {
         Animation<MicroMeterPointVector>
@@ -63,7 +63,7 @@ private:
         )
     };
 
-    ShapeType    const determineShapeType() const;
+    NobType    const determineNobType() const;
     unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
     void               nextAnimationPhase();
     void               updateUI();

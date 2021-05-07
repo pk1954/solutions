@@ -63,7 +63,7 @@
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SelectShapesInRectCommand.h">
+    <ClInclude Include="SelectNobsInRectCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CopySelectionCommand.h">
@@ -78,7 +78,7 @@
     <ClInclude Include="SetPulseRateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SelectShapeCommand.h">
+    <ClInclude Include="SelectNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CommandStack.h">
@@ -111,7 +111,7 @@
     <ClInclude Include="SetConnectionNeuronsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveShapeCommand.h">
+    <ClInclude Include="MoveNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AddSignalCommand.h">
@@ -129,7 +129,7 @@
     <ClInclude Include="DisconnectConnectorCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetShapeCommand.h">
+    <ClInclude Include="SetNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeleteSelectionCommand.h">

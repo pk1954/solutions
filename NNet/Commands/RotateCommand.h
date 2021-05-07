@@ -7,20 +7,20 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
-#include "Shape.h"
+#include "Nob.h"
 
 class RotateCommand : public Command
 {
 public:
 	RotateCommand
 	( 
-		Shape                 & shape,
+		Nob                 & nob,
 		MicroMeterPoint const & umPntOld, 
 		MicroMeterPoint const & umPntNew
 	)
-	  : m_shape(shape)
+	  : m_nob(nob)
 	{
-		m_umPntPivot = shape.GetPos();
+		m_umPntPivot = nob.GetPos();
 		Radian const radOld { Vector2Radian(umPntOld - m_umPntPivot) };
 		Radian const radNew { Vector2Radian(umPntNew - m_umPntPivot) };
 		m_radDelta = radNew - radOld;
@@ -28,17 +28,17 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_shape.RotateShape(m_umPntPivot, m_radDelta);
+		m_nob.RotateNob(m_umPntPivot, m_radDelta);
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_shape.RotateShape(m_umPntPivot, -m_radDelta);
+		m_nob.RotateNob(m_umPntPivot, -m_radDelta);
 	}
 
-	virtual ShapeId const GetMovedShape() const
+	virtual NobId const GetMovedNob() const
 	{
-		return m_shape.GetId();
+		return m_nob.GetId();
 	}
 
 	virtual bool IsMoveCommand() const
@@ -47,7 +47,7 @@ public:
 	};
 
 private:
-	Shape         & m_shape;
+	Nob         & m_nob;
 	Radian          m_radDelta;
 	MicroMeterPoint m_umPntPivot;
 };

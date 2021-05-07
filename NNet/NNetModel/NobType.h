@@ -1,4 +1,4 @@
-// ShapeType.h
+// NobType.h
 //
 // NNetModel
 
@@ -14,7 +14,7 @@ using std::wostream;
 using std::wstring;
 using std::size_t;
 
-class ShapeType
+class NobType
 {
 public:
 	enum class Value
@@ -27,43 +27,43 @@ public:
 		pipe,
 		knot,
 		undefined,
-		shapeTypeLast  = knot,
-		shapeTypeFirst = connector
+		nobTypeLast  = knot,
+		nobTypeFirst = connector
 	};
 
-	static size_t const NR_OF_SHAPE_TYPES { static_cast<size_t>(Value::shapeTypeLast) + 1 };
+	static size_t const NR_OF_NOB_TYPES { static_cast<size_t>(Value::nobTypeLast) + 1 };
 
-	ShapeType()
+	NobType()
 		:	m_value( Value::undefined )
 	{}
 
-	ShapeType( Value val )
+	NobType( Value val )
 		:	m_value( val )
 	{}
 
-	bool const operator==( ShapeType const & rhs ) const
+	bool const operator==( NobType const & rhs ) const
 	{
 		return m_value == rhs.m_value;
 	}
 
-	bool const operator!=(ShapeType const & rhs) const
+	bool const operator!=(NobType const & rhs) const
 	{
 		return m_value != rhs.m_value;
 	}
 
 	void Check() const
 	{
-		AssertLimits<int>( (int)m_value, (int)Value::shapeTypeFirst, (int)Value::undefined );
+		AssertLimits<int>( (int)m_value, (int)Value::nobTypeFirst, (int)Value::undefined );
 	}
 
 	static void Apply2All( function<void(Value const &)> const & func )
 	{
-		for ( int i = 0; i <= static_cast<int>(ShapeType::Value::shapeTypeLast); ++i )
+		for ( int i = 0; i <= static_cast<int>(NobType::Value::nobTypeLast); ++i )
 			func( static_cast<Value>( i ) );
 	}
 
-	static wstring          const GetName( ShapeType::Value const );
-	static ShapeType::Value const GetTypeFromName( wstring const & );
+	static wstring          const GetName( NobType::Value const );
+	static NobType::Value const GetTypeFromName( wstring const & );
 
 	bool const IsPipeType           () const { return m_value == Value::pipe;            }
 	bool const IsDefinedType        () const { return m_value != Value::undefined;       }
@@ -97,7 +97,7 @@ public:
 
 	Value const GetValue() const { return m_value; }
 
-	friend wostream & operator<< ( wostream &, ShapeType const & shapeType );
+	friend wostream & operator<< ( wostream &, NobType const & nobType );
 
 private:
 	Value m_value;
@@ -105,24 +105,24 @@ private:
 
 using std::bitset;
 
-class ShapeTypeFilter
+class NobTypeFilter
 {
 public:
-	ShapeTypeFilter() = default;
-	ShapeTypeFilter(ShapeType::Value val) : m_bits(bitSet(val)) {}
-	ShapeTypeFilter(const ShapeTypeFilter& other) : m_bits(other.m_bits) {}
+	NobTypeFilter() = default;
+	NobTypeFilter(NobType::Value val) : m_bits(bitSet(val)) {}
+	NobTypeFilter(const NobTypeFilter& other) : m_bits(other.m_bits) {}
 
 	bool const Any()  const { return m_bits.any();  }
 	bool const All()  const { return m_bits.all();  }
 	bool const None() const { return m_bits.none(); }
 
-	bool const Test (ShapeType::Value val) const { return m_bits.test (bitSet(val)); }
-	void const Set  (ShapeType::Value val)       {        m_bits.set  (bitSet(val)); }
-	void const Unset(ShapeType::Value val)       {        m_bits.reset(bitSet(val)); }
+	bool const Test (NobType::Value val) const { return m_bits.test (bitSet(val)); }
+	void const Set  (NobType::Value val)       {        m_bits.set  (bitSet(val)); }
+	void const Unset(NobType::Value val)       {        m_bits.reset(bitSet(val)); }
 
 private:
 	
-	static unsigned int const bitSet(ShapeType::Value const val) { return 1 << static_cast<unsigned int>(val); }
+	static unsigned int const bitSet(NobType::Value const val) { return 1 << static_cast<unsigned int>(val); }
 
-	bitset<ShapeType::NR_OF_SHAPE_TYPES> m_bits;
+	bitset<NobType::NR_OF_NOB_TYPES> m_bits;
 };

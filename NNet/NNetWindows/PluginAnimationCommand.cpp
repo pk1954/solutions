@@ -8,7 +8,7 @@
 #include "CalcOrthoVector.h"
 #include "win32_Commands.h"
 #include "CommandStack.h"
-#include "ShapeIdList.h"
+#include "NobIdList.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 #include "PluginAnimationCommand.h"
@@ -28,7 +28,7 @@ PluginAnimationCommand::PluginAnimationCommand
     m_NMWI(cmds.GetNMWI()),
     m_callable(win.GetWindowHandle())
 {
-    m_pModelShapes = &m_NMWI.GetUPShapes();
+    m_pModelNobs = &m_NMWI.GetUPNobs();
 
     Radian          const radianTarget { m_connTarget.GetDir() };
     MicroMeterPoint const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
@@ -69,7 +69,7 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
                  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
         case 3:  m_upClosedConnector->SetParentPointers();
-                 m_pModelShapes->Push(move(m_upClosedConnector));
+                 m_pModelNobs->Push(move(m_upClosedConnector));
                  unblockUI();
                  return; 
         default: return;        // do not start animation
@@ -80,7 +80,7 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         switch (m_iPhase--)
         {
         case 3:  blockUI();
-                 m_upClosedConnector = m_pModelShapes->Pop<ClosedConnector>();
+                 m_upClosedConnector = m_pModelNobs->Pop<ClosedConnector>();
                  m_upClosedConnector->ClearParentPointers();
                  [[fallthrough]]; 
         case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;

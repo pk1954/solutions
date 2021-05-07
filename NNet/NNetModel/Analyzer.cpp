@@ -13,35 +13,35 @@
 using std::endl;
 using std::to_wstring;
 
-ShapeStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri )
+NobStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri )
 {
-	int const iNrOfShapes { Cast2Int(nmri.GetSizeOfShapeList()) };
+	int const iNrOfNobs { Cast2Int(nmri.GetSizeOfNobList()) };
 
-	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
+	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfNobs + 1; iMaxLoopSize += 2 )
 	{
 		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
 		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
-		m_shapeStack.Clear();
-		if ( nmri.GetUPShapes().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop( b ); } ) )
+		m_nobStack.Clear();
+		if ( nmri.GetUPNobs().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop( b ); } ) )
 		{
 			if ( m_bStop )  
 			{
-				m_shapeStack.Clear();
+				m_nobStack.Clear();
 				statusDisplay( L"analysis aborted by user" );
-				return m_shapeStack;
+				return m_nobStack;
 			}
 			else 
 			{
 				statusDisplay( L"loop found" );
-				return m_shapeStack;
+				return m_nobStack;
 			}
 		}
 	}
 
 	statusDisplay( L"no loop found" );
-	return m_shapeStack;
+	return m_nobStack;
 }
 
 // findLoop - try to find a loop in model
@@ -49,7 +49,7 @@ ShapeStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri 
 // returns true, if loop found (m_bStop == false) or aborted by user (m_bStop == true). 
 //         false, if analysis completed and no loop found
 
-bool ModelAnalyzer::findLoop( Shape const & shape )
+bool ModelAnalyzer::findLoop( Nob const & nob )
 {
 	if ( ( * m_pEscFunc )() )
 		m_bStop = true;
@@ -57,28 +57,28 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	if ( m_bStop )
 		return true;
 
-	if ( m_shapeStack.Size() == m_iRecDepth )
+	if ( m_nobStack.Size() == m_iRecDepth )
 		return false;  // maximum search depth reached
 
-	assert( shape.IsDefined() );
-	m_shapeStack.Add( & shape );
+	assert( nob.IsDefined() );
+	m_nobStack.Add( & nob );
 
 	bool bResult { false };
 
 	if ( 
-		  ( m_shapeStack.Size() > 1 ) &&                        // we are beyond the initial shape
-	      ( shape.GetId() == m_shapeStack.GetFirst().GetId() )  // and found the same shape again
+		  ( m_nobStack.Size() > 1 ) &&                        // we are beyond the initial nob
+	      ( nob.GetId() == m_nobStack.GetFirst().GetId() )  // and found the same nob again
 	   )
 	{
 		bResult = true;  // loop found. Do not pop_back stack!
 	}
-	else if ( shape.IsPipe() )
+	else if ( nob.IsPipe() )
 	{
-		bResult = findLoop( * static_cast<Pipe const &>(shape).GetEndKnotPtr() );  // recursion
+		bResult = findLoop( * static_cast<Pipe const &>(nob).GetEndKnotPtr() );  // recursion
 	}
-	else if ( shape.IsBaseKnot() )
+	else if ( nob.IsBaseKnot() )
 	{
-		bResult = static_cast<BaseKnot const &>(shape).m_connections.Apply2AllOutPipesB
+		bResult = static_cast<BaseKnot const &>(nob).m_connections.Apply2AllOutPipesB
 		( 
 			[&]( Pipe const & pipe ) 
 			{ 
@@ -88,11 +88,11 @@ bool ModelAnalyzer::findLoop( Shape const & shape )
 	}
 	else
 	{
-		assert( false );  // shape is neither Pipe nor baseknot
+		assert( false );  // nob is neither Pipe nor baseknot
 	}
 
 	if ( ! bResult )
-		m_shapeStack.RemoveLast(); // no loop in this branch
+		m_nobStack.RemoveLast(); // no loop in this branch
 
 	return bResult;
 }
@@ -103,26 +103,26 @@ bool ModelAnalyzer::hasAnomaly( Knot const & knot )
 
 	if ( ! knot.m_connections.HasIncoming() )
 	{
-		knot.m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_shapeStack.Add( & pipe ); } );
+		knot.m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_nobStack.Add( & pipe ); } );
 		bFoundAnomaly = true;
 	}
 	else if ( ! knot.m_connections.HasOutgoing() )
 	{
-		knot.m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_shapeStack.Add( & pipe ); } );
+		knot.m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_nobStack.Add( & pipe ); } );
 		bFoundAnomaly = true;
 	}
 
 	if ( bFoundAnomaly )
-		m_shapeStack.Add( & knot );
+		m_nobStack.Add( & knot );
 
 	return bFoundAnomaly; 
 }
 
-ShapeStack const ModelAnalyzer::FindAnomaly( NNetModelReaderInterface const & nmri)
+NobStack const ModelAnalyzer::FindAnomaly( NNetModelReaderInterface const & nmri)
 {
-	m_shapeStack.Clear();
-	bool const bFound { nmri.GetUPShapes().Apply2AllB<Knot>( [&](Knot const & k) { return hasAnomaly(k); } ) };
+	m_nobStack.Clear();
+	bool const bFound { nmri.GetUPNobs().Apply2AllB<Knot>( [&](Knot const & k) { return hasAnomaly(k); } ) };
 	if ( ! bFound )
 		statusDisplay( L"no anomalies found" );
-	return m_shapeStack;
+	return m_nobStack;
 }

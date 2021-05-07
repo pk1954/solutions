@@ -44,5 +44,5 @@ void Knot::Select(bool const bOn, bool const bRecursive)
 		[&](Pipe const &p) { return p.IsSelected(); }   // if any connected pipe is selected
 	);                                                  // knot must also be selected
 
-	Shape::Select( bOn || bAnyConnectedPipeSelected );
+	Nob::Select( bOn || bAnyConnectedPipeSelected );
 }

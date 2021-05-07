@@ -7,24 +7,24 @@
 #include "MoreTypes.h"
 #include "LineType.h"
 #include "BaseKnot.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 
-template <Shape_t T>
+template <Nob_t T>
 MicroMeterPoint const CalcOrthoVector
 (
 	MicroMeterLine  const & line,
-	ShapePtrList<T> const & list
+	NobPtrList<T> const & list
 )
 {
 	unsigned int uiLeftConnections  { 0 };
 	unsigned int uiRightConnections { 0 };
 	list.Apply2All
 	(	
-		[&](Shape const & shape)
+		[&](Nob const & nob)
 		{ 
-			if ( shape.IsBaseKnot() )
+			if ( nob.IsBaseKnot() )
 			{
-				BaseKnot const & baseKnot { static_cast<BaseKnot const &>(shape) };
+				BaseKnot const & baseKnot { static_cast<BaseKnot const &>(nob) };
 				baseKnot.m_connections.Apply2AllInPipes
 				( 
 					[&](Pipe & pipe) 

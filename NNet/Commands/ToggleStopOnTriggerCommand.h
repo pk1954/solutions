@@ -5,13 +5,13 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 
 class ToggleStopOnTriggerCommand : public Command
 {
 public:
-	ToggleStopOnTriggerCommand( ShapeId const id )
+	ToggleStopOnTriggerCommand( NobId const id )
 		:	m_id( id )
 	{ }
 
@@ -21,6 +21,6 @@ public:
 	}
 
 private:
-	ShapeId const m_id;
+	NobId const m_id;
 };
 

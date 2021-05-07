@@ -11,8 +11,8 @@
 class AnalyzeCommand : public SelectionCommand
 {
 public:
-	AnalyzeCommand( ShapeStack const stack )
-		: m_result ( stack )
+	AnalyzeCommand(NobStack const stack)
+		: m_result(stack)
 	{}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
@@ -20,11 +20,11 @@ public:
 		SelectionCommand::Do( nmwi );
 		if ( ! m_result.IsEmpty() )
 		{
-			nmwi.GetUPShapes().DeselectAllShapes();
-			m_result.Apply2All([&](Shape const &s){ nmwi.SelectShape(s.GetId(), true); }	);
+			nmwi.GetUPNobs().DeselectAllNobs();
+			m_result.Apply2All([&](Nob const &s){ nmwi.SelectNob(s.GetId(), true); }	);
 		}
 	}
 
 protected:
-	ShapeStack m_result;
+	NobStack m_result;
 };

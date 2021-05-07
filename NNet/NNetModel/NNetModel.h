@@ -15,8 +15,8 @@
 #include "tHighlightType.h"
 #include "ModelDescription.h"
 #include "MonitorData.h"
-#include "ShapeErrorHandler.h"
-#include "UPShapeList.h"
+#include "NobErrorHandler.h"
+#include "UPNobList.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
 
@@ -32,48 +32,48 @@ public:
 
 	bool operator==( NNetModel const & ) const;
 
-	template <Shape_t T>
-	T GetShapeConstPtr( ShapeId const id ) const
+	template <Nob_t T>
+	T GetNobConstPtr( NobId const id ) const
 	{
-		Shape const * const pShape { GetConstShape( id ) };
-		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
+		Nob const * const pNob { GetConstNob( id ) };
+		return (pNob && HasType<T>( * pNob )) ? static_cast<T>( pNob ) : nullptr;
 	}
 
 	void CheckModel() const;
 	void DumpModel () const;
 
-	Shape  const * GetConstShape( ShapeId const ) const;
-	fHertz const   GetPulseRate ( ShapeId const ) const;
+	Nob  const * GetConstNob( NobId const ) const;
+	fHertz const   GetPulseRate ( NobId const ) const;
 
 	fMicroSecs const GetSimulationTime () const { return m_timeStamp; }
 
 	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	MicroMeterPoint const GetShapePos    (ShapeId const id) const {	return GetShapeConstPtr<Shape const *>(id)->GetPos    (); }
-	BaseKnot      * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe  const *>(id)->GetStartKnotPtr(); }
-	BaseKnot      * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe  const *>(id)->GetEndKnotPtr  (); }
+	MicroMeterPoint const GetNobPos    (NobId const id) const {	return GetNobConstPtr<Nob const *>(id)->GetPos    (); }
+	BaseKnot      * const GetStartKnotPtr(NobId const id) const { return GetNobConstPtr<Pipe  const *>(id)->GetStartKnotPtr(); }
+	BaseKnot      * const GetEndKnotPtr  (NobId const id) const { return GetNobConstPtr<Pipe  const *>(id)->GetEndKnotPtr  (); }
 
-	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
-	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
+	NobId const GetStartKnotId(NobId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
+	NobId const GetEndKnotId  (NobId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	UPShapeList const & GetUPShapes()     const { return m_Shapes; }
+	UPNobList const & GetUPNobs()     const { return m_Nobs; }
 	MonitorData const & GetMonitorData()  const { return m_monitorData; }
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
-	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
+	NobId const FindNobAt( MicroMeterPoint const &, NobCrit const & ) const;
 	bool    const GetDescriptionLine( int const, wstring & )                const;
 
 	// non const functions
 
 	virtual bool Compute();
 
-	void  RecalcAllShapes();
+	void  RecalcAllNobs();
 	void  ResetModel();
 	float SetParam( ParamType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, bool const );
 
-	UPShapeList & GetUPShapes()    { return m_Shapes; }
+	UPNobList & GetUPNobs()    { return m_Nobs; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
@@ -85,7 +85,7 @@ public:
 
 private:
 
-	UPShapeList      m_Shapes;
+	UPNobList      m_Nobs;
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;

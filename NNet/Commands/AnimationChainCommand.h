@@ -6,8 +6,8 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "UPShapeList.h"
-#include "ShapePtrList.h"
+#include "UPNobList.h"
+#include "NobPtrList.h"
 #include "Command.h"
 #include "Connector.h"
 #include "ConnectionNeuron.h"

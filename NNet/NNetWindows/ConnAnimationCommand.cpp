@@ -8,7 +8,7 @@
 #include "win32_rootWindow.h"
 #include "win32_Commands.h"
 #include "CommandStack.h"
-#include "ShapeIdList.h"
+#include "NobIdList.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 #include "ConnAnimationCommand.h"
@@ -24,49 +24,49 @@ ConnAnimationCommand::ConnAnimationCommand
     m_NMWI(cmds.GetNMWI()),
     m_callable(win.GetWindowHandle())
 {
-    m_pModelShapes = &m_NMWI.GetUPShapes();
-    ShapeType const shapeType { determineShapeType() };
-    if ( shapeType.IsUndefinedType() )
+    m_pModelNobs = &m_NMWI.GetUPNobs();
+    NobType const nobType { determineNobType() };
+    if ( nobType.IsUndefinedType() )
         return;
     
-    m_shapesAnimated = ShapePtrList<ConnNeuron>(m_pModelShapes->GetAllSelected<ConnNeuron>(shapeType));
+    m_nobsAnimated = NobPtrList<ConnNeuron>(m_pModelNobs->GetAllSelected<ConnNeuron>(nobType));
 
     MicroMeterLine line { MicroMeterLine::NULL_VAL() };
-    line = m_shapesAnimated.CalcMaxDistLine();
+    line = m_nobsAnimated.CalcMaxDistLine();
     if ( line.IsZero() )
         return;
 
-    m_shapesAnimated.SortAccToDistFromLine( line.OrthoLine() );
-    m_upConnector  = make_unique<Connector>( m_shapesAnimated );
+    m_nobsAnimated.SortAccToDistFromLine( line.OrthoLine() );
+    m_upConnector  = make_unique<Connector>( m_nobsAnimated );
     
-    m_umPntVectorOriginal = MicroMeterPointVector( m_shapesAnimated );
+    m_umPntVectorOriginal = MicroMeterPointVector( m_nobsAnimated );
 
     m_umPntVectorTarget1  = m_umPntVectorOriginal;
     m_umPntVectorTarget1.Align(line);
 
     m_umPntVectorTarget2  = m_umPntVectorTarget1;
-    m_umPntVectorTarget2.SetDir(Vector2Radian(CalcOrthoVector(line, m_shapesAnimated)));
+    m_umPntVectorTarget2.SetDir(Vector2Radian(CalcOrthoVector(line, m_nobsAnimated)));
 
     m_umPntVectorTarget3  = m_umPntVectorTarget2;
     m_umPntVectorTarget3.Pack(NEURON_RADIUS * 1.8f);
 }
 
-ShapeType const ConnAnimationCommand::determineShapeType() const
+NobType const ConnAnimationCommand::determineNobType() const
 {
-    unsigned int uiNrOfConnectors { m_pModelShapes->CountInSelection( ShapeType::Value::connector ) };
+    unsigned int uiNrOfConnectors { m_pModelNobs->CountInSelection( NobType::Value::connector ) };
 
     if ( uiNrOfConnectors > 0 )
-        return ShapeType::Value::undefined;
+        return NobType::Value::undefined;
 
-    unsigned int uiNrOfInputNeurons  { m_pModelShapes->CountInSelection( ShapeType::Value::inputNeuron  ) };
-    unsigned int uiNrOfOutputNeurons { m_pModelShapes->CountInSelection( ShapeType::Value::outputNeuron ) };
+    unsigned int uiNrOfInputNeurons  { m_pModelNobs->CountInSelection( NobType::Value::inputNeuron  ) };
+    unsigned int uiNrOfOutputNeurons { m_pModelNobs->CountInSelection( NobType::Value::outputNeuron ) };
 
     if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
-        return ShapeType::Value::undefined;
+        return NobType::Value::undefined;
 
     return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-        ? ShapeType::Value::inputNeuron 
-        : ShapeType::Value::outputNeuron;
+        ? NobType::Value::inputNeuron 
+        : NobType::Value::outputNeuron;
 }
 
 void ConnAnimationCommand::updateUI()  // runs in animation thread
@@ -74,14 +74,14 @@ void ConnAnimationCommand::updateUI()  // runs in animation thread
     m_NMWI.SetConnNeurons
     (
         m_connAnimation.GetActual(), 
-        m_shapesAnimated
+        m_nobsAnimated
     );
     m_win.Notify(false);
 }
 
 void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
 {
-    MicroMeterPointVector umPntVectorStart { MicroMeterPointVector( m_shapesAnimated ) };
+    MicroMeterPointVector umPntVectorStart { MicroMeterPointVector( m_nobsAnimated ) };
     MicroMeterPointVector umPntVectorTarget;
 
     if (m_mode == Mode::mode_do)
@@ -93,7 +93,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 2:	 umPntVectorTarget = m_umPntVectorTarget2; break;
         case 3:  umPntVectorTarget = m_umPntVectorTarget3; break;
         case 4:	 m_upConnector->SetParentPointers();
-                 m_pModelShapes->Push(move(m_upConnector));
+                 m_pModelNobs->Push(move(m_upConnector));
                  unblockUI();
                  return; 
         default: return;        // do not start animation
@@ -104,7 +104,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         switch (m_iPhase--)
         {
         case 4:	 blockUI();
-                 m_upConnector = m_pModelShapes->Pop<Connector>();
+                 m_upConnector = m_pModelNobs->Pop<Connector>();
                  m_upConnector->ClearParentPointers();
                  [[fallthrough]]; 
         case 3:	 umPntVectorTarget = m_umPntVectorTarget2;  break;

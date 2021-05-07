@@ -12,7 +12,7 @@
 class AppendNeuronCommand : public Command
 {
 public:
-	AppendNeuronCommand( ShapeId const idKnot )
+	AppendNeuronCommand( NobId const idKnot )
 	  : m_idKnot( idKnot )
 	{}
 
@@ -22,7 +22,7 @@ public:
 	{ 
 		if ( ! m_upNeuron )
 		{     
-			Knot const * pKnot { nmwi.GetShapePtr<Knot *>(m_idKnot) };
+			Knot const * pKnot { nmwi.GetNobPtr<Knot *>(m_idKnot) };
 			m_upNeuron = make_unique<Neuron>( pKnot->GetPos() );
 			m_upNeuron->m_connections = pKnot->m_connections;
 			m_upNeuron->SetId( m_idKnot );
@@ -40,5 +40,5 @@ public:
 private:
 	unique_ptr<Neuron> m_upNeuron { nullptr };
 	unique_ptr<Knot>   m_upKnot   { nullptr };
-	ShapeId      const m_idKnot;
+	NobId      const m_idKnot;
 };

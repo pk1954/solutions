@@ -6,7 +6,7 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 #include "BaseKnot.h"
 
@@ -16,7 +16,7 @@ class InsertBaseKnotCommand : public Command
 public:
 	InsertBaseKnotCommand
 	( 
-		ShapeId         const   idPipe, 
+		NobId         const   idPipe, 
 		MicroMeterPoint const & umSplitPoint 
 	)
 	  :	m_idPipe(idPipe),
@@ -29,7 +29,7 @@ public:
 	{ 
 		if ( ! m_upBaseKnot )
 		{ 
-			m_pPipe2Split = nmwi.GetShapePtr<Pipe *>( m_idPipe );
+			m_pPipe2Split = nmwi.GetNobPtr<Pipe *>( m_idPipe );
 			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
 			m_upBaseKnot  = make_unique<T>   ( m_umSplitPoint );
 			m_upPipeNew   = make_unique<Pipe>( m_pStartKnot, m_upBaseKnot.get() );
@@ -38,14 +38,14 @@ public:
 		}
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
 		m_pPipe2Split->SetStartKnot( m_upBaseKnot.get() );
-		nmwi.GetUPShapes().Push( move(m_upBaseKnot) );
-		nmwi.GetUPShapes().Push( move(m_upPipeNew) );
+		nmwi.GetUPNobs().Push( move(m_upBaseKnot) );
+		nmwi.GetUPNobs().Push( move(m_upPipeNew) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upPipeNew  = nmwi.GetUPShapes().Pop<Pipe>();
-		m_upBaseKnot = nmwi.GetUPShapes().Pop<T>();
+		m_upPipeNew  = nmwi.GetUPNobs().Pop<Pipe>();
+		m_upBaseKnot = nmwi.GetUPNobs().Pop<T>();
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 	}
@@ -57,6 +57,6 @@ private:
 	unique_ptr<Pipe> m_upPipeNew;
 	unique_ptr<T>    m_upBaseKnot;
 
-	ShapeId         const m_idPipe;
+	NobId         const m_idPipe;
 	MicroMeterPoint const m_umSplitPoint; 
 };

@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 #include "NNetModel.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 #include "DisplayFunctor.h"
 
 class Knot;
-class Shape;
+class Nob;
 class NNetModelReadInterface;
 class NNetModelWriterInterface;
 
@@ -21,7 +21,7 @@ using std::vector;
 using std::wostream;
 using std::wstring;
 
-using ShapeStack = ShapePtrList<Shape const>;
+using NobStack = NobPtrList<Nob const>;
 
 class ModelAnalyzer
 {
@@ -29,19 +29,19 @@ public:
 	static void SetStatusBarDisplay( DisplayFunctor * const func ) { m_pStatusBarDisplay = func; }
 	static void SetEscFunc ( bool (* func )() ) { m_pEscFunc = func; }
 
-	static ShapeStack const FindLoop   ( NNetModelReaderInterface const & );
-	static ShapeStack const FindAnomaly( NNetModelReaderInterface const & );
+	static NobStack const FindLoop   ( NNetModelReaderInterface const & );
+	static NobStack const FindAnomaly( NNetModelReaderInterface const & );
 
 private:
 
 	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };
 	inline static bool             m_bStop		       { false };
 	inline static int              m_iRecDepth	       { 0 };
-	inline static ShapeStack       m_shapeStack        { };
+	inline static NobStack       m_nobStack        { };
 
 	inline static bool (* m_pEscFunc )() { nullptr };
 
-	static bool findLoop( Shape const & );
+	static bool findLoop( Nob const & );
 	static bool hasAnomaly( Knot const & );
 
 	static void statusDisplay( wstring const str ) 

@@ -213,24 +213,24 @@
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
-    <ClInclude Include="ShapeIdList.h" />
-    <ClInclude Include="ShapePtrList.h" />
-    <ClInclude Include="ShapeErrorHandler.h" />
+    <ClInclude Include="NobIdList.h" />
+    <ClInclude Include="NobPtrList.h" />
+    <ClInclude Include="NobErrorHandler.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
     <ClInclude Include="NNetError.h" />
     <ClInclude Include="Segment.h" />
-    <ClInclude Include="Shape.h" />
-    <ClInclude Include="ShapeId.h" />
+    <ClInclude Include="Nob.h" />
+    <ClInclude Include="NobId.h" />
     <ClInclude Include="SignalId.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tHighlightType.h" />
     <ClInclude Include="ParameterType.h" />
-    <ClInclude Include="ShapeType.h" />
+    <ClInclude Include="NobType.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="TrackNr.h" />
-    <ClInclude Include="UPShapeList.h" />
+    <ClInclude Include="UPNobList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
@@ -256,13 +256,13 @@
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="ShapeIdList.cpp" />
+    <ClCompile Include="Nob.cpp" />
+    <ClCompile Include="NobdList.cpp" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />
-    <ClCompile Include="ShapeType.cpp" />
+    <ClCompile Include="NobType.cpp" />
     <ClCompile Include="Track.cpp" />
-    <ClCompile Include="UPShapeList.cpp" />
+    <ClCompile Include="UPNobList.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

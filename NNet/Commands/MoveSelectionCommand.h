@@ -13,21 +13,31 @@ class MoveSelectionCommand : public Command
 {
 public:
 	MoveSelectionCommand( MicroMeterPoint const & delta )
-       : m_delta( -delta )
+       : m_delta( delta )
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		MicroMeterPoint const delta = - m_delta;
-		nmwi.GetUPShapes().Apply2AllSelected<Shape>
+		nmwi.GetUPNobs().Apply2AllSelected<Nob>
 		( 
-			[&](Shape & shape) 
+			[&](Nob & nob) 
 			{ 
-				if (shape.IsBaseKnot())
-					shape.MoveShape(delta);
+				if (! nob.IsPipe())
+					nob.MoveNob(m_delta);
 			} 
 		);
-		m_delta = delta;
+	}
+
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
+	{ 
+		nmwi.GetUPNobs().Apply2AllSelected<Nob>
+		( 
+			[&](Nob & nob) 
+			{ 
+				if (! nob.IsPipe())
+					nob.MoveNob(-m_delta);
+			} 
+		);
 	}
 
 	virtual bool IsMoveCommand() const
@@ -37,9 +47,10 @@ public:
 
 	virtual bool const Combine(Command const & src) 
 	{ 
-		if (typeid(src) != typeid(this))
+		if (typeid(src) != typeid(*this))
 			return false;
-		m_delta += static_cast<MoveSelectionCommand const &>(src).m_delta;
+		MoveSelectionCommand const & srcCmd { static_cast<MoveSelectionCommand const &>(src) };
+		m_delta += srcCmd.m_delta;
 		return true; 
 	};
 

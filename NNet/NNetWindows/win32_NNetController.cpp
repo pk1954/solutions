@@ -174,7 +174,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
     return true;  // command has been processed
 }
 
-void NNetController::pulseRateDlg( ShapeId const id )
+void NNetController::pulseRateDlg( NobId const id )
 {
     fHertz  const fOldValue { m_pNMRI->GetPulseFrequency( id ) };
     if ( fOldValue.IsNull() )
@@ -187,9 +187,9 @@ void NNetController::pulseRateDlg( ShapeId const id )
         m_pModelCommands->SetPulseRate( id, fNewValue );
 }
 
-void NNetController::triggerSoundDlg( ShapeId const id )
+void NNetController::triggerSoundDlg( NobId const id )
 {
-    ShapeType const type { m_pNMRI->GetShapeType(id) };
+    NobType const type { m_pNMRI->GetNobType(id) };
     if ( ! type.IsAnyNeuronType() )
         return;
 
@@ -231,11 +231,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_PULSE_RATE:
-        pulseRateDlg( m_pMainWindow->GetHighlightedShapeId() );
+        pulseRateDlg( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_TRIGGER_SOUND_DLG:
-        triggerSoundDlg( m_pMainWindow->GetHighlightedShapeId() );
+        triggerSoundDlg( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDM_NNET_REFRESH_RATE:
@@ -247,31 +247,31 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_CONNECT:
-        m_pWinCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetTargetShapeId(), * m_pMainWindow );
+        m_pWinCommands->Connect( m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId(), * m_pMainWindow );
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         break;
 
     case IDM_DELETE:   // keyboard delete key
-        if ( IsUndefined(m_pMainWindow->GetHighlightedShapeId()) )
+        if ( IsUndefined(m_pMainWindow->GetHighlightedNobId()) )
             break;
         [[fallthrough]];
 
-    case IDD_DELETE_SHAPE:
+    case IDD_DELETE_NOB:
         m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
-        m_pModelCommands->DeleteShape( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->DeleteNob( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_DISCONNECT:
         m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->Disconnect( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->Disconnect( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_INSERT_KNOT:
-        m_pModelCommands->InsertKnot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->InsertKnot( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
     case IDD_INSERT_NEURON:
-        m_pModelCommands->InsertNeuron( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->InsertNeuron( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
     case IDD_NEW_NEURON:
@@ -287,27 +287,27 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_APPEND_INPUT_NEURON:
-        m_pModelCommands->AppendInputNeuron( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->AppendInputNeuron( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_APPEND_NEURON:
-        m_pModelCommands->AppendNeuron( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->AppendNeuron( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_ADD_OUTGOING2KNOT:
-        m_pModelCommands->AddOutgoing2Knot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddOutgoing2Knot( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
     case IDD_ADD_INCOMING2KNOT:
-        m_pModelCommands->AddIncoming2Knot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddIncoming2Knot( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
     case IDD_ADD_OUTGOING2PIPE:
-        m_pModelCommands->AddOutgoing2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddOutgoing2Pipe( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
     case IDD_ADD_INCOMING2PIPE:
-        m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
     case IDD_ADD_SIGNAL:
@@ -332,12 +332,12 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         Script::StopProcessing();
         break;
 
-    case IDM_SELECT_SHAPE:
-        m_pModelCommands->SelectShape( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
+    case IDM_SELECT_NOB:
+        m_pModelCommands->SelectNob( m_pMainWindow->GetHighlightedNobId(), tBoolOp::opTrue );
         break;
 
-    case IDM_DESELECT_SHAPE:
-        m_pModelCommands->SelectShape( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opFalse );
+    case IDM_DESELECT_NOB:
+        m_pModelCommands->SelectNob( m_pMainWindow->GetHighlightedNobId(), tBoolOp::opFalse );
         break;
 
     case IDM_SELECT_ALL:
@@ -345,11 +345,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SELECT_SUBTREE:
-        m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedShapeId(), true );
+        m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedNobId(), true );
         break;
 
     case IDD_STOP_ON_TRIGGER:
-        m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedNobId() );
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         break;
 

@@ -6,7 +6,7 @@
 
 #include "scanner.h"
 #include "Pipe.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 
 using std::endl;
 using std::unique_ptr;
@@ -118,6 +118,6 @@ public:
 	}
 
 private:
-	ShapePtrList<Pipe> m_incoming;
-	ShapePtrList<Pipe> m_outgoing;
+	NobPtrList<Pipe> m_incoming;
+	NobPtrList<Pipe> m_outgoing;
 };

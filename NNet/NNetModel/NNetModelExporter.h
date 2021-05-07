@@ -7,8 +7,8 @@
 #include <vector>
 #include <fstream>
 #include "MoreTypes.h"
-#include "ShapeId.h"
-#include "ShapeIdList.h"
+#include "NobId.h"
+#include "NobIdList.h"
 
 using std::wostream;
 using std::wstring;
@@ -17,9 +17,9 @@ using std::vector;
 class Param;
 class Script;
 class Pipe;
-class Shape;
+class Nob;
 class Connector;
-class UPShapeList;
+class UPNobList;
 class Observable;
 class ModelDescription;
 class NNetModelReaderInterface;
@@ -34,19 +34,19 @@ private:
 	NNetModelReaderInterface * m_pNMRI                    { nullptr };
 	Observable               * m_unsavedChangesObservable { nullptr };
 
-	ShapeIdList m_CompactIds;
+	NobIdList m_CompactIds;
 
-	long const getCompactIdVal(ShapeId const);
+	long const getCompactIdVal(NobId const);
 
-	void writeShape    ( wostream &, Shape     const & );
+	void writeNob    ( wostream &, Nob     const & );
 	void writePipe     ( wostream &, Pipe      const & );
 	void writeConnector( wostream &, Connector const & );
 	void writeDescription( wostream & );
 	void writeMonitorData( wostream & );
 	void writeTriggerSounds( wostream & );
-	void writeShapeParameters( wostream & );
+	void writeNobParameters( wostream & );
 	void writeGlobalParameters( wostream & );
-	void writeShapes( wostream & );
+	void writeNobs( wostream & );
 	void writeHeader( wostream & );
 	void write( wostream & );
 };

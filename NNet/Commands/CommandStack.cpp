@@ -12,7 +12,7 @@ using std::endl;
 
 bool canBeCombined(Command const & A, Command const & B)
 {
-    return A.IsMoveCommand() && (typeid(A) == typeid(B)) && (A.GetMovedShape() == B.GetMovedShape());
+    return A.IsMoveCommand() && (typeid(A) == typeid(B)) && (A.GetMovedNob() == B.GetMovedNob());
 }
 
 void CommandStack::Initialize

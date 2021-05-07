@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Shape.h"
+#include "Nob.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
@@ -16,63 +16,63 @@ class CopySelectionCommand : public Command
 {
 private:
 
-	void addMissingKnot(BaseKnot * pBaseKnot, function<Shape * (Shape const *)> const & dstFromSrc)
+	void addMissingKnot(BaseKnot * pBaseKnot, function<Nob * (Nob const *)> const & dstFromSrc)
 	{
 		if ( ! dstFromSrc(pBaseKnot))
 		{
 			unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPos()) };
 			upKnot->SetId( pBaseKnot->GetId() );
-			m_indexList[upKnot->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
+			m_indexList[upKnot->GetId().GetValue()] = SelNobsIndex(Cast2Int(m_copies.size()));
 			m_copies.push_back(move(upKnot));
 		}
 	}
 
 	void init( NNetModelWriterInterface & nmwi )
 	{ 
-		auto dstFromSrc = [&](Shape const * pSrc )
+		auto dstFromSrc = [&](Nob const * pSrc )
 		{ 
 			if ( pSrc && IsDefined(pSrc->GetId()) )
 			{
-				SelShapesIndex & ssi { m_indexList[pSrc->GetId().GetValue()] };
+				SelNobsIndex & ssi { m_indexList[pSrc->GetId().GetValue()] };
 				if ( ssi.IsNotNull() )
 					return m_copies[ssi.GetValue()].get();
 			}
-			return (Shape *)0;
+			return (Nob *)0;
 		};
 
-		long const lSizeOfModel { nmwi.GetUPShapes().Size() };
-		ShapeId    idShapeCopy  { ShapeId( lSizeOfModel ) };
+		long const lSizeOfModel { nmwi.GetUPNobs().Size() };
+		NobId    idNobCopy  { NobId( lSizeOfModel ) };
 
-		m_indexList.resize( lSizeOfModel, SelShapesIndex::NULL_VAL() ); 
+		m_indexList.resize( lSizeOfModel, SelNobsIndex::NULL_VAL() ); 
 
-		nmwi.GetUPShapes().Apply2AllSelected<Shape>
+		nmwi.GetUPNobs().Apply2AllSelected<Nob>
 		(
-			[&](Shape & shape)
+			[&](Nob & nob)
 			{
-				m_selectedShapeIds.Add(shape);
-				UPShape upShapeCopy { ShallowCopy(shape) };
-				m_indexList[upShapeCopy->GetId().GetValue()] = SelShapesIndex(Cast2Int(m_copies.size()));
-				m_copies.push_back( move(upShapeCopy) );
+				m_selectedNobIds.Add(nob);
+				UPNob upNobCopy { ShallowCopy(nob) };
+				m_indexList[upNobCopy->GetId().GetValue()] = SelNobsIndex(Cast2Int(m_copies.size()));
+				m_copies.push_back( move(upNobCopy) );
 			}
 		);
 		int const iSize { Cast2Int(m_copies.size()) };
 		for (int i = 0; i < iSize; ++i) // cannot use range-based loop. m_copies changed in loop.
 		{
-			Shape * const pShapeSrc { nmwi.GetShape( m_copies[i]->GetId() ) };
-			if ( pShapeSrc->IsPipe() )
+			Nob * const pNobSrc { nmwi.GetNob( m_copies[i]->GetId() ) };
+			if ( pNobSrc->IsPipe() )
 			{
-				Pipe * const pPipeSrc { static_cast<Pipe *>(pShapeSrc) };
+				Pipe * const pPipeSrc { static_cast<Pipe *>(pNobSrc) };
 				addMissingKnot(pPipeSrc->GetStartKnotPtr(), dstFromSrc);
 				addMissingKnot(pPipeSrc->GetEndKnotPtr  (), dstFromSrc);
 			}
 		}
-		for ( UPShape & upShapeDst : m_copies )  // link shapes
+		for ( UPNob & upNobDst : m_copies )  // link nobs
 		{
-			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
-			nmwi.GetUPShapes().LinkShape( shapeSrc, dstFromSrc );
-			upShapeDst->SetId( idShapeCopy++ );
-			if ( upShapeDst->GetShapeType().IsBaseKnotType() )
-				upShapeDst->MoveShape( PIPE_WIDTH ); 
+			Nob const & nobSrc { * nmwi.GetNob( upNobDst->GetId() ) };
+			nmwi.GetUPNobs().LinkNob( nobSrc, dstFromSrc );
+			upNobDst->SetId( idNobCopy++ );
+			if ( upNobDst->GetNobType().IsBaseKnotType() )
+				upNobDst->MoveNob( PIPE_WIDTH ); 
 		}
 		m_iSizeOfSelection = Cast2Int(m_copies.size());
 	}
@@ -85,10 +85,10 @@ public:
 			init( nmwi );
 			m_bInitialized = true;
 		}
-		nmwi.GetUPShapes().DeselectAllShapes();  
+		nmwi.GetUPNobs().DeselectAllNobs();  
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			nmwi.GetUPShapes().Push( move(m_copies.back()) ); // add copies (which are already selected)
+			nmwi.GetUPNobs().Push( move(m_copies.back()) ); // add copies (which are already selected)
 			m_copies.pop_back();
 		}
 		assert( m_copies.empty() );
@@ -98,20 +98,20 @@ public:
 	{ 
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			m_copies.push_back(nmwi.GetUPShapes().Pop<Shape>());
+			m_copies.push_back(nmwi.GetUPNobs().Pop<Nob>());
 		}
-		nmwi.GetUPShapes().DeselectAllShapes();
-		m_selectedShapeIds.Apply2All([&](ShapeId const &id) { nmwi.SelectShape(id, true); });
+		nmwi.GetUPNobs().DeselectAllNobs();
+		m_selectedNobIds.Apply2All([&](NobId const &id) { nmwi.SelectNob(id, true); });
 	}
 
 private:
-	using SelShapesIndex = NamedType <int, struct SelShapesIndex_Parameter>;
-	using SSIndexVector  = vector<SelShapesIndex>;
+	using SelNobsIndex = NamedType <int, struct SelNobsIndex_Parameter>;
+	using SSIndexVector  = vector<SelNobsIndex>;
 
 	bool            m_bInitialized     { false };
 	int             m_iSizeOfSelection { 0 };
 	SSIndexVector   m_indexList        {};     // indices into m_copies
-	vector<UPShape> m_copies           {};
-	ShapeIdList m_selectedShapeIds {};
+	vector<UPNob> m_copies           {};
+	NobIdList m_selectedNobIds {};
 };
 

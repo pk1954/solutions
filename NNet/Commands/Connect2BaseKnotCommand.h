@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 #include "BaseKnot.h"
 

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 #include "BaseKnot.h"
 
@@ -21,19 +21,19 @@ public:
 
 	void clearAll( NNetModelWriterInterface & nmwi ) const
 	{
-		nmwi.GetUPShapes().Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.GetUPNobs().Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
 	void clearAllSelected( NNetModelWriterInterface & nmwi ) const
 	{
-		nmwi.GetUPShapes().Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.GetUPNobs().Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		if ( ! m_bInitialized )
 		{
-			nmwi.GetUPShapes().Apply2All<Neuron>
+			nmwi.GetUPNobs().Apply2All<Neuron>
 			( 
 				[&]( Neuron & neuron ) 
 				{ 
@@ -43,7 +43,7 @@ public:
 			);
 			m_bInitialized = true;
 		}
-		if ( nmwi.GetUPShapes().AnyShapesSelected() )
+		if ( nmwi.GetUPNobs().AnyNobsSelected() )
 			clearAllSelected( nmwi );
 		else
 			clearAll( nmwi );

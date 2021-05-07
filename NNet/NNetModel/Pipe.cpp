@@ -23,7 +23,7 @@ using std::wcout;
 using std::endl;
 
 Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
-  :	Shape( ShapeType::Value::pipe ),
+  :	Nob( NobType::Value::pipe ),
 	m_pKnotStart( pKnotStart ),
 	m_pKnotEnd  ( pKnotEnd )
 {
@@ -32,7 +32,7 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 }
 
 Pipe::Pipe( Pipe const & src ) :  // copy constructor
-	Shape       ( src ),
+	Nob       ( src ),
     m_pKnotStart( nullptr ),
 	m_pKnotEnd  ( nullptr ),
 	m_potIndex  ( src.m_potIndex  ),
@@ -43,34 +43,34 @@ Pipe::~Pipe() { }
 
 void Pipe::Dump() const
 {
-	Shape::Dump();
+	Nob::Dump();
 	wcout << L' ' << * this << endl;
 }
 
 void Pipe::init( const Pipe & rhs )
 {
-	Shape::operator=( rhs );
+	Nob::operator=( rhs );
 	m_pKnotStart = nullptr;
 	m_pKnotEnd   = nullptr;
 	m_potIndex   = rhs.m_potIndex;
 	m_potential  = rhs.m_potential;
 }
 
-bool Pipe::operator==( Shape const & rhs ) const 
+bool Pipe::operator==( Nob const & rhs ) const 
 {
 	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };
 	return
-	( this->Shape::operator== (rhs) )                          && 
+	( this->Nob::operator== (rhs) )                          && 
 	( m_pKnotStart->GetId() == pipeRhs.m_pKnotStart->GetId() ) &&
 	( m_pKnotEnd  ->GetId() == pipeRhs.m_pKnotEnd  ->GetId() );
 }
 
-ShapeId Pipe::GetStartKnotId() const 
+NobId Pipe::GetStartKnotId() const 
 { 
 	return m_pKnotStart->GetId(); 
 }
 
-ShapeId Pipe::GetEndKnotId() const 
+NobId Pipe::GetEndKnotId() const 
 { 
 	return m_pKnotEnd->GetId(); 
 }
@@ -82,7 +82,7 @@ MicroMeterPoint const Pipe::GetPos() const
 
 void Pipe::Clear()
 {
-	Shape::Clear();
+	Nob::Clear();
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
 }
 
@@ -98,9 +98,9 @@ void Pipe::Recalc()
 		m_potIndex = 0;
 	}
 }
-void Pipe::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> const & dstFromSrc)
+void Pipe::Link(Nob const & nobSrc,	function<Nob * (Nob const *)> const & dstFromSrc)
 {
-	Pipe const & pipeSrc { static_cast<Pipe const &>(shapeSrc) };
+	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
 	BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
 	BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
 	SetStartKnot(pBaseKnotStart);
@@ -109,7 +109,7 @@ void Pipe::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> const 
 
 void Pipe::Check() const
 {
-	Shape::Check();
+	Nob::Check();
 	assert( m_pKnotStart->IsPrecursorOf( * this ) );
 	assert( m_pKnotEnd  ->IsSuccessorOf( * this ) );
 }
@@ -125,10 +125,10 @@ void Pipe::Prepare()
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
 }
 
-void Pipe::MoveShape( MicroMeterPoint const & delta )
+void Pipe::MoveNob( MicroMeterPoint const & delta )
 {
-	m_pKnotStart->MoveShape( delta );
-	m_pKnotEnd  ->MoveShape( delta );
+	m_pKnotStart->MoveNob( delta );
+	m_pKnotEnd  ->MoveNob( delta );
 }
 
 // IsIncludedIn should be called IsPossiblyIncludedIn
@@ -168,7 +168,7 @@ void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 
 void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
-	pBaseKnot->MoveShape( GetVector().OrthoVector().ScaledTo( dislocation ) );
+	pBaseKnot->MoveNob( GetVector().OrthoVector().ScaledTo( dislocation ) );
 	Recalc();
 }
 
@@ -184,7 +184,7 @@ MicroMeterPoint Pipe::GetEndPoint() const
 
 void Pipe::Select(bool const bOn, bool const bRecursive) 
 { 
-	Shape::Select(bOn);
+	Nob::Select(bOn);
 	if ( bRecursive )
 	{
 		if ( m_pKnotStart->IsKnot() )
@@ -314,16 +314,16 @@ mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const
 	return mVresult;
 }
 
-Pipe const * Cast2Pipe( Shape const * pShape )
+Pipe const * Cast2Pipe( Nob const * pNob )
 {
-	assert( pShape->IsPipe() );
-	return static_cast<Pipe const *>(pShape);
+	assert( pNob->IsPipe() );
+	return static_cast<Pipe const *>(pNob);
 }
 
-Pipe * Cast2Pipe( Shape * pShape )
+Pipe * Cast2Pipe( Nob * pNob )
 {
-	assert( pShape->IsPipe() );
-	return static_cast<Pipe *>(pShape);
+	assert( pNob->IsPipe() );
+	return static_cast<Pipe *>(pNob);
 }
 
 wostream & operator<< ( wostream & out, Pipe const & pipe )

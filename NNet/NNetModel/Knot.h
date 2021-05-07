@@ -21,15 +21,15 @@ class Knot : public BaseKnot
 {
 public:
 	Knot( MicroMeterPoint const center )
-		: BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
+		: BaseKnot( center, NobType::Value::knot, PIPE_WIDTH / 2 )
 	{}
 
 	virtual ~Knot() {}
 
 	void Check() const;
 
-	static bool      const TypeFits(ShapeType const type) { return type.IsKnotType(); }
-	static ShapeType const GetShapeType() { return ShapeType::Value::knot; }
+	static bool      const TypeFits(NobType const type) { return type.IsKnotType(); }
+	static NobType const GetNobType() { return NobType::Value::knot; }
 
 	mV const GetNextOutput() const { return m_mVinputBuffer; }
 

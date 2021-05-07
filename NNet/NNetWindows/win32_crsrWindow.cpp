@@ -95,20 +95,20 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	printMicroMeter( textBuf, umPoint.GetY() );
 	textBuf.nextLine();
 
-	ShapeId const id { m_pMainWindow->GetHighlightedShapeId() };
+	NobId const id { m_pMainWindow->GetHighlightedNobId() };
 
 	if ( IsUndefined(id) )
 		return;
 
-	ShapeType const type { m_pNMRI->GetShapeType( id ) };
+	NobType const type { m_pNMRI->GetNobType( id ) };
 
-	textBuf.AlignRight(); textBuf.printString( L"Shape #" );
+	textBuf.AlignRight(); textBuf.printString( L"Nob #" );
 	textBuf.AlignLeft();  textBuf.printNumber( id.GetValue() );
 	if ( m_pNMRI->IsSelected(id) )
 		textBuf.printString( L" selected" );
 	textBuf.nextLine();
 	textBuf.AlignRight(); textBuf.printString( L"type:" ); 
-	textBuf.AlignLeft();  textBuf.printString( ShapeType::GetName( type.GetValue() ) ); 
+	textBuf.AlignLeft();  textBuf.printString( NobType::GetName( type.GetValue() ) ); 
 	textBuf.nextLine();
 
 	mV potential { 0.0_mV };

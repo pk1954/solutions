@@ -22,7 +22,7 @@
 #include "DeleteTrackCommand.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
-#include "MoveShapeCommand.h"
+#include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NewNeuronCommandT.h"
 #include "NNetModelImporter.h"
@@ -32,13 +32,13 @@
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
-#include "SelectShapeCommand.h"
-#include "SelectShapesInRectCommand.h"
+#include "SelectNobCommand.h"
+#include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SetConnectionNeuronsCommand.h"
 #include "SetParameterCommand.h"
 #include "SetPulseRateCommand.h"
-#include "SetShapeCommand.h"
+#include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "ToggleStopOnTriggerCommand.h"
 #include "NNetModelWriterInterface.h"
@@ -129,21 +129,21 @@ void NNetModelCommands::InsertTrack( TrackNr const nr )
 	m_pCmdStack->PushCommand( make_unique<InsertTrackCommand>(nr) );
 }
 
-void NNetModelCommands::CreateInitialShapes()
+void NNetModelCommands::CreateInitialNobs()
 { 
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pNMWI->CreateInitialShapes();
+	m_pNMWI->CreateInitialNobs();
 	m_pDynamicModelObservable->NotifyAll( false );
 }
 
-void NNetModelCommands::DeleteShape( ShapeId const id )
+void NNetModelCommands::DeleteNob( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	if ( Shape * pShape { m_pNMWI->GetShape(id) } )
+	if ( Nob * pNob { m_pNMWI->GetNob(id) } )
 	{
-		m_pCmdStack->PushCommand( move( MakeDeleteCommand(*pShape) ) );
+		m_pCmdStack->PushCommand( move( MakeDeleteCommand(*pNob) ) );
 	}
 }
 
@@ -154,29 +154,29 @@ void NNetModelCommands::DeleteSelection()
 	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>() );
 }
 
-void NNetModelCommands::Disconnect( ShapeId const id )
+void NNetModelCommands::Disconnect( NobId const id )
 {
 	unique_ptr<Command> pCmd;
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI->GetShape(id)) ) );
+	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI->GetNob(id)) ) );
 }
 
-void NNetModelCommands::ToggleStopOnTrigger( ShapeId const id )
+void NNetModelCommands::ToggleStopOnTrigger( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
 	m_pCmdStack->PushCommand( make_unique<ToggleStopOnTriggerCommand>( id ) );
 }
 
-void NNetModelCommands::SetPulseRate( ShapeId const id, fHertz const fNewValue )
+void NNetModelCommands::SetPulseRate( NobId const id, fHertz const fNewValue )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << fNewValue << endl;
 	m_pCmdStack->PushCommand( make_unique<SetPulseRateCommand>( id, fNewValue ) );
 }
 
-void NNetModelCommands::SetTriggerSound( ShapeId const id, SoundDescr const & sound )
+void NNetModelCommands::SetTriggerSound( NobId const id, SoundDescr const & sound )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << sound.m_bOn << L" " << sound.m_frequency << L" " << sound.m_duration << endl;
@@ -190,30 +190,30 @@ void NNetModelCommands::SetParameter( ParamType::Value const param, float const 
 	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>(SetParameterCommand(m_pNMWI->GetParams(), param, fNewValue)) );
 }
 
-void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
+void NNetModelCommands::MoveNob( NobId const id, MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
-	m_pCmdStack->PushCommand( make_unique<MoveShapeCommand>(*m_pNMWI->GetShape(id), delta) );
+	m_pCmdStack->PushCommand( make_unique<MoveNobCommand>(*m_pNMWI->GetNob(id), delta) );
 }
 
 void NNetModelCommands::Rotate
 ( 
-	ShapeId         const   id, 
+	NobId         const   id, 
 	MicroMeterPoint const & umPntOld, 
 	MicroMeterPoint const & umPntNew 
 )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << umPntOld << L" " << umPntNew << endl;
-	m_pCmdStack->PushCommand( make_unique<RotateCommand>(*m_pNMWI->GetShape(id), umPntOld, umPntNew) );
+	m_pCmdStack->PushCommand( make_unique<RotateCommand>(*m_pNMWI->GetNob(id), umPntOld, umPntNew) );
 }
 
-void NNetModelCommands::SetShape( ShapeId const id, MicroMeterPosDir const posDir )
+void NNetModelCommands::SetNob( NobId const id, MicroMeterPosDir const posDir )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << posDir << endl;
-	m_pCmdStack->PushCommand( make_unique<SetShapeCommand>(*m_pNMWI->GetShape(id), posDir) );
+	m_pCmdStack->PushCommand( make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir) );
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
@@ -226,57 +226,57 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 void NNetModelCommands::SetConnectionNeurons
 ( 
 	MicroMeterPointVector const & umPntVectorRun,
-	unique_ptr<ShapeIdList>       upShapeIds 
+	unique_ptr<NobIdList>       upNobIds 
 )
 {
 	if ( IsTraceOn() )
-		TraceStream() << __func__<< * upShapeIds << umPntVectorRun << endl ;
-	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>(umPntVectorRun, move(upShapeIds)) );
+		TraceStream() << __func__<< * upNobIds << umPntVectorRun << endl ;
+	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>(umPntVectorRun, move(upNobIds)) );
 }
 
 void NNetModelCommands::AddModel()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetUPShapes() ) );
+	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetUPNobs() ) );
 }
 
-void NNetModelCommands::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddOutgoing2Knot( NobId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddOutgoing2KnotCommand>( id, pos + STD_OFFSET ) );
 }
 
-void NNetModelCommands::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddIncoming2Knot( NobId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddIncoming2KnotCommand>( id, pos - STD_OFFSET ) );
 }
 
-void NNetModelCommands::AddOutgoing2Pipe( ShapeId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddOutgoing2Pipe( NobId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddOutgoing2PipeCommand>( id, pos ) );
 }
 
-void NNetModelCommands::AddIncoming2Pipe( ShapeId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddIncoming2Pipe( NobId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddIncoming2PipeCommand>( id, pos ) );
 }
 
-void NNetModelCommands::InsertKnot( ShapeId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::InsertKnot( NobId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<InsertBaseKnotCommand<Knot>>( id, pos ) );
 }
 
-void NNetModelCommands::InsertNeuron( ShapeId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::InsertNeuron( NobId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
@@ -304,14 +304,14 @@ void NNetModelCommands::NewOutputNeuron( MicroMeterPoint const & pos )
 	m_pCmdStack->PushCommand( make_unique<NewOutputNeuronCommand>( pos ) );
 }
 
-void NNetModelCommands::AppendNeuron( ShapeId const id )
+void NNetModelCommands::AppendNeuron( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
 	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand>( id ) );
 }
 
-void NNetModelCommands::AppendInputNeuron( ShapeId const id )
+void NNetModelCommands::AppendInputNeuron( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
@@ -334,7 +334,7 @@ void NNetModelCommands::CopySelection()
 	m_pCmdStack->PushCommand( make_unique<CopySelectionCommand>() );
 }
 
-void NNetModelCommands::RestrictSelection( ShapeType::Value const val )
+void NNetModelCommands::RestrictSelection( NobType::Value const val )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << val << endl;
@@ -348,11 +348,11 @@ void NNetModelCommands::SelectAllBeepers()
 	m_pCmdStack->PushCommand( make_unique<SelectAllBeepersCommand>() );
 }
 
-void NNetModelCommands::SelectShape( ShapeId const id, tBoolOp const op )
+void NNetModelCommands::SelectNob( NobId const id, tBoolOp const op )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << op << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectShapeCommand>( id, op ) );
+	m_pCmdStack->PushCommand( make_unique<SelectNobCommand>( id, op ) );
 }
 
 void NNetModelCommands::SelectAll(bool const bOn)
@@ -362,18 +362,18 @@ void NNetModelCommands::SelectAll(bool const bOn)
 	m_pCmdStack->PushCommand( make_unique<SelectAllCommand>(bOn) );
 }
 
-void NNetModelCommands::SelectSubtree( ShapeId const id, bool  const bOn )
+void NNetModelCommands::SelectSubtree( NobId const id, bool  const bOn )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << bOn << endl;
 	m_pCmdStack->PushCommand( make_unique<SelectSubtreeCommand>( id, bOn ) );
 }
 
-void NNetModelCommands::SelectShapesInRect( MicroMeterRect const & rect, bool const bAdd2Selection )
+void NNetModelCommands::SelectNobsInRect( MicroMeterRect const & rect, bool const bAdd2Selection )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << rect << bAdd2Selection << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectShapesInRectCommand>(rect, bAdd2Selection) );
+	m_pCmdStack->PushCommand( make_unique<SelectNobsInRectCommand>(rect, bAdd2Selection) );
 }
 
 void NNetModelCommands::AnalyzeLoops()

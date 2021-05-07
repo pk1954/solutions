@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "Command.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -18,7 +18,7 @@ class DeletePipeCommand : public Command
 {
 public:
 
-	DeletePipeCommand( ShapeId const idPipe )
+	DeletePipeCommand( NobId const idPipe )
 		: m_idPipe( idPipe )
 	{}
 
@@ -28,7 +28,7 @@ public:
 	{
 		if ( ! m_pPipe )
 		{
-			m_pPipe      = nmwi.GetShapePtr<Pipe *>( m_idPipe );
+			m_pPipe      = nmwi.GetNobPtr<Pipe *>( m_idPipe );
 			m_pStartKnot = m_pPipe->GetStartKnotPtr();
 			m_pEndKnot   = m_pPipe->GetEndKnotPtr();
 		}
@@ -65,5 +65,5 @@ private:
 	unique_ptr<BaseKnot> m_upStartKnot;
 	unique_ptr<BaseKnot> m_upEndKnot;
 
-	ShapeId const m_idPipe;
+	NobId const m_idPipe;
 };

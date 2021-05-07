@@ -8,30 +8,30 @@
 #include "Connector.h"
 
 Connector::Connector()
-  :	Shape(ShapeType::Value::connector)
+  :	Nob(NobType::Value::connector)
 {};
 
-Connector::Connector( ShapePtrList<ConnNeuron> const & src )
-  :	Shape(ShapeType::Value::connector)
+Connector::Connector( NobPtrList<ConnNeuron> const & src )
+  :	Nob(NobType::Value::connector)
 {
     src.Apply2All([&](ConnNeuron & n) { Push(&n); });
 }
 
 void Connector::Check() const
 {
-    Shape::Check();
+    Nob::Check();
 }
 
 void Connector::Dump() const
 {
-    Shape::Dump();
+    Nob::Dump();
     m_list.Apply2All([&](ConnNeuron const & s){ wcout << s << endl; } );
 }
 
-void Connector::Link(Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc)
+void Connector::Link(Nob const & nobSrc, function<Nob * (Nob const *)> const & dstFromSrc)
 {
     Clear();
-    static_cast<Connector const &>(shapeSrc).Apply2All
+    static_cast<Connector const &>(nobSrc).Apply2All
     (
         [&](ConnNeuron const & c) 
         { 
@@ -42,7 +42,7 @@ void Connector::Link(Shape const & shapeSrc, function<Shape * (Shape const *)> c
 
 void Connector::Clear( )
 {
-    Shape::Clear();
+    Nob::Clear();
     m_list.Clear();
 }
 
@@ -70,7 +70,7 @@ MicroMeterPosDir const Connector::GetPosDir() const
 
 void Connector::SetPos(MicroMeterPoint const & umPos)
 {
-    MoveShape(umPos - GetPos());
+    MoveNob(umPos - GetPos());
 }
 
 void Connector::SetPosDir(MicroMeterPosDir const & umPosDir)
@@ -81,17 +81,17 @@ void Connector::SetPosDir(MicroMeterPosDir const & umPosDir)
 
 void Connector::SetDir(Radian const radianNew)
 {
-    RotateShape(GetPos(), radianNew - GetDir());
+    RotateNob(GetPos(), radianNew - GetDir());
 }
 
 void Connector::SetParentPointers()
 {
-    m_list.Apply2All([&](ConnNeuron & n){ n.SetParentShape(this); } );
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetParentNob(this); } );
 }
 
 void Connector::ClearParentPointers()
 {
-    m_list.Apply2All([&](ConnNeuron & n){ n.SetParentShape(nullptr); } );
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetParentNob(nullptr); } );
 }
 
 void Connector::Prepare()
@@ -116,14 +116,14 @@ void Connector::Apply2All(function<void(ConnNeuron const &)> const & func) const
     m_list.Apply2All([&](ConnNeuron const & n){ func(n); } );
 }                        
 
-void Connector::MoveShape(MicroMeterPoint const & delta)       
+void Connector::MoveNob(MicroMeterPoint const & delta)       
 {
-    m_list.Apply2All([&](ConnNeuron & s){ s.MoveShape(delta); } );
+    m_list.Apply2All([&](ConnNeuron & s){ s.MoveNob(delta); } );
 }
 
-void Connector::RotateShape(MicroMeterPoint const & umPntPivot, Radian const radDelta)
+void Connector::RotateNob(MicroMeterPoint const & umPntPivot, Radian const radDelta)
 {
-    m_list.Apply2All([&](ConnNeuron & n){ n.RotateShape(umPntPivot, radDelta); } );
+    m_list.Apply2All([&](ConnNeuron & n){ n.RotateNob(umPntPivot, radDelta); } );
 }
 
 void Connector::Rotate(MicroMeterPoint const & umPntOld, MicroMeterPoint const & umPntNew)
@@ -132,12 +132,12 @@ void Connector::Rotate(MicroMeterPoint const & umPntOld, MicroMeterPoint const &
     Radian          const radOld     { Vector2Radian(umPntOld - umPntPivot) };
     Radian          const radNew     { Vector2Radian(umPntNew - umPntPivot) };
     Radian          const radDelta   { radNew - radOld };
-    RotateShape(umPntPivot, radDelta);
+    RotateNob(umPntPivot, radDelta);
 }                        
 
 void Connector::Select(bool const bOn, bool const bRecursive) 
 { 
-    Shape::Select(bOn);
+    Nob::Select(bOn);
     if (bRecursive)
         m_list.Apply2All([&](ConnNeuron & s){ s.Select(bOn, false); } );
 }
@@ -171,14 +171,14 @@ void Connector::Expand(MicroMeterRect & umRect) const
     m_list.Apply2All([&](ConnNeuron const & s){ umRect.Expand(s.GetPos()); } );
 }
 
-Connector const * Cast2Connector( Shape const * pShape )
+Connector const * Cast2Connector( Nob const * pNob )
 {
-    assert( pShape->IsConnector() );
-    return static_cast<Connector const *>(pShape);
+    assert( pNob->IsConnector() );
+    return static_cast<Connector const *>(pNob);
 }
 
-Connector * Cast2Connector( Shape * pShape )
+Connector * Cast2Connector( Nob * pNob )
 {
-    assert( pShape->IsConnector() );
-    return static_cast<Connector *>(pShape);
+    assert( pNob->IsConnector() );
+    return static_cast<Connector *>(pNob);
 }

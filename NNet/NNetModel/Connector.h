@@ -7,20 +7,20 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "MicroMeterPosDir.h"
-#include "ShapeType.h"
-#include "UPShapeList.h"
-#include "ShapePtrList.h"
+#include "NobType.h"
+#include "UPNobList.h"
+#include "NobPtrList.h"
 #include "ConnectionNeuron.h"
 
-class Connector: public Shape
+class Connector: public Nob
 {
 public:
 
-	static bool      const TypeFits(ShapeType const type) { return type.IsConnectorType(); }
-	static ShapeType const GetShapeType()                 { return ShapeType::Value::connector; }
+	static bool      const TypeFits(NobType const type) { return type.IsConnectorType(); }
+	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
 	Connector();
-	Connector(ShapePtrList<ConnNeuron> const &);
+	Connector(NobPtrList<ConnNeuron> const &);
 
 	virtual ~Connector() {}
 
@@ -34,14 +34,14 @@ public:
 	virtual void       Expand      (MicroMeterRect        &)               const;
 	virtual bool const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool const Includes    (MicroMeterPoint const &)               const;
-	virtual void       RotateShape (MicroMeterPoint const &, Radian const);
-	virtual void       MoveShape   (MicroMeterPoint const &);
+	virtual void       RotateNob (MicroMeterPoint const &, Radian const);
+	virtual void       MoveNob   (MicroMeterPoint const &);
 	virtual void       Select      (bool const, bool const);
 	virtual void       Prepare     ();
 	virtual bool const CompStep    ();
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
-	virtual void       Link        (Shape const &, function<Shape * (Shape const *)> const &);
+	virtual void       Link        (Nob const &, function<Nob * (Nob const *)> const &);
 
 	void Push(ConnNeuron * const p) { m_list.Add(p); }
 
@@ -77,8 +77,8 @@ public:
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
 private:
-	ShapePtrList<ConnNeuron> m_list {};
+	NobPtrList<ConnNeuron> m_list {};
 };
 
-Connector const * Cast2Connector( Shape const * );
-Connector       * Cast2Connector( Shape       * );
+Connector const * Cast2Connector( Nob const * );
+Connector       * Cast2Connector( Nob       * );

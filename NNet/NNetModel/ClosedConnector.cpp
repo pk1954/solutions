@@ -10,7 +10,7 @@ ClosedConnector::ClosedConnector
     Connector & connA, 
     Connector & connB 
 )
-  :	Shape(ShapeType::Value::closedConnector)
+  :	Nob(NobType::Value::closedConnector)
 {
     if ( connA.IsInputConnector() && connB.IsOutputConnector() )
     {
@@ -76,10 +76,10 @@ bool const ClosedConnector::Includes(MicroMeterPoint const & umPnt) const
         || m_pOutputConnector->Includes(umPnt);
 }
 
-void ClosedConnector::RotateShape(MicroMeterPoint const & umPntPivot, Radian const radian)
+void ClosedConnector::RotateNob(MicroMeterPoint const & umPntPivot, Radian const radian)
 {   
-    m_pInputConnector ->RotateShape(umPntPivot, radian);
-    m_pOutputConnector->RotateShape(umPntPivot, radian);
+    m_pInputConnector ->RotateNob(umPntPivot, radian);
+    m_pOutputConnector->RotateNob(umPntPivot, radian);
 }
 
 void ClosedConnector::Prepare()
@@ -108,16 +108,16 @@ void ClosedConnector::Clear()
     m_pOutputConnector->Clear();
 }
 
-void ClosedConnector::Link(Shape const & shapeSrc, function<Shape * (Shape const *)> const & dstFromSrc)
+void ClosedConnector::Link(Nob const & nobSrc, function<Nob * (Nob const *)> const & dstFromSrc)
 {
-    auto const & src = static_cast<ClosedConnector const &>(shapeSrc);
+    auto const & src = static_cast<ClosedConnector const &>(nobSrc);
     m_pInputConnector  = static_cast<Connector *>(dstFromSrc(src.m_pInputConnector ));
     m_pOutputConnector = static_cast<Connector *>(dstFromSrc(src.m_pOutputConnector));
 }
 
 void ClosedConnector::Select(bool const bOn, bool const bRecursive) 
 { 
-    Shape::Select(bOn);
+    Nob::Select(bOn);
     if ( bRecursive )
     {
         m_pInputConnector ->Select(bOn, false);
@@ -125,21 +125,21 @@ void ClosedConnector::Select(bool const bOn, bool const bRecursive)
     }
 }
 
-void ClosedConnector::MoveShape(MicroMeterPoint const & delta)       
+void ClosedConnector::MoveNob(MicroMeterPoint const & delta)       
 {
-    m_pInputConnector ->MoveShape(delta);
-    m_pOutputConnector->MoveShape(delta);
+    m_pInputConnector ->MoveNob(delta);
+    m_pOutputConnector->MoveNob(delta);
 }
 
 void ClosedConnector::SetParentPointers()
 {
-    m_pInputConnector ->SetParentShape(this);
-    m_pOutputConnector->SetParentShape(this);
+    m_pInputConnector ->SetParentNob(this);
+    m_pOutputConnector->SetParentNob(this);
 }
 
 void ClosedConnector::ClearParentPointers()
 {
-    m_pInputConnector ->SetParentShape(nullptr);
-    m_pOutputConnector->SetParentShape(nullptr);
+    m_pInputConnector ->SetParentNob(nullptr);
+    m_pOutputConnector->SetParentNob(nullptr);
 }
 

@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include "MoreTypes.h"
 #include "tHighlightType.h"
-#include "ShapeType.h"
+#include "NobType.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
@@ -23,7 +23,7 @@ using std::endl;
 bool NNetModel::operator==( NNetModel const & rhs ) const
 {
 	return
-	(m_Shapes            == rhs.m_Shapes            ) &&
+	(m_Nobs            == rhs.m_Nobs            ) &&
 	(m_timeStamp         == rhs.m_timeStamp         ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath ) &&
 //	(m_description       == rhs.m_description       ) &&  // not neccessary
@@ -34,30 +34,30 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 void NNetModel::CheckModel() const
 {
 #ifdef _DEBUG
-	m_Shapes.CheckShapeList();
+	m_Nobs.CheckNobList();
 #endif
 }
 
-Shape const * NNetModel::GetConstShape( ShapeId const id ) const 
+Nob const * NNetModel::GetConstNob( NobId const id ) const 
 {	
-	if ( IsUndefined( id ) || ! m_Shapes.IsValidShapeId( id ) )
+	if ( IsUndefined( id ) || ! m_Nobs.IsValidNobId( id ) )
 	{
-		wcout << L"# **** GetConstShape failed. Id = " << id << endl;
+		wcout << L"# **** GetConstNob failed. Id = " << id << endl;
 		DumpModel();
-		m_Shapes.CallErrorHandler( id );  
+		m_Nobs.CallErrorHandler( id );  
 		return nullptr;
 	}
-	return m_Shapes.GetAt( id );
+	return m_Nobs.GetAt( id );
 }
 
-void NNetModel::RecalcAllShapes() 
+void NNetModel::RecalcAllNobs() 
 { 
-	m_Shapes.Apply2All( [&]( Shape & shape ) { shape.Recalc(); } );
+	m_Nobs.Apply2All( [&]( Nob & nob ) { nob.Recalc(); } );
 } 
 
-fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
+fHertz const NNetModel::GetPulseRate( NobId const id ) const
 {
-	InputNeuron const * const pInputNeuron { GetShapeConstPtr<InputNeuron const *>( id ) };
+	InputNeuron const * const pInputNeuron { GetNobConstPtr<InputNeuron const *>( id ) };
 	return ( pInputNeuron )
 		   ? pInputNeuron->GetPulseFrequency()
 	       : fHertz::NULL_VAL();
@@ -76,7 +76,7 @@ float NNetModel::SetParam
 {
 	float fOldValue { m_param.GetParameterValue( param ) };
 	m_param.SetParameterValue( param, fNewValue );
-	RecalcAllShapes();
+	RecalcAllNobs();
 	return fOldValue;
 }
 
@@ -84,15 +84,15 @@ bool NNetModel::Compute()
 {
 	bool bStop {false};
 	m_timeStamp += m_param.GetTimeResolution();
-	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare(); } );
-	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep() ) bStop = true; } );
+	m_Nobs.Apply2All( [&](Nob &s) { s.Prepare(); } );
+	m_Nobs.Apply2All( [&](Nob &s) { if ( s.CompStep() ) bStop = true; } );
 	return bStop;
 }
 
 void NNetModel::ResetModel()
 {
 	m_wstrModelFilePath = L""; 
-	m_Shapes.Clear();
+	m_Nobs.Clear();
 	m_monitorData.Reset();
 	m_description.ClearDescription();
 	SetSimulationTime();
@@ -115,40 +115,40 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 	}
 }
 
-ShapeId const NNetModel::FindShapeAt
+NobId const NNetModel::FindNobAt
 ( 
 	MicroMeterPoint const & umPoint, 
-	ShapeCrit       const & crit 
+	NobCrit       const & crit 
 ) const
 {	
-	ShapeId idRes { NO_SHAPE };
+	NobId idRes { NO_NOB };
 
-	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsClosedConnector() && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsClosedConnector() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsConnector() && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsConnector() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsAnyNeuron() && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyNeuron() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsKnot     () && crit(s); }); 	
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsKnot     () && crit(s); }); 	
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsPipe     () && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsPipe     () && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	return NO_SHAPE;
+	return NO_NOB;
 }
 
 void NNetModel::DumpModel() const
 {
 	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump start ------------" << endl;
-	m_Shapes.Dump();
+	m_Nobs.Dump();
 	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump end ------------" << endl;
 }

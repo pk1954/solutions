@@ -15,18 +15,18 @@ using std::find;
 using std::begin;
 using std::end;
 
-bool BaseKnot::operator==( Shape const & rhs ) const
+bool BaseKnot::operator==( Nob const & rhs ) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
 	return 
-	( this->Shape::operator== (rhs) )                    &&
+	( this->Nob::operator== (rhs) )                    &&
 	GetPos ().IsCloseTo(baseKnotRhs.GetPos ()) &&
 	GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
 }
 
 void BaseKnot::Dump() const
 {
-	Shape::Dump();
+	Nob::Dump();
 	wcout << m_connections << endl;
 }
 
@@ -36,24 +36,24 @@ void BaseKnot::SetPos( MicroMeterPoint const & newPos )
 	m_connections.Recalc();
 }
 
-void BaseKnot::MoveShape( MicroMeterPoint const & delta )
+void BaseKnot::MoveNob( MicroMeterPoint const & delta )
 {
 	SetPos( GetPos() + delta );
 }
 
-void BaseKnot::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> const & dstFromSrc)
+void BaseKnot::Link(Nob const & nobSrc,	function<Nob * (Nob const *)> const & dstFromSrc)
 {
-	BaseKnot    const & baseKnotSrc { static_cast<BaseKnot const &>(shapeSrc) };
+	BaseKnot    const & baseKnotSrc { static_cast<BaseKnot const &>(nobSrc) };
 	Connections const & srcConn { baseKnotSrc.m_connections };
 	m_connections.ClearOutgoing();
 	m_connections.ClearIncoming();
 	srcConn.Apply2AllOutPipes([&](Pipe const &p){m_connections.AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
 	srcConn.Apply2AllInPipes ([&](Pipe const &p){m_connections.AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
-	if ( baseKnotSrc.GetParentShape() )
-		SetParentShape(dstFromSrc(baseKnotSrc.GetParentShape()));
+	if ( baseKnotSrc.GetParentNob() )
+		SetParentNob(dstFromSrc(baseKnotSrc.GetParentNob()));
 }
 
-void BaseKnot::RotateShape( MicroMeterPoint const & umPntPivot, Radian const radDelta )
+void BaseKnot::RotateNob( MicroMeterPoint const & umPntPivot, Radian const radDelta )
 {
 	MicroMeterPoint const umPntVectorOld    { GetPos() - umPntPivot };
 	Radian          const radOld            { Vector2Radian(umPntVectorOld) };
@@ -77,7 +77,7 @@ void BaseKnot::Expand( MicroMeterRect & umRect ) const
 
 void BaseKnot::Check() const
 {
-	Shape::Check();
+	Nob::Check();
 	m_connections.Apply2AllInPipes ([&](Pipe & p) { assert(p.GetEndKnotId  () == GetId()); });
 	m_connections.Apply2AllOutPipes([&](Pipe & p) { assert(p.GetStartKnotId() == GetId()); });
 }
@@ -141,16 +141,16 @@ void BaseKnot::drawCircle
 	context.FillCircle( MicroMeterCircle( GetPos(), umWidth ),	colF );
 }
 
-BaseKnot const * Cast2BaseKnot( Shape const * shape )
+BaseKnot const * Cast2BaseKnot( Nob const * nob )
 {
-	assert( ! shape->IsPipe() );
-	assert( ! shape->IsUndefined() );
-	return static_cast<BaseKnot const *>(shape);
+	assert( ! nob->IsPipe() );
+	assert( ! nob->IsUndefined() );
+	return static_cast<BaseKnot const *>(nob);
 }
 
-BaseKnot * Cast2BaseKnot( Shape * shape )
+BaseKnot * Cast2BaseKnot( Nob * nob )
 {
-	assert( ! shape->IsPipe() );
-	assert( ! shape->IsUndefined() );
-	return static_cast<BaseKnot *>(shape);
+	assert( ! nob->IsPipe() );
+	assert( ! nob->IsUndefined() );
+	return static_cast<BaseKnot *>(nob);
 }

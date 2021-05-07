@@ -8,7 +8,7 @@
 #include "DrawContext.h"
 #include "tHighlightType.h"
 #include "ParameterType.h"
-#include "ShapeType.h"
+#include "NobType.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "Knot.h"
@@ -20,7 +20,7 @@ using std::setprecision;
 using std::fixed;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-	: ConnNeuron( upCenter, ShapeType::Value::inputNeuron )
+	: ConnNeuron( upCenter, NobType::Value::inputNeuron )
 { 
 	SetPulseFrequency(STD_PULSE_FREQ);
 }
@@ -33,7 +33,7 @@ void InputNeuron::Check() const
 	assert( ! m_connections.HasIncoming() );
 }
 
-bool InputNeuron::operator==( Shape const & rhs ) const
+bool InputNeuron::operator==( Nob const & rhs ) const
 {
 	InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
 	return 

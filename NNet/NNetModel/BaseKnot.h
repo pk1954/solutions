@@ -8,7 +8,7 @@
 #include "CircleType.h"
 #include "MoreTypes.h"
 #include "Connections.h"
-#include "Shape.h"
+#include "Nob.h"
 
 using std::wstring;
 
@@ -21,23 +21,23 @@ concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
 
 struct IDWriteTextFormat;
 
-class BaseKnot : public Shape
+class BaseKnot : public Nob
 {
 public:
 
 	BaseKnot
 	( 
 		MicroMeterPoint const & center,
-		ShapeType       const   type,
+		NobType       const   type,
 		MicroMeter      const   extension
 	)
-	  : Shape( type ),
+	  : Nob( type ),
 		m_circle( center, extension )
 	{ }
 
 	virtual ~BaseKnot() {}
 
-	virtual bool operator==( Shape const & ) const override;
+	virtual bool operator==( Nob const & ) const override;
 
 	virtual BaseKnot & operator*=(float const f)
 	{
@@ -69,11 +69,11 @@ public:
 	virtual void       SetPos       (MicroMeterPoint const &);
 	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
-	virtual void       MoveShape    (MicroMeterPoint const &);
-	virtual void       RotateShape  (MicroMeterPoint const &, Radian const);
-	virtual void       Link         (Shape const &, function<Shape * (Shape const *)> const &);
+	virtual void       MoveNob    (MicroMeterPoint const &);
+	virtual void       RotateNob  (MicroMeterPoint const &, Radian const);
+	virtual void       Link         (Nob const &, function<Nob * (Nob const *)> const &);
 
-	static bool const TypeFits( ShapeType const type ) { return type.IsBaseKnotType(); }
+	static bool const TypeFits( NobType const type ) { return type.IsBaseKnotType(); }
 
 	MicroMeterCircle const GetCircle   () const { return m_circle; }
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
@@ -114,12 +114,12 @@ protected:
 
 	MicroMeterRect const GetRect4Text() const;
 
-	void moveShape( MicroMeterPoint const & );
+	void moveNob( MicroMeterPoint const & );
 
 private:
 
 	MicroMeterCircle m_circle;
 };
 
-BaseKnot const * Cast2BaseKnot(Shape const *);
-BaseKnot       * Cast2BaseKnot(Shape       *);
+BaseKnot const * Cast2BaseKnot(Nob const *);
+BaseKnot       * Cast2BaseKnot(Nob       *);

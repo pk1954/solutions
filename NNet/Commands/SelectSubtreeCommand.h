@@ -6,7 +6,7 @@
 
 #include "BoolOp.h"
 #include "NNetModelWriterInterface.h"
-#include "ShapeId.h"
+#include "NobId.h"
 #include "SelectionCommand.h"
 #include "BaseKnot.h"
 
@@ -15,21 +15,21 @@ class SelectSubtreeCommand : public SelectionCommand
 public:
 	SelectSubtreeCommand
 	( 
-		ShapeId const id, 
+		NobId const id, 
 		bool    const bOn
 	)
-	  :	m_idShape(id),
+	  :	m_idNob(id),
 		m_bOn(bOn)
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
 		SelectionCommand::Do(nmwi);
-		nmwi.SelectSubtree(nmwi.GetShapePtr<BaseKnot *>(m_idShape), m_bOn);
+		nmwi.SelectSubtree(nmwi.GetNobPtr<BaseKnot *>(m_idNob), m_bOn);
 	}
 
 private:
-	ShapeId const m_idShape;
+	NobId const m_idNob;
 	bool    const m_bOn;
 };
 

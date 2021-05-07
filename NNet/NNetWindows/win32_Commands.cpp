@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "ShapeIdList.h"
+#include "NobIdList.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "Connect2PipeCommand.h"
@@ -42,36 +42,36 @@ void WinCommands::MakeConnector(RootWindow & win)
 	m_pCmdStack->PushCommand( make_unique<ConnAnimationCommand>(win, *this) );
 }
 
-void WinCommands::Connect(ShapeId const idSrc, ShapeId const idDst, MainWindow & win)
+void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
 
 	unique_ptr<Command> upCmd;
-	switch ( m_pNMRI->GetShapeType(idDst).GetValue() )
+	switch ( m_pNMRI->GetNobType(idDst).GetValue() )
 	{
-	case ShapeType::Value::pipe:
+	case NobType::Value::pipe:
 		upCmd = make_unique<Connect2PipeCommand>    
 		(
-			m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
-			m_pNMWI->GetShapePtr<Pipe     *>(idDst)
+			m_pNMWI->GetNobPtr<BaseKnot *>(idSrc), 
+			m_pNMWI->GetNobPtr<Pipe     *>(idDst)
 		);
 		break;
-	case ShapeType::Value::knot:
-	case ShapeType::Value::neuron:
-	case ShapeType::Value::inputNeuron:
-	case ShapeType::Value::outputNeuron:
+	case NobType::Value::knot:
+	case NobType::Value::neuron:
+	case NobType::Value::inputNeuron:
+	case NobType::Value::outputNeuron:
 		upCmd = make_unique<Connect2BaseKnotCommand>
 		(
-			m_pNMWI->GetShapePtr<BaseKnot *>(idSrc), 
-			m_pNMWI->GetShapePtr<BaseKnot *>(idDst)
+			m_pNMWI->GetNobPtr<BaseKnot *>(idSrc), 
+			m_pNMWI->GetNobPtr<BaseKnot *>(idDst)
 		);
 	break;
-	case ShapeType::Value::connector:
+	case NobType::Value::connector:
 		upCmd = make_unique<PluginAnimationCommand> 
 		(
-			* m_pNMWI->GetShapePtr<Connector *>(idSrc), 
-			* m_pNMWI->GetShapePtr<Connector *>(idDst),
+			* m_pNMWI->GetNobPtr<Connector *>(idSrc), 
+			* m_pNMWI->GetNobPtr<Connector *>(idDst),
 			win,
 			* this
 		);

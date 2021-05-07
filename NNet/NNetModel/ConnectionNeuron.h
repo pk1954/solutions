@@ -14,9 +14,9 @@ using std::endl;
 class ConnNeuron : public Neuron
 {
 public:
-	static bool const TypeFits(ShapeType const type) { return type.IsConnNeuronType(); }
+	static bool const TypeFits(NobType const type) { return type.IsConnNeuronType(); }
 
-	ConnNeuron( MicroMeterPoint const & upCenter, ShapeType const type )
+	ConnNeuron( MicroMeterPoint const & upCenter, NobType const type )
 		: Neuron( upCenter, type )
 	{}
 
@@ -25,7 +25,7 @@ public:
 		Neuron::Check();
 	}
 
-	virtual void RotateShape(MicroMeterPoint const &, Radian const);
+	virtual void RotateNob(MicroMeterPoint const &, Radian const);
 
 	void SetDir(Radian const radian)
 	{

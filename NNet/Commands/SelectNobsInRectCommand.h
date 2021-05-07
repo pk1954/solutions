@@ -1,4 +1,4 @@
-// SelectShapesInRectCommand.h
+// SelectNobsInRectCommand.h
 //
 // Commands
 
@@ -8,10 +8,10 @@
 #include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
-class SelectShapesInRectCommand : public SelectionCommand
+class SelectNobsInRectCommand : public SelectionCommand
 {
 public:
-	SelectShapesInRectCommand
+	SelectNobsInRectCommand
 	( 
 		MicroMeterRect const & rect,
 		bool           const   bAdd2Selection
@@ -22,11 +22,11 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		UPShapeList & list { nmwi.GetUPShapes() };
+		UPNobList & list { nmwi.GetUPNobs() };
 		SelectionCommand::Do( nmwi );
 		if ( ! m_bAdd2Selection )
-			list.DeselectAllShapes();
-		list.Apply2AllInRect<Shape>(m_rect, [&](Shape& s){ s.Select(true, true); });
+			list.DeselectAllNobs();
+		list.Apply2AllInRect<Nob>(m_rect, [&](Nob& s){ s.Select(true, true); });
 	}
 
 private:

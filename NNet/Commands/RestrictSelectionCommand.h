@@ -11,23 +11,23 @@
 class RestrictSelectionCommand : public SelectionCommand
 {
 public:
-	RestrictSelectionCommand( ShapeType::Value const val )
+	RestrictSelectionCommand( NobType::Value const val )
 		: m_val(val)
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.GetUPShapes().Apply2AllSelected<Shape>
+		nmwi.GetUPNobs().Apply2AllSelected<Nob>
 		( 
-			[&](Shape & s)
+			[&](Nob & s)
 			{ 
-				if ( s.GetShapeType() != m_val ) 
+				if ( s.GetNobType() != m_val ) 
 					s.Select(false, false); 
 			}
 		);
 	}
 
 private:
-	ShapeType::Value const m_val;
+	NobType::Value const m_val;
 };

@@ -14,7 +14,7 @@ class SetPulseRateCommand : public Command
 public:
 	SetPulseRateCommand
 	( 
-		ShapeId const id, 
+		NobId const id, 
 		fHertz  const fNewValue 
 	)
 	  :	m_idInputNeuron( id ),
@@ -23,11 +23,11 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		m_fHertz = nmwi.GetShapePtr<InputNeuron *>(m_idInputNeuron)->SetPulseFrequency( m_fHertz );
+		m_fHertz = nmwi.GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetPulseFrequency( m_fHertz );
 		nmwi.ClearModel();
 	}
 
 private:
-	ShapeId const m_idInputNeuron;
+	NobId const m_idInputNeuron;
 	fHertz        m_fHertz;
 };

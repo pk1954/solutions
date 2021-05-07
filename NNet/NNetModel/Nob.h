@@ -1,4 +1,4 @@
-// Shape.h
+// Nob.h
 //
 // NNetModel
 
@@ -10,10 +10,10 @@
 #include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "NNetParameters.h"
-#include "ShapeType.h"
-#include "ShapeId.h"
+#include "NobType.h"
+#include "NobId.h"
 
-class Shape;
+class Nob;
 class DrawContext;
 
 using std::is_base_of;
@@ -24,29 +24,29 @@ using std::wostream;
 using std::wstring;
 
 template <typename T> 
-concept Shape_t = is_base_of<Shape, remove_pointer_t<T>>::value;
+concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
 
-using UPShape    = unique_ptr<Shape>;
-using ShapeFuncC = function<void(Shape const &)>;
-using ShapeFunc  = function<void(Shape       &)>;
-using ShapeCrit  = function<bool(Shape const &)>;
+using UPNob    = unique_ptr<Nob>;
+using NobFuncC = function<void(Nob const &)>;
+using NobFunc  = function<void(Nob       &)>;
+using NobCrit  = function<bool(Nob const &)>;
 
-static ShapeCrit const ShapeCritAlwaysTrue { [](auto & s) { return true; } };
+static NobCrit const NobCritAlwaysTrue { [](auto & s) { return true; } };
 
-class Shape
+class Nob
 {
 public:
 	static void Initialize(Param const & param) { m_pParameters = & param; }
 
-	static bool const TypeFits(ShapeType const type) { return true; }  // every shape type is a Shape
+	static bool const TypeFits(NobType const type) { return true; }  // every nob type is a Nob
 
-	Shape( ShapeType const );
-	virtual ~Shape() {}
+	Nob( NobType const );
+	virtual ~Nob() {}
 
 	virtual void Check() const;
 	virtual void Dump() const;
 
-	virtual bool operator==(Shape const &) const;
+	virtual bool operator==(Nob const &) const;
 
 	virtual MicroMeterPoint const GetPos ()                                                        const = 0;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const)              const = 0;
@@ -57,10 +57,10 @@ public:
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &)                            const = 0;
 	virtual bool            const Includes    (MicroMeterPoint const &)                            const = 0;
 	virtual void                  Expand      (MicroMeterRect &)                                   const = 0;
-	virtual void                  MoveShape   (MicroMeterPoint const &)                                  = 0;
-	virtual void                  RotateShape (MicroMeterPoint const &, Radian const)                    = 0;
+	virtual void                  MoveNob   (MicroMeterPoint const &)                                  = 0;
+	virtual void                  RotateNob (MicroMeterPoint const &, Radian const)                    = 0;
 	virtual void                  Select      (bool const, bool const)                                   = 0;
-	virtual void                  Link        (Shape const &, function<Shape * (Shape const *)> const &) = 0;
+	virtual void                  Link        (Nob const &, function<Nob * (Nob const *)> const &) = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
@@ -68,14 +68,14 @@ public:
 
 	bool      const IsSelected  () const { return m_bSelected; }
 	bool      const IsDefined   () const { return ::IsDefined( m_identifier ); }
-	wstring   const GetName     () const { return ShapeType::GetName( m_type.GetValue() ); }
-	ShapeType const GetShapeType() const { return m_type; }
-	ShapeId   const GetId       () const { return m_identifier; }
+	wstring   const GetName     () const { return NobType::GetName( m_type.GetValue() ); }
+	NobType const GetNobType() const { return m_type; }
+	NobId   const GetId       () const { return m_identifier; }
 
 	MicroMeter const GetPosX() const { return GetPos().GetX(); }
 	MicroMeter const GetPosY() const { return GetPos().GetY(); }
 
-	bool const HasType(ShapeType const type) const { return m_type == type; }
+	bool const HasType(NobType const type) const { return m_type == type; }
 
 	bool const IsClosedConnector() const { return m_type.IsClosedConnectorType(); }
 	bool const IsAnyConnector   () const { return m_type.IsAnyConnectorType   (); }
@@ -89,13 +89,13 @@ public:
 	bool const IsBaseKnot       () const { return m_type.IsBaseKnotType       (); }
 	bool const IsUndefined      () const { return m_type.IsUndefinedType      (); }
 
-	virtual void SetId( ShapeId const id ) { m_identifier = id;	}
+	virtual void SetId( NobId const id ) { m_identifier = id;	}
 
-	friend wostream & operator<< ( wostream &, Shape const & );
+	friend wostream & operator<< ( wostream &, Nob const & );
 
-	bool    const HasParentShape() const          { return m_pShapeParent != nullptr; }
-	Shape * const GetParentShape() const          { return m_pShapeParent; }
-	void          SetParentShape(Shape * const p) { m_pShapeParent = p; }
+	bool    const HasParentNob() const          { return m_pNobParent != nullptr; }
+	Nob * const GetParentNob() const          { return m_pNobParent; }
+	void          SetParentNob(Nob * const p) { m_pNobParent = p; }
 
 protected:
 
@@ -111,17 +111,17 @@ protected:
 	float GetFillLevel( mV const ) const;
 	float GetFillLevel() const { return GetFillLevel(m_mVinputBuffer); };
 
-	void SetType(ShapeType const type) { m_type = type; }
+	void SetType(NobType const type) { m_type = type; }
 
 private:
 
-	ShapeType m_type         { ShapeType::Value::undefined };
+	NobType m_type         { NobType::Value::undefined };
 	bool      m_bSelected    { false };
-	ShapeId   m_identifier   { };
-	Shape   * m_pShapeParent { nullptr };
+	NobId   m_identifier   { };
+	Nob   * m_pNobParent { nullptr };
 };
 
-template <Shape_t T> bool HasType( Shape const & shape ) 
+template <Nob_t T> bool HasType( Nob const & nob ) 
 { 
-	return remove_pointer<T>::type::TypeFits( shape.GetShapeType() ); 
+	return remove_pointer<T>::type::TypeFits( nob.GetNobType() ); 
 }

@@ -9,7 +9,7 @@
 #include "Command.h"
 #include "Connector.h"
 #include "ClosedConnector.h"
-#include "ShapePtrList.h"
+#include "NobPtrList.h"
 #include "win32_mainWindow.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
@@ -44,7 +44,7 @@ private:
     };
 
     Mode                        m_mode { Mode::mode_do };
-    UPShapeList               * m_pModelShapes;
+    UPNobList               * m_pModelNobs;
     NNetModelWriterInterface  & m_NMWI;
     MainWindow                & m_win;
     int                         m_iPhase { 0 };

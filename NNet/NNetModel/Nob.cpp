@@ -1,22 +1,22 @@
-// Shape.cpp 
+// Nob.cpp 
 //
 // NNetModel
 
 #include "stdafx.h"
 #include "scanner.h"
 #include "NNetColors.h"
-#include "shape.h"
+#include "nob.h"
 #include "debug.h"
 
 using std::move;
 using std::wcout;
 using std::wostream;
 
-Shape::Shape( ShapeType const type )
+Nob::Nob( NobType const type )
 	: m_type( type )
 { }	
 
-bool Shape::operator==( Shape const & rhs ) const
+bool Nob::operator==( Nob const & rhs ) const
 {
 	return
 	( m_type       == rhs.m_type       ) &&
@@ -24,7 +24,7 @@ bool Shape::operator==( Shape const & rhs ) const
 	( m_bSelected  == rhs.m_bSelected  );
 }
 
-D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
+D2D1::ColorF Nob::GetInteriorColor( mV const voltageInput ) const
 {
 	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParamType::Value::peakVoltage )) };
 	float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
@@ -32,7 +32,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, fAlphaChannel );
 }
 
-D2D1::ColorF Shape::GetExteriorColor( tHighlight const type ) const 
+D2D1::ColorF Nob::GetExteriorColor( tHighlight const type ) const 
 {
 	switch ( type )
 	{
@@ -41,13 +41,13 @@ D2D1::ColorF Shape::GetExteriorColor( tHighlight const type ) const
 	case tHighlight::normal:      
 	case tHighlight::targetFit:   
 	case tHighlight::targetNoFit: 
-		return HasParentShape() ? NNetColors::EXT_CONNECTOR : NNetColors::EXT_NORMAL;
+		return HasParentNob() ? NNetColors::EXT_CONNECTOR : NNetColors::EXT_NORMAL;
 	}
 	assert( false );
 	return NNetColors::EXT_NORMAL;
 };
 
-D2D1::ColorF Shape::GetInteriorColor( tHighlight const type ) const 
+D2D1::ColorF Nob::GetInteriorColor( tHighlight const type ) const 
 { 
 	switch ( type )
 	{
@@ -60,12 +60,12 @@ D2D1::ColorF Shape::GetInteriorColor( tHighlight const type ) const
 	return NNetColors::INT_NORMAL;
 };
 
-float Shape::GetFillLevel( mV const voltageInput ) const
+float Nob::GetFillLevel( mV const voltageInput ) const
 {
 	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParamType::Value::threshold );
 }
 
-void Shape::Check() const
+void Nob::Check() const
 {
 #ifdef _DEBUG
 	m_type.Check();
@@ -73,13 +73,13 @@ void Shape::Check() const
 #endif
 }
 
-void Shape::Dump() const
+void Nob::Dump() const
 {
 	wcout << Scanner::COMMENT_SYMBOL << *this;
 }
 
-wostream & operator<< ( wostream & out, Shape const & shape )
+wostream & operator<< ( wostream & out, Nob const & nob )
 {
-	out << shape.m_identifier << L' ' << shape.m_type;
+	out << nob.m_identifier << L' ' << nob.m_type;
 	return out;
 }

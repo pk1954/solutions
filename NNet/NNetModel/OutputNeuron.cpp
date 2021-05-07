@@ -14,14 +14,14 @@ using std::wcout;
 using std::endl;
 
 OutputNeuron::OutputNeuron( MicroMeterPoint const & upCenter )
-	: ConnNeuron( upCenter, ShapeType::Value::outputNeuron )
+	: ConnNeuron( upCenter, NobType::Value::outputNeuron )
 {}
 
 OutputNeuron::OutputNeuron( Neuron const & neuron )
-	: ConnNeuron( neuron.GetPos(), ShapeType::Value::outputNeuron )
+	: ConnNeuron( neuron.GetPos(), NobType::Value::outputNeuron )
 {
 	static_cast<Neuron &>(*this) = neuron;      // use all data from Neuron to construct OutputNeuron
-	SetType( ShapeType::Value::outputNeuron );  // fix neuron type
+	SetType( NobType::Value::outputNeuron );  // fix neuron type
 }
 
 void OutputNeuron::Check() const
@@ -30,7 +30,7 @@ void OutputNeuron::Check() const
 	assert( ! m_connections.HasOutgoing() );
 }
 
-bool OutputNeuron::operator==( Shape const & rhs ) const
+bool OutputNeuron::operator==( Nob const & rhs ) const
 {
 	return this->Neuron::operator== (static_cast<OutputNeuron const &>(rhs));
 }

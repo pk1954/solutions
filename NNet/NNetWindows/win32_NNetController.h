@@ -55,8 +55,8 @@ private:
 	bool       IsTraceOn  () const { return m_bTrace; }
 	wostream & TraceStream()       { return wcout; }
 
-	void pulseRateDlg       ( ShapeId const );
-	void triggerSoundDlg    ( ShapeId const );
+	void pulseRateDlg       ( NobId const );
+	void triggerSoundDlg    ( NobId const );
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 

@@ -1,4 +1,4 @@
-// MoveShapeCommand.h
+// MoveNobCommand.h
 //
 // Commands
 
@@ -7,34 +7,34 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
-#include "ShapeId.h"
-#include "Shape.h"
+#include "NobId.h"
+#include "Nob.h"
 
-class MoveShapeCommand : public Command
+class MoveNobCommand : public Command
 {
 public:
-	MoveShapeCommand
+	MoveNobCommand
 	( 
-		Shape                 & shape, 
+		Nob                   & nob, 
 		MicroMeterPoint const & delta 
 	)
 	  : m_delta( delta ),
-		m_shape( shape )
+		m_nob( nob )
 	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_shape.MoveShape(m_delta);
+		m_nob.MoveNob(m_delta);
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_shape.MoveShape(-m_delta);
+		m_nob.MoveNob(-m_delta);
 	}
 
-	virtual ShapeId const GetMovedShape() const
+	virtual NobId const GetMovedNob() const
 	{
-		return m_shape.GetId();
+		return m_nob.GetId();
 	}
 
 	virtual bool IsMoveCommand() const
@@ -46,8 +46,8 @@ public:
 	{ 
 		if (typeid(src) != typeid(*this))
 			return false;
-		MoveShapeCommand const & srcCmd { static_cast<MoveShapeCommand const &>(src) };
-		if (m_shape.GetId() != srcCmd.m_shape.GetId())
+		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
+		if (m_nob.GetId() != srcCmd.m_nob.GetId())
 			return false;
 		m_delta += srcCmd.m_delta;
 		return true; 
@@ -55,5 +55,5 @@ public:
 
 private:
 	MicroMeterPoint m_delta;
-	Shape         & m_shape;
+	Nob         & m_nob;
 };

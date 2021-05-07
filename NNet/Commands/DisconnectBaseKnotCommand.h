@@ -7,8 +7,8 @@
 #include <vector>
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
-#include "ShapeId.h"
-#include "ShapeIdList.h"
+#include "NobId.h"
+#include "NobIdList.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 
@@ -22,7 +22,7 @@ using std::unique_ptr;
 class DisconnectBaseKnotCommand : public Command
 {
 public:
-    DisconnectBaseKnotCommand( ShapeId const, bool const );
+    DisconnectBaseKnotCommand( NobId const, bool const );
 
     ~DisconnectBaseKnotCommand() {}
 
@@ -37,10 +37,10 @@ private:
 
     vector<unique_ptr<Knot>> m_startKnots  {};
     vector<unique_ptr<Knot>> m_endKnots    {};
-    ShapeIdList              m_idStartKnots{};
-    ShapeIdList              m_idEndKnots  {};
+    NobIdList              m_idStartKnots{};
+    NobIdList              m_idEndKnots  {};
 
-    ShapeId            const m_idBaseKnot;
+    NobId            const m_idBaseKnot;
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only
     bool                     m_bInitialized { false };
 };

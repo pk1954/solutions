@@ -9,7 +9,7 @@
 #include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
-#include "Shape.h"
+#include "Nob.h"
 #include "Segment.h"
 
 using std::vector;
@@ -17,7 +17,7 @@ using std::vector;
 class DrawContext;
 class BaseKnot;
 
-class Pipe : public Shape
+class Pipe : public Nob
 {
 public:
 	Pipe(BaseKnot * const, BaseKnot * const);
@@ -28,12 +28,12 @@ public:
 
 	virtual ~Pipe();
 
-	virtual bool operator==(Shape const &) const override;
+	virtual bool operator==(Nob const &) const override;
 
 	virtual void Dump() const;
 
-	static bool      const TypeFits(ShapeType const type) { return type.IsPipeType(); }
-	static ShapeType const GetShapeType() { return ShapeType::Value::pipe; }
+	static bool      const TypeFits(NobType const type) { return type.IsPipeType(); }
+	static NobType const GetNobType() { return NobType::Value::pipe; }
 
 	void SetStartKnot(BaseKnot * const);
 	void SetEndKnot  (BaseKnot * const);
@@ -41,8 +41,8 @@ public:
 	BaseKnot * const GetStartKnotPtr() const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  () const { return m_pKnotEnd;   }
 
-	ShapeId         GetStartKnotId() const;
-	ShapeId         GetEndKnotId  () const;
+	NobId         GetStartKnotId() const;
+	NobId         GetEndKnotId  () const;
 	MicroMeterPoint GetStartPoint () const; 
 	MicroMeterPoint GetEndPoint   () const; 
 	MicroMeter      GetLength     () const;
@@ -59,9 +59,9 @@ public:
 	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const;
 	virtual void                  Expand      (MicroMeterRect &)                      const;
 	virtual void                  Select      (bool const, bool const);
-	virtual void                  MoveShape   (MicroMeterPoint const &);
-	virtual void                  Link        (Shape const &, function<Shape * (Shape const *)> const &);
-	virtual void                  RotateShape (MicroMeterPoint const &, Radian const) {}
+	virtual void                  MoveNob   (MicroMeterPoint const &);
+	virtual void                  Link        (Nob const &, function<Nob * (Nob const *)> const &);
+	virtual void                  RotateNob (MicroMeterPoint const &, Radian const) {}
 	virtual void                  Prepare();
 	virtual bool            const CompStep();
 	virtual void                  Recalc();
@@ -93,5 +93,5 @@ private:
 	void dislocate( BaseKnot * const, MicroMeter const );
 };
 
-Pipe const * Cast2Pipe( Shape const * );
-Pipe       * Cast2Pipe( Shape       * );
+Pipe const * Cast2Pipe( Nob const * );
+Pipe       * Cast2Pipe( Nob       * );

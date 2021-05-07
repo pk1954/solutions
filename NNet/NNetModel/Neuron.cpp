@@ -30,7 +30,7 @@ static void CALLBACK BeepFunc
 	Neuron::m_pSound->Beep( pNeuron->GetTriggerSound() );
 }
 
-Neuron::Neuron( MicroMeterPoint const & upCenter, ShapeType const type )
+Neuron::Neuron( MicroMeterPoint const & upCenter, NobType const type )
 	: BaseKnot( upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
@@ -69,7 +69,7 @@ Neuron & Neuron::operator=( Neuron const & rhs )
 
 Neuron::~Neuron() { }
 
-bool Neuron::operator==( Shape const & rhs ) const
+bool Neuron::operator==( Nob const & rhs ) const
 {
 	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
 	return
@@ -132,7 +132,7 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 void Neuron::Clear()
 {
 	m_timeSinceLastPulse = 0._MicroSecs;   
-	Shape::Clear();
+	Nob::Clear();
 }
 
 bool const Neuron::CompStep()
@@ -203,14 +203,14 @@ void Neuron::DrawInterior( DrawContext const & context, tHighlight const type ) 
 	m_bTriggered = false;
 }
 
-Neuron const * Cast2Neuron( Shape const * pShape )
+Neuron const * Cast2Neuron( Nob const * pNob )
 {
-	assert( pShape->IsAnyNeuron() );
-	return static_cast<Neuron const *>(pShape);
+	assert( pNob->IsAnyNeuron() );
+	return static_cast<Neuron const *>(pNob);
 }
 
-Neuron * Cast2Neuron( Shape * pShape )
+Neuron * Cast2Neuron( Nob * pNob )
 {
-	assert( pShape->IsAnyNeuron() );
-	return static_cast<Neuron *>(pShape);
+	assert( pNob->IsAnyNeuron() );
+	return static_cast<Neuron *>(pNob);
 }

@@ -6,31 +6,31 @@
 #include "DeletePipeCommand.h"
 #include "DisconnectConnectorCommand.h"
 #include "DisconnectBaseKnotCommand.h"
-#include "ShapeType.h"
+#include "NobType.h"
 #include "BaseKnot.h"
-#include "Shape.h"
+#include "Nob.h"
 #include "CommandFunctions.h"
 
-unique_ptr<Command> MakeDeleteCommand(Shape const & shape)
+unique_ptr<Command> MakeDeleteCommand(Nob const & nob)
 {
-	ShapeId const id { shape.GetId() };
+	NobId const id { nob.GetId() };
 	unique_ptr<Command> upCmd;
-	if (shape.IsPipe()) 
+	if (nob.IsPipe()) 
 		upCmd = make_unique<DeletePipeCommand>(id);
-	else if (shape.IsConnector()) 
+	else if (nob.IsConnector()) 
 		upCmd = make_unique<DisconnectConnectorCommand>(id, true);
 	else 
 		upCmd = make_unique<DisconnectBaseKnotCommand>(id, true);
 	return move(upCmd);
 }
 
-unique_ptr<Command> MakeDisconnectCommand(Shape const & shape)
+unique_ptr<Command> MakeDisconnectCommand(Nob const & nob)
 {
-	ShapeId const id { shape.GetId() };
+	NobId const id { nob.GetId() };
 	unique_ptr<Command> upCmd;
-	if (shape.IsPipe()) 
+	if (nob.IsPipe()) 
 		assert( false );
-	else if (shape.IsConnector()) 
+	else if (nob.IsConnector()) 
 		upCmd = make_unique<DisconnectConnectorCommand>(id, false);
 	else 
 		upCmd = make_unique<DisconnectBaseKnotCommand>(id, false);

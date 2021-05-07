@@ -20,7 +20,7 @@ using std::make_unique;
 class Neuron : public BaseKnot
 {
 public:
-	Neuron( MicroMeterPoint const &, ShapeType const = ShapeType::Value::neuron );
+	Neuron( MicroMeterPoint const &, NobType const = NobType::Value::neuron );
  
 	Neuron( Neuron const & );   // copy constructor
 
@@ -30,10 +30,10 @@ public:
 
 	virtual ~Neuron();
 
-	virtual bool operator==( Shape const & ) const override;
+	virtual bool operator==( Nob const & ) const override;
 
-	static bool      const TypeFits( ShapeType const type ) { return type.IsNeuronType(); }
-	static ShapeType const GetShapeType() { return ShapeType::Value::neuron; }
+	static bool      const TypeFits( NobType const type ) { return type.IsNeuronType(); }
+	static NobType const GetNobType() { return NobType::Value::neuron; }
 
 	bool       const HasAxon         () const { return m_connections.HasOutgoing(); }
 	bool       const HasTriggerSound () const { return m_triggerSound.m_bOn; }
@@ -48,7 +48,7 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
 
-	virtual void       Select(bool const bOn, bool const bRec) { Shape::Select(bOn); };
+	virtual void       Select(bool const bOn, bool const bRec) { Nob::Select(bOn); };
 	virtual void       DrawExterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawInterior  ( DrawContext const &, tHighlight const) const;
 	virtual void       DrawNeuronText( DrawContext const & ) const;
@@ -85,5 +85,5 @@ private:
 	friend static void CALLBACK BeepFunc( PTP_CALLBACK_INSTANCE, PVOID,	PTP_WORK );
 };
 
-Neuron const * Cast2Neuron( Shape const * );
-Neuron       * Cast2Neuron( Shape       * );
+Neuron const * Cast2Neuron( Nob const * );
+Neuron       * Cast2Neuron( Nob       * );
