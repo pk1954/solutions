@@ -24,7 +24,7 @@ public:
 
 	virtual ~Connector() {}
 
-	virtual void CheckShape() const;
+	virtual void Check() const;
 	virtual void Dump      () const;
 
 	virtual MicroMeterPoint const GetPos() const;

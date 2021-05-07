@@ -24,7 +24,7 @@ public:
  
 	Neuron( Neuron const & );   // copy constructor
 
-	virtual void CheckShape() const;
+	virtual void Check() const;
 
 	Neuron & operator=( Neuron const & ); // copy assignment operator
 

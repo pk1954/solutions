@@ -32,7 +32,7 @@ public:
 			m_pStartKnot = m_pPipe->GetStartKnotPtr();
 			m_pEndKnot   = m_pPipe->GetEndKnotPtr();
 		}
-		m_pPipe->CheckShape();
+		m_pPipe->Check();
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 		if ( m_pStartKnot->IsOrphanedKnot() )
 			m_upStartKnot = nmwi.RemoveFromModel<Knot>( * m_pStartKnot );
@@ -53,7 +53,7 @@ public:
 		if ( m_upEndKnot )
 			nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move(m_upEndKnot) );
 		nmwi.ReplaceInModel<Pipe,Pipe>( move(m_upPipe) );
-		m_pPipe->CheckShape();
+		m_pPipe->Check();
 	}
 
 private:

@@ -24,9 +24,9 @@ void Knot::DrawInterior( DrawContext const & context, tHighlight const type ) co
 	context.FillCircle( GetCircle() * PIPE_INTERIOR, GetInteriorColor(type) );
 }
 
-void Knot::CheckShape() const
+void Knot::Check() const
 {
-	BaseKnot::CheckShape();
+	BaseKnot::Check();
 	if ( m_connections.IsOrphan() )
 	{
 		int x = 42;

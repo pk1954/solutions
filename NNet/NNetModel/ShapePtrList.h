@@ -28,7 +28,7 @@ public:
 	T       & GetLast()       { return * m_list.back(); }
 	T const & GetLast() const { return * m_list.back(); }
 
-	void Check() const { for (auto & it : m_list) { it->CheckShape(); }; }
+	void Check() const { for (auto & it : m_list) { it->Check(); }; }
 
 	void Clear()      {	m_list.clear(); }
 	void RemoveLast() {	m_list.pop_back(); }

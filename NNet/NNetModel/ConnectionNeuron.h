@@ -22,7 +22,7 @@ public:
 
 	void Check() const
 	{
-		Neuron::CheckShape();
+		Neuron::Check();
 	}
 
 	virtual void RotateShape(MicroMeterPoint const &, Radian const);

@@ -28,10 +28,10 @@ ClosedConnector::ClosedConnector
     }
 }
 
-void ClosedConnector::CheckShape() const
+void ClosedConnector::Check() const
 {
-    m_pInputConnector ->CheckShape();
-    m_pOutputConnector->CheckShape();
+    m_pInputConnector ->Check();
+    m_pOutputConnector->Check();
 }
 
 void ClosedConnector::Dump() const
@@ -65,8 +65,9 @@ void ClosedConnector::Expand(MicroMeterRect & umRect) const
 
 bool const ClosedConnector::IsIncludedIn(MicroMeterRect const & rect) const
 {
-    return m_pInputConnector ->IsIncludedIn(rect) 
+    bool bRes = m_pInputConnector ->IsIncludedIn(rect) 
         || m_pOutputConnector->IsIncludedIn(rect);
+    return bRes;
 }
 
 bool const ClosedConnector::Includes(MicroMeterPoint const & umPnt) const
@@ -132,13 +133,13 @@ void ClosedConnector::MoveShape(MicroMeterPoint const & delta)
 
 void ClosedConnector::SetParentPointers()
 {
-    m_pInputConnector ->SetParent(this);
-    m_pOutputConnector->SetParent(this);
+    m_pInputConnector ->SetParentShape(this);
+    m_pOutputConnector->SetParentShape(this);
 }
 
 void ClosedConnector::ClearParentPointers()
 {
-    m_pInputConnector ->SetParent(nullptr);
-    m_pOutputConnector->SetParent(nullptr);
+    m_pInputConnector ->SetParentShape(nullptr);
+    m_pOutputConnector->SetParentShape(nullptr);
 }
 

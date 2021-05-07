@@ -26,7 +26,7 @@ public:
 
 	virtual ~Knot() {}
 
-	void CheckShape() const;
+	void Check() const;
 
 	static bool      const TypeFits(ShapeType const type) { return type.IsKnotType(); }
 	static ShapeType const GetShapeType() { return ShapeType::Value::knot; }

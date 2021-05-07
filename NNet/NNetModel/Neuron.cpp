@@ -36,9 +36,9 @@ Neuron::Neuron( MicroMeterPoint const & upCenter, ShapeType const type )
 	Recalc();
 }
 
-void Neuron::CheckShape() const
+void Neuron::Check() const
 {
-	BaseKnot::CheckShape();
+	BaseKnot::Check();
 }
 
 void Neuron::init( const Neuron & rhs )

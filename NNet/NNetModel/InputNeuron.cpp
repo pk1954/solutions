@@ -27,9 +27,9 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 
 InputNeuron::~InputNeuron() { }
 
-void InputNeuron::CheckShape() const
+void InputNeuron::Check() const
 {
-	Neuron::CheckShape();
+	Neuron::Check();
 	assert( ! m_connections.HasIncoming() );
 }
 

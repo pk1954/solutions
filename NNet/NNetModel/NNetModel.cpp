@@ -123,6 +123,10 @@ ShapeId const NNetModel::FindShapeAt
 {	
 	ShapeId idRes { NO_SHAPE };
 
+	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsClosedConnector() && crit(s); });
+	if ( IsDefined(idRes) )
+		return idRes;
+
 	idRes = m_Shapes.FindShapeAt(umPoint, [&](Shape const & s) { return s.IsConnector() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;

@@ -49,8 +49,8 @@ void BaseKnot::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> co
 	m_connections.ClearIncoming();
 	srcConn.Apply2AllOutPipes([&](Pipe const &p){m_connections.AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
 	srcConn.Apply2AllInPipes ([&](Pipe const &p){m_connections.AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
-	if ( baseKnotSrc.GetParent() )
-		SetParent(dstFromSrc(baseKnotSrc.GetParent()));
+	if ( baseKnotSrc.GetParentShape() )
+		SetParentShape(dstFromSrc(baseKnotSrc.GetParentShape()));
 }
 
 void BaseKnot::RotateShape( MicroMeterPoint const & umPntPivot, Radian const radDelta )
@@ -75,9 +75,9 @@ void BaseKnot::Expand( MicroMeterRect & umRect ) const
 	umRect.Expand( GetPos() );
 }
 
-void BaseKnot::CheckShape() const
+void BaseKnot::Check() const
 {
-	Shape::CheckShape();
+	Shape::Check();
 	m_connections.Apply2AllInPipes ([&](Pipe & p) { assert(p.GetEndKnotId  () == GetId()); });
 	m_connections.Apply2AllOutPipes([&](Pipe & p) { assert(p.GetStartKnotId() == GetId()); });
 }

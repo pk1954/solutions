@@ -63,7 +63,7 @@ public:
 	}
 
 	virtual void       Dump         () const;
-	virtual void       CheckShape   () const;
+	virtual void       Check   () const;
 	virtual void       Prepare      ();
  	virtual mV   const GetNextOutput() const = 0;
 	virtual void       SetPos       (MicroMeterPoint const &);

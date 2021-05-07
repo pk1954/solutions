@@ -107,9 +107,9 @@ void Pipe::Link(Shape const & shapeSrc,	function<Shape * (Shape const *)> const 
 	SetEndKnot  (pBaseKnotEnd);
 }
 
-void Pipe::CheckShape() const
+void Pipe::Check() const
 {
-	Shape::CheckShape();
+	Shape::Check();
 	assert( m_pKnotStart->IsPrecursorOf( * this ) );
 	assert( m_pKnotEnd  ->IsSuccessorOf( * this ) );
 }

@@ -15,7 +15,7 @@ public:
 
 	virtual ~InputNeuron();
 
-	virtual void CheckShape() const;
+	virtual void Check() const;
 
 	virtual bool operator==( Shape const & ) const override;
 

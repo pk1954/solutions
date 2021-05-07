@@ -35,11 +35,14 @@ PluginAnimationCommand::PluginAnimationCommand
     
     m_umPosDirTarget[0] = m_connAnimated.GetPosDir();
 
-    array <float, 3> fOffsets { 0.0f, 5.0f, 2.3f };
+    array <float, 2> fOffsets { 5.0f, 2.3f };
 
     for (int i = 1; i<= 2; ++i )
     {
-        MicroMeterPoint const umPosOffset { umDirVector * fOffsets[i] };
+        float fOff { fOffsets[i-1] };
+        if (m_connTarget.IsOutputConnector() )
+            fOff = -fOff;
+        MicroMeterPoint const umPosOffset { umDirVector * fOff };
         MicroMeterPoint const umPosTarget { m_connTarget.GetPos() - umPosOffset };
         m_umPosDirTarget[i] = MicroMeterPosDir( umPosTarget, radianTarget );
     }
@@ -67,8 +70,8 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
         case 3:  m_upClosedConnector->SetParentPointers();
                  m_pModelShapes->Push(move(m_upClosedConnector));
-        case 4:  unblockUI();
-                 [[fallthrough]]; 
+                 unblockUI();
+                 return; 
         default: return;        // do not start animation
         }
     }
@@ -79,11 +82,11 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 3:  blockUI();
                  m_upClosedConnector = m_pModelShapes->Pop<ClosedConnector>();
                  m_upClosedConnector->ClearParentPointers();
-                 break;
+                 [[fallthrough]]; 
         case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
         case 0:  unblockUI();
-                 [[fallthrough]]; 
+                 return; 
         default: return;                // do not start animation
         }
     }

@@ -95,7 +95,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 4:	 m_upConnector->SetParentPointers();
                  m_pModelShapes->Push(move(m_upConnector));
                  unblockUI();
-                 [[fallthrough]]; 
+                 return; 
         default: return;        // do not start animation
         }
     }
@@ -111,7 +111,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 2:	 umPntVectorTarget = m_umPntVectorTarget1;  break;
         case 1:	 umPntVectorTarget = m_umPntVectorOriginal; break;
         case 0:  unblockUI();
-                 [[fallthrough]]; 
+                 return; 
         default: return;                // do not start animation
         }
     }

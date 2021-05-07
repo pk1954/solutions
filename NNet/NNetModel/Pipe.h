@@ -53,7 +53,7 @@ public:
 	virtual MicroMeterPoint const GetPos ()                                           const;
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool            const Includes    (MicroMeterPoint const &)               const;
-	virtual void                  CheckShape  ()                                      const;
+	virtual void                  Check  ()                                      const;
 	virtual void                  DrawArrows  (DrawContext const &, MicroMeter const) const;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const;

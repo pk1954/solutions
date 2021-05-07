@@ -17,9 +17,9 @@ Connector::Connector( ShapePtrList<ConnNeuron> const & src )
     src.Apply2All([&](ConnNeuron & n) { Push(&n); });
 }
 
-void Connector::CheckShape() const
+void Connector::Check() const
 {
-    Shape::CheckShape();
+    Shape::Check();
 }
 
 void Connector::Dump() const
@@ -86,12 +86,12 @@ void Connector::SetDir(Radian const radianNew)
 
 void Connector::SetParentPointers()
 {
-    m_list.Apply2All([&](ConnNeuron & n){ n.SetParent(this); } );
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetParentShape(this); } );
 }
 
 void Connector::ClearParentPointers()
 {
-    m_list.Apply2All([&](ConnNeuron & n){ n.SetParent(nullptr); } );
+    m_list.Apply2All([&](ConnNeuron & n){ n.SetParentShape(nullptr); } );
 }
 
 void Connector::Prepare()
@@ -125,11 +125,6 @@ void Connector::RotateShape(MicroMeterPoint const & umPntPivot, Radian const rad
 {
     m_list.Apply2All([&](ConnNeuron & n){ n.RotateShape(umPntPivot, radDelta); } );
 }
-
-//void Connector::Rotate(MicroMeterPoint const & umPntPivot, Radian const radDelta)
-//{
-//    m_list.Apply2All([&](ConnNeuron & s){ RotateShape(umPntPivot, radDelta); } );
-//}                        
 
 void Connector::Rotate(MicroMeterPoint const & umPntOld, MicroMeterPoint const & umPntNew)
 {

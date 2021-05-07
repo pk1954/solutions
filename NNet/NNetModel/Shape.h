@@ -43,7 +43,7 @@ public:
 	Shape( ShapeType const );
 	virtual ~Shape() {}
 
-	virtual void CheckShape() const;
+	virtual void Check() const;
 	virtual void Dump() const;
 
 	virtual bool operator==(Shape const &) const;
@@ -77,23 +77,24 @@ public:
 
 	bool const HasType(ShapeType const type) const { return m_type == type; }
 
-	bool const IsConnector   () const { return m_type.IsConnectorType   (); }
-	bool const IsPipe        () const { return m_type.IsPipeType        (); }
-	bool const IsKnot        () const { return m_type.IsKnotType        (); }
-	bool const IsNeuron      () const { return m_type.IsNeuronType      (); }
-	bool const IsInputNeuron () const { return m_type.IsInputNeuronType (); }
-	bool const IsOutputNeuron() const { return m_type.IsOutputNeuronType(); }
-	bool const IsAnyNeuron   () const { return m_type.IsAnyNeuronType   (); }
-	bool const IsBaseKnot    () const { return m_type.IsBaseKnotType    (); }
-	bool const IsUndefined   () const { return m_type.IsUndefinedType   (); }
+	bool const IsClosedConnector() const { return m_type.IsClosedConnectorType(); }
+	bool const IsConnector      () const { return m_type.IsConnectorType      (); }
+	bool const IsPipe           () const { return m_type.IsPipeType           (); }
+	bool const IsKnot           () const { return m_type.IsKnotType           (); }
+	bool const IsNeuron         () const { return m_type.IsNeuronType         (); }
+	bool const IsInputNeuron    () const { return m_type.IsInputNeuronType    (); }
+	bool const IsOutputNeuron   () const { return m_type.IsOutputNeuronType   (); }
+	bool const IsAnyNeuron      () const { return m_type.IsAnyNeuronType      (); }
+	bool const IsBaseKnot       () const { return m_type.IsBaseKnotType       (); }
+	bool const IsUndefined      () const { return m_type.IsUndefinedType      (); }
 
 	virtual void SetId( ShapeId const id ) { m_identifier = id;	}
 
 	friend wostream & operator<< ( wostream &, Shape const & );
 
-	bool    const HasParent() const          { return m_pShapeParent != nullptr; }
-	Shape * const GetParent() const          { return m_pShapeParent; }
-	void          SetParent(Shape * const p) { m_pShapeParent = p; }
+	bool    const HasParentShape() const          { return m_pShapeParent != nullptr; }
+	Shape * const GetParentShape() const          { return m_pShapeParent; }
+	void          SetParentShape(Shape * const p) { m_pShapeParent = p; }
 
 protected:
 

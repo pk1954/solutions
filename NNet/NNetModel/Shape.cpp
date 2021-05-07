@@ -36,10 +36,12 @@ D2D1::ColorF Shape::GetExteriorColor( tHighlight const type ) const
 {
 	switch ( type )
 	{
-	case tHighlight::highlighted: return NNetColors::EXT_HIGHLIGHTED;
+	case tHighlight::highlighted: 
+		return NNetColors::EXT_HIGHLIGHTED;
 	case tHighlight::normal:      
 	case tHighlight::targetFit:   
-	case tHighlight::targetNoFit: return HasParent() ? NNetColors::EXT_CONNECTOR : NNetColors::EXT_NORMAL;
+	case tHighlight::targetNoFit: 
+		return HasParentShape() ? NNetColors::EXT_CONNECTOR : NNetColors::EXT_NORMAL;
 	}
 	assert( false );
 	return NNetColors::EXT_NORMAL;
@@ -63,7 +65,7 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParamType::Value::threshold );
 }
 
-void Shape::CheckShape() const
+void Shape::Check() const
 {
 #ifdef _DEBUG
 	m_type.Check();

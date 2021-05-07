@@ -22,34 +22,6 @@ void UPShapeList::Clear()
 	m_shapesOfType.fill( 0 );
 }
 
-//void UPShapeList::checkShape( Shape const & shape ) const
-//{
-//	switch ( shape.GetShapeType().GetValue() )
-//	{
-//	case ShapeType::Value::inputNeuron:
-//	case ShapeType::Value::outputNeuron:
-//	case ShapeType::Value::neuron:
-//	case ShapeType::Value::knot:
-//		static_cast<BaseKnot const &>(shape).CheckShape();
-//		break;
-//
-//	case ShapeType::Value::pipe:
-//		static_cast<Pipe const &>(shape).CheckShape();
-//		break;
-//
-//	case ShapeType::Value::connector:
-//		static_cast<Connector const &>(shape).CheckShape();
-//		break;
-//
-//	case ShapeType::Value::closedConnector:
-//		static_cast<ClosedConnector const &>(shape).CheckShape();
-//		break;
-//
-//	default:
-//		assert( false );
-//	}
-//}
-
 void UPShapeList::SetErrorHandler( ShapeErrorHandler * const p ) 
 { 
 	m_pShapeErrorHandler = p; 
@@ -211,7 +183,7 @@ UPShapeList & UPShapeList::operator= ( const UPShapeList & rhs ) // copy assignm
 void UPShapeList::CheckShapeList() const
 {
 #ifdef _DEBUG
-	Apply2All( [&](Shape const & shape) { shape.CheckShape(); } );
+	Apply2All( [&](Shape const & shape) { shape.Check(); } );
 #endif
 }
 

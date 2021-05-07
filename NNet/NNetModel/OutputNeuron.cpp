@@ -24,9 +24,9 @@ OutputNeuron::OutputNeuron( Neuron const & neuron )
 	SetType( ShapeType::Value::outputNeuron );  // fix neuron type
 }
 
-void OutputNeuron::CheckShape() const
+void OutputNeuron::Check() const
 {
-	Neuron::CheckShape();
+	Neuron::Check();
 	assert( ! m_connections.HasOutgoing() );
 }
 

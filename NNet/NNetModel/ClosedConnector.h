@@ -22,7 +22,7 @@ public:
 	ClosedConnector(Connector &, Connector &);
 	virtual ~ClosedConnector() {}
 
-	virtual void CheckShape() const;
+	virtual void Check() const;
 	virtual void Dump      () const;
 
 	virtual MicroMeterPoint const GetPos() const;

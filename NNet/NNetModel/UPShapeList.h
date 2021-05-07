@@ -230,8 +230,7 @@ private:
 
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
-	void copy      ( UPShapeList const & );
-//	void checkShape( Shape const & ) const;
+	void copy( UPShapeList const & );
 };
 
 UPShape ShallowCopy(Shape const &);
