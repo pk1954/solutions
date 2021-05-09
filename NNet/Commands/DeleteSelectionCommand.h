@@ -39,12 +39,12 @@ private:
 		(
 			[&](Nob & nob) 
 			{ 
-				m_cmdStack.Push( move( MakeDeleteCommand(nob) ) );
+				m_cmdStack.Push( move( MakeDeleteCommand(nmwi, nob.GetId()) ) );
 			}
 		); 
 	}
 
 	CommandStack m_cmdStack     {};
-	NobIdList  m_idList       {};
+	NobIdList    m_idList       {};
 	bool         m_bInitialized { false };
 };

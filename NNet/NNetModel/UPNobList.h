@@ -31,40 +31,40 @@ public:
 	~UPNobList();
 
 	UPNobList & operator=  ( UPNobList const & );
-	bool          operator== ( UPNobList const & ) const;
+	bool        operator== ( UPNobList const & ) const;
 
-	bool    const IsEmpty       ()                 const { return m_list.size() == 0; }
-	long    const Size          ()                 const { return Cast2Long( m_list.size() ); }
-	NobId const IdNewSlot     ()	               const { return NobId( Cast2Long(m_list.size()) ); }
-	bool    const IsEmptySlot   (NobId const id) const { return GetAt(id) == nullptr; }
+	bool    const IsEmpty     ()               const { return m_list.size() == 0; }
+	long    const Size        ()               const { return Cast2Long( m_list.size() ); }
+	NobId   const IdNewSlot   ()	           const { return NobId( Cast2Long(m_list.size()) ); }
+	bool    const IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
 	bool    const IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
 	bool    const IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
-	Nob * const Front         ()                 const { return   m_list[0].get(); }
-	Nob * const GetAt         (int     const i ) const { return   m_list[i].get(); }
-	Nob * const GetAt         (NobId const id) const { return   GetAt(id.GetValue()); }
-	Nob       & GetRef        (int     const i )       { return * m_list[i]; }
-	Nob       & GetRef        (NobId const id)       { return   GetRef(id.GetValue()); }
-	void          Resize        (long    const nr)       { m_list.resize( nr );	}
-	void          Increase      (long    const nr)       { m_list.resize( m_list.size() + nr ); }
+	Nob   * const Front       ()               const { return   m_list[0].get(); }
+	Nob   * const GetAt       (int   const i ) const { return   m_list[i].get(); }
+	Nob   * const GetAt       (NobId const id) const { return   GetAt(id.GetValue()); }
+	Nob         & GetRef      (int   const i )       { return * m_list[i]; }
+	Nob         & GetRef      (NobId const id)       { return   GetRef(id.GetValue()); }
+	void          Resize      (long  const nr)       { m_list.resize( nr );	}
+	void          Increase    (long  const nr)       { m_list.resize( m_list.size() + nr ); }
 				    
 	void               Clear             ();
 	void               SetErrorHandler   (NobErrorHandler * const);
-	void               SelectAllNobs   (bool const);
-	void               DeselectAllNobs () { SelectAllNobs(false); }
-	NobId      const Push              (UPNob);
-	UPNob            ExtractNob      (NobId const);	
-	Nob      * const ReplaceNob      (NobId const, UPNob);	
-	void               SetNob2Slot     (NobId const, UPNob); // only for special situations
-	void               SetNob2Slot     (UPNob);                // only for special situations
-	void               CheckNobList    ()                                                        const;
+	void               SelectAllNobs     (bool const);
+	void               DeselectAllNobs   () { SelectAllNobs(false); }
+	NobId      const Push                (UPNob);
+	UPNob            ExtractNob          (NobId const);	
+	Nob      * const ReplaceNob          (NobId const, UPNob);	
+	void               SetNob2Slot       (NobId const, UPNob); // only for special situations
+	void               SetNob2Slot       (UPNob);                // only for special situations
+	void               CheckNobList      ()                                                        const;
 	void               Dump              ()                                                        const;
-	void               LinkNob         (Nob const &, function<Nob* (Nob const *)> const &) const;
-	bool         const AnyNobsSelected ()                                                        const;
+	void               LinkNob           (Nob const &, function<Nob* (Nob const *)> const &) const;
+	bool         const AnyNobsSelected   ()                                                        const;
 	void               CallErrorHandler  (NobId const )                                          const;
 	unsigned int const CountInSelection  (NobType const)                                         const;
 	unsigned int const GetCounter        (NobType const)                                         const;
 	unsigned int const GetCounter        ()                                                        const;
-	NobId      const FindNobAt       (MicroMeterPoint const, NobCrit const &)                const;
+	NobId        const FindNobAt         (MicroMeterPoint const, NobCrit const &)                const;
 	bool         const Apply2AllB        (                       NobCrit const &)                const;
 	void               Apply2All         (NobFuncC const & )                                     const;
 	void               Apply2All         (NobFunc  const & );

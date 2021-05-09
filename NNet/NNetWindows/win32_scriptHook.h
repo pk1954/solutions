@@ -13,7 +13,7 @@ using std::to_wstring;
 class ScriptHook : public Script_Functor
 {
 public:
-	ScriptHook() { }
+	ScriptHook() {}
 
 	void Initialize
 	( 
@@ -46,6 +46,10 @@ public:
 				m_iStatusBarPart, 
 				L"Reading " + wstrPath + L" ... " + to_wstring( lPercentRead ) + L"%"  
 			);
+		}
+		else
+		{
+			m_pStatusBar->ClearPart(m_iStatusBarPart);
 		}
 	}
 

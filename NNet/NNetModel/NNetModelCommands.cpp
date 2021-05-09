@@ -141,10 +141,7 @@ void NNetModelCommands::DeleteNob( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	if ( Nob * pNob { m_pNMWI->GetNob(id) } )
-	{
-		m_pCmdStack->PushCommand( move( MakeDeleteCommand(*pNob) ) );
-	}
+	m_pCmdStack->PushCommand( move( MakeDeleteCommand(*m_pNMWI, id) ) );
 }
 
 void NNetModelCommands::DeleteSelection()
@@ -159,7 +156,7 @@ void NNetModelCommands::Disconnect( NobId const id )
 	unique_ptr<Command> pCmd;
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI->GetNob(id)) ) );
+	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI, id) ) );
 }
 
 void NNetModelCommands::ToggleStopOnTrigger( NobId const id )
@@ -199,7 +196,7 @@ void NNetModelCommands::MoveNob( NobId const id, MicroMeterPoint const & delta )
 
 void NNetModelCommands::Rotate
 ( 
-	NobId         const   id, 
+	NobId           const   id, 
 	MicroMeterPoint const & umPntOld, 
 	MicroMeterPoint const & umPntNew 
 )

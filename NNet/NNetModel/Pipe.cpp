@@ -98,7 +98,7 @@ void Pipe::Recalc()
 		m_potIndex = 0;
 	}
 }
-void Pipe::Link(Nob const & nobSrc,	function<Nob * (Nob const *)> const & dstFromSrc)
+void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
 	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
 	BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };

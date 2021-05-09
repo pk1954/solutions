@@ -108,7 +108,7 @@ void ClosedConnector::Clear()
     m_pOutputConnector->Clear();
 }
 
-void ClosedConnector::Link(Nob const & nobSrc, function<Nob * (Nob const *)> const & dstFromSrc)
+void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     auto const & src = static_cast<ClosedConnector const &>(nobSrc);
     m_pInputConnector  = static_cast<Connector *>(dstFromSrc(src.m_pInputConnector ));

@@ -18,7 +18,7 @@
     <ClInclude Include="Command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DisconnectBaseKnotCommand.h">
+    <ClInclude Include="DiscBaseKnotCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Connect2PipeCommand.h">
@@ -126,7 +126,7 @@
     <ClInclude Include="InsertTrackCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DisconnectConnectorCommand.h">
+    <ClInclude Include="DiscConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SetNobCommand.h">
@@ -144,12 +144,15 @@
     <ClInclude Include="RotateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiscClosedConnCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisconnectBaseKnotCommand.cpp">
+    <ClCompile Include="DiscBaseKnotCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFunctions.cpp">

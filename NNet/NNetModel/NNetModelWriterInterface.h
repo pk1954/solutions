@@ -23,18 +23,18 @@ using std::move;
 class NNetModelWriterInterface
 {
 public:
-	void          Start(NNetModel * const);
-	void          Stop(); 
-    void          CreateInitialNobs();
-    void          RemoveOrphans();
-    void          SelectBeepers();
-    void          SelectNob(NobId const, bool const);
-    void          ToggleStopOnTrigger(NobId const);
+	void        Start(NNetModel * const);
+	void        Stop(); 
+    void        CreateInitialNobs();
+    void        RemoveOrphans();
+    void        SelectBeepers();
+    void        SelectNob(NobId const, bool const);
+    void        ToggleStopOnTrigger(NobId const);
     Nob * const GetNob(NobId const);
 
-    UPNobList       & GetUPNobs()    { return m_pModel->GetUPNobs(); }
-    Param             & GetParams()      { return m_pModel->GetParams(); }
-    MonitorData       & GetMonitorData() { return m_pModel->GetMonitorData(); }
+    UPNobList     & GetUPNobs()      { return m_pModel->GetUPNobs(); }
+    Param         & GetParams()      { return m_pModel->GetParams(); }
+    MonitorData   & GetMonitorData() { return m_pModel->GetMonitorData(); }
     NobPtrList<Nob> GetSelection()   { return GetUPNobs().GetAllSelected<Nob>(); }
 
     void CheckModel() { m_pModel->CheckModel(); }
@@ -79,8 +79,8 @@ public:
     template <Nob_t NEW, Nob_t OLD>
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
-        NobId id     { up.get()->GetId() };
-        Nob * pNob { m_pModel->GetUPNobs().ReplaceNob( id, move(up) ) }; 
+        NobId  id   { up.get()->GetId() };
+        Nob  * pNob { m_pModel->GetUPNobs().ReplaceNob( id, move(up) ) }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
@@ -94,7 +94,7 @@ public:
     unique_ptr<OLD> RemoveFromModel( NobId const id ) 
     { 
         UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
-        auto    pNob  { upNob.release() }; 
+        auto  pNob  { upNob.release() }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 

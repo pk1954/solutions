@@ -41,7 +41,7 @@ public:
 	virtual bool const CompStep    ();
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
-	virtual void       Link        (Nob const &, function<Nob * (Nob const *)> const &);
+	virtual void       Link        (Nob const &, Nob2NobFunc const &);
 
 	void Push(ConnNeuron * const p) { m_list.Add(p); }
 

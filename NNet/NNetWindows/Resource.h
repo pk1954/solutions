@@ -30,10 +30,10 @@
 #define IDM_RESET                141
 #define IDM_SELECT_ALL           142
 #define IDM_SELECT_SUBTREE       143
-#define IDM_SELECT_NOB         144
+#define IDM_SELECT_NOB           144
 #define IDM_DESELECT_ALL         145
 #define IDM_DESELECT_SUBTREE     146
-#define IDM_DESELECT_NOB       147
+#define IDM_DESELECT_NOB         147
 #define IDM_SELECTION            148
 #define IDM_DELETE               149
 
@@ -78,7 +78,7 @@
 #define IDD_NEW_OUTPUT_NEURON    564
 #define IDD_APPEND_NEURON        565
 #define IDD_APPEND_INPUT_NEURON  566
-#define IDD_DELETE_NOB         567
+#define IDD_DELETE_NOB           567
 #define IDD_DISCONNECT           568
 #define IDD_ADD_INCOMING2KNOT    569
 #define IDD_ADD_INCOMING2PIPE    570
@@ -107,9 +107,9 @@
 #define IDM_CLEAR_BEEPERS        654
 #define IDM_SELECT_ALL_BEEPERS   655
 
-#define IDM_ALIGN_NOBS         671
+#define IDM_ALIGN_NOBS           671
 #define IDM_ALIGN_DIRECTIONS     672
-#define IDM_PACK_NOBS          673
+#define IDM_PACK_NOBS            673
 #define IDM_MAKE_CONNECTOR       674
 
 #define IDX_ANIMATION_STEP       701

@@ -28,7 +28,7 @@ void Connector::Dump() const
     m_list.Apply2All([&](ConnNeuron const & s){ wcout << s << endl; } );
 }
 
-void Connector::Link(Nob const & nobSrc, function<Nob * (Nob const *)> const & dstFromSrc)
+void Connector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     Clear();
     static_cast<Connector const &>(nobSrc).Apply2All

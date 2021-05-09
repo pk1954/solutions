@@ -1,32 +1,30 @@
-// DisconnectBaseKnotCommand.cpp
+// DiscBaseKnotCmd.cpp
 //
 // NNetModel
 
 #include "stdafx.h"
-#include "DisconnectBaseKnotCommand.h"
+#include "DiscBaseKnotCmd.h"
 
 using std::wcout;
 using std::endl;
 using std::move;
 
-DisconnectBaseKnotCommand::DisconnectBaseKnotCommand
+DiscBaseKnotCmd::DiscBaseKnotCmd
 ( 
-    NobId const idBaseKnot, 
-    bool    const bDelete 
+    NNetModelWriterInterface & nmwi,
+    NobId                const idBaseKnot, 
+    bool                 const bDelete 
 )
   : m_idBaseKnot(idBaseKnot),
     m_bDelete( bDelete )
-{}
-
-void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
-{ 
+{
     m_pBaseKnot = nmwi.GetNobPtr<BaseKnot *>( m_idBaseKnot );
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
     m_idEndKnots  .Resize( m_pBaseKnot->m_connections.GetNrOfIncomingConnections() );
     m_idStartKnots.Resize( m_pBaseKnot->m_connections.GetNrOfOutgoingConnections() );
-    
+
     MicroMeterPoint umPos { m_pBaseKnot->GetPos() };
     m_pBaseKnot->m_connections.Apply2AllInPipes
     ( 
@@ -52,14 +50,8 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
         m_bDelete = true;
 }
 
-void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
+void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
 {
-    if ( ! m_bInitialized )
-    {
-        init( nmwi );
-        m_bInitialized = true;
-    }
-
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
@@ -90,7 +82,7 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
         m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>( * m_pBaseKnot );
 }
 
-void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )
+void DiscBaseKnotCmd::Undo( NNetModelWriterInterface & nmwi )
 {
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;

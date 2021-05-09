@@ -16,14 +16,14 @@ class ClosedConnector: public Nob
 {
 public:
 
-	static bool      const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::closedConnector; }
 
 	ClosedConnector(Connector &, Connector &);
 	virtual ~ClosedConnector() {}
 
 	virtual void Check() const;
-	virtual void Dump      () const;
+	virtual void Dump () const;
 
 	virtual MicroMeterPoint const GetPos() const;
 
@@ -32,14 +32,14 @@ public:
 	virtual void       Expand      (MicroMeterRect        &)               const;
 	virtual bool const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool const Includes    (MicroMeterPoint const &)               const;
-	virtual void       RotateNob (MicroMeterPoint const &, Radian const);
-	virtual void       MoveNob   (MicroMeterPoint const &);
+	virtual void       RotateNob   (MicroMeterPoint const &, Radian const);
+	virtual void       MoveNob     (MicroMeterPoint const &);
 	virtual void       Select      (bool const, bool const); 
 	virtual void       Prepare     ();
 	virtual bool const CompStep    ();
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
-	virtual void       Link        (Nob const &, function<Nob * (Nob const *)> const &);
+	virtual void       Link        (Nob const &, Nob2NobFunc const &);
 
 	void SetParentPointers();
 	void ClearParentPointers();
@@ -53,6 +53,9 @@ public:
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
+
+	Connector const & GetInputconnector () const { return * m_pInputConnector;  }
+	Connector const & GetOutputconnector() const { return * m_pOutputConnector; }
 
 private:
 	Connector * m_pInputConnector  { nullptr };

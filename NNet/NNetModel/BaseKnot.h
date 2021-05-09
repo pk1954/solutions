@@ -63,15 +63,15 @@ public:
 	}
 
 	virtual void       Dump         () const;
-	virtual void       Check   () const;
+	virtual void       Check        () const;
 	virtual void       Prepare      ();
  	virtual mV   const GetNextOutput() const = 0;
 	virtual void       SetPos       (MicroMeterPoint const &);
 	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
-	virtual void       MoveNob    (MicroMeterPoint const &);
-	virtual void       RotateNob  (MicroMeterPoint const &, Radian const);
-	virtual void       Link         (Nob const &, function<Nob * (Nob const *)> const &);
+	virtual void       MoveNob      (MicroMeterPoint const &);
+	virtual void       RotateNob    (MicroMeterPoint const &, Radian const);
+	virtual void       Link         (Nob const &, Nob2NobFunc const &);
 
 	static bool const TypeFits( NobType const type ) { return type.IsBaseKnotType(); }
 
@@ -113,8 +113,6 @@ protected:
 	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeter       const) const;
 
 	MicroMeterRect const GetRect4Text() const;
-
-	void moveNob( MicroMeterPoint const & );
 
 private:
 

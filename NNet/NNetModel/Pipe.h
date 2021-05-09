@@ -32,7 +32,7 @@ public:
 
 	virtual void Dump() const;
 
-	static bool      const TypeFits(NobType const type) { return type.IsPipeType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsPipeType(); }
 	static NobType const GetNobType() { return NobType::Value::pipe; }
 
 	void SetStartKnot(BaseKnot * const);
@@ -41,8 +41,8 @@ public:
 	BaseKnot * const GetStartKnotPtr() const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  () const { return m_pKnotEnd;   }
 
-	NobId         GetStartKnotId() const;
-	NobId         GetEndKnotId  () const;
+	NobId           GetStartKnotId() const;
+	NobId           GetEndKnotId  () const;
 	MicroMeterPoint GetStartPoint () const; 
 	MicroMeterPoint GetEndPoint   () const; 
 	MicroMeter      GetLength     () const;
@@ -53,15 +53,15 @@ public:
 	virtual MicroMeterPoint const GetPos ()                                           const;
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool            const Includes    (MicroMeterPoint const &)               const;
-	virtual void                  Check  ()                                      const;
+	virtual void                  Check       ()                                      const;
 	virtual void                  DrawArrows  (DrawContext const &, MicroMeter const) const;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const;
 	virtual void                  Expand      (MicroMeterRect &)                      const;
 	virtual void                  Select      (bool const, bool const);
-	virtual void                  MoveNob   (MicroMeterPoint const &);
-	virtual void                  Link        (Nob const &, function<Nob * (Nob const *)> const &);
-	virtual void                  RotateNob (MicroMeterPoint const &, Radian const) {}
+	virtual void                  MoveNob     (MicroMeterPoint const &);
+	virtual void                  Link        (Nob const &, Nob2NobFunc const &);
+	virtual void                  RotateNob   (MicroMeterPoint const &, Radian const) {}
 	virtual void                  Prepare();
 	virtual bool            const CompStep();
 	virtual void                  Recalc();

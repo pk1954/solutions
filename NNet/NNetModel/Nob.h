@@ -26,10 +26,11 @@ using std::wstring;
 template <typename T> 
 concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
 
-using UPNob    = unique_ptr<Nob>;
-using NobFuncC = function<void(Nob const &)>;
-using NobFunc  = function<void(Nob       &)>;
-using NobCrit  = function<bool(Nob const &)>;
+using UPNob       = unique_ptr<Nob>;
+using NobFuncC    = function<void(Nob const &)>;
+using NobFunc     = function<void(Nob       &)>;
+using NobCrit     = function<bool(Nob const &)>;
+using Nob2NobFunc = function<Nob * (Nob const *)>;
 
 static NobCrit const NobCritAlwaysTrue { [](auto & s) { return true; } };
 
@@ -57,20 +58,20 @@ public:
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &)                            const = 0;
 	virtual bool            const Includes    (MicroMeterPoint const &)                            const = 0;
 	virtual void                  Expand      (MicroMeterRect &)                                   const = 0;
-	virtual void                  MoveNob   (MicroMeterPoint const &)                                  = 0;
-	virtual void                  RotateNob (MicroMeterPoint const &, Radian const)                    = 0;
+	virtual void                  MoveNob     (MicroMeterPoint const &)                                  = 0;
+	virtual void                  RotateNob   (MicroMeterPoint const &, Radian const)                    = 0;
 	virtual void                  Select      (bool const, bool const)                                   = 0;
-	virtual void                  Link        (Nob const &, function<Nob * (Nob const *)> const &) = 0;
+	virtual void                  Link        (Nob const &, Nob2NobFunc const &) = 0;
 
 	virtual void Clear() { m_mVinputBuffer = 0.0_mV; };
 
 	void Select(bool const bOn) { m_bSelected = bOn; }
 
-	bool      const IsSelected  () const { return m_bSelected; }
-	bool      const IsDefined   () const { return ::IsDefined( m_identifier ); }
-	wstring   const GetName     () const { return NobType::GetName( m_type.GetValue() ); }
+	bool    const IsSelected() const { return m_bSelected; }
+	bool    const IsDefined () const { return ::IsDefined( m_identifier ); }
+	wstring const GetName   () const { return NobType::GetName( m_type.GetValue() ); }
 	NobType const GetNobType() const { return m_type; }
-	NobId   const GetId       () const { return m_identifier; }
+	NobId   const GetId     () const { return m_identifier; }
 
 	MicroMeter const GetPosX() const { return GetPos().GetX(); }
 	MicroMeter const GetPosY() const { return GetPos().GetY(); }
@@ -93,9 +94,9 @@ public:
 
 	friend wostream & operator<< ( wostream &, Nob const & );
 
-	bool    const HasParentNob() const          { return m_pNobParent != nullptr; }
-	Nob * const GetParentNob() const          { return m_pNobParent; }
-	void          SetParentNob(Nob * const p) { m_pNobParent = p; }
+	bool  const HasParentNob() const        { return m_pNobParent != nullptr; }
+	Nob * const GetParentNob() const        { return m_pNobParent; }
+	void        SetParentNob(Nob * const p) { m_pNobParent = p; }
 
 protected:
 
@@ -115,9 +116,9 @@ protected:
 
 private:
 
-	NobType m_type         { NobType::Value::undefined };
-	bool      m_bSelected    { false };
-	NobId   m_identifier   { };
+	NobType m_type       { NobType::Value::undefined };
+	bool    m_bSelected  { false };
+	NobId   m_identifier { };
 	Nob   * m_pNobParent { nullptr };
 };
 

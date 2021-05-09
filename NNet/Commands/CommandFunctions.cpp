@@ -4,35 +4,68 @@
 
 #include "stdafx.h"
 #include "DeletePipeCommand.h"
-#include "DisconnectConnectorCommand.h"
-#include "DisconnectBaseKnotCommand.h"
+#include "DiscClosedConnCmd.h"
+#include "DiscConnCmd.h"
+#include "DiscBaseKnotCmd.h"
 #include "NobType.h"
+#include "ClosedConnector.h"
+#include "Connector.h"
 #include "BaseKnot.h"
 #include "Nob.h"
 #include "CommandFunctions.h"
 
-unique_ptr<Command> MakeDeleteCommand(Nob const & nob)
+unique_ptr<Command> MakeDeleteCommand
+(
+	NNetModelWriterInterface & nmwi,
+	NobId                const id
+)
 {
-	NobId const id { nob.GetId() };
+	Nob * pNob { nmwi.GetNob(id) };
+	if ( ! pNob )
+		return nullptr;
+
 	unique_ptr<Command> upCmd;
-	if (nob.IsPipe()) 
+	switch ( pNob->GetNobType().GetValue() )
+	{
+	case NobType::Value::pipe:
 		upCmd = make_unique<DeletePipeCommand>(id);
-	else if (nob.IsConnector()) 
-		upCmd = make_unique<DisconnectConnectorCommand>(id, true);
-	else 
-		upCmd = make_unique<DisconnectBaseKnotCommand>(id, true);
+		break;
+	case NobType::Value::connector:
+		upCmd = make_unique<DiscConnCmd>(nmwi, id, true);
+		break;
+	case NobType::Value::closedConnector:
+		upCmd = make_unique<DiscClosedConnCmd>(nmwi, id, true);
+		break;
+	default:
+		upCmd = make_unique<DiscBaseKnotCmd>(nmwi, id, true);
+	}
 	return move(upCmd);
 }
 
-unique_ptr<Command> MakeDisconnectCommand(Nob const & nob)
+unique_ptr<Command> MakeDisconnectCommand
+(
+	NNetModelWriterInterface & nmwi,
+	NobId                const id
+)
 {
-	NobId const id { nob.GetId() };
+	Nob * pNob { nmwi.GetNob(id) };
+	if ( ! pNob )
+		return nullptr;
+
 	unique_ptr<Command> upCmd;
-	if (nob.IsPipe()) 
+	switch ( pNob->GetNobType().GetValue() )
+	{
+	case NobType::Value::pipe:
 		assert( false );
-	else if (nob.IsConnector()) 
-		upCmd = make_unique<DisconnectConnectorCommand>(id, false);
-	else 
-		upCmd = make_unique<DisconnectBaseKnotCommand>(id, false);
+		break;
+	case NobType::Value::connector:
+		upCmd = make_unique<DiscConnCmd>(nmwi, id, false);
+		break;
+	case NobType::Value::closedConnector:
+		upCmd = make_unique<DiscClosedConnCmd>(nmwi, id, false);
+		break;
+	default:
+		upCmd = make_unique<DiscBaseKnotCmd>(nmwi, id, false);
+	}
 	return move(upCmd);
 }

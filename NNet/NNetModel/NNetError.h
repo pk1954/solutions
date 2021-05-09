@@ -28,12 +28,12 @@ public:
 
     static void CheckNobId
     ( 
-        Script            & script, 
+        Script          & script, 
         UPNobList const & list,
         NobId     const   id 
     )
     {        
-        Scanner & scanner    { script.GetScanner() };
+        Scanner & scanner  { script.GetScanner() };
         wstring   strNobId { to_wstring( id.GetValue() ) };
         if ( IsUndefined(id) )
         {
@@ -59,15 +59,15 @@ public:
     }
 
 private:
-    Script            * const m_pScript;
+    Script          * const m_pScript;
     UPNobList const * const m_pList;
 };
 
 inline bool ProcessNNetScript
 ( 
-    Script        & script,
+    Script      & script,
     UPNobList   & nobList,
-    wstring   const wstrPath
+    wstring const wstrPath
 ) 
 {
     bool bSuccess { false };

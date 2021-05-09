@@ -14,16 +14,14 @@ class RotateCommand : public Command
 public:
 	RotateCommand
 	( 
-		Nob                 & nob,
+		Nob                   & nob,
 		MicroMeterPoint const & umPntOld, 
 		MicroMeterPoint const & umPntNew
 	)
 	  : m_nob(nob)
 	{
 		m_umPntPivot = nob.GetPos();
-		Radian const radOld { Vector2Radian(umPntOld - m_umPntPivot) };
-		Radian const radNew { Vector2Radian(umPntNew - m_umPntPivot) };
-		m_radDelta = radNew - radOld;
+		m_radDelta = Vector2Radian(umPntNew - m_umPntPivot) - Vector2Radian(umPntOld - m_umPntPivot);
 	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
@@ -47,7 +45,7 @@ public:
 	};
 
 private:
-	Nob         & m_nob;
+	Nob           & m_nob;
 	Radian          m_radDelta;
 	MicroMeterPoint m_umPntPivot;
 };

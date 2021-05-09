@@ -57,9 +57,9 @@ public:
     void AppendNeuron        ( NobId const );
     void ClearBeepers        ();
     void CopySelection       ();
-    void CreateInitialNobs ();
+    void CreateInitialNobs   ();
     void DeleteSelection     ();
-    void DeleteNob         ( NobId  const );
+    void DeleteNob           ( NobId  const );
     void DeleteSignal        ( SignalId const );
     void DeleteTrack         ( TrackNr  const );
     void Disconnect          ( NobId  const );
@@ -67,7 +67,7 @@ public:
     void InsertNeuron        ( NobId  const, MicroMeterPoint const & );
     void InsertTrack         ( TrackNr  const );
     void MoveSelection       ( MicroMeterPoint const & );
-    void MoveNob           ( NobId const, MicroMeterPoint const & );
+    void MoveNob             ( NobId const, MicroMeterPoint const & );
     void NewInputNeuron      ( MicroMeterPoint const & );
     void NewNeuron           ( MicroMeterPoint const & );
     void NewOutputNeuron     ( MicroMeterPoint const & );
@@ -76,13 +76,13 @@ public:
     void Rotate              ( NobId const, MicroMeterPoint const &, MicroMeterPoint const & );
     void SelectAll           ( bool const );
     void SelectAllBeepers    ();
-    void SelectNob         ( NobId const, tBoolOp const );
-    void SelectNobsInRect  ( MicroMeterRect const &, bool const );
+    void SelectNob           ( NobId const, tBoolOp const );
+    void SelectNobsInRect    ( MicroMeterRect const &, bool const );
     void SelectSubtree       ( NobId const, bool const );
     void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<NobIdList> );
     void SetParameter        ( ParamType::Value const, float const );
     void SetPulseRate        ( NobId    const, fHertz const );
-    void SetNob            ( NobId const, MicroMeterPosDir const );
+    void SetNob              ( NobId const, MicroMeterPosDir const );
     void SetTriggerSound     ( NobId const, SoundDescr const & );
     void ToggleStopOnTrigger ( NobId const );
 

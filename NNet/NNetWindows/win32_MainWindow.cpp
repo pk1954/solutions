@@ -94,7 +94,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_ADD_OUTGOING2KNOT,   L"Add outgoing dendrite"                 },
 		{ IDD_ADD_OUTGOING2PIPE,   L"Add outgoing dendrite"                 },
 		{ IDD_ADD_SIGNAL,          L"New EEG sensor" 					    },
-		{ IDM_ALIGN_NOBS,        L"Align selected objects"                },
+		{ IDM_ALIGN_NOBS,          L"Align selected objects"                },
 		{ IDD_APPEND_INPUT_NEURON, L"Add input neuron"                      },
 		{ IDD_APPEND_NEURON,       L"Add neuron"                            },
 		{ IDD_ARROWS_OFF,          L"Arrows off"                            },
@@ -102,9 +102,9 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_CLEAR_BEEPERS,       L"Clear selected trigger sounds"         },
 		{ IDM_COPY_SELECTION,      L"Copy selection"                        },
 		{ IDM_DELETE_SELECTION,    L"Delete selected objects"               },
-		{ IDD_DELETE_NOB,        L"Delete"                                },
+		{ IDD_DELETE_NOB,          L"Delete"                                },
 		{ IDM_DESELECT_ALL,        L"Deselect all"                          },
-		{ IDM_DESELECT_NOB,      L"Deselect"                              },
+		{ IDM_DESELECT_NOB,        L"Deselect"                              },
 		{ IDD_DISCONNECT,          L"Disconnect"                            },
 		{ IDD_INSERT_KNOT,         L"Insert knot"                           },
 		{ IDD_INSERT_NEURON,       L"Insert neuron"                         },
@@ -114,7 +114,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_NEW_OUTPUT_NEURON,   L"New output neuron"					    },
 		{ IDD_PULSE_RATE,          L"Pulse rate"                            },
 		{ IDM_SELECT_ALL_BEEPERS,  L"Select all neurons with trigger sound" }, 
-		{ IDM_SELECT_NOB,        L"Select"                                },
+		{ IDM_SELECT_NOB,          L"Select"                                },
 		{ IDM_SELECT_SUBTREE,      L"Select subtree"                        },
 		{ IDD_STOP_ON_TRIGGER,     L"Stop on trigger on/off"                },
 		{ IDD_TRIGGER_SOUND_DLG,   L"Trigger sound"                         }
@@ -177,8 +177,8 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case NobType::Value::closedConnector:
-		//appendMenu( hPopupMenu, IDD_DELETE_NOB );     
-		//appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
+		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
 	case NobType::Value::knot:  

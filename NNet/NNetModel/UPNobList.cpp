@@ -119,8 +119,8 @@ Nob * const UPNobList::ReplaceNob( NobId const id, UPNob upT )
 
 void UPNobList::LinkNob
 (
-	Nob                             const & nobSrc, 
-	function<Nob * (Nob const *)> const & dstFromSrc
+	Nob         const & nobSrc, 
+	Nob2NobFunc const & dstFromSrc
 ) const
 {
 	if ( Nob * pNobDst { dstFromSrc(& nobSrc) } )

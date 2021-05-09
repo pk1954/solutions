@@ -41,7 +41,7 @@ void BaseKnot::MoveNob( MicroMeterPoint const & delta )
 	SetPos( GetPos() + delta );
 }
 
-void BaseKnot::Link(Nob const & nobSrc,	function<Nob * (Nob const *)> const & dstFromSrc)
+void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
 	BaseKnot    const & baseKnotSrc { static_cast<BaseKnot const &>(nobSrc) };
 	Connections const & srcConn { baseKnotSrc.m_connections };

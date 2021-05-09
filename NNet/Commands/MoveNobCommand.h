@@ -55,5 +55,5 @@ public:
 
 private:
 	MicroMeterPoint m_delta;
-	Nob         & m_nob;
+	Nob           & m_nob;
 };

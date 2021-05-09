@@ -16,7 +16,7 @@ class CopySelectionCommand : public Command
 {
 private:
 
-	void addMissingKnot(BaseKnot * pBaseKnot, function<Nob * (Nob const *)> const & dstFromSrc)
+	void addMissingKnot(BaseKnot * pBaseKnot, Nob2NobFunc const & dstFromSrc)
 	{
 		if ( ! dstFromSrc(pBaseKnot))
 		{

@@ -4,11 +4,11 @@
 
 #pragma once
 
+#include "NobId.h"
+
 using std::unique_ptr;
 
-class Nob;
-class BaseKnot;
-class MainWindow;
+class NNetModelWriterInterface;
 
-unique_ptr<Command> MakeDeleteCommand    (Nob const &);
-unique_ptr<Command> MakeDisconnectCommand(Nob const &);
+unique_ptr<Command> MakeDeleteCommand    (NNetModelWriterInterface &, NobId const);
+unique_ptr<Command> MakeDisconnectCommand(NNetModelWriterInterface &, NobId const);
