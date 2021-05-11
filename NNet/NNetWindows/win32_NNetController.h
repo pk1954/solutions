@@ -58,7 +58,7 @@ private:
 	void pulseRateDlg       ( NobId const );
 	void triggerSoundDlg    ( NobId const );
 	bool processUIcommand   ( int const, LPARAM const );
-	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
+	bool processModelCommand( int const, LPARAM const = 0, MicroMeterPoint const = NP_NULL);
 
 	bool                       m_bTrace                 { true };
 	bool                       m_bBlockedUI             { false };

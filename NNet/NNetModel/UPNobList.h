@@ -51,28 +51,27 @@ public:
 	void               SetErrorHandler   (NobErrorHandler * const);
 	void               SelectAllNobs     (bool const);
 	void               DeselectAllNobs   () { SelectAllNobs(false); }
-	NobId      const Push                (UPNob);
-	UPNob            ExtractNob          (NobId const);	
-	Nob      * const ReplaceNob          (NobId const, UPNob);	
+	NobId        const Push              (UPNob);
+	UPNob              ExtractNob        (NobId const);	
+	Nob        * const ReplaceNob        (NobId const, UPNob);	
 	void               SetNob2Slot       (NobId const, UPNob); // only for special situations
 	void               SetNob2Slot       (UPNob);                // only for special situations
-	void               CheckNobList      ()                                                        const;
-	void               Dump              ()                                                        const;
-	void               LinkNob           (Nob const &, function<Nob* (Nob const *)> const &) const;
-	bool         const AnyNobsSelected   ()                                                        const;
-	void               CallErrorHandler  (NobId const )                                          const;
-	unsigned int const CountInSelection  (NobType const)                                         const;
-	unsigned int const GetCounter        (NobType const)                                         const;
-	unsigned int const GetCounter        ()                                                        const;
-	NobId        const FindNobAt         (MicroMeterPoint const, NobCrit const &)                const;
-	bool         const Apply2AllB        (                       NobCrit const &)                const;
-	void               Apply2All         (NobFuncC const & )                                     const;
+	void               CheckNobList      ()                                       const;
+	void               Dump              ()                                       const;
+	void               LinkNob           (Nob const &, Nob2NobFunc const &)       const;
+	bool         const AnyNobsSelected   ()                                       const;
+	void               CallErrorHandler  (NobId   const)                          const;
+	unsigned int const CountInSelection  (NobType const)                          const;
+	unsigned int const GetCounter        (NobType const)                          const;
+	unsigned int const GetCounter        ()                                       const;
+	NobId        const FindNobAt         (MicroMeterPoint const, NobCrit const &) const;
+	bool         const Apply2AllB        (                       NobCrit const &) const;
+	void               Apply2All         (NobFuncC const & )                      const;
 	void               Apply2All         (NobFunc  const & );
-	void               Apply2AllSelected (NobType const, NobFuncC const &)                     const;
+	void               Apply2AllSelected (NobType const, NobFuncC const &)        const;
 	void               Apply2AllSelected (NobType const, NobFunc  const &);
 
-
-	NobIdList Append       (UPNobList &);
+	NobIdList Append     (UPNobList &);
 	UPNobList ExtractNobs(NobIdList);
 
 	enum class SelMode { allNobs,	selectedNobs };

@@ -218,10 +218,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->CopySelection();
         break;
 
-    case IDM_DELETE_SELECTION:
-        m_pModelCommands->DeleteSelection();
-        break;
-
     case IDM_CLEAR_BEEPERS:
         m_pModelCommands->ClearBeepers();
         break;
@@ -252,13 +248,19 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_DELETE:   // keyboard delete key
-        if ( IsUndefined(m_pMainWindow->GetHighlightedNobId()) )
-            break;
-        [[fallthrough]];
+        if ( IsDefined(m_pMainWindow->GetHighlightedNobId()) )
+            processModelCommand(IDD_DELETE_NOB);
+        else if (m_pMainWindow->AnyNobsSelected())
+            processModelCommand(IDM_DELETE_SELECTION);
+        break;
 
     case IDD_DELETE_NOB:
         m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
-        m_pModelCommands->DeleteNob( m_pMainWindow->GetHighlightedNobId() );
+        m_pModelCommands->DeleteNob(m_pMainWindow->GetHighlightedNobId());
+        break;
+
+    case IDM_DELETE_SELECTION:
+        m_pModelCommands->DeleteSelection();
         break;
 
     case IDD_DISCONNECT:

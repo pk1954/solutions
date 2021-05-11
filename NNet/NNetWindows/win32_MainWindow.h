@@ -44,6 +44,7 @@ public:
 
 	NobId const GetTargetNobId     () const { return m_nobTarget; }
 	NobId const GetHighlightedNobId() const { return m_nobHighlighted; }
+	bool  const AnyNobsSelected    () const { return m_pNMRI->AnyNobsSelected(); }
 
 	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
 
@@ -89,19 +90,19 @@ private:
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
-	NobId             m_nobHighlighted     { };
-	NobId             m_nobTarget          { };
+	NobId               m_nobHighlighted       { };
+	NobId               m_nobTarget            { };
 	bool                m_bTargetFits          { false };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
 	WinCommands       * m_pWinCommands         { nullptr };
 
-	void setNoTarget        ();
+	void setNoTarget      ();
 	void setTargetNob     ();
 	void setHighlightedNob( MicroMeterPoint const & );
-	bool changePulseRate    ( NobId const, bool const );
-	void centerAndZoomRect  ( UPNobList::SelMode const, float const );
+	bool changePulseRate  ( NobId const, bool const );
+	void centerAndZoomRect( UPNobList::SelMode const, float const );
 
 	virtual void doPaint();
 

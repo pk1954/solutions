@@ -22,7 +22,7 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do(nmwi);
-		nmwi.GetUPNobs().SelectAllNobs(true);
+		nmwi.GetUPNobs().SelectAllNobs(false);
 		m_idList = nmwi.GetUPNobs().Append( m_UPNobList );
 	}
 

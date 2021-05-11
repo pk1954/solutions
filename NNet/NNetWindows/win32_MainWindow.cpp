@@ -172,10 +172,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case NobType::Value::connector:
-		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
-		appendMenu( hPopupMenu, IDD_DISCONNECT );        
-		break;
-
 	case NobType::Value::closedConnector:
 		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
