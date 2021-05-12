@@ -30,6 +30,8 @@ public:
     virtual void Undo( NNetModelWriterInterface & );
 
 private:
+    void initialize(NNetModelWriterInterface &);
+
     BaseKnot               * m_pBaseKnot { nullptr };
     unique_ptr<BaseKnot>     m_upBaseKnot;
 
@@ -40,4 +42,5 @@ private:
 
     NobId              const m_idBaseKnot;
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only
+    bool                     m_bInitialized { false };
 };

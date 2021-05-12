@@ -43,17 +43,8 @@ public:
 
     void Clear();
 
-    void DoAll( )
-    {
-        for ( size_t i = 0; i < m_CommandStack.size(); ++i )
-            m_CommandStack[i]->Do(*m_pNMWI);
-    }
-
-    void UndoAll( )
-    {
-        for ( size_t i = m_CommandStack.size(); i --> 0; )
-            m_CommandStack[i]->Undo(*m_pNMWI);
-    }
+    void DoAll();
+    void UndoAll();
 
 private:
 

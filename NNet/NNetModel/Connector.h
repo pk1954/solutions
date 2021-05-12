@@ -16,7 +16,7 @@ class Connector: public Nob
 {
 public:
 
-	static bool      const TypeFits(NobType const type) { return type.IsConnectorType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
 	Connector();

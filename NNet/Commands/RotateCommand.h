@@ -44,6 +44,19 @@ public:
 		return true; 
 	};
 
+	virtual bool const Combine(Command const & src) 
+	{ 
+		if (typeid(src) != typeid(*this))
+			return false;
+		RotateCommand const & srcCmd { static_cast<RotateCommand const &>(src) };
+		if (GetMovedNob() != srcCmd.GetMovedNob())
+			return false;
+		if (m_umPntPivot != srcCmd.m_umPntPivot)
+			return false;
+		m_radDelta += srcCmd.m_radDelta;
+		return true; 
+	};
+
 private:
 	Nob           & m_nob;
 	Radian          m_radDelta;

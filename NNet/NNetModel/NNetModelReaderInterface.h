@@ -19,10 +19,10 @@ class NNetModelReaderInterface
 {
 public:
 
-	void Start( NNetModel * const pModel ) { m_pModel = pModel;	 }
-	void Stop ()                          { m_pModel = nullptr; }
+	void Start(NNetModel * const pModel) { m_pModel = pModel;  }
+	void Stop ()                         { m_pModel = nullptr; }
 
-	void DumpModel() const { m_pModel->DumpModel(); }
+	void DumpModel()  const { m_pModel->DumpModel(); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
 	bool            const IsConnectionCandidate     ( NobId const, NobId const ) const;

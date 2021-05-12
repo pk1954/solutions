@@ -17,6 +17,9 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
 )
   : m_idBaseKnot(idBaseKnot),
     m_bDelete( bDelete )
+{}
+
+void DiscBaseKnotCmd::initialize(NNetModelWriterInterface & nmwi)
 {
     m_pBaseKnot = nmwi.GetNobPtr<BaseKnot *>( m_idBaseKnot );
     if ( ! m_pBaseKnot )   // might have been deleted earlier
@@ -52,6 +55,12 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
 
 void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
 {
+    if ( ! m_bInitialized )
+    {
+        initialize(nmwi);
+        m_bInitialized = true;
+    }
+
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
@@ -78,6 +87,7 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
         }
     }
     m_pBaseKnot->ClearConnections();
+    m_pBaseKnot->Check();
     if ( m_bDelete )
         m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>( * m_pBaseKnot );
 }

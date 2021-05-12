@@ -47,7 +47,7 @@ public:
 		if (typeid(src) != typeid(*this))
 			return false;
 		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
-		if (m_nob.GetId() != srcCmd.m_nob.GetId())
+		if (GetMovedNob() != srcCmd.GetMovedNob())
 			return false;
 		m_delta += srcCmd.m_delta;
 		return true; 

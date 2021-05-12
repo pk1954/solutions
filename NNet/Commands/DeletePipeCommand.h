@@ -18,52 +18,49 @@ class DeletePipeCommand : public Command
 {
 public:
 
-	DeletePipeCommand( NobId const idPipe )
-		: m_idPipe( idPipe )
+	DeletePipeCommand
+	( 
+		NNetModelWriterInterface & nmwi, 
+		NobId                const idPipe 
+	)
+	  :	m_pipe(*nmwi.GetNobPtr<Pipe *>(idPipe))
 	{}
 
 	~DeletePipeCommand(){ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
-		if ( ! m_pPipe )
-		{
-			m_pPipe      = nmwi.GetNobPtr<Pipe *>( m_idPipe );
-			m_pStartKnot = m_pPipe->GetStartKnotPtr();
-			m_pEndKnot   = m_pPipe->GetEndKnotPtr();
-		}
-		m_pPipe->Check();
-		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
-		if ( m_pStartKnot->IsOrphanedKnot() )
-			m_upStartKnot = nmwi.RemoveFromModel<Knot>( * m_pStartKnot );
+		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
+		startKnot.m_connections.RemoveOutgoing( & m_pipe );
+		if ( startKnot.IsOrphanedKnot() )
+			m_upStartKnot = nmwi.RemoveFromModel<Knot>( startKnot );
 
-		m_pEndKnot->m_connections.RemoveIncoming( m_pPipe );
-		if ( m_pEndKnot->IsOrphanedKnot() )
-			m_upEndKnot = nmwi.RemoveFromModel<Knot>( * m_pEndKnot );
+		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
+		endKnot.m_connections.RemoveIncoming( & m_pipe );
+		if ( endKnot.IsOrphanedKnot() )
+			m_upEndKnot = nmwi.RemoveFromModel<Knot>( endKnot );
 
-		m_upPipe = nmwi.RemoveFromModel<Pipe>( * m_pPipe );
+		m_upPipe = nmwi.RemoveFromModel<Pipe>( m_pipe );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
-		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
+		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
+		startKnot.m_connections.AddOutgoing( & m_pipe );
 		if ( m_upStartKnot )
 			nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move(m_upStartKnot) );
+
+		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
+		endKnot.m_connections.AddIncoming( & m_pipe );
 		if ( m_upEndKnot )
 			nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move(m_upEndKnot) );
+
 		nmwi.ReplaceInModel<Pipe,Pipe>( move(m_upPipe) );
-		m_pPipe->Check();
 	}
 
 private:
-	Pipe     * m_pPipe      { nullptr };
-	BaseKnot * m_pStartKnot { nullptr };
-	BaseKnot * m_pEndKnot   { nullptr };
-
+	Pipe               & m_pipe;
 	unique_ptr<Pipe>     m_upPipe;
 	unique_ptr<BaseKnot> m_upStartKnot;
 	unique_ptr<BaseKnot> m_upEndKnot;
-
-	NobId const m_idPipe;
 };

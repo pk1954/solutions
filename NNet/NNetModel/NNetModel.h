@@ -42,27 +42,27 @@ public:
 	void CheckModel() const;
 	void DumpModel () const;
 
-	Nob  const * GetConstNob( NobId const ) const;
-	fHertz const   GetPulseRate ( NobId const ) const;
+	Nob    const * GetConstNob ( NobId const ) const;
+	fHertz const   GetPulseRate( NobId const ) const;
 
 	fMicroSecs const GetSimulationTime () const { return m_timeStamp; }
 
 	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	MicroMeterPoint const GetNobPos    (NobId const id) const {	return GetNobConstPtr<Nob const *>(id)->GetPos    (); }
+	MicroMeterPoint const GetNobPos      (NobId const id) const {	return GetNobConstPtr<Nob const *>(id)->GetPos    (); }
 	BaseKnot      * const GetStartKnotPtr(NobId const id) const { return GetNobConstPtr<Pipe  const *>(id)->GetStartKnotPtr(); }
 	BaseKnot      * const GetEndKnotPtr  (NobId const id) const { return GetNobConstPtr<Pipe  const *>(id)->GetEndKnotPtr  (); }
 
 	NobId const GetStartKnotId(NobId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	NobId const GetEndKnotId  (NobId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
-	UPNobList const & GetUPNobs()     const { return m_Nobs; }
-	MonitorData const & GetMonitorData()  const { return m_monitorData; }
+	UPNobList   const & GetUPNobs()        const { return m_Nobs; }
+	MonitorData const & GetMonitorData()   const { return m_monitorData; }
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
 	NobId const FindNobAt( MicroMeterPoint const &, NobCrit const & ) const;
-	bool    const GetDescriptionLine( int const, wstring & )                const;
+	bool  const GetDescriptionLine( int const, wstring & )                const;
 
 	// non const functions
 
@@ -73,7 +73,7 @@ public:
 	float SetParam( ParamType::Value const, float const );
 	void  SelectSubtree( BaseKnot * const, bool const );
 
-	UPNobList & GetUPNobs()    { return m_Nobs; }
+	UPNobList   & GetUPNobs()      { return m_Nobs; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
@@ -85,7 +85,7 @@ public:
 
 private:
 
-	UPNobList      m_Nobs;
+	UPNobList        m_Nobs;
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;

@@ -130,7 +130,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDM_COPY_SELECTION   );
 		appendMenu( hPopupMenu, IDM_DELETE_SELECTION );
 		appendMenu( hPopupMenu, IDM_MAKE_CONNECTOR   );
-		appendMenu( hPopupMenu, IDM_ALIGN_NOBS     );
+		appendMenu( hPopupMenu, IDM_ALIGN_NOBS       );
 		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS    );
 	}
 	else if ( IsUndefined(m_nobHighlighted) )  // no nob selected, cursor on background

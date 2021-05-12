@@ -62,7 +62,7 @@ public:
 			func( static_cast<Value>( i ) );
 	}
 
-	static wstring          const GetName( NobType::Value const );
+	static wstring        const GetName( NobType::Value const );
 	static NobType::Value const GetTypeFromName( wstring const & );
 
 	bool const IsPipeType           () const { return m_value == Value::pipe;            }

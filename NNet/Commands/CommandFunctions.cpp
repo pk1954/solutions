@@ -28,7 +28,9 @@ unique_ptr<Command> MakeDeleteCommand
 	switch ( pNob->GetNobType().GetValue() )
 	{
 	case NobType::Value::pipe:
-		upCmd = make_unique<DeletePipeCommand>(id);
+		upCmd = make_unique<DeletePipeCommand>(nmwi, id);
+		break;
+	case NobType::Value::knot:
 		break;
 	case NobType::Value::connector:
 		upCmd = make_unique<DiscConnCmd>(nmwi, id, true);

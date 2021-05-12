@@ -187,9 +187,9 @@ private:
 	void countNobs();
 	void copy( UPNobList const & );
 
-	vector<UPNob>                                   m_list               {};
+	vector<UPNob>                                 m_list             {};
 	array<unsigned int, NobType::NR_OF_NOB_TYPES> m_nobsOfType       {};
-	NobErrorHandler                               * m_pNobErrorHandler { nullptr };
+	NobErrorHandler                             * m_pNobErrorHandler { nullptr };
 };
 
 UPNob ShallowCopy(Nob const &);

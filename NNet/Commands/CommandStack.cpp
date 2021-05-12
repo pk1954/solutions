@@ -10,11 +10,6 @@
 using std::wcout;
 using std::endl;
 
-bool canBeCombined(Command const & A, Command const & B)
-{
-    return A.IsMoveCommand() && (typeid(A) == typeid(B)) && (A.GetMovedNob() == B.GetMovedNob());
-}
-
 void CommandStack::Initialize
 ( 
     NNetModelWriterInterface * const pModel, 
@@ -40,17 +35,10 @@ void CommandStack::clearRedoStack()
 
 void CommandStack::Push( unique_ptr<Command> pCmd )
 {
-    if ( UndoStackEmpty() )
+    if ( UndoStackEmpty() || ! previousCmd().Combine(*pCmd) )
     {
         m_CommandStack.push_back( move(pCmd) );
         set2YoungerCmd();
-        return;
-    }
-    if (! previousCmd().Combine(*pCmd) )
-    {
-        m_CommandStack.push_back( move(pCmd) );
-        set2YoungerCmd();
-        return;
     }
 }
 
@@ -108,4 +96,16 @@ bool CommandStack::RedoCommand()
     set2YoungerCmd();
     notify();
     return true;
+}
+
+void CommandStack::DoAll( )
+{
+    for ( size_t i = 0; i < m_CommandStack.size(); ++i )
+        m_CommandStack[i]->Do(*m_pNMWI);
+}
+
+void CommandStack::UndoAll( )
+{
+    for ( size_t i = m_CommandStack.size(); i --> 0; )
+        m_CommandStack[i]->Undo(*m_pNMWI);
 }

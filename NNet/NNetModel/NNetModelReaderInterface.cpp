@@ -94,14 +94,18 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 {
 	if (idSrc == idDst)
 		return false; 
-	if (GetNobType(idSrc).IsConnectorType() && !GetNobType(idDst).IsConnectorType())
-		return false;
 	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
+		return false;
+	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
+	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
+	if ( (typeSrc == NobType::Value::connector) != (typeDst == NobType::Value::connector) )
+		return false;
+	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
 		return false;
 	return true;
 }
 
-bool const NNetModelReaderInterface::CanConnectTo( NobId const idSrc, NobId const idDst ) const
+bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst) const
 {
 	assert(idSrc != idDst);
 	assert(IsDefined(idSrc));
@@ -114,13 +118,22 @@ bool const NNetModelReaderInterface::CanConnectTo( NobId const idSrc, NobId cons
 	switch (typeSrc)
 	{
 	case NobType::Value::connector:
-		return typeDst == NobType::Value::connector;
+		if (typeDst == NobType::Value::connector)
+		{
+			Connector const & connSrc { * m_pModel->GetNobConstPtr<Connector const *>(idSrc) }; 
+			Connector const & connDst { * m_pModel->GetNobConstPtr<Connector const *>(idDst) }; 
+			if (connSrc.IsInputConnector() == connDst.IsInputConnector())  // opposite connectors?
+				return false;
+			if (connSrc.Size() == connDst.Size())
+				return true;
+		}
+		return false;
 
 	case NobType::Value::pipe:
 		return false;
 
 	case NobType::Value::knot:
-		switch ( typeDst )
+		switch (typeDst)
 		{
 		case NobType::Value::pipe:
 		case NobType::Value::knot:
@@ -151,9 +164,6 @@ bool const NNetModelReaderInterface::CanConnectTo( NobId const idSrc, NobId cons
 		case NobType::Value::outputNeuron:
 			return (! HasOutgoing(idSrc));
 
-		case NobType::Value::inputNeuron:
-			return false;
-
 		default:
 			break;
 		}
@@ -162,11 +172,6 @@ bool const NNetModelReaderInterface::CanConnectTo( NobId const idSrc, NobId cons
 	case NobType::Value::inputNeuron:
 		switch ( typeDst )
 		{
-		case NobType::Value::pipe:
-		case NobType::Value::knot:
-		case NobType::Value::outputNeuron:
-			return false;
-
 		case NobType::Value::neuron:
 		case NobType::Value::inputNeuron:
 			return onlyOneAxon(idSrc, idDst) && ! HasIncoming(idSrc);
@@ -179,10 +184,6 @@ bool const NNetModelReaderInterface::CanConnectTo( NobId const idSrc, NobId cons
 	case NobType::Value::outputNeuron:
 		switch ( typeDst )
 		{
-		case NobType::Value::pipe:
-		case NobType::Value::inputNeuron:
-			return false;
-
 		case NobType::Value::outputNeuron:
 			return true;
 

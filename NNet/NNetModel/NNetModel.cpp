@@ -23,7 +23,7 @@ using std::endl;
 bool NNetModel::operator==( NNetModel const & rhs ) const
 {
 	return
-	(m_Nobs            == rhs.m_Nobs            ) &&
+	(m_Nobs              == rhs.m_Nobs              ) &&
 	(m_timeStamp         == rhs.m_timeStamp         ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath ) &&
 //	(m_description       == rhs.m_description       ) &&  // not neccessary

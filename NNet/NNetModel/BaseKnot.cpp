@@ -92,17 +92,17 @@ void BaseKnot::Prepare()
 	//		m_mVinputBuffer += pPipe->GetNextOutput();
 	//}
 
-	m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_mVinputBuffer += pipe.GetNextOutput(); } ); // slow !!
+	m_connections.Apply2AllInPipes([&](Pipe & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 }
 
 bool const BaseKnot::IsPrecursorOf( Pipe const & pipeSucc ) const 
 {
-	return m_connections.Apply2AllOutPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipeSucc; } ); 
+	return m_connections.Apply2AllOutPipesB([&](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
 }
 
 bool const BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 {
-	return m_connections.Apply2AllInPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipePred; } );
+	return m_connections.Apply2AllInPipesB([&](Pipe const & pipe) { return & pipe == & pipePred; });
 }
 
 bool const BaseKnot::Includes( MicroMeterPoint const & point ) const

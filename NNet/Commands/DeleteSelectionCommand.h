@@ -14,14 +14,22 @@
 class DeleteSelectionCommand : public Command
 {
 public:
+	DeleteSelectionCommand(NNetModelWriterInterface & nmwi) 
+	{ 
+		m_cmdStack.Initialize(&nmwi, nullptr);
+		nmwi.GetUPNobs().Apply2AllSelected<Nob>
+		(
+			[&](Nob & nob) 
+			{ 
+				unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, nob.GetId())) };
+				if (upCmd)
+					m_cmdStack.Push(move(upCmd));
+			}
+		); 
+	}
 
 	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		if ( ! m_bInitialized )
-		{
-			init(nmwi);
-			m_bInitialized = true;
-		}
 		m_cmdStack.DoAll();
 	}
 
@@ -31,18 +39,6 @@ public:
 	}
 
 private:
-	void init(NNetModelWriterInterface & nmwi) 
-	{ 
-		m_cmdStack.Initialize(&nmwi, nullptr);
-
-		nmwi.GetUPNobs().Apply2AllSelected<Nob>
-		(
-			[&](Nob & nob) 
-			{ 
-				m_cmdStack.Push( move( MakeDeleteCommand(nmwi, nob.GetId()) ) );
-			}
-		); 
-	}
 
 	CommandStack m_cmdStack     {};
 	NobIdList    m_idList       {};

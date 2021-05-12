@@ -148,7 +148,7 @@ void NNetModelCommands::DeleteSelection()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << endl;
-	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>() );
+	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>(*m_pNMWI) );
 }
 
 void NNetModelCommands::Disconnect( NobId const id )
