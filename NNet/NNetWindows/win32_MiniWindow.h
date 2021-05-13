@@ -14,8 +14,8 @@ public:
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const ) { };  // mini window cannot be zoomed 
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const ) { return false; }
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const ) { return false; }
-	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) { };
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) { };
+	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) { };
 	virtual void OnChar              ( WPARAM const, LPARAM const ) { };
 
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );

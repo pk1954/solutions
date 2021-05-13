@@ -34,8 +34,8 @@ public:
 	virtual void       Expand      (MicroMeterRect        &)               const;
 	virtual bool const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool const Includes    (MicroMeterPoint const &)               const;
-	virtual void       RotateNob (MicroMeterPoint const &, Radian const);
-	virtual void       MoveNob   (MicroMeterPoint const &);
+	virtual void       RotateNob   (MicroMeterPoint const &, Radian const);
+	virtual void       MoveNob     (MicroMeterPoint const &);
 	virtual void       Select      (bool const, bool const);
 	virtual void       Prepare     ();
 	virtual bool const CompStep    ();

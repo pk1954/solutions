@@ -90,6 +90,7 @@ private:
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
+	MicroMeterPoint     m_umPntSelectionAnchor { };
 	NobId               m_nobHighlighted       { };
 	NobId               m_nobTarget            { };
 	bool                m_bTargetFits          { false };

@@ -315,65 +315,74 @@ void MainWindow::setTargetNob()
 
 void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
-	MicroMeterPoint const umCrsrPos { GetCoordC().Transform2MicroMeterPointPos( ptCrsr   ) };
-	MicroMeterPoint const umLastPos { GetCoordC().Transform2MicroMeterPointPos( m_ptLast ) };
-
 	if ( m_pCursorPosObservable )
 		m_pCursorPosObservable->NotifyAll( false );
 
-	if ( wParam & MK_RBUTTON )         // Right mouse button: selection
+	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
+	MicroMeterPoint const umCrsrPos { GetCoordC().Transform2MicroMeterPointPos(ptCrsr) };
+
+	if (wParam == 0)                     // no mouse buttons or special keyboard keys pressed
 	{
-		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
-		{
-			m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
+		setHighlightedNob( umCrsrPos );
+		m_ptLast.Set2Null();             // make m_ptLast invalid
+		return;
+	}
+
+	PixelPoint const ptLast = m_ptLast;
+	m_ptLast = ptCrsr;
+	if (ptLast.IsNull())
+		return;
+
+	MicroMeterPoint const umLastPos { GetCoordC().Transform2MicroMeterPointPos(ptLast) };
+
+	if (wParam & MK_RBUTTON)        // Right mouse button: selection
+	{
+		m_rectSelection = MicroMeterRect(m_umPntSelectionAnchor, umCrsrPos);
+		Notify( false );
+		return;
+	}
+	
+	if (wParam & MK_LBUTTON)        // Left mouse button
+	{
+		MicroMeterPoint const umDelta { umCrsrPos - umLastPos };
+		if (umDelta.IsZero())
+			return;
+
+		if (Signal * const pSignal { m_pNMRI->FindSensor(umCrsrPos) })
+		{                                
+			pSignal->Move( umDelta );          // move signal
 			Notify( false ); 
 		}
-		else                           // first time here after RBUTTON pressed
+		else if ( IsDefined(m_nobHighlighted) )    // operate on single nob
 		{
-			m_ptLast = ptCrsr;         // store current cursor pos
-		}
-	}
-	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
-	{
-		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
-		{
-			MicroMeterPoint umDelta = umCrsrPos - umLastPos;
-			if ( IsDefined(m_nobHighlighted) )    // move highligthted nob
+			if (wParam & MK_CONTROL)
 			{
-				if (umDelta.IsNotZero())
+				m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
+			}
+			else
+			{
+				m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
+				setTargetNob();
+			}
+		}
+		else if (wParam & MK_SHIFT)     // operate on selection
+		{
+			if (m_pNMRI->AnyNobsSelected())
+			{
+				if (wParam & MK_CONTROL)
 				{
-					if ((wParam & MK_CONTROL) && m_pNMRI->GetConstNob(m_nobHighlighted)->IsAnyConnector())
-					{
-						m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
-					}
-					else
-					{
-						m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
-						setTargetNob();
-					}
+					// rotate selection
+				}
+				else 
+				{
+					m_pModelCommands->MoveSelection( umDelta );
 				}
 			}
-			else if (Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor(umCrsrPos) })
-			{                                // move signal
-				pSignal->Move( umDelta );
-				Notify( false ); 
-			}
-			else if (m_pNMRI->AnyNobsSelected())   // move selected nobs 
-			{
-				m_pModelCommands->MoveSelection( umDelta );
-			}
-			else  // move view by manipulating coordinate system 
-			{
-				NNetMove( ptCrsr - m_ptLast );
-			}
 		}
-		m_ptLast = ptCrsr;
-	}
-	else  // no mouse button pressed
-	{                         
-		setHighlightedNob( umCrsrPos );
-		m_ptLast.Set2Null();   // make m_ptLast invalid
+		else 
+		{
+			NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
+		}
 	}
 }
 
@@ -387,10 +396,8 @@ void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 
 void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( IsDefined(m_nobHighlighted) && IsDefined(m_nobTarget) && m_bTargetFits )
-	{ 
+	if (m_bTargetFits)
 		SendCommand2Application( IDD_CONNECT, 0	);
-	}
 	setNoTarget();
 }
 
@@ -399,7 +406,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 	bool const bSelection { m_rectSelection.IsNotEmpty() };
 	if ( bSelection )
 	{
-		m_pModelCommands->SelectNobsInRect(m_rectSelection, wParam & MK_CONTROL);
+		m_pModelCommands->SelectNobsInRect(m_rectSelection);
 		m_rectSelection.SetZero();
 	}
 	return bSelection; // let base class handle other cases
@@ -407,6 +414,10 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool MainWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
+	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
+	MicroMeterPoint const umCrsrPos { GetCoordC().Transform2MicroMeterPointPos(ptCrsr) };
+
+	m_umPntSelectionAnchor = umCrsrPos;
 	SetFocus();
 	return false;
 }
@@ -438,7 +449,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 void MainWindow::centerAndZoomRect
 ( 
 	UPNobList::SelMode const mode, 
-	float                const fRatioFactor 
+	float              const fRatioFactor 
 )
 {
 	MicroMeterRect umRect { m_pNMRI->GetUPNobs().CalcEnclosingRect( mode ) };

@@ -77,7 +77,7 @@ public:
     void SelectAll           ( bool const );
     void SelectAllBeepers    ();
     void SelectNob           ( NobId const, tBoolOp const );
-    void SelectNobsInRect    ( MicroMeterRect const &, bool const );
+    void SelectNobsInRect    ( MicroMeterRect const & );
     void SelectSubtree       ( NobId const, bool const );
     void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<NobIdList> );
     void SetParameter        ( ParamType::Value const, float const );

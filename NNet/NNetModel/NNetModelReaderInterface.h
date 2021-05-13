@@ -52,13 +52,15 @@ public:
 	fMicroSecs      const   GetTimeResolution()                    const { return m_pModel->GetParams().GetTimeResolution(); };
 	wstring         const   GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float           const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
+	Signal        * const   FindSensor(MicroMeterPoint const & p)  const { return GetMonitorData().FindSensor(p); }
+
 
 	bool const GetDescriptionLine( int const, wstring & ) const;
 
 	NobId const FindNobAt
 	( 
 		MicroMeterPoint const &, 
-		NobCrit       const & = NobCritAlwaysTrue 
+		NobCrit         const & = NobCritAlwaysTrue 
 	) const;
 
 	void DrawExterior  ( NobId const, DrawContext const &, tHighlight const ) const;

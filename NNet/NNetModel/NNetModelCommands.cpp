@@ -366,11 +366,11 @@ void NNetModelCommands::SelectSubtree( NobId const id, bool  const bOn )
 	m_pCmdStack->PushCommand( make_unique<SelectSubtreeCommand>( id, bOn ) );
 }
 
-void NNetModelCommands::SelectNobsInRect( MicroMeterRect const & rect, bool const bAdd2Selection )
+void NNetModelCommands::SelectNobsInRect( MicroMeterRect const & rect )
 {
 	if ( IsTraceOn() )
-		TraceStream() << __func__ << L" " << rect << bAdd2Selection << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectNobsInRectCommand>(rect, bAdd2Selection) );
+		TraceStream() << __func__ << L" " << rect << endl;
+	m_pCmdStack->PushCommand( make_unique<SelectNobsInRectCommand>(rect) );
 }
 
 void NNetModelCommands::AnalyzeLoops()
