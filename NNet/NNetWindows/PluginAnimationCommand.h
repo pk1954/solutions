@@ -25,8 +25,8 @@ class PluginAnimationCommand : public Command
 public:
     PluginAnimationCommand
     (
-        Connector   &,
-        Connector   &,
+        Nob         &,
+        Nob         &,
         MainWindow  &,
         WinCommands &
     );
@@ -44,16 +44,16 @@ private:
     };
 
     Mode                        m_mode { Mode::mode_do };
-    UPNobList               * m_pModelNobs;
+    UPNobList                 * m_pModelNobs;
     NNetModelWriterInterface  & m_NMWI;
     MainWindow                & m_win;
     int                         m_iPhase { 0 };
     Callable                    m_callable;
-    Connector                 & m_connTarget;
-    Connector                 & m_connAnimated;
+    Nob                       & m_nobTarget;
+    Nob                       & m_nobAnimated;
     array<MicroMeterPosDir,3>   m_umPosDirTarget;  
-    Connector                   m_connectorAnimated {};
-    unique_ptr<ClosedConnector> m_upClosedConnector {};
+//    Connector                   m_connectorAnimated {};
+    unique_ptr<Nob>             m_upClosedNob {};
     Animation<MicroMeterPosDir> m_pluginAnimation 
     {
         Animation<MicroMeterPosDir>

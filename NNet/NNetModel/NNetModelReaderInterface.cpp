@@ -176,6 +176,9 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 		case NobType::Value::inputNeuron:
 			return onlyOneAxon(idSrc, idDst) && ! HasIncoming(idSrc);
 
+		case NobType::Value::outputNeuron:
+			return true;
+
 		default:
 			break;
 		}
@@ -185,6 +188,7 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 		switch ( typeDst )
 		{
 		case NobType::Value::outputNeuron:
+		case NobType::Value::inputNeuron:
 			return true;
 
 		case NobType::Value::knot:

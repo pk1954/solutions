@@ -28,6 +28,8 @@ public:
 
 	virtual bool const Includes( MicroMeterPoint const & ) const;
 
+	virtual NobIoMode const GetIoMode() const { return NobIoMode::output; }
+
 private:
 
 	void drawPlug

@@ -33,7 +33,7 @@ ConnAnimationCommand::ConnAnimationCommand
 
     MicroMeterLine line { MicroMeterLine::NULL_VAL() };
     line = m_nobsAnimated.CalcMaxDistLine();
-    if ( line.IsZero() )
+    if (line.IsZero())
         return;
 
     m_nobsAnimated.SortAccToDistFromLine( line.OrthoLine() );
@@ -48,7 +48,9 @@ ConnAnimationCommand::ConnAnimationCommand
     m_umPntVectorTarget2.SetDir(Vector2Radian(CalcOrthoVector(line, m_nobsAnimated)));
 
     m_umPntVectorTarget3  = m_umPntVectorTarget2;
-    m_umPntVectorTarget3.Pack(NEURON_RADIUS * 1.8f);
+    m_umPntVectorTarget3.Pack(NEURON_RADIUS * 2.0f);
+
+    m_bAllOk = true;
 }
 
 NobType const ConnAnimationCommand::determineNobType() const

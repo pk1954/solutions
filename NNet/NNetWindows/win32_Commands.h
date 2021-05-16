@@ -33,7 +33,7 @@ public:
     );
 
     void Connect      (NobId const, NobId const, MainWindow &);
-    void MakeConnector(RootWindow &);
+    bool MakeConnector(RootWindow &);
 
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
 

@@ -147,6 +147,9 @@
     <ClInclude Include="DiscClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SplitClosedConnCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

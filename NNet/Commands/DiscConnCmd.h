@@ -6,7 +6,9 @@
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
+#include "MicroMeterPointVector.h"
 #include "DiscBaseKnotCmd.h"
+#include "CommandFunctions.h"
 #include "Command.h"
 #include "CommandStack.h"
 #include "NobId.h"
@@ -18,26 +20,37 @@ using std::unique_ptr;
 class DiscConnCmd : public Command
 {
 public:
+    enum class tMode { remove, unplug, split };
+    
     DiscConnCmd
     (
         NNetModelWriterInterface & nmwi,
         NobId                const idConnector,
-        bool                 const bDelete 
+        tMode                const mode 
     )
       : m_idConnector(idConnector),
-        m_bDelete(bDelete)
+        m_mode(mode)
     {
-        //m_cmdStack.Initialize(&nmwi, nullptr);
-        //if (m_bDelete)
-        //{
-        //    nmwi.GetNobPtr<Connector *>(m_idConnector)->Apply2All
-        //    (
-        //        [&](Nob const & s) 
-        //        { 
-        //            m_cmdStack.Push(move(make_unique<DiscBaseKnotCmd>(nmwi, s.GetId(), true)));
-        //        }
-        //    );
-        //}
+        m_cmdStack.Initialize(&nmwi, nullptr);
+        Connector & conn { * nmwi.GetNobPtr<Connector *>(m_idConnector) };
+
+        switch (m_mode)
+        {
+        case tMode::remove:
+            conn.Apply2All([&](Nob const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
+            break;
+
+        case tMode::unplug:
+            break;
+
+        case tMode::split :
+            //            umPntVector.Pack( xxxxxxx );
+            break;
+
+        default:
+            assert( false );
+            break;
+        }
     }
 
     ~DiscConnCmd() {}
@@ -46,22 +59,22 @@ public:
     {
         m_upConnector = nmwi.RemoveFromModel<Connector>(m_idConnector);
         m_upConnector->ClearParentPointers();
-        //if (m_bDelete)
-            //m_cmdStack.DoAll();
+        if (m_mode == tMode::remove)
+            m_cmdStack.DoAll();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
         m_upConnector->SetParentPointers();
         nmwi.GetUPNobs().SetNob2Slot( move(m_upConnector) );
-        //if (m_bDelete)
-            //m_cmdStack.UndoAll();
+        if (m_mode == tMode::remove)
+            m_cmdStack.UndoAll();
     }
 
 private:
 
     NobId           const m_idConnector;
-    bool            const m_bDelete;     // true: delete Connector, false: disconnect only
-    //CommandStack          m_cmdStack {};
+    tMode           const m_mode;
+    CommandStack          m_cmdStack {};
     unique_ptr<Connector> m_upConnector {};  
 };

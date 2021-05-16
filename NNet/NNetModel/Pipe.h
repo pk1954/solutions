@@ -50,7 +50,11 @@ public:
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
-	virtual MicroMeterPoint const GetPos ()                                           const;
+	virtual void SetDir(Radian const) {};
+
+	virtual Radian          const GetDir      () const { return Vector2Radian(GetVector()); };
+	virtual NobIoMode       const GetIoMode   () const { return NobIoMode::internal; }
+	virtual MicroMeterPoint const GetPos      ()                                      const;
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const;
 	virtual bool            const Includes    (MicroMeterPoint const &)               const;
 	virtual void                  Check       ()                                      const;
@@ -62,10 +66,10 @@ public:
 	virtual void                  MoveNob     (MicroMeterPoint const &);
 	virtual void                  Link        (Nob const &, Nob2NobFunc const &);
 	virtual void                  RotateNob   (MicroMeterPoint const &, Radian const) {}
-	virtual void                  Prepare();
-	virtual bool            const CompStep();
-	virtual void                  Recalc();
-	virtual void                  Clear();
+	virtual void                  Prepare     ();
+	virtual bool            const CompStep    ();
+	virtual void                  Recalc      ();
+	virtual void                  Clear       ();
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPoint const & ) const;

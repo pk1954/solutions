@@ -18,12 +18,8 @@ class DeletePipeCommand : public Command
 {
 public:
 
-	DeletePipeCommand
-	( 
-		NNetModelWriterInterface & nmwi, 
-		NobId                const idPipe 
-	)
-	  :	m_pipe(*nmwi.GetNobPtr<Pipe *>(idPipe))
+	DeletePipeCommand(Nob &nob)
+	  :	m_pipe(*Cast2Pipe(&nob))
 	{}
 
 	~DeletePipeCommand(){ }

@@ -28,6 +28,18 @@ void Connector::Dump() const
     m_list.Apply2All([&](ConnNeuron const & s){ wcout << s << endl; } );
 }
 
+NobIoMode const Connector::GetIoMode() const 
+{ 
+    return IsInputConnector() ? NobIoMode::input : NobIoMode::output; 
+}
+
+ConnNeuron * const Connector::Pop() 
+{ 
+    ConnNeuron * pRet { & m_list.GetLast() };
+    m_list.RemoveLast();
+    return pRet;
+}
+
 void Connector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     Clear();

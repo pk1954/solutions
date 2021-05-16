@@ -24,6 +24,27 @@ bool Nob::operator==( Nob const & rhs ) const
 	( m_bSelected  == rhs.m_bSelected  );
 }
 
+void Nob::SetDir(Radian const radian) 
+{ 
+	RotateNob(GetPos(), radian - GetDir()); 
+};
+
+void Nob::SetPos(MicroMeterPoint const & umPosNew) 
+{ 
+	MoveNob(umPosNew - GetPos()); 
+}
+
+void Nob::SetPosDir(MicroMeterPosDir const & umPosDir) 
+{
+	SetDir(umPosDir.GetDir());
+	SetPos(umPosDir.GetPos());
+};
+
+MicroMeterPosDir const Nob::GetPosDir() const 
+{ 
+	return MicroMeterPosDir(GetPos(), GetDir()); 
+};
+
 D2D1::ColorF Nob::GetInteriorColor( mV const voltageInput ) const
 {
 	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParamType::Value::peakVoltage )) };

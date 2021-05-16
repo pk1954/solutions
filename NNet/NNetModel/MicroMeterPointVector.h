@@ -24,7 +24,7 @@ public:
 
     MicroMeterPointVector() {}
 
-    MicroMeterPointVector( NobPtrList<ConnNeuron> const& nobList )
+    MicroMeterPointVector(NobPtrList<ConnNeuron> const& nobList)
     {
         nobList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
     }
@@ -43,7 +43,7 @@ public:
         return m_list[ui];
     }
 
-    void SetPosDir( unsigned int const ui, MicroMeterPosDir const & posDir )
+    void SetPosDir(unsigned int const ui, MicroMeterPosDir const & posDir)
     {
         assert( ui < Size() );
         m_list[ui] = posDir;
@@ -157,6 +157,8 @@ public:
 
     Radian const FindMaxRadian() const 
     {
+        if ( m_list.empty() )
+            return Radian::NULL_VAL();
         MicroMeterPosDir const maxElement = * std::max_element
         (
             m_list.begin(), m_list.end(), 
@@ -170,6 +172,8 @@ public:
 
     MicroMeter const FindMaxPos() const
     {
+        if ( m_list.empty() )
+            return MicroMeter::NULL_VAL();
         MicroMeterPosDir const maxElement = * std::max_element
         (
             m_list.begin(), m_list.end(), 

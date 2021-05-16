@@ -17,48 +17,64 @@ using std::make_unique;
 
 PluginAnimationCommand::PluginAnimationCommand
 ( 
-    Connector   & connAnimated,
-    Connector   & connTarget,
+    Nob         & nobAnimated,
+    Nob         & nobTarget,
     MainWindow  & win,
     WinCommands & cmds
 )
-  : m_connTarget(connTarget),
-    m_connAnimated(connAnimated),
+  : m_nobTarget(nobTarget),
+    m_nobAnimated(nobAnimated),
     m_win(win),
     m_NMWI(cmds.GetNMWI()),
     m_callable(win.GetWindowHandle())
 {
     m_pModelNobs = &m_NMWI.GetUPNobs();
 
-    Radian          const radianTarget { m_connTarget.GetDir() };
+    assert( m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob() );
+    assert( m_nobAnimated.GetIoMode() != NobIoMode::internal );
+    assert( m_nobTarget  .GetIoMode() != NobIoMode::internal );
+    assert( m_nobTarget.GetIoMode() !== m_nobAnimated.GetIoMode() );
+
+    Radian          const radianTarget { m_nobTarget.GetDir() };
     MicroMeterPoint const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
     
-    m_umPosDirTarget[0] = m_connAnimated.GetPosDir();
+    m_umPosDirTarget[0] = m_nobAnimated.GetPosDir();
 
-    array <float, 2> fOffsets { 5.0f, 2.3f };
+    array <float, 2> fOffsets { 5.0f, 1.4f };
 
-    for (int i = 1; i<= 2; ++i )
+    for (size_t i = 1; i<= 2; ++i )
     {
         float fOff { fOffsets[i-1] };
-        if (m_connTarget.IsOutputConnector() )
+        if (m_nobTarget.GetIoMode() == NobIoMode::input )
             fOff = -fOff;
         MicroMeterPoint const umPosOffset { umDirVector * fOff };
-        MicroMeterPoint const umPosTarget { m_connTarget.GetPos() - umPosOffset };
+        MicroMeterPoint const umPosTarget { m_nobTarget.GetPos() - umPosOffset };
         m_umPosDirTarget[i] = MicroMeterPosDir( umPosTarget, radianTarget );
     }
 
-    m_upClosedConnector = make_unique<ClosedConnector>(m_connTarget, m_connAnimated);
+    if ( m_nobAnimated.IsCompositeNob() )
+    {
+        m_upClosedNob = make_unique<ClosedConnector>
+        (
+            static_cast<Connector &>(m_nobTarget), 
+            static_cast<Connector &>(m_nobAnimated)
+        );
+    }
+    else
+    {
+        m_upClosedNob = make_unique<Neuron>(m_nobTarget.GetPos());
+    }
 }
 
 void PluginAnimationCommand::updateUI()  // runs in animation thread
 {
-    m_connAnimated.SetPosDir(m_pluginAnimation.GetActual());
+    m_nobAnimated.SetPosDir(m_pluginAnimation.GetActual());
     m_win.Notify(false);
 }
 
 void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
 {
-    MicroMeterPosDir umPosDirStart { m_connAnimated.GetPosDir() };
+    MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
     MicroMeterPosDir umPosDirTarget;
 
     if (m_mode == Mode::mode_do)
@@ -68,8 +84,8 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 1:  blockUI();
                  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
-        case 3:  m_upClosedConnector->SetParentPointers();
-                 m_pModelNobs->Push(move(m_upClosedConnector));
+        case 3:  m_upClosedNob->SetParentPointers();
+                 m_pModelNobs->Push(move(m_upClosedNob));
                  unblockUI();
                  return; 
         default: return;        // do not start animation
@@ -80,8 +96,8 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         switch (m_iPhase--)
         {
         case 3:  blockUI();
-                 m_upClosedConnector = m_pModelNobs->Pop<ClosedConnector>();
-                 m_upClosedConnector->ClearParentPointers();
+                 m_upClosedNob = m_pModelNobs->Pop<ClosedConnector>();
+                 m_upClosedNob->ClearParentPointers();
                  [[fallthrough]]; 
         case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;

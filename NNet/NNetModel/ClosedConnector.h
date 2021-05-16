@@ -41,14 +41,14 @@ public:
 	virtual void       Clear       ();
 	virtual void       Link        (Nob const &, Nob2NobFunc const &);
 
+	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
+
+	virtual bool const IsCompositeNob() { return true; }
+
 	void SetParentPointers();
 	void ClearParentPointers();
-	//MicroMeterPosDir const GetPosDir() const;
-	//Radian           const GetDir()    const;
 
-	//void SetDir   (Radian           const  );
-	//void SetPos   (MicroMeterPoint  const &);
-	//void SetPosDir(MicroMeterPosDir const &);
+	virtual Radian const GetDir() const { return m_pInputConnector->GetDir(); };
 
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };

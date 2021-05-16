@@ -32,7 +32,7 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 }
 
 Pipe::Pipe( Pipe const & src ) :  // copy constructor
-	Nob       ( src ),
+	Nob         ( src ),
     m_pKnotStart( nullptr ),
 	m_pKnotEnd  ( nullptr ),
 	m_potIndex  ( src.m_potIndex  ),
@@ -125,7 +125,7 @@ void Pipe::Prepare()
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
 }
 
-void Pipe::MoveNob( MicroMeterPoint const & delta )
+void Pipe::MoveNob(MicroMeterPoint const & delta)
 {
 	m_pKnotStart->MoveNob( delta );
 	m_pKnotEnd  ->MoveNob( delta );
@@ -221,8 +221,8 @@ MicroMeterPoint Pipe::GetVector() const
 
 void Pipe::DrawArrows
 ( 
-	DrawContext    const & context, 
-	MicroMeter     const   umSize
+	DrawContext const & context, 
+	MicroMeter  const   umSize
 ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint() };

@@ -28,12 +28,15 @@ public:
 
 	void Check() const;
 
-	static bool      const TypeFits(NobType const type) { return type.IsKnotType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsKnotType(); }
 	static NobType const GetNobType() { return NobType::Value::knot; }
 
 	mV const GetNextOutput() const { return m_mVinputBuffer; }
 
-	virtual bool const CompStep() { return false; }
+	virtual void            SetDir(Radian const r) { };
+	virtual Radian    const GetDir   () const { return Radian::NULL_VAL(); };
+	virtual bool      const CompStep ()       { return false; }
+	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;

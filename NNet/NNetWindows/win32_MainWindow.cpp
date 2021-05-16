@@ -99,7 +99,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_APPEND_NEURON,       L"Add neuron"                            },
 		{ IDD_ARROWS_OFF,          L"Arrows off"                            },
 		{ IDD_ARROWS_ON,           L"Arrows on"                             },
-		{ IDM_CLEAR_BEEPERS,       L"Clear selected trigger sounds"         },
 		{ IDM_COPY_SELECTION,      L"Copy selection"                        },
 		{ IDM_DELETE_SELECTION,    L"Delete selected objects"               },
 		{ IDD_DELETE_NOB,          L"Delete"                                },
@@ -113,7 +112,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_NEW_NEURON,          L"New neuron"                            },
 		{ IDD_NEW_OUTPUT_NEURON,   L"New output neuron"					    },
 		{ IDD_PULSE_RATE,          L"Pulse rate"                            },
-		{ IDM_SELECT_ALL_BEEPERS,  L"Select all neurons with trigger sound" }, 
 		{ IDM_SELECT_NOB,          L"Select"                                },
 		{ IDM_SELECT_SUBTREE,      L"Select subtree"                        },
 		{ IDD_STOP_ON_TRIGGER,     L"Stop on trigger on/off"                },
@@ -131,16 +129,13 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDM_DELETE_SELECTION );
 		appendMenu( hPopupMenu, IDM_MAKE_CONNECTOR   );
 		appendMenu( hPopupMenu, IDM_ALIGN_NOBS       );
-		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS    );
 	}
 	else if ( IsUndefined(m_nobHighlighted) )  // no nob selected, cursor on background
 	{
-		appendMenu( hPopupMenu, IDD_NEW_NEURON         );
-		appendMenu( hPopupMenu, IDD_NEW_INPUT_NEURON   );
-		appendMenu( hPopupMenu, IDD_NEW_OUTPUT_NEURON  );
-		appendMenu( hPopupMenu, IDD_ADD_SIGNAL         );
-		appendMenu( hPopupMenu, IDM_SELECT_ALL_BEEPERS );
-		appendMenu( hPopupMenu, IDM_CLEAR_BEEPERS      );
+		appendMenu( hPopupMenu, IDD_NEW_NEURON        );
+		appendMenu( hPopupMenu, IDD_NEW_INPUT_NEURON  );
+		appendMenu( hPopupMenu, IDD_NEW_OUTPUT_NEURON );
+		appendMenu( hPopupMenu, IDD_ADD_SIGNAL        );
 	}
 	else switch ( m_pNMRI->GetNobType( m_nobHighlighted ).GetValue() )
 	{
@@ -148,13 +143,11 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_PULSE_RATE );         
-		appendMenu( hPopupMenu, IDD_DELETE_NOB );
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
 	case NobType::Value::outputNeuron:
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
-		appendMenu( hPopupMenu, IDD_DELETE_NOB );   
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
 		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );   
@@ -164,7 +157,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
-		appendMenu( hPopupMenu, IDD_DELETE_NOB );   
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
 		appendMenu( hPopupMenu, IDM_SELECT_SUBTREE );   
@@ -173,7 +165,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 
 	case NobType::Value::connector:
 	case NobType::Value::closedConnector:
-		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
@@ -201,7 +192,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2PIPE );
 		appendMenu( hPopupMenu, IDD_INSERT_NEURON );
 		appendMenu( hPopupMenu, IDD_INSERT_KNOT );   
-		appendMenu( hPopupMenu, IDD_DELETE_NOB );     
 		if ( ArrowsVisible() )
 			appendMenu( hPopupMenu, IDD_ARROWS_OFF );    
 		else
@@ -211,9 +201,9 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	default:
 		assert( false );
 	}
-
 	if ( IsDefined(m_nobHighlighted) )
 	{
+		appendMenu( hPopupMenu, IDD_DELETE_NOB );
 		if ( m_pNMRI->IsSelected( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDM_DESELECT_NOB );
 		else
@@ -333,8 +323,6 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	if (ptLast.IsNull())
 		return;
 
-	MicroMeterPoint const umLastPos { GetCoordC().Transform2MicroMeterPointPos(ptLast) };
-
 	if (wParam & MK_RBUTTON)        // Right mouse button: selection
 	{
 		m_rectSelection = MicroMeterRect(m_umPntSelectionAnchor, umCrsrPos);
@@ -344,7 +332,8 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	
 	if (wParam & MK_LBUTTON)        // Left mouse button
 	{
-		MicroMeterPoint const umDelta { umCrsrPos - umLastPos };
+		MicroMeterPoint const umLastPos { GetCoordC().Transform2MicroMeterPointPos(ptLast) };
+		MicroMeterPoint const umDelta   { umCrsrPos - umLastPos };
 		if (umDelta.IsZero())
 			return;
 
@@ -568,7 +557,8 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	{
 
 	case IDM_MAKE_CONNECTOR:
-		m_pWinCommands->MakeConnector(*this);
+		if ( ! m_pWinCommands->MakeConnector(*this) )
+			SendCommand2Application(IDX_PLAY_SOUND, reinterpret_cast<LPARAM>(TEXT("NOT_POSSIBLE_SOUND")));
 		break;
 
 	default:

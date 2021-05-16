@@ -35,11 +35,15 @@ void WinCommands::Initialize
 	m_pNMWI     = pNMWI;
 }
 
-void WinCommands::MakeConnector(RootWindow & win)
+bool WinCommands::MakeConnector(RootWindow & win)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<ConnAnimationCommand>(win, *this) );
+	unique_ptr<ConnAnimationCommand> upCmd = { make_unique<ConnAnimationCommand>(win, *this) };
+	bool bCmdOk = upCmd->IsCmdOk();
+	if (bCmdOk)
+		m_pCmdStack->PushCommand( move(upCmd) );
+	return bCmdOk;
 }
 
 void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win)

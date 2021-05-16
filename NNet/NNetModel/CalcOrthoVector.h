@@ -12,8 +12,8 @@
 template <Nob_t T>
 MicroMeterPoint const CalcOrthoVector
 (
-	MicroMeterLine  const & line,
-	NobPtrList<T> const & list
+	MicroMeterLine const & line,
+	NobPtrList<T>  const & list
 )
 {
 	unsigned int uiLeftConnections  { 0 };

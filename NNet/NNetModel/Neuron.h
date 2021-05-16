@@ -32,7 +32,7 @@ public:
 
 	virtual bool operator==( Nob const & ) const override;
 
-	static bool      const TypeFits( NobType const type ) { return type.IsNeuronType(); }
+	static bool    const TypeFits( NobType const type ) { return type.IsNeuronType(); }
 	static NobType const GetNobType() { return NobType::Value::neuron; }
 
 	bool       const HasAxon         () const { return m_connections.HasOutgoing(); }
@@ -48,14 +48,18 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp( m_bStopOnTrigger, op ); }
 
-	virtual void       Select(bool const bOn, bool const bRec) { Nob::Select(bOn); };
-	virtual void       DrawExterior  ( DrawContext const &, tHighlight const) const;
-	virtual void       DrawInterior  ( DrawContext const &, tHighlight const) const;
-	virtual void       DrawNeuronText( DrawContext const & ) const;
-	virtual void       Recalc();
-	virtual void       Clear();
-	virtual bool const CompStep();
-	virtual mV   const GetNextOutput() const;
+	virtual void         SetDir(Radian const r) { };
+	virtual void         Select(bool const bOn, bool const bRec) { Nob::Select(bOn); };
+	virtual void         DrawExterior  ( DrawContext const &, tHighlight const) const;
+	virtual void         DrawInterior  ( DrawContext const &, tHighlight const) const;
+	virtual void         DrawNeuronText( DrawContext const & ) const;
+	virtual void         Recalc();
+	virtual void         Clear();
+	virtual bool   const CompStep();
+	virtual mV     const GetNextOutput() const;
+	virtual Radian const GetDir()        const { return Radian::NULL_VAL(); };
+
+	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
 
 	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
 

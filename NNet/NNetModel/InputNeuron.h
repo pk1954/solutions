@@ -25,6 +25,8 @@ public:
 	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
 	virtual void DrawInterior( DrawContext const &, tHighlight const ) const;
 
+	virtual NobIoMode const GetIoMode() const { return NobIoMode::input; }
+
 	virtual void Prepare()
 	{
 		m_mVinputBuffer = m_mvFactor * m_timeSinceLastPulse.GetValue();

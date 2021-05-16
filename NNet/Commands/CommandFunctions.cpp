@@ -14,6 +14,11 @@
 #include "Nob.h"
 #include "CommandFunctions.h"
 
+unique_ptr<Command> MakeDeleteCommand(NNetModelWriterInterface & nmwi, Nob const & nob)
+{
+	return move(MakeDeleteCommand(nmwi, nob.GetId()));
+}
+
 unique_ptr<Command> MakeDeleteCommand
 (
 	NNetModelWriterInterface & nmwi,
@@ -28,12 +33,12 @@ unique_ptr<Command> MakeDeleteCommand
 	switch ( pNob->GetNobType().GetValue() )
 	{
 	case NobType::Value::pipe:
-		upCmd = make_unique<DeletePipeCommand>(nmwi, id);
+		upCmd = make_unique<DeletePipeCommand>(* pNob);
 		break;
 	case NobType::Value::knot:
 		break;
 	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, id, true);
+		upCmd = make_unique<DiscConnCmd>(nmwi, id, DiscConnCmd::tMode::remove);
 		break;
 	case NobType::Value::closedConnector:
 		upCmd = make_unique<DiscClosedConnCmd>(nmwi, id, true);
@@ -61,7 +66,7 @@ unique_ptr<Command> MakeDisconnectCommand
 		assert( false );
 		break;
 	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, id, false);
+		upCmd = make_unique<DiscConnCmd>(nmwi, id, DiscConnCmd::tMode::unplug);
 		break;
 	case NobType::Value::closedConnector:
 		upCmd = make_unique<DiscClosedConnCmd>(nmwi, id, false);

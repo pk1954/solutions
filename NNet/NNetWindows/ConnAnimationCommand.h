@@ -30,6 +30,8 @@ public:
     virtual void Do  (NNetModelWriterInterface&);
     virtual void Undo(NNetModelWriterInterface&);
 
+    bool const IsCmdOk() { return m_bAllOk; }
+
 private:
 
     enum class Mode
@@ -38,8 +40,9 @@ private:
         mode_undo
     };
     
-    Mode                             m_mode { Mode::mode_do };
-    UPNobList                    * m_pModelNobs;
+    bool                             m_bAllOk { false };
+    Mode                             m_mode  { Mode::mode_do };
+    UPNobList                      * m_pModelNobs;
     NNetModelWriterInterface       & m_NMWI;
     RootWindow                     & m_win;
     int                              m_iPhase { 0 };
@@ -49,7 +52,7 @@ private:
     MicroMeterPointVector            m_umPntVectorTarget1;   // after position alignment
     MicroMeterPointVector            m_umPntVectorTarget2;   // after direction alignment
     MicroMeterPointVector            m_umPntVectorTarget3;   // after packing
-    NobPtrList<ConnNeuron>         m_nobsAnimated {};
+    NobPtrList<ConnNeuron>           m_nobsAnimated {};
     Animation<MicroMeterPointVector> m_connAnimation 
     {
         Animation<MicroMeterPointVector>
@@ -63,7 +66,7 @@ private:
         )
     };
 
-    NobType    const determineNobType() const;
+    NobType      const determineNobType() const;
     unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
     void               nextAnimationPhase();
     void               updateUI();

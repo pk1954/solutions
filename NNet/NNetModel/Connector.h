@@ -27,6 +27,7 @@ public:
 	virtual void Check() const;
 	virtual void Dump      () const;
 
+	virtual NobIoMode       const GetIoMode() const;
 	virtual MicroMeterPoint const GetPos() const;
 
 	virtual void       DrawExterior(DrawContext const &, tHighlight const) const;
@@ -43,14 +44,10 @@ public:
 	virtual void       Clear       ();
 	virtual void       Link        (Nob const &, Nob2NobFunc const &);
 
-	void Push(ConnNeuron * const p) { m_list.Add(p); }
+	virtual bool const IsCompositeNob() { return true; }
 
-	ConnNeuron * const Pop() 
-	{ 
-		ConnNeuron * pRet { & m_list.GetLast() };
-		m_list.RemoveLast();
-		return pRet;
-	}
+	void Push(ConnNeuron * const p) { m_list.Add(p); }
+	ConnNeuron * const Pop();
 
 	bool const IsInputConnector () const { return m_list.GetFirst().IsInputNeuron (); }
 	bool const IsOutputConnector() const { return m_list.GetFirst().IsOutputNeuron(); }
@@ -75,6 +72,8 @@ public:
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
+
+	NobPtrList<ConnNeuron> const & GetConnNeurons() { return m_list; }
 
 private:
 	NobPtrList<ConnNeuron> m_list {};
