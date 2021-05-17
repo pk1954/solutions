@@ -8,7 +8,7 @@
 #include "util.h"
 #include "NobId.h"
 #include "Connector.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 
 using std::vector;
 using std::endl;
@@ -21,7 +21,7 @@ public:
     NobIdList() {}
     NobIdList(Connector              const &);
     NobIdList(NobPtrList<Nob>        const &);
-    NobIdList(NobPtrList<ConnNeuron> const &);
+    NobIdList(NobPtrList<IoNeuron> const &);
 
     virtual ~NobIdList() {}
 

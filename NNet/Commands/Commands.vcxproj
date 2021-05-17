@@ -98,7 +98,7 @@
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="SetNobCommand.h" />
-    <ClInclude Include="SetConnectionNeuronsCommand.h" />
+    <ClInclude Include="SetIoNeuronsCommand.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="SelectAllBeepersCommand.h" />
     <ClInclude Include="SelectAllCommand.h" />

@@ -1,4 +1,4 @@
-// SetConnectionNeuronsCommand.h
+// SetIoNeuronsCommand.h
 //
 // Commands
 
@@ -9,12 +9,12 @@
 #include "NNetModelWriterInterface.h"
 #include "NobPtrList.h"
 #include "Command.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 
-class SetConnectionNeuronsCommand : public Command
+class SetIoNeuronsCommand : public Command
 {
 public:
-	SetConnectionNeuronsCommand
+	SetIoNeuronsCommand
 	(
 		MicroMeterPointVector const & umPntVector,
 		unique_ptr<NobIdList>   upNobIds
@@ -25,7 +25,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.SetConnNeurons(m_umPntVector, *m_upNobIds.get());
+		nmwi.SetIoNeurons(m_umPntVector, *m_upNobIds.get());
 	}
 
 private:

@@ -1,4 +1,4 @@
-// ConnectionNeuron.h
+// IoNeuron.h
 //
 // NNetModel
 
@@ -11,12 +11,12 @@
 using std::wcout;
 using std::endl;
 
-class ConnNeuron : public Neuron
+class IoNeuron : public Neuron
 {
 public:
-	static bool const TypeFits(NobType const type) { return type.IsConnNeuronType(); }
+	static bool const TypeFits(NobType const type) { return type.IsIoNeuronType(); }
 
-	ConnNeuron( MicroMeterPoint const & upCenter, NobType const type )
+	IoNeuron( MicroMeterPoint const & upCenter, NobType const type )
 		: Neuron( upCenter, type )
 	{}
 

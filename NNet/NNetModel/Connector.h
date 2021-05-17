@@ -10,7 +10,7 @@
 #include "NobType.h"
 #include "UPNobList.h"
 #include "NobPtrList.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 
 class Connector: public Nob
 {
@@ -20,7 +20,7 @@ public:
 	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
 	Connector();
-	Connector(NobPtrList<ConnNeuron> const &);
+	Connector(NobPtrList<IoNeuron> const &);
 
 	virtual ~Connector() {}
 
@@ -46,8 +46,8 @@ public:
 
 	virtual bool const IsCompositeNob() { return true; }
 
-	void Push(ConnNeuron * const p) { m_list.Add(p); }
-	ConnNeuron * const Pop();
+	void Push(IoNeuron * const p) { m_list.Add(p); }
+	IoNeuron * const Pop();
 
 	bool const IsInputConnector () const { return m_list.GetFirst().IsInputNeuron (); }
 	bool const IsOutputConnector() const { return m_list.GetFirst().IsOutputNeuron(); }
@@ -67,16 +67,16 @@ public:
 	void SetPos   (MicroMeterPoint  const &);
 	void SetPosDir(MicroMeterPosDir const &);
 
-	void Apply2All(function<void(ConnNeuron const &)> const & func) const;
+	void Apply2All(function<void(IoNeuron const &)> const & func) const;
 
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
-	NobPtrList<ConnNeuron> const & GetConnNeurons() { return m_list; }
+	NobPtrList<IoNeuron> const & GetIoNeurons() { return m_list; }
 
 private:
-	NobPtrList<ConnNeuron> m_list {};
+	NobPtrList<IoNeuron> m_list {};
 };
 
 Connector const * Cast2Connector( Nob const * );

@@ -108,7 +108,7 @@
     <ClInclude Include="NewNeuronCommandT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetConnectionNeuronsCommand.h">
+    <ClInclude Include="SetIoNeuronsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveNobCommand.h">

@@ -14,7 +14,7 @@
 #include "NNetParameters.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "NNetModelStorage.h"
@@ -161,10 +161,10 @@ private:
         for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
         {
             NobId        const id          { script.ScrReadInt() };
-            ConnNeuron * const pConnNeuron { GetWriterInterface().GetNobPtr<ConnNeuron *>(id) };
-            if ( ! pConnNeuron )
+            IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
+            if ( ! pIoNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
-            upConnector->Push(pConnNeuron);
+            upConnector->Push(pIoNeuron);
         }
         script.ScrReadSpecial( Connector::CLOSE_BRACKET );
         upConnector->AlignDirection();

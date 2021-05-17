@@ -8,7 +8,7 @@
 #include "boolOp.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 #include "NobId.h"
 #include "NNetModel.h"
 
@@ -104,8 +104,8 @@ public:
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
-    void SetConnNeurons(MicroMeterPointVector       &, NobIdList              const &);
-    void SetConnNeurons(MicroMeterPointVector const &, NobPtrList<ConnNeuron> const &);
+    void SetIoNeurons(MicroMeterPointVector       &, NobIdList              const &);
+    void SetIoNeurons(MicroMeterPointVector const &, NobPtrList<IoNeuron> const &);
 
 #ifdef _DEBUG
     NNetModel const & GetModel()  const { return * m_pModel; }  // TODO: find better solution

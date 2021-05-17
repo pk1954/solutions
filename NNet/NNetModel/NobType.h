@@ -80,14 +80,14 @@ public:
 		return IsConnectorType() || IsClosedConnectorType();
 	}
 
-	bool const IsConnNeuronType() const
+	bool const IsIoNeuronType() const
 	{
 		return (m_value == Value::inputNeuron) || (m_value == Value::outputNeuron);
 	}
 
 	bool const IsAnyNeuronType() const
 	{
-		return (m_value == Value::neuron) || IsConnNeuronType();
+		return (m_value == Value::neuron) || IsIoNeuronType();
 	}
 
 	bool const IsBaseKnotType() const

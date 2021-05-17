@@ -35,7 +35,7 @@
 #include "SelectNobCommand.h"
 #include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
-#include "SetConnectionNeuronsCommand.h"
+#include "SetIoNeuronsCommand.h"
 #include "SetParameterCommand.h"
 #include "SetPulseRateCommand.h"
 #include "SetNobCommand.h"
@@ -220,7 +220,7 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 	m_pCmdStack->PushCommand( make_unique<MoveSelectionCommand>( delta ) );
 }
 
-void NNetModelCommands::SetConnectionNeurons
+void NNetModelCommands::SetIoNeurons
 ( 
 	MicroMeterPointVector const & umPntVectorRun,
 	unique_ptr<NobIdList>       upNobIds 
@@ -228,7 +228,7 @@ void NNetModelCommands::SetConnectionNeurons
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__<< * upNobIds << umPntVectorRun << endl ;
-	m_pCmdStack->PushCommand( make_unique<SetConnectionNeuronsCommand>(umPntVectorRun, move(upNobIds)) );
+	m_pCmdStack->PushCommand( make_unique<SetIoNeuronsCommand>(umPntVectorRun, move(upNobIds)) );
 }
 
 void NNetModelCommands::AddModel()

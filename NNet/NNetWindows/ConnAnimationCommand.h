@@ -52,7 +52,7 @@ private:
     MicroMeterPointVector            m_umPntVectorTarget1;   // after position alignment
     MicroMeterPointVector            m_umPntVectorTarget2;   // after direction alignment
     MicroMeterPointVector            m_umPntVectorTarget3;   // after packing
-    NobPtrList<ConnNeuron>           m_nobsAnimated {};
+    NobPtrList<IoNeuron>           m_nobsAnimated {};
     Animation<MicroMeterPointVector> m_connAnimation 
     {
         Animation<MicroMeterPointVector>

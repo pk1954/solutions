@@ -1,16 +1,16 @@
-// ConnNeuron.cpp 
+// IoNeuron.cpp 
 //
 // NNetModel
 
 #include "stdafx.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 
-MicroMeterPoint const ConnNeuron::GetScaledDirVector() const
+MicroMeterPoint const IoNeuron::GetScaledDirVector() const
 {
 	return GetDirVector().ScaledTo(GetExtension());
 }
 
-MicroMeterPoint const ConnNeuron::determineVector() const
+MicroMeterPoint const IoNeuron::determineVector() const
 {
 	MicroMeterPoint umVector { MicroMeterPoint::ZERO_VAL() };
 
@@ -25,7 +25,7 @@ MicroMeterPoint const ConnNeuron::determineVector() const
 	return umVector;
 }
 
-void ConnNeuron::RotateNob( MicroMeterPoint const & umPntPivot, Radian const radDelta )
+void IoNeuron::RotateNob( MicroMeterPoint const & umPntPivot, Radian const radDelta )
 {
 	BaseKnot::RotateNob(umPntPivot, radDelta);
 	m_radDirection += radDelta;

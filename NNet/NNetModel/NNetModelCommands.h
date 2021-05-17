@@ -9,7 +9,7 @@
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "MonitorData.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 #include "NobPtrList.h"
 #include "NobType.h"
 #include "NobId.h"
@@ -45,46 +45,46 @@ public:
         CommandStack             * const 
     );
 
-    void AddIncoming2Knot    ( NobId const, MicroMeterPoint const & );
-    void AddIncoming2Pipe    ( NobId const, MicroMeterPoint const & );
-    void AddModel            ();
-    void AddSignal           ( MicroMeterCircle const &, TrackNr const );
-    void AddOutgoing2Knot    ( NobId const, MicroMeterPoint const & );
-    void AddOutgoing2Pipe    ( NobId const, MicroMeterPoint const & );
-    void AnalyzeAnomalies    ();
-    void AnalyzeLoops        ();
-    void AppendInputNeuron   ( NobId const );
-    void AppendNeuron        ( NobId const );
-    void ClearBeepers        ();
-    void CopySelection       ();
-    void CreateInitialNobs   ();
-    void DeleteSelection     ();
-    void DeleteNob           ( NobId  const );
-    void DeleteSignal        ( SignalId const );
-    void DeleteTrack         ( TrackNr  const );
-    void Disconnect          ( NobId  const );
-    void InsertKnot          ( NobId  const, MicroMeterPoint const & );
-    void InsertNeuron        ( NobId  const, MicroMeterPoint const & );
-    void InsertTrack         ( TrackNr  const );
-    void MoveSelection       ( MicroMeterPoint const & );
-    void MoveNob             ( NobId const, MicroMeterPoint const & );
-    void NewInputNeuron      ( MicroMeterPoint const & );
-    void NewNeuron           ( MicroMeterPoint const & );
-    void NewOutputNeuron     ( MicroMeterPoint const & );
-    void ResetModel          ();
-    void RestrictSelection   ( NobType::Value const );
-    void Rotate              ( NobId const, MicroMeterPoint const &, MicroMeterPoint const & );
-    void SelectAll           ( bool const );
-    void SelectAllBeepers    ();
-    void SelectNob           ( NobId const, tBoolOp const );
-    void SelectNobsInRect    ( MicroMeterRect const & );
-    void SelectSubtree       ( NobId const, bool const );
-    void SetConnectionNeurons( MicroMeterPointVector const &, unique_ptr<NobIdList> );
-    void SetParameter        ( ParamType::Value const, float const );
-    void SetPulseRate        ( NobId    const, fHertz const );
-    void SetNob              ( NobId const, MicroMeterPosDir const );
-    void SetTriggerSound     ( NobId const, SoundDescr const & );
-    void ToggleStopOnTrigger ( NobId const );
+    void AddIncoming2Knot   ( NobId const, MicroMeterPoint const & );
+    void AddIncoming2Pipe   ( NobId const, MicroMeterPoint const & );
+    void AddModel           ();
+    void AddSignal          ( MicroMeterCircle const &, TrackNr const );
+    void AddOutgoing2Knot   ( NobId const, MicroMeterPoint const & );
+    void AddOutgoing2Pipe   ( NobId const, MicroMeterPoint const & );
+    void AnalyzeAnomalies   ();
+    void AnalyzeLoops       ();
+    void AppendInputNeuron  ( NobId const );
+    void AppendNeuron       ( NobId const );
+    void ClearBeepers       ();
+    void CopySelection      ();
+    void CreateInitialNobs  ();
+    void DeleteSelection    ();
+    void DeleteNob          ( NobId  const );
+    void DeleteSignal       ( SignalId const );
+    void DeleteTrack        ( TrackNr  const );
+    void Disconnect         ( NobId  const );
+    void InsertKnot         ( NobId  const, MicroMeterPoint const & );
+    void InsertNeuron       ( NobId  const, MicroMeterPoint const & );
+    void InsertTrack        ( TrackNr  const );
+    void MoveSelection      ( MicroMeterPoint const & );
+    void MoveNob            ( NobId const, MicroMeterPoint const & );
+    void NewInputNeuron     ( MicroMeterPoint const & );
+    void NewNeuron          ( MicroMeterPoint const & );
+    void NewOutputNeuron    ( MicroMeterPoint const & );
+    void ResetModel         ();
+    void RestrictSelection  ( NobType::Value const );
+    void Rotate             ( NobId const, MicroMeterPoint const &, MicroMeterPoint const & );
+    void SelectAll          ( bool const );
+    void SelectAllBeepers   ();
+    void SelectNob          ( NobId const, tBoolOp const );
+    void SelectNobsInRect   ( MicroMeterRect const & );
+    void SelectSubtree      ( NobId const, bool const );
+    void SetIoNeurons       ( MicroMeterPointVector const &, unique_ptr<NobIdList> );
+    void SetParameter       ( ParamType::Value const, float const );
+    void SetPulseRate       ( NobId    const, fHertz const );
+    void SetNob             ( NobId const, MicroMeterPosDir const );
+    void SetTriggerSound    ( NobId const, SoundDescr const & );
+    void ToggleStopOnTrigger( NobId const );
 
     void UndoCommand();
     void RedoCommand();

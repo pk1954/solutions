@@ -14,11 +14,11 @@ using std::wcout;
 using std::endl;
 
 OutputNeuron::OutputNeuron( MicroMeterPoint const & upCenter )
-	: ConnNeuron( upCenter, NobType::Value::outputNeuron )
+	: IoNeuron( upCenter, NobType::Value::outputNeuron )
 {}
 
 OutputNeuron::OutputNeuron( Neuron const & neuron )
-	: ConnNeuron( neuron.GetPos(), NobType::Value::outputNeuron )
+	: IoNeuron( neuron.GetPos(), NobType::Value::outputNeuron )
 {
 	static_cast<Neuron &>(*this) = neuron;      // use all data from Neuron to construct OutputNeuron
 	SetType( NobType::Value::outputNeuron );  // fix neuron type

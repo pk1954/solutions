@@ -8,7 +8,7 @@
 #include <assert.h>   
 #include "MoreTypes.h"
 #include "PointType.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 #include "NobPtrList.h"
 #include "MicroMeterPosDir.h"
 
@@ -24,9 +24,9 @@ public:
 
     MicroMeterPointVector() {}
 
-    MicroMeterPointVector(NobPtrList<ConnNeuron> const& nobList)
+    MicroMeterPointVector(NobPtrList<IoNeuron> const& nobList)
     {
-        nobList.Apply2All( [&](ConnNeuron const & c) { Add( c.GetPosDir() ); } );
+        nobList.Apply2All( [&](IoNeuron const & c) { Add( c.GetPosDir() ); } );
     }
 
     void Apply2All(function<void(MicroMeterPosDir &)> const & func)

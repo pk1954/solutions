@@ -29,7 +29,7 @@ ConnAnimationCommand::ConnAnimationCommand
     if ( nobType.IsUndefinedType() )
         return;
     
-    m_nobsAnimated = NobPtrList<ConnNeuron>(m_pModelNobs->GetAllSelected<ConnNeuron>(nobType));
+    m_nobsAnimated = NobPtrList<IoNeuron>(m_pModelNobs->GetAllSelected<IoNeuron>(nobType));
 
     MicroMeterLine line { MicroMeterLine::NULL_VAL() };
     line = m_nobsAnimated.CalcMaxDistLine();
@@ -73,7 +73,7 @@ NobType const ConnAnimationCommand::determineNobType() const
 
 void ConnAnimationCommand::updateUI()  // runs in animation thread
 {
-    m_NMWI.SetConnNeurons
+    m_NMWI.SetIoNeurons
     (
         m_connAnimation.GetActual(), 
         m_nobsAnimated

@@ -5,9 +5,9 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 
-class InputNeuron : public ConnNeuron
+class InputNeuron : public IoNeuron
 {
 public:
 

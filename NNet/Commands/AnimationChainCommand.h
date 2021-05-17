@@ -10,7 +10,7 @@
 #include "NobPtrList.h"
 #include "Command.h"
 #include "Connector.h"
-#include "ConnectionNeuron.h"
+#include "IoNeuron.h"
 
 using std::vector;
 

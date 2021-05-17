@@ -11,7 +11,7 @@ NobIdList::NobIdList(Connector const & connector)
     connector.Apply2All([&](Nob const & s) { Add(s.GetId()); } );
 }
 
-NobIdList::NobIdList(NobPtrList<ConnNeuron> const& list) 
+NobIdList::NobIdList(NobPtrList<IoNeuron> const& list) 
 {
     list.Apply2All([&](Nob & s) { Add(s.GetId()); } );
 }

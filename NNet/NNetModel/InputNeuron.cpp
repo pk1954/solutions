@@ -20,7 +20,7 @@ using std::setprecision;
 using std::fixed;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-	: ConnNeuron( upCenter, NobType::Value::inputNeuron )
+	: IoNeuron( upCenter, NobType::Value::inputNeuron )
 { 
 	SetPulseFrequency(STD_PULSE_FREQ);
 }
