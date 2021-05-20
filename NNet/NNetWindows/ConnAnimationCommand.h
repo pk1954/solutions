@@ -40,19 +40,19 @@ private:
         mode_undo
     };
     
-    bool                             m_bAllOk { false };
-    Mode                             m_mode  { Mode::mode_do };
-    UPNobList                      * m_pModelNobs;
-    NNetModelWriterInterface       & m_NMWI;
-    RootWindow                     & m_win;
-    int                              m_iPhase { 0 };
-    Callable                         m_callable;
-    unique_ptr<Connector>            m_upConnector {};  
+    bool                           m_bAllOk { false };
+    Mode                           m_mode  { Mode::mode_do };
+    UPNobList                    * m_pModelNobs;
+    NNetModelWriterInterface     & m_NMWI;
+    RootWindow                   & m_win;
+    int                            m_iPhase { 0 };
+    Callable                       m_callable;
+    unique_ptr<Connector>          m_upConnector {};  
     MicroMeterPntVector            m_umPntVectorOriginal;  // before animation
     MicroMeterPntVector            m_umPntVectorTarget1;   // after position alignment
     MicroMeterPntVector            m_umPntVectorTarget2;   // after direction alignment
     MicroMeterPntVector            m_umPntVectorTarget3;   // after packing
-    NobPtrList<IoNeuron>             m_nobsAnimated {};
+    NobPtrList<IoNeuron>           m_nobsAnimated {};
     Animation<MicroMeterPntVector> m_connAnimation 
     {
         Animation<MicroMeterPntVector>
@@ -70,6 +70,6 @@ private:
     unsigned int const calcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &) const;
     void               nextAnimationPhase();
     void               updateUI();
-    void               blockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true); };
-    void               unblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
+    void               BlockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true); };
+    void               UnblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
 };

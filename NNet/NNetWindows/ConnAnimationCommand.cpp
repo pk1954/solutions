@@ -90,13 +90,13 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
     {
         switch (m_iPhase++)
         {
-        case 1:  blockUI();
+        case 1:  BlockUI();
                  umPntVectorTarget = m_umPntVectorTarget1; break;
         case 2:	 umPntVectorTarget = m_umPntVectorTarget2; break;
         case 3:  umPntVectorTarget = m_umPntVectorTarget3; break;
         case 4:	 m_upConnector->SetParentPointers();
                  m_pModelNobs->Push(move(m_upConnector));
-                 unblockUI();
+                 UnblockUI();
                  return; 
         default: return;        // do not start animation
         }
@@ -105,14 +105,14 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
     {
         switch (m_iPhase--)
         {
-        case 4:	 blockUI();
+        case 4:	 BlockUI();
                  m_upConnector = m_pModelNobs->Pop<Connector>();
                  m_upConnector->ClearParentPointers();
                  [[fallthrough]]; 
         case 3:	 umPntVectorTarget = m_umPntVectorTarget2;  break;
         case 2:	 umPntVectorTarget = m_umPntVectorTarget1;  break;
         case 1:	 umPntVectorTarget = m_umPntVectorOriginal; break;
-        case 0:  unblockUI();
+        case 0:  UnblockUI();
                  return; 
         default: return;                // do not start animation
         }
@@ -142,15 +142,15 @@ unsigned int const ConnAnimationCommand::calcNrOfSteps
 ) const
 {
     MicroMeterPntVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
-    Radian                const radDiffMax      { umPntVectorDiff.FindMaxRadian() };
-    Radian                const radPerStep      { Degrees2Radian(6.0_Degrees) };
-    float                 const fStepsFromRot   { radDiffMax / radPerStep };
+    Radian              const radDiffMax      { umPntVectorDiff.FindMaxRadian() };
+    Radian              const radPerStep      { Degrees2Radian(6.0_Degrees) };
+    float               const fStepsFromRot   { radDiffMax / radPerStep };
 
-    MicroMeter            const umDiffMax       { umPntVectorDiff.FindMaxPos() };
-    MicroMeter            const umPerStep       { NEURON_RADIUS / 5.0f };
-    float                 const fStepsFromMove  { umDiffMax / umPerStep };
+    MicroMeter          const umDiffMax       { umPntVectorDiff.FindMaxPos() };
+    MicroMeter          const umPerStep       { NEURON_RADIUS / 5.0f };
+    float               const fStepsFromMove  { umDiffMax / umPerStep };
 
-    float                 const fSteps          { max(fStepsFromRot, fStepsFromMove) };
-    unsigned int          const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
+    float               const fSteps          { max(fStepsFromRot, fStepsFromMove) };
+    unsigned int        const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
     return uiSteps;
 }

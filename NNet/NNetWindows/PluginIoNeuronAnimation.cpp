@@ -22,11 +22,9 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
     MainWindow  & win,
     WinCommands & cmds
 )
-  : m_nobTarget(nobTarget),
-    m_nobAnimated(nobAnimated),
-    m_win(win),
-    m_NMWI(cmds.GetNMWI()),
-    m_callable(win.GetWindowHandle())
+  : AnimatedCommand(win, cmds),
+    m_nobTarget(nobTarget),
+    m_nobAnimated(nobAnimated)
 {
     assert( m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob() );
     assert( m_nobAnimated.GetIoMode() != NobIoMode::internal );
@@ -36,7 +34,7 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
     Radian        const radianTarget { m_nobTarget.GetDir() };
     MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
 
-    m_umPosDirTarget[0] = m_nobAnimated.GetPosDir();
+    m_umPosDirTarget.push_back(m_nobAnimated.GetPosDir());
 
     array <float, 2> fOffsets { 5.0f, 1.4f };
 
@@ -47,29 +45,17 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
             fOff = -fOff;
         MicroMeterPnt const umPosOffset { umDirVector * fOff };
         MicroMeterPnt const umPosTarget { m_nobTarget.GetPos() + umPosOffset };
-        m_umPosDirTarget[i] = MicroMeterPosDir( umPosTarget, radianTarget );
+        m_umPosDirTarget.push_back(MicroMeterPosDir(umPosTarget, radianTarget));
     }
 
-    IoNeuron * pNobIn;
-    IoNeuron * pNobOut;
-
-    if ( m_nobAnimated.IsInternalNob() )
-    {
-        pNobIn  = &m_nobAnimated;
-        pNobOut = &m_nobTarget; 
-    }
-    else
-    {
-        pNobIn  = &m_nobTarget;
-        pNobOut = &m_nobAnimated; 
-    }
-
-    m_upClosedNeuron = move(make_unique<Neuron>(m_nobTarget.GetPos(), * pNobIn, * pNobOut));
+    m_upClosedNeuron = m_nobAnimated.IsInputNob()
+        ? make_unique<Neuron>(m_nobTarget.GetPos(), m_nobAnimated, m_nobTarget  )
+        : make_unique<Neuron>(m_nobTarget.GetPos(), m_nobTarget,   m_nobAnimated);
 }
 
 void PluginIoNeuronAnimation::updateUI()  // runs in animation thread
 {
-    m_nobAnimated.SetPosDir(m_pluginAnimation.GetActual());
+    m_nobAnimated.SetPosDir(m_animation.GetActual());
     m_win.Notify(false);
 }
 
@@ -82,18 +68,18 @@ void PluginIoNeuronAnimation::nextAnimationPhase() // runs in UI thread
     {
         switch (m_iPhase++)
         {
-        case 1:  blockUI();
+        case 1:  BlockUI();
                  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
         case 3:  m_upClosedNeuron->SetParentPointers();
-                {
-                    NobId id = m_NMWI.GetUPNobs().Push(move(m_upClosedNeuron));
-                    m_upNobAnimated = m_NMWI.RemoveFromModel<IoNeuron>(m_nobAnimated);
-                    m_upNobTarget   = m_NMWI.RemoveFromModel<IoNeuron>(m_nobTarget);
-                    m_NMWI.GetNobPtr<Neuron *>(id)->Reconnect();
-                }
-                unblockUI();
-                return; 
+                 {
+                     NobId id = m_NMWI.GetUPNobs().Push(move(m_upClosedNeuron));
+                     m_upNobAnimated = m_NMWI.RemoveFromModel<IoNeuron>(m_nobAnimated);
+                     m_upNobTarget   = m_NMWI.RemoveFromModel<IoNeuron>(m_nobTarget);
+                     m_NMWI.GetNobPtr<Neuron *>(id)->Reconnect();
+                 }
+                 UnblockUI();
+                 return; 
         default: return;        // do not start animation
         }
     }
@@ -101,7 +87,7 @@ void PluginIoNeuronAnimation::nextAnimationPhase() // runs in UI thread
     {
         switch (m_iPhase--)
         {
-        case 3:  blockUI();
+        case 3:  BlockUI();
             m_upClosedNeuron = m_NMWI.GetUPNobs().Pop<Neuron>();
             m_upClosedNeuron->ClearParentPointers();
             [[fallthrough]]; 
@@ -111,28 +97,14 @@ void PluginIoNeuronAnimation::nextAnimationPhase() // runs in UI thread
                  m_upNobTarget  ->Reconnect();
                  m_upNobAnimated = m_NMWI.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));
                  m_upNobTarget   = m_NMWI.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobTarget));
-                 unblockUI();
+                 UnblockUI();
                  return; 
         default: return;                // do not start animation
         }
     }
-    m_pluginAnimation.SetNrOfSteps( calcNrOfSteps(umPosDirStart, umPosDirTarget) );
-    m_pluginAnimation.Start(umPosDirStart, umPosDirTarget);
+    m_animation.SetNrOfSteps( calcNrOfSteps(umPosDirStart, umPosDirTarget) );
+    m_animation.Start(umPosDirStart, umPosDirTarget);
     m_win.Notify(false);
-}
-
-void PluginIoNeuronAnimation::Do( NNetModelWriterInterface& nmwi )
-{
-    m_mode = Mode::mode_do;
-    m_iPhase = 1;
-    nextAnimationPhase();
-}
-
-void PluginIoNeuronAnimation::Undo( NNetModelWriterInterface& nmwi )
-{
-    m_mode = Mode::mode_undo;
-    m_iPhase = 3;
-    nextAnimationPhase();
 }
 
 unsigned int const PluginIoNeuronAnimation::calcNrOfSteps
