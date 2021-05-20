@@ -35,6 +35,4 @@ private:
 
     virtual void nextAnimationPhase();
     virtual void updateUI();
-
-    unsigned int const calcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &) const;
 };

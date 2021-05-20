@@ -72,7 +72,37 @@ protected:
     void BlockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true);  };
     void UnblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
 
+    void StartAnimation
+    (
+        MicroMeterPosDir const & umPosDirStart,
+        MicroMeterPosDir const & umPosDirTarget
+    )
+    {
+        m_animation.SetNrOfSteps( calcNrOfSteps(umPosDirStart, umPosDirTarget) );
+        m_animation.Start(umPosDirStart, umPosDirTarget);
+        m_win.Notify(false);
+    }
+
 private:
     virtual void nextAnimationPhase() = 0;
     virtual void updateUI()           = 0;
+
+    unsigned int const calcNrOfSteps
+    (
+        MicroMeterPosDir const & umPosDirStart,
+        MicroMeterPosDir const & umPosDirTarget
+    ) const
+    {
+        MicroMeterPosDir const umPosDirDiff   { umPosDirTarget - umPosDirStart };
+
+        Radian           const radPerStep     { Degrees2Radian(6.0_Degrees) };
+        float            const fStepsFromRot  { Normalize(umPosDirDiff.GetDir()) / radPerStep };
+
+        MicroMeter       const umPerStep      { NEURON_RADIUS / 5.0f };
+        float            const fStepsFromMove { Hypot(umPosDirDiff.GetPos()) / umPerStep };
+
+        float            const fSteps         { max(fStepsFromRot, fStepsFromMove) };
+        unsigned int     const uiSteps        { Cast2UnsignedInt(fSteps) + 1 };
+        return uiSteps;
+    }
 };

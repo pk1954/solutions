@@ -36,7 +36,7 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
 
     m_umPosDirTarget.push_back(m_nobAnimated.GetPosDir());
 
-    array <float, 2> fOffsets { 5.0f, 1.4f };
+    array <float, 2> fOffsets { 3.0f, 1.4f };
 
     for (size_t i = 1; i<= 2; ++i )
     {
@@ -102,26 +102,5 @@ void PluginIoNeuronAnimation::nextAnimationPhase() // runs in UI thread
         default: return;                // do not start animation
         }
     }
-    m_animation.SetNrOfSteps( calcNrOfSteps(umPosDirStart, umPosDirTarget) );
-    m_animation.Start(umPosDirStart, umPosDirTarget);
-    m_win.Notify(false);
-}
-
-unsigned int const PluginIoNeuronAnimation::calcNrOfSteps
-(
-    MicroMeterPosDir const & umPosDirStart,
-    MicroMeterPosDir const & umPosDirTarget
-) const
-{
-    MicroMeterPosDir const umPosDirDiff   { umPosDirTarget - umPosDirStart };
-
-    Radian           const radPerStep     { Degrees2Radian(6.0_Degrees) };
-    float            const fStepsFromRot  { Normalize(umPosDirDiff.GetDir()) / radPerStep };
-
-    MicroMeter       const umPerStep      { NEURON_RADIUS / 5.0f };
-    float            const fStepsFromMove { Hypot(umPosDirDiff.GetPos()) / umPerStep };
-
-    float            const fSteps         { max(fStepsFromRot, fStepsFromMove) };
-    unsigned int     const uiSteps        { Cast2UnsignedInt(fSteps) + 1 };
-    return uiSteps;
+    StartAnimation(umPosDirStart, umPosDirTarget);
 }

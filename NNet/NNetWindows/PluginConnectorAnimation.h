@@ -35,7 +35,6 @@ private:
     unique_ptr<Connector>       m_upNobTarget;
     unique_ptr<ClosedConnector> m_upClosedNob {};
 
-    unsigned int const calcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &) const;
-    void               nextAnimationPhase();
-    void               updateUI();
+    virtual void nextAnimationPhase();
+    virtual void updateUI();
 };

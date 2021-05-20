@@ -93,26 +93,5 @@ void PluginConnectorAnimation::nextAnimationPhase() // runs in UI thread
         default: return;                // do not start animation
         }
     }
-    m_animation.SetNrOfSteps( calcNrOfSteps(umPosDirStart, umPosDirTarget) );
-    m_animation.Start(umPosDirStart, umPosDirTarget);
-    m_win.Notify(false);
-}
-
-unsigned int const PluginConnectorAnimation::calcNrOfSteps
-(
-    MicroMeterPosDir const & umPosDirStart,
-    MicroMeterPosDir const & umPosDirTarget
-) const
-{
-    MicroMeterPosDir const umPosDirDiff   { umPosDirTarget - umPosDirStart };
-
-    Radian           const radPerStep     { Degrees2Radian(6.0_Degrees) };
-    float            const fStepsFromRot  { Normalize(umPosDirDiff.GetDir()) / radPerStep };
-
-    MicroMeter       const umPerStep      { NEURON_RADIUS / 5.0f };
-    float            const fStepsFromMove { Hypot(umPosDirDiff.GetPos()) / umPerStep };
-
-    float            const fSteps         { max(fStepsFromRot, fStepsFromMove) };
-    unsigned int     const uiSteps        { Cast2UnsignedInt(fSteps) + 1 };
-    return uiSteps;
+    StartAnimation(umPosDirStart, umPosDirTarget);
 }

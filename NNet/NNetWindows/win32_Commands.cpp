@@ -72,13 +72,24 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 	break;
 	case NobType::Value::inputNeuron:
 	case NobType::Value::outputNeuron:
-		upCmd = make_unique<PluginIoNeuronAnimation> 
+		if ( m_pNMRI->GetNobType(idSrc).GetValue() == NobType::Value::knot)
+		{
+			upCmd = make_unique<Connect2BaseKnotCommand>
+			(
+				m_pNMWI->GetNobPtr<BaseKnot *>(idSrc), 
+				m_pNMWI->GetNobPtr<BaseKnot *>(idDst)
+			);
+		}
+		else
+		{
+			upCmd = make_unique<PluginIoNeuronAnimation> 
 			(
 				* m_pNMWI->GetNobPtr<IoNeuron *>(idSrc), 
 				* m_pNMWI->GetNobPtr<IoNeuron *>(idDst),
 				win,
 				* this
 			);
+		}
 		break;
 	case NobType::Value::connector:
 		upCmd = make_unique<PluginConnectorAnimation> 

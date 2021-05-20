@@ -65,12 +65,6 @@ public:
 		return MicroMeterPosDir( GetPos(), Vector2Radian(GetDirVector()) );
 	}
 
-	void SetPosDir( MicroMeterPosDir const posDir )
-	{
-		m_radDirection = posDir.GetDir();
-		SetPos( posDir.GetPos() );
-	}
-
 	void UnlockDirection() 
 	{
 		m_radDirection.Set2Null();
