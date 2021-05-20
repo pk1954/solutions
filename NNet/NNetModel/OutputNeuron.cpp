@@ -13,14 +13,14 @@ using std::fill;
 using std::wcout;
 using std::endl;
 
-OutputNeuron::OutputNeuron( MicroMeterPoint const & upCenter )
+OutputNeuron::OutputNeuron( MicroMeterPnt const & upCenter )
 	: IoNeuron( upCenter, NobType::Value::outputNeuron )
 {}
 
 OutputNeuron::OutputNeuron( Neuron const & neuron )
 	: IoNeuron( neuron.GetPos(), NobType::Value::outputNeuron )
 {
-	static_cast<Neuron &>(*this) = neuron;      // use all data from Neuron to construct OutputNeuron
+	static_cast<Neuron &>(*this) = neuron;    // use all data from Neuron to construct OutputNeuron
 	SetType( NobType::Value::outputNeuron );  // fix neuron type
 }
 
@@ -45,9 +45,9 @@ void OutputNeuron::DrawInterior(DrawContext const & context, tHighlight const ty
 	drawPlug( context, 0.4f, 0.6f, GetInteriorColor(type) );
 }
 
-bool const OutputNeuron::Includes(MicroMeterPoint const & point) const
+bool const OutputNeuron::Includes(MicroMeterPnt const & point) const
 {
-	MicroMeterPoint const umCenter { GetPos() + GetScaledDirVector() * 0.5f };
+	MicroMeterPnt const umCenter { GetPos() + GetScaledDirVector() * 0.5f };
 	return Distance(point, umCenter) <= GetExtension();
 }
 
@@ -59,9 +59,9 @@ void OutputNeuron::drawPlug
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umDirVector { GetDirVector() };
-	MicroMeterPoint const umCenter    { GetPos() - GetScaledDirVector() * 0.1f };
-	MicroMeterPoint const umP         { umCenter - umDirVector * (M * 0.5f - 0.2f) };
+	MicroMeterPnt const umDirVector { GetDirVector() };
+	MicroMeterPnt const umCenter    { GetPos() - GetScaledDirVector() * 0.1f };
+	MicroMeterPnt const umP         { umCenter - umDirVector * (M * 0.5f - 0.2f) };
 
 	context.DrawLine( umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,          colF );
 	context.DrawLine( umCenter + umDirVector *  V,         umP, GetExtension() * (M + 1.2f ), colF );

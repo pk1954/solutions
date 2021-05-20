@@ -18,7 +18,7 @@ public:
 	AddOutgoing2KnotCommand
 	( 
 		NobId           const   id, 
-		MicroMeterPoint const & pos 
+		MicroMeterPnt const & pos 
 	)
 	  :	m_idKnot(id),
 		m_pos(pos)
@@ -52,5 +52,5 @@ private:
 	unique_ptr<Knot>      m_upKnotNew { nullptr };
 	unique_ptr<Pipe>      m_upPipe    { nullptr };
 	NobId         const m_idKnot;
-	MicroMeterPoint const m_pos; 
+	MicroMeterPnt const m_pos; 
 };

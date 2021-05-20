@@ -12,7 +12,7 @@
 class MoveSelectionCommand : public Command
 {
 public:
-	MoveSelectionCommand( MicroMeterPoint const & delta )
+	MoveSelectionCommand( MicroMeterPnt const & delta )
        : m_delta( delta )
 	{ }
 
@@ -55,5 +55,5 @@ public:
 	};
 
 private:
-	MicroMeterPoint m_delta;
+	MicroMeterPnt m_delta;
 };

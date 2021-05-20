@@ -8,7 +8,7 @@
 #include "Command.h"
 #include "Connector.h"
 #include "NobPtrList.h"
-#include "MicroMeterPointVector.h"
+#include "MicroMeterPntVector.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
 
@@ -48,14 +48,14 @@ private:
     int                              m_iPhase { 0 };
     Callable                         m_callable;
     unique_ptr<Connector>            m_upConnector {};  
-    MicroMeterPointVector            m_umPntVectorOriginal;  // before animation
-    MicroMeterPointVector            m_umPntVectorTarget1;   // after position alignment
-    MicroMeterPointVector            m_umPntVectorTarget2;   // after direction alignment
-    MicroMeterPointVector            m_umPntVectorTarget3;   // after packing
-    NobPtrList<IoNeuron>           m_nobsAnimated {};
-    Animation<MicroMeterPointVector> m_connAnimation 
+    MicroMeterPntVector            m_umPntVectorOriginal;  // before animation
+    MicroMeterPntVector            m_umPntVectorTarget1;   // after position alignment
+    MicroMeterPntVector            m_umPntVectorTarget2;   // after direction alignment
+    MicroMeterPntVector            m_umPntVectorTarget3;   // after packing
+    NobPtrList<IoNeuron>             m_nobsAnimated {};
+    Animation<MicroMeterPntVector> m_connAnimation 
     {
-        Animation<MicroMeterPointVector>
+        Animation<MicroMeterPntVector>
         (
             [&](bool const bTargetReached) 
             { 
@@ -67,7 +67,7 @@ private:
     };
 
     NobType      const determineNobType() const;
-    unsigned int const calcNrOfSteps(MicroMeterPointVector const &, MicroMeterPointVector const &) const;
+    unsigned int const calcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &) const;
     void               nextAnimationPhase();
     void               updateUI();
     void               blockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true); };

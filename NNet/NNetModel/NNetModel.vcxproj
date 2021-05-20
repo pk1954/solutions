@@ -191,7 +191,7 @@
     <ClInclude Include="ClosedConnector.h" />
     <ClInclude Include="IoNeuron.h" />
     <ClInclude Include="Connector.h" />
-    <ClInclude Include="MicroMeterPointVector.h" />
+    <ClInclude Include="MicroMeterPntVector.h" />
     <ClInclude Include="Connections.h" />
     <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="DrawContext.h" />

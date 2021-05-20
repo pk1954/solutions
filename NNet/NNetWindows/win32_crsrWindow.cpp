@@ -82,7 +82,7 @@ void CrsrWindow::printMilliSecs( TextBuffer & textBuf, MilliSecs const msec )
 
 void CrsrWindow::DoPaint( TextBuffer & textBuf )
 {
-	MicroMeterPoint const umPoint { m_pMainWindow->GetCursorPos() };
+	MicroMeterPnt const umPoint { m_pMainWindow->GetCursorPos() };
 	if ( umPoint == NP_ZERO )
 	{
 		textBuf.AlignLeft();

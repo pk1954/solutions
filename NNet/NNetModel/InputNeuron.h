@@ -11,7 +11,7 @@ class InputNeuron : public IoNeuron
 {
 public:
 
-	InputNeuron( MicroMeterPoint const );
+	InputNeuron( MicroMeterPnt const );
 
 	virtual ~InputNeuron();
 
@@ -19,7 +19,7 @@ public:
 
 	virtual bool operator==( Nob const & ) const override;
 
-	static bool      const TypeFits( NobType const type ) { return type.IsInputNeuronType(); }
+	static bool    const TypeFits( NobType const type ) { return type.IsInputNeuronType(); }
 	static NobType const GetNobType() { return NobType::Value::inputNeuron; }
 
 	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
@@ -39,12 +39,12 @@ public:
 	fHertz const GetPulseFrequency() const { return m_pulseFrequency; }
 	fHertz const SetPulseFrequency( fHertz const );
 
-	virtual bool const Includes( MicroMeterPoint const & ) const;
+	virtual bool const Includes( MicroMeterPnt const & ) const;
 
 private:
 
-	MicroMeterPoint const getOffset() const;
-	MicroMeterPoint const getCenter() const;
+	MicroMeterPnt const getOffset() const;
+	MicroMeterPnt const getCenter() const;
 
 	void drawSocket
 	( 

@@ -26,8 +26,8 @@ public:
 
 	virtual void DrawLine
 	( 
-		MicroMeterPoint const &, 
-		MicroMeterPoint const &,
+		MicroMeterPnt const &, 
+		MicroMeterPnt const &,
 		MicroMeter      const,
 		D2D1::ColorF    const  
 	) const;
@@ -74,8 +74,8 @@ public:
 
 	virtual void FillArrow
 	( 
-		MicroMeterPoint const &,
-		MicroMeterPoint const &,
+		MicroMeterPnt const &,
+		MicroMeterPnt const &,
 		MicroMeter      const,
 		MicroMeter      const,
 		D2D1::ColorF    const  

@@ -64,7 +64,7 @@ public:
 	unsigned int const CountInSelection  (NobType const)                          const;
 	unsigned int const GetCounter        (NobType const)                          const;
 	unsigned int const GetCounter        ()                                       const;
-	NobId        const FindNobAt         (MicroMeterPoint const, NobCrit const &) const;
+	NobId        const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
 	bool         const Apply2AllB        (                       NobCrit const &) const;
 	void               Apply2All         (NobFuncC const & )                      const;
 	void               Apply2All         (NobFunc  const & );

@@ -7,10 +7,10 @@
 #include "script.h"
 #include "moretypes.h"
 #include "NobIdList.h"
-#include "MicroMeterPointVector.h"
+#include "MicroMeterPntVector.h"
 
 extern MicroMeter              ScrReadMicroMeter           (Script &);
-extern MicroMeterPoint         ScrReadMicroMeterPoint      (Script &);
+extern MicroMeterPnt         ScrReadMicroMeterPnt      (Script &);
 extern MicroMeterCircle        ScrReadMicroMeterCircle     (Script &);
-extern MicroMeterPointVector   ScrReadMicroMeterPointVector(Script &);
+extern MicroMeterPntVector   ScrReadMicroMeterPntVector(Script &);
 extern unique_ptr<NobIdList> ScrReadNobIdList          (Script &);

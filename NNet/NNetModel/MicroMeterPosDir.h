@@ -22,15 +22,15 @@ public:
         m_dir()
     {}
 
-    MicroMeterPosDir( MicroMeterPoint const & pos, Radian const & dir )
+    MicroMeterPosDir( MicroMeterPnt const & pos, Radian const & dir )
       : m_pos(pos),
         m_dir(dir)
     {}
 
-    MicroMeterPoint const GetPos() const { return m_pos; }
+    MicroMeterPnt const GetPos() const { return m_pos; }
     Radian          const GetDir() const { return m_dir; }
 
-    void SetPos(MicroMeterPoint const & pos) { m_pos = pos; }
+    void SetPos(MicroMeterPnt const & pos) { m_pos = pos; }
     void SetDir(Radian          const & dir) { m_dir = dir; }
 
     bool operator==(MicroMeterPosDir const& rhs) const
@@ -38,7 +38,7 @@ public:
         return (m_pos == rhs.m_pos) && (m_dir == rhs.m_dir); 
     }
 
-    MicroMeterPosDir& operator+= (MicroMeterPoint const & pnt) 
+    MicroMeterPosDir& operator+= (MicroMeterPnt const & pnt) 
     { 
         m_pos += pnt;
         return * this; 
@@ -99,6 +99,6 @@ public:
     inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
-    MicroMeterPoint m_pos;
+    MicroMeterPnt m_pos;
     Radian          m_dir;
 };

@@ -203,7 +203,7 @@ MicroMeterRect const UPNobList::CalcEnclosingRect( SelMode const mode ) const
 
 NobId const UPNobList::FindNobAt
 ( 
-	MicroMeterPoint const   pnt, 
+	MicroMeterPnt const   pnt, 
 	NobCrit       const & crit 
 ) const
 {

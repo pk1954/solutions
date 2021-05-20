@@ -30,8 +30,8 @@ void D2D_DrawContext::SetStdFontSize( MicroMeter const & size )
 
 void D2D_DrawContext::DrawLine
 ( 
-	MicroMeterPoint const & umStartPoint, 
-	MicroMeterPoint const & umEndPoint, 
+	MicroMeterPnt const & umStartPoint, 
+	MicroMeterPnt const & umEndPoint, 
 	MicroMeter      const   umWidth, 
 	D2D1::ColorF    const   col
 ) const
@@ -126,8 +126,8 @@ void D2D_DrawContext::DrawEllipse
 
 void D2D_DrawContext::FillArrow
 ( 
-	MicroMeterPoint const & umPos, 
-	MicroMeterPoint const & umVector, 
+	MicroMeterPnt const & umPos, 
+	MicroMeterPnt const & umVector, 
 	MicroMeter      const   umSize, 
 	MicroMeter      const   umWidth, 
 	D2D1::ColorF    const   col

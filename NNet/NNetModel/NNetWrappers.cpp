@@ -202,7 +202,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         unique_ptr<NobIdList> upNobIds  { ScrReadNobIdList(script) };
-        MicroMeterPointVector   umPntVector { ScrReadMicroMeterPointVector(script) };
+        MicroMeterPntVector   umPntVector { ScrReadMicroMeterPntVector(script) };
         m_pCommands->SetIoNeurons( umPntVector, move(upNobIds) );
     }
 };
@@ -224,7 +224,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         NobId         const id      { ScrReadNobId( script ) };
-        MicroMeterPoint const umDelta { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umDelta { ScrReadMicroMeterPnt( script ) };
         m_pCommands->MoveNob( id, umDelta );
     }
 };
@@ -234,8 +234,8 @@ class WrapSelectNobsInRect: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        MicroMeterPoint const umPntStart { ScrReadMicroMeterPoint( script ) };
-        MicroMeterPoint const umPntEnd   { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPntStart { ScrReadMicroMeterPnt( script ) };
+        MicroMeterPnt const umPntEnd   { ScrReadMicroMeterPnt( script ) };
         m_pCommands->SelectNobsInRect( MicroMeterRect(umPntStart, umPntEnd) );
     }
 };
@@ -245,7 +245,7 @@ class WrapMoveSelection: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->MoveSelection( umPos );
     }
 };
@@ -256,7 +256,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         NobId         const id    { ScrReadNobId( script ) };
-        MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->InsertNeuron( id, umPos );
     }
 };
@@ -267,7 +267,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         NobId         const idNob { ScrReadNobId( script ) };
-        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos   { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddOutgoing2Knot( idNob, umPos );
     }
 };
@@ -278,7 +278,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         NobId         const idNob { ScrReadNobId( script ) };
-        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos   { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddIncoming2Knot( idNob, umPos );
     }
 };
@@ -289,7 +289,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         NobId         const idNob { ScrReadNobId( script ) };
-        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos   { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddOutgoing2Pipe( idNob, umPos );
     }
 };
@@ -300,7 +300,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         NobId         const idNob { ScrReadNobId( script ) };
-        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos   { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddIncoming2Pipe( idNob, umPos );
     }
 };
@@ -310,7 +310,7 @@ class WrapNewNeuron: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->NewNeuron( umPos );
     }
 };
@@ -320,7 +320,7 @@ class WrapNewInputNeuron: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->NewInputNeuron( umPos );
     }
 };

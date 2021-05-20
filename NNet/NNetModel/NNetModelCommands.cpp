@@ -187,7 +187,7 @@ void NNetModelCommands::SetParameter( ParamType::Value const param, float const 
 	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>(SetParameterCommand(m_pNMWI->GetParams(), param, fNewValue)) );
 }
 
-void NNetModelCommands::MoveNob( NobId const id, MicroMeterPoint const & delta )
+void NNetModelCommands::MoveNob( NobId const id, MicroMeterPnt const & delta )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
@@ -197,8 +197,8 @@ void NNetModelCommands::MoveNob( NobId const id, MicroMeterPoint const & delta )
 void NNetModelCommands::Rotate
 ( 
 	NobId           const   id, 
-	MicroMeterPoint const & umPntOld, 
-	MicroMeterPoint const & umPntNew 
+	MicroMeterPnt const & umPntOld, 
+	MicroMeterPnt const & umPntNew 
 )
 {
 	if ( IsTraceOn() )
@@ -213,7 +213,7 @@ void NNetModelCommands::SetNob( NobId const id, MicroMeterPosDir const posDir )
 	m_pCmdStack->PushCommand( make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir) );
 }
 
-void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
+void NNetModelCommands::MoveSelection( MicroMeterPnt const & delta )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << delta << endl;
@@ -222,7 +222,7 @@ void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 
 void NNetModelCommands::SetIoNeurons
 ( 
-	MicroMeterPointVector const & umPntVectorRun,
+	MicroMeterPntVector const & umPntVectorRun,
 	unique_ptr<NobIdList>       upNobIds 
 )
 {
@@ -238,63 +238,63 @@ void NNetModelCommands::AddModel()
 	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetUPNobs() ) );
 }
 
-void NNetModelCommands::AddOutgoing2Knot( NobId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddOutgoing2Knot( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddOutgoing2KnotCommand>( id, pos + STD_OFFSET ) );
 }
 
-void NNetModelCommands::AddIncoming2Knot( NobId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddIncoming2Knot( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddIncoming2KnotCommand>( id, pos - STD_OFFSET ) );
 }
 
-void NNetModelCommands::AddOutgoing2Pipe( NobId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddOutgoing2Pipe( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddOutgoing2PipeCommand>( id, pos ) );
 }
 
-void NNetModelCommands::AddIncoming2Pipe( NobId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::AddIncoming2Pipe( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<AddIncoming2PipeCommand>( id, pos ) );
 }
 
-void NNetModelCommands::InsertKnot( NobId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::InsertKnot( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<InsertBaseKnotCommand<Knot>>( id, pos ) );
 }
 
-void NNetModelCommands::InsertNeuron( NobId const id, MicroMeterPoint const & pos )
+void NNetModelCommands::InsertNeuron( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<InsertBaseKnotCommand<Neuron>>( id, pos ) );
 }
 
-void NNetModelCommands::NewNeuron( MicroMeterPoint const & pos )
+void NNetModelCommands::NewNeuron( MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<NewNeuronCommand>( pos ) );
 }
 
-void NNetModelCommands::NewInputNeuron( MicroMeterPoint const & pos )
+void NNetModelCommands::NewInputNeuron( MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<NewInputNeuronCommand>( pos ) );
 }
 
-void NNetModelCommands::NewOutputNeuron( MicroMeterPoint const & pos )
+void NNetModelCommands::NewOutputNeuron( MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << pos << endl;

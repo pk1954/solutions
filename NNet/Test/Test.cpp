@@ -13,7 +13,7 @@ float const factor { 180.0f/static_cast<float>(M_PI) };
 
 static void testVector2Radian( MicroMeter const x, MicroMeter const y )
 {
-    MicroMeterPoint const ump { x, y };
+    MicroMeterPnt const ump { x, y };
     Radian          const rad { Vector2Radian(ump) };
     Degrees         const deg { Radian2Degrees(rad) };
     wcout << ump << L" -> " << deg << L" Grad(" << rad << L")" << endl;
@@ -22,7 +22,7 @@ static void testVector2Radian( MicroMeter const x, MicroMeter const y )
 static void testRadian2Vector( Degrees const deg )
 {
     Radian          const rad { Degrees2Radian(deg) };
-    MicroMeterPoint const ump { Radian2Vector( rad ) };
+    MicroMeterPnt const ump { Radian2Vector( rad ) };
     wcout << deg << L" Grad (" << rad.GetValue() << L") -> " << ump << endl;
 }
 

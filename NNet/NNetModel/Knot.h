@@ -20,7 +20,7 @@ using std::make_unique;
 class Knot : public BaseKnot
 {
 public:
-	Knot( MicroMeterPoint const center )
+	Knot( MicroMeterPnt const center )
 		: BaseKnot( center, NobType::Value::knot, PIPE_WIDTH / 2 )
 	{}
 

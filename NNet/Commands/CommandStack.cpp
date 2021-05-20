@@ -52,6 +52,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 #endif
     clearRedoStack();
     assert( * pCmd );
+    m_pNMWI->CheckModel();
     pCmd->Do( * m_pNMWI );
     m_pNMWI->CheckModel();
     Push( move(pCmd) );
@@ -82,6 +83,7 @@ bool CommandStack::UndoCommand()
     if ( UndoStackEmpty() )
        return false;
     set2OlderCmd();
+    m_pNMWI->CheckModel();
     currentCmd().Undo(*m_pNMWI);
     m_pNMWI->CheckModel();
     notify();
@@ -92,7 +94,9 @@ bool CommandStack::RedoCommand()
 {
     if ( RedoStackEmpty() ) 
         return false;
+    m_pNMWI->CheckModel();
     currentCmd().Do(*m_pNMWI);
+    m_pNMWI->CheckModel();
     set2YoungerCmd();
     notify();
     return true;

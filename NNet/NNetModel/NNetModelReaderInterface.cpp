@@ -53,7 +53,7 @@ mV const NNetModelReaderInterface::GetVoltage( NobId const id ) const
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 
-mV const NNetModelReaderInterface::GetVoltage( NobId const id, MicroMeterPoint const & umPoint ) const
+mV const NNetModelReaderInterface::GetVoltage( NobId const id, MicroMeterPnt const & umPoint ) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
 	return p ? p->GetVoltage( umPoint ) : mV::NULL_VAL(); 
@@ -222,7 +222,7 @@ bool const NNetModelReaderInterface::isConnectedToPipe( NobId const idNob, NobId
 	return (idNob == m_pModel->GetStartKnotId(idPipe)) || (idNob == m_pModel->GetEndKnotId(idPipe));
 }
 
-NobId const NNetModelReaderInterface::FindNobAt( MicroMeterPoint const & umPnt, NobCrit const & crit ) const
+NobId const NNetModelReaderInterface::FindNobAt( MicroMeterPnt const & umPnt, NobCrit const & crit ) const
 {
 	return m_pModel->FindNobAt( umPnt, crit );
 }

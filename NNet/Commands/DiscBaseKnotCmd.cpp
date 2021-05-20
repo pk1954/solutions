@@ -28,7 +28,7 @@ void DiscBaseKnotCmd::initialize(NNetModelWriterInterface & nmwi)
     m_idEndKnots  .Resize( m_pBaseKnot->m_connections.GetNrOfIncomingConnections() );
     m_idStartKnots.Resize( m_pBaseKnot->m_connections.GetNrOfOutgoingConnections() );
 
-    MicroMeterPoint umPos { m_pBaseKnot->GetPos() };
+    MicroMeterPnt umPos { m_pBaseKnot->GetPos() };
     m_pBaseKnot->m_connections.Apply2AllInPipes
     ( 
         [&]( Pipe & pipe ) // every incoming pipe needs a new end knot

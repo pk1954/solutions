@@ -30,13 +30,13 @@ void BaseKnot::Dump() const
 	wcout << m_connections << endl;
 }
 
-void BaseKnot::SetPos( MicroMeterPoint const & newPos )
+void BaseKnot::SetPos( MicroMeterPnt const & newPos )
 {
 	m_circle.SetPos( newPos ); 
 	m_connections.Recalc();
 }
 
-void BaseKnot::MoveNob( MicroMeterPoint const & delta )
+void BaseKnot::MoveNob( MicroMeterPnt const & delta )
 {
 	SetPos( GetPos() + delta );
 }
@@ -53,15 +53,15 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 		SetParentNob(dstFromSrc(baseKnotSrc.GetParentNob()));
 }
 
-void BaseKnot::RotateNob( MicroMeterPoint const & umPntPivot, Radian const radDelta )
+void BaseKnot::RotateNob( MicroMeterPnt const & umPntPivot, Radian const radDelta )
 {
-	MicroMeterPoint const umPntVectorOld    { GetPos() - umPntPivot };
+	MicroMeterPnt const umPntVectorOld    { GetPos() - umPntPivot };
 	Radian          const radOld            { Vector2Radian(umPntVectorOld) };
 	Radian          const radNew            { radOld + radDelta };
-	MicroMeterPoint const umPntVectorNew    { Radian2Vector(radNew) };
+	MicroMeterPnt const umPntVectorNew    { Radian2Vector(radNew) };
 	MicroMeter      const umDistFromPivot   { Hypot(umPntVectorOld) };
-	MicroMeterPoint const umPntVectorScaled { umPntVectorNew.ScaledTo( umDistFromPivot) };
-	MicroMeterPoint const umPntPosNew       { umPntPivot + umPntVectorScaled };
+	MicroMeterPnt const umPntVectorScaled { umPntVectorNew.ScaledTo( umDistFromPivot) };
+	MicroMeterPnt const umPntPosNew       { umPntPivot + umPntVectorScaled };
 	SetPos( umPntPosNew );
 }
 
@@ -105,7 +105,7 @@ bool const BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 	return m_connections.Apply2AllInPipesB([&](Pipe const & pipe) { return & pipe == & pipePred; });
 }
 
-bool const BaseKnot::Includes( MicroMeterPoint const & point ) const
+bool const BaseKnot::Includes( MicroMeterPnt const & point ) const
 {
 	return Distance(point, GetPos()) <= GetExtension();
 }

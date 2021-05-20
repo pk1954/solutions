@@ -61,18 +61,18 @@ void Connector::Clear( )
 void Connector::AlignDirection()
 {
     MicroMeterLine  const umLine(m_list.GetFirst().GetPos(), m_list.GetLast().GetPos());
-    MicroMeterPoint const umPntDir { CalcOrthoVector(umLine, m_list) };
+    MicroMeterPnt const umPntDir { CalcOrthoVector(umLine, m_list) };
     m_list.Apply2All([&](IoNeuron & ioNeuron){ ioNeuron.SetDirVector(umPntDir); } );
 }
 
-MicroMeterPoint const Connector::GetPos() const 
+MicroMeterPnt const Connector::GetPos() const 
 { 
     return (m_list.GetFirst().GetPos() + m_list.GetLast().GetPos()) / 2.0f; 
 }
 
 Radian const Connector::GetDir() const 
 { 
-    return m_list.GetFirst().GetRad();
+    return m_list.GetFirst().GetDir();
 }
 
 MicroMeterPosDir const Connector::GetPosDir() const 
@@ -80,7 +80,7 @@ MicroMeterPosDir const Connector::GetPosDir() const
     return MicroMeterPosDir( GetPos(), GetDir() );
 }
 
-void Connector::SetPos(MicroMeterPoint const & umPos)
+void Connector::SetPos(MicroMeterPnt const & umPos)
 {
     MoveNob(umPos - GetPos());
 }
@@ -128,19 +128,19 @@ void Connector::Apply2All(function<void(IoNeuron const &)> const & func) const
     m_list.Apply2All([&](IoNeuron const & n){ func(n); } );
 }                        
 
-void Connector::MoveNob(MicroMeterPoint const & delta)       
+void Connector::MoveNob(MicroMeterPnt const & delta)       
 {
     m_list.Apply2All([&](IoNeuron & s){ s.MoveNob(delta); } );
 }
 
-void Connector::RotateNob(MicroMeterPoint const & umPntPivot, Radian const radDelta)
+void Connector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
     m_list.Apply2All([&](IoNeuron & n){ n.RotateNob(umPntPivot, radDelta); } );
 }
 
-void Connector::Rotate(MicroMeterPoint const & umPntOld, MicroMeterPoint const & umPntNew)
+void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
 {
-    MicroMeterPoint const umPntPivot { GetPos() };
+    MicroMeterPnt const umPntPivot { GetPos() };
     Radian          const radOld     { Vector2Radian(umPntOld - umPntPivot) };
     Radian          const radNew     { Vector2Radian(umPntNew - umPntPivot) };
     Radian          const radDelta   { radNew - radOld };
@@ -161,7 +161,7 @@ bool const Connector::IsIncludedIn(MicroMeterRect const & umRect) const
     return bRes;
 }
 
-bool const Connector::Includes(MicroMeterPoint const & umPnt) const
+bool const Connector::Includes(MicroMeterPnt const & umPnt) const
 {
     bool bRes { false };
     m_list.Apply2All([&](IoNeuron const & n) { if (n.Includes(umPnt)) bRes = true; } );

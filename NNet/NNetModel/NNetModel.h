@@ -49,7 +49,7 @@ public:
 
 	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	MicroMeterPoint const GetNobPos      (NobId const id) const {	return GetNobConstPtr<Nob const *>(id)->GetPos    (); }
+	MicroMeterPnt const GetNobPos      (NobId const id) const {	return GetNobConstPtr<Nob const *>(id)->GetPos    (); }
 	BaseKnot      * const GetStartKnotPtr(NobId const id) const { return GetNobConstPtr<Pipe  const *>(id)->GetStartKnotPtr(); }
 	BaseKnot      * const GetEndKnotPtr  (NobId const id) const { return GetNobConstPtr<Pipe  const *>(id)->GetEndKnotPtr  (); }
 
@@ -61,7 +61,7 @@ public:
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
-	NobId const FindNobAt( MicroMeterPoint const &, NobCrit const & ) const;
+	NobId const FindNobAt( MicroMeterPnt const &, NobCrit const & ) const;
 	bool  const GetDescriptionLine( int const, wstring & )                const;
 
 	// non const functions

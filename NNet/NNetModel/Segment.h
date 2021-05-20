@@ -17,8 +17,8 @@ public:
 
 	Segment
 	(  
-		MicroMeterPoint const startPnt,
-		MicroMeterPoint const endPnt,
+		MicroMeterPnt const startPnt,
+		MicroMeterPnt const endPnt,
 		MicroMeter      const width
 	) :
 		m_startPnt( startPnt ),
@@ -26,12 +26,12 @@ public:
 		m_width   ( width )
 	{}
 
-	MicroMeterPoint GetStartPoint() const { return m_startPnt; }
-	MicroMeterPoint GetEndPoint  () const { return m_endPnt; }
+	MicroMeterPnt GetStartPoint() const { return m_startPnt; }
+	MicroMeterPnt GetEndPoint  () const { return m_endPnt; }
 	MicroMeter      GetWidth     () const { return m_width; }
 
 private:
-	MicroMeterPoint m_startPnt;
-	MicroMeterPoint m_endPnt;
+	MicroMeterPnt m_startPnt;
+	MicroMeterPnt m_endPnt;
 	MicroMeter      m_width;
 };

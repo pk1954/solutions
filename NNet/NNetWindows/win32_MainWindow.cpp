@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "Resource.h"
 #include "Signal.h"
-#include "MicroMeterPointVector.h"
+#include "MicroMeterPntVector.h"
 #include "Neuron.h"
 #include "Connector.h"
 #include "NNetColors.h"
@@ -213,11 +213,11 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	return m_nobHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
 }
 
-MicroMeterPoint const MainWindow::GetCursorPos() const
+MicroMeterPnt const MainWindow::GetCursorPos() const
 {
 	PixelPoint const pixPoint { GetRelativeCrsrPosition() };
 	return IsInClientRect( pixPoint )
-		? GetCoordC().Transform2MicroMeterPointPos( pixPoint )
+		? GetCoordC().Transform2MicroMeterPntPos( pixPoint )
 		: NP_ZERO;
 }
 
@@ -225,7 +225,7 @@ bool MainWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPn
 {
 	PixelPoint      const pixPntCenter    { pPixPntCenter ? * pPixPntCenter : GetClRectCenter() };
 	fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };                         // compute center
-	MicroMeterPoint const umPointcenter   { GetCoordC().Transform2MicroMeterPointPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
+	MicroMeterPnt const umPointcenter   { GetCoordC().Transform2MicroMeterPntPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
 	if ( GetDrawContext().Zoom( newSize )  )
 	{
 		GetDrawContext().Center( umPointcenter, fPixPointCenter ); 
@@ -309,7 +309,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		m_pCursorPosObservable->NotifyAll( false );
 
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
-	MicroMeterPoint const umCrsrPos { GetCoordC().Transform2MicroMeterPointPos(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
 
 	if (wParam == 0)                     // no mouse buttons or special keyboard keys pressed
 	{
@@ -332,8 +332,8 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	
 	if (wParam & MK_LBUTTON)        // Left mouse button
 	{
-		MicroMeterPoint const umLastPos { GetCoordC().Transform2MicroMeterPointPos(ptLast) };
-		MicroMeterPoint const umDelta   { umCrsrPos - umLastPos };
+		MicroMeterPnt const umLastPos { GetCoordC().Transform2MicroMeterPntPos(ptLast) };
+		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
 		if (umDelta.IsZero())
 			return;
 
@@ -404,7 +404,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 bool MainWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
-	MicroMeterPoint const umCrsrPos { GetCoordC().Transform2MicroMeterPointPos(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
 
 	m_umPntSelectionAnchor = umCrsrPos;
 	SetFocus();
@@ -417,7 +417,7 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	int        const iDelta     { GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA };
 	bool       const bDirection { iDelta > 0 };
 
-	MicroMeterPoint const umCrsrPos { GetCoordC().Transform2MicroMeterPointPos( ptCrsr ) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos( ptCrsr ) };
 	if ( Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor( umCrsrPos ) } )
 	{
 		for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
@@ -524,7 +524,7 @@ void MainWindow::doPaint()
 	DrawBeacon();
 }
 
-void MainWindow::setHighlightedNob( MicroMeterPoint const & umCrsrPos )
+void MainWindow::setHighlightedNob( MicroMeterPnt const & umCrsrPos )
 {
 	NobId const idHighlight { m_pNMRI->FindNobAt( umCrsrPos ) };
 	if ( idHighlight != m_nobHighlighted )

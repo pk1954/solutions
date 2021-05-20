@@ -17,7 +17,7 @@ public:
 	InsertBaseKnotCommand
 	( 
 		NobId         const   idPipe, 
-		MicroMeterPoint const & umSplitPoint 
+		MicroMeterPnt const & umSplitPoint 
 	)
 	  :	m_idPipe(idPipe),
 		m_umSplitPoint(umSplitPoint)
@@ -58,5 +58,5 @@ private:
 	unique_ptr<T>    m_upBaseKnot;
 
 	NobId         const m_idPipe;
-	MicroMeterPoint const m_umSplitPoint; 
+	MicroMeterPnt const m_umSplitPoint; 
 };

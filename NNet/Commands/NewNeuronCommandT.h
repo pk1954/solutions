@@ -15,7 +15,7 @@ template <typename T>
 class NewNeuronCommandT : public Command
 {
 public:
-	NewNeuronCommandT( MicroMeterPoint const & pos )
+	NewNeuronCommandT( MicroMeterPnt const & pos )
 	{ 
 		m_upNeuronT = make_unique<T>( pos );
 	}

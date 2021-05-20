@@ -109,19 +109,19 @@ static fHertz const Frequency( fMicroSecs const us )
 		: fHertz( 1e6f / us.GetValue() );
 }
 
-////////////// MicroMeterPoint /////////////////////////////////////
+////////////// MicroMeterPnt /////////////////////////////////////
 
-using MicroMeterPoint = PosType< MicroMeter >;
+using MicroMeterPnt = PosType< MicroMeter >;
 
-inline static MicroMeterPoint const NP_NULL( MicroMeterPoint::NULL_VAL() );   // compiler generates call!
-inline static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   // compiler generates call!
+inline static MicroMeterPnt const NP_NULL( MicroMeterPnt::NULL_VAL() );   // compiler generates call!
+inline static MicroMeterPnt const NP_ZERO( MicroMeterPnt::ZERO_VAL() );   // compiler generates call!
 
 ////////////// MicroMeterRect /////////////////////////////////////
 
 using MicroMeterRect     = RectType< MicroMeter >;
 using MicroMeterRectSize = SizeType < MicroMeter >;
 
-MicroMeterPoint const MicroMeterRect::GetCenter() const { return (GetStartPoint() + GetEndPoint()) * 0.5f; }
+MicroMeterPnt const MicroMeterRect::GetCenter() const { return (GetStartPoint() + GetEndPoint()) * 0.5f; }
 
 ////////////// MicroMeterLine          //////////////////////////
 
@@ -166,12 +166,12 @@ static Degrees const Normalize(Degrees const & d) { return Degrees( fmod(d.GetVa
 static MicroMeter const Cos(Radian const r) { return MicroMeter( cos(r.GetValue()) ); } 
 static MicroMeter const Sin(Radian const r) { return MicroMeter( sin(r.GetValue()) ); } 
 
-static MicroMeterPoint const Radian2Vector(Radian const r)
+static MicroMeterPnt const Radian2Vector(Radian const r)
 {
-	return MicroMeterPoint(Cos(r), Sin(r));
+	return MicroMeterPnt(Cos(r), Sin(r));
 }
 
-static Radian const Vector2Radian( MicroMeterPoint const & umPnt )
+static Radian const Vector2Radian( MicroMeterPnt const & umPnt )
 {
 	return Radian( atan2(umPnt.GetYvalue(),umPnt.GetXvalue()) );
 }

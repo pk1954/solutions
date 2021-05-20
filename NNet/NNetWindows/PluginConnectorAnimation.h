@@ -1,4 +1,4 @@
-// PluginAnimationCommand.h
+// PluginConnectorAnimation.h
 //
 // NNetWindows
 
@@ -20,17 +20,17 @@ class NNetModelWriterInterface;
 class NNetModelCommands;
 class WinCommands;
 
-class PluginAnimationCommand : public Command
+class PluginConnectorAnimation : public Command
 {
 public:
-    PluginAnimationCommand
+    PluginConnectorAnimation
     (
-        Nob         &,
-        Nob         &,
+        Connector   &,
+        Connector   &,
         MainWindow  &,
         WinCommands &
     );
-    virtual ~PluginAnimationCommand() {};
+    virtual ~PluginConnectorAnimation() {};
 
     virtual void Do  (NNetModelWriterInterface&);
     virtual void Undo(NNetModelWriterInterface&);
@@ -44,15 +44,15 @@ private:
     };
 
     Mode                        m_mode { Mode::mode_do };
-    UPNobList                 * m_pModelNobs;
     NNetModelWriterInterface  & m_NMWI;
     MainWindow                & m_win;
     int                         m_iPhase { 0 };
     Callable                    m_callable;
-    Nob                       & m_nobTarget;
-    Nob                       & m_nobAnimated;
+    Connector                 & m_nobTarget;
+    Connector                 & m_nobAnimated;
+    UPNob                       m_upNobAnimated;
+    UPNob                       m_upNobTarget;
     array<MicroMeterPosDir,3>   m_umPosDirTarget;  
-//    Connector                   m_connectorAnimated {};
     unique_ptr<Nob>             m_upClosedNob {};
     Animation<MicroMeterPosDir> m_pluginAnimation 
     {

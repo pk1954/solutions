@@ -59,7 +59,7 @@ public:
 	void Apply2AllSignals       ( SignalFunc   const & ) const;
 
 	Signal * const FindSignal( SignalCrit      const & ) const;
-	Signal * const FindSensor( MicroMeterPoint const & ) const;
+	Signal * const FindSensor( MicroMeterPnt const & ) const;
 
 	SignalId const GetSelectedSignalId()          const { return m_idSigSelected; }
 	TrackNr  const GetSelectedTrackNr ()          const { return m_idSigSelected.GetTrackNr(); }

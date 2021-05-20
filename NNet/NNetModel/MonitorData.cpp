@@ -216,7 +216,7 @@ bool const MonitorData::IsEmptyTrack(TrackNr const trackNr) const
 	return IsValid(trackNr) ? getTrack(trackNr)->IsEmpty() : true; 
 }
 
-Signal * const MonitorData::FindSensor( MicroMeterPoint const & umPos ) const
+Signal * const MonitorData::FindSensor( MicroMeterPnt const & umPos ) const
 {
 	return FindSignal( [&](Signal const & s) { return s.Includes(umPos); } );
 }

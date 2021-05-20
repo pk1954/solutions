@@ -575,7 +575,8 @@
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
-    <ClCompile Include="PluginAnimationCommand.cpp" />
+    <ClCompile Include="PluginConnectorAnimation.cpp" />
+    <ClCompile Include="PluginIoNeuronAnimation.cpp" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
@@ -602,7 +603,8 @@
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="NNetWinWrappers.h" />
-    <ClInclude Include="PluginAnimationCommand.h" />
+    <ClInclude Include="PluginConnectorAnimation.h" />
+    <ClInclude Include="PluginIoNeuronAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="scale.h" />

@@ -39,7 +39,7 @@ ConnAnimationCommand::ConnAnimationCommand
     m_nobsAnimated.SortAccToDistFromLine( line.OrthoLine() );
     m_upConnector  = make_unique<Connector>( m_nobsAnimated );
     
-    m_umPntVectorOriginal = MicroMeterPointVector( m_nobsAnimated );
+    m_umPntVectorOriginal = MicroMeterPntVector( m_nobsAnimated );
 
     m_umPntVectorTarget1  = m_umPntVectorOriginal;
     m_umPntVectorTarget1.Align(line);
@@ -83,8 +83,8 @@ void ConnAnimationCommand::updateUI()  // runs in animation thread
 
 void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
 {
-    MicroMeterPointVector umPntVectorStart { MicroMeterPointVector( m_nobsAnimated ) };
-    MicroMeterPointVector umPntVectorTarget;
+    MicroMeterPntVector umPntVectorStart { MicroMeterPntVector( m_nobsAnimated ) };
+    MicroMeterPntVector umPntVectorTarget;
 
     if (m_mode == Mode::mode_do)
     {
@@ -137,11 +137,11 @@ void ConnAnimationCommand::Undo( NNetModelWriterInterface& nmwi )
 
 unsigned int const ConnAnimationCommand::calcNrOfSteps
 (
-    MicroMeterPointVector const & umPntVectorStart,
-    MicroMeterPointVector const & umPntVectorTarget
+    MicroMeterPntVector const & umPntVectorStart,
+    MicroMeterPntVector const & umPntVectorTarget
 ) const
 {
-    MicroMeterPointVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
+    MicroMeterPntVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
     Radian                const radDiffMax      { umPntVectorDiff.FindMaxRadian() };
     Radian                const radPerStep      { Degrees2Radian(6.0_Degrees) };
     float                 const fStepsFromRot   { radDiffMax / radPerStep };

@@ -9,10 +9,11 @@
 #include "NNetParameters.h"
 #include "SoundInterface.h"
 #include "tHighlightType.h"
-#include "Pipe.h"
 #include "BaseKnot.h"
 
 class DrawContext;
+class IoNeuron;
+class Pipe;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -20,9 +21,9 @@ using std::make_unique;
 class Neuron : public BaseKnot
 {
 public:
-	Neuron( MicroMeterPoint const &, NobType const = NobType::Value::neuron );
- 
-	Neuron( Neuron const & );   // copy constructor
+	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
+	Neuron(MicroMeterPnt const &, IoNeuron &, IoNeuron &);
+	Neuron(Neuron const & );   // copy constructor
 
 	virtual void Check() const;
 
@@ -32,7 +33,7 @@ public:
 
 	virtual bool operator==( Nob const & ) const override;
 
-	static bool    const TypeFits( NobType const type ) { return type.IsNeuronType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsNeuronType(); }
 	static NobType const GetNobType() { return NobType::Value::neuron; }
 
 	bool       const HasAxon         () const { return m_connections.HasOutgoing(); }
@@ -61,7 +62,7 @@ public:
 
 	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
 
-	static void SetSound( Sound * const pSound ) { m_pSound = pSound; }
+	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
@@ -80,7 +81,8 @@ private:
 	SoundDescr m_triggerSound {};
 
 	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
-	MicroMeterPoint getAxonHillockPos() const;
+
+	MicroMeterPnt getAxonHillockPos() const;
 
 	inline static Sound * m_pSound  { nullptr };
 

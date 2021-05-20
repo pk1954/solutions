@@ -23,7 +23,7 @@ class AlignAnimation;
 class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
-class MicroMeterPointVector;
+class MicroMeterPntVector;
 
 struct SoundDescr;
 
@@ -45,12 +45,12 @@ public:
         CommandStack             * const 
     );
 
-    void AddIncoming2Knot   ( NobId const, MicroMeterPoint const & );
-    void AddIncoming2Pipe   ( NobId const, MicroMeterPoint const & );
+    void AddIncoming2Knot   ( NobId const, MicroMeterPnt const & );
+    void AddIncoming2Pipe   ( NobId const, MicroMeterPnt const & );
     void AddModel           ();
     void AddSignal          ( MicroMeterCircle const &, TrackNr const );
-    void AddOutgoing2Knot   ( NobId const, MicroMeterPoint const & );
-    void AddOutgoing2Pipe   ( NobId const, MicroMeterPoint const & );
+    void AddOutgoing2Knot   ( NobId const, MicroMeterPnt const & );
+    void AddOutgoing2Pipe   ( NobId const, MicroMeterPnt const & );
     void AnalyzeAnomalies   ();
     void AnalyzeLoops       ();
     void AppendInputNeuron  ( NobId const );
@@ -63,23 +63,23 @@ public:
     void DeleteSignal       ( SignalId const );
     void DeleteTrack        ( TrackNr  const );
     void Disconnect         ( NobId  const );
-    void InsertKnot         ( NobId  const, MicroMeterPoint const & );
-    void InsertNeuron       ( NobId  const, MicroMeterPoint const & );
+    void InsertKnot         ( NobId  const, MicroMeterPnt const & );
+    void InsertNeuron       ( NobId  const, MicroMeterPnt const & );
     void InsertTrack        ( TrackNr  const );
-    void MoveSelection      ( MicroMeterPoint const & );
-    void MoveNob            ( NobId const, MicroMeterPoint const & );
-    void NewInputNeuron     ( MicroMeterPoint const & );
-    void NewNeuron          ( MicroMeterPoint const & );
-    void NewOutputNeuron    ( MicroMeterPoint const & );
+    void MoveSelection      ( MicroMeterPnt const & );
+    void MoveNob            ( NobId const, MicroMeterPnt const & );
+    void NewInputNeuron     ( MicroMeterPnt const & );
+    void NewNeuron          ( MicroMeterPnt const & );
+    void NewOutputNeuron    ( MicroMeterPnt const & );
     void ResetModel         ();
     void RestrictSelection  ( NobType::Value const );
-    void Rotate             ( NobId const, MicroMeterPoint const &, MicroMeterPoint const & );
+    void Rotate             ( NobId const, MicroMeterPnt const &, MicroMeterPnt const & );
     void SelectAll          ( bool const );
     void SelectAllBeepers   ();
     void SelectNob          ( NobId const, tBoolOp const );
     void SelectNobsInRect   ( MicroMeterRect const & );
     void SelectSubtree      ( NobId const, bool const );
-    void SetIoNeurons       ( MicroMeterPointVector const &, unique_ptr<NobIdList> );
+    void SetIoNeurons       ( MicroMeterPntVector const &, unique_ptr<NobIdList> );
     void SetParameter       ( ParamType::Value const, float const );
     void SetPulseRate       ( NobId    const, fHertz const );
     void SetNob             ( NobId const, MicroMeterPosDir const );

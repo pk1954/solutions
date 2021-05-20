@@ -16,7 +16,7 @@ public:
 	AddOutgoing2PipeCommand
 	( 
 		NobId         const   idPipe, 
-		MicroMeterPoint const & pos 
+		MicroMeterPnt const & pos 
 	)
 	  :	m_idPipe(idPipe),
 		m_pos(pos)
@@ -67,5 +67,5 @@ private:
 	unique_ptr<Knot> m_upKnotInsert  { nullptr };
 	unique_ptr<Knot> m_upKnotOrtho   { nullptr }; 
 	NobId          const m_idPipe;
-	MicroMeterPoint  const m_pos; 
+	MicroMeterPnt  const m_pos; 
 };

@@ -75,7 +75,7 @@ NobId Pipe::GetEndKnotId() const
 	return m_pKnotEnd->GetId(); 
 }
 
-MicroMeterPoint const Pipe::GetPos() const 
+MicroMeterPnt const Pipe::GetPos() const 
 { 
 	return (m_pKnotStart->GetPos() + m_pKnotEnd->GetPos()) / 2.0f; 
 }
@@ -125,7 +125,7 @@ void Pipe::Prepare()
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
 }
 
-void Pipe::MoveNob(MicroMeterPoint const & delta)
+void Pipe::MoveNob(MicroMeterPnt const & delta)
 {
 	m_pKnotStart->MoveNob( delta );
 	m_pKnotEnd  ->MoveNob( delta );
@@ -172,14 +172,14 @@ void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 	Recalc();
 }
 
-MicroMeterPoint Pipe::GetStartPoint() const 
+MicroMeterPnt Pipe::GetStartPoint() const 
 { 
-	return m_pKnotStart ? m_pKnotStart->GetPos() : MicroMeterPoint::NULL_VAL(); 
+	return m_pKnotStart ? m_pKnotStart->GetPos() : MicroMeterPnt::NULL_VAL(); 
 }
 
-MicroMeterPoint Pipe::GetEndPoint() const 
+MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	return m_pKnotEnd ? m_pKnotEnd->GetPos() : MicroMeterPoint::NULL_VAL();
+	return m_pKnotEnd ? m_pKnotEnd->GetPos() : MicroMeterPnt::NULL_VAL();
 }
 
 void Pipe::Select(bool const bOn, bool const bRecursive) 
@@ -199,22 +199,22 @@ MicroMeter Pipe::GetLength() const
 	return Distance(GetStartPoint(), GetEndPoint());
 }
 
-bool const Pipe::Includes( MicroMeterPoint const & point ) const
+bool const Pipe::Includes( MicroMeterPnt const & point ) const
 {
-	MicroMeterPoint const umVector{ GetEndPoint() - GetStartPoint() };
+	MicroMeterPnt const umVector{ GetEndPoint() - GetStartPoint() };
 	if ( umVector.IsCloseToZero() )
 		return false;
-	MicroMeterPoint const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
-	MicroMeterPoint       umPoint1     { GetStartPoint() };
-	MicroMeterPoint const umPoint2     { umPoint1 + umVector };
-	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
+	MicroMeterPnt const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
+	MicroMeterPnt       umPoint1     { GetStartPoint() };
+	MicroMeterPnt const umPoint2     { umPoint1 + umVector };
+	return IsPointInRect2<MicroMeterPnt>( point, umPoint1, umPoint2, umOrthoScaled );
 }
 
-MicroMeterPoint Pipe::GetVector() const
+MicroMeterPnt Pipe::GetVector() const
 {
-	MicroMeterPoint const umStartPoint { GetStartPoint() };
-	MicroMeterPoint const umEndPoint   { GetEndPoint  () };
-	MicroMeterPoint const umvector{ umEndPoint - umStartPoint };
+	MicroMeterPnt const umStartPoint { GetStartPoint() };
+	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
+	MicroMeterPnt const umvector{ umEndPoint - umStartPoint };
 	assert( ! umvector.IsCloseToZero() );
 	return umvector;
 }
@@ -225,8 +225,8 @@ void Pipe::DrawArrows
 	MicroMeter  const   umSize
 ) const
 {
-	MicroMeterPoint const umStartPoint { GetStartPoint() };
-	MicroMeterPoint const umEndPoint   { GetEndPoint  () };
+	MicroMeterPnt const umStartPoint { GetStartPoint() };
+	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
 
 	context.FillArrow
 	(
@@ -249,12 +249,12 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlight const type ) co
 
 	if ( IsNormal(type) && ! IsSelected() )
 	{
-		MicroMeterPoint const umVector { GetEndPoint() - GetStartPoint() };
+		MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
 		if ( ! umVector.IsCloseToZero() )
 		{
 			size_t          const nrOfSegments { m_potential.size() };
-			MicroMeterPoint const umSegVec     { umVector / Cast2Float(nrOfSegments) };
-			MicroMeterPoint       umPoint      { GetStartPoint() };
+			MicroMeterPnt const umSegVec     { umVector / Cast2Float(nrOfSegments) };
+			MicroMeterPnt       umPoint      { GetStartPoint() };
 			size_t          const potIndex     { m_potIndex };
 			size_t                index        { potIndex }; 
 			do 
@@ -262,7 +262,7 @@ void Pipe::DrawInterior( DrawContext const & context, tHighlight const type ) co
 				if (++index == m_potential.size()) 
 					index = 0; 
 
-				MicroMeterPoint const umPointNext { umPoint + umSegVec };
+				MicroMeterPnt const umPointNext { umPoint + umSegVec };
 				context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]) );
 				umPoint = umPointNext;
 			} while (index != potIndex );
@@ -284,16 +284,16 @@ bool const Pipe::CompStep()
 	return false;
 }
 
-mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const
+mV const Pipe::GetVoltage( MicroMeterPnt const & point ) const
 {
 	mV mVresult { 0._mV };
-	MicroMeterPoint const umVector { GetEndPoint() - GetStartPoint() };
+	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
 	if ( ! umVector.IsCloseToZero() )
 	{
 		size_t          const nrOfSegments  { m_potential.size() };
-		MicroMeterPoint const umSegVec      { umVector / Cast2Float(nrOfSegments) };
-		MicroMeterPoint const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
-		MicroMeterPoint       umPoint       { GetStartPoint() };
+		MicroMeterPnt const umSegVec      { umVector / Cast2Float(nrOfSegments) };
+		MicroMeterPnt const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
+		MicroMeterPnt       umPoint       { GetStartPoint() };
 		size_t          const potIndex      { m_potIndex };
 		size_t                index         { potIndex }; 
 		do 
@@ -301,8 +301,8 @@ mV const Pipe::GetVoltage( MicroMeterPoint const & point ) const
 			if (++index == m_potential.size()) 
 				index = 0; 
 
-			MicroMeterPoint const umPoint2 { umPoint + umSegVec };
-			if ( IsPointInRect2<MicroMeterPoint>( point, umPoint, umPoint2, umOrthoScaled ) )
+			MicroMeterPnt const umPoint2 { umPoint + umSegVec };
+			if ( IsPointInRect2<MicroMeterPnt>( point, umPoint, umPoint2, umOrthoScaled ) )
 			{
 				mVresult = m_potential[index];
 				break;

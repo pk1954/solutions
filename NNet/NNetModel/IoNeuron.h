@@ -16,7 +16,7 @@ class IoNeuron : public Neuron
 public:
 	static bool const TypeFits(NobType const type) { return type.IsIoNeuronType(); }
 
-	IoNeuron( MicroMeterPoint const & upCenter, NobType const type )
+	IoNeuron( MicroMeterPnt const & upCenter, NobType const type )
 		: Neuron( upCenter, type )
 	{}
 
@@ -25,21 +25,21 @@ public:
 		Neuron::Check();
 	}
 
-	virtual void RotateNob(MicroMeterPoint const &, Radian const);
+	virtual void RotateNob(MicroMeterPnt const &, Radian const);
 
 	void SetDir(Radian const radian)
 	{
 		m_radDirection = radian;
 	}
 
-	void SetDirVector(MicroMeterPoint const umVector)
+	void SetDirVector(MicroMeterPnt const umVector)
 	{
 		SetDir(Vector2Radian(umVector));
 	}
 
-	MicroMeterPoint const GetDirVector() const
+	MicroMeterPnt const GetDirVector() const
 	{
-		MicroMeterPoint umVector 
+		MicroMeterPnt umVector 
 		{ 
 			m_radDirection.IsNull() 
 			? determineVector() 
@@ -48,10 +48,12 @@ public:
 		return umVector.ScaledTo(GetExtension());
 	}
 
-	Radian const GetRad() const
-	{
-		return m_radDirection.IsNull() ? Vector2Radian(determineVector()) : m_radDirection;
-	}
+	virtual Radian const GetDir() const 
+	{ 
+		return m_radDirection.IsNull() 
+			? Vector2Radian(determineVector()) 
+			: m_radDirection;
+	};
 
 	MicroMeterPosDir const GetRawPosDir() const
 	{
@@ -75,10 +77,10 @@ public:
 	}
 
 protected:
-	MicroMeterPoint const GetScaledDirVector() const;
+	MicroMeterPnt const GetScaledDirVector() const;
 
 private:
-	MicroMeterPoint const determineVector() const;
+	MicroMeterPnt const determineVector() const;
 
 	Radian m_radDirection { Radian::NULL_VAL() };
 };

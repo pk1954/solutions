@@ -16,7 +16,7 @@ public:
 	MoveNobCommand
 	( 
 		Nob                   & nob, 
-		MicroMeterPoint const & delta 
+		MicroMeterPnt const & delta 
 	)
 	  : m_delta( delta ),
 		m_nob( nob )
@@ -54,6 +54,6 @@ public:
 	};
 
 private:
-	MicroMeterPoint m_delta;
+	MicroMeterPnt m_delta;
 	Nob           & m_nob;
 };

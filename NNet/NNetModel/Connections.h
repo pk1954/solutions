@@ -28,6 +28,16 @@ public:
 		return move(upCopy);
 	}
 	
+	void SetIncoming(Connections const & incoming) 
+	{ 
+		m_incoming = incoming.m_incoming; 
+	}
+
+	void SetOutgoing(Connections const & outgoing) 
+	{ 
+		m_outgoing = outgoing.m_outgoing; 
+	}
+
 	Pipe & GetFirstOutgoing() { return m_outgoing.GetFirst(); }
 	Pipe & GetFirstIncoming() { return m_incoming.GetFirst(); }
 

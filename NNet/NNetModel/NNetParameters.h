@@ -39,4 +39,4 @@ inline static float           const NEURON_INTERIOR { 0.8f };                // 
 inline static float           const PIPE_INTERIOR   { 0.6f };                // Pipes have 60% interior, 40 % border 
 inline static MicroMeter      const NEURON_RADIUS   { 50.0_MicroMeter };    
 inline static MicroMeter      const PIPE_WIDTH      { 20.0_MicroMeter };
-inline static MicroMeterPoint const STD_OFFSET      { MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2.0 ) };
+inline static MicroMeterPnt const STD_OFFSET      { MicroMeterPnt( 0._MicroMeter, NEURON_RADIUS * 2.0 ) };

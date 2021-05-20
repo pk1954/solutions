@@ -1,4 +1,4 @@
-// PluginAnimationCommand.cpp
+// PluginConnectorAnimation.cpp
 //
 // NNetWindows
 
@@ -11,14 +11,14 @@
 #include "NobIdList.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
-#include "PluginAnimationCommand.h"
+#include "PluginConnectorAnimation.h"
 
 using std::make_unique;
 
-PluginAnimationCommand::PluginAnimationCommand
+PluginConnectorAnimation::PluginConnectorAnimation
 ( 
-    Nob         & nobAnimated,
-    Nob         & nobTarget,
+    Connector   & nobAnimated,
+    Connector   & nobTarget,
     MainWindow  & win,
     WinCommands & cmds
 )
@@ -28,15 +28,13 @@ PluginAnimationCommand::PluginAnimationCommand
     m_NMWI(cmds.GetNMWI()),
     m_callable(win.GetWindowHandle())
 {
-    m_pModelNobs = &m_NMWI.GetUPNobs();
-
     assert( m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob() );
     assert( m_nobAnimated.GetIoMode() != NobIoMode::internal );
     assert( m_nobTarget  .GetIoMode() != NobIoMode::internal );
-    assert( m_nobTarget.GetIoMode() !== m_nobAnimated.GetIoMode() );
+    assert( m_nobTarget  .GetIoMode() !== m_nobAnimated.GetIoMode() );
 
-    Radian          const radianTarget { m_nobTarget.GetDir() };
-    MicroMeterPoint const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
+    Radian        const radianTarget { m_nobTarget.GetDir() };
+    MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
     
     m_umPosDirTarget[0] = m_nobAnimated.GetPosDir();
 
@@ -47,32 +45,23 @@ PluginAnimationCommand::PluginAnimationCommand
         float fOff { fOffsets[i-1] };
         if (m_nobTarget.GetIoMode() == NobIoMode::input )
             fOff = -fOff;
-        MicroMeterPoint const umPosOffset { umDirVector * fOff };
-        MicroMeterPoint const umPosTarget { m_nobTarget.GetPos() - umPosOffset };
+        MicroMeterPnt const umPosOffset { umDirVector * fOff };
+        MicroMeterPnt const umPosTarget { m_nobTarget.GetPos() + umPosOffset };
         m_umPosDirTarget[i] = MicroMeterPosDir( umPosTarget, radianTarget );
     }
 
-    if ( m_nobAnimated.IsCompositeNob() )
-    {
-        m_upClosedNob = make_unique<ClosedConnector>
-        (
-            static_cast<Connector &>(m_nobTarget), 
-            static_cast<Connector &>(m_nobAnimated)
-        );
-    }
-    else
-    {
-        m_upClosedNob = make_unique<Neuron>(m_nobTarget.GetPos());
-    }
+    m_upClosedNob = m_nobAnimated.IsInternalNob()
+                    ? make_unique<ClosedConnector>(m_nobAnimated, m_nobTarget)
+                    : make_unique<ClosedConnector>(m_nobTarget,   m_nobAnimated);
 }
 
-void PluginAnimationCommand::updateUI()  // runs in animation thread
+void PluginConnectorAnimation::updateUI()  // runs in animation thread
 {
     m_nobAnimated.SetPosDir(m_pluginAnimation.GetActual());
     m_win.Notify(false);
 }
 
-void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
+void PluginConnectorAnimation::nextAnimationPhase() // runs in UI thread
 {
     MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
     MicroMeterPosDir umPosDirTarget;
@@ -85,7 +74,7 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
                  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
         case 3:  m_upClosedNob->SetParentPointers();
-                 m_pModelNobs->Push(move(m_upClosedNob));
+                 m_NMWI.GetUPNobs().Push(move(m_upClosedNob));
                  unblockUI();
                  return; 
         default: return;        // do not start animation
@@ -96,7 +85,7 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
         switch (m_iPhase--)
         {
         case 3:  blockUI();
-                 m_upClosedNob = m_pModelNobs->Pop<ClosedConnector>();
+                 m_upClosedNob = m_NMWI.GetUPNobs().Pop<ClosedConnector>();
                  m_upClosedNob->ClearParentPointers();
                  [[fallthrough]]; 
         case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
@@ -111,21 +100,21 @@ void PluginAnimationCommand::nextAnimationPhase() // runs in UI thread
     m_win.Notify(false);
 }
 
-void PluginAnimationCommand::Do( NNetModelWriterInterface& nmwi )
+void PluginConnectorAnimation::Do( NNetModelWriterInterface& nmwi )
 {
     m_mode = Mode::mode_do;
     m_iPhase = 1;
     nextAnimationPhase();
 }
 
-void PluginAnimationCommand::Undo( NNetModelWriterInterface& nmwi )
+void PluginConnectorAnimation::Undo( NNetModelWriterInterface& nmwi )
 {
     m_mode = Mode::mode_undo;
     m_iPhase = 3;
     nextAnimationPhase();
 }
 
-unsigned int const PluginAnimationCommand::calcNrOfSteps
+unsigned int const PluginConnectorAnimation::calcNrOfSteps
 (
     MicroMeterPosDir const & umPosDirStart,
     MicroMeterPosDir const & umPosDirTarget

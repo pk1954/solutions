@@ -15,8 +15,8 @@ public:
 	RotateCommand
 	( 
 		Nob                   & nob,
-		MicroMeterPoint const & umPntOld, 
-		MicroMeterPoint const & umPntNew
+		MicroMeterPnt const & umPntOld, 
+		MicroMeterPnt const & umPntNew
 	)
 	  : m_nob(nob)
 	{
@@ -60,5 +60,5 @@ public:
 private:
 	Nob           & m_nob;
 	Radian          m_radDelta;
-	MicroMeterPoint m_umPntPivot;
+	MicroMeterPnt m_umPntPivot;
 };

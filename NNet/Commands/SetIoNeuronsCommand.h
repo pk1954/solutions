@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "MicroMeterPointVector.h"
+#include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 #include "NobPtrList.h"
 #include "Command.h"
@@ -16,7 +16,7 @@ class SetIoNeuronsCommand : public Command
 public:
 	SetIoNeuronsCommand
 	(
-		MicroMeterPointVector const & umPntVector,
+		MicroMeterPntVector const & umPntVector,
 		unique_ptr<NobIdList>   upNobIds
 	)
 	  : m_umPntVector(umPntVector),
@@ -29,6 +29,6 @@ public:
 	}
 
 private:
-	MicroMeterPointVector   m_umPntVector;
+	MicroMeterPntVector   m_umPntVector;
 	unique_ptr<NobIdList> m_upNobIds;
 };

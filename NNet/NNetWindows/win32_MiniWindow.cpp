@@ -28,7 +28,7 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
-			MicroMeterPoint const umDelta  { GetCoordC().Transform2MicroMeterPointSize( pixDelta ) }; 
+			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize( pixDelta ) }; 
 			m_pObservedNNetWindow->NNetMove( - umDelta );               // move the observed window in opposite direction
 		}
 		m_ptLast = ptCrsr;
@@ -48,7 +48,7 @@ void MiniWindow::Notify( bool const bImmediately )
 		MicroMeterRect  const umRectModel { m_pNMRI->GetUPNobs().CalcEnclosingRect() }; // current extension of model
 		MicroMeterRect  const umRectShow  { Union( umRectMain, umRectModel ) };         // all this should be visible  
 		fPixelPoint     const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
-		MicroMeterPoint const umPntTarget { umRectShow.GetCenter() };
+		MicroMeterPnt const umPntTarget { umRectShow.GetCenter() };
 		MicroMeter      const umPixelSizeTarget
 		{
 			GetCoordC().ComputeZoom

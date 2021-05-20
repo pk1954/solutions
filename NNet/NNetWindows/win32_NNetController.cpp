@@ -82,7 +82,7 @@ NNetController::~NNetController()
     m_pMonitorWindow    = nullptr;
 }
 
-bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
+bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint )
 {
     bool bRes { false };
 
@@ -198,7 +198,7 @@ void NNetController::triggerSoundDlg( NobId const id )
     m_pModelCommands->SetTriggerSound( id, dialog.GetSound() );
 }
 
-bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
+bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint )
 {
     switch ( wmId )
     {

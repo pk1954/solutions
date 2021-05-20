@@ -26,7 +26,6 @@ bool NNetModel::operator==( NNetModel const & rhs ) const
 	(m_Nobs              == rhs.m_Nobs              ) &&
 	(m_timeStamp         == rhs.m_timeStamp         ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath ) &&
-//	(m_description       == rhs.m_description       ) &&  // not neccessary
 	(m_monitorData       == rhs.m_monitorData       ) &&
 	(m_param             == rhs.m_param             );
 }
@@ -117,7 +116,7 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 
 NobId const NNetModel::FindNobAt
 ( 
-	MicroMeterPoint const & umPoint, 
+	MicroMeterPnt const & umPoint, 
 	NobCrit       const & crit 
 ) const
 {	

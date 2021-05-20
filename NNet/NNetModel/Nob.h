@@ -53,26 +53,26 @@ public:
 	virtual bool operator==(Nob const &) const;
 
 	virtual void SetDir   (Radian const);
-	virtual void SetPos   (MicroMeterPoint  const &);
+	virtual void SetPos   (MicroMeterPnt  const &);
 	virtual void SetPosDir(MicroMeterPosDir const &);
 
 	virtual MicroMeterPosDir const GetPosDir() const;
 
-	virtual Radian           const GetDir      ()                                                   const = 0;
-	virtual MicroMeterPoint  const GetPos      ()                                                   const = 0;
-	virtual NobIoMode        const GetIoMode   ()                                                   const = 0;
-	virtual void                   DrawExterior(DrawContext const &, tHighlight const)              const = 0;
-	virtual void                   DrawInterior(DrawContext const &, tHighlight const)              const = 0;
-	virtual void                   Prepare     ()                                                         = 0;
-	virtual bool             const CompStep    ()                                                         = 0;
-	virtual void                   Recalc      ()                                                         = 0;
-	virtual bool             const IsIncludedIn(MicroMeterRect  const &)                            const = 0;
-	virtual bool             const Includes    (MicroMeterPoint const &)                            const = 0;
-	virtual void                   Expand      (MicroMeterRect &)                                   const = 0;
-	virtual void                   MoveNob     (MicroMeterPoint const &)                                  = 0;
-	virtual void                   RotateNob   (MicroMeterPoint const &, Radian const)                    = 0;
-	virtual void                   Select      (bool const, bool const)                                   = 0;
-	virtual void                   Link        (Nob const &, Nob2NobFunc const &) = 0;
+	virtual Radian        const GetDir      ()                                                   const = 0;
+	virtual MicroMeterPnt const GetPos      ()                                                   const = 0;
+	virtual NobIoMode     const GetIoMode   ()                                                   const = 0;
+	virtual void                DrawExterior(DrawContext const &, tHighlight const)              const = 0;
+	virtual void                DrawInterior(DrawContext const &, tHighlight const)              const = 0;
+	virtual void                Prepare     ()                                                         = 0;
+	virtual bool          const CompStep    ()                                                         = 0;
+	virtual void                Recalc      ()                                                         = 0;
+	virtual bool          const IsIncludedIn(MicroMeterRect  const &)                            const = 0;
+	virtual bool          const Includes    (MicroMeterPnt const &)                            const = 0;
+	virtual void                Expand      (MicroMeterRect &)                                   const = 0;
+	virtual void                MoveNob     (MicroMeterPnt const &)                                  = 0;
+	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)                    = 0;
+	virtual void                Select      (bool const, bool const)                                   = 0;
+	virtual void                Link        (Nob const &, Nob2NobFunc const &) = 0;
 
 	virtual void Clear()               { m_mVinputBuffer = 0.0_mV; };
 	virtual void SetId(NobId const id) { m_identifier = id; }
@@ -83,11 +83,14 @@ public:
 
 	void Select(bool const bOn) { m_bSelected = bOn; }
 
-	bool    const IsSelected() const { return m_bSelected; }
-	bool    const IsDefined () const { return ::IsDefined( m_identifier ); }
-	wstring const GetName   () const { return NobType::GetName( m_type.GetValue() ); }
-	NobType const GetNobType() const { return m_type; }
-	NobId   const GetId     () const { return m_identifier; }
+	bool    const IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
+	bool    const IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
+	bool    const IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }
+	bool    const IsSelected   () const { return m_bSelected; }
+	bool    const IsDefined    () const { return ::IsDefined( m_identifier ); }
+	wstring const GetName      () const { return NobType::GetName( m_type.GetValue() ); }
+	NobType const GetNobType   () const { return m_type; }
+	NobId   const GetId        () const { return m_identifier; }
 
 	MicroMeter const GetPosX() const { return GetPos().GetX(); }
 	MicroMeter const GetPosY() const { return GetPos().GetY(); }

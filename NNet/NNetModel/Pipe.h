@@ -43,10 +43,10 @@ public:
 
 	NobId           GetStartKnotId() const;
 	NobId           GetEndKnotId  () const;
-	MicroMeterPoint GetStartPoint () const; 
-	MicroMeterPoint GetEndPoint   () const; 
+	MicroMeterPnt GetStartPoint () const; 
+	MicroMeterPnt GetEndPoint   () const; 
 	MicroMeter      GetLength     () const;
-	MicroMeterPoint GetVector     () const; 
+	MicroMeterPnt GetVector     () const; 
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
@@ -54,25 +54,25 @@ public:
 
 	virtual Radian          const GetDir      () const { return Vector2Radian(GetVector()); };
 	virtual NobIoMode       const GetIoMode   () const { return NobIoMode::internal; }
-	virtual MicroMeterPoint const GetPos      ()                                      const;
+	virtual MicroMeterPnt const GetPos      ()                                      const;
 	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const;
-	virtual bool            const Includes    (MicroMeterPoint const &)               const;
+	virtual bool            const Includes    (MicroMeterPnt const &)               const;
 	virtual void                  Check       ()                                      const;
 	virtual void                  DrawArrows  (DrawContext const &, MicroMeter const) const;
 	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const;
 	virtual void                  Expand      (MicroMeterRect &)                      const;
 	virtual void                  Select      (bool const, bool const);
-	virtual void                  MoveNob     (MicroMeterPoint const &);
+	virtual void                  MoveNob     (MicroMeterPnt const &);
 	virtual void                  Link        (Nob const &, Nob2NobFunc const &);
-	virtual void                  RotateNob   (MicroMeterPoint const &, Radian const) {}
+	virtual void                  RotateNob   (MicroMeterPnt const &, Radian const) {}
 	virtual void                  Prepare     ();
 	virtual bool            const CompStep    ();
 	virtual void                  Recalc      ();
 	virtual void                  Clear       ();
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
-	mV const GetVoltage( MicroMeterPoint const & ) const;
+	mV const GetVoltage( MicroMeterPnt const & ) const;
 
 	void DislocateEndPoint  () { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
 	void DislocateStartPoint() { dislocate( GetStartKnotPtr(), -PIPE_WIDTH ); }

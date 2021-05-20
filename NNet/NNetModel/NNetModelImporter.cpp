@@ -131,7 +131,7 @@ private:
 
     UPNob createBaseKnot( Script & script, NobType const nobType ) const 
     {
-        MicroMeterPoint const umPosition(ScrReadMicroMeterPoint( script ) );
+        MicroMeterPnt const umPosition(ScrReadMicroMeterPnt( script ) );
         switch ( nobType.GetValue() )
         {
         case NobType::Value::inputNeuron:

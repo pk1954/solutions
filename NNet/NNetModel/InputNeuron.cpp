@@ -19,7 +19,7 @@ using std::wostringstream;
 using std::setprecision;
 using std::fixed;
 
-InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
+InputNeuron::InputNeuron( MicroMeterPnt const upCenter )
 	: IoNeuron( upCenter, NobType::Value::inputNeuron )
 { 
 	SetPulseFrequency(STD_PULSE_FREQ);
@@ -76,17 +76,17 @@ void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const typ
 	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
 }
 
-MicroMeterPoint const InputNeuron::getOffset() const
+MicroMeterPnt const InputNeuron::getOffset() const
 {
 	return GetScaledDirVector() * 0.7f;
 }
 
-MicroMeterPoint const InputNeuron::getCenter() const
+MicroMeterPnt const InputNeuron::getCenter() const
 {
 	return GetPos() - getOffset();
 }
 
-bool const InputNeuron::Includes(MicroMeterPoint const & point) const
+bool const InputNeuron::Includes(MicroMeterPnt const & point) const
 {
 	return Distance(point, getCenter()) <= GetExtension();
 }
@@ -99,15 +99,15 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPoint const umDirVector   { GetDirVector() * M };
+	MicroMeterPnt const umDirVector   { GetDirVector() * M };
 	MicroMeter      const umSize        { GetExtension() * M };
-	MicroMeterPoint const umOrthoVector { getOffset().OrthoVector() };
-	MicroMeterPoint const umDirVectorVS { umDirVector * 0.5f };
+	MicroMeterPnt const umOrthoVector { getOffset().OrthoVector() };
+	MicroMeterPnt const umDirVectorVS { umDirVector * 0.5f };
 	MicroMeter      const umWidthLR     { umSize - GetExtension() * 1.4f };  // width of left/right section                 
-	MicroMeterPoint const umCenter      { getCenter() };
-	MicroMeterPoint const umStart       { umCenter + umDirVectorVS };
-	MicroMeterPoint const umEndLR       { umCenter - umDirVectorVS };
-	MicroMeterPoint const umEndCenter   { umCenter - umDirVector * VEM };
+	MicroMeterPnt const umCenter      { getCenter() };
+	MicroMeterPnt const umStart       { umCenter + umDirVectorVS };
+	MicroMeterPnt const umEndLR       { umCenter - umDirVectorVS };
+	MicroMeterPnt const umEndCenter   { umCenter - umDirVector * VEM };
 	MicroMeterLine  const umLine        { umStart, umEndLR };
 
 	context.DrawLine( umStart, umEndCenter,   umSize,    colF );

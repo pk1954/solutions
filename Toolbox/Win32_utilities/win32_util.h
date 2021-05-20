@@ -46,7 +46,7 @@ namespace Util
         UINT64 ui64;
 	};
 
-    inline UINT64 Pack2UINT64( MicroMeterPoint const pnt )
+    inline UINT64 Pack2UINT64( MicroMeterPnt const pnt )
     {
         U64Bit u;
         u.f2.floatA = pnt.GetXvalue();
@@ -54,11 +54,11 @@ namespace Util
         return u.ui64;
     }
 
-    inline MicroMeterPoint Unpack2MicroMeterPoint( UINT64 ui64 )
+    inline MicroMeterPnt Unpack2MicroMeterPnt( UINT64 ui64 )
 	{
 		U64Bit u;
 		u.ui64 = ui64;
-		return MicroMeterPoint( MicroMeter(u.f2.floatA), MicroMeter(u.f2.floatB) );
+		return MicroMeterPnt( MicroMeter(u.f2.floatA), MicroMeter(u.f2.floatB) );
 	}
 
     inline UINT64 Pack2UINT64( long const lA, long const lB )

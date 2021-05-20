@@ -7,25 +7,13 @@
 
 ClosedConnector::ClosedConnector
 ( 
-    Connector & connA, 
-    Connector & connB 
+    Connector & connInput, 
+    Connector & connOutput 
 )
   :	Nob(NobType::Value::closedConnector)
 {
-    if ( connA.IsInputConnector() && connB.IsOutputConnector() )
-    {
-        m_pInputConnector  = &connA;
-        m_pOutputConnector = &connB; 
-    }
-    else if ( connB.IsInputConnector() && connA.IsOutputConnector() )
-    {
-        m_pInputConnector  = &connB;
-        m_pOutputConnector = &connA; 
-    }
-    else
-    {
-        assert( false );
-    }
+    m_pInputConnector  = &connInput;
+    m_pOutputConnector = &connOutput;
 }
 
 void ClosedConnector::Check() const
@@ -40,7 +28,7 @@ void ClosedConnector::Dump() const
     m_pOutputConnector->Dump();
 }
 
-MicroMeterPoint const ClosedConnector::GetPos() const
+MicroMeterPnt const ClosedConnector::GetPos() const
 {
    return (m_pInputConnector->GetPos() + m_pOutputConnector->GetPos()) * 0.5f;
 }
@@ -70,13 +58,13 @@ bool const ClosedConnector::IsIncludedIn(MicroMeterRect const & rect) const
     return bRes;
 }
 
-bool const ClosedConnector::Includes(MicroMeterPoint const & umPnt) const
+bool const ClosedConnector::Includes(MicroMeterPnt const & umPnt) const
 {
     return m_pInputConnector ->Includes(umPnt)
         || m_pOutputConnector->Includes(umPnt);
 }
 
-void ClosedConnector::RotateNob(MicroMeterPoint const & umPntPivot, Radian const radian)
+void ClosedConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radian)
 {   
     m_pInputConnector ->RotateNob(umPntPivot, radian);
     m_pOutputConnector->RotateNob(umPntPivot, radian);
@@ -125,7 +113,7 @@ void ClosedConnector::Select(bool const bOn, bool const bRecursive)
     }
 }
 
-void ClosedConnector::MoveNob(MicroMeterPoint const & delta)       
+void ClosedConnector::MoveNob(MicroMeterPnt const & delta)       
 {
     m_pInputConnector ->MoveNob(delta);
     m_pOutputConnector->MoveNob(delta);

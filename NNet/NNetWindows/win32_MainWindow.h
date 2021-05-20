@@ -7,7 +7,7 @@
 #include "Resource.h"
 #include "scale.h"
 #include "BaseKnot.h"
-#include "MicroMeterPointVector.h"
+#include "MicroMeterPntVector.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
@@ -59,7 +59,7 @@ public:
 			m_pCoordObservable->NotifyAll( false );
 	}
 
-	MicroMeterPoint const GetCursorPos() const;
+	MicroMeterPnt const GetCursorPos() const;
 
 	void       CenterModel();
 	void       CenterSelection();
@@ -90,7 +90,7 @@ private:
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 
 	MicroMeterRect      m_rectSelection        { };
-	MicroMeterPoint     m_umPntSelectionAnchor { };
+	MicroMeterPnt     m_umPntSelectionAnchor { };
 	NobId               m_nobHighlighted       { };
 	NobId               m_nobTarget            { };
 	bool                m_bTargetFits          { false };
@@ -101,7 +101,7 @@ private:
 
 	void setNoTarget      ();
 	void setTargetNob     ();
-	void setHighlightedNob( MicroMeterPoint const & );
+	void setHighlightedNob( MicroMeterPnt const & );
 	bool changePulseRate  ( NobId const, bool const );
 	void centerAndZoomRect( UPNobList::SelMode const, float const );
 

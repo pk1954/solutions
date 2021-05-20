@@ -15,7 +15,7 @@
 class Pipe;
 class BaseKnot;
 class NobErrorHandler;
-class MicroMeterPointVector;
+class MicroMeterPntVector;
 
 using std::unique_ptr;
 using std::move;
@@ -98,14 +98,14 @@ public:
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
-    MicroMeterPoint const OrthoVector( NobId const idPipe ) const
+    MicroMeterPnt const OrthoVector( NobId const idPipe ) const
     {
-        MicroMeterPoint vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
+        MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
-    void SetIoNeurons(MicroMeterPointVector       &, NobIdList              const &);
-    void SetIoNeurons(MicroMeterPointVector const &, NobPtrList<IoNeuron> const &);
+    void SetIoNeurons(MicroMeterPntVector       &, NobIdList              const &);
+    void SetIoNeurons(MicroMeterPntVector const &, NobPtrList<IoNeuron> const &);
 
 #ifdef _DEBUG
     NNetModel const & GetModel()  const { return * m_pModel; }  // TODO: find better solution

@@ -10,7 +10,7 @@
 #include "NobPtrList.h"
 
 template <Nob_t T>
-MicroMeterPoint const CalcOrthoVector
+MicroMeterPnt const CalcOrthoVector
 (
 	MicroMeterLine const & line,
 	NobPtrList<T>  const & list
@@ -29,7 +29,7 @@ MicroMeterPoint const CalcOrthoVector
 				( 
 					[&](Pipe & pipe) 
 					{ 
-						MicroMeterPoint pnt { pipe.GetStartPoint() };
+						MicroMeterPnt pnt { pipe.GetStartPoint() };
 						if ( PointToLine(line, pnt) < 0.0_MicroMeter )
 							++uiLeftConnections;
 						else
@@ -40,7 +40,7 @@ MicroMeterPoint const CalcOrthoVector
 				( 
 					[&](Pipe & pipe) 
 					{ 
-						MicroMeterPoint pnt { pipe.GetEndPoint() };
+						MicroMeterPnt pnt { pipe.GetEndPoint() };
 						if ( PointToLine(line, pnt) < 0.0_MicroMeter )
 							++uiRightConnections;
 						else
@@ -51,7 +51,7 @@ MicroMeterPoint const CalcOrthoVector
 		}	
 	);
 
-	MicroMeterPoint orthoVector = line.OrthoVector();
+	MicroMeterPnt orthoVector = line.OrthoVector();
 	if ( uiRightConnections < uiLeftConnections )
 		orthoVector = -orthoVector;
 	return orthoVector;

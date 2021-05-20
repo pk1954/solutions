@@ -17,8 +17,8 @@ public:
 
 	virtual void DrawLine
 	( 
-		MicroMeterPoint const &, 
-		MicroMeterPoint const &, 
+		MicroMeterPnt const &, 
+		MicroMeterPnt const &, 
 		MicroMeter      const, 
 		D2D1::ColorF    const
 	) const = 0;
@@ -32,8 +32,8 @@ public:
 
 	virtual void FillArrow
 	( 
-		MicroMeterPoint const &, 
-		MicroMeterPoint const &, 
+		MicroMeterPnt const &, 
+		MicroMeterPnt const &, 
 		MicroMeter      const, 
 		MicroMeter      const, 
 		D2D1::ColorF    const
@@ -63,7 +63,7 @@ public:
 	void SetPixelSize  ( MicroMeter      const s ) { m_coord.SetPixelSize  ( s ); }
 	void SetPixelOffset( fPixelPoint     const f ) { m_coord.SetPixelOffset( f ); }
 	bool Zoom          ( MicroMeter      const s ) { return m_coord.Zoom   ( s ); }
-	void Center        ( MicroMeterPoint const u, fPixelPoint const f ) { m_coord.Center( u, f ); }
+	void Center        ( MicroMeterPnt const u, fPixelPoint const f ) { m_coord.Center( u, f ); }
 
 	void Move(auto const d) { m_coord.Move(d); }
 

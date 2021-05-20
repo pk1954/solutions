@@ -16,20 +16,20 @@ MicroMeter ScrReadMicroMeter(Script & script)
 	return MicroMeter( fValue );
 }
 
-MicroMeterPoint ScrReadMicroMeterPoint(Script & script)
+MicroMeterPnt ScrReadMicroMeterPnt(Script & script)
 {
-	script.ScrReadSpecial( MicroMeterPoint::OPEN_BRACKET );
+	script.ScrReadSpecial( MicroMeterPnt::OPEN_BRACKET );
 	MicroMeter const x(ScrReadMicroMeter( script ));
-	script.ScrReadSpecial( MicroMeterPoint::SEPARATOR );
+	script.ScrReadSpecial( MicroMeterPnt::SEPARATOR );
 	MicroMeter const y(ScrReadMicroMeter( script ));
-	script.ScrReadSpecial( MicroMeterPoint::CLOSE_BRACKET );
-	return MicroMeterPoint( x, y );
+	script.ScrReadSpecial( MicroMeterPnt::CLOSE_BRACKET );
+	return MicroMeterPnt( x, y );
 }
 
 MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterCircle::OPEN_BRACKET );
-	MicroMeterPoint umCenter { ScrReadMicroMeterPoint( script ) };
+	MicroMeterPnt umCenter { ScrReadMicroMeterPnt( script ) };
 	script.ScrReadSpecial( MicroMeterCircle::SEPARATOR );
 	MicroMeter      umRadius { ScrReadMicroMeter( script ) };
 	script.ScrReadSpecial( MicroMeterCircle::CLOSE_BRACKET );
@@ -39,17 +39,17 @@ MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterPosDir::OPEN_BRACKET );
-	MicroMeterPoint const umPnt(ScrReadMicroMeterPoint( script ));
+	MicroMeterPnt const umPnt(ScrReadMicroMeterPnt( script ));
 	script.ScrReadSpecial( MicroMeterPosDir::SEPARATOR );
 	Radian const rad(Cast2Float(script.ScrReadFloat()));
 	script.ScrReadSpecial( MicroMeterPosDir::CLOSE_BRACKET );
 	return MicroMeterPosDir( umPnt, rad );
 }
 
-MicroMeterPointVector ScrReadMicroMeterPointVector(Script& script)
+MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
 {
-	MicroMeterPointVector umPntVector;
-	script.ScrReadSpecial( MicroMeterPointVector::OPEN_BRACKET );
+	MicroMeterPntVector umPntVector;
+	script.ScrReadSpecial( MicroMeterPntVector::OPEN_BRACKET );
 	int const iNrOfElements { script.ScrReadInt() };
 	script.ScrReadSpecial( L':' );
 	for (int i = 0;;)
@@ -57,9 +57,9 @@ MicroMeterPointVector ScrReadMicroMeterPointVector(Script& script)
 		umPntVector.Add( ScrReadMicroMeterPosDir(script) );
 		if (++i == iNrOfElements )
 			break;
-		script.ScrReadSpecial( MicroMeterPointVector::SEPARATOR );
+		script.ScrReadSpecial( MicroMeterPntVector::SEPARATOR );
 	}
-	script.ScrReadSpecial( MicroMeterPointVector::CLOSE_BRACKET );
+	script.ScrReadSpecial( MicroMeterPntVector::CLOSE_BRACKET );
 	return umPntVector;
 }
 

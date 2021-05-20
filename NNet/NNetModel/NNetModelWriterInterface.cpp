@@ -9,7 +9,7 @@
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "NobIdList.h"
-#include "MicroMeterPointVector.h"
+#include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::Start( NNetModel * const pModel )
@@ -24,8 +24,8 @@ void NNetModelWriterInterface::Stop()
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
-	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
-	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
+	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPnt( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
+	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPnt( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
 	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upOutputNeuron.get() ) };
 	upInputNeuron ->m_connections.AddOutgoing( upNewPipe.get() );
 	upOutputNeuron->m_connections.AddIncoming( upNewPipe.get() );
@@ -76,7 +76,7 @@ void NNetModelWriterInterface::RemoveOrphans()
 
 void NNetModelWriterInterface::SetIoNeurons
 (
-	MicroMeterPointVector & umPntVector, 
+	MicroMeterPntVector & umPntVector, 
 	NobIdList     const & nobIds
 )
 {
@@ -85,8 +85,8 @@ void NNetModelWriterInterface::SetIoNeurons
 	(
 		[&](NobId const & id)
 		{
-			IoNeuron     * const pIoNeuron { GetNobPtr<IoNeuron *>(id) };
-			MicroMeterPosDir const posDir      { pIoNeuron->GetRawPosDir() };
+			IoNeuron       * const pIoNeuron { GetNobPtr<IoNeuron *>(id) };
+			MicroMeterPosDir const posDir    { pIoNeuron->GetRawPosDir() };
 			pIoNeuron->SetPosDir( umPntVector.GetPosDir(ui) );
 			umPntVector.SetPosDir( ui, posDir );
 			++ui;
@@ -96,7 +96,7 @@ void NNetModelWriterInterface::SetIoNeurons
 
 void NNetModelWriterInterface::SetIoNeurons
 (
-	MicroMeterPointVector    const & umPntVector, 
+	MicroMeterPntVector  const & umPntVector, 
 	NobPtrList<IoNeuron> const & nobPtrList
 )
 {

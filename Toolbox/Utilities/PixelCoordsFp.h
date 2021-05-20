@@ -46,7 +46,7 @@ public:
 		return m_pixelSize * fPixel.GetValue();
 	}
 
-	fPixelPoint const Transform2fPixelSize( MicroMeterPoint const np ) const
+	fPixelPoint const Transform2fPixelSize( MicroMeterPnt const np ) const
 	{ 
 		return fPixelPoint( Transform2fPixel( np.GetX() ), Transform2fPixel( np.GetY() ) );
 	}
@@ -56,9 +56,9 @@ public:
 		return fPixelRectSize( Transform2fPixel( np.GetX() ), Transform2fPixel( np.GetY() ) );
 	}
 
-	MicroMeterPoint const Transform2MicroMeterPointSize( fPixelPoint const pp ) const
+	MicroMeterPnt const Transform2MicroMeterPntSize( fPixelPoint const pp ) const
 	{ 
-		return MicroMeterPoint( Transform2MicroMeter( pp.GetX() ), Transform2MicroMeter( pp.GetY() ) ); 
+		return MicroMeterPnt( Transform2MicroMeter( pp.GetX() ), Transform2MicroMeter( pp.GetY() ) ); 
 	}
 
 	MicroMeterRectSize const Transform2MicroMeterRectSize( fPixelRectSize const pp ) const
@@ -66,17 +66,17 @@ public:
 		return MicroMeterRectSize( Transform2MicroMeter( pp.GetX() ), Transform2MicroMeter( pp.GetY() ) ); 
 	}
 
-	MicroMeterPoint const Transform2MicroMeterPointPos( fPixelPoint const pp ) const
+	MicroMeterPnt const Transform2MicroMeterPntPos( fPixelPoint const pp ) const
 	{ 
-		return Transform2MicroMeterPointSize( pp + m_fPixOffset );
+		return Transform2MicroMeterPntSize( pp + m_fPixOffset );
 	}
 
-	MicroMeterPoint const Transform2MicroMeterPointPos( PixelPoint const pixPoint ) const
+	MicroMeterPnt const Transform2MicroMeterPntPos( PixelPoint const pixPoint ) const
 	{ 
-		return Transform2MicroMeterPointSize( ::Convert2fPixelPoint( pixPoint ) + m_fPixOffset );
+		return Transform2MicroMeterPntSize( ::Convert2fPixelPoint( pixPoint ) + m_fPixOffset );
 	}
 
-	fPixelPoint const Transform2fPixelPos( MicroMeterPoint const np ) const
+	fPixelPoint const Transform2fPixelPos( MicroMeterPnt const np ) const
 	{ 
 		return Transform2fPixelSize( np ) - m_fPixOffset;
 	}
@@ -85,8 +85,8 @@ public:
 	{ 
 		return MicroMeterRect
 		( 
-			Transform2MicroMeterPointPos( fPixRect.GetStartPoint() ), 
-			Transform2MicroMeterPointPos( fPixRect.GetEndPoint  () ) 
+			Transform2MicroMeterPntPos( fPixRect.GetStartPoint() ), 
+			Transform2MicroMeterPntPos( fPixRect.GetEndPoint  () ) 
 		);
 	}
 
@@ -107,7 +107,7 @@ public:
 	{
 		return MicroMeterCircle
 		( 
-			Transform2MicroMeterPointPos( fPixCircle.GetPos() ),
+			Transform2MicroMeterPntPos( fPixCircle.GetPos() ),
 			Transform2MicroMeter        ( fPixCircle.GetRadius  () )
 		);
 	}
@@ -167,9 +167,9 @@ public:
 		return Transform2MicroMeter( ::Convert2fPixel( pix ) );
 	}
 
-	MicroMeterPoint Transform2MicroMeterPointSize( PixelPoint const & pnt ) const
+	MicroMeterPnt Transform2MicroMeterPntSize( PixelPoint const & pnt ) const
 	{ 
-		return Transform2MicroMeterPointSize( ::Convert2fPixelPoint( pnt ) );
+		return Transform2MicroMeterPntSize( ::Convert2fPixelPoint( pnt ) );
 	}
 
 	MicroMeterRectSize Transform2MicroMeterRectSize( PixelRectSize const & siz ) const
@@ -187,12 +187,12 @@ public:
 		return ::Convert2PIXEL(Transform2fPixel( um ) );
 	}
 
-	PixelPoint Transform2PixelSize( MicroMeterPoint const & umPnt ) const
+	PixelPoint Transform2PixelSize( MicroMeterPnt const & umPnt ) const
 	{
 		return ::Convert2PixelPoint( Transform2fPixelSize( umPnt ) );
 	}
 
-	PixelPoint Transform2PixelPos( MicroMeterPoint const & umPnt ) const
+	PixelPoint Transform2PixelPos( MicroMeterPnt const & umPnt ) const
 	{
 		return ::Convert2PixelPoint( Transform2fPixelPos( umPnt ) );
 	}
@@ -224,7 +224,7 @@ public:
 	void Set           (PixelCoordsFp const newVals   ) { * this = newVals; }
 
 	void Move(PixelPoint      const pntDelta) { m_fPixOffset -= ::Convert2fPixelPoint(pntDelta); }
-	void Move(MicroMeterPoint const umDelta ) { m_fPixOffset -= Transform2fPixelSize (umDelta ); }
+	void Move(MicroMeterPnt const umDelta ) { m_fPixOffset -= Transform2fPixelSize (umDelta ); }
 
 	bool Zoom( MicroMeter const pixelSize )
 	{
@@ -236,7 +236,7 @@ public:
 
 	void Center
 	( 
-		MicroMeterPoint const umPntCenter,   
+		MicroMeterPnt const umPntCenter,   
 		fPixelPoint     const fPntPix  
 	)
 	{

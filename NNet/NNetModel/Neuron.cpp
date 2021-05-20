@@ -12,12 +12,38 @@
 #include "DrawContext.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
+#include "IoNeuron.h"
+#include "Pipe.h"
 #include "Neuron.h"
 
 using std::chrono::microseconds;
 using std::fixed;
 using std::wstring;
 using std::wostringstream;
+
+Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
+  : BaseKnot( upCenter, type, NEURON_RADIUS )
+{
+	Recalc();
+}
+
+Neuron::Neuron
+( 
+	MicroMeterPnt const & upCenter,
+	IoNeuron & inputNeuron, 
+	IoNeuron & outputNeuron 
+)
+  : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
+{
+	m_connections.SetIncoming(outputNeuron.m_connections);
+	m_connections.SetOutgoing(inputNeuron .m_connections);
+	Recalc();
+}
+
+void Neuron::Check() const
+{
+	BaseKnot::Check();
+}
 
 static void CALLBACK BeepFunc
 (
@@ -28,17 +54,6 @@ static void CALLBACK BeepFunc
 {
 	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
 	Neuron::m_pSound->Beep( pNeuron->GetTriggerSound() );
-}
-
-Neuron::Neuron( MicroMeterPoint const & upCenter, NobType const type )
-	: BaseKnot( upCenter, type, NEURON_RADIUS )
-{
-	Recalc();
-}
-
-void Neuron::Check() const
-{
-	BaseKnot::Check();
 }
 
 void Neuron::init( const Neuron & rhs )
@@ -163,7 +178,7 @@ mV const Neuron::GetNextOutput() const
 
 void const Neuron::DisplayText( DrawContext const & context, MicroMeterRect const & umRect, wstring const text ) const
 {
-	MicroMeterPoint const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
+	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
 //	context.DisplayText( umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow );
 }
 
@@ -175,10 +190,10 @@ void Neuron::DrawNeuronText( DrawContext const & context ) const
 	DisplayText( context, GetRect4Text(), m_wBuffer.str() );
 }
 
-MicroMeterPoint Neuron::getAxonHillockPos() const
+MicroMeterPnt Neuron::getAxonHillockPos() const
 {
 	Pipe            const & axon         { m_connections.GetFirstOutgoing() };
-	MicroMeterPoint const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
+	MicroMeterPnt const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
 	return GetPos() + vectorScaled * NEURON_INTERIOR;
 }
 

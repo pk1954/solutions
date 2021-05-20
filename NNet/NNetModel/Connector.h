@@ -25,18 +25,18 @@ public:
 	virtual ~Connector() {}
 
 	virtual void Check() const;
-	virtual void Dump      () const;
+	virtual void Dump () const;
 
-	virtual NobIoMode       const GetIoMode() const;
-	virtual MicroMeterPoint const GetPos() const;
+	virtual NobIoMode     const GetIoMode() const;
+	virtual MicroMeterPnt const GetPos() const;
 
-	virtual void       DrawExterior(DrawContext const &, tHighlight const) const;
-	virtual void       DrawInterior(DrawContext const &, tHighlight const) const;
-	virtual void       Expand      (MicroMeterRect        &)               const;
-	virtual bool const IsIncludedIn(MicroMeterRect  const &)               const;
-	virtual bool const Includes    (MicroMeterPoint const &)               const;
-	virtual void       RotateNob   (MicroMeterPoint const &, Radian const);
-	virtual void       MoveNob     (MicroMeterPoint const &);
+	virtual void       DrawExterior(DrawContext    const &, tHighlight const) const;
+	virtual void       DrawInterior(DrawContext    const &, tHighlight const) const;
+	virtual void       Expand      (MicroMeterRect       &)                   const;
+	virtual bool const IsIncludedIn(MicroMeterRect const &)                   const;
+	virtual bool const Includes    (MicroMeterPnt  const &)                   const;
+	virtual void       RotateNob   (MicroMeterPnt  const &, Radian const);
+	virtual void       MoveNob     (MicroMeterPnt  const &);
 	virtual void       Select      (bool const, bool const);
 	virtual void       Prepare     ();
 	virtual bool const CompStep    ();
@@ -58,13 +58,13 @@ public:
 	void ClearParentPointers();
 	void AlignDirection();
 
-	void Rotate(MicroMeterPoint const &, MicroMeterPoint const &);
+	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
 
 	MicroMeterPosDir const GetPosDir() const;
 	Radian           const GetDir()    const;
 
 	void SetDir   (Radian           const  );
-	void SetPos   (MicroMeterPoint  const &);
+	void SetPos   (MicroMeterPnt  const &);
 	void SetPosDir(MicroMeterPosDir const &);
 
 	void Apply2All(function<void(IoNeuron const &)> const & func) const;
