@@ -26,6 +26,7 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
     m_nobTarget(nobTarget),
     m_nobAnimated(nobAnimated)
 {
+    m_pBaseKnotAnimation = make_unique<BaseKnotAnimation>(win, nobAnimated);
     m_upConnectIoNeurons = make_unique<ConnectIoNeuronsCommand>(nobAnimated, nobTarget);
 
     Radian        const radianTarget { m_nobTarget.GetDir() };
@@ -52,23 +53,28 @@ void PluginIoNeuronAnimation::updateUI()  // runs in animation thread
     m_win.Notify(false);
 }
 
-
 void PluginIoNeuronAnimation::nextAnimationPhase(Mode const mode) // runs in UI thread
 {
-    MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
-    MicroMeterPosDir umPosDirTarget;
-
     if (mode == Mode::mode_do)
     {
         switch (m_iPhase++)
         {
-        case 1:  BlockUI();
-                 umPosDirTarget = m_umPosDirTarget[1]; break;
-        case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
+        case 0:  BlockUI();
+                 nextAnimationPhase(Mode::mode_do);
+                 break;
+
+        case 1:  m_pBaseKnotAnimation->Start(m_umPosDirTarget[1], [&](){ nextAnimationPhase(Mode::mode_do); });
+                 break;
+
+        case 2:	 m_pBaseKnotAnimation->Start(m_umPosDirTarget[2], [&](){ nextAnimationPhase(Mode::mode_do); });
+                 break;
+
         case 3:  m_upConnectIoNeurons->Do(m_NMWI);
+                 m_win.Notify(false);
                  UnblockUI();
-                 return; 
-        default: return;        // do not start animation
+                 break; 
+
+        default: break;        // do not start animation
         }
     }
     else
@@ -77,14 +83,19 @@ void PluginIoNeuronAnimation::nextAnimationPhase(Mode const mode) // runs in UI 
         {
         case 3:  BlockUI();
                  m_upConnectIoNeurons->Undo(m_NMWI);
-                 
-                 [[fallthrough]]; 
-        case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
-        case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
+                 nextAnimationPhase(Mode::mode_undo);
+                 break;
+
+        case 2:  m_pBaseKnotAnimation->Start(m_umPosDirTarget[1], [&](){ nextAnimationPhase(Mode::mode_undo); });
+                 break;
+
+        case 1:	 m_pBaseKnotAnimation->Start(m_umPosDirTarget[0], [&](){ nextAnimationPhase(Mode::mode_undo); });
+                 break;
+
         case 0:  UnblockUI();
-                 return; 
-        default: return;                // do not start animation
+                 break; 
+
+        default: break;                // do not start animation
         }
     }
-    StartAnimation(umPosDirStart, umPosDirTarget);
 }

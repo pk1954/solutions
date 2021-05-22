@@ -34,7 +34,7 @@ public:
         nextAnimationPhase(m_mode);
     }
 
-    void Undo( NNetModelWriterInterface& nmwi )
+    virtual void Undo( NNetModelWriterInterface& nmwi )
     {
         m_mode = Mode::mode_undo;
         m_iPhase = Cast2Int(m_umPosDirTarget.size());

@@ -19,44 +19,29 @@ class BaseKnotAnimation
 public:
     BaseKnotAnimation
     ( 
-        MainWindow win,
-        BaseKnot & baseKnot
+        MainWindow & win,
+        BaseKnot   & baseKnot
     )
       : m_win(win),
-        m_baseKnotAnimated(baseKnot),
-        m_callable(win.GetWindowHandle()),
-        m_umPosDirStart(m_baseKnotAnimated.GetPosDir())
-    {
-    }
+        m_baseKnotAnimated(baseKnot)
+    {}
 
     void Start
     (
         MicroMeterPosDir const & umPosDirTarget,
-        function<void()> const & targetReachedFunc
+        function<void()> const   targetReachedFunc
     )
     {
-        m_umPosDirTarget = umPosDirTarget;
-        m_pTargetReachedFunc = & targetReachedFunc;
-        m_animation.SetNrOfSteps( CalcNrOfSteps(m_umPosDirStart, umPosDirTarget) );
-    }
-
-    virtual void Do(NNetModelWriterInterface & nmwi)
-    {
-        m_animation.Start(m_umPosDirStart, m_umPosDirTarget);
-    }
-
-    void Undo(NNetModelWriterInterface & nmwi)
-    {
-        m_animation.Start(m_umPosDirTarget, m_umPosDirStart);
+        MicroMeterPosDir umPosDirStart { m_baseKnotAnimated.GetPosDir() };
+        m_targetReachedFunc = targetReachedFunc;
+        m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
+        m_animation.Start(umPosDirStart, umPosDirTarget);
     }
 
 private:
-    BaseKnot               & m_baseKnotAnimated;
-    MainWindow             & m_win;
-    Callable                 m_callable;
-    MicroMeterPosDir         m_umPosDirTarget { MicroMeterPosDir::NULL_VAL() };
-    MicroMeterPosDir         m_umPosDirStart { MicroMeterPosDir::NULL_VAL() };
-    function<void()> const * m_pTargetReachedFunc;
+    BaseKnot       & m_baseKnotAnimated;
+    MainWindow     & m_win;
+    function<void()> m_targetReachedFunc { nullptr };
 
     Animation<MicroMeterPosDir> m_animation 
     {
@@ -64,7 +49,8 @@ private:
         (
             [&](bool const bTargetReached) 
             { 
-                m_callable.Call_UI_thread
+                Callable callable { m_win.GetWindowHandle() };
+                callable.Call_UI_thread
                 (
                     [&]()
                     { 
@@ -73,7 +59,7 @@ private:
                     }
                 );
                 if (bTargetReached)
-                    m_callable.Call_UI_thread([&](){ (* m_pTargetReachedFunc)(); });
+                    callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
             }
         )
     };

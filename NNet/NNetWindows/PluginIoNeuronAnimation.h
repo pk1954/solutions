@@ -9,6 +9,7 @@
 #include "NobPtrList.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
+#include "BaseKnotAnimation.h"
 #include "ConnectIoNeuronsCommand.h"
 
 using std::unique_ptr;
@@ -31,6 +32,7 @@ private:
     IoNeuron & m_nobAnimated;
 
     unique_ptr<ConnectIoNeuronsCommand> m_upConnectIoNeurons;
+    unique_ptr<BaseKnotAnimation>       m_pBaseKnotAnimation;
 
     virtual void nextAnimationPhase(Mode const);
     virtual void updateUI();
