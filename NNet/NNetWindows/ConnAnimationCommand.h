@@ -66,10 +66,9 @@ private:
         )
     };
 
-    NobType      const determineNobType() const;
-    unsigned int const calcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &) const;
-    void               nextAnimationPhase();
-    void               updateUI();
-    void               BlockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true); };
-    void               UnblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
+    NobType const determineNobType() const;
+    void          nextAnimationPhase();
+    void          updateUI();
+    void          BlockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true); };
+    void          UnblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
 };

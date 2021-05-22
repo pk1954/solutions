@@ -28,77 +28,37 @@ public:
     {}
 
     MicroMeterPnt const GetPos() const { return m_pos; }
-    Radian          const GetDir() const { return m_dir; }
+    Radian        const GetDir() const { return m_dir; }
 
     void SetPos(MicroMeterPnt const & pos) { m_pos = pos; }
-    void SetDir(Radian          const & dir) { m_dir = dir; }
+    void SetDir(Radian        const & dir) { m_dir = dir; }
 
-    bool operator==(MicroMeterPosDir const& rhs) const
-    {
-        return (m_pos == rhs.m_pos) && (m_dir == rhs.m_dir); 
-    }
+    bool operator==(MicroMeterPosDir const&) const;
 
-    MicroMeterPosDir& operator+= (MicroMeterPnt const & pnt) 
-    { 
-        m_pos += pnt;
-        return * this; 
-    }
+    MicroMeterPosDir& operator+= (MicroMeterPnt const &);
+    MicroMeterPosDir& operator+= (MicroMeterPosDir const &); 
+    MicroMeterPosDir& operator-= (MicroMeterPosDir const &); 
+    MicroMeterPosDir& operator*= (float const); 
 
-    MicroMeterPosDir& operator+= (MicroMeterPosDir const & rhs) 
-    { 
-        m_pos += rhs.m_pos;
-        m_dir += rhs.m_dir;
-        return * this; 
-    }
+    friend MicroMeterPosDir const operator+ (MicroMeterPosDir const, MicroMeterPosDir const); 
+    friend MicroMeterPosDir const operator- (MicroMeterPosDir const, MicroMeterPosDir const); 
+    friend MicroMeterPosDir const operator* (MicroMeterPosDir const, float const); 
 
-    MicroMeterPosDir& operator-= (MicroMeterPosDir const & rhs) 
-    { 
-        m_pos -= rhs.m_pos;
-        m_dir -= rhs.m_dir;
-        return * this; 
-    }
+    friend wostream & operator<< ( wostream &, MicroMeterPosDir const &);
 
-    MicroMeterPosDir& operator*= (float const factor) 
-    { 
-        m_pos *= factor;
-        m_dir *= factor;
-        return * this; 
-    }
-    
-    friend MicroMeterPosDir const operator+ (MicroMeterPosDir const a, MicroMeterPosDir const b) 
-    { 
-        MicroMeterPosDir res { a }; 
-        res += b; 
-        return res; 
-    };
-
-    friend MicroMeterPosDir const operator- (MicroMeterPosDir const a, MicroMeterPosDir const b) 
-    { 
-        MicroMeterPosDir res { a }; 
-        res -= b; 
-        return res; 
-    };
-
-    friend MicroMeterPosDir const operator* (MicroMeterPosDir const a, float const f) 
-    { 
-        MicroMeterPosDir res { a }; 
-        res *= f; 
-        return res; 
-    };
-
-    friend wostream & operator<< ( wostream & out, MicroMeterPosDir const & posDir )
-    {
-        out << OPEN_BRACKET  << posDir.m_pos 
-            << SEPARATOR     << posDir.m_dir.GetValue() 
-            << CLOSE_BRACKET;
-        return out;
-    }
+    friend unsigned int const CalcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &);
 
     inline static wchar_t const OPEN_BRACKET  { L'(' };
     inline static wchar_t const SEPARATOR     { L',' };
     inline static wchar_t const CLOSE_BRACKET { L')' };
 
+    static MicroMeterPosDir const & NULL_VAL() 
+    { 
+        static MicroMeterPosDir res { MicroMeterPosDir( MicroMeterPnt::NULL_VAL(), Radian::NULL_VAL() ) }; 
+        return res;
+    };
+
 private:
     MicroMeterPnt m_pos;
-    Radian          m_dir;
+    Radian        m_dir;
 };

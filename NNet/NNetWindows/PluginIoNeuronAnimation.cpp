@@ -26,10 +26,7 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
     m_nobTarget(nobTarget),
     m_nobAnimated(nobAnimated)
 {
-    assert( m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob() );
-    assert( m_nobAnimated.GetIoMode() != NobIoMode::internal );
-    assert( m_nobTarget  .GetIoMode() != NobIoMode::internal );
-    assert( m_nobTarget  .GetIoMode() !== m_nobAnimated.GetIoMode() );
+    m_upConnectIoNeurons = make_unique<ConnectIoNeuronsCommand>(nobAnimated, nobTarget);
 
     Radian        const radianTarget { m_nobTarget.GetDir() };
     MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
@@ -47,10 +44,6 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
         MicroMeterPnt const umPosTarget { m_nobTarget.GetPos() + umPosOffset };
         m_umPosDirTarget.push_back(MicroMeterPosDir(umPosTarget, radianTarget));
     }
-
-    m_upClosedNeuron = m_nobAnimated.IsInputNob()
-        ? make_unique<Neuron>(m_nobTarget.GetPos(), m_nobAnimated, m_nobTarget  )
-        : make_unique<Neuron>(m_nobTarget.GetPos(), m_nobTarget,   m_nobAnimated);
 }
 
 void PluginIoNeuronAnimation::updateUI()  // runs in animation thread
@@ -59,25 +52,20 @@ void PluginIoNeuronAnimation::updateUI()  // runs in animation thread
     m_win.Notify(false);
 }
 
-void PluginIoNeuronAnimation::nextAnimationPhase() // runs in UI thread
+
+void PluginIoNeuronAnimation::nextAnimationPhase(Mode const mode) // runs in UI thread
 {
     MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
     MicroMeterPosDir umPosDirTarget;
 
-    if (m_mode == Mode::mode_do)
+    if (mode == Mode::mode_do)
     {
         switch (m_iPhase++)
         {
         case 1:  BlockUI();
                  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
-        case 3:  m_upClosedNeuron->SetParentPointers();
-                 {
-                     NobId id = m_NMWI.GetUPNobs().Push(move(m_upClosedNeuron));
-                     m_upNobAnimated = m_NMWI.RemoveFromModel<IoNeuron>(m_nobAnimated);
-                     m_upNobTarget   = m_NMWI.RemoveFromModel<IoNeuron>(m_nobTarget);
-                     m_NMWI.GetNobPtr<Neuron *>(id)->Reconnect();
-                 }
+        case 3:  m_upConnectIoNeurons->Do(m_NMWI);
                  UnblockUI();
                  return; 
         default: return;        // do not start animation
@@ -88,16 +76,12 @@ void PluginIoNeuronAnimation::nextAnimationPhase() // runs in UI thread
         switch (m_iPhase--)
         {
         case 3:  BlockUI();
-            m_upClosedNeuron = m_NMWI.GetUPNobs().Pop<Neuron>();
-            m_upClosedNeuron->ClearParentPointers();
-            [[fallthrough]]; 
+                 m_upConnectIoNeurons->Undo(m_NMWI);
+                 
+                 [[fallthrough]]; 
         case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
         case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
-        case 0:  m_upNobAnimated->Reconnect();
-                 m_upNobTarget  ->Reconnect();
-                 m_upNobAnimated = m_NMWI.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));
-                 m_upNobTarget   = m_NMWI.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobTarget));
-                 UnblockUI();
+        case 0:  UnblockUI();
                  return; 
         default: return;                // do not start animation
         }

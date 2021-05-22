@@ -36,7 +36,7 @@ using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
 
 constexpr const MilliSecs operator"" _MilliSecs( const unsigned long long d )
 {
-	return MilliSecs( Cast2UnsignedLong( d ) );
+	return MilliSecs( Cast2UnsignedLong(d) );
 }
 
 ////////////// MicroMeter /////////////////////////////////////
@@ -45,7 +45,7 @@ using MicroMeter = NamedType< float, struct MicroMeter_Parameter >;
 
 constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 {
-	return MicroMeter( Cast2Float( d ) );
+	return MicroMeter( Cast2Float(d) );
 }
 
 inline MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter

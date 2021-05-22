@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "vector"
 #include "MoreTypes.h"
 #include "AnimatedCommand.h"
 #include "NobPtrList.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
+#include "ConnectIoNeuronsCommand.h"
 
-using std::vector;
+using std::unique_ptr;
 
 class PluginIoNeuronAnimation : public AnimatedCommand
 {
@@ -27,12 +27,11 @@ public:
 
 private:
 
-    IoNeuron           & m_nobTarget;
-    IoNeuron           & m_nobAnimated;
-    unique_ptr<IoNeuron> m_upNobAnimated;
-    unique_ptr<IoNeuron> m_upNobTarget;
-    unique_ptr<Neuron>   m_upClosedNeuron {};
+    IoNeuron & m_nobTarget;
+    IoNeuron & m_nobAnimated;
 
-    virtual void nextAnimationPhase();
+    unique_ptr<ConnectIoNeuronsCommand> m_upConnectIoNeurons;
+
+    virtual void nextAnimationPhase(Mode const);
     virtual void updateUI();
 };

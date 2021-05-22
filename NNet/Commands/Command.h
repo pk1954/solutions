@@ -25,7 +25,7 @@ public:
         Do( nmwi ); 
     };
 
-    virtual bool const Combine(Command const & src) 
+    virtual bool const CombineCommands(Command const & src) 
     { 
         return false; 
     };

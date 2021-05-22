@@ -150,6 +150,9 @@
     <ClInclude Include="SplitClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ConnectIoNeuronsCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">
@@ -159,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectIoNeuronsCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

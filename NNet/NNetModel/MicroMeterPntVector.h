@@ -23,205 +23,44 @@ class MicroMeterPntVector
 public:
 
     MicroMeterPntVector() {}
+    MicroMeterPntVector(NobPtrList<IoNeuron> const&);
 
-    MicroMeterPntVector(NobPtrList<IoNeuron> const& nobList)
-    {
-        nobList.Apply2All( [&](IoNeuron const & c) { Add( c.GetPosDir() ); } );
-    }
+    void Apply2All(function<void(MicroMeterPosDir &)> const &);
 
-    void Apply2All(function<void(MicroMeterPosDir &)> const & func)
-    {
-        for (auto & elem: m_list)
-            func(elem);
-    }
+    unsigned int const Size() const;
 
-    unsigned int Size() const { return Cast2UnsignedInt(m_list.size()); }
+    MicroMeterPosDir const GetPosDir( unsigned int const) const;
 
-    MicroMeterPosDir const GetPosDir( unsigned int const ui) const
-    {
-        assert( ui < Size() );
-        return m_list[ui];
-    }
+    void SetPosDir(unsigned int const, MicroMeterPosDir const &);
+    void SetDir   (Radian const);
+    void SetDir   (MicroMeterPntVector const);
+    void SetPos   (MicroMeterPntVector const);
+    void Resize   (size_t const);
+    void Add      (MicroMeterPosDir const &);
+    void Add      (MicroMeterPnt    const &, Radian const);
+    void Align    (MicroMeterPnt    const &, MicroMeterPnt const &);
+    void Align    (MicroMeterLine   const &, MicroMeter);
+    void Align    (MicroMeterLine   const);
+    void Pack     (MicroMeter);
+    void Clear();
 
-    void SetPosDir(unsigned int const ui, MicroMeterPosDir const & posDir)
-    {
-        assert( ui < Size() );
-        m_list[ui] = posDir;
-    }
+    bool operator==(MicroMeterPntVector const&) const;
 
-    void SetDir(Radian const radian)
-    {
-        Apply2All( [&](MicroMeterPosDir & umPosDir) { umPosDir.SetDir(radian); } );
-    }
+    MicroMeterPntVector& operator+= (MicroMeterPntVector const &); 
+    MicroMeterPntVector& operator-= (MicroMeterPntVector const &); 
+    MicroMeterPntVector& operator*= (float const);
 
-    void SetDir(MicroMeterPntVector const rhs)
-    {
-        assert(rhs.Size() == Size());
-        for ( int i = 0; i < m_list.size(); ++i )
-            m_list[i].SetDir( rhs.GetPosDir(i).GetDir() );
-    }
+    Radian         const FindMaxRadian() const; 
+    MicroMeter     const FindMaxPos() const;
+    MicroMeterLine const GetLine();
 
-    void SetPos(MicroMeterPntVector const rhs)
-    {
-        assert(rhs.Size() == Size());
-        for ( int i = 0; i < m_list.size(); ++i )
-            m_list[i].SetPos( rhs.GetPosDir(i).GetPos() );
-    }
+    friend MicroMeterPntVector const operator+ (MicroMeterPntVector const, MicroMeterPntVector const);
+    friend MicroMeterPntVector const operator- (MicroMeterPntVector const, MicroMeterPntVector const); 
+    friend MicroMeterPntVector const operator* (MicroMeterPntVector const, float const);
 
-    void Clear()
-    {
-        m_list.clear();
-    }
+    friend unsigned int        const CalcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &);
 
-    void Resize( size_t const size )
-    {
-        m_list.resize( size );
-    }
-
-    void Add( MicroMeterPnt const & pos, Radian const dir )
-    {
-        m_list.push_back( MicroMeterPosDir(pos, dir) );
-    }
-
-    void Add( MicroMeterPosDir const & posDir )
-    {
-        m_list.push_back( posDir );
-    }
-
-    bool operator==( MicroMeterPntVector const& rhs ) const
-    {
-        assert( m_list.size() == rhs.m_list.size() );
-        for ( int i = 0; i < m_list.size(); ++i )
-            if (m_list[i] != rhs.m_list[i])
-                return false;
-        return true; 
-    }
-
-    MicroMeterPntVector& operator+= (MicroMeterPntVector const & rhs) 
-    { 
-        assert( m_list.size() == rhs.m_list.size() );
-        for ( int i = 0; i < m_list.size(); ++i )
-            m_list[i] += rhs.m_list[i];
-        return * this; 
-    }
-
-    MicroMeterPntVector& operator-= (MicroMeterPntVector const & rhs) 
-    { 
-        assert( m_list.size() == rhs.m_list.size() );
-        for ( int i = 0; i < m_list.size(); ++i )
-            m_list[i] -= rhs.m_list[i];
-        return * this; 
-    }
-
-    MicroMeterPntVector& operator*= (float const factor) 
-    { 
-        for ( int i = 0; i < m_list.size(); ++i )
-            m_list[i] *= factor;
-        return * this; 
-    }
-
-    friend MicroMeterPntVector const operator+ (MicroMeterPntVector const a, MicroMeterPntVector const b) 
-    { 
-        MicroMeterPntVector res { a }; 
-        res += b; 
-        return res; 
-    };
-
-    friend MicroMeterPntVector const operator- (MicroMeterPntVector const a, MicroMeterPntVector const b) 
-    { 
-        MicroMeterPntVector res { a }; 
-        res -= b; 
-        return res; 
-    };
-
-    friend MicroMeterPntVector const operator* (MicroMeterPntVector const a, float const f) 
-    { 
-        MicroMeterPntVector res { a }; 
-        res *= f; 
-        return res; 
-    };
-
-    friend wostream & operator<< (wostream & out, MicroMeterPntVector const & v)
-    {
-        out << OPEN_BRACKET << v.m_list.size() << L":";
-        for ( auto & it: v.m_list )
-        {
-            out << it;
-            if ( &it == &v.m_list.back() )
-                break;
-            out << SEPARATOR;
-        }
-        out << CLOSE_BRACKET;
-        return out; 
-    }
-
-    Radian const FindMaxRadian() const 
-    {
-        if ( m_list.empty() )
-            return Radian::NULL_VAL();
-        MicroMeterPosDir const maxElement = * std::max_element
-        (
-            m_list.begin(), m_list.end(), 
-            [](MicroMeterPosDir const & a, MicroMeterPosDir const & b)
-            { 
-                return a.GetDir() < b.GetDir(); 
-            }
-        );
-        return maxElement.GetDir();
-    }
-
-    MicroMeter const FindMaxPos() const
-    {
-        if ( m_list.empty() )
-            return MicroMeter::NULL_VAL();
-        MicroMeterPosDir const maxElement = * std::max_element
-        (
-            m_list.begin(), m_list.end(), 
-            [](MicroMeterPosDir const & a, MicroMeterPosDir const & b)
-            { 
-                return Hypot(a.GetPos()) < Hypot(b.GetPos()); 
-            }
-        );
-        return Hypot(maxElement.GetPos());
-    }
-
-    MicroMeterLine const GetLine()
-    {
-        return MicroMeterLine(m_list.front().GetPos(), m_list.back().GetPos());
-    }
-
-    void Align( MicroMeterPnt const& umPntStart, MicroMeterPnt const& umPntOffset )
-    {	
-        MicroMeterPnt umPnt { umPntStart };
-        Apply2All
-        (	
-            [&](MicroMeterPosDir & posDir)	
-            { 
-                posDir.SetPos(umPnt);
-                umPnt += umPntOffset;
-            }	
-        );
-    }
-
-    void Align( MicroMeterLine const umLine, MicroMeter umDist )
-    {
-        MicroMeterPnt const umVector           { umLine.GetVector() };
-        MicroMeter    const umLineLengthTarget { umDist * gapCount() };
-        MicroMeterPnt const umPntSingleVector  { umVector.ScaledTo(umDist) };
-        MicroMeterPnt const umPntLineTarget    { umVector.ScaledTo(umLineLengthTarget) };
-        MicroMeterPnt const umPntTargetStart   { umLine.GetCenter() - umPntLineTarget * 0.5f };
-        Align(umPntTargetStart, umPntSingleVector);
-    }
-
-    void Align( MicroMeterLine const umLine )
-    {
-        Align(umLine, umLine.Length() / gapCount());
-    }
-
-    void Pack( MicroMeter umDist )
-    {
-        Align(GetLine(), umDist);
-    }
+    friend wostream & operator<< (wostream &, MicroMeterPntVector const &);
 
     inline static wchar_t const OPEN_BRACKET  { L'(' };
     inline static wchar_t const SEPARATOR     { L',' };

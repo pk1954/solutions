@@ -240,6 +240,8 @@
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
+    <ClCompile Include="MicroMeterPntVector.cpp" />
+    <ClCompile Include="MicroMeterPosDir.cpp" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="NNetModel.cpp">

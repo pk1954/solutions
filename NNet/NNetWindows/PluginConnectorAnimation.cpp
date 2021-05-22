@@ -59,12 +59,12 @@ void PluginConnectorAnimation::updateUI()  // runs in animation thread
     m_win.Notify(false);
 }
 
-void PluginConnectorAnimation::nextAnimationPhase() // runs in UI thread
+void PluginConnectorAnimation::nextAnimationPhase(Mode const mode) // runs in UI thread
 {
     MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
     MicroMeterPosDir umPosDirTarget;
 
-    if (m_mode == Mode::mode_do)
+    if (mode == Mode::mode_do)
     {
         switch (m_iPhase++)
         {

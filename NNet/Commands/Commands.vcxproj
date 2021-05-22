@@ -83,6 +83,7 @@
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
+    <ClInclude Include="ConnectIoNeuronsCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DiscClosedConnCmd.h" />
     <ClInclude Include="DeletePipeCommand.h" />
@@ -125,6 +126,10 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <ClCompile Include="ConnectIoNeuronsCommand.cpp">
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
     <ClCompile Include="DiscBaseKnotCmd.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>

@@ -15,7 +15,7 @@ class MoveNobCommand : public Command
 public:
 	MoveNobCommand
 	( 
-		Nob                   & nob, 
+		Nob                 & nob, 
 		MicroMeterPnt const & delta 
 	)
 	  : m_delta( delta ),
@@ -42,7 +42,7 @@ public:
 		return true; 
 	};
 
-	virtual bool const Combine(Command const & src) 
+	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		if (typeid(src) != typeid(*this))
 			return false;

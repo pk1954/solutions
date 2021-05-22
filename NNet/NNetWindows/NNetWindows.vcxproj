@@ -603,6 +603,7 @@
     <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="Measurement.h" />
+    <ClInclude Include="BaseKnotAnimation.h" />
     <ClInclude Include="NNetWinWrappers.h" />
     <ClInclude Include="PluginConnectorAnimation.h" />
     <ClInclude Include="PluginIoNeuronAnimation.h" />

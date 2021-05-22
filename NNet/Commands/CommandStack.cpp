@@ -35,7 +35,7 @@ void CommandStack::clearRedoStack()
 
 void CommandStack::Push( unique_ptr<Command> pCmd )
 {
-    if ( UndoStackEmpty() || ! previousCmd().Combine(*pCmd) )
+    if ( UndoStackEmpty() || ! previousCmd().CombineCommands(*pCmd) )
     {
         m_CommandStack.push_back( move(pCmd) );
         set2YoungerCmd();

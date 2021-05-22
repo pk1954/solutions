@@ -35,6 +35,6 @@ private:
     unique_ptr<Connector>       m_upNobTarget;
     unique_ptr<ClosedConnector> m_upClosedNob {};
 
-    virtual void nextAnimationPhase();
+    virtual void nextAnimationPhase(Mode const);
     virtual void updateUI();
 };

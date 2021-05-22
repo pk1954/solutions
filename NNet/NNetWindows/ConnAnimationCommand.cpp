@@ -117,7 +117,7 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         default: return;                // do not start animation
         }
     }
-    m_connAnimation.SetNrOfSteps( calcNrOfSteps(umPntVectorStart, umPntVectorTarget) );
+    m_connAnimation.SetNrOfSteps( CalcNrOfSteps(umPntVectorStart, umPntVectorTarget) );
     m_connAnimation.Start(umPntVectorStart, umPntVectorTarget);
 }
 
@@ -133,24 +133,4 @@ void ConnAnimationCommand::Undo( NNetModelWriterInterface& nmwi )
     m_mode = Mode::mode_undo;
     m_iPhase = 4;
     nextAnimationPhase();
-}
-
-unsigned int const ConnAnimationCommand::calcNrOfSteps
-(
-    MicroMeterPntVector const & umPntVectorStart,
-    MicroMeterPntVector const & umPntVectorTarget
-) const
-{
-    MicroMeterPntVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
-    Radian              const radDiffMax      { umPntVectorDiff.FindMaxRadian() };
-    Radian              const radPerStep      { Degrees2Radian(6.0_Degrees) };
-    float               const fStepsFromRot   { radDiffMax / radPerStep };
-
-    MicroMeter          const umDiffMax       { umPntVectorDiff.FindMaxPos() };
-    MicroMeter          const umPerStep       { NEURON_RADIUS / 5.0f };
-    float               const fStepsFromMove  { umDiffMax / umPerStep };
-
-    float               const fSteps          { max(fStepsFromRot, fStepsFromMove) };
-    unsigned int        const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
-    return uiSteps;
 }

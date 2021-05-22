@@ -200,5 +200,8 @@
     <ClInclude Include="AnimatedCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BaseKnotAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
