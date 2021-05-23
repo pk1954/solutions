@@ -29,13 +29,4 @@ public:
     virtual ~PluginIoNeuronAnimation() {};
 
 private:
-
-    IoNeuron & m_nobAnimated;
-
-    unique_ptr<ConnectIoNeuronsCommand> m_upConnectIoNeurons;
-    unique_ptr<SingleNobAnimation>      m_upSingleNobAnimation;
-
-    virtual void doPhase  (unsigned int const);
-    virtual void undoPhase(unsigned int const);
-    virtual void updateUI ();
 };

@@ -33,13 +33,4 @@ public:
     virtual ~PluginConnectorAnimation() {};
 
 private:
-
-    Connector & m_nobAnimated;
-
-    unique_ptr<ConnectConnectorsCommand> m_upConnectConnectors;
-    unique_ptr<SingleNobAnimation>       m_upSingleNobAnimation;
-
-    virtual void doPhase  (unsigned int const);
-    virtual void undoPhase(unsigned int const);
-    virtual void updateUI ();
 };

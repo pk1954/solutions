@@ -6,11 +6,12 @@
 
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
+#include "Command.h"
 
 using std::unique_ptr;
 
 template <Nob_t PART, Nob_t RESULT>
-class ConnectIoObjectsCommand
+class ConnectIoObjectsCommand : public Command
 {
 public:
     ConnectIoObjectsCommand
@@ -31,7 +32,7 @@ public:
             : make_unique<RESULT>(m_nobTarget.GetPos(), m_nobTarget,   m_nobAnimated);
     }
 
-    void Do( NNetModelWriterInterface& nmwi )
+    virtual void Do( NNetModelWriterInterface& nmwi )
     {
         m_upResult->SetParentPointers();
         NobId id = nmwi.GetUPNobs().Push(move(m_upResult)); 
@@ -40,7 +41,7 @@ public:
         nmwi.GetNobPtr<RESULT *>(id)->Reconnect();
     }
 
-    void Undo( NNetModelWriterInterface& nmwi )
+    virtual void Undo( NNetModelWriterInterface& nmwi )
     {
         m_upResult = nmwi.GetUPNobs().Pop<RESULT>();
         m_upResult->ClearParentPointers();
