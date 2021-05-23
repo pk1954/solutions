@@ -25,11 +25,19 @@ class PluginConnectorAnimation : public PluginAnimation
 public:
     PluginConnectorAnimation
     (
-        Connector   &,
-        Connector   &,
-        MainWindow  &,
-        WinCommands &
-    );
+        Connector   & nobAnimated,
+        Connector   & nobTarget,
+        MainWindow  & win,
+        WinCommands & cmds
+    )
+        : PluginAnimation( nobAnimated, nobTarget, win, cmds )
+    {
+        SetConnectionCommand(move(make_unique<ConnectConnectorsCommand>(nobAnimated, nobTarget)));
+
+        SetTarget(5.0f);
+        SetTarget(1.4f);
+    }
+
     virtual ~PluginConnectorAnimation() {};
 
 private:

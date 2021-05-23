@@ -21,10 +21,12 @@ public:
     PluginAnimation
     ( 
         Nob         & nobAnimated,
+        Nob         & nobTarget,
         MainWindow  & win,
         WinCommands & cmds
     )
     :   m_nobAnimated(nobAnimated),
+        m_nobTarget  (nobTarget),
         m_win(win),
         m_NMWI(cmds.GetNMWI()),
         m_callable(win.GetWindowHandle())
@@ -46,23 +48,21 @@ public:
     }
 
 protected:
-    MicroMeterPosDir const calcOffsetTarget(Nob const & nobTarget, float fOffset)
+    void SetTarget(float fOffset)
     {
-        if (nobTarget.GetIoMode() == NobIoMode::input )
+        if (m_nobTarget.GetIoMode() == NobIoMode::input )
             fOffset = -fOffset;
-        Radian        const radianTarget { nobTarget.GetDir() };
+        Radian        const radianTarget { m_nobTarget.GetDir() };
         MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
         MicroMeterPnt const umPosOffset  { umDirVector * fOffset };
-        MicroMeterPnt const umPosTarget  { nobTarget.GetPos() + umPosOffset };
-        return MicroMeterPosDir(umPosTarget, radianTarget);
+        MicroMeterPnt const umPosTarget  { m_nobTarget.GetPos() + umPosOffset };
+        pushTarget(MicroMeterPosDir(umPosTarget, radianTarget));
     }
 
-    void pushTarget( MicroMeterPosDir const& umPosDir )
+    void SetConnectionCommand( unique_ptr<Command> upCmd )
     {
-        m_umPosDirTarget.push_back(umPosDir);
+        m_upConnectionCommand = move(upCmd);
     }
-
-    unique_ptr<Command> m_upConnectionCommand;
 
 private:
 
@@ -70,7 +70,9 @@ private:
     MainWindow                   & m_win;
     Callable                       m_callable;
     unique_ptr<SingleNobAnimation> m_upSingleNobAnimation;
+    unique_ptr<Command>            m_upConnectionCommand;
     Nob                          & m_nobAnimated;
+    Nob                          & m_nobTarget;
     vector<MicroMeterPosDir>       m_umPosDirTarget { };  
     unsigned int                   m_uiPhase        { 0 };
 
@@ -83,19 +85,19 @@ private:
         switch (m_uiPhase++)
         {
         case 0:  BlockUI();
-            doPhase();
-            break;
+                 doPhase();
+                 break;
 
         case 1:  m_upSingleNobAnimation->Start(getTarget(1), [&](){ doPhase(); });
-            break;
+                 break;
 
         case 2:	 m_upSingleNobAnimation->Start(getTarget(2), [&](){ doPhase(); });
-            break;
+                 break;
 
         case 3:  m_upConnectionCommand->Do(m_NMWI);
-            m_win.Notify(false);
-            UnblockUI();
-            break; 
+                 m_win.Notify(false);
+                 UnblockUI();
+                 break; 
 
         default: break;        
         }
@@ -106,18 +108,19 @@ private:
         switch (m_uiPhase--)
         {
         case 3:  BlockUI();
-            m_upConnectionCommand->Undo(m_NMWI);
-            undoPhase();
-            break;
+                 m_upConnectionCommand->Undo(m_NMWI);
+                 m_win.Notify(false);
+                 undoPhase();
+                 break;
 
         case 2:  m_upSingleNobAnimation->Start(getTarget(1), [&](){ undoPhase(); });
-            break;
+                 break;
 
         case 1:	 m_upSingleNobAnimation->Start(getTarget(0), [&](){ undoPhase(); });
-            break;
+                 break;
 
         case 0:  UnblockUI();
-            break; 
+                 break; 
 
         default: break;                // do not start animation
         }
@@ -126,6 +129,11 @@ private:
     MicroMeterPosDir const& getTarget( unsigned int const uiStep )
     {
         return m_umPosDirTarget.at(uiStep);
+    }
+
+    void pushTarget( MicroMeterPosDir const& umPosDir )
+    {
+        m_umPosDirTarget.push_back(umPosDir);
     }
 
 };
