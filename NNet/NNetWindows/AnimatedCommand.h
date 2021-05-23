@@ -31,14 +31,14 @@ public:
     {
         m_mode = Mode::mode_do;
         m_iPhase = 1;
-        nextAnimationPhase(m_mode);
+        doPhase();
     }
 
     virtual void Undo( NNetModelWriterInterface& nmwi )
     {
         m_mode = Mode::mode_undo;
         m_iPhase = Cast2Int(m_umPosDirTarget.size());
-        nextAnimationPhase(m_mode);
+        undoPhase();
     }
 
 protected:
@@ -59,7 +59,16 @@ protected:
             { 
                 m_callable.Call_UI_thread([&](){ updateUI(); });
                 if (bTargetReached)
-                    m_callable.Call_UI_thread([&](){ nextAnimationPhase(m_mode); });
+                    m_callable.Call_UI_thread
+                    (
+                        [&]()
+                        { 
+                            if (m_mode == Mode::mode_do) 
+                                doPhase();
+                            else
+                                undoPhase();
+                        }
+                );
             }
         )
     };
@@ -71,20 +80,10 @@ protected:
     void BlockUI()   { m_win.SendCommand2Application(IDM_BLOCK_UI, true);  };
     void UnblockUI() { m_win.SendCommand2Application(IDM_BLOCK_UI, false); };
 
-    void StartAnimation
-    (
-        MicroMeterPosDir const & umPosDirStart,
-        MicroMeterPosDir const & umPosDirTarget
-    )
-    {
-        m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
-        m_animation.Start(umPosDirStart, umPosDirTarget);
-        m_win.Notify(false);
-    }
-
 private:
     Mode m_mode { Mode::mode_do };
 
-    virtual void nextAnimationPhase(Mode const) = 0;
-    virtual void updateUI()                     = 0;
+    virtual void doPhase  () = 0;
+    virtual void undoPhase() = 0;
+    virtual void updateUI () = 0;
 };

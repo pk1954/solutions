@@ -59,39 +59,46 @@ void PluginConnectorAnimation::updateUI()  // runs in animation thread
     m_win.Notify(false);
 }
 
-void PluginConnectorAnimation::nextAnimationPhase(Mode const mode) // runs in UI thread
+void PluginConnectorAnimation::doPhase() // runs in UI thread
 {
     MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
     MicroMeterPosDir umPosDirTarget;
 
-    if (mode == Mode::mode_do)
+    switch (m_iPhase++)
     {
-        switch (m_iPhase++)
-        {
-        case 1:  BlockUI();
-                 umPosDirTarget = m_umPosDirTarget[1]; break;
-        case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
-        case 3:  m_upClosedNob->SetParentPointers();
-                 m_NMWI.GetUPNobs().Push(move(m_upClosedNob));
-                 UnblockUI();
-                 return; 
-        default: return;        // do not start animation
-        }
+    case 1:  BlockUI();
+             umPosDirTarget = m_umPosDirTarget[1]; break;
+    case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
+    case 3:  m_upClosedNob->SetParentPointers();
+             m_NMWI.GetUPNobs().Push(move(m_upClosedNob));
+             UnblockUI();
+             return; 
+    default: return;        // do not start animation
     }
-    else
+
+    m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
+    m_animation.Start(umPosDirStart, umPosDirTarget);
+    m_win.Notify(false);
+}
+
+void PluginConnectorAnimation::undoPhase() // runs in UI thread
+{
+    MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
+    MicroMeterPosDir umPosDirTarget;
+    switch (m_iPhase--)
     {
-        switch (m_iPhase--)
-        {
-        case 3:  BlockUI();
-                 m_upClosedNob = m_NMWI.GetUPNobs().Pop<ClosedConnector>();
-                 m_upClosedNob->ClearParentPointers();
-                 [[fallthrough]]; 
-        case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
-        case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
-        case 0:  UnblockUI();
-                 return; 
-        default: return;                // do not start animation
-        }
+    case 3:  BlockUI();
+             m_upClosedNob = m_NMWI.GetUPNobs().Pop<ClosedConnector>();
+             m_upClosedNob->ClearParentPointers();
+             [[fallthrough]]; 
+    case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
+    case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
+    case 0:  UnblockUI();
+             return; 
+    default: return;                // do not start animation
     }
-    StartAnimation(umPosDirStart, umPosDirTarget);
+
+    m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
+    m_animation.Start(umPosDirStart, umPosDirTarget);
+    m_win.Notify(false);
 }

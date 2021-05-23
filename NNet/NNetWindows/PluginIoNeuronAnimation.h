@@ -34,6 +34,7 @@ private:
     unique_ptr<ConnectIoNeuronsCommand> m_upConnectIoNeurons;
     unique_ptr<BaseKnotAnimation>       m_pBaseKnotAnimation;
 
-    virtual void nextAnimationPhase(Mode const);
-    virtual void updateUI();
+    virtual void doPhase  ();
+    virtual void undoPhase();
+    virtual void updateUI ();
 };

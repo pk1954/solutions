@@ -47,7 +47,7 @@ private:
     {
         Animation<MicroMeterPosDir>
         (
-            [&](bool const bTargetReached) 
+            [&](bool const bTargetReached)
             { 
                 Callable callable { m_win.GetWindowHandle() };
                 callable.Call_UI_thread
