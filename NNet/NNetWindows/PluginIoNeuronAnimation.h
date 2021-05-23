@@ -5,18 +5,10 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "PluginAnimation.h"
-#include "NobPtrList.h"
-#include "win32_callable.h"
-#include "win32_animation.h"
+#include "Neuron.h"
 #include "IoNeuron.h"
-#include "SingleNobAnimation.h"
 #include "PluginAnimation.h"
 #include "ConnectIoObjectsCommand.h"
-
-using std::unique_ptr;
-
-using ConnectIoNeuronsCommand = ConnectIoObjectsCommand<IoNeuron,Neuron>;
 
 class PluginIoNeuronAnimation : public PluginAnimation
 {
@@ -30,7 +22,7 @@ public:
     )
         : PluginAnimation(nobAnimated, nobTarget, win, cmds)
     {
-        SetConnectionCommand(move(make_unique<ConnectIoNeuronsCommand>(nobAnimated, nobTarget)));
+        SetConnectionCommand(move(make_unique<ConnectIoObjectsCommand<IoNeuron,Neuron>>(nobAnimated, nobTarget)));
 
         SetTarget(3.0f);
         SetTarget(1.4f);

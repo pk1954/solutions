@@ -4,21 +4,11 @@
 
 #pragma once
 
-#include "vector"
 #include "MoreTypes.h"
-#include "PluginAnimation.h"
 #include "Connector.h"
 #include "ClosedConnector.h"
-#include "NobPtrList.h"
-#include "SingleNobAnimation.h"
-#include "win32_callable.h"
-#include "win32_animation.h"
+#include "PluginAnimation.h"
 #include "ConnectIoObjectsCommand.h"
-
-using std::unique_ptr;
-using std::vector;
-
-using ConnectConnectorsCommand = ConnectIoObjectsCommand<Connector,ClosedConnector>;
 
 class PluginConnectorAnimation : public PluginAnimation
 {
@@ -32,7 +22,7 @@ public:
     )
         : PluginAnimation( nobAnimated, nobTarget, win, cmds )
     {
-        SetConnectionCommand(move(make_unique<ConnectConnectorsCommand>(nobAnimated, nobTarget)));
+        SetConnectionCommand(move(make_unique<ConnectIoObjectsCommand<Connector,ClosedConnector>>(nobAnimated, nobTarget)));
 
         SetTarget(5.0f);
         SetTarget(1.4f);

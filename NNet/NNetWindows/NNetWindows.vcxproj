@@ -575,7 +575,7 @@
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
-    <ClCompile Include="PluginConnectorAnimation.cpp" />
+    <ClCompile Include="PluginAnimation.cpp" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />

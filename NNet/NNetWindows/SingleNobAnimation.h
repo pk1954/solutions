@@ -63,7 +63,7 @@ private:
                         m_win.Notify(false);
                     }
                 );
-                if (bTargetReached)
+                if (bTargetReached && m_targetReachedFunc)
                     callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
             }
         )

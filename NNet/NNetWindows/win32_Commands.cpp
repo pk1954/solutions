@@ -92,6 +92,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 		}
 		break;
 	case NobType::Value::connector:
+	{
 		upCmd = make_unique<PluginConnectorAnimation> 
 		(
 			* m_pNMWI->GetNobPtr<Connector *>(idSrc), 
@@ -99,6 +100,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 			win,
 			* this
 		);
+	}
 		break;
 	default:
 		assert( false );
