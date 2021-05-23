@@ -200,7 +200,7 @@
     <ClInclude Include="AnimatedCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseKnotAnimation.h">
+    <ClInclude Include="SingleNobAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,7 +19,7 @@ public:
 	static bool    const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::closedConnector; }
 
-	ClosedConnector(Connector &, Connector &);
+	ClosedConnector(MicroMeterPnt const &, Connector &, Connector &);
 	virtual ~ClosedConnector() {}
 
 	virtual void Check() const;

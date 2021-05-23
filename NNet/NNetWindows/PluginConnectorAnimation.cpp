@@ -23,34 +23,27 @@ PluginConnectorAnimation::PluginConnectorAnimation
     WinCommands & cmds
 )
   : AnimatedCommand(win, cmds),
-    m_nobTarget(nobTarget),
     m_nobAnimated(nobAnimated)
 {
-    assert( m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob() );
-    assert( m_nobAnimated.GetIoMode() != NobIoMode::internal );
-    assert( m_nobTarget  .GetIoMode() != NobIoMode::internal );
-    assert( m_nobTarget  .GetIoMode() !== m_nobAnimated.GetIoMode() );
+    m_upSingleNobAnimation = make_unique<SingleNobAnimation>(win, nobAnimated);
+    m_upConnectConnectors  = make_unique<ConnectConnectorsCommand>(nobAnimated, nobTarget);
 
-    Radian        const radianTarget { m_nobTarget.GetDir() };
+    Radian        const radianTarget { nobTarget.GetDir() };
     MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
     
-    m_umPosDirTarget.push_back(m_nobAnimated.GetPosDir());
+    m_umPosDirTarget.push_back(nobAnimated.GetPosDir());
 
     array <float, 2> fOffsets { 5.0f, 1.4f };
 
     for (size_t i = 1; i<= 2; ++i )
     {
         float fOff { fOffsets[i-1] };
-        if (m_nobTarget.GetIoMode() == NobIoMode::input )
+        if (nobTarget.GetIoMode() == NobIoMode::input )
             fOff = -fOff;
         MicroMeterPnt const umPosOffset { umDirVector * fOff };
-        MicroMeterPnt const umPosTarget { m_nobTarget.GetPos() + umPosOffset };
+        MicroMeterPnt const umPosTarget { nobTarget.GetPos() + umPosOffset };
         m_umPosDirTarget.push_back(MicroMeterPosDir(umPosTarget, radianTarget));
     }
-
-    m_upClosedNob = m_nobAnimated.IsInputNob()
-                    ? make_unique<ClosedConnector>(m_nobAnimated, m_nobTarget)
-                    : make_unique<ClosedConnector>(m_nobTarget,   m_nobAnimated);
 }
 
 void PluginConnectorAnimation::updateUI()  // runs in animation thread
@@ -61,44 +54,45 @@ void PluginConnectorAnimation::updateUI()  // runs in animation thread
 
 void PluginConnectorAnimation::doPhase() // runs in UI thread
 {
-    MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
-    MicroMeterPosDir umPosDirTarget;
-
     switch (m_iPhase++)
     {
-    case 1:  BlockUI();
-             umPosDirTarget = m_umPosDirTarget[1]; break;
-    case 2:	 umPosDirTarget = m_umPosDirTarget[2]; break;
-    case 3:  m_upClosedNob->SetParentPointers();
-             m_NMWI.GetUPNobs().Push(move(m_upClosedNob));
-             UnblockUI();
-             return; 
-    default: return;        // do not start animation
-    }
+    case 0:  BlockUI();
+             doPhase();
+             break;
 
-    m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
-    m_animation.Start(umPosDirStart, umPosDirTarget);
-    m_win.Notify(false);
+    case 1:  m_upSingleNobAnimation->Start(m_umPosDirTarget[1], [&](){ doPhase(); });
+             break;
+
+    case 2:	 m_upSingleNobAnimation->Start(m_umPosDirTarget[2], [&](){ doPhase(); });
+             break;
+
+    case 3:  m_upConnectConnectors->Do(m_NMWI);
+             m_win.Notify(false);
+             UnblockUI();
+             break; 
+
+    default: break;
+    }
 }
 
 void PluginConnectorAnimation::undoPhase() // runs in UI thread
 {
-    MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
-    MicroMeterPosDir umPosDirTarget;
     switch (m_iPhase--)
     {
     case 3:  BlockUI();
-             m_upClosedNob = m_NMWI.GetUPNobs().Pop<ClosedConnector>();
-             m_upClosedNob->ClearParentPointers();
-             [[fallthrough]]; 
-    case 2:  umPosDirTarget = m_umPosDirTarget[1]; break;
-    case 1:	 umPosDirTarget = m_umPosDirTarget[0]; break;
-    case 0:  UnblockUI();
-             return; 
-    default: return;                // do not start animation
-    }
+             m_upConnectConnectors->Undo(m_NMWI);
+             undoPhase();
+             break;
 
-    m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
-    m_animation.Start(umPosDirStart, umPosDirTarget);
-    m_win.Notify(false);
+    case 2:  m_upSingleNobAnimation->Start(m_umPosDirTarget[1], [&](){ undoPhase(); });
+             break;
+
+    case 1:	 m_upSingleNobAnimation->Start(m_umPosDirTarget[0], [&](){ undoPhase(); });
+             break;
+
+    case 0:  UnblockUI();
+             break; 
+
+    default: break;
+    }
 }

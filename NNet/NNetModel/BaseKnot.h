@@ -85,7 +85,7 @@ public:
 	bool const IsPrecursorOf( Pipe const & ) const;
 	bool const IsSuccessorOf( Pipe const & ) const ;
 
-	void Reconnect() { m_connections.Reconnect( this );	}
+	virtual void Reconnect() { m_connections.Reconnect( this );	}
 	
 	void AddConnections( BaseKnot * const pSrc ) 
 	{ 

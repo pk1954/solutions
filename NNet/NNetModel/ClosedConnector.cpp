@@ -7,8 +7,9 @@
 
 ClosedConnector::ClosedConnector
 ( 
-    Connector & connInput, 
-    Connector & connOutput 
+    MicroMeterPnt const & upCenter, 
+    Connector           & connInput, 
+    Connector           & connOutput 
 )
   :	Nob(NobType::Value::closedConnector)
 {

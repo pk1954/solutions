@@ -78,6 +78,7 @@ public:
 	virtual void SetId(NobId const id) { m_identifier = id; }
 	virtual void SetParentPointers  () {};
 	virtual void ClearParentPointers() {};
+	virtual void Reconnect          () {};
 
 	virtual bool const IsCompositeNob() { return false; }
 

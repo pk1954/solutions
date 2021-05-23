@@ -11,6 +11,7 @@
 #include "NobIdList.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
+#include "ConnectIoObjectsCommand.h"
 #include "PluginIoNeuronAnimation.h"
 
 using std::make_unique;
@@ -26,8 +27,8 @@ PluginIoNeuronAnimation::PluginIoNeuronAnimation
     m_nobTarget(nobTarget),
     m_nobAnimated(nobAnimated)
 {
-    m_pBaseKnotAnimation = make_unique<BaseKnotAnimation>(win, nobAnimated);
-    m_upConnectIoNeurons = make_unique<ConnectIoNeuronsCommand>(nobAnimated, nobTarget);
+    m_upSingleNobAnimation = make_unique<SingleNobAnimation>(win, nobAnimated);
+    m_upConnectIoNeurons   = make_unique<ConnectIoNeuronsCommand>(nobAnimated, nobTarget);
 
     Radian        const radianTarget { m_nobTarget.GetDir() };
     MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
@@ -61,10 +62,10 @@ void PluginIoNeuronAnimation::doPhase() // runs in UI thread
              doPhase();
              break;
 
-    case 1:  m_pBaseKnotAnimation->Start(m_umPosDirTarget[1], [&](){ doPhase(); });
+    case 1:  m_upSingleNobAnimation->Start(m_umPosDirTarget[1], [&](){ doPhase(); });
              break;
 
-    case 2:	 m_pBaseKnotAnimation->Start(m_umPosDirTarget[2], [&](){ doPhase(); });
+    case 2:	 m_upSingleNobAnimation->Start(m_umPosDirTarget[2], [&](){ doPhase(); });
              break;
 
     case 3:  m_upConnectIoNeurons->Do(m_NMWI);
@@ -85,10 +86,10 @@ void PluginIoNeuronAnimation::undoPhase() // runs in UI thread
              undoPhase();
              break;
 
-    case 2:  m_pBaseKnotAnimation->Start(m_umPosDirTarget[1], [&](){ undoPhase(); });
+    case 2:  m_upSingleNobAnimation->Start(m_umPosDirTarget[1], [&](){ undoPhase(); });
              break;
 
-    case 1:	 m_pBaseKnotAnimation->Start(m_umPosDirTarget[0], [&](){ undoPhase(); });
+    case 1:	 m_upSingleNobAnimation->Start(m_umPosDirTarget[0], [&](){ undoPhase(); });
              break;
 
     case 0:  UnblockUI();

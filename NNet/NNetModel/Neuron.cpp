@@ -22,7 +22,7 @@ using std::wstring;
 using std::wostringstream;
 
 Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
-  : BaseKnot( upCenter, type, NEURON_RADIUS )
+  : BaseKnot(upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
 }
@@ -30,8 +30,8 @@ Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
 Neuron::Neuron
 ( 
 	MicroMeterPnt const & upCenter,
-	IoNeuron & inputNeuron, 
-	IoNeuron & outputNeuron 
+	IoNeuron            & inputNeuron, 
+	IoNeuron            & outputNeuron 
 )
   : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
 {
