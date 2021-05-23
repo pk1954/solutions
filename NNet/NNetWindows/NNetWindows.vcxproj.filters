@@ -197,7 +197,7 @@
     <ClInclude Include="PluginIoNeuronAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AnimatedCommand.h">
+    <ClInclude Include="PluginAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">

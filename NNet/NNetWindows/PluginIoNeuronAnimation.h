@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "AnimatedCommand.h"
+#include "PluginAnimation.h"
 #include "NobPtrList.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
@@ -16,7 +16,7 @@ using std::unique_ptr;
 
 using ConnectIoNeuronsCommand = ConnectIoObjectsCommand<IoNeuron,Neuron>;
 
-class PluginIoNeuronAnimation : public AnimatedCommand
+class PluginIoNeuronAnimation : public PluginAnimation
 {
 public:
     PluginIoNeuronAnimation
@@ -30,13 +30,12 @@ public:
 
 private:
 
-    IoNeuron & m_nobTarget;
     IoNeuron & m_nobAnimated;
 
     unique_ptr<ConnectIoNeuronsCommand> m_upConnectIoNeurons;
     unique_ptr<SingleNobAnimation>      m_upSingleNobAnimation;
 
-    virtual void doPhase  ();
-    virtual void undoPhase();
+    virtual void doPhase  (unsigned int const);
+    virtual void undoPhase(unsigned int const);
     virtual void updateUI ();
 };

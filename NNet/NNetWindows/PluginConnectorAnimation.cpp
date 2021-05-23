@@ -22,48 +22,35 @@ PluginConnectorAnimation::PluginConnectorAnimation
     MainWindow  & win,
     WinCommands & cmds
 )
-  : AnimatedCommand(win, cmds),
+  : PluginAnimation(win, cmds),
     m_nobAnimated(nobAnimated)
 {
     m_upSingleNobAnimation = make_unique<SingleNobAnimation>(win, nobAnimated);
     m_upConnectConnectors  = make_unique<ConnectConnectorsCommand>(nobAnimated, nobTarget);
 
-    Radian        const radianTarget { nobTarget.GetDir() };
-    MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
-    
-    m_umPosDirTarget.push_back(nobAnimated.GetPosDir());
-
-    array <float, 2> fOffsets { 5.0f, 1.4f };
-
-    for (size_t i = 1; i<= 2; ++i )
-    {
-        float fOff { fOffsets[i-1] };
-        if (nobTarget.GetIoMode() == NobIoMode::input )
-            fOff = -fOff;
-        MicroMeterPnt const umPosOffset { umDirVector * fOff };
-        MicroMeterPnt const umPosTarget { nobTarget.GetPos() + umPosOffset };
-        m_umPosDirTarget.push_back(MicroMeterPosDir(umPosTarget, radianTarget));
-    }
+    pushTarget(m_nobAnimated.GetPosDir());
+    pushTarget(calcOffsetTarget(nobTarget, 5.0f));
+    pushTarget(calcOffsetTarget(nobTarget, 1.4f));
 }
 
 void PluginConnectorAnimation::updateUI()  // runs in animation thread
 {
-    m_nobAnimated.SetPosDir(m_animation.GetActual());
+    m_nobAnimated.SetPosDir(m_upSingleNobAnimation->GetActual());
     m_win.Notify(false);
 }
 
-void PluginConnectorAnimation::doPhase() // runs in UI thread
+void PluginConnectorAnimation::doPhase(unsigned int const uiPhase) // runs in UI thread
 {
-    switch (m_iPhase++)
+    switch (uiPhase)
     {
     case 0:  BlockUI();
-             doPhase();
+             doPhase(1);
              break;
 
-    case 1:  m_upSingleNobAnimation->Start(m_umPosDirTarget[1], [&](){ doPhase(); });
+    case 1:  m_upSingleNobAnimation->Start(getTarget(1), [&](){ doPhase(2); });
              break;
 
-    case 2:	 m_upSingleNobAnimation->Start(m_umPosDirTarget[2], [&](){ doPhase(); });
+    case 2:	 m_upSingleNobAnimation->Start(getTarget(2), [&](){ doPhase(3); });
              break;
 
     case 3:  m_upConnectConnectors->Do(m_NMWI);
@@ -75,19 +62,19 @@ void PluginConnectorAnimation::doPhase() // runs in UI thread
     }
 }
 
-void PluginConnectorAnimation::undoPhase() // runs in UI thread
+void PluginConnectorAnimation::undoPhase(unsigned int const uiPhase) // runs in UI thread
 {
-    switch (m_iPhase--)
+    switch (uiPhase)
     {
     case 3:  BlockUI();
              m_upConnectConnectors->Undo(m_NMWI);
-             undoPhase();
+             undoPhase(2);
              break;
 
-    case 2:  m_upSingleNobAnimation->Start(m_umPosDirTarget[1], [&](){ undoPhase(); });
+    case 2:  m_upSingleNobAnimation->Start(getTarget(1), [&](){ undoPhase(1); });
              break;
 
-    case 1:	 m_upSingleNobAnimation->Start(m_umPosDirTarget[0], [&](){ undoPhase(); });
+    case 1:	 m_upSingleNobAnimation->Start(getTarget(0), [&](){ undoPhase(0); });
              break;
 
     case 0:  UnblockUI();
