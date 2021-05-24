@@ -200,5 +200,8 @@
     <ClInclude Include="SingleNobAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

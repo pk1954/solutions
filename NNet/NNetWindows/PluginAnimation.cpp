@@ -6,6 +6,7 @@
 #include "NNetModelWriterInterface.h"
 #include "win32_Commands.h"
 #include "win32_mainWindow.h"
+#include "SingleNobAnimation.h"
 #include "PluginAnimation.h"
 
 PluginAnimation::PluginAnimation
@@ -20,8 +21,6 @@ PluginAnimation::PluginAnimation
     m_win(win),
     m_NMWI(cmds.GetNMWI())
 {
-    m_upSingleNobAnimation = make_unique<SingleNobAnimation>(win, nobAnimated);
-    pushTarget(m_nobAnimated.GetPosDir());
 }
 
 void PluginAnimation::Do( NNetModelWriterInterface& nmwi )
@@ -32,7 +31,7 @@ void PluginAnimation::Do( NNetModelWriterInterface& nmwi )
 
 void PluginAnimation::Undo( NNetModelWriterInterface& nmwi )
 {
-    m_uiPhase = Cast2Int(m_umPosDirTarget.Size());
+    m_uiPhase = Cast2Int(m_moveSteps.size());
     undoPhase();
 }
 
@@ -40,11 +39,12 @@ void PluginAnimation::SetTarget(float fOffset)
 {
     if (m_nobTarget.GetIoMode() == NobIoMode::input )
         fOffset = -fOffset;
-    Radian        const radianTarget { m_nobTarget.GetDir() };
-    MicroMeterPnt const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
-    MicroMeterPnt const umPosOffset  { umDirVector * fOffset };
-    MicroMeterPnt const umPosTarget  { m_nobTarget.GetPos() + umPosOffset };
-    pushTarget(MicroMeterPosDir(umPosTarget, radianTarget));
+    Radian           const radianTarget { m_nobTarget.GetDir() };
+    MicroMeterPnt    const umDirVector  { Radian2Vector(radianTarget).ScaledTo(NEURON_RADIUS) };
+    MicroMeterPnt    const umPosOffset  { umDirVector * fOffset };
+    MicroMeterPnt    const umPosTarget  { m_nobTarget.GetPos() + umPosOffset };
+    MicroMeterPosDir const umPosDirTarget(umPosTarget, radianTarget);
+    m_moveSteps.push_back(make_unique<SingleNobAnimation>(m_win, m_nobAnimated, umPosDirTarget));
 }
 
 void PluginAnimation::SetConnectionCommand( unique_ptr<Command> upCmd )
@@ -72,11 +72,11 @@ void PluginAnimation::doPhase() // runs in UI thread
         break;
 
     case 1:  
-        m_upSingleNobAnimation->Start(getTarget(1), [&](){ doPhase(); });
+        m_moveSteps[0]->Do([&](){ doPhase(); });
         break;
 
     case 2:	 
-        m_upSingleNobAnimation->Start(getTarget(2), [&](){ doPhase(); });
+        m_moveSteps[1]->Do([&](){ doPhase(); });
         break;
 
     case 3:  
@@ -102,11 +102,11 @@ void PluginAnimation::undoPhase() // runs in UI thread
         break;
 
     case 2:  
-        m_upSingleNobAnimation->Start(getTarget(1), [&](){ undoPhase(); });
+        m_moveSteps[1]->Undo([&](){ undoPhase(); });
         break;
 
     case 1:	 
-        m_upSingleNobAnimation->Start(getTarget(0), [&](){ undoPhase(); });
+        m_moveSteps[0]->Undo([&](){ undoPhase(); });
         break;
 
     case 0:  
@@ -117,14 +117,3 @@ void PluginAnimation::undoPhase() // runs in UI thread
         break;
     }
 }
-
-MicroMeterPosDir const PluginAnimation::getTarget( unsigned int const uiStep )
-{
-    return m_umPosDirTarget.GetPosDir(uiStep);
-}
-
-void PluginAnimation::pushTarget( MicroMeterPosDir const & umPosDir )
-{
-    m_umPosDirTarget.Add(umPosDir);
-}
-

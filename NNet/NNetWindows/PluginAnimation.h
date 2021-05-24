@@ -8,7 +8,7 @@
 #include "MicroMeterPntVector.h"
 #include "Command.h"
 #include "win32_commands.h"
-#include "SingleNobAnimation.h"
+#include "AnimationCmd.h"
 
 class NNetModelWriterInterface;
 class WinCommands;
@@ -28,22 +28,19 @@ protected:
     void SetConnectionCommand( unique_ptr<Command> );
 
 private:
-    unique_ptr<SingleNobAnimation> m_upSingleNobAnimation;
-    unique_ptr<Command>            m_upConnectionCommand;
+    unique_ptr<Command> m_upConnectionCommand;
 
+    unsigned int               m_uiPhase { 0 };
     NNetModelWriterInterface & m_NMWI;
     MainWindow               & m_win;
     Nob                      & m_nobAnimated;
     Nob                      & m_nobTarget;
-    MicroMeterPntVector        m_umPosDirTarget { };  
-    unsigned int               m_uiPhase        { 0 };
+
+    vector<unique_ptr<AnimationCmd>> m_moveSteps { };  
 
     void BlockUI();
     void UnblockUI();
 
     void doPhase();
     void undoPhase();
-
-    MicroMeterPosDir const getTarget(unsigned int const);
-    void pushTarget(MicroMeterPosDir const &);
 };

@@ -11,42 +11,44 @@
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
+#include "AnimationCmd.h"
 
 using std::function;
 
-class SingleNobAnimation
+class SingleNobAnimation : public AnimationCmd
 {
 public:
     SingleNobAnimation
     ( 
-        MainWindow & win,
-        Nob        & nob
+        MainWindow             & win,
+        Nob                    & nob,
+        MicroMeterPosDir const & umPosDirTarget
     )
-      : m_win(win),
-        m_nobAnimated(nob)
-    {}
-
-    void Start
-    (
-        MicroMeterPosDir const & umPosDirTarget,
-        function<void()> const   targetReachedFunc
-    )
+      : AnimationCmd(win),
+        m_nobAnimated(nob),
+        m_umPosDirTarget(umPosDirTarget),
+        m_umPosDirStart(nob.GetPosDir())
     {
-        MicroMeterPosDir umPosDirStart { m_nobAnimated.GetPosDir() };
-        m_targetReachedFunc = targetReachedFunc;
-        m_animation.SetNrOfSteps( CalcNrOfSteps(umPosDirStart, umPosDirTarget) );
-        m_animation.Start(umPosDirStart, umPosDirTarget);
+        m_animation.SetNrOfSteps( CalcNrOfSteps(m_umPosDirStart, m_umPosDirTarget) );
     }
 
-    MicroMeterPosDir const GetActual()
+    virtual void Do(function<void()> const & targetReachedFunc)
     {
-        return m_animation.GetActual();
+        AnimationCmd::Do(targetReachedFunc);
+        m_animation.Start(m_umPosDirStart, m_umPosDirTarget);
+    }
+
+    virtual void Undo(function<void()> const & targetReachedFunc)
+    {
+        AnimationCmd::Undo(targetReachedFunc);
+        m_animation.Start(m_umPosDirTarget, m_umPosDirStart);
     }
 
 private:
-    Nob            & m_nobAnimated;
-    MainWindow     & m_win;
-    function<void()> m_targetReachedFunc { nullptr };
+    unsigned int           m_uiNrOfSteps;
+    Nob                  & m_nobAnimated;
+    MicroMeterPosDir const m_umPosDirStart;
+    MicroMeterPosDir const m_umPosDirTarget;
 
     Animation<MicroMeterPosDir> m_animation 
     {
