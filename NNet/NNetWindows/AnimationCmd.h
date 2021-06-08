@@ -4,7 +4,8 @@
 
 #pragma once
 
-class MainWindow;
+#include "win32_callable.h"
+#include "win32_mainWindow.h"
 
 using std::function;
 
@@ -19,10 +20,13 @@ public:
     {
         m_targetReachedFunc = func;
     };
+    
     virtual void Undo(function<void()> const & func)
     {
         m_targetReachedFunc = func;
     };
+
+    virtual void UpdateUI() { m_win.Notify(false); };
 
 protected:
     MainWindow     & m_win;

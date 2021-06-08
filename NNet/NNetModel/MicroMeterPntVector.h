@@ -29,7 +29,7 @@ public:
 
     unsigned int const Size() const;
 
-    MicroMeterPosDir const GetPosDir( unsigned int const) const;
+    MicroMeterPosDir const GetPosDir(unsigned int const) const;
 
     void SetPosDir(unsigned int const, MicroMeterPosDir const &);
     void SetDir   (Radian const);

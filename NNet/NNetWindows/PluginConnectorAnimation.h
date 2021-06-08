@@ -5,30 +5,34 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "Nob.h"
 #include "Connector.h"
 #include "ClosedConnector.h"
-#include "PluginAnimation.h"
+#include "AnimationSequence.h"
+#include "SingleNobAnimation.h"
 #include "ConnectIoObjectsCommand.h"
 
-class PluginConnectorAnimation : public PluginAnimation
+class NNetModelWriterInterface;
+
+class PluginConnectorAnimation : public AnimationSequence
 {
 public:
     PluginConnectorAnimation
     (
-        Connector   & nobAnimated,
-        Connector   & nobTarget,
-        MainWindow  & win,
-        WinCommands & cmds
+        NNetModelWriterInterface & nmwi,
+        Connector                & nobAnimated,
+        Connector                & nobTarget,
+        MainWindow               & win
     )
-        : PluginAnimation( nobAnimated, nobTarget, win, cmds )
+        : AnimationSequence(win)
     {
-        SetConnectionCommand(move(make_unique<ConnectIoObjectsCommand<Connector,ClosedConnector>>(nobAnimated, nobTarget)));
-
-        SetTarget(5.0f);
-        SetTarget(1.4f);
+        AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));
+        AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
+        AddPhase(make_unique<ConnectIoObjectsCommand<Connector,ClosedConnector>>(nmwi,nobAnimated, nobTarget, win));
     }
 
     virtual ~PluginConnectorAnimation() {};
 
 private:
+
 };

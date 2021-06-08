@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "MoreTypes.h"
-#include "RectType.h"
 #include "win32_util.h"
 #include "NNetModelReaderInterface.h"
 #include "Knot.h"

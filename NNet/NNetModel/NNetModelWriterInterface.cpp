@@ -76,19 +76,19 @@ void NNetModelWriterInterface::RemoveOrphans()
 
 void NNetModelWriterInterface::SetIoNeurons
 (
-	MicroMeterPntVector & umPntVector, 
-	NobIdList     const & nobIds
+	MicroMeterPntVector & umPntVectorSrc, 
+	NobIdList     const & nobIdsDst
 )
 {
 	unsigned int ui = 0;
-	nobIds.Apply2All
+	nobIdsDst.Apply2All
 	(
-		[&](NobId const & id)
+		[&](NobId const & idDst)
 		{
-			IoNeuron       * const pIoNeuron { GetNobPtr<IoNeuron *>(id) };
-			MicroMeterPosDir const posDir    { pIoNeuron->GetRawPosDir() };
-			pIoNeuron->SetPosDir( umPntVector.GetPosDir(ui) );
-			umPntVector.SetPosDir( ui, posDir );
+			IoNeuron       * const pIoNeuronDst { GetNobPtr<IoNeuron *>(idDst) };
+//			MicroMeterPosDir const posDir       { pIoNeuronDst->GetRawPosDir() };
+			pIoNeuronDst->SetPosDir( umPntVectorSrc.GetPosDir(ui) );
+//			umPntVectorSrc.SetPosDir( ui, posDir );
 			++ui;
 		}
 	);

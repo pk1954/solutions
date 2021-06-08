@@ -19,7 +19,7 @@ public:
 	NobPtrList() {}
 	virtual ~NobPtrList() {}
 
-	size_t const Size()    const { return m_list.size(); }
+	size_t const Size()    const { return m_list.size (); }
 	bool   const IsEmpty() const { return m_list.empty(); }
 
 	T       & GetFirst()       { return * m_list.at( 0 ); }
@@ -27,6 +27,9 @@ public:
 
 	T       & GetLast()       { return * m_list.back(); }
 	T const & GetLast() const { return * m_list.back(); }
+
+	T       & GetElem(size_t const i)       { return * m_list.at(i); }
+	T const & GetElem(size_t const i) const { return * m_list.at(i); }
 
 	void Check() const { for (auto & it : m_list) { it->Check(); }; }
 

@@ -181,12 +181,13 @@ public:
 		return res; 
 	};
 
-	friend PointType const operator/ (PointType const a, int const i) 
-	{ 
-		PointType res { a }; 
-		res /= i; 
-		return res; 
-	};
+	// makes problems! Not quite clear, but works without.
+	//friend PointType const operator/ (PointType const a, int const i) 
+	//{ 
+	//	PointType res { a }; 
+	//	res /= i; 
+	//	return res; 
+	//};
 
 	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
 	{

@@ -19,55 +19,51 @@ class SingleNobAnimation : public AnimationCmd
 {
 public:
     SingleNobAnimation
-    ( 
+    (
         MainWindow             & win,
         Nob                    & nob,
         MicroMeterPosDir const & umPosDirTarget
     )
       : AnimationCmd(win),
         m_nobAnimated(nob),
-        m_umPosDirTarget(umPosDirTarget),
-        m_umPosDirStart(nob.GetPosDir())
-    {
-        m_animation.SetNrOfSteps( CalcNrOfSteps(m_umPosDirStart, m_umPosDirTarget) );
-    }
+        m_umPosDirStart(nob.GetPosDir()),
+        m_umPosDirTarget(umPosDirTarget)
+    {}
 
     virtual void Do(function<void()> const & targetReachedFunc)
     {
         AnimationCmd::Do(targetReachedFunc);
-        m_animation.Start(m_umPosDirStart, m_umPosDirTarget);
+        m_animation.SetNrOfSteps(CalcNrOfSteps(m_nobAnimated.GetPosDir(), m_umPosDirTarget));
+        m_animation.Start(m_nobAnimated.GetPosDir(), m_umPosDirTarget);
     }
 
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
         AnimationCmd::Undo(targetReachedFunc);
-        m_animation.Start(m_umPosDirTarget, m_umPosDirStart);
+        m_animation.SetNrOfSteps(CalcNrOfSteps(m_nobAnimated.GetPosDir(), m_umPosDirStart));
+        m_animation.Start(m_nobAnimated.GetPosDir(), m_umPosDirStart);
+    }
+
+    virtual void UpdateUI()
+    {
+        m_nobAnimated.SetPosDir(m_animation.GetActual());
+        AnimationCmd::UpdateUI();
     }
 
 private:
-    unsigned int           m_uiNrOfSteps;
+
     Nob                  & m_nobAnimated;
     MicroMeterPosDir const m_umPosDirStart;
     MicroMeterPosDir const m_umPosDirTarget;
 
     Animation<MicroMeterPosDir> m_animation 
     {
-        Animation<MicroMeterPosDir>
-        (
-            [&](bool const bTargetReached)
-            { 
-                Callable callable { m_win.GetWindowHandle() };
-                callable.Call_UI_thread
-                (
-                    [&]()
-                    { 
-                        m_nobAnimated.SetPosDir(m_animation.GetActual());
-                        m_win.Notify(false);
-                    }
-                );
-                if (bTargetReached && m_targetReachedFunc)
-                    callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
-            }
-        )
+        [&](bool const bTargetReached)
+        { 
+            Callable callable { m_win.GetWindowHandle() };
+            callable.Call_UI_thread ([&](){ UpdateUI(); });
+            if (bTargetReached && m_targetReachedFunc)
+                callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
+        }
     };
 };

@@ -11,7 +11,7 @@
 #include <string>
 #include <iostream>
 
-using std::wstring;
+//using std::wstring;
 using std::wostream;
 using std::wcout;
 using std::endl;
@@ -215,8 +215,8 @@ namespace Util
 
     inline PixelPoint GetClRectCenter( HWND const hwnd )
     {
-        PixelRectSize pixSize = GetClRectSize( hwnd ) / 2;
-		return PixelPoint( pixSize.GetX(), pixSize.GetY() );
+        PixelRectSize pixSize = GetClRectSize( hwnd );
+		return PixelPoint(pixSize.GetX() / 2, pixSize.GetY() / 2);
     }
 
     inline bool IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?

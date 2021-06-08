@@ -6,21 +6,26 @@
 
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "AnimationCmd.h"
 
 using std::unique_ptr;
 
 template <Nob_t PART, Nob_t RESULT>
-class ConnectIoObjectsCommand : public Command
+class ConnectIoObjectsCommand : public AnimationCmd
 {
 public:
     ConnectIoObjectsCommand
     (
-        PART & nobAnimated, 
-        PART & nobTarget
+        NNetModelWriterInterface & nmwi,
+        PART                     & nobAnimated, 
+        PART                     & nobTarget,
+        MainWindow               & win
     )
-      : m_nobTarget(nobTarget),
-        m_nobAnimated(nobAnimated)
+      : AnimationCmd(win),
+        m_NMWI(nmwi),
+        m_nobTarget(nobTarget),
+        m_nobAnimated(nobAnimated),
+        m_win(win)
     {
         assert( m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob() );
         assert( m_nobAnimated.GetIoMode() != NobIoMode::internal );
@@ -32,29 +37,36 @@ public:
             : make_unique<RESULT>(m_nobTarget.GetPos(), m_nobTarget,   m_nobAnimated);
     }
 
-    virtual void Do( NNetModelWriterInterface& nmwi )
+    virtual void Do(function<void()> const & targetReachedFunc)
     {
         m_upResult->SetParentPointers();
-        NobId id = nmwi.GetUPNobs().Push(move(m_upResult)); 
-        m_upNobAnimated = nmwi.RemoveFromModel<PART>(m_nobAnimated);
-        m_upNobTarget   = nmwi.RemoveFromModel<PART>(m_nobTarget);
-        nmwi.GetNobPtr<RESULT *>(id)->Reconnect();
+        NobId id = m_NMWI.GetUPNobs().Push(move(m_upResult)); 
+        m_upNobAnimated = m_NMWI.RemoveFromModel<PART>(m_nobAnimated);
+        m_upNobTarget   = m_NMWI.RemoveFromModel<PART>(m_nobTarget);
+        m_NMWI.GetNobPtr<RESULT *>(id)->Reconnect();
+        if (targetReachedFunc)
+            (targetReachedFunc)();
     }
 
-    virtual void Undo( NNetModelWriterInterface& nmwi )
+    virtual void Undo(function<void()> const & targetReachedFunc)
     {
-        m_upResult = nmwi.GetUPNobs().Pop<RESULT>();
+        m_upResult = m_NMWI.GetUPNobs().Pop<RESULT>();
         m_upResult->ClearParentPointers();
         m_upNobAnimated->Reconnect();
         m_upNobTarget  ->Reconnect();
-        m_upNobAnimated = nmwi.ReplaceInModel<PART,PART>(move(m_upNobAnimated));
-        m_upNobTarget   = nmwi.ReplaceInModel<PART,PART>(move(m_upNobTarget));
+        m_upNobAnimated = m_NMWI.ReplaceInModel<PART,PART>(move(m_upNobAnimated));
+        m_upNobTarget   = m_NMWI.ReplaceInModel<PART,PART>(move(m_upNobTarget));
+        m_NMWI.GetUPNobs().DeselectAllNobs();
+        if (targetReachedFunc)
+            (targetReachedFunc)();
     }
 
 private:
-    PART             & m_nobTarget;
-    PART             & m_nobAnimated;
-    unique_ptr<PART>   m_upNobAnimated;
-    unique_ptr<PART>   m_upNobTarget;
-    unique_ptr<RESULT> m_upResult {};
+    NNetModelWriterInterface & m_NMWI;
+    PART                     & m_nobTarget;
+    PART                     & m_nobAnimated;
+    unique_ptr<PART>           m_upNobAnimated;
+    unique_ptr<PART>           m_upNobTarget;
+    unique_ptr<RESULT>         m_upResult {};
+    MainWindow               & m_win;
 };

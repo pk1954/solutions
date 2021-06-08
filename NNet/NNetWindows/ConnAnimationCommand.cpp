@@ -108,7 +108,8 @@ void ConnAnimationCommand::nextAnimationPhase() // runs in UI thread
         case 4:	 BlockUI();
                  m_upConnector = m_pModelNobs->Pop<Connector>();
                  m_upConnector->ClearParentPointers();
-                 [[fallthrough]]; 
+                 nextAnimationPhase();
+                 return;
         case 3:	 umPntVectorTarget = m_umPntVectorTarget2;  break;
         case 2:	 umPntVectorTarget = m_umPntVectorTarget1;  break;
         case 1:	 umPntVectorTarget = m_umPntVectorOriginal; break;

@@ -201,7 +201,7 @@ class WrapSetIoNeurons: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        unique_ptr<NobIdList> upNobIds  { ScrReadNobIdList(script) };
+        unique_ptr<NobIdList> upNobIds    { ScrReadNobIdList(script) };
         MicroMeterPntVector   umPntVector { ScrReadMicroMeterPntVector(script) };
         m_pCommands->SetIoNeurons( umPntVector, move(upNobIds) );
     }

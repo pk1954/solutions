@@ -121,8 +121,6 @@ inline static MicroMeterPnt const NP_ZERO( MicroMeterPnt::ZERO_VAL() );   // com
 using MicroMeterRect     = RectType< MicroMeter >;
 using MicroMeterRectSize = SizeType < MicroMeter >;
 
-MicroMeterPnt const MicroMeterRect::GetCenter() const { return (GetStartPoint() + GetEndPoint()) * 0.5f; }
-
 ////////////// MicroMeterLine          //////////////////////////
 
 using MicroMeterLine = LineType<MicroMeter>;

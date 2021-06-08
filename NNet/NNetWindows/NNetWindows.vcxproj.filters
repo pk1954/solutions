@@ -87,7 +87,7 @@
     <ClCompile Include="ConnAnimationCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PluginAnimation.cpp">
+    <ClCompile Include="AnimationSequence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,13 +194,16 @@
     <ClInclude Include="PluginIoNeuronAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PluginAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimationCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationSequence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiNobsAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

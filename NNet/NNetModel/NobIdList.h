@@ -25,12 +25,12 @@ public:
 
     virtual ~NobIdList() {}
 
-    void          Add   (NobId  const   id  ) { m_list.push_back(id); }
-    void          Add   (Nob    const & nob ) { Add(nob.GetId()); }
-    void          Resize(size_t const   size) { m_list.resize(size); }
-    void          SetAt (int const index, NobId const id) { m_list.at(index) = id; }
-    int     const Size() { return Cast2Int(m_list.size()); }
-    NobId const Get(int const index) { return m_list.at(index); }
+    void        Add   (NobId  const   id  )             { m_list.push_back(id); }
+    void        Add   (Nob    const & nob )             { Add(nob.GetId()); }
+    void        Resize(size_t const   size)             { m_list.resize(size); }
+    void        SetAt (int const index, NobId const id) { m_list.at(index) = id; }
+    int   const Size  ()                                { return Cast2Int(m_list.size()); }
+    NobId const Get   (int const index)                 { return m_list.at(index); }
 
     void Apply2All( function<void(NobId const &)> const& func ) const;
 

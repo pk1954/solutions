@@ -46,8 +46,6 @@ public:
 
     friend wostream & operator<< ( wostream &, MicroMeterPosDir const &);
 
-    friend unsigned int const CalcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &);
-
     inline static wchar_t const OPEN_BRACKET  { L'(' };
     inline static wchar_t const SEPARATOR     { L',' };
     inline static wchar_t const CLOSE_BRACKET { L')' };
@@ -62,3 +60,5 @@ private:
     MicroMeterPnt m_pos;
     Radian        m_dir;
 };
+
+unsigned int const CalcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &);

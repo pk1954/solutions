@@ -104,3 +104,14 @@ wostream & operator<< ( wostream & out, Nob const & nob )
 	out << nob.m_identifier << L' ' << nob.m_type;
 	return out;
 }
+
+MicroMeterPosDir const CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
+{
+	MicroMeter    const umOff        { umO * NEURON_RADIUS.GetValue() };
+	MicroMeter    const umOffset     { (nob.GetIoMode() == NobIoMode::input) ? -umOff : umOff };
+	Radian        const radianTarget { nob.GetDir() };
+	MicroMeterPnt const umDirVector  { Normalize(Radian2Vector(radianTarget)) };
+	MicroMeterPnt const umPosOffset  { umDirVector * umOffset.GetValue() };
+	MicroMeterPnt const umPosTarget  { nob.GetPos() + umPosOffset };
+	return MicroMeterPosDir(umPosTarget, radianTarget);
+}

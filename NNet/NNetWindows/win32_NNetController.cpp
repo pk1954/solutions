@@ -147,6 +147,10 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         m_pMainWindow->ShowArrows( false );
         break;
 
+    case IDX_PLAY_SOUND:
+        m_pSound->Play( reinterpret_cast<wchar_t *>(lParam) ); 
+        break;
+
     case IDD_SOUND_ON:
         m_pSound->On();
         break;
@@ -238,13 +242,8 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pMainWindow->PostMessage( WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0 );
         break;
 
-    case IDX_PLAY_SOUND:
-        m_pSound->Play( reinterpret_cast<wchar_t *>(lParam) ); 
-        break;
-
     case IDD_CONNECT:
-        m_pWinCommands->Connect( m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId(), * m_pMainWindow );
-        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+        m_pWinCommands->Connect(m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId(), * m_pMainWindow);
         break;
 
     case IDM_DELETE:   // keyboard delete key

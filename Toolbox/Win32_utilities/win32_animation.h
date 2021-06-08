@@ -112,7 +112,8 @@ private:
     { 
 //        SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
 //        WaitForThreadpoolTimerCallbacks( m_pTpTimer, true );
-        CloseThreadpoolTimer( m_pTpTimer );
+        if (m_pTpTimer)
+            CloseThreadpoolTimer( m_pTpTimer );
         m_pTpTimer = nullptr;
     } 
 

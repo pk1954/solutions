@@ -29,6 +29,6 @@ public:
 
 protected:
 	NobPtrList<Nob> m_selectedNobs;
-	bool                m_bInitialized { false };
+	bool            m_bInitialized { false };
 };
 

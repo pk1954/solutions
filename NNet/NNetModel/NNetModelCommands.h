@@ -5,7 +5,7 @@
 #pragma once
 
 #include <string>
-#include "boolOp.h"
+#include "BoolOp.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "MonitorData.h"

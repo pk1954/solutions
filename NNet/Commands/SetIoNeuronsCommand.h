@@ -16,19 +16,19 @@ class SetIoNeuronsCommand : public Command
 public:
 	SetIoNeuronsCommand
 	(
-		MicroMeterPntVector const & umPntVector,
-		unique_ptr<NobIdList>   upNobIds
+		MicroMeterPntVector const & umPntVectorSrc,
+		unique_ptr<NobIdList>       upNobIdsDst
 	)
-	  : m_umPntVector(umPntVector),
-		m_upNobIds(move(upNobIds))
+	  : m_umPntVectorSrc(umPntVectorSrc),
+		m_upNobIdsDst(move(upNobIdsDst))
 	{}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		nmwi.SetIoNeurons(m_umPntVector, *m_upNobIds.get());
+		nmwi.SetIoNeurons(m_umPntVectorSrc, *m_upNobIdsDst.get());
 	}
 
 private:
-	MicroMeterPntVector   m_umPntVector;
-	unique_ptr<NobIdList> m_upNobIds;
+	MicroMeterPntVector   m_umPntVectorSrc;
+	unique_ptr<NobIdList> m_upNobIdsDst;
 };

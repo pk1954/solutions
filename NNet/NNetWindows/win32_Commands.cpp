@@ -84,10 +84,10 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 		{
 			upCmd = make_unique<PluginIoNeuronAnimation> 
 			(
+				* m_pNMWI,
 				* m_pNMWI->GetNobPtr<IoNeuron *>(idSrc), 
 				* m_pNMWI->GetNobPtr<IoNeuron *>(idDst),
-				win,
-				* this
+				win
 			);
 		}
 		break;
@@ -95,10 +95,10 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 	{
 		upCmd = make_unique<PluginConnectorAnimation> 
 		(
+			* m_pNMWI,
 			* m_pNMWI->GetNobPtr<Connector *>(idSrc), 
 			* m_pNMWI->GetNobPtr<Connector *>(idDst),
-			win,
-			* this
+			win
 		);
 	}
 		break;

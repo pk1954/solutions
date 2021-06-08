@@ -140,6 +140,8 @@ private:
 	Nob   * m_pNobParent { nullptr };
 };
 
+MicroMeterPosDir const CalcOffsetPosDir(Nob const &, MicroMeter const);
+
 template <Nob_t T> bool HasType( Nob const & nob ) 
 { 
 	return remove_pointer<T>::type::TypeFits( nob.GetNobType() ); 
