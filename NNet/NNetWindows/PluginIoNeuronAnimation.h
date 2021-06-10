@@ -29,6 +29,7 @@ public:
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
         AddPhase(make_unique<ConnectIoObjectsCommand<IoNeuron,Neuron>>(nmwi, nobAnimated, nobTarget, win));
     }
+
     virtual ~PluginIoNeuronAnimation() {};
 
 private:

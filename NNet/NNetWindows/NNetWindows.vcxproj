@@ -602,6 +602,7 @@
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="D2D_DrawContext.h" />
+    <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="MultiNobsAnimation.h" />
     <ClInclude Include="SingleNobAnimation.h" />

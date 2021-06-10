@@ -3,8 +3,24 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Nob.h"
 #include "NNetParameters.h"
 #include "MicroMeterPosDir.h"
+
+MicroMeterPosDir::MicroMeterPosDir()
+    : m_pos(),
+    m_dir()
+{}
+
+MicroMeterPosDir::MicroMeterPosDir( MicroMeterPnt const & pos, Radian const & dir )
+    : m_pos(pos),
+    m_dir(dir)
+{}
+
+MicroMeterPosDir::MicroMeterPosDir(Nob const & nob)
+  : m_pos(nob.GetPos()),
+    m_dir(nob.GetDir())
+{}
 
 bool MicroMeterPosDir::operator==(MicroMeterPosDir const& rhs) const
 {

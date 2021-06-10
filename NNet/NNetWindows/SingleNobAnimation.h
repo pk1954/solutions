@@ -30,18 +30,20 @@ public:
         m_umPosDirTarget(umPosDirTarget)
     {}
 
-    virtual void Do(function<void()> const & targetReachedFunc)
+    virtual void Do(function<void()> const & func)
     {
-        AnimationCmd::Do(targetReachedFunc);
-        m_animation.SetNrOfSteps(CalcNrOfSteps(m_nobAnimated.GetPosDir(), m_umPosDirTarget));
-        m_animation.Start(m_nobAnimated.GetPosDir(), m_umPosDirTarget);
+        m_targetReachedFunc = func;
+        MicroMeterPosDir const umPosDirActual(m_nobAnimated);
+        m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirTarget));
+        m_animation.Start(umPosDirActual, m_umPosDirTarget);
     }
 
-    virtual void Undo(function<void()> const & targetReachedFunc)
+    virtual void Undo(function<void()> const & func)
     {
-        AnimationCmd::Undo(targetReachedFunc);
-        m_animation.SetNrOfSteps(CalcNrOfSteps(m_nobAnimated.GetPosDir(), m_umPosDirStart));
-        m_animation.Start(m_nobAnimated.GetPosDir(), m_umPosDirStart);
+        m_targetReachedFunc = func;
+        MicroMeterPosDir const umPosDirActual(m_nobAnimated);
+        m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirStart));
+        m_animation.Start(umPosDirActual, m_umPosDirStart);
     }
 
     virtual void UpdateUI()

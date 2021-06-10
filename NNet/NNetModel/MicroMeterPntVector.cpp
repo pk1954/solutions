@@ -21,10 +21,10 @@ unsigned int const MicroMeterPntVector::Size() const
     return Cast2UnsignedInt(m_list.size()); 
 }
 
-MicroMeterPosDir const MicroMeterPntVector::GetPosDir( unsigned int const ui) const
+MicroMeterPosDir const MicroMeterPntVector::GetPosDir(size_t const i) const
 {
-    assert( ui < Size() );
-    return m_list[ui];
+    assert( i < Size() );
+    return m_list[i];
 }
 
 void MicroMeterPntVector::SetPosDir(unsigned int const ui, MicroMeterPosDir const & posDir)

@@ -36,7 +36,7 @@ void WinCommands::Initialize
 	m_pNMWI     = pNMWI;
 }
 
-bool WinCommands::MakeConnector(RootWindow & win)
+bool WinCommands::MakeConnector(MainWindow & win)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;

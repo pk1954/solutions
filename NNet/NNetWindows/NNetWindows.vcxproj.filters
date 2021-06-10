@@ -206,5 +206,8 @@
     <ClInclude Include="MultiNobsAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MakeConnAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

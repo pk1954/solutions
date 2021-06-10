@@ -16,19 +16,13 @@ public:
         : m_win(win)
     {}
 
-    virtual void Do(function<void()> const & func)
-    {
-        m_targetReachedFunc = func;
-    };
-    
-    virtual void Undo(function<void()> const & func)
-    {
-        m_targetReachedFunc = func;
-    };
+    virtual void Do  (function<void()> const &) = 0;
+    virtual void Undo(function<void()> const &) = 0;
 
     virtual void UpdateUI() { m_win.Notify(false); };
 
 protected:
+  
     MainWindow     & m_win;
     function<void()> m_targetReachedFunc { nullptr };
 };

@@ -13,20 +13,16 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
+class Nob;
+
 class MicroMeterPosDir
 {
 public:
 
-    MicroMeterPosDir()
-      : m_pos(),
-        m_dir()
-    {}
-
-    MicroMeterPosDir( MicroMeterPnt const & pos, Radian const & dir )
-      : m_pos(pos),
-        m_dir(dir)
-    {}
-
+    MicroMeterPosDir();
+    MicroMeterPosDir(MicroMeterPnt const &, Radian const &);
+    MicroMeterPosDir(Nob const &);
+    
     MicroMeterPnt const GetPos() const { return m_pos; }
     Radian        const GetDir() const { return m_dir; }
 

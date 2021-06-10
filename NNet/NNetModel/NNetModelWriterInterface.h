@@ -104,8 +104,13 @@ public:
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
-    void SetIoNeurons(MicroMeterPntVector       &, NobIdList              const &);
+    void SetIoNeurons(MicroMeterPntVector const &, NobIdList            const &);
     void SetIoNeurons(MicroMeterPntVector const &, NobPtrList<IoNeuron> const &);
+
+    void SetPosDir(NobId const id, MicroMeterPosDir const& umPosDir)
+    {
+        GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
+    }
 
 #ifdef _DEBUG
     NNetModel const & GetModel()  const { return * m_pModel; }  // TODO: find better solution
