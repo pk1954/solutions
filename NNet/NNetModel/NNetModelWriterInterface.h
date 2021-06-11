@@ -98,6 +98,11 @@ public:
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
+    NobId const Add2Model(UPNob upNob)
+    {
+        return m_pModel->GetUPNobs().Push(move(upNob));
+    }
+
     MicroMeterPnt const OrthoVector( NobId const idPipe ) const
     {
         MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };

@@ -24,7 +24,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.GetUPNobs().Push( move(m_upNeuronT) );
+		nmwi.Add2Model( move(m_upNeuronT) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 

@@ -114,6 +114,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_PULSE_RATE,          L"Pulse rate"                            },
 		{ IDM_SELECT_NOB,          L"Select"                                },
 		{ IDM_SELECT_SUBTREE,      L"Select subtree"                        },
+		{ IDM_SPLIT_CONNECTOR,     L"Split (make neurons)"                  },
 		{ IDD_STOP_ON_TRIGGER,     L"Stop on trigger on/off"                },
 		{ IDD_TRIGGER_SOUND_DLG,   L"Trigger sound"                         }
 	};
@@ -164,8 +165,12 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case NobType::Value::connector:
+		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		break;
+
 	case NobType::Value::closedConnector:
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		appendMenu( hPopupMenu, IDM_SPLIT_CONNECTOR );        
 		break;
 
 	case NobType::Value::knot:  

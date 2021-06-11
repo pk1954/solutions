@@ -27,7 +27,7 @@ void UPNobList::SetErrorHandler( NobErrorHandler * const p )
 	m_pNobErrorHandler = p; 
 }
 
-UPNob ShallowCopy( Nob const & nob )
+UPNob ShallowCopy( Nob const & nob )  //TODO: simplify! Better 
 {
 	switch ( nob.GetNobType().GetValue() )
 	{
@@ -88,7 +88,7 @@ UPNob UPNobList::ExtractNob( NobId const id )
 
 
 void UPNobList::SetNob2Slot( NobId const id, UPNob upNob ) // only for special situations
-{                                                                    // read model from script
+{                                                          // read model from script
 	assert( IsDefined(id) );
 	assert( IsValidNobId(id) );
 	assert( IsEmptySlot(id) );
@@ -98,7 +98,7 @@ void UPNobList::SetNob2Slot( NobId const id, UPNob upNob ) // only for special s
 	m_list[id.GetValue()] = move(upNob);
 }
 
-void UPNobList::SetNob2Slot( UPNob upNob )	 // only for special situations
+void UPNobList::SetNob2Slot( UPNob upNob )
 {                 
 	NobId const id { upNob->GetId() };
 	SetNob2Slot(id, move(upNob));

@@ -42,10 +42,10 @@ public:
 		}
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_upPipeExt.get() );
 		m_pPipeOld->SetStartKnot( m_upKnotInsert.get() );
-		nmwi.GetUPNobs().Push( move(m_upKnotOrtho) );
-		nmwi.GetUPNobs().Push( move(m_upKnotInsert) );
-		nmwi.GetUPNobs().Push( move(m_upPipeOrtho) );
-		nmwi.GetUPNobs().Push( move(m_upPipeExt) );
+		nmwi.Add2Model( move(m_upKnotOrtho) );
+		nmwi.Add2Model( move(m_upKnotInsert) );
+		nmwi.Add2Model( move(m_upPipeOrtho) );
+		nmwi.Add2Model( move(m_upPipeExt) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 

@@ -64,7 +64,7 @@ public:
 	Radian           const GetDir()    const;
 
 	void SetDir   (Radian           const  );
-	void SetPos   (MicroMeterPnt  const &);
+	void SetPos   (MicroMeterPnt    const &);
 	void SetPosDir(MicroMeterPosDir const &);
 
 	void Apply2All(function<void(IoNeuron const &)> const & func) const;
@@ -73,7 +73,7 @@ public:
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
-	NobPtrList<IoNeuron> const & GetIoNeurons() { return m_list; }
+	NobPtrList<IoNeuron> const & GetIoNeurons() const { return m_list; }
 
 private:
 	NobPtrList<IoNeuron> m_list {};

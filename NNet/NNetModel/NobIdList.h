@@ -19,8 +19,8 @@ class NobIdList
 {
 public:
     NobIdList() {}
-    NobIdList(Connector              const &);
-    NobIdList(NobPtrList<Nob>        const &);
+    NobIdList(Connector            const &);
+    NobIdList(NobPtrList<Nob>      const &);
     NobIdList(NobPtrList<IoNeuron> const &);
 
     virtual ~NobIdList() {}
@@ -30,7 +30,7 @@ public:
     void        Resize(size_t const   size)             { m_list.resize(size); }
     void        SetAt (int const index, NobId const id) { m_list.at(index) = id; }
     int   const Size  ()                                { return Cast2Int(m_list.size()); }
-    NobId const Get   (int const index)                 { return m_list.at(index); }
+    NobId const Get   (size_t const index)              { return m_list.at(index); }
 
     void Apply2All( function<void(NobId const &)> const& func ) const;
 

@@ -72,7 +72,7 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
             Pipe & pipeOut { upKnot->m_connections.GetFirstOutgoing() };
             pipeOut.SetStartKnot( upKnot.get() );
             pipeOut.DislocateStartPoint();                     // dislocate new knot
-            m_idStartKnots.SetAt(i, nmwi.GetUPNobs().Push(move(upKnot)));
+            m_idStartKnots.SetAt(i, nmwi.Add2Model(move(upKnot)));
         }
     }
     for ( int i = 0; i < m_endKnots.size(); ++i )
@@ -83,7 +83,7 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
             Pipe & pipeIn { upKnot->m_connections.GetFirstIncoming() };
             pipeIn.SetEndKnot( upKnot.get() );
             pipeIn.DislocateEndPoint();                       // dislocate new knot 
-            m_idEndKnots.SetAt(i, nmwi.GetUPNobs().Push(move(upKnot)));
+            m_idEndKnots.SetAt(i, nmwi.Add2Model(move(upKnot)));
         }
     }
     m_pBaseKnot->ClearConnections();

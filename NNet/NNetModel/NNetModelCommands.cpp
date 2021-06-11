@@ -41,6 +41,7 @@
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "ToggleStopOnTriggerCommand.h"
+#include "SplitClosedConnCmd.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -157,6 +158,14 @@ void NNetModelCommands::Disconnect( NobId const id )
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
 	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI, id) ) );
+}
+
+void NNetModelCommands::SplitConnector( NobId const id )
+{
+	unique_ptr<Command> pCmd;
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << L" " << id << endl;
+ 	m_pCmdStack->PushCommand( make_unique<SplitClosedConnCmd>(*m_pNMWI, id) );
 }
 
 void NNetModelCommands::ToggleStopOnTrigger( NobId const id )

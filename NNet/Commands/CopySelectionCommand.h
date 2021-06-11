@@ -88,7 +88,7 @@ public:
 		nmwi.GetUPNobs().DeselectAllNobs();  
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			nmwi.GetUPNobs().Push( move(m_copies.back()) ); // add copies (which are already selected)
+			nmwi.Add2Model( move(m_copies.back()) ); // add copies (which are already selected)
 			m_copies.pop_back();
 		}
 		assert( m_copies.empty() );

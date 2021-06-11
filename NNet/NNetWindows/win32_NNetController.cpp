@@ -267,6 +267,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->Disconnect( m_pMainWindow->GetHighlightedNobId() );
         break;
 
+    case IDM_SPLIT_CONNECTOR:
+        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
+        m_pModelCommands->SplitConnector( m_pMainWindow->GetHighlightedNobId() );
+        break;
+
     case IDD_INSERT_KNOT:
         m_pModelCommands->InsertKnot( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;

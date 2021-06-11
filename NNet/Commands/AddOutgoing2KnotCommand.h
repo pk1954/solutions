@@ -36,8 +36,8 @@ public:
 			m_upKnotNew->m_connections.AddIncoming( m_upPipe.get() );
 		}
 		m_pStart->m_connections.AddOutgoing( m_upPipe.get() );
-		nmwi.GetUPNobs().Push( move( m_upKnotNew ) );
-		nmwi.GetUPNobs().Push( move( m_upPipe ) );
+		nmwi.Add2Model( move( m_upKnotNew ) );
+		nmwi.Add2Model( move( m_upPipe ) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 

@@ -84,6 +84,7 @@ public:
     void SetPulseRate       ( NobId    const, fHertz const );
     void SetNob             ( NobId const, MicroMeterPosDir const );
     void SetTriggerSound    ( NobId const, SoundDescr const & );
+    void SplitConnector     ( NobId  const );
     void ToggleStopOnTrigger( NobId const );
 
     void UndoCommand();

@@ -111,6 +111,7 @@
 #define IDM_ALIGN_DIRECTIONS     672
 #define IDM_PACK_NOBS            673
 #define IDM_MAKE_CONNECTOR       674
+#define IDM_SPLIT_CONNECTOR      675
 
 #define IDX_ANIMATION_STEP       701
 #define IDX_PLUG_IN_ANIMATION    703
