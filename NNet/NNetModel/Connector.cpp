@@ -27,13 +27,7 @@ void Connector::Dump() const
 {
     Nob::Dump();
     wcout << endl; 
-    m_list.Apply2All
-    (
-        [&](IoNeuron const & n)
-        { 
-            wcout << L"       " << Scanner::COMMENT_SYMBOL << n << endl;
-        } 
-    );
+    m_list.Apply2All([&](IoNeuron const & n) { wcout << L"       " << Scanner::COMMENT_SYMBOL << n << endl; });
 }
 
 NobIoMode const Connector::GetIoMode() const 

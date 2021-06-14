@@ -49,7 +49,6 @@ public:
             nmwi.Push2Model(move(m_upNeuronList.back()));        // Move ownership of Neurons to model
             m_upNeuronList.pop_back();
         }
-        nmwi.DumpModel();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
@@ -63,7 +62,6 @@ public:
             m_upOutputNeurons.pop_back();
             m_upNeuronList.push_back(nmwi.PopFromModel<Neuron>());                       // Take ownership of Neurons
         }
-        nmwi.DumpModel();
     }
 
 private:
