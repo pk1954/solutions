@@ -30,9 +30,6 @@
     <ClInclude Include="AddIncoming2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveSelectionCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AddOutgoing2KnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -105,9 +102,6 @@
     <ClInclude Include="RestrictSelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NewNeuronCommandT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SetIoNeuronsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,13 +138,19 @@
     <ClInclude Include="RotateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiscClosedConnCmd.h">
+    <ClInclude Include="UnplugClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplitClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConnectIoObjectsCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveSelectionCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NewNeuronCommandT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

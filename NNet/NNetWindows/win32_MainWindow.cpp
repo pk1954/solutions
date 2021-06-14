@@ -105,6 +105,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_DESELECT_ALL,        L"Deselect all"                          },
 		{ IDM_DESELECT_NOB,        L"Deselect"                              },
 		{ IDD_DISCONNECT,          L"Disconnect"                            },
+		{ IDD_UNPLUG,              L"Unplug"                                },
 		{ IDD_INSERT_KNOT,         L"Insert knot"                           },
 		{ IDD_INSERT_NEURON,       L"Insert neuron"                         },
 		{ IDM_MAKE_CONNECTOR,      L"Make connector"                        },
@@ -169,7 +170,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case NobType::Value::closedConnector:
-		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		appendMenu( hPopupMenu, IDD_UNPLUG );        
 		appendMenu( hPopupMenu, IDM_SPLIT_CONNECTOR );        
 		break;
 

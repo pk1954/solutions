@@ -49,7 +49,7 @@ private:
 		(
 			[&](Nob & nob)
 			{
-				m_selectedNobIds.Add(nob);
+				m_selectedNobIds.Push(nob);
 				UPNob upNobCopy { ShallowCopy(nob) };
 				m_indexList[upNobCopy->GetId().GetValue()] = SelNobsIndex(Cast2Int(m_copies.size()));
 				m_copies.push_back( move(upNobCopy) );
@@ -88,7 +88,7 @@ public:
 		nmwi.GetUPNobs().DeselectAllNobs();  
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			nmwi.Add2Model( move(m_copies.back()) ); // add copies (which are already selected)
+			nmwi.Push2Model( move(m_copies.back()) ); // add copies (which are already selected)
 			m_copies.pop_back();
 		}
 		assert( m_copies.empty() );
@@ -98,7 +98,7 @@ public:
 	{ 
 		for ( int i = 0; i < m_iSizeOfSelection; ++i )
 		{
-			m_copies.push_back(nmwi.GetUPNobs().Pop<Nob>());
+			m_copies.push_back(nmwi.PopFromModel<Nob>());
 		}
 		nmwi.GetUPNobs().DeselectAllNobs();
 		m_selectedNobIds.Apply2All([&](NobId const &id) { nmwi.SelectNob(id, true); });

@@ -20,12 +20,20 @@ Connector::Connector( NobPtrList<IoNeuron> const & src )
 void Connector::Check() const
 {
     Nob::Check();
+    m_list.Apply2All([&](IoNeuron const & n){ n.Check(); } );
 }
 
 void Connector::Dump() const
 {
     Nob::Dump();
-    m_list.Apply2All([&](IoNeuron const & s){ wcout << s << endl; } );
+    wcout << endl; 
+    m_list.Apply2All
+    (
+        [&](IoNeuron const & n)
+        { 
+            wcout << L"       " << Scanner::COMMENT_SYMBOL << n << endl;
+        } 
+    );
 }
 
 NobIoMode const Connector::GetIoMode() const 
@@ -141,9 +149,9 @@ void Connector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelt
 void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
 {
     MicroMeterPnt const umPntPivot { GetPos() };
-    Radian          const radOld     { Vector2Radian(umPntOld - umPntPivot) };
-    Radian          const radNew     { Vector2Radian(umPntNew - umPntPivot) };
-    Radian          const radDelta   { radNew - radOld };
+    Radian        const radOld     { Vector2Radian(umPntOld - umPntPivot) };
+    Radian        const radNew     { Vector2Radian(umPntNew - umPntPivot) };
+    Radian        const radDelta   { radNew - radOld };
     RotateNob(umPntPivot, radDelta);
 }                        
 

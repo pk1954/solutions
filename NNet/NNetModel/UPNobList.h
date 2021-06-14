@@ -33,19 +33,17 @@ public:
 	UPNobList & operator=  ( UPNobList const & );
 	bool        operator== ( UPNobList const & ) const;
 
-	bool    const IsEmpty     ()               const { return m_list.size() == 0; }
-	long    const Size        ()               const { return Cast2Long( m_list.size() ); }
-	NobId   const IdNewSlot   ()	           const { return NobId( Cast2Long(m_list.size()) ); }
-	bool    const IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
-	bool    const IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
-	bool    const IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
-	Nob   * const Front       ()               const { return   m_list[0].get(); }
-	Nob   * const GetAt       (int   const i ) const { return   m_list[i].get(); }
-	Nob   * const GetAt       (NobId const id) const { return   GetAt(id.GetValue()); }
-	Nob         & GetRef      (int   const i )       { return * m_list[i]; }
-	Nob         & GetRef      (NobId const id)       { return   GetRef(id.GetValue()); }
-	void          Resize      (long  const nr)       { m_list.resize( nr );	}
-	void          Increase    (long  const nr)       { m_list.resize( m_list.size() + nr ); }
+	bool  const IsEmpty     ()               const { return m_list.size() == 0; }
+	long  const Size        ()               const { return Cast2Long( m_list.size() ); }
+	NobId const IdNewSlot   ()	             const { return NobId( Cast2Long(m_list.size()) ); }
+	bool  const IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
+	bool  const IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
+	bool  const IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
+	Nob * const Front       ()               const { return   m_list[0].get(); }
+	Nob * const GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
+	Nob &       GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
+	void        Resize      (long  const nr)       { m_list.resize( nr );	}
+	void        Increase    (long  const nr)       { m_list.resize( m_list.size() + nr ); }
 				    
 	void               Clear             ();
 	void               SetErrorHandler   (NobErrorHandler * const);
@@ -55,7 +53,7 @@ public:
 	UPNob              ExtractNob        (NobId const);	
 	Nob        * const ReplaceNob        (NobId const, UPNob);	
 	void               SetNob2Slot       (NobId const, UPNob); // only for special situations
-	void               SetNob2Slot       (UPNob);                // only for special situations
+	void               SetNob2Slot       (UPNob);              // only for special situations
 	void               CheckNobList      ()                                       const;
 	void               Dump              ()                                       const;
 	void               LinkNob           (Nob const &, Nob2NobFunc const &)       const;
@@ -181,7 +179,7 @@ private:
 	void incCounter(UPNob const & ups) { incCounter(ups.get()); }
 	void decCounter(UPNob const & ups) { decCounter(ups.get()); }
 
-	void incCounter(NobId const & id)	{ incCounter(GetAt(id)); }
+	void incCounter(NobId const & id) { incCounter(GetAt(id)); }
 	void decCounter(NobId const & id) { decCounter(GetAt(id)); }
 
 	void countNobs();

@@ -56,10 +56,10 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void BaseKnot::RotateNob( MicroMeterPnt const & umPntPivot, Radian const radDelta )
 {
 	MicroMeterPnt const umPntVectorOld    { GetPos() - umPntPivot };
-	Radian          const radOld            { Vector2Radian(umPntVectorOld) };
-	Radian          const radNew            { radOld + radDelta };
+	Radian        const radOld            { Vector2Radian(umPntVectorOld) };
+	Radian        const radNew            { radOld + radDelta };
 	MicroMeterPnt const umPntVectorNew    { Radian2Vector(radNew) };
-	MicroMeter      const umDistFromPivot   { Hypot(umPntVectorOld) };
+	MicroMeter    const umDistFromPivot   { Hypot(umPntVectorOld) };
 	MicroMeterPnt const umPntVectorScaled { umPntVectorNew.ScaledTo( umDistFromPivot) };
 	MicroMeterPnt const umPntPosNew       { umPntPivot + umPntVectorScaled };
 	SetPos( umPntPosNew );

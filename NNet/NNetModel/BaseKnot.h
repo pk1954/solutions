@@ -29,7 +29,7 @@ public:
 	( 
 		MicroMeterPnt const & center,
 		NobType       const   type,
-		MicroMeter      const   extension
+		MicroMeter    const   extension
 	)
 	  : Nob( type ),
 		m_circle( center, extension )

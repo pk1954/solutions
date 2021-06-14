@@ -22,7 +22,7 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
-	Neuron(MicroMeterPnt const &, IoNeuron &, IoNeuron &);
+	Neuron(MicroMeterPnt const &, IoNeuron const &, IoNeuron const &);
 	Neuron(Neuron const & );   // copy constructor
 
 	virtual void Check() const;

@@ -1,4 +1,4 @@
-// DiscClosedConnCmd.h
+// UnplugClosedConnCmd.h
 //
 // Commands
 
@@ -12,10 +12,10 @@
 
 using std::unique_ptr;
 
-class DiscClosedConnCmd : public Command
+class UnplugClosedConnCmd : public Command
 {
 public:
-    DiscClosedConnCmd
+    UnplugClosedConnCmd
     (
         NNetModelWriterInterface & nmwi,
         NobId                const idClosedConnector,
@@ -29,7 +29,7 @@ public:
         m_upOutputConnectorCmd = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetOutputConnector().GetId(), DiscConnCmd::tMode::remove));
     }
 
-    ~DiscClosedConnCmd() {}
+    ~UnplugClosedConnCmd() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {

@@ -85,6 +85,7 @@ bool CommandStack::UndoCommand()
     set2OlderCmd();
     m_pNMWI->CheckModel();
     currentCmd().Undo(*m_pNMWI);
+    m_pNMWI->DumpModel();
     m_pNMWI->CheckModel();
     notify();
     return true;

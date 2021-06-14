@@ -282,7 +282,7 @@ NobIdList UPNobList::Append( UPNobList & list2Append )
 		{
 			NobId id { upNob->GetId() + offset };
 			upNob->SetId( id );
-			idList.Add( id );
+			idList.Push( id );
 		}
 		m_list.push_back( move(upNob) );
 	}

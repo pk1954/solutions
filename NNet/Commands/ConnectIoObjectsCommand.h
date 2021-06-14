@@ -40,17 +40,16 @@ public:
     virtual void Do(function<void()> const & targetReachedFunc)
     {
         m_upResult->SetParentPointers();
-        NobId id = m_NMWI.GetUPNobs().Push(move(m_upResult)); 
+        m_NMWI.Push2Model(move(m_upResult)); 
         m_upNobAnimated = m_NMWI.RemoveFromModel<PART>(m_nobAnimated);
         m_upNobTarget   = m_NMWI.RemoveFromModel<PART>(m_nobTarget);
-        m_NMWI.GetNobPtr<RESULT *>(id)->Reconnect();
         if (targetReachedFunc)
             (targetReachedFunc)();
     }
 
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
-        m_upResult = m_NMWI.GetUPNobs().Pop<RESULT>();
+        m_upResult = m_NMWI.PopFromModel<RESULT>();
         m_upResult->ClearParentPointers();
         m_upNobAnimated->Reconnect();
         m_upNobTarget  ->Reconnect();

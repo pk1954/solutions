@@ -19,6 +19,7 @@ class Script;
 class Pipe;
 class Nob;
 class Connector;
+class ClosedConnector;
 class UPNobList;
 class Observable;
 class ModelDescription;
@@ -38,9 +39,10 @@ private:
 
 	long const getCompactIdVal(NobId const);
 
-	void writeNob    ( wostream &, Nob     const & );
-	void writePipe     ( wostream &, Pipe      const & );
-	void writeConnector( wostream &, Connector const & );
+	void writeNob            ( wostream &, Nob             const & );
+	void writePipe           ( wostream &, Pipe            const & );
+	void writeConnector      ( wostream &, Connector       const & );
+	void writeClosedConnector( wostream &, ClosedConnector const & );
 	void writeDescription( wostream & );
 	void writeMonitorData( wostream & );
 	void writeTriggerSounds( wostream & );

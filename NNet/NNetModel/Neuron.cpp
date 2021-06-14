@@ -30,8 +30,8 @@ Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
 Neuron::Neuron
 ( 
 	MicroMeterPnt const & upCenter,
-	IoNeuron            & inputNeuron, 
-	IoNeuron            & outputNeuron 
+	IoNeuron      const & inputNeuron, 
+	IoNeuron      const & outputNeuron 
 )
   : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
 {

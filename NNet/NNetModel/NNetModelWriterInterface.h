@@ -80,8 +80,15 @@ public:
     unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     {
         NobId  id   { up.get()->GetId() };
-        Nob  * pNob { m_pModel->GetUPNobs().ReplaceNob( id, move(up) ) }; 
+        Nob  * pNob { m_pModel->GetUPNobs().ReplaceNob( id, move(up) ) };
+        Reconnect(id);
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
+    }
+
+    template <Nob_t T>
+    unique_ptr<T> PopFromModel() 
+    { 
+        return m_pModel->GetUPNobs().Pop<T>();
     }
 
     template <Nob_t OLD>
@@ -98,9 +105,16 @@ public:
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
-    NobId const Add2Model(UPNob upNob)
+    void Reconnect(NobId const id)
     {
-        return m_pModel->GetUPNobs().Push(move(upNob));
+        m_pModel->GetUPNobs().GetAt(id)->Reconnect();
+    }
+
+    NobId const Push2Model(UPNob upNob)
+    {
+        NobId const id { m_pModel->GetUPNobs().Push(move(upNob)) };
+        Reconnect(id);
+        return id;
     }
 
     MicroMeterPnt const OrthoVector( NobId const idPipe ) const

@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "DeletePipeCommand.h"
-#include "DiscClosedConnCmd.h"
+#include "UnplugClosedConnCmd.h"
 #include "DiscConnCmd.h"
 #include "DiscBaseKnotCmd.h"
 #include "NobType.h"
@@ -41,7 +41,7 @@ unique_ptr<Command> MakeDeleteCommand
 		upCmd = make_unique<DiscConnCmd>(nmwi, id, DiscConnCmd::tMode::remove);
 		break;
 	case NobType::Value::closedConnector:
-		upCmd = make_unique<DiscClosedConnCmd>(nmwi, id, true);
+		upCmd = make_unique<UnplugClosedConnCmd>(nmwi, id, true);
 		break;
 	default:
 		upCmd = make_unique<DiscBaseKnotCmd>(nmwi, id, true);
@@ -69,7 +69,7 @@ unique_ptr<Command> MakeDisconnectCommand
 		upCmd = make_unique<DiscConnCmd>(nmwi, id, DiscConnCmd::tMode::unplug);
 		break;
 	case NobType::Value::closedConnector:
-		upCmd = make_unique<DiscClosedConnCmd>(nmwi, id, false);
+		assert(false);
 		break;
 	default:
 		upCmd = make_unique<DiscBaseKnotCmd>(nmwi, id, false);

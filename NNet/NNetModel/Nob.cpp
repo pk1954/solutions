@@ -101,7 +101,9 @@ void Nob::Dump() const
 
 wostream & operator<< ( wostream & out, Nob const & nob )
 {
-	out << nob.m_identifier << L' ' << nob.m_type;
+	out << setw(4) << nob.m_identifier << L' ' << nob.m_type;
+	if (nob.m_pNobParent)
+		out << L" (par " << nob.m_pNobParent->m_identifier << ")";
 	return out;
 }
 

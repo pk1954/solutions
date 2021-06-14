@@ -24,18 +24,17 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.Add2Model( move(m_upNeuronT) );
+		nmwi.Push2Model( move(m_upNeuronT) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuronT = nmwi.GetUPNobs().Pop<T>();
+		m_upNeuronT = nmwi.PopFromModel<T>();
 	}
 
 private:
 	unique_ptr<T> m_upNeuronT { nullptr };
 };
-
 
 using NewOutputNeuronCommand = NewNeuronCommandT<OutputNeuron>;
 using NewInputNeuronCommand  = NewNeuronCommandT<InputNeuron>;

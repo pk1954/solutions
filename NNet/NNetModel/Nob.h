@@ -58,21 +58,21 @@ public:
 
 	virtual MicroMeterPosDir const GetPosDir() const;
 
-	virtual Radian        const GetDir      ()                                                   const = 0;
-	virtual MicroMeterPnt const GetPos      ()                                                   const = 0;
-	virtual NobIoMode     const GetIoMode   ()                                                   const = 0;
-	virtual void                DrawExterior(DrawContext const &, tHighlight const)              const = 0;
-	virtual void                DrawInterior(DrawContext const &, tHighlight const)              const = 0;
-	virtual void                Prepare     ()                                                         = 0;
-	virtual bool          const CompStep    ()                                                         = 0;
-	virtual void                Recalc      ()                                                         = 0;
-	virtual bool          const IsIncludedIn(MicroMeterRect  const &)                            const = 0;
-	virtual bool          const Includes    (MicroMeterPnt const &)                            const = 0;
-	virtual void                Expand      (MicroMeterRect &)                                   const = 0;
-	virtual void                MoveNob     (MicroMeterPnt const &)                                  = 0;
-	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)                    = 0;
-	virtual void                Select      (bool const, bool const)                                   = 0;
-	virtual void                Link        (Nob const &, Nob2NobFunc const &) = 0;
+	virtual Radian        const GetDir      ()                                      const = 0;
+	virtual MicroMeterPnt const GetPos      ()                                      const = 0;
+	virtual NobIoMode     const GetIoMode   ()                                      const = 0;
+	virtual void                DrawExterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void                DrawInterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void                Prepare     ()                                            = 0;
+	virtual bool          const CompStep    ()                                            = 0;
+	virtual void                Recalc      ()                                            = 0;
+	virtual bool          const IsIncludedIn(MicroMeterRect  const &)               const = 0;
+	virtual bool          const Includes    (MicroMeterPnt const &)                 const = 0;
+	virtual void                Expand      (MicroMeterRect &)                      const = 0;
+	virtual void                MoveNob     (MicroMeterPnt const &)                       = 0;
+	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
+	virtual void                Select      (bool const, bool const)                      = 0;
+	virtual void                Link        (Nob const &, Nob2NobFunc const &)            = 0;
 
 	virtual void Clear()               { m_mVinputBuffer = 0.0_mV; };
 	virtual void SetId(NobId const id) { m_identifier = id; }
@@ -136,7 +136,7 @@ private:
 
 	NobType m_type       { NobType::Value::undefined };
 	bool    m_bSelected  { false };
-	NobId   m_identifier { };
+	NobId   m_identifier { NO_NOB };
 	Nob   * m_pNobParent { nullptr };
 };
 

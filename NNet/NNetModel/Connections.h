@@ -123,7 +123,7 @@ public:
 
 	friend wostream & operator<< ( wostream & out, Connections const & con )
 	{
-		out << L" " << con.m_incoming << L" " << con.m_outgoing;
+		out << L" in" << con.m_incoming << L" out" << con.m_outgoing;
 		return out;
 	}
 

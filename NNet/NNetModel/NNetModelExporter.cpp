@@ -11,6 +11,7 @@
 #include "InputNeuron.h"
 #include "BaseKnot.h"
 #include "Connector.h"
+#include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
 #include "NNetModelReaderInterface.h"
@@ -87,9 +88,10 @@ void NNetModelExporter::writeNobs( wostream & out )
     }
     out << L"NrOfNobs = " << idCompact << endl;
     out << endl;
-    m_pNMRI->GetUPNobs().Apply2All<BaseKnot >([&](BaseKnot  const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<Pipe     >([&](Pipe      const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<Connector>([&](Connector const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<BaseKnot       >([&](BaseKnot        const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<Pipe           >([&](Pipe            const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<Connector      >([&](Connector       const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<ClosedConnector>([&](ClosedConnector const & s) { writeNob(out, s); });
 }
 
 void NNetModelExporter::writeNobParameters( wostream & out )
@@ -172,6 +174,14 @@ void NNetModelExporter::writeConnector(wostream & out, Connector const & connect
     out << Connector::CLOSE_BRACKET;
 }
 
+void NNetModelExporter::writeClosedConnector(wostream & out, ClosedConnector const & cc)
+{
+    out << L" ";
+    writeConnector(out, cc.GetInputConnector());
+    out << L" ";
+    writeConnector(out, cc.GetOutputConnector());
+}
+
 void NNetModelExporter::writeNob( wostream & out, Nob const & nob )
 {
     if ( nob.IsDefined() )
@@ -192,6 +202,10 @@ void NNetModelExporter::writeNob( wostream & out, Nob const & nob )
 
         case NobType::Value::connector:
             writeConnector( out, static_cast<Connector const &>(nob) );
+            break;
+
+        case NobType::Value::closedConnector:
+            writeClosedConnector( out, static_cast<ClosedConnector const &>(nob) );
             break;
 
         default:

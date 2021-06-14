@@ -91,7 +91,9 @@ public:
 
 	friend wostream & operator<< (wostream & out, NobPtrList<T> const & v)
 	{
-		out << OPEN_BRACKET << v.m_list.size() << L":";
+		out << OPEN_BRACKET << v.m_list.size();
+		if (v.m_list.size() > 0)
+			out << L":";
 		for ( auto & it: v.m_list )
 		{
 			out << it->GetId();

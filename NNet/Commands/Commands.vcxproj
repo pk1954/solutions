@@ -85,7 +85,9 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="ConnectIoObjectsCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
-    <ClInclude Include="DiscClosedConnCmd.h" />
+    <ClInclude Include="MoveSelectionCommand.h" />
+    <ClInclude Include="NewNeuronCommandT.h" />
+    <ClInclude Include="UnplugClosedConnCmd.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
@@ -95,12 +97,10 @@
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MoveNobCommand.h" />
-    <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="RotateCommand.h" />
     <ClInclude Include="SetNobCommand.h" />
     <ClInclude Include="SetIoNeuronsCommand.h" />
-    <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="SelectAllBeepersCommand.h" />
     <ClInclude Include="SelectAllCommand.h" />
     <ClInclude Include="SelectionCommand.h" />

@@ -8,17 +8,17 @@
 
 NobIdList::NobIdList(Connector const & connector) 
 {
-    connector.Apply2All([&](Nob const & s) { Add(s.GetId()); } );
+    connector.Apply2All([&](Nob const & s) { Push(s.GetId()); } );
 }
 
 NobIdList::NobIdList(NobPtrList<IoNeuron> const& list) 
 {
-    list.Apply2All([&](Nob & s) { Add(s.GetId()); } );
+    list.Apply2All([&](Nob & s) { Push(s.GetId()); } );
 }
 
 NobIdList::NobIdList(NobPtrList<Nob> const& list) 
 {
-    list.Apply2All([&](Nob & s) { Add(s.GetId()); } );
+    list.Apply2All([&](Nob & s) { Push(s.GetId()); } );
 }
 
 void NobIdList::Apply2All( function<void(NobId const &)> const& func ) const

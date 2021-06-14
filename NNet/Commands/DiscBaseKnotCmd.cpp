@@ -72,7 +72,7 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
             Pipe & pipeOut { upKnot->m_connections.GetFirstOutgoing() };
             pipeOut.SetStartKnot( upKnot.get() );
             pipeOut.DislocateStartPoint();                     // dislocate new knot
-            m_idStartKnots.SetAt(i, nmwi.Add2Model(move(upKnot)));
+            m_idStartKnots.SetAt(i, nmwi.Push2Model(move(upKnot)));
         }
     }
     for ( int i = 0; i < m_endKnots.size(); ++i )
@@ -83,7 +83,7 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
             Pipe & pipeIn { upKnot->m_connections.GetFirstIncoming() };
             pipeIn.SetEndKnot( upKnot.get() );
             pipeIn.DislocateEndPoint();                       // dislocate new knot 
-            m_idEndKnots.SetAt(i, nmwi.Add2Model(move(upKnot)));
+            m_idEndKnots.SetAt(i, nmwi.Push2Model(move(upKnot)));
         }
     }
     m_pBaseKnot->ClearConnections();
@@ -99,21 +99,21 @@ void DiscBaseKnotCmd::Undo( NNetModelWriterInterface & nmwi )
 
     for ( int i = Cast2Int(m_idEndKnots.Size()) - 1; i >= 0; --i )
     {
-        NobId idEndKnot { m_idEndKnots.Get(i) };
+        NobId   idEndKnot { m_idEndKnots.Get(i) };
         Knot  & knotEnd   { * nmwi.GetNobPtr<Knot *>(idEndKnot) };
         Pipe  & pipeIn    { knotEnd.m_connections.GetFirstIncoming() };
         pipeIn.SetEndKnot( m_pBaseKnot );
         m_pBaseKnot->m_connections.AddIncoming( & pipeIn );
-        m_endKnots[i] = nmwi.GetUPNobs().Pop<Knot>();
+        m_endKnots[i] = nmwi.PopFromModel<Knot>();
     }
     for ( int i = Cast2Int(m_startKnots.size()) - 1; i >= 0; --i )
     {
-        NobId idStartKnot { m_idStartKnots.Get(i) };
+        NobId   idStartKnot { m_idStartKnots.Get(i) };
         Knot  & knotStart   { * nmwi.GetNobPtr<Knot *>(idStartKnot) };
         Pipe  & pipeOut     { knotStart.m_connections.GetFirstOutgoing() };
         pipeOut.SetStartKnot( m_pBaseKnot );
         m_pBaseKnot->m_connections.AddOutgoing( & pipeOut );
-        m_startKnots[i] = nmwi.GetUPNobs().Pop<Knot>();
+        m_startKnots[i] = nmwi.PopFromModel<Knot>();
     }
     if ( m_bDelete ) 
         m_upBaseKnot = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnot));
