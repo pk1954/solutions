@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "Command.h"
+#include "SelectionCommand.h"
 #include "AnimationCmd.h"
 
 class NNetModelWriterInterface;
 class MainWindow;
 class Nob;
 
-class AnimationSequence : public Command
+class AnimationSequence : public SelectionCommand
 {
 public:
     AnimationSequence(MainWindow &);

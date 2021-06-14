@@ -20,37 +20,20 @@ using std::unique_ptr;
 class DiscConnCmd : public Command
 {
 public:
-    enum class tMode { remove, unplug, split };
-    
     DiscConnCmd
     (
         NNetModelWriterInterface & nmwi,
         NobId                const idConnector,
-        tMode                const mode 
+        bool                 const bRemove 
     )
       : m_idConnector(idConnector),
-        m_mode(mode)
+        m_bRemove(bRemove)
     {
         m_cmdStack.Initialize(&nmwi, nullptr);
         Connector & conn { * nmwi.GetNobPtr<Connector *>(m_idConnector) };
 
-        switch (m_mode)
-        {
-        case tMode::remove:
+        if (m_bRemove)
             conn.Apply2All([&](Nob const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
-            break;
-
-        case tMode::unplug:
-            break;
-
-        case tMode::split :
-            //            umPntVector.Pack( xxxxxxx );
-            break;
-
-        default:
-            assert( false );
-            break;
-        }
     }
 
     ~DiscConnCmd() {}
@@ -59,7 +42,7 @@ public:
     {
         m_upConnector = nmwi.RemoveFromModel<Connector>(m_idConnector);
         m_upConnector->ClearParentPointers();
-        if (m_mode == tMode::remove)
+        if (m_bRemove)
             m_cmdStack.DoAll();
     }
 
@@ -67,14 +50,14 @@ public:
     {
         m_upConnector->SetParentPointers();
         nmwi.GetUPNobs().SetNob2Slot( move(m_upConnector) );
-        if (m_mode == tMode::remove)
+        if (m_bRemove)
             m_cmdStack.UndoAll();
     }
 
 private:
 
     NobId           const m_idConnector;
-    tMode           const m_mode;
+    bool            const m_bRemove;
     CommandStack          m_cmdStack {};
     unique_ptr<Connector> m_upConnector {};  
 };

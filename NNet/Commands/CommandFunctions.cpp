@@ -38,7 +38,7 @@ unique_ptr<Command> MakeDeleteCommand
 	case NobType::Value::knot:
 		break;
 	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, id, DiscConnCmd::tMode::remove);
+		upCmd = make_unique<DiscConnCmd>(nmwi, id, true);
 		break;
 	case NobType::Value::closedConnector:
 		upCmd = make_unique<UnplugClosedConnCmd>(nmwi, id, true);
@@ -66,7 +66,7 @@ unique_ptr<Command> MakeDisconnectCommand
 		assert( false );
 		break;
 	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, id, DiscConnCmd::tMode::unplug);
+		upCmd = make_unique<DiscConnCmd>(nmwi, id, false);
 		break;
 	case NobType::Value::closedConnector:
 		assert(false);

@@ -39,6 +39,7 @@ public:
 
     virtual void Do(function<void()> const & targetReachedFunc)
     {
+        m_NMWI.GetUPNobs().DeselectAllNobs();
         m_upConnector->SetParentPointers();
         m_pModelNobs->Push(move(m_upConnector));
         (targetReachedFunc)();
