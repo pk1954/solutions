@@ -82,7 +82,7 @@ public:
 
 	virtual bool const IsCompositeNob() { return false; }
 
-	void Select(bool const bOn) { m_bSelected = bOn; }
+	virtual void Select(bool const bOn) { m_bSelected = bOn; }
 
 	bool    const IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
 	bool    const IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }

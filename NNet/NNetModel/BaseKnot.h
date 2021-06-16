@@ -73,6 +73,8 @@ public:
 	virtual void       RotateNob    (MicroMeterPnt const &, Radian const);
 	virtual void       Link         (Nob const &, Nob2NobFunc const &);
 
+	void MoveBaseKnot(MicroMeterPnt const &);
+
 	static bool const TypeFits( NobType const type ) { return type.IsBaseKnotType(); }
 
 	MicroMeterCircle const GetCircle   () const { return m_circle; }

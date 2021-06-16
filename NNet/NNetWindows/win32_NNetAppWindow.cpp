@@ -397,6 +397,10 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		PostMessage( WM_CLOSE, 0, 0 );
 		break;
 
+	case IDM_DUMP:
+		m_model.DumpModel();
+		break;
+
 	case IDM_FORWARD:
 		m_computeThread.SingleStep();
 		break;

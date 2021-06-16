@@ -18,10 +18,9 @@ using std::end;
 bool BaseKnot::operator==( Nob const & rhs ) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
-	return 
-	( this->Nob::operator== (rhs) )                    &&
-	GetPos ().IsCloseTo(baseKnotRhs.GetPos ()) &&
-	GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
+	return (this->Nob::operator==(rhs))             &&
+	       GetPos().IsCloseTo(baseKnotRhs.GetPos()) &&
+	       GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
 }
 
 void BaseKnot::Dump() const
@@ -36,9 +35,17 @@ void BaseKnot::SetPos( MicroMeterPnt const & newPos )
 	m_connections.Recalc();
 }
 
+void BaseKnot::MoveBaseKnot( MicroMeterPnt const & delta )
+{
+	SetPos(GetPos() + delta);
+}
+
 void BaseKnot::MoveNob( MicroMeterPnt const & delta )
 {
-	SetPos( GetPos() + delta );
+	if (HasParentNob())
+		GetParentNob()->MoveNob(delta);
+	else
+		MoveBaseKnot(delta);
 }
 
 void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)

@@ -64,6 +64,7 @@ void NNetAppMenu::Start
         AppendMenu( hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model" );
         AppendMenu( hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as" );
         AppendMenu( hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script" );
+        AppendMenu( hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump" );
         AppendMenu( hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit" );
     }
 

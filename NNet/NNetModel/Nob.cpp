@@ -96,12 +96,14 @@ void Nob::Check() const
 
 void Nob::Dump() const
 {
-	wcout << Scanner::COMMENT_SYMBOL << *this;
+	wcout << Scanner::COMMENT_SYMBOL;
+	wcout << (IsSelected() ? L'S' : L' ');
+	wcout << *this;
 }
 
 wostream & operator<< ( wostream & out, Nob const & nob )
 {
-	out << setw(4) << nob.m_identifier << L' ' << nob.m_type;
+	out << setw(5) << nob.m_identifier << L' ' << nob.m_type;
 	if (nob.m_pNobParent)
 		out << L" (par " << nob.m_pNobParent->m_identifier << ")";
 	return out;

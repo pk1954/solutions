@@ -82,22 +82,6 @@ MicroMeterPosDir const Connector::GetPosDir() const
     return MicroMeterPosDir( GetPos(), GetDir() );
 }
 
-void Connector::SetPos(MicroMeterPnt const & umPos)
-{
-    MoveNob(umPos - GetPos());
-}
-
-void Connector::SetPosDir(MicroMeterPosDir const & umPosDir)
-{
-    SetDir(umPosDir.GetDir());
-    SetPos(umPosDir.GetPos());
-}
-
-void Connector::SetDir(Radian const radianNew)
-{
-    RotateNob(GetPos(), radianNew - GetDir());
-}
-
 void Connector::SetParentPointers()
 {
     m_list.Apply2All([&](IoNeuron & n){ n.SetParentNob(this); } );
@@ -130,9 +114,25 @@ void Connector::Apply2All(function<void(IoNeuron const &)> const & func) const
     m_list.Apply2All([&](IoNeuron const & n){ func(n); } );
 }                        
 
+void Connector::SetPosDir(MicroMeterPosDir const & umPosDir)
+{
+    SetDir(umPosDir.GetDir());
+    SetPos(umPosDir.GetPos());
+}
+
+void Connector::SetDir(Radian const radianNew)
+{
+    RotateNob(GetPos(), radianNew - GetDir());
+}
+
+void Connector::SetPos(MicroMeterPnt const & umPos)
+{
+    MoveNob(umPos - GetPos());
+}
+
 void Connector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_list.Apply2All([&](IoNeuron & s){ s.MoveNob(delta); } );
+    m_list.Apply2All([&](IoNeuron & s){ s.MoveBaseKnot(delta); } );
 }
 
 void Connector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
@@ -151,9 +151,8 @@ void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umP
 
 void Connector::Select(bool const bOn, bool const bRecursive) 
 { 
-    Nob::Select(bOn);
-    if (bRecursive)
-        m_list.Apply2All([&](IoNeuron & s){ s.Select(bOn, false); } );
+    //if (bRecursive)
+    //    m_list.Apply2All([&](IoNeuron & s){ s.Select(bOn, false); } );
 }
 
 bool const Connector::IsIncludedIn(MicroMeterRect const & umRect) const 

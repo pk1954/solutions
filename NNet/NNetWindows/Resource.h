@@ -18,6 +18,7 @@
 #define IDM_SCRIPT_DIALOG        110
 #define IDM_UNDO                 115
 #define IDM_REDO                 116
+#define IDM_DUMP                 117
 
 #define IDI_NNETSIMU			 120
 #define IDI_SMALL				 121
