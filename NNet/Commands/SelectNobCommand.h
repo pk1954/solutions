@@ -15,7 +15,7 @@ class SelectNobCommand : public SelectionCommand
 public:
 	SelectNobCommand
 	( 
-		NobId const id, 
+		NobId   const id, 
 		tBoolOp const op 
 	)
 	  :	m_idNob(id),
@@ -26,11 +26,10 @@ public:
 	{ 
 		SelectionCommand::Do( nmwi );
 		Nob * pNob { nmwi.GetNobPtr<Nob *>(m_idNob) };
-		bool const bOn { ApplyOp2(pNob->IsSelected(), m_op) };
-		pNob->Select(bOn, true);  // true: apply recursive 
+		pNob->Select(ApplyOp2(pNob->IsSelected(), m_op));
 	}
 
 private:
-	NobId const m_idNob;
+	NobId   const m_idNob;
 	tBoolOp const m_op;
 };

@@ -37,8 +37,6 @@ public:
 	virtual bool const Includes    (MicroMeterPnt  const &)                   const;
 	virtual void       RotateNob   (MicroMeterPnt  const &, Radian const);
 	virtual void       MoveNob     (MicroMeterPnt  const &);
-	virtual void       Select      (bool const, bool const);
-	virtual void       Select      (bool const) {};
 	virtual void       Prepare     ();
 	virtual bool const CompStep    ();
 	virtual void       Recalc      ();

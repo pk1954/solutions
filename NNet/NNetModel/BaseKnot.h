@@ -69,11 +69,9 @@ public:
 	virtual void       SetPos       (MicroMeterPnt const &);
 	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
-	virtual void       MoveNob      (MicroMeterPnt const &);
 	virtual void       RotateNob    (MicroMeterPnt const &, Radian const);
 	virtual void       Link         (Nob const &, Nob2NobFunc const &);
-
-	void MoveBaseKnot(MicroMeterPnt const &);
+	virtual void       MoveNob      (MicroMeterPnt const &);
 
 	static bool const TypeFits( NobType const type ) { return type.IsBaseKnotType(); }
 

@@ -104,16 +104,6 @@ void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
     m_pOutputConnector = static_cast<Connector *>(dstFromSrc(src.m_pOutputConnector));
 }
 
-void ClosedConnector::Select(bool const bOn, bool const bRecursive) 
-{ 
-    Nob::Select(bOn);
-    if ( bRecursive )
-    {
-        m_pInputConnector ->Select(bOn, false);
-        m_pOutputConnector->Select(bOn, false);
-    }
-}
-
 void ClosedConnector::MoveNob(MicroMeterPnt const & delta)       
 {
     m_pInputConnector ->MoveNob(delta);

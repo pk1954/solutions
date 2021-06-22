@@ -40,10 +40,11 @@ public:
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
-	virtual void Select      (bool const, bool const);
 	virtual void Recalc      () { };
 
 	virtual void DrawNeuronText(PixelCoordsFp const &) const {};
+
+	void EvaluateSelectionStatus();
 
 private: 
 };

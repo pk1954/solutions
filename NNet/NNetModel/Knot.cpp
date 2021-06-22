@@ -34,15 +34,14 @@ void Knot::Check() const
 	assert( ! m_connections.IsOrphan() );
 }
 
-void Knot::Select(bool const bOn, bool const bRecursive) 
-{ 
-	if (bRecursive)
-		m_connections.Apply2AllConnectedPipes([&](Pipe &p){ p.Select(bOn, true); });
-
-	bool bAnyConnectedPipeSelected = m_connections.Apply2AllConnectedPipesB
-	( 
-		[&](Pipe const &p) { return p.IsSelected(); }   // if any connected pipe is selected
-	);                                                  // knot must also be selected
-
-	Nob::Select( bOn || bAnyConnectedPipeSelected );
+void Knot::EvaluateSelectionStatus( )
+{
+	Nob::Select
+	(
+		m_connections.Apply2AllConnectedPipesB
+		( 
+			[&](Pipe const &p) { return p.IsSelected(); }  // if any connected pipe is selected
+		)                                                  // knot must also be selected
+	);
 }
+

@@ -101,12 +101,12 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 {
 	if ( pBaseKnot )
 	{
-		pBaseKnot->Select(bOn, false);
+		pBaseKnot->Select(bOn);
 		pBaseKnot->m_connections.Apply2AllOutPipes
 		( 
 			[&]( Pipe & pipe ) 
 			{ 
-				pipe.Select(bOn, false); 
+				pipe.Select(bOn); 
 				if ( pipe.GetEndKnotPtr()->IsKnot() )
 					SelectSubtree(pipe.GetEndKnotPtr(), bOn); 
 			} 

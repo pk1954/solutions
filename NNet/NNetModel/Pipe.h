@@ -41,35 +41,35 @@ public:
 	BaseKnot * const GetStartKnotPtr() const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  () const { return m_pKnotEnd;   }
 
-	NobId           GetStartKnotId() const;
-	NobId           GetEndKnotId  () const;
+	NobId         GetStartKnotId() const;
+	NobId         GetEndKnotId  () const;
 	MicroMeterPnt GetStartPoint () const; 
 	MicroMeterPnt GetEndPoint   () const; 
-	MicroMeter      GetLength     () const;
+	MicroMeter    GetLength     () const;
 	MicroMeterPnt GetVector     () const; 
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
 	virtual void SetDir(Radian const) {};
 
-	virtual Radian          const GetDir      () const { return Vector2Radian(GetVector()); };
-	virtual NobIoMode       const GetIoMode   () const { return NobIoMode::internal; }
+	virtual Radian        const GetDir      () const { return Vector2Radian(GetVector()); };
+	virtual NobIoMode     const GetIoMode   () const { return NobIoMode::internal; }
 	virtual MicroMeterPnt const GetPos      ()                                      const;
-	virtual bool            const IsIncludedIn(MicroMeterRect  const &)               const;
-	virtual bool            const Includes    (MicroMeterPnt const &)               const;
-	virtual void                  Check       ()                                      const;
-	virtual void                  DrawArrows  (DrawContext const &, MicroMeter const) const;
-	virtual void                  DrawExterior(DrawContext const &, tHighlight const) const;
-	virtual void                  DrawInterior(DrawContext const &, tHighlight const) const;
-	virtual void                  Expand      (MicroMeterRect &)                      const;
-	virtual void                  Select      (bool const, bool const);
-	virtual void                  MoveNob     (MicroMeterPnt const &);
-	virtual void                  Link        (Nob const &, Nob2NobFunc const &);
-	virtual void                  RotateNob   (MicroMeterPnt const &, Radian const) {}
-	virtual void                  Prepare     ();
-	virtual bool            const CompStep    ();
-	virtual void                  Recalc      ();
-	virtual void                  Clear       ();
+	virtual bool          const IsIncludedIn(MicroMeterRect  const &)               const;
+	virtual bool          const Includes    (MicroMeterPnt const &)                 const;
+	virtual void                Check       ()                                      const;
+	virtual void                DrawArrows  (DrawContext const &, MicroMeter const) const;
+	virtual void                DrawExterior(DrawContext const &, tHighlight const) const;
+	virtual void                DrawInterior(DrawContext const &, tHighlight const) const;
+	virtual void                Expand      (MicroMeterRect &)                      const;
+	virtual void                MoveNob     (MicroMeterPnt const &);
+	virtual void                Link        (Nob const &, Nob2NobFunc const &);
+	virtual void                RotateNob   (MicroMeterPnt const &, Radian const) {}
+	virtual void                Prepare     ();
+	virtual bool          const CompStep    ();
+	virtual void                Recalc      ();
+	virtual void                Clear       ();
+	virtual void                Select      (bool const);
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPnt const & ) const;

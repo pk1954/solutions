@@ -69,11 +69,14 @@ D2D1::ColorF Nob::GetExteriorColor( tHighlight const type ) const
 };
 
 D2D1::ColorF Nob::GetInteriorColor( tHighlight const type ) const 
-{ 
+{
+	Nob const * pNob { this };
+	while ( pNob->HasParentNob() )
+		pNob = pNob->GetParentNob();
 	switch ( type )
 	{
-	case tHighlight::normal:      return IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
-	case tHighlight::highlighted: return IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
+	case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
+	case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
 	case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
 	case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
 	}

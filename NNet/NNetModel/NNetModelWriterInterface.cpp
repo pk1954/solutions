@@ -36,12 +36,12 @@ void NNetModelWriterInterface::CreateInitialNobs()
 
 Nob * const NNetModelWriterInterface::GetNob( NobId const id )     
 { 
-	return const_cast<Nob *>(m_pModel->GetConstNob( id ) );
+	return const_cast<Nob *>(m_pModel->GetConstNob(id) );
 }
 
 void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
 { 
-	GetNobPtr<Nob *>(idNob)->Select(bOn, false); 
+	GetNobPtr<Nob *>(idNob)->Select(bOn); 
 }
 
 void NNetModelWriterInterface::ToggleStopOnTrigger( NobId const id )
@@ -57,7 +57,7 @@ void NNetModelWriterInterface::SelectBeepers()
 		[&](Neuron &n) 
 		{ 
 			if (n.HasTriggerSound()) 
-				n.Select(true, false); 
+				n.Select(true); 
 		} 
 	); 
 }

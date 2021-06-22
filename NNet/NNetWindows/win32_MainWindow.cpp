@@ -8,6 +8,7 @@
 #include "Resource.h"
 #include "Signal.h"
 #include "MicroMeterPntVector.h"
+#include "Knot.h"
 #include "Neuron.h"
 #include "Connector.h"
 #include "NNetColors.h"
@@ -383,7 +384,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( IsDefined( m_nobHighlighted ) )
+	if (! m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
 	{
 		m_pModelCommands->SelectNob( m_nobHighlighted, tBoolOp::opToggle );
 	}

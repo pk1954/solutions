@@ -62,8 +62,8 @@ void Connector::Clear( )
 
 void Connector::AlignDirection()
 {
-    MicroMeterLine  const umLine(m_list.GetFirst().GetPos(), m_list.GetLast().GetPos());
-    MicroMeterPnt const umPntDir { CalcOrthoVector(umLine, m_list) };
+    MicroMeterLine const umLine(m_list.GetFirst().GetPos(), m_list.GetLast().GetPos());
+    MicroMeterPnt  const umPntDir { CalcOrthoVector(umLine, m_list) };
     m_list.Apply2All([&](IoNeuron & ioNeuron){ ioNeuron.SetDirVector(umPntDir); } );
 }
 
@@ -132,7 +132,7 @@ void Connector::SetPos(MicroMeterPnt const & umPos)
 
 void Connector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_list.Apply2All([&](IoNeuron & s){ s.MoveBaseKnot(delta); } );
+    m_list.Apply2All([&](IoNeuron & s){ s.MoveNob(delta); } );
 }
 
 void Connector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
@@ -148,12 +148,6 @@ void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umP
     Radian        const radDelta   { radNew - radOld };
     RotateNob(umPntPivot, radDelta);
 }                        
-
-void Connector::Select(bool const bOn, bool const bRecursive) 
-{ 
-    //if (bRecursive)
-    //    m_list.Apply2All([&](IoNeuron & s){ s.Select(bOn, false); } );
-}
 
 bool const Connector::IsIncludedIn(MicroMeterRect const & umRect) const 
 {

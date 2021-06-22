@@ -24,7 +24,7 @@ public:
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
 		nmwi.GetUPNobs().DeselectAllNobs();
-		m_selectedNobs.Apply2All([&](Nob &s){ s.Select(true, false); });
+		m_selectedNobs.Apply2All([&](Nob &s){ s.Select(true); });
 	}
 
 protected:

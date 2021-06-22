@@ -18,7 +18,7 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
 		SelectionCommand::Do( nmwi );
-		nmwi.GetUPNobs().Apply2AllInRect<Nob>(m_rect, [&](Nob& s){ s.Select(true, true); });
+		nmwi.GetUPNobs().Apply2AllInRect<Nob>(m_rect, [&](Nob& s){ s.Select(true); });
 	}
 
 private:

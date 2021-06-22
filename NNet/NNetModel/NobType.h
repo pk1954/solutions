@@ -19,16 +19,16 @@ class NobType
 public:
 	enum class Value
 	{
-		connector,
 		closedConnector,
+		connector,
 		inputNeuron,
 		outputNeuron,
 		neuron,
-		pipe,
 		knot,
+		pipe,
 		undefined,
-		nobTypeLast  = knot,
-		nobTypeFirst = connector
+		nobTypeLast  = pipe,
+		nobTypeFirst = closedConnector
 	};
 
 	static size_t const NR_OF_NOB_TYPES { static_cast<size_t>(Value::nobTypeLast) + 1 };

@@ -10,6 +10,7 @@
 #include "tHighlightType.h"
 #include "NNetParameters.h"
 #include "BaseKnot.h"
+#include "Knot.h"
 #include "Pipe.h"
 
 using std::fixed;
@@ -182,16 +183,13 @@ MicroMeterPnt Pipe::GetEndPoint() const
 	return m_pKnotEnd ? m_pKnotEnd->GetPos() : MicroMeterPnt::NULL_VAL();
 }
 
-void Pipe::Select(bool const bOn, bool const bRecursive) 
+void Pipe::Select(bool const bOn) 
 { 
 	Nob::Select(bOn);
-	if ( bRecursive )
-	{
-		if ( m_pKnotStart->IsKnot() )
-			m_pKnotStart->Select(bOn, false);
-		if ( m_pKnotEnd  ->IsKnot() )
-			m_pKnotEnd->Select(bOn, false);
-	}
+	if ( m_pKnotStart->IsKnot() )
+		static_cast<Knot *>(m_pKnotStart)->EvaluateSelectionStatus();
+	if ( m_pKnotEnd  ->IsKnot() )
+		static_cast<Knot *>(m_pKnotEnd)  ->EvaluateSelectionStatus();
 }
 
 MicroMeter Pipe::GetLength() const

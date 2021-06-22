@@ -210,8 +210,12 @@ NobId const UPNobList::FindNobAt
 	for (size_t i = m_list.size(); i --> 0;)	
 	{
 		Nob * pNob = m_list[i].get();
-		if ( pNob && crit(* pNob) && pNob->Includes(pnt) ) 
+		if (pNob && crit(* pNob) && pNob->Includes(pnt))
+		{
+			while (pNob->HasParentNob())
+				pNob = pNob->GetParentNob();
 			return pNob->GetId();
+		}
 	};
 	return NobId( NO_NOB );
 }
@@ -269,7 +273,7 @@ void UPNobList::Apply2AllSelected( NobType const type, NobFuncC const & func ) c
 
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
-	Apply2All( [&](Nob & s) { s.Select(bOn); } ); 
+	Apply2All( [&](Nob & s) { if (!s.HasParentNob()) s.Select(bOn); } ); 
 }
 
 NobIdList UPNobList::Append( UPNobList & list2Append )

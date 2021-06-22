@@ -22,8 +22,8 @@ public:
 		( 
 			[&](Nob & s)
 			{ 
-				if ( s.GetNobType() != m_val ) 
-					s.Select(false, false); 
+				if (s.GetNobType() != m_val) 
+					s.Select(false); 
 			}
 		);
 	}

@@ -71,7 +71,6 @@ public:
 	virtual void                Expand      (MicroMeterRect &)                      const = 0;
 	virtual void                MoveNob     (MicroMeterPnt const &)                       = 0;
 	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
-	virtual void                Select      (bool const, bool const)                      = 0;
 	virtual void                Link        (Nob const &, Nob2NobFunc const &)            = 0;
 
 	virtual void Clear()               { m_mVinputBuffer = 0.0_mV; };
@@ -82,7 +81,13 @@ public:
 
 	virtual bool const IsCompositeNob() { return false; }
 
-	virtual void Select(bool const bOn) { m_bSelected = bOn; }
+	virtual void Select(bool const bOn) 
+	{ 
+		if (HasParentNob())
+			m_pNobParent->Select(bOn);
+		else
+			m_bSelected = bOn; 
+	}
 
 	bool    const IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
 	bool    const IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }

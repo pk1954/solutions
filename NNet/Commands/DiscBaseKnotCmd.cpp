@@ -34,8 +34,8 @@ void DiscBaseKnotCmd::initialize(NNetModelWriterInterface & nmwi)
         [&]( Pipe & pipe ) // every incoming pipe needs a new end knot
         { 
             auto upKnotNew { make_unique<Knot>( umPos ) };
-            upKnotNew->Select( pipe.IsSelected(), false );
-            upKnotNew->m_connections.AddIncoming( & pipe );  // prepare new knot as far as possible
+            upKnotNew->Select(pipe.IsSelected());
+            upKnotNew->m_connections.AddIncoming(& pipe);  // prepare new knot as far as possible
             m_endKnots.push_back( move(upKnotNew) );         // store new knot for later
         }                                                    // but do not touch m_pBaseKnot
     );  // Knots in m_endKnots have their incoming pipe set
@@ -44,8 +44,8 @@ void DiscBaseKnotCmd::initialize(NNetModelWriterInterface & nmwi)
         [&]( Pipe & pipe ) // every outgoing pipe needs a new start knot
         { 
             auto upKnotNew { make_unique<Knot>( umPos ) };
-            upKnotNew->Select( pipe.IsSelected(), false );
-            upKnotNew->m_connections.AddOutgoing( & pipe );  // prepare new knot as far as possible
+            upKnotNew->Select(pipe.IsSelected());
+            upKnotNew->m_connections.AddOutgoing(& pipe);  // prepare new knot as far as possible
             m_startKnots.push_back( move(upKnotNew) );       // store new knot for later
         }                                                    // but do not touch m_pBaseKnot
     );  // Knots in m_startKnots have their outgoing pipe set

@@ -35,17 +35,9 @@ void BaseKnot::SetPos( MicroMeterPnt const & newPos )
 	m_connections.Recalc();
 }
 
-void BaseKnot::MoveBaseKnot( MicroMeterPnt const & delta )
-{
-	SetPos(GetPos() + delta);
-}
-
 void BaseKnot::MoveNob( MicroMeterPnt const & delta )
 {
-	if (HasParentNob())
-		GetParentNob()->MoveNob(delta);
-	else
-		MoveBaseKnot(delta);
+	SetPos(GetPos() + delta);
 }
 
 void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
