@@ -160,7 +160,7 @@ private:
         script.ScrReadSpecial( Connector::SEPARATOR );
         for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
         {
-            NobId        const id          { script.ScrReadInt() };
+            NobId      const id        { script.ScrReadInt() };
             IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
             if ( ! pIoNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );

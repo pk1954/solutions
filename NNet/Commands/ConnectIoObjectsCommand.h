@@ -33,8 +33,8 @@ public:
         assert( m_nobTarget  .GetIoMode() !== m_nobAnimated.GetIoMode() );
 
         m_upResult = m_nobAnimated.IsInputNob()
-            ? make_unique<RESULT>(m_nobTarget.GetPos(), m_nobAnimated, m_nobTarget  )
-            : make_unique<RESULT>(m_nobTarget.GetPos(), m_nobTarget,   m_nobAnimated);
+        ? make_unique<RESULT>(m_nobTarget.GetPos(), m_nobAnimated, m_nobTarget  )
+        : make_unique<RESULT>(m_nobTarget.GetPos(), m_nobTarget,   m_nobAnimated);
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)

@@ -25,8 +25,8 @@ public:
         m_bDelete(bDelete)
     {
         ClosedConnector const & closedConnector { * nmwi.GetNobPtr<ClosedConnector *>(idClosedConnector) };
-        m_upInputConnectorCmd  = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetInputConnector ().GetId(), true));
-        m_upOutputConnectorCmd = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetOutputConnector().GetId(), true));
+        m_upInputConnectorCmd  = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetInputConnector (), true));
+        m_upOutputConnectorCmd = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetOutputConnector(), true));
     }
 
     ~UnplugClosedConnCmd() {}

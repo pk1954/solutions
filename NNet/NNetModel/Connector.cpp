@@ -11,7 +11,7 @@ Connector::Connector()
   :	Nob(NobType::Value::connector)
 {};
 
-Connector::Connector( NobPtrList<IoNeuron> const & src )
+Connector::Connector(NobPtrList<IoNeuron> const & src)
   :	Nob(NobType::Value::connector)
 {
     src.Apply2All([&](IoNeuron & n) { Push(&n); });
