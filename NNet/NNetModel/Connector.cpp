@@ -14,20 +14,20 @@ Connector::Connector()
 Connector::Connector(NobPtrList<IoNeuron> const & src)
   :	Nob(NobType::Value::connector)
 {
-    src.Apply2All([&](IoNeuron & n) { Push(&n); });
+    m_list = src;
+//    src.Apply2All([&](IoNeuron & n) { Push(&n); });
 }
 
 void Connector::Check() const
 {
     Nob::Check();
-    m_list.Apply2All([&](IoNeuron const & n){ n.Check(); } );
+    m_list.Check();
 }
 
 void Connector::Dump() const
 {
     Nob::Dump();
-    wcout << endl; 
-    m_list.Apply2All([&](IoNeuron const & n) { wcout << L"       " << Scanner::COMMENT_SYMBOL << n << endl; });
+    m_list.Dump();
 }
 
 NobIoMode const Connector::GetIoMode() const 
@@ -44,14 +44,15 @@ IoNeuron * const Connector::Pop()
 
 void Connector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
-    Clear();
-    static_cast<Connector const &>(nobSrc).Apply2All
-    (
-        [&](IoNeuron const & c) 
-        { 
-            Push(static_cast<IoNeuron *>(dstFromSrc(& c))); 
-        }
-    );
+    m_list.Link(dstFromSrc);
+    //Clear();
+    //static_cast<Connector const &>(nobSrc).m_list.Apply2All
+    //(
+    //    [&](IoNeuron const & c) 
+    //    { 
+    //        Push(static_cast<IoNeuron *>(dstFromSrc(& c))); 
+    //    }
+    //);
 }
 
 void Connector::Clear( )
@@ -69,7 +70,7 @@ void Connector::AlignDirection()
 
 MicroMeterPnt const Connector::GetPos() const 
 { 
-    return (m_list.GetFirst().GetPos() + m_list.GetLast().GetPos()) / 2.0f; 
+    return m_list.GetPos(); 
 }
 
 Radian const Connector::GetDir() const 
@@ -84,29 +85,27 @@ MicroMeterPosDir const Connector::GetPosDir() const
 
 void Connector::SetParentPointers()
 {
-    m_list.Apply2All([&](IoNeuron & n){ n.SetParentNob(this); } );
+    m_list.SetParentPointers(this);
 }
 
 void Connector::ClearParentPointers()
 {
-    m_list.Apply2All([&](IoNeuron & n){ n.SetParentNob(nullptr); } );
+    m_list.ClearParentPointers();
 }
 
 void Connector::Prepare()
 {
-    m_list.Apply2All([&](IoNeuron & n){ n.Prepare(); } );
+    m_list.Prepare();
 }
 
 bool const Connector::CompStep()
 {
-    bool bStop { false };
-    m_list.Apply2All([&](IoNeuron & n){ if (n.CompStep()) bStop = true; } );
-    return bStop;
+    return m_list.CompStep();
 }
 
 void Connector::Recalc()
 {
-    m_list.Apply2All([&](IoNeuron & n){ n.Recalc(); } );
+    m_list.Recalc();
 }
 
 void Connector::Apply2All(function<void(IoNeuron const &)> const & func) const
@@ -132,12 +131,12 @@ void Connector::SetPos(MicroMeterPnt const & umPos)
 
 void Connector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_list.Apply2All([&](IoNeuron & s){ s.MoveNob(delta); } );
+    m_list.MoveNob(delta);
 }
 
 void Connector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
-    m_list.Apply2All([&](IoNeuron & n){ n.RotateNob(umPntPivot, radDelta); } );
+    m_list.RotateNob(umPntPivot, radDelta);
 }
 
 void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
@@ -151,31 +150,27 @@ void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umP
 
 bool const Connector::IsIncludedIn(MicroMeterRect const & umRect) const 
 {
-    bool bRes { false };
-    m_list.Apply2All([&](IoNeuron const & n){ if (n.IsIncludedIn(umRect)) bRes = true; } );
-    return bRes;
+    return m_list.IsIncludedIn(umRect);
 }
 
 bool const Connector::Includes(MicroMeterPnt const & umPnt) const
 {
-    bool bRes { false };
-    m_list.Apply2All([&](IoNeuron const & n) { if (n.Includes(umPnt)) bRes = true; } );
-    return bRes;
+    return m_list.Includes(umPnt);
 }
 
 void Connector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-    m_list.Apply2All([&](IoNeuron const & s){ s.DrawExterior(context, type); } );
+    m_list.DrawExterior(context, type);
 }
 
 void Connector::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-    m_list.Apply2All([&](IoNeuron const & s){ s.DrawInterior(context, type); } );
+    m_list.DrawInterior(context, type);
 }
 
 void Connector::Expand(MicroMeterRect & umRect) const
 {
-    m_list.Apply2All([&](IoNeuron const & s){ umRect.Expand(s.GetPos()); } );
+    m_list.Expand(umRect);
 }
 
 Connector const * Cast2Connector( Nob const * pNob )

@@ -13,112 +13,112 @@ ClosedConnector::ClosedConnector
 )
   :	Nob(NobType::Value::closedConnector)
 {
-    m_pInputConnector  = &connInput;
-    m_pOutputConnector = &connOutput;
+    m_listInput  = move(connInput.GetIoNeurons ());
+    m_listOutput = move(connOutput.GetIoNeurons());
 }
 
 void ClosedConnector::Check() const
 {
-    m_pInputConnector ->Check();
-    m_pOutputConnector->Check();
+    m_listInput .Check();
+    m_listOutput.Check();
 }
 
 void ClosedConnector::Dump() const
 {
-    m_pInputConnector ->Dump();
-    m_pOutputConnector->Dump();
+    m_listInput .Dump();
+    m_listOutput.Dump();
 }
 
 MicroMeterPnt const ClosedConnector::GetPos() const
 {
-   return (m_pInputConnector->GetPos() + m_pOutputConnector->GetPos()) * 0.5f;
+   return (m_listInput.GetPos() + m_listOutput.GetPos()) * 0.5f;
 }
 
 void ClosedConnector::DrawExterior(DrawContext const & context, tHighlight const highLightType) const
 {
-    m_pInputConnector ->DrawExterior(context, highLightType);
-    m_pOutputConnector->DrawExterior(context, highLightType);
+    m_listInput .DrawExterior(context, highLightType);
+    m_listOutput.DrawExterior(context, highLightType);
 }
 
 void ClosedConnector::DrawInterior(DrawContext const &context, tHighlight const highLightType) const
 {
-    m_pInputConnector ->DrawInterior(context, highLightType);
-    m_pOutputConnector->DrawInterior(context, highLightType);
+    m_listInput .DrawInterior(context, highLightType);
+    m_listOutput.DrawInterior(context, highLightType);
 }
 
 void ClosedConnector::Expand(MicroMeterRect & umRect) const
 {
-    m_pInputConnector ->Expand(umRect);
-    m_pOutputConnector->Expand(umRect);
+    m_listInput .Expand(umRect);
+    m_listOutput.Expand(umRect);
 }
 
 bool const ClosedConnector::IsIncludedIn(MicroMeterRect const & rect) const
 {
-    bool bRes = m_pInputConnector ->IsIncludedIn(rect) 
-        || m_pOutputConnector->IsIncludedIn(rect);
-    return bRes;
+    return m_listInput.IsIncludedIn(rect) || m_listOutput.IsIncludedIn(rect);
 }
 
 bool const ClosedConnector::Includes(MicroMeterPnt const & umPnt) const
 {
-    return m_pInputConnector ->Includes(umPnt)
-        || m_pOutputConnector->Includes(umPnt);
+    return m_listInput.Includes(umPnt) || m_listOutput.Includes(umPnt);
 }
 
 void ClosedConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radian)
 {   
-    m_pInputConnector ->RotateNob(umPntPivot, radian);
-    m_pOutputConnector->RotateNob(umPntPivot, radian);
+    m_listInput .RotateNob(umPntPivot, radian);
+    m_listOutput.RotateNob(umPntPivot, radian);
 }
 
 void ClosedConnector::Prepare()
 {
-    m_pInputConnector ->Prepare();
-    m_pOutputConnector->Prepare();
+    m_listInput .Prepare();
+    m_listOutput.Prepare();
 }
 
 bool const ClosedConnector::CompStep()
 {
     bool bStop { false };
-    if (m_pInputConnector ->CompStep()) bStop = true;
-    if (m_pOutputConnector->CompStep()) bStop = true;
+    if (m_listInput .CompStep()) bStop = true;
+    if (m_listOutput.CompStep()) bStop = true;
     return bStop;
 }
 
 void ClosedConnector::Recalc()
 {
-    m_pInputConnector ->Recalc();
-    m_pOutputConnector->Recalc();
+    m_listInput .Recalc();
+    m_listOutput.Recalc();
 }
 
 void ClosedConnector::Clear()
 {
-    m_pInputConnector ->Clear();
-    m_pOutputConnector->Clear();
+    m_listInput .Clear();
+    m_listOutput.Clear();
 }
 
 void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
-    auto const & src = static_cast<ClosedConnector const &>(nobSrc);
-    m_pInputConnector  = static_cast<Connector *>(dstFromSrc(src.m_pInputConnector ));
-    m_pOutputConnector = static_cast<Connector *>(dstFromSrc(src.m_pOutputConnector));
+    m_listInput .Link(dstFromSrc);
+    m_listOutput.Link(dstFromSrc);
+
+    //auto const & src = static_cast<ClosedConnector const &>(nobSrc);
+    //m_pInputConnector  = static_cast<Connector *>(dstFromSrc(src.m_pInputConnector ));
+    //m_pOutputConnector = static_cast<Connector *>(dstFromSrc(src.m_pOutputConnector));
 }
 
 void ClosedConnector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_pInputConnector ->MoveNob(delta);
-    m_pOutputConnector->MoveNob(delta);
+    m_listInput .MoveNob(delta);
+    m_listOutput.MoveNob(delta);
 }
 
 void ClosedConnector::SetParentPointers()
 {
-    m_pInputConnector ->SetParentNob(this);
-    m_pOutputConnector->SetParentNob(this);
+    m_listInput .SetParentPointers(this);
+    m_listOutput.SetParentPointers(this);
 }
 
 void ClosedConnector::ClearParentPointers()
 {
-    m_pInputConnector ->SetParentNob(nullptr);
-    m_pOutputConnector->SetParentNob(nullptr);
+    m_listInput .ClearParentPointers();
+    m_listOutput.ClearParentPointers();
 }
 

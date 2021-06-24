@@ -47,20 +47,20 @@ public:
 	void SetParentPointers();
 	void ClearParentPointers();
 
-	size_t const Size() const { return m_pInputConnector->Size(); };
+	size_t const Size() const { return m_listInput.Size(); };
 
-	virtual Radian const GetDir() const { return m_pInputConnector->GetDir(); };
+	virtual Radian const GetDir() const { return m_listInput.GetFirst().GetDir(); };
 
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
-	Connector const & GetInputConnector () const { return * m_pInputConnector;  }
-	Connector const & GetOutputConnector() const { return * m_pOutputConnector; }
+	NobPtrList<IoNeuron> const & GetInputNeurons () const { return m_listInput;  };
+	NobPtrList<IoNeuron> const & GetOutputNeurons() const { return m_listOutput; };
 
 private:
-	Connector * m_pInputConnector  { nullptr };
-	Connector * m_pOutputConnector { nullptr };
+	NobPtrList<IoNeuron> m_listInput  {};
+	NobPtrList<IoNeuron> m_listOutput {};
 };
 
 ClosedConnector const * Cast2ClosedConnector(Nob const *);

@@ -10,6 +10,8 @@
 
 using std::vector;
 using std::sort;
+using std::wcout;
+using std::endl;
 
 template <Nob_t T>
 class NobPtrList
@@ -32,6 +34,16 @@ public:
 	T const & GetElem(size_t const i) const { return * m_list.at(i); }
 
 	void Check() const { for (auto & it : m_list) { it->Check(); }; }
+	void Dump () const
+	{
+		wcout << endl; 
+		for (auto & it : m_list) { wcout << L"       " << Scanner::COMMENT_SYMBOL << it << endl; };
+	}
+
+	MicroMeterPnt const GetPos() const 
+	{ 
+		return (GetFirst().GetPos() + GetLast().GetPos()) * 0.5f; 
+	}
 
 	void Clear()      {	m_list.clear(); }
 	void RemoveLast() {	m_list.pop_back(); }
@@ -133,6 +145,78 @@ public:
 				return PointToLine(line, p1->GetPos()) < PointToLine(line, p2->GetPos()); 
 			} 
 		);
+	}
+
+	void Link(Nob2NobFunc const & dstFromSrc)
+	{
+		Clear();
+		for (auto & it : m_list) { it = static_cast<T *>(dstFromSrc(it)); }
+	}
+
+	bool const IsIncludedIn(MicroMeterRect const & umRect) const 
+	{
+		bool bRes { false };
+		for (auto it : m_list) { if (it->IsIncludedIn(umRect)) bRes = true; }
+		return bRes;
+	}
+
+	bool const Includes(MicroMeterPnt const & umPnt) const
+	{
+		bool bRes { false };
+		for (auto it : m_list) { if (it->Includes(umPnt)) bRes = true; }
+		return bRes;
+	}
+
+	void DrawExterior(DrawContext const & context, tHighlight const type) const
+	{
+		for (auto it : m_list) { it->DrawExterior(context, type); }
+	}
+
+	void DrawInterior(DrawContext const & context, tHighlight const type) const
+	{
+		for (auto it : m_list) { it->DrawInterior(context, type); }
+	}
+
+	void Expand(MicroMeterRect & umRect) const
+	{
+		for (auto it : m_list) { umRect.Expand(it->GetPos()); }
+	}
+
+	void RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
+	{
+		for (auto it : m_list) { it->RotateNob(umPntPivot, radDelta); }
+	}
+
+	void MoveNob(MicroMeterPnt const & delta)       
+	{
+		for (auto it : m_list) { it->MoveNob(delta); }
+	}
+
+	void Prepare()
+	{
+		for (auto it : m_list) { it->Prepare(); }
+	}
+
+	bool const CompStep()
+	{
+		bool bStop { false };
+		for (auto it : m_list) { if (it->CompStep()) bStop = true; }
+		return bStop;
+	}
+
+	void Recalc()
+	{
+		for (auto it : m_list) { it->Recalc(); }
+	}
+
+	void SetParentPointers(Nob * const pNob)
+	{
+		for (auto it : m_list) { it->SetParentNob(pNob); }
+	}
+
+	void ClearParentPointers()
+	{
+		for (auto it : m_list) { it->SetParentNob(nullptr); }
 	}
 
 	inline static wchar_t const OPEN_BRACKET  { L'(' };

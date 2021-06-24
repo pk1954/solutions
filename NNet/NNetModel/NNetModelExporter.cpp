@@ -167,19 +167,19 @@ void NNetModelExporter::writePipe( wostream & out, Pipe const & pipe )
         << Pipe::CLOSE_BRACKET;
 }
 
-void NNetModelExporter::writeConnector(wostream & out, Connector const & connector)
+void NNetModelExporter::writeIoNeurons(wostream & out, NobPtrList<IoNeuron> const & list)
 {
-    out << Connector::OPEN_BRACKET << L" " << connector.Size() << Connector::SEPARATOR << L" ";
-    connector.Apply2All( [&](Nob const & n) { out << n.GetId() << L" "; } );
+    out << Connector::OPEN_BRACKET << L" " << list.Size() << Connector::SEPARATOR << L" ";
+    list.Apply2All( [&](Nob const & n) { out << n.GetId() << L" "; } );
     out << Connector::CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writeClosedConnector(wostream & out, ClosedConnector const & cc)
 {
     out << L" ";
-    writeConnector(out, cc.GetInputConnector());
+    writeIoNeurons(out, cc.GetInputNeurons());
     out << L" ";
-    writeConnector(out, cc.GetOutputConnector());
+    writeIoNeurons(out, cc.GetOutputNeurons());
 }
 
 void NNetModelExporter::writeNob( wostream & out, Nob const & nob )
@@ -201,7 +201,7 @@ void NNetModelExporter::writeNob( wostream & out, Nob const & nob )
             break;
 
         case NobType::Value::connector:
-            writeConnector( out, static_cast<Connector const &>(nob) );
+            writeIoNeurons( out, static_cast<Connector const &>(nob).GetIoNeurons() );
             break;
 
         case NobType::Value::closedConnector:

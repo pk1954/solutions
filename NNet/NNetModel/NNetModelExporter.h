@@ -41,7 +41,7 @@ private:
 
 	void writeNob            ( wostream &, Nob             const & );
 	void writePipe           ( wostream &, Pipe            const & );
-	void writeConnector      ( wostream &, Connector       const & );
+	void writeIoNeurons      ( wostream &, NobPtrList<IoNeuron> const & );
 	void writeClosedConnector( wostream &, ClosedConnector const & );
 	void writeDescription( wostream & );
 	void writeMonitorData( wostream & );

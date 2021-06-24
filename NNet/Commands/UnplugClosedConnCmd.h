@@ -25,8 +25,8 @@ public:
         m_bDelete(bDelete)
     {
         ClosedConnector const & closedConnector { * nmwi.GetNobPtr<ClosedConnector *>(idClosedConnector) };
-        m_upInputConnectorCmd  = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetInputConnector (), true));
-        m_upOutputConnectorCmd = move(make_unique<DiscConnCmd>(nmwi, closedConnector.GetOutputConnector(), true));
+        m_upInputConnector     = make_unique<Connector>(closedConnector.GetInputNeurons ());
+        m_upOutputConnector    = make_unique<Connector>(closedConnector.GetOutputNeurons());
     }
 
     ~UnplugClosedConnCmd() {}
@@ -35,21 +35,23 @@ public:
     {
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_idClosedConnector);
         m_upClosedConnector->ClearParentPointers();
-        if (m_bDelete)
+        if (!m_bDelete)
         {
-            m_upInputConnectorCmd ->Do(nmwi);
-            m_upOutputConnectorCmd->Do(nmwi);
+            m_upInputConnector ->SetParentPointers();
+            m_upOutputConnector->SetParentPointers();
+            m_idInputConnector  = nmwi.Push2Model(move(m_upInputConnector));
+            m_idOutputConnector = nmwi.Push2Model(move(m_upOutputConnector));
         }
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
         m_upClosedConnector->SetParentPointers();
-        nmwi.GetUPNobs().SetNob2Slot( move(m_upClosedConnector) );
-        if ( m_bDelete )
+        nmwi.GetUPNobs().SetNob2Slot(move(m_upClosedConnector));
+        if (!m_bDelete)
         {
-            m_upOutputConnectorCmd->Undo(nmwi);
-            m_upInputConnectorCmd ->Undo(nmwi);
+            m_upInputConnector  = nmwi.RemoveFromModel<Connector>(m_idInputConnector);
+            m_upOutputConnector = nmwi.RemoveFromModel<Connector>(m_idOutputConnector);
         }
     }
 
@@ -57,7 +59,11 @@ private:
 
     bool                  const m_bDelete;     // true: delete Connector, false: disconnect only
     NobId                 const m_idClosedConnector;
-    unique_ptr<DiscConnCmd>     m_upInputConnectorCmd  {};  
-    unique_ptr<DiscConnCmd>     m_upOutputConnectorCmd {};  
-    unique_ptr<ClosedConnector> m_upClosedConnector    {};  
+    unique_ptr<ClosedConnector> m_upClosedConnector    {};
+    NobId                       m_idInputConnector     {};
+    NobId                       m_idOutputConnector    {};
+    unique_ptr<Connector>       m_upInputConnector     {};  
+    unique_ptr<Connector>       m_upOutputConnector    {};  
+    //unique_ptr<DiscConnCmd>     m_upInputConnectorCmd  {};  
+    //unique_ptr<DiscConnCmd>     m_upOutputConnectorCmd {};  
 };
