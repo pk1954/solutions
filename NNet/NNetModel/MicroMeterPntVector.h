@@ -9,7 +9,7 @@
 #include "MoreTypes.h"
 #include "PointType.h"
 #include "IoNeuron.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "MicroMeterPosDir.h"
 
 using std::endl;
@@ -23,7 +23,7 @@ class MicroMeterPntVector
 public:
 
     MicroMeterPntVector() {}
-    MicroMeterPntVector(NobPtrList<IoNeuron> const&);
+    MicroMeterPntVector(IoNeuronList const&);
 
     void Apply2All(function<void(MicroMeterPosDir &)> const &);
 

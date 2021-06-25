@@ -8,7 +8,7 @@
 #include "win32_callable.h"
 #include "win32_animation.h"
 #include "Connector.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 #include "AnimationCmd.h"
@@ -33,7 +33,7 @@ public:
         NobType const nobType { determineNobType(* m_pModelNobs) };
         if ( nobType.IsUndefinedType() )
             return;
-        m_nobsAnimated = NobPtrList<IoNeuron>(m_pModelNobs->GetAllSelected<IoNeuron>(nobType));
+        m_nobsAnimated = IoNeuronList(m_pModelNobs->GetAllSelected<IoNeuron>(nobType));
         m_upConnector  = make_unique<Connector>( m_nobsAnimated );
     }
 
@@ -72,8 +72,8 @@ private:
             : NobType::Value::outputNeuron;
     }
 
-    UPNobList                * m_pModelNobs { nullptr };
-    unique_ptr<Connector>      m_upConnector {};  
-    NobPtrList<IoNeuron>       m_nobsAnimated {};
+    UPNobList                * m_pModelNobs   { nullptr };
+    unique_ptr<Connector>      m_upConnector  {};  
+    IoNeuronList               m_nobsAnimated {};
     NNetModelWriterInterface & m_NMWI;
 };

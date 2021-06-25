@@ -1,4 +1,4 @@
-// NobPtrList.h
+// IoNeuronList.h
 //
 // NNetModel
 
@@ -6,32 +6,31 @@
 
 #include <vector>
 #include "MoreTypes.h"
-#include "Nob.h"
+#include "IoNeuron.h"
 
 using std::vector;
 using std::sort;
 using std::wcout;
 using std::endl;
 
-template <Nob_t T>
-class NobPtrList
+class IoNeuronList
 {
 public:
 
-	NobPtrList() {}
-	virtual ~NobPtrList() {}
+	IoNeuronList() {}
+	virtual ~IoNeuronList() {}
 
 	size_t const Size()    const { return m_list.size (); }
 	bool   const IsEmpty() const { return m_list.empty(); }
 
-	T       & GetFirst()       { return * m_list.at( 0 ); }
-	T const & GetFirst() const { return * m_list.at( 0 ); }
+	IoNeuron       & GetFirst()       { return * m_list.front(); }
+	IoNeuron const & GetFirst() const { return * m_list.front(); }
 
-	T       & GetLast()       { return * m_list.back(); }
-	T const & GetLast() const { return * m_list.back(); }
+	IoNeuron       & GetLast()       { return * m_list.back(); }
+	IoNeuron const & GetLast() const { return * m_list.back(); }
 
-	T       & GetElem(size_t const i)       { return * m_list.at(i); }
-	T const & GetElem(size_t const i) const { return * m_list.at(i); }
+	IoNeuron       & GetElem(size_t const i)       { return * m_list.at(i); }
+	IoNeuron const & GetElem(size_t const i) const { return * m_list.at(i); }
 
 	void Check() const { for (auto & it : m_list) { it->Check(); }; }
 	void Dump () const
@@ -47,12 +46,12 @@ public:
 
 	void Clear()      {	m_list.clear(); }
 	void RemoveLast() {	m_list.pop_back(); }
-	void Replace(T * const pDel, T * const pAdd) 
+	void Replace(IoNeuron * const pDel, IoNeuron * const pAdd) 
 	{ 
 		replace( begin(m_list), end(m_list), pDel, pAdd ); 
 	}
 
-	void Add( T * const pNob )
+	void Add( IoNeuron * const pNob )
 	{
 		if ( pNob != nullptr )
 		{
@@ -61,14 +60,14 @@ public:
 		}
 	}
 
-	void Remove( T * const pNob )
+	void Remove( IoNeuron * const pNob )
 	{
 		auto res = find( begin(m_list), end(m_list), pNob );
 		assert( res != end(m_list) );
 		m_list.erase( res );
 	}
 
-	void Apply2All( function<void(T &)> const & func ) const
+	void Apply2All( function<void(IoNeuron &)> const & func ) const
 	{
 		for ( auto pNob : m_list ) 
 		{ 
@@ -77,7 +76,7 @@ public:
 		}
 	}
 
-	bool Apply2AllB( function<bool(T const &)> const & func ) const 
+	bool Apply2AllB( function<bool(IoNeuron const &)> const & func ) const 
 	{
 		bool bResult { false };
 		for ( auto pNob : m_list ) 
@@ -91,7 +90,7 @@ public:
 		return false;
 	}
 
-	bool operator==(NobPtrList const & rhs) const
+	bool operator==(IoNeuronList const & rhs) const
 	{
 		if ( Size() != rhs.Size() )
 			return false;
@@ -101,7 +100,7 @@ public:
 		return true;
 	}
 
-	friend wostream & operator<< (wostream & out, NobPtrList<T> const & v)
+	friend wostream & operator<< (wostream & out, IoNeuronList const & v)
 	{
 		out << OPEN_BRACKET << v.m_list.size();
 		if (v.m_list.size() > 0)
@@ -121,8 +120,8 @@ public:
 	{
 		MicroMeter     maxDist { 0.0_MicroMeter };   	
 		MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
-		for ( T * it1 : m_list )
-		for ( T * it2 : m_list )    //TODO: optimize
+		for ( IoNeuron * it1 : m_list )
+		for ( IoNeuron * it2 : m_list )    //TODO: optimize
 		{
 			auto const line { MicroMeterLine( it1->GetPos(), it2->GetPos() ) };
 			auto const dist { line.Length() };
@@ -135,6 +134,41 @@ public:
 		return lineMax;
 	}
 
+	MicroMeterPnt const CalcOrthoVector(MicroMeterLine const & line)
+	{
+		unsigned int uiLeftConnections  { 0 };
+		unsigned int uiRightConnections { 0 };
+		for (auto pIoNeuron : m_list)
+		{ 
+			pIoNeuron->m_connections.Apply2AllInPipes
+			( 
+				[&](Pipe & pipe) 
+				{ 
+					MicroMeterPnt pnt { pipe.GetStartPoint() };
+					if ( PointToLine(line, pnt) < 0.0_MicroMeter )
+						++uiLeftConnections;
+					else
+						++uiRightConnections;
+				}
+			);
+			pIoNeuron->m_connections.Apply2AllOutPipes
+			( 
+				[&](Pipe & pipe) 
+				{ 
+					MicroMeterPnt pnt { pipe.GetEndPoint() };
+					if ( PointToLine(line, pnt) < 0.0_MicroMeter )
+						++uiRightConnections;
+					else
+						++uiLeftConnections;
+				}
+			);
+		}	
+
+		MicroMeterPnt orthoVector = line.OrthoVector();
+		if ( uiRightConnections < uiLeftConnections )
+			orthoVector = -orthoVector;
+		return orthoVector;
+	}
 	void SortAccToDistFromLine(MicroMeterLine const & line)
 	{
 		sort
@@ -147,10 +181,17 @@ public:
 		);
 	}
 
+	void AlignDirection()
+	{
+		MicroMeterLine const umLine(GetFirst().GetPos(), GetLast().GetPos());
+		MicroMeterPnt  const umPntDir { CalcOrthoVector(umLine) };
+		for (auto it : m_list) { it->SetDirVector(umPntDir); }
+	}
+
 	void Link(Nob2NobFunc const & dstFromSrc)
 	{
 		Clear();
-		for (auto & it : m_list) { it = static_cast<T *>(dstFromSrc(it)); }
+		for (auto & it : m_list) { it = static_cast<IoNeuron *>(dstFromSrc(it)); }
 	}
 
 	bool const IsIncludedIn(MicroMeterRect const & umRect) const 
@@ -224,5 +265,5 @@ public:
 	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
-	vector<T *> m_list;
+	vector<IoNeuron *> m_list;
 };

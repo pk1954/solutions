@@ -9,7 +9,7 @@
 #include "MicroMeterPosDir.h"
 #include "NobType.h"
 #include "UPNobList.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "IoNeuron.h"
 
 class Connector: public Nob
@@ -20,7 +20,7 @@ public:
 	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
 	Connector();
-	Connector(NobPtrList<IoNeuron> const &);
+	Connector(IoNeuronList const &);
 
 	virtual ~Connector() {}
 
@@ -48,7 +48,11 @@ public:
 	void Push(IoNeuron * const p) { m_list.Add(p); }
 	IoNeuron * const Pop();
 
-	bool const IsInputConnector () const { return m_list.GetFirst().IsInputNeuron (); }
+	bool const IsInputConnector () const 
+	{
+		Neuron const & ioNeuron { m_list.GetFirst() };
+		return ioNeuron.IsInputNob (); 
+	}
 	bool const IsOutputConnector() const { return m_list.GetFirst().IsOutputNeuron(); }
 
 	size_t const Size() const { return m_list.Size(); }
@@ -72,10 +76,11 @@ public:
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
-	NobPtrList<IoNeuron> const & GetIoNeurons() const { return m_list; }
+	IoNeuronList       & GetIoNeurons()       { return m_list; }
+	IoNeuronList const & GetIoNeurons() const { return m_list; }
 
 private:
-	NobPtrList<IoNeuron> m_list {};
+	IoNeuronList m_list {};
 };
 
 Connector const * Cast2Connector( Nob const * );

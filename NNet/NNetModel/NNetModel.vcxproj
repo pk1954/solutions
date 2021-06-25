@@ -187,7 +187,6 @@
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
-    <ClInclude Include="CalcOrthoVector.h" />
     <ClInclude Include="ClosedConnector.h" />
     <ClInclude Include="IoNeuron.h" />
     <ClInclude Include="Connector.h" />
@@ -214,7 +213,7 @@
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="NobIdList.h" />
-    <ClInclude Include="NobPtrList.h" />
+    <ClInclude Include="IoNeuronList.h" />
     <ClInclude Include="NobErrorHandler.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
@@ -259,7 +258,7 @@
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Nob.cpp" />
-    <ClCompile Include="NobdList.cpp" />
+    <ClCompile Include="NobIdList.cpp" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="NobType.cpp" />

@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include <vector>
 #include "NNetModelWriterInterface.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "Command.h"
 
 class SelectionCommand : public Command
@@ -24,11 +25,11 @@ public:
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
 		nmwi.GetUPNobs().DeselectAllNobs();
-		m_selectedNobs.Apply2All([&](Nob &s){ s.Select(true); });
+		for (auto it : m_selectedNobs){ it->Select(true); };
 	}
 
 protected:
-	NobPtrList<Nob> m_selectedNobs;
-	bool            m_bInitialized { false };
+	vector<Nob *> m_selectedNobs;
+	bool          m_bInitialized { false };
 };
 

@@ -90,8 +90,8 @@ void NNetModelWriterInterface::SetIoNeurons
 
 void NNetModelWriterInterface::SetIoNeurons
 (
-	MicroMeterPntVector  const & umPntVector, 
-	NobPtrList<IoNeuron> const & nobPtrList
+	MicroMeterPntVector const & umPntVector, 
+	IoNeuronList        const & nobPtrList
 )
 {
 	unsigned int ui = 0;

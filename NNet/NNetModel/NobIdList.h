@@ -19,9 +19,9 @@ class NobIdList
 {
 public:
     NobIdList() {}
-    NobIdList(Connector            const &);
-    NobIdList(NobPtrList<Nob>      const &);
-    NobIdList(NobPtrList<IoNeuron> const &);
+    NobIdList(Connector     const &);
+    NobIdList(vector<Nob *> const &);
+    NobIdList(IoNeuronList  const &);
 
     virtual ~NobIdList() {}
 

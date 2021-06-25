@@ -4,11 +4,13 @@
 
 #pragma once
 
+#include <fstream>
+#include <vector>
 #include "scanner.h"
 #include "Pipe.h"
-#include "NobPtrList.h"
 
 using std::endl;
+using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
@@ -38,23 +40,34 @@ public:
 		m_outgoing = outgoing.m_outgoing; 
 	}
 
-	Pipe & GetFirstOutgoing() { return m_outgoing.GetFirst(); }
-	Pipe & GetFirstIncoming() { return m_incoming.GetFirst(); }
+	Pipe & GetFirstOutgoing() { return * m_outgoing.front(); }
+	Pipe & GetFirstIncoming() { return * m_incoming.front(); }
 
-	Pipe const & GetFirstOutgoing() const { return m_outgoing.GetFirst(); }
-	Pipe const & GetFirstIncoming() const { return m_incoming.GetFirst(); }
+	Pipe const & GetFirstOutgoing() const { return * m_outgoing.front(); }
+	Pipe const & GetFirstIncoming() const { return * m_incoming.front(); }
 
-	void AddIncoming( Pipe * const p ) { m_incoming.Add( p ); }
-	void AddOutgoing( Pipe * const p ) { m_outgoing.Add( p ); }
+	void AddIncoming(Pipe * const p) { m_incoming.push_back(p); }
+	void AddOutgoing(Pipe * const p) { m_outgoing.push_back(p); }
 
-	void RemoveIncoming( Pipe * const p ) { m_incoming.Remove( p ); }
-	void RemoveOutgoing( Pipe * const p ) { m_outgoing.Remove( p ); }
+	void RemoveIncoming( Pipe * const p ) 
+	{ 
+		auto res = find(begin(m_incoming), end(m_incoming), p);
+		assert( res != end(m_incoming) );
+		m_incoming.erase( res );
+	}
 
-	void ReplaceIncoming( Pipe * const pDel, Pipe * const pAdd ) { m_incoming.Replace( pDel, pAdd ); }
-	void ReplaceOutgoing( Pipe * const pDel, Pipe * const pAdd ) { m_outgoing.Replace( pDel, pAdd ); }
+	void RemoveOutgoing( Pipe * const p ) 
+	{ 
+		auto res = find(begin(m_outgoing), end(m_outgoing), p);
+		assert( res != end(m_outgoing) );
+		m_outgoing.erase( res );
+	}
 
-	bool const HasIncoming() const { return ! m_incoming.IsEmpty(); }
-	bool const HasOutgoing() const { return ! m_outgoing.IsEmpty(); }
+	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) { replace( m_incoming.begin(), m_incoming.end(), pDel, pAdd ); }
+	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) { replace( m_outgoing.begin(), m_outgoing.end(), pDel, pAdd ); }
+
+	bool const HasIncoming() const { return ! m_incoming.empty(); }
+	bool const HasOutgoing() const { return ! m_outgoing.empty(); }
 	bool const HasConnection(Type const type = Type::all) const
 	{
 		if (type == Type::in)
@@ -65,16 +78,16 @@ public:
 			return HasIncoming() || HasOutgoing();
 	}
 
-	size_t GetNrOfIncomingConnections() const { return m_incoming.Size(); }
-	size_t GetNrOfOutgoingConnections() const { return m_outgoing.Size(); }
-	size_t GetNrOfConnections()         const { return m_incoming.Size() + m_outgoing.Size(); }
+	size_t GetNrOfIncomingConnections() const { return m_incoming.size(); }
+	size_t GetNrOfOutgoingConnections() const { return m_outgoing.size(); }
+	size_t GetNrOfConnections()         const { return m_incoming.size() + m_outgoing.size(); }
 	bool   IsOrphan()                   const { return ! HasConnection(Type::all); }
 
-	void ClearIncoming() { m_incoming.Clear(); }
-	void ClearOutgoing() { m_outgoing.Clear(); }
+	void ClearIncoming() { m_incoming.clear(); }
+	void ClearOutgoing() { m_outgoing.clear(); }
 
-	void Apply2AllInPipes (PipeFunc const &f) const { m_incoming.Apply2All(f); }
-	void Apply2AllOutPipes(PipeFunc const &f) const { m_outgoing.Apply2All(f); }
+	void Apply2AllInPipes (PipeFunc const &f) const { for (auto it : m_incoming) { f(* it); } }
+	void Apply2AllOutPipes(PipeFunc const &f) const { for (auto it : m_outgoing) { f(* it); } }
 
 	void Apply2AllPipes( Type const type, PipeFunc const & func ) const
 	{
@@ -86,8 +99,25 @@ public:
 			Apply2AllConnectedPipes( func );
 	}
 
-	bool Apply2AllInPipesB (PipeCrit const &f) const { return m_incoming.Apply2AllB(f); }
-	bool Apply2AllOutPipesB(PipeCrit const &f) const { return m_outgoing.Apply2AllB(f); }
+	bool Apply2AllInPipesB (PipeCrit const &f) const 
+	{ 
+		for (auto it : m_incoming) 
+		{ 
+			if (f(* it))
+				return true;
+		}
+		return false;
+	}
+
+	bool Apply2AllOutPipesB(PipeCrit const &f) const 
+	{ 
+		for (auto it : m_outgoing) 
+		{ 
+			if (f(* it))
+				return true;
+		}
+		return false;
+	}
 
 	void Apply2AllConnectedPipes( PipeFunc const & func ) const
 	{
@@ -123,11 +153,14 @@ public:
 
 	friend wostream & operator<< ( wostream & out, Connections const & con )
 	{
-		out << L" in" << con.m_incoming << L" out" << con.m_outgoing;
+		out << L" in";
+		for (auto it : con.m_incoming) { out << * it; }
+		out << L" out"; 
+		for (auto it : con.m_outgoing) { out << * it; }
 		return out;
 	}
 
 private:
-	NobPtrList<Pipe> m_incoming;
-	NobPtrList<Pipe> m_outgoing;
+	vector<Pipe *> m_incoming {};
+	vector<Pipe *> m_outgoing {};
 };

@@ -1,19 +1,31 @@
 // ClosedConnector.cpp
 //
-// NNetWindows
+// NNetModel
 
 #include "stdafx.h"
 #include "ClosedConnector.h"
 
 ClosedConnector::ClosedConnector
 ( 
-    MicroMeterPnt const & upCenter, 
-    Connector           & connInput, 
-    Connector           & connOutput 
+    MicroMeterPnt const & pnt,  // not used 
+    IoNeuronList listInput, 
+    IoNeuronList listOutput 
 )
   :	Nob(NobType::Value::closedConnector)
 {
-    m_listInput  = move(connInput.GetIoNeurons ());
+    m_listInput  = move(listInput);
+    m_listOutput = move(listOutput);
+}
+
+ClosedConnector::ClosedConnector
+( 
+    MicroMeterPnt const & pnt,  // not used 
+    Connector & connInput, 
+    Connector & connOutput 
+)
+  :	Nob(NobType::Value::closedConnector)
+{
+    m_listInput  = move(connInput .GetIoNeurons());
     m_listOutput = move(connOutput.GetIoNeurons());
 }
 

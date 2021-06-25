@@ -18,10 +18,10 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		SelectionCommand::Do( nmwi );
-		if ( ! m_result.IsEmpty() )
+		if ( ! m_result.empty() )
 		{
 			nmwi.GetUPNobs().DeselectAllNobs();
-			m_result.Apply2All([&](Nob const &s){ nmwi.SelectNob(s.GetId(), true); }	);
+			for (auto it : m_result) { nmwi.SelectNob(it->GetId(), true); }
 		}
 	}
 

@@ -167,7 +167,7 @@ void NNetModelExporter::writePipe( wostream & out, Pipe const & pipe )
         << Pipe::CLOSE_BRACKET;
 }
 
-void NNetModelExporter::writeIoNeurons(wostream & out, NobPtrList<IoNeuron> const & list)
+void NNetModelExporter::writeIoNeurons(wostream & out, IoNeuronList const & list)
 {
     out << Connector::OPEN_BRACKET << L" " << list.Size() << Connector::SEPARATOR << L" ";
     list.Apply2All( [&](Nob const & n) { out << n.GetId() << L" "; } );

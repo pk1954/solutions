@@ -11,14 +11,14 @@ NobIdList::NobIdList(Connector const & connector)
     connector.Apply2All([&](Nob const & s) { Push(s.GetId()); } );
 }
 
-NobIdList::NobIdList(NobPtrList<IoNeuron> const& list) 
+NobIdList::NobIdList(IoNeuronList const & list) 
 {
-    list.Apply2All([&](Nob & s) { Push(s.GetId()); } );
+    list.Apply2All([&](Nob & s) { Push(s.GetId()); });
 }
 
-NobIdList::NobIdList(NobPtrList<Nob> const& list) 
+NobIdList::NobIdList(vector <Nob *> const & list) 
 {
-    list.Apply2All([&](Nob & s) { Push(s.GetId()); } );
+    for (auto it : list) { Push(it->GetId()); };
 }
 
 void NobIdList::Apply2All( function<void(NobId const &)> const& func ) const

@@ -9,24 +9,24 @@
 #include <string>
 #include <vector>
 #include "NNetModel.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "DisplayFunctor.h"
 
 class Knot;
 class Nob;
-class NNetModelReadInterface;
+class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 
 using std::vector;
 using std::wostream;
 using std::wstring;
 
-using NobStack = NobPtrList<Nob const>;
+using NobStack = vector<Nob const *>;
 
 class ModelAnalyzer
 {
 public:
-	static void SetStatusBarDisplay( DisplayFunctor * const func ) { m_pStatusBarDisplay = func; }
+	static void SetStatusBarDisplay(DisplayFunctor * const func) { m_pStatusBarDisplay = func; }
 	static void SetEscFunc ( bool (* func )() ) { m_pEscFunc = func; }
 
 	static NobStack const FindLoop   ( NNetModelReaderInterface const & );
@@ -37,7 +37,7 @@ private:
 	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };
 	inline static bool             m_bStop		       { false };
 	inline static int              m_iRecDepth	       { 0 };
-	inline static NobStack       m_nobStack        { };
+	inline static NobStack         m_nobStack          { };
 
 	inline static bool (* m_pEscFunc )() { nullptr };
 

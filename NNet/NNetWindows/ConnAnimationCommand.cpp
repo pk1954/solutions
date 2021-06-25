@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "CalcOrthoVector.h"
 #include "win32_Commands.h"
 #include "MultiNobsAnimation.h"
 #include "MakeConnAnimation.h"
@@ -26,8 +25,8 @@ ConnAnimationCommand::ConnAnimationCommand
     if ( nobType.IsUndefinedType() )
         return;
     
-    NobPtrList<IoNeuron> nobsAnimated { NobPtrList<IoNeuron>(modelNobs.GetAllSelected<IoNeuron>(nobType)) };
-    MicroMeterLine       line         { nobsAnimated.CalcMaxDistLine() };
+    IoNeuronList   nobsAnimated { IoNeuronList(modelNobs.GetAllSelected<IoNeuron>(nobType)) };
+    MicroMeterLine line         { nobsAnimated.CalcMaxDistLine() };
     if (line.IsZero())
         return;
 
@@ -38,7 +37,7 @@ ConnAnimationCommand::ConnAnimationCommand
     umPntVector.Align(line);
     AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after position alignment
 
-    umPntVector.SetDir(Vector2Radian(CalcOrthoVector(line, nobsAnimated)));
+    umPntVector.SetDir(Vector2Radian(nobsAnimated.CalcOrthoVector(line)));
     AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);

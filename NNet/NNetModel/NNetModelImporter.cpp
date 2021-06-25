@@ -8,6 +8,7 @@
 #include "SignalFactory.h"
 #include "Knot.h"
 #include "Connector.h"
+#include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "NNetError.h"
 #include "NNetWrapperHelpers.h"
@@ -79,13 +80,28 @@ private:
         NobId   const idFromScript{ ScrReadNobId(script) };
         NobType const nobType     { static_cast<NobType::Value>(script.ScrReadInt()) };
         Nob         * pNob        { nullptr };
-        UPNob         upNob     
+        UPNob         upNob       {};   
         { 
-            nobType.IsConnectorType()
-            ? createConnector(script)
-            : nobType.IsPipeType()
-            ? createPipe(script)
-            : createBaseKnot(script, nobType) 
+            switch ( nobType.GetValue() )
+            {
+            case NobType::Value::closedConnector:
+                upNob = createClosedConnector(script);
+                break;
+            case NobType::Value::connector:
+                 upNob = createConnector(script);
+                 break;
+            case NobType::Value::inputNeuron:
+            case NobType::Value::outputNeuron:
+            case NobType::Value::neuron:
+            case NobType::Value::knot:
+                 upNob = createBaseKnot(script, nobType);
+                 break;
+            case NobType::Value::pipe:
+                 upNob = createPipe(script);
+                 break;
+            default:
+                break;
+            }
         };
         if ( upNob )
         {
@@ -152,9 +168,9 @@ private:
         }
     }
 
-    UPNob createConnector(Script & script) const 
+    IoNeuronList createNobPtrList(Script & script) const 
     {
-        unique_ptr<Connector> upConnector { make_unique<Connector>() };
+        IoNeuronList list;
         script.ScrReadSpecial( Connector::OPEN_BRACKET );
         int const iNrOfElements { script.ScrReadInt() };
         script.ScrReadSpecial( Connector::SEPARATOR );
@@ -164,11 +180,32 @@ private:
             IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
             if ( ! pIoNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
-            upConnector->Push(pIoNeuron);
+            list.Add(pIoNeuron);
         }
         script.ScrReadSpecial( Connector::CLOSE_BRACKET );
+        list.AlignDirection();
+        return move(list);
+    }
+
+    UPNob createConnector(Script & script) const 
+    {
+        unique_ptr<Connector> upConnector { make_unique<Connector>(createNobPtrList(script)) };
         upConnector->AlignDirection();
         return move(upConnector);
+    }
+
+    UPNob createClosedConnector(Script & script) const 
+    {
+        unique_ptr<ClosedConnector> upClosedConnector 
+        { 
+            make_unique<ClosedConnector>
+            (
+                MicroMeterPnt::NULL_VAL(),
+                move(createNobPtrList(script)),
+                move(createNobPtrList(script))
+            ) 
+        };
+        return move(upClosedConnector);
     }
 };
 

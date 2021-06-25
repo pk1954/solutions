@@ -9,7 +9,7 @@
 #include <numeric>
 #include "Nob.h"
 #include "NobId.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "Connections.h"
 #include "NobErrorHandler.h"
 
@@ -146,21 +146,27 @@ public:
 	}
 
 	template <Nob_t T>
-	NobPtrList<T> GetAll(function<bool(T &)> const & crit)
+	IoNeuronList GetAll(function<bool(T &)> const & crit)
 	{
-		NobPtrList<T> nobPtrList;
+		IoNeuronList nobPtrList;
 		Apply2All<T>( [&](T &s)	{ if (crit(s)) nobPtrList.Add(&s); } );
 		return move(nobPtrList);
 	}
 
-	template <Nob_t T>
-	NobPtrList<T> GetAllSelected()
+	vector<Nob *> GetAllSelected()
 	{
-		return GetAll<T>( [&](T &s) { return s.IsSelected(); } );
+		vector<Nob *> nobs;
+		for (auto & it : m_list)
+		{
+			if (it->IsSelected())
+				nobs.push_back(it.get());
+		}
+		return move(nobs);
+			//rn GetAll<T>( [&](T &s) { return s.IsSelected(); } );
 	}
 
 	template <Nob_t T>
-	NobPtrList<T> GetAllSelected(NobType const nobType)
+	IoNeuronList GetAllSelected(NobType const nobType)
 	{
 		return GetAll<T>( [&](T &s) { return s.IsSelected() && s.HasType(nobType); } );
 	}

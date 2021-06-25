@@ -9,7 +9,7 @@
 #include "MicroMeterPosDir.h"
 #include "NobType.h"
 #include "UPNobList.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "Connector.h"
 
 class ClosedConnector: public Nob
@@ -19,7 +19,8 @@ public:
 	static bool    const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::closedConnector; }
 
-	ClosedConnector(MicroMeterPnt const &, Connector &, Connector &);
+	ClosedConnector(MicroMeterPnt const &, IoNeuronList, IoNeuronList);
+	ClosedConnector(MicroMeterPnt const &, Connector &,  Connector &);
 	virtual ~ClosedConnector() {}
 
 	virtual void Check() const;
@@ -55,12 +56,12 @@ public:
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
-	NobPtrList<IoNeuron> const & GetInputNeurons () const { return m_listInput;  };
-	NobPtrList<IoNeuron> const & GetOutputNeurons() const { return m_listOutput; };
+	IoNeuronList const & GetInputNeurons () const { return m_listInput;  };
+	IoNeuronList const & GetOutputNeurons() const { return m_listOutput; };
 
 private:
-	NobPtrList<IoNeuron> m_listInput  {};
-	NobPtrList<IoNeuron> m_listOutput {};
+	IoNeuronList m_listInput  {};
+	IoNeuronList m_listOutput {};
 };
 
 ClosedConnector const * Cast2ClosedConnector(Nob const *);

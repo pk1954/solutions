@@ -8,7 +8,7 @@
 #include "win32_mainWindow.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
 #include "AnimationCmd.h"
@@ -21,7 +21,7 @@ public:
     MultiNobsAnimation
     (
         MainWindow                & win,
-        NobPtrList<IoNeuron>      & nobs,
+        IoNeuronList              & nobs,
         MicroMeterPntVector const & umPntVectorTarget
     )
       : AnimationCmd(win),
@@ -55,7 +55,7 @@ public:
 
 private:
 
-    NobPtrList<IoNeuron>      m_nobsAnimated;
+    IoNeuronList              m_nobsAnimated;
     MicroMeterPntVector const m_umPntVectorStart;
     MicroMeterPntVector const m_umPntVectorTarget;
 

@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "CalcOrthoVector.h"
 #include "IoNeuron.h"
 #include "Connector.h"
 
@@ -11,11 +10,10 @@ Connector::Connector()
   :	Nob(NobType::Value::connector)
 {};
 
-Connector::Connector(NobPtrList<IoNeuron> const & src)
+Connector::Connector(IoNeuronList const & src)
   :	Nob(NobType::Value::connector)
 {
     m_list = src;
-//    src.Apply2All([&](IoNeuron & n) { Push(&n); });
 }
 
 void Connector::Check() const
@@ -45,14 +43,6 @@ IoNeuron * const Connector::Pop()
 void Connector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     m_list.Link(dstFromSrc);
-    //Clear();
-    //static_cast<Connector const &>(nobSrc).m_list.Apply2All
-    //(
-    //    [&](IoNeuron const & c) 
-    //    { 
-    //        Push(static_cast<IoNeuron *>(dstFromSrc(& c))); 
-    //    }
-    //);
 }
 
 void Connector::Clear( )
@@ -63,9 +53,7 @@ void Connector::Clear( )
 
 void Connector::AlignDirection()
 {
-    MicroMeterLine const umLine(m_list.GetFirst().GetPos(), m_list.GetLast().GetPos());
-    MicroMeterPnt  const umPntDir { CalcOrthoVector(umLine, m_list) };
-    m_list.Apply2All([&](IoNeuron & ioNeuron){ ioNeuron.SetDirVector(umPntDir); } );
+    m_list.AlignDirection();
 }
 
 MicroMeterPnt const Connector::GetPos() const 

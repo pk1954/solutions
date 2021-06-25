@@ -25,8 +25,8 @@ public:
     {
         ClosedConnector const & closedConnector { * nmwi.GetNobPtr<ClosedConnector *>(idClosedConnector) };
         closedConnector.Check();
-        NobPtrList<IoNeuron> const & inputNeurons  { closedConnector.GetInputNeurons () };
-        NobPtrList<IoNeuron> const & outputNeurons { closedConnector.GetOutputNeurons() };
+        IoNeuronList const & inputNeurons  { closedConnector.GetInputNeurons () };
+        IoNeuronList const & outputNeurons { closedConnector.GetOutputNeurons() };
         m_nrOfNeurons = closedConnector.Size();
         for ( size_t i = 0; i < m_nrOfNeurons; ++i )
         {
@@ -39,9 +39,11 @@ public:
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
+        wcout << L"Before SplitClosedConnCmd.Do" << endl;
+        nmwi.GetUPNobs().Dump();
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_idClosedConnector); // Take ownership of ClosedConnector
-        NobPtrList<IoNeuron> const & inputNeurons  { m_upClosedConnector->GetInputNeurons () };
-        NobPtrList<IoNeuron> const & outputNeurons { m_upClosedConnector->GetOutputNeurons() };
+        IoNeuronList const & inputNeurons  { m_upClosedConnector->GetInputNeurons () };
+        IoNeuronList const & outputNeurons { m_upClosedConnector->GetOutputNeurons() };
         for ( size_t i = 0; i < m_nrOfNeurons; ++i )
         {                                                        // Take ownership of IoNeurons
             m_upInputNeurons .push_back(nmwi.RemoveFromModel<IoNeuron>(inputNeurons .GetElem(i)));
@@ -49,6 +51,8 @@ public:
             nmwi.Push2Model(move(m_upNeuronList.back()));        // Move ownership of Neurons to model
             m_upNeuronList.pop_back();
         }
+        wcout << L"After SplitClosedConnCmd.Do" << endl;
+        nmwi.GetUPNobs().Dump();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )

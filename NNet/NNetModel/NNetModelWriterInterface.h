@@ -35,7 +35,7 @@ public:
     UPNobList     & GetUPNobs()      { return m_pModel->GetUPNobs(); }
     Param         & GetParams()      { return m_pModel->GetParams(); }
     MonitorData   & GetMonitorData() { return m_pModel->GetMonitorData(); }
-    NobPtrList<Nob> GetSelection()   { return GetUPNobs().GetAllSelected<Nob>(); }
+    vector<Nob *>   GetSelection()   { return move(GetUPNobs().GetAllSelected()); }
 
     void CheckModel() { m_pModel->CheckModel(); }
     void ResetModel() { m_pModel->ResetModel(); }
@@ -123,8 +123,8 @@ public:
         return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
     }
 
-    void SetIoNeurons(MicroMeterPntVector const &, NobIdList            const &);
-    void SetIoNeurons(MicroMeterPntVector const &, NobPtrList<IoNeuron> const &);
+    void SetIoNeurons(MicroMeterPntVector const &, NobIdList    const &);
+    void SetIoNeurons(MicroMeterPntVector const &, IoNeuronList const &);
 
     void SetPosDir(NobId const id, MicroMeterPosDir const& umPosDir)
     {

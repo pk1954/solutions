@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "UPNobList.h"
-#include "NobPtrList.h"
+#include "IoNeuronList.h"
 #include "Command.h"
 #include "Connector.h"
 #include "IoNeuron.h"

@@ -4,17 +4,17 @@
 
 #pragma once
 
+//#include <string>
 #include "PixelTypes.h"
 #include "CircleType.h"
 #include "MoreTypes.h"
 #include "Connections.h"
 #include "Nob.h"
 
-using std::wstring;
+//using std::wstring;
 
 class DrawContext;
 class NNetModel;
-class Pipe;
 
 template <typename T> 
 concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
