@@ -4,14 +4,11 @@
 
 #pragma once
 
-//#include <string>
 #include "PixelTypes.h"
 #include "CircleType.h"
 #include "MoreTypes.h"
 #include "Connections.h"
 #include "Nob.h"
-
-//using std::wstring;
 
 class DrawContext;
 class NNetModel;

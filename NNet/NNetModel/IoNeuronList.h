@@ -190,8 +190,8 @@ public:
 
 	void Link(Nob2NobFunc const & dstFromSrc)
 	{
-		Clear();
-		for (auto & it : m_list) { it = static_cast<IoNeuron *>(dstFromSrc(it)); }
+		for (int i = 0; i < m_list.size(); ++i)
+			m_list[i] = static_cast<IoNeuron *>(dstFromSrc(m_list[i]));
 	}
 
 	bool const IsIncludedIn(MicroMeterRect const & umRect) const 
