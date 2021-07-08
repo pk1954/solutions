@@ -34,6 +34,9 @@ UPNob ShallowCopy( Nob const & nob )  //TODO: simplify! Better
 	case NobType::Value::connector:
 		return Copy<Connector>(nob);
 
+	case NobType::Value::closedConnector:
+		return Copy<ClosedConnector>(nob);
+
 	case NobType::Value::inputNeuron:
 		return Copy<InputNeuron>(nob);
 
