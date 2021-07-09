@@ -15,6 +15,7 @@ ClosedConnector::ClosedConnector
 {
     m_listInput  = move(listInput);
     m_listOutput = move(listOutput);
+    Check();
 }
 
 ClosedConnector::ClosedConnector
@@ -32,7 +33,9 @@ ClosedConnector::ClosedConnector
 void ClosedConnector::Check() const
 {
     m_listInput .Check();
+    m_listInput .Apply2All([&](IoNeuron &n){ assert(n.IsInputNeuron()); });
     m_listOutput.Check();
+    m_listOutput.Apply2All([&](IoNeuron &n){ assert(n.IsOutputNeuron()); });
 }
 
 void ClosedConnector::Dump() const

@@ -54,7 +54,7 @@ public:
     void AnalyzeAnomalies    ();
     void AnalyzeLoops        ();
     void AppendInputNeuron   ( NobId const );
-    void AppendNeuron        ( NobId const );
+    void AppendOutputNeuron  ( NobId const );
     void ClearBeepers        ();
     void CopySelection       ();
     void CreateInitialNobs   ();

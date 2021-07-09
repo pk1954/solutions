@@ -61,13 +61,13 @@ public:
     }
 };
 
-class WrapAppendNeuron: public Script_Functor
+class WrapAppendOutputNeuron: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         NobId const id { ScrReadNobId( script ) };
-        m_pCommands->AppendNeuron( id );
+        m_pCommands->AppendOutputNeuron( id );
     }
 };
 
@@ -359,7 +359,7 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(AnalyzeAnomalies);   
     DEF_FUNC(AnalyzeLoops);       
     DEF_FUNC(AppendInputNeuron);  
-    DEF_FUNC(AppendNeuron);       
+    DEF_FUNC(AppendOutputNeuron);  
     DEF_FUNC(AddIncoming2Knot);   
     DEF_FUNC(AddIncoming2Pipe);   
     DEF_FUNC(AddOutgoing2Knot);   

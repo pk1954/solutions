@@ -158,11 +158,10 @@ public:
 		vector<Nob *> nobs;
 		for (auto & it : m_list)
 		{
-			if (it->IsSelected())
+			if (it && it->IsSelected())
 				nobs.push_back(it.get());
 		}
-		return move(nobs);
-			//rn GetAll<T>( [&](T &s) { return s.IsSelected(); } );
+		return nobs;
 	}
 
 	template <Nob_t T>

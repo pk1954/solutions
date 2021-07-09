@@ -301,8 +301,8 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->AppendInputNeuron( m_pMainWindow->GetHighlightedNobId() );
         break;
 
-    case IDD_APPEND_NEURON:
-        m_pModelCommands->AppendNeuron( m_pMainWindow->GetHighlightedNobId() );
+    case IDD_APPEND_OUTPUT_NEURON:
+        m_pModelCommands->AppendOutputNeuron( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_ADD_OUTGOING2KNOT:

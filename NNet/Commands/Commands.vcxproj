@@ -75,7 +75,6 @@
     <ClInclude Include="AddSignalCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />
     <ClInclude Include="AnimationChainCommand.h" />
-    <ClInclude Include="AppendInputNeuronCommand.h" />
     <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="Command.h" />

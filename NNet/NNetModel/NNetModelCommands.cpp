@@ -316,18 +316,18 @@ void NNetModelCommands::NewOutputNeuron( MicroMeterPnt const & pos )
 	m_pCmdStack->PushCommand( make_unique<NewOutputNeuronCommand>( pos ) );
 }
 
-void NNetModelCommands::AppendNeuron( NobId const id )
-{
-	if ( IsTraceOn() )
-		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand>( id ) );
-}
-
 void NNetModelCommands::AppendInputNeuron( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( make_unique<AppendInputNeuronCommand>( id ) );
+	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand<InputNeuron>>(*m_pNMWI, id ) );
+}
+
+void NNetModelCommands::AppendOutputNeuron( NobId const id )
+{
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << L" " << id << endl;
+	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand<OutputNeuron>>(*m_pNMWI, id ) );
 }
 
 void NNetModelCommands::ClearBeepers()

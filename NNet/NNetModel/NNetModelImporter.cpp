@@ -196,13 +196,15 @@ private:
 
     UPNob createClosedConnector(Script & script) const 
     {
+        IoNeuronList listInput  = createNobPtrList(script);
+        IoNeuronList listOutput = createNobPtrList(script);
         unique_ptr<ClosedConnector> upClosedConnector 
         { 
             make_unique<ClosedConnector>
             (
                 MicroMeterPnt::NULL_VAL(),
-                move(createNobPtrList(script)),
-                move(createNobPtrList(script))
+                listInput,
+                listOutput
             ) 
         };
         return move(upClosedConnector);
