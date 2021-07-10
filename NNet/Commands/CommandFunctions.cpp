@@ -6,6 +6,7 @@
 #include "DeletePipeCommand.h"
 #include "UnplugClosedConnCmd.h"
 #include "DiscConnCmd.h"
+#include "DiscNeuronCmd.h"
 #include "DiscBaseKnotCmd.h"
 #include "NobType.h"
 #include "ClosedConnector.h"
@@ -64,6 +65,9 @@ unique_ptr<Command> MakeDisconnectCommand
 	{
 	case NobType::Value::pipe:
 		assert( false );
+		break;
+	case NobType::Value::neuron:
+		upCmd = make_unique<DiscNeuronCmd>(nmwi, id);
 		break;
 	case NobType::Value::connector:
 		upCmd = make_unique<DiscConnCmd>(nmwi, id, false);

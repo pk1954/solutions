@@ -84,6 +84,7 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="ConnectIoObjectsCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
+    <ClInclude Include="DiscNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
     <ClInclude Include="UnplugClosedConnCmd.h" />

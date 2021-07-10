@@ -12,7 +12,6 @@
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "AppendNeuronCommand.h"
-#include "AppendInputNeuronCommand.h"
 #include "ClearBeepersCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"

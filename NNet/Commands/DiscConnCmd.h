@@ -32,18 +32,6 @@ public:
         initialize(nmwi);
     }
 
-    //DiscConnCmd
-    //(
-    //    NNetModelWriterInterface & nmwi,
-    //    unique_ptr<Connector>      conn,
-    //    bool               const   bRemove 
-    //)
-    //  : m_upConnector(move(conn)),
-    //    m_bRemove(bRemove)
-    //{
-    //    initialize(nmwi);
-    //}
-
     ~DiscConnCmd() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )

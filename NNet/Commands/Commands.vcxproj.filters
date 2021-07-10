@@ -150,6 +150,9 @@
     <ClInclude Include="NewNeuronCommandT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiscNeuronCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

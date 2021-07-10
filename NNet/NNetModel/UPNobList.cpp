@@ -90,8 +90,8 @@ UPNob UPNobList::ExtractNob( NobId const id )
 }
 
 
-void UPNobList::SetNob2Slot( NobId const id, UPNob upNob ) // only for special situations
-{                                                          // read model from script
+void UPNobList::SetNob2Slot( NobId const id, UPNob upNob ) 
+{
 	assert( IsDefined(id) );
 	assert( IsValidNobId(id) );
 	assert( IsEmptySlot(id) );
