@@ -51,6 +51,7 @@ public:
 	virtual void Dump() const;
 
 	virtual bool operator==(Nob const &) const;
+	bool operator!=(Nob const & nob) const { return ! (this->Nob::operator==(nob)); };
 
 	virtual void SetDir   (Radian const);
 	virtual void SetPos   (MicroMeterPnt  const &);

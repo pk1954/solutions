@@ -15,6 +15,8 @@
 
 class Nob;
 
+#define DUMP() DumpModel(__FILE__, __LINE__)
+
 class NNetModelReaderInterface
 {
 public:
@@ -22,7 +24,7 @@ public:
 	void Start(NNetModel * const pModel) { m_pModel = pModel;  }
 	void Stop ()                         { m_pModel = nullptr; }
 
-	void DumpModel()  const { m_pModel->DumpModel(); }
+	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
 	bool          const   IsConnectionCandidate     ( NobId const, NobId const ) const;

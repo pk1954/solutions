@@ -40,8 +40,12 @@ void ClosedConnector::Check() const
 
 void ClosedConnector::Dump() const
 {
+    Nob::Dump();
+    wcout << L" in";
     m_listInput .Dump();
+    wcout << L" out";
     m_listOutput.Dump();
+    wcout << endl;
 }
 
 MicroMeterPnt const ClosedConnector::GetPos() const

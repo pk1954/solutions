@@ -42,7 +42,6 @@ Nob const * NNetModel::GetConstNob( NobId const id ) const
 	if ( IsUndefined( id ) || ! m_Nobs.IsValidNobId( id ) )
 	{
 		wcout << L"# **** GetConstNob failed. Id = " << id << endl;
-		DumpModel();
 		m_Nobs.CallErrorHandler( id );  
 		return nullptr;
 	}
@@ -145,9 +144,14 @@ NobId const NNetModel::FindNobAt
 	return NO_NOB;
 }
 
-void NNetModel::DumpModel() const
+void NNetModel::DumpModel
+(
+	char const * const file,
+	int  const         line 
+
+) const
 {
-	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump start ------------" << endl;
+	wcout << Scanner::COMMENT_SYMBOL << L"--- Dump start (" << file << L" line " << line << L")" << endl;
 	m_Nobs.Dump();
-	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump end ------------" << endl;
+	wcout << Scanner::COMMENT_SYMBOL << L"--- Dump end ---" << endl;
 }

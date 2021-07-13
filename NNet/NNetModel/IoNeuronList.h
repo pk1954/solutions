@@ -35,8 +35,9 @@ public:
 	void Check() const { for (auto & it : m_list) { it->Check(); }; }
 	void Dump () const
 	{
-		wcout << endl; 
-		for (auto & it : m_list) { wcout << L"       " << Scanner::COMMENT_SYMBOL << it << endl; };
+		wcout << OPEN_BRACKET; 
+		for (auto & it : m_list) { wcout << it->GetId() << L' '; };
+		wcout << CLOSE_BRACKET; 
 	}
 
 	MicroMeterPnt const GetPos() const 

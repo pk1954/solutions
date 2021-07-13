@@ -18,10 +18,13 @@ Nob::Nob( NobType const type )
 
 bool Nob::operator==( Nob const & rhs ) const
 {
-	return
-	( m_type       == rhs.m_type       ) &&
-	( m_identifier == rhs.m_identifier ) &&
-	( m_bSelected  == rhs.m_bSelected  );
+    if ( m_type != rhs.m_type )
+		 return false;
+	if ( m_identifier != rhs.m_identifier )
+		return false;
+	if ( m_bSelected != rhs.m_bSelected )
+		return false;
+	return true;
 }
 
 void Nob::SetDir(Radian const radian) 

@@ -26,7 +26,8 @@ bool BaseKnot::operator==( Nob const & rhs ) const
 void BaseKnot::Dump() const
 {
 	Nob::Dump();
-	wcout << m_connections << endl;
+	m_connections.Dump();
+	wcout << endl;
 }
 
 void BaseKnot::SetPos( MicroMeterPnt const & newPos )
@@ -77,7 +78,14 @@ void BaseKnot::Expand( MicroMeterRect & umRect ) const
 void BaseKnot::Check() const
 {
 	Nob::Check();
-	m_connections.Apply2AllInPipes ([&](Pipe & p) { assert(p.GetEndKnotId  () == GetId()); });
+	m_connections.Apply2AllInPipes 
+	(
+		[&](Pipe & p) 
+		{ 
+			assert(p.GetEndKnotId  () == GetId());
+			int x = 42;
+		}
+	);
 	m_connections.Apply2AllOutPipes([&](Pipe & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 

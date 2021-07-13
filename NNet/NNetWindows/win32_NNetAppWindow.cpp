@@ -398,7 +398,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_DUMP:
-		m_model.DumpModel();
+		m_model.DUMP();
 		break;
 
 	case IDM_FORWARD:

@@ -89,6 +89,11 @@ UPNob UPNobList::ExtractNob( NobId const id )
 	return move( m_list[id.GetValue()] );
 }
 
+void UPNobList::SetNob2Slot( UPNob upNob )
+{                 
+	NobId const id { upNob->GetId() };
+	SetNob2Slot(id, move(upNob));
+}
 
 void UPNobList::SetNob2Slot( NobId const id, UPNob upNob ) 
 {
@@ -99,12 +104,6 @@ void UPNobList::SetNob2Slot( NobId const id, UPNob upNob )
 
 	incCounter(upNob);
 	m_list[id.GetValue()] = move(upNob);
-}
-
-void UPNobList::SetNob2Slot( UPNob upNob )
-{                 
-	NobId const id { upNob->GetId() };
-	SetNob2Slot(id, move(upNob));
 }
 
 Nob * const UPNobList::ReplaceNob( NobId const id, UPNob upT )	

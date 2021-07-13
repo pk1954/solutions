@@ -10,6 +10,7 @@
 #include "Pipe.h"
 
 using std::endl;
+using std::wcout;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
@@ -30,6 +31,16 @@ public:
 		return move(upCopy);
 	}
 	
+	void Dump() const
+	{
+		wcout << L" in" << Pipe::OPEN_BRACKET;
+		for (auto it : m_incoming) { wcout << it->GetId() << L' '; }
+		wcout << Pipe::CLOSE_BRACKET;
+		wcout << L" out" << Pipe::OPEN_BRACKET;
+		for (auto it : m_outgoing) { wcout << it->GetId() << L' '; }
+		wcout << Pipe::CLOSE_BRACKET;
+	}
+
 	void SetIncoming(Connections const & incoming) 
 	{ 
 		m_incoming = incoming.m_incoming; 

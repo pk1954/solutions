@@ -20,6 +20,8 @@ class MicroMeterPntVector;
 using std::unique_ptr;
 using std::move;
 
+#define DUMP() DumpModel(__FILE__, __LINE__)
+
 class NNetModelWriterInterface
 {
 public:
@@ -41,7 +43,7 @@ public:
     void ResetModel() { m_pModel->ResetModel(); }
     void ClearModel() { m_pModel->GetUPNobs().Apply2All([&](Nob & s) { s.Clear(); }); }
 
-    void DumpModel() const { m_pModel->DumpModel(); }
+    void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 
     void  SelectSubtree(BaseKnot  * const p, bool  const b) { m_pModel->SelectSubtree(p, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
@@ -109,6 +111,9 @@ public:
     {
         m_pModel->GetUPNobs().GetAt(id)->Reconnect();
     }
+
+    void IncreaseSize(long const nr) { m_pModel->GetUPNobs().IncreaseSize(nr); }
+    void ReduceSize  (long const nr) { m_pModel->GetUPNobs().ReduceSize(nr); }
 
     NobId const Push2Model(UPNob upNob)
     {

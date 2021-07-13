@@ -40,7 +40,7 @@ public:
 	}
 
 	void CheckModel() const;
-	void DumpModel () const;
+	void DumpModel (char const * const, int const) const;
 
 	Nob    const * GetConstNob ( NobId const ) const;
 	fHertz const   GetPulseRate( NobId const ) const;

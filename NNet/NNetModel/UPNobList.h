@@ -42,9 +42,9 @@ public:
 	Nob * const Front       ()               const { return   m_list[0].get(); }
 	Nob * const GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
 	Nob &       GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
-	void        Resize      (long  const nr)       { m_list.resize( nr );	}
-	void        Increase    (long  const nr)       { m_list.resize( m_list.size() + nr ); }
-				    
+	void        IncreaseSize(long  const nr)       { m_list.resize( m_list.size() + nr ); }
+	void        ReduceSize  (long  const nr)       { m_list.resize( m_list.size() - nr ); }
+
 	void               Clear             ();
 	void               SetErrorHandler   (NobErrorHandler * const);
 	void               SelectAllNobs     (bool const);

@@ -40,19 +40,19 @@ public:
         if ( ! m_pNeuron )   // might have been deleted earlier
             return;
 
-        m_idInputNeuron  = nmwi.Push2Model(move(m_upInputNeuron ));
-        m_idOutputNeuron = nmwi.Push2Model(move(m_upOutputNeuron));
+        nmwi.Push2Model(move(m_upInputNeuron ));
+        nmwi.Push2Model(move(m_upOutputNeuron));
         m_upNeuron       = nmwi.RemoveFromModel<Neuron>(*m_pNeuron);
         nmwi.CheckModel();
     }
 
-    virtual void Undo( NNetModelWriterInterface& nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     {
         if ( ! m_pNeuron )   // might have been deleted earlier
             return;
 
-        m_upInputNeuron  = nmwi.RemoveFromModel<InputNeuron >(m_idInputNeuron );
-        m_upOutputNeuron = nmwi.RemoveFromModel<OutputNeuron>(m_idOutputNeuron);
+        m_upOutputNeuron = nmwi.PopFromModel<OutputNeuron>();
+        m_upInputNeuron  = nmwi.PopFromModel<InputNeuron >();
         m_upNeuron->Reconnect();
         nmwi.GetUPNobs().SetNob2Slot( move(m_upNeuron) );
         nmwi.CheckModel();
@@ -64,6 +64,4 @@ private:
     unique_ptr<Neuron>       m_upNeuron       { };
     unique_ptr<InputNeuron>  m_upInputNeuron  { };
     unique_ptr<OutputNeuron> m_upOutputNeuron { };
-    NobId                    m_idInputNeuron  { };
-    NobId                    m_idOutputNeuron { };
 };

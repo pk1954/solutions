@@ -234,7 +234,7 @@ public:
     {
         script.ScrReadSpecial( L'=' );
         long lNrOfNobs { script.ScrReadLong() };
-        GetUPNobs().Resize( GetUPNobs().Size() + lNrOfNobs );
+        GetUPNobs().IncreaseSize( lNrOfNobs );
     }
 };
 

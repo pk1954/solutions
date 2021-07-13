@@ -39,8 +39,7 @@ public:
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
-        wcout << L"Before SplitClosedConnCmd.Do" << endl;
-        nmwi.GetUPNobs().Dump();
+        nmwi.DUMP();
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_idClosedConnector); // Take ownership of ClosedConnector
         IoNeuronList const & inputNeurons  { m_upClosedConnector->GetInputNeurons () };
         IoNeuronList const & outputNeurons { m_upClosedConnector->GetOutputNeurons() };
@@ -51,8 +50,7 @@ public:
             nmwi.Push2Model(move(m_upNeuronList.back()));        // Move ownership of Neurons to model
             m_upNeuronList.pop_back();
         }
-        wcout << L"After SplitClosedConnCmd.Do" << endl;
-        nmwi.GetUPNobs().Dump();
+        nmwi.DUMP();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
