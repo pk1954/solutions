@@ -29,8 +29,8 @@ public:
         m_upOutputNeuron = make_unique<OutputNeuron>(umPos);
         m_upInputNeuron ->m_connections.SetOutgoing(m_pNeuron->m_connections);
         m_upOutputNeuron->m_connections.SetIncoming(m_pNeuron->m_connections);
-        m_upInputNeuron ->m_connections.GetFirstOutgoing().DislocateStartPoint();
-        m_upOutputNeuron->m_connections.GetFirstIncoming().DislocateEndPoint  ();
+        m_upInputNeuron ->MoveNob((m_pNeuron->m_connections.GetFirstOutgoing().GetEndPoint  ()-umPos).ScaledTo(NEURON_RADIUS*2));
+        m_upOutputNeuron->MoveNob((m_pNeuron->m_connections.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }
 
     ~DiscNeuronCmd() {}
@@ -42,8 +42,7 @@ public:
 
         nmwi.Push2Model(move(m_upInputNeuron ));
         nmwi.Push2Model(move(m_upOutputNeuron));
-        m_upNeuron       = nmwi.RemoveFromModel<Neuron>(*m_pNeuron);
-        nmwi.CheckModel();
+        m_upNeuron = nmwi.RemoveFromModel<Neuron>(*m_pNeuron);
     }
 
     virtual void Undo(NNetModelWriterInterface & nmwi)
@@ -55,7 +54,6 @@ public:
         m_upInputNeuron  = nmwi.PopFromModel<InputNeuron >();
         m_upNeuron->Reconnect();
         nmwi.GetUPNobs().SetNob2Slot( move(m_upNeuron) );
-        nmwi.CheckModel();
     }
 
 private:

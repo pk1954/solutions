@@ -74,8 +74,8 @@ public:
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
 	mV const GetVoltage( MicroMeterPnt const & ) const;
 
-	void DislocateEndPoint  () { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
-	void DislocateStartPoint() { dislocate( GetStartKnotPtr(), -PIPE_WIDTH ); }
+	void DislocateEndPoint  (MicroMeter d =  PIPE_WIDTH) { dislocate(GetEndKnotPtr  (), d); }
+	void DislocateStartPoint(MicroMeter d = -PIPE_WIDTH) { dislocate(GetStartKnotPtr(), d); }
 
 	inline static wstring const SEPARATOR     { L"->" };
 	inline static wchar_t const OPEN_BRACKET  { L'(' };
