@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "DeletePipeCommand.h"
-#include "UnplugClosedConnCmd.h"
+#include "DeleteClosedConnCmd.h"
 #include "DiscConnCmd.h"
 #include "DiscNeuronCmd.h"
 #include "DiscBaseKnotCmd.h"
@@ -39,13 +39,13 @@ unique_ptr<Command> MakeDeleteCommand
 	case NobType::Value::knot:
 		break;
 	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, id, true);
+		upCmd = make_unique<DiscConnCmd>(nmwi, * pNob, true);
 		break;
 	case NobType::Value::closedConnector:
-		upCmd = make_unique<UnplugClosedConnCmd>(nmwi, id, true);
+		upCmd = make_unique<DeleteClosedConnCmd>(nmwi, * pNob);
 		break;
 	default:
-		upCmd = make_unique<DiscBaseKnotCmd>(nmwi, id, true);
+		upCmd = make_unique<DiscBaseKnotCmd>(* pNob, true);
 	}
 	return move(upCmd);
 }
@@ -67,16 +67,16 @@ unique_ptr<Command> MakeDisconnectCommand
 		assert( false );
 		break;
 	case NobType::Value::neuron:
-		upCmd = make_unique<DiscNeuronCmd>(nmwi, id);
+		upCmd = make_unique<DiscNeuronCmd>(nmwi, *pNob);
 		break;
 	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, id, false);
+		upCmd = make_unique<DiscConnCmd>(nmwi, *pNob, false);
 		break;
 	case NobType::Value::closedConnector:
 		assert(false);
 		break;
 	default:
-		upCmd = make_unique<DiscBaseKnotCmd>(nmwi, id, false);
+		upCmd = make_unique<DiscBaseKnotCmd>(*pNob, false);
 	}
 	return move(upCmd);
 }

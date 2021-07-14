@@ -84,6 +84,7 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="ConnectIoObjectsCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
+    <ClInclude Include="DeleteClosedConnCmd.h" />
     <ClInclude Include="DiscNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
@@ -110,7 +111,7 @@
     <ClInclude Include="SetParameterCommand.h" />
     <ClInclude Include="SetPulseRateCommand.h" />
     <ClInclude Include="SetTriggerSoundCommand.h" />
-    <ClInclude Include="SplitClosedConnCmd.h" />
+    <ClInclude Include="DiscClosedConnCmd.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />
   </ItemGroup>

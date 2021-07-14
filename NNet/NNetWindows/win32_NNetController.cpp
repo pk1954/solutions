@@ -272,9 +272,9 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->Unplug( m_pMainWindow->GetHighlightedNobId() );
         break;
 
-    case IDM_SPLIT_CONNECTOR:
+    case IDM_DISC_CONNECTOR:
         m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->SplitClosedConnector( m_pMainWindow->GetHighlightedNobId() );
+        m_pModelCommands->DiscClosedConnector( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_INSERT_KNOT:

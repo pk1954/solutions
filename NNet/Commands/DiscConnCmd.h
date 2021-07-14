@@ -23,20 +23,22 @@ public:
     DiscConnCmd
     (
         NNetModelWriterInterface & nmwi,
-        NobId                const idConnector,
+        Nob                      & nob,
         bool                 const bRemove 
     )
-      : m_pConnector(nmwi.GetNobPtr<Connector *>(idConnector)),
+      : m_connector(*Cast2Connector(&nob)),
         m_bRemove(bRemove)
     {
-        initialize(nmwi);
+        m_cmdStack.Initialize(&nmwi, nullptr);
+        if (m_bRemove)
+            m_connector.Apply2All([&](Nob const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
     }
 
     ~DiscConnCmd() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
-        m_upConnector = nmwi.RemoveFromModel<Connector>(*m_pConnector);
+        m_upConnector = nmwi.RemoveFromModel<Connector>(m_connector);
         m_upConnector->ClearParentPointers();
         if (m_bRemove)
             m_cmdStack.DoAll();
@@ -51,15 +53,9 @@ public:
     }
 
 private:
-    void initialize(NNetModelWriterInterface & nmwi)
-    {
-        m_cmdStack.Initialize(&nmwi, nullptr);
-        if (m_bRemove)
-            m_pConnector->Apply2All([&](Nob const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
-    }
 
     bool            const m_bRemove;
     CommandStack          m_cmdStack    {};
     unique_ptr<Connector> m_upConnector {};  
-    Connector     const * m_pConnector  { nullptr };
+    Connector     const & m_connector;
 };

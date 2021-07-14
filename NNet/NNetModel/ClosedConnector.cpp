@@ -117,10 +117,6 @@ void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     m_listInput .Link(dstFromSrc);
     m_listOutput.Link(dstFromSrc);
-
-    //auto const & src = static_cast<ClosedConnector const &>(nobSrc);
-    //m_pInputConnector  = static_cast<Connector *>(dstFromSrc(src.m_pInputConnector ));
-    //m_pOutputConnector = static_cast<Connector *>(dstFromSrc(src.m_pOutputConnector));
 }
 
 void ClosedConnector::MoveNob(MicroMeterPnt const & delta)       
@@ -141,3 +137,14 @@ void ClosedConnector::ClearParentPointers()
     m_listOutput.ClearParentPointers();
 }
 
+ClosedConnector const * Cast2ClosedConnector(Nob const * pNob)
+{
+    assert( pNob->IsClosedConnector() );
+    return static_cast<ClosedConnector const *>(pNob);
+}
+
+ClosedConnector * Cast2ClosedConnector(Nob * pNob)
+{
+    assert( pNob->IsClosedConnector() );
+    return static_cast<ClosedConnector *>(pNob);
+}

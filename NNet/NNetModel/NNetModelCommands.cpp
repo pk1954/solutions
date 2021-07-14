@@ -39,7 +39,7 @@
 #include "SetPulseRateCommand.h"
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
-#include "SplitClosedConnCmd.h"
+#include "DiscClosedConnCmd.h"
 #include "ToggleStopOnTriggerCommand.h"
 #include "UnplugClosedConnCmd.h"
 #include "NNetModelWriterInterface.h"
@@ -163,14 +163,14 @@ void NNetModelCommands::Unplug( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( make_unique<UnplugClosedConnCmd>(*m_pNMWI, id, false) );
+	m_pCmdStack->PushCommand( make_unique<UnplugClosedConnCmd>(*m_pNMWI, id) );
 }
 
-void NNetModelCommands::SplitClosedConnector( NobId const id )
+void NNetModelCommands::DiscClosedConnector( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
- 	m_pCmdStack->PushCommand( make_unique<SplitClosedConnCmd>(*m_pNMWI, id) );
+ 	m_pCmdStack->PushCommand( make_unique<DiscClosedConnCmd>(*m_pNMWI, id) );
 }
 
 void NNetModelCommands::ToggleStopOnTrigger( NobId const id )

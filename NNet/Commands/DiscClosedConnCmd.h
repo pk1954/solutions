@@ -1,4 +1,4 @@
-// SplitClosedConnCmd.h
+// DiscClosedConnCmd.h
 //
 // Commands
 
@@ -13,10 +13,10 @@
 
 using std::unique_ptr;
 
-class SplitClosedConnCmd : public Command
+class DiscClosedConnCmd : public Command
 {
 public:
-    SplitClosedConnCmd
+    DiscClosedConnCmd
     (
         NNetModelWriterInterface & nmwi,
         NobId                const idClosedConnector
@@ -35,7 +35,7 @@ public:
         }
     }
 
-    ~SplitClosedConnCmd() {}
+    ~DiscClosedConnCmd() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {

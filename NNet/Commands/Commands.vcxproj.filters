@@ -138,7 +138,7 @@
     <ClInclude Include="UnplugClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SplitClosedConnCmd.h">
+    <ClInclude Include="DiscClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConnectIoObjectsCommand.h">
@@ -151,6 +151,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DiscNeuronCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -161,13 +161,13 @@ void Connector::Expand(MicroMeterRect & umRect) const
     m_list.Expand(umRect);
 }
 
-Connector const * Cast2Connector( Nob const * pNob )
+Connector const * Cast2Connector(Nob const * pNob)
 {
     assert( pNob->IsConnector() );
     return static_cast<Connector const *>(pNob);
 }
 
-Connector * Cast2Connector( Nob * pNob )
+Connector * Cast2Connector(Nob * pNob)
 {
     assert( pNob->IsConnector() );
     return static_cast<Connector *>(pNob);

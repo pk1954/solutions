@@ -22,7 +22,7 @@ using std::unique_ptr;
 class DiscBaseKnotCmd : public Command
 {
 public:
-    DiscBaseKnotCmd(NNetModelWriterInterface &, NobId const, bool const);
+    DiscBaseKnotCmd(Nob &, bool const);
 
     ~DiscBaseKnotCmd() {}
 
@@ -30,17 +30,11 @@ public:
     virtual void Undo( NNetModelWriterInterface & );
 
 private:
-    void initialize(NNetModelWriterInterface &);
-
-    BaseKnot               * m_pBaseKnot { nullptr };
+    BaseKnot               & m_baseKnot;
     unique_ptr<BaseKnot>     m_upBaseKnot;
-
     vector<unique_ptr<Knot>> m_startKnots  {};
     vector<unique_ptr<Knot>> m_endKnots    {};
     NobIdList                m_idStartKnots{};
     NobIdList                m_idEndKnots  {};
-
-    NobId              const m_idBaseKnot;
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only
-    bool                     m_bInitialized { false };
 };

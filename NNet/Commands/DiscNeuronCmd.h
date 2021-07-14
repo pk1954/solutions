@@ -16,40 +16,34 @@ using std::unique_ptr;
 class DiscNeuronCmd : public Command
 {
 public:
-    DiscNeuronCmd(NNetModelWriterInterface & nmwi, NobId const idNeuron)
-        : m_idNeuron(idNeuron)
+    DiscNeuronCmd
+    (
+        NNetModelWriterInterface & nmwi, 
+        Nob                      & nob
+    )
+      : m_neuron(*Cast2Neuron(&nob))
     {
-        m_pNeuron = nmwi.GetNobPtr<Neuron *>( m_idNeuron );
-        if ( ! m_pNeuron )   // might have been deleted earlier
-            return;
-
-        MicroMeterPnt umPos { m_pNeuron->GetPos() };
-        
-        m_upInputNeuron  = make_unique<InputNeuron>(umPos);
+        MicroMeterPnt umPos { m_neuron.GetPos() };
+        Connections & conn  { m_neuron.m_connections };
+        m_upInputNeuron  = make_unique<InputNeuron >(umPos);
         m_upOutputNeuron = make_unique<OutputNeuron>(umPos);
-        m_upInputNeuron ->m_connections.SetOutgoing(m_pNeuron->m_connections);
-        m_upOutputNeuron->m_connections.SetIncoming(m_pNeuron->m_connections);
-        m_upInputNeuron ->MoveNob((m_pNeuron->m_connections.GetFirstOutgoing().GetEndPoint  ()-umPos).ScaledTo(NEURON_RADIUS*2));
-        m_upOutputNeuron->MoveNob((m_pNeuron->m_connections.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
+        m_upInputNeuron ->m_connections.SetOutgoing(conn);
+        m_upOutputNeuron->m_connections.SetIncoming(conn);
+        m_upInputNeuron ->MoveNob((conn.GetFirstOutgoing().GetEndPoint  ()-umPos).ScaledTo(NEURON_RADIUS*2));
+        m_upOutputNeuron->MoveNob((conn.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }
 
     ~DiscNeuronCmd() {}
 
     virtual void Do(NNetModelWriterInterface & nmwi)
     {
-        if ( ! m_pNeuron )   // might have been deleted earlier
-            return;
-
         nmwi.Push2Model(move(m_upInputNeuron ));
         nmwi.Push2Model(move(m_upOutputNeuron));
-        m_upNeuron = nmwi.RemoveFromModel<Neuron>(*m_pNeuron);
+        m_upNeuron = nmwi.RemoveFromModel<Neuron>(m_neuron);
     }
 
     virtual void Undo(NNetModelWriterInterface & nmwi)
     {
-        if ( ! m_pNeuron )   // might have been deleted earlier
-            return;
-
         m_upOutputNeuron = nmwi.PopFromModel<OutputNeuron>();
         m_upInputNeuron  = nmwi.PopFromModel<InputNeuron >();
         m_upNeuron->Reconnect();
@@ -57,8 +51,7 @@ public:
     }
 
 private:
-    NobId              const m_idNeuron;
-    Neuron                 * m_pNeuron { nullptr };
+    Neuron                 & m_neuron;
     unique_ptr<Neuron>       m_upNeuron       { };
     unique_ptr<InputNeuron>  m_upInputNeuron  { };
     unique_ptr<OutputNeuron> m_upOutputNeuron { };
