@@ -111,7 +111,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_INSERT_NEURON,        L"Insert neuron"                         },
 		{ IDM_MAKE_CONNECTOR,       L"Make connector"                        },
 		{ IDD_NEW_INPUT_NEURON,     L"New input neuron" 					 },
-		{ IDD_NEW_NEURON,           L"New neuron"                            },
 		{ IDD_NEW_OUTPUT_NEURON,    L"New output neuron"		             },
 		{ IDD_PULSE_RATE,           L"Pulse rate"                            },
 		{ IDM_SELECT_NOB,           L"Select"                                },
@@ -135,7 +134,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	}
 	else if ( IsUndefined(m_nobHighlighted) )  // no nob selected, cursor on background
 	{
-		appendMenu( hPopupMenu, IDD_NEW_NEURON        );
 		appendMenu( hPopupMenu, IDD_NEW_INPUT_NEURON  );
 		appendMenu( hPopupMenu, IDD_NEW_OUTPUT_NEURON );
 		appendMenu( hPopupMenu, IDD_ADD_SIGNAL        );

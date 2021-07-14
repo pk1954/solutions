@@ -66,7 +66,6 @@ void DefineNNetWinWrappers
     SymbolTable::ScrDefConst( L"SELECT_ALL_BEEPERS",   static_cast<long>(IDM_SELECT_ALL_BEEPERS  ) );
     SymbolTable::ScrDefConst( L"COPY_SELECTION",       static_cast<long>(IDM_COPY_SELECTION      ) );
     SymbolTable::ScrDefConst( L"INSERT_NEURON",        static_cast<long>(IDD_INSERT_NEURON       ) );
-    SymbolTable::ScrDefConst( L"NEW_NEURON",           static_cast<long>(IDD_NEW_NEURON          ) );
     SymbolTable::ScrDefConst( L"NEW_INPUT_NEURON",     static_cast<long>(IDD_NEW_INPUT_NEURON    ) );
     SymbolTable::ScrDefConst( L"NEW_OUTPUT_NEURON",    static_cast<long>(IDD_NEW_OUTPUT_NEURON   ) );
     SymbolTable::ScrDefConst( L"APPEND_INPUT_NEURON",  static_cast<long>(IDD_APPEND_INPUT_NEURON ) );

@@ -305,16 +305,6 @@ public:
     }
 };
 
-class WrapNewNeuron: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
-        m_pCommands->NewNeuron( umPos );
-    }
-};
-
 class WrapNewInputNeuron: public Script_Functor
 {
 public:
@@ -374,7 +364,6 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveNob);          
     DEF_FUNC(NewInputNeuron);     
-    DEF_FUNC(NewNeuron);          
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          
     DEF_FUNC(SelectAllBeepers);   

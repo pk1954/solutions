@@ -294,13 +294,6 @@ void NNetModelCommands::InsertNeuron( NobId const id, MicroMeterPnt const & pos 
 	m_pCmdStack->PushCommand( make_unique<InsertBaseKnotCommand<Neuron>>( id, pos ) );
 }
 
-void NNetModelCommands::NewNeuron( MicroMeterPnt const & pos )
-{
-	if ( IsTraceOn() )
-		TraceStream() << __func__ << L" " << pos << endl;
-	m_pCmdStack->PushCommand( make_unique<NewNeuronCommand>( pos ) );
-}
-
 void NNetModelCommands::NewInputNeuron( MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )

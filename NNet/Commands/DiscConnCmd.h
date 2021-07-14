@@ -36,7 +36,7 @@ public:
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
-        m_upConnector = nmwi.RemoveFromModel<Connector>(m_pConnector->GetId());
+        m_upConnector = nmwi.RemoveFromModel<Connector>(*m_pConnector);
         m_upConnector->ClearParentPointers();
         if (m_bRemove)
             m_cmdStack.DoAll();
@@ -45,7 +45,7 @@ public:
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
         m_upConnector->SetParentPointers();
-        nmwi.GetUPNobs().SetNob2Slot( move(m_upConnector) );
+        nmwi.Restore2Model( move(m_upConnector) );
         if (m_bRemove)
             m_cmdStack.UndoAll();
     }

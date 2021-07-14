@@ -15,19 +15,19 @@ template <typename T>
 class NewNeuronCommandT : public Command
 {
 public:
-	NewNeuronCommandT( MicroMeterPnt const & pos )
+	NewNeuronCommandT(MicroMeterPnt const & pos)
 	{ 
-		m_upNeuronT = make_unique<T>( pos );
+		m_upNeuronT = make_unique<T>(pos);
 	}
 
 	~NewNeuronCommandT() {}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		nmwi.Push2Model( move(m_upNeuronT) );
+		nmwi.Push2Model(move(m_upNeuronT));
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi ) 
+	virtual void Undo(NNetModelWriterInterface & nmwi)
 	{ 
 		m_upNeuronT = nmwi.PopFromModel<T>();
 	}
@@ -38,4 +38,3 @@ private:
 
 using NewOutputNeuronCommand = NewNeuronCommandT<OutputNeuron>;
 using NewInputNeuronCommand  = NewNeuronCommandT<InputNeuron>;
-using NewNeuronCommand       = NewNeuronCommandT<Neuron>;

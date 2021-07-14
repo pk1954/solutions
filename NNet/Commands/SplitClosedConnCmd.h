@@ -39,7 +39,6 @@ public:
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
-        nmwi.DUMP();
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_idClosedConnector); // Take ownership of ClosedConnector
         IoNeuronList const & inputNeurons  { m_upClosedConnector->GetInputNeurons () };
         IoNeuronList const & outputNeurons { m_upClosedConnector->GetOutputNeurons() };
@@ -50,16 +49,15 @@ public:
             nmwi.Push2Model(move(m_upNeuronList.back()));        // Move ownership of Neurons to model
             m_upNeuronList.pop_back();
         }
-        nmwi.DUMP();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
     { 
-        nmwi.ReplaceInModel<ClosedConnector,ClosedConnector>(move(m_upClosedConnector)); // Move ownership of ClosedConnector to model
+        nmwi.Restore2Model(move(m_upClosedConnector)); // Move ownership of ClosedConnector to model
         for ( size_t i = 0; i < m_nrOfNeurons; ++i )
         {                                                     
-            nmwi.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upInputNeurons .back()));      // Move ownership of IoNeurons to model
-            nmwi.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upOutputNeurons.back()));
+            nmwi.Restore2Model(move(m_upInputNeurons .back()));      // Move ownership of IoNeurons to model
+            nmwi.Restore2Model(move(m_upOutputNeurons.back()));
             m_upInputNeurons .pop_back();
             m_upOutputNeurons.pop_back();
             m_upNeuronList.push_back(nmwi.PopFromModel<Neuron>());                       // Take ownership of Neurons

@@ -285,10 +285,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->InsertNeuron( m_pMainWindow->GetHighlightedNobId(), umPoint );
         break;
 
-    case IDD_NEW_NEURON:
-        m_pModelCommands->NewNeuron( umPoint );
-        break;
-
     case IDD_NEW_INPUT_NEURON:
         m_pModelCommands->NewInputNeuron( umPoint );
         break;

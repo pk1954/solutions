@@ -106,8 +106,10 @@ void UPNobList::SetNob2Slot( NobId const id, UPNob upNob )
 	m_list[id.GetValue()] = move(upNob);
 }
 
-Nob * const UPNobList::ReplaceNob( NobId const id, UPNob upT )	
+Nob * const UPNobList::ReplaceNob(UPNob upT)
 {
+	NobId const id { upT->GetId() };
+
 	assert( IsDefined(id) );
 	assert( IsValidNobId( id ) );
 

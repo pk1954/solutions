@@ -78,13 +78,38 @@ public:
         return (pNob && HasType<T>( * pNob )) ? static_cast<T>( pNob ) : nullptr;
     }
 
-    template <Nob_t NEW, Nob_t OLD>
-    unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
-    {
-        NobId  id   { up.get()->GetId() };
-        Nob  * pNob { m_pModel->GetUPNobs().ReplaceNob( id, move(up) ) };
-        Reconnect(id);
+    /// RemoveFromModel - ReplaceInModel/Restore2Model: Slot remains
+
+    template <Nob_t OLD>
+    unique_ptr<OLD> RemoveFromModel(Nob const & nob) 
+    { 
+        return RemoveFromModel<OLD>(nob.GetId());
+    }
+
+    template <Nob_t OLD>
+    unique_ptr<OLD> RemoveFromModel(NobId const id) 
+    { 
+        UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
+        auto  pNob  { upNob.release() }; 
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
+    }
+
+    Nob * Restore2Model(unique_ptr<Nob>);
+
+    template <Nob_t NEW, Nob_t OLD>
+    unique_ptr<OLD> ReplaceInModel(unique_ptr<NEW> up) 
+    {
+        Nob  * pNobOld { Restore2Model(move(up)) };
+        return move( unique_ptr<OLD>(static_cast<OLD*>(pNobOld)) );
+    }
+
+    /// Push2Model - PopFromModel
+
+    NobId const Push2Model(UPNob upNob)
+    {
+        NobId const id { m_pModel->GetUPNobs().Push(move(upNob)) };
+        Reconnect(id);
+        return id;
     }
 
     template <Nob_t T>
@@ -93,19 +118,7 @@ public:
         return m_pModel->GetUPNobs().Pop<T>();
     }
 
-    template <Nob_t OLD>
-    unique_ptr<OLD> RemoveFromModel( Nob const & nob ) 
-    { 
-        return RemoveFromModel<OLD>(nob.GetId());
-    }
-
-    template <Nob_t OLD>
-    unique_ptr<OLD> RemoveFromModel( NobId const id ) 
-    { 
-        UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
-        auto  pNob  { upNob.release() }; 
-        return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
-    }
+    ///////////////////////////////////////////////////////////
 
     void Reconnect(NobId const id)
     {
@@ -114,13 +127,6 @@ public:
 
     void IncreaseSize(long const nr) { m_pModel->GetUPNobs().IncreaseSize(nr); }
     void ReduceSize  (long const nr) { m_pModel->GetUPNobs().ReduceSize(nr); }
-
-    NobId const Push2Model(UPNob upNob)
-    {
-        NobId const id { m_pModel->GetUPNobs().Push(move(upNob)) };
-        Reconnect(id);
-        return id;
-    }
 
     MicroMeterPnt const OrthoVector( NobId const idPipe ) const
     {

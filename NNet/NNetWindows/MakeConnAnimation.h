@@ -27,27 +27,26 @@ public:
         NNetModelWriterInterface & nmwi
     )
       : AnimationCmd(win),
-        m_NMWI(nmwi)
+        m_nmwi(nmwi)
     {
-        m_pModelNobs = & m_NMWI.GetUPNobs();
-        NobType const nobType { determineNobType(* m_pModelNobs) };
+        NobType const nobType { determineNobType(m_nmwi.GetUPNobs()) };
         if ( nobType.IsUndefinedType() )
             return;
-        m_nobsAnimated = IoNeuronList(m_pModelNobs->GetAllSelected<IoNeuron>(nobType));
+        m_nobsAnimated = IoNeuronList(m_nmwi.GetUPNobs().GetAllSelected<IoNeuron>(nobType));
         m_upConnector  = make_unique<Connector>( m_nobsAnimated );
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)
     {
-        m_NMWI.GetUPNobs().DeselectAllNobs();
+        m_nmwi.GetUPNobs().DeselectAllNobs();
         m_upConnector->SetParentPointers();
-        m_pModelNobs->Push(move(m_upConnector));
+        m_nmwi.GetUPNobs().Push(move(m_upConnector));
         (targetReachedFunc)();
     }
 
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
-        m_upConnector = m_pModelNobs->Pop<Connector>();
+        m_upConnector = m_nmwi.GetUPNobs().Pop<Connector>();
         m_upConnector->ClearParentPointers();
         (targetReachedFunc)();
     }
@@ -72,8 +71,7 @@ private:
             : NobType::Value::outputNeuron;
     }
 
-    UPNobList                * m_pModelNobs   { nullptr };
     unique_ptr<Connector>      m_upConnector  {};  
     IoNeuronList               m_nobsAnimated {};
-    NNetModelWriterInterface & m_NMWI;
+    NNetModelWriterInterface & m_nmwi;
 };

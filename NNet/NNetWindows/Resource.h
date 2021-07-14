@@ -74,7 +74,6 @@
 
 #define IDD_INSERT_KNOT          560
 #define IDD_INSERT_NEURON        561
-#define IDD_NEW_NEURON           562
 #define IDD_NEW_INPUT_NEURON     563
 #define IDD_NEW_OUTPUT_NEURON    564
 #define IDD_APPEND_INPUT_NEURON  566

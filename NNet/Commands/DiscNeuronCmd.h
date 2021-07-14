@@ -53,7 +53,7 @@ public:
         m_upOutputNeuron = nmwi.PopFromModel<OutputNeuron>();
         m_upInputNeuron  = nmwi.PopFromModel<InputNeuron >();
         m_upNeuron->Reconnect();
-        nmwi.GetUPNobs().SetNob2Slot( move(m_upNeuron) );
+        nmwi.Restore2Model(move(m_upNeuron));
     }
 
 private:

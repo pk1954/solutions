@@ -51,7 +51,7 @@ public:
 	void               DeselectAllNobs   () { SelectAllNobs(false); }
 	NobId        const Push              (UPNob);
 	UPNob              ExtractNob        (NobId const);	
-	Nob        * const ReplaceNob        (NobId const, UPNob);	
+	Nob        * const ReplaceNob        (UPNob);	
 	void               SetNob2Slot       (NobId const, UPNob); // only for special situations
 	void               SetNob2Slot       (UPNob);              // only for special situations
 	void               CheckNobList      ()                                       const;

@@ -39,6 +39,14 @@ Nob * const NNetModelWriterInterface::GetNob( NobId const id )
 	return const_cast<Nob *>(m_pModel->GetConstNob(id) );
 }
 
+Nob * NNetModelWriterInterface::Restore2Model(unique_ptr<Nob> up) 
+{
+	NobId  id      { up.get()->GetId() };
+	Nob  * pNobOld { m_pModel->GetUPNobs().ReplaceNob(move(up)) };
+	Reconnect(id);
+	return pNobOld;
+}
+
 void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
 { 
 	GetNobPtr<Nob *>(idNob)->Select(bOn); 

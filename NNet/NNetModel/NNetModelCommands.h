@@ -69,7 +69,6 @@ public:
     void MoveSelection       ( MicroMeterPnt const & );
     void MoveNob             ( NobId const, MicroMeterPnt const & );
     void NewInputNeuron      ( MicroMeterPnt const & );
-    void NewNeuron           ( MicroMeterPnt const & );
     void NewOutputNeuron     ( MicroMeterPnt const & );
     void ResetModel          ();
     void RestrictSelection   ( NobType::Value const );

@@ -43,7 +43,7 @@ ConnAnimationCommand::ConnAnimationCommand
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
     AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after packing
 
-    AddPhase(make_unique<MakeConnAnimation >(win, nmwi));
+    AddPhase(make_unique<MakeConnAnimation>(win, nmwi));
 
     m_bAllOk = true;
 }

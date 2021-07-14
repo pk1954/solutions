@@ -367,11 +367,7 @@ void NNetModelImporter::fixOutputNeurons()
         {
             if ( ! neuron.m_connections.HasOutgoing() )
             {
-                m_ImportedNMWI.GetUPNobs().ReplaceNob
-                ( 
-                    neuron.GetId(), 
-                    move(make_unique<OutputNeuron>(neuron)) // special constructor! 
-                );
+                m_ImportedNMWI.GetUPNobs().ReplaceNob(move(make_unique<OutputNeuron>(neuron)));
             }
         }
     );
