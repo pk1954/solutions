@@ -170,6 +170,7 @@ public:
 			orthoVector = -orthoVector;
 		return orthoVector;
 	}
+
 	void SortAccToDistFromLine(MicroMeterLine const & line)
 	{
 		sort

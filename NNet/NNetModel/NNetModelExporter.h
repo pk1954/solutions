@@ -39,16 +39,16 @@ private:
 
 	long const getCompactIdVal(NobId const);
 
-	void writeNob            ( wostream &, Nob             const & );
-	void writePipe           ( wostream &, Pipe            const & );
-	void writeIoNeurons      ( wostream &, IoNeuronList      const & );
-	void writeClosedConnector( wostream &, ClosedConnector const & );
-	void writeDescription( wostream & );
-	void writeMonitorData( wostream & );
-	void writeTriggerSounds( wostream & );
-	void writeNobParameters( wostream & );
+	void writeNob             ( wostream &, Nob             const & );
+	void writePipe            ( wostream &, Pipe            const & );
+	void writeConnector       ( wostream &, Connector       const & );
+	void writeClosedConnector ( wostream &, ClosedConnector const & );
+	void writeDescription     ( wostream & );
+	void writeMonitorData     ( wostream & );
+	void writeTriggerSounds   ( wostream & );
+	void writeNobParameters   ( wostream & );
 	void writeGlobalParameters( wostream & );
-	void writeNobs( wostream & );
-	void writeHeader( wostream & );
-	void write( wostream & );
+	void writeNobs            ( wostream & );
+	void writeHeader          ( wostream & );
+	void write                ( wostream & );
 };

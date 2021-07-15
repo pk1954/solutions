@@ -55,7 +55,7 @@ public:
 
 	unique_ptr<Connections>CloneConnection() const { return m_connections.Clone(); }
 
-	static bool const TypeFits( NobType const type ) { return type.IsBaseKnotType(); }
+	static bool const TypeFits(NobType const type) { return type.IsBaseKnotType(); }
 
 	MicroMeterCircle const GetCircle   () const { return m_circle; }
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
@@ -69,7 +69,7 @@ public:
 
 	bool const HasIncoming() const { return m_connections.HasIncoming(); }
 	bool const HasOutgoing() const { return m_connections.HasOutgoing(); }
-	bool const IsOrphan()    const { return  m_connections.IsOrphan(); }
+	bool const IsOrphan()    const { return m_connections.IsOrphan(); }
 
 	virtual void Reconnect() { m_connections.Reconnect( this );	}
 	
@@ -108,14 +108,12 @@ public:
 	bool Apply2AllOutPipesB      (PipeCrit const &c) const { return m_connections.Apply2AllOutPipesB      (c); }
 	bool Apply2AllConnectedPipesB(PipeCrit const &c) const { return m_connections.Apply2AllConnectedPipesB(c); }
 
-protected:
-
-	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeterCircle const) const;
-	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeter       const) const;
-
 	MicroMeterRect const GetRect4Text() const;
 
 private:
+
+	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeterCircle const) const;
+	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeter       const) const;
 
 	Connections      m_connections;
 	MicroMeterCircle m_circle;
