@@ -27,7 +27,7 @@ OutputNeuron::OutputNeuron( Neuron const & neuron )
 void OutputNeuron::Check() const
 {
 	Neuron::Check();
-	assert( ! m_connections.HasOutgoing() );
+	assert( !HasOutgoing() );
 }
 
 bool OutputNeuron::operator==( Nob const & rhs ) const

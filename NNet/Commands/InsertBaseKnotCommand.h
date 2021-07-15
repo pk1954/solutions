@@ -33,10 +33,10 @@ public:
 			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
 			m_upBaseKnot  = make_unique<T>   ( m_umSplitPoint );
 			m_upPipeNew   = make_unique<Pipe>( m_pStartKnot, m_upBaseKnot.get() );
-			m_upBaseKnot->m_connections.AddOutgoing( m_pPipe2Split );
-			m_upBaseKnot->m_connections.AddIncoming( m_upPipeNew.get() );
+			m_upBaseKnot->AddOutgoing( m_pPipe2Split );
+			m_upBaseKnot->AddIncoming( m_upPipeNew.get() );
 		}
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
+		m_pStartKnot->ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
 		m_pPipe2Split->SetStartKnot( m_upBaseKnot.get() );
 		nmwi.Push2Model( move(m_upBaseKnot) );
 		nmwi.Push2Model( move(m_upPipeNew) );
@@ -47,7 +47,7 @@ public:
 		m_upPipeNew  = nmwi.PopFromModel<Pipe>();
 		m_upBaseKnot = nmwi.PopFromModel<T>();
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
+		m_pStartKnot->ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 	}
 
 private:

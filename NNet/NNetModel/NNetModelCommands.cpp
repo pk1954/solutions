@@ -312,14 +312,14 @@ void NNetModelCommands::AppendInputNeuron( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand<InputNeuron>>(*m_pNMWI, id ) );
+	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand<InputNeuron>>(*m_pNMWI, id) );
 }
 
 void NNetModelCommands::AppendOutputNeuron( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand<OutputNeuron>>(*m_pNMWI, id ) );
+	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand<OutputNeuron>>(*m_pNMWI, id) );
 }
 
 void NNetModelCommands::ClearBeepers()

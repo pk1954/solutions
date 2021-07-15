@@ -24,7 +24,7 @@ public:
 	{ 
 		if ( m_pBaseKnotDst->IsKnot() ) // if a Neuron is connected to a Knot, the Knot would survive
 			swap( m_pBaseKnotDst, m_pBaseKnotSrc ); // swap makes sure, that the Neuron survives
-		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
+		m_upDstConnections = m_pBaseKnotDst->CloneConnection();
 	}
 
 	~Connect2BaseKnotCommand()	{ }
@@ -33,12 +33,12 @@ public:
 	{
 		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(*m_pBaseKnotSrc); 
 		assert( m_upBaseKnotSrc );
-		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() ); // double connections?
+		m_pBaseKnotDst->AddConnections(*m_upBaseKnotSrc.get()); // double connections?
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-		m_pBaseKnotDst->SetConnections( m_upDstConnections.get() );  // restore dst connections
+		m_pBaseKnotDst->SetConnections(*m_upDstConnections.get());  // restore dst connections
 		assert( m_upBaseKnotSrc );
 		m_upBaseKnotSrc->Reconnect();
 		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotSrc)); // reconnect src  

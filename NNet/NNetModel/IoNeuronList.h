@@ -141,7 +141,7 @@ public:
 		unsigned int uiRightConnections { 0 };
 		for (auto pIoNeuron : m_list)
 		{ 
-			pIoNeuron->m_connections.Apply2AllInPipes
+			pIoNeuron->Apply2AllInPipes
 			( 
 				[&](Pipe & pipe) 
 				{ 
@@ -152,7 +152,7 @@ public:
 						++uiRightConnections;
 				}
 			);
-			pIoNeuron->m_connections.Apply2AllOutPipes
+			pIoNeuron->Apply2AllOutPipes
 			( 
 				[&](Pipe & pipe) 
 				{ 

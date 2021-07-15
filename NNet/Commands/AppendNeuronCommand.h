@@ -19,9 +19,9 @@ public:
 	)
 	{
 		Knot const * pKnot { nmwi.GetNobPtr<Knot *>(idKnot) };
-		m_upNeuron = make_unique<T>( pKnot->GetPos() );
-		m_upNeuron->m_connections = pKnot->m_connections;
-		m_upNeuron->SetId( idKnot );
+		m_upNeuron = make_unique<T>(pKnot->GetPos());
+		m_upNeuron->SetConnections(*pKnot);
+		m_upNeuron->SetId(idKnot);
 	}
 
 	~AppendNeuronCommand() {}

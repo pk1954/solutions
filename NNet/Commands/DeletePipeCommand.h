@@ -27,12 +27,12 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
-		startKnot.m_connections.RemoveOutgoing( & m_pipe );
+		startKnot.RemoveOutgoing( & m_pipe );
 		if ( startKnot.IsOrphanedKnot() )
 			m_upStartKnot = nmwi.RemoveFromModel<Knot>( startKnot );
 
 		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
-		endKnot.m_connections.RemoveIncoming( & m_pipe );
+		endKnot.RemoveIncoming( & m_pipe );
 		if ( endKnot.IsOrphanedKnot() )
 			m_upEndKnot = nmwi.RemoveFromModel<Knot>( endKnot );
 
@@ -42,12 +42,12 @@ public:
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
-		startKnot.m_connections.AddOutgoing( & m_pipe );
+		startKnot.AddOutgoing( & m_pipe );
 		if ( m_upStartKnot )
 			nmwi.Restore2Model( move(m_upStartKnot) );
 
 		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
-		endKnot.m_connections.AddIncoming( & m_pipe );
+		endKnot.AddIncoming( & m_pipe );
 		if ( m_upEndKnot )
 			nmwi.Restore2Model( move(m_upEndKnot) );
 

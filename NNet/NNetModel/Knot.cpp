@@ -27,18 +27,18 @@ void Knot::DrawInterior( DrawContext const & context, tHighlight const type ) co
 void Knot::Check() const
 {
 	BaseKnot::Check();
-	if ( m_connections.IsOrphan() )
+	if ( IsOrphan() )
 	{
 		int x = 42;
 	}
-	assert( ! m_connections.IsOrphan() );
+	assert( ! IsOrphan() );
 }
 
 void Knot::EvaluateSelectionStatus( )
 {
 	Nob::Select
 	(
-		m_connections.Apply2AllConnectedPipesB
+		Apply2AllConnectedPipesB
 		( 
 			[&](Pipe const &p) { return p.IsSelected(); }  // if any connected pipe is selected
 		)                                                  // knot must also be selected

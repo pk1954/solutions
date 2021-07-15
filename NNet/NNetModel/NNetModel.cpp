@@ -101,7 +101,7 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 	if ( pBaseKnot )
 	{
 		pBaseKnot->Select(bOn);
-		pBaseKnot->m_connections.Apply2AllOutPipes
+		pBaseKnot->Apply2AllOutPipes
 		( 
 			[&]( Pipe & pipe ) 
 			{ 

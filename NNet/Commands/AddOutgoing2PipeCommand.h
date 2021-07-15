@@ -36,12 +36,12 @@ public:
 			m_upPipeOrtho   = make_unique<Pipe>( m_upKnotInsert.get(), m_upKnotOrtho.get() );
 			m_upPipeExt     = make_unique<Pipe>( m_pStartKnotOld, m_upKnotInsert.get() );	
 
-			m_upKnotInsert->m_connections.AddOutgoing( m_upPipeOrtho.get() );
-			m_upKnotOrtho ->m_connections.AddIncoming( m_upPipeOrtho.get() );
-			m_upKnotInsert->m_connections.AddIncoming( m_upPipeExt.get() );
-			m_upKnotInsert->m_connections.AddOutgoing( m_pPipeOld );
+			m_upKnotInsert->AddOutgoing( m_upPipeOrtho.get() );
+			m_upKnotOrtho ->AddIncoming( m_upPipeOrtho.get() );
+			m_upKnotInsert->AddIncoming( m_upPipeExt.get() );
+			m_upKnotInsert->AddOutgoing( m_pPipeOld );
 		}
-		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_upPipeExt.get() );
+		m_pStartKnotOld->ReplaceOutgoing( m_pPipeOld, m_upPipeExt.get() );
 		m_pPipeOld->SetStartKnot( m_upKnotInsert.get() );
 		nmwi.Push2Model( move(m_upKnotOrtho ) );
 		nmwi.Push2Model( move(m_upKnotInsert) );
@@ -56,7 +56,7 @@ public:
 		m_upKnotInsert = nmwi.PopFromModel<Knot>();
 		m_upKnotOrtho  = nmwi.PopFromModel<Knot>();
 		m_pPipeOld->SetStartKnot( m_pStartKnotOld );
-		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_upPipeExt.get(), m_pPipeOld );
+		m_pStartKnotOld->ReplaceOutgoing( m_upPipeExt.get(), m_pPipeOld );
 	}
 
 private:

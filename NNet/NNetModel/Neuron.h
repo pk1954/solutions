@@ -36,7 +36,7 @@ public:
 	static bool    const TypeFits(NobType const type) { return type.IsNeuronType(); }
 	static NobType const GetNobType() { return NobType::Value::neuron; }
 
-	bool       const HasAxon         () const { return m_connections.HasOutgoing(); }
+	bool       const HasAxon         () const { return HasOutgoing(); }
 	bool       const HasTriggerSound () const { return m_triggerSound.m_bOn; }
 	SoundDescr const GetTriggerSound () const { return m_triggerSound; }
 

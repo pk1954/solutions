@@ -36,28 +36,11 @@ public:
 
 	virtual bool operator==( Nob const & ) const override;
 
-	virtual BaseKnot & operator*=(float const f)
-	{
-		m_circle *= f;
-		return * this;
-	}
+	virtual BaseKnot & operator*=(float const);
+	virtual BaseKnot & operator+=(BaseKnot const &);
+	virtual BaseKnot & operator-=(BaseKnot const &);
 
-	virtual BaseKnot & operator+=(BaseKnot const &rhs)
-	{
-		m_circle += rhs.GetPos();
-		return * this;
-	}
-
-	virtual BaseKnot & operator-=(BaseKnot const &rhs)
-	{
-		m_circle += rhs.GetPos();
-		return * this;
-	}
-
-	virtual MicroMeterPnt const GetPos() const 
-	{ 
-		return m_circle.GetPos(); 
-	}
+	virtual MicroMeterPnt const GetPos() const { return m_circle.GetPos(); }
 
 	virtual void       Dump         () const;
 	virtual void       Check        () const;
@@ -69,6 +52,8 @@ public:
 	virtual void       RotateNob    (MicroMeterPnt const &, Radian const);
 	virtual void       Link         (Nob const &, Nob2NobFunc const &);
 	virtual void       MoveNob      (MicroMeterPnt const &);
+
+	unique_ptr<Connections>CloneConnection() const { return m_connections.Clone(); }
 
 	static bool const TypeFits( NobType const type ) { return type.IsBaseKnotType(); }
 
@@ -82,27 +67,46 @@ public:
 	bool const IsPrecursorOf( Pipe const & ) const;
 	bool const IsSuccessorOf( Pipe const & ) const ;
 
+	bool const HasIncoming() const { return m_connections.HasIncoming(); }
+	bool const HasOutgoing() const { return m_connections.HasOutgoing(); }
+	bool const IsOrphan()    const { return  m_connections.IsOrphan(); }
+
 	virtual void Reconnect() { m_connections.Reconnect( this );	}
 	
-	void AddConnections( BaseKnot * const pSrc ) 
-	{ 
-		m_connections.Add( pSrc->m_connections );
-		Reconnect();
-	}
+	void AddConnections(BaseKnot    const &); 
+	void SetConnections(BaseKnot    const &); 
+	void SetConnections(Connections const &); 
+	void ClearConnections();
 
-	void SetConnections( Connections * const pSrc ) 
-	{ 
-		m_connections = * pSrc;
-		Reconnect();
-	}
+	size_t GetNrOfIncomingConnections() const { return m_connections.GetNrOfIncomingConnections(); }
+	size_t GetNrOfOutgoingConnections() const { return m_connections.GetNrOfOutgoingConnections(); }
+	size_t GetNrOfConnections()         const { return m_connections.GetNrOfConnections(); }
 
-	void ClearConnections()
-	{
-		m_connections.ClearIncoming();
-		m_connections.ClearOutgoing();
-	}
+	Pipe & GetFirstOutgoing() { return m_connections.GetFirstOutgoing(); }
+	Pipe & GetFirstIncoming() { return m_connections.GetFirstIncoming(); }
 
-	Connections m_connections;
+	Pipe const & GetFirstOutgoing() const { return m_connections.GetFirstOutgoing(); }
+	Pipe const & GetFirstIncoming() const { return m_connections.GetFirstIncoming(); }
+
+	void AddIncoming(Pipe * const p) { m_connections.AddIncoming(p); }
+	void AddOutgoing(Pipe * const p) { m_connections.AddOutgoing(p); }
+
+	void RemoveIncoming(Pipe * const p) { m_connections.RemoveIncoming(p); } 
+	void RemoveOutgoing(Pipe * const p) { m_connections.RemoveOutgoing(p); }
+
+	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) { m_connections.ReplaceIncoming(pDel, pAdd); }
+	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) { m_connections.ReplaceOutgoing(pDel, pAdd); }
+
+	void SetIncoming(BaseKnot const & b) { m_connections.SetIncoming(b.m_connections); }
+	void SetOutgoing(BaseKnot const & b) { m_connections.SetOutgoing(b.m_connections); }
+
+	void Apply2AllInPipes        (PipeFunc const &f) const { m_connections.Apply2AllInPipes       (f); }
+	void Apply2AllOutPipes       (PipeFunc const &f) const { m_connections.Apply2AllOutPipes      (f); }
+	void Apply2AllConnectedPipes (PipeFunc const &f) const { m_connections.Apply2AllConnectedPipes(f); }
+
+	bool Apply2AllInPipesB       (PipeCrit const &c) const { return m_connections.Apply2AllInPipesB       (c); }
+	bool Apply2AllOutPipesB      (PipeCrit const &c) const { return m_connections.Apply2AllOutPipesB      (c); }
+	bool Apply2AllConnectedPipesB(PipeCrit const &c) const { return m_connections.Apply2AllConnectedPipesB(c); }
 
 protected:
 
@@ -113,6 +117,7 @@ protected:
 
 private:
 
+	Connections      m_connections;
 	MicroMeterCircle m_circle;
 };
 

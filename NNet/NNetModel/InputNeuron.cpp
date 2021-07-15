@@ -30,7 +30,7 @@ InputNeuron::~InputNeuron() { }
 void InputNeuron::Check() const
 {
 	Neuron::Check();
-	assert( ! m_connections.HasIncoming() );
+	assert( !HasIncoming() );
 }
 
 bool InputNeuron::operator==( Nob const & rhs ) const

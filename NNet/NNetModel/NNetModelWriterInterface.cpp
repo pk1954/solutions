@@ -27,8 +27,8 @@ void NNetModelWriterInterface::CreateInitialNobs()
 	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPnt( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
 	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPnt( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
 	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upOutputNeuron.get() ) };
-	upInputNeuron ->m_connections.AddOutgoing( upNewPipe.get() );
-	upOutputNeuron->m_connections.AddIncoming( upNewPipe.get() );
+	upInputNeuron ->AddOutgoing( upNewPipe.get() );
+	upOutputNeuron->AddIncoming( upNewPipe.get() );
 	GetUPNobs().Push( move(upInputNeuron) );
 	GetUPNobs().Push( move(upOutputNeuron) );       
 	GetUPNobs().Push( move(upNewPipe) );      

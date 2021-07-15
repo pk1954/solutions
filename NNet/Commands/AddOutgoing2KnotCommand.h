@@ -33,9 +33,9 @@ public:
 			m_pStart    = nmwi.GetNobPtr<BaseKnot *>( m_idKnot );
 			m_upKnotNew = make_unique<Knot>( m_pos );
 			m_upPipe    = make_unique<Pipe>( m_pStart, m_upKnotNew.get() );
-			m_upKnotNew->m_connections.AddIncoming( m_upPipe.get() );
+			m_upKnotNew->AddIncoming( m_upPipe.get() );
 		}
-		m_pStart->m_connections.AddOutgoing( m_upPipe.get() );
+		m_pStart->AddOutgoing( m_upPipe.get() );
 		nmwi.Push2Model( move( m_upKnotNew ) );
 		nmwi.Push2Model( move( m_upPipe ) );
 	}
@@ -44,7 +44,7 @@ public:
 	{ 
 		m_upPipe    = nmwi.PopFromModel<Pipe>();
 		m_upKnotNew = nmwi.PopFromModel<Knot>();
-		m_pStart->m_connections.RemoveOutgoing( m_upPipe.get() );
+		m_pStart->RemoveOutgoing( m_upPipe.get() );
 	}
 
 private:

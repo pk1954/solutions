@@ -77,7 +77,7 @@ bool ModelAnalyzer::findLoop( Nob const & nob )
 	}
 	else if ( nob.IsBaseKnot() )
 	{
-		bResult = static_cast<BaseKnot const &>(nob).m_connections.Apply2AllOutPipesB
+		bResult = static_cast<BaseKnot const &>(nob).Apply2AllOutPipesB
 		( 
 			[&]( Pipe const & pipe ) 
 			{ 
@@ -100,14 +100,14 @@ bool ModelAnalyzer::hasAnomaly( Knot const & knot )
 {
 	bool bFoundAnomaly { false };
 
-	if ( ! knot.m_connections.HasIncoming() )
+	if ( ! knot.HasIncoming() )
 	{
-		knot.m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_nobStack.push_back(& pipe); } );
+		knot.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_nobStack.push_back(& pipe); } );
 		bFoundAnomaly = true;
 	}
-	else if ( ! knot.m_connections.HasOutgoing() )
+	else if ( ! knot.HasOutgoing() )
 	{
-		knot.m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_nobStack.push_back(& pipe); } );
+		knot.Apply2AllInPipes( [&]( Pipe & pipe ) { m_nobStack.push_back(& pipe); } );
 		bFoundAnomaly = true;
 	}
 

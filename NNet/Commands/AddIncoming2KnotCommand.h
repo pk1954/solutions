@@ -32,9 +32,9 @@ public:
 			m_pEnd      = nmwi.GetNobPtr<BaseKnot *>( m_idKnot );
 			m_upKnotNew = make_unique<Knot>( m_pos );
 			m_upPipe    = make_unique<Pipe>( m_upKnotNew.get(), m_pEnd );
-			m_upKnotNew->m_connections.AddOutgoing( m_upPipe.get() );
+			m_upKnotNew->AddOutgoing( m_upPipe.get() );
 		}
-		m_pEnd->m_connections.AddIncoming( m_upPipe.get() );
+		m_pEnd->AddIncoming( m_upPipe.get() );
 		nmwi.Push2Model( move(m_upKnotNew) );
 		nmwi.Push2Model( move(m_upPipe) );
 	}
@@ -43,13 +43,13 @@ public:
 	{ 
 		m_upPipe    = nmwi.PopFromModel<Pipe>();
 		m_upKnotNew = nmwi.PopFromModel<Knot>();
-		m_pEnd->m_connections.RemoveIncoming( m_upPipe.get() );
+		m_pEnd->RemoveIncoming( m_upPipe.get() );
 	}
 
 private:
-	BaseKnot      *       m_pEnd      { nullptr };
-	unique_ptr<Knot>      m_upKnotNew { nullptr };
-	unique_ptr<Pipe>      m_upPipe    { nullptr };
+	BaseKnot          * m_pEnd      { nullptr };
+	unique_ptr<Knot>    m_upKnotNew { nullptr };
+	unique_ptr<Pipe>    m_upPipe    { nullptr };
 	NobId         const m_idKnot;
 	MicroMeterPnt const m_pos; 
 };

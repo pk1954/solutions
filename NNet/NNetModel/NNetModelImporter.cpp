@@ -139,8 +139,8 @@ private:
             BaseKnot * const pKnotStart { GetWriterInterface().GetNobPtr<BaseKnot *>( idStart ) };
             BaseKnot * const pKnotEnd   { GetWriterInterface().GetNobPtr<BaseKnot *>( idEnd   ) };
             unique_ptr<Pipe> upPipe { make_unique<Pipe>( pKnotStart, pKnotEnd ) };
-            pKnotStart->m_connections.AddOutgoing( upPipe.get() );
-            pKnotEnd  ->m_connections.AddIncoming( upPipe.get() );
+            pKnotStart->AddOutgoing( upPipe.get() );
+            pKnotEnd  ->AddIncoming( upPipe.get() );
             return move(upPipe);
         }
     }
@@ -365,7 +365,7 @@ void NNetModelImporter::fixOutputNeurons()
     (
         [&](Neuron & neuron)
         {
-            if ( ! neuron.m_connections.HasOutgoing() )
+            if ( ! neuron.HasOutgoing() )
             {
                 m_ImportedNMWI.GetUPNobs().ReplaceNob(move(make_unique<OutputNeuron>(neuron)));
             }

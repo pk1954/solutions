@@ -35,8 +35,8 @@ Neuron::Neuron
 )
   : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
 {
-	m_connections.SetIncoming(outputNeuron.m_connections);
-	m_connections.SetOutgoing(inputNeuron .m_connections);
+	SetIncoming(outputNeuron);
+	SetOutgoing(inputNeuron );
 	Recalc();
 }
 
@@ -192,7 +192,7 @@ void Neuron::DrawNeuronText( DrawContext const & context ) const
 
 MicroMeterPnt Neuron::getAxonHillockPos() const
 {
-	Pipe            const & axon         { m_connections.GetFirstOutgoing() };
+	Pipe          const & axon         { GetFirstOutgoing() };
 	MicroMeterPnt const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
 	return GetPos() + vectorScaled * NEURON_INTERIOR;
 }
