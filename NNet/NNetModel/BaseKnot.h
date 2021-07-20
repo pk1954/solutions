@@ -92,11 +92,11 @@ public:
 	size_t GetNrOfOutgoingConnections() const { return m_outPipes.Size(); }
 	size_t GetNrOfConnections()         const { return m_inPipes .Size() + m_outPipes.Size(); }
 
-	Pipe & GetFirstOutgoing() { return m_inPipes .GetFirst(); }
-	Pipe & GetFirstIncoming() { return m_outPipes.GetFirst(); }
+	Pipe & GetFirstIncoming() { return m_inPipes .GetFirst(); }
+	Pipe & GetFirstOutgoing() { return m_outPipes.GetFirst(); }
 
-	Pipe const & GetFirstOutgoing() const { return m_inPipes .GetFirst(); }
-	Pipe const & GetFirstIncoming() const { return m_outPipes.GetFirst(); }
+	Pipe const & GetFirstIncoming() const { return m_inPipes .GetFirst(); }
+	Pipe const & GetFirstOutgoing() const { return m_outPipes.GetFirst(); }
 
 	void AddIncoming(Pipe * const p) { m_inPipes .Add(p); }
 	void AddOutgoing(Pipe * const p) { m_outPipes.Add(p); }
