@@ -4,13 +4,17 @@
 
 #pragma once
 
+#include <vector>
 #include "BoolOp.h"
 #include "MoreTypes.h"
-#include "MicroMeterPosDir.h"
+#include "Nob.h"
 #include "NobType.h"
-#include "UPNobList.h"
-#include "IoNeuronList.h"
-#include "Connector.h"
+
+using std::vector;
+
+class Neuron;
+class Connector;
+class IoNeuronList;
 
 class ClosedConnector: public Nob
 {
@@ -19,14 +23,14 @@ public:
 	static bool    const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::closedConnector; }
 
-	ClosedConnector(MicroMeterPnt const &, IoNeuronList, IoNeuronList);
-	ClosedConnector(MicroMeterPnt const &, Connector &,  Connector &);
+	ClosedConnector() :	Nob(NobType::Value::closedConnector) {};
 	virtual ~ClosedConnector() {}
 
 	virtual void Check() const;
 	virtual void Dump () const;
 
 	virtual MicroMeterPnt const GetPos() const;
+	virtual Radian        const GetDir() const;
 
 	virtual void       DrawExterior(DrawContext    const &, tHighlight const) const;
 	virtual void       DrawInterior(DrawContext    const &, tHighlight const) const;
@@ -45,23 +49,22 @@ public:
 
 	virtual bool const IsCompositeNob() { return true; }
 
+	void Push(Neuron * const p) { m_list.push_back(p); }
+	Neuron * const Pop();
+
 	void SetParentPointers();
 	void ClearParentPointers();
 
-	size_t const Size() const { return m_listInput.Size(); };
-
-	virtual Radian const GetDir() const { return m_listInput.GetFirst().GetDir(); };
+	size_t const Size() const { return m_list.size(); };
 
 	inline static wchar_t const SEPARATOR     { L':' };
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
-	IoNeuronList const & GetInputNeurons () const { return m_listInput;  };
-	IoNeuronList const & GetOutputNeurons() const { return m_listOutput; };
+	vector<Neuron *> const & GetNeurons() const { return m_list; }
 
 private:
-	IoNeuronList m_listInput  {};
-	IoNeuronList m_listOutput {};
+	vector<Neuron *> m_list{};
 };
 
 ClosedConnector const * Cast2ClosedConnector(Nob const *);

@@ -27,18 +27,18 @@ Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
 	Recalc();
 }
 
-Neuron::Neuron
-( 
-	MicroMeterPnt const & upCenter,
-	IoNeuron      const & inputNeuron, 
-	IoNeuron      const & outputNeuron 
-)
-  : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
-{
-	SetIncoming(outputNeuron);
-	SetOutgoing(inputNeuron );
-	Recalc();
-}
+//Neuron::Neuron
+//( 
+//	MicroMeterPnt const & upCenter,
+//	IoNeuron      const & inputNeuron, 
+//	IoNeuron      const & outputNeuron 
+//)
+//  : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
+//{
+//	SetIncoming(outputNeuron);
+//	SetOutgoing(inputNeuron );
+//	Recalc();
+//}
 
 void Neuron::Check() const
 {

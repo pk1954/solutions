@@ -607,8 +607,8 @@
     <ClInclude Include="MultiNobsAnimation.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="NNetWinWrappers.h" />
-    <ClInclude Include="PluginConnectorAnimation.h" />
-    <ClInclude Include="PluginIoNeuronAnimation.h" />
+    <ClInclude Include="PlugConnectorAnimation.h" />
+    <ClInclude Include="PlugIoNeuronAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="scale.h" />

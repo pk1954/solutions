@@ -191,7 +191,6 @@
     <ClInclude Include="IoNeuron.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="MicroMeterPntVector.h" />
-    <ClInclude Include="Connections.h" />
     <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="DrawContext.h" />
     <ClInclude Include="InputNeuron.h" />
@@ -215,6 +214,7 @@
     <ClInclude Include="NobIdList.h" />
     <ClInclude Include="IoNeuronList.h" />
     <ClInclude Include="NobErrorHandler.h" />
+    <ClInclude Include="PipeList.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
     <ClInclude Include="NNetError.h" />
@@ -238,6 +238,7 @@
     <ClCompile Include="IoNeuron.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
+    <ClCompile Include="IoNeuronList.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="MicroMeterPntVector.cpp" />
     <ClCompile Include="MicroMeterPosDir.cpp" />

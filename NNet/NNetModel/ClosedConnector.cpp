@@ -3,138 +3,166 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "IoNeuronList.h"
+#include "Neuron.h"
+#include "IoNeuron.h"
+#include "Connector.h"
 #include "ClosedConnector.h"
 
-ClosedConnector::ClosedConnector
-( 
-    MicroMeterPnt const & pnt,  // not used 
-    IoNeuronList listInput, 
-    IoNeuronList listOutput 
-)
-  :	Nob(NobType::Value::closedConnector)
-{
-    m_listInput  = move(listInput);
-    m_listOutput = move(listOutput);
-    Check();
-}
-
-ClosedConnector::ClosedConnector
-( 
-    MicroMeterPnt const & pnt,  // not used 
-    Connector & connInput, 
-    Connector & connOutput 
-)
-  :	Nob(NobType::Value::closedConnector)
-{
-    m_listInput  = move(connInput .GetIoNeurons());
-    m_listOutput = move(connOutput.GetIoNeurons());
-}
+//ClosedConnector::ClosedConnector
+//( 
+//    MicroMeterPnt const & pnt,  // not used 
+//    IoNeuronList  const & listInput, 
+//    IoNeuronList  const & listOutput 
+//)
+//  :	Nob(NobType::Value::closedConnector)
+//{
+//    size_t nrOfNeurons { listInput.Size() };
+//    for (size_t i = 0; i < nrOfNeurons; ++i)
+//    {
+//        IoNeuron      const & inputNeuron  { listInput .GetElem(i) };
+//        IoNeuron      const & outputNeuron { listOutput.GetElem(i) };
+//        MicroMeterPnt const   umPos        { inputNeuron.GetPos() };
+//        unique_ptr<Neuron>    upNeuron     { make_unique<Neuron>(umPos, inputNeuron, outputNeuron) };
+//
+//    }
+////    m_listInput  = move(listInput);
+////    m_listOutput = move(listOutput);
+////    Check();
+//}
+//
+//ClosedConnector::ClosedConnector
+//( 
+//    MicroMeterPnt const & pnt,  // not used 
+//    Connector & connInput, 
+//    Connector & connOutput 
+//)
+//  :	Nob(NobType::Value::closedConnector)
+//{
+//    //m_listInput  = move(connInput .GetIoNeurons());
+//    //m_listOutput = move(connOutput.GetIoNeurons());
+//}
 
 void ClosedConnector::Check() const
 {
-    m_listInput .Check();
-    m_listInput .Apply2All([&](IoNeuron &n){ assert(n.IsInputNeuron()); });
-    m_listOutput.Check();
-    m_listOutput.Apply2All([&](IoNeuron &n){ assert(n.IsOutputNeuron()); });
+    for (auto & it: m_list)
+    {
+        assert(it->IsNeuron());
+        it->Check();
+    }
 }
 
 void ClosedConnector::Dump() const
 {
     Nob::Dump();
-    wcout << L" in";
-    m_listInput .Dump();
-    wcout << L" out";
-    m_listOutput.Dump();
+    for (auto & it: m_list)
+        it->Dump();
     wcout << endl;
 }
 
+Neuron * const ClosedConnector::Pop() 
+{ 
+    Neuron * pRet { m_list.back() };
+    m_list.pop_back();
+    return pRet;
+}
+
+Radian const ClosedConnector::GetDir() const 
+{ 
+    return m_list.empty() 
+        ? Radian::NULL_VAL() 
+        : m_list[0]->GetDir(); 
+};
+
 MicroMeterPnt const ClosedConnector::GetPos() const
 {
-   return (m_listInput.GetPos() + m_listOutput.GetPos()) * 0.5f;
+    assert(!m_list.empty());
+    return (m_list.front()->GetPos() + m_list.back()->GetPos()) * 0.5f; 
 }
 
 void ClosedConnector::DrawExterior(DrawContext const & context, tHighlight const highLightType) const
 {
-    m_listInput .DrawExterior(context, highLightType);
-    m_listOutput.DrawExterior(context, highLightType);
+    for (auto & it: m_list)
+        it->DrawExterior(context, highLightType);
 }
 
 void ClosedConnector::DrawInterior(DrawContext const &context, tHighlight const highLightType) const
 {
-    m_listInput .DrawInterior(context, highLightType);
-    m_listOutput.DrawInterior(context, highLightType);
+    for (auto & it: m_list)
+        it->DrawInterior(context, highLightType);
 }
 
 void ClosedConnector::Expand(MicroMeterRect & umRect) const
 {
-    m_listInput .Expand(umRect);
-    m_listOutput.Expand(umRect);
+    for (auto & it: m_list)
+        it->Expand(umRect);
 }
 
-bool const ClosedConnector::IsIncludedIn(MicroMeterRect const & rect) const
+bool const ClosedConnector::IsIncludedIn(MicroMeterRect const & umRect) const
 {
-    return m_listInput.IsIncludedIn(rect) || m_listOutput.IsIncludedIn(rect);
+    for (auto & it : m_list) { if (it->IsIncludedIn(umRect)) return true; }
+    return false;
 }
 
 bool const ClosedConnector::Includes(MicroMeterPnt const & umPnt) const
 {
-    return m_listInput.Includes(umPnt) || m_listOutput.Includes(umPnt);
+    for (auto & it : m_list) { if (it->Includes(umPnt)) return true; }
+    return false;
 }
 
 void ClosedConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radian)
 {   
-    m_listInput .RotateNob(umPntPivot, radian);
-    m_listOutput.RotateNob(umPntPivot, radian);
+    for (auto & it: m_list)
+        it->RotateNob(umPntPivot, radian);
 }
 
 void ClosedConnector::Prepare()
 {
-    m_listInput .Prepare();
-    m_listOutput.Prepare();
+    for (auto & it: m_list)
+        it->Prepare();
 }
 
 bool const ClosedConnector::CompStep()
 {
     bool bStop { false };
-    if (m_listInput .CompStep()) bStop = true;
-    if (m_listOutput.CompStep()) bStop = true;
-    return bStop;
+    for (auto & it: m_list)
+        if (it->CompStep()) return true;
+    return false;
 }
 
 void ClosedConnector::Recalc()
 {
-    m_listInput .Recalc();
-    m_listOutput.Recalc();
+    for (auto & it: m_list)
+        it->Recalc();
 }
 
 void ClosedConnector::Clear()
 {
-    m_listInput .Clear();
-    m_listOutput.Clear();
+    m_list.clear();
 }
 
 void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
-    m_listInput .Link(dstFromSrc);
-    m_listOutput.Link(dstFromSrc);
+    //for (int i = 0; i < m_list.size(); ++i)
+    //    m_list[i] = static_cast<IoNeuron *>(dstFromSrc(m_list[i]));
 }
 
 void ClosedConnector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_listInput .MoveNob(delta);
-    m_listOutput.MoveNob(delta);
+    for (auto & it: m_list)
+        it->MoveNob(delta);
 }
 
 void ClosedConnector::SetParentPointers()
 {
-    m_listInput .SetParentPointers(this);
-    m_listOutput.SetParentPointers(this);
+    for (auto & it: m_list)
+        it->SetParentNob(this);
 }
 
 void ClosedConnector::ClearParentPointers()
 {
-    m_listInput .ClearParentPointers();
-    m_listOutput.ClearParentPointers();
+    for (auto & it: m_list)
+        it->ClearParentPointers();
 }
 
 ClosedConnector const * Cast2ClosedConnector(Nob const * pNob)

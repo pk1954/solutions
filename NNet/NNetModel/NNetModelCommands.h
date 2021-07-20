@@ -59,13 +59,14 @@ public:
     void CopySelection      ();
     void CreateInitialNobs  ();
     void DeleteSelection    ();
-    void DeleteNob          ( NobId  const );
+    void DeleteNob          ( NobId const );
     void DeleteSignal       ( SignalId const );
-    void DeleteTrack        ( TrackNr  const );
-    void Disconnect         ( NobId  const );
-    void InsertKnot         ( NobId  const, MicroMeterPnt const & );
-    void InsertNeuron       ( NobId  const, MicroMeterPnt const & );
-    void InsertTrack        ( TrackNr  const );
+    void DeleteTrack        ( TrackNr const );
+    void Disconnect         ( NobId const );
+    void DiscClosedConnector( NobId const );
+    void InsertKnot         ( NobId const, MicroMeterPnt const & );
+    void InsertNeuron       ( NobId const, MicroMeterPnt const & );
+    void InsertTrack        ( TrackNr const );
     void MoveSelection      ( MicroMeterPnt const & );
     void MoveNob            ( NobId const, MicroMeterPnt const & );
     void NewInputNeuron     ( MicroMeterPnt const & );
@@ -80,12 +81,12 @@ public:
     void SelectSubtree      ( NobId const, bool const );
     void SetIoNeurons       ( MicroMeterPntVector const &, unique_ptr<NobIdList> );
     void SetParameter       ( ParamType::Value const, float const );
-    void SetPulseRate       ( NobId    const, fHertz const );
+    void SetPulseRate       ( NobId const, fHertz const );
     void SetNob             ( NobId const, MicroMeterPosDir const );
     void SetTriggerSound    ( NobId const, SoundDescr const & );
-    void DiscClosedConnector( NobId  const );
+    void SplitNeuron        ( NobId const );
     void ToggleStopOnTrigger( NobId const );
-    void Unplug             ( NobId  const );
+    void Unplug             ( NobId const );
 
     void UndoCommand();
     void RedoCommand();

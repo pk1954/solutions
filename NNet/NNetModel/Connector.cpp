@@ -3,17 +3,42 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "MicroMeterPosDir.h"
 #include "IoNeuron.h"
+#include "Neuron.h"
 #include "Connector.h"
 
-Connector::Connector()
-  :	Nob(NobType::Value::connector)
-{};
+Connector::Connector(NobIoMode const ioMode)
+  :	Nob(NobType::Value::connector),
+    m_IoMode(ioMode)
+{}
 
 Connector::Connector(IoNeuronList const & src)
-  :	Nob(NobType::Value::connector)
+  :	Nob(NobType::Value::connector),
+    m_IoMode(src.GetFirst().GetIoMode())
 {
     m_list = src;
+}
+
+//Connector::Connector(vector<Neuron *> const & list, NobIoMode const ioMode)
+//  : Nob(NobType::Value::connector),
+//    m_IoMode(ioMode)
+//{
+//    if ( m_IoMode == NobIoMode::input )
+//    {
+//        for (auto & it: list)
+//            m_list.Add( )
+//    }
+//}
+//
+bool const Connector::IsInputConnector () const 
+{ 
+    return m_list.GetFirst().IsInputNob (); 
+}
+
+bool const Connector::IsOutputConnector() const 
+{ 
+    return m_list.GetFirst().IsOutputNob(); 
 }
 
 void Connector::Check() const
@@ -30,7 +55,7 @@ void Connector::Dump() const
 
 NobIoMode const Connector::GetIoMode() const 
 { 
-    return IsInputConnector() ? NobIoMode::input : NobIoMode::output; 
+    return m_IoMode;
 }
 
 IoNeuron * const Connector::Pop() 

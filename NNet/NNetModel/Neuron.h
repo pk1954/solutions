@@ -22,16 +22,15 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
-	Neuron(MicroMeterPnt const &, IoNeuron const &, IoNeuron const &);
-	Neuron(Neuron const & );   // copy constructor
+	Neuron(Neuron const &);             // copy constructor
 
-	virtual void Check() const;
-
-	Neuron & operator=( Neuron const & ); // copy assignment operator
+	Neuron & operator=(Neuron const &); // copy assignment operator
 
 	virtual ~Neuron();
 
 	virtual bool operator==( Nob const & ) const override;
+
+	virtual void Check() const;
 
 	static bool    const TypeFits(NobType const type) { return type.IsNeuronType(); }
 	static NobType const GetNobType() { return NobType::Value::neuron; }

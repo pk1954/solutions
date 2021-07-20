@@ -7,23 +7,28 @@
 #include "MoreTypes.h"
 #include "IoNeuron.h"
 
+class Nob;
+class Neuron;
+class DrawContext;
+
 class InputNeuron : public IoNeuron
 {
 public:
 
-	InputNeuron( MicroMeterPnt const );
+	InputNeuron(MicroMeterPnt const &);
+	InputNeuron(Neuron        const &);
 
 	virtual ~InputNeuron();
 
 	virtual void Check() const;
 
-	virtual bool operator==( Nob const & ) const override;
+	virtual bool operator==(Nob const &) const override;
 
-	static bool    const TypeFits( NobType const type ) { return type.IsInputNeuronType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 	static NobType const GetNobType() { return NobType::Value::inputNeuron; }
 
-	virtual void DrawExterior( DrawContext const &, tHighlight const ) const;
-	virtual void DrawInterior( DrawContext const &, tHighlight const ) const;
+	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
+	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
 
 	virtual NobIoMode const GetIoMode() const { return NobIoMode::input; }
 
@@ -33,7 +38,7 @@ public:
 	}
 
 	virtual bool const CompStep();
-	virtual void       DrawNeuronText( DrawContext const & ) const;
+	virtual void       DrawNeuronText(DrawContext const &) const;
 	virtual void       Recalc();   // Recalculate precalculated values
 
 	fHertz const GetPulseFrequency() const { return m_pulseFrequency; }

@@ -25,9 +25,42 @@ MicroMeterPnt const IoNeuron::determineVector() const
 	return umVector;
 }
 
+MicroMeterPnt const IoNeuron::GetDirVector() const
+{
+	MicroMeterPnt umVector 
+	{ 
+		m_radDirection.IsNull() 
+		? determineVector() 
+		: Radian2Vector(m_radDirection) 
+	};
+	return umVector.ScaledTo(GetExtension());
+}
+
+Radian const IoNeuron::GetDir() const 
+{ 
+	return m_radDirection.IsNull() 
+		? Vector2Radian(determineVector()) 
+		: m_radDirection;
+};
+
 void IoNeuron::RotateNob( MicroMeterPnt const & umPntPivot, Radian const radDelta )
 {
 	BaseKnot::RotateNob(umPntPivot, radDelta);
 	m_radDirection += radDelta;
+}
+
+MicroMeterPosDir const IoNeuron::GetRawPosDir() const
+{
+	return MicroMeterPosDir(GetPos(), m_radDirection);
+}
+
+MicroMeterPosDir const IoNeuron::GetPosDir() const
+{
+	return MicroMeterPosDir(GetPos(), Vector2Radian(GetDirVector()));
+}
+
+void IoNeuron::UnlockDirection() 
+{
+	m_radDirection.Set2Null();
 }
 

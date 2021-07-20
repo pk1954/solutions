@@ -32,7 +32,7 @@ public:
 	static void Apply2GlobalParameters( function<void(ParamType::Value const &)> const & );
 	static void Apply2AllParameters   ( function<void(ParamType::Value const &)> const & );
 
-	friend wostream & operator << ( wostream &, ParamType const & );
+	friend wostream & operator<<(wostream &, ParamType::Value const &);
 
 private:
 	Value m_value;

@@ -26,7 +26,10 @@ bool BaseKnot::operator==( Nob const & rhs ) const
 void BaseKnot::Dump() const
 {
 	Nob::Dump();
-	m_connections.Dump();
+	wcout << L" in";
+	m_inPipes.Dump();
+	wcout << L" out";
+	m_outPipes.Dump();
 	wcout << endl;
 }
 
@@ -51,7 +54,8 @@ BaseKnot & BaseKnot::operator-=(BaseKnot const &rhs)
 void BaseKnot::SetPos( MicroMeterPnt const & newPos )
 {
 	m_circle.SetPos( newPos ); 
-	m_connections.Recalc();
+	m_inPipes .Recalc();
+	m_outPipes.Recalc();
 }
 
 void BaseKnot::MoveNob( MicroMeterPnt const & delta )
@@ -59,28 +63,17 @@ void BaseKnot::MoveNob( MicroMeterPnt const & delta )
 	SetPos(GetPos() + delta);
 }
 
-void BaseKnot::AddConnections(BaseKnot const & src) 
-{ 
-	m_connections.Add(src.m_connections);
-	Reconnect();
-}
-
 void BaseKnot::SetConnections(BaseKnot const & src) 
 { 
-	m_connections = src.m_connections;
-	Reconnect();
-}
-
-void BaseKnot::SetConnections(Connections const & src) 
-{ 
-	m_connections = src;
+	SetIncoming(src);
+	SetOutgoing(src);
 	Reconnect();
 }
 
 void BaseKnot::ClearConnections()
 {
-	m_connections.ClearIncoming();
-	m_connections.ClearOutgoing();
+	m_inPipes .Clear();
+	m_outPipes.Clear();
 }
 
 void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
@@ -105,14 +98,14 @@ void BaseKnot::RotateNob( MicroMeterPnt const & umPntPivot, Radian const radDelt
 	SetPos( umPntPosNew );
 }
 
-bool const BaseKnot::IsIncludedIn( MicroMeterRect const & umRect ) const 
+bool const BaseKnot::IsIncludedIn(MicroMeterRect const & umRect) const 
 { 
-	return umRect.Includes( GetPos() ); 
+	return umRect.Includes(GetPos()); 
 }
 
-void BaseKnot::Expand( MicroMeterRect & umRect ) const
+void BaseKnot::Expand(MicroMeterRect & umRect) const
 {
-	umRect.Expand( GetPos() );
+	umRect.Expand(GetPos());
 }
 
 void BaseKnot::Check() const
@@ -137,12 +130,12 @@ void BaseKnot::Prepare()
 
 bool const BaseKnot::IsPrecursorOf( Pipe const & pipeSucc ) const 
 {
-	return m_connections.Apply2AllOutPipesB([&](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
+	return m_outPipes.Apply2AllB([&](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
 }
 
 bool const BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 {
-	return Apply2AllInPipesB([&](Pipe const & pipe) { return & pipe == & pipePred; });
+	return m_inPipes.Apply2AllB([&](Pipe const & pipe) { return & pipe == & pipePred; });
 }
 
 bool const BaseKnot::Includes( MicroMeterPnt const & point ) const

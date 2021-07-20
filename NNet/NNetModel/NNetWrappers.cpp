@@ -185,6 +185,16 @@ public:
     }
 };
 
+class WrapSplitNeuron: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        NobId const id { ScrReadNobId( script ) };
+        m_pCommands->SplitNeuron( id );
+    }
+};
+
 class WrapSetPulseRate: public Script_Functor
 {
 public:
@@ -374,6 +384,7 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(SetPulseRate); 
     DEF_FUNC(SetTriggerSound);
     DEF_FUNC(SetIoNeurons);
+    DEF_FUNC(SplitNeuron);
     DEF_FUNC(ToggleStopOnTrigger);
     DEF_FUNC(UndoCommand);
     DEF_FUNC(RedoCommand);

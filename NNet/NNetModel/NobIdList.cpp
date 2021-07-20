@@ -6,10 +6,10 @@
 #include "Nob.h"
 #include "NobIdList.h"
 
-NobIdList::NobIdList(Connector const & connector) 
-{
-    connector.Apply2All([&](Nob const & s) { Push(s.GetId()); } );
-}
+//NobIdList::NobIdList(Connector const & connector) 
+//{
+//    connector.Apply2All([&](Nob const & s) { Push(s.GetId()); } );
+//}
 
 NobIdList::NobIdList(IoNeuronList const & list) 
 {

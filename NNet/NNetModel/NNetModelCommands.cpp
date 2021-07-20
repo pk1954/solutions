@@ -19,6 +19,7 @@
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
+#include "DiscClosedConnCmd.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
 #include "MoveNobCommand.h"
@@ -39,9 +40,9 @@
 #include "SetPulseRateCommand.h"
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
-#include "DiscClosedConnCmd.h"
+#include "SplitClosedConnCmd.h"
+#include "SplitNeuronCmd.h"
 #include "ToggleStopOnTriggerCommand.h"
-#include "UnplugClosedConnCmd.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -159,11 +160,18 @@ void NNetModelCommands::Disconnect( NobId const id )
 	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI, id) ) );
 }
 
+void NNetModelCommands::SplitNeuron( NobId const id )
+{
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << L" " << id << endl;
+	m_pCmdStack->PushCommand( make_unique<SplitNeuronCmd>(*m_pNMWI, id) );
+}
+
 void NNetModelCommands::Unplug( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( make_unique<UnplugClosedConnCmd>(*m_pNMWI, id) );
+	m_pCmdStack->PushCommand( make_unique<SplitClosedConnCmd>(*m_pNMWI, id) );
 }
 
 void NNetModelCommands::DiscClosedConnector( NobId const id )

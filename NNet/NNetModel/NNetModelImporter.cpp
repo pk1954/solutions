@@ -196,17 +196,19 @@ private:
 
     UPNob createClosedConnector(Script & script) const 
     {
-        IoNeuronList listInput  = createNobPtrList(script);
-        IoNeuronList listOutput = createNobPtrList(script);
-        unique_ptr<ClosedConnector> upClosedConnector 
-        { 
-            make_unique<ClosedConnector>
-            (
-                MicroMeterPnt::NULL_VAL(),
-                listInput,
-                listOutput
-            ) 
-        };
+        unique_ptr<ClosedConnector> upClosedConnector { make_unique<ClosedConnector>() };
+        script.ScrReadSpecial( Connector::OPEN_BRACKET );
+        int const iNrOfElements { script.ScrReadInt() };
+        script.ScrReadSpecial( Connector::SEPARATOR );
+        for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
+        {
+            NobId    const id      { script.ScrReadInt() };
+            Neuron * const pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
+            if ( ! pNeuron )
+                throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
+            upClosedConnector->Push(pNeuron);
+        }
+        script.ScrReadSpecial( Connector::CLOSE_BRACKET );
         return move(upClosedConnector);
     }
 };

@@ -19,9 +19,16 @@ using std::wostringstream;
 using std::setprecision;
 using std::fixed;
 
-InputNeuron::InputNeuron( MicroMeterPnt const upCenter )
+InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
 	: IoNeuron( upCenter, NobType::Value::inputNeuron )
 { 
+	SetPulseFrequency(STD_PULSE_FREQ);
+}
+
+InputNeuron::InputNeuron(Neuron const & neuron)
+	: IoNeuron(neuron.GetPos(), NobType::Value::inputNeuron)
+{ 
+	SetIncoming(neuron);
 	SetPulseFrequency(STD_PULSE_FREQ);
 }
 
@@ -36,11 +43,10 @@ void InputNeuron::Check() const
 bool InputNeuron::operator==( Nob const & rhs ) const
 {
 	InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
-	return 
-	( this->Neuron::operator== (inputNeuronRhs) )           &&
-	( m_mvFactor       == inputNeuronRhs.m_mvFactor )       &&
-	( m_pulseFrequency == inputNeuronRhs.m_pulseFrequency ) &&
-	( m_pulseDuration  == inputNeuronRhs.m_pulseDuration );
+	return (this->Neuron::operator== (inputNeuronRhs))           &&
+           (m_mvFactor       == inputNeuronRhs.m_mvFactor)       &&
+		   (m_pulseFrequency == inputNeuronRhs.m_pulseFrequency) &&
+		   (m_pulseDuration  == inputNeuronRhs.m_pulseDuration);
 }
 
 void InputNeuron::Recalc()

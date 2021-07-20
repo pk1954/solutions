@@ -4,13 +4,17 @@
 
 #pragma once
 
+#include <vector>
 #include "BoolOp.h"
 #include "MoreTypes.h"
-#include "MicroMeterPosDir.h"
 #include "NobType.h"
-#include "UPNobList.h"
 #include "IoNeuronList.h"
-#include "IoNeuron.h"
+
+using std::vector;
+
+class DrawContext;
+class MicroMeterPosDir;
+class Neuron;
 
 class Connector: public Nob
 {
@@ -19,7 +23,7 @@ public:
 	static bool    const TypeFits(NobType const type) { return type.IsConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
-	Connector();
+	Connector(NobIoMode const);
 	Connector(IoNeuronList const &);
 
 	virtual ~Connector() {}
@@ -48,12 +52,8 @@ public:
 	void Push(IoNeuron * const p) { m_list.Add(p); }
 	IoNeuron * const Pop();
 
-	bool const IsInputConnector () const 
-	{
-		Neuron const & ioNeuron { m_list.GetFirst() };
-		return ioNeuron.IsInputNob (); 
-	}
-	bool const IsOutputConnector() const { return m_list.GetFirst().IsOutputNeuron(); }
+	bool const IsInputConnector () const;
+	bool const IsOutputConnector() const;
 
 	size_t const Size() const { return m_list.Size(); }
 
@@ -80,7 +80,8 @@ public:
 	IoNeuronList const & GetIoNeurons() const { return m_list; }
 
 private:
-	IoNeuronList m_list {};
+	NobIoMode const m_IoMode;
+	IoNeuronList    m_list {};
 };
 
 Connector const * Cast2Connector( Nob const * );

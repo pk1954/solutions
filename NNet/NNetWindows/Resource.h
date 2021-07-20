@@ -67,19 +67,21 @@
 #define IDM_PLUS                 191
 #define IDM_MINUS                192
 
-#define IDM_MONITOR_WINDOW       530
-#define IDD_ADD_SIGNAL           545
-#define IDD_DELETE_SIGNAL        546
-#define IDD_CONNECT              550
+#define IDM_MONITOR_WINDOW       330
+#define IDD_ADD_SIGNAL           345
+#define IDD_DELETE_SIGNAL        346
+#define IDD_CONNECT              350
 
-#define IDD_INSERT_KNOT          560
-#define IDD_INSERT_NEURON        561
-#define IDD_NEW_INPUT_NEURON     563
-#define IDD_NEW_OUTPUT_NEURON    564
-#define IDD_APPEND_INPUT_NEURON  566
-#define IDD_APPEND_OUTPUT_NEURON 567
-#define IDD_DELETE_NOB           568
-#define IDD_DISCONNECT           569
+#define IDD_INSERT_KNOT          460
+#define IDD_INSERT_NEURON        461
+#define IDD_NEW_INPUT_NEURON     463
+#define IDD_NEW_OUTPUT_NEURON    464
+#define IDD_APPEND_INPUT_NEURON  466
+#define IDD_APPEND_OUTPUT_NEURON 467
+#define IDD_DELETE_NOB           468
+#define IDD_DISCONNECT           469
+#define IDD_SPLIT_NEURON         470
+
 #define IDD_UNPLUG               570
 #define IDD_ADD_INCOMING2KNOT    571
 #define IDD_ADD_INCOMING2PIPE    572

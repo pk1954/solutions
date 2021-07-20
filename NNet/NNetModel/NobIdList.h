@@ -7,8 +7,9 @@
 #include <vector>
 #include "util.h"
 #include "NobId.h"
-#include "Connector.h"
+//#include "Connector.h"
 #include "IoNeuron.h"
+#include "IoNeuronList.h"
 
 using std::vector;
 using std::endl;
@@ -19,7 +20,7 @@ class NobIdList
 {
 public:
     NobIdList() {}
-    NobIdList(Connector     const &);
+//    NobIdList(Connector     const &);
     NobIdList(vector<Nob *> const &);
     NobIdList(IoNeuronList  const &);
 

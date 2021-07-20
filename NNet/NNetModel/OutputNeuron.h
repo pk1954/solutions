@@ -7,12 +7,16 @@
 #include "MoreTypes.h"
 #include "IoNeuron.h"
 
+class Nob;
+class Neuron;
+class DrawContext;
+
 class OutputNeuron : public IoNeuron
 {
 public:
 
-	OutputNeuron( MicroMeterPnt const & );
-	OutputNeuron( Neuron const & );
+	OutputNeuron(MicroMeterPnt const &);
+	OutputNeuron(Neuron        const &);
 
 	virtual ~OutputNeuron() {};
 

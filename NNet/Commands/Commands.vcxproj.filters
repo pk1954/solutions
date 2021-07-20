@@ -135,13 +135,10 @@
     <ClInclude Include="RotateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UnplugClosedConnCmd.h">
+    <ClInclude Include="SplitClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DiscClosedConnCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectIoObjectsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveSelectionCommand.h">
@@ -150,10 +147,16 @@
     <ClInclude Include="NewNeuronCommandT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiscNeuronCmd.h">
+    <ClInclude Include="SplitNeuronCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeleteClosedConnCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlugIoNeurons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlugConnectors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

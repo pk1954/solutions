@@ -20,7 +20,9 @@ public:
 	)
 	  : m_delta( delta ),
 		m_nob( nob )
-	{ }
+	{ 
+		assert( &nob );
+	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 

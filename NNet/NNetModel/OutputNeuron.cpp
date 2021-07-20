@@ -13,15 +13,14 @@ using std::fill;
 using std::wcout;
 using std::endl;
 
-OutputNeuron::OutputNeuron( MicroMeterPnt const & upCenter )
+OutputNeuron::OutputNeuron(MicroMeterPnt const & upCenter)
 	: IoNeuron( upCenter, NobType::Value::outputNeuron )
 {}
 
-OutputNeuron::OutputNeuron( Neuron const & neuron )
-	: IoNeuron( neuron.GetPos(), NobType::Value::outputNeuron )
+OutputNeuron::OutputNeuron(Neuron const & neuron)
+	: IoNeuron(neuron.GetPos(), NobType::Value::outputNeuron)
 {
-	static_cast<Neuron &>(*this) = neuron;    // use all data from Neuron to construct OutputNeuron
-	SetType( NobType::Value::outputNeuron );  // fix neuron type
+	SetOutgoing(neuron);
 }
 
 void OutputNeuron::Check() const

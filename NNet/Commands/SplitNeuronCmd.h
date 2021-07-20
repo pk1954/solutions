@@ -1,4 +1,4 @@
-// DiscNeuronCmd.h
+// SplitNeuronCmd.h
 //
 // Commands
 
@@ -13,15 +13,15 @@
 
 using std::unique_ptr;
 
-class DiscNeuronCmd : public Command
+class SplitNeuronCmd : public Command
 {
 public:
-    DiscNeuronCmd
+    SplitNeuronCmd
     (
         NNetModelWriterInterface & nmwi, 
-        Nob                      & nob
+        NobId                const id
     )
-      : m_neuron(*Cast2Neuron(&nob))
+      : m_neuron(*nmwi.GetNobPtr<Neuron *>(id))
     {
         MicroMeterPnt umPos { m_neuron.GetPos() };
         m_upInputNeuron  = make_unique<InputNeuron >(umPos);
@@ -32,13 +32,13 @@ public:
         m_upOutputNeuron->MoveNob((m_neuron.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }
 
-    ~DiscNeuronCmd() {}
+    ~SplitNeuronCmd() {}
 
     virtual void Do(NNetModelWriterInterface & nmwi)
     {
+        m_upNeuron = nmwi.RemoveFromModel<Neuron>(m_neuron);
         nmwi.Push2Model(move(m_upInputNeuron ));
         nmwi.Push2Model(move(m_upOutputNeuron));
-        m_upNeuron = nmwi.RemoveFromModel<Neuron>(m_neuron);
     }
 
     virtual void Undo(NNetModelWriterInterface & nmwi)

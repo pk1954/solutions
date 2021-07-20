@@ -82,13 +82,14 @@
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
-    <ClInclude Include="ConnectIoObjectsCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeleteClosedConnCmd.h" />
-    <ClInclude Include="DiscNeuronCmd.h" />
+    <ClInclude Include="PlugConnectors.h" />
+    <ClInclude Include="PlugIoNeurons.h" />
+    <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
-    <ClInclude Include="UnplugClosedConnCmd.h" />
+    <ClInclude Include="SplitClosedConnCmd.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />

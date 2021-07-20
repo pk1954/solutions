@@ -90,34 +90,35 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
-		{ IDD_ADD_INCOMING2KNOT,    L"Add incoming dendrite"                 },
-		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"                 },
-		{ IDD_ADD_OUTGOING2KNOT,    L"Add outgoing dendrite"                 },
-		{ IDD_ADD_OUTGOING2PIPE,    L"Add outgoing dendrite"                 },
-		{ IDD_ADD_SIGNAL,           L"New EEG sensor" 					     },
-		{ IDM_ALIGN_NOBS,           L"Align selected objects"                },
-		{ IDD_APPEND_INPUT_NEURON,  L"Add input neuron"                      },
-		{ IDD_APPEND_OUTPUT_NEURON, L"Add output neuron"                     },
-		{ IDD_ARROWS_OFF,           L"Arrows off"                            },
-		{ IDD_ARROWS_ON,            L"Arrows on"                             },
-		{ IDM_COPY_SELECTION,       L"Copy selection"                        },
-		{ IDM_DELETE_SELECTION,     L"Delete selected objects"               },
-		{ IDD_DELETE_NOB,           L"Delete"                                },
-		{ IDM_DESELECT_ALL,         L"Deselect all"                          },
-		{ IDM_DESELECT_NOB,         L"Deselect"                              },
-		{ IDD_DISCONNECT,           L"Disconnect"                            },
-		{ IDD_UNPLUG,               L"Unplug"                                },
-		{ IDD_INSERT_KNOT,          L"Insert knot"                           },
-		{ IDD_INSERT_NEURON,        L"Insert neuron"                         },
-		{ IDM_MAKE_CONNECTOR,       L"Make connector"                        },
-		{ IDD_NEW_INPUT_NEURON,     L"New input neuron" 					 },
-		{ IDD_NEW_OUTPUT_NEURON,    L"New output neuron"		             },
-		{ IDD_PULSE_RATE,           L"Pulse rate"                            },
-		{ IDM_SELECT_NOB,           L"Select"                                },
-		{ IDM_SELECT_SUBTREE,       L"Select subtree"                        },
-		{ IDM_DISC_CONNECTOR,      L"Disconnect (make neurons)"             },
-		{ IDD_STOP_ON_TRIGGER,      L"Stop on trigger on/off"                },
-		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"                         }
+		{ IDD_ADD_INCOMING2KNOT,    L"Add incoming dendrite"     },
+		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"     },
+		{ IDD_ADD_OUTGOING2KNOT,    L"Add outgoing dendrite"     },
+		{ IDD_ADD_OUTGOING2PIPE,    L"Add outgoing dendrite"     },
+		{ IDD_ADD_SIGNAL,           L"New EEG sensor" 			 },
+		{ IDM_ALIGN_NOBS,           L"Align selected objects"    },
+		{ IDD_APPEND_INPUT_NEURON,  L"Add input neuron"          },
+		{ IDD_APPEND_OUTPUT_NEURON, L"Add output neuron"         },
+		{ IDD_ARROWS_OFF,           L"Arrows off"                },
+		{ IDD_ARROWS_ON,            L"Arrows on"                 },
+		{ IDM_COPY_SELECTION,       L"Copy selection"            },
+		{ IDM_DELETE_SELECTION,     L"Delete selected objects"   },
+		{ IDD_DELETE_NOB,           L"Delete"                    },
+		{ IDM_DESELECT_ALL,         L"Deselect all"              },
+		{ IDM_DESELECT_NOB,         L"Deselect"                  },
+		{ IDD_DISCONNECT,           L"Disconnect"                },
+		{ IDD_SPLIT_NEURON,         L"Split"                     },
+		{ IDD_UNPLUG,               L"Unplug"                    },
+		{ IDD_INSERT_KNOT,          L"Insert knot"               },
+		{ IDD_INSERT_NEURON,        L"Insert neuron"             },
+		{ IDM_MAKE_CONNECTOR,       L"Make connector"            },
+		{ IDD_NEW_INPUT_NEURON,     L"New input neuron" 		 },
+		{ IDD_NEW_OUTPUT_NEURON,    L"New output neuron"		 },
+		{ IDD_PULSE_RATE,           L"Pulse rate"                },
+		{ IDM_SELECT_NOB,           L"Select"                    },
+		{ IDM_SELECT_SUBTREE,       L"Select subtree"            },
+		{ IDM_DISC_CONNECTOR,       L"Disconnect (make neurons)" },
+		{ IDD_STOP_ON_TRIGGER,      L"Stop on trigger on/off"    },
+		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"             }
 	};
 	AppendMenu( hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand) );
 }
@@ -144,12 +145,10 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_PULSE_RATE );         
-		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
 	case NobType::Value::outputNeuron:
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
-		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
 		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );   
 		break;
@@ -158,10 +157,10 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
-		appendMenu( hPopupMenu, IDD_DISCONNECT );        
+		appendMenu( hPopupMenu, IDD_SPLIT_NEURON );        
 		appendMenu( hPopupMenu, IDD_TRIGGER_SOUND_DLG );
-		appendMenu( hPopupMenu, IDM_SELECT_SUBTREE );   
 		appendMenu( hPopupMenu, IDD_STOP_ON_TRIGGER );      
+		appendMenu( hPopupMenu, IDM_SELECT_SUBTREE );   
 		break;
 
 	case NobType::Value::connector:

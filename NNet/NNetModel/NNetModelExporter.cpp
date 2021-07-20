@@ -180,11 +180,8 @@ void NNetModelExporter::writeClosedConnector(wostream & out, ClosedConnector con
     size_t size { cc.Size() };
     out << L" ";
     out << Connector::OPEN_BRACKET << L" " << size << Connector::SEPARATOR << L" ";
-    cc.GetInputNeurons().Apply2All( [&](Nob const & n) { out << n.GetId() << L" "; } );
-    out << Connector::CLOSE_BRACKET;
-    out << L" ";
-    out << Connector::OPEN_BRACKET << L" " << size << Connector::SEPARATOR << L" ";
-    cc.GetOutputNeurons().Apply2All( [&](Nob const & n) { out << n.GetId() << L" "; } );
+    for (auto it: cc.GetNeurons()) 
+        out << it->GetId() << L" ";
     out << Connector::CLOSE_BRACKET;
 }
 

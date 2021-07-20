@@ -12,8 +12,8 @@
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "ConnAnimationCommand.h"
-#include "PluginConnectorAnimation.h"
-#include "PluginIoNeuronAnimation.h"
+#include "PlugConnectorAnimation.h"
+#include "PlugIoNeuronAnimation.h"
 #include "win32_Commands.h"
 
 using std::wcout;
@@ -82,7 +82,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 		}
 		else
 		{
-			upCmd = make_unique<PluginIoNeuronAnimation> 
+			upCmd = make_unique<PlugIoNeuronAnimation> 
 			(
 				* m_pNMWI,
 				* m_pNMWI->GetNobPtr<IoNeuron *>(idSrc), 
@@ -93,7 +93,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 		break;
 	case NobType::Value::connector:
 	{
-		upCmd = make_unique<PluginConnectorAnimation> 
+		upCmd = make_unique<PlugConnectorAnimation> 
 		(
 			* m_pNMWI,
 			* m_pNMWI->GetNobPtr<Connector *>(idSrc), 
