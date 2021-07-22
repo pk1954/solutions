@@ -84,8 +84,6 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeleteClosedConnCmd.h" />
-    <ClInclude Include="PlugConnectors.h" />
-    <ClInclude Include="PlugIoNeurons.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />

@@ -52,6 +52,8 @@ public:
 	void Push(Neuron * const p) { m_list.push_back(p); }
 	Neuron * const Pop();
 
+	void Apply2All(function<void(Neuron const &)> const & func) const;
+
 	void SetParentPointers();
 	void ClearParentPointers();
 

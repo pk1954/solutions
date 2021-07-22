@@ -1,6 +1,6 @@
 // PlugIoNeurons.h
 //
-// NNetCommands
+// NNetWindows
 
 #pragma once
 

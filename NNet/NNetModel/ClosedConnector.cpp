@@ -9,40 +9,6 @@
 #include "Connector.h"
 #include "ClosedConnector.h"
 
-//ClosedConnector::ClosedConnector
-//( 
-//    MicroMeterPnt const & pnt,  // not used 
-//    IoNeuronList  const & listInput, 
-//    IoNeuronList  const & listOutput 
-//)
-//  :	Nob(NobType::Value::closedConnector)
-//{
-//    size_t nrOfNeurons { listInput.Size() };
-//    for (size_t i = 0; i < nrOfNeurons; ++i)
-//    {
-//        IoNeuron      const & inputNeuron  { listInput .GetElem(i) };
-//        IoNeuron      const & outputNeuron { listOutput.GetElem(i) };
-//        MicroMeterPnt const   umPos        { inputNeuron.GetPos() };
-//        unique_ptr<Neuron>    upNeuron     { make_unique<Neuron>(umPos, inputNeuron, outputNeuron) };
-//
-//    }
-////    m_listInput  = move(listInput);
-////    m_listOutput = move(listOutput);
-////    Check();
-//}
-//
-//ClosedConnector::ClosedConnector
-//( 
-//    MicroMeterPnt const & pnt,  // not used 
-//    Connector & connInput, 
-//    Connector & connOutput 
-//)
-//  :	Nob(NobType::Value::closedConnector)
-//{
-//    //m_listInput  = move(connInput .GetIoNeurons());
-//    //m_listOutput = move(connOutput.GetIoNeurons());
-//}
-
 void ClosedConnector::Check() const
 {
     for (auto & it: m_list)
@@ -66,6 +32,12 @@ Neuron * const ClosedConnector::Pop()
     m_list.pop_back();
     return pRet;
 }
+
+void ClosedConnector::Apply2All(function<void(Neuron const &)> const & func) const
+{
+    for (auto it: m_list)
+        func(*it);
+}                        
 
 Radian const ClosedConnector::GetDir() const 
 { 

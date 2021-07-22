@@ -20,17 +20,6 @@ Connector::Connector(IoNeuronList const & src)
     m_list = src;
 }
 
-//Connector::Connector(vector<Neuron *> const & list, NobIoMode const ioMode)
-//  : Nob(NobType::Value::connector),
-//    m_IoMode(ioMode)
-//{
-//    if ( m_IoMode == NobIoMode::input )
-//    {
-//        for (auto & it: list)
-//            m_list.Add( )
-//    }
-//}
-//
 bool const Connector::IsInputConnector () const 
 { 
     return m_list.GetFirst().IsInputNob (); 

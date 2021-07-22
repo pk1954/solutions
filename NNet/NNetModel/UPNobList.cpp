@@ -79,7 +79,7 @@ bool UPNobList::operator==( UPNobList const & other ) const
 	return true;
 }
 
-UPNob UPNobList::ExtractNob( NobId const id )	
+UPNob UPNobList::ExtractNob(NobId const id)	
 {
 	assert( IsDefined(id) );
 	assert( IsValidNobId(id) );
@@ -95,7 +95,7 @@ void UPNobList::SetNob2Slot( UPNob upNob )
 	SetNob2Slot(id, move(upNob));
 }
 
-void UPNobList::SetNob2Slot( NobId const id, UPNob upNob ) 
+void UPNobList::SetNob2Slot(NobId const id, UPNob upNob) 
 {
 	assert( IsDefined(id) );
 	assert( IsValidNobId(id) );
@@ -131,7 +131,7 @@ void UPNobList::LinkNob
 		pNobDst->Link(nobSrc, dstFromSrc);
 }
 
-NobId const UPNobList::Push( UPNob upNob )	
+NobId const UPNobList::Push(UPNob upNob)	
 {
 	NobId idNewSlot { IdNewSlot() };
 	if ( upNob )

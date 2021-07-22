@@ -209,5 +209,11 @@
     <ClInclude Include="MakeConnAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlugConnectors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlugIoNeurons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

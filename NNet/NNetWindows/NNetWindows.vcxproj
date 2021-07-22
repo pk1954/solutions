@@ -605,6 +605,8 @@
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="MultiNobsAnimation.h" />
+    <ClInclude Include="PlugConnectors.h" />
+    <ClInclude Include="PlugIoNeurons.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="NNetWinWrappers.h" />
     <ClInclude Include="PlugConnectorAnimation.h" />
