@@ -17,8 +17,15 @@ class IoNeuronList
 {
 public:
 
-	IoNeuronList() {}
-	virtual ~IoNeuronList() {}
+	IoNeuronList() 
+	{
+		int x = 42;
+	}
+	
+	virtual ~IoNeuronList() 
+	{
+		int x = 42;
+	}
 
 	bool operator==(IoNeuronList const &) const;
 
@@ -46,8 +53,10 @@ public:
 	void Add    (IoNeuron * const);
 	void Remove (IoNeuron * const);
 
-	void Apply2All (function<void(IoNeuron       &)> const &) const;
-	bool Apply2AllB(function<bool(IoNeuron const &)> const &) const; 
+	void         Apply2All (function<void(IoNeuron       &)> const &) const;
+	bool   const Apply2AllB(function<bool(IoNeuron const &)> const &) const; 
+
+	size_t const Count (NobType const nobType) const;
 
 	MicroMeterLine const CalcMaxDistLine();
 	MicroMeterPnt  const CalcOrthoVector(MicroMeterLine const &);

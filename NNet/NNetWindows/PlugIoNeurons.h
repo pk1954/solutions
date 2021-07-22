@@ -32,8 +32,8 @@ public:
         assert( m_nobTarget  .GetIoMode() !== m_nobAnimated.GetIoMode() );
 
         m_upNeuron = make_unique<Neuron>(m_nobTarget.GetPos());
-        m_upNeuron->SetIncoming(m_nobAnimated.IsInputNob () ? m_nobAnimated : m_nobTarget);
-        m_upNeuron->SetOutgoing(m_nobAnimated.IsOutputNob() ? m_nobAnimated : m_nobTarget);
+        m_upNeuron->SetIncoming(m_nobAnimated.IsOutputNob() ? m_nobAnimated : m_nobTarget);
+        m_upNeuron->SetOutgoing(m_nobAnimated.IsInputNob () ? m_nobAnimated : m_nobTarget);
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)

@@ -158,7 +158,7 @@ public:
 		vector<Nob *> nobs;
 		for (auto & it : m_list)
 		{
-			if (it && it->IsSelected())
+			if (it && it->IsSelected()) 
 				nobs.push_back(it.get());
 		}
 		return nobs;
@@ -167,7 +167,7 @@ public:
 	template <Nob_t T>
 	IoNeuronList GetAllSelected(NobType const nobType)
 	{
-		return GetAll<T>( [&](T &s) { return s.IsSelected() && s.HasType(nobType); } );
+		return move(GetAll<T>( [&](T &s) { return s.IsSelected() && s.HasType(nobType); } ));
 	}
 
 private:

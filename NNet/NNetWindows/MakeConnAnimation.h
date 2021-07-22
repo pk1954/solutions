@@ -24,16 +24,13 @@ public:
     MakeConnAnimation
     (
         MainWindow               & win,
-        NNetModelWriterInterface & nmwi
+        NNetModelWriterInterface & nmwi,
+        IoNeuronList             & list
     )
       : AnimationCmd(win),
         m_nmwi(nmwi)
     {
-        NobType const nobType { determineNobType(m_nmwi.GetUPNobs()) };
-        if ( nobType.IsUndefinedType() )
-            return;
-        m_nobsAnimated = IoNeuronList(m_nmwi.GetUPNobs().GetAllSelected<IoNeuron>(nobType));
-        m_upConnector  = make_unique<Connector>( m_nobsAnimated );
+        m_upConnector = make_unique<Connector>(list);
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)
@@ -53,25 +50,6 @@ public:
 
 private:
 
-    NobType const determineNobType(UPNobList const & list) const
-    {
-        unsigned int uiNrOfConnectors { list.CountInSelection( NobType::Value::connector ) };
-
-        if ( uiNrOfConnectors > 0 )
-            return NobType::Value::undefined;
-
-        unsigned int uiNrOfInputNeurons  { list.CountInSelection( NobType::Value::inputNeuron  ) };
-        unsigned int uiNrOfOutputNeurons { list.CountInSelection( NobType::Value::outputNeuron ) };
-
-        if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
-            return NobType::Value::undefined;
-
-        return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-            ? NobType::Value::inputNeuron 
-            : NobType::Value::outputNeuron;
-    }
-
     unique_ptr<Connector>      m_upConnector  {};  
-    IoNeuronList               m_nobsAnimated {};
     NNetModelWriterInterface & m_nmwi;
 };

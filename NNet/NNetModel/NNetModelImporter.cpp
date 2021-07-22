@@ -179,7 +179,7 @@ private:
             NobId      const id        { script.ScrReadInt() };
             IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
             if ( ! pIoNeuron )
-                throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
+                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found" ));
             list.Add(pIoNeuron);
         }
         script.ScrReadSpecial( Connector::CLOSE_BRACKET );
@@ -189,7 +189,7 @@ private:
 
     UPNob createConnector(Script & script) const 
     {
-        unique_ptr<Connector> upConnector { make_unique<Connector>(createNobPtrList(script)) };
+        unique_ptr<Connector> upConnector { make_unique<Connector>(move(createNobPtrList(script))) };
         upConnector->AlignDirection();
         return move(upConnector);
     }

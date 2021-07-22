@@ -25,7 +25,7 @@ ConnAnimationCommand::ConnAnimationCommand
     if ( nobType.IsUndefinedType() )
         return;
     
-    IoNeuronList   nobsAnimated { IoNeuronList(modelNobs.GetAllSelected<IoNeuron>(nobType)) };
+    IoNeuronList   nobsAnimated { modelNobs.GetAllSelected<IoNeuron>(nobType) };
     MicroMeterLine line         { nobsAnimated.CalcMaxDistLine() };
     if (line.IsZero())
         return;
@@ -43,7 +43,7 @@ ConnAnimationCommand::ConnAnimationCommand
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
     AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after packing
 
-    AddPhase(make_unique<MakeConnAnimation>(win, nmwi));
+    AddPhase(make_unique<MakeConnAnimation>(win, nmwi, nobsAnimated));
 
     m_bAllOk = true;
 }

@@ -41,34 +41,36 @@ void IoNeuronList::Add( IoNeuron * const pNob )
 	}
 }
 
-void IoNeuronList::Remove( IoNeuron * const pNob )
+void IoNeuronList::Remove(IoNeuron * const pNob)
 {
 	auto res = find( begin(m_list), end(m_list), pNob );
 	assert( res != end(m_list) );
 	m_list.erase( res );
 }
 
-void IoNeuronList::Apply2All( function<void(IoNeuron &)> const & func ) const
+void IoNeuronList::Apply2All(function<void(IoNeuron &)> const & func) const
 {
 	for ( auto pNob : m_list ) 
-	{ 
-		if ( pNob != nullptr )
+		if (pNob)
 			func( * pNob );
-	}
 }
 
-bool IoNeuronList::Apply2AllB( function<bool(IoNeuron const &)> const & func ) const 
+bool const IoNeuronList::Apply2AllB(function<bool(IoNeuron const &)> const & func) const 
 {
 	bool bResult { false };
 	for ( auto pNob : m_list ) 
-	{ 
-		if ( pNob != nullptr )
-		{
-			if ( func( * pNob ) )
-				return true;
-		}
-	}
+		if (pNob && func(*pNob))
+			return true;
 	return false;
+}
+
+size_t const IoNeuronList::Count(NobType const nobType) const 
+{
+	size_t counter { 0 };
+	for (auto pNob : m_list)
+		if (pNob && (pNob->GetNobType() == nobType))
+			++counter;
+	return counter;
 }
 
 bool IoNeuronList::operator==(IoNeuronList const & rhs) const
