@@ -77,7 +77,7 @@ private:
 
     Nob * const createNob( Script & script ) const
     {   
-        NobId   const idFromScript{ ScrReadNobId(script) };
+        NobId   const idFromScript{ script.ScrReadLong() };
         NobType const nobType     { static_cast<NobType::Value>(script.ScrReadInt()) };
         Nob         * pNob        { nullptr };
         UPNob         upNob       {};   
@@ -119,10 +119,10 @@ private:
     UPNob createPipe( Script & script ) const
     {
         script.ScrReadSpecial( Pipe::OPEN_BRACKET );
-        NobId const idStart { ScrReadNobId(script) };
+        NobId const idStart { script.ScrReadLong() };
         for ( int i = 0; i < Pipe::SEPARATOR.length(); i++ )
             script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
-        NobId const idEnd { ScrReadNobId(script) };
+        NobId const idEnd { script.ScrReadLong() };
         script.ScrReadSpecial( Pipe::CLOSE_BRACKET );
         NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idStart);
         NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idEnd);
@@ -248,7 +248,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         script.ScrReadString( L"InputNeuron" );
-        NobId            const id   ( ScrReadNobId(script) );
+        NobId            const id   ( script.ScrReadLong() );
         ParamType::Value const param( static_cast< ParamType::Value >( script.ScrReadUint() ) );
         assert( param == ParamType::Value::pulseRate );
         script.ScrReadSpecial( L'=' );
@@ -264,7 +264,7 @@ public:
 
     virtual void operator() ( Script & script ) const  
     {
-        NobId const id      { ScrReadNobId(script) };
+        NobId const id      { script.ScrReadLong() };
         Neuron    * pNeuron { GetWriterInterface().GetNobPtr<Neuron *>( id ) };
         Hertz   const freq    { script.ScrReadUlong() };
         script.ScrReadString( L"Hertz" );
@@ -304,7 +304,7 @@ public:
         }
         else if ( ulSigSrc == NNetModelStorage::SIGSRC_NOB_NR )
         {
-            ScrReadNobId(script);  ///// legacy
+            script.ScrReadLong();  ///// legacy
         }
         else
         {

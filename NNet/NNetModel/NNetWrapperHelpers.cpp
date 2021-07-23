@@ -71,7 +71,7 @@ unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 	script.ScrReadSpecial( L':' );
 	for (int i = 0;;)
 	{
-		upNobIds->Push( ScrReadNobId(script) );
+		upNobIds->Push( NobId(script.ScrReadLong()) );
 		if (++i == iNrOfElements )
 			break;
 		script.ScrReadSpecial( NobIdList::SEPARATOR );

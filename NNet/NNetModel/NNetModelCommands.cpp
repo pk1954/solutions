@@ -346,25 +346,26 @@ void NNetModelCommands::CopySelection()
 	m_pCmdStack->PushCommand( make_unique<CopySelectionCommand>() );
 }
 
-void NNetModelCommands::RestrictSelection( NobType::Value const val )
+void NNetModelCommands::RestrictSelection(NobType::Value const val)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << val << endl;
-	m_pCmdStack->PushCommand( make_unique<RestrictSelectionCommand>( val ) );
+	m_pCmdStack->PushCommand(make_unique<RestrictSelectionCommand>(val));
 }
 
 void NNetModelCommands::SelectAllBeepers()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectAllBeepersCommand>() );
+	m_pCmdStack->PushCommand(make_unique<SelectAllBeepersCommand>());
 }
 
-void NNetModelCommands::SelectNob( NobId const id, tBoolOp const op )
+void NNetModelCommands::SelectNob(NobId const id, tBoolOp const op)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << op << endl;
-	m_pCmdStack->PushCommand( make_unique<SelectNobCommand>( id, op ) );
+	if (IsDefined(id))
+		m_pCmdStack->PushCommand(make_unique<SelectNobCommand>(id, op));
 }
 
 void NNetModelCommands::SelectAll(bool const bOn)

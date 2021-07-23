@@ -345,11 +345,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SELECT_NOB:
-        m_pModelCommands->SelectNob( m_pMainWindow->GetHighlightedNobId(), tBoolOp::opTrue );
+        m_pModelCommands->SelectNob(m_pMainWindow->GetHighlightedNobId(), tBoolOp::opTrue);
         break;
 
     case IDM_DESELECT_NOB:
-        m_pModelCommands->SelectNob( m_pMainWindow->GetHighlightedNobId(), tBoolOp::opFalse );
+        m_pModelCommands->SelectNob(m_pMainWindow->GetHighlightedNobId(), tBoolOp::opFalse);
         break;
 
     case IDM_SELECT_ALL:

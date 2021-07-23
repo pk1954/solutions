@@ -6,22 +6,21 @@
 #include "Nob.h"
 #include "NobIdList.h"
 
-//NobIdList::NobIdList(Connector const & connector) 
-//{
-//    connector.Apply2All([&](Nob const & s) { Push(s.GetId()); } );
-//}
+using std::endl;
 
-NobIdList::NobIdList(IoNeuronList const & list) 
-{
-    list.Apply2All([&](Nob & s) { Push(s.GetId()); });
+void NobIdList::Push(Nob const & nob)
+{ 
+    Push(nob.GetId()); 
 }
 
-NobIdList::NobIdList(vector <Nob *> const & list) 
+NobId const NobIdList::Pop()
 {
-    for (auto it : list) { Push(it->GetId()); };
+    NobId const id { m_list.back() };
+    m_list.pop_back();
+    return id;
 }
 
-void NobIdList::Apply2All( function<void(NobId const &)> const& func ) const
+void NobIdList::Apply2All(function<void(NobId const &)> const& func) const
 {
     for (NobId const & id : m_list)
         func(id);

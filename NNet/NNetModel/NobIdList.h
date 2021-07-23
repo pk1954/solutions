@@ -7,12 +7,8 @@
 #include <vector>
 #include "util.h"
 #include "NobId.h"
-//#include "Connector.h"
-#include "IoNeuron.h"
-#include "IoNeuronList.h"
 
 using std::vector;
-using std::endl;
 
 class Nob;
 
@@ -20,26 +16,18 @@ class NobIdList
 {
 public:
     NobIdList() {}
-//    NobIdList(Connector     const &);
-    NobIdList(vector<Nob *> const &);
-    NobIdList(IoNeuronList  const &);
 
     virtual ~NobIdList() {}
 
     void        Resize(size_t const   size)             { m_list.resize(size); }
     int   const Size  ()                                { return Cast2Int(m_list.size()); }
-    void        Push  (NobId  const   id  )             { m_list.push_back(id); }
-    void        Push  (Nob    const & nob )             { Push(nob.GetId()); }
     void        SetAt (int const index, NobId const id) { m_list.at(index) = id; }
     NobId const Get   (size_t const index)              { return m_list.at(index); }
-    NobId const Pop()
-    {
-        NobId const id { m_list.back() };
-        m_list.pop_back();
-        return id;
-    }
+    void        Push  (NobId  const   id  )             { m_list.push_back(id); }
+    void        Push  (Nob    const &);
+    NobId const Pop   ();
 
-    void Apply2All( function<void(NobId const &)> const& func ) const;
+    void Apply2All(function<void(NobId const &)> const &) const;
 
     friend wostream & operator<< (wostream &, NobIdList const &);
 

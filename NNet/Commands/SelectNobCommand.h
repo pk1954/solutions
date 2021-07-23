@@ -20,7 +20,9 @@ public:
 	)
 	  :	m_idNob(id),
 		m_op(op)
-	{ }
+	{
+		assert(IsDefined(m_idNob));
+	}
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 

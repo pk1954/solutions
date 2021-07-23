@@ -17,15 +17,8 @@ class IoNeuronList
 {
 public:
 
-	IoNeuronList() 
-	{
-		int x = 42;
-	}
-	
-	virtual ~IoNeuronList() 
-	{
-		int x = 42;
-	}
+	IoNeuronList() {}
+	virtual ~IoNeuronList() {}
 
 	bool operator==(IoNeuronList const &) const;
 
@@ -63,14 +56,14 @@ public:
 
 	void       SortAccToDistFromLine(MicroMeterLine const &);
 	void       AlignDirection();
-	void       Link(Nob2NobFunc const &);
+	void       Link        (Nob2NobFunc const &);
+	void       Expand      (MicroMeterRect       &) const;
 	bool const IsIncludedIn(MicroMeterRect const &) const; 
 	bool const Includes    (MicroMeterPnt  const &) const;
+	void       RotateNob   (MicroMeterPnt  const &, Radian const);
+	void       MoveNob     (MicroMeterPnt  const &);
 	void       DrawExterior(DrawContext const &, tHighlight const) const;
 	void       DrawInterior(DrawContext const &, tHighlight const) const;
-	void       Expand(MicroMeterRect &) const;
-	void       RotateNob(MicroMeterPnt const &, Radian const);
-	void       MoveNob(MicroMeterPnt const &);
 	void       Prepare();
 	bool const CompStep();
 	void       Recalc();
