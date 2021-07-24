@@ -265,22 +265,22 @@ bool const UPNobList::Apply2AllB( NobCrit const & func ) const
 	return false;
 }
 
-void UPNobList::Apply2AllSelected( NobType const type, NobFunc const & func )
+void UPNobList::Apply2AllSelected(NobType const type, NobFunc const & func)
 {
 	Apply2All( { [&](Nob & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } } );
 }
 
-void UPNobList::Apply2AllSelected( NobType const type, NobFuncC const & func ) const
+void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) const
 {
 	Apply2All( { [&](Nob const & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } } );
 }
 
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
-	Apply2All( [&](Nob & s) { if (!s.HasParentNob()) s.Select(bOn); } ); 
+	Apply2All( [&](Nob & s) { s.Select(bOn); } ); 
 }
 
-NobIdList UPNobList::Append( UPNobList & list2Append )
+NobIdList UPNobList::Append(UPNobList & list2Append)
 {
 	NobIdList idList;
 	long offset { Size() };

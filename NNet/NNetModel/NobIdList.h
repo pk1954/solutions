@@ -19,13 +19,15 @@ public:
 
     virtual ~NobIdList() {}
 
-    void        Resize(size_t const   size)             { m_list.resize(size); }
-    int   const Size  ()                                { return Cast2Int(m_list.size()); }
-    void        SetAt (int const index, NobId const id) { m_list.at(index) = id; }
-    NobId const Get   (size_t const index)              { return m_list.at(index); }
-    void        Push  (NobId  const   id  )             { m_list.push_back(id); }
-    void        Push  (Nob    const &);
-    NobId const Pop   ();
+    bool const   IsEmpty()                            const { return m_list.empty(); }
+    bool const   IsNotEmpty()                         const { return ! IsEmpty(); }
+    void         Resize(size_t const size)                  { m_list.resize(size); }
+    size_t const Size  ()                             const { return m_list.size(); }
+    void         SetAt (size_t const index, NobId const id) { m_list.at(index) = id; }
+    NobId  const Get   (size_t const index)           const { return m_list.at(index); }
+    void         Push  (NobId  const   id  )                { m_list.push_back(id); }
+    void         Push  (Nob    const &);
+    NobId  const Pop   ();
 
     void Apply2All(function<void(NobId const &)> const &) const;
 

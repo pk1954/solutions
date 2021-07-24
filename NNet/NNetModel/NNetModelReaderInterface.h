@@ -56,7 +56,6 @@ public:
 	float         const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	Signal      * const   FindSensor(MicroMeterPnt const & p)    const { return GetMonitorData().FindSensor(p); }
 
-
 	bool const GetDescriptionLine( int const, wstring & ) const;
 
 	NobId const FindNobAt

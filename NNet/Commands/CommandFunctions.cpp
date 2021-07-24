@@ -26,12 +26,10 @@ unique_ptr<Command> MakeDeleteCommand
 	NobId                const id
 )
 {
-	Nob * pNob { nmwi.GetNob(id) };
-	if ( ! pNob )
-		return nullptr;
-
 	unique_ptr<Command> upCmd;
-	switch ( pNob->GetNobType().GetValue() )
+	Nob               * pNob { nmwi.GetNob(id) };
+	assert(pNob);
+	switch (pNob->GetNobType().GetValue())
 	{
 	case NobType::Value::pipe:
 		upCmd = make_unique<DeletePipeCommand>(* pNob);

@@ -22,7 +22,6 @@ public:
     )
       : m_closedConnector(*Cast2ClosedConnector(&nob))
     {
-  //      m_upDiscInputConn = make_unique<DiscConnCmd>(nmwi, )
     }
 
     ~DeleteClosedConnCmd() {}
@@ -43,6 +42,4 @@ private:
 
     ClosedConnector           & m_closedConnector;
     unique_ptr<ClosedConnector> m_upClosedConnector {};
-    unique_ptr<DiscConnCmd>     m_upDiscInputConn   {};
-    unique_ptr<DiscConnCmd>     m_upDiscOutputConn  {};
 };

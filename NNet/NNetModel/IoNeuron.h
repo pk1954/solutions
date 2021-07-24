@@ -23,6 +23,7 @@ public:
 	void Check() const { Neuron::Check(); }
 
 	virtual void RotateNob(MicroMeterPnt const &, Radian const);
+
 	virtual Radian const GetDir() const;
 
 	void SetDir      (Radian        const r) { m_radDirection = r;	}

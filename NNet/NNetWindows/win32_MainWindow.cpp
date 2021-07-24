@@ -487,7 +487,7 @@ void MainWindow::doPaint()
 	DrawContext const & context { GetDrawContext() };
 
 	if ( m_rectSelection.IsNotEmpty() )
-		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
+		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
 
 	m_scale.DisplayStaticScale();
 
@@ -495,27 +495,27 @@ void MainWindow::doPaint()
 	{
 		DrawExteriorInRect( pixRect );
 		if ( ArrowsVisible() )
-			DrawArrowsInRect( pixRect, m_arrowSize );
+			DrawArrowsInRect(pixRect, m_arrowSize);
 	}
 
-	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsPipe() && ! s.IsSelected(); } ); 
-	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsPipe() &&   s.IsSelected(); } ); 
-	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsBaseKnot (); } ); // draw BaseKnots OVER Pipes
-	DrawInteriorInRect( pixRect, [&](Nob const & s) { return s.IsConnector(); } ); 
-	DrawNeuronTextInRect( pixRect );
+	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsPipe() && ! s.IsSelected(); }); 
+	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsPipe() &&   s.IsSelected(); }); 
+	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsConnector(); }); 
+	DrawNeuronTextInRect(pixRect);
 
 	if ( IsDefined(m_nobTarget) ) // draw target nob again to be sure that it is visible
 	{
 		tHighlight type { m_bTargetFits ? tHighlight::targetFit : tHighlight::targetNoFit };
-		m_pNMRI->DrawExterior( m_nobTarget, context, type );
-		m_pNMRI->DrawInterior( m_nobTarget, context, type );
+		m_pNMRI->DrawExterior(m_nobTarget, context, type);
+		m_pNMRI->DrawInterior(m_nobTarget, context, type);
 	}
 
 	if ( IsDefined(m_nobHighlighted) )  // draw highlighted nob again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior( m_nobHighlighted, context, tHighlight::highlighted );
-		m_pNMRI->DrawInterior( m_nobHighlighted, context, tHighlight::highlighted );
-		m_pNMRI->DrawNeuronText( m_nobHighlighted, context );
+		m_pNMRI->DrawExterior  (m_nobHighlighted, context, tHighlight::highlighted);
+		m_pNMRI->DrawInterior  (m_nobHighlighted, context, tHighlight::highlighted);
+		m_pNMRI->DrawNeuronText(m_nobHighlighted, context);
 	}
 
 	DrawSensors();
@@ -524,7 +524,7 @@ void MainWindow::doPaint()
 
 void MainWindow::setHighlightedNob( MicroMeterPnt const & umCrsrPos )
 {
-	NobId const idHighlight { m_pNMRI->FindNobAt( umCrsrPos ) };
+	NobId const idHighlight { m_pNMRI->FindNobAt(umCrsrPos) };
 	if ( idHighlight != m_nobHighlighted )
 	{
 		m_nobHighlighted = idHighlight; 

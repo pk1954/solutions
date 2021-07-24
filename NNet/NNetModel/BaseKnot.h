@@ -13,25 +13,13 @@
 class DrawContext;
 class NNetModel;
 
-template <typename T> 
-concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
-
 struct IDWriteTextFormat;
 
 class BaseKnot : public Nob
 {
 public:
 
-	BaseKnot
-	( 
-		MicroMeterPnt const & center,
-		NobType       const   type,
-		MicroMeter    const   extension
-	)
-	  : Nob( type ),
-		m_circle( center, extension )
-	{ }
-
+	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
 	virtual ~BaseKnot() {}
 
 	virtual bool operator==( Nob const & ) const override;
@@ -45,7 +33,8 @@ public:
 	virtual void       Dump         () const;
 	virtual void       Check        () const;
 	virtual void       Prepare      ();
- 	virtual mV   const GetNextOutput() const = 0;
+	virtual void       Reconnect    ();
+	virtual mV   const GetNextOutput() const = 0;
 	virtual void       SetPos       (MicroMeterPnt const &);
 	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
 	virtual void       Expand       (MicroMeterRect        &) const;
@@ -59,8 +48,6 @@ public:
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
 	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
-	bool IsOrphanedKnot() const { return IsKnot() && IsOrphan(); }
-
 	bool const Includes( MicroMeterPnt const & ) const;
 	bool const IsPrecursorOf( Pipe const & ) const;
 	bool const IsSuccessorOf( Pipe const & ) const ;
@@ -69,21 +56,8 @@ public:
 	bool const HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
 	bool const IsOrphan()    const { return !(HasIncoming() || HasOutgoing()); }
 
-	virtual void Reconnect() 
-	{ 
-		m_inPipes .Apply2All([&](Pipe & pipe) { pipe.SetEndKnot  (this); } );
-		m_outPipes.Apply2All([&](Pipe & pipe) { pipe.SetStartKnot(this); } );
-	}
-	
-	void AddIncoming(BaseKnot const & src) 
-	{ 
-		src.Apply2AllInPipes ([&](Pipe & pipe) { AddIncoming(& pipe); } );
-	}
-
-	void AddOutgoing(BaseKnot const & src) 
-	{ 
-		src.Apply2AllOutPipes([&](Pipe & pipe) { AddOutgoing(& pipe); } );
-	}
+	void AddIncoming(BaseKnot const &);
+	void AddOutgoing(BaseKnot const &); 
 
 	void SetConnections(BaseKnot const &); 
 	void ClearConnections();
@@ -115,18 +89,11 @@ public:
 
 	void Apply2AllInPipes        (PipeFunc const &f) const { m_inPipes .Apply2All(f); }
 	void Apply2AllOutPipes       (PipeFunc const &f) const { m_outPipes.Apply2All(f); }
-	void Apply2AllConnectedPipes (PipeFunc const &f) const 
-	{ 
-		Apply2AllInPipes(f); 
-		Apply2AllOutPipes(f); 
-	}
+	void Apply2AllConnectedPipes (PipeFunc const &f) const; 
 
 	bool Apply2AllInPipesB       (PipeCrit const &c) const { return m_inPipes .Apply2AllB(c); }
 	bool Apply2AllOutPipesB      (PipeCrit const &c) const { return m_outPipes.Apply2AllB(c); }
-	bool Apply2AllConnectedPipesB(PipeCrit const &c) const 
-	{ 
-		return Apply2AllInPipesB(c) || Apply2AllOutPipesB(c); 
-	}
+	bool Apply2AllConnectedPipesB(PipeCrit const &c) const;
 
 	MicroMeterRect const GetRect4Text() const;
 
@@ -145,3 +112,6 @@ private:
 
 BaseKnot const * Cast2BaseKnot(Nob const *);
 BaseKnot       * Cast2BaseKnot(Nob       *);
+
+template <typename T> 
+concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;

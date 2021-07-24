@@ -143,7 +143,7 @@ void NNetModelCommands::DeleteNob( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( move( MakeDeleteCommand(*m_pNMWI, id) ) );
+	m_pCmdStack->PushCommand(move(MakeDeleteCommand(*m_pNMWI, id)));
 }
 
 void NNetModelCommands::DeleteSelection()
@@ -343,7 +343,7 @@ void NNetModelCommands::CopySelection()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<CopySelectionCommand>() );
+	m_pCmdStack->PushCommand( make_unique<CopySelectionCommand>(*m_pNMWI) );
 }
 
 void NNetModelCommands::RestrictSelection(NobType::Value const val)

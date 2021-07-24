@@ -47,6 +47,12 @@ NobIoMode const Connector::GetIoMode() const
     return m_IoMode;
 }
 
+void Connector::Select(bool const bOn) 
+{ 
+    Nob::Select(bOn);
+    m_list.SelectAll(bOn);
+}
+
 IoNeuron * const Connector::Pop() 
 { 
     IoNeuron * pRet { & m_list.GetLast() };
@@ -72,17 +78,17 @@ void Connector::AlignDirection()
 
 MicroMeterPnt const Connector::GetPos() const 
 { 
-    return m_list.GetPos(); 
+    return m_list.IsEmpty() ? MicroMeterPnt::NULL_VAL() : m_list.GetPos(); 
 }
 
 Radian const Connector::GetDir() const 
 { 
-    return m_list.GetFirst().GetDir();
+    return m_list.IsEmpty() ? Radian::NULL_VAL() : m_list.GetFirst().GetDir();
 }
 
 MicroMeterPosDir const Connector::GetPosDir() const 
 { 
-    return MicroMeterPosDir( GetPos(), GetDir() );
+    return m_list.IsEmpty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir( GetPos(), GetDir() );
 }
 
 void Connector::SetParentPointers()

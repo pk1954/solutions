@@ -26,12 +26,13 @@ public:
 
     ~DiscBaseKnotCmd() {}
 
-    virtual void Do  ( NNetModelWriterInterface & );
-    virtual void Undo( NNetModelWriterInterface & );
+    virtual void Do  (NNetModelWriterInterface &);
+    virtual void Undo(NNetModelWriterInterface &);
 
 private:
     BaseKnot               & m_baseKnot;
     unique_ptr<BaseKnot>     m_upBaseKnot;
+    MicroMeterPnt            m_umPos       {};
     vector<unique_ptr<Knot>> m_startKnots  {};
     vector<unique_ptr<Knot>> m_endKnots    {};
     NobIdList                m_idStartKnots{};

@@ -46,6 +46,7 @@ public:
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
 	virtual void       Link        (Nob const &, Nob2NobFunc const &);
+	virtual void       Select      (bool const);
 
 	virtual bool const IsCompositeNob() { return true; }
 
@@ -84,5 +85,5 @@ private:
 	IoNeuronList    m_list {};
 };
 
-Connector const * Cast2Connector( Nob const * );
-Connector       * Cast2Connector( Nob       * );
+Connector const * Cast2Connector(Nob const *);
+Connector       * Cast2Connector(Nob       *);

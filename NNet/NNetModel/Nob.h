@@ -74,21 +74,13 @@ public:
 	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
 	virtual void                Link        (Nob const &, Nob2NobFunc const &)            = 0;
 
-	virtual void Clear()               { m_mVinputBuffer = 0.0_mV; };
-	virtual void SetId(NobId const id) { m_identifier = id; }
-	virtual void SetParentPointers  () {};
-	virtual void ClearParentPointers() {};
-	virtual void Reconnect          () {};
-
-	virtual bool const IsCompositeNob() { return false; }
-
-	virtual void Select(bool const bOn) 
-	{ 
-		if (HasParentNob())
-			m_pNobParent->Select(bOn);
-		else
-			m_bSelected = bOn; 
-	}
+	virtual bool const IsCompositeNob()       { return false; }
+	virtual void       Select(bool const bOn) { m_bSelected = bOn; }
+	virtual void       Clear()                { m_mVinputBuffer = 0.0_mV; };
+	virtual void       SetId(NobId const id)  { m_identifier = id; }
+	virtual void       SetParentPointers  ()  {};
+	virtual void       ClearParentPointers()  {};
+	virtual void       Reconnect          ()  {};
 
 	bool    const IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
 	bool    const IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
@@ -110,6 +102,7 @@ public:
 	bool const IsPipe           () const { return m_type.IsPipeType           (); }
 	bool const IsKnot           () const { return m_type.IsKnotType           (); }
 	bool const IsNeuron         () const { return m_type.IsNeuronType         (); }
+	bool const IsIoNeuron       () const { return m_type.IsIoNeuronType       (); }
 	bool const IsInputNeuron    () const { return m_type.IsInputNeuronType    (); }
 	bool const IsOutputNeuron   () const { return m_type.IsOutputNeuronType   (); }
 	bool const IsAnyNeuron      () const { return m_type.IsAnyNeuronType      (); }

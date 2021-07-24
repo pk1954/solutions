@@ -51,12 +51,12 @@ public:
 	void ZoomStep( bool const, PixelPoint const * const );
 
 	template <typename T>
-	void NNetMove( T const & delta )	
+	void NNetMove(T const & delta)	
 	{ 
-		GetDrawContext().Move( delta ); 
-		Notify( true );  
+		GetDrawContext().Move(delta); 
+		Notify(true);  
 		if ( m_pCoordObservable )
-			m_pCoordObservable->NotifyAll( false );
+			m_pCoordObservable->NotifyAll(false);
 	}
 
 	MicroMeterPnt const GetCursorPos() const;
@@ -101,11 +101,11 @@ private:
 
 	void setNoTarget      ();
 	void setTargetNob     ();
-	void setHighlightedNob( MicroMeterPnt const & );
-	bool changePulseRate  ( NobId const, bool const );
-	void centerAndZoomRect( UPNobList::SelMode const, float const );
+	void setHighlightedNob(MicroMeterPnt const &);
+	bool changePulseRate  (NobId const, bool const);
+	void centerAndZoomRect(UPNobList::SelMode const, float const);
 
 	virtual void doPaint();
 
-	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

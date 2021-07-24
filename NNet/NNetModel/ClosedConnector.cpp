@@ -115,8 +115,15 @@ void ClosedConnector::Clear()
 
 void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
-    //for (int i = 0; i < m_list.size(); ++i)
-    //    m_list[i] = static_cast<IoNeuron *>(dstFromSrc(m_list[i]));
+    for (int i = 0; i < m_list.size(); ++i)
+        m_list[i] = static_cast<Neuron *>(dstFromSrc(m_list[i]));
+}
+
+void ClosedConnector::Select(bool const bOn) 
+{ 
+    Nob::Select(bOn);
+    for (auto it: m_list)
+        it->Select(bOn);
 }
 
 void ClosedConnector::MoveNob(MicroMeterPnt const & delta)       

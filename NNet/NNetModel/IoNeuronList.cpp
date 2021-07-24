@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Pipe.h"
 #include "IoNeuron.h"
 #include "IoNeuronList.h"
 
@@ -71,6 +72,12 @@ size_t const IoNeuronList::Count(NobType const nobType) const
 		if (pNob && (pNob->GetNobType() == nobType))
 			++counter;
 	return counter;
+}
+
+void IoNeuronList::SelectAll(bool const bOn) 
+{ 
+	for (auto it: m_list)
+		it->Select(bOn);
 }
 
 bool IoNeuronList::operator==(IoNeuronList const & rhs) const

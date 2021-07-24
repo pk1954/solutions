@@ -10,7 +10,6 @@
 #include "Nob.h"
 #include "NobId.h"
 #include "IoNeuronList.h"
-//#include "Connections.h"
 #include "NobErrorHandler.h"
 
 using std::move;
@@ -89,18 +88,18 @@ public:
 	{
 		for ( auto const & it : m_list )
 		{ 
-			if ( it.get() && HasType<T>( * it.get() ) ) 
-				func( static_cast<T const &>( * it.get() ) );
+			if ( it && HasType<T>(*it) ) 
+				func( static_cast<T const &>(*it) );
 		};
 	}                        
 
 	template <Nob_t T>    // non const version
 	void Apply2All( function<void(T &)> const & func )
 	{
-		for ( auto & it : m_list )
+		for ( size_t i = 0; i < m_list.size(); ++i )
 		{ 
-			if ( it.get() && HasType<T>( * it.get() ) ) 
-				func( static_cast<T &>( * it.get() ) );
+			if ( m_list[i] && HasType<T>(*m_list[i]) ) 
+				func( static_cast<T &>(*m_list[i]) );
 		};
 	}                        
 
@@ -134,10 +133,10 @@ public:
 		bool bResult { false };
 		for ( auto & it : m_list )
 		{
-			if ( it.get() )
+			if (it)
 			{
-				if ( HasType<T>( * it.get() ) )	
-					bResult = crit( static_cast<T &>( * it.get() ) );
+				if ( HasType<T>(*it) )	
+					bResult = crit( static_cast<T &>(*it) );
 				if ( bResult )
 					break;
 			}

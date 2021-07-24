@@ -74,9 +74,9 @@ void NNetModelWriterInterface::RemoveOrphans()
 {
 	GetUPNobs().Apply2All<Knot>                              
 	(                                                        
-		[&]( Knot const & knot )                  
+		[&](Knot const & knot)
 		{
-			if ( knot.IsOrphanedKnot() )
+			if ( knot.IsOrphan() )
 				RemoveFromModel<Knot>( knot );
 		} 
 	); 

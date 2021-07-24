@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Pipe.h"
 #include "IoNeuron.h"
 
 MicroMeterPnt const IoNeuron::GetScaledDirVector() const

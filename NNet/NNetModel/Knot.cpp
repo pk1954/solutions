@@ -27,10 +27,6 @@ void Knot::DrawInterior( DrawContext const & context, tHighlight const type ) co
 void Knot::Check() const
 {
 	BaseKnot::Check();
-	if ( IsOrphan() )
-	{
-		int x = 42;
-	}
 	assert( ! IsOrphan() );
 }
 

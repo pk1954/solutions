@@ -24,23 +24,25 @@ public:
 
 	~DeletePipeCommand(){ }
 
-	virtual void Do( NNetModelWriterInterface & nmwi )
+	virtual void Do(NNetModelWriterInterface & nmwi)
 	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
 		startKnot.RemoveOutgoing( & m_pipe );
-		if ( startKnot.IsOrphanedKnot() )
+		if ( startKnot.IsOrphan() && ! startKnot.IsIoNeuron() )
 			m_upStartKnot = nmwi.RemoveFromModel<Knot>( startKnot );
 
 		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
 		endKnot.RemoveIncoming( & m_pipe );
-		if ( endKnot.IsOrphanedKnot() )
+		if ( endKnot.IsOrphan() && ! endKnot.IsIoNeuron() )
 			m_upEndKnot = nmwi.RemoveFromModel<Knot>( endKnot );
 
-		m_upPipe = nmwi.RemoveFromModel<Pipe>( m_pipe );
+		m_upPipe = nmwi.RemoveFromModel<Pipe>(m_pipe);
+		nmwi.DUMP();
+		nmwi.CheckModel();
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi )
-	{
+	virtual void Undo(NNetModelWriterInterface & nmwi)
+ 	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
 		startKnot.AddOutgoing( & m_pipe );
 		if ( m_upStartKnot )
@@ -51,7 +53,7 @@ public:
 		if ( m_upEndKnot )
 			nmwi.Restore2Model( move(m_upEndKnot) );
 
-		nmwi.Restore2Model( move(m_upPipe) );
+		nmwi.Restore2Model(move(m_upPipe));
 	}
 
 private:

@@ -44,6 +44,7 @@ public:
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
 	virtual void       Link        (Nob const &, Nob2NobFunc const &);
+	virtual void       Select      (bool const);
 
 	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
 

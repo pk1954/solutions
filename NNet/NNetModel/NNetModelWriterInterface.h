@@ -90,7 +90,8 @@ public:
     unique_ptr<OLD> RemoveFromModel(NobId const id) 
     { 
         UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
-        auto  pNob  { upNob.release() }; 
+        auto  pNob  { upNob.release() };
+        wcout << L"RemoveFromModel " << id << endl;
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 

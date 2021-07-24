@@ -69,6 +69,7 @@ public:
 	void       Recalc();
 	void       SetParentPointers(Nob * const);
 	void       ClearParentPointers();
+	void       SelectAll(bool const);
 
 	inline static wchar_t const OPEN_BRACKET  { L'(' };
 	inline static wchar_t const SEPARATOR     { L',' };
