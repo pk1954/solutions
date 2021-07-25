@@ -105,16 +105,16 @@ void InputNeuron::drawSocket
 	D2D1::ColorF const   colF
 ) const
 {
-	MicroMeterPnt const umDirVector   { GetDirVector() * M };
-	MicroMeter      const umSize        { GetExtension() * M };
-	MicroMeterPnt const umOrthoVector { getOffset().OrthoVector() };
-	MicroMeterPnt const umDirVectorVS { umDirVector * 0.5f };
-	MicroMeter      const umWidthLR     { umSize - GetExtension() * 1.4f };  // width of left/right section                 
-	MicroMeterPnt const umCenter      { getCenter() };
-	MicroMeterPnt const umStart       { umCenter + umDirVectorVS };
-	MicroMeterPnt const umEndLR       { umCenter - umDirVectorVS };
-	MicroMeterPnt const umEndCenter   { umCenter - umDirVector * VEM };
-	MicroMeterLine  const umLine        { umStart, umEndLR };
+	MicroMeterPnt  const umDirVector   { GetDirVector() * M };
+	MicroMeter     const umSize        { GetExtension() * M };
+	MicroMeterPnt  const umOrthoVector { getOffset().OrthoVector() };
+	MicroMeterPnt  const umDirVectorVS { umDirVector * 0.5f };
+	MicroMeter     const umWidthLR     { umSize - GetExtension() * 1.4f };  // width of left/right section                 
+	MicroMeterPnt  const umCenter      { getCenter() };
+	MicroMeterPnt  const umStart       { umCenter + umDirVectorVS };
+	MicroMeterPnt  const umEndLR       { umCenter - umDirVectorVS };
+	MicroMeterPnt  const umEndCenter   { umCenter - umDirVector * VEM };
+	MicroMeterLine const umLine        { umStart, umEndLR };
 
 	context.DrawLine( umStart, umEndCenter,   umSize,    colF );
 	context.DrawLine( umLine + umOrthoVector, umWidthLR, colF );

@@ -27,19 +27,6 @@ Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
 	Recalc();
 }
 
-//Neuron::Neuron
-//( 
-//	MicroMeterPnt const & upCenter,
-//	IoNeuron      const & inputNeuron, 
-//	IoNeuron      const & outputNeuron 
-//)
-//  : BaseKnot( upCenter, NobType::Value::neuron, NEURON_RADIUS )
-//{
-//	SetIncoming(outputNeuron);
-//	SetOutgoing(inputNeuron );
-//	Recalc();
-//}
-
 void Neuron::Check() const
 {
 	BaseKnot::Check();
@@ -178,7 +165,7 @@ mV const Neuron::GetNextOutput() const
 
 void const Neuron::DisplayText( DrawContext const & context, MicroMeterRect const & umRect, wstring const text ) const
 {
-	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
+//	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
 //	context.DisplayText( umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow );
 }
 
@@ -193,7 +180,7 @@ void Neuron::DrawNeuronText( DrawContext const & context ) const
 MicroMeterPnt Neuron::getAxonHillockPos() const
 {
 	Pipe          const & axon         { GetFirstOutgoing() };
-	MicroMeterPnt const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
+	MicroMeterPnt const   vectorScaled { axon.GetVector() * (GetExtension() / axon.GetLength()) };
 	return GetPos() + vectorScaled * NEURON_INTERIOR;
 }
 
@@ -201,20 +188,20 @@ void Neuron::DrawExterior( DrawContext const & context, tHighlight const type ) 
 {
 	if ( m_bStopOnTrigger )
 	{
-		context.FillCircle( GetCircle() * 1.4f, GetExteriorColor( type ) );
-		context.FillCircle( GetCircle() * 1.2f, NNetColors::INT_TRIGGER );
+		context.FillCircle(GetCircle() * 1.4f, GetExteriorColor(type));
+		context.FillCircle(GetCircle() * 1.2f, NNetColors::INT_TRIGGER);
 	}
-	context.FillCircle( GetCircle(), GetExteriorColor( type ) );
+	context.FillCircle(GetCircle(), GetExteriorColor(type));
 	if ( HasAxon() )
-		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * 0.5f ), GetExteriorColor( type ) );
+		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * 0.5f), GetExteriorColor(type));
 }
 
 void Neuron::DrawInterior( DrawContext const & context, tHighlight const type ) const
 { 
 	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor(type) };
-	context.FillCircle( GetCircle() * NEURON_INTERIOR, color );
+	context.FillCircle(GetCircle() * NEURON_INTERIOR, color);
 	if ( HasAxon() )
-		context.FillCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f) ), color );
+		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 	m_bTriggered = false;
 }
 

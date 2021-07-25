@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "IoNeuronList.h"
+#include "DrawContext.h"
 #include "Neuron.h"
 #include "IoNeuron.h"
 #include "Connector.h"
@@ -54,6 +55,17 @@ MicroMeterPnt const ClosedConnector::GetPos() const
 
 void ClosedConnector::DrawExterior(DrawContext const & context, tHighlight const highLightType) const
 {
+    if ( m_list.size() > 1 )
+    {
+        context.DrawLine
+        (
+            m_list.front()->GetPos(), 
+            m_list.back ()->GetPos(), 
+            m_list.front()->GetExtension() * 2.0f, 
+            GetExteriorColor(highLightType)
+        );
+    }
+
     for (auto & it: m_list)
         it->DrawExterior(context, highLightType);
 }

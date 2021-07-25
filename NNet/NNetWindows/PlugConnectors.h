@@ -49,6 +49,7 @@ public:
             unique_ptr<Neuron>  upNeuron { make_unique<Neuron>(umPos) };
             upNeuron->SetIncoming(outputNeurons.GetElem(i));
             upNeuron->SetOutgoing(inputNeurons .GetElem(i));
+            m_upClosedConnector->Push(upNeuron.get());
             m_upNeurons.push_back(move(upNeuron));
         }
         m_upIoNeuronsAnimated.resize(m_size);
