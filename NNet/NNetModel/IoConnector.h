@@ -1,4 +1,4 @@
-// Connector.h
+// IoConnector.h
 //
 // NNetModel
 
@@ -17,18 +17,18 @@ class DrawContext;
 class MicroMeterPosDir;
 class IoNeuron;
 
-class Connector: public Nob
+class IoConnector: public Nob
 {
 public:
 
-	static bool    const TypeFits(NobType const type) { return type.IsConnectorType(); }
+	static bool    const TypeFits(NobType const type) { return type.IsIoConnectorType(); }
 	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
-	Connector(NobIoMode const);
-	Connector(unique_ptr<IoNeuronList>);
-	Connector(Connector const &);   // copy constructor
+	IoConnector(NobIoMode const);
+	IoConnector(unique_ptr<IoNeuronList>);
+	IoConnector(IoConnector const &);   // copy constructor
 
-	virtual ~Connector() {}
+	virtual ~IoConnector() {}
 
 	virtual void Check() const;
 	virtual void Dump () const;
@@ -75,12 +75,12 @@ public:
 
 	void Apply2All(function<void(IoNeuron const &)> const & func) const;
 
-	friend wostream & operator<< (wostream &, Connector const &);
+	friend wostream & operator<< (wostream &, IoConnector const &);
 
 private:
 	NobIoMode          const m_IoMode;
 	unique_ptr<IoNeuronList> m_upList {};
 };
 
-Connector const * Cast2Connector(Nob const *);
-Connector       * Cast2Connector(Nob       *);
+IoConnector const * Cast2IoConnector(Nob const *);
+IoConnector       * Cast2IoConnector(Nob       *);

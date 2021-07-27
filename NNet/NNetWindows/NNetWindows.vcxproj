@@ -605,11 +605,11 @@
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="MultiNobsAnimation.h" />
-    <ClInclude Include="PlugConnectors.h" />
+    <ClInclude Include="PlugIoConnectors.h" />
     <ClInclude Include="PlugIoNeurons.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="NNetWinWrappers.h" />
-    <ClInclude Include="PlugConnectorAnimation.h" />
+    <ClInclude Include="PlugIoConnectorAnimation.h" />
     <ClInclude Include="PlugIoNeuronAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />

@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "Command.h"
 #include "NobId.h"
 #include "Nob.h"

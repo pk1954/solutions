@@ -97,8 +97,8 @@ public:
 	bool const HasType(NobType const type) const { return m_type == type; }
 
 	bool const IsClosedConnector() const { return m_type.IsClosedConnectorType(); }
-	bool const IsAnyConnector   () const { return m_type.IsAnyConnectorType   (); }
-	bool const IsConnector      () const { return m_type.IsConnectorType      (); }
+	bool const IsAnyIoConnector   () const { return m_type.IsAnyIoConnectorType   (); }
+	bool const IsIoConnector      () const { return m_type.IsIoConnectorType      (); }
 	bool const IsPipe           () const { return m_type.IsPipeType           (); }
 	bool const IsKnot           () const { return m_type.IsKnotType           (); }
 	bool const IsNeuron         () const { return m_type.IsNeuronType         (); }

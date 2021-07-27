@@ -1,4 +1,4 @@
-// PlugConnectorAnimation.h
+// PlugIoConnectorAnimation.h
 //
 // NNetWindows
 
@@ -6,30 +6,30 @@
 
 #include "MoreTypes.h"
 #include "Nob.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "ClosedConnector.h"
 #include "AnimationSequence.h"
 #include "SingleNobAnimation.h"
-#include "PlugConnectors.h"
+#include "PlugIoConnectors.h"
 
 class NNetModelWriterInterface;
 
-class PlugConnectorAnimation : public AnimationSequence
+class PlugIoConnectorAnimation : public AnimationSequence
 {
 public:
-    PlugConnectorAnimation
+    PlugIoConnectorAnimation
     (
         NNetModelWriterInterface & nmwi,
-        Connector                & nobAnimated,
-        Connector                & nobTarget,
+        IoConnector                & nobAnimated,
+        IoConnector                & nobTarget,
         MainWindow               & win
     )
         : AnimationSequence(win)
     {
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
-        AddPhase(make_unique<PlugConnectors>(nmwi, nobAnimated, nobTarget, win));
+        AddPhase(make_unique<PlugIoConnectors>(nmwi, nobAnimated, nobTarget, win));
     }
 
-    virtual ~PlugConnectorAnimation() {};
+    virtual ~PlugIoConnectorAnimation() {};
 };

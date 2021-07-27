@@ -1,4 +1,4 @@
-// PlugConnectors.h
+// PlugIoConnectors.h
 //
 // NNetWindows
 
@@ -8,7 +8,7 @@
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
 #include "ClosedConnector.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "AnimationCmd.h"
 
 using std::vector;
@@ -16,14 +16,14 @@ using std::unique_ptr;
 
 class MainWindow;
 
-class PlugConnectors : public AnimationCmd
+class PlugIoConnectors : public AnimationCmd
 {
 public:
-    PlugConnectors
+    PlugIoConnectors
     (
         NNetModelWriterInterface & nmwi,
-        Connector                & connectorAnimated, 
-        Connector                & connectorTarget,
+        IoConnector                & connectorAnimated, 
+        IoConnector                & connectorTarget,
         MainWindow               & win
     )
       : AnimationCmd(win),
@@ -37,16 +37,16 @@ public:
         assert( m_connectorTarget  .GetIoMode() != m_connectorAnimated.GetIoMode() );
         assert( m_connectorAnimated.Size() == m_connectorTarget.Size() );
 
-        Connector    const & inputConnector  { m_connectorAnimated.IsInputNob () ? m_connectorAnimated : m_connectorTarget };
-        Connector    const & outputConnector { m_connectorAnimated.IsOutputNob() ? m_connectorAnimated : m_connectorTarget };
+        IoConnector    const & inputIoConnector  { m_connectorAnimated.IsInputNob () ? m_connectorAnimated : m_connectorTarget };
+        IoConnector    const & outputIoConnector { m_connectorAnimated.IsOutputNob() ? m_connectorAnimated : m_connectorTarget };
         m_upClosedConnector = make_unique<ClosedConnector>();
         m_size              = m_connectorAnimated.Size();
         for (size_t i = 0; i < m_size; ++i)
         {
             MicroMeterPnt const umPos    { m_connectorTarget.GetElem(i).GetPos() };
             unique_ptr<Neuron>  upNeuron { make_unique<Neuron>(umPos) };
-            upNeuron->SetIncoming(outputConnector.GetElem(i));
-            upNeuron->SetOutgoing(inputConnector .GetElem(i));
+            upNeuron->SetIncoming(outputIoConnector.GetElem(i));
+            upNeuron->SetOutgoing(inputIoConnector .GetElem(i));
             m_upClosedConnector->Push(upNeuron.get());
             m_upNeurons.push_back(move(upNeuron));
         }
@@ -64,8 +64,8 @@ public:
         }
         m_nmwi.Push2Model(move(m_upClosedConnector));
 
-        m_upNobAnimated = m_nmwi.RemoveFromModel<Connector>(m_connectorAnimated);
-        m_upNobTarget   = m_nmwi.RemoveFromModel<Connector>(m_connectorTarget  );
+        m_upNobAnimated = m_nmwi.RemoveFromModel<IoConnector>(m_connectorAnimated);
+        m_upNobTarget   = m_nmwi.RemoveFromModel<IoConnector>(m_connectorTarget  );
         for (size_t i = 0; i < m_size; ++i)
         {
             m_upIoNeuronsAnimated[i] = m_nmwi.RemoveFromModel<IoNeuron>(m_connectorAnimated.GetElem(i));
@@ -82,8 +82,8 @@ public:
         for (size_t i = 0; i < m_size; ++i)
             m_upNeurons.push_back(m_nmwi.PopFromModel<Neuron>());
 
-        m_upNobAnimated = m_nmwi.ReplaceInModel<Connector, Connector>(move(m_upNobAnimated));
-        m_upNobTarget   = m_nmwi.ReplaceInModel<Connector, Connector>(move(m_upNobTarget  ));
+        m_upNobAnimated = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upNobAnimated));
+        m_upNobTarget   = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upNobTarget  ));
         for (size_t i = 0; i < m_size; ++i)
         {
             m_upIoNeuronsAnimated[i] = m_nmwi.ReplaceInModel<IoNeuron, IoNeuron>(move(m_upIoNeuronsAnimated[i]));
@@ -99,16 +99,16 @@ private:
     NNetModelWriterInterface   & m_nmwi;
     size_t                       m_size;
 
-    Connector                  & m_connectorAnimated;
-    Connector                  & m_connectorTarget;
+    IoConnector                  & m_connectorAnimated;
+    IoConnector                  & m_connectorTarget;
 
     // take ownership of ClosedConnector and Neurons between Undo and Redo
     unique_ptr<ClosedConnector>  m_upClosedConnector {};
     vector<unique_ptr<Neuron>>   m_upNeurons;              
 
-    // take ownership of Connectors and IoNeurons between Do and Undo
-    unique_ptr<Connector>        m_upNobAnimated;
-    unique_ptr<Connector>        m_upNobTarget;
+    // take ownership of IoConnectors and IoNeurons between Do and Undo
+    unique_ptr<IoConnector>        m_upNobAnimated;
+    unique_ptr<IoConnector>        m_upNobTarget;
     vector<unique_ptr<IoNeuron>> m_upIoNeuronsAnimated;              
     vector<unique_ptr<IoNeuron>> m_upIoNeuronsTarget;              
 };

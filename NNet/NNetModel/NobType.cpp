@@ -16,7 +16,7 @@ wstring const NobType::GetName( NobType::Value const val )
 	{
 		{ NobType::Value::undefined,       L"undefined"       },
 		{ NobType::Value::connector,       L"connector"       },
-		{ NobType::Value::closedConnector, L"closedConnector" },
+		{ NobType::Value::closedIoConnector, L"closedIoConnector" },
 		{ NobType::Value::inputNeuron,     L"inputNeuron"     },
 		{ NobType::Value::outputNeuron,    L"outputNeuron"    },
 		{ NobType::Value::neuron,          L"neuron"          },
@@ -32,7 +32,7 @@ NobType::Value const NobType::GetTypeFromName( wstring const & name )
 	{
 		{ L"undefined",       NobType::Value::undefined       },
 		{ L"connector",       NobType::Value::connector       },
-		{ L"closedConnector", NobType::Value::closedConnector },
+		{ L"closedIoConnector", NobType::Value::closedIoConnector },
 		{ L"inputNeuron",     NobType::Value::inputNeuron     },
 		{ L"outputNeuron",    NobType::Value::outputNeuron    },
 		{ L"neuron",          NobType::Value::neuron	        },

@@ -59,9 +59,9 @@ ConnAnimationCommand::ConnAnimationCommand
 
 NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
 {
-    unsigned int uiNrOfConnectors { nobs.CountInSelection( NobType::Value::connector ) };
+    unsigned int uiNrOfIoConnectors { nobs.CountInSelection( NobType::Value::connector ) };
 
-    if ( uiNrOfConnectors > 0 )
+    if ( uiNrOfIoConnectors > 0 )
         return NobType::Value::undefined;
 
     unsigned int uiNrOfInputNeurons  { nobs.CountInSelection( NobType::Value::inputNeuron  ) };

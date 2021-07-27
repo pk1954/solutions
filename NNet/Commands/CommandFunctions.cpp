@@ -10,7 +10,7 @@
 #include "DiscBaseKnotCmd.h"
 #include "NobType.h"
 #include "ClosedConnector.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "BaseKnot.h"
 #include "Nob.h"
 #include "CommandFunctions.h"
@@ -39,7 +39,7 @@ unique_ptr<Command> MakeDeleteCommand
 	case NobType::Value::connector:
 		upCmd = make_unique<DiscConnCmd>(nmwi, * pNob, true);
 		break;
-	case NobType::Value::closedConnector:
+	case NobType::Value::closedIoConnector:
 		upCmd = make_unique<DeleteClosedConnCmd>(nmwi, * pNob);
 		break;
 	default:
@@ -67,7 +67,7 @@ unique_ptr<Command> MakeDisconnectCommand
 	case NobType::Value::connector:
 		upCmd = make_unique<DiscConnCmd>(nmwi, *pNob, false);
 		break;
-	case NobType::Value::closedConnector:
+	case NobType::Value::closedIoConnector:
 		assert(false);
 		break;
 	default:

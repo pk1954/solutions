@@ -10,7 +10,7 @@
 #include "MicroMeterPntVector.h"
 #include "Knot.h"
 #include "Neuron.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -167,7 +167,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDD_DISCONNECT );        
 		break;
 
-	case NobType::Value::closedConnector:
+	case NobType::Value::closedIoConnector:
 		appendMenu( hPopupMenu, IDD_SPLIT_CONNECTOR );        
 		appendMenu( hPopupMenu, IDM_DISC_CONNECTOR );        
 		break;
@@ -504,7 +504,7 @@ void MainWindow::doPaint()
 	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsPipe() && ! s.IsSelected(); }); 
 	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsPipe() &&   s.IsSelected(); }); 
 	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
-	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsConnector(); }); 
+	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsIoConnector(); }); 
 	DrawNeuronTextInRect(pixRect);
 
 	if ( IsDefined(m_nobTarget) ) // draw target nob again to be sure that it is visible
@@ -558,7 +558,7 @@ bool MainWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	{
 
 	case IDM_MAKE_CONNECTOR:
-		if ( ! m_pWinCommands->MakeConnector(*this) )
+		if ( ! m_pWinCommands->MakeIoConnector(*this) )
 			SendCommand2Application(IDX_PLAY_SOUND, reinterpret_cast<LPARAM>(TEXT("NOT_POSSIBLE_SOUND")));
 		break;
 

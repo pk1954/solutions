@@ -7,7 +7,7 @@
 #include <assert.h>
 #include "SignalFactory.h"
 #include "Knot.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "NNetError.h"
@@ -84,11 +84,11 @@ private:
         { 
             switch ( nobType.GetValue() )
             {
-            case NobType::Value::closedConnector:
+            case NobType::Value::closedIoConnector:
                 upNob = createClosedConnector(script);
                 break;
             case NobType::Value::connector:
-                 upNob = createConnector(script);
+                 upNob = createIoConnector(script);
                  break;
             case NobType::Value::inputNeuron:
             case NobType::Value::outputNeuron:
@@ -109,9 +109,9 @@ private:
             pNob = upNob.get();
             GetUPNobs().SetNob2Slot( idFromScript, move(upNob) );
         }
-        if ( nobType.IsConnectorType() )
+        if ( nobType.IsIoConnectorType() )
         {
-            static_cast<Connector *>(pNob)->SetParentPointers();
+            static_cast<IoConnector *>(pNob)->SetParentPointers();
         }
         return pNob;
     }
@@ -189,7 +189,7 @@ private:
         return move(upClosedConnector);
     }
 
-    UPNob createConnector(Script & script) const 
+    UPNob createIoConnector(Script & script) const 
     {
         unique_ptr<IoNeuronList> upIoNeuronList { make_unique<IoNeuronList>() };
         script.ScrReadSpecial(IoNeuronList::OPEN_BRACKET);
@@ -207,9 +207,9 @@ private:
             script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
         }
         script.ScrReadSpecial(IoNeuronList::CLOSE_BRACKET);
-        unique_ptr<Connector> upConnector { make_unique<Connector>(move(upIoNeuronList)) };
-        upConnector->AlignDirection();
-        return move(upConnector);
+        unique_ptr<IoConnector> upIoConnector { make_unique<IoConnector>(move(upIoNeuronList)) };
+        upIoConnector->AlignDirection();
+        return move(upIoConnector);
     }
 };
 

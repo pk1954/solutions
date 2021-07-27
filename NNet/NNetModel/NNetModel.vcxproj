@@ -189,7 +189,7 @@
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="ClosedConnector.h" />
     <ClInclude Include="IoNeuron.h" />
-    <ClInclude Include="Connector.h" />
+    <ClInclude Include="IoConnector.h" />
     <ClInclude Include="MicroMeterPntVector.h" />
     <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="DrawContext.h" />
@@ -236,7 +236,7 @@
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="ClosedConnector.cpp" />
     <ClCompile Include="IoNeuron.cpp" />
-    <ClCompile Include="Connector.cpp" />
+    <ClCompile Include="IoConnector.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="IoNeuronList.cpp" />
     <ClCompile Include="Knot.cpp" />

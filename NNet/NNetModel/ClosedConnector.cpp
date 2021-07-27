@@ -7,7 +7,7 @@
 #include "DrawContext.h"
 #include "Neuron.h"
 #include "IoNeuron.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "ClosedConnector.h"
 
 void ClosedConnector::Check() const

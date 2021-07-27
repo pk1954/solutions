@@ -1,4 +1,4 @@
-// Connector.cpp 
+// IoConnector.cpp 
 //
 // NNetModel
 
@@ -7,172 +7,172 @@
 #include "IoNeuronList.h"
 #include "IoNeuron.h"
 #include "Neuron.h"
-#include "Connector.h"
+#include "IoConnector.h"
 
-Connector::Connector(NobIoMode const ioMode)
+IoConnector::IoConnector(NobIoMode const ioMode)
   :	Nob(NobType::Value::connector),
     m_IoMode(ioMode)
 {
     m_upList = make_unique<IoNeuronList>();
 }
 
-Connector::Connector(unique_ptr<IoNeuronList> upSrc)
+IoConnector::IoConnector(unique_ptr<IoNeuronList> upSrc)
   :	Nob(NobType::Value::connector),
     m_IoMode(upSrc->GetFirst().GetIoMode())
 {
     m_upList = move(upSrc);
 }
 
-Connector::Connector(Connector const & src)   // copy constructor
+IoConnector::IoConnector(IoConnector const & src)   // copy constructor
   :	Nob(src),
     m_IoMode(src.GetIoMode())
 {
     m_upList = make_unique<IoNeuronList>(*src.m_upList.get());
 }
 
-bool const Connector::IsInputConnector () const 
+bool const IoConnector::IsInputConnector () const 
 { 
     return m_upList->GetFirst().IsInputNob (); 
 }
 
-bool const Connector::IsOutputConnector() const 
+bool const IoConnector::IsOutputConnector() const 
 { 
     return m_upList->GetFirst().IsOutputNob(); 
 }
 
-void Connector::Check() const
+void IoConnector::Check() const
 {
     Nob::Check();
     m_upList->Check();
 }
 
-void Connector::Dump() const
+void IoConnector::Dump() const
 {
     Nob::Dump();
     m_upList->Dump();
 }
 
-NobIoMode const Connector::GetIoMode() const 
+NobIoMode const IoConnector::GetIoMode() const 
 { 
     return m_IoMode;
 }
 
-void Connector::Select(bool const bOn) 
+void IoConnector::Select(bool const bOn) 
 { 
     Nob::Select(bOn);
     m_upList->SelectAll(bOn);
 }
 
-void Connector::Push(IoNeuron * const p) 
+void IoConnector::Push(IoNeuron * const p) 
 { 
     m_upList->Add(p); 
 }
 
-IoNeuron * const Connector::Pop() 
+IoNeuron * const IoConnector::Pop() 
 { 
     IoNeuron * pRet { & m_upList->GetLast() };
     m_upList->RemoveLast();
     return pRet;
 }
 
-size_t const Connector::Size() const 
+size_t const IoConnector::Size() const 
 { 
     return m_upList->Size(); 
 }
 
-IoNeuron const & Connector::GetElem(size_t const nr) const 
+IoNeuron const & IoConnector::GetElem(size_t const nr) const 
 { 
     return m_upList->GetElem(nr); 
 }
 
-void Connector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
+void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     m_upList->Link(dstFromSrc);
 }
 
-void Connector::Clear( )
+void IoConnector::Clear( )
 {
     Nob::Clear();
     m_upList->Clear();
 }
 
-void Connector::AlignDirection()
+void IoConnector::AlignDirection()
 {
     m_upList->AlignDirection();
 }
 
-MicroMeterPnt const Connector::GetPos() const 
+MicroMeterPnt const IoConnector::GetPos() const 
 { 
     return m_upList->IsEmpty() ? MicroMeterPnt::NULL_VAL() : m_upList->GetPos(); 
 }
 
-Radian const Connector::GetDir() const 
+Radian const IoConnector::GetDir() const 
 { 
     return m_upList->IsEmpty() ? Radian::NULL_VAL() : m_upList->GetFirst().GetDir();
 }
 
-MicroMeterPosDir const Connector::GetPosDir() const 
+MicroMeterPosDir const IoConnector::GetPosDir() const 
 { 
     return m_upList->IsEmpty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir( GetPos(), GetDir() );
 }
 
-void Connector::SetParentPointers()
+void IoConnector::SetParentPointers()
 {
     m_upList->SetParentPointers(this);
 }
 
-void Connector::ClearParentPointers()
+void IoConnector::ClearParentPointers()
 {
     m_upList->ClearParentPointers();
 }
 
-void Connector::Prepare()
+void IoConnector::Prepare()
 {
     m_upList->Prepare();
 }
 
-bool const Connector::CompStep()
+bool const IoConnector::CompStep()
 {
     return m_upList->CompStep();
 }
 
-void Connector::Recalc()
+void IoConnector::Recalc()
 {
     m_upList->Recalc();
 }
 
-void Connector::Apply2All(function<void(IoNeuron const &)> const & func) const
+void IoConnector::Apply2All(function<void(IoNeuron const &)> const & func) const
 {
     m_upList->Apply2All([&](IoNeuron const & n){ func(n); } );
 }                        
 
-void Connector::SetPosDir(MicroMeterPosDir const & umPosDir)
+void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
 {
     SetDir(umPosDir.GetDir());
     SetPos(umPosDir.GetPos());
 }
 
-void Connector::SetDir(Radian const radianNew)
+void IoConnector::SetDir(Radian const radianNew)
 {
     RotateNob(GetPos(), radianNew - GetDir());
 }
 
-void Connector::SetPos(MicroMeterPnt const & umPos)
+void IoConnector::SetPos(MicroMeterPnt const & umPos)
 {
     MoveNob(umPos - GetPos());
 }
 
-void Connector::MoveNob(MicroMeterPnt const & delta)       
+void IoConnector::MoveNob(MicroMeterPnt const & delta)       
 {
     m_upList->MoveNob(delta);
 }
 
-void Connector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
+void IoConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
     m_upList->RotateNob(umPntPivot, radDelta);
 }
 
-void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
+void IoConnector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
 {
     MicroMeterPnt const umPntPivot { GetPos() };
     Radian        const radOld     { Vector2Radian(umPntOld - umPntPivot) };
@@ -181,44 +181,44 @@ void Connector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umP
     RotateNob(umPntPivot, radDelta);
 }                        
 
-bool const Connector::IsIncludedIn(MicroMeterRect const & umRect) const 
+bool const IoConnector::IsIncludedIn(MicroMeterRect const & umRect) const 
 {
     return m_upList->IsIncludedIn(umRect);
 }
 
-bool const Connector::Includes(MicroMeterPnt const & umPnt) const
+bool const IoConnector::Includes(MicroMeterPnt const & umPnt) const
 {
     return m_upList->Includes(umPnt);
 }
 
-void Connector::DrawExterior(DrawContext const & context, tHighlight const type) const
+void IoConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
     m_upList->DrawExterior(context, type);
 }
 
-void Connector::DrawInterior(DrawContext const & context, tHighlight const type) const
+void IoConnector::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
     m_upList->DrawInterior(context, type);
 }
 
-void Connector::Expand(MicroMeterRect & umRect) const
+void IoConnector::Expand(MicroMeterRect & umRect) const
 {
     m_upList->Expand(umRect);
 }
 
-Connector const * Cast2Connector(Nob const * pNob)
+IoConnector const * Cast2IoConnector(Nob const * pNob)
 {
-    assert( pNob->IsConnector() );
-    return static_cast<Connector const *>(pNob);
+    assert( pNob->IsIoConnector() );
+    return static_cast<IoConnector const *>(pNob);
 }
 
-Connector * Cast2Connector(Nob * pNob)
+IoConnector * Cast2IoConnector(Nob * pNob)
 {
-    assert( pNob->IsConnector() );
-    return static_cast<Connector *>(pNob);
+    assert( pNob->IsIoConnector() );
+    return static_cast<IoConnector *>(pNob);
 }
 
-wostream & operator<< (wostream & out, Connector const & v)
+wostream & operator<< (wostream & out, IoConnector const & v)
 {
     out << * v.m_upList.get();
     return out;

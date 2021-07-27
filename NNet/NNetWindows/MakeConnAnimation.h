@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "IoNeuronList.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
@@ -31,26 +31,26 @@ public:
       : AnimationCmd(win),
         m_nmwi(nmwi)
     {
-        m_upConnector = make_unique<Connector>(move(upList));
+        m_upIoConnector = make_unique<IoConnector>(move(upList));
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)
     {
         m_nmwi.GetUPNobs().DeselectAllNobs();
-        m_upConnector->SetParentPointers();
-        m_nmwi.GetUPNobs().Push(move(m_upConnector));
+        m_upIoConnector->SetParentPointers();
+        m_nmwi.GetUPNobs().Push(move(m_upIoConnector));
         (targetReachedFunc)();
     }
 
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
-        m_upConnector = m_nmwi.GetUPNobs().Pop<Connector>();
-        m_upConnector->ClearParentPointers();
+        m_upIoConnector = m_nmwi.GetUPNobs().Pop<IoConnector>();
+        m_upIoConnector->ClearParentPointers();
         (targetReachedFunc)();
     }
 
 private:
 
-    unique_ptr<Connector>      m_upConnector {};  
+    unique_ptr<IoConnector>      m_upIoConnector {};  
     NNetModelWriterInterface & m_nmwi;
 };

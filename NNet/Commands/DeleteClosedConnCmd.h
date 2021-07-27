@@ -20,7 +20,7 @@ public:
         NNetModelWriterInterface & nmwi,
         Nob                      & nob
     )
-      : m_closedConnector(*Cast2ClosedConnector(&nob))
+      : m_closedIoConnector(*Cast2ClosedConnector(&nob))
     {
     }
 
@@ -28,7 +28,7 @@ public:
 
     virtual void Do(NNetModelWriterInterface & nmwi)
     {
-        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
+        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedIoConnector);
         m_upClosedConnector->ClearParentPointers();
     }
 
@@ -40,6 +40,6 @@ public:
 
 private:
 
-    ClosedConnector           & m_closedConnector;
+    ClosedConnector           & m_closedIoConnector;
     unique_ptr<ClosedConnector> m_upClosedConnector {};
 };

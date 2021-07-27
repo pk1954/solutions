@@ -12,7 +12,7 @@
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "ConnAnimationCommand.h"
-#include "PlugConnectorAnimation.h"
+#include "PlugIoConnectorAnimation.h"
 #include "PlugIoNeuronAnimation.h"
 #include "win32_Commands.h"
 
@@ -36,7 +36,7 @@ void WinCommands::Initialize
 	m_pNMWI     = pNMWI;
 }
 
-bool WinCommands::MakeConnector(MainWindow & win)
+bool WinCommands::MakeIoConnector(MainWindow & win)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
@@ -93,11 +93,11 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 		break;
 	case NobType::Value::connector:
 	{
-		upCmd = make_unique<PlugConnectorAnimation> 
+		upCmd = make_unique<PlugIoConnectorAnimation> 
 		(
 			* m_pNMWI,
-			* m_pNMWI->GetNobPtr<Connector *>(idSrc), 
-			* m_pNMWI->GetNobPtr<Connector *>(idDst),
+			* m_pNMWI->GetNobPtr<IoConnector *>(idSrc), 
+			* m_pNMWI->GetNobPtr<IoConnector *>(idDst),
 			win
 		);
 	}

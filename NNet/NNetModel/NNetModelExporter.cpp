@@ -10,7 +10,7 @@
 #include "Track.h"
 #include "InputNeuron.h"
 #include "BaseKnot.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
@@ -90,7 +90,7 @@ void NNetModelExporter::writeNobs( wostream & out )
     out << endl;
     m_pNMRI->GetUPNobs().Apply2All<BaseKnot       >([&](BaseKnot        const & s) { writeNob(out, s); });
     m_pNMRI->GetUPNobs().Apply2All<Pipe           >([&](Pipe            const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<Connector      >([&](Connector       const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<IoConnector      >([&](IoConnector       const & s) { writeNob(out, s); });
     m_pNMRI->GetUPNobs().Apply2All<ClosedConnector>([&](ClosedConnector const & s) { writeNob(out, s); });
 }
 
@@ -186,10 +186,10 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
             break;
 
         case NobType::Value::connector:
-            out << static_cast<Connector const &>(nob);
+            out << static_cast<IoConnector const &>(nob);
             break;
 
-        case NobType::Value::closedConnector:
+        case NobType::Value::closedIoConnector:
             out << static_cast<ClosedConnector const &>(nob);
             break;
 

@@ -9,7 +9,7 @@
 #include "UPNobList.h"
 #include "IoNeuronList.h"
 #include "Command.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "IoNeuron.h"
 
 using std::vector;

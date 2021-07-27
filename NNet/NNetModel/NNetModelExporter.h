@@ -18,7 +18,7 @@ class Param;
 class Script;
 class Pipe;
 class Nob;
-class Connector;
+class IoConnector;
 class ClosedConnector;
 class UPNobList;
 class Observable;

@@ -6,7 +6,7 @@
 #include "Nob.h"
 #include "DrawContext.h"
 #include "NNetModel.h"
-#include "Connector.h"
+#include "IoConnector.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
 #include "NNetModelReaderInterface.h"
@@ -25,7 +25,7 @@ NobType const NNetModelReaderInterface::GetNobType( NobId const id ) const
 
 Degrees const NNetModelReaderInterface::GetDirection( NobId const id ) const 
 { 
-	auto p { m_pModel->GetNobConstPtr<Connector const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<IoConnector const *>(id) };
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
@@ -100,7 +100,7 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
 	if ( (typeSrc == NobType::Value::connector) != (typeDst == NobType::Value::connector) )
 		return false;
-	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
+	if ( (typeSrc == NobType::Value::closedIoConnector) || (typeDst == NobType::Value::closedIoConnector) )
 		return false;
 	return true;
 }
@@ -115,7 +115,7 @@ bool const NNetModelReaderInterface::IsConnectionCandidateX(NobId const idSrc, N
 	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
 	if ( (typeSrc == NobType::Value::connector) != (typeDst == NobType::Value::connector) )
 		return false;
-	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
+	if ( (typeSrc == NobType::Value::closedIoConnector) || (typeDst == NobType::Value::closedIoConnector) )
 		return false;
 	return true;
 }
@@ -135,8 +135,8 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 	case NobType::Value::connector:
 		if (typeDst == NobType::Value::connector)
 		{
-			Connector const & connSrc { * m_pModel->GetNobConstPtr<Connector const *>(idSrc) }; 
-			Connector const & connDst { * m_pModel->GetNobConstPtr<Connector const *>(idDst) }; 
+			IoConnector const & connSrc { * m_pModel->GetNobConstPtr<IoConnector const *>(idSrc) }; 
+			IoConnector const & connDst { * m_pModel->GetNobConstPtr<IoConnector const *>(idDst) }; 
 			if (connSrc.IsInputConnector() == connDst.IsInputConnector())  // opposite connectors?
 				return false;
 			if (connSrc.Size() == connDst.Size())

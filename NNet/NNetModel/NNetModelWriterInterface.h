@@ -53,10 +53,10 @@ public:
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
-    bool const IsConnector( NobId const id )
+    bool const IsIoConnector( NobId const id )
     {
         Nob * pNob { GetNobPtr<Nob *>( id ) };
-        return pNob && pNob->IsConnector();
+        return pNob && pNob->IsIoConnector();
     }
 
     bool const IsPipe( NobId const id )

@@ -13,7 +13,7 @@
 #include "CommandStack.h"
 #include "NobId.h"
 #include "UpNobList.h"
-#include "Connector.h"
+#include "IoConnector.h"
 
 using std::unique_ptr;
 
@@ -26,7 +26,7 @@ public:
         Nob                      & nob,
         bool                 const bRemove 
     )
-      : m_connector(*Cast2Connector(&nob)),
+      : m_connector(*Cast2IoConnector(&nob)),
         m_bRemove(bRemove)
     {
         m_cmdStack.Initialize(&nmwi, nullptr);
@@ -38,16 +38,16 @@ public:
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
-        m_upConnector = nmwi.RemoveFromModel<Connector>(m_connector);
-        m_upConnector->ClearParentPointers();
+        m_upIoConnector = nmwi.RemoveFromModel<IoConnector>(m_connector);
+        m_upIoConnector->ClearParentPointers();
         if (m_bRemove)
             m_cmdStack.DoAll();
     }
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
-        m_upConnector->SetParentPointers();
-        nmwi.Restore2Model( move(m_upConnector) );
+        m_upIoConnector->SetParentPointers();
+        nmwi.Restore2Model( move(m_upIoConnector) );
         if (m_bRemove)
             m_cmdStack.UndoAll();
     }
@@ -56,6 +56,6 @@ private:
 
     bool            const m_bRemove;
     CommandStack          m_cmdStack    {};
-    unique_ptr<Connector> m_upConnector {};  
-    Connector     const & m_connector;
+    unique_ptr<IoConnector> m_upIoConnector {};  
+    IoConnector     const & m_connector;
 };
