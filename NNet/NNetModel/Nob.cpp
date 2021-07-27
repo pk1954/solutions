@@ -12,11 +12,11 @@ using std::move;
 using std::wcout;
 using std::wostream;
 
-Nob::Nob( NobType const type )
+Nob::Nob(NobType const type)
 	: m_type( type )
 { }	
 
-bool Nob::operator==( Nob const & rhs ) const
+bool Nob::operator==(Nob const & rhs) const
 {
     if ( m_type != rhs.m_type )
 		 return false;
@@ -48,7 +48,7 @@ MicroMeterPosDir const Nob::GetPosDir() const
 	return MicroMeterPosDir(GetPos(), GetDir()); 
 };
 
-D2D1::ColorF Nob::GetInteriorColor( mV const voltageInput ) const
+D2D1::ColorF Nob::GetInteriorColor(mV const voltageInput) const
 {
 	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParamType::Value::peakVoltage )) };
 	float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
@@ -56,22 +56,12 @@ D2D1::ColorF Nob::GetInteriorColor( mV const voltageInput ) const
 	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, fAlphaChannel );
 }
 
-D2D1::ColorF Nob::GetExteriorColor( tHighlight const type ) const 
+D2D1::ColorF Nob::GetExteriorColor(tHighlight const type) const 
 {
-	switch ( type )
-	{
-	case tHighlight::highlighted: 
-		return NNetColors::EXT_HIGHLIGHTED;
-	case tHighlight::normal:      
-	case tHighlight::targetFit:   
-	case tHighlight::targetNoFit: 
-		return HasParentNob() ? NNetColors::EXT_CONNECTOR : NNetColors::EXT_NORMAL;
-	}
-	assert( false );
-	return NNetColors::EXT_NORMAL;
+	return (type == tHighlight::highlighted) ? NNetColors::EXT_HIGHLIGHTED : NNetColors::EXT_NORMAL;
 };
 
-D2D1::ColorF Nob::GetInteriorColor( tHighlight const type ) const 
+D2D1::ColorF Nob::GetInteriorColor(tHighlight const type) const 
 {
 	Nob const * pNob { this };
 	while ( pNob->HasParentNob() )
@@ -87,9 +77,9 @@ D2D1::ColorF Nob::GetInteriorColor( tHighlight const type ) const
 	return NNetColors::INT_NORMAL;
 };
 
-float Nob::GetFillLevel( mV const voltageInput ) const
+float Nob::GetFillLevel(mV const voltageInput) const
 {
-	return voltageInput.GetValue() / m_pParameters->GetParameterValue( ParamType::Value::threshold );
+	return voltageInput.GetValue() / m_pParameters->GetParameterValue(ParamType::Value::threshold);
 }
 
 void Nob::Check() const
@@ -107,7 +97,7 @@ void Nob::Dump() const
 	wcout << *this;
 }
 
-wostream & operator<< ( wostream & out, Nob const & nob )
+wostream & operator<< (wostream & out, Nob const & nob)
 {
 	out << setw(5) << nob.m_identifier << L' ' << nob.m_type;
 	if (nob.m_pNobParent)

@@ -214,14 +214,26 @@ NobId const UPNobList::FindNobAt
 	for (size_t i = m_list.size(); i --> 0;)	
 	{
 		Nob * pNob = m_list[i].get();
-		if (pNob && crit(* pNob) && pNob->Includes(pnt))
+		if (pNob && pNob->Includes(pnt))
 		{
-			while (pNob->HasParentNob())
-				pNob = pNob->GetParentNob();
-			return pNob->GetId();
+			//while (pNob->HasParentNob())
+			//	pNob = pNob->GetParentNob();
+			if (crit(* pNob))
+				return pNob->GetId();
 		}
 	};
 	return NobId( NO_NOB );
+}
+
+unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
+{
+	unique_ptr<vector<Nob *>> upNobs = make_unique<vector<Nob *>>();
+	for (auto & it : m_list)
+	{
+		if (it && it->IsSelected()) 
+			upNobs->push_back(it.get());
+	}
+	return move(upNobs);
 }
 
 bool const UPNobList::AnyNobsSelected() const

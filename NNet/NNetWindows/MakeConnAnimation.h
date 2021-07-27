@@ -14,6 +14,7 @@
 #include "AnimationCmd.h"
 
 using std::function;
+using std::unique_ptr;
 using std::make_unique;
 
 class MainWindow;
@@ -25,12 +26,12 @@ public:
     (
         MainWindow               & win,
         NNetModelWriterInterface & nmwi,
-        IoNeuronList             & list
+        unique_ptr<IoNeuronList>   upList
     )
       : AnimationCmd(win),
         m_nmwi(nmwi)
     {
-        m_upConnector = make_unique<Connector>(list);
+        m_upConnector = make_unique<Connector>(move(upList));
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)
@@ -50,6 +51,6 @@ public:
 
 private:
 
-    unique_ptr<Connector>      m_upConnector  {};  
+    unique_ptr<Connector>      m_upConnector {};  
     NNetModelWriterInterface & m_nmwi;
 };

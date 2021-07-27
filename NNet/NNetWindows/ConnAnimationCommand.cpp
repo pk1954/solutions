@@ -4,13 +4,14 @@
 
 #include "stdafx.h"
 #include "win32_Commands.h"
+#include "NNetModelWriterInterface.h"
+#include "IoNeuron.h"
+#include "IoNeuronList.h"
 #include "MultiNobsAnimation.h"
 #include "MakeConnAnimation.h"
 #include "ConnAnimationCommand.h"
 
 using std::make_unique;
-
-class NNetModelWriterInterface;
 
 ConnAnimationCommand::ConnAnimationCommand
 (  
@@ -21,29 +22,37 @@ ConnAnimationCommand::ConnAnimationCommand
 {
     NNetModelWriterInterface & nmwi      { cmds.GetNMWI() };
     UPNobList                & modelNobs { nmwi.GetUPNobs() };
-    NobType const nobType { determineNobType(modelNobs) };
+    NobType              const nobType   { determineNobType(modelNobs) };
     if ( nobType.IsUndefinedType() )
         return;
     
-    IoNeuronList   nobsAnimated { modelNobs.GetAllSelected<IoNeuron>(nobType) };
-    MicroMeterLine line         { nobsAnimated.CalcMaxDistLine() };
+    unique_ptr<IoNeuronList> upNobsAnimated { make_unique<IoNeuronList>() };
+    modelNobs.Apply2All<IoNeuron>
+    ( 
+        [&](IoNeuron & s)	
+        { 
+            if (s.IsSelected() && s.HasType(nobType)) 
+                upNobsAnimated->Add(&s); 
+        } 
+    );
+    MicroMeterLine line{ upNobsAnimated->CalcMaxDistLine() };
     if (line.IsZero())
         return;
 
-    nobsAnimated.SortAccToDistFromLine( line.OrthoLine() );
+    upNobsAnimated->SortAccToDistFromLine( line.OrthoLine() );
     
-    MicroMeterPntVector umPntVector(nobsAnimated);  // before animation
+    MicroMeterPntVector umPntVector(*upNobsAnimated.get());  // before animation
 
     umPntVector.Align(line);
-    AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after position alignment
+    AddPhase(make_unique<MultiNobsAnimation>(win, *upNobsAnimated.get(), umPntVector));  // after position alignment
 
-    umPntVector.SetDir(Vector2Radian(nobsAnimated.CalcOrthoVector(line)));
-    AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after direction alignment
+    umPntVector.SetDir(Vector2Radian(upNobsAnimated->CalcOrthoVector(line)));
+    AddPhase(make_unique<MultiNobsAnimation>(win, *upNobsAnimated.get(), umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
-    AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after packing
+    AddPhase(make_unique<MultiNobsAnimation>(win, *upNobsAnimated.get(), umPntVector));  // after packing
 
-    AddPhase(make_unique<MakeConnAnimation>(win, nmwi, nobsAnimated));
+    AddPhase(make_unique<MakeConnAnimation>(win, nmwi, move(upNobsAnimated)));
 
     m_bAllOk = true;
 }

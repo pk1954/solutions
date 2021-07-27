@@ -8,13 +8,14 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "NobType.h"
-#include "IoNeuronList.h"
 
 using std::vector;
+using std::unique_ptr;
 
+class IoNeuronList;
 class DrawContext;
 class MicroMeterPosDir;
-class Neuron;
+class IoNeuron;
 
 class Connector: public Nob
 {
@@ -24,7 +25,8 @@ public:
 	static NobType const GetNobType()                 { return NobType::Value::connector; }
 
 	Connector(NobIoMode const);
-	Connector(IoNeuronList const &);
+	Connector(unique_ptr<IoNeuronList>);
+	Connector(Connector const &);   // copy constructor
 
 	virtual ~Connector() {}
 
@@ -50,13 +52,13 @@ public:
 
 	virtual bool const IsCompositeNob() { return true; }
 
-	void Push(IoNeuron * const p) { m_list.Add(p); }
-	IoNeuron * const Pop();
+	void               Push(IoNeuron * const);
+	IoNeuron * const   Pop();
+	IoNeuron   const & GetElem(size_t const) const;
+	size_t     const Size() const;
 
 	bool const IsInputConnector () const;
 	bool const IsOutputConnector() const;
-
-	size_t const Size() const { return m_list.Size(); }
 
 	void SetParentPointers();
 	void ClearParentPointers();
@@ -73,16 +75,11 @@ public:
 
 	void Apply2All(function<void(IoNeuron const &)> const & func) const;
 
-	inline static wchar_t const SEPARATOR     { L':' };
-	inline static wchar_t const OPEN_BRACKET  { L'{' };
-	inline static wchar_t const CLOSE_BRACKET { L'}' };
-
-	IoNeuronList       & GetIoNeurons()       { return m_list; }
-	IoNeuronList const & GetIoNeurons() const { return m_list; }
+	friend wostream & operator<< (wostream &, Connector const &);
 
 private:
-	NobIoMode const m_IoMode;
-	IoNeuronList    m_list {};
+	NobIoMode          const m_IoMode;
+	unique_ptr<IoNeuronList> m_upList {};
 };
 
 Connector const * Cast2Connector(Nob const *);

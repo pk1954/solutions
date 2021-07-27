@@ -61,8 +61,8 @@ public:
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 
-	NobId const FindNobAt( MicroMeterPnt const &, NobCrit const & ) const;
-	bool  const GetDescriptionLine( int const, wstring & )                const;
+	NobId const FindNobAt(MicroMeterPnt const &, NobCrit const &) const;
+	bool  const GetDescriptionLine(int const, wstring &)          const;
 
 	// non const functions
 

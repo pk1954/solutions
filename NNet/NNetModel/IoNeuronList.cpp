@@ -13,14 +13,17 @@ using std::endl;
 
 void IoNeuronList::Check() const 
 { 
-	for (auto & it : m_list) { it->Check(); }; 
+	NobType const nobType { GetFirst().GetNobType() };
+	for (auto & it : m_list) 
+	{ 
+		assert(it->GetNobType() == nobType);
+		it->Check();
+	}; 
 }
 
-void IoNeuronList::Dump () const
+void IoNeuronList::Dump() const
 {
-	wcout << OPEN_BRACKET; 
-	for (auto & it : m_list) { wcout << it->GetId() << L' '; };
-	wcout << CLOSE_BRACKET; 
+	wcout << *this;
 }
 
 MicroMeterPnt const IoNeuronList::GetPos() const 
@@ -33,18 +36,18 @@ void IoNeuronList::Replace(IoNeuron * const pDel, IoNeuron * const pAdd)
 	replace( begin(m_list), end(m_list), pDel, pAdd ); 
 }
 
-void IoNeuronList::Add( IoNeuron * const pNob )
+void IoNeuronList::Add(IoNeuron * const pNob)
 {
 	if ( pNob != nullptr )
 	{
-		assert( find( begin(m_list), end(m_list), pNob ) == end(m_list) );
+		assert( find(begin(m_list), end(m_list), pNob) == end(m_list) );
 		m_list.push_back( pNob );
 	}
 }
 
 void IoNeuronList::Remove(IoNeuron * const pNob)
 {
-	auto res = find( begin(m_list), end(m_list), pNob );
+	auto res = find(begin(m_list), end(m_list), pNob);
 	assert( res != end(m_list) );
 	m_list.erase( res );
 }
@@ -92,15 +95,13 @@ bool IoNeuronList::operator==(IoNeuronList const & rhs) const
 
 wostream & operator<< (wostream & out, IoNeuronList const & v)
 {
-	out << IoNeuronList::OPEN_BRACKET << v.m_list.size();
-	if (v.m_list.size() > 0)
-		out << L":";
+	out << IoNeuronList::OPEN_BRACKET << v.m_list.size() << IoNeuronList::NR_SEPARATOR;
 	for ( auto & it: v.m_list )
 	{
 		out << it->GetId();
 		if ( &it == &v.m_list.back() )
 			break;
-		out << IoNeuronList::SEPARATOR;
+		out << IoNeuronList::ID_SEPARATOR;
 	}
 	out << IoNeuronList::CLOSE_BRACKET;
 	return out;

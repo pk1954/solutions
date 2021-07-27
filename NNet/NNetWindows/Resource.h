@@ -82,7 +82,7 @@
 #define IDD_DISCONNECT           469
 #define IDD_SPLIT_NEURON         470
 
-#define IDD_UNPLUG               570
+#define IDD_SPLIT_CONNECTOR      570
 #define IDD_ADD_INCOMING2KNOT    571
 #define IDD_ADD_INCOMING2PIPE    572
 #define IDD_ADD_OUTGOING2KNOT    573

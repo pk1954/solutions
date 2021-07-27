@@ -90,35 +90,35 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
-		{ IDD_ADD_INCOMING2KNOT,    L"Add incoming dendrite"     },
-		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"     },
-		{ IDD_ADD_OUTGOING2KNOT,    L"Add outgoing dendrite"     },
-		{ IDD_ADD_OUTGOING2PIPE,    L"Add outgoing dendrite"     },
-		{ IDD_ADD_SIGNAL,           L"New EEG sensor" 			 },
-		{ IDM_ALIGN_NOBS,           L"Align selected objects"    },
-		{ IDD_APPEND_INPUT_NEURON,  L"Add input neuron"          },
-		{ IDD_APPEND_OUTPUT_NEURON, L"Add output neuron"         },
-		{ IDD_ARROWS_OFF,           L"Arrows off"                },
-		{ IDD_ARROWS_ON,            L"Arrows on"                 },
-		{ IDM_COPY_SELECTION,       L"Copy selection"            },
-		{ IDM_DELETE_SELECTION,     L"Delete selected objects"   },
-		{ IDD_DELETE_NOB,           L"Delete"                    },
-		{ IDM_DESELECT_ALL,         L"Deselect all"              },
-		{ IDM_DESELECT_NOB,         L"Deselect"                  },
-		{ IDD_DISCONNECT,           L"Disconnect"                },
-		{ IDD_SPLIT_NEURON,         L"Split"                     },
-		{ IDD_UNPLUG,               L"Unplug"                    },
-		{ IDD_INSERT_KNOT,          L"Insert knot"               },
-		{ IDD_INSERT_NEURON,        L"Insert neuron"             },
-		{ IDM_MAKE_CONNECTOR,       L"Make connector"            },
-		{ IDD_NEW_INPUT_NEURON,     L"New input neuron" 		 },
-		{ IDD_NEW_OUTPUT_NEURON,    L"New output neuron"		 },
-		{ IDD_PULSE_RATE,           L"Pulse rate"                },
-		{ IDM_SELECT_NOB,           L"Select"                    },
-		{ IDM_SELECT_SUBTREE,       L"Select subtree"            },
-		{ IDM_DISC_CONNECTOR,       L"Disconnect (make neurons)" },
-		{ IDD_STOP_ON_TRIGGER,      L"Stop on trigger on/off"    },
-		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"             }
+		{ IDD_ADD_INCOMING2KNOT,    L"Add incoming dendrite"       },
+		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"       },
+		{ IDD_ADD_OUTGOING2KNOT,    L"Add outgoing dendrite"       },
+		{ IDD_ADD_OUTGOING2PIPE,    L"Add outgoing dendrite"       },
+		{ IDD_ADD_SIGNAL,           L"New EEG sensor" 			   },
+		{ IDM_ALIGN_NOBS,           L"Align selected objects"      },
+		{ IDD_APPEND_INPUT_NEURON,  L"Add input neuron"            },
+		{ IDD_APPEND_OUTPUT_NEURON, L"Add output neuron"           },
+		{ IDD_ARROWS_OFF,           L"Arrows off"                  },
+		{ IDD_ARROWS_ON,            L"Arrows on"                   },
+		{ IDM_COPY_SELECTION,       L"Copy selection"              },
+		{ IDM_DELETE_SELECTION,     L"Delete selected objects"     },
+		{ IDD_DELETE_NOB,           L"Delete"                      },
+		{ IDM_DESELECT_ALL,         L"Deselect all"                },
+		{ IDM_DESELECT_NOB,         L"Deselect"                    },
+		{ IDD_DISCONNECT,           L"Disconnect"                  },
+		{ IDD_SPLIT_NEURON,         L"Split (make I/O neurons)"    },
+		{ IDD_SPLIT_CONNECTOR,      L"Split (make I/O connectors)" },
+		{ IDD_INSERT_KNOT,          L"Insert knot"                 },
+		{ IDD_INSERT_NEURON,        L"Insert neuron"               },
+		{ IDM_MAKE_CONNECTOR,       L"Make connector"              },
+		{ IDD_NEW_INPUT_NEURON,     L"New input neuron" 		   },
+		{ IDD_NEW_OUTPUT_NEURON,    L"New output neuron"		   },
+		{ IDD_PULSE_RATE,           L"Pulse rate"                  },
+		{ IDM_SELECT_NOB,           L"Select"                      },
+		{ IDM_SELECT_SUBTREE,       L"Select subtree"              },
+		{ IDM_DISC_CONNECTOR,       L"Disconnect (make neurons)"   },
+		{ IDD_STOP_ON_TRIGGER,      L"Stop on trigger on/off"      },
+		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"               }
 	};
 	AppendMenu( hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand) );
 }
@@ -168,7 +168,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case NobType::Value::closedConnector:
-		appendMenu( hPopupMenu, IDD_UNPLUG );        
+		appendMenu( hPopupMenu, IDD_SPLIT_CONNECTOR );        
 		appendMenu( hPopupMenu, IDM_DISC_CONNECTOR );        
 		break;
 
@@ -287,7 +287,7 @@ bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void MainWindow::setNoTarget()
 {
-	m_nobTarget = NO_NOB;
+	m_nobTarget   = NO_NOB;
 	m_bTargetFits = false;
 }
 
@@ -295,23 +295,26 @@ void MainWindow::setTargetNob()
 {
 	m_nobTarget = m_pNMRI->FindNobAt
 	(
-		m_pNMRI->GetNobPos( m_nobHighlighted ),
-		[&](Nob const & s) { return m_pNMRI->IsConnectionCandidate(s.GetId(), m_nobHighlighted); }
+		m_pNMRI->GetNobPos(m_nobHighlighted),
+		[&](Nob const & s) 
+		{ 
+			return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); 
+		}
 	);
 	m_bTargetFits = IsDefined(m_nobTarget) && m_pNMRI->CanConnectTo(m_nobHighlighted, m_nobTarget); 
 }
 
-void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
+void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	if ( m_pCursorPosObservable )
-		m_pCursorPosObservable->NotifyAll( false );
+		m_pCursorPosObservable->NotifyAll(false);
 
-	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
 
 	if (wParam == 0)                     // no mouse buttons or special keyboard keys pressed
 	{
-		setHighlightedNob( umCrsrPos );
+		setHighlightedNob(umCrsrPos);
 		m_ptLast.Set2Null();             // make m_ptLast invalid
 		return;
 	}

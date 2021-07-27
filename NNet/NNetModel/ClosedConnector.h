@@ -60,11 +60,9 @@ public:
 
 	size_t const Size() const { return m_list.size(); };
 
-	inline static wchar_t const SEPARATOR     { L':' };
-	inline static wchar_t const OPEN_BRACKET  { L'{' };
-	inline static wchar_t const CLOSE_BRACKET { L'}' };
-
 	vector<Neuron *> const & GetNeurons() const { return m_list; }
+
+	friend wostream & operator<< (wostream &, ClosedConnector const &);
 
 private:
 	vector<Neuron *> m_list{};

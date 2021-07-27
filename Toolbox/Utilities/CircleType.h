@@ -81,11 +81,11 @@ public:
 
     friend wostream & operator<< ( wostream & out, CircleType const & param )
     {
-        out << OPEN_BRACKET 
+        out << CircleType::OPEN_BRACKET 
             << param.m_position 
-            << SEPARATOR 
+            << CircleType::SEPARATOR 
             << param.m_radius.GetValue()
-            << CLOSE_BRACKET;
+            << CircleType::CLOSE_BRACKET;
         return out;
     }
 

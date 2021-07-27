@@ -168,48 +168,48 @@ private:
         }
     }
 
-    IoNeuronList createNobPtrList(Script & script) const 
-    {
-        IoNeuronList list;
-        script.ScrReadSpecial( Connector::OPEN_BRACKET );
-        int const iNrOfElements { script.ScrReadInt() };
-        script.ScrReadSpecial( Connector::SEPARATOR );
-        for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
-        {
-            NobId      const id        { script.ScrReadInt() };
-            IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
-            if ( ! pIoNeuron )
-                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found" ));
-            list.Add(pIoNeuron);
-        }
-        script.ScrReadSpecial( Connector::CLOSE_BRACKET );
-        list.AlignDirection();
-        return move(list);
-    }
-
-    UPNob createConnector(Script & script) const 
-    {
-        unique_ptr<Connector> upConnector { make_unique<Connector>(move(createNobPtrList(script))) };
-        upConnector->AlignDirection();
-        return move(upConnector);
-    }
-
     UPNob createClosedConnector(Script & script) const 
     {
         unique_ptr<ClosedConnector> upClosedConnector { make_unique<ClosedConnector>() };
-        script.ScrReadSpecial( Connector::OPEN_BRACKET );
+        script.ScrReadSpecial( IoNeuronList::OPEN_BRACKET );
         int const iNrOfElements { script.ScrReadInt() };
-        script.ScrReadSpecial( Connector::SEPARATOR );
-        for (int iElem { 0 }; iElem < iNrOfElements; ++iElem)
+        script.ScrReadSpecial( IoNeuronList::NR_SEPARATOR );
+        for (int iElem { 0 };;)
         {
             NobId    const id      { script.ScrReadInt() };
             Neuron * const pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
             if ( ! pNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
             upClosedConnector->Push(pNeuron);
+            if (++iElem == iNrOfElements)
+                break;
+            script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
         }
-        script.ScrReadSpecial( Connector::CLOSE_BRACKET );
+        script.ScrReadSpecial( IoNeuronList::CLOSE_BRACKET );
         return move(upClosedConnector);
+    }
+
+    UPNob createConnector(Script & script) const 
+    {
+        unique_ptr<IoNeuronList> upIoNeuronList { make_unique<IoNeuronList>() };
+        script.ScrReadSpecial(IoNeuronList::OPEN_BRACKET);
+        int const iNrOfElements { script.ScrReadInt() };
+        script.ScrReadSpecial(IoNeuronList::NR_SEPARATOR);
+        for (int iElem { 0 };;)
+        {
+            NobId      const id        { script.ScrReadInt() };
+            IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
+            if ( ! pIoNeuron )
+                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found" ));
+            upIoNeuronList->Add(pIoNeuron);
+            if (++iElem == iNrOfElements)
+                break;
+            script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
+        }
+        script.ScrReadSpecial(IoNeuronList::CLOSE_BRACKET);
+        unique_ptr<Connector> upConnector { make_unique<Connector>(move(upIoNeuronList)) };
+        upConnector->AlignDirection();
+        return move(upConnector);
     }
 };
 

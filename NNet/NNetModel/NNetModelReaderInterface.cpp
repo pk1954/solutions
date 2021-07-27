@@ -105,6 +105,21 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 	return true;
 }
 
+bool const NNetModelReaderInterface::IsConnectionCandidateX(NobId const idSrc, NobId const idDst) const
+{
+	if (idSrc == idDst)
+		return false; 
+	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
+		return false;
+	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
+	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
+	if ( (typeSrc == NobType::Value::connector) != (typeDst == NobType::Value::connector) )
+		return false;
+	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
+		return false;
+	return true;
+}
+
 bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst) const
 {
 	assert(idSrc != idDst);
@@ -224,12 +239,12 @@ bool const NNetModelReaderInterface::isConnectedToPipe( NobId const idNob, NobId
 
 NobId const NNetModelReaderInterface::FindNobAt( MicroMeterPnt const & umPnt, NobCrit const & crit ) const
 {
-	return m_pModel->FindNobAt( umPnt, crit );
+	return m_pModel->FindNobAt(umPnt, crit);
 }
 
 void NNetModelReaderInterface::DrawExterior
 ( 
-	NobId     const   id,
+	NobId       const   id,
 	DrawContext const & context,
 	tHighlight  const   type
 ) const

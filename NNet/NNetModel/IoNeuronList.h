@@ -18,6 +18,7 @@ class IoNeuronList
 public:
 
 	IoNeuronList() {}
+	IoNeuronList(IoNeuronList const & src) { m_list = src.m_list; }
 	virtual ~IoNeuronList() {}
 
 	bool operator==(IoNeuronList const &) const;
@@ -56,14 +57,14 @@ public:
 
 	void       SortAccToDistFromLine(MicroMeterLine const &);
 	void       AlignDirection();
-	void       Link        (Nob2NobFunc const &);
+	void       Link        (Nob2NobFunc    const &);
 	void       Expand      (MicroMeterRect       &) const;
 	bool const IsIncludedIn(MicroMeterRect const &) const; 
 	bool const Includes    (MicroMeterPnt  const &) const;
 	void       RotateNob   (MicroMeterPnt  const &, Radian const);
 	void       MoveNob     (MicroMeterPnt  const &);
-	void       DrawExterior(DrawContext const &, tHighlight const) const;
-	void       DrawInterior(DrawContext const &, tHighlight const) const;
+	void       DrawExterior(DrawContext    const &, tHighlight const) const;
+	void       DrawInterior(DrawContext    const &, tHighlight const) const;
 	void       Prepare();
 	bool const CompStep();
 	void       Recalc();
@@ -71,11 +72,12 @@ public:
 	void       ClearParentPointers();
 	void       SelectAll(bool const);
 
-	inline static wchar_t const OPEN_BRACKET  { L'(' };
-	inline static wchar_t const SEPARATOR     { L',' };
-	inline static wchar_t const CLOSE_BRACKET { L')' };
-
 	friend wostream & operator<< (wostream &, IoNeuronList const &);
+
+	inline static wchar_t const OPEN_BRACKET  { L'{' };
+	inline static wchar_t const NR_SEPARATOR  { L':' };
+	inline static wchar_t const ID_SEPARATOR  { L',' };
+	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
 private:
 	vector<IoNeuron *> m_list;

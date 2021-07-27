@@ -121,15 +121,11 @@ NobId const NNetModel::FindNobAt
 {	
 	NobId idRes { NO_NOB };
 
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsClosedConnector() && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyConnector() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsConnector() && crit(s); });
-	if ( IsDefined(idRes) )
-		return idRes;
-
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyNeuron() && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyNeuron() && (!s.HasParentNob()) && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 

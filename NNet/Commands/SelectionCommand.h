@@ -17,19 +17,19 @@ public:
 	{
 		if ( ! m_bInitialized )	
 		{ 
-			m_selectedNobs = nmwi.GetSelection();
-			m_bInitialized = true;
+			m_upSelectedNobs = move(nmwi.GetSelection());
+			m_bInitialized   = true;
 		}
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
 		nmwi.GetUPNobs().DeselectAllNobs();
-		for (auto it : m_selectedNobs){ it->Select(true); };
+		for (auto it : *m_upSelectedNobs){ it->Select(true); };
 	}
 
 protected:
-	vector<Nob *> m_selectedNobs;
-	bool          m_bInitialized { false };
+	unique_ptr<vector<Nob *>> m_upSelectedNobs;
+	bool                      m_bInitialized { false };
 };
 

@@ -34,10 +34,10 @@ public:
     void        ToggleStopOnTrigger(NobId const);
     Nob * const GetNob(NobId const);
 
-    UPNobList     & GetUPNobs()      { return m_pModel->GetUPNobs(); }
-    Param         & GetParams()      { return m_pModel->GetParams(); }
-    MonitorData   & GetMonitorData() { return m_pModel->GetMonitorData(); }
-    vector<Nob *>   GetSelection()   { return move(GetUPNobs().GetAllSelected()); }
+    UPNobList               & GetUPNobs()      { return m_pModel->GetUPNobs(); }
+    Param                   & GetParams()      { return m_pModel->GetParams(); }
+    MonitorData             & GetMonitorData() { return m_pModel->GetMonitorData(); }
+    unique_ptr<vector<Nob *>> GetSelection()   { return move(GetUPNobs().GetAllSelected()); }
 
     void CheckModel() { m_pModel->CheckModel(); }
     void ResetModel() { m_pModel->ResetModel(); }

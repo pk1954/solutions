@@ -39,16 +39,14 @@ public:
 
         Connector    const & inputConnector  { m_connectorAnimated.IsInputNob () ? m_connectorAnimated : m_connectorTarget };
         Connector    const & outputConnector { m_connectorAnimated.IsOutputNob() ? m_connectorAnimated : m_connectorTarget };
-        IoNeuronList const & inputNeurons    { inputConnector .GetIoNeurons() };
-        IoNeuronList const & outputNeurons   { outputConnector.GetIoNeurons() };
         m_upClosedConnector = make_unique<ClosedConnector>();
         m_size              = m_connectorAnimated.Size();
         for (size_t i = 0; i < m_size; ++i)
         {
-            MicroMeterPnt const umPos    { m_connectorTarget.GetIoNeurons().GetElem(i).GetPos() };
+            MicroMeterPnt const umPos    { m_connectorTarget.GetElem(i).GetPos() };
             unique_ptr<Neuron>  upNeuron { make_unique<Neuron>(umPos) };
-            upNeuron->SetIncoming(outputNeurons.GetElem(i));
-            upNeuron->SetOutgoing(inputNeurons .GetElem(i));
+            upNeuron->SetIncoming(outputConnector.GetElem(i));
+            upNeuron->SetOutgoing(inputConnector .GetElem(i));
             m_upClosedConnector->Push(upNeuron.get());
             m_upNeurons.push_back(move(upNeuron));
         }
@@ -70,8 +68,8 @@ public:
         m_upNobTarget   = m_nmwi.RemoveFromModel<Connector>(m_connectorTarget  );
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upIoNeuronsAnimated[i] = m_nmwi.RemoveFromModel<IoNeuron>(m_connectorAnimated.GetIoNeurons().GetElem(i));
-            m_upIoNeuronsTarget  [i] = m_nmwi.RemoveFromModel<IoNeuron>(m_connectorTarget  .GetIoNeurons().GetElem(i));
+            m_upIoNeuronsAnimated[i] = m_nmwi.RemoveFromModel<IoNeuron>(m_connectorAnimated.GetElem(i));
+            m_upIoNeuronsTarget  [i] = m_nmwi.RemoveFromModel<IoNeuron>(m_connectorTarget  .GetElem(i));
         }
 
         if (targetReachedFunc)

@@ -23,7 +23,7 @@ using std::fill;
 using std::wcout;
 using std::endl;
 
-Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
+Pipe::Pipe(BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd)
   :	Nob( NobType::Value::pipe ),
 	m_pKnotStart( pKnotStart ),
 	m_pKnotEnd  ( pKnotEnd )
@@ -32,7 +32,7 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 	Recalc();
 }
 
-Pipe::Pipe( Pipe const & src ) :  // copy constructor
+Pipe::Pipe(Pipe const & src) :  // copy constructor
 	Nob         ( src ),
     m_pKnotStart( nullptr ),
 	m_pKnotEnd  ( nullptr ),

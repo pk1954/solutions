@@ -167,3 +167,17 @@ ClosedConnector * Cast2ClosedConnector(Nob * pNob)
     assert( pNob->IsClosedConnector() );
     return static_cast<ClosedConnector *>(pNob);
 }
+
+wostream & operator<< (wostream & out, ClosedConnector const & v)
+{
+    out << IoNeuronList::OPEN_BRACKET << v.m_list.size() << IoNeuronList::NR_SEPARATOR;
+    for ( auto & it: v.m_list )
+    {
+        out << it->GetId();
+        if ( &it == &v.m_list.back() )
+            break;
+        out << IoNeuronList::ID_SEPARATOR;
+    }
+    out << IoNeuronList::CLOSE_BRACKET;
+    return out;
+}

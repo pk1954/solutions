@@ -53,23 +53,24 @@ public:
 	Nob        * const ReplaceNob        (UPNob);	
 	void               SetNob2Slot       (NobId const, UPNob); // only for special situations
 	void               SetNob2Slot       (UPNob);              // only for special situations
-	void               CheckNobList      ()                                       const;
-	void               Dump              ()                                       const;
-	void               LinkNob           (Nob const &, Nob2NobFunc const &)       const;
-	bool         const AnyNobsSelected   ()                                       const;
-	void               CallErrorHandler  (NobId   const)                          const;
-	unsigned int const CountInSelection  (NobType const)                          const;
-	unsigned int const GetCounter        (NobType const)                          const;
-	unsigned int const GetCounter        ()                                       const;
+	void               CheckNobList      ()                                     const;
+	void               Dump              ()                                     const;
+	void               LinkNob           (Nob const &, Nob2NobFunc const &)     const;
+	bool         const AnyNobsSelected   ()                                     const;
+	void               CallErrorHandler  (NobId   const)                        const;
+	unsigned int const CountInSelection  (NobType const)                        const;
+	unsigned int const GetCounter        (NobType const)                        const;
+	unsigned int const GetCounter        ()                                     const;
 	NobId        const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
-	bool         const Apply2AllB        (                       NobCrit const &) const;
-	void               Apply2All         (NobFuncC const & )                      const;
+	bool         const Apply2AllB        (                     NobCrit const &) const;
+	void               Apply2All         (NobFuncC const & )                    const;
 	void               Apply2All         (NobFunc  const & );
-	void               Apply2AllSelected (NobType const, NobFuncC const &)        const;
+	void               Apply2AllSelected (NobType const, NobFuncC const &)      const;
 	void               Apply2AllSelected (NobType const, NobFunc  const &);
 
-	NobIdList Append     (UPNobList &);
-	UPNobList ExtractNobs(NobIdList);
+	NobIdList                 Append     (UPNobList &);
+	UPNobList                 ExtractNobs(NobIdList);
+	unique_ptr<vector<Nob *>> GetAllSelected();
 
 	enum class SelMode { allNobs,	selectedNobs };
 	MicroMeterRect const CalcEnclosingRect(SelMode const = SelMode::allNobs) const;
@@ -144,31 +145,6 @@ public:
 		return bResult;
 	}
 
-	template <Nob_t T>
-	IoNeuronList GetAll(function<bool(T &)> const & crit)
-	{
-		IoNeuronList nobPtrList;
-		Apply2All<T>( [&](T &s)	{ if (crit(s)) nobPtrList.Add(&s); } );
-		return move(nobPtrList);
-	}
-
-	vector<Nob *> GetAllSelected()
-	{
-		vector<Nob *> nobs;
-		for (auto & it : m_list)
-		{
-			if (it && it->IsSelected()) 
-				nobs.push_back(it.get());
-		}
-		return nobs;
-	}
-
-	template <Nob_t T>
-	IoNeuronList GetAllSelected(NobType const nobType)
-	{
-		return move(GetAll<T>( [&](T &s) { return s.IsSelected() && s.HasType(nobType); } ));
-	}
-
 private:
 
 	unsigned int const & counter(NobType const) const;
@@ -197,4 +173,4 @@ private:
 UPNob ShallowCopy(Nob const &);
 
 template <Nob_t T>
-UPNob Copy(Nob const & nob) { return make_unique<T>( static_cast<T const &>(nob) ); }
+UPNob Copy(Nob const & nob) { return make_unique<T>(static_cast<T const &>(nob)); }

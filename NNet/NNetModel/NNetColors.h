@@ -32,8 +32,6 @@ public:
 	inline static D2D1::ColorF const EXT_TARGET       { 0.0f, 0.6f, 0.0f, 1.0f };  // dark green
 	inline static D2D1::ColorF const INT_TARGET_FIT   { 0.0f, 1.0f, 0.0f, 1.0f };  // green
 	inline static D2D1::ColorF const INT_TARGET_NOFIT { 1.0f, 0.0f, 0.0f, 1.0f };  // red
-//	inline static D2D1::ColorF const EXT_CONNECTOR    { 0.75f, 0.0f, 0.75f, 1.0f };
-	inline static D2D1::ColorF const EXT_CONNECTOR    { EXT_NORMAL };
 
 	// color used when neurons trigger
 	inline static D2D1::ColorF const INT_TRIGGER    { 1.0f, 1.0f, 0.0f, 1.0f };

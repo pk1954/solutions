@@ -167,7 +167,7 @@ void NNetModelCommands::SplitNeuron( NobId const id )
 	m_pCmdStack->PushCommand( make_unique<SplitNeuronCmd>(*m_pNMWI, id) );
 }
 
-void NNetModelCommands::Unplug( NobId const id )
+void NNetModelCommands::SplitClosedConnector( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;

@@ -21,10 +21,10 @@ public:
 
     bool const   IsEmpty()                            const { return m_list.empty(); }
     bool const   IsNotEmpty()                         const { return ! IsEmpty(); }
-    void         Resize(size_t const size)                  { m_list.resize(size); }
     size_t const Size  ()                             const { return m_list.size(); }
-    void         SetAt (size_t const index, NobId const id) { m_list.at(index) = id; }
     NobId  const Get   (size_t const index)           const { return m_list.at(index); }
+    void         Resize(size_t const size)                  { m_list.resize(size); }
+    void         SetAt (size_t const index, NobId const id) { m_list.at(index) = id; }
     void         Push  (NobId  const   id  )                { m_list.push_back(id); }
     void         Push  (Nob    const &);
     NobId  const Pop   ();

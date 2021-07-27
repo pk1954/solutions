@@ -272,9 +272,9 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->SplitNeuron( m_pMainWindow->GetHighlightedNobId() );
         break;
 
-    case IDD_UNPLUG:
+    case IDD_SPLIT_CONNECTOR:
         m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->Unplug( m_pMainWindow->GetHighlightedNobId() );
+        m_pModelCommands->SplitClosedConnector( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDM_DISC_CONNECTOR:
