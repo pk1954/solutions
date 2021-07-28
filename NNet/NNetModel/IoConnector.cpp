@@ -10,14 +10,14 @@
 #include "IoConnector.h"
 
 IoConnector::IoConnector(NobIoMode const ioMode)
-  :	Nob(NobType::Value::connector),
+  :	Nob(NobType::Value::ioConnector),
     m_IoMode(ioMode)
 {
     m_upList = make_unique<IoNeuronList>();
 }
 
 IoConnector::IoConnector(unique_ptr<IoNeuronList> upSrc)
-  :	Nob(NobType::Value::connector),
+  :	Nob(NobType::Value::ioConnector),
     m_IoMode(upSrc->GetFirst().GetIoMode())
 {
     m_upList = move(upSrc);
@@ -149,7 +149,6 @@ void IoConnector::Apply2All(function<void(IoNeuron const &)> const & func) const
 void IoConnector::SetDir(Radian const radianNew)
 {
     m_upList->Apply2All([&](IoNeuron & n){ n.SetDir(radianNew); } );
-    //    RotateNob(GetPos(), radianNew - GetDir());
 }
 
 void IoConnector::SetPos(MicroMeterPnt const & umPos)

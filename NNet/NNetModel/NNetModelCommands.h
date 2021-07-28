@@ -62,7 +62,8 @@ public:
     void DeleteNob           ( NobId const );
     void DeleteSignal        ( SignalId const );
     void DeleteTrack         ( TrackNr const );
-    void Disconnect          ( NobId const );
+    void DiscBaseKnot        ( NobId const );
+    void DiscIoConnector     ( NobId const );
     void DiscClosedConnector ( NobId const );
     void InsertKnot          ( NobId const, MicroMeterPnt const & );
     void InsertNeuron        ( NobId const, MicroMeterPnt const & );

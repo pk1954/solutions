@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "DiscConnCmd.h"
+#include "DiscIoConnectorCmd.h"
 #include "Command.h"
 #include "NobId.h"
 #include "ClosedConnector.h"
@@ -20,15 +20,14 @@ public:
         NNetModelWriterInterface & nmwi,
         Nob                      & nob
     )
-      : m_closedIoConnector(*Cast2ClosedConnector(&nob))
-    {
-    }
+      : m_closedConnector(*Cast2ClosedConnector(&nob))
+    {}
 
     ~DeleteClosedConnCmd() {}
 
     virtual void Do(NNetModelWriterInterface & nmwi)
     {
-        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedIoConnector);
+        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
     }
 
@@ -40,6 +39,6 @@ public:
 
 private:
 
-    ClosedConnector           & m_closedIoConnector;
+    ClosedConnector           & m_closedConnector;
     unique_ptr<ClosedConnector> m_upClosedConnector {};
 };

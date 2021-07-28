@@ -117,7 +117,7 @@
     <ClInclude Include="InsertTrackCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiscConnCmd.h">
+    <ClInclude Include="DiscIoConnectorCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SetNobCommand.h">

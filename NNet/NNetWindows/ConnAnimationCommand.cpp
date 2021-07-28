@@ -59,7 +59,7 @@ ConnAnimationCommand::ConnAnimationCommand
 
 NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
 {
-    unsigned int uiNrOfIoConnectors { nobs.CountInSelection( NobType::Value::connector ) };
+    unsigned int uiNrOfIoConnectors { nobs.CountInSelection(NobType::Value::ioConnector) };
 
     if ( uiNrOfIoConnectors > 0 )
         return NobType::Value::undefined;

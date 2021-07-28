@@ -185,11 +185,11 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
             writePipe( out, static_cast<Pipe const &>(nob) );
             break;
 
-        case NobType::Value::connector:
+        case NobType::Value::ioConnector:
             out << static_cast<IoConnector const &>(nob);
             break;
 
-        case NobType::Value::closedIoConnector:
+        case NobType::Value::closedConnector:
             out << static_cast<ClosedConnector const &>(nob);
             break;
 

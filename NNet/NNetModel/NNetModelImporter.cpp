@@ -84,10 +84,10 @@ private:
         { 
             switch ( nobType.GetValue() )
             {
-            case NobType::Value::closedIoConnector:
+            case NobType::Value::closedConnector:
                 upNob = createClosedConnector(script);
                 break;
-            case NobType::Value::connector:
+            case NobType::Value::ioConnector:
                  upNob = createIoConnector(script);
                  break;
             case NobType::Value::inputNeuron:

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "DeletePipeCommand.h"
 #include "DeleteClosedConnCmd.h"
-#include "DiscConnCmd.h"
+#include "DiscIoConnectorCmd.h"
 #include "SplitNeuronCmd.h"
 #include "DiscBaseKnotCmd.h"
 #include "NobType.h"
@@ -36,42 +36,14 @@ unique_ptr<Command> MakeDeleteCommand
 		break;
 	case NobType::Value::knot:
 		break;
-	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, * pNob, true);
+	case NobType::Value::ioConnector:
+		upCmd = make_unique<DiscIoConnectorCmd>(nmwi, * pNob, true);
 		break;
-	case NobType::Value::closedIoConnector:
+	case NobType::Value::closedConnector:
 		upCmd = make_unique<DeleteClosedConnCmd>(nmwi, * pNob);
 		break;
 	default:
 		upCmd = make_unique<DiscBaseKnotCmd>(* pNob, true);
-	}
-	return move(upCmd);
-}
-
-unique_ptr<Command> MakeDisconnectCommand
-(
-	NNetModelWriterInterface & nmwi,
-	NobId                const id
-)
-{
-	Nob * pNob { nmwi.GetNob(id) };
-	if ( ! pNob )
-		return nullptr;
-
-	unique_ptr<Command> upCmd;
-	switch ( pNob->GetNobType().GetValue() )
-	{
-	case NobType::Value::pipe:
-		assert( false );
-		break;
-	case NobType::Value::connector:
-		upCmd = make_unique<DiscConnCmd>(nmwi, *pNob, false);
-		break;
-	case NobType::Value::closedIoConnector:
-		assert(false);
-		break;
-	default:
-		upCmd = make_unique<DiscBaseKnotCmd>(*pNob, false);
 	}
 	return move(upCmd);
 }

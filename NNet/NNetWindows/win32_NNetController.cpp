@@ -262,9 +262,19 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->DeleteSelection();
         break;
 
-    case IDD_DISCONNECT:
+    case IDD_DISC_BASEKNOT:
         m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->Disconnect( m_pMainWindow->GetHighlightedNobId() );
+        m_pModelCommands->DiscBaseKnot( m_pMainWindow->GetHighlightedNobId() );
+        break;
+
+    case IDD_DISC_IOCONNECTOR:
+        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
+        m_pModelCommands->DiscIoConnector( m_pMainWindow->GetHighlightedNobId() );
+        break;
+
+    case IDM_DISC_CLOSED_CONNECTOR:
+        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
+        m_pModelCommands->DiscClosedConnector( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_SPLIT_NEURON:
@@ -272,14 +282,9 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->SplitNeuron( m_pMainWindow->GetHighlightedNobId() );
         break;
 
-    case IDD_SPLIT_CONNECTOR:
+    case IDM_SPLIT_CLOSED_CONNECTOR:
         m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
         m_pModelCommands->SplitClosedConnector( m_pMainWindow->GetHighlightedNobId() );
-        break;
-
-    case IDM_DISC_CONNECTOR:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->DiscClosedConnector( m_pMainWindow->GetHighlightedNobId() );
         break;
 
     case IDD_INSERT_KNOT:

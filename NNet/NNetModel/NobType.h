@@ -19,8 +19,8 @@ class NobType
 public:
 	enum class Value
 	{
-		closedIoConnector,
-		connector,
+		closedConnector,
+		ioConnector,
 		inputNeuron,
 		outputNeuron,
 		neuron,
@@ -28,7 +28,7 @@ public:
 		pipe,
 		undefined,
 		nobTypeLast  = pipe,
-		nobTypeFirst = closedIoConnector
+		nobTypeFirst = closedConnector
 	};
 
 	static size_t const NR_OF_NOB_TYPES { static_cast<size_t>(Value::nobTypeLast) + 1 };
@@ -72,8 +72,8 @@ public:
 	bool const IsNeuronType         () const { return m_value == Value::neuron;          }
 	bool const IsInputNeuronType    () const { return m_value == Value::inputNeuron;     }
 	bool const IsOutputNeuronType   () const { return m_value == Value::outputNeuron;    }
-	bool const IsIoConnectorType      () const { return m_value == Value::connector;       }
-	bool const IsClosedConnectorType() const { return m_value == Value::closedIoConnector; }
+	bool const IsIoConnectorType    () const { return m_value == Value::ioConnector;       }
+	bool const IsClosedConnectorType() const { return m_value == Value::closedConnector; }
 
 	bool const IsAnyIoConnectorType() const
 	{

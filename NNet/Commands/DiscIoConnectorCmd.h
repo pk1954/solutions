@@ -1,4 +1,4 @@
-// DiscConnCmd.h
+// DiscIoConnectorCmd.h
 //
 // Commands
 
@@ -17,10 +17,10 @@
 
 using std::unique_ptr;
 
-class DiscConnCmd : public Command
+class DiscIoConnectorCmd : public Command
 {
 public:
-    DiscConnCmd
+    DiscIoConnectorCmd
     (
         NNetModelWriterInterface & nmwi,
         Nob                      & nob,
@@ -31,10 +31,10 @@ public:
     {
         m_cmdStack.Initialize(&nmwi, nullptr);
         if (m_bRemove)
-            m_connector.Apply2All([&](Nob const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
+            m_connector.Apply2All([&](IoNeuron const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
     }
 
-    ~DiscConnCmd() {}
+    ~DiscIoConnectorCmd() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
@@ -54,8 +54,8 @@ public:
 
 private:
 
-    bool            const m_bRemove;
-    CommandStack          m_cmdStack    {};
+    bool              const m_bRemove;
+    CommandStack            m_cmdStack    {};
     unique_ptr<IoConnector> m_upIoConnector {};  
     IoConnector     const & m_connector;
 };

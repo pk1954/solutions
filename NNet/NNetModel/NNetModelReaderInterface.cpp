@@ -98,9 +98,9 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 		return false;
 	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
 	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
-	if ( (typeSrc == NobType::Value::connector) != (typeDst == NobType::Value::connector) )
+	if ( (typeSrc == NobType::Value::ioConnector) != (typeDst == NobType::Value::ioConnector) )
 		return false;
-	if ( (typeSrc == NobType::Value::closedIoConnector) || (typeDst == NobType::Value::closedIoConnector) )
+	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
 		return false;
 	return true;
 }
@@ -113,9 +113,9 @@ bool const NNetModelReaderInterface::IsConnectionCandidateX(NobId const idSrc, N
 		return false;
 	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
 	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
-	if ( (typeSrc == NobType::Value::connector) != (typeDst == NobType::Value::connector) )
+	if ( (typeSrc == NobType::Value::ioConnector) != (typeDst == NobType::Value::ioConnector) )
 		return false;
-	if ( (typeSrc == NobType::Value::closedIoConnector) || (typeDst == NobType::Value::closedIoConnector) )
+	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
 		return false;
 	return true;
 }
@@ -132,8 +132,8 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 
 	switch (typeSrc)
 	{
-	case NobType::Value::connector:
-		if (typeDst == NobType::Value::connector)
+	case NobType::Value::ioConnector:
+		if (typeDst == NobType::Value::ioConnector)
 		{
 			IoConnector const & connSrc { * m_pModel->GetNobConstPtr<IoConnector const *>(idSrc) }; 
 			IoConnector const & connDst { * m_pModel->GetNobConstPtr<IoConnector const *>(idDst) }; 

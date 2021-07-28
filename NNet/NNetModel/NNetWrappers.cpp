@@ -175,13 +175,33 @@ public:
     }
 };
 
-class WrapDisconnect: public Script_Functor
+class WrapDiscBaseKnot: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         NobId const id { script.ScrReadLong() };
-        m_pCommands->Disconnect( id );
+        m_pCommands->DiscBaseKnot( id );
+    }
+};
+
+class WrapDiscIoConnector: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        NobId const id { script.ScrReadLong() };
+        m_pCommands->DiscIoConnector( id );
+    }
+};
+
+class WrapDiscClosedConnector: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        NobId const id { script.ScrReadLong() };
+        m_pCommands->DiscClosedConnector( id );
     }
 };
 
@@ -369,7 +389,9 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(CreateInitialNobs);
     DEF_FUNC(DeleteSelection);    
     DEF_FUNC(DeleteNob);        
-    DEF_FUNC(Disconnect);         
+    DEF_FUNC(DiscBaseKnot);
+    DEF_FUNC(DiscIoConnector);         
+    DEF_FUNC(DiscClosedConnector);         
     DEF_FUNC(InsertNeuron);       
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveNob);          

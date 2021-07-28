@@ -93,7 +93,7 @@
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DeleteTrackCommand.h" />
     <ClInclude Include="DiscBaseKnotCmd.h" />
-    <ClInclude Include="DiscConnCmd.h" />
+    <ClInclude Include="DiscIoConnectorCmd.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MoveNobCommand.h" />

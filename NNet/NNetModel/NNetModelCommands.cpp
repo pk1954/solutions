@@ -19,7 +19,9 @@
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
+#include "DiscBaseKnotCmd.h"
 #include "DiscClosedConnCmd.h"
+#include "DiscIoConnectorCmd.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
 #include "MoveNobCommand.h"
@@ -153,11 +155,24 @@ void NNetModelCommands::DeleteSelection()
 	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>(*m_pNMWI) );
 }
 
-void NNetModelCommands::Disconnect( NobId const id )
+void NNetModelCommands::DiscIoConnector(NobId const id)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand( move( MakeDisconnectCommand(*m_pNMWI, id) ) );
+	Nob * pNob { m_pNMWI->GetNob(id) };
+	if ( ! pNob )
+		return;
+	m_pCmdStack->PushCommand( make_unique<DiscIoConnectorCmd>(*m_pNMWI, *pNob, false) );
+}
+
+void NNetModelCommands::DiscBaseKnot(NobId const id)
+{
+	if ( IsTraceOn() )
+		TraceStream() << __func__ << L" " << id << endl;
+	Nob * pNob { m_pNMWI->GetNob(id) };
+	if ( ! pNob )
+		return;
+	m_pCmdStack->PushCommand( make_unique<DiscBaseKnotCmd>(*pNob, false) );
 }
 
 void NNetModelCommands::SplitNeuron( NobId const id )

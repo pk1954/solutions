@@ -22,7 +22,7 @@ class IoConnector: public Nob
 public:
 
 	static bool    const TypeFits(NobType const type) { return type.IsIoConnectorType(); }
-	static NobType const GetNobType()                 { return NobType::Value::connector; }
+	static NobType const GetNobType()                 { return NobType::Value::ioConnector; }
 
 	IoConnector(NobIoMode const);
 	IoConnector(unique_ptr<IoNeuronList>);

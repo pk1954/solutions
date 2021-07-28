@@ -91,7 +91,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 			);
 		}
 		break;
-	case NobType::Value::connector:
+	case NobType::Value::ioConnector:
 	{
 		upCmd = make_unique<PlugIoConnectorAnimation> 
 		(

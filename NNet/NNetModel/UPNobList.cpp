@@ -31,10 +31,10 @@ UPNob ShallowCopy( Nob const & nob )  //TODO: simplify! Better
 {
 	switch ( nob.GetNobType().GetValue() )
 	{
-	case NobType::Value::connector:
+	case NobType::Value::ioConnector:
 		return Copy<IoConnector>(nob);
 
-	case NobType::Value::closedIoConnector:
+	case NobType::Value::closedConnector:
 		return Copy<ClosedConnector>(nob);
 
 	case NobType::Value::inputNeuron:
