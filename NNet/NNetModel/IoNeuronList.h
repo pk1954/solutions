@@ -6,17 +6,74 @@
 
 #include <vector>
 #include "Nob.h"
+#include "Pipe.h"
 #include "MoreTypes.h"
+#include "IoNeuron.h"
 
 using std::vector;
 
-class IoNeuron;
+//class IoNeuron;
 class DrawContext;
+
+template <typename T>
+inline MicroMeterLine const CalcMaxDistLine(vector<T *> const & list) // find two nobs with maximum distance
+{
+	MicroMeter     maxDist { 0.0_MicroMeter };   	
+	MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
+	for (auto it1 : list)
+		for (auto it2 : list)    //TODO: optimize
+		{
+			auto const line { MicroMeterLine( it1->GetPos(), it2->GetPos() ) };
+			auto const dist { line.Length() };
+			if ( dist > maxDist )
+			{
+				maxDist = dist;
+				lineMax = line;
+			}
+		}
+	return lineMax;
+}
+
+template <BaseKnot_t T>
+MicroMeterPnt const CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & line)
+{
+	unsigned int uiLeftConnections  { 0 };
+	unsigned int uiRightConnections { 0 };
+	for (auto pBaseKnot : list)
+	{ 
+		pBaseKnot->Apply2AllInPipes
+		( 
+			[&](Pipe & pipe) 
+			{ 
+				MicroMeterPnt pnt { pipe.GetStartPoint() };
+				if ( PointToLine(line, pnt) < 0.0_MicroMeter )
+					++uiLeftConnections;
+				else
+					++uiRightConnections;
+			}
+		);
+		pBaseKnot->Apply2AllOutPipes
+		( 
+			[&](Pipe & pipe) 
+			{ 
+				MicroMeterPnt pnt { pipe.GetEndPoint() };
+				if ( PointToLine(line, pnt) < 0.0_MicroMeter )
+					++uiRightConnections;
+				else
+					++uiLeftConnections;
+			}
+		);
+	}	
+
+	MicroMeterPnt orthoVector = line.OrthoVector();
+	if (uiRightConnections < uiLeftConnections)
+		orthoVector = -orthoVector;
+	return orthoVector;
+}
 
 class IoNeuronList
 {
 public:
-
 	IoNeuronList() {}
 	IoNeuronList(IoNeuronList const & src) { m_list = src.m_list; }
 	virtual ~IoNeuronList() {}
@@ -52,8 +109,15 @@ public:
 
 	size_t const Count (NobType const nobType) const;
 
-	MicroMeterLine const CalcMaxDistLine();
-	MicroMeterPnt  const CalcOrthoVector(MicroMeterLine const &);
+	MicroMeterLine const CalcMaxDistLine() const // find two nobs with maximum distance
+	{
+		return ::CalcMaxDistLine<IoNeuron>(m_list);
+	}
+
+	MicroMeterPnt const CalcOrthoVector(MicroMeterLine const& line) const
+	{
+		return ::CalcOrthoVector<IoNeuron>(m_list, line);
+	}
 
 	void       SortAccToDistFromLine(MicroMeterLine const &);
 	void       AlignDirection();

@@ -20,11 +20,11 @@ public:
         NNetModelWriterInterface & nmwi,
         NobId                const id
     )
-      : m_closedIoConnector(*nmwi.GetNobPtr<ClosedConnector *>(id))
+      : m_closedConnector(*nmwi.GetNobPtr<ClosedConnector *>(id))
     {
         m_upInputConnector  = make_unique<IoConnector>(NobIoMode::input);
         m_upOutputConnector = make_unique<IoConnector>(NobIoMode::output);
-        for (Neuron * pNeuron : m_closedIoConnector.GetNeurons())
+        for (Neuron * pNeuron : m_closedConnector.GetNeurons())
         {
             unique_ptr<InputNeuron > upInputNeuron  { make_unique<InputNeuron >(*pNeuron) };
             m_upInputConnector->Push(upInputNeuron.get());
@@ -35,14 +35,22 @@ public:
         }
         m_upInputConnector ->SetParentPointers();
         m_upOutputConnector->SetParentPointers();
+        MicroMeterLine line     { m_closedConnector.CalcMaxDistLine() };
+        MicroMeterPnt  umPntDir { m_closedConnector.CalcOrthoVector(line).ScaledTo(NEURON_RADIUS*2.0f) };
+        Radian         radDir   { Vector2Radian(umPntDir) };
+        Degrees        degDir   { Radian2Degrees(radDir) };
+        m_upInputConnector ->SetDir(radDir);
+        m_upOutputConnector->SetDir(radDir);
+        m_upInputConnector ->MoveNob( umPntDir);
+        m_upOutputConnector->MoveNob(-umPntDir);
     }
 
     ~SplitClosedConnCmd() {}
 
     virtual void Do( NNetModelWriterInterface & nmwi )
     {
-        m_closedIoConnector.Apply2All([&](Neuron const &n){ m_upNeurons.push_back(nmwi.RemoveFromModel<Neuron>(n)); });
-        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedIoConnector);
+        m_closedConnector.Apply2All([&](Neuron const &n){ m_upNeurons.push_back(nmwi.RemoveFromModel<Neuron>(n)); });
+        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
 
         for (auto & it : m_upInputNeurons ) { nmwi.Push2Model(move(it)); }
@@ -65,7 +73,7 @@ public:
 
 private:
 
-    ClosedConnector            & m_closedIoConnector;
+    ClosedConnector            & m_closedConnector;
 
     unique_ptr<ClosedConnector>  m_upClosedConnector {};
     vector<unique_ptr<Neuron>>   m_upNeurons;              

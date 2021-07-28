@@ -18,7 +18,7 @@ public:
         m_radius()
     { }
 
-    CircleType( POS_TYPE const & pos, BASE_TYPE const radius ) 
+    CircleType(POS_TYPE const & pos, BASE_TYPE const radius)
         : m_position( pos ),
           m_radius( radius )
     {}
@@ -34,8 +34,8 @@ public:
     CircleType const operator*= (float const d) { m_radius *= d; return * this; }
     CircleType const operator/= (float const d) { m_radius /= d; return * this; }
 
-    POS_TYPE  const & GetPos() const { return m_position; }
-    BASE_TYPE const & GetRadius  () const { return m_radius; }
+    POS_TYPE  const & GetPos   () const { return m_position; }
+    BASE_TYPE const & GetRadius() const { return m_radius; }
 
     void SetPos   ( POS_TYPE  const & newPos    ) { m_position = newPos; }
     void SetRadius( BASE_TYPE const   newRadius ) { m_radius   = newRadius; }

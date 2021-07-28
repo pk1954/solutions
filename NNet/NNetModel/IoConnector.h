@@ -69,9 +69,8 @@ public:
 	MicroMeterPosDir const GetPosDir() const;
 	Radian           const GetDir()    const;
 
-	void SetDir   (Radian           const  );
-	void SetPos   (MicroMeterPnt    const &);
-	void SetPosDir(MicroMeterPosDir const &);
+	void SetDir(Radian           const  );
+	void SetPos(MicroMeterPnt    const &);
 
 	void Apply2All(function<void(IoNeuron const &)> const & func) const;
 

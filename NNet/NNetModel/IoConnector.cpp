@@ -146,15 +146,10 @@ void IoConnector::Apply2All(function<void(IoNeuron const &)> const & func) const
     m_upList->Apply2All([&](IoNeuron const & n){ func(n); } );
 }                        
 
-void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
-{
-    SetDir(umPosDir.GetDir());
-    SetPos(umPosDir.GetPos());
-}
-
 void IoConnector::SetDir(Radian const radianNew)
 {
-    RotateNob(GetPos(), radianNew - GetDir());
+    m_upList->Apply2All([&](IoNeuron & n){ n.SetDir(radianNew); } );
+    //    RotateNob(GetPos(), radianNew - GetDir());
 }
 
 void IoConnector::SetPos(MicroMeterPnt const & umPos)

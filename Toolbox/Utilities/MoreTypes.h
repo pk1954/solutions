@@ -171,7 +171,7 @@ static MicroMeterPnt const Radian2Vector(Radian const r)
 
 static Radian const Vector2Radian( MicroMeterPnt const & umPnt )
 {
-	return Radian( atan2(umPnt.GetYvalue(),umPnt.GetXvalue()) );
+	return Radian(atan2(umPnt.GetYvalue(),umPnt.GetXvalue()));
 }
 
 ////////////// Formatting /////////////////////////////////////

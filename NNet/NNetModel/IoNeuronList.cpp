@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "Pipe.h"
 #include "IoNeuron.h"
 #include "IoNeuronList.h"
 
@@ -105,60 +104,6 @@ wostream & operator<< (wostream & out, IoNeuronList const & v)
 	}
 	out << IoNeuronList::CLOSE_BRACKET;
 	return out;
-}
-
-MicroMeterLine const IoNeuronList::CalcMaxDistLine() // find two nobs with maximum distance
-{
-	MicroMeter     maxDist { 0.0_MicroMeter };   	
-	MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
-	for ( IoNeuron * it1 : m_list )
-		for ( IoNeuron * it2 : m_list )    //TODO: optimize
-		{
-			auto const line { MicroMeterLine( it1->GetPos(), it2->GetPos() ) };
-			auto const dist { line.Length() };
-			if ( dist > maxDist )
-			{
-				maxDist = dist;
-				lineMax = line;
-			}
-		}
-	return lineMax;
-}
-
-MicroMeterPnt const IoNeuronList::CalcOrthoVector(MicroMeterLine const & line)
-{
-	unsigned int uiLeftConnections  { 0 };
-	unsigned int uiRightConnections { 0 };
-	for (auto pIoNeuron : m_list)
-	{ 
-		pIoNeuron->Apply2AllInPipes
-		( 
-			[&](Pipe & pipe) 
-			{ 
-				MicroMeterPnt pnt { pipe.GetStartPoint() };
-				if ( PointToLine(line, pnt) < 0.0_MicroMeter )
-					++uiLeftConnections;
-				else
-					++uiRightConnections;
-			}
-		);
-		pIoNeuron->Apply2AllOutPipes
-		( 
-			[&](Pipe & pipe) 
-			{ 
-				MicroMeterPnt pnt { pipe.GetEndPoint() };
-				if ( PointToLine(line, pnt) < 0.0_MicroMeter )
-					++uiRightConnections;
-				else
-					++uiLeftConnections;
-			}
-		);
-	}	
-
-	MicroMeterPnt orthoVector = line.OrthoVector();
-	if ( uiRightConnections < uiLeftConnections )
-		orthoVector = -orthoVector;
-	return orthoVector;
 }
 
 void IoNeuronList::SortAccToDistFromLine(MicroMeterLine const & line)

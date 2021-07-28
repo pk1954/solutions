@@ -113,16 +113,16 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 		SetParentNob(dstFromSrc(baseKnotSrc.GetParentNob()));
 }
 
-void BaseKnot::RotateNob( MicroMeterPnt const & umPntPivot, Radian const radDelta )
+void BaseKnot::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
 	MicroMeterPnt const umPntVectorOld    { GetPos() - umPntPivot };
 	Radian        const radOld            { Vector2Radian(umPntVectorOld) };
 	Radian        const radNew            { radOld + radDelta };
 	MicroMeterPnt const umPntVectorNew    { Radian2Vector(radNew) };
 	MicroMeter    const umDistFromPivot   { Hypot(umPntVectorOld) };
-	MicroMeterPnt const umPntVectorScaled { umPntVectorNew.ScaledTo( umDistFromPivot) };
+	MicroMeterPnt const umPntVectorScaled { umPntVectorNew.ScaledTo(umDistFromPivot) };
 	MicroMeterPnt const umPntPosNew       { umPntPivot + umPntVectorScaled };
-	SetPos( umPntPosNew );
+	SetPos(umPntPosNew);
 }
 
 bool const BaseKnot::IsIncludedIn(MicroMeterRect const & umRect) const 

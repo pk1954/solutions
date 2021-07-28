@@ -8,13 +8,14 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Nob.h"
+#include "IoNeuronList.h"
 #include "NobType.h"
 
 using std::vector;
 
 class Neuron;
 class IoConnector;
-class IoNeuronList;
+//class IoNeuronList;
 
 class ClosedConnector: public Nob
 {
@@ -59,6 +60,16 @@ public:
 	void ClearParentPointers();
 
 	size_t const Size() const { return m_list.size(); };
+
+	MicroMeterLine const CalcMaxDistLine() // find two nobs with maximum distance
+	{
+		return ::CalcMaxDistLine<Neuron>(m_list);
+	}
+
+	MicroMeterPnt const CalcOrthoVector(MicroMeterLine const & line)
+	{
+		return ::CalcOrthoVector<Neuron>(m_list, line);
+	}
 
 	vector<Neuron *> const & GetNeurons() const { return m_list; }
 
