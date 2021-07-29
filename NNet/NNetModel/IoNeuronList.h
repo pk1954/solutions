@@ -75,7 +75,10 @@ class IoNeuronList
 {
 public:
 	IoNeuronList() {}
-	IoNeuronList(IoNeuronList const & src) { m_list = src.m_list; }
+	IoNeuronList(IoNeuronList const & src) 
+	{ 
+		m_list = src.m_list; 
+	}
 	virtual ~IoNeuronList() {}
 
 	bool operator==(IoNeuronList const &) const;

@@ -96,26 +96,11 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 		return false; 
 	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
 		return false;
-	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
-	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
-	if ( (typeSrc == NobType::Value::ioConnector) != (typeDst == NobType::Value::ioConnector) )
+	NobType const typeSrc { GetNobType(idSrc) };
+	NobType const typeDst { GetNobType(idDst) };
+	if ( typeSrc.IsIoConnectorType() != typeDst.IsIoConnectorType() )
 		return false;
-	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
-		return false;
-	return true;
-}
-
-bool const NNetModelReaderInterface::IsConnectionCandidateX(NobId const idSrc, NobId const idDst) const
-{
-	if (idSrc == idDst)
-		return false; 
-	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
-		return false;
-	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
-	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
-	if ( (typeSrc == NobType::Value::ioConnector) != (typeDst == NobType::Value::ioConnector) )
-		return false;
-	if ( (typeSrc == NobType::Value::closedConnector) || (typeDst == NobType::Value::closedConnector) )
+	if ( typeSrc.IsClosedConnectorType() || typeDst.IsClosedConnectorType() )
 		return false;
 	return true;
 }
@@ -132,8 +117,9 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 
 	switch (typeSrc)
 	{
-	case NobType::Value::ioConnector:
-		if (typeDst == NobType::Value::ioConnector)
+	case NobType::Value::inputConnector:
+	case NobType::Value::outputConnector:
+		if ((typeDst == NobType::Value::inputConnector)||(typeDst == NobType::Value::outputConnector))
 		{
 			IoConnector const & connSrc { * m_pModel->GetNobConstPtr<IoConnector const *>(idSrc) }; 
 			IoConnector const & connDst { * m_pModel->GetNobConstPtr<IoConnector const *>(idDst) }; 

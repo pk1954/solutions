@@ -6,13 +6,13 @@
 
 #include <vector>
 #include "BoolOp.h"
+#include "IoNeuronList.h"
 #include "MoreTypes.h"
 #include "NobType.h"
 
 using std::vector;
 using std::unique_ptr;
 
-class IoNeuronList;
 class DrawContext;
 class MicroMeterPosDir;
 class IoNeuron;
@@ -20,20 +20,16 @@ class IoNeuron;
 class IoConnector: public Nob
 {
 public:
+	static bool const TypeFits(NobType const type) { return type.IsIoConnectorType(); }
 
-	static bool    const TypeFits(NobType const type) { return type.IsIoConnectorType(); }
-	static NobType const GetNobType()                 { return NobType::Value::ioConnector; }
-
-	IoConnector(NobIoMode const);
-	IoConnector(unique_ptr<IoNeuronList>);
-	IoConnector(IoConnector const &);   // copy constructor
+	IoConnector(NobType const);
+	IoConnector(IoConnector const &);
 
 	virtual ~IoConnector() {}
 
 	virtual void Check() const;
 	virtual void Dump () const;
 
-	virtual NobIoMode     const GetIoMode() const;
 	virtual MicroMeterPnt const GetPos() const;
 
 	virtual void       DrawExterior(DrawContext    const &, tHighlight const) const;
@@ -55,10 +51,7 @@ public:
 	void               Push(IoNeuron * const);
 	IoNeuron * const   Pop();
 	IoNeuron   const & GetElem(size_t const) const;
-	size_t     const Size() const;
-
-	bool const IsInputConnector () const;
-	bool const IsOutputConnector() const;
+	size_t     const   Size() const;
 
 	void SetParentPointers();
 	void ClearParentPointers();
@@ -76,8 +69,7 @@ public:
 
 	friend wostream & operator<< (wostream &, IoConnector const &);
 
-private:
-	NobIoMode          const m_IoMode;
+protected:
 	unique_ptr<IoNeuronList> m_upList {};
 };
 

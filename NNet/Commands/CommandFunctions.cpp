@@ -36,7 +36,8 @@ unique_ptr<Command> MakeDeleteCommand
 		break;
 	case NobType::Value::knot:
 		break;
-	case NobType::Value::ioConnector:
+	case NobType::Value::inputConnector:
+	case NobType::Value::outputConnector:
 		upCmd = make_unique<DiscIoConnectorCmd>(nmwi, * pNob, true);
 		break;
 	case NobType::Value::closedConnector:

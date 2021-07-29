@@ -53,26 +53,38 @@ public:
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
-    bool const IsIoConnector( NobId const id )
+    //bool const IsIoConnector( NobId const id )
+    //{
+    //    Nob * pNob { GetNobPtr<Nob *>( id ) };
+    //    return pNob && pNob->IsIoConnector();
+    //}
+
+    bool const IsInputConnector(NobId const id)
     {
         Nob * pNob { GetNobPtr<Nob *>( id ) };
-        return pNob && pNob->IsIoConnector();
+        return pNob && pNob->IsInputConnector();
     }
 
-    bool const IsPipe( NobId const id )
+    bool const IsOutputConnector(NobId const id)
+    {
+        Nob * pNob { GetNobPtr<Nob *>( id ) };
+        return pNob && pNob->IsOutputConnector();
+    }
+
+    bool const IsPipe(NobId const id)
     {
         Nob * pNob { GetNobPtr<Nob *>( id ) };
         return pNob && pNob->IsPipe();
     }
 
-    bool const IsKnot( NobId const id )
+    bool const IsKnot(NobId const id)
     {
         Nob * pNob { GetNobPtr<Nob *>( id ) };
         return pNob && pNob->IsKnot();
     }
 
     template <Nob_t T>
-    T GetNobPtr( NobId const id ) 
+    T GetNobPtr(NobId const id) 
     {
         Nob * const pNob { GetNob( id ) };
         return (pNob && HasType<T>( * pNob )) ? static_cast<T>( pNob ) : nullptr;

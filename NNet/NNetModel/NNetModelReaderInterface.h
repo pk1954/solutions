@@ -28,7 +28,6 @@ public:
 	void CheckModel() const { m_pModel->CheckModel(); };
 
 	bool          const   IsConnectionCandidate     ( NobId const, NobId const ) const;
-	bool          const   IsConnectionCandidateX     ( NobId const, NobId const ) const;
 	bool          const   CanConnectTo              ( NobId const, NobId const ) const;
 	bool          const   IsConnectedTo             ( NobId const, NobId const ) const;
 	bool          const   IsSelected                ( NobId const ) const;

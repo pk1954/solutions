@@ -7,7 +7,8 @@
 #include "Pipe.h"
 #include "BaseKnot.h"
 #include "Neuron.h"
-#include "IoConnector.h"
+#include "InputConnector.h"
+#include "OutputConnector.h"
 #include "ClosedConnector.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
@@ -31,8 +32,11 @@ UPNob ShallowCopy( Nob const & nob )  //TODO: simplify! Better
 {
 	switch ( nob.GetNobType().GetValue() )
 	{
-	case NobType::Value::ioConnector:
-		return Copy<IoConnector>(nob);
+	case NobType::Value::inputConnector:
+		return Copy<InputConnector>(nob);
+
+	case NobType::Value::outputConnector:
+		return Copy<OutputConnector>(nob);
 
 	case NobType::Value::closedConnector:
 		return Copy<ClosedConnector>(nob);
@@ -216,8 +220,8 @@ NobId const UPNobList::FindNobAt
 		Nob * pNob = m_list[i].get();
 		if (pNob && pNob->Includes(pnt))
 		{
-			//while (pNob->HasParentNob())
-			//	pNob = pNob->GetParentNob();
+			while (pNob->HasParentNob())
+				pNob = pNob->GetParentNob();
 			if (crit(* pNob))
 				return pNob->GetId();
 		}

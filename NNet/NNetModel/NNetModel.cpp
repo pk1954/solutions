@@ -121,7 +121,7 @@ NobId const NNetModel::FindNobAt
 {	
 	NobId idRes { NO_NOB };
 
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyIoConnector() && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyConnector() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 
@@ -129,11 +129,11 @@ NobId const NNetModel::FindNobAt
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsKnot     () && crit(s); }); 	
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsKnot() && crit(s); }); 	
 	if ( IsDefined(idRes) )
 		return idRes;
 
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsPipe     () && crit(s); });
+	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsPipe() && crit(s); });
 	if ( IsDefined(idRes) )
 		return idRes;
 

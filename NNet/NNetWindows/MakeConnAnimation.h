@@ -7,7 +7,8 @@
 #include "MoreTypes.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
-#include "IoConnector.h"
+#include "InputConnector.h"
+#include "OutputConnector.h"
 #include "IoNeuronList.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
@@ -31,7 +32,10 @@ public:
       : AnimationCmd(win),
         m_nmwi(nmwi)
     {
-        m_upIoConnector = make_unique<IoConnector>(move(upList));
+        if (upList->GetFirst().IsInputNeuron())
+            m_upIoConnector = make_unique<InputConnector>(move(upList));
+        else 
+            m_upIoConnector = make_unique<OutputConnector>(move(upList));
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)
@@ -51,6 +55,6 @@ public:
 
 private:
 
-    unique_ptr<IoConnector>      m_upIoConnector {};  
+    unique_ptr<IoConnector>    m_upIoConnector {};  
     NNetModelWriterInterface & m_nmwi;
 };

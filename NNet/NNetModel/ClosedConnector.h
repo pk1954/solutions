@@ -15,14 +15,13 @@ using std::vector;
 
 class Neuron;
 class IoConnector;
-//class IoNeuronList;
 
 class ClosedConnector: public Nob
 {
 public:
 
 	static bool    const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
-	static NobType const GetNobType()                 { return NobType::Value::closedConnector; }
+//	virtual NobType const GetNobType()                 { return NobType::Value::closedConnector; }
 
 	ClosedConnector() :	Nob(NobType::Value::closedConnector) {};
 	virtual ~ClosedConnector() {}

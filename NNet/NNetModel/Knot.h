@@ -29,7 +29,7 @@ public:
 	void Check() const;
 
 	static bool    const TypeFits(NobType const type) { return type.IsKnotType(); }
-	static NobType const GetNobType() { return NobType::Value::knot; }
+//	virtual NobType const GetNobType() { return NobType::Value::knot; }
 
 	mV const GetNextOutput() const { return m_mVinputBuffer; }
 

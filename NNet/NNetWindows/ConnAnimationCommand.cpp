@@ -31,7 +31,7 @@ ConnAnimationCommand::ConnAnimationCommand
     ( 
         [&](IoNeuron & s)	
         { 
-            if (s.IsSelected() && s.HasType(nobType)) 
+            if (s.IsSelected() && (s.GetNobType() == nobType)) 
                 upNobsAnimated->Add(&s); 
         } 
     );
@@ -59,9 +59,10 @@ ConnAnimationCommand::ConnAnimationCommand
 
 NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
 {
-    unsigned int uiNrOfIoConnectors { nobs.CountInSelection(NobType::Value::ioConnector) };
+    if ( nobs.CountInSelection(NobType::Value::inputConnector) > 0 )
+        return NobType::Value::undefined;
 
-    if ( uiNrOfIoConnectors > 0 )
+    if ( nobs.CountInSelection(NobType::Value::outputConnector) > 0 )
         return NobType::Value::undefined;
 
     unsigned int uiNrOfInputNeurons  { nobs.CountInSelection( NobType::Value::inputNeuron  ) };

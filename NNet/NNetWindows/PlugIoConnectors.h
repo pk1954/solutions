@@ -32,9 +32,6 @@ public:
         m_connectorAnimated(connectorAnimated)
     {
         assert( m_connectorAnimated.IsCompositeNob() == m_connectorTarget.IsCompositeNob() );
-        assert( m_connectorAnimated.GetIoMode() != NobIoMode::internal );
-        assert( m_connectorTarget  .GetIoMode() != NobIoMode::internal );
-        assert( m_connectorTarget  .GetIoMode() != m_connectorAnimated.GetIoMode() );
         assert( m_connectorAnimated.Size() == m_connectorTarget.Size() );
 
         IoConnector    const & inputIoConnector  { m_connectorAnimated.IsInputNob () ? m_connectorAnimated : m_connectorTarget };

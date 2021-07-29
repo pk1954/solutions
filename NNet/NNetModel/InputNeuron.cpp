@@ -54,7 +54,7 @@ void InputNeuron::Recalc()
 	m_mvFactor = mV( m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) / m_pulseDuration.GetValue() );
 }
 
-fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
+fHertz const InputNeuron::SetPulseFrequency(fHertz const freq)
 {
 	fHertz const fOldValue { m_pulseFrequency };
 	m_pulseFrequency = freq;
@@ -74,12 +74,12 @@ bool const InputNeuron::CompStep()
 
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-	drawSocket( context, 2.0f, 0.1f, GetExteriorColor(type) );
+	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));
 }
 
 void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-	drawSocket( context, 1.6f, 0.0f, GetInteriorColor(type) );
+	drawSocket(context, 1.6f, 0.0f, GetInteriorColor(type));
 }
 
 MicroMeterPnt const InputNeuron::getOffset() const

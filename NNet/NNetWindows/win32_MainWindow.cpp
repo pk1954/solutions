@@ -164,7 +164,8 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDM_SELECT_SUBTREE );   
 		break;
 
-	case NobType::Value::ioConnector:
+	case NobType::Value::inputConnector:
+	case NobType::Value::outputConnector:
 		appendMenu( hPopupMenu, IDD_DISC_IOCONNECTOR );        
 		break;
 

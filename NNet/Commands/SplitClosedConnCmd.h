@@ -7,7 +7,8 @@
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
 #include "NobId.h"
-#include "IoConnector.h"
+#include "InputConnector.h"
+#include "OutputConnector.h"
 #include "ClosedConnector.h"
 
 using std::unique_ptr;
@@ -22,8 +23,8 @@ public:
     )
       : m_closedConnector(*nmwi.GetNobPtr<ClosedConnector *>(id))
     {
-        m_upInputConnector  = make_unique<IoConnector>(NobIoMode::input);
-        m_upOutputConnector = make_unique<IoConnector>(NobIoMode::output);
+        m_upInputConnector  = make_unique<InputConnector>();
+        m_upOutputConnector = make_unique<OutputConnector>();
         for (Neuron * pNeuron : m_closedConnector.GetNeurons())
         {
             unique_ptr<InputNeuron > upInputNeuron  { make_unique<InputNeuron >(*pNeuron) };
@@ -61,8 +62,8 @@ public:
 
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
-        m_upOutputConnector = nmwi.PopFromModel<IoConnector>();
-        m_upInputConnector  = nmwi.PopFromModel<IoConnector>();
+        m_upOutputConnector = nmwi.PopFromModel<OutputConnector>();
+        m_upInputConnector  = nmwi.PopFromModel<InputConnector>();
         for (auto & it : m_upOutputNeurons) { it = nmwi.PopFromModel<IoNeuron>(); }
         for (auto & it : m_upInputNeurons ) { it = nmwi.PopFromModel<IoNeuron>(); }
 
@@ -78,8 +79,8 @@ private:
     unique_ptr<ClosedConnector>  m_upClosedConnector {};
     vector<unique_ptr<Neuron>>   m_upNeurons;              
 
-    unique_ptr<IoConnector>        m_upInputConnector  {};  
-    unique_ptr<IoConnector>        m_upOutputConnector {};  
+    unique_ptr<InputConnector>   m_upInputConnector  {};  
+    unique_ptr<OutputConnector>  m_upOutputConnector {};  
     vector<unique_ptr<IoNeuron>> m_upInputNeurons;              
     vector<unique_ptr<IoNeuron>> m_upOutputNeurons;              
 };

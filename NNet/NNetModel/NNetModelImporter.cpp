@@ -7,7 +7,8 @@
 #include <assert.h>
 #include "SignalFactory.h"
 #include "Knot.h"
-#include "IoConnector.h"
+#include "InputConnector.h"
+#include "OutputConnector.h"
 #include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "NNetError.h"
@@ -75,7 +76,7 @@ public:
 
 private:
 
-    Nob * const createNob( Script & script ) const
+    Nob * const createNob(Script & script) const
     {   
         NobId   const idFromScript{ script.ScrReadLong() };
         NobType const nobType     { static_cast<NobType::Value>(script.ScrReadInt()) };
@@ -85,10 +86,11 @@ private:
             switch ( nobType.GetValue() )
             {
             case NobType::Value::closedConnector:
-                upNob = createClosedConnector(script);
-                break;
-            case NobType::Value::ioConnector:
-                 upNob = createIoConnector(script);
+                 upNob = createClosedConnector(script);
+                 break;
+            case NobType::Value::inputConnector:
+            case NobType::Value::outputConnector:
+                 upNob = createIoConnector(script, nobType);
                  break;
             case NobType::Value::inputNeuron:
             case NobType::Value::outputNeuron:
@@ -145,7 +147,7 @@ private:
         }
     }
 
-    UPNob createBaseKnot( Script & script, NobType const nobType ) const 
+    UPNob createBaseKnot(Script & script, NobType const nobType) const 
     {
         MicroMeterPnt const umPosition(ScrReadMicroMeterPnt( script ) );
         switch ( nobType.GetValue() )
@@ -189,7 +191,7 @@ private:
         return move(upClosedConnector);
     }
 
-    UPNob createIoConnector(Script & script) const 
+    UPNob createIoConnector(Script & script, NobType const nobType) const 
     {
         unique_ptr<IoNeuronList> upIoNeuronList { make_unique<IoNeuronList>() };
         script.ScrReadSpecial(IoNeuronList::OPEN_BRACKET);
@@ -207,7 +209,11 @@ private:
             script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
         }
         script.ScrReadSpecial(IoNeuronList::CLOSE_BRACKET);
-        unique_ptr<IoConnector> upIoConnector { make_unique<IoConnector>(move(upIoNeuronList)) };
+        unique_ptr<IoConnector> upIoConnector;
+        if (nobType.IsInputConnectorType())
+            upIoConnector = make_unique<InputConnector> (move(upIoNeuronList));
+        else
+            upIoConnector = make_unique<OutputConnector>(move(upIoNeuronList));
         upIoConnector->AlignDirection();
         return move(upIoConnector);
     }

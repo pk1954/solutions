@@ -188,6 +188,7 @@
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="ClosedConnector.h" />
+    <ClInclude Include="InputConnector.h" />
     <ClInclude Include="IoNeuron.h" />
     <ClInclude Include="IoConnector.h" />
     <ClInclude Include="MicroMeterPntVector.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="NNetWrappers.h" />
+    <ClInclude Include="OutputConnector.h" />
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="NobIdList.h" />
@@ -235,6 +237,7 @@
     <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="ClosedConnector.cpp" />
+    <ClCompile Include="InputConnector.cpp" />
     <ClCompile Include="IoNeuron.cpp" />
     <ClCompile Include="IoConnector.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
@@ -256,6 +259,7 @@
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
+    <ClCompile Include="OutputConnector.cpp" />
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Nob.cpp" />

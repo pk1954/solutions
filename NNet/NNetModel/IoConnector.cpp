@@ -9,35 +9,16 @@
 #include "Neuron.h"
 #include "IoConnector.h"
 
-IoConnector::IoConnector(NobIoMode const ioMode)
-  :	Nob(NobType::Value::ioConnector),
-    m_IoMode(ioMode)
-{
-    m_upList = make_unique<IoNeuronList>();
-}
+using std::make_unique;
 
-IoConnector::IoConnector(unique_ptr<IoNeuronList> upSrc)
-  :	Nob(NobType::Value::ioConnector),
-    m_IoMode(upSrc->GetFirst().GetIoMode())
-{
-    m_upList = move(upSrc);
-}
+IoConnector::IoConnector(NobType const nobType)
+    :	Nob(nobType)
+{}
 
-IoConnector::IoConnector(IoConnector const & src)   // copy constructor
-  :	Nob(src),
-    m_IoMode(src.GetIoMode())
+IoConnector::IoConnector(IoConnector const & src)
+  : Nob(src)
 {
     m_upList = make_unique<IoNeuronList>(*src.m_upList.get());
-}
-
-bool const IoConnector::IsInputConnector () const 
-{ 
-    return m_upList->GetFirst().IsInputNob (); 
-}
-
-bool const IoConnector::IsOutputConnector() const 
-{ 
-    return m_upList->GetFirst().IsOutputNob(); 
 }
 
 void IoConnector::Check() const
@@ -50,11 +31,6 @@ void IoConnector::Dump() const
 {
     Nob::Dump();
     m_upList->Dump();
-}
-
-NobIoMode const IoConnector::GetIoMode() const 
-{ 
-    return m_IoMode;
 }
 
 void IoConnector::Select(bool const bOn) 

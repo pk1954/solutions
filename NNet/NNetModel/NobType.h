@@ -20,7 +20,8 @@ public:
 	enum class Value
 	{
 		closedConnector,
-		ioConnector,
+		inputConnector,
+		outputConnector,
 		inputNeuron,
 		outputNeuron,
 		neuron,
@@ -72,10 +73,16 @@ public:
 	bool const IsNeuronType         () const { return m_value == Value::neuron;          }
 	bool const IsInputNeuronType    () const { return m_value == Value::inputNeuron;     }
 	bool const IsOutputNeuronType   () const { return m_value == Value::outputNeuron;    }
-	bool const IsIoConnectorType    () const { return m_value == Value::ioConnector;       }
+	bool const IsInputConnectorType () const { return m_value == Value::inputConnector;  }
+	bool const IsOutputConnectorType() const { return m_value == Value::outputConnector; }
 	bool const IsClosedConnectorType() const { return m_value == Value::closedConnector; }
 
-	bool const IsAnyIoConnectorType() const
+	bool const IsIoConnectorType() const
+	{
+		return IsInputConnectorType() || IsOutputConnectorType();
+	}
+
+	bool const IsAnyConnectorType() const
 	{
 		return IsIoConnectorType() || IsClosedConnectorType();
 	}
