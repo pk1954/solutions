@@ -73,7 +73,6 @@ public:
 	virtual void                MoveNob     (MicroMeterPnt const &)                       = 0;
 	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
 	virtual void                Link        (Nob const &, Nob2NobFunc const &)            = 0;
-//	virtual NobType       const GetNobType  ()                                      const = 0;
 
 	virtual bool const IsCompositeNob()       { return false; }
 	virtual void       Select(bool const bOn) { m_bSelected = bOn; }

@@ -20,8 +20,7 @@ class ClosedConnector: public Nob
 {
 public:
 
-	static bool    const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
-//	virtual NobType const GetNobType()                 { return NobType::Value::closedConnector; }
+	static bool const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
 
 	ClosedConnector() :	Nob(NobType::Value::closedConnector) {};
 	virtual ~ClosedConnector() {}

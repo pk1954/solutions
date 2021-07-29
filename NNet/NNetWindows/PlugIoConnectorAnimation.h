@@ -20,8 +20,8 @@ public:
     PlugIoConnectorAnimation
     (
         NNetModelWriterInterface & nmwi,
-        IoConnector                & nobAnimated,
-        IoConnector                & nobTarget,
+        IoConnector              & nobAnimated,
+        IoConnector              & nobTarget,
         MainWindow               & win
     )
         : AnimationSequence(win)

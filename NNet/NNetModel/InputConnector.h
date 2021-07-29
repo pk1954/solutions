@@ -15,8 +15,7 @@ class InputConnector: public IoConnector
 {
 public:
 
-	static bool    const TypeFits(NobType const type) { return type.IsInputConnectorType(); }
-//	virtual NobType const GetNobType()                 { return NobType::Value::inputConnector; }
+	static bool const TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
 	InputConnector();
 	InputConnector(unique_ptr<IoNeuronList>);

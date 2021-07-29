@@ -15,8 +15,7 @@ class OutputConnector: public IoConnector
 {
 public:
 
-	static bool    const TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
-//	virtual NobType const GetNobType()                 { return NobType::Value::outputConnector; }
+	static bool const TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
 
 	OutputConnector();
 	OutputConnector(unique_ptr<IoNeuronList>);

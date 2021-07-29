@@ -32,8 +32,7 @@ public:
 
 	virtual void Dump() const;
 
-	static bool    const TypeFits(NobType const type) { return type.IsPipeType(); }
-//	virtual NobType const GetNobType() { return NobType::Value::pipe; }
+	static bool const TypeFits(NobType const type) { return type.IsPipeType(); }
 
 	void SetStartKnot(BaseKnot * const);
 	void SetEndKnot  (BaseKnot * const);

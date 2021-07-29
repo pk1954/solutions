@@ -32,8 +32,7 @@ public:
 
 	virtual void Check() const;
 
-	static bool    const TypeFits(NobType const type) { return type.IsNeuronType(); }
-//	virtual NobType const GetNobType() { return NobType::Value::neuron; }
+	static bool const TypeFits(NobType const type) { return type.IsNeuronType(); }
 
 	bool       const HasAxon         () const { return HasOutgoing(); }
 	bool       const HasTriggerSound () const { return m_triggerSound.m_bOn; }

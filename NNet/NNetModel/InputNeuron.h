@@ -24,8 +24,7 @@ public:
 
 	virtual bool operator==(Nob const &) const override;
 
-	static bool    const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
-//	virtual NobType const GetNobType() { return NobType::Value::inputNeuron; }
+	static bool const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
