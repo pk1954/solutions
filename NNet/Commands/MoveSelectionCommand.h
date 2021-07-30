@@ -22,7 +22,7 @@ public:
 		( 
 			[&](Nob & nob) 
 			{ 
-				if (! nob.IsPipe())
+				if (nob.IsBaseKnot())
 					nob.MoveNob(m_delta);
 			} 
 		);
@@ -34,7 +34,7 @@ public:
 		( 
 			[&](Nob & nob) 
 			{ 
-				if (! nob.IsPipe())
+				if (nob.IsBaseKnot())
 					nob.MoveNob(-m_delta);
 			} 
 		);

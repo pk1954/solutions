@@ -21,10 +21,16 @@ using std::fixed;
 using std::wstring;
 using std::wostringstream;
 
-Neuron::Neuron( MicroMeterPnt const & upCenter, NobType const type )
+Neuron::Neuron(MicroMeterPnt const & upCenter, NobType const type)
   : BaseKnot(upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
+}
+
+Neuron::Neuron(Neuron const & src)  // copy constructor
+	: BaseKnot(src)
+{ 
+	init( src );
 }
 
 void Neuron::Check() const
@@ -43,7 +49,7 @@ static void CALLBACK BeepFunc
 	Neuron::m_pSound->Beep( pNeuron->GetTriggerSound() );
 }
 
-void Neuron::init( const Neuron & rhs )
+void Neuron::init(const Neuron & rhs)
 {
 	m_bStopOnTrigger     = rhs.m_bStopOnTrigger;
 	m_timeSinceLastPulse = rhs.m_timeSinceLastPulse;
@@ -54,12 +60,6 @@ void Neuron::init( const Neuron & rhs )
 	m_pTpWork = ( rhs.m_triggerSound.m_bOn  )
 		      ? CreateThreadpoolWork( BeepFunc, this, nullptr )
 		      : nullptr;
-}
-
-Neuron::Neuron( Neuron const & src )  // copy constructor
-   : BaseKnot( src )
-{ 
-	init( src );
 }
 
 Neuron & Neuron::operator=( Neuron const & rhs )

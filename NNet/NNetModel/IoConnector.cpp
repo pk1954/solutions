@@ -13,7 +13,9 @@ using std::make_unique;
 
 IoConnector::IoConnector(NobType const nobType)
     :	Nob(nobType)
-{}
+{
+    m_upList = make_unique<IoNeuronList>();
+}
 
 IoConnector::IoConnector(IoConnector const & src)
   : Nob(src)
@@ -66,6 +68,11 @@ void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
     m_upList->Link(dstFromSrc);
 }
 
+void IoConnector::Reverse()
+{
+    m_upList->Reverse();
+}
+
 void IoConnector::Clear( )
 {
     Nob::Clear();
@@ -84,7 +91,7 @@ MicroMeterPnt const IoConnector::GetPos() const
 
 Radian const IoConnector::GetDir() const 
 { 
-    return m_upList->IsEmpty() ? Radian::NULL_VAL() : m_upList->GetFirst().GetDir();
+    return m_upList->GetDir();
 }
 
 MicroMeterPosDir const IoConnector::GetPosDir() const 
@@ -124,7 +131,7 @@ void IoConnector::Apply2All(function<void(IoNeuron const &)> const & func) const
 
 void IoConnector::SetDir(Radian const radianNew)
 {
-    m_upList->Apply2All([&](IoNeuron & n){ n.SetDir(radianNew); } );
+    m_upList->RotateNobs(GetPos(), radianNew - GetDir());
 }
 
 void IoConnector::SetPos(MicroMeterPnt const & umPos)
@@ -132,14 +139,22 @@ void IoConnector::SetPos(MicroMeterPnt const & umPos)
     MoveNob(umPos - GetPos());
 }
 
+void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
+{
+    MicroMeterPnt const pos { GetPos() };
+    assert(pos.IsNotNull());
+    m_upList->RotateNobs(pos, umPosDir.GetDir() - GetDir());
+    m_upList->MoveNobs(umPosDir.GetPos() - pos);
+}
+
 void IoConnector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_upList->MoveNob(delta);
+    m_upList->MoveNobs(delta);
 }
 
 void IoConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
-    m_upList->RotateNob(umPntPivot, radDelta);
+    m_upList->RotateNobs(umPntPivot, radDelta);
 }
 
 void IoConnector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)

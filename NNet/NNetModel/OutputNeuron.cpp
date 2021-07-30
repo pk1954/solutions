@@ -14,14 +14,12 @@ using std::wcout;
 using std::endl;
 
 OutputNeuron::OutputNeuron(MicroMeterPnt const & upCenter)
-	: IoNeuron( upCenter, NobType::Value::outputNeuron )
+	: IoNeuron(upCenter, NobType::Value::outputNeuron)
 {}
 
 OutputNeuron::OutputNeuron(Neuron const & neuron)
-	: IoNeuron(neuron.GetPos(), NobType::Value::outputNeuron)
-{
-	SetOutgoing(neuron);
-}
+	: IoNeuron(neuron, NobType::Value::outputNeuron)
+{}
 
 void OutputNeuron::Check() const
 {

@@ -22,8 +22,8 @@ public:
     PlugIoConnectors
     (
         NNetModelWriterInterface & nmwi,
-        IoConnector                & connectorAnimated, 
-        IoConnector                & connectorTarget,
+        IoConnector              & connectorAnimated, 
+        IoConnector              & connectorTarget,
         MainWindow               & win
     )
       : AnimationCmd(win),
@@ -42,14 +42,23 @@ public:
         {
             MicroMeterPnt const umPos    { m_connectorTarget.GetElem(i).GetPos() };
             unique_ptr<Neuron>  upNeuron { make_unique<Neuron>(umPos) };
-            upNeuron->SetIncoming(outputIoConnector.GetElem(i));
-            upNeuron->SetOutgoing(inputIoConnector .GetElem(i));
+            if (m_connectorAnimated.IsOutputNob())
+            {
+                upNeuron->SetIncoming(outputIoConnector.GetElem(m_size-i-1));
+                upNeuron->SetOutgoing(inputIoConnector .GetElem(i));
+            }
+            else
+            {
+                upNeuron->SetIncoming(outputIoConnector.GetElem(i));
+                upNeuron->SetOutgoing(inputIoConnector .GetElem(m_size-i-1));
+            }
             m_upClosedConnector->Push(upNeuron.get());
             m_upNeurons.push_back(move(upNeuron));
         }
         m_upIoNeuronsAnimated.resize(m_size);
         m_upIoNeuronsTarget  .resize(m_size);
         m_upClosedConnector->SetParentPointers();
+        nmwi.CheckModel();
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)
@@ -71,6 +80,7 @@ public:
 
         if (targetReachedFunc)
             (targetReachedFunc)();
+        m_nmwi.CheckModel();
     }
 
     virtual void Undo(function<void()> const & targetReachedFunc)

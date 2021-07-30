@@ -21,8 +21,8 @@ BaseKnot::BaseKnot
 	NobType       const   type,
 	MicroMeter    const   extension
 )
-  : Nob( type ),
-	m_circle( center, extension )
+  : Nob(type),
+	m_circle(center, extension)
 { }
 
 bool BaseKnot::operator==( Nob const & rhs ) const
@@ -61,14 +61,14 @@ BaseKnot & BaseKnot::operator-=(BaseKnot const &rhs)
 	return * this;
 }
 
-void BaseKnot::SetPos( MicroMeterPnt const & newPos )
+void BaseKnot::SetPos(MicroMeterPnt const & newPos)
 {
-	m_circle.SetPos( newPos ); 
+	m_circle.SetPos(newPos);
 	m_inPipes .Recalc();
 	m_outPipes.Recalc();
 }
 
-void BaseKnot::MoveNob( MicroMeterPnt const & delta )
+void BaseKnot::MoveNob(MicroMeterPnt const & delta)
 {
 	SetPos(GetPos() + delta);
 }

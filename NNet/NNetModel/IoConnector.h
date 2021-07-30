@@ -48,6 +48,7 @@ public:
 
 	virtual bool const IsCompositeNob() { return true; }
 
+	void               Reverse();
 	void               Push(IoNeuron * const);
 	IoNeuron * const   Pop();
 	IoNeuron   const & GetElem(size_t const) const;
@@ -62,8 +63,9 @@ public:
 	MicroMeterPosDir const GetPosDir() const;
 	Radian           const GetDir()    const;
 
-	void SetDir(Radian           const  );
-	void SetPos(MicroMeterPnt    const &);
+	void SetDir   (Radian           const  );
+	void SetPos   (MicroMeterPnt    const &);
+	void SetPosDir(MicroMeterPosDir const &);
 
 	void Apply2All(function<void(IoNeuron const &)> const & func) const;
 

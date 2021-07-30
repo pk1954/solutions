@@ -44,7 +44,7 @@ Radian const IoNeuron::GetDir() const
 		: m_radDirection;
 };
 
-void IoNeuron::RotateNob( MicroMeterPnt const & umPntPivot, Radian const radDelta )
+void IoNeuron::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
 	BaseKnot::RotateNob(umPntPivot, radDelta);
 	m_radDirection += radDelta;

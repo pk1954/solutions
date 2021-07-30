@@ -121,7 +121,7 @@ Nob * const UPNobList::ReplaceNob(UPNob upT)
 	decCounter(id);
 
 	UPNob tmp = move(upT);
-	m_list[id.GetValue()].swap( tmp );
+	m_list[id.GetValue()].swap(tmp);
 	return tmp.release();
 }
 

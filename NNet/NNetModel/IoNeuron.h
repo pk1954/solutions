@@ -20,6 +20,12 @@ public:
 		: Neuron(upCenter, type)
 	{}
 
+	IoNeuron(Neuron const & src, NobType const type)
+		: Neuron(src)
+	{
+		SetType(type);
+	}
+
 	void Check() const { Neuron::Check(); }
 
 	virtual void RotateNob(MicroMeterPnt const &, Radian const);

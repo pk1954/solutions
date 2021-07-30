@@ -82,6 +82,7 @@ public:
 
 	size_t const Size()    const { return m_list.size (); }
 	bool   const IsEmpty() const { return m_list.empty(); }
+	Radian const GetDir()  const; 
 
 	IoNeuron       & GetFirst()       { return * m_list.front(); }
 	IoNeuron const & GetFirst() const { return * m_list.front(); }
@@ -125,13 +126,14 @@ public:
 	void       Expand      (MicroMeterRect       &) const;
 	bool const IsIncludedIn(MicroMeterRect const &) const; 
 	bool const Includes    (MicroMeterPnt  const &) const;
-	void       RotateNob   (MicroMeterPnt  const &, Radian const);
-	void       MoveNob     (MicroMeterPnt  const &);
+	void       RotateNobs  (MicroMeterPnt  const &, Radian const);
+	void       MoveNobs    (MicroMeterPnt  const &);
 	void       DrawExterior(DrawContext    const &, tHighlight const) const;
 	void       DrawInterior(DrawContext    const &, tHighlight const) const;
 	void       Prepare();
 	bool const CompStep();
 	void       Recalc();
+	void       Reverse();
 	void       SetParentPointers(Nob * const);
 	void       ClearParentPointers();
 	void       SelectAll(bool const);

@@ -3,12 +3,14 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <algorithm>
 #include "IoNeuron.h"
 #include "IoNeuronList.h"
 
 using std::sort;
 using std::wcout;
 using std::endl;
+using std::reverse;
 
 void IoNeuronList::Check() const 
 { 
@@ -25,6 +27,11 @@ void IoNeuronList::Dump() const
 	wcout << *this;
 }
 
+void IoNeuronList::Reverse()
+{
+	reverse(m_list.begin(), m_list.end());
+}
+
 MicroMeterPnt const IoNeuronList::GetPos() const 
 { 
 	return (GetFirst().GetPos() + GetLast().GetPos()) * 0.5f; 
@@ -32,14 +39,14 @@ MicroMeterPnt const IoNeuronList::GetPos() const
 
 void IoNeuronList::Replace(IoNeuron * const pDel, IoNeuron * const pAdd) 
 { 
-	replace( begin(m_list), end(m_list), pDel, pAdd ); 
+	replace(begin(m_list), end(m_list), pDel, pAdd); 
 }
 
 void IoNeuronList::Add(IoNeuron * const pNob)
 {
 	if ( pNob != nullptr )
 	{
-		assert( find(begin(m_list), end(m_list), pNob) == end(m_list) );
+		assert(find(begin(m_list), end(m_list), pNob) == end(m_list));
 		m_list.push_back( pNob );
 	}
 }
@@ -158,12 +165,17 @@ void IoNeuronList::Expand(MicroMeterRect & umRect) const
 	for (auto it : m_list) { umRect.Expand(it->GetPos()); }
 }
 
-void IoNeuronList::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
+Radian const IoNeuronList::GetDir() const 
+{ 
+	return IsEmpty() ? Radian::NULL_VAL() : GetFirst().GetDir();
+}
+
+void IoNeuronList::RotateNobs(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
 	for (auto it : m_list) { it->RotateNob(umPntPivot, radDelta); }
 }
 
-void IoNeuronList::MoveNob(MicroMeterPnt const & delta)       
+void IoNeuronList::MoveNobs(MicroMeterPnt const & delta)       
 {
 	for (auto it : m_list) { it->MoveNob(delta); }
 }
