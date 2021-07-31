@@ -12,7 +12,7 @@ using std::wostream;
 using std::stringbuf;
 using std::ostream;
 
-RECT Util::ScrReadRECT( Script & script )
+RECT Util::ScrReadRECT(Script & script)
 {
     RECT rect;
     rect.left   = script.ScrReadLong();

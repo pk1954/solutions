@@ -34,7 +34,7 @@ void NNetModelWriterInterface::CreateInitialNobs()
 	GetUPNobs().Push( move(upNewPipe) );      
 }
 
-Nob * const NNetModelWriterInterface::GetNob( NobId const id )     
+Nob * const NNetModelWriterInterface::GetNob(NobId const id)
 { 
 	return const_cast<Nob *>(m_pModel->GetConstNob(id) );
 }
@@ -44,7 +44,7 @@ void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn)
 	GetNobPtr<Nob *>(idNob)->Select(bOn); 
 }
 
-void NNetModelWriterInterface::ToggleStopOnTrigger( NobId const id )
+void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 {
 	if ( Neuron * pNeuron { GetNobPtr<Neuron *>( id ) } )
 		pNeuron->StopOnTrigger( tBoolOp::opToggle );

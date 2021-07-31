@@ -20,14 +20,14 @@ using std::unordered_map;
 using std::wcout;
 using std::endl;
 
-bool NNetModel::operator==( NNetModel const & rhs ) const
+bool NNetModel::operator==(NNetModel const & rhs) const
 {
 	return
-	(m_Nobs              == rhs.m_Nobs              ) &&
-	(m_timeStamp         == rhs.m_timeStamp         ) &&
-	(m_wstrModelFilePath == rhs.m_wstrModelFilePath ) &&
-	(m_monitorData       == rhs.m_monitorData       ) &&
-	(m_param             == rhs.m_param             );
+	(m_Nobs              == rhs.m_Nobs             ) &&
+	(m_timeStamp         == rhs.m_timeStamp        ) &&
+	(m_wstrModelFilePath == rhs.m_wstrModelFilePath) &&
+	(m_monitorData       == rhs.m_monitorData      ) &&
+	(m_param             == rhs.m_param            );
 }
 
 void NNetModel::CheckModel() const
@@ -37,20 +37,20 @@ void NNetModel::CheckModel() const
 #endif
 }
 
-Nob const * NNetModel::GetConstNob( NobId const id ) const 
+Nob const * NNetModel::GetConstNob(NobId const id) const 
 {	
-	if ( IsUndefined( id ) || ! m_Nobs.IsValidNobId( id ) )
+	if (IsUndefined(id) || ! m_Nobs.IsValidNobId(id))
 	{
 		wcout << L"# **** GetConstNob failed. Id = " << id << endl;
 		m_Nobs.CallErrorHandler( id );  
 		return nullptr;
 	}
-	return m_Nobs.GetAt( id );
+	return m_Nobs.GetAt(id);
 }
 
 void NNetModel::RecalcAllNobs() 
 { 
-	m_Nobs.Apply2All( [&]( Nob & nob ) { nob.Recalc(); } );
+	m_Nobs.Apply2All( [&](Nob & nob) { nob.Recalc(); } );
 } 
 
 fHertz const NNetModel::GetPulseRate( NobId const id ) const

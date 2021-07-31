@@ -53,11 +53,16 @@ public:
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
-    //bool const IsIoConnector( NobId const id )
+    //bool const IsIoConnector(NobId const id)
     //{
     //    Nob * pNob { GetNobPtr<Nob *>( id ) };
     //    return pNob && pNob->IsIoConnector();
     //}
+
+    bool const IsNobInModel(Nob const & nob) const 
+    { 
+        return m_pModel->GetConstNob(nob.GetId());
+    }
 
     bool const IsInputConnector(NobId const id)
     {
@@ -103,7 +108,6 @@ public:
     { 
         UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
         auto  pNob  { upNob.release() };
-        wcout << L"RemoveFromModel " << id << endl;
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
@@ -117,14 +121,10 @@ public:
     template <Nob_t NEW, Nob_t OLD>
     unique_ptr<OLD> ReplaceInModel(unique_ptr<NEW> up) 
     {
-        if ( !up )
-        {
-            int x = 42;
-        }
         NobId id      { up.get()->GetId() };
         Nob * pNobOld { m_pModel->GetUPNobs().ReplaceNob(move(up)) };
         Reconnect(id);
-        return move( unique_ptr<OLD>(static_cast<OLD*>(pNobOld)) );
+        return move(unique_ptr<OLD>(static_cast<OLD*>(pNobOld)));
     }
 
     /// Push2Model - PopFromModel

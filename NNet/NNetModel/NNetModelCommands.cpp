@@ -141,7 +141,7 @@ void NNetModelCommands::CreateInitialNobs()
 	m_pDynamicModelObservable->NotifyAll( false );
 }
 
-void NNetModelCommands::DeleteNob( NobId const id )
+void NNetModelCommands::DeleteNob(NobId const id)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
@@ -152,7 +152,7 @@ void NNetModelCommands::DeleteSelection()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << endl;
-	m_pCmdStack->PushCommand( make_unique<DeleteSelectionCommand>(*m_pNMWI) );
+	m_pCmdStack->PushCommand(make_unique<DeleteSelectionCommand>(*m_pNMWI));
 }
 
 void NNetModelCommands::DiscIoConnector(NobId const id)

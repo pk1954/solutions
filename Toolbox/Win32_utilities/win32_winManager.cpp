@@ -27,7 +27,7 @@ public:
         m_pWinManager( pWinManager )
     { };
 
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
 	    UINT uiResId = script.ScrReadUint();
 
@@ -63,7 +63,7 @@ public:
         m_pWinManager( pWinManager )
     { };
 
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
 	    UINT const uiResId  = script.ScrReadUint();
 		INT const  iCmdShow = script.ScrReadInt();  // WM_HIDE, WM_SHOW, ...
@@ -88,7 +88,7 @@ struct CHECK_MON_STRUCT  // communication between WrapMonitorInfos and CheckMoni
     ScriptErrorHandler::ScriptException m_errorInfo      { } ;
 };
 
-static MONITORINFO ScrReadMonitorInfo( Script & script )
+static MONITORINFO ScrReadMonitorInfo(Script & script)
 {
     MONITORINFO monInfo;
 
@@ -160,7 +160,7 @@ public:
         m_pWinManager( pWinManager )
     { };
     
-    virtual void operator() ( Script & script ) const     // process one monitor configuration
+    virtual void operator() (Script & script) const     // process one monitor configuration
     {
         CHECK_MON_STRUCT monStruct;
         monStruct.m_pScript = & script;

@@ -26,8 +26,7 @@ public:
 		(
 			[&](Nob & nob) 
 			{ 
-				unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, nob)) };
-				if (upCmd)
+				if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, nob)) })
 				{
 					upCmd->Do(nmwi);
 					m_cmdStack.Push(move(upCmd));

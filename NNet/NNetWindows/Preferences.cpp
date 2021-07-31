@@ -31,7 +31,7 @@ static wstring m_wstrPreferencesFile;
 class WrapSetAutoOpen: public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if ( bMode )
@@ -48,7 +48,7 @@ public:
         : m_sound( sound )
     {}
 
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if ( bMode )
@@ -70,7 +70,7 @@ public:
         m_hwndApp = hwndApp;
     }
 
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
         wstring wstrFile    { script.ScrReadString() };
         auto    termination { make_unique<NNetImportTermination>( m_hwndApp, IDX_REPLACE_MODEL ) };

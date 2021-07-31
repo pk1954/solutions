@@ -35,7 +35,8 @@ public:
             (
                 [&](IoNeuron & n) 
                 { 
-                    m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); 
+                    if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, n)) })
+                        m_cmdStack.Push(move(upCmd)); 
                 }
             );
     }

@@ -74,10 +74,7 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
     if ( m_bDelete )
     {
         m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>(m_baseKnot);
-        if ( !m_upBaseKnot )
-        {
-            int x = 42;
-        }
+        assert(m_upBaseKnot);
     }
     nmwi.DUMP();
     nmwi.CheckModel();
@@ -105,10 +102,7 @@ void DiscBaseKnotCmd::Undo( NNetModelWriterInterface & nmwi )
     }
     if ( m_bDelete ) 
     {
-        if ( !m_upBaseKnot )
-        {
-            int x = 42;
-        }
+        assert(m_upBaseKnot);
         m_upBaseKnot = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnot));
     }
 }

@@ -18,7 +18,7 @@ static WinCommands * m_pWinCommands;
 class WrapSetPixelOffset: public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
         fPixelPoint const fPixelOffset { ScrReadfPixelPoint( script ) };
         m_pMainWindow->GetDrawContext().SetPixelOffset( fPixelOffset );
@@ -28,7 +28,7 @@ public:
 class WrapSetPixelSize: public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
         MicroMeter const umPixelSize { ScrReadMicroMeter( script ) };
         m_pMainWindow->GetDrawContext().SetPixelSize( umPixelSize );
@@ -38,7 +38,7 @@ public:
 class WrapConnect: public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
         NobId const idSrc { script.ScrReadLong() };
         NobId const idDst { script.ScrReadLong() };

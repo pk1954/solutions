@@ -15,7 +15,7 @@
 #include <string>
 #include "script.h"
 
-void WrapInclude::operator() ( Script & script ) const
+void WrapInclude::operator() (Script & script) const
 {
     wstring const & wstrPath = script.ScrReadString();
     script.ScrProcess( wstrPath );

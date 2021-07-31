@@ -88,9 +88,10 @@ UPNob UPNobList::ExtractNob(NobId const id)
 	assert( IsDefined(id) );
 	assert( IsValidNobId(id) );
 
-	decCounter(id);
-
-	return move( m_list[id.GetValue()] );
+	UPNob upNob { move(m_list[id.GetValue()]) };
+	if (upNob)
+		decCounter(id);
+	return move(upNob);
 }
 
 void UPNobList::SetNob2Slot( UPNob upNob )

@@ -21,7 +21,7 @@ class Script_Functor
 {
 public:
     virtual ~Script_Functor() {};
-    virtual void operator() ( Script & script ) const = 0;
+    virtual void operator() (Script & script) const = 0;
 };
 
 class Script
@@ -85,5 +85,5 @@ private:
 class WrapInclude : public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const;
+    virtual void operator() (Script & script) const;
 };

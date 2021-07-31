@@ -42,42 +42,43 @@ void CommandStack::Push( unique_ptr<Command> pCmd )
     }
 }
 
-void CommandStack::PushCommand( unique_ptr<Command> pCmd )
+void CommandStack::PushCommand(unique_ptr<Command> pCmd)
 {
+    if (pCmd)
+    {
 #ifdef _DEBUG
-    //NNetModel const & model { m_pNMWI->GetModel() };
-    //m_pNMWI->CheckModel();
-    //NNetModel modelSave1( model );
-    //m_pNMWI->CheckModel();
+        //NNetModel const & model { m_pNMWI->GetModel() };
+        //m_pNMWI->CheckModel();
+        //NNetModel modelSave1( model );
+        //m_pNMWI->CheckModel();
 #endif
-    clearRedoStack();
-    assert( * pCmd );
-    m_pNMWI->CheckModel();
-    pCmd->Do( * m_pNMWI );
-    m_pNMWI->CheckModel();
-    Push( move(pCmd) );
-    notify();
-
+        clearRedoStack();
+        m_pNMWI->CheckModel();
+        pCmd->Do(* m_pNMWI);
+        m_pNMWI->CheckModel();
+        Push( move(pCmd) );
+        notify();
 #ifdef _DEBUG
-    //NNetModel modelSave2( model );
-    //modelSave2.CheckModel();
-    //m_pNMWI->CheckModel();
-    //UndoCommand();
-    //m_pNMWI->CheckModel();
-    //if ( !(model == modelSave1) )
-    //{
-    //    model.DUMP();
-    //    modelSave1.DUMP();
-    //    int x = 42;
-    //}
-    //m_pNMWI->CheckModel();
-    //RedoCommand();
-    //m_pNMWI->CheckModel();
-    //if ( !(model == modelSave2) )
-    //{
-    //    int x = 42;
-    //}
+        //NNetModel modelSave2( model );
+        //modelSave2.CheckModel();
+        //m_pNMWI->CheckModel();
+        //UndoCommand();
+        //m_pNMWI->CheckModel();
+        //if ( !(model == modelSave1) )
+        //{
+        //    model.DUMP();
+        //    modelSave1.DUMP();
+        //    int x = 42;
+        //}
+        //m_pNMWI->CheckModel();
+        //RedoCommand();
+        //m_pNMWI->CheckModel();
+        //if ( !(model == modelSave2) )
+        //{
+        //    int x = 42;
+        //}
 #endif
+    }
 }
 
 bool CommandStack::UndoCommand()

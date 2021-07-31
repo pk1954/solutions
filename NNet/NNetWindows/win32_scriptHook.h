@@ -30,7 +30,7 @@ public:
 		m_pStatusBar->AddCustomControl( 80 );  // nr of characters
 	}
 
-	virtual void operator() ( Script & script ) const
+	virtual void operator() (Script & script) const
 	{
 		m_pRefreshRate->Notify( false );
 	}
