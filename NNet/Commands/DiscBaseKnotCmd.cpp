@@ -76,8 +76,8 @@ void DiscBaseKnotCmd::Do( NNetModelWriterInterface & nmwi )
         m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>(m_baseKnot);
         assert(m_upBaseKnot);
     }
-    nmwi.DUMP();
-    nmwi.CheckModel();
+    //nmwi.DUMP();
+    //nmwi.CheckModel();
 }
 
 void DiscBaseKnotCmd::Undo( NNetModelWriterInterface & nmwi )

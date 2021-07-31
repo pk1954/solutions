@@ -37,8 +37,6 @@ public:
 			m_upEndKnot = nmwi.RemoveFromModel<Knot>( endKnot );
 
 		m_upPipe = nmwi.RemoveFromModel<Pipe>(m_pipe);
-		nmwi.DUMP();
-		nmwi.CheckModel();
 	}
 
 	virtual void Undo(NNetModelWriterInterface & nmwi)
