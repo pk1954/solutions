@@ -68,8 +68,8 @@ public:
         for (auto & it : m_upInputNeurons ) { it = nmwi.PopFromModel<IoNeuron>(); }
 
         m_upClosedConnector->SetParentPointers();
-        nmwi.Restore2Model(move(m_upClosedConnector));
-        for (auto & it : m_upNeurons) { nmwi.Restore2Model(move(it)); }
+        nmwi.Restore2Model<ClosedConnector>(move(m_upClosedConnector));
+        for (auto & it : m_upNeurons) { nmwi.Restore2Model<Neuron>(move(it)); }
     }
 
 private:

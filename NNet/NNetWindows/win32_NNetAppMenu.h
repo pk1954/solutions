@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include "win32_util.h"
 #include "ObserverInterface.h"
 
 using std::wstring;
@@ -53,15 +54,15 @@ private:
 
 		void appendOnOffMenu( HMENU hMenu, LPCTSTR const title )
 		{
-			HMENU hMenuPopup = m_pAppMenu->popupMenu( hMenu, title );
+			HMENU hMenuPopup = Util::PopupMenu( hMenu, title );
 			AppendMenu( hMenuPopup, MF_STRING, m_iOn,  L"o&n" );
 			AppendMenu( hMenuPopup, MF_STRING, m_iOff, L"o&ff" );
 		}
 
 		void enableOnOff( bool const bCrit )
 		{
-			m_pAppMenu->enable( m_iOn,  ! bCrit );
-			m_pAppMenu->enable( m_iOff,   bCrit );
+			m_pAppMenu->enable( m_iOn, ! bCrit );
+			m_pAppMenu->enable( m_iOff,  bCrit );
 		}
 
 	private:
@@ -70,7 +71,6 @@ private:
 		unsigned int  m_iOff;
 	};
 
-	HMENU popupMenu( HMENU const, LPCTSTR const );
 	void  enable( unsigned int const, bool const );
 
 	HWND                  m_hwndApp        { nullptr };

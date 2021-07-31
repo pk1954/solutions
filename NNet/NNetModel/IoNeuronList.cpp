@@ -14,6 +14,8 @@ using std::reverse;
 
 void IoNeuronList::Check() const 
 { 
+	if (m_list.empty())
+		return;
 	NobType const nobType { GetFirst().GetNobType() };
 	for (auto & it : m_list) 
 	{ 

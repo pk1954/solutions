@@ -16,13 +16,6 @@
 
 using std::make_unique;
 
-HMENU NNetAppMenu::popupMenu( HMENU const hMenuParent, LPCTSTR const text )
-{
-    HMENU hMenuPopup = CreatePopupMenu();
-    AppendMenu( hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text );
-    return hMenuPopup;
-}
-
 NNetAppMenu::NNetAppMenu()
   : m_upOnOffArrows  ( make_unique<OnOffPair>( this, IDD_ARROWS_ON,    IDD_ARROWS_OFF    ) ),
     m_upOnOffSound   ( make_unique<OnOffPair>( this, IDD_SOUND_ON,     IDD_SOUND_OFF     ) ),
@@ -56,7 +49,7 @@ void NNetAppMenu::Start
 	HBITMAP hBitmapUndo { LoadBitmap( hInstance, L"UNDO_BITMAP" ) };
 	HBITMAP hBitmapRedo { LoadBitmap( hInstance, L"REDO_BITMAP" ) };
 
-    HMENU hMenuFile = popupMenu( m_hMenu, L"&File" );
+    HMENU hMenuFile = Util::PopupMenu( m_hMenu, L"&File" );
     {
         AppendMenu( hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model"  );
         AppendMenu( hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model" );
@@ -68,9 +61,9 @@ void NNetAppMenu::Start
         AppendMenu( hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit" );
     }
 
-    HMENU hMenuEdit = popupMenu( m_hMenu, L"&Edit" );
+    HMENU hMenuEdit = Util::PopupMenu( m_hMenu, L"&Edit" );
     {
-        HMENU hMenuSelection = popupMenu( hMenuEdit, L"&Selection" );
+        HMENU hMenuSelection = Util::PopupMenu( hMenuEdit, L"&Selection" );
         {
             AppendMenu( hMenuSelection, MF_STRING, IDM_SELECT_ALL,         L"&Select all" );
             AppendMenu( hMenuSelection, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds" );
@@ -82,12 +75,12 @@ void NNetAppMenu::Start
     AppendMenu( m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo );
     AppendMenu( m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo );
 
-    HMENU hMenuAction = popupMenu( m_hMenu, L"&Action" );
+    HMENU hMenuAction = Util::PopupMenu( m_hMenu, L"&Action" );
     {
         AppendMenu( hMenuAction, MF_STRING, IDM_FORWARD, L"&Proceed single step" );
         AppendMenu( hMenuAction, MF_STRING, IDM_RUN,     L"&Run" );
         AppendMenu( hMenuAction, MF_STRING, IDM_STOP,    L"&Stop" );
-        HMENU hMenuAnalyze = popupMenu( hMenuAction, L"&Analyze" );
+        HMENU hMenuAnalyze = Util::PopupMenu( hMenuAction, L"&Analyze" );
         {
             AppendMenu( hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops" );
             AppendMenu( hMenuAnalyze, MF_STRING, IDM_ANALYZE_ANOMALIES, L"Find &anomalies" );
@@ -95,9 +88,9 @@ void NNetAppMenu::Start
         AppendMenu( hMenuAction, MF_STRING, IDM_CENTER_MODEL, L"&Center model" );
     }
 
-    HMENU hMenuView = popupMenu( m_hMenu, L"&View" );
+    HMENU hMenuView = Util::PopupMenu( m_hMenu, L"&View" );
     {
-        HMENU hMenuWindows = popupMenu( hMenuView, L"&Windows" );
+        HMENU hMenuWindows = Util::PopupMenu( hMenuView, L"&Windows" );
         {
             AppendMenu( hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window" );
             AppendMenu( hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window" );
@@ -108,12 +101,12 @@ void NNetAppMenu::Start
         }
         m_upOnOffArrows->appendOnOffMenu( hMenuView, L"&Arrows" );
     }
-    HMENU hMenuOptions = popupMenu( m_hMenu, L"&Options" );
+    HMENU hMenuOptions = Util::PopupMenu( m_hMenu, L"&Options" );
     {
         m_upOnOffSound   ->appendOnOffMenu( hMenuOptions, L"&Sound" );
         m_upOnOffAutoOpen->appendOnOffMenu( hMenuOptions, L"Auto&Open" );
     }
-    HMENU hMenuHelp = popupMenu( m_hMenu, L"&Help" );
+    HMENU hMenuHelp = Util::PopupMenu( m_hMenu, L"&Help" );
     {
         AppendMenu( hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info..." );
     }

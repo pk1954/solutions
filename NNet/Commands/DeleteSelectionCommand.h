@@ -26,7 +26,7 @@ public:
 		(
 			[&](Nob & nob) 
 			{ 
-				unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, nob.GetId())) };
+				unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, nob)) };
 				if (upCmd)
 				{
 					upCmd->Do(nmwi);

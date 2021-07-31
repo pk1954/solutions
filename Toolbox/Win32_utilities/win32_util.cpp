@@ -172,3 +172,9 @@ void Util::StdOutConsole()
     }	
 }
 
+HMENU Util::PopupMenu(HMENU const hMenuParent, LPCTSTR const text)
+{
+    HMENU hMenuPopup = CreatePopupMenu();
+    AppendMenu( hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text );
+    return hMenuPopup;
+}

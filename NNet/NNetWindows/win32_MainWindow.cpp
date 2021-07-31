@@ -95,7 +95,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_ADD_OUTGOING2KNOT,      L"Add outgoing dendrite"       },
 		{ IDD_ADD_OUTGOING2PIPE,      L"Add outgoing dendrite"       },
 		{ IDD_ADD_SIGNAL,             L"New EEG sensor" 		     },
-		{ IDM_ALIGN_NOBS,             L"Align selected objects"      },
+//		{ IDM_ALIGN_NOBS,             L"Align selected objects"      },
 		{ IDD_APPEND_INPUT_NEURON,    L"Add input neuron"            },
 		{ IDD_APPEND_OUTPUT_NEURON,   L"Add output neuron"           },
 		{ IDD_ARROWS_OFF,             L"Arrows off"                  },
@@ -128,22 +128,24 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	if ( m_pNMRI->AnyNobsSelected() )
 	{
-		appendMenu( hPopupMenu, IDM_DESELECT_ALL     );
-		appendMenu( hPopupMenu, IDM_COPY_SELECTION   );
-		appendMenu( hPopupMenu, IDM_DELETE_SELECTION );
-		appendMenu( hPopupMenu, IDM_MAKE_CONNECTOR   );
-		appendMenu( hPopupMenu, IDM_ALIGN_NOBS       );
+		HMENU hSelectionMenu { Util::PopupMenu(hPopupMenu, L"Selection") };
+		appendMenu( hSelectionMenu, IDM_DESELECT_ALL     );
+		appendMenu( hSelectionMenu, IDM_COPY_SELECTION   );
+		appendMenu( hSelectionMenu, IDM_DELETE_SELECTION );
+		appendMenu( hSelectionMenu, IDM_MAKE_CONNECTOR   );
+//		appendMenu( hSelectionMenu, IDM_ALIGN_NOBS       );
 	}
-	else if ( IsUndefined(m_nobHighlighted) )  // no nob selected, cursor on background
+
+	if ( IsUndefined(m_nobHighlighted) )  // no nob selected, cursor on background
 	{
 		appendMenu( hPopupMenu, IDD_NEW_INPUT_NEURON  );
 		appendMenu( hPopupMenu, IDD_NEW_OUTPUT_NEURON );
 		appendMenu( hPopupMenu, IDD_ADD_SIGNAL        );
 	}
-	else switch ( m_pNMRI->GetNobType( m_nobHighlighted ).GetValue() )
+	else switch ( m_pNMRI->GetNobType(m_nobHighlighted).GetValue() )
 	{
 	case NobType::Value::inputNeuron:
-		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
+		if ( ! m_pNMRI->HasOutgoing(m_nobHighlighted) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_PULSE_RATE );         
 		break;
@@ -155,7 +157,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		break;
 
 	case NobType::Value::neuron:
-		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) )
+		if ( ! m_pNMRI->HasOutgoing(m_nobHighlighted) )
 			appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
 		appendMenu( hPopupMenu, IDD_SPLIT_NEURON );        
@@ -178,8 +180,8 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		appendMenu( hPopupMenu, IDD_ADD_OUTGOING2KNOT );
 		appendMenu( hPopupMenu, IDD_ADD_INCOMING2KNOT );
 		if ( 
-			 ( ! m_pNMRI->HasIncoming( m_nobHighlighted ) ) &&
-			 ( m_pNMRI->GetNrOfOutgoingConnections( m_nobHighlighted ) <= 1 )
+			 ( ! m_pNMRI->HasIncoming(m_nobHighlighted) ) &&
+			 ( m_pNMRI->GetNrOfOutgoingConnections(m_nobHighlighted) <= 1 )
 		   )
 			appendMenu( hPopupMenu, IDD_APPEND_INPUT_NEURON );
 		if ( ! m_pNMRI->HasOutgoing( m_nobHighlighted ) ) 
@@ -204,7 +206,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	if ( IsDefined(m_nobHighlighted) )
 	{
 		appendMenu( hPopupMenu, IDD_DELETE_NOB );
-		if ( m_pNMRI->IsSelected( m_nobHighlighted ) )
+		if ( m_pNMRI->IsSelected(m_nobHighlighted) )
 			appendMenu( hPopupMenu, IDM_DESELECT_NOB );
 		else
 			appendMenu( hPopupMenu, IDM_SELECT_NOB );

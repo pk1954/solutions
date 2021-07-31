@@ -46,14 +46,14 @@ public:
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
 		startKnot.AddOutgoing( & m_pipe );
 		if ( m_upStartKnot )
-			nmwi.Restore2Model( move(m_upStartKnot) );
+			nmwi.Restore2Model<BaseKnot>( move(m_upStartKnot) );
 
 		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
 		endKnot.AddIncoming( & m_pipe );
 		if ( m_upEndKnot )
-			nmwi.Restore2Model( move(m_upEndKnot) );
+			nmwi.Restore2Model<BaseKnot>( move(m_upEndKnot) );
 
-		nmwi.Restore2Model(move(m_upPipe));
+		nmwi.Restore2Model<Pipe>(move(m_upPipe));
 	}
 
 private:

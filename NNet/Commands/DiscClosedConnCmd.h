@@ -33,7 +33,7 @@ public:
     virtual void Undo( NNetModelWriterInterface & nmwi )
     { 
         m_upClosedConnector->SetParentPointers();
-        nmwi.Restore2Model(move(m_upClosedConnector)); // Move ownership of ClosedConnector to model
+        nmwi.Restore2Model<ClosedConnector>(move(m_upClosedConnector)); // Move ownership of ClosedConnector to model
     }
 
 private:

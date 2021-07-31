@@ -1,5 +1,6 @@
 // win32_util.h : 
 //
+// Toolbox\Win32_utilities
 
 #pragma once
 
@@ -11,7 +12,6 @@
 #include <string>
 #include <iostream>
 
-//using std::wstring;
 using std::wostream;
 using std::wcout;
 using std::endl;
@@ -20,9 +20,9 @@ class Script;
 
 namespace Util
 {
-    wostream & operator << ( wostream &, RECT const & );
+    wostream & operator << (wostream &, RECT const &);
 
-    RECT ScrReadRECT( Script & );
+    RECT ScrReadRECT(Script &);
 
     inline bool CtrlKeyDown() { return GetAsyncKeyState(VK_CONTROL) & 0x01; }
 
@@ -368,4 +368,5 @@ namespace Util
     void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
     void      StdOutConsole();
     bool      EscapeKeyPressed();
+    HMENU     PopupMenu( HMENU const, LPCTSTR const );
 };

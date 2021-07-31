@@ -145,7 +145,7 @@ void NNetModelCommands::DeleteNob( NobId const id )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand(move(MakeDeleteCommand(*m_pNMWI, id)));
+	m_pCmdStack->PushCommand(move(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id))));
 }
 
 void NNetModelCommands::DeleteSelection()

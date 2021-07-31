@@ -124,9 +124,9 @@ void IoConnector::Recalc()
     m_upList->Recalc();
 }
 
-void IoConnector::Apply2All(function<void(IoNeuron const &)> const & func) const
+void IoConnector::Apply2All(function<void(IoNeuron &)> const & func) const
 {
-    m_upList->Apply2All([&](IoNeuron const & n){ func(n); } );
+    m_upList->Apply2All([&](IoNeuron & n){ func(n); } );
 }                        
 
 void IoConnector::SetDir(Radian const radianNew)

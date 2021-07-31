@@ -107,12 +107,23 @@ public:
         return move( unique_ptr<OLD>( static_cast<OLD*>(pNob) ) );
     }
 
-    Nob * Restore2Model(unique_ptr<Nob>);
+    template <Nob_t NEW>
+    void Restore2Model(unique_ptr<NEW> up) 
+    {
+        assert(up);
+        m_pModel->GetUPNobs().ReplaceNob(move(up));
+    }
 
     template <Nob_t NEW, Nob_t OLD>
     unique_ptr<OLD> ReplaceInModel(unique_ptr<NEW> up) 
     {
-        Nob  * pNobOld { Restore2Model(move(up)) };
+        if ( !up )
+        {
+            int x = 42;
+        }
+        NobId id      { up.get()->GetId() };
+        Nob * pNobOld { m_pModel->GetUPNobs().ReplaceNob(move(up)) };
+        Reconnect(id);
         return move( unique_ptr<OLD>(static_cast<OLD*>(pNobOld)) );
     }
 

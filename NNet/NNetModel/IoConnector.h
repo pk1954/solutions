@@ -67,7 +67,7 @@ public:
 	void SetPos   (MicroMeterPnt    const &);
 	void SetPosDir(MicroMeterPosDir const &);
 
-	void Apply2All(function<void(IoNeuron const &)> const & func) const;
+	void Apply2All(function<void(IoNeuron &)> const & func) const;
 
 	friend wostream & operator<< (wostream &, IoConnector const &);
 

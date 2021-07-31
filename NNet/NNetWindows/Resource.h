@@ -107,9 +107,7 @@
 #define IDM_CLEAR_BEEPERS          654
 #define IDM_SELECT_ALL_BEEPERS     655
 								   
-#define IDM_ALIGN_NOBS             671
-#define IDM_ALIGN_DIRECTIONS       672
-#define IDM_PACK_NOBS              673
+//#define IDM_ALIGN_NOBS             671
 #define IDM_MAKE_CONNECTOR         674
 #define IDM_DISC_CLOSED_CONNECTOR  675
 #define IDD_DISC_IOCONNECTOR       676

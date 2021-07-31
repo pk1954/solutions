@@ -31,7 +31,13 @@ public:
     {
         m_cmdStack.Initialize(&nmwi, nullptr);
         if (m_bRemove)
-            m_connector.Apply2All([&](IoNeuron const &n) { m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); });
+            m_connector.Apply2All
+            (
+                [&](IoNeuron & n) 
+                { 
+                    m_cmdStack.Push(move(MakeDeleteCommand(nmwi, n))); 
+                }
+            );
     }
 
     ~DiscIoConnectorCmd() {}
@@ -47,7 +53,7 @@ public:
     virtual void Undo( NNetModelWriterInterface & nmwi )
     {
         m_upIoConnector->SetParentPointers();
-        nmwi.Restore2Model( move(m_upIoConnector) );
+        nmwi.Restore2Model<IoConnector>(move(m_upIoConnector));
         if (m_bRemove)
             m_cmdStack.UndoAll();
     }
