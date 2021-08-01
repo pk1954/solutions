@@ -31,7 +31,7 @@ public:
 	void Reset();
 	void Stop();
 
-	virtual long AddContextMenuEntries( HMENU const );
+	virtual LPARAM AddContextMenuEntries(HMENU const);
 
 	MicroMeterCircle const & GetSelectedSignalCircle() const;
 

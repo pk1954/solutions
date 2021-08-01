@@ -42,13 +42,13 @@ public:
     {
         m_nmwi.GetUPNobs().DeselectAllNobs();
         m_upIoConnector->SetParentPointers();
-        m_nmwi.GetUPNobs().Push(move(m_upIoConnector));
+        m_nmwi.Push2Model(move(m_upIoConnector));
         (targetReachedFunc)();
     }
 
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
-        m_upIoConnector = m_nmwi.GetUPNobs().Pop<IoConnector>();
+        m_upIoConnector = m_nmwi.PopFromModel<IoConnector>();
         m_upIoConnector->ClearParentPointers();
         (targetReachedFunc)();
     }

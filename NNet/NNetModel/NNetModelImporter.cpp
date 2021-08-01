@@ -78,10 +78,10 @@ private:
 
     Nob * const createNob(Script & script) const
     {   
-        NobId   const idFromScript{ script.ScrReadLong() };
-        NobType const nobType     { static_cast<NobType::Value>(script.ScrReadInt()) };
-        Nob         * pNob        { nullptr };
-        UPNob         upNob       {};   
+        NobId   const idFromScript { ScrReadNobId(script) };
+        NobType const nobType      { static_cast<NobType::Value>(script.ScrReadInt()) };
+        Nob         * pNob         { nullptr };
+        UPNob         upNob        {};   
         { 
             switch ( nobType.GetValue() )
             {
@@ -121,10 +121,10 @@ private:
     UPNob createPipe(Script & script) const
     {
         script.ScrReadSpecial( Pipe::OPEN_BRACKET );
-        NobId const idStart { script.ScrReadLong() };
+        NobId const idStart { ScrReadNobId(script) };
         for ( int i = 0; i < Pipe::SEPARATOR.length(); i++ )
             script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
-        NobId const idEnd { script.ScrReadLong() };
+        NobId const idEnd { ScrReadNobId(script) };
         script.ScrReadSpecial( Pipe::CLOSE_BRACKET );
         NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idStart);
         NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idEnd);
@@ -178,7 +178,7 @@ private:
         script.ScrReadSpecial( IoNeuronList::NR_SEPARATOR );
         for (int iElem { 0 };;)
         {
-            NobId    const id      { script.ScrReadInt() };
+            NobId    const id      { ScrReadNobId(script) };
             Neuron * const pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
             if ( ! pNeuron )
                 throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
@@ -199,7 +199,7 @@ private:
         script.ScrReadSpecial(IoNeuronList::NR_SEPARATOR);
         for (int iElem { 0 };;)
         {
-            NobId      const id        { script.ScrReadInt() };
+            NobId      const id        { ScrReadNobId(script) };
             IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
             if ( ! pIoNeuron )
                 throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found" ));
@@ -270,9 +270,9 @@ public:
 
     virtual void operator() (Script & script) const  
     {
-        NobId const id      { script.ScrReadLong() };
+        NobId const id      { ScrReadNobId(script) };
         Neuron    * pNeuron { GetWriterInterface().GetNobPtr<Neuron *>( id ) };
-        Hertz   const freq    { script.ScrReadUlong() };
+        Hertz const freq    { script.ScrReadUlong() };
         script.ScrReadString( L"Hertz" );
         MilliSecs const msec { script.ScrReadUlong() };
         script.ScrReadString( L"msec" );
@@ -388,7 +388,7 @@ void NNetModelImporter::import()
     if ( ProcessNNetScript( * m_pScript, m_ImportedNMWI.GetUPNobs(), m_wstrFile2Read ) )
     {
         m_ImportedNMWI.RemoveOrphans();
-        m_ImportedNMWI.SetModelFilePath( m_wstrFile2Read );
+        m_ImportedNMWI.SetModelFilePath(m_wstrFile2Read);
         m_ImportedNMWI.DescriptionComplete();
         res = ImportTermination::Result::ok;
         fixOutputNeurons();  // legacy: in old models no explicit OutputNeurons
@@ -420,22 +420,22 @@ bool NNetModelImporter::Import
     if ( m_upImportedModel.get() ) 
         return false;       // another import is already running
 
-    if ( ! exists( wstrPath ) )
+    if ( ! exists(wstrPath) )
     {
-        upTermination->Reaction( ImportTermination::Result::fileNotFound, wstrPath );
+        upTermination->Reaction(ImportTermination::Result::fileNotFound, wstrPath);
         return false;
     }
 
     m_upTermination   = move(upTermination);
     m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
-    m_ImportedNMWI.Start( m_upImportedModel.get() );
+    m_ImportedNMWI.Start(m_upImportedModel.get());
     m_wstrFile2Read = wstrPath;
     wcout << L"*** Reading file " << wstrPath << endl;
-    Util::RunAsAsyncThread( importModelThreadProc, static_cast<void *>(this) );
+    Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
     return true;
 }
 
 unique_ptr<NNetModel> NNetModelImporter::GetImportedModel() 
 { 
-    return move( m_upImportedModel ); 
+    return move(m_upImportedModel);
 }

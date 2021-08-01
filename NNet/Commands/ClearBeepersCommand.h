@@ -35,7 +35,7 @@ public:
 		{
 			nmwi.GetUPNobs().Apply2All<Neuron>
 			( 
-				[&]( Neuron & neuron ) 
+				[&](Neuron & neuron) 
 				{ 
 					if ( neuron.HasTriggerSound() )
 						m_beepers.push_back( Beeper{ & neuron, neuron.GetTriggerSound() } );

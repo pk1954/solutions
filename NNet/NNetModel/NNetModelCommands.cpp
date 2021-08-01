@@ -272,24 +272,24 @@ void NNetModelCommands::AddModel()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AddModelCommand>( m_pModelImporter->GetImportedModel()->GetUPNobs() ) );
+	m_pCmdStack->PushCommand(make_unique<AddModelCommand>(*m_pNMWI, move(m_pModelImporter->GetImportedModel())));
 }
 
 void NNetModelCommands::AddOutgoing2Knot( NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand( make_unique<AddOutgoing2KnotCommand>( id, pos + STD_OFFSET ) );
+	m_pCmdStack->PushCommand( make_unique<AddOutgoing2KnotCommand>(id, pos + STD_OFFSET));
 }
 
-void NNetModelCommands::AddIncoming2Knot( NobId const id, MicroMeterPnt const & pos )
+void NNetModelCommands::AddIncoming2Knot(NobId const id, MicroMeterPnt const & pos )
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand( make_unique<AddIncoming2KnotCommand>( id, pos - STD_OFFSET ) );
+	m_pCmdStack->PushCommand( make_unique<AddIncoming2KnotCommand>(id, pos - STD_OFFSET) );
 }
 
-void NNetModelCommands::AddOutgoing2Pipe( NobId const id, MicroMeterPnt const & pos )
+void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << id << L" " << pos << endl;

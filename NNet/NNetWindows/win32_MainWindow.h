@@ -40,7 +40,7 @@ public:
 	void Stop();
 	void Reset();
 
-	virtual long AddContextMenuEntries( HMENU const );
+	virtual LPARAM AddContextMenuEntries(HMENU const);
 
 	NobId const GetTargetNobId     () const { return m_nobTarget; }
 	NobId const GetHighlightedNobId() const { return m_nobHighlighted; }

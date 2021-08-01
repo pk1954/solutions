@@ -139,12 +139,12 @@ void UPNobList::LinkNob
 NobId const UPNobList::Push(UPNob upNob)	
 {
 	NobId idNewSlot { IdNewSlot() };
-	if ( upNob )
+	if (upNob)
 	{
-		upNob->SetId( IdNewSlot() );
+		upNob->SetId(idNewSlot);
 		incCounter(upNob);
 	}
-	m_list.push_back( move(upNob) );
+	m_list.push_back(move(upNob));
 	return idNewSlot;
 }
 
@@ -154,15 +154,15 @@ void UPNobList::copy( const UPNobList & rhs )
 
 	m_list.resize( Cast2Long(rhs.m_list.size()) );
 
-	for ( auto const & pNobSrc : rhs.m_list )
+	for (auto const & pNobSrc : rhs.m_list)
 	{
-		if ( pNobSrc )
-			SetNob2Slot( pNobSrc->GetId(), ShallowCopy( * pNobSrc ) );
+		if (pNobSrc)
+			SetNob2Slot(pNobSrc->GetId(), ShallowCopy(*pNobSrc));
 	}
 
-	for ( auto const & pNobSrc : rhs.m_list )
+	for (auto const & pNobSrc : rhs.m_list)
 	{
-		if ( pNobSrc )
+		if (pNobSrc)
 			LinkNob(*pNobSrc, [&](Nob const *pSrc){ return GetAt(pSrc->GetId()); });
 	}
 
@@ -295,30 +295,6 @@ void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) con
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
 	Apply2All( [&](Nob & s) { s.Select(bOn); } ); 
-}
-
-NobIdList UPNobList::Append(UPNobList & list2Append)
-{
-	NobIdList idList;
-	long offset { Size() };
-	for ( auto & upNob : list2Append.m_list )
-	{
-		if ( upNob )
-		{
-			NobId id { upNob->GetId() + offset };
-			upNob->SetId( id );
-			idList.Push( id );
-		}
-		m_list.push_back( move(upNob) );
-	}
-	return idList;
-}
-
-UPNobList UPNobList::ExtractNobs(NobIdList idList)
-{
-	UPNobList nobList;
-	idList.Apply2All([&](NobId const &id){ nobList.Push(ExtractNob(id)); } );
-	return nobList;
 }
 
 unsigned int const UPNobList::CountInSelection(NobType const nobType) const

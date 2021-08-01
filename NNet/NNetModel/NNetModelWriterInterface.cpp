@@ -12,7 +12,7 @@
 #include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 
-void NNetModelWriterInterface::Start( NNetModel * const pModel )
+void NNetModelWriterInterface::Start(NNetModel * const pModel)
 {
 	m_pModel = pModel;
 }
@@ -68,8 +68,8 @@ void NNetModelWriterInterface::RemoveOrphans()
 	(                                                        
 		[&](Knot const & knot)
 		{
-			if ( knot.IsOrphan() )
-				RemoveFromModel<Knot>( knot );
+			if (knot.IsOrphan())
+				RemoveFromModel<Knot>(knot);
 		} 
 	); 
 }
@@ -101,3 +101,21 @@ void NNetModelWriterInterface::SetIoNeurons
 		{ ioNeuron.SetPosDir( umPntVector.GetPosDir(ui++) ); }
 	);
 }
+
+void NNetModelWriterInterface::Reconnect(NobId const id)
+{
+	if (Nob * pNod { m_pModel->GetUPNobs().GetAt(id) })
+		pNod->Reconnect();
+}
+
+MicroMeterPnt const NNetModelWriterInterface::OrthoVector( NobId const idPipe ) const
+{
+	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
+	return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
+}
+
+void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const & umPosDir)
+{
+	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
+}
+

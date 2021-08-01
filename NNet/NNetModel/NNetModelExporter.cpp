@@ -34,7 +34,7 @@ void NNetModelExporter::Initialize( NNetModelReaderInterface * const pNMRI )
     m_pNMRI = pNMRI;
 }
 
-long const NNetModelExporter::getCompactIdVal(NobId const id) 
+size_t const NNetModelExporter::getCompactIdVal(NobId const id) 
 { 
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
 }

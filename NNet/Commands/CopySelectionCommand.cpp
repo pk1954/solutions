@@ -21,10 +21,10 @@ CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 		return (Nob *)0;
 	};
 
-	long const lSizeOfModel { nmwi.GetUPNobs().Size() };
-	NobId      idNobCopy    { NobId( lSizeOfModel ) };
+	size_t const sizeOfModel { nmwi.GetUPNobs().Size() };
+	NobId        idNobCopy   { NobId(sizeOfModel) };
 
-	m_indexList.resize( lSizeOfModel, SelNobsIndex::NULL_VAL() ); 
+	m_indexList.resize(sizeOfModel, SelNobsIndex::NULL_VAL()); 
 
 	nmwi.GetUPNobs().Apply2AllSelected<Nob>
 	(
@@ -47,13 +47,13 @@ CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 			addMissingKnot(pPipeSrc->GetEndKnotPtr  (), dstFromSrc);
 		}
 	}
-	for ( UPNob & upNobDst : m_copies )  // link nobs
+	for (UPNob & upNobDst : m_copies)  // link nobs
 	{
 		Nob const & nobSrc { * nmwi.GetNob( upNobDst->GetId() ) };
 		nmwi.GetUPNobs().LinkNob( nobSrc, dstFromSrc );
-		upNobDst->SetId( idNobCopy++ );
+		upNobDst->SetId(idNobCopy++);
 		if ( upNobDst->GetNobType().IsBaseKnotType() )
-			upNobDst->MoveNob( PIPE_WIDTH ); 
+			upNobDst->MoveNob(PIPE_WIDTH); 
 	}
 	m_iSizeOfSelection = Cast2Int(m_copies.size());
 }

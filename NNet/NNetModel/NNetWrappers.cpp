@@ -56,7 +56,7 @@ class WrapAppendInputNeuron: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->AppendInputNeuron( id );
     }
 };
@@ -66,7 +66,7 @@ class WrapAppendOutputNeuron: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->AppendOutputNeuron( id );
     }
 };
@@ -104,7 +104,7 @@ class WrapSelectSubtree: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id  { script.ScrReadLong() };
+        NobId const id  { ScrReadNobId(script) };
         bool  const bOn { script.ScrReadInt() != 0 };
         m_pCommands->SelectSubtree(id, bOn);
     }
@@ -115,7 +115,7 @@ class WrapSelectNob: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId   const id { ScrReadNobId(script) };
         tBoolOp const op { ScrReadBoolOp(script) };
         m_pCommands->SelectNob(id, op);
     }
@@ -126,7 +126,7 @@ class WrapSetTriggerSound: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         SoundDescr desc 
         {
             script.ScrReadInt() != 0,
@@ -142,7 +142,7 @@ class WrapToggleStopOnTrigger: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->ToggleStopOnTrigger( id );
     }
 };
@@ -170,7 +170,7 @@ class WrapDeleteNob: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->DeleteNob( id );
     }
 };
@@ -180,7 +180,7 @@ class WrapDiscBaseKnot: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->DiscBaseKnot( id );
     }
 };
@@ -190,7 +190,7 @@ class WrapDiscIoConnector: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->DiscIoConnector( id );
     }
 };
@@ -200,7 +200,7 @@ class WrapDiscClosedConnector: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->DiscClosedConnector( id );
     }
 };
@@ -210,7 +210,7 @@ class WrapSplitNeuron: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id { script.ScrReadLong() };
+        NobId const id { ScrReadNobId(script) };
         m_pCommands->SplitNeuron( id );
     }
 };
@@ -220,8 +220,8 @@ class WrapSetPulseRate: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const id     { script.ScrReadLong() };
-        float   const fValue { Cast2Float( script.ScrReadFloat() ) };
+        NobId const id     { ScrReadNobId(script) };
+        float const fValue { Cast2Float( script.ScrReadFloat() ) };
         m_pCommands->SetPulseRate( id, fHertz{ fValue } );
     }
 };
@@ -253,7 +253,7 @@ class WrapMoveNob: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId         const id      { script.ScrReadLong() };
+        NobId         const id      { ScrReadNobId(script) };
         MicroMeterPnt const umDelta { ScrReadMicroMeterPnt( script ) };
         m_pCommands->MoveNob( id, umDelta );
     }
@@ -285,7 +285,7 @@ class WrapInsertNeuron: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId         const id    { script.ScrReadLong() };
+        NobId         const id    { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->InsertNeuron( id, umPos );
     }
@@ -296,7 +296,7 @@ class WrapAddOutgoing2Knot: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId         const idNob { script.ScrReadLong() };
+        NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddOutgoing2Knot( idNob, umPos );
     }
@@ -307,7 +307,7 @@ class WrapAddIncoming2Knot: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId         const idNob { script.ScrReadLong() };
+        NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddIncoming2Knot( idNob, umPos );
     }
@@ -318,7 +318,7 @@ class WrapAddOutgoing2Pipe: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId         const idNob { script.ScrReadLong() };
+        NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddOutgoing2Pipe( idNob, umPos );
     }
@@ -329,7 +329,7 @@ class WrapAddIncoming2Pipe: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId         const idNob { script.ScrReadLong() };
+        NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt( script ) };
         m_pCommands->AddIncoming2Pipe( idNob, umPos );
     }

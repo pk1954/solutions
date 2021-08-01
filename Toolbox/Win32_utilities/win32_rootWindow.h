@@ -212,8 +212,8 @@ public:
 		return PixelPoint{ CrsrXpos(lParam), CrsrYpos(lParam) };
 	}
 
-	virtual long AddContextMenuEntries( HMENU const ) { return 0L; }
-	virtual void Notify( bool const );
+	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
+	virtual void   Notify(bool const);
 
 	virtual void Trigger()	{ Invalidate( false ); }
 

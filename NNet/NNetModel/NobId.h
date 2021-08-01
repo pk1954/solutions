@@ -6,7 +6,7 @@
 
 #include "NamedType.h"
 
-using NobId = NamedType<long, struct NobIdParam>;
+using NobId = NamedType<size_t, struct NobIdParam>;
 
 inline NobId const NO_NOB( -1 );
 

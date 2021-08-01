@@ -124,7 +124,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 	AppendMenu( hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand) );
 }
 
-long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
+LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if ( m_pNMRI->AnyNobsSelected() )
 	{
@@ -212,7 +212,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 			appendMenu( hPopupMenu, IDM_SELECT_NOB );
 	}	
 
-	return m_nobHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
+	return static_cast<LPARAM>(m_nobHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
 }
 
 MicroMeterPnt const MainWindow::GetCursorPos() const

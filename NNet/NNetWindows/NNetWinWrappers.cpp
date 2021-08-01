@@ -40,8 +40,8 @@ class WrapConnect: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        NobId const idSrc { script.ScrReadLong() };
-        NobId const idDst { script.ScrReadLong() };
+        NobId const idSrc { ScrReadNobId(script) };
+        NobId const idDst { ScrReadNobId(script) };
         m_pWinCommands->Connect( idSrc, idDst, * m_pMainWindow );
     }
 };

@@ -13,26 +13,35 @@ class AddModelCommand : public SelectionCommand
 {
 public:
 
-	AddModelCommand( UPNobList const & list )
+	AddModelCommand
+	(
+		NNetModelWriterInterface & nmwi,
+		unique_ptr<NNetModel>      upImportedModel
+	)
+	  : m_upImportedModel(move(upImportedModel))
 	{ 
-		m_UPNobList = list;
-		m_UPNobList.SelectAllNobs(true);
+		m_nrOfNobs = m_upImportedModel->Size();
+		m_upImportedModel->GetUPNobs().SelectAllNobs(true);
 	}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 		SelectionCommand::Do(nmwi);
 		nmwi.GetUPNobs().SelectAllNobs(false);
-		m_idList = nmwi.GetUPNobs().Append( m_UPNobList );
+		UPNobList & importedList { m_upImportedModel->GetUPNobs() };
+		while (importedList.IsNotEmpty())
+			nmwi.Push2Model(move(importedList.Pop<Nob>()));
 	}
 
-	virtual void Undo( NNetModelWriterInterface  & nmwi ) 
+	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{ 
-		m_UPNobList = nmwi.GetUPNobs().ExtractNobs( m_idList );
-		SelectionCommand::Undo( nmwi );
+		UPNobList & importedList { m_upImportedModel->GetUPNobs() };
+		for (size_t i = 0; i < m_nrOfNobs; ++i)
+			importedList.Push(move(nmwi.PopFromModel<Nob>()));
+		SelectionCommand::Undo(nmwi);
 	}
 
 private:
-	UPNobList m_UPNobList;
-	NobIdList m_idList;
+	unique_ptr<NNetModel> m_upImportedModel;
+	size_t                m_nrOfNobs;
 };

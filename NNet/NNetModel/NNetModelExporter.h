@@ -37,7 +37,7 @@ private:
 
 	NobIdList m_CompactIds;
 
-	long const getCompactIdVal(NobId const);
+	size_t const getCompactIdVal(NobId const);
 
 	void writeNob             ( wostream &, Nob  const & );
 	void writePipe            ( wostream &, Pipe const & );

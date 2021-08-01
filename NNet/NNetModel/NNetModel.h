@@ -60,6 +60,7 @@ public:
 	MonitorData const & GetMonitorData()   const { return m_monitorData; }
 	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
+	size_t      const   Size()             const { return m_Nobs.Size(); }
 
 	NobId const FindNobAt(MicroMeterPnt const &, NobCrit const &) const;
 	bool  const GetDescriptionLine(int const, wstring &)          const;

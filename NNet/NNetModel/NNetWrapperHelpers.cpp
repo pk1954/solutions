@@ -8,7 +8,7 @@
 #include "NobId.h"
 #include "NNetWrapperHelpers.h"
 
-MicroMeter ScrReadMicroMeter(Script & script)
+MicroMeter const ScrReadMicroMeter(Script & script)
 {
 	float const fValue = Cast2Float( script.ScrReadFloat() );
 	if ( fabs(fValue) > MAX_MICRO_METER.GetValue() )
@@ -16,7 +16,7 @@ MicroMeter ScrReadMicroMeter(Script & script)
 	return MicroMeter( fValue );
 }
 
-MicroMeterPnt ScrReadMicroMeterPnt(Script & script)
+MicroMeterPnt const ScrReadMicroMeterPnt(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterPnt::OPEN_BRACKET );
 	MicroMeter const x(ScrReadMicroMeter( script ));
@@ -26,7 +26,7 @@ MicroMeterPnt ScrReadMicroMeterPnt(Script & script)
 	return MicroMeterPnt( x, y );
 }
 
-MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
+MicroMeterCircle const ScrReadMicroMeterCircle(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterCircle::OPEN_BRACKET );
 	MicroMeterPnt umCenter { ScrReadMicroMeterPnt( script ) };
@@ -36,7 +36,7 @@ MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 	return MicroMeterCircle( umCenter, umRadius );
 }
 
-MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
+MicroMeterPosDir const ScrReadMicroMeterPosDir(Script & script)
 {
 	script.ScrReadSpecial( MicroMeterPosDir::OPEN_BRACKET );
 	MicroMeterPnt const umPnt(ScrReadMicroMeterPnt( script ));
@@ -46,7 +46,7 @@ MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
 	return MicroMeterPosDir( umPnt, rad );
 }
 
-MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
+MicroMeterPntVector const ScrReadMicroMeterPntVector(Script& script)
 {
 	MicroMeterPntVector umPntVector;
 	script.ScrReadSpecial( MicroMeterPntVector::OPEN_BRACKET );
@@ -63,7 +63,12 @@ MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
 	return umPntVector;
 }
 
-unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
+NobId const ScrReadNobId(Script& script)
+{
+	return NobId(script.ScrReadLong());
+}
+
+unique_ptr<NobIdList> const ScrReadNobIdList(Script& script)
 {
 	unique_ptr<NobIdList> upNobIds  { make_unique<NobIdList>() };
 	script.ScrReadSpecial( NobIdList::OPEN_BRACKET );
@@ -71,7 +76,7 @@ unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 	script.ScrReadSpecial( L':' );
 	for (int i = 0;;)
 	{
-		upNobIds->Push( NobId(script.ScrReadLong()) );
+		upNobIds->Push(ScrReadNobId(script));
 		if (++i == iNrOfElements )
 			break;
 		script.ScrReadSpecial( NobIdList::SEPARATOR );

@@ -11,20 +11,20 @@ class MiniWindow : public NNetWindow
 {
 public:
 
-	virtual void OnMouseWheel        ( WPARAM const, LPARAM const ) { };  // mini window cannot be zoomed 
-	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const ) { return false; }
-	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const ) { return false; }
-	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) { };
-	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) { };
-	virtual void OnChar              ( WPARAM const, LPARAM const ) { };
+	virtual void   OnMouseWheel         (WPARAM const, LPARAM const) { };  // mini window cannot be zoomed 
+	virtual bool   OnRButtonUp          (WPARAM const, LPARAM const) { return false; }
+	virtual bool   OnRButtonDown        (WPARAM const, LPARAM const) { return false; }
+	virtual void   OnLButtonUp          (WPARAM const, LPARAM const) { };
+	virtual void   OnLeftButtonDblClick (WPARAM const, LPARAM const) { };
+	virtual void   OnChar               (WPARAM const, LPARAM const) { };
 
-	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
+	virtual void   OnMouseMove          (WPARAM const, LPARAM const);
 
-	virtual long AddContextMenuEntries( HMENU const ) { return 0; }
+	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0; }
 
-	virtual void Notify( bool const );
+	virtual void   Notify(bool const);
 
-	void ObservedNNetWindow( MainWindow * const );
+	void ObservedNNetWindow(MainWindow * const);
 
 private:
 

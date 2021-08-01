@@ -71,7 +71,7 @@ void MonitorWindow::Stop()
 	DestroyWindow();
 }
 
-long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
+LPARAM MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	if ( m_bShowScale )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_RULER_OFF, L"Ruler off" );

@@ -34,7 +34,7 @@ private:
 
 RootWindow::RootWindow()
 {
-	m_upRefreshRate = std::make_unique<WindowRefreshRate>( this );
+	m_upRefreshRate = std::make_unique<WindowRefreshRate>(this);
 }
 
 RootWindow::~RootWindow() 
@@ -42,7 +42,7 @@ RootWindow::~RootWindow()
 	m_hwnd = nullptr; 
 }
 
-void RootWindow::StartRootWindow( function<bool()> const visibilityCriterion )
+void RootWindow::StartRootWindow(function<bool()> const visibilityCriterion)
 {
 	m_visibilityCriterion = visibilityCriterion;
 
@@ -57,29 +57,29 @@ void RootWindow::addWinMenu( HMENU const hMenuParent, std::wstring const strTitl
 {
 	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 	HMENU const hMenu = CreatePopupMenu();
-	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto" );
-	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on"   );
-	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off"  );
-	(void)AppendMenu( hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str() );
+	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto");
+	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on"  );
+	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off" );
+	(void)AppendMenu(hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str());
 }
 
 void RootWindow::adjustWinMenu( HMENU const hMenu ) const
 {
-	EnableMenuItem( hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on       ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem(hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic) ? MF_GRAYED : MF_ENABLED));
+	EnableMenuItem(hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on       ) ? MF_GRAYED : MF_ENABLED));
+	EnableMenuItem(hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED));
 }
 
-void RootWindow::contextMenu( PixelPoint const & crsrPosScreen ) // crsr pos in screen coordinates
+void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in screen coordinates
 {
 	HMENU const hPopupMenu { CreatePopupMenu() };
 
-	long lParam = AddContextMenuEntries( hPopupMenu ); // arbitrary parameter, forwarded as lParam  
+	LPARAM lParam = AddContextMenuEntries(hPopupMenu); // arbitrary parameter, forwarded as lParam  
 
-	if ( m_visibilityCriterion )
+	if (m_visibilityCriterion)
 	{
-		addWinMenu( hPopupMenu, L"Show window" );
-		adjustWinMenu( hPopupMenu );
+		addWinMenu(hPopupMenu, L"Show window");
+		adjustWinMenu(hPopupMenu);
 	}
 
 	// TODO
