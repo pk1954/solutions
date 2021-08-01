@@ -92,8 +92,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 	{
 		{ IDD_ADD_INCOMING2KNOT,      L"Add incoming dendrite"       },
 		{ IDD_ADD_INCOMING2PIPE,      L"Add incoming dendrite"       },
-		{ IDD_ADD_OUTGOING2KNOT,      L"Add outgoing dendrite"       },
-		{ IDD_ADD_OUTGOING2PIPE,      L"Add outgoing dendrite"       },
+		{ IDD_ADD_OUTGOING2KNOT,      L"Add outgoing knot"           },
+		{ IDD_ADD_OUTGOING2PIPE,      L"Add outgoing knot"           },
 		{ IDD_ADD_SIGNAL,             L"New EEG sensor" 		     },
 //		{ IDM_ALIGN_NOBS,             L"Align selected objects"      },
 		{ IDD_APPEND_INPUT_NEURON,    L"Add input neuron"            },
