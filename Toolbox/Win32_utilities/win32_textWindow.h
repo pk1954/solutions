@@ -15,10 +15,10 @@ public:
     TextWindow();
 	virtual ~TextWindow() { };
 
-    void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, bool const, function<bool()> const );
+    void StartTextWindow(HWND const, PixelRect const &, LPCTSTR const, UINT const, bool const, function<bool()> const);
 	void StopTextWindow();
 
-    virtual void DoPaint( TextBuffer & ) = 0;
+    virtual void DoPaint(TextBuffer &) = 0;
 	virtual void Trigger();
 
 private:

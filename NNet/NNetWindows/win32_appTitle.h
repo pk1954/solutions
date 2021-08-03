@@ -13,7 +13,7 @@ class AppTitle : public ObserverInterface
 {
 public:
 	void Initialize
-	( 
+	(
 		HWND                             const hwndApp,
 		NNetModelReaderInterface const * const pNMRI
 	)
@@ -22,12 +22,12 @@ public:
 		m_pNMRI   = pNMRI;
 	}
 
-    virtual void Notify( bool const bImmediate ) 
+    virtual void Notify(bool const bImmediate) 
     { 
-		SetUnsavedChanges( true );
+		SetUnsavedChanges(true);
 	}
 
-	void SetUnsavedChanges( bool const bState )
+	void SetUnsavedChanges(bool const bState)
 	{
 		m_bUnsavedChanges = bState;
 		setAppTitle();
@@ -42,7 +42,7 @@ private:
 	void setAppTitle()
 	{
 		Util::SetApplicationTitle
-		( 
+		(
 			m_hwndApp, 
 			IDS_APP_TITLE, 
 			m_pNMRI->GetModelFilePath() + (m_bUnsavedChanges ? L" * " : L"") 

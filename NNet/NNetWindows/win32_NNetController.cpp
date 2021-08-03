@@ -62,7 +62,7 @@ void NNetController::Initialize
     m_pPreferences      = pPreferences;
     m_pCommandStack     = pCommandStack;
     m_pMonitorWindow    = pMonitorWindow;
-    m_hCrsrWait         = LoadCursor( NULL, IDC_WAIT );
+    m_hCrsrWait         = LoadCursor(NULL, IDC_WAIT);
 }
 
 NNetController::~NNetController()
@@ -82,38 +82,38 @@ NNetController::~NNetController()
     m_pMonitorWindow    = nullptr;
 }
 
-bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint )
+bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint)
 {
     bool bRes { false };
 
-    if ( wmId == IDM_FATAL_ERROR )
+    if (wmId == IDM_FATAL_ERROR)
     {
-        FatalError::Happened( static_cast<long>(lParam), "unknown" );
+        FatalError::Happened(static_cast<long>(lParam), "unknown");
     }
-    else if ( wmId == IDM_BLOCK_UI )
+    else if (wmId == IDM_BLOCK_UI)
     {
         m_bBlockedUI = (lParam != 0);
     }
 
-    if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+    if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
         return true;                        // but do not concern the model  
 
-    if ( ! m_bBlockedUI )
+    if (! m_bBlockedUI)
     {
         m_pComputeThread->LockComputation();
-        bRes = processModelCommand( wmId, lParam, umPoint );
+        bRes = processModelCommand(wmId, lParam, umPoint);
         m_pComputeThread->ReleaseComputationLock();
     }
 
     return bRes;
 }
 
-bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
+bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 {
-    switch ( wmId )
+    switch (wmId)
     {
     case IDM_ABOUT:
-        ShowAboutBox( m_pMainWindow->GetWindowHandle() );
+        ShowAboutBox(m_pMainWindow->GetWindowHandle());
         break;
 
     case IDM_PERF_WINDOW:
@@ -122,7 +122,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
     case IDM_MINI_WINDOW:
     case IDM_MONITOR_WINDOW:
     case IDM_PARAM_WINDOW:
-        ::SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
+        ::SendMessage(m_pWinManager->GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
     case IDM_CENTER_MODEL:
@@ -130,25 +130,25 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDM_SLOWER:
-        if ( ! m_pSlowMotionRatio->IncRatio() )
-            MessageBeep( MB_ICONWARNING );
+        if (! m_pSlowMotionRatio->IncRatio())
+            MessageBeep(MB_ICONWARNING);
         break;
 
     case IDM_FASTER:
-        if ( ! m_pSlowMotionRatio->DecRatio() )
-            MessageBeep( MB_ICONWARNING );
+        if (! m_pSlowMotionRatio->DecRatio())
+            MessageBeep(MB_ICONWARNING);
         break;
 
     case IDD_ARROWS_ON:
-        m_pMainWindow->ShowArrows( true );
+        m_pMainWindow->ShowArrows(true);
         break;
 
     case IDD_ARROWS_OFF:
-        m_pMainWindow->ShowArrows( false );
+        m_pMainWindow->ShowArrows(false);
         break;
 
     case IDX_PLAY_SOUND:
-        m_pSound->Play( reinterpret_cast<wchar_t *>(lParam) ); 
+        m_pSound->Play(reinterpret_cast<wchar_t *>(lParam)); 
         break;
 
     case IDD_SOUND_ON:
@@ -168,7 +168,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDM_REFRESH:
-        m_pMainWindow->Notify( lParam != 0 );
+        m_pMainWindow->Notify(lParam != 0);
         break;
 
     default:
@@ -178,33 +178,33 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
     return true;  // command has been processed
 }
 
-void NNetController::pulseRateDlg( NobId const id )
+void NNetController::pulseRateDlg(NobId const id)
 {
-    fHertz  const fOldValue { m_pNMRI->GetPulseFrequency( id ) };
-    if ( fOldValue.IsNull() )
+    fHertz  const fOldValue { m_pNMRI->GetPulseFrequency(id) };
+    if (fOldValue.IsNull())
         return;
     HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
-    wstring const header     { ParamType::GetName( ParamType::Value::pulseRate ) }; 
-    wstring const unit       { ParamType::GetUnit( ParamType::Value::pulseRate ) };
-    fHertz  const fNewValue  { StdDialogBox::Show( hwndParent, fOldValue.GetValue(), header, unit ) };
-    if ( fNewValue != fOldValue )
-        m_pModelCommands->SetPulseRate( id, fNewValue );
+    wstring const header     { ParamType::GetName(ParamType::Value::pulseRate) }; 
+    wstring const unit       { ParamType::GetUnit(ParamType::Value::pulseRate) };
+    fHertz  const fNewValue  { StdDialogBox::Show(hwndParent, fOldValue.GetValue(), header, unit) };
+    if (fNewValue != fOldValue)
+        m_pModelCommands->SetPulseRate(id, fNewValue);
 }
 
-void NNetController::triggerSoundDlg( NobId const id )
+void NNetController::triggerSoundDlg(NobId const id)
 {
     NobType const type { m_pNMRI->GetNobType(id) };
-    if ( ! type.IsAnyNeuronType() )
+    if (! type.IsAnyNeuronType())
         return;
 
-    TriggerSoundDialog dialog( m_pSound, m_pNMRI->GetTriggerSound( id ) );
-    dialog.Show( m_pMainWindow->GetWindowHandle() );
-    m_pModelCommands->SetTriggerSound( id, dialog.GetSound() );
+    TriggerSoundDialog dialog(m_pSound, m_pNMRI->GetTriggerSound(id));
+    dialog.Show(m_pMainWindow->GetWindowHandle());
+    m_pModelCommands->SetTriggerSound(id, dialog.GetSound());
 }
 
-bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint )
+bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint)
 {
-    switch ( wmId )
+    switch (wmId)
     {
     case IDM_UNDO:
         m_pModelCommands->UndoCommand();
@@ -231,15 +231,15 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_PULSE_RATE:
-        pulseRateDlg( m_pMainWindow->GetHighlightedNobId() );
+        pulseRateDlg(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_TRIGGER_SOUND_DLG:
-        triggerSoundDlg( m_pMainWindow->GetHighlightedNobId() );
+        triggerSoundDlg(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDM_NNET_REFRESH_RATE:
-        m_pMainWindow->PostMessage( WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0 );
+        m_pMainWindow->PostMessage(WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0);
         break;
 
     case IDD_CONNECT:
@@ -247,14 +247,14 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_DELETE:   // keyboard delete key
-        if ( IsDefined(m_pMainWindow->GetHighlightedNobId()) )
+        if (IsDefined(m_pMainWindow->GetHighlightedNobId()))
             processModelCommand(IDD_DELETE_NOB);
         else if (m_pMainWindow->AnyNobsSelected())
             processModelCommand(IDM_DELETE_SELECTION);
         break;
 
     case IDD_DELETE_NOB:
-        m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
+        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
         m_pModelCommands->DeleteNob(m_pMainWindow->GetHighlightedNobId());
         break;
 
@@ -263,74 +263,74 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_DISC_BASEKNOT:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->DiscBaseKnot( m_pMainWindow->GetHighlightedNobId() );
+        m_pSound->Play(TEXT("UNLOCK_SOUND")); 
+        m_pModelCommands->DiscBaseKnot(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_DISC_IOCONNECTOR:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->DiscIoConnector( m_pMainWindow->GetHighlightedNobId() );
+        m_pSound->Play(TEXT("UNLOCK_SOUND")); 
+        m_pModelCommands->DiscIoConnector(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDM_DISC_CLOSED_CONNECTOR:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->DiscClosedConnector( m_pMainWindow->GetHighlightedNobId() );
+        m_pSound->Play(TEXT("UNLOCK_SOUND")); 
+        m_pModelCommands->DiscClosedConnector(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_SPLIT_NEURON:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->SplitNeuron( m_pMainWindow->GetHighlightedNobId() );
+        m_pSound->Play(TEXT("UNLOCK_SOUND")); 
+        m_pModelCommands->SplitNeuron(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDM_SPLIT_CLOSED_CONNECTOR:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelCommands->SplitClosedConnector( m_pMainWindow->GetHighlightedNobId() );
+        m_pSound->Play(TEXT("UNLOCK_SOUND")); 
+        m_pModelCommands->SplitClosedConnector(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_INSERT_KNOT:
-        m_pModelCommands->InsertKnot( m_pMainWindow->GetHighlightedNobId(), umPoint );
+        m_pModelCommands->InsertKnot(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_INSERT_NEURON:
-        m_pModelCommands->InsertNeuron( m_pMainWindow->GetHighlightedNobId(), umPoint );
+        m_pModelCommands->InsertNeuron(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_NEW_INPUT_NEURON:
-        m_pModelCommands->NewInputNeuron( umPoint );
+        m_pModelCommands->NewInputNeuron(umPoint);
         break;
 
     case IDD_NEW_OUTPUT_NEURON:
-        m_pModelCommands->NewOutputNeuron( umPoint );
+        m_pModelCommands->NewOutputNeuron(umPoint);
         break;
 
     case IDD_APPEND_INPUT_NEURON:
-        m_pModelCommands->AppendInputNeuron( m_pMainWindow->GetHighlightedNobId() );
+        m_pModelCommands->AppendInputNeuron(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_APPEND_OUTPUT_NEURON:
-        m_pModelCommands->AppendOutputNeuron( m_pMainWindow->GetHighlightedNobId() );
+        m_pModelCommands->AppendOutputNeuron(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_ADD_OUTGOING2KNOT:
-        m_pModelCommands->AddOutgoing2Knot( m_pMainWindow->GetHighlightedNobId(), umPoint );
+        m_pModelCommands->AddOutgoing2Knot(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_ADD_INCOMING2KNOT:
-        m_pModelCommands->AddIncoming2Knot( m_pMainWindow->GetHighlightedNobId(), umPoint );
+        m_pModelCommands->AddIncoming2Knot(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_ADD_OUTGOING2PIPE:
-        m_pModelCommands->AddOutgoing2Pipe( m_pMainWindow->GetHighlightedNobId(), umPoint );
+        m_pModelCommands->AddOutgoing2Pipe(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_ADD_INCOMING2PIPE:
-        m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedNobId(), umPoint );
+        m_pModelCommands->AddIncoming2Pipe(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_ADD_SIGNAL:
-        m_pModelCommands->AddSignal( MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0) );
-        m_pMonitorWindow->Show( true );
-        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+        m_pModelCommands->AddSignal(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
+        m_pMonitorWindow->Show(true);
+        m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
     case IDM_ANALYZE_LOOPS:
@@ -362,12 +362,12 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SELECT_SUBTREE:
-        m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedNobId(), true );
+        m_pModelCommands->SelectSubtree(m_pMainWindow->GetHighlightedNobId(), true);
         break;
 
     case IDD_STOP_ON_TRIGGER:
-        m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedNobId() );
-        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
+        m_pModelCommands->ToggleStopOnTrigger(m_pMainWindow->GetHighlightedNobId());
+        m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
     default:

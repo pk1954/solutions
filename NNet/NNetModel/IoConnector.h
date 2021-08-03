@@ -63,7 +63,7 @@ public:
 	MicroMeterPosDir const GetPosDir() const;
 	Radian           const GetDir()    const;
 
-	void SetDir   (Radian           const  );
+	void SetDir   (Radian           const );
 	void SetPos   (MicroMeterPnt    const &);
 	void SetPosDir(MicroMeterPosDir const &);
 

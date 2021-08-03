@@ -23,7 +23,7 @@ public:
 	virtual ~NNetAppMenu(){};
 
 	void Start
-	( 
+	(
 		HWND          const, 
 		ComputeThread const &, 
 		WinManager    const &,
@@ -34,7 +34,7 @@ public:
 
 	void AdjustUndoRedo();
 
-	virtual void Notify( bool const );
+	virtual void Notify(bool const);
 
 private:
 
@@ -42,27 +42,27 @@ private:
 	{
 	public:
 		OnOffPair
-		( 
+		(
 			NNetAppMenu      * pMenu,
 			unsigned int const iOn, 
 			unsigned int const iOff 
 		)
-		:	m_pAppMenu( pMenu ),
-			m_iOn     ( iOn ),
-			m_iOff    ( iOff )
+		:	m_pAppMenu(pMenu),
+			m_iOn     (iOn),
+			m_iOff    (iOff)
 		{ }
 
-		void appendOnOffMenu( HMENU hMenu, LPCTSTR const title )
+		void appendOnOffMenu(HMENU hMenu, LPCTSTR const title)
 		{
-			HMENU hMenuPopup = Util::PopupMenu( hMenu, title );
-			AppendMenu( hMenuPopup, MF_STRING, m_iOn,  L"o&n" );
-			AppendMenu( hMenuPopup, MF_STRING, m_iOff, L"o&ff" );
+			HMENU hMenuPopup = Util::PopupMenu(hMenu, title);
+			AppendMenu(hMenuPopup, MF_STRING, m_iOn,  L"o&n");
+			AppendMenu(hMenuPopup, MF_STRING, m_iOff, L"o&ff");
 		}
 
-		void enableOnOff( bool const bCrit )
+		void enableOnOff(bool const bCrit)
 		{
-			m_pAppMenu->enable( m_iOn, ! bCrit );
-			m_pAppMenu->enable( m_iOff,  bCrit );
+			m_pAppMenu->enable(m_iOn, ! bCrit);
+			m_pAppMenu->enable(m_iOff,  bCrit);
 		}
 
 	private:
@@ -71,7 +71,7 @@ private:
 		unsigned int  m_iOff;
 	};
 
-	void  enable( unsigned int const, bool const );
+	void  enable(unsigned int const, bool const);
 
 	HWND                  m_hwndApp        { nullptr };
 	HMENU                 m_hMenu          { nullptr };

@@ -18,14 +18,14 @@ using std::endl;
 class FatalError
 {
 public:
-	static void Happened( long const errnr, string const errText )
+	static void Happened(long const errnr, string const errText)
 	{
 		ostringstream wBuffer;
 		wBuffer << "+++ fatal error"   << endl;
 		wBuffer << "+++ error number:  " << errnr   << endl;
 		wBuffer << "+++ error message: " << errText << endl;
 		cout << wBuffer.str();
-		MessageBoxA( nullptr, wBuffer.str().c_str(), NULL, MB_OK );
+		MessageBoxA(nullptr, wBuffer.str().c_str(), NULL, MB_OK);
 		terminate();
 	}
 

@@ -11,30 +11,30 @@
 class BeeperThread: public Util::Thread
 {
 public:
-	BeeperThread( Sound * const pSound )
-		: m_pSound( pSound )
+	BeeperThread(Sound * const pSound)
+		: m_pSound(pSound)
 	{ 
-		StartThread( L"BeeperThread", true );
+		StartThread(L"BeeperThread", true);
 	}
 
 	~BeeperThread()	{ }
 
-	void Beep( Hertz hertz, MilliSecs msecs )
+	void Beep(Hertz hertz, MilliSecs msecs)
 	{
-		PostThreadMsg( IDM_BEEP, static_cast<WPARAM>(hertz.GetValue()), static_cast<LPARAM>(msecs.GetValue()) );
+		PostThreadMsg(IDM_BEEP, static_cast<WPARAM>(hertz.GetValue()), static_cast<LPARAM>(msecs.GetValue()));
 	}
 
-	virtual void ThreadMsgDispatcher( MSG const msg )
+	virtual void ThreadMsgDispatcher(MSG const msg)
 	{
-		assert( msg.message == IDM_BEEP );
+		assert(msg.message == IDM_BEEP);
 		SoundDescr desc 
 		{ 
 			true, 
 			static_cast<Hertz>    (Cast2UnsignedLong(msg.wParam)), 
 			static_cast<MilliSecs>(Cast2UnsignedLong(msg.lParam)) 
 		};
-//		m_pSound->Beep( desc );
-		m_pSound->Play( TEXT("SNAP_IN_SOUND") );
+//		m_pSound->Beep(desc);
+		m_pSound->Play(TEXT("SNAP_IN_SOUND"));
 	}
 
 private:

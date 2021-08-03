@@ -12,9 +12,9 @@ using std::wstring;
 
 namespace Util
 {
-	HANDLE RunAsAsyncThread( unsigned int __stdcall ( void * ), void *, UINT * = nullptr );
+	HANDLE RunAsAsyncThread(unsigned int __stdcall (void *), void *, UINT * = nullptr);
 
-	static unsigned int __stdcall ThreadProc( void * );
+	static unsigned int __stdcall ThreadProc(void *);
 
 	class Thread
 	{
@@ -22,20 +22,20 @@ namespace Util
 
 		~Thread() {};
 
-		void BeginThread( wstring const & );
-		void StartThread( wstring const &, bool const );
+		void BeginThread(wstring const &);
+		void StartThread(wstring const &, bool const);
 
-		void SetThreadAffinityMask( DWORD_PTR const );
+		void SetThreadAffinityMask(DWORD_PTR const);
 
-		void PostThreadMsg( UINT, WPARAM const = 0, LPARAM const = 0 );
+		void PostThreadMsg(UINT, WPARAM const = 0, LPARAM const = 0);
 
 		void Terminate(); // Waits until thread has stopped
-		void TerminateNoWait() { PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); }// PostQuitMessage( 0 );  doesn't work
+		void TerminateNoWait() { PostThreadMessage(m_threadId, WM_QUIT, 0, 0); }// PostQuitMessage(0);  doesn't work
 
 		bool IsAsyncThread() { return m_bAsync; }
 
 		virtual void ThreadStartupFunc() {};
-		virtual void ThreadMsgDispatcher( MSG const ) = 0;
+		virtual void ThreadMsgDispatcher(MSG const) = 0;
 		virtual void ThreadShutDownFunc() {};
 
 	private:
@@ -45,6 +45,6 @@ namespace Util
 		Event   m_eventThreadStarter { };
 		wstring m_strThreadName      { };
 
-		friend static unsigned int __stdcall Util::ThreadProc( void * );
+		friend static unsigned int __stdcall Util::ThreadProc(void *);
 	};
 };

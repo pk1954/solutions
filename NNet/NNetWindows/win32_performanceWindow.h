@@ -16,17 +16,17 @@ class PerformanceWindow: public TextWindow
 public:
 
     void Start
-    ( 
+    (
         HWND const, 
         NNetModelReaderInterface const * const, 
         ComputeThread                  * const, 
         SlowMotionRatio          const * const, 
         ActionTimer                    * const 
-    );
+   );
 
 	void Stop();
 
-    virtual void DoPaint( TextBuffer & );
+    virtual void DoPaint(TextBuffer &);
 
 private:
     ComputeThread                  * m_pComputeThread        { nullptr };
@@ -34,7 +34,7 @@ private:
     ActionTimer                    * m_pDisplayTimer         { nullptr };
     SlowMotionRatio          const * m_pSlowMotionRatio      { nullptr };
 
-    void printMicroSecLine( TextBuffer &, wchar_t const * const, fMicroSecs const );
-    void printFloatLine   ( TextBuffer &, wchar_t const * const, float const, wchar_t const * const );
-    void printIntLine     ( TextBuffer &, wchar_t const * const, int const );
+    void printMicroSecLine(TextBuffer &, wchar_t const * const, fMicroSecs const);
+    void printFloatLine   (TextBuffer &, wchar_t const * const, float const, wchar_t const * const);
+    void printIntLine     (TextBuffer &, wchar_t const * const, int const);
 };

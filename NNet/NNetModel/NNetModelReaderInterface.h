@@ -27,27 +27,27 @@ public:
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
-	bool          const   IsConnectionCandidate     ( NobId const, NobId const ) const;
-	bool          const   CanConnectTo              ( NobId const, NobId const ) const;
-	bool          const   IsConnectedTo             ( NobId const, NobId const ) const;
-	bool          const   IsSelected                ( NobId const ) const;
-	NobType       const   GetNobType                ( NobId const ) const;
-	fHertz        const   GetPulseFrequency         ( NobId const ) const;
-	size_t        const   GetNrOfSegments           ( NobId const ) const;
-	SoundDescr    const   GetTriggerSound           ( NobId const ) const;
-	bool          const   HasIncoming               ( NobId const ) const;
-	bool          const   HasOutgoing               ( NobId const ) const;
-	size_t        const   GetNrOfOutgoingConnections( NobId const ) const;
-	size_t        const   GetNrOfIncomingConnections( NobId const ) const;
-	mV            const   GetVoltage                ( NobId const ) const;
-	mV            const   GetVoltage                ( NobId const, MicroMeterPnt const & ) const;
-	Degrees       const   GetDirection              ( NobId const ) const; 
+	bool          const   IsConnectionCandidate     (NobId const, NobId const) const;
+	bool          const   CanConnectTo              (NobId const, NobId const) const;
+	bool          const   IsConnectedTo             (NobId const, NobId const) const;
+	bool          const   IsSelected                (NobId const) const;
+	NobType       const   GetNobType                (NobId const) const;
+	fHertz        const   GetPulseFrequency         (NobId const) const;
+	size_t        const   GetNrOfSegments           (NobId const) const;
+	SoundDescr    const   GetTriggerSound           (NobId const) const;
+	bool          const   HasIncoming               (NobId const) const;
+	bool          const   HasOutgoing               (NobId const) const;
+	size_t        const   GetNrOfOutgoingConnections(NobId const) const;
+	size_t        const   GetNrOfIncomingConnections(NobId const) const;
+	mV            const   GetVoltage                (NobId const) const;
+	mV            const   GetVoltage                (NobId const, MicroMeterPnt const &) const;
+	Degrees       const   GetDirection              (NobId const) const; 
 
 	UPNobList     const & GetUPNobs()                            const { return m_pModel->GetUPNobs(); }
 	bool          const   AnyNobsSelected()                      const { return m_pModel->GetUPNobs().AnyNobsSelected(); }
-	bool          const   IsValidNobId( NobId const id )         const { return m_pModel->GetUPNobs().IsValidNobId(id); }
-	MicroMeterPnt const   GetNobPos   ( NobId const id )         const { return m_pModel->GetNobPos(id); }
-	Nob           const * GetConstNob ( NobId const id )         const { return m_pModel->GetConstNob(id); }
+	bool          const   IsValidNobId(NobId const id)         const { return m_pModel->GetUPNobs().IsValidNobId(id); }
+	MicroMeterPnt const   GetNobPos   (NobId const id)         const { return m_pModel->GetNobPos(id); }
+	Nob           const * GetConstNob (NobId const id)         const { return m_pModel->GetConstNob(id); }
 	size_t        const   GetSizeOfNobList()                     const { return m_pModel->GetUPNobs().Size(); }
 	fMicroSecs    const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime (); }
 	MonitorData   const & GetMonitorData()                       const { return m_pModel->GetMonitorData    (); }
@@ -56,19 +56,19 @@ public:
 	float         const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	Signal      * const   FindSensor(MicroMeterPnt const & p)    const { return GetMonitorData().FindSensor(p); }
 
-	bool const GetDescriptionLine( int const, wstring & ) const;
+	bool const GetDescriptionLine(int const, wstring &) const;
 
 	NobId const FindNobAt
-	( 
+	(
 		MicroMeterPnt const &, 
 		NobCrit       const & = NobCritAlwaysTrue 
 	) const;
 
-	void DrawExterior  ( NobId const, DrawContext const &, tHighlight const ) const;
-	void DrawInterior  ( NobId const, DrawContext const &, tHighlight const ) const;
-	void DrawNeuronText( NobId const, DrawContext const & ) const;
+	void DrawExterior  (NobId const, DrawContext const &, tHighlight const) const;
+	void DrawInterior  (NobId const, DrawContext const &, tHighlight const) const;
+	void DrawNeuronText(NobId const, DrawContext const &) const;
 	
-	void DrawLine( MicroMeterLine const &, DrawContext const & ) const;
+	void DrawLine(MicroMeterLine const &, DrawContext const &) const;
 
 	unsigned int const GetNrOf(NobType const type) const { return m_pModel->GetUPNobs().GetCounter(type); }
 	unsigned int const GetNrOfNobs()               const { return m_pModel->GetUPNobs().GetCounter(); }
@@ -78,8 +78,8 @@ public:
 private:
 	NNetModel const * m_pModel;
 
-	bool const isConnectedToPipe( NobId const, NobId const ) const;
-	bool const onlyOneAxon( NobId const idSrc, NobId const idDst ) const
+	bool const isConnectedToPipe(NobId const, NobId const) const;
+	bool const onlyOneAxon(NobId const idSrc, NobId const idDst) const
 	{
 		return (GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst) <= 1);
 	}

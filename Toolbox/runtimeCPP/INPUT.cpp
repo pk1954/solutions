@@ -35,10 +35,10 @@ InputBuffer::~InputBuffer()
 //   Error conditions: File name (including path) too long
 //                     File could not be opened
 
-void InputBuffer::Open( wstring const & wstrFile )  // path of file to be opened 
+void InputBuffer::Open(wstring const & wstrFile)  // path of file to be opened 
 {
-    m_ifstream.open( wstrFile, std::ios::in );
-    if ( ! m_ifstream )
+    m_ifstream.open(wstrFile, std::ios::in);
+    if (! m_ifstream)
         ScriptErrorHandler::inputFileError();
 }                                                  // end OpenInputBuffer 
 
@@ -54,17 +54,17 @@ void InputBuffer::Open( wstring const & wstrFile )  // path of file to be opened
 
 wchar_t InputBuffer::ReadNextChar()
 {             
-   assert( m_ifstream );
+   assert(m_ifstream);
    
-   if ( L'\0' == *(m_pwchRead) )   // end of line reached
+   if (L'\0' == *(m_pwchRead))   // end of line reached
    {      
-      getline( m_ifstream, m_wstrLine );
+      getline(m_ifstream, m_wstrLine);
       m_wstrLine += L'\n'; 
 
-      if ( m_ifstream.bad() )
+      if (m_ifstream.bad())
           ScriptErrorHandler::inputFileError();
 
-      else if ( m_ifstream.eof() )  // end of file reached
+      else if (m_ifstream.eof())  // end of file reached
          return L'\0';
 
       else // new line successfully read
@@ -94,12 +94,12 @@ bool InputBuffer::IsFloat() const
 {             
    wchar_t const * pwchRun = m_pwchRead;
 
-   assert( isdigit( *(pwchRun-1) ) );
+   assert(isdigit(*(pwchRun-1)));
 
    //lint -e661  access of out-of-bounds pointer 
    //            no problem, because there is at least a "/n" after the digit
 
-   while ( isdigit( *pwchRun ) )   // search first non digit 
+   while (isdigit(*pwchRun))   // search first non digit 
       pwchRun++;  
 
    return (*pwchRun == L'e') || (*pwchRun == L'E') || (*pwchRun == L'.');
@@ -117,7 +117,7 @@ double InputBuffer::ReadFloat()
 {
    wchar_t const * const pwchRun = m_pwchRead - 1;
    wchar_t       *       pwchStop;
-   double    const dValue = wcstod( pwchRun, &pwchStop );
+   double    const dValue = wcstod(pwchRun, &pwchStop);
    m_pwchRead = pwchStop;
    return dValue;
 }                                 
@@ -131,7 +131,7 @@ unsigned long InputBuffer::ReadNumber()
 {
    wchar_t const * const pwchRun = m_pwchRead - 1;
    wchar_t       *       pwchStop;
-   unsigned long   const ulValue = wcstoul( pwchRun, &pwchStop, 0 );
+   unsigned long   const ulValue = wcstoul(pwchRun, &pwchStop, 0);
    m_pwchRead = pwchStop;
    return ulValue;
 }                                         
@@ -148,28 +148,28 @@ void InputBuffer::SetStartMarker()
 
 void InputBuffer::UnreadLastChar()
 {
-    assert( m_pwchRead > &m_wstrLine.front() );
+    assert(m_pwchRead > &m_wstrLine.front());
     --m_pwchRead;
 }
 
 int InputBuffer::GetActStartPos() const
 {
-    if ( m_pwchStart == nullptr )
+    if (m_pwchStart == nullptr)
         return -1;
 
-    assert( m_wstrLine[0] != L'\0' );
-    assert( m_pwchRead > &m_wstrLine.front() );
+    assert(m_wstrLine[0] != L'\0');
+    assert(m_pwchRead > &m_wstrLine.front());
 
     return static_cast<int>(m_pwchStart - &m_wstrLine.front());
 }          
 
 int InputBuffer::GetActEndPos() const
 {
-    if ( m_pwchStart == nullptr )
+    if (m_pwchStart == nullptr)
         return -1;
 
-    assert( m_wstrLine[0] != L'\0' );
-    assert( m_pwchRead > &m_wstrLine[0] );
+    assert(m_wstrLine[0] != L'\0');
+    assert(m_pwchRead > &m_wstrLine[0]);
 
     return static_cast<int>(m_pwchRead - &m_wstrLine.front());
 }                  
@@ -180,9 +180,9 @@ void InputBuffer::Close()
     {
         m_ifstream.close();
     }
-    catch ( ... )
+    catch (...)
     {
-        exit( 1 );
+        exit(1);
     };
 
     m_pwchRead  = nullptr;

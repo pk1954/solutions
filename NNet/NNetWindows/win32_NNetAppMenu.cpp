@@ -17,13 +17,13 @@
 using std::make_unique;
 
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffArrows  ( make_unique<OnOffPair>( this, IDD_ARROWS_ON,    IDD_ARROWS_OFF    ) ),
-    m_upOnOffSound   ( make_unique<OnOffPair>( this, IDD_SOUND_ON,     IDD_SOUND_OFF     ) ),
-    m_upOnOffAutoOpen( make_unique<OnOffPair>( this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF ) )
+  : m_upOnOffArrows  (make_unique<OnOffPair>(this, IDD_ARROWS_ON,    IDD_ARROWS_OFF   )),
+    m_upOnOffSound   (make_unique<OnOffPair>(this, IDD_SOUND_ON,     IDD_SOUND_OFF    )),
+    m_upOnOffAutoOpen(make_unique<OnOffPair>(this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF))
 { }
 
 void NNetAppMenu::Start
-( 
+(
 	HWND          const   hwndApp,
 	ComputeThread const & computeThread,
 	WinManager    const & winManager,
@@ -32,7 +32,7 @@ void NNetAppMenu::Start
     MainWindow    const & mainWindow
 ) 
 {
-    HINSTANCE const hInstance = GetModuleHandle( nullptr );
+    HINSTANCE const hInstance = GetModuleHandle(nullptr);
 
 	m_hwndApp        = hwndApp;
 	m_pComputeThread = & computeThread;
@@ -41,109 +41,109 @@ void NNetAppMenu::Start
 	m_pSound         = & sound;
     m_pMainWindow    = & mainWindow;
 
-    SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
-    SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
+    SendMessage(m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NNETSIMU)));
+    SendMessage(m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL   )));
 
     m_hMenu = CreateMenu();
 
-	HBITMAP hBitmapUndo { LoadBitmap( hInstance, L"UNDO_BITMAP" ) };
-	HBITMAP hBitmapRedo { LoadBitmap( hInstance, L"REDO_BITMAP" ) };
+	HBITMAP hBitmapUndo { LoadBitmap(hInstance, L"UNDO_BITMAP") };
+	HBITMAP hBitmapRedo { LoadBitmap(hInstance, L"REDO_BITMAP") };
 
-    HMENU hMenuFile = Util::PopupMenu( m_hMenu, L"&File" );
+    HMENU hMenuFile = Util::PopupMenu(m_hMenu, L"&File");
     {
-        AppendMenu( hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model"  );
-        AppendMenu( hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model" );
-        AppendMenu( hMenuFile, MF_STRING, IDM_ADD_MODEL,     L"&Add module" );
-        AppendMenu( hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model" );
-        AppendMenu( hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as" );
-        AppendMenu( hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script" );
-        AppendMenu( hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump" );
-        AppendMenu( hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit" );
+        AppendMenu(hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model" );
+        AppendMenu(hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model");
+        AppendMenu(hMenuFile, MF_STRING, IDM_ADD_MODEL,     L"&Add module");
+        AppendMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
+        AppendMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
+        AppendMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
+        AppendMenu(hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump");
+        AppendMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
     }
 
-    HMENU hMenuEdit = Util::PopupMenu( m_hMenu, L"&Edit" );
+    HMENU hMenuEdit = Util::PopupMenu(m_hMenu, L"&Edit");
     {
-        HMENU hMenuSelection = Util::PopupMenu( hMenuEdit, L"&Selection" );
+        HMENU hMenuSelection = Util::PopupMenu(hMenuEdit, L"&Selection");
         {
-            AppendMenu( hMenuSelection, MF_STRING, IDM_SELECT_ALL,         L"&Select all" );
-            AppendMenu( hMenuSelection, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds" );
-            AppendMenu( hMenuSelection, MF_STRING, IDM_DESELECT_ALL,       L"&Deselect all" );
+            AppendMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL,         L"&Select all");
+            AppendMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds");
+            AppendMenu(hMenuSelection, MF_STRING, IDM_DESELECT_ALL,       L"&Deselect all");
         }
-        AppendMenu( hMenuEdit, MF_STRING, IDM_CLEAR_BEEPERS, L"Clear all trigger sounds" );
+        AppendMenu(hMenuEdit, MF_STRING, IDM_CLEAR_BEEPERS, L"Clear all trigger sounds");
     }
 
-    AppendMenu( m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo );
-    AppendMenu( m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo );
+    AppendMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
+    AppendMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
 
-    HMENU hMenuAction = Util::PopupMenu( m_hMenu, L"&Action" );
+    HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
-        AppendMenu( hMenuAction, MF_STRING, IDM_FORWARD, L"&Proceed single step" );
-        AppendMenu( hMenuAction, MF_STRING, IDM_RUN,     L"&Run" );
-        AppendMenu( hMenuAction, MF_STRING, IDM_STOP,    L"&Stop" );
-        HMENU hMenuAnalyze = Util::PopupMenu( hMenuAction, L"&Analyze" );
+        AppendMenu(hMenuAction, MF_STRING, IDM_FORWARD, L"&Proceed single step");
+        AppendMenu(hMenuAction, MF_STRING, IDM_RUN,     L"&Run");
+        AppendMenu(hMenuAction, MF_STRING, IDM_STOP,    L"&Stop");
+        HMENU hMenuAnalyze = Util::PopupMenu(hMenuAction, L"&Analyze");
         {
-            AppendMenu( hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops" );
-            AppendMenu( hMenuAnalyze, MF_STRING, IDM_ANALYZE_ANOMALIES, L"Find &anomalies" );
+            AppendMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops");
+            AppendMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_ANOMALIES, L"Find &anomalies");
         }
-        AppendMenu( hMenuAction, MF_STRING, IDM_CENTER_MODEL, L"&Center model" );
+        AppendMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL, L"&Center model");
     }
 
-    HMENU hMenuView = Util::PopupMenu( m_hMenu, L"&View" );
+    HMENU hMenuView = Util::PopupMenu(m_hMenu, L"&View");
     {
-        HMENU hMenuWindows = Util::PopupMenu( hMenuView, L"&Windows" );
+        HMENU hMenuWindows = Util::PopupMenu(hMenuView, L"&Windows");
         {
-            AppendMenu( hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window" );
+            AppendMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
+            AppendMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
+            AppendMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
+            AppendMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
+            AppendMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
+            AppendMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
         }
-        m_upOnOffArrows->appendOnOffMenu( hMenuView, L"&Arrows" );
+        m_upOnOffArrows->appendOnOffMenu(hMenuView, L"&Arrows");
     }
-    HMENU hMenuOptions = Util::PopupMenu( m_hMenu, L"&Options" );
+    HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
     {
-        m_upOnOffSound   ->appendOnOffMenu( hMenuOptions, L"&Sound" );
-        m_upOnOffAutoOpen->appendOnOffMenu( hMenuOptions, L"Auto&Open" );
+        m_upOnOffSound   ->appendOnOffMenu(hMenuOptions, L"&Sound");
+        m_upOnOffAutoOpen->appendOnOffMenu(hMenuOptions, L"Auto&Open");
     }
-    HMENU hMenuHelp = Util::PopupMenu( m_hMenu, L"&Help" );
+    HMENU hMenuHelp = Util::PopupMenu(m_hMenu, L"&Help");
     {
-        AppendMenu( hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info..." );
+        AppendMenu(hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info...");
     }
 
-    bool bRes = SetMenu( m_hwndApp, m_hMenu );
-    assert( bRes );
+    bool bRes = SetMenu(m_hwndApp, m_hMenu);
+    assert(bRes);
 }
 
-void NNetAppMenu::enable( unsigned int const id, bool const bCrit )
+void NNetAppMenu::enable(unsigned int const id, bool const bCrit)
 {
-    EnableMenuItem( m_hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED );
+    EnableMenuItem(m_hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
 }
 
-void NNetAppMenu::Notify( bool const bImmediately )
+void NNetAppMenu::Notify(bool const bImmediately)
 {
-    enable( IDM_FORWARD, ! m_pComputeThread->IsRunning() );
-    enable( IDM_RESET,   ! m_pComputeThread->IsRunning() );
-    enable( IDM_RUN,     ! m_pComputeThread->IsRunning() );
-    enable( IDM_STOP,      m_pComputeThread->IsRunning() );
+    enable(IDM_FORWARD, ! m_pComputeThread->IsRunning());
+    enable(IDM_RESET,   ! m_pComputeThread->IsRunning());
+    enable(IDM_RUN,     ! m_pComputeThread->IsRunning());
+    enable(IDM_STOP,      m_pComputeThread->IsRunning());
 
-    enable( IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible( IDM_DESC_WINDOW    ) );
-    enable( IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible( IDM_CRSR_WINDOW    ) );
-    enable( IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible( IDM_MINI_WINDOW    ) );
-    enable( IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible( IDM_MONITOR_WINDOW ) );
-    enable( IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
-    enable( IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
+    enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(IDM_DESC_WINDOW   ));
+    enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(IDM_CRSR_WINDOW   ));
+    enable(IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible(IDM_MINI_WINDOW   ));
+    enable(IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(IDM_MONITOR_WINDOW));
+    enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(IDM_PARAM_WINDOW  ));
+    enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
 
-    m_upOnOffArrows  ->enableOnOff( m_pMainWindow->ArrowsVisible() );
-    m_upOnOffSound   ->enableOnOff( m_pSound->IsOn() );
-    m_upOnOffAutoOpen->enableOnOff( AutoOpen::IsOn() );
+    m_upOnOffArrows  ->enableOnOff(m_pMainWindow->ArrowsVisible());
+    m_upOnOffSound   ->enableOnOff(m_pSound->IsOn());
+    m_upOnOffAutoOpen->enableOnOff(AutoOpen::IsOn());
 
-    DrawMenuBar( m_hwndApp );
+    DrawMenuBar(m_hwndApp);
 }
 
 void NNetAppMenu::AdjustUndoRedo()
 {
-    enable( IDM_UNDO, ! m_pCommandStack->UndoStackEmpty() );
-    enable( IDM_REDO, ! m_pCommandStack->RedoStackEmpty() );
-    DrawMenuBar( m_hwndApp );
+    enable(IDM_UNDO, ! m_pCommandStack->UndoStackEmpty());
+    enable(IDM_REDO, ! m_pCommandStack->RedoStackEmpty());
+    DrawMenuBar(m_hwndApp);
 }

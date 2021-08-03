@@ -12,12 +12,12 @@ class SelectNobsInRectCommand : public SelectionCommand
 {
 public:
 	SelectNobsInRectCommand(MicroMeterRect const & rect)
-	  :	m_rect( rect )
+	  :	m_rect(rect)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & nmwi )
+	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
-		SelectionCommand::Do( nmwi );
+		SelectionCommand::Do(nmwi);
 		nmwi.GetUPNobs().Apply2AllInRect<Nob>(m_rect, [&](Nob& s){ s.Select(true); });
 	}
 

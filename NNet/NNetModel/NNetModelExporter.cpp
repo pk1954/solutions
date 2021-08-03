@@ -29,7 +29,7 @@ using std::put_time;
 using std::wofstream;
 using std::filesystem::path;
 
-void NNetModelExporter::Initialize( NNetModelReaderInterface * const pNMRI )
+void NNetModelExporter::Initialize(NNetModelReaderInterface * const pNMRI)
 {
     m_pNMRI = pNMRI;
 }
@@ -39,7 +39,7 @@ size_t const NNetModelExporter::getCompactIdVal(NobId const id)
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
 }
 
-void NNetModelExporter::writeHeader( wostream & out )
+void NNetModelExporter::writeHeader(wostream & out)
 {
     static int const BUF_SIZE { 128 };
 
@@ -50,11 +50,11 @@ void NNetModelExporter::writeHeader( wostream & out )
     DWORD  bufCharCount = BUF_SIZE;
 
     // Get and display the name of the computer.
-    GetComputerName( infoBuf, &bufCharCount );
+    GetComputerName(infoBuf, &bufCharCount);
     out << Scanner::COMMENT_SYMBOL << L" Computer name: " << infoBuf << endl;
 
     // Get and display the user name.
-    GetUserName( infoBuf, &bufCharCount );
+    GetUserName(infoBuf, &bufCharCount);
     out << Scanner::COMMENT_SYMBOL << L" User name: " << infoBuf << endl; 
     out << endl;
 
@@ -62,30 +62,30 @@ void NNetModelExporter::writeHeader( wostream & out )
     out << endl;
 }
 
-void NNetModelExporter::writeGlobalParameters( wostream & out )
+void NNetModelExporter::writeGlobalParameters(wostream & out)
 {
     ParamType::Apply2GlobalParameters
-    ( 
-        [&]( ParamType::Value const & par ) 
+    (
+        [&](ParamType::Value const & par) 
         {
             out << L"GlobalParameter " << ParamType::GetName(par) << L" = "
                 << m_pNMRI->GetParameter(par) 
                 << endl; 
         }
-    );
+   );
 }
 
-void NNetModelExporter::writeNobs( wostream & out )
+void NNetModelExporter::writeNobs(wostream & out)
 {
-    m_CompactIds.Resize( m_pNMRI->GetSizeOfNobList() );
-    NobId idCompact( 0 );
-    for ( int i = 0; i < m_CompactIds.Size(); ++i )
+    m_CompactIds.Resize(m_pNMRI->GetSizeOfNobList());
+    NobId idCompact(0);
+    for (int i = 0; i < m_CompactIds.Size(); ++i)
     {
         m_CompactIds.SetAt
         (
             i, 
             m_pNMRI->GetConstNob(NobId(i)) ? idCompact++ : NobId()
-        );
+       );
     }
     out << L"NrOfNobs = " << idCompact << endl;
     out << endl;
@@ -95,65 +95,65 @@ void NNetModelExporter::writeNobs( wostream & out )
     m_pNMRI->GetUPNobs().Apply2All<ClosedConnector>([&](ClosedConnector const & s) { writeNob(out, s); });
 }
 
-void NNetModelExporter::writeNobParameters( wostream & out )
+void NNetModelExporter::writeNobParameters(wostream & out)
 {
     m_pNMRI->GetUPNobs().Apply2All<InputNeuron>
     (
-        [&]( InputNeuron const & inpNeuron )
+        [&](InputNeuron const & inpNeuron)
         { 
             out << L"NobParameter InputNeuron " 
-                << getCompactIdVal( inpNeuron.GetId() ) << L" "
+                << getCompactIdVal(inpNeuron.GetId()) << L" "
                 << ParamType::GetName(ParamType::Value::pulseRate) 
                 << L" = " << inpNeuron.GetPulseFrequency()
                 << endl; 
         }
-    );
+   );
 }
 
-void NNetModelExporter::writeTriggerSounds( wostream & out )
+void NNetModelExporter::writeTriggerSounds(wostream & out)
 {
     m_pNMRI->GetUPNobs().Apply2All<Neuron>
-    ( 
-        [&]( Neuron const & neuron ) 
+    (
+        [&](Neuron const & neuron) 
         { 
-            if ( neuron.HasTriggerSound() )
+            if (neuron.HasTriggerSound())
             {
                 SoundDescr sound { neuron.GetTriggerSound() };
-                out << L"TriggerSound " << getCompactIdVal( neuron.GetId() ) << L" "
+                out << L"TriggerSound " << getCompactIdVal(neuron.GetId()) << L" "
                     << sound.m_frequency << L" Hertz "
                     << sound.m_duration  << L" msec "
                     << endl; 
             }
         } 
-    );
+   );
 }
 
-void NNetModelExporter::writeMonitorData( wostream & out )
+void NNetModelExporter::writeMonitorData(wostream & out)
 {
     MonitorData const & monitorData { m_pNMRI->GetMonitorData() };
 
     out << L"NrOfTracks " << monitorData.GetNrOfTracks() << endl;
 
     monitorData.Apply2AllSignals
-    ( 
-        [&]( SignalId const idSignal )
+    (
+        [&](SignalId const idSignal)
         {
             Signal const * const pSignal { monitorData.GetSignalPtr(idSignal) };
             out << L"Signal "; 
-            WriteTrackNr( out, idSignal.GetTrackNr() );
+            WriteTrackNr(out, idSignal.GetTrackNr());
             out << L"source " << NNetModelStorage::SIGSRC_CIRCLE; 
-            if ( pSignal )
+            if (pSignal)
                 out << pSignal->GetCircle();
             out << endl; 
         }
-    );
+   );
 }
 
 void NNetModelExporter::writeDescription(wostream & out)
 {
     wstring wstrLine;
     int iLineNr = 0;
-    while ( m_pNMRI->GetDescriptionLine( iLineNr++, wstrLine ) )
+    while (m_pNMRI->GetDescriptionLine(iLineNr++, wstrLine))
     {
         out << L"Description \"" << wstrLine << "\"" << endl;
     }
@@ -162,18 +162,18 @@ void NNetModelExporter::writeDescription(wostream & out)
 void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe)
 {
     out << Pipe::OPEN_BRACKET 
-        << getCompactIdVal( pipe.GetStartKnotId() ) 
+        << getCompactIdVal(pipe.GetStartKnotId()) 
         << Pipe::SEPARATOR
-        << getCompactIdVal( pipe.GetEndKnotId() ) 
+        << getCompactIdVal(pipe.GetEndKnotId()) 
         << Pipe::CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
 {
-    if ( nob.IsDefined() )
+    if (nob.IsDefined())
     {
-        out << L"CreateNob " << getCompactIdVal( nob.GetId() ) << L" " << nob.GetName();
-        switch ( nob.GetNobType().GetValue() )
+        out << L"CreateNob " << getCompactIdVal(nob.GetId()) << L" " << nob.GetName();
+        switch (nob.GetNobType().GetValue())
         {
         case NobType::Value::inputNeuron:
         case NobType::Value::outputNeuron:
@@ -183,7 +183,7 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
             break;
 
         case NobType::Value::pipe:
-            writePipe( out, static_cast<Pipe const &>(nob) );
+            writePipe(out, static_cast<Pipe const &>(nob));
             break;
 
         case NobType::Value::inputConnector:
@@ -199,31 +199,31 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
             break;
 
         default:
-            assert( false );
+            assert(false);
             break;
         }
         out << endl;
     }
 }
 
-void NNetModelExporter::write( wostream & out )
+void NNetModelExporter::write(wostream & out)
 {
     HiResTimer timer;
     timer.Start();
 
-    writeHeader( out );
+    writeHeader(out);
     out << endl;
-    writeDescription( out );
+    writeDescription(out);
     out << endl;
-    writeGlobalParameters( out );
+    writeGlobalParameters(out);
     out << endl;
-    writeNobs( out );
+    writeNobs(out);
     out << endl;
-    writeNobParameters( out );
+    writeNobParameters(out);
     out << endl;
-    writeTriggerSounds( out );
+    writeTriggerSounds(out);
     out << endl;
-    writeMonitorData( out );
+    writeMonitorData(out);
     out << endl;
 
     timer.Stop();
@@ -232,7 +232,7 @@ void NNetModelExporter::write( wostream & out )
 
 void NNetModelExporter::WriteModel()
 {
-    wofstream modelFile( m_pNMRI->GetModelFilePath() );
-    write( modelFile );
+    wofstream modelFile(m_pNMRI->GetModelFilePath());
+    write(modelFile);
     modelFile.close();
 }

@@ -20,7 +20,7 @@ public:
     (
         NNetModelWriterInterface & nmwi,
         NobId                const id
-    )
+   )
       : m_closedConnector(*nmwi.GetNobPtr<ClosedConnector *>(id))
     {
         m_upInputConnector  = make_unique<InputConnector>();
@@ -42,30 +42,30 @@ public:
         Degrees        degDir   { Radian2Degrees(radDir) };
         m_upInputConnector ->SetDir(radDir);
         m_upOutputConnector->SetDir(radDir);
-        m_upInputConnector ->MoveNob( umPntDir);
+        m_upInputConnector ->MoveNob(umPntDir);
         m_upOutputConnector->MoveNob(-umPntDir);
     }
 
     ~SplitClosedConnCmd() {}
 
-    virtual void Do( NNetModelWriterInterface & nmwi )
+    virtual void Do(NNetModelWriterInterface & nmwi)
     {
         m_closedConnector.Apply2All([&](Neuron const &n){ m_upNeurons.push_back(nmwi.RemoveFromModel<Neuron>(n)); });
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
 
-        for (auto & it : m_upInputNeurons ) { nmwi.Push2Model(move(it)); }
+        for (auto & it : m_upInputNeurons) { nmwi.Push2Model(move(it)); }
         for (auto & it : m_upOutputNeurons) { nmwi.Push2Model(move(it)); }
         nmwi.Push2Model(move(m_upInputConnector));
         nmwi.Push2Model(move(m_upOutputConnector));
     }
 
-    virtual void Undo( NNetModelWriterInterface & nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     {
         m_upOutputConnector = nmwi.PopFromModel<OutputConnector>();
         m_upInputConnector  = nmwi.PopFromModel<InputConnector>();
         for (auto & it : m_upOutputNeurons) { it = nmwi.PopFromModel<IoNeuron>(); }
-        for (auto & it : m_upInputNeurons ) { it = nmwi.PopFromModel<IoNeuron>(); }
+        for (auto & it : m_upInputNeurons) { it = nmwi.PopFromModel<IoNeuron>(); }
 
         m_upClosedConnector->SetParentPointers();
         nmwi.Restore2Model<ClosedConnector>(move(m_upClosedConnector));

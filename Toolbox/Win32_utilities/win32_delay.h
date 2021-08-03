@@ -11,15 +11,15 @@
 
 using std::chrono::milliseconds;
 
-milliseconds const DEFAULT_DELAY( 50 );  
-milliseconds const MAX_DELAY  ( 2048 );  
+milliseconds const DEFAULT_DELAY(50);  
+milliseconds const MAX_DELAY  (2048);  
 
 class Delay: public Observable
 {
 public:
 
 	Delay()
-	  : m_msGenerationDelay( DEFAULT_DELAY )
+	  : m_msGenerationDelay(DEFAULT_DELAY)
 	{}
 
 	milliseconds GetDelay()
@@ -32,16 +32,16 @@ public:
 		return m_msGenerationDelay == milliseconds::zero();
 	};
 
-	void SetDelay( milliseconds delay )
+	void SetDelay(milliseconds delay)
 	{
 		m_msGenerationDelay = delay;
-		NotifyAll( false );
+		NotifyAll(false);
 	};
 
 	void SleepDelay() const
 	{
-		if ( m_msGenerationDelay > milliseconds::zero() )
-			Sleep( Cast2UnsignedLong(m_msGenerationDelay.count()) );
+		if (m_msGenerationDelay > milliseconds::zero())
+			Sleep(Cast2UnsignedLong(m_msGenerationDelay.count()));
 	};
 
 private:

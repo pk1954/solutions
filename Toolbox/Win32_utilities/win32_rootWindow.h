@@ -18,8 +18,8 @@ using std::unique_ptr;
 using std::function;
 using std::vector;
 
-inline LONG_PTR GetUserDataPtr( HWND hwnd )               { return GetWindowLongPtr( hwnd, GWLP_USERDATA ); }
-inline void     SetUserDataPtr( HWND hwnd, LONG_PTR ptr ) { (void) SetWindowLongPtr( hwnd, GWLP_USERDATA, ptr ); }
+inline LONG_PTR GetUserDataPtr(HWND hwnd)               { return GetWindowLongPtr(hwnd, GWLP_USERDATA); }
+inline void     SetUserDataPtr(HWND hwnd, LONG_PTR ptr) { (void) SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr); }
 
 class RootWindow : public ObserverInterface
 {
@@ -28,186 +28,186 @@ public:
     RootWindow();
     virtual ~RootWindow();
 
-	void StartRootWindow( function<bool()> const );
+	void StartRootWindow(function<bool()> const);
 
     HWND GetWindowHandle() const { return m_hwnd; };
 
-    PIXEL         const GetWindowTop()            const { return Util::GetWindowTop           ( m_hwnd ); }
-    PIXEL         const GetWindowWidth()          const { return Util::GetWindowWidth         ( m_hwnd ); }
-    PIXEL         const GetWindowHeight()         const { return Util::GetWindowHeight        ( m_hwnd ); }
-    PixelRectSize const GetWindowSize()           const { return Util::GetWindowSize          ( m_hwnd ); }
-    PixelRectSize const GetClRectSize()           const { return Util::GetClRectSize          ( m_hwnd ); }
-    PixelRect     const GetClPixelRect()          const { return Util::GetClPixelRect         ( m_hwnd ); }
-    PIXEL         const GetClientWindowHeight()   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
-    PIXEL         const GetClientWindowWidth()    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
-    bool          const CrsrInClientRect()        const { return Util::CrsrInClientRect       ( m_hwnd ); }
-    PixelPoint    const GetRelativeCrsrPosition() const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
-    PixelPoint    const GetClRectCenter()         const { return Util::GetClRectCenter        ( m_hwnd ); }
+    PIXEL         const GetWindowTop()            const { return Util::GetWindowTop           (m_hwnd); }
+    PIXEL         const GetWindowWidth()          const { return Util::GetWindowWidth         (m_hwnd); }
+    PIXEL         const GetWindowHeight()         const { return Util::GetWindowHeight        (m_hwnd); }
+    PixelRectSize const GetWindowSize()           const { return Util::GetWindowSize          (m_hwnd); }
+    PixelRectSize const GetClRectSize()           const { return Util::GetClRectSize          (m_hwnd); }
+    PixelRect     const GetClPixelRect()          const { return Util::GetClPixelRect         (m_hwnd); }
+    PIXEL         const GetClientWindowHeight()   const { return Util::GetClientWindowHeight  (m_hwnd); }
+    PIXEL         const GetClientWindowWidth()    const { return Util::GetClientWindowWidth   (m_hwnd); }
+    bool          const CrsrInClientRect()        const { return Util::CrsrInClientRect       (m_hwnd); }
+    PixelPoint    const GetRelativeCrsrPosition() const { return Util::GetRelativeCrsrPosition(m_hwnd); }
+    PixelPoint    const GetClRectCenter()         const { return Util::GetClRectCenter        (m_hwnd); }
 
-	PixelPoint    const Client2Screen( PixelPoint  const & p ) const { return Util::Client2Screen ( m_hwnd, p ); }
-	PixelPoint    const Screen2Client( PixelPoint  const & p ) const { return Util::Screen2Client ( m_hwnd, p ); }
+	PixelPoint    const Client2Screen(PixelPoint  const & p) const { return Util::Client2Screen (m_hwnd, p); }
+	PixelPoint    const Screen2Client(PixelPoint  const & p) const { return Util::Screen2Client (m_hwnd, p); }
 
-	bool          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
-	bool          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
+	bool          const IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
+	bool          const IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
 
-	bool          const IsWindowVisible()            const { return ::IsWindowVisible( m_hwnd ); }
-	HWND          const SetCapture()                 const { return ::SetCapture     ( m_hwnd ); }
-    HWND          const SetFocus()                   const { return ::SetFocus       ( m_hwnd ); }
-    HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
+	bool          const IsWindowVisible()            const { return ::IsWindowVisible(m_hwnd); }
+	HWND          const SetCapture()                 const { return ::SetCapture     (m_hwnd); }
+    HWND          const SetFocus()                   const { return ::SetFocus       (m_hwnd); }
+    HWND          const GetDlgItem(int const iItem) const { return ::GetDlgItem     (m_hwnd, iItem); }
     bool          const IsCaptured()                 const { return ::GetCapture() == m_hwnd; }
-	int			  const GetWindowTextLength()        const { return ::GetWindowTextLength( m_hwnd ); }        
+	int			  const GetWindowTextLength()        const { return ::GetWindowTextLength(m_hwnd); }        
 
-	void SetRefreshRate( milliseconds const );
+	void SetRefreshRate(milliseconds const);
 	
-    void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
-    void Show( bool    const b  ) const { Util::Show( m_hwnd, b  ); }
+    void Show(tBoolOp const op) const { Util::Show(m_hwnd, op); }
+    void Show(bool    const b ) const { Util::Show(m_hwnd, b ); }
 
-    HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hwnd, lpPaint ); }
-    bool EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
+    HDC  BeginPaint(LPPAINTSTRUCT lpPaint) const { return ::BeginPaint(m_hwnd, lpPaint); }
+    bool EndPaint  (LPPAINTSTRUCT lpPaint) const { return ::EndPaint  (m_hwnd, lpPaint); }
 
-	void SetTrackBarPos( INT const, LONG const ) const;
-	void SetTrackBarRange( INT const, LONG const, LONG const ) const;
+	void SetTrackBarPos(INT const, LONG const) const;
+	void SetTrackBarRange(INT const, LONG const, LONG const) const;
 
 	void const DestroyWindow() 
 	{ 
-		::DestroyWindow( m_hwnd );
+		::DestroyWindow(m_hwnd);
 		m_hwnd = nullptr;
 	}
 
-	HWND CreateBalloonToolTip( int const id, LPWSTR const t ) 
+	HWND CreateBalloonToolTip(int const id, LPWSTR const t) 
 	{
-		return ::CreateBalloonToolTip( m_hwnd, id, t );	
+		return ::CreateBalloonToolTip(m_hwnd, id, t);	
 	}
 
-	HWND CreateStdToolTip( int const id, LPWSTR const t ) 
+	HWND CreateStdToolTip(int const id, LPWSTR const t) 
 	{ 
-		return ::CreateStdToolTip( m_hwnd, id, t );	
+		return ::CreateStdToolTip(m_hwnd, id, t);	
 	}
 
-	HWND CreateWindowToolTip( LPWSTR const t ) 
+	HWND CreateWindowToolTip(LPWSTR const t) 
 	{ 
-		return ::CreateWindowToolTip( m_hwnd, t );	
+		return ::CreateWindowToolTip(m_hwnd, t);	
 	}
 
-	HWND CreateRectToolTip( int const id, PixelRect * const pRect, LPWSTR const t ) 
+	HWND CreateRectToolTip(int const id, PixelRect * const pRect, LPWSTR const t) 
 	{ 
-		return ::CreateRectToolTip( m_hwnd, id, pRect, t );	
+		return ::CreateRectToolTip(m_hwnd, id, pRect, t);	
 	}
 
-	HBITMAP const CreateCompatibleBitmap( HDC const hDC )
+	HBITMAP const CreateCompatibleBitmap(HDC const hDC)
 	{
 		PixelRectSize rectSize = GetClRectSize();
-		return ::CreateCompatibleBitmap( hDC, rectSize.GetXvalue(), rectSize.GetYvalue() );
+		return ::CreateCompatibleBitmap(hDC, rectSize.GetXvalue(), rectSize.GetYvalue());
 	}
 	
-	LRESULT const PostCommand( WPARAM const wParam, LPARAM const lParam = 0 ) const
+	LRESULT const PostCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
-		return PostMessage( WM_COMMAND, wParam, lParam );
+		return PostMessage(WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT const SendCommand( WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT const SendCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
-		return SendMessage( WM_COMMAND, wParam, lParam );
+		return SendMessage(WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT const SendNotifyCommand( WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT const SendNotifyCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
-		return SendNotifyMessage( WM_COMMAND, wParam, lParam );
+		return SendNotifyMessage(WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT const PostMessage(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
-		return ::PostMessage( m_hwnd, msg, wParam, lParam );
+		return ::PostMessage(m_hwnd, msg, wParam, lParam);
 	}
 
-	LRESULT const SendMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT const SendMessage(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
-		return ::SendMessage( m_hwnd, msg, wParam, lParam );
+		return ::SendMessage(m_hwnd, msg, wParam, lParam);
 	}
 
-	LRESULT const SendNotifyMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+	LRESULT const SendNotifyMessage(UINT const msg, WPARAM const wParam, LPARAM const lParam) const
 	{
-		return ::SendNotifyMessage( m_hwnd, msg, wParam, lParam );
+		return ::SendNotifyMessage(m_hwnd, msg, wParam, lParam);
 	}
 
-	LRESULT const SendDlgItemMessage( int const iItem, UINT msg, WPARAM wParam, LPARAM lParam ) const
+	LRESULT const SendDlgItemMessage(int const iItem, UINT msg, WPARAM wParam, LPARAM lParam) const
     {
-        return ::SendDlgItemMessage( m_hwnd, iItem, msg, wParam, lParam );
+        return ::SendDlgItemMessage(m_hwnd, iItem, msg, wParam, lParam);
     }
 
-	void SetDlgText( int const iItem, wchar_t const * const wstrText )
+	void SetDlgText(int const iItem, wchar_t const * const wstrText)
 	{
-		Util::SetText( GetDlgItem( iItem ), wstrText );
+		Util::SetText(GetDlgItem(iItem), wstrText);
 	}
 
-    LRESULT const DefWindowProc( UINT msg, WPARAM wParam, LPARAM lParam ) const
+    LRESULT const DefWindowProc(UINT msg, WPARAM wParam, LPARAM lParam) const
     {
-        return ::DefWindowProc( m_hwnd, msg, wParam, lParam );
+        return ::DefWindowProc(m_hwnd, msg, wParam, lParam);
     }
 
-	void CheckRadioButton( int iFirst, int iLast, int iCheck ) const
+	void CheckRadioButton(int iFirst, int iLast, int iCheck) const
 	{
-		(void)::CheckRadioButton( m_hwnd, iFirst, iLast, iCheck );
+		(void)::CheckRadioButton(m_hwnd, iFirst, iLast, iCheck);
 	}
 
-	UINT IsDlgButtonChecked( int iIdButton ) const
+	UINT IsDlgButtonChecked(int iIdButton) const
 	{
-		return ::IsDlgButtonChecked( m_hwnd, iIdButton );
+		return ::IsDlgButtonChecked(m_hwnd, iIdButton);
 	}
 
-	void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw )
+	void Move(PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw)
     {
-        (void)::MoveWindow( m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
+        (void)::MoveWindow(m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
     }
 
-    void Move( PixelPoint const pos, PixelRectSize const size, bool const bRedraw )
+    void Move(PixelPoint const pos, PixelRectSize const size, bool const bRedraw)
     {
-        Move( pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw );
+        Move(pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw);
     }
 
-    void Move( PixelRect const rect, bool const bRedraw )
+    void Move(PixelRect const rect, bool const bRedraw)
     {
-        Move( rect.GetStartPoint(), rect.GetSize(), bRedraw );
+        Move(rect.GetStartPoint(), rect.GetSize(), bRedraw);
     }
 
-    void Invalidate( bool const bRedraw ) 
+    void Invalidate(bool const bRedraw) 
     {
-		if ( m_hwnd != nullptr )
-			(void)::InvalidateRect( m_hwnd, nullptr, bRedraw );
+		if (m_hwnd != nullptr)
+			(void)::InvalidateRect(m_hwnd, nullptr, bRedraw);
     }
 
-    void FillBackground( HDC const hDC, COLORREF const col ) const
+    void FillBackground(HDC const hDC, COLORREF const col) const
     {
-        SetBkColor( hDC, col );
-        Util::FastFill( hDC, m_hwnd );
+        SetBkColor(hDC, col);
+        Util::FastFill(hDC, m_hwnd);
     }
 
-	short GetTrackBarPos( INT const idTrackbar ) const
+	short GetTrackBarPos(INT const idTrackbar) const
 	{
-		return Cast2Short( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
+		return Cast2Short(SendDlgItemMessage(idTrackbar, TBM_GETPOS, 0, 0)); 
 	}
 
-	LRESULT PostCommand2Application( WPARAM const wParam, LPARAM const lParam )
+	LRESULT PostCommand2Application(WPARAM const wParam, LPARAM const lParam)
 	{
-		return ::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
+		return ::PostMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT SendCommand2Application( WPARAM const wParam, LPARAM const lParam )
+	LRESULT SendCommand2Application(WPARAM const wParam, LPARAM const lParam)
 	{
-		return ::SendMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
+		return ::SendMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}
 
-	PIXEL const CrsrXpos( LPARAM const lParam ) const
+	PIXEL const CrsrXpos(LPARAM const lParam) const
 	{
-		return PIXEL(GET_X_LPARAM( lParam ) );
+		return PIXEL(GET_X_LPARAM(lParam));
 	}
 
-	PIXEL const CrsrYpos( LPARAM const lParam ) const
+	PIXEL const CrsrYpos(LPARAM const lParam) const
 	{
-		return PIXEL(GET_Y_LPARAM( lParam ) );
+		return PIXEL(GET_Y_LPARAM(lParam));
 	}
 
-	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
+	PixelPoint const GetCrsrPosFromLparam(LPARAM const lParam) const
 	{
 		return PixelPoint{ CrsrXpos(lParam), CrsrYpos(lParam) };
 	}
@@ -215,20 +215,20 @@ public:
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
 	virtual void   Notify(bool const);
 
-	virtual void Trigger()	{ Invalidate( false ); }
+	virtual void Trigger()	{ Invalidate(false); }
 
-	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
-	void SetWindowVisibility( tOnOffAuto const );
+	void ShowRefreshRateDlg(bool const bShow) { m_bShowRefreshRateDlg = bShow; }
+	void SetWindowVisibility(tOnOffAuto const);
 
 protected:
 
-	void SetWindowHandle( HWND const );
+	void SetWindowHandle(HWND const);
 
-	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
-	virtual bool OnSize   ( WPARAM const, LPARAM const );
+	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	virtual bool OnSize   (WPARAM const, LPARAM const);
 	virtual void OnClose();
 
-	virtual bool CommonMessageHandler( UINT const, WPARAM const, LPARAM const );
+	virtual bool CommonMessageHandler(UINT const, WPARAM const, LPARAM const);
 
 private:
 
@@ -241,16 +241,16 @@ private:
 	function<bool()> m_visibilityCriterion { nullptr };
 	bool             m_bShowRefreshRateDlg { true };
 
-	void addWinMenu( HMENU const, std::wstring const ) const;
-	void adjustWinMenu( HMENU const ) const;
-	void contextMenu( PixelPoint const & );
+	void addWinMenu(HMENU const, std::wstring const) const;
+	void adjustWinMenu(HMENU const) const;
+	void contextMenu(PixelPoint const &);
 
-	void adjustVisibility( tOnOffAuto const onOffAuto )
+	void adjustVisibility(tOnOffAuto const onOffAuto)
 	{
-		if ( m_visibilityCriterion )
-			Show( ApplyAutoCriterion( onOffAuto, m_visibilityCriterion ) );
+		if (m_visibilityCriterion)
+			Show(ApplyAutoCriterion(onOffAuto, m_visibilityCriterion));
 	}
 
 };
 
-RootWindow * GetRootWindow( HWND const );
+RootWindow * GetRootWindow(HWND const);

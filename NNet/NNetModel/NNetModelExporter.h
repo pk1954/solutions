@@ -28,7 +28,7 @@ class NNetModelReaderInterface;
 class NNetModelExporter
 {
 public:
-	void Initialize( NNetModelReaderInterface * const );
+	void Initialize(NNetModelReaderInterface * const);
 	void WriteModel();
 
 private:
@@ -39,14 +39,14 @@ private:
 
 	size_t const getCompactIdVal(NobId const);
 
-	void writeNob             ( wostream &, Nob  const & );
-	void writePipe            ( wostream &, Pipe const & );
-	void writeDescription     ( wostream & );
-	void writeMonitorData     ( wostream & );
-	void writeTriggerSounds   ( wostream & );
-	void writeNobParameters   ( wostream & );
-	void writeGlobalParameters( wostream & );
-	void writeNobs            ( wostream & );
-	void writeHeader          ( wostream & );
-	void write                ( wostream & );
+	void writeNob             (wostream &, Nob  const &);
+	void writePipe            (wostream &, Pipe const &);
+	void writeDescription     (wostream &);
+	void writeMonitorData     (wostream &);
+	void writeTriggerSounds   (wostream &);
+	void writeNobParameters   (wostream &);
+	void writeGlobalParameters(wostream &);
+	void writeNobs            (wostream &);
+	void writeHeader          (wostream &);
+	void write                (wostream &);
 };

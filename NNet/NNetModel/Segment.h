@@ -10,20 +10,20 @@ class Segment
 {
 public:
 	Segment()
-	:	m_startPnt( NP_NULL ),
-		m_endPnt  ( NP_NULL ),
-		m_width   ( 0.0f )
+	:	m_startPnt(NP_NULL),
+		m_endPnt  (NP_NULL),
+		m_width   (0.0f)
 	{}
 
 	Segment
-	(  
+	( 
 		MicroMeterPnt const startPnt,
 		MicroMeterPnt const endPnt,
 		MicroMeter      const width
 	) :
-		m_startPnt( startPnt ),
-		m_endPnt  ( endPnt   ),
-		m_width   ( width )
+		m_startPnt(startPnt),
+		m_endPnt  (endPnt  ),
+		m_width   (width)
 	{}
 
 	MicroMeterPnt GetStartPoint() const { return m_startPnt; }

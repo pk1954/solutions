@@ -19,37 +19,37 @@ HWND BaseDialog::StartBaseDialog
         lpTemplateName,
         hwndParent,
         BaseDialogProc,
-        ( LPARAM )this
-    );
+        (LPARAM)this
+   );
 
-	SetWindowHandle( hwnd );
-	StartRootWindow( visibilityCriterion );
+	SetWindowHandle(hwnd);
+	StartRootWindow(visibilityCriterion);
 
 	return hwnd;
 }
 
-bool BaseDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
-	return RootWindow::CommonMessageHandler( message, wParam, lParam );
+	return RootWindow::CommonMessageHandler(message, wParam, lParam);
 }
 
 static INT_PTR CALLBACK BaseDialogProc
-( 
+(
     HWND   const hwnd,
     UINT   const message, 
     WPARAM const wParam, 
     LPARAM const lParam 
 )
 {
-	if ( message == WM_INITDIALOG )
+	if (message == WM_INITDIALOG)
 	{
-		SetUserDataPtr( hwnd, (LONG_PTR)lParam );
+		SetUserDataPtr(hwnd, (LONG_PTR)lParam);
 		return INT_PTR(true);
 	}
 	else 
 	{
-		if ( BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetRootWindow( hwnd ) ) )
-			return pBaseDialog->UserProc( message, wParam, lParam );         // normal case
+		if (BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetRootWindow(hwnd)))
+			return pBaseDialog->UserProc(message, wParam, lParam);         // normal case
 	}
 
 	return INT_PTR(false);

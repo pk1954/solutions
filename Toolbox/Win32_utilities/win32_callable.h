@@ -13,13 +13,13 @@ using std::function;
 class Callable
 {
 public:
-    Callable( HWND const hwnd )
+    Callable(HWND const hwnd)
         : m_hwnd(hwnd)
     {}
     virtual ~Callable() {};
     virtual void Call_UI_thread(function<void()> const & func)
     {
-        SendMessage( m_hwnd, WM_APP_UI_CALL, 0, reinterpret_cast<LPARAM>(&func) );
+        SendMessage(m_hwnd, WM_APP_UI_CALL, 0, reinterpret_cast<LPARAM>(&func));
     };
 
     static void DoCall(LPARAM const lParam) 

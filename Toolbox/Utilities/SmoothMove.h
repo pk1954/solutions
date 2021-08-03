@@ -10,7 +10,7 @@ class SmoothMove
 public:
     SmoothMove();
 
-    PixelPoint Step( PixelPoint, PixelPoint );
+    PixelPoint Step(PixelPoint, PixelPoint);
     
 private:
     PIXEL m_pixVelocity; // set in every step

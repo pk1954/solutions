@@ -16,7 +16,7 @@ using std::begin;
 using std::end;
 
 BaseKnot::BaseKnot
-( 
+(
 	MicroMeterPnt const & center,
 	NobType       const   type,
 	MicroMeter    const   extension
@@ -25,7 +25,7 @@ BaseKnot::BaseKnot
 	m_circle(center, extension)
 { }
 
-bool BaseKnot::operator==( Nob const & rhs ) const
+bool BaseKnot::operator==(Nob const & rhs) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
 	return (this->Nob::operator==(rhs))             &&
@@ -75,12 +75,12 @@ void BaseKnot::MoveNob(MicroMeterPnt const & delta)
 
 void BaseKnot::AddIncoming(BaseKnot const & src) 
 { 
-	src.Apply2AllInPipes ([&](Pipe & pipe) { AddIncoming(& pipe); } );
+	src.Apply2AllInPipes ([&](Pipe & pipe) { AddIncoming(& pipe); });
 }
 
 void BaseKnot::AddOutgoing(BaseKnot const & src) 
 { 
-	src.Apply2AllOutPipes([&](Pipe & pipe) { AddOutgoing(& pipe); } );
+	src.Apply2AllOutPipes([&](Pipe & pipe) { AddOutgoing(& pipe); });
 }
 
 
@@ -99,8 +99,8 @@ void BaseKnot::ClearConnections()
 
 void BaseKnot::Reconnect() 
 { 
-	m_inPipes .Apply2All([&](Pipe & pipe) { pipe.SetEndKnot  (this); } );
-	m_outPipes.Apply2All([&](Pipe & pipe) { pipe.SetStartKnot(this); } );
+	m_inPipes .Apply2All([&](Pipe & pipe) { pipe.SetEndKnot  (this); });
+	m_outPipes.Apply2All([&](Pipe & pipe) { pipe.SetStartKnot(this); });
 }
 
 void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
@@ -109,7 +109,7 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 	ClearConnections();
 	baseKnotSrc.Apply2AllOutPipes([&](Pipe const &p){AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
 	baseKnotSrc.Apply2AllInPipes ([&](Pipe const &p){AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
-	if ( baseKnotSrc.GetParentNob() )
+	if (baseKnotSrc.GetParentNob())
 		SetParentNob(dstFromSrc(baseKnotSrc.GetParentNob()));
 //	Check();
 }
@@ -160,9 +160,9 @@ void BaseKnot::Prepare()
 {
 	m_mVinputBuffer = 0._mV;
 
-	//for ( Pipe * pPipe : m_incoming ) 
+	//for (Pipe * pPipe : m_incoming) 
 	//{ 
-	//	if ( pPipe != nullptr )
+	//	if (pPipe != nullptr)
 	//		m_mVinputBuffer += pPipe->GetNextOutput();
 	//}
 
@@ -212,19 +212,19 @@ void BaseKnot::drawCircle
 	MicroMeter   const   umWidth
 ) const
 {
-	context.FillCircle( MicroMeterCircle(GetPos(), umWidth ), colF);
+	context.FillCircle(MicroMeterCircle(GetPos(), umWidth), colF);
 }
 
 BaseKnot const * Cast2BaseKnot(Nob const * nob)
 {
-	assert( ! nob->IsPipe() );
-	assert( ! nob->IsUndefined() );
+	assert(! nob->IsPipe());
+	assert(! nob->IsUndefined());
 	return static_cast<BaseKnot const *>(nob);
 }
 
-BaseKnot * Cast2BaseKnot( Nob * nob )
+BaseKnot * Cast2BaseKnot(Nob * nob)
 {
-	assert( ! nob->IsPipe() );
-	assert( ! nob->IsUndefined() );
+	assert(! nob->IsPipe());
+	assert(! nob->IsUndefined());
 	return static_cast<BaseKnot *>(nob);
 }

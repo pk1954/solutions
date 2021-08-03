@@ -28,7 +28,7 @@ public:
         MainWindow               & win,
         NNetModelWriterInterface & nmwi,
         unique_ptr<IoNeuronList>   upList
-    )
+   )
       : AnimationCmd(win),
         m_nmwi(nmwi)
     {

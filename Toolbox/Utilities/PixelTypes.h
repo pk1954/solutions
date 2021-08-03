@@ -21,12 +21,12 @@ using PixelRect     = RectType   < PIXEL >;
 using PixelCircle   = CircleType < PIXEL >;
 using PixelEllipse  = EllipseType< PIXEL >;
 
-inline static PixelPoint const PP_NULL( PixelPoint::NULL_VAL() );   // compiler generates call!
-inline static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generates call!
+inline static PixelPoint const PP_NULL(PixelPoint::NULL_VAL());   // compiler generates call!
+inline static PixelPoint const PP_ZERO(PixelPoint::ZERO_VAL());   // compiler generates call!
 
-constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
+constexpr PIXEL operator"" _PIXEL(unsigned long long ull)
 {
-	return PIXEL( Cast2Short( ull ) );
+	return PIXEL(Cast2Short(ull));
 }
 
 /////////////////// fPixel ///////////////////////////////////
@@ -38,53 +38,53 @@ using fPixelRect     = RectType    < fPixel >;
 using fPixelCircle   = CircleType  < fPixel >;
 using fPixelEllipse  = EllipseType < fPixel >;
 
-inline static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!
-inline static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler generates call!
+inline static fPixelPoint const fPP_NULL(fPixelPoint::NULL_VAL());   // compiler generates call!
+inline static fPixelPoint const fPP_ZERO(fPixelPoint::ZERO_VAL());   // compiler generates call!
 
-constexpr fPixel operator"" _fPixel( long double ld )
+constexpr fPixel operator"" _fPixel(long double ld)
 {
-	return fPixel( Cast2Float( ld ) );
+	return fPixel(Cast2Float(ld));
 }
 
 /////////////////// conversions ///////////////////////////////////
 
-static PIXEL Convert2PIXEL( fPixel const fPixel )
+static PIXEL Convert2PIXEL(fPixel const fPixel)
 {
-	return PIXEL( Cast2Long( fPixel.GetValue() ) );
+	return PIXEL(Cast2Long(fPixel.GetValue()));
 }
 
-static fPixel Convert2fPixel( PIXEL const pixel )
+static fPixel Convert2fPixel(PIXEL const pixel)
 {
-	return fPixel( Cast2Float( pixel.GetValue() ) );
+	return fPixel(Cast2Float(pixel.GetValue()));
 }
 
-static PixelPoint Convert2PixelPoint( fPixelPoint const fPixPoint )
+static PixelPoint Convert2PixelPoint(fPixelPoint const fPixPoint)
 {
-	return PixelPoint( Convert2PIXEL( fPixPoint.GetX() ), Convert2PIXEL( fPixPoint.GetY() ) );
+	return PixelPoint(Convert2PIXEL(fPixPoint.GetX()), Convert2PIXEL(fPixPoint.GetY()));
 }
 
-static fPixelPoint Convert2fPixelPoint( PixelPoint const pixPoint )
+static fPixelPoint Convert2fPixelPoint(PixelPoint const pixPoint)
 {
-	return fPixelPoint( Convert2fPixel( pixPoint.GetX() ), Convert2fPixel( pixPoint.GetY() ) );
+	return fPixelPoint(Convert2fPixel(pixPoint.GetX()), Convert2fPixel(pixPoint.GetY()));
 }
 
-static PixelRectSize Convert2PixelRectSize( fPixelRectSize const fRectSize )
+static PixelRectSize Convert2PixelRectSize(fPixelRectSize const fRectSize)
 {
-	return PixelRectSize( Convert2PIXEL( fRectSize.GetX() ), Convert2PIXEL( fRectSize.GetY() ) );
+	return PixelRectSize(Convert2PIXEL(fRectSize.GetX()), Convert2PIXEL(fRectSize.GetY()));
 }
 
-static fPixelRectSize Convert2fPixelRectSize( PixelRectSize const rectSize )
+static fPixelRectSize Convert2fPixelRectSize(PixelRectSize const rectSize)
 {
-	return fPixelRectSize( Convert2fPixel( rectSize.GetX() ), Convert2fPixel( rectSize.GetY() ) );
+	return fPixelRectSize(Convert2fPixel(rectSize.GetX()), Convert2fPixel(rectSize.GetY()));
 }
 
-static fPixelRect Convert2fPixelRect( PixelRect const & rect )
+static fPixelRect Convert2fPixelRect(PixelRect const & rect)
 {
 	return fPixelRect
-		   ( 
-			   Convert2fPixel( rect.GetLeft() ),
-			   Convert2fPixel( rect.GetTop() ),
-			   Convert2fPixel( rect.GetRight() ),
-			   Convert2fPixel( rect.GetBottom() )
-		   );
+		   (
+			   Convert2fPixel(rect.GetLeft()),
+			   Convert2fPixel(rect.GetTop()),
+			   Convert2fPixel(rect.GetRight()),
+			   Convert2fPixel(rect.GetBottom())
+		  );
 }

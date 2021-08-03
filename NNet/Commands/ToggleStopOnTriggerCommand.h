@@ -11,13 +11,13 @@
 class ToggleStopOnTriggerCommand : public Command
 {
 public:
-	ToggleStopOnTriggerCommand( NobId const id )
-		:	m_id( id )
+	ToggleStopOnTriggerCommand(NobId const id)
+		:	m_id(id)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do(NNetModelWriterInterface & model)
 	{
-		model.ToggleStopOnTrigger( m_id );
+		model.ToggleStopOnTrigger(m_id);
 	}
 
 private:

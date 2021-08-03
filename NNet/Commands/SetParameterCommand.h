@@ -13,24 +13,24 @@ class SetParameterCommand : public Command
 {
 public:
 	SetParameterCommand
-	( 
+	(
 		Param            const & param,
 		ParamType::Value const   parameter, 
 		float            const   fNewValue 
 	)
-	  : m_parameter( parameter ),
-		m_fNewValue( fNewValue ),
-		m_fOldValue( param.GetParameterValue( parameter ))
+	  : m_parameter(parameter),
+		m_fNewValue(fNewValue),
+		m_fOldValue(param.GetParameterValue(parameter))
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do(NNetModelWriterInterface & model) 
 	{ 
-		model.SetParam( m_parameter, m_fNewValue ); 
+		model.SetParam(m_parameter, m_fNewValue); 
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo(NNetModelWriterInterface & model) 
 	{ 
-		model.SetParam( m_parameter, m_fOldValue ); 
+		model.SetParam(m_parameter, m_fOldValue); 
 	}
 
 private:

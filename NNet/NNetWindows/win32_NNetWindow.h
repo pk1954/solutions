@@ -28,12 +28,12 @@ class NNetModelReaderInterface;
 class NNetWindow : public ModelWindow
 {
 public:
-	static void InitClass( ActionTimer * const );
+	static void InitClass(ActionTimer * const);
 
 	NNetWindow();
 
 	void Start
-	( 
+	(
 		HWND                     const, 
 		DWORD                    const,
 		bool                     const,
@@ -54,18 +54,18 @@ public:
 	PixelCoordsFp        & GetCoord      ()       { return m_context.GetCoord (); }
 	MicroMeter     const   PixelSize     () const { return m_context.GetPixelSize(); }
 
-	void DrawInteriorInRect  ( PixelRect  const &, NobCrit const & ) const;
-	void DrawExteriorInRect  ( PixelRect  const &                    ) const;
-	void DrawNeuronTextInRect( PixelRect  const &                    ) const;
-	void DrawArrowsInRect    ( PixelRect  const &, MicroMeter const  ) const;
+	void DrawInteriorInRect  (PixelRect  const &, NobCrit const &) const;
+	void DrawExteriorInRect  (PixelRect  const &                   ) const;
+	void DrawNeuronTextInRect(PixelRect  const &                   ) const;
+	void DrawArrowsInRect    (PixelRect  const &, MicroMeter const ) const;
 	void DrawSensors         () const;
 
 protected:
 
 	virtual void OnPaint      ();
-	virtual bool OnSize       ( WPARAM const, LPARAM const );
-	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
-	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
+	virtual bool OnSize       (WPARAM const, LPARAM const);
+	virtual bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const);
+	virtual void OnLButtonDown(WPARAM const, LPARAM const) {}
 
 	virtual void doPaint() = 0;
 
@@ -77,8 +77,8 @@ protected:
 	D2D_driver                       m_graphics { };
 
 private:
-	NNetWindow             ( NNetWindow const & );  // noncopyable class 
-	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
+	NNetWindow             (NNetWindow const &);  // noncopyable class 
+	NNetWindow & operator= (NNetWindow const &);  // noncopyable class 
 
 	unique_ptr<Animation<float>> m_upBeaconAnimation;
 	float                        m_fRelBeaconSize { 0.0f }; 

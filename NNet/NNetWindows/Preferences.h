@@ -14,9 +14,9 @@ class Sound;
 class Preferences
 {
 public:
-	void Initialize( Sound &, NNetModelImporter &, HWND const );
+	void Initialize(Sound &, NNetModelImporter &, HWND const);
 	bool ReadPreferences();
-	bool WritePreferences( wstring const );
+	bool WritePreferences(wstring const);
 
 private:
 	HWND    m_hwndApp;

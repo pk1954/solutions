@@ -22,27 +22,27 @@ public:
 		wstring const & strName,
 		bool            bAsync
 	) :
-		m_textWindow( textWindow ),
-		m_hDC( hDC_Memory )
+		m_textWindow(textWindow),
+		m_hDC(hDC_Memory)
 	{ 
-	    m_pTextBuffer = make_unique<Win32_TextBuffer>( hDC_Memory, pixSize );
-		if ( bAsync )
-			StartThread( strName, bAsync );
-		PostThreadMsg( anyMessageWillDo );
+	    m_pTextBuffer = make_unique<Win32_TextBuffer>(hDC_Memory, pixSize);
+		if (bAsync)
+			StartThread(strName, bAsync);
+		PostThreadMsg(anyMessageWillDo);
 	}
 
 	virtual ~TextWindowThread()	{ }
 
 	virtual void Trigger()
 	{
-		PostThreadMsg( anyMessageWillDo );
+		PostThreadMsg(anyMessageWillDo);
 	}
 
-	virtual void ThreadMsgDispatcher( MSG const msg )
+	virtual void ThreadMsgDispatcher(MSG const msg)
 	{
         m_pTextBuffer->StartPainting();
-		m_textWindow.DoPaint( * m_pTextBuffer );
-		m_textWindow.Invalidate( false );
+		m_textWindow.DoPaint(* m_pTextBuffer);
+		m_textWindow.Invalidate(false);
 	}
 
 private:

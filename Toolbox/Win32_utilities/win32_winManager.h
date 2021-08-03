@@ -22,13 +22,13 @@ public:
     WinManager();
     virtual ~WinManager() { };
 
-	void AddWindow( wstring const, UINT const, HWND,               bool const, bool const );
-	void AddWindow( wstring const, UINT const, BaseWindow const &, bool const, bool const );
-	void AddWindow( wstring const, UINT const, BaseDialog const &, bool const, bool const );
+	void AddWindow(wstring const, UINT const, HWND,               bool const, bool const);
+	void AddWindow(wstring const, UINT const, BaseWindow const &, bool const, bool const);
+	void AddWindow(wstring const, UINT const, BaseDialog const &, bool const, bool const);
 
-	void RemoveWindow( UINT const id )
+	void RemoveWindow(UINT const id)
 	{
-		m_map.erase( id );
+		m_map.erase(id);
 	}
 
 	void RemoveAll()
@@ -36,67 +36,67 @@ public:
 		m_map.clear ();
 	}
 
-	std::wstring const GetWindowName( UINT const id ) const // can throw out_of_range exception
+	std::wstring const GetWindowName(UINT const id) const // can throw out_of_range exception
     {
-        return m_map.at( id ).m_wstr;
+        return m_map.at(id).m_wstr;
     }
 
-	HWND const GetHWND( UINT const id ) const // can throw out_of_range exception
+	HWND const GetHWND(UINT const id) const // can throw out_of_range exception
 	{
-		return m_map.at( id ).m_hwnd;
+		return m_map.at(id).m_hwnd;
 	}
 
-	void BringToTop( UINT const id ) const
+	void BringToTop(UINT const id) const
 	{
-		HWND hwnd { GetHWND( id ) };
-		BringWindowToTop( hwnd );
-		ShowWindow( hwnd, SW_SHOWNORMAL );
+		HWND hwnd { GetHWND(id) };
+		BringWindowToTop(hwnd);
+		ShowWindow(hwnd, SW_SHOWNORMAL);
 	}
 
-	void AdjustRight( UINT const id, PIXEL const pixYpos = 0_PIXEL ) const
+	void AdjustRight(UINT const id, PIXEL const pixYpos = 0_PIXEL) const
 	{
-		Util::AdjustRight( GetHWND( id ), pixYpos );
+		Util::AdjustRight(GetHWND(id), pixYpos);
 	}
 
-	void AdjustLeft( UINT const id, PIXEL const pixYpos = 0_PIXEL ) const
+	void AdjustLeft(UINT const id, PIXEL const pixYpos = 0_PIXEL) const
 	{
-		Util::AdjustLeft( GetHWND( id ), pixYpos );
+		Util::AdjustLeft(GetHWND(id), pixYpos);
 	}
 
-	BaseWindow const * const GetBaseWindow( UINT const id ) const // can throw out_of_range exception
+	BaseWindow const * const GetBaseWindow(UINT const id) const // can throw out_of_range exception
 	{
-		return m_map.at( id ).m_pBaseWindow;
+		return m_map.at(id).m_pBaseWindow;
 	}
 
-	INT const GetIdFromRootWindow( HWND const hwnd )
+	INT const GetIdFromRootWindow(HWND const hwnd)
 	{
-		for ( auto & pp : m_map )
-			if ( pp.second.m_hwnd == hwnd )
+		for (auto & pp : m_map)
+			if (pp.second.m_hwnd == hwnd)
 				return pp.first; 
 		return -1;
 	}
 
-    bool const IsMoveable( UINT const id ) const // can throw out_of_range exception
+    bool const IsMoveable(UINT const id) const // can throw out_of_range exception
     {
-        return m_map.at( id ).m_bTrackPosition;
+        return m_map.at(id).m_bTrackPosition;
     }
 
-	bool const IsSizeable( UINT const id ) const // can throw out_of_range exception
+	bool const IsSizeable(UINT const id) const // can throw out_of_range exception
 	{
-		return m_map.at( id ).m_bTrackSize;
+		return m_map.at(id).m_bTrackSize;
 	}
 
-	bool const IsVisible( UINT const id ) const // can throw out_of_range exception
+	bool const IsVisible(UINT const id) const // can throw out_of_range exception
 	{
-		return IsWindowVisible( GetHWND( id ) );
+		return IsWindowVisible(GetHWND(id));
 	}
 
-	void Show( UINT const id, tBoolOp const op ) const
+	void Show(UINT const id, tBoolOp const op) const
     {
-        Util::Show( GetHWND( id ), op );
+        Util::Show(GetHWND(id), op);
     }
 
-    void SetWindowConfigurationFile( std::wstring const fileName ) 
+    void SetWindowConfigurationFile(std::wstring const fileName) 
     { 
         m_strWindowConfigurationFile = fileName; 
     };
@@ -133,7 +133,7 @@ private:
     void dumpWindowCoordinates() const;
 
 	void addWindow
-	( 
+	(
 		wstring    const,
 		UINT       const,
 		HWND       const,

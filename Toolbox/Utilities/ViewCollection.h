@@ -14,28 +14,28 @@ class ViewCollection
 {
 public:
 
-	virtual void NotifyAll( bool const bImmediately )
+	virtual void NotifyAll(bool const bImmediately)
 	{
 		int i = 0;
-		for ( auto &v : m_aView )
+		for (auto &v : m_aView)
 		{
 			++i;
-			v->Notify( bImmediately );
+			v->Notify(bImmediately);
 		}
 	}
 
-	void Register( ObserverInterface * const pObserver )
+	void Register(ObserverInterface * const pObserver)
 	{
-		assert( pObserver != nullptr );
-		m_aView.push_back( pObserver );
+		assert(pObserver != nullptr);
+		m_aView.push_back(pObserver);
 	}
 
-	void Unregister( ObserverInterface * const pObserver )
+	void Unregister(ObserverInterface * const pObserver)
 	{
-		assert( pObserver != nullptr );
+		assert(pObserver != nullptr);
 		for (auto it = m_aView.begin(); it != m_aView.end();)
 		{
-			if ( * it == pObserver ) 
+			if (* it == pObserver) 
 				it = m_aView.erase(it);
 			else 
 				++it;

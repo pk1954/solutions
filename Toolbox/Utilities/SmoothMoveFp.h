@@ -11,7 +11,7 @@ class SmoothMoveFp
 {
 public:
 
-    void Start( unsigned int const uiNrOfSteps )
+    void Start(unsigned int const uiNrOfSteps)
     {
         m_pos          = START_POINT;
         m_velocity     = static_cast<T>(0);
@@ -23,12 +23,12 @@ public:
 
     bool Next() // returns true if target reached
     {
-        if ( m_pos <= BREAK_POINT )
+        if (m_pos <= BREAK_POINT)
             m_velocity += m_acceleration;
         else 
             m_velocity -= m_acceleration;
         m_pos += m_velocity;
-        if ( m_pos >= END_POINT * static_cast<T>(0.999f) )
+        if (m_pos >= END_POINT * static_cast<T>(0.999f))
         {
             m_pos          = END_POINT;
             m_velocity     = static_cast<T>(0);

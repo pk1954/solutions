@@ -30,7 +30,7 @@ public:
 	NNetController() {}
 
 	void Initialize
-	( 
+	(
 		NNetModelExporter        * const,
 		MainWindow               * const,
 		WinManager               * const,
@@ -48,17 +48,17 @@ public:
 
 	virtual ~NNetController();
 
-	bool HandleCommand( int const, LPARAM const, MicroMeterPnt const = NP_NULL );
+	bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL);
 
 private:
 
 	bool       IsTraceOn  () const { return m_bTrace; }
 	wostream & TraceStream()       { return wcout; }
 
-	void pulseRateDlg       ( NobId const );
-	void triggerSoundDlg    ( NobId const );
-	bool processUIcommand   ( int const, LPARAM const );
-	bool processModelCommand( int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
+	void pulseRateDlg       (NobId const);
+	void triggerSoundDlg    (NobId const);
+	bool processUIcommand   (int const, LPARAM const);
+	bool processModelCommand(int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
 
 	bool                       m_bTrace                 { true };
 	bool                       m_bBlockedUI             { false };

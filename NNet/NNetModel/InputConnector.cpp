@@ -24,7 +24,7 @@ InputConnector::InputConnector(InputConnector const & src)   // copy constructor
 
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-    if ( Size() > 1 )
+    if (Size() > 1)
     {
         MicroMeterPnt umPnt1     { m_upList->GetFirst().GetPos() }; 
         MicroMeterPnt umPnt2     { m_upList->GetLast ().GetPos() }; 
@@ -39,7 +39,7 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
             umPnt2 + umPntOff, 
             m_upList->GetFirst().GetExtension() * 1.2f, 
             GetExteriorColor(type)
-        );
+       );
     }
     IoConnector::DrawExterior(context, type);
 }

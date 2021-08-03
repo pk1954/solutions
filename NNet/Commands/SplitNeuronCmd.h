@@ -20,7 +20,7 @@ public:
     (
         NNetModelWriterInterface & nmwi, 
         NobId                const id
-    )
+   )
       : m_neuron(*nmwi.GetNobPtr<Neuron *>(id))
     {
         MicroMeterPnt umPos { m_neuron.GetPos() };
@@ -37,7 +37,7 @@ public:
     virtual void Do(NNetModelWriterInterface & nmwi)
     {
         m_upNeuron = nmwi.RemoveFromModel<Neuron>(m_neuron);
-        nmwi.Push2Model(move(m_upInputNeuron ));
+        nmwi.Push2Model(move(m_upInputNeuron));
         nmwi.Push2Model(move(m_upOutputNeuron));
     }
 

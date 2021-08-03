@@ -27,10 +27,10 @@ class ModelAnalyzer
 {
 public:
 	static void SetStatusBarDisplay(DisplayFunctor * const func) { m_pStatusBarDisplay = func; }
-	static void SetEscFunc ( bool (* func )() ) { m_pEscFunc = func; }
+	static void SetEscFunc (bool (* func)()) { m_pEscFunc = func; }
 
-	static NobStack const FindLoop   ( NNetModelReaderInterface const & );
-	static NobStack const FindAnomaly( NNetModelReaderInterface const & );
+	static NobStack const FindLoop   (NNetModelReaderInterface const &);
+	static NobStack const FindAnomaly(NNetModelReaderInterface const &);
 
 private:
 
@@ -39,19 +39,19 @@ private:
 	inline static int              m_iRecDepth	       { 0 };
 	inline static NobStack         m_nobStack          { };
 
-	inline static bool (* m_pEscFunc )() { nullptr };
+	inline static bool (* m_pEscFunc)() { nullptr };
 
-	static bool findLoop( Nob const & );
-	static bool hasAnomaly( Knot const & );
+	static bool findLoop(Nob const &);
+	static bool hasAnomaly(Knot const &);
 
-	static void statusDisplay( wstring const str ) 
+	static void statusDisplay(wstring const str) 
 	{ 
-		if ( m_pStatusBarDisplay )
-			(* m_pStatusBarDisplay)( str );
+		if (m_pStatusBarDisplay)
+			(* m_pStatusBarDisplay)(str);
 	}
 
-	static void statusDisplay( wchar_t const * pStr )
+	static void statusDisplay(wchar_t const * pStr)
 	{
-		statusDisplay( wstring( pStr ) );
+		statusDisplay(wstring(pStr));
 	}
 };

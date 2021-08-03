@@ -12,17 +12,17 @@ enum class tHighlight
 	targetNoFit
 };
 
-static bool const IsHighlighted( tHighlight const type )
+static bool const IsHighlighted(tHighlight const type)
 {
 	return type == tHighlight::highlighted;
 }
 
-static bool const IsNormal( tHighlight const type )
+static bool const IsNormal(tHighlight const type)
 {
 	return type == tHighlight::normal;
 }
 
-//static bool const IsTarget( tHighlight const type )
+//static bool const IsTarget(tHighlight const type)
 //{
 //	return type == tHighlight::target;
 //}

@@ -22,7 +22,7 @@ public:
 	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
 	virtual ~BaseKnot() {}
 
-	virtual bool operator==( Nob const & ) const override;
+	virtual bool operator==(Nob const &) const override;
 
 	virtual BaseKnot & operator*=(float const);
 	virtual BaseKnot & operator+=(BaseKnot const &);
@@ -48,9 +48,9 @@ public:
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
 	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
-	bool const Includes( MicroMeterPnt const & ) const;
-	bool const IsPrecursorOf( Pipe const & ) const;
-	bool const IsSuccessorOf( Pipe const & ) const ;
+	bool const Includes(MicroMeterPnt const &) const;
+	bool const IsPrecursorOf(Pipe const &) const;
+	bool const IsSuccessorOf(Pipe const &) const ;
 
 	bool const HasIncoming() const { return m_inPipes.IsNotEmpty (); }
 	bool const HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
@@ -84,7 +84,7 @@ public:
 	void SetIncoming(PipeList const & l) { m_inPipes  = l; }
 	void SetOutgoing(PipeList const & l) { m_outPipes = l; }
 
-	void SetIncoming(BaseKnot const & b) { SetIncoming(b.m_inPipes ); }
+	void SetIncoming(BaseKnot const & b) { SetIncoming(b.m_inPipes); }
 	void SetOutgoing(BaseKnot const & b) { SetOutgoing(b.m_outPipes); }
 
 	void Apply2AllInPipes        (PipeFunc const &f) const { m_inPipes .Apply2All(f); }

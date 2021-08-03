@@ -15,7 +15,7 @@ public:
 	ParameterDialog();
 	~ParameterDialog();
 
-	void Start( HWND const, NNetModelCommands * const, Param * const );
+	void Start(HWND const, NNetModelCommands * const, Param * const);
 	void Stop();
 
 private:
@@ -34,18 +34,18 @@ private:
 	HWND m_hwndTimeResolution  { nullptr };
 	HWND m_hwndPulseSpeed      { nullptr };
 		
-	HWND createButton     ( HWND const, wchar_t  const * const, int const, int const, int const, int const, HMENU const );
-	HWND createEditField  ( HWND const, ParamType::Value const, int &,     int const, int const );
-	HWND createStaticField( HWND const, wchar_t  const * const, int &,     int const, int const );
-	void resetParameter   ( HWND const, ParamType::Value const );
-	void applyParameter   ( HWND const, ParamType::Value const );
-	HWND addParameter     ( HWND const, ParamType::Value const, int & );
+	HWND createButton     (HWND const, wchar_t  const * const, int const, int const, int const, int const, HMENU const);
+	HWND createEditField  (HWND const, ParamType::Value const, int &,     int const, int const);
+	HWND createStaticField(HWND const, wchar_t  const * const, int &,     int const, int const);
+	void resetParameter   (HWND const, ParamType::Value const);
+	void applyParameter   (HWND const, ParamType::Value const);
+	HWND addParameter     (HWND const, ParamType::Value const, int &);
 	void applyParameters();
 	void resetParameters();
 
-	ParameterDialog             ( ParameterDialog const & );  // noncopyable class 
-	ParameterDialog & operator= ( ParameterDialog const & );  // noncopyable class 
+	ParameterDialog             (ParameterDialog const &);  // noncopyable class 
+	ParameterDialog & operator= (ParameterDialog const &);  // noncopyable class 
 
-	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
-	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

@@ -40,7 +40,7 @@ public:
     friend MicroMeterPosDir const operator- (MicroMeterPosDir const, MicroMeterPosDir const); 
     friend MicroMeterPosDir const operator* (MicroMeterPosDir const, float const); 
 
-    friend wostream & operator<< ( wostream &, MicroMeterPosDir const &);
+    friend wostream & operator<< (wostream &, MicroMeterPosDir const &);
 
     inline static wchar_t const OPEN_BRACKET  { L'(' };
     inline static wchar_t const SEPARATOR     { L',' };
@@ -48,7 +48,7 @@ public:
 
     static MicroMeterPosDir const & NULL_VAL() 
     { 
-        static MicroMeterPosDir res { MicroMeterPosDir( MicroMeterPnt::NULL_VAL(), Radian::NULL_VAL() ) }; 
+        static MicroMeterPosDir res { MicroMeterPosDir(MicroMeterPnt::NULL_VAL(), Radian::NULL_VAL()) }; 
         return res;
     };
 

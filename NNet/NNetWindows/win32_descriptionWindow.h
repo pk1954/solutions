@@ -13,13 +13,13 @@ using std::wstring;
 class DescriptionWindow : public BaseWindow, public DescriptionUI
 {
 public:
-	void Start( HWND const );
+	void Start(HWND const);
 	void Stop();
 
 	virtual void       ClearDescription();
-	virtual void       SetDescription( wstring const );
+	virtual void       SetDescription(wstring const);
 	virtual int  const GetLineCount() const;
-    virtual bool const GetDescriptionLine( int const, wstring & ) const;
+    virtual bool const GetDescriptionLine(int const, wstring &) const;
 	virtual bool const IsDirty() { return m_bDirty; };
 	virtual void       ResetDirtyFlag() { m_bDirty = false; };
 
@@ -28,6 +28,6 @@ private:
 	bool m_bDirty   { false };
 
 	virtual void OnPaint  () { };
-	virtual bool OnSize   ( WPARAM const, LPARAM const );
-	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+	virtual bool OnSize   (WPARAM const, LPARAM const);
+	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
 };

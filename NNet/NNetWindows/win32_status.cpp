@@ -7,14 +7,14 @@
 #include "win32_tooltip.h"
 #include "win32_status.h"
 
-static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
+static LRESULT CALLBACK OwnerDrawStatusBar(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
 {
 	StatusBar * const pStatusBar = (StatusBar *)dwRefData;
-	switch ( uMsg )
+	switch (uMsg)
 	{
 
 	case WM_COMMAND:
-		pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
+		pStatusBar->PostCommand2Application(LOWORD(wParam), 0);
 		return true;
 
 	default: 
@@ -24,7 +24,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 	return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
-void StatusBar::Start( HWND const hwndParent )
+void StatusBar::Start(HWND const hwndParent)
 {
 	HWND hwndStatus = CreateWindow
 	(
@@ -34,32 +34,32 @@ void StatusBar::Start( HWND const hwndParent )
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue(),
 		hwndParent,
 		nullptr, 
-		GetModuleHandle( nullptr ), 
+		GetModuleHandle(nullptr), 
 		nullptr
 	); 
 
-	SetWindowHandle( hwndStatus );
+	SetWindowHandle(hwndStatus);
 
-	(void)SetWindowSubclass( hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
+	(void)SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this) ;
 
-	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ))) + 10_PIXEL;
-	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
+	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics(SM_CXSIZEFRAME))) + 10_PIXEL;
+	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics(SM_CYSIZEFRAME)));
 	m_pixClientHeight = GetHeight() - m_pixBorderY;
 }
 
 void StatusBar::AddCustomControl
-( 
+(
 	int const width  // in number of characters
 )
 {
-	static PIXEL const FONT_WIDTH = PIXEL( 9 );
+	static PIXEL const FONT_WIDTH = PIXEL(9);
 	m_pixPosX += FONT_WIDTH * width;
 }
 
 int StatusBar::NewPart()
 {
 	m_pixPosX += m_pixBorderX;
-	m_statWidths.push_back( m_pixPosX );
+	m_statWidths.push_back(m_pixPosX);
 	m_pixPosX += m_pixBorderX;
 	return static_cast<int>(m_statWidths.size());
 }
@@ -67,24 +67,24 @@ int StatusBar::NewPart()
 void StatusBar::LastPart()
 {
 	NewPart();
-	m_statWidths.push_back( -1_PIXEL  ); // Stop
-	(void)SendMessage( SB_SETPARTS, m_statWidths.size(), (LPARAM)( m_statWidths.data() ) );
+	m_statWidths.push_back(-1_PIXEL ); // Stop
+	(void)SendMessage(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
 }
 
 void StatusBar::Stop()
 {
-	Show( false );
+	Show(false);
 	DestroyWindow();
 }
 
 LRESULT StatusBar::UserProc
-( 
+(
 	UINT   const uMsg, 
 	WPARAM const wParam, 
 	LPARAM const lParam 
 )
 {
-	return DefSubclassProc( GetWindowHandle(), uMsg, wParam, lParam );
+	return DefSubclassProc(GetWindowHandle(), uMsg, wParam, lParam);
 }
 
 HWND WINAPI StatusBar::addControl
@@ -96,8 +96,8 @@ HWND WINAPI StatusBar::addControl
     HMENU   const hMenu
 )
 {
-	int   const iWidth   { width ? width : static_cast<int>( wcslen( lpWindowName ) ) };
-	PIXEL const pixWidth { PIXEL( iWidth * 9 ) };
+	int   const iWidth   { width ? width : static_cast<int>(wcslen(lpWindowName)) };
+	PIXEL const pixWidth { PIXEL(iWidth * 9) };
     HWND  const hwnd     
 	{ 
 		CreateWindow
@@ -111,7 +111,7 @@ HWND WINAPI StatusBar::addControl
 			m_pixClientHeight.GetValue(),    // height
 			GetWindowHandle(),              // parent window 
 			hMenu,                           // control identifier 
-			GetModuleHandle( nullptr ),      // instance 
+			GetModuleHandle(nullptr),      // instance 
 			nullptr                          // no WM_CREATE parameter 
 		)
 	};
@@ -119,27 +119,27 @@ HWND WINAPI StatusBar::addControl
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddStaticControl( LPCTSTR const lpWindowName )
+HWND WINAPI StatusBar::AddStaticControl(LPCTSTR const lpWindowName)
 {
-	HWND hwnd = addControl( WC_STATIC, lpWindowName, 0, 0, nullptr );
+	HWND hwnd = addControl(WC_STATIC, lpWindowName, 0, 0, nullptr);
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddStaticControl( int const width )
+HWND WINAPI StatusBar::AddStaticControl(int const width)
 {
-	HWND hwnd = addControl( WC_STATIC, L"", width, 0, nullptr );
+	HWND hwnd = addControl(WC_STATIC, L"", width, 0, nullptr);
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddButton( LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle )
+HWND WINAPI StatusBar::AddButton(LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle)
 { 
-	HWND hwnd = addControl( WC_BUTTON, lpWindowName, 0, dwStyle, hMenu );
+	HWND hwnd = addControl(WC_BUTTON, lpWindowName, 0, dwStyle, hMenu);
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddTrackBar( HMENU hMenu )
+HWND WINAPI StatusBar::AddTrackBar(HMENU hMenu)
 { 
-	HWND hwnd = addControl( TRACKBAR_CLASS, L"   Trackbar Control   ", 0, WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
+	HWND hwnd = addControl(TRACKBAR_CLASS, L"   Trackbar Control   ", 0, WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu);
 	return hwnd;
 };
 
@@ -150,15 +150,15 @@ PIXEL StatusBar::GetHeight() const
     
 void StatusBar::Resize() const 
 {
-    (void)SendMessage( WM_SIZE, 0, 0 );
+    (void)SendMessage(WM_SIZE, 0, 0);
 }
 
-void StatusBar::DisplayInPart( int const iPart, wstring const wstrLine )
+void StatusBar::DisplayInPart(int const iPart, wstring const wstrLine)
 {
-	(void)SendMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str() ) );
+	(void)SendMessage(SB_SETTEXT, iPart, (LPARAM)(wstrLine.c_str()));
 }
 
-void StatusBar::ClearPart( int const iPart )
+void StatusBar::ClearPart(int const iPart)
 {
-	(void)SendMessage( SB_SETTEXT, iPart, (LPARAM)L"" );
+	(void)SendMessage(SB_SETTEXT, iPart, (LPARAM)L"");
 }

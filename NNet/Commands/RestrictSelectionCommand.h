@@ -11,15 +11,15 @@
 class RestrictSelectionCommand : public SelectionCommand
 {
 public:
-	RestrictSelectionCommand( NobType::Value const val )
+	RestrictSelectionCommand(NobType::Value const val)
 		: m_val(val)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & nmwi )
+	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
-		SelectionCommand::Do( nmwi );
+		SelectionCommand::Do(nmwi);
 		nmwi.GetUPNobs().Apply2AllSelected<Nob>
-		( 
+		(
 			[&](Nob & s)
 			{ 
 				if (s.GetNobType() != m_val) 

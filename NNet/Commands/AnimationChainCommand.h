@@ -21,11 +21,11 @@ public:
 	{
 	}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi )
+	virtual void Undo(NNetModelWriterInterface & nmwi)
 	{
 	}
 

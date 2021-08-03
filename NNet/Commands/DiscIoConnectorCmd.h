@@ -25,7 +25,7 @@ public:
         NNetModelWriterInterface & nmwi,
         Nob                      & nob,
         bool                 const bRemove 
-    )
+   )
       : m_connector(*Cast2IoConnector(&nob)),
         m_bRemove(bRemove)
     {
@@ -38,12 +38,12 @@ public:
                     if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, n)) })
                         m_cmdStack.Push(move(upCmd)); 
                 }
-            );
+           );
     }
 
     ~DiscIoConnectorCmd() {}
 
-    virtual void Do( NNetModelWriterInterface & nmwi )
+    virtual void Do(NNetModelWriterInterface & nmwi)
     {
         m_upIoConnector = nmwi.RemoveFromModel<IoConnector>(m_connector);
         m_upIoConnector->ClearParentPointers();
@@ -51,7 +51,7 @@ public:
             m_cmdStack.DoAll();
     }
 
-    virtual void Undo( NNetModelWriterInterface & nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     {
         m_upIoConnector->SetParentPointers();
         nmwi.Restore2Model<IoConnector>(move(m_upIoConnector));

@@ -3,7 +3,7 @@
 //                                                                          
 //   Standard wrapper function implementing an "include" mechanism in test 
 //   scripts similar to the preprocessor instruction "#include" in C.
-//   For usage call DEF_FUNC( Include ) in your main program and add lines like
+//   For usage call DEF_FUNC(Include) in your main program and add lines like
 //
 //   Include "C:\MyProject\Test\Standard.dat" 
 //
@@ -18,5 +18,5 @@
 void WrapInclude::operator() (Script & script) const
 {
     wstring const & wstrPath = script.ScrReadString();
-    script.ScrProcess( wstrPath );
+    script.ScrProcess(wstrPath);
 }

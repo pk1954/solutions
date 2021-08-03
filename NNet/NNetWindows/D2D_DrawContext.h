@@ -15,17 +15,17 @@ class D2D_DrawContext: public DrawContext
 {
 public:
 
-	void Start( D2D_driver * const );
+	void Start(D2D_driver * const);
 	void Stop();
 
-	bool StartFrame( HDC const hDC ) { return m_pGraphics->StartFrame( hDC );	}
+	bool StartFrame(HDC const hDC) { return m_pGraphics->StartFrame(hDC);	}
 	void EndFrame() { m_pGraphics->EndFrame(); }
 
-	void Resize( int const, int const );
-	void SetStdFontSize( MicroMeter const & );
+	void Resize(int const, int const);
+	void SetStdFontSize(MicroMeter const &);
 
 	virtual void DrawLine
-	( 
+	(
 		MicroMeterPnt const &, 
 		MicroMeterPnt const &,
 		MicroMeter      const,
@@ -33,7 +33,7 @@ public:
 	) const;
 
 	virtual void DrawLine
-	( 
+	(
 		MicroMeterLine const &, 
 		MicroMeter     const,
 		D2D1::ColorF   const  
@@ -73,7 +73,7 @@ public:
 	) const;
 
 	virtual void FillArrow
-	( 
+	(
 		MicroMeterPnt const &,
 		MicroMeterPnt const &,
 		MicroMeter      const,
@@ -81,8 +81,8 @@ public:
 		D2D1::ColorF    const  
 	) const;
 
-	virtual void FillRectangle ( MicroMeterRect const &, D2D1::ColorF ) const; 
-	virtual void DrawTranspRect( MicroMeterRect const &, D2D1::ColorF ) const; 
+	virtual void FillRectangle (MicroMeterRect const &, D2D1::ColorF) const; 
+	virtual void DrawTranspRect(MicroMeterRect const &, D2D1::ColorF) const; 
 
 	virtual void DisplayText
 	(

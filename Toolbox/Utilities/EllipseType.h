@@ -20,30 +20,30 @@ public:
         * this = ZERO_VAL(); 
     }
 
-    EllipseType( POS_TYPE const & pos, BASE_TYPE const radiusX, BASE_TYPE const radiusY ) 
-      : m_position( pos ),
-        m_radiusX( radiusX ),
-        m_radiusY( radiusY )
+    EllipseType(POS_TYPE const & pos, BASE_TYPE const radiusX, BASE_TYPE const radiusY) 
+      : m_position(pos),
+        m_radiusX(radiusX),
+        m_radiusY(radiusY)
     {}
 
-    EllipseType( CircleType<BASE_TYPE> const & circle ) 
-        : m_position( circle.GetPos() ),
-        m_radiusX( circle.GetRadius() ),
-        m_radiusY( circle.GetRadius() )
+    EllipseType(CircleType<BASE_TYPE> const & circle) 
+        : m_position(circle.GetPos()),
+        m_radiusX(circle.GetRadius()),
+        m_radiusY(circle.GetRadius())
     {}
 
-    EllipseType( RectType<BASE_TYPE> const & rect ) 
-        : m_position( rect.GetCenter() ),
-        m_radiusX( rect.GetWidth() / 2 ),
-        m_radiusY( rect.GetHeight() / 2 )
+    EllipseType(RectType<BASE_TYPE> const & rect) 
+        : m_position(rect.GetCenter()),
+        m_radiusX(rect.GetWidth() / 2),
+        m_radiusY(rect.GetHeight() / 2)
     {}
 
     bool const operator==(EllipseType const & a) const 
     { 
         return 
         (m_position == a.m_position) &&
-        (m_radiusX  == a.m_radiusX ) &&
-        (m_radiusY  == a.m_radiusY );
+        (m_radiusX  == a.m_radiusX) &&
+        (m_radiusY  == a.m_radiusY);
     }
 
     EllipseType const operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
@@ -56,19 +56,19 @@ public:
     BASE_TYPE const & GetRadiusX () const { return m_radiusX; }
     BASE_TYPE const & GetRadiusY () const { return m_radiusY; }
 
-    void SetPos    ( POS_TYPE  const & newPos  ) { m_position = newPos; }
-    void SetRadiusX( BASE_TYPE const   newRadX ) { m_radiusX  = newRadX; }
-    void SetRadiusY( BASE_TYPE const   newRadY ) { m_radiusY  = newRadY; }
+    void SetPos    (POS_TYPE  const & newPos ) { m_position = newPos; }
+    void SetRadiusX(BASE_TYPE const   newRadX) { m_radiusX  = newRadX; }
+    void SetRadiusY(BASE_TYPE const   newRadY) { m_radiusY  = newRadY; }
 
     static EllipseType const & NULL_VAL() 
     { 
-        static EllipseType res { EllipseType( POS_TYPE::NULL_VAL, BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ) }; 
+        static EllipseType res { EllipseType(POS_TYPE::NULL_VAL, BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL()) }; 
         return res;
     };
 
     static EllipseType const & ZERO_VAL() 
     { 
-        static PointType res { EllipseType( POS_TYPE::ZERO_VAL, BASE_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL() ) }; 
+        static PointType res { EllipseType(POS_TYPE::ZERO_VAL, BASE_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL()) }; 
         return res;
     };
 

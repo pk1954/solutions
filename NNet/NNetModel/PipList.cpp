@@ -29,7 +29,7 @@ void PipeList::Check() const
 {
 	for (auto it : m_list)
 	{
-		if ( ! it )
+		if (! it)
 		{
 			int x = 42;
 		}
@@ -40,8 +40,8 @@ void PipeList::Check() const
 void PipeList::Remove(Pipe * const p) 
 { 
 	auto res = find(begin(m_list), end(m_list), p);
-	assert( res != end(m_list) );
-	m_list.erase( res );
+	assert(res != end(m_list));
+	m_list.erase(res);
 }
 
 void PipeList::Replace(Pipe * const pDel, Pipe * const pAdd) 
@@ -70,11 +70,11 @@ bool PipeList::Apply2AllB(PipeCrit const &f) const
 
 void PipeList::Recalc() 
 { 
-	Apply2All([&](Pipe & pipe) { pipe.Recalc(); } ); 
+	Apply2All([&](Pipe & pipe) { pipe.Recalc(); }); 
 }
 
 wostream & operator<<(wostream & out, PipeList const & pl)
 {
-	pl.Apply2All([&](Pipe & pipe) { out << pipe; } );
+	pl.Apply2All([&](Pipe & pipe) { out << pipe; });
 	return out;
 }

@@ -30,7 +30,6 @@ CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 	(
 		[&](Nob & nob)
 		{
-			m_selectedNobIds.Push(nob);
 			UPNob upNobCopy { ShallowCopy(nob) };
 			m_indexList[upNobCopy->GetId().GetValue()] = SelNobsIndex(m_copies.size());
 			m_copies.push_back(move(upNobCopy));
@@ -60,6 +59,7 @@ CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 
 void CopySelectionCommand::Do(NNetModelWriterInterface & nmwi) 
 { 
+	SelectionCommand::Do(nmwi);
 	nmwi.GetUPNobs().DeselectAllNobs();  
 	for (size_t i = 0; i < m_sizeOfSelection; ++i)
 	{
@@ -75,8 +75,7 @@ void CopySelectionCommand::Undo(NNetModelWriterInterface & nmwi)
 	{
 		m_copies.push_back(nmwi.PopFromModel<Nob>());
 	}
-	nmwi.GetUPNobs().DeselectAllNobs();
-	m_selectedNobIds.Apply2All([&](NobId const &id) { nmwi.SelectNob(id, true); });
+	SelectionCommand::Undo(nmwi);
 }
 
 void CopySelectionCommand::addMissingKnot(BaseKnot * pBaseKnot, Nob2NobFunc const & dstFromSrc)
@@ -84,7 +83,7 @@ void CopySelectionCommand::addMissingKnot(BaseKnot * pBaseKnot, Nob2NobFunc cons
 	if (!dstFromSrc(pBaseKnot))
 	{
 		unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPos()) };
-		upKnot->SetId( pBaseKnot->GetId() );
+		upKnot->SetId(pBaseKnot->GetId());
 		m_indexList[upKnot->GetId().GetValue()] = SelNobsIndex(Cast2Int(m_copies.size()));
 		m_copies.push_back(move(upKnot));
 	}

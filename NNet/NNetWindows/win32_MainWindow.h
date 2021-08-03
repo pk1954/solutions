@@ -46,16 +46,16 @@ public:
 	NobId const GetHighlightedNobId() const { return m_nobHighlighted; }
 	bool  const AnyNobsSelected    () const { return m_pNMRI->AnyNobsSelected(); }
 
-	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
+	virtual bool Zoom(MicroMeter const, PixelPoint const * const);
 
-	void ZoomStep( bool const, PixelPoint const * const );
+	void ZoomStep(bool const, PixelPoint const * const);
 
 	template <typename T>
 	void NNetMove(T const & delta)	
 	{ 
 		GetDrawContext().Move(delta); 
 		Notify(true);  
-		if ( m_pCoordObservable )
+		if (m_pCoordObservable)
 			m_pCoordObservable->NotifyAll(false);
 	}
 
@@ -63,18 +63,18 @@ public:
 
 	void       CenterModel();
 	void       CenterSelection();
-	void       ShowArrows( bool const );
+	void       ShowArrows(bool const);
 	bool const ArrowsVisible() const; 
 
-	virtual bool OnCommand           ( WPARAM const, LPARAM const, PixelPoint const );
-	virtual bool OnSize              ( WPARAM const, LPARAM const );
-	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
-	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
-	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
-	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
-	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
-	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
-	virtual void OnChar              ( WPARAM const, LPARAM const );
+	virtual bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const);
+	virtual bool OnSize              (WPARAM const, LPARAM const);
+	virtual bool OnRButtonDown       (WPARAM const, LPARAM const);
+	virtual void OnMouseWheel        (WPARAM const, LPARAM const);
+	virtual void OnMouseMove         (WPARAM const, LPARAM const);
+	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const);
+	virtual void OnLButtonUp         (WPARAM const, LPARAM const);
+	virtual bool OnRButtonUp         (WPARAM const, LPARAM const);
+	virtual void OnChar              (WPARAM const, LPARAM const);
 	virtual void OnPaint             ();
 
 private:

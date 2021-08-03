@@ -19,24 +19,24 @@ public:
 
 	virtual void Trigger() = 0;
 
-	void SetRefreshRate( milliseconds const );
+	void SetRefreshRate(milliseconds const);
 	milliseconds GetRefreshRate();
 
-	void Notify( bool const bImmediately )
+	void Notify(bool const bImmediately)
 	{
 		m_bDirty = true;
-		if ( bImmediately || (m_msRefreshRate == 0ms) )
+		if (bImmediately || (m_msRefreshRate == 0ms))
 			trigger();
 	}
 
-	void RefreshRateDialog( HWND const );
+	void RefreshRateDialog(HWND const);
 
 private:
 	HANDLE       m_hTimer        { nullptr };
 	milliseconds m_msRefreshRate { 0ms };
 	bool         m_bDirty        { true };
 
-	void startTimer( milliseconds const );
+	void startTimer(milliseconds const);
 	void deleteTimer();
 	void trigger()
 	{
@@ -44,5 +44,5 @@ private:
 		m_bDirty = false;
 	}
 
-	static void CALLBACK TimerProc( void * const, bool const );
+	static void CALLBACK TimerProc(void * const, bool const);
 };

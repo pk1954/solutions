@@ -21,7 +21,7 @@ class Knot : public BaseKnot
 {
 public:
 	Knot(MicroMeterPnt const center)
-		: BaseKnot( center, NobType::Value::knot, PIPE_WIDTH / 2 )
+		: BaseKnot(center, NobType::Value::knot, PIPE_WIDTH / 2)
 	{}
 
 	virtual ~Knot() {}

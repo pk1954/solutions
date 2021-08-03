@@ -46,31 +46,31 @@ void IoNeuronList::Replace(IoNeuron * const pDel, IoNeuron * const pAdd)
 
 void IoNeuronList::Add(IoNeuron * const pNob)
 {
-	if ( pNob != nullptr )
+	if (pNob != nullptr)
 	{
 		assert(find(begin(m_list), end(m_list), pNob) == end(m_list));
-		m_list.push_back( pNob );
+		m_list.push_back(pNob);
 	}
 }
 
 void IoNeuronList::Remove(IoNeuron * const pNob)
 {
 	auto res = find(begin(m_list), end(m_list), pNob);
-	assert( res != end(m_list) );
-	m_list.erase( res );
+	assert(res != end(m_list));
+	m_list.erase(res);
 }
 
 void IoNeuronList::Apply2All(function<void(IoNeuron &)> const & func) const
 {
-	for ( auto pNob : m_list ) 
+	for (auto pNob : m_list) 
 		if (pNob)
-			func( * pNob );
+			func(* pNob);
 }
 
 bool const IoNeuronList::Apply2AllB(function<bool(IoNeuron const &)> const & func) const 
 {
 	bool bResult { false };
-	for ( auto pNob : m_list ) 
+	for (auto pNob : m_list) 
 		if (pNob && func(*pNob))
 			return true;
 	return false;
@@ -93,10 +93,10 @@ void IoNeuronList::SelectAll(bool const bOn)
 
 bool IoNeuronList::operator==(IoNeuronList const & rhs) const
 {
-	if ( Size() != rhs.Size() )
+	if (Size() != rhs.Size())
 		return false;
-	for ( int i = 0; i < Size(); ++i )
-		if ( m_list[i] != rhs.m_list[i] )
+	for (int i = 0; i < Size(); ++i)
+		if (m_list[i] != rhs.m_list[i])
 			return false;
 	return true;
 }
@@ -104,10 +104,10 @@ bool IoNeuronList::operator==(IoNeuronList const & rhs) const
 wostream & operator<< (wostream & out, IoNeuronList const & v)
 {
 	out << IoNeuronList::OPEN_BRACKET << v.m_list.size() << IoNeuronList::NR_SEPARATOR;
-	for ( auto & it: v.m_list )
+	for (auto & it: v.m_list)
 	{
 		out << it->GetId();
-		if ( &it == &v.m_list.back() )
+		if (&it == &v.m_list.back())
 			break;
 		out << IoNeuronList::ID_SEPARATOR;
 	}
@@ -118,7 +118,7 @@ wostream & operator<< (wostream & out, IoNeuronList const & v)
 void IoNeuronList::SortAccToDistFromLine(MicroMeterLine const & line)
 {
 	sort
-	( 
+	(
 		m_list.begin(), m_list.end(),
 		[&](auto & p1, auto & p2) 
 		{ 

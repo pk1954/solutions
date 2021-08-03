@@ -46,110 +46,110 @@ void CrsrWindow::Start
 		true,
 		nullptr
 	);
-//	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
+//	::CreateWindowToolTip(GetWindowHandle(), L"Cursor window");
 }
 
 void CrsrWindow::Stop()
 {
 	TextWindow::StopTextWindow();
-	Show( false );
+	Show(false);
 }
 
 void CrsrWindow::printMicroMeter
-( 
+(
 	TextBuffer     & textBuf,
 	MicroMeter const um 
 )
 {
 	wostringstream wBuffer;
-	MicroMeter     umAbs { abs( um.GetValue() ) };
+	MicroMeter     umAbs { abs(um.GetValue()) };
 	wBuffer << std::fixed << setprecision(1);
-	if ( umAbs < 1000.0_MicroMeter )
+	if (umAbs < 1000.0_MicroMeter)
 		wBuffer << um.GetValue() << L" um ";
-	else if ( umAbs < 1000000.0_MicroMeter )
+	else if (umAbs < 1000000.0_MicroMeter)
 		wBuffer << um.GetValue() / 1000.0f << L" mm ";
 	else
 		wBuffer << um.GetValue() / 1000000.0f << L" m ";
-	textBuf.printString( wBuffer.str() );
+	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::printMilliSecs( TextBuffer & textBuf, MilliSecs const msec )
+void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec)
 {
 	wostringstream wBuffer;
 	wBuffer << msec.GetValue() << L" msec";
-	textBuf.printString( wBuffer.str() );
+	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::DoPaint( TextBuffer & textBuf )
+void CrsrWindow::DoPaint(TextBuffer & textBuf)
 {
 	MicroMeterPnt const umPoint { m_pMainWindow->GetCursorPos() };
-	if ( umPoint == NP_ZERO )
+	if (umPoint == NP_ZERO)
 	{
 		textBuf.AlignLeft();
-		textBuf.printString( L"Cursor not in model window" );
+		textBuf.printString(L"Cursor not in model window");
 		return;
 	}
 
-	textBuf.printString( L"Position: " );
-	printMicroMeter( textBuf, umPoint.GetX() );
-	printMicroMeter( textBuf, umPoint.GetY() );
+	textBuf.printString(L"Position: ");
+	printMicroMeter(textBuf, umPoint.GetX());
+	printMicroMeter(textBuf, umPoint.GetY());
 	textBuf.nextLine();
 
 	NobId const id { m_pMainWindow->GetHighlightedNobId() };
 
-	if ( IsUndefined(id) )
+	if (IsUndefined(id))
 		return;
 
-	NobType const type { m_pNMRI->GetNobType( id ) };
+	NobType const type { m_pNMRI->GetNobType(id) };
 
-	textBuf.AlignRight(); textBuf.printString( L"Nob #" );
-	textBuf.AlignLeft();  textBuf.printNumber( id.GetValue() );
-	if ( m_pNMRI->IsSelected(id) )
-		textBuf.printString( L" selected" );
+	textBuf.AlignRight(); textBuf.printString(L"Nob #");
+	textBuf.AlignLeft();  textBuf.printNumber(id.GetValue());
+	if (m_pNMRI->IsSelected(id))
+		textBuf.printString(L" selected");
 	textBuf.nextLine();
-	textBuf.AlignRight(); textBuf.printString( L"type:" ); 
-	textBuf.AlignLeft();  textBuf.printString( NobType::GetName( type.GetValue() ) ); 
+	textBuf.AlignRight(); textBuf.printString(L"type:"); 
+	textBuf.AlignLeft();  textBuf.printString(NobType::GetName(type.GetValue())); 
 	textBuf.nextLine();
 
 	mV potential { 0.0_mV };
-	if ( type.IsPipeType() )
+	if (type.IsPipeType())
 	{
-		textBuf.AlignRight(); textBuf.printString( L"# segments:" );
-		textBuf.AlignLeft();  textBuf.printNumber( m_pNMRI->GetNrOfSegments( id ) );
-		potential = m_pNMRI->GetVoltage( id, umPoint );
+		textBuf.AlignRight(); textBuf.printString(L"# segments:");
+		textBuf.AlignLeft();  textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
+		potential = m_pNMRI->GetVoltage(id, umPoint);
 	}
 	else 
 	{
-		potential = m_pNMRI->GetVoltage( id );
+		potential = m_pNMRI->GetVoltage(id);
 	}
 
-	textBuf.AlignRight(); textBuf.nextLine( L"potential " );
-	textBuf.AlignLeft();  textBuf.printFloat( potential.GetValue() );
-	                      textBuf.printString( L" mV" );
+	textBuf.AlignRight(); textBuf.nextLine(L"potential ");
+	textBuf.AlignLeft();  textBuf.printFloat(potential.GetValue());
+	                      textBuf.printString(L" mV");
 	textBuf.nextLine();
 
-	if ( type.IsAnyNeuronType() )
+	if (type.IsAnyNeuronType())
 	{
-		SoundDescr sound { m_pNMRI->GetTriggerSound( id ) };
-		if ( sound.m_bOn )
+		SoundDescr sound { m_pNMRI->GetTriggerSound(id) };
+		if (sound.m_bOn)
 		{
-			textBuf.AlignRight(); textBuf.nextLine( L"trigger sound:" );
-			textBuf.AlignLeft();  printFrequency( textBuf, sound.m_frequency );
-			                      printMilliSecs( textBuf, sound.m_duration );
-			                      textBuf.printString( L" msec" );
+			textBuf.AlignRight(); textBuf.nextLine(L"trigger sound:");
+			textBuf.AlignLeft();  printFrequency(textBuf, sound.m_frequency);
+			                      printMilliSecs(textBuf, sound.m_duration);
+			                      textBuf.printString(L" msec");
 			textBuf.nextLine();
 		}
-		if ( type.IsInputNeuronType() )
+		if (type.IsInputNeuronType())
 		{
-			textBuf.AlignRight(); textBuf.printString( L"pulse freq: " );
-			textBuf.AlignLeft();  printFrequency( textBuf, m_pNMRI->GetPulseFrequency( id ) );
+			textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
+			textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetPulseFrequency(id));
 			textBuf.nextLine();
 		}
 	}
-	if ( type.IsIoConnectorType() || type.IsClosedConnectorType() )
+	if (type.IsIoConnectorType() || type.IsClosedConnectorType())
 	{
-		textBuf.AlignRight(); textBuf.printString( L"direction: " );
-		textBuf.AlignLeft();  printDegrees( textBuf, m_pNMRI->GetDirection( id ) );
+		textBuf.AlignRight(); textBuf.printString(L"direction: ");
+		textBuf.AlignLeft();  printDegrees(textBuf, m_pNMRI->GetDirection(id));
 		textBuf.nextLine();
 	}
 }

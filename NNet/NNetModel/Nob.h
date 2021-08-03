@@ -44,7 +44,7 @@ public:
 
 	static bool const TypeFits(NobType const type) { return true; }  // every nob type is a Nob
 
-	Nob( NobType const );
+	Nob(NobType const);
 	virtual ~Nob() {}
 
 	virtual void Check() const;
@@ -86,8 +86,8 @@ public:
 	bool    const IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
 	bool    const IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }
 	bool    const IsSelected   () const { return m_bSelected; }
-	bool    const IsDefined    () const { return ::IsDefined( m_identifier ); }
-	wstring const GetName      () const { return NobType::GetName( m_type.GetValue() ); }
+	bool    const IsDefined    () const { return ::IsDefined(m_identifier); }
+	wstring const GetName      () const { return NobType::GetName(m_type.GetValue()); }
 	NobType const GetNobType   () const { return m_type; }
 	NobId   const GetId        () const { return m_identifier; }
 
@@ -109,7 +109,7 @@ public:
 	bool const IsBaseKnot       () const { return m_type.IsBaseKnotType       (); }
 	bool const IsUndefined      () const { return m_type.IsUndefinedType      (); }
 
-	friend wostream & operator<< ( wostream &, Nob const & );
+	friend wostream & operator<< (wostream &, Nob const &);
 
 	bool  const HasParentNob() const        { return m_pNobParent != nullptr; }
 	Nob * const GetParentNob() const        { return m_pNobParent; }
@@ -126,7 +126,7 @@ protected:
 	D2D1::ColorF GetInteriorColor(mV const) const;
 	D2D1::ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
-	float GetFillLevel( mV const ) const;
+	float GetFillLevel(mV const) const;
 	float GetFillLevel() const { return GetFillLevel(m_mVinputBuffer); };
 
 	void SetType(NobType const type) { m_type = type; }
@@ -141,7 +141,7 @@ private:
 
 MicroMeterPosDir const CalcOffsetPosDir(Nob const &, MicroMeter const);
 
-template <Nob_t T> bool HasType( Nob const & nob ) 
+template <Nob_t T> bool HasType(Nob const & nob) 
 { 
-	return remove_pointer<T>::type::TypeFits( nob.GetNobType() ); 
+	return remove_pointer<T>::type::TypeFits(nob.GetNobType()); 
 }

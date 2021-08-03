@@ -19,7 +19,7 @@ public:
 	virtual ~CrsrWindow();
 
 	void Start
-	( 
+	(
 		HWND                             const, 
 		MainWindow               const * const,
 		NNetModelReaderInterface const * const
@@ -27,28 +27,28 @@ public:
 
 	void Stop();
 
-	virtual void DoPaint( TextBuffer & );
+	virtual void DoPaint(TextBuffer &);
 
 private:
 	MainWindow               const * m_pMainWindow { nullptr };
 	NNetModelReaderInterface const * m_pNMRI        { nullptr };
 
-	void printMicroMeter( TextBuffer &,	MicroMeter const );
-	void printMilliSecs ( TextBuffer &, MilliSecs  const );
+	void printMicroMeter(TextBuffer &,	MicroMeter const);
+	void printMilliSecs (TextBuffer &, MilliSecs  const);
 
-	template <typename T> void printFrequency( TextBuffer & textBuf, T const freq )
+	template <typename T> void printFrequency(TextBuffer & textBuf, T const freq)
 	{
 		wostringstream wBuffer;
 		wBuffer << freq.GetValue() << L" Hz";
-		textBuf.printString( wBuffer.str() );
+		textBuf.printString(wBuffer.str());
 		textBuf.nextLine();
 	}
 
-	template <typename T> void printDegrees( TextBuffer & textBuf, T const degrees )
+	template <typename T> void printDegrees(TextBuffer & textBuf, T const degrees)
 	{
 		wostringstream wBuffer;
 		wBuffer << degrees.GetValue() << L"°";
-		textBuf.printString( wBuffer.str() );
+		textBuf.printString(wBuffer.str());
 		textBuf.nextLine();
 	}
 

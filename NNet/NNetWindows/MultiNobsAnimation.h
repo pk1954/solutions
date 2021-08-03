@@ -23,7 +23,7 @@ public:
         MainWindow                & win,
         IoNeuronList              & nobs,
         MicroMeterPntVector const & umPntVectorTarget
-    )
+   )
       : AnimationCmd(win),
         m_nobsAnimated(nobs),
         m_umPntVectorStart(nobs),

@@ -12,7 +12,7 @@ MicroMeterPosDir::MicroMeterPosDir()
     m_dir()
 {}
 
-MicroMeterPosDir::MicroMeterPosDir( MicroMeterPnt const & pos, Radian const & dir )
+MicroMeterPosDir::MicroMeterPosDir(MicroMeterPnt const & pos, Radian const & dir)
     : m_pos(pos),
     m_dir(dir)
 {}
@@ -75,7 +75,7 @@ MicroMeterPosDir const operator* (MicroMeterPosDir const a, float const f)
     return res; 
 };
 
-wostream & operator<< ( wostream & out, MicroMeterPosDir const & posDir )
+wostream & operator<< (wostream & out, MicroMeterPosDir const & posDir)
 {
     out << MicroMeterPosDir::OPEN_BRACKET << posDir.m_pos 
         << MicroMeterPosDir::SEPARATOR    << posDir.m_dir.GetValue() 

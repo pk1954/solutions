@@ -8,10 +8,10 @@
 #include "win32_baseRefreshRate.h"
 #include "win32_rootWindow.h"
 
-RootWindow * GetRootWindow( HWND const hwnd )
+RootWindow * GetRootWindow(HWND const hwnd)
 {
-	RootWindow * pRootWin = reinterpret_cast<RootWindow *>(GetUserDataPtr( hwnd ));
-	return ( pRootWin && pRootWin->GetWindowHandle() )
+	RootWindow * pRootWin = reinterpret_cast<RootWindow *>(GetUserDataPtr(hwnd));
+	return (pRootWin && pRootWin->GetWindowHandle())
 		   ? pRootWin
 		   : nullptr;
 }
@@ -19,8 +19,8 @@ RootWindow * GetRootWindow( HWND const hwnd )
 class RootWindow::WindowRefreshRate : public BaseRefreshRate
 {
 public:
-	WindowRefreshRate( RootWindow * const pRootWin )
-		: m_pRootWin( pRootWin )
+	WindowRefreshRate(RootWindow * const pRootWin)
+		: m_pRootWin(pRootWin)
 	{ }
 
 	virtual void Trigger()
@@ -53,21 +53,21 @@ void RootWindow::StartRootWindow(function<bool()> const visibilityCriterion)
 		  : tOnOffAuto::off;
 }
 
-void RootWindow::addWinMenu( HMENU const hMenuParent, std::wstring const strTitle ) const
+void RootWindow::addWinMenu(HMENU const hMenuParent, std::wstring const strTitle) const
 {
 	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 	HMENU const hMenu = CreatePopupMenu();
 	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto");
-	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on"  );
-	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off" );
+	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on" );
+	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off");
 	(void)AppendMenu(hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str());
 }
 
-void RootWindow::adjustWinMenu( HMENU const hMenu ) const
+void RootWindow::adjustWinMenu(HMENU const hMenu) const
 {
 	EnableMenuItem(hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic) ? MF_GRAYED : MF_ENABLED));
-	EnableMenuItem(hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on       ) ? MF_GRAYED : MF_ENABLED));
-	EnableMenuItem(hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED));
+	EnableMenuItem(hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on      ) ? MF_GRAYED : MF_ENABLED));
+	EnableMenuItem(hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off     ) ? MF_GRAYED : MF_ENABLED));
 }
 
 void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in screen coordinates
@@ -83,15 +83,15 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 	}
 
 	// TODO
-	//if ( m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate() > 0ms) )
+	//if (m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate() > 0ms))
 	//{
-	//	(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
+	//	(void)AppendMenu(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
 	//}
 
-	(void)SetForegroundWindow( GetWindowHandle() );
+	(void)SetForegroundWindow(GetWindowHandle());
 
 	UINT const uiID = (UINT)TrackPopupMenu
-	( 
+	(
 		hPopupMenu, 
 		TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
 		crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
@@ -100,83 +100,83 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 		nullptr 
 	);        
 
-	(void)DestroyMenu( hPopupMenu );
+	(void)DestroyMenu(hPopupMenu);
 
-	if ( uiID != 0 )
-		OnCommand( uiID, lParam, Screen2Client( crsrPosScreen ) );
+	if (uiID != 0)
+		OnCommand(uiID, lParam, Screen2Client(crsrPosScreen));
 }
 
-void RootWindow::SetWindowHandle( HWND const hwnd ) 
+void RootWindow::SetWindowHandle(HWND const hwnd) 
 { 
-	assert( hwnd );
+	assert(hwnd);
 	m_hwnd    = hwnd;  
-	m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
+	m_hwndApp = GetAncestor(m_hwnd, GA_ROOTOWNER);
 };
 
-void RootWindow::SetRefreshRate( milliseconds const msRate ) 
+void RootWindow::SetRefreshRate(milliseconds const msRate) 
 { 
-	m_upRefreshRate->SetRefreshRate( msRate ); 
+	m_upRefreshRate->SetRefreshRate(msRate); 
 }
 
-void RootWindow::Notify( bool const bImmediately )
+void RootWindow::Notify(bool const bImmediately)
 {
-	m_upRefreshRate->Notify( bImmediately );
+	m_upRefreshRate->Notify(bImmediately);
 }
 
-void RootWindow::SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
+void RootWindow::SetTrackBarPos(INT const idTrackbar, LONG const lPos) const
 {
 	(void)SendDlgItemMessage
-	(   
+	(  
 		idTrackbar, TBM_SETPOS, 
-		static_cast<WPARAM>( true ),                   // redraw flag 
-		static_cast<LPARAM>( lPos )
+		static_cast<WPARAM>(true),                   // redraw flag 
+		static_cast<LPARAM>(lPos)
 	); 
 }
 
-void RootWindow::SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG const lMax ) const
+void RootWindow::SetTrackBarRange(INT const idTrackbar, LONG const lMin, LONG const lMax) const
 {
 	(void)SendDlgItemMessage
-	( 
+	(
 		idTrackbar, 
 		TBM_SETRANGEMIN, 
-		static_cast<WPARAM>( false ),                   // redraw flag 
-		static_cast<LPARAM>( lMin ) 
+		static_cast<WPARAM>(false),                   // redraw flag 
+		static_cast<LPARAM>(lMin) 
 	);
 	(void)SendDlgItemMessage
-	( 
+	(
 		idTrackbar, 
 		TBM_SETRANGEMAX, 
-		static_cast<WPARAM>( true ),                   // redraw flag 
-		static_cast<LPARAM>( lMax ) 
+		static_cast<WPARAM>(true),                   // redraw flag 
+		static_cast<LPARAM>(lMax) 
 	);
 }
 
-void RootWindow::SetWindowVisibility( tOnOffAuto const mode )
+void RootWindow::SetWindowVisibility(tOnOffAuto const mode)
 {
 	m_visibilityMode = mode;
-	Show( ApplyAutoCriterion( m_visibilityMode, m_visibilityCriterion ) );
+	Show(ApplyAutoCriterion(m_visibilityMode, m_visibilityCriterion));
 }
 
-bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	UINT const uiCmdId  = LOWORD( wParam );
+	UINT const uiCmdId  = LOWORD(wParam);
 
-	switch ( uiCmdId )
+	switch (uiCmdId)
 	{
 	case IDM_WINDOW_ON:
-		SetWindowVisibility( tOnOffAuto::on );
+		SetWindowVisibility(tOnOffAuto::on);
 		break;
 
 	case IDM_WINDOW_OFF:
-		SetWindowVisibility( tOnOffAuto::off );
+		SetWindowVisibility(tOnOffAuto::off);
 		break;
 
 	case IDM_WINDOW_AUTO:
-		SetWindowVisibility( tOnOffAuto::automatic );
+		SetWindowVisibility(tOnOffAuto::automatic);
 		break;
 
 	case IDD_REFRESH_RATE_DIALOG:
-		m_upRefreshRate->RefreshRateDialog( m_hwnd );
+		m_upRefreshRate->RefreshRateDialog(m_hwnd);
 		break;
 
 	default:
@@ -188,10 +188,10 @@ bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 
 void RootWindow::OnClose()
 {
-	SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
+	SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
 }
 
-bool RootWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+bool RootWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
 	return false;
 }
@@ -199,17 +199,17 @@ bool RootWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 // CommonMessageHandler
 // used by dialogs and normal windows 
 
-bool RootWindow::CommonMessageHandler( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
 	switch (message)
 	{
 
 	case WM_CONTEXTMENU:
-		contextMenu( GetCrsrPosFromLparam( lParam ) );
+		contextMenu(GetCrsrPosFromLparam(lParam));
 		return true;
 
 	case WM_COMMAND:
-		if ( OnCommand( wParam, lParam ) )
+		if (OnCommand(wParam, lParam))
 			return true;
 		break;
 
@@ -218,7 +218,7 @@ bool RootWindow::CommonMessageHandler( UINT const message, WPARAM const wParam, 
 		return true;
 
 	case WM_SIZE:
-		if ( OnSize( wParam, lParam ) )
+		if (OnSize(wParam, lParam))
 			return true;
 		break;
 

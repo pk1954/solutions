@@ -9,20 +9,20 @@
 #include "symtab.h"
 
 Symbol::Symbol() :
-    m_type(tSTYPE::UnknownSTYPE  ),
-    m_pFunc( nullptr ),
-    m_lValue( 0L ),    
-    m_ulValue( 0L ),   
-    m_wstrValue( L"" ),
-    m_dValue( 0.0f )
+    m_type(tSTYPE::UnknownSTYPE ),
+    m_pFunc(nullptr),
+    m_lValue(0L),    
+    m_ulValue(0L),   
+    m_wstrValue(L""),
+    m_dValue(0.0f)
 { };
 
-bool Symbol::operator< ( const Symbol & rhs ) const
+bool Symbol::operator< (const Symbol & rhs) const
 {
-    if ( m_type < rhs.m_type ) 
+    if (m_type < rhs.m_type) 
         return true;
     
-    switch ( m_type )
+    switch (m_type)
     {
     case tSTYPE::Function:            // name of a function     
         return m_pFunc < rhs.m_pFunc;
@@ -40,61 +40,61 @@ bool Symbol::operator< ( const Symbol & rhs ) const
         return m_wstrValue < rhs.m_wstrValue;
 
     default:
-           assert( false );
+           assert(false);
     }
     return false;
 }
 
 // GetSymbolFromName: Find symbol in symbol table with error handling
 
-Symbol const & SymbolTable::GetSymbolFromName( wstring const & wstrKey )
+Symbol const & SymbolTable::GetSymbolFromName(wstring const & wstrKey)
 {
-    auto const iter = m_SymbolTab.find( wstrKey );
+    auto const iter = m_SymbolTab.find(wstrKey);
 
-    if ( iter == m_SymbolTab.end() )
-        ScriptErrorHandler::symbolError( wstrKey );
+    if (iter == m_SymbolTab.end())
+        ScriptErrorHandler::symbolError(wstrKey);
 
     return iter->second;
 }
 
-wstring const & SymbolTable::GetSymbolName( Symbol const & symbol )
+wstring const & SymbolTable::GetSymbolName(Symbol const & symbol)
 {
-    auto const iter = m_ReverseTab.find( symbol );
+    auto const iter = m_ReverseTab.find(symbol);
 
-    assert( iter != m_ReverseTab.end() );
+    assert(iter != m_ReverseTab.end());
 
     return iter->second;
 }
 
-void SymbolTable::addSymbol( wstring const & wstrName, Symbol const & sym )
+void SymbolTable::addSymbol(wstring const & wstrName, Symbol const & sym)
 {
     m_SymbolTab[ wstrName ] = sym;
     m_ReverseTab[ sym ] = wstrName;
 }
 
-void SymbolTable::ScrDefConst( wstring const & wstrName, Script_Functor const * const pFunc )
+void SymbolTable::ScrDefConst(wstring const & wstrName, Script_Functor const * const pFunc)
 {
-    addSymbol( wstrName, Symbol( pFunc ) );
+    addSymbol(wstrName, Symbol(pFunc));
 }
 
-void SymbolTable::ScrDefConst( wstring const & wstrName, long const lValue )
+void SymbolTable::ScrDefConst(wstring const & wstrName, long const lValue)
 {
-    addSymbol( wstrName, Symbol( lValue ) );
+    addSymbol(wstrName, Symbol(lValue));
 }
 
-void SymbolTable::ScrDefConst( wstring const & wstrName, unsigned long const ulValue )
+void SymbolTable::ScrDefConst(wstring const & wstrName, unsigned long const ulValue)
 {
-    addSymbol( wstrName, Symbol( ulValue ) );
+    addSymbol(wstrName, Symbol(ulValue));
 }
 
-void SymbolTable::ScrDefConst( wstring const & wstrName, double const dValue )
+void SymbolTable::ScrDefConst(wstring const & wstrName, double const dValue)
 {
-    addSymbol( wstrName, Symbol( dValue ) );
+    addSymbol(wstrName, Symbol(dValue));
 }
 
-void SymbolTable::ScrDefConst( wstring const & wstrName, wstring const & wstrValue )
+void SymbolTable::ScrDefConst(wstring const & wstrName, wstring const & wstrValue)
 {
-    addSymbol( wstrName, Symbol( wstrValue ) );
+    addSymbol(wstrName, Symbol(wstrValue));
 }
 
 void SymbolTable::Clear()

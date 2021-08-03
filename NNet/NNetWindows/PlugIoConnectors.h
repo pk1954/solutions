@@ -25,14 +25,14 @@ public:
         IoConnector              & connectorAnimated, 
         IoConnector              & connectorTarget,
         MainWindow               & win
-    )
+   )
       : AnimationCmd(win),
         m_nmwi(nmwi),
         m_connectorTarget(connectorTarget),
         m_connectorAnimated(connectorAnimated)
     {
-        assert( m_connectorAnimated.IsCompositeNob() == m_connectorTarget.IsCompositeNob() );
-        assert( m_connectorAnimated.Size() == m_connectorTarget.Size() );
+        assert(m_connectorAnimated.IsCompositeNob() == m_connectorTarget.IsCompositeNob());
+        assert(m_connectorAnimated.Size() == m_connectorTarget.Size());
 
         IoConnector    const & inputIoConnector  { m_connectorAnimated.IsInputNob () ? m_connectorAnimated : m_connectorTarget };
         IoConnector    const & outputIoConnector { m_connectorAnimated.IsOutputNob() ? m_connectorAnimated : m_connectorTarget };
@@ -71,7 +71,7 @@ public:
         m_nmwi.Push2Model(move(m_upClosedConnector));
 
         m_upNobAnimated = m_nmwi.RemoveFromModel<IoConnector>(m_connectorAnimated);
-        m_upNobTarget   = m_nmwi.RemoveFromModel<IoConnector>(m_connectorTarget  );
+        m_upNobTarget   = m_nmwi.RemoveFromModel<IoConnector>(m_connectorTarget );
         for (size_t i = 0; i < m_size; ++i)
         {
             m_upIoNeuronsAnimated[i] = m_nmwi.RemoveFromModel<IoNeuron>(m_connectorAnimated.GetElem(i));
@@ -90,7 +90,7 @@ public:
             m_upNeurons.push_back(m_nmwi.PopFromModel<Neuron>());
 
         m_upNobAnimated = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upNobAnimated));
-        m_upNobTarget   = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upNobTarget  ));
+        m_upNobTarget   = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upNobTarget ));
         for (size_t i = 0; i < m_size; ++i)
         {
             m_upIoNeuronsAnimated[i] = m_nmwi.ReplaceInModel<IoNeuron, IoNeuron>(move(m_upIoNeuronsAnimated[i]));

@@ -20,25 +20,25 @@
 
 //   ScrSetWrapHook: Set hook function, which will be called in processScript
    
-void Script::ScrSetWrapHook( Script_Functor const * const pHook )
+void Script::ScrSetWrapHook(Script_Functor const * const pHook)
 {
     m_pWrapHook = pHook;
 }
 
-void Script::ScrReadSpecial( wchar_t const wchExpected )
+void Script::ScrReadSpecial(wchar_t const wchExpected)
 {
 	static wchar_t strExpected[2] = L"";
 	strExpected[0] = wchExpected;
-	m_pScanAct->SetExpectedToken( strExpected );
+	m_pScanAct->SetExpectedToken(strExpected);
 
-	switch ( m_pScanAct->NextToken( true ) )
+	switch (m_pScanAct->NextToken(true))
 	{
 	case tTOKEN::End:         // end of file reached 
 		ScriptErrorHandler::eofError();
 		break;
 
 	case tTOKEN::Special:
-		if ( m_pScanAct->GetCharacter() != wchExpected )
+		if (m_pScanAct->GetCharacter() != wchExpected)
 			ScriptErrorHandler::tokenError();
 		break;
 
@@ -47,18 +47,18 @@ void Script::ScrReadSpecial( wchar_t const wchExpected )
 	}             
 }
 
-void Script::ScrReadString( wstring const wstrExpected )
+void Script::ScrReadString(wstring const wstrExpected)
 {
-	m_pScanAct->SetExpectedToken( wstrExpected );
+	m_pScanAct->SetExpectedToken(wstrExpected);
 
-	switch ( m_pScanAct->NextToken( true ) )
+	switch (m_pScanAct->NextToken(true))
 	{
 	case tTOKEN::End:         // end of file reached 
 		ScriptErrorHandler::eofError();
 		break;
 
 	case tTOKEN::Name:
-		if ( m_pScanAct->GetString() != wstrExpected )
+		if (m_pScanAct->GetString() != wstrExpected)
 			ScriptErrorHandler::stringError();
 		break;
 
@@ -74,12 +74,12 @@ bool Script::readSign()
    wchar_t const wch  = m_pScanAct->GetCharacter();
    bool          fNeg = false;   
 
-   if ( (wch == L'+') || (wch == L'-') )
+   if ((wch == L'+') || (wch == L'-'))
    {
-      if ( wch == L'-' )
+      if (wch == L'-')
          fNeg = true;
                   
-      switch ( m_pScanAct->NextToken( false ) )
+      switch (m_pScanAct->NextToken(false))
       {
          case tTOKEN::End:         // end of file reached 
              ScriptErrorHandler::eofError();
@@ -105,7 +105,7 @@ bool Script::readSign()
 //  numeric: Process numeric value
 
 unsigned long Script::numeric
-( 
+(
    wstring       const & wstrExpected, // name of expected token
    unsigned long const   ulMax,        // maximum absolute value
    bool        * const   pfNeg         // negative value allowed?
@@ -114,11 +114,11 @@ unsigned long Script::numeric
    bool    const fNegAllowed = * pfNeg;
    unsigned long ulValue = 0;
 
-   m_pScanAct->SetExpectedToken( wstrExpected );
+   m_pScanAct->SetExpectedToken(wstrExpected);
 
    *pfNeg = false;
 
-   switch ( m_pScanAct->NextToken( true ) )    
+   switch (m_pScanAct->NextToken(true))    
    {
       case tTOKEN::End:         // end of file reached 
          ScriptErrorHandler::eofError();
@@ -135,8 +135,8 @@ unsigned long Script::numeric
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString() );
-            switch ( symbol.GetSymbolType() )
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_pScanAct->GetString());
+            switch (symbol.GetSymbolType())
             {
                case tSTYPE::ULongConst:
                   ulValue = symbol.GetUlongConst();
@@ -146,7 +146,7 @@ unsigned long Script::numeric
                   {
                      long const lValue = symbol.GetLongConst();
                      *pfNeg  = lValue < 0L;
-                     ulValue = static_cast<unsigned long>( *pfNeg ? -lValue : lValue );
+                     ulValue = static_cast<unsigned long>(*pfNeg ? -lValue : lValue);
                   }
                   break;
 
@@ -160,10 +160,10 @@ unsigned long Script::numeric
           ScriptErrorHandler::tokenError();
    }            
    
-   if ( ulValue > ulMax )
+   if (ulValue > ulMax)
        ScriptErrorHandler::numericError();
 
-   if ( *pfNeg && !fNegAllowed )
+   if (*pfNeg && !fNegAllowed)
        ScriptErrorHandler::negativeError();
 
    return ulValue;
@@ -171,14 +171,14 @@ unsigned long Script::numeric
 
 //  ScrReadFloat: Try to read a float from open test script
 
-double Script::ScrReadFloat( void )
+double Script::ScrReadFloat(void)
 { 
    bool   fNeg = false;   
    double dRes = 0.0;
          
-   m_pScanAct->SetExpectedToken( L"float" );
+   m_pScanAct->SetExpectedToken(L"float");
 
-   switch ( m_pScanAct->NextToken( true ) )
+   switch (m_pScanAct->NextToken(true))
    {
       case tTOKEN::End:            // end of file reached 
           ScriptErrorHandler::eofError();
@@ -186,8 +186,8 @@ double Script::ScrReadFloat( void )
       
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString() );
-            switch ( symbol.GetSymbolType() )
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_pScanAct->GetString());
+            switch (symbol.GetSymbolType())
             {
                case tSTYPE::ULongConst:
                   dRes = symbol.GetUlongConst();
@@ -218,11 +218,11 @@ double Script::ScrReadFloat( void )
       case tTOKEN::Special:
          {
             wchar_t const wch = m_pScanAct->GetCharacter();
-            if ( (wch == L'+') || (wch == L'-') )
+            if ((wch == L'+') || (wch == L'-'))
             {
-               if ( wch == L'-' )
+               if (wch == L'-')
                   fNeg = true;
-               switch ( m_pScanAct->NextToken( false ) )
+               switch (m_pScanAct->NextToken(false))
                {
                   case tTOKEN::End:         // end of file reached 
                      ScriptErrorHandler::eofError();
@@ -244,7 +244,7 @@ double Script::ScrReadFloat( void )
                      ScriptErrorHandler::tokenError();
                }             
 
-               if ( fNeg )
+               if (fNeg)
                   dRes = -dRes;
             }
             else
@@ -261,21 +261,21 @@ double Script::ScrReadFloat( void )
 
 // ScrReadUlong: Try to read an unsigned long from open test script
    
-unsigned long Script::ScrReadUlong( void )
+unsigned long Script::ScrReadUlong(void)
 { 
    bool                fNeg    = false;
-   unsigned long const ulValue = numeric( L"unsigned long", ULONG_MAX, &fNeg );
+   unsigned long const ulValue = numeric(L"unsigned long", ULONG_MAX, &fNeg);
    return ulValue; 
 }
 
 //  ScrReadLong: Try to read a long from open test script
    
-long Script::ScrReadLong( void )
+long Script::ScrReadLong(void)
 { 
    bool fNeg = true;
-   long lRes = static_cast<long>(numeric( L"long", LONG_MAX, &fNeg ));
+   long lRes = static_cast<long>(numeric(L"long", LONG_MAX, &fNeg));
 
-   if ( fNeg )
+   if (fNeg)
       lRes = -lRes;
       
    return lRes;  
@@ -283,12 +283,12 @@ long Script::ScrReadLong( void )
 
 //  ScrReadInt: Try to read an integer from open test script
    
-int Script::ScrReadInt( void )
+int Script::ScrReadInt(void)
 { 
    bool fNeg = true;
-   int  iRes = static_cast<int>(numeric( L"int", INT_MAX, &fNeg ));
+   int  iRes = static_cast<int>(numeric(L"int", INT_MAX, &fNeg));
    
-   if ( fNeg )
+   if (fNeg)
       iRes = -iRes;
       
    return iRes;  
@@ -296,21 +296,21 @@ int Script::ScrReadInt( void )
 
 // ScrReadUint: Try to read an unsigned integer from open test script
    
-unsigned int Script::ScrReadUint( void )
+unsigned int Script::ScrReadUint(void)
 { 
    bool               fNeg  = false;
-   unsigned int const uiRes = static_cast<unsigned int>(numeric( L"unsigned int", UINT_MAX, &fNeg ));
+   unsigned int const uiRes = static_cast<unsigned int>(numeric(L"unsigned int", UINT_MAX, &fNeg));
    return uiRes;  
 } 
 
 //  ScrReadShort: Try to read a short from open test script
    
-short Script::ScrReadShort( void )
+short Script::ScrReadShort(void)
 { 
    bool  fNeg = true;
-   short sRes = static_cast<short>(numeric( L"short", SHRT_MAX, &fNeg ));
+   short sRes = static_cast<short>(numeric(L"short", SHRT_MAX, &fNeg));
 
-   if ( fNeg )
+   if (fNeg)
       sRes = -sRes;
 
    return sRes;  
@@ -318,32 +318,32 @@ short Script::ScrReadShort( void )
 
 //  ScrReadUshort: Try to read an unsigned short from open test script
    
-unsigned short Script::ScrReadUshort( void )
+unsigned short Script::ScrReadUshort(void)
 { 
    bool                 fNeg  = false;
-   unsigned short const usRes = static_cast<unsigned short>(numeric( L"unsigned short", USHRT_MAX, &fNeg ));
+   unsigned short const usRes = static_cast<unsigned short>(numeric(L"unsigned short", USHRT_MAX, &fNeg));
    return usRes;  
 } 
 
 //  ScrReadUchar: Try to read an unsigned character from open test script
    
-unsigned char Script::ScrReadUchar( void )
+unsigned char Script::ScrReadUchar(void)
 { 
    bool                fNeg   = false;
-   unsigned char const uchRes = static_cast<unsigned char>(numeric( L"unsigned char", UCHAR_MAX, &fNeg ));
+   unsigned char const uchRes = static_cast<unsigned char>(numeric(L"unsigned char", UCHAR_MAX, &fNeg));
    return uchRes;  
 }
 
 // ScrReadChar: Try to read a character from open test script
    
-wchar_t Script::ScrReadChar( void )
+wchar_t Script::ScrReadChar(void)
 { 
    bool    fNeg   = false;   
    wchar_t wchRes = L'\0'; 
                
-   m_pScanAct->SetExpectedToken( L"char" );
+   m_pScanAct->SetExpectedToken(L"char");
    
-   switch ( m_pScanAct->NextToken( true ) )
+   switch (m_pScanAct->NextToken(true))
    {
       case tTOKEN::End:         // end of file reached 
          ScriptErrorHandler::eofError();
@@ -361,11 +361,11 @@ wchar_t Script::ScrReadChar( void )
       {
          unsigned long const ulValue = m_pScanAct->GetUlong();
    
-         if ( ulValue > CHAR_MAX )
+         if (ulValue > CHAR_MAX)
             ScriptErrorHandler::numericError();
 
          wchRes = static_cast<wchar_t>(ulValue);
-         if ( fNeg )
+         if (fNeg)
             wchRes = -wchRes;
 
          break;
@@ -382,11 +382,11 @@ wchar_t Script::ScrReadChar( void )
 //                  Return code is a pointer to a string in an internal buffer 
 //                  This pointer is valid until next call of a Scr.. function
    
-wstring const Script::ScrReadString( void )
+wstring const Script::ScrReadString(void)
 { 
-   m_pScanAct->SetExpectedToken( L"string" );
+   m_pScanAct->SetExpectedToken(L"string");
 
-   switch ( m_pScanAct->NextToken( true ) )
+   switch (m_pScanAct->NextToken(true))
    {
       case tTOKEN::End:         // end of file reached 
          ScriptErrorHandler::eofError();
@@ -401,8 +401,8 @@ wstring const Script::ScrReadString( void )
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName( m_pScanAct->GetString() );
-            if ( symbol.GetSymbolType() != tSTYPE::StringConst )
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_pScanAct->GetString());
+            if (symbol.GetSymbolType() != tSTYPE::StringConst)
                 ScriptErrorHandler::typeError();
             return symbol.GetStringConst();
          }
@@ -413,7 +413,7 @@ wstring const Script::ScrReadString( void )
          break;
    }
 
-   return wstring( L"" );
+   return wstring(L"");
 }
             
 //  ScrProcess: Process a test script
@@ -423,43 +423,43 @@ bool Script::ScrProcess
     wstring const & wstrPath  // name of test script to be processed
 )
 { 
-    Scanner scan;          //lint -esym( 1414, scan )   Assigning address of auto variable 'scan' to member
+    Scanner scan;          //lint -esym(1414, scan)   Assigning address of auto variable 'scan' to member
     m_pScanAct = & scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function //-V506
 	m_bStop = false;
     try 
     {  
-        scan.OpenInputFile( wstrPath ); // open script file 
-        m_fileSize = std::filesystem::file_size( wstrPath );
+        scan.OpenInputFile(wstrPath); // open script file 
+        m_fileSize = std::filesystem::file_size(wstrPath);
 
 		for (;;)
         {
-	        if( m_bStop )
+	        if(m_bStop)
 				return false;
 
-            tTOKEN const token = scan.NextToken( true );
+            tTOKEN const token = scan.NextToken(true);
          
-            m_pScanAct->SetExpectedToken( L"function name" );
+            m_pScanAct->SetExpectedToken(L"function name");
 
-            if ( token == tTOKEN::Name )
+            if (token == tTOKEN::Name)
             {
                 wstring const & wstrName = m_pScanAct->GetString();
 
-				if ( m_pWrapHook )
-                    (* m_pWrapHook)( * this );                // call hook function 
+				if (m_pWrapHook)
+                    (* m_pWrapHook)(* this);                // call hook function 
             
-                Symbol const & symbol = SymbolTable::GetSymbolFromName( wstrName ); // find entry in symbol table 
+                Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
 
-                if ( symbol.GetSymbolType() != tSTYPE::Function )
+                if (symbol.GetSymbolType() != tSTYPE::Function)
                    ScriptErrorHandler::typeError();          // wrong symbol type 
 
-                symbol.GetFunction()( * this );              // call wrapper function 
+                symbol.GetFunction()(* this);              // call wrapper function 
 
                 m_pScanAct = & scan;
             }   
-            else if ( token == tTOKEN::End )
+            else if (token == tTOKEN::End)
                 break;                                        // normal termination 
 
-            else if ( token == tTOKEN::Special )
+            else if (token == tTOKEN::Special)
                 ScriptErrorHandler::charError();
 
             else
@@ -468,12 +468,12 @@ bool Script::ScrProcess
 
         scan.CloseInputFile();
         m_pScanAct = nullptr;
-		if ( m_pWrapHook != nullptr )
-			(* m_pWrapHook)( * this );                // call hook function 
+		if (m_pWrapHook != nullptr)
+			(* m_pWrapHook)(* this);                // call hook function 
     }
-    catch ( ScriptErrorHandler::ScriptException const & errInfo )
+    catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
-        ScriptErrorHandler::HandleScriptError( * m_pScanAct, errInfo );
+        ScriptErrorHandler::HandleScriptError(* m_pScanAct, errInfo);
         m_pScanAct = nullptr;
         return false;
     }
@@ -481,19 +481,19 @@ bool Script::ScrProcess
     return true;
 }
 
-bool Script::ProcessScript( wstring const & wstrScript )
+bool Script::ProcessScript(wstring const & wstrScript)
 {
     Script script;
-    return script.ScrProcess( wstrScript );
+    return script.ScrProcess(wstrScript);
 }
 
 void Script::Clear()
 {
-	ScrSetWrapHook( nullptr );
+	ScrSetWrapHook(nullptr);
 	SymbolTable::Clear();
 }
 
 long const Script::GetPercentRead() const
 {
-    return (m_fileSize > 0) ? Cast2Long( GetFilePos() * 100 / m_fileSize ) : 0L;
+    return (m_fileSize > 0) ? Cast2Long(GetFilePos() * 100 / m_fileSize) : 0L;
 }

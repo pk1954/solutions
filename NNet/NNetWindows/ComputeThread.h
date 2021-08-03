@@ -26,8 +26,8 @@ public:
 	);
 
 	virtual void ThreadStartupFunc();
-	virtual void ThreadMsgDispatcher( MSG const ) { }
-	virtual void Notify( bool const );
+	virtual void ThreadMsgDispatcher(MSG const) { }
+	virtual void Notify(bool const);
 
 	void SingleStep();
 	void ReleaseComputationLock();

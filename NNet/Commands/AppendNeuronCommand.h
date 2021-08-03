@@ -13,7 +13,7 @@ class AppendNeuronCommand : public Command
 {
 public:
 	AppendNeuronCommand
-	( 
+	(
 		NNetModelWriterInterface & nmwi,
 		NobId                const idKnot 
 	)
@@ -26,16 +26,16 @@ public:
 
 	~AppendNeuronCommand() {}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 		m_upNeuron->Reconnect();
-		m_upKnot = nmwi.ReplaceInModel<T,Knot>( move(m_upNeuron) );
+		m_upKnot = nmwi.ReplaceInModel<T,Knot>(move(m_upNeuron));
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi ) 
+	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{ 
 		m_upKnot->Reconnect();
-		m_upNeuron = nmwi.ReplaceInModel<Knot,T>( move( m_upKnot ) ); 
+		m_upNeuron = nmwi.ReplaceInModel<Knot,T>(move(m_upKnot)); 
 	}
 
 private:

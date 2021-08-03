@@ -22,9 +22,9 @@ class PointType
 {
 public:
 
-	PointType() : m_x( BASE_TYPE::NULL_VAL() ), m_y( BASE_TYPE::NULL_VAL() ) { }
-	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
-	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : m_x(_x), m_y(_y) {}
+	PointType() : m_x(BASE_TYPE::NULL_VAL()), m_y(BASE_TYPE::NULL_VAL()) { }
+	PointType(BASE_TYPE const _b) : m_x(_b), m_y(_b) {}
+	PointType(BASE_TYPE const _x, BASE_TYPE const _y) : m_x(_x), m_y(_y) {}
 
 	bool const operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
 	bool const operator!=(PointType const & a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
@@ -50,13 +50,13 @@ public:
 
 	static PointType const & NULL_VAL() 
 	{ 
-		static PointType res { PointType( BASE_TYPE::NULL_VAL() ) }; 
+		static PointType res { PointType(BASE_TYPE::NULL_VAL()) }; 
 		return res;
 	};
 
 	static PointType const & ZERO_VAL() 
 	{ 
-		static PointType res { PointType( BASE_TYPE::ZERO_VAL() ) }; 
+		static PointType res { PointType(BASE_TYPE::ZERO_VAL()) }; 
 		return res;
 	};
 
@@ -68,12 +68,12 @@ public:
     bool IsZero   () const { return * this == ZERO_VAL(); };
     bool IsNotZero() const { return * this != ZERO_VAL(); };
 
-	friend BASE_TYPE Distance( PointType const & npA, PointType const & npB )
+	friend BASE_TYPE Distance(PointType const & npA, PointType const & npB)
 	{
-		return Hypot( npA - npB );
+		return Hypot(npA - npB);
 	}
 
-	friend float const DistSquare( PointType const pntA, PointType const pntB )
+	friend float const DistSquare(PointType const pntA, PointType const pntB)
 	{
 		PointType delta {pntA - pntB};
 		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
@@ -81,29 +81,29 @@ public:
 
 	bool const IsCloseToZero() const
 	{
-		return ::IsCloseToZero( GetXvalue() ) && ::IsCloseToZero( GetYvalue() );
+		return ::IsCloseToZero(GetXvalue()) && ::IsCloseToZero(GetYvalue());
 	}
 
-	bool const IsCloseTo( PointType const & pt ) const
+	bool const IsCloseTo(PointType const & pt) const
 	{
 		return (*this - pt).IsCloseToZero();
 	}
 
-	friend BASE_TYPE const Hypot( PointType const pt ) 
+	friend BASE_TYPE const Hypot(PointType const pt) 
 	{ 
-		return BASE_TYPE( hypot(pt.GetXvalue(), pt.GetYvalue()) );
+		return BASE_TYPE(hypot(pt.GetXvalue(), pt.GetYvalue()));
 	};
 
-	friend PointType const Normalize( PointType const & pt ) 
+	friend PointType const Normalize(PointType const & pt) 
 	{ 
-		BASE_TYPE fHypot { Hypot( pt ) };
-		assert( ! ::IsCloseToZero( fHypot.GetValue() ) );
+		BASE_TYPE fHypot { Hypot(pt) };
+		assert(! ::IsCloseToZero(fHypot.GetValue()));
 		return pt / fHypot.GetValue();
 	};
 
-	PointType ScaledTo( BASE_TYPE const length ) const
+	PointType ScaledTo(BASE_TYPE const length) const
 	{
-		return Normalize( * this ) * length.GetValue();
+		return Normalize(* this) * length.GetValue();
 	}
 
 	PointType OrthoVector() const
@@ -193,10 +193,10 @@ public:
 	{
 		BASE_TYPE xAbs { abs(pnt.GetXvalue()) };
 		BASE_TYPE yAbs { abs(pnt.GetYvalue()) };
-		return max( xAbs, yAbs );
+		return max(xAbs, yAbs);
 	}
 
-	friend wostream & operator<< ( wostream & out, PointType const & param )
+	friend wostream & operator<< (wostream & out, PointType const & param)
 	{
 		out << OPEN_BRACKET 
 			<< param.GetX() << SEPARATOR << param.GetY() 
@@ -221,8 +221,8 @@ class PosType: public PointType<BASE_TYPE, struct pos_tag>
 public:
 	using PointType<BASE_TYPE, struct pos_tag>::PointType;
 
-	PosType( PointType<BASE_TYPE, struct pos_tag> const & p ) 
-		: PointType<BASE_TYPE, struct pos_tag>( p )	
+	PosType(PointType<BASE_TYPE, struct pos_tag> const & p) 
+		: PointType<BASE_TYPE, struct pos_tag>(p)	
 	{}
 };
 
@@ -234,7 +234,7 @@ class SizeType: public PointType<BASE_TYPE, struct siz_tag>
 public:
 	using PointType<BASE_TYPE, struct siz_tag>::PointType;
 
-	SizeType( PointType<BASE_TYPE, struct siz_tag> const & p ) 
-		: PointType<BASE_TYPE, struct siz_tag>( p ) 
+	SizeType(PointType<BASE_TYPE, struct siz_tag> const & p) 
+		: PointType<BASE_TYPE, struct siz_tag>(p) 
 	{}
 };

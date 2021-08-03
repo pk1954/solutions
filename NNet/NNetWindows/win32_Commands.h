@@ -25,12 +25,12 @@ class WinCommands
 {
 public:
     void Initialize
-    ( 
+    (
         CommandStack             * const, 
         NNetModelCommands        * const,
         NNetModelReaderInterface * const,
         NNetModelWriterInterface * const
-    );
+   );
 
     void Connect      (NobId const, NobId const, MainWindow &);
     bool MakeIoConnector(MainWindow &);

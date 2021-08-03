@@ -10,14 +10,14 @@ using std::wostream;
 
 enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
 
-inline tBoolOp BoolOp( bool const b )
+inline tBoolOp BoolOp(bool const b)
 {
     return b ? tBoolOp::opTrue : tBoolOp::opFalse;
 }
 
-inline tBoolOp Reverse( tBoolOp const op )
+inline tBoolOp Reverse(tBoolOp const op)
 {
-    switch ( op )
+    switch (op)
     {
     case tBoolOp::opTrue:
         return tBoolOp::opFalse;
@@ -32,14 +32,14 @@ inline tBoolOp Reverse( tBoolOp const op )
         return tBoolOp::opNoChange;
 
     default:
-        assert( false );
+        assert(false);
         return tBoolOp::opNoChange;
     }
 }
 
-inline bool ApplyOp2( bool const b, tBoolOp const op )
+inline bool ApplyOp2(bool const b, tBoolOp const op)
 {
-    switch ( op )
+    switch (op)
     {
 	case tBoolOp::opTrue:
         return true;
@@ -54,16 +54,16 @@ inline bool ApplyOp2( bool const b, tBoolOp const op )
         return b;
 
     default:
-        assert( false );
+        assert(false);
         return false;
     }
 }
 
-inline void ApplyOp( bool & b, tBoolOp const op )
+inline void ApplyOp(bool & b, tBoolOp const op)
 {
-    b = ApplyOp2( b, op );
+    b = ApplyOp2(b, op);
 }
 
-wchar_t const * const GetBoolOpName( tBoolOp const );
+wchar_t const * const GetBoolOpName(tBoolOp const);
 
-wostream & operator<< ( wostream &, tBoolOp const );
+wostream & operator<< (wostream &, tBoolOp const);

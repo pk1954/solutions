@@ -14,7 +14,7 @@
 using std::make_unique;
 
 ConnAnimationCommand::ConnAnimationCommand
-(  
+( 
     MainWindow  & win,
     WinCommands & cmds
 )
@@ -23,23 +23,23 @@ ConnAnimationCommand::ConnAnimationCommand
     NNetModelWriterInterface & nmwi      { cmds.GetNMWI() };
     UPNobList                & modelNobs { nmwi.GetUPNobs() };
     NobType              const nobType   { determineNobType(modelNobs) };
-    if ( nobType.IsUndefinedType() )
+    if (nobType.IsUndefinedType())
         return;
     
     unique_ptr<IoNeuronList> upNobsAnimated { make_unique<IoNeuronList>() };
     modelNobs.Apply2All<IoNeuron>
-    ( 
+    (
         [&](IoNeuron & s)	
         { 
             if (s.IsSelected() && (s.GetNobType() == nobType)) 
                 upNobsAnimated->Add(&s); 
         } 
-    );
+   );
     MicroMeterLine line{ upNobsAnimated->CalcMaxDistLine() };
     if (line.IsZero())
         return;
 
-    upNobsAnimated->SortAccToDistFromLine( line.OrthoLine() );
+    upNobsAnimated->SortAccToDistFromLine(line.OrthoLine());
     
     MicroMeterPntVector umPntVector(*upNobsAnimated.get());  // before animation
 
@@ -59,14 +59,14 @@ ConnAnimationCommand::ConnAnimationCommand
 
 NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
 {
-    if ( nobs.CountInSelection(NobType::Value::inputConnector) > 0 )
+    if (nobs.CountInSelection(NobType::Value::inputConnector) > 0)
         return NobType::Value::undefined;
 
-    if ( nobs.CountInSelection(NobType::Value::outputConnector) > 0 )
+    if (nobs.CountInSelection(NobType::Value::outputConnector) > 0)
         return NobType::Value::undefined;
 
-    unsigned int uiNrOfInputNeurons  { nobs.CountInSelection( NobType::Value::inputNeuron  ) };
-    unsigned int uiNrOfOutputNeurons { nobs.CountInSelection( NobType::Value::outputNeuron ) };
+    unsigned int uiNrOfInputNeurons  { nobs.CountInSelection(NobType::Value::inputNeuron ) };
+    unsigned int uiNrOfOutputNeurons { nobs.CountInSelection(NobType::Value::outputNeuron) };
 
     if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
         return NobType::Value::undefined;

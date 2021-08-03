@@ -23,7 +23,7 @@ public:
         IoConnector              & nobAnimated,
         IoConnector              & nobTarget,
         MainWindow               & win
-    )
+   )
         : AnimationSequence(win)
     {
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));

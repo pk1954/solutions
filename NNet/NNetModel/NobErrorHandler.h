@@ -9,5 +9,5 @@
 class NobErrorHandler
 {
 public:
-	virtual void operator()( NobId const ) = 0;
+	virtual void operator()(NobId const) = 0;
 };

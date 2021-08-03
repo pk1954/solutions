@@ -12,9 +12,9 @@ class SlowMotionRatio;
 class SlowMotionDisplay : public ObserverInterface
 {
 public:
-	void Initialize( StatusBar *, SlowMotionRatio *, int );
+	void Initialize(StatusBar *, SlowMotionRatio *, int);
 
-	virtual void Notify( bool const );
+	virtual void Notify(bool const);
 
 private:
 

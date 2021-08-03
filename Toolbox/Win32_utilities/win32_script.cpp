@@ -27,16 +27,16 @@ wstring const ScriptFile::GetPathOfExecutable()
 	do
 	{
 		iBufSize *= 2;
-		buffer.resize( iBufSize );
-	} while ( GetModuleFileName( nullptr, buffer.data(), iBufSize ) == iBufSize );
+		buffer.resize(iBufSize);
+	} while (GetModuleFileName(nullptr, buffer.data(), iBufSize) == iBufSize);
 
-	return wstring( buffer.data() );
+	return wstring(buffer.data());
 }
 
 ScriptFile::ScriptFile()
 {
-    HRESULT hr = CoInitializeEx( NULL, COINIT_APARTMENTTHREADED|COINIT_DISABLE_OLE1DDE );
-    assert( SUCCEEDED(hr) );
+    HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED|COINIT_DISABLE_OLE1DDE);
+    assert(SUCCEEDED(hr));
 }
 
 ScriptFile::~ScriptFile()
@@ -52,16 +52,16 @@ IFileDialog * ScriptFile::createOpenDialog()
         CLSID_FileOpenDialog, 
         NULL, CLSCTX_ALL, 
         IID_IFileOpenDialog, 
-        reinterpret_cast<void**>( & pFileDlg )
-    );
-    if ( ! SUCCEEDED(hr) )
+        reinterpret_cast<void**>(& pFileDlg)
+   );
+    if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ ScriptFile constructor: CoCreateInstance( CLSID_FileOpenDialog ... ) failed." << endl;
+        wcout << L"+++ ScriptFile constructor: CoCreateInstance(CLSID_FileOpenDialog ...) failed." << endl;
         wcout << L"+++ error code: " << hr << endl;
         return nullptr;
     }
-    hr = pFileDlg->SetTitle( L"Open file" );
-    assert( SUCCEEDED(hr) );
+    hr = pFileDlg->SetTitle(L"Open file");
+    assert(SUCCEEDED(hr));
     return pFileDlg;
 }
 
@@ -73,22 +73,22 @@ IFileDialog * ScriptFile::createSaveDialog()
         CLSID_FileSaveDialog, 
         NULL, CLSCTX_ALL, 
         IID_IFileSaveDialog, 
-        reinterpret_cast<void**>( & pFileDlg )
-    );
-    if ( ! SUCCEEDED(hr) )
+        reinterpret_cast<void**>(& pFileDlg)
+   );
+    if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ ScriptFile constructor: CoCreateInstance( CLSID_FileSaveDialog ... ) failed." << endl;
+        wcout << L"+++ ScriptFile constructor: CoCreateInstance(CLSID_FileSaveDialog ...) failed." << endl;
         wcout << L"+++ error code: " << hr << endl;
         return nullptr;
     }
 
-    hr = pFileDlg->SetTitle( L"Save file" );
-    assert( SUCCEEDED(hr) );
+    hr = pFileDlg->SetTitle(L"Save file");
+    assert(SUCCEEDED(hr));
     return pFileDlg;
 }
 
 bool const ScriptFile::setFileTypes
-( 
+(
     IFileDialog * pFileDlg, 
     wstring const extension, 
     wstring const description 
@@ -96,8 +96,8 @@ bool const ScriptFile::setFileTypes
 {
     wstring           filter { L"*." + extension };
     COMDLG_FILTERSPEC rgSpec { description.c_str(), filter.c_str() };
-    HRESULT           hr     { pFileDlg->SetFileTypes( 1, & rgSpec ) };
-    if ( ! SUCCEEDED( hr ) )
+    HRESULT           hr     { pFileDlg->SetFileTypes(1, & rgSpec) };
+    if (! SUCCEEDED(hr))
     {
         wcout << L"+++ AskForFileName: SetFileTypes(1, {\"" << description.c_str() << L"\" , \"" << filter.c_str() << L"\" }) failed." << endl;
         wcout << L"+++ error code : " << hr << endl;
@@ -107,13 +107,13 @@ bool const ScriptFile::setFileTypes
 }
 
 bool const ScriptFile::setDefaultExtension
-( 
+(
     IFileDialog * pFileDlg, 
     wstring const extension
 )
 {
-    HRESULT hr { pFileDlg->SetDefaultExtension( extension.c_str() ) };
-    if ( ! SUCCEEDED( hr ) )
+    HRESULT hr { pFileDlg->SetDefaultExtension(extension.c_str()) };
+    if (! SUCCEEDED(hr))
     {
         wcout << L"+++ AskForFileName: SetDefaultExtension(\"" << extension.c_str() << L"\") failed." << endl;
         wcout << L"+++ error code : " << hr << endl;
@@ -122,36 +122,36 @@ bool const ScriptFile::setDefaultExtension
     return true;
 }
 
-wstring const ScriptFile::getResult( IFileDialog * const pFileDlg )
+wstring const ScriptFile::getResult(IFileDialog * const pFileDlg)
 {
     HRESULT      hr;
     wstring      wstrRes { };
     IShellItem * pItem   { nullptr };
-    hr = pFileDlg->GetResult( & pItem );                        
-    if ( ! SUCCEEDED(hr) )
+    hr = pFileDlg->GetResult(& pItem);                        
+    if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ AskForFileName: GetResult( & pItem ) failed." << endl;
+        wcout << L"+++ AskForFileName: GetResult(& pItem) failed." << endl;
         wcout << L"+++ error code: " << hr << endl;
         return wstrRes;
     }
 
     PWSTR pszPath { nullptr };
-    hr = pItem->GetDisplayName( SIGDN_FILESYSPATH, & pszPath ); 
-    if ( ! SUCCEEDED(hr) )
+    hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, & pszPath); 
+    if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ AskForFileName: GetDisplayName( SIGDN_FILESYSPATH, & pszPath ) failed." << endl;
+        wcout << L"+++ AskForFileName: GetDisplayName(SIGDN_FILESYSPATH, & pszPath) failed." << endl;
         wcout << L"+++ error code: " << hr << endl;
         return wstrRes;
     }
 
     wstrRes = pszPath;
-    CoTaskMemFree( pszPath );
+    CoTaskMemFree(pszPath);
     pItem->Release();
     return wstrRes;
 }
 
 wstring const ScriptFile::AskForFileName
-( 
+(
 	wstring   const extension, 
 	wstring   const description,
 	tFileMode const mode
@@ -160,23 +160,23 @@ wstring const ScriptFile::AskForFileName
     IFileDialog * pFileDlg { nullptr }; 
     wstring       wstrRes  { };
 
-    if ( mode == tFileMode::read )
+    if (mode == tFileMode::read)
         pFileDlg = createOpenDialog();
     else
         pFileDlg = createSaveDialog();
 
-    if ( ! pFileDlg )
+    if (! pFileDlg)
         return wstrRes;
 
-    if ( ! setDefaultExtension( pFileDlg, extension ) )
+    if (! setDefaultExtension(pFileDlg, extension))
         return wstrRes;
 
-    if ( ! setFileTypes( pFileDlg, extension, description ) )
+    if (! setFileTypes(pFileDlg, extension, description))
         return wstrRes;
 
-    HRESULT hr = pFileDlg->Show( NULL ); 
-    if ( SUCCEEDED( hr ) )
-        wstrRes = getResult( pFileDlg );
+    HRESULT hr = pFileDlg->Show(NULL); 
+    if (SUCCEEDED(hr))
+        wstrRes = getResult(pFileDlg);
 
     pFileDlg->Release();
 

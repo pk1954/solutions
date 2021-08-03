@@ -6,14 +6,14 @@
 
 #include "win32_rootWindow.h"
 
-static INT_PTR CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
+static INT_PTR CALLBACK BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
 class BaseDialog: public RootWindow
 {
 public:
 
     HWND StartBaseDialog
-	( 
+	(
 		HWND             const, 
 		LPCTSTR          const, 
 		function<bool()> const 
@@ -21,9 +21,9 @@ public:
 
 protected:
 
-	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
 private:
 
-	friend static INT_PTR CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
+	friend static INT_PTR CALLBACK BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 };

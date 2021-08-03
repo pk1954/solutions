@@ -17,12 +17,12 @@ public:
 		m_byte[2] = 0;
 	}
 
-	Int24( int i )
+	Int24(int i)
 	{
-		assert( i <= 0xffffff );
+		assert(i <= 0xffffff);
 		m_byte[0] =   i              >> 16;
-		m_byte[1] = ( i & 0x00ff00 ) >>  8;
-		m_byte[2] = ( i & 0x0000ff );
+		m_byte[1] = (i & 0x00ff00) >>  8;
+		m_byte[2] = (i & 0x0000ff);
 	}
 
 	int GetValue() const

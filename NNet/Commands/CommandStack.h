@@ -23,7 +23,7 @@ class CommandStack
 {
 public:
 
-    void Initialize( NNetModelWriterInterface * const, Observable * const );
+    void Initialize(NNetModelWriterInterface * const, Observable * const);
 
     bool UndoStackEmpty() const 
     { 
@@ -35,9 +35,9 @@ public:
         return m_iIndex == m_CommandStack.size(); 
     }
 
-    void Push( unique_ptr<Command> );
+    void Push(unique_ptr<Command>);
 
-    void PushCommand( unique_ptr<Command> );
+    void PushCommand(unique_ptr<Command>);
     bool UndoCommand();
     bool RedoCommand();
 
@@ -58,20 +58,20 @@ private:
 
     void set2OlderCmd()
     {
-        assert( ! UndoStackEmpty() );
+        assert(! UndoStackEmpty());
         --m_iIndex;
     }
 
     void set2YoungerCmd()
     {
-        assert( m_iIndex < m_CommandStack.size() );
+        assert(m_iIndex < m_CommandStack.size());
         ++m_iIndex;
     }
 
-    void notify( )
+    void notify()
     {
         if (m_pStaticModelObservable)
-            m_pStaticModelObservable->NotifyAll( true );
+            m_pStaticModelObservable->NotifyAll(true);
     }
 
     void clearRedoStack();

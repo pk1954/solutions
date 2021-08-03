@@ -73,7 +73,7 @@ void IoConnector::Reverse()
     m_upList->Reverse();
 }
 
-void IoConnector::Clear( )
+void IoConnector::Clear()
 {
     Nob::Clear();
     m_upList->Clear();
@@ -96,7 +96,7 @@ Radian const IoConnector::GetDir() const
 
 MicroMeterPosDir const IoConnector::GetPosDir() const 
 { 
-    return m_upList->IsEmpty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir( GetPos(), GetDir() );
+    return m_upList->IsEmpty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir(GetPos(), GetDir());
 }
 
 void IoConnector::SetParentPointers()
@@ -126,7 +126,7 @@ void IoConnector::Recalc()
 
 void IoConnector::Apply2All(function<void(IoNeuron &)> const & func) const
 {
-    m_upList->Apply2All([&](IoNeuron & n){ func(n); } );
+    m_upList->Apply2All([&](IoNeuron & n){ func(n); });
 }                        
 
 void IoConnector::SetDir(Radian const radianNew)
@@ -193,13 +193,13 @@ void IoConnector::Expand(MicroMeterRect & umRect) const
 
 IoConnector const * Cast2IoConnector(Nob const * pNob)
 {
-    assert( pNob->IsIoConnector() );
+    assert(pNob->IsIoConnector());
     return static_cast<IoConnector const *>(pNob);
 }
 
 IoConnector * Cast2IoConnector(Nob * pNob)
 {
-    assert( pNob->IsIoConnector() );
+    assert(pNob->IsIoConnector());
     return static_cast<IoConnector *>(pNob);
 }
 

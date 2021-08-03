@@ -17,18 +17,18 @@ public:
     CLUT() 
     { 
         m_uiBase  = CLUT_INDEX(0);
-        m_colorHi = RGB( 255, 255, 255 );
+        m_colorHi = RGB(255, 255, 255);
     };
    
     virtual ~CLUT() {};
 
-    void Allocate( CLUT_INDEX const );
-    void SetClutBase( CLUT_INDEX const );
-    void SetColorHi( COLORREF const );
+    void Allocate(CLUT_INDEX const);
+    void SetClutBase(CLUT_INDEX const);
+    void SetColorHi(COLORREF const);
 
-    COLORREF GetColor( CLUT_INDEX index ) const 
+    COLORREF GetColor(CLUT_INDEX index) const 
     {
-		assert( index.GetValue() < static_cast<int>(m_data.size()) ); 
+		assert(index.GetValue() < static_cast<int>(m_data.size())); 
         return m_data[ index.GetValue() ]; 
     };
 

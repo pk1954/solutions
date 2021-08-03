@@ -11,9 +11,9 @@ using std::vector;
 class MessagePump
 {
 public:
-	void SetAccelTable( HINSTANCE const, int const );
+	void SetAccelTable(HINSTANCE const, int const);
 
-	void RegisterWindow( HWND const, bool const );
+	void RegisterWindow(HWND const, bool const);
 	
 	int Run();
 
@@ -27,5 +27,5 @@ private:
 	vector<AccEntry> m_accEntries;
 	HACCEL           m_defaultAccelTable { nullptr };
 
-	bool accelerator( MSG & );
+	bool accelerator(MSG &);
 };

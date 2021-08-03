@@ -10,7 +10,7 @@
 using std::unordered_map;
 using std::wstring;
 
-wstring const NobType::GetName( NobType::Value const val )
+wstring const NobType::GetName(NobType::Value const val)
 {
 	static unordered_map < NobType::Value, wstring const > mapNob =
 	{
@@ -24,10 +24,10 @@ wstring const NobType::GetName( NobType::Value const val )
 		{ NobType::Value::pipe,            L"pipe"            },
 		{ NobType::Value::knot,            L"knot"            }
 	};				  
-	return mapNob.at( val );
+	return mapNob.at(val);
 }
 
-NobType::Value const NobType::GetTypeFromName( wstring const & name )
+NobType::Value const NobType::GetTypeFromName(wstring const & name)
 {
 	static unordered_map < wstring, NobType::Value > mapNob =
 	{
@@ -41,12 +41,12 @@ NobType::Value const NobType::GetTypeFromName( wstring const & name )
 	    { L"pipe",            NobType::Value::pipe	          },
 	    { L"knot",            NobType::Value::knot            }
 	};				  
-	return mapNob.at( name );
+	return mapNob.at(name);
 }
 
-wostream & operator<< ( wostream & out, NobType const & nobType )
+wostream & operator<< (wostream & out, NobType const & nobType)
 {
-	wstring const wstrName { NobType::GetName( nobType.GetValue() ) };
+	wstring const wstrName { NobType::GetName(nobType.GetValue()) };
 	out << wstrName;
 	return out;
 }

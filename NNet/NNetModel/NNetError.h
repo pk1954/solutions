@@ -21,40 +21,40 @@ struct NobException: public exception
 class NNetErrorHandler : public NobErrorHandler
 {
 public:
-    NNetErrorHandler( Script * const pScript, UPNobList const * const pList )
-        : m_pScript( pScript ),
-          m_pList( pList )
+    NNetErrorHandler(Script * const pScript, UPNobList const * const pList)
+        : m_pScript(pScript),
+          m_pList(pList)
     {}
 
     static void CheckNobId
-    ( 
+    (
         Script          & script, 
         UPNobList const & list,
         NobId     const   id 
-    )
+   )
     {        
         Scanner & scanner  { script.GetScanner() };
-        wstring   strNobId { to_wstring( id.GetValue() ) };
-        if ( IsUndefined(id) )
+        wstring   strNobId { to_wstring(id.GetValue()) };
+        if (IsUndefined(id))
         {
-            scanner.SetExpectedToken( L"NobId != NO_NOB" );
-            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid nob id: " ) + strNobId );
+            scanner.SetExpectedToken(L"NobId != NO_NOB");
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
         }
-        else if ( ! list.IsValidNobId( id ) )
+        else if (! list.IsValidNobId(id))
         {
-            scanner.SetExpectedToken( L"id < " + to_wstring( list.Size() ) );
-            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid nob id: " ) + strNobId );
+            scanner.SetExpectedToken(L"id < " + to_wstring(list.Size()));
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
         }
-        else if ( ! list.IsNobDefined( id ) )
+        else if (! list.IsNobDefined(id))
         {
-            scanner.SetExpectedToken( L"Defined NobId" );
-            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Nob is not defined: " ) + strNobId );
+            scanner.SetExpectedToken(L"Defined NobId");
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Nob is not defined: ") + strNobId);
         }
     };
 
-    virtual void operator()( NobId const id ) 
+    virtual void operator()(NobId const id) 
     {
-        CheckNobId( * m_pScript, * m_pList, id );
+        CheckNobId(* m_pScript, * m_pList, id);
         throw NobException();
     }
 
@@ -64,27 +64,27 @@ private:
 };
 
 inline bool ProcessNNetScript
-( 
+(
     Script      & script,
     UPNobList   & nobList,
     wstring const wstrPath
 ) 
 {
     bool bSuccess { false };
-    if ( ! wstrPath.empty() )
+    if (! wstrPath.empty())
     {
         NNetErrorHandler errHndl { & script, & nobList };
-        nobList.SetErrorHandler( & errHndl );
+        nobList.SetErrorHandler(& errHndl);
         try
         {
             wcout << L"*** Processing script file " << wstrPath << endl;
-            bSuccess = script.ScrProcess( wstrPath );
+            bSuccess = script.ScrProcess(wstrPath);
         }
-        catch ( NobException e ) 
+        catch (NobException e) 
         { 
             return false;
         }
-        nobList.SetErrorHandler( nullptr );
+        nobList.SetErrorHandler(nullptr);
     }
     return bSuccess;
 }

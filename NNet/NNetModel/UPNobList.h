@@ -26,11 +26,11 @@ class UPNobList
 public:
 
 	UPNobList() { }
-	UPNobList( const UPNobList & );
+	UPNobList(const UPNobList &);
 	~UPNobList();
 
-	UPNobList & operator=  ( UPNobList const & );
-	bool        operator== ( UPNobList const & ) const;
+	UPNobList & operator=  (UPNobList const &);
+	bool        operator== (UPNobList const &) const;
 
 	bool   const IsEmpty     ()               const { return m_list.size() == 0; }
 	bool   const IsNotEmpty  ()               const { return m_list.size() > 0; }
@@ -62,9 +62,9 @@ public:
 	unsigned int const GetCounter        (NobType const)                        const;
 	unsigned int const GetCounter        ()                                     const;
 	NobId        const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
-	bool         const Apply2AllB        (                     NobCrit const &) const;
-	void               Apply2All         (NobFuncC const & )                    const;
-	void               Apply2All         (NobFunc  const & );
+	bool         const Apply2AllB        (                    NobCrit const &) const;
+	void               Apply2All         (NobFuncC const &)                    const;
+	void               Apply2All         (NobFunc  const &);
 	void               Apply2AllSelected (NobType const, NobFuncC const &)      const;
 	void               Apply2AllSelected (NobType const, NobFunc  const &);
 
@@ -88,7 +88,7 @@ public:
 	template <Nob_t T>    // const version
 	void Apply2All(function<void(T const &)> const & func) const
 	{
-		for ( auto const & it : m_list )
+		for (auto const & it : m_list)
 		{ 
 			if (it && HasType<T>(*it))
 				func(static_cast<T const &>(*it));
@@ -98,7 +98,7 @@ public:
 	template <Nob_t T>    // non const version
 	void Apply2All(function<void(T &)> const & func)
 	{
-		for ( size_t i = 0; i < m_list.size(); ++i )
+		for (size_t i = 0; i < m_list.size(); ++i)
 		{ 
 			if (m_list[i] && HasType<T>(*m_list[i]))
 				func(static_cast<T &>(*m_list[i]));
@@ -108,38 +108,38 @@ public:
 	template <Nob_t T>    // const version
 	void Apply2AllSelected(function<void(T const &)> const & func) const
 	{
-		Apply2All<T>( {	[&](T const & s) { if (s.IsSelected()) func(s); } } );
+		Apply2All<T>({	[&](T const & s) { if (s.IsSelected()) func(s); } });
 	}
 
 	template <Nob_t T>    // non const version
 	void Apply2AllSelected(function<void(T &)> const & func) 
 	{
-		Apply2All<T>( {	[&](T & s) { if (s.IsSelected()) func(s); } } );
+		Apply2All<T>({	[&](T & s) { if (s.IsSelected()) func(s); } });
 	}
 
 	template <Nob_t T>   // const version
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
+	void Apply2AllInRect(MicroMeterRect const & r, function<void(T const &)> const & func) const
 	{
-		Apply2All<T>( [&](T const & s) { if ( s.IsIncludedIn(r) ) func(s); } );
+		Apply2All<T>([&](T const & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
 	template <Nob_t T>   // non const version
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
+	void Apply2AllInRect(MicroMeterRect const & r, function<void(T &)> const & func)
 	{
-		Apply2All<T>( [&](T & s) { if ( s.IsIncludedIn(r) ) func(s); } );
+		Apply2All<T>([&](T & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
 	template <Nob_t T>
-	bool Apply2AllB( function<bool(T &)> const & crit ) const
+	bool Apply2AllB(function<bool(T &)> const & crit) const
 	{
 		bool bResult { false };
-		for ( auto & it : m_list )
+		for (auto & it : m_list)
 		{
 			if (it)
 			{
-				if ( HasType<T>(*it) )	
-					bResult = crit( static_cast<T &>(*it) );
-				if ( bResult )
+				if (HasType<T>(*it))	
+					bResult = crit(static_cast<T &>(*it));
+				if (bResult)
 					break;
 			}
 		}

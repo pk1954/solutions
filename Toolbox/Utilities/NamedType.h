@@ -18,12 +18,12 @@ class NamedType
 public:
     NamedType() : m_value(0) {}
 		
-    constexpr explicit NamedType( BASE_TYPE const value ) : m_value(value) {}
+    constexpr explicit NamedType(BASE_TYPE const value) : m_value(value) {}
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
-	constexpr NamedType const GetAbs     () const { return NamedType( abs(m_value) ); }
-	constexpr BASE_TYPE const GetAbsValue() const { return BASE_TYPE( abs(m_value) ); }
+	constexpr NamedType const GetAbs     () const { return NamedType(abs(m_value)); }
+	constexpr BASE_TYPE const GetAbsValue() const { return BASE_TYPE(abs(m_value)); }
 
 	bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }
     bool const operator!= (NamedType const other) const { return m_value != other.GetValue(); }
@@ -59,64 +59,64 @@ public:
 	NamedType  operator++(int) { NamedType tmp { *this }; operator++(); return tmp; }
 	NamedType  operator--(int) { NamedType tmp { *this }; operator--(); return tmp; }
 
-	bool const IsCloseToZero()            const { return ::IsCloseToZero( GetValue() ); }
+	bool const IsCloseToZero()            const { return ::IsCloseToZero(GetValue()); }
 	bool const IsCloseTo(NamedType other) const { return (*this - other).IsCloseToZero(); }
 
-	friend NamedType operator+ (NamedType const a, NamedType const b )
+	friend NamedType operator+ (NamedType const a, NamedType const b)
 	{ 
 		NamedType res { a };
 		res += b; 
 		return res; 
 	}
 
-	friend NamedType operator- (NamedType const a, NamedType const b )
+	friend NamedType operator- (NamedType const a, NamedType const b)
 	{ 
 		NamedType res { a };
 		res -= b; 
 		return res; 
 	}
 
-	friend NamedType operator% (NamedType const a, NamedType const b )
+	friend NamedType operator% (NamedType const a, NamedType const b)
 	{ 
 		NamedType res { a };
 		res %= b; 
 		return res; 
 	}
 
-	friend NamedType operator+ (NamedType const a, BASE_TYPE const b )
+	friend NamedType operator+ (NamedType const a, BASE_TYPE const b)
 	{ 
 		NamedType res { a };
 		res += b; 
 		return res; 
 	}
 
-	friend NamedType operator- (NamedType const a, BASE_TYPE const b )
+	friend NamedType operator- (NamedType const a, BASE_TYPE const b)
 	{ 
 		NamedType res { a };
 		res -= b; 
 		return res; 
 	}
 
-	friend NamedType operator* (NamedType const a, BASE_TYPE const i )
+	friend NamedType operator* (NamedType const a, BASE_TYPE const i)
 	{ 
 		NamedType res { a };
 		res *= i; 
 		return res; 
 	}
 
-	friend NamedType operator/ (NamedType const a, BASE_TYPE const i )
+	friend NamedType operator/ (NamedType const a, BASE_TYPE const i)
 	{ 
 		NamedType res { a };
 		res /= i; 
 		return res; 
 	}
 
-	friend BASE_TYPE operator/ (NamedType const a, NamedType const b )
+	friend BASE_TYPE operator/ (NamedType const a, NamedType const b)
 	{ 
-		return BASE_TYPE( a.GetValue() / b.GetValue() );
+		return BASE_TYPE(a.GetValue() / b.GetValue());
 	}
 
-	friend wostream & operator << ( std::wostream & out, NamedType const & param )
+	friend wostream & operator << (std::wostream & out, NamedType const & param)
 	{
 		out << param.GetValue();
 		return out;
@@ -124,14 +124,14 @@ public:
 
 	static NamedType const MAX_VAL()
 	{
-		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no MAX_VAL" );
+		static_assert(std::numeric_limits<BASE_TYPE>::is_specialized, "type has no MAX_VAL");
 		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::max)() };
 		return res;
 	}
 
 	static NamedType const NULL_VAL()
 	{
-		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL" );
+		static_assert(std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL");
 		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::min)() };
 		return res;
 	}

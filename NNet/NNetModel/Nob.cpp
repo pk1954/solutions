@@ -13,16 +13,16 @@ using std::wcout;
 using std::wostream;
 
 Nob::Nob(NobType const type)
-	: m_type( type )
+	: m_type(type)
 { }	
 
 bool Nob::operator==(Nob const & rhs) const
 {
-    if ( m_type != rhs.m_type )
+    if (m_type != rhs.m_type)
 		 return false;
-	if ( m_identifier != rhs.m_identifier )
+	if (m_identifier != rhs.m_identifier)
 		return false;
-	if ( m_bSelected != rhs.m_bSelected )
+	if (m_bSelected != rhs.m_bSelected)
 		return false;
 	return true;
 }
@@ -50,10 +50,10 @@ MicroMeterPosDir const Nob::GetPosDir() const
 
 D2D1::ColorF Nob::GetInteriorColor(mV const voltageInput) const
 {
-	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( ParamType::Value::peakVoltage )) };
-	float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
+	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage)) };
+	float const colorComponent { min(voltageInput / peakVoltage, 1.0f)};
 	float const fAlphaChannel  { m_bSelected ? 0.7f : 1.0f };
-	return D2D1::ColorF( colorComponent, 0.0f, 0.0f, fAlphaChannel );
+	return D2D1::ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
 }
 
 D2D1::ColorF Nob::GetExteriorColor(tHighlight const type) const 
@@ -64,16 +64,16 @@ D2D1::ColorF Nob::GetExteriorColor(tHighlight const type) const
 D2D1::ColorF Nob::GetInteriorColor(tHighlight const type) const 
 {
 	Nob const * pNob { this };
-	while ( pNob->HasParentNob() )
+	while (pNob->HasParentNob())
 		pNob = pNob->GetParentNob();
-	switch ( type )
+	switch (type)
 	{
 	case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
 	case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
 	case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
 	case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
 	}
-	assert( false );
+	assert(false);
 	return NNetColors::INT_NORMAL;
 };
 
@@ -86,7 +86,7 @@ void Nob::Check() const
 {
 #ifdef _DEBUG
 	m_type.Check();
-	AssertLimits<int>( (int)m_bSelected, 0, 1 );
+	AssertLimits<int>((int)m_bSelected, 0, 1);
 #endif
 }
 

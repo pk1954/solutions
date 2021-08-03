@@ -30,20 +30,20 @@ class NNetModel
 public:
 	// const functions
 
-	bool operator==( NNetModel const & ) const;
+	bool operator==(NNetModel const &) const;
 
 	template <Nob_t T>
-	T GetNobConstPtr( NobId const id ) const
+	T GetNobConstPtr(NobId const id) const
 	{
-		Nob const * const pNob { GetConstNob( id ) };
-		return (pNob && HasType<T>( * pNob )) ? static_cast<T>( pNob ) : nullptr;
+		Nob const * const pNob { GetConstNob(id) };
+		return (pNob && HasType<T>(* pNob)) ? static_cast<T>(pNob) : nullptr;
 	}
 
 	void CheckModel() const;
 	void DumpModel (char const * const, int const) const;
 
-	Nob    const * GetConstNob ( NobId const ) const;
-	fHertz const   GetPulseRate( NobId const ) const;
+	Nob    const * GetConstNob (NobId const) const;
+	fHertz const   GetPulseRate(NobId const) const;
 
 	fMicroSecs const GetSimulationTime () const { return m_timeStamp; }
 
@@ -71,17 +71,17 @@ public:
 
 	void  RecalcAllNobs();
 	void  ResetModel();
-	float SetParam( ParamType::Value const, float const );
-	void  SelectSubtree( BaseKnot * const, bool const );
+	float SetParam(ParamType::Value const, float const);
+	void  SelectSubtree(BaseKnot * const, bool const);
 
 	UPNobList   & GetUPNobs()      { return m_Nobs; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
 	void SetModelFilePath   (wstring const wstr) { m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine (wstring const wstr) { m_description.AddDescriptionLine( wstr ); }
+	void AddDescriptionLine (wstring const wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete()                   { m_description.DescriptionComplete(); }
-	void SetDescriptionUI   (DescriptionUI & i)  { m_description.SetDescriptionUI( i ); }
+	void SetDescriptionUI   (DescriptionUI & i)  { m_description.SetDescriptionUI(i); }
 	void SetSimulationTime  (fMicroSecs const newVal = 0._MicroSecs) { m_timeStamp = newVal; }
 
 private:

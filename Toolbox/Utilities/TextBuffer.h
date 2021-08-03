@@ -14,9 +14,9 @@ using std::wostringstream;
 
 using TEXT_POSITION = NamedType< int, struct TEXT_POSITION_Parameter >;
 
-constexpr TEXT_POSITION operator"" _TEXT_POSITION( unsigned long long ull )
+constexpr TEXT_POSITION operator"" _TEXT_POSITION(unsigned long long ull)
 {
-	return TEXT_POSITION( Cast2Int( ull ) );
+	return TEXT_POSITION(Cast2Int(ull));
 }
 
 class TextBuffer
@@ -24,52 +24,52 @@ class TextBuffer
 public:
 	virtual ~TextBuffer() {}
 
-    void Initialize( PIXEL const,	PIXEL const );
+    void Initialize(PIXEL const,	PIXEL const);
 
-	virtual void PrintBuffer( std::wostringstream *, PIXEL const, PIXEL const ) = 0;
+	virtual void PrintBuffer(std::wostringstream *, PIXEL const, PIXEL const) = 0;
 
 	virtual void AlignLeft() = 0;
 	virtual void AlignRight() = 0;
 
 	virtual void StartPainting();
 
-    void nextLine( TEXT_POSITION iHorPos = 1_TEXT_POSITION )     
+    void nextLine(TEXT_POSITION iHorPos = 1_TEXT_POSITION)     
     { 
-        setHorizontalPos( iHorPos );
+        setHorizontalPos(iHorPos);
         m_pixVerticalPos += m_pixVertRaster;
     }
 
-    void setHorizontalPos( TEXT_POSITION pos )
+    void setHorizontalPos(TEXT_POSITION pos)
     {
         m_pixHorizontalPos = LEFT_MARGIN + m_pixHorRaster * pos.GetValue();
     }
 
-	void nextLine( wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION )
+	void nextLine(wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION)
 	{
-		nextLine( iHorPos );
+		nextLine(iHorPos);
 		AlignRight();
-		printString( data );
+		printString(data);
 	}
 
-	void header( wstring data )
+	void header(wstring data)
 	{
 		nextLine();
 		AlignLeft();
-		printString( data );
+		printString(data);
 	}
 
-	void printString     ( wstring const & );
-    void printNumber     ( int const );
-    void printNumber     ( unsigned int const );
-	void printNumber     ( long const );
-	void printNumber     ( long long const );
-	void printNumber     ( unsigned long long const );
-	void printNumber     ( float const );
-	void printFloat      ( float const );
-	void printPercentage ( unsigned int const );
-    void printPercentage ( unsigned int const, unsigned int const );
-    void printSpan       ( unsigned int const, unsigned int const );
-	void printAsMillisecs( microseconds const );
+	void printString     (wstring const &);
+    void printNumber     (int const);
+    void printNumber     (unsigned int const);
+	void printNumber     (long const);
+	void printNumber     (long long const);
+	void printNumber     (unsigned long long const);
+	void printNumber     (float const);
+	void printFloat      (float const);
+	void printPercentage (unsigned int const);
+    void printPercentage (unsigned int const, unsigned int const);
+    void printSpan       (unsigned int const, unsigned int const);
+	void printAsMillisecs(microseconds const);
 
 private:
 	void printBuffer();

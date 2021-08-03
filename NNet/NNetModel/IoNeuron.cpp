@@ -16,12 +16,12 @@ MicroMeterPnt const IoNeuron::determineVector() const
 	MicroMeterPnt umVector { MicroMeterPnt::ZERO_VAL() };
 
 	Apply2AllConnectedPipes
-	( 
+	(
 		[&](Pipe & pipe) { umVector += Normalize(pipe.GetVector());	} 
 	);
 
-	if ( umVector.IsZero() )
-		umVector = MicroMeterPnt( 0.0_MicroMeter, 1.0_MicroMeter );
+	if (umVector.IsZero())
+		umVector = MicroMeterPnt(0.0_MicroMeter, 1.0_MicroMeter);
 
 	return umVector;
 }

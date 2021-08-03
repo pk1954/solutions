@@ -6,4 +6,4 @@
 
 class NNetModelCommands;
 
-extern void DefineNNetWrappers( NNetModelCommands * const );
+extern void DefineNNetWrappers(NNetModelCommands * const);

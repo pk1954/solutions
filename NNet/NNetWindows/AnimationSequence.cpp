@@ -44,7 +44,7 @@ void AnimationSequence::doPhase() // runs in UI thread
     if (m_uiPhase == 0)
         BlockUI();
     if (m_uiPhase < m_phases.size())
-        m_phases[m_uiPhase++]->Do([&](){ doPhase(); } );
+        m_phases[m_uiPhase++]->Do([&](){ doPhase(); });
     else
         UnblockUI();
     m_win.Notify(false);

@@ -17,7 +17,7 @@ HWND CreateRectToolTip
 	LPCTSTR     const szText
 )
 {
-	return CreateToolTipEx( hwndParent, idTool, true, pRect, szText );
+	return CreateToolTipEx(hwndParent, idTool, true, pRect, szText);
 }
 
 HWND CreateWindowToolTip
@@ -26,7 +26,7 @@ HWND CreateWindowToolTip
 	LPCTSTR const szText
 )
 {
-	return CreateToolTipEx( hwndParent, 0, false, nullptr, szText );
+	return CreateToolTipEx(hwndParent, 0, false, nullptr, szText);
 }
 
 HWND CreateStdToolTip
@@ -36,21 +36,21 @@ HWND CreateStdToolTip
 	LPCTSTR const szText
 )
 {
-	return CreateToolTipEx( hwndParent, idTool, false, nullptr, szText );
+	return CreateToolTipEx(hwndParent, idTool, false, nullptr, szText);
 }
 
 HWND CreateBalloonToolTip
-( 
+(
 	HWND    const hwndParent,
 	int     const idTool,
 	LPCTSTR const szText
 )
 {
-	return CreateToolTipEx( hwndParent, idTool, true, nullptr, szText );
+	return CreateToolTipEx(hwndParent, idTool, true, nullptr, szText);
 }
 
 HWND CreateToolTipEx
-( 
+(
 	HWND        const hwndParent,
 	int         const idTool,
 	bool        const bBalloon,
@@ -59,7 +59,7 @@ HWND CreateToolTipEx
 )
 {
 	DWORD dwStyle = WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP; 
-	if ( bBalloon )
+	if (bBalloon)
 		dwStyle |= TTS_BALLOON;
 
 	HWND hwndTip = CreateWindowEx
@@ -72,7 +72,7 @@ HWND CreateToolTipEx
 		CW_USEDEFAULT, CW_USEDEFAULT,  
 		hwndParent,                      // parent
 		NULL,                            // ID
-		GetModuleHandle( nullptr ),      // instance
+		GetModuleHandle(nullptr),      // instance
 		NULL                             // no extra data
 	);
 
@@ -107,27 +107,27 @@ HWND CreateToolTipEx
 
 	TOOLINFO_REDEF ti = { 0 };
 
-	if ( pRect )
-		ti.rect = Util::PixelRect2RECT( * pRect );
+	if (pRect)
+		ti.rect = Util::PixelRect2RECT(* pRect);
 	else
-		GetClientRect( hwndParent, &ti.rect );
+		GetClientRect(hwndParent, &ti.rect);
 
 	ti.cbSize   = sizeof(ti);
 	ti.uFlags   = TTF_SUBCLASS;
 	ti.hwnd     = hwndParent;
-	ti.hinst    = GetModuleHandle( nullptr );
+	ti.hinst    = GetModuleHandle(nullptr);
 	ti.lpszText = szText;
 
-	if ( idTool > 0 )
+	if (idTool > 0)
 	{
-		ti.uId = (UINT_PTR)GetDlgItem( hwndParent, idTool );
+		ti.uId = (UINT_PTR)GetDlgItem(hwndParent, idTool);
 		ti.uFlags |= TTF_IDISHWND;
 	}
 
-	LRESULT res = SendMessage( hwndTip, TTM_ADDTOOL, 0, (LPARAM)&ti );
-	assert( res > 0 );
+	LRESULT res = SendMessage(hwndTip, TTM_ADDTOOL, 0, (LPARAM)&ti);
+	assert(res > 0);
 
-	SendMessage( hwndTip, TTM_SETMAXTIPWIDTH, 0, 100 );
+	SendMessage(hwndTip, TTM_SETMAXTIPWIDTH, 0, 100);
 
 	return hwndTip;
 }

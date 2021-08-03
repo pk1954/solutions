@@ -19,20 +19,20 @@ class EnumArray
 public:
 	T Sum()
 	{
-		T sum = static_cast<T>( 0 );
-		for ( auto & elem : m_tArray )
+		T sum = static_cast<T>(0);
+		for (auto & elem : m_tArray)
 			sum += elem;
 		return sum;
 	}
 
-    T const & operator[] ( typename INDEX_TYPE::Id index ) const
+    T const & operator[] (typename INDEX_TYPE::Id index) const
 	{ 
-		return m_tArray.at( static_cast<unsigned short>( index ) ); 
+		return m_tArray.at(static_cast<unsigned short>(index)); 
 	}
 
-	T & operator[] ( typename INDEX_TYPE::Id index )
+	T & operator[] (typename INDEX_TYPE::Id index)
 	{ 
-		return m_tArray.at( static_cast<unsigned short>( index ) ); 
+		return m_tArray.at(static_cast<unsigned short>(index)); 
 	}
 
 	T * begin()
@@ -45,24 +45,24 @@ public:
 		return m_tArray.end(); 
 	}
 
-	void operator= ( T const val )
+	void operator= (T const val)
 	{
-        for ( T & elem : m_tArray )
+        for (T & elem : m_tArray)
 		{
             elem = T;
 		}
 	}
 
-	void Apply2All( function<void(T &)> const & func )
+	void Apply2All(function<void(T &)> const & func)
 	{
-        for ( T & elem : m_tArray )
+        for (T & elem : m_tArray)
 		{
-            func( elem );
+            func(elem);
 		}
 	}
 
 private:
-	static int constexpr COUNT = static_cast<int>( INDEX_TYPE::Id::count );
+	static int constexpr COUNT = static_cast<int>(INDEX_TYPE::Id::count);
 
     std::array < T, COUNT > m_tArray;
 };

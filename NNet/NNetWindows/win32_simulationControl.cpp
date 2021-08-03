@@ -16,18 +16,18 @@ void SimulationControl::Initialize
     m_pStatusBar     = pStatusBar;
 	m_pComputeThread = pComputeThread;
 
-	m_pStatusBar->AddButton( L"SingleStep", (HMENU)IDM_FORWARD, BS_PUSHBUTTON ); 
-	m_pStatusBar->AddButton( L"   Run    ", (HMENU)IDM_RUN,     BS_PUSHBUTTON ); 
-	m_pStatusBar->AddButton( L"  Stop    ", (HMENU)IDM_STOP,    BS_PUSHBUTTON );
+	m_pStatusBar->AddButton(L"SingleStep", (HMENU)IDM_FORWARD, BS_PUSHBUTTON); 
+	m_pStatusBar->AddButton(L"   Run    ", (HMENU)IDM_RUN,     BS_PUSHBUTTON); 
+	m_pStatusBar->AddButton(L"  Stop    ", (HMENU)IDM_STOP,    BS_PUSHBUTTON);
 
-	Notify( true );
+	Notify(true);
 }
 
-void SimulationControl::Notify( bool const bImmediate )
+void SimulationControl::Notify(bool const bImmediate)
 {
 	bool const bIsRunning = m_pComputeThread->IsRunning();
 
-	EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ),    ! bIsRunning );
-	EnableWindow( m_pStatusBar->GetDlgItem( IDM_STOP ),      bIsRunning );
-	EnableWindow( m_pStatusBar->GetDlgItem( IDM_FORWARD ), ! bIsRunning );
+	EnableWindow(m_pStatusBar->GetDlgItem(IDM_RUN ),    ! bIsRunning);
+	EnableWindow(m_pStatusBar->GetDlgItem(IDM_STOP),      bIsRunning);
+	EnableWindow(m_pStatusBar->GetDlgItem(IDM_FORWARD), ! bIsRunning);
 }

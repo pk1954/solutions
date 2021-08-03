@@ -16,22 +16,22 @@ class AddSignalCommand: public Command
 public:
 
     AddSignalCommand
-    ( 
+    (
         MicroMeterCircle const & umCircle,
         TrackNr          const   trackNr
-    )
+   )
       : m_umCircle(umCircle),
         m_trackNr(trackNr)
     {}
 
-    virtual void Do( NNetModelWriterInterface & nmwi) 
+    virtual void Do(NNetModelWriterInterface & nmwi) 
     {
         MonitorData & monitorData { nmwi.GetMonitorData() };
-        monitorData.InsertTrack( TrackNr(0) );
+        monitorData.InsertTrack(TrackNr(0));
         m_signalId = SignalId(m_trackNr, monitorData.AddSignal(m_trackNr, m_umCircle));
     };
 
-    virtual void Undo( NNetModelWriterInterface & nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     { 
         nmwi.GetMonitorData().DeleteSignal(m_signalId);
     };

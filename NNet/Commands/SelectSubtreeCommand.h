@@ -14,7 +14,7 @@ class SelectSubtreeCommand : public SelectionCommand
 {
 public:
 	SelectSubtreeCommand
-	( 
+	(
 		NobId const id, 
 		bool    const bOn
 	)
@@ -22,7 +22,7 @@ public:
 		m_bOn(bOn)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & nmwi )
+	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
 		SelectionCommand::Do(nmwi);
 		nmwi.SelectSubtree(nmwi.GetNobPtr<BaseKnot *>(m_idNob), m_bOn);

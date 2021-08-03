@@ -23,7 +23,7 @@ public:
         IoNeuron                 & nobAnimated,
         IoNeuron                 & nobTarget,
         MainWindow               & win
-    )
+   )
         : AnimationSequence(win)
     {
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 3.0_MicroMeter)));

@@ -8,7 +8,7 @@ class MainWindow;
 class WinCommands;
 
 extern void DefineNNetWinWrappers
-( 
+(
     MainWindow  * const, 
     WinCommands * const
 );

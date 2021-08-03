@@ -19,8 +19,8 @@ public:
     { }
 
     CircleType(POS_TYPE const & pos, BASE_TYPE const radius)
-        : m_position( pos ),
-          m_radius( radius )
+        : m_position(pos),
+          m_radius(radius)
     {}
 
     bool const operator==(CircleType const & a) const 
@@ -37,23 +37,23 @@ public:
     POS_TYPE  const & GetPos   () const { return m_position; }
     BASE_TYPE const & GetRadius() const { return m_radius; }
 
-    void SetPos   ( POS_TYPE  const & newPos    ) { m_position = newPos; }
-    void SetRadius( BASE_TYPE const   newRadius ) { m_radius   = newRadius; }
+    void SetPos   (POS_TYPE  const & newPos   ) { m_position = newPos; }
+    void SetRadius(BASE_TYPE const   newRadius) { m_radius   = newRadius; }
 
-    bool Includes( POS_TYPE const pos ) const
+    bool Includes(POS_TYPE const pos) const
     {
         return DistSquare(pos, m_position) <= m_radius.GetValue() * m_radius.GetValue();
     }
 
     static CircleType const & NULL_VAL() 
     { 
-        static CircleType res { CircleType( POS_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ) }; 
+        static CircleType res { CircleType(POS_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL()) }; 
         return res;
     };
 
     static CircleType const & ZERO_VAL() 
     { 
-        static CircleType res { CircleType( POS_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL() ) }; 
+        static CircleType res { CircleType(POS_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL()) }; 
         return res;
     };
 
@@ -79,7 +79,7 @@ public:
         return res; 
     };
 
-    friend wostream & operator<< ( wostream & out, CircleType const & param )
+    friend wostream & operator<< (wostream & out, CircleType const & param)
     {
         out << CircleType::OPEN_BRACKET 
             << param.m_position 

@@ -15,7 +15,7 @@ public:
 	  :	m_bOn(bOn)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 		SelectionCommand::Do(nmwi);
 		nmwi.GetUPNobs().SelectAllNobs(m_bOn); 

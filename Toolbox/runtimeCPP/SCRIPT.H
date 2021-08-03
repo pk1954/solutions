@@ -12,8 +12,8 @@
 
 using std::wstring;
 
-#define DEF_FUNC(name)        SymbolTable::ScrDefConst( L#name, new Wrap##name )
-#define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst( L#name, static_cast<unsigned long>(name) )
+#define DEF_FUNC(name)        SymbolTable::ScrDefConst(L#name, new Wrap##name)
+#define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst(L#name, static_cast<unsigned long>(name))
 
 class Script;
 
@@ -29,18 +29,18 @@ class Script
 public:
 // functions for reading from input script
 
-    double         ScrReadFloat  ( void ); 
-    long           ScrReadLong   ( void ); 
-    unsigned long  ScrReadUlong  ( void ); 
-    int            ScrReadInt    ( void ); 
-    unsigned int   ScrReadUint   ( void ); 
-    short          ScrReadShort  ( void ); 
-    unsigned short ScrReadUshort ( void );
-    wchar_t        ScrReadChar   ( void ); 
-    unsigned char  ScrReadUchar  ( void ); 
-	wstring const  ScrReadString ( void );
-	void           ScrReadString ( wstring const );
-	void           ScrReadSpecial( wchar_t const ); 
+    double         ScrReadFloat  (void); 
+    long           ScrReadLong   (void); 
+    unsigned long  ScrReadUlong  (void); 
+    int            ScrReadInt    (void); 
+    unsigned int   ScrReadUint   (void); 
+    short          ScrReadShort  (void); 
+    unsigned short ScrReadUshort (void);
+    wchar_t        ScrReadChar   (void); 
+    unsigned char  ScrReadUchar  (void); 
+	wstring const  ScrReadString (void);
+	void           ScrReadString (wstring const);
+	void           ScrReadSpecial(wchar_t const); 
 
 // Helper routines for error handlers 
 	wstring const GetActPath         () const { return m_pScanAct->GetActPath      (); }
@@ -59,20 +59,20 @@ public:
 	uintmax_t const GetFileSize   () const { return m_fileSize; };
 	long      const GetPercentRead() const;
 
-	static bool ProcessScript( wstring const & );
-    static void ScrSetWrapHook( Script_Functor const * const );
+	static bool ProcessScript(wstring const &);
+    static void ScrSetWrapHook(Script_Functor const * const);
 	static void Clear();
 
 // script processing
 
-    bool ScrProcess( wstring const & );
+    bool ScrProcess(wstring const &);
 
 	static void StopProcessing() { m_bStop = true; }
 
 private:
 
-    bool          readSign( void );
-    unsigned long numeric( wstring const &, unsigned long, bool * );
+    bool          readSign(void);
+    unsigned long numeric(wstring const &, unsigned long, bool *);
 
 	Scanner * m_pScanAct { nullptr };   // Pointer to active stack element
 	

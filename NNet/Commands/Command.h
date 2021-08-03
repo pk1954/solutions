@@ -22,7 +22,7 @@ public:
     
     virtual void Undo(NNetModelWriterInterface & nmwi)
     { 
-        Do( nmwi ); 
+        Do(nmwi); 
     };
 
     virtual bool const CombineCommands(Command const & src) 

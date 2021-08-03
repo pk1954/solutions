@@ -38,16 +38,16 @@ public:
 		errorInFile
 	};
 
-	virtual void Reaction( ImportTermination::Result const, wstring const ) = 0;
+	virtual void Reaction(ImportTermination::Result const, wstring const) = 0;
 };
 
 class NNetModelImporter
 {
 public:
 
-	void Initialize( Script * const );
+	void Initialize(Script * const);
 
-	bool Import( wstring const, unique_ptr<ImportTermination> );
+	bool Import(wstring const, unique_ptr<ImportTermination>);
 
 	unique_ptr<NNetModel> GetImportedModel();
 
@@ -65,7 +65,7 @@ private:
 	void import();
 	void fixOutputNeurons();
 
-	friend static unsigned int __stdcall importModelThreadProc( void * );
+	friend static unsigned int __stdcall importModelThreadProc(void *);
 
 	friend WrapBase;
 };

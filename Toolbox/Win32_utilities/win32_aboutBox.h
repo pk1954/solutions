@@ -4,4 +4,4 @@
 
 #pragma once
 
-extern void ShowAboutBox( HWND );
+extern void ShowAboutBox(HWND);

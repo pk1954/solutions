@@ -10,9 +10,9 @@
 class SelectAllBeepersCommand : public SelectionCommand
 {
 public:
-	virtual void Do( NNetModelWriterInterface & nmwi )
+	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
-		SelectionCommand::Do( nmwi );
+		SelectionCommand::Do(nmwi);
 		nmwi.SelectBeepers();
 	}
 };

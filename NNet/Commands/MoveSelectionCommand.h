@@ -12,14 +12,14 @@
 class MoveSelectionCommand : public Command
 {
 public:
-	MoveSelectionCommand( MicroMeterPnt const & delta )
-       : m_delta( delta )
+	MoveSelectionCommand(MicroMeterPnt const & delta)
+       : m_delta(delta)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 		nmwi.GetUPNobs().Apply2AllSelected<Nob>
-		( 
+		(
 			[&](Nob & nob) 
 			{ 
 				if (nob.IsBaseKnot())
@@ -28,10 +28,10 @@ public:
 		);
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi ) 
+	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{ 
 		nmwi.GetUPNobs().Apply2AllSelected<Nob>
-		( 
+		(
 			[&](Nob & nob) 
 			{ 
 				if (nob.IsBaseKnot())

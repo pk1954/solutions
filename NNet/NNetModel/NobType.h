@@ -35,14 +35,14 @@ public:
 	static size_t const NR_OF_NOB_TYPES { static_cast<size_t>(Value::nobTypeLast) + 1 };
 
 	NobType()
-		:	m_value( Value::undefined )
+		:	m_value(Value::undefined)
 	{}
 
-	NobType( Value val )
-		:	m_value( val )
+	NobType(Value val)
+		:	m_value(val)
 	{}
 
-	bool const operator==( NobType const & rhs ) const
+	bool const operator==(NobType const & rhs) const
 	{
 		return m_value == rhs.m_value;
 	}
@@ -54,17 +54,17 @@ public:
 
 	void Check() const
 	{
-		AssertLimits<int>( (int)m_value, (int)Value::nobTypeFirst, (int)Value::undefined );
+		AssertLimits<int>((int)m_value, (int)Value::nobTypeFirst, (int)Value::undefined);
 	}
 
-	static void Apply2All( function<void(Value const &)> const & func )
+	static void Apply2All(function<void(Value const &)> const & func)
 	{
-		for ( int i = 0; i <= static_cast<int>(NobType::Value::nobTypeLast); ++i )
-			func( static_cast<Value>( i ) );
+		for (int i = 0; i <= static_cast<int>(NobType::Value::nobTypeLast); ++i)
+			func(static_cast<Value>(i));
 	}
 
-	static wstring        const GetName( NobType::Value const );
-	static NobType::Value const GetTypeFromName( wstring const & );
+	static wstring        const GetName(NobType::Value const);
+	static NobType::Value const GetTypeFromName(wstring const &);
 
 	bool const IsPipeType           () const { return m_value == Value::pipe;            }
 	bool const IsDefinedType        () const { return m_value != Value::undefined;       }
@@ -104,7 +104,7 @@ public:
 
 	Value const GetValue() const { return m_value; }
 
-	friend wostream & operator<< ( wostream &, NobType const & nobType );
+	friend wostream & operator<< (wostream &, NobType const & nobType);
 
 private:
 	Value m_value;

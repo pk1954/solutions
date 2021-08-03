@@ -18,17 +18,17 @@ int APIENTRY wWinMain
 	_In_     int       nCmdShow
 )
 {
-    UNREFERENCED_PARAMETER( hPrevInstance );
-    UNREFERENCED_PARAMETER( lpCmdLine );
-    UNREFERENCED_PARAMETER( nCmdShow );
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+    UNREFERENCED_PARAMETER(nCmdShow);
 
 	NNetAppWindow App;
 
-	// SetThreadAffinityMask( GetCurrentThread(), 0x0001 );
+	// SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
 	INITCOMMONCONTROLSEX icex // load common control's DLL 
 	{
-		sizeof( INITCOMMONCONTROLSEX ),
+		sizeof(INITCOMMONCONTROLSEX),
 		ICC_STANDARD_CLASSES | 
 		ICC_BAR_CLASSES | 
 		ICC_TAB_CLASSES | 
@@ -38,10 +38,10 @@ int APIENTRY wWinMain
 	Stopwatch   stopwatch;
 	MessagePump pump;
 	stopwatch.Start();
-	pump.SetAccelTable( hInstance, IDC_NNET_SIMU_MAIN );
-	App.Start( pump );
-	pump.RegisterWindow( App.GetWindowHandle(), false );
-	stopwatch.Stop( L"*** App.Start" );
+	pump.SetAccelTable(hInstance, IDC_NNET_SIMU_MAIN);
+	App.Start(pump);
+	pump.RegisterWindow(App.GetWindowHandle(), false);
+	stopwatch.Stop(L"*** App.Start");
 	wcout << endl;
 	int iRetVal = pump.Run();
 

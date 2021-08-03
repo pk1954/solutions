@@ -14,12 +14,12 @@ using namespace std::chrono;
 class Param : public Observable
 {
 public:
-	bool operator==( Param const & rhs ) const;
+	bool operator==(Param const & rhs) const;
 
 	fMicroSecs const GetTimeResolution() const { return m_usResolution; }
 
-	float const GetParameterValue( ParamType::Value const ) const;
-	void        SetParameterValue( ParamType::Value const, float const );
+	float const GetParameterValue(ParamType::Value const) const;
+	void        SetParameterValue(ParamType::Value const, float const);
 
 private:
 	mV          m_threshold    { 20._mV            };
@@ -39,7 +39,7 @@ inline static float         const NEURON_INTERIOR { 0.8f };                // Ne
 inline static float         const PIPE_INTERIOR   { 0.6f };                // Pipes have 60% interior, 40 % border 
 inline static MicroMeter    const NEURON_RADIUS   { 50.0_MicroMeter };    
 inline static MicroMeter    const PIPE_WIDTH      { 20.0_MicroMeter };
-inline static MicroMeterPnt const STD_OFFSET      { MicroMeterPnt( 0._MicroMeter, NEURON_RADIUS * 2.0 ) };
+inline static MicroMeterPnt const STD_OFFSET      { MicroMeterPnt(0._MicroMeter, NEURON_RADIUS * 2.0) };
 
 static float const CalcNrOfSteps(MicroMeter const um)
 {
@@ -47,7 +47,7 @@ static float const CalcNrOfSteps(MicroMeter const um)
 	return um / umPerStep;
 }
 
-static float const CalcNrOfSteps( Radian const rad )
+static float const CalcNrOfSteps(Radian const rad)
 {
 	static Radian const radPerStep { Degrees2Radian(6.0_Degrees) };
 	return rad / radPerStep;

@@ -71,7 +71,7 @@ public:
 	virtual void                Select      (bool const);
 
 	mV const GetNextOutput() const { return m_potential[ m_potIndex ]; }
-	mV const GetVoltage( MicroMeterPnt const & ) const;
+	mV const GetVoltage(MicroMeterPnt const &) const;
 
 	void DislocateEndPoint  (MicroMeter d =  PIPE_WIDTH) { dislocate(GetEndKnotPtr  (), d); }
 	void DislocateStartPoint(MicroMeter d = -PIPE_WIDTH) { dislocate(GetStartKnotPtr(), d); }
@@ -80,7 +80,7 @@ public:
 	inline static wchar_t const OPEN_BRACKET  { L'(' };
 	inline static wchar_t const CLOSE_BRACKET { L')' };
 
-	friend wostream & operator<< ( wostream &, Pipe const & );
+	friend wostream & operator<< (wostream &, Pipe const &);
 
 private:
 	
@@ -91,10 +91,10 @@ private:
 	size_t           m_potIndex   { 0 };
 	tPotentialVector m_potential  { };
 
-	void init( const Pipe & );
+	void init(const Pipe &);
 
-	void dislocate( BaseKnot * const, MicroMeter const );
+	void dislocate(BaseKnot * const, MicroMeter const);
 };
 
-Pipe const * Cast2Pipe( Nob const * );
-Pipe       * Cast2Pipe( Nob       * );
+Pipe const * Cast2Pipe(Nob const *);
+Pipe       * Cast2Pipe(Nob       *);

@@ -20,10 +20,10 @@ using std::move;
 void UPNobList::Clear()
 { 
 	m_list.clear(); 
-	m_nobsOfType.fill( 0 );
+	m_nobsOfType.fill(0);
 }
 
-void UPNobList::SetErrorHandler( NobErrorHandler * const p ) 
+void UPNobList::SetErrorHandler(NobErrorHandler * const p) 
 { 
 	m_pNobErrorHandler = p; 
 }
@@ -57,7 +57,7 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify! Better
 		return Copy<Pipe>(nob);
 
 	default:
-		assert( false );
+		assert(false);
 		return nullptr;
 	}
 }
@@ -70,11 +70,11 @@ bool UPNobList::operator==(UPNobList const & other) const
 	{
 		Nob const * pNob      {       m_list[i].get() };
 		Nob const * pNobOther { other.m_list[i].get() };
-		if ( (pNob == nullptr) != (pNobOther == nullptr) )
+		if ((pNob == nullptr) != (pNobOther == nullptr))
 		{
 			return false;
 		}
-		if ( (pNob != nullptr) && (pNobOther != nullptr) )
+		if ((pNob != nullptr) && (pNobOther != nullptr))
 		{
 			if (*pNob != *pNobOther)
 				return false;
@@ -85,8 +85,8 @@ bool UPNobList::operator==(UPNobList const & other) const
 
 UPNob UPNobList::ExtractNob(NobId const id)	
 {
-	assert( IsDefined(id) );
-	assert( IsValidNobId(id) );
+	assert(IsDefined(id));
+	assert(IsValidNobId(id));
 
 	UPNob upNob { move(m_list[id.GetValue()]) };
 	if (upNob)
@@ -94,7 +94,7 @@ UPNob UPNobList::ExtractNob(NobId const id)
 	return move(upNob);
 }
 
-void UPNobList::SetNob2Slot( UPNob upNob )
+void UPNobList::SetNob2Slot(UPNob upNob)
 {                 
 	NobId const id { upNob->GetId() };
 	SetNob2Slot(id, move(upNob));
@@ -102,10 +102,10 @@ void UPNobList::SetNob2Slot( UPNob upNob )
 
 void UPNobList::SetNob2Slot(NobId const id, UPNob upNob) 
 {
-	assert( IsDefined(id) );
-	assert( IsValidNobId(id) );
-	assert( IsEmptySlot(id) );
-	assert( upNob );
+	assert(IsDefined(id));
+	assert(IsValidNobId(id));
+	assert(IsEmptySlot(id));
+	assert(upNob);
 
 	incCounter(upNob);
 	m_list[id.GetValue()] = move(upNob);
@@ -115,8 +115,8 @@ Nob * const UPNobList::ReplaceNob(UPNob upT)
 {
 	NobId const id { upT->GetId() };
 
-	assert( IsDefined(id) );
-	assert( IsValidNobId( id ) );
+	assert(IsDefined(id));
+	assert(IsValidNobId(id));
 
 	incCounter(upT);
 	decCounter(id);
@@ -132,7 +132,7 @@ void UPNobList::LinkNob
 	Nob2NobFunc const & dstFromSrc
 ) const
 {
-	if ( Nob * pNobDst { dstFromSrc(& nobSrc) } )
+	if (Nob * pNobDst { dstFromSrc(& nobSrc) })
 		pNobDst->Link(nobSrc, dstFromSrc);
 }
 
@@ -148,11 +148,11 @@ NobId const UPNobList::Push(UPNob upNob)
 	return idNewSlot;
 }
 
-void UPNobList::copy( const UPNobList & rhs )
+void UPNobList::copy(const UPNobList & rhs)
 {
 	rhs.CheckNobList();
 
-	m_list.resize( Cast2Long(rhs.m_list.size()) );
+	m_list.resize(Cast2Long(rhs.m_list.size()));
 
 	for (auto const & pNobSrc : rhs.m_list)
 	{
@@ -201,7 +201,7 @@ void UPNobList::Dump() const
 	Apply2All([&](Nob const & nob) { nob.Dump(); });
 }
 
-MicroMeterRect const UPNobList::CalcEnclosingRect( SelMode const mode ) const
+MicroMeterRect const UPNobList::CalcEnclosingRect(SelMode const mode) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for (auto const & pNob : m_list)
@@ -211,7 +211,7 @@ MicroMeterRect const UPNobList::CalcEnclosingRect( SelMode const mode ) const
 }
 
 NobId const UPNobList::FindNobAt
-( 
+(
 	MicroMeterPnt const   pnt, 
 	NobCrit       const & crit 
 ) const
@@ -227,7 +227,7 @@ NobId const UPNobList::FindNobAt
 				return pNob->GetId();
 		}
 	};
-	return NobId( NO_NOB );
+	return NobId(NO_NOB);
 }
 
 unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
@@ -248,35 +248,35 @@ bool const UPNobList::AnyNobsSelected() const
 
 void UPNobList::CallErrorHandler(NobId const id) const
 {
-	if ( m_pNobErrorHandler )
+	if (m_pNobErrorHandler)
 	{
-		(* m_pNobErrorHandler)( id );
+		(* m_pNobErrorHandler)(id);
 	}
 }
 
-void UPNobList::Apply2All( NobFuncC const & func ) const
+void UPNobList::Apply2All(NobFuncC const & func) const
 {
-	for ( auto const & it : m_list )
+	for (auto const & it : m_list)
 	{ 
-		if ( it.get() )
-			func( * it.get() ); 
+		if (it.get())
+			func(* it.get()); 
 	}
 }                        
 
-void UPNobList::Apply2All( NobFunc const & func )
+void UPNobList::Apply2All(NobFunc const & func)
 {
-	for ( auto & it : m_list )
+	for (auto & it : m_list)
 	{ 
-		if ( it.get() )
-			func( * it.get() ); 
+		if (it.get())
+			func(* it.get()); 
 	}
 }                        
 
-bool const UPNobList::Apply2AllB( NobCrit const & func ) const
+bool const UPNobList::Apply2AllB(NobCrit const & func) const
 {
-	for ( auto & it : m_list )
+	for (auto & it : m_list)
 	{ 
-		if ( it.get() && func( * it.get() ) )
+		if (it.get() && func(* it.get()))
 			return true;
 	}
 	return false;
@@ -284,23 +284,23 @@ bool const UPNobList::Apply2AllB( NobCrit const & func ) const
 
 void UPNobList::Apply2AllSelected(NobType const type, NobFunc const & func)
 {
-	Apply2All( { [&](Nob & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } } );
+	Apply2All({ [&](Nob & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } });
 }
 
 void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) const
 {
-	Apply2All( { [&](Nob const & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } } );
+	Apply2All({ [&](Nob const & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } });
 }
 
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
-	Apply2All( [&](Nob & s) { s.Select(bOn); } ); 
+	Apply2All([&](Nob & s) { s.Select(bOn); }); 
 }
 
 unsigned int const UPNobList::CountInSelection(NobType const nobType) const
 {
 	unsigned int uiNr { 0 };
-	Apply2AllSelected( nobType, [&](auto & s) { ++uiNr; } );
+	Apply2AllSelected(nobType, [&](auto & s) { ++uiNr; });
 	return uiNr;
 }
 
@@ -311,7 +311,7 @@ unsigned int const UPNobList::GetCounter(NobType const t) const
 
 unsigned int const UPNobList::GetCounter() const 
 { 
-	return accumulate( m_nobsOfType.begin(), m_nobsOfType.end(), 0 ); 
+	return accumulate(m_nobsOfType.begin(), m_nobsOfType.end(), 0); 
 }
 
 unsigned int const & UPNobList::counter(NobType const t) const 
@@ -326,8 +326,8 @@ unsigned int & UPNobList::counter(NobType const t)
 
 void UPNobList::countNobs()
 {
-	m_nobsOfType.fill( 0 );
-	for ( auto & it : m_list )
+	m_nobsOfType.fill(0);
+	for (auto & it : m_list)
 	{ 
 		NobType    const type  { it->GetNobType() };
 		unsigned int const index { static_cast<unsigned int>(type.GetValue()) };

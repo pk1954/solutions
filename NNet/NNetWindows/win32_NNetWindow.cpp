@@ -22,9 +22,9 @@
 
 using std::function;
 
-void NNetWindow::InitClass( ActionTimer * const pActionTimer )
+void NNetWindow::InitClass(ActionTimer * const pActionTimer)
 {
-	ModelWindow::InitClass( pActionTimer );
+	ModelWindow::InitClass(pActionTimer);
 }
 
 NNetWindow::NNetWindow() :
@@ -32,7 +32,7 @@ NNetWindow::NNetWindow() :
 { }
 
 void NNetWindow::Start
-( 
+(
 	HWND                     const   hwndApp, 
 	DWORD                    const   dwStyle,
 	bool                     const   bShowRefreshRateDialog,
@@ -43,7 +43,7 @@ void NNetWindow::Start
 )
 {
 	HWND hwnd = StartBaseWindow
-	( 
+	(
 		hwndApp,
 		CS_OWNDC | CS_DBLCLKS,
 		L"ClassNNetWindow",
@@ -51,16 +51,16 @@ void NNetWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_graphics.Initialize( hwnd );
-	m_context.Start( & m_graphics );
+	m_graphics.Initialize(hwnd);
+	m_context.Start(& m_graphics);
 	m_pNMRI           = & modelReaderInterface;
 	m_pMonitorWindow  = & monitorWindow;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
 	
 	//m_upBeaconAnimation = make_unique<Animation<float>>(nullptr, ANIMATION_RECURRING);
-	//m_upBeaconAnimation->Start( 0.0f, 1.0f );
-	ShowRefreshRateDlg( bShowRefreshRateDialog );
+	//m_upBeaconAnimation->Start(0.0f, 1.0f);
+	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 
 void NNetWindow::Stop()
@@ -77,11 +77,11 @@ NNetWindow::~NNetWindow()
 
 MicroMeterRect const NNetWindow::GetViewRect() const 
 { 
-	return GetCoordC().Transform2MicroMeterRect( GetClPixelRect() ); 
+	return GetCoordC().Transform2MicroMeterRect(GetClPixelRect()); 
 };
 
 void NNetWindow::DrawInteriorInRect
-( 
+(
 	PixelRect const & rect, 
 	NobCrit const & crit 
 ) const
@@ -93,43 +93,43 @@ void NNetWindow::DrawInteriorInRect
 		[&](Nob const & s) 
 		{ 
 			if (crit(s)) 
-				s.DrawInterior( m_context, tHighlight::normal ); 
+				s.DrawInterior(m_context, tHighlight::normal); 
 		} 
 	);
 }
 
-void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
+void NNetWindow::DrawExteriorInRect(PixelRect const & rect) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
 	m_pNMRI->GetUPNobs().Apply2AllInRect<Nob>
-	( 
+	(
 		umRect,
 		[&](Nob const & s) 
 		{ 
-			s.DrawExterior( m_context, tHighlight::normal ); 
+			s.DrawExterior(m_context, tHighlight::normal); 
 		} 
 	);
 }
 
-void NNetWindow::DrawArrowsInRect( PixelRect const & rect, MicroMeter const umSize ) const
+void NNetWindow::DrawArrowsInRect(PixelRect const & rect, MicroMeter const umSize) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
 	m_pNMRI->GetUPNobs().Apply2AllInRect<Pipe>
-	( 
+	(
 		umRect,	
 		[&](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
 	);
 }
 
-void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
+void NNetWindow::DrawNeuronTextInRect(PixelRect const & rect) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	if ( PixelSize() <= 2.5_MicroMeter )
+	if (PixelSize() <= 2.5_MicroMeter)
 	{
 		m_pNMRI->GetUPNobs().Apply2AllInRect<Neuron>
-		( 
+		(
 			umRect,
-			[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
+			[&](Neuron const & n) { n.DrawNeuronText(m_context); } 
 		);
 	}
 }
@@ -138,57 +138,57 @@ void NNetWindow::DrawSensors() const
 {
 	m_pNMRI->GetMonitorData().Apply2AllSignals
 	(
-		[&](Signal const & signal) { signal.Draw( m_context ); }
+		[&](Signal const & signal) { signal.Draw(m_context); }
 	);
 }
 
 void NNetWindow::OnPaint()
 {
-	if ( IsWindowVisible() )
+	if (IsWindowVisible())
 	{
 		PAINTSTRUCT ps;
-		HDC const hDC = BeginPaint( &ps );
-		if ( m_context.StartFrame( hDC ) )
+		HDC const hDC = BeginPaint(&ps);
+		if (m_context.StartFrame(hDC))
 		{
 			doPaint();
 			m_context.EndFrame();
 		}
-		EndPaint( &ps );
+		EndPaint(&ps);
 	}
 }
 
 void NNetWindow::DrawBeacon()
 {
 	//MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
-	//if ( umCircleBeacon.IsNotNull() )
+	//if (umCircleBeacon.IsNotNull())
 	//{
-	//	MicroMeter const umRadiusLimit  { GetCoordC().Transform2MicroMeter( m_fPixRadiusLimit ) };
-	//	MicroMeter const umMaxRadius    { max( umCircleBeacon.GetRadius(), umRadiusLimit ) };
+	//	MicroMeter const umRadiusLimit  { GetCoordC().Transform2MicroMeter(m_fPixRadiusLimit) };
+	//	MicroMeter const umMaxRadius    { max(umCircleBeacon.GetRadius(), umRadiusLimit) };
 	//	MicroMeter const umSpan         { umMaxRadius - NEURON_RADIUS };
 	//	float            fRelBeaconSize = m_upBeaconAnimation->GetActual();
-	//	umCircleBeacon.SetRadius( NEURON_RADIUS + (umSpan * fRelBeaconSize)  );
+	//	umCircleBeacon.SetRadius(NEURON_RADIUS + (umSpan * fRelBeaconSize) );
 	//	m_context.FillCircle
-	//	( 
+	//	(
 	//		umCircleBeacon, 
-	//		NNetColors::SetAlpha( NNetColors::COL_BEACON, 0.8f * (1.0f - fRelBeaconSize) )
+	//		NNetColors::SetAlpha(NNetColors::COL_BEACON, 0.8f * (1.0f - fRelBeaconSize))
 	//	);
 	//}
 }
 
-bool NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+bool NNetWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
-	m_context.Resize( width, height );
-	Notify( false );
+	m_context.Resize(width, height);
+	Notify(false);
 	return true;    // job done
 }
 
-bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+bool NNetWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	MicroMeterPnt const umPoint { GetCoordC().Transform2MicroMeterPntPos( pixPoint ) };
-	if ( m_pController->HandleCommand( LOWORD( wParam ), lParam, umPoint ) )
+	MicroMeterPnt const umPoint { GetCoordC().Transform2MicroMeterPntPos(pixPoint) };
+	if (m_pController->HandleCommand(LOWORD(wParam), lParam, umPoint))
 		return true;
 
-	return ModelWindow::OnCommand( wParam, lParam, pixPoint );
+	return ModelWindow::OnCommand(wParam, lParam, pixPoint);
 }

@@ -10,13 +10,13 @@
 class Win32_TextBuffer : public TextBuffer
 {
 public:
-    Win32_TextBuffer( HDC const, PixelRectSize const & );
+    Win32_TextBuffer(HDC const, PixelRectSize const &);
 
 	virtual ~Win32_TextBuffer() {}
 
 	virtual void StartPainting();
 
-	virtual void PrintBuffer( std::wostringstream *, PIXEL const, PIXEL const );
+	virtual void PrintBuffer(std::wostringstream *, PIXEL const, PIXEL const);
 
 	virtual void AlignLeft();
 	virtual void AlignRight();

@@ -16,7 +16,7 @@ public:
 	ScriptHook() {}
 
 	void Initialize
-	( 
+	(
 		StatusBar * const pStatusBar, 
 		int         const iPart, 
 		Script    * const pScript
@@ -25,26 +25,26 @@ public:
 		m_pStatusBar     = pStatusBar;
 		m_iStatusBarPart = iPart;
 		m_pScript        = pScript;
-		m_pRefreshRate   = new refreshRate( this );
-		m_pRefreshRate->SetRefreshRate( 300ms );
-		m_pStatusBar->AddCustomControl( 80 );  // nr of characters
+		m_pRefreshRate   = new refreshRate(this);
+		m_pRefreshRate->SetRefreshRate(300ms);
+		m_pStatusBar->AddCustomControl(80);  // nr of characters
 	}
 
 	virtual void operator() (Script & script) const
 	{
-		m_pRefreshRate->Notify( false );
+		m_pRefreshRate->Notify(false);
 	}
 
 	void DisplayScriptProgress()
 	{
-		if ( ( m_pStatusBar != nullptr ) && ( m_pScript->IsActive() ) )
+		if ((m_pStatusBar != nullptr) && (m_pScript->IsActive()))
 		{
 			wstring const & wstrPath     { m_pScript->GetActPath () };
 			long    const   lPercentRead { m_pScript->GetPercentRead() };
 			m_pStatusBar->DisplayInPart
-			( 
+			(
 				m_iStatusBarPart, 
-				L"Reading " + wstrPath + L" ... " + to_wstring( lPercentRead ) + L"%"  
+				L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"  
 			);
 		}
 		else
@@ -57,8 +57,8 @@ private:
 	class refreshRate : public BaseRefreshRate
 	{
 	public:
-		refreshRate( ScriptHook * const pScriptHook )
-			: m_pScriptHook( pScriptHook )
+		refreshRate(ScriptHook * const pScriptHook)
+			: m_pScriptHook(pScriptHook)
 		{ }
 
 		virtual void Trigger()

@@ -31,7 +31,7 @@ public:
     inline static wchar_t COMMENT_SYMBOL { L'#' };
 
     explicit Scanner();
-    void OpenInputFile( wstring const & );
+    void OpenInputFile(wstring const &);
     void CloseInputFile();
     ~Scanner();
 
@@ -39,7 +39,7 @@ public:
 
    // Get next token from input file 
 
-    tTOKEN NextToken( bool );
+    tTOKEN NextToken(bool);
    
    // Get actual token, type according to NextToken return value 
 
@@ -57,13 +57,13 @@ public:
     wstring const & GetExpectedToken() const { return m_wstrExpected; }
     wstring const & GetActPath      () const { return m_wstrPath;     };
 
-    void SetExpectedToken( wstring const & wstrExp ) { m_wstrExpected = wstrExp; }
+    void SetExpectedToken(wstring const & wstrExp) { m_wstrExpected = wstrExp; }
 
-	wchar_t ReadOneOf ( wstring const & );
+	wchar_t ReadOneOf (wstring const &);
 
 private:
     wchar_t SkipSpace    ();
-    tTOKEN  ScanName     ( wchar_t );
+    tTOKEN  ScanName     (wchar_t);
     tTOKEN  ScanUnsigned ();
     tTOKEN  ScanString   ();
     tTOKEN  ScanCharacter();

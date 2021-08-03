@@ -19,7 +19,7 @@ class MonitorWindow : public BaseWindow
 public:
 
 	void Start
-	( 
+	(
 		HWND                     const, 
 		Sound                  * const,
 		NNetController         * const,
@@ -37,35 +37,35 @@ public:
 
 private:
 
-	SignalNr const findSignal      ( TrackNr const, PixelPoint const & ) const;
+	SignalNr const findSignal      (TrackNr const, PixelPoint const &) const;
 	fPixel   const calcTrackHeight () const;
-	TrackNr  const findTrack       ( PIXEL const ) const;
-	TrackNr  const findPos4NewTrack( PIXEL const ) const;
+	TrackNr  const findTrack       (PIXEL const) const;
+	TrackNr  const findPos4NewTrack(PIXEL const) const;
 
-	fMicroSecs const fPixel2fMicroSecs( fPixel     const   ) const;
-	fPixel     const fMicroSecs2fPixel( fMicroSecs const   ) const;
-	fPixel     const yValue2fPixel    ( float      const   ) const;
-	fPixel     const getSignalOffset  ( SignalId   const & ) const;
+	fMicroSecs const fPixel2fMicroSecs(fPixel     const  ) const;
+	fPixel     const fMicroSecs2fPixel(fMicroSecs const  ) const;
+	fPixel     const yValue2fPixel    (float      const  ) const;
+	fPixel     const getSignalOffset  (SignalId   const &) const;
 
-	fPixel     const getYvalue  ( Signal const &, fMicroSecs const ) const;
-	fMicroSecs const findNextMax( Signal const &, fPixel     const ) const;
+	fPixel     const getYvalue  (Signal const &, fMicroSecs const) const;
+	fMicroSecs const findNextMax(Signal const &, fPixel     const) const;
 
-	SignalId const selectSignal( SignalId const & );
+	SignalId const selectSignal(SignalId const &);
 
 	void doPaint() const;
-	void paintSignal( SignalId const & ) const;
+	void paintSignal(SignalId const &) const;
 	void drawDiamond() const;
 
 	virtual void OnPaint();
-	virtual bool OnSize              ( WPARAM const, LPARAM const );
-	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
-	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
-	virtual bool OnMouseLeave        ( WPARAM const, LPARAM const );
-	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
-	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
-	virtual bool OnShow              ( WPARAM const, LPARAM const );
-	virtual bool OnCommand           ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
-	virtual void OnChar              ( WPARAM const, LPARAM const ) { };
+	virtual bool OnSize              (WPARAM const, LPARAM const);
+	virtual void OnMouseWheel        (WPARAM const, LPARAM const);
+	virtual void OnMouseMove         (WPARAM const, LPARAM const);
+	virtual bool OnMouseLeave        (WPARAM const, LPARAM const);
+	virtual void OnLButtonUp         (WPARAM const, LPARAM const);
+	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const);
+	virtual bool OnShow              (WPARAM const, LPARAM const);
+	virtual bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	virtual void OnChar              (WPARAM const, LPARAM const) { };
 
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };

@@ -9,20 +9,20 @@
 static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 
 static INT_PTR CALLBACK About 
-( 
+(
     HWND   const hDlg,
     UINT   const message,
     WPARAM const wParam, 
     LPARAM const lParam 
 )
 {
-    UNREFERENCED_PARAMETER( lParam );
+    UNREFERENCED_PARAMETER(lParam);
 
     switch (message)
     {
 
 	case WM_INITDIALOG:
-		SetDlgItemText( hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP );
+		SetDlgItemText(hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP);
 		return INT_PTR(true);
 
 	case WM_COMMAND:
@@ -40,8 +40,8 @@ static INT_PTR CALLBACK About
     return INT_PTR(false);
 }
 
-void ShowAboutBox( HWND const hwndParent ) 
+void ShowAboutBox(HWND const hwndParent) 
 {
-    HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    (void)DialogBox( hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About );
+    HINSTANCE const hInstance = GetModuleHandle(nullptr);
+    (void)DialogBox(hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About);
 }

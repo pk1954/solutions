@@ -5,20 +5,23 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
 #include "Nob.h"
 #include "NamedType.h"
 #include "NNetParameters.h"
 #include "NobIdList.h"
+#include "SelectionCommand.h"
 #include "Command.h"
 
 class NNetModelWriterInterface;
 class BaseKnot;
 
 using std::vector;
+using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
 
-class CopySelectionCommand : public Command
+class CopySelectionCommand : public SelectionCommand
 {
 public:
 	CopySelectionCommand(NNetModelWriterInterface &);
@@ -37,6 +40,5 @@ private:
 	size_t        m_sizeOfSelection { 0 };
 	SSIndexVector m_indexList       {};     // indices into m_copies
 	vector<UPNob> m_copies          {};
-	NobIdList     m_selectedNobIds  {};
 };
 

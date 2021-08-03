@@ -15,9 +15,9 @@ public:
 		: m_result(stack)
 	{}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		SelectionCommand::Do( nmwi );
+		SelectionCommand::Do(nmwi);
 		if (!m_result.empty())
 		{
 			nmwi.GetUPNobs().DeselectAllNobs();

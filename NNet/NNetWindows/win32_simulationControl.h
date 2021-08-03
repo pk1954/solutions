@@ -13,11 +13,11 @@ class SimulationControl: public ObserverInterface
 {
 public:
 
-	void Initialize( StatusBar * const, ComputeThread * const );
+	void Initialize(StatusBar * const, ComputeThread * const);
 
 	virtual ~SimulationControl() {};
 
-	virtual void Notify( bool const );
+	virtual void Notify(bool const);
 
 private:
 	ComputeThread * m_pComputeThread;

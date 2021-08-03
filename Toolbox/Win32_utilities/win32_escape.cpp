@@ -13,9 +13,9 @@
 bool Util::EscapeKeyPressed()
 {
 	MSG msg;
-	if ( PeekMessage( &msg, NULL, WM_KEYDOWN, WM_KEYDOWN, PM_REMOVE | PM_QS_INPUT) != 0 )
+	if (PeekMessage(&msg, NULL, WM_KEYDOWN, WM_KEYDOWN, PM_REMOVE | PM_QS_INPUT) != 0)
 	{
-		if ( msg.wParam == VK_ESCAPE )
+		if (msg.wParam == VK_ESCAPE)
 			return true;
 	}
 	return false;

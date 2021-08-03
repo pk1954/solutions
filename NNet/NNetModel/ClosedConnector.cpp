@@ -55,7 +55,7 @@ MicroMeterPnt const ClosedConnector::GetPos() const
 
 void ClosedConnector::DrawExterior(DrawContext const & context, tHighlight const highLightType) const
 {
-    if ( m_list.size() > 1 )
+    if (m_list.size() > 1)
     {
         context.DrawLine
         (
@@ -63,7 +63,7 @@ void ClosedConnector::DrawExterior(DrawContext const & context, tHighlight const
             m_list.back ()->GetPos(), 
             m_list.front()->GetExtension() * 2.0f, 
             GetExteriorColor(highLightType)
-        );
+       );
     }
 
     for (auto & it: m_list)
@@ -158,23 +158,23 @@ void ClosedConnector::ClearParentPointers()
 
 ClosedConnector const * Cast2ClosedConnector(Nob const * pNob)
 {
-    assert( pNob->IsClosedConnector() );
+    assert(pNob->IsClosedConnector());
     return static_cast<ClosedConnector const *>(pNob);
 }
 
 ClosedConnector * Cast2ClosedConnector(Nob * pNob)
 {
-    assert( pNob->IsClosedConnector() );
+    assert(pNob->IsClosedConnector());
     return static_cast<ClosedConnector *>(pNob);
 }
 
 wostream & operator<< (wostream & out, ClosedConnector const & v)
 {
     out << IoNeuronList::OPEN_BRACKET << v.m_list.size() << IoNeuronList::NR_SEPARATOR;
-    for ( auto & it: v.m_list )
+    for (auto & it: v.m_list)
     {
         out << it->GetId();
-        if ( &it == &v.m_list.back() )
+        if (&it == &v.m_list.back())
             break;
         out << IoNeuronList::ID_SEPARATOR;
     }

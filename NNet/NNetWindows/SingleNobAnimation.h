@@ -23,7 +23,7 @@ public:
         MainWindow             & win,
         Nob                    & nob,
         MicroMeterPosDir const & umPosDirTarget
-    )
+   )
       : AnimationCmd(win),
         m_nobAnimated(nob),
         m_umPosDirStart(nob.GetPosDir()),

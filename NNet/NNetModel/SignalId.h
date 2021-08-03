@@ -18,13 +18,13 @@ class SignalId
 {
 public:
 	SignalId()
-	  : trackNr ( TrackNr ::NULL_VAL() ),
-		signalNr( SignalNr::NULL_VAL() )
+	  : trackNr (TrackNr ::NULL_VAL()),
+		signalNr(SignalNr::NULL_VAL())
 	{ }
 
-	SignalId( TrackNr const tNr, SignalNr const sNr )
-	  : trackNr( tNr),
-		signalNr( sNr)
+	SignalId(TrackNr const tNr, SignalNr const sNr)
+	  : trackNr(tNr),
+		signalNr(sNr)
 	{ }
 
 	void Set2Null() 
@@ -49,7 +49,7 @@ public:
 	TrackNr  const GetTrackNr () const { return trackNr; }
 	SignalNr const GetSignalNr() const { return signalNr; }
 
-	friend wostream & operator<< ( wostream & out, SignalId const & id )
+	friend wostream & operator<< (wostream & out, SignalId const & id)
 	{
 		out << L" (" << id.trackNr << L"|" << id.signalNr << L")";
 		return out;

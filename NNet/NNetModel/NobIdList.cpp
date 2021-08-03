@@ -32,7 +32,7 @@ wostream & operator<< (wostream & out, NobIdList const & v)
     for (auto & it : v.m_list)
     {
         out << it;
-        if ( &it == &v.m_list.back() )
+        if (&it == &v.m_list.back())
             break;
         out << NobIdList::SEPARATOR;
     }

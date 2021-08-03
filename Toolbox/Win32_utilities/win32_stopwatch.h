@@ -14,16 +14,16 @@ class Stopwatch
 {
 public:
 	void Start();
-	void Stop( wstring const wstr );
+	void Stop(wstring const wstr);
 
 void Clock
-( 
+(
 	wstring const wstr, function<void()> code
 )
 {
 	Start();
 	code();
-	Stop( wstr );
+	Stop(wstr);
 };
 
 private:

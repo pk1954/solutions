@@ -23,33 +23,33 @@ unsigned int const MicroMeterPntVector::Size() const
 
 MicroMeterPosDir const MicroMeterPntVector::GetPosDir(size_t const i) const
 {
-    assert( i < Size() );
+    assert(i < Size());
     return m_list[i];
 }
 
 void MicroMeterPntVector::SetPosDir(unsigned int const ui, MicroMeterPosDir const & posDir)
 {
-    assert( ui < Size() );
+    assert(ui < Size());
     m_list[ui] = posDir;
 }
 
 void MicroMeterPntVector::SetDir(Radian const radian)
 {
-    Apply2All( [&](MicroMeterPosDir & umPosDir) { umPosDir.SetDir(radian); } );
+    Apply2All([&](MicroMeterPosDir & umPosDir) { umPosDir.SetDir(radian); });
 }
 
 void MicroMeterPntVector::SetDir(MicroMeterPntVector const rhs)
 {
     assert(rhs.Size() == Size());
-    for ( int i = 0; i < m_list.size(); ++i )
-        m_list[i].SetDir( rhs.GetPosDir(i).GetDir() );
+    for (int i = 0; i < m_list.size(); ++i)
+        m_list[i].SetDir(rhs.GetPosDir(i).GetDir());
 }
 
 void MicroMeterPntVector::SetPos(MicroMeterPntVector const rhs)
 {
     assert(rhs.Size() == Size());
-    for ( int i = 0; i < m_list.size(); ++i )
-        m_list[i].SetPos( rhs.GetPosDir(i).GetPos() );
+    for (int i = 0; i < m_list.size(); ++i)
+        m_list[i].SetPos(rhs.GetPosDir(i).GetPos());
 }
 
 void MicroMeterPntVector::Clear()
@@ -57,25 +57,25 @@ void MicroMeterPntVector::Clear()
     m_list.clear();
 }
 
-void MicroMeterPntVector::Resize( size_t const size )
+void MicroMeterPntVector::Resize(size_t const size)
 {
-    m_list.resize( size );
+    m_list.resize(size);
 }
 
-void MicroMeterPntVector::Add( MicroMeterPnt const & pos, Radian const dir )
+void MicroMeterPntVector::Add(MicroMeterPnt const & pos, Radian const dir)
 {
-    m_list.push_back( MicroMeterPosDir(pos, dir) );
+    m_list.push_back(MicroMeterPosDir(pos, dir));
 }
 
-void MicroMeterPntVector::Add( MicroMeterPosDir const & posDir )
+void MicroMeterPntVector::Add(MicroMeterPosDir const & posDir)
 {
-    m_list.push_back( posDir );
+    m_list.push_back(posDir);
 }
 
-bool MicroMeterPntVector::operator==( MicroMeterPntVector const& rhs ) const
+bool MicroMeterPntVector::operator==(MicroMeterPntVector const& rhs) const
 {
-    assert( m_list.size() == rhs.m_list.size() );
-    for ( int i = 0; i < m_list.size(); ++i )
+    assert(m_list.size() == rhs.m_list.size());
+    for (int i = 0; i < m_list.size(); ++i)
         if (m_list[i] != rhs.m_list[i])
             return false;
     return true; 
@@ -83,23 +83,23 @@ bool MicroMeterPntVector::operator==( MicroMeterPntVector const& rhs ) const
 
 MicroMeterPntVector& MicroMeterPntVector::operator+= (MicroMeterPntVector const & rhs) 
 { 
-    assert( m_list.size() == rhs.m_list.size() );
-    for ( int i = 0; i < m_list.size(); ++i )
+    assert(m_list.size() == rhs.m_list.size());
+    for (int i = 0; i < m_list.size(); ++i)
         m_list[i] += rhs.m_list[i];
     return * this; 
 }
 
 MicroMeterPntVector& MicroMeterPntVector::operator-= (MicroMeterPntVector const & rhs) 
 { 
-    assert( m_list.size() == rhs.m_list.size() );
-    for ( int i = 0; i < m_list.size(); ++i )
+    assert(m_list.size() == rhs.m_list.size());
+    for (int i = 0; i < m_list.size(); ++i)
         m_list[i] -= rhs.m_list[i];
     return * this; 
 }
 
 MicroMeterPntVector& MicroMeterPntVector::operator*= (float const factor) 
 { 
-    for ( int i = 0; i < m_list.size(); ++i )
+    for (int i = 0; i < m_list.size(); ++i)
         m_list[i] *= factor;
     return * this; 
 }
@@ -128,10 +128,10 @@ MicroMeterPntVector const operator* (MicroMeterPntVector const a, float const f)
 wostream & operator<< (wostream & out, MicroMeterPntVector const & v)
 {
     out << MicroMeterPntVector::OPEN_BRACKET << v.m_list.size() << L":";
-    for ( auto & it: v.m_list )
+    for (auto & it: v.m_list)
     {
         out << it;
-        if ( &it == &v.m_list.back() )
+        if (&it == &v.m_list.back())
             break;
         out << MicroMeterPntVector::SEPARATOR;
     }
@@ -141,7 +141,7 @@ wostream & operator<< (wostream & out, MicroMeterPntVector const & v)
 
 Radian const MicroMeterPntVector::FindMaxRadian() const 
 {
-    if ( m_list.empty() )
+    if (m_list.empty())
         return Radian::NULL_VAL();
     MicroMeterPosDir const maxElement = * std::max_element
     (
@@ -150,13 +150,13 @@ Radian const MicroMeterPntVector::FindMaxRadian() const
         { 
             return a.GetDir() < b.GetDir(); 
         }
-    );
+   );
     return maxElement.GetDir();
 }
 
 MicroMeter const MicroMeterPntVector::FindMaxPos() const
 {
-    if ( m_list.empty() )
+    if (m_list.empty())
         return MicroMeter::NULL_VAL();
     MicroMeterPosDir const maxElement = * std::max_element
     (
@@ -165,7 +165,7 @@ MicroMeter const MicroMeterPntVector::FindMaxPos() const
         { 
             return Hypot(a.GetPos()) < Hypot(b.GetPos()); 
         }
-    );
+   );
     return Hypot(maxElement.GetPos());
 }
 
@@ -174,7 +174,7 @@ MicroMeterLine const MicroMeterPntVector::GetLine()
     return MicroMeterLine(m_list.front().GetPos(), m_list.back().GetPos());
 }
 
-void MicroMeterPntVector::Align( MicroMeterPnt const& umPntStart, MicroMeterPnt const& umPntOffset )
+void MicroMeterPntVector::Align(MicroMeterPnt const& umPntStart, MicroMeterPnt const& umPntOffset)
 {	
     MicroMeterPnt umPnt { umPntStart };
     Apply2All
@@ -184,10 +184,10 @@ void MicroMeterPntVector::Align( MicroMeterPnt const& umPntStart, MicroMeterPnt 
             posDir.SetPos(umPnt);
             umPnt += umPntOffset;
         }	
-    );
+   );
 }
 
-void MicroMeterPntVector::Align( MicroMeterLine const & umLine, MicroMeter umDist )
+void MicroMeterPntVector::Align(MicroMeterLine const & umLine, MicroMeter umDist)
 {
     MicroMeterPnt const umVector           { umLine.GetVector() };
     MicroMeter    const umLineLengthTarget { umDist * gapCount() };
@@ -197,12 +197,12 @@ void MicroMeterPntVector::Align( MicroMeterLine const & umLine, MicroMeter umDis
     Align(umPntTargetStart, umPntSingleVector);
 }
 
-void MicroMeterPntVector::Align( MicroMeterLine const umLine )
+void MicroMeterPntVector::Align(MicroMeterLine const umLine)
 {
     Align(umLine, umLine.Length() / gapCount());
 }
 
-void MicroMeterPntVector::Pack( MicroMeter umDist )
+void MicroMeterPntVector::Pack(MicroMeter umDist)
 {
     Align(GetLine(), umDist);
 }

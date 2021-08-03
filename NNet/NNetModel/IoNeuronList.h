@@ -23,9 +23,9 @@ inline MicroMeterLine const CalcMaxDistLine(vector<T *> const & list) // find tw
 	for (auto it1 : list)
 		for (auto it2 : list)    //TODO: optimize
 		{
-			auto const line { MicroMeterLine( it1->GetPos(), it2->GetPos() ) };
+			auto const line { MicroMeterLine(it1->GetPos(), it2->GetPos()) };
 			auto const dist { line.Length() };
-			if ( dist > maxDist )
+			if (dist > maxDist)
 			{
 				maxDist = dist;
 				lineMax = line;
@@ -42,22 +42,22 @@ MicroMeterPnt const CalcOrthoVector(vector<T *> const & list, MicroMeterLine con
 	for (auto pBaseKnot : list)
 	{ 
 		pBaseKnot->Apply2AllInPipes
-		( 
+		(
 			[&](Pipe & pipe) 
 			{ 
 				MicroMeterPnt pnt { pipe.GetStartPoint() };
-				if ( PointToLine(line, pnt) < 0.0_MicroMeter )
+				if (PointToLine(line, pnt) < 0.0_MicroMeter)
 					++uiLeftConnections;
 				else
 					++uiRightConnections;
 			}
 		);
 		pBaseKnot->Apply2AllOutPipes
-		( 
+		(
 			[&](Pipe & pipe) 
 			{ 
 				MicroMeterPnt pnt { pipe.GetEndPoint() };
-				if ( PointToLine(line, pnt) < 0.0_MicroMeter )
+				if (PointToLine(line, pnt) < 0.0_MicroMeter)
 					++uiRightConnections;
 				else
 					++uiLeftConnections;

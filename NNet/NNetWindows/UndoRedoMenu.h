@@ -12,12 +12,12 @@ class UndoRedoMenu : public ObserverInterface
 public:
 	virtual ~UndoRedoMenu() {}
 
-	inline void Start( NNetAppMenu * const pAppMenu )
+	inline void Start(NNetAppMenu * const pAppMenu)
 	{
 		m_pAppMenu = pAppMenu;
 	}
 
-	virtual void Notify( bool const bImmediatelly )
+	virtual void Notify(bool const bImmediatelly)
 	{
 		m_pAppMenu->AdjustUndoRedo();
 	}

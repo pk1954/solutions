@@ -14,7 +14,7 @@ class SelectNobCommand : public SelectionCommand
 {
 public:
 	SelectNobCommand
-	( 
+	(
 		NobId   const id, 
 		tBoolOp const op 
 	)
@@ -24,9 +24,9 @@ public:
 		assert(IsDefined(m_idNob));
 	}
 
-	virtual void Do( NNetModelWriterInterface & nmwi )
+	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
-		SelectionCommand::Do( nmwi );
+		SelectionCommand::Do(nmwi);
 		Nob * pNob { nmwi.GetNobPtr<Nob *>(m_idNob) };
 		pNob->Select(ApplyOp2(pNob->IsSelected(), m_op));
 	}

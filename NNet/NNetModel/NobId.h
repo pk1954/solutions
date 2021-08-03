@@ -8,7 +8,7 @@
 
 using NobId = NamedType<size_t, struct NobIdParam>;
 
-inline NobId const NO_NOB( -1 );
+inline NobId const NO_NOB(-1);
 
 static bool IsDefined(NobId const id) 
 { 

@@ -13,18 +13,18 @@ class DeleteTrackCommand: public Command
 {
 public:
 
-    DeleteTrackCommand( TrackNr const trackNr )
+    DeleteTrackCommand(TrackNr const trackNr)
         : m_trackNr(trackNr)
     {}
 
-    virtual void Do( NNetModelWriterInterface & nmwi ) 
+    virtual void Do(NNetModelWriterInterface & nmwi) 
     {
         MonitorData & monitorData { nmwi.GetMonitorData() };
-        assert( monitorData.IsEmptyTrack(m_trackNr) );
+        assert(monitorData.IsEmptyTrack(m_trackNr));
         monitorData.DeleteTrack(m_trackNr);
     };
 
-    virtual void Undo( NNetModelWriterInterface & nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     { 
         nmwi.GetMonitorData().InsertTrack(m_trackNr);
     };

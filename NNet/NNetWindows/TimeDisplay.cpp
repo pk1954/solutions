@@ -38,8 +38,8 @@ public:
 	{
 		fMicroSecs const time = m_pNMRI->GetSimulationTime();
 		wstring wstrTime;
-		Format2wstring( time, wstrTime );
-		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, wstrTime );
+		Format2wstring(time, wstrTime);
+		m_pStatusBar->DisplayInPart(m_iPartInStatusBar, wstrTime);
 	}
 
 private:
@@ -58,13 +58,13 @@ void TimeDisplay::Start
 )
 {
 	m_pRefreshRate = new RefreshRate
-	( 
+	(
 		pStatusBar,
 		pModelInterface,
 		iPartInStatusBar
 	);
-	m_pRefreshRate->SetRefreshRate( 300ms );
-	pStatusBar->AddCustomControl( 8 );        // nr of characters 
+	m_pRefreshRate->SetRefreshRate(300ms);
+	pStatusBar->AddCustomControl(8);        // nr of characters 
 }
 
 void TimeDisplay::Stop()
@@ -73,8 +73,8 @@ void TimeDisplay::Stop()
 	m_pRefreshRate = nullptr;
 }
 
-void TimeDisplay::Notify( bool const bImmediately )
+void TimeDisplay::Notify(bool const bImmediately)
 {
-	if ( m_pRefreshRate )
-		m_pRefreshRate->Notify( bImmediately );
+	if (m_pRefreshRate)
+		m_pRefreshRate->Notify(bImmediately);
 }

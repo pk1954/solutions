@@ -41,9 +41,9 @@ public:
 	virtual void       Recalc();   // Recalculate precalculated values
 
 	fHertz const GetPulseFrequency() const { return m_pulseFrequency; }
-	fHertz const SetPulseFrequency( fHertz const );
+	fHertz const SetPulseFrequency(fHertz const);
 
-	virtual bool const Includes( MicroMeterPnt const & ) const;
+	virtual bool const Includes(MicroMeterPnt const &) const;
 
 private:
 
@@ -51,7 +51,7 @@ private:
 	MicroMeterPnt const getCenter() const;
 
 	void drawSocket
-	( 
+	(
 		DrawContext  const &, 
 		float        const, 
 		float        const, 

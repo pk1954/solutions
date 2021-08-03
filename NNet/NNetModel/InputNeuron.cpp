@@ -20,7 +20,7 @@ using std::setprecision;
 using std::fixed;
 
 InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
-	: IoNeuron( upCenter, NobType::Value::inputNeuron )
+	: IoNeuron(upCenter, NobType::Value::inputNeuron)
 { 
 	SetPulseFrequency(STD_PULSE_FREQ);
 }
@@ -37,10 +37,10 @@ InputNeuron::~InputNeuron() { }
 void InputNeuron::Check() const
 {
 	Neuron::Check();
-	assert( !HasIncoming() );
+	assert(!HasIncoming());
 }
 
-bool InputNeuron::operator==( Nob const & rhs ) const
+bool InputNeuron::operator==(Nob const & rhs) const
 {
 	InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
 	return (this->Neuron::operator== (inputNeuronRhs))           &&
@@ -51,14 +51,14 @@ bool InputNeuron::operator==( Nob const & rhs ) const
 
 void InputNeuron::Recalc()
 {
-	m_mvFactor = mV( m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) / m_pulseDuration.GetValue() );
+	m_mvFactor = mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) / m_pulseDuration.GetValue());
 }
 
 fHertz const InputNeuron::SetPulseFrequency(fHertz const freq)
 {
 	fHertz const fOldValue { m_pulseFrequency };
 	m_pulseFrequency = freq;
-	m_pulseDuration  = PulseDuration( m_pulseFrequency );
+	m_pulseDuration  = PulseDuration(m_pulseFrequency);
 	Recalc();
 	return fOldValue;
 }
@@ -67,7 +67,7 @@ bool const InputNeuron::CompStep()
 {
 	m_timeSinceLastPulse += m_pParameters->GetTimeResolution();
 	bool bTrigger { m_timeSinceLastPulse >= m_pulseDuration };
-	if ( bTrigger )
+	if (bTrigger)
 		m_timeSinceLastPulse = 0._MicroSecs;   
 	return m_bStopOnTrigger && bTrigger;
 }
@@ -98,7 +98,7 @@ bool const InputNeuron::Includes(MicroMeterPnt const & point) const
 }
 
 void InputNeuron::drawSocket
-( 
+(
 	DrawContext  const & context, 
 	float        const   M,       // overall width/height                        
 	float        const   VEM,     // vertical offset of end point middle section 
@@ -116,22 +116,22 @@ void InputNeuron::drawSocket
 	MicroMeterPnt  const umEndCenter   { umCenter - umDirVector * VEM };
 	MicroMeterLine const umLine        { umStart, umEndLR };
 
-	context.DrawLine( umStart, umEndCenter,   umSize,    colF );
-	context.DrawLine( umLine + umOrthoVector, umWidthLR, colF );
-	context.DrawLine( umLine - umOrthoVector, umWidthLR, colF );
+	context.DrawLine(umStart, umEndCenter,   umSize,    colF);
+	context.DrawLine(umLine + umOrthoVector, umWidthLR, colF);
+	context.DrawLine(umLine - umOrthoVector, umWidthLR, colF);
 }
 
-void InputNeuron::DrawNeuronText( DrawContext const & context ) const
+void InputNeuron::DrawNeuronText(DrawContext const & context) const
 { 
 	wostringstream m_wBuffer;
 
 	m_wBuffer.clear();
-	m_wBuffer.str( std::wstring() );
+	m_wBuffer.str(std::wstring());
 	m_wBuffer << fixed << setprecision(2) 
 		      << GetPulseFrequency().GetValue() 
 		      << L" " 
 		      << ParamType::GetUnit(ParamType::Value::pulseRate);
 
-	DisplayText( context, GetRect4Text(), m_wBuffer.str() );
+	DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }
 

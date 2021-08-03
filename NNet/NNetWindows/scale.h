@@ -16,17 +16,17 @@ struct IDWriteTextFormat;
 class Scale
 {
 public:
-	void Initialize( D2D_driver * const, wstring const & );
+	void Initialize(D2D_driver * const, wstring const &);
 
-	void SetClientRectSize( PIXEL const, PIXEL const );
-	void SetHorzPixelSize( float const );
+	void SetClientRectSize(PIXEL const, PIXEL const);
+	void SetHorzPixelSize(float const);
 
 	void DisplayStaticScale() const;
 
 private:
 	using LogUnits = float;
 
-	inline static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
+	inline static COLORREF const SCALE_COLOR { RGB(0, 0, 0) };  // CLR_BLACK
 
 	fPixel m_fPixClientWidth { 0.0_fPixel };
 	fPixel m_fPixClientHeight{ 0.0_fPixel };
@@ -46,8 +46,8 @@ private:
 
 	// private functions
 
-	void displayTicks      ( fPixelPoint const, fPixelPoint const, float const, int const ) const;
-	void displayScaleNumber( fPixelPoint const, float const, int const ) const;
-	void displayScaleText  ( fPixelPoint const, float const ) const;
+	void displayTicks      (fPixelPoint const, fPixelPoint const, float const, int const) const;
+	void displayScaleNumber(fPixelPoint const, float const, int const) const;
+	void displayScaleText  (fPixelPoint const, float const) const;
 	void calcScaleParams();
 };

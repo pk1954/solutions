@@ -8,21 +8,21 @@
 
 using std::wostringstream;
 
-extern void UpperCase( std::wstring & str )
+extern void UpperCase(std::wstring & str)
 {
-	for ( auto & c: str ) 
+	for (auto & c: str) 
 		c = toupper(c);
 }
 
 bool ApplyAutoCriterion
-( 
+(
 	tOnOffAuto const onOffAuto,
 	function<bool()> crit
 )
 {
-	return ( onOffAuto == tOnOffAuto::on )
+	return (onOffAuto == tOnOffAuto::on)
 		? true
-		: ( onOffAuto == tOnOffAuto::off )
+		: (onOffAuto == tOnOffAuto::off)
 		? false
 		: crit();
 }

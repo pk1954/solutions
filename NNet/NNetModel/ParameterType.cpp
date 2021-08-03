@@ -9,19 +9,19 @@
 
 using std::unordered_map;
 
-void ParamType::Apply2GlobalParameters( function<void(ParamType::Value const &)> const & func )
+void ParamType::Apply2GlobalParameters(function<void(ParamType::Value const &)> const & func)
 {
-	for ( int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLastGlobal); ++i )
-		func( static_cast<ParamType::Value>( i ) );
+	for (int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLastGlobal); ++i)
+		func(static_cast<ParamType::Value>(i));
 }
 
-void ParamType::Apply2AllParameters( function<void(ParamType::Value const &)> const & func )
+void ParamType::Apply2AllParameters(function<void(ParamType::Value const &)> const & func)
 {
-	for ( int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLast); ++i )
-		func( static_cast<ParamType::Value>( i ) );
+	for (int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLast); ++i)
+		func(static_cast<ParamType::Value>(i));
 }
 
-wchar_t const * const ParamType::GetName( ParamType::Value const p )
+wchar_t const * const ParamType::GetName(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
@@ -35,10 +35,10 @@ wchar_t const * const ParamType::GetName( ParamType::Value const p )
 	    { ParamType::Value::timeResolution, L"TimeResolution"   }
 	};				  
 	
-	return mapParam.at( p );
+	return mapParam.at(p);
 }
 
-wchar_t const * const ParamType::GetUnit( ParamType::Value const p )
+wchar_t const * const ParamType::GetUnit(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
@@ -52,11 +52,11 @@ wchar_t const * const ParamType::GetUnit( ParamType::Value const p )
 	    { ParamType::Value::timeResolution, L"µs"    }
 	};				  
 
-	return mapParam.at( p );
+	return mapParam.at(p);
 }
 
 wostream & operator <<(wostream & out, ParamType::Value const p)
 {
-	out << L" " << ParamType::GetName( p );
+	out << L" " << ParamType::GetName(p);
 	return out;
 }

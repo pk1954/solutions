@@ -37,5 +37,5 @@ bool IsPointInRect2  // check if point is in given rectangle
 	T const corner2 { start - ext };
 	T const corner3 { end   + ext };
 
-	return IsPointInRect< T >( point, corner1, corner2, corner3 );
+	return IsPointInRect< T >(point, corner1, corner2, corner3);
 }

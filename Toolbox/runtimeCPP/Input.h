@@ -18,7 +18,7 @@ class InputBuffer
 public:
 
     explicit InputBuffer();
-    void Open( wstring const & );
+    void Open(wstring const &);
     void Close();
     ~InputBuffer();
 

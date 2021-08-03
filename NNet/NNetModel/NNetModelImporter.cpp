@@ -28,8 +28,8 @@ using std::make_unique;
 class WrapBase : public Script_Functor
 {
 public:
-    WrapBase( NNetModelImporter & modelImporter ) :
-        m_modelImporter( modelImporter )
+    WrapBase(NNetModelImporter & modelImporter) :
+        m_modelImporter(modelImporter)
     { };
 
 protected:
@@ -47,7 +47,7 @@ public:
 
     virtual void operator() (Script & script) const
     {
-        script.ScrReadString( L"version" );
+        script.ScrReadString(L"version");
         double dVersion = script.ScrReadFloat();
     }
 };
@@ -60,7 +60,7 @@ public:
     virtual void operator() (Script & script) const
     {
         wstring const wstrDescription { script.ScrReadString() };
-        GetWriterInterface().AddDescriptionLine( wstrDescription );
+        GetWriterInterface().AddDescriptionLine(wstrDescription);
     }
 };
 
@@ -83,7 +83,7 @@ private:
         Nob         * pNob         { nullptr };
         UPNob         upNob        {};   
         { 
-            switch ( nobType.GetValue() )
+            switch (nobType.GetValue())
             {
             case NobType::Value::closedConnector:
                  upNob = createClosedConnector(script);
@@ -105,13 +105,13 @@ private:
                 break;
             }
         };
-        if ( upNob )
+        if (upNob)
         {
-            upNob->SetId( idFromScript );
+            upNob->SetId(idFromScript);
             pNob = upNob.get();
-            GetUPNobs().SetNob2Slot( idFromScript, move(upNob) );
+            GetUPNobs().SetNob2Slot(idFromScript, move(upNob));
         }
-        if ( nobType.IsIoConnectorType() )
+        if (nobType.IsIoConnectorType())
         {
             static_cast<IoConnector *>(pNob)->SetParentPointers();
         }
@@ -120,52 +120,52 @@ private:
 
     UPNob createPipe(Script & script) const
     {
-        script.ScrReadSpecial( Pipe::OPEN_BRACKET );
+        script.ScrReadSpecial(Pipe::OPEN_BRACKET);
         NobId const idStart { ScrReadNobId(script) };
-        for ( int i = 0; i < Pipe::SEPARATOR.length(); i++ )
-            script.ScrReadSpecial( Pipe::SEPARATOR[i] );        
+        for (int i = 0; i < Pipe::SEPARATOR.length(); i++)
+            script.ScrReadSpecial(Pipe::SEPARATOR[i]);        
         NobId const idEnd { ScrReadNobId(script) };
-        script.ScrReadSpecial( Pipe::CLOSE_BRACKET );
+        script.ScrReadSpecial(Pipe::CLOSE_BRACKET);
         NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idStart);
         NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idEnd);
-        if ( idStart == idEnd )
+        if (idStart == idEnd)
         {
             wcout << "+++ Pipe has identical start and end point" << endl;
             wcout << "+++ " << L": " << idStart << L" -> " << idEnd << endl;
             wcout << "+++ Pipe ignored" << endl;
-            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Error reading Pipe" )  );
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Error reading Pipe") );
             return nullptr;
         }
         else
         { 
-            BaseKnot * const pKnotStart { GetWriterInterface().GetNobPtr<BaseKnot *>( idStart ) };
-            BaseKnot * const pKnotEnd   { GetWriterInterface().GetNobPtr<BaseKnot *>( idEnd   ) };
-            unique_ptr<Pipe> upPipe { make_unique<Pipe>( pKnotStart, pKnotEnd ) };
-            pKnotStart->AddOutgoing( upPipe.get() );
-            pKnotEnd  ->AddIncoming( upPipe.get() );
+            BaseKnot * const pKnotStart { GetWriterInterface().GetNobPtr<BaseKnot *>(idStart) };
+            BaseKnot * const pKnotEnd   { GetWriterInterface().GetNobPtr<BaseKnot *>(idEnd  ) };
+            unique_ptr<Pipe> upPipe { make_unique<Pipe>(pKnotStart, pKnotEnd) };
+            pKnotStart->AddOutgoing(upPipe.get());
+            pKnotEnd  ->AddIncoming(upPipe.get());
             return move(upPipe);
         }
     }
 
     UPNob createBaseKnot(Script & script, NobType const nobType) const 
     {
-        MicroMeterPnt const umPosition(ScrReadMicroMeterPnt( script ) );
-        switch ( nobType.GetValue() )
+        MicroMeterPnt const umPosition(ScrReadMicroMeterPnt(script));
+        switch (nobType.GetValue())
         {
         case NobType::Value::inputNeuron:
-            return make_unique<InputNeuron>( umPosition );
+            return make_unique<InputNeuron>(umPosition);
 
         case NobType::Value::outputNeuron:
-            return make_unique<OutputNeuron>( umPosition );
+            return make_unique<OutputNeuron>(umPosition);
 
         case NobType::Value::neuron:
-            return make_unique<Neuron>( umPosition );
+            return make_unique<Neuron>(umPosition);
 
         case NobType::Value::knot:
-            return make_unique<Knot>( umPosition );
+            return make_unique<Knot>(umPosition);
 
         default:
-            assert( false );
+            assert(false);
             return nullptr;
         }
     }
@@ -173,21 +173,21 @@ private:
     UPNob createClosedConnector(Script & script) const 
     {
         unique_ptr<ClosedConnector> upClosedConnector { make_unique<ClosedConnector>() };
-        script.ScrReadSpecial( IoNeuronList::OPEN_BRACKET );
+        script.ScrReadSpecial(IoNeuronList::OPEN_BRACKET);
         int const iNrOfElements { script.ScrReadInt() };
-        script.ScrReadSpecial( IoNeuronList::NR_SEPARATOR );
+        script.ScrReadSpecial(IoNeuronList::NR_SEPARATOR);
         for (int iElem { 0 };;)
         {
             NobId    const id      { ScrReadNobId(script) };
             Neuron * const pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
-            if ( ! pNeuron )
-                throw ScriptErrorHandler::ScriptException( 999, wstring( L"NobId not found" ) );
+            if (! pNeuron)
+                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found"));
             upClosedConnector->Push(pNeuron);
             if (++iElem == iNrOfElements)
                 break;
             script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
         }
-        script.ScrReadSpecial( IoNeuronList::CLOSE_BRACKET );
+        script.ScrReadSpecial(IoNeuronList::CLOSE_BRACKET);
         return move(upClosedConnector);
     }
 
@@ -201,8 +201,8 @@ private:
         {
             NobId      const id        { ScrReadNobId(script) };
             IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
-            if ( ! pIoNeuron )
-                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found" ));
+            if (! pIoNeuron)
+                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found"));
             upIoNeuronList->Add(pIoNeuron);
             if (++iElem == iNrOfElements)
                 break;
@@ -226,10 +226,10 @@ public:
 
     virtual void operator() (Script & script) const
     {
-        ParamType::Value const param( static_cast<ParamType::Value>(script.ScrReadUint()) );
-        script.ScrReadSpecial( L'=' );
-        float const fValue { Cast2Float( script.ScrReadFloat() ) };
-        GetWriterInterface().SetParam( param, fValue );
+        ParamType::Value const param(static_cast<ParamType::Value>(script.ScrReadUint()));
+        script.ScrReadSpecial(L'=');
+        float const fValue { Cast2Float(script.ScrReadFloat()) };
+        GetWriterInterface().SetParam(param, fValue);
     }
 };
 
@@ -240,9 +240,9 @@ public:
 
     virtual void operator() (Script & script) const
     {
-        script.ScrReadSpecial( L'=' );
+        script.ScrReadSpecial(L'=');
         long lNrOfNobs { script.ScrReadLong() };
-        GetUPNobs().IncreaseSize( lNrOfNobs );
+        GetUPNobs().IncreaseSize(lNrOfNobs);
     }
 };
 
@@ -253,13 +253,13 @@ public:
 
     virtual void operator() (Script & script) const
     {
-        script.ScrReadString( L"InputNeuron" );
-        NobId            const id   ( script.ScrReadLong() );
-        ParamType::Value const param( static_cast< ParamType::Value >( script.ScrReadUint() ) );
-        assert( param == ParamType::Value::pulseRate );
-        script.ScrReadSpecial( L'=' );
-        float const fValue { Cast2Float( script.ScrReadFloat() ) };
-        GetWriterInterface().GetNobPtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
+        script.ScrReadString(L"InputNeuron");
+        NobId            const id   (script.ScrReadLong());
+        ParamType::Value const param(static_cast< ParamType::Value >(script.ScrReadUint()));
+        assert(param == ParamType::Value::pulseRate);
+        script.ScrReadSpecial(L'=');
+        float const fValue { Cast2Float(script.ScrReadFloat()) };
+        GetWriterInterface().GetNobPtr<InputNeuron *>(id)->SetPulseFrequency(fHertz(fValue));
     }
 };
 
@@ -271,12 +271,12 @@ public:
     virtual void operator() (Script & script) const  
     {
         NobId const id      { ScrReadNobId(script) };
-        Neuron    * pNeuron { GetWriterInterface().GetNobPtr<Neuron *>( id ) };
+        Neuron    * pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
         Hertz const freq    { script.ScrReadUlong() };
-        script.ScrReadString( L"Hertz" );
+        script.ScrReadString(L"Hertz");
         MilliSecs const msec { script.ScrReadUlong() };
-        script.ScrReadString( L"msec" );
-        pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } );
+        script.ScrReadString(L"msec");
+        pNeuron->SetTriggerSound(SoundDescr{ true, freq, msec });
     }
 };
 
@@ -288,8 +288,8 @@ public:
     virtual void operator() (Script & script) const 
     {
         unsigned int const uiNrOfTracks { script.ScrReadUint() };
-        for ( unsigned int ui = 0; ui < uiNrOfTracks; ++ui )
-            GetMonitorData().InsertTrack( TrackNr(0) );
+        for (unsigned int ui = 0; ui < uiNrOfTracks; ++ui)
+            GetMonitorData().InsertTrack(TrackNr(0));
     }
 };
 
@@ -302,69 +302,69 @@ public:
     {
         MicroMeterCircle umCircle;
         TrackNr          trackNr { ScrReadTrackNr(script) };
-        script.ScrReadString( L"source" );
+        script.ScrReadString(L"source");
         unsigned long    ulSigSrc { script.ScrReadUlong() };
-        if ( ulSigSrc == NNetModelStorage::SIGSRC_CIRCLE )
+        if (ulSigSrc == NNetModelStorage::SIGSRC_CIRCLE)
         {
-            umCircle = ScrReadMicroMeterCircle( script );
+            umCircle = ScrReadMicroMeterCircle(script);
         }
-        else if ( ulSigSrc == NNetModelStorage::SIGSRC_NOB_NR )
+        else if (ulSigSrc == NNetModelStorage::SIGSRC_NOB_NR)
         {
             script.ScrReadLong();  ///// legacy
         }
         else
         {
-            assert( false );  // unexpected signal source 
+            assert(false);  // unexpected signal source 
         }
-        GetMonitorData().AddSignal( trackNr, umCircle );
+        GetMonitorData().AddSignal(trackNr, umCircle);
     }
 };
 
-void NNetModelImporter::Initialize( Script * const pScript )
+void NNetModelImporter::Initialize(Script * const pScript)
 {
     m_pScript = pScript;
-    SymbolTable::ScrDefConst( L"nob",             NNetModelStorage::SIGSRC_NOB_NR );  // legacy
-    SymbolTable::ScrDefConst( L"shape",           NNetModelStorage::SIGSRC_NOB_NR );  // legacy
-    SymbolTable::ScrDefConst( L"circle",          NNetModelStorage::SIGSRC_CIRCLE   );
-    SymbolTable::ScrDefConst( L"Description",     new WrapDescription    ( * this ) );
-    SymbolTable::ScrDefConst( L"Protocol",        new WrapProtocol       ( * this ) );
-    SymbolTable::ScrDefConst( L"GlobalParameter", new WrapGlobalParameter( * this ) );
-    SymbolTable::ScrDefConst( L"NrOfNobs",        new WrapNrOfNobs       ( * this ) );
-    SymbolTable::ScrDefConst( L"NrOfShapes",      new WrapNrOfNobs       ( * this ) ); // legacy
-    SymbolTable::ScrDefConst( L"CreateNob",       new WrapCreateNob      ( * this ) );
-    SymbolTable::ScrDefConst( L"CreateShape",     new WrapCreateNob      ( * this ) ); // legacy
-    SymbolTable::ScrDefConst( L"NobParameter",    new WrapNobParameter   ( * this ) );
-    SymbolTable::ScrDefConst( L"ShapeParameter",  new WrapNobParameter   ( * this ) ); // legacy
-    SymbolTable::ScrDefConst( L"TriggerSound",    new WrapTriggerSound   ( * this ) );
-    SymbolTable::ScrDefConst( L"NrOfTracks",      new WrapNrOfTracks     ( * this ) );
-    SymbolTable::ScrDefConst( L"Signal",          new WrapSignal         ( * this ) );
+    SymbolTable::ScrDefConst(L"nob",             NNetModelStorage::SIGSRC_NOB_NR);  // legacy
+    SymbolTable::ScrDefConst(L"shape",           NNetModelStorage::SIGSRC_NOB_NR);  // legacy
+    SymbolTable::ScrDefConst(L"circle",          NNetModelStorage::SIGSRC_CIRCLE  );
+    SymbolTable::ScrDefConst(L"Description",     new WrapDescription    (* this));
+    SymbolTable::ScrDefConst(L"Protocol",        new WrapProtocol       (* this));
+    SymbolTable::ScrDefConst(L"GlobalParameter", new WrapGlobalParameter(* this));
+    SymbolTable::ScrDefConst(L"NrOfNobs",        new WrapNrOfNobs       (* this));
+    SymbolTable::ScrDefConst(L"NrOfShapes",      new WrapNrOfNobs       (* this)); // legacy
+    SymbolTable::ScrDefConst(L"CreateNob",       new WrapCreateNob      (* this));
+    SymbolTable::ScrDefConst(L"CreateShape",     new WrapCreateNob      (* this)); // legacy
+    SymbolTable::ScrDefConst(L"NobParameter",    new WrapNobParameter   (* this));
+    SymbolTable::ScrDefConst(L"ShapeParameter",  new WrapNobParameter   (* this)); // legacy
+    SymbolTable::ScrDefConst(L"TriggerSound",    new WrapTriggerSound   (* this));
+    SymbolTable::ScrDefConst(L"NrOfTracks",      new WrapNrOfTracks     (* this));
+    SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this));
 
     NobType::Apply2All
-    ( 
-        [&]( NobType const & type ) 
+    (
+        [&](NobType const & type) 
         {
             SymbolTable::ScrDefConst
-            ( 
-                NobType::GetName( type.GetValue() ), 
+            (
+                NobType::GetName(type.GetValue()), 
                 static_cast<unsigned long>(type.GetValue()) 
-            );
+           );
         }
-    );
+   );
 
     ///// Legacy /////
-    SymbolTable::ScrDefConst( L"pipeline", static_cast<unsigned long>(NobType::Value::pipe) );  // support older protocol version
+    SymbolTable::ScrDefConst(L"pipeline", static_cast<unsigned long>(NobType::Value::pipe));  // support older protocol version
                                                                                                   ///// end Legacy /////
     ParamType::Apply2AllParameters
-    ( 
-        [&]( ParamType::Value const & param ) 
+    (
+        [&](ParamType::Value const & param) 
         {
             SymbolTable::ScrDefConst
-            ( 
-                ParamType::GetName( param ), 
-                static_cast<unsigned long>( param ) 
-            );
+            (
+                ParamType::GetName(param), 
+                static_cast<unsigned long>(param) 
+           );
         }
-    );
+   );
 }
 
 void NNetModelImporter::fixOutputNeurons()
@@ -373,19 +373,19 @@ void NNetModelImporter::fixOutputNeurons()
     (
         [&](Neuron & neuron)
         {
-            if ( ! neuron.HasOutgoing() )
+            if (! neuron.HasOutgoing())
             {
                 m_ImportedNMWI.GetUPNobs().ReplaceNob(move(make_unique<OutputNeuron>(neuron)));
             }
         }
-    );
+   );
 }
 
 void NNetModelImporter::import() 
 {
     ImportTermination::Result res;
 
-    if ( ProcessNNetScript( * m_pScript, m_ImportedNMWI.GetUPNobs(), m_wstrFile2Read ) )
+    if (ProcessNNetScript(* m_pScript, m_ImportedNMWI.GetUPNobs(), m_wstrFile2Read))
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath(m_wstrFile2Read);
@@ -397,30 +397,30 @@ void NNetModelImporter::import()
     {
         res = ImportTermination::Result::errorInFile;
     }
-    m_upTermination->Reaction( res, m_wstrFile2Read );
+    m_upTermination->Reaction(res, m_wstrFile2Read);
 }
 
-static unsigned int __stdcall importModelThreadProc( void * data ) 
+static unsigned int __stdcall importModelThreadProc(void * data) 
 {
-    SetThreadDescription( GetCurrentThread(), L"ImportModel" );
-    NNetModelImporter * pModelImporter { reinterpret_cast<NNetModelImporter *>( data ) };
+    SetThreadDescription(GetCurrentThread(), L"ImportModel");
+    NNetModelImporter * pModelImporter { reinterpret_cast<NNetModelImporter *>(data) };
     pModelImporter->import();
     return 0;
 }
 
 bool NNetModelImporter::Import
-( 
+(
     wstring                 const wstrPath,
     unique_ptr<ImportTermination> upTermination
 )
 {
-    if ( wstrPath.empty() )
+    if (wstrPath.empty())
         return false;
 
-    if ( m_upImportedModel.get() ) 
+    if (m_upImportedModel.get()) 
         return false;       // another import is already running
 
-    if ( ! exists(wstrPath) )
+    if (! exists(wstrPath))
     {
         upTermination->Reaction(ImportTermination::Result::fileNotFound, wstrPath);
         return false;

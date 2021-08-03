@@ -23,11 +23,11 @@ using std::endl;
 bool NNetModel::operator==(NNetModel const & rhs) const
 {
 	return
-	(m_Nobs              == rhs.m_Nobs             ) &&
-	(m_timeStamp         == rhs.m_timeStamp        ) &&
+	(m_Nobs              == rhs.m_Nobs            ) &&
+	(m_timeStamp         == rhs.m_timeStamp       ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath) &&
-	(m_monitorData       == rhs.m_monitorData      ) &&
-	(m_param             == rhs.m_param            );
+	(m_monitorData       == rhs.m_monitorData     ) &&
+	(m_param             == rhs.m_param           );
 }
 
 void NNetModel::CheckModel() const
@@ -42,7 +42,7 @@ Nob const * NNetModel::GetConstNob(NobId const id) const
 	if (IsUndefined(id) || ! m_Nobs.IsValidNobId(id))
 	{
 		wcout << L"# **** GetConstNob failed. Id = " << id << endl;
-		m_Nobs.CallErrorHandler( id );  
+		m_Nobs.CallErrorHandler(id);  
 		return nullptr;
 	}
 	return m_Nobs.GetAt(id);
@@ -50,30 +50,30 @@ Nob const * NNetModel::GetConstNob(NobId const id) const
 
 void NNetModel::RecalcAllNobs() 
 { 
-	m_Nobs.Apply2All( [&](Nob & nob) { nob.Recalc(); } );
+	m_Nobs.Apply2All([&](Nob & nob) { nob.Recalc(); });
 } 
 
-fHertz const NNetModel::GetPulseRate( NobId const id ) const
+fHertz const NNetModel::GetPulseRate(NobId const id) const
 {
-	InputNeuron const * const pInputNeuron { GetNobConstPtr<InputNeuron const *>( id ) };
-	return ( pInputNeuron )
+	InputNeuron const * const pInputNeuron { GetNobConstPtr<InputNeuron const *>(id) };
+	return (pInputNeuron)
 		   ? pInputNeuron->GetPulseFrequency()
 	       : fHertz::NULL_VAL();
 }
 
-bool const NNetModel::GetDescriptionLine( int const iLine, wstring & wstrLine ) const
+bool const NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 {
-	return m_description.GetDescriptionLine( iLine, wstrLine );
+	return m_description.GetDescriptionLine(iLine, wstrLine);
 }
 
 float NNetModel::SetParam
-( 
+(
 	ParamType::Value const param, 
 	float      const fNewValue 
 )
 {
-	float fOldValue { m_param.GetParameterValue( param ) };
-	m_param.SetParameterValue( param, fNewValue );
+	float fOldValue { m_param.GetParameterValue(param) };
+	m_param.SetParameterValue(param, fNewValue);
 	RecalcAllNobs();
 	return fOldValue;
 }
@@ -82,8 +82,8 @@ bool NNetModel::Compute()
 {
 	bool bStop {false};
 	m_timeStamp += m_param.GetTimeResolution();
-	m_Nobs.Apply2All( [&](Nob &s) { s.Prepare(); } );
-	m_Nobs.Apply2All( [&](Nob &s) { if ( s.CompStep() ) bStop = true; } );
+	m_Nobs.Apply2All([&](Nob &s) { s.Prepare(); });
+	m_Nobs.Apply2All([&](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;
 }
 
@@ -98,15 +98,15 @@ void NNetModel::ResetModel()
 
 void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 {
-	if ( pBaseKnot )
+	if (pBaseKnot)
 	{
 		pBaseKnot->Select(bOn);
 		pBaseKnot->Apply2AllOutPipes
-		( 
-			[&]( Pipe & pipe ) 
+		(
+			[&](Pipe & pipe) 
 			{ 
 				pipe.Select(bOn); 
-				if ( pipe.GetEndKnotPtr()->IsKnot() )
+				if (pipe.GetEndKnotPtr()->IsKnot())
 					SelectSubtree(pipe.GetEndKnotPtr(), bOn); 
 			} 
 		);
@@ -114,7 +114,7 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 }
 
 NobId const NNetModel::FindNobAt
-( 
+(
 	MicroMeterPnt const & umPoint, 
 	NobCrit       const & crit 
 ) const
@@ -122,19 +122,19 @@ NobId const NNetModel::FindNobAt
 	NobId idRes { NO_NOB };
 
 	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyConnector() && crit(s); });
-	if ( IsDefined(idRes) )
+	if (IsDefined(idRes))
 		return idRes;
 
 	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyNeuron() && (!s.HasParentNob()) && crit(s); });
-	if ( IsDefined(idRes) )
+	if (IsDefined(idRes))
 		return idRes;
 
 	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsKnot() && crit(s); }); 	
-	if ( IsDefined(idRes) )
+	if (IsDefined(idRes))
 		return idRes;
 
 	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsPipe() && crit(s); });
-	if ( IsDefined(idRes) )
+	if (IsDefined(idRes))
 		return idRes;
 
 	return NO_NOB;

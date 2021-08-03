@@ -53,18 +53,18 @@ using std::wofstream;
 class StatusBarDisplayFunctor : public DisplayFunctor
 {
 public:
-	void Initialize( StatusBar * const pStatusBar, int const iPart )
+	void Initialize(StatusBar * const pStatusBar, int const iPart)
 	{
 		m_pStatusBar = pStatusBar;
 		m_iPart      = iPart;
 	}
 
-	virtual void operator() ( wstring const & line )
+	virtual void operator() (wstring const & line)
 	{
-		if ( m_pStatusBar )
+		if (m_pStatusBar)
 		{
 			m_wstring = line;
-			m_pStatusBar->DisplayInPart( m_iPart, m_wstring );
+			m_pStatusBar->DisplayInPart(m_iPart, m_wstring);
 		}
 	}
 
@@ -80,16 +80,16 @@ public:
 	NNetAppWindow();
 	~NNetAppWindow();
 
-	virtual void Start( MessagePump & );
+	virtual void Start(MessagePump &);
 	virtual void Stop();
 
-	NNetAppWindow             ( NNetAppWindow const & ) = delete;  // noncopyable class 
-	NNetAppWindow & operator= ( NNetAppWindow const & ) = delete;  // noncopyable class 
+	NNetAppWindow             (NNetAppWindow const &) = delete;  // noncopyable class 
+	NNetAppWindow & operator= (NNetAppWindow const &) = delete;  // noncopyable class 
 
 private:
 
-	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
-	virtual bool OnSize   ( WPARAM const, LPARAM const );
+	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const);
+	virtual bool OnSize   (WPARAM const, LPARAM const);
 	virtual void OnClose();
 	virtual void OnPaint();
 
@@ -103,12 +103,12 @@ private:
 	void writeModel()
 	{
 		m_modelExporter.WriteModel();
-		m_appTitle.SetUnsavedChanges( false );
+		m_appTitle.SetUnsavedChanges(false);
 	}
 
 	wstring AskModelFile()
 	{
-		return ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::read );
+		return ScriptFile::AskForFileName(L"mod", L"Model files", tFileMode::read);
 	}
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
@@ -159,5 +159,5 @@ private:
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
 
-	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

@@ -13,9 +13,9 @@ namespace Util
 	public:
 		Event()
 		  : m_eventHandle
-		    ( 
+		    (
 				CreateEvent
-				( 
+				(
 					nullptr, // no security attributes
 					true,    // manual reset event 
 					false,   // initial state nonsignaled
@@ -26,19 +26,19 @@ namespace Util
 
 		~Event()
 		{
-			(void)CloseHandle( m_eventHandle );
+			(void)CloseHandle(m_eventHandle);
 			m_eventHandle = nullptr;
 		}
 
 		virtual void Wait()
 		{
-			(void)ResetEvent( m_eventHandle );
-			(void)WaitForSingleObject( m_eventHandle, INFINITE );
+			(void)ResetEvent(m_eventHandle);
+			(void)WaitForSingleObject(m_eventHandle, INFINITE);
 		}
 
 		virtual void Continue()
 		{
-			(void)SetEvent( m_eventHandle );
+			(void)SetEvent(m_eventHandle);
 		}
 
 	private:

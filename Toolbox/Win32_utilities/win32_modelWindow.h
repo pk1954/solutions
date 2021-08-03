@@ -16,11 +16,11 @@ public:
 		BaseWindow()
 	{ }
 
-	static void InitClass( ActionTimer * const pActionTimer	)
+	static void InitClass(ActionTimer * const pActionTimer	)
 	{
 		m_pDisplayTimer = pActionTimer;
-		m_hCrsrArrow    = LoadCursor( NULL, IDC_ARROW );
-		m_hCrsrMove     = LoadCursor( NULL, IDC_HAND );
+		m_hCrsrArrow    = LoadCursor(NULL, IDC_ARROW);
+		m_hCrsrMove     = LoadCursor(NULL, IDC_HAND);
 	}
 
 protected:

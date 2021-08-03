@@ -13,47 +13,47 @@ class ClearBeepersCommand : public Command
 {
 public:
 
-	void clearTriggerSound( Neuron * const pNeuron ) const
+	void clearTriggerSound(Neuron * const pNeuron) const
 	{
 		static const SoundDescr noSound { false, 0_Hertz, 0_MilliSecs };
-		pNeuron->SetTriggerSound( noSound );
+		pNeuron->SetTriggerSound(noSound);
 	}
 
-	void clearAll( NNetModelWriterInterface & nmwi ) const
+	void clearAll(NNetModelWriterInterface & nmwi) const
 	{
-		nmwi.GetUPNobs().Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.GetUPNobs().Apply2All<Neuron>([&](Neuron & n) { clearTriggerSound(& n); });
 	}
 
-	void clearAllSelected( NNetModelWriterInterface & nmwi ) const
+	void clearAllSelected(NNetModelWriterInterface & nmwi) const
 	{
-		nmwi.GetUPNobs().Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.GetUPNobs().Apply2AllSelected<Neuron>([&](Neuron & n) { clearTriggerSound(& n); });
 	}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		if ( ! m_bInitialized )
+		if (! m_bInitialized)
 		{
 			nmwi.GetUPNobs().Apply2All<Neuron>
-			( 
+			(
 				[&](Neuron & neuron) 
 				{ 
-					if ( neuron.HasTriggerSound() )
-						m_beepers.push_back( Beeper{ & neuron, neuron.GetTriggerSound() } );
+					if (neuron.HasTriggerSound())
+						m_beepers.push_back(Beeper{ & neuron, neuron.GetTriggerSound() });
 				} 
 			);
 			m_bInitialized = true;
 		}
-		if ( nmwi.GetUPNobs().AnyNobsSelected() )
-			clearAllSelected( nmwi );
+		if (nmwi.GetUPNobs().AnyNobsSelected())
+			clearAllSelected(nmwi);
 		else
-			clearAll( nmwi );
+			clearAll(nmwi);
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi ) 
+	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{ 
-		clearAll( nmwi );
-		for ( Beeper const & beeper : m_beepers )
-			beeper.m_pNeuron->SetTriggerSound( beeper.m_sound );
+		clearAll(nmwi);
+		for (Beeper const & beeper : m_beepers)
+			beeper.m_pNeuron->SetTriggerSound(beeper.m_sound);
 	}
 
 private:

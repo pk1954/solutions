@@ -11,21 +11,21 @@
 #include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
 
-void MiniWindow::ObservedNNetWindow( MainWindow * const pNNetWin )	
+void MiniWindow::ObservedNNetWindow(MainWindow * const pNNetWin)	
 { 
 	m_pObservedNNetWindow = pNNetWin;
-	GetDrawContext().SetNoColors( true );
+	GetDrawContext().SetNoColors(true);
 }
 
-void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
+void MiniWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if ( ! m_pObservedNNetWindow )
+	if (! m_pObservedNNetWindow)
 		return; 
 
-	if ( wParam & MK_LBUTTON )       	// Left mouse button: move or edit action
+	if (wParam & MK_LBUTTON)       	// Left mouse button: move or edit action
 	{
-		PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
-		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
+		PixelPoint const ptCrsr { GetCrsrPosFromLparam(lParam) };  // screen coordinates
+		if (m_ptLast.IsNotNull())     // last cursor pos stored in m_ptLast
 		{
 			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
 			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize(pixDelta) }; 
@@ -39,9 +39,9 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
-void MiniWindow::Notify( bool const bImmediately )
+void MiniWindow::Notify(bool const bImmediately)
 {
-	if ( m_pObservedNNetWindow )
+	if (m_pObservedNNetWindow)
 	{
 		float          const EXTRA_SPACE_FACTOR { 1.2f };                              // give 20% more space (looks better)
 		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };     // current position of main window view 
@@ -52,7 +52,7 @@ void MiniWindow::Notify( bool const bImmediately )
 		MicroMeter     const umPixelSizeTarget
 		{
 			GetCoordC().ComputeZoom
-			( 
+			(
 				umRectShow.Scale(NEURON_RADIUS), 
 				GetClRectSize(),
 				EXTRA_SPACE_FACTOR
@@ -66,10 +66,10 @@ void MiniWindow::Notify( bool const bImmediately )
 
 void MiniWindow::doPaint() 
 {
-	if ( m_pObservedNNetWindow )
+	if (m_pObservedNNetWindow)
 	{
-		DrawExteriorInRect( GetClPixelRect() );
-		GetDrawContext().DrawTranspRect( m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT );
+		DrawExteriorInRect(GetClPixelRect());
+		GetDrawContext().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		DrawSensors();
 		DrawBeacon();
 	}

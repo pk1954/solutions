@@ -9,6 +9,6 @@
 using std::wofstream;
 using std::wstring;
 
-wofstream OpenTraceFile( wstring const );
+wofstream OpenTraceFile(wstring const);
 
-void SwitchWcoutTo( wstring const );
+void SwitchWcoutTo(wstring const);

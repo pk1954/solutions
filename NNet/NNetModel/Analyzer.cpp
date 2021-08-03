@@ -12,20 +12,20 @@
 using std::endl;
 using std::to_wstring;
 
-NobStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri )
+NobStack const ModelAnalyzer::FindLoop(NNetModelReaderInterface const & nmri)
 {
 	int const iNrOfNobs { Cast2Int(nmri.GetSizeOfNobList()) };
 
-	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfNobs + 1; iMaxLoopSize += 2 )
+	for (int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfNobs + 1; iMaxLoopSize += 2)
 	{
 		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
 		statusDisplay(wstring(L"Looking for loop of size ") + to_wstring(iMaxLoopSize) + L". Press ESC to stop.");
 		m_nobStack.clear();
-		if ( nmri.GetUPNobs().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop(b); } ) )
+		if (nmri.GetUPNobs().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop(b); }))
 		{
-			if ( m_bStop )  
+			if (m_bStop)  
 			{
 				m_nobStack.clear();
 				statusDisplay(L"analysis aborted by user");
@@ -50,47 +50,47 @@ NobStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri )
 
 bool ModelAnalyzer::findLoop(Nob const & nob)
 {
-	if ( ( * m_pEscFunc )() )
+	if ((* m_pEscFunc)())
 		m_bStop = true;
 
-	if ( m_bStop )
+	if (m_bStop)
 		return true;
 
-	if ( m_nobStack.size() == m_iRecDepth )
+	if (m_nobStack.size() == m_iRecDepth)
 		return false;  // maximum search depth reached
 
-	assert( nob.IsDefined() );
+	assert(nob.IsDefined());
 	m_nobStack.push_back(& nob);
 
 	bool bResult { false };
 
-	if ( 
+	if (
 		  (m_nobStack.size() > 1) &&                    // we are beyond the initial nob
 	      (nob.GetId() == m_nobStack.front()->GetId())  // and found the same nob again
-	   )
+	  )
 	{
 		bResult = true;  // loop found. Do not pop_back stack!
 	}
-	else if ( nob.IsPipe() )
+	else if (nob.IsPipe())
 	{
-		bResult = findLoop( * static_cast<Pipe const &>(nob).GetEndKnotPtr() );  // recursion
+		bResult = findLoop(* static_cast<Pipe const &>(nob).GetEndKnotPtr());  // recursion
 	}
-	else if ( nob.IsBaseKnot() )
+	else if (nob.IsBaseKnot())
 	{
 		bResult = static_cast<BaseKnot const &>(nob).Apply2AllOutPipesB
-		( 
-			[&]( Pipe const & pipe ) 
+		(
+			[&](Pipe const & pipe) 
 			{ 
-				return findLoop( pipe ); 
+				return findLoop(pipe); 
 			} 
 		);
 	}
 	else
 	{
-		assert( false );  // nob is neither Pipe nor baseknot
+		assert(false);  // nob is neither Pipe nor baseknot
 	}
 
-	if ( ! bResult )
+	if (! bResult)
 		m_nobStack.pop_back(); // no loop in this branch
 
 	return bResult;
@@ -100,28 +100,28 @@ bool ModelAnalyzer::hasAnomaly(Knot const & knot)
 {
 	bool bFoundAnomaly { false };
 
-	if ( ! knot.HasIncoming() )
+	if (! knot.HasIncoming())
 	{
-		knot.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_nobStack.push_back(& pipe); } );
+		knot.Apply2AllOutPipes([&](Pipe & pipe) { m_nobStack.push_back(& pipe); });
 		bFoundAnomaly = true;
 	}
-	else if ( ! knot.HasOutgoing() )
+	else if (! knot.HasOutgoing())
 	{
-		knot.Apply2AllInPipes( [&]( Pipe & pipe ) { m_nobStack.push_back(& pipe); } );
+		knot.Apply2AllInPipes([&](Pipe & pipe) { m_nobStack.push_back(& pipe); });
 		bFoundAnomaly = true;
 	}
 
-	if ( bFoundAnomaly )
-		m_nobStack.push_back( & knot );
+	if (bFoundAnomaly)
+		m_nobStack.push_back(& knot);
 
 	return bFoundAnomaly; 
 }
 
-NobStack const ModelAnalyzer::FindAnomaly( NNetModelReaderInterface const & nmri)
+NobStack const ModelAnalyzer::FindAnomaly(NNetModelReaderInterface const & nmri)
 {
 	m_nobStack.clear();
-	bool const bFound { nmri.GetUPNobs().Apply2AllB<Knot>( [&](Knot const & k) { return hasAnomaly(k); } ) };
-	if ( ! bFound )
-		statusDisplay( L"no anomalies found" );
+	bool const bFound { nmri.GetUPNobs().Apply2AllB<Knot>([&](Knot const & k) { return hasAnomaly(k); }) };
+	if (! bFound)
+		statusDisplay(L"no anomalies found");
 	return m_nobStack;
 }

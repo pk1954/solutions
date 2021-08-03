@@ -8,16 +8,16 @@
 
 using std::wstring;
 
-static INT_PTR CALLBACK dialogProc( HWND const,	UINT const, WPARAM const, LPARAM const );
+static INT_PTR CALLBACK dialogProc(HWND const,	UINT const, WPARAM const, LPARAM const);
 
 class StdDialogBox
 {
 public:
-	static float Show( HWND const, float, wstring const, wstring const );
-	static void  SetParameterValue( HWND const, float const );
-	static bool  Evaluate( HWND const, float & );
+	static float Show(HWND const, float, wstring const, wstring const);
+	static void  SetParameterValue(HWND const, float const);
+	static bool  Evaluate(HWND const, float &);
 
 private:
 
-	friend static INT_PTR CALLBACK dialogProc( HWND const,	UINT const, WPARAM const, LPARAM const );
+	friend static INT_PTR CALLBACK dialogProc(HWND const,	UINT const, WPARAM const, LPARAM const);
 };

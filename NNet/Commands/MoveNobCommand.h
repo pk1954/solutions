@@ -14,22 +14,22 @@ class MoveNobCommand : public Command
 {
 public:
 	MoveNobCommand
-	( 
+	(
 		Nob                 & nob, 
 		MicroMeterPnt const & delta 
 	)
-	  : m_delta( delta ),
-		m_nob( nob )
+	  : m_delta(delta),
+		m_nob(nob)
 	{ 
-		assert( &nob );
+		assert(&nob);
 	}
 
-	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 		m_nob.MoveNob(m_delta);
 	}
 
-	virtual void Undo( NNetModelWriterInterface & nmwi ) 
+	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{ 
 		m_nob.MoveNob(-m_delta);
 	}

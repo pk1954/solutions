@@ -26,9 +26,9 @@ using std::wofstream;
 class ConsImportTermination : public ImportTermination
 {
 public:
-	virtual void Reaction( Result const res, wstring const name )
+	virtual void Reaction(Result const res, wstring const name)
 	{
-		switch ( res )
+		switch (res)
 		{
 		case ImportTermination::Result::ok:
 			wcout << L"model file ok";
@@ -43,13 +43,13 @@ public:
 			break;
 
 		default:
-			assert( false );
+			assert(false);
 		}
 		wcout << endl;
 	};
 };
 
-int main( int argc, char * argv [ ], char * envp [ ] )
+int main(int argc, char * argv [ ], char * envp [ ])
 {
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
@@ -67,32 +67,32 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	MonitorData              m_monitorData            {};
 
 	DefineUtilityWrapperFunctions();
-	DefineNNetWrappers( & m_modelCommands );
+	DefineNNetWrappers(& m_modelCommands);
 
-	SignalFactory:: Initialize( m_nmri, m_dynamicModelObservable );
-	Nob::Initialize( m_model.GetParams() );
+	SignalFactory:: Initialize(m_nmri, m_dynamicModelObservable);
+	Nob::Initialize(m_model.GetParams());
 
-	m_modelCommands.Initialize( & m_nmri, & m_nmwi, & m_modelImporter, & m_dynamicModelObservable, & m_cmdStack	);
-	m_modelImporter.Initialize(	nullptr );
-	m_modelExporter.Initialize( & m_nmri );
+	m_modelCommands.Initialize(& m_nmri, & m_nmwi, & m_modelImporter, & m_dynamicModelObservable, & m_cmdStack	);
+	m_modelImporter.Initialize(	nullptr);
+	m_modelExporter.Initialize(& m_nmri);
 
-	m_nmwi.Start( & m_model );
+	m_nmwi.Start(& m_model);
 
 	wstring wstrInputFile{} ; // = L"D:\\SW-projects\\Solutions\\NNet\\Tests\\test_1.in";
 
-	for ( int iCount = 1; iCount < argc; iCount++ )
+	for (int iCount = 1; iCount < argc; iCount++)
 	{
-		string strCmd( argv[ iCount ] );
+		string strCmd(argv[ iCount ]);
 
-		if ( (strCmd.find( ".in" ) != string::npos) || (strCmd.find( ".IN" ) != string::npos) ) 
+		if ((strCmd.find(".in") != string::npos) || (strCmd.find(".IN") != string::npos)) 
 		{
-			wstrInputFile.assign( strCmd.begin(), strCmd.end() ); 
+			wstrInputFile.assign(strCmd.begin(), strCmd.end()); 
 		}
 	}
 
-	m_modelImporter.Import( L"std.mod", make_unique<ConsImportTermination>() );
+	m_modelImporter.Import(L"std.mod", make_unique<ConsImportTermination>());
 
-	if ( ProcessNNetScript( m_script, m_nmwi.GetUPNobs(), wstrInputFile ) )
+	if (ProcessNNetScript(m_script, m_nmwi.GetUPNobs(), wstrInputFile))
 		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";

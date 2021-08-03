@@ -24,19 +24,19 @@ void NNetModelWriterInterface::Stop()
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
-	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >( MicroMeterPnt( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
-	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>( MicroMeterPnt( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
-	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>( upInputNeuron.get(), upOutputNeuron.get() ) };
-	upInputNeuron ->AddOutgoing( upNewPipe.get() );
-	upOutputNeuron->AddIncoming( upNewPipe.get() );
-	GetUPNobs().Push( move(upInputNeuron) );
-	GetUPNobs().Push( move(upOutputNeuron) );       
-	GetUPNobs().Push( move(upNewPipe) );      
+	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >(MicroMeterPnt(400.0_MicroMeter, 200.0_MicroMeter)) };
+	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>(MicroMeterPnt(400.0_MicroMeter, 800.0_MicroMeter)) };
+	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>(upInputNeuron.get(), upOutputNeuron.get()) };
+	upInputNeuron ->AddOutgoing(upNewPipe.get());
+	upOutputNeuron->AddIncoming(upNewPipe.get());
+	GetUPNobs().Push(move(upInputNeuron));
+	GetUPNobs().Push(move(upOutputNeuron));       
+	GetUPNobs().Push(move(upNewPipe));      
 }
 
 Nob * const NNetModelWriterInterface::GetNob(NobId const id)
 { 
-	return const_cast<Nob *>(m_pModel->GetConstNob(id) );
+	return const_cast<Nob *>(m_pModel->GetConstNob(id));
 }
 
 void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
@@ -46,14 +46,14 @@ void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn)
 
 void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 {
-	if ( Neuron * pNeuron { GetNobPtr<Neuron *>( id ) } )
-		pNeuron->StopOnTrigger( tBoolOp::opToggle );
+	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })
+		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
 
 void NNetModelWriterInterface::SelectBeepers() 
 { 
 	GetUPNobs().Apply2All<Neuron>
-	( 
+	(
 		[&](Neuron &n) 
 		{ 
 			if (n.HasTriggerSound()) 
@@ -65,7 +65,7 @@ void NNetModelWriterInterface::SelectBeepers()
 void NNetModelWriterInterface::RemoveOrphans()
 {
 	GetUPNobs().Apply2All<Knot>                              
-	(                                                        
+	(                                                       
 		[&](Knot const & knot)
 		{
 			if (knot.IsOrphan())
@@ -98,7 +98,7 @@ void NNetModelWriterInterface::SetIoNeurons
 	nobPtrList.Apply2All
 	(
 		[&](IoNeuron & ioNeuron)	
-		{ ioNeuron.SetPosDir( umPntVector.GetPosDir(ui++) ); }
+		{ ioNeuron.SetPosDir(umPntVector.GetPosDir(ui++)); }
 	);
 }
 
@@ -108,7 +108,7 @@ void NNetModelWriterInterface::Reconnect(NobId const id)
 		pNod->Reconnect();
 }
 
-MicroMeterPnt const NNetModelWriterInterface::OrthoVector( NobId const idPipe ) const
+MicroMeterPnt const NNetModelWriterInterface::OrthoVector(NobId const idPipe) const
 {
 	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
 	return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);

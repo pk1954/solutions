@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include "BoolOp.h"
 
-wchar_t const * const GetBoolOpName( tBoolOp const op )
+wchar_t const * const GetBoolOpName(tBoolOp const op)
 {
     static std::unordered_map < tBoolOp, wchar_t const * const > mapNames =
     {
@@ -17,11 +17,11 @@ wchar_t const * const GetBoolOpName( tBoolOp const op )
         { tBoolOp::opNoChange, L"tBoolOp::opNoChange" }
     };
 
-    return mapNames.at( op );
+    return mapNames.at(op);
 }
 
-wostream & operator << ( wostream & out, tBoolOp const op )
+wostream & operator << (wostream & out, tBoolOp const op)
 {
-    out << L" " <<std::wstring( GetBoolOpName( op ) );
+    out << L" " <<std::wstring(GetBoolOpName(op));
     return out;
 }

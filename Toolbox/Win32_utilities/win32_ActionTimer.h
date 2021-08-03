@@ -18,9 +18,9 @@ class ActionTimer : public Observable
 public:
 	ActionTimer()
 		: m_hrtimerSingleAction(),
-	      m_usSingleActionTime( 0 ),
+	      m_usSingleActionTime(0),
 		  m_hrtimerOverall(),
-		  m_dwCounter( 0 )
+		  m_dwCounter(0)
 	{
 		m_hrtimerOverall.Start();
 	}
@@ -35,7 +35,7 @@ public:
 		m_hrtimerSingleAction.Stop();
 		m_usSingleActionTime = m_hrtimerSingleAction.GetDuration();
 		++m_dwCounter;
-		NotifyAll( false );
+		NotifyAll(false);
 	};
 
 	microseconds GetSingleActionTime()
@@ -43,22 +43,22 @@ public:
 		return m_usSingleActionTime;
 	}
 
-	Hertz CalcActionFrequency( microseconds us, DWORD dwCount = 1 )
+	Hertz CalcActionFrequency(microseconds us, DWORD dwCount = 1)
 	{
 		static unsigned long long MICROSECONDS_TO_HERTZ_FACTOR = microseconds::period::den;
-		if ( us == microseconds::zero() )
+		if (us == microseconds::zero())
 			return  0_Hertz;
 
-		assert( dwCount < ULLONG_MAX / MICROSECONDS_TO_HERTZ_FACTOR );    // avoid ull overflow
-		unsigned long long ullFrequency = ( dwCount * MICROSECONDS_TO_HERTZ_FACTOR ) / us.count();
-		return Hertz( Cast2Long(ullFrequency) );
+		assert(dwCount < ULLONG_MAX / MICROSECONDS_TO_HERTZ_FACTOR);    // avoid ull overflow
+		unsigned long long ullFrequency = (dwCount * MICROSECONDS_TO_HERTZ_FACTOR) / us.count();
+		return Hertz(Cast2Long(ullFrequency));
 	}
 
 	Hertz GetMeasuredPerformance()
 	{
 		m_hrtimerOverall.Stop();
 		microseconds usOverallTime = m_hrtimerOverall.GetDuration();
-		Hertz        result        = CalcActionFrequency( usOverallTime, m_dwCounter );
+		Hertz        result        = CalcActionFrequency(usOverallTime, m_dwCounter);
 		m_dwCounter = 0;
 		m_hrtimerOverall.Restart();
 		return result;

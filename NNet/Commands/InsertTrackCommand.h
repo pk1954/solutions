@@ -13,16 +13,16 @@ class InsertTrackCommand: public Command
 {
 public:
 
-    InsertTrackCommand( TrackNr const trackNr )
+    InsertTrackCommand(TrackNr const trackNr)
         : m_trackNr(trackNr)
     {}
 
-    virtual void Do( NNetModelWriterInterface & nmwi ) 
+    virtual void Do(NNetModelWriterInterface & nmwi) 
     {
         nmwi.GetMonitorData().InsertTrack(m_trackNr);
     };
 
-    virtual void Undo( NNetModelWriterInterface & nmwi )
+    virtual void Undo(NNetModelWriterInterface & nmwi)
     { 
         nmwi.GetMonitorData().DeleteTrack(m_trackNr);
     };

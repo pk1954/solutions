@@ -21,7 +21,7 @@ public:
 
     using APP_PROC = function<void(bool const)>;
 
-    Animation( APP_PROC const & appProc, DWORD const dwFlags = 0 )
+    Animation(APP_PROC const & appProc, DWORD const dwFlags = 0)
       : m_appProc(appProc),
         m_dwFlags(dwFlags)
     {}
@@ -33,8 +33,8 @@ public:
         m_distance       = target - origin;
         m_bTargetReached = false;
         setActual(m_start);
-        m_smoothMove.Start( m_uiNrOfSteps );
-        if ( m_pTpTimer )
+        m_smoothMove.Start(m_uiNrOfSteps);
+        if (m_pTpTimer)
         {
             int x = 42;
         }
@@ -44,18 +44,18 @@ public:
     ANIM_PAR const GetActual()
     {
         ANIM_PAR result;
-        AcquireSRWLockExclusive( & m_srwlData );
+        AcquireSRWLockExclusive(& m_srwlData);
         result = m_actual;
-        ReleaseSRWLockExclusive( & m_srwlData );
+        ReleaseSRWLockExclusive(& m_srwlData);
         return move(result);
     }
 
-    void SetNrOfSteps( unsigned int const uiNrOfSteps )
+    void SetNrOfSteps(unsigned int const uiNrOfSteps)
     {
         m_uiNrOfSteps = uiNrOfSteps;
     }
 
-    void SetMsPeriod( unsigned int const uiMsPeriod )
+    void SetMsPeriod(unsigned int const uiMsPeriod)
     {
         m_uiMsPeriod = uiMsPeriod;
     }
@@ -76,22 +76,22 @@ private:
     HWND                m_hwnd           { nullptr };
     bool                m_bTargetReached { false };
 
-    void setActual( ANIM_PAR const newVal )
+    void setActual(ANIM_PAR const newVal)
     {
-        AcquireSRWLockExclusive( & m_srwlData );
+        AcquireSRWLockExclusive(& m_srwlData);
         m_actual = newVal;
-        ReleaseSRWLockExclusive( & m_srwlData );
+        ReleaseSRWLockExclusive(& m_srwlData);
     }
 
     void next() // runs in animation thread
     {
-        if ( ! m_bTargetReached )
+        if (! m_bTargetReached)
         {
             m_bTargetReached = m_smoothMove.Next();
             setActual(m_start + m_distance * m_smoothMove.GetPos());
-            if ( m_bTargetReached )
+            if (m_bTargetReached)
             {
-                if ( m_dwFlags & ANIMATION_RECURRING )
+                if (m_dwFlags & ANIMATION_RECURRING)
                     setActual(m_start);
                 else 
                     stopTimer();
@@ -104,16 +104,16 @@ private:
     void startTimer()  // runs in UI thread
     {
         FILETIME fileTime { m_uiMsPeriod, 0 };
-        m_pTpTimer = CreateThreadpoolTimer( timerProc, this, nullptr );
-        SetThreadpoolTimer( m_pTpTimer, &fileTime, m_uiMsPeriod, 50L );
+        m_pTpTimer = CreateThreadpoolTimer(timerProc, this, nullptr);
+        SetThreadpoolTimer(m_pTpTimer, &fileTime, m_uiMsPeriod, 50L);
     }
 
     void stopTimer()  // runs in animation thread
     { 
-//        SetThreadpoolTimer( m_pTpTimer, nullptr, 0, 0 );
-//        WaitForThreadpoolTimerCallbacks( m_pTpTimer, true );
+//        SetThreadpoolTimer(m_pTpTimer, nullptr, 0, 0);
+//        WaitForThreadpoolTimerCallbacks(m_pTpTimer, true);
         if (m_pTpTimer)
-            CloseThreadpoolTimer( m_pTpTimer );
+            CloseThreadpoolTimer(m_pTpTimer);
         m_pTpTimer = nullptr;
     } 
 

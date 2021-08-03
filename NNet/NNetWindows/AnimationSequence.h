@@ -16,11 +16,11 @@ class AnimationSequence : public SelectionCommand
 public:
     AnimationSequence(MainWindow &);
     
-    virtual void Do  ( NNetModelWriterInterface & );
-    virtual void Undo( NNetModelWriterInterface & );
+    virtual void Do  (NNetModelWriterInterface &);
+    virtual void Undo(NNetModelWriterInterface &);
 
 protected:
-    void AddPhase( unique_ptr<AnimationCmd> );
+    void AddPhase(unique_ptr<AnimationCmd>);
 
 private:
     unsigned int m_uiPhase { 0 };

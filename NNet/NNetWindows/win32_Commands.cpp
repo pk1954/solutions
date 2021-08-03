@@ -23,7 +23,7 @@ using std::make_unique;
 using std::unique_ptr;
 
 void WinCommands::Initialize
-( 
+(
 	CommandStack             * const pCmdStack,
 	NNetModelCommands        * const pCmds,
 	NNetModelReaderInterface * const pNMRI,
@@ -38,22 +38,22 @@ void WinCommands::Initialize
 
 bool WinCommands::MakeIoConnector(MainWindow & win)
 {
-	if ( IsTraceOn() )
+	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
 	unique_ptr<ConnAnimationCommand> upCmd = { make_unique<ConnAnimationCommand>(win, *this) };
 	bool bCmdOk = upCmd->IsCmdOk();
 	if (bCmdOk)
-		m_pCmdStack->PushCommand( move(upCmd) );
+		m_pCmdStack->PushCommand(move(upCmd));
 	return bCmdOk;
 }
 
 void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win)
 {
-	if ( IsTraceOn() )
+	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
 
 	unique_ptr<Command> upCmd;
-	switch ( m_pNMRI->GetNobType(idDst).GetValue() )
+	switch (m_pNMRI->GetNobType(idDst).GetValue())
 	{
 	case NobType::Value::pipe:
 		upCmd = make_unique<Connect2PipeCommand>    
@@ -72,7 +72,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 	break;
 	case NobType::Value::inputNeuron:
 	case NobType::Value::outputNeuron:
-		if ( m_pNMRI->GetNobType(idSrc).GetValue() == NobType::Value::knot)
+		if (m_pNMRI->GetNobType(idSrc).GetValue() == NobType::Value::knot)
 		{
 			upCmd = make_unique<Connect2BaseKnotCommand>
 			(
@@ -104,7 +104,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 	}
 		break;
 	default:
-		assert( false );
+		assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));
 }
