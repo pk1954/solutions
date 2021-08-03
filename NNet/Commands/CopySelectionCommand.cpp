@@ -10,12 +10,12 @@
 
 CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 { 
-	auto dstFromSrc = [&](Nob const * pSrc )
+	auto dstFromSrc = [&](Nob const * pSrc)
 	{ 
-		if ( pSrc && IsDefined(pSrc->GetId()) )
+		if (pSrc && IsDefined(pSrc->GetId()))
 		{
 			SelNobsIndex & ssi { m_indexList[pSrc->GetId().GetValue()] };
-			if ( ssi.IsNotNull() )
+			if (ssi.IsNotNull())
 				return m_copies[ssi.GetValue()].get();
 		}
 		return (Nob *)0;
@@ -32,15 +32,15 @@ CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 		{
 			m_selectedNobIds.Push(nob);
 			UPNob upNobCopy { ShallowCopy(nob) };
-			m_indexList[upNobCopy->GetId().GetValue()] = SelNobsIndex(Cast2Int(m_copies.size()));
-			m_copies.push_back( move(upNobCopy) );
+			m_indexList[upNobCopy->GetId().GetValue()] = SelNobsIndex(m_copies.size());
+			m_copies.push_back(move(upNobCopy));
 		}
 	);
-	int const iSize { Cast2Int(m_copies.size()) };
-	for (int i = 0; i < iSize; ++i) // cannot use range-based loop. m_copies changed in loop.
+	size_t const iSize { m_copies.size() };
+	for (size_t i = 0; i < iSize; ++i) // cannot use range-based loop. m_copies changed in loop.
 	{
-		Nob * const pNobSrc { nmwi.GetNob( m_copies[i]->GetId() ) };
-		if ( pNobSrc->IsPipe() )
+		Nob * const pNobSrc { nmwi.GetNob(m_copies[i]->GetId()) };
+		if (pNobSrc->IsPipe())
 		{
 			Pipe * const pPipeSrc { static_cast<Pipe *>(pNobSrc) };
 			addMissingKnot(pPipeSrc->GetStartKnotPtr(), dstFromSrc);
@@ -49,29 +49,29 @@ CopySelectionCommand::CopySelectionCommand(NNetModelWriterInterface & nmwi)
 	}
 	for (UPNob & upNobDst : m_copies)  // link nobs
 	{
-		Nob const & nobSrc { * nmwi.GetNob( upNobDst->GetId() ) };
-		nmwi.GetUPNobs().LinkNob( nobSrc, dstFromSrc );
+		Nob const & nobSrc { * nmwi.GetNob(upNobDst->GetId()) };
+		nmwi.GetUPNobs().LinkNob(nobSrc, dstFromSrc);
 		upNobDst->SetId(idNobCopy++);
-		if ( upNobDst->GetNobType().IsBaseKnotType() )
+		if (upNobDst->GetNobType().IsBaseKnotType())
 			upNobDst->MoveNob(PIPE_WIDTH); 
 	}
-	m_iSizeOfSelection = Cast2Int(m_copies.size());
+	m_sizeOfSelection = m_copies.size();
 }
 
 void CopySelectionCommand::Do(NNetModelWriterInterface & nmwi) 
 { 
 	nmwi.GetUPNobs().DeselectAllNobs();  
-	for ( int i = 0; i < m_iSizeOfSelection; ++i )
+	for (size_t i = 0; i < m_sizeOfSelection; ++i)
 	{
-		nmwi.Push2Model( move(m_copies.back()) ); // add copies (which are already selected)
+		nmwi.Push2Model(move(m_copies.back())); // add copies (which are already selected and linked)
 		m_copies.pop_back();
 	}
-	assert( m_copies.empty() );
+	assert(m_copies.empty());
 }
 
 void CopySelectionCommand::Undo(NNetModelWriterInterface & nmwi) 
 { 
-	for ( int i = 0; i < m_iSizeOfSelection; ++i )
+	for (size_t i = 0; i < m_sizeOfSelection; ++i)
 	{
 		m_copies.push_back(nmwi.PopFromModel<Nob>());
 	}
@@ -81,7 +81,7 @@ void CopySelectionCommand::Undo(NNetModelWriterInterface & nmwi)
 
 void CopySelectionCommand::addMissingKnot(BaseKnot * pBaseKnot, Nob2NobFunc const & dstFromSrc)
 {
-	if ( ! dstFromSrc(pBaseKnot))
+	if (!dstFromSrc(pBaseKnot))
 	{
 		unique_ptr<Knot> upKnot { make_unique<Knot>(pBaseKnot->GetPos()) };
 		upKnot->SetId( pBaseKnot->GetId() );

@@ -28,9 +28,9 @@ void UPNobList::SetErrorHandler( NobErrorHandler * const p )
 	m_pNobErrorHandler = p; 
 }
 
-UPNob ShallowCopy( Nob const & nob )  //TODO: simplify! Better 
+UPNob ShallowCopy(Nob const & nob)  //TODO: simplify! Better 
 {
-	switch ( nob.GetNobType().GetValue() )
+	switch (nob.GetNobType().GetValue())
 	{
 	case NobType::Value::inputConnector:
 		return Copy<InputConnector>(nob);
@@ -62,11 +62,11 @@ UPNob ShallowCopy( Nob const & nob )  //TODO: simplify! Better
 	}
 }
 
-bool UPNobList::operator==( UPNobList const & other ) const
+bool UPNobList::operator==(UPNobList const & other) const
 {
-	if ( m_list.size() != other.m_list.size() )
+	if (m_list.size() != other.m_list.size())
 		return false;
-	for ( int i = 0; i < m_list.size(); ++i )
+	for (int i = 0; i < m_list.size(); ++i)
 	{
 		Nob const * pNob      {       m_list[i].get() };
 		Nob const * pNobOther { other.m_list[i].get() };
@@ -74,9 +74,9 @@ bool UPNobList::operator==( UPNobList const & other ) const
 		{
 			return false;
 		}
-		else if ( (pNob != nullptr) && (pNobOther != nullptr) )
+		if ( (pNob != nullptr) && (pNobOther != nullptr) )
 		{
-			if ( *pNob != *pNobOther )
+			if (*pNob != *pNobOther)
 				return false;
 		}
 	}
@@ -174,17 +174,17 @@ UPNobList::~UPNobList()
 	Clear();
 }
 
-UPNobList::UPNobList( const UPNobList & rhs ) // copy constructor
+UPNobList::UPNobList(const UPNobList & rhs) // copy constructor
 {
-	copy( rhs );
+	copy(rhs);
 }
 
-UPNobList & UPNobList::operator= ( const UPNobList & rhs ) // copy assignment
+UPNobList & UPNobList::operator= (const UPNobList & rhs) // copy assignment
 {
 	if (this != &rhs)
 	{
 		Clear();
-		copy( rhs );
+		copy(rhs);
 	}
 	return * this;
 }
@@ -192,21 +192,21 @@ UPNobList & UPNobList::operator= ( const UPNobList & rhs ) // copy assignment
 void UPNobList::CheckNobList() const
 {
 #ifdef _DEBUG
-	Apply2All( [&](Nob const & nob) { nob.Check(); } );
+	Apply2All([&](Nob const & nob) { nob.Check(); });
 #endif
 }
 
 void UPNobList::Dump() const
 {
-	Apply2All( [&](Nob const & nob) { nob.Dump(); } );
+	Apply2All([&](Nob const & nob) { nob.Dump(); });
 }
 
 MicroMeterRect const UPNobList::CalcEnclosingRect( SelMode const mode ) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
-	for ( auto const & pNob : m_list )
-		if ( pNob && ((mode == SelMode::allNobs) || pNob->IsSelected()) )
-			pNob->Expand( rect );
+	for (auto const & pNob : m_list)
+		if (pNob && ((mode == SelMode::allNobs) || pNob->IsSelected()))
+			pNob->Expand(rect);
 	return rect;
 }
 

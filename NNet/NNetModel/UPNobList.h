@@ -164,7 +164,7 @@ private:
 	void decCounter(NobId const & id) { decCounter(GetAt(id)); }
 
 	void countNobs();
-	void copy( UPNobList const & );
+	void copy(UPNobList const &);
 
 	vector<UPNob>                                 m_list             {};
 	array<unsigned int, NobType::NR_OF_NOB_TYPES> m_nobsOfType       {};

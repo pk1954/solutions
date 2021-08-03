@@ -397,7 +397,7 @@ void NNetModelCommands::SelectSubtree( NobId const id, bool  const bOn )
 	m_pCmdStack->PushCommand( make_unique<SelectSubtreeCommand>( id, bOn ) );
 }
 
-void NNetModelCommands::SelectNobsInRect( MicroMeterRect const & rect )
+void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << L" " << rect << endl;
@@ -408,12 +408,12 @@ void NNetModelCommands::AnalyzeLoops()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AnalyzeCommand>( ModelAnalyzer::FindLoop(*m_pNMRI) ) );
+	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMRI)));
 }
 
 void NNetModelCommands::AnalyzeAnomalies()
 {
 	if ( IsTraceOn() )
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand( make_unique<AnalyzeCommand>( ModelAnalyzer::FindAnomaly(*m_pNMRI) ) );
+	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMRI)));
 }

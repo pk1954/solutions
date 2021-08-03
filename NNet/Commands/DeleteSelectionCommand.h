@@ -19,8 +19,6 @@ public:
 
 	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		//nmwi.DUMP();
-		//nmwi.CheckModel();
 		m_cmdStack.Initialize(&nmwi, nullptr);
 		nmwi.GetUPNobs().Apply2AllSelected<Nob>
 		(

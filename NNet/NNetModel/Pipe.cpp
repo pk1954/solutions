@@ -115,10 +115,10 @@ void Pipe::Check() const
 	assert( m_pKnotEnd  ->IsSuccessorOf( * this ) );
 }
 
-void Pipe::Expand( MicroMeterRect & umRect ) const
+void Pipe::Expand(MicroMeterRect & umRect) const
 {
-	umRect.Expand( GetStartPoint() );
-	umRect.Expand( GetEndPoint  () );
+	umRect.Expand(GetStartPoint());
+	umRect.Expand(GetEndPoint  ());
 }
 
 void Pipe::Prepare()
@@ -128,8 +128,8 @@ void Pipe::Prepare()
 
 void Pipe::MoveNob(MicroMeterPnt const & delta)
 {
-	m_pKnotStart->MoveNob( delta );
-	m_pKnotEnd  ->MoveNob( delta );
+	m_pKnotStart->MoveNob(delta);
+	m_pKnotEnd  ->MoveNob(delta);
 }
 
 // IsIncludedIn should be called IsPossiblyIncludedIn

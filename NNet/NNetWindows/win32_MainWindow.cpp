@@ -92,8 +92,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 	{
 		{ IDD_ADD_INCOMING2KNOT,      L"Add incoming dendrite"       },
 		{ IDD_ADD_INCOMING2PIPE,      L"Add incoming dendrite"       },
-		{ IDD_ADD_OUTGOING2KNOT,      L"Add outgoing knot"           },
-		{ IDD_ADD_OUTGOING2PIPE,      L"Add outgoing knot"           },
+		{ IDD_ADD_OUTGOING2KNOT,      L"Add outgoing dendrite"       },
+		{ IDD_ADD_OUTGOING2PIPE,      L"Add outgoing dendrite"       },
 		{ IDD_ADD_SIGNAL,             L"New EEG sensor" 		     },
 //		{ IDM_ALIGN_NOBS,             L"Align selected objects"      },
 		{ IDD_APPEND_INPUT_NEURON,    L"Add input neuron"            },
@@ -251,12 +251,12 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 
 void MainWindow::CenterModel()
 {
-	centerAndZoomRect( UPNobList::SelMode::allNobs, 1.2f ); // give 20% more space (looks better)
+	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
 }
 
 void MainWindow::CenterSelection()
 {
-	centerAndZoomRect( UPNobList::SelMode::selectedNobs, 2.0f );
+	centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
 bool const MainWindow::ArrowsVisible() const
@@ -446,18 +446,18 @@ void MainWindow::centerAndZoomRect
 	float              const fRatioFactor 
 )
 {
-	MicroMeterRect umRect { m_pNMRI->GetUPNobs().CalcEnclosingRect( mode ) };
+	MicroMeterRect umRect { m_pNMRI->GetUPNobs().CalcEnclosingRect(mode) };
 	PixelCoordsFp  coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	( 
-		GetCoord().ComputeZoom( umRect.Scale( NEURON_RADIUS ), GetClRectSize(), fRatioFactor ) 
+		GetCoord().ComputeZoom(umRect.Scale(NEURON_RADIUS), GetClRectSize(), fRatioFactor) 
 	);
 	coordTarget.SetPixelOffset // do not change order! 
 	( 
-		coordTarget.Transform2fPixelSize( umRect.GetCenter() ) -  // SetPixelSize result is used here  
-		Convert2fPixelPoint( GetClRectCenter() ) 
+		coordTarget.Transform2fPixelSize(umRect.GetCenter()) -  // SetPixelSize result is used here  
+		Convert2fPixelPoint(GetClRectCenter()) 
 	);
-	m_upCoordAnimation->Start( GetCoord(), coordTarget );
+	m_upCoordAnimation->Start(GetCoord(), coordTarget);
 }
 
 void MainWindow::OnPaint()

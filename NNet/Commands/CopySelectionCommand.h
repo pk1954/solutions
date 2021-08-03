@@ -31,12 +31,12 @@ private:
 
 	void addMissingKnot(BaseKnot *, Nob2NobFunc const &);
 
-	using SelNobsIndex  = NamedType <int, struct SelNobsIndex_Parameter>;
+	using SelNobsIndex  = NamedType <size_t, struct SelNobsIndex_Parameter>;
 	using SSIndexVector = vector<SelNobsIndex>;
 
-	int           m_iSizeOfSelection { 0 };
-	SSIndexVector m_indexList        {};     // indices into m_copies
-	vector<UPNob> m_copies           {};
-	NobIdList     m_selectedNobIds   {};
+	size_t        m_sizeOfSelection { 0 };
+	SSIndexVector m_indexList       {};     // indices into m_copies
+	vector<UPNob> m_copies          {};
+	NobIdList     m_selectedNobIds  {};
 };
 

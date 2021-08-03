@@ -28,8 +28,8 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
-			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize( pixDelta ) }; 
-			m_pObservedNNetWindow->NNetMove( - umDelta );               // move the observed window in opposite direction
+			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize(pixDelta) }; 
+			m_pObservedNNetWindow->NNetMove(-umDelta);               // move the observed window in opposite direction
 		}
 		m_ptLast = ptCrsr;
 	}
@@ -46,21 +46,21 @@ void MiniWindow::Notify( bool const bImmediately )
 		float          const EXTRA_SPACE_FACTOR { 1.2f };                              // give 20% more space (looks better)
 		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };     // current position of main window view 
 		MicroMeterRect const umRectModel { m_pNMRI->GetUPNobs().CalcEnclosingRect() }; // current extension of model
-		MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };         // all this should be visible  
-		fPixelPoint    const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
+		MicroMeterRect const umRectShow  { Union(umRectMain, umRectModel) };           // all this should be visible  
+		fPixelPoint    const fpCenter    { Convert2fPixelPoint(GetClRectCenter()) };
 		MicroMeterPnt  const umPntTarget { umRectShow.GetCenter() };
 		MicroMeter     const umPixelSizeTarget
 		{
 			GetCoordC().ComputeZoom
 			( 
-				umRectShow.Scale( NEURON_RADIUS ), 
+				umRectShow.Scale(NEURON_RADIUS), 
 				GetClRectSize(),
 				EXTRA_SPACE_FACTOR
 			)
 		};
-		GetDrawContext().Zoom( umPixelSizeTarget );
-		GetDrawContext().Center( umPntTarget, fpCenter );
-		NNetWindow::Notify( false );
+		GetDrawContext().Zoom(umPixelSizeTarget);
+		GetDrawContext().Center(umPntTarget, fpCenter);
+		NNetWindow::Notify(false);
 	}
 }
 

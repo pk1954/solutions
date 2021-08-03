@@ -21,25 +21,25 @@ NobStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri )
 		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
-		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
+		statusDisplay(wstring(L"Looking for loop of size ") + to_wstring(iMaxLoopSize) + L". Press ESC to stop.");
 		m_nobStack.clear();
-		if ( nmri.GetUPNobs().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop( b ); } ) )
+		if ( nmri.GetUPNobs().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop(b); } ) )
 		{
 			if ( m_bStop )  
 			{
 				m_nobStack.clear();
-				statusDisplay( L"analysis aborted by user" );
+				statusDisplay(L"analysis aborted by user");
 				return m_nobStack;
 			}
 			else 
 			{
-				statusDisplay( L"loop found" );
+				statusDisplay(L"loop found");
 				return m_nobStack;
 			}
 		}
 	}
 
-	statusDisplay( L"no loop found" );
+	statusDisplay(L"no loop found");
 	return m_nobStack;
 }
 
@@ -48,7 +48,7 @@ NobStack const ModelAnalyzer::FindLoop( NNetModelReaderInterface const & nmri )
 // returns true, if loop found (m_bStop == false) or aborted by user (m_bStop == true). 
 //         false, if analysis completed and no loop found
 
-bool ModelAnalyzer::findLoop( Nob const & nob )
+bool ModelAnalyzer::findLoop(Nob const & nob)
 {
 	if ( ( * m_pEscFunc )() )
 		m_bStop = true;
@@ -65,8 +65,8 @@ bool ModelAnalyzer::findLoop( Nob const & nob )
 	bool bResult { false };
 
 	if ( 
-		  ( m_nobStack.size() > 1 ) &&                        // we are beyond the initial nob
-	      ( nob.GetId() == m_nobStack.front()->GetId() )  // and found the same nob again
+		  (m_nobStack.size() > 1) &&                    // we are beyond the initial nob
+	      (nob.GetId() == m_nobStack.front()->GetId())  // and found the same nob again
 	   )
 	{
 		bResult = true;  // loop found. Do not pop_back stack!
@@ -96,7 +96,7 @@ bool ModelAnalyzer::findLoop( Nob const & nob )
 	return bResult;
 }
 
-bool ModelAnalyzer::hasAnomaly( Knot const & knot )
+bool ModelAnalyzer::hasAnomaly(Knot const & knot)
 {
 	bool bFoundAnomaly { false };
 
