@@ -62,18 +62,22 @@ public:
 	unsigned int const GetCounter        (NobType const)                        const;
 	unsigned int const GetCounter        ()                                     const;
 	NobId        const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
-	bool         const Apply2AllB        (                    NobCrit const &) const;
-	void               Apply2All         (NobFuncC const &)                    const;
+	bool         const Apply2AllB        (                     NobCrit const &) const;
+	void               Apply2All         (NobFuncC const &)                     const;
 	void               Apply2All         (NobFunc  const &);
 	void               Apply2AllSelected (NobType const, NobFuncC const &)      const;
 	void               Apply2AllSelected (NobType const, NobFunc  const &);
+	void               Move              (MicroMeterPnt const &);
 
 	unique_ptr<vector<Nob *>> GetAllSelected();
 
 	enum class SelMode { allNobs,	selectedNobs };
 	MicroMeterRect const CalcEnclosingRect(SelMode const = SelMode::allNobs) const;
 
-	NobId const Push(UPNob);
+	NobId           const Push(UPNob);
+	unique_ptr<Nob> const Pop() { return move(Pop<Nob>()); }
+
+	void MoveFrom(UPNobList &, size_t);
 
 	template <Nob_t T>
 	unique_ptr<T> Pop()

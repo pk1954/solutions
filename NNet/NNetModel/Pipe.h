@@ -24,8 +24,6 @@ public:
 
 	Pipe(Pipe const &);   // copy constructor
 
-	Pipe & operator=(Pipe const &); // copy assignment operator
-
 	virtual ~Pipe();
 
 	virtual bool operator==(Nob const &) const override;

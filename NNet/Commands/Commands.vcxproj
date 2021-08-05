@@ -69,7 +69,7 @@
   <ItemGroup>
     <ClInclude Include="AddIncoming2KnotCommand.h" />
     <ClInclude Include="AddIncoming2PipeCommand.h" />
-    <ClInclude Include="AddModelCommand.h" />
+    <ClInclude Include="AddNobsCommand.h" />
     <ClInclude Include="AddOutgoing2KnotCommand.h" />
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AddSignalCommand.h" />
@@ -82,7 +82,6 @@
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
-    <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeleteClosedConnCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
@@ -128,11 +127,6 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
-    </ClCompile>
-    <ClCompile Include="CopySelectionCommand.cpp">
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <ClCompile Include="DiscBaseKnotCmd.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>

@@ -111,7 +111,6 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 	baseKnotSrc.Apply2AllInPipes ([&](Pipe const &p){AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
 	if (baseKnotSrc.GetParentNob())
 		SetParentNob(dstFromSrc(baseKnotSrc.GetParentNob()));
-//	Check();
 }
 
 void BaseKnot::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)

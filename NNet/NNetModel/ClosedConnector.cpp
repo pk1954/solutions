@@ -134,7 +134,7 @@ void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 void ClosedConnector::Select(bool const bOn) 
 { 
     Nob::Select(bOn);
-    for (auto it: m_list)
+    for (auto & it: m_list)
         it->Select(bOn);
 }
 

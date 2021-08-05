@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "AddModelCommand.h"
+#include "AddNobsCommand.h"
 #include "AddIncoming2KnotCommand.h"
 #include "AddIncoming2PipeCommand.h"
 #include "AddOutgoing2KnotCommand.h"
@@ -15,7 +15,7 @@
 #include "ClearBeepersCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
-#include "CopySelectionCommand.h"
+#include "CopySelectedNobs.h"
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
@@ -268,13 +268,6 @@ void NNetModelCommands::SetIoNeurons
 	m_pCmdStack->PushCommand(make_unique<SetIoNeuronsCommand>(umPntVectorRun, move(upNobIds)));
 }
 
-void NNetModelCommands::AddModel()
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<AddModelCommand>(*m_pNMWI, move(m_pModelImporter->GetImportedModel())));
-}
-
 void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
@@ -354,11 +347,18 @@ void NNetModelCommands::ClearBeepers()
 
 ///////////////////// selection commands /////////////////////////////
 
+void NNetModelCommands::AddModel()
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(*m_pNMWI, move(m_pModelImporter->GetImportedModel()->GetUPNobs())));
+}
+
 void NNetModelCommands::CopySelection()
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<CopySelectionCommand>(*m_pNMWI));
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(*m_pNMWI,move(CopySelectedNobs(*m_pNMWI))));
 }
 
 void NNetModelCommands::RestrictSelection(NobType::Value const val)

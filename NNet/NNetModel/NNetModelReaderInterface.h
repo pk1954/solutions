@@ -45,9 +45,9 @@ public:
 
 	UPNobList     const & GetUPNobs()                            const { return m_pModel->GetUPNobs(); }
 	bool          const   AnyNobsSelected()                      const { return m_pModel->GetUPNobs().AnyNobsSelected(); }
-	bool          const   IsValidNobId(NobId const id)         const { return m_pModel->GetUPNobs().IsValidNobId(id); }
-	MicroMeterPnt const   GetNobPos   (NobId const id)         const { return m_pModel->GetNobPos(id); }
-	Nob           const * GetConstNob (NobId const id)         const { return m_pModel->GetConstNob(id); }
+	bool          const   IsValidNobId(NobId const id)           const { return m_pModel->GetUPNobs().IsValidNobId(id); }
+	MicroMeterPnt const   GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
+	Nob           const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	size_t        const   GetSizeOfNobList()                     const { return m_pModel->GetUPNobs().Size(); }
 	fMicroSecs    const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime (); }
 	MonitorData   const & GetMonitorData()                       const { return m_pModel->GetMonitorData    (); }
@@ -64,11 +64,10 @@ public:
 		NobCrit       const & = NobCritAlwaysTrue 
 	) const;
 
-	void DrawExterior  (NobId const, DrawContext const &, tHighlight const) const;
-	void DrawInterior  (NobId const, DrawContext const &, tHighlight const) const;
-	void DrawNeuronText(NobId const, DrawContext const &) const;
-	
-	void DrawLine(MicroMeterLine const &, DrawContext const &) const;
+	void DrawExterior  (NobId          const,   DrawContext const &, tHighlight const) const;
+	void DrawInterior  (NobId          const,   DrawContext const &, tHighlight const) const;
+	void DrawNeuronText(NobId          const,   DrawContext const &)                   const;
+	void DrawLine      (MicroMeterLine const &, DrawContext const &)                   const;
 
 	unsigned int const GetNrOf(NobType const type) const { return m_pModel->GetUPNobs().GetCounter(type); }
 	unsigned int const GetNrOfNobs()               const { return m_pModel->GetUPNobs().GetCounter(); }

@@ -148,6 +148,12 @@ NobId const UPNobList::Push(UPNob upNob)
 	return idNewSlot;
 }
 
+void UPNobList::MoveFrom(UPNobList & src, size_t nrOfItems)
+{
+	for (size_t i = 0; i < nrOfItems; ++i)
+		Push(src.Pop());
+}
+
 void UPNobList::copy(const UPNobList & rhs)
 {
 	rhs.CheckNobList();
@@ -295,6 +301,11 @@ void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) con
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
 	Apply2All([&](Nob & s) { s.Select(bOn); }); 
+}
+
+void UPNobList::Move(MicroMeterPnt const& delta)
+{
+	Apply2All<BaseKnot>([&](BaseKnot & b) { b.MoveNob(delta); });
 }
 
 unsigned int const UPNobList::CountInSelection(NobType const nobType) const

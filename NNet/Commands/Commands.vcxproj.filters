@@ -63,9 +63,6 @@
     <ClInclude Include="SelectNobsInRectCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CopySelectionCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SelectAllBeepersCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,7 +81,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddModelCommand.h">
+    <ClInclude Include="AddNobsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AppendNeuronCommand.h">
@@ -162,9 +159,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CopySelectionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

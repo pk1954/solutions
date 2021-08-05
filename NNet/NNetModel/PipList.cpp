@@ -27,14 +27,8 @@ void PipeList::Dump() const
 
 void PipeList::Check() const
 {
-	for (auto it : m_list)
-	{
-		if (! it)
-		{
-			int x = 42;
-		}
+	for (auto & it : m_list)
 		assert(it);
-	}
 }
 
 void PipeList::Remove(Pipe * const p) 
@@ -52,15 +46,13 @@ void PipeList::Replace(Pipe * const pDel, Pipe * const pAdd)
 
 void PipeList::Apply2All(PipeFunc const &f) const 
 { 
-	for (auto it : m_list) 
-	{ 
+	for (auto & it : m_list) 
 		f(* it); 
-	} 
 }
 
 bool PipeList::Apply2AllB(PipeCrit const &f) const 
 { 
-	for (auto it : m_list) 
+	for (auto & it : m_list) 
 	{ 
 		if (f(* it))
 			return true;

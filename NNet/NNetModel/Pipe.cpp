@@ -61,7 +61,7 @@ bool Pipe::operator==(Nob const & rhs) const
 {
 	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };
 	return
-	(this->Nob::operator== (rhs))                          && 
+	(this->Nob::operator==(rhs))                             && 
 	(m_pKnotStart->GetId() == pipeRhs.m_pKnotStart->GetId()) &&
 	(m_pKnotEnd  ->GetId() == pipeRhs.m_pKnotEnd  ->GetId());
 }
@@ -101,9 +101,9 @@ void Pipe::Recalc()
 }
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
-	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
-	BaseKnot * const pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
-	BaseKnot * const pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
+	Pipe       const & pipeSrc        { static_cast<Pipe const &>(nobSrc) };
+	BaseKnot * const   pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
+	BaseKnot * const   pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
 	SetStartKnot(pBaseKnotStart);
 	SetEndKnot  (pBaseKnotEnd);
 }
