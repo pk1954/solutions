@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "MicroMeterPosDir.h"
-#include "IoNeuronList.h"
 #include "IoNeuron.h"
 #include "Neuron.h"
 #include "IoConnector.h"

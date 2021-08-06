@@ -7,7 +7,6 @@
 #include "MoreTypes.h"
 #include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
-#include "IoNeuronList.h"
 #include "Command.h"
 #include "IoNeuron.h"
 

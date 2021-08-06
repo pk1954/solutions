@@ -6,11 +6,7 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "UPNobList.h"
-#include "IoNeuronList.h"
 #include "Command.h"
-#include "IoConnector.h"
-#include "IoNeuron.h"
 
 using std::vector;
 
