@@ -10,7 +10,6 @@
 #include "MoreTypes.h"
 #include "MonitorData.h"
 #include "IoNeuron.h"
-#include "IoNeuronList.h"
 #include "NobType.h"
 #include "NobId.h"
 

@@ -9,7 +9,6 @@
 #include "win32_animation.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "IoNeuronList.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 #include "AnimationCmd.h"
@@ -25,17 +24,17 @@ class MakeConnAnimation : public AnimationCmd
 public:
     MakeConnAnimation
     (
-        MainWindow               & win,
-        NNetModelWriterInterface & nmwi,
-        unique_ptr<IoNeuronList>   upList
+        MainWindow                   & win,
+        NNetModelWriterInterface     & nmwi,
+        vector<IoNeuron *>          && list
    )
       : AnimationCmd(win),
         m_nmwi(nmwi)
     {
-        if (upList->GetFirst().IsInputNeuron())
-            m_upIoConnector = make_unique<InputConnector>(move(upList));
+        if (list.front()->IsInputNeuron())
+            m_upIoConnector = make_unique<InputConnector>(move(list));
         else 
-            m_upIoConnector = make_unique<OutputConnector>(move(upList));
+            m_upIoConnector = make_unique<OutputConnector>(move(list));
     }
 
     virtual void Do(function<void()> const & targetReachedFunc)

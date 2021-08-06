@@ -193,7 +193,7 @@ private:
 
     UPNob createIoConnector(Script & script, NobType const nobType) const 
     {
-        unique_ptr<IoNeuronList> upIoNeuronList { make_unique<IoNeuronList>() };
+        vector<IoNeuron *> ioNeuronList;
         script.ScrReadSpecial(BaseKnot::OPEN_BRACKET);
         int const iNrOfElements { script.ScrReadInt() };
         script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
@@ -203,7 +203,7 @@ private:
             IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
             if (! pIoNeuron)
                 throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found"));
-            upIoNeuronList->Add(pIoNeuron);
+            ioNeuronList.push_back(pIoNeuron);
             if (++iElem == iNrOfElements)
                 break;
             script.ScrReadSpecial(BaseKnot::ID_SEPARATOR);
@@ -211,9 +211,9 @@ private:
         script.ScrReadSpecial(BaseKnot::CLOSE_BRACKET);
         unique_ptr<IoConnector> upIoConnector;
         if (nobType.IsInputConnectorType())
-            upIoConnector = make_unique<InputConnector> (move(upIoNeuronList));
+            upIoConnector = make_unique<InputConnector> (move(ioNeuronList));
         else
-            upIoConnector = make_unique<OutputConnector>(move(upIoNeuronList));
+            upIoConnector = make_unique<OutputConnector>(move(ioNeuronList));
         upIoConnector->AlignDirection();
         return move(upIoConnector);
     }

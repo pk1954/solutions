@@ -18,7 +18,8 @@ public:
 	static bool const TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
 
 	OutputConnector();
-	OutputConnector(unique_ptr<IoNeuronList>);
+	OutputConnector(vector<IoNeuron *> &);
+	OutputConnector(vector<IoNeuron *> &&);
 	OutputConnector(OutputConnector const &);   // copy constructor
 
 	virtual ~OutputConnector() {}

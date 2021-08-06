@@ -5,9 +5,11 @@
 #include "stdafx.h"
 #include "MicroMeterPntVector.h"
 
-MicroMeterPntVector::MicroMeterPntVector(IoNeuronList const & nobList)
+MicroMeterPntVector::MicroMeterPntVector(vector<IoNeuron *> const & nobList)
 {
-    nobList.Apply2All([&](IoNeuron & ioNeuron) { Add(ioNeuron.GetPosDir()); });
+    for (auto pNob : nobList) 
+        if (pNob)
+            Add(pNob->GetPosDir());
 }
 
 void MicroMeterPntVector::Apply2All(function<void(MicroMeterPosDir &)> const & func)

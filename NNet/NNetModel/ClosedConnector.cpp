@@ -125,8 +125,8 @@ void ClosedConnector::Clear()
 
 void ClosedConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
-    for (int i = 0; i < m_list.size(); ++i)
-        m_list[i] = static_cast<Neuron *>(dstFromSrc(m_list[i]));
+    for (auto & it : m_list) 
+        it = static_cast<IoNeuron *>(dstFromSrc(it));
 }
 
 void ClosedConnector::Select(bool const bOn) 

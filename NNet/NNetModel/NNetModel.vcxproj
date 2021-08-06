@@ -215,7 +215,6 @@
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="NobIdList.h" />
-    <ClInclude Include="IoNeuronList.h" />
     <ClInclude Include="NobErrorHandler.h" />
     <ClInclude Include="PipeList.h" />
     <ClInclude Include="SignalFactory.h" />
@@ -243,7 +242,6 @@
     <ClCompile Include="IoNeuron.cpp" />
     <ClCompile Include="IoConnector.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
-    <ClCompile Include="IoNeuronList.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="MicroMeterPntVector.cpp" />
     <ClCompile Include="MicroMeterPosDir.cpp" />

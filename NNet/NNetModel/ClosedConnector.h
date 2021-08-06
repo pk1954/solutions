@@ -8,11 +8,11 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Nob.h"
+#include "Neuron.h"
 #include "NobType.h"
 
 using std::vector;
 
-class Neuron;
 class IoConnector;
 
 class ClosedConnector: public Nob

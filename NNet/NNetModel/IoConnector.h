@@ -6,7 +6,6 @@
 
 #include <vector>
 #include "BoolOp.h"
-#include "IoNeuronList.h"
 #include "MoreTypes.h"
 #include "NobType.h"
 
@@ -48,7 +47,6 @@ public:
 
 	virtual bool const IsCompositeNob() { return true; }
 
-	void               Reverse();
 	void               Push(IoNeuron * const);
 	IoNeuron * const   Pop();
 	IoNeuron   const & GetElem(size_t const) const;
@@ -72,7 +70,7 @@ public:
 	friend wostream & operator<< (wostream &, IoConnector const &);
 
 protected:
-	unique_ptr<IoNeuronList> m_upList {};
+	vector<IoNeuron *> m_list {};
 };
 
 IoConnector const * Cast2IoConnector(Nob const *);

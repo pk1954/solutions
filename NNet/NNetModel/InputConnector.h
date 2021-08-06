@@ -18,7 +18,8 @@ public:
 	static bool const TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
 	InputConnector();
-	InputConnector(unique_ptr<IoNeuronList>);
+	InputConnector(vector<IoNeuron *> &);
+	InputConnector(vector<IoNeuron *> &&);
 	InputConnector(InputConnector const &);   // copy constructor
 
 	virtual ~InputConnector() {}

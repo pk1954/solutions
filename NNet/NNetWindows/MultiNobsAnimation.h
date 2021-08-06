@@ -8,7 +8,6 @@
 #include "win32_mainWindow.h"
 #include "win32_callable.h"
 #include "win32_animation.h"
-#include "IoNeuronList.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
 #include "AnimationCmd.h"
@@ -21,7 +20,7 @@ public:
     MultiNobsAnimation
     (
         MainWindow                & win,
-        IoNeuronList              & nobs,
+        vector<IoNeuron *>              & nobs,
         MicroMeterPntVector const & umPntVectorTarget
    )
       : AnimationCmd(win),
@@ -48,14 +47,14 @@ public:
 
     virtual void UpdateUI()
     {
-        for (size_t i = 0; i < m_nobsAnimated.Size(); ++i)
-            m_nobsAnimated.GetElem(i).SetPosDir(m_animation.GetActual().GetPosDir(i));
+        for (size_t i = 0; i < m_nobsAnimated.size(); ++i)
+            m_nobsAnimated.at(i)->SetPosDir(m_animation.GetActual().GetPosDir(i));
         AnimationCmd::UpdateUI();
     }
 
 private:
 
-    IoNeuronList              m_nobsAnimated;
+    vector<IoNeuron *>        m_nobsAnimated;
     MicroMeterPntVector const m_umPntVectorStart;
     MicroMeterPntVector const m_umPntVectorTarget;
 

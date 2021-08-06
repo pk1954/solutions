@@ -6,7 +6,6 @@
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "IoNeuronList.h"
 #include "Command.h"
 
 class SelectionCommand : public Command

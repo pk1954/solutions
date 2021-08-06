@@ -12,125 +12,139 @@ using std::make_unique;
 
 IoConnector::IoConnector(NobType const nobType)
     :	Nob(nobType)
-{
-    m_upList = make_unique<IoNeuronList>();
-}
+{ }
 
 IoConnector::IoConnector(IoConnector const & src)
   : Nob(src)
 {
-    m_upList = make_unique<IoNeuronList>(*src.m_upList.get());
+    m_list = src.m_list;
 }
 
 void IoConnector::Check() const
 {
     Nob::Check();
-    m_upList->Check();
+    if (m_list.empty())
+        return;
+    NobType const nobType { m_list.front()->GetNobType() };
+    for (auto it : m_list) 
+    { 
+        assert(it);
+        assert(it->GetNobType() == nobType);
+        it->Check();
+    }; 
 }
 
 void IoConnector::Dump() const
 {
     Nob::Dump();
-    m_upList->Dump();
+    wcout << * this;
 }
 
 void IoConnector::Select(bool const bOn) 
 { 
     Nob::Select(bOn);
-    m_upList->SelectAll(bOn);
+    for (auto it: m_list)
+        it->Select(bOn);
 }
 
 void IoConnector::Push(IoNeuron * const p) 
 { 
-    m_upList->Add(p); 
+    m_list.push_back(p); 
 }
 
 IoNeuron * const IoConnector::Pop() 
 { 
-    IoNeuron * pRet { & m_upList->GetLast() };
-    m_upList->RemoveLast();
+    IoNeuron * pRet { m_list.back() };
+    m_list.pop_back();
     return pRet;
 }
 
 size_t const IoConnector::Size() const 
 { 
-    return m_upList->Size(); 
+    return m_list.size(); 
 }
 
 IoNeuron const & IoConnector::GetElem(size_t const nr) const 
 { 
-    return m_upList->GetElem(nr); 
+    return * m_list.at(nr); 
 }
 
 void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
-    m_upList->Link(dstFromSrc);
-}
-
-void IoConnector::Reverse()
-{
-    m_upList->Reverse();
+    for (auto & it : m_list) 
+        it = static_cast<IoNeuron *>(dstFromSrc(it));
 }
 
 void IoConnector::Clear()
 {
     Nob::Clear();
-    m_upList->Clear();
+    m_list.clear();
 }
 
 void IoConnector::AlignDirection()
 {
-    m_upList->AlignDirection();
+    MicroMeterLine const umLine   { m_list.front()->GetPos(), m_list.back()->GetPos() };
+    MicroMeterPnt  const umPntDir { CalcOrthoVector(m_list, umLine) };
+    for (auto it : m_list) { it->SetDirVector(umPntDir); }
 }
 
 MicroMeterPnt const IoConnector::GetPos() const 
 { 
-    return m_upList->IsEmpty() ? MicroMeterPnt::NULL_VAL() : m_upList->GetPos(); 
+    assert(!m_list.empty());
+    return (m_list.front()->GetPos() + m_list.back()->GetPos()) * 0.5f; 
 }
 
 Radian const IoConnector::GetDir() const 
 { 
-    return m_upList->GetDir();
+    return m_list.empty() ? Radian::NULL_VAL() : m_list.front()->GetDir();
 }
 
 MicroMeterPosDir const IoConnector::GetPosDir() const 
 { 
-    return m_upList->IsEmpty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir(GetPos(), GetDir());
+    return m_list.empty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir(GetPos(), GetDir());
 }
 
 void IoConnector::SetParentPointers()
 {
-    m_upList->SetParentPointers(this);
+    for (auto it : m_list) { it->SetParentNob(this); }
 }
 
 void IoConnector::ClearParentPointers()
 {
-    m_upList->ClearParentPointers();
+    for (auto it : m_list) { it->SetParentNob(nullptr); }
 }
 
 void IoConnector::Prepare()
 {
-    m_upList->Prepare();
+    for (auto it : m_list) { it->Prepare(); }
 }
 
 bool const IoConnector::CompStep()
 {
-    return m_upList->CompStep();
+    for (auto it : m_list) { if (it->CompStep()) return true; }
+    return false;
 }
 
 void IoConnector::Recalc()
 {
-    m_upList->Recalc();
+    for (auto it : m_list) { it->Recalc(); }
 }
 
 void IoConnector::Apply2All(function<void(IoNeuron &)> const & func) const
 {
-    m_upList->Apply2All([&](IoNeuron & n){ func(n); });
+    for (auto pNob : m_list) 
+        if (pNob)
+            func(* pNob);
 }                        
 
 void IoConnector::SetDir(Radian const radianNew)
 {
-    m_upList->RotateNobs(GetPos(), radianNew - GetDir());
+    MicroMeterPnt umPntPivot { GetPos() };
+    Radian        radDelta   { radianNew - GetDir() };
+    for (auto it : m_list) 
+    { 
+        it->RotateNob(umPntPivot, radDelta); 
+    }
 }
 
 void IoConnector::SetPos(MicroMeterPnt const & umPos)
@@ -142,18 +156,18 @@ void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
 {
     MicroMeterPnt const pos { GetPos() };
     assert(pos.IsNotNull());
-    m_upList->RotateNobs(pos, umPosDir.GetDir() - GetDir());
-    m_upList->MoveNobs(umPosDir.GetPos() - pos);
+    RotateNob(pos, umPosDir.GetDir() - GetDir());
+    MoveNob  (umPosDir.GetPos() - pos);
 }
 
 void IoConnector::MoveNob(MicroMeterPnt const & delta)       
 {
-    m_upList->MoveNobs(delta);
+    for (auto it : m_list) { it->MoveNob(delta); }
 }
 
 void IoConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
 {
-    m_upList->RotateNobs(umPntPivot, radDelta);
+    for (auto it : m_list) { it->RotateNob(umPntPivot, radDelta); }
 }
 
 void IoConnector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
@@ -167,27 +181,29 @@ void IoConnector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & u
 
 bool const IoConnector::IsIncludedIn(MicroMeterRect const & umRect) const 
 {
-    return m_upList->IsIncludedIn(umRect);
+    for (auto it : m_list) { if (it->IsIncludedIn(umRect)) return true; }
+    return false;
 }
 
 bool const IoConnector::Includes(MicroMeterPnt const & umPnt) const
 {
-    return m_upList->Includes(umPnt);
+    for (auto it : m_list) { if (it->Includes(umPnt)) return true; }
+    return false;
 }
 
 void IoConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-    m_upList->DrawExterior(context, type);
+    for (auto it : m_list) { it->DrawExterior(context, type); }
 }
 
 void IoConnector::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-    m_upList->DrawInterior(context, type);
+    for (auto it : m_list) { it->DrawInterior(context, type); }
 }
 
 void IoConnector::Expand(MicroMeterRect & umRect) const
 {
-    m_upList->Expand(umRect);
+    for (auto it : m_list) { umRect.Expand(it->GetPos()); }
 }
 
 IoConnector const * Cast2IoConnector(Nob const * pNob)
@@ -204,6 +220,14 @@ IoConnector * Cast2IoConnector(Nob * pNob)
 
 wostream & operator<< (wostream & out, IoConnector const & v)
 {
-    out << * v.m_upList.get();
+    out << BaseKnot::OPEN_BRACKET << v.m_list.size() << BaseKnot::NR_SEPARATOR;
+    for (auto & it: v.m_list)
+    {
+        out << it->GetId();
+        if (&it == &v.m_list.back())
+            break;
+        out << BaseKnot::ID_SEPARATOR;
+    }
+    out << BaseKnot::CLOSE_BRACKET;
     return out;
 }

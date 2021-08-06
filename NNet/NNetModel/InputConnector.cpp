@@ -4,30 +4,37 @@
 
 #include "stdafx.h"
 #include "DrawContext.h"
+#include "IoNeuron.h"
 #include "InputConnector.h"
 
 InputConnector::InputConnector()
     :	IoConnector(NobType::Value::inputConnector)
 {}
 
-InputConnector::InputConnector(unique_ptr<IoNeuronList> upSrc)
+InputConnector::InputConnector(vector<IoNeuron *> & src)
     :	IoConnector(NobType::Value::inputConnector)
 {
-    m_upList = move(upSrc);
+    m_list = move(src);
+}
+
+InputConnector::InputConnector(vector<IoNeuron *> && src)
+    :	IoConnector(NobType::Value::inputConnector)
+{
+    m_list = move(src);
 }
 
 InputConnector::InputConnector(InputConnector const & src)   // copy constructor
-  :	IoConnector(src)
+    :	IoConnector(src)
 {
-    m_upList = make_unique<IoNeuronList>(*src.m_upList.get());
+    m_list = src.m_list;
 }
 
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
     if (Size() > 1)
     {
-        MicroMeterPnt umPnt1     { m_upList->GetFirst().GetPos() }; 
-        MicroMeterPnt umPnt2     { m_upList->GetLast ().GetPos() }; 
+        MicroMeterPnt umPnt1     { m_list.front()->GetPos() }; 
+        MicroMeterPnt umPnt2     { m_list.back ()->GetPos() }; 
         MicroMeterPnt umPntDir   { umPnt2 - umPnt1 };
         MicroMeterPnt umPntOff   { umPntDir.ScaledTo(NEURON_RADIUS * 1.2f) };
         MicroMeterPnt umOrthoVec { umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS * 0.3f) };
@@ -37,7 +44,7 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         (
             umPnt1 - umPntOff, 
             umPnt2 + umPntOff, 
-            m_upList->GetFirst().GetExtension() * 1.2f, 
+            m_list.front()->GetExtension() * 1.2f, 
             GetExteriorColor(type)
        );
     }
