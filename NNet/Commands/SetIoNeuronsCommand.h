@@ -25,7 +25,12 @@ public:
 
 	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		nmwi.SetIoNeurons(m_umPntVectorSrc, *m_upNobIdsDst.get());
+		unsigned int ui = 0;
+		m_upNobIdsDst->Apply2All
+		(
+			[&](NobId const & idDst)
+			{ nmwi.SetPosDir(idDst, m_umPntVectorSrc.GetPosDir(ui++)); }
+		);
 	}
 
 private:

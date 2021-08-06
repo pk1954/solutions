@@ -9,7 +9,6 @@
 #include <numeric>
 #include "Nob.h"
 #include "NobId.h"
-#include "IoNeuronList.h"
 #include "NobErrorHandler.h"
 
 using std::move;

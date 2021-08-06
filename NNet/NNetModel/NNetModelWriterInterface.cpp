@@ -74,34 +74,6 @@ void NNetModelWriterInterface::RemoveOrphans()
 	); 
 }
 
-void NNetModelWriterInterface::SetIoNeurons
-(
-	MicroMeterPntVector const & umPntVectorSrc, 
-	NobIdList           const & nobIdsDst
-)
-{
-	unsigned int ui = 0;
-	nobIdsDst.Apply2All
-	(
-		[&](NobId const & idDst)
-		{ SetPosDir(idDst, umPntVectorSrc.GetPosDir(ui++)); }
-	);
-}
-
-void NNetModelWriterInterface::SetIoNeurons
-(
-	MicroMeterPntVector const & umPntVector, 
-	IoNeuronList        const & nobPtrList
-)
-{
-	unsigned int ui = 0;
-	nobPtrList.Apply2All
-	(
-		[&](IoNeuron & ioNeuron)	
-		{ ioNeuron.SetPosDir(umPntVector.GetPosDir(ui++)); }
-	);
-}
-
 void NNetModelWriterInterface::Reconnect(NobId const id)
 {
 	if (Nob * pNod { m_pModel->GetUPNobs().GetAt(id) })

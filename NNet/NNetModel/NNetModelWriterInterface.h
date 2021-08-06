@@ -147,9 +147,6 @@ public:
 
     MicroMeterPnt const OrthoVector(NobId const) const;
 
-    void SetIoNeurons(MicroMeterPntVector const &, NobIdList    const &);
-    void SetIoNeurons(MicroMeterPntVector const &, IoNeuronList const &);
-
 private:
 
     NNetModel * m_pModel { nullptr };
