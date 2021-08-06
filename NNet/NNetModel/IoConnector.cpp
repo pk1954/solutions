@@ -47,14 +47,14 @@ void IoConnector::Select(bool const bOn)
         it->Select(bOn);
 }
 
-void IoConnector::Push(IoNeuron * const p) 
+void IoConnector::Push(Neuron * const p) 
 { 
     m_list.push_back(p); 
 }
 
-IoNeuron * const IoConnector::Pop() 
+Neuron * const IoConnector::Pop() 
 { 
-    IoNeuron * pRet { m_list.back() };
+    Neuron * pRet { m_list.back() };
     m_list.pop_back();
     return pRet;
 }
@@ -64,7 +64,7 @@ size_t const IoConnector::Size() const
     return m_list.size(); 
 }
 
-IoNeuron const & IoConnector::GetElem(size_t const nr) const 
+Neuron const & IoConnector::GetElem(size_t const nr) const 
 { 
     return * m_list.at(nr); 
 }
@@ -130,7 +130,7 @@ void IoConnector::Recalc()
     for (auto it : m_list) { it->Recalc(); }
 }
 
-void IoConnector::Apply2All(function<void(IoNeuron &)> const & func) const
+void IoConnector::Apply2All(function<void(Neuron &)> const & func) const
 {
     for (auto pNob : m_list) 
         if (pNob)

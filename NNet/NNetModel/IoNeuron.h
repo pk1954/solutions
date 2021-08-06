@@ -32,8 +32,7 @@ public:
 
 	virtual Radian const GetDir() const;
 
-	void SetDir      (Radian        const r) { m_radDirection = r;	}
-	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
+	void SetDir(Radian const r) { m_radDirection = r; }
 
 	MicroMeterPnt    const GetScaledDirVector() const;
 	MicroMeterPnt    const GetDirVector      () const;

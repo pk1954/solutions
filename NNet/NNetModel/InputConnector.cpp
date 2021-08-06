@@ -14,13 +14,19 @@ InputConnector::InputConnector()
 InputConnector::InputConnector(vector<IoNeuron *> & src)
     :	IoConnector(NobType::Value::inputConnector)
 {
-    m_list = move(src);
+    for (auto it : src)
+        m_list.push_back(it);
+    src.clear();
+//    m_list = move(src);
 }
 
 InputConnector::InputConnector(vector<IoNeuron *> && src)
     :	IoConnector(NobType::Value::inputConnector)
 {
-    m_list = move(src);
+    for (auto it : src)
+        m_list.push_back(it);
+    src.clear();
+    //    m_list = move(src);
 }
 
 InputConnector::InputConnector(InputConnector const & src)   // copy constructor

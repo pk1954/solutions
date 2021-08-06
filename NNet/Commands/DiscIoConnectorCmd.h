@@ -33,7 +33,7 @@ public:
         if (m_bRemove)
             m_connector.Apply2All
             (
-                [&](IoNeuron & n) 
+                [&](Neuron & n) 
                 { 
                     if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, n)) })
                         m_cmdStack.Push(move(upCmd)); 

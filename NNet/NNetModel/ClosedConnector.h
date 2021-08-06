@@ -9,19 +9,18 @@
 #include "MoreTypes.h"
 #include "Nob.h"
 #include "Neuron.h"
+#include "IoConnector.h"
 #include "NobType.h"
 
 using std::vector;
 
-class IoConnector;
-
-class ClosedConnector: public Nob
+class ClosedConnector: public IoConnector
 {
 public:
 
 	static bool const TypeFits(NobType const type) { return type.IsClosedConnectorType(); }
 
-	ClosedConnector() :	Nob(NobType::Value::closedConnector) {};
+	ClosedConnector() :	IoConnector(NobType::Value::closedConnector) {};
 	virtual ~ClosedConnector() {}
 
 	virtual void Check() const;
@@ -73,7 +72,7 @@ public:
 	friend wostream & operator<< (wostream &, ClosedConnector const &);
 
 private:
-	vector<Neuron *> m_list{};
+	//vector<Neuron *> m_list{};
 };
 
 ClosedConnector const * Cast2ClosedConnector(Nob const *);

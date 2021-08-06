@@ -14,13 +14,19 @@ OutputConnector::OutputConnector()
 OutputConnector::OutputConnector(vector<IoNeuron *> & src)
     :	IoConnector(NobType::Value::outputConnector)
 {
-    m_list = move(src);
+    for (auto it : src)
+        m_list.push_back(it);
+    src.clear();
+    //    m_list = move(src);
 }
 
 OutputConnector::OutputConnector(vector<IoNeuron *> && src)
     :	IoConnector(NobType::Value::outputConnector)
 {
-    m_list = move(src);
+    for (auto it : src)
+        m_list.push_back(it);
+    src.clear();
+    //    m_list = move(src);
 }
 
 OutputConnector::OutputConnector(OutputConnector const & src)   // copy constructor

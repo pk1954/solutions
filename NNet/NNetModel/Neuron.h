@@ -59,6 +59,8 @@ public:
 
 	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
 
+	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
+
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 protected:
