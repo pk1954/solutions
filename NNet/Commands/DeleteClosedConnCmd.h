@@ -20,7 +20,7 @@ public:
         NNetModelWriterInterface & nmwi,
         Nob                      & nob
    )
-      : m_closedConnector(*Cast2ClosedConnector(&nob))
+      : m_closedConnector(Cast2ClosedConnector(nob))
     {}
 
     ~DeleteClosedConnCmd() {}

@@ -25,15 +25,18 @@ public:
     {
         m_upInputConnector  = make_unique<InputConnector>();
         m_upOutputConnector = make_unique<OutputConnector>();
-        for (Neuron * pNeuron : m_closedConnector.GetNeurons())
-        {
-            unique_ptr<InputNeuron > upInputNeuron  { make_unique<InputNeuron >(*pNeuron) };
-            m_upInputConnector->Push(upInputNeuron.get());
-            m_upInputNeurons.push_back(move(upInputNeuron));
-            unique_ptr<OutputNeuron> upOutputNeuron { make_unique<OutputNeuron>(*pNeuron) };
-            m_upOutputConnector->Push(upOutputNeuron.get());
-            m_upOutputNeurons.push_back(move(upOutputNeuron));
-        }
+        m_closedConnector.Apply2All
+        (
+            [&](Neuron & neuron)
+            {
+                unique_ptr<InputNeuron > upInputNeuron  { make_unique<InputNeuron >(neuron) };
+                m_upInputConnector->Push(upInputNeuron.get());
+                m_upInputNeurons.push_back(move(upInputNeuron));
+                unique_ptr<OutputNeuron> upOutputNeuron { make_unique<OutputNeuron>(neuron) };
+                m_upOutputConnector->Push(upOutputNeuron.get());
+                m_upOutputNeurons.push_back(move(upOutputNeuron));
+            }
+        );
         m_upInputConnector ->SetParentPointers();
         m_upOutputConnector->SetParentPointers();
         MicroMeterLine line     { m_closedConnector.CalcMaxDistLine() };

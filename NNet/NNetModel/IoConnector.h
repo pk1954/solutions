@@ -68,6 +68,9 @@ public:
 
 	void Apply2All(function<void(Neuron &)> const & func) const;
 
+	MicroMeterLine const CalcMaxDistLine();
+	MicroMeterPnt  const CalcOrthoVector(MicroMeterLine const &);
+
 	friend wostream & operator<< (wostream &, IoConnector const &);
 
 protected:

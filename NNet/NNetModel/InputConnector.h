@@ -4,12 +4,15 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NobType.h"
 #include "Nob.h"
+#include "tHighlightType.h"
 #include "IoConnector.h"
 
 using std::unique_ptr;
+
+class IoNeuron;
+class DrawContext;
 
 class InputConnector: public IoConnector
 {
