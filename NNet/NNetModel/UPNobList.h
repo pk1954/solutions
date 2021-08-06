@@ -55,7 +55,6 @@ public:
 	void               SetNob2Slot       (UPNob);              // only for special situations
 	void               CheckNobList      ()                                     const;
 	void               Dump              ()                                     const;
-	void               LinkNob           (Nob const &, Nob2NobFunc const &)     const;
 	bool         const AnyNobsSelected   ()                                     const;
 	void               CallErrorHandler  (NobId   const)                        const;
 	unsigned int const CountInSelection  (NobType const)                        const;

@@ -12,64 +12,7 @@
 
 using std::vector;
 
-//class IoNeuron;
 class DrawContext;
-
-template <typename T>
-inline MicroMeterLine const CalcMaxDistLine(vector<T *> const & list) // find two nobs with maximum distance
-{
-	MicroMeter     maxDist { 0.0_MicroMeter };   	
-	MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
-	for (auto it1 : list)
-		for (auto it2 : list)    //TODO: optimize
-		{
-			auto const line { MicroMeterLine(it1->GetPos(), it2->GetPos()) };
-			auto const dist { line.Length() };
-			if (dist > maxDist)
-			{
-				maxDist = dist;
-				lineMax = line;
-			}
-		}
-	return lineMax;
-}
-
-template <BaseKnot_t T>
-MicroMeterPnt const CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & line)
-{
-	unsigned int uiLeftConnections  { 0 };
-	unsigned int uiRightConnections { 0 };
-	for (auto pBaseKnot : list)
-	{ 
-		pBaseKnot->Apply2AllInPipes
-		(
-			[&](Pipe & pipe) 
-			{ 
-				MicroMeterPnt pnt { pipe.GetStartPoint() };
-				if (PointToLine(line, pnt) < 0.0_MicroMeter)
-					++uiLeftConnections;
-				else
-					++uiRightConnections;
-			}
-		);
-		pBaseKnot->Apply2AllOutPipes
-		(
-			[&](Pipe & pipe) 
-			{ 
-				MicroMeterPnt pnt { pipe.GetEndPoint() };
-				if (PointToLine(line, pnt) < 0.0_MicroMeter)
-					++uiRightConnections;
-				else
-					++uiLeftConnections;
-			}
-		);
-	}	
-
-	MicroMeterPnt orthoVector = line.OrthoVector();
-	if (uiRightConnections < uiLeftConnections)
-		orthoVector = -orthoVector;
-	return orthoVector;
-}
 
 class IoNeuronList
 {
@@ -139,11 +82,6 @@ public:
 	void       SelectAll(bool const);
 
 	friend wostream & operator<< (wostream &, IoNeuronList const &);
-
-	inline static wchar_t const OPEN_BRACKET  { L'{' };
-	inline static wchar_t const NR_SEPARATOR  { L':' };
-	inline static wchar_t const ID_SEPARATOR  { L',' };
-	inline static wchar_t const CLOSE_BRACKET { L'}' };
 
 private:
 	vector<IoNeuron *> m_list;

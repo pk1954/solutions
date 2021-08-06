@@ -19,6 +19,7 @@ void IoNeuronList::Check() const
 	NobType const nobType { GetFirst().GetNobType() };
 	for (auto & it : m_list) 
 	{ 
+		assert(it);
 		assert(it->GetNobType() == nobType);
 		it->Check();
 	}; 
@@ -103,15 +104,15 @@ bool IoNeuronList::operator==(IoNeuronList const & rhs) const
 
 wostream & operator<< (wostream & out, IoNeuronList const & v)
 {
-	out << IoNeuronList::OPEN_BRACKET << v.m_list.size() << IoNeuronList::NR_SEPARATOR;
+	out << BaseKnot::OPEN_BRACKET << v.m_list.size() << BaseKnot::NR_SEPARATOR;
 	for (auto & it: v.m_list)
 	{
 		out << it->GetId();
 		if (&it == &v.m_list.back())
 			break;
-		out << IoNeuronList::ID_SEPARATOR;
+		out << BaseKnot::ID_SEPARATOR;
 	}
-	out << IoNeuronList::CLOSE_BRACKET;
+	out << BaseKnot::CLOSE_BRACKET;
 	return out;
 }
 

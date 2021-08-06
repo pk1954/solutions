@@ -3,11 +3,9 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "IoNeuronList.h"
 #include "DrawContext.h"
 #include "Neuron.h"
 #include "IoNeuron.h"
-#include "IoConnector.h"
 #include "ClosedConnector.h"
 
 void ClosedConnector::Check() const
@@ -170,14 +168,14 @@ ClosedConnector * Cast2ClosedConnector(Nob * pNob)
 
 wostream & operator<< (wostream & out, ClosedConnector const & v)
 {
-    out << IoNeuronList::OPEN_BRACKET << v.m_list.size() << IoNeuronList::NR_SEPARATOR;
+    out << BaseKnot::OPEN_BRACKET << v.m_list.size() << BaseKnot::NR_SEPARATOR;
     for (auto & it: v.m_list)
     {
         out << it->GetId();
         if (&it == &v.m_list.back())
             break;
-        out << IoNeuronList::ID_SEPARATOR;
+        out << BaseKnot::ID_SEPARATOR;
     }
-    out << IoNeuronList::CLOSE_BRACKET;
+    out << BaseKnot::CLOSE_BRACKET;
     return out;
 }

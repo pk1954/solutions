@@ -8,6 +8,7 @@
 #include "CircleType.h"
 #include "MoreTypes.h"
 #include "PipeList.h"
+#include "Pipe.h"
 #include "Nob.h"
 
 class DrawContext;
@@ -100,6 +101,11 @@ public:
 	PipeList const & GetIncoming() const { return m_inPipes; }
 	PipeList const & GetOutgoing() const { return m_outPipes; }
 
+	inline static wchar_t const OPEN_BRACKET  { L'{' };
+	inline static wchar_t const NR_SEPARATOR  { L':' };
+	inline static wchar_t const ID_SEPARATOR  { L',' };
+	inline static wchar_t const CLOSE_BRACKET { L'}' };
+
 private:
 
 	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeterCircle const) const;
@@ -115,3 +121,40 @@ BaseKnot       * Cast2BaseKnot(Nob       *);
 
 template <typename T> 
 concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
+
+template <BaseKnot_t T>
+MicroMeterPnt const CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & line)
+{
+	unsigned int uiLeftConnections  { 0 };
+	unsigned int uiRightConnections { 0 };
+	for (auto pBaseKnot : list)
+	{ 
+		pBaseKnot->Apply2AllInPipes
+		(
+			[&](Pipe & pipe) 
+			{ 
+				MicroMeterPnt pnt { pipe.GetStartPoint() };
+				if (PointToLine(line, pnt) < 0.0_MicroMeter)
+					++uiLeftConnections;
+				else
+					++uiRightConnections;
+			}
+		);
+		pBaseKnot->Apply2AllOutPipes
+		(
+			[&](Pipe & pipe) 
+			{ 
+				MicroMeterPnt pnt { pipe.GetEndPoint() };
+				if (PointToLine(line, pnt) < 0.0_MicroMeter)
+					++uiRightConnections;
+				else
+					++uiLeftConnections;
+			}
+		);
+	}	
+
+	MicroMeterPnt orthoVector = line.OrthoVector();
+	if (uiRightConnections < uiLeftConnections)
+		orthoVector = -orthoVector;
+	return orthoVector;
+}

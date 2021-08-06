@@ -126,16 +126,6 @@ Nob * const UPNobList::ReplaceNob(UPNob upT)
 	return tmp.release();
 }
 
-void UPNobList::LinkNob
-(
-	Nob         const & nobSrc, 
-	Nob2NobFunc const & dstFromSrc
-) const
-{
-	if (Nob * pNobDst { dstFromSrc(& nobSrc) })
-		pNobDst->Link(nobSrc, dstFromSrc);
-}
-
 NobId const UPNobList::Push(UPNob upNob)	
 {
 	NobId idNewSlot { IdNewSlot() };
@@ -158,7 +148,7 @@ void UPNobList::copy(const UPNobList & rhs)
 {
 	rhs.CheckNobList();
 
-	m_list.resize(Cast2Long(rhs.m_list.size()));
+	m_list.resize(rhs.m_list.size());
 
 	for (auto const & pNobSrc : rhs.m_list)
 	{
@@ -166,10 +156,18 @@ void UPNobList::copy(const UPNobList & rhs)
 			SetNob2Slot(pNobSrc->GetId(), ShallowCopy(*pNobSrc));
 	}
 
-	for (auto const & pNobSrc : rhs.m_list)
+	for (auto const & pNobDst : m_list)
 	{
-		if (pNobSrc)
-			LinkNob(*pNobSrc, [&](Nob const *pSrc){ return GetAt(pSrc->GetId()); });
+		if (pNobDst)
+			pNobDst->Link
+			(
+				*rhs.GetAt(pNobDst->GetId()),                        // the src nob used as template for links
+				[&](Nob const *pSrc){ return GetAt(pSrc->GetId()); } // how to get dst nob from src nob
+		    );
+		else
+		{
+			int x = 42;
+		}
 	}
 
 	m_pNobErrorHandler = rhs.m_pNobErrorHandler;

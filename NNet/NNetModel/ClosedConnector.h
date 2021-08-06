@@ -8,7 +8,6 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Nob.h"
-#include "IoNeuronList.h"
 #include "NobType.h"
 
 using std::vector;

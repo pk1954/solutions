@@ -24,9 +24,6 @@ using std::unique_ptr;
 using std::wostream;
 using std::wstring;
 
-template <typename T> 
-concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
-
 using UPNob       = unique_ptr<Nob>;
 using NobFuncC    = function<void  (Nob const &)>;
 using NobFunc     = function<void  (Nob       &)>;
@@ -141,7 +138,29 @@ private:
 
 MicroMeterPosDir const CalcOffsetPosDir(Nob const &, MicroMeter const);
 
+template <typename T> 
+concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
+
 template <Nob_t T> bool HasType(Nob const & nob) 
 { 
 	return remove_pointer<T>::type::TypeFits(nob.GetNobType()); 
+}
+
+template <Nob_t T>
+inline MicroMeterLine const CalcMaxDistLine(vector<T *> const & list) // find two nobs with maximum distance
+{
+	MicroMeter     maxDist { 0.0_MicroMeter };   	
+	MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };
+	for (auto it1 : list)
+		for (auto it2 : list)    //TODO: optimize
+		{
+			auto const line { MicroMeterLine(it1->GetPos(), it2->GetPos()) };
+			auto const dist { line.Length() };
+			if (dist > maxDist)
+			{
+				maxDist = dist;
+				lineMax = line;
+			}
+		}
+	return lineMax;
 }

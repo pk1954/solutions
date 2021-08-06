@@ -173,9 +173,9 @@ private:
     UPNob createClosedConnector(Script & script) const 
     {
         unique_ptr<ClosedConnector> upClosedConnector { make_unique<ClosedConnector>() };
-        script.ScrReadSpecial(IoNeuronList::OPEN_BRACKET);
+        script.ScrReadSpecial(BaseKnot::OPEN_BRACKET);
         int const iNrOfElements { script.ScrReadInt() };
-        script.ScrReadSpecial(IoNeuronList::NR_SEPARATOR);
+        script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
         for (int iElem { 0 };;)
         {
             NobId    const id      { ScrReadNobId(script) };
@@ -185,18 +185,18 @@ private:
             upClosedConnector->Push(pNeuron);
             if (++iElem == iNrOfElements)
                 break;
-            script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
+            script.ScrReadSpecial(BaseKnot::ID_SEPARATOR);
         }
-        script.ScrReadSpecial(IoNeuronList::CLOSE_BRACKET);
+        script.ScrReadSpecial(BaseKnot::CLOSE_BRACKET);
         return move(upClosedConnector);
     }
 
     UPNob createIoConnector(Script & script, NobType const nobType) const 
     {
         unique_ptr<IoNeuronList> upIoNeuronList { make_unique<IoNeuronList>() };
-        script.ScrReadSpecial(IoNeuronList::OPEN_BRACKET);
+        script.ScrReadSpecial(BaseKnot::OPEN_BRACKET);
         int const iNrOfElements { script.ScrReadInt() };
-        script.ScrReadSpecial(IoNeuronList::NR_SEPARATOR);
+        script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
         for (int iElem { 0 };;)
         {
             NobId      const id        { ScrReadNobId(script) };
@@ -206,9 +206,9 @@ private:
             upIoNeuronList->Add(pIoNeuron);
             if (++iElem == iNrOfElements)
                 break;
-            script.ScrReadSpecial(IoNeuronList::ID_SEPARATOR);
+            script.ScrReadSpecial(BaseKnot::ID_SEPARATOR);
         }
-        script.ScrReadSpecial(IoNeuronList::CLOSE_BRACKET);
+        script.ScrReadSpecial(BaseKnot::CLOSE_BRACKET);
         unique_ptr<IoConnector> upIoConnector;
         if (nobType.IsInputConnectorType())
             upIoConnector = make_unique<InputConnector> (move(upIoNeuronList));

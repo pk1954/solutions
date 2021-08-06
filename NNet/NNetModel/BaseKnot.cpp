@@ -6,7 +6,6 @@
 #include <assert.h>
 #include "Geometry.h"
 #include "DrawContext.h"
-#include "Pipe.h"
 #include "BaseKnot.h"
 
 using std::wcout;

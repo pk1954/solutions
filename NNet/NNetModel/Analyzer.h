@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 #include "NNetModel.h"
-#include "IoNeuronList.h"
 #include "DisplayFunctor.h"
 
 class Knot;
