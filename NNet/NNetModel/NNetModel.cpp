@@ -23,11 +23,11 @@ using std::endl;
 bool NNetModel::operator==(NNetModel const & rhs) const
 {
 	return
-	(m_Nobs              == rhs.m_Nobs            ) &&
-	(m_timeStamp         == rhs.m_timeStamp       ) &&
+	(m_Nobs              == rhs.m_Nobs             ) &&
+	(m_timeStamp         == rhs.m_timeStamp        ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath) &&
-	(m_monitorData       == rhs.m_monitorData     ) &&
-	(m_param             == rhs.m_param           );
+	(m_monitorData       == rhs.m_monitorData      ) &&
+	(m_param             == rhs.m_param            );
 }
 
 void NNetModel::CheckModel() const

@@ -199,8 +199,11 @@ void UPNobList::CheckNobList() const
 #ifdef _DEBUG
 	for (size_t i = 0; i < m_list.size(); ++i)
 	{
-		assert(m_list[i]->GetId().GetValue() == i);
-		m_list[i]->Check();
+		if (m_list[i])
+		{
+			assert(m_list[i]->GetId().GetValue() == i);
+			m_list[i]->Check();
+		}
 	}
 #endif
 }
@@ -254,7 +257,7 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 bool const UPNobList::AnyNobsSelected() const
 {
 	for (auto const & it : m_list)
-		if (it->IsSelected())
+		if (it && it->IsSelected())
 			return true;
 	return false;
 }

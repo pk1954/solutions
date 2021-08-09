@@ -28,7 +28,7 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
             auto upKnotNew { make_unique<Knot>(m_umPos) };
             upKnotNew->Select(pipe.IsSelected());
             upKnotNew->AddIncoming(& pipe);          // prepare new knot as far as possible
-            m_endKnots.push_back(move(upKnotNew)); // store new knot for later
+            m_endKnots.push_back(move(upKnotNew));   // store new knot for later
         }                                            // but do not touch m_pBaseKnot
    );  // Knots in m_endKnots have their incoming pipe set
     m_baseKnot.Apply2AllOutPipes
@@ -38,7 +38,7 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
             auto upKnotNew { make_unique<Knot>(m_umPos) };
             upKnotNew->Select(pipe.IsSelected());
             upKnotNew->AddOutgoing(& pipe);            // prepare new knot as far as possible
-            m_startKnots.push_back(move(upKnotNew)); // store new knot for later
+            m_startKnots.push_back(move(upKnotNew));   // store new knot for later
         }                                              // but do not touch m_pBaseKnot
    );  // Knots in m_startKnots have their outgoing pipe set
     if (m_baseKnot.IsKnot())
@@ -70,14 +70,11 @@ void DiscBaseKnotCmd::Do(NNetModelWriterInterface & nmwi)
         }
     }
     m_baseKnot.ClearConnections();
-    m_baseKnot.Check();
     if (m_bDelete)
     {
         m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>(m_baseKnot);
         assert(m_upBaseKnot);
     }
-    //nmwi.DUMP();
-    //nmwi.CheckModel();
 }
 
 void DiscBaseKnotCmd::Undo(NNetModelWriterInterface & nmwi)
