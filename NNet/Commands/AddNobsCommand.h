@@ -21,6 +21,7 @@ public:
 		m_nobs2Add = move(nobs2Add);
 		m_nrOfNobs = m_nobs2Add.Size();
 		m_nobs2Add.SelectAllNobs(true);
+		m_nobs2Add.CheckNobList();
 	}
 
 	virtual void Do(NNetModelWriterInterface & nmwi) 
@@ -28,6 +29,7 @@ public:
 		SelectionCommand::Do(nmwi);
 		nmwi.GetUPNobs().DeselectAllNobs();
 		nmwi.GetUPNobs().MoveFrom(m_nobs2Add, m_nrOfNobs);
+		nmwi.CheckModel();
 	}
 
 	virtual void Undo(NNetModelWriterInterface & nmwi) 

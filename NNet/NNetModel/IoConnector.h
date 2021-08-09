@@ -23,7 +23,6 @@ public:
 	static bool const TypeFits(NobType const type) { return type.IsIoConnectorType(); }
 
 	IoConnector(NobType const);
-	IoConnector(IoConnector const &);
 
 	virtual ~IoConnector() {}
 

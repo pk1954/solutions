@@ -72,10 +72,15 @@ public:
 	enum class SelMode { allNobs,	selectedNobs };
 	MicroMeterRect const CalcEnclosingRect(SelMode const = SelMode::allNobs) const;
 
-	NobId           const Push(UPNob);
-	unique_ptr<Nob> const Pop() { return move(Pop<Nob>()); }
+	NobId const Push(UPNob);
+	UPNob const Pop() { return move(Pop<Nob>()); }
 
 	void MoveFrom(UPNobList &, size_t);
+
+	bool const Contains(Nob const * pNob) const 
+	{ 
+		return Apply2AllB([&](Nob const & nob) { return pNob == &nob; }); 
+	}
 
 	template <Nob_t T>
 	unique_ptr<T> Pop()
@@ -131,7 +136,7 @@ public:
 		Apply2All<T>([&](T & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
-	template <Nob_t T>
+	template <Nob_t T>  // used only in Analyzer. TODO: find simpler solution
 	bool Apply2AllB(function<bool(T &)> const & crit) const
 	{
 		bool bResult { false };

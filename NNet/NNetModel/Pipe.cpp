@@ -101,11 +101,9 @@ void Pipe::Recalc()
 }
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
-	Pipe       const & pipeSrc        { static_cast<Pipe const &>(nobSrc) };
-	BaseKnot * const   pBaseKnotStart { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr())) };
-	BaseKnot * const   pBaseKnotEnd   { static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ())) };
-	SetStartKnot(pBaseKnotStart);
-	SetEndKnot  (pBaseKnotEnd);
+	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
+	m_pKnotStart = static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr()));
+	m_pKnotEnd   = static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ()));
 }
 
 void Pipe::Check() const

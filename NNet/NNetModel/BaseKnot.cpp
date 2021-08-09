@@ -82,7 +82,6 @@ void BaseKnot::AddOutgoing(BaseKnot const & src)
 	src.Apply2AllOutPipes([&](Pipe & pipe) { AddOutgoing(& pipe); });
 }
 
-
 void BaseKnot::SetConnections(BaseKnot const & src) 
 { 
 	SetIncoming(src);

@@ -29,12 +29,6 @@ InputConnector::InputConnector(vector<IoNeuron *> && src)
     //    m_list = move(src);
 }
 
-InputConnector::InputConnector(InputConnector const & src)   // copy constructor
-    :	IoConnector(src)
-{
-    m_list = src.m_list;
-}
-
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
     if (Size() > 1)

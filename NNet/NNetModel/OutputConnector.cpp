@@ -29,12 +29,6 @@ OutputConnector::OutputConnector(vector<IoNeuron *> && src)
     //    m_list = move(src);
 }
 
-OutputConnector::OutputConnector(OutputConnector const & src)   // copy constructor
-    :	IoConnector(src)
-{
-    m_list = src.m_list;
-}
-
 void OutputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
     if (Size() > 1)

@@ -14,22 +14,19 @@ IoConnector::IoConnector(NobType const nobType)
     :	Nob(nobType)
 { }
 
-IoConnector::IoConnector(IoConnector const & src)
-  : Nob(src)
-{
-    m_list = src.m_list;
-}
-
 void IoConnector::Check() const
 {
     Nob::Check();
     if (m_list.empty())
         return;
-    NobType const nobType { m_list.front()->GetNobType() };
     for (auto it : m_list) 
     { 
         assert(it);
         assert(it->IsAnyNeuron());
+    }; 
+    NobType const nobType { m_list.front()->GetNobType() };
+    for (auto it : m_list) 
+    { 
         assert(it->GetNobType() == nobType);
         it->Check();
     }; 

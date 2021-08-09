@@ -28,7 +28,10 @@ void PipeList::Dump() const
 void PipeList::Check() const
 {
 	for (auto & it : m_list)
+	{
 		assert(it);
+		it->Check();
+	}
 }
 
 void PipeList::Remove(Pipe * const p) 

@@ -171,6 +171,7 @@ void UPNobList::copy(const UPNobList & rhs)
 	}
 
 	m_pNobErrorHandler = rhs.m_pNobErrorHandler;
+	CheckNobList();
 }
 
 UPNobList::~UPNobList()
@@ -196,21 +197,26 @@ UPNobList & UPNobList::operator= (const UPNobList & rhs) // copy assignment
 void UPNobList::CheckNobList() const
 {
 #ifdef _DEBUG
-	Apply2All([&](Nob const & nob) { nob.Check(); });
+	for (size_t i = 0; i < m_list.size(); ++i)
+	{
+		assert(m_list[i]->GetId().GetValue() == i);
+		m_list[i]->Check();
+	}
 #endif
 }
 
 void UPNobList::Dump() const
 {
-	Apply2All([&](Nob const & nob) { nob.Dump(); });
+	for (auto const & it : m_list)
+		it->Dump();
 }
 
 MicroMeterRect const UPNobList::CalcEnclosingRect(SelMode const mode) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
-	for (auto const & pNob : m_list)
-		if (pNob && ((mode == SelMode::allNobs) || pNob->IsSelected()))
-			pNob->Expand(rect);
+	for (auto const & it : m_list)
+		if (it && ((mode == SelMode::allNobs) || it->IsSelected()))
+			it->Expand(rect);
 	return rect;
 }
 
@@ -247,7 +253,10 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 
 bool const UPNobList::AnyNobsSelected() const
 {
-	return Apply2AllB<Nob>([&](Nob const & s) { return s.IsSelected(); });
+	for (auto const & it : m_list)
+		if (it->IsSelected())
+			return true;
+	return false;
 }
 
 void UPNobList::CallErrorHandler(NobId const id) const
@@ -261,49 +270,49 @@ void UPNobList::CallErrorHandler(NobId const id) const
 void UPNobList::Apply2All(NobFuncC const & func) const
 {
 	for (auto const & it : m_list)
-	{ 
 		if (it.get())
 			func(* it.get()); 
-	}
 }                        
 
 void UPNobList::Apply2All(NobFunc const & func)
 {
 	for (auto & it : m_list)
-	{ 
 		if (it.get())
 			func(* it.get()); 
-	}
 }                        
 
 bool const UPNobList::Apply2AllB(NobCrit const & func) const
 {
 	for (auto & it : m_list)
-	{ 
 		if (it.get() && func(* it.get()))
 			return true;
-	}
 	return false;
 }
 
 void UPNobList::Apply2AllSelected(NobType const type, NobFunc const & func)
 {
-	Apply2All({ [&](Nob & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } });
+	for (auto & it : m_list)
+		if (it.get() && it->IsSelected() && (it->GetNobType() == type))
+			func(* it.get()); 
 }
 
 void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) const
 {
-	Apply2All({ [&](Nob const & s) { if (s.IsSelected() && (s.GetNobType() == type)) func(s); } });
+	for (auto & it : m_list)
+		if (it.get() && it->IsSelected() && (it->GetNobType() == type))
+			func(* it.get()); 
 }
 
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
-	Apply2All([&](Nob & s) { s.Select(bOn); }); 
+	for (auto & it : m_list)
+		it->Select(bOn);
 }
 
 void UPNobList::Move(MicroMeterPnt const& delta)
 {
-	Apply2All<BaseKnot>([&](BaseKnot & b) { b.MoveNob(delta); });
+	for (auto & it : m_list)
+		it->MoveNob(delta);
 }
 
 unsigned int const UPNobList::CountInSelection(NobType const nobType) const

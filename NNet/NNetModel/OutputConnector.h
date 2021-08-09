@@ -23,7 +23,6 @@ public:
 	OutputConnector();
 	OutputConnector(vector<IoNeuron *> &);
 	OutputConnector(vector<IoNeuron *> &&);
-	OutputConnector(OutputConnector const &);   // copy constructor
 
 	virtual ~OutputConnector() {}
 

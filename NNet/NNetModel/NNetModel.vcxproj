@@ -264,7 +264,7 @@
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Nob.cpp" />
     <ClCompile Include="NobIdList.cpp" />
-    <ClCompile Include="PipList.cpp" />
+    <ClCompile Include="PipeList.cpp" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="NobType.cpp" />
