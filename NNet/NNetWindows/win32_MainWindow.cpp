@@ -104,7 +104,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_DELETE_SELECTION,       L"Delete selected objects"     },
 		{ IDD_DELETE_NOB,             L"Delete"                      },
 		{ IDM_DESELECT_ALL,           L"Deselect all"                },
-		{ IDM_DESELECT_NOB,           L"Deselect"                    },
+		{ IDM_DESELECT_NOB,           L"Deselect nob"                },
 		{ IDD_DISC_BASEKNOT,          L"Disconnect"                  },
 		{ IDD_DISC_IOCONNECTOR,       L"Disconnect"                  },
 		{ IDM_DISC_CLOSED_CONNECTOR,  L"Disconnect (make neurons)"   },
@@ -116,7 +116,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_NEW_INPUT_NEURON,       L"New input neuron" 		     },
 		{ IDD_NEW_OUTPUT_NEURON,      L"New output neuron"		     },
 		{ IDD_PULSE_RATE,             L"Pulse rate"                  },
-		{ IDM_SELECT_NOB,             L"Select"                      },
+		{ IDM_SELECT_NOB,             L"Select nob"                  },
 		{ IDM_SELECT_SUBTREE,         L"Select subtree"              },
 		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"      },
 		{ IDD_TRIGGER_SOUND_DLG,      L"Trigger sound"               }
@@ -145,18 +145,21 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	else switch (m_pNMRI->GetNobType(m_nobHighlighted).GetValue())
 	{
 	case NobType::Value::inputNeuron:
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		if (! m_pNMRI->HasOutgoing(m_nobHighlighted))
 			appendMenu(hPopupMenu, IDD_ADD_OUTGOING2KNOT);
 		appendMenu(hPopupMenu, IDD_PULSE_RATE);         
 		break;
 
 	case NobType::Value::outputNeuron:
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_ADD_INCOMING2KNOT);
 		appendMenu(hPopupMenu, IDD_TRIGGER_SOUND_DLG);
 		appendMenu(hPopupMenu, IDD_STOP_ON_TRIGGER);   
 		break;
 
 	case NobType::Value::neuron:
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		if (! m_pNMRI->HasOutgoing(m_nobHighlighted))
 			appendMenu(hPopupMenu, IDD_ADD_OUTGOING2KNOT);
 		appendMenu(hPopupMenu, IDD_ADD_INCOMING2KNOT);
@@ -168,10 +171,12 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 
 	case NobType::Value::inputConnector:
 	case NobType::Value::outputConnector:
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_DISC_IOCONNECTOR);        
 		break;
 
 	case NobType::Value::closedConnector:
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDM_SPLIT_CLOSED_CONNECTOR);        
 		appendMenu(hPopupMenu, IDM_DISC_CLOSED_CONNECTOR);        
 		break;
@@ -186,10 +191,12 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_APPEND_INPUT_NEURON);
 		if (! m_pNMRI->HasOutgoing(m_nobHighlighted)) 
 			appendMenu(hPopupMenu, IDD_APPEND_OUTPUT_NEURON);
-		appendMenu(hPopupMenu, IDD_DISC_BASEKNOT);
+		if (m_pNMRI->GetNrOfConnections(m_nobHighlighted) > 1) 
+			appendMenu(hPopupMenu, IDD_DISC_BASEKNOT);
 		break;
 
 	case NobType::Value::pipe:
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_ADD_OUTGOING2PIPE);
 		appendMenu(hPopupMenu, IDD_ADD_INCOMING2PIPE);
 		appendMenu(hPopupMenu, IDD_INSERT_NEURON);
@@ -205,7 +212,6 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	}
 	if (IsDefined(m_nobHighlighted))
 	{
-		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		if (m_pNMRI->IsSelected(m_nobHighlighted))
 			appendMenu(hPopupMenu, IDM_DESELECT_NOB);
 		else

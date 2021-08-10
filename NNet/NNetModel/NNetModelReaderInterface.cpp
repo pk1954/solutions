@@ -71,6 +71,12 @@ size_t const NNetModelReaderInterface::GetNrOfIncomingConnections(NobId const id
 	return p ? p->GetNrOfIncomingConnections() : -1;
 }
 
+size_t const NNetModelReaderInterface::GetNrOfConnections(NobId const id) const 
+{ 
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+	return p ? p->GetNrOfConnections() : -1;
+}
+
 bool const NNetModelReaderInterface::HasIncoming(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };

@@ -75,8 +75,6 @@ public:
 	virtual void       Select(bool const bOn) { m_bSelected = bOn; }
 	virtual void       Clear()                { m_mVinputBuffer = 0.0_mV; };
 	virtual void       SetId(NobId const id)  { m_identifier = id; }
-	virtual void       SetParentPointers  ()  {};
-	virtual void       ClearParentPointers()  {};
 	virtual void       Reconnect          ()  {};
 
 	bool    const IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }

@@ -38,7 +38,6 @@ public:
 
     virtual void Do(function<void()> const & targetReachedFunc)
     {
-        m_upNeuron->SetParentPointers();
         m_nmwi.Push2Model(move(m_upNeuron)); 
         m_upNobAnimated = m_nmwi.RemoveFromModel<IoNeuron>(m_nobAnimated);
         m_upNobTarget   = m_nmwi.RemoveFromModel<IoNeuron>(m_nobTarget);
@@ -49,7 +48,6 @@ public:
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
         m_upNeuron = m_nmwi.PopFromModel<Neuron>();
-        m_upNeuron->ClearParentPointers();
         m_upNobAnimated->Reconnect();
         m_upNobTarget  ->Reconnect();
         m_upNobAnimated = m_nmwi.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));

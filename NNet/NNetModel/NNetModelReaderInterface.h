@@ -39,6 +39,7 @@ public:
 	bool          const   HasOutgoing               (NobId const) const;
 	size_t        const   GetNrOfOutgoingConnections(NobId const) const;
 	size_t        const   GetNrOfIncomingConnections(NobId const) const;
+	size_t        const   GetNrOfConnections        (NobId const) const;
 	mV            const   GetVoltage                (NobId const) const;
 	mV            const   GetVoltage                (NobId const, MicroMeterPnt const &) const;
 	Degrees       const   GetDirection              (NobId const) const; 

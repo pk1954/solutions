@@ -164,10 +164,6 @@ void UPNobList::copy(const UPNobList & rhs)
 				*rhs.GetAt(pNobDst->GetId()),                        // the src nob used as template for links
 				[&](Nob const *pSrc){ return GetAt(pSrc->GetId()); } // how to get dst nob from src nob
 		    );
-		else
-		{
-			int x = 42;
-		}
 	}
 
 	m_pNobErrorHandler = rhs.m_pNobErrorHandler;
@@ -211,7 +207,8 @@ void UPNobList::CheckNobList() const
 void UPNobList::Dump() const
 {
 	for (auto const & it : m_list)
-		it->Dump();
+		if (it)
+			it->Dump();
 }
 
 MicroMeterRect const UPNobList::CalcEnclosingRect(SelMode const mode) const
@@ -273,21 +270,21 @@ void UPNobList::CallErrorHandler(NobId const id) const
 void UPNobList::Apply2All(NobFuncC const & func) const
 {
 	for (auto const & it : m_list)
-		if (it.get())
+		if (it)
 			func(* it.get()); 
 }                        
 
 void UPNobList::Apply2All(NobFunc const & func)
 {
 	for (auto & it : m_list)
-		if (it.get())
+		if (it)
 			func(* it.get()); 
 }                        
 
 bool const UPNobList::Apply2AllB(NobCrit const & func) const
 {
 	for (auto & it : m_list)
-		if (it.get() && func(* it.get()))
+		if (it && func(* it.get()))
 			return true;
 	return false;
 }
@@ -295,27 +292,29 @@ bool const UPNobList::Apply2AllB(NobCrit const & func) const
 void UPNobList::Apply2AllSelected(NobType const type, NobFunc const & func)
 {
 	for (auto & it : m_list)
-		if (it.get() && it->IsSelected() && (it->GetNobType() == type))
+		if (it && it->IsSelected() && (it->GetNobType() == type))
 			func(* it.get()); 
 }
 
 void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) const
 {
 	for (auto & it : m_list)
-		if (it.get() && it->IsSelected() && (it->GetNobType() == type))
+		if (it && it->IsSelected() && (it->GetNobType() == type))
 			func(* it.get()); 
 }
 
 void UPNobList::SelectAllNobs(bool const bOn) 
 { 
 	for (auto & it : m_list)
-		it->Select(bOn);
+		if (it)
+			it->Select(bOn);
 }
 
 void UPNobList::Move(MicroMeterPnt const& delta)
 {
 	for (auto & it : m_list)
-		it->MoveNob(delta);
+		if (it)
+			it->MoveNob(delta);
 }
 
 unsigned int const UPNobList::CountInSelection(NobType const nobType) const
@@ -349,9 +348,10 @@ void UPNobList::countNobs()
 {
 	m_nobsOfType.fill(0);
 	for (auto & it : m_list)
-	{ 
-		NobType    const type  { it->GetNobType() };
-		unsigned int const index { static_cast<unsigned int>(type.GetValue()) };
-		++m_nobsOfType[index];
-	};
+		if (it)
+		{ 
+			NobType    const type  { it->GetNobType() };
+			unsigned int const index { static_cast<unsigned int>(type.GetValue()) };
+			++m_nobsOfType[index];
+		};
 }

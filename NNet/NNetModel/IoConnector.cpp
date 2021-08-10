@@ -113,7 +113,7 @@ void IoConnector::SetParentPointers()
 void IoConnector::ClearParentPointers()
 {
     for (auto & it: m_list)
-        it->ClearParentPointers();
+        it->SetParentNob(nullptr);
 }
 
 void IoConnector::Prepare()

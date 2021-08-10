@@ -44,6 +44,8 @@ public:
 	virtual void       Clear       ();
 	virtual void       Link        (Nob const &, Nob2NobFunc const &);
 	virtual void       Select      (bool const);
+	virtual void       SetParentPointers();
+	virtual void       ClearParentPointers();
 
 	virtual bool const IsCompositeNob() { return true; }
 
@@ -52,8 +54,6 @@ public:
 	Neuron   const & GetElem(size_t const) const;
 	size_t   const   Size() const;
 
-	void SetParentPointers();
-	void ClearParentPointers();
 	void AlignDirection();
 
 	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
