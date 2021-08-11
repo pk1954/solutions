@@ -39,8 +39,9 @@ private:
 
 	size_t const getCompactIdVal(NobId const);
 
-	void writeNob             (wostream &, Nob  const &);
-	void writePipe            (wostream &, Pipe const &);
+	void writeNob             (wostream &, Nob         const &);
+	void writePipe            (wostream &, Pipe        const &);
+	void writeIoConnector     (wostream &, IoConnector const &);
 	void writeDescription     (wostream &);
 	void writeMonitorData     (wostream &);
 	void writeTriggerSounds   (wostream &);

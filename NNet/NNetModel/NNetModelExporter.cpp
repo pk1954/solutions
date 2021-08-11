@@ -168,6 +168,18 @@ void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe)
         << Pipe::CLOSE_BRACKET;
 }
 
+void NNetModelExporter::writeIoConnector(wostream & out, IoConnector const & conn)
+{
+    out << BaseKnot::OPEN_BRACKET << conn.Size() << BaseKnot::NR_SEPARATOR;
+    for (size_t i = 0; i < conn.Size() - 1; ++i)
+    {
+        out << getCompactIdVal(conn.GetElem(i).GetId());
+        out << BaseKnot::ID_SEPARATOR;
+    }
+    out << getCompactIdVal(conn.GetElem(conn.Size()-1).GetId());
+    out << BaseKnot::CLOSE_BRACKET;
+}
+
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
 {
     if (nob.IsDefined())
@@ -187,15 +199,9 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
             break;
 
         case NobType::Value::inputConnector:
-            out << static_cast<InputConnector const &>(nob);
-            break;
-
         case NobType::Value::outputConnector:
-            out << static_cast<OutputConnector const &>(nob);
-            break;
-
         case NobType::Value::closedConnector:
-            out << static_cast<ClosedConnector const &>(nob);
+            writeIoConnector(out, static_cast<IoConnector const &>(nob));
             break;
 
         default:

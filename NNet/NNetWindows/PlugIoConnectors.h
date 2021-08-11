@@ -44,13 +44,13 @@ public:
             unique_ptr<Neuron>  upNeuron { make_unique<Neuron>(umPos) };
             if (m_connectorAnimated.IsOutputNob())
             {
-                upNeuron->SetIncoming(outputIoConnector.GetElem(m_size-i-1));
+                upNeuron->SetIncoming(outputIoConnector.GetElem(i));
                 upNeuron->SetOutgoing(inputIoConnector .GetElem(i));
             }
             else
             {
                 upNeuron->SetIncoming(outputIoConnector.GetElem(i));
-                upNeuron->SetOutgoing(inputIoConnector .GetElem(m_size-i-1));
+                upNeuron->SetOutgoing(inputIoConnector .GetElem(i));
             }
             m_upClosedConnector->Push(upNeuron.get());
             m_upNeurons.push_back(move(upNeuron));
@@ -114,8 +114,8 @@ private:
     vector<unique_ptr<Neuron>>   m_upNeurons;              
 
     // take ownership of IoConnectors and IoNeurons between Do and Undo
-    unique_ptr<IoConnector>        m_upNobAnimated;
-    unique_ptr<IoConnector>        m_upNobTarget;
+    unique_ptr<IoConnector>      m_upNobAnimated;
+    unique_ptr<IoConnector>      m_upNobTarget;
     vector<unique_ptr<IoNeuron>> m_upIoNeuronsAnimated;              
     vector<unique_ptr<IoNeuron>> m_upIoNeuronsTarget;              
 };

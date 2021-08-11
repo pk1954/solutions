@@ -148,12 +148,14 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		if (! m_pNMRI->HasOutgoing(m_nobHighlighted))
 			appendMenu(hPopupMenu, IDD_ADD_OUTGOING2KNOT);
+		appendMenu(hPopupMenu, IDD_DISC_BASEKNOT);
 		appendMenu(hPopupMenu, IDD_PULSE_RATE);         
 		break;
 
 	case NobType::Value::outputNeuron:
 		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_ADD_INCOMING2KNOT);
+		appendMenu(hPopupMenu, IDD_DISC_BASEKNOT);
 		appendMenu(hPopupMenu, IDD_TRIGGER_SOUND_DLG);
 		appendMenu(hPopupMenu, IDD_STOP_ON_TRIGGER);   
 		break;
@@ -163,6 +165,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		if (! m_pNMRI->HasOutgoing(m_nobHighlighted))
 			appendMenu(hPopupMenu, IDD_ADD_OUTGOING2KNOT);
 		appendMenu(hPopupMenu, IDD_ADD_INCOMING2KNOT);
+		appendMenu(hPopupMenu, IDD_DISC_BASEKNOT);
 		appendMenu(hPopupMenu, IDD_SPLIT_NEURON);        
 		appendMenu(hPopupMenu, IDD_TRIGGER_SOUND_DLG);
 		appendMenu(hPopupMenu, IDD_STOP_ON_TRIGGER);      

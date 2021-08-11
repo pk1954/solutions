@@ -126,8 +126,10 @@ void Pipe::Prepare()
 
 void Pipe::MoveNob(MicroMeterPnt const & delta)
 {
-	m_pKnotStart->MoveNob(delta);
-	m_pKnotEnd  ->MoveNob(delta);
+	if (!m_pKnotStart->HasParentNob())
+		m_pKnotStart->MoveNob(delta);
+	if (!m_pKnotEnd->HasParentNob())
+		m_pKnotEnd  ->MoveNob(delta);
 }
 
 // IsIncludedIn should be called IsPossiblyIncludedIn

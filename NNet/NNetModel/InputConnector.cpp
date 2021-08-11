@@ -40,22 +40,22 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         umPnt2 -= umOrthoVec;
         context.DrawLine
         (
-            umPnt1 - umPntOff, 
-            umPnt1 - umPntOff * 0.8f, 
+            umPnt1 - umPntOff        + umOrthoVec * 2.0f,
+            umPnt1 - umPntOff * 0.8f + umOrthoVec * 2.0f, 
             m_list.front()->GetExtension() * 2.0f, 
             GetExteriorColor(type)
         );
         context.DrawLine
         (
-            umPnt2 + umPntOff, 
-            umPnt2 + umPntOff * 0.8f, 
+            umPnt2 + umPntOff        + umOrthoVec * 2.0f,
+            umPnt2 + umPntOff * 0.8f + umOrthoVec * 2.0f,
             m_list.front()->GetExtension() * 2.0f, 
             GetExteriorColor(type)
         );
         context.DrawLine
         (
-            umPnt1 - umPntOff + umOrthoVec * 1.5f, 
-            umPnt2 + umPntOff + umOrthoVec * 1.5f, 
+            umPnt1 - umPntOff + umOrthoVec * 0.4f, 
+            umPnt2 + umPntOff + umOrthoVec * 0.4f, 
             m_list.front()->GetExtension() * 0.2f, 
             GetExteriorColor(type)
         );

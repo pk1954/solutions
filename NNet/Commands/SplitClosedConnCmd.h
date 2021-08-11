@@ -57,7 +57,7 @@ public:
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
 
-        for (auto & it : m_upInputNeurons) { nmwi.Push2Model(move(it)); }
+        for (auto & it : m_upInputNeurons ) { nmwi.Push2Model(move(it)); }
         for (auto & it : m_upOutputNeurons) { nmwi.Push2Model(move(it)); }
         nmwi.Push2Model(move(m_upInputConnector));
         nmwi.Push2Model(move(m_upOutputConnector));
@@ -68,7 +68,7 @@ public:
         m_upOutputConnector = nmwi.PopFromModel<OutputConnector>();
         m_upInputConnector  = nmwi.PopFromModel<InputConnector>();
         for (auto & it : m_upOutputNeurons) { it = nmwi.PopFromModel<IoNeuron>(); }
-        for (auto & it : m_upInputNeurons) { it = nmwi.PopFromModel<IoNeuron>(); }
+        for (auto & it : m_upInputNeurons ) { it = nmwi.PopFromModel<IoNeuron>(); }
 
         m_upClosedConnector->SetParentPointers();
         nmwi.Restore2Model<ClosedConnector>(move(m_upClosedConnector));
