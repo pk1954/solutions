@@ -40,7 +40,7 @@ ConnAnimationCommand::ConnAnimationCommand
     if (line.IsZero())
         return;
 
-    MicroMeterLine orthoLine  { line.OrthoLine() };
+    MicroMeterLine orthoLine { line.OrthoLine() };
 
     sort
     (

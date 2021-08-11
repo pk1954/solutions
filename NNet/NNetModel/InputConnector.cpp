@@ -17,7 +17,6 @@ InputConnector::InputConnector(vector<IoNeuron *> & src)
     for (auto it : src)
         m_list.push_back(it);
     src.clear();
-//    m_list = move(src);
 }
 
 InputConnector::InputConnector(vector<IoNeuron *> && src)
@@ -26,7 +25,6 @@ InputConnector::InputConnector(vector<IoNeuron *> && src)
     for (auto it : src)
         m_list.push_back(it);
     src.clear();
-    //    m_list = move(src);
 }
 
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -37,16 +35,30 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         MicroMeterPnt umPnt2     { m_list.back ()->GetPos() }; 
         MicroMeterPnt umPntDir   { umPnt2 - umPnt1 };
         MicroMeterPnt umPntOff   { umPntDir.ScaledTo(NEURON_RADIUS * 1.2f) };
-        MicroMeterPnt umOrthoVec { umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS * 0.3f) };
+        MicroMeterPnt umOrthoVec { umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS * 0.7f) };
         umPnt1 -= umOrthoVec;
         umPnt2 -= umOrthoVec;
         context.DrawLine
         (
             umPnt1 - umPntOff, 
-            umPnt2 + umPntOff, 
-            m_list.front()->GetExtension() * 1.2f, 
+            umPnt1 - umPntOff * 0.8f, 
+            m_list.front()->GetExtension() * 2.0f, 
             GetExteriorColor(type)
-       );
+        );
+        context.DrawLine
+        (
+            umPnt2 + umPntOff, 
+            umPnt2 + umPntOff * 0.8f, 
+            m_list.front()->GetExtension() * 2.0f, 
+            GetExteriorColor(type)
+        );
+        context.DrawLine
+        (
+            umPnt1 - umPntOff + umOrthoVec * 1.5f, 
+            umPnt2 + umPntOff + umOrthoVec * 1.5f, 
+            m_list.front()->GetExtension() * 0.2f, 
+            GetExteriorColor(type)
+        );
     }
     IoConnector::DrawExterior(context, type);
 }
