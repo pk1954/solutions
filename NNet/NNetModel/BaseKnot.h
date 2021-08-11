@@ -153,7 +153,7 @@ MicroMeterPnt const CalcOrthoVector(vector<T *> const & list, MicroMeterLine con
 		);
 	}	
 
-	MicroMeterPnt orthoVector = line.OrthoVector();
+	MicroMeterPnt orthoVector { line.OrthoVector() };
 	if (uiRightConnections < uiLeftConnections)
 		orthoVector = -orthoVector;
 	return orthoVector;

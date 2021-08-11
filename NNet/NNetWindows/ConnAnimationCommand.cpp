@@ -35,17 +35,19 @@ ConnAnimationCommand::ConnAnimationCommand
             if (s.IsSelected() && (s.GetNobType() == nobType)) 
                 nobsAnimated.push_back(&s); 
         } 
-   );
+    );
     MicroMeterLine line{ CalcMaxDistLine<IoNeuron>(nobsAnimated) };
     if (line.IsZero())
         return;
+
+    MicroMeterLine orthoLine  { line.OrthoLine() };
 
     sort
     (
         nobsAnimated.begin(), nobsAnimated.end(),
         [&](auto & p1, auto & p2) 
         { 
-            return PointToLine(line, p1->GetPos()) < PointToLine(line, p2->GetPos()); 
+            return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos()); 
         } 
     );
 
