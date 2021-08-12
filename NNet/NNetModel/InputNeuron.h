@@ -8,7 +8,7 @@
 #include "IoNeuron.h"
 
 class Nob;
-class Neuron;
+class BaseKnot;
 class DrawContext;
 
 class InputNeuron : public IoNeuron
@@ -16,7 +16,7 @@ class InputNeuron : public IoNeuron
 public:
 
 	InputNeuron(MicroMeterPnt const &);
-	InputNeuron(Neuron        const &);
+	InputNeuron(BaseKnot      const &);
 
 	virtual ~InputNeuron();
 

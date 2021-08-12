@@ -180,7 +180,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 
 	case NobType::Value::closedConnector:
 		appendMenu(hPopupMenu, IDD_DELETE_NOB);
-		appendMenu(hPopupMenu, IDM_SPLIT_CLOSED_CONNECTOR);        
+	//	appendMenu(hPopupMenu, IDM_SPLIT_CLOSED_CONNECTOR);  // buggy
 		appendMenu(hPopupMenu, IDM_DISC_CLOSED_CONNECTOR);        
 		break;
 

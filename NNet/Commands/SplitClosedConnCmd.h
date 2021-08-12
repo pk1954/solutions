@@ -13,6 +13,10 @@
 
 using std::unique_ptr;
 
+/// <summary>
+/// Not working !
+/// </summary>
+
 class SplitClosedConnCmd : public Command
 {
 public:
@@ -25,6 +29,7 @@ public:
     {
         m_upInputConnector  = make_unique<InputConnector>();
         m_upOutputConnector = make_unique<OutputConnector>();
+        m_size = m_closedConnector.Size();
         m_closedConnector.Apply2All
         (
             [&](Neuron & neuron)
@@ -57,8 +62,13 @@ public:
         m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
 
-        for (auto & it : m_upInputNeurons ) { nmwi.Push2Model(move(it)); }
-        for (auto & it : m_upOutputNeurons) { nmwi.Push2Model(move(it)); }
+        for (size_t i = 0; i < m_size; ++i)
+        { 
+            nmwi.Push2Model(move(m_upInputNeurons.back()));
+            m_upInputNeurons.pop_back();
+            nmwi.Push2Model(move(m_upOutputNeurons.back()));
+            m_upOutputNeurons.pop_back();
+        }
         nmwi.Push2Model(move(m_upInputConnector));
         nmwi.Push2Model(move(m_upOutputConnector));
     }
@@ -67,21 +77,28 @@ public:
     {
         m_upOutputConnector = nmwi.PopFromModel<OutputConnector>();
         m_upInputConnector  = nmwi.PopFromModel<InputConnector>();
-        for (auto & it : m_upOutputNeurons) { it = nmwi.PopFromModel<IoNeuron>(); }
-        for (auto & it : m_upInputNeurons ) { it = nmwi.PopFromModel<IoNeuron>(); }
+        for ( size_t i = 0; i < m_size; ++i )
+        {
+            m_upOutputNeurons[i] = nmwi.PopFromModel<IoNeuron>();
+            m_upInputNeurons [i] = nmwi.PopFromModel<IoNeuron>();
+        }
 
         m_upClosedConnector->SetParentPointers();
-        nmwi.Restore2Model<ClosedConnector>(move(m_upClosedConnector));
-        for (auto & it : m_upNeurons) { nmwi.Restore2Model<Neuron>(move(it)); }
+        m_upClosedConnector = nmwi.ReplaceInModel<ClosedConnector,ClosedConnector>(move(m_upClosedConnector));
+        for (auto & it : m_upNeurons) 
+            it = nmwi.ReplaceInModel<Neuron,Neuron>(move(it));
     }
 
 private:
 
+    size_t                       m_size;
     ClosedConnector            & m_closedConnector;
 
+    // take ownership of ClosedConnector and Neurons between Do and Undo
     unique_ptr<ClosedConnector>  m_upClosedConnector {};
     vector<unique_ptr<Neuron>>   m_upNeurons;              
 
+    // take ownership of IoConnectors and IoNeurons between Undo and redo
     unique_ptr<InputConnector>   m_upInputConnector  {};  
     unique_ptr<OutputConnector>  m_upOutputConnector {};  
     vector<unique_ptr<IoNeuron>> m_upInputNeurons;              

@@ -56,7 +56,7 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         (
             umPnt1 - umPntOff + umOrthoVec * 0.4f, 
             umPnt2 + umPntOff + umOrthoVec * 0.4f, 
-            m_list.front()->GetExtension() * 0.2f, 
+            m_list.front()->GetExtension() * 0.25f, 
             GetExteriorColor(type)
         );
     }

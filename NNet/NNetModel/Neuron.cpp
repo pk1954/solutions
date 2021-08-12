@@ -76,8 +76,8 @@ bool Neuron::operator==(Nob const & rhs) const
 	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
 	return
 	(this->BaseKnot::operator== (neuronRhs))                             &&
-	IsCloseToZero(m_factorW - neuronRhs.m_factorW)                         &&
-	IsCloseToZero(m_factorU - neuronRhs.m_factorU)                         &&
+	IsCloseToZero(m_factorW - neuronRhs.m_factorW)                       &&
+	IsCloseToZero(m_factorU - neuronRhs.m_factorU)                       &&
 	(m_triggerSound.m_bOn       == neuronRhs.m_triggerSound.m_bOn)       &&
 	(m_triggerSound.m_frequency == neuronRhs.m_triggerSound.m_frequency) &&
 	(m_triggerSound.m_duration  == neuronRhs.m_triggerSound.m_duration);

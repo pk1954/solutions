@@ -17,9 +17,11 @@ OutputNeuron::OutputNeuron(MicroMeterPnt const & upCenter)
 	: IoNeuron(upCenter, NobType::Value::outputNeuron)
 {}
 
-OutputNeuron::OutputNeuron(Neuron const & neuron)
-	: IoNeuron(neuron, NobType::Value::outputNeuron)
-{}
+OutputNeuron::OutputNeuron(BaseKnot const & baseKnot)
+	: IoNeuron(baseKnot.GetPos(), NobType::Value::outputNeuron)
+{
+	SetIncoming(baseKnot);
+}
 
 void OutputNeuron::Check() const
 {
