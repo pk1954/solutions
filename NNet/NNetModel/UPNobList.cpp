@@ -355,3 +355,14 @@ void UPNobList::countNobs()
 			++m_nobsOfType[index];
 		};
 }
+
+bool const UPNobList::Contains(Nob const * pNob) const 
+{ 
+	return Apply2AllB([&](Nob const & nob) { return pNob == &nob; }); 
+}
+
+void UPNobList::Reconnect(NobId const id)
+{
+	if (Nob * pNod { GetAt(id) })
+		pNod->Reconnect();
+}

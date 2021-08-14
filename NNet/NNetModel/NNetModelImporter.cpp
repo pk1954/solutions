@@ -367,15 +367,19 @@ void NNetModelImporter::Initialize(Script * const pScript)
    );
 }
 
-void NNetModelImporter::fixOutputNeurons()
+void NNetModelImporter::fixOutputNeurons(UPNobList & list)
 {
-    m_ImportedNMWI.GetUPNobs().Apply2All<Neuron>  
+    list.Apply2All<Neuron>  
     (
         [&](Neuron & neuron)
         {
             if (! neuron.HasOutgoing())
             {
-                m_ImportedNMWI.GetUPNobs().ReplaceNob(move(make_unique<OutputNeuron>(neuron)));
+                NobId id { neuron.GetId() };
+                unique_ptr<OutputNeuron> upOutputNeuron { make_unique<OutputNeuron>(neuron) };
+                upOutputNeuron->SetId(id);
+                list.ReplaceNob(move(upOutputNeuron));
+                list.Reconnect(id);
             }
         }
    );
@@ -391,7 +395,7 @@ void NNetModelImporter::import()
         m_ImportedNMWI.SetModelFilePath(m_wstrFile2Read);
         m_ImportedNMWI.DescriptionComplete();
         res = ImportTermination::Result::ok;
-        fixOutputNeurons();  // legacy: in old models no explicit OutputNeurons
+        fixOutputNeurons(m_ImportedNMWI.GetUPNobs());  // legacy: in old models no explicit OutputNeurons
     }
     else
     {

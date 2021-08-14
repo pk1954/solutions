@@ -55,6 +55,7 @@ public:
 	void               CheckNobList      ()                                     const;
 	void               Dump              ()                                     const;
 	bool         const AnyNobsSelected   ()                                     const;
+	bool         const Contains          (Nob const *)                          const;
 	void               CallErrorHandler  (NobId   const)                        const;
 	unsigned int const CountInSelection  (NobType const)                        const;
 	unsigned int const GetCounter        (NobType const)                        const;
@@ -67,20 +68,17 @@ public:
 	void               Apply2AllSelected (NobType const, NobFunc  const &);
 	void               Move              (MicroMeterPnt const &);
 
+	void Reconnect(NobId const);
+
 	unique_ptr<vector<Nob *>> GetAllSelected();
 
-	enum class SelMode { allNobs,	selectedNobs };
+	enum class SelMode { allNobs, selectedNobs };
 	MicroMeterRect const CalcEnclosingRect(SelMode const = SelMode::allNobs) const;
 
 	NobId const Push(UPNob);
 	UPNob const Pop() { return move(Pop<Nob>()); }
 
 	void MoveFrom(UPNobList &, size_t);
-
-	bool const Contains(Nob const * pNob) const 
-	{ 
-		return Apply2AllB([&](Nob const & nob) { return pNob == &nob; }); 
-	}
 
 	template <Nob_t T>
 	unique_ptr<T> Pop()

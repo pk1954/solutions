@@ -63,7 +63,7 @@ private:
 	Script                      * m_pScript { nullptr };
 
 	void import();
-	void fixOutputNeurons();
+	void fixOutputNeurons(UPNobList &);
 
 	friend static unsigned int __stdcall importModelThreadProc(void *);
 

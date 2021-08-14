@@ -31,35 +31,40 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
 {
     if (Size() > 1)
     {
-        MicroMeterPnt umPnt1     { m_list.front()->GetPos() }; 
-        MicroMeterPnt umPnt2     { m_list.back ()->GetPos() }; 
-        MicroMeterPnt umPntDir   { umPnt2 - umPnt1 };
-        MicroMeterPnt umPntOff   { umPntDir.ScaledTo(NEURON_RADIUS * 1.2f) };
-        MicroMeterPnt umOrthoVec { umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS * 0.7f) };
-        umPnt1 -= umOrthoVec;
-        umPnt2 -= umOrthoVec;
+        static float const WIDTH  { 0.2f };
+        static float const OFFSET { 1.0f + WIDTH * 0.5f };
+
+        MicroMeter    const umWidth     { NEURON_RADIUS * WIDTH };
+        MicroMeterPnt       umPnt1      { m_list.front()->GetPos() }; 
+        MicroMeterPnt       umPnt2      { m_list.back ()->GetPos() }; 
+        MicroMeterPnt const umPntDir    { (umPnt2 - umPnt1)     .ScaledTo(NEURON_RADIUS) };
+        MicroMeterPnt const umPntOrtho  { umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS) };
+        MicroMeterPnt const umPntDirOff { umPntDir   * OFFSET };
+        MicroMeterPnt const umPntOrtOff { umPntOrtho * OFFSET };
+        MicroMeterPnt const umPntOrtCor { umPntOrtho * (1.0f + WIDTH) * 0.5f };
+        umPnt1 += umPntOrtCor;
+        umPnt2 += umPntOrtCor;
         context.DrawLine
         (
-            umPnt1 - umPntOff        + umOrthoVec * 2.0f,
-            umPnt1 - umPntOff * 0.8f + umOrthoVec * 2.0f, 
-            m_list.front()->GetExtension() * 2.0f, 
+            umPnt1 - umPntDirOff - umPntOrtOff, 
+            umPnt1 - umPntDirOff + umPntOrtOff,
+            umWidth, 
             GetExteriorColor(type)
         );
         context.DrawLine
         (
-            umPnt2 + umPntOff        + umOrthoVec * 2.0f,
-            umPnt2 + umPntOff * 0.8f + umOrthoVec * 2.0f,
-            m_list.front()->GetExtension() * 2.0f, 
+            umPnt2 + umPntDirOff - umPntOrtOff, 
+            umPnt2 + umPntDirOff + umPntOrtOff,
+            umWidth, 
             GetExteriorColor(type)
         );
         context.DrawLine
         (
-            umPnt1 - umPntOff + umOrthoVec * 0.4f, 
-            umPnt2 + umPntOff + umOrthoVec * 0.4f, 
-            m_list.front()->GetExtension() * 0.25f, 
+            umPnt1 - umPntDir - umPntOrtho, 
+            umPnt2 + umPntDir - umPntOrtho, 
+            umWidth, 
             GetExteriorColor(type)
         );
     }
     IoConnector::DrawExterior(context, type);
 }
-

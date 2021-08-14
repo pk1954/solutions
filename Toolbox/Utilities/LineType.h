@@ -10,6 +10,8 @@
 #include "NamedType.h"
 #include "PointType.h"
 
+using std::swap;
+
 template <typename BASE_TYPE> 
 class LineType
 {
@@ -105,6 +107,17 @@ public:
     bool IsNotNull() const { return * this != NULL_VAL(); };
     bool IsZero   () const { return * this == ZERO_VAL(); };
     bool IsNotZero() const { return * this != ZERO_VAL(); };
+
+    void Swap() { swap(m_p1, m_p2); }
+    void Normalize() 
+    { 
+        POS_TYPE vector { GetVector() };
+        if (vector.GetX() >  BASE_TYPE::ZERO_VAL())
+            return;
+        if ((vector.GetX() == BASE_TYPE::ZERO_VAL()) && (vector.GetY() > BASE_TYPE::ZERO_VAL()))
+            return;
+        swap(m_p1, m_p2); 
+    }
 
 private:
     POS_TYPE m_p1;

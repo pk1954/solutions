@@ -160,5 +160,7 @@ inline MicroMeterLine const CalcMaxDistLine(vector<T *> const & list) // find tw
 				lineMax = line;
 			}
 		}
+	if (lineMax.GetStartPoint().GetX() >  lineMax.GetEndPoint().GetX())
+		lineMax.Normalize();
 	return lineMax;
 }
