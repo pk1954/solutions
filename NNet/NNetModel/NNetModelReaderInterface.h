@@ -47,7 +47,6 @@ public:
 	UPNobList     const & GetUPNobs()                            const { return m_pModel->GetUPNobs(); }
 	bool          const   AnyNobsSelected()                      const { return m_pModel->GetUPNobs().AnyNobsSelected(); }
 	bool          const   IsValidNobId(NobId const id)           const { return m_pModel->GetUPNobs().IsValidNobId(id); }
-	MicroMeterPnt const   CenterOfGravity()                      const { return m_pModel->GetUPNobs().CenterOfGravity(); }
 	MicroMeterPnt const   GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
 	Nob           const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	size_t        const   GetSizeOfNobList()                     const { return m_pModel->GetUPNobs().Size(); }

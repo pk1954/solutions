@@ -1,4 +1,4 @@
-// RotateModelCommand.h
+// RotateSelectionCommand.h
 //
 // Commands
 
@@ -9,10 +9,10 @@
 #include "NNetModelWriterInterface.h"
 #include "RotationCommand.h"
 
-class RotateModelCommand : public RotationCommand
+class RotateSelectionCommand : public RotationCommand
 {
 public:
-	RotateModelCommand
+	RotateSelectionCommand
 	(
 		NNetModelReaderInterface & nmri,
 		MicroMeterPnt      const & umPntOld, 
@@ -21,19 +21,19 @@ public:
 	{
 		m_umPntPivot = nmri.GetUPNobs().CenterOfGravity
 		(
-			[&](Nob const & nob){ return nob.IsAnyNeuron(); }
+			[&](Nob const & nob){ return nob.IsSelected() && nob.IsAnyNeuron(); }
 		);
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
 	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
-		nmwi.GetUPNobs().Apply2All<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
+		nmwi.GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
 	}
 
 	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{ 
-		nmwi.GetUPNobs().Apply2All<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
+		nmwi.GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
 
 	virtual NobId const GetAffectedNob() const { return NO_NOB;	}

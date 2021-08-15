@@ -374,7 +374,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			{
 				if (wParam & MK_CONTROL)
 				{
-					// rotate selection
+					m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
 				}
 				else 
 				{

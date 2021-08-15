@@ -153,6 +153,12 @@
     <ClInclude Include="RotateModelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RotateSelectionCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

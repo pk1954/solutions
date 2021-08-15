@@ -369,30 +369,17 @@ void UPNobList::Reconnect(NobId const id)
 		pNod->Reconnect();
 }
 
-MicroMeterPnt const UPNobList::CenterOfGravity() const
+MicroMeterPnt const UPNobList::CenterOfGravity(NobCrit const& crit) const
 {
 	MicroMeterPnt umPntRes { MicroMeterPnt::ZERO_VAL() };
 	size_t        counter  { 0 };
 
 	for (auto & it : m_list)
-		if (it && it->IsAnyNeuron())
+		if (it && crit(*it))
 		{ 
 			umPntRes += it->GetPos();
 			++counter;
-		};
+		}
 	umPntRes /= static_cast<float>(counter);
 	return umPntRes;
-}
-
-void UPNobList::Rotate
-(
-	MicroMeterPnt const & umPntPivot,
-	Radian        const   radDelta
-)
-{
-	for (auto & it : m_list)
-		if (it && it->IsBaseKnot())
-		{ 
-			it->RotateNob(umPntPivot, radDelta);
-		};
 }

@@ -53,7 +53,6 @@ public:
 	void                SetNob2Slot       (UPNob);              // only for special situations
 	void                CheckNobList      ()                                     const;
 	void                Dump              ()                                     const;
-	MicroMeterPnt const CenterOfGravity   ()                                     const;
 	bool          const AnyNobsSelected   ()                                     const;
 	bool          const Contains          (Nob const *)                          const;
 	void                CallErrorHandler  (NobId   const)                        const;
@@ -67,7 +66,8 @@ public:
 	void                Apply2AllSelected (NobType const, NobFuncC const &)      const;
 	void                Apply2AllSelected (NobType const, NobFunc  const &);
 	void                Move              (MicroMeterPnt const &);
-	void                Rotate            (MicroMeterPnt const &, Radian const);
+
+	MicroMeterPnt const CenterOfGravity(NobCrit const &) const;
 
 	void Reconnect(NobId const);
 

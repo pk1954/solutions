@@ -40,6 +40,8 @@ public:
 		);
 	}
 
+	virtual NobId const GetAffectedNob() const { return NO_NOB;	}
+
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		if (typeid(src) != typeid(*this))

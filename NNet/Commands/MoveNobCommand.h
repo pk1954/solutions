@@ -34,17 +34,14 @@ public:
 		m_nob.MoveNob(-m_delta);
 	}
 
-	virtual NobId const GetMovedNob() const
-	{
-		return m_nob.GetId();
-	}
+	virtual NobId const GetAffectedNob() const { return m_nob.GetId(); }
 
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		if (typeid(src) != typeid(*this))
 			return false;
 		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
-		if (GetMovedNob() != srcCmd.GetMovedNob())
+		if (GetAffectedNob() != srcCmd.GetAffectedNob())
 			return false;
 		m_delta += srcCmd.m_delta;
 		return true; 

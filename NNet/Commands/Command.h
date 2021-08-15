@@ -30,7 +30,7 @@ public:
         return false; 
     };
 
-    virtual NobId const GetMovedNob() const
+    virtual NobId const GetAffectedNob() const
     {
         return NobId();
     }

@@ -32,6 +32,7 @@
 #include "RestrictSelectionCommand.h"
 #include "RotateNobCommand.h"
 #include "RotateModelCommand.h"
+#include "RotateSelectionCommand.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
@@ -256,6 +257,13 @@ void NNetModelCommands::MoveSelection(MicroMeterPnt const & delta)
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << delta << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveSelectionCommand>(delta));
+}
+
+void NNetModelCommands::RotateSelection(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << umPntOld << umPntNew << endl;
+	m_pCmdStack->PushCommand(make_unique<RotateSelectionCommand>(* m_pNMRI, umPntOld, umPntNew));
 }
 
 void NNetModelCommands::RotateModel(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)

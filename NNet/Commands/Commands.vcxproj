@@ -84,6 +84,8 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="DeleteClosedConnCmd.h" />
     <ClInclude Include="RotateModelCommand.h" />
+    <ClInclude Include="RotateSelectionCommand.h" />
+    <ClInclude Include="RotationCommand.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
