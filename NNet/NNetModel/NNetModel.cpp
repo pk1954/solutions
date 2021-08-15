@@ -41,7 +41,7 @@ Nob const * NNetModel::GetConstNob(NobId const id) const
 {	
 	if (IsUndefined(id) || ! m_Nobs.IsValidNobId(id))
 	{
-		wcout << L"# **** GetConstNob failed. Id = " << id << endl;
+		wcout << Scanner::COMMENT_START << L"GetConstNob failed. Id = " << id << endl;
 		m_Nobs.CallErrorHandler(id);  
 		return nullptr;
 	}

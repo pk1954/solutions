@@ -35,11 +35,11 @@ public:
 			break;
 
 		case ImportTermination::Result::fileNotFound:
-			wcout << L"+++ could not find model file " << name.c_str() << endl;
+			wcout << L" +++ could not find model file " << name.c_str() << endl;
 			break;
 
 		case ImportTermination::Result::errorInFile:
-			wcout << L"+++ error in model file";
+			wcout << L" +++ error in model file";
 			break;
 
 		default:
@@ -92,9 +92,11 @@ int main(int argc, char * argv [ ], char * envp [ ])
 
 	m_modelImporter.Import(L"std.mod", make_unique<ConsImportTermination>());
 
+	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrInputFile << endl;
+
 	if (ProcessNNetScript(m_script, m_nmwi.GetUPNobs(), wstrInputFile))
 		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
-		wcout << L"+++ NNetSimuConsole terminated with error";
+		wcout << L" +++ NNetSimuConsole terminated with error";
 	wcout << endl;
 }

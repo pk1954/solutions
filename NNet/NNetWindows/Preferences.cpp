@@ -119,13 +119,13 @@ bool Preferences::ReadPreferences()
 {
     if (exists(m_wstrPreferencesFile))
     {
-        wcout << L"*** read preferences file " << m_wstrPreferencesFile << endl;
+        wcout << Scanner::COMMENT_START << L"Read preferences file " << m_wstrPreferencesFile << endl;
         return Script::ProcessScript(m_wstrPreferencesFile);
     }
     else 
     {
-        wcout << L"+++ preferences file " << m_wstrPreferencesFile << L" not found" << endl;
-        wcout << L"+++ using defaults" << endl;
+        wcout << Scanner::COMMENT_SYMBOL << L" +++ Preferences file " << m_wstrPreferencesFile << L" not found" << endl;
+        wcout << Scanner::COMMENT_SYMBOL << L" +++ Using defaults" << endl;
         return false;
     }
 }
@@ -137,6 +137,6 @@ bool Preferences::WritePreferences(wstring const wstrModelPath)
 	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
     prefFile << L"ReadModel \"" << wstrModelPath << L"\"" << endl;
     prefFile.close();
-    wcout << L"*** preferences file " << m_wstrPreferencesFile << L" written" << endl;
+    wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;
 }

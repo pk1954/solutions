@@ -41,8 +41,7 @@ int APIENTRY wWinMain
 	pump.SetAccelTable(hInstance, IDC_NNET_SIMU_MAIN);
 	App.Start(pump);
 	pump.RegisterWindow(App.GetWindowHandle(), false);
-	stopwatch.Stop(L"*** App.Start");
-	wcout << endl;
+	stopwatch.Stop(Scanner::COMMENT_START + L"App.Start");
 	int iRetVal = pump.Run();
 
 	return iRetVal;

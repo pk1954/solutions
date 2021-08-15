@@ -27,7 +27,7 @@ void Stopwatch::Start()
 	m_hrtimer.Start();
 }
 
-void Stopwatch::Stop(wstring const wstr)
+void Stopwatch::Stop(wstring const & wstr)
 {
 	assert(m_iLevel > 0);  // no Stop without Start
 
@@ -35,10 +35,11 @@ void Stopwatch::Stop(wstring const wstr)
 	microseconds microSecs = m_hrtimer.GetDuration();
 	float        millisecs = Cast2Float(microSecs.count()) / 1000.0f;
 	--m_iLevel;
+
 	for (int i = 0; i < m_iLevel; ++i)
-		std::wcout << L"      ";
+		wcout << L"      ";
 	wcout << setw(30) << left << wstr;
-	wcout << setw(6) << right;
+	wcout << setw(6)  << right;
 	wcout << fixed    << setprecision(2) << millisecs;
-	wcout << L" ms" << endl;
+	wcout << L" ms"   << endl;
 }

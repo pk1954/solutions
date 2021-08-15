@@ -11,7 +11,6 @@
 #include <vector>
 #include "pathcch.h"
 #include "SCRIPT.H"
-#include "win32_stopwatch.h"
 #include "win32_script.h"
 
 using std::wcout;
@@ -56,8 +55,8 @@ IFileDialog * ScriptFile::createOpenDialog()
    );
     if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ ScriptFile constructor: CoCreateInstance(CLSID_FileOpenDialog ...) failed." << endl;
-        wcout << L"+++ error code: " << hr << endl;
+        wcout << L" +++ ScriptFile constructor: CoCreateInstance(CLSID_FileOpenDialog ...) failed." << endl;
+        wcout << L" +++ error code: " << hr << endl;
         return nullptr;
     }
     hr = pFileDlg->SetTitle(L"Open file");
@@ -77,8 +76,8 @@ IFileDialog * ScriptFile::createSaveDialog()
    );
     if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ ScriptFile constructor: CoCreateInstance(CLSID_FileSaveDialog ...) failed." << endl;
-        wcout << L"+++ error code: " << hr << endl;
+        wcout << L" +++ ScriptFile constructor: CoCreateInstance(CLSID_FileSaveDialog ...) failed." << endl;
+        wcout << L" +++ error code: " << hr << endl;
         return nullptr;
     }
 
@@ -99,8 +98,8 @@ bool const ScriptFile::setFileTypes
     HRESULT           hr     { pFileDlg->SetFileTypes(1, & rgSpec) };
     if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ AskForFileName: SetFileTypes(1, {\"" << description.c_str() << L"\" , \"" << filter.c_str() << L"\" }) failed." << endl;
-        wcout << L"+++ error code : " << hr << endl;
+        wcout << L" +++ AskForFileName: SetFileTypes(1, {\"" << description.c_str() << L"\" , \"" << filter.c_str() << L"\" }) failed." << endl;
+        wcout << L" +++ error code : " << hr << endl;
         return false;
     }
     return true;
@@ -115,8 +114,8 @@ bool const ScriptFile::setDefaultExtension
     HRESULT hr { pFileDlg->SetDefaultExtension(extension.c_str()) };
     if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ AskForFileName: SetDefaultExtension(\"" << extension.c_str() << L"\") failed." << endl;
-        wcout << L"+++ error code : " << hr << endl;
+        wcout << L" +++ AskForFileName: SetDefaultExtension(\"" << extension.c_str() << L"\") failed." << endl;
+        wcout << L" +++ error code : " << hr << endl;
         return false;
     }
     return true;
@@ -130,8 +129,8 @@ wstring const ScriptFile::getResult(IFileDialog * const pFileDlg)
     hr = pFileDlg->GetResult(& pItem);                        
     if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ AskForFileName: GetResult(& pItem) failed." << endl;
-        wcout << L"+++ error code: " << hr << endl;
+        wcout << L" +++ AskForFileName: GetResult(& pItem) failed." << endl;
+        wcout << L" +++ error code: " << hr << endl;
         return wstrRes;
     }
 
@@ -139,8 +138,8 @@ wstring const ScriptFile::getResult(IFileDialog * const pFileDlg)
     hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, & pszPath); 
     if (! SUCCEEDED(hr))
     {
-        wcout << L"+++ AskForFileName: GetDisplayName(SIGDN_FILESYSPATH, & pszPath) failed." << endl;
-        wcout << L"+++ error code: " << hr << endl;
+        wcout << L" +++ AskForFileName: GetDisplayName(SIGDN_FILESYSPATH, & pszPath) failed." << endl;
+        wcout << L" +++ error code: " << hr << endl;
         return wstrRes;
     }
 

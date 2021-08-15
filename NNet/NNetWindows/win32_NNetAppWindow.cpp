@@ -36,7 +36,6 @@
 #include "NNetWinWrappers.h"
 #include "UtilityWrappers.h"
 #include "win32_script.h"
-#include "win32_stopwatch.h"
 #include "win32_fatalError.h"
 
 // system and resources
@@ -55,23 +54,20 @@
 
 using namespace std::literals::chrono_literals;
 
+using std::wcout;
+using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 using std::wostringstream;
-using std::wstring;
-using std::wcout;
 using std::filesystem::path;
 
 NNetAppWindow::NNetAppWindow()
 {
-	Stopwatch stopwatch;
-
 	SwitchWcoutTo(L"main_trace.out");
 
-	wcout << L"*** Application start at " << Util::GetCurrentDateAndTime() << endl;
-	wcout << L"*** Computer name: "       << Util::GetComputerName()       << endl;
-	wcout << L"*** User name:     "       << Util::GetUserName()           << endl;
-	wcout << endl;
+	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
+	wcout << Scanner::COMMENT_START << L"Computer name: "       << Util::GetComputerName() << endl;
+	wcout << Scanner::COMMENT_START << L"User name:     "       << Util::GetUserName()     << endl;
 
 	Neuron::SetSound(& m_sound);
 	NNetWindow::InitClass(& m_atDisplay);
@@ -416,12 +412,13 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 	case IDM_SCRIPT_DIALOG:
 		m_computeThread.StopComputation();
-		ProcessNNetScript
-		(
-		    m_script, 
-			m_nmwi.GetUPNobs(), 
-			ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read)
-		);
+		{
+			wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
+			if (wstrFile.empty())
+				break;
+			wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
+			ProcessNNetScript(m_script, m_nmwi.GetUPNobs(),	wstrFile);
+		}
 		break;
 
 	case IDM_NEW_MODEL:

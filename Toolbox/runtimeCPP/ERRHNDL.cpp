@@ -130,7 +130,7 @@ void ScriptErrorHandler::HandleScriptError
     ScriptException const & errInfo
 )
 {
-    * m_pScriptTrace << endl << L"+++ error " << errInfo.m_sErrNr;
+    * m_pScriptTrace << endl << L" +++ error " << errInfo.m_sErrNr;
     printErrorMsg(scanner, errInfo.m_wstrMessage);
 }
 
@@ -144,7 +144,7 @@ void ScriptErrorHandler::printErrorMsg
 
     int const iLineNr = scanner.GetActLineNr();
     if (iLineNr > 0)
-        * m_pScriptTrace << L"+++ line " << iLineNr << endl;
+        * m_pScriptTrace << L" +++ line " << iLineNr << endl;
 
     wstring const wstrActLine = scanner.GetActLine();
     if (! wstrActLine.empty())
@@ -153,12 +153,12 @@ void ScriptErrorHandler::printErrorMsg
     PrintMarkerLine(scanner);
 
     if (! m_wstrMessage.empty())
-        * m_pScriptTrace << L"+++ " << m_wstrMessage << endl;
+        * m_pScriptTrace << L" +++ " << m_wstrMessage << endl;
 
     if (!scanner.GetExpectedToken().empty())
-        * m_pScriptTrace << L"+++ expected \"" << scanner.GetExpectedToken().c_str() << L"\""<< endl;
+        * m_pScriptTrace << L" +++ expected \"" << scanner.GetExpectedToken().c_str() << L"\""<< endl;
 
-    * m_pScriptTrace << L"+++ error exit" << endl;
+    * m_pScriptTrace << L" +++ error exit" << endl;
 
     (void)m_pScriptTrace->flush();
 }

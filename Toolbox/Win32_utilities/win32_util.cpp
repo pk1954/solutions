@@ -109,7 +109,7 @@ ULONGLONG Util::GetPhysicalMemory()  // in bytes
 {
     ULONGLONG ramKB;
     (void)GetPhysicallyInstalledSystemMemory(&ramKB);   // get physical memory in KB
-    return ramKB * 1024;                                  // compute number of bytes
+    return ramKB * 1024;                                // compute number of bytes
 }
 
 wstring Util::GetCurrentDateAndTime()

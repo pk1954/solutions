@@ -434,7 +434,7 @@ bool NNetModelImporter::Import
     m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
     m_ImportedNMWI.Start(m_upImportedModel.get());
     m_wstrFile2Read = wstrPath;
-    wcout << L"*** Reading file " << wstrPath << endl;
+    wcout << Scanner::COMMENT_START << L"Reading file " << wstrPath << endl;
     Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
     return true;
 }

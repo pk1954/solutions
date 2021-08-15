@@ -203,23 +203,25 @@ bool WinManager::GetWindowConfiguration()
 	
 	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
 	{
-		wcout << L"+++ Monitor configuration file " << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
+		wcout << Scanner::COMMENT_SYMBOL << L" +++ Monitor configuration file " << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
 	} 
 	else if (m_strWindowConfigurationFile.empty())
 	{
-		wcout << L"+++ Monitor configuration unknown" << endl;
+		wcout << Scanner::COMMENT_SYMBOL << L" +++ Monitor configuration unknown" << endl;
 	}
     else
     {
 	    if (! scriptWindowConfig.ScrProcess(m_strWindowConfigurationFile))
 	    {
-            wcout << L"+++ Window configuration file " 
+            wcout << Scanner::COMMENT_SYMBOL
+                  << L" +++ Window configuration file " 
                   << m_strWindowConfigurationFile
                   << L" missing or bad" << endl;
 	    }
 	    else
 	    {
-            wcout << L"*** Window configuration file " 
+            wcout << Scanner::COMMENT_SYMBOL
+                  << L" *** Window configuration file " 
                   << m_strWindowConfigurationFile
                   << L" sucessfully processed" << endl;
             bRes = true;
@@ -227,7 +229,7 @@ bool WinManager::GetWindowConfiguration()
     }
 
     if (! bRes)
-        wcout << L"*** Using default window positions" << endl;
+        wcout << Scanner::COMMENT_START << L"Using default window positions" << endl;
 
     return bRes;
 }

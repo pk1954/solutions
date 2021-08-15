@@ -77,9 +77,7 @@ wchar_t Scanner::SkipSpace()
 // precondition:  valid start of name has been read
 // postcondition: char has been read, which is not part of name
 
-tTOKEN Scanner::ScanName(
-                           wchar_t wchAct   // first char of name 
-                       )
+tTOKEN Scanner::ScanName(wchar_t wchAct)   // first char of name 
 {              
    do
    {

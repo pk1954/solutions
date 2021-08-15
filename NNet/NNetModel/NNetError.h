@@ -11,7 +11,6 @@
 #include "UPNobList.h"
 
 using std::to_wstring;
-using std::wcout;
 using std::endl;
 
 struct NobException: public exception
@@ -77,7 +76,6 @@ inline bool ProcessNNetScript
         nobList.SetErrorHandler(& errHndl);
         try
         {
-            wcout << L"*** Processing script file " << wstrPath << endl;
             bSuccess = script.ScrProcess(wstrPath);
         }
         catch (NobException e) 
