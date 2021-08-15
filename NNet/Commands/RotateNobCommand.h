@@ -1,4 +1,4 @@
-// RotateCommand.h
+// RotateNobCommand.h
 //
 // Commands
 
@@ -9,12 +9,12 @@
 #include "Command.h"
 #include "Nob.h"
 
-class RotateCommand : public Command
+class RotateNobCommand : public Command
 {
 public:
-	RotateCommand
+	RotateNobCommand
 	(
-		Nob                   & nob,
+		Nob                 & nob,
 		MicroMeterPnt const & umPntOld, 
 		MicroMeterPnt const & umPntNew
 	)
@@ -39,16 +39,11 @@ public:
 		return m_nob.GetId();
 	}
 
-	virtual bool IsMoveCommand() const
-	{ 
-		return true; 
-	};
-
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		if (typeid(src) != typeid(*this))
 			return false;
-		RotateCommand const & srcCmd { static_cast<RotateCommand const &>(src) };
+		RotateNobCommand const & srcCmd { static_cast<RotateNobCommand const &>(src) };
 		if (GetMovedNob() != srcCmd.GetMovedNob())
 			return false;
 		if (m_umPntPivot != srcCmd.m_umPntPivot)
@@ -58,7 +53,7 @@ public:
 	};
 
 private:
-	Nob           & m_nob;
-	Radian          m_radDelta;
+	Nob         & m_nob;
+	Radian        m_radDelta;
 	MicroMeterPnt m_umPntPivot;
 };

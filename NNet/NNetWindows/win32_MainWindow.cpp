@@ -382,6 +382,10 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				}
 			}
 		}
+		else if (wParam & MK_CONTROL)     // rotate model
+		{
+			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
+		}
 		else 
 		{
 			NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 

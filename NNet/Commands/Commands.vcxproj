@@ -83,6 +83,7 @@
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="DeleteClosedConnCmd.h" />
+    <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
@@ -97,7 +98,7 @@
     <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MoveNobCommand.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
-    <ClInclude Include="RotateCommand.h" />
+    <ClInclude Include="RotateNobCommand.h" />
     <ClInclude Include="SetNobCommand.h" />
     <ClInclude Include="SetIoNeuronsCommand.h" />
     <ClInclude Include="SelectAllBeepersCommand.h" />

@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <numeric>
 #include "Knot.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
@@ -16,6 +17,7 @@
 #include "UPNobList.h"
 
 using std::move;
+using std::accumulate;
 
 void UPNobList::Clear()
 { 
@@ -365,4 +367,32 @@ void UPNobList::Reconnect(NobId const id)
 {
 	if (Nob * pNod { GetAt(id) })
 		pNod->Reconnect();
+}
+
+MicroMeterPnt const UPNobList::CenterOfGravity() const
+{
+	MicroMeterPnt umPntRes { MicroMeterPnt::ZERO_VAL() };
+	size_t        counter  { 0 };
+
+	for (auto & it : m_list)
+		if (it && it->IsAnyNeuron())
+		{ 
+			umPntRes += it->GetPos();
+			++counter;
+		};
+	umPntRes /= static_cast<float>(counter);
+	return umPntRes;
+}
+
+void UPNobList::Rotate
+(
+	MicroMeterPnt const & umPntPivot,
+	Radian        const   radDelta
+)
+{
+	for (auto & it : m_list)
+		if (it && it->IsBaseKnot())
+		{ 
+			it->RotateNob(umPntPivot, radDelta);
+		};
 }

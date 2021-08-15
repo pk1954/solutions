@@ -39,11 +39,6 @@ public:
 		return m_nob.GetId();
 	}
 
-	virtual bool IsMoveCommand() const
-	{ 
-		return true; 
-	};
-
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		if (typeid(src) != typeid(*this))

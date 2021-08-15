@@ -6,7 +6,7 @@
 
 #include <array>
 #include <vector>
-#include <numeric>
+#include "MoreTypes.h"
 #include "Nob.h"
 #include "NobId.h"
 #include "NobErrorHandler.h"
@@ -14,7 +14,6 @@
 using std::move;
 using std::array;
 using std::vector;
-using std::accumulate;
 using std::unique_ptr;
 using std::make_unique;
 
@@ -44,29 +43,31 @@ public:
 	void         IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
 	void         ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
 
-	void               Clear             ();
-	void               SetErrorHandler   (NobErrorHandler * const);
-	void               SelectAllNobs     (bool const);
-	void               DeselectAllNobs   () { SelectAllNobs(false); }
-	UPNob              ExtractNob        (NobId const);	
-	Nob        * const ReplaceNob        (UPNob);	
-	void               SetNob2Slot       (NobId const, UPNob); // only for special situations
-	void               SetNob2Slot       (UPNob);              // only for special situations
-	void               CheckNobList      ()                                     const;
-	void               Dump              ()                                     const;
-	bool         const AnyNobsSelected   ()                                     const;
-	bool         const Contains          (Nob const *)                          const;
-	void               CallErrorHandler  (NobId   const)                        const;
-	unsigned int const CountInSelection  (NobType const)                        const;
-	unsigned int const GetCounter        (NobType const)                        const;
-	unsigned int const GetCounter        ()                                     const;
-	NobId        const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
-	bool         const Apply2AllB        (                     NobCrit const &) const;
-	void               Apply2All         (NobFuncC const &)                     const;
-	void               Apply2All         (NobFunc  const &);
-	void               Apply2AllSelected (NobType const, NobFuncC const &)      const;
-	void               Apply2AllSelected (NobType const, NobFunc  const &);
-	void               Move              (MicroMeterPnt const &);
+	void                Clear             ();
+	void                SetErrorHandler   (NobErrorHandler * const);
+	void                SelectAllNobs     (bool const);
+	void                DeselectAllNobs   () { SelectAllNobs(false); }
+	UPNob               ExtractNob        (NobId const);	
+	Nob         * const ReplaceNob        (UPNob);	
+	void                SetNob2Slot       (NobId const, UPNob); // only for special situations
+	void                SetNob2Slot       (UPNob);              // only for special situations
+	void                CheckNobList      ()                                     const;
+	void                Dump              ()                                     const;
+	MicroMeterPnt const CenterOfGravity   ()                                     const;
+	bool          const AnyNobsSelected   ()                                     const;
+	bool          const Contains          (Nob const *)                          const;
+	void                CallErrorHandler  (NobId   const)                        const;
+	unsigned int  const CountInSelection  (NobType const)                        const;
+	unsigned int  const GetCounter        (NobType const)                        const;
+	unsigned int  const GetCounter        ()                                     const;
+	NobId         const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
+	bool          const Apply2AllB        (                     NobCrit const &) const;
+	void                Apply2All         (NobFuncC const &)                     const;
+	void                Apply2All         (NobFunc  const &);
+	void                Apply2AllSelected (NobType const, NobFuncC const &)      const;
+	void                Apply2AllSelected (NobType const, NobFunc  const &);
+	void                Move              (MicroMeterPnt const &);
+	void                Rotate            (MicroMeterPnt const &, Radian const);
 
 	void Reconnect(NobId const);
 

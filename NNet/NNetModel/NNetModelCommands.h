@@ -74,6 +74,7 @@ public:
     void ResetModel          ();
     void RestrictSelection   (NobType::Value const);
     void Rotate              (NobId const, MicroMeterPnt const &, MicroMeterPnt const &);
+    void RotateModel         (MicroMeterPnt const &, MicroMeterPnt const &);
     void SelectAll           (bool const);
     void SelectAllBeepers    ();
     void SelectNob           (NobId const, tBoolOp const);

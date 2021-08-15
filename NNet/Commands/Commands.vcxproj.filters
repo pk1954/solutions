@@ -129,7 +129,7 @@
     <ClInclude Include="AnimationChainCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RotateCommand.h">
+    <ClInclude Include="RotateNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplitClosedConnCmd.h">
@@ -148,6 +148,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeleteClosedConnCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateModelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

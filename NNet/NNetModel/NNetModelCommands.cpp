@@ -30,7 +30,8 @@
 #include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
 #include "RestrictSelectionCommand.h"
-#include "RotateCommand.h"
+#include "RotateNobCommand.h"
+#include "RotateModelCommand.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
@@ -233,14 +234,14 @@ void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
 
 void NNetModelCommands::Rotate
 (
-	NobId           const   id, 
+	NobId         const   id, 
 	MicroMeterPnt const & umPntOld, 
 	MicroMeterPnt const & umPntNew 
 )
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << id << L" " << umPntOld << L" " << umPntNew << endl;
-	m_pCmdStack->PushCommand(make_unique<RotateCommand>(*m_pNMWI->GetNob(id), umPntOld, umPntNew));
+	m_pCmdStack->PushCommand(make_unique<RotateNobCommand>(*m_pNMWI->GetNob(id), umPntOld, umPntNew));
 }
 
 void NNetModelCommands::SetNob(NobId const id, MicroMeterPosDir const posDir)
@@ -255,6 +256,13 @@ void NNetModelCommands::MoveSelection(MicroMeterPnt const & delta)
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << delta << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveSelectionCommand>(delta));
+}
+
+void NNetModelCommands::RotateModel(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << umPntOld << umPntNew << endl;
+	m_pCmdStack->PushCommand(make_unique<RotateModelCommand>(* m_pNMRI, umPntOld, umPntNew));
 }
 
 void NNetModelCommands::SetIoNeurons

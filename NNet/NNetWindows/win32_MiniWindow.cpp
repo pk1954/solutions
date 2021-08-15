@@ -29,7 +29,7 @@ void MiniWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		{
 			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
 			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize(pixDelta) }; 
-			m_pObservedNNetWindow->NNetMove(-umDelta);               // move the observed window in opposite direction
+			m_pObservedNNetWindow->NNetMove(-umDelta);       // move the observed window in opposite direction
 		}
 		m_ptLast = ptCrsr;
 	}

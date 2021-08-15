@@ -30,11 +30,6 @@ public:
         return false; 
     };
 
-    virtual bool IsMoveCommand() const
-    { 
-        return false; 
-    };
-
     virtual NobId const GetMovedNob() const
     {
         return NobId();
