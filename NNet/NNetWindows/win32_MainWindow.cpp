@@ -265,7 +265,8 @@ void MainWindow::CenterModel()
 
 void MainWindow::CenterSelection()
 {
-	centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
+	if (m_pNMRI->AnyNobsSelected())
+		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
 bool const MainWindow::ArrowsVisible() const

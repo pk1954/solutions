@@ -67,7 +67,10 @@ public:
 
     bool ScrProcess(wstring const &);
 
-	static void StopProcessing() { m_bStop = true; }
+	static void StopProcessing() 
+	{ 
+		m_bStop = true; 
+	}
 
 private:
 

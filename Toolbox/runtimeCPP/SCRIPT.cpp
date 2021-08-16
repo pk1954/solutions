@@ -433,7 +433,7 @@ bool Script::ScrProcess
 
 		for (;;)
         {
-	        if(m_bStop)
+	        if (m_bStop)
 				return false;
 
             tTOKEN const token = scan.NextToken(true);
