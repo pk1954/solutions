@@ -1,5 +1,5 @@
 # NNetModel
-# Created Mon Aug 16 17:25:42 2021
+# Created Tue Aug 17 15:30:06 2021
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -16,7 +16,7 @@ GlobalParameter PeakVoltage = 10
 GlobalParameter RefractoryPeriod = 500
 GlobalParameter TimeResolution = 100
 
-NrOfNobs = 934
+NrOfNobs = 933
 
 CreateNob 0 inputNeuron(406.603|169.599)
 CreateNob 2 inputNeuron(306.603|169.312)
@@ -109,8 +109,8 @@ CreateNob 187 knot(154.82|2230.27)
 CreateNob 188 knot(342.58|2026.52)
 CreateNob 192 knot(-45.7475|2558.15)
 CreateNob 193 knot(164.751|1932.76)
-CreateNob 197 knot(406.978|2624.15)
-CreateNob 198 knot(-45.4104|2100.89)
+CreateNob 197 knot(-290.666|3185.3)
+CreateNob 198 knot(-743.054|2662.04)
 CreateNob 202 knot(584.843|2550.18)
 CreateNob 203 knot(992.464|1897.19)
 CreateNob 207 knot(384.321|2239.66)
@@ -951,21 +951,15 @@ CreateNob 924 pipe(242->923)
 CreateNob 927 pipe(227->926)
 CreateNob 929 pipe(408->928)
 CreateNob 932 pipe(223->931)
-CreateNob 933 inputConnector{6:4,2,0,8,7,6}
 
-NobParameter InputNeuron 0 PulseRate = 50.01
-NobParameter InputNeuron 2 PulseRate = 50.01
-NobParameter InputNeuron 4 PulseRate = 50.01
-NobParameter InputNeuron 6 PulseRate = 50.01
-NobParameter InputNeuron 7 PulseRate = 50.01
-NobParameter InputNeuron 8 PulseRate = 50.01
+NobParameter InputNeuron 0 PulseRate = 50
+NobParameter InputNeuron 2 PulseRate = 50
+NobParameter InputNeuron 4 PulseRate = 50
+NobParameter InputNeuron 6 PulseRate = 50
+NobParameter InputNeuron 7 PulseRate = 50
+NobParameter InputNeuron 8 PulseRate = 50
 
-TriggerSound 69 550 Hertz 100 msec 
-TriggerSound 72 440 Hertz 100 msec 
-TriggerSound 74 330 Hertz 100 msec 
-TriggerSound 75 880 Hertz 100 msec 
-TriggerSound 78 770 Hertz 100 msec 
-TriggerSound 80 660 Hertz 100 msec 
 
-NrOfTracks 0
+NrOfTracks 1
+Signal  track 0source 101((2467.62|6804.28),784.607)
 

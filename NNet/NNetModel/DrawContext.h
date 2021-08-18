@@ -60,9 +60,9 @@ public:
 	MicroMeter  GetPixelSize  () const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset() const { return m_coord.GetPixelOffset(); }
 
-	void SetPixelSize  (MicroMeter      const s) { m_coord.SetPixelSize  (s); }
-	void SetPixelOffset(fPixelPoint     const f) { m_coord.SetPixelOffset(f); }
-	bool Zoom          (MicroMeter      const s) { return m_coord.Zoom   (s); }
+	void SetPixelSize  (MicroMeter    const s) { m_coord.SetPixelSize  (s); }
+	void SetPixelOffset(fPixelPoint   const f) { m_coord.SetPixelOffset(f); }
+	bool Zoom          (MicroMeter    const s) { return m_coord.Zoom   (s); }
 	void Center        (MicroMeterPnt const u, fPixelPoint const f) { m_coord.Center(u, f); }
 
 	void Move(auto const d) { m_coord.Move(d); }

@@ -45,12 +45,12 @@ public:
     void  Notify(bool const);
     void  Draw(DrawContext const &) const;
     float GetSignalValue() const;
-    void  WriteSignalData(wostream &) const;;
+    void  WriteSignalData(wostream &) const;
 
     bool  Includes(MicroMeterPnt const pos) const { return m_circle.Includes(pos); }
 
     void  Move(MicroMeterPnt const & umDelta) { m_circle += umDelta; }
-    void  Size(float           const   factor ) { m_circle *= factor; }
+    void  Size(float         const   factor ) { m_circle *= factor; }
 
     MicroMeterPnt    const & GetCenter() const { return m_circle.GetPos(); }
     MicroMeterCircle const & GetCircle() const { return m_circle; }
@@ -58,7 +58,7 @@ public:
     void Set2Null() { m_circle.Set2Null(); }
 
     void Check() const {};
-    void Dump() const {};
+    void Dump()  const {};
     void CheckSignal();
 
 private:
@@ -68,7 +68,7 @@ private:
 
     MicroMeterCircle m_circle    { MicroMeterCircle::NULL_VAL() };
     fMicroSecs       m_timeStart { 0._MicroSecs };
-    vector <float>   m_data      { };
+    vector<float>    m_data      { };
 
     int        const time2index(fMicroSecs const) const;
     fMicroSecs const index2time(int        const) const;

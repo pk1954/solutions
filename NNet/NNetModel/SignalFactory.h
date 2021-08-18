@@ -24,7 +24,7 @@ public:
     (
         NNetModelReaderInterface const & modelReaderInterface,
         Observable                     & observable
-   )
+    )
     {
         m_pNMRI       = & modelReaderInterface;
         m_pObservable = & observable;
@@ -32,7 +32,7 @@ public:
 
     static unique_ptr<Signal>MakeSignal(Signal const & src)
     {
-        return make_unique<Signal>(src);
+        return make_unique<Signal>(* m_pNMRI, * m_pObservable, src.GetCircle());
     }
 
     static unique_ptr<Signal>MakeSignal(MicroMeterCircle const & umCircle)

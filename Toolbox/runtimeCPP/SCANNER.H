@@ -13,6 +13,7 @@
 #include "Input.h"
    
 using std::wstring;
+using std::streampos;
                                             
 enum class tTOKEN    // Return value of NextToken
 { 
@@ -36,7 +37,7 @@ public:
     void CloseInputFile();
     ~Scanner();
 
-    std::streampos GetFilePos () { return m_inbuf.GetFilePos(); };
+    streampos GetFilePos() { return m_inbuf.GetFilePos(); };
 
    // Get next token from input file 
 

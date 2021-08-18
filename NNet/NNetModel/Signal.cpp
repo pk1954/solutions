@@ -84,7 +84,7 @@ fMicroSecs const Signal::index2time(int const index) const
 float const Signal::GetDataPoint(fMicroSecs const time) const
 {
     int index { time2index(time) };
-    return (index < 0) ? NAN : m_data[ index ];
+    return (index < 0) ? NAN : m_data[index];
 }
 
 fMicroSecs const Signal::FindNextMaximum(fMicroSecs const time) const

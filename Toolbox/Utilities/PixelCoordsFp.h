@@ -205,30 +205,20 @@ public:
 	//////// queries ////////
 
 	MicroMeter  GetPixelSize()   const { return m_pixelSize; };
-	
 	fPixelPoint GetPixelOffset() const { return m_fPixOffset; }
-
-	MicroMeter ComputeNewPixelSize(bool const bZoomIn) const  // does not modify field size
-	{
-		static float const ZOOM_FACTOR { 1.3f };
-
-		float      const fFactor { bZoomIn ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
-		MicroMeter const newSize { m_pixelSize * fFactor };
-		return isValidPixelSize(newSize) ? newSize : m_pixelSize;
-	}
 
 	//////// manipulation functions ////////
 
-	void SetPixelSize  (MicroMeter    const pixelSize) { m_pixelSize  = pixelSize;  }
+	void SetPixelSize  (MicroMeter    const pixelSize ) { m_pixelSize  = pixelSize;  }
 	void SetPixelOffset(fPixelPoint   const fPixOffset) { m_fPixOffset = fPixOffset; }
-	void Set           (PixelCoordsFp const newVals  ) { * this = newVals; }
+	void Set           (PixelCoordsFp const newVals   ) { * this = newVals; }
 
-	void Move(PixelPoint      const pntDelta) { m_fPixOffset -= ::Convert2fPixelPoint(pntDelta); }
-	void Move(MicroMeterPnt const umDelta) { m_fPixOffset -= Transform2fPixelSize (umDelta); }
+	void Move(PixelPoint    const pntDelta) { m_fPixOffset -= ::Convert2fPixelPoint(pntDelta); }
+	void Move(MicroMeterPnt const umDelta ) { m_fPixOffset -= Transform2fPixelSize (umDelta); }
 
 	bool Zoom(MicroMeter const pixelSize)
 	{
-		bool bValid = isValidPixelSize(pixelSize);
+		bool bValid = IsValidPixelSize(pixelSize);
 		if (bValid)
 			SetPixelSize(pixelSize);
 		return bValid;
@@ -237,7 +227,7 @@ public:
 	void Center
 	(
 		MicroMeterPnt const umPntCenter,   
-		fPixelPoint     const fPntPix  
+		fPixelPoint   const fPntPix  
 	)
 	{
 		SetPixelOffset(Transform2fPixelSize(umPntCenter) - fPntPix);
@@ -307,16 +297,16 @@ public:
 		return out; 
 	}
 
+	bool IsValidPixelSize(MicroMeter const size) const
+	{
+		return (MINIMUM_PIXEL_SIZE <= size) && (size <= MAXIMUM_PIXEL_SIZE); 
+	}
+
 private:
 
 	inline static MicroMeter const MINIMUM_PIXEL_SIZE {    0.1_MicroMeter };
 	inline static MicroMeter const DEFAULT_PIXEL_SIZE {    1.0_MicroMeter };  
 	inline static MicroMeter const MAXIMUM_PIXEL_SIZE { 2000.0_MicroMeter };  // 2 MilliMeter
-
-	bool isValidPixelSize(MicroMeter const newSize) const
-	{
-		return (MINIMUM_PIXEL_SIZE <= newSize) && (newSize <= MAXIMUM_PIXEL_SIZE); 
-	}
 
 	fPixelPoint m_fPixOffset;
 	MicroMeter  m_pixelSize;

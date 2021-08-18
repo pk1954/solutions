@@ -46,10 +46,6 @@ public:
 	NobId const GetHighlightedNobId() const { return m_nobHighlighted; }
 	bool  const AnyNobsSelected    () const { return m_pNMRI->AnyNobsSelected(); }
 
-	virtual bool Zoom(MicroMeter const, PixelPoint const * const);
-
-	void ZoomStep(bool const, PixelPoint const * const);
-
 	template <typename T>
 	void NNetMove(T const & delta)	
 	{ 
@@ -104,6 +100,7 @@ private:
 	void setHighlightedNob(MicroMeterPnt const &);
 	bool changePulseRate  (NobId const, bool const);
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
+	void zoomStep         (float const, fPixelPoint const);
 
 	virtual void doPaint();
 

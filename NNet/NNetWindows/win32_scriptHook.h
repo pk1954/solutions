@@ -9,6 +9,8 @@
 #include "script.h"
 
 using std::to_wstring;
+using std::unique_ptr;
+using std::make_unique;
 
 class ScriptHook : public Script_Functor
 {
@@ -25,14 +27,14 @@ public:
 		m_pStatusBar     = pStatusBar;
 		m_iStatusBarPart = iPart;
 		m_pScript        = pScript;
-		m_pRefreshRate   = new refreshRate(this);
-		m_pRefreshRate->SetRefreshRate(300ms);
+		m_upRefreshRate  = make_unique<refreshRate>(this);
+		m_upRefreshRate->SetRefreshRate(300ms);
 		m_pStatusBar->AddCustomControl(80);  // nr of characters
 	}
 
 	virtual void operator() (Script & script) const
 	{
-		m_pRefreshRate->Notify(false);
+		m_upRefreshRate->Notify(false);
 	}
 
 	void DisplayScriptProgress()
@@ -70,8 +72,8 @@ private:
 		ScriptHook * m_pScriptHook;
 	};
 
-	refreshRate * m_pRefreshRate   { nullptr };
-	StatusBar   * m_pStatusBar     { nullptr };
-	Script      * m_pScript        { nullptr };
-	int           m_iStatusBarPart { 0 };
+	unique_ptr<refreshRate> m_upRefreshRate  { };
+	StatusBar             * m_pStatusBar     { nullptr };
+	Script                * m_pScript        { nullptr };
+	int                     m_iStatusBarPart { 0 };
 };

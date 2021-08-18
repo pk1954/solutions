@@ -232,30 +232,22 @@ MicroMeterPnt const MainWindow::GetCursorPos() const
 		: NP_ZERO;
 }
 
-bool MainWindow::Zoom(MicroMeter const newSize, PixelPoint const * const pPixPntCenter)
+void MainWindow::zoomStep(float const fFactor, fPixelPoint const fPixPointCenter)
 {
-	PixelPoint      const pixPntCenter    { pPixPntCenter ? * pPixPntCenter : GetClRectCenter() };
-	fPixelPoint     const fPixPointCenter { Convert2fPixelPoint(pixPntCenter) };                         // compute center
-	MicroMeterPnt const umPointcenter   { GetCoordC().Transform2MicroMeterPntPos(fPixPointCenter) }; // ** BEFORE ** zooming!
-	if (GetDrawContext().Zoom(newSize) )
+	MicroMeter const newSize { GetCoordC().GetPixelSize() * fFactor };
+	if ( GetCoordC().IsValidPixelSize(newSize) )
 	{
-		GetDrawContext().Center(umPointcenter, fPixPointCenter); 
-		Notify(false); 
+		MicroMeterPnt const umPntcenter { GetCoordC().Transform2MicroMeterPntPos(fPixPointCenter) }; // compute center ** BEFORE ** zooming!
+		GetDrawContext().Zoom(newSize);
+		GetDrawContext().Center(umPntcenter, fPixPointCenter);
+		m_scale.SetHorzPixelSize(newSize.GetValue());
 		if (m_pCoordObservable)
 			m_pCoordObservable->NotifyAll(false);
-		m_scale.SetHorzPixelSize(newSize.GetValue());
-		return true;
 	}
 	else
 	{
 		MessageBeep(MB_ICONWARNING);
-		return false;
 	}
-}
-
-void MainWindow::ZoomStep(bool const bZoomIn, PixelPoint const * const pPixPntCenter)
-{
-	Zoom(GetCoordC().ComputeNewPixelSize(bZoomIn), pPixPntCenter);
 }
 
 void MainWindow::CenterModel()
@@ -422,7 +414,7 @@ bool MainWindow::OnRButtonUp(WPARAM const wParam, LPARAM const lParam)
 
 bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
 
 	m_umPntSelectionAnchor = umCrsrPos;
@@ -432,26 +424,29 @@ bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
 
 void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-	PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
-	int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-	bool       const bDirection { iDelta > 0 };
+	static float  const ZOOM_FACTOR { 1.1f };
 
+	PixelPoint    const ptCrsr    { GetRelativeCrsrPosition() };  // screen coordinates
+	int           const iDelta    { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
+	float         const fFactor   { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
+
 	if (Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor(umCrsrPos) })
 	{
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
-			pSignal->Size(bDirection ? 1.1f : 0.9f);
-			Notify(false); 
+			pSignal->Size(fFactor);
 		}
 	}
 	else
 	{
+		fPixelPoint const fPixPointCenter { Convert2fPixelPoint(ptCrsr) }; 
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
-			ZoomStep(bDirection, & ptCrsr);
+			zoomStep(fFactor, fPixPointCenter);
 		}
 	}
+	Notify(false); 
 }
 
 void MainWindow::centerAndZoomRect

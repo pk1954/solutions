@@ -18,6 +18,8 @@
 #include "script.h"
 #include "symtab.h"
 
+using std::numeric_limits;
+
 //   ScrSetWrapHook: Set hook function, which will be called in processScript
    
 void Script::ScrSetWrapHook(Script_Functor const * const pHook)
@@ -495,5 +497,11 @@ void Script::Clear()
 
 long const Script::GetPercentRead() const
 {
-    return (m_fileSize > 0) ? Cast2Long(GetFilePos() * 100 / m_fileSize) : 0L;
+    long long const filePos = GetFilePos();
+    if ((filePos < 0) || (numeric_limits<long>::max() / 100 < filePos))
+        return 100L;
+    else if (m_fileSize == 0)
+        return 0L;
+    else
+        return Cast2Long(filePos * 100 / m_fileSize);
 }
