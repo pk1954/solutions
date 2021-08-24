@@ -133,7 +133,15 @@ void NNetWindow::DrawSensors() const
 {
 	MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
 	Signal const * const   pSignal { mon.GetHighlightedSignal() };
-	mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, &sig == pSignal); });
+	mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
+}
+
+void NNetWindow::DrawHighlightedSensor() const
+{
+	MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
+	Signal const * const   pSignal { mon.GetHighlightedSignal() };
+	if (pSignal)
+		pSignal->Draw(m_context, true);
 }
 
 void NNetWindow::OnPaint()

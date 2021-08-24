@@ -56,6 +56,7 @@ public:
 	wstring       const   GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float         const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	Signal      * const   FindSensor(MicroMeterPnt const & p)    const { return GetMonitorData().FindSensor(p); }
+	SignalId      const   GetHighlightedSignalId()               const { return GetMonitorData().GetHighlightedSignalId(); }
 
 	bool const GetDescriptionLine(int const, wstring &) const;
 

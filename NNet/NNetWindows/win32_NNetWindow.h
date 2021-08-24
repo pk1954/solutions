@@ -69,6 +69,7 @@ protected:
 	virtual void doPaint() = 0;
 
 	void DrawSensors() const;
+	void DrawHighlightedSensor() const;
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 

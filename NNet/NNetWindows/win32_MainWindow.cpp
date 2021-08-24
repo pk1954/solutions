@@ -348,13 +348,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
 		if (umDelta.IsZero())
 			return;
-		SignalId const & signalId { m_pNMRI->GetMonitorData().GetHighlightedSignalId() };
-		if (signalId.IsNotNull())
-		{   
-			m_pModelCommands->MoveSensor(signalId, umDelta); // move sensor
-			Notify(false); 
-		}
-		else if (IsDefined(m_nobHighlighted))    // operate on single nob
+		if (IsDefined(m_nobHighlighted))    // operate on single nob
 		{
 			if (wParam & MK_CONTROL)
 			{
@@ -365,6 +359,11 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
 				setTargetNob();
 			}
+		}
+		else if (m_pNMRI->GetMonitorData().IsAnySignalSelected())
+		{   
+			m_pModelCommands->MoveSensor(m_pNMRI->GetHighlightedSignalId(), umDelta);
+			Notify(false); 
 		}
 		else if (wParam & MK_SHIFT)     // operate on selection
 		{
@@ -437,9 +436,10 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	int           const iDelta        { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 	float         const fFactor       { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
 	SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
+	bool          const bSizeSensor   { signalId.IsNotNull() && IsUndefined(m_nobHighlighted) };
 	for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 	{
-		if (signalId.IsNotNull())
+		if (bSizeSensor)
 			m_pModelCommands->SizeSensor(signalId, fFactor);
 		else
 			zoomStep(fFactor, fPixPointCrsr);
@@ -505,6 +505,8 @@ void MainWindow::doPaint()
 
 	m_scale.DisplayStaticScale();
 
+	DrawSensors();
+
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
 		DrawExteriorInRect(pixRect);
@@ -531,8 +533,10 @@ void MainWindow::doPaint()
 		m_pNMRI->DrawInterior  (m_nobHighlighted, context, tHighlight::highlighted);
 		m_pNMRI->DrawNeuronText(m_nobHighlighted, context);
 	}
-
-	DrawSensors();
+	else 
+	{
+		DrawHighlightedSensor();
+	}
 }
 
 void MainWindow::setHighlightedNob(MicroMeterPnt const & umCrsrPos)
