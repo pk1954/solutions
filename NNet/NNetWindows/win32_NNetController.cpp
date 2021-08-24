@@ -258,6 +258,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->DeleteNob(m_pMainWindow->GetHighlightedNobId());
         break;
 
+    case IDD_DELETE_EEG_SENSOR:
+        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
+        m_pModelCommands->DeleteSignal(m_pNMRI->GetMonitorData().GetHighlightedSignalId());
+        break;
+
     case IDM_DELETE_SELECTION:
         m_pModelCommands->DeleteSelection();
         break;
@@ -327,7 +332,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->AddIncoming2Pipe(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_ADD_SIGNAL:
+    case IDD_ADD_EEG_SENSOR:
         m_pModelCommands->AddSignal(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
         m_pMonitorWindow->Show(true);
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 

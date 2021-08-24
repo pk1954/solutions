@@ -15,9 +15,8 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
-#include "MonitorData.h"
 #include "win32_sound.h"
-#include "win32_monitorWindow.h"
+#include "win32_NNetController.h"
 #include "win32_NNetWindow.h"
 
 using std::function;
@@ -38,7 +37,6 @@ void NNetWindow::Start
 	bool                     const   bShowRefreshRateDialog,
 	fPixel                   const   fPixLimit,
 	NNetModelReaderInterface const & modelReaderInterface,
-	MonitorWindow            const & monitorWindow,
 	NNetController                 & controller
 )
 {
@@ -54,12 +52,9 @@ void NNetWindow::Start
 	m_graphics.Initialize(hwnd);
 	m_context.Start(& m_graphics);
 	m_pNMRI           = & modelReaderInterface;
-	m_pMonitorWindow  = & monitorWindow;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
 	
-	//m_upBeaconAnimation = make_unique<Animation<float>>(nullptr, ANIMATION_RECURRING);
-	//m_upBeaconAnimation->Start(0.0f, 1.0f);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 
@@ -136,10 +131,9 @@ void NNetWindow::DrawNeuronTextInRect(PixelRect const & rect) const
 
 void NNetWindow::DrawSensors() const
 {
-	m_pNMRI->GetMonitorData().Apply2AllSignals
-	(
-		[&](Signal const & signal) { signal.Draw(m_context); }
-	);
+	MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
+	Signal const * const   pSignal { mon.GetHighlightedSignal() };
+	mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, &sig == pSignal); });
 }
 
 void NNetWindow::OnPaint()
@@ -155,24 +149,6 @@ void NNetWindow::OnPaint()
 		}
 		EndPaint(&ps);
 	}
-}
-
-void NNetWindow::DrawBeacon()
-{
-	//MicroMeterCircle umCircleBeacon { m_pMonitorWindow->GetSelectedSignalCircle() };
-	//if (umCircleBeacon.IsNotNull())
-	//{
-	//	MicroMeter const umRadiusLimit  { GetCoordC().Transform2MicroMeter(m_fPixRadiusLimit) };
-	//	MicroMeter const umMaxRadius    { max(umCircleBeacon.GetRadius(), umRadiusLimit) };
-	//	MicroMeter const umSpan         { umMaxRadius - NEURON_RADIUS };
-	//	float            fRelBeaconSize = m_upBeaconAnimation->GetActual();
-	//	umCircleBeacon.SetRadius(NEURON_RADIUS + (umSpan * fRelBeaconSize) );
-	//	m_context.FillCircle
-	//	(
-	//		umCircleBeacon, 
-	//		NNetColors::SetAlpha(NNetColors::COL_BEACON, 0.8f * (1.0f - fRelBeaconSize))
-	//	);
-	//}
 }
 
 bool NNetWindow::OnSize(WPARAM const wParam, LPARAM const lParam)

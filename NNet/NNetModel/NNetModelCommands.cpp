@@ -24,6 +24,8 @@
 #include "DiscIoConnectorCmd.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
+#include "MoveSensorCmd.h"
+#include "MoveSignalCmd.h"
 #include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NewNeuronCommandT.h"
@@ -39,11 +41,13 @@
 #include "SelectNobCommand.h"
 #include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
+#include "SetHighlightedSignalCmd.h"
 #include "SetIoNeuronsCommand.h"
 #include "SetParameterCommand.h"
 #include "SetPulseRateCommand.h"
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
+#include "SizeSensorCmd.h"
 #include "SplitClosedConnCmd.h"
 #include "SplitNeuronCmd.h"
 #include "ToggleStopOnTriggerCommand.h"
@@ -114,10 +118,10 @@ void NNetModelCommands::AddSignal
 	m_pCmdStack->PushCommand(make_unique<AddSignalCommand>(umCircle, trackNr));
 }
 
-void NNetModelCommands::DeleteSignal(SignalId const id)
+void NNetModelCommands::DeleteSignal(SignalId const & id)
 { 
 	if (IsTraceOn())
-		TraceStream() << __func__ << id << endl;
+		TraceStream() << __func__ << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
 }
 
@@ -205,6 +209,11 @@ void NNetModelCommands::ToggleStopOnTrigger(NobId const id)
 	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCommand>(id));
 }
 
+SignalId const NNetModelCommands::SetHighlightedSignal(MicroMeterPnt const & umPos)
+{
+	return m_pNMWI->GetMonitorData().SetHighlightedSignal(umPos);
+}
+
 void NNetModelCommands::SetPulseRate(NobId const id, fHertz const fNewValue)
 {
 	if (IsTraceOn())
@@ -231,6 +240,27 @@ void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(id), delta));
+}
+
+void NNetModelCommands::MoveSensor(SignalId const & id, MicroMeterPnt const & delta)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << delta << endl;
+	m_pCmdStack->PushCommand(make_unique<MoveSensorCmd>(id, delta));
+}
+
+void NNetModelCommands::MoveSignal(SignalId const & id, TrackNr const trackNr)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << trackNr << endl;
+	m_pCmdStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
+}
+
+void NNetModelCommands::SizeSensor(SignalId const & id, float const fFactor)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << fFactor << endl;
+	m_pCmdStack->PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
 }
 
 void NNetModelCommands::Rotate

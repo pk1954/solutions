@@ -11,16 +11,22 @@ class NNetColors
 public:											 
 
 	// SELECTION_RECT is used to select rectangular area, transparent
-	inline static D2D1::ColorF const SELECTION_RECT { 1.0f, 0.0f, 0.0f, 0.2f };
+	inline static D2D1::ColorF const SELECTION_RECT   { 1.0f, 0.0f, 0.0f, 0.2f };
 
 	// POSITION_RECT is used in mini window to visualize position of main window area, transparent
-	inline static D2D1::ColorF const POSITION_RECT  { 0.9f, 0.3f, 0.2f, 0.4f };
+	inline static D2D1::ColorF const POSITION_RECT    { 0.9f, 0.3f, 0.2f, 0.4f };
 
 	// color of beacon 
-	inline static D2D1::ColorF const COL_BEACON     { 0.0f, 0.0f, 1.0f, 0.4f };
+	inline static D2D1::ColorF const COL_BEACON       { 0.0f, 0.0f, 1.0f, 0.4f };
 
-	// colors EEG-Monitor
-	inline static D2D1::ColorF const COL_DIAMOND    { 0.0f, 1.0f, 0.0f, 1.0f };
+	// colors EEG Monitor
+	inline static D2D1::ColorF const COL_DIAMOND      { 0.0f, 1.0f, 0.0f, 1.0f };
+
+	// colors for EEG sensors
+	inline static D2D1::ColorF EEG_SENSOR_1           { 0.0f, 0.5f, 0.0f, 0.8f };
+	inline static D2D1::ColorF EEG_SENSOR_2           { 1.0f, 1.0f, 0.0f, 0.4f };
+	inline static D2D1::ColorF EEG_SENSOR_HIGHLIGHTED { 1.0f, 0.5f, 0.0f, 0.8f };
+	inline static D2D1::ColorF EEG_SIGNAL_HIGHLIGHTED { 1.0f, 0.5f, 0.0f, 1.0f };
 
 	// colors for neuron/pipe boundary
 	inline static D2D1::ColorF const EXT_NORMAL       { 0.0f, 0.5f, 1.0f, 1.0f };

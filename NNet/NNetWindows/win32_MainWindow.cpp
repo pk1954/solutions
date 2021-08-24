@@ -31,7 +31,6 @@ void MainWindow::Start
 	bool                     const   bShowRefreshRateDialog,
 	fPixel                   const   fPixBeaconLimit,
 	NNetModelReaderInterface const & modelReaderInterface,
-	MonitorWindow            const & monitorWindow,
 	NNetController                 & controller,
 	NNetModelCommands              & modelCommands,
 	WinCommands                    & winCommands,  
@@ -46,7 +45,6 @@ void MainWindow::Start
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
 		modelReaderInterface,
-		monitorWindow,
 		controller
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
@@ -94,7 +92,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_ADD_INCOMING2PIPE,      L"Add incoming dendrite"       },
 		{ IDD_ADD_OUTGOING2KNOT,      L"Add outgoing dendrite"       },
 		{ IDD_ADD_OUTGOING2PIPE,      L"Add outgoing dendrite"       },
-		{ IDD_ADD_SIGNAL,             L"New EEG sensor" 		     },
+		{ IDD_ADD_EEG_SENSOR,         L"New EEG sensor" 		     },
 //		{ IDM_ALIGN_NOBS,             L"Align selected objects"      },
 		{ IDD_APPEND_INPUT_NEURON,    L"Add input neuron"            },
 		{ IDD_APPEND_OUTPUT_NEURON,   L"Add output neuron"           },
@@ -103,6 +101,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_COPY_SELECTION,         L"Copy selection"              },
 		{ IDM_DELETE_SELECTION,       L"Delete selected objects"     },
 		{ IDD_DELETE_NOB,             L"Delete"                      },
+		{ IDD_DELETE_EEG_SENSOR,      L"Delete EEG sensor"           },
 		{ IDM_DESELECT_ALL,           L"Deselect all"                },
 		{ IDM_DESELECT_NOB,           L"Deselect nob"                },
 		{ IDD_DISC_BASEKNOT,          L"Disconnect"                  },
@@ -138,9 +137,14 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 
 	if (IsUndefined(m_nobHighlighted))  // no nob selected, cursor on background
 	{
-		appendMenu(hPopupMenu, IDD_NEW_INPUT_NEURON );
-		appendMenu(hPopupMenu, IDD_NEW_OUTPUT_NEURON);
-		appendMenu(hPopupMenu, IDD_ADD_SIGNAL       );
+		if (m_pNMRI->GetMonitorData().GetHighlightedSignal())
+			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
+		else
+		{
+			appendMenu(hPopupMenu, IDD_NEW_INPUT_NEURON );
+			appendMenu(hPopupMenu, IDD_NEW_OUTPUT_NEURON);
+			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR   );
+		}
 	}
 	else switch (m_pNMRI->GetNobType(m_nobHighlighted).GetValue())
 	{
@@ -320,6 +324,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam == 0)                     // no mouse buttons or special keyboard keys pressed
 	{
+		m_pModelCommands->SetHighlightedSignal(umCrsrPos);
 		setHighlightedNob(umCrsrPos);
 		m_ptLast.Set2Null();             // make m_ptLast invalid
 		return;
@@ -343,10 +348,10 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
 		if (umDelta.IsZero())
 			return;
-
-		if (Signal * const pSignal { m_pNMRI->FindSensor(umCrsrPos) })
-		{                                
-			pSignal->Move(umDelta);          // move signal
+		SignalId const & signalId { m_pNMRI->GetMonitorData().GetHighlightedSignalId() };
+		if (signalId.IsNotNull())
+		{   
+			m_pModelCommands->MoveSensor(signalId, umDelta); // move sensor
 			Notify(false); 
 		}
 		else if (IsDefined(m_nobHighlighted))    // operate on single nob
@@ -426,25 +431,18 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
 	static float  const ZOOM_FACTOR { 1.1f };
 
-	PixelPoint    const ptCrsr    { GetRelativeCrsrPosition() };  // screen coordinates
-	int           const iDelta    { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
-	float         const fFactor   { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
-
-	if (Signal * const pSignal { m_pNMRI->GetMonitorData().FindSensor(umCrsrPos) })
+	PixelPoint    const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
+	fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
+	MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2MicroMeterPntPos(fPixPointCrsr) };
+	int           const iDelta        { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	float         const fFactor       { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
+	SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
+	for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 	{
-		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
-		{
-			pSignal->Size(fFactor);
-		}
-	}
-	else
-	{
-		fPixelPoint const fPixPointCenter { Convert2fPixelPoint(ptCrsr) }; 
-		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
-		{
-			zoomStep(fFactor, fPixPointCenter);
-		}
+		if (signalId.IsNotNull())
+			m_pModelCommands->SizeSensor(signalId, fFactor);
+		else
+			zoomStep(fFactor, fPixPointCrsr);
 	}
 	Notify(false); 
 }
@@ -535,7 +533,6 @@ void MainWindow::doPaint()
 	}
 
 	DrawSensors();
-	DrawBeacon();
 }
 
 void MainWindow::setHighlightedNob(MicroMeterPnt const & umCrsrPos)

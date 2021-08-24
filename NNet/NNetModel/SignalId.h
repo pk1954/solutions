@@ -12,11 +12,11 @@
 
 using std::vector;
 
-using SignalIdFunc = function<void(SignalId const &)>;
-
 class SignalId
 {
 public:
+	using Func = function<void(SignalId const &)>;
+
 	SignalId()
 	  : trackNr (TrackNr ::NULL_VAL()),
 		signalNr(SignalNr::NULL_VAL())
@@ -32,6 +32,12 @@ public:
 		trackNr.Set2Null(); 
 		signalNr.Set2Null(); 
 	}
+
+	static SignalId const & NULL_VAL() 
+	{ 
+		static SignalId res { SignalId(TrackNr::NULL_VAL(), SignalNr::NULL_VAL()) }; 
+		return res;
+	};
 
 	bool IsNull   () const { return trackNr.IsNull() || signalNr.IsNull(); }
 	bool IsNotNull() const { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
@@ -59,5 +65,3 @@ private:
 	TrackNr  trackNr;
 	SignalNr signalNr;
 };
-
-inline static const SignalId SignalIdNull { TrackNr::NULL_VAL(), SignalNr::NULL_VAL() };

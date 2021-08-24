@@ -68,8 +68,8 @@
 #define IDM_MINUS                  192
 								   
 #define IDM_MONITOR_WINDOW         330
-#define IDD_ADD_SIGNAL             345
-#define IDD_DELETE_SIGNAL          346
+#define IDD_ADD_EEG_SENSOR         345
+#define IDD_DELETE_EEG_SENSOR      346
 #define IDD_CONNECT                350
 								   
 #define IDD_INSERT_KNOT            460
@@ -79,7 +79,7 @@
 #define IDD_APPEND_INPUT_NEURON    466
 #define IDD_APPEND_OUTPUT_NEURON   467
 #define IDD_DELETE_NOB             468
-								  
+
 #define IDD_ADD_INCOMING2KNOT      571
 #define IDD_ADD_INCOMING2PIPE      572
 #define IDD_ADD_OUTGOING2KNOT      573

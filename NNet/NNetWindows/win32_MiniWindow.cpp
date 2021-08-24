@@ -71,6 +71,5 @@ void MiniWindow::doPaint()
 		DrawExteriorInRect(GetClPixelRect());
 		GetDrawContext().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		DrawSensors();
-		DrawBeacon();
 	}
 }

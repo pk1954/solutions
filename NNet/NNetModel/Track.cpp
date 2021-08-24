@@ -18,10 +18,19 @@ bool Track::operator==(Track const & rhs) const
 	return m_signals == rhs.m_signals;
 }
 
-SignalNr const Track::AddSignal(unique_ptr<Signal> pSignal)
+void Track::AddSignal
+(
+	unique_ptr<Signal> pSignal,
+	SignalNr     const signalNr
+)
 {
-	m_signals.push_back(move(pSignal));
-	return SignalNr(Cast2Int(m_signals.size() - 1));
+	m_signals.insert(m_signals.begin() + signalNr.GetValue(), move(pSignal));
+}
+
+SignalNr const Track::AddSignal(unique_ptr<Signal> upSignal)
+{
+	m_signals.push_back(move(upSignal));
+	return SignalNr(Cast2Int(m_signals.size()) - 1);
 }
 
 unique_ptr<Signal> Track::RemoveSignal(SignalNr const signalNr)
@@ -42,22 +51,28 @@ void Track::Apply2AllSignals(SignalNrFunc const & func) const
 		func(SignalNr(i)); 
 }             
 
-void Track::Apply2AllSignals(SignalFunc const & func) const
+void Track::Apply2AllSignals(Signal::Func const & func) const
 {
 	for (int i = 0; i < m_signals.size(); ++i)
 		if (Signal const * const pSignal { GetSignalPtr(SignalNr(i)) })
 			func(* pSignal); 
 }             
 
-Signal * const Track::FindSignal(SignalCrit const & crit)
+Signal * const Track::FindSignal(Signal::Crit const & crit)
+{
+	return GetSignalPtr(FindSignalNr(crit));
+}
+
+SignalNr const Track::FindSignalNr(Signal::Crit const & crit) const
 {
 	for (int i = 0; i < m_signals.size(); ++i)
 	{ 
-		Signal * const pSignal { GetSignalPtr(SignalNr(i)) };
+		SignalNr       const signalNr { SignalNr(i) };
+		Signal const * const pSignal  { GetSignalPtr(signalNr) };
 		if (pSignal && crit(*pSignal))
-			return pSignal;  
+			return signalNr;  
 	}
-	return nullptr;
+	return SignalNr::NULL_VAL();
 }
 
 Signal const * const Track::GetSignalPtr(SignalNr const signalNr) const

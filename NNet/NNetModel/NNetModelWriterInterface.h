@@ -41,11 +41,11 @@ public:
 
     size_t const Size() const { return m_pModel->Size(); }
 
-    void CheckModel() { m_pModel->CheckModel(); }
-    void ResetModel() { m_pModel->ResetModel(); }
-    void ClearModel() { m_pModel->GetUPNobs().Apply2All([&](Nob & s) { s.Clear(); }); }
+    void  CheckModel() { m_pModel->CheckModel(); }
+    void  ResetModel() { m_pModel->ResetModel(); }
+    void  ClearModel() { m_pModel->GetUPNobs().Apply2All([&](Nob & s) { s.Clear(); }); }
 
-    void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
+    void  DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 
     void  SelectSubtree(BaseKnot  * const p, bool  const b) { m_pModel->SelectSubtree(p, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }

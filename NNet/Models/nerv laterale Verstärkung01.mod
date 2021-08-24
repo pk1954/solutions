@@ -1,5 +1,5 @@
 # NNetModel
-# Created Tue Aug 17 15:30:06 2021
+# Created Wed Aug 18 21:31:43 2021
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -960,6 +960,8 @@ NobParameter InputNeuron 7 PulseRate = 50
 NobParameter InputNeuron 8 PulseRate = 50
 
 
-NrOfTracks 1
-Signal  track 0source 101((2467.62|6804.28),784.607)
+NrOfTracks 3
+Signal  track 0 source 101((541.519|3831.71),250)
+Signal  track 1 source 101((314.026|4984.34),250)
+Signal  track 2 source 101((435.353|7608.09),784.607)
 

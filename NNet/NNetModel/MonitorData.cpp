@@ -36,7 +36,8 @@ MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignme
 void MonitorData::Reset()
 {
 	m_tracks.clear();
-	m_idSigSelected.Set2Null();
+	m_idSigHighlighted.Set2Null();
+	m_pHighSigObservable->NotifyAll(false);
 }
 
 int MonitorData::GetNrOfTracks() const
@@ -60,32 +61,56 @@ unique_ptr<Signal> MonitorData::removeSignal(SignalId const & id)
 	return getTrack(id.GetTrackNr())->RemoveSignal(id.GetSignalNr()); 
 };
 
-SignalId const MonitorData::SetSelectedSignalId(SignalId const id)
+SignalId const MonitorData::SetHighlightedSignal(SignalId const id)
 {
-	SignalId const idOld { m_idSigSelected };
-	m_idSigSelected = id;
-	return idOld;
+	SignalId const signalIdOld { m_idSigHighlighted };
+	m_idSigHighlighted = id;
+	if (m_pHighSigObservable)
+		m_pHighSigObservable->NotifyAll(false);
+	return signalIdOld;
 }
 
-SignalId const MonitorData::ResetSelectedSignal()
+SignalId const MonitorData::SetHighlightedSignal(Signal const &sigNew)
 {
-	SignalId const idOld { m_idSigSelected };
-	m_idSigSelected.Set2Null();
-	return idOld;
+	return SetHighlightedSignal(FindSignalId([&](Signal const &s){ return &s == &sigNew; }));
+}
+
+SignalId const MonitorData::SetHighlightedSignal(MicroMeterPnt const& umPos)
+{
+	return SetHighlightedSignal(FindSignalId([&](Signal const &s){ return s.Includes(umPos); }));
+}
+
+SignalId const MonitorData::ResetHighlightedSignal()
+{
+	return SetHighlightedSignal(SignalId::NULL_VAL());
+}
+
+void MonitorData::AddSignal
+(
+	SignalId   const & id, 
+	unique_ptr<Signal> upSignal 
+)
+{
+	assert(upSignal);
+	getTrack(id.GetTrackNr())->AddSignal(move(upSignal),id.GetSignalNr());
 }
 
 SignalNr const MonitorData::AddSignal
 (
 	TrackNr      const trackNr, 
-	unique_ptr<Signal> pSignal 
+	unique_ptr<Signal> upSignal 
 )
 {
-	return getTrack(trackNr)->AddSignal(move(pSignal));
+	assert(IsValid(trackNr));
+	return getTrack(trackNr)->AddSignal(move(upSignal));
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
 {
-	return IsValid(id.GetTrackNr())	? move(removeSignal(id)) : nullptr; 
+	assert(IsValid(id));
+	if (id == m_idSigHighlighted)
+		ResetHighlightedSignal();
+	return move(removeSignal(id));
 }
 
 SignalNr const MonitorData::AddSignal
@@ -94,20 +119,25 @@ SignalNr const MonitorData::AddSignal
 	MicroMeterCircle const & umCircle 
 )
 {
-	return (IsValid(trackNr))
-	? AddSignal(trackNr, move(SignalFactory::MakeSignal(umCircle)))
-	: SignalNr::NULL_VAL();
+	assert(IsValid(trackNr));
+	return AddSignal(trackNr, move(SignalFactory::MakeSignal(umCircle)));
 }
 
-SignalId const MonitorData::MoveSelectedSignal(	TrackNr const trackNrNew)
+SignalNr const MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
-	if (IsValid(m_idSigSelected) && IsValid(trackNrNew)) //-V1051
-	{
-		unique_ptr<Signal> pSignal     { removeSignal(m_idSigSelected) };
-		SignalNr           signalNrNew { AddSignal(trackNrNew, move(pSignal)) };
-		m_idSigSelected = SignalId(trackNrNew, signalNrNew);
-	}
-	return m_idSigSelected;
+	assert(IsValid(id) && IsValid(trackNrDst));
+	SignalNr sigNr { AddSignal(trackNrDst, move(removeSignal(id))) };
+	if (id == m_idSigHighlighted)
+		SetHighlightedSignal(SignalId(trackNrDst, sigNr));
+	return sigNr;
+}
+
+void MonitorData::MoveSignal(SignalId const & id, SignalId const & idDst)
+{
+	assert(IsValid(id) && IsValid(idDst));
+	AddSignal(idDst, move(removeSignal(id)));
+	if (id == m_idSigHighlighted)
+		SetHighlightedSignal(idDst);
 }
 
 void MonitorData::DeleteTrack(TrackNr const trackNr)
@@ -128,7 +158,7 @@ void MonitorData::Apply2AllSignalsInTrack(TrackNr const trackNr, SignalNrFunc co
 		pTrack->Apply2AllSignals(func);
 }                        
 
-void MonitorData::Apply2AllSignals(SignalIdFunc const & func) const
+void MonitorData::Apply2AllSignals(SignalId::Func const & func) const
 {
 	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 	{ 
@@ -139,7 +169,7 @@ void MonitorData::Apply2AllSignals(SignalIdFunc const & func) const
 	}
 }                        
 
-void MonitorData::Apply2AllSignals(SignalFunc const & func) const
+void MonitorData::Apply2AllSignals(Signal::Func const & func) const
 {
 	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 	{ 
@@ -150,13 +180,25 @@ void MonitorData::Apply2AllSignals(SignalFunc const & func) const
 	}
 }                        
 
-Signal * const  MonitorData::FindSignal(SignalCrit const & crit) const
+Signal * const MonitorData::FindSignal(Signal::Crit const & crit) const
 {
 	for (unique_ptr<Track> const & upTrack: m_tracks) 
 		if (Signal * const pSignal { upTrack->FindSignal(crit) })
 			return pSignal;
 	return nullptr;
 }                        
+
+SignalId const MonitorData::FindSignalId(Signal::Crit const & crit) const
+{
+	for (int i = 0; i < m_tracks.size(); ++i)
+	{ 
+		TrackNr  const trackNr  { TrackNr(i) };
+		SignalNr const signalNr { getTrack(trackNr)->FindSignalNr(crit) };
+		if (signalNr.IsNotNull())
+			return SignalId(trackNr, signalNr);
+	}
+	return SignalId::NULL_VAL();
+}
 
 Signal * const MonitorData::GetSignalPtr(SignalId const & id)
 {
@@ -166,21 +208,22 @@ Signal * const MonitorData::GetSignalPtr(SignalId const & id)
 
 Signal const * const MonitorData::GetSignalPtr(SignalId const & id) const
 {
-	TrackNr const trackNr { id.GetTrackNr() };
-	return IsValid(trackNr) ? getTrack(trackNr)->GetSignalPtr(id.GetSignalNr()) : nullptr;
+	return id.IsNull()
+		   ? nullptr
+	       : getTrack(id.GetTrackNr())->GetSignalPtr(id.GetSignalNr());
 }
 
-Signal * const MonitorData::GetSelectedSignalPtr()
+Signal * const MonitorData::GetHighlightedSignal()
 {
-	TrackNr const trackNr { m_idSigSelected.GetTrackNr() };
+	TrackNr const trackNr { m_idSigHighlighted.GetTrackNr() };
 	return IsValid(trackNr)
-		   ? getTrack(trackNr)->GetSignalPtr(m_idSigSelected.GetSignalNr())
+		   ? getTrack(trackNr)->GetSignalPtr(m_idSigHighlighted.GetSignalNr())
 		   : nullptr;
 }
 
-Signal const * const MonitorData::GetSelectedSignalPtr() const
+Signal const * const MonitorData::GetHighlightedSignal() const
 {
-	return GetSignalPtr(m_idSigSelected);
+	return GetSignalPtr(m_idSigHighlighted);
 }
 
 bool const MonitorData::IsValid(TrackNr const trackNr) const

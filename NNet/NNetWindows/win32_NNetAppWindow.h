@@ -127,6 +127,7 @@ private:
 	ScriptHook               m_ScriptHook             { };
 	SlowMotionRatio          m_SlowMotionRatio        { };
 	Observable               m_soundOnObservable      { };
+	Observable               m_highlightSigObservable { };
 	Observable               m_cursorPosObservable    { };
 	Observable               m_staticModelObservable  { };
 	Observable               m_dynamicModelObservable { };

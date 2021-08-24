@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "DrawContext.h"
+#include "NNetColors.h"
 #include "NNetModelReaderInterface.h"
 #include "Signal.h"
 
@@ -27,7 +28,7 @@ Signal::~Signal()
     m_observable.UnregisterObserver(this);
 }
 
-float Signal::GetSignalValue() const
+float const Signal::GetSignalValue() const
 {
     float fResult   { 0.0f };
     float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
@@ -54,13 +55,18 @@ void Signal::WriteSignalData(wostream & out) const
     out << L"Signal " << m_circle;
 }
 
-void Signal::Draw(DrawContext const & context) const
+void Signal::Draw
+(
+    DrawContext const & context,
+    bool        const   bHighlight
+) const
 {
-    D2D1::ColorF color1 { D2D1::ColorF::Green  };
-    D2D1::ColorF color2 { D2D1::ColorF::Yellow };
-    color1.a = 0.8f;
-    color2.a = 0.4f;
-    context.FillGradientCircle(m_circle, color1, color2);
+    context.FillGradientCircle
+    (
+        m_circle, 
+        NNetColors::EEG_SENSOR_1, 
+        bHighlight ? NNetColors::EEG_SENSOR_HIGHLIGHTED : NNetColors::EEG_SENSOR_2
+    );
 }
 
 int const Signal::time2index(fMicroSecs const usParam) const

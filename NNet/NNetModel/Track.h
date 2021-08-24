@@ -14,7 +14,7 @@
 using std::vector;
 using std::unique_ptr;
 
-using SignalNr     = NamedType< int, struct SignalNrParam >;
+using SignalNr     = NamedType<int, struct SignalNrParam>;
 using SignalNrFunc = function<void(SignalNr const &)>;
 
 class SignalId;
@@ -25,15 +25,16 @@ public:
 
 	Track()                           = default;  // constructor   
 	~Track()                          = default;  // destructor
-	Track             (     Track&&) = delete;   // move constructor
-	Track & operator= (const Track&) = delete;   // copy assignment operator
-	Track & operator= (     Track&&) = delete;   // move assignment operator
-	Track             (const Track&);            // copy constructor
+	Track             (      Track&&) = delete;   // move constructor
+	Track & operator= (const Track&)  = delete;   // copy assignment operator
+	Track & operator= (      Track&&) = delete;   // move assignment operator
+	Track             (const Track&);             // copy constructor
 
 	bool operator==(Track const &) const;
 
 	void CheckSignals() const;
 
+	void               AddSignal   (unique_ptr<Signal>, SignalNr const);
 	SignalNr     const AddSignal   (unique_ptr<Signal>);
 	unique_ptr<Signal> RemoveSignal(SignalNr const);
 
@@ -43,9 +44,10 @@ public:
 	bool           const IsEmpty     () const { return m_signals.empty(); }
 
 	void Apply2AllSignals(SignalNrFunc const &) const;
-	void Apply2AllSignals(SignalFunc   const &) const;
+	void Apply2AllSignals(Signal::Func   const &) const;
 
-	Signal * const FindSignal(SignalCrit const &);
+	Signal * const FindSignal  (Signal::Crit const &);
+	SignalNr const FindSignalNr(Signal::Crit const &) const;
 
 private:
 	vector<unique_ptr<Signal>> m_signals;

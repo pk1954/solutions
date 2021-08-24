@@ -29,7 +29,6 @@ public:
 		bool                     const,
 		fPixel                   const,
 		NNetModelReaderInterface const &,
-		MonitorWindow            const &, 
 		NNetController                 &,
 		NNetModelCommands              &,
 		WinCommands                    &,

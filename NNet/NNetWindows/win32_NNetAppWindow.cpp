@@ -94,12 +94,13 @@ void NNetAppWindow::Start(MessagePump & pump)
 	SignalFactory::Initialize(m_nmri, m_dynamicModelObservable);
 	Nob::Initialize(m_model.GetParams());
 	m_model.SetDescriptionUI(m_descWindow);
+	m_model.SetHighSigObservable(&m_highlightSigObservable);
 
 	m_modelImporter .Initialize(&m_script);
 	m_modelExporter .Initialize(&m_nmri);
 	m_modelCommands .Initialize(&m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack);
 	m_winCommands   .Initialize(&m_cmdStack, &m_modelCommands, &m_nmri, &m_nmwi);
-	m_cmdStack      .Initialize(&m_nmwi, & m_staticModelObservable);
+	m_cmdStack      .Initialize(&m_nmwi, &m_staticModelObservable);
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_appTitle      .Initialize(m_hwndApp, &m_nmri);
 	m_preferences   .Initialize(m_sound, m_modelImporter, m_hwndApp);
@@ -151,7 +152,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		false,
 		30._fPixel,
 		m_nmri,
-		m_monitorWindow,
 		m_NNetController,
 		m_modelCommands,
 		m_winCommands,
@@ -166,7 +166,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		true,
 		5._fPixel,
 		m_nmri,
-		m_monitorWindow,
 		m_NNetController
 	);
 
@@ -199,6 +198,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_staticModelObservable .RegisterObserver(& m_performanceWindow);
 	m_staticModelObservable .RegisterObserver(& m_appTitle);
 	m_staticModelObservable .RegisterObserver(& m_undoRedoMenu);
+	m_highlightSigObservable.RegisterObserver(& m_mainNNetWindow);
+	m_highlightSigObservable.RegisterObserver(& m_monitorWindow);
 	m_cursorPosObservable   .RegisterObserver(& m_crsrWindow);
 	m_performanceObservable .RegisterObserver(& m_performanceWindow);
 	m_runObservable         .RegisterObserver(& m_simulationControl);

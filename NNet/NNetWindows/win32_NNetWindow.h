@@ -9,8 +9,8 @@
 #include "D2D_DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
-#include "win32_animation.h"
-#include "win32_NNetController.h"
+//#include "win32_animation.h"
+//#include "win32_NNetController.h"
 #include "win32_modelWindow.h"
 
 using std::wstring;
@@ -18,9 +18,10 @@ using std::function;
 using std::make_unique;
 
 class Scale;
+class Signal;
 class Observable;
 class ActionTimer;
-class MonitorWindow;
+class NNetController;
 class ObserverInterface;
 class ControllerInterface;
 class NNetModelReaderInterface;
@@ -39,7 +40,6 @@ public:
 		bool                     const,
 		fPixel                   const,
 		NNetModelReaderInterface const &,
-		MonitorWindow            const &,
 		NNetController                 &
 	);
 
@@ -54,11 +54,10 @@ public:
 	PixelCoordsFp        & GetCoord      ()       { return m_context.GetCoord (); }
 	MicroMeter     const   PixelSize     () const { return m_context.GetPixelSize(); }
 
-	void DrawInteriorInRect  (PixelRect  const &, NobCrit const &) const;
+	void DrawInteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
 	void DrawExteriorInRect  (PixelRect  const &                   ) const;
 	void DrawNeuronTextInRect(PixelRect  const &                   ) const;
 	void DrawArrowsInRect    (PixelRect  const &, MicroMeter const ) const;
-	void DrawSensors         () const;
 
 protected:
 
@@ -69,22 +68,18 @@ protected:
 
 	virtual void doPaint() = 0;
 
-	void DrawBeacon();
+	void DrawSensors() const;
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	NNetModelReaderInterface const * m_pNMRI    { nullptr };
-	D2D_driver                       m_graphics { };
+	NNetModelReaderInterface const * m_pNMRI        { nullptr };
+	D2D_driver                       m_graphics     { };
 
 private:
 	NNetWindow             (NNetWindow const &);  // noncopyable class 
 	NNetWindow & operator= (NNetWindow const &);  // noncopyable class 
 
-	unique_ptr<Animation<float>> m_upBeaconAnimation;
-	float                        m_fRelBeaconSize { 0.0f }; 
-
-	MonitorWindow const * m_pMonitorWindow { nullptr };
-	NNetController      * m_pController    { nullptr };
-	D2D_DrawContext       m_context        { };
-	fPixel                m_fPixRadiusLimit;
+	NNetController * m_pController { nullptr };
+	D2D_DrawContext  m_context     { };
+	fPixel           m_fPixRadiusLimit;
 };

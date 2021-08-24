@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include "Observable.h"
 #include "NamedType.h"
 #include "Signal.h"
 #include "Track.h"
@@ -12,11 +13,11 @@
 
 using std::vector;
 
-using TrackNrFunc = function<void(TrackNr const)>;
-
 class MonitorData
 {
 public:
+	using TrackNrFunc = function<void(TrackNr const)>;
+
 	MonitorData()                              = default;  // constructor   
 	~MonitorData()                             = default;  // destructor
 	MonitorData(MonitorData&& rhs)             = delete;   // move constructor
@@ -40,38 +41,46 @@ public:
 	void InsertTrack(TrackNr const);
 	void DeleteTrack(TrackNr const);
 
-	SignalId const SetSelectedSignalId(SignalId const);
-	SignalId const ResetSelectedSignal();
+	void SetHighSigObservable(Observable * pObs) { m_pHighSigObservable = pObs; }
 
-	SignalNr       const AddSignal           (TrackNr const, MicroMeterCircle const &);
-	SignalNr       const AddSignal           (TrackNr const, unique_ptr<Signal>);
-	SignalId       const MoveSelectedSignal  (TrackNr const);
-	Signal const * const GetSignalPtr        (SignalId const &) const;
-	Signal       * const GetSignalPtr        (SignalId const &);
-	Signal       * const FindSignal          (SignalCrit    const &) const;
-	Signal       * const FindSensor          (MicroMeterPnt const &) const;
-	Signal const * const GetSelectedSignalPtr() const;
-	Signal       * const GetSelectedSignalPtr();
+	SignalId const SetHighlightedSignal(MicroMeterPnt const &);
+	SignalId const SetHighlightedSignal(Signal        const &);
+	SignalId const SetHighlightedSignal(SignalId      const  );
+	SignalId const ResetHighlightedSignal();
+
+	SignalNr       const AddSignal            (TrackNr  const, MicroMeterCircle const &);
+	SignalNr       const AddSignal            (TrackNr  const, unique_ptr<Signal>);
+	void                 AddSignal            (SignalId const &, unique_ptr<Signal>);
+	SignalNr       const MoveSignal           (SignalId const &, TrackNr  const);
+	void                 MoveSignal           (SignalId const &, SignalId const &);
+	Signal const * const GetSignalPtr         (SignalId const &) const;
+	Signal       * const GetSignalPtr         (SignalId const &);
+	Signal       * const FindSignal           (Signal::Crit    const &) const;
+	SignalId       const FindSignalId         (Signal::Crit    const &) const;
+	Signal       * const FindSensor           (MicroMeterPnt const &) const;
+	Signal const * const GetHighlightedSignal () const;
+	Signal       * const GetHighlightedSignal ();
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 
 	void Apply2AllTracks        (TrackNrFunc const &) const;
 	void Apply2AllSignalsInTrack(TrackNr const, SignalNrFunc const &) const;
-	void Apply2AllSignals       (SignalIdFunc const &) const;
-	void Apply2AllSignals       (SignalFunc   const &) const;
+	void Apply2AllSignals       (SignalId::Func const &) const;
+	void Apply2AllSignals       (Signal::Func   const &) const;
 
-	SignalId const GetSelectedSignalId()          const { return m_idSigSelected; }
-	TrackNr  const GetSelectedTrackNr ()          const { return m_idSigSelected.GetTrackNr(); }
-	bool     const IsAnySignalSelected()          const { return m_idSigSelected != SignalIdNull; }
-	bool     const IsSelected(SignalId const &id) const { return m_idSigSelected == id; }
+	SignalId const GetHighlightedSignalId()       const { return m_idSigHighlighted; }
+	TrackNr  const GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }
+	bool     const IsAnySignalSelected()          const { return m_idSigHighlighted.IsNotNull(); }
+	bool     const IsSelected(SignalId const &id) const { return m_idSigHighlighted == id; }
+	bool     const IsEmptyTrack(TrackNr const)    const;
 
-	bool const IsEmptyTrack(TrackNr const) const;
 
 private:
 	Track       * const getTrack(TrackNr const);
 	Track const * const getTrack(TrackNr const) const;
 	unique_ptr<Signal>  removeSignal(SignalId const &);
 
-	SignalId                  m_idSigSelected {};
-	vector<unique_ptr<Track>> m_tracks        {};
+	Observable              * m_pHighSigObservable { nullptr };
+	SignalId                  m_idSigHighlighted   {};
+	vector<unique_ptr<Track>> m_tracks             {};
 };

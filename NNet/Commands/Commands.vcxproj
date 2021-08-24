@@ -74,7 +74,6 @@
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AddSignalCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />
-    <ClInclude Include="AnimationChainCommand.h" />
     <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="Command.h" />
@@ -83,9 +82,13 @@
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="DeleteClosedConnCmd.h" />
+    <ClInclude Include="MoveSensorCmd.h" />
+    <ClInclude Include="MoveSignalCmd.h" />
     <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
     <ClInclude Include="RotationCommand.h" />
+    <ClInclude Include="SetHighlightedSignalCmd.h" />
+    <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />

@@ -8,11 +8,11 @@
 #include "Scale.h"
 #include "MoreTypes.h"
 #include "Measurement.h"
-#include "MonitorData.h"
 #include "win32_baseWindow.h"
 #include "win32_NNetController.h"
 
 class NNetModelReaderInterface;
+class MonitorData;
 
 class MonitorWindow : public BaseWindow
 {
@@ -33,24 +33,19 @@ public:
 
 	virtual LPARAM AddContextMenuEntries(HMENU const);
 
-	MicroMeterCircle const & GetSelectedSignalCircle() const;
-
 private:
 
-	SignalNr const findSignal      (TrackNr const, PixelPoint const &) const;
-	fPixel   const calcTrackHeight () const;
-	TrackNr  const findTrack       (PIXEL const) const;
-	TrackNr  const findPos4NewTrack(PIXEL const) const;
-
+	SignalNr   const findSignal       (TrackNr const, PixelPoint const &) const;
+	fPixel     const calcTrackHeight  () const;
+	TrackNr    const findTrack        (PIXEL const) const;
+	TrackNr    const findPos4NewTrack (PIXEL const) const;
 	fMicroSecs const fPixel2fMicroSecs(fPixel     const  ) const;
 	fPixel     const fMicroSecs2fPixel(fMicroSecs const  ) const;
 	fPixel     const yValue2fPixel    (float      const  ) const;
 	fPixel     const getSignalOffset  (SignalId   const &) const;
-
-	fPixel     const getYvalue  (Signal const &, fMicroSecs const) const;
-	fMicroSecs const findNextMax(Signal const &, fPixel     const) const;
-
-	SignalId const selectSignal(SignalId const &);
+	fPixel     const getYvalue        (Signal const &, fMicroSecs const) const;
+	fMicroSecs const findNextMax      (Signal const &, fPixel     const) const;
+	void             highlightSignal  (SignalId const &);
 
 	void doPaint() const;
 	void paintSignal(SignalId const &) const;
@@ -86,7 +81,6 @@ private:
 	PIXEL        m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel       m_fPixWinWidth       { 0.0_fPixel };
 	bool         m_bShowScale         { false };
-	bool         m_bSignalLocked      { false };
 	Measurement  m_measurement;
 	Scale        m_scale;
 };

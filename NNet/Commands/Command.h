@@ -32,6 +32,6 @@ public:
 
     virtual NobId const GetAffectedNob() const
     {
-        return NobId();
+        return NO_NOB;
     }
 };

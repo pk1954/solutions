@@ -126,9 +126,6 @@
     <ClInclude Include="CommandFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationChainCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RotateNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -157,6 +154,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RotationCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetHighlightedSignalCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveSensorCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SizeSensorCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveSignalCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
