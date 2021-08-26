@@ -1,5 +1,5 @@
 # NNetModel
-# Created Wed Aug 18 21:31:43 2021
+# Created Thu Aug 26 22:53:01 2021
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -41,7 +41,7 @@ CreateNob 42 neuron(803.539|3826.23)
 CreateNob 44 neuron(599.77|3818.4)
 CreateNob 45 neuron(447.892|4595.22)
 CreateNob 48 neuron(212.773|4607.7)
-CreateNob 50 neuron(9.00349|4599.86)
+CreateNob 50 neuron(9.00366|4599.86)
 CreateNob 51 neuron(1054.85|4595.22)
 CreateNob 54 neuron(819.727|4607.7)
 CreateNob 56 neuron(615.958|4599.86)
@@ -169,7 +169,7 @@ CreateNob 333 knot(1066.6|5231.4)
 CreateNob 334 knot(617.407|4968.78)
 CreateNob 338 knot(820.867|5501.42)
 CreateNob 339 knot(452.511|5098.11)
-CreateNob 343 knot(9.31979|5178.03)
+CreateNob 343 knot(9.31982|5178.03)
 CreateNob 344 knot(455.744|4942.92)
 CreateNob 348 knot(460.31|5771.81)
 CreateNob 349 knot(229.024|4819.89)

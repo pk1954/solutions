@@ -38,8 +38,6 @@ public:
 
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
-		if (typeid(src) != typeid(*this))
-			return false;
 		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
 		if (GetAffectedNob() != srcCmd.GetAffectedNob())
 			return false;

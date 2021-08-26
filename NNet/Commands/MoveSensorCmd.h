@@ -38,9 +38,10 @@ public:
 
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
-		if (typeid(src) != typeid(*this))
+		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
+		if (m_signalId != cmdSrc.m_signalId)
 			return false;
-		m_delta += static_cast<MoveSensorCmd const &>(src).m_delta;
+		m_delta += cmdSrc.m_delta;
 		return true; 
 	};
 

@@ -15,8 +15,6 @@ public:
 
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
-		if (typeid(src) != typeid(*this))
-			return false;
 		RotationCommand const & srcCmd { static_cast<RotationCommand const &>(src) };
 		m_radDelta += srcCmd.m_radDelta;
 		return true; 

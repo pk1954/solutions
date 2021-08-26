@@ -37,9 +37,10 @@ public:
 
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
-		if (typeid(src) != typeid(*this))
+		SizeSensorCmd const & cmdSrc { static_cast<SizeSensorCmd const &>(src) };
+		if (m_signalId != cmdSrc.m_signalId)
 			return false;
-		m_fFactor *= static_cast<SizeSensorCmd const &>(src).m_fFactor;
+		m_fFactor *= cmdSrc.m_fFactor;
 		return true; 
 	};
 

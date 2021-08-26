@@ -44,8 +44,6 @@ public:
 
 	virtual bool const CombineCommands(Command const & src) 
 	{ 
-		if (typeid(src) != typeid(*this))
-			return false;
 		MoveSelectionCommand const & srcCmd { static_cast<MoveSelectionCommand const &>(src) };
 		m_delta += srcCmd.m_delta;
 		return true; 
