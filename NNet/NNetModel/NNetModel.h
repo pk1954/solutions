@@ -49,9 +49,9 @@ public:
 
 	float const GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	MicroMeterPnt   const GetNobPos      (NobId const id) const { return GetNobConstPtr<Nob  const *>(id)->GetPos         (); }
-	BaseKnot      * const GetStartKnotPtr(NobId const id) const { return GetNobConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
-	BaseKnot      * const GetEndKnotPtr  (NobId const id) const { return GetNobConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
+	MicroMeterPnt const GetNobPos      (NobId const id) const { return GetNobConstPtr<Nob  const *>(id)->GetPos         (); }
+	BaseKnot    * const GetStartKnotPtr(NobId const id) const { return GetNobConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
+	BaseKnot    * const GetEndKnotPtr  (NobId const id) const { return GetNobConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
 
 	NobId const GetStartKnotId(NobId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	NobId const GetEndKnotId  (NobId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
@@ -70,14 +70,17 @@ public:
 	virtual bool Compute();
 
 	void  RecalcAllNobs();
+	void  ClearAllNobs();
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
 	void  SelectSubtree(BaseKnot * const, bool const);
+	void  Reconnect(NobId const);
 
 	UPNobList   & GetUPNobs()      { return m_Nobs; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
+	void DeselectAllNobs     ()                   { m_Nobs.SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine  (wstring const wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete ()                   { m_description.DescriptionComplete(); }

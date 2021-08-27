@@ -52,7 +52,7 @@ public:
         m_upNobTarget  ->Reconnect();
         m_upNobAnimated = m_nmwi.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));
         m_upNobTarget   = m_nmwi.ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobTarget));
-        m_nmwi.GetUPNobs().DeselectAllNobs();
+        m_nmwi.DeselectAllNobs();
         if (targetReachedFunc)
             (targetReachedFunc)();
     }

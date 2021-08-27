@@ -48,10 +48,21 @@ Nob const * NNetModel::GetConstNob(NobId const id) const
 	return m_Nobs.GetAt(id);
 }
 
+void NNetModel::Reconnect(NobId const id)
+{
+	if (Nob * pNod { m_Nobs.GetAt(id) })
+		pNod->Reconnect();
+}
+
 void NNetModel::RecalcAllNobs() 
 { 
 	m_Nobs.Apply2All([&](Nob & nob) { nob.Recalc(); });
 } 
+
+void NNetModel::ClearAllNobs() 
+{ 
+	m_Nobs.Apply2All([&](Nob & nob) { nob.Clear(); }); 
+}
 
 fHertz const NNetModel::GetPulseRate(NobId const id) const
 {

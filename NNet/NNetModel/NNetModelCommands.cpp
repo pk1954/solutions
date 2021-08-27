@@ -397,7 +397,7 @@ void NNetModelCommands::AddModel()
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(*m_pNMWI, move(m_pModelImporter->GetImportedModel()->GetUPNobs())));
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(*m_pNMWI, move(m_pModelImporter->GetUPNobs())));
 }
 
 void NNetModelCommands::CopySelection()

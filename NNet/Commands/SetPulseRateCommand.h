@@ -24,7 +24,7 @@ public:
 	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
 		m_fHertz = nmwi.GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetPulseFrequency(m_fHertz);
-		nmwi.ClearModel();
+		nmwi.ClearAllNobs();
 	}
 
 private:

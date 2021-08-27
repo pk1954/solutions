@@ -25,7 +25,7 @@ public:
 	virtual void Do(NNetModelWriterInterface & nmwi)
 	{ 
 		m_sound = nmwi.GetNobPtr<Neuron *>(m_idNeuron)->SetTriggerSound(m_sound);
-		nmwi.ClearModel();
+		nmwi.ClearAllNobs();
 	}
 
 private:

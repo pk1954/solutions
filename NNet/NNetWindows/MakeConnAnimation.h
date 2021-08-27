@@ -39,7 +39,7 @@ public:
 
     virtual void Do(function<void()> const & targetReachedFunc)
     {
-        m_nmwi.GetUPNobs().DeselectAllNobs();
+        m_nmwi.DeselectAllNobs();
         m_upIoConnector->SetParentPointers();
         m_nmwi.Push2Model(move(m_upIoConnector));
         (targetReachedFunc)();

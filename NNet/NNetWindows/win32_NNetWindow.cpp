@@ -78,7 +78,7 @@ MicroMeterRect const NNetWindow::GetViewRect() const
 void NNetWindow::DrawInteriorInRect
 (
 	PixelRect const & rect, 
-	NobCrit const & crit 
+	NobCrit   const & crit 
 ) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };

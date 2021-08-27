@@ -50,6 +50,7 @@ public:
 	bool Import(wstring const, unique_ptr<ImportTermination>);
 
 	unique_ptr<NNetModel> GetImportedModel();
+	UPNobList             GetUPNobs();
 
 	wstring const GetFilePath() { return m_wstrFile2Read; }
 

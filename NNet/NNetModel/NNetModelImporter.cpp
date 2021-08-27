@@ -443,3 +443,8 @@ unique_ptr<NNetModel> NNetModelImporter::GetImportedModel()
 { 
     return move(m_upImportedModel);
 }
+
+UPNobList NNetModelImporter::GetUPNobs()
+{ 
+    return move(m_upImportedModel->GetUPNobs()); 
+}

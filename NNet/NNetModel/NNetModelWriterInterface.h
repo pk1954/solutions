@@ -41,9 +41,11 @@ public:
 
     size_t const Size() const { return m_pModel->Size(); }
 
-    void  CheckModel() { m_pModel->CheckModel(); }
-    void  ResetModel() { m_pModel->ResetModel(); }
-    void  ClearModel() { m_pModel->GetUPNobs().Apply2All([&](Nob & s) { s.Clear(); }); }
+    void  CheckModel  () { m_pModel->CheckModel(); }
+    void  ResetModel  () { m_pModel->ResetModel(); }
+    void  ClearAllNobs() { m_pModel->ClearAllNobs(); }
+
+    void  Reconnect(NobId const id) { m_pModel->Reconnect(id); }
 
     void  DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 
@@ -53,6 +55,7 @@ public:
     void  SetModelFilePath  (wstring const wstr) { m_pModel->SetModelFilePath  (wstr); }
     void  AddDescriptionLine(wstring const wstr) { m_pModel->AddDescriptionLine(wstr); }
     void  DescriptionComplete()                  { m_pModel->DescriptionComplete(); }
+    void  DeselectAllNobs()                      { m_pModel->DeselectAllNobs(); }
 
     wstring const GetModelFilePath() { return m_pModel->GetModelFilePath(); }
 
@@ -103,7 +106,7 @@ public:
     template <Nob_t OLD>
     unique_ptr<OLD> RemoveFromModel(NobId const id) 
     { 
-        UPNob upNob { m_pModel->GetUPNobs().ExtractNob(id) }; 
+        UPNob upNob { GetUPNobs().ExtractNob(id) }; 
         auto  pNob  { upNob.release() };
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNob)));
     }
@@ -112,21 +115,21 @@ public:
     void Restore2Model(unique_ptr<NEW> up) 
     {
         assert(up);
-        m_pModel->GetUPNobs().ReplaceNob(move(up));
+        GetUPNobs().ReplaceNob(move(up));
     }
 
     template <Nob_t NEW, Nob_t OLD>
     unique_ptr<OLD> ReplaceInModel(unique_ptr<NEW> upNew) 
     {
         NobId id      { upNew.get()->GetId() };
-        Nob * pNobOld { m_pModel->GetUPNobs().ReplaceNob(move(upNew)) };
+        Nob * pNobOld { GetUPNobs().ReplaceNob(move(upNew)) };
         Reconnect(id);
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNobOld)));
     }
 
     NobId const Push2Model(UPNob upNob)
     {
-        NobId const id { m_pModel->GetUPNobs().Push(move(upNob)) };
+        NobId const id { GetUPNobs().Push(move(upNob)) };
         Reconnect(id);
         return id;
     }
@@ -134,15 +137,14 @@ public:
     template <Nob_t T>
     unique_ptr<T> PopFromModel() 
     { 
-        return m_pModel->GetUPNobs().Pop<T>();
+        return GetUPNobs().Pop<T>();
     }
 
     ///////////////////////////////////////////////////////////
 
-    void IncreaseSize(long const nr) { m_pModel->GetUPNobs().IncreaseSize(nr); }
-    void ReduceSize  (long const nr) { m_pModel->GetUPNobs().ReduceSize(nr); }
+    void IncreaseSize(long const nr) { GetUPNobs().IncreaseSize(nr); }
+    void ReduceSize  (long const nr) { GetUPNobs().ReduceSize(nr); }
 
-    void Reconnect(NobId const);
     void SetPosDir(NobId const, MicroMeterPosDir const &);
 
     MicroMeterPnt const OrthoVector(NobId const) const;

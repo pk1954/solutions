@@ -27,7 +27,7 @@ public:
 	virtual void Do(NNetModelWriterInterface & nmwi) 
 	{ 
 		SelectionCommand::Do(nmwi);
-		nmwi.GetUPNobs().DeselectAllNobs();
+		nmwi.DeselectAllNobs();
 		nmwi.GetUPNobs().MoveFrom(m_nobs2Add, m_nrOfNobs);
 		nmwi.CheckModel();
 	}

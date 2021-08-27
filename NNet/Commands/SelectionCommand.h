@@ -23,7 +23,7 @@ public:
 
 	virtual void Undo(NNetModelWriterInterface & nmwi) 
 	{
-		nmwi.GetUPNobs().DeselectAllNobs();
+		nmwi.DeselectAllNobs();
 		for (auto it : *m_upSelectedNobs){ it->Select(true); };
 	}
 

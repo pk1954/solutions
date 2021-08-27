@@ -408,7 +408,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 	case IDM_STOP:
 		m_computeThread.StopComputation();
-		m_nmwi.ClearModel();
+		m_nmwi.ClearAllNobs();
 		break;
 
 	case IDM_SCRIPT_DIALOG:

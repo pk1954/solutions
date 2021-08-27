@@ -74,12 +74,6 @@ void NNetModelWriterInterface::RemoveOrphans()
 	); 
 }
 
-void NNetModelWriterInterface::Reconnect(NobId const id)
-{
-	if (Nob * pNod { m_pModel->GetUPNobs().GetAt(id) })
-		pNod->Reconnect();
-}
-
 MicroMeterPnt const NNetModelWriterInterface::OrthoVector(NobId const idPipe) const
 {
 	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
