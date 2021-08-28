@@ -15,9 +15,14 @@ public:
 		:	m_id(id)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & model)
+	virtual void Do()
 	{
-		model.ToggleStopOnTrigger(m_id);
+		m_pNMWI->ToggleStopOnTrigger(m_id);
+	}
+
+	virtual void Undo()
+	{
+		m_pNMWI->ToggleStopOnTrigger(m_id);
 	}
 
 private:

@@ -12,13 +12,9 @@ template<typename T>
 class AppendNeuronCommand : public Command
 {
 public:
-	AppendNeuronCommand
-	(
-		NNetModelWriterInterface & nmwi,
-		NobId                const idKnot 
-	)
+	AppendNeuronCommand(NobId const idKnot)
 	{
-		Knot const * pKnot { nmwi.GetNobPtr<Knot *>(idKnot) };
+		Knot const * pKnot { m_pNMWI->GetNobPtr<Knot *>(idKnot) };
 		m_upNeuron = make_unique<T>(pKnot->GetPos());
 		m_upNeuron->SetConnections(*pKnot);
 		m_upNeuron->SetId(idKnot);
@@ -26,16 +22,16 @@ public:
 
 	~AppendNeuronCommand() {}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		m_upNeuron->Reconnect();
-		m_upKnot = nmwi.ReplaceInModel<T,Knot>(move(m_upNeuron));
+		m_upKnot = m_pNMWI->ReplaceInModel<T,Knot>(move(m_upNeuron));
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
 		m_upKnot->Reconnect();
-		m_upNeuron = nmwi.ReplaceInModel<Knot,T>(move(m_upKnot)); 
+		m_upNeuron = m_pNMWI->ReplaceInModel<Knot,T>(move(m_upKnot)); 
 	}
 
 private:

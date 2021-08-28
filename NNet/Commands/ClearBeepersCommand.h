@@ -29,11 +29,11 @@ public:
 		nmwi.GetUPNobs().Apply2AllSelected<Neuron>([&](Neuron & n) { clearTriggerSound(& n); });
 	}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		if (! m_bInitialized)
 		{
-			nmwi.GetUPNobs().Apply2All<Neuron>
+			m_pNMWI->GetUPNobs().Apply2All<Neuron>
 			(
 				[&](Neuron & neuron) 
 				{ 
@@ -43,15 +43,15 @@ public:
 			);
 			m_bInitialized = true;
 		}
-		if (nmwi.GetUPNobs().AnyNobsSelected())
-			clearAllSelected(nmwi);
+		if (m_pNMWI->GetUPNobs().AnyNobsSelected())
+			clearAllSelected(*m_pNMWI);
 		else
-			clearAll(nmwi);
+			clearAll(*m_pNMWI);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		clearAll(nmwi);
+		clearAll(*m_pNMWI);
 		for (Beeper const & beeper : m_beepers)
 			beeper.m_pNeuron->SetTriggerSound(beeper.m_sound);
 	}

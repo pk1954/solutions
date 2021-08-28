@@ -24,13 +24,13 @@ public:
 		m_posDir(posDir)
 	{}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		m_nob.RotateNob(m_nob .GetPos(), m_posDir.GetDir());
 		m_nob.MoveNob  (m_posDir.GetPos() - m_nob.GetPos());
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
 		m_nob.RotateNob(m_nob.GetPos(), -m_posDir.GetDir());
 		m_nob.MoveNob  (m_nob.GetPos() - m_posDir.GetPos());

@@ -20,12 +20,8 @@ using std::unique_ptr;
 class SplitClosedConnCmd : public Command
 {
 public:
-    SplitClosedConnCmd
-    (
-        NNetModelWriterInterface & nmwi,
-        NobId                const id
-   )
-      : m_closedConnector(*nmwi.GetNobPtr<ClosedConnector *>(id))
+    SplitClosedConnCmd(NobId const id)
+      : m_closedConnector(*m_pNMWI->GetNobPtr<ClosedConnector *>(id))
     {
         m_upInputConnector  = make_unique<InputConnector>();
         m_upOutputConnector = make_unique<OutputConnector>();
@@ -56,37 +52,37 @@ public:
 
     ~SplitClosedConnCmd() {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi)
+    virtual void Do()
     {
-        m_closedConnector.Apply2All([&](Neuron const &n){ m_upNeurons.push_back(nmwi.RemoveFromModel<Neuron>(n)); });
-        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
+        m_closedConnector.Apply2All([&](Neuron const &n){ m_upNeurons.push_back(m_pNMWI->RemoveFromModel<Neuron>(n)); });
+        m_upClosedConnector = m_pNMWI->RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
 
         for (size_t i = 0; i < m_size; ++i)
         { 
-            nmwi.Push2Model(move(m_upInputNeurons.back()));
+            m_pNMWI->Push2Model(move(m_upInputNeurons.back()));
             m_upInputNeurons.pop_back();
-            nmwi.Push2Model(move(m_upOutputNeurons.back()));
+            m_pNMWI->Push2Model(move(m_upOutputNeurons.back()));
             m_upOutputNeurons.pop_back();
         }
-        nmwi.Push2Model(move(m_upInputConnector));
-        nmwi.Push2Model(move(m_upOutputConnector));
+        m_pNMWI->Push2Model(move(m_upInputConnector));
+        m_pNMWI->Push2Model(move(m_upOutputConnector));
     }
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     {
-        m_upOutputConnector = nmwi.PopFromModel<OutputConnector>();
-        m_upInputConnector  = nmwi.PopFromModel<InputConnector>();
+        m_upOutputConnector = m_pNMWI->PopFromModel<OutputConnector>();
+        m_upInputConnector  = m_pNMWI->PopFromModel<InputConnector>();
         for ( size_t i = 0; i < m_size; ++i )
         {
-            m_upOutputNeurons[i] = nmwi.PopFromModel<IoNeuron>();
-            m_upInputNeurons [i] = nmwi.PopFromModel<IoNeuron>();
+            m_upOutputNeurons[i] = m_pNMWI->PopFromModel<IoNeuron>();
+            m_upInputNeurons [i] = m_pNMWI->PopFromModel<IoNeuron>();
         }
 
         m_upClosedConnector->SetParentPointers();
-        m_upClosedConnector = nmwi.ReplaceInModel<ClosedConnector,ClosedConnector>(move(m_upClosedConnector));
+        m_upClosedConnector = m_pNMWI->ReplaceInModel<ClosedConnector,ClosedConnector>(move(m_upClosedConnector));
         for (auto & it : m_upNeurons) 
-            it = nmwi.ReplaceInModel<Neuron,Neuron>(move(it));
+            it = m_pNMWI->ReplaceInModel<Neuron,Neuron>(move(it));
     }
 
 private:

@@ -21,16 +21,16 @@ public:
 		m_fFactor(fFactor)
 	{}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		Signal * pSignal = nmwi.GetMonitorData().GetSignalPtr(m_signalId);
+		Signal * pSignal = m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId);
 		assert(pSignal);
 		pSignal->SizeSensor(1.0f / m_fFactor);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		Signal * pSignal = nmwi.GetMonitorData().GetSignalPtr(m_signalId);
+		Signal * pSignal = m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId);
 		assert(pSignal);
 		pSignal->SizeSensor(m_fFactor);
 	}

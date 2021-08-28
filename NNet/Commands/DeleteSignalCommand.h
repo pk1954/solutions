@@ -17,14 +17,14 @@ public:
       :  m_signalId(id)
     {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi) 
+    virtual void Do() 
     {
-        m_upSignal = move(nmwi.GetMonitorData().DeleteSignal(m_signalId));
+        m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
     };
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     { 
-        nmwi.GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
+        m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
     };
 
 private:

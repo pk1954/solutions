@@ -276,3 +276,9 @@ void NNetModelReaderInterface::DrawLine
 {
 	context.DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), 10.0_MicroMeter, D2D1::ColorF::Brown);
 }
+
+MicroMeterPnt const NNetModelReaderInterface::OrthoVector(NobId const idPipe) const
+{
+	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
+	return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
+}

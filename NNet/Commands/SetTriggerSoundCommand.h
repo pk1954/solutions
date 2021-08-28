@@ -15,20 +15,25 @@ class SetTriggerSoundCommand : public Command
 public:
 	SetTriggerSoundCommand
 	(
-		NobId    const   id, 
+		NobId      const   id, 
 		SoundDescr const & sound
 	)
 	  : m_idNeuron(id),
 		m_sound(sound)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{ 
-		m_sound = nmwi.GetNobPtr<Neuron *>(m_idNeuron)->SetTriggerSound(m_sound);
-		nmwi.ClearAllNobs();
+		m_sound = m_pNMWI->GetNobPtr<Neuron *>(m_idNeuron)->SetTriggerSound(m_sound);
+		m_pNMWI->ClearAllNobs();
+	}
+
+	virtual void Undo()
+	{ 
+		Do();
 	}
 
 private:
 	NobId const m_idNeuron;
-	SoundDescr    m_sound;
+	SoundDescr  m_sound;
 };

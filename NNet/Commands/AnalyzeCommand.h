@@ -15,13 +15,13 @@ public:
 		: m_result(stack)
 	{}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		SelectionCommand::Do(nmwi);
+		SelectionCommand::Do();
 		if (!m_result.empty())
 		{
-			nmwi.DeselectAllNobs();
-			for (auto it : m_result) { nmwi.SelectNob(it->GetId(), true); }
+			m_pNMWI->DeselectAllNobs();
+			for (auto it : m_result) { m_pNMWI->SelectNob(it->GetId(), true); }
 		}
 	}
 

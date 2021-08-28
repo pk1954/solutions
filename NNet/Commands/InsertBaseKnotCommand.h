@@ -25,11 +25,11 @@ public:
 
 	~InsertBaseKnotCommand() {}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		if (! m_upBaseKnot)
 		{ 
-			m_pPipe2Split = nmwi.GetNobPtr<Pipe *>(m_idPipe);
+			m_pPipe2Split = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
 			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
 			m_upBaseKnot  = make_unique<T>   (m_umSplitPoint);
 			m_upPipeNew   = make_unique<Pipe>(m_pStartKnot, m_upBaseKnot.get());
@@ -38,14 +38,14 @@ public:
 		}
 		m_pStartKnot->ReplaceOutgoing(m_pPipe2Split, m_upPipeNew.get());
 		m_pPipe2Split->SetStartKnot(m_upBaseKnot.get());
-		nmwi.Push2Model(move(m_upBaseKnot));
-		nmwi.Push2Model(move(m_upPipeNew));
+		m_pNMWI->Push2Model(move(m_upBaseKnot));
+		m_pNMWI->Push2Model(move(m_upPipeNew));
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		m_upPipeNew  = nmwi.PopFromModel<Pipe>();
-		m_upBaseKnot = nmwi.PopFromModel<T>();
+		m_upPipeNew  = m_pNMWI->PopFromModel<Pipe>();
+		m_upBaseKnot = m_pNMWI->PopFromModel<T>();
 		m_pPipe2Split->SetStartKnot(m_pStartKnot);
 		m_pStartKnot->ReplaceOutgoing(m_upPipeNew.get(), m_pPipe2Split);
 	}

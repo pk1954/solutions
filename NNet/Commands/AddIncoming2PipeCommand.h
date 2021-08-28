@@ -23,15 +23,15 @@ public:
 	
 	~AddIncoming2PipeCommand()	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		if (! m_upKnotInsert)
 		{
-			m_pPipeOld      = nmwi.GetNobPtr<Pipe *>(m_idPipe);
+			m_pPipeOld      = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
 			m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr();
 			m_upKnotInsert  = make_unique<Knot>(m_pos);                                
 			m_upKnotInsert->Select(m_pPipeOld->IsSelected());
-			m_upKnotOrtho   = make_unique<Knot>(m_pos - nmwi.OrthoVector(m_idPipe));
+			m_upKnotOrtho   = make_unique<Knot>(m_pos - m_pNMWI->OrthoVector(m_idPipe));
 			m_upPipeOrtho   = make_unique<Pipe>(m_upKnotOrtho.get(), m_upKnotInsert.get());		
 			m_upPipeExt     = make_unique<Pipe>(m_pStartKnotOld,     m_upKnotInsert.get());   	
 
@@ -42,18 +42,18 @@ public:
 		}
 		m_pStartKnotOld->ReplaceOutgoing(m_pPipeOld, m_upPipeExt.get());
 		m_pPipeOld->SetStartKnot(m_upKnotInsert.get());
-		nmwi.Push2Model(move(m_upKnotOrtho));
-		nmwi.Push2Model(move(m_upKnotInsert));
-		nmwi.Push2Model(move(m_upPipeOrtho));
-		nmwi.Push2Model(move(m_upPipeExt));
+		m_pNMWI->Push2Model(move(m_upKnotOrtho));
+		m_pNMWI->Push2Model(move(m_upKnotInsert));
+		m_pNMWI->Push2Model(move(m_upPipeOrtho));
+		m_pNMWI->Push2Model(move(m_upPipeExt));
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		m_upPipeExt    = nmwi.PopFromModel<Pipe>();
-		m_upPipeOrtho  = nmwi.PopFromModel<Pipe>();
-		m_upKnotInsert = nmwi.PopFromModel<Knot>();
-		m_upKnotOrtho  = nmwi.PopFromModel<Knot>();
+		m_upPipeExt    = m_pNMWI->PopFromModel<Pipe>();
+		m_upPipeOrtho  = m_pNMWI->PopFromModel<Pipe>();
+		m_upKnotInsert = m_pNMWI->PopFromModel<Knot>();
+		m_upKnotOrtho  = m_pNMWI->PopFromModel<Knot>();
 		m_pPipeOld->SetStartKnot(m_pStartKnotOld);
 		m_pStartKnotOld->ReplaceOutgoing(m_upPipeExt.get(), m_pPipeOld);
 	}

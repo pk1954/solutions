@@ -22,16 +22,16 @@ public:
 		m_delta(delta)
 	{}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		Signal * pSignal { nmwi.GetMonitorData().GetSignalPtr(m_signalId) };
+		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
 		assert(pSignal);
 		pSignal->MoveSensor(m_delta);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		Signal * pSignal { nmwi.GetMonitorData().GetSignalPtr(m_signalId) };
+		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
 		assert(pSignal);
 		pSignal->MoveSensor(-m_delta);
 	}

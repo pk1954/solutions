@@ -22,14 +22,14 @@ public:
 
 	~NewNeuronCommandT() {}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		nmwi.Push2Model(move(m_upNeuronT));
+		m_pNMWI->Push2Model(move(m_upNeuronT));
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi)
+	virtual void Undo()
 	{ 
-		m_upNeuronT = nmwi.PopFromModel<T>();
+		m_upNeuronT = m_pNMWI->PopFromModel<T>();
 	}
 
 private:

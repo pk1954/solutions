@@ -12,18 +12,15 @@ class Command
 {
 public:
     virtual ~Command()
+    {}
+
+    static void SetNNetModelWriterInterface(NNetModelWriterInterface* const pNMWI)
     {
-        int x = 42;
+        m_pNMWI = pNMWI;
     }
 
-    virtual void Do(NNetModelWriterInterface & nmwi) 
-    { 
-    };
-    
-    virtual void Undo(NNetModelWriterInterface & nmwi)
-    { 
-        Do(nmwi); 
-    };
+    virtual void Do  () = 0;
+    virtual void Undo() = 0;
 
     virtual bool const CombineCommands(Command const & src) 
     { 
@@ -34,4 +31,8 @@ public:
     {
         return NO_NOB;
     }
+
+protected:
+
+    inline static NNetModelWriterInterface * m_pNMWI { nullptr };
 };

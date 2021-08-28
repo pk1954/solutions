@@ -23,14 +23,14 @@ public:
 		m_fOldValue(param.GetParameterValue(parameter))
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & model) 
+	virtual void Do() 
 	{ 
-		model.SetParam(m_parameter, m_fNewValue); 
+		m_pNMWI->SetParam(m_parameter, m_fNewValue); 
 	}
 
-	virtual void Undo(NNetModelWriterInterface & model) 
+	virtual void Undo() 
 	{ 
-		model.SetParam(m_parameter, m_fOldValue); 
+		m_pNMWI->SetParam(m_parameter, m_fOldValue); 
 	}
 
 private:

@@ -16,9 +16,9 @@ public:
        : m_delta(delta)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		nmwi.GetUPNobs().Apply2AllSelected<Nob>
+		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
 			[&](Nob & nob) 
 			{ 
@@ -28,9 +28,9 @@ public:
 		);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		nmwi.GetUPNobs().Apply2AllSelected<Nob>
+		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
 			[&](Nob & nob) 
 			{ 

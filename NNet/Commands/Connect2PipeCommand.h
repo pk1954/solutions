@@ -27,18 +27,18 @@ public:
 
 	~Connect2PipeCommand()	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{
 		m_pStartKnot->ReplaceOutgoing(m_pPipe, m_upNewPipe.get());
 		m_pBaseKnot ->AddIncoming(m_upNewPipe.get());
 		m_pBaseKnot ->AddOutgoing(m_pPipe);
 		m_pPipe->SetStartKnot(m_pBaseKnot);
-		nmwi.Push2Model(move(m_upNewPipe));
+		m_pNMWI->Push2Model(move(m_upNewPipe));
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi)
+	virtual void Undo()
 	{
-		m_upNewPipe = nmwi.PopFromModel<Pipe>();
+		m_upNewPipe = m_pNMWI->PopFromModel<Pipe>();
 		m_pStartKnot->ReplaceOutgoing(m_upNewPipe.get(), m_pPipe);
 		m_pBaseKnot ->RemoveIncoming(m_upNewPipe.get());
 		m_pBaseKnot ->RemoveOutgoing(m_pPipe);

@@ -24,10 +24,10 @@ public:
 		assert(IsDefined(m_idNob));
 	}
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{ 
-		SelectionCommand::Do(nmwi);
-		Nob * pNob { nmwi.GetNobPtr<Nob *>(m_idNob) };
+		SelectionCommand::Do();
+		Nob * pNob { m_pNMWI->GetNobPtr<Nob *>(m_idNob) };
 		pNob->Select(ApplyOp2(pNob->IsSelected(), m_op));
 	}
 

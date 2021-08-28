@@ -24,12 +24,12 @@ public:
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		m_nob.RotateNob(m_umPntPivot, m_radDelta);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
 		m_nob.RotateNob(m_umPntPivot, -m_radDelta);
 	}

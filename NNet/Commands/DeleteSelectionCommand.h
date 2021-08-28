@@ -14,26 +14,26 @@
 class DeleteSelectionCommand : public Command
 {
 public:
-	DeleteSelectionCommand(NNetModelWriterInterface & nmwi) 
+	DeleteSelectionCommand() 
 	{}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		m_cmdStack.Initialize(&nmwi, nullptr);
-		nmwi.GetUPNobs().Apply2AllSelected<Nob>
+		m_cmdStack.Initialize(m_pNMWI, nullptr);
+		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
 			[&](Nob & nob) 
 			{ 
-				if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, nob)) })
+				if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(*m_pNMWI, nob)) })
 				{
-					upCmd->Do(nmwi);
+					upCmd->Do();
 					m_cmdStack.Push(move(upCmd));
 				}
 			}
 		); 
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
 		m_cmdStack.UndoAll();
 		m_cmdStack.Clear();

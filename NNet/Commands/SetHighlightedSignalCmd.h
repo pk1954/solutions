@@ -16,14 +16,14 @@ public:
       : m_umPos(umPos)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{
-		m_pSignalIdOld = nmwi.GetMonitorData().SetHighlightedSignal(m_umPos);
+		m_pSignalIdOld = m_pNMWI->GetMonitorData().SetHighlightedSignal(m_umPos);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi)
+	virtual void Undo()
 	{
-		nmwi.GetMonitorData().SetHighlightedSignal(m_pSignalIdOld);
+		m_pNMWI->GetMonitorData().SetHighlightedSignal(m_pSignalIdOld);
 	}
 
 private:

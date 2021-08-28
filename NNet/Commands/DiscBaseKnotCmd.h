@@ -26,8 +26,8 @@ public:
 
     ~DiscBaseKnotCmd() {}
 
-    virtual void Do  (NNetModelWriterInterface &);
-    virtual void Undo(NNetModelWriterInterface &);
+    virtual void Do  ();
+    virtual void Undo();
 
 private:
     BaseKnot               & m_baseKnot;

@@ -17,14 +17,14 @@ public:
         : m_trackNr(trackNr)
     {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi) 
+    virtual void Do() 
     {
-        nmwi.GetMonitorData().InsertTrack(m_trackNr);
+        m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
     };
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     { 
-        nmwi.GetMonitorData().DeleteTrack(m_trackNr);
+        m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
     };
 
 private:

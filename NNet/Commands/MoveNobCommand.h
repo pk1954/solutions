@@ -24,12 +24,12 @@ public:
 		assert(&nob);
 	}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		m_nob.MoveNob(m_delta);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
 		m_nob.MoveNob(-m_delta);
 	}

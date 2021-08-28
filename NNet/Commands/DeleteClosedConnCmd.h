@@ -15,26 +15,22 @@ using std::unique_ptr;
 class DeleteClosedConnCmd : public Command
 {
 public:
-    DeleteClosedConnCmd
-    (
-        NNetModelWriterInterface & nmwi,
-        Nob                      & nob
-   )
+    DeleteClosedConnCmd(Nob & nob)
       : m_closedConnector(Cast2ClosedConnector(nob))
     {}
 
     ~DeleteClosedConnCmd() {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi)
+    virtual void Do()
     {
-        m_upClosedConnector = nmwi.RemoveFromModel<ClosedConnector>(m_closedConnector);
+        m_upClosedConnector = m_pNMWI->RemoveFromModel<ClosedConnector>(m_closedConnector);
         m_upClosedConnector->ClearParentPointers();
     }
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     {
         m_upClosedConnector->SetParentPointers();
-        nmwi.Restore2Model<ClosedConnector>(move(m_upClosedConnector));
+        m_pNMWI->Restore2Model<ClosedConnector>(move(m_upClosedConnector));
     }
 
 private:

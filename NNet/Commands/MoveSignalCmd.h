@@ -21,14 +21,14 @@ public:
 		m_trackNr(trackNr)
 	{}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		m_signalNr = nmwi.GetMonitorData().MoveSignal(m_signalId, m_trackNr);
+		m_signalNr = m_pNMWI->GetMonitorData().MoveSignal(m_signalId, m_trackNr);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{
-		nmwi.GetMonitorData().MoveSignal(SignalId(m_trackNr, m_signalNr), m_signalId);
+		m_pNMWI->GetMonitorData().MoveSignal(SignalId(m_trackNr, m_signalNr), m_signalId);
 	}
 
 private:

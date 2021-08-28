@@ -17,16 +17,16 @@ public:
         : m_trackNr(trackNr)
     {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi) 
+    virtual void Do() 
     {
-        MonitorData & monitorData { nmwi.GetMonitorData() };
+        MonitorData & monitorData { m_pNMWI->GetMonitorData() };
         assert(monitorData.IsEmptyTrack(m_trackNr));
         monitorData.DeleteTrack(m_trackNr);
     };
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     { 
-        nmwi.GetMonitorData().InsertTrack(m_trackNr);
+        m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
     };
 
 private:

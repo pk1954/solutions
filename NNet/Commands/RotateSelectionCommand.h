@@ -14,26 +14,25 @@ class RotateSelectionCommand : public RotationCommand
 public:
 	RotateSelectionCommand
 	(
-		NNetModelReaderInterface & nmri,
-		MicroMeterPnt      const & umPntOld, 
-		MicroMeterPnt      const & umPntNew
+		MicroMeterPnt const & umPntOld, 
+		MicroMeterPnt const & umPntNew
 	)
 	{
-		m_umPntPivot = nmri.GetUPNobs().CenterOfGravity
+		m_umPntPivot = m_pNMWI->GetUPNobs().CenterOfGravity
 		(
 			[&](Nob const & nob){ return nob.IsSelected() && nob.IsAnyNeuron(); }
 		);
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		nmwi.GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		nmwi.GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
 
 	virtual NobId const GetAffectedNob() const { return NO_NOB;	}

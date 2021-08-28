@@ -83,7 +83,7 @@ public:
     void SelectNob            (NobId const, tBoolOp const);
     void SelectNobsInRect     (MicroMeterRect const &);
     void SelectSubtree        (NobId const, bool const);
-    void SetIoNeurons         (MicroMeterPntVector const &, unique_ptr<NobIdList>);
+    //void SetIoNeurons         (MicroMeterPntVector const &, unique_ptr<NobIdList>);
     void SetParameter         (ParamType::Value const, float const);
     void SetPulseRate         (NobId const, fHertz const);
     void SetNob               (NobId const, MicroMeterPosDir const);

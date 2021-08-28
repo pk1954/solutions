@@ -12,15 +12,15 @@
 #include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 
-void NNetModelWriterInterface::Start(NNetModel * const pModel)
-{
-	m_pModel = pModel;
-}
-
-void NNetModelWriterInterface::Stop()
-{
-	m_pModel = nullptr;
-}
+//void NNetModelWriterInterface::Start(NNetModel * const pModel)
+//{
+//	m_pModel = pModel;
+//}
+//
+//void NNetModelWriterInterface::Stop()
+//{
+//	m_pModel = nullptr;
+//}
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
@@ -74,14 +74,7 @@ void NNetModelWriterInterface::RemoveOrphans()
 	); 
 }
 
-MicroMeterPnt const NNetModelWriterInterface::OrthoVector(NobId const idPipe) const
-{
-	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
-	return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
-}
-
 void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const & umPosDir)
 {
 	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
 }
-

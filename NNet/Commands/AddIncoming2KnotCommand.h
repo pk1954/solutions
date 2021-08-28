@@ -25,24 +25,24 @@ public:
 	
 	~AddIncoming2KnotCommand()	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
 		if (! m_upPipe)
 		{
-			m_pEnd      = nmwi.GetNobPtr<BaseKnot *>(m_idKnot);
+			m_pEnd      = m_pNMWI->GetNobPtr<BaseKnot *>(m_idKnot);
 			m_upKnotNew = make_unique<Knot>(m_pos);
 			m_upPipe    = make_unique<Pipe>(m_upKnotNew.get(), m_pEnd);
 			m_upKnotNew->AddOutgoing(m_upPipe.get());
 		}
 		m_pEnd->AddIncoming(m_upPipe.get());
-		nmwi.Push2Model(move(m_upKnotNew));
-		nmwi.Push2Model(move(m_upPipe));
+		m_pNMWI->Push2Model(move(m_upKnotNew));
+		m_pNMWI->Push2Model(move(m_upPipe));
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		m_upPipe    = nmwi.PopFromModel<Pipe>();
-		m_upKnotNew = nmwi.PopFromModel<Knot>();
+		m_upPipe    = m_pNMWI->PopFromModel<Pipe>();
+		m_upKnotNew = m_pNMWI->PopFromModel<Knot>();
 		m_pEnd->RemoveIncoming(m_upPipe.get());
 	}
 

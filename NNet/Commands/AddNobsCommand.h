@@ -12,11 +12,7 @@ class AddNobsCommand : public SelectionCommand
 {
 public:
 
-	AddNobsCommand
-	(
-		NNetModelWriterInterface & nmwi,
-		UPNobList                  nobs2Add
-	)
+	AddNobsCommand(UPNobList nobs2Add)
 	{ 
 		m_nobs2Add = move(nobs2Add);
 		m_nrOfNobs = m_nobs2Add.Size();
@@ -24,18 +20,18 @@ public:
 		m_nobs2Add.CheckNobList();
 	}
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{ 
-		SelectionCommand::Do(nmwi);
-		nmwi.DeselectAllNobs();
-		nmwi.GetUPNobs().MoveFrom(m_nobs2Add, m_nrOfNobs);
-		nmwi.CheckModel();
+		SelectionCommand::Do();
+		m_pNMWI->DeselectAllNobs();
+		m_pNMWI->GetUPNobs().MoveFrom(m_nobs2Add, m_nrOfNobs);
+		m_pNMWI->CheckModel();
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{ 
-		m_nobs2Add.MoveFrom(nmwi.GetUPNobs(), m_nrOfNobs);
-		SelectionCommand::Undo(nmwi);
+		m_nobs2Add.MoveFrom(m_pNMWI->GetUPNobs(), m_nrOfNobs);
+		SelectionCommand::Undo();
 	}
 
 private:

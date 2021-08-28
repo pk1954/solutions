@@ -39,43 +39,43 @@ public:
 
 	~DeletePipeCommand(){ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
 		startKnot.RemoveOutgoing(& m_pipe);
 		if (startKnot.IsOrphan() && ! startKnot.IsIoNeuron())
-			m_upStartKnot = nmwi.RemoveFromModel<Knot>(startKnot);
+			m_upStartKnot = m_pNMWI->RemoveFromModel<Knot>(startKnot);
 		if (m_upOutputNeuron)
-			m_upStartKnot = move(nmwi.ReplaceInModel<OutputNeuron,Neuron>(move(m_upOutputNeuron)));
+			m_upStartKnot = move(m_pNMWI->ReplaceInModel<OutputNeuron,Neuron>(move(m_upOutputNeuron)));
 
 		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
 		endKnot.RemoveIncoming(& m_pipe);
 		if (endKnot.IsOrphan() && ! endKnot.IsIoNeuron())
-			m_upEndKnot = nmwi.RemoveFromModel<Knot>(endKnot);
+			m_upEndKnot = m_pNMWI->RemoveFromModel<Knot>(endKnot);
 		if (m_upInputNeuron)
-			m_upEndKnot = move(nmwi.ReplaceInModel<InputNeuron,Neuron>(move(m_upInputNeuron)));
+			m_upEndKnot = move(m_pNMWI->ReplaceInModel<InputNeuron,Neuron>(move(m_upInputNeuron)));
 
-		m_upPipe = nmwi.RemoveFromModel<Pipe>(m_pipe);
+		m_upPipe = m_pNMWI->RemoveFromModel<Pipe>(m_pipe);
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi)
+	virtual void Undo()
  	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
 		startKnot.AddOutgoing(& m_pipe);
 		if (m_upStartKnot)
-			nmwi.Restore2Model<BaseKnot>(move(m_upStartKnot));
+			m_pNMWI->Restore2Model<BaseKnot>(move(m_upStartKnot));
 
 		BaseKnot & endKnot = * m_pipe.GetEndKnotPtr();
 		endKnot.AddIncoming(& m_pipe);
 		if (m_upEndKnot)
-			nmwi.Restore2Model<BaseKnot>(move(m_upEndKnot));
+			m_pNMWI->Restore2Model<BaseKnot>(move(m_upEndKnot));
 
 		if (m_upInputNeuron)
-			m_upEndKnot = move(nmwi.ReplaceInModel<Neuron,InputNeuron>(move(m_upInputNeuron)));
+			m_upEndKnot = move(m_pNMWI->ReplaceInModel<Neuron,InputNeuron>(move(m_upInputNeuron)));
 		if (m_upOutputNeuron)
-			m_upStartKnot = move(nmwi.ReplaceInModel<Neuron,OutputNeuron>(move(m_upOutputNeuron)));
+			m_upStartKnot = move(m_pNMWI->ReplaceInModel<Neuron,OutputNeuron>(move(m_upOutputNeuron)));
 
-		nmwi.Restore2Model<Pipe>(move(m_upPipe));
+		m_pNMWI->Restore2Model<Pipe>(move(m_upPipe));
 	}
 
 private:

@@ -24,16 +24,16 @@ public:
         m_trackNr(trackNr)
     {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi) 
+    virtual void Do() 
     {
-        MonitorData & monitorData { nmwi.GetMonitorData() };
+        MonitorData & monitorData { m_pNMWI->GetMonitorData() };
         monitorData.InsertTrack(TrackNr(0));
         m_signalId = SignalId(m_trackNr, monitorData.AddSignal(m_trackNr, m_umCircle));
     };
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     { 
-        nmwi.GetMonitorData().DeleteSignal(m_signalId);
+        m_pNMWI->GetMonitorData().DeleteSignal(m_signalId);
     };
 
 private:

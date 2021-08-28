@@ -15,10 +15,10 @@ public:
 	  :	m_rect(rect)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{ 
-		SelectionCommand::Do(nmwi);
-		nmwi.GetUPNobs().Apply2AllInRect<Nob>(m_rect, [&](Nob& s){ s.Select(true); });
+		SelectionCommand::Do();
+		m_pNMWI->GetUPNobs().Apply2AllInRect<Nob>(m_rect, [&](Nob& s){ s.Select(true); });
 	}
 
 private:

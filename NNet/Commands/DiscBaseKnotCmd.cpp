@@ -45,7 +45,7 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
         m_bDelete = true;
 }
 
-void DiscBaseKnotCmd::Do(NNetModelWriterInterface & nmwi)
+void DiscBaseKnotCmd::Do()
 {
     for (size_t i = 0; i < m_startKnots.size(); ++i)
     {
@@ -55,7 +55,7 @@ void DiscBaseKnotCmd::Do(NNetModelWriterInterface & nmwi)
             Pipe & pipeOut { upKnot->GetFirstOutgoing() };
             pipeOut.SetStartKnot(upKnot.get());
             pipeOut.DislocateStartPoint();                     // dislocate new knot
-            m_idStartKnots.SetAt(i, nmwi.Push2Model(move(upKnot)));
+            m_idStartKnots.SetAt(i, m_pNMWI->Push2Model(move(upKnot)));
         }
     }
     for (size_t i = 0; i < m_endKnots.size(); ++i)
@@ -66,40 +66,40 @@ void DiscBaseKnotCmd::Do(NNetModelWriterInterface & nmwi)
             Pipe & pipeIn { upKnot->GetFirstIncoming() };
             pipeIn.SetEndKnot(upKnot.get());
             pipeIn.DislocateEndPoint();                       // dislocate new knot 
-            m_idEndKnots.SetAt(i, nmwi.Push2Model(move(upKnot)));
+            m_idEndKnots.SetAt(i, m_pNMWI->Push2Model(move(upKnot)));
         }
     }
     m_baseKnot.ClearConnections();
     if (m_bDelete)
     {
-        m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>(m_baseKnot);
+        m_upBaseKnot = m_pNMWI->RemoveFromModel<BaseKnot>(m_baseKnot);
         assert(m_upBaseKnot);
     }
 }
 
-void DiscBaseKnotCmd::Undo(NNetModelWriterInterface & nmwi)
+void DiscBaseKnotCmd::Undo()
 {
     for (size_t i = m_endKnots.size(); i --> 0;)
     {
         NobId   idEndKnot { m_idEndKnots.Get(i) };
-        Knot  & knotEnd   { * nmwi.GetNobPtr<Knot *>(idEndKnot) };
+        Knot  & knotEnd   { * m_pNMWI->GetNobPtr<Knot *>(idEndKnot) };
         Pipe  & pipeIn    { knotEnd.GetFirstIncoming() };
         pipeIn.SetEndKnot(&m_baseKnot);
         m_baseKnot.AddIncoming(& pipeIn);
-        m_endKnots[i] = nmwi.PopFromModel<Knot>();
+        m_endKnots[i] = m_pNMWI->PopFromModel<Knot>();
     }
     for (size_t i = m_startKnots.size(); i --> 0;)
     {
         NobId   idStartKnot { m_idStartKnots.Get(i) };
-        Knot  & knotStart   { * nmwi.GetNobPtr<Knot *>(idStartKnot) };
+        Knot  & knotStart   { * m_pNMWI->GetNobPtr<Knot *>(idStartKnot) };
         Pipe  & pipeOut     { knotStart.GetFirstOutgoing() };
         pipeOut.SetStartKnot(&m_baseKnot);
         m_baseKnot.AddOutgoing(& pipeOut);
-        m_startKnots[i] = nmwi.PopFromModel<Knot>();
+        m_startKnots[i] = m_pNMWI->PopFromModel<Knot>();
     }
     if (m_bDelete) 
     {
         assert(m_upBaseKnot);
-        m_upBaseKnot = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnot));
+        m_upBaseKnot = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnot));
     }
 }

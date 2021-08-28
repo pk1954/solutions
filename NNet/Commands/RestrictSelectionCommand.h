@@ -15,10 +15,10 @@ public:
 		: m_val(val)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{ 
-		SelectionCommand::Do(nmwi);
-		nmwi.GetUPNobs().Apply2AllSelected<Nob>
+		SelectionCommand::Do();
+		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
 			[&](Nob & s)
 			{ 

@@ -21,10 +21,15 @@ public:
 		m_fHertz(fNewValue)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{ 
-		m_fHertz = nmwi.GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetPulseFrequency(m_fHertz);
-		nmwi.ClearAllNobs();
+		m_fHertz = m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetPulseFrequency(m_fHertz);
+		m_pNMWI->ClearAllNobs();
+	}
+
+	virtual void Undo()
+	{ 
+		Do();
 	}
 
 private:

@@ -31,22 +31,22 @@ public:
 
 	~Connect2BaseKnotCommand()	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{
-		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(*m_pBaseKnotSrc); 
+		m_upBaseKnotSrc = m_pNMWI->RemoveFromModel<BaseKnot>(*m_pBaseKnotSrc); 
 		assert(m_upBaseKnotSrc);
 		m_pBaseKnotDst->AddIncoming(*m_upBaseKnotSrc.get()); // double connections?
 		m_pBaseKnotDst->AddOutgoing(*m_upBaseKnotSrc.get()); // double connections?
 		m_pBaseKnotDst->Reconnect();
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi)
+	virtual void Undo()
 	{
 		m_pBaseKnotDst->SetIncoming(m_dstIncoming);  // restore dst connections
 		m_pBaseKnotDst->SetOutgoing(m_dstOutgoing); 
 		assert(m_upBaseKnotSrc);
 		m_upBaseKnotSrc->Reconnect();
-		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotSrc)); // reconnect src  
+		m_upBaseKnotSrc = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotSrc)); // reconnect src  
 	}
 
 private:

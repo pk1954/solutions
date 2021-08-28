@@ -226,16 +226,16 @@ public:
     }
 };
 
-class WrapSetIoNeurons: public Script_Functor
-{
-public:
-    virtual void operator() (Script & script) const
-    {
-        unique_ptr<NobIdList> upNobIds    { ScrReadNobIdList(script) };
-        MicroMeterPntVector   umPntVector { ScrReadMicroMeterPntVector(script) };
-        m_pCommands->SetIoNeurons(umPntVector, move(upNobIds));
-    }
-};
+//class WrapSetIoNeurons: public Script_Functor
+//{
+//public:
+//    virtual void operator() (Script & script) const
+//    {
+//        unique_ptr<NobIdList> upNobIds    { ScrReadNobIdList(script) };
+//        MicroMeterPntVector   umPntVector { ScrReadMicroMeterPntVector(script) };
+//        m_pCommands->SetIoNeurons(umPntVector, move(upNobIds));
+//    }
+//};
 
 class WrapSetParameter: public Script_Functor
 {
@@ -405,7 +405,7 @@ void DefineNNetWrappers(NNetModelCommands * const pCommands)
     DEF_FUNC(SetParameter);    
     DEF_FUNC(SetPulseRate); 
     DEF_FUNC(SetTriggerSound);
-    DEF_FUNC(SetIoNeurons);
+    //DEF_FUNC(SetIoNeurons);
     DEF_FUNC(SplitNeuron);
     DEF_FUNC(ToggleStopOnTrigger);
     DEF_FUNC(UndoCommand);

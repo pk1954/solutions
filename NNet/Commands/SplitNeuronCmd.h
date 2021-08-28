@@ -16,12 +16,8 @@ using std::unique_ptr;
 class SplitNeuronCmd : public Command
 {
 public:
-    SplitNeuronCmd
-    (
-        NNetModelWriterInterface & nmwi, 
-        NobId                const id
-   )
-      : m_neuron(*nmwi.GetNobPtr<Neuron *>(id))
+    SplitNeuronCmd(NobId const id)
+      : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
     {
         MicroMeterPnt umPos { m_neuron.GetPos() };
         m_upInputNeuron  = make_unique<InputNeuron >(umPos);
@@ -34,19 +30,19 @@ public:
 
     ~SplitNeuronCmd() {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi)
+    virtual void Do()
     {
-        m_upNeuron = nmwi.RemoveFromModel<Neuron>(m_neuron);
-        nmwi.Push2Model(move(m_upInputNeuron));
-        nmwi.Push2Model(move(m_upOutputNeuron));
+        m_upNeuron = m_pNMWI->RemoveFromModel<Neuron>(m_neuron);
+        m_pNMWI->Push2Model(move(m_upInputNeuron));
+        m_pNMWI->Push2Model(move(m_upOutputNeuron));
     }
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     {
-        m_upOutputNeuron = nmwi.PopFromModel<OutputNeuron>();
-        m_upInputNeuron  = nmwi.PopFromModel<InputNeuron >();
+        m_upOutputNeuron = m_pNMWI->PopFromModel<OutputNeuron>();
+        m_upInputNeuron  = m_pNMWI->PopFromModel<InputNeuron >();
         m_upNeuron->Reconnect();
-        nmwi.Restore2Model<Neuron>(move(m_upNeuron));
+        m_pNMWI->Restore2Model<Neuron>(move(m_upNeuron));
     }
 
 private:

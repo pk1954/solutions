@@ -16,20 +16,20 @@ public:
 	SelectSubtreeCommand
 	(
 		NobId const id, 
-		bool    const bOn
+		bool  const bOn
 	)
 	  :	m_idNob(id),
 		m_bOn(bOn)
 	{ }
 
-	virtual void Do(NNetModelWriterInterface & nmwi)
+	virtual void Do()
 	{ 
-		SelectionCommand::Do(nmwi);
-		nmwi.SelectSubtree(nmwi.GetNobPtr<BaseKnot *>(m_idNob), m_bOn);
+		SelectionCommand::Do();
+		m_pNMWI->SelectSubtree(m_pNMWI->GetNobPtr<BaseKnot *>(m_idNob), m_bOn);
 	}
 
 private:
 	NobId const m_idNob;
-	bool    const m_bOn;
+	bool  const m_bOn;
 };
 

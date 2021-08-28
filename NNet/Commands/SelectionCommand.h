@@ -12,18 +12,18 @@ class SelectionCommand : public Command
 {
 public:
 
-	virtual void Do(NNetModelWriterInterface & nmwi) 
+	virtual void Do() 
 	{
 		if (! m_bInitialized)	
 		{ 
-			m_upSelectedNobs = move(nmwi.GetSelection());
+			m_upSelectedNobs = move(m_pNMWI->GetSelection());
 			m_bInitialized   = true;
 		}
 	}
 
-	virtual void Undo(NNetModelWriterInterface & nmwi) 
+	virtual void Undo() 
 	{
-		nmwi.DeselectAllNobs();
+		m_pNMWI->DeselectAllNobs();
 		for (auto it : *m_upSelectedNobs){ it->Select(true); };
 	}
 

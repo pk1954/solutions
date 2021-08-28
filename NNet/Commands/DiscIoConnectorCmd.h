@@ -22,20 +22,19 @@ class DiscIoConnectorCmd : public Command
 public:
     DiscIoConnectorCmd
     (
-        NNetModelWriterInterface & nmwi,
-        Nob                      & nob,
-        bool                 const bRemove 
-   )
+        Nob      & nob,
+        bool const bRemove 
+    )
       : m_connector(*Cast2IoConnector(&nob)),
         m_bRemove(bRemove)
     {
-        m_cmdStack.Initialize(&nmwi, nullptr);
+        m_cmdStack.Initialize(m_pNMWI, nullptr);
         if (m_bRemove)
             m_connector.Apply2All
             (
                 [&](Neuron & n) 
                 { 
-                    if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(nmwi, n)) })
+                    if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(*m_pNMWI, n)) })
                         m_cmdStack.Push(move(upCmd)); 
                 }
            );
@@ -43,18 +42,18 @@ public:
 
     ~DiscIoConnectorCmd() {}
 
-    virtual void Do(NNetModelWriterInterface & nmwi)
+    virtual void Do()
     {
-        m_upIoConnector = nmwi.RemoveFromModel<IoConnector>(m_connector);
+        m_upIoConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_connector);
         m_upIoConnector->ClearParentPointers();
         if (m_bRemove)
             m_cmdStack.DoAll();
     }
 
-    virtual void Undo(NNetModelWriterInterface & nmwi)
+    virtual void Undo()
     {
         m_upIoConnector->SetParentPointers();
-        nmwi.Restore2Model<IoConnector>(move(m_upIoConnector));
+        m_pNMWI->Restore2Model<IoConnector>(move(m_upIoConnector));
         if (m_bRemove)
             m_cmdStack.UndoAll();
     }
@@ -62,7 +61,7 @@ public:
 private:
 
     bool              const m_bRemove;
-    CommandStack            m_cmdStack    {};
+    CommandStack            m_cmdStack      {};
     unique_ptr<IoConnector> m_upIoConnector {};  
     IoConnector     const & m_connector;
 };

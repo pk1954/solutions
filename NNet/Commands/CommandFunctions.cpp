@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <assert.h>
+#include "NNetModelWriterInterface.h"
 #include "DeletePipeCommand.h"
 #include "DeleteClosedConnCmd.h"
 #include "DiscIoConnectorCmd.h"
@@ -33,10 +34,10 @@ unique_ptr<Command> MakeDeleteCommand
 			break;
 		case NobType::Value::inputConnector:
 		case NobType::Value::outputConnector:
-			upCmd = make_unique<DiscIoConnectorCmd>(nmwi, nob, true);
+			upCmd = make_unique<DiscIoConnectorCmd>(nob, true);
 			break;
 		case NobType::Value::closedConnector:
-			upCmd = make_unique<DeleteClosedConnCmd>(nmwi, nob);
+			upCmd = make_unique<DeleteClosedConnCmd>(nob);
 			break;
 		default:
 			upCmd = make_unique<DiscBaseKnotCmd>(nob, true);

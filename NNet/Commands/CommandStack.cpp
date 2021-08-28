@@ -18,6 +18,7 @@ void CommandStack::Initialize
 {
     m_pNMWI = pModel;
     m_pStaticModelObservable = pStaticModelObservable;
+    Command::SetNNetModelWriterInterface(pModel);
 }
 
 void CommandStack::Clear()
@@ -54,7 +55,7 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
 #endif
         clearRedoStack();
         m_pNMWI->CheckModel();
-        pCmd->Do(* m_pNMWI);
+        pCmd->Do();
         m_pNMWI->CheckModel();
         Push(move(pCmd));
         notify();
@@ -87,7 +88,7 @@ bool CommandStack::UndoCommand()
        return false;
     set2OlderCmd();
     m_pNMWI->CheckModel();
-    currentCmd().Undo(*m_pNMWI);
+    currentCmd().Undo();
     m_pNMWI->CheckModel();
     notify();
     return true;
@@ -98,7 +99,7 @@ bool CommandStack::RedoCommand()
     if (RedoStackEmpty()) 
         return false;
     m_pNMWI->CheckModel();
-    currentCmd().Do(*m_pNMWI);
+    currentCmd().Do();
     m_pNMWI->CheckModel();
     set2YoungerCmd();
     notify();
@@ -108,11 +109,11 @@ bool CommandStack::RedoCommand()
 void CommandStack::DoAll()
 {
     for (size_t i = 0; i < m_CommandStack.size(); ++i)
-        m_CommandStack[i]->Do(*m_pNMWI);
+        m_CommandStack[i]->Do();
 }
 
 void CommandStack::UndoAll()
 {
     for (size_t i = m_CommandStack.size(); i --> 0;)
-        m_CommandStack[i]->Undo(*m_pNMWI);
+        m_CommandStack[i]->Undo();
 }
