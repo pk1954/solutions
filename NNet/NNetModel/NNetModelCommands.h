@@ -63,7 +63,6 @@ public:
     void DeleteTrack          (TrackNr const);
     void DiscBaseKnot         (NobId const);
     void DiscIoConnector      (NobId const);
-    void DiscClosedConnector  (NobId const);
     void InsertKnot           (NobId const, MicroMeterPnt const &);
     void InsertNeuron         (NobId const, MicroMeterPnt const &);
     void InsertTrack          (TrackNr const);
@@ -89,7 +88,6 @@ public:
     void SetNob               (NobId const, MicroMeterPosDir const);
     void SetTriggerSound      (NobId const, SoundDescr const &);
     void SizeSensor           (SignalId const &, float const);
-    void SplitClosedConnector (NobId const);
     void SplitNeuron          (NobId const);
     void ToggleStopOnTrigger  (NobId const);
 

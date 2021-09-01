@@ -90,11 +90,9 @@ public:
 	MicroMeter const GetPosX() const { return GetPos().GetX(); }
 	MicroMeter const GetPosY() const { return GetPos().GetY(); }
 
-	bool const IsClosedConnector() const { return m_type.IsClosedConnectorType(); }
 	bool const IsInputConnector () const { return m_type.IsInputConnectorType (); }
 	bool const IsOutputConnector() const { return m_type.IsOutputConnectorType(); }
 	bool const IsIoConnector    () const { return m_type.IsIoConnectorType    (); }
-	bool const IsAnyConnector   () const { return m_type.IsAnyConnectorType   (); }
 	bool const IsPipe           () const { return m_type.IsPipeType           (); }
 	bool const IsKnot           () const { return m_type.IsKnotType           (); }
 	bool const IsNeuron         () const { return m_type.IsNeuronType         (); }

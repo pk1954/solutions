@@ -81,7 +81,6 @@
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
-    <ClInclude Include="DeleteClosedConnCmd.h" />
     <ClInclude Include="MoveSensorCmd.h" />
     <ClInclude Include="MoveSignalCmd.h" />
     <ClInclude Include="RotateModelCommand.h" />
@@ -92,7 +91,6 @@
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewNeuronCommandT.h" />
-    <ClInclude Include="SplitClosedConnCmd.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
@@ -115,7 +113,6 @@
     <ClInclude Include="SetParameterCommand.h" />
     <ClInclude Include="SetPulseRateCommand.h" />
     <ClInclude Include="SetTriggerSoundCommand.h" />
-    <ClInclude Include="DiscClosedConnCmd.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />
   </ItemGroup>

@@ -195,16 +195,6 @@ public:
     }
 };
 
-class WrapDiscClosedConnector: public Script_Functor
-{
-public:
-    virtual void operator() (Script & script) const
-    {
-        NobId const id { ScrReadNobId(script) };
-        m_pCommands->DiscClosedConnector(id);
-    }
-};
-
 class WrapSplitNeuron: public Script_Functor
 {
 public:
@@ -391,7 +381,6 @@ void DefineNNetWrappers(NNetModelCommands * const pCommands)
     DEF_FUNC(DeleteNob);        
     DEF_FUNC(DiscBaseKnot);
     DEF_FUNC(DiscIoConnector);         
-    DEF_FUNC(DiscClosedConnector);         
     DEF_FUNC(InsertNeuron);       
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveNob);          

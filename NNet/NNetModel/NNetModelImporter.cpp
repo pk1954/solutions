@@ -9,7 +9,6 @@
 #include "Knot.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "NNetError.h"
 #include "NNetWrapperHelpers.h"
@@ -85,9 +84,6 @@ private:
         { 
             switch (nobType.GetValue())
             {
-            case NobType::Value::closedConnector:
-                 upNob = createClosedConnector(script);
-                 break;
             case NobType::Value::inputConnector:
             case NobType::Value::outputConnector:
                  upNob = createIoConnector(script, nobType);
@@ -168,27 +164,6 @@ private:
             assert(false);
             return nullptr;
         }
-    }
-
-    UPNob createClosedConnector(Script & script) const 
-    {
-        unique_ptr<ClosedConnector> upClosedConnector { make_unique<ClosedConnector>() };
-        script.ScrReadSpecial(BaseKnot::OPEN_BRACKET);
-        int const iNrOfElements { script.ScrReadInt() };
-        script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
-        for (int iElem { 0 };;)
-        {
-            NobId    const id      { ScrReadNobId(script) };
-            Neuron * const pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
-            if (! pNeuron)
-                throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found"));
-            upClosedConnector->Push(pNeuron);
-            if (++iElem == iNrOfElements)
-                break;
-            script.ScrReadSpecial(BaseKnot::ID_SEPARATOR);
-        }
-        script.ScrReadSpecial(BaseKnot::CLOSE_BRACKET);
-        return move(upClosedConnector);
     }
 
     UPNob createIoConnector(Script & script, NobType const nobType) const 

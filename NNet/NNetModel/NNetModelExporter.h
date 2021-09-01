@@ -19,7 +19,6 @@ class Script;
 class Pipe;
 class Nob;
 class IoConnector;
-class ClosedConnector;
 class UPNobList;
 class Observable;
 class ModelDescription;

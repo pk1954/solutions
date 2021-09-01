@@ -20,7 +20,6 @@
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
 #include "DiscBaseKnotCmd.h"
-#include "DiscClosedConnCmd.h"
 #include "DiscIoConnectorCmd.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
@@ -48,7 +47,6 @@
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "SizeSensorCmd.h"
-#include "SplitClosedConnCmd.h"
 #include "SplitNeuronCmd.h"
 #include "ToggleStopOnTriggerCommand.h"
 #include "NNetModelWriterInterface.h"
@@ -186,20 +184,6 @@ void NNetModelCommands::SplitNeuron(NobId const id)
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << id << endl;
 	m_pCmdStack->PushCommand(make_unique<SplitNeuronCmd>(id));
-}
-
-void NNetModelCommands::SplitClosedConnector(NobId const id)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand(make_unique<SplitClosedConnCmd>(id));
-}
-
-void NNetModelCommands::DiscClosedConnector(NobId const id)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << endl;
- 	m_pCmdStack->PushCommand(make_unique<DiscClosedConnCmd>(id));
 }
 
 void NNetModelCommands::ToggleStopOnTrigger(NobId const id)

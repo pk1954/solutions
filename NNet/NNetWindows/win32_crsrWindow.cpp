@@ -146,7 +146,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 			textBuf.nextLine();
 		}
 	}
-	if (type.IsIoConnectorType() || type.IsClosedConnectorType())
+	if (type.IsIoConnectorType())
 	{
 		textBuf.AlignRight(); textBuf.printString(L"direction: ");
 		textBuf.AlignLeft();  printDegrees(textBuf, m_pNMRI->GetDirection(id));

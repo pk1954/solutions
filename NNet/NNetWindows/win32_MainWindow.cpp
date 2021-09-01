@@ -106,9 +106,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_DESELECT_NOB,           L"Deselect nob"                },
 		{ IDD_DISC_BASEKNOT,          L"Disconnect"                  },
 		{ IDD_DISC_IOCONNECTOR,       L"Disconnect"                  },
-		{ IDM_DISC_CLOSED_CONNECTOR,  L"Disconnect (make neurons)"   },
 		{ IDD_SPLIT_NEURON,           L"Split (make I/O neurons)"    },
-		{ IDM_SPLIT_CLOSED_CONNECTOR, L"Split (make I/O connectors)" },
 		{ IDD_INSERT_KNOT,            L"Insert knot"                 },
 		{ IDD_INSERT_NEURON,          L"Insert neuron"               },
 		{ IDM_MAKE_CONNECTOR,         L"Make connector"              },
@@ -180,12 +178,6 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	case NobType::Value::outputConnector:
 		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_DISC_IOCONNECTOR);        
-		break;
-
-	case NobType::Value::closedConnector:
-		appendMenu(hPopupMenu, IDD_DELETE_NOB);
-	//	appendMenu(hPopupMenu, IDM_SPLIT_CLOSED_CONNECTOR);  // buggy
-		appendMenu(hPopupMenu, IDM_DISC_CLOSED_CONNECTOR);        
 		break;
 
 	case NobType::Value::knot:  

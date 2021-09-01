@@ -109,11 +109,9 @@
 								   
 //#define IDM_ALIGN_NOBS             671
 #define IDM_MAKE_CONNECTOR         674
-#define IDM_DISC_CLOSED_CONNECTOR  675
 #define IDD_DISC_IOCONNECTOR       676
 #define IDD_DISC_BASEKNOT          677
 #define IDD_SPLIT_NEURON           678
-#define IDM_SPLIT_CLOSED_CONNECTOR 679
 
 #define IDX_ANIMATION_STEP         701
 #define IDX_PLUG_IN_ANIMATION      703

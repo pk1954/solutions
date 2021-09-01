@@ -12,7 +12,6 @@
 #include "BaseKnot.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "ClosedConnector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
 #include "NNetModelReaderInterface.h"
@@ -89,10 +88,9 @@ void NNetModelExporter::writeNobs(wostream & out)
     }
     out << L"NrOfNobs = " << idCompact << endl;
     out << endl;
-    m_pNMRI->GetUPNobs().Apply2All<BaseKnot       >([&](BaseKnot        const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<Pipe           >([&](Pipe            const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<IoConnector    >([&](IoConnector     const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<ClosedConnector>([&](ClosedConnector const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<BaseKnot   >([&](BaseKnot    const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<Pipe       >([&](Pipe        const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobs().Apply2All<IoConnector>([&](IoConnector const & s) { writeNob(out, s); });
 }
 
 void NNetModelExporter::writeNobParameters(wostream & out)
@@ -200,7 +198,6 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
 
         case NobType::Value::inputConnector:
         case NobType::Value::outputConnector:
-        case NobType::Value::closedConnector:
             writeIoConnector(out, static_cast<IoConnector const &>(nob));
             break;
 

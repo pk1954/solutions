@@ -106,8 +106,6 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 	NobType const typeDst { GetNobType(idDst) };
 	if (typeSrc.IsIoConnectorType() != typeDst.IsIoConnectorType())
 		return false;
-	if (typeSrc.IsClosedConnectorType() || typeDst.IsClosedConnectorType())
-		return false;
 	return true;
 }
 

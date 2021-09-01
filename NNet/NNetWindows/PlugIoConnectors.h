@@ -7,7 +7,6 @@
 #include <vector>
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
-#include "ClosedConnector.h"
 #include "IoConnector.h"
 #include "AnimationCmd.h"
 
@@ -33,7 +32,6 @@ public:
     {
         assert(m_inputConnector.Size() == m_outputConnector.Size());
 
-        m_upClosedConnector = make_unique<ClosedConnector>();
         m_size              = m_inputConnector.Size();
         for (size_t i = 0; i < m_size; ++i)
         {
@@ -41,12 +39,10 @@ public:
             unique_ptr<Neuron>  upNeuron { make_unique<Neuron>(umPos) };
             upNeuron->SetIncoming(m_outputConnector.GetElem(i));
             upNeuron->SetOutgoing(m_inputConnector .GetElem(i));
-            m_upClosedConnector->Push(upNeuron.get());
             m_upNeurons.push_back(move(upNeuron));
         }
         m_upOutputNeurons.resize(m_size);
         m_upInputNeurons .resize(m_size);
-        m_upClosedConnector->SetParentPointers();
         nmwi.CheckModel();
     }
 
@@ -57,7 +53,6 @@ public:
             m_nmwi.Push2Model(move(m_upNeurons.back()));
             m_upNeurons.pop_back();
         }
-        m_nmwi.Push2Model(move(m_upClosedConnector));
 
         m_upOutputConnector = m_nmwi.RemoveFromModel<IoConnector>(m_outputConnector);
         m_upInputConnector  = m_nmwi.RemoveFromModel<IoConnector>(m_inputConnector );
@@ -74,7 +69,6 @@ public:
 
     virtual void Undo(function<void()> const & targetReachedFunc)
     {
-        m_upClosedConnector = m_nmwi.PopFromModel<ClosedConnector>();
         for (size_t i = 0; i < m_size; ++i)
             m_upNeurons.push_back(m_nmwi.PopFromModel<Neuron>());
 
@@ -99,8 +93,6 @@ private:
     IoConnector            const & m_inputConnector;
     IoConnector            const & m_outputConnector;
 
-    // take ownership of ClosedConnector and Neurons between Undo and Redo
-    unique_ptr<ClosedConnector>  m_upClosedConnector {};
     vector<unique_ptr<Neuron>>   m_upNeurons;              
 
     // take ownership of IoConnectors and IoNeurons between Do and Undo

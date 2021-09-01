@@ -10,7 +10,6 @@
 #include "Neuron.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "ClosedConnector.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "NobIdList.h"
@@ -39,9 +38,6 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify! Better
 
 	case NobType::Value::outputConnector:
 		return Copy<OutputConnector>(nob);
-
-	case NobType::Value::closedConnector:
-		return Copy<ClosedConnector>(nob);
 
 	case NobType::Value::inputNeuron:
 		return Copy<InputNeuron>(nob);

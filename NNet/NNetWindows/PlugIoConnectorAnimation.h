@@ -7,7 +7,6 @@
 #include "MoreTypes.h"
 #include "Nob.h"
 #include "IoConnector.h"
-#include "ClosedConnector.h"
 #include "AnimationSequence.h"
 #include "SingleNobAnimation.h"
 #include "PlugIoConnectors.h"
@@ -23,8 +22,8 @@ public:
         IoConnector              & nobAnimated,
         IoConnector              & nobTarget,
         MainWindow               & win
-   )
-        : AnimationSequence(win)
+    )
+      : AnimationSequence(win)
     {
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));

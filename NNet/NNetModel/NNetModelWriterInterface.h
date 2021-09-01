@@ -26,8 +26,6 @@ using std::move;
 class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
-	//void        Start(NNetModel * const);
-	//void        Stop(); 
     void        CreateInitialNobs();
     void        RemoveOrphans();
     void        SelectBeepers();

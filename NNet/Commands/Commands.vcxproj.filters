@@ -129,12 +129,6 @@
     <ClInclude Include="RotateNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SplitClosedConnCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DiscClosedConnCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveSelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -142,9 +136,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplitNeuronCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeleteClosedConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RotateModelCommand.h">
