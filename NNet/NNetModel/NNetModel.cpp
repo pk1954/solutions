@@ -3,11 +3,8 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "scanner.h"
-#include <vector>
-#include <unordered_map>
 #include "MoreTypes.h"
-#include "tHighlightType.h"
+//#include "tHighlightType.h"
 #include "NobType.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -16,7 +13,6 @@
 #include "NNetModel.h"
 
 using namespace std::chrono;
-using std::unordered_map;
 using std::wcout;
 using std::endl;
 

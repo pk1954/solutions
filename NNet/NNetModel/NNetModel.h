@@ -4,23 +4,17 @@
 
 #pragma once
 
-#include <vector>
-#include <exception>
 #include "util.h"
-#include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Observable.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
-#include "tHighlightType.h"
 #include "ModelDescription.h"
 #include "MonitorData.h"
 #include "NobErrorHandler.h"
 #include "UPNobList.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
-
-class EventInterface;
 
 using std::unique_ptr;
 using std::move;
