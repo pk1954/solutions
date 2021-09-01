@@ -27,6 +27,7 @@ public:
 				if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(*m_pNMWI, nob)) })
 				{
 					upCmd->Do();
+					m_pNMWI->CheckModel();
 					m_cmdStack.Push(move(upCmd));
 				}
 			}
@@ -41,7 +42,5 @@ public:
 
 private:
 
-	CommandStack m_cmdStack     {};
-	NobIdList    m_idList       {};
-	bool         m_bInitialized { false };
+	CommandStack m_cmdStack {};
 };

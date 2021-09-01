@@ -93,7 +93,7 @@ public:
     void SplitNeuron          (NobId const);
     void ToggleStopOnTrigger  (NobId const);
 
-    SignalId const  SetHighlightedSignal(MicroMeterPnt const &);
+    SignalId const SetHighlightedSignal(MicroMeterPnt const &);
 
     void UndoCommand();
     void RedoCommand();

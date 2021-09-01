@@ -104,8 +104,8 @@ public:
 	template <Nob_t T>    // non const version
 	void Apply2All(function<void(T &)> const & func)
 	{
-		for (size_t i = 0; i < m_list.size(); ++i)
-		{ 
+		for (size_t i = 0; i < m_list.size(); ++i)  // use normal loop instead of range-based loop
+		{                                           // vector may be enlarged in loop
 			if (m_list[i] && HasType<T>(*m_list[i]))
 				func(static_cast<T &>(*m_list[i]));
 		};

@@ -42,6 +42,7 @@ public:
 	static bool const TypeFits(NobType const type) { return true; }  // every nob type is a Nob
 
 	Nob(NobType const);
+	Nob(Nob const &);
 	virtual ~Nob() {}
 
 	virtual void Check() const;

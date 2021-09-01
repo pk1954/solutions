@@ -33,6 +33,10 @@ Neuron::Neuron(Neuron const & src)  // copy constructor
 	init(src);
 }
 
+Neuron::Neuron(BaseKnot const & src)
+	: BaseKnot(src)
+{}
+
 void Neuron::Check() const
 {
 	BaseKnot::Check();

@@ -16,8 +16,8 @@ class AnimationSequence : public SelectionCommand
 public:
     AnimationSequence(MainWindow &);
     
-    virtual void Do  (NNetModelWriterInterface &);
-    virtual void Undo(NNetModelWriterInterface &);
+    virtual void Do  ();
+    virtual void Undo();
 
 protected:
     void AddPhase(unique_ptr<AnimationCmd>);

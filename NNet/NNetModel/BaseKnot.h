@@ -21,6 +21,7 @@ class BaseKnot : public Nob
 public:
 
 	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
+	BaseKnot(BaseKnot const &);
 	virtual ~BaseKnot() {}
 
 	virtual bool operator==(Nob const &) const override;

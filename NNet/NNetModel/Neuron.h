@@ -22,6 +22,7 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
+	Neuron(BaseKnot const &);
 	Neuron(Neuron const &);             // copy constructor
 
 	Neuron & operator=(Neuron const &); // copy assignment operator
@@ -74,8 +75,8 @@ protected:
 private:
 	mutable bool m_bTriggered { false };
 
-	float m_factorW; // Parameter of wave function
-	float m_factorU; // Parameter of wave function
+	float m_factorW { 0.0f }; // Parameter of wave function
+	float m_factorU { 0.0f }; // Parameter of wave function
 
 	SoundDescr m_triggerSound {};
 

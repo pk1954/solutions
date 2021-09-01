@@ -26,7 +26,7 @@ InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
 }
 
 InputNeuron::InputNeuron(BaseKnot const & baseKnot)
-	: IoNeuron(baseKnot.GetPos(), NobType::Value::inputNeuron)
+	: IoNeuron(baseKnot, NobType::Value::inputNeuron)
 { 
 	SetOutgoing(baseKnot);
 	SetPulseFrequency(STD_PULSE_FREQ);

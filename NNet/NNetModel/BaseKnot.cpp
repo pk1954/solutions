@@ -20,8 +20,13 @@ BaseKnot::BaseKnot
 	NobType       const   type,
 	MicroMeter    const   extension
 )
-  : Nob(type),
+	: Nob(type),
 	m_circle(center, extension)
+{ }
+
+BaseKnot::BaseKnot(BaseKnot const & src)
+  : Nob(src),
+	m_circle(src.GetCircle())
 { }
 
 bool BaseKnot::operator==(Nob const & rhs) const

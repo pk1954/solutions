@@ -46,6 +46,15 @@ public:
     }
 };
 
+class WrapMakeIoConnector: public Script_Functor
+{
+public:
+    virtual void operator() (Script & script) const
+    {
+        m_pWinCommands->MakeIoConnector(* m_pMainWindow);
+    }
+};
+
 void DefineNNetWinWrappers
 (
     MainWindow  * const pMainWindow, 
@@ -58,6 +67,7 @@ void DefineNNetWinWrappers
     DEF_FUNC(Connect);
     DEF_FUNC(SetPixelOffset);
     DEF_FUNC(SetPixelSize);
+    DEF_FUNC(MakeIoConnector);
 
     SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",        static_cast<long>(IDM_ANALYZE_LOOPS      ));
     SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",    static_cast<long>(IDM_ANALYZE_ANOMALIES  ));

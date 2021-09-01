@@ -14,7 +14,12 @@ using std::wostream;
 
 Nob::Nob(NobType const type)
 	: m_type(type)
-{ }	
+{}	
+
+Nob::Nob(Nob const & src)
+{
+	*this = src;
+}
 
 bool Nob::operator==(Nob const & rhs) const
 {

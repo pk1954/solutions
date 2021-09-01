@@ -11,15 +11,12 @@
 class SelectionCommand : public Command
 {
 public:
+	SelectionCommand()
+	  : m_upSelectedNobs(move(m_pNMWI->GetSelection()))
+	{}
 
 	virtual void Do() 
-	{
-		if (! m_bInitialized)	
-		{ 
-			m_upSelectedNobs = move(m_pNMWI->GetSelection());
-			m_bInitialized   = true;
-		}
-	}
+	{}
 
 	virtual void Undo() 
 	{
@@ -29,6 +26,5 @@ public:
 
 protected:
 	unique_ptr<vector<Nob *>> m_upSelectedNobs;
-	bool                      m_bInitialized { false };
 };
 

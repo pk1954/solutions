@@ -20,7 +20,7 @@ public:
 		: Neuron(upCenter, type)
 	{}
 
-	IoNeuron(Neuron const & src, NobType const type)
+	IoNeuron(BaseKnot const & src, NobType const type)
 		: Neuron(src)
 	{
 		SetType(type);

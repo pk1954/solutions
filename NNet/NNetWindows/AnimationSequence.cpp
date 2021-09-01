@@ -12,13 +12,13 @@ AnimationSequence::AnimationSequence(MainWindow & win)
   : m_win(win)
 {}
 
-void AnimationSequence::Do(NNetModelWriterInterface& nmwi)
+void AnimationSequence::Do()
 {
     m_uiPhase = 0;
     doPhase();
 }
 
-void AnimationSequence::Undo(NNetModelWriterInterface& nmwi)
+void AnimationSequence::Undo()
 {
     m_uiPhase = Cast2Int(m_phases.size());
     undoPhase();
