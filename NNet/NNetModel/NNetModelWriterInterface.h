@@ -101,7 +101,7 @@ public:
     template <Nob_t T>
     unique_ptr<T> PopFromModel() 
     { 
-        return GetUPNobs().Pop<T>();
+        return move(GetUPNobs().Pop<T>());
     }
 
     ///////////////////////////////////////////////////////////

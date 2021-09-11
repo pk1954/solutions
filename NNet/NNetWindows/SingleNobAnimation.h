@@ -30,16 +30,18 @@ public:
         m_umPosDirTarget(umPosDirTarget)
     {}
 
-    virtual void Do(function<void()> const & func)
+    virtual void DoAnimation(function<void()> const & func)
     {
+        wcout << L'#' << __FUNCDNAME__ << endl;
         m_targetReachedFunc = func;
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirTarget));
         m_animation.Start(umPosDirActual, m_umPosDirTarget);
     }
 
-    virtual void Undo(function<void()> const & func)
+    virtual void UndoAnimation(function<void()> const & func)
     {
+        wcout << L'#' << __FUNCDNAME__ << endl;
         m_targetReachedFunc = func;
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirStart));
@@ -54,18 +56,8 @@ public:
 
 private:
 
-    Nob                  & m_nobAnimated;
-    MicroMeterPosDir const m_umPosDirStart;
-    MicroMeterPosDir const m_umPosDirTarget;
-
-    Animation<MicroMeterPosDir> m_animation 
-    {
-        [&](bool const bTargetReached)
-        { 
-            Callable callable { m_win.GetWindowHandle() };
-            callable.Call_UI_thread ([&](){ UpdateUI(); });
-            if (bTargetReached && m_targetReachedFunc)
-                callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
-        }
-    };
+    Nob                       & m_nobAnimated;
+    MicroMeterPosDir      const m_umPosDirStart;
+    MicroMeterPosDir      const m_umPosDirTarget;
+    Animation<MicroMeterPosDir> m_animation  { m_applicationFunc };
 };

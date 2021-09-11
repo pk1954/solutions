@@ -20,7 +20,7 @@ public:
     MultiNobsAnimation
     (
         MainWindow                & win,
-        vector<IoNeuron *>              & nobs,
+        vector<IoNeuron *>        & nobs,
         MicroMeterPntVector const & umPntVectorTarget
    )
       : AnimationCmd(win),
@@ -29,16 +29,18 @@ public:
         m_umPntVectorTarget(umPntVectorTarget)
     {}
 
-    virtual void Do(function<void()> const & func)
+    virtual void DoAnimation(function<void()> const & func)
     {
+        wcout << L'#' << __FUNCDNAME__ << endl;
         m_targetReachedFunc = func;
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorTarget));
         m_animation.Start(umPntVectorActual, m_umPntVectorTarget);
     }
 
-    virtual void Undo(function<void()> const & func)
+    virtual void UndoAnimation(function<void()> const & func)
     {
+        wcout << L'#' << __FUNCDNAME__ << endl;
         m_targetReachedFunc = func;
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorStart));
@@ -54,18 +56,8 @@ public:
 
 private:
 
-    vector<IoNeuron *>        m_nobsAnimated;
-    MicroMeterPntVector const m_umPntVectorStart;
-    MicroMeterPntVector const m_umPntVectorTarget;
-
-    Animation<MicroMeterPntVector> m_animation 
-    {
-        [&](bool const bTargetReached)
-        { 
-            Callable callable { m_win.GetWindowHandle() };
-            callable.Call_UI_thread([&](){ UpdateUI(); });
-            if (bTargetReached && m_targetReachedFunc)
-                callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
-        }
-    };
+    vector<IoNeuron *>             m_nobsAnimated;
+    MicroMeterPntVector      const m_umPntVectorStart;
+    MicroMeterPntVector      const m_umPntVectorTarget;
+    Animation<MicroMeterPntVector> m_animation { m_applicationFunc };
 };

@@ -46,7 +46,7 @@ public:
         nmwi.CheckModel();
     }
 
-    virtual void Do(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation(function<void()> const & targetReachedFunc)
     {
         for (size_t i = 0; i < m_size; ++i)
         {
@@ -67,7 +67,7 @@ public:
         m_nmwi.CheckModel();
     }
 
-    virtual void Undo(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
     {
         for (size_t i = 0; i < m_size; ++i)
             m_upNeurons.push_back(m_nmwi.PopFromModel<Neuron>());

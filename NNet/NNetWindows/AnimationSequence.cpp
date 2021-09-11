@@ -14,6 +14,7 @@ AnimationSequence::AnimationSequence(MainWindow & win)
 
 void AnimationSequence::Do()
 {
+    SelectionCommand::Do();
     m_uiPhase = 0;
     doPhase();
 }
@@ -22,6 +23,7 @@ void AnimationSequence::Undo()
 {
     m_uiPhase = Cast2Int(m_phases.size());
     undoPhase();
+    SelectionCommand::Undo();
 }
 
 void AnimationSequence::AddPhase(unique_ptr<AnimationCmd> upCmd)
@@ -41,10 +43,11 @@ void AnimationSequence::UnblockUI()
 
 void AnimationSequence::doPhase() // runs in UI thread
 {
+    wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
     if (m_uiPhase == 0)
         BlockUI();
     if (m_uiPhase < m_phases.size())
-        m_phases[m_uiPhase++]->Do([&](){ doPhase(); });
+        m_phases[m_uiPhase++]->DoAnimation([&](){ doPhase(); });
     else
         UnblockUI();
     m_win.Notify(false);
@@ -52,10 +55,11 @@ void AnimationSequence::doPhase() // runs in UI thread
 
 void AnimationSequence::undoPhase() // runs in UI thread
 {
+    wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
     if (m_uiPhase >= m_phases.size())
         BlockUI();
     if (m_uiPhase > 0)
-        m_phases[--m_uiPhase]->Undo([&](){ undoPhase(); });
+        m_phases[--m_uiPhase]->UndoAnimation([&](){ undoPhase(); });
     else
         UnblockUI();
     m_win.Notify(false);

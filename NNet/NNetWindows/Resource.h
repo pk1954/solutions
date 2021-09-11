@@ -113,7 +113,6 @@
 #define IDD_DISC_BASEKNOT          677
 #define IDD_SPLIT_NEURON           678
 
-#define IDX_ANIMATION_STEP         701
 #define IDX_PLUG_IN_ANIMATION      703
 #define IDX_CONNECT_CON_STEP       720
 								  

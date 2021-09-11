@@ -24,9 +24,9 @@ class MakeConnAnimation : public AnimationCmd
 public:
     MakeConnAnimation
     (
-        MainWindow                   & win,
-        NNetModelWriterInterface     & nmwi,
-        vector<IoNeuron *>          && list
+        MainWindow               & win,
+        NNetModelWriterInterface & nmwi,
+        vector<IoNeuron *>      && list
    )
       : AnimationCmd(win),
         m_nmwi(nmwi)
@@ -37,17 +37,19 @@ public:
             m_upIoConnector = make_unique<OutputConnector>(move(list));
     }
 
-    virtual void Do(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation(function<void()> const & targetReachedFunc)
     {
+        wcout << L'#' << __FUNCDNAME__ << endl;
         m_nmwi.DeselectAllNobs();
         m_upIoConnector->SetParentPointers();
         m_nmwi.Push2Model(move(m_upIoConnector));
         (targetReachedFunc)();
     }
 
-    virtual void Undo(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
     {
-        m_upIoConnector = m_nmwi.PopFromModel<IoConnector>();
+        wcout << L'#' << __FUNCDNAME__ << endl;
+        m_upIoConnector = move(m_nmwi.PopFromModel<IoConnector>());
         m_upIoConnector->ClearParentPointers();
         (targetReachedFunc)();
     }
