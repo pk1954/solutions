@@ -15,7 +15,7 @@
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "ConnAnimationCommand.h"
-#include "win32_callable.h"
+#include "AnimationCmd.h"
 #include "win32_Commands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
@@ -550,7 +550,7 @@ bool MainWindow::UserProc
 {
 	if (uMsg == WM_APP_UI_CALL)
 	{ 
-		Callable::DoCall(lParam);
+		AnimationCmd::DoCall(lParam);
 		return 0;
 	}
 	return NNetWindow::UserProc(uMsg, wParam, lParam); 

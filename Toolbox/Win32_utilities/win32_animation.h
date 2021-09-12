@@ -11,6 +11,7 @@
 #include "SmoothMoveFp.h"
 
 using AnimationScript = vector<DWORD>;
+using APP_PROC        = function<void(bool const)>;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
@@ -18,8 +19,6 @@ template <typename ANIM_PAR>
 class Animation
 {
 public:
-
-    using APP_PROC = function<void(bool const)>;
 
     Animation(APP_PROC const & appProc, DWORD const dwFlags = 0)
       : m_appProc(appProc),

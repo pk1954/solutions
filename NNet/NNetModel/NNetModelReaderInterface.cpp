@@ -43,8 +43,10 @@ size_t const NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 
 SoundDescr const NNetModelReaderInterface::GetTriggerSound(NobId const id) const
 {
-	auto p { m_pModel->GetNobConstPtr<Neuron const *>(id) }; 
-	return p ? p->GetTriggerSound() : SoundDescr(); 
+	Nob const & nob { * m_pModel->GetConstNob(id) };
+	return nob.IsAnyNeuron()
+		   ? static_cast<Neuron const &>(nob).GetTriggerSound()
+		   : SoundDescr(); 
 }
 
 mV const NNetModelReaderInterface::GetVoltage(NobId const id) const
@@ -245,7 +247,7 @@ void NNetModelReaderInterface::DrawExterior
 
 void NNetModelReaderInterface::DrawInterior
 (
-	NobId     const   id, 
+	NobId       const   id, 
 	DrawContext const & context,
 	tHighlight  const   type
 ) 
@@ -257,13 +259,14 @@ const
 
 void NNetModelReaderInterface::DrawNeuronText
 (
-	NobId     const   id, 
+	NobId       const   id, 
 	DrawContext const & context
 ) 
 const
 {
 	if (auto p { m_pModel->GetNobConstPtr<Neuron const *>(id) })
-		p->DrawNeuronText(context);
+		if (p)
+			p->DrawNeuronText(context);
 }
 
 void NNetModelReaderInterface::DrawLine

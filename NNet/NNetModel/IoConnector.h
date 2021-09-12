@@ -8,6 +8,7 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "NobType.h"
+#include "Nob.h"
 
 using std::vector;
 using std::unique_ptr;

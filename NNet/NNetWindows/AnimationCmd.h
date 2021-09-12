@@ -5,7 +5,6 @@
 #pragma once
 
 #include "win32_animation.h"
-#include "win32_callable.h"
 #include "win32_mainWindow.h"
 
 using std::function;
@@ -22,18 +21,37 @@ public:
 
     virtual void UpdateUI() { m_win.Notify(false); };
 
+    static void DoCall(LPARAM const lParam) 
+    {
+        function<void()> const & func { * reinterpret_cast<function<void()> *>(lParam) };
+        (func)();
+    };
+
 protected:
   
-    MainWindow               & m_win;
-    function<void()>           m_targetReachedFunc { nullptr };
-    function<void(bool const)> m_applicationFunc
+    MainWindow      & m_win;
+    function<void()> m_targetReachedFunc { nullptr };
+    APP_PROC         m_applicationFunc
     {
         [&](bool const bTargetReached)
         { 
-            Callable callable { m_win.GetWindowHandle() };
-            callable.Call_UI_thread([&](){ UpdateUI(); });
-            if (bTargetReached && m_targetReachedFunc)
-                callable.Call_UI_thread([&](){ (m_targetReachedFunc)(); });
+            function<void()> const & func
+            {
+                [&]()
+                { 
+                    UpdateUI();
+                    if (bTargetReached && m_targetReachedFunc)
+                        (m_targetReachedFunc)(); 
+                }
+            };
+
+            SendMessage
+            (
+                m_win.GetWindowHandle(), 
+                WM_APP_UI_CALL, 
+                0, 
+                reinterpret_cast<LPARAM>(&func)
+            );
         }
     };
 };

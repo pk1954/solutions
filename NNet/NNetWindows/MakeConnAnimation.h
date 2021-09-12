@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "win32_callable.h"
 #include "win32_animation.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
