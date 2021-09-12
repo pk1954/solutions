@@ -18,6 +18,7 @@ public:
 	virtual void Do()
 	{ 
 		SelectionCommand::Do();
+		m_pNMWI->DeselectAllNobs();
 		m_pNMWI->GetUPNobs().Apply2AllInRect<Nob>
 		(
 			m_rect, 
@@ -30,6 +31,14 @@ public:
 						return;
 					if (!m_rect.Includes(pipe.GetEndPoint()))
 						return;
+				}
+				if (s.IsKnot())
+				{
+					Knot & knot { static_cast<Knot &>(s) };
+					bool bIn  { knot.Apply2AllInPipesB ([&](Pipe const & p){ return m_rect.Includes(p.GetStartPoint()); }) };
+					bool bOut { knot.Apply2AllOutPipesB([&](Pipe const & p){ return m_rect.Includes(p.GetEndPoint  ()); }) };
+					if ( ! (bIn||bOut) )
+						return;          // knot would be orphan in selection
 				}
 				s.Select(true);
 			}
