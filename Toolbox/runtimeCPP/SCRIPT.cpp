@@ -19,6 +19,7 @@
 #include "symtab.h"
 
 using std::numeric_limits;
+using std::filesystem::file_size;
 
 //   ScrSetWrapHook: Set hook function, which will be called in processScript
    
@@ -357,7 +358,7 @@ wchar_t Script::ScrReadChar(void)
 
       case tTOKEN::Special:
          fNeg = readSign();
-         //lint -fallthrough
+         [[fallthrough]];
 
       case tTOKEN::Number:    // unsigned integer constant 
       {
@@ -408,7 +409,7 @@ wstring const Script::ScrReadString(void)
                 ScriptErrorHandler::typeError();
             return symbol.GetStringConst();
          }
-         //lint -fallthrough
+         [[fallthrough]];
          
       default: 
          ScriptErrorHandler::tokenError();
@@ -418,6 +419,47 @@ wstring const Script::ScrReadString(void)
    return wstring(L"");
 }
             
+// ProcessCommand processes one command from a script file
+// returns true, if all is normal
+//         false, if end of file reached or break by user
+
+bool Script::ProcessCommand(Scanner & scan)
+{
+    if (m_bStop)
+        return false;
+
+    tTOKEN const token = scan.NextToken(true);
+
+    m_pScanAct->SetExpectedToken(L"function name");
+
+    if (token == tTOKEN::Name)
+    {
+        wstring const & wstrName = m_pScanAct->GetString();
+
+        if (m_pWrapHook)
+            (* m_pWrapHook)(* this);                // call hook function 
+
+        Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
+
+        if (symbol.GetSymbolType() != tSTYPE::Function)
+            ScriptErrorHandler::typeError();          // wrong symbol type 
+
+        symbol.GetFunction()(* this);              // call wrapper function 
+
+        m_pScanAct = & scan;
+    }   
+    else if (token == tTOKEN::End)
+        return false;                                        // normal termination 
+
+    else if (token == tTOKEN::Special)
+        ScriptErrorHandler::charError();
+
+    else
+        ScriptErrorHandler::tokenError();
+
+    return true;
+}         
+
 //  ScrProcess: Process a test script
 
 bool Script::ScrProcess
@@ -431,43 +473,10 @@ bool Script::ScrProcess
     try 
     {  
         scan.OpenInputFile(wstrPath); // open script file 
-        m_fileSize = std::filesystem::file_size(wstrPath);
+        m_fileSize = file_size(wstrPath);
 
-		for (;;)
-        {
-	        if (m_bStop)
-				return false;
-
-            tTOKEN const token = scan.NextToken(true);
-         
-            m_pScanAct->SetExpectedToken(L"function name");
-
-            if (token == tTOKEN::Name)
-            {
-                wstring const & wstrName = m_pScanAct->GetString();
-
-				if (m_pWrapHook)
-                    (* m_pWrapHook)(* this);                // call hook function 
-            
-                Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
-
-                if (symbol.GetSymbolType() != tSTYPE::Function)
-                   ScriptErrorHandler::typeError();          // wrong symbol type 
-
-                symbol.GetFunction()(* this);              // call wrapper function 
-
-                m_pScanAct = & scan;
-            }   
-            else if (token == tTOKEN::End)
-                break;                                        // normal termination 
-
-            else if (token == tTOKEN::Special)
-                ScriptErrorHandler::charError();
-
-            else
-                ScriptErrorHandler::tokenError();
-        }         
-
+		while (ProcessCommand(scan));
+        
         scan.CloseInputFile();
         m_pScanAct = nullptr;
 		if (m_pWrapHook != nullptr)

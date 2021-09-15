@@ -65,7 +65,8 @@ public:
 
 // script processing
 
-    bool ScrProcess(wstring const &);
+	bool ProcessCommand(Scanner &);
+	bool ScrProcess(wstring const &);
 
 	static void StopProcessing() 
 	{ 

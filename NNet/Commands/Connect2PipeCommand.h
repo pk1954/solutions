@@ -14,11 +14,11 @@ class Connect2PipeCommand : public Command
 public:
 	Connect2PipeCommand
 	(
-		BaseKnot * pBaseKnot,
-		Pipe     * pPipe
+		NobId const idBaseKnot,
+		NobId const idPipe
 	)
-	:	m_pBaseKnot(pBaseKnot),
-		m_pPipe    (pPipe)
+	:	m_pBaseKnot(m_pNMWI->GetNobPtr<BaseKnot *>(idBaseKnot)),
+		m_pPipe    (m_pNMWI->GetNobPtr<Pipe     *>(idPipe))
 	{
 		m_pStartKnot = m_pPipe->GetStartKnotPtr();
 		m_upNewPipe  = make_unique<Pipe>(m_pStartKnot, m_pBaseKnot);

@@ -54,7 +54,7 @@ void InputBuffer::Open(wstring const & wstrFile)  // path of file to be opened
 
 wchar_t InputBuffer::ReadNextChar()
 {             
-   assert(m_ifstream);
+   assert(!m_ifstream.bad());
    
    if (L'\0' == *(m_pwchRead))   // end of line reached
    {      

@@ -21,21 +21,19 @@ public:
 	)
 	  :	m_idPipe(idPipe),
 		m_umSplitPoint(umSplitPoint)
-	{ }
+	{ 
+		m_pPipe2Split = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
+		m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
+		m_upBaseKnot  = make_unique<T>   (m_umSplitPoint);
+		m_upPipeNew   = make_unique<Pipe>(m_pStartKnot, m_upBaseKnot.get());
+		m_upBaseKnot->AddOutgoing(m_pPipe2Split);
+		m_upBaseKnot->AddIncoming(m_upPipeNew.get());
+	}
 
 	~InsertBaseKnotCommand() {}
 
 	virtual void Do() 
 	{ 
-		if (! m_upBaseKnot)
-		{ 
-			m_pPipe2Split = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
-			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
-			m_upBaseKnot  = make_unique<T>   (m_umSplitPoint);
-			m_upPipeNew   = make_unique<Pipe>(m_pStartKnot, m_upBaseKnot.get());
-			m_upBaseKnot->AddOutgoing(m_pPipe2Split);
-			m_upBaseKnot->AddIncoming(m_upPipeNew.get());
-		}
 		m_pStartKnot->ReplaceOutgoing(m_pPipe2Split, m_upPipeNew.get());
 		m_pPipe2Split->SetStartKnot(m_upBaseKnot.get());
 		m_pNMWI->Push2Model(move(m_upBaseKnot));

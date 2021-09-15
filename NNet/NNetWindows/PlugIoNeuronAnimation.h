@@ -20,12 +20,14 @@ public:
     PlugIoNeuronAnimation
     (
         NNetModelWriterInterface & nmwi,
-        IoNeuron                 & nobAnimated,
-        IoNeuron                 & nobTarget,
+        NobId                      idAnimated,
+        NobId                      idTarget,
         MainWindow               & win
    )
         : AnimationSequence(win)
     {
+        IoNeuron & nobAnimated { * nmwi.GetNobPtr<IoNeuron *>(idAnimated) };
+        IoNeuron & nobTarget   { * nmwi.GetNobPtr<IoNeuron *>(idTarget) };
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 3.0_MicroMeter)));
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
         AddPhase(make_unique<PlugIoNeurons>(nmwi, nobAnimated, nobTarget, win));

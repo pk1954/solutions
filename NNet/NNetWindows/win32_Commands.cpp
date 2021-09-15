@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "NobIdList.h"
-#include "NNetModelReaderInterface.h"
+#include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "NNetModelWriterInterface.h"
 #include "Connect2PipeCommand.h"
 #include "Connect2BaseKnotCommand.h"
@@ -56,52 +57,24 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 	switch (m_pNMRI->GetNobType(idDst).GetValue())
 	{
 	case NobType::Value::pipe:
-		upCmd = make_unique<Connect2PipeCommand>    
-		(
-			m_pNMWI->GetNobPtr<BaseKnot *>(idSrc), 
-			m_pNMWI->GetNobPtr<Pipe     *>(idDst)
-		);
+		upCmd = make_unique<Connect2PipeCommand>(idSrc, idDst);
 		break;
 	case NobType::Value::knot:
 	case NobType::Value::neuron:
-		upCmd = make_unique<Connect2BaseKnotCommand>
-		(
-			m_pNMWI->GetNobPtr<BaseKnot *>(idSrc), 
-			m_pNMWI->GetNobPtr<BaseKnot *>(idDst)
-		);
-	break;
+		upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
+		break;
 	case NobType::Value::inputNeuron:
 	case NobType::Value::outputNeuron:
-		if (m_pNMRI->GetNobType(idSrc).GetValue() == NobType::Value::knot)
-		{
-			upCmd = make_unique<Connect2BaseKnotCommand>
-			(
-				m_pNMWI->GetNobPtr<BaseKnot *>(idSrc), 
-				m_pNMWI->GetNobPtr<BaseKnot *>(idDst)
-			);
-		}
+		if (m_pNMRI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
+			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
+		else if (m_pNMRI->GetNobType(idSrc).IsInputNeuronType())
+			upCmd = make_unique<PlugIoNeuronAnimation>(* m_pNMWI, idSrc, idDst, win);
 		else
-		{
-			upCmd = make_unique<PlugIoNeuronAnimation> 
-			(
-				* m_pNMWI,
-				* m_pNMWI->GetNobPtr<IoNeuron *>(idSrc), 
-				* m_pNMWI->GetNobPtr<IoNeuron *>(idDst),
-				win
-			);
-		}
+			assert(false);
 		break;
 	case NobType::Value::inputConnector:
 	case NobType::Value::outputConnector:
-	{
-		upCmd = make_unique<PlugIoConnectorAnimation> 
-		(
-			* m_pNMWI,
-			* m_pNMWI->GetNobPtr<IoConnector *>(idSrc), 
-			* m_pNMWI->GetNobPtr<IoConnector *>(idDst),
-			win
-		);
-	}
+		upCmd = make_unique<PlugIoConnectorAnimation>(* m_pNMWI, idSrc, idDst, win); 
 		break;
 	default:
 		assert(false);

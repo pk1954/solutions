@@ -19,12 +19,14 @@ public:
     PlugIoConnectorAnimation
     (
         NNetModelWriterInterface & nmwi,
-        IoConnector              & nobAnimated,
-        IoConnector              & nobTarget,
+        NobId                      idAnimated,
+        NobId                      idTarget,
         MainWindow               & win
     )
       : AnimationSequence(win)
     {
+        IoConnector & nobAnimated { * nmwi.GetNobPtr<IoConnector *>(idAnimated) };
+        IoConnector & nobTarget   { * nmwi.GetNobPtr<IoConnector *>(idTarget) };
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));
         AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
         AddPhase(make_unique<PlugIoConnectors>(nmwi, nobAnimated, nobTarget, win));

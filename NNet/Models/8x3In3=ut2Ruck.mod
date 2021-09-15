@@ -1,5 +1,5 @@
 # NNetModel
-# Created Wed Sep  1 19:22:08 2021
+# Created Mon Sep 13 18:28:13 2021
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -1475,7 +1475,7 @@ CreateNob 3576 knot(-1373.52|1258.36)
 CreateNob 3582 neuron(-3636.46|-15057.7)
 CreateNob 3583 neuron(-3497.69|-15342.2)
 CreateNob 3584 neuron(-3194.66|-15922.6)
-CreateNob 3585 neuron(-2942.38|-15791.2)
+CreateNob 3585 neuron(-2900.53|-15738.9)
 CreateNob 3586 knot(-3090.3|-15238.5)
 CreateNob 1 pipe(12->215)
 CreateNob 2 pipe(35->3)

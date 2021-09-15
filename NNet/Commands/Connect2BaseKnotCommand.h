@@ -17,13 +17,13 @@ class Connect2BaseKnotCommand : public Command
 public:
 	Connect2BaseKnotCommand
 	(
-		BaseKnot * pBaseKnotSrc,
-		BaseKnot * pBaseKnotDst
+		NobId const idSrc,
+		NobId const idDst
 	)
-	  :	m_pBaseKnotSrc(pBaseKnotSrc),
-		m_pBaseKnotDst(pBaseKnotDst)
+	  :	m_pBaseKnotSrc(m_pNMWI->GetNobPtr<BaseKnot *>(idSrc)),
+		m_pBaseKnotDst(m_pNMWI->GetNobPtr<BaseKnot *>(idDst))
 	{ 
-		if (m_pBaseKnotDst->IsKnot())           // if a Neuron is connected to a Knot, the Knot would survive
+		if (m_pBaseKnotDst->IsKnot())             // if a Neuron is connected to a Knot, the Knot would survive
 			swap(m_pBaseKnotDst, m_pBaseKnotSrc); // swap makes sure, that the Neuron survives
 		m_dstIncoming = m_pBaseKnotDst->GetIncoming();
 		m_dstOutgoing = m_pBaseKnotDst->GetOutgoing();
@@ -35,8 +35,8 @@ public:
 	{
 		m_upBaseKnotSrc = m_pNMWI->RemoveFromModel<BaseKnot>(*m_pBaseKnotSrc); 
 		assert(m_upBaseKnotSrc);
-		m_pBaseKnotDst->AddIncoming(*m_upBaseKnotSrc.get()); // double connections?
-		m_pBaseKnotDst->AddOutgoing(*m_upBaseKnotSrc.get()); // double connections?
+		m_pBaseKnotDst->AddIncoming(*m_upBaseKnotSrc.get());
+		m_pBaseKnotDst->AddOutgoing(*m_upBaseKnotSrc.get());
 		m_pBaseKnotDst->Reconnect();
 	}
 
