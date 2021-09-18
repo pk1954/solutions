@@ -50,6 +50,8 @@ public:
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
 	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
+	void SetExtension(MicroMeter const um) { m_circle.SetRadius(um); }
+
 	bool const Includes(MicroMeterPnt const &) const;
 	bool const IsPrecursorOf(Pipe const &) const;
 	bool const IsSuccessorOf(Pipe const &) const ;

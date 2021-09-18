@@ -37,6 +37,7 @@ Neuron::Neuron(BaseKnot const & src, NobType const type)
 	: BaseKnot(src)
 {
 	SetType(type);
+	SetExtension(NEURON_RADIUS);
 }
 
 void Neuron::Check() const

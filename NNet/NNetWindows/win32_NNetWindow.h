@@ -9,8 +9,6 @@
 #include "D2D_DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
-//#include "win32_animation.h"
-//#include "win32_NNetController.h"
 #include "win32_modelWindow.h"
 
 using std::wstring;
@@ -55,7 +53,7 @@ public:
 	MicroMeter     const   PixelSize     () const { return m_context.GetPixelSize(); }
 
 	void DrawInteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
-	void DrawExteriorInRect  (PixelRect  const &                   ) const;
+	void DrawExteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
 	void DrawNeuronTextInRect(PixelRect  const &                   ) const;
 	void DrawArrowsInRect    (PixelRect  const &, MicroMeter const ) const;
 

@@ -29,12 +29,15 @@ public:
 
 		if (m_baseKnotSrc.IsKnot() && m_baseKnotDst.IsKnot())
 			m_upResult = make_unique<Knot>(m_baseKnotDst);
-		else if (nrIn == 0)
-			m_upResult = make_unique<InputNeuron>(m_baseKnotDst);
 		else if (nrOut == 0)
 			m_upResult = make_unique<OutputNeuron>(m_baseKnotDst);
 		else if (nrOut == 1)
-			m_upResult = make_unique<Neuron>(m_baseKnotDst);
+		{
+			if (nrIn == 0)
+				m_upResult = make_unique<InputNeuron>(m_baseKnotDst);
+			else 
+				m_upResult = make_unique<Neuron>(m_baseKnotDst);
+		}
 		else 
 			assert(false);
 

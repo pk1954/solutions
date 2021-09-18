@@ -30,7 +30,7 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
             upKnotNew->AddIncoming(& pipe);          // prepare new knot as far as possible
             m_endKnots.push_back(move(upKnotNew));   // store new knot for later
         }                                            // but do not touch m_pBaseKnot
-   );  // Knots in m_endKnots have their incoming pipe set
+    );  // Knots in m_endKnots have their incoming pipe set
     m_baseKnot.Apply2AllOutPipes
     (
         [&](Pipe & pipe) // every outgoing pipe needs a new start knot
@@ -40,8 +40,8 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
             upKnotNew->AddOutgoing(& pipe);            // prepare new knot as far as possible
             m_startKnots.push_back(move(upKnotNew));   // store new knot for later
         }                                              // but do not touch m_pBaseKnot
-   );  // Knots in m_startKnots have their outgoing pipe set
-    if (m_baseKnot.IsKnot())
+    );  // Knots in m_startKnots have their outgoing pipe set
+    if (m_baseKnot.IsKnot() || m_baseKnot.IsNeuron())
         m_bDelete = true;
 }
 

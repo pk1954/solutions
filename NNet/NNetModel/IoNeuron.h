@@ -21,7 +21,7 @@ public:
 	{}
 
 	IoNeuron(BaseKnot const & src, NobType const type)
-		: Neuron(src, type)
+		: Neuron(src.GetPos(), type)
 	{}
 
 	void Check() const { Neuron::Check(); }
@@ -30,10 +30,10 @@ public:
 
 	virtual Radian const GetDir() const;
 	virtual void         SetDir(Radian const);
-
-	void       LockDirection();
-	void       UnlockDirection();
-	bool const IsDirLocked() const;
+	                                // IoNeurons can be locked or unlocked
+	void       LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
+	void       UnlockDirection();   // unlocked: m_radDirection is null, displaed direction
+	bool const IsDirLocked() const; //           is computed depending on connected pipe(s)
 
 	MicroMeterPnt    const GetScaledDirVector() const;
 	MicroMeterPnt    const GetDirVector      () const;

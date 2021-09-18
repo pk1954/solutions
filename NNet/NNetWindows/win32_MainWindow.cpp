@@ -501,15 +501,18 @@ void MainWindow::doPaint()
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
-		DrawExteriorInRect(pixRect);
+		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
+		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
+		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsIoConnector(); }); 
 		if (ArrowsVisible())
 			DrawArrowsInRect(pixRect, m_arrowSize);
 	}
 
-	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsPipe() && ! s.IsSelected(); }); 
-	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsPipe() &&   s.IsSelected(); }); 
-	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
-	DrawInteriorInRect  (pixRect, [&](Nob const & s) { return s.IsIoConnector(); }); 
+	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
+	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
+	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsIoConnector(); }); 
 	DrawNeuronTextInRect(pixRect);
 
 	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible

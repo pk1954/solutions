@@ -69,7 +69,7 @@ void MiniWindow::doPaint()
 	if (m_pObservedNNetWindow)
 	{
 		DrawSensors();
-		DrawExteriorInRect(GetClPixelRect());
+		DrawExteriorInRect(GetClPixelRect(), [&](Nob const & n) { return true; }); 
 		GetDrawContext().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		DrawHighlightedSensor();
 	}

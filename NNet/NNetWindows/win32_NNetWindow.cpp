@@ -93,7 +93,11 @@ void NNetWindow::DrawInteriorInRect
 	);
 }
 
-void NNetWindow::DrawExteriorInRect(PixelRect const & rect) const
+void NNetWindow::DrawExteriorInRect
+(
+	PixelRect const & rect, 
+	NobCrit   const & crit 
+) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
 	m_pNMRI->GetUPNobs().Apply2AllInRect<Nob>
@@ -101,7 +105,8 @@ void NNetWindow::DrawExteriorInRect(PixelRect const & rect) const
 		umRect,
 		[&](Nob const & s) 
 		{ 
-			s.DrawExterior(m_context, tHighlight::normal); 
+			if (crit(s)) 
+				s.DrawExterior(m_context, tHighlight::normal); 
 		} 
 	);
 }
