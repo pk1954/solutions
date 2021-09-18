@@ -39,9 +39,9 @@ MicroMeterPnt const IoNeuron::GetDirVector() const
 
 Radian const IoNeuron::GetDir() const 
 { 
-	return m_radDirection.IsNull() 
-		? Vector2Radian(determineVector()) 
-		: m_radDirection;
+	return (IsDirLocked())
+		? m_radDirection
+		: Vector2Radian(determineVector());
 };
 
 void IoNeuron::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
@@ -65,3 +65,19 @@ void IoNeuron::UnlockDirection()
 	m_radDirection.Set2Null();
 }
 
+void IoNeuron::LockDirection() 
+{ 
+	if (!IsDirLocked()) 
+		m_radDirection = Vector2Radian(determineVector());
+}
+
+void IoNeuron::SetDir(Radian const r) 
+{ 
+	if (IsDirLocked())
+		m_radDirection = r; 
+}
+
+bool const IoNeuron::IsDirLocked() const
+{
+	return m_radDirection.IsNotNull();
+}

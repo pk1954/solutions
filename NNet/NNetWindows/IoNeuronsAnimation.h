@@ -1,4 +1,4 @@
-// MultiNobsAnimation.h
+// IoNeuronsAnimation.h
 //
 // NNetWindows
 
@@ -13,10 +13,10 @@
 
 using std::function;
 
-class MultiNobsAnimation : public AnimationCmd
+class IoNeuronsAnimation : public AnimationCmd
 {
 public:
-    MultiNobsAnimation
+    IoNeuronsAnimation
     (
         MainWindow                & win,
         vector<IoNeuron *>        & nobs,
@@ -31,8 +31,10 @@ public:
     virtual void DoAnimation(function<void()> const & func)
     {
         wcout << L'#' << __FUNCDNAME__ << endl;
-        m_targetReachedFunc = func;
+        SetTargetReachedFunc(func);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
+        for (auto & it: m_nobsAnimated)
+            it->LockDirection(); 
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorTarget));
         m_animation.Start(umPntVectorActual, m_umPntVectorTarget);
     }
@@ -40,7 +42,7 @@ public:
     virtual void UndoAnimation(function<void()> const & func)
     {
         wcout << L'#' << __FUNCDNAME__ << endl;
-        m_targetReachedFunc = func;
+        SetTargetReachedFunc(func);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorStart));
         m_animation.Start(umPntVectorActual, m_umPntVectorStart);

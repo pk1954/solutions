@@ -50,6 +50,7 @@ public:
         wcout << L'#' << __FUNCDNAME__ << endl;
         m_upIoConnector = move(m_nmwi.PopFromModel<IoConnector>());
         m_upIoConnector->ClearParentPointers();
+        m_upIoConnector->UnlockDirection();
         (targetReachedFunc)();
     }
 

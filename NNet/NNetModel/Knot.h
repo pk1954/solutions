@@ -24,6 +24,8 @@ public:
 		: BaseKnot(center, NobType::Value::knot, PIPE_WIDTH / 2)
 	{}
 
+	Knot(BaseKnot const &);
+
 	virtual ~Knot() {}
 
 	void Check() const;

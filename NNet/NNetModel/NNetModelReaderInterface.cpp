@@ -104,10 +104,6 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 		return false; 
 	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
 		return false;
-	NobType const typeSrc { GetNobType(idSrc) };
-	NobType const typeDst { GetNobType(idDst) };
-	if (typeSrc.IsIoConnectorType() != typeDst.IsIoConnectorType())
-		return false;
 	return true;
 }
 
@@ -118,100 +114,36 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 	assert(IsDefined(idDst));
 	assert(!IsConnectedTo(idSrc, idDst));
 
-	NobType::Value const typeSrc { GetNobType(idSrc).GetValue() };
-	NobType::Value const typeDst { GetNobType(idDst).GetValue() };
+	NobType const typeSrc { GetNobType(idSrc) };
+	NobType const typeDst { GetNobType(idDst) };
 
-	switch (typeSrc)
+	if (typeSrc.IsKnotType() && typeDst.IsPipeType() )
 	{
-	case NobType::Value::inputConnector:
-	case NobType::Value::outputConnector:
-		if ((typeDst == NobType::Value::inputConnector)||(typeDst == NobType::Value::outputConnector))
-		{
-			IoConnector const & connSrc { * m_pModel->GetNobConstPtr<IoConnector const *>(idSrc) }; 
-			IoConnector const & connDst { * m_pModel->GetNobConstPtr<IoConnector const *>(idDst) }; 
-			if (connSrc.IsInputConnector() == connDst.IsInputConnector())  // opposite connectors?
-				return false;
-			if (connSrc.Size() == connDst.Size())
-				return true;
-		}
-		return false;
-
-	case NobType::Value::pipe:
-		return false;
-
-	case NobType::Value::knot:
-		switch (typeDst)
-		{
-		case NobType::Value::pipe:
-		case NobType::Value::knot:
-			return true;
-
-		case NobType::Value::outputNeuron:
-//			return (! HasOutgoing(idSrc));
-			return true;
-
-		case NobType::Value::inputNeuron:
-		case NobType::Value::neuron:
-			return onlyOneAxon(idSrc, idDst);
-
-		default:
-			break;
-		}
-		break;
-
-	case NobType::Value::neuron:
-		switch (typeDst)
-		{
-		case NobType::Value::pipe:
-			return true;
-
-		case NobType::Value::knot:
-		case NobType::Value::neuron:
-			return onlyOneAxon(idSrc, idDst);
-
-		case NobType::Value::outputNeuron:
-			return true;
-
-		default:
-			break;
-		}
-		break;
-
-	case NobType::Value::inputNeuron:
-		switch (typeDst)
-		{
-		case NobType::Value::neuron:
-		case NobType::Value::inputNeuron:
-			return onlyOneAxon(idSrc, idDst) && ! HasIncoming(idSrc);
-
-		case NobType::Value::outputNeuron:
-			return true;
-
-		default:
-			break;
-		}
-		break;
-
-	case NobType::Value::outputNeuron:
-		switch (typeDst)
-		{
-		case NobType::Value::outputNeuron:
-		case NobType::Value::inputNeuron:
-			return true;
-
-		case NobType::Value::knot:
-		case NobType::Value::neuron:
-			return onlyOneAxon(idSrc, idDst);
-
-		default:
-			break;
-		}
-		break;
-
-	default:
-		break;
+		return true;
 	}
+	else if (typeSrc.IsBaseKnotType() && typeDst.IsBaseKnotType())
+	{
+		size_t nrIn  = GetNrOfIncomingConnections(idSrc) + GetNrOfIncomingConnections(idDst);
+		size_t nrOut = GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst);
 
+		if (typeSrc.IsKnotType() && typeDst.IsKnotType())
+			return true;
+		else if (nrIn == 0)
+			return true;
+		else if (nrOut == 0)
+			return true;
+		else if (nrOut == 1)
+			return true;
+		else 
+			return false;
+	}
+	else if (typeSrc.IsIoConnectorType() && typeDst.IsIoConnectorType() && (typeDst != typeSrc))
+	{
+		IoConnector const & connSrc { * m_pModel->GetNobConstPtr<IoConnector const *>(idSrc) }; 
+		IoConnector const & connDst { * m_pModel->GetNobConstPtr<IoConnector const *>(idDst) }; 
+		if (connSrc.Size() == connDst.Size())
+			return true;
+	}
 	return false;
 }
 

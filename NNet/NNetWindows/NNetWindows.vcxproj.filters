@@ -200,7 +200,7 @@
     <ClInclude Include="AnimationSequence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MultiNobsAnimation.h">
+    <ClInclude Include="IoNeuronsAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MakeConnAnimation.h">

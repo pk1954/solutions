@@ -517,9 +517,10 @@ void MainWindow::doPaint()
 		tHighlight type { m_bTargetFits ? tHighlight::targetFit : tHighlight::targetNoFit };
 		m_pNMRI->DrawExterior(m_nobTarget, context, type);
 		m_pNMRI->DrawInterior(m_nobTarget, context, type);
+		m_pNMRI->DrawExterior(m_nobHighlighted, context, type);
+		m_pNMRI->DrawInterior(m_nobHighlighted, context, type);
 	}
-
-	if (IsDefined(m_nobHighlighted))  // draw highlighted nob again to be sure that it is in foreground
+	else if (IsDefined(m_nobHighlighted))  // draw highlighted nob again to be sure that it is in foreground
 	{
 		m_pNMRI->DrawExterior  (m_nobHighlighted, context, tHighlight::highlighted);
 		m_pNMRI->DrawInterior  (m_nobHighlighted, context, tHighlight::highlighted);
@@ -550,7 +551,7 @@ bool MainWindow::UserProc
 {
 	if (uMsg == WM_APP_UI_CALL)
 	{ 
-		AnimationCmd::DoCall(lParam);
+		AnimationCmd::DoCall(wParam, lParam);
 		return 0;
 	}
 	return NNetWindow::UserProc(uMsg, wParam, lParam); 

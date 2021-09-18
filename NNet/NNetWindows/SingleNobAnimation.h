@@ -20,19 +20,19 @@ public:
     SingleNobAnimation
     (
         MainWindow             & win,
-        Nob                    & nob,
+        Nob                    & nobAnimated,
         MicroMeterPosDir const & umPosDirTarget
    )
       : AnimationCmd(win),
-        m_nobAnimated(nob),
-        m_umPosDirStart(nob.GetPosDir()),
+        m_nobAnimated(nobAnimated),
+        m_umPosDirStart(nobAnimated.GetPosDir()),
         m_umPosDirTarget(umPosDirTarget)
     {}
 
     virtual void DoAnimation(function<void()> const & func)
     {
-        wcout << L'#' << __FUNCDNAME__ << endl;
-        m_targetReachedFunc = func;
+        //wcout << L'#' << __FUNCDNAME__ << endl;
+        SetTargetReachedFunc(func);
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirTarget));
         m_animation.Start(umPosDirActual, m_umPosDirTarget);
@@ -40,8 +40,8 @@ public:
 
     virtual void UndoAnimation(function<void()> const & func)
     {
-        wcout << L'#' << __FUNCDNAME__ << endl;
-        m_targetReachedFunc = func;
+        //wcout << L'#' << __FUNCDNAME__ << endl;
+        SetTargetReachedFunc(func);
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirStart));
         m_animation.Start(umPosDirActual, m_umPosDirStart);
@@ -58,5 +58,5 @@ private:
     Nob                       & m_nobAnimated;
     MicroMeterPosDir      const m_umPosDirStart;
     MicroMeterPosDir      const m_umPosDirTarget;
-    Animation<MicroMeterPosDir> m_animation  { m_applicationFunc };
+    Animation<MicroMeterPosDir> m_animation { m_applicationFunc };
 };

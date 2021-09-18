@@ -16,7 +16,6 @@ using std::unique_ptr;
 class DrawContext;
 class MicroMeterPosDir;
 class IoNeuron;
-class Neuron;
 
 class IoConnector: public Nob
 {
@@ -50,10 +49,13 @@ public:
 
 	virtual bool const IsCompositeNob() { return true; }
 
-	void             Push(Neuron * const);
-	Neuron * const   Pop();
-	Neuron   const & GetElem(size_t const) const;
-	size_t   const   Size() const;
+	void               Push(IoNeuron * const);
+	IoNeuron * const   Pop();
+	IoNeuron   const & GetElem(size_t const) const;
+	size_t     const   Size() const;
+
+	void LockDirection();
+	void UnlockDirection();
 
 	void AlignDirection();
 
@@ -66,7 +68,7 @@ public:
 	void SetPos   (MicroMeterPnt    const &);
 	void SetPosDir(MicroMeterPosDir const &);
 
-	void Apply2All(function<void(Neuron &)> const & func) const;
+	void Apply2All(function<void(IoNeuron &)> const & func) const;
 
 	MicroMeterLine const CalcMaxDistLine();
 	MicroMeterPnt  const CalcOrthoVector(MicroMeterLine const &);
@@ -74,7 +76,7 @@ public:
 	friend wostream & operator<< (wostream &, IoConnector const &);
 
 protected:
-	vector<Neuron *> m_list {};
+	vector<IoNeuron *> m_list {};
 };
 
 IoConnector const * Cast2IoConnector(Nob const *);

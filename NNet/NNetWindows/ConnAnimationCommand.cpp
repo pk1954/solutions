@@ -7,7 +7,7 @@
 #include "win32_Commands.h"
 #include "NNetModelWriterInterface.h"
 #include "IoNeuron.h"
-#include "MultiNobsAnimation.h"
+#include "IoNeuronsAnimation.h"
 #include "MakeConnAnimation.h"
 #include "ConnAnimationCommand.h"
 
@@ -21,10 +21,9 @@ ConnAnimationCommand::ConnAnimationCommand
 )
   : AnimationSequence(win)
 {
-    vector<IoNeuron *>         nobsAnimated {};
-    NNetModelWriterInterface & nmwi         { cmds.GetNMWI() };
-    UPNobList                & modelNobs    { nmwi.GetUPNobs() };
-    NobType              const nobType      { determineNobType(modelNobs) };
+    NNetModelWriterInterface & nmwi      { cmds.GetNMWI() };
+    UPNobList                & modelNobs { nmwi.GetUPNobs() };
+    NobType              const nobType   { determineNobType(modelNobs) };
     if (nobType.IsUndefinedType())
         return;
     
@@ -33,10 +32,10 @@ ConnAnimationCommand::ConnAnimationCommand
         [&](IoNeuron & s)	
         { 
             if (s.IsSelected() && (s.GetNobType() == nobType)) 
-                nobsAnimated.push_back(&s); 
+                m_nobsAnimated.push_back(&s); 
         } 
     );
-    MicroMeterLine line{ CalcMaxDistLine<IoNeuron>(nobsAnimated) };
+    MicroMeterLine line{ CalcMaxDistLine<IoNeuron>(m_nobsAnimated) };
     if (line.IsZero())
         return;
 
@@ -44,27 +43,41 @@ ConnAnimationCommand::ConnAnimationCommand
 
     sort
     (
-        nobsAnimated.begin(), nobsAnimated.end(),
+        m_nobsAnimated.begin(), m_nobsAnimated.end(),
         [&](auto & p1, auto & p2) 
         { 
             return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos()); 
         } 
     );
 
-    MicroMeterPntVector umPntVector(nobsAnimated);  // before animation
+    MicroMeterPntVector umPntVector(m_nobsAnimated);  // before animation
 
     umPntVector.Align(line);
-    AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after position alignment
+    AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after position alignment
 
-    umPntVector.SetDir(Vector2Radian(CalcOrthoVector<IoNeuron>(nobsAnimated, line)));
-    AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after direction alignment
+    umPntVector.SetDir(Vector2Radian(CalcOrthoVector<IoNeuron>(m_nobsAnimated, line)));
+    AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
-    AddPhase(make_unique<MultiNobsAnimation>(win, nobsAnimated, umPntVector));  // after packing
+    AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after packing
 
-    AddPhase(make_unique<MakeConnAnimation>(win, nmwi, move(nobsAnimated)));
+    AddPhase(make_unique<MakeConnAnimation>(win, nmwi, move(m_nobsAnimated)));
 
     m_bAllOk = true;
+}
+
+void ConnAnimationCommand::Do()
+{
+    //for (auto & it: m_nobsAnimated)
+    //    it->LockDirection(); 
+    AnimationSequence::Do();
+}
+
+void ConnAnimationCommand::Undo()
+{
+    AnimationSequence::Undo();
+    //for (auto & it: m_nobsAnimated)
+    //    it->UnlockDirection(); 
 }
 
 NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const

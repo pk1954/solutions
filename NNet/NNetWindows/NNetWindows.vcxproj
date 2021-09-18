@@ -608,7 +608,7 @@
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="Measurement.h" />
-    <ClInclude Include="MultiNobsAnimation.h" />
+    <ClInclude Include="IoNeuronsAnimation.h" />
     <ClInclude Include="PlugIoConnectors.h" />
     <ClInclude Include="PlugIoNeurons.h" />
     <ClInclude Include="SingleNobAnimation.h" />

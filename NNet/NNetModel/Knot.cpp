@@ -8,20 +8,48 @@
 #include "DrawContext.h"
 #include "Knot.h"
 
+Knot::Knot(BaseKnot const & src)
+	: BaseKnot(src)
+{
+	SetType(NobType::Value::knot);
+}
+
 void Knot::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-	MicroMeter const umRadius 
-	{ 
-		(type == tHighlight::highlighted) 
-		? 30.0_MicroMeter 
-		: GetExtension() 
-	};
-	context.FillCircle(MicroMeterCircle(GetPos(), umRadius), GetExteriorColor(type));
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(MicroMeterCircle(GetPos(), GetExtension()), NNetColors::EXT_NORMAL);
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(MicroMeterCircle(GetPos(), 30.0_MicroMeter), NNetColors::EXT_HIGHLIGHTED);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(MicroMeterCircle(GetPos(), 30.0_MicroMeter), NNetColors::EXT_TARGET_FIT);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(MicroMeterCircle(GetPos(), 30.0_MicroMeter), NNetColors::EXT_TARGET_NOFIT);
+		break;
+	}
 }
 
 void Knot::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-	context.FillCircle(GetCircle() * PIPE_INTERIOR, GetInteriorColor(type));
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(GetCircle() * PIPE_INTERIOR, GetInteriorColor(type));
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(GetCircle() * PIPE_INTERIOR, GetInteriorColor(type));
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(GetCircle() * PIPE_INTERIOR, NNetColors::INT_NORMAL);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(GetCircle() * PIPE_INTERIOR, NNetColors::INT_NORMAL);
+		break;
+	}
 }
 
 void Knot::Check() const

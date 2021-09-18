@@ -45,14 +45,14 @@ void IoConnector::Select(bool const bOn)
         it->Select(bOn);
 }
 
-void IoConnector::Push(Neuron * const p) 
+void IoConnector::Push(IoNeuron * const p) 
 { 
     m_list.push_back(p); 
 }
 
-Neuron * const IoConnector::Pop() 
+IoNeuron * const IoConnector::Pop() 
 { 
-    Neuron * pRet { m_list.back() };
+    IoNeuron * pRet { m_list.back() };
     m_list.pop_back();
     return pRet;
 }
@@ -62,7 +62,7 @@ size_t const IoConnector::Size() const
     return m_list.size(); 
 }
 
-Neuron const & IoConnector::GetElem(size_t const nr) const 
+IoNeuron const & IoConnector::GetElem(size_t const nr) const 
 { 
     return * m_list.at(nr); 
 }
@@ -70,7 +70,7 @@ Neuron const & IoConnector::GetElem(size_t const nr) const
 void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     for (auto & it : m_list) 
-        it = static_cast<Neuron *>(dstFromSrc(it));
+        it = static_cast<IoNeuron *>(dstFromSrc(it));
 }
 
 void IoConnector::Clear()
@@ -97,6 +97,18 @@ Radian const IoConnector::GetDir() const
     return m_list.empty() 
         ? Radian::NULL_VAL() 
         : m_list.front()->GetDir();
+}
+
+void IoConnector::UnlockDirection() 
+{
+    for (auto & it: m_list)
+        it->UnlockDirection(); 
+}
+
+void IoConnector::LockDirection() 
+{ 
+    for (auto & it: m_list)
+        it->LockDirection(); 
 }
 
 MicroMeterPosDir const IoConnector::GetPosDir() const 
@@ -135,7 +147,7 @@ void IoConnector::Recalc()
         it->Recalc();
 }
 
-void IoConnector::Apply2All(function<void(Neuron &)> const & func) const
+void IoConnector::Apply2All(function<void(IoNeuron &)> const & func) const
 {
     for (auto pNob : m_list) 
         if (pNob)
@@ -220,12 +232,12 @@ void IoConnector::Expand(MicroMeterRect & umRect) const
 
 MicroMeterLine const IoConnector::CalcMaxDistLine() // find two nobs with maximum distance
 {
-    return ::CalcMaxDistLine<Neuron>(m_list);
+    return ::CalcMaxDistLine<IoNeuron>(m_list);
 }
 
 MicroMeterPnt const IoConnector::CalcOrthoVector(MicroMeterLine const & line)
 {
-    return ::CalcOrthoVector<Neuron>(m_list, line);
+    return ::CalcOrthoVector<IoNeuron>(m_list, line);
 }
 
 IoConnector const * Cast2IoConnector(Nob const * pNob)

@@ -21,25 +21,25 @@ public:
 	{}
 
 	IoNeuron(BaseKnot const & src, NobType const type)
-		: Neuron(src)
-	{
-		SetType(type);
-	}
+		: Neuron(src, type)
+	{}
 
 	void Check() const { Neuron::Check(); }
 
 	virtual void RotateNob(MicroMeterPnt const &, Radian const);
 
 	virtual Radian const GetDir() const;
+	virtual void         SetDir(Radian const);
 
-	void SetDir(Radian const r) { m_radDirection = r; }
+	void       LockDirection();
+	void       UnlockDirection();
+	bool const IsDirLocked() const;
 
 	MicroMeterPnt    const GetScaledDirVector() const;
 	MicroMeterPnt    const GetDirVector      () const;
 	MicroMeterPosDir const GetRawPosDir      () const;
 	MicroMeterPosDir const GetPosDir         () const;
 
-	void UnlockDirection();
 
 private:
 	MicroMeterPnt const determineVector() const;

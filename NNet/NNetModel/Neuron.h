@@ -22,7 +22,7 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
-	Neuron(BaseKnot const &);
+	Neuron(BaseKnot const &, NobType const = NobType::Value::neuron);
 	Neuron(Neuron const &);             // copy constructor
 
 	Neuron & operator=(Neuron const &); // copy assignment operator

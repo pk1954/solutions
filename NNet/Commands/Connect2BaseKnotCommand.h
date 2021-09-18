@@ -9,6 +9,7 @@
 #include "Command.h"
 #include "PipeList.h"
 #include "BaseKnot.h"
+#include "Knot.h"
 
 using std::swap;
 
@@ -20,41 +21,53 @@ public:
 		NobId const idSrc,
 		NobId const idDst
 	)
-	  :	m_pBaseKnotSrc(m_pNMWI->GetNobPtr<BaseKnot *>(idSrc)),
-		m_pBaseKnotDst(m_pNMWI->GetNobPtr<BaseKnot *>(idDst))
+	  :	m_baseKnotSrc(*m_pNMWI->GetNobPtr<BaseKnot *>(idSrc)),
+		m_baseKnotDst(*m_pNMWI->GetNobPtr<BaseKnot *>(idDst))
 	{ 
-		if (m_pBaseKnotDst->IsKnot())             // if a Neuron is connected to a Knot, the Knot would survive
-			swap(m_pBaseKnotDst, m_pBaseKnotSrc); // swap makes sure, that the Neuron survives
-		m_dstIncoming = m_pBaseKnotDst->GetIncoming();
-		m_dstOutgoing = m_pBaseKnotDst->GetOutgoing();
+		size_t nrIn  = m_baseKnotSrc.GetNrOfIncomingConnections() + m_baseKnotDst.GetNrOfIncomingConnections();
+		size_t nrOut = m_baseKnotSrc.GetNrOfOutgoingConnections() + m_baseKnotDst.GetNrOfOutgoingConnections();
+
+		if (m_baseKnotSrc.IsKnot() && m_baseKnotDst.IsKnot())
+			m_upResult = make_unique<Knot>(m_baseKnotDst);
+		else if (nrIn == 0)
+			m_upResult = make_unique<InputNeuron>(m_baseKnotDst);
+		else if (nrOut == 0)
+			m_upResult = make_unique<OutputNeuron>(m_baseKnotDst);
+		else if (nrOut == 1)
+			m_upResult = make_unique<Neuron>(m_baseKnotDst);
+		else 
+			assert(false);
+
+		m_upResult->AddIncoming(m_baseKnotSrc);
+		m_upResult->AddOutgoing(m_baseKnotSrc);
 	}
 
-	~Connect2BaseKnotCommand()	{ }
+	~Connect2BaseKnotCommand() { }
 
 	virtual void Do()
 	{
-		m_upBaseKnotSrc = m_pNMWI->RemoveFromModel<BaseKnot>(*m_pBaseKnotSrc); 
+		assert(m_upResult);
+		m_upResult->Reconnect();
+		m_upBaseKnotDst = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upResult));
+		m_upBaseKnotSrc = m_pNMWI->RemoveFromModel<BaseKnot>(m_baseKnotSrc); 
 		assert(m_upBaseKnotSrc);
-		m_pBaseKnotDst->AddIncoming(*m_upBaseKnotSrc.get());
-		m_pBaseKnotDst->AddOutgoing(*m_upBaseKnotSrc.get());
-		m_pBaseKnotDst->Reconnect();
+		assert(m_upBaseKnotDst);
 	}
 
 	virtual void Undo()
 	{
-		m_pBaseKnotDst->SetIncoming(m_dstIncoming);  // restore dst connections
-		m_pBaseKnotDst->SetOutgoing(m_dstOutgoing); 
-		assert(m_upBaseKnotSrc);
+		m_upBaseKnotDst->Reconnect();
 		m_upBaseKnotSrc->Reconnect();
-		m_upBaseKnotSrc = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotSrc)); // reconnect src  
+		m_upResult = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotDst));
+		m_pNMWI->Restore2Model<BaseKnot>(move(m_upBaseKnotSrc));
 	}
 
 private:
 
-	BaseKnot * m_pBaseKnotSrc;
-	BaseKnot * m_pBaseKnotDst;
+	BaseKnot const & m_baseKnotSrc;
+	BaseKnot const & m_baseKnotDst;
 
+	unique_ptr<BaseKnot> m_upResult      { nullptr };
 	unique_ptr<BaseKnot> m_upBaseKnotSrc { nullptr };
-	PipeList             m_dstIncoming;
-	PipeList             m_dstOutgoing;
+	unique_ptr<BaseKnot> m_upBaseKnotDst { nullptr };
 };

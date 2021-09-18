@@ -21,37 +21,34 @@ public:
 
     virtual void UpdateUI() { m_win.Notify(false); };
 
-    static void DoCall(LPARAM const lParam) 
+    static void DoCall(WPARAM const wParam, LPARAM const lParam) 
     {
-        function<void()> const & func { * reinterpret_cast<function<void()> *>(lParam) };
-        (func)();
+        AnimationCmd * const pAnimCmd       { reinterpret_cast<AnimationCmd * const>(lParam) };
+        bool           const bTargetReached { static_cast<bool const>(wParam) };
+        pAnimCmd->UpdateUI();
+        if (bTargetReached && pAnimCmd->m_targetReachedFunc)
+            (pAnimCmd->m_targetReachedFunc)(); 
     };
 
 protected:
   
-    MainWindow      & m_win;
-    function<void()> m_targetReachedFunc { nullptr };
-    APP_PROC         m_applicationFunc
+    void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
+
+    APP_PROC m_applicationFunc
     {
         [&](bool const bTargetReached)
         { 
-            function<void()> const & func
-            {
-                [&]()
-                { 
-                    UpdateUI();
-                    if (bTargetReached && m_targetReachedFunc)
-                        (m_targetReachedFunc)(); 
-                }
-            };
-
             SendMessage
             (
                 m_win.GetWindowHandle(), 
                 WM_APP_UI_CALL, 
-                0, 
-                reinterpret_cast<LPARAM>(&func)
+                static_cast<WPARAM>(bTargetReached), 
+                reinterpret_cast<LPARAM>(this)
             );
         }
     };
+
+private:
+    MainWindow     & m_win;
+    function<void()> m_targetReachedFunc { nullptr };
 };

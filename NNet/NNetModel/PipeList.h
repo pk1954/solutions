@@ -28,11 +28,7 @@ public:
 
 	Pipe const & GetFirst() const { return * m_list.front(); }
 
-	void Add(Pipe   * const   p) 
-	{ 
-		if (p) 
-			m_list.push_back(p); 
-	}
+	void Add(Pipe   * const   p) { if (p) m_list.push_back(p); }
 	void Add(PipeList const & l) { l.Apply2All([&](Pipe &p) { Add(&p); }); }
 
 	void Recalc();

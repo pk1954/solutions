@@ -59,7 +59,7 @@ public:
 
 private:
     NNetModelWriterInterface & m_nmwi;
-    IoNeuron                 & m_nobTarget;
+    IoNeuron           const & m_nobTarget;
     IoNeuron                 & m_nobAnimated;
     unique_ptr<IoNeuron>       m_upNobAnimated;
     unique_ptr<IoNeuron>       m_upNobTarget;
