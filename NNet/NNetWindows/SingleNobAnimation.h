@@ -19,11 +19,10 @@ class SingleNobAnimation : public AnimationCmd
 public:
     SingleNobAnimation
     (
-        MainWindow             & win,
         Nob                    & nobAnimated,
         MicroMeterPosDir const & umPosDirTarget
    )
-      : AnimationCmd(win),
+      : AnimationCmd(),
         m_nobAnimated(nobAnimated),
         m_umPosDirStart(nobAnimated.GetPosDir()),
         m_umPosDirTarget(umPosDirTarget)

@@ -28,9 +28,9 @@ public:
         m_nobAnimated( * nmwi.GetNobPtr<IoNeuron *>(idAnimated) ),
         m_nobTarget  ( * nmwi.GetNobPtr<IoNeuron *>(idTarget) )
     {
-        AddPhase(make_unique<SingleNobAnimation>(win, m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 3.0_MicroMeter)));
-        AddPhase(make_unique<SingleNobAnimation>(win, m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 1.4_MicroMeter)));
-        AddPhase(make_unique<PlugIoNeurons>(m_nobAnimated, m_nobTarget, win));
+        AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 3.0_MicroMeter)));
+        AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 1.4_MicroMeter)));
+        AddPhase(make_unique<PlugIoNeurons     >(m_nobAnimated, m_nobTarget));
     }
 
     virtual ~PlugIoNeuronAnimation() {};

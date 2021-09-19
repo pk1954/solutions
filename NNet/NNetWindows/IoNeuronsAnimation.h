@@ -18,12 +18,10 @@ class IoNeuronsAnimation : public AnimationCmd
 public:
     IoNeuronsAnimation
     (
-        MainWindow                & win,
         vector<IoNeuron *>        & nobs,
         MicroMeterPntVector const & umPntVectorTarget
    )
-      : AnimationCmd(win),
-        m_nobsAnimated(nobs),
+      : m_nobsAnimated(nobs),
         m_umPntVectorStart(nobs),
         m_umPntVectorTarget(umPntVectorTarget)
     {}

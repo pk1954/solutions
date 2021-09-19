@@ -14,14 +14,12 @@ class NNetModelWriterInterface;
 class AnimationCmd
 {
 public:
-    AnimationCmd(MainWindow & win)
-        : m_win(win)
-    {}
+    AnimationCmd() {}
 
     virtual void DoAnimation  (function<void()> const &) = 0;
     virtual void UndoAnimation(function<void()> const &) = 0;
 
-    virtual void UpdateUI() { m_win.Notify(false); };
+    virtual void UpdateUI() { m_pWin->Notify(false); };
 
     static void DoCall(WPARAM const wParam, LPARAM const lParam) 
     {
@@ -32,14 +30,20 @@ public:
             (pAnimCmd->m_targetReachedFunc)(); 
     };
 
-    static void SetNNetModelWriterInterface(NNetModelWriterInterface* const pNMWI)
+    static void Initialize
+    (
+        NNetModelWriterInterface * const pNMWI,
+        MainWindow               * const pWin
+    )
     {
         m_pNMWI = pNMWI;
+        m_pWin  = pWin;
     }
 
 protected:
   
     inline static NNetModelWriterInterface * m_pNMWI { nullptr };
+    inline static MainWindow               * m_pWin  { nullptr };
 
     void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
 
@@ -49,7 +53,7 @@ protected:
         { 
             SendMessage
             (
-                m_win.GetWindowHandle(), 
+                m_pWin->GetWindowHandle(), 
                 WM_APP_UI_CALL, 
                 static_cast<WPARAM>(bTargetReached), 
                 reinterpret_cast<LPARAM>(this)
@@ -58,6 +62,5 @@ protected:
     };
 
 private:
-    MainWindow     & m_win;
     function<void()> m_targetReachedFunc { nullptr };
 };

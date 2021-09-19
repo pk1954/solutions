@@ -21,11 +21,9 @@ public:
     PlugIoConnectors
     (
         IoConnector & conn1, 
-        IoConnector & conn2,
-        MainWindow  & win
+        IoConnector & conn2
    )
-      : AnimationCmd(win),
-        m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
+      : m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
         m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
     {
         assert(m_inputConnector.Size() == m_outputConnector.Size());

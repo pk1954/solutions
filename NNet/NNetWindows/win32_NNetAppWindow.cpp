@@ -94,7 +94,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	SignalFactory::Initialize(m_nmri, m_dynamicModelObservable);
 	Nob::Initialize(m_model.GetParams());
 	Command::SetNNetModelWriterInterface(&m_nmwi);
-	AnimationCmd::SetNNetModelWriterInterface(&m_nmwi);
+	AnimationCmd::Initialize(&m_nmwi,&m_mainNNetWindow);
 	m_model.SetDescriptionUI(m_descWindow);
 	m_model.SetHighSigObservable(&m_highlightSigObservable);
 

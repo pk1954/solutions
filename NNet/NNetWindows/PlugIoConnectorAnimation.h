@@ -27,9 +27,9 @@ public:
     {
         IoConnector & nobAnimated { * nmwi.GetNobPtr<IoConnector *>(idAnimated) };
         IoConnector & nobTarget   { * nmwi.GetNobPtr<IoConnector *>(idTarget) };
-        AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));
-        AddPhase(make_unique<SingleNobAnimation>(win, nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
-        AddPhase(make_unique<PlugIoConnectors>(nobAnimated, nobTarget, win));
+        AddPhase(make_unique<SingleNobAnimation>(nobAnimated, CalcOffsetPosDir(nobTarget, 5.0_MicroMeter)));
+        AddPhase(make_unique<SingleNobAnimation>(nobAnimated, CalcOffsetPosDir(nobTarget, 1.4_MicroMeter)));
+        AddPhase(make_unique<PlugIoConnectors  >(nobAnimated, nobTarget));
     }
 
     virtual ~PlugIoConnectorAnimation() {};

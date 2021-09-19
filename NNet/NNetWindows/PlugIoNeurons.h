@@ -16,13 +16,10 @@ public:
     PlugIoNeurons
     (
         IoNeuron   & connectorAnimated, 
-        IoNeuron   & nobTarget,
-        MainWindow & win
+        IoNeuron   & nobTarget
    )
-      : AnimationCmd(win),
-        m_nobTarget(nobTarget),
-        m_nobAnimated(connectorAnimated),
-        m_win(win)
+      : m_nobTarget(nobTarget),
+        m_nobAnimated(connectorAnimated)
     {
         assert(m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob());
         assert(m_nobAnimated.GetIoMode() != NobIoMode::internal);
@@ -61,5 +58,4 @@ private:
     unique_ptr<IoNeuron> m_upNobAnimated;
     unique_ptr<IoNeuron> m_upNobTarget;
     unique_ptr<Neuron>   m_upNeuron {};
-    MainWindow         & m_win;
 };

@@ -21,12 +21,7 @@ class MainWindow;
 class MakeConnAnimation : public AnimationCmd
 {
 public:
-    MakeConnAnimation
-    (
-        MainWindow          & win,
-        vector<IoNeuron *> && list
-   )
-      : AnimationCmd(win)
+    MakeConnAnimation(vector<IoNeuron *> && list)
     {
         if (list.front()->IsInputNeuron())
             m_upIoConnector = make_unique<InputConnector>(move(list));

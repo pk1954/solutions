@@ -52,15 +52,15 @@ ConnAnimationCommand::ConnAnimationCommand
     MicroMeterPntVector umPntVector(m_nobsAnimated);  // before animation
 
     umPntVector.Align(line);
-    AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after position alignment
+    AddPhase(make_unique<IoNeuronsAnimation>(m_nobsAnimated, umPntVector));  // after position alignment
 
     umPntVector.SetDir(Vector2Radian(CalcOrthoVector<IoNeuron>(m_nobsAnimated, line)));
-    AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after direction alignment
+    AddPhase(make_unique<IoNeuronsAnimation>(m_nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
-    AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after packing
+    AddPhase(make_unique<IoNeuronsAnimation>(m_nobsAnimated, umPntVector));  // after packing
 
-    AddPhase(make_unique<MakeConnAnimation>(win, move(m_nobsAnimated)));
+    AddPhase(make_unique<MakeConnAnimation>(move(m_nobsAnimated)));
 
     m_bAllOk = true;
 }
