@@ -15,7 +15,7 @@ using std::unique_ptr;
 
 class MainWindow;
 
-class PlugIoConnectors : public AnimationCmd
+class PlugIoConnectors : public NNetCommand
 {
 public:
     PlugIoConnectors
@@ -57,10 +57,7 @@ public:
             m_upOutputNeurons[i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_outputConnector.GetElem(i));
             m_upInputNeurons [i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_inputConnector .GetElem(i));
         }
-
-        if (targetReachedFunc)
-            (targetReachedFunc)();
-        m_pNMWI->CheckModel();
+        (targetReachedFunc)();
     }
 
     virtual void UndoAnimation(function<void()> const & targetReachedFunc)
@@ -75,10 +72,7 @@ public:
             m_upOutputNeurons[i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upOutputNeurons[i]));
             m_upInputNeurons [i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upInputNeurons [i]));
         }
-
-        if (targetReachedFunc)
-            (targetReachedFunc)();
-        m_pNMWI->CheckModel();
+        (targetReachedFunc)();
     }
 
 private:

@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include "win32_util_resource.h"
 #include "win32_animation.h"
-#include "win32_mainWindow.h"
+#include "win32_rootWindow.h"
 
 using std::function;
 
@@ -30,21 +31,13 @@ public:
             (pAnimCmd->m_targetReachedFunc)(); 
     };
 
-    static void Initialize
-    (
-        NNetModelWriterInterface * const pNMWI,
-        MainWindow               * const pWin
-    )
+    static void Initialize(RootWindow * const pWin)
     {
-        m_pNMWI = pNMWI;
         m_pWin  = pWin;
     }
 
 protected:
   
-    inline static NNetModelWriterInterface * m_pNMWI { nullptr };
-    inline static MainWindow               * m_pWin  { nullptr };
-
     void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
 
     APP_PROC m_applicationFunc
@@ -62,5 +55,7 @@ protected:
     };
 
 private:
+    inline static RootWindow * m_pWin  { nullptr };
+
     function<void()> m_targetReachedFunc { nullptr };
 };

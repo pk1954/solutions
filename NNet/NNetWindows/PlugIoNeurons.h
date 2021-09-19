@@ -6,17 +6,17 @@
 
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
-#include "AnimationCmd.h"
+#include "NNetCommand.h"
 
 using std::unique_ptr;
 
-class PlugIoNeurons : public AnimationCmd
+class PlugIoNeurons : public NNetCommand
 {
 public:
     PlugIoNeurons
     (
-        IoNeuron   & connectorAnimated, 
-        IoNeuron   & nobTarget
+        IoNeuron & connectorAnimated, 
+        IoNeuron & nobTarget
    )
       : m_nobTarget(nobTarget),
         m_nobAnimated(connectorAnimated)
@@ -36,8 +36,7 @@ public:
         m_pNMWI->Push2Model(move(m_upNeuron)); 
         m_upNobAnimated = m_pNMWI->RemoveFromModel<IoNeuron>(m_nobAnimated);
         m_upNobTarget   = m_pNMWI->RemoveFromModel<IoNeuron>(m_nobTarget);
-        if (targetReachedFunc)
-            (targetReachedFunc)();
+        (targetReachedFunc)();
     }
 
     virtual void UndoAnimation(function<void()> const & targetReachedFunc)
@@ -48,8 +47,7 @@ public:
         m_upNobAnimated = m_pNMWI->ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));
         m_upNobTarget   = m_pNMWI->ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobTarget));
         m_pNMWI->DeselectAllNobs();
-        if (targetReachedFunc)
-            (targetReachedFunc)();
+        (targetReachedFunc)();
     }
 
 private:

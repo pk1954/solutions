@@ -9,11 +9,11 @@
 #include "win32_animation.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
-#include "AnimationCmd.h"
+#include "NNetCommand.h"
 
 using std::function;
 
-class IoNeuronsAnimation : public AnimationCmd
+class IoNeuronsAnimation : public NNetCommand
 {
 public:
     IoNeuronsAnimation
@@ -26,10 +26,10 @@ public:
         m_umPntVectorTarget(umPntVectorTarget)
     {}
 
-    virtual void DoAnimation(function<void()> const & func)
+    virtual void DoAnimation(function<void()> const & targetReachedFunc)
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(func);
+        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         for (auto & it: m_nobsAnimated)
             it->LockDirection(); 
@@ -37,10 +37,10 @@ public:
         m_animation.Start(umPntVectorActual, m_umPntVectorTarget);
     }
 
-    virtual void UndoAnimation(function<void()> const & func)
+    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(func);
+        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorStart));
         m_animation.Start(umPntVectorActual, m_umPntVectorStart);

@@ -10,7 +10,7 @@
 #include "OutputConnector.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
-#include "AnimationCmd.h"
+#include "NNetCommand.h"
 
 using std::function;
 using std::unique_ptr;
@@ -18,7 +18,7 @@ using std::make_unique;
 
 class MainWindow;
 
-class MakeConnAnimation : public AnimationCmd
+class MakeConnAnimation : public NNetCommand
 {
 public:
     MakeConnAnimation(vector<IoNeuron *> && list)

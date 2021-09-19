@@ -10,11 +10,11 @@
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
-#include "AnimationCmd.h"
+#include "NNetCommand.h"
 
 using std::function;
 
-class SingleNobAnimation : public AnimationCmd
+class SingleNobAnimation : public NNetCommand
 {
 public:
     SingleNobAnimation
@@ -22,25 +22,24 @@ public:
         Nob                    & nobAnimated,
         MicroMeterPosDir const & umPosDirTarget
    )
-      : AnimationCmd(),
-        m_nobAnimated(nobAnimated),
+      : m_nobAnimated(nobAnimated),
         m_umPosDirStart(nobAnimated.GetPosDir()),
         m_umPosDirTarget(umPosDirTarget)
     {}
 
-    virtual void DoAnimation(function<void()> const & func)
+    virtual void DoAnimation(function<void()> const & targetReachedFunc)
     {
         //wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(func);
+        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirTarget));
         m_animation.Start(umPosDirActual, m_umPosDirTarget);
     }
 
-    virtual void UndoAnimation(function<void()> const & func)
+    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
     {
         //wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(func);
+        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirStart));
         m_animation.Start(umPosDirActual, m_umPosDirStart);
