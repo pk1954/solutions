@@ -21,9 +21,8 @@ ConnAnimationCommand::ConnAnimationCommand
 )
   : AnimationSequence(win)
 {
-    NNetModelWriterInterface & nmwi      { cmds.GetNMWI() };
-    UPNobList                & modelNobs { nmwi.GetUPNobs() };
-    NobType              const nobType   { determineNobType(modelNobs) };
+    UPNobList   & modelNobs { cmds.GetNMWI().GetUPNobs() };
+    NobType const nobType   { determineNobType(modelNobs) };
     if (nobType.IsUndefinedType())
         return;
     
@@ -61,23 +60,9 @@ ConnAnimationCommand::ConnAnimationCommand
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
     AddPhase(make_unique<IoNeuronsAnimation>(win, m_nobsAnimated, umPntVector));  // after packing
 
-    AddPhase(make_unique<MakeConnAnimation>(win, nmwi, move(m_nobsAnimated)));
+    AddPhase(make_unique<MakeConnAnimation>(win, move(m_nobsAnimated)));
 
     m_bAllOk = true;
-}
-
-void ConnAnimationCommand::Do()
-{
-    //for (auto & it: m_nobsAnimated)
-    //    it->LockDirection(); 
-    AnimationSequence::Do();
-}
-
-void ConnAnimationCommand::Undo()
-{
-    AnimationSequence::Undo();
-    //for (auto & it: m_nobsAnimated)
-    //    it->UnlockDirection(); 
 }
 
 NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const

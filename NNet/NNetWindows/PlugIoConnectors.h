@@ -20,19 +20,17 @@ class PlugIoConnectors : public AnimationCmd
 public:
     PlugIoConnectors
     (
-        NNetModelWriterInterface & nmwi,
-        IoConnector              & conn1, 
-        IoConnector              & conn2,
-        MainWindow               & win
+        IoConnector & conn1, 
+        IoConnector & conn2,
+        MainWindow  & win
    )
       : AnimationCmd(win),
-        m_nmwi(nmwi),
         m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
         m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
     {
         assert(m_inputConnector.Size() == m_outputConnector.Size());
 
-        m_size              = m_inputConnector.Size();
+        m_size = m_inputConnector.Size();
         for (size_t i = 0; i < m_size; ++i)
         {
             MicroMeterPnt const umPos    { m_inputConnector.GetElem(i).GetPos() };
@@ -43,51 +41,50 @@ public:
         }
         m_upOutputNeurons.resize(m_size);
         m_upInputNeurons .resize(m_size);
-        nmwi.CheckModel();
+        m_pNMWI->CheckModel();
     }
 
     virtual void DoAnimation(function<void()> const & targetReachedFunc)
     {
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_nmwi.Push2Model(move(m_upNeurons.back()));
+            m_pNMWI->Push2Model(move(m_upNeurons.back()));
             m_upNeurons.pop_back();
         }
 
-        m_upOutputConnector = m_nmwi.RemoveFromModel<IoConnector>(m_outputConnector);
-        m_upInputConnector  = m_nmwi.RemoveFromModel<IoConnector>(m_inputConnector );
+        m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_outputConnector);
+        m_upInputConnector  = m_pNMWI->RemoveFromModel<IoConnector>(m_inputConnector );
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upOutputNeurons[i] = m_nmwi.RemoveFromModel<IoNeuron>(m_outputConnector.GetElem(i));
-            m_upInputNeurons [i] = m_nmwi.RemoveFromModel<IoNeuron>(m_inputConnector .GetElem(i));
+            m_upOutputNeurons[i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_outputConnector.GetElem(i));
+            m_upInputNeurons [i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_inputConnector .GetElem(i));
         }
 
         if (targetReachedFunc)
             (targetReachedFunc)();
-        m_nmwi.CheckModel();
+        m_pNMWI->CheckModel();
     }
 
     virtual void UndoAnimation(function<void()> const & targetReachedFunc)
     {
         for (size_t i = 0; i < m_size; ++i)
-            m_upNeurons.push_back(m_nmwi.PopFromModel<Neuron>());
+            m_upNeurons.push_back(m_pNMWI->PopFromModel<Neuron>());
 
-        m_upOutputConnector = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upOutputConnector));
-        m_upInputConnector  = m_nmwi.ReplaceInModel<IoConnector, IoConnector>(move(m_upInputConnector ));
+        m_upOutputConnector = m_pNMWI->ReplaceInModel<IoConnector, IoConnector>(move(m_upOutputConnector));
+        m_upInputConnector  = m_pNMWI->ReplaceInModel<IoConnector, IoConnector>(move(m_upInputConnector ));
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upOutputNeurons[i] = m_nmwi.ReplaceInModel<IoNeuron, IoNeuron>(move(m_upOutputNeurons[i]));
-            m_upInputNeurons [i] = m_nmwi.ReplaceInModel<IoNeuron, IoNeuron>(move(m_upInputNeurons [i]));
+            m_upOutputNeurons[i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upOutputNeurons[i]));
+            m_upInputNeurons [i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upInputNeurons [i]));
         }
 
         if (targetReachedFunc)
             (targetReachedFunc)();
-        m_nmwi.CheckModel();
+        m_pNMWI->CheckModel();
     }
 
 private:
 
-    NNetModelWriterInterface     & m_nmwi;
     size_t                         m_size;
 
     IoConnector            const & m_inputConnector;

@@ -18,7 +18,6 @@ void CommandStack::Initialize
 {
     m_pNMWI = pModel;
     m_pStaticModelObservable = pStaticModelObservable;
-    Command::SetNNetModelWriterInterface(pModel);
 }
 
 void CommandStack::Clear()

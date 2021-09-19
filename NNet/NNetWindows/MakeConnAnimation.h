@@ -23,12 +23,10 @@ class MakeConnAnimation : public AnimationCmd
 public:
     MakeConnAnimation
     (
-        MainWindow               & win,
-        NNetModelWriterInterface & nmwi,
-        vector<IoNeuron *>      && list
+        MainWindow          & win,
+        vector<IoNeuron *> && list
    )
-      : AnimationCmd(win),
-        m_nmwi(nmwi)
+      : AnimationCmd(win)
     {
         if (list.front()->IsInputNeuron())
             m_upIoConnector = make_unique<InputConnector>(move(list));
@@ -38,17 +36,17 @@ public:
 
     virtual void DoAnimation(function<void()> const & targetReachedFunc)
     {
-        wcout << L'#' << __FUNCDNAME__ << endl;
-        m_nmwi.DeselectAllNobs();
+//        wcout << L'#' << __FUNCDNAME__ << endl;
+        m_pNMWI->DeselectAllNobs();
         m_upIoConnector->SetParentPointers();
-        m_nmwi.Push2Model(move(m_upIoConnector));
+        m_pNMWI->Push2Model(move(m_upIoConnector));
         (targetReachedFunc)();
     }
 
     virtual void UndoAnimation(function<void()> const & targetReachedFunc)
     {
-        wcout << L'#' << __FUNCDNAME__ << endl;
-        m_upIoConnector = move(m_nmwi.PopFromModel<IoConnector>());
+//        wcout << L'#' << __FUNCDNAME__ << endl;
+        m_upIoConnector = move(m_pNMWI->PopFromModel<IoConnector>());
         m_upIoConnector->ClearParentPointers();
         m_upIoConnector->UnlockDirection();
         (targetReachedFunc)();
@@ -56,6 +54,5 @@ public:
 
 private:
 
-    unique_ptr<IoConnector>    m_upIoConnector {};  
-    NNetModelWriterInterface & m_nmwi;
+    unique_ptr<IoConnector> m_upIoConnector {};  
 };

@@ -64,10 +64,19 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win
 		upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
 		break;
 	case NobType::Value::inputNeuron:
+		if (m_pNMRI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
+			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
+		else if (m_pNMRI->GetNobType(idSrc).IsOutputNeuronType())
+			upCmd = make_unique<PlugIoNeuronAnimation>(* m_pNMWI, idSrc, idDst, win);
+		else
+			assert(false);
+		break;
 	case NobType::Value::outputNeuron:
 		if (m_pNMRI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
 			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMRI->GetNobType(idSrc).IsIoNeuronType())
+		else if (m_pNMRI->GetNobType(idSrc).IsOutputNeuronType())  // connect two output neurons
+			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
+		else if (m_pNMRI->GetNobType(idSrc).IsInputNeuronType())
 			upCmd = make_unique<PlugIoNeuronAnimation>(* m_pNMWI, idSrc, idDst, win);
 		else
 			assert(false);

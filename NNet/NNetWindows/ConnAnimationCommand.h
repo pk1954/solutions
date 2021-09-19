@@ -18,9 +18,6 @@ public:
     ConnAnimationCommand(MainWindow  &, WinCommands &);
     virtual ~ConnAnimationCommand() {};
 
-    virtual void Do();
-    virtual void Undo();
-
     bool const IsCmdOk() { return m_bAllOk; }
 
 private:

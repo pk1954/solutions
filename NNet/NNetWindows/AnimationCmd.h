@@ -9,6 +9,8 @@
 
 using std::function;
 
+class NNetModelWriterInterface;
+
 class AnimationCmd
 {
 public:
@@ -30,8 +32,15 @@ public:
             (pAnimCmd->m_targetReachedFunc)(); 
     };
 
+    static void SetNNetModelWriterInterface(NNetModelWriterInterface* const pNMWI)
+    {
+        m_pNMWI = pNMWI;
+    }
+
 protected:
   
+    inline static NNetModelWriterInterface * m_pNMWI { nullptr };
+
     void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
 
     APP_PROC m_applicationFunc

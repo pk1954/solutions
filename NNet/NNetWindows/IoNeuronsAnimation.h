@@ -30,7 +30,7 @@ public:
 
     virtual void DoAnimation(function<void()> const & func)
     {
-        wcout << L'#' << __FUNCDNAME__ << endl;
+//        wcout << L'#' << __FUNCDNAME__ << endl;
         SetTargetReachedFunc(func);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         for (auto & it: m_nobsAnimated)
@@ -41,7 +41,7 @@ public:
 
     virtual void UndoAnimation(function<void()> const & func)
     {
-        wcout << L'#' << __FUNCDNAME__ << endl;
+//        wcout << L'#' << __FUNCDNAME__ << endl;
         SetTargetReachedFunc(func);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorStart));
