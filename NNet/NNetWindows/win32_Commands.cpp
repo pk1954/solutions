@@ -37,7 +37,7 @@ void WinCommands::Initialize
 	m_pNMWI     = pNMWI;
 }
 
-bool WinCommands::MakeIoConnector(MainWindow & win)
+bool WinCommands::MakeIoConnector(RootWindow & win)
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
@@ -48,7 +48,7 @@ bool WinCommands::MakeIoConnector(MainWindow & win)
 	return bCmdOk;
 }
 
-void WinCommands::Connect(NobId const idSrc, NobId const idDst, MainWindow & win)
+void WinCommands::Connect(NobId const idSrc, NobId const idDst, RootWindow & win)
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;

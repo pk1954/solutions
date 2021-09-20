@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <algorithm>
 #include "win32_Commands.h"
+#include "win32_rootWindow.h"
 #include "NNetModelWriterInterface.h"
 #include "IoNeuron.h"
 #include "IoNeuronsAnimation.h"
@@ -16,7 +17,7 @@ using std::sort;
 
 ConnAnimationCommand::ConnAnimationCommand
 ( 
-    MainWindow  & win,
+    RootWindow  & win,
     WinCommands & cmds
 )
   : AnimationSequence(win)

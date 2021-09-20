@@ -33,7 +33,7 @@ public:
 
     static void Initialize(RootWindow * const pWin)
     {
-        m_pWin  = pWin;
+        m_pWin = pWin;
     }
 
 protected:

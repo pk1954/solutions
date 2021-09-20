@@ -93,12 +93,12 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     else if (wmId == IDM_BLOCK_UI)
     {
         m_bBlockedUI = (lParam != 0);
-        wcout << L'#';
-        if (m_bBlockedUI)
-            wcout << L"Block UI";
-        else 
-            wcout << L"Unblock UI";
-        wcout << endl;
+        //wcout << L'#';
+        //if (m_bBlockedUI)
+        //    wcout << L"Block UI";
+        //else 
+        //    wcout << L"Unblock UI";
+        //wcout << endl;
     }
 
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI

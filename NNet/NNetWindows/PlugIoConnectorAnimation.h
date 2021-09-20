@@ -11,6 +11,7 @@
 #include "SingleNobAnimation.h"
 #include "PlugIoConnectors.h"
 
+class RootWindow;
 class NNetModelWriterInterface;
 
 class PlugIoConnectorAnimation : public AnimationSequence
@@ -21,7 +22,7 @@ public:
         NNetModelWriterInterface & nmwi,
         NobId                      idAnimated,
         NobId                      idTarget,
-        MainWindow               & win
+        RootWindow               & win
     )
       : AnimationSequence(win)
     {

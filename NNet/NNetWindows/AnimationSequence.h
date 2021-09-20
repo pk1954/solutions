@@ -4,17 +4,15 @@
 
 #pragma once
 
-#include "SelectionCommand.h"
+#include "Command.h"
 #include "AnimationCmd.h"
 
-class NNetModelWriterInterface;
-class MainWindow;
-class Nob;
+class RootWindow;
 
-class AnimationSequence : public SelectionCommand
+class AnimationSequence : public Command
 {
 public:
-    AnimationSequence(MainWindow &);
+    AnimationSequence(RootWindow &);
     
     virtual void Do  ();
     virtual void Undo();
@@ -24,7 +22,7 @@ protected:
 
 private:
     unsigned int m_uiPhase { 0 };
-    MainWindow & m_win;
+    RootWindow & m_win;
 
     vector<unique_ptr<AnimationCmd>> m_phases { };  
 

@@ -5,17 +5,19 @@
 #pragma once
 
 #include <vector>
+#include "IoNeuron.h"
+#include "UPNobList.h"
 #include "AnimationSequence.h"
 
 using std::vector;
 
 class WinCommands;
-class MainWindow;
+class RootWindow;
 
 class ConnAnimationCommand : public AnimationSequence
 {
 public:
-    ConnAnimationCommand(MainWindow  &, WinCommands &);
+    ConnAnimationCommand(RootWindow  &, WinCommands &);
     virtual ~ConnAnimationCommand() {};
 
     bool const IsCmdOk() { return m_bAllOk; }

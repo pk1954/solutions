@@ -15,7 +15,7 @@ class NobIdList;
 class NNetModelCommands;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
-class MainWindow;
+class RootWindow;
 
 using std::wcout;
 using std::wostream;
@@ -32,8 +32,8 @@ public:
         NNetModelWriterInterface * const
    );
 
-    void Connect      (NobId const, NobId const, MainWindow &);
-    bool MakeIoConnector(MainWindow &);
+    void Connect        (NobId const, NobId const, RootWindow &);
+    bool MakeIoConnector(RootWindow &);
 
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
 

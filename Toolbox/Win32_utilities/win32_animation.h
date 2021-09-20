@@ -65,15 +65,15 @@ private:
     ANIM_PAR m_target   {};
     ANIM_PAR m_distance {};
 
-    SmoothMoveFp<float> m_smoothMove;
-    APP_PROC const      m_appProc;
-    DWORD    const      m_dwFlags;
-    SRWLOCK             m_srwlData       { SRWLOCK_INIT };
-    TP_TIMER          * m_pTpTimer       { nullptr };
-    unsigned int        m_uiMsPeriod     { 50 };
-    unsigned int        m_uiNrOfSteps    { 20 };
-    HWND                m_hwnd           { nullptr };
-    bool                m_bTargetReached { false };
+    SmoothMoveFp   m_smoothMove;
+    APP_PROC const m_appProc;
+    DWORD    const m_dwFlags;
+    SRWLOCK        m_srwlData       { SRWLOCK_INIT };
+    TP_TIMER     * m_pTpTimer       { nullptr };
+    unsigned int   m_uiMsPeriod     { 50 };
+    unsigned int   m_uiNrOfSteps    { 20 };
+    HWND           m_hwnd           { nullptr };
+    bool           m_bTargetReached { false };
 
     void setActual(ANIM_PAR const newVal)
     {

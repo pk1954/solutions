@@ -4,17 +4,16 @@
 
 #include "stdafx.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_mainWindow.h"
+#include "win32_rootWindow.h"
 #include "SingleNobAnimation.h"
 #include "AnimationSequence.h"
 
-AnimationSequence::AnimationSequence(MainWindow & win)
+AnimationSequence::AnimationSequence(RootWindow & win)
   : m_win(win)
 {}
 
 void AnimationSequence::Do()
 {
-    SelectionCommand::Do();
     m_uiPhase = 0;
     doPhase();
 }
@@ -23,7 +22,6 @@ void AnimationSequence::Undo()
 {
     m_uiPhase = Cast2Int(m_phases.size());
     undoPhase();
-    SelectionCommand::Undo();
 }
 
 void AnimationSequence::AddPhase(unique_ptr<AnimationCmd> upCmd)
@@ -43,7 +41,7 @@ void AnimationSequence::UnblockUI()
 
 void AnimationSequence::doPhase() // runs in UI thread
 {
-    wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
+    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
     if (m_uiPhase == 0)
         BlockUI();
     if (m_uiPhase < m_phases.size())
@@ -55,7 +53,7 @@ void AnimationSequence::doPhase() // runs in UI thread
 
 void AnimationSequence::undoPhase() // runs in UI thread
 {
-    wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
+    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
     if (m_uiPhase >= m_phases.size())
         BlockUI();
     if (m_uiPhase > 0)

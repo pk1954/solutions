@@ -12,6 +12,7 @@
 #include "AnimationSequence.h"
 #include "PlugIoNeurons.h"
 
+class RootWindow;
 class NNetModelWriterInterface;
 
 class PlugIoNeuronAnimation : public AnimationSequence
@@ -22,7 +23,7 @@ public:
         NNetModelWriterInterface & nmwi,
         NobId                      idAnimated,
         NobId                      idTarget,
-        MainWindow               & win
+        RootWindow               & win
     )
       : AnimationSequence(win),
         m_nobAnimated( * nmwi.GetNobPtr<IoNeuron *>(idAnimated) ),
