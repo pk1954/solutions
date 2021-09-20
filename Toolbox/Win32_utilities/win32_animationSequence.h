@@ -9,10 +9,10 @@
 
 class RootWindow;
 
-class AnimationSequence : public BaseCommand
+class AnimationSequence : public AnimationCmd
 {
 public:
-    AnimationSequence(RootWindow &);
+    AnimationSequence();
     
     virtual void Do  ();
     virtual void Undo();
@@ -25,7 +25,6 @@ protected:
 
 private:
     unsigned int m_uiPhase { 0 };
-    RootWindow & m_win;
 
     vector<unique_ptr<AnimationCmd>> m_phases { };  
 

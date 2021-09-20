@@ -6,8 +6,7 @@
 #include "win32_rootWindow.h"
 #include "win32_animationSequence.h"
 
-AnimationSequence::AnimationSequence(RootWindow & win)
-  : m_win(win)
+AnimationSequence::AnimationSequence()
 {}
 
 void AnimationSequence::Do()
@@ -29,12 +28,12 @@ void AnimationSequence::AddPhase(unique_ptr<AnimationCmd> upCmd)
 
 void AnimationSequence::BlockUI()   
 { 
-    m_win.SendCommand2Application(IDM_BLOCK_UI, true);  
+    m_pWin->SendCommand2Application(IDM_BLOCK_UI, true);  
 };
 
 void AnimationSequence::UnblockUI()
 { 
-    m_win.SendCommand2Application(IDM_BLOCK_UI, false); 
+    m_pWin->SendCommand2Application(IDM_BLOCK_UI, false); 
 };
 
 void AnimationSequence::DoPhase() // runs in UI thread
@@ -46,11 +45,11 @@ void AnimationSequence::DoPhase() // runs in UI thread
     {
         AnimationCmd & animCmd { * m_phases[m_uiPhase++] };
         animCmd.SetTargetReachedFunc( [&](){ DoPhase(); } );
-        animCmd.DoAnimation();
+        animCmd.Do();
     }
     else
         UnblockUI();
-    m_win.Notify(false);
+    UpdateUI();
 }
 
 void AnimationSequence::UndoPhase() // runs in UI thread
@@ -62,9 +61,9 @@ void AnimationSequence::UndoPhase() // runs in UI thread
     {
         AnimationCmd & animCmd { * m_phases[--m_uiPhase] };
         animCmd.SetTargetReachedFunc( [&](){ UndoPhase(); } );
-        animCmd.UndoAnimation();
+        animCmd.Undo();
     }
     else
         UnblockUI();
-    m_win.Notify(false);
+    UpdateUI();
 }

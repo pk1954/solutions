@@ -42,7 +42,7 @@ public:
         m_pNMWI->CheckModel();
     }
 
-    virtual void DoAnimation()
+    virtual void Do()
     {
         for (size_t i = 0; i < m_size; ++i)
         {
@@ -60,7 +60,7 @@ public:
         (m_targetReachedFunc)();
     }
 
-    virtual void UndoAnimation()
+    virtual void Undo()
     {
         for (size_t i = 0; i < m_size; ++i)
             m_upNeurons.push_back(m_pNMWI->PopFromModel<Neuron>());

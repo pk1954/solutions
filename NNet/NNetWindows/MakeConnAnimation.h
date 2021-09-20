@@ -29,7 +29,7 @@ public:
             m_upIoConnector = make_unique<OutputConnector>(move(list));
     }
 
-    virtual void DoAnimation()
+    virtual void Do()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
         m_pNMWI->DeselectAllNobs();
@@ -38,7 +38,7 @@ public:
         (m_targetReachedFunc)();
     }
 
-    virtual void UndoAnimation()
+    virtual void Undo()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
         m_upIoConnector = move(m_pNMWI->PopFromModel<IoConnector>());

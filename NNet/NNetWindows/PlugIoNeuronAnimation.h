@@ -22,11 +22,9 @@ public:
     (
         NNetModelWriterInterface & nmwi,
         NobId                      idAnimated,
-        NobId                      idTarget,
-        RootWindow               & win
+        NobId                      idTarget
     )
-      : AnimationSequence(win),
-        m_nobAnimated( * nmwi.GetNobPtr<IoNeuron *>(idAnimated) ),
+      : m_nobAnimated( * nmwi.GetNobPtr<IoNeuron *>(idAnimated) ),
         m_nobTarget  ( * nmwi.GetNobPtr<IoNeuron *>(idTarget) )
     {
         AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 3.0_MicroMeter)));

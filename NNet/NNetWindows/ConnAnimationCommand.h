@@ -17,7 +17,7 @@ class RootWindow;
 class ConnAnimationCommand : public AnimationSequence
 {
 public:
-    ConnAnimationCommand(RootWindow  &, WinCommands &);
+    ConnAnimationCommand(WinCommands &);
     virtual ~ConnAnimationCommand() {};
 
     bool const IsCmdOk() { return m_bAllOk; }

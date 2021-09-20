@@ -15,12 +15,7 @@
 using std::make_unique;
 using std::sort;
 
-ConnAnimationCommand::ConnAnimationCommand
-( 
-    RootWindow  & win,
-    WinCommands & cmds
-)
-  : AnimationSequence(win)
+ConnAnimationCommand::ConnAnimationCommand(WinCommands & cmds)
 {
     UPNobList   & modelNobs { cmds.GetNMWI().GetUPNobs() };
     NobType const nobType   { determineNobType(modelNobs) };

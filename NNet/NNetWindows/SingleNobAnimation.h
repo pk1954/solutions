@@ -27,7 +27,7 @@ public:
         m_umPosDirTarget(umPosDirTarget)
     {}
 
-    virtual void DoAnimation()
+    virtual void Do()
     {
         //wcout << L'#' << __FUNCDNAME__ << endl;
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
@@ -35,7 +35,7 @@ public:
         m_animation.Start(umPosDirActual, m_umPosDirTarget);
     }
 
-    virtual void UndoAnimation()
+    virtual void Undo()
     {
         //wcout << L'#' << __FUNCDNAME__ << endl;
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);

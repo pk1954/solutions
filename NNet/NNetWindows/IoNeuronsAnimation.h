@@ -26,7 +26,7 @@ public:
         m_umPntVectorTarget(umPntVectorTarget)
     {}
 
-    virtual void DoAnimation()
+    virtual void Do()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
@@ -36,7 +36,7 @@ public:
         m_animation.Start(umPntVectorActual, m_umPntVectorTarget);
     }
 
-    virtual void UndoAnimation()
+    virtual void Undo()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);

@@ -6,19 +6,17 @@
 
 #include "win32_util_resource.h"
 #include "win32_animation.h"
+#include "BaseCommand.h"
 
 using std::function;
 
 class RootWindow;
 class NNetModelWriterInterface;
 
-class AnimationCmd
+class AnimationCmd : public BaseCommand
 {
 public:
     AnimationCmd();
-
-    virtual void DoAnimation  () = 0;
-    virtual void UndoAnimation() = 0;
 
     virtual void UpdateUI() 
     { 
@@ -40,7 +38,6 @@ protected:
 
     function<void()> m_targetReachedFunc { nullptr };
 
-private:
     inline static RootWindow * m_pWin { nullptr };
 
 };

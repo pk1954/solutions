@@ -21,10 +21,8 @@ public:
     (
         NNetModelWriterInterface & nmwi,
         NobId                      idAnimated,
-        NobId                      idTarget,
-        RootWindow               & win
+        NobId                      idTarget
     )
-      : AnimationSequence(win)
     {
         IoConnector & nobAnimated { * nmwi.GetNobPtr<IoConnector *>(idAnimated) };
         IoConnector & nobTarget   { * nmwi.GetNobPtr<IoConnector *>(idTarget) };
