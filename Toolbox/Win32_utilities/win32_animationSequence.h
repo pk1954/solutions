@@ -1,4 +1,4 @@
-// AnimationSequence.h
+// win32_animationSequence.h
 //
 // Win32_utilities
 
@@ -17,6 +17,9 @@ public:
     virtual void Do  ();
     virtual void Undo();
 
+    void DoPhase();
+    void UndoPhase();
+
 protected:
     void AddPhase(unique_ptr<AnimationCmd>);
 
@@ -28,7 +31,4 @@ private:
 
     void BlockUI();
     void UnblockUI();
-
-    void doPhase();
-    void undoPhase();
 };

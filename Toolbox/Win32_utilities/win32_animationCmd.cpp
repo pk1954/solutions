@@ -3,8 +3,9 @@
 // Win32_utilities
 
 #include "stdafx.h"
-#include "win32_animationCmd.h"
 #include "win32_rootWindow.h"
+#include "win32_animationSequence.h"
+#include "win32_animationCmd.h"
 
 AnimationCmd::AnimationCmd()
 {

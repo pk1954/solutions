@@ -29,22 +29,22 @@ public:
             m_upIoConnector = make_unique<OutputConnector>(move(list));
     }
 
-    virtual void DoAnimation(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
         m_pNMWI->DeselectAllNobs();
         m_upIoConnector->SetParentPointers();
         m_pNMWI->Push2Model(move(m_upIoConnector));
-        (targetReachedFunc)();
+        (m_targetReachedFunc)();
     }
 
-    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
         m_upIoConnector = move(m_pNMWI->PopFromModel<IoConnector>());
         m_upIoConnector->ClearParentPointers();
         m_upIoConnector->UnlockDirection();
-        (targetReachedFunc)();
+        (m_targetReachedFunc)();
     }
 
 private:

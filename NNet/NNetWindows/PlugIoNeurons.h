@@ -31,15 +31,15 @@ public:
         m_upNeuron->SetOutgoing(m_nobAnimated.IsInputNob () ? m_nobAnimated : m_nobTarget);
     }
 
-    virtual void DoAnimation(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation()
     {
         m_pNMWI->Push2Model(move(m_upNeuron)); 
         m_upNobAnimated = m_pNMWI->RemoveFromModel<IoNeuron>(m_nobAnimated);
         m_upNobTarget   = m_pNMWI->RemoveFromModel<IoNeuron>(m_nobTarget);
-        (targetReachedFunc)();
+        (m_targetReachedFunc)();
     }
 
-    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation()
     {
         m_upNeuron = m_pNMWI->PopFromModel<Neuron>();
         m_upNobAnimated->Reconnect();
@@ -47,7 +47,7 @@ public:
         m_upNobAnimated = m_pNMWI->ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));
         m_upNobTarget   = m_pNMWI->ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobTarget));
         m_pNMWI->DeselectAllNobs();
-        (targetReachedFunc)();
+        (m_targetReachedFunc)();
     }
 
 private:

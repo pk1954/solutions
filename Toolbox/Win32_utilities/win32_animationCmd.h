@@ -17,8 +17,8 @@ class AnimationCmd
 public:
     AnimationCmd();
 
-    virtual void DoAnimation  (function<void()> const &) = 0;
-    virtual void UndoAnimation(function<void()> const &) = 0;
+    virtual void DoAnimation  () = 0;
+    virtual void UndoAnimation() = 0;
 
     virtual void UpdateUI() 
     { 
@@ -32,14 +32,15 @@ public:
         m_pWin = pWin;
     }
 
-protected:
-  
     void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
 
+protected:
+  
     APP_PROC m_applicationFunc;
+
+    function<void()> m_targetReachedFunc { nullptr };
 
 private:
     inline static RootWindow * m_pWin { nullptr };
 
-    function<void()> m_targetReachedFunc { nullptr };
 };

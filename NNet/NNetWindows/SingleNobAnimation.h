@@ -27,19 +27,17 @@ public:
         m_umPosDirTarget(umPosDirTarget)
     {}
 
-    virtual void DoAnimation(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation()
     {
         //wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirTarget));
         m_animation.Start(umPosDirActual, m_umPosDirTarget);
     }
 
-    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation()
     {
         //wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPosDir const umPosDirActual(m_nobAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPosDirActual, m_umPosDirStart));
         m_animation.Start(umPosDirActual, m_umPosDirStart);

@@ -42,7 +42,7 @@ public:
         m_pNMWI->CheckModel();
     }
 
-    virtual void DoAnimation(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation()
     {
         for (size_t i = 0; i < m_size; ++i)
         {
@@ -57,10 +57,10 @@ public:
             m_upOutputNeurons[i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_outputConnector.GetElem(i));
             m_upInputNeurons [i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_inputConnector .GetElem(i));
         }
-        (targetReachedFunc)();
+        (m_targetReachedFunc)();
     }
 
-    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation()
     {
         for (size_t i = 0; i < m_size; ++i)
             m_upNeurons.push_back(m_pNMWI->PopFromModel<Neuron>());
@@ -72,7 +72,7 @@ public:
             m_upOutputNeurons[i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upOutputNeurons[i]));
             m_upInputNeurons [i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upInputNeurons [i]));
         }
-        (targetReachedFunc)();
+        (m_targetReachedFunc)();
     }
 
 private:

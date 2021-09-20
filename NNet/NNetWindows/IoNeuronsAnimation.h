@@ -26,10 +26,9 @@ public:
         m_umPntVectorTarget(umPntVectorTarget)
     {}
 
-    virtual void DoAnimation(function<void()> const & targetReachedFunc)
+    virtual void DoAnimation()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         for (auto & it: m_nobsAnimated)
             it->LockDirection(); 
@@ -37,10 +36,9 @@ public:
         m_animation.Start(umPntVectorActual, m_umPntVectorTarget);
     }
 
-    virtual void UndoAnimation(function<void()> const & targetReachedFunc)
+    virtual void UndoAnimation()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
-        SetTargetReachedFunc(targetReachedFunc);
         MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
         m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorStart));
         m_animation.Start(umPntVectorActual, m_umPntVectorStart);
