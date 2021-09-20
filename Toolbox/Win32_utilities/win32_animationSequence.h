@@ -1,15 +1,15 @@
 // AnimationSequence.h
 //
-// NNetWindows
+// Win32_utilities
 
 #pragma once
 
-#include "Command.h"
+#include "BaseCommand.h"
 #include "win32_animationCmd.h"
 
 class RootWindow;
 
-class AnimationSequence : public Command
+class AnimationSequence : public BaseCommand
 {
 public:
     AnimationSequence(RootWindow &);

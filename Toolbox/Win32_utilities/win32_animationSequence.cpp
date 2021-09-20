@@ -1,12 +1,10 @@
 // AnimationSequence.cpp
 //
-// NNetWindows
+// Win32_utilities
 
 #include "stdafx.h"
-#include "NNetModelWriterInterface.h"
 #include "win32_rootWindow.h"
-#include "SingleNobAnimation.h"
-#include "AnimationSequence.h"
+#include "win32_animationSequence.h"
 
 AnimationSequence::AnimationSequence(RootWindow & win)
   : m_win(win)

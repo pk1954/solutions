@@ -5,10 +5,11 @@
 #pragma once
 
 #include "NobId.h"
+#include "BaseCommand.h"
 
 class NNetModelWriterInterface;
 
-class Command
+class Command : public BaseCommand
 {
 public:
     virtual ~Command()
@@ -18,14 +19,6 @@ public:
     {
         m_pNMWI = pNMWI;
     }
-
-    virtual void Do  () = 0;
-    virtual void Undo() = 0;
-
-    virtual bool const CombineCommands(Command const & src) 
-    { 
-        return false; 
-    };
 
     virtual NobId const GetAffectedNob() const
     {

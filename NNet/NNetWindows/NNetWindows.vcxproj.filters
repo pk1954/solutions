@@ -87,9 +87,6 @@
     <ClCompile Include="ConnAnimationCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationSequence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -192,9 +189,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationSequence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IoNeuronsAnimation.h">

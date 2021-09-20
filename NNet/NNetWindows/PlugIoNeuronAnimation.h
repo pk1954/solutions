@@ -9,7 +9,7 @@
 #include "Neuron.h"
 #include "IoNeuron.h"
 #include "SingleNobAnimation.h"
-#include "AnimationSequence.h"
+#include "win32_animationSequence.h"
 #include "PlugIoNeurons.h"
 
 class RootWindow;

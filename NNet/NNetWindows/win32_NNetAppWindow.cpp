@@ -22,6 +22,7 @@
 // infrastructure
 
 #include "util.h"
+#include "Command.h"
 #include "ObserverInterface.h"
 #include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"

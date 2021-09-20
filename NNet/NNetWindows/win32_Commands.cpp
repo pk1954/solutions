@@ -53,7 +53,7 @@ void WinCommands::Connect(NobId const idSrc, NobId const idDst, RootWindow & win
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
 
-	unique_ptr<Command> upCmd;
+	unique_ptr<BaseCommand> upCmd;
 	switch (m_pNMRI->GetNobType(idDst).GetValue())
 	{
 	case NobType::Value::pipe:

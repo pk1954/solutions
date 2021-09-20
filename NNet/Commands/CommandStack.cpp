@@ -33,7 +33,7 @@ void CommandStack::clearRedoStack()
     assert(RedoStackEmpty());
 }
 
-void CommandStack::Push(unique_ptr<Command> pCmd)
+void CommandStack::Push(unique_ptr<BaseCommand> pCmd)
 {
     if (UndoStackEmpty() || ! (typeid(previousCmd()) == typeid(*pCmd)) || ! previousCmd().CombineCommands(*pCmd))
     {
@@ -42,7 +42,7 @@ void CommandStack::Push(unique_ptr<Command> pCmd)
     }
 }
 
-void CommandStack::PushCommand(unique_ptr<Command> pCmd)
+void CommandStack::PushCommand(unique_ptr<BaseCommand> pCmd)
 {
     if (pCmd)
     {

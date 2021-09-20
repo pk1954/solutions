@@ -7,7 +7,7 @@
 #include <vector>
 #include "IoNeuron.h"
 #include "UPNobList.h"
-#include "AnimationSequence.h"
+#include "win32_animationSequence.h"
 
 using std::vector;
 

@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "Nob.h"
 #include "IoConnector.h"
-#include "AnimationSequence.h"
+#include "win32_animationSequence.h"
 #include "SingleNobAnimation.h"
 #include "PlugIoConnectors.h"
 
