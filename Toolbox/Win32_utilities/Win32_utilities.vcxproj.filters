@@ -114,9 +114,6 @@
     <ClInclude Include="win32_animationCmd.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_animationSequence.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">
@@ -177,9 +174,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_animationCmd.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_animationSequence.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

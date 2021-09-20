@@ -9,13 +9,13 @@
 #include "Neuron.h"
 #include "IoNeuron.h"
 #include "SingleNobAnimation.h"
-#include "win32_animationSequence.h"
+#include "win32_animationCmd.h"
 #include "PlugIoNeurons.h"
 
 class RootWindow;
 class NNetModelWriterInterface;
 
-class PlugIoNeuronAnimation : public AnimationSequence
+class PlugIoNeuronAnimation : public AnimationCmd
 {
 public:
     PlugIoNeuronAnimation
@@ -37,12 +37,12 @@ public:
     virtual void Do()
     {
         m_nobAnimated.LockDirection(); 
-        AnimationSequence::Do();
+        AnimationCmd::Do();
     }
 
     virtual void Undo()
     {
-        AnimationSequence::Undo();
+        AnimationCmd::Undo();
         m_nobAnimated.UnlockDirection();
     }
 

@@ -7,14 +7,14 @@
 #include "MoreTypes.h"
 #include "Nob.h"
 #include "IoConnector.h"
-#include "win32_animationSequence.h"
+#include "win32_animationCmd.h"
 #include "SingleNobAnimation.h"
 #include "PlugIoConnectors.h"
 
 class RootWindow;
 class NNetModelWriterInterface;
 
-class PlugIoConnectorAnimation : public AnimationSequence
+class PlugIoConnectorAnimation : public AnimationCmd
 {
 public:
     PlugIoConnectorAnimation
