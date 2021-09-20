@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "AnimationCmd.h"
+#include "win32_animationCmd.h"
 
 class NNetModelWriterInterface;
 

@@ -1,19 +1,19 @@
-// AnimationCmd.cpp
+// win32_animationCmd.cpp
 //
-// NNetWindows
+// Win32_utilities
 
 #include "stdafx.h"
-#include "AnimationCmd.h"
+#include "win32_animationCmd.h"
+#include "win32_rootWindow.h"
 
-AnimationCmd::AnimationCmd(MainWindow & win)
-    : m_win(win)
+AnimationCmd::AnimationCmd()
 {
     m_applicationFunc =
     [&](bool const bTargetReached)
     { 
         SendMessage
         (
-            m_win.GetWindowHandle(), 
+            m_pWin->GetWindowHandle(), 
             WM_APP_UI_CALL, 
             static_cast<WPARAM>(bTargetReached), 
             reinterpret_cast<LPARAM>(this)

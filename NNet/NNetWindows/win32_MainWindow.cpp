@@ -15,7 +15,7 @@
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "ConnAnimationCommand.h"
-#include "AnimationCmd.h"
+#include "win32_animationCmd.h"
 #include "win32_Commands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"

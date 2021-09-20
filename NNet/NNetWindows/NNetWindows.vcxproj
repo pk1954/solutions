@@ -601,7 +601,6 @@
     <ClCompile Include="win32_triggerSoundDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnimationCmd.h" />
     <ClInclude Include="AnimationSequence.h" />
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="ConnAnimationCommand.h" />

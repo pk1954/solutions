@@ -164,6 +164,7 @@
     <ClInclude Include="win32_aboutBox.h" />
     <ClInclude Include="win32_actionTimer.h" />
     <ClInclude Include="win32_animation.h" />
+    <ClInclude Include="win32_animationCmd.h" />
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
@@ -199,6 +200,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="win32_aboutBox.cpp" />
+    <ClCompile Include="win32_animationCmd.cpp" />
     <ClCompile Include="win32_baseDialog.cpp" />
     <ClCompile Include="win32_baseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />

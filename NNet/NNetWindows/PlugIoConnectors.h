@@ -8,7 +8,7 @@
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
 #include "IoConnector.h"
-#include "AnimationCmd.h"
+#include "win32_animationCmd.h"
 
 using std::vector;
 using std::unique_ptr;
