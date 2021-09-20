@@ -22,7 +22,9 @@ public:
 
 	IoNeuron(BaseKnot const & src, NobType const type)
 		: Neuron(src.GetPos(), type)
-	{}
+	{
+		SetId(src.GetId());
+	}
 
 	void Check() const { Neuron::Check(); }
 
