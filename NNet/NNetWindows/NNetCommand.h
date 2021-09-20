@@ -13,13 +13,8 @@ class NNetCommand : public AnimationCmd
 public:
     NNetCommand() {}
 
-    static void Initialize
-    (
-        NNetModelWriterInterface * const pNMWI,
-        RootWindow               * const pWin
-    )
+    static void Initialize(NNetModelWriterInterface * const pNMWI)
     {
-        AnimationCmd::Initialize(pWin);
         m_pNMWI = pNMWI;
     }
 

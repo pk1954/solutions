@@ -22,7 +22,7 @@ public:
     (
         IoConnector & conn1, 
         IoConnector & conn2
-   )
+    )
       : m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
         m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
     {

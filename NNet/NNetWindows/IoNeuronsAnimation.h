@@ -20,7 +20,7 @@ public:
     (
         vector<IoNeuron *>        & nobs,
         MicroMeterPntVector const & umPntVectorTarget
-   )
+    )
       : m_nobsAnimated(nobs),
         m_umPntVectorStart(nobs),
         m_umPntVectorTarget(umPntVectorTarget)

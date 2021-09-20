@@ -21,7 +21,7 @@ public:
     (
         Nob                    & nobAnimated,
         MicroMeterPosDir const & umPosDirTarget
-   )
+    )
       : m_nobAnimated(nobAnimated),
         m_umPosDirStart(nobAnimated.GetPosDir()),
         m_umPosDirTarget(umPosDirTarget)

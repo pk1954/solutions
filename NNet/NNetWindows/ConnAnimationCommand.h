@@ -7,14 +7,14 @@
 #include <vector>
 #include "IoNeuron.h"
 #include "UPNobList.h"
-#include "win32_animationCmd.h"
+#include "NNetCommand.h"
 
 using std::vector;
 
 class WinCommands;
 class RootWindow;
 
-class ConnAnimationCommand : public AnimationCmd
+class ConnAnimationCommand : public NNetCommand
 {
 public:
     ConnAnimationCommand(WinCommands &);

@@ -9,23 +9,22 @@
 #include "Neuron.h"
 #include "IoNeuron.h"
 #include "SingleNobAnimation.h"
-#include "win32_animationCmd.h"
+#include "NNetCommand.h"
 #include "PlugIoNeurons.h"
 
 class RootWindow;
 class NNetModelWriterInterface;
 
-class PlugIoNeuronAnimation : public AnimationCmd
+class PlugIoNeuronAnimation : public NNetCommand
 {
 public:
     PlugIoNeuronAnimation
     (
-        NNetModelWriterInterface & nmwi,
-        NobId                      idAnimated,
-        NobId                      idTarget
+        NobId idAnimated,
+        NobId idTarget
     )
-      : m_nobAnimated( * nmwi.GetNobPtr<IoNeuron *>(idAnimated) ),
-        m_nobTarget  ( * nmwi.GetNobPtr<IoNeuron *>(idTarget) )
+      : m_nobAnimated( * m_pNMWI->GetNobPtr<IoNeuron *>(idAnimated) ),
+        m_nobTarget  ( * m_pNMWI->GetNobPtr<IoNeuron *>(idTarget) )
     {
         AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 3.0_MicroMeter)));
         AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 1.4_MicroMeter)));
