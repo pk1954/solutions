@@ -36,18 +36,18 @@ public:
         m_pWin = pWin;
     }
 
-    void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
 
 protected:
     void AddPhase(unique_ptr<AnimationCmd>);
 
     APP_PROC m_applicationFunc;
 
+    void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
     function<void()> m_targetReachedFunc { nullptr };
 
+private:
     inline static RootWindow * m_pWin { nullptr };
 
-private:
     unsigned int m_uiPhase { 0 };
 
     vector<unique_ptr<AnimationCmd>> m_phases { };  

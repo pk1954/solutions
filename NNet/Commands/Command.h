@@ -12,10 +12,9 @@ class NNetModelWriterInterface;
 class Command : public BaseCommand
 {
 public:
-    virtual ~Command()
-    {}
+    virtual ~Command() {}
 
-    static void SetNNetModelWriterInterface(NNetModelWriterInterface* const pNMWI)
+    static void Initialize(NNetModelWriterInterface* const pNMWI)
     {
         m_pNMWI = pNMWI;
     }

@@ -11,7 +11,7 @@ class NNetModelWriterInterface;
 class NNetCommand : public AnimationCmd
 {
 public:
-    NNetCommand() {}
+    virtual ~NNetCommand() {}
 
     static void Initialize(NNetModelWriterInterface * const pNMWI)
     {
