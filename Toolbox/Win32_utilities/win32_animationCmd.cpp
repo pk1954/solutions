@@ -17,7 +17,7 @@ AnimationCmd::AnimationCmd()
     m_applicationFunc =
     [&](bool const bTargetReached)
     { 
-        SendMessage
+        PostMessage
         (
             m_pWin->GetWindowHandle(), 
             WM_APP_UI_CALL, 

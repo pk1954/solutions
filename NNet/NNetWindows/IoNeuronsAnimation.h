@@ -14,46 +14,50 @@ using std::function;
 
 class IoNeuronsAnimation : public NNetCommand
 {
+    using ANIM_TYPE = MicroMeterPntVector;
+    using ANIMATION = Animation<ANIM_TYPE>;
 public:
     IoNeuronsAnimation
     (
-        vector<IoNeuron *>        & nobs,
-        MicroMeterPntVector const & umPntVectorTarget
+        vector<IoNeuron *> & animated,
+        ANIM_TYPE    const & target
     )
-      : m_nobsAnimated(nobs),
-        m_umPntVectorStart(nobs),
-        m_umPntVectorTarget(umPntVectorTarget)
-    {}
+      : m_animated(animated),
+        m_start(animated),
+        m_target(target)
+    {
+        m_upAnimation = make_unique<ANIMATION>(m_applicationFunc);
+    }
 
     virtual void Do()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
-        MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
-        for (auto & it: m_nobsAnimated)
+        ANIM_TYPE const actual(m_animated);
+        for (auto & it: m_animated)
             it->LockDirection(); 
-        m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorTarget));
-        m_animation.Start(umPntVectorActual, m_umPntVectorTarget);
+        m_upAnimation->SetNrOfSteps(CalcNrOfSteps(actual, m_target));
+        m_upAnimation->Start(actual, m_target);
     }
 
     virtual void Undo()
     {
 //        wcout << L'#' << __FUNCDNAME__ << endl;
-        MicroMeterPntVector const umPntVectorActual(m_nobsAnimated);
-        m_animation.SetNrOfSteps(CalcNrOfSteps(umPntVectorActual, m_umPntVectorStart));
-        m_animation.Start(umPntVectorActual, m_umPntVectorStart);
+        ANIM_TYPE const actual(m_animated);
+        m_upAnimation->SetNrOfSteps(CalcNrOfSteps(actual, m_start));
+        m_upAnimation->Start(actual, m_start);
     }
 
     virtual void UpdateUI()
     {
-        for (size_t i = 0; i < m_nobsAnimated.size(); ++i)
-            m_nobsAnimated.at(i)->SetPosDir(m_animation.GetActual().GetPosDir(i));
+        for (size_t i = 0; i < m_animated.size(); ++i)
+            m_animated.at(i)->SetPosDir(m_upAnimation->GetActual().GetPosDir(i));
         AnimationCmd::UpdateUI();
     }
 
 private:
 
-    vector<IoNeuron *>             m_nobsAnimated;
-    MicroMeterPntVector      const m_umPntVectorStart;
-    MicroMeterPntVector      const m_umPntVectorTarget;
-    Animation<MicroMeterPntVector> m_animation { m_applicationFunc };
+    vector<IoNeuron *>    m_animated;
+    ANIM_TYPE       const m_start;
+    ANIM_TYPE       const m_target;
+    unique_ptr<ANIMATION> m_upAnimation;
 };
