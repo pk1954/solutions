@@ -3,8 +3,14 @@
 // Win32_utilities
 
 #include "stdafx.h"
+#include "win32_util_resource.h"
 #include "win32_rootWindow.h"
 #include "win32_animationCmd.h"
+
+void AnimationCmd::UpdateUI() 
+{ 
+    m_pWin->Notify(false); 
+};
 
 AnimationCmd::AnimationCmd()
 {
@@ -30,16 +36,47 @@ void AnimationCmd::DoCall(WPARAM const wParam, LPARAM const lParam)
         (pAnimCmd->m_targetReachedFunc)(); 
 };
 
+void AnimationCmd::doPhase() // runs in UI thread
+{
+    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
+    if (m_uiPhase == 0)
+        blockUI();
+    if (m_uiPhase < m_phases.size())
+    {
+        AnimationCmd & animCmd { * m_phases[m_uiPhase++] };
+        animCmd.m_targetReachedFunc = [&](){ doPhase(); };
+        animCmd.Do();
+    }
+    else
+        unblockUI();
+    UpdateUI();
+}
+
+void AnimationCmd::undoPhase() // runs in UI thread
+{
+    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
+    if (m_uiPhase >= m_phases.size())
+        blockUI();
+    if (m_uiPhase > 0)
+    {
+        AnimationCmd & animCmd { * m_phases[--m_uiPhase] };
+        animCmd.m_targetReachedFunc = [&](){ undoPhase(); };
+        animCmd.Undo();
+    }
+    else
+        unblockUI();
+    UpdateUI();
+}
 void AnimationCmd::Do()
 {
     m_uiPhase = 0;
-    DoPhase();
+    doPhase();
 }
 
 void AnimationCmd::Undo()
 {
     m_uiPhase = Cast2Int(m_phases.size());
-    UndoPhase();
+    undoPhase();
 }
 
 void AnimationCmd::AddPhase(unique_ptr<AnimationCmd> upCmd)
@@ -47,44 +84,12 @@ void AnimationCmd::AddPhase(unique_ptr<AnimationCmd> upCmd)
     m_phases.push_back(move(upCmd));
 }
 
-void AnimationCmd::BlockUI()   
+void AnimationCmd::blockUI()   
 { 
     m_pWin->SendCommand2Application(IDM_BLOCK_UI, true);  
 };
 
-void AnimationCmd::UnblockUI()
+void AnimationCmd::unblockUI()
 { 
     m_pWin->SendCommand2Application(IDM_BLOCK_UI, false); 
 };
-
-void AnimationCmd::DoPhase() // runs in UI thread
-{
-    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
-    if (m_uiPhase == 0)
-        BlockUI();
-    if (m_uiPhase < m_phases.size())
-    {
-        AnimationCmd & animCmd { * m_phases[m_uiPhase++] };
-        animCmd.SetTargetReachedFunc( [&](){ DoPhase(); } );
-        animCmd.Do();
-    }
-    else
-        UnblockUI();
-    UpdateUI();
-}
-
-void AnimationCmd::UndoPhase() // runs in UI thread
-{
-    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
-    if (m_uiPhase >= m_phases.size())
-        BlockUI();
-    if (m_uiPhase > 0)
-    {
-        AnimationCmd & animCmd { * m_phases[--m_uiPhase] };
-        animCmd.SetTargetReachedFunc( [&](){ UndoPhase(); } );
-        animCmd.Undo();
-    }
-    else
-        UnblockUI();
-    UpdateUI();
-}

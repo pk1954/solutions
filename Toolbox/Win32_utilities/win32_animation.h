@@ -11,7 +11,6 @@
 #include "SmoothMoveFp.h"
 
 using AnimationScript = vector<DWORD>;
-using APP_PROC        = function<void(bool const)>;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
@@ -20,7 +19,11 @@ class Animation
 {
 public:
 
-    Animation(APP_PROC const & appProc, DWORD const dwFlags = 0)
+    Animation
+    (
+        function<void(bool const)> const & appProc, 
+        DWORD const dwFlags = 0
+    )
       : m_appProc(appProc),
         m_dwFlags(dwFlags)
     {}
@@ -66,7 +69,7 @@ private:
     ANIM_PAR m_distance {};
 
     SmoothMoveFp   m_smoothMove;
-    APP_PROC const m_appProc;
+    function<void(bool const)> const m_appProc;
     DWORD    const m_dwFlags;
     SRWLOCK        m_srwlData       { SRWLOCK_INIT };
     TP_TIMER     * m_pTpTimer       { nullptr };

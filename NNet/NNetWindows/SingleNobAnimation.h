@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "win32_mainWindow.h"
 #include "win32_animation.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"

@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "win32_util_resource.h"
-#include "win32_animation.h"
+#include <vector>
 #include "BaseCommand.h"
 
+using std::vector;
 using std::function;
+using std::unique_ptr;
 
 class RootWindow;
-class NNetModelWriterInterface;
 
 class AnimationCmd : public BaseCommand
 {
@@ -20,14 +20,7 @@ public:
 
     virtual void Do  ();
     virtual void Undo();
-
-    virtual void UpdateUI() 
-    { 
-        m_pWin->Notify(false); 
-    };
-
-    void DoPhase();
-    void UndoPhase();
+    virtual void UpdateUI();
 
     static void DoCall(WPARAM const, LPARAM const); 
 
@@ -36,22 +29,21 @@ public:
         m_pWin = pWin;
     }
 
-
 protected:
     void AddPhase(unique_ptr<AnimationCmd>);
 
-    APP_PROC m_applicationFunc;
-
-    void SetTargetReachedFunc(function<void()> const & func) { m_targetReachedFunc = func; }
-    function<void()> m_targetReachedFunc { nullptr };
+    function<void()>           m_targetReachedFunc { nullptr };
+    function<void(bool const)> m_applicationFunc   { nullptr };
 
 private:
     inline static RootWindow * m_pWin { nullptr };
 
-    unsigned int m_uiPhase { 0 };
+    vector<unique_ptr<AnimationCmd>> m_phases  { };  
+    unsigned int                     m_uiPhase { 0 };
 
-    vector<unique_ptr<AnimationCmd>> m_phases { };  
+    void doPhase();
+    void undoPhase();
 
-    void BlockUI();
-    void UnblockUI();
+    void blockUI();
+    void unblockUI();
 };
