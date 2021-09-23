@@ -32,8 +32,9 @@ public:
         NNetModelWriterInterface * const
    );
 
-    void Connect        (NobId const, NobId const, RootWindow &);
-    bool MakeIoConnector(RootWindow &);
+    void Connect        (NobId const, NobId const);
+    bool MakeIoConnector();
+    void AnimateArrows  (MicroMeter &, MicroMeter const);
 
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
 

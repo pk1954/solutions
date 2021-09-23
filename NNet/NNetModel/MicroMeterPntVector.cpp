@@ -216,9 +216,9 @@ unsigned int const CalcNrOfSteps
 )
 {
     MicroMeterPntVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
-    float               const fStepsFromRot   { CalcNrOfSteps(umPntVectorDiff.FindMaxRadian()) };
-    float               const fStepsFromMove  { CalcNrOfSteps(umPntVectorDiff.FindMaxPos()) };
-    float               const fSteps          { max(fStepsFromRot, fStepsFromMove) };
+    unsigned int        const fStepsFromRot   { CalcNrOfSteps(umPntVectorDiff.FindMaxRadian()) };
+    unsigned int        const fStepsFromMove  { CalcNrOfSteps(umPntVectorDiff.FindMaxPos()) };
+    unsigned int        const fSteps          { max(fStepsFromRot, fStepsFromMove) };
     unsigned int        const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
     return uiSteps;
 }

@@ -78,9 +78,7 @@ private:
 	
 	Scale m_scale;
 
-	unique_ptr<Animation<MicroMeter>> m_upArrowAnimation;
-	MicroMeter                        m_arrowSizeTarget { STD_ARROW_SIZE };
-	MicroMeter                        m_arrowSize       { m_arrowSizeTarget };
+	MicroMeter m_arrowSize { STD_ARROW_SIZE };
 
 	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
 

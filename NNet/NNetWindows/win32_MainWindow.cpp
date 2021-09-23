@@ -9,11 +9,13 @@
 #include "Signal.h"
 #include "MicroMeterPntVector.h"
 #include "Knot.h"
+#include "Knot.h"
 #include "Neuron.h"
 #include "IoConnector.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "ArrowAnimation.h"
 #include "ConnAnimationCommand.h"
 #include "win32_animationCmd.h"
 #include "win32_Commands.h"
@@ -59,14 +61,6 @@ void MainWindow::Start
 		[&](bool const bTargetReached)
 		{ 
 			GetCoord().Set(m_upCoordAnimation->GetActual());
-			Notify(false);
-		}
-	);
-	m_upArrowAnimation = make_unique<Animation<MicroMeter>>
-	(
-		[&](bool const bTargetReached)
-		{ 
-			m_arrowSize = m_upArrowAnimation->GetActual();
 			Notify(false);
 		}
 	);
@@ -265,9 +259,9 @@ bool const MainWindow::ArrowsVisible() const
 void MainWindow::ShowArrows(bool const op)
 {
 	MicroMeter oldVal { m_arrowSize };
-	m_arrowSizeTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
-	if (m_arrowSizeTarget != oldVal)
-		m_upArrowAnimation->Start(m_arrowSize, m_arrowSizeTarget);
+	MicroMeter umTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
+	if (umTarget != oldVal)
+		m_pWinCommands->AnimateArrows(m_arrowSize, umTarget);
 }
 
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
@@ -568,7 +562,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	{
 
 	case IDM_MAKE_CONNECTOR:
-		if (! m_pWinCommands->MakeIoConnector(*this))
+		if (! m_pWinCommands->MakeIoConnector())
 			SendCommand2Application(IDX_PLAY_SOUND, reinterpret_cast<LPARAM>(TEXT("NOT_POSSIBLE_SOUND")));
 		break;
 

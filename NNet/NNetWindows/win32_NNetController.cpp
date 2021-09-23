@@ -249,7 +249,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_CONNECT:
-        m_pWinCommands->Connect(m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId(), * m_pMainWindow);
+        m_pWinCommands->Connect(m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId());
         break;
 
     case IDM_DELETE:   // keyboard delete key

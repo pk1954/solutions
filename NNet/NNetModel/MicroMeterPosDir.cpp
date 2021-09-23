@@ -90,9 +90,9 @@ unsigned int const CalcNrOfSteps
 )
 {
     MicroMeterPosDir const umPosDirDiff   { umPosDirTarget - umPosDirStart };
-    float            const fStepsFromRot  { CalcNrOfSteps(Normalize(umPosDirDiff.GetDir())) };
-    float            const fStepsFromMove { CalcNrOfSteps(Hypot    (umPosDirDiff.GetPos())) };
-    float            const fSteps         { max(fStepsFromRot, fStepsFromMove) };
+    unsigned int     const fStepsFromRot  { CalcNrOfSteps(Normalize(umPosDirDiff.GetDir())) };
+    unsigned int     const fStepsFromMove { CalcNrOfSteps(Hypot    (umPosDirDiff.GetPos())) };
+    unsigned int     const fSteps         { max(fStepsFromRot, fStepsFromMove) };
     unsigned int     const uiSteps        { Cast2UnsignedInt(fSteps) + 1 };
     return uiSteps;
 }

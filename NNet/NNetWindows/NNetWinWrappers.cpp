@@ -42,7 +42,7 @@ public:
     {
         NobId const idSrc { ScrReadNobId(script) };
         NobId const idDst { ScrReadNobId(script) };
-        m_pWinCommands->Connect(idSrc, idDst, * m_pMainWindow);
+        m_pWinCommands->Connect(idSrc, idDst);
     }
 };
 
@@ -51,7 +51,7 @@ class WrapMakeIoConnector: public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        m_pWinCommands->MakeIoConnector(* m_pMainWindow);
+        m_pWinCommands->MakeIoConnector();
     }
 };
 

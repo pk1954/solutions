@@ -12,6 +12,7 @@
 #include "Connect2BaseKnotCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
+#include "ArrowAnimation.h"
 #include "ConnAnimationCommand.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoNeuronAnimation.h"
@@ -37,7 +38,18 @@ void WinCommands::Initialize
 	m_pNMWI     = pNMWI;
 }
 
-bool WinCommands::MakeIoConnector(RootWindow & win)
+void WinCommands::AnimateArrows
+(
+	MicroMeter     & umActual, 
+	MicroMeter const umTarget
+)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
+}
+
+bool WinCommands::MakeIoConnector()
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
@@ -48,7 +60,7 @@ bool WinCommands::MakeIoConnector(RootWindow & win)
 	return bCmdOk;
 }
 
-void WinCommands::Connect(NobId const idSrc, NobId const idDst, RootWindow & win)
+void WinCommands::Connect(NobId const idSrc, NobId const idDst)
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
