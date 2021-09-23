@@ -4,10 +4,8 @@
 
 #pragma once
 
-#include <functional>
 #include "windows.h"
-#include "MoreTypes.h"
-#include "win32_rootWindow.h"
+#include "win32_animationCmd.h"
 #include "SmoothMoveFp.h"
 
 using AnimationScript = vector<DWORD>;
@@ -21,10 +19,10 @@ public:
 
     Animation
     (
-        function<void(bool const)> const & appProc, 
-        DWORD const dwFlags = 0
+        AnimationCmd * pCmd, 
+        DWORD    const dwFlags = 0
     )
-      : m_appProc(appProc),
+      : m_pCmd(pCmd),
         m_dwFlags(dwFlags)
     {}
 
@@ -69,7 +67,7 @@ private:
     ANIM_PAR m_distance {};
 
     SmoothMoveFp   m_smoothMove;
-    function<void(bool const)> const m_appProc;
+    AnimationCmd * m_pCmd;
     DWORD    const m_dwFlags;
     SRWLOCK        m_srwlData       { SRWLOCK_INIT };
     TP_TIMER     * m_pTpTimer       { nullptr };
@@ -98,8 +96,7 @@ private:
                 else 
                     stopTimer();
             }
-            if (m_appProc)
-                (m_appProc)(m_bTargetReached);
+            m_pCmd->CallUI(m_bTargetReached);
         }
     }
 

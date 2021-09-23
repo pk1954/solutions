@@ -27,23 +27,18 @@ public:
         m_start(animated.GetPosDir()),
         m_target(target)
     {
-        m_upAnimation = make_unique<ANIMATION>(m_applicationFunc);
+        m_upAnimation = make_unique<ANIMATION>(this);
+        m_upAnimation->SetNrOfSteps(CalcNrOfSteps(m_animated, m_target));
     }
 
     virtual void Do()
     {
-        //wcout << L'#' << __FUNCDNAME__ << endl;
-        ANIM_TYPE const actual(m_animated);
-        m_upAnimation->SetNrOfSteps(CalcNrOfSteps(actual, m_target));
-        m_upAnimation->Start(actual, m_target);
+        m_upAnimation->Start(m_animated, m_target);
     }
 
     virtual void Undo()
     {
-        //wcout << L'#' << __FUNCDNAME__ << endl;
-        ANIM_TYPE const actual(m_animated);
-        m_upAnimation->SetNrOfSteps(CalcNrOfSteps(actual, m_start));
-        m_upAnimation->Start(actual, m_start);
+        m_upAnimation->Start(m_animated, m_start);
     }
 
     virtual void UpdateUI()

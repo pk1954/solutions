@@ -16,11 +16,11 @@ class RootWindow;
 class AnimationCmd : public BaseCommand
 {
 public:
-    AnimationCmd();
-
     virtual void Do  ();
     virtual void Undo();
     virtual void UpdateUI();
+
+    void CallUI(bool const);
 
     static void DoCall(WPARAM const, LPARAM const); 
 
@@ -29,14 +29,14 @@ public:
         m_pWin = pWin;
     }
 
+    inline static RootWindow * m_pWin { nullptr };
+
 protected:
     void AddPhase(unique_ptr<AnimationCmd>);
 
-    function<void()>           m_targetReachedFunc { nullptr };
-    function<void(bool const)> m_applicationFunc   { nullptr };
+    function<void()> m_targetReachedFunc { nullptr };
 
 private:
-    inline static RootWindow * m_pWin { nullptr };
 
     vector<unique_ptr<AnimationCmd>> m_phases  { };  
     unsigned int                     m_uiPhase { 0 };

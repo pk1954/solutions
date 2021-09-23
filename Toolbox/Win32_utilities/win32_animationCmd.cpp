@@ -12,19 +12,15 @@ void AnimationCmd::UpdateUI()
     m_pWin->Notify(false); 
 };
 
-AnimationCmd::AnimationCmd()
+void AnimationCmd::CallUI(bool const bTargetReached)
 {
-    m_applicationFunc =
-    [&](bool const bTargetReached)
-    { 
-        PostMessage
-        (
-            m_pWin->GetWindowHandle(), 
-            WM_APP_UI_CALL, 
-            static_cast<WPARAM>(bTargetReached), 
-            reinterpret_cast<LPARAM>(this)
-        );
-    };
+    PostMessage
+    (
+        m_pWin->GetWindowHandle(), 
+        WM_APP_UI_CALL, 
+        static_cast<WPARAM>(bTargetReached), 
+        reinterpret_cast<LPARAM>(this)
+    );
 }
 
 void AnimationCmd::DoCall(WPARAM const wParam, LPARAM const lParam) 

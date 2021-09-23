@@ -27,7 +27,7 @@ public:
         m_start(animated),
         m_target(target)
     {
-        m_upAnimation = make_unique<ANIMATION>(m_applicationFunc);
+        m_upAnimation = make_unique<ANIMATION>(this);
     }
 
     virtual void Do()
