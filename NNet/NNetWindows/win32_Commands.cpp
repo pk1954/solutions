@@ -12,6 +12,7 @@
 #include "Connect2BaseKnotCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
+#include "CoordAnimation.h"
 #include "ArrowAnimation.h"
 #include "ConnAnimationCommand.h"
 #include "PlugIoConnectorAnimation.h"
@@ -36,6 +37,17 @@ void WinCommands::Initialize
 	m_pCommands = pCmds;
 	m_pNMRI     = pNMRI;
 	m_pNMWI     = pNMWI;
+}
+
+void WinCommands::AnimateCoord
+(
+	PixelCoordsFp     & actual, 
+	PixelCoordsFp const target
+)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<CoordAnimation>(actual, target));
 }
 
 void WinCommands::AnimateArrows

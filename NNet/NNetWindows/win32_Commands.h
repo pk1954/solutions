@@ -12,6 +12,7 @@
 class Command;
 class CommandStack;
 class NobIdList;
+class PixelCoordsFp;
 class NNetModelCommands;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
@@ -35,6 +36,7 @@ public:
     void Connect        (NobId const, NobId const);
     bool MakeIoConnector();
     void AnimateArrows  (MicroMeter &, MicroMeter const);
+    void AnimateCoord   (PixelCoordsFp &, PixelCoordsFp const);
 
     NNetModelWriterInterface & GetNMWI() { return * m_pNMWI; }
 

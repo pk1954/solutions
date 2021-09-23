@@ -212,5 +212,8 @@
     <ClInclude Include="ArrowAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CoordAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

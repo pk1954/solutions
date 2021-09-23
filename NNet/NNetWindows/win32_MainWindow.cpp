@@ -55,15 +55,6 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_scale.Initialize(& m_graphics, L"m");
-
-	m_upCoordAnimation = make_unique<Animation<PixelCoordsFp>>
-	(
-		[&](bool const bTargetReached)
-		{ 
-			GetCoord().Set(m_upCoordAnimation->GetActual());
-			Notify(false);
-		}
-	);
 }
 
 void MainWindow::Stop()
@@ -450,7 +441,7 @@ void MainWindow::centerAndZoomRect
 		coordTarget.Transform2fPixelSize(umRect.GetCenter()) -  // SetPixelSize result is used here  
 		Convert2fPixelPoint(GetClRectCenter()) 
 	);
-	m_upCoordAnimation->Start(GetCoord(), coordTarget);
+	m_pWinCommands->AnimateCoord(GetCoord(), coordTarget);
 }
 
 void MainWindow::OnPaint()

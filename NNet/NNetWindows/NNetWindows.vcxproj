@@ -603,6 +603,7 @@
     <ClInclude Include="ArrowAnimation.h" />
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="ConnAnimationCommand.h" />
+    <ClInclude Include="CoordAnimation.h" />
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="Measurement.h" />

@@ -31,7 +31,6 @@ public:
 
     virtual void Do()
     {
-//        wcout << L'#' << __FUNCDNAME__ << endl;
         ANIM_TYPE const actual(m_animated);
         for (auto & it: m_animated)
             it->LockDirection(); 
@@ -41,7 +40,6 @@ public:
 
     virtual void Undo()
     {
-//        wcout << L'#' << __FUNCDNAME__ << endl;
         ANIM_TYPE const actual(m_animated);
         m_upAnimation->SetNrOfSteps(CalcNrOfSteps(actual, m_start));
         m_upAnimation->Start(actual, m_start);

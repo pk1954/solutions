@@ -1,4 +1,4 @@
-// ArrowAnimation.h
+// CoordAnimation.h
 //
 // NNetWindows
 
@@ -7,17 +7,18 @@
 #include "MoreTypes.h"
 #include "win32_animation.h"
 #include "NNetParameters.h"
+#include "PixelCoordsFp.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 
 using std::function;
 
-class ArrowAnimation : public NNetCommand
+class CoordAnimation : public NNetCommand
 {
-    using ANIM_TYPE = MicroMeter;
+    using ANIM_TYPE = PixelCoordsFp;
     using ANIMATION = Animation<ANIM_TYPE>;
 public:
-    ArrowAnimation
+    CoordAnimation
     (
         ANIM_TYPE       & animated,
         ANIM_TYPE const & target

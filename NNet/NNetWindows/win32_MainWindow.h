@@ -80,8 +80,6 @@ private:
 
 	MicroMeter m_arrowSize { STD_ARROW_SIZE };
 
-	unique_ptr<Animation<PixelCoordsFp>> m_upCoordAnimation;
-
 	MicroMeterRect      m_rectSelection        { };
 	MicroMeterPnt       m_umPntSelectionAnchor { };
 	NobId               m_nobHighlighted       { };
