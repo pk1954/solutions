@@ -1,11 +1,9 @@
 // ConnAnimationCommand.cpp
 //
-// NNetWindows
+// Command
 
 #include "stdafx.h"
 #include <algorithm>
-#include "win32_Commands.h"
-#include "win32_rootWindow.h"
 #include "NNetModelWriterInterface.h"
 #include "IoNeuron.h"
 #include "IoNeuronsAnimation.h"
@@ -15,9 +13,9 @@
 using std::make_unique;
 using std::sort;
 
-ConnAnimationCommand::ConnAnimationCommand(WinCommands & cmds)
+ConnAnimationCommand::ConnAnimationCommand()
 {
-    UPNobList   & modelNobs { cmds.GetNMWI().GetUPNobs() };
+    UPNobList   & modelNobs { m_pNMWI->GetUPNobs() };
     NobType const nobType   { determineNobType(modelNobs) };
     if (nobType.IsUndefinedType())
         return;

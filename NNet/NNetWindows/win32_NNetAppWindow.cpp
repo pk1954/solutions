@@ -35,7 +35,6 @@
 #include "script.h"
 #include "Preferences.h"
 #include "NNetWrappers.h"
-#include "NNetWinWrappers.h"
 #include "UtilityWrappers.h"
 #include "win32_script.h"
 #include "win32_fatalError.h"
@@ -76,7 +75,6 @@ NNetAppWindow::NNetAppWindow()
 
 	DefineUtilityWrapperFunctions();
 	DefineNNetWrappers(& m_modelCommands);
-	DefineNNetWinWrappers(& m_mainNNetWindow, & m_winCommands);
 };
 
 NNetAppWindow::~NNetAppWindow() { }
@@ -103,7 +101,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_modelImporter .Initialize(&m_script);
 	m_modelExporter .Initialize(&m_nmri);
 	m_modelCommands .Initialize(&m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack);
-	m_winCommands   .Initialize(&m_cmdStack, &m_modelCommands, &m_nmri, &m_nmwi);
 	m_cmdStack      .Initialize(&m_nmwi, &m_staticModelObservable);
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_appTitle      .Initialize(m_hwndApp, &m_nmri);
@@ -115,7 +112,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		& m_WinManager,
 		& m_nmri,
 		& m_modelCommands,
-		& m_winCommands,
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_statusBarDispFunctor,
@@ -158,7 +154,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_nmri,
 		m_NNetController,
 		m_modelCommands,
-		m_winCommands,
 		m_cursorPosObservable,
 		m_coordObservable
 	);

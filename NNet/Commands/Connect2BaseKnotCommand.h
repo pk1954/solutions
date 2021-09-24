@@ -8,6 +8,8 @@
 #include "NobId.h"
 #include "NNetCommand.h"
 #include "PipeList.h"
+#include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 

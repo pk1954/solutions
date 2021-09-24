@@ -31,7 +31,6 @@ public:
 		NNetModelReaderInterface const &,
 		NNetController                 &,
 		NNetModelCommands              &,
-		WinCommands                    &,
 		Observable                     &,
 		Observable                     &
 	);
@@ -88,7 +87,6 @@ private:
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
-	WinCommands       * m_pWinCommands         { nullptr };
 
 	void setNoTarget      ();
 	void setTargetNob     ();

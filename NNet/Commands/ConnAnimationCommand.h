@@ -1,11 +1,10 @@
 // ConnAnimationCommand.h
 //
-// NNetWindows
+// Commands
 
 #pragma once
 
 #include <vector>
-#include "IoNeuron.h"
 #include "UPNobList.h"
 #include "NNetCommand.h"
 
@@ -13,11 +12,12 @@ using std::vector;
 
 class WinCommands;
 class RootWindow;
+class IoNeuron;
 
 class ConnAnimationCommand : public NNetCommand
 {
 public:
-    ConnAnimationCommand(WinCommands &);
+    ConnAnimationCommand();
     virtual ~ConnAnimationCommand() {};
 
     bool const IsCmdOk() { return m_bAllOk; }

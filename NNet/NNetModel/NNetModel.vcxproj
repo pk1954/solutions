@@ -209,7 +209,6 @@
     <ClInclude Include="NNetModelWriterInterface.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
-    <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="OutputConnector.h" />
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
@@ -256,7 +255,6 @@
     <ClCompile Include="NNetModelWriterInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
-    <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="OutputConnector.cpp" />
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipe.cpp" />

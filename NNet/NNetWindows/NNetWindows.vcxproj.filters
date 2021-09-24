@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetWinWrappers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_NNetWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,10 +78,7 @@
     <ClCompile Include="scale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_Commands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnAnimationCommand.cpp">
+    <ClCompile Include="NNetWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetWinWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetController.h">
@@ -179,37 +170,10 @@
     <ClInclude Include="scale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConnAnimationCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_Commands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlugIoNeuronAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IoNeuronsAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MakeConnAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlugIoNeurons.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlugIoConnectors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlugIoConnectorAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrowAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoordAnimation.h">
+    <ClInclude Include="NNetWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

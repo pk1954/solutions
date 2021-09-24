@@ -1,6 +1,6 @@
 // PlugIoNeurons.h
 //
-// NNetWindows
+// Commands
 
 #pragma once
 
@@ -24,7 +24,7 @@ public:
         assert(m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob());
         assert(m_nobAnimated.GetIoMode() != NobIoMode::internal);
         assert(m_nobTarget  .GetIoMode() != NobIoMode::internal);
-        assert(m_nobTarget  .GetIoMode() !== m_nobAnimated.GetIoMode());
+        assert(m_nobTarget  .GetIoMode() != m_nobAnimated.GetIoMode());
 
         m_upNeuron = make_unique<Neuron>(m_nobTarget.GetPos());
         m_upNeuron->SetIncoming(m_nobAnimated.IsOutputNob() ? m_nobAnimated : m_nobTarget);

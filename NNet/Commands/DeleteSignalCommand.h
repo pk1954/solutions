@@ -1,6 +1,6 @@
 // DeleteSignalCommand.h
 //
-// NNetModel
+// Commands
 
 #pragma once
 

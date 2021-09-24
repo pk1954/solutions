@@ -72,7 +72,8 @@ public:
 	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
 	virtual void                Link        (Nob const &, Nob2NobFunc const &)            = 0;
 
-	virtual bool const IsCompositeNob()       { return false; }
+	virtual bool const IsCompositeNob() const { return false; }
+
 	virtual void       Select(bool const bOn) { m_bSelected = bOn; }
 	virtual void       Clear()                { m_mVinputBuffer = 0.0_mV; };
 	virtual void       SetId(NobId const id)  { m_identifier = id; }

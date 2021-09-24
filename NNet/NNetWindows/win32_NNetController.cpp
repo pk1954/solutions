@@ -28,7 +28,6 @@
 #include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelCommands.h"
-#include "win32_Commands.h"
 #include "win32_monitorWindow.h"
 #include "win32_NNetController.h"
 
@@ -39,7 +38,6 @@ void NNetController::Initialize
     WinManager               * const pWinManager,
     NNetModelReaderInterface * const pMRI,
     NNetModelCommands        * const pModelCommands,
-    WinCommands              * const pWinCommands,
     ComputeThread            * const pComputeThread,
     SlowMotionRatio          * const pSlowMotionRatio,
     DisplayFunctor           * const func,
@@ -54,7 +52,6 @@ void NNetController::Initialize
     m_pWinManager       = pWinManager;
     m_pNMRI             = pMRI;
     m_pModelCommands    = pModelCommands;
-    m_pWinCommands      = pWinCommands;
     m_pSlowMotionRatio  = pSlowMotionRatio;
     m_pComputeThread    = pComputeThread;
     m_pStatusBarDisplay = func;
@@ -249,7 +246,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_CONNECT:
-        m_pWinCommands->Connect(m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId());
+        m_pModelCommands->Connect(m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId());
         break;
 
     case IDM_DELETE:   // keyboard delete key

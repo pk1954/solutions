@@ -15,10 +15,8 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
-#include "ArrowAnimation.h"
-#include "ConnAnimationCommand.h"
+//#include "ArrowAnimation.h"
 #include "win32_animationCmd.h"
-#include "win32_Commands.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
@@ -35,7 +33,6 @@ void MainWindow::Start
 	NNetModelReaderInterface const & modelReaderInterface,
 	NNetController                 & controller,
 	NNetModelCommands              & modelCommands,
-	WinCommands                    & winCommands,  
 	Observable                     & cursorObservable,
 	Observable                     & coordObservable
 )
@@ -50,7 +47,6 @@ void MainWindow::Start
 		controller
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
-	m_pWinCommands         = & winCommands;
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
@@ -252,7 +248,7 @@ void MainWindow::ShowArrows(bool const op)
 	MicroMeter oldVal { m_arrowSize };
 	MicroMeter umTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
 	if (umTarget != oldVal)
-		m_pWinCommands->AnimateArrows(m_arrowSize, umTarget);
+		m_pModelCommands->AnimateArrows(m_arrowSize, umTarget);
 }
 
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
@@ -441,7 +437,7 @@ void MainWindow::centerAndZoomRect
 		coordTarget.Transform2fPixelSize(umRect.GetCenter()) -  // SetPixelSize result is used here  
 		Convert2fPixelPoint(GetClRectCenter()) 
 	);
-	m_pWinCommands->AnimateCoord(GetCoord(), coordTarget);
+	m_pModelCommands->AnimateCoord(GetCoord(), coordTarget);
 }
 
 void MainWindow::OnPaint()
@@ -553,7 +549,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	{
 
 	case IDM_MAKE_CONNECTOR:
-		if (! m_pWinCommands->MakeIoConnector())
+		if (! m_pModelCommands->MakeIoConnector())
 			SendCommand2Application(IDX_PLAY_SOUND, reinterpret_cast<LPARAM>(TEXT("NOT_POSSIBLE_SOUND")));
 		break;
 

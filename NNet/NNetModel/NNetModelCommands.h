@@ -19,6 +19,7 @@ class Observable;
 class NobIdList;
 class CommandStack;
 class AlignAnimation;
+class PixelCoordsFp;
 class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
@@ -57,9 +58,12 @@ public:
     void AddSignal            (MicroMeterCircle const &, TrackNr const);
     void AnalyzeAnomalies     ();
     void AnalyzeLoops         ();
+    void AnimateArrows        (MicroMeter &, MicroMeter const);
+    void AnimateCoord         (PixelCoordsFp &, PixelCoordsFp const);
     void AppendInputNeuron    (NobId const);
     void AppendOutputNeuron   (NobId const);
     void ClearBeepers         ();
+    void Connect              (NobId const, NobId const);
     void CopySelection        ();
     void CreateInitialNobs    ();
     void DeleteSelection      ();
@@ -71,6 +75,7 @@ public:
     void InsertKnot           (NobId const, MicroMeterPnt const &);
     void InsertNeuron         (NobId const, MicroMeterPnt const &);
     void InsertTrack          (TrackNr const);
+    bool MakeIoConnector      ();
     void MoveSelection        (MicroMeterPnt const &);
     void MoveSensor           (SignalId const &, MicroMeterPnt const &);
     void MoveSignal           (SignalId const &, TrackNr const);
@@ -86,7 +91,6 @@ public:
     void SelectNob            (NobId const, tBoolOp const);
     void SelectNobsInRect     (MicroMeterRect const &);
     void SelectSubtree        (NobId const, bool const);
-    //void SetIoNeurons         (MicroMeterPntVector const &, unique_ptr<NobIdList>);
     void SetParameter         (ParamType::Value const, float const);
     void SetPulseRate         (NobId const, fHertz const);
     void SetNob               (NobId const, MicroMeterPosDir const);

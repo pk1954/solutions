@@ -75,18 +75,28 @@
     <ClInclude Include="AddSignalCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />
     <ClInclude Include="AppendNeuronCommand.h" />
+    <ClInclude Include="ArrowAnimation.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
+    <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
+    <ClInclude Include="CoordAnimation.h" />
+    <ClInclude Include="IoNeuronsAnimation.h" />
+    <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSensorCmd.h" />
     <ClInclude Include="MoveSignalCmd.h" />
     <ClInclude Include="NNetCommand.h" />
+    <ClInclude Include="PlugIoConnectorAnimation.h" />
+    <ClInclude Include="PlugIoConnectors.h" />
+    <ClInclude Include="PlugIoNeuronAnimation.h" />
+    <ClInclude Include="PlugIoNeurons.h" />
     <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
     <ClInclude Include="RotationCommand.h" />
     <ClInclude Include="SetHighlightedSignalCmd.h" />
+    <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
@@ -103,7 +113,6 @@
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="RotateNobCommand.h" />
     <ClInclude Include="SetNobCommand.h" />
-    <ClInclude Include="SetIoNeuronsCommand.h" />
     <ClInclude Include="SelectAllBeepersCommand.h" />
     <ClInclude Include="SelectAllCommand.h" />
     <ClInclude Include="SelectionCommand.h" />
@@ -130,6 +139,9 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <ClCompile Include="ConnAnimationCommand.cpp">
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
     <ClCompile Include="DiscBaseKnotCmd.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>

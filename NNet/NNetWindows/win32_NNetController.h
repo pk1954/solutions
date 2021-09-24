@@ -36,7 +36,6 @@ public:
 		WinManager               * const,
 		NNetModelReaderInterface * const,
 		NNetModelCommands        * const,
-		WinCommands              * const,
 		ComputeThread            * const,
 		SlowMotionRatio          * const,
 		DisplayFunctor           * const,
@@ -70,7 +69,6 @@ private:
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
 	NNetModelCommands        * m_pModelCommands         { nullptr };
-	WinCommands              * m_pWinCommands           { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay      { nullptr };
 	Preferences              * m_pPreferences           { nullptr };
