@@ -76,13 +76,13 @@
     <ClInclude Include="AnalyzeCommand.h" />
     <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
-    <ClInclude Include="Command.h" />
     <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="MoveSensorCmd.h" />
     <ClInclude Include="MoveSignalCmd.h" />
+    <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
     <ClInclude Include="RotationCommand.h" />

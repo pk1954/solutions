@@ -6,14 +6,14 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "PipeList.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 
 using std::swap;
 
-class Connect2BaseKnotCommand : public Command
+class Connect2BaseKnotCommand : public NNetCommand
 {
 public:
 	Connect2BaseKnotCommand

@@ -8,11 +8,11 @@
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 #include "IoConnector.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "NobId.h"
 #include "Nob.h"
 
-class SetNobCommand : public Command
+class SetNobCommand : public NNetCommand
 {
 public:
 	SetNobCommand

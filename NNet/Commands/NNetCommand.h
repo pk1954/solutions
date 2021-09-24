@@ -1,20 +1,20 @@
-// Command.h
+// NNetCommand.h
 //
-// NNetModel
+// Commands
 
 #pragma once
 
 #include "NobId.h"
-#include "BaseCommand.h"
+#include "win32_animationCmd.h"
 
 class NNetModelWriterInterface;
 
-class Command : public BaseCommand
+class NNetCommand : public AnimationCmd
 {
 public:
-    virtual ~Command() {}
+    virtual ~NNetCommand() {}
 
-    static void Initialize(NNetModelWriterInterface* const pNMWI)
+    static void Initialize(NNetModelWriterInterface * const pNMWI)
     {
         m_pNMWI = pNMWI;
     }

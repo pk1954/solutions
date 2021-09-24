@@ -5,11 +5,11 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 
-class Connect2PipeCommand : public Command
+class Connect2PipeCommand : public NNetCommand
 {
 public:
 	Connect2PipeCommand

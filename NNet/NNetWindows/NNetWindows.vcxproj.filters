@@ -206,9 +206,6 @@
     <ClInclude Include="PlugIoConnectorAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NNetCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ArrowAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "NobId.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
@@ -13,7 +13,7 @@
 
 using std::unique_ptr;
 
-class SplitNeuronCmd : public Command
+class SplitNeuronCmd : public NNetCommand
 {
 public:
     SplitNeuronCmd(NobId const id)

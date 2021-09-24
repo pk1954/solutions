@@ -6,7 +6,7 @@
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "NobId.h"
 #include "NobIdList.h"
 #include "BaseKnot.h"
@@ -19,7 +19,7 @@ using std::unique_ptr;
 // For Delete... functionality create DisconnectBaseKnot 
 // with bool parameter set to true.
 
-class DiscBaseKnotCmd : public Command
+class DiscBaseKnotCmd : public NNetCommand
 {
 public:
     DiscBaseKnotCmd(Nob &, bool const);

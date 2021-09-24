@@ -7,10 +7,10 @@
 #include "NNetModelWriterInterface.h"
 #include "SoundInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "Neuron.h"
 
-class SetTriggerSoundCommand : public Command
+class SetTriggerSoundCommand : public NNetCommand
 {
 public:
 	SetTriggerSoundCommand

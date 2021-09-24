@@ -6,10 +6,10 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "InputNeuron.h"
 
-class SetPulseRateCommand : public Command
+class SetPulseRateCommand : public NNetCommand
 {
 public:
 	SetPulseRateCommand

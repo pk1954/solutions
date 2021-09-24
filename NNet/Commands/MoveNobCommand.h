@@ -6,11 +6,11 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "NobId.h"
 #include "Nob.h"
 
-class MoveNobCommand : public Command
+class MoveNobCommand : public NNetCommand
 {
 public:
 	MoveNobCommand

@@ -7,9 +7,9 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class InsertTrackCommand: public Command
+class InsertTrackCommand: public NNetCommand
 {
 public:
 

@@ -6,11 +6,11 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "Signal.h"
 #include "MonitorData.h"
 
-class MoveSensorCmd : public Command
+class MoveSensorCmd : public NNetCommand
 {
 public:
 	MoveSensorCmd
@@ -36,7 +36,7 @@ public:
 		pSignal->MoveSensor(-m_delta);
 	}
 
-	virtual bool const CombineCommands(Command const & src) 
+	virtual bool const CombineCommands(NNetCommand const & src) 
 	{ 
 		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
 		if (m_signalId != cmdSrc.m_signalId)

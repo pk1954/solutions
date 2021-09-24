@@ -7,9 +7,9 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "Signal.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class SetHighlightedSignalCmd : public Command
+class SetHighlightedSignalCmd : public NNetCommand
 {
 public:
 	SetHighlightedSignalCmd(MicroMeterPnt const & umPos)

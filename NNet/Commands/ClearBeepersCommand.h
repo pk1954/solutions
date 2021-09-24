@@ -6,10 +6,10 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 
-class ClearBeepersCommand : public Command
+class ClearBeepersCommand : public NNetCommand
 {
 public:
 

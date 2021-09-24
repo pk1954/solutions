@@ -91,7 +91,7 @@ void NNetModelCommands::RedoCommand()
 		MessageBeep(MB_ICONWARNING);
 }
 
-void NNetModelCommands::PushCommand(unique_ptr<Command> upCmd)
+void NNetModelCommands::PushCommand(unique_ptr<NNetCommand> upCmd)
 {
 	m_pCmdStack->PushCommand(move(upCmd));
 }
@@ -105,6 +105,41 @@ void NNetModelCommands::ResetModel()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
+void NNetModelCommands::AddIncoming2Knot(NobId const id, MicroMeterPnt const & pos)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<AddIncoming2KnotCommand>(id, pos - STD_OFFSET));
+}
+
+void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<AddIncoming2PipeCommand>(id, pos));
+}
+
+void NNetModelCommands::AddModel()
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(m_pModelImporter->GetUPNobs())));
+}
+
+void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & pos)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<AddOutgoing2KnotCommand>(id, pos + STD_OFFSET));
+}
+
+void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<AddOutgoing2PipeCommand>(id, pos));
+}
+
 void NNetModelCommands::AddSignal
 (
 	MicroMeterCircle const & umCircle,
@@ -116,25 +151,46 @@ void NNetModelCommands::AddSignal
 	m_pCmdStack->PushCommand(make_unique<AddSignalCommand>(umCircle, trackNr));
 }
 
-void NNetModelCommands::DeleteSignal(SignalId const & id)
-{ 
+void NNetModelCommands::AnalyzeAnomalies()
+{
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
+	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMRI)));
 }
 
-void NNetModelCommands::DeleteTrack(TrackNr const nr)
-{ 
+void NNetModelCommands::AnalyzeLoops()
+{
 	if (IsTraceOn())
-		TraceStream() << __func__ << nr << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMRI)));
 }
 
-void NNetModelCommands::InsertTrack(TrackNr const nr)
-{ 
+void NNetModelCommands::AppendInputNeuron(NobId const id)
+{
 	if (IsTraceOn())
-		TraceStream() << __func__ << nr << endl;
-	m_pCmdStack->PushCommand(make_unique<InsertTrackCommand>(nr));
+		TraceStream() << __func__ << L" " << id << endl;
+	m_pCmdStack->PushCommand(make_unique<AppendNeuronCommand<InputNeuron>>(id));
+}
+
+void NNetModelCommands::AppendOutputNeuron(NobId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << endl;
+	m_pCmdStack->PushCommand(make_unique<AppendNeuronCommand<OutputNeuron>>(id));
+}
+
+void NNetModelCommands::ClearBeepers()
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << endl;
+	m_pCmdStack->PushCommand(make_unique<ClearBeepersCommand>());
+}
+
+void NNetModelCommands::CopySelection()
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs(*m_pNMWI))));
 }
 
 void NNetModelCommands::CreateInitialNobs()
@@ -145,11 +201,11 @@ void NNetModelCommands::CreateInitialNobs()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::DeleteNob(NobId const id)
-{
+void NNetModelCommands::DeleteSignal(SignalId const & id)
+{ 
 	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand(move(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id))));
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
 }
 
 void NNetModelCommands::DeleteSelection()
@@ -157,6 +213,30 @@ void NNetModelCommands::DeleteSelection()
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSelectionCommand>());
+}
+
+void NNetModelCommands::DeleteNob(NobId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << endl;
+	m_pCmdStack->PushCommand(move(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id))));
+}
+
+void NNetModelCommands::DeleteTrack(TrackNr const nr)
+{ 
+	if (IsTraceOn())
+		TraceStream() << __func__ << nr << endl;
+	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
+}
+
+void NNetModelCommands::DiscBaseKnot(NobId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << L" " << id << endl;
+	Nob * pNob { m_pNMWI->GetNob(id) };
+	if (! pNob)
+		return;
+	m_pCmdStack->PushCommand(make_unique<DiscBaseKnotCmd>(*pNob, false));
 }
 
 void NNetModelCommands::DiscIoConnector(NobId const id)
@@ -168,15 +248,12 @@ void NNetModelCommands::DiscIoConnector(NobId const id)
 		return;
 	m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(*pNob, false));
 }
-
-void NNetModelCommands::DiscBaseKnot(NobId const id)
-{
+/* XXXXX */
+void NNetModelCommands::InsertTrack(TrackNr const nr)
+{ 
 	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << endl;
-	Nob * pNob { m_pNMWI->GetNob(id) };
-	if (! pNob)
-		return;
-	m_pCmdStack->PushCommand(make_unique<DiscBaseKnotCmd>(*pNob, false));
+	TraceStream() << __func__ << nr << endl;
+	m_pCmdStack->PushCommand(make_unique<InsertTrackCommand>(nr));
 }
 
 void NNetModelCommands::SplitNeuron(NobId const id)
@@ -216,7 +293,7 @@ void NNetModelCommands::SetParameter(ParamType::Value const param, float const f
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << ParamType::GetName(param) << L" " << fNewValue << endl;
-	m_pCmdStack->PushCommand(make_unique<SetParameterCommand>(SetParameterCommand(m_pNMWI->GetParams(), param, fNewValue)));
+	m_pCmdStack->PushCommand(make_unique<SetParameterCommand>(m_pNMWI->GetParams(), param, fNewValue));
 }
 
 void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
@@ -298,34 +375,6 @@ void NNetModelCommands::RotateModel(MicroMeterPnt const & umPntOld, MicroMeterPn
 //	m_pCmdStack->PushCommand(make_unique<SetIoNeuronsCommand>(umPntVectorRun, move(upNobIds)));
 //}
 
-void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & pos)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddOutgoing2KnotCommand>(id, pos + STD_OFFSET));
-}
-
-void NNetModelCommands::AddIncoming2Knot(NobId const id, MicroMeterPnt const & pos)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddIncoming2KnotCommand>(id, pos - STD_OFFSET));
-}
-
-void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddOutgoing2PipeCommand>(id, pos));
-}
-
-void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddIncoming2PipeCommand>(id, pos));
-}
-
 void NNetModelCommands::InsertKnot(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
@@ -352,43 +401,6 @@ void NNetModelCommands::NewOutputNeuron(MicroMeterPnt const & pos)
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << pos << endl;
 	m_pCmdStack->PushCommand(make_unique<NewOutputNeuronCommand>(pos));
-}
-
-void NNetModelCommands::AppendInputNeuron(NobId const id)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand(make_unique<AppendNeuronCommand<InputNeuron>>(id));
-}
-
-void NNetModelCommands::AppendOutputNeuron(NobId const id)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << endl;
-	m_pCmdStack->PushCommand(make_unique<AppendNeuronCommand<OutputNeuron>>(id));
-}
-
-void NNetModelCommands::ClearBeepers()
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << endl;
-	m_pCmdStack->PushCommand(make_unique<ClearBeepersCommand>());
-}
-
-///////////////////// selection commands /////////////////////////////
-
-void NNetModelCommands::AddModel()
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(m_pModelImporter->GetUPNobs())));
-}
-
-void NNetModelCommands::CopySelection()
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs(*m_pNMWI))));
 }
 
 void NNetModelCommands::RestrictSelection(NobType::Value const val)
@@ -434,16 +446,3 @@ void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)
 	m_pCmdStack->PushCommand(make_unique<SelectNobsInRectCommand>(rect));
 }
 
-void NNetModelCommands::AnalyzeLoops()
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMRI)));
-}
-
-void NNetModelCommands::AnalyzeAnomalies()
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << endl;
-	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMRI)));
-}

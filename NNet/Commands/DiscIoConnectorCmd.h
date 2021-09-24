@@ -9,7 +9,7 @@
 #include "MicroMeterPntVector.h"
 #include "DiscBaseKnotCmd.h"
 #include "CommandFunctions.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "CommandStack.h"
 #include "NobId.h"
 #include "UpNobList.h"
@@ -17,7 +17,7 @@
 
 using std::unique_ptr;
 
-class DiscIoConnectorCmd : public Command
+class DiscIoConnectorCmd : public NNetCommand
 {
 public:
     DiscIoConnectorCmd
@@ -34,7 +34,7 @@ public:
             (
                 [&](Neuron & n) 
                 { 
-                    if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(*m_pNMWI, n)) })
+                    if (unique_ptr<NNetCommand> upCmd { move(MakeDeleteCommand(*m_pNMWI, n)) })
                         m_cmdStack.Push(move(upCmd)); 
                 }
            );

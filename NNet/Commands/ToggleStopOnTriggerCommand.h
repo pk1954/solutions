@@ -6,9 +6,9 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class ToggleStopOnTriggerCommand : public Command
+class ToggleStopOnTriggerCommand : public NNetCommand
 {
 public:
 	ToggleStopOnTriggerCommand(NobId const id)

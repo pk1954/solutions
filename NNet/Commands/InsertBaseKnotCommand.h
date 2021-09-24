@@ -7,11 +7,11 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 
 template <BaseKnot_t T>
-class InsertBaseKnotCommand : public Command
+class InsertBaseKnotCommand : public NNetCommand
 {
 public:
 	InsertBaseKnotCommand

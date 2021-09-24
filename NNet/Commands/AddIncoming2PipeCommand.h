@@ -6,10 +6,10 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 
-class AddIncoming2PipeCommand : public Command
+class AddIncoming2PipeCommand : public NNetCommand
 {
 public:
 	AddIncoming2PipeCommand

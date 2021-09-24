@@ -7,10 +7,10 @@
 //#include "MoreTypes.h"
 //#include "MicroMeterPntVector.h"
 //#include "NNetModelWriterInterface.h"
-//#include "Command.h"
+//#include "NNetCommand.h"
 //#include "IoNeuron.h"
 //
-//class SetIoNeuronsCommand : public Command
+//class SetIoNeuronsCommand : public NNetCommand
 //{
 //public:
 //	SetIoNeuronsCommand

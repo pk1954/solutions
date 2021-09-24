@@ -29,14 +29,14 @@ public:
         m_pWin = pWin;
     }
 
-    inline static RootWindow * m_pWin { nullptr };
-
 protected:
     void AddPhase(unique_ptr<AnimationCmd>);
 
     function<void()> m_targetReachedFunc { nullptr };
 
 private:
+
+    inline static RootWindow * m_pWin { nullptr };
 
     vector<unique_ptr<AnimationCmd>> m_phases  { };  
     unsigned int                     m_uiPhase { 0 };

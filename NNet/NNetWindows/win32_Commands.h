@@ -9,7 +9,7 @@
 #include <string>
 #include "ConnAnimationCommand.h"
 
-class Command;
+class NNetCommand;
 class CommandStack;
 class NobIdList;
 class PixelCoordsFp;

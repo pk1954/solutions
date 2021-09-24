@@ -7,11 +7,11 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
 class NNetModelWriterInterface;
 
-class AddSignalCommand: public Command
+class AddSignalCommand: public NNetCommand
 {
 public:
 

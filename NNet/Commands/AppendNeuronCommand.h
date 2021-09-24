@@ -6,10 +6,10 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
 template<typename T>
-class AppendNeuronCommand : public Command
+class AppendNeuronCommand : public NNetCommand
 {
 public:
 	AppendNeuronCommand(NobId const idKnot)

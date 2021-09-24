@@ -6,10 +6,10 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 
-class MoveSelectionCommand : public Command
+class MoveSelectionCommand : public NNetCommand
 {
 public:
 	MoveSelectionCommand(MicroMeterPnt const & delta)
@@ -42,7 +42,7 @@ public:
 
 	virtual NobId const GetAffectedNob() const { return NO_NOB;	}
 
-	virtual bool const CombineCommands(Command const & src) 
+	virtual bool const CombineCommands(NNetCommand const & src) 
 	{ 
 		MoveSelectionCommand const & srcCmd { static_cast<MoveSelectionCommand const &>(src) };
 		m_delta += srcCmd.m_delta;

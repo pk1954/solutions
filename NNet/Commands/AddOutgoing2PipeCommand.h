@@ -7,10 +7,10 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 
-class AddOutgoing2PipeCommand : public Command
+class AddOutgoing2PipeCommand : public NNetCommand
 {
 public:
 	AddOutgoing2PipeCommand

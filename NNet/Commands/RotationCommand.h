@@ -7,13 +7,13 @@
 #include "MoreTypes.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class RotationCommand : public Command
+class RotationCommand : public NNetCommand
 {
 public:
 
-	virtual bool const CombineCommands(Command const & src) 
+	virtual bool const CombineCommands(NNetCommand const & src) 
 	{ 
 		RotationCommand const & srcCmd { static_cast<RotationCommand const &>(src) };
 		m_radDelta += srcCmd.m_radDelta;

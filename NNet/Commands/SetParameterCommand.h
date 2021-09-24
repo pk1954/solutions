@@ -7,9 +7,9 @@
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class SetParameterCommand : public Command
+class SetParameterCommand : public NNetCommand
 {
 public:
 	SetParameterCommand

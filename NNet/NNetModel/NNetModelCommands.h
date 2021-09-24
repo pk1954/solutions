@@ -14,7 +14,7 @@
 #include "NobId.h"
 
 class Param;
-class Command;
+class NNetCommand;
 class Observable;
 class NobIdList;
 class CommandStack;
@@ -44,12 +44,17 @@ public:
         CommandStack             * const 
    );
 
-    void AddIncoming2Knot       (NobId const, MicroMeterPnt const &);
+    void ResetModel           ();
+    void PushCommand(unique_ptr<NNetCommand>);
+    void UndoCommand();
+    void RedoCommand();
+
+    void AddIncoming2Knot     (NobId const, MicroMeterPnt const &);
     void AddIncoming2Pipe     (NobId const, MicroMeterPnt const &);
     void AddModel             ();
-    void AddSignal            (MicroMeterCircle const &, TrackNr const);
     void AddOutgoing2Knot     (NobId const, MicroMeterPnt const &);
     void AddOutgoing2Pipe     (NobId const, MicroMeterPnt const &);
+    void AddSignal            (MicroMeterCircle const &, TrackNr const);
     void AnalyzeAnomalies     ();
     void AnalyzeLoops         ();
     void AppendInputNeuron    (NobId const);
@@ -72,7 +77,6 @@ public:
     void MoveNob              (NobId const, MicroMeterPnt const &);
     void NewInputNeuron       (MicroMeterPnt const &);
     void NewOutputNeuron      (MicroMeterPnt const &);
-    void ResetModel           ();
     void RestrictSelection    (NobType::Value const);
     void Rotate               (NobId const, MicroMeterPnt const &, MicroMeterPnt const &);
     void RotateModel          (MicroMeterPnt const &, MicroMeterPnt const &);
@@ -92,11 +96,6 @@ public:
     void ToggleStopOnTrigger  (NobId const);
 
     SignalId const SetHighlightedSignal(MicroMeterPnt const &);
-
-    void UndoCommand();
-    void RedoCommand();
-
-    void PushCommand(unique_ptr<Command>);
 
 private:
 

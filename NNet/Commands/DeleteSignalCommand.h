@@ -7,9 +7,9 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class DeleteSignalCommand: public Command
+class DeleteSignalCommand: public NNetCommand
 {
 public:
 

@@ -608,7 +608,6 @@
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="IoNeuronsAnimation.h" />
-    <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectors.h" />
     <ClInclude Include="PlugIoNeurons.h" />
     <ClInclude Include="SingleNobAnimation.h" />

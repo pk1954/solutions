@@ -9,19 +9,20 @@
 #include "DiscIoConnectorCmd.h"
 #include "SplitNeuronCmd.h"
 #include "DiscBaseKnotCmd.h"
+#include "NNetCommand.h"
 #include "NobType.h"
 #include "IoConnector.h"
 #include "BaseKnot.h"
 #include "Nob.h"
 #include "CommandFunctions.h"
 
-unique_ptr<Command> MakeDeleteCommand
+unique_ptr<NNetCommand> MakeDeleteCommand
 (
 	NNetModelWriterInterface & nmwi,
 	Nob                      & nob
 )
 {
-	unique_ptr<Command> upCmd;
+	unique_ptr<NNetCommand> upCmd;
 	if (nmwi.IsNobInModel(nob))
 		switch (nob.GetNobType().GetValue())
 		{

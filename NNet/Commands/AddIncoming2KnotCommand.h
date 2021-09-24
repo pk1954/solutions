@@ -7,11 +7,11 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 
-class AddIncoming2KnotCommand : public Command
+class AddIncoming2KnotCommand : public NNetCommand
 {
 public:
 	AddIncoming2KnotCommand

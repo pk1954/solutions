@@ -7,7 +7,7 @@
 using std::unique_ptr;
 
 class NNetModelWriterInterface;
-class Command;
+class NNetCommand;
 class Nob;
 
-unique_ptr<Command> MakeDeleteCommand(NNetModelWriterInterface &, Nob &);
+unique_ptr<NNetCommand> MakeDeleteCommand(NNetModelWriterInterface &, Nob &);

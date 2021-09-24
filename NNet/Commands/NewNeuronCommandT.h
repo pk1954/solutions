@@ -6,13 +6,13 @@
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 
 template <typename T>
-class NewNeuronCommandT : public Command
+class NewNeuronCommandT : public NNetCommand
 {
 public:
 	NewNeuronCommandT(MicroMeterPnt const & pos)

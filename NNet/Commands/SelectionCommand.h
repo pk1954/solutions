@@ -6,9 +6,9 @@
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class SelectionCommand : public Command
+class SelectionCommand : public NNetCommand
 {
 public:
 	SelectionCommand()

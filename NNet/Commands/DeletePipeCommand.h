@@ -6,7 +6,7 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "BaseKnot.h"
@@ -30,7 +30,7 @@ using std::endl;
 //      2.3: The startpoint (endpoint) is a neuron
 //          -> transform the neuron to an output (input) neuron 
 
-class DeletePipeCommand : public Command
+class DeletePipeCommand : public NNetCommand
 {
 public:
 

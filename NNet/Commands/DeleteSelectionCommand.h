@@ -9,9 +9,9 @@
 #include "CommandFunctions.h"
 #include "NobIdList.h"
 #include "CommandStack.h"
-#include "Command.h"
+#include "NNetCommand.h"
 
-class DeleteSelectionCommand : public Command
+class DeleteSelectionCommand : public NNetCommand
 {
 public:
 	DeleteSelectionCommand() 
@@ -24,7 +24,7 @@ public:
 		(
 			[&](Nob & nob) 
 			{ 
-				if (unique_ptr<Command> upCmd { move(MakeDeleteCommand(*m_pNMWI, nob)) })
+				if (unique_ptr<NNetCommand> upCmd { move(MakeDeleteCommand(*m_pNMWI, nob)) })
 				{
 					upCmd->Do();
 					m_pNMWI->CheckModel();

@@ -5,11 +5,11 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "Command.h"
+#include "NNetCommand.h"
 #include "Signal.h"
 #include "MonitorData.h"
 
-class MoveSignalCmd : public Command
+class MoveSignalCmd : public NNetCommand
 {
 public:
 	MoveSignalCmd
