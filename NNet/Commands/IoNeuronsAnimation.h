@@ -8,11 +8,11 @@
 #include "win32_animation.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
-#include "NNetCommand.h"
+#include "win32_command.h"
 
 using std::function;
 
-class IoNeuronsAnimation : public NNetCommand
+class IoNeuronsAnimation : public Command
 {
     using ANIM_TYPE = MicroMeterPntVector;
     using ANIMATION = Animation<ANIM_TYPE>;

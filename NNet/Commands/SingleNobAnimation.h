@@ -9,11 +9,11 @@
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
-#include "NNetCommand.h"
+#include "win32_command.h"
 
 using std::function;
 
-class SingleNobAnimation : public NNetCommand
+class SingleNobAnimation : public Command
 {
     using ANIM_TYPE = MicroMeterPosDir;
     using ANIMATION = Animation<ANIM_TYPE>;

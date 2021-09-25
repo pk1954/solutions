@@ -9,11 +9,11 @@
 #include "NNetParameters.h"
 #include "PixelCoordsFp.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
+#include "win32_command.h"
 
 using std::function;
 
-class CoordAnimation : public NNetCommand
+class CoordAnimation : public Command
 {
     using ANIM_TYPE = PixelCoordsFp;
     using ANIMATION = Animation<ANIM_TYPE>;

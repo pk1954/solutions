@@ -26,7 +26,7 @@ public:
 
     void CallUI(bool const); // called by Animation
 
-    static void DoCall(WPARAM const, LPARAM const); 
+    static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
 
     static void Initialize(RootWindow * const pWin)
     {
@@ -43,7 +43,7 @@ private:
     inline static RootWindow * m_pWin { nullptr };
 
     vector<unique_ptr<Command>> m_phases  { };  
-    unsigned int                     m_uiPhase { 0 };
+    unsigned int                m_uiPhase { 0 };
 
     void doPhase();
     void undoPhase();

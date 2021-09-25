@@ -75,4 +75,6 @@ private:
     }
 
     void clearRedoStack();
+
+    bool const canBeCombined(Command const *);
 };

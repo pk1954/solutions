@@ -19,8 +19,8 @@ public:
 
     Animation
     (
-        Command * pCmd, 
-        DWORD    const dwFlags = 0
+        Command   * pCmd, 
+        DWORD const dwFlags = 0
     )
       : m_pCmd(pCmd),
         m_dwFlags(dwFlags)

@@ -13,7 +13,7 @@ class RotationCommand : public NNetCommand
 {
 public:
 
-	virtual bool const CombineCommands(NNetCommand const & src) 
+	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		RotationCommand const & srcCmd { static_cast<RotationCommand const &>(src) };
 		m_radDelta += srcCmd.m_radDelta;

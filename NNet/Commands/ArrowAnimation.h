@@ -8,11 +8,11 @@
 #include "win32_animation.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
+#include "win32_command.h"
 
 using std::function;
 
-class ArrowAnimation : public NNetCommand
+class ArrowAnimation : public Command
 {
     using ANIM_TYPE = MicroMeter;
     using ANIMATION = Animation<ANIM_TYPE>;

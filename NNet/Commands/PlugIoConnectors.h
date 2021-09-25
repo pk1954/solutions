@@ -8,7 +8,7 @@
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
 #include "IoConnector.h"
-#include "win32_command.h"
+#include "NNetCommand.h"
 
 using std::vector;
 using std::unique_ptr;
@@ -77,10 +77,10 @@ public:
 
 private:
 
-    size_t                         m_size;
+    size_t                       m_size;
 
-    IoConnector            const & m_inputConnector;
-    IoConnector            const & m_outputConnector;
+    IoConnector          const & m_inputConnector;
+    IoConnector          const & m_outputConnector;
 
     vector<unique_ptr<Neuron>>   m_upNeurons;              
 

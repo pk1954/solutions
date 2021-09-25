@@ -33,9 +33,23 @@ void CommandStack::clearRedoStack()
     assert(RedoStackEmpty());
 }
 
+bool const CommandStack::canBeCombined(Command const * pCmd)
+{
+    if (UndoStackEmpty())
+        return false;
+    
+    if (! (typeid(previousCmd()) == typeid(*pCmd)) )
+        return false;
+
+    if (! previousCmd().CombineCommands(*pCmd))
+        return false;
+
+    return true;
+}
+
 void CommandStack::Push(unique_ptr<Command> pCmd)
 {
-    if (UndoStackEmpty() || ! (typeid(previousCmd()) == typeid(*pCmd)) || ! previousCmd().CombineCommands(*pCmd))
+    if (!canBeCombined(pCmd.get()))
     {
         m_CommandStack.push_back(move(pCmd));
         set2YoungerCmd();
