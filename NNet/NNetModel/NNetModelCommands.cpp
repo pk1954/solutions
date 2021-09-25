@@ -220,7 +220,7 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	if (IsTraceOn())
 		TraceStream() << __func__ << L" " << idSrc << L" " << idDst << endl;
 
-	unique_ptr<BaseCommand> upCmd;
+	unique_ptr<Command> upCmd;
 	switch (m_pNMRI->GetNobType(idDst).GetValue())
 	{
 	case NobType::Value::pipe:

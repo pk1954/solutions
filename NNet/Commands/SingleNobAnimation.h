@@ -44,7 +44,7 @@ public:
     virtual void UpdateUI()
     {
         m_animated.SetPosDir(m_upAnimation->GetActual());
-        AnimationCmd::UpdateUI();
+        Command::UpdateUI();
     }
 
 private:

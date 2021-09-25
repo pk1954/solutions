@@ -5,11 +5,11 @@
 #pragma once
 
 #include "NobId.h"
-#include "win32_animationCmd.h"
+#include "win32_command.h"
 
 class NNetModelWriterInterface;
 
-class NNetCommand : public AnimationCmd
+class NNetCommand : public Command
 {
 public:
     virtual ~NNetCommand() {}

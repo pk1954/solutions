@@ -11,7 +11,7 @@
 #include <exception>
 #include "BoolOp.h"
 #include "Observable.h"
-#include "BaseCommand.h"
+#include "win32_command.h"
 
 using std::vector;
 using std::unique_ptr;
@@ -35,9 +35,9 @@ public:
         return m_iIndex == m_CommandStack.size(); 
     }
 
-    void Push(unique_ptr<BaseCommand>);
+    void Push(unique_ptr<Command>);
 
-    void PushCommand(unique_ptr<BaseCommand>);
+    void PushCommand(unique_ptr<Command>);
     bool UndoCommand();
     bool RedoCommand();
 
@@ -48,13 +48,13 @@ public:
 
 private:
 
-    vector<unique_ptr<BaseCommand>> m_CommandStack           { };
+    vector<unique_ptr<Command>> m_CommandStack           { };
     size_t                          m_iIndex                 { 0 };     // index into m_Commandstack
     NNetModelWriterInterface      * m_pNMWI                  { nullptr };
     Observable                    * m_pStaticModelObservable { nullptr };
 
-    BaseCommand & currentCmd () { return * m_CommandStack.at(m_iIndex); }
-    BaseCommand & previousCmd() { return * m_CommandStack.at(m_iIndex-1); }; 
+    Command & currentCmd () { return * m_CommandStack.at(m_iIndex); }
+    Command & previousCmd() { return * m_CommandStack.at(m_iIndex-1); }; 
 
     void set2OlderCmd()
     {

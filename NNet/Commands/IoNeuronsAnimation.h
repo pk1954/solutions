@@ -46,7 +46,7 @@ public:
     {
         for (size_t i = 0; i < m_animated.size(); ++i)
             m_animated.at(i)->SetPosDir(m_upAnimation->GetActual().GetPosDir(i));
-        AnimationCmd::UpdateUI();
+        Command::UpdateUI();
     }
 
 private:

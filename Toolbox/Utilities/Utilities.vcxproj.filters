@@ -111,9 +111,6 @@
     <ClInclude Include="EllipseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp">

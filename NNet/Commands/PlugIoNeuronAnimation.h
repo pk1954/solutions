@@ -36,12 +36,12 @@ public:
     virtual void Do()
     {
         m_nobAnimated.LockDirection(); 
-        AnimationCmd::Do();
+        Command::Do();
     }
 
     virtual void Undo()
     {
-        AnimationCmd::Undo();
+        Command::Undo();
         m_nobAnimated.UnlockDirection();
     }
 

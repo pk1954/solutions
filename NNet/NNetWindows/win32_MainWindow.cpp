@@ -16,7 +16,7 @@
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 //#include "ArrowAnimation.h"
-#include "win32_animationCmd.h"
+#include "win32_command.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
 
@@ -535,7 +535,7 @@ bool MainWindow::UserProc
 {
 	if (uMsg == WM_APP_UI_CALL)
 	{ 
-		AnimationCmd::DoCall(wParam, lParam);
+		Command::DoCall(wParam, lParam);
 		return 0;
 	}
 	return NNetWindow::UserProc(uMsg, wParam, lParam); 

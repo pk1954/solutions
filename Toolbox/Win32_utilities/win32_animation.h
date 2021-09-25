@@ -5,7 +5,7 @@
 #pragma once
 
 #include "windows.h"
-#include "win32_animationCmd.h"
+#include "win32_command.h"
 #include "SmoothMoveFp.h"
 
 using AnimationScript = vector<DWORD>;
@@ -19,7 +19,7 @@ public:
 
     Animation
     (
-        AnimationCmd * pCmd, 
+        Command * pCmd, 
         DWORD    const dwFlags = 0
     )
       : m_pCmd(pCmd),
@@ -67,7 +67,7 @@ private:
     ANIM_PAR m_distance {};
 
     SmoothMoveFp   m_smoothMove;
-    AnimationCmd * m_pCmd;
+    Command * m_pCmd;
     DWORD    const m_dwFlags;
     SRWLOCK        m_srwlData       { SRWLOCK_INIT };
     TP_TIMER     * m_pTpTimer       { nullptr };

@@ -36,7 +36,7 @@ public:
 
 	virtual NobId const GetAffectedNob() const { return m_nob.GetId(); }
 
-	virtual bool const CombineCommands(BaseCommand const & src) 
+	virtual bool const CombineCommands(Command const & src) 
 	{ 
 		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
 		if (GetAffectedNob() != srcCmd.GetAffectedNob())

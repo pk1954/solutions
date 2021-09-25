@@ -1,11 +1,10 @@
-// win32_animationCmd.h
+// win32_command.h
 //
 // Win32_utilities
 
 #pragma once
 
 #include <vector>
-#include "BaseCommand.h"
 
 using std::vector;
 using std::function;
@@ -13,14 +12,19 @@ using std::unique_ptr;
 
 class RootWindow;
 
-class AnimationCmd : public BaseCommand
+class Command
 {
 public:
     virtual void Do  ();
     virtual void Undo();
     virtual void UpdateUI();
 
-    void CallUI(bool const);
+    virtual bool const CombineCommands(Command const & src) 
+    { 
+        return false; 
+    };
+
+    void CallUI(bool const); // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); 
 
@@ -30,7 +34,7 @@ public:
     }
 
 protected:
-    void AddPhase(unique_ptr<AnimationCmd>);
+    void AddPhase(unique_ptr<Command>);
 
     function<void()> m_targetReachedFunc { nullptr };
 
@@ -38,7 +42,7 @@ private:
 
     inline static RootWindow * m_pWin { nullptr };
 
-    vector<unique_ptr<AnimationCmd>> m_phases  { };  
+    vector<unique_ptr<Command>> m_phases  { };  
     unsigned int                     m_uiPhase { 0 };
 
     void doPhase();
