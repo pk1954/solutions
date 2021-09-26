@@ -26,7 +26,7 @@ void Command::CallUI(bool const bTargetReached)
 void Command::DoCall(WPARAM const wParam, LPARAM const lParam) 
 {
     Command * const pAnimCmd       { reinterpret_cast<Command * const>(lParam) };
-    bool           const bTargetReached { static_cast<bool const>(wParam) };
+    bool      const bTargetReached { static_cast<bool const>(wParam) };
     pAnimCmd->UpdateUI();
     if (bTargetReached && pAnimCmd->m_targetReachedFunc)
         (pAnimCmd->m_targetReachedFunc)(); 
@@ -34,14 +34,13 @@ void Command::DoCall(WPARAM const wParam, LPARAM const lParam)
 
 void Command::doPhase() // runs in UI thread
 {
-    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
     if (m_uiPhase == 0)
         blockUI();
     if (m_uiPhase < m_phases.size())
     {
-        Command & animCmd { * m_phases[m_uiPhase++] };
-        animCmd.m_targetReachedFunc = [&](){ doPhase(); };
-        animCmd.Do();
+        Command * const pAnimCmd { m_phases[m_uiPhase++].get() };
+        pAnimCmd->m_targetReachedFunc = [&](){ doPhase(); };
+        pAnimCmd->Do();
     }
     else
         unblockUI();
@@ -50,7 +49,6 @@ void Command::doPhase() // runs in UI thread
 
 void Command::undoPhase() // runs in UI thread
 {
-    //wcout << L'#' << __FUNCDNAME__ << L" phase(" << m_uiPhase << L'/' << m_phases.size() << L')' << endl;
     if (m_uiPhase >= m_phases.size())
         blockUI();
     if (m_uiPhase > 0)

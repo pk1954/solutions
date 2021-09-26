@@ -14,6 +14,13 @@ class NNetCommand : public Command
 public:
     virtual ~NNetCommand() {}
 
+    NNetCommand() {}
+
+    NNetCommand(unique_ptr<NNetCommand> cmd)
+    {
+        AddPhase(move(cmd));
+    }
+
     static void Initialize(NNetModelWriterInterface * const pNMWI)
     {
         m_pNMWI = pNMWI;

@@ -21,7 +21,7 @@ public:
     explicit InputBuffer();
     void Open(wstring const &);
     void Close();
-    ~InputBuffer();
+    virtual ~InputBuffer();
 
     void            SetStartMarker();
     void            UnreadLastChar();

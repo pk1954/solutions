@@ -25,7 +25,7 @@ public:
 		m_upNewPipe->Select(m_pPipe->IsSelected());
 	}
 
-	~Connect2PipeCommand()	{ }
+	virtual ~Connect2PipeCommand()	{ }
 
 	virtual void Do()
 	{

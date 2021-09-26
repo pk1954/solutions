@@ -35,7 +35,7 @@ public:
     explicit Scanner();
     void OpenInputFile(wstring const &);
     void CloseInputFile();
-    ~Scanner();
+    virtual ~Scanner();
 
     streampos GetFilePos() { return m_inbuf.GetFilePos(); };
 

@@ -30,7 +30,7 @@ class D2D_driver
 public:
 
     D2D_driver();
-    ~D2D_driver();
+    virtual ~D2D_driver();
 
     void Initialize(HWND const);
     bool StartFrame(HDC const);

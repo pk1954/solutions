@@ -16,7 +16,7 @@ class HiResTimer
 {
 public:
     HiResTimer();
-    ~HiResTimer() {};
+	virtual ~HiResTimer() {};
 
 	Ticks const ReadHiResTimer() const
 	{

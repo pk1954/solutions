@@ -28,7 +28,7 @@ public:
         m_upOutputNeuron->MoveNob((m_neuron.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }
 
-    ~SplitNeuronCmd() {}
+    virtual ~SplitNeuronCmd() {}
 
     virtual void Do()
     {
