@@ -25,7 +25,9 @@ Scanner::Scanner()
   m_wchValue(L'\0'),
   m_dValue(0.0),
   m_wstrExpected()
-{ }
+{ 
+    wcout << L"new Scanner" << std::endl;
+}
 
 // OpenInputFile
 //
@@ -42,10 +44,6 @@ void Scanner::CloseInputFile()
 {
     m_inbuf.Close();
 }
-
-Scanner::~Scanner()
-{
-}                                           
 
 // SkipSpace: Skips white space, newlines and comments 
 // returns (char)0 or some significant character

@@ -45,7 +45,7 @@ class NNetModelImporter
 {
 public:
 
-	void Initialize(Script * const);
+	void Initialize();
 
 	bool Import(wstring const, unique_ptr<ImportTermination>);
 
@@ -61,7 +61,6 @@ private:
 	unique_ptr<NNetModel>         m_upImportedModel;
 	NNetModelWriterInterface      m_ImportedNMWI;
 	wstring                       m_wstrFile2Read;
-	Script                      * m_pScript { nullptr };
 
 	void import();
 	void fixOutputNeurons(UPNobList &);

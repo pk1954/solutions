@@ -52,11 +52,11 @@ void InputBuffer::Open(wstring const & wstrFile)  // path of file to be opened
 //                     File error
 //                     Line too long
 
-wchar_t InputBuffer::ReadNextChar()
+wchar_t const InputBuffer::ReadNextChar()
 {             
    assert(!m_ifstream.bad());
    
-   if (L'\0' == *(m_pwchRead))   // end of line reached
+   if ((m_pwchRead == nullptr) || (L'\0' == *(m_pwchRead)))   // end of line reached
    {      
       getline(m_ifstream, m_wstrLine);
       m_wstrLine += L'\n'; 
@@ -90,7 +90,7 @@ wchar_t InputBuffer::ReadNextChar()
 //                 
 //   Error conditions: ---
 
-bool InputBuffer::IsFloat() const
+bool const InputBuffer::IsFloat() const
 {             
    wchar_t const * pwchRun = m_pwchRead;
 
@@ -113,7 +113,7 @@ bool InputBuffer::IsFloat() const
 // Writes to: pchRead           
 
 
-double InputBuffer::ReadFloat()
+double const InputBuffer::ReadFloat()
 {
    wchar_t const * const pwchRun = m_pwchRead - 1;
    wchar_t       *       pwchStop;
@@ -127,7 +127,7 @@ double InputBuffer::ReadFloat()
 //
 //   Writes to: pchRead           
   
-unsigned long InputBuffer::ReadNumber()
+unsigned long const InputBuffer::ReadNumber()
 {
    wchar_t const * const pwchRun = m_pwchRead - 1;
    wchar_t       *       pwchStop;
@@ -152,7 +152,7 @@ void InputBuffer::UnreadLastChar()
     --m_pwchRead;
 }
 
-int InputBuffer::GetActStartPos() const
+int const InputBuffer::GetActStartPos() const
 {
     if (m_pwchStart == nullptr)
         return -1;
@@ -163,7 +163,7 @@ int InputBuffer::GetActStartPos() const
     return static_cast<int>(m_pwchStart - &m_wstrLine.front());
 }          
 
-int InputBuffer::GetActEndPos() const
+int const InputBuffer::GetActEndPos() const
 {
     if (m_pwchStart == nullptr)
         return -1;

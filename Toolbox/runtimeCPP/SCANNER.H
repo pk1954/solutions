@@ -35,9 +35,10 @@ public:
     explicit Scanner();
     void OpenInputFile(wstring const &);
     void CloseInputFile();
-    virtual ~Scanner();
+    virtual ~Scanner() {};
 
-    streampos GetFilePos() { return m_inbuf.GetFilePos(); };
+    streampos const GetFilePos()       { return m_inbuf.GetFilePos(); };
+    bool      const IsActive  () const { return m_inbuf.IsActive(); }
 
    // Get next token from input file 
 

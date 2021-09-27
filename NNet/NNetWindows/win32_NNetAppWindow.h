@@ -118,7 +118,6 @@ private:
 	int                      m_statusMessagePart      { };
 	WinManager               m_WinManager             { };
 	StatusBar                m_StatusBar              { };
-	Script                   m_script                 { };
 	AppTitle                 m_appTitle               { };
 	NNetAppMenu              m_appMenu                { };
 	ActionTimer              m_atComputation          { };

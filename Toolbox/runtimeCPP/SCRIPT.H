@@ -43,21 +43,24 @@ public:
 	void           ScrReadSpecial(wchar_t const); 
 
 // Helper routines for error handlers 
-	wstring const GetActPath         () const { return m_pScanAct->GetActPath      (); }
-	wstring const GetActLine         () const { return m_pScanAct->GetActLine      (); }
-	int     const GetActLineNr       () const { return m_pScanAct->GetActLineNr    (); }
-	int     const GetActStartPos     () const { return m_pScanAct->GetActStartPos  (); }
-	int     const GetActEndPos       () const { return m_pScanAct->GetActEndPos    (); }
-	wstring const GetActExpectedToken() const { return m_pScanAct->GetExpectedToken(); }
-	bool    const IsActive           () const { return m_pScanAct != nullptr;           }
+
+	void SetExpectedToken(wstring const & wstrExp) { m_scanner.SetExpectedToken(wstrExp); }
+
+	wstring const GetActPath         () const { return m_scanner.GetActPath      (); }
+	wstring const GetActLine         () const { return m_scanner.GetActLine      (); }
+	int     const GetActLineNr       () const { return m_scanner.GetActLineNr    (); }
+	int     const GetActStartPos     () const { return m_scanner.GetActStartPos  (); }
+	int     const GetActEndPos       () const { return m_scanner.GetActEndPos    (); }
+	wstring const GetActExpectedToken() const { return m_scanner.GetExpectedToken(); }
+	bool    const IsActive           () const { return m_scanner.IsActive        (); }
 
 // utility functions
 
-	Scanner & GetScanner() { return * m_pScanAct; }
+	Scanner & GetScanner() { return m_scanner; }
 
-	long long const GetFilePos    () const { return m_pScanAct->GetFilePos(); };
+	long      const GetPercentRead();
+	long long const GetFilePos    ()       { return m_scanner.GetFilePos(); };
 	uintmax_t const GetFileSize   () const { return m_fileSize; };
-	long      const GetPercentRead() const;
 
 	static bool ProcessScript(wstring const &);
     static void ScrSetWrapHook(Script_Functor const * const);
@@ -65,7 +68,7 @@ public:
 
 // script processing
 
-	bool ProcessCommand(Scanner &);
+	bool ProcessCommand();
 	bool ScrProcess(wstring const &);
 
 	static void StopProcessing() 
@@ -78,7 +81,7 @@ private:
     bool          readSign(void);
     unsigned long numeric(wstring const &, unsigned long, bool *);
 
-	Scanner * m_pScanAct { nullptr };   // Pointer to active stack element
+	Scanner m_scanner; 
 	
 	inline static bool                   m_bStop     { false };
 	inline static Script_Functor const * m_pWrapHook { nullptr };

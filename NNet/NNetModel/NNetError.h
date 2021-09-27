@@ -32,21 +32,20 @@ public:
         NobId     const   id 
    )
     {        
-        Scanner & scanner  { script.GetScanner() };
-        wstring   strNobId { to_wstring(id.GetValue()) };
+        wstring strNobId { to_wstring(id.GetValue()) };
         if (IsUndefined(id))
         {
-            scanner.SetExpectedToken(L"NobId != NO_NOB");
+            script.SetExpectedToken(L"NobId != NO_NOB");
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
         }
         else if (! list.IsValidNobId(id))
         {
-            scanner.SetExpectedToken(L"id < " + to_wstring(list.Size()));
+            script.SetExpectedToken(L"id < " + to_wstring(list.Size()));
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
         }
         else if (! list.IsNobDefined(id))
         {
-            scanner.SetExpectedToken(L"Defined NobId");
+            script.SetExpectedToken(L"Defined NobId");
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Nob is not defined: ") + strNobId);
         }
     };
@@ -64,12 +63,12 @@ private:
 
 inline bool ProcessNNetScript
 (
-    Script      & script,
     UPNobList   & nobList,
     wstring const wstrPath
 ) 
 {
-    bool bSuccess { false };
+    Script script;
+    bool   bSuccess { false };
     if (! wstrPath.empty())
     {
         NNetErrorHandler errHndl { & script, & nobList };

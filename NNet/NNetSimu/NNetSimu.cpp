@@ -10,6 +10,8 @@
 #include "win32_messagePump.h"
 #include "win32_NNetAppWindow.h"
 
+#include "trace.h"
+
 int APIENTRY wWinMain
 (
 	_In_     HINSTANCE hInstance,
@@ -22,9 +24,9 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
 
-	NNetAppWindow App;
+    NNetAppWindow App;
 
-	// SetThreadAffinityMask(GetCurrentThread(), 0x0001);
+	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
 	INITCOMMONCONTROLSEX icex // load common control's DLL 
 	{

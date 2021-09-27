@@ -98,7 +98,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_model.SetDescriptionUI(m_descWindow);
 	m_model.SetHighSigObservable(&m_highlightSigObservable);
 
-	m_modelImporter .Initialize(&m_script);
+	m_modelImporter .Initialize();
 	m_modelExporter .Initialize(&m_nmri);
 	m_modelCommands .Initialize(&m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack);
 	m_cmdStack      .Initialize(&m_nmwi, &m_staticModelObservable);
@@ -336,7 +336,7 @@ void NNetAppWindow::configureStatusBar()
 	SlowMotionControl::Add(& m_StatusBar);
 
 	iPartScriptLine = m_StatusBar.NewPart();
-	m_ScriptHook.Initialize(& m_StatusBar, iPartScriptLine, & m_script);
+	m_ScriptHook.Initialize(& m_StatusBar, iPartScriptLine);
 	m_StatusBar.ClearPart(iPartScriptLine);
 	Script::ScrSetWrapHook(& m_ScriptHook);
 	m_statusBarDispFunctor.Initialize(& m_StatusBar, iPartScriptLine);
@@ -417,7 +417,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			if (wstrFile.empty())
 				break;
 			wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-			ProcessNNetScript(m_script, m_nmwi.GetUPNobs(),	wstrFile);
+			ProcessNNetScript(m_nmwi.GetUPNobs(), wstrFile);
 		}
 		break;
 

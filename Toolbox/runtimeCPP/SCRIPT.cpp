@@ -32,16 +32,16 @@ void Script::ScrReadSpecial(wchar_t const wchExpected)
 {
 	static wchar_t strExpected[2] = L"";
 	strExpected[0] = wchExpected;
-	m_pScanAct->SetExpectedToken(strExpected);
+	m_scanner.SetExpectedToken(strExpected);
 
-	switch (m_pScanAct->NextToken(true))
+	switch (m_scanner.NextToken(true))
 	{
 	case tTOKEN::End:         // end of file reached 
 		ScriptErrorHandler::eofError();
 		break;
 
 	case tTOKEN::Special:
-		if (m_pScanAct->GetCharacter() != wchExpected)
+		if (m_scanner.GetCharacter() != wchExpected)
 			ScriptErrorHandler::tokenError();
 		break;
 
@@ -52,16 +52,16 @@ void Script::ScrReadSpecial(wchar_t const wchExpected)
 
 void Script::ScrReadString(wstring const wstrExpected)
 {
-	m_pScanAct->SetExpectedToken(wstrExpected);
+	m_scanner.SetExpectedToken(wstrExpected);
 
-	switch (m_pScanAct->NextToken(true))
+	switch (m_scanner.NextToken(true))
 	{
 	case tTOKEN::End:         // end of file reached 
 		ScriptErrorHandler::eofError();
 		break;
 
 	case tTOKEN::Name:
-		if (m_pScanAct->GetString() != wstrExpected)
+		if (m_scanner.GetString() != wstrExpected)
 			ScriptErrorHandler::stringError();
 		break;
 
@@ -74,7 +74,7 @@ void Script::ScrReadString(wstring const wstrExpected)
 
 bool Script::readSign()
 {
-   wchar_t const wch  = m_pScanAct->GetCharacter();
+   wchar_t const wch  = m_scanner.GetCharacter();
    bool          fNeg = false;   
 
    if ((wch == L'+') || (wch == L'-'))
@@ -82,7 +82,7 @@ bool Script::readSign()
       if (wch == L'-')
          fNeg = true;
                   
-      switch (m_pScanAct->NextToken(false))
+      switch (m_scanner.NextToken(false))
       {
          case tTOKEN::End:         // end of file reached 
              ScriptErrorHandler::eofError();
@@ -117,28 +117,28 @@ unsigned long Script::numeric
    bool    const fNegAllowed = * pfNeg;
    unsigned long ulValue = 0;
 
-   m_pScanAct->SetExpectedToken(wstrExpected);
+   m_scanner.SetExpectedToken(wstrExpected);
 
    *pfNeg = false;
 
-   switch (m_pScanAct->NextToken(true))    
+   switch (m_scanner.NextToken(true))    
    {
       case tTOKEN::End:         // end of file reached 
          ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::Number:    // unsigned integer constant 
-         ulValue = m_pScanAct->GetUlong();      
+         ulValue = m_scanner.GetUlong();      
          break;
 
       case tTOKEN::Special:
          *pfNeg  = readSign();
-         ulValue = m_pScanAct->GetUlong();      
+         ulValue = m_scanner.GetUlong();      
          break;
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_pScanAct->GetString());
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_scanner.GetString());
             switch (symbol.GetSymbolType())
             {
                case tSTYPE::ULongConst:
@@ -179,9 +179,9 @@ double Script::ScrReadFloat(void)
    bool   fNeg = false;   
    double dRes = 0.0;
          
-   m_pScanAct->SetExpectedToken(L"float");
+   m_scanner.SetExpectedToken(L"float");
 
-   switch (m_pScanAct->NextToken(true))
+   switch (m_scanner.NextToken(true))
    {
       case tTOKEN::End:            // end of file reached 
           ScriptErrorHandler::eofError();
@@ -189,7 +189,7 @@ double Script::ScrReadFloat(void)
       
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_pScanAct->GetString());
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_scanner.GetString());
             switch (symbol.GetSymbolType())
             {
                case tSTYPE::ULongConst:
@@ -211,32 +211,32 @@ double Script::ScrReadFloat(void)
          break;
          
       case tTOKEN::Number:     // unsigned integer constant
-         dRes = static_cast<double>(m_pScanAct->GetUlong());
+         dRes = static_cast<double>(m_scanner.GetUlong());
          break;
          
       case tTOKEN::Float:       // floating point constant 
-         dRes = m_pScanAct->GetFloat();
+         dRes = m_scanner.GetFloat();
          break;
 
       case tTOKEN::Special:
          {
-            wchar_t const wch = m_pScanAct->GetCharacter();
+            wchar_t const wch = m_scanner.GetCharacter();
             if ((wch == L'+') || (wch == L'-'))
             {
                if (wch == L'-')
                   fNeg = true;
-               switch (m_pScanAct->NextToken(false))
+               switch (m_scanner.NextToken(false))
                {
                   case tTOKEN::End:         // end of file reached 
                      ScriptErrorHandler::eofError();
                      break;
                      
                   case tTOKEN::Number:     // unsigned integer constant
-                     dRes = m_pScanAct->GetUlong();
+                     dRes = m_scanner.GetUlong();
                      break;
          
                   case tTOKEN::Float:       // floating point constant 
-                     dRes = m_pScanAct->GetFloat();
+                     dRes = m_scanner.GetFloat();
                      break;
 
                   case tTOKEN::Special:
@@ -344,16 +344,16 @@ wchar_t Script::ScrReadChar(void)
    bool    fNeg   = false;   
    wchar_t wchRes = L'\0'; 
                
-   m_pScanAct->SetExpectedToken(L"char");
+   m_scanner.SetExpectedToken(L"char");
    
-   switch (m_pScanAct->NextToken(true))
+   switch (m_scanner.NextToken(true))
    {
       case tTOKEN::End:         // end of file reached 
          ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::Character:   // character constant found  
-         wchRes = m_pScanAct->GetCharacter();
+         wchRes = m_scanner.GetCharacter();
          break;
 
       case tTOKEN::Special:
@@ -362,7 +362,7 @@ wchar_t Script::ScrReadChar(void)
 
       case tTOKEN::Number:    // unsigned integer constant 
       {
-         unsigned long const ulValue = m_pScanAct->GetUlong();
+         unsigned long const ulValue = m_scanner.GetUlong();
    
          if (ulValue > CHAR_MAX)
             ScriptErrorHandler::numericError();
@@ -387,16 +387,16 @@ wchar_t Script::ScrReadChar(void)
    
 wstring const Script::ScrReadString(void)
 { 
-   m_pScanAct->SetExpectedToken(L"string");
+   m_scanner.SetExpectedToken(L"string");
 
-   switch (m_pScanAct->NextToken(true))
+   switch (m_scanner.NextToken(true))
    {
       case tTOKEN::End:         // end of file reached 
          ScriptErrorHandler::eofError();
          break;
       
       case tTOKEN::String:      // string constant 
-         return m_pScanAct->GetString();
+         return m_scanner.GetString();
 
       case tTOKEN::Special:
          ScriptErrorHandler::charError();
@@ -404,7 +404,7 @@ wstring const Script::ScrReadString(void)
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_pScanAct->GetString());
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_scanner.GetString());
             if (symbol.GetSymbolType() != tSTYPE::StringConst)
                 ScriptErrorHandler::typeError();
             return symbol.GetStringConst();
@@ -423,18 +423,18 @@ wstring const Script::ScrReadString(void)
 // returns true, if all is normal
 //         false, if end of file reached or break by user
 
-bool Script::ProcessCommand(Scanner & scan)
+bool Script::ProcessCommand()
 {
     if (m_bStop)
         return false;
 
-    tTOKEN const token = scan.NextToken(true);
+    tTOKEN const token = m_scanner.NextToken(true);
 
-    m_pScanAct->SetExpectedToken(L"function name");
+    m_scanner.SetExpectedToken(L"function name");
 
     if (token == tTOKEN::Name)
     {
-        wstring const & wstrName = m_pScanAct->GetString();
+        wstring const & wstrName = m_scanner.GetString();
 
         if (m_pWrapHook)
             (* m_pWrapHook)(* this);                // call hook function 
@@ -445,8 +445,6 @@ bool Script::ProcessCommand(Scanner & scan)
             ScriptErrorHandler::typeError();          // wrong symbol type 
 
         symbol.GetFunction()(* this);              // call wrapper function 
-
-        m_pScanAct = & scan;
     }   
     else if (token == tTOKEN::End)
         return false;                                        // normal termination 
@@ -467,25 +465,21 @@ bool Script::ScrProcess
     wstring const & wstrPath  // name of test script to be processed
 )
 { 
-    Scanner scan;          //lint -esym(1414, scan)   Assigning address of auto variable 'scan' to member
-    m_pScanAct = & scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function //-V506
-	m_bStop = false;
+    m_bStop = false;
     try 
     {  
-        scan.OpenInputFile(wstrPath); // open script file 
+        m_scanner.OpenInputFile(wstrPath); // open script file 
         m_fileSize = file_size(wstrPath);
 
-		while (ProcessCommand(scan));
+		while (ProcessCommand());
         
-        scan.CloseInputFile();
-        m_pScanAct = nullptr;
-		if (m_pWrapHook != nullptr)
+        m_scanner.CloseInputFile();
+		if (m_pWrapHook)
 			(* m_pWrapHook)(* this);                // call hook function 
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
-        ScriptErrorHandler::HandleScriptError(* m_pScanAct, errInfo);
-        m_pScanAct = nullptr;
+        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
         return false;
     }
 
@@ -504,7 +498,7 @@ void Script::Clear()
 	SymbolTable::Clear();
 }
 
-long const Script::GetPercentRead() const
+long const Script::GetPercentRead()
 {
     long long const filePos = GetFilePos();
     if ((filePos < 0) || (numeric_limits<long>::max() / 100 < filePos))

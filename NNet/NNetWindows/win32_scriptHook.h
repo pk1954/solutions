@@ -20,13 +20,11 @@ public:
 	void Initialize
 	(
 		StatusBar * const pStatusBar, 
-		int         const iPart, 
-		Script    * const pScript
+		int         const iPart
 	)
 	{
 		m_pStatusBar     = pStatusBar;
 		m_iStatusBarPart = iPart;
-		m_pScript        = pScript;
 		m_upRefreshRate  = make_unique<refreshRate>(this);
 		m_upRefreshRate->SetRefreshRate(300ms);
 		m_pStatusBar->AddCustomControl(80);  // nr of characters
@@ -39,20 +37,20 @@ public:
 
 	void DisplayScriptProgress()
 	{
-		if ((m_pStatusBar != nullptr) && (m_pScript->IsActive()))
-		{
-			wstring const & wstrPath     { m_pScript->GetActPath () };
-			long    const   lPercentRead { m_pScript->GetPercentRead() };
-			m_pStatusBar->DisplayInPart
-			(
-				m_iStatusBarPart, 
-				L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"  
-			);
-		}
-		else
-		{
-			m_pStatusBar->ClearPart(m_iStatusBarPart);
-		}
+		//if ((m_pStatusBar != nullptr) && (m_pScript->IsActive()))
+		//{
+		//	wstring const & wstrPath     { m_pScript->GetActPath () };
+		//	long    const   lPercentRead { m_pScript->GetPercentRead() };
+		//	m_pStatusBar->DisplayInPart
+		//	(
+		//		m_iStatusBarPart, 
+		//		L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"  
+		//	);
+		//}
+		//else
+		//{
+		//	m_pStatusBar->ClearPart(m_iStatusBarPart);
+		//}
 	}
 
 private:
@@ -74,6 +72,5 @@ private:
 
 	unique_ptr<refreshRate> m_upRefreshRate  { };
 	StatusBar             * m_pStatusBar     { nullptr };
-	Script                * m_pScript        { nullptr };
 	int                     m_iStatusBarPart { 0 };
 };

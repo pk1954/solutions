@@ -295,9 +295,8 @@ public:
     }
 };
 
-void NNetModelImporter::Initialize(Script * const pScript)
+void NNetModelImporter::Initialize()
 {
-    m_pScript = pScript;
     SymbolTable::ScrDefConst(L"nob",             NNetModelStorage::SIGSRC_NOB_NR);  // legacy
     SymbolTable::ScrDefConst(L"shape",           NNetModelStorage::SIGSRC_NOB_NR);  // legacy
     SymbolTable::ScrDefConst(L"circle",          NNetModelStorage::SIGSRC_CIRCLE  );
@@ -364,7 +363,7 @@ void NNetModelImporter::import()
 {
     ImportTermination::Result res;
 
-    if (ProcessNNetScript(* m_pScript, m_ImportedNMWI.GetUPNobs(), m_wstrFile2Read))
+    if (ProcessNNetScript(m_ImportedNMWI.GetUPNobs(), m_wstrFile2Read))
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath(m_wstrFile2Read);

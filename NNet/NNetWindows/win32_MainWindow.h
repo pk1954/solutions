@@ -81,8 +81,8 @@ private:
 
 	MicroMeterRect      m_rectSelection        { };
 	MicroMeterPnt       m_umPntSelectionAnchor { };
-	NobId               m_nobHighlighted       { };
-	NobId               m_nobTarget            { };
+	NobId               m_nobHighlighted       { NO_NOB };
+	NobId               m_nobTarget            { NO_NOB };
 	bool                m_bTargetFits          { false };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
