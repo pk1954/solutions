@@ -120,7 +120,8 @@ bool Preferences::ReadPreferences()
     if (exists(m_wstrPreferencesFile))
     {
         wcout << Scanner::COMMENT_START << L"Read preferences file " << m_wstrPreferencesFile << endl;
-        return Script::ProcessScript(m_wstrPreferencesFile);
+        Script script;
+        return script.ScrProcess(m_wstrPreferencesFile);
     }
     else 
     {

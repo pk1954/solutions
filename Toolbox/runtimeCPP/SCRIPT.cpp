@@ -419,6 +419,22 @@ wstring const Script::ScrReadString(void)
    return wstring(L"");
 }
             
+bool Script::ScrOpen(wstring const & wstrPath)
+{ 
+    m_bStop = false;
+    try 
+    {  
+        m_scanner.OpenInputFile(wstrPath); // open script file 
+        m_fileSize = file_size(wstrPath);
+    }
+    catch (ScriptErrorHandler::ScriptException const & errInfo)
+    {
+        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
+        return false;
+    }
+    return true;
+}
+
 // ProcessCommand processes one command from a script file
 // returns true, if all is normal
 //         false, if end of file reached or break by user
@@ -428,54 +444,33 @@ bool Script::ProcessCommand()
     if (m_bStop)
         return false;
 
-    tTOKEN const token = m_scanner.NextToken(true);
-
-    m_scanner.SetExpectedToken(L"function name");
-
-    if (token == tTOKEN::Name)
-    {
-        wstring const & wstrName = m_scanner.GetString();
-
-        if (m_pWrapHook)
-            (* m_pWrapHook)(* this);                // call hook function 
-
-        Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
-
-        if (symbol.GetSymbolType() != tSTYPE::Function)
-            ScriptErrorHandler::typeError();          // wrong symbol type 
-
-        symbol.GetFunction()(* this);              // call wrapper function 
-    }   
-    else if (token == tTOKEN::End)
-        return false;                                        // normal termination 
-
-    else if (token == tTOKEN::Special)
-        ScriptErrorHandler::charError();
-
-    else
-        ScriptErrorHandler::tokenError();
-
-    return true;
-}         
-
-//  ScrProcess: Process a test script
-
-bool Script::ScrProcess
-(
-    wstring const & wstrPath  // name of test script to be processed
-)
-{ 
-    m_bStop = false;
     try 
     {  
-        m_scanner.OpenInputFile(wstrPath); // open script file 
-        m_fileSize = file_size(wstrPath);
+        tTOKEN const token = m_scanner.NextToken(true);
 
-		while (ProcessCommand());
-        
-        m_scanner.CloseInputFile();
-		if (m_pWrapHook)
-			(* m_pWrapHook)(* this);                // call hook function 
+        m_scanner.SetExpectedToken(L"function name");
+
+        if (token == tTOKEN::Name)
+        {
+            wstring const & wstrName = m_scanner.GetString();
+
+            if (m_pWrapHook)
+                (* m_pWrapHook)(* this);                // call hook function 
+
+            Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
+
+            if (symbol.GetSymbolType() != tSTYPE::Function)
+                ScriptErrorHandler::typeError();          // wrong symbol type 
+
+            symbol.GetFunction()(* this);              // call wrapper function 
+        }   
+        else if (token == tTOKEN::End)
+            return false;                                        // normal termination 
+
+        else if (token == tTOKEN::Special)
+            ScriptErrorHandler::charError();
+        else
+            ScriptErrorHandler::tokenError();
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
@@ -484,12 +479,34 @@ bool Script::ScrProcess
     }
 
     return true;
+}         
+
+bool Script::ScrClose()
+{ 
+    try 
+    {  
+        m_scanner.CloseInputFile();
+        if (m_pWrapHook)
+            (* m_pWrapHook)(* this);                // call hook function 
+    }
+    catch (ScriptErrorHandler::ScriptException const & errInfo)
+    {
+        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
+        return false;
+    }
+    return true;
 }
 
-bool Script::ProcessScript(wstring const & wstrScript)
-{
-    Script script;
-    return script.ScrProcess(wstrScript);
+//  ScrProcess: Process a test script
+
+bool Script::ScrProcess(wstring const & wstrPath)
+{ 
+    if (ScrOpen(wstrPath))
+    {
+        while (ProcessCommand());
+        return ScrClose();
+    }
+    return false;
 }
 
 void Script::Clear()

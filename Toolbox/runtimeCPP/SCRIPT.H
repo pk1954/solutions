@@ -62,13 +62,14 @@ public:
 	long long const GetFilePos    ()       { return m_scanner.GetFilePos(); };
 	uintmax_t const GetFileSize   () const { return m_fileSize; };
 
-	static bool ProcessScript(wstring const &);
     static void ScrSetWrapHook(Script_Functor const * const);
 	static void Clear();
 
 // script processing
 
+	bool ScrOpen(wstring const &);
 	bool ProcessCommand();
+	bool ScrClose();
 	bool ScrProcess(wstring const &);
 
 	static void StopProcessing() 

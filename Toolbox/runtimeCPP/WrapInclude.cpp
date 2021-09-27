@@ -10,7 +10,6 @@
 //   inside your test script. The path name can be absolute, like in the 
 //   example or relative.
 
-
 #include "stdafx.h"
 #include <string>
 #include "script.h"
