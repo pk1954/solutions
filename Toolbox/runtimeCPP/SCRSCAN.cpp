@@ -25,9 +25,7 @@ Scanner::Scanner()
   m_wchValue(L'\0'),
   m_dValue(0.0),
   m_wstrExpected()
-{ 
-    wcout << L"new Scanner" << std::endl;
-}
+{}
 
 // OpenInputFile
 //

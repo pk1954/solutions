@@ -27,7 +27,12 @@ public:
 class Script
 {
 public:
-// functions for reading from input script
+	virtual ~Script() 
+	{
+		int x = 42;
+	};
+	
+	// functions for reading from input script
 
     double         ScrReadFloat  (void); 
     long           ScrReadLong   (void); 

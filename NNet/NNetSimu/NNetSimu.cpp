@@ -12,6 +12,8 @@
 
 #include "trace.h"
 
+NNetAppWindow App;
+
 int APIENTRY wWinMain
 (
 	_In_     HINSTANCE hInstance,
@@ -23,8 +25,6 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
-
-    NNetAppWindow App;
 
 	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
@@ -47,4 +47,11 @@ int APIENTRY wWinMain
 	int iRetVal = pump.Run();
 
 	return iRetVal;
+}
+
+void WrapInclude::operator() (Script & script) const
+{
+	wstring const & wstrFile = script.ScrReadString();
+	if (!wstrFile.empty())
+		App.StartScript(wstrFile);
 }

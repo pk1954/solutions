@@ -27,7 +27,6 @@
 #include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"
 #include "win32_importTermination.h"
-#include "NNetError.h"
 
 // scripting and tracing
 
@@ -414,10 +413,29 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		m_computeThread.StopComputation();
 		{
 			wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
-			if (wstrFile.empty())
-				break;
-			wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-			ProcessNNetScript(m_nmwi.GetUPNobs(), wstrFile);
+			if (!wstrFile.empty())
+				StartScript(wstrFile);
+		}
+		break;
+
+	case IDM_NEXT_SCRIPT_CMD:
+		{
+		    Script * const pScript{ ScriptStack::GetScript() };
+			try
+			{
+				if (pScript->ProcessCommand())
+				{
+					PostCommand(IDM_NEXT_SCRIPT_CMD);
+				}
+				else
+				{
+					ScriptStack::CloseScript();
+				}
+			}
+			catch (NobException e) 
+			{ 
+			}
+			return false;
 		}
 		break;
 

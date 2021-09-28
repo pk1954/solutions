@@ -392,6 +392,7 @@ void DefineNNetWrappers(NNetModelCommands * const pCommands)
     DEF_FUNC(DeleteNob);        
     DEF_FUNC(DiscBaseKnot);
     DEF_FUNC(DiscIoConnector);         
+    DEF_FUNC(Include);
     DEF_FUNC(InsertNeuron);       
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveNob);          

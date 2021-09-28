@@ -85,4 +85,3 @@ inline bool ProcessNNetScript
     }
     return bSuccess;
 }
-

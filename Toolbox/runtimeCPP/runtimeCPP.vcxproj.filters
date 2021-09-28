@@ -39,6 +39,9 @@
     <ClInclude Include="ERRHNDL.H">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptStack.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

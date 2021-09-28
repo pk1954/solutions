@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include "SCRIPT.H"
+#include "ScriptStack.h"
 #include "NNetModel.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
@@ -41,6 +42,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
+#include "NNetError.h"
 
 class ReadModelResult;
 class MessagePump;
@@ -84,6 +86,25 @@ public:
 
 	NNetAppWindow             (NNetAppWindow const &) = delete;  // noncopyable class 
 	NNetAppWindow & operator= (NNetAppWindow const &) = delete;  // noncopyable class 
+
+	void StartScript(wstring const & wstrFile)
+	{
+		wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
+		Script    * pScript { ScriptStack::OpenScript() };
+		UPNobList & nobList { m_nmwi.GetUPNobs() };
+		NNetErrorHandler errHndl { pScript, & nobList };
+		nobList.SetErrorHandler(& errHndl);
+		try
+		{
+			if (!pScript->ScrOpen(wstrFile))
+				return;
+		}
+		catch (NobException e) 
+		{ 
+			return;
+		}
+		PostCommand(IDM_NEXT_SCRIPT_CMD);
+	}
 
 private:
 

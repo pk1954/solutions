@@ -16,6 +16,7 @@
 #define IDD_RESET_PARAMETERS       106
 								   
 #define IDM_SCRIPT_DIALOG          110
+#define IDM_NEXT_SCRIPT_CMD        111
 #define IDM_UNDO                   115
 #define IDM_REDO                   116
 #define IDM_DUMP                   117
