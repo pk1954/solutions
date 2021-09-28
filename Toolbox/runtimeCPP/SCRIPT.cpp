@@ -455,17 +455,17 @@ bool Script::ProcessCommand()
             wstring const & wstrName = m_scanner.GetString();
 
             if (m_pWrapHook)
-                (* m_pWrapHook)(* this);                // call hook function 
+                (* m_pWrapHook)(* this);            // call hook function 
 
             Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
 
             if (symbol.GetSymbolType() != tSTYPE::Function)
-                ScriptErrorHandler::typeError();          // wrong symbol type 
+                ScriptErrorHandler::typeError();    // wrong symbol type 
 
-            symbol.GetFunction()(* this);              // call wrapper function 
+            symbol.GetFunction()(* this);           // call wrapper function 
         }   
         else if (token == tTOKEN::End)
-            return false;                                        // normal termination 
+            return false;                           // normal termination 
 
         else if (token == tTOKEN::Special)
             ScriptErrorHandler::charError();

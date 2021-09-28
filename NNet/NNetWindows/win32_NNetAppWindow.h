@@ -90,8 +90,8 @@ public:
 	void StartScript(wstring const & wstrFile)
 	{
 		wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-		Script    * pScript { ScriptStack::OpenScript() };
-		UPNobList & nobList { m_nmwi.GetUPNobs() };
+		Script         * pScript { ScriptStack::OpenScript() };
+		UPNobList      & nobList { m_nmwi.GetUPNobs() };
 		NNetErrorHandler errHndl { pScript, & nobList };
 		nobList.SetErrorHandler(& errHndl);
 		try
