@@ -3,6 +3,7 @@
 // Win32_utilities
 
 #include "stdafx.h"
+#include "ScriptStack.h"
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"
 #include "win32_command.h"
@@ -85,5 +86,12 @@ void Command::blockUI()
 
 void Command::unblockUI()
 { 
-    m_pWin->SendCommand2Application(IDM_BLOCK_UI, false); 
+    NextScriptCommand(); 
+    m_pWin->PostCommand2Application(IDM_BLOCK_UI, false);
 };
+
+void Command::NextScriptCommand()
+{
+    if (ScriptStack::IsScriptActive())
+        m_pWin->PostCommand2Application(IDM_NEXT_SCRIPT_CMD, 0); 
+}

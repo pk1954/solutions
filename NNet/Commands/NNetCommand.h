@@ -16,10 +16,10 @@ public:
 
     NNetCommand() {}
 
-    NNetCommand(unique_ptr<NNetCommand> cmd)
-    {
-        AddPhase(move(cmd));
-    }
+    //NNetCommand(unique_ptr<NNetCommand> cmd)
+    //{
+    //    AddPhase(move(cmd));
+    //}
 
     static void Initialize(NNetModelWriterInterface * const pNMWI)
     {

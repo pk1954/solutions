@@ -46,6 +46,11 @@ public:
         Command::UpdateUI();
     }
 
+    virtual bool const IsAsyncCommand() 
+    { 
+        return true; 
+    };
+
 private:
 
     ANIM_TYPE           & m_animated;

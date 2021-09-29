@@ -333,8 +333,7 @@ bool NNetModelCommands::MakeIoConnector()
 		TraceStream() << __func__ << endl;
 	unique_ptr<ConnAnimationCommand> upCmd = { make_unique<ConnAnimationCommand>() };
 	bool bCmdOk = upCmd->IsCmdOk();
-	if (bCmdOk)
-		m_pCmdStack->PushCommand(move(upCmd));
+	m_pCmdStack->PushCommand(move(upCmd));
 	return bCmdOk;
 }
 

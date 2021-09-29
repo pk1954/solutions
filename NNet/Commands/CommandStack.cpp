@@ -4,7 +4,9 @@
 
 #include "stdafx.h"
 #include "assert.h"
+#include "Observable.h"
 #include "NNetModelWriterInterface.h"
+#include "win32_command.h"
 #include "CommandStack.h"
 
 using std::wcout;
@@ -69,6 +71,8 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
         clearRedoStack();
         m_pNMWI->CheckModel();
         pCmd->Do();
+        if (!pCmd->IsAsyncCommand())
+            Command::NextScriptCommand();
         m_pNMWI->CheckModel();
         Push(move(pCmd));
         notify();
@@ -92,6 +96,10 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
         //    int x = 42;
         //}
 #endif
+    }
+    else
+    {
+        Command::NextScriptCommand();
     }
 }
 

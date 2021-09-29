@@ -31,4 +31,9 @@ public:
     }
 
     virtual ~PlugIoConnectorAnimation() {};
+
+    virtual bool const IsAsyncCommand() 
+    { 
+        return true; 
+    };
 };

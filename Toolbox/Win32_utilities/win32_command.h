@@ -24,6 +24,11 @@ public:
         return false; 
     };
 
+    virtual bool const IsAsyncCommand() 
+    { 
+        return false;
+    };
+
     void CallUI(bool const); // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
@@ -33,6 +38,8 @@ public:
         m_pWin = pWin;
     }
 
+    static void NextScriptCommand();
+
 protected:
     void AddPhase(unique_ptr<Command>);
 
@@ -40,7 +47,7 @@ protected:
 
 private:
 
-    inline static RootWindow * m_pWin { nullptr };
+    inline static RootWindow  * m_pWin { nullptr };
 
     vector<unique_ptr<Command>> m_phases  { };  
     unsigned int                m_uiPhase { 0 };

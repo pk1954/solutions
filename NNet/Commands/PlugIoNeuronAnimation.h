@@ -45,6 +45,11 @@ public:
         m_nobAnimated.UnlockDirection();
     }
 
+    virtual bool const IsAsyncCommand() 
+    { 
+        return true; 
+    };
+
 private:
     IoNeuron & m_nobAnimated;
     IoNeuron & m_nobTarget; 

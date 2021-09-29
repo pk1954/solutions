@@ -158,8 +158,8 @@ float const INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
 static Radian  const Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
 static Degrees const Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
 
-static Radian  const Normalize(Radian  const & r) { return Radian (fmod(r.GetValue(), RADIAN_FACTOR * 2.0f)); }
-static Degrees const Normalize(Degrees const & d) { return Degrees(fmod(d.GetValue(), 360.0f)); }
+static Radian  const Normalize(Radian  const & r) { return Radian (fmod(fabs(r.GetValue()), RADIAN_FACTOR * 2.0f)); }
+static Degrees const Normalize(Degrees const & d) { return Degrees(fmod(fabs(d.GetValue()), 360.0f)); }
 
 static MicroMeter const Cos(Radian const r) { return MicroMeter(cos(r.GetValue())); } 
 static MicroMeter const Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); } 

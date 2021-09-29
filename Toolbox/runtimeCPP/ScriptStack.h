@@ -22,7 +22,12 @@ public:
 
     static Script* const GetScript()
     {
-       return m_stack.empty() ? nullptr : m_stack.top().get();
+        return m_stack.empty() ? nullptr : m_stack.top().get();
+    }
+
+    static bool const IsScriptActive()
+    {
+        return ! m_stack.empty();
     }
 
     static void CloseScript()

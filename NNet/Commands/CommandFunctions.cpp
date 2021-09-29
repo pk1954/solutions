@@ -29,8 +29,6 @@ unique_ptr<NNetCommand> MakeDeleteCommand
 		case NobType::Value::pipe:
 			upCmd = make_unique<DeletePipeCommand>(nob);
 			break;
-		case NobType::Value::knot:
-			break;
 		case NobType::Value::inputConnector:
 		case NobType::Value::outputConnector:
 			upCmd = make_unique<DiscIoConnectorCmd>(nob, true);

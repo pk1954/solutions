@@ -6,17 +6,13 @@
 
 #include "assert.h"
 #include <vector>
-#include <utility>
-#include <typeinfo>
-#include <exception>
-#include "BoolOp.h"
-#include "Observable.h"
-#include "win32_command.h"
 
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
+class Command;
+class Observable;
 class NNetModelWriterInterface;
 
 class CommandStack
@@ -49,9 +45,9 @@ public:
 private:
 
     vector<unique_ptr<Command>> m_CommandStack           { };
-    size_t                          m_iIndex                 { 0 };     // index into m_Commandstack
-    NNetModelWriterInterface      * m_pNMWI                  { nullptr };
-    Observable                    * m_pStaticModelObservable { nullptr };
+    size_t                      m_iIndex                 { 0 };     // index into m_Commandstack
+    NNetModelWriterInterface  * m_pNMWI                  { nullptr };
+    Observable                * m_pStaticModelObservable { nullptr };
 
     Command & currentCmd () { return * m_CommandStack.at(m_iIndex); }
     Command & previousCmd() { return * m_CommandStack.at(m_iIndex-1); }; 

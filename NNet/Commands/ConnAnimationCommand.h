@@ -20,6 +20,11 @@ public:
     ConnAnimationCommand();
     virtual ~ConnAnimationCommand() {};
 
+    virtual bool const IsAsyncCommand() 
+    { 
+        return true; 
+    };
+
     bool const IsCmdOk() { return m_bAllOk; }
 
 private:

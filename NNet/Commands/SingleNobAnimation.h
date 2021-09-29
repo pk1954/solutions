@@ -47,6 +47,11 @@ public:
         Command::UpdateUI();
     }
 
+    virtual bool const IsAsyncCommand() 
+    { 
+        return true; 
+    };
+
 private:
 
     Nob                 & m_animated;

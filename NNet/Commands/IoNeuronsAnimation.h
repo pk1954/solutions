@@ -49,6 +49,11 @@ public:
         Command::UpdateUI();
     }
 
+    virtual bool const IsAsyncCommand() 
+    { 
+        return true; 
+    };
+
 private:
 
     vector<IoNeuron *>    m_animated;
