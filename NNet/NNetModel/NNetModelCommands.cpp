@@ -234,7 +234,12 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 		if (m_pNMRI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
 			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
 		else if (m_pNMRI->GetNobType(idSrc).IsOutputNeuronType())
-			upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
+		{
+			if (m_pNMRI->HasIncoming(idSrc) && m_pNMRI->HasOutgoing(idDst))
+				upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
+			else
+				upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
+		}
 		else
 			assert(false);
 		break;
@@ -244,7 +249,12 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 		else if (m_pNMRI->GetNobType(idSrc).IsOutputNeuronType())  // connect two output neurons
 			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
 		else if (m_pNMRI->GetNobType(idSrc).IsInputNeuronType())
-			upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
+		{
+			if (m_pNMRI->HasOutgoing(idSrc) && m_pNMRI->HasIncoming(idDst))
+				upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
+			else
+				upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
+		}
 		else
 			assert(false);
 		break;

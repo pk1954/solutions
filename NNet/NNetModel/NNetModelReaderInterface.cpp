@@ -126,7 +126,9 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 		size_t nrIn  = GetNrOfIncomingConnections(idSrc) + GetNrOfIncomingConnections(idDst);
 		size_t nrOut = GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst);
 
-		if (typeSrc.IsKnotType() && typeDst.IsKnotType())
+		if (nrIn + nrOut == 0)
+			return false;
+		else if (typeSrc.IsKnotType() && typeDst.IsKnotType())
 			return true;
 		else if (nrOut <= 1)   // OutputNeuron 
 			return true;
