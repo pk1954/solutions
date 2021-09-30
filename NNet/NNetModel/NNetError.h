@@ -13,10 +13,6 @@
 using std::to_wstring;
 using std::endl;
 
-struct NobException: public exception
-{
-};
-
 class NNetErrorHandler : public NobErrorHandler
 {
 public:
@@ -53,7 +49,6 @@ public:
     virtual void operator()(NobId const id) 
     {
         CheckNobId(* m_pScript, * m_pList, id);
-        throw NobException();
     }
 
 private:
@@ -73,14 +68,7 @@ inline bool ProcessNNetScript
     {
         NNetErrorHandler errHndl { & script, & nobList };
         nobList.SetErrorHandler(& errHndl);
-        try
-        {
-            bSuccess = script.ScrProcess(wstrPath);
-        }
-        catch (NobException e) 
-        { 
-            return false;
-        }
+        bSuccess = script.ScrProcess(wstrPath);
         nobList.SetErrorHandler(nullptr);
     }
     return bSuccess;

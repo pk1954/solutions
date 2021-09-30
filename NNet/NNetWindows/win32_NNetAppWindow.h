@@ -92,18 +92,8 @@ public:
 		wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
 		Script         * pScript { ScriptStack::OpenScript() };
 		UPNobList      & nobList { m_nmwi.GetUPNobs() };
-		NNetErrorHandler errHndl { pScript, & nobList };
-		nobList.SetErrorHandler(& errHndl);
-		try
-		{
-			if (!pScript->ScrOpen(wstrFile))
-				return;
-		}
-		catch (NobException e) 
-		{ 
-			return;
-		}
-		PostCommand(IDM_NEXT_SCRIPT_CMD);
+		if (pScript->ScrOpen(wstrFile))
+			PostCommand(IDM_NEXT_SCRIPT_CMD);
 	}
 
 private:

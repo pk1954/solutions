@@ -419,19 +419,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		break;
 
 	case IDM_NEXT_SCRIPT_CMD:
-		{
-			bool bContinue;
-			assert(ScriptStack::IsScriptActive());
-			try
-			{
-				bContinue = ScriptStack::GetScript()->ProcessCommand();
-			}
-			catch (NobException e) 
-			{ 
-			}
-			if (!bContinue)
-				ScriptStack::CloseScript();
-		}
+		assert(ScriptStack::IsScriptActive());
+		if (!ScriptStack::GetScript()->ProcessCommand())
+			ScriptStack::CloseScript();
 		return false;
 
 	case IDM_NEW_MODEL:
