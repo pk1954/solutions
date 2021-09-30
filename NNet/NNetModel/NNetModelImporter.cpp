@@ -362,8 +362,18 @@ void NNetModelImporter::fixOutputNeurons(UPNobList & list)
 void NNetModelImporter::import() 
 {
     ImportTermination::Result res;
+    Script                    script;
+    UPNobList               & nobList  { m_ImportedNMWI.GetUPNobs() };
+    bool                      bSuccess { false };
 
-    if (ProcessNNetScript(m_ImportedNMWI.GetUPNobs(), m_wstrFile2Read))
+    if (! m_wstrFile2Read.empty())
+    {
+        NNetErrorHandler errHndl { & script, & nobList };
+        nobList.SetErrorHandler(& errHndl);
+        bSuccess = script.ScrProcess(m_wstrFile2Read);
+        nobList.SetErrorHandler(nullptr);
+    }
+    if (bSuccess)
     {
         m_ImportedNMWI.RemoveOrphans();
         m_ImportedNMWI.SetModelFilePath(m_wstrFile2Read);

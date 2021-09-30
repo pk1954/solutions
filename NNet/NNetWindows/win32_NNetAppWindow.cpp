@@ -539,3 +539,12 @@ bool NNetAppWindow::AskAndSave()
 	}
 	return true;
 }
+
+void NNetAppWindow::StartScript(wstring const & wstrFile)
+{
+	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
+	Script    * pScript { ScriptStack::OpenScript() };
+	UPNobList & nobList { m_nmwi.GetUPNobs() };
+	if (pScript->ScrOpen(wstrFile))
+		Command::NextScriptCommand();
+}

@@ -55,21 +55,3 @@ private:
     Script          * const m_pScript;
     UPNobList const * const m_pList;
 };
-
-inline bool ProcessNNetScript
-(
-    UPNobList   & nobList,
-    wstring const wstrPath
-) 
-{
-    Script script;
-    bool   bSuccess { false };
-    if (! wstrPath.empty())
-    {
-        NNetErrorHandler errHndl { & script, & nobList };
-        nobList.SetErrorHandler(& errHndl);
-        bSuccess = script.ScrProcess(wstrPath);
-        nobList.SetErrorHandler(nullptr);
-    }
-    return bSuccess;
-}

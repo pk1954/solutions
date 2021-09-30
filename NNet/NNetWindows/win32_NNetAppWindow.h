@@ -87,14 +87,7 @@ public:
 	NNetAppWindow             (NNetAppWindow const &) = delete;  // noncopyable class 
 	NNetAppWindow & operator= (NNetAppWindow const &) = delete;  // noncopyable class 
 
-	void StartScript(wstring const & wstrFile)
-	{
-		wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-		Script         * pScript { ScriptStack::OpenScript() };
-		UPNobList      & nobList { m_nmwi.GetUPNobs() };
-		if (pScript->ScrOpen(wstrFile))
-			PostCommand(IDM_NEXT_SCRIPT_CMD);
-	}
+	void StartScript(wstring const &);
 
 private:
 
