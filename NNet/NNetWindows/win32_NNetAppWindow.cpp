@@ -73,7 +73,7 @@ NNetAppWindow::NNetAppWindow()
 	NNetWindow::InitClass(& m_atDisplay);
 
 	DefineUtilityWrapperFunctions();
-	DefineNNetWrappers(& m_modelCommands);
+	DefineNNetWrappers(& m_nmri, & m_modelCommands);
 };
 
 NNetAppWindow::~NNetAppWindow() { }
@@ -546,5 +546,5 @@ void NNetAppWindow::StartScript(wstring const & wstrFile)
 	Script    * pScript { ScriptStack::OpenScript() };
 	UPNobList & nobList { m_nmwi.GetUPNobs() };
 	if (pScript->ScrOpen(wstrFile))
-		Command::NextScriptCommand();
+		Command::NextScriptCommand();  // start reading script file
 }

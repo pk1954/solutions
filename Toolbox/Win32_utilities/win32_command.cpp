@@ -86,12 +86,12 @@ void Command::blockUI()
 
 void Command::unblockUI()
 { 
-    NextScriptCommand(); 
+    NextScriptCommand();   // script continuation for async commands
     m_pWin->PostCommand2Application(IDM_BLOCK_UI, false);
 };
 
 void Command::NextScriptCommand()
 {
-    if (ScriptStack::IsScriptActive())
+    if (ScriptStack::IsScriptActive() && !ScriptStack::SingleStepMode())
         m_pWin->PostCommand2Application(IDM_NEXT_SCRIPT_CMD, 0); 
 }

@@ -30,6 +30,16 @@ public:
         return ! m_stack.empty();
     }
 
+    static bool const SingleStepMode()
+    {
+        return m_bSingleStepMode;
+    }
+
+    static void SetSingleStepMode(bool const bMode)
+    {
+        m_bSingleStepMode = bMode;
+    }
+
     static void CloseScript()
     {
         GetScript()->ScrClose();
@@ -38,4 +48,5 @@ public:
 
 private:
     inline static stack<unique_ptr<Script>> m_stack;
+    inline static bool                      m_bSingleStepMode { false };
 };

@@ -46,6 +46,7 @@ public:
 	mV            const   GetVoltage                (NobId const, MicroMeterPnt const &) const;
 	Degrees       const   GetDirection              (NobId const) const; 
 
+	wstring       const   GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
 	MicroMeterPnt const   GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
 	Nob           const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	fMicroSecs    const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
@@ -103,8 +104,4 @@ protected:
 	NNetModel * m_pModel;
 
 	bool const isConnectedToPipe(NobId const, NobId const) const;
-	bool const onlyOneAxon(NobId const idSrc, NobId const idDst) const
-	{
-		return (GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst) <= 1);
-	}
 };

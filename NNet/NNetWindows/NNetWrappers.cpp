@@ -5,16 +5,19 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "symtab.h"
+#include "NobType.h"
 #include "NobIdList.h"
 #include "SoundInterface.h"
 #include "win32_util.h"
 #include "UtilityWrappers.h"
 #include "DrawContext.h"
 #include "NNetError.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelCommands.h"
 
-static NNetModelCommands * m_pCommands;
+static NNetModelReaderInterface * m_pNMRI;
+static NNetModelCommands        * m_pCommands;
 
 class WrapConnect: public Script_Functor
 {
@@ -23,7 +26,22 @@ public:
     {
         NobId const idSrc { ScrReadNobId(script) };
         NobId const idDst { ScrReadNobId(script) };
-        m_pCommands->Connect(idSrc, idDst);
+        if (m_pNMRI->CanConnectTo(idSrc, idDst))
+        {
+            m_pCommands->Connect(idSrc, idDst);
+        }
+        else
+        {
+            script.SetExpectedToken(L"");
+            wstring wstrMsg
+            {
+                L"Invalid: Connect " + 
+                m_pNMRI->GetTypeName(idSrc) + 
+                L" to " + 
+                m_pNMRI->GetTypeName(idDst)
+            };
+            throw ScriptErrorHandler::ScriptException(999, wstrMsg);
+        }
     }
 };
 
@@ -372,8 +390,13 @@ public:
     }
 };
 
-void DefineNNetWrappers(NNetModelCommands * const pCommands)
+void DefineNNetWrappers
+(
+    NNetModelReaderInterface * const pNMRI,
+    NNetModelCommands        * const pCommands
+)
 {
+    m_pNMRI     = pNMRI;
     m_pCommands = pCommands;
 
     DEF_FUNC(AnalyzeAnomalies);   

@@ -7,4 +7,4 @@
 class NNetModelCommands;
 class MainWindow;
 
-extern void DefineNNetWrappers(NNetModelCommands * const);
+extern void DefineNNetWrappers(NNetModelReaderInterface * const, NNetModelCommands * const);

@@ -6,6 +6,7 @@
 
 #include "win32_baseRefreshRate.h"
 #include "win32_status.h"
+#include "ScriptStack.h"
 #include "script.h"
 
 using std::to_wstring;
@@ -37,20 +38,21 @@ public:
 
 	void DisplayScriptProgress()
 	{
-		//if ((m_pStatusBar != nullptr) && (m_pScript->IsActive()))
-		//{
-		//	wstring const & wstrPath     { m_pScript->GetActPath () };
-		//	long    const   lPercentRead { m_pScript->GetPercentRead() };
-		//	m_pStatusBar->DisplayInPart
-		//	(
-		//		m_iStatusBarPart, 
-		//		L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"  
-		//	);
-		//}
-		//else
-		//{
-		//	m_pStatusBar->ClearPart(m_iStatusBarPart);
-		//}
+		if ((m_pStatusBar != nullptr) && (ScriptStack::IsScriptActive()))
+		{
+			Script * const   pScript      { ScriptStack::GetScript() };
+			wstring  const & wstrPath     { pScript->GetActPath () };
+			long     const   lPercentRead { pScript->GetPercentRead() };
+			m_pStatusBar->DisplayInPart
+			(
+				m_iStatusBarPart, 
+				L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"
+			);
+		}
+		else
+		{
+			m_pStatusBar->ClearPart(m_iStatusBarPart);
+		}
 	}
 
 private:

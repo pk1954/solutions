@@ -72,7 +72,7 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
         m_pNMWI->CheckModel();
         pCmd->Do();
         if (!pCmd->IsAsyncCommand())
-            Command::NextScriptCommand();
+            Command::NextScriptCommand(); // script continuation for syncronous commands
         m_pNMWI->CheckModel();
         Push(move(pCmd));
         notify();
@@ -99,7 +99,7 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
     }
     else
     {
-        Command::NextScriptCommand();
+        Command::NextScriptCommand(); // script continuation for failed commands
     }
 }
 
