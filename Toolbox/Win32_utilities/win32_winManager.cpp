@@ -20,7 +20,7 @@ using Util::operator==;
 using Util::operator!=;
 using Util::operator<<; 
 
-class WrapMoveWindow : public Script_Functor
+class WrapMoveWindow : public ScriptFunctor
 {
 public:
     WrapMoveWindow(WinManager * pWinManager) :
@@ -56,7 +56,7 @@ private:
     WinManager * m_pWinManager;
 };
 
-class WrapShowWindow : public Script_Functor
+class WrapShowWindow : public ScriptFunctor
 {
 public:
     WrapShowWindow(WinManager * pWinManager) :
@@ -153,7 +153,7 @@ static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
 // <rectangle> = (4)<integer number>
 // <monitor type> = "0" | "1"
 
-class WrapMonitorConfiguration : public Script_Functor
+class WrapMonitorConfiguration : public ScriptFunctor
 {
 public:
     WrapMonitorConfiguration(WinManager * pWinManager) :

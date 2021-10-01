@@ -23,7 +23,7 @@ using std::filesystem::file_size;
 
 //   ScrSetWrapHook: Set hook function, which will be called in processScript
    
-void Script::ScrSetWrapHook(Script_Functor const * const pHook)
+void Script::ScrSetWrapHook(ScriptFunctor const * const pHook)
 {
     m_pWrapHook = pHook;
 }
@@ -435,39 +435,44 @@ bool Script::ScrOpen(wstring const & wstrPath)
     return true;
 }
 
-// ProcessCommand processes one command from a script file
-// returns true, if all is normal
-//         false, if end of file reached or break by user
-
-bool Script::ProcessCommand()
+bool Script::ReadNextToken()
 {
     if (m_bStop)
         return false;
-
     try 
     {  
-        tTOKEN const token = m_scanner.NextToken(true);
+        m_token = m_scanner.NextToken(true);
+        if (m_pWrapHook)
+            (* m_pWrapHook)(* this);            // call hook function 
 
+    }
+    catch (ScriptErrorHandler::ScriptException const & errInfo)
+    {
+        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
+        return false;
+    }
+    return true;
+}
+
+bool Script::ProcessToken()
+{
+    try 
+    {  
         m_scanner.SetExpectedToken(L"function name");
 
-        if (token == tTOKEN::Name)
+        if (m_token == tTOKEN::Name)
         {
             wstring const & wstrName = m_scanner.GetString();
-
-            if (m_pWrapHook)
-                (* m_pWrapHook)(* this);            // call hook function 
-
-            Symbol const & symbol = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
+            Symbol  const & symbol   = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
 
             if (symbol.GetSymbolType() != tSTYPE::Function)
                 ScriptErrorHandler::typeError();    // wrong symbol type 
 
             symbol.GetFunction()(* this);           // call wrapper function 
         }   
-        else if (token == tTOKEN::End)
+        else if (m_token == tTOKEN::End)
             return false;                           // normal termination 
-
-        else if (token == tTOKEN::Special)
+        else if (m_token == tTOKEN::Special)
             ScriptErrorHandler::charError();
         else
             ScriptErrorHandler::tokenError();
@@ -503,7 +508,7 @@ bool Script::ScrProcess(wstring const & wstrPath)
 { 
     if (ScrOpen(wstrPath))
     {
-        while (ProcessCommand());
+        while (ReadNextToken() && ProcessToken());
         return ScrClose();
     }
     return false;

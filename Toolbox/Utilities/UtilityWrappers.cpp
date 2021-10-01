@@ -56,7 +56,7 @@ tBoolOp ScrReadBoolOp(Script & script)
     return static_cast<tBoolOp>(ulBoolOp);
 }
 
-class WrapOpenTraceFile : public Script_Functor
+class WrapOpenTraceFile : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const

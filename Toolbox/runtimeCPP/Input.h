@@ -9,10 +9,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <functional>
 
 using std::wstring;
 using std::wifstream;
 using std::streampos;
+using std::function;
 
 class InputBuffer
 {
@@ -39,11 +41,14 @@ public:
     bool          const   IsActive      () const { return m_ifstream.is_open(); }
     streampos     const   GetFilePos    ()       { return m_ifstream.tellg(); };
 
+    static void SetNewLineTrigger(function<void(void)> const);
+
 private:
+    inline static function<void(void)> m_newLineTrigger { nullptr };
+
     wstring   m_wstrLine;       // buffer for script line
     int       m_iLineNr;        // actual line number  
     wchar_t * m_pwchStart;      // pointer to start of current token 
     wchar_t * m_pwchRead;       // pointer to next char in line 
     wifstream m_ifstream;
 };
-

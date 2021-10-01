@@ -9,20 +9,12 @@
 
 #include <string>
 #include "scanner.h"
+#include "ScriptFunctor.h"
 
 using std::wstring;
 
 #define DEF_FUNC(name)        SymbolTable::ScrDefConst(L#name, new Wrap##name)
 #define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst(L#name, static_cast<unsigned long>(name))
-
-class Script;
-
-class Script_Functor
-{
-public:
-    virtual ~Script_Functor() {};
-    virtual void operator() (Script & script) const = 0;
-};
 
 class Script
 {
@@ -67,13 +59,20 @@ public:
 	long long const GetFilePos    ()       { return m_scanner.GetFilePos(); };
 	uintmax_t const GetFileSize   () const { return m_fileSize; };
 
-    static void ScrSetWrapHook(Script_Functor const * const);
+	static void ScrSetWrapHook(ScriptFunctor const * const);
 	static void Clear();
+
+	void ScrSetNewLineHook(ScriptFunctor const * const pHook)
+	{
+		m_pNewLineHook = pHook;
+		Scanner::SetNewLineTrigger([&](){ (*m_pNewLineHook)(*this); });
+	}
 
 // script processing
 
 	bool ScrOpen(wstring const &);
-	bool ProcessCommand();
+	bool ReadNextToken();
+	bool ProcessToken();
 	bool ScrClose();
 	bool ScrProcess(wstring const &);
 
@@ -88,14 +87,15 @@ private:
     unsigned long numeric(wstring const &, unsigned long, bool *);
 
 	Scanner m_scanner; 
-	
-	inline static bool                   m_bStop     { false };
-	inline static Script_Functor const * m_pWrapHook { nullptr };
-	
+	tTOKEN  m_token;
+
+	inline static bool                  m_bStop        { false };
+	inline static ScriptFunctor const * m_pWrapHook    { nullptr };
+	inline static ScriptFunctor const * m_pNewLineHook { nullptr };
 	uintmax_t m_fileSize { 0 };
 };
 
-class WrapInclude : public Script_Functor
+class WrapInclude : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const;

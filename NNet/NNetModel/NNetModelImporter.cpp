@@ -24,7 +24,7 @@
 using std::filesystem::exists;
 using std::make_unique;
 
-class WrapBase : public Script_Functor
+class WrapBase : public ScriptFunctor
 {
 public:
     WrapBase(NNetModelImporter & modelImporter) :

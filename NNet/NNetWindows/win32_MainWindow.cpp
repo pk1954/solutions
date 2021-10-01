@@ -443,7 +443,7 @@ void MainWindow::centerAndZoomRect
 void MainWindow::OnPaint()
 {
 	m_pDisplayTimer->TimerStart();
-	NNetWindow::OnPaint();
+ 	NNetWindow::OnPaint();
 	m_pDisplayTimer->TimerStop();
 }
 

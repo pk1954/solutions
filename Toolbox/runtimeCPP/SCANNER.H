@@ -37,6 +37,8 @@ public:
     void CloseInputFile();
     virtual ~Scanner() {};
 
+    static void SetNewLineTrigger(function<void(void)> p) { InputBuffer::SetNewLineTrigger(p); }
+
     streampos const GetFilePos()       { return m_inbuf.GetFilePos(); };
     bool      const IsActive  () const { return m_inbuf.IsActive(); }
 

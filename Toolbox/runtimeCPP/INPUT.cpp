@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include "Input.h"
 #include "errhndl.h"
+#include "ScriptFunctor.h"
 
 InputBuffer::InputBuffer() 
   :  m_wstrLine(),
@@ -22,13 +23,18 @@ InputBuffer::InputBuffer()
     m_pwchStart  = nullptr;
     m_pwchRead   = &m_wstrLine.front();
     m_iLineNr    = 0;
-}                                                  // end OpenInputBuffer 
+}
 
 InputBuffer::~InputBuffer() 
 {
     m_pwchStart = nullptr;
     m_pwchRead  = nullptr;
 };
+
+void InputBuffer::SetNewLineTrigger(function<void(void)> const pFunc)
+{
+    m_newLineTrigger = pFunc;
+}
 
 // InputBuffer::Open - Open script file and initialize according variables
 //
@@ -59,7 +65,7 @@ wchar_t const InputBuffer::ReadNextChar()
    if ((m_pwchRead == nullptr) || (L'\0' == *(m_pwchRead)))   // end of line reached
    {      
       getline(m_ifstream, m_wstrLine);
-      m_wstrLine += L'\n'; 
+      m_wstrLine += L'\n';
 
       if (m_ifstream.bad())
           ScriptErrorHandler::inputFileError();
@@ -71,6 +77,8 @@ wchar_t const InputBuffer::ReadNextChar()
       {         
          m_iLineNr++;
          m_pwchRead = &m_wstrLine.front();
+         if (m_newLineTrigger)
+             (m_newLineTrigger)();
       }   
    }
 

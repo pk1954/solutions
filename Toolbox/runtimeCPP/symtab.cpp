@@ -72,7 +72,7 @@ void SymbolTable::addSymbol(wstring const & wstrName, Symbol const & sym)
     m_ReverseTab[ sym ] = wstrName;
 }
 
-void SymbolTable::ScrDefConst(wstring const & wstrName, Script_Functor const * const pFunc)
+void SymbolTable::ScrDefConst(wstring const & wstrName, ScriptFunctor const * const pFunc)
 {
     addSymbol(wstrName, Symbol(pFunc));
 }

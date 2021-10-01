@@ -19,7 +19,7 @@
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;
 
-class WrapConnect: public Script_Functor
+class WrapConnect: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -45,7 +45,7 @@ public:
     }
 };
 
-class WrapMakeIoConnector: public Script_Functor
+class WrapMakeIoConnector: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -54,7 +54,7 @@ public:
     }
 };
 
-class WrapAnalyzeAnomalies: public Script_Functor
+class WrapAnalyzeAnomalies: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -63,7 +63,7 @@ public:
     }
 };
 
-class WrapAnalyzeLoops: public Script_Functor
+class WrapAnalyzeLoops: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -72,7 +72,7 @@ public:
     }
 };
 
-class WrapResetModel: public Script_Functor
+class WrapResetModel: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -81,7 +81,7 @@ public:
     }
 };
 
-class WrapCreateInitialNobs: public Script_Functor
+class WrapCreateInitialNobs: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -90,7 +90,7 @@ public:
     }
 };
 
-class WrapAppendInputNeuron: public Script_Functor
+class WrapAppendInputNeuron: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -100,7 +100,7 @@ public:
     }
 };
 
-class WrapAppendOutputNeuron: public Script_Functor
+class WrapAppendOutputNeuron: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -110,7 +110,7 @@ public:
     }
 };
 
-class WrapClearBeepers: public Script_Functor
+class WrapClearBeepers: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -119,7 +119,7 @@ public:
     }
 };
 
-class WrapCopySelection: public Script_Functor
+class WrapCopySelection: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -128,7 +128,7 @@ public:
     }
 };
 
-class WrapSelectAll: public Script_Functor
+class WrapSelectAll: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -138,7 +138,7 @@ public:
     }
 };
 
-class WrapSelectSubtree: public Script_Functor
+class WrapSelectSubtree: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -149,7 +149,7 @@ public:
     }
 };
 
-class WrapSelectNob: public Script_Functor
+class WrapSelectNob: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -160,7 +160,7 @@ public:
     }
 };
 
-class WrapSetTriggerSound: public Script_Functor
+class WrapSetTriggerSound: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -176,7 +176,7 @@ public:
     }
 };
 
-class WrapToggleStopOnTrigger: public Script_Functor
+class WrapToggleStopOnTrigger: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -186,7 +186,7 @@ public:
     }
 };
 
-class WrapSelectAllBeepers: public Script_Functor
+class WrapSelectAllBeepers: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -195,7 +195,7 @@ public:
     }
 };
 
-class WrapDeleteSelection: public Script_Functor
+class WrapDeleteSelection: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -204,7 +204,7 @@ public:
     }
 };
 
-class WrapDeleteNob: public Script_Functor
+class WrapDeleteNob: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -214,7 +214,7 @@ public:
     }
 };
 
-class WrapDiscBaseKnot: public Script_Functor
+class WrapDiscBaseKnot: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -224,7 +224,7 @@ public:
     }
 };
 
-class WrapDiscIoConnector: public Script_Functor
+class WrapDiscIoConnector: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -234,7 +234,7 @@ public:
     }
 };
 
-class WrapSplitNeuron: public Script_Functor
+class WrapSplitNeuron: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -244,7 +244,7 @@ public:
     }
 };
 
-class WrapSetPulseRate: public Script_Functor
+class WrapSetPulseRate: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -255,7 +255,7 @@ public:
     }
 };
 
-class WrapSetParameter: public Script_Functor
+class WrapSetParameter: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -266,7 +266,7 @@ public:
     }
 };
 
-class WrapMoveNob: public Script_Functor
+class WrapMoveNob: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -277,7 +277,7 @@ public:
     }
 };
 
-class WrapSelectNobsInRect: public Script_Functor
+class WrapSelectNobsInRect: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -288,7 +288,7 @@ public:
     }
 };
 
-class WrapMoveSelection: public Script_Functor
+class WrapMoveSelection: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -298,7 +298,7 @@ public:
     }
 };
 
-class WrapInsertNeuron: public Script_Functor
+class WrapInsertNeuron: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -309,7 +309,7 @@ public:
     }
 };
 
-class WrapAddOutgoing2Knot: public Script_Functor
+class WrapAddOutgoing2Knot: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -320,7 +320,7 @@ public:
     }
 };
 
-class WrapAddIncoming2Knot: public Script_Functor
+class WrapAddIncoming2Knot: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -331,7 +331,7 @@ public:
     }
 };
 
-class WrapAddOutgoing2Pipe: public Script_Functor
+class WrapAddOutgoing2Pipe: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -342,7 +342,7 @@ public:
     }
 };
 
-class WrapAddIncoming2Pipe: public Script_Functor
+class WrapAddIncoming2Pipe: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -353,7 +353,7 @@ public:
     }
 };
 
-class WrapNewInputNeuron: public Script_Functor
+class WrapNewInputNeuron: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -363,7 +363,17 @@ public:
     }
 };
 
-class WrapUndoCommand: public Script_Functor
+class WrapNewOutputNeuron: public ScriptFunctor
+{
+public:
+    virtual void operator() (Script & script) const
+    {
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
+        m_pCommands->NewOutputNeuron(umPos);
+    }
+};
+
+class WrapUndoCommand: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -372,7 +382,7 @@ public:
     }
 };
 
-class WrapRedoCommand: public Script_Functor
+class WrapRedoCommand: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -381,7 +391,7 @@ public:
     }
 };
 
-class WrapBreak : public Script_Functor
+class WrapBreak : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -420,6 +430,7 @@ void DefineNNetWrappers
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveNob);          
     DEF_FUNC(NewInputNeuron);     
+    DEF_FUNC(NewOutputNeuron);     
     DEF_FUNC(MakeIoConnector);
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          

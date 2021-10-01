@@ -28,7 +28,7 @@ using std::filesystem::path;
 
 static wstring m_wstrPreferencesFile;
 
-class WrapSetAutoOpen: public Script_Functor
+class WrapSetAutoOpen: public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -41,7 +41,7 @@ public:
    }
 };
 
-class WrapSetSound: public Script_Functor
+class WrapSetSound: public ScriptFunctor
 {
 public:
     WrapSetSound(Sound & sound)
@@ -61,7 +61,7 @@ private:
     Sound & m_sound;
 };
 
-class WrapReadModel: public Script_Functor
+class WrapReadModel: public ScriptFunctor
 {
 public:
     WrapReadModel(NNetModelImporter & modelImporter, HWND const hwndApp)

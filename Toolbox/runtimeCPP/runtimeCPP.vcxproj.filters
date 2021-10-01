@@ -42,6 +42,9 @@
     <ClInclude Include="ScriptStack.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptFunctor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -337,7 +337,8 @@ void NNetAppWindow::configureStatusBar()
 	iPartScriptLine = m_StatusBar.NewPart();
 	m_ScriptHook.Initialize(& m_StatusBar, iPartScriptLine);
 	m_StatusBar.ClearPart(iPartScriptLine);
-	Script::ScrSetWrapHook(& m_ScriptHook);
+//	Script::ScrSetWrapHook(& m_ScriptHook);
+
 	m_statusBarDispFunctor.Initialize(& m_StatusBar, iPartScriptLine);
 	ModelAnalyzer::SetStatusBarDisplay(& m_statusBarDispFunctor);
 	ModelAnalyzer::SetEscFunc         (& Util::EscapeKeyPressed);
@@ -415,13 +416,18 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
 			if (!wstrFile.empty())
 				StartScript(wstrFile);
+			if (!ScriptStack::GetScript()->ReadNextToken())
+				ScriptStack::CloseScript();
 		}
 		break;
 
 	case IDM_NEXT_SCRIPT_CMD:
-		assert(ScriptStack::IsScriptActive());
-		if (!ScriptStack::GetScript()->ProcessCommand())
-			ScriptStack::CloseScript();
+		if (ScriptStack::IsScriptActive())
+		{
+			Script * const pScript { ScriptStack::GetScript() };
+			if (!pScript->ProcessToken() || !pScript->ReadNextToken())
+				ScriptStack::CloseScript();
+		}
 		return false;
 
 	case IDM_NEW_MODEL:
@@ -546,5 +552,8 @@ void NNetAppWindow::StartScript(wstring const & wstrFile)
 	Script    * pScript { ScriptStack::OpenScript() };
 	UPNobList & nobList { m_nmwi.GetUPNobs() };
 	if (pScript->ScrOpen(wstrFile))
+	{
+		pScript->ScrSetNewLineHook(& m_ScriptHook);
 		Command::NextScriptCommand();  // start reading script file
+	}
 }

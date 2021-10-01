@@ -170,6 +170,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="SCANNER.H" />
     <ClInclude Include="SCRIPT.H" />
+    <ClInclude Include="ScriptFunctor.h" />
     <ClInclude Include="ScriptStack.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SYMTAB.H" />

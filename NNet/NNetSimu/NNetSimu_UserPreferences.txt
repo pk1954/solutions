@@ -1,3 +1,3 @@
 SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\Models\8x3In3=ut2Ruck.mod"
+ReadModel "D:\SW-projects\Delivery\2021-09-20\Retina-Sehnerv_rot_gruen-blau_Schicht 1-2_Geniculum_visuel-Cortex V1 linkes Auge_linkes Sehfeld_neu.mod"

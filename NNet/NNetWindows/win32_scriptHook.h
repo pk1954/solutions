@@ -13,7 +13,7 @@ using std::to_wstring;
 using std::unique_ptr;
 using std::make_unique;
 
-class ScriptHook : public Script_Functor
+class ScriptHook : public ScriptFunctor
 {
 public:
 	ScriptHook() {}
@@ -33,7 +33,7 @@ public:
 
 	virtual void operator() (Script & script) const
 	{
-		m_upRefreshRate->Notify(false);
+		m_upRefreshRate->Notify(true);
 	}
 
 	void DisplayScriptProgress()
@@ -46,7 +46,8 @@ public:
 			m_pStatusBar->DisplayInPart
 			(
 				m_iStatusBarPart, 
-				L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"
+				//L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"
+				wstrPath + L"(" + to_wstring(pScript->GetActLineNr()) + L"): " +pScript->GetActLine()
 			);
 		}
 		else

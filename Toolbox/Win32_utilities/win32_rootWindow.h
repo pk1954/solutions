@@ -170,13 +170,18 @@ public:
         Move(rect.GetStartPoint(), rect.GetSize(), bRedraw);
     }
 
-    void Invalidate(bool const bRedraw) 
-    {
+	void Update() 
+	{
+		(void)::UpdateWindow(m_hwnd);
+	}
+
+	void Invalidate(bool const bRedraw) 
+	{
 		if (m_hwnd != nullptr)
 			(void)::InvalidateRect(m_hwnd, nullptr, bRedraw);
-    }
+	}
 
-    void FillBackground(HDC const hDC, COLORREF const col) const
+	void FillBackground(HDC const hDC, COLORREF const col) const
     {
         SetBkColor(hDC, col);
         Util::FastFill(hDC, m_hwnd);
