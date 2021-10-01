@@ -283,13 +283,9 @@ public:
         {
             umCircle = ScrReadMicroMeterCircle(script);
         }
-        else if (ulSigSrc == NNetModelStorage::SIGSRC_NOB_NR)
-        {
-            script.ScrReadLong();  ///// legacy
-        }
         else
         {
-            assert(false);  // unexpected signal source 
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101") );
         }
         GetMonitorData().AddSignal(trackNr, umCircle);
     }
@@ -297,18 +293,13 @@ public:
 
 void NNetModelImporter::Initialize()
 {
-    SymbolTable::ScrDefConst(L"nob",             NNetModelStorage::SIGSRC_NOB_NR);  // legacy
-    SymbolTable::ScrDefConst(L"shape",           NNetModelStorage::SIGSRC_NOB_NR);  // legacy
-    SymbolTable::ScrDefConst(L"circle",          NNetModelStorage::SIGSRC_CIRCLE  );
+    SymbolTable::ScrDefConst(L"circle",          NNetModelStorage::SIGSRC_CIRCLE );
     SymbolTable::ScrDefConst(L"Description",     new WrapDescription    (* this));
     SymbolTable::ScrDefConst(L"Protocol",        new WrapProtocol       (* this));
     SymbolTable::ScrDefConst(L"GlobalParameter", new WrapGlobalParameter(* this));
     SymbolTable::ScrDefConst(L"NrOfNobs",        new WrapNrOfNobs       (* this));
-    SymbolTable::ScrDefConst(L"NrOfShapes",      new WrapNrOfNobs       (* this)); // legacy
     SymbolTable::ScrDefConst(L"CreateNob",       new WrapCreateNob      (* this));
-    SymbolTable::ScrDefConst(L"CreateShape",     new WrapCreateNob      (* this)); // legacy
     SymbolTable::ScrDefConst(L"NobParameter",    new WrapNobParameter   (* this));
-    SymbolTable::ScrDefConst(L"ShapeParameter",  new WrapNobParameter   (* this)); // legacy
     SymbolTable::ScrDefConst(L"TriggerSound",    new WrapTriggerSound   (* this));
     SymbolTable::ScrDefConst(L"NrOfTracks",      new WrapNrOfTracks     (* this));
     SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this));
@@ -341,24 +332,6 @@ void NNetModelImporter::Initialize()
    );
 }
 
-void NNetModelImporter::fixOutputNeurons(UPNobList & list)
-{
-    list.Apply2All<Neuron>  
-    (
-        [&](Neuron & neuron)
-        {
-            if (! neuron.HasOutgoing())
-            {
-                NobId id { neuron.GetId() };
-                unique_ptr<OutputNeuron> upOutputNeuron { make_unique<OutputNeuron>(neuron) };
-                upOutputNeuron->SetId(id);
-                list.ReplaceNob(move(upOutputNeuron));
-                list.Reconnect(id);
-            }
-        }
-   );
-}
-
 void NNetModelImporter::import() 
 {
     ImportTermination::Result res;
@@ -379,7 +352,6 @@ void NNetModelImporter::import()
         m_ImportedNMWI.SetModelFilePath(m_wstrFile2Read);
         m_ImportedNMWI.DescriptionComplete();
         res = ImportTermination::Result::ok;
-        fixOutputNeurons(m_ImportedNMWI.GetUPNobs());  // legacy: in old models no explicit OutputNeurons
     }
     else
     {

@@ -63,7 +63,6 @@ private:
 	wstring                       m_wstrFile2Read;
 
 	void import();
-	void fixOutputNeurons(UPNobList &);
 
 	friend static unsigned int __stdcall importModelThreadProc(void *);
 
