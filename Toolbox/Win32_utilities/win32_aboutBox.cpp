@@ -6,8 +6,6 @@
 #include "win32_util_resource.h"
 #include "win32_aboutBox.h"
 
-static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
-
 static INT_PTR CALLBACK About 
 (
     HWND   const hDlg,

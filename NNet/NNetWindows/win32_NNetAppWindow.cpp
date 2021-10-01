@@ -63,15 +63,8 @@ using std::filesystem::path;
 
 NNetAppWindow::NNetAppWindow()
 {
-	SwitchWcoutTo(L"main_trace.out");
-
-	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
-	wcout << Scanner::COMMENT_START << L"Computer name: "       << Util::GetComputerName() << endl;
-	wcout << Scanner::COMMENT_START << L"User name:     "       << Util::GetUserName()     << endl;
-
 	Neuron::SetSound(& m_sound);
 	NNetWindow::InitClass(& m_atDisplay);
-
 	DefineUtilityWrapperFunctions();
 	DefineNNetWrappers(& m_nmri, & m_modelCommands);
 };

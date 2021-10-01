@@ -3,8 +3,10 @@
 // NNetSimu
 
 #include "stdafx.h"
+#include "Version.h"
 #include "Resource.h"
 #include "commctrl.h"
+#include "win32_util_resource.h"
 #include "win32_fatalError.h"
 #include "win32_stopwatch.h"
 #include "win32_messagePump.h"
@@ -12,7 +14,7 @@
 
 #include "trace.h"
 
-NNetAppWindow App;
+unique_ptr<NNetAppWindow> upApp;
 
 int APIENTRY wWinMain
 (
@@ -26,6 +28,9 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
 
+	Stopwatch stopwatch;
+	stopwatch.Start();
+
 	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
 	INITCOMMONCONTROLSEX icex // load common control's DLL 
@@ -37,15 +42,24 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	Stopwatch   stopwatch;
-	MessagePump pump;
-	stopwatch.Start();
-	pump.SetAccelTable(hInstance, IDC_NNET_SIMU_MAIN);
-	App.Start(pump);
-	pump.RegisterWindow(App.GetWindowHandle(), false);
-	stopwatch.Stop(Scanner::COMMENT_START + L"App.Start");
-	int iRetVal = pump.Run();
+	SwitchWcoutTo(L"main_trace.out");
 
+	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
+	wcout << Scanner::COMMENT_START << L"Version:       " << VER_PRODUCTNAME_STR     << endl;
+	wcout << Scanner::COMMENT_START << L"Build date:    " << COMPILE_TIMESTAMP       << endl;
+	wcout << Scanner::COMMENT_START << L"Computer name: " << Util::GetComputerName() << endl;
+	wcout << Scanner::COMMENT_START << L"User name:     " << Util::GetUserName()     << endl;
+
+	upApp = make_unique<NNetAppWindow>();
+
+	MessagePump pump;
+	pump.SetAccelTable(hInstance, IDC_NNET_SIMU_MAIN);
+	upApp->Start(pump);
+	pump.RegisterWindow(upApp->GetWindowHandle(), false);
+
+	stopwatch.Stop(Scanner::COMMENT_START + L"App.Start");
+
+	int iRetVal = pump.Run();
 	return iRetVal;
 }
 
@@ -53,5 +67,5 @@ void WrapInclude::operator() (Script & script) const
 {
 	wstring const & wstrFile = script.ScrReadString();
 	if (!wstrFile.empty())
-		App.StartScript(wstrFile);
+		upApp->StartScript(wstrFile);
 }
