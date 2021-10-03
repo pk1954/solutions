@@ -86,14 +86,14 @@ bool Script::readSign()
       {
          case tTOKEN::End:         // end of file reached 
              ScriptErrorHandler::eofError();
-            break;
+             break;
                      
          case tTOKEN::Number:     // unsigned integer constant 
-            break;
+             break;
          
 		 case tTOKEN::Special:
              ScriptErrorHandler::charError();
-            break;
+             break;
                      
          default: 
              ScriptErrorHandler::tokenError();
@@ -419,7 +419,7 @@ wstring const Script::ScrReadString(void)
    return wstring(L"");
 }
             
-bool Script::ScrOpen(wstring const & wstrPath)
+bool const Script::ScrOpen(wstring const & wstrPath)
 { 
     m_bStop = false;
     try 
@@ -435,16 +435,15 @@ bool Script::ScrOpen(wstring const & wstrPath)
     return true;
 }
 
-bool Script::ReadNextToken()
-{
-    if (m_bStop)
+bool const Script::ReadNextToken()  // returns true, if token was successfully read
+{                                   // or end of file reached         
+    if (m_bStop)                    // false, if token was bad 
         return false;
     try 
     {  
         m_token = m_scanner.NextToken(true);
         if (m_pWrapHook)
             (* m_pWrapHook)(* this);            // call hook function 
-
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
@@ -454,7 +453,7 @@ bool Script::ReadNextToken()
     return true;
 }
 
-bool Script::ProcessToken()
+bool const Script::ProcessToken()
 {
     try 
     {  
@@ -486,7 +485,7 @@ bool Script::ProcessToken()
     return true;
 }         
 
-bool Script::ScrClose()
+bool const Script::ScrClose()
 { 
     try 
     {  
@@ -504,14 +503,20 @@ bool Script::ScrClose()
 
 //  ScrProcess: Process a test script
 
-bool Script::ScrProcess(wstring const & wstrPath)
+bool const Script::ScrProcess(wstring const & wstrPath)
 { 
-    if (ScrOpen(wstrPath))
+    if (!ScrOpen(wstrPath))   // could not open file 
+        return false;          
+    while (ReadNextToken() && (m_token != tTOKEN::End))
     {
-        while (ReadNextToken() && ProcessToken());
-        return ScrClose();
+        if (!ProcessToken())   
+        {
+            ScrClose();
+            return false;     // error in file
+        }
     }
-    return false;
+    ScrClose();
+    return true;             // processed file successfully
 }
 
 void Script::Clear()

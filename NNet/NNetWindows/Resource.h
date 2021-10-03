@@ -44,8 +44,10 @@
 #define IDM_OPEN_MODEL             153
 #define IDM_ADD_MODEL              154
 #define IDX_REPLACE_MODEL          155
-#define IDM_NEW_MODEL              156
-#define IDM_ADD_IMPORTED_MODEL     157
+#define IDX_FILE_NOT_FOUND         156
+#define IDX_ERROR_IN_FILE          157
+#define IDM_NEW_MODEL              158
+#define IDM_ADD_IMPORTED_MODEL     159
 								   
 #define IDD_PULSE_RATE             160
 #define IDD_ARROWS_ON              161

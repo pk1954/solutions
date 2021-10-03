@@ -70,11 +70,11 @@ public:
 
 // script processing
 
-	bool ScrOpen(wstring const &);
-	bool ReadNextToken();
-	bool ProcessToken();
-	bool ScrClose();
-	bool ScrProcess(wstring const &);
+	bool const ScrOpen(wstring const &);
+	bool const ReadNextToken();
+	bool const ProcessToken();
+	bool const ScrClose();
+	bool const ScrProcess(wstring const &);
 
 	static void StopProcessing() 
 	{ 

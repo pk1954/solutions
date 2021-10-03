@@ -24,17 +24,11 @@ public:
 			break;
 
 		case ImportTermination::Result::fileNotFound:
-			MessageBox(nullptr, name.c_str(), L"Could not find model file", MB_OK);
+			SendMessage(m_hwndApp, WM_COMMAND, IDX_FILE_NOT_FOUND, 0);
 			break;
 
 		case ImportTermination::Result::errorInFile:
-			MessageBox
-			(
-				nullptr, 
-				L"Error in model file\r\nSee main_trace.out for details", 
-				L"Error", 
-				MB_OK 
-			);
+			SendMessage(m_hwndApp, WM_COMMAND, IDX_ERROR_IN_FILE, 0);
 			break;
 
 		default:

@@ -478,6 +478,20 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		}
 		break;
 
+	case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
+		MessageBox(nullptr, L"Could not find model file", L"Error", MB_OK);
+		break;
+
+	case IDX_ERROR_IN_FILE:  //no user command, only internal usage
+		MessageBox
+		(
+			nullptr, 
+			L"Error reading model file\r\nSee main_trace.out for details", 
+			L"Error", 
+			MB_OK 
+		);
+		break;
+
 	default:
 		if (m_NNetController.HandleCommand(wmId, lParam, NP_NULL))
 			return true;
