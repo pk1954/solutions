@@ -62,11 +62,7 @@ public:
 	static void ScrSetWrapHook(ScriptFunctor const * const);
 	static void Clear();
 
-	void ScrSetNewLineHook(ScriptFunctor const * const pHook)
-	{
-		m_pNewLineHook = pHook;
-		Scanner::SetNewLineTrigger([&](){ (*m_pNewLineHook)(*this); });
-	}
+	void ScrSetNewLineHook(ScriptFunctor const * const);
 
 // script processing
 
@@ -76,23 +72,23 @@ public:
 	bool const ScrClose();
 	bool const ScrProcess(wstring const &);
 
-	static void StopProcessing() 
-	{ 
-		m_bStop = true; 
-	}
+	void SetEcho(bool const bMode) { m_bEchoScript = bMode; }
+
+	static void StopProcessing() { m_bStop = true; }
 
 private:
 
     bool          readSign(void);
     unsigned long numeric(wstring const &, unsigned long, bool *);
 
-	Scanner m_scanner; 
-	tTOKEN  m_token;
+	Scanner   m_scanner; 
+	tTOKEN    m_token;
+	bool      m_bEchoScript { true };
+	uintmax_t m_fileSize    { 0 };
 
 	inline static bool                  m_bStop        { false };
 	inline static ScriptFunctor const * m_pWrapHook    { nullptr };
 	inline static ScriptFunctor const * m_pNewLineHook { nullptr };
-	uintmax_t m_fileSize { 0 };
 };
 
 class WrapInclude : public ScriptFunctor

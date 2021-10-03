@@ -343,6 +343,7 @@ void NNetModelImporter::import()
     {
         NNetErrorHandler errHndl { & script, & nobList };
         nobList.SetErrorHandler(& errHndl);
+        script.SetEcho(true);
         bSuccess = script.ScrProcess(m_wstrFile2Read);
         nobList.SetErrorHandler(nullptr);
     }
@@ -390,7 +391,6 @@ bool NNetModelImporter::Import
     m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
     m_ImportedNMWI.Start(m_upImportedModel.get());
     m_wstrFile2Read = wstrPath;
-    wcout << Scanner::COMMENT_START << L"Reading file " << wstrPath << endl;
     Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
     return true;
 }

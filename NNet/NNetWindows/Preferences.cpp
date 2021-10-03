@@ -121,6 +121,7 @@ bool Preferences::ReadPreferences()
     {
         wcout << Scanner::COMMENT_START << L"Read preferences file " << m_wstrPreferencesFile << endl;
         Script script;
+        script.SetEcho(false);
         return script.ScrProcess(m_wstrPreferencesFile);
     }
     else 

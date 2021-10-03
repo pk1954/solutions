@@ -200,7 +200,7 @@ bool WinManager::GetWindowConfiguration()
     bool bRes { false };
 
     Script scriptWindowConfig;
-	
+    scriptWindowConfig.SetEcho(false);
 	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
 	{
 		wcout << Scanner::COMMENT_SYMBOL << L" +++ Monitor configuration file " << MONITOR_CONFIG_FILE << L" not found or bad" << endl;

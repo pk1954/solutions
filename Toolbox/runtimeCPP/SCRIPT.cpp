@@ -18,6 +18,7 @@
 #include "script.h"
 #include "symtab.h"
 
+using std::endl;
 using std::numeric_limits;
 using std::filesystem::file_size;
 
@@ -419,6 +420,15 @@ wstring const Script::ScrReadString(void)
    return wstring(L"");
 }
             
+void Script::ScrSetNewLineHook(ScriptFunctor const * const pHook)
+{
+    m_pNewLineHook = pHook;
+    if (m_pNewLineHook)
+        Scanner::SetNewLineTrigger([&](){ (*m_pNewLineHook)(*this); });
+    else
+        Scanner::SetNewLineTrigger(nullptr);
+}
+
 bool const Script::ScrOpen(wstring const & wstrPath)
 { 
     m_bStop = false;
@@ -426,6 +436,7 @@ bool const Script::ScrOpen(wstring const & wstrPath)
     {  
         m_scanner.OpenInputFile(wstrPath); // open script file 
         m_fileSize = file_size(wstrPath);
+        wcout << endl << Scanner::COMMENT_START << L"Reading file " << wstrPath << endl;
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
@@ -488,10 +499,11 @@ bool const Script::ProcessToken()
 bool const Script::ScrClose()
 { 
     try 
-    {  
+    {     
         m_scanner.CloseInputFile();
         if (m_pWrapHook)
             (* m_pWrapHook)(* this);                // call hook function 
+        wcout << Scanner::COMMENT_START << L"End of file  " << GetActPath() << endl << endl;
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
@@ -501,12 +513,23 @@ bool const Script::ScrClose()
     return true;
 }
 
+class EchoScriptLine: public ScriptFunctor
+{
+public:
+    virtual void operator() (Script & script) const
+    {
+        wcout << Scanner::COMMENT_SYMBOL << script.GetActLine();
+    }
+};
+
 //  ScrProcess: Process a test script
 
 bool const Script::ScrProcess(wstring const & wstrPath)
 { 
+    static EchoScriptLine newLineHook;
     if (!ScrOpen(wstrPath))   // could not open file 
-        return false;          
+        return false;     
+    ScrSetNewLineHook(m_bEchoScript ? &newLineHook : nullptr);
     while (ReadNextToken() && (m_token != tTOKEN::End))
     {
         if (!ProcessToken())   

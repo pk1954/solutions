@@ -4,15 +4,11 @@
 
 #pragma once
 
-#include "win32_baseRefreshRate.h"
 #include "win32_status.h"
 #include "ScriptStack.h"
 #include "script.h"
 
 using std::to_wstring;
-using std::unique_ptr;
-using std::make_unique;
-using std::endl;
 
 class ScriptHook : public ScriptFunctor
 {
@@ -27,29 +23,26 @@ public:
 	{
 		m_pStatusBar     = pStatusBar;
 		m_iStatusBarPart = iPart;
-		m_upRefreshRate  = make_unique<refreshRate>(this);
-		m_upRefreshRate->SetRefreshRate(300ms);
 		m_pStatusBar->AddCustomControl(80);  // nr of characters
 	}
 
 	virtual void operator() (Script & script) const
 	{
-		m_upRefreshRate->Notify(true);
-		wcout << script.GetActLine() << endl;
-	}
+		if (!m_pStatusBar)
+			return;
 
-	void DisplayScriptProgress()
-	{
-		if ((m_pStatusBar != nullptr) && (ScriptStack::IsScriptActive()))
+		if (Script * const pScript { ScriptStack::GetScript() })
 		{
-			Script * const   pScript      { ScriptStack::GetScript() };
-			wstring  const & wstrPath     { pScript->GetActPath () };
-			long     const   lPercentRead { pScript->GetPercentRead() };
 			m_pStatusBar->DisplayInPart
 			(
 				m_iStatusBarPart, 
-				//L"Reading " + wstrPath + L" ... " + to_wstring(lPercentRead) + L"%"
-				wstrPath + L"(" + to_wstring(pScript->GetActLineNr()) + L"): " + pScript->GetActLine()
+				pScript->GetActPath() + 
+				L"(" + 
+				to_wstring(pScript->GetActLineNr()) + 
+				L"//" + 
+				to_wstring(pScript->GetFileSize()) + 
+				L"): " + 
+				pScript->GetActLine()
 			);
 		}
 		else
@@ -59,23 +52,6 @@ public:
 	}
 
 private:
-	class refreshRate : public BaseRefreshRate
-	{
-	public:
-		refreshRate(ScriptHook * const pScriptHook)
-			: m_pScriptHook(pScriptHook)
-		{ }
-
-		virtual void Trigger()
-		{
-			m_pScriptHook->DisplayScriptProgress();
-		}
-
-	private:
-		ScriptHook * m_pScriptHook;
-	};
-
-	unique_ptr<refreshRate> m_upRefreshRate  { };
-	StatusBar             * m_pStatusBar     { nullptr };
-	int                     m_iStatusBarPart { 0 };
+	StatusBar * m_pStatusBar     { nullptr };
+	int         m_iStatusBarPart { 0 };
 };

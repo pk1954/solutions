@@ -330,7 +330,6 @@ void NNetAppWindow::configureStatusBar()
 	iPartScriptLine = m_StatusBar.NewPart();
 	m_ScriptHook.Initialize(& m_StatusBar, iPartScriptLine);
 	m_StatusBar.ClearPart(iPartScriptLine);
-//	Script::ScrSetWrapHook(& m_ScriptHook);
 
 	m_statusBarDispFunctor.Initialize(& m_StatusBar, iPartScriptLine);
 	ModelAnalyzer::SetStatusBarDisplay(& m_statusBarDispFunctor);
