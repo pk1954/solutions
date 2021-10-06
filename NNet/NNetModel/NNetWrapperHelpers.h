@@ -6,6 +6,7 @@
 
 #include "script.h"
 #include "moretypes.h"
+#include "NobType.h"
 #include "NobIdList.h"
 #include "MicroMeterPntVector.h"
 
@@ -15,3 +16,4 @@ extern MicroMeterCircle      const ScrReadMicroMeterCircle   (Script &);
 extern MicroMeterPntVector   const ScrReadMicroMeterPntVector(Script &);
 extern unique_ptr<NobIdList> const ScrReadNobIdList          (Script &);
 extern NobId                 const ScrReadNobId              (Script &);
+extern NobType               const ScrReadNobType            (Script &);

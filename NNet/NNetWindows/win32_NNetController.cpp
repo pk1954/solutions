@@ -11,6 +11,7 @@
 #include "Observable.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
+#include "NobException.h"
 #include "NNetModelExporter.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
@@ -30,6 +31,8 @@
 #include "NNetModelCommands.h"
 #include "win32_monitorWindow.h"
 #include "win32_NNetController.h"
+
+using std::to_wstring;
 
 void NNetController::Initialize
 (
@@ -85,17 +88,11 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
 
     if (wmId == IDM_FATAL_ERROR)
     {
-        FatalError::Happened(static_cast<long>(lParam), "unknown");
+        FatalError::Happened(static_cast<long>(lParam), L"unknown");
     }
     else if (wmId == IDM_BLOCK_UI)
     {
         m_bBlockedUI = (lParam != 0);
-        //wcout << L'#';
-        //if (m_bBlockedUI)
-        //    wcout << L"Block UI";
-        //else 
-        //    wcout << L"Unblock UI";
-        //wcout << endl;
     }
 
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
@@ -104,7 +101,16 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     if (! m_bBlockedUI)
     {
         m_pComputeThread->LockComputation();
-        bRes = processModelCommand(wmId, lParam, umPoint);
+        try
+        {
+            bRes = processModelCommand(wmId, lParam, umPoint);
+        }
+        catch (NobException e)
+        {
+            wcout << Scanner::COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
+            m_pNMRI->DUMP();
+            FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
+        }
         m_pComputeThread->ReleaseComputationLock();
     }
 

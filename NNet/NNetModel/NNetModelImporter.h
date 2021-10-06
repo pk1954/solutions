@@ -54,6 +54,8 @@ public:
 
 	wstring const GetFilePath() { return m_wstrFile2Read; }
 
+	static void CheckImportedNobId(Script &, UPNobList const &, NobId const);
+
 private:
 	NNetModelWriterInterface & getWriterInterface() { return m_ImportedNMWI; }
 

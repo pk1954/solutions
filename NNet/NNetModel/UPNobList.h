@@ -9,7 +9,6 @@
 #include "MoreTypes.h"
 #include "Nob.h"
 #include "NobId.h"
-#include "NobErrorHandler.h"
 
 using std::move;
 using std::array;
@@ -44,7 +43,6 @@ public:
 	void         ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
 
 	void                Clear             ();
-	void                SetErrorHandler   (NobErrorHandler * const);
 	void                SelectAllNobs     (bool const);
 	void                DeselectAllNobs   () { SelectAllNobs(false); }
 	UPNob               ExtractNob        (NobId const);	
@@ -55,7 +53,6 @@ public:
 	void                Dump              ()                                     const;
 	bool          const AnyNobsSelected   ()                                     const;
 	bool          const Contains          (Nob const *)                          const;
-	void                CallErrorHandler  (NobId   const)                        const;
 	unsigned int  const CountInSelection  (NobType const)                        const;
 	unsigned int  const GetCounter        (NobType const)                        const;
 	unsigned int  const GetCounter        ()                                     const;
@@ -172,9 +169,8 @@ private:
 	void countNobs();
 	void copy(UPNobList const &);
 
-	vector<UPNob>                                 m_list             {};
-	array<unsigned int, NobType::NR_OF_NOB_TYPES> m_nobsOfType       {};
-	NobErrorHandler                             * m_pNobErrorHandler { nullptr };
+	vector<UPNob>                                 m_list       {};
+	array<unsigned int, NobType::NR_OF_NOB_TYPES> m_nobsOfType {};
 };
 
 UPNob ShallowCopy(Nob const &);

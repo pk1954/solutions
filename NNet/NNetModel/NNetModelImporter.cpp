@@ -5,12 +5,13 @@
 #include "stdafx.h"
 #include <filesystem>
 #include <assert.h>
+#include "ErrHndl.h"
 #include "SignalFactory.h"
 #include "Knot.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
 #include "MonitorData.h"
-#include "NNetError.h"
+#include "NobException.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
@@ -23,6 +24,7 @@
 
 using std::filesystem::exists;
 using std::make_unique;
+using std::to_wstring;
 
 class WrapBase : public ScriptFunctor
 {
@@ -34,7 +36,7 @@ public:
 protected:
     NNetModelWriterInterface & GetWriterInterface() const { return m_modelImporter.getWriterInterface(); }
     MonitorData              & GetMonitorData()     const { return m_modelImporter.getWriterInterface().GetMonitorData(); }
-    UPNobList                & GetUPNobs()          const { return m_modelImporter.getWriterInterface().GetUPNobs(); }
+    UPNobList                & GetUPNobsRef()       const { return m_modelImporter.getWriterInterface().GetUPNobs(); }
 
     NNetModelImporter & m_modelImporter;
 };
@@ -78,7 +80,7 @@ private:
     Nob * const createNob(Script & script) const
     {   
         NobId   const idFromScript { ScrReadNobId(script) };
-        NobType const nobType      { static_cast<NobType::Value>(script.ScrReadInt()) };
+        NobType const nobType      { ScrReadNobType(script) };
         Nob         * pNob         { nullptr };
         UPNob         upNob        {};   
         { 
@@ -98,6 +100,7 @@ private:
                  upNob = createPipe(script);
                  break;
             default:
+                assert(false);  // handled in ScrReadNobType
                 break;
             }
         };
@@ -105,7 +108,7 @@ private:
         {
             upNob->SetId(idFromScript);
             pNob = upNob.get();
-            GetUPNobs().SetNob2Slot(idFromScript, move(upNob));
+            GetUPNobsRef().SetNob2Slot(idFromScript, move(upNob));
         }
         if (nobType.IsIoConnectorType())
         {
@@ -122,8 +125,8 @@ private:
             script.ScrReadSpecial(Pipe::SEPARATOR[i]);        
         NobId const idEnd { ScrReadNobId(script) };
         script.ScrReadSpecial(Pipe::CLOSE_BRACKET);
-        NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idStart);
-        NNetErrorHandler::CheckNobId(script, GetWriterInterface().GetUPNobs(), idEnd);
+        NNetModelImporter::CheckImportedNobId(script, GetUPNobsRef(), idStart);
+        NNetModelImporter::CheckImportedNobId(script, GetUPNobsRef(), idEnd);
         if (idStart == idEnd)
         {
             wcout << "+++ Pipe has identical start and end point" << endl;
@@ -217,7 +220,7 @@ public:
     {
         script.ScrReadSpecial(L'=');
         long lNrOfNobs { script.ScrReadLong() };
-        GetUPNobs().IncreaseSize(lNrOfNobs);
+        GetUPNobsRef().IncreaseSize(lNrOfNobs);
     }
 };
 
@@ -316,9 +319,6 @@ void NNetModelImporter::Initialize()
         }
    );
 
-    ///// Legacy /////
-    SymbolTable::ScrDefConst(L"pipeline", static_cast<unsigned long>(NobType::Value::pipe));  // support older protocol version
-                                                                                                  ///// end Legacy /////
     ParamType::Apply2AllParameters
     (
         [&](ParamType::Value const & param) 
@@ -336,16 +336,19 @@ void NNetModelImporter::import()
 {
     ImportTermination::Result res;
     Script                    script;
-    UPNobList               & nobList  { m_ImportedNMWI.GetUPNobs() };
     bool                      bSuccess { false };
 
     if (! m_wstrFile2Read.empty())
     {
-        NNetErrorHandler errHndl { & script, & nobList };
-        nobList.SetErrorHandler(& errHndl);
         script.SetEcho(true);
-        bSuccess = script.ScrProcess(m_wstrFile2Read);
-        nobList.SetErrorHandler(nullptr);
+        try
+        {
+            bSuccess = script.ScrProcess(m_wstrFile2Read);
+        }
+        catch (NobException e)
+        {
+            CheckImportedNobId(script, m_ImportedNMWI.GetUPNobs(), e.m_id);
+        }
     }
     if (bSuccess)
     {
@@ -360,6 +363,31 @@ void NNetModelImporter::import()
     }
     m_upTermination->Reaction(res, m_wstrFile2Read);
 }
+
+void NNetModelImporter::CheckImportedNobId
+(
+    Script          & script, 
+    UPNobList const & list,
+    NobId     const   id 
+)
+{        
+    wstring const strNobId { to_wstring(id.GetValue()) };
+    if (IsUndefined(id))
+    {
+        script.SetExpectedToken(L"NobId != NO_NOB");
+        throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
+    }
+    else if (! list.IsValidNobId(id))
+    {
+        script.SetExpectedToken(L"id < " + to_wstring(list.Size()));
+        throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
+    }
+    else if (! list.IsNobDefined(id))
+    {
+        script.SetExpectedToken(L"Defined NobId");
+        throw ScriptErrorHandler::ScriptException(999, wstring(L"Nob is not defined: ") + strNobId);
+    }
+};
 
 static unsigned int __stdcall importModelThreadProc(void * data) 
 {

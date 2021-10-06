@@ -15,7 +15,6 @@
 
 class Pipe;
 class BaseKnot;
-class NobErrorHandler;
 class MicroMeterPntVector;
 
 using std::unique_ptr;

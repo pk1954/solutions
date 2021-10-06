@@ -56,10 +56,23 @@ public:
 		AssertLimits<int>((int)m_value, (int)Value::nobTypeFirst, (int)Value::undefined);
 	}
 
-	static void Apply2All(function<void(Value const &)> const & func)
+	static constexpr void Apply2All(function<void(Value const &)> const & func)
 	{
 		for (int i = 0; i <= static_cast<int>(NobType::Value::nobTypeLast); ++i)
 			func(static_cast<Value>(i));
+	}
+
+	static constexpr wstring const GetListOfNobTypes()
+	{
+		wstring wstrList;
+		NobType::Apply2All
+		(
+			[&](NobType::Value const &t) 
+			{ 
+				wstrList += NobType::GetName(t) + L" ";
+			}
+		);
+		return wstrList;
 	}
 
 	static wstring        const GetName(NobType::Value const);

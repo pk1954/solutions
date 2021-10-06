@@ -42,7 +42,6 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
-#include "NNetError.h"
 
 class ReadModelResult;
 class MessagePump;

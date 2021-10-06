@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "MoreTypes.h"
-//#include "tHighlightType.h"
+#include "NobException.h"
 #include "NobType.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -36,11 +36,7 @@ void NNetModel::CheckModel() const
 Nob const * NNetModel::GetConstNob(NobId const id) const 
 {	
 	if (IsUndefined(id) || ! m_Nobs.IsValidNobId(id))
-	{
-		wcout << Scanner::COMMENT_START << L"GetConstNob failed. Id = " << id << endl;
-		m_Nobs.CallErrorHandler(id);  
-		return nullptr;
-	}
+		throw NobException(id, L"");
 	return m_Nobs.GetAt(id);
 }
 

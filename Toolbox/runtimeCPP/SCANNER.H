@@ -62,7 +62,10 @@ public:
     wstring const & GetExpectedToken() const { return m_wstrExpected; }
     wstring const & GetActPath      () const { return m_wstrPath;     };
 
-    void SetExpectedToken(wstring const & wstrExp) { m_wstrExpected = wstrExp; }
+    void SetExpectedToken(wstring const & wstrExp) 
+    { 
+        m_wstrExpected = wstrExp; 
+    }
 
 	wchar_t ReadOneOf (wstring const &);
 

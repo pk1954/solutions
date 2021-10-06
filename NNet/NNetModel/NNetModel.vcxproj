@@ -209,15 +209,14 @@
     <ClInclude Include="NNetModelWriterInterface.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
+    <ClInclude Include="NobException.h" />
     <ClInclude Include="OutputConnector.h" />
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="NobIdList.h" />
-    <ClInclude Include="NobErrorHandler.h" />
     <ClInclude Include="PipeList.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
-    <ClInclude Include="NNetError.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Nob.h" />
     <ClInclude Include="NobId.h" />

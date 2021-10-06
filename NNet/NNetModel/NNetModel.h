@@ -11,7 +11,6 @@
 #include "NNetParameters.h"
 #include "ModelDescription.h"
 #include "MonitorData.h"
-#include "NobErrorHandler.h"
 #include "UPNobList.h"
 #include "Pipe.h"
 #include "BaseKnot.h"

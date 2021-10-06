@@ -34,6 +34,7 @@
 #include "script.h"
 #include "Preferences.h"
 #include "NNetWrappers.h"
+#include "NobException.h"
 #include "UtilityWrappers.h"
 #include "win32_script.h"
 #include "win32_fatalError.h"
@@ -84,9 +85,10 @@ void NNetAppWindow::Start(MessagePump & pump)
 	);
 
 	SignalFactory::Initialize(m_nmri, m_dynamicModelObservable);
-	Nob::Initialize(m_model.GetParams());
-	Command::Initialize(&m_mainNNetWindow);
-	NNetCommand::Initialize(&m_nmwi);
+	Nob          ::Initialize(m_model.GetParams());
+	Command      ::Initialize(&m_mainNNetWindow);
+	NNetCommand  ::Initialize(&m_nmwi);
+
 	m_model.SetDescriptionUI(m_descWindow);
 	m_model.SetHighSigObservable(&m_highlightSigObservable);
 
@@ -379,121 +381,133 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 {
 	int const wmId = LOWORD(wParam);
 	
-	switch (wmId)
+	try
 	{
-	case IDM_EXIT:
-		PostMessage(WM_CLOSE, 0, 0);
-		break;
-
-	case IDM_DUMP:
-		m_model.DUMP();
-		break;
-
-	case IDM_FORWARD:
-		m_computeThread.SingleStep();
-		break;
-
-	case IDM_RUN:
-		m_computeThread.RunComputation();
-		break;
-
-	case IDM_STOP:
-		m_computeThread.StopComputation();
-		m_nmwi.ClearAllNobs();
-		break;
-
-	case IDM_SCRIPT_DIALOG:
-		m_computeThread.StopComputation();
+		switch (wmId)
 		{
-			wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
-			if (!wstrFile.empty())
-				StartScript(wstrFile);
-			if (!ScriptStack::GetScript()->ReadNextToken())
-				ScriptStack::CloseScript();
-		}
-		break;
+		case IDM_EXIT:
+			PostMessage(WM_CLOSE, 0, 0);
+			break;
 
-	case IDM_NEXT_SCRIPT_CMD:
-		if (ScriptStack::IsScriptActive())
-		{
-			Script * const pScript { ScriptStack::GetScript() };
-			if (!pScript->ProcessToken() || !pScript->ReadNextToken())
-				ScriptStack::CloseScript();
-		}
-		return false;
+		case IDM_DUMP:
+			m_model.DUMP();
+			break;
 
-	case IDM_NEW_MODEL:
-		if (AskAndSave())
-		{
+		case IDM_FORWARD:
+			m_computeThread.SingleStep();
+			break;
+
+		case IDM_RUN:
+			m_computeThread.RunComputation();
+			break;
+
+		case IDM_STOP:
 			m_computeThread.StopComputation();
-			m_mainNNetWindow.Reset();
-			m_modelCommands.ResetModel();
-			m_modelCommands.CreateInitialNobs();
-			m_staticModelObservable.NotifyAll(false);
-			m_appTitle.SetUnsavedChanges(true);
-			m_mainNNetWindow.CenterModel();
-		}
-		break;
+			m_nmwi.ClearAllNobs();
+			break;
 
-	case IDM_SAVE_MODEL:
-		if (SaveModel())
-			m_preferences.WritePreferences(m_nmri.GetModelFilePath());
-		break;
-
-	case IDM_SAVE_MODEL_AS:
-		m_computeThread.StopComputation();
-		if (SaveModelAs())
-			m_preferences.WritePreferences(m_nmri.GetModelFilePath());
-		break;
-
-	case IDM_OPEN_MODEL:
-		m_cmdStack.Clear();
-		m_modelImporter.Import
-		(
-			AskModelFile(), 
-			make_unique<NNetImportTermination>(m_hwndApp, IDX_REPLACE_MODEL)
-		);
-		break;
-
-	case IDM_ADD_MODEL:
-		m_modelImporter.Import
-		(
-			AskModelFile(), 
-			make_unique<NNetImportTermination>(m_hwndApp, IDM_ADD_IMPORTED_MODEL)
-		); 
-		break;
-
-	case IDX_REPLACE_MODEL:  //no user command, only internal usage
-		m_StatusBar.ClearPart(m_statusMessagePart);
-		if (AskAndSave())
-		{
+		case IDM_SCRIPT_DIALOG:
 			m_computeThread.StopComputation();
-			m_mainNNetWindow.Reset();
-			m_model = move(* m_modelImporter.GetImportedModel());
-			m_staticModelObservable.NotifyAll(false);
-			m_model.SetDescriptionUI(m_descWindow);
-			m_appTitle.SetUnsavedChanges(false);
-			m_mainNNetWindow.CenterModel();
+			{
+				wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
+				if (!wstrFile.empty())
+					StartScript(wstrFile);
+				if (!ScriptStack::GetScript()->ReadNextToken())
+					ScriptStack::CloseScript();
+			}
+			break;
+
+		case IDM_NEXT_SCRIPT_CMD:
+			if (ScriptStack::IsScriptActive())
+			{
+				Script * const pScript { ScriptStack::GetScript() };
+				if (!pScript->ProcessToken() || !pScript->ReadNextToken())
+					ScriptStack::CloseScript();
+			}
+			return false;
+
+		case IDM_NEW_MODEL:
+			if (AskAndSave())
+			{
+				m_computeThread.StopComputation();
+				m_mainNNetWindow.Reset();
+				m_modelCommands.ResetModel();
+				m_modelCommands.CreateInitialNobs();
+				m_staticModelObservable.NotifyAll(false);
+				m_appTitle.SetUnsavedChanges(true);
+				m_mainNNetWindow.CenterModel();
+			}
+			break;
+
+		case IDM_SAVE_MODEL:
+			if (SaveModel())
+				m_preferences.WritePreferences(m_nmri.GetModelFilePath());
+			break;
+
+		case IDM_SAVE_MODEL_AS:
+			m_computeThread.StopComputation();
+			if (SaveModelAs())
+				m_preferences.WritePreferences(m_nmri.GetModelFilePath());
+			break;
+
+		case IDM_OPEN_MODEL:
+			m_cmdStack.Clear();
+			m_modelImporter.Import
+			(
+				AskModelFile(), 
+				make_unique<NNetImportTermination>(m_hwndApp, IDX_REPLACE_MODEL)
+			);
+			break;
+
+		case IDM_ADD_MODEL:
+			m_modelImporter.Import
+			(
+				AskModelFile(), 
+				make_unique<NNetImportTermination>(m_hwndApp, IDM_ADD_IMPORTED_MODEL)
+			); 
+			break;
+
+		case IDX_REPLACE_MODEL:  //no user command, only internal usage
+			m_StatusBar.ClearPart(m_statusMessagePart);
+			if (AskAndSave())
+			{
+				m_computeThread.StopComputation();
+				m_mainNNetWindow.Reset();
+				m_model = move(* m_modelImporter.GetImportedModel());
+				m_staticModelObservable.NotifyAll(false);
+				m_model.SetDescriptionUI(m_descWindow);
+				m_appTitle.SetUnsavedChanges(false);
+				m_mainNNetWindow.CenterModel();
+			}
+			break;
+
+		case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
+			MessageBox(nullptr, L"Could not find model file", L"Error", MB_OK);
+			break;
+
+		case IDX_ERROR_IN_FILE:  //no user command, only internal usage
+			MessageBox
+			(
+				nullptr, 
+				L"Error reading model file\r\nSee main_trace.out for details", 
+				L"Error", 
+				MB_OK 
+			);
+			break;
+
+		default:
+			if (m_NNetController.HandleCommand(wmId, lParam, NP_NULL))
+				return true;
 		}
-		break;
-
-	case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
-		MessageBox(nullptr, L"Could not find model file", L"Error", MB_OK);
-		break;
-
-	case IDX_ERROR_IN_FILE:  //no user command, only internal usage
-		MessageBox
-		(
-			nullptr, 
-			L"Error reading model file\r\nSee main_trace.out for details", 
-			L"Error", 
-			MB_OK 
-		);
-		break;
-
-	default:
-		if (m_NNetController.HandleCommand(wmId, lParam, NP_NULL))
-			return true;
+	}
+	catch (NobTypeException e)
+	{
+		wcout << Scanner::COMMENT_START << L"Command failed: " << endl;
+		wcout << Scanner::COMMENT_START << L"File    : " << e.m_szFile  << endl;
+		wcout << Scanner::COMMENT_START << L"Line    : " << e.m_iLineNr << endl;
+		wcout << Scanner::COMMENT_START << L"Function: " << __func__    << endl;
+		wcout << Scanner::COMMENT_START << L"NobType : " << to_wstring(static_cast<int>(e.m_type.GetValue())) << endl;
+		FatalError::Happened(10, L"Invalid NobType");
 	}
 
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);

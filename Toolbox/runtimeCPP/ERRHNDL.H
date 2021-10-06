@@ -49,8 +49,8 @@ public:
         wstring m_wstrMessage { L"undefined" };    // error message              
     };
 
-    static void HandleScriptError  (Scanner const &, ScriptException const &);
-    static void PrintMarkerLine    (Scanner const &);
+    static void HandleScriptError(Scanner const &, ScriptException const &);
+    static void PrintMarkerLine  (Scanner const &);
     static void ScrSetOutputStream(wostream * const);
 
 private:

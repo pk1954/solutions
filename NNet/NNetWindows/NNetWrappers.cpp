@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Resource.h"
+#include "errhndl.h"
 #include "symtab.h"
 #include "NobType.h"
 #include "NobIdList.h"
@@ -11,7 +12,6 @@
 #include "win32_util.h"
 #include "UtilityWrappers.h"
 #include "DrawContext.h"
-#include "NNetError.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelCommands.h"

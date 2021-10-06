@@ -13,6 +13,7 @@
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "NobIdList.h"
+#include "NobException.h"
 #include "UPNobList.h"
 
 using std::move;
@@ -24,14 +25,10 @@ void UPNobList::Clear()
 	m_nobsOfType.fill(0);
 }
 
-void UPNobList::SetErrorHandler(NobErrorHandler * const p) 
-{ 
-	m_pNobErrorHandler = p; 
-}
-
-UPNob ShallowCopy(Nob const & nob)  //TODO: simplify! Better 
+UPNob ShallowCopy(Nob const & nob)  //TODO: simplify!  
 {
-	switch (nob.GetNobType().GetValue())
+	NobType::Value type { nob.GetNobType().GetValue() };
+	switch (type)
 	{
 	case NobType::Value::inputConnector:
 		return Copy<InputConnector>(nob);
@@ -55,7 +52,7 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify! Better
 		return Copy<Pipe>(nob);
 
 	default:
-		assert(false);
+		ThrowNobTypeException(nob);
 		return nullptr;
 	}
 }
@@ -164,7 +161,6 @@ void UPNobList::copy(const UPNobList & rhs)
 		    );
 	}
 
-	m_pNobErrorHandler = rhs.m_pNobErrorHandler;
 	CheckNobList();
 }
 
@@ -255,14 +251,6 @@ bool const UPNobList::AnyNobsSelected() const
 		if (it && it->IsSelected())
 			return true;
 	return false;
-}
-
-void UPNobList::CallErrorHandler(NobId const id) const
-{
-	if (m_pNobErrorHandler)
-	{
-		(* m_pNobErrorHandler)(id);
-	}
 }
 
 void UPNobList::Apply2All(NobFuncC const & func) const

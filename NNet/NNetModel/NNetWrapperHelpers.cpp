@@ -68,6 +68,14 @@ NobId const ScrReadNobId(Script& script)
 	return NobId(script.ScrReadLong());
 }
 
+NobType const ScrReadNobType(Script& script)
+{
+	unsigned int uiVal { script.ScrReadUint() };
+	if (uiVal >= NobType::NR_OF_NOB_TYPES)
+		throw ScriptErrorHandler::ScriptException(998, wstring(L"Wrong nob type") );
+	return static_cast<NobType::Value>(uiVal);
+}
+
 unique_ptr<NobIdList> const ScrReadNobIdList(Script& script)
 {
 	unique_ptr<NobIdList> upNobIds  { make_unique<NobIdList>() };
