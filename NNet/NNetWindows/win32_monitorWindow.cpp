@@ -303,7 +303,15 @@ void MonitorWindow::OnPaint()
 		HDC const hDC = BeginPaint(&ps);
 		if (m_graphics.StartFrame(hDC))
 		{
-			doPaint();
+			try
+			{
+				doPaint();
+			}
+			catch (MonitorDataException e)
+			{
+				SendCommand2Application(IDM_STOP, 0);
+				MonitorData::HandleException(e);
+			}
 			m_graphics.EndFrame();
 		}
 		EndPaint(&ps);
@@ -338,14 +346,12 @@ bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		break;
 
 	case IDD_ADD_TRACK:
-		m_pModelCommands->InsertTrack(findPos4NewTrack(pixPoint.GetY()));
-		m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
+		SendCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
 		Show(true);            // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:
-		m_pModelCommands->DeleteTrack(m_trackNrHighlighted);
-		m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
+		SendCommand2Application(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
 		if (m_pMonitorData->NoTracks())
 			SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
 		break;

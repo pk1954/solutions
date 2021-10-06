@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <exception>
 #include <vector>
 #include "Observable.h"
 #include "NamedType.h"
@@ -12,6 +13,26 @@
 #include "SignalId.h"
 
 using std::vector;
+using std::exception;
+
+class MonitorData;
+
+struct MonitorDataException: public exception
+{
+	MonitorDataException
+	(
+		MonitorData const & data,
+		TrackNr     const   trackNr,
+		wstring     const   msg
+	)
+	  : m_data(data),
+		m_trackNr(trackNr),
+		m_wstrMessage(msg)
+	{}
+	MonitorData const & m_data;
+	TrackNr     const   m_trackNr;
+	wstring     const   m_wstrMessage;
+};
 
 class MonitorData
 {
@@ -74,6 +95,7 @@ public:
 	bool     const IsSelected(SignalId const &id) const { return m_idSigHighlighted == id; }
 	bool     const IsEmptyTrack(TrackNr const)    const;
 
+	static void HandleException(MonitorDataException const &);
 
 private:
 	Track       * const getTrack(TrackNr const);

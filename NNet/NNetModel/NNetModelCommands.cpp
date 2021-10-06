@@ -307,7 +307,7 @@ void NNetModelCommands::DeleteNob(NobId const id)
 void NNetModelCommands::DeleteTrack(TrackNr const nr)
 { 
 	if (IsTraceOn())
-		TraceStream() << __func__ << nr << endl;
+		TraceStream() << __func__ << L" " << nr << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
 }
 

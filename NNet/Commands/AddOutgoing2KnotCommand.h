@@ -23,7 +23,7 @@ public:
 	  :	m_idKnot(id),
 		m_pos(pos)
 	{ 
-		m_pStart    = m_pNMWI->GetNobPtr<BaseKnot *>(NobId(1234)); //m_idKnot);
+		m_pStart    = m_pNMWI->GetNobPtr<BaseKnot *>(m_idKnot);
 		m_upKnotNew = make_unique<Knot>(m_pos);
 		m_upPipe    = make_unique<Pipe>(m_pStart, m_upKnotNew.get());
 		m_upKnotNew->AddIncoming(m_upPipe.get());

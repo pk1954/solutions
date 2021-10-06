@@ -272,6 +272,16 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->DeleteSignal(m_pNMRI->GetMonitorData().GetHighlightedSignalId());
         break;
 
+    case IDD_ADD_TRACK:
+        m_pModelCommands->InsertTrack(TrackNr(Cast2Int(lParam)));
+        m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
+        break;
+
+    case IDD_DELETE_TRACK:
+        m_pModelCommands->DeleteTrack(TrackNr(Cast2Int(lParam)));
+        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
+        break;
+
     case IDM_DELETE_SELECTION:
         m_pModelCommands->DeleteSelection();
         break;

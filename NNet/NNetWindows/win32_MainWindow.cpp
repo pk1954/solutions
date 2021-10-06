@@ -12,10 +12,11 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "IoConnector.h"
+#include "NobException.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
-//#include "ArrowAnimation.h"
+#include "win32_fatalError.h"
 #include "win32_command.h"
 #include "win32_MonitorWindow.h"
 #include "win32_MainWindow.h"
@@ -23,6 +24,7 @@
 using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
+using std::to_wstring;
 
 void MainWindow::Start
 (
@@ -365,7 +367,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 void MainWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	if (! m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
+	if (IsDefined(m_nobHighlighted) && !m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
 	{
 		m_pModelCommands->SelectNob(m_nobHighlighted, tBoolOp::opToggle);
 	}
@@ -538,7 +540,20 @@ bool MainWindow::UserProc
 		Command::DoCall(wParam, lParam);
 		return 0;
 	}
-	return NNetWindow::UserProc(uMsg, wParam, lParam); 
+	bool bRes;
+	try
+	{
+		bRes = NNetWindow::UserProc(uMsg, wParam, lParam); 
+	}
+	catch (NobException e)
+	{
+		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
+		m_pNMRI->DUMP();
+		wcout << L"highlighted = " << m_nobHighlighted << endl;
+		wcout << L"target      = " << m_nobTarget      << endl;
+		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
+	}
+	return bRes;
 }
 
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

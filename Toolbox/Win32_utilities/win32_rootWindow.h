@@ -192,12 +192,12 @@ public:
 		return Cast2Short(SendDlgItemMessage(idTrackbar, TBM_GETPOS, 0, 0)); 
 	}
 
-	LRESULT PostCommand2Application(WPARAM const wParam, LPARAM const lParam)
+	LRESULT PostCommand2Application(WPARAM const wParam, LPARAM const lParam) const
 	{
 		return ::PostMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT SendCommand2Application(WPARAM const wParam, LPARAM const lParam)
+	LRESULT SendCommand2Application(WPARAM const wParam, LPARAM const lParam) const
 	{
 		return ::SendMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <sstream> 
 #include "util.h"
+#include "Resource.h"
 #include "MoreTypes.h"
 #include "Segment.h"
 #include "scale.h"
@@ -136,9 +137,17 @@ void NNetWindow::DrawNeuronTextInRect(PixelRect const & rect) const
 
 void NNetWindow::DrawSensors() const
 {
-	MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
-	Signal const * const   pSignal { mon.GetHighlightedSignal() };
-	mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
+	try
+	{
+		MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
+		Signal const * const   pSignal { mon.GetHighlightedSignal() };
+		mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
+	}
+	catch (MonitorDataException e)
+	{
+		SendCommand2Application(IDM_STOP, 0);
+		MonitorData::HandleException(e);
+	}
 }
 
 void NNetWindow::DrawHighlightedSensor() const

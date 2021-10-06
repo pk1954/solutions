@@ -5,11 +5,13 @@
 #include "stdafx.h"
 #include "Track.h"
 #include "SignalFactory.h"
+#include "win32_fatalError.h"
 #include "MonitorData.h"
 
 using std::distance;
 using std::make_unique;
 using std::move;
+using std::endl;
 
 bool MonitorData::operator==(MonitorData const & rhs) const
 {
@@ -101,8 +103,9 @@ SignalNr const MonitorData::AddSignal
 	unique_ptr<Signal> upSignal 
 )
 {
-	assert(IsValid(trackNr));
-	return getTrack(trackNr)->AddSignal(move(upSignal));
+	if (IsValid(trackNr))
+		return getTrack(trackNr)->AddSignal(move(upSignal));
+	throw MonitorDataException(*this, trackNr, L"AddSignal(upSignal)");
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
@@ -119,8 +122,9 @@ SignalNr const MonitorData::AddSignal
 	MicroMeterCircle const & umCircle 
 )
 {
-	assert(IsValid(trackNr));
-	return AddSignal(trackNr, move(SignalFactory::MakeSignal(umCircle)));
+	if (IsValid(trackNr))
+		return AddSignal(trackNr, move(SignalFactory::MakeSignal(umCircle)));
+	throw MonitorDataException(*this, trackNr, L"AddSignal(upCircle)");
 }
 
 SignalNr const MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
@@ -203,7 +207,9 @@ SignalId const MonitorData::FindSignalId(Signal::Crit const & crit) const
 Signal * const MonitorData::GetSignalPtr(SignalId const & id)
 {
 	TrackNr const trackNr { id.GetTrackNr() };
-	return IsValid(trackNr) ? getTrack(trackNr)->GetSignalPtr(id.GetSignalNr()) : nullptr;
+	if (IsValid(trackNr))
+		return getTrack(trackNr)->GetSignalPtr(id.GetSignalNr());
+	throw MonitorDataException(*this, trackNr, L"GetSignalPtr");
 }
 
 Signal const * const MonitorData::GetSignalPtr(SignalId const & id) const
@@ -216,9 +222,9 @@ Signal const * const MonitorData::GetSignalPtr(SignalId const & id) const
 Signal * const MonitorData::GetHighlightedSignal()
 {
 	TrackNr const trackNr { m_idSigHighlighted.GetTrackNr() };
-	return IsValid(trackNr)
-		   ? getTrack(trackNr)->GetSignalPtr(m_idSigHighlighted.GetSignalNr())
-		   : nullptr;
+	if (IsValid(trackNr))
+		return getTrack(trackNr)->GetSignalPtr(m_idSigHighlighted.GetSignalNr());
+	throw MonitorDataException(*this, trackNr, L"GetHighlightedSignal");
 }
 
 Signal const * const MonitorData::GetHighlightedSignal() const
@@ -246,7 +252,9 @@ void MonitorData::CheckTracks() const
 
 Track const * const MonitorData::getTrack(TrackNr const trackNr) const
 {
-	return IsValid(trackNr) ? m_tracks[trackNr.GetValue()].get() : nullptr;
+	if (IsValid(trackNr))
+		return m_tracks[trackNr.GetValue()].get();
+	throw MonitorDataException(*this, trackNr, L"getTrack");
 }
 
 Track * const MonitorData::getTrack(TrackNr const trackNr) // calling const version 
@@ -256,10 +264,19 @@ Track * const MonitorData::getTrack(TrackNr const trackNr) // calling const vers
 
 bool const MonitorData::IsEmptyTrack(TrackNr const trackNr) const 
 { 
-	return IsValid(trackNr) ? getTrack(trackNr)->IsEmpty() : true; 
+	if (IsValid(trackNr))
+		return getTrack(trackNr)->IsEmpty(); 
+	throw MonitorDataException(*this, trackNr, L"IsEmptyTrack");
 }
 
 Signal * const MonitorData::FindSensor(MicroMeterPnt const & umPos) const
 {
 	return FindSignal([&](Signal const & s) { return s.Includes(umPos); });
+}
+
+void MonitorData::HandleException(MonitorDataException const & e)
+{
+	wcout << Scanner::COMMENT_START << L"MonitorWindow: " << e.m_wstrMessage << endl;
+	wcout << Scanner::COMMENT_START << L"TrackNr: "       << e.m_trackNr << endl;
+	FatalError::Happened(10, L"MonitorData failure");
 }
