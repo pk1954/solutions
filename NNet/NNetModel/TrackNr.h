@@ -11,8 +11,6 @@ using std::wostream;
 
 using TrackNr = NamedType< int, struct TrackNrParam >;
 
-inline TrackNr const NO_TRACK(-1);
-
 static TrackNr const ScrReadTrackNr(Script & script)
 {
 	script.ScrReadString(L"track");

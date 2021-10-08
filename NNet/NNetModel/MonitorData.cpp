@@ -60,7 +60,7 @@ void MonitorData::InsertTrack(TrackNr const trackNr)
 
 unique_ptr<Signal> MonitorData::removeSignal(SignalId const & id)
 { 
-	return getTrack(id.GetTrackNr())->RemoveSignal(id.GetSignalNr()); 
+	return getTrack(id.GetTrackNr())->RemoveSignal(id.GetSignalNr()); // getTrack may throw MonitorDataException
 };
 
 SignalId const MonitorData::SetHighlightedSignal(SignalId const id)
@@ -94,7 +94,7 @@ void MonitorData::AddSignal
 )
 {
 	assert(upSignal);
-	getTrack(id.GetTrackNr())->AddSignal(move(upSignal),id.GetSignalNr());
+	getTrack(id.GetTrackNr())->AddSignal(move(upSignal),id.GetSignalNr()); // getTrack may throw MonitorDataException
 }
 
 SignalNr const MonitorData::AddSignal
@@ -104,8 +104,9 @@ SignalNr const MonitorData::AddSignal
 )
 {
 	if (IsValid(trackNr))
-		return getTrack(trackNr)->AddSignal(move(upSignal));
-	throw MonitorDataException(*this, trackNr, L"AddSignal(upSignal)");
+		return getTrack(trackNr)->AddSignal(move(upSignal)); // getTrack may throw MonitorDataException 
+	else
+		throw MonitorDataException(*this, trackNr, L"AddSignal(upSignal)");
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
@@ -124,7 +125,8 @@ SignalNr const MonitorData::AddSignal
 {
 	if (IsValid(trackNr))
 		return AddSignal(trackNr, move(SignalFactory::MakeSignal(umCircle)));
-	throw MonitorDataException(*this, trackNr, L"AddSignal(upCircle)");
+	else 
+		throw MonitorDataException(*this, trackNr, L"AddSignal(upCircle)");
 }
 
 SignalNr const MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
@@ -136,18 +138,12 @@ SignalNr const MonitorData::MoveSignal(SignalId const & id, TrackNr const trackN
 	return sigNr;
 }
 
-void MonitorData::MoveSignal(SignalId const & id, SignalId const & idDst)
-{
-	assert(IsValid(id) && IsValid(idDst));
-	AddSignal(idDst, move(removeSignal(id)));
-	if (id == m_idSigHighlighted)
-		SetHighlightedSignal(idDst);
-}
-
 void MonitorData::DeleteTrack(TrackNr const trackNr)
 {
 	if (IsValid(trackNr))
 		m_tracks.erase(m_tracks.begin() + trackNr.GetValue());
+	else 
+		throw MonitorDataException(*this, trackNr, L"DeleteTrack");
 }
 
 void MonitorData::Apply2AllTracks(TrackNrFunc const & func) const
@@ -158,18 +154,20 @@ void MonitorData::Apply2AllTracks(TrackNrFunc const & func) const
 
 void MonitorData::Apply2AllSignalsInTrack(TrackNr const trackNr, SignalNrFunc const & func) const
 {
-	if (Track const * pTrack { getTrack(trackNr) })
-		pTrack->Apply2AllSignals(func);
+	if (IsValid(trackNr))
+		getTrack(trackNr)->Apply2AllSignals(func);
+	else
+	    throw MonitorDataException(*this, trackNr, L"Apply2AllSignalsInTrack");
 }                        
 
 void MonitorData::Apply2AllSignals(SignalId::Func const & func) const
 {
 	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 	{ 
-		if (Track const * pTrack { getTrack(trackNr) })
-		{
-			pTrack->Apply2AllSignals([&](SignalNr const & signalNr){ func(SignalId(trackNr, signalNr)); });
-		}
+		getTrack(trackNr)->Apply2AllSignals   // getTrack may throw MonitorDataException
+		(
+			[&](SignalNr const & signalNr) { func(SignalId(trackNr, signalNr)); }
+		);
 	}
 }                        
 
@@ -177,10 +175,10 @@ void MonitorData::Apply2AllSignals(Signal::Func const & func) const
 {
 	for (TrackNr trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 	{ 
-		if (Track const * pTrack { getTrack(trackNr) })
-		{
-			pTrack->Apply2AllSignals([&](Signal const & signal)	{ func(signal); });
-		}
+		getTrack(trackNr)->Apply2AllSignals  // getTrack may throw MonitorDataException
+		(
+			[&](Signal const & signal)	{ func(signal); }
+		);
 	}
 }                        
 

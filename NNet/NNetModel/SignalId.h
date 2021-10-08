@@ -18,7 +18,7 @@ public:
 	using Func = function<void(SignalId const &)>;
 
 	SignalId()
-	  : trackNr (TrackNr ::NULL_VAL()),
+	  : trackNr (TrackNr::NULL_VAL()),
 		signalNr(SignalNr::NULL_VAL())
 	{ }
 

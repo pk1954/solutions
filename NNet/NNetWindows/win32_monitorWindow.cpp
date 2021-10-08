@@ -82,10 +82,11 @@ LPARAM MonitorWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	else
 		AppendMenu(hPopupMenu, MF_STRING, IDD_MEASUREMENT_ON,  L"Measurement on");
 
-	if (m_pMonitorData->IsEmptyTrack(m_trackNrHighlighted))
+	if (m_trackNrHighlighted.IsNotNull() && m_pMonitorData->IsEmptyTrack(m_trackNrHighlighted))
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track");
 	
-	AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK,    L"Add track");
+	if (m_trackNrHighlighted.IsNotNull())
+		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"Add track");
 
 	if (m_pMonitorData->IsAnySignalSelected())
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_EEG_SENSOR, L"Delete signal");
@@ -160,7 +161,8 @@ TrackNr const MonitorWindow::findPos4NewTrack(PIXEL const pixCrsrPosY) const
 	fPixel const fPixCrsrYpos     { Convert2fPixel(pixCrsrPosY) };
 	int    const iTrackNr         { Cast2Int(fPixCrsrYpos / fPixTrackHeight) };
 	fPixel const fPixTrackCenterY { fPixTrackHeight * (Cast2Float(iTrackNr) + 0.5f) };
-	TrackNr      trackNr          { m_trackNrHighlighted };  // { m_pMonitorData->GetSelectedTrackNr() };
+	TrackNr      trackNr          { m_trackNrHighlighted };
+	assert(trackNr.IsNotNull());
 	if (fPixCrsrYpos > fPixTrackCenterY)
 		++trackNr;
 	return trackNr;
@@ -342,18 +344,18 @@ bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		break;
 
 	case IDD_DELETE_EEG_SENSOR:
-		SendCommand2Application(wmId, 0);
+		PostCommand2Application(wmId, 0);
 		break;
 
 	case IDD_ADD_TRACK:
-		SendCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
-		Show(true);            // if window was not visible, show it now
+		PostCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
+		PostMessage(WM_COMMAND, IDM_WINDOW_ON, 0);  // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:
-		SendCommand2Application(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
-		if (m_pMonitorData->NoTracks())
-			SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
+		if (m_pMonitorData->GetNrOfTracks()==1)
+			PostMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
+		PostCommand2Application(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
 		break;
 
 	default:

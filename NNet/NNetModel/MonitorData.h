@@ -73,7 +73,6 @@ public:
 	SignalNr       const AddSignal            (TrackNr  const, unique_ptr<Signal>);
 	void                 AddSignal            (SignalId const &, unique_ptr<Signal>);
 	SignalNr       const MoveSignal           (SignalId const &, TrackNr  const);
-	void                 MoveSignal           (SignalId const &, SignalId const &);
 	Signal const * const GetSignalPtr         (SignalId const &) const;
 	Signal       * const GetSignalPtr         (SignalId const &);
 	Signal       * const FindSignal           (Signal::Crit    const &) const;

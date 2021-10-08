@@ -21,11 +21,13 @@ public:
 	static void Happened(long const errnr, wstring const errText)
 	{
 		wostringstream wBuffer;
-		wBuffer << L"+++ fatal error"                << endl;
-		wBuffer << L"+++ error number:  " << errnr   << endl;
-		wBuffer << L"+++ error message: " << errText << endl;
-		wcout << wBuffer.str();
-		MessageBox(nullptr, wBuffer.str().c_str(), NULL, MB_OK);
+		wBuffer << L"Error number:  " << errnr   << endl;
+		wBuffer << L"Error message: " << errText << endl;
+		wBuffer << L"Press OK to exit application" << endl;
+		wcout << L"+++ Fatal error" << endl;
+		wcout << L"+++ Error number:  " << errnr   << endl;
+		wcout << L"+++ Error message: " << errText << endl;
+		MessageBox(nullptr, wBuffer.str().c_str(), L"Fatal error", MB_OK|MB_SYSTEMMODAL);
 		wcout << L"+++ forced application exit" << endl;
 		ExitProcess(3);
 	}

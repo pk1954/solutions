@@ -17,22 +17,24 @@ public:
 		SignalId const & id,
 		TrackNr  const   trackNr
 	)
-	  : m_signalId(id),
-		m_trackNr(trackNr)
+	  : m_signalIdOld(id),
+		m_trackNrNew(trackNr)
 	{}
 
 	virtual void Do() 
 	{ 
-		m_signalNr = m_pNMWI->GetMonitorData().MoveSignal(m_signalId, m_trackNr);
+		m_trackNrOld  = m_signalIdOld.GetTrackNr();
+		m_signalNrNew = m_pNMWI->GetMonitorData().MoveSignal(m_signalIdOld, m_trackNrNew);
 	}
 
 	virtual void Undo() 
 	{
-		m_pNMWI->GetMonitorData().MoveSignal(SignalId(m_trackNr, m_signalNr), m_signalId);
+		m_pNMWI->GetMonitorData().MoveSignal(SignalId(m_trackNrNew, m_signalNrNew), m_trackNrOld);
 	}
 
 private:
-	SignalId m_signalId;
-	TrackNr  m_trackNr;
-	SignalNr m_signalNr;
+	SignalId const m_signalIdOld;
+	TrackNr  const m_trackNrNew;
+	TrackNr        m_trackNrOld;
+	SignalNr       m_signalNrNew;
 };
