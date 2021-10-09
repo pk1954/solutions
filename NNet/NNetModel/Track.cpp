@@ -6,6 +6,8 @@
 #include "Track.h"
 
 using std::move;
+using std::wcout;
+using std::endl;
 
 Track::Track(const Track & rhs) // copy constructor
 {
@@ -99,4 +101,17 @@ void Track::CheckSignals() const
 		pSignal->CheckSignal();
 	}
 #endif
+}
+
+void Track::Dump() const
+{
+	wcout << L"NrSignals: " << m_signals.size() << endl;
+	wcout << '(' << endl;
+	int iNr = 0;
+	for (auto & it: m_signals)
+	{
+		wcout << L"Signal " << iNr++ << endl;
+		it->Dump();
+	}
+	wcout << ')' << endl;
 }

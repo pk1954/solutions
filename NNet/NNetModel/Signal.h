@@ -62,7 +62,7 @@ public:
     void Set2Null() { m_circle.Set2Null(); }
 
     void Check() const {};
-    void Dump()  const {};
+    void Dump()  const;
     void CheckSignal();
 
 private:

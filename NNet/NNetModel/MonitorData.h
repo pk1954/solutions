@@ -49,6 +49,7 @@ public:
 
 	bool operator== (MonitorData const &) const;
 
+	void Dump() const;
 	void CheckTracks() const;  // for debugging
 
 	void Reset();

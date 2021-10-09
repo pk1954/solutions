@@ -278,3 +278,16 @@ void MonitorData::HandleException(MonitorDataException const & e)
 	wcout << Scanner::COMMENT_START << L"TrackNr: "       << e.m_trackNr << endl;
 	FatalError::Happened(10, L"MonitorData failure");
 }
+
+void MonitorData::Dump() const
+{
+	wcout << L"NrTracks: " << m_tracks.size() << endl;
+	wcout << '(' << endl;
+	int iNr = 0;
+	for (auto & it: m_tracks)
+	{
+		wcout << L"Track " << iNr++ << endl;
+		it->Dump();
+	}
+	wcout << ')' << endl;
+}

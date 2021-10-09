@@ -32,6 +32,7 @@ public:
 
 	bool operator==(Track const &) const;
 
+	void Dump()  const;
 	void CheckSignals() const;
 
 	void               AddSignal   (unique_ptr<Signal>, SignalNr const);

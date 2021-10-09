@@ -8,6 +8,9 @@
 #include "NNetModelReaderInterface.h"
 #include "Signal.h"
 
+using std::wcout;
+using std::endl;
+
 Signal::Signal
 (
     NNetModelReaderInterface const & nmri,
@@ -123,4 +126,14 @@ void Signal::CheckSignal()
         int x = 42;
     }
 #endif
+}
+
+void Signal::Dump() const
+{
+    wcout << L"circle:     " << m_circle << endl;
+    wcout << L"time start: " << m_timeStart << endl;
+    wcout << '(' << endl;
+    for (auto it : m_data)
+        wcout << it << endl;
+    wcout << ')' << endl;
 }
