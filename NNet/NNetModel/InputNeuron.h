@@ -33,7 +33,7 @@ public:
 
 	virtual void Prepare()
 	{
-		m_mVinputBuffer = m_mvFactor * m_timeSinceLastPulse.GetValue();
+		m_mVinputBuffer = m_mvFactor * m_usSinceLastPulse.GetValue();
 	}
 
 	virtual bool const CompStep();

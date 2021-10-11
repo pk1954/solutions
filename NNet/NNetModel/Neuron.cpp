@@ -58,12 +58,12 @@ static void CALLBACK BeepFunc
 
 void Neuron::init(const Neuron & rhs)
 {
-	m_bStopOnTrigger     = rhs.m_bStopOnTrigger;
-	m_timeSinceLastPulse = rhs.m_timeSinceLastPulse;
-	m_bTriggered         = rhs.m_bTriggered;
-	m_factorW            = rhs.m_factorW;
-	m_factorU            = rhs.m_factorU;
-	m_triggerSound       = rhs.m_triggerSound;
+	m_bStopOnTrigger   = rhs.m_bStopOnTrigger;
+	m_usSinceLastPulse = rhs.m_usSinceLastPulse;
+	m_bTriggered       = rhs.m_bTriggered;
+	m_factorW          = rhs.m_factorW;
+	m_factorU          = rhs.m_factorU;
+	m_triggerSound     = rhs.m_triggerSound;
 	m_pTpWork = (rhs.m_triggerSound.m_bOn )
 		      ? CreateThreadpoolWork(BeepFunc, this, nullptr)
 		      : nullptr;
@@ -133,31 +133,31 @@ void Neuron::Recalc()
 	m_factorU = 4.0f * m_factorW * PeakVoltage().GetValue();
 };
 
-mV Neuron::waveFunction(fMicroSecs const time) const
+mV const Neuron::waveFunction(fMicroSecs const time) const
 {
 	return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }
 
 void Neuron::Clear()
 {
-	m_timeSinceLastPulse = 0._MicroSecs;   
+	m_usSinceLastPulse = 0._MicroSecs;   
 	Nob::Clear();
 }
 
 bool const Neuron::CompStep()
 {
-	bool bTrigger { (m_mVinputBuffer >= Threshold()) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) };
+	bool bTrigger { (m_mVinputBuffer >= Threshold()) && (m_usSinceLastPulse >= PulseWidth() + RefractPeriod()) };
 
 	if (bTrigger)
 	{
-		m_timeSinceLastPulse = 0._MicroSecs;
+		m_usSinceLastPulse = 0._MicroSecs;
 		m_bTriggered = true;
 		if (HasTriggerSound() && m_pTpWork)
 			SubmitThreadpoolWork(m_pTpWork);
 	}
 	else
 	{
-		m_timeSinceLastPulse += m_pParameters->GetTimeResolution();
+		m_usSinceLastPulse += m_pParameters->GetTimeResolution();
 	}
 
 	return m_bStopOnTrigger && bTrigger;
@@ -165,8 +165,8 @@ bool const Neuron::CompStep()
 
 mV const Neuron::GetNextOutput() const
 {
-	return (m_timeSinceLastPulse <= PulseWidth())
-		   ? waveFunction(m_timeSinceLastPulse)
+	return (m_usSinceLastPulse <= PulseWidth())
+		   ? waveFunction(m_usSinceLastPulse)
 		   : BASE_POTENTIAL;
 }
 

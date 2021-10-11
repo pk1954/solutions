@@ -65,10 +65,10 @@ public:
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 protected:
-	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
-	bool       m_bStopOnTrigger     { false };
+	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
+	bool       m_bStopOnTrigger   { false };
 
-	mV waveFunction(fMicroSecs const) const;
+	mV const waveFunction(fMicroSecs const) const;
 
 	void const DisplayText(DrawContext const &, MicroMeterRect const &, wstring const) const;
 
@@ -80,7 +80,7 @@ private:
 
 	SoundDescr m_triggerSound {};
 
-	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
+	PTP_WORK m_pTpWork { nullptr };  // Thread poolworker thread
 
 	MicroMeterPnt getAxonHillockPos() const;
 

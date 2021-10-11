@@ -581,6 +581,7 @@
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
+    <ClCompile Include="StimulusDesigner.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_descriptionWindow.cpp" />
@@ -608,6 +609,7 @@
     <ClInclude Include="scale.h" />
     <ClInclude Include="SlowMotionDisplay.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StimulusDesigner.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeDisplay.h" />
     <ClInclude Include="UndoRedoMenu.h" />

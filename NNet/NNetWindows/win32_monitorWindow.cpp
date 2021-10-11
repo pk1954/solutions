@@ -26,7 +26,7 @@ void MonitorWindow::Start
 	Sound                  * const   pSound,
 	NNetController         * const   pController,
 	NNetModelCommands      * const   pModelCommands,
-	NNetModelReaderInterface const & model,
+	NNetModelReaderInterface const & nmri,
 	MonitorData                    & monitorData 
 )
 {
@@ -42,7 +42,7 @@ void MonitorWindow::Start
 	m_pSound         =   pSound;
 	m_pController    =   pController;
 	m_pModelCommands =   pModelCommands;
-	m_pNMRI          = & model;
+	m_pNMRI          = & nmri;
 	m_pMonitorData   = & monitorData;
 	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"Monitor");
