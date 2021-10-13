@@ -9,6 +9,7 @@
 #include "PixelTypes.h"
 #include "win32_baseWindow.h"
 
+class SignalGenerator;
 class NNetModelReaderInterface;
 
 class StimulusDesigner : public BaseWindow
@@ -19,6 +20,7 @@ public:
 	void Start
 	(
 		HWND                     const,
+		SignalGenerator        * const,
 		NNetModelReaderInterface const &
     );
 
@@ -26,27 +28,29 @@ public:
 	void Stop();
 
 private:
-	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
+
+	void doPaint() const;
 
 	virtual void OnPaint     ();
 	virtual bool OnSize      (WPARAM const, LPARAM const);
 	virtual void OnMouseWheel(WPARAM const, LPARAM const);
 
-	void         doPaint()                      const;
-	fHertz const stimulusFunc(fMicroSecs const) const;
-
 	fPixel     const fHertz2fPixel    (fHertz     const) const;
 	fMicroSecs const fPixel2fMicroSecs(fPixel     const) const;
 	fPixel     const fMicroSecs2fPixel(fMicroSecs const) const;
 
-	void setMaximum(fMicroSecs const, fHertz const);
+	fPixelPoint const getPixPnt(fMicroSecs const) const;
+
+	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
 	D2D_driver                       m_graphics           { };
 	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
 	fPixel                           m_fPixWinWidth       { 0.0_fPixel };
+	fPixel                           m_fPixWinHeight      { 0.0_fPixel };
+	fPixel                           m_fPixYoff           { 0.0_fPixel };
+	fPixel                           m_fPixXoff           { 0.0_fPixel };
+	fPixel                           m_fPixGraphWidth     { 0.0_fPixel };
 	fHertz                           m_fHertzPerPixel     { 1.0_fHertz };
 	NNetModelReaderInterface const * m_pNMRI              { nullptr };
-
-	float m_A { 1.0f }; // Parameter for stimulus function
-	float m_B { 1.0f }; // Parameter for stimulus function
+	SignalGenerator                * m_pSignalGenerator   { nullptr };
 };

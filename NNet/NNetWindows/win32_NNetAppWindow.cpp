@@ -84,10 +84,11 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	SignalFactory::Initialize(m_nmri, m_dynamicModelObservable);
-	Nob          ::Initialize(m_model.GetParams());
-	Command      ::Initialize(&m_mainNNetWindow);
-	NNetCommand  ::Initialize(&m_nmwi);
+	SignalFactory  ::Initialize(m_nmri, m_dynamicModelObservable);
+	SignalGenerator::Initialize(m_model.GetParams());
+	Nob            ::Initialize(m_model.GetParams());
+	Command        ::Initialize(&m_mainNNetWindow);
+	NNetCommand    ::Initialize(&m_nmwi);
 
 	m_model.SetDescriptionUI(m_descWindow);
 	m_model.SetHighSigObservable(&m_highlightSigObservable);
@@ -170,6 +171,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands, & m_model.GetParams());
 	m_performanceWindow.Start(m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, & m_sound, & m_NNetController, & m_modelCommands, m_nmri, m_model.GetMonitorData());
+	m_stimDesWindow    .Start(m_hwndApp, & m_signalGenerator, m_nmri);
 
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true );
 	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false);
@@ -210,6 +212,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_monitorWindow .Move(PixelRect{ 200_PIXEL, 0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
 	m_miniNNetWindow.Move(PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
 	m_descWindow    .Move(PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
+	m_stimDesWindow .Move(PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
 
 	m_monitorWindow    .Show(false);
 	m_miniNNetWindow   .Show(true);
@@ -219,6 +222,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Show(true);
 	m_performanceWindow.Show(true);
 	m_descWindow       .Show(true);
+	m_stimDesWindow    .Show(true);
 
 	if (! m_WinManager.GetWindowConfiguration())
 		Util::Show(m_hwndApp, true);

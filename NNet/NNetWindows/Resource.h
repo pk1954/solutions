@@ -114,4 +114,5 @@
 #define IDD_DISC_IOCONNECTOR       676
 #define IDD_DISC_BASEKNOT          677
 #define IDD_SPLIT_NEURON           678
-								  
+
+#define IDX_TEST                   999

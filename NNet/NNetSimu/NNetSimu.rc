@@ -92,6 +92,7 @@ FONT 8, "Ms Shell Dlg"
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 IDC_NNET_SIMU_MAIN ACCELERATORS
 {
+    "t",       IDX_TEST,            VIRTKEY, CONTROL
     "z",       IDM_UNDO,            VIRTKEY, CONTROL
     "y",       IDM_REDO,            VIRTKEY, CONTROL
     "a",       IDM_SELECT_ALL,      VIRTKEY, CONTROL

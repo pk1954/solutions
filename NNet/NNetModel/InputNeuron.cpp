@@ -22,17 +22,25 @@ using std::fixed;
 InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
 	: IoNeuron(upCenter, NobType::Value::inputNeuron)
 { 
-	SetPulseFrequency(STD_PULSE_FREQ);
+	initialize();
 }
 
 InputNeuron::InputNeuron(BaseKnot const & baseKnot)
 	: IoNeuron(baseKnot, NobType::Value::inputNeuron)
 { 
+	initialize();
 	SetOutgoing(baseKnot);
-	SetPulseFrequency(STD_PULSE_FREQ);
 }
 
-InputNeuron::~InputNeuron() { }
+InputNeuron::~InputNeuron() 
+{
+	//delete m_pSignalGenerator;
+}
+
+void InputNeuron::initialize()
+{
+	//m_pSignalGenerator = new SignalGenerator();
+}
 
 void InputNeuron::Check() const
 {
@@ -43,30 +51,33 @@ void InputNeuron::Check() const
 bool InputNeuron::operator==(Nob const & rhs) const
 {
 	InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
-	return (this->Neuron::operator== (inputNeuronRhs))           &&
-           (m_mvFactor       == inputNeuronRhs.m_mvFactor)       &&
-		   (m_pulseFrequency == inputNeuronRhs.m_pulseFrequency) &&
-		   (m_pulseDuration  == inputNeuronRhs.m_pulseDuration);
+	return (this->Neuron::operator== (inputNeuronRhs)) &&
+		   (m_signalGenerator == inputNeuronRhs.m_signalGenerator);
 }
 
-void InputNeuron::Recalc()
-{
-	m_mvFactor = mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) / m_pulseDuration.GetValue());
+fHertz const InputNeuron::GetPulseFrequency() const 
+{ 
+//	return m_pSignalGenerator ? m_pSignalGenerator->GetPulseFrequency() : fHertz::NULL_VAL(); 
+	return m_signalGenerator.GetPulseFrequency(); 
 }
 
 fHertz const InputNeuron::SetPulseFrequency(fHertz const freq)
 {
-	fHertz const fOldValue { m_pulseFrequency };
-	m_pulseFrequency = freq;
-	m_pulseDuration  = PulseDuration(m_pulseFrequency);
-	Recalc();
-	return fOldValue;
+	return m_signalGenerator.SetPulseFrequency(freq);
+}
+
+void InputNeuron::Prepare()
+{
+//	m_mVinputBuffer = m_pSignalGenerator ? m_pSignalGenerator->GetPotential(m_usSinceLastPulse) : BASE_POTENTIAL;
+	m_mVinputBuffer = m_signalGenerator.GetPotential(m_usSinceLastPulse);
 }
 
 bool const InputNeuron::CompStep()
 {
+	//if (!m_pSignalGenerator)
+	//	return false;
 	m_usSinceLastPulse += m_pParameters->GetTimeResolution();
-	bool bTrigger { m_usSinceLastPulse >= m_pulseDuration };
+	bool bTrigger { m_usSinceLastPulse >= m_signalGenerator.GetPulseDuration() };
 	if (bTrigger)
 		m_usSinceLastPulse = 0._MicroSecs;   
 	return m_bStopOnTrigger && bTrigger;

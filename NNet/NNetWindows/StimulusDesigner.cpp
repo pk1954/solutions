@@ -5,11 +5,14 @@
 #include <math.h>       // pow
 #include "stdafx.h"
 #include "NNetModelReaderInterface.h"
+#include "SignalGenerator.h"
+#include "NNetParameters.h"
 #include "StimulusDesigner.h"
 
 void StimulusDesigner::Start
 (
 	HWND                     const   hwndParent,
+	SignalGenerator        * const   pSignalGenerator,
 	NNetModelReaderInterface const & nmri
 )
 {
@@ -24,7 +27,9 @@ void StimulusDesigner::Start
 	);
 	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"StimulusDesigner");
+	m_pSignalGenerator      = pSignalGenerator;
 	m_trackStruct.hwndTrack = hwnd;
+	m_pNMRI                 = &nmri;
 }
 
 void StimulusDesigner::Reset()
@@ -40,22 +45,26 @@ void StimulusDesigner::Stop()
 	DestroyWindow();
 }
 
+fPixelPoint const StimulusDesigner::getPixPnt(fMicroSecs const time) const
+{
+	fHertz      const fHertzAct{ m_pSignalGenerator->StimulusFunc(time) };
+	fPixelPoint const actPoint { m_fPixXoff + fMicroSecs2fPixel(time), m_fPixYoff - fHertz2fPixel(fHertzAct) };
+	return actPoint;
+}
+
 void StimulusDesigner::doPaint() const
 {
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fPixel       const fPixWidth    { 1.0_fPixel };
-	fPixel       const fPixYoff     { 1.0_fPixel };
-	fMicroSecs   const usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
 	fMicroSecs   const usResolution { m_pNMRI->GetTimeResolution() };
-	float        const fPointsInWin { usInWindow / usResolution };
-	fMicroSecs   const usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fMicroSecs   const usEnd        { m_pNMRI->GetSimulationTime() };
-	fMicroSecs   const timeStart    { usEnd - usInWindow };
-	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - fHertz2fPixel(stimulusFunc(usEnd)) };
+	fMicroSecs   const usIncrement  { (m_fMicroSecsPerPixel > usResolution) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs   const timeStart    { 0.0_MicroSecs };
+	fMicroSecs   const timeEnd      { fPixel2fMicroSecs(m_fPixGraphWidth) };
+	fPixelPoint        prevPoint    { getPixPnt(timeStart) };
 
-	for (fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement)
+	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 	{
-		fPixelPoint const actPoint { fMicroSecs2fPixel(time), fPixYoff - fHertz2fPixel(stimulusFunc(usEnd)) };
+		fPixelPoint const actPoint { getPixPnt(time) };
 		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
@@ -78,10 +87,16 @@ void StimulusDesigner::OnPaint()
 
 bool StimulusDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
+	static const float HORZ_BORDER { 0.1f };
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_graphics.Resize(width, height);
-	m_fPixWinWidth = Convert2fPixel(PIXEL(width));
+	m_fPixWinWidth   = Convert2fPixel(PIXEL(width));
+	m_fPixWinHeight  = Convert2fPixel(PIXEL(height));
+	m_fPixXoff       = m_fPixWinWidth  * HORZ_BORDER;
+	m_fPixYoff       = m_fPixWinHeight * (1.0f - HORZ_BORDER);
+	m_fPixGraphWidth = m_fPixWinWidth  * (1.0f - 2.0f * HORZ_BORDER);
+	Trigger();  // cause repaint
 	return true;
 }
 
@@ -138,21 +153,6 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	Trigger();  // cause repaint
 }
 
-fHertz const StimulusDesigner::stimulusFunc(fMicroSecs const time) const
-{
-	float const x { time.GetValue() };
-	return fHertz(m_A * x * pow(m_B, (1.0f - x)));
-}
-
-void StimulusDesigner::setMaximum(fMicroSecs const uSecs, fHertz const hertz)
-{
-	float const x { uSecs.GetValue() };
-	float const y { hertz.GetValue() };
-	float const r { 1.0f/x };
-	m_A = y / exp(r - 1.0f);
-	m_B = exp(r);
-}
-
 fPixel const StimulusDesigner::fHertz2fPixel(fHertz const freq) const
 {
 	fPixel const fPixYvalue { freq / m_fHertzPerPixel };
@@ -162,15 +162,14 @@ fPixel const StimulusDesigner::fHertz2fPixel(fHertz const freq) const
 
 fMicroSecs const StimulusDesigner::fPixel2fMicroSecs(fPixel const fPixX) const
 {
-	fPixel     const fTicks   { m_fPixWinWidth - fPixX };
-	fMicroSecs const usResult { m_fMicroSecsPerPixel * fTicks.GetValue() };
+	fMicroSecs const usResult { m_fMicroSecsPerPixel * fPixX.GetValue() };
 	return usResult;
 }
 
 fPixel const StimulusDesigner::fMicroSecs2fPixel(fMicroSecs const usParam) const
 {
-	float      const fTicks { usParam / m_fMicroSecsPerPixel };
-	fPixel     const fPixX  { m_fPixWinWidth - fPixel(fTicks) };
+	float  const fTicks { usParam / m_fMicroSecsPerPixel };
+	fPixel const fPixX  { fPixel(fTicks) };
 	return fPixX;
 }
 

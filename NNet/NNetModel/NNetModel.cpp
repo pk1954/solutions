@@ -56,14 +56,6 @@ void NNetModel::ClearAllNobs()
 	m_Nobs.Apply2All([&](Nob & nob) { nob.Clear(); }); 
 }
 
-fHertz const NNetModel::GetPulseRate(NobId const id) const
-{
-	InputNeuron const * const pInputNeuron { GetNobConstPtr<InputNeuron const *>(id) };
-	return (pInputNeuron)
-		   ? pInputNeuron->GetPulseFrequency()
-	       : fHertz::NULL_VAL();
-}
-
 bool const NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 {
 	return m_description.GetDescriptionLine(iLine, wstrLine);
