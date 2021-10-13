@@ -33,7 +33,7 @@ mV const SignalGenerator::GetPotential(fMicroSecs const usSinceLastPulse)
 
 fHertz const SignalGenerator::StimulusFunc(fMicroSecs const time) const
 {
-	float const x { time.GetValue() * 0.001f };
+	float const x { time.GetValue() * 0.001f };  // convert to milliseconds
 	return fHertz(m_A * x * pow(m_B, (1.0f - x)));
 }
 

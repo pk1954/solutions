@@ -65,7 +65,9 @@ void StimulusDesigner::doPaint() const
 	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 	{
 		fPixelPoint const actPoint { getPixPnt(time) };
-		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
+//		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
+		m_graphics.DrawLine(prevPoint, fPixelPoint(actPoint.GetX(), prevPoint.GetY()), fPixWidth, color);
+		m_graphics.DrawLine(fPixelPoint(actPoint.GetX(), prevPoint.GetY()), actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
 }

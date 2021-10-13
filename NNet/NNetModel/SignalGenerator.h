@@ -33,6 +33,6 @@ private:
 	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
 								 // floating point rounding effects, both are stored
 
-	float m_A { 1000.0f }; // Parameter for stimulus function
-	float m_B {    2.0f }; // Parameter for stimulus function
+	float m_A { 50.0f }; // Parameter for stimulus function
+	float m_B {  2.0f }; // Parameter for stimulus function
 };
