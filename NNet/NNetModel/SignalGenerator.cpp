@@ -8,7 +8,7 @@
 
 SignalGenerator::SignalGenerator()
 {
-	SetPulseFrequency(STD_PULSE_FREQ);
+	SetPulseFrequency(fHertz(m_pParameters->GetParameterValue(ParamType::Value::stdPulseRate)));
 }
 
 bool SignalGenerator::operator==(SignalGenerator const & rhs) const

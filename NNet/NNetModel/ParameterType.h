@@ -14,6 +14,7 @@ class ParamType
 public:
 	enum class Value
 	{
+		stdPulseRate,
 		pulseSpeed,
 		pulseWidth,
 		signalLoss,  // not used, just for compatibility

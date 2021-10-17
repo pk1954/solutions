@@ -66,7 +66,7 @@ HWND ParameterDialog::addParameter
 	int  iXpos { 10 }; 
 
 	HWND hwndName = createStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, 120);
-	HWND hwndEdit = createEditField  (hwndDlg, parameter,                           iXpos, iYpos,  60);
+	HWND hwndEdit = createEditField  (hwndDlg, parameter,                     iXpos, iYpos,  60);
 	HWND hwndUnit = createStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos,  40);
 
 	iYpos += HEIGHT + VERT_SPACE;
@@ -76,6 +76,7 @@ HWND ParameterDialog::addParameter
 
 void ParameterDialog::resetParameters()  // refresh edit fields with data from model
 {
+	resetParameter(m_hwndStdPulseRate,     ParamType::Value::stdPulseRate  );
 	resetParameter(m_hwndPeakVoltage,      ParamType::Value::peakVoltage   );
 	resetParameter(m_hwndThreshold,        ParamType::Value::threshold     );
 	resetParameter(m_hwndPulseWidth,       ParamType::Value::pulseWidth    );
@@ -86,6 +87,7 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {
+	applyParameter(m_hwndStdPulseRate,     ParamType::Value::stdPulseRate  );
 	applyParameter(m_hwndPeakVoltage,      ParamType::Value::peakVoltage   );
 	applyParameter(m_hwndThreshold,        ParamType::Value::threshold     );
 	applyParameter(m_hwndPulseWidth,       ParamType::Value::pulseWidth    );
@@ -114,6 +116,7 @@ void ParameterDialog::Start
 	m_pParams   = pParams;
 
 	int iYpos { 10 };
+	m_hwndStdPulseRate     = addParameter(hwndDlg, ParamType::Value::stdPulseRate,   iYpos); 
 	m_hwndPeakVoltage      = addParameter(hwndDlg, ParamType::Value::peakVoltage,    iYpos); 
 	m_hwndThreshold        = addParameter(hwndDlg, ParamType::Value::threshold,      iYpos); 
 	m_hwndPulseWidth       = addParameter(hwndDlg, ParamType::Value::pulseWidth,     iYpos); 

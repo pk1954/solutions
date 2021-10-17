@@ -162,7 +162,7 @@ private:
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
 	StimulusDesigner         m_stimDesWindow          { };
-	SignalGenerator          m_signalGenerator        { };
+//	SignalGenerator          m_signalGenerator        { };
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

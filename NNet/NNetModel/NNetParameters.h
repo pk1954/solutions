@@ -22,6 +22,7 @@ public:
 	void        SetParameterValue(ParamType::Value const, float const);
 
 private:
+	fHertz      m_stdPulseRate { 10.0_fHertz       };
 	mV          m_threshold    { 20._mV            };
 	mV          m_peakVoltage  { 10._mV            };   
 	fMicroSecs  m_pulseWidth   { 2000._MicroSecs   };   
@@ -29,9 +30,6 @@ private:
 	meterPerSec m_pulseSpeed   { 120.0_meterPerSec };
 	fMicroSecs  m_usResolution { 100._MicroSecs    };
 };
-
-// dynamic model 
-inline static fHertz          const STD_PULSE_FREQ  { 50.0_fHertz };         // Input neurons
 
 // geometry
 inline static mV            const BASE_POTENTIAL  { 0.0_mV };

@@ -21,12 +21,13 @@ public:
 private:
 	static DWORD const STYLE { WS_CHILD | WS_VISIBLE };
 	static int   const HORZ_SPACE {  8 };
-	static int   const VERT_SPACE { 16 };
+	static int   const VERT_SPACE { 14 };
 	static int   const HEIGHT     { 16 };
 
 	Param             * m_pParams   { nullptr };
 	NNetModelCommands * m_pCommands { nullptr };
 
+	HWND m_hwndStdPulseRate    { nullptr };
 	HWND m_hwndPeakVoltage     { nullptr };
 	HWND m_hwndThreshold       { nullptr };     
 	HWND m_hwndPulseWidth      { nullptr };

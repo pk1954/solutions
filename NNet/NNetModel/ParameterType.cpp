@@ -25,6 +25,7 @@ wchar_t const * const ParamType::GetName(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
+		{ ParamType::Value::stdPulseRate,   L"StdPulseRate"     },
 		{ ParamType::Value::pulseRate,      L"PulseRate"        },
 		{ ParamType::Value::pulseSpeed,     L"PulseSpeed"       },
 		{ ParamType::Value::pulseWidth,     L"PulseWidth"       },
@@ -42,6 +43,7 @@ wchar_t const * const ParamType::GetUnit(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
+		{ ParamType::Value::stdPulseRate,   L"Hz"    },
 		{ ParamType::Value::pulseRate,      L"Hz"    },
 		{ ParamType::Value::pulseSpeed,     L"m/sec" },
 		{ ParamType::Value::pulseWidth,     L"µs"    },
