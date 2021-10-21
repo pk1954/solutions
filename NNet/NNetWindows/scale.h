@@ -20,6 +20,10 @@ public:
 
 	void SetClientRectSize(PIXEL const, PIXEL const);
 	void SetHorzPixelSize(float const);
+	void SetOffset(fPixel const, fPixel const);
+	void SetOffset(fPixelPoint const);
+	void SetCentered(bool const);
+	void SetBelowMode(bool const);
 
 	void DisplayStaticScale() const;
 
@@ -28,26 +32,38 @@ private:
 
 	inline static COLORREF const SCALE_COLOR { RGB(0, 0, 0) };  // CLR_BLACK
 
+	inline static fPixel const MIN_TICK_DIST { 6._fPixel };  
+
 	fPixel m_fPixClientWidth { 0.0_fPixel };
 	fPixel m_fPixClientHeight{ 0.0_fPixel };
-	fPixel m_fPixVertPos     { 0.0_fPixel };
 
-	D2D_driver        * m_pGraphics   { nullptr }; 
-	IDWriteTextFormat * m_pTextFormat { nullptr };
-	wstring             m_wstrLogUnit;
+	D2D_driver        * m_pGraphics      { nullptr }; 
+	IDWriteTextFormat * m_pTextFormat    { nullptr };
 	float               m_fHorzPixelSize { 1.0f };
+	wstring             m_wstrLogUnit;
 
 	// parameters for fixed scale
 
-	float       m_fIntegerPart { 0.0f };
-	int         m_iFirstDigit  { 0 };    
+	bool        m_bCentered    { false };
+	bool        m_bBelowMode   { false };
+	fPixelPoint m_fPixOffset   { fPP_NULL };
 	fPixelPoint m_fPixPntStart { fPP_NULL };
 	fPixelPoint m_fPixPntEnd   { fPP_NULL };
+	LogUnits    m_logStart     {};
+	LogUnits    m_logEnd       {};
+	LogUnits    m_logTickDist  {};
+	LogUnits    m_logReduction {};
+	wstring     m_unitPrefix   {};
 
 	// private functions
 
-	void displayTicks      (fPixelPoint const, fPixelPoint const, float const, int const) const;
-	void displayScaleNumber(fPixelPoint const, float const, int const) const;
-	void displayScaleText  (fPixelPoint const, float const) const;
-	void calcScaleParams();
+	void calcScaleParams   ();
+	void displayTick       (fPixel const, fPixel const) const;
+	void displayTicks      () const;
+	void display           (fPixelPoint const, wstring const) const;
+
+	fPixel   const log2pix    (LogUnits const) const;
+	fPixel   const log2pixSize(LogUnits const) const;
+	LogUnits const pix2log    (fPixel   const) const;
+	LogUnits const pix2logSize(fPixel   const) const;
 };

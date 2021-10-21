@@ -5,6 +5,7 @@
 #pragma once
 
 #include "D2D_DrawContext.h"
+#include "Scale.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "win32_baseWindow.h"
@@ -44,12 +45,10 @@ private:
 
 	D2D_driver                       m_graphics           { };
 	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
-	fPixel                           m_fPixWinWidth       { 0.0_fPixel };
-	fPixel                           m_fPixWinHeight      { 0.0_fPixel };
-	fPixel                           m_fPixYoff           { 0.0_fPixel };
-	fPixel                           m_fPixXoff           { 0.0_fPixel };
+	fPixelPoint                      m_fPixOffset         { fPP_NULL };
 	fPixel                           m_fPixGraphWidth     { 0.0_fPixel };
 	fHertz                           m_fHertzPerPixel     { 0.25_fHertz };
 	NNetModelReaderInterface const * m_pNMRI              { nullptr };
 	SignalGenerator                * m_pSignalGenerator   { nullptr };
+	Scale                            m_scale;
 };

@@ -62,6 +62,8 @@ using std::make_unique;
 using std::wostringstream;
 using std::filesystem::path;
 
+SignalGenerator * m_pSignalGenerator { };
+
 NNetAppWindow::NNetAppWindow()
 {
 	Neuron::SetSound(& m_sound);
@@ -171,7 +173,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands, & m_model.GetParams());
 	m_performanceWindow.Start(m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, & m_sound, & m_NNetController, & m_modelCommands, m_nmri, m_model.GetMonitorData());
-//	m_stimDesWindow    .Start(m_hwndApp, & m_signalGenerator, m_nmri);
+	
+	m_pSignalGenerator = new SignalGenerator();
+	m_stimDesWindow    .Start(m_hwndApp, m_pSignalGenerator, m_nmri);
 
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true );
 	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false);

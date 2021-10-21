@@ -27,6 +27,9 @@ void StimulusDesigner::Start
 	);
 	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"StimulusDesigner");
+	m_scale.Initialize(& m_graphics, L"s");	
+	m_scale.SetHorzPixelSize(m_fMicroSecsPerPixel.GetValue());
+	m_scale.SetBelowMode(true);
 	m_pSignalGenerator      = pSignalGenerator;
 	m_trackStruct.hwndTrack = hwnd;
 	m_pNMRI                 = &nmri;
@@ -48,7 +51,7 @@ void StimulusDesigner::Stop()
 fPixelPoint const StimulusDesigner::getPixPnt(fMicroSecs const time) const
 {
 	fHertz      const fHertzAct{ m_pSignalGenerator->StimulusFunc(time) };
-	fPixelPoint const actPoint { m_fPixXoff + fMicroSecs2fPixel(time), m_fPixYoff - fHertz2fPixel(fHertzAct) };
+	fPixelPoint const actPoint { m_fPixOffset + fPixelPoint(fMicroSecs2fPixel(time), -fHertz2fPixel(fHertzAct)) };
 	return actPoint;
 }
 
@@ -64,12 +67,13 @@ void StimulusDesigner::doPaint() const
 
 	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 	{
-		fPixelPoint const actPoint { getPixPnt(time) };
-//		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
-		m_graphics.DrawLine(prevPoint, fPixelPoint(actPoint.GetX(), prevPoint.GetY()), fPixWidth, color);
-		m_graphics.DrawLine(fPixelPoint(actPoint.GetX(), prevPoint.GetY()), actPoint, fPixWidth, color);
+		fPixelPoint const actPoint  { getPixPnt(time) };
+		fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
+		m_graphics.DrawLine(prevPoint, stepPoint, fPixWidth, color);
+		m_graphics.DrawLine(stepPoint,  actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
+	m_scale.DisplayStaticScale();
 }
 
 void StimulusDesigner::OnPaint()
@@ -89,15 +93,16 @@ void StimulusDesigner::OnPaint()
 
 bool StimulusDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
-	static const float HORZ_BORDER { 0.1f };
+	static const float BORDER { 0.1f };
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_graphics.Resize(width, height);
-	m_fPixWinWidth   = Convert2fPixel(PIXEL(width));
-	m_fPixWinHeight  = Convert2fPixel(PIXEL(height));
-	m_fPixXoff       = m_fPixWinWidth  * HORZ_BORDER;
-	m_fPixYoff       = m_fPixWinHeight * (1.0f - HORZ_BORDER);
-	m_fPixGraphWidth = m_fPixWinWidth  * (1.0f - 2.0f * HORZ_BORDER);
+	m_scale.SetClientRectSize(PIXEL(width), PIXEL(height));
+	fPixel fPixWinWidth  { Convert2fPixel(PIXEL(width )) };
+	fPixel fPixWinHeight { Convert2fPixel(PIXEL(height)) };
+	m_fPixOffset     = fPixelPoint(fPixWinWidth * BORDER, fPixWinHeight * (1.0f - BORDER));
+	m_fPixGraphWidth = fPixWinWidth  * (1.0f - 2.0f * BORDER);
+	m_scale.SetOffset(m_fPixOffset);
 	Trigger();  // cause repaint
 	return true;
 }
@@ -130,6 +135,7 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 				else 
 					MessageBeep(MB_ICONWARNING);
 			}
+			m_scale.SetHorzPixelSize(m_fMicroSecsPerPixel.GetValue());
 		}
 		else
 		{

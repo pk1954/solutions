@@ -52,6 +52,7 @@ void MainWindow::Start
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
+	m_scale.SetCentered(true);
 	m_scale.Initialize(& m_graphics, L"m");
 }
 

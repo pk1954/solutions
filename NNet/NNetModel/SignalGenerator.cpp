@@ -28,20 +28,18 @@ fHertz const SignalGenerator::SetPulseFrequency(fHertz const freq)
 mV const SignalGenerator::GetPotential(fMicroSecs const usSinceLastPulse)
 {
 	return mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage)) 
-		/ m_pulseDuration.GetValue() * usSinceLastPulse.GetValue();
+	    	* m_pulseFrequency.GetValue() * usSinceLastPulse.GetValue() / 1e6f;
 }
 
 fHertz const SignalGenerator::StimulusFunc(fMicroSecs const time) const
 {
 	float const x { time.GetValue() * 0.001f };  // convert to milliseconds
-	return fHertz(m_A * x * pow(m_B, (1.0f - x)));
+	return m_pulseFrequency + m_fMaxFrequency * x * pow(m_fBaseFactor, (1.0f - x));
 }
 
-void SignalGenerator::SetMaximum(fMicroSecs const uSecs, fHertz const hertz)
+void SignalGenerator::SetMaximum(fMicroSecs const uSecs, fHertz const freq)
 {
-	float const x { uSecs.GetValue() };
-	float const y { hertz.GetValue() };
-	float const r { 1.0f/x };
-	m_A = y / exp(r - 1.0f);
-	m_B = exp(r);
+	float const r { 1.0f/uSecs.GetValue() };
+	m_fMaxFrequency = freq / exp(r - 1.0f);
+	m_fBaseFactor   = exp(r);
 }

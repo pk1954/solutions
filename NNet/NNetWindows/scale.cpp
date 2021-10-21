@@ -9,6 +9,7 @@
 #include "scale.h"
 
 using std::wostringstream;
+using std::to_wstring;
 
 void Scale::Initialize
 (
@@ -25,8 +26,18 @@ void Scale::SetClientRectSize(PIXEL const width, PIXEL const height)
 {
 	m_fPixClientWidth  = Convert2fPixel(width);
 	m_fPixClientHeight = Convert2fPixel(height);
-	m_fPixVertPos      = m_fPixClientHeight - 20._fPixel;
 	calcScaleParams();
+}
+
+void Scale::SetOffset(fPixelPoint const fPixOffset)
+{
+	m_fPixOffset = fPixOffset;
+	calcScaleParams();
+}
+
+void Scale::SetOffset(fPixel const fPixX, fPixel const fPixY)
+{
+	SetOffset(fPixelPoint(fPixX, fPixY));
 }
 
 void Scale::SetHorzPixelSize(float const fSize) 
@@ -35,143 +46,126 @@ void Scale::SetHorzPixelSize(float const fSize)
 	calcScaleParams();
 };
 
+void Scale::SetCentered(bool const bCentered) 
+{ 
+	m_bCentered = bCentered; 
+	calcScaleParams();
+};
+
+void Scale::SetBelowMode(bool const bMode) 
+{ 
+	m_bBelowMode = bMode; 
+	calcScaleParams();
+};
+
+fPixel const Scale::log2pixSize(LogUnits const lu) const 
+{ 
+	return fPixel(lu / m_fHorzPixelSize); 
+}
+
+fPixel const Scale::log2pix(LogUnits const lu) const 
+{ 
+	return log2pixSize(lu) + m_fPixOffset.GetX(); 
+}
+
+Scale::LogUnits const Scale::pix2logSize(fPixel const fp) const	
+{ 
+	return LogUnits(fp.GetValue() * m_fHorzPixelSize); 
+}
+
+Scale::LogUnits const Scale::pix2log(fPixel const fp) const	
+{ 
+	return pix2logSize(fp - m_fPixOffset.GetX()); 
+}
+
 void Scale::calcScaleParams()
 {
-	LogUnits logLengthMax    { m_fPixClientWidth.GetValue() * m_fHorzPixelSize * 0.9f };
-	float    fFractPart      { modff(log10f(logLengthMax), & m_fIntegerPart) };
-	LogUnits logLength       { LogUnits(powf(10.0, m_fIntegerPart)) };
-	float    fFirstDigit     { (fFractPart >= log10f(5.f)) ? 5.f : (fFractPart >= log10f(2.f)) ? 2.f : 1.f };
-	fPixel   fPixScaleLength { fPixel(fFirstDigit * logLength / m_fHorzPixelSize) };
-	fPixel   fPixHorzOffset  { (m_fPixClientWidth - fPixScaleLength) / 2 };
-	m_iFirstDigit  = static_cast<int>(fFirstDigit);
-	m_fPixPntStart = fPixelPoint(fPixHorzOffset,                   m_fPixVertPos);
-	m_fPixPntEnd   = fPixelPoint(fPixHorzOffset + fPixScaleLength, m_fPixVertPos);
+	LogUnits const logMinTickDist { pix2logSize(MIN_TICK_DIST) };
+	float    const log10          { log10f(logMinTickDist) };
+	float    const fExp           { floor(log10) };
+	float    const fFractPart     { log10 - fExp };
+	float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
+
+	m_logTickDist = powf(10.0, fExp) * fFactor;
+
+	if (m_logTickDist >= 1e5f)
+	{ 
+		m_unitPrefix   = L" ";
+		m_logReduction = 1e6f;
+	}
+	else if (m_logTickDist >= 1e2f)
+	{
+		m_unitPrefix = L"m";
+		m_logReduction = 1e3f;
+	}
+	else
+	{
+		m_unitPrefix = L"\u03BC";
+		m_logReduction = 1e0f;
+	}
+
+	if ( m_bCentered )
+		m_fPixOffset = fPixelPoint(m_fPixClientWidth * 0.1f, m_fPixClientHeight - 20._fPixel);
+
+	fPixel m_fPixScaleLen { m_fPixClientWidth - m_fPixOffset.GetX() * 2.0f };
+
+	m_fPixPntStart = m_fPixOffset;
+	m_fPixPntEnd   = m_fPixPntStart + fPixelPoint(m_fPixScaleLen, 0._fPixel);
+	m_logStart     = pix2log(m_fPixPntStart.GetX());
+	m_logEnd       = pix2log(m_fPixPntEnd.  GetX());
 }
 
 void Scale::DisplayStaticScale() const
 {
 	m_pGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
-	displayTicks    (m_fPixPntStart, m_fPixPntEnd, m_fIntegerPart, m_iFirstDigit);
-	displayScaleText(m_fPixPntEnd, m_fIntegerPart);
+	displayTicks();
+	display
+	(
+		m_fPixPntStart - fPixelPoint(20._fPixel, 0._fPixel), 
+		m_unitPrefix + m_wstrLogUnit
+	);
 }
 
-void Scale::displayTicks
+void Scale::displayTick
 (
-	fPixelPoint const fPixPoint1, 
-	fPixelPoint const fPixPoint2, 
-	float       const fLog10, 
-	int         const iFirstDigit 
+	fPixel const fTickX,
+	fPixel const fTickExt
 ) const
 {
-	fPixelPoint fLongTick  (0._fPixel, 10._fPixel);
-	fPixelPoint fMiddleTick(0._fPixel,  7._fPixel);
-	fPixelPoint fSmallTick (0._fPixel,  5._fPixel);
-
-	fPixelPoint fTickPos(fPixPoint1);
-	fPixelPoint fTickDist((fPixPoint2.GetX() - fPixPoint1.GetX()) / 10, 0._fPixel);
-
-	m_pGraphics->DrawLine(fPixPoint1 - fLongTick, fTickPos, 1._fPixel, SCALE_COLOR);
-
-	displayScaleNumber(fTickPos, fLog10, 0);
-
-	if (iFirstDigit == 1)
-	{
-		for (int i = 1; i <= 4; ++i)
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->DrawLine(fTickPos - fSmallTick, fTickPos, 1._fPixel, SCALE_COLOR);
-		}
-
-		fTickPos += fTickDist;
-		m_pGraphics->DrawLine(fTickPos - fMiddleTick, fTickPos, 1._fPixel, SCALE_COLOR);
-		displayScaleNumber(fTickPos, fLog10 - 1.0f, 5);
-
-		for (int i = 6; i <= 9; ++i)
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->DrawLine(fTickPos - fSmallTick, fTickPos, 1._fPixel, SCALE_COLOR);
-		}
-	}
-	else if (iFirstDigit == 2)
-	{
-		for (int i = 1; i <= 4; ++i)
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->DrawLine(fTickPos - fSmallTick, fTickPos, 1._fPixel, SCALE_COLOR);
-		}
-
-		fTickPos += fTickDist;
-		m_pGraphics->DrawLine(fTickPos - fMiddleTick, fTickPos, 1._fPixel, SCALE_COLOR);
-		displayScaleNumber(fTickPos, fLog10, 1);
-
-		for (int i = 6; i <= 9; ++i)
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->DrawLine(fTickPos - fSmallTick, fTickPos, 1._fPixel, SCALE_COLOR);
-		}
-	}
-	else if (iFirstDigit == 5)
-	{
-		for (int i = 0;;)
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->DrawLine(fTickPos - fSmallTick, fTickPos, 1._fPixel, SCALE_COLOR);
-
-			if (++i > 4)
-				break;
-
-			fTickPos += fTickDist;
-			m_pGraphics->DrawLine(fTickPos - fMiddleTick, fTickPos, 1._fPixel, SCALE_COLOR);
-			displayScaleNumber(fTickPos, fLog10, i);
-		}
-	}
-	else 
-		assert(false);
-
-	displayScaleNumber(fPixPoint2, fLog10, iFirstDigit);
-	m_pGraphics->DrawLine(fPixPoint2 - fLongTick, fPixPoint2, 1._fPixel, SCALE_COLOR);
+	fPixel      const fDir(m_bBelowMode ? fTickExt : -fTickExt);
+	fPixelPoint const fTickStart(fTickX, m_fPixOffset.GetY());
+	fPixelPoint const fTickEnd  (fTickX, m_fPixOffset.GetY() + fDir);
+	m_pGraphics->DrawLine(fTickStart, fTickEnd, 1._fPixel, SCALE_COLOR);
 }
 
-void Scale::displayScaleNumber
-(
-	fPixelPoint const fPos, 
-	float       const fLog10, 
-	int         const iFirstDigit 
-) const
+void Scale::displayTicks() const
 {
-	static PIXEL const textWidth  { 40_PIXEL };
-	static PIXEL const textHeight { 20_PIXEL };
-	static PIXEL const horzDist   {  2_PIXEL };
-	static PIXEL const vertDist   { 12_PIXEL };
+	static fPixel fLongTick  (10._fPixel);
+	static fPixel fMiddleTick( 7._fPixel);
+	static fPixel fSmallTick ( 5._fPixel);
 
-	PixelPoint const pixPos { Convert2PixelPoint(fPos) };
-	PixelRect  const pixRect
-	{ 
-		pixPos.GetX() + horzDist - textWidth,  // left
-		pixPos.GetY() - vertDist - textHeight, // top
-		pixPos.GetX() + horzDist + textWidth,  // right
-		pixPos.GetY() - vertDist               // bottom
-	};
+	fPixel fPixTickDist = log2pixSize(m_logTickDist);
 
-	wostringstream wBuffer;
-	wBuffer << iFirstDigit;
-
-	if (iFirstDigit > 0)
+	int iNrOfTicks { static_cast<int>((m_logEnd - m_logStart) / m_logTickDist) };
+	for (int iRun = 0; iRun <= iNrOfTicks; ++iRun)
 	{
-		int iLog10  = static_cast<int>(floor(fLog10));
-		int nDigits = iLog10 % 3;
-
-		while (nDigits--)
-			wBuffer << L"0";
+		LogUnits lu    { m_logStart + iRun * m_logTickDist };
+		fPixel   fTick { (iRun % 5 == 0) ? fLongTick : (iRun % 2 == 0) ? fMiddleTick : fSmallTick};
+		fPixel   fPixX { log2pix(lu) };
+		displayTick(fPixX, fTick);
+		if (iRun % 10 == 0)
+			display
+			(
+				fPixelPoint(fPixX, m_fPixOffset.GetY()), 
+				to_wstring(static_cast<int>(lu / m_logReduction))
+			);
 	}
-
-	m_pGraphics->DisplayText(pixRect, wBuffer.str(), SCALE_COLOR, m_pTextFormat);
 }
 
-void Scale::displayScaleText
+void Scale::display
 (
-	fPixelPoint const fPos, 
-	float       const fLog10
+	fPixelPoint const fPos,
+    wstring     const wstr
 ) const
 {
 	static PIXEL const textWidth  = 40_PIXEL;
@@ -179,24 +173,14 @@ void Scale::displayScaleText
 	static PIXEL const horzDist   =  0_PIXEL;
 	static PIXEL const vertDist   = 12_PIXEL;
 
-	PIXEL posX { Convert2PIXEL(fPos.GetX()) };
-	PIXEL posY { Convert2PIXEL(fPos.GetY()) };
-
-	PixelRect pixRect
-	(
-		posX + horzDist,              // left
-		posY - vertDist - textHeight, // top
-		posX + horzDist + textWidth,  // right
-		posY - vertDist               // bottom
-	);
-
-	wostringstream wBuffer;
-
-	if (fLog10 < 3)
-		wBuffer << L"\u03BC";
-	else if (fLog10 < 6)
-		wBuffer << L"m";
-	wBuffer << m_wstrLogUnit;
-
-	m_pGraphics->DisplayText(pixRect, wBuffer.str(), SCALE_COLOR, m_pTextFormat);
+	PIXEL      const vDist  { m_bBelowMode ? (vertDist+textHeight) : -vertDist };
+	PixelPoint const pixPos { Convert2PixelPoint(fPos) };
+	PixelRect  const pixRect
+	{ 
+		pixPos.GetX() + horzDist - textWidth,  // left
+		pixPos.GetY() + vDist    - textHeight, // top
+		pixPos.GetX() + horzDist + textWidth,  // right
+		pixPos.GetY() + vDist                  // bottom
+	};
+	m_pGraphics->DisplayText(pixRect, wstr, SCALE_COLOR, m_pTextFormat);
 }

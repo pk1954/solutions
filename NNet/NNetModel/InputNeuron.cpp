@@ -77,7 +77,8 @@ bool const InputNeuron::CompStep()
 	//if (!m_pSignalGenerator)
 	//	return false;
 	m_usSinceLastPulse += m_pParameters->GetTimeResolution();
-	bool bTrigger { m_usSinceLastPulse >= m_signalGenerator.GetPulseDuration() };
+	// bool bTrigger { m_usSinceLastPulse >= m_signalGenerator.GetPulseDuration() };
+	bool bTrigger { m_mVinputBuffer >= Threshold() };
 	if (bTrigger)
 		m_usSinceLastPulse = 0._MicroSecs;   
 	return m_bStopOnTrigger && bTrigger;
