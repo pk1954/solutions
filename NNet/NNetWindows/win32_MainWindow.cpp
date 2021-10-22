@@ -52,8 +52,8 @@ void MainWindow::Start
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_scale.SetCentered(true);
-	m_scale.Initialize(& m_graphics, L"m");
+	m_horzScale.Initialize(& m_graphics, L"m");
+	m_horzScale.SetCentered(true);
 }
 
 void MainWindow::Stop()
@@ -220,7 +220,7 @@ void MainWindow::zoomStep(float const fFactor, fPixelPoint const fPixPointCenter
 		MicroMeterPnt const umPntcenter { GetCoordC().Transform2MicroMeterPntPos(fPixPointCenter) }; // compute center ** BEFORE ** zooming!
 		GetDrawContext().Zoom(newSize);
 		GetDrawContext().Center(umPntcenter, fPixPointCenter);
-		m_scale.SetHorzPixelSize(newSize.GetValue());
+		m_horzScale.SetPixelSize(newSize.GetValue());
 		if (m_pCoordObservable)
 			m_pCoordObservable->NotifyAll(false);
 	}
@@ -265,9 +265,7 @@ bool MainWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
 	NNetWindow::OnSize(wParam, lParam);
 	m_pCoordObservable->NotifyAll(false);
-	UINT width  = LOWORD(lParam);
-	UINT height = HIWORD(lParam);
-	m_scale.SetClientRectSize(PIXEL(width), PIXEL(height));
+	m_horzScale.Recalc();
 	return true;
 }
 
@@ -479,7 +477,7 @@ void MainWindow::doPaint()
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
 
-	m_scale.DisplayStaticScale();
+	m_horzScale.Display();
 
 	DrawSensors();
 

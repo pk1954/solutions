@@ -82,5 +82,5 @@ private:
 	fPixel       m_fPixWinWidth       { 0.0_fPixel };
 	bool         m_bShowScale         { false };
 	Measurement  m_measurement;
-	Scale        m_scale;
+	Scale        m_horzScale;
 };

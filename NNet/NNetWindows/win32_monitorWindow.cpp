@@ -48,9 +48,9 @@ void MonitorWindow::Start
 	SetWindowText(hwnd, L"Monitor");
 	m_trackStruct.hwndTrack = hwnd;
 	m_measurement.Initialize(& m_graphics);
-	m_scale.Initialize(& m_graphics, L"s");
-	m_scale.SetHorzPixelSize(m_fMicroSecsPerPixel.GetValue());
-	m_scale.SetCentered(true);
+	m_horzScale.Initialize(& m_graphics, L"s");
+	m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
+	m_horzScale.SetCentered(true);
 	m_hCrsrNS = LoadCursor(NULL, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(NULL, IDC_SIZEWE);
 }
@@ -215,7 +215,7 @@ void MonitorWindow::doPaint() const
 	m_pMonitorData->Apply2AllSignals([&](SignalId const id) { paintSignal(id); });
 
 	if (m_bShowScale)
-		m_scale.DisplayStaticScale();
+		m_horzScale.Display();
 
 	if (m_trackNrHighlighted.IsNotNull())  // paint background of selected track
 	{
@@ -382,8 +382,8 @@ bool MonitorWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 	UINT height = HIWORD(lParam);
 	m_graphics.Resize(width, height);
 	m_fPixWinWidth = Convert2fPixel(PIXEL(width));
-	m_scale      .SetClientRectSize(PIXEL(width), PIXEL(height));
 	m_measurement.SetClientRectSize(PIXEL(width), PIXEL(height));
+	m_horzScale.Recalc();
 	return true;
 }
 
@@ -509,7 +509,7 @@ void MonitorWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 				else 
 					MessageBeep(MB_ICONWARNING);
 			}
-			m_scale.SetHorzPixelSize(m_fMicroSecsPerPixel.GetValue());
+			m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
 		}
 		else
 		{

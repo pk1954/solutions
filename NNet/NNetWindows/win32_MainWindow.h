@@ -75,7 +75,7 @@ private:
 	 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 	
-	Scale m_scale;
+	Scale m_horzScale;
 
 	MicroMeter m_arrowSize { STD_ARROW_SIZE };
 

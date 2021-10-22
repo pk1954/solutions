@@ -50,5 +50,5 @@ private:
 	fHertz                           m_fHertzPerPixel     { 0.25_fHertz };
 	NNetModelReaderInterface const * m_pNMRI              { nullptr };
 	SignalGenerator                * m_pSignalGenerator   { nullptr };
-	Scale                            m_scale;
+	Scale                            m_horzScale;
 };

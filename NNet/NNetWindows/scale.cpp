@@ -22,17 +22,10 @@ void Scale::Initialize
 	m_wstrLogUnit = wstrLogUnit;
 }
 
-void Scale::SetClientRectSize(PIXEL const width, PIXEL const height)
-{
-	m_fPixClientWidth  = Convert2fPixel(width);
-	m_fPixClientHeight = Convert2fPixel(height);
-	calcScaleParams();
-}
-
 void Scale::SetOffset(fPixelPoint const fPixOffset)
 {
 	m_fPixOffset = fPixOffset;
-	calcScaleParams();
+	Recalc();
 }
 
 void Scale::SetOffset(fPixel const fPixX, fPixel const fPixY)
@@ -40,27 +33,27 @@ void Scale::SetOffset(fPixel const fPixX, fPixel const fPixY)
 	SetOffset(fPixelPoint(fPixX, fPixY));
 }
 
-void Scale::SetHorzPixelSize(float const fSize) 
+void Scale::SetPixelSize(float const fSize) 
 { 
-	m_fHorzPixelSize = fSize; 
-	calcScaleParams();
+	m_fPixelSize = fSize; 
+	Recalc();
 };
 
 void Scale::SetCentered(bool const bCentered) 
 { 
 	m_bCentered = bCentered; 
-	calcScaleParams();
+	Recalc();
 };
 
-void Scale::SetBelowMode(bool const bMode) 
+void Scale::SetOrientation(bool const bMode) 
 { 
-	m_bBelowMode = bMode; 
-	calcScaleParams();
+	m_bOrientation = bMode; 
+	Recalc();
 };
 
 fPixel const Scale::log2pixSize(LogUnits const lu) const 
 { 
-	return fPixel(lu / m_fHorzPixelSize); 
+	return fPixel(lu / m_fPixelSize); 
 }
 
 fPixel const Scale::log2pix(LogUnits const lu) const 
@@ -70,7 +63,7 @@ fPixel const Scale::log2pix(LogUnits const lu) const
 
 Scale::LogUnits const Scale::pix2logSize(fPixel const fp) const	
 { 
-	return LogUnits(fp.GetValue() * m_fHorzPixelSize); 
+	return LogUnits(fp.GetValue() * m_fPixelSize); 
 }
 
 Scale::LogUnits const Scale::pix2log(fPixel const fp) const	
@@ -78,13 +71,14 @@ Scale::LogUnits const Scale::pix2log(fPixel const fp) const
 	return pix2logSize(fp - m_fPixOffset.GetX()); 
 }
 
-void Scale::calcScaleParams()
+void Scale::Recalc()
 {
-	LogUnits const logMinTickDist { pix2logSize(MIN_TICK_DIST) };
-	float    const log10          { log10f(logMinTickDist) };
-	float    const fExp           { floor(log10) };
-	float    const fFractPart     { log10 - fExp };
-	float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
+	fPixelRectSize const fPixClRectSize { m_pGraphics->GetClRectSize() };
+	LogUnits       const logMinTickDist { pix2logSize(MIN_TICK_DIST) };
+	float          const log10          { log10f(logMinTickDist) };
+	float          const fExp           { floor(log10) };
+	float          const fFractPart     { log10 - fExp };
+	float          const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
 
 	m_logTickDist = powf(10.0, fExp) * fFactor;
 
@@ -104,10 +98,10 @@ void Scale::calcScaleParams()
 		m_logReduction = 1e0f;
 	}
 
-	if ( m_bCentered )
-		m_fPixOffset = fPixelPoint(m_fPixClientWidth * 0.1f, m_fPixClientHeight - 20._fPixel);
+	if (m_bCentered)
+		m_fPixOffset = fPixelPoint(fPixClRectSize.GetX() * 0.1f, fPixClRectSize.GetY() - 20._fPixel);
 
-	fPixel m_fPixScaleLen { m_fPixClientWidth - m_fPixOffset.GetX() * 2.0f };
+	fPixel m_fPixScaleLen { fPixClRectSize.GetX() - m_fPixOffset.GetX() * 2.0f };
 
 	m_fPixPntStart = m_fPixOffset;
 	m_fPixPntEnd   = m_fPixPntStart + fPixelPoint(m_fPixScaleLen, 0._fPixel);
@@ -115,7 +109,7 @@ void Scale::calcScaleParams()
 	m_logEnd       = pix2log(m_fPixPntEnd.  GetX());
 }
 
-void Scale::DisplayStaticScale() const
+void Scale::Display() const
 {
 	m_pGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
 	displayTicks();
@@ -132,7 +126,7 @@ void Scale::displayTick
 	fPixel const fTickExt
 ) const
 {
-	fPixel      const fDir(m_bBelowMode ? fTickExt : -fTickExt);
+	fPixel      const fDir(m_bOrientation ? -fTickExt : fTickExt);
 	fPixelPoint const fTickStart(fTickX, m_fPixOffset.GetY());
 	fPixelPoint const fTickEnd  (fTickX, m_fPixOffset.GetY() + fDir);
 	m_pGraphics->DrawLine(fTickStart, fTickEnd, 1._fPixel, SCALE_COLOR);
@@ -173,7 +167,7 @@ void Scale::display
 	static PIXEL const horzDist   =  0_PIXEL;
 	static PIXEL const vertDist   = 12_PIXEL;
 
-	PIXEL      const vDist  { m_bBelowMode ? (vertDist+textHeight) : -vertDist };
+	PIXEL      const vDist  { m_bOrientation ? -vertDist : (vertDist+textHeight) };
 	PixelPoint const pixPos { Convert2PixelPoint(fPos) };
 	PixelRect  const pixRect
 	{ 
