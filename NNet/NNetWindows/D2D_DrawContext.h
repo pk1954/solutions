@@ -9,7 +9,6 @@
 #include "Direct2D.h"
 #include "MoreTypes.h"
 #include "NobId.h"
-#include "scale.h"
 
 class D2D_DrawContext: public DrawContext
 {

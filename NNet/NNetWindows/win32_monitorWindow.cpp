@@ -6,7 +6,7 @@
 #include <math.h>    
 #include <assert.h>
 #include "util.h"
-#include "scale.h"
+#include "win32_scale.h"
 #include "Signal.h"
 #include "Track.h"
 #include "Resource.h"

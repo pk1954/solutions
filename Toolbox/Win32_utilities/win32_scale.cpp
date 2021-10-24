@@ -1,13 +1,13 @@
-// scale.cpp
+// win32_scale.cpp
 //
-// NNetWindows
+// win32_utilities
 
 #include "stdafx.h"
 #include <sstream> 
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"
-#include "scale.h"
+#include "win32_scale.h"
 
 using std::wostringstream;
 using std::to_wstring;

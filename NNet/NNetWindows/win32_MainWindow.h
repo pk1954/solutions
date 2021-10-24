@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Resource.h"
-#include "scale.h"
+#include "win32_scale.h"
 #include "BaseKnot.h"
 #include "MicroMeterPntVector.h"
 #include "NNetModelReaderInterface.h"

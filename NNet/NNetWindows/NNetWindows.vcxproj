@@ -579,7 +579,6 @@
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
-    <ClCompile Include="scale.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="StimulusDesigner.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
@@ -606,7 +605,6 @@
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="scale.h" />
     <ClInclude Include="SlowMotionDisplay.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StimulusDesigner.h" />

@@ -75,9 +75,6 @@
     <ClCompile Include="D2D_DrawContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NNetWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_descriptionWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">

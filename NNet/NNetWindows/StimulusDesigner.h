@@ -5,7 +5,7 @@
 #pragma once
 
 #include "D2D_DrawContext.h"
-#include "Scale.h"
+#include "win32_scale.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "win32_baseWindow.h"

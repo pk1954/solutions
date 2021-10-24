@@ -8,7 +8,7 @@
 #include "Resource.h"
 #include "MoreTypes.h"
 #include "Segment.h"
-#include "scale.h"
+#include "win32_scale.h"
 #include "Pipe.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
