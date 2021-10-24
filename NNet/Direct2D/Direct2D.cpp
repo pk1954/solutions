@@ -10,6 +10,8 @@
 #include "PixelTypes.h"
 #include "Direct2D.h"
 
+using std::wstring;
+
 D2D_driver::D2D_driver():
 	m_pD2DFactory(nullptr),
 	m_pRenderTarget(nullptr),
@@ -130,8 +132,8 @@ bool D2D_driver::StartFrame(HDC const hdc)
 
 void D2D_driver::DisplayText
 (
-	PixelRect           const & pixRect, 
-	std::wstring        const & wstr,
+	fPixelRect          const & rect, 
+	wstring             const & wstr,
 	D2D1::ColorF        const   colF,
 	IDWriteTextFormat * const   pTextFormat
 ) const
@@ -140,10 +142,10 @@ void D2D_driver::DisplayText
 	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
 	D2D1_RECT_F            d2Rect 
 	{ 
-		static_cast<float>(pixRect.GetLeft  ().GetValue()),
-		static_cast<float>(pixRect.GetTop   ().GetValue()),
-		static_cast<float>(pixRect.GetRight ().GetValue()),
-		static_cast<float>(pixRect.GetBottom().GetValue())
+		rect.GetLeft  ().GetValue(), 
+		rect.GetTop   ().GetValue(), 
+		rect.GetRight ().GetValue(), 
+		rect.GetBottom().GetValue() 
 	};
 	m_pRenderTarget->DrawText(wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, pBrush);
 	SafeRelease(& pBrush);

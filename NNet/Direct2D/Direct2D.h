@@ -35,7 +35,7 @@ public:
     void Initialize(HWND const);
     bool StartFrame(HDC const);
     void SetStdFontSize(float const);
-    void DisplayText(PixelRect const &, std::wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr) const;
+    void DisplayText(fPixelRect const &, wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr) const;
     void EndFrame();
     void ShutDown();
     void FillRectangle      (fPixelRect    const &, D2D1::ColorF const) const;

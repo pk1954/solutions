@@ -118,15 +118,15 @@ void Measurement::textArea(fMicroSecs const fMicroSecsPerPixel) const
 	fMicroSecs      const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
 	fHertz          const frequency    { Frequency(usMeasured) };
 
-	PIXEL posRight { Convert2PIXEL(m_fPixRightLimit - GRADIENT_WIDTH) };
-	PIXEL posTop   { Convert2PIXEL(GRADIENT_WIDTH) };
+	fPixel fPosRight { m_fPixRightLimit - GRADIENT_WIDTH };
+	fPixel fPosTop   { GRADIENT_WIDTH };
 
-	PixelRect pixRect
+	fPixelRect fPixRect
 	(
-		posRight - 55_PIXEL, // left
-		posTop,              // top
-		posRight,            // right
-		posTop + 35_PIXEL    // bottom
+		fPosRight - 55._fPixel, // left
+		fPosTop,                // top
+		fPosRight,              // right
+		fPosTop + 35._fPixel    // bottom
 	);
 
 	wostringstream wBuffer;
@@ -139,8 +139,8 @@ void Measurement::textArea(fMicroSecs const fMicroSecsPerPixel) const
 	static D2D1::ColorF const COLOR_TEXT     { D2D1::ColorF::Black }; 
 	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::AntiqueWhite };
 
-	m_pGraphics->FillRectangle(Convert2fPixelRect(pixRect), COL_BACKGROUND);
-	m_pGraphics->DisplayText(pixRect, wBuffer.str(), COLOR_TEXT, m_pTextFormat);
+	m_pGraphics->FillRectangle(fPixRect, COL_BACKGROUND);
+	m_pGraphics->DisplayText  (fPixRect, wBuffer.str(), COLOR_TEXT, m_pTextFormat);
 }
 
 bool Measurement::IsClose2LeftLimit (fPixel const fPix) const 

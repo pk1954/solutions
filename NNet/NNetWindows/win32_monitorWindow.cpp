@@ -48,9 +48,8 @@ void MonitorWindow::Start
 	SetWindowText(hwnd, L"Monitor");
 	m_trackStruct.hwndTrack = hwnd;
 	m_measurement.Initialize(& m_graphics);
-	m_horzScale.Initialize(& m_graphics, L"s");
+	m_horzScale.InitHorzScale(& m_graphics, L"s", 1e6f);
 	m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
-	m_horzScale.SetCentered(true);
 	m_hCrsrNS = LoadCursor(NULL, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(NULL, IDC_SIZEWE);
 }
@@ -383,7 +382,7 @@ bool MonitorWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 	m_graphics.Resize(width, height);
 	m_fPixWinWidth = Convert2fPixel(PIXEL(width));
 	m_measurement.SetClientRectSize(PIXEL(width), PIXEL(height));
-	m_horzScale.Recalc();
+	m_horzScale.SetOffset(fPixelPoint(m_fPixWinWidth * 0.1f, Convert2fPixel(PIXEL(height)) - 20._fPixel));
 	return true;
 }
 

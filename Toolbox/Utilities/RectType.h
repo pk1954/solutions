@@ -141,7 +141,7 @@ public:
 	};
 
 	RectType const Scale(BASE_TYPE const val) const // positive values of val enlarge rectangle
-	{                                                 // negative values reduce its size
+	{                                               // negative values reduce its size
 		return RectType
 		{
 			m_Left   - val,

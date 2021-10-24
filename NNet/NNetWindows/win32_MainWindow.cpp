@@ -52,8 +52,7 @@ void MainWindow::Start
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_horzScale.Initialize(& m_graphics, L"m");
-	m_horzScale.SetCentered(true);
+	m_horzScale.InitHorzScale(& m_graphics, L"m", 1e6f);
 }
 
 void MainWindow::Stop()
@@ -263,9 +262,11 @@ void MainWindow::ShowArrows(bool const op)
 
 bool MainWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
+	UINT width  = LOWORD(lParam);
+	UINT height = HIWORD(lParam);
 	NNetWindow::OnSize(wParam, lParam);
+	m_horzScale.SetOffset(fPixelPoint(Convert2fPixel(PIXEL(width)) * 0.1f, Convert2fPixel(PIXEL(height)) - 20._fPixel));
 	m_pCoordObservable->NotifyAll(false);
-	m_horzScale.Recalc();
 	return true;
 }
 

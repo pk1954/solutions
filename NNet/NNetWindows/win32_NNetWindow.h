@@ -71,8 +71,8 @@ protected:
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	NNetModelReaderInterface const * m_pNMRI        { nullptr };
-	D2D_driver                       m_graphics     { };
+	NNetModelReaderInterface const * m_pNMRI    { nullptr };
+	D2D_driver                       m_graphics { };
 
 private:
 	NNetWindow             (NNetWindow const &);  // noncopyable class 
