@@ -193,7 +193,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 
 void NNetController::pulseRateDlg(NobId const id)
 {
-    fHertz  const fOldValue { m_pNMRI->GetPulseFrequency(id) };
+    fHertz  const fOldValue { m_pNMRI->GetBaseFrequency(id) };
     if (fOldValue.IsNull())
         return;
     HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };

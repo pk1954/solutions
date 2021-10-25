@@ -29,10 +29,10 @@ Degrees const NNetModelReaderInterface::GetDirection(NobId const id) const
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
-fHertz const NNetModelReaderInterface::GetPulseFrequency(NobId const id) const 
+fHertz const NNetModelReaderInterface::GetBaseFrequency(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
-	return p ? p->GetPulseFrequency() : fHertz::NULL_VAL(); 
+	return p ? p->GetBaseFrequency() : fHertz::NULL_VAL(); 
 }
 
 size_t const NNetModelReaderInterface::GetNrOfSegments(NobId const id) const

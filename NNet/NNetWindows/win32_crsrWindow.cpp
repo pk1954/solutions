@@ -142,7 +142,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 		if (type.IsInputNeuronType())
 		{
 			textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
-			textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetPulseFrequency(id));
+			textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetBaseFrequency(id));
 			textBuf.nextLine();
 		}
 	}

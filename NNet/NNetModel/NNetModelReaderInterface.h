@@ -34,7 +34,7 @@ public:
 	bool          const   IsConnectedTo             (NobId const, NobId const) const;
 	bool          const   IsSelected                (NobId const) const;
 	NobType       const   GetNobType                (NobId const) const;
-	fHertz        const   GetPulseFrequency         (NobId const) const;
+	fHertz        const   GetBaseFrequency         (NobId const) const;
 	size_t        const   GetNrOfSegments           (NobId const) const;
 	SoundDescr    const   GetTriggerSound           (NobId const) const;
 	bool          const   HasIncoming               (NobId const) const;

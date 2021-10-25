@@ -16,23 +16,21 @@ public:
 
 	SignalGenerator();
 
-	bool operator==(SignalGenerator const &) const;
+	//bool operator==(SignalGenerator const &) const;
 
-	fMicroSecs const GetPulseDuration () const { return m_pulseDuration;  }
-	fHertz     const GetPulseFrequency() const { return m_pulseFrequency; }
+	void SetStimulus();
 
-	fHertz const SetPulseFrequency(fHertz const);
-	mV     const GetPotential     (fMicroSecs const);
-	fHertz const StimulusFunc     (fMicroSecs const) const;
-	void         SetMaximum       (fMicroSecs const, fHertz const);
+	fHertz const GetBaseFrequency() const { return m_fBaseFrequency; }
+	fHertz const SetBaseFrequency(fHertz const);
+	mV     const GetPotIncrease  ();
+	fHertz const StimulusFunc    (fMicroSecs const) const;
+	void         SetStimulusMax  (fMicroSecs const, fHertz const);
 
 private:
 	inline static Param const * m_pParameters { nullptr };
 
-	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other
-	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
-								 // floating point rounding effects, both are stored
-
-	fHertz m_fMaxFrequency { 50.0_fHertz }; // Parameter for stimulus function
-	float  m_fBaseFactor   {  2.0f };       // Parameter for stimulus function
+	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
+	fHertz     m_fBaseFrequency      { 10.0_fHertz };
+	fHertz     m_fParamA             { 50.0_fHertz }; // Parameter for stimulus function
+	float      m_fParamB             {  2.0f };       // Parameter for stimulus function
 };

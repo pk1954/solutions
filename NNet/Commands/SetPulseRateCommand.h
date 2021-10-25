@@ -23,7 +23,7 @@ public:
 
 	virtual void Do()
 	{ 
-		m_fHertz = m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetPulseFrequency(m_fHertz);
+		m_fHertz = m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetBaseFrequency(m_fHertz);
 		m_pNMWI->ClearAllNobs();
 	}
 

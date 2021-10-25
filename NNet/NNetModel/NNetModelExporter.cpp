@@ -102,7 +102,7 @@ void NNetModelExporter::writeNobParameters(wostream & out)
             out << L"NobParameter InputNeuron " 
                 << getCompactIdVal(inpNeuron.GetId()) << L" "
                 << ParamType::GetName(ParamType::Value::pulseRate) 
-                << L" = " << inpNeuron.GetPulseFrequency()
+                << L" = " << inpNeuron.GetBaseFrequency()
                 << endl; 
         }
    );

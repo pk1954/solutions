@@ -65,8 +65,18 @@ public:
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 protected:
-	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
 	bool       m_bStopOnTrigger   { false };
+	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
+
+	void IncreaseTimeSinceLastPulse()
+	{
+		m_usSinceLastPulse += m_pParameters->GetTimeResolution();
+	}
+
+	void ResetTimeSinceLastPulse()
+	{
+		m_usSinceLastPulse = 0._MicroSecs;
+	}
 
 	mV const waveFunction(fMicroSecs const) const;
 

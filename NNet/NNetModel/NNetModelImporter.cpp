@@ -237,7 +237,7 @@ public:
         assert(param == ParamType::Value::pulseRate);
         script.ScrReadSpecial(L'=');
         float const fValue { Cast2Float(script.ScrReadFloat()) };
-        GetWriterInterface().GetNobPtr<InputNeuron *>(id)->SetPulseFrequency(fHertz(fValue));
+        GetWriterInterface().GetNobPtr<InputNeuron *>(id)->SetBaseFrequency(fHertz(fValue));
     }
 };
 

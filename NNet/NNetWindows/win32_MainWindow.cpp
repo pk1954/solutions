@@ -452,7 +452,7 @@ void MainWindow::OnPaint()
 bool MainWindow::changePulseRate(NobId const id, bool const bDirection)
 {
 	static fHertz const INCREMENT { 0.01_fHertz };
-	fHertz const fOldValue { m_pNMRI->GetPulseFrequency(id) };
+	fHertz const fOldValue { m_pNMRI->GetBaseFrequency(id) };
 	if (fOldValue.IsNull())
 		return false;
 	fHertz const fNewValue = fOldValue + (bDirection ? INCREMENT : -INCREMENT);

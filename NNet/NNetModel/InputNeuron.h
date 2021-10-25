@@ -25,7 +25,7 @@ public:
 
 	virtual void Check() const;
 
-	virtual bool operator==(Nob const &) const override;
+	//virtual bool operator==(Nob const &) const override;
 
 	static bool const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
@@ -38,8 +38,8 @@ public:
 	virtual bool const CompStep();
 	virtual void       DrawNeuronText(DrawContext const &) const;
 
-	fHertz const GetPulseFrequency() const;
-	fHertz const SetPulseFrequency(fHertz const);
+	fHertz const GetBaseFrequency() const;
+	fHertz const SetBaseFrequency(fHertz const);
 
 	virtual bool const Includes(MicroMeterPnt const &) const;
 
