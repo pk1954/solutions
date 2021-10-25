@@ -33,10 +33,10 @@ mV const SignalGenerator::GetPotIncrease()
 {
 	m_usSinceLastStimulus += m_pParameters->GetTimeResolution();
 
-	fHertz     const freq     { StimulusFunc(m_usSinceLastStimulus) };
-	fMicroSecs const us2Fill  { PulseDuration(freq) };
-	float      const fillRate { us2Fill / m_pParameters->GetTimeResolution() };
-	mV         const potInc   { fillRate * m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) };
+	fHertz     const freq         { StimulusFunc(m_usSinceLastStimulus) };
+	fMicroSecs const time2Trigger { PulseDuration(freq) };
+	float      const fillRate     { time2Trigger / m_pParameters->GetTimeResolution() };
+	mV         const potInc       { fillRate * m_pParameters->GetParameterValue(ParamType::Value::peakVoltage) };
 	return potInc;
 }
 
