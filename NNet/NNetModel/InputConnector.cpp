@@ -27,6 +27,11 @@ InputConnector::InputConnector(vector<IoNeuron *> && src)
     src.clear();
 }
 
+void InputConnector::Prepare()
+{
+    m_mVinputBuffer += m_signalGenerator.GetPotIncrease();
+}
+
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
     if (Size() > 1)

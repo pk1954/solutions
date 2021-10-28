@@ -162,7 +162,7 @@ bool BaseKnot::Apply2AllConnectedPipesB(PipeCrit const &c) const
 
 void BaseKnot::Prepare()
 {
-	m_mVinputBuffer = 0._mV;
+	m_mVinputBuffer.Set2Zero();
 
 	//for (Pipe * pPipe : m_incoming) 
 	//{ 

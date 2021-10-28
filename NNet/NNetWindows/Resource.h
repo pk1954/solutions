@@ -49,7 +49,7 @@
 #define IDM_NEW_MODEL              158
 #define IDM_ADD_IMPORTED_MODEL     159
 								   
-#define IDD_PULSE_RATE             160
+//#define IDD_PULSE_RATE             160
 #define IDD_ARROWS_ON              161
 #define IDD_ARROWS_OFF             162
 #define IDD_RULER_ON               163
@@ -108,7 +108,9 @@
 #define IDM_DELETE_SELECTION       651
 #define IDM_CLEAR_BEEPERS          654
 #define IDM_SELECT_ALL_BEEPERS     655
-								   
+
+#define IDM_TRIGGER_STIMULUS       660
+
 //#define IDM_ALIGN_NOBS             671
 #define IDM_MAKE_CONNECTOR         674
 #define IDD_DISC_IOCONNECTOR       676

@@ -95,7 +95,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_MAKE_CONNECTOR,         L"Make connector"              },
 		{ IDD_NEW_INPUT_NEURON,       L"New input neuron" 		     },
 		{ IDD_NEW_OUTPUT_NEURON,      L"New output neuron"		     },
-		{ IDD_PULSE_RATE,             L"Pulse rate"                  },
+		//{ IDD_PULSE_RATE,             L"Pulse rate"                  },
+		{ IDM_TRIGGER_STIMULUS,       L"Trigger stimulus"            },
 		{ IDM_SELECT_NOB,             L"Select nob"                  },
 		{ IDM_SELECT_SUBTREE,         L"Select subtree"              },
 		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"      },
@@ -134,7 +135,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		if (! m_pNMRI->HasOutgoing(m_nobHighlighted))
 			appendMenu(hPopupMenu, IDD_ADD_OUTGOING2KNOT);
 		appendMenu(hPopupMenu, IDD_DISC_BASEKNOT);
-		appendMenu(hPopupMenu, IDD_PULSE_RATE);         
+		//appendMenu(hPopupMenu, IDD_PULSE_RATE);         
 		break;
 
 	case NobType::Value::outputNeuron:
@@ -159,6 +160,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 
 	case NobType::Value::inputConnector:
 	case NobType::Value::outputConnector:
+		appendMenu(hPopupMenu, IDM_TRIGGER_STIMULUS);
 		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_DISC_IOCONNECTOR);        
 		break;
@@ -449,23 +451,23 @@ void MainWindow::OnPaint()
 	m_pDisplayTimer->TimerStop();
 }
 
-bool MainWindow::changePulseRate(NobId const id, bool const bDirection)
-{
-	static fHertz const INCREMENT { 0.01_fHertz };
-	fHertz const fOldValue { m_pNMRI->GetBaseFrequency(id) };
-	if (fOldValue.IsNull())
-		return false;
-	fHertz const fNewValue = fOldValue + (bDirection ? INCREMENT : -INCREMENT);
-	m_pModelCommands->SetPulseRate(id, fNewValue);
-	return true;
-}
+//bool MainWindow::changePulseRate(NobId const id, bool const bDirection)
+//{
+//	static fHertz const INCREMENT { 0.01_fHertz };
+//	fHertz const fOldValue { m_pNMRI->GetBaseFrequency(id) };
+//	if (fOldValue.IsNull())
+//		return false;
+//	fHertz const fNewValue = fOldValue + (bDirection ? INCREMENT : -INCREMENT);
+//	m_pModelCommands->SetPulseRate(id, fNewValue);
+//	return true;
+//}
 
 void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
-	if (wParam == '+')
-		changePulseRate(m_nobHighlighted, true);
-	else if (wParam == '-')
-		changePulseRate(m_nobHighlighted, false);
+	//if (wParam == '+')
+	//	changePulseRate(m_nobHighlighted, true);
+	//else if (wParam == '-')
+	//	changePulseRate(m_nobHighlighted, false);
 }
 
 /////////////////////// local functions ////////////////////////////////

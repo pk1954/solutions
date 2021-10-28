@@ -48,7 +48,6 @@ public:
 
 	MicroMeterCircle const GetCircle   () const { return m_circle; }
 	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
-	mV               const GetVoltage  () const { return m_mVinputBuffer; }
 
 	void SetExtension(MicroMeter const um) { m_circle.SetRadius(um); }
 

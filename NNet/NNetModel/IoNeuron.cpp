@@ -73,8 +73,7 @@ void IoNeuron::LockDirection()
 
 void IoNeuron::SetDir(Radian const r) 
 { 
-	if (IsDirLocked())
-		m_radDirection = r; 
+	m_radDirection = r; 
 }
 
 bool const IoNeuron::IsDirLocked() const

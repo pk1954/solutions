@@ -29,12 +29,12 @@ Degrees const NNetModelReaderInterface::GetDirection(NobId const id) const
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
-fHertz const NNetModelReaderInterface::GetBaseFrequency(NobId const id) const 
-{ 
-	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
-	return p ? p->GetBaseFrequency() : fHertz::NULL_VAL(); 
-}
-
+//fHertz const NNetModelReaderInterface::GetBaseFrequency(NobId const id) const 
+//{ 
+//	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
+//	return p ? p->GetBaseFrequency() : fHertz::NULL_VAL(); 
+//}
+//
 size_t const NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
@@ -51,7 +51,7 @@ SoundDescr const NNetModelReaderInterface::GetTriggerSound(NobId const id) const
 
 mV const NNetModelReaderInterface::GetVoltage(NobId const id) const
 {
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 

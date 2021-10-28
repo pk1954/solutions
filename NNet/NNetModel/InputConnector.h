@@ -7,6 +7,7 @@
 #include "NobType.h"
 #include "Nob.h"
 #include "tHighlightType.h"
+#include "SignalGenerator.h"
 #include "IoConnector.h"
 
 using std::unique_ptr;
@@ -26,7 +27,14 @@ public:
 
 	virtual ~InputConnector() {}
 
+	virtual void Prepare();
+
 	virtual NobIoMode const GetIoMode() const { return NobIoMode::input; }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
+
+	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
+
+private:
+	SignalGenerator m_signalGenerator;
 };

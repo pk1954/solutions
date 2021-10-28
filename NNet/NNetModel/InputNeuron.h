@@ -25,8 +25,6 @@ public:
 
 	virtual void Check() const;
 
-	//virtual bool operator==(Nob const &) const override;
-
 	static bool const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
@@ -37,18 +35,12 @@ public:
 	virtual void       Prepare();
 	virtual bool const CompStep();
 	virtual void       DrawNeuronText(DrawContext const &) const;
-
-	fHertz const GetBaseFrequency() const;
-	fHertz const SetBaseFrequency(fHertz const);
-
 	virtual bool const Includes(MicroMeterPnt const &) const;
 
 private:
 
 	MicroMeterPnt const getOffset() const;
 	MicroMeterPnt const getCenter() const;
-
-	void initialize();
 
 	void drawSocket
 	(
@@ -57,6 +49,4 @@ private:
 		float        const, 
 		D2D1::ColorF const
 	) const;
-
-	SignalGenerator m_signalGenerator;
 };	

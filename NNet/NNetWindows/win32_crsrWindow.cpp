@@ -139,12 +139,12 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 			                      textBuf.printString(L" msec");
 			textBuf.nextLine();
 		}
-		if (type.IsInputNeuronType())
-		{
-			textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
-			textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetBaseFrequency(id));
-			textBuf.nextLine();
-		}
+		//if (type.IsInputNeuronType())
+		//{
+		//	textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
+		//	textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetBaseFrequency(id));
+		//	textBuf.nextLine();
+		//}
 	}
 	if (type.IsIoConnectorType())
 	{

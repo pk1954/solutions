@@ -41,11 +41,6 @@ public:
 
 	SoundDescr const SetTriggerSound(SoundDescr const &);
 
-	fMicroSecs const PulseWidth   () const;
-	fMicroSecs const RefractPeriod() const;
-	mV         const Threshold    () const;
-	mV         const PeakVoltage  () const;
-
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
 	virtual void         SetDir(Radian const r) { };
@@ -70,7 +65,7 @@ protected:
 
 	void IncreaseTimeSinceLastPulse()
 	{
-		m_usSinceLastPulse += m_pParameters->GetTimeResolution();
+		m_usSinceLastPulse += m_pParameters->TimeResolution();
 	}
 
 	void ResetTimeSinceLastPulse()

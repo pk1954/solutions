@@ -92,7 +92,7 @@ void Pipe::Recalc()
 	if (m_pKnotStart && m_pKnotEnd)
 	{
 		meterPerSec  const pulseSpeed    { meterPerSec(m_pParameters->GetParameterValue(ParamType::Value::pulseSpeed)) };
-		MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, m_pParameters->GetTimeResolution()) };
+		MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, m_pParameters->TimeResolution()) };
 		MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
 		unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
 		m_potential.resize(iNrOfSegments, BASE_POTENTIAL);
@@ -288,12 +288,12 @@ mV const Pipe::GetVoltage(MicroMeterPnt const & point) const
 	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
 	if (! umVector.IsCloseToZero())
 	{
-		size_t          const nrOfSegments  { m_potential.size() };
+		size_t        const nrOfSegments  { m_potential.size() };
 		MicroMeterPnt const umSegVec      { umVector / Cast2Float(nrOfSegments) };
 		MicroMeterPnt const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
 		MicroMeterPnt       umPoint       { GetStartPoint() };
-		size_t          const potIndex      { m_potIndex };
-		size_t                index         { potIndex }; 
+		size_t        const potIndex      { m_potIndex };
+		size_t              index         { potIndex }; 
 		do 
 		{
 			if (++index == m_potential.size()) 

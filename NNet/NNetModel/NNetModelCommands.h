@@ -92,12 +92,13 @@ public:
     void SelectNobsInRect     (MicroMeterRect const &);
     void SelectSubtree        (NobId const, bool const);
     void SetParameter         (ParamType::Value const, float const);
-    void SetPulseRate         (NobId const, fHertz const);
+    //void SetPulseRate         (NobId const, fHertz const);
     void SetNob               (NobId const, MicroMeterPosDir const);
     void SetTriggerSound      (NobId const, SoundDescr const &);
     void SizeSensor           (SignalId const &, float const);
     void SplitNeuron          (NobId const);
     void ToggleStopOnTrigger  (NobId const);
+    void TriggerStimulus      (NobId const);
 
     SignalId const SetHighlightedSignal(MicroMeterPnt const &);
 

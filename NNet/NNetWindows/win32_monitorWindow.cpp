@@ -191,7 +191,7 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 	fPixel       const fPixWidth    { m_pMonitorData->IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
 	fPixel       const fPixYoff     { getSignalOffset(idSignal) };
 	fMicroSecs   const usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
-	fMicroSecs   const usResolution { m_pNMRI->GetTimeResolution() };
+	fMicroSecs   const usResolution { m_pNMRI->TimeResolution() };
 	float        const fPointsInWin { usInWindow / usResolution };
 	fMicroSecs   const usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
 	fMicroSecs   const usEnd        { m_pNMRI->GetSimulationTime() };

@@ -26,6 +26,7 @@
 #include "DeleteTrackCommand.h"
 #include "DiscBaseKnotCmd.h"
 #include "DiscIoConnectorCmd.h"
+#include "InputConnector.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
 #include "MoveSensorCmd.h"
@@ -50,7 +51,7 @@
 #include "SelectSubtreeCommand.h"
 #include "SetHighlightedSignalCmd.h"
 #include "SetParameterCommand.h"
-#include "SetPulseRateCommand.h"
+//#include "SetPulseRateCommand.h"
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "SizeSensorCmd.h"
@@ -366,12 +367,13 @@ SignalId const NNetModelCommands::SetHighlightedSignal(MicroMeterPnt const & umP
 	return m_pNMWI->GetMonitorData().SetHighlightedSignal(umPos);
 }
 
-void NNetModelCommands::SetPulseRate(NobId const id, fHertz const fNewValue)
-{
-	if (IsTraceOn())
-		TraceStream() << __func__ << L" " << id << L" " << fNewValue << endl;
-	m_pCmdStack->PushCommand(make_unique<SetPulseRateCommand>(id, fNewValue));
-}
+//void NNetModelCommands::SetPulseRate(NobId const id, fHertz const fNewValue)
+//{
+//	if (IsTraceOn())
+//		TraceStream() << __func__ << L" " << id << L" " << fNewValue << endl;
+//	m_pCmdStack->PushCommand(make_unique<SetPulseRateCommand>(id, fNewValue));
+//}
+//
 
 void NNetModelCommands::SetTriggerSound(NobId const id, SoundDescr const & sound)
 {
@@ -526,3 +528,9 @@ void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)
 	m_pCmdStack->PushCommand(make_unique<SelectNobsInRectCommand>(rect));
 }
 
+void NNetModelCommands::TriggerStimulus(NobId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
+}

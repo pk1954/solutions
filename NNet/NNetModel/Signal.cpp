@@ -75,7 +75,7 @@ void Signal::Draw
 int const Signal::time2index(fMicroSecs const usParam) const
 {
     fMicroSecs const timeTilStart { usParam - m_timeStart };
-    float      const fNrOfPoints  { timeTilStart / m_nmri.GetTimeResolution() };
+    float      const fNrOfPoints  { timeTilStart / m_nmri.TimeResolution() };
     int              index        { static_cast<int>(roundf(fNrOfPoints)) };
     if (index >= m_data.size())
         index = Cast2UnsignedInt(m_data.size() - 1);
@@ -85,7 +85,7 @@ int const Signal::time2index(fMicroSecs const usParam) const
 fMicroSecs const Signal::index2time(int const index) const
 {
     float      const fNrOfPoints  { static_cast<float>(index) };
-    fMicroSecs const timeTilStart { m_nmri.GetTimeResolution() * fNrOfPoints };
+    fMicroSecs const timeTilStart { m_nmri.TimeResolution() * fNrOfPoints };
     fMicroSecs const usResult     { timeTilStart + m_timeStart };
     return usResult;
 }

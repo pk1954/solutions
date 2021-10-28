@@ -251,7 +251,7 @@ public:
     {
         NobId const id     { ScrReadNobId(script) };
         float const fValue { Cast2Float(script.ScrReadFloat()) };
-        m_pCommands->SetPulseRate(id, fHertz{ fValue });
+        //m_pCommands->SetPulseRate(id, fHertz{ fValue });
     }
 };
 

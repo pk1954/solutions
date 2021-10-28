@@ -75,7 +75,7 @@ public:
 	virtual bool const IsCompositeNob() const { return false; }
 
 	virtual void       Select(bool const bOn) { m_bSelected = bOn; }
-	virtual void       Clear()                { m_mVinputBuffer = 0.0_mV; };
+	virtual void       Clear()                { m_mVinputBuffer.Set2Zero(); }
 	virtual void       SetId(NobId const id)  { m_identifier = id; }
 	virtual void       Reconnect          ()  {};
 
@@ -110,6 +110,8 @@ public:
 	Nob * const GetParentNob() const        { return m_pNobParent; }
 	void        SetParentNob(Nob * const p) { m_pNobParent = p; }
 
+	mV const GetVoltage() const { return m_mVinputBuffer; }
+
 protected:
 
 	mV m_mVinputBuffer { 0._mV };
@@ -122,7 +124,7 @@ protected:
 	D2D1::ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	float GetFillLevel(mV const) const;
-	float GetFillLevel() const { return GetFillLevel(m_mVinputBuffer); };
+	float GetFillLevel() const { return GetFillLevel(GetVoltage()); };
 
 	void SetType(NobType const type) { m_type = type; }
 

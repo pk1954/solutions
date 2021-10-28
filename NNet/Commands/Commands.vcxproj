@@ -120,7 +120,6 @@
     <ClInclude Include="SelectNobsInRectCommand.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
     <ClInclude Include="SetParameterCommand.h" />
-    <ClInclude Include="SetPulseRateCommand.h" />
     <ClInclude Include="SetTriggerSoundCommand.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />

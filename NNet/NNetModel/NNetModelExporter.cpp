@@ -102,7 +102,7 @@ void NNetModelExporter::writeNobParameters(wostream & out)
             out << L"NobParameter InputNeuron " 
                 << getCompactIdVal(inpNeuron.GetId()) << L" "
                 << ParamType::GetName(ParamType::Value::pulseRate) 
-                << L" = " << inpNeuron.GetBaseFrequency()
+                << L" = " << 0._fHertz  // inpNeuron.GetBaseFrequency()
                 << endl; 
         }
    );
@@ -168,6 +168,7 @@ void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe)
 
 void NNetModelExporter::writeIoConnector(wostream & out, IoConnector const & conn)
 {
+    assert(conn.Size() > 0);
     out << BaseKnot::OPEN_BRACKET << conn.Size() << BaseKnot::NR_SEPARATOR;
     for (size_t i = 0; i < conn.Size() - 1; ++i)
     {

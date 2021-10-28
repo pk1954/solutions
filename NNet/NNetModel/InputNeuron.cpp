@@ -21,24 +21,15 @@ using std::fixed;
 
 InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
 	: IoNeuron(upCenter, NobType::Value::inputNeuron)
-{ 
-	initialize();
-}
+{ }
 
 InputNeuron::InputNeuron(BaseKnot const & baseKnot)
 	: IoNeuron(baseKnot, NobType::Value::inputNeuron)
 { 
-	initialize();
 	SetOutgoing(baseKnot);
 }
 
-InputNeuron::~InputNeuron() 
-{
-}
-
-void InputNeuron::initialize()
-{
-}
+InputNeuron::~InputNeuron() {}
 
 void InputNeuron::Check() const
 {
@@ -46,35 +37,23 @@ void InputNeuron::Check() const
 	assert(!HasIncoming());
 }
 
-//bool InputNeuron::operator==(Nob const & rhs) const
-//{
-//	InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
-//	return (this->Neuron::operator== (inputNeuronRhs)) &&
-//		   (m_signalGenerator == inputNeuronRhs.m_signalGenerator);
-//}
-
-fHertz const InputNeuron::GetBaseFrequency() const 
-{ 
-//	return m_pSignalGenerator ? m_pSignalGenerator->GetBaseFrequency() : fHertz::NULL_VAL(); 
-	return m_signalGenerator.GetBaseFrequency(); 
-}
-
-fHertz const InputNeuron::SetBaseFrequency(fHertz const freq)
-{
-	return m_signalGenerator.SetBaseFrequency(freq);
-}
-
 void InputNeuron::Prepare()
 {
-	m_mVinputBuffer += m_signalGenerator.GetPotIncrease();
+	if (HasParentNob())
+		m_mVinputBuffer = GetParentNob()->GetVoltage();
+	else
+		m_mVinputBuffer += SignalGenerator::GetBasePotIncrease();
 }
 
 bool const InputNeuron::CompStep()
 {
 	IncreaseTimeSinceLastPulse();
-	bool bTrigger { m_mVinputBuffer >= Threshold() };
+	bool bTrigger { m_mVinputBuffer >= m_pParameters->Threshold() };
 	if (bTrigger)
-		ResetTimeSinceLastPulse();   
+	{
+		ResetTimeSinceLastPulse();
+		m_mVinputBuffer.Set2Zero();
+	}
 	return m_bStopOnTrigger && bTrigger;
 }
 
@@ -134,9 +113,9 @@ void InputNeuron::DrawNeuronText(DrawContext const & context) const
 	m_wBuffer.clear();
 	m_wBuffer.str(std::wstring());
 	m_wBuffer << fixed << setprecision(2) 
-		      << GetBaseFrequency().GetValue() 
+		      << m_pParameters->StdPulseRate()
 		      << L" " 
-		      << ParamType::GetUnit(ParamType::Value::pulseRate);
+		      << ParamType::GetUnit(ParamType::Value::stdPulseRate);
 
 	DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }

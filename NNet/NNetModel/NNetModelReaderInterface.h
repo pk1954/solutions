@@ -34,7 +34,6 @@ public:
 	bool          const   IsConnectedTo             (NobId const, NobId const) const;
 	bool          const   IsSelected                (NobId const) const;
 	NobType       const   GetNobType                (NobId const) const;
-	fHertz        const   GetBaseFrequency         (NobId const) const;
 	size_t        const   GetNrOfSegments           (NobId const) const;
 	SoundDescr    const   GetTriggerSound           (NobId const) const;
 	bool          const   HasIncoming               (NobId const) const;
@@ -51,7 +50,7 @@ public:
 	Nob           const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	fMicroSecs    const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
 	MonitorData   const & GetMonitorData()                       const { return m_pModel->GetMonitorData(); }
-	fMicroSecs    const   GetTimeResolution()                    const { return m_pModel->GetParams().GetTimeResolution(); };
+	fMicroSecs    const   TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
 	wstring       const   GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float         const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool          const   IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}

@@ -53,7 +53,7 @@ void StimulusDesigner::Stop()
 
 fPixelPoint const StimulusDesigner::getPixPnt(fMicroSecs const time) const
 {
-	fHertz      const fHertzAct{ m_pSignalGenerator->StimulusFunc(time) };
+	fHertz      const fHertzAct{ m_pSignalGenerator->GetBaseFrequency() + m_pSignalGenerator->StimulusFunc(time) };
 	fPixelPoint const actPoint { m_fPixOffset + fPixelPoint(fMicroSecs2fPixel(time), -fHertz2fPixel(fHertzAct)) };
 	return actPoint;
 }
@@ -62,7 +62,7 @@ void StimulusDesigner::doPaint() const
 {
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fPixel       const fPixWidth    { 1.0_fPixel };
-	fMicroSecs   const usResolution { m_pNMRI->GetTimeResolution() };
+	fMicroSecs   const usResolution { m_pNMRI->TimeResolution() };
 	fMicroSecs   const usIncrement  { (m_fMicroSecsPerPixel > usResolution) ? m_fMicroSecsPerPixel : usResolution };
 	fMicroSecs   const timeStart    { 0.0_MicroSecs };
 	fMicroSecs   const timeEnd      { fPixel2fMicroSecs(m_fPixGraphWidth) };

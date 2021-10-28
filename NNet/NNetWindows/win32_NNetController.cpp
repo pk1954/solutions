@@ -191,18 +191,18 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     return true;  // command has been processed
 }
 
-void NNetController::pulseRateDlg(NobId const id)
-{
-    fHertz  const fOldValue { m_pNMRI->GetBaseFrequency(id) };
-    if (fOldValue.IsNull())
-        return;
-    HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
-    wstring const header     { ParamType::GetName(ParamType::Value::pulseRate) }; 
-    wstring const unit       { ParamType::GetUnit(ParamType::Value::pulseRate) };
-    fHertz  const fNewValue  { StdDialogBox::Show(hwndParent, fOldValue.GetValue(), header, unit) };
-    if (fNewValue != fOldValue)
-        m_pModelCommands->SetPulseRate(id, fNewValue);
-}
+//void NNetController::pulseRateDlg(NobId const id)
+//{
+//    fHertz  const fOldValue { m_pNMRI->GetBaseFrequency(id) };
+//    if (fOldValue.IsNull())
+//        return;
+//    HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
+//    wstring const header     { ParamType::GetName(ParamType::Value::pulseRate) }; 
+//    wstring const unit       { ParamType::GetUnit(ParamType::Value::pulseRate) };
+//    fHertz  const fNewValue  { StdDialogBox::Show(hwndParent, fOldValue.GetValue(), header, unit) };
+//    if (fNewValue != fOldValue)
+//        m_pModelCommands->SetPulseRate(id, fNewValue);
+//}
 
 void NNetController::triggerSoundDlg(NobId const id)
 {
@@ -243,12 +243,16 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->SelectAllBeepers();
         break;
 
-    case IDD_PULSE_RATE:
-        pulseRateDlg(m_pMainWindow->GetHighlightedNobId());
-        break;
+    //case IDD_PULSE_RATE:
+    //    pulseRateDlg(m_pMainWindow->GetHighlightedNobId());
+    //    break;
 
     case IDD_TRIGGER_SOUND_DLG:
         triggerSoundDlg(m_pMainWindow->GetHighlightedNobId());
+        break;
+
+    case IDM_TRIGGER_STIMULUS:
+        m_pModelCommands->TriggerStimulus(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDM_NNET_REFRESH_RATE:

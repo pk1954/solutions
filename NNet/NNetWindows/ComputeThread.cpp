@@ -43,7 +43,7 @@ void ComputeThread::reset()
 	m_usSimuTimeAtLastReset = m_pModel->GetSimulationTime();
 	m_ticksNetRunning       = Ticks(0);
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
-	m_usSimuTimeResolution  = m_pModel->GetParams().GetTimeResolution(); 
+	m_usSimuTimeResolution  = m_pModel->GetParams().TimeResolution(); 
 	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime(m_usSimuTimeResolution); 
 	ReleaseComputationLock();
 }

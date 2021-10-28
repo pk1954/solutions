@@ -16,10 +16,16 @@ class Param : public Observable
 public:
 	bool operator==(Param const & rhs) const;
 
-	fMicroSecs const GetTimeResolution() const { return m_usResolution; }
-
 	float const GetParameterValue(ParamType::Value const) const;
 	void        SetParameterValue(ParamType::Value const, float const);
+
+	fHertz      const StdPulseRate  () const { return m_stdPulseRate;  }
+	mV          const Threshold     () const { return m_threshold; 	   }
+	mV          const PeakVoltage   () const { return m_peakVoltage;   }
+	fMicroSecs  const PulseWidth    () const { return m_pulseWidth;    }
+	fMicroSecs  const RefractPeriod () const { return m_refractPeriod; }
+	meterPerSec const PulseSpeed    () const { return m_pulseSpeed;    }
+	fMicroSecs  const TimeResolution() const { return m_usResolution;  }
 
 private:
 	fHertz      m_stdPulseRate { 10.0_fHertz       };

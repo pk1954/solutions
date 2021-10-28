@@ -107,30 +107,10 @@ SoundDescr const Neuron::SetTriggerSound(SoundDescr const & sound)
 	return oldValue;
 }
 
-fMicroSecs const Neuron::PulseWidth() const 
-{ 
-	return fMicroSecs(m_pParameters->GetParameterValue(ParamType::Value::pulseWidth)); 
-}
-
-fMicroSecs const Neuron::RefractPeriod() const 
-{ 
-	return fMicroSecs(m_pParameters->GetParameterValue(ParamType::Value::refractPeriod)); 
-}
-
-mV const Neuron::Threshold() const 
-{ 
-	return mV(m_pParameters->GetParameterValue(ParamType::Value::threshold)); 
-}
-
-mV const Neuron::PeakVoltage() const 
-{ 
-	return mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage)); 
-}
-
 void Neuron::Recalc() 
 {
-	m_factorW = 1.0f / PulseWidth().GetValue();
-	m_factorU = 4.0f * m_factorW * PeakVoltage().GetValue();
+	m_factorW = 1.0f / m_pParameters->PulseWidth().GetValue();
+	m_factorU = 4.0f * m_factorW * m_pParameters->PeakVoltage().GetValue();
 };
 
 mV const Neuron::waveFunction(fMicroSecs const time) const
@@ -146,7 +126,11 @@ void Neuron::Clear()
 
 bool const Neuron::CompStep()
 {
-	bool bTrigger { (m_mVinputBuffer >= Threshold()) && (m_usSinceLastPulse >= PulseWidth() + RefractPeriod()) };
+	bool bTrigger 
+	{ 
+		(m_mVinputBuffer >= m_pParameters->Threshold()) && 
+		(m_usSinceLastPulse >= m_pParameters->PulseWidth() + m_pParameters->RefractPeriod()) 
+	};
 
 	if (bTrigger)
 	{
@@ -165,7 +149,7 @@ bool const Neuron::CompStep()
 
 mV const Neuron::GetNextOutput() const
 {
-	return (m_usSinceLastPulse <= PulseWidth())
+	return (m_usSinceLastPulse <= m_pParameters->PulseWidth())
 		   ? waveFunction(m_usSinceLastPulse)
 		   : BASE_POTENTIAL;
 }
