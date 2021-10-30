@@ -120,7 +120,7 @@ mV const Neuron::waveFunction(fMicroSecs const time) const
 
 void Neuron::Clear()
 {
-	ResetTimeSinceLastPulse();   
+	m_usSinceLastPulse = 0._MicroSecs;
 	Nob::Clear();
 }
 
@@ -134,14 +134,15 @@ bool const Neuron::CompStep()
 
 	if (bTrigger)
 	{
-		ResetTimeSinceLastPulse();
-		m_bTriggered = true;
+		m_usSinceLastPulse = 0._MicroSecs;
+		m_mVinputBuffer    = 0._mV;
+		m_bTriggered       = true;
 		if (HasTriggerSound() && m_pTpWork)
 			SubmitThreadpoolWork(m_pTpWork);
 	}
 	else
 	{
-		IncreaseTimeSinceLastPulse();
+		m_usSinceLastPulse += m_pParameters->TimeResolution();
 	}
 
 	return m_bStopOnTrigger && bTrigger;

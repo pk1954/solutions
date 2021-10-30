@@ -16,20 +16,15 @@ public:
 
 	SignalGenerator();
 
-	//bool operator==(SignalGenerator const &) const;
-
 	void TriggerStimulus();
 
 	fHertz const StimulusFunc    (fMicroSecs const) const;
 	void         SetStimulusMax  (fMicroSecs const, fHertz const);
 	fHertz const GetBaseFrequency() const { return m_fBaseFrequency; }
 	fHertz const SetBaseFrequency(fHertz const);
-	mV     const GetPotIncrease  ();
-
-	static mV const GetBasePotIncrease();
+	fHertz const GetFrequency    ();
 
 private:
-	static mV const getPotIncrease(fHertz const);
 
 	inline static Param const * m_pParameters { nullptr };
 

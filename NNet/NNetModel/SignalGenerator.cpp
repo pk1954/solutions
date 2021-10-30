@@ -12,11 +12,6 @@ SignalGenerator::SignalGenerator()
 	SetStimulusMax(2000._MicroSecs, 50.0_fHertz);
 }
 
-//bool SignalGenerator::operator==(SignalGenerator const & rhs) const
-//{
-//	return m_fBaseFrequency == rhs.m_fBaseFrequency;
-//}
-
 void SignalGenerator::TriggerStimulus()
 {
 	m_bTriggered = true;
@@ -30,33 +25,18 @@ fHertz const SignalGenerator::SetBaseFrequency(fHertz const freq)
 	return fOldValue;
 }
 
-mV const SignalGenerator::getPotIncrease(fHertz const freq)
+fHertz const SignalGenerator::GetFrequency()
 {
-	fMicroSecs const time2Trigger    { PulseDuration(freq) };
-	float      const ticks2Trigger   { time2Trigger / m_pParameters->TimeResolution() };
-	mV         const increasePerTick { m_pParameters->Threshold() / ticks2Trigger };
-	return increasePerTick;
-}
-
-mV const SignalGenerator::GetBasePotIncrease()
-{
-	fHertz const freq (m_pParameters->StdPulseRate());
-	return getPotIncrease(freq);
-}
-
-mV const SignalGenerator::GetPotIncrease()
-{
-	fHertz freq { GetBaseFrequency() };
-	if (m_bTriggered)
-	{
-		m_usSinceLastStimulus += m_pParameters->TimeResolution();
-		fHertz const freqStimulus { StimulusFunc(m_usSinceLastStimulus) };
-		if (freqStimulus > m_fCutoffFrequency)
-			freq += freqStimulus;
-		else
-			m_bTriggered = false;
-	}
-	return getPotIncrease(freq);
+	if (!m_bTriggered)
+		return m_fBaseFrequency;
+	fHertz freq { m_fBaseFrequency };
+	m_usSinceLastStimulus += m_pParameters->TimeResolution();
+	fHertz const freqStimulus { StimulusFunc(m_usSinceLastStimulus) };
+	if (freqStimulus > m_fCutoffFrequency)
+		freq += freqStimulus;
+	else
+		m_bTriggered = false;
+	return freq;
 }
 
 fHertz const SignalGenerator::StimulusFunc(fMicroSecs const stimulusTime) const

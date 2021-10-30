@@ -128,18 +128,18 @@ void IoConnector::ClearParentPointers()
         it->SetParentNob(nullptr);
 }
 
-void IoConnector::Prepare()
-{
-    for (auto it : m_list) 
-        it->Prepare();
-}
-
-bool const IoConnector::CompStep()
-{
-    for (auto it : m_list) 
-        if (it->CompStep()) return true;
-    return false;
-}
+//void IoConnector::Prepare()
+//{
+//    for (auto it : m_list) 
+//        it->Prepare();
+//}
+//
+//bool const IoConnector::CompStep()
+//{
+//    for (auto it : m_list) 
+//        if (it->CompStep()) return true;
+//    return false;
+//}
 
 void IoConnector::Recalc()
 {

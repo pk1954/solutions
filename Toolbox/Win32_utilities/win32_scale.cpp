@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <sstream> 
+#include "util.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"
@@ -63,6 +64,42 @@ void Scale::SetPixelSize(float const fSize)
 	m_fPixelSize = fSize; 
 	Recalc();
 };
+
+void Scale::SetPixelSizeLimits(float const fMin, float const fMax)
+{
+	m_fPixelSizeMin = fMin;
+	m_fPixelSizeMax = fMax;
+	ClipToMinMax(m_fPixelSize, fMin, fMax);
+}
+
+void Scale::SetZoomFactor(float const fFactor) 
+{ 
+	m_fZoomFactor = fFactor; 
+};
+
+bool const Scale::Zoom(bool const bDirection)
+{
+	bool   bResult { false };
+	float fNewSize;
+	if (bDirection)
+	{
+		fNewSize = m_fPixelSize / m_fZoomFactor;
+		if (fNewSize >= m_fPixelSizeMin)
+			bResult = true;
+	}
+	else
+	{
+		fNewSize = m_fPixelSize * m_fZoomFactor;
+		if (fNewSize <= m_fPixelSizeMax)
+			bResult = true;
+	}
+	if (bResult)
+	{
+		m_fPixelSize = fNewSize;
+		Recalc();
+	}
+	return true;
+}
 
 void Scale::SetOrientation(bool const bMode) 
 { 

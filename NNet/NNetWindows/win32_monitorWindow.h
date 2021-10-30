@@ -74,8 +74,6 @@ private:
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
 	D2D_driver   m_graphics           { };
-	fMicroSecs   m_fMicroSecsPerPixel { 100.0_MicroSecs };
-	float        m_fYvaluesPerPixel   { 0.2f };
 	TrackNr      m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint   m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL        m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
@@ -83,4 +81,5 @@ private:
 	bool         m_bShowScale         { false };
 	Measurement  m_measurement;
 	Scale        m_horzScale;
+	Scale        m_vertScale; // XXXXXXXXXXX
 };

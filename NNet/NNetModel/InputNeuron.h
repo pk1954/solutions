@@ -33,7 +33,6 @@ public:
 	virtual NobIoMode const GetIoMode() const { return NobIoMode::input; }
 
 	virtual void       Prepare();
-	virtual bool const CompStep();
 	virtual void       DrawNeuronText(DrawContext const &) const;
 	virtual bool const Includes(MicroMeterPnt const &) const;
 

@@ -60,36 +60,24 @@ public:
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 protected:
-	bool       m_bStopOnTrigger   { false };
-	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
-
-	void IncreaseTimeSinceLastPulse()
-	{
-		m_usSinceLastPulse += m_pParameters->TimeResolution();
-	}
-
-	void ResetTimeSinceLastPulse()
-	{
-		m_usSinceLastPulse = 0._MicroSecs;
-	}
-
-	mV const waveFunction(fMicroSecs const) const;
 
 	void const DisplayText(DrawContext const &, MicroMeterRect const &, wstring const) const;
 
 private:
 	mutable bool m_bTriggered { false };
 
-	float m_factorW { 0.0f }; // Parameter of wave function
-	float m_factorU { 0.0f }; // Parameter of wave function
-
-	SoundDescr m_triggerSound {};
-
-	PTP_WORK m_pTpWork { nullptr };  // Thread poolworker thread
-
-	MicroMeterPnt getAxonHillockPos() const;
+	SoundDescr m_triggerSound     {};
+	float      m_factorW          { 0.0f }; // Parameter of wave function
+	float      m_factorU          { 0.0f }; // Parameter of wave function
+	bool       m_bStopOnTrigger   { false };
+	PTP_WORK   m_pTpWork          { nullptr };  // Thread poolworker thread
+	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
 
 	inline static Sound * m_pSound  { nullptr };
+
+	mV const waveFunction(fMicroSecs const) const;
+
+	MicroMeterPnt getAxonHillockPos() const;
 
 	void init(const Neuron &);
 

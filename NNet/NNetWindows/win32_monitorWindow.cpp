@@ -49,7 +49,13 @@ void MonitorWindow::Start
 	m_trackStruct.hwndTrack = hwnd;
 	m_measurement.Initialize(& m_graphics);
 	m_horzScale.InitHorzScale(& m_graphics, L"s", 1e6f);
-	m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
+	m_vertScale.InitHorzScale(& m_graphics, L"", 1e6f);
+	m_horzScale.SetPixelSize(100.0f);  // MicroSecs
+	m_vertScale.SetPixelSize(0.2f);
+	m_horzScale.SetPixelSizeLimits(1.f, 400.f);      // Microsecs
+	m_vertScale.SetPixelSizeLimits(0.001f, 100.f);   // Hertz
+	m_horzScale.SetZoomFactor(1.3f);
+	m_vertScale.SetZoomFactor(1.3f);
 	m_hCrsrNS = LoadCursor(NULL, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(NULL, IDC_SIZEWE);
 }
@@ -98,21 +104,21 @@ fMicroSecs const MonitorWindow::fPixel2fMicroSecs(fPixel const fPixX) const
 {
 	fMicroSecs const usEnd    { m_pNMRI->GetSimulationTime() };
 	fPixel     const fTicks   { m_fPixWinWidth - fPixX };
-	fMicroSecs const usResult { usEnd - m_fMicroSecsPerPixel * fTicks.GetValue() };
+	fMicroSecs const usResult { usEnd - m_horzScale.GetPixelSize() * fTicks.GetValue() };
 	return usResult;
 }
 
 fPixel const MonitorWindow::fMicroSecs2fPixel(fMicroSecs const usParam) const
 {
 	fMicroSecs const usEnd  { m_pNMRI->GetSimulationTime() };
-	float      const fTicks { (usEnd - usParam) / m_fMicroSecsPerPixel };
+	float      const fTicks { (usEnd - usParam).GetValue() / m_horzScale.GetPixelSize() };
 	fPixel     const fPixX  { m_fPixWinWidth - fPixel(fTicks) };
 	return fPixX;
 }
 
 fPixel const MonitorWindow::yValue2fPixel(float const fYvalue) const
 {
-	fPixel const fPixYvalue { fYvalue / m_fYvaluesPerPixel };
+	fPixel const fPixYvalue { fYvalue / m_vertScale.GetPixelSize() };
 	assert(fPixYvalue.GetValue() < 10000.0f);
 	return fPixYvalue;
 }
@@ -190,10 +196,11 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 	D2D1::ColorF const color        { m_pMonitorData->IsSelected(idSignal) ? NNetColors::EEG_SENSOR_HIGHLIGHTED : D2D1::ColorF::Black };  // emphasize selected signal 
 	fPixel       const fPixWidth    { m_pMonitorData->IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
 	fPixel       const fPixYoff     { getSignalOffset(idSignal) };
-	fMicroSecs   const usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
+	fMicroSecs   const usInWindow   { m_horzScale.GetPixelSize() * m_fPixWinWidth.GetValue() };
 	fMicroSecs   const usResolution { m_pNMRI->TimeResolution() };
 	float        const fPointsInWin { usInWindow / usResolution };
-	fMicroSecs   const usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs   const usPixelSize  { m_horzScale.GetPixelSize() };
+	fMicroSecs   const usIncrement  { (fPointsInWin > usPixelSize.GetValue()) ? usPixelSize : usResolution };
 	fMicroSecs   const usEnd        { m_pNMRI->GetSimulationTime() };
 	fMicroSecs   const timeStart    { max(usEnd - usInWindow, pSignal->GetStartTime()) };
 	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(*pSignal, usEnd) };
@@ -224,7 +231,7 @@ void MonitorWindow::doPaint() const
 		m_graphics.FillRectangle(fPixelRect(pos, size), NNetColors::COL_BEACON);
 	}
 
-	m_measurement.DisplayDynamicScale(m_fMicroSecsPerPixel);
+	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzScale.GetPixelSize()));
 
 	if (m_pMonitorData->IsAnySignalSelected())
 		drawDiamond();
@@ -482,54 +489,19 @@ void MonitorWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 
 void MonitorWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-	static float const ZOOM_FACTOR { 1.3f };
-
 	int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 	bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
 	bool const bDirection { iDelta > 0 };
+	bool       bResult    { true };
 
-	for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
+	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 	{
-		if (bShiftKey)
-		{
-			static const fMicroSecs LOWER_LIMIT {   1.0_MicroSecs };
-			static const fMicroSecs UPPER_LIMIT { 400.0_MicroSecs };
-			if (bDirection)
-			{
-				if (m_fMicroSecsPerPixel > LOWER_LIMIT)
-					m_fMicroSecsPerPixel /= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-			else
-			{
-				if (m_fMicroSecsPerPixel < UPPER_LIMIT)
-					m_fMicroSecsPerPixel *= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-			m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
-		}
-		else
-		{
-			static const float LOWER_LIMIT { 0.001f };
-			static const float UPPER_LIMIT { 100.0f };
-			if (bDirection)
-			{
-				if (m_fYvaluesPerPixel > LOWER_LIMIT)
-					m_fYvaluesPerPixel /= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-			else
-			{
-				if (m_fYvaluesPerPixel < UPPER_LIMIT)
-					m_fYvaluesPerPixel *= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-		}
+		bResult = bShiftKey 
+			? m_horzScale.Zoom(bDirection)
+			: m_vertScale.Zoom(bDirection);
 	}
+	if (!bResult)
+		MessageBeep(MB_ICONWARNING);
 
 	Trigger();  // cause repaint
 }

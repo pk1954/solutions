@@ -28,10 +28,10 @@ void StimulusDesigner::Start
 	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"StimulusDesigner");
 	m_horzScale.InitHorzScale(& m_graphics, L"s", 1e6f);	
-	m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
+	m_horzScale.SetPixelSize(100.0f);  // MicroSecs
 	m_horzScale.SetOrientation(false);
 	m_vertScale.InitVertScale(& m_graphics, L"Hz", 1e0f);	
-	m_vertScale.SetPixelSize(m_fHertzPerPixel.GetValue());
+	m_vertScale.SetPixelSize(0.25f);  // Hertz
 	m_vertScale.SetOrientation(true);
 	m_pSignalGenerator      = pSignalGenerator;
 	m_trackStruct.hwndTrack = hwnd;
@@ -63,7 +63,8 @@ void StimulusDesigner::doPaint() const
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fPixel       const fPixWidth    { 1.0_fPixel };
 	fMicroSecs   const usResolution { m_pNMRI->TimeResolution() };
-	fMicroSecs   const usIncrement  { (m_fMicroSecsPerPixel > usResolution) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs   const usPixelSize  { m_horzScale.GetPixelSize() };
+	fMicroSecs   const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
 	fMicroSecs   const timeStart    { 0.0_MicroSecs };
 	fMicroSecs   const timeEnd      { fPixel2fMicroSecs(m_fPixGraphWidth) };
 	fPixelPoint        prevPoint    { getPixPnt(timeStart) };
@@ -76,6 +77,7 @@ void StimulusDesigner::doPaint() const
 		m_graphics.DrawLine(stepPoint,  actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
+
 	m_horzScale.Display();
 	m_vertScale.Display();
 }
@@ -107,6 +109,10 @@ bool StimulusDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 	m_fPixGraphWidth = fPixWinWidth  * (1.0f - 2.0f * BORDER);
 	m_horzScale.SetOffset(m_fPixOffset);
 	m_vertScale.SetOffset(m_fPixOffset);
+	m_horzScale.SetPixelSizeLimits(1.f, 400.f);      // Microsecs
+	m_vertScale.SetPixelSizeLimits(0.001f, 100.f);   // Hertz
+	m_horzScale.SetZoomFactor(1.3f);
+	m_vertScale.SetZoomFactor(1.3f);
 	Trigger();  // cause repaint
 	return true;
 }
@@ -118,70 +124,36 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 	bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
 	bool const bDirection { iDelta > 0 };
+	bool       bResult    { true };
 
-	for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
+	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 	{
-		if (bShiftKey)
-		{
-			static const fMicroSecs LOWER_LIMIT {   1.0_MicroSecs };
-			static const fMicroSecs UPPER_LIMIT { 400.0_MicroSecs };
-			if (bDirection)
-			{
-				if (m_fMicroSecsPerPixel > LOWER_LIMIT)
-					m_fMicroSecsPerPixel /= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-			else
-			{
-				if (m_fMicroSecsPerPixel < UPPER_LIMIT)
-					m_fMicroSecsPerPixel *= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-			m_horzScale.SetPixelSize(m_fMicroSecsPerPixel.GetValue());
-			m_vertScale.SetPixelSize(m_fHertzPerPixel.GetValue());
-		}
-		else
-		{
-			static const fHertz LOWER_LIMIT { 0.001_fHertz };
-			static const fHertz UPPER_LIMIT { 100.0_fHertz };
-			if (bDirection)
-			{
-				if (m_fHertzPerPixel > LOWER_LIMIT)
-					m_fHertzPerPixel /= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-			else
-			{
-				if (m_fHertzPerPixel < UPPER_LIMIT)
-					m_fHertzPerPixel *= ZOOM_FACTOR;
-				else 
-					MessageBeep(MB_ICONWARNING);
-			}
-		}
+		bResult = bShiftKey 
+			      ? m_horzScale.Zoom(bDirection)
+			      : m_vertScale.Zoom(bDirection);
 	}
+	if (!bResult)
+		MessageBeep(MB_ICONWARNING);
 
 	Trigger();  // cause repaint
 }
 
 fPixel const StimulusDesigner::fHertz2fPixel(fHertz const freq) const
 {
-	fPixel const fPixYvalue { freq / m_fHertzPerPixel };
+	fPixel const fPixYvalue { freq.GetValue() / m_vertScale.GetPixelSize() };
 	assert(fPixYvalue.GetValue() < 10000.0f);
 	return fPixYvalue;
 }
 
 fMicroSecs const StimulusDesigner::fPixel2fMicroSecs(fPixel const fPixX) const
 {
-	fMicroSecs const usResult { m_fMicroSecsPerPixel * fPixX.GetValue() };
+	fMicroSecs const usResult { m_horzScale.GetPixelSize() * fPixX.GetValue() };
 	return usResult;
 }
 
 fPixel const StimulusDesigner::fMicroSecs2fPixel(fMicroSecs const usParam) const
 {
-	float  const fTicks { usParam / m_fMicroSecsPerPixel };
+	float  const fTicks { usParam.GetValue() / m_horzScale.GetPixelSize() };
 	fPixel const fPixX  { fPixel(fTicks) };
 	return fPixX;
 }

@@ -38,14 +38,15 @@ public:
 	virtual bool const Includes    (MicroMeterPnt  const &)                   const;
 	virtual void       RotateNob   (MicroMeterPnt  const &, Radian const);
 	virtual void       MoveNob     (MicroMeterPnt  const &);
-	virtual void       Prepare     ();
-	virtual bool const CompStep    ();
 	virtual void       Recalc      ();
 	virtual void       Clear       ();
 	virtual void       Link        (Nob const &, Nob2NobFunc const &);
 	virtual void       Select      (bool const);
 	virtual void       SetParentPointers();
 	virtual void       ClearParentPointers();
+
+	virtual void       Prepare     () {}
+	virtual bool const CompStep    () { return false; }
 
 	virtual bool const IsCompositeNob() { return true; }
 

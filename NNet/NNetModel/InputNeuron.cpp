@@ -12,6 +12,7 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "Knot.h"
+#include "InputConnector.h"
 #include "InputNeuron.h"
 
 using std::chrono::microseconds;
@@ -39,22 +40,16 @@ void InputNeuron::Check() const
 
 void InputNeuron::Prepare()
 {
-	if (HasParentNob())
-		m_mVinputBuffer = GetParentNob()->GetVoltage();
-	else
-		m_mVinputBuffer += SignalGenerator::GetBasePotIncrease();
-}
-
-bool const InputNeuron::CompStep()
-{
-	IncreaseTimeSinceLastPulse();
-	bool bTrigger { m_mVinputBuffer >= m_pParameters->Threshold() };
-	if (bTrigger)
+	fHertz const freq 
 	{
-		ResetTimeSinceLastPulse();
-		m_mVinputBuffer.Set2Zero();
-	}
-	return m_bStopOnTrigger && bTrigger;
+	    HasParentNob()
+		? static_cast<InputConnector &>(*GetParentNob()).GetFrequency()
+		: m_pParameters->StdPulseRate()
+	};
+	fMicroSecs const time2Trigger    { PulseDuration(freq) };
+	float      const ticks2Trigger   { time2Trigger / m_pParameters->TimeResolution() };
+	mV         const increasePerTick { m_pParameters->Threshold() / ticks2Trigger };
+	m_mVinputBuffer += increasePerTick;
 }
 
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -119,4 +114,3 @@ void InputNeuron::DrawNeuronText(DrawContext const & context) const
 
 	DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }
-
