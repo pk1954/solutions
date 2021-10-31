@@ -6,6 +6,7 @@
 
 #include <string> 
 #include "PixelTypes.h"
+#include "PixCoordFp.h"
 
 using std::wstring;
 
@@ -29,31 +30,32 @@ public:
 
 	bool const Zoom(bool const);
 
-	float const GetPixelSize() const { return m_fPixelSize; }
+	float const GetPixelSize() const { return m_pixelSize; }
 
 private:
 	using LogUnits = float;
 
 	inline static COLORREF const SCALE_COLOR { RGB(0, 0, 0) };  // CLR_BLACK
 
-	D2D_driver        * m_pGraphics     { nullptr }; 
-	IDWriteTextFormat * m_pTextFormat   { nullptr };
-	float               m_fPixelSize    {   1.0f };
-	float               m_fPixelSizeMin {   1.0f };
-	float               m_fPixelSizeMax { 100.0f };
-	float               m_fScaleFactor  {   1.0f };
-	float               m_fZoomFactor   {   1.1f };
-	bool                m_bOrientation  { true };  // true: ticks on positive side of scale
-	bool                m_bScaleType    { false }; // true: vertical, false: horizontal
-	fPixelPoint         m_fPixPntStart  { fPP_NULL };
-	fPixelPoint         m_fPixPntEnd    { fPP_NULL };
-	LogUnits            m_logStart      {};
-	LogUnits            m_logEnd        {};
-	LogUnits            m_logTickDist   {};
-	LogUnits            m_logReduction  {};
-	wchar_t             m_unitPrefix    {};
-	wstring             m_wstrLogUnit   {};
-	fPixelRect          m_textBox       {};
+	D2D_driver        * m_pGraphics    { nullptr }; 
+	IDWriteTextFormat * m_pTextFormat  { nullptr };
+	LogUnits            m_pixelSize    {   1.0f };
+	LogUnits            m_pixelSizeMin {   1.0f };
+	LogUnits            m_pixelSizeMax { 100.0f };
+	float               m_fScaleFactor {   1.0f };
+	float               m_fZoomFactor  {   1.1f };
+	bool                m_bOrientation { true };  // true: ticks on positive side of scale
+	bool                m_bScaleType   { false }; // true: vertical, false: horizontal
+	fPixelPoint         m_fPixPntStart { fPP_NULL };
+	fPixelPoint         m_fPixPntEnd   { fPP_NULL };
+	fPixel              m_fPixTickDist {};
+	LogUnits            m_logStart     {};
+	LogUnits            m_logEnd       {};
+	LogUnits            m_logTickDist  {};
+	LogUnits            m_logReduction {};
+	wchar_t             m_unitPrefix   {};
+	wstring             m_wstrLogUnit  {};
+	fPixelRect          m_textBox      {};
 
 	// private functions
 

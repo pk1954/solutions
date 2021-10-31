@@ -35,6 +35,7 @@
     <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />
     <ClInclude Include="observerInterface.h" />
+    <ClInclude Include="PixCoordFp.h" />
     <ClInclude Include="PixelCoordsFp.h" />
     <ClInclude Include="PixelTypes.h" />
     <ClInclude Include="PointType.h" />

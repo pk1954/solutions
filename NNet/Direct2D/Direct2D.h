@@ -71,4 +71,71 @@ private:
 
     friend D2D1_POINT_2F convertD2D(fPixelPoint   const &);
     friend D2D1_ELLIPSE  convertD2D(fPixelEllipse const &);
+
+    //fPixel const getValueA
+    //(
+    //    bool        const bScaleType,
+    //    fPixelPoint const & p
+    //) const
+    //{
+    //    return bScaleType ? p.GetY() : p.GetX();
+    //}
+
+    //fPixel const getValueB
+    //(
+    //    bool        const bScaleType,
+    //    fPixelPoint const & p
+    //) const
+    //{
+    //    return bScaleType ? p.GetX() : p.GetY();
+    //}
+
+    //fPixelPoint const makefPixelPnt
+    //(
+    //    bool   const bScaleType, 
+    //    fPixel const fPixA, 
+    //    fPixel const fPixB
+    //) const
+    //{
+    //    return bScaleType ? fPixelPoint(fPixB, fPixA) : fPixelPoint(fPixA, fPixB);
+    //}
+
+    //void displayTick
+    //(
+    //    bool         const bScaleType,
+    //    bool         const bOrientation,
+    //    fPixelPoint  const fPixPntStart, 
+    //    fPixel       const fTickA,
+    //    fPixel       const fTickExt,
+    //    D2D1::ColorF const colF
+    //) const
+    //{
+    //    fPixel      const fDir(bOrientation ? -fTickExt : fTickExt);
+    //    fPixelPoint const fTickStart { makefPixelPnt(bScaleType, fTickA, getValueB(bScaleType, fPixPntStart)) };
+    //    fPixelPoint const fTickEnd   { makefPixelPnt(bScaleType, fTickA, getValueB(bScaleType, fPixPntStart) + fDir) };
+    //    DrawLine(fTickStart, fTickEnd, 1._fPixel, colF);
+    //}
+
+    //void displayTicks() const
+    //{
+    //    static fPixel fLongTick  (10._fPixel);
+    //    static fPixel fMiddleTick( 7._fPixel);
+    //    static fPixel fSmallTick ( 5._fPixel);
+
+    //    int iNrOfTicks { static_cast<int>((m_logEnd - m_logStart) / m_logTickDist) };
+    //    for (int iRun = 0; iRun <= iNrOfTicks; ++iRun)
+    //    {
+    //        LogUnits lu    { m_logStart + iRun * m_logTickDist };
+    //        fPixel   fTick { (iRun % 5 == 0) ? fLongTick : (iRun % 2 == 0) ? fMiddleTick : fSmallTick};
+    //        fPixel   fPixA { log2pix(lu) };
+    //        displayTick(fPixA, fTick);
+    //        if (iRun % 10 == 0)
+    //            display
+    //            (
+    //                makefPixelPnt(fPixA, getValueB(m_fPixPntStart)), 
+    //                to_wstring(static_cast<int>(round(lu / m_logReduction)))
+    //            );
+    //    }
+    //}
+
 };

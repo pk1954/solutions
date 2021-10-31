@@ -61,15 +61,15 @@ void Scale::SetOffset(fPixel const fPixX, fPixel const fPixY)
 
 void Scale::SetPixelSize(float const fSize) 
 { 
-	m_fPixelSize = fSize; 
+	m_pixelSize = fSize; 
 	Recalc();
 };
 
 void Scale::SetPixelSizeLimits(float const fMin, float const fMax)
 {
-	m_fPixelSizeMin = fMin;
-	m_fPixelSizeMax = fMax;
-	ClipToMinMax(m_fPixelSize, fMin, fMax);
+	m_pixelSizeMin = fMin;
+	m_pixelSizeMax = fMax;
+	ClipToMinMax(m_pixelSize, fMin, fMax);
 }
 
 void Scale::SetZoomFactor(float const fFactor) 
@@ -83,19 +83,19 @@ bool const Scale::Zoom(bool const bDirection)
 	float fNewSize;
 	if (bDirection)
 	{
-		fNewSize = m_fPixelSize / m_fZoomFactor;
-		if (fNewSize >= m_fPixelSizeMin)
+		fNewSize = m_pixelSize / m_fZoomFactor;
+		if (fNewSize >= m_pixelSizeMin)
 			bResult = true;
 	}
 	else
 	{
-		fNewSize = m_fPixelSize * m_fZoomFactor;
-		if (fNewSize <= m_fPixelSizeMax)
+		fNewSize = m_pixelSize * m_fZoomFactor;
+		if (fNewSize <= m_pixelSizeMax)
 			bResult = true;
 	}
 	if (bResult)
 	{
-		m_fPixelSize = fNewSize;
+		m_pixelSize = fNewSize;
 		Recalc();
 	}
 	return true;
@@ -127,7 +127,7 @@ fPixel const Scale::getValueB(fPixelPoint const & p) const
 
 fPixel const Scale::log2pixSize(LogUnits const lu) const 
 { 
-	return fPixel(lu / m_fPixelSize); 
+	return fPixel(lu / m_pixelSize); 
 }
 
 fPixel const Scale::log2pix(LogUnits const lu) const 
@@ -139,7 +139,7 @@ fPixel const Scale::log2pix(LogUnits const lu) const
 
 Scale::LogUnits const Scale::pix2logSize(fPixel const fp) const	
 { 
-	return LogUnits(fp.GetValue() * m_fPixelSize); 
+	return LogUnits(fp.GetValue() * m_pixelSize); 
 }
 
 Scale::LogUnits const Scale::pix2log(fPixel const fp) const	
@@ -160,11 +160,11 @@ void Scale::Recalc()
 	float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
 	fPixel   const fPixScaleLen   { getClRectSizeA() - getValueA(m_fPixPntStart) * 2.0f };
 
-	m_fPixPntEnd  = m_fPixPntStart + makefPixelPnt(fPixScaleLen, 0._fPixel);
-	m_logStart    = pix2log(getValueA(m_fPixPntStart));
-	m_logEnd      = pix2log(getValueA(m_fPixPntEnd  ));
-	m_logTickDist = powf(10.0, fExp) * fFactor;
-
+	m_fPixPntEnd   = m_fPixPntStart + makefPixelPnt(fPixScaleLen, 0._fPixel);
+	m_logStart     = pix2log(getValueA(m_fPixPntStart));
+	m_logEnd       = pix2log(getValueA(m_fPixPntEnd  ));
+	m_logTickDist  = powf(10.0, fExp) * fFactor;
+	m_fPixTickDist = log2pix(m_logTickDist);
 	setScaleParams();
 	setTextBox();
 }
@@ -253,16 +253,16 @@ void Scale::displayTicks() const
 	int iNrOfTicks { static_cast<int>((m_logEnd - m_logStart) / m_logTickDist) };
 	for (int iRun = 0; iRun <= iNrOfTicks; ++iRun)
 	{
-		LogUnits lu    { m_logStart + iRun * m_logTickDist };
-		fPixel   fTick { (iRun % 5 == 0) ? fLongTick : (iRun % 2 == 0) ? fMiddleTick : fSmallTick};
-		fPixel   fPixA { log2pix(lu) };
+		fPixel fTick { (iRun % 5 == 0) ? fLongTick : (iRun % 2 == 0) ? fMiddleTick : fSmallTick};
+		fPixel fPixA { getValueA(m_fPixPntStart) + m_fPixTickDist * static_cast<float>(iRun) };
 		displayTick(fPixA, fTick);
 		if (iRun % 10 == 0)
-			display
-			(
-				makefPixelPnt(fPixA, getValueB(m_fPixPntStart)), 
-				to_wstring(static_cast<int>(round(lu / m_logReduction)))
-			);
+		{
+			LogUnits    lu   { m_logStart + iRun * m_logTickDist };
+			int         iLu  { static_cast<int>(round(lu / m_logReduction)) };
+			fPixelPoint fPos { makefPixelPnt(fPixA, getValueB(m_fPixPntStart)) };
+			display(fPos, to_wstring(iLu));
+		}
 	}
 }
 

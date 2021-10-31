@@ -8,6 +8,7 @@
 #include "win32_scale.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
+#include "PixCoordFp.h"
 #include "win32_baseWindow.h"
 
 class SignalGenerator;
@@ -44,10 +45,11 @@ private:
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
 	D2D_driver                       m_graphics         { };
-	fPixelPoint                      m_fPixOffset       { fPP_NULL };
 	fPixel                           m_fPixGraphWidth   { 0.0_fPixel };
 	NNetModelReaderInterface const * m_pNMRI            { nullptr };
 	SignalGenerator                * m_pSignalGenerator { nullptr };
 	Scale                            m_horzScale;
 	Scale                            m_vertScale;
+	PixCoordFp<fMicroSecs>           m_horzCoord;
+	PixCoordFp<fHertz>               m_vertCoord;
 };

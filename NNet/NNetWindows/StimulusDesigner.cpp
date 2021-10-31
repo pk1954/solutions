@@ -27,12 +27,19 @@ void StimulusDesigner::Start
 	);
 	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"StimulusDesigner");
-	m_horzScale.InitHorzScale(& m_graphics, L"s", 1e6f);	
-	m_horzScale.SetPixelSize(100.0f);  // MicroSecs
+
+	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 400._MicroSecs); 
+	m_horzCoord.SetZoomFactor(1.3f);
+	m_horzScale.InitHorzScale(& m_graphics, L"s", 1e6f);
 	m_horzScale.SetOrientation(false);
+
+	m_vertCoord.SetPixelSize(0.25_fHertz);
+	m_vertCoord.SetPixelSizeLimits(0.001_fHertz, 100._fHertz); 
+	m_vertCoord.SetZoomFactor(1.3f);
 	m_vertScale.InitVertScale(& m_graphics, L"Hz", 1e0f);	
-	m_vertScale.SetPixelSize(0.25f);  // Hertz
 	m_vertScale.SetOrientation(true);
+
 	m_pSignalGenerator      = pSignalGenerator;
 	m_trackStruct.hwndTrack = hwnd;
 	m_pNMRI                 = &nmri;
@@ -54,7 +61,7 @@ void StimulusDesigner::Stop()
 fPixelPoint const StimulusDesigner::getPixPnt(fMicroSecs const time) const
 {
 	fHertz      const fHertzAct{ m_pSignalGenerator->GetBaseFrequency() + m_pSignalGenerator->StimulusFunc(time) };
-	fPixelPoint const actPoint { m_fPixOffset + fPixelPoint(fMicroSecs2fPixel(time), -fHertz2fPixel(fHertzAct)) };
+	fPixelPoint const actPoint { m_horzCoord.GetPixelOffset() + fPixelPoint(fMicroSecs2fPixel(time), -fHertz2fPixel(fHertzAct)) };
 	return actPoint;
 }
 
@@ -105,14 +112,11 @@ bool StimulusDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 	m_graphics.Resize(width, height);
 	fPixel fPixWinWidth  { Convert2fPixel(PIXEL(width )) };
 	fPixel fPixWinHeight { Convert2fPixel(PIXEL(height)) };
-	m_fPixOffset     = fPixelPoint(fPixWinWidth * BORDER, fPixWinHeight * (1.0f - BORDER));
+	fPixel fPixXoffset = fPixWinWidth * BORDER;
+	fPixel fPixYoffset = fPixWinHeight * (1.0f - BORDER);
 	m_fPixGraphWidth = fPixWinWidth  * (1.0f - 2.0f * BORDER);
-	m_horzScale.SetOffset(m_fPixOffset);
-	m_vertScale.SetOffset(m_fPixOffset);
-	m_horzScale.SetPixelSizeLimits(1.f, 400.f);      // Microsecs
-	m_vertScale.SetPixelSizeLimits(0.001f, 100.f);   // Hertz
-	m_horzScale.SetZoomFactor(1.3f);
-	m_vertScale.SetZoomFactor(1.3f);
+	m_horzCoord.SetOffset(fPixXoffset);
+	m_vertCoord.SetOffset(fPixYoffset);
 	Trigger();  // cause repaint
 	return true;
 }

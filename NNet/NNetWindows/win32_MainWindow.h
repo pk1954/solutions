@@ -91,7 +91,6 @@ private:
 	void setNoTarget      ();
 	void setTargetNob     ();
 	void setHighlightedNob(MicroMeterPnt const &);
-	bool changePulseRate  (NobId const, bool const);
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
 	void zoomStep         (float const, fPixelPoint const);
 
