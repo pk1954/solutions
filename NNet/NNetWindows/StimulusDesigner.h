@@ -37,10 +37,7 @@ private:
 	virtual bool OnSize      (WPARAM const, LPARAM const);
 	virtual void OnMouseWheel(WPARAM const, LPARAM const);
 
-	fPixel      const fHertz2fPixel    (fHertz     const) const;
-	fMicroSecs  const fPixel2fMicroSecs(fPixel     const) const;
-	fPixel      const fMicroSecs2fPixel(fMicroSecs const) const;
-	fPixelPoint const getPixPnt        (fMicroSecs const) const;
+	fPixelPoint const getPixPnt (fMicroSecs const) const;
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
@@ -48,8 +45,8 @@ private:
 	fPixel                           m_fPixGraphWidth   { 0.0_fPixel };
 	NNetModelReaderInterface const * m_pNMRI            { nullptr };
 	SignalGenerator                * m_pSignalGenerator { nullptr };
-	Scale                            m_horzScale;
-	Scale                            m_vertScale;
+	Scale<fMicroSecs>                m_horzScale;
+	Scale<fHertz>                    m_vertScale;
 	PixCoordFp<fMicroSecs>           m_horzCoord;
 	PixCoordFp<fHertz>               m_vertCoord;
 };

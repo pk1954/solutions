@@ -52,7 +52,7 @@ void MainWindow::Start
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-	m_horzScale.InitHorzScale(& m_graphics, L"m", 1e6f);
+//	m_horzScale.InitHorzScale(& m_graphics, L"m", 1e6f);
 }
 
 void MainWindow::Stop()
@@ -221,7 +221,7 @@ void MainWindow::zoomStep(float const fFactor, fPixelPoint const fPixPointCenter
 		MicroMeterPnt const umPntcenter { GetCoordC().Transform2MicroMeterPntPos(fPixPointCenter) }; // compute center ** BEFORE ** zooming!
 		GetDrawContext().Zoom(newSize);
 		GetDrawContext().Center(umPntcenter, fPixPointCenter);
-		m_horzScale.SetPixelSize(newSize.GetValue());
+//		m_horzScale.SetPixelSize(newSize.GetValue());
 		if (m_pCoordObservable)
 			m_pCoordObservable->NotifyAll(false);
 	}
@@ -267,7 +267,7 @@ bool MainWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	NNetWindow::OnSize(wParam, lParam);
-	m_horzScale.SetOffset(fPixelPoint(Convert2fPixel(PIXEL(width)) * 0.1f, Convert2fPixel(PIXEL(height)) - 20._fPixel));
+//	m_horzScale.SetOffset(fPixelPoint(Convert2fPixel(PIXEL(width)) * 0.1f, Convert2fPixel(PIXEL(height)) - 20._fPixel));
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
@@ -434,7 +434,7 @@ void MainWindow::centerAndZoomRect
 	PixelCoordsFp  coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	(
-		GetCoord().ComputeZoom(umRect.Scale(NEURON_RADIUS), GetClRectSize(), fRatioFactor) 
+		GetCoord().ComputeZoom(umRect.ScaleRect(NEURON_RADIUS), GetClRectSize(), fRatioFactor) 
 	);
 	coordTarget.SetPixelOffset // do not change order! 
 	(
@@ -480,7 +480,7 @@ void MainWindow::doPaint()
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
 
-	m_horzScale.Display();
+//	m_horzScale.Display();
 
 	DrawSensors();
 

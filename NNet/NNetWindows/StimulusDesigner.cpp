@@ -31,14 +31,16 @@ void StimulusDesigner::Start
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 400._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
-	m_horzScale.InitHorzScale(& m_graphics, L"s", 1e6f);
+	m_horzScale.InitHorzScale(& m_horzCoord, & m_graphics, L"s", 1e6f);
 	m_horzScale.SetOrientation(false);
+	m_horzScale.Recalc();
 
 	m_vertCoord.SetPixelSize(0.25_fHertz);
 	m_vertCoord.SetPixelSizeLimits(0.001_fHertz, 100._fHertz); 
 	m_vertCoord.SetZoomFactor(1.3f);
-	m_vertScale.InitVertScale(& m_graphics, L"Hz", 1e0f);	
+	m_vertScale.InitVertScale(& m_vertCoord, & m_graphics, L"Hz", 1e0f);	
 	m_vertScale.SetOrientation(true);
+	m_vertScale.Recalc();
 
 	m_pSignalGenerator      = pSignalGenerator;
 	m_trackStruct.hwndTrack = hwnd;
@@ -61,7 +63,7 @@ void StimulusDesigner::Stop()
 fPixelPoint const StimulusDesigner::getPixPnt(fMicroSecs const time) const
 {
 	fHertz      const fHertzAct{ m_pSignalGenerator->GetBaseFrequency() + m_pSignalGenerator->StimulusFunc(time) };
-	fPixelPoint const actPoint { m_horzCoord.GetPixelOffset() + fPixelPoint(fMicroSecs2fPixel(time), -fHertz2fPixel(fHertzAct)) };
+	fPixelPoint const actPoint { m_horzCoord.Transform2fPixelPos(time), m_vertCoord.Transform2fPixelPos(-fHertzAct) };
 	return actPoint;
 }
 
@@ -70,10 +72,10 @@ void StimulusDesigner::doPaint() const
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fPixel       const fPixWidth    { 1.0_fPixel };
 	fMicroSecs   const usResolution { m_pNMRI->TimeResolution() };
-	fMicroSecs   const usPixelSize  { m_horzScale.GetPixelSize() };
+	fMicroSecs   const usPixelSize  { m_horzCoord.GetPixelSize() };
 	fMicroSecs   const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
 	fMicroSecs   const timeStart    { 0.0_MicroSecs };
-	fMicroSecs   const timeEnd      { fPixel2fMicroSecs(m_fPixGraphWidth) };
+	fMicroSecs   const timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
 	fPixelPoint        prevPoint    { getPixPnt(timeStart) };
 
 	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
@@ -117,6 +119,10 @@ bool StimulusDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 	m_fPixGraphWidth = fPixWinWidth  * (1.0f - 2.0f * BORDER);
 	m_horzCoord.SetOffset(fPixXoffset);
 	m_vertCoord.SetOffset(fPixYoffset);
+	m_horzScale.SetOrthoOffset(fPixYoffset);
+	m_vertScale.SetOrthoOffset(fPixXoffset);
+	m_horzScale.Recalc();
+	m_vertScale.Recalc();
 	Trigger();  // cause repaint
 	return true;
 }
@@ -133,32 +139,20 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 	{
 		bResult = bShiftKey 
-			      ? m_horzScale.Zoom(bDirection)
-			      : m_vertScale.Zoom(bDirection);
+			      ? m_horzCoord.Zoom(bDirection)
+			      : m_vertCoord.Zoom(bDirection);
 	}
-	if (!bResult)
+	if ( bResult )
+	{
+		if (bShiftKey)
+			m_horzScale.Recalc();
+		else
+			m_vertScale.Recalc();
+	}
+	else
+	{
 		MessageBeep(MB_ICONWARNING);
+	}
 
 	Trigger();  // cause repaint
 }
-
-fPixel const StimulusDesigner::fHertz2fPixel(fHertz const freq) const
-{
-	fPixel const fPixYvalue { freq.GetValue() / m_vertScale.GetPixelSize() };
-	assert(fPixYvalue.GetValue() < 10000.0f);
-	return fPixYvalue;
-}
-
-fMicroSecs const StimulusDesigner::fPixel2fMicroSecs(fPixel const fPixX) const
-{
-	fMicroSecs const usResult { m_horzScale.GetPixelSize() * fPixX.GetValue() };
-	return usResult;
-}
-
-fPixel const StimulusDesigner::fMicroSecs2fPixel(fMicroSecs const usParam) const
-{
-	float  const fTicks { usParam.GetValue() / m_horzScale.GetPixelSize() };
-	fPixel const fPixX  { fPixel(fTicks) };
-	return fPixX;
-}
-

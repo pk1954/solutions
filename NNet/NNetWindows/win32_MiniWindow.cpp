@@ -53,7 +53,7 @@ void MiniWindow::Notify(bool const bImmediately)
 		{
 			GetCoordC().ComputeZoom
 			(
-				umRectShow.Scale(NEURON_RADIUS), 
+				umRectShow.ScaleRect(NEURON_RADIUS), 
 				GetClRectSize(),
 				EXTRA_SPACE_FACTOR
 			)

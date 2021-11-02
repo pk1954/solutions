@@ -45,6 +45,9 @@ public:
 	BASE_TYPE const GetX() const { return m_x; }
 	BASE_TYPE const GetY() const { return m_y; }
 
+	void SetX(BASE_TYPE const b) { m_x = b; }
+	void SetY(BASE_TYPE const b) { m_y = b; }
+
 	auto const GetXvalue() const { return GetX().GetValue(); }
 	auto const GetYvalue() const { return GetY().GetValue(); }
 

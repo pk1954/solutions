@@ -9,6 +9,7 @@
 #include "BaseKnot.h"
 #include "MicroMeterPntVector.h"
 #include "NNetModelReaderInterface.h"
+#include "win32_scale.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
@@ -75,7 +76,7 @@ private:
 	 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 	
-	Scale m_horzScale;
+//	Scale<fMicroSecs> m_horzScale;
 
 	MicroMeter m_arrowSize { STD_ARROW_SIZE };
 

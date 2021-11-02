@@ -39,9 +39,6 @@ private:
 	fPixel     const calcTrackHeight  () const;
 	TrackNr    const findTrack        (PIXEL const) const;
 	TrackNr    const findPos4NewTrack (PIXEL const) const;
-	fMicroSecs const fPixel2fMicroSecs(fPixel     const  ) const;
-	fPixel     const fMicroSecs2fPixel(fMicroSecs const  ) const;
-	fPixel     const yValue2fPixel    (float      const  ) const;
 	fPixel     const getSignalOffset  (SignalId   const &) const;
 	fPixel     const getYvalue        (Signal const &, fMicroSecs const) const;
 	fMicroSecs const findNextMax      (Signal const &, fPixel     const) const;
@@ -80,6 +77,8 @@ private:
 	fPixel       m_fPixWinWidth       { 0.0_fPixel };
 	bool         m_bShowScale         { false };
 	Measurement  m_measurement;
-	Scale        m_horzScale;
-	Scale        m_vertScale; // XXXXXXXXXXX
+
+	Scale<fMicroSecs>      m_horzScale;
+	PixCoordFp<fMicroSecs> m_horzCoord;
+	PixCoordFp<float>      m_vertCoord;
 };

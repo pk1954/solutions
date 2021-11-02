@@ -17,7 +17,7 @@ public:
 
 	PixCoordFp()
 	  : m_fPixOffset(0.0_fPixel),
-		m_pixelSize (1.0f)
+		m_logPixelSize (1.0f)
 	{}
 
 	PixCoordFp
@@ -26,72 +26,76 @@ public:
 		LOG_UNIT const pixelSize
 	)
 	  : m_fPixOffset(fPixOffset),
-		m_pixelSize ()
+		m_logPixelSize ()
 	{}
 
 	void Reset()
 	{
-		m_fPixOffset = 0.0_fPixel;
-		m_pixelSize  = LOG_UNIT(1.0f);
+		m_fPixOffset   = 0.0_fPixel;
+		m_logPixelSize = LOG_UNIT(1.0f);
 	}
 
 	//////// transformations LOG_UNIT <---> fPixel ////////
 
-	fPixel const Transform2fPixel(LOG_UNIT const param) const
+	fPixel const Transform2fPixelSize(LOG_UNIT const param) const
 	{ 
-		return fPixel(param / m_pixelSize);
+		return fPixel(param / m_logPixelSize);
 	}
 
-	LOG_UNIT const Transform2logUnit(fPixel const fPixel) const
+	LOG_UNIT const Transform2logUnitSize(fPixel const fPixel) const
 	{ 
-		return m_pixelSize * fPixel.GetValue();
-	}
-
-	LOG_UNIT const Transform2logUnitPos(PIXEL const pix) const
-	{ 
-		return Transform2logUnit(::Convert2fPixel(pix) + m_fPixOffset);
+		return m_logPixelSize * fPixel.GetValue();
 	}
 
 	fPixel const Transform2fPixelPos(LOG_UNIT const np) const
 	{ 
-		return Transform2fPixel(np) - m_fPixOffset;
+		return Transform2fPixelSize(np) + m_fPixOffset;
+	}
+
+	LOG_UNIT const Transform2logUnitPos(fPixel const fPixel) const
+	{ 
+		return Transform2logUnitSize(fPixel - m_fPixOffset);
 	}
 
 	//////// transformations LOG_UNIT <---> PIXEL  ////////
 
-	LOG_UNIT Transform2logUnit(PIXEL const pix) const
+	LOG_UNIT Transform2logUnitSize(PIXEL const pix) const
 	{ 
-		return Transform2logUnit(::Convert2fPixel(pix));
-	}
-
-	PIXEL Transform2PIXEL(LOG_UNIT const um) const
-	{
-		return ::Convert2PIXEL(Transform2fPixel(um));
-	}
-
-	PIXEL Transform2PixelPos(LOG_UNIT const & umPnt) const
-	{
-		return ::Convert2PIXEL(Transform2fPixelPos(umPnt));
+		return Transform2logUnitSize(::Convert2fPixel(pix));
 	}
 
 	//////// queries ////////
 
-	LOG_UNIT const GetPixelSize()   const { return m_pixelSize; };
+	LOG_UNIT const GetPixelSize()   const { return m_logPixelSize; };
 	fPixel   const GetPixelOffset() const { return m_fPixOffset; }
 
 	//////// manipulation functions ////////
 
 //	void Set(PixCoordFp const newVals ) { * this = newVals; }
 
-	void Move(PIXEL    const pixDelta) { m_fPixOffset -= ::Convert2fPixel(pixDelta); }
-	void Move(LOG_UNIT const umDelta ) { m_fPixOffset -= Transform2fPixel(umDelta); }
+	void Move(fPixel   const fPixDelta ) { m_fPixOffset -= fPixDelta; }
+	void Move(PIXEL    const pixDelta  ) { Move(::Convert2fPixel(pixDelta)); }
+	void Move(LOG_UNIT const umDelta   ) { Move(Transform2fPixelSize(umDelta)); }
 
-	bool Zoom(LOG_UNIT const pixelSize)
+	bool const Zoom(bool const bDirection)
 	{
-		bool bValid = IsValidPixelSize(pixelSize);
-		if (bValid)
-			SetPixelSize(pixelSize);
-		return bValid;
+		bool     bResult { false };
+		LOG_UNIT logNewSize;
+		if (bDirection)
+		{
+			logNewSize = m_logPixelSize / m_fZoomFactor;
+			if (logNewSize >= m_pixelSizeMin)
+				bResult = true;
+		}
+		else
+		{
+			logNewSize = m_logPixelSize * m_fZoomFactor;
+			if (logNewSize <= m_pixelSizeMax)
+				bResult = true;
+		}
+		if (bResult)
+			m_logPixelSize = logNewSize;
+		return true;
 	}
 
 	void Center
@@ -100,27 +104,27 @@ public:
 		fPixel     const fPntPix  
 	)
 	{
-		SetPixelOffset(Transform2fPixel(umCenter) - fPntPix);
+		SetPixelOffset(Transform2fPixelSize(umCenter) - fPntPix);
 	}
 
 	PixCoordFp const operator+= (PixCoordFp const a) 
 	{ 
-		m_fPixOffset += a.m_fPixOffset;
-		m_pixelSize  += a.m_pixelSize; 
+		m_fPixOffset   += a.m_fPixOffset;
+		m_logPixelSize += a.m_logPixelSize; 
 		return * this; 
 	}
 
 	PixCoordFp const operator-= (PixCoordFp const a) 
 	{ 
-		m_fPixOffset -= a.m_fPixOffset;
-		m_pixelSize  -= a.m_pixelSize; 
+		m_fPixOffset   -= a.m_fPixOffset;
+		m_logPixelSize -= a.m_logPixelSize; 
 		return * this; 
 	}
 
 	PixCoordFp const operator*= (float const factor) 
 	{ 
 		m_fPixOffset *= factor;
-		m_pixelSize  *= factor; 
+		m_logPixelSize  *= factor; 
 		return * this; 
 	}
 
@@ -147,7 +151,7 @@ public:
 
 	//friend wostream & operator<< (wostream & out, fPixel const & c)
 	//{
-	//	out << c.m_fPixOffset << L", " << c.m_pixelSize << endl;
+	//	out << c.m_fPixOffset << L", " << c.m_logPixelSize << endl;
 	//	return out; 
 	//}
 
@@ -156,24 +160,27 @@ public:
 		return (m_pixelSizeMin <= size) && (size <= m_pixelSizeMax); 
 	}
 
-	void SetPixelSize(LOG_UNIT const s) { m_pixelSize = s; }
+	void SetPixelSize(LOG_UNIT const s) { m_logPixelSize = s; }
 
 	void SetPixelSizeLimits(LOG_UNIT const fMin, LOG_UNIT const fMax)
 	{
 		m_pixelSizeMin = fMin;
 		m_pixelSizeMax = fMax;
-		ClipToMinMax(m_pixelSize, fMin, fMax);
+		ClipToMinMax(m_logPixelSize, fMin, fMax);
 	}
 	
-	void SetOffset     (fPixel const o) { m_fPixOffset = o; }
-	void SetZoomFactor (float  const f) { m_zoomFactor = f; };
+	void SetZoomFactor(float  const f) { m_fZoomFactor = f; };
+	void SetOffset    (fPixel const o) 
+	{
+		m_fPixOffset = o; 
+	}
 
 private:
 
 	fPixel   m_fPixOffset;
-	LOG_UNIT m_pixelSize;
+	LOG_UNIT m_logPixelSize;
 	LOG_UNIT m_pixelSizeMin {   1.0f };
 	LOG_UNIT m_pixelSizeMax { 100.0f };
 	float    m_scaleFactor  {   1.0f };
-	float    m_zoomFactor   {   1.1f };
+	float    m_fZoomFactor  {   1.1f };
 };

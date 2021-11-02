@@ -15,7 +15,6 @@ using std::wstring;
 using std::function;
 using std::make_unique;
 
-class Scale;
 class Signal;
 class Observable;
 class ActionTimer;
