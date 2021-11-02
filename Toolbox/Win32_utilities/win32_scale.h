@@ -7,6 +7,7 @@
 #include <string> 
 #include <sstream> 
 #include "util.h"
+#include "ObserverInterface.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"
@@ -22,7 +23,7 @@ class D2D_driver;
 struct IDWriteTextFormat;
 
 template <typename LogUnits>
-class Scale
+class Scale : public ObserverInterface
 {
 public:
 
@@ -48,6 +49,11 @@ public:
 	{
 		m_bScaleType = true;  
 		init(pPixCoord, pGraphics, wstrLogUnit, fScaleFactor);
+	}
+
+	virtual void Notify(bool const bImmediate)
+	{
+		Recalc();
 	}
 
 	void Recalc()
@@ -130,6 +136,7 @@ private:
 		m_pTextFormat  = pGraphics->NewTextFormat(12.f);
 		m_wstrLogUnit  = wstrLogUnit;
 		m_fScaleFactor = fScaleFactor;
+		m_pPixCoord->RegisterObserver(this);
 	}
 
 	fPixel const getClRectSizeA() const

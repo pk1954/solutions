@@ -5,13 +5,14 @@
 #pragma once
 
 #include "util.h"
+#include "Observable.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
 using std::endl;
 
 template <typename LOG_UNIT>
-class PixCoordFp
+class PixCoordFp : public Observable
 {
 public:
 
@@ -26,7 +27,7 @@ public:
 		LOG_UNIT const pixelSize
 	)
 	  : m_fPixOffset(fPixOffset),
-		m_logPixelSize ()
+		m_logPixelSize()
 	{}
 
 	void Reset()
@@ -71,8 +72,6 @@ public:
 
 	//////// manipulation functions ////////
 
-//	void Set(PixCoordFp const newVals ) { * this = newVals; }
-
 	void Move(fPixel   const fPixDelta ) { m_fPixOffset -= fPixDelta; }
 	void Move(PIXEL    const pixDelta  ) { Move(::Convert2fPixel(pixDelta)); }
 	void Move(LOG_UNIT const umDelta   ) { Move(Transform2fPixelSize(umDelta)); }
@@ -95,6 +94,7 @@ public:
 		}
 		if (bResult)
 			m_logPixelSize = logNewSize;
+		NotifyAll(false);
 		return true;
 	}
 
@@ -111,6 +111,7 @@ public:
 	{ 
 		m_fPixOffset   += a.m_fPixOffset;
 		m_logPixelSize += a.m_logPixelSize; 
+		NotifyAll(false);
 		return * this; 
 	}
 
@@ -118,6 +119,7 @@ public:
 	{ 
 		m_fPixOffset   -= a.m_fPixOffset;
 		m_logPixelSize -= a.m_logPixelSize; 
+		NotifyAll(false);
 		return * this; 
 	}
 
@@ -125,6 +127,7 @@ public:
 	{ 
 		m_fPixOffset *= factor;
 		m_logPixelSize  *= factor; 
+		NotifyAll(false);
 		return * this; 
 	}
 
@@ -160,7 +163,11 @@ public:
 		return (m_pixelSizeMin <= size) && (size <= m_pixelSizeMax); 
 	}
 
-	void SetPixelSize(LOG_UNIT const s) { m_logPixelSize = s; }
+	void SetPixelSize(LOG_UNIT const s) 
+	{ 
+		m_logPixelSize = s; 
+		NotifyAll(false);
+	}
 
 	void SetPixelSizeLimits(LOG_UNIT const fMin, LOG_UNIT const fMax)
 	{
@@ -169,10 +176,15 @@ public:
 		ClipToMinMax(m_logPixelSize, fMin, fMax);
 	}
 	
-	void SetZoomFactor(float  const f) { m_fZoomFactor = f; };
+	void SetZoomFactor(float  const f) 
+	{ 
+		m_fZoomFactor = f; 
+	};
+
 	void SetOffset    (fPixel const o) 
 	{
 		m_fPixOffset = o; 
+		NotifyAll(false);
 	}
 
 private:
@@ -181,6 +193,5 @@ private:
 	LOG_UNIT m_logPixelSize;
 	LOG_UNIT m_pixelSizeMin {   1.0f };
 	LOG_UNIT m_pixelSizeMax { 100.0f };
-	float    m_scaleFactor  {   1.0f };
 	float    m_fZoomFactor  {   1.1f };
 };

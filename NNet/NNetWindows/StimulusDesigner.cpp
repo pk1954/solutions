@@ -31,6 +31,7 @@ void StimulusDesigner::Start
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 400._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
+	m_horzCoord.RegisterObserver(this);
 	m_horzScale.InitHorzScale(& m_horzCoord, & m_graphics, L"s", 1e6f);
 	m_horzScale.SetOrientation(false);
 	m_horzScale.Recalc();
@@ -38,6 +39,7 @@ void StimulusDesigner::Start
 	m_vertCoord.SetPixelSize(0.25_fHertz);
 	m_vertCoord.SetPixelSizeLimits(0.001_fHertz, 100._fHertz); 
 	m_vertCoord.SetZoomFactor(1.3f);
+	m_vertCoord.RegisterObserver(this);
 	m_vertScale.InitVertScale(& m_vertCoord, & m_graphics, L"Hz", 1e0f);	
 	m_vertScale.SetOrientation(true);
 	m_vertScale.Recalc();
@@ -142,17 +144,6 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 			      ? m_horzCoord.Zoom(bDirection)
 			      : m_vertCoord.Zoom(bDirection);
 	}
-	if ( bResult )
-	{
-		if (bShiftKey)
-			m_horzScale.Recalc();
-		else
-			m_vertScale.Recalc();
-	}
-	else
-	{
+	if (!bResult)
 		MessageBeep(MB_ICONWARNING);
-	}
-
-	Trigger();  // cause repaint
 }
