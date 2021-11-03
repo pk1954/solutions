@@ -204,6 +204,8 @@ SignalId const MonitorData::FindSignalId(Signal::Crit const & crit) const
 
 Signal * const MonitorData::GetSignalPtr(SignalId const & id)
 {
+	if (id.IsNull())
+		return nullptr;
 	TrackNr const trackNr { id.GetTrackNr() };
 	if (IsValid(trackNr))
 		return getTrack(trackNr)->GetSignalPtr(id.GetSignalNr());

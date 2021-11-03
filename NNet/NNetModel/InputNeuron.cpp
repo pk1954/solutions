@@ -18,6 +18,7 @@
 using std::chrono::microseconds;
 using std::wostringstream;
 using std::setprecision;
+using std::wstring;
 using std::fixed;
 
 InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
@@ -38,14 +39,16 @@ void InputNeuron::Check() const
 	assert(!HasIncoming());
 }
 
+fHertz const InputNeuron::getFrequency() const
+{
+	return HasParentNob()
+		? static_cast<InputConnector &>(*GetParentNob()).GetFrequency()
+		: m_pParameters->StdPulseRate();
+}
+
 void InputNeuron::Prepare()
 {
-	fHertz const freq 
-	{
-	    HasParentNob()
-		? static_cast<InputConnector &>(*GetParentNob()).GetFrequency()
-		: m_pParameters->StdPulseRate()
-	};
+	fHertz     const freq            { getFrequency() };
 	fMicroSecs const time2Trigger    { PulseDuration(freq) };
 	float      const ticks2Trigger   { time2Trigger / m_pParameters->TimeResolution() };
 	mV         const increasePerTick { m_pParameters->Threshold() / ticks2Trigger };
@@ -55,6 +58,7 @@ void InputNeuron::Prepare()
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));
+	DrawNeuronText(context);
 }
 
 void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
@@ -106,11 +110,10 @@ void InputNeuron::DrawNeuronText(DrawContext const & context) const
 	wostringstream m_wBuffer;
 
 	m_wBuffer.clear();
-	m_wBuffer.str(std::wstring());
+	m_wBuffer.str(wstring());
 	m_wBuffer << fixed << setprecision(2) 
-		      << m_pParameters->StdPulseRate()
-		      << L" " 
-		      << ParamType::GetUnit(ParamType::Value::stdPulseRate);
+		      << getFrequency()
+		      << L"Hz";
 
 	DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }

@@ -38,8 +38,9 @@ public:
 
 private:
 
-	MicroMeterPnt const getOffset() const;
-	MicroMeterPnt const getCenter() const;
+	MicroMeterPnt const getOffset   () const;
+	MicroMeterPnt const getCenter   () const;
+	fHertz        const getFrequency() const;
 
 	void drawSocket
 	(

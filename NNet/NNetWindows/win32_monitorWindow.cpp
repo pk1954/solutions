@@ -54,7 +54,8 @@ void MonitorWindow::Start
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 400._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 	m_horzCoord.RegisterObserver(this);
-	m_horzScale.InitHorzScale(& m_horzCoord, & m_graphics, L"s", 1e6f);
+
+	m_horzScale.InitHorzScale(&m_horzCoord, &m_graphics, L"s", 1e6f);
 	m_horzScale.Recalc();
 
 	m_vertCoord.SetPixelSize(0.2f);
@@ -106,16 +107,17 @@ LPARAM MonitorWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
-fPixel const MonitorWindow::getYvalue(Signal const & signal, fMicroSecs const time) const
+fPixel const MonitorWindow::getSignalValue(Signal const & signal, fMicroSecs const time) const
 {
 	return m_vertCoord.Transform2fPixelSize(signal.GetDataPoint(time));
 }
 
 fMicroSecs const MonitorWindow::findNextMax(Signal const & signal, fPixel const fPixX) const
 {
-	fMicroSecs const usEnd   { m_pNMRI->GetSimulationTime() };
-	fMicroSecs const usParam { m_horzCoord.Transform2logUnitPos(fPixX) - usEnd };
-	fMicroSecs const usMax   { signal.FindNextMaximum(usParam) };
+	fMicroSecs const usEnd  { m_pNMRI->GetSimulationTime() };
+	fPixel     const fTicks { m_fPixWinWidth - fPixX };
+	fMicroSecs const usTime { usEnd - m_horzCoord.Transform2logUnitSize(fTicks) };
+	fMicroSecs const usMax  { signal.FindNextMaximum(usTime) };
 	return usMax;
 }
 
@@ -187,12 +189,12 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 	fMicroSecs   const usIncrement  { (fPointsInWin > usPixelSize.GetValue()) ? usPixelSize : usResolution };
 	fMicroSecs   const usEnd        { m_pNMRI->GetSimulationTime() };
 	fMicroSecs   const timeStart    { max(usEnd - usInWindow, pSignal->GetStartTime()) };
-	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(*pSignal, usEnd) };
+	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getSignalValue(*pSignal, usEnd) };
 
 	for (fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement)
 	{
-		fMicroSecs const  usEnd    { m_pNMRI->GetSimulationTime() };
-		fPixelPoint const actPoint { -m_horzCoord.Transform2fPixelPos(usEnd - time), fPixYoff - getYvalue(*pSignal, time) };
+		fPixel      const fPixX    { m_fPixWinWidth - m_horzCoord.Transform2fPixelSize(usEnd - time) }; 
+		fPixelPoint const actPoint { fPixX, fPixYoff - getSignalValue(*pSignal, time) };
 		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
@@ -212,36 +214,29 @@ void MonitorWindow::doPaint() const
 	{
 		fPixel         const fPHeight { calcTrackHeight() };
 		fPixelPoint    const pos      {	0._fPixel, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
-		fPixelRectSize const size     {	m_fPixWinWidth, fPHeight };
+		fPixelRectSize const size     {	m_fPixWinWidth + 1, fPHeight };
 		m_graphics.FillRectangle(fPixelRect(pos, size), NNetColors::COL_BEACON);
 	}
 
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
-	if (m_pMonitorData->IsAnySignalSelected())
-		drawDiamond();
+	m_graphics.FillDiamond(calcDiamondPos(), 4.0_fPixel, NNetColors::COL_DIAMOND);
 }
 
-void MonitorWindow::drawDiamond() const
+fPixelPoint const MonitorWindow::calcDiamondPos() const
 {
-	SignalId   const & idSignal { m_pMonitorData->GetHighlightedSignalId() };
-	if (Signal const * pSignal  { m_pMonitorData->GetSignalPtr(idSignal) })
-	{
-		PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition() };
-		fPixel     const   fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
-		fMicroSecs const   usMax        { findNextMax(*pSignal, fPixCrsrX) };
-		fMicroSecs const   usEnd        { m_pNMRI->GetSimulationTime() };
-		fPixel     const   fPixMax      { -m_horzCoord.Transform2fPixelPos(usEnd - usMax) };
-		fPixel     const   fPixYoff     { getSignalOffset(idSignal) };
-		fPixel     const   fPixYvalue   { fPixYoff - getYvalue(*pSignal, usMax) };
-
-		m_graphics.FillDiamond
-		(
-			fPixelPoint(fPixMax, fPixYvalue),
-			4.0_fPixel,
-			NNetColors::COL_DIAMOND
-		);
-	}
+	SignalId const & idSignal { m_pMonitorData->GetHighlightedSignalId() };
+	Signal   const * pSignal  { m_pMonitorData->GetSignalPtr(idSignal) };
+	if (!pSignal)
+		return fPP_NULL;
+	PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
+	fPixel     const fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
+	fMicroSecs const usMax        { findNextMax(*pSignal, fPixCrsrX) };
+	fMicroSecs const usEnd        { m_pNMRI->GetSimulationTime() };
+	fPixel     const fPixMaxX     { m_fPixWinWidth - m_horzCoord.Transform2fPixelSize(usEnd-usMax) };
+	fPixel     const fPixYoff     { getSignalOffset(idSignal) };
+	fPixel     const fPixYvalue   { fPixYoff - getSignalValue(*pSignal, usMax) };
+	return fPixelPoint(fPixMaxX, fPixYvalue);
 }
 
 SignalNr const MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptCrsr) const
@@ -268,8 +263,7 @@ SignalNr const MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const
 			Signal const & signal { * m_pMonitorData->GetSignalPtr(SignalId(trackNr, signalNr)) };
 			if (umTime >= signal.GetStartTime())
 			{
-				fPixel const fPixAmplitude { getYvalue(signal, umTime) };
-				fPixel const fPixDelta     { fPixAmplitude - fPixCrsrY };
+				fPixel const fPixDelta     { fPixCrsrY - getSignalValue(signal, umTime) };
 				fPixel const fPixDeltaAbs  { fPixDelta.GetAbs() };
 				if (fPixDeltaAbs < fPixBestDelta)
 				{
@@ -438,13 +432,17 @@ void MonitorWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			SetCursor(m_hCrsrWE);
 			Trigger();
 		}
-
 	}
+	Trigger();   // cause repaint
 	(void)TrackMouseEvent(& m_trackStruct);
 }
 
 void MonitorWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam) 
 {
+	fPixelPoint const fPixDiamondPos { calcDiamondPos() };
+	if (fPixDiamondPos.IsNull())
+		return;
+		
 	if (! m_pMonitorData->IsAnySignalSelected())
 		return;
 
@@ -453,11 +451,7 @@ void MonitorWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lPara
 
 	if (m_measurement.IsClose2LeftLimit(fPixCrsrX) || m_measurement.IsClose2RightLimit(fPixCrsrX))
 	{
-		Signal     const & signal  { * m_pMonitorData->GetHighlightedSignal() };
-		fMicroSecs const   usEnd   { m_pNMRI->GetSimulationTime() };
-		fMicroSecs const   usMax   { findNextMax(signal, fPixCrsrX) };
-		fPixel     const   fPixMax { -m_horzCoord.Transform2fPixelPos(usEnd - usMax) };
-		m_measurement.MoveSelection(fPixMax);
+		m_measurement.MoveSelection(fPixDiamondPos.GetX());
 		m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
 		Trigger();  // cause repaint
 	}

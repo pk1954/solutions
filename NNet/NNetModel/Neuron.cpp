@@ -157,8 +157,8 @@ mV const Neuron::GetNextOutput() const
 
 void const Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const text) const
 {
-//	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
-//	context.DisplayText(umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow);
+	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
+	context.DisplayText(umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow);
 }
 
 void Neuron::DrawNeuronText(DrawContext const & context) const

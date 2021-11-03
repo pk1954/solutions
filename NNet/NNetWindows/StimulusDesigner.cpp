@@ -28,11 +28,12 @@ void StimulusDesigner::Start
 	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"StimulusDesigner");
 
-	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 400._MicroSecs); 
+	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 40000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 	m_horzCoord.RegisterObserver(this);
-	m_horzScale.InitHorzScale(& m_horzCoord, & m_graphics, L"s", 1e6f);
+
+	m_horzScale.InitHorzScale(&m_horzCoord, &m_graphics, L"s", 1e6f);
 	m_horzScale.SetOrientation(false);
 	m_horzScale.Recalc();
 
@@ -40,6 +41,7 @@ void StimulusDesigner::Start
 	m_vertCoord.SetPixelSizeLimits(0.001_fHertz, 100._fHertz); 
 	m_vertCoord.SetZoomFactor(1.3f);
 	m_vertCoord.RegisterObserver(this);
+
 	m_vertScale.InitVertScale(& m_vertCoord, & m_graphics, L"Hz", 1e0f);	
 	m_vertScale.SetOrientation(true);
 	m_vertScale.Recalc();

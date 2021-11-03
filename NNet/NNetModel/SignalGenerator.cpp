@@ -9,7 +9,7 @@
 SignalGenerator::SignalGenerator()
 {
 	SetBaseFrequency(fHertz(m_pParameters->GetParameterValue(ParamType::Value::stdPulseRate)));
-	SetStimulusMax(2000._MicroSecs, 50.0_fHertz);
+	SetStimulusMax(1000000._MicroSecs, 500.0_fHertz);
 }
 
 void SignalGenerator::TriggerStimulus()

@@ -40,13 +40,14 @@ private:
 	TrackNr    const findTrack        (PIXEL const) const;
 	TrackNr    const findPos4NewTrack (PIXEL const) const;
 	fPixel     const getSignalOffset  (SignalId   const &) const;
-	fPixel     const getYvalue        (Signal const &, fMicroSecs const) const;
+	fPixel     const getSignalValue   (Signal const &, fMicroSecs const) const;
 	fMicroSecs const findNextMax      (Signal const &, fPixel     const) const;
 	void             highlightSignal  (SignalId const &);
 
 	void doPaint() const;
 	void paintSignal(SignalId const &) const;
-	void drawDiamond() const;
+
+	fPixelPoint const calcDiamondPos() const;
 
 	virtual void OnPaint();
 	virtual bool OnSize              (WPARAM const, LPARAM const);
