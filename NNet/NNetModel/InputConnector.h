@@ -32,8 +32,9 @@ public:
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 
 	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
+	void Tick           () { m_signalGenerator.Tick(); }
 
-	fHertz const GetFrequency() { return m_signalGenerator.GetFrequency(); }
+	fHertz const GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
 
 private:
 

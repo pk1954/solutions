@@ -8,6 +8,8 @@
 #include "win32_textWindow.h"
 
 using std::wostringstream;
+using std::setprecision;
+using std::fixed;
 
 class MainWindow;
 class NNetModelReaderInterface;
@@ -31,15 +33,15 @@ public:
 
 private:
 	MainWindow               const * m_pMainWindow { nullptr };
-	NNetModelReaderInterface const * m_pNMRI        { nullptr };
+	NNetModelReaderInterface const * m_pNMRI       { nullptr };
 
-	void printMicroMeter(TextBuffer &,	MicroMeter const);
+	void printMicroMeter(TextBuffer &, MicroMeter const);
 	void printMilliSecs (TextBuffer &, MilliSecs  const);
 
 	template <typename T> void printFrequency(TextBuffer & textBuf, T const freq)
 	{
 		wostringstream wBuffer;
-		wBuffer << freq.GetValue() << L" Hz";
+		wBuffer << fixed << setprecision(1) << freq.GetValue() << L" Hz";
 		textBuf.printString(wBuffer.str());
 		textBuf.nextLine();
 	}
@@ -51,5 +53,4 @@ private:
 		textBuf.printString(wBuffer.str());
 		textBuf.nextLine();
 	}
-
 };

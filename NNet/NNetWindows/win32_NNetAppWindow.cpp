@@ -191,6 +191,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_dynamicModelObservable.RegisterObserver(& m_miniNNetWindow);
 	m_dynamicModelObservable.RegisterObserver(& m_monitorWindow);
 	m_dynamicModelObservable.RegisterObserver(& m_timeDisplay);
+	m_dynamicModelObservable.RegisterObserver(& m_crsrWindow);
 	m_staticModelObservable .RegisterObserver(& m_mainNNetWindow);
 	m_staticModelObservable .RegisterObserver(& m_miniNNetWindow);
 	m_staticModelObservable .RegisterObserver(& m_monitorWindow);

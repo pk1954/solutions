@@ -39,16 +39,18 @@ void InputNeuron::Check() const
 	assert(!HasIncoming());
 }
 
-fHertz const InputNeuron::getFrequency() const
+fHertz const InputNeuron::GetActFrequency() const
 {
 	return HasParentNob()
-		? static_cast<InputConnector &>(*GetParentNob()).GetFrequency()
+		? static_cast<InputConnector *>(GetParentNob())->GetActFrequency()
 		: m_pParameters->StdPulseRate();
 }
 
 void InputNeuron::Prepare()
 {
-	fHertz     const freq            { getFrequency() };
+	if (HasParentNob())
+		static_cast<InputConnector *>(GetParentNob())->Tick();
+	fHertz     const freq            { GetActFrequency() };
 	fMicroSecs const time2Trigger    { PulseDuration(freq) };
 	float      const ticks2Trigger   { time2Trigger / m_pParameters->TimeResolution() };
 	mV         const increasePerTick { m_pParameters->Threshold() / ticks2Trigger };
@@ -107,13 +109,13 @@ void InputNeuron::drawSocket
 
 void InputNeuron::DrawNeuronText(DrawContext const & context) const
 { 
-	wostringstream m_wBuffer;
+	//wostringstream m_wBuffer;
 
-	m_wBuffer.clear();
-	m_wBuffer.str(wstring());
-	m_wBuffer << fixed << setprecision(2) 
-		      << getFrequency()
-		      << L"Hz";
+	//m_wBuffer.clear();
+	//m_wBuffer.str(wstring());
+	//m_wBuffer << fixed << setprecision(2) 
+	//	      << GetActFrequency()
+	//	      << L"Hz";
 
-	DisplayText(context, GetRect4Text(), m_wBuffer.str());
+	//DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }

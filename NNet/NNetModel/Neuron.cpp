@@ -163,10 +163,10 @@ void const Neuron::DisplayText(DrawContext const & context, MicroMeterRect const
 
 void Neuron::DrawNeuronText(DrawContext const & context) const
 { 
-	wostringstream m_wBuffer;
-	m_wBuffer.precision(2);
-	m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
-	DisplayText(context, GetRect4Text(), m_wBuffer.str());
+	//wostringstream m_wBuffer;
+	//m_wBuffer.precision(2);
+	//m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
+	//DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }
 
 MicroMeterPnt Neuron::getAxonHillockPos() const

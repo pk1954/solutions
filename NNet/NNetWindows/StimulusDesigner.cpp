@@ -29,7 +29,7 @@ void StimulusDesigner::Start
 	SetWindowText(hwnd, L"StimulusDesigner");
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 40000._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(1000._MicroSecs, 1000000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 	m_horzCoord.RegisterObserver(this);
 
@@ -38,7 +38,7 @@ void StimulusDesigner::Start
 	m_horzScale.Recalc();
 
 	m_vertCoord.SetPixelSize(0.25_fHertz);
-	m_vertCoord.SetPixelSizeLimits(0.001_fHertz, 100._fHertz); 
+	m_vertCoord.SetPixelSizeLimits(0.001_fHertz, 10._fHertz); 
 	m_vertCoord.SetZoomFactor(1.3f);
 	m_vertCoord.RegisterObserver(this);
 

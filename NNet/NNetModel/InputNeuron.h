@@ -27,6 +27,8 @@ public:
 
 	static bool const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
+	fHertz const GetActFrequency() const;
+
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
 
@@ -38,9 +40,8 @@ public:
 
 private:
 
-	MicroMeterPnt const getOffset   () const;
-	MicroMeterPnt const getCenter   () const;
-	fHertz        const getFrequency() const;
+	MicroMeterPnt const getOffset() const;
+	MicroMeterPnt const getCenter() const;
 
 	void drawSocket
 	(

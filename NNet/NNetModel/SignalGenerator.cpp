@@ -9,12 +9,13 @@
 SignalGenerator::SignalGenerator()
 {
 	SetBaseFrequency(fHertz(m_pParameters->GetParameterValue(ParamType::Value::stdPulseRate)));
-	SetStimulusMax(1000000._MicroSecs, 500.0_fHertz);
+	SetStimulusMax(500000._MicroSecs, 50.0_fHertz);
+	m_fActFrequency = m_fBaseFrequency;
 }
 
 void SignalGenerator::TriggerStimulus()
 {
-	m_bTriggered = true;
+	m_bStimulusActive = true;
 	m_usSinceLastStimulus = 0._MicroSecs;
 }
 
@@ -25,18 +26,18 @@ fHertz const SignalGenerator::SetBaseFrequency(fHertz const freq)
 	return fOldValue;
 }
 
-fHertz const SignalGenerator::GetFrequency()
+void SignalGenerator::Tick()
 {
-	if (!m_bTriggered)
-		return m_fBaseFrequency;
-	fHertz freq { m_fBaseFrequency };
-	m_usSinceLastStimulus += m_pParameters->TimeResolution();
-	fHertz const freqStimulus { StimulusFunc(m_usSinceLastStimulus) };
-	if (freqStimulus > m_fCutoffFrequency)
-		freq += freqStimulus;
-	else
-		m_bTriggered = false;
-	return freq;
+	m_fActFrequency = m_fBaseFrequency;
+	if (m_bStimulusActive)
+	{
+		m_usSinceLastStimulus += m_pParameters->TimeResolution();
+		fHertz const freqStimulus { StimulusFunc(m_usSinceLastStimulus) };
+		if (freqStimulus > m_fCutoffFrequency)
+			m_fActFrequency += freqStimulus;
+		else
+			m_bStimulusActive = false;
+	}
 }
 
 fHertz const SignalGenerator::StimulusFunc(fMicroSecs const stimulusTime) const

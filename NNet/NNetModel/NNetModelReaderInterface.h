@@ -44,6 +44,7 @@ public:
 	mV            const   GetVoltage                (NobId const) const;
 	mV            const   GetVoltage                (NobId const, MicroMeterPnt const &) const;
 	Degrees       const   GetDirection              (NobId const) const; 
+	fHertz        const   GetActFrequency           (NobId const) const; 
 
 	wstring       const   GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
 	MicroMeterPnt const   GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }

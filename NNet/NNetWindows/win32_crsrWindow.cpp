@@ -35,8 +35,8 @@ void CrsrWindow::Start
 	NNetModelReaderInterface const * const pModelInterface
 ) 
 {
-	m_pMainWindow           = pNNetWindow;
-	m_pNMRI = pModelInterface;
+	m_pMainWindow = pNNetWindow;
+	m_pNMRI       = pModelInterface;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -139,15 +139,15 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 			                      textBuf.printString(L" msec");
 			textBuf.nextLine();
 		}
-		//if (type.IsInputNeuronType())
-		//{
-		//	textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
-		//	textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetBaseFrequency(id));
-		//	textBuf.nextLine();
-		//}
 	}
 	if (type.IsIoConnectorType())
 	{
+		if (type.IsInputConnectorType())
+		{
+			textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
+			textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetActFrequency(id));
+			textBuf.nextLine();
+		}
 		textBuf.AlignRight(); textBuf.printString(L"direction: ");
 		textBuf.AlignLeft();  printDegrees(textBuf, m_pNMRI->GetDirection(id));
 		textBuf.nextLine();

@@ -6,6 +6,7 @@
 #include "Nob.h"
 #include "DrawContext.h"
 #include "NNetModel.h"
+#include "InputConnector.h"
 #include "IoConnector.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
@@ -29,12 +30,17 @@ Degrees const NNetModelReaderInterface::GetDirection(NobId const id) const
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
-//fHertz const NNetModelReaderInterface::GetBaseFrequency(NobId const id) const 
-//{ 
-//	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
-//	return p ? p->GetBaseFrequency() : fHertz::NULL_VAL(); 
-//}
-//
+fHertz const NNetModelReaderInterface::GetActFrequency(NobId const id) const 
+{ 
+	NobType const type { GetNobType(id) };
+	if (type.IsInputConnectorType())
+		return m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetActFrequency();
+	else if (type.IsInputNeuronType())
+		return m_pModel->GetNobConstPtr<InputNeuron const *>(id)->GetActFrequency();
+	else
+		return fHertz::NULL_VAL(); 
+}
+
 size_t const NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
