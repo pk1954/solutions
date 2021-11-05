@@ -100,15 +100,43 @@ public:
 		);
 	}
 
+	fPixelRect const GetScaleRect() const
+	{
+		fPixel const fPixSize { 30.0_fPixel };
+		fPixelRect   rect(m_fPixPntStart, m_fPixPntEnd);
+
+		if (m_bScaleType)  //vertical
+		{
+			if (m_bOrientation)       
+				rect.SetLeft (m_fPixPntStart.GetX() - fPixSize);
+			else                      
+				rect.SetRight(m_fPixPntEnd.GetX() + fPixSize);
+		}
+		else     // horizontal
+		{
+			if (m_bOrientation)       
+				rect.SetTop   (m_fPixPntStart.GetY() - fPixSize);
+			else                      
+				rect.SetBottom(m_fPixPntEnd.GetY() + fPixSize);
+		}
+		return rect;
+	}
+
 private:
 
-	inline static COLORREF const SCALE_COLOR { RGB(0, 0, 0) };  // CLR_BLACK
+	inline static COLORREF const SCALE_COLOR    { RGB(0, 0, 0) };  // CLR_BLACK
+	inline static fPixel   const LONG_TICK      { 10._fPixel };
+	inline static fPixel   const MIDDLE_TICK    {  7._fPixel };
+	inline static fPixel   const SMALL_TICK     {  5._fPixel };
+	inline static fPixel   const TEXT_DIST2LINE { LONG_TICK + 2._fPixel };
+	inline static fPixel   const TEXT_HORZ_EXT  { 20._fPixel };
+	inline static fPixel   const TEXT_VERT_EXT  { 10._fPixel };
 
 	PixCoordFp<LogUnits> * m_pPixCoord       { nullptr }; 
 	D2D_driver           * m_pGraphics       { nullptr }; 
 	IDWriteTextFormat    * m_pTextFormat     { nullptr };
 	float                  m_fScaleFactor    { 1.0f };
-	bool                   m_bOrientation    { true };  // true: ticks on positive side of scale
+	bool                   m_bOrientation    { true };  // true: ticks on negative side of scale
 	bool                   m_bScaleType      { false }; // true: vertical, false: horizontal
 	fPixelPoint            m_fPixPntStart    {};
 	fPixelPoint            m_fPixPntEnd      {};
@@ -172,33 +200,29 @@ private:
 
 	void setTextBox()
 	{
-		static fPixel const DIST2TICK { 12._fPixel };
-		static fPixel const HORZ_EXT  { 20._fPixel };
-		static fPixel const VERT_EXT  { 10._fPixel };
-
 		fPixel horzDist { 0._fPixel };
 		fPixel vertDist { 0._fPixel };
 
 		if (m_bScaleType)  // vertical scale
 		{
-			horzDist = DIST2TICK + HORZ_EXT; 
+			horzDist = TEXT_DIST2LINE + TEXT_HORZ_EXT; 
 			if (m_bOrientation)
 				horzDist = - horzDist;
 			vertDist -= 4._fPixel;
 		}
 		else  // horizontal scale
 		{
-			vertDist = DIST2TICK + VERT_EXT;
+			vertDist = TEXT_DIST2LINE + TEXT_VERT_EXT;
 			if (m_bOrientation)
 				vertDist = - vertDist;
 		}
 
 		m_textBox = fPixelRect
 		(
-			horzDist - HORZ_EXT,    // left
-			vertDist - VERT_EXT,    // top
-			horzDist + HORZ_EXT,    // right
-			vertDist + VERT_EXT     // bottom
+			horzDist - TEXT_HORZ_EXT,    // left
+			vertDist - TEXT_VERT_EXT,    // top
+			horzDist + TEXT_HORZ_EXT,    // right
+			vertDist + TEXT_VERT_EXT     // bottom
 		);
 	}
 
@@ -221,14 +245,10 @@ private:
 
 	void displayTicks() const
 	{
-		static fPixel fLongTick  (10._fPixel);
-		static fPixel fMiddleTick( 7._fPixel);
-		static fPixel fSmallTick ( 5._fPixel);
-
 		int iNrOfTicks { abs(static_cast<int>((m_logEnd - m_logStart) / m_logTickDist)) };
 		for (int iRun = 0; iRun <= iNrOfTicks; ++iRun)
 		{
-			fPixel fTick { (iRun % 5 == 0) ? fLongTick : (iRun % 2 == 0) ? fMiddleTick : fSmallTick};
+			fPixel fTick { (iRun % 5 == 0) ? LONG_TICK : (iRun % 2 == 0) ? MIDDLE_TICK : SMALL_TICK};
 			fPixel fPix  { m_fPixTickDist * static_cast<float>(iRun) };
 			fPixel fPixA { m_pPixCoord->GetPixelOffset() + (m_bScaleType ? -fPix : fPix) }; 
 			displayTick(fPixA, fTick);

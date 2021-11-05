@@ -74,6 +74,11 @@ public:
 		assert(m_Bottom >= m_Top);
 	}
 
+	void SetLeft  (BASE_TYPE const val) { m_Left   = val; };
+	void SetTop   (BASE_TYPE const val) { m_Top    = val; };
+	void SetRight (BASE_TYPE const val) { m_Right  = val; };
+	void SetBottom(BASE_TYPE const val) { m_Bottom = val; };
+
     bool IsEmpty   () const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
 	bool IsNotEmpty() const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
 

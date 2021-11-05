@@ -9,8 +9,8 @@
 SignalGenerator::SignalGenerator()
 {
 	SetBaseFrequency(fHertz(m_pParameters->GetParameterValue(ParamType::Value::stdPulseRate)));
-	SetStimulusMax(500000._MicroSecs, 50.0_fHertz);
 	m_fActFrequency = m_fBaseFrequency;
+	SetStimulusMax(500000._MicroSecs, 50.0_fHertz);
 }
 
 void SignalGenerator::TriggerStimulus()
@@ -70,12 +70,8 @@ void SignalGenerator::SetStimulusMax(fMicroSecs uSecs, fHertz freq)
 	if (freq < 0._fHertz)
 		freq = 0._fHertz;
 	float const r { 1e3f/uSecs.GetValue() };
-	m_fParamA = freq * r * exp(1.0f - r);
-	m_fParamB = exp(r);
-	m_usCutoffTime = GetPeakTime() * m_fCutoffFactor;
-}
-
-fMicroSecs const SignalGenerator::GetPeakTime() const
-{
-	return fMicroSecs(1e3f/log(m_fParamB));
+	m_fParamA      = freq * r * exp(1.0f - r);
+	m_fParamB      = exp(r);
+	m_usPeakTime   = fMicroSecs(1e3f/log(m_fParamB));
+	m_usCutoffTime = m_usPeakTime * m_fCutoffFactor;
 }

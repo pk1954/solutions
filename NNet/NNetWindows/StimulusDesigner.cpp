@@ -52,6 +52,8 @@ void StimulusDesigner::Start
 	m_trackStruct.hwndTrack = hwnd;
 	m_pNMRI                 = &nmri;
 
+	m_fPixPntMax = getGraphPnt(m_pSignalGenerator->GetPeakTime());
+
 	m_hCrsrNS  = LoadCursor(NULL, IDC_SIZENS);
 	m_hCrsrAll = LoadCursor(NULL, IDC_SIZEALL);
 }
@@ -98,13 +100,13 @@ fPixelPoint const StimulusDesigner::getIntegralPnt(fMicroSecs const time) const
 
 void StimulusDesigner::doPaint() const
 {
-	D2D1::ColorF const color         { D2D1::ColorF::Black };
-	fMicroSecs   const usResolution  { m_pNMRI->TimeResolution() };
-	fMicroSecs   const usPixelSize   { m_horzCoord.GetPixelSize() };
-	fMicroSecs   const usIncrement   { (usPixelSize > usResolution) ? usPixelSize : usResolution };
-	fMicroSecs   const timeStart     { 0.0_MicroSecs };
-	fMicroSecs   const timeEnd       { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	fPixelPoint        prevPoint     { getGraphPnt(timeStart) };
+	D2D1::ColorF const color        { D2D1::ColorF::Black };
+	fMicroSecs   const usResolution { m_pNMRI->TimeResolution() };
+	fMicroSecs   const usPixelSize  { m_horzCoord.GetPixelSize() };
+	fMicroSecs   const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
+	fMicroSecs   const timeStart    { 0.0_MicroSecs };
+	fMicroSecs   const timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
+	fPixelPoint        prevPoint    { getGraphPnt(timeStart) };
 
 	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 	{
@@ -126,76 +128,85 @@ void StimulusDesigner::doPaint() const
 	//	prevPoint = actPoint;
 	//}
 
+	if (m_zoomMode == tZoomMode::HORZ)
+		m_graphics.FillRectangle(m_horzScale.GetScaleRect(), D2D1::ColorF::Aquamarine);
+	else if (m_zoomMode == tZoomMode::VERT)
+		m_graphics.FillRectangle(m_vertScale.GetScaleRect(), D2D1::ColorF::Aquamarine);
+
 	m_horzScale.Display();
 	m_vertScale.Display();
 
 	switch (m_trackMode)
 	{
 	case tTrackMode::MAX_PNT:
-		displayDiamondAtMaximum(DIAMOND_SIZE * 1.5f, D2D1::ColorF::Red);
+		displayDiamondAtMaximum(true);
 		break;
 	case tTrackMode::MAX_FREQ:
-		displayFreqMaxLine(m_fPixLineWidth + 2.f, D2D1::ColorF::Red);
+		displayFreqMaxLine(true);
 		break;
 	case tTrackMode::MAX_TIME:
-		displayTimeMaxLine(m_fPixLineWidth + 2.f, D2D1::ColorF::Red);
+		displayTimeMaxLine(true);
 		break;
 	case tTrackMode::BASE_FREQ:
-		displayBaseFrequency(timeStart, timeEnd, m_fPixLineWidth + 2.f, D2D1::ColorF::Red);
+		displayBaseFrequency(timeStart, timeEnd, true);
 		break;
 	default:
 		break;
 	}
-	displayDiamondAtMaximum(DIAMOND_SIZE, D2D1::ColorF::Lime);
-	displayFreqMaxLine(m_fPixLineWidth, D2D1::ColorF::Green);
-	displayTimeMaxLine(m_fPixLineWidth, D2D1::ColorF::Green);
-	displayBaseFrequency(timeStart, timeEnd, m_fPixLineWidth, D2D1::ColorF::Green);
+	displayDiamondAtMaximum(false);
+	displayFreqMaxLine     (false);
+	displayTimeMaxLine     (false);
+	displayBaseFrequency   (timeStart, timeEnd, false);
 }
 
 void StimulusDesigner::displayBaseFrequency
 (
-	fMicroSecs   const timeStart, 
-	fMicroSecs   const timeEnd,
-	fPixel       const fPixWidth,
-	D2D1::ColorF const col
+	fMicroSecs const timeStart, 
+	fMicroSecs const timeEnd,
+	bool       const bEmphasized
 ) const
 {		
 	fPixel      const fPixBaseFreq(getPixY(m_pSignalGenerator->GetBaseFrequency()));
 	fPixelPoint const fPixPntStart(getPixX(timeStart), fPixBaseFreq);
 	fPixelPoint const fPixPointEnd(getPixX(timeEnd),   fPixBaseFreq);
-	m_graphics.DrawLine(fPixPntStart, fPixPointEnd, fPixWidth, col);
-}
-
-void StimulusDesigner::displayFreqMaxLine(fPixel const fPixWidth, D2D1::ColorF const col) const
-{
-	fMicroSecs  const usPeakTime { m_pSignalGenerator->GetPeakTime() };
-	fPixelPoint const fPixPntMax { getGraphPnt(usPeakTime) };
 	m_graphics.DrawLine
 	(
-		fPixelPoint(fPixPntMax.GetX(),            fPixPntMax.GetY()), 
-		fPixelPoint(m_horzCoord.GetPixelOffset(), fPixPntMax.GetY()), 
-		fPixWidth, 
-		col
-	);
-}
-void StimulusDesigner::displayTimeMaxLine(fPixel const fPixWidth, D2D1::ColorF const col) const
-{
-	fMicroSecs  const usPeakTime { m_pSignalGenerator->GetPeakTime() };
-	fPixelPoint const fPixPntMax { getGraphPnt(usPeakTime) };
-	m_graphics.DrawLine
-	(
-		fPixelPoint(fPixPntMax.GetX(), fPixPntMax.GetY()), 
-		fPixelPoint(fPixPntMax.GetX(), m_vertCoord.GetPixelOffset()), 
-		fPixWidth, 
-		col
+		fPixPntStart, 
+		fPixPointEnd, 
+		bEmphasized ? 3.0_fPixel : 1.0_fPixel,
+		bEmphasized ? D2D1::ColorF::Red : D2D1::ColorF::Green
 	);
 }
 
-void StimulusDesigner::displayDiamondAtMaximum(fPixel const fPixSize, D2D1::ColorF const col) const
+void StimulusDesigner::displayFreqMaxLine(bool const bEmphasized) const
 {
-	fMicroSecs  const usPeakTime { m_pSignalGenerator->GetPeakTime() };
-	fPixelPoint const fPixPntMax { getGraphPnt(usPeakTime) };
-	m_graphics.FillDiamond(fPixPntMax, fPixSize, col);
+	m_graphics.DrawLine
+	(
+		fPixelPoint(m_fPixPntMax.GetX(),            m_fPixPntMax.GetY()), 
+		fPixelPoint(m_horzCoord.GetPixelOffset(), m_fPixPntMax.GetY()), 
+		bEmphasized ? 3.0_fPixel : 1.0_fPixel,
+		bEmphasized ? D2D1::ColorF::Red : D2D1::ColorF::Green
+	);
+}
+void StimulusDesigner::displayTimeMaxLine(bool const bEmphasized) const
+{
+	m_graphics.DrawLine
+	(
+		fPixelPoint(m_fPixPntMax.GetX(), m_fPixPntMax.GetY()), 
+		fPixelPoint(m_fPixPntMax.GetX(), m_vertCoord.GetPixelOffset()), 
+		bEmphasized ? 3.0_fPixel : 1.0_fPixel,
+		bEmphasized ? D2D1::ColorF::Red : D2D1::ColorF::Green
+	);
+}
+
+void StimulusDesigner::displayDiamondAtMaximum(bool const bEmphasized) const
+{
+	m_graphics.FillDiamond
+	(
+		m_fPixPntMax, 
+		bEmphasized ? DIAMOND_SIZE * 1.5f : DIAMOND_SIZE,
+		bEmphasized ? D2D1::ColorF::Red : D2D1::ColorF::Lime
+	);
 }
 
 void StimulusDesigner::OnPaint()
@@ -230,36 +241,42 @@ bool StimulusDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 	m_vertScale.SetOrthoOffset(fPixXoffset);
 	m_horzScale.Recalc();
 	m_vertScale.Recalc();
+	m_fPixPntMax = getGraphPnt(m_pSignalGenerator->GetPeakTime());
 	Trigger();  // cause repaint
 	return true;
 }
 
 bool StimulusDesigner::timeMaxLineSelected(fPixelPoint const & pos) const
 {
-	fHertz      const freqStart  { 0.0_fHertz };
-	fPixelPoint const fPixPntMax { getGraphPnt(m_pSignalGenerator->GetPeakTime()) };
-	return (Distance(pos.GetX(), fPixPntMax.GetX()) <= 10.0_fPixel)
-		&& (getPixY(freqStart) >= pos.GetY())
-		&& (pos.GetY() >= fPixPntMax.GetY());
+	return (Distance(pos.GetX(), m_fPixPntMax.GetX()) <= 10.0_fPixel)
+		&& (getPixY(0.0_fHertz) >= pos.GetY())
+		&& (pos.GetY() >= m_fPixPntMax.GetY());
 }
 
 bool StimulusDesigner::freqMaxLineSelected(fPixelPoint const & pos) const
 {
-	fMicroSecs  const timeStart  { 0.0_MicroSecs };
-	fPixelPoint const fPixPntMax { getGraphPnt(m_pSignalGenerator->GetPeakTime()) };
-	return (Distance(pos.GetY(), fPixPntMax.GetY()) <= 10.0_fPixel)
-		&& (getPixX(timeStart) <= pos.GetX())
-		&& (pos.GetX() <= fPixPntMax.GetX());
+	return (Distance(pos.GetY(), m_fPixPntMax.GetY()) <= 10.0_fPixel)
+		&& (getPixX(0.0_MicroSecs) <= pos.GetX())
+		&& (pos.GetX() <= m_fPixPntMax.GetX());
 }
 
 bool StimulusDesigner::baseLineSelected(fPixelPoint const & pos) const
 {
-	fMicroSecs const timeStart { 0.0_MicroSecs };
-	fMicroSecs const timeEnd   { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	fPixel     const fPixFreq  { getPixY(m_pSignalGenerator->GetBaseFrequency()) };
+	fMicroSecs const timeEnd  { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
+	fPixel     const fPixFreq { getPixY(m_pSignalGenerator->GetBaseFrequency()) };
 	return (Distance(pos.GetY(), fPixFreq) <= 10.0_fPixel)
-		&& (getPixX(timeStart) <= pos.GetX())
+		&& (getPixX(0.0_MicroSecs) <= pos.GetX())
 		&& (pos.GetX() <= getPixX(timeEnd));
+}
+
+bool StimulusDesigner::horzScaleSelected(fPixelPoint const & pos) const
+{
+	return m_horzScale.GetScaleRect().Includes(pos);
+}
+
+bool StimulusDesigner::vertScaleSelected(fPixelPoint const & pos) const
+{
+	return m_vertScale.GetScaleRect().Includes(pos);
 }
 
 void StimulusDesigner::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -290,11 +307,11 @@ void StimulusDesigner::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		default:
 			break;
 		}
+		m_fPixPntMax = getGraphPnt(m_pSignalGenerator->GetPeakTime());
 	}
 	else  // left button not pressed: select
 	{
-		fPixelPoint const fPixPntMax { getPixPnt(usPeakTime, freqMax) };
-		if (Distance(fPixCrsrPos, fPixPntMax) <= 20.0_fPixel) 
+		if (Distance(fPixCrsrPos, m_fPixPntMax) <= 20.0_fPixel) 
 			m_trackMode = tTrackMode::MAX_PNT;
 		else if (baseLineSelected(fPixCrsrPos))
 			m_trackMode = tTrackMode::BASE_FREQ;
@@ -304,6 +321,13 @@ void StimulusDesigner::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			m_trackMode = tTrackMode::MAX_TIME;
 		else
 			m_trackMode = tTrackMode::NONE;
+
+		if (horzScaleSelected(fPixCrsrPos))
+			m_zoomMode = tZoomMode::HORZ;
+		else if (vertScaleSelected(fPixCrsrPos))
+			m_zoomMode = tZoomMode::VERT;
+		else
+			m_zoomMode = tZoomMode::NONE;
 	}
 	Trigger();   // cause repaint
 	(void)TrackMouseEvent(& m_trackStruct);
@@ -313,6 +337,9 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
 	static float const ZOOM_FACTOR { 1.3f };
 
+	if (m_zoomMode == tZoomMode::NONE)
+		return;
+
 	int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 	bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
 	bool const bDirection { iDelta > 0 };
@@ -320,10 +347,12 @@ void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 
 	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 	{
-		bResult = bShiftKey 
-			      ? m_horzCoord.Zoom(bDirection)
-			      : m_vertCoord.Zoom(bDirection);
+		if (m_zoomMode == tZoomMode::HORZ)
+			bResult = m_horzCoord.Zoom(bDirection);
+		else if (m_zoomMode == tZoomMode::VERT)
+			bResult = m_vertCoord.Zoom(bDirection);
 	}
+	m_fPixPntMax = getGraphPnt(m_pSignalGenerator->GetPeakTime());
 	if (!bResult)
 		MessageBeep(MB_ICONWARNING);
 }

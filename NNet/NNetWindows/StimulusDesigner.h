@@ -50,23 +50,28 @@ private:
 	fPixelPoint const getGraphPnt   (fMicroSecs const)               const;
 	fPixelPoint const getIntegralPnt(fMicroSecs const)               const;
 
+	bool horzScaleSelected  (fPixelPoint const &) const;
+	bool vertScaleSelected  (fPixelPoint const &) const;
 	bool baseLineSelected   (fPixelPoint const &) const;
 	bool freqMaxLineSelected(fPixelPoint const &) const;
 	bool timeMaxLineSelected(fPixelPoint const &) const;
 
-	void displayBaseFrequency(fMicroSecs const, fMicroSecs const, fPixel const, D2D1::ColorF const) const;
-	void displayFreqMaxLine(fPixel const, D2D1::ColorF const) const;
-	void displayTimeMaxLine(fPixel const, D2D1::ColorF const) const;
-	void displayDiamondAtMaximum(fPixel const, D2D1::ColorF const) const;
+	void displayBaseFrequency   (fMicroSecs const, fMicroSecs const, bool const) const;
+	void displayFreqMaxLine     (bool const) const;
+	void displayTimeMaxLine     (bool const) const;
+	void displayDiamondAtMaximum(bool const) const;
 
 	enum class tTrackMode { NONE, MAX_PNT, MAX_FREQ, MAX_TIME, BASE_FREQ };
+	enum class tZoomMode  { NONE, HORZ, VERT };
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
 	D2D_driver                       m_graphics         { };
 	tTrackMode                       m_trackMode        { tTrackMode::NONE };
+	tZoomMode                        m_zoomMode         { tZoomMode::NONE };
 	fPixel                           m_fPixGraphWidth   { 0.0_fPixel };
 	fPixel                           m_fPixLineWidth    { 1.0_fPixel };
+	fPixelPoint                      m_fPixPntMax       { };
 	NNetModelReaderInterface const * m_pNMRI            { nullptr };
 	SignalGenerator                * m_pSignalGenerator { nullptr };
 	Scale<fMicroSecs>                m_horzScale;
