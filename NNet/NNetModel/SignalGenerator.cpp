@@ -57,6 +57,11 @@ float const SignalGenerator::StimulusIntegral(fMicroSecs const stimulusTime) con
 	return fRes * 1e-3f;
 }
 
+fHertz const SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
+{
+	return m_fBaseFrequency + StimulusFunc(uSecs);
+}
+
 void SignalGenerator::SetStimulusMax(fMicroSecs uSecs, fHertz freq)
 {
 	freq -= m_fBaseFrequency;

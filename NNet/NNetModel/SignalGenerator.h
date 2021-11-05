@@ -27,6 +27,8 @@ public:
 	fHertz const GetBaseFrequency() const { return m_fBaseFrequency; }
 	fHertz const GetActFrequency () const { return m_fActFrequency;  }
 
+	fHertz const GetFrequency(fMicroSecs const) const;
+
 	fMicroSecs const GetPeakTime() const;
 
 private:

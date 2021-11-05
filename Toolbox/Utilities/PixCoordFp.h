@@ -101,7 +101,7 @@ public:
 	void Center
 	(
 		LOG_UNIT const umCenter,   
-		fPixel     const fPntPix  
+		fPixel   const fPntPix  
 	)
 	{
 		SetPixelOffset(Transform2fPixelSize(umCenter) - fPntPix);

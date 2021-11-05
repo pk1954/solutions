@@ -24,7 +24,13 @@ public:
 		HWND                     const,
 		SignalGenerator        * const,
 		NNetModelReaderInterface const &
-    );
+	);
+
+	void SetSignalGenerator(SignalGenerator * const pSG)
+	{
+		m_pSignalGenerator = pSG;
+		Trigger();  // cause repaint
+	}
 
 	void Reset();
 	void Stop();
@@ -38,17 +44,27 @@ private:
 	virtual void OnMouseMove (WPARAM const, LPARAM const);
 	virtual void OnMouseWheel(WPARAM const, LPARAM const);
 
-	fPixelPoint const getPixPnt  (fMicroSecs const, fHertz const) const;
-	fPixelPoint const getGraphPnt(fMicroSecs const)               const;
+	fPixel      const getPixX       (fMicroSecs const) const;
+	fPixel      const getPixY       (fHertz     const) const;
+	fPixelPoint const getPixPnt     (fMicroSecs const, fHertz const) const;
+	fPixelPoint const getGraphPnt   (fMicroSecs const)               const;
 	fPixelPoint const getIntegralPnt(fMicroSecs const)               const;
 
-	void displayBaseFrequency(fMicroSecs const, fMicroSecs const) const;
-	void displayDiamondAtMaximum()const;
+	bool baseLineSelected   (fPixelPoint const &) const;
+	bool freqMaxLineSelected(fPixelPoint const &) const;
+	bool timeMaxLineSelected(fPixelPoint const &) const;
+
+	void displayBaseFrequency(fMicroSecs const, fMicroSecs const, fPixel const, D2D1::ColorF const) const;
+	void displayFreqMaxLine(fPixel const, D2D1::ColorF const) const;
+	void displayTimeMaxLine(fPixel const, D2D1::ColorF const) const;
+	void displayDiamondAtMaximum(fPixel const, D2D1::ColorF const) const;
+
+	enum class tTrackMode { NONE, MAX_PNT, MAX_FREQ, MAX_TIME, BASE_FREQ };
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
 	D2D_driver                       m_graphics         { };
-	bool                             m_bTrackingActive  { false };
+	tTrackMode                       m_trackMode        { tTrackMode::NONE };
 	fPixel                           m_fPixGraphWidth   { 0.0_fPixel };
 	fPixel                           m_fPixLineWidth    { 1.0_fPixel };
 	NNetModelReaderInterface const * m_pNMRI            { nullptr };
