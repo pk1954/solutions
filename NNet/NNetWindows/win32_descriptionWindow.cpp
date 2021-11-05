@@ -36,17 +36,6 @@ void DescriptionWindow::Start(HWND const hwndParent)
         GetModuleHandle(nullptr), 
         NULL
    );          
-    //m_hwndEdit = CreateWindow
-    //(
-    //    L"EDIT",                 // predefined class 
-    //    NULL,        
-    //    WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOHSCROLL|ES_AUTOVSCROLL, 
-    //    0, 0, 0, 0,              // set size in WM_SIZE message 
-    //    hwndDlg,                 // parent window 
-    //    (HMENU)ID_EDIT_CTRL,     // control id
-    //    GetModuleHandle(nullptr), 
-    //    NULL
-    //);          
 }
 
 void DescriptionWindow::Stop()
@@ -90,6 +79,11 @@ bool const DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & ws
     return false;
 }
 
+void DescriptionWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
+{
+    int i = 42;
+}
+
 bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
     // control notifications
@@ -111,19 +105,19 @@ bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixe
         return true; 
 
     case IDM_DELETE: 
-         {
-             DWORD dwSelStart { 0L };
-             DWORD dwSelEnd   { 0L };
-             ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
-             if (dwSelStart == dwSelEnd)
-             {
-                 int iNrOfChars { ::Edit_GetTextLength(m_hwndEdit) };  
-                 if (dwSelStart == iNrOfChars)                         // if cursor is at end
-                     break;                                              // nothing to delete
-                 Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
-             }
-             ::SendMessage(m_hwndEdit, WM_CLEAR, 0, 0); 
-         }
+        {
+            DWORD dwSelStart { 0L };
+            DWORD dwSelEnd   { 0L };
+            ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
+            if (dwSelStart == dwSelEnd)
+            {
+                int iNrOfChars { ::Edit_GetTextLength(m_hwndEdit) };  
+                if (dwSelStart == iNrOfChars)                         // if cursor is at end
+                    break;                                              // nothing to delete
+                Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
+            }
+            ::SendMessage(m_hwndEdit, WM_CLEAR, 0, 0); 
+        }
         return true; 
 
     default:

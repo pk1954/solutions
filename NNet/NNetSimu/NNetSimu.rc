@@ -103,7 +103,7 @@ IDC_NNET_SIMU_MAIN ACCELERATORS
     "p",       IDM_PARAM_WINDOW,    ASCII,   ALT
     "m",       IDM_MINI_WINDOW,     ASCII,   ALT
     "?",       IDM_ABOUT,           ASCII,   ALT
-    " ",       IDM_NEXT_SCRIPT_CMD, ASCII
+    "n",       IDM_NEXT_SCRIPT_CMD, ASCII,   ALT
     VK_BACK,   IDM_UNDO,            VIRTKEY, ALT
     VK_DELETE, IDM_DELETE,          VIRTKEY
     VK_ESCAPE, IDM_ESCAPE,          VIRTKEY
