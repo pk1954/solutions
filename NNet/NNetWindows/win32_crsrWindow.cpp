@@ -63,14 +63,22 @@ void CrsrWindow::printMicroMeter
 {
 	wostringstream wBuffer;
 	MicroMeter     umAbs { abs(um.GetValue()) };
-	wBuffer << std::fixed << setprecision(1);
+	wBuffer << fixed << setprecision(1);
 	if (umAbs < 1000.0_MicroMeter)
-		wBuffer << um.GetValue() << L" um ";
+		wBuffer << um.GetValue() << L"um ";
 	else if (umAbs < 1000000.0_MicroMeter)
-		wBuffer << um.GetValue() / 1000.0f << L" mm ";
+		wBuffer << um.GetValue() / 1000.0f << L"mm ";
 	else
-		wBuffer << um.GetValue() / 1000000.0f << L" m ";
+		wBuffer << um.GetValue() / 1000000.0f << L"m ";
 	textBuf.printString(wBuffer.str());
+}
+
+void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees)
+{
+	wostringstream wBuffer;
+	wBuffer << degrees.GetValue() << L"°";
+	textBuf.printString(wBuffer.str());
+	textBuf.nextLine();
 }
 
 void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec)
@@ -80,10 +88,17 @@ void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec)
 	textBuf.printString(wBuffer.str());
 }
 
+void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage)
+{
+	wostringstream wBuffer;
+	wBuffer << voltage.GetValue() << L"mV";
+	textBuf.printString(wBuffer.str());
+}
+
 void CrsrWindow::DoPaint(TextBuffer & textBuf)
 {
 	MicroMeterPnt const umPoint { m_pMainWindow->GetCursorPos() };
-	if (umPoint == NP_ZERO)
+	if (umPoint.IsNull())
 	{
 		textBuf.AlignLeft();
 		textBuf.printString(L"Cursor not in model window");
@@ -124,8 +139,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	}
 
 	textBuf.AlignRight(); textBuf.nextLine(L"potential ");
-	textBuf.AlignLeft();  textBuf.printFloat(potential.GetValue());
-	                      textBuf.printString(L" mV");
+	textBuf.AlignLeft();  printVoltage(textBuf, potential);
 	textBuf.nextLine();
 
 	if (type.IsAnyNeuronType())
@@ -136,7 +150,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 			textBuf.AlignRight(); textBuf.nextLine(L"trigger sound:");
 			textBuf.AlignLeft();  printFrequency(textBuf, sound.m_frequency);
 			                      printMilliSecs(textBuf, sound.m_duration);
-			                      textBuf.printString(L" msec");
+			                      textBuf.printString(L"msec");
 			textBuf.nextLine();
 		}
 	}

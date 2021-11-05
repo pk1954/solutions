@@ -210,7 +210,7 @@ MicroMeterPnt const MainWindow::GetCursorPos() const
 	PixelPoint const pixPoint { GetRelativeCrsrPosition() };
 	return IsInClientRect(pixPoint)
 		? GetCoordC().Transform2MicroMeterPntPos(pixPoint)
-		: NP_ZERO;
+		: NP_NULL;
 }
 
 void MainWindow::zoomStep(float const fFactor, fPixelPoint const fPixPointCenter)

@@ -37,19 +37,13 @@ private:
 
 	void printMicroMeter(TextBuffer &, MicroMeter const);
 	void printMilliSecs (TextBuffer &, MilliSecs  const);
+	void printDegrees   (TextBuffer &, Degrees    const);
+	void printVoltage   (TextBuffer &, mV         const);
 
 	template <typename T> void printFrequency(TextBuffer & textBuf, T const freq)
 	{
 		wostringstream wBuffer;
-		wBuffer << fixed << setprecision(1) << freq.GetValue() << L" Hz";
-		textBuf.printString(wBuffer.str());
-		textBuf.nextLine();
-	}
-
-	template <typename T> void printDegrees(TextBuffer & textBuf, T const degrees)
-	{
-		wostringstream wBuffer;
-		wBuffer << degrees.GetValue() << L"°";
+		wBuffer << fixed << setprecision(1) << freq.GetValue() << L"Hz ";
 		textBuf.printString(wBuffer.str());
 		textBuf.nextLine();
 	}

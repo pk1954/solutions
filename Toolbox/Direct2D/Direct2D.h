@@ -1,6 +1,6 @@
 // Direct2D.h
 //
-// Direct2D
+// Toolbox\Direct2D
 
 #pragma once
 
@@ -47,7 +47,7 @@ public:
     void DrawCircle (fPixelCircle  const &, D2D1::ColorF const, fPixel const) const;
     void FillEllipse(fPixelEllipse const &, D2D1::ColorF const) const;
     void DrawEllipse(fPixelEllipse const &, D2D1::ColorF const, fPixel const) const;
-    void FillArrow(fPixelPoint const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const) const;
+    void FillArrow  (fPixelPoint const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const) const;
     void FillDiamond(fPixelPoint const, fPixel const, D2D1::ColorF const) const;
     void Resize(int const, int const);
 

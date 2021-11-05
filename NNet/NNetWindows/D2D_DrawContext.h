@@ -17,7 +17,7 @@ public:
 	void Start(D2D_driver * const);
 	void Stop();
 
-	bool StartFrame(HDC const hDC) { return m_pGraphics->StartFrame(hDC);	}
+	bool StartFrame(HDC const hDC) { return m_pGraphics->StartFrame(hDC); }
 	void EndFrame() { m_pGraphics->EndFrame(); }
 
 	void Resize(int const, int const);

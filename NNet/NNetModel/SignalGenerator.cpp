@@ -32,24 +32,45 @@ void SignalGenerator::Tick()
 	if (m_bStimulusActive)
 	{
 		m_usSinceLastStimulus += m_pParameters->TimeResolution();
-		fHertz const freqStimulus { StimulusFunc(m_usSinceLastStimulus) };
-		if (freqStimulus > m_fCutoffFrequency)
-			m_fActFrequency += freqStimulus;
-		else
+		if (m_usSinceLastStimulus > m_usCutoffTime)
 			m_bStimulusActive = false;
+		else
+			m_fActFrequency += StimulusFunc(m_usSinceLastStimulus);
 	}
 }
 
 fHertz const SignalGenerator::StimulusFunc(fMicroSecs const stimulusTime) const
 {
-	float  const x              { stimulusTime.GetValue() * 1e-3f };  // convert to milliseconds
-	fHertz const fStimFrequency { m_fParamA * x * pow(m_fParamB, (1.0f - x)) };
-	return fStimFrequency;
+	if (stimulusTime > m_usCutoffTime)
+		return 0.0_fHertz;
+	float  const x { stimulusTime.GetValue() * 1e-3f };  // convert to milliseconds
+	return m_fParamA * x * pow(m_fParamB, (1.0f - x));
 }
 
-void SignalGenerator::SetStimulusMax(fMicroSecs const uSecs, fHertz const freq)
+float const SignalGenerator::StimulusIntegral(fMicroSecs const stimulusTime) const
 {
+	fMicroSecs const time { (stimulusTime < m_usCutoffTime)	? stimulusTime : m_usCutoffTime };
+	float      const x    { time.GetValue() * 1e-3f };  // convert to milliseconds
+	float      const lnB  { log(m_fParamB) };
+	float      const C    { m_fParamA.GetValue() * m_fParamB/(lnB*lnB) };
+	float      const fRes { C - m_fParamA.GetValue() * (lnB * x + 1) * pow(m_fParamB, (1.0f - x))/(lnB*lnB) };
+	return fRes * 1e-3f;
+}
+
+void SignalGenerator::SetStimulusMax(fMicroSecs uSecs, fHertz freq)
+{
+	freq -= m_fBaseFrequency;
+	if (uSecs < 0._MicroSecs)
+		uSecs = 0._MicroSecs;
+	if (freq < 0._fHertz)
+		freq = 0._fHertz;
 	float const r { 1e3f/uSecs.GetValue() };
 	m_fParamA = freq * r * exp(1.0f - r);
 	m_fParamB = exp(r);
+	m_usCutoffTime = GetPeakTime() * m_fCutoffFactor;
+}
+
+fMicroSecs const SignalGenerator::GetPeakTime() const
+{
+	return fMicroSecs(1e3f/log(m_fParamB));
 }

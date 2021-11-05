@@ -18,7 +18,7 @@ public:
 
 	PixCoordFp()
 	  : m_fPixOffset(0.0_fPixel),
-		m_logPixelSize (1.0f)
+		m_logPixelSize(1.0f)
 	{}
 
 	PixCoordFp
@@ -72,9 +72,9 @@ public:
 
 	//////// manipulation functions ////////
 
-	void Move(fPixel   const fPixDelta ) { m_fPixOffset -= fPixDelta; }
-	void Move(PIXEL    const pixDelta  ) { Move(::Convert2fPixel(pixDelta)); }
-	void Move(LOG_UNIT const umDelta   ) { Move(Transform2fPixelSize(umDelta)); }
+	void Move(fPixel   const fPixDelta) { m_fPixOffset -= fPixDelta; }
+	void Move(PIXEL    const pixDelta ) { Move(::Convert2fPixel(pixDelta)); }
+	void Move(LOG_UNIT const umDelta  ) { Move(Transform2fPixelSize(umDelta)); }
 
 	bool const Zoom(bool const bDirection)
 	{
@@ -181,7 +181,7 @@ public:
 		m_fZoomFactor = f; 
 	};
 
-	void SetOffset    (fPixel const o) 
+	void SetOffset(fPixel const o) 
 	{
 		m_fPixOffset = o; 
 		NotifyAll(false);

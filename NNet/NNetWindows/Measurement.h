@@ -22,8 +22,9 @@ public:
 	void ResetLimits();
 
 	void SetActive(bool const bState) { m_bActive = bState; }
-	bool IsActive()                   { return m_bActive; }
-	bool TrackingActive()             { return m_bSelectedLeft || m_bSelectedRight; }
+
+	bool IsActive()       const { return m_bActive; }
+	bool TrackingActive() const { return m_bSelectedLeft || m_bSelectedRight; }
 
 	bool IsClose2LeftLimit (fPixel const) const;
 	bool IsClose2RightLimit(fPixel const) const;

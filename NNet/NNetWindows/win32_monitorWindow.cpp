@@ -51,7 +51,7 @@ void MonitorWindow::Start
 	m_measurement.Initialize(& m_graphics);
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 400._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 4000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 	m_horzCoord.RegisterObserver(this);
 
@@ -220,7 +220,8 @@ void MonitorWindow::doPaint() const
 
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
-	m_graphics.FillDiamond(calcDiamondPos(), 4.0_fPixel, NNetColors::COL_DIAMOND);
+	if (m_measurement.TrackingActive())
+		m_graphics.FillDiamond(calcDiamondPos(), 4.0_fPixel, NNetColors::COL_DIAMOND);
 }
 
 fPixelPoint const MonitorWindow::calcDiamondPos() const
@@ -417,7 +418,6 @@ void MonitorWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			}
 		}
 		m_pixLast = pixCrsrPos;
-		Trigger();   // cause repaint
 	}
 	else  // left button not pressed: select
 	{
@@ -430,7 +430,6 @@ void MonitorWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		else if (m_measurement.Select(Convert2fPixel(pixCrsrPos.GetX())))
 		{
 			SetCursor(m_hCrsrWE);
-			Trigger();
 		}
 	}
 	Trigger();   // cause repaint

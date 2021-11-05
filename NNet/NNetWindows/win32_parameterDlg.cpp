@@ -50,7 +50,7 @@ HWND ParameterDialog::createStaticField(HWND const hwndParent, wchar_t const * c
 
 HWND ParameterDialog::createEditField(HWND const hwndParent, ParamType::Value const parameter, int & iXpos, int const iYpos, int const iWidth)
 {
-	HWND hwnd =  CreateWindow(L"Edit", 0, STYLE|ES_RIGHT, iXpos, iYpos, iWidth, HEIGHT, hwndParent, 0, GetModuleHandle(nullptr), 0);
+	HWND hwnd = CreateWindow(L"Edit", 0, STYLE|ES_RIGHT, iXpos, iYpos, iWidth, HEIGHT, hwndParent, 0, GetModuleHandle(nullptr), 0);
 	resetParameter(hwnd, parameter);
 	iXpos += iWidth + HORZ_SPACE;
 	return hwnd;

@@ -353,8 +353,8 @@ void D2D_driver::FillDiamond
 ) const
 {
 	fPixelPoint const ptOffset(fPixSize, fPixSize);
-	fPixelPoint const ptEndPoint1 { ptPos + fPixelPoint(-fPixSize, - fPixSize* 3.f) };
-	fPixelPoint const ptEndPoint2 { ptPos + fPixelPoint(fPixSize, - fPixSize) };
+	fPixelPoint const ptEndPoint1 { ptPos + fPixelPoint(-fPixSize, -fPixSize * 3.f) };
+	fPixelPoint const ptEndPoint2 { ptPos + fPixelPoint( fPixSize, -fPixSize      ) };
 	DrawLine(ptEndPoint1, ptEndPoint2, fPixSize * sqrtf(8.0f), colF);
 }
 
