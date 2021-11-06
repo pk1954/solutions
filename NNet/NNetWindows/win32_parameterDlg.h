@@ -7,6 +7,7 @@
 #include "win32_baseDialog.h"
 
 class Param;
+class NNetModelCommands;
 class NNetModelWriterInterface;
 
 class ParameterDialog : public BaseDialog

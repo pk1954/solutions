@@ -335,8 +335,6 @@ void StimulusDesigner::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 void StimulusDesigner::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-	static float const ZOOM_FACTOR { 1.3f };
-
 	if (m_zoomMode == tZoomMode::NONE)
 		return;
 

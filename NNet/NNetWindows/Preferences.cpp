@@ -14,6 +14,7 @@
 #include "SoundInterface.h"
 #include "NNetModelImporter.h"
 #include "NNetParameters.h"
+#include "win32_descriptionWindow.h"
 #include "win32_importTermination.h"
 #include "win32_NNetAppMenu.h"
 #include "Preferences.h"
@@ -61,6 +62,23 @@ private:
     Sound & m_sound;
 };
 
+class WrapDescWinFontSize: public ScriptFunctor
+{
+public:
+    WrapDescWinFontSize(DescriptionWindow & descWin)
+        : m_descWin(descWin)
+    {}
+
+    virtual void operator() (Script & script) const
+    {
+        int iSize { script.ScrReadInt() };
+        m_descWin.SetFontSize(iSize);
+    }
+
+private:
+    DescriptionWindow & m_descWin;
+};
+
 class WrapReadModel: public ScriptFunctor
 {
 public:
@@ -92,13 +110,15 @@ wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
 void Preferences::Initialize
 (
+    DescriptionWindow & descWin,
     Sound             & sound, 
     NNetModelImporter & modelImporter,
     HWND                hwndApp
 )
 {
-    m_pSound  = & sound;
-    m_hwndApp = hwndApp;
+    m_pDescWin = & descWin;
+    m_pSound   = & sound;
+    m_hwndApp  = hwndApp;
 
     wchar_t szBuffer[MAX_PATH];
     DWORD const dwRes = GetCurrentDirectory(MAX_PATH, szBuffer);
@@ -107,9 +127,10 @@ void Preferences::Initialize
     m_wstrPreferencesFile = szBuffer;
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    SymbolTable::ScrDefConst(L"SetAutoOpen", new WrapSetAutoOpen());
-    SymbolTable::ScrDefConst(L"SetSound",    new WrapSetSound (sound));
-    SymbolTable::ScrDefConst(L"ReadModel",   new WrapReadModel(modelImporter, m_hwndApp));
+    SymbolTable::ScrDefConst(L"SetAutoOpen",     new WrapSetAutoOpen());
+    SymbolTable::ScrDefConst(L"SetSound",        new WrapSetSound (sound));
+    SymbolTable::ScrDefConst(L"DescWinFontSize", new WrapDescWinFontSize(descWin));
+    SymbolTable::ScrDefConst(L"ReadModel",       new WrapReadModel(modelImporter, m_hwndApp));
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON,  1L);
@@ -135,9 +156,10 @@ bool Preferences::ReadPreferences()
 bool Preferences::WritePreferences(wstring const wstrModelPath)
 {
     wofstream prefFile(m_wstrPreferencesFile);
-    prefFile << L"SetSound "    << (m_pSound->IsOn() ? PREF_ON : PREF_OFF) << endl;
-	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
-    prefFile << L"ReadModel \"" << wstrModelPath << L"\"" << endl;
+    prefFile << L"DescWinFontSize" << L" " << m_pDescWin->GetFontSize()               << endl;
+    prefFile << L"SetSound"        << L" " << (m_pSound->IsOn() ? PREF_ON : PREF_OFF) << endl;
+    prefFile << L"SetAutoOpen"     << L" " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
+    prefFile << L"ReadModel \""    << wstrModelPath << L"\"" << endl;
     prefFile.close();
     wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;

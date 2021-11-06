@@ -16,6 +16,9 @@ public:
 	void Start(HWND const);
 	void Stop();
 
+	bool const SetFontSize(int const);
+	int  const GetFontSize() { return m_iFontSize; }
+
 	virtual void       ClearDescription();
 	virtual void       SetDescription(wstring const);
 	virtual int  const GetLineCount() const;
@@ -24,12 +27,17 @@ public:
 	virtual void       ResetDirtyFlag() { m_bDirty = false; };
 
 private:
-	HWND m_hwndEdit { nullptr };
-	bool m_bDirty   { false };
-
-	virtual void OnChar(WPARAM const, LPARAM const);
+	int   m_iFontSize { 20 };
+	HFONT m_hFont     { nullptr };
+	HWND  m_hwndEdit  { nullptr };
+	bool  m_bDirty    { false };
 
 	virtual void OnPaint  () { };
 	virtual bool OnSize   (WPARAM const, LPARAM const);
 	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+
+	bool const delChar();
+	void fontSize();
+
+	friend static LRESULT CALLBACK OwnerDrawEditBox(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 };

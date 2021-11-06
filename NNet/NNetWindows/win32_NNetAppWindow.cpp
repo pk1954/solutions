@@ -101,7 +101,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_cmdStack      .Initialize(&m_nmwi, &m_staticModelObservable);
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_appTitle      .Initialize(m_hwndApp, &m_nmri);
-	m_preferences   .Initialize(m_sound, m_modelImporter, m_hwndApp);
+	m_preferences   .Initialize(m_descWindow, m_sound, m_modelImporter, m_hwndApp);
 	m_NNetController.Initialize
 	(
 		& m_modelExporter,

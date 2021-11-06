@@ -9,9 +9,53 @@
 
 static WORD const ID_EDIT_CTRL { 42 };
 
+static LRESULT CALLBACK OwnerDrawEditBox(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+{
+    DescriptionWindow * const pDescWin = (DescriptionWindow *)dwRefData;
+    switch (uMsg)
+    {
+    case WM_MOUSEWHEEL:
+    {  
+        int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+        bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
+        bool const bDirection { iDelta > 0 };
+        bool       bResult    { true };
+
+        for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
+        {
+            int iNewSize = pDescWin->m_iFontSize + (bDirection ? -1 : +1);
+            bResult = pDescWin->SetFontSize(iNewSize);
+        }
+        if (!bResult)
+            MessageBeep(MB_ICONWARNING);
+    }
+        break;
+
+    default: 
+        break;
+    }
+
+    return DefSubclassProc(hwnd, uMsg, wParam, lParam);
+}
+
+bool const DescriptionWindow::SetFontSize(int const iSize)
+{
+    static int const MIN_SIZE { 12 };
+    static int const MAX_SIZE { 36 };
+
+    bool const bResult = (MIN_SIZE <= iSize) && (iSize <= MAX_SIZE);
+    if (bResult)
+    {
+        m_iFontSize = iSize;
+        fontSize();
+    }
+    return bResult;
+}
+
 void DescriptionWindow::Start(HWND const hwndParent)
 {
     PixelRect rect(100_PIXEL, 100_PIXEL, 200_PIXEL, 200_PIXEL);
+
     HWND const hwndDlg = StartBaseWindow
     (
         hwndParent, 
@@ -20,7 +64,7 @@ void DescriptionWindow::Start(HWND const hwndParent)
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
         & rect,
         nullptr
-   );
+    );
 
     SetWindowText(hwndDlg, L"Model description");
 
@@ -35,12 +79,43 @@ void DescriptionWindow::Start(HWND const hwndParent)
         (HMENU)ID_EDIT_CTRL,     // control id
         GetModuleHandle(nullptr), 
         NULL
-   );          
+    );
+
+    (void)SetWindowSubclass(m_hwndEdit, OwnerDrawEditBox, 0, (DWORD_PTR)this) ;
+
+    fontSize();
+}
+
+void DescriptionWindow::fontSize()
+{
+    if (m_hFont)
+        DeleteObject(m_hFont);
+
+    m_hFont = CreateFontA
+    (
+        m_iFontSize,  //[in] int    cHeight,
+        0,            //[in] int    cWidth,
+        0,            //[in] int    cEscapement,
+        0,            //[in] int    cOrientation,
+        0,            //[in] int    cWeight,
+        0,            //[in] DWORD  bItalic,
+        0,            //[in] DWORD  bUnderline,
+        0,            //[in] DWORD  bStrikeOut,
+        0,            //[in] DWORD  iCharSet,
+        0,            //[in] DWORD  iOutPrecision,
+        0,            //[in] DWORD  iClipPrecision,
+        0,            //[in] DWORD  iQuality,
+        0,            //[in] DWORD  iPitchAndFamily,
+        nullptr       //[in] LPCSTR pszFaceName
+    );
+
+    ::SendMessage(m_hwndEdit, WM_SETFONT, (WPARAM)m_hFont, true);
 }
 
 void DescriptionWindow::Stop()
 {
     DestroyWindow();
+    DeleteObject(m_hFont);
 }
 
 void DescriptionWindow::ClearDescription()
@@ -68,7 +143,7 @@ bool const DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & ws
         int iLineLength = Edit_LineLength(m_hwndEdit, iLineIndex);
         int iCharsRead  = Edit_GetLine   (m_hwndEdit, iLineNr, buffer, BUFLEN);
         for (int i = 0; i < iCharsRead; ++i)  // copy line to wstrDst 
-        {                                       // removing CR and LF characters
+        {                                     // removing CR and LF characters
             wchar_t c { buffer[i] };
             if ((c != L'\r') &&(c != L'\n'))
                 wstrDst += c;
@@ -77,11 +152,6 @@ bool const DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & ws
         return true;
     }
     return false;
-}
-
-void DescriptionWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
-{
-    int i = 42;
 }
 
 bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
@@ -105,26 +175,31 @@ bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixe
         return true; 
 
     case IDM_DELETE: 
-        {
-            DWORD dwSelStart { 0L };
-            DWORD dwSelEnd   { 0L };
-            ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
-            if (dwSelStart == dwSelEnd)
-            {
-                int iNrOfChars { ::Edit_GetTextLength(m_hwndEdit) };  
-                if (dwSelStart == iNrOfChars)                         // if cursor is at end
-                    break;                                              // nothing to delete
-                Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
-            }
-            ::SendMessage(m_hwndEdit, WM_CLEAR, 0, 0); 
-        }
-        return true; 
+        if (delChar())
+            return true; 
+        break;
 
     default:
         break;
     }
 
     return BaseWindow::OnCommand(wParam, lParam, pixPoint);
+}
+
+bool const DescriptionWindow::delChar()
+{
+    DWORD dwSelStart { 0L };
+    DWORD dwSelEnd   { 0L };
+    ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
+    if (dwSelStart == dwSelEnd)
+    {
+        int iNrOfChars { ::Edit_GetTextLength(m_hwndEdit) };  
+        if (dwSelStart == iNrOfChars)                         // if cursor is at end
+            return false;                                     // nothing to delete
+        Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
+    }
+    ::SendMessage(m_hwndEdit, WM_CLEAR, 0, 0); 
+    return true;
 }
 
 bool DescriptionWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
