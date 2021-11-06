@@ -1,4 +1,4 @@
-DescWinFontSize 21
-SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
+SetSound ON
+DescWinFontSize 21
+ReadModel "D:\SW-projects\Delivery\2021-10-11\PROT01 6-stuf-5-rueck.mod"
