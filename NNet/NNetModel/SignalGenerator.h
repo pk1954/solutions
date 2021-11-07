@@ -12,7 +12,10 @@ class SignalGenerator
 {
 public:
 
-	static void Initialize(Param const & param) { m_pParameters = & param; }
+	static void Initialize(Param const & param) 
+	{ 
+		m_pParameters = & param; 
+    }
 
 	SignalGenerator();
 

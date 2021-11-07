@@ -79,8 +79,5 @@ private:
 	PixCoordFp<fMicroSecs>           m_horzCoord;
 	PixCoordFp<fHertz>               m_vertCoord;
 
-	inline static HCURSOR m_hCrsrNS  { nullptr };
-	inline static HCURSOR m_hCrsrAll { nullptr };
-
 	inline static fPixel const DIAMOND_SIZE { 4.0_fPixel };
 };

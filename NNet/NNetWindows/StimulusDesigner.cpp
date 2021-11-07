@@ -53,9 +53,6 @@ void StimulusDesigner::Start
 	m_pNMRI                 = &nmri;
 
 	m_fPixPntMax = getGraphPnt(m_pSignalGenerator->GetPeakTime());
-
-	m_hCrsrNS  = LoadCursor(NULL, IDC_SIZENS);
-	m_hCrsrAll = LoadCursor(NULL, IDC_SIZEALL);
 }
 
 void StimulusDesigner::Reset()

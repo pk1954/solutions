@@ -5,9 +5,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include "WrapBase.h"
 
 using std::wstring;
+using std::vector;
 
+class NNetModelReaderInterface;
 class NNetModelImporter;
 class DescriptionWindow;
 class Sound;
@@ -15,12 +19,17 @@ class Sound;
 class Preferences
 {
 public:
-	void Initialize(DescriptionWindow &, Sound &, NNetModelImporter &, HWND const);
+	void Initialize
+	(
+		NNetModelReaderInterface &,
+		DescriptionWindow &, 
+		Sound &, 
+		NNetModelImporter &, 
+		HWND const
+	);
 	bool ReadPreferences();
-	bool WritePreferences(wstring const);
+	bool WritePreferences();
 
 private:
-	HWND                m_hwndApp;
-	Sound             * m_pSound;
-	DescriptionWindow * m_pDescWin;
+	vector<unique_ptr<WrapBase>> m_prefVector;
 };

@@ -101,7 +101,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_cmdStack      .Initialize(&m_nmwi, &m_staticModelObservable);
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_appTitle      .Initialize(m_hwndApp, &m_nmri);
-	m_preferences   .Initialize(m_descWindow, m_sound, m_modelImporter, m_hwndApp);
+	m_preferences   .Initialize(m_nmri, m_descWindow, m_sound, m_modelImporter, m_hwndApp);
 	m_NNetController.Initialize
 	(
 		& m_modelExporter,
@@ -450,13 +450,13 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_SAVE_MODEL:
 			if (SaveModel())
-				m_preferences.WritePreferences(m_nmri.GetModelFilePath());
+				m_preferences.WritePreferences();
 			break;
 
 		case IDM_SAVE_MODEL_AS:
 			m_computeThread.StopComputation();
 			if (SaveModelAs())
-				m_preferences.WritePreferences(m_nmri.GetModelFilePath());
+				m_preferences.WritePreferences();
 			break;
 
 		case IDM_OPEN_MODEL:

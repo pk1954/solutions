@@ -8,22 +8,22 @@
 #include <iostream>
 #include "Script.h"
 #include "errhndl.h"
-#include "symtab.h"
 #include "Resource.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
 #include "NNetModelImporter.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
 #include "win32_descriptionWindow.h"
 #include "win32_importTermination.h"
 #include "win32_NNetAppMenu.h"
+#include "win32_script.h"
 #include "Preferences.h"
 
 using std::wofstream;
 using std::wstring;
 using std::string;
 using std::wcout;
-using std::endl;
 using std::filesystem::exists;
 using std::filesystem::path;
 
@@ -37,33 +37,13 @@ static wstring const PREF_OFF { L"OFF" };
 
 static wstring m_wstrPreferencesFile;
 
-static unique_ptr<WrapSetAutoOpen    > m_upWrapSetAutoOpen     {};
-static unique_ptr<WrapSetSound       > m_upWrapSetSound        {};
-static unique_ptr<WrapDescWinFontSize> m_upWrapDescWinFontSize {};
-static unique_ptr<WrapReadModel      > m_upWrapReadModel       {};
-
-class WrapBase : public ScriptFunctor
-{
-public:
-    void SetName(wstring const & wstrName)
-    {
-        m_wstrName = wstrName;
-        SymbolTable::ScrDefConst(wstrName, this);
-    }
-
-    void Write(wostream & out)
-    {
-        out << m_wstrName << L" ";
-    }
-
-private:
-    wstring m_wstrName;
-};
-
-
 class WrapSetAutoOpen: public WrapBase
 {
 public:
+    WrapSetAutoOpen()
+      : WrapBase(L"SetAutoOpen")
+    {}
+
     virtual void operator() (Script & script) const
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
@@ -73,10 +53,9 @@ public:
             AutoOpen::Off();
     }
 
-    void Write(wostream& out)
+    virtual void Write(wostream & out) const
     {
-        WrapBase::Write(out);
-        out << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
+        out << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF);
     }
 };
 
@@ -84,7 +63,8 @@ class WrapSetSound: public WrapBase
 {
 public:
     WrapSetSound(Sound & sound)
-        : m_sound(sound)
+      : WrapBase(L"SetSound"),
+        m_sound(sound)
     {}
 
     virtual void operator() (Script & script) const
@@ -96,10 +76,9 @@ public:
             m_sound.Off();
     }
 
-    void Write(wostream& out)
+    virtual void Write(wostream & out) const
     {
-        WrapBase::Write(out);
-        out << (m_sound.IsOn() ? PREF_ON : PREF_OFF) << endl;
+        out << (m_sound.IsOn() ? PREF_ON : PREF_OFF);
     }
 
 private:
@@ -110,7 +89,8 @@ class WrapDescWinFontSize: public WrapBase
 {
 public:
     WrapDescWinFontSize(DescriptionWindow & descWin)
-      : m_descWin(descWin)
+      : WrapBase(L"DescWinFontSize"),
+        m_descWin(descWin)
     {}
 
     virtual void operator() (Script & script) const
@@ -118,10 +98,9 @@ public:
         m_descWin.SetFontSize(script.ScrReadInt());
     }
 
-    void Write(wostream& out)
+    virtual void Write(wostream & out) const
     {
-        WrapBase::Write(out);
-        out << m_descWin.GetFontSize() << endl;
+        out << m_descWin.GetFontSize();
     }
 
 private:
@@ -133,10 +112,13 @@ class WrapReadModel: public WrapBase
 public:
     WrapReadModel
     (
-        NNetModelImporter & modelImporter, 
-        HWND        const   hwndApp
+        NNetModelReaderInterface & nmri,
+        NNetModelImporter        & modelImporter, 
+        HWND               const   hwndApp
     )
-    : m_modelImporter(modelImporter),
+    : WrapBase(L"ReadModel"),
+      m_nmri(nmri),
+      m_modelImporter(modelImporter),
       m_hwndApp(hwndApp)
     {}
 
@@ -150,29 +132,26 @@ public:
         }
      }
 
-    void Write(wostream& out, wstring const wstrModelPath)
+    virtual void Write(wostream & out) const
     {
-        WrapBase::Write(out);
-        out <<  L"\""  << wstrModelPath << L"\"" << endl;
+        out <<  L"\""  << m_nmri.GetModelFilePath() << L"\"";
     }
 
 private:
-    NNetModelImporter & m_modelImporter;
-    HWND                m_hwndApp;
+    NNetModelReaderInterface & m_nmri;
+    NNetModelImporter        & m_modelImporter;
+    HWND                       m_hwndApp;
 };
 
 void Preferences::Initialize
 (
-    DescriptionWindow & descWin,
-    Sound             & sound, 
-    NNetModelImporter & modelImporter,
-    HWND                hwndApp
+    NNetModelReaderInterface & nmri,
+    DescriptionWindow        & descWin,
+    Sound                    & sound, 
+    NNetModelImporter        & modelImporter,
+    HWND                       hwndApp
 )
 {
-    m_pDescWin = & descWin;
-    m_pSound   = & sound;
-    m_hwndApp  = hwndApp;
-
     wchar_t szBuffer[MAX_PATH];
     DWORD const dwRes = GetCurrentDirectory(MAX_PATH, szBuffer);
     assert(dwRes > 0);
@@ -182,15 +161,10 @@ void Preferences::Initialize
     m_wstrPreferencesFile = szBuffer;
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    m_upWrapDescWinFontSize = make_unique<WrapDescWinFontSize>(descWin);
-    m_upWrapSetAutoOpen     = make_unique<WrapSetAutoOpen    >();
-    m_upWrapSetSound        = make_unique<WrapSetSound       >(sound);
-    m_upWrapReadModel       = make_unique<WrapReadModel      >(modelImporter, m_hwndApp);
-
-    m_upWrapDescWinFontSize->SetName(L"DescWinFontSize");
-    m_upWrapSetAutoOpen    ->SetName(L"SetAutoOpen");
-    m_upWrapSetSound       ->SetName(L"SetSound");
-    m_upWrapReadModel      ->SetName(L"ReadModel");
+    m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
+    m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
+    m_prefVector.push_back(make_unique<WrapSetSound>(sound));
+    m_prefVector.push_back(make_unique<WrapReadModel>(nmri, modelImporter, hwndApp));
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON,  1L);
@@ -213,13 +187,11 @@ bool Preferences::ReadPreferences()
     }
 }
 
-bool Preferences::WritePreferences(wstring const wstrModelPath)
+bool Preferences::WritePreferences()
 {
     wofstream prefFile(m_wstrPreferencesFile);
-    m_upWrapSetAutoOpen    ->Write(prefFile);
-    m_upWrapSetSound       ->Write(prefFile);
-    m_upWrapDescWinFontSize->Write(prefFile);
-    m_upWrapReadModel      ->Write(prefFile, wstrModelPath);
+    for (auto & it : m_prefVector)
+        it->Write2(prefFile);
     prefFile.close();
     wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;
