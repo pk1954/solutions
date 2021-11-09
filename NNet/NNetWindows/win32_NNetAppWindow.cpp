@@ -86,11 +86,12 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	SignalFactory  ::Initialize(m_nmri, m_dynamicModelObservable);
-	SignalGenerator::Initialize(m_model.GetParams());
-	Nob            ::Initialize(m_model.GetParams());
-	Command        ::Initialize(&m_mainNNetWindow);
-	NNetCommand    ::Initialize(&m_nmwi);
+	SignalFactory   ::Initialize(m_nmri, m_dynamicModelObservable);
+	StimulusDesigner::Initialize(m_model.GetParams());
+	SignalGenerator ::Initialize(m_model.GetParams());
+	Nob             ::Initialize(m_model.GetParams());
+	Command         ::Initialize(&m_mainNNetWindow);
+	NNetCommand     ::Initialize(&m_nmwi);
 
 	m_model.SetDescriptionUI(m_descWindow);
 	m_model.SetHighSigObservable(&m_highlightSigObservable);

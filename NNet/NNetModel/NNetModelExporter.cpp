@@ -93,19 +93,19 @@ void NNetModelExporter::writeNobs(wostream & out)
     m_pNMRI->GetUPNobs().Apply2All<IoConnector>([&](IoConnector const & s) { writeNob(out, s); });
 }
 
-void NNetModelExporter::writeNobParameters(wostream & out)
+void NNetModelExporter::writeNobParameters(wostream & out)   // Legacy
 {
-    m_pNMRI->GetUPNobs().Apply2All<InputNeuron>
-    (
-        [&](InputNeuron const & inpNeuron)
-        { 
-            out << L"NobParameter InputNeuron " 
-                << getCompactIdVal(inpNeuron.GetId()) << L" "
-                << ParamType::GetName(ParamType::Value::pulseRate) 
-                << L" = " << 0._fHertz  // inpNeuron.GetBaseFrequency()
-                << endl; 
-        }
-   );
+   // m_pNMRI->GetUPNobs().Apply2All<InputNeuron>
+   // (
+   //     [&](InputNeuron const & inpNeuron)
+   //     { 
+   //         out << L"NobParameter InputNeuron " 
+   //             << getCompactIdVal(inpNeuron.GetId()) << L" "
+   //             << ParamType::GetName(ParamType::Value::pulseRate) 
+   //             << L" = " << 0._fHertz  // inpNeuron.GetBaseFrequency()
+   //             << endl; 
+   //     }
+   //);
 }
 
 void NNetModelExporter::writeTriggerSounds(wostream & out)
@@ -223,7 +223,7 @@ void NNetModelExporter::write(wostream & out)
     out << endl;
     writeNobs(out);
     out << endl;
-    writeNobParameters(out);
+    writeNobParameters(out);   // Legacy
     out << endl;
     writeTriggerSounds(out);
     out << endl;

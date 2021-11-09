@@ -56,8 +56,9 @@ public:
 
 	static void CheckImportedNobId(Script &, UPNobList const &, NobId const);
 
+	NNetModelWriterInterface & GetWriterInterface() { return m_ImportedNMWI; }
+
 private:
-	NNetModelWriterInterface & getWriterInterface() { return m_ImportedNMWI; }
 
 	unique_ptr<ImportTermination> m_upTermination;
 	unique_ptr<NNetModel>         m_upImportedModel;

@@ -19,6 +19,11 @@ class StimulusDesigner : public BaseWindow
 public:
     virtual ~StimulusDesigner() {};
 
+	static void Initialize(Param & param) 
+	{ 
+		m_pParameters = & param; 
+	}
+
 	void Start
 	(
 		HWND                     const,
@@ -48,7 +53,7 @@ private:
 	fPixel      const getPixY       (fHertz     const) const;
 	fPixelPoint const getPixPnt     (fMicroSecs const, fHertz const) const;
 	fPixelPoint const getGraphPnt   (fMicroSecs const)               const;
-	fPixelPoint const getIntegralPnt(fMicroSecs const)               const;
+	//fPixelPoint const getIntegralPnt(fMicroSecs const)               const;
 
 	bool horzScaleSelected  (fPixelPoint const &) const;
 	bool vertScaleSelected  (fPixelPoint const &) const;
@@ -65,6 +70,8 @@ private:
 	enum class tZoomMode  { NONE, HORZ, VERT };
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
+
+	inline static Param * m_pParameters { nullptr };
 
 	D2D_driver                       m_graphics         { };
 	tTrackMode                       m_trackMode        { tTrackMode::NONE };

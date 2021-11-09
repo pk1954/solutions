@@ -14,17 +14,20 @@ class ParamType
 public:
 	enum class Value
 	{
-		stdPulseRate,
+		stimulusMaxFreq,
+		stimulusMaxTime,
+		baseFrequency,
 		pulseSpeed,
 		pulseWidth,
-		signalLoss,  // not used, just for compatibility
 		threshold,
 		peakVoltage,
 		refractPeriod,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
-		pulseRate,
-		tParameterLast = pulseRate
+		pulseRate,      // legacy
+		signalLoss,     // legacy
+		stdPulseRate,   // legacy
+		tParameterLast = stdPulseRate
 	};
 
 	static wchar_t const * const GetName(ParamType::Value const);

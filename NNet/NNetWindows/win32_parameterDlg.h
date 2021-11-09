@@ -28,7 +28,7 @@ private:
 	Param             * m_pParams   { nullptr };
 	NNetModelCommands * m_pCommands { nullptr };
 
-	HWND m_hwndStdPulseRate    { nullptr };
+	HWND m_hwndBaseFrequency   { nullptr };
 	HWND m_hwndPeakVoltage     { nullptr };
 	HWND m_hwndThreshold       { nullptr };     
 	HWND m_hwndPulseWidth      { nullptr };

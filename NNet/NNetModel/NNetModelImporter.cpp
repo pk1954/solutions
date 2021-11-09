@@ -26,25 +26,25 @@ using std::filesystem::exists;
 using std::make_unique;
 using std::to_wstring;
 
-class WrapBase : public ScriptFunctor
+class WrapperBase : public ScriptFunctor
 {
 public:
-    WrapBase(NNetModelImporter & modelImporter) :
+    WrapperBase(NNetModelImporter & modelImporter) :
         m_modelImporter(modelImporter)
     { };
 
 protected:
-    NNetModelWriterInterface & GetWriterInterface() const { return m_modelImporter.getWriterInterface(); }
-    MonitorData              & GetMonitorData()     const { return m_modelImporter.getWriterInterface().GetMonitorData(); }
-    UPNobList                & GetUPNobsRef()       const { return m_modelImporter.getWriterInterface().GetUPNobs(); }
+    NNetModelWriterInterface & GetWriterInterface() const { return m_modelImporter.GetWriterInterface(); }
+    MonitorData              & GetMonitorData()     const { return m_modelImporter.GetWriterInterface().GetMonitorData(); }
+    UPNobList                & GetUPNobsRef()       const { return m_modelImporter.GetWriterInterface().GetUPNobs(); }
 
     NNetModelImporter & m_modelImporter;
 };
 
-class WrapProtocol : public WrapBase
+class WrapProtocol : public WrapperBase
 {
 public:
-    WrapProtocol(NNetModelImporter & m) : WrapBase(m) { };
+    WrapProtocol(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const
     {
@@ -53,10 +53,10 @@ public:
     }
 };
 
-class WrapDescription : public WrapBase
+class WrapDescription : public WrapperBase
 {
 public:
-    WrapDescription(NNetModelImporter & m) : WrapBase(m) { };
+    WrapDescription(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const
     {
@@ -65,10 +65,10 @@ public:
     }
 };
 
-class WrapCreateNob : public WrapBase
+class WrapCreateNob : public WrapperBase
 {
 public:
-    WrapCreateNob(NNetModelImporter & m) : WrapBase(m) { };
+    WrapCreateNob(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const
     {   
@@ -197,10 +197,10 @@ private:
     }
 };
 
-class WrapGlobalParameter : public WrapBase
+class WrapGlobalParameter : public WrapperBase
 {
 public:
-    WrapGlobalParameter(NNetModelImporter & m) : WrapBase(m) { };
+    WrapGlobalParameter(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const
     {
@@ -211,10 +211,10 @@ public:
     }
 };
 
-class WrapNrOfNobs : public WrapBase
+class WrapNrOfNobs : public WrapperBase
 {
 public:
-    WrapNrOfNobs(NNetModelImporter & m) : WrapBase(m) { };
+    WrapNrOfNobs(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const
     {
@@ -224,10 +224,10 @@ public:
     }
 };
 
-class WrapNobParameter : public WrapBase
+class WrapNobParameter : public WrapperBase  // Legacy
 {
 public:
-    WrapNobParameter(NNetModelImporter & m) : WrapBase(m) { };
+    WrapNobParameter(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const
     {
@@ -241,10 +241,10 @@ public:
     }
 };
 
-class WrapTriggerSound : public WrapBase
+class WrapTriggerSound : public WrapperBase
 {
 public:
-    WrapTriggerSound(NNetModelImporter & m) : WrapBase(m) { };
+    WrapTriggerSound(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const  
     {
@@ -258,10 +258,10 @@ public:
     }
 };
 
-class WrapNrOfTracks : public WrapBase
+class WrapNrOfTracks : public WrapperBase
 {
 public:
-    WrapNrOfTracks(NNetModelImporter & m) : WrapBase(m) { };
+    WrapNrOfTracks(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const 
     {
@@ -271,10 +271,10 @@ public:
     }
 };
 
-class WrapSignal : public WrapBase
+class WrapSignal : public WrapperBase
 {
 public:
-    WrapSignal(NNetModelImporter & m) : WrapBase(m) { };
+    WrapSignal(NNetModelImporter & m) : WrapperBase(m) { };
 
     virtual void operator() (Script & script) const 
     {

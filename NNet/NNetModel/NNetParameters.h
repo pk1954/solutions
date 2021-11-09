@@ -19,22 +19,26 @@ public:
 	float const GetParameterValue(ParamType::Value const) const;
 	void        SetParameterValue(ParamType::Value const, float const);
 
-	fHertz      const StdPulseRate  () const { return m_stdPulseRate;  }
-	mV          const Threshold     () const { return m_threshold; 	   }
-	mV          const PeakVoltage   () const { return m_peakVoltage;   }
-	fMicroSecs  const PulseWidth    () const { return m_pulseWidth;    }
-	fMicroSecs  const RefractPeriod () const { return m_refractPeriod; }
-	meterPerSec const PulseSpeed    () const { return m_pulseSpeed;    }
-	fMicroSecs  const TimeResolution() const { return m_usResolution;  }
+	fHertz      const StimulusMaxFreq() const { return m_stimulusMaxFreq; }
+	fMicroSecs  const StimulusMaxTime() const { return m_stimulusMaxTime; }
+	fHertz      const BaseFrequency   () const { return m_baseFrequency;    }
+	mV          const Threshold      () const { return m_threshold; 	  }
+	mV          const PeakVoltage    () const { return m_peakVoltage;     }
+	fMicroSecs  const PulseWidth     () const { return m_pulseWidth;      }
+	fMicroSecs  const RefractPeriod  () const { return m_refractPeriod;   }
+	meterPerSec const PulseSpeed     () const { return m_pulseSpeed;      }
+	fMicroSecs  const TimeResolution () const { return m_usResolution;    }
 
 private:
-	fHertz      m_stdPulseRate { 10.0_fHertz       };
-	mV          m_threshold    { 20._mV            };
-	mV          m_peakVoltage  { 10._mV            };   
-	fMicroSecs  m_pulseWidth   { 2000._MicroSecs   };   
-	fMicroSecs  m_refractPeriod{ 500._MicroSecs    };
-	meterPerSec m_pulseSpeed   { 120.0_meterPerSec };
-	fMicroSecs  m_usResolution { 100._MicroSecs    };
+	fHertz      m_stimulusMaxFreq { 50.0_fHertz       };
+	fMicroSecs  m_stimulusMaxTime { 500000._MicroSecs };  // 1/2 sec
+	fHertz      m_baseFrequency   { 10.0_fHertz       };
+	meterPerSec m_pulseSpeed      { 120.0_meterPerSec };
+	fMicroSecs  m_pulseWidth      { 2000._MicroSecs   };   
+	mV          m_threshold       { 20._mV            };
+	mV          m_peakVoltage     { 10._mV            };   
+	fMicroSecs  m_refractPeriod   { 500._MicroSecs    };
+	fMicroSecs  m_usResolution    { 100._MicroSecs    };
 };
 
 // geometry

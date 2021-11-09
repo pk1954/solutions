@@ -43,7 +43,7 @@ fHertz const InputNeuron::GetActFrequency() const
 {
 	return HasParentNob()
 		? static_cast<InputConnector *>(GetParentNob())->GetActFrequency()
-		: m_pParameters->StdPulseRate();
+		: m_pParameters->BaseFrequency();
 }
 
 void InputNeuron::Prepare()

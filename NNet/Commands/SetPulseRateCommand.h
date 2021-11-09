@@ -14,8 +14,8 @@ class SetPulseRateCommand : public NNetCommand
 public:
 	SetPulseRateCommand
 	(
-		NobId const id, 
-		fHertz  const fNewValue 
+		NobId  const id, 
+		fHertz const fNewValue 
 	)
 	  :	m_idInputNeuron(id),
 		m_fHertz(fNewValue)
@@ -23,8 +23,8 @@ public:
 
 	virtual void Do()
 	{ 
-		m_fHertz = m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetBaseFrequency(m_fHertz);
-		m_pNMWI->ClearAllNobs();
+		//m_fHertz = m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetBaseFrequency(m_fHertz);
+		//m_pNMWI->ClearAllNobs();
 	}
 
 	virtual void Undo()

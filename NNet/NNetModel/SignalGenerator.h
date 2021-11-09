@@ -12,38 +12,21 @@ class SignalGenerator
 {
 public:
 
-	static void Initialize(Param const & param) 
+	static void Initialize(Param & param) 
 	{ 
 		m_pParameters = & param; 
     }
 
-	SignalGenerator();
-
 	void Tick();
 	void TriggerStimulus();
 
-	fHertz const SetBaseFrequency(fHertz const);
-	fHertz const StimulusFunc    (fMicroSecs const) const;
-	float  const StimulusIntegral(fMicroSecs const) const;
-	void         SetStimulusMax  (fMicroSecs const, fHertz const);
-
-	fHertz     const GetBaseFrequency() const { return m_fBaseFrequency; }
-	fHertz     const GetActFrequency () const { return m_fActFrequency;  }
-	fMicroSecs const GetPeakTime     () const { return m_usPeakTime;	 }
-
-	fHertz const GetFrequency(fMicroSecs const) const;
+	fHertz const GetActFrequency ()                 const;
+	fHertz const GetFrequency    (fMicroSecs const) const;
 
 private:
+	float const CUT_OFF_FACTOR { 10.0f };
 
-	inline static Param const * m_pParameters { nullptr };
+	inline static Param * m_pParameters { nullptr };
 
-	bool       m_bStimulusActive     { false };
 	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
-	fMicroSecs m_usCutoffTime        { 0._MicroSecs };
-	fMicroSecs m_usPeakTime          { 0._MicroSecs };
-	float      m_fCutoffFactor       { 10.0f };
-	fHertz     m_fBaseFrequency      { 10.0_fHertz };
-	fHertz     m_fActFrequency       { };
-	fHertz     m_fParamA             { 50.0_fHertz }; // Parameter for stimulus function
-	float      m_fParamB             {  2.0f };       // Parameter for stimulus function
 };
