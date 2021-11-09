@@ -31,12 +31,6 @@ public:
 		NNetModelReaderInterface const &
 	);
 
-	void SetSignalGenerator(SignalGenerator * const pSG)
-	{
-		m_pSignalGenerator = pSG;
-		Trigger();  // cause repaint
-	}
-
 	void Reset();
 	void Stop();
 
@@ -49,11 +43,10 @@ private:
 	virtual void OnMouseMove (WPARAM const, LPARAM const);
 	virtual void OnMouseWheel(WPARAM const, LPARAM const);
 
-	fPixel      const getPixX       (fMicroSecs const) const;
-	fPixel      const getPixY       (fHertz     const) const;
-	fPixelPoint const getPixPnt     (fMicroSecs const, fHertz const) const;
-	fPixelPoint const getGraphPnt   (fMicroSecs const)               const;
-	//fPixelPoint const getIntegralPnt(fMicroSecs const)               const;
+	fPixel      const getPixX    (fMicroSecs const) const;
+	fPixel      const getPixY    (fHertz     const) const;
+	fPixelPoint const getPixPnt  (fMicroSecs const, fHertz const) const;
+	fPixelPoint const getGraphPnt(fMicroSecs const)               const;
 
 	bool horzScaleSelected  (fPixelPoint const &) const;
 	bool vertScaleSelected  (fPixelPoint const &) const;

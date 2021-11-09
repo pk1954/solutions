@@ -240,11 +240,10 @@ bool StimulusDesigner::freqMaxLineSelected(fPixelPoint const & pos) const
 
 bool StimulusDesigner::baseLineSelected(fPixelPoint const & pos) const
 {
-	fMicroSecs const timeEnd  { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	fPixel     const fPixFreq { getPixY(m_pParameters->BaseFrequency()) };
+	fPixel const fPixFreq { getPixY(m_pParameters->BaseFrequency()) };
 	return (Distance(pos.GetY(), fPixFreq) <= 10.0_fPixel)
 		&& (getPixX(0.0_MicroSecs) <= pos.GetX())
-		&& (pos.GetX() <= getPixX(timeEnd));
+		&& (pos.GetX() <= m_fPixGraphWidth);
 }
 
 bool StimulusDesigner::horzScaleSelected(fPixelPoint const & pos) const
@@ -267,29 +266,28 @@ void StimulusDesigner::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (wParam & MK_LBUTTON)
 	{
 		fHertz const freqBase { m_pParameters->BaseFrequency() };
-		fMicroSecs   usMax    {   m_horzCoord.Transform2logUnitPos(fPixCrsrPos.GetX()) };
-		fHertz       freqMax  { - m_vertCoord.Transform2logUnitPos(fPixCrsrPos.GetY()) };
+		fMicroSecs   usCrsr   {   m_horzCoord.Transform2logUnitPos(fPixCrsrPos.GetX()) };
+		fHertz       freqCrsr { - m_vertCoord.Transform2logUnitPos(fPixCrsrPos.GetY()) };
 
-		freqMax -= freqBase;
-		if (usMax < 0._MicroSecs)
-			usMax = 0._MicroSecs;
-		if (freqMax < 0._fHertz)
-			freqMax = 0._fHertz;
+		if (usCrsr < 0._MicroSecs)
+			usCrsr = 0._MicroSecs;
+		if (freqCrsr < 0._fHertz)
+			freqCrsr = 0._fHertz;
 
 		switch (m_trackMode)
 		{
 		case tTrackMode::MAX_PNT:
-			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, freqMax.GetValue());
-			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, usMax.GetValue());
+			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, (freqCrsr-freqBase).GetValue());
+			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, usCrsr.GetValue());
 			break;
 		case tTrackMode::MAX_FREQ:
-			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, freqMax.GetValue());
+			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, (freqCrsr-freqBase).GetValue());
 			break;
 		case tTrackMode::MAX_TIME:
-			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, usMax.GetValue());
+			m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, usCrsr.GetValue());
 			break;
 		case tTrackMode::BASE_FREQ:
-			m_pParameters->SetParameterValue(ParamType::Value::baseFrequency, freqMax.GetValue());
+			m_pParameters->SetParameterValue(ParamType::Value::baseFrequency, freqCrsr.GetValue());
 			break;
 		default:
 			break;
