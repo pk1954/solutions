@@ -7,24 +7,13 @@
 #include "IoNeuron.h"
 #include "InputConnector.h"
 
-InputConnector::InputConnector()
-    :	IoConnector(NobType::Value::inputConnector)
-{}
-
-InputConnector::InputConnector(vector<IoNeuron *> & src)
-    :	IoConnector(NobType::Value::inputConnector)
-{
-    for (auto it : src)
-        m_list.push_back(it);
-    src.clear();
-}
-
 InputConnector::InputConnector(vector<IoNeuron *> && src)
-    :	IoConnector(NobType::Value::inputConnector)
+  : IoConnector(NobType::Value::inputConnector)
 {
     for (auto it : src)
         m_list.push_back(it);
     src.clear();
+    m_signalGenerator.LoadParameterValues();
 }
 
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const

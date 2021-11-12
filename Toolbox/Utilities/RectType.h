@@ -48,15 +48,15 @@ public:
 
 	RectType
 	(
-		BASE_TYPE const pixLeft, 
-		BASE_TYPE const pixTop, 
-		BASE_TYPE const pixRight, 
-		BASE_TYPE const pixBottom 
+		BASE_TYPE const left, 
+		BASE_TYPE const top, 
+		BASE_TYPE const right, 
+		BASE_TYPE const bottom 
 	) :
-        m_Left  (pixLeft), 
-        m_Top   (pixTop), 
-        m_Right (pixRight), 
-        m_Bottom(pixBottom)
+        m_Left  (left), 
+        m_Top   (top), 
+        m_Right (right), 
+        m_Bottom(bottom)
     { 
 		assert(m_Bottom >= m_Top);
     };

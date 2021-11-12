@@ -21,7 +21,7 @@ public:
 
 	fHertz      const StimulusMaxFreq() const { return m_stimulusMaxFreq; }
 	fMicroSecs  const StimulusMaxTime() const { return m_stimulusMaxTime; }
-	fHertz      const BaseFrequency   () const { return m_baseFrequency;    }
+	fHertz      const BaseFrequency  () const { return m_baseFrequency;   }
 	mV          const Threshold      () const { return m_threshold; 	  }
 	mV          const PeakVoltage    () const { return m_peakVoltage;     }
 	fMicroSecs  const PulseWidth     () const { return m_pulseWidth;      }

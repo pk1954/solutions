@@ -78,7 +78,7 @@
     <ClCompile Include="NNetWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StimulusDesigner.cpp">
+    <ClCompile Include="SignalDesigner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,7 +173,7 @@
     <ClInclude Include="NNetWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StimulusDesigner.h">
+    <ClInclude Include="SignalDesigner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

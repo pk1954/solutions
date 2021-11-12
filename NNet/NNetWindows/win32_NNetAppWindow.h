@@ -39,7 +39,7 @@
 #include "win32_slowMotionControl.h"
 #include "win32_script.h"
 #include "SignalGenerator.h"
-#include "StimulusDesigner.h"
+#include "SignalDesigner.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
@@ -99,6 +99,7 @@ private:
 
 	void configureStatusBar();
 	void adjustChildWindows();
+	void openSignalDesigner();
 
 	bool SaveModelAs();
 	bool SaveModel();
@@ -161,8 +162,7 @@ private:
 	CommandStack             m_cmdStack               { };
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
-	StimulusDesigner         m_stimDesWindow          { };
-//	SignalGenerator          m_signalGenerator        { };
+	SignalGenerator          m_signalGenerator        { };
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

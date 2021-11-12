@@ -38,6 +38,7 @@ public:
     void DisplayText(fPixelRect const &, wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr) const;
     void EndFrame();
     void ShutDown();
+    void DrawRectangle      (fPixelRect    const &, D2D1::ColorF const, fPixel const) const;
     void FillRectangle      (fPixelRect    const &, D2D1::ColorF const) const;
     void FillGradientRect   (fPixelRect    const &, D2D1::ColorF const, D2D1::ColorF const) const;
     void FillGradientEllipse(fPixelEllipse const &, D2D1::ColorF const, D2D1::ColorF const) const;
@@ -52,6 +53,8 @@ public:
     void Resize(int const, int const);
 
     fPixelRectSize const GetClRectSize() const;
+    fPixel         const GetClRectWidth() const;
+    fPixel         const GetClRectHeight() const;
 
     IDWriteTextFormat * NewTextFormat(float const) const;
 

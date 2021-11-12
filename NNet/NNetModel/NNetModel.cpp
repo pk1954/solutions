@@ -64,7 +64,7 @@ bool const NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) co
 float NNetModel::SetParam
 (
 	ParamType::Value const param, 
-	float      const fNewValue 
+	float            const fNewValue 
 )
 {
 	float fOldValue { m_param.GetParameterValue(param) };

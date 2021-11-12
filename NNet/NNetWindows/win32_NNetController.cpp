@@ -17,6 +17,7 @@
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
+#include "SignalDesigner.h"
 #include "win32_util.h"
 #include "win32_sound.h"
 #include "win32_script.h"
@@ -253,6 +254,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDM_TRIGGER_STIMULUS:
         m_pModelCommands->TriggerStimulus(m_pMainWindow->GetHighlightedNobId());
+        break;
+
+    case IDM_SIGNAL_DESIGNER:
+        m_pMainWindow->PostCommand2Application(IDM_SIGNAL_DESIGNER, 0);
         break;
 
     case IDM_NNET_REFRESH_RATE:

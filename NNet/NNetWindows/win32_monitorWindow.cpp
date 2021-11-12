@@ -162,15 +162,15 @@ TrackNr const MonitorWindow::findPos4NewTrack(PIXEL const pixCrsrPosY) const
 
 fPixel const MonitorWindow::calcTrackHeight() const
 {
-	PIXEL const pixRectHeight  { GetClientWindowHeight() };
-	PIXEL const pixExtraSpace  { m_bShowScale ? 60_PIXEL : 10_PIXEL };
-	PIXEL const pixFreeHeight  { pixRectHeight - pixExtraSpace };
-	PIXEL const pixTrackHeight { 
-		                          m_pMonitorData->NoTracks() 
-		                          ? pixFreeHeight 
-		                          : pixFreeHeight / Cast2Long(m_pMonitorData->GetNrOfTracks()) 
-	                           }; 
-	return Convert2fPixel(pixTrackHeight);
+	fPixel const fPixRectHeight  { Convert2fPixel(GetClientWindowHeight()) };
+	fPixel const fPixExtraSpace  { m_bShowScale ? 60.0_fPixel : 10.0_fPixel };
+	fPixel const fPixFreeHeight  { fPixRectHeight - fPixExtraSpace };
+	fPixel const fPixTrackHeight { 
+									  m_pMonitorData->NoTracks() 
+									  ? fPixFreeHeight 
+									  : fPixFreeHeight / Cast2Float(m_pMonitorData->GetNrOfTracks())
+	                             }; 
+	return fPixTrackHeight;
 }
 
 void MonitorWindow::paintSignal(SignalId const & idSignal) const

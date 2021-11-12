@@ -97,6 +97,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_NEW_OUTPUT_NEURON,      L"New output neuron"		     },
 		//{ IDD_PULSE_RATE,             L"Pulse rate"                  },
 		{ IDM_TRIGGER_STIMULUS,       L"Trigger stimulus"            },
+		{ IDM_SIGNAL_DESIGNER,        L"Signal designer"             },
 		{ IDM_SELECT_NOB,             L"Select nob"                  },
 		{ IDM_SELECT_SUBTREE,         L"Select subtree"              },
 		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"      },
@@ -159,8 +160,13 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		break;
 
 	case NobType::Value::inputConnector:
-	case NobType::Value::outputConnector:
+		appendMenu(hPopupMenu, IDM_SIGNAL_DESIGNER);
 		appendMenu(hPopupMenu, IDM_TRIGGER_STIMULUS);
+		appendMenu(hPopupMenu, IDD_DELETE_NOB);
+		appendMenu(hPopupMenu, IDD_DISC_IOCONNECTOR);        
+		break;
+
+	case NobType::Value::outputConnector:
 		appendMenu(hPopupMenu, IDD_DELETE_NOB);
 		appendMenu(hPopupMenu, IDD_DISC_IOCONNECTOR);        
 		break;

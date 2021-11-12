@@ -86,6 +86,16 @@ fPixelRectSize const D2D_driver::GetClRectSize() const
 	return Convert2fPixelRectSize(Util::GetClRectSize(m_hwnd));
 }
 
+fPixel const D2D_driver::GetClRectWidth() const
+{
+	return Convert2fPixel(Util::GetClientWindowWidth(m_hwnd));
+}
+
+fPixel const D2D_driver::GetClRectHeight() const
+{
+	return Convert2fPixel(Util::GetClientWindowHeight(m_hwnd));
+}
+
 void D2D_driver::ShutDown()
 {
 	discardResources();
@@ -161,6 +171,25 @@ void D2D_driver::EndFrame()
 		m_hr = S_OK;
 		discardResources();
 	}
+}
+
+void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel const fPixWidth) const
+{
+	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	m_pRenderTarget->DrawRectangle
+	(
+		D2D1_RECT_F
+		{ 
+			rect.GetLeft  ().GetValue(), 
+			rect.GetTop   ().GetValue(), 
+			rect.GetRight ().GetValue(), 
+			rect.GetBottom().GetValue() 
+		},
+		pBrush,
+		fPixWidth.GetValue(),
+		nullptr  // solid stroke
+	);
+	SafeRelease(& pBrush);
 }
 
 void D2D_driver::FillRectangle(fPixelRect const & rect, D2D1::ColorF const colF) const

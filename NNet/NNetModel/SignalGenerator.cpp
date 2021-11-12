@@ -9,23 +9,23 @@
 void SignalGenerator::TriggerStimulus()
 {
 	m_usSinceLastStimulus = 0._MicroSecs;
+	m_bTriggerActive = true;
+	NotifyAll(false);
 }
 
 fHertz const SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
 {
-	fMicroSecs const usMax { m_pParameters->StimulusMaxTime() };
-	if (uSecs < usMax * CUT_OFF_FACTOR)
+	if (InStimulusRange(uSecs))
 	{
-		fHertz const freqMax  { m_pParameters->StimulusMaxFreq() };
-		float  const fFactor  { uSecs / usMax };
-		fHertz const freqStim { freqMax * exp(1 - fFactor) * fFactor };
-		return m_pParameters->BaseFrequency() + freqStim;
+		float  const fFactor  { uSecs / m_usMax };
+		fHertz const freqStim { m_freqMaxStim * exp(1 - fFactor) * fFactor };
+		return m_freqBase + freqStim;
 	}
 	else
-		return m_pParameters->BaseFrequency();
+		return m_freqBase;
 }
 
-fHertz const SignalGenerator::GetActFrequency () const 
+fHertz const SignalGenerator::GetActFrequency() const 
 { 
 	return GetFrequency(m_usSinceLastStimulus);
 }
@@ -33,4 +33,21 @@ fHertz const SignalGenerator::GetActFrequency () const
 void SignalGenerator::Tick()
 {
 	m_usSinceLastStimulus += m_pParameters->TimeResolution();
+	if (m_bTriggerActive && InStimulusRange(m_usSinceLastStimulus))
+		StopTrigger();
+	NotifyAll(false);
 }
+
+void SignalGenerator::LoadParameterValues()
+{
+	m_freqBase    = m_pParameters->BaseFrequency();
+	m_freqMaxStim = m_pParameters->StimulusMaxFreq() - m_freqBase;
+	m_usMax       = m_pParameters->StimulusMaxTime();
+}
+
+//void SignalGenerator::SetParameterValues()
+//{
+//	m_pParameters->SetParameterValue(ParamType::Value::baseFrequency,   m_freqBase.GetValue());
+//	m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, (m_freqMaxStim + m_freqBase).GetValue());
+//	m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, m_usMax.GetValue());
+//}

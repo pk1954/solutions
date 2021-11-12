@@ -35,7 +35,7 @@ public:
 		float                  const   fScaleFactor
 	)
 	{
-		m_bScaleType = false;  
+		m_bVertScale = false;  
 		init(pPixCoord, pGraphics, wstrLogUnit, fScaleFactor);
 	}
 
@@ -47,7 +47,7 @@ public:
 		float                  const   fScaleFactor
 	)
 	{
-		m_bScaleType = true;  
+		m_bVertScale = true;  
 		init(pPixCoord, pGraphics, wstrLogUnit, fScaleFactor);
 	}
 
@@ -65,10 +65,16 @@ public:
 		float    const fExp           { floor(log10) };
 		float    const fFractPart     { log10 - fExp };
 		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
-		fPixel   const fPixScaleLen   { getClRectSizeA() - m_pPixCoord->GetPixelOffset() * 2.0f }; 
+		fPixel   const fPixSizeA      { m_bVertScale ? m_pGraphics->GetClRectHeight() : m_pGraphics->GetClRectWidth() };
+		fPixel   const fPixScaleLen   { fPixSizeA - m_pPixCoord->GetPixelOffset() - m_fPixBorder }; 
 		LogUnits const logScaleLen    { m_pPixCoord->Transform2logUnitSize(fPixScaleLen) };
 
-		m_fPixPntEnd   = m_fPixPntStart + makefPixelPnt(fPixScaleLen, 0._fPixel);
+		m_fPixPntEnd   = m_fPixPntStart + 
+			(
+				m_bVertScale
+				? fPixelPoint(0._fPixel, - fPixScaleLen)
+				: fPixelPoint(fPixScaleLen, 0._fPixel)
+			);
 		m_logStart     = m_pPixCoord->Transform2logUnitPos(m_pPixCoord->GetPixelOffset());
 		m_logEnd       = m_logStart + logScaleLen;
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
@@ -79,13 +85,15 @@ public:
 
 	void SetOrthoOffset(fPixel const fPixOffset)
 	{
-		m_fPixPntStart = makefPixelPnt(m_pPixCoord->GetPixelOffset(), fPixOffset);
+		m_fPixPntStart = m_bVertScale
+		? fPixelPoint(fPixOffset,                    getClHeight() - m_pPixCoord->GetPixelOffset())
+		: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - fPixOffset);
 	}
 
 	void SetOrientation(bool const bMode) 
 	{ 
 		m_bOrientation = bMode; 
-		if (m_bScaleType)  // vertical scale
+		if (m_bVertScale)  // vertical scale
 			m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
 	};
 
@@ -105,7 +113,7 @@ public:
 		fPixel const fPixSize { 30.0_fPixel };
 		fPixelRect   rect(m_fPixPntStart, m_fPixPntEnd);
 
-		if (m_bScaleType)  //vertical
+		if (m_bVertScale)  //vertical
 		{
 			if (m_bOrientation)       
 				rect.SetLeft (m_fPixPntStart.GetX() - fPixSize);
@@ -137,9 +145,10 @@ private:
 	IDWriteTextFormat    * m_pTextFormat     { nullptr };
 	float                  m_fScaleFactor    { 1.0f };
 	bool                   m_bOrientation    { true };  // true: ticks on negative side of scale
-	bool                   m_bScaleType      { false }; // true: vertical, false: horizontal
+	bool                   m_bVertScale      { false }; // true: vertical, false: horizontal
 	fPixelPoint            m_fPixPntStart    {};
 	fPixelPoint            m_fPixPntEnd      {};
+	fPixel                 m_fPixBorder      { 10._fPixel };
 	fPixel                 m_fPixTickDist    {};
 	LogUnits               m_logStart        {};
 	LogUnits               m_logEnd          {};
@@ -167,20 +176,9 @@ private:
 		m_pPixCoord->RegisterObserver(this);
 	}
 
-	fPixel const getClRectSizeA() const
+	fPixel const getClHeight() const
 	{
-		fPixelRectSize const size { m_pGraphics->GetClRectSize() };
-		return m_bScaleType ? size.GetY() : size.GetX();
-	}
-
-	fPixel const getValueA(fPixelPoint const & p) const
-	{
-		return m_bScaleType ? p.GetY() : p.GetX();
-	}
-
-	fPixel const getValueB(fPixelPoint const & p) const
-	{
-		return m_bScaleType ? p.GetX() : p.GetY();
+		return m_pGraphics->GetClRectHeight();
 	}
 
 	void setScaleParams()
@@ -203,7 +201,7 @@ private:
 		fPixel horzDist { 0._fPixel };
 		fPixel vertDist { 0._fPixel };
 
-		if (m_bScaleType)  // vertical scale
+		if (m_bVertScale)  // vertical scale
 		{
 			horzDist = TEXT_DIST2LINE + TEXT_HORZ_EXT; 
 			if (m_bOrientation)
@@ -226,11 +224,6 @@ private:
 		);
 	}
 
-	fPixelPoint const makefPixelPnt(fPixel const fPixA, fPixel const fPixB) const
-	{
-		return m_bScaleType ? fPixelPoint(fPixB, fPixA) : fPixelPoint(fPixA, fPixB);
-	}
-
 	void displayTick
 	(
 		fPixel const fTickA,
@@ -238,9 +231,19 @@ private:
 	) const
 	{
 		fPixel      const fDir(m_bOrientation ? -fTickExt : fTickExt);
-		fPixelPoint const fTickStart { makefPixelPnt(fTickA, getValueB(m_fPixPntStart)) };
-		fPixelPoint const fTickEnd   { makefPixelPnt(fTickA, getValueB(m_fPixPntStart) + fDir) };
-		m_pGraphics->DrawLine(fTickStart, fTickEnd, 1._fPixel, SCALE_COLOR);
+		fPixelPoint const fPixPntStart
+		{
+			m_bVertScale 
+			? fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fTickA)
+			: fPixelPoint(fTickA,                m_fPixPntStart.GetY())
+		};
+		fPixelPoint const fPixPntEnd
+		{
+			m_bVertScale 
+			? fPixelPoint(m_fPixPntStart.GetX() + fDir, getClHeight() - fTickA)
+			: fPixelPoint(fTickA,                       m_fPixPntStart.GetY() + fDir)
+		};
+		m_pGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, SCALE_COLOR);
 	}
 
 	void displayTicks() const
@@ -248,15 +251,18 @@ private:
 		int iNrOfTicks { abs(static_cast<int>((m_logEnd - m_logStart) / m_logTickDist)) };
 		for (int iRun = 0; iRun <= iNrOfTicks; ++iRun)
 		{
-			fPixel fTick { (iRun % 5 == 0) ? LONG_TICK : (iRun % 2 == 0) ? MIDDLE_TICK : SMALL_TICK};
-			fPixel fPix  { m_fPixTickDist * static_cast<float>(iRun) };
-			fPixel fPixA { m_pPixCoord->GetPixelOffset() + (m_bScaleType ? -fPix : fPix) }; 
-			displayTick(fPixA, fTick);
+			fPixel fTickExt { (iRun % 5 == 0) ? LONG_TICK : (iRun % 2 == 0) ? MIDDLE_TICK : SMALL_TICK};
+			fPixel fPix     { m_fPixTickDist * static_cast<float>(iRun) };
+			fPixel fPixA    { m_pPixCoord->GetPixelOffset() + fPix	}; 
+			displayTick(fPixA, fTickExt);
 			if (iRun % 10 == 0)
 			{
 				LogUnits    lu   { m_logStart + m_logTickDist * static_cast<float>(iRun)};
 				int         iLu  { static_cast<int>(round(lu.GetValue() / m_fUnitReduction)) };
-				fPixelPoint fPos { makefPixelPnt(fPixA, getValueB(m_fPixPntStart)) };
+				fPixelPoint fPos { m_bVertScale 
+					               ? (fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fPixA)) 
+					               : (fPixelPoint(fPixA,                 m_fPixPntStart.GetY())) 
+				                 };
 				display(fPos, to_wstring(iLu));
 			}
 		}

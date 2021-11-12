@@ -110,6 +110,7 @@
 #define IDM_SELECT_ALL_BEEPERS     655
 
 #define IDM_TRIGGER_STIMULUS       660
+#define IDM_SIGNAL_DESIGNER        661
 
 //#define IDM_ALIGN_NOBS             671
 #define IDM_MAKE_CONNECTOR         674

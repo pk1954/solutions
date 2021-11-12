@@ -21,8 +21,6 @@ public:
 
 	static bool const TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
-	InputConnector();
-	InputConnector(vector<IoNeuron *> &);
 	InputConnector(vector<IoNeuron *> &&);
 
 	virtual ~InputConnector() {}
@@ -33,6 +31,8 @@ public:
 
 	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
 	void Tick           () { m_signalGenerator.Tick(); }
+
+	SignalGenerator * GetSignalGenerator() { return & m_signalGenerator; }
 
 	fHertz const GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
 
