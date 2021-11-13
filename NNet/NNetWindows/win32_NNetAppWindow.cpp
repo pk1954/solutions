@@ -89,8 +89,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	SignalDesigner ::Initialize(m_model.GetParams());
 	SignalGenerator::Initialize(m_model.GetParams());
 	Nob            ::Initialize(m_model.GetParams());
-	Command        ::Initialize(&m_mainNNetWindow);
 	SignalGenerator::Initialize(m_model.GetParams());
+	Command        ::Initialize(&m_mainNNetWindow);
 	NNetCommand    ::Initialize(&m_nmwi);
 
 	m_model.SetDescriptionUI(m_descWindow);
@@ -593,5 +593,17 @@ void NNetAppWindow::openSignalDesigner()
 	NobType const type { m_nmri.GetNobType(id) };
 	if (! type.IsInputConnectorType())
 		return;
-	SignalDesigner * pSigDes { new SignalDesigner(m_nmwi, m_mainNNetWindow.GetWindowHandle(), id) };
+	InputConnector  * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
+	SignalGenerator * pSigGen { pInpCon->GetSignalGenerator() };
+	SignalDesigner  * pSigDes 
+	{ 
+		new SignalDesigner
+		(
+			m_mainNNetWindow.GetWindowHandle(),
+			m_computeThread,
+			* pSigGen
+		) 
+	};
+	m_runObservable.RegisterObserver(pSigDes);
+	pSigGen->RegisterObserver(pSigDes);
 }

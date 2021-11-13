@@ -50,10 +50,7 @@ public:
 
 	UPNobList   const & GetUPNobs()        const { return m_Nobs; }
 	MonitorData const & GetMonitorData()   const { return m_monitorData; }
-	Param       const & GetParams()        const 
-	{ 
-		return m_param; 
-	}
+	Param       const & GetParams()        const { return m_param; }
 	wstring     const   GetModelFilePath() const { return m_wstrModelFilePath; }
 	size_t      const   Size()             const { return m_Nobs.Size(); }
 

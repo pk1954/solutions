@@ -38,7 +38,10 @@ public:
 
 	bool       const IsTriggerActive() const { return m_bTriggerActive; }
 	fMicroSecs const TimeTilTrigger () const { return m_usSinceLastStimulus; }
-	bool       const InStimulusRange(fMicroSecs const t) const { return t < m_usMax * CUT_OFF_FACTOR; }
+	fMicroSecs const CutoffTime     () const { return m_usMax * CUT_OFF_FACTOR; }
+	bool       const InStimulusRange(fMicroSecs const t) const { return t < CutoffTime(); }
+
+	Param const & GetParams() { return * m_pParameters; }
 
 private:
 

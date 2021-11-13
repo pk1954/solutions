@@ -33,7 +33,7 @@ fHertz const SignalGenerator::GetActFrequency() const
 void SignalGenerator::Tick()
 {
 	m_usSinceLastStimulus += m_pParameters->TimeResolution();
-	if (m_bTriggerActive && InStimulusRange(m_usSinceLastStimulus))
+	if (m_bTriggerActive && ! InStimulusRange(m_usSinceLastStimulus))
 		StopTrigger();
 	NotifyAll(false);
 }

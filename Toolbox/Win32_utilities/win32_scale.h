@@ -93,19 +93,26 @@ public:
 	void SetOrientation(bool const bMode) 
 	{ 
 		m_bOrientation = bMode; 
-		if (m_bVertScale)  // vertical scale
+		if (m_bVertScale) 
 			m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
 	};
 
 	void Display() const
 	{
-		m_pGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
+//		m_pGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
 		displayTicks();
-		display
-		(
-			m_fPixPntStart - fPixelPoint(20._fPixel, 0._fPixel), 
-			m_unitPrefix + m_wstrLogUnit
-		);
+		if (m_bVertScale) 
+			display
+			(
+				m_fPixPntStart - fPixelPoint(0._fPixel, 20._fPixel), 
+				m_unitPrefix + m_wstrLogUnit
+			);
+		else
+			display
+			(
+				m_fPixPntStart + fPixelPoint(20._fPixel, 0._fPixel), 
+				m_unitPrefix + m_wstrLogUnit
+			);
 	}
 
 	fPixelRect const GetScaleRect() const
@@ -113,7 +120,7 @@ public:
 		fPixel const fPixSize { 30.0_fPixel };
 		fPixelRect   rect(m_fPixPntStart, m_fPixPntEnd);
 
-		if (m_bVertScale)  //vertical
+		if (m_bVertScale) 
 		{
 			if (m_bOrientation)       
 				rect.SetLeft (m_fPixPntStart.GetX() - fPixSize);
