@@ -53,7 +53,7 @@ static PIXEL Convert2PIXEL(fPixel const fPixel)
 	return PIXEL(Cast2Long(fPixel.GetValue()));
 }
 
-static fPixel Convert2fPixel(PIXEL const pixel)
+static constexpr fPixel Convert2fPixel(PIXEL const pixel)
 {
 	return fPixel(Cast2Float(pixel.GetValue()));
 }

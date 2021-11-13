@@ -579,6 +579,7 @@
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
+    <ClCompile Include="SignalControl.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="SignalDesigner.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
@@ -602,6 +603,7 @@
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="NNetWrappers.h" />
+    <ClInclude Include="SignalControl.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />
