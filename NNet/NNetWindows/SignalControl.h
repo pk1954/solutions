@@ -22,8 +22,8 @@ public:
 		HWND             const, 
 		ComputeThread    const &, 
 		SignalGenerator        &,
-		PixCoordFp<fMicroSecs> *,
-		PixCoordFp<fHertz>     * 
+		PixCoordFp<fMicroSecs> &,
+		PixCoordFp<fHertz>     & 
 	);
 
 	virtual ~SignalControl();
@@ -85,12 +85,12 @@ private:
 
 	ComputeThread    const & m_computeThread;
 	SignalGenerator        & m_signalGenerator;
+	PixCoordFp<fMicroSecs> & m_horzCoord;
+	PixCoordFp<fHertz>     & m_vertCoord;
 	D2D_driver               m_graphics       { };
 	tTrackMode               m_trackMode      { tTrackMode::NONE };
 	fPixel                   m_fPixGraphWidth { 0.0_fPixel };
 	fPixel                   m_fPixLineWidth  { 1.0_fPixel };
-	PixCoordFp<fMicroSecs> * m_pHorzCoord;
-	PixCoordFp<fHertz>     * m_pVertCoord;
 
 	inline static fPixel const DIAMOND_SIZE { 4.0_fPixel };
 };

@@ -21,15 +21,17 @@ SignalControl::SignalControl
 	HWND             const   hwndParent,
 	ComputeThread    const & computeThread,
 	SignalGenerator        & sigGen,
-	PixCoordFp<fMicroSecs> * pHorzCoord,
-	PixCoordFp<fHertz>     * pVertCoord
+	PixCoordFp<fMicroSecs> & horzCoord,
+	PixCoordFp<fHertz>     & vertCoord
 )
   : m_computeThread(computeThread),
 	m_signalGenerator(sigGen),
-	m_pHorzCoord(pHorzCoord),
-	m_pVertCoord(pVertCoord)
+	m_horzCoord(horzCoord),
+	m_vertCoord(vertCoord)
 {
 	m_signalGenerator.RegisterObserver(this);
+	m_horzCoord.RegisterObserver(this);
+	m_vertCoord.RegisterObserver(this);
 
 	HWND hwnd = StartBaseWindow
 	(
@@ -60,22 +62,22 @@ void SignalControl::Stop()
 
 fMicroSecs const SignalControl::getTime(fPixel const fPix)
 {
-	return m_pHorzCoord->Transform2logUnitPos(fPix);
+	return m_horzCoord.Transform2logUnitPos(fPix);
 }
 
 fHertz const SignalControl::getFreq(fPixel const fPix)
 {
-	return m_pVertCoord->Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
+	return m_vertCoord.Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
 }
 
 fPixel const SignalControl::getPixX(fMicroSecs const time) const
 {
-	return fPixel(m_pHorzCoord->Transform2fPixelPos(time));
+	return fPixel(m_horzCoord.Transform2fPixelPos(time));
 }
 
 fPixel const SignalControl::getPixY(fHertz const freq) const
 {
-	return Convert2fPixel(GetClientWindowHeight()) - fPixel(m_pVertCoord->Transform2fPixelPos(freq));
+	return Convert2fPixel(GetClientWindowHeight()) - fPixel(m_vertCoord.Transform2fPixelPos(freq));
 }
 
 fPixel const SignalControl::getPixXmax() const
@@ -112,15 +114,14 @@ void SignalControl::doPaint() const
 {
 	fPixelRect fPixRect = Convert2fPixelRect(GetClPixelRect());
 	m_graphics.FillRectangle(fPixRect, D2D1::ColorF::Ivory);
-//	m_graphics.DrawRectangle(fPixRect, D2D1::ColorF::Black, 1.0_fPixel);
 
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fMicroSecs   const usResolution { m_signalGenerator.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
-	fMicroSecs   const usPixelSize  { m_pHorzCoord->GetPixelSize() };
+	fMicroSecs   const usPixelSize  { m_horzCoord.GetPixelSize() };
 	fMicroSecs   const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
 	fMicroSecs   const timeStart    { 0.0_MicroSecs };
 	fMicroSecs   const timeCutoff   { m_signalGenerator.CutoffTime() };
-	fMicroSecs         timeEnd      { m_pHorzCoord->Transform2logUnitSize(m_fPixGraphWidth) };
+	fMicroSecs         timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
 	fPixelPoint        prevPoint    { getGraphPnt(timeStart) };
 
 	if (timeCutoff < timeEnd)
@@ -185,7 +186,7 @@ void SignalControl::displayBaseFrequency
 const
 {		
 	fMicroSecs   const timeStart { 0.0_MicroSecs };
-	fMicroSecs   const timeEnd   { m_pHorzCoord->Transform2logUnitSize(m_fPixGraphWidth) };
+	fMicroSecs   const timeEnd   { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
 	m_graphics.DrawLine
 	(
 		getPixPnt(timeStart, m_signalGenerator.FreqBase()), 
@@ -232,8 +233,8 @@ bool SignalControl::OnSize(WPARAM const wParam, LPARAM const lParam)
 
 	m_fPixGraphWidth = fPixWinWidth;
 
-	m_pHorzCoord->SetOffset(0.0_fPixel);
-	m_pVertCoord->SetOffset(0.0_fPixel);
+	m_horzCoord.SetOffset(0.0_fPixel);
+	m_vertCoord.SetOffset(0.0_fPixel);
 
 	Trigger();  // cause repaint
 	return true;

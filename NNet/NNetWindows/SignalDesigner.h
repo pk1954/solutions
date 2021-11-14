@@ -14,11 +14,19 @@
 
 class SignalGenerator;
 class ComputeThread;
+class Observable;
 
 class SignalDesigner : public BaseWindow
 {
 public:
-	SignalDesigner(HWND const, ComputeThread const &, SignalGenerator &);
+	SignalDesigner
+	(
+		HWND const, 
+		ComputeThread const &, 
+		SignalGenerator &,
+		Observable &
+	);
+
 	virtual ~SignalDesigner() {};
 
 	static void Initialize(Param & param) 
@@ -35,9 +43,9 @@ private:
 	inline static PIXEL const RIGHT_OFFSET  {  0_PIXEL };
 	inline static PIXEL const TOP_OFFSET    {  0_PIXEL };
 
-	void doPaint() const;
+	//void doPaint() const;
 
-	virtual void OnPaint();
+	virtual void OnPaint() {};
 	virtual bool OnSize(WPARAM const, LPARAM const);
 
 	enum class tZoomMode  { NONE, HORZ, VERT };

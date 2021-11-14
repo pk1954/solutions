@@ -13,10 +13,7 @@ class SignalGenerator : public Observable
 {
 public:
 
-    static void Initialize(Param & param) 
-	{ 
-		m_pParameters = & param; 
-	}
+    static void Initialize(Param & param) { m_pParameters = & param; }
 
 	void Tick();
 	void TriggerStimulus();
@@ -28,13 +25,15 @@ public:
 	void LoadParameterValues();
 //	void SetParameterValues();
 
-	fHertz     FreqBase() { return m_freqBase; };
-	fHertz     FreqMax () { return m_freqMaxStim + m_freqBase; };
-	fMicroSecs TimeMax () { return m_usMax;    };
+	fHertz     FreqBase() const { return m_freqBase; };
+	fHertz     FreqMax () const { return m_freqMaxStim + m_freqBase; };
+	fMicroSecs TimeMax () const { return m_usMax;    };
 
 	void SetFreqBase(fHertz     const f) { m_freqBase    = f; }
 	void SetFreqMax (fHertz     const f) { m_freqMaxStim = f - m_freqBase; }
 	void SetTimeMax (fMicroSecs const t) { m_usMax       = t; }
+
+	void SetParam(ParamType::Value const, float const);
 
 	bool       const IsTriggerActive() const { return m_bTriggerActive; }
 	fMicroSecs const TimeTilTrigger () const { return m_usSinceLastStimulus; }

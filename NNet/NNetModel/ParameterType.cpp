@@ -46,16 +46,18 @@ wchar_t const * const ParamType::GetUnit(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
-		{ ParamType::Value::baseFrequency,  L"Hz"    },
-		{ ParamType::Value::pulseSpeed,     L"m/sec" },
-		{ ParamType::Value::pulseWidth,     L"µs"    },
-		{ ParamType::Value::threshold,      L"mV"    },
-		{ ParamType::Value::peakVoltage,    L"mV"    },
-    	{ ParamType::Value::refractPeriod,  L"µs"    },
-	    { ParamType::Value::timeResolution, L"µs"    },
-		{ ParamType::Value::signalLoss,     L"1/µm"  },  // Legacy
-		{ ParamType::Value::stdPulseRate,   L"Hz"    },  // Legacy
-		{ ParamType::Value::pulseRate,      L"Hz"    }   // Legacy
+		{ ParamType::Value::stimulusMaxFreq, L"Hz"    },
+		{ ParamType::Value::stimulusMaxTime, L"µs"    },
+		{ ParamType::Value::baseFrequency,   L"Hz"    },
+		{ ParamType::Value::pulseSpeed,      L"m/sec" },
+		{ ParamType::Value::pulseWidth,      L"µs"    },
+		{ ParamType::Value::threshold,       L"mV"    },
+		{ ParamType::Value::peakVoltage,     L"mV"    },
+    	{ ParamType::Value::refractPeriod,   L"µs"    },
+	    { ParamType::Value::timeResolution,  L"µs"    },
+		{ ParamType::Value::signalLoss,      L"1/µm"  },  // Legacy
+		{ ParamType::Value::stdPulseRate,    L"Hz"    },  // Legacy
+		{ ParamType::Value::pulseRate,       L"Hz"    }   // Legacy
 	};				  
 
 	return mapParam.at(p);

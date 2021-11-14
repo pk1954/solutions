@@ -44,7 +44,7 @@ private:
 	void writeDescription     (wostream &);
 	void writeMonitorData     (wostream &);
 	void writeTriggerSounds   (wostream &);
-	void writeNobParameters   (wostream &);     // Legacy
+	void writeNobParameters   (wostream &);
 	void writeGlobalParameters(wostream &);
 	void writeNobs            (wostream &);
 	void writeHeader          (wostream &);

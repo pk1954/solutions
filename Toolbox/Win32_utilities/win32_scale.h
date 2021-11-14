@@ -28,7 +28,15 @@ class Scale : public BaseWindow
 {
 public:
 
-	Scale(HWND const hwndParent)
+	Scale
+	(
+		HWND                   const   hwndParent,
+		bool                   const   bVertScale,
+		PixCoordFp<LogUnits> * const   pPixCoord,
+		D2D_driver           * const   pGraphics,
+		wstring                const & wstrLogUnit,
+		float                  const   fScaleFactor
+	)
 	{
 		HWND hwnd = StartBaseWindow
 		(
@@ -41,6 +49,11 @@ public:
 		);
 		m_graphics.Initialize(hwnd);
 		m_trackStruct.hwndTrack = hwnd;
+		m_bVertScale   = bVertScale;  
+		m_pPixCoord    = pPixCoord;
+		m_pTextFormat  = m_graphics.NewTextFormat(12.f);
+		m_wstrLogUnit  = wstrLogUnit;
+		m_fScaleFactor = fScaleFactor;
 	}
 
 	~Scale()
@@ -49,36 +62,9 @@ public:
 		DestroyWindow();
 	}
 
-	void InitHorzScale
-	(
-		PixCoordFp<LogUnits> * const   pPixCoord,
-		D2D_driver           * const   pGraphics,
-		wstring                const & wstrLogUnit,
-		float                  const   fScaleFactor
-	)
-	{
-		m_bVertScale = false;  
-		init(pPixCoord, wstrLogUnit, fScaleFactor);
-	}
-
-	void InitVertScale
-	(
-		PixCoordFp<LogUnits> * const   pPixCoord,
-		D2D_driver           * const   pGraphics,
-		wstring                const & wstrLogUnit,
-		float                  const   fScaleFactor
-	)
-	{
-		m_bVertScale = true;  
-		init(pPixCoord, wstrLogUnit, fScaleFactor);
-	}
-
 	void SetOrthoOffset(fPixel const fPixOffset)
 	{
 		m_fPixOrthoOffset = fPixOffset;
-		//m_fPixPntStart = m_bVertScale
-		//? fPixelPoint(fPixOffset,                    getClHeight() - m_pPixCoord->GetPixelOffset())
-		//: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - fPixOffset);
 	}
 
 	void SetOrientation(bool const bMode) 
@@ -121,19 +107,6 @@ private:
 
 	// private functions
 
-	void init
-	(
-		PixCoordFp<LogUnits> * const   pPixCoord,
-		wstring                const & wstrLogUnit,
-		float                  const   fScaleFactor
-	)
-	{
-		m_pPixCoord    = pPixCoord;
-		m_pTextFormat  = m_graphics.NewTextFormat(12.f);
-		m_wstrLogUnit  = wstrLogUnit;
-		m_fScaleFactor = fScaleFactor;
-	}
-
 	void doPaint()
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };  
@@ -172,7 +145,7 @@ private:
 		if (m_bVertScale) 
 			display
 			(
-				m_fPixPntStart - fPixelPoint(0._fPixel, 15._fPixel), 
+				m_fPixPntStart - fPixelPoint(0._fPixel, 16._fPixel), 
 				m_unitPrefix + m_wstrLogUnit
 			);
 		else

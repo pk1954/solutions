@@ -41,6 +41,8 @@ public:
 	bool const IsNegative   () const { return m_value <  BASE_TYPE(0); };
 	bool const IsNotNegative() const { return m_value >= BASE_TYPE(0); };
 
+	NamedType& operator=  (BASE_TYPE const value) { m_value = value; return * this; }
+
 	NamedType& operator+= (NamedType const other) { m_value += other.GetValue(); return * this; }
 	NamedType& operator-= (NamedType const other) { m_value -= other.GetValue(); return * this; }
 	NamedType& operator%= (NamedType const other) { m_value %= other.GetValue(); return * this; }
@@ -143,7 +145,7 @@ public:
 
 	friend wostream & operator << (std::wostream & out, NamedType const & param)
 	{
-		out << param.GetValue();
+		out << L" " << param.GetValue();
 		return out;
 	}
 

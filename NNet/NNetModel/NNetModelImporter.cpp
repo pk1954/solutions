@@ -288,9 +288,25 @@ public:
         }
         else
         {
-            throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101") );
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
         }
         GetMonitorData().AddSignal(trackNr, umCircle);
+    }
+};
+
+class WrapSetParam : public WrapperBase
+{
+public:
+    WrapSetParam(NNetModelImporter & m) : WrapperBase(m) { };
+
+    virtual void operator() (Script & script) const 
+    {
+        NobId            const id       { ScrReadNobId(script) };
+        ParamType::Value const param    { ScrReadParamType(script) };
+        float                  fVal     { Cast2Float(script.ScrReadFloat()) };
+        InputConnector       * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) };
+        SignalGenerator      & sigGen   { pInpConn->GetSignalGenerator() };
+        sigGen.SetParam(param, fVal);
     }
 };
 
@@ -306,6 +322,7 @@ void NNetModelImporter::Initialize()
     SymbolTable::ScrDefConst(L"TriggerSound",    new WrapTriggerSound   (* this));
     SymbolTable::ScrDefConst(L"NrOfTracks",      new WrapNrOfTracks     (* this));
     SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this));
+    SymbolTable::ScrDefConst(L"SetParam",        new WrapSetParam       (* this));
 
     NobType::Apply2All
     (

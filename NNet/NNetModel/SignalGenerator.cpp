@@ -51,3 +51,25 @@ void SignalGenerator::LoadParameterValues()
 //	m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, (m_freqMaxStim + m_freqBase).GetValue());
 //	m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, m_usMax.GetValue());
 //}
+
+void SignalGenerator::SetParam(ParamType::Value const par, float const f)
+{
+	switch ( par )
+	{
+	case ParamType::Value::stimulusMaxFreq:
+		m_freqMaxStim = f;
+		break;
+
+	case ParamType::Value::stimulusMaxTime:
+		m_usMax = f;
+		break;
+
+	case ParamType::Value::baseFrequency:
+		m_freqBase = f;
+		break;
+
+	default:
+		assert(false);
+	}
+}
+

@@ -15,7 +15,8 @@ SignalDesigner::SignalDesigner
 (
 	HWND          const   hwndParent,
 	ComputeThread const & computeThread,
-	SignalGenerator     & sigGen
+	SignalGenerator     & sigGen,
+	Observable          & runObservable
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -36,31 +37,30 @@ SignalDesigner::SignalDesigner
 		hwnd, 
 		computeThread, 
 		sigGen, 
-		&m_horzCoord, 
-		&m_vertCoord
+		m_horzCoord, 
+		m_vertCoord
 	);
-	m_upHorzScale = make_unique<Scale<fMicroSecs>>(hwnd);
-	m_upVertScale = make_unique<Scale<fHertz    >>(hwnd);
+
+	runObservable.RegisterObserver(m_upSignalControl.get());
+
+	m_upHorzScale = make_unique<Scale<fMicroSecs>>(hwnd, false, &m_horzCoord, &m_graphics, L"s",  1e6f);
+	m_upVertScale = make_unique<Scale<fHertz    >>(hwnd, true,  &m_vertCoord, &m_graphics, L"Hz", 1e0f);
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(100._MicroSecs, 1000000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 	m_horzCoord.RegisterObserver(this);
 
-	m_upHorzScale->InitHorzScale(&m_horzCoord, &m_graphics, L"s", 1e6f);
 	m_upHorzScale->SetOrientation(false);
 	m_upHorzScale->Show(true);
-	m_upHorzScale->Notify(false);
 
 	m_vertCoord.SetPixelSize(0.25_fHertz);
 	m_vertCoord.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoord.SetZoomFactor(1.3f);
 	m_vertCoord.RegisterObserver(this);
 
-	m_upVertScale->InitVertScale(&m_vertCoord, &m_graphics, L"Hz", 1e0f);
 	m_upVertScale->SetOrientation(true);
 	m_upVertScale->Show(true);
-	m_upVertScale->Notify(false);
 
 	::MoveWindow(hwnd, 100, 100, 500, 400, true);
 }
@@ -71,27 +71,24 @@ void SignalDesigner::Stop()
 	DestroyWindow();
 }
 
-void SignalDesigner::doPaint() const
-{
-	m_upSignalControl->Invalidate(false);
-	m_upHorzScale->Invalidate(false);
-	m_upVertScale->Invalidate(false);
-}
-
-void SignalDesigner::OnPaint()
-{
-	if (IsWindowVisible())
-	{
-		PAINTSTRUCT ps;
-		HDC const hDC = BeginPaint(&ps);
-		if (m_graphics.StartFrame(hDC))
-		{
-			doPaint();
-			m_graphics.EndFrame();
-		}
-		EndPaint(&ps);
-	}
-}
+//void SignalDesigner::doPaint() const
+//{
+//}
+//
+//void SignalDesigner::OnPaint()
+//{
+//	if (IsWindowVisible())
+//	{
+//		PAINTSTRUCT ps;
+//		HDC const hDC = BeginPaint(&ps);
+//		if (m_graphics.StartFrame(hDC))
+//		{
+//			doPaint();
+//			m_graphics.EndFrame();
+//		}
+//		EndPaint(&ps);
+//	}
+//}
 
 bool SignalDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 {

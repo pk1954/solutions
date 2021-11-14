@@ -596,16 +596,15 @@ void NNetAppWindow::openSignalDesigner()
 	if (! type.IsInputConnectorType())
 		return;
 	InputConnector  * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
-	SignalGenerator * pSigGen { pInpCon->GetSignalGenerator() };
+	SignalGenerator & sigGen  { pInpCon->GetSignalGenerator() };
 	SignalDesigner  * pSigDes 
 	{ 
 		new SignalDesigner
 		(
 			m_mainNNetWindow.GetWindowHandle(),
 			m_computeThread,
-			* pSigGen
+			sigGen,
+			m_runObservable
 		) 
 	};
-	m_runObservable.RegisterObserver(pSigDes);
-	pSigGen->RegisterObserver(pSigDes);
 }
