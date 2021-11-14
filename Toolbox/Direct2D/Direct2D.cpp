@@ -385,6 +385,11 @@ void D2D_driver::FillDiamond
 	DrawLine(ptPos - ptOffset, ptPos + ptOffset, fPixSize * sqrtf(8.0f), colF);
 }
 
+void D2D_driver::FillBackground(D2D1::ColorF const d2dCol) const
+{
+	FillRectangle(Convert2fPixelRect(Util::GetClPixelRect(m_hwnd)), d2dCol);
+}
+
 ID2D1SolidColorBrush * D2D_driver::createBrush(D2D1::ColorF const d2dCol) const
 {
 	ID2D1SolidColorBrush * pBrush;

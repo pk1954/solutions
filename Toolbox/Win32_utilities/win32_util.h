@@ -222,7 +222,7 @@ namespace Util
     inline bool IsInClientRect(HWND const hwnd, PixelPoint const pp)  // Is point in client rect?
     {
         RECT const rect = GetClRect(hwnd);  
-		return PtInRect(&rect, PixelPoint2POINT(pp));
+        return PtInRect(&rect, PixelPoint2POINT(pp));
     } 
 
     inline bool IsInClientRect(HWND const hwnd, PixelRect const & pixRect)  // Is rect in client rect?

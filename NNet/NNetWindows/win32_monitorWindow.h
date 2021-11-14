@@ -76,10 +76,10 @@ private:
 	PixelPoint   m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL        m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel       m_fPixWinWidth       { 0.0_fPixel };
-	bool         m_bShowScale         { false };
+	//bool         m_bShowScale         { false };
 	Measurement  m_measurement;
 
-	Scale<fMicroSecs>      m_horzScale;
+	//Scale<fMicroSecs>      m_horzScale;
 	PixCoordFp<fMicroSecs> m_horzCoord;
 	PixCoordFp<float>      m_vertCoord;
 };

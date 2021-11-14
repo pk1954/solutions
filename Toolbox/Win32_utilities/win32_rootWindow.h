@@ -50,12 +50,12 @@ public:
 	bool          const IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
 	bool          const IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
 
-	bool          const IsWindowVisible()            const { return ::IsWindowVisible(m_hwnd); }
-	HWND          const SetCapture()                 const { return ::SetCapture     (m_hwnd); }
-    HWND          const SetFocus()                   const { return ::SetFocus       (m_hwnd); }
+	bool          const IsWindowVisible()           const { return ::IsWindowVisible(m_hwnd); }
+	HWND          const SetCapture()                const { return ::SetCapture     (m_hwnd); }
+    HWND          const SetFocus()                  const { return ::SetFocus       (m_hwnd); }
     HWND          const GetDlgItem(int const iItem) const { return ::GetDlgItem     (m_hwnd, iItem); }
-    bool          const IsCaptured()                 const { return ::GetCapture() == m_hwnd; }
-	int			  const GetWindowTextLength()        const { return ::GetWindowTextLength(m_hwnd); }        
+    bool          const IsCaptured()                const { return ::GetCapture() == m_hwnd; }
+	int			  const GetWindowTextLength()       const { return ::GetWindowTextLength(m_hwnd); }        
 
 	void SetRefreshRate(milliseconds const);
 	

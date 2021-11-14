@@ -51,6 +51,7 @@ public:
     void FillArrow  (fPixelPoint const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const) const;
     void FillDiamond(fPixelPoint const, fPixel const, D2D1::ColorF const) const;
     void Resize(int const, int const);
+    void FillBackground(D2D1::ColorF const) const;
 
     fPixelRectSize const GetClRectSize() const;
     fPixel         const GetClRectWidth() const;
