@@ -264,8 +264,8 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_LBUTTON)
 	{
-		fMicroSecs usCrsr          = getTime(fPixCrsrPos.GetX());
-		fHertz     freqCrsr        = getFreq(fPixCrsrPos.GetY());
+		fMicroSecs usCrsr   { getTime(fPixCrsrPos.GetX()) };
+		fHertz     freqCrsr { getFreq(fPixCrsrPos.GetY()) };
 		if (freqCrsr < m_signalGenerator.FreqBase())
 			freqCrsr = m_signalGenerator.FreqBase();
 
@@ -282,7 +282,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			m_signalGenerator.SetTimeMax(usCrsr);
 			break;
 		case tTrackMode::BASE_FREQ:
-			m_signalGenerator.SetFreqBase(freqCrsr); // Limit(freqCrsr, 0.0_fHertz, getFreq(m_fPixTop)));
+			m_signalGenerator.SetFreqBase(freqCrsr);
 			break;
 		default:
 			break;
@@ -303,6 +303,13 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	Trigger();   // cause repaint
 	(void)TrackMouseEvent(& m_trackStruct);
+}
+
+bool SignalControl::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
+{
+	m_trackMode = tTrackMode::NONE;
+	Trigger();   // cause repaint
+	return false;
 }
 
 bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

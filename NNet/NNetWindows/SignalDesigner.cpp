@@ -49,6 +49,7 @@ SignalDesigner::SignalDesigner
 
 	m_upHorzScale->InitHorzScale(&m_horzCoord, &m_graphics, L"s", 1e6f);
 	m_upHorzScale->SetOrientation(false);
+	m_upHorzScale->Show(true);
 	m_upHorzScale->Notify(false);
 
 	m_vertCoord.SetPixelSize(0.25_fHertz);
@@ -58,6 +59,7 @@ SignalDesigner::SignalDesigner
 
 	m_upVertScale->InitVertScale(&m_vertCoord, &m_graphics, L"Hz", 1e0f);
 	m_upVertScale->SetOrientation(true);
+	m_upVertScale->Show(true);
 	m_upVertScale->Notify(false);
 
 	::MoveWindow(hwnd, 100, 100, 500, 400, true);
@@ -106,8 +108,6 @@ bool SignalDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 	fPixel fPixWinWidth  { Convert2fPixel(PIXEL(width )) };
 	fPixel fPixWinHeight { Convert2fPixel(PIXEL(height)) };
 
-	m_horzCoord.SetOffset(fPixLeftOffset);
-	m_vertCoord.SetOffset(fPixBottomOffset);
 	m_upHorzScale->SetOrthoOffset(fPixBottomOffset);
 	m_upVertScale->SetOrthoOffset(fPixLeftOffset);
 

@@ -47,10 +47,11 @@ private:
 
 	void doPaint() const;
 
-	virtual void OnPaint    ();
-	virtual bool OnSize     (WPARAM const, LPARAM const);
-	virtual void OnMouseMove(WPARAM const, LPARAM const);
-	virtual bool OnCommand  (WPARAM const, LPARAM const, PixelPoint const);
+	virtual void OnPaint     ();
+	virtual bool OnSize      (WPARAM const, LPARAM const);
+	virtual void OnMouseMove (WPARAM const, LPARAM const);
+	virtual bool OnMouseLeave(WPARAM const, LPARAM const);
+	virtual bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const);
 
 	fMicroSecs const getTime(fPixel const);
 	fHertz     const getFreq(fPixel const);

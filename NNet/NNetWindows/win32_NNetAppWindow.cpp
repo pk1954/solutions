@@ -589,7 +589,9 @@ void NNetAppWindow::StartScript(wstring const & wstrFile)
 
 void NNetAppWindow::openSignalDesigner()
 {
-	NobId   const id   { m_mainNNetWindow.GetHighlightedNobId() };
+	NobId const id { m_mainNNetWindow.GetHighlightedNobId() };
+	if (IsUndefined(id))
+		return;
 	NobType const type { m_nmri.GetNobType(id) };
 	if (! type.IsInputConnectorType())
 		return;

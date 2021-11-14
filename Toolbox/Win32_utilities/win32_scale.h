@@ -35,7 +35,7 @@ public:
 			hwndParent,
 			CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, 
 			L"ClassScale",
-			WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
+			WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 			nullptr,
 			nullptr
 		);
@@ -73,38 +73,12 @@ public:
 		init(pPixCoord, wstrLogUnit, fScaleFactor);
 	}
 
-	//virtual void Notify(bool const bImmediate)
-	//{
-	//	static fPixel const MIN_TICK_DIST { 6._fPixel };  
-	//			    
-	//	LogUnits    const logMinTickDist { m_pPixCoord->Transform2logUnitSize(MIN_TICK_DIST) };
-	//	float       const log10          { log10f(logMinTickDist.GetValue()) };
-	//	float       const fExp           { floor(log10) };
-	//	float       const fFractPart     { log10 - fExp };
-	//	float       const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
-	//	fPixel      const fPixSizeA      { m_bVertScale ? m_graphics.GetClRectHeight() : m_graphics.GetClRectWidth() };
-	//	fPixel      const fPixScaleLen   { fPixSizeA - m_pPixCoord->GetPixelOffset() - m_fPixBorder }; 
-	//	LogUnits    const logScaleLen    { m_pPixCoord->Transform2logUnitSize(fPixScaleLen) };
-	//	fPixelPoint const fPixPntOffset 
-	//	{
-	//		m_bVertScale
-	//		? fPixelPoint(0._fPixel, - fPixScaleLen)
-	//		: fPixelPoint(fPixScaleLen, 0._fPixel)
-	//	};
-	//	m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
-	//	m_logStart     = m_pPixCoord->Transform2logUnitPos(m_pPixCoord->GetPixelOffset());
-	//	m_logEnd       = m_logStart + logScaleLen;
-	//	m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
-	//	m_fPixTickDist = m_pPixCoord->Transform2fPixelSize(m_logTickDist);
-	//	setScaleParams();
-	//	setTextBox();
-	//}
-
 	void SetOrthoOffset(fPixel const fPixOffset)
 	{
-		m_fPixPntStart = m_bVertScale
-		? fPixelPoint(fPixOffset,                    getClHeight() - m_pPixCoord->GetPixelOffset())
-		: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - fPixOffset);
+		m_fPixOrthoOffset = fPixOffset;
+		//m_fPixPntStart = m_bVertScale
+		//? fPixelPoint(fPixOffset,                    getClHeight() - m_pPixCoord->GetPixelOffset())
+		//: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - fPixOffset);
 	}
 
 	void SetOrientation(bool const bMode) 
@@ -134,8 +108,9 @@ private:
 	bool                   m_bVertScale     { false }; // true: vertical, false: horizontal
 	fPixelPoint            m_fPixPntStart   {};
 	fPixelPoint            m_fPixPntEnd     {};
-	fPixel                 m_fPixBorder     { 10._fPixel };
+	fPixel                 m_fPixBorder     { 0._fPixel };
 	fPixel                 m_fPixTickDist   {};
+	fPixel                 m_fPixOrthoOffset{ 0._fPixel };
 	LogUnits               m_logStart       {};
 	LogUnits               m_logEnd         {};
 	LogUnits               m_logTickDist    {};
@@ -177,6 +152,9 @@ private:
 			? fPixelPoint(0._fPixel, - fPixScaleLen)
 			: fPixelPoint(fPixScaleLen, 0._fPixel)
 		};
+		m_fPixPntStart = m_bVertScale
+		? fPixelPoint(m_fPixOrthoOffset,             getClHeight() - m_pPixCoord->GetPixelOffset())
+		: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - m_fPixOrthoOffset);
 		m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
 		m_logStart     = m_pPixCoord->Transform2logUnitPos(m_pPixCoord->GetPixelOffset());
 		m_logEnd       = m_logStart + logScaleLen;
@@ -194,13 +172,13 @@ private:
 		if (m_bVertScale) 
 			display
 			(
-				m_fPixPntStart + fPixelPoint(0._fPixel, 5._fPixel), 
+				m_fPixPntStart - fPixelPoint(0._fPixel, 15._fPixel), 
 				m_unitPrefix + m_wstrLogUnit
 			);
 		else
 			display
 			(
-				m_fPixPntStart - fPixelPoint(5._fPixel, 0._fPixel), 
+				m_fPixPntStart + fPixelPoint(10._fPixel, 0._fPixel), 
 				m_unitPrefix + m_wstrLogUnit
 			);
 	}
