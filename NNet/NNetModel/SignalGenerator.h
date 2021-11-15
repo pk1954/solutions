@@ -32,11 +32,11 @@ public:
 //	void SetParameterValues();
 
 	fHertz     FreqBase() const { return m_freqBase; };
-	fHertz     FreqMax () const { return m_freqMaxStim + m_freqBase; };
+	fHertz     FreqMax () const { return m_freqMaxStim; };
 	fMicroSecs TimeMax () const { return m_usMax;    };
 
 	void SetFreqBase(fHertz     const f) { m_freqBase    = f; }
-	void SetFreqMax (fHertz     const f) { m_freqMaxStim = f - m_freqBase; }
+	void SetFreqMax (fHertz     const f) { m_freqMaxStim = f; }
 	void SetTimeMax (fMicroSecs const t) { m_usMax       = t; }
 
 	void SetParam(ParamType::Value const, float const);

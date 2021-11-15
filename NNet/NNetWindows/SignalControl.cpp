@@ -87,7 +87,7 @@ fPixel const SignalControl::getPixXmax() const
 
 fPixel const SignalControl::getPixYmax() const
 {
-	return getPixY(m_signalGenerator.FreqMax());
+	return getPixY(m_signalGenerator.FreqMax() + m_signalGenerator.FreqBase());
 }
 
 fPixel const SignalControl::getPixYbase() const
@@ -265,22 +265,25 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_LBUTTON)
 	{
-		fMicroSecs usCrsr   { getTime(fPixCrsrPos.GetX()) };
-		fHertz     freqCrsr { getFreq(fPixCrsrPos.GetY()) };
-		if (freqCrsr < m_signalGenerator.FreqBase())
-			freqCrsr = m_signalGenerator.FreqBase();
-
+		fMicroSecs const usCrsr   { getTime(fPixCrsrPos.GetX()) };
+		fHertz     const freqCrsr { getFreq(fPixCrsrPos.GetY()) };
+		fHertz           freqLim  { freqCrsr - m_signalGenerator.FreqBase() };
+		fMicroSecs       usLim    { usCrsr };
+		if (freqLim < 0._fHertz)
+			freqLim = 0._fHertz;
+		if (usLim <= 1._MicroSecs)
+			usLim = 1._MicroSecs;
 		switch (m_trackMode)
 		{
 		case tTrackMode::MAX_PNT:
-			m_signalGenerator.SetFreqMax(freqCrsr);
-			m_signalGenerator.SetTimeMax(usCrsr);
+			m_signalGenerator.SetFreqMax(freqLim);
+			m_signalGenerator.SetTimeMax(usLim);
 			break;
 		case tTrackMode::MAX_FREQ:
-			m_signalGenerator.SetFreqMax(freqCrsr);
+			m_signalGenerator.SetFreqMax(freqLim);
 			break;
 		case tTrackMode::MAX_TIME:
-			m_signalGenerator.SetTimeMax(usCrsr);
+			m_signalGenerator.SetTimeMax(usLim);
 			break;
 		case tTrackMode::BASE_FREQ:
 			m_signalGenerator.SetFreqBase(freqCrsr);

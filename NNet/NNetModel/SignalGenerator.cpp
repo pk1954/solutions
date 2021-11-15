@@ -46,7 +46,7 @@ void SignalGenerator::Tick()
 void SignalGenerator::LoadParameterValues()
 {
 	m_freqBase    = m_pParameters->BaseFrequency();
-	m_freqMaxStim = m_pParameters->StimulusMaxFreq() - m_freqBase;
+	m_freqMaxStim = m_pParameters->StimulusMaxFreq();
 	m_usMax       = m_pParameters->StimulusMaxTime();
 }
 
@@ -62,6 +62,10 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	switch ( par )
 	{
 	case ParamType::Value::stimulusMaxFreq:
+		if ( f <= 0.0f )
+		{
+			int x = 42;
+		}
 		m_freqMaxStim = f;
 		break;
 
