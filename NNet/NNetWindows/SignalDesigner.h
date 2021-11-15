@@ -27,7 +27,10 @@ public:
 		Observable &
 	);
 
-	virtual ~SignalDesigner() {};
+	virtual ~SignalDesigner() 
+	{
+		int x = 42;
+	};
 
 	static void Initialize(Param & param) 
 	{ 
@@ -46,6 +49,7 @@ private:
 	//void doPaint() const;
 
 	virtual void OnPaint() {};
+	virtual void OnClose();
 	virtual bool OnSize(WPARAM const, LPARAM const);
 
 	enum class tZoomMode  { NONE, HORZ, VERT };

@@ -38,7 +38,6 @@
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
 #include "win32_script.h"
-#include "SignalGenerator.h"
 #include "SignalDesigner.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -162,7 +161,6 @@ private:
 	CommandStack             m_cmdStack               { };
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
-	SignalGenerator          m_signalGenerator        { };
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

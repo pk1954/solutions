@@ -40,7 +40,10 @@ public:
            );
     }
 
-    virtual ~DiscIoConnectorCmd() {}
+    virtual ~DiscIoConnectorCmd() 
+    {
+        int x = 42;
+    }
 
     virtual void Do()
     {

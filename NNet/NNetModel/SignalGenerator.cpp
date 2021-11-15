@@ -6,6 +6,11 @@
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 
+SignalGenerator::SignalGenerator()
+{
+	LoadParameterValues();
+}
+
 void SignalGenerator::TriggerStimulus()
 {
 	m_usSinceLastStimulus = 0._MicroSecs;

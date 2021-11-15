@@ -15,6 +15,8 @@ class RootWindow;
 class Command
 {
 public:
+    virtual ~Command() {}
+
     virtual void Do  ();
     virtual void Undo();
     virtual void UpdateUI();

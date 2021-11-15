@@ -13,6 +13,12 @@ class SignalGenerator : public Observable
 {
 public:
 
+	SignalGenerator();
+	virtual ~SignalGenerator()
+	{
+		int x = 42;
+	}
+
     static void Initialize(Param & param) { m_pParameters = & param; }
 
 	void Tick();

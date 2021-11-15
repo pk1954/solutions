@@ -71,24 +71,10 @@ void SignalDesigner::Stop()
 	DestroyWindow();
 }
 
-//void SignalDesigner::doPaint() const
-//{
-//}
-//
-//void SignalDesigner::OnPaint()
-//{
-//	if (IsWindowVisible())
-//	{
-//		PAINTSTRUCT ps;
-//		HDC const hDC = BeginPaint(&ps);
-//		if (m_graphics.StartFrame(hDC))
-//		{
-//			doPaint();
-//			m_graphics.EndFrame();
-//		}
-//		EndPaint(&ps);
-//	}
-//}
+void SignalDesigner::OnClose()
+{
+	Stop();
+}
 
 bool SignalDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
