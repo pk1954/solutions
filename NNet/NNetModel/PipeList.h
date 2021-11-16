@@ -36,10 +36,10 @@ public:
 	void Remove (Pipe * const);
 	void Replace(Pipe * const, Pipe * const);
 
-	bool const IsEmpty   () const { return m_list.empty(); }
-	bool const IsNotEmpty() const { return ! IsEmpty(); }
+	bool IsEmpty   () const { return m_list.empty(); }
+	bool IsNotEmpty() const { return ! IsEmpty(); }
 
-	size_t const Size() const { return m_list.size(); }
+	size_t Size() const { return m_list.size(); }
 
 	void Clear() { m_list.clear(); }
 
