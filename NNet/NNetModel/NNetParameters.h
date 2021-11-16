@@ -49,13 +49,13 @@ inline static MicroMeter    const NEURON_RADIUS   { 50.0_MicroMeter };
 inline static MicroMeter    const PIPE_WIDTH      { 20.0_MicroMeter };
 inline static MicroMeterPnt const STD_OFFSET      { MicroMeterPnt(0._MicroMeter, NEURON_RADIUS * 2.0) };
 
-static unsigned int const CalcNrOfSteps(MicroMeter const um)
+static unsigned int CalcNrOfSteps(MicroMeter const um)
 {
 	static MicroMeter const umPerStep { NEURON_RADIUS / 5.0f };
 	return Cast2UnsignedInt(um / umPerStep);
 }
 
-static unsigned int const CalcNrOfSteps(Radian const rad)
+static unsigned int CalcNrOfSteps(Radian const rad)
 {
 	static Radian const radPerStep { Degrees2Radian(6.0_Degrees) };
 	return Cast2UnsignedInt(rad / radPerStep);

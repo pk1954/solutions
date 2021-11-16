@@ -18,30 +18,29 @@ class InputNeuron : public IoNeuron
 {
 public:
 
-	InputNeuron(MicroMeterPnt const &);
-	InputNeuron(BaseKnot      const &);
+	explicit InputNeuron(MicroMeterPnt const &);
+	explicit InputNeuron(BaseKnot      const &);
 
 	virtual ~InputNeuron();
 
 	virtual void Check() const;
 
-	static bool const TypeFits(NobType const type) { return type.IsInputNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
 	fHertz const GetActFrequency() const;
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
 
-	virtual NobIoMode const GetIoMode() const { return NobIoMode::input; }
+	virtual NobIoMode GetIoMode() const { return NobIoMode::input; }
 
-	virtual void       Prepare();
-	virtual void       DrawNeuronText(DrawContext const &) const;
-	virtual bool const Includes(MicroMeterPnt const &) const;
+	virtual void Prepare();
+	virtual bool Includes(MicroMeterPnt const &) const;
 
 private:
 
-	MicroMeterPnt const getOffset() const;
-	MicroMeterPnt const getCenter() const;
+	MicroMeterPnt getOffset() const;
+	MicroMeterPnt getCenter() const;
 
 	void drawSocket
 	(

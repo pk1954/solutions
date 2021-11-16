@@ -29,31 +29,32 @@ public:
 	virtual void Check() const;
 	virtual void Dump () const;
 
-	virtual MicroMeterPnt const GetPos() const;
+	virtual MicroMeterPnt GetPos() const;
 
-	virtual void       DrawExterior(DrawContext    const &, tHighlight const) const;
-	virtual void       DrawInterior(DrawContext    const &, tHighlight const) const;
-	virtual void       Expand      (MicroMeterRect       &)                   const;
-	virtual bool const IsIncludedIn(MicroMeterRect const &)                   const;
-	virtual bool const Includes    (MicroMeterPnt  const &)                   const;
-	virtual void       RotateNob   (MicroMeterPnt  const &, Radian const);
-	virtual void       MoveNob     (MicroMeterPnt  const &);
-	virtual void       Recalc      ();
-	virtual void       Clear       ();
-	virtual void       Link        (Nob const &, Nob2NobFunc const &);
-	virtual void       Select      (bool const);
-	virtual void       SetParentPointers();
-	virtual void       ClearParentPointers();
+	virtual void DrawExterior(DrawContext    const &, tHighlight const) const;
+	virtual void DrawInterior(DrawContext    const &, tHighlight const) const;
+	virtual void Expand      (MicroMeterRect       &)                   const;
+	virtual bool IsIncludedIn(MicroMeterRect const &)                   const;
+	virtual bool Includes    (MicroMeterPnt  const &)                   const;
+	virtual void RotateNob   (MicroMeterPnt  const &, Radian const);
+	virtual void MoveNob     (MicroMeterPnt  const &);
+	virtual void Recalc      ();
+	virtual void Clear       ();
+	virtual void Link        (Nob const &, Nob2NobFunc const &);
+	virtual void Select      (bool const);
+	virtual void SetParentPointers();
+	virtual void ClearParentPointers();
 
-	virtual void       Prepare     () {}
-	virtual bool const CompStep    () { return false; }
+	virtual void Prepare     () {}
+	virtual bool CompStep    () { return false; }
 
-	virtual bool const IsCompositeNob() { return true; }
+	virtual bool             IsCompositeNob() { return true; }
+	virtual MicroMeterPosDir GetPosDir() const;
 
-	void               Push(IoNeuron * const);
-	IoNeuron * const   Pop();
-	IoNeuron   const & GetElem(size_t const) const;
-	size_t     const   Size() const;
+	void             Push(IoNeuron * const);
+	IoNeuron       * Pop();
+	IoNeuron const & GetElem(size_t const) const;
+	size_t           Size() const;
 
 	void LockDirection();
 	void UnlockDirection();
@@ -62,8 +63,7 @@ public:
 
 	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
 
-	MicroMeterPosDir const GetPosDir() const;
-	Radian           const GetDir()    const;
+	Radian GetDir() const;
 
 	void SetDir   (Radian           const );
 	void SetPos   (MicroMeterPnt    const &);
@@ -71,8 +71,8 @@ public:
 
 	void Apply2All(function<void(IoNeuron &)> const & func) const;
 
-	MicroMeterLine const CalcMaxDistLine();
-	MicroMeterPnt  const CalcOrthoVector(MicroMeterLine const &);
+	MicroMeterLine CalcMaxDistLine() const;
+	MicroMeterPnt  CalcOrthoVector(MicroMeterLine const &) const;
 
 	friend wostream & operator<< (wostream &, IoConnector const &);
 

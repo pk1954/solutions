@@ -26,20 +26,20 @@ public:
 
     void Apply2All(function<void(MicroMeterPosDir &)> const &);
 
-    unsigned int const Size() const;
+    unsigned int Size() const;
 
-    MicroMeterPosDir const GetPosDir(size_t const) const;
+    MicroMeterPosDir GetPosDir(size_t const) const;
 
     void SetPosDir(unsigned int const, MicroMeterPosDir const &);
     void SetDir   (Radian const);
-    void SetDir   (MicroMeterPntVector const);
-    void SetPos   (MicroMeterPntVector const);
+    void SetDir   (MicroMeterPntVector const &);
+    void SetPos   (MicroMeterPntVector const &);
     void Resize   (size_t const);
     void Add      (MicroMeterPosDir const &);
     void Add      (MicroMeterPnt    const &, Radian const);
     void Align    (MicroMeterPnt    const &, MicroMeterPnt const &);
     void Align    (MicroMeterLine   const &, MicroMeter);
-    void Align    (MicroMeterLine   const);
+    void Align    (MicroMeterLine   const &);
     void Pack     (MicroMeter);
     void Clear();
 
@@ -49,15 +49,15 @@ public:
     MicroMeterPntVector& operator-= (MicroMeterPntVector const &); 
     MicroMeterPntVector& operator*= (float const);
 
-    Radian         const FindMaxRadian() const; 
-    MicroMeter     const FindMaxPos() const;
-    MicroMeterLine const GetLine();
+    Radian         FindMaxRadian() const; 
+    MicroMeter     FindMaxPos() const;
+    MicroMeterLine GetLine() const;
 
-    friend MicroMeterPntVector const operator+ (MicroMeterPntVector const, MicroMeterPntVector const);
-    friend MicroMeterPntVector const operator- (MicroMeterPntVector const, MicroMeterPntVector const); 
-    friend MicroMeterPntVector const operator* (MicroMeterPntVector const, float const);
+    friend MicroMeterPntVector operator+ (MicroMeterPntVector const, MicroMeterPntVector const);
+    friend MicroMeterPntVector operator- (MicroMeterPntVector const, MicroMeterPntVector const); 
+    friend MicroMeterPntVector operator* (MicroMeterPntVector const, float const);
 
-    friend unsigned int        const CalcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &);
+    friend unsigned int CalcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &);
 
     friend wostream & operator<< (wostream &, MicroMeterPntVector const &);
 
@@ -66,7 +66,7 @@ public:
     inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
-    float const gapCount() { return Cast2Float(Size() - 1); };
+    float gapCount() const { return Cast2Float(Size() - 1); };
 
     vector<MicroMeterPosDir> m_list;
 };

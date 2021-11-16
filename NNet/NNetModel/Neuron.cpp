@@ -90,7 +90,7 @@ bool Neuron::operator==(Nob const & rhs) const
 	(m_triggerSound.m_duration  == neuronRhs.m_triggerSound.m_duration);
 }
 
-SoundDescr const Neuron::SetTriggerSound(SoundDescr const & sound) 
+SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound) 
 {
 	SoundDescr oldValue { m_triggerSound };
 	if (m_triggerSound.m_bOn != sound.m_bOn)
@@ -113,7 +113,7 @@ void Neuron::Recalc()
 	m_factorU = 4.0f * m_factorW * m_pParameters->PeakVoltage().GetValue();
 };
 
-mV const Neuron::waveFunction(fMicroSecs const time) const
+mV Neuron::waveFunction(fMicroSecs const time) const
 {
 	return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }
@@ -124,7 +124,7 @@ void Neuron::Clear()
 	Nob::Clear();
 }
 
-bool const Neuron::CompStep()
+bool Neuron::CompStep()
 {
 	bool bTrigger 
 	{ 
@@ -148,14 +148,14 @@ bool const Neuron::CompStep()
 	return m_bStopOnTrigger && bTrigger;
 }
 
-mV const Neuron::GetNextOutput() const
+mV Neuron::GetNextOutput() const
 {
 	return (m_usSinceLastPulse <= m_pParameters->PulseWidth())
 		   ? waveFunction(m_usSinceLastPulse)
 		   : BASE_POTENTIAL;
 }
 
-void const Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const text) const
+void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const & text) const
 {
 	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
 	context.DisplayText(umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow);

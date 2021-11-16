@@ -60,7 +60,6 @@ void InputNeuron::Prepare()
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));
-	DrawNeuronText(context);
 }
 
 void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
@@ -68,17 +67,17 @@ void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const typ
 	drawSocket(context, 1.6f, 0.0f, GetInteriorColor(type));
 }
 
-MicroMeterPnt const InputNeuron::getOffset() const
+MicroMeterPnt InputNeuron::getOffset() const
 {
 	return GetScaledDirVector() * 0.7f;
 }
 
-MicroMeterPnt const InputNeuron::getCenter() const
+MicroMeterPnt InputNeuron::getCenter() const
 {
 	return GetPos() - getOffset();
 }
 
-bool const InputNeuron::Includes(MicroMeterPnt const & point) const
+bool InputNeuron::Includes(MicroMeterPnt const & point) const
 {
 	return Distance(point, getCenter()) <= GetExtension();
 }
@@ -105,17 +104,4 @@ void InputNeuron::drawSocket
 	context.DrawLine(umStart, umEndCenter,   umSize,    colF);
 	context.DrawLine(umLine + umOrthoVector, umWidthLR, colF);
 	context.DrawLine(umLine - umOrthoVector, umWidthLR, colF);
-}
-
-void InputNeuron::DrawNeuronText(DrawContext const & context) const
-{ 
-	//wostringstream m_wBuffer;
-
-	//m_wBuffer.clear();
-	//m_wBuffer.str(wstring());
-	//m_wBuffer << fixed << setprecision(2) 
-	//	      << GetActFrequency()
-	//	      << L"Hz";
-
-	//DisplayText(context, GetRect4Text(), m_wBuffer.str());
 }

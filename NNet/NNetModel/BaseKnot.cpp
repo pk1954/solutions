@@ -130,7 +130,7 @@ void BaseKnot::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta
 	SetPos(umPntPosNew);
 }
 
-bool const BaseKnot::IsIncludedIn(MicroMeterRect const & umRect) const 
+bool BaseKnot::IsIncludedIn(MicroMeterRect const & umRect) const 
 { 
 	return umRect.Includes(GetPos()); 
 }
@@ -173,22 +173,22 @@ void BaseKnot::Prepare()
 	Apply2AllInPipes([&](Pipe & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 }
 
-bool const BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 
+bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 
 {
 	return m_outPipes.Apply2AllB([&](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
 }
 
-bool const BaseKnot::IsSuccessorOf(Pipe const & pipePred) const
+bool BaseKnot::IsSuccessorOf(Pipe const & pipePred) const
 {
 	return m_inPipes.Apply2AllB([&](Pipe const & pipe) { return & pipe == & pipePred; });
 }
 
-bool const BaseKnot::Includes(MicroMeterPnt const & point) const
+bool BaseKnot::Includes(MicroMeterPnt const & point) const
 {
 	return Distance(point, GetPos()) <= GetExtension();
 }
 
-MicroMeterRect const BaseKnot::GetRect4Text() const
+MicroMeterRect BaseKnot::GetRect4Text() const
 {
 	return MicroMeterRect
 	{

@@ -25,21 +25,18 @@ public:
     void Close();
     virtual ~InputBuffer();
 
-    void                  SetStartMarker();
-    void                  UnreadLastChar();
-    wchar_t       const   ReadNextChar  ();
-    double        const   ReadFloat     ();
-    unsigned long const   ReadNumber    ();
-
-    wstring       const & GetActLine    () const { return m_wstrLine; };
-    int           const   GetActLineNr  () const { return m_iLineNr; };
-
-    int           const   GetActStartPos() const;
-    int           const   GetActEndPos  () const;
-    bool          const   IsFloat       () const;
-
-    bool          const   IsActive      () const { return m_ifstream.is_open(); }
-    streampos     const   GetFilePos    ()       { return m_ifstream.tellg(); };
+    void            SetStartMarker();
+    void            UnreadLastChar();
+    wchar_t         ReadNextChar  ();
+    double          ReadFloat     ();
+    unsigned long   ReadNumber    ();
+    int             GetActStartPos() const;
+    int             GetActEndPos  () const;
+    bool            IsFloat       () const;
+    wstring const & GetActLine    () const { return m_wstrLine; };
+    int             GetActLineNr  () const { return m_iLineNr; };
+    bool            IsActive      () const { return m_ifstream.is_open(); }
+    streampos const GetFilePos    ()       { return m_ifstream.tellg(); };
 
     static void SetNewLineTrigger(function<void(void)> const);
 

@@ -76,7 +76,7 @@ NobId Pipe::GetEndKnotId() const
 	return m_pKnotEnd->GetId(); 
 }
 
-MicroMeterPnt const Pipe::GetPos() const 
+MicroMeterPnt Pipe::GetPos() const 
 { 
 	return (m_pKnotStart->GetPos() + m_pKnotEnd->GetPos()) / 2.0f; 
 }
@@ -136,7 +136,7 @@ void Pipe::MoveNob(MicroMeterPnt const & delta)
 // It doesn't calculate exactly if the pipe intersects umRect, but eliminites a lot of cases with a 
 // simple and fast check. The rest is left over for the clipping algorithm of the graphics subsystem
 
-bool const Pipe::IsIncludedIn(MicroMeterRect const & umRect) const 
+bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const 
 { 
 	if ((m_pKnotStart->GetPosX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosX() < umRect.GetLeft()))
 		return false;
@@ -197,7 +197,7 @@ MicroMeter Pipe::GetLength() const
 	return Distance(GetStartPoint(), GetEndPoint());
 }
 
-bool const Pipe::Includes(MicroMeterPnt const & point) const
+bool Pipe::Includes(MicroMeterPnt const & point) const
 {
 	MicroMeterPnt const umVector{ GetEndPoint() - GetStartPoint() };
 	if (umVector.IsCloseToZero())
@@ -272,7 +272,7 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 	}
 }
 
-bool const Pipe::CompStep()
+bool Pipe::CompStep()
 {
 	m_potential[m_potIndex] = m_mVinputBuffer;
 	if (m_potIndex == 0)
@@ -282,7 +282,7 @@ bool const Pipe::CompStep()
 	return false;
 }
 
-mV const Pipe::GetVoltage(MicroMeterPnt const & point) const
+mV Pipe::GetVoltage(MicroMeterPnt const & point) const
 {
 	mV mVresult { 0._mV };
 	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };

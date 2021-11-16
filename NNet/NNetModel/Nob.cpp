@@ -48,7 +48,7 @@ void Nob::SetPosDir(MicroMeterPosDir const & umPosDir)
 	SetPos(umPosDir.GetPos());
 };
 
-MicroMeterPosDir const Nob::GetPosDir() const 
+MicroMeterPosDir Nob::GetPosDir() const 
 { 
 	return MicroMeterPosDir(GetPos(), GetDir()); 
 };
@@ -110,7 +110,7 @@ wostream & operator<< (wostream & out, Nob const & nob)
 	return out;
 }
 
-MicroMeterPosDir const CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
+MicroMeterPosDir CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
 {
 	MicroMeter    const umOff        { umO * NEURON_RADIUS.GetValue() };
 	MicroMeter    const umOffset     { (nob.GetIoMode() == NobIoMode::input) ? -umOff : umOff };

@@ -21,11 +21,11 @@ public:
 
 	static bool const TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
-	InputConnector(vector<IoNeuron *> &&);
+	explicit InputConnector(vector<IoNeuron *> &&);
 
 	virtual ~InputConnector() {}
 
-	virtual NobIoMode const GetIoMode() const { return NobIoMode::input; }
+	virtual NobIoMode GetIoMode() const { return NobIoMode::input; }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 

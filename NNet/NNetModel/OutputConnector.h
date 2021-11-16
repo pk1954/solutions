@@ -26,7 +26,7 @@ public:
 
 	virtual ~OutputConnector() {}
 
-	virtual NobIoMode const GetIoMode() const { return NobIoMode::output; }
+	virtual NobIoMode GetIoMode() const { return NobIoMode::output; }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 };

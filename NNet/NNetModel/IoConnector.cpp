@@ -50,14 +50,14 @@ void IoConnector::Push(IoNeuron * const p)
     m_list.push_back(p); 
 }
 
-IoNeuron * const IoConnector::Pop() 
+IoNeuron * IoConnector::Pop() 
 { 
     IoNeuron * pRet { m_list.back() };
     m_list.pop_back();
     return pRet;
 }
 
-size_t const IoConnector::Size() const 
+size_t IoConnector::Size() const 
 { 
     return m_list.size(); 
 }
@@ -86,13 +86,13 @@ void IoConnector::AlignDirection()
     for (auto it : m_list) { it->SetDirVector(umPntDir); }
 }
 
-MicroMeterPnt const IoConnector::GetPos() const 
+MicroMeterPnt IoConnector::GetPos() const 
 { 
     assert(!m_list.empty());
     return (m_list.front()->GetPos() + m_list.back()->GetPos()) * 0.5f; 
 }
 
-Radian const IoConnector::GetDir() const 
+Radian IoConnector::GetDir() const 
 { 
     return m_list.empty() 
         ? Radian::NULL_VAL() 
@@ -111,7 +111,7 @@ void IoConnector::LockDirection()
         it->LockDirection(); 
 }
 
-MicroMeterPosDir const IoConnector::GetPosDir() const 
+MicroMeterPosDir IoConnector::GetPosDir() const 
 { 
     return m_list.empty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir(GetPos(), GetDir());
 }
@@ -127,19 +127,6 @@ void IoConnector::ClearParentPointers()
     for (auto & it: m_list)
         it->SetParentNob(nullptr);
 }
-
-//void IoConnector::Prepare()
-//{
-//    for (auto it : m_list) 
-//        it->Prepare();
-//}
-//
-//bool const IoConnector::CompStep()
-//{
-//    for (auto it : m_list) 
-//        if (it->CompStep()) return true;
-//    return false;
-//}
 
 void IoConnector::Recalc()
 {
@@ -198,13 +185,13 @@ void IoConnector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & u
     RotateNob(umPntPivot, radDelta);
 }                        
 
-bool const IoConnector::IsIncludedIn(MicroMeterRect const & umRect) const 
+bool IoConnector::IsIncludedIn(MicroMeterRect const & umRect) const 
 {
     for (auto it : m_list) { if (it->IsIncludedIn(umRect)) return true; }
     return false;
 }
 
-bool const IoConnector::Includes(MicroMeterPnt const & umPnt) const
+bool IoConnector::Includes(MicroMeterPnt const & umPnt) const
 {
     for (auto it : m_list) 
         if (it->Includes(umPnt)) 
@@ -230,12 +217,12 @@ void IoConnector::Expand(MicroMeterRect & umRect) const
         it->Expand(umRect);
 }
 
-MicroMeterLine const IoConnector::CalcMaxDistLine() // find two nobs with maximum distance
+MicroMeterLine IoConnector::CalcMaxDistLine() const // find two nobs with maximum distance
 {
     return ::CalcMaxDistLine<IoNeuron>(m_list);
 }
 
-MicroMeterPnt const IoConnector::CalcOrthoVector(MicroMeterLine const & line)
+MicroMeterPnt IoConnector::CalcOrthoVector(MicroMeterLine const & line) const 
 {
     return ::CalcOrthoVector<IoNeuron>(m_list, line);
 }

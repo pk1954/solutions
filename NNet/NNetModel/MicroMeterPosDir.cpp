@@ -83,7 +83,7 @@ wostream & operator<< (wostream & out, MicroMeterPosDir const & posDir)
     return out;
 }
 
-unsigned int const CalcNrOfSteps
+unsigned int CalcNrOfSteps
 (
     MicroMeterPosDir const & umPosDirStart,
     MicroMeterPosDir const & umPosDirTarget

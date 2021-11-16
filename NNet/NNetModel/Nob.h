@@ -55,60 +55,59 @@ public:
 	virtual void SetPos   (MicroMeterPnt  const &);
 	virtual void SetPosDir(MicroMeterPosDir const &);
 
-	virtual MicroMeterPosDir const GetPosDir() const;
+	virtual MicroMeterPosDir GetPosDir() const;
 
-	virtual Radian        const GetDir      ()                                      const = 0;
-	virtual MicroMeterPnt const GetPos      ()                                      const = 0;
-	virtual NobIoMode     const GetIoMode   ()                                      const = 0;
-	virtual void                DrawExterior(DrawContext const &, tHighlight const) const = 0;
-	virtual void                DrawInterior(DrawContext const &, tHighlight const) const = 0;
-	virtual void                Prepare     ()                                            = 0;
-	virtual bool          const CompStep    ()                                            = 0;
-	virtual void                Recalc      ()                                            = 0;
-	virtual bool          const IsIncludedIn(MicroMeterRect  const &)               const = 0;
-	virtual bool          const Includes    (MicroMeterPnt const &)                 const = 0;
-	virtual void                Expand      (MicroMeterRect &)                      const = 0;
-	virtual void                MoveNob     (MicroMeterPnt const &)                       = 0;
-	virtual void                RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
-	virtual void                Link        (Nob const &, Nob2NobFunc const &)            = 0;
+	virtual Radian        GetDir      ()                                      const = 0;
+	virtual MicroMeterPnt GetPos      ()                                      const = 0;
+	virtual NobIoMode     GetIoMode   ()                                      const = 0;
+	virtual void          DrawExterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void          DrawInterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void          Prepare     ()                                            = 0;
+	virtual bool          CompStep    ()                                            = 0;
+	virtual void          Recalc      ()                                            = 0;
+	virtual bool          IsIncludedIn(MicroMeterRect  const &)               const = 0;
+	virtual bool          Includes    (MicroMeterPnt const &)                 const = 0;
+	virtual void          Expand      (MicroMeterRect &)                      const = 0;
+	virtual void          MoveNob     (MicroMeterPnt const &)                       = 0;
+	virtual void          RotateNob   (MicroMeterPnt const &, Radian const)         = 0;
+	virtual void          Link        (Nob const &, Nob2NobFunc const &)            = 0;
 
-	virtual bool const IsCompositeNob() const { return false; }
+	virtual bool IsCompositeNob() const { return false; }
+	virtual void Select(bool const bOn) { m_bSelected = bOn; }
+	virtual void Clear()                { m_mVinputBuffer.Set2Zero(); }
+	virtual void SetId(NobId const id)  { m_identifier = id; }
+	virtual void Reconnect          ()  {};
 
-	virtual void       Select(bool const bOn) { m_bSelected = bOn; }
-	virtual void       Clear()                { m_mVinputBuffer.Set2Zero(); }
-	virtual void       SetId(NobId const id)  { m_identifier = id; }
-	virtual void       Reconnect          ()  {};
+	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
+	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
+	bool    IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }
+	bool    IsSelected   () const { return m_bSelected; }
+	bool    IsDefined    () const { return ::IsDefined(m_identifier); }
+	wstring GetName      () const { return NobType::GetName(m_type.GetValue()); }
+	NobType GetNobType   () const { return m_type; }
+	NobId   GetId        () const { return m_identifier; }
 
-	bool    const IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
-	bool    const IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
-	bool    const IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }
-	bool    const IsSelected   () const { return m_bSelected; }
-	bool    const IsDefined    () const { return ::IsDefined(m_identifier); }
-	wstring const GetName      () const { return NobType::GetName(m_type.GetValue()); }
-	NobType const GetNobType   () const { return m_type; }
-	NobId   const GetId        () const { return m_identifier; }
+	MicroMeter GetPosX() const { return GetPos().GetX(); }
+	MicroMeter GetPosY() const { return GetPos().GetY(); }
 
-	MicroMeter const GetPosX() const { return GetPos().GetX(); }
-	MicroMeter const GetPosY() const { return GetPos().GetY(); }
-
-	bool const IsInputConnector () const { return m_type.IsInputConnectorType (); }
-	bool const IsOutputConnector() const { return m_type.IsOutputConnectorType(); }
-	bool const IsIoConnector    () const { return m_type.IsIoConnectorType    (); }
-	bool const IsPipe           () const { return m_type.IsPipeType           (); }
-	bool const IsKnot           () const { return m_type.IsKnotType           (); }
-	bool const IsNeuron         () const { return m_type.IsNeuronType         (); }
-	bool const IsIoNeuron       () const { return m_type.IsIoNeuronType       (); }
-	bool const IsInputNeuron    () const { return m_type.IsInputNeuronType    (); }
-	bool const IsOutputNeuron   () const { return m_type.IsOutputNeuronType   (); }
-	bool const IsAnyNeuron      () const { return m_type.IsAnyNeuronType      (); }
-	bool const IsBaseKnot       () const { return m_type.IsBaseKnotType       (); }
-	bool const IsUndefined      () const { return m_type.IsUndefinedType      (); }
+	bool IsInputConnector () const { return m_type.IsInputConnectorType (); }
+	bool IsOutputConnector() const { return m_type.IsOutputConnectorType(); }
+	bool IsIoConnector    () const { return m_type.IsIoConnectorType    (); }
+	bool IsPipe           () const { return m_type.IsPipeType           (); }
+	bool IsKnot           () const { return m_type.IsKnotType           (); }
+	bool IsNeuron         () const { return m_type.IsNeuronType         (); }
+	bool IsIoNeuron       () const { return m_type.IsIoNeuronType       (); }
+	bool IsInputNeuron    () const { return m_type.IsInputNeuronType    (); }
+	bool IsOutputNeuron   () const { return m_type.IsOutputNeuronType   (); }
+	bool IsAnyNeuron      () const { return m_type.IsAnyNeuronType      (); }
+	bool IsBaseKnot       () const { return m_type.IsBaseKnotType       (); }
+	bool IsUndefined      () const { return m_type.IsUndefinedType      (); }
 
 	friend wostream & operator<< (wostream &, Nob const &);
 
-	bool  const HasParentNob() const        { return m_pNobParent != nullptr; }
-	Nob * const GetParentNob() const        { return m_pNobParent; }
-	void        SetParentNob(Nob * const p) { m_pNobParent = p; }
+	bool  HasParentNob() const        { return m_pNobParent != nullptr; }
+	Nob * GetParentNob() const        { return m_pNobParent; }
+	void  SetParentNob(Nob * const p) { m_pNobParent = p; }
 
 	mV const GetVoltage() const { return m_mVinputBuffer; }
 
@@ -136,7 +135,7 @@ private:
 	Nob   * m_pNobParent { nullptr };
 };
 
-MicroMeterPosDir const CalcOffsetPosDir(Nob const &, MicroMeter const);
+MicroMeterPosDir CalcOffsetPosDir(Nob const &, MicroMeter const);
 
 template <typename T> 
 concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;

@@ -30,34 +30,34 @@ public:
 	virtual BaseKnot & operator+=(BaseKnot const &);
 	virtual BaseKnot & operator-=(BaseKnot const &);
 
-	virtual MicroMeterPnt const GetPos() const { return m_circle.GetPos(); }
+	virtual MicroMeterPnt GetPos() const { return m_circle.GetPos(); }
 
-	virtual void       Dump         () const;
-	virtual void       Check        () const;
-	virtual void       Prepare      ();
-	virtual void       Reconnect    ();
-	virtual mV   const GetNextOutput() const = 0;
-	virtual void       SetPos       (MicroMeterPnt const &);
-	virtual bool const IsIncludedIn (MicroMeterRect  const &) const; 
-	virtual void       Expand       (MicroMeterRect        &) const;
-	virtual void       RotateNob    (MicroMeterPnt const &, Radian const);
-	virtual void       Link         (Nob const &, Nob2NobFunc const &);
-	virtual void       MoveNob      (MicroMeterPnt const &);
+	virtual void Dump         () const;
+	virtual void Check        () const;
+	virtual void Prepare      ();
+	virtual void Reconnect    ();
+	virtual mV   GetNextOutput() const = 0;
+	virtual void SetPos       (MicroMeterPnt const &);
+	virtual bool IsIncludedIn (MicroMeterRect  const &) const; 
+	virtual void Expand       (MicroMeterRect        &) const;
+	virtual void RotateNob    (MicroMeterPnt const &, Radian const);
+	virtual void Link         (Nob const &, Nob2NobFunc const &);
+	virtual void MoveNob      (MicroMeterPnt const &);
+	virtual bool Includes     (MicroMeterPnt const &) const;
 
-	static bool const TypeFits(NobType const type) { return type.IsBaseKnotType(); }
+	static bool TypeFits(NobType const type) { return type.IsBaseKnotType(); }
 
-	MicroMeterCircle const GetCircle   () const { return m_circle; }
-	MicroMeter       const GetExtension() const { return m_circle.GetRadius(); }
+	MicroMeterCircle GetCircle   () const { return m_circle; }
+	MicroMeter       GetExtension() const { return m_circle.GetRadius(); }
 
 	void SetExtension(MicroMeter const um) { m_circle.SetRadius(um); }
 
-	bool const Includes(MicroMeterPnt const &) const;
-	bool const IsPrecursorOf(Pipe const &) const;
-	bool const IsSuccessorOf(Pipe const &) const ;
+	bool IsPrecursorOf(Pipe const &) const;
+	bool IsSuccessorOf(Pipe const &) const ;
 
-	bool const HasIncoming() const { return m_inPipes.IsNotEmpty (); }
-	bool const HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
-	bool const IsOrphan()    const { return !(HasIncoming() || HasOutgoing()); }
+	bool HasIncoming() const { return m_inPipes.IsNotEmpty (); }
+	bool HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
+	bool IsOrphan()    const { return !(HasIncoming() || HasOutgoing()); }
 
 	void AddIncoming(BaseKnot const &);
 	void AddOutgoing(BaseKnot const &); 
@@ -98,7 +98,7 @@ public:
 	bool Apply2AllOutPipesB      (PipeCrit const &c) const { return m_outPipes.Apply2AllB(c); }
 	bool Apply2AllConnectedPipesB(PipeCrit const &c) const;
 
-	MicroMeterRect const GetRect4Text() const;
+	MicroMeterRect GetRect4Text() const;
 
 	PipeList const & GetIncoming() const { return m_inPipes; }
 	PipeList const & GetOutgoing() const { return m_outPipes; }

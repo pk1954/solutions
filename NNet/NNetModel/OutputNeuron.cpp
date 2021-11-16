@@ -44,7 +44,7 @@ void OutputNeuron::DrawInterior(DrawContext const & context, tHighlight const ty
 	drawPlug(context, 0.4f, 0.6f, GetInteriorColor(type));
 }
 
-bool const OutputNeuron::Includes(MicroMeterPnt const & point) const
+bool OutputNeuron::Includes(MicroMeterPnt const & point) const
 {
 	MicroMeterPnt const umCenter { GetPos() + GetScaledDirVector() * 0.5f };
 	return Distance(point, umCenter) <= GetExtension();

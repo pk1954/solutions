@@ -30,13 +30,13 @@ public:
 
 	void Check() const;
 
-	static bool const TypeFits(NobType const type) { return type.IsKnotType(); }
+	static bool TypeFits(NobType const type) { return type.IsKnotType(); }
 
-	virtual void            SetDir(Radian const r) { };
-	virtual Radian    const GetDir       () const { return Radian::NULL_VAL(); };
-	virtual mV        const GetNextOutput() const { return m_mVinputBuffer; }
-	virtual bool      const CompStep     ()       { return false; }
-	virtual NobIoMode const GetIoMode    () const { return NobIoMode::internal; }
+	virtual void      SetDir(Radian const r) { };
+	virtual Radian    GetDir       () const { return Radian::NULL_VAL(); };
+	virtual mV        GetNextOutput() const { return m_mVinputBuffer; }
+	virtual bool      CompStep     ()       { return false; }
+	virtual NobIoMode GetIoMode    () const { return NobIoMode::internal; }
 
 	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
 	virtual void DrawInterior(DrawContext const &, tHighlight const) const;

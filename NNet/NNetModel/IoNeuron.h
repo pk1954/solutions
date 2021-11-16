@@ -14,7 +14,7 @@ using std::endl;
 class IoNeuron : public Neuron
 {
 public:
-	static bool const TypeFits(NobType const type) { return type.IsIoNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsIoNeuronType(); }
 
 	IoNeuron(MicroMeterPnt const & upCenter, NobType const type)
 		: Neuron(upCenter, type)
@@ -30,21 +30,21 @@ public:
 
 	virtual void RotateNob(MicroMeterPnt const &, Radian const);
 
-	virtual Radian const GetDir() const;
-	virtual void         SetDir(Radian const);
-	                                // IoNeurons can be locked or unlocked
-	void       LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
-	void       UnlockDirection();   // unlocked: m_radDirection is null, displaed direction
-	bool const IsDirLocked() const; //           is computed depending on connected pipe(s)
+	virtual MicroMeterPosDir GetPosDir() const;
+	virtual Radian           GetDir()    const;
+	virtual void             SetDir(Radian const);
 
-	MicroMeterPnt    const GetScaledDirVector() const;
-	MicroMeterPnt    const GetDirVector      () const;
-	MicroMeterPosDir const GetRawPosDir      () const;
-	MicroMeterPosDir const GetPosDir         () const;
+	                          // IoNeurons can be locked or unlocked
+	void LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
+	void UnlockDirection();   // unlocked: m_radDirection is null, displaed direction
+	bool IsDirLocked() const; //           is computed depending on connected pipe(s)
 
+	MicroMeterPnt    GetScaledDirVector() const;
+	MicroMeterPnt    GetDirVector      () const;
+	MicroMeterPosDir GetRawPosDir      () const;
 
 private:
-	MicroMeterPnt const determineVector() const;
+	MicroMeterPnt determineVector() const;
 
 	Radian m_radDirection { Radian::NULL_VAL() };
 };

@@ -48,7 +48,7 @@ public:
 		);
 		m_graphics.Initialize(hwnd);
 		m_trackStruct.hwndTrack = hwnd;
-		m_pTextFormat  = m_graphics.NewTextFormat(12.f);
+		m_pTextFormat = m_graphics.NewTextFormat(12.f);
 	}
 
 	~Scale()

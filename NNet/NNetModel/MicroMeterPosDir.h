@@ -57,4 +57,4 @@ private:
     Radian        m_dir;
 };
 
-unsigned int const CalcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &);
+unsigned int CalcNrOfSteps(MicroMeterPosDir const &, MicroMeterPosDir const &);

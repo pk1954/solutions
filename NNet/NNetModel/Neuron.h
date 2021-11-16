@@ -33,27 +33,26 @@ public:
 
 	virtual void Check() const;
 
-	static bool const TypeFits(NobType const type) { return type.IsNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
 
-	bool       const HasAxon         () const { return HasOutgoing(); }
-	bool       const HasTriggerSound () const { return m_triggerSound.m_bOn; }
-	SoundDescr const GetTriggerSound () const { return m_triggerSound; }
+	bool       HasAxon         () const { return HasOutgoing(); }
+	bool       HasTriggerSound () const { return m_triggerSound.m_bOn; }
+	SoundDescr GetTriggerSound () const { return m_triggerSound; }
 
-	SoundDescr const SetTriggerSound(SoundDescr const &);
+	SoundDescr SetTriggerSound(SoundDescr const &);
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
-	virtual void         SetDir(Radian const r) { };
-	virtual void         DrawExterior  (DrawContext const &, tHighlight const) const;
-	virtual void         DrawInterior  (DrawContext const &, tHighlight const) const;
-	virtual void         DrawNeuronText(DrawContext const &) const;
-	virtual void         Recalc();
-	virtual void         Clear();
-	virtual bool   const CompStep();
-	virtual mV     const GetNextOutput() const;
-	virtual Radian const GetDir()        const { return Radian::NULL_VAL(); };
-
-	virtual NobIoMode const GetIoMode() const { return NobIoMode::internal; }
+	virtual void      SetDir(Radian const r) { };
+	virtual void      DrawExterior  (DrawContext const &, tHighlight const) const;
+	virtual void      DrawInterior  (DrawContext const &, tHighlight const) const;
+	virtual void      DrawNeuronText(DrawContext const &) const;
+	virtual void      Recalc();
+	virtual void      Clear();
+	virtual bool      CompStep();
+	virtual mV        GetNextOutput() const;
+	virtual Radian    GetDir()        const { return Radian::NULL_VAL(); };
+	virtual NobIoMode GetIoMode()     const { return NobIoMode::internal; }
 
 	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
 
@@ -61,7 +60,7 @@ public:
 
 protected:
 
-	void const DisplayText(DrawContext const &, MicroMeterRect const &, wstring const) const;
+	void DisplayText(DrawContext const &, MicroMeterRect const &, wstring const &) const;
 
 private:
 	mutable bool m_bTriggered { false };
@@ -75,7 +74,7 @@ private:
 
 	inline static Sound * m_pSound  { nullptr };
 
-	mV const waveFunction(fMicroSecs const) const;
+	mV waveFunction(fMicroSecs const) const;
 
 	MicroMeterPnt getAxonHillockPos() const;
 
