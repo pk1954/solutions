@@ -78,18 +78,13 @@ void SignalDesigner::OnClose()
 
 bool SignalDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
-	PIXEL width  = static_cast<PIXEL>(LOWORD(lParam));
-	PIXEL height = static_cast<PIXEL>(HIWORD(lParam));
+	auto width  { static_cast<PIXEL>(LOWORD(lParam)) };
+	auto height { static_cast<PIXEL>(HIWORD(lParam)) };
 
 	m_graphics.Resize(width.GetValue(), height.GetValue());
 
 	static fPixel const fPixLeftOffset   { Convert2fPixel(LEFT_OFFSET  ) };
 	static fPixel const fPixBottomOffset { Convert2fPixel(BOTTOM_OFFSET) };
-	static fPixel const fPixRightOffset  { Convert2fPixel(RIGHT_OFFSET ) };
-	static fPixel const fPixTopOffset    { Convert2fPixel(TOP_OFFSET   ) };
-
-	fPixel fPixWinWidth  { Convert2fPixel(PIXEL(width )) };
-	fPixel fPixWinHeight { Convert2fPixel(PIXEL(height)) };
 
 	m_upHorzScale->SetOrthoOffset(fPixBottomOffset);
 	m_upVertScale->SetOrthoOffset(fPixLeftOffset);

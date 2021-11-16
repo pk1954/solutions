@@ -27,11 +27,6 @@ public:
 		Observable &
 	);
 
-	virtual ~SignalDesigner() 
-	{
-		int x = 42;
-	};
-
 	static void Initialize(Param & param) 
 	{ 
 		m_pParameters = & param; 
@@ -46,9 +41,6 @@ private:
 	inline static PIXEL const RIGHT_OFFSET  {  0_PIXEL };
 	inline static PIXEL const TOP_OFFSET    {  0_PIXEL };
 
-	//void doPaint() const;
-
-	virtual void OnPaint() {};
 	virtual void OnClose();
 	virtual bool OnSize(WPARAM const, LPARAM const);
 

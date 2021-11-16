@@ -24,22 +24,22 @@ public:
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
-	constexpr NamedType const GetAbs     () const { return NamedType(abs(m_value)); }
-	constexpr BASE_TYPE const GetAbsValue() const { return BASE_TYPE(abs(m_value)); }
+	constexpr NamedType GetAbs     () const { return NamedType(abs(m_value)); }
+	constexpr BASE_TYPE GetAbsValue() const { return BASE_TYPE(abs(m_value)); }
 
-	bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }
-    bool const operator!= (NamedType const other) const { return m_value != other.GetValue(); }
-    bool const operator<= (NamedType const other) const { return m_value <= other.GetValue(); }
-    bool const operator<  (NamedType const other) const { return m_value <  other.GetValue(); }
-    bool const operator>= (NamedType const other) const { return m_value >= other.GetValue(); }
-    bool const operator>  (NamedType const other) const { return m_value >  other.GetValue(); }
+	bool operator== (NamedType const other) const { return m_value == other.GetValue(); }
+    bool operator!= (NamedType const other) const { return m_value != other.GetValue(); }
+    bool operator<= (NamedType const other) const { return m_value <= other.GetValue(); }
+    bool operator<  (NamedType const other) const { return m_value <  other.GetValue(); }
+    bool operator>= (NamedType const other) const { return m_value >= other.GetValue(); }
+    bool operator>  (NamedType const other) const { return m_value >  other.GetValue(); }
 
-	bool const IsZero       () const { return m_value == BASE_TYPE(0); };
-	bool const IsNotZero    () const { return m_value != BASE_TYPE(0); };
-	bool const IsPositive   () const { return m_value >  BASE_TYPE(0); };
-	bool const IsNotPositive() const { return m_value <= BASE_TYPE(0); };
-	bool const IsNegative   () const { return m_value <  BASE_TYPE(0); };
-	bool const IsNotNegative() const { return m_value >= BASE_TYPE(0); };
+	bool IsZero       () const { return m_value == BASE_TYPE(0); };
+	bool IsNotZero    () const { return m_value != BASE_TYPE(0); };
+	bool IsPositive   () const { return m_value >  BASE_TYPE(0); };
+	bool IsNotPositive() const { return m_value <= BASE_TYPE(0); };
+	bool IsNegative   () const { return m_value <  BASE_TYPE(0); };
+	bool IsNotNegative() const { return m_value >= BASE_TYPE(0); };
 
 	NamedType& operator=  (BASE_TYPE const value) { m_value = value; return * this; }
 
@@ -63,10 +63,10 @@ public:
 	NamedType  operator++(int) { NamedType tmp { *this }; operator++(); return tmp; }
 	NamedType  operator--(int) { NamedType tmp { *this }; operator--(); return tmp; }
 
-	bool const IsCloseToZero()            const { return ::IsCloseToZero(GetValue()); }
-	bool const IsCloseTo(NamedType other) const { return (*this - other).IsCloseToZero(); }
+	bool IsCloseToZero()            const { return ::IsCloseToZero(GetValue()); }
+	bool IsCloseTo(NamedType other) const { return (*this - other).IsCloseToZero(); }
 
-	friend NamedType const Limit(NamedType const v, NamedType const min, NamedType const max)
+	friend NamedType Limit(NamedType const v, NamedType const min, NamedType const max)
 	{
 		if (v > max)
 			return max;
@@ -75,7 +75,7 @@ public:
 		return v;
 	}
 
-	friend bool const IsInRange(NamedType const v, NamedType const min, NamedType const max)
+	friend bool IsInRange(NamedType const v, NamedType const min, NamedType const max)
 	{
 		if (v > max)
 			return false;
@@ -149,21 +149,21 @@ public:
 		return out;
 	}
 
-	static NamedType const MAX_VAL()
+	static NamedType MAX_VAL()
 	{
 		static_assert(std::numeric_limits<BASE_TYPE>::is_specialized, "type has no MAX_VAL");
 		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::max)() };
 		return res;
 	}
 
-	static NamedType const NULL_VAL()
+	static NamedType NULL_VAL()
 	{
 		static_assert(std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL");
 		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::min)() };
 		return res;
 	}
 
-	static NamedType const ZERO_VAL()
+	static NamedType ZERO_VAL()
 	{
 		static NamedType constexpr res { BASE_TYPE(0) };
 		return res;

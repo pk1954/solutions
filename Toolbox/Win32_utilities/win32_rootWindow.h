@@ -68,35 +68,35 @@ public:
 	void SetTrackBarPos(INT const, LONG const) const;
 	void SetTrackBarRange(INT const, LONG const, LONG const) const;
 
-	void const DestroyWindow() 
+	void DestroyWindow() 
 	{ 
 		::DestroyWindow(m_hwnd);
 		m_hwnd = nullptr;
 	}
 
-	HWND CreateBalloonToolTip(int const id, LPWSTR const t) 
+	HWND CreateBalloonToolTip(int const id, LPWSTR const t) const
 	{
 		return ::CreateBalloonToolTip(m_hwnd, id, t);	
 	}
 
-	HWND CreateStdToolTip(int const id, LPWSTR const t) 
+	HWND CreateStdToolTip(int const id, LPWSTR const t) const
 	{ 
 		return ::CreateStdToolTip(m_hwnd, id, t);	
 	}
 
-	HWND CreateWindowToolTip(LPWSTR const t) 
+	HWND CreateWindowToolTip(LPWSTR const t) const
 	{ 
 		return ::CreateWindowToolTip(m_hwnd, t);	
 	}
 
-	HWND CreateRectToolTip(int const id, PixelRect * const pRect, LPWSTR const t) 
+	HWND CreateRectToolTip(int const id, PixelRect * const pRect, LPWSTR const t) const
 	{ 
 		return ::CreateRectToolTip(m_hwnd, id, pRect, t);	
 	}
 
-	HBITMAP const CreateCompatibleBitmap(HDC const hDC)
+	HBITMAP CreateCompatibleBitmap(HDC const hDC) const
 	{
-		PixelRectSize rectSize = GetClRectSize();
+		PixelRectSize const rectSize = GetClRectSize();
 		return ::CreateCompatibleBitmap(hDC, rectSize.GetXvalue(), rectSize.GetYvalue());
 	}
 	
@@ -175,7 +175,7 @@ public:
 		(void)::UpdateWindow(m_hwnd);
 	}
 
-	void Invalidate(bool const bRedraw) 
+	void Invalidate(bool const bRedraw) const 
 	{
 		if (m_hwnd != nullptr)
 			(void)::InvalidateRect(m_hwnd, nullptr, bRedraw);
@@ -202,12 +202,12 @@ public:
 		return ::SendMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}
 
-	PIXEL const CrsrXpos(LPARAM const lParam) const
+	PIXEL CrsrXpos(LPARAM const lParam) const
 	{
 		return PIXEL(GET_X_LPARAM(lParam));
 	}
 
-	PIXEL const CrsrYpos(LPARAM const lParam) const
+	PIXEL CrsrYpos(LPARAM const lParam) const
 	{
 		return PIXEL(GET_Y_LPARAM(lParam));
 	}
@@ -250,7 +250,7 @@ private:
 	void adjustWinMenu(HMENU const) const;
 	void contextMenu(PixelPoint const &);
 
-	void adjustVisibility(tOnOffAuto const onOffAuto)
+	void adjustVisibility(tOnOffAuto const onOffAuto) const
 	{
 		if (m_visibilityCriterion)
 			Show(ApplyAutoCriterion(onOffAuto, m_visibilityCriterion));

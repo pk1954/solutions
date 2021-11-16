@@ -25,7 +25,7 @@ using std::hypotf;
 
 using fMicroSecs = NamedType< float, struct MicroSecs_Parameter >;
 
-constexpr const fMicroSecs operator"" _MicroSecs(const long double d)
+constexpr fMicroSecs operator"" _MicroSecs(const long double d)
 {
 	return fMicroSecs(Cast2Float(d));
 }
@@ -34,7 +34,7 @@ constexpr const fMicroSecs operator"" _MicroSecs(const long double d)
 
 using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
 
-constexpr const MilliSecs operator"" _MilliSecs(const unsigned long long d)
+constexpr MilliSecs operator"" _MilliSecs(const unsigned long long d)
 {
 	return MilliSecs(Cast2UnsignedLong(d));
 }
@@ -43,20 +43,18 @@ constexpr const MilliSecs operator"" _MilliSecs(const unsigned long long d)
 
 using MicroMeter = NamedType< float, struct MicroMeter_Parameter >;
 
-constexpr const MicroMeter operator"" _MicroMeter(const long double d)
+constexpr MicroMeter operator"" _MicroMeter(const long double d)
 {
 	return MicroMeter(Cast2Float(d));
 }
 
 inline MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
-// static MicroMeter const MicroMeter_NULL(std::numeric_limits<float>::infinity());
-																	   																	   
 ////////////// mV /////////////////////////////////////
 
 using mV = NamedType<float, struct mV_Parameter >;
 
-constexpr const mV operator"" _mV(const long double d)
+constexpr mV operator"" _mV(const long double d)
 { 
 	return mV(Cast2Float(d));
 }
@@ -79,7 +77,7 @@ Hertz constexpr operator"" _Hertz(unsigned long long ull)
 	return Hertz(Cast2UnsignedLong(ull));
 }
 
-static microseconds const PulseDuration(Hertz const freq)
+static microseconds PulseDuration(Hertz const freq)
 {
 	return (freq.GetValue() == 0) 
 		? microseconds((numeric_limits<long long>::max)())
@@ -95,14 +93,14 @@ fHertz constexpr operator"" _fHertz(long double dl)
 	return fHertz(Cast2Float(dl));
 }
 
-static fMicroSecs const PulseDuration(fHertz const freq)
+static fMicroSecs PulseDuration(fHertz const freq)
 {
 	return IsCloseToZero(freq.GetValue()) 
 		? fMicroSecs((numeric_limits<float>::max)())
 		: fMicroSecs(1e6f / freq.GetValue());
 }
 
-static fHertz const Frequency(fMicroSecs const us)
+static fHertz Frequency(fMicroSecs const us)
 {
 	return IsCloseToZero(us.GetValue())
 		? fHertz((numeric_limits<float>::max)())
@@ -113,8 +111,8 @@ static fHertz const Frequency(fMicroSecs const us)
 
 using MicroMeterPnt = PosType< MicroMeter >;
 
-inline static MicroMeterPnt const NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!
-inline static MicroMeterPnt const NP_ZERO(MicroMeterPnt::ZERO_VAL());   // compiler generates call!
+inline static const MicroMeterPnt NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!
+inline static const MicroMeterPnt NP_ZERO(MicroMeterPnt::ZERO_VAL());   // compiler generates call!
 
 ////////////// MicroMeterRect /////////////////////////////////////
 
@@ -134,7 +132,7 @@ using MicroMeterEllipse = EllipseType< MicroMeter >;
 
 using meterPerSec = NamedType<float, struct meterPerSec_Parameter >;
 
-constexpr const meterPerSec operator"" _meterPerSec(const long double d)
+constexpr meterPerSec operator"" _meterPerSec(const long double d)
 { 
 	return meterPerSec(Cast2Float(d));
 }
@@ -149,22 +147,22 @@ static MicroMeter CoveredDistance(meterPerSec const speed, fMicroSecs const time
 using Radian  = NamedType<float, struct radian_Parameter >;
 using Degrees = NamedType<float, struct degrees_Parameter >;
 
-constexpr const Radian  operator"" _Radian (const long double r) { return Radian (Cast2Float(r)); }
-constexpr const Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
+constexpr Radian  operator"" _Radian (const long double r) { return Radian (Cast2Float(r)); }
+constexpr Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
 
-float const RADIAN_FACTOR     { 180.0f/static_cast<float>(M_PI) };
-float const INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
+inline float RADIAN_FACTOR     { 180.0f/static_cast<float>(M_PI) };
+inline float INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
 
-static Radian  const Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
-static Degrees const Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
+static Radian  Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
+static Degrees Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
 
-static Radian  const Normalize(Radian  const & r) { return Radian (fmod(fabs(r.GetValue()), RADIAN_FACTOR * 2.0f)); }
-static Degrees const Normalize(Degrees const & d) { return Degrees(fmod(fabs(d.GetValue()), 360.0f)); }
+static Radian  Normalize(Radian  const & r) { return Radian (fmod(fabs(r.GetValue()), RADIAN_FACTOR * 2.0f)); }
+static Degrees Normalize(Degrees const & d) { return Degrees(fmod(fabs(d.GetValue()), 360.0f)); }
 
-static MicroMeter const Cos(Radian const r) { return MicroMeter(cos(r.GetValue())); } 
-static MicroMeter const Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); } 
+static MicroMeter Cos(Radian const r) { return MicroMeter(cos(r.GetValue())); } 
+static MicroMeter Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); } 
 
-static MicroMeterPnt const Radian2Vector(Radian const r)
+static MicroMeterPnt Radian2Vector(Radian const r)
 {
 	return MicroMeterPnt(Cos(r), Sin(r));
 }

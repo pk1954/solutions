@@ -12,16 +12,6 @@
 
 using std::wstring;
 
-D2D_driver::D2D_driver():
-	m_pD2DFactory(nullptr),
-	m_pRenderTarget(nullptr),
-	m_pDWriteFactory(nullptr),
-	m_pTextFormat(nullptr),
-	m_hwnd(nullptr),
-	m_hr(0)
-{
-}
-
 D2D_driver::~D2D_driver()
 {
 	discardResources();
@@ -55,8 +45,6 @@ void D2D_driver::createResources()
 	assert(SUCCEEDED(m_hr));
 
 	m_pTextFormat = NewTextFormat(12.0f);
-
-	//	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 void D2D_driver::discardResources() 
@@ -81,17 +69,17 @@ void D2D_driver::Resize(int const iWidth, int const iHeight)
 	}
 }
 
-fPixelRectSize const D2D_driver::GetClRectSize() const 
+fPixelRectSize D2D_driver::GetClRectSize() const 
 { 
 	return Convert2fPixelRectSize(Util::GetClRectSize(m_hwnd));
 }
 
-fPixel const D2D_driver::GetClRectWidth() const
+fPixel D2D_driver::GetClRectWidth() const
 {
 	return Convert2fPixel(Util::GetClientWindowWidth(m_hwnd));
 }
 
-fPixel const D2D_driver::GetClRectHeight() const
+fPixel D2D_driver::GetClRectHeight() const
 {
 	return Convert2fPixel(Util::GetClientWindowHeight(m_hwnd));
 }
@@ -108,7 +96,7 @@ IDWriteTextFormat * D2D_driver::NewTextFormat(float const fSize) const
 	m_hr = m_pDWriteFactory->CreateTextFormat
 	(
 		L"",
-		NULL,
+		nullptr,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,

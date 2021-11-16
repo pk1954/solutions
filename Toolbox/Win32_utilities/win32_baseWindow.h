@@ -27,6 +27,7 @@ protected:
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
+	virtual void OnPaint             ()                           {};
 	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const) {};
 	virtual void OnMouseWheel        (WPARAM const, LPARAM const) {};
 	virtual void OnMouseMove         (WPARAM const, LPARAM const) {};
@@ -40,8 +41,6 @@ protected:
 	virtual bool OnMouseLeave        (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnSetCursor         (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnTimer             (WPARAM const, LPARAM const) { return false; };
-
-	virtual void OnPaint() = 0;
 
 private:
 	

@@ -29,7 +29,7 @@ class D2D_driver
 {
 public:
 
-    D2D_driver();
+    D2D_driver() {};
     virtual ~D2D_driver();
 
     void Initialize(HWND const);
@@ -53,21 +53,21 @@ public:
     void Resize(int const, int const);
     void FillBackground(D2D1::ColorF const) const;
 
-    fPixelRectSize const GetClRectSize() const;
-    fPixel         const GetClRectWidth() const;
-    fPixel         const GetClRectHeight() const;
+    fPixelRectSize GetClRectSize() const;
+    fPixel         GetClRectWidth() const;
+    fPixel         GetClRectHeight() const;
 
     IDWriteTextFormat * NewTextFormat(float const) const;
 
 private:
-    HWND m_hwnd;
+    HWND m_hwnd { nullptr };
 
-    mutable HRESULT m_hr;
+    mutable HRESULT m_hr { 0 };
 
-    ID2D1Factory          * m_pD2DFactory;
-    ID2D1HwndRenderTarget * m_pRenderTarget;
-    IDWriteFactory        * m_pDWriteFactory;
-    IDWriteTextFormat     * m_pTextFormat;
+    ID2D1Factory          * m_pD2DFactory    { nullptr };
+    ID2D1HwndRenderTarget * m_pRenderTarget  { nullptr };
+    IDWriteFactory        * m_pDWriteFactory { nullptr };
+    IDWriteTextFormat     * m_pTextFormat    { nullptr };
 
     ID2D1SolidColorBrush * createBrush(D2D1::ColorF const) const;
     void createResources();
