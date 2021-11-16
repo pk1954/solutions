@@ -30,13 +30,12 @@ public:
 
 	Scale
 	(
-		HWND                   const   hwndParent,
-		bool                   const   bVertScale,
-		PixCoordFp<LogUnits> * const   pPixCoord,
-		D2D_driver           * const   pGraphics,
-		wstring                const & wstrLogUnit,
-		float                  const   fScaleFactor
+		HWND                   const hwndParent,
+		bool                   const bVertScale,
+		PixCoordFp<LogUnits> * const pPixCoord
 	)
+ 	: m_bVertScale(bVertScale),
+	  m_pPixCoord(pPixCoord)
 	{
 		HWND hwnd = StartBaseWindow
 		(
@@ -49,11 +48,7 @@ public:
 		);
 		m_graphics.Initialize(hwnd);
 		m_trackStruct.hwndTrack = hwnd;
-		m_bVertScale   = bVertScale;  
-		m_pPixCoord    = pPixCoord;
 		m_pTextFormat  = m_graphics.NewTextFormat(12.f);
-		m_wstrLogUnit  = wstrLogUnit;
-		m_fScaleFactor = fScaleFactor;
 	}
 
 	~Scale()
@@ -89,21 +84,18 @@ private:
 	D2D_driver             m_graphics       { };
 	PixCoordFp<LogUnits> * m_pPixCoord      { nullptr }; 
 	IDWriteTextFormat    * m_pTextFormat    { nullptr };
-	float                  m_fScaleFactor   { 1.0f };
 	bool                   m_bOrientation   { true };  // true: ticks on negative side of scale
 	bool                   m_bVertScale     { false }; // true: vertical, false: horizontal
+	fPixel                 m_fPixBorder     { 0._fPixel };
+	fPixel                 m_fPixOrthoOffset{ 0._fPixel };
 	fPixelPoint            m_fPixPntStart   {};
 	fPixelPoint            m_fPixPntEnd     {};
-	fPixel                 m_fPixBorder     { 0._fPixel };
 	fPixel                 m_fPixTickDist   {};
-	fPixel                 m_fPixOrthoOffset{ 0._fPixel };
 	LogUnits               m_logStart       {};
 	LogUnits               m_logEnd         {};
 	LogUnits               m_logTickDist    {};
 	float                  m_fUnitReduction {};
 	wchar_t                m_unitPrefix     {};
-	wstring                m_wstrLogUnit    {};
-	fPixelRect             m_textBox        {};
 
 	// private functions
 
@@ -125,6 +117,8 @@ private:
 			? fPixelPoint(0._fPixel, - fPixScaleLen)
 			: fPixelPoint(fPixScaleLen, 0._fPixel)
 		};
+		fPixelRect textBox {};
+
 		m_fPixPntStart = m_bVertScale
 		? fPixelPoint(m_fPixOrthoOffset,             getClHeight() - m_pPixCoord->GetPixelOffset())
 		: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - m_fPixOrthoOffset);
@@ -134,26 +128,26 @@ private:
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
 		m_fPixTickDist = m_pPixCoord->Transform2fPixelSize(m_logTickDist);
 		setScaleParams();
-		setTextBox();
+		setTextBox(textBox);
 
 		if (CrsrInClientRect())
 			m_graphics.FillBackground(D2D1::ColorF::Aquamarine);
 
 		m_graphics.DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
 
-		displayTicks();
-		if (m_bVertScale) 
-			display
-			(
-				m_fPixPntStart - fPixelPoint(0._fPixel, 16._fPixel), 
-				m_unitPrefix + m_wstrLogUnit
-			);
-		else
-			display
-			(
-				m_fPixPntStart + fPixelPoint(10._fPixel, 0._fPixel), 
-				m_unitPrefix + m_wstrLogUnit
-			);
+		displayTicks(textBox);
+		fPixelPoint fPixPos 
+		{ 
+			m_bVertScale
+			? fPixelPoint(0._fPixel, - 16._fPixel)
+			: fPixelPoint(10._fPixel,   0._fPixel)
+		};
+
+		display
+		(
+			textBox + (m_fPixPntStart + fPixPos), 
+			m_unitPrefix + TypeAttribute<LogUnits>::unit 
+		);
 	}
 
 	void OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -192,7 +186,7 @@ private:
 		return true;
 	}
 
-	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+	virtual void OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	{  
 		int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 		bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
@@ -208,7 +202,7 @@ private:
 		Notify(false);
 	}
 
-	fPixel const getClHeight() const
+	fPixel getClHeight() const
 	{
 		return m_graphics.GetClRectHeight();
 	}
@@ -220,7 +214,7 @@ private:
 		wchar_t  const * pPrefix   { prefix };
 		float    const   logDist10 { m_logTickDist.GetValue() * 10 };
 
-		m_fUnitReduction = m_fScaleFactor * 1e6f;
+		m_fUnitReduction = TypeAttribute<LogUnits>::factor * 1e6f;
 		do
 		{
 			m_fUnitReduction *= 1e-3f;
@@ -228,7 +222,7 @@ private:
 		} while ((logDist10 < round(m_fUnitReduction)) && *pPrefix);
 	}
 
-	void setTextBox()
+	void setTextBox(fPixelRect & textBox) const
 	{
 		fPixel horzDist { 0._fPixel };
 		fPixel vertDist { 0._fPixel };
@@ -248,7 +242,7 @@ private:
 			horzDist += 4._fPixel; 
 		}
 
-		m_textBox = fPixelRect
+		textBox = fPixelRect
 		(
 			horzDist - TEXT_HORZ_EXT,    // left
 			vertDist - TEXT_VERT_EXT,    // top
@@ -279,7 +273,7 @@ private:
 		m_graphics.DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, SCALE_COLOR);
 	}
 
-	void displayTicks() const
+	void displayTicks(fPixelRect const & textBox) const
 	{
 		int iNrOfTicks { abs(static_cast<int>((m_logEnd - m_logStart) / m_logTickDist)) };
 		for (int iRun = 0; iRun <= iNrOfTicks; ++iRun)
@@ -296,17 +290,17 @@ private:
 					               ? (fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fPixA)) 
 					               : (fPixelPoint(fPixA,                 m_fPixPntStart.GetY())) 
 				                 };
-				display(fPos, to_wstring(iLu));
+				display(textBox + fPos, to_wstring(iLu));
 			}
 		}
 	}
 
 	void display
 	(
-		fPixelPoint const fPos,
-		wstring     const wstr
+		fPixelRect const & textBox,
+		wstring    const   wstr
 	) const
 	{
-		m_graphics.DisplayText(m_textBox + fPos, wstr, SCALE_COLOR, m_pTextFormat);
+		m_graphics.DisplayText(textBox, wstr, SCALE_COLOR, m_pTextFormat);
 	}
 };

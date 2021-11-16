@@ -30,6 +30,9 @@ constexpr fMicroSecs operator"" _MicroSecs(const long double d)
 	return fMicroSecs(Cast2Float(d));
 }
 
+template <> const wstring TypeAttribute<fMicroSecs>::unit   = L"s";
+template <> const float   TypeAttribute<fMicroSecs>::factor = 1.e6f;
+
 ////////////// MilliSecs /////////////////////////////////////
 
 using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
@@ -92,6 +95,9 @@ fHertz constexpr operator"" _fHertz(long double dl)
 {
 	return fHertz(Cast2Float(dl));
 }
+
+template <> const wstring TypeAttribute<fHertz>::unit   = L"Hz";
+template <> const float   TypeAttribute<fHertz>::factor = 1.f;
 
 static fMicroSecs PulseDuration(fHertz const freq)
 {

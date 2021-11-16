@@ -11,15 +11,24 @@
 #include <iomanip>
 #include <limits.h>
 
+using std::wstring;
 using std::wostream;
 using std::numeric_limits;
+
+template <typename T>
+struct TypeAttribute 
+{ 
+	static const wstring unit; 
+	static const float   factor; 
+};
 
 template <typename BASE_TYPE, typename Parameter>
 class NamedType
 {
 public:
-    NamedType() : m_value(0) {}
-		
+
+	NamedType() : m_value(0) {}
+	
     constexpr explicit NamedType(BASE_TYPE const value) : m_value(value) {}
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }

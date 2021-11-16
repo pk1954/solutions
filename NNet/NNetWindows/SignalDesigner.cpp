@@ -29,7 +29,6 @@ SignalDesigner::SignalDesigner
 		nullptr
 	);
 
-	m_graphics.Initialize(hwnd);
 	SetWindowText(hwnd, L"SignalDesigner");
 
 	m_upSignalControl = make_unique<SignalControl>
@@ -43,8 +42,8 @@ SignalDesigner::SignalDesigner
 
 	runObservable.RegisterObserver(m_upSignalControl.get());
 
-	m_upHorzScale = make_unique<Scale<fMicroSecs>>(hwnd, false, &m_horzCoord, &m_graphics, L"s",  1e6f);
-	m_upVertScale = make_unique<Scale<fHertz    >>(hwnd, true,  &m_vertCoord, &m_graphics, L"Hz", 1e0f);
+	m_upHorzScale = make_unique<Scale<fMicroSecs>>(hwnd, false, &m_horzCoord);
+	m_upVertScale = make_unique<Scale<fHertz    >>(hwnd, true,  &m_vertCoord);
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(100._MicroSecs, 1000000._MicroSecs); 
@@ -67,7 +66,6 @@ SignalDesigner::SignalDesigner
 
 void SignalDesigner::Stop()
 {
-	m_graphics.ShutDown();
 	DestroyWindow();
 }
 
@@ -80,8 +78,6 @@ bool SignalDesigner::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
 	auto width  { static_cast<PIXEL>(LOWORD(lParam)) };
 	auto height { static_cast<PIXEL>(HIWORD(lParam)) };
-
-	m_graphics.Resize(width.GetValue(), height.GetValue());
 
 	static fPixel const fPixLeftOffset   { Convert2fPixel(LEFT_OFFSET  ) };
 	static fPixel const fPixBottomOffset { Convert2fPixel(BOTTOM_OFFSET) };

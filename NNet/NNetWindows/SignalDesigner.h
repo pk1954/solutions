@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "D2D_DrawContext.h"
 #include "win32_scale.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
@@ -54,7 +53,6 @@ private:
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<Scale<fHertz>>     m_upVertScale;
 
-	D2D_driver             m_graphics      { };
 	tZoomMode              m_zoomMode      { tZoomMode::NONE };
 	fPixel                 m_fPixLineWidth { 1.0_fPixel };
 	PixCoordFp<fMicroSecs> m_horzCoord;
