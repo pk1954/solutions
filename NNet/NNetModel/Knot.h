@@ -45,6 +45,4 @@ public:
 	virtual void DrawNeuronText(PixelCoordsFp const &) const {};
 
 	void EvaluateSelectionStatus();
-
-private: 
 };

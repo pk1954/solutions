@@ -3,9 +3,9 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "scanner.h"
+#include "Scanner.h"
 #include "NNetColors.h"
-#include "nob.h"
+#include "Nob.h"
 #include "debug.h"
 
 using std::move;

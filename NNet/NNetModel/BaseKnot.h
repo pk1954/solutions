@@ -21,29 +21,27 @@ class BaseKnot : public Nob
 public:
 
 	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
-	BaseKnot(BaseKnot const &);
-	virtual ~BaseKnot() {}
+	~BaseKnot() = default;
 
-	virtual bool operator==(Nob const &) const override;
+	virtual bool operator==(Nob const &) const;
 
 	virtual BaseKnot & operator*=(float const);
 	virtual BaseKnot & operator+=(BaseKnot const &);
 	virtual BaseKnot & operator-=(BaseKnot const &);
 
-	virtual MicroMeterPnt GetPos() const { return m_circle.GetPos(); }
+	MicroMeterPnt GetPos() const final { return m_circle.GetPos(); }
 
-	virtual void Dump         () const;
-	virtual void Check        () const;
-	virtual void Prepare      ();
-	virtual void Reconnect    ();
-	virtual mV   GetNextOutput() const = 0;
-	virtual void SetPos       (MicroMeterPnt const &);
-	virtual bool IsIncludedIn (MicroMeterRect  const &) const; 
-	virtual void Expand       (MicroMeterRect        &) const;
-	virtual void RotateNob    (MicroMeterPnt const &, Radian const);
-	virtual void Link         (Nob const &, Nob2NobFunc const &);
-	virtual void MoveNob      (MicroMeterPnt const &);
-	virtual bool Includes     (MicroMeterPnt const &) const;
+	void Dump        ()                               const override;
+	void Check       ()                               const override;
+	void Prepare     ()                                     override;
+	void Reconnect   ()                                     override;
+	void SetPos      (MicroMeterPnt  const &)               override;
+	void MoveNob     (MicroMeterPnt  const &)               override;
+	bool Includes    (MicroMeterPnt  const &)         const override;
+	bool IsIncludedIn(MicroMeterRect const &)         const override; 
+	void Expand      (MicroMeterRect       &)         const override;
+	void RotateNob   (MicroMeterPnt  const &, Radian const) override;
+	void Link        (Nob const &, Nob2NobFunc const &)     override;
 
 	static bool TypeFits(NobType const type) { return type.IsBaseKnotType(); }
 
@@ -125,7 +123,7 @@ template <typename T>
 concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
 
 template <BaseKnot_t T>
-MicroMeterPnt const CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & line)
+MicroMeterPnt CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & line)
 {
 	unsigned int uiLeftConnections  { 0 };
 	unsigned int uiRightConnections { 0 };

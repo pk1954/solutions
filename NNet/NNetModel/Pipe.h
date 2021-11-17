@@ -24,11 +24,11 @@ public:
 
 	Pipe(Pipe const &);   // copy constructor
 
-	virtual ~Pipe();
+	~Pipe() final;
 
-	virtual bool operator==(Nob const &) const override;
+	virtual bool operator==(Nob const &) const;
 
-	virtual void Dump() const;
+	void Dump() const override;
 
 	static bool TypeFits(NobType const type) { return type.IsPipeType(); }
 
@@ -47,29 +47,31 @@ public:
 
 	size_t GetNrOfSegments() const { return m_potential.size(); }
 
-	virtual void SetDir(Radian const) {};
+	void          RotateNob(MicroMeterPnt const &, Radian const) final { /* Pipe dir defined by endpoints */ }
+	void          SetDir   (Radian const)                        final { /* Pipe dir defined by endpoints */ };
 
-	virtual Radian        GetDir      () const { return Vector2Radian(GetVector()); };
-	virtual NobIoMode     GetIoMode   () const { return NobIoMode::internal; }
-	virtual MicroMeterPnt GetPos      ()                                      const;
-	virtual bool          IsIncludedIn(MicroMeterRect  const &)               const;
-	virtual bool          Includes    (MicroMeterPnt const &)                 const;
-	virtual void          Check       ()                                      const;
-	virtual void          DrawArrows  (DrawContext const &, MicroMeter const) const;
-	virtual void          DrawExterior(DrawContext const &, tHighlight const) const;
-	virtual void          DrawInterior(DrawContext const &, tHighlight const) const;
-	virtual void          Expand      (MicroMeterRect &)                      const;
-	virtual void          MoveNob     (MicroMeterPnt const &);
-	virtual void          Link        (Nob const &, Nob2NobFunc const &);
-	virtual void          RotateNob   (MicroMeterPnt const &, Radian const) {}
-	virtual void          Prepare     ();
-	virtual bool          CompStep    ();
-	virtual void          Recalc      ();
-	virtual void          Clear       ();
-	virtual void          Select      (bool const);
+	Radian        GetDir       () const final { return Vector2Radian(GetVector()); };
+	NobIoMode     GetIoMode    () const final { return NobIoMode::internal; }
+	mV            GetNextOutput() const final { return m_potential[m_potIndex]; }
 
-	mV GetNextOutput() const { return m_potential[ m_potIndex ]; }
+	MicroMeterPnt GetPos      ()                                      const final;
+	bool          IsIncludedIn(MicroMeterRect const &)                const final;
+	bool          Includes    (MicroMeterPnt  const &)                const final;
+	void          Check       ()                                      const final;
+	void          DrawExterior(DrawContext const &, tHighlight const) const final;
+	void          DrawInterior(DrawContext const &, tHighlight const) const final;
+	void          Expand      (MicroMeterRect &)                      const final;
+	void          MoveNob     (MicroMeterPnt const &)                       final;
+	void          Link        (Nob const &, Nob2NobFunc const &)            final;
+	void          Prepare     ()                                            final;
+	bool          CompStep    ()                                            final;
+	void          Recalc      ()                                            final;
+	void          Clear       ()                                            final;
+	void          Select      (bool const)                                  final;
+
 	mV GetVoltage(MicroMeterPnt const &) const;
+
+	void DrawArrows(DrawContext const &, MicroMeter const) const;
 
 	void DislocateEndPoint  (MicroMeter d =  PIPE_WIDTH) { dislocate(GetEndKnotPtr  (), d); }
 	void DislocateStartPoint(MicroMeter d = -PIPE_WIDTH) { dislocate(GetStartKnotPtr(), d); }
@@ -82,12 +84,10 @@ public:
 
 private:
 	
-	typedef vector<mV> tPotentialVector;
-
-	BaseKnot       * m_pKnotStart { nullptr };
-	BaseKnot       * m_pKnotEnd   { nullptr };
-	size_t           m_potIndex   { 0 };
-	tPotentialVector m_potential  { };
+	BaseKnot * m_pKnotStart { nullptr };
+	BaseKnot * m_pKnotEnd   { nullptr };
+	size_t     m_potIndex   { 0 };
+	vector<mV> m_potential  { };
 
 	void init(const Pipe &);
 

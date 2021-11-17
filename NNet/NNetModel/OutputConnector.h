@@ -18,7 +18,7 @@ class OutputConnector: public IoConnector
 {
 public:
 
-	static bool const TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
+	static bool TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
 
 	OutputConnector();
 	OutputConnector(vector<IoNeuron *> &);
@@ -26,7 +26,7 @@ public:
 
 	virtual ~OutputConnector() {}
 
-	virtual NobIoMode GetIoMode() const { return NobIoMode::output; }
+	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
-	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
+	void DrawExterior(DrawContext const &, tHighlight const) const override;
 };

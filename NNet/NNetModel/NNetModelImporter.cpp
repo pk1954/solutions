@@ -349,7 +349,7 @@ void NNetModelImporter::Initialize()
    );
 }
 
-void NNetModelImporter::import() 
+void NNetModelImporter::importModel() 
 {
     ImportTermination::Result res;
     Script                    script;
@@ -410,13 +410,13 @@ static unsigned int __stdcall importModelThreadProc(void * data)
 {
     SetThreadDescription(GetCurrentThread(), L"ImportModel");
     NNetModelImporter * pModelImporter { reinterpret_cast<NNetModelImporter *>(data) };
-    pModelImporter->import();
+    pModelImporter->importModel();
     return 0;
 }
 
 bool NNetModelImporter::Import
 (
-    wstring                 const wstrPath,
+    wstring const & wstrPath,
     unique_ptr<ImportTermination> upTermination
 )
 {

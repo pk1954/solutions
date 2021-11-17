@@ -52,7 +52,7 @@ static void CALLBACK BeepFunc
 	PTP_WORK              pWork
 )
 {
-	Neuron * pNeuron { static_cast<Neuron *>(arg) };
+	Neuron const * pNeuron { static_cast<Neuron const *>(arg) };
 	Neuron::m_pSound->Beep(pNeuron->GetTriggerSound());
 }
 

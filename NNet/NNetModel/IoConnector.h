@@ -20,7 +20,7 @@ class IoNeuron;
 class IoConnector: public Nob
 {
 public:
-	static bool const TypeFits(NobType const type) { return type.IsIoConnectorType(); }
+	static bool TypeFits(NobType const type) { return type.IsIoConnectorType(); }
 
 	IoConnector(NobType const);
 
@@ -65,9 +65,9 @@ public:
 
 	Radian GetDir() const;
 
-	void SetDir   (Radian           const );
-	void SetPos   (MicroMeterPnt    const &);
-	void SetPosDir(MicroMeterPosDir const &);
+	virtual void SetDir   (Radian           const );
+	virtual void SetPos   (MicroMeterPnt    const &);
+	virtual void SetPosDir(MicroMeterPosDir const &);
 
 	void Apply2All(function<void(IoNeuron &)> const & func) const;
 

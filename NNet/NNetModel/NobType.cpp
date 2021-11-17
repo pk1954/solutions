@@ -10,7 +10,7 @@
 using std::unordered_map;
 using std::wstring;
 
-wstring const NobType::GetName(NobType::Value const val)
+wstring NobType::GetName(NobType::Value const val)
 {
 	static unordered_map < NobType::Value, wstring const > mapNob =
 	{
@@ -26,7 +26,7 @@ wstring const NobType::GetName(NobType::Value const val)
 	return mapNob.at(val);
 }
 
-NobType::Value const NobType::GetTypeFromName(wstring const & name)
+NobType::Value NobType::GetTypeFromName(wstring const & name)
 {
 	static unordered_map < wstring, NobType::Value > mapNob =
 	{

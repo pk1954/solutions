@@ -37,18 +37,15 @@ public:
 		:	m_value(Value::undefined)
 	{}
 
-	NobType(Value val)
+    NobType(Value val)
 		:	m_value(val)
 	{}
 
-	bool const operator==(NobType const & rhs) const
-	{
-		return m_value == rhs.m_value;
-	}
+	bool operator==(NobType const & rhs) const = default;
 
-	bool const operator!=(NobType const & rhs) const
+	bool operator!=(NobType const & rhs) const
 	{
-		return m_value != rhs.m_value;
+		return !(m_value == rhs.m_value);
 	}
 
 	void Check() const
@@ -75,40 +72,40 @@ public:
 		return wstrList;
 	}
 
-	static wstring        const GetName(NobType::Value const);
-	static NobType::Value const GetTypeFromName(wstring const &);
+	static wstring        GetName(NobType::Value const);
+	static NobType::Value GetTypeFromName(wstring const &);
 
-	bool const IsPipeType           () const { return m_value == Value::pipe;            }
-	bool const IsDefinedType        () const { return m_value != Value::undefined;       }
-	bool const IsUndefinedType      () const { return m_value == Value::undefined;       }
-	bool const IsKnotType           () const { return m_value == Value::knot;            }
-	bool const IsNeuronType         () const { return m_value == Value::neuron;          }
-	bool const IsInputNeuronType    () const { return m_value == Value::inputNeuron;     }
-	bool const IsOutputNeuronType   () const { return m_value == Value::outputNeuron;    }
-	bool const IsInputConnectorType () const { return m_value == Value::inputConnector;  }
-	bool const IsOutputConnectorType() const { return m_value == Value::outputConnector; }
+	bool IsPipeType           () const { return m_value == Value::pipe;            }
+	bool IsDefinedType        () const { return m_value != Value::undefined;       }
+	bool IsUndefinedType      () const { return m_value == Value::undefined;       }
+	bool IsKnotType           () const { return m_value == Value::knot;            }
+	bool IsNeuronType         () const { return m_value == Value::neuron;          }
+	bool IsInputNeuronType    () const { return m_value == Value::inputNeuron;     }
+	bool IsOutputNeuronType   () const { return m_value == Value::outputNeuron;    }
+	bool IsInputConnectorType () const { return m_value == Value::inputConnector;  }
+	bool IsOutputConnectorType() const { return m_value == Value::outputConnector; }
 
-	bool const IsIoConnectorType() const
+	bool IsIoConnectorType() const
 	{
 		return IsInputConnectorType() || IsOutputConnectorType();
 	}
 
-	bool const IsIoNeuronType() const
+	bool IsIoNeuronType() const
 	{
 		return (m_value == Value::inputNeuron) || (m_value == Value::outputNeuron);
 	}
 
-	bool const IsAnyNeuronType() const
+	bool IsAnyNeuronType() const
 	{
 		return (m_value == Value::neuron) || IsIoNeuronType();
 	}
 
-	bool const IsBaseKnotType() const
+	bool IsBaseKnotType() const
 	{
 		return IsAnyNeuronType() || (m_value == Value::knot);
 	}
 
-	Value const GetValue() const { return m_value; }
+	Value GetValue() const { return m_value; }
 
 	friend wostream & operator<< (wostream &, NobType const & nobType);
 
@@ -135,7 +132,7 @@ public:
 
 private:
 	
-	static unsigned int const bitSet(NobType::Value const val) { return 1 << static_cast<unsigned int>(val); }
+	static unsigned int bitSet(NobType::Value const val) { return 1 << static_cast<unsigned int>(val); }
 
 	bitset<NobType::NR_OF_NOB_TYPES> m_bits;
 };

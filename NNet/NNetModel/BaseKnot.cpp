@@ -24,13 +24,6 @@ BaseKnot::BaseKnot
 	m_circle(center, extension)
 { }
 
-BaseKnot::BaseKnot(BaseKnot const & src)
-  : Nob(src),
-	m_circle(src.GetCircle()),
-	m_inPipes(src.m_inPipes),
-	m_outPipes(src.m_outPipes)
-{ }
-
 bool BaseKnot::operator==(Nob const & rhs) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };

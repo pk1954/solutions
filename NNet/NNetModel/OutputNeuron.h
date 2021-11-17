@@ -15,8 +15,8 @@ class OutputNeuron : public IoNeuron
 {
 public:
 
-	OutputNeuron(MicroMeterPnt const &);
-	OutputNeuron(BaseKnot      const &);
+	explicit OutputNeuron(MicroMeterPnt const &);
+	explicit OutputNeuron(BaseKnot      const &);
 
 	virtual ~OutputNeuron() {};
 
@@ -24,14 +24,14 @@ public:
 
 	virtual bool operator==(Nob const &) const override;
 
-	static bool const TypeFits(NobType const type) { return type.IsOutputNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsOutputNeuronType(); }
 
-	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
-	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
+	virtual void DrawExterior(DrawContext const &, tHighlight const) const override;
+	virtual void DrawInterior(DrawContext const &, tHighlight const) const override;
 
-	virtual bool Includes(MicroMeterPnt const &) const;
+	virtual bool Includes(MicroMeterPnt const &) const final;
 
-	virtual NobIoMode GetIoMode() const { return NobIoMode::output; }
+	virtual NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
 private:
 

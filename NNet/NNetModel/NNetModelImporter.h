@@ -38,6 +38,8 @@ public:
 		errorInFile
 	};
 
+	virtual ~ImportTermination() {}
+
 	virtual void Reaction(ImportTermination::Result const, wstring const) = 0;
 };
 
@@ -47,12 +49,10 @@ public:
 
 	void Initialize();
 
-	bool Import(wstring const, unique_ptr<ImportTermination>);
+	bool Import(wstring const &, unique_ptr<ImportTermination>);
 
 	unique_ptr<NNetModel> GetImportedModel();
 	UPNobList             GetUPNobs();
-
-	wstring const GetFilePath() { return m_wstrFile2Read; }
 
 	static void CheckImportedNobId(Script &, UPNobList const &, NobId const);
 
@@ -65,7 +65,7 @@ private:
 	NNetModelWriterInterface      m_ImportedNMWI;
 	wstring                       m_wstrFile2Read;
 
-	void import();
+	void importModel();
 
 	friend static unsigned int __stdcall importModelThreadProc(void *);
 

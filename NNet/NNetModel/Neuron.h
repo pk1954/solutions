@@ -22,7 +22,7 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
-	Neuron(BaseKnot const &, NobType const = NobType::Value::neuron);
+	Neuron(BaseKnot      const &, NobType const = NobType::Value::neuron);
 	Neuron(Neuron const &);             // copy constructor
 
 	Neuron & operator=(Neuron const &); // copy assignment operator
@@ -47,13 +47,13 @@ public:
 	virtual void      DrawExterior  (DrawContext const &, tHighlight const) const;
 	virtual void      DrawInterior  (DrawContext const &, tHighlight const) const;
 	virtual void      DrawNeuronText(DrawContext const &) const;
-	virtual void      Recalc();
 	virtual void      Clear();
 	virtual bool      CompStep();
 	virtual mV        GetNextOutput() const;
 	virtual Radian    GetDir()        const { return Radian::NULL_VAL(); };
 	virtual NobIoMode GetIoMode()     const { return NobIoMode::internal; }
 
+	void Recalc() final;
 	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
 
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }

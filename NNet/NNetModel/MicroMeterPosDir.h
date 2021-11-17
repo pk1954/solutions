@@ -21,15 +21,16 @@ public:
 
     MicroMeterPosDir();
     MicroMeterPosDir(MicroMeterPnt const &, Radian const &);
+
     MicroMeterPosDir(Nob const &);
     
-    MicroMeterPnt const GetPos() const { return m_pos; }
-    Radian        const GetDir() const { return m_dir; }
+    MicroMeterPnt GetPos() const { return m_pos; }
+    Radian        GetDir() const { return m_dir; }
 
     void SetPos(MicroMeterPnt const & pos) { m_pos = pos; }
     void SetDir(Radian        const & dir) { m_dir = dir; }
 
-    bool operator==(MicroMeterPosDir const&) const;
+    bool operator==(MicroMeterPosDir const&) const = default;
 
     MicroMeterPosDir& operator+= (MicroMeterPnt const &);
     MicroMeterPosDir& operator+= (MicroMeterPosDir const &); 

@@ -22,11 +22,6 @@ MicroMeterPosDir::MicroMeterPosDir(Nob const & nob)
     m_dir(nob.GetDir())
 {}
 
-bool MicroMeterPosDir::operator==(MicroMeterPosDir const& rhs) const
-{
-    return (m_pos == rhs.m_pos) && (m_dir == rhs.m_dir); 
-}
-
 MicroMeterPosDir& MicroMeterPosDir::operator+= (MicroMeterPnt const & pnt) 
 { 
     m_pos += pnt;

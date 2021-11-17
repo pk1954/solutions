@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "scanner.h"
+#include "Scanner.h"
 #include "Pipe.h"
 #include "PipeList.h"
 
@@ -63,7 +63,7 @@ bool PipeList::Apply2AllB(PipeCrit const &f) const
 	return false;
 }
 
-void PipeList::Recalc() 
+void PipeList::Recalc() const
 { 
 	Apply2All([&](Pipe & pipe) { pipe.Recalc(); }); 
 }

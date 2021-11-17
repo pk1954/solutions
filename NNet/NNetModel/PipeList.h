@@ -31,7 +31,7 @@ public:
 	void Add(Pipe   * const   p) { if (p) m_list.push_back(p); }
 	void Add(PipeList const & l) { l.Apply2All([&](Pipe &p) { Add(&p); }); }
 
-	void Recalc();
+	void Recalc() const;
 
 	void Remove (Pipe * const);
 	void Replace(Pipe * const, Pipe * const);

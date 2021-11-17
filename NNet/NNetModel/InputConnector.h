@@ -19,7 +19,7 @@ class InputConnector: public IoConnector
 {
 public:
 
-	static bool const TypeFits(NobType const type) { return type.IsInputConnectorType(); }
+	static bool TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
 	explicit InputConnector(vector<IoNeuron *> &&);
 
