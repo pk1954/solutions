@@ -20,7 +20,7 @@ public:
     ConnAnimationCommand();
     virtual ~ConnAnimationCommand() {};
 
-    virtual bool const IsAsyncCommand() 
+    virtual bool IsAsyncCommand() 
     { 
         return true; 
     };

@@ -32,7 +32,7 @@ public:
 
     virtual ~PlugIoConnectorAnimation() {};
 
-    virtual bool const IsAsyncCommand() 
+    virtual bool IsAsyncCommand() 
     { 
         return true; 
     };

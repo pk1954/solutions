@@ -47,7 +47,7 @@ public:
         Command::UpdateUI();
     }
 
-    virtual bool const IsAsyncCommand() 
+    virtual bool IsAsyncCommand() 
     { 
         return true; 
     };

@@ -20,7 +20,7 @@ using std::make_unique;
 class Knot : public BaseKnot
 {
 public:
-	Knot(MicroMeterPnt const center)
+	explicit Knot(MicroMeterPnt const center)
 		: BaseKnot(center, NobType::Value::knot, PIPE_WIDTH / 2)
 	{}
 
@@ -28,19 +28,19 @@ public:
 
 	virtual ~Knot() {}
 
-	void Check() const;
+	void Check() const override;
 
 	static bool TypeFits(NobType const type) { return type.IsKnotType(); }
 
-	virtual void      SetDir(Radian const r) { };
-	virtual Radian    GetDir       () const { return Radian::NULL_VAL(); };
-	virtual mV        GetNextOutput() const { return m_mVinputBuffer; }
-	virtual bool      CompStep     ()       { return false; }
-	virtual NobIoMode GetIoMode    () const { return NobIoMode::internal; }
+	void      SetDir(Radian const r)  override { };
+	Radian    GetDir       () const   override { return Radian::NULL_VAL(); };
+	mV        GetNextOutput() const   override { return m_mVinputBuffer; }
+	bool      CompStep     ()         override { return false; }
+	NobIoMode GetIoMode    () const   override { return NobIoMode::internal; }
 
-	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
-	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
-	virtual void Recalc      () { };
+	void DrawExterior(DrawContext const &, tHighlight const) const override;
+	void DrawInterior(DrawContext const &, tHighlight const) const override;
+	void Recalc      ()  override { };
 
 	virtual void DrawNeuronText(PixelCoordsFp const &) const {};
 

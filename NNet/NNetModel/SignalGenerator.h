@@ -14,10 +14,7 @@ class SignalGenerator : public Observable
 public:
 
 	SignalGenerator();
-	virtual ~SignalGenerator()
-	{
-		int x = 42;
-	}
+	virtual ~SignalGenerator() {}
 
     static void Initialize(Param & param) { m_pParameters = & param; }
 
@@ -25,11 +22,10 @@ public:
 	void TriggerStimulus();
 	void StopTrigger() { m_bTriggerActive = false; }
 
-	fHertz const GetActFrequency ()                 const;
-	fHertz const GetFrequency    (fMicroSecs const) const;
+	fHertz GetActFrequency()                 const;
+	fHertz GetFrequency   (fMicroSecs const) const;
 
 	void LoadParameterValues();
-//	void SetParameterValues();
 
 	fHertz     FreqBase() const { return m_freqBase; };
 	fHertz     FreqMax () const { return m_freqMaxStim; };
@@ -41,12 +37,12 @@ public:
 
 	void SetParam(ParamType::Value const, float const);
 
-	bool       const IsTriggerActive() const { return m_bTriggerActive; }
-	fMicroSecs const TimeTilTrigger () const { return m_usSinceLastStimulus; }
-	fMicroSecs const CutoffTime     () const { return m_usMax * CUT_OFF_FACTOR; }
-	bool       const InStimulusRange(fMicroSecs const t) const { return t < CutoffTime(); }
+	bool       IsTriggerActive() const { return m_bTriggerActive; }
+	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
+	fMicroSecs CutoffTime     () const { return m_usMax * CUT_OFF_FACTOR; }
+	bool       InStimulusRange(fMicroSecs const t) const { return t < CutoffTime(); }
 
-	Param const & GetParams() { return * m_pParameters; }
+	Param const & GetParams() const { return * m_pParameters; }
 
 private:
 

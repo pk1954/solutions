@@ -45,7 +45,7 @@ public:
         m_nobAnimated.UnlockDirection();
     }
 
-    virtual bool const IsAsyncCommand() 
+    virtual bool IsAsyncCommand() 
     { 
         return true; 
     };

@@ -18,7 +18,7 @@ void SignalGenerator::TriggerStimulus()
 	NotifyAll(false);
 }
 
-fHertz const SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
+fHertz SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
 {
 	if (InStimulusRange(uSecs))
 	{
@@ -30,7 +30,7 @@ fHertz const SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
 		return m_freqBase;
 }
 
-fHertz const SignalGenerator::GetActFrequency() const 
+fHertz SignalGenerator::GetActFrequency() const 
 { 
 	return GetFrequency(m_usSinceLastStimulus);
 }

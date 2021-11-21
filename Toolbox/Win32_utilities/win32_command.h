@@ -26,7 +26,7 @@ public:
         return false; 
     };
 
-    virtual bool const IsAsyncCommand() 
+    virtual bool IsAsyncCommand() 
     { 
         return false;
     };
