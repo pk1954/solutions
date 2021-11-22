@@ -41,11 +41,11 @@ private:
 	void writeNob             (wostream &, Nob         const &);
 	void writePipe            (wostream &, Pipe        const &);
 	void writeIoConnector     (wostream &, IoConnector const &);
-	void writeDescription     (wostream &);
-	void writeMonitorData     (wostream &);
+	void writeDescription     (wostream &) const;
+	void writeMonitorData     (wostream &) const;
 	void writeTriggerSounds   (wostream &);
 	void writeNobParameters   (wostream &);
-	void writeGlobalParameters(wostream &);
+	void writeGlobalParameters(wostream &) const;
 	void writeNobs            (wostream &);
 	void writeHeader          (wostream &);
 	void write                (wostream &);

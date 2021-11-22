@@ -1,4 +1,4 @@
 DescWinFontSize 12
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
+ReadModel "D:\SW-projects\Delivery\2021-11-15\Test.mod"

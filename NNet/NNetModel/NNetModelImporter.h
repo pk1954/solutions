@@ -38,7 +38,7 @@ public:
 		errorInFile
 	};
 
-	virtual ~ImportTermination() {}
+	virtual ~ImportTermination() = default;
 
 	virtual void Reaction(ImportTermination::Result const, wstring const) = 0;
 };
@@ -52,7 +52,7 @@ public:
 	bool Import(wstring const &, unique_ptr<ImportTermination>);
 
 	unique_ptr<NNetModel> GetImportedModel();
-	UPNobList             GetUPNobs();
+	UPNobList             GetUPNobs() const;
 
 	static void CheckImportedNobId(Script &, UPNobList const &, NobId const);
 

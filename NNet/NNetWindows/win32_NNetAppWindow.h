@@ -91,10 +91,10 @@ public:
 
 private:
 
-	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const);
-	virtual bool OnSize   (WPARAM const, LPARAM const);
-	virtual void OnClose();
-	virtual void OnPaint();
+	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
+	bool OnSize   (WPARAM const, LPARAM const) final;
+	void OnClose() final;
+	void OnPaint() final;
 
 	void configureStatusBar();
 	void adjustChildWindows();
@@ -110,7 +110,7 @@ private:
 		m_appTitle.SetUnsavedChanges(false);
 	}
 
-	wstring AskModelFile()
+	wstring AskModelFile() const
 	{
 		return ScriptFile::AskForFileName(L"mod", L"Model files", tFileMode::read);
 	}

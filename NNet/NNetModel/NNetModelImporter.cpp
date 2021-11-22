@@ -445,7 +445,7 @@ unique_ptr<NNetModel> NNetModelImporter::GetImportedModel()
     return move(m_upImportedModel);
 }
 
-UPNobList NNetModelImporter::GetUPNobs()
+UPNobList NNetModelImporter::GetUPNobs() const
 { 
     return move(m_upImportedModel->GetUPNobs()); 
 }

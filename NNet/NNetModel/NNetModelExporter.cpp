@@ -18,7 +18,7 @@
 #include "NNetModelWriterInterface.h"
 #include "win32_util.h"
 #include "win32_script.h"
-#include "win32_HiResTimer.h"
+#include "win32_hiResTimer.h"
 #include "NNetModelStorage.h"
 #include "NNetModelExporter.h"
 
@@ -61,7 +61,7 @@ void NNetModelExporter::writeHeader(wostream & out)
     out << endl;
 }
 
-void NNetModelExporter::writeGlobalParameters(wostream & out)
+void NNetModelExporter::writeGlobalParameters(wostream & out) const
 {
     ParamType::Apply2GlobalParameters
     (
@@ -126,7 +126,7 @@ void NNetModelExporter::writeTriggerSounds(wostream & out)
    );
 }
 
-void NNetModelExporter::writeMonitorData(wostream & out)
+void NNetModelExporter::writeMonitorData(wostream & out) const
 {
     MonitorData const & monitorData { m_pNMRI->GetMonitorData() };
 
@@ -147,7 +147,7 @@ void NNetModelExporter::writeMonitorData(wostream & out)
    );
 }
 
-void NNetModelExporter::writeDescription(wostream & out)
+void NNetModelExporter::writeDescription(wostream & out) const
 {
     wstring wstrLine;
     int iLineNr = 0;

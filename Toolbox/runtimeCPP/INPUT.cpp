@@ -11,18 +11,14 @@
 #include <assert.h>
 #include <ctype.h>
 #include "Input.h"
-#include "errhndl.h"
+#include "Errhndl.h"
 #include "ScriptFunctor.h"
 
 InputBuffer::InputBuffer() 
-  :  m_wstrLine(),
-     m_ifstream()
 {
     m_wstrLine.clear();
     m_wstrLine  += L'\0';
-    m_pwchStart  = nullptr;
     m_pwchRead   = &m_wstrLine.front();
-    m_iLineNr    = 0;
 }
 
 InputBuffer::~InputBuffer() 
@@ -78,7 +74,7 @@ wchar_t InputBuffer::ReadNextChar()
          m_iLineNr++;
          m_pwchRead = &m_wstrLine.front();
          if (m_newLineTrigger)
-             (m_newLineTrigger)();
+             m_newLineTrigger();
       }   
    }
 
