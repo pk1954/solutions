@@ -49,7 +49,7 @@ public:
 	{
         for (T & elem : m_tArray)
 		{
-            elem = T;
+            elem = val;
 		}
 	}
 

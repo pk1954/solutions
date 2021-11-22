@@ -362,7 +362,7 @@ void NNetModelImporter::importModel()
         {
             bSuccess = script.ScrProcess(m_wstrFile2Read);
         }
-        catch (NobException e)
+        catch (NobException & e)
         {
             CheckImportedNobId(script, m_ImportedNMWI.GetUPNobs(), e.m_id);
         }

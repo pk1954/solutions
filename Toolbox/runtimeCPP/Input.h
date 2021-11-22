@@ -36,9 +36,9 @@ public:
     wstring const & GetActLine    () const { return m_wstrLine; };
     int             GetActLineNr  () const { return m_iLineNr; };
     bool            IsActive      () const { return m_ifstream.is_open(); }
-    streampos const GetFilePos    ()       { return m_ifstream.tellg(); };
+    streampos       GetFilePos    ()       { return m_ifstream.tellg(); };
 
-    static void SetNewLineTrigger(function<void(void)> const);
+    static void SetNewLineTrigger(function<void(void)> const &);
 
 private:
     inline static function<void(void)> m_newLineTrigger { nullptr };

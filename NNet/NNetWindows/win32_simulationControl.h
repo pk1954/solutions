@@ -15,9 +15,9 @@ public:
 
 	void Initialize(StatusBar * const, ComputeThread * const);
 
-	virtual ~SimulationControl() {};
+	~SimulationControl() override = default;
 
-	virtual void Notify(bool const);
+	void Notify(bool const) final;
 
 private:
 	ComputeThread * m_pComputeThread;

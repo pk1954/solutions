@@ -298,7 +298,7 @@ void MonitorWindow::OnPaint()
 			{
 				doPaint();
 			}
-			catch (MonitorDataException e)
+			catch (MonitorDataException & e)
 			{
 				SendCommand2Application(IDM_STOP, 0);
 				MonitorData::HandleException(e);

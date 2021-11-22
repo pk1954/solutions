@@ -305,10 +305,6 @@ bool NNetAppWindow::UserProc
 		adjustChildWindows();
 		break;
 
-	case WM_CHAR:
-		m_mainNNetWindow.OnChar(wParam, lParam);
-		return true;  
-
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -325,13 +321,11 @@ void NNetAppWindow::configureStatusBar()
 	int iPartScriptLine = 0;
 	m_timeDisplay.Start(& m_StatusBar, & m_nmri, iPartScriptLine);
 
-	iPartScriptLine = m_StatusBar.NewPart();
 	m_simulationControl.Initialize(& m_StatusBar, & m_computeThread);
 
 	iPartScriptLine = m_StatusBar.NewPart();
 	m_slowMotionDisplay.Initialize(& m_StatusBar, & m_SlowMotionRatio, iPartScriptLine);
 
-	iPartScriptLine = m_StatusBar.NewPart();
 	SlowMotionControl::Add(& m_StatusBar);
 
 	iPartScriptLine = m_StatusBar.NewPart();
@@ -509,7 +503,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				return true;
 		}
 	}
-	catch (NobTypeException e)
+	catch (NobTypeException & e)
 	{
 		wcout << Scanner::COMMENT_START << L"Command failed: " << endl;
 		wcout << Scanner::COMMENT_START << L"File    : " << e.m_szFile  << endl;

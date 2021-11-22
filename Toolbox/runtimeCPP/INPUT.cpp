@@ -31,7 +31,7 @@ InputBuffer::~InputBuffer()
     m_pwchRead  = nullptr;
 };
 
-void InputBuffer::SetNewLineTrigger(function<void(void)> const pFunc)
+void InputBuffer::SetNewLineTrigger(function<void(void)> const & pFunc)
 {
     m_newLineTrigger = pFunc;
 }
@@ -62,7 +62,7 @@ wchar_t InputBuffer::ReadNextChar()
 {             
    assert(!m_ifstream.bad());
    
-   if ((m_pwchRead == nullptr) || (L'\0' == *(m_pwchRead)))   // end of line reached
+   if ((m_pwchRead == nullptr) || (L'\0' == *m_pwchRead))   // end of line reached
    {      
       getline(m_ifstream, m_wstrLine);
       m_wstrLine += L'\n';

@@ -143,7 +143,7 @@ void NNetWindow::DrawSensors() const
 		Signal const * const   pSignal { mon.GetHighlightedSignal() };
 		mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
 	}
-	catch (MonitorDataException e)
+	catch (MonitorDataException & e)
 	{
 		SendCommand2Application(IDM_STOP, 0);
 		MonitorData::HandleException(e);

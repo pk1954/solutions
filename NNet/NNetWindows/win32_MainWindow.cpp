@@ -248,7 +248,7 @@ void MainWindow::CenterSelection()
 		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
-bool const MainWindow::ArrowsVisible() const
+bool MainWindow::ArrowsVisible() const
 {
 	return m_arrowSize > 0._MicroMeter;
 }
@@ -457,25 +457,6 @@ void MainWindow::OnPaint()
 	m_pDisplayTimer->TimerStop();
 }
 
-//bool MainWindow::changePulseRate(NobId const id, bool const bDirection)
-//{
-//	static fHertz const INCREMENT { 0.01_fHertz };
-//	fHertz const fOldValue { m_pNMRI->GetBaseFrequency(id) };
-//	if (fOldValue.IsNull())
-//		return false;
-//	fHertz const fNewValue = fOldValue + (bDirection ? INCREMENT : -INCREMENT);
-//	m_pModelCommands->SetPulseRate(id, fNewValue);
-//	return true;
-//}
-
-void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
-{
-	//if (wParam == '+')
-	//	changePulseRate(m_nobHighlighted, true);
-	//else if (wParam == '-')
-	//	changePulseRate(m_nobHighlighted, false);
-}
-
 /////////////////////// local functions ////////////////////////////////
 
 void MainWindow::doPaint() 
@@ -553,7 +534,7 @@ bool MainWindow::UserProc
 	{
 		bRes = NNetWindow::UserProc(uMsg, wParam, lParam); 
 	}
-	catch (NobException e)
+	catch (NobException & e)
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DUMP();
@@ -566,9 +547,7 @@ bool MainWindow::UserProc
 
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	int const wmId = LOWORD(wParam);
-
-	switch (wmId)
+	switch (int const wmId { LOWORD(wParam) } )
 	{
 
 	case IDM_MAKE_CONNECTOR:

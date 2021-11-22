@@ -41,9 +41,9 @@ public:
 
 	virtual LPARAM AddContextMenuEntries(HMENU const);
 
-	NobId const GetTargetNobId     () const { return m_nobTarget; }
-	NobId const GetHighlightedNobId() const { return m_nobHighlighted; }
-	bool  const AnyNobsSelected    () const { return m_pNMRI->AnyNobsSelected(); }
+	NobId GetTargetNobId     () const { return m_nobTarget; }
+	NobId GetHighlightedNobId() const { return m_nobHighlighted; }
+	bool  AnyNobsSelected    () const { return m_pNMRI->AnyNobsSelected(); }
 
 	template <typename T>
 	void NNetMove(T const & delta)	
@@ -56,21 +56,20 @@ public:
 
 	MicroMeterPnt const GetCursorPos() const;
 
-	void       CenterModel();
-	void       CenterSelection();
-	void       ShowArrows(bool const);
-	bool const ArrowsVisible() const; 
+	void CenterModel();
+	void CenterSelection();
+	void ShowArrows(bool const);
+	bool ArrowsVisible() const; 
 
-	virtual bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const);
-	virtual bool OnSize              (WPARAM const, LPARAM const);
-	virtual bool OnRButtonDown       (WPARAM const, LPARAM const);
-	virtual void OnMouseWheel        (WPARAM const, LPARAM const);
-	virtual void OnMouseMove         (WPARAM const, LPARAM const);
-	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const);
-	virtual void OnLButtonUp         (WPARAM const, LPARAM const);
-	virtual bool OnRButtonUp         (WPARAM const, LPARAM const);
-	virtual void OnChar              (WPARAM const, LPARAM const);
-	virtual void OnPaint             ();
+	bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const) final;
+	bool OnSize              (WPARAM const, LPARAM const) final;
+	bool OnRButtonDown       (WPARAM const, LPARAM const) final;
+	void OnMouseWheel        (WPARAM const, LPARAM const) final;
+	void OnMouseMove         (WPARAM const, LPARAM const) final;
+	void OnLeftButtonDblClick(WPARAM const, LPARAM const) final;
+	void OnLButtonUp         (WPARAM const, LPARAM const) final;
+	bool OnRButtonUp         (WPARAM const, LPARAM const) final;
+	void OnPaint             () final;
 
 private:
 	 
