@@ -21,7 +21,7 @@ void ParamType::Apply2AllParameters(function<void(ParamType::Value const &)> con
 		func(static_cast<ParamType::Value>(i));
 }
 
-wchar_t const * const ParamType::GetName(ParamType::Value const p)
+wchar_t const * ParamType::GetName(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
@@ -42,7 +42,7 @@ wchar_t const * const ParamType::GetName(ParamType::Value const p)
 	return mapParam.at(p);
 }
 
-wchar_t const * const ParamType::GetUnit(ParamType::Value const p)
+wchar_t const * ParamType::GetUnit(ParamType::Value const p)
 {
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{

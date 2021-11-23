@@ -30,8 +30,8 @@ public:
 		tParameterLast = stdPulseRate
 	};
 
-	static wchar_t const * const GetName(ParamType::Value const);
-	static wchar_t const * const GetUnit(ParamType::Value const);
+	static wchar_t const * GetName(ParamType::Value const);
+	static wchar_t const * GetUnit(ParamType::Value const);
 
 	static void Apply2GlobalParameters(function<void(ParamType::Value const &)> const &);
 	static void Apply2AllParameters   (function<void(ParamType::Value const &)> const &);

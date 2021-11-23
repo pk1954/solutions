@@ -8,6 +8,8 @@
 #include "win32_rootWindow.h"
 #include "win32_command.h"
 
+using std::bit_cast;
+
 void Command::UpdateUI() 
 { 
     m_pWin->Notify(false); 
@@ -20,13 +22,13 @@ void Command::CallUI(bool const bTargetReached)
         m_pWin->GetWindowHandle(), 
         WM_APP_UI_CALL, 
         static_cast<WPARAM>(bTargetReached), 
-        reinterpret_cast<LPARAM>(this)
+        bit_cast<LPARAM>(this)
     );
 }
 
 void Command::DoCall(WPARAM const wParam, LPARAM const lParam) 
 {
-    Command * const pAnimCmd       { reinterpret_cast<Command * const>(lParam) };
+    Command * const pAnimCmd       { bit_cast<Command * const>(lParam) };
     bool      const bTargetReached { static_cast<bool const>(wParam) };
     pAnimCmd->UpdateUI();
     if (bTargetReached && pAnimCmd->m_targetReachedFunc)
@@ -39,9 +41,10 @@ void Command::doPhase() // runs in UI thread
         blockUI();
     if (m_uiPhase < m_phases.size())
     {
-        Command * const pAnimCmd { m_phases[m_uiPhase++].get() };
+        Command * const pAnimCmd { m_phases[m_uiPhase].get() };
         pAnimCmd->m_targetReachedFunc = [&](){ doPhase(); };
         pAnimCmd->Do();
+        ++m_uiPhase;
     }
     else
         unblockUI();
@@ -54,7 +57,8 @@ void Command::undoPhase() // runs in UI thread
         blockUI();
     if (m_uiPhase > 0)
     {
-        Command & animCmd { * m_phases[--m_uiPhase] };
+        --m_uiPhase;
+        Command & animCmd { * m_phases[m_uiPhase] };
         animCmd.m_targetReachedFunc = [&](){ undoPhase(); };
         animCmd.Undo();
     }

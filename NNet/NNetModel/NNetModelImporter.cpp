@@ -29,7 +29,7 @@ using std::to_wstring;
 class WrapperBase : public ScriptFunctor
 {
 public:
-    WrapperBase(NNetModelImporter & modelImporter) :
+    explicit WrapperBase(NNetModelImporter & modelImporter) :
         m_modelImporter(modelImporter)
     { };
 
@@ -44,9 +44,9 @@ protected:
 class WrapProtocol : public WrapperBase
 {
 public:
-    WrapProtocol(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         script.ScrReadString(L"version");
         double dVersion = script.ScrReadFloat();
@@ -56,9 +56,9 @@ public:
 class WrapDescription : public WrapperBase
 {
 public:
-    WrapDescription(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         wstring const wstrDescription { script.ScrReadString() };
         GetWriterInterface().AddDescriptionLine(wstrDescription);
@@ -68,16 +68,16 @@ public:
 class WrapCreateNob : public WrapperBase
 {
 public:
-    WrapCreateNob(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {   
         createNob(script);
     }
 
 private:
 
-    Nob * const createNob(Script & script) const
+    Nob * createNob(Script & script) const
     {   
         NobId   const idFromScript { ScrReadNobId(script) };
         NobType const nobType      { ScrReadNobType(script) };
@@ -200,11 +200,11 @@ private:
 class WrapGlobalParameter : public WrapperBase
 {
 public:
-    WrapGlobalParameter(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
-        ParamType::Value const param(static_cast<ParamType::Value>(script.ScrReadUint()));
+        auto const param(static_cast<ParamType::Value>(script.ScrReadUint()));
         script.ScrReadSpecial(L'=');
         float const fValue { Cast2Float(script.ScrReadFloat()) };
         GetWriterInterface().SetParam(param, fValue);
@@ -214,9 +214,9 @@ public:
 class WrapNrOfNobs : public WrapperBase
 {
 public:
-    WrapNrOfNobs(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         script.ScrReadSpecial(L'=');
         long lNrOfNobs { script.ScrReadLong() };
@@ -227,13 +227,13 @@ public:
 class WrapNobParameter : public WrapperBase  // Legacy
 {
 public:
-    WrapNobParameter(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         script.ScrReadString(L"InputNeuron");
-        NobId            const id   (script.ScrReadLong());
-        ParamType::Value const param(static_cast< ParamType::Value >(script.ScrReadUint()));
+        NobId const id   (script.ScrReadLong());
+        auto  const param(static_cast< ParamType::Value >(script.ScrReadUint()));
         assert(param == ParamType::Value::pulseRate);
         script.ScrReadSpecial(L'=');
         float const fValue { Cast2Float(script.ScrReadFloat()) };
@@ -244,9 +244,9 @@ public:
 class WrapTriggerSound : public WrapperBase
 {
 public:
-    WrapTriggerSound(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const  
+    void operator() (Script & script) const final
     {
         NobId const id      { ScrReadNobId(script) };
         Neuron    * pNeuron { GetWriterInterface().GetNobPtr<Neuron *>(id) };
@@ -261,9 +261,9 @@ public:
 class WrapNrOfTracks : public WrapperBase
 {
 public:
-    WrapNrOfTracks(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const 
+    void operator() (Script & script) const final
     {
         unsigned int const uiNrOfTracks { script.ScrReadUint() };
         for (unsigned int ui = 0; ui < uiNrOfTracks; ++ui)
@@ -274,9 +274,9 @@ public:
 class WrapSignal : public WrapperBase
 {
 public:
-    WrapSignal(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const 
+    void operator() (Script & script) const final
     {
         MicroMeterCircle umCircle;
         TrackNr          trackNr { ScrReadTrackNr(script) };
@@ -297,9 +297,9 @@ public:
 class WrapSetParam : public WrapperBase
 {
 public:
-    WrapSetParam(NNetModelImporter & m) : WrapperBase(m) { };
+    using WrapperBase::WrapperBase;
 
-    virtual void operator() (Script & script) const 
+    void operator() (Script & script) const final
     {
         NobId            const id       { ScrReadNobId(script) };
         ParamType::Value const param    { ScrReadParamType(script) };
@@ -362,7 +362,7 @@ void NNetModelImporter::importModel()
         {
             bSuccess = script.ScrProcess(m_wstrFile2Read);
         }
-        catch (NobException & e)
+        catch (NobException const & e)
         {
             CheckImportedNobId(script, m_ImportedNMWI.GetUPNobs(), e.m_id);
         }

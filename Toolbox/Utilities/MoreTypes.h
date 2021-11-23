@@ -156,8 +156,8 @@ using Degrees = NamedType<float, struct degrees_Parameter >;
 constexpr Radian  operator"" _Radian (const long double r) { return Radian (Cast2Float(r)); }
 constexpr Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
 
-inline float RADIAN_FACTOR     { 180.0f/static_cast<float>(M_PI) };
-inline float INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
+inline float const RADIAN_FACTOR     { 180.0f/static_cast<float>(M_PI) };
+inline float const INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
 
 static Radian  Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
 static Degrees Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
@@ -173,7 +173,7 @@ static MicroMeterPnt Radian2Vector(Radian const r)
 	return MicroMeterPnt(Cos(r), Sin(r));
 }
 
-static Radian const Vector2Radian(MicroMeterPnt const & umPnt)
+static Radian Vector2Radian(MicroMeterPnt const & umPnt)
 {
 	return Radian(atan2(umPnt.GetYvalue(),umPnt.GetXvalue()));
 }
