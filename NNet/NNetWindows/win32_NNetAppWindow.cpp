@@ -6,6 +6,7 @@
 #include "Windows.h"
 #include <chrono>
 #include <filesystem>
+#include <source_location>
 
 // Model interfaces
 
@@ -23,7 +24,7 @@
 
 #include "util.h"
 #include "NNetCommand.h"
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"
 #include "win32_importTermination.h"
@@ -54,14 +55,13 @@
 #include "UndoRedoMenu.h"
 #include "win32_NNetAppWindow.h"
 
-using namespace std::literals::chrono_literals;
-
 using std::wcout;
 using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 using std::wostringstream;
 using std::filesystem::path;
+using std::source_location;
 
 NNetAppWindow::NNetAppWindow()
 {
@@ -71,7 +71,7 @@ NNetAppWindow::NNetAppWindow()
 	DefineNNetWrappers(& m_nmri, & m_modelCommands);
 };
 
-NNetAppWindow::~NNetAppWindow() { }
+NNetAppWindow::~NNetAppWindow() = default;
 
 void NNetAppWindow::Start(MessagePump & pump)
 {
@@ -281,7 +281,7 @@ void NNetAppWindow::OnPaint()
 {
 	PAINTSTRUCT   ps;
 	HDC           hDC = BeginPaint(&ps);
-	static COLORREF const CLR_GREY = RGB(128, 128, 128);
+	static auto const CLR_GREY { RGB(128, 128, 128) };
 	FillBackground(hDC, CLR_GREY);
 	(void)EndPaint(&ps);
 }
@@ -424,7 +424,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			if (ScriptStack::IsScriptActive())
 			{
 				Script * const pScript { ScriptStack::GetScript() };
-				if (!pScript->ProcessToken() || !pScript->ReadNextToken())
+				if (pScript && (!pScript->ProcessToken() || !pScript->ReadNextToken()) )
 					ScriptStack::CloseScript();
 			}
 			return false;
@@ -508,7 +508,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		wcout << Scanner::COMMENT_START << L"Command failed: " << endl;
 		wcout << Scanner::COMMENT_START << L"File    : " << e.m_szFile  << endl;
 		wcout << Scanner::COMMENT_START << L"Line    : " << e.m_iLineNr << endl;
-		wcout << Scanner::COMMENT_START << L"Function: " << __func__    << endl;
+		wcout << Scanner::COMMENT_START << L"Function: " << source_location::current().function_name()    << endl;
 		wcout << Scanner::COMMENT_START << L"NobType : " << to_wstring(static_cast<int>(e.m_type.GetValue())) << endl;
 		FatalError::Happened(10, L"Invalid NobType");
 	}

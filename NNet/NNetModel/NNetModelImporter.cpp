@@ -305,8 +305,8 @@ public:
         ParamType::Value const param    { ScrReadParamType(script) };
         float                  fVal     { Cast2Float(script.ScrReadFloat()) };
         InputConnector       * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) };
-        SignalGenerator      & sigGen   { pInpConn->GetSignalGenerator() };
-        sigGen.SetParam(param, fVal);
+        if (pInpConn)
+            pInpConn->GetSignalGenerator().SetParam(param, fVal);
     }
 };
 

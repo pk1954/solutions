@@ -8,7 +8,7 @@
           
 #include <map>
 #include <assert.h>
-#include "script.h"
+#include "SCRIPT.H"
 
 using std::map;
 
@@ -26,30 +26,30 @@ class Symbol
 {
 public:
 
-    Symbol();
+    Symbol() = default;
 
-    explicit Symbol(ScriptFunctor const * const pFunc) : m_type(tSTYPE::Function   ), m_pFunc(pFunc  ), m_lValue(0), m_ulValue(0 ), m_wstrValue(L"" ), m_dValue(.0) { };
-    explicit Symbol(long                  const l    ) : m_type(tSTYPE::LongConst  ), m_pFunc(nullptr), m_lValue(l), m_ulValue(0 ), m_wstrValue(L"" ), m_dValue(.0) { };
-    explicit Symbol(unsigned long         const ul   ) : m_type(tSTYPE::ULongConst ), m_pFunc(nullptr), m_lValue(0), m_ulValue(ul), m_wstrValue(L"" ), m_dValue(.0) { };
-    explicit Symbol(wstring       const &       wstr ) : m_type(tSTYPE::StringConst), m_pFunc(nullptr), m_lValue(0), m_ulValue(0 ), m_wstrValue(wstr), m_dValue(.0) { };
-    explicit Symbol(double                const d    ) : m_type(tSTYPE::FloatConst ), m_pFunc(nullptr), m_lValue(0), m_ulValue(0 ), m_wstrValue(L"" ), m_dValue( d) { };
+    explicit Symbol(ScriptFunctor const * const pFunc) : m_type(tSTYPE::Function   ), m_pFunc    (pFunc) { };
+    explicit Symbol(long                  const l    ) : m_type(tSTYPE::LongConst  ), m_lValue   (l)     { };
+    explicit Symbol(unsigned long         const ul   ) : m_type(tSTYPE::ULongConst ), m_ulValue  (ul)    { };
+    explicit Symbol(wstring       const &       wstr ) : m_type(tSTYPE::StringConst), m_wstrValue(wstr)  { };
+    explicit Symbol(double                const d    ) : m_type(tSTYPE::FloatConst ), m_dValue   (d)     { };
 
     bool operator< (const Symbol &) const;
 
-    tSTYPE        const   GetSymbolType () const { return m_type; };
-    double        const   GetFloatConst () const { assert(m_type == tSTYPE::FloatConst ); return   m_dValue;    };
+    tSTYPE                GetSymbolType () const { return m_type; };
+    double                GetFloatConst () const { assert(m_type == tSTYPE::FloatConst ); return   m_dValue;    };
     ScriptFunctor const & GetFunction   () const { assert(m_type == tSTYPE::Function   ); return * m_pFunc;     };
     wstring       const & GetStringConst() const { assert(m_type == tSTYPE::StringConst); return   m_wstrValue; };
-    long          const   GetLongConst  () const { assert(m_type == tSTYPE::LongConst  ); return   m_lValue;    };
-    unsigned long const   GetUlongConst () const { assert(m_type == tSTYPE::ULongConst ); return   m_ulValue;   };
+    long                  GetLongConst  () const { assert(m_type == tSTYPE::LongConst  ); return   m_lValue;    };
+    unsigned long         GetUlongConst () const { assert(m_type == tSTYPE::ULongConst ); return   m_ulValue;   };
 
 private:
-    tSTYPE                m_type;
-    ScriptFunctor const * m_pFunc;     // type: Function    
-    long                  m_lValue;    // type: LogConst    
-    unsigned long         m_ulValue;   // type: ULongConst  
-    wstring               m_wstrValue; // type: StringConst 
-    double                m_dValue;    // type: FloatConst  
+    tSTYPE                 m_type      { tSTYPE::UnknownSTYPE };
+    ScriptFunctor const *  m_pFunc     { nullptr };  // type: Function    
+    long                   m_lValue    { 0L };       // type: LogConst    
+    unsigned long          m_ulValue   { 0L };       // type: ULongConst  
+    wstring                m_wstrValue { L"" };      // type: StringConst 
+    double                 m_dValue    { 0.0f };     // type: FloatConst  
 };
 
 class SymbolTable

@@ -137,7 +137,7 @@ void ParameterDialog::Stop()
 
 bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	WORD const wId = LOWORD(wParam);
+	auto const wId = LOWORD(wParam);
 	switch (wId)
 	{
 	case IDD_APPLY_PARAMETERS:

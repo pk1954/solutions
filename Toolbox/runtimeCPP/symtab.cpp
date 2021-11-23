@@ -5,17 +5,8 @@
 #include "stdafx.h"
 #include <map>
 #include <assert.h>
-#include "errhndl.h"
-#include "symtab.h"
-
-Symbol::Symbol() :
-    m_type(tSTYPE::UnknownSTYPE ),
-    m_pFunc(nullptr),
-    m_lValue(0L),    
-    m_ulValue(0L),   
-    m_wstrValue(L""),
-    m_dValue(0.0f)
-{ };
+#include "ERRHNDL.H"
+#include "SYMTAB.H"
 
 bool Symbol::operator< (const Symbol & rhs) const
 {
