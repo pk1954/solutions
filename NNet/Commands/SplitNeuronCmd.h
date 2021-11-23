@@ -30,7 +30,7 @@ public:
 
     virtual ~SplitNeuronCmd() {}
 
-    virtual void Do()
+    void Do() final
     {
         m_upNeuron = m_pNMWI->RemoveFromModel<Neuron>(m_neuron);
         m_pNMWI->Push2Model(move(m_upInputNeuron));

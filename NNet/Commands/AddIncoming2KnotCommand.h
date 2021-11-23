@@ -30,7 +30,7 @@ public:
 	
 	~AddIncoming2KnotCommand()	{ }
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pEnd->AddIncoming(m_upPipe.get());
 		m_pNMWI->Push2Model(move(m_upKnotNew));

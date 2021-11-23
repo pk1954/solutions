@@ -212,7 +212,7 @@ public:
 		return PIXEL(GET_Y_LPARAM(lParam));
 	}
 
-	PixelPoint const GetCrsrPosFromLparam(LPARAM const lParam) const
+	PixelPoint GetCrsrPosFromLparam(LPARAM const lParam) const
 	{
 		return PixelPoint{ CrsrXpos(lParam), CrsrYpos(lParam) };
 	}

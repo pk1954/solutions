@@ -24,19 +24,19 @@ public:
 		assert(&nob);
 	}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_nob.MoveNob(m_delta);
 	}
 
-	virtual void Undo() 
+	void Undo() final
 	{ 
 		m_nob.MoveNob(-m_delta);
 	}
 
-	virtual NobId const GetAffectedNob() const { return m_nob.GetId(); }
+	NobId GetAffectedNob() const final { return m_nob.GetId(); }
 
-	virtual bool const CombineCommands(Command const & src) 
+	bool CombineCommands(Command const & src) final
 	{ 
 		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
 		if (GetAffectedNob() != srcCmd.GetAffectedNob())

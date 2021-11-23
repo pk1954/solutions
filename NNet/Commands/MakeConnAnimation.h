@@ -21,7 +21,7 @@ class MainWindow;
 class MakeConnAnimation : public NNetCommand
 {
 public:
-    MakeConnAnimation(vector<IoNeuron *> && list)
+    explicit MakeConnAnimation(vector<IoNeuron *> && list)
     {
         if (list.front()->IsInputNeuron())
             m_upIoConnector = make_unique<InputConnector>(move(list));
@@ -29,9 +29,8 @@ public:
             m_upIoConnector = make_unique<OutputConnector>(move(list));
     }
 
-    virtual void Do()
+    void Do() final
     {
-//        wcout << L'#' << __FUNCDNAME__ << endl;
         m_pNMWI->DeselectAllNobs();
         m_upIoConnector->SetParentPointers();
         m_pNMWI->Push2Model(move(m_upIoConnector));
@@ -40,7 +39,6 @@ public:
 
     virtual void Undo()
     {
-//        wcout << L'#' << __FUNCDNAME__ << endl;
         m_upIoConnector = move(m_pNMWI->PopFromModel<IoConnector>());
         m_upIoConnector->ClearParentPointers();
         m_upIoConnector->UnlockDirection();

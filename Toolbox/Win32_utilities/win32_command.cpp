@@ -79,12 +79,12 @@ void Command::AddPhase(unique_ptr<Command> upCmd)
     m_phases.push_back(move(upCmd));
 }
 
-void Command::blockUI()   
+void Command::blockUI() const
 { 
     m_pWin->SendCommand2Application(IDM_BLOCK_UI, true);  
 };
 
-void Command::unblockUI()
+void Command::unblockUI() const
 { 
     NextScriptCommand();   // script continuation for async commands
     m_pWin->PostCommand2Application(IDM_BLOCK_UI, false);

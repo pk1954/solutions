@@ -46,10 +46,10 @@ public:
     void  SelectSubtree(BaseKnot  * const p, bool  const b) { m_pModel->SelectSubtree(p, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
-    void  SetModelFilePath  (wstring const wstr) { m_pModel->SetModelFilePath  (wstr); }
-    void  AddDescriptionLine(wstring const wstr) { m_pModel->AddDescriptionLine(wstr); }
-    void  DescriptionComplete()                  { m_pModel->DescriptionComplete(); }
-    void  DeselectAllNobs()                      { m_pModel->DeselectAllNobs(); }
+    void  SetModelFilePath  (wstring const & wstr) { m_pModel->SetModelFilePath  (wstr); }
+    void  AddDescriptionLine(wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
+    void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
+    void  DeselectAllNobs()                        { m_pModel->DeselectAllNobs(); }
 
     template <Nob_t T>
     T GetNobPtr(NobId const id) 
@@ -90,7 +90,7 @@ public:
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNobOld)));
     }
 
-    NobId const Push2Model(UPNob upNob)
+    NobId Push2Model(UPNob upNob)
     {
         NobId const id { GetUPNobs().Push(move(upNob)) };
         Reconnect(id);

@@ -15,7 +15,7 @@ public:
 	  :	m_rect(rect)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->DeselectAllNobs();

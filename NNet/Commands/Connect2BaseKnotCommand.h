@@ -49,7 +49,7 @@ public:
 
 	~Connect2BaseKnotCommand() { }
 
-	virtual void Do()
+	void Do() final
 	{
 		assert(m_upResult);
 		m_upResult->Reconnect();

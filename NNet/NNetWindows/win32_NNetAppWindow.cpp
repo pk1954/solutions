@@ -572,9 +572,9 @@ bool NNetAppWindow::AskAndSave()
 void NNetAppWindow::StartScript(wstring const & wstrFile)
 {
 	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-	Script    * pScript { ScriptStack::OpenScript() };
-	UPNobList & nobList { m_nmwi.GetUPNobs() };
-	if (pScript->ScrOpen(wstrFile))
+	Script          * pScript { ScriptStack::OpenScript() };
+	UPNobList const & nobList { m_nmwi.GetUPNobs() };
+	if (pScript && pScript->ScrOpen(wstrFile))
 	{
 		pScript->ScrSetNewLineHook(& m_ScriptHook);
 		Command::NextScriptCommand();  // start reading script file
@@ -586,19 +586,19 @@ void NNetAppWindow::openSignalDesigner()
 	NobId const id { m_mainNNetWindow.GetHighlightedNobId() };
 	if (IsUndefined(id))
 		return;
-	NobType const type { m_nmri.GetNobType(id) };
-	if (! type.IsInputConnectorType())
+	if (! m_nmri.IsOfType<InputConnector>(id))
 		return;
 	InputConnector  * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
 	SignalGenerator & sigGen  { pInpCon->GetSignalGenerator() };
-	SignalDesigner  * pSigDes 
+	SignalDesigner const * pSigDes 
 	{ 
 		new SignalDesigner
 		(
 			m_mainNNetWindow.GetWindowHandle(),
 			m_computeThread,
 			sigGen,
-			m_runObservable
+			m_runObservable,
+			m_modelCommands
 		) 
 	};
 }

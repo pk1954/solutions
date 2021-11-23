@@ -22,7 +22,7 @@ public:
 		m_bOn(bOn)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->SelectSubtree(m_pNMWI->GetNobPtr<BaseKnot *>(m_idNob), m_bOn);

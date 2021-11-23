@@ -35,7 +35,7 @@ void CommandStack::clearRedoStack()
     assert(RedoStackEmpty());
 }
 
-bool const CommandStack::canBeCombined(Command const * pCmd)
+bool CommandStack::canBeCombined(Command const * pCmd)
 {
     if (UndoStackEmpty())
         return false;

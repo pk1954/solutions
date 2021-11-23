@@ -95,6 +95,7 @@
     <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
     <ClInclude Include="RotationCommand.h" />
+    <ClInclude Include="SetStimulusParamsCmd.h" />
     <ClInclude Include="SetHighlightedSignalCmd.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="SizeSensorCmd.h" />

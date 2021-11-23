@@ -15,7 +15,7 @@ public:
 		:	m_id(id)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{
 		m_pNMWI->ToggleStopOnTrigger(m_id);
 	}

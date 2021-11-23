@@ -64,7 +64,7 @@ private:
         ++m_iIndex;
     }
 
-    void notify()
+    void notify() const
     {
         if (m_pStaticModelObservable)
             m_pStaticModelObservable->NotifyAll(true);
@@ -72,5 +72,5 @@ private:
 
     void clearRedoStack();
 
-    bool const canBeCombined(Command const *);
+    bool canBeCombined(Command const *);
 };

@@ -11,6 +11,7 @@
 #include "SignalControl.h"
 #include "win32_baseWindow.h"
 
+class NNetModelCommands;
 class SignalGenerator;
 class ComputeThread;
 class Observable;
@@ -23,7 +24,8 @@ public:
 		HWND const, 
 		ComputeThread const &, 
 		SignalGenerator &,
-		Observable &
+		Observable &,
+		NNetModelCommands &
 	);
 
 	static void Initialize(Param & param) 
@@ -40,8 +42,8 @@ private:
 	inline static PIXEL const RIGHT_OFFSET  {  0_PIXEL };
 	inline static PIXEL const TOP_OFFSET    {  0_PIXEL };
 
-	virtual void OnClose();
-	virtual bool OnSize(WPARAM const, LPARAM const);
+	void OnClose() final;
+	bool OnSize(WPARAM const, LPARAM const) final;
 
 	enum class tZoomMode  { NONE, HORZ, VERT };
 

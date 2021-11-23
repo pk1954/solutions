@@ -15,10 +15,10 @@ public:
 	  : m_upSelectedNobs(move(m_pNMWI->GetSelection()))
 	{}
 
-	virtual void Do() 
+	void Do() override 
 	{}
 
-	virtual void Undo() 
+	void Undo() override
 	{
 		m_pNMWI->DeselectAllNobs();
 		for (auto it : *m_upSelectedNobs){ it->Select(true); };

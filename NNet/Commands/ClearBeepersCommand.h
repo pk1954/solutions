@@ -29,7 +29,7 @@ public:
 		nmwi.GetUPNobs().Apply2AllSelected<Neuron>([&](Neuron & n) { clearTriggerSound(& n); });
 	}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		if (! m_bInitialized)
 		{

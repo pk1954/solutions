@@ -23,7 +23,7 @@ public:
 		m_fOldValue(param.GetParameterValue(parameter))
 	{ }
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pNMWI->SetParam(m_parameter, m_fNewValue); 
 	}

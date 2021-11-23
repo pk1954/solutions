@@ -9,6 +9,7 @@
 #include "InputConnector.h"
 #include "SignalGenerator.h"
 #include "ComputeThread.h"
+#include "NNetModelCommands.h"
 #include "SignalControl.h"
 
 SignalControl::~SignalControl()
@@ -22,12 +23,14 @@ SignalControl::SignalControl
 	ComputeThread    const & computeThread,
 	SignalGenerator        & sigGen,
 	PixCoordFp<fMicroSecs> & horzCoord,
-	PixCoordFp<fHertz>     & vertCoord
+	PixCoordFp<fHertz>     & vertCoord,
+	NNetModelCommands      & commands
 )
   : m_computeThread(computeThread),
 	m_signalGenerator(sigGen),
 	m_horzCoord(horzCoord),
-	m_vertCoord(vertCoord)
+	m_vertCoord(vertCoord),
+	m_commands(commands)
 {
 	m_signalGenerator.RegisterObserver(this);
 	m_horzCoord.RegisterObserver(this);
@@ -60,52 +63,52 @@ void SignalControl::Stop()
 	DestroyWindow();
 }
 
-fMicroSecs const SignalControl::getTime(fPixel const fPix)
+fMicroSecs SignalControl::getTime(fPixel const fPix)
 {
 	return m_horzCoord.Transform2logUnitPos(fPix);
 }
 
-fHertz const SignalControl::getFreq(fPixel const fPix)
+fHertz SignalControl::getFreq(fPixel const fPix)
 {
 	return m_vertCoord.Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
 }
 
-fPixel const SignalControl::getPixX(fMicroSecs const time) const
+fPixel SignalControl::getPixX(fMicroSecs const time) const
 {
 	return fPixel(m_horzCoord.Transform2fPixelPos(time));
 }
 
-fPixel const SignalControl::getPixY(fHertz const freq) const
+fPixel SignalControl::getPixY(fHertz const freq) const
 {
 	return Convert2fPixel(GetClientWindowHeight()) - fPixel(m_vertCoord.Transform2fPixelPos(freq));
 }
 
-fPixel const SignalControl::getPixXmax() const
+fPixel SignalControl::getPixXmax() const
 {
 	return getPixX(m_signalGenerator.TimeMax());
 }
 
-fPixel const SignalControl::getPixYmax() const
+fPixel SignalControl::getPixYmax() const
 {
 	return getPixY(m_signalGenerator.FreqMax() + m_signalGenerator.FreqBase());
 }
 
-fPixel const SignalControl::getPixYbase() const
+fPixel SignalControl::getPixYbase() const
 {
 	return getPixY(m_signalGenerator.FreqBase());
 }
 
-fPixelPoint const SignalControl::getPixPnt(fMicroSecs const time, fHertz const freq) const
+fPixelPoint SignalControl::getPixPnt(fMicroSecs const time, fHertz const freq) const
 {
 	return fPixelPoint(getPixX(time), getPixY(freq));
 }
 
-fPixelPoint const SignalControl::getPixPntMax() const
+fPixelPoint SignalControl::getPixPntMax() const
 {
 	return fPixelPoint(getPixXmax(), getPixYmax());
 }
 
-fPixelPoint const SignalControl::getGraphPnt(fMicroSecs const time) const
+fPixelPoint SignalControl::getGraphPnt(fMicroSecs const time) const
 {
 	return getPixPnt(time, m_signalGenerator.GetFrequency(time));
 }
@@ -228,10 +231,7 @@ bool SignalControl::OnSize(WPARAM const wParam, LPARAM const lParam)
 
 	m_graphics.Resize(width, height);
 
-	fPixel fPixWinWidth  { Convert2fPixel(PIXEL(width )) };
-	fPixel fPixWinHeight { Convert2fPixel(PIXEL(height)) };
-
-	m_fPixGraphWidth = fPixWinWidth;
+	m_fPixGraphWidth = Convert2fPixel(PIXEL(width));
 
 	m_horzCoord.SetOffset(0.0_fPixel);
 	m_vertCoord.SetOffset(0.0_fPixel);
@@ -276,14 +276,14 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		switch (m_trackMode)
 		{
 		case tTrackMode::MAX_PNT:
-			m_signalGenerator.SetFreqMax(freqLim);
-			m_signalGenerator.SetTimeMax(usLim);
+			m_commands.SetStimulusParams(m_signalGenerator, fMicroSecs::NULL_VAL(), freqLim);
+			m_commands.SetStimulusParams(m_signalGenerator, usLim, fHertz::NULL_VAL());
 			break;
 		case tTrackMode::MAX_FREQ:
-			m_signalGenerator.SetFreqMax(freqLim);
+			m_commands.SetStimulusParams(m_signalGenerator, fMicroSecs::NULL_VAL(), freqLim);
 			break;
 		case tTrackMode::MAX_TIME:
-			m_signalGenerator.SetTimeMax(usLim);
+			m_commands.SetStimulusParams(m_signalGenerator, usLim, fHertz::NULL_VAL());
 			break;
 		case tTrackMode::BASE_FREQ:
 			m_signalGenerator.SetFreqBase(freqCrsr);

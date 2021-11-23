@@ -15,7 +15,7 @@ public:
 		: m_val(val)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>

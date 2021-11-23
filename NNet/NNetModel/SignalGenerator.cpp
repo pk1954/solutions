@@ -48,24 +48,14 @@ void SignalGenerator::LoadParameterValues()
 	m_freqBase    = m_pParameters->BaseFrequency();
 	m_freqMaxStim = m_pParameters->StimulusMaxFreq();
 	m_usMax       = m_pParameters->StimulusMaxTime();
+	NotifyAll(false);
 }
-
-//void SignalGenerator::SetParameterValues()
-//{
-//	m_pParameters->SetParameterValue(ParamType::Value::baseFrequency,   m_freqBase.GetValue());
-//	m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxFreq, (m_freqMaxStim + m_freqBase).GetValue());
-//	m_pParameters->SetParameterValue(ParamType::Value::stimulusMaxTime, m_usMax.GetValue());
-//}
 
 void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 {
 	switch ( par )
 	{
 	case ParamType::Value::stimulusMaxFreq:
-		if ( f <= 0.0f )
-		{
-			int x = 42;
-		}
 		m_freqMaxStim = f;
 		break;
 
@@ -80,5 +70,24 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	default:
 		assert(false);
 	}
+	NotifyAll(false);
 }
 
+void SignalGenerator::SetFreqBase(fHertz const f) 
+{ 
+	m_freqBase = f;
+	NotifyAll(false);
+}
+
+void SignalGenerator::SetStimulusParams
+(
+	fMicroSecs const t,
+	fHertz     const f
+)
+{
+	if (t.IsNotNull())
+		m_usMax = t;
+	if (f.IsNotNull())
+		m_freqMaxStim = f;
+	NotifyAll(false);
+}

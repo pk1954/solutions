@@ -16,7 +16,7 @@ public:
       : m_umPos(umPos)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{
 		m_pSignalIdOld = m_pNMWI->GetMonitorData().SetHighlightedSignal(m_umPos);
 	}

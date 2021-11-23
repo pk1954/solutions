@@ -45,7 +45,7 @@ public:
         int x = 42;
     }
 
-    virtual void Do()
+    void Do() final
     {
         m_upIoConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_connector);
         m_upIoConnector->ClearParentPointers();

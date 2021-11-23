@@ -20,7 +20,7 @@ public:
 		m_nobs2Add.CheckNobList();
 	}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->DeselectAllNobs();

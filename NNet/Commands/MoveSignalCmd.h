@@ -21,7 +21,7 @@ public:
 		m_trackNrNew(trackNr)
 	{}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_trackNrOld  = m_signalIdOld.GetTrackNr();
 		m_signalNrNew = m_pNMWI->GetMonitorData().MoveSignal(m_signalIdOld, m_trackNrNew);

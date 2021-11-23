@@ -29,7 +29,7 @@ public:
         m_upAnimation = make_unique<ANIMATION>(this);
     }
 
-    virtual void Do()
+    void Do() final
     {
         m_upAnimation->Start(m_animated, m_target);
     }

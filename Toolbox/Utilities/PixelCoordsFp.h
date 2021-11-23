@@ -36,52 +36,52 @@ public:
 
 	//////// transformations MicroMeter <---> fPixel ////////
 
-	fPixel const Transform2fPixel(MicroMeter const param) const
+	fPixel Transform2fPixel(MicroMeter const param) const
 	{ 
 		return fPixel(param / m_pixelSize);
 	}
 
-	MicroMeter const Transform2MicroMeter(fPixel const fPixel) const
+	MicroMeter Transform2MicroMeter(fPixel const fPixel) const
 	{ 
 		return m_pixelSize * fPixel.GetValue();
 	}
 
-	fPixelPoint const Transform2fPixelSize(MicroMeterPnt const np) const
+	fPixelPoint Transform2fPixelSize(MicroMeterPnt const np) const
 	{ 
 		return fPixelPoint(Transform2fPixel(np.GetX()), Transform2fPixel(np.GetY()));
 	}
 
-	fPixelRectSize const Transform2fPixelRectSize(MicroMeterRectSize const np) const
+	fPixelRectSize Transform2fPixelRectSize(MicroMeterRectSize const np) const
 	{ 
 		return fPixelRectSize(Transform2fPixel(np.GetX()), Transform2fPixel(np.GetY()));
 	}
 
-	MicroMeterPnt const Transform2MicroMeterPntSize(fPixelPoint const pp) const
+	MicroMeterPnt Transform2MicroMeterPntSize(fPixelPoint const pp) const
 	{ 
 		return MicroMeterPnt(Transform2MicroMeter(pp.GetX()), Transform2MicroMeter(pp.GetY())); 
 	}
 
-	MicroMeterRectSize const Transform2MicroMeterRectSize(fPixelRectSize const pp) const
+	MicroMeterRectSize Transform2MicroMeterRectSize(fPixelRectSize const pp) const
 	{ 
 		return MicroMeterRectSize(Transform2MicroMeter(pp.GetX()), Transform2MicroMeter(pp.GetY())); 
 	}
 
-	MicroMeterPnt const Transform2MicroMeterPntPos(fPixelPoint const pp) const
+	MicroMeterPnt Transform2MicroMeterPntPos(fPixelPoint const pp) const
 	{ 
 		return Transform2MicroMeterPntSize(pp + m_fPixOffset);
 	}
 
-	MicroMeterPnt const Transform2MicroMeterPntPos(PixelPoint const pixPoint) const
+	MicroMeterPnt Transform2MicroMeterPntPos(PixelPoint const pixPoint) const
 	{ 
 		return Transform2MicroMeterPntSize(::Convert2fPixelPoint(pixPoint) + m_fPixOffset);
 	}
 
-	fPixelPoint const Transform2fPixelPos(MicroMeterPnt const np) const
+	fPixelPoint Transform2fPixelPos(MicroMeterPnt const np) const
 	{ 
 		return Transform2fPixelSize(np) - m_fPixOffset;
 	}
 
-	MicroMeterRect const Transform2MicroMeterRect(fPixelRect const & fPixRect) const
+	MicroMeterRect Transform2MicroMeterRect(fPixelRect const & fPixRect) const
 	{ 
 		return MicroMeterRect
 		(
@@ -90,7 +90,7 @@ public:
 		);
 	}
 
-	fPixelRect const Transform2fPixelRect(MicroMeterRect const & umRect) const
+	fPixelRect Transform2fPixelRect(MicroMeterRect const & umRect) const
 	{
 		return fPixelRect
 		(
@@ -99,7 +99,7 @@ public:
 		);
 	}
 
-	MicroMeterCircle const Transform2MicroMeterCircle(fPixelCircle const & fPixCircle) const
+	MicroMeterCircle Transform2MicroMeterCircle(fPixelCircle const & fPixCircle) const
 	{
 		return MicroMeterCircle
 		(
@@ -108,7 +108,7 @@ public:
 		);
 	}
 
-	fPixelCircle const Transform2fPixelCircle(MicroMeterCircle const & umCircle) const
+	fPixelCircle Transform2fPixelCircle(MicroMeterCircle const & umCircle) const
 	{
 		return fPixelCircle
 		(
@@ -117,7 +117,7 @@ public:
 		);
 	}
 
-	fPixelEllipse const Transform2fPixelEllipse(MicroMeterEllipse const & umEllipse) const
+	fPixelEllipse Transform2fPixelEllipse(MicroMeterEllipse const & umEllipse) const
 	{
 		return fPixelEllipse
 		(
@@ -129,7 +129,7 @@ public:
 
 	//////// transformations PIXEL <---> fPixel ////////
 
-	PixelRect const Transform2PixelRect(fPixelRect const & fPixRect) const
+	PixelRect Transform2PixelRect(fPixelRect const & fPixRect) const
 	{
 		return PixelRect
 		(
@@ -138,7 +138,7 @@ public:
 		);
 	}
 
-	fPixelRect const Transform2fPixelRect(PixelRect const & rect) const
+	fPixelRect Transform2fPixelRect(PixelRect const & rect) const
 	{
 		return fPixelRect
 		(
@@ -147,7 +147,7 @@ public:
 		);
 	}
 
-	fPixelRectSize const Transform2fPixelRectSize(PixelRectSize const & siz) const
+	fPixelRectSize Transform2fPixelRectSize(PixelRectSize const & siz) const
 	{
 		return fPixelRectSize
 		(
@@ -229,7 +229,7 @@ public:
 		SetPixelOffset(Transform2fPixelSize(umPntCenter) - fPntPix);
 	}
 
-	MicroMeter const ComputeZoom
+	MicroMeter ComputeZoom
 	(
 		MicroMeterRect const & umRect,     
 		PixelRectSize  const   pixRectSize,
@@ -245,42 +245,42 @@ public:
 		return ClipToMinMax<MicroMeter>(sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE);
 	}
 
-	PixelCoordsFp const operator+= (PixelCoordsFp const a) 
+	PixelCoordsFp operator+= (PixelCoordsFp const a) 
 	{ 
 		m_fPixOffset += a.m_fPixOffset;
 		m_pixelSize  += a.m_pixelSize; 
 		return * this; 
 	}
 
-	PixelCoordsFp const operator-= (PixelCoordsFp const a) 
+	PixelCoordsFp operator-= (PixelCoordsFp const a) 
 	{ 
 		m_fPixOffset -= a.m_fPixOffset;
 		m_pixelSize  -= a.m_pixelSize; 
 		return * this; 
 	}
 
-	PixelCoordsFp const operator*= (float const factor) 
+	PixelCoordsFp operator*= (float const factor) 
 	{ 
 		m_fPixOffset *= factor;
 		m_pixelSize  *= factor; 
 		return * this; 
 	}
 
-	friend PixelCoordsFp const operator+ (PixelCoordsFp const a, PixelCoordsFp const b) 
+	friend PixelCoordsFp operator+ (PixelCoordsFp const a, PixelCoordsFp const b) 
 	{ 
 		PixelCoordsFp res { a }; 
 		res += b; 
 		return res; 
 	};
 
-	friend PixelCoordsFp const operator- (PixelCoordsFp const a, PixelCoordsFp const b) 
+	friend PixelCoordsFp operator- (PixelCoordsFp const a, PixelCoordsFp const b) 
 	{ 
 		PixelCoordsFp res { a }; 
 		res -= b; 
 		return res; 
 	};
 
-	friend PixelCoordsFp const operator* (PixelCoordsFp const a, float const factor) 
+	friend PixelCoordsFp operator* (PixelCoordsFp const a, float const factor) 
 	{ 
 		PixelCoordsFp res { a }; 
 		res *= factor; 

@@ -21,7 +21,7 @@ public:
 		m_fHertz(fNewValue)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{ 
 		//m_fHertz = m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeuron)->SetBaseFrequency(m_fHertz);
 		//m_pNMWI->ClearAllNobs();

@@ -36,7 +36,7 @@ public:
 	
 	~AddIncoming2PipeCommand()	{ }
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pStartKnotOld->ReplaceOutgoing(m_pPipeOld, m_upPipeExt.get());
 		m_pPipeOld->SetStartKnot(m_upKnotInsert.get());

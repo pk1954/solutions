@@ -33,7 +33,7 @@ public:
 
     virtual ~PlugIoNeuronAnimation() {};
 
-    virtual void Do()
+    void Do() final
     {
         m_nobAnimated.LockDirection(); 
         Command::Do();

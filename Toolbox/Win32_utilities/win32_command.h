@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 
 using std::vector;
 using std::function;
@@ -15,13 +16,13 @@ class RootWindow;
 class Command
 {
 public:
-    virtual ~Command() {}
+    virtual ~Command() = default;
 
     virtual void Do  ();
     virtual void Undo();
     virtual void UpdateUI();
 
-    virtual bool const CombineCommands(Command const & src) 
+    virtual bool CombineCommands(Command const & src) 
     { 
         return false; 
     };
@@ -57,6 +58,6 @@ private:
     void doPhase();
     void undoPhase();
 
-    void blockUI();
-    void unblockUI();
+    void blockUI()   const;
+    void unblockUI() const;
 };

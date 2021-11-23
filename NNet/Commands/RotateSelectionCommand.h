@@ -25,7 +25,7 @@ public:
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
 	}
@@ -35,5 +35,5 @@ public:
 		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
 
-	virtual NobId const GetAffectedNob() const { return NO_NOB;	}
+	virtual NobId GetAffectedNob() const { return NO_NOB;	}
 };

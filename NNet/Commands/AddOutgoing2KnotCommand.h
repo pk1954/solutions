@@ -31,7 +31,7 @@ public:
 
 	~AddOutgoing2KnotCommand() {}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pStart->AddOutgoing(m_upPipe.get());
 		m_pNMWI->Push2Model(move(m_upKnotNew));

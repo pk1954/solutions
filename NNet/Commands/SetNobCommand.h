@@ -24,7 +24,7 @@ public:
 		m_posDir(posDir)
 	{}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_nob.RotateNob(m_nob .GetPos(), m_posDir.GetDir());
 		m_nob.MoveNob  (m_posDir.GetPos() - m_nob.GetPos());

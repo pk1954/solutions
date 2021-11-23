@@ -24,7 +24,7 @@ public:
 		assert(IsDefined(m_idNob));
 	}
 
-	virtual void Do()
+	void Do() final
 	{ 
 		SelectionCommand::Do();
 		Nob * pNob { m_pNMWI->GetNobPtr<Nob *>(m_idNob) };

@@ -15,7 +15,7 @@ public:
 	  :	m_bOn(bOn)
 	{ }
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->GetUPNobs().SelectAllNobs(m_bOn); 

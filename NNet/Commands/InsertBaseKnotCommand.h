@@ -32,7 +32,7 @@ public:
 
 	~InsertBaseKnotCommand() {}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pStartKnot->ReplaceOutgoing(m_pPipe2Split, m_upPipeNew.get());
 		m_pPipe2Split->SetStartKnot(m_upBaseKnot.get());

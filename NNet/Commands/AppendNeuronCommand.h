@@ -22,7 +22,7 @@ public:
 
 	~AppendNeuronCommand() {}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_upNeuron->Reconnect();
 		m_upKnot = m_pNMWI->ReplaceInModel<T,Knot>(move(m_upNeuron));

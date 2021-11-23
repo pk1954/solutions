@@ -15,7 +15,7 @@ public:
 		: m_result(stack)
 	{}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		SelectionCommand::Do();
 		if (!m_result.empty())

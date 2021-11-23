@@ -22,7 +22,7 @@ public:
 
 	~NewNeuronCommandT() {}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pNMWI->Push2Model(move(m_upNeuronT));
 	}

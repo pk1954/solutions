@@ -21,7 +21,7 @@ public:
 		m_fFactor(fFactor)
 	{}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		Signal * pSignal = m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId);
 		assert(pSignal);
@@ -35,7 +35,7 @@ public:
 		pSignal->SizeSensor(m_fFactor);
 	}
 
-	virtual bool const CombineCommands(Command const & src) 
+	virtual bool CombineCommands(Command const & src) 
 	{ 
 		SizeSensorCmd const & cmdSrc { static_cast<SizeSensorCmd const &>(src) };
 		if (m_signalId != cmdSrc.m_signalId)

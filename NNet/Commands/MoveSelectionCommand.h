@@ -16,7 +16,7 @@ public:
        : m_delta(delta)
 	{ }
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
@@ -40,9 +40,9 @@ public:
 		);
 	}
 
-	virtual NobId const GetAffectedNob() const { return NO_NOB;	}
+	virtual NobId GetAffectedNob() const { return NO_NOB;	}
 
-	virtual bool const CombineCommands(Command const & src) 
+	virtual bool CombineCommands(Command const & src) 
 	{ 
 		MoveSelectionCommand const & srcCmd { static_cast<MoveSelectionCommand const &>(src) };
 		m_delta += srcCmd.m_delta;

@@ -12,25 +12,25 @@
 #include "InputNeuron.h"
 #include "NNetModelReaderInterface.h"
 
-bool const NNetModelReaderInterface::IsSelected(NobId const id) const
+bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
 	return p ? p->IsSelected() : false; 
 }
 
-NobType const NNetModelReaderInterface::GetNobType(NobId const id) const
+NobType NNetModelReaderInterface::GetNobType(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
 	return p ? p->GetNobType() : NobType::Value::undefined; 
 }
 
-Degrees const NNetModelReaderInterface::GetDirection(NobId const id) const 
+Degrees NNetModelReaderInterface::GetDirection(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<IoConnector const *>(id) };
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
-fHertz const NNetModelReaderInterface::GetActFrequency(NobId const id) const 
+fHertz NNetModelReaderInterface::GetActFrequency(NobId const id) const 
 { 
 	NobType const type { GetNobType(id) };
 	if (type.IsInputConnectorType())
@@ -41,13 +41,13 @@ fHertz const NNetModelReaderInterface::GetActFrequency(NobId const id) const
 		return fHertz::NULL_VAL(); 
 }
 
-size_t const NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
+size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
 	return p ? p->GetNrOfSegments() : 0; 
 }
 
-SoundDescr const NNetModelReaderInterface::GetTriggerSound(NobId const id) const
+SoundDescr NNetModelReaderInterface::GetTriggerSound(NobId const id) const
 {
 	Nob const & nob { * m_pModel->GetConstNob(id) };
 	return nob.IsAnyNeuron()
@@ -55,56 +55,56 @@ SoundDescr const NNetModelReaderInterface::GetTriggerSound(NobId const id) const
 		   : SoundDescr(); 
 }
 
-mV const NNetModelReaderInterface::GetVoltage(NobId const id) const
+mV NNetModelReaderInterface::GetVoltage(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 
-mV const NNetModelReaderInterface::GetVoltage(NobId const id, MicroMeterPnt const & umPoint) const
+mV NNetModelReaderInterface::GetVoltage(NobId const id, MicroMeterPnt const & umPoint) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
 	return p ? p->GetVoltage(umPoint) : mV::NULL_VAL(); 
 }
 
-size_t const NNetModelReaderInterface::GetNrOfOutgoingConnections(NobId const id) const 
+size_t NNetModelReaderInterface::GetNrOfOutgoingConnections(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->GetNrOfOutgoingConnections() : -1;
 }
 
-size_t const NNetModelReaderInterface::GetNrOfIncomingConnections(NobId const id) const 
+size_t NNetModelReaderInterface::GetNrOfIncomingConnections(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->GetNrOfIncomingConnections() : -1;
 }
 
-size_t const NNetModelReaderInterface::GetNrOfConnections(NobId const id) const 
+size_t NNetModelReaderInterface::GetNrOfConnections(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->GetNrOfConnections() : -1;
 }
 
-bool const NNetModelReaderInterface::HasIncoming(NobId const id) const
+bool NNetModelReaderInterface::HasIncoming(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->HasIncoming() : false; 
 }
 
-bool const NNetModelReaderInterface::HasOutgoing(NobId const id) const
+bool NNetModelReaderInterface::HasOutgoing(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->HasOutgoing() : false; 
 }
 
-bool const NNetModelReaderInterface::GetDescriptionLine(int const iLine, wstring & wstrLine) const 
+bool NNetModelReaderInterface::GetDescriptionLine(int const iLine, wstring & wstrLine) const 
 {
 	return m_pModel->GetDescriptionLine(iLine, wstrLine);
 };
 
 // IsConnectionCandidate: Sort out obvious non-candidates
 
-bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, NobId const idDst) const
+bool NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, NobId const idDst) const
 {
 	if (idSrc == idDst)
 		return false; 
@@ -113,7 +113,7 @@ bool const NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, No
 	return true;
 }
 
-bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst) const
+bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst) const
 {
 	assert(idSrc != idDst);
 	assert(IsDefined(idSrc));
@@ -151,7 +151,7 @@ bool const NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const
 	return false;
 }
 
-bool const NNetModelReaderInterface::IsConnectedTo(NobId const idSrc, NobId const idDst) const
+bool NNetModelReaderInterface::IsConnectedTo(NobId const idSrc, NobId const idDst) const
 {
 	if (GetNobType(idSrc).IsPipeType())
 		return isConnectedToPipe(idDst, idSrc);
@@ -161,12 +161,12 @@ bool const NNetModelReaderInterface::IsConnectedTo(NobId const idSrc, NobId cons
 		return false;
 }
 
-bool const NNetModelReaderInterface::isConnectedToPipe(NobId const idNob, NobId const idPipe) const
+bool NNetModelReaderInterface::isConnectedToPipe(NobId const idNob, NobId const idPipe) const
 {
 	return (idNob == m_pModel->GetStartKnotId(idPipe)) || (idNob == m_pModel->GetEndKnotId(idPipe));
 }
 
-NobId const NNetModelReaderInterface::FindNobAt(MicroMeterPnt const & umPnt, NobCrit const & crit) const
+NobId NNetModelReaderInterface::FindNobAt(MicroMeterPnt const & umPnt, NobCrit const & crit) const
 {
 	return m_pModel->FindNobAt(umPnt, crit);
 }
@@ -215,7 +215,7 @@ void NNetModelReaderInterface::DrawLine
 	context.DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), 10.0_MicroMeter, D2D1::ColorF::Brown);
 }
 
-MicroMeterPnt const NNetModelReaderInterface::OrthoVector(NobId const idPipe) const
+MicroMeterPnt NNetModelReaderInterface::OrthoVector(NobId const idPipe) const
 {
 	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
 	return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);

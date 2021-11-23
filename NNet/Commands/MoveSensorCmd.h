@@ -22,7 +22,7 @@ public:
 		m_delta(delta)
 	{}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
 		assert(pSignal);
@@ -36,7 +36,7 @@ public:
 		pSignal->MoveSensor(-m_delta);
 	}
 
-	virtual bool const CombineCommands(Command const & src) 
+	virtual bool CombineCommands(Command const & src) 
 	{ 
 		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
 		if (m_signalId != cmdSrc.m_signalId)

@@ -24,7 +24,7 @@ public:
         m_trackNr(trackNr)
     {}
 
-    virtual void Do() 
+    void Do() final 
     {
         MonitorData & monitorData { m_pNMWI->GetMonitorData() };
         monitorData.InsertTrack(TrackNr(0));

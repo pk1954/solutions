@@ -26,7 +26,7 @@ public:
         m_pNMWI = pNMWI;
     }
 
-    virtual NobId const GetAffectedNob() const
+    virtual NobId GetAffectedNob() const
     {
         return NO_NOB;
     }

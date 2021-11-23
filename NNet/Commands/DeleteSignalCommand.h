@@ -17,7 +17,7 @@ public:
       :  m_signalId(id)
     {}
 
-    virtual void Do() 
+    void Do() final 
     {
         m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
     };

@@ -16,7 +16,8 @@ SignalDesigner::SignalDesigner
 	HWND          const   hwndParent,
 	ComputeThread const & computeThread,
 	SignalGenerator     & sigGen,
-	Observable          & runObservable
+	Observable          & runObservable,
+	NNetModelCommands   & commands
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -37,7 +38,8 @@ SignalDesigner::SignalDesigner
 		computeThread, 
 		sigGen, 
 		m_horzCoord, 
-		m_vertCoord
+		m_vertCoord,
+		commands
 	);
 
 	runObservable.RegisterObserver(m_upSignalControl.get());

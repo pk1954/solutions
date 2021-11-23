@@ -24,6 +24,7 @@ class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 class MicroMeterPntVector;
+class SignalGenerator;
 
 struct SoundDescr;
 
@@ -91,8 +92,8 @@ public:
     void SelectNob            (NobId const, tBoolOp const);
     void SelectNobsInRect     (MicroMeterRect const &);
     void SelectSubtree        (NobId const, bool const);
+    void SetStimulusParams    (SignalGenerator &, fMicroSecs const, fHertz const);
     void SetParameter         (ParamType::Value const, float const);
-    //void SetPulseRate         (NobId const, fHertz const);
     void SetNob               (NobId const, MicroMeterPosDir const);
     void SetTriggerSound      (NobId const, SoundDescr const &);
     void SizeSensor           (SignalId const &, float const);

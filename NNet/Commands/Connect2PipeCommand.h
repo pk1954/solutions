@@ -27,7 +27,7 @@ public:
 
 	virtual ~Connect2PipeCommand()	{ }
 
-	virtual void Do()
+	void Do() final
 	{
 		m_pStartKnot->ReplaceOutgoing(m_pPipe, m_upNewPipe.get());
 		m_pBaseKnot ->AddIncoming(m_upNewPipe.get());

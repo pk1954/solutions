@@ -35,7 +35,7 @@ public:
 	SignalGenerator       & GetSignalGenerator()       { return m_signalGenerator; }
 	SignalGenerator const & GetSignalGenerator() const { return m_signalGenerator; }
 
-	fHertz const GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
+	fHertz GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
 
 private:
 

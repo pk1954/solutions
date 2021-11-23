@@ -42,7 +42,7 @@ public:
         m_pNMWI->CheckModel();
     }
 
-    virtual void Do()
+    void Do() final
     {
         for (size_t i = 0; i < m_size; ++i)
         {

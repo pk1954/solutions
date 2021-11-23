@@ -53,7 +53,7 @@ public:
 
 	~DeletePipeCommand(){ }
 
-	virtual void Do()
+	void Do() final
 	{
 		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
 		startKnot.RemoveOutgoing(& m_pipe);

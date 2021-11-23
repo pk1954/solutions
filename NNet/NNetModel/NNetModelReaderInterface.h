@@ -27,81 +27,82 @@ public:
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
-	size_t const Size() const { return m_pModel->Size(); }
+	size_t Size() const { return m_pModel->Size(); }
 
-	bool          const   IsConnectionCandidate     (NobId const, NobId const) const;
-	bool          const   CanConnectTo              (NobId const, NobId const) const;
-	bool          const   IsConnectedTo             (NobId const, NobId const) const;
-	bool          const   IsSelected                (NobId const) const;
-	NobType       const   GetNobType                (NobId const) const;
-	size_t        const   GetNrOfSegments           (NobId const) const;
-	SoundDescr    const   GetTriggerSound           (NobId const) const;
-	bool          const   HasIncoming               (NobId const) const;
-	bool          const   HasOutgoing               (NobId const) const;
-	size_t        const   GetNrOfOutgoingConnections(NobId const) const;
-	size_t        const   GetNrOfIncomingConnections(NobId const) const;
-	size_t        const   GetNrOfConnections        (NobId const) const;
-	mV            const   GetVoltage                (NobId const) const;
-	mV            const   GetVoltage                (NobId const, MicroMeterPnt const &) const;
-	Degrees       const   GetDirection              (NobId const) const; 
-	fHertz        const   GetActFrequency           (NobId const) const; 
+	bool       IsConnectionCandidate     (NobId const, NobId const) const;
+	bool       CanConnectTo              (NobId const, NobId const) const;
+	bool       IsConnectedTo             (NobId const, NobId const) const;
+	bool       IsSelected                (NobId const) const;
+	NobType    GetNobType                (NobId const) const;
+	size_t     GetNrOfSegments           (NobId const) const;
+	SoundDescr GetTriggerSound           (NobId const) const;
+	bool       HasIncoming               (NobId const) const;
+	bool       HasOutgoing               (NobId const) const;
+	size_t     GetNrOfOutgoingConnections(NobId const) const;
+	size_t     GetNrOfIncomingConnections(NobId const) const;
+	size_t     GetNrOfConnections        (NobId const) const;
+	mV         GetVoltage                (NobId const) const;
+	mV         GetVoltage                (NobId const, MicroMeterPnt const &) const;
+	Degrees    GetDirection              (NobId const) const; 
+	fHertz     GetActFrequency           (NobId const) const; 
 
-	wstring       const   GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
-	MicroMeterPnt const   GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
-	Nob           const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
-	fMicroSecs    const   GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
-	MonitorData   const & GetMonitorData()                       const { return m_pModel->GetMonitorData(); }
-	fMicroSecs    const   TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
-	wstring       const   GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
-	float         const   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
-	bool          const   IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}
-	UPNobList     const & GetUPNobs()                            const { return m_pModel->GetUPNobs(); }
-	unsigned int  const   GetNrOf(NobType const type)            const { return GetUPNobs().GetCounter(type); }
-	unsigned int  const   GetNrOfNobs()                          const { return GetUPNobs().GetCounter(); }
-	bool          const   AnyNobsSelected()                      const { return GetUPNobs().AnyNobsSelected(); }
-	bool          const   IsValidNobId(NobId const id)           const { return GetUPNobs().IsValidNobId(id); }
-	size_t        const   GetSizeOfNobList()                     const { return GetUPNobs().Size(); }
-	Signal      * const   FindSensor(MicroMeterPnt const & p)    const { return GetMonitorData().FindSensor(p); }
-	SignalId      const   GetHighlightedSignalId()               const { return GetMonitorData().GetHighlightedSignalId(); }
+	wstring             GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
+	MicroMeterPnt       GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
+	Nob         const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
+	fMicroSecs          GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
+	MonitorData const & GetMonitorData()                       const { return m_pModel->GetMonitorData(); }
+	fMicroSecs          TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
+	wstring             GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
+	float               GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
+	bool                IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}
+	UPNobList   const & GetUPNobs()                            const { return m_pModel->GetUPNobs(); }
+	unsigned int        GetNrOf(NobType const type)            const { return GetUPNobs().GetCounter(type); }
+	unsigned int        GetNrOfNobs()                          const { return GetUPNobs().GetCounter(); }
+	bool                AnyNobsSelected()                      const { return GetUPNobs().AnyNobsSelected(); }
+	bool                IsValidNobId(NobId const id)           const { return GetUPNobs().IsValidNobId(id); }
+	size_t              GetSizeOfNobList()                     const { return GetUPNobs().Size(); }
+	Signal            * FindSensor(MicroMeterPnt const & p)    const { return GetMonitorData().FindSensor(p); }
+	SignalId            GetHighlightedSignalId()               const { return GetMonitorData().GetHighlightedSignalId(); }
 
-	bool const IsInputConnector(NobId const id) const 
+	bool IsInputConnector(NobId const id) const 
 	{
 		Nob const * const pNob { GetConstNob(id) };
 		return pNob && pNob->IsInputConnector();
 	}
 
-	bool const IsOutputConnector(NobId const id) const
+	bool IsOutputConnector(NobId const id) const
 	{
 		Nob const * const pNob { GetConstNob(id) };
 		return pNob && pNob->IsOutputConnector();
 	}
 
-	bool const IsPipe(NobId const id) const
+	bool IsPipe(NobId const id) const
 	{
 		Nob const * const pNob { GetConstNob(id) };
 		return pNob && pNob->IsPipe();
 	}
 
-	bool const IsKnot(NobId const id) const
+	bool IsKnot(NobId const id) const
 	{
 		Nob const * const pNob { GetConstNob(id) };
 		return pNob && pNob->IsKnot();
 	}
 
-	bool  const GetDescriptionLine(int const, wstring &)                               const;
-	NobId const FindNobAt(MicroMeterPnt const &, NobCrit const & = NobCritAlwaysTrue)  const;
+	bool  GetDescriptionLine(int const, wstring &)                               const;
+	NobId FindNobAt(MicroMeterPnt const &, NobCrit const & = NobCritAlwaysTrue)  const;
 
 	void DrawExterior  (NobId          const,   DrawContext const &, tHighlight const) const;
 	void DrawInterior  (NobId          const,   DrawContext const &, tHighlight const) const;
 	void DrawNeuronText(NobId          const,   DrawContext const &)                   const;
 	void DrawLine      (MicroMeterLine const &, DrawContext const &)                   const;
 
-	template <Nob_t T> bool const IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
+	template <Nob_t T> bool IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
 
-	MicroMeterPnt const OrthoVector(NobId const) const;
+	MicroMeterPnt OrthoVector(NobId const) const;
 
 protected:
 	NNetModel * m_pModel;
 
-	bool const isConnectedToPipe(NobId const, NobId const) const;
+private:
+	bool isConnectedToPipe(NobId const, NobId const) const;
 };

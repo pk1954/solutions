@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "Observable.h"
+#include "observable.h"
 
 class Param;
 
@@ -14,7 +14,7 @@ class SignalGenerator : public Observable
 public:
 
 	SignalGenerator();
-	virtual ~SignalGenerator() {}
+	~SignalGenerator() override = default;
 
     static void Initialize(Param & param) { m_pParameters = & param; }
 
@@ -31,11 +31,10 @@ public:
 	fHertz     FreqMax () const { return m_freqMaxStim; };
 	fMicroSecs TimeMax () const { return m_usMax;    };
 
-	void SetFreqBase(fHertz     const f) { m_freqBase    = f; }
-	void SetFreqMax (fHertz     const f) { m_freqMaxStim = f; }
-	void SetTimeMax (fMicroSecs const t) { m_usMax       = t; }
-
 	void SetParam(ParamType::Value const, float const);
+
+	void SetFreqBase(fHertz const);
+	void SetStimulusParams(fMicroSecs const, fHertz const);
 
 	bool       IsTriggerActive() const { return m_bTriggerActive; }
 	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }

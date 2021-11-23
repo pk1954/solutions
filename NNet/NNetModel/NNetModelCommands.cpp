@@ -49,9 +49,9 @@
 #include "SelectNobCommand.h"
 #include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
+#include "SetStimulusParamsCmd.h"
 #include "SetHighlightedSignalCmd.h"
 #include "SetParameterCommand.h"
-//#include "SetPulseRateCommand.h"
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "SizeSensorCmd.h"
@@ -533,4 +533,11 @@ void NNetModelCommands::TriggerStimulus(NobId const id)
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
 	m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
+}
+
+void NNetModelCommands::SetStimulusParams(SignalGenerator & s, fMicroSecs const t, fHertz const f)
+{
+	if (IsTraceOn())
+		TraceStream() << __func__ << endl;
+	m_pCmdStack->PushCommand(make_unique<SetStimulusParamsCmd>(s, t, f));
 }

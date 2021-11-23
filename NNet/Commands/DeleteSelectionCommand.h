@@ -17,7 +17,7 @@ public:
 	DeleteSelectionCommand() 
 	{}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_cmdStack.Initialize(m_pNMWI, nullptr);
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>

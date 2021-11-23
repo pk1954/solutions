@@ -30,7 +30,7 @@ public:
         m_upAnimation->SetNrOfSteps(CalcNrOfSteps(m_animated, m_target));
     }
 
-    virtual void Do()
+    void Do() final
     {
         for (auto & it: m_animated)
             it->LockDirection(); 

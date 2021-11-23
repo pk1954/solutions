@@ -13,6 +13,7 @@
 
 class SignalGenerator;
 class ComputeThread;
+class NNetModelCommands;
 
 class SignalControl : public BaseWindow
 {
@@ -23,7 +24,8 @@ public:
 		ComputeThread    const &, 
 		SignalGenerator        &,
 		PixCoordFp<fMicroSecs> &,
-		PixCoordFp<fHertz>     & 
+		PixCoordFp<fHertz>     &,
+		NNetModelCommands      &
 	);
 
 	virtual ~SignalControl();
@@ -47,24 +49,24 @@ private:
 
 	void doPaint() const;
 
-	virtual void OnPaint     ();
-	virtual bool OnSize      (WPARAM const, LPARAM const);
-	virtual void OnMouseMove (WPARAM const, LPARAM const);
-	virtual bool OnMouseLeave(WPARAM const, LPARAM const);
-	virtual bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const);
+	void OnPaint     () final;
+	bool OnSize      (WPARAM const, LPARAM const) final;
+	void OnMouseMove (WPARAM const, LPARAM const) final;
+	bool OnMouseLeave(WPARAM const, LPARAM const) final;
+	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const) final;
 
-	fMicroSecs const getTime(fPixel const);
-	fHertz     const getFreq(fPixel const);
+	fMicroSecs getTime(fPixel const);
+	fHertz     getFreq(fPixel const);
 
-	fPixel const getPixX(fMicroSecs const) const;
-	fPixel const getPixY(fHertz     const) const;
-	fPixel const getPixXmax() const;
-	fPixel const getPixYmax() const;
-	fPixel const getPixYbase() const;
+	fPixel getPixX(fMicroSecs const) const;
+	fPixel getPixY(fHertz     const) const;
+	fPixel getPixXmax() const;
+	fPixel getPixYmax() const;
+	fPixel getPixYbase() const;
 
-	fPixelPoint const getPixPnt  (fMicroSecs const, fHertz const) const;
-	fPixelPoint const getGraphPnt(fMicroSecs const)               const;
-	fPixelPoint const getPixPntMax() const;
+	fPixelPoint getPixPnt  (fMicroSecs const, fHertz const) const;
+	fPixelPoint getGraphPnt(fMicroSecs const)               const;
+	fPixelPoint getPixPntMax() const;
 
 	bool baseLineSelected   (fPixelPoint const &) const;
 	bool freqMaxLineSelected(fPixelPoint const &) const;
@@ -83,6 +85,7 @@ private:
 
 	inline static Param * m_pParameters { nullptr };
 
+	NNetModelCommands      & m_commands;
 	ComputeThread    const & m_computeThread;
 	SignalGenerator        & m_signalGenerator;
 	PixCoordFp<fMicroSecs> & m_horzCoord;

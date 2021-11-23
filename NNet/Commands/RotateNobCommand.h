@@ -24,7 +24,7 @@ public:
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
-	virtual void Do() 
+	void Do() final 
 	{ 
 		m_nob.RotateNob(m_umPntPivot, m_radDelta);
 	}
@@ -34,7 +34,7 @@ public:
 		m_nob.RotateNob(m_umPntPivot, -m_radDelta);
 	}
 
-	virtual NobId const GetAffectedNob() const { return m_nob.GetId(); }
+	virtual NobId GetAffectedNob() const { return m_nob.GetId(); }
 
 private:
 	Nob & m_nob;

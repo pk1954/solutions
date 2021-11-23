@@ -22,7 +22,7 @@ public:
 		m_sound(sound)
 	{ }
 
-	virtual void Do()
+	void Do() final
 	{ 
 		Nob * const pNob { m_pNMWI->GetNob(m_idNeuron) };
 		assert( pNob->IsAnyNeuron() );

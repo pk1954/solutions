@@ -31,7 +31,7 @@ public:
         m_upAnimation->SetNrOfSteps(CalcNrOfSteps(m_animated, m_target));
     }
 
-    virtual void Do()
+    void Do() final
     {
         m_upAnimation->Start(m_animated, m_target);
     }
