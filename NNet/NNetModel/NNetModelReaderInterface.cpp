@@ -61,10 +61,10 @@ mV NNetModelReaderInterface::GetVoltage(NobId const id) const
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 
-mV NNetModelReaderInterface::GetVoltage(NobId const id, MicroMeterPnt const & umPoint) const
+mV NNetModelReaderInterface::GetVoltageAt(NobId const id, MicroMeterPnt const & umPoint) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };
-	return p ? p->GetVoltage(umPoint) : mV::NULL_VAL(); 
+	return p ? p->GetVoltageAt(umPoint) : mV::NULL_VAL(); 
 }
 
 size_t NNetModelReaderInterface::GetNrOfOutgoingConnections(NobId const id) const 

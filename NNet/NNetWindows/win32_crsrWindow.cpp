@@ -131,7 +131,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	{
 		textBuf.AlignRight(); textBuf.printString(L"# segments:");
 		textBuf.AlignLeft();  textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
-		potential = m_pNMRI->GetVoltage(id, umPoint);
+		potential = m_pNMRI->GetVoltageAt(id, umPoint);
 	}
 	else 
 	{

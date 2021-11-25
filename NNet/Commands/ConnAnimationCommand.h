@@ -18,14 +18,10 @@ class ConnAnimationCommand : public NNetCommand
 {
 public:
     ConnAnimationCommand();
-    virtual ~ConnAnimationCommand() {};
 
-    virtual bool IsAsyncCommand() 
-    { 
-        return true; 
-    };
+    bool IsAsyncCommand() final { return true; };
 
-    bool const IsCmdOk() { return m_bAllOk; }
+    bool IsCmdOk() const { return m_bAllOk; }
 
 private:
     
@@ -33,5 +29,5 @@ private:
 
     bool m_bAllOk { false };
 
-    NobType const determineNobType(UPNobList const &) const;
+    NobType determineNobType(UPNobList const &) const;
 };

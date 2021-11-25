@@ -527,14 +527,14 @@ bool MainWindow::UserProc
 	if (uMsg == WM_APP_UI_CALL)
 	{ 
 		Command::DoCall(wParam, lParam);
-		return 0;
+		return false;
 	}
 	bool bRes;
 	try
 	{
 		bRes = NNetWindow::UserProc(uMsg, wParam, lParam); 
 	}
-	catch (NobException & e)
+	catch (NobException const & e)
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DUMP();

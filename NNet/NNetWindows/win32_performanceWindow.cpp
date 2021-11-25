@@ -54,7 +54,7 @@ void PerformanceWindow::printMicroSecLine
 	TextBuffer          & textBuf,
 	wchar_t const * const pwch1, 
 	fMicroSecs      const usDuration
-)
+) const
 {
 	wostringstream wBuffer;
 	float fPrintValue { usDuration.GetValue() };
@@ -70,7 +70,7 @@ void PerformanceWindow::printIntLine
 	TextBuffer          & textBuf,
 	wchar_t const * const pwchBefore, 
 	int             const iPrintValue
-)
+) const
 {
 	wostringstream wBuffer;
 	wBuffer << std::fixed << std::setprecision(1) << iPrintValue;
@@ -86,7 +86,7 @@ void PerformanceWindow::printFloatLine
 	wchar_t const * const pwchBefore, 
 	float           const fPrintValue,
 	wchar_t const * const pwchAfter
-)
+) const
 {
 	wostringstream wBuffer;
 	wBuffer << std::fixed << std::setprecision(1) << fPrintValue << pwchAfter;

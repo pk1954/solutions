@@ -51,9 +51,9 @@ void NNetModel::RecalcAllNobs()
 	m_Nobs.Apply2All([&](Nob & nob) { nob.Recalc(); });
 } 
 
-void NNetModel::ClearAllNobs() 
+void NNetModel::ClearDynamicData() 
 { 
-	m_Nobs.Apply2All([&](Nob & nob) { nob.Clear(); }); 
+	m_Nobs.Apply2All([&](Nob & nob) { nob.ClearDynamicData(); }); 
 }
 
 bool const NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const

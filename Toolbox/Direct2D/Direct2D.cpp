@@ -119,7 +119,7 @@ void D2D_driver::SetStdFontSize(float const fSize)
 
 // functions called per frame
 
-bool D2D_driver::StartFrame(HDC const hdc)
+bool D2D_driver::StartFrame()
 {
 	if (! m_pRenderTarget)
 		createResources();
@@ -136,7 +136,7 @@ void D2D_driver::DisplayText
 	IDWriteTextFormat * const   pTextFormat
 ) const
 {
-	IDWriteTextFormat    * pTF { pTextFormat ? pTextFormat : m_pTextFormat };
+	IDWriteTextFormat    * pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
 	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
 	D2D1_RECT_F            d2Rect 
 	{ 
@@ -205,7 +205,7 @@ void D2D_driver::FillGradientRect
 ) const
 {
 	HRESULT hr;
-	ID2D1GradientStopCollection * pGradientStopColl = NULL;
+	ID2D1GradientStopCollection * pGradientStopColl = nullptr;
 	D2D1_GRADIENT_STOP            gradientStops[2] { { 0.0f, colF1 }, { 1.0f, colF2 } };
 	hr = m_pRenderTarget->CreateGradientStopCollection(	gradientStops, 2, & pGradientStopColl);
 	assert(SUCCEEDED(hr));
@@ -241,8 +241,8 @@ void D2D_driver::FillGradientEllipse
 ) const
 {
 	HRESULT hr;
-	ID2D1GradientStopCollection * pGradientStopColl = NULL;
-	D2D1_GRADIENT_STOP            gradientStops[2] { { 0.0f, colF1 }, { 1.0f, colF2 } };
+	ID2D1GradientStopCollection * pGradientStopColl { nullptr };
+	D2D1_GRADIENT_STOP            gradientStops[2]  { { 0.0f, colF1 }, { 1.0f, colF2 } };
 	hr = m_pRenderTarget->CreateGradientStopCollection(	gradientStops, 2, & pGradientStopColl);
 	assert(SUCCEEDED(hr));
 

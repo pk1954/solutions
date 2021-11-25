@@ -54,22 +54,22 @@ public:
 	NobIoMode     GetIoMode    () const final { return NobIoMode::internal; }
 	mV            GetNextOutput() const final { return m_potential[m_potIndex]; }
 
-	MicroMeterPnt GetPos      ()                                      const final;
-	bool          IsIncludedIn(MicroMeterRect const &)                const final;
-	bool          Includes    (MicroMeterPnt  const &)                const final;
-	void          Check       ()                                      const final;
-	void          DrawExterior(DrawContext const &, tHighlight const) const final;
-	void          DrawInterior(DrawContext const &, tHighlight const) const final;
-	void          Expand      (MicroMeterRect &)                      const final;
-	void          MoveNob     (MicroMeterPnt const &)                       final;
-	void          Link        (Nob const &, Nob2NobFunc const &)            final;
-	void          Prepare     ()                                            final;
-	bool          CompStep    ()                                            final;
-	void          Recalc      ()                                            final;
-	void          Clear       ()                                            final;
-	void          Select      (bool const)                                  final;
+	MicroMeterPnt GetPos          ()                                      const final;
+	bool          IsIncludedIn    (MicroMeterRect const &)                const final;
+	bool          Includes        (MicroMeterPnt  const &)                const final;
+	void          Check           ()                                      const final;
+	void          DrawExterior    (DrawContext const &, tHighlight const) const final;
+	void          DrawInterior    (DrawContext const &, tHighlight const) const final;
+	void          Expand          (MicroMeterRect &)                      const final;
+	void          MoveNob         (MicroMeterPnt const &)                       final;
+	void          Link            (Nob const &, Nob2NobFunc const &)            final;
+	void          Prepare         ()                                            final;
+	bool          CompStep        ()                                            final;
+	void          Recalc          ()                                            final;
+	void          ClearDynamicData()                                            final;
+	void          Select          (bool const)                                  final;
 
-	mV GetVoltage(MicroMeterPnt const &) const;
+	mV GetVoltageAt(MicroMeterPnt const &) const;
 
 	void DrawArrows(DrawContext const &, MicroMeter const) const;
 

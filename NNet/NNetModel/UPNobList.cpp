@@ -106,7 +106,7 @@ void UPNobList::SetNob2Slot(NobId const id, UPNob upNob)
 	m_list[id.GetValue()] = move(upNob);
 }
 
-Nob * const UPNobList::ReplaceNob(UPNob upT)
+Nob * UPNobList::ReplaceNob(UPNob upT)
 {
 	NobId const id { upT->GetId() };
 
@@ -121,7 +121,7 @@ Nob * const UPNobList::ReplaceNob(UPNob upT)
 	return tmp.release();
 }
 
-NobId const UPNobList::Push(UPNob upNob)	
+NobId UPNobList::Push(UPNob upNob)	
 {
 	NobId idNewSlot { IdNewSlot() };
 	if (upNob)
@@ -205,7 +205,7 @@ void UPNobList::Dump() const
 			it->Dump();
 }
 
-MicroMeterRect const UPNobList::CalcEnclosingRect(SelMode const mode) const
+MicroMeterRect UPNobList::CalcEnclosingRect(SelMode const mode) const
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for (auto const & it : m_list)
@@ -214,7 +214,7 @@ MicroMeterRect const UPNobList::CalcEnclosingRect(SelMode const mode) const
 	return rect;
 }
 
-NobId const UPNobList::FindNobAt
+NobId UPNobList::FindNobAt
 (
 	MicroMeterPnt const   pnt, 
 	NobCrit       const & crit 
@@ -222,7 +222,7 @@ NobId const UPNobList::FindNobAt
 {
 	for (size_t i = m_list.size(); i --> 0;)	
 	{
-		Nob * pNob = m_list[i].get();
+		Nob const * pNob = m_list[i].get();
 		if (pNob && pNob->Includes(pnt))
 		{
 			while (pNob->HasParentNob())
@@ -236,8 +236,8 @@ NobId const UPNobList::FindNobAt
 
 unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 {
-	unique_ptr<vector<Nob *>> upNobs = make_unique<vector<Nob *>>();
-	for (auto & it : m_list)
+	auto upNobs { make_unique<vector<Nob*>>() };
+	for (auto const & it : m_list)
 	{
 		if (it && it->IsSelected()) 
 			upNobs->push_back(it.get());
@@ -245,7 +245,7 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 	return move(upNobs);
 }
 
-bool const UPNobList::AnyNobsSelected() const
+bool UPNobList::AnyNobsSelected() const
 {
 	for (auto const & it : m_list)
 		if (it && it->IsSelected())
@@ -262,12 +262,12 @@ void UPNobList::Apply2All(NobFuncC const & func) const
 
 void UPNobList::Apply2All(NobFunc const & func)
 {
-	for (auto & it : m_list)
+	for (auto const & it : m_list)
 		if (it)
 			func(* it.get()); 
 }                        
 
-bool const UPNobList::Apply2AllB(NobCrit const & func) const
+bool UPNobList::Apply2AllB(NobCrit const & func) const
 {
 	for (auto & it : m_list)
 		if (it && func(* it.get()))
@@ -303,19 +303,19 @@ void UPNobList::Move(MicroMeterPnt const& delta)
 			it->MoveNob(delta);
 }
 
-unsigned int const UPNobList::CountInSelection(NobType const nobType) const
+unsigned int UPNobList::CountInSelection(NobType const nobType) const
 {
 	unsigned int uiNr { 0 };
 	Apply2AllSelected(nobType, [&](auto & s) { ++uiNr; });
 	return uiNr;
 }
 
-unsigned int const UPNobList::GetCounter(NobType const t) const 
+unsigned int UPNobList::GetCounter(NobType const t) const 
 { 
 	return counter(t); 
 }
 
-unsigned int const UPNobList::GetCounter() const 
+unsigned int UPNobList::GetCounter() const 
 { 
 	return accumulate(m_nobsOfType.begin(), m_nobsOfType.end(), 0); 
 }
@@ -333,7 +333,7 @@ unsigned int & UPNobList::counter(NobType const t)
 void UPNobList::countNobs()
 {
 	m_nobsOfType.fill(0);
-	for (auto & it : m_list)
+	for (auto const & it : m_list)
 		if (it)
 		{ 
 			NobType    const type  { it->GetNobType() };
@@ -342,7 +342,7 @@ void UPNobList::countNobs()
 		};
 }
 
-bool const UPNobList::Contains(Nob const * pNob) const 
+bool UPNobList::Contains(Nob const * pNob) const 
 { 
 	return Apply2AllB([&](Nob const & nob) { return pNob == &nob; }); 
 }
@@ -353,7 +353,7 @@ void UPNobList::Reconnect(NobId const id)
 		pNod->Reconnect();
 }
 
-MicroMeterPnt const UPNobList::CenterOfGravity(NobCrit const& crit) const
+MicroMeterPnt UPNobList::CenterOfGravity(NobCrit const& crit) const
 {
 	MicroMeterPnt umPntRes { MicroMeterPnt::ZERO_VAL() };
 	size_t        counter  { 0 };

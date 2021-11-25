@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <filesystem>
 #include <assert.h>
-#include "ErrHndl.h"
+#include "ERRHNDL.H"
 #include "SignalFactory.h"
 #include "Knot.h"
 #include "InputConnector.h"
@@ -25,6 +25,7 @@
 using std::filesystem::exists;
 using std::make_unique;
 using std::to_wstring;
+using std::bit_cast;
 
 class WrapperBase : public ScriptFunctor
 {
@@ -110,7 +111,7 @@ private:
             pNob = upNob.get();
             GetUPNobsRef().SetNob2Slot(idFromScript, move(upNob));
         }
-        if (nobType.IsIoConnectorType())
+        if (pNob && nobType.IsIoConnectorType())
         {
             static_cast<IoConnector *>(pNob)->SetParentPointers();
         }
@@ -409,7 +410,7 @@ void NNetModelImporter::CheckImportedNobId
 static unsigned int __stdcall importModelThreadProc(void * data) 
 {
     SetThreadDescription(GetCurrentThread(), L"ImportModel");
-    NNetModelImporter * pModelImporter { reinterpret_cast<NNetModelImporter *>(data) };
+    NNetModelImporter * pModelImporter { bit_cast<NNetModelImporter *>(data) };
     pModelImporter->importModel();
     return 0;
 }

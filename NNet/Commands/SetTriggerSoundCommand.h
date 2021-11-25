@@ -27,7 +27,7 @@ public:
 		Nob * const pNob { m_pNMWI->GetNob(m_idNeuron) };
 		assert( pNob->IsAnyNeuron() );
 		static_cast<Neuron *>(pNob)->SetTriggerSound(m_sound);
-		m_pNMWI->ClearAllNobs();
+		m_pNMWI->ClearDynamicData();
 	}
 
 	virtual void Undo()

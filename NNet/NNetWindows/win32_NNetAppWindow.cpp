@@ -279,9 +279,9 @@ bool NNetAppWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 
 void NNetAppWindow::OnPaint()
 {
-	PAINTSTRUCT   ps;
-	HDC           hDC = BeginPaint(&ps);
 	static auto const CLR_GREY { RGB(128, 128, 128) };
+	PAINTSTRUCT   ps;
+	HDC           hDC { BeginPaint(&ps) };
 	FillBackground(hDC, CLR_GREY);
 	(void)EndPaint(&ps);
 }
@@ -402,7 +402,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_STOP:
 			m_computeThread.StopComputation();
-			m_nmwi.ClearAllNobs();
+			m_nmwi.ClearDynamicData();
 			break;
 
 		case IDM_SIGNAL_DESIGNER:

@@ -29,52 +29,52 @@ public:
 	UPNobList & operator=  (UPNobList const &);
 	bool        operator== (UPNobList const &) const;
 
-	bool   const IsEmpty     ()               const { return m_list.size() == 0; }
-	bool   const IsNotEmpty  ()               const { return m_list.size() > 0; }
-	size_t const Size        ()               const { return m_list.size(); }
-	NobId  const IdNewSlot   ()	              const { return NobId(Cast2Long(m_list.size())); }
-	bool   const IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
-	bool   const IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
-	bool   const IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
-	Nob  * const Front       ()               const { return   m_list[0].get(); }
-	Nob  * const GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
-	Nob  &       GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
-	void         IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
-	void         ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
+	bool   IsEmpty     ()               const { return   m_list.empty(); }
+	bool   IsNotEmpty  ()               const { return ! m_list.empty(); }
+	size_t Size        ()               const { return m_list.size(); }
+	NobId  IdNewSlot   ()	            const { return NobId(Cast2Long(m_list.size())); }
+	bool   IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
+	bool   IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
+	bool   IsValidNobId(NobId const id) const { return id.GetValue() < Size(); }
+	Nob  * Front       ()               const { return   m_list[0].get(); }
+	Nob  * GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
+	Nob  & GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
+	void   IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
+	void   ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
 
-	void                Clear             ();
-	void                SelectAllNobs     (bool const);
-	void                DeselectAllNobs   () { SelectAllNobs(false); }
-	UPNob               ExtractNob        (NobId const);	
-	Nob         * const ReplaceNob        (UPNob);	
-	void                SetNob2Slot       (NobId const, UPNob); // only for special situations
-	void                SetNob2Slot       (UPNob);              // only for special situations
-	void                CheckNobList      ()                                     const;
-	void                Dump              ()                                     const;
-	bool          const AnyNobsSelected   ()                                     const;
-	bool          const Contains          (Nob const *)                          const;
-	unsigned int  const CountInSelection  (NobType const)                        const;
-	unsigned int  const GetCounter        (NobType const)                        const;
-	unsigned int  const GetCounter        ()                                     const;
-	NobId         const FindNobAt         (MicroMeterPnt const, NobCrit const &) const;
-	bool          const Apply2AllB        (                     NobCrit const &) const;
-	void                Apply2All         (NobFuncC const &)                     const;
-	void                Apply2All         (NobFunc  const &);
-	void                Apply2AllSelected (NobType const, NobFuncC const &)      const;
-	void                Apply2AllSelected (NobType const, NobFunc  const &);
-	void                Move              (MicroMeterPnt const &);
+	void         Clear            ();
+	void         SelectAllNobs    (bool const);
+	void         DeselectAllNobs  () { SelectAllNobs(false); }
+	UPNob        ExtractNob       (NobId const);	
+	Nob        * ReplaceNob       (UPNob);	
+	void         SetNob2Slot      (NobId const, UPNob); // only for special situations
+	void         SetNob2Slot      (UPNob);              // only for special situations
+	void         CheckNobList     ()                                     const;
+	void         Dump             ()                                     const;
+	bool         AnyNobsSelected  ()                                     const;
+	bool         Contains         (Nob const *)                          const;
+	unsigned int CountInSelection (NobType const)                        const;
+	unsigned int GetCounter       (NobType const)                        const;
+	unsigned int GetCounter       ()                                     const;
+	NobId        FindNobAt        (MicroMeterPnt const, NobCrit const &) const;
+	bool         Apply2AllB       (                     NobCrit const &) const;
+	void         Apply2All        (NobFuncC const &)                     const;
+	void         Apply2All        (NobFunc  const &);
+	void         Apply2AllSelected(NobType const, NobFuncC const &)      const;
+	void         Apply2AllSelected(NobType const, NobFunc  const &);
+	void         Move             (MicroMeterPnt const &);
 
-	MicroMeterPnt const CenterOfGravity(NobCrit const &) const;
+	MicroMeterPnt CenterOfGravity(NobCrit const &) const;
 
 	void Reconnect(NobId const);
 
 	unique_ptr<vector<Nob *>> GetAllSelected();
 
 	enum class SelMode { allNobs, selectedNobs };
-	MicroMeterRect const CalcEnclosingRect(SelMode const = SelMode::allNobs) const;
+	MicroMeterRect CalcEnclosingRect(SelMode const = SelMode::allNobs) const;
 
-	NobId const Push(UPNob);
-	UPNob const Pop() { return move(Pop<Nob>()); }
+	NobId Push(UPNob);
+	UPNob Pop() { return Pop<Nob>(); }
 
 	void MoveFrom(UPNobList &, size_t);
 

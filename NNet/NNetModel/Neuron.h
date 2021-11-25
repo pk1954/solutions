@@ -47,7 +47,7 @@ public:
 	virtual void      DrawExterior  (DrawContext const &, tHighlight const) const;
 	virtual void      DrawInterior  (DrawContext const &, tHighlight const) const;
 	virtual void      DrawNeuronText(DrawContext const &) const;
-	virtual void      Clear();
+	virtual void      ClearDynamicData();
 	virtual bool      CompStep();
 	virtual mV        GetNextOutput() const;
 	virtual Radian    GetDir()        const { return Radian::NULL_VAL(); };

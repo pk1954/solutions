@@ -13,20 +13,29 @@ class TextWindow : public BaseWindow
 {
 public:
     TextWindow();
-	virtual ~TextWindow() { };
+	~TextWindow() override = default;
 
-    void StartTextWindow(HWND const, PixelRect const &, LPCTSTR const, UINT const, bool const, function<bool()> const);
+    void StartTextWindow
+	(
+		HWND             const, 
+		PixelRect        const &, 
+		LPCTSTR          const, 
+		UINT             const, 
+		bool             const, 
+		function<bool()> const &
+	);
 	void StopTextWindow();
 
     virtual void DoPaint(TextBuffer &) = 0;
-	virtual void Trigger();
+
+	void Trigger() final;
 
 private:
 
-	virtual void OnPaint ();
+	void OnPaint() final;
 
-	RefreshTimer     * m_pRefreshTimer;
-	TextWindowThread * m_pTextWindowThread;
-    HDC                m_hDC_Memory;
-	HBITMAP            m_hBitmap;
+	RefreshTimer     * m_pRefreshTimer     { nullptr };
+	TextWindowThread * m_pTextWindowThread { nullptr };
+    HDC                m_hDC_Memory        { nullptr };
+	HBITMAP            m_hBitmap           { nullptr };
 };

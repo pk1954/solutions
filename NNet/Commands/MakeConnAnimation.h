@@ -37,7 +37,7 @@ public:
         (m_targetReachedFunc)();
     }
 
-    virtual void Undo()
+    void Undo() final
     {
         m_upIoConnector = move(m_pNMWI->PopFromModel<IoConnector>());
         m_upIoConnector->ClearParentPointers();

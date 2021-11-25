@@ -291,14 +291,14 @@ void MonitorWindow::OnPaint()
 	if (IsWindowVisible())
 	{
 		PAINTSTRUCT ps;
-		HDC const hDC = BeginPaint(&ps);
-		if (m_graphics.StartFrame(hDC))
+		BeginPaint(&ps);
+		if (m_graphics.StartFrame())
 		{
 			try
 			{
 				doPaint();
 			}
-			catch (MonitorDataException & e)
+			catch (MonitorDataException const & e)
 			{
 				SendCommand2Application(IDM_STOP, 0);
 				MonitorData::HandleException(e);

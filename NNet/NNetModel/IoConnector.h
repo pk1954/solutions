@@ -22,9 +22,9 @@ class IoConnector: public Nob
 public:
 	static bool TypeFits(NobType const type) { return type.IsIoConnectorType(); }
 
-	IoConnector(NobType const);
+	explicit IoConnector(NobType const);
 
-	virtual ~IoConnector() {}
+	virtual ~IoConnector() = default;
 
 	virtual void Check() const;
 	virtual void Dump () const;
@@ -39,7 +39,6 @@ public:
 	virtual void RotateNob   (MicroMeterPnt  const &, Radian const);
 	virtual void MoveNob     (MicroMeterPnt  const &);
 	virtual void Recalc      ();
-	virtual void Clear       ();
 	virtual void Link        (Nob const &, Nob2NobFunc const &);
 	virtual void Select      (bool const);
 	virtual void SetParentPointers();

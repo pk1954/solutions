@@ -8,6 +8,8 @@
 #include "win32_command.h"
 #include "SmoothMoveFp.h"
 
+using std::bit_cast;
+
 using AnimationScript = vector<DWORD>;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
@@ -67,8 +69,8 @@ private:
     ANIM_PAR m_distance {};
 
     SmoothMoveFp   m_smoothMove;
-    Command * m_pCmd;
-    DWORD    const m_dwFlags;
+    Command      * m_pCmd           { nullptr };
+    DWORD    const m_dwFlags        { 0 };
     SRWLOCK        m_srwlData       { SRWLOCK_INIT };
     TP_TIMER     * m_pTpTimer       { nullptr };
     unsigned int   m_uiMsPeriod     { 50 };
@@ -118,6 +120,6 @@ private:
 
     static void CALLBACK timerProc(PTP_CALLBACK_INSTANCE i, PVOID pContext, PTP_TIMER p)
     {
-        reinterpret_cast<Animation<ANIM_PAR> *>(pContext)->next();
+        bit_cast<Animation<ANIM_PAR> *>(pContext)->next();
     }
 };

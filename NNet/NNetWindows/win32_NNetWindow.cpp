@@ -163,8 +163,8 @@ void NNetWindow::OnPaint()
 	if (IsWindowVisible())
 	{
 		PAINTSTRUCT ps;
-		HDC const hDC = BeginPaint(&ps);
-		if (m_context.StartFrame(hDC))
+		BeginPaint(&ps);
+		if (m_context.StartFrame())
 		{
 			doPaint();
 			m_context.EndFrame();

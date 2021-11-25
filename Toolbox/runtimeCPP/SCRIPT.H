@@ -8,7 +8,7 @@
 #pragma once
 
 #include <string>
-#include "scanner.h"
+#include "SCANNER.H"
 #include "ScriptFunctor.h"
 
 using std::wstring;
@@ -19,10 +19,6 @@ using std::wstring;
 class Script
 {
 public:
-	virtual ~Script() 
-	{
-		int x = 42;
-	};
 	
 	// functions for reading from input script
 

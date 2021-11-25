@@ -26,15 +26,15 @@ public:
 
 	void Stop();
 
-    virtual void DoPaint(TextBuffer &);
+    void DoPaint(TextBuffer &) final;
 
 private:
-    ComputeThread                  * m_pComputeThread        { nullptr };
-    NNetModelReaderInterface const * m_pNMRI { nullptr };
-    ActionTimer                    * m_pDisplayTimer         { nullptr };
-    SlowMotionRatio          const * m_pSlowMotionRatio      { nullptr };
+    ComputeThread                  * m_pComputeThread   { nullptr };
+    NNetModelReaderInterface const * m_pNMRI            { nullptr };
+    ActionTimer                    * m_pDisplayTimer    { nullptr };
+    SlowMotionRatio          const * m_pSlowMotionRatio { nullptr };
 
-    void printMicroSecLine(TextBuffer &, wchar_t const * const, fMicroSecs const);
-    void printFloatLine   (TextBuffer &, wchar_t const * const, float const, wchar_t const * const);
-    void printIntLine     (TextBuffer &, wchar_t const * const, int const);
+    void printMicroSecLine(TextBuffer &, wchar_t const * const, fMicroSecs const) const;
+    void printFloatLine   (TextBuffer &, wchar_t const * const, float const, wchar_t const * const) const;
+    void printIntLine     (TextBuffer &, wchar_t const * const, int const) const;
 };

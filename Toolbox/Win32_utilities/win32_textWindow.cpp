@@ -13,11 +13,7 @@
 using std::function;
 
 TextWindow::TextWindow() :  
-    BaseWindow(),
-	m_pTextWindowThread(nullptr),
-	m_pRefreshTimer(nullptr),
-	m_hDC_Memory(0),
-	m_hBitmap(0)
+    BaseWindow()
 { }
 
 void TextWindow::StartTextWindow
@@ -27,7 +23,7 @@ void TextWindow::StartTextWindow
 	LPCTSTR          const   szClass,
     UINT             const   uiAlpha,
 	bool             const   bAsync,
-	function<bool()> const   visibilityCriterion
+	function<bool()> const & visibilityCriterion
 )
 {
     HWND const hwnd = StartBaseWindow
@@ -67,10 +63,10 @@ void TextWindow::StopTextWindow()
 	m_pTextWindowThread = nullptr;
 
 	DeleteObject(m_hBitmap);
-	m_hBitmap = 0;
+	m_hBitmap = nullptr;
 
 	DeleteDC(m_hDC_Memory);
-	m_hDC_Memory = 0;
+	m_hDC_Memory = nullptr;
 }
 
 void TextWindow::Trigger()

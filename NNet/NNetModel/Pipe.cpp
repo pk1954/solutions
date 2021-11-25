@@ -81,9 +81,9 @@ MicroMeterPnt Pipe::GetPos() const
 	return (m_pKnotStart->GetPos() + m_pKnotEnd->GetPos()) / 2.0f; 
 }
 
-void Pipe::Clear()
+void Pipe::ClearDynamicData()
 {
-	Nob::Clear();
+	Nob::ClearDynamicData();
 	fill(m_potential.begin(), m_potential.end(), 0.0_mV);
 }
 
@@ -282,7 +282,7 @@ bool Pipe::CompStep()
 	return false;
 }
 
-mV Pipe::GetVoltage(MicroMeterPnt const & point) const
+mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 {
 	mV mVresult { 0._mV };
 	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };

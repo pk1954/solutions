@@ -37,9 +37,8 @@ public:
     MonitorData             & GetMonitorData() { return m_pModel->GetMonitorData(); }
     unique_ptr<vector<Nob *>> GetSelection()   { return move(GetUPNobs().GetAllSelected()); }
 
-    void  CheckModel  () { m_pModel->CheckModel(); }
-    void  ResetModel  () { m_pModel->ResetModel(); }
-    void  ClearAllNobs() { m_pModel->ClearAllNobs(); }
+    void  ResetModel      () { m_pModel->ResetModel(); }
+    void  ClearDynamicData() { m_pModel->ClearDynamicData(); }
 
     void  Reconnect(NobId const id) { m_pModel->Reconnect(id); }
 

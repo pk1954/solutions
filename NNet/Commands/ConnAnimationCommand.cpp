@@ -11,7 +11,7 @@
 #include "ConnAnimationCommand.h"
 
 using std::make_unique;
-using std::sort;
+using std::ranges::sort;
 
 ConnAnimationCommand::ConnAnimationCommand()
 {
@@ -28,15 +28,15 @@ ConnAnimationCommand::ConnAnimationCommand()
                 m_nobsAnimated.push_back(&s); 
         } 
     );
+
     MicroMeterLine line{ CalcMaxDistLine<IoNeuron>(m_nobsAnimated) };
     if (line.IsZero())
         return;
 
     MicroMeterLine orthoLine { line.OrthoLine() };
-
     sort
     (
-        m_nobsAnimated.begin(), m_nobsAnimated.end(),
+        m_nobsAnimated,
         [&](auto & p1, auto & p2) 
         { 
             return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos()); 
@@ -59,7 +59,7 @@ ConnAnimationCommand::ConnAnimationCommand()
     m_bAllOk = true;
 }
 
-NobType const ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
+NobType ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
 {
     if (nobs.CountInSelection(NobType::Value::inputConnector) > 0)
         return NobType::Value::undefined;

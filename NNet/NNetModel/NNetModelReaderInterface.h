@@ -42,7 +42,7 @@ public:
 	size_t     GetNrOfIncomingConnections(NobId const) const;
 	size_t     GetNrOfConnections        (NobId const) const;
 	mV         GetVoltage                (NobId const) const;
-	mV         GetVoltage                (NobId const, MicroMeterPnt const &) const;
+	mV         GetVoltageAt              (NobId const, MicroMeterPnt const &) const;
 	Degrees    GetDirection              (NobId const) const; 
 	fHertz     GetActFrequency           (NobId const) const; 
 

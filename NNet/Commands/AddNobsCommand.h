@@ -12,10 +12,10 @@ class AddNobsCommand : public SelectionCommand
 {
 public:
 
-	AddNobsCommand(UPNobList nobs2Add)
+	explicit AddNobsCommand(UPNobList const & nobs2Add)
+	  : m_nobs2Add(nobs2Add),
+		m_nrOfNobs(nobs2Add.Size())
 	{ 
-		m_nobs2Add = move(nobs2Add);
-		m_nrOfNobs = m_nobs2Add.Size();
 		m_nobs2Add.SelectAllNobs(true);
 		m_nobs2Add.CheckNobList();
 	}
@@ -28,7 +28,7 @@ public:
 		m_pNMWI->CheckModel();
 	}
 
-	virtual void Undo() 
+	void Undo() final
 	{ 
 		m_nobs2Add.MoveFrom(m_pNMWI->GetUPNobs(), m_nrOfNobs);
 		SelectionCommand::Undo();

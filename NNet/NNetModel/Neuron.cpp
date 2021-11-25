@@ -118,10 +118,10 @@ mV Neuron::waveFunction(fMicroSecs const time) const
 	return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }
 
-void Neuron::Clear()
+void Neuron::ClearDynamicData()
 {
 	m_usSinceLastPulse = 0._MicroSecs;
-	Nob::Clear();
+	Nob::ClearDynamicData();
 }
 
 bool Neuron::CompStep()

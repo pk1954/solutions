@@ -51,7 +51,12 @@ public:
 		m_pTextFormat = m_graphics.NewTextFormat(12.f);
 	}
 
-	~Scale()
+	Scale(Scale  &) = delete;
+	Scale(Scale &&) = delete;
+	Scale       & operator=(const Scale  &) = delete;
+	Scale const & operator=(const Scale &&) = delete;
+
+	~Scale() final
 	{
 		m_graphics.ShutDown();
 		DestroyWindow();
@@ -150,13 +155,13 @@ private:
 		);
 	}
 
-	void OnMouseMove(WPARAM const wParam, LPARAM const lParam)
+	void OnMouseMove(WPARAM const wParam, LPARAM const lParam) final
 	{
 		Trigger();   // cause repaint
 		(void)TrackMouseEvent(& m_trackStruct);
 	}
 
-	bool OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
+	bool OnMouseLeave(WPARAM const wParam, LPARAM const lParam) final
 	{
 		Trigger();   // cause repaint
 		return false;
@@ -167,8 +172,8 @@ private:
 		if (IsWindowVisible())
 		{
 			PAINTSTRUCT ps;
-			HDC const hDC = BeginPaint(&ps);
-			if (m_graphics.StartFrame(hDC))
+			BeginPaint(&ps);
+			if (m_graphics.StartFrame())
 			{
 				doPaint();
 				m_graphics.EndFrame();
@@ -177,7 +182,7 @@ private:
 		}
 	}
 
-	virtual bool OnSize(WPARAM const wParam, LPARAM const lParam)
+	bool OnSize(WPARAM const wParam, LPARAM const lParam) final
 	{
 		UINT width  = LOWORD(lParam);
 		UINT height = HIWORD(lParam);
@@ -186,10 +191,9 @@ private:
 		return true;
 	}
 
-	virtual void OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
 	{  
 		int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-		bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
 		bool const bDirection { iDelta > 0 };
 		bool       bResult    { true };
 

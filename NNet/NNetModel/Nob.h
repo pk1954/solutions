@@ -76,7 +76,7 @@ public:
 	virtual bool IsCompositeNob() const { return false; }
 
 	virtual void Select(bool const bOn) { m_bSelected = bOn; }
-	virtual void Clear()                { m_mVinputBuffer.Set2Zero(); }
+	virtual void ClearDynamicData()     { m_mVinputBuffer.Set2Zero(); }
 	virtual void SetId(NobId const id)  { m_identifier = id; }
 	virtual void Reconnect()            {};
 	

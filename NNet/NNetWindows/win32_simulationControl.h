@@ -20,6 +20,6 @@ public:
 	void Notify(bool const) final;
 
 private:
-	ComputeThread * m_pComputeThread;
-	StatusBar     * m_pStatusBar;
+	ComputeThread * m_pComputeThread { nullptr };
+	StatusBar     * m_pStatusBar     { nullptr };
 };

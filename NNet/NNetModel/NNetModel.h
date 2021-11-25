@@ -62,7 +62,7 @@ public:
 	virtual bool Compute();
 
 	void  RecalcAllNobs();
-	void  ClearAllNobs();
+	void  ClearDynamicData();
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
 	void  SelectSubtree(BaseKnot * const, bool const);

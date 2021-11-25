@@ -29,11 +29,11 @@ class D2D_driver
 {
 public:
 
-    D2D_driver() {};
+    D2D_driver() = default;
     virtual ~D2D_driver();
 
     void Initialize(HWND const);
-    bool StartFrame(HDC const);
+    bool StartFrame();
     void SetStdFontSize(float const);
     void DisplayText(fPixelRect const &, wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr) const;
     void EndFrame();

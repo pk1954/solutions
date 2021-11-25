@@ -214,8 +214,8 @@ void SignalControl::OnPaint()
 	if (IsWindowVisible())
 	{
 		PAINTSTRUCT ps;
-		HDC const hDC = BeginPaint(&ps);
-		if (m_graphics.StartFrame(hDC))
+		BeginPaint(&ps);
+		if (m_graphics.StartFrame())
 		{
 			doPaint();
 			m_graphics.EndFrame();

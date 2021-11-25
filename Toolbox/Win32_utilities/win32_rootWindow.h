@@ -26,36 +26,36 @@ class RootWindow : public ObserverInterface
 public:
 
     RootWindow();
-    virtual ~RootWindow();
+    ~RootWindow() override;
 
 	void StartRootWindow(function<bool()> const);
 
     HWND GetWindowHandle() const { return m_hwnd; };
 
-    PIXEL         const GetWindowTop()            const { return Util::GetWindowTop           (m_hwnd); }
-    PIXEL         const GetWindowWidth()          const { return Util::GetWindowWidth         (m_hwnd); }
-    PIXEL         const GetWindowHeight()         const { return Util::GetWindowHeight        (m_hwnd); }
-    PixelRectSize const GetWindowSize()           const { return Util::GetWindowSize          (m_hwnd); }
-    PixelRectSize const GetClRectSize()           const { return Util::GetClRectSize          (m_hwnd); }
-    PixelRect     const GetClPixelRect()          const { return Util::GetClPixelRect         (m_hwnd); }
-    PIXEL         const GetClientWindowHeight()   const { return Util::GetClientWindowHeight  (m_hwnd); }
-    PIXEL         const GetClientWindowWidth()    const { return Util::GetClientWindowWidth   (m_hwnd); }
-    bool          const CrsrInClientRect()        const { return Util::CrsrInClientRect       (m_hwnd); }
-    PixelPoint    const GetRelativeCrsrPosition() const { return Util::GetRelativeCrsrPosition(m_hwnd); }
-    PixelPoint    const GetClRectCenter()         const { return Util::GetClRectCenter        (m_hwnd); }
+    PIXEL         GetWindowTop()            const { return Util::GetWindowTop           (m_hwnd); }
+    PIXEL         GetWindowWidth()          const { return Util::GetWindowWidth         (m_hwnd); }
+    PIXEL         GetWindowHeight()         const { return Util::GetWindowHeight        (m_hwnd); }
+    PixelRectSize GetWindowSize()           const { return Util::GetWindowSize          (m_hwnd); }
+    PixelRectSize GetClRectSize()           const { return Util::GetClRectSize          (m_hwnd); }
+    PixelRect     GetClPixelRect()          const { return Util::GetClPixelRect         (m_hwnd); }
+    PIXEL         GetClientWindowHeight()   const { return Util::GetClientWindowHeight  (m_hwnd); }
+    PIXEL         GetClientWindowWidth()    const { return Util::GetClientWindowWidth   (m_hwnd); }
+    bool          CrsrInClientRect()        const { return Util::CrsrInClientRect       (m_hwnd); }
+    PixelPoint    GetRelativeCrsrPosition() const { return Util::GetRelativeCrsrPosition(m_hwnd); }
+    PixelPoint    GetClRectCenter()         const { return Util::GetClRectCenter        (m_hwnd); }
 
-	PixelPoint    const Client2Screen(PixelPoint  const & p) const { return Util::Client2Screen (m_hwnd, p); }
-	PixelPoint    const Screen2Client(PixelPoint  const & p) const { return Util::Screen2Client (m_hwnd, p); }
+	PixelPoint    Client2Screen(PixelPoint  const & p) const { return Util::Client2Screen (m_hwnd, p); }
+	PixelPoint    Screen2Client(PixelPoint  const & p) const { return Util::Screen2Client (m_hwnd, p); }
 
-	bool          const IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
-	bool          const IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
+	bool          IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
+	bool          IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
 
-	bool          const IsWindowVisible()           const { return ::IsWindowVisible(m_hwnd); }
-	HWND          const SetCapture()                const { return ::SetCapture     (m_hwnd); }
-    HWND          const SetFocus()                  const { return ::SetFocus       (m_hwnd); }
-    HWND          const GetDlgItem(int const iItem) const { return ::GetDlgItem     (m_hwnd, iItem); }
-    bool          const IsCaptured()                const { return ::GetCapture() == m_hwnd; }
-	int			  const GetWindowTextLength()       const { return ::GetWindowTextLength(m_hwnd); }        
+	bool          IsWindowVisible()           const { return ::IsWindowVisible(m_hwnd); }
+	HWND          SetCapture()                const { return ::SetCapture     (m_hwnd); }
+    HWND          SetFocus()                  const { return ::SetFocus       (m_hwnd); }
+    HWND          GetDlgItem(int const iItem) const { return ::GetDlgItem     (m_hwnd, iItem); }
+    bool          IsCaptured()                const { return ::GetCapture() == m_hwnd; }
+	int			  GetWindowTextLength()       const { return ::GetWindowTextLength(m_hwnd); }        
 
 	void SetRefreshRate(milliseconds const);
 	
@@ -68,7 +68,7 @@ public:
 	void SetTrackBarPos(INT const, LONG const) const;
 	void SetTrackBarRange(INT const, LONG const, LONG const) const;
 
-	void DestroyWindow() 
+	void DestroyWindow()
 	{ 
 		::DestroyWindow(m_hwnd);
 		m_hwnd = nullptr;
@@ -155,22 +155,22 @@ public:
 		return ::IsDlgButtonChecked(m_hwnd, iIdButton);
 	}
 
-	void Move(PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw)
+	void Move(PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw) const
     {
         (void)::MoveWindow(m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
     }
 
-    void Move(PixelPoint const pos, PixelRectSize const size, bool const bRedraw)
+    void Move(PixelPoint const pos, PixelRectSize const size, bool const bRedraw) const
     {
         Move(pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw);
     }
 
-    void Move(PixelRect const rect, bool const bRedraw)
+    void Move(PixelRect const rect, bool const bRedraw) const
     {
         Move(rect.GetStartPoint(), rect.GetSize(), bRedraw);
     }
 
-	void Update() 
+	void Update() const
 	{
 		(void)::UpdateWindow(m_hwnd);
 	}
@@ -218,7 +218,8 @@ public:
 	}
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
-	virtual void   Notify(bool const);
+
+	void Notify(bool const) override;
 
 	virtual void Trigger()	{ Invalidate(false); }
 

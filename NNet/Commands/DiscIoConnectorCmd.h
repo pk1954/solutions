@@ -12,7 +12,7 @@
 #include "NNetCommand.h"
 #include "CommandStack.h"
 #include "NobId.h"
-#include "UpNobList.h"
+#include "UPNobList.h"
 #include "IoConnector.h"
 
 using std::unique_ptr;
@@ -40,11 +40,6 @@ public:
            );
     }
 
-    virtual ~DiscIoConnectorCmd() 
-    {
-        int x = 42;
-    }
-
     void Do() final
     {
         m_upIoConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_connector);
@@ -53,7 +48,7 @@ public:
             m_cmdStack.DoAll();
     }
 
-    virtual void Undo()
+    void Undo() final
     {
         m_upIoConnector->SetParentPointers();
         m_pNMWI->Restore2Model<IoConnector>(move(m_upIoConnector));
@@ -63,8 +58,8 @@ public:
 
 private:
 
-    bool              const m_bRemove;
+    IoConnector     const & m_connector;
+    bool            const   m_bRemove;
     CommandStack            m_cmdStack      {};
     unique_ptr<IoConnector> m_upIoConnector {};  
-    IoConnector     const & m_connector;
 };

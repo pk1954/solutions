@@ -15,18 +15,18 @@ void Command::UpdateUI()
     m_pWin->Notify(false); 
 };
 
-void Command::CallUI(bool const bTargetReached)
+void Command::CallUI(bool const bTargetReached)  // runs in animation thread
 {
     PostMessage
     (
         m_pWin->GetWindowHandle(), 
-        WM_APP_UI_CALL, 
+        WM_APP_UI_CALL,            // calls DoCall from UI thread
         static_cast<WPARAM>(bTargetReached), 
         bit_cast<LPARAM>(this)
     );
 }
 
-void Command::DoCall(WPARAM const wParam, LPARAM const lParam) 
+void Command::DoCall(WPARAM const wParam, LPARAM const lParam) // runs in UI thread
 {
     Command * const pAnimCmd       { bit_cast<Command * const>(lParam) };
     bool      const bTargetReached { static_cast<bool const>(wParam) };
@@ -41,10 +41,9 @@ void Command::doPhase() // runs in UI thread
         blockUI();
     if (m_uiPhase < m_phases.size())
     {
-        Command * const pAnimCmd { m_phases[m_uiPhase].get() };
+        Command * const pAnimCmd { m_phases[m_uiPhase++].get() };
         pAnimCmd->m_targetReachedFunc = [&](){ doPhase(); };
         pAnimCmd->Do();
-        ++m_uiPhase;
     }
     else
         unblockUI();
@@ -57,8 +56,7 @@ void Command::undoPhase() // runs in UI thread
         blockUI();
     if (m_uiPhase > 0)
     {
-        --m_uiPhase;
-        Command & animCmd { * m_phases[m_uiPhase] };
+        Command & animCmd { * m_phases[--m_uiPhase] };
         animCmd.m_targetReachedFunc = [&](){ undoPhase(); };
         animCmd.Undo();
     }
@@ -66,6 +64,7 @@ void Command::undoPhase() // runs in UI thread
         unblockUI();
     UpdateUI();
 }
+
 void Command::Do()
 {
     m_uiPhase = 0;

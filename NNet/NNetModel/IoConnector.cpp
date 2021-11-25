@@ -73,12 +73,6 @@ void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
         it = static_cast<IoNeuron *>(dstFromSrc(it));
 }
 
-void IoConnector::Clear()
-{
-    Nob::Clear();
-    m_list.clear();
-}
-
 void IoConnector::AlignDirection()
 {
     MicroMeterLine const umLine   { m_list.front()->GetPos(), m_list.back()->GetPos() };
