@@ -36,7 +36,7 @@ public:
     void OpenInputFile(wstring const &);
     void CloseInputFile();
 
-    static void SetNewLineTrigger(function<void(void)> p) { InputBuffer::SetNewLineTrigger(p); }
+    static void SetNewLineTrigger(function<void(void)> const & p) { InputBuffer::SetNewLineTrigger(p); }
 
     streampos GetFilePos()       { return m_inbuf.GetFilePos(); };
     bool      IsActive  () const { return m_inbuf.IsActive(); }

@@ -49,7 +49,7 @@ public:
 			clearAll(*m_pNMWI);
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		clearAll(*m_pNMWI);
 		for (Beeper const & beeper : m_beepers)

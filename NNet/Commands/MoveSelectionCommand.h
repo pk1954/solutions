@@ -28,7 +28,7 @@ public:
 		);
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(

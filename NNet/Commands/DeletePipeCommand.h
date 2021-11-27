@@ -108,7 +108,7 @@ public:
 		m_upPipe = m_pNMWI->RemoveFromModel<Pipe>(m_pipe);
 	}
 
-	virtual void Undo()
+	void Undo() final
  	{
 		m_pNMWI->Restore2Model<Pipe>(move(m_upPipe));
 

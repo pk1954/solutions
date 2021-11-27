@@ -35,7 +35,7 @@ public:
         m_upAnimation->Start(m_animated, m_target);
     }
 
-    virtual void Undo()
+    void Undo() final
     {
         m_upAnimation->Start(m_animated, m_start);
     }

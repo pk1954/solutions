@@ -34,7 +34,7 @@ public:
 		); 
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_cmdStack.UndoAll();
 		m_cmdStack.Clear();

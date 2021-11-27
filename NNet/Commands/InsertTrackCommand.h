@@ -22,7 +22,7 @@ public:
         m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
     };
 
-    virtual void Undo()
+    void Undo() final
     { 
         m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
     };

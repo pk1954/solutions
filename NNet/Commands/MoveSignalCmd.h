@@ -27,7 +27,7 @@ public:
 		m_signalNrNew = m_pNMWI->GetMonitorData().MoveSignal(m_signalIdOld, m_trackNrNew);
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{
 		m_pNMWI->GetMonitorData().MoveSignal(SignalId(m_trackNrNew, m_signalNrNew), m_trackNrOld);
 	}

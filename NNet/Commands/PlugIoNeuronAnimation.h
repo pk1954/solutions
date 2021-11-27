@@ -39,7 +39,7 @@ public:
         Command::Do();
     }
 
-    virtual void Undo()
+    void Undo() final
     {
         Command::Undo();
         m_nobAnimated.UnlockDirection();

@@ -29,7 +29,7 @@ public:
 		pSignal->MoveSensor(m_delta);
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
 		assert(pSignal);

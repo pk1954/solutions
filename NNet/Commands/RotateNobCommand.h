@@ -29,7 +29,7 @@ public:
 		m_nob.RotateNob(m_umPntPivot, m_radDelta);
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_nob.RotateNob(m_umPntPivot, -m_radDelta);
 	}

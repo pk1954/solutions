@@ -78,7 +78,7 @@ private:
     unsigned long numeric(wstring const &, unsigned long, bool *);
 
 	Scanner   m_scanner; 
-	tTOKEN    m_token;
+	tTOKEN    m_token       { tTOKEN::End };
 	bool      m_bEchoScript { true };
 	uintmax_t m_fileSize    { 0 };
 
@@ -90,5 +90,5 @@ private:
 class WrapInclude : public ScriptFunctor
 {
 public:
-    virtual void operator() (Script & script) const;
+    void operator() (Script & script) const final;
 };

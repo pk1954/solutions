@@ -59,7 +59,7 @@ public:
 		assert(m_upBaseKnotDst);
 	}
 
-	virtual void Undo()
+	void Undo() final
 	{
 		m_upBaseKnotDst->Reconnect();
 		m_upBaseKnotSrc->Reconnect();

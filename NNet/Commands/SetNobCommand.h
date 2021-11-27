@@ -30,7 +30,7 @@ public:
 		m_nob.MoveNob  (m_posDir.GetPos() - m_nob.GetPos());
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_nob.RotateNob(m_nob.GetPos(), -m_posDir.GetDir());
 		m_nob.MoveNob  (m_nob.GetPos() - m_posDir.GetPos());

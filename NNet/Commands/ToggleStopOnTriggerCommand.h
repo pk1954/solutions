@@ -20,7 +20,7 @@ public:
 		m_pNMWI->ToggleStopOnTrigger(m_id);
 	}
 
-	virtual void Undo()
+	void Undo() final
 	{
 		m_pNMWI->ToggleStopOnTrigger(m_id);
 	}

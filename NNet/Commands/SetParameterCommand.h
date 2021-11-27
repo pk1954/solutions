@@ -28,7 +28,7 @@ public:
 		m_pNMWI->SetParam(m_parameter, m_fNewValue); 
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_pNMWI->SetParam(m_parameter, m_fOldValue); 
 	}

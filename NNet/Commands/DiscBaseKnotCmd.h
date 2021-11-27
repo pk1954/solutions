@@ -27,7 +27,7 @@ public:
     virtual ~DiscBaseKnotCmd() {}
 
     virtual void Do  ();
-    virtual void Undo();
+    void Undo() final;
 
 private:
     BaseKnot               & m_baseKnot;

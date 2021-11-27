@@ -21,7 +21,7 @@ public:
 		m_pSignalIdOld = m_pNMWI->GetMonitorData().SetHighlightedSignal(m_umPos);
 	}
 
-	virtual void Undo()
+	void Undo() final
 	{
 		m_pNMWI->GetMonitorData().SetHighlightedSignal(m_pSignalIdOld);
 	}

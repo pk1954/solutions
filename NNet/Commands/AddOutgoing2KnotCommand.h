@@ -38,7 +38,7 @@ public:
 		m_pNMWI->Push2Model(move(m_upPipe));
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_upPipe    = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew = m_pNMWI->PopFromModel<Knot>();

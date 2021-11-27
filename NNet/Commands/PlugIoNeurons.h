@@ -39,7 +39,7 @@ public:
         (m_targetReachedFunc)();
     }
 
-    virtual void Undo()
+    void Undo() final
     {
         m_upNeuron = m_pNMWI->PopFromModel<Neuron>();
         m_upNobAnimated->Reconnect();

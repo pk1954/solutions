@@ -46,7 +46,7 @@ public:
 		m_pNMWI->Push2Model(move(m_upPipeExt));
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_upPipeExt    = m_pNMWI->PopFromModel<Pipe>();
 		m_upPipeOrtho  = m_pNMWI->PopFromModel<Pipe>();

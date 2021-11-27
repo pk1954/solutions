@@ -22,7 +22,7 @@ public:
         m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
     };
 
-    virtual void Undo()
+    void Undo() final
     { 
         m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
     };

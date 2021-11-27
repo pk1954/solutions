@@ -36,7 +36,7 @@ public:
 		m_pNMWI->Push2Model(move(m_upNewPipe));
 	}
 
-	virtual void Undo()
+	void Undo() final
 	{
 		m_upNewPipe = m_pNMWI->PopFromModel<Pipe>();
 		m_pStartKnot->ReplaceOutgoing(m_upNewPipe.get(), m_pPipe);

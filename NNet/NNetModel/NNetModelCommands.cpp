@@ -133,7 +133,7 @@ void NNetModelCommands::AddModel()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(m_pModelImporter->GetUPNobs())));
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(m_pModelImporter->GetUPNobs()));
 }
 
 void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & pos)
@@ -275,7 +275,7 @@ void NNetModelCommands::CopySelection()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs(*m_pNMWI))));
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(CopySelectedNobs(*m_pNMWI)));
 }
 
 void NNetModelCommands::CreateInitialNobs()
@@ -304,7 +304,7 @@ void NNetModelCommands::DeleteNob(NobId const id)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << endl;
-	m_pCmdStack->PushCommand(move(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id))));
+	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id)));
 }
 
 void NNetModelCommands::DeleteTrack(TrackNr const nr)
@@ -368,14 +368,6 @@ SignalId const NNetModelCommands::SetHighlightedSignal(MicroMeterPnt const & umP
 {
 	return m_pNMWI->GetMonitorData().SetHighlightedSignal(umPos);
 }
-
-//void NNetModelCommands::SetPulseRate(NobId const id, fHertz const fNewValue)
-//{
-//	if (IsTraceOn())
-//		TraceStream() << source_location::current().function_name() << L" " << id << L" " << fNewValue << endl;
-//	m_pCmdStack->PushCommand(make_unique<SetPulseRateCommand>(id, fNewValue));
-//}
-//
 
 void NNetModelCommands::SetTriggerSound(NobId const id, SoundDescr const & sound)
 {

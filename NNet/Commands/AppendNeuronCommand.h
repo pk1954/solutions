@@ -28,7 +28,7 @@ public:
 		m_upKnot = m_pNMWI->ReplaceInModel<T,Knot>(move(m_upNeuron));
 	}
 
-	virtual void Undo() 
+	void Undo() final 
 	{ 
 		m_upKnot->Reconnect();
 		m_upNeuron = m_pNMWI->ReplaceInModel<Knot,T>(move(m_upKnot)); 

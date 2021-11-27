@@ -31,7 +31,7 @@ public:
         m_signalId = SignalId(m_trackNr, monitorData.AddSignal(m_trackNr, m_umCircle));
     };
 
-    virtual void Undo()
+    void Undo() final
     { 
         m_pNMWI->GetMonitorData().DeleteSignal(m_signalId);
     };

@@ -30,7 +30,7 @@ public:
 		m_pNMWI->ClearDynamicData();
 	}
 
-	virtual void Undo()
+	void Undo() final
 	{ 
 		Do();
 	}

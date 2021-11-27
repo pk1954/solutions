@@ -37,7 +37,7 @@ public:
         m_pNMWI->Push2Model(move(m_upOutputNeuron));
     }
 
-    virtual void Undo()
+    void Undo() final
     {
         m_upOutputNeuron = m_pNMWI->PopFromModel<OutputNeuron>();
         m_upInputNeuron  = m_pNMWI->PopFromModel<InputNeuron >();
