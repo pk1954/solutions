@@ -29,27 +29,27 @@ public:
 	bool const operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
 	bool const operator!=(PointType const & a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
 
-    PointType const operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
-    PointType const operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
-    PointType const operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
+    PointType operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
+    PointType operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
+    PointType operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
 
-	PointType const operator*= (int       const i) { m_x *= i; m_y *= i; return * this; }
-	PointType const operator/= (int       const i) { m_x /= i; m_y /= i; return * this; }
+	PointType operator*= (int       const i) { m_x *= i; m_y *= i; return * this; }
+	PointType operator/= (int       const i) { m_x /= i; m_y /= i; return * this; }
 
-	PointType const operator*= (float     const d) { m_x *= d; m_y *= d; return * this; }
-	PointType const operator/= (float     const d) { m_x /= d; m_y /= d; return * this; }
+	PointType operator*= (float     const d) { m_x *= d; m_y *= d; return * this; }
+	PointType operator/= (float     const d) { m_x /= d; m_y /= d; return * this; }
 
-	PointType const operator- () const { return PointType { -m_x, -m_y }; };
-	PointType const operator+ () const { return PointType { +m_x, +m_y }; };
+	PointType operator- () const { return PointType { -m_x, -m_y }; };
+	PointType operator+ () const { return PointType { +m_x, +m_y }; };
 
-	BASE_TYPE const GetX() const { return m_x; }
-	BASE_TYPE const GetY() const { return m_y; }
+	BASE_TYPE GetX() const { return m_x; }
+	BASE_TYPE GetY() const { return m_y; }
 
 	void SetX(BASE_TYPE const b) { m_x = b; }
 	void SetY(BASE_TYPE const b) { m_y = b; }
 
-	auto const GetXvalue() const { return GetX().GetValue(); }
-	auto const GetYvalue() const { return GetY().GetValue(); }
+	auto GetXvalue() const { return GetX().GetValue(); }
+	auto GetYvalue() const { return GetY().GetValue(); }
 
 	static PointType const & NULL_VAL() 
 	{ 
@@ -82,22 +82,22 @@ public:
 		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
 	}
 
-	bool const IsCloseToZero() const
+	bool IsCloseToZero() const
 	{
 		return ::IsCloseToZero(GetXvalue()) && ::IsCloseToZero(GetYvalue());
 	}
 
-	bool const IsCloseTo(PointType const & pt) const
+	bool IsCloseTo(PointType const & pt) const
 	{
 		return (*this - pt).IsCloseToZero();
 	}
 
-	friend BASE_TYPE const Hypot(PointType const pt) 
+	friend BASE_TYPE Hypot(PointType const pt) 
 	{ 
 		return BASE_TYPE(hypot(pt.GetXvalue(), pt.GetYvalue()));
 	};
 
-	friend PointType const Normalize(PointType const & pt) 
+	friend PointType Normalize(PointType const & pt) 
 	{ 
 		BASE_TYPE fHypot { Hypot(pt) };
 		assert(! ::IsCloseToZero(fHypot.GetValue()));
@@ -114,70 +114,70 @@ public:
 		return PointType(GetY(), -GetX());
 	}
 
-	friend PointType const operator+ (PointType const a, PointType const b) 
+	friend PointType operator+ (PointType const a, PointType const b) 
 	{ 
 		PointType res { a }; 
 		res += b; 
 		return res; 
 	};
 
-	friend PointType const operator- (PointType const a, PointType const b) 
+	friend PointType operator- (PointType const a, PointType const b) 
 	{ 
 		PointType res { a }; 
 		res -= b; 
 		return res; 
 	};
 
-	friend PointType const operator% (PointType const a, PointType const b) 
+	friend PointType operator% (PointType const a, PointType const b) 
 	{ 
 		PointType res { a }; 
 		res %= b; 
 		return res; 
 	};
 
-	friend PointType const operator+ (PointType const a, int const i) 
+	friend PointType operator+ (PointType const a, int const i) 
 	{ 
 		PointType res { a }; 
 		res += i; 
 		return res; 
 	};
 
-	friend PointType const operator+ (PointType const a, float const d) 
+	friend PointType operator+ (PointType const a, float const d) 
 	{ 
 		PointType res { a }; 
 		res += d; 
 		return res; 
 	};
 
-	friend PointType const operator- (PointType const a, int const i) 
+	friend PointType operator- (PointType const a, int const i) 
 	{ 
 		PointType res { a }; 
 		res -= i; 
 		return res; 
 	};
 
-	friend PointType const operator- (PointType const a, float const d) 
+	friend PointType operator- (PointType const a, float const d) 
 	{ 
 		PointType res { a }; 
 		res -= d; 
 		return res; 
 	};
 
-	friend PointType const operator* (PointType const a,  float const d) 
+	friend PointType operator* (PointType const a,  float const d) 
 	{ 
 		PointType res { a }; 
 		res *= d; 
 		return res; 
 	};
 
-	friend PointType const operator* (PointType const a,  int const i) 
+	friend PointType operator* (PointType const a,  int const i) 
 	{ 
 		PointType res { a }; 
 		res *= i; 
 		return res; 
 	};
 
-	friend PointType const operator/ (PointType const a, float const d) 
+	friend PointType operator/ (PointType const a, float const d) 
 	{ 
 		PointType res { a }; 
 		res /= d; 
@@ -192,7 +192,7 @@ public:
 	//	return res; 
 	//};
 
-	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
+	friend BASE_TYPE MaxAbsDelta(PointType const pnt) 
 	{
 		BASE_TYPE xAbs { abs(pnt.GetXvalue()) };
 		BASE_TYPE yAbs { abs(pnt.GetYvalue()) };

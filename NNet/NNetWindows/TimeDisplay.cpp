@@ -28,18 +28,16 @@ public:
 		NNetModelReaderInterface const * pModelInterface,
 		int                              iPartInStatusBar
 	)
-	:	m_pStatusBar           (pStatusBar),
-		m_pNMRI(pModelInterface),
-		m_iPartInStatusBar     (iPartInStatusBar)
+	:	m_pStatusBar      (pStatusBar),
+		m_pNMRI           (pModelInterface),
+		m_iPartInStatusBar(iPartInStatusBar)
 	{ 
 	}
 
-	virtual void Trigger()
+	void Trigger() final
 	{
-		fMicroSecs const time = m_pNMRI->GetSimulationTime();
-		wstring wstrTime;
-		Format2wstring(time, wstrTime);
-		m_pStatusBar->DisplayInPart(m_iPartInStatusBar, wstrTime);
+		fMicroSecs const time { m_pNMRI->GetSimulationTime() };
+		m_pStatusBar->DisplayInPart(m_iPartInStatusBar, Format2wstring(time));
 	}
 
 private:

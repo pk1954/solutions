@@ -35,8 +35,6 @@ public:
 		m_upKnotInsert->AddOutgoing(m_pPipeOld);
 	}
 
-	~AddOutgoing2PipeCommand()	{}
-
 	void Do() final 
 	{ 
 		m_pStartKnotOld->ReplaceOutgoing(m_pPipeOld, m_upPipeExt.get());

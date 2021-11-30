@@ -75,24 +75,6 @@ public:
 	bool IsCloseToZero()            const { return ::IsCloseToZero(GetValue()); }
 	bool IsCloseTo(NamedType other) const { return (*this - other).IsCloseToZero(); }
 
-	friend NamedType Limit(NamedType const v, NamedType const min, NamedType const max)
-	{
-		if (v > max)
-			return max;
-		if (v < min)
-			return min;
-		return v;
-	}
-
-	friend bool IsInRange(NamedType const v, NamedType const min, NamedType const max)
-	{
-		if (v > max)
-			return false;
-		if (v < min)
-			return false;
-		return true;
-	}
-
 	friend NamedType Distance(NamedType const & a, NamedType const & b)
 	{
 		return NamedType(abs(a.m_value - b.m_value));

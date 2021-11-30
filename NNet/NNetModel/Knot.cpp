@@ -30,6 +30,9 @@ void Knot::DrawExterior(DrawContext const & context, tHighlight const type) cons
 	case tHighlight::targetNoFit:
 		context.FillCircle(MicroMeterCircle(GetPos(), 30.0_MicroMeter), NNetColors::EXT_TARGET_NOFIT);
 		break;
+	default:
+		assert(false);
+		break;
 	}
 }
 
@@ -48,6 +51,9 @@ void Knot::DrawInterior(DrawContext const & context, tHighlight const type) cons
 		break;
 	case tHighlight::targetNoFit:
 		context.FillCircle(GetCircle() * PIPE_INTERIOR, NNetColors::INT_NORMAL);
+		break;
+	default:
+		assert(false);
 		break;
 	}
 }
@@ -68,4 +74,3 @@ void Knot::EvaluateSelectionStatus()
 		)                                                  // knot must also be selected
 	);
 }
-

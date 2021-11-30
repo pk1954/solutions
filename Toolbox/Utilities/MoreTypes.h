@@ -180,4 +180,12 @@ static Radian Vector2Radian(MicroMeterPnt const & umPnt)
 
 ////////////// Formatting /////////////////////////////////////
 
-void Format2wstring(fMicroSecs const, wstring &);
+int     StepsOfThousand(float fValue);
+wstring GetUnitPrefix  (int const);
+wstring Format2wstring(float const);
+
+template<typename T>
+wstring Format2wstring(T const val)
+{
+	return Format2wstring(val.GetValue() / TypeAttribute<T>::factor) + TypeAttribute<T>::unit;
+}

@@ -6,15 +6,13 @@
 
 #include "win32_status.h"
 #include "ScriptStack.h"
-#include "script.h"
+#include "SCRIPT.H"
 
 using std::to_wstring;
 
 class ScriptHook : public ScriptFunctor
 {
 public:
-	ScriptHook() {}
-
 	void Initialize
 	(
 		StatusBar * const pStatusBar, 
@@ -26,12 +24,12 @@ public:
 		m_pStatusBar->AddCustomControl(80);  // nr of characters
 	}
 
-	virtual void operator() (Script & script) const
+	void operator() (Script & script) const final
 	{
 		if (!m_pStatusBar)
 			return;
 
-		if (Script * const pScript { ScriptStack::GetScript() })
+		if (Script const * const pScript { ScriptStack::GetScript() })
 		{
 			m_pStatusBar->DisplayInPart
 			(

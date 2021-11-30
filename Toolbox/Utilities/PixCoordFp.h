@@ -5,7 +5,7 @@
 #pragma once
 
 #include "util.h"
-#include "Observable.h"
+#include "observable.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
@@ -16,19 +16,17 @@ class PixCoordFp : public Observable
 {
 public:
 
-	PixCoordFp()
-	  : m_fPixOffset(0.0_fPixel),
-		m_logPixelSize(1.0f)
-	{}
+	//PixCoordFp()
+	//{}
 
-	PixCoordFp
-	(	
-		fPixel   const fPixOffset,
-		LOG_UNIT const pixelSize
-	)
-	  : m_fPixOffset(fPixOffset),
-		m_logPixelSize()
-	{}
+	//PixCoordFp
+	//(	
+	//	fPixel   const fPixOffset,
+	//	LOG_UNIT const pixelSize
+	//)
+	//  : m_fPixOffset(fPixOffset),
+	//	m_logPixelSize()
+	//{}
 
 	void Reset()
 	{
@@ -38,22 +36,22 @@ public:
 
 	//////// transformations LOG_UNIT <---> fPixel ////////
 
-	fPixel const Transform2fPixelSize(LOG_UNIT const param) const
+	fPixel Transform2fPixelSize(LOG_UNIT const param) const
 	{ 
 		return fPixel(param / m_logPixelSize);
 	}
 
-	LOG_UNIT const Transform2logUnitSize(fPixel const fPixel) const
+	LOG_UNIT Transform2logUnitSize(fPixel const fPixel) const
 	{ 
 		return m_logPixelSize * fPixel.GetValue();
 	}
 
-	fPixel const Transform2fPixelPos(LOG_UNIT const np) const
+	fPixel Transform2fPixelPos(LOG_UNIT const np) const
 	{ 
 		return Transform2fPixelSize(np) + m_fPixOffset;
 	}
 
-	LOG_UNIT const Transform2logUnitPos(fPixel const fPixel) const
+	LOG_UNIT Transform2logUnitPos(fPixel const fPixel) const
 	{ 
 		return Transform2logUnitSize(fPixel - m_fPixOffset);
 	}
@@ -67,8 +65,8 @@ public:
 
 	//////// queries ////////
 
-	LOG_UNIT const GetPixelSize()   const { return m_logPixelSize; };
-	fPixel   const GetPixelOffset() const { return m_fPixOffset; }
+	LOG_UNIT GetPixelSize()   const { return m_logPixelSize; };
+	fPixel   GetPixelOffset() const { return m_fPixOffset; }
 
 	//////// manipulation functions ////////
 
@@ -76,7 +74,7 @@ public:
 	void Move(PIXEL    const pixDelta ) { Move(::Convert2fPixel(pixDelta)); }
 	void Move(LOG_UNIT const umDelta  ) { Move(Transform2fPixelSize(umDelta)); }
 
-	bool const Zoom(bool const bDirection)
+	bool Zoom(bool const bDirection)
 	{
 		bool     bResult { false };
 		LOG_UNIT logNewSize;
@@ -107,7 +105,7 @@ public:
 		SetPixelOffset(Transform2fPixelSize(umCenter) - fPntPix);
 	}
 
-	PixCoordFp const operator+= (PixCoordFp const a) 
+	PixCoordFp operator+= (PixCoordFp const a) 
 	{ 
 		m_fPixOffset   += a.m_fPixOffset;
 		m_logPixelSize += a.m_logPixelSize; 
@@ -115,7 +113,7 @@ public:
 		return * this; 
 	}
 
-	PixCoordFp const operator-= (PixCoordFp const a) 
+	PixCoordFp operator-= (PixCoordFp const a) 
 	{ 
 		m_fPixOffset   -= a.m_fPixOffset;
 		m_logPixelSize -= a.m_logPixelSize; 
@@ -123,7 +121,7 @@ public:
 		return * this; 
 	}
 
-	PixCoordFp const operator*= (float const factor) 
+	PixCoordFp operator*= (float const factor) 
 	{ 
 		m_fPixOffset *= factor;
 		m_logPixelSize  *= factor; 
@@ -131,21 +129,21 @@ public:
 		return * this; 
 	}
 
-	friend PixCoordFp const operator+ (PixCoordFp const a, PixCoordFp const b) 
+	friend PixCoordFp operator+ (PixCoordFp const a, PixCoordFp const b) 
 	{ 
 		PixCoordFp res { a }; 
 		res += b; 
 		return res; 
 	};
 
-	friend PixCoordFp const operator- (PixCoordFp const a, PixCoordFp const b) 
+	friend PixCoordFp operator- (PixCoordFp const a, PixCoordFp const b) 
 	{ 
 		PixCoordFp res { a }; 
 		res -= b; 
 		return res; 
 	};
 
-	friend PixCoordFp const operator* (PixCoordFp const a, float const factor) 
+	friend PixCoordFp operator* (PixCoordFp const a, float const factor) 
 	{ 
 		PixCoordFp res { a }; 
 		res *= factor; 
@@ -189,9 +187,9 @@ public:
 
 private:
 
-	fPixel   m_fPixOffset;
-	LOG_UNIT m_logPixelSize;
-	LOG_UNIT m_pixelSizeMin {   1.0f };
-	LOG_UNIT m_pixelSizeMax { 100.0f };
-	float    m_fZoomFactor  {   1.1f };
+	fPixel   m_fPixOffset   { 0.0_fPixel };
+	LOG_UNIT m_logPixelSize {       1.0f };
+	LOG_UNIT m_pixelSizeMin {       1.0f };
+	LOG_UNIT m_pixelSizeMax {     100.0f };
+	float    m_fZoomFactor  {       1.1f };
 };

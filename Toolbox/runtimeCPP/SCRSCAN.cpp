@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "errhndl.h"
+#include "ERRHNDL.H"
 #include "scanner.h"
 #include "Input.h"
                   

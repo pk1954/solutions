@@ -11,25 +11,74 @@ using std::wostringstream;
 using std::setprecision;
 using std::fixed;
 
-void Format2wstring(fMicroSecs const us, wstring & wstr)
+int StepsOfThousand(float fValue)
 {
-	wostringstream wstrBuffer;
-	wstrBuffer << fixed << setprecision(2);
-	if (us > 1.e6_MicroSecs)  // more than one second
+	int iSteps { 0 };
+	//int iSteps2 { 0 };		
+	//float fLog1000;
+	//float fFloor;
+
+	//if ( fValue < 1.f )
+	//{
+	//	fLog1000 = log10(fValue) / 3.f;
+	//	fFloor   = floor(-fLog1000);
+	//	iSteps2  = -static_cast<int>(fFloor);
+	//}
+	//else
+	//{
+	//	fLog1000 = log10(fValue) / 3.f;
+	//	fFloor   = floor(fLog1000);
+	//	iSteps2  = static_cast<int>(fFloor);
+	//}
+
+	while (fValue < 1.f)
 	{
-		float seconds = us.GetValue() / 1000000.0f;
-		wstrBuffer << seconds << L" s";
+		fValue *= 1e3f;
+		++iSteps;
 	}
-	else if (us > 1.e3_MicroSecs)  // more than one millisecond
+
+	while (fValue >= 1000.f)
 	{
-		float millisecs = us.GetValue() / 1000.0f;
-		wstrBuffer << millisecs << L" ms";
+		fValue *= 1e-3f;
+		--iSteps;
 	}
-	else
-	{
-		float microsecs = us.GetValue();
-		wstrBuffer << microsecs << L" \u03BCs";
-	}
-	wstr = wstrBuffer.str();
+
+	//if ( iSteps != iSteps2 )
+	//{
+	//	int x = 42;
+	//}
+
+	return iSteps;
 }
 
+wstring GetUnitPrefix(int const iSteps)
+{
+	static wchar_t const prefix[]  { L'G', L'M', L'k', L' ', L'm', L'\u03BC', L'n', L'p' };
+	static int     const iMaxIndex { sizeof(prefix)/sizeof(prefix[0]) - 1 };
+	int iIndex { iSteps + 3 }; // 3 is index of L' '
+	wchar_t const wchPrefix { IsInRange(iIndex, 0, iMaxIndex) ? prefix[iIndex] : L'?' };
+	wstring wstrRes { L" " };
+	if (wchPrefix != L' ')
+		wstrRes += wchPrefix;
+	return wstrRes;
+}
+
+wstring Format2wstring(float fValue)
+{
+	int iIndex { 0 };
+
+	if (IsCloseToZero(fValue))
+	{
+		fValue = 0.f;
+	}
+	else 
+	{
+		int iSteps = StepsOfThousand(fValue);
+		iIndex += iSteps;
+		fValue *= powf(1000.f, static_cast<float>(iSteps));
+	}
+
+	wostringstream wstrBuffer;
+	wstrBuffer << fixed << setprecision(2) << fValue << GetUnitPrefix(iIndex);
+	return wstrBuffer.str();
+}

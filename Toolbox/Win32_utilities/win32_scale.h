@@ -7,7 +7,7 @@
 #include <string> 
 #include <sstream> 
 #include "util.h"
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"
@@ -100,7 +100,7 @@ private:
 	LogUnits               m_logEnd         {};
 	LogUnits               m_logTickDist    {};
 	float                  m_fUnitReduction {};
-	wchar_t                m_unitPrefix     {};
+	wstring                m_wstrUnit       {};
 
 	// private functions
 
@@ -122,7 +122,6 @@ private:
 			? fPixelPoint(0._fPixel, - fPixScaleLen)
 			: fPixelPoint(fPixScaleLen, 0._fPixel)
 		};
-		fPixelRect textBox {};
 
 		m_fPixPntStart = m_bVertScale
 		? fPixelPoint(m_fPixOrthoOffset,             getClHeight() - m_pPixCoord->GetPixelOffset())
@@ -133,6 +132,12 @@ private:
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
 		m_fPixTickDist = m_pPixCoord->Transform2fPixelSize(m_logTickDist);
 		setScaleParams();
+		renderScale();
+	}
+
+	void renderScale()
+	{
+		fPixelRect textBox {};
 		setTextBox(textBox);
 
 		if (CrsrInClientRect())
@@ -148,11 +153,7 @@ private:
 			: fPixelPoint(10._fPixel,   0._fPixel)
 		};
 
-		display
-		(
-			textBox + (m_fPixPntStart + fPixPos), 
-			m_unitPrefix + TypeAttribute<LogUnits>::unit 
-		);
+		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit);
 	}
 
 	void OnMouseMove(WPARAM const wParam, LPARAM const lParam) final
@@ -167,7 +168,7 @@ private:
 		return false;
 	}
 
-	void OnPaint()
+	void OnPaint() final
 	{
 		if (IsWindowVisible())
 		{
@@ -213,17 +214,11 @@ private:
 
 	void setScaleParams()
 	{
-		static wchar_t const prefix[] { L'k', L' ', L'm', L'\u03BC', L'\0' };
-
-		wchar_t  const * pPrefix   { prefix };
-		float    const   logDist10 { m_logTickDist.GetValue() * 10 };
-
-		m_fUnitReduction = TypeAttribute<LogUnits>::factor * 1e6f;
-		do
-		{
-			m_fUnitReduction *= 1e-3f;
-			m_unitPrefix = *pPrefix++;
-		} while ((logDist10 < round(m_fUnitReduction)) && *pPrefix);
+		float   const fFactor   { TypeAttribute<LogUnits>::factor };
+		float   const logDist10 { m_logTickDist.GetValue() * 10 };  // numbers every 10 ticks
+		int     const iSteps    { StepsOfThousand(logDist10 / fFactor) };
+		m_wstrUnit       = GetUnitPrefix(iSteps) + TypeAttribute<LogUnits>::unit;
+		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
 	}
 
 	void setTextBox(fPixelRect & textBox) const
@@ -302,7 +297,7 @@ private:
 	void display
 	(
 		fPixelRect const & textBox,
-		wstring    const   wstr
+		wstring    const & wstr
 	) const
 	{
 		m_graphics.DisplayText(textBox, wstr, SCALE_COLOR, m_pTextFormat);

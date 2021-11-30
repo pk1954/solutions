@@ -6,7 +6,7 @@
 
 #include <memory>
 #include <vector>
-#include "Observable.h"
+#include "observable.h"
 #include "NamedType.h"
 #include "SignalFactory.h"
 #include "Signal.h"

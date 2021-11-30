@@ -3,7 +3,7 @@
 // EvoWindows
 
 #include "stdafx.h"
-#include "Strsafe.h"
+#include "strsafe.h"
 #include "util.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -18,6 +18,9 @@
 #include "win32_performanceWindow.h"
 
 using std::wostringstream;
+using std::fixed;
+using std::setprecision;
+
 
 void PerformanceWindow::Start
 (
@@ -57,8 +60,7 @@ void PerformanceWindow::printMicroSecLine
 ) const
 {
 	wostringstream wBuffer;
-	float fPrintValue { usDuration.GetValue() };
-	wBuffer << std::fixed << std::setprecision(1) << fPrintValue << L" µs";
+	wBuffer << fixed << setprecision(1) << usDuration.GetValue() << L" µs";
 	textBuf.printString(pwch1);
 	textBuf.printString(L"");
 	textBuf.printString(wBuffer.str());

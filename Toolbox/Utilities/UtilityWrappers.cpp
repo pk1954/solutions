@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include <assert.h>
-#include "script.h"
+#include "SCRIPT.H"
 #include "symtab.h"
 #include "trace.h"
 #include "BoolOp.h"
@@ -59,7 +59,7 @@ tBoolOp ScrReadBoolOp(Script & script)
 class WrapOpenTraceFile : public ScriptFunctor
 {
 public:
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
 		OpenTraceFile(script.ScrReadString());
     }

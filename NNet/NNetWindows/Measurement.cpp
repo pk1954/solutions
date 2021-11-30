@@ -113,28 +113,24 @@ void Measurement::measuringArea() const
 
 void Measurement::textArea(fMicroSecs const fMicroSecsPerPixel) const
 {
-	static COLORREF const COLOR        { RGB(0, 0, 0) };  // CLR_BLACK
-	fPixel          const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
-	fMicroSecs      const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
-	fHertz          const frequency    { Frequency(usMeasured) };
+	fPixel     const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
+	fMicroSecs const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
+	fHertz     const frequency    { Frequency(usMeasured) };
 
 	fPixel fPosRight { m_fPixRightLimit - GRADIENT_WIDTH };
 	fPixel fPosTop   { GRADIENT_WIDTH };
 
 	fPixelRect fPixRect
 	(
-		fPosRight - 55._fPixel, // left
+		fPosRight - 70._fPixel, // left
 		fPosTop,                // top
 		fPosRight,              // right
 		fPosTop + 35._fPixel    // bottom
 	);
 
 	wostringstream wBuffer;
-	wstring        wstrTime;
-	Format2wstring(usMeasured, wstrTime);
-	wBuffer << wstrTime << endl;
-	wBuffer << fixed << setprecision(2);
-	wBuffer << frequency << L" Hz";
+	wBuffer << Format2wstring(usMeasured) << endl;
+	wBuffer << Format2wstring(frequency);
 
 	static D2D1::ColorF const COLOR_TEXT     { D2D1::ColorF::Black }; 
 	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::AntiqueWhite };

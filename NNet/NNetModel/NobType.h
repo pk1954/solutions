@@ -25,6 +25,9 @@ public:
 		outputNeuron,
 		neuron,
 		knot,
+		synapse,
+		branch,
+		bend,
 		pipe,
 		undefined,
 		nobTypeLast  = pipe,
@@ -37,7 +40,7 @@ public:
 		:	m_value(Value::undefined)
 	{}
 
-    NobType(Value val)
+    NobType(Value val)   // "explicit" makes trouble!
 		:	m_value(val)
 	{}
 
@@ -53,18 +56,19 @@ public:
 		AssertLimits<int>((int)m_value, (int)Value::nobTypeFirst, (int)Value::undefined);
 	}
 
-	static constexpr void Apply2All(function<void(Value const &)> const & func)
+	template<class FUNC>
+	static constexpr void Apply2All(FUNC const & func)
 	{
 		for (int i = 0; i <= static_cast<int>(NobType::Value::nobTypeLast); ++i)
 			func(static_cast<Value>(i));
 	}
 
-	static constexpr wstring const GetListOfNobTypes()
+	static constexpr wstring GetListOfNobTypes()
 	{
 		wstring wstrList;
 		NobType::Apply2All
 		(
-			[&](NobType::Value const &t) 
+			[&wstrList](NobType::Value const &t) 
 			{ 
 				wstrList += NobType::GetName(t) + L" ";
 			}
@@ -114,25 +118,3 @@ private:
 };
 
 using std::bitset;
-
-class NobTypeFilter
-{
-public:
-	NobTypeFilter() = default;
-	NobTypeFilter(NobType::Value val) : m_bits(bitSet(val)) {}
-	NobTypeFilter(const NobTypeFilter& other) : m_bits(other.m_bits) {}
-
-	bool const Any()  const { return m_bits.any();  }
-	bool const All()  const { return m_bits.all();  }
-	bool const None() const { return m_bits.none(); }
-
-	bool const Test (NobType::Value val) const { return m_bits.test (bitSet(val)); }
-	void const Set  (NobType::Value val)       {        m_bits.set  (bitSet(val)); }
-	void const Unset(NobType::Value val)       {        m_bits.reset(bitSet(val)); }
-
-private:
-	
-	static unsigned int bitSet(NobType::Value const val) { return 1 << static_cast<unsigned int>(val); }
-
-	bitset<NobType::NR_OF_NOB_TYPES> m_bits;
-};

@@ -6,8 +6,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include "Script.h"
-#include "errhndl.h"
+#include "SCRIPT.H"
+#include "ERRHNDL.H"
 #include "Resource.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
@@ -44,7 +44,7 @@ public:
       : WrapBase(L"SetAutoOpen")
     {}
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if (bMode)
@@ -53,7 +53,7 @@ public:
             AutoOpen::Off();
     }
 
-    virtual void Write(wostream & out) const
+    void Write(wostream & out) const final
     {
         out << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF);
     }
@@ -62,12 +62,12 @@ public:
 class WrapSetSound: public WrapBase
 {
 public:
-    WrapSetSound(Sound & sound)
+    explicit WrapSetSound(Sound & sound)
       : WrapBase(L"SetSound"),
         m_sound(sound)
     {}
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if (bMode)
@@ -76,7 +76,7 @@ public:
             m_sound.Off();
     }
 
-    virtual void Write(wostream & out) const
+    void Write(wostream & out) const final
     {
         out << (m_sound.IsOn() ? PREF_ON : PREF_OFF);
     }
@@ -88,17 +88,17 @@ private:
 class WrapDescWinFontSize: public WrapBase
 {
 public:
-    WrapDescWinFontSize(DescriptionWindow & descWin)
+    explicit WrapDescWinFontSize(DescriptionWindow & descWin)
       : WrapBase(L"DescWinFontSize"),
         m_descWin(descWin)
     {}
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         m_descWin.SetFontSize(script.ScrReadInt());
     }
 
-    virtual void Write(wostream & out) const
+    void Write(wostream & out) const final
     {
         out << m_descWin.GetFontSize();
     }
@@ -122,7 +122,7 @@ public:
       m_hwndApp(hwndApp)
     {}
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         wstring wstrFile    { script.ScrReadString() };
         auto    termination { make_unique<NNetImportTermination>(m_hwndApp, IDX_REPLACE_MODEL) };
@@ -132,7 +132,7 @@ public:
         }
      }
 
-    virtual void Write(wostream & out) const
+    void Write(wostream & out) const final
     {
         out <<  L"\""  << m_nmri.GetModelFilePath() << L"\"";
     }
@@ -170,7 +170,7 @@ void Preferences::Initialize
     SymbolTable::ScrDefConst(PREF_ON,  1L);
 }
 
-bool Preferences::ReadPreferences()
+bool Preferences::ReadPreferences() const
 {
     if (exists(m_wstrPreferencesFile))
     {
@@ -187,10 +187,10 @@ bool Preferences::ReadPreferences()
     }
 }
 
-bool Preferences::WritePreferences()
+bool Preferences::WritePreferences() const
 {
     wofstream prefFile(m_wstrPreferencesFile);
-    for (auto & it : m_prefVector)
+    for (auto const & it : m_prefVector)
         it->Write2(prefFile);
     prefFile.close();
     wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;

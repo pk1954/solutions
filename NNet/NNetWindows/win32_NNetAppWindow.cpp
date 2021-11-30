@@ -32,7 +32,7 @@
 // scripting and tracing
 
 #include "trace.h"
-#include "script.h"
+#include "SCRIPT.H"
 #include "Preferences.h"
 #include "NNetWrappers.h"
 #include "NobException.h"
@@ -572,8 +572,7 @@ bool NNetAppWindow::AskAndSave()
 void NNetAppWindow::StartScript(wstring const & wstrFile)
 {
 	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-	Script          * pScript { ScriptStack::OpenScript() };
-	UPNobList const & nobList { m_nmwi.GetUPNobs() };
+	Script * pScript { ScriptStack::OpenScript() };
 	if (pScript && pScript->ScrOpen(wstrFile))
 	{
 		pScript->ScrSetNewLineHook(& m_ScriptHook);
@@ -588,8 +587,8 @@ void NNetAppWindow::openSignalDesigner()
 		return;
 	if (! m_nmri.IsOfType<InputConnector>(id))
 		return;
-	InputConnector  * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
-	SignalGenerator & sigGen  { pInpCon->GetSignalGenerator() };
+	InputConnector       * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
+	SignalGenerator      & sigGen  { pInpCon->GetSignalGenerator() };
 	SignalDesigner const * pSigDes 
 	{ 
 		new SignalDesigner

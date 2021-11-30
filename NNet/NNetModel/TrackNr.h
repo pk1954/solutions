@@ -5,13 +5,13 @@
 #pragma once
 
 #include <iostream>
-#include "script.h"
+#include "SCRIPT.H"
 
 using std::wostream;
 
 using TrackNr = NamedType< int, struct TrackNrParam >;
 
-static TrackNr const ScrReadTrackNr(Script & script)
+static TrackNr ScrReadTrackNr(Script & script)
 {
 	script.ScrReadString(L"track");
 	TrackNr const trackNr { script.ScrReadInt() };

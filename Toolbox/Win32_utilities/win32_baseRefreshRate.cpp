@@ -8,6 +8,7 @@
 
 using std::wstring;
 using std::to_wstring;
+using std::bit_cast;
 
 BaseRefreshRate::BaseRefreshRate()
 {}
@@ -25,7 +26,7 @@ void BaseRefreshRate::SetRefreshRate(milliseconds const msRate)
 	startTimer(msRate);
 }
 
-milliseconds BaseRefreshRate::GetRefreshRate()
+milliseconds BaseRefreshRate::GetRefreshRate() const
 { 
 	return m_msRefreshRate; 
 }
@@ -44,7 +45,7 @@ void BaseRefreshRate::RefreshRateDialog(HWND const hwnd)
 	if (dNewValue < MIN_REFRESH_RATE)
 	{
 		wstring text { L"Minimum refresh rate is " + to_wstring(MIN_REFRESH_RATE) + L" ms" };
-		MessageBox(nullptr, text.c_str(), NULL, MB_OK);
+		MessageBox(nullptr, text.c_str(), nullptr, MB_OK);
 		dNewValue = MIN_REFRESH_RATE;
 	}
 	SetRefreshRate(static_cast<milliseconds>(static_cast<long long>(dNewValue)));
@@ -52,7 +53,7 @@ void BaseRefreshRate::RefreshRateDialog(HWND const hwnd)
 
 void BaseRefreshRate::startTimer(milliseconds const msTimer)
 {
-	DWORD dwTime = static_cast<DWORD>(msTimer.count());
+	auto dwTime = static_cast<DWORD>(msTimer.count());
 	(void)CreateTimerQueueTimer
 	(
 		& m_hTimer,                     // output parameter 
@@ -77,7 +78,7 @@ void BaseRefreshRate::deleteTimer()
 
 void CALLBACK BaseRefreshRate::TimerProc(void * const lpParam, bool const TimerOrWaitFired)
 {
-	BaseRefreshRate * const pRefreshRate = reinterpret_cast<BaseRefreshRate *>(lpParam);
+	auto const pRefreshRate = bit_cast<BaseRefreshRate *>(lpParam);
 	if (pRefreshRate->m_bDirty)
 		pRefreshRate->trigger();
 }

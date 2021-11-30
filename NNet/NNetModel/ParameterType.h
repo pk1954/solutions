@@ -33,8 +33,19 @@ public:
 	static wchar_t const * GetName(ParamType::Value const);
 	static wchar_t const * GetUnit(ParamType::Value const);
 
-	static void Apply2GlobalParameters(function<void(ParamType::Value const &)> const &);
-	static void Apply2AllParameters   (function<void(ParamType::Value const &)> const &);
+	template<class FUNC>
+	static void Apply2GlobalParameters(FUNC const & func)
+	{
+		for (int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLastGlobal); ++i)
+			func(static_cast<ParamType::Value>(i));
+	}
+
+	template<class FUNC>
+	static void Apply2AllParameters(FUNC const & func)
+	{
+		for (int i = 0; i <= static_cast<int>(ParamType::Value::tParameterLast); ++i)
+			func(static_cast<ParamType::Value>(i));
+	}
 
 	friend wostream & operator<<(wostream &, ParamType::Value const);
 

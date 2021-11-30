@@ -13,10 +13,10 @@
 #include <string.h>
 #include <assert.h>
 #include "util.h"
-#include "Scanner.h"
-#include "ERRHNDL.h"
-#include "Script.h"
-#include "Symtab.h"
+#include "SCANNER.H"
+#include "ERRHNDL.H"
+#include "SCRIPT.H"
+#include "SYMTAB.H"
 
 using std::endl;
 using std::numeric_limits;
@@ -31,9 +31,8 @@ void Script::ScrSetWrapHook(ScriptFunctor const * const pHook)
 
 void Script::ScrReadSpecial(wchar_t const wchExpected)
 {
-	static wchar_t strExpected[2] = L"";
-	strExpected[0] = wchExpected;
-	m_scanner.SetExpectedToken(strExpected);
+    wstring wstr { wchExpected };
+    m_scanner.SetExpectedToken(wstr);
 
 	switch (m_scanner.NextToken(true))
 	{
@@ -51,7 +50,7 @@ void Script::ScrReadSpecial(wchar_t const wchExpected)
 	}             
 }
 
-void Script::ScrReadString(wstring const wstrExpected)
+void Script::ScrReadString(wstring const & wstrExpected)
 {
 	m_scanner.SetExpectedToken(wstrExpected);
 
@@ -75,8 +74,8 @@ void Script::ScrReadString(wstring const wstrExpected)
 
 bool Script::readSign()
 {
-   wchar_t const wch  = m_scanner.GetCharacter();
-   bool          fNeg = false;   
+    wchar_t const wch  { m_scanner.GetCharacter() };
+    bool          fNeg { false };   
 
    if ((wch == L'+') || (wch == L'-'))
    {
@@ -115,8 +114,8 @@ unsigned long Script::numeric
    bool        * const   pfNeg         // negative value allowed?
 )
 {                                  
-   bool    const fNegAllowed = * pfNeg;
-   unsigned long ulValue = 0;
+    bool    const fNegAllowed { *pfNeg };
+    unsigned long ulValue     { 0 };
 
    m_scanner.SetExpectedToken(wstrExpected);
 
@@ -139,7 +138,7 @@ unsigned long Script::numeric
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-            Symbol const & symbol = SymbolTable::GetSymbolFromName(m_scanner.GetString());
+           Symbol const & symbol { SymbolTable::GetSymbolFromName(m_scanner.GetString()) };
             switch (symbol.GetSymbolType())
             {
                case tSTYPE::ULongConst:
@@ -177,8 +176,8 @@ unsigned long Script::numeric
 
 double Script::ScrReadFloat(void)
 { 
-   bool   fNeg = false;   
-   double dRes = 0.0;
+    bool   fNeg { false };
+    double dRes { 0.0 };
          
    m_scanner.SetExpectedToken(L"float");
 
@@ -267,8 +266,8 @@ double Script::ScrReadFloat(void)
    
 unsigned long Script::ScrReadUlong(void)
 { 
-   bool                fNeg    = false;
-   unsigned long const ulValue = numeric(L"unsigned long", ULONG_MAX, &fNeg);
+    bool                fNeg    { false };
+    unsigned long const ulValue { numeric(L"unsigned long", ULONG_MAX, &fNeg) };
    return ulValue; 
 }
 
@@ -276,8 +275,8 @@ unsigned long Script::ScrReadUlong(void)
    
 long Script::ScrReadLong(void)
 { 
-   bool fNeg = true;
-   long lRes = static_cast<long>(numeric(L"long", LONG_MAX, &fNeg));
+    bool fNeg { true };
+    auto lRes { static_cast<long>(numeric(L"long", LONG_MAX, &fNeg)) };
 
    if (fNeg)
       lRes = -lRes;
@@ -289,8 +288,8 @@ long Script::ScrReadLong(void)
    
 int Script::ScrReadInt(void)
 { 
-   bool fNeg = true;
-   int  iRes = static_cast<int>(numeric(L"int", INT_MAX, &fNeg));
+   bool fNeg { true };
+   auto iRes { static_cast<int>(numeric(L"int", INT_MAX, &fNeg)) };
    
    if (fNeg)
       iRes = -iRes;
@@ -302,8 +301,8 @@ int Script::ScrReadInt(void)
    
 unsigned int Script::ScrReadUint(void)
 { 
-   bool               fNeg  = false;
-   unsigned int const uiRes = static_cast<unsigned int>(numeric(L"unsigned int", UINT_MAX, &fNeg));
+   bool       fNeg  { false };
+   auto const uiRes { static_cast<unsigned int>(numeric(L"unsigned int", UINT_MAX, &fNeg)) };
    return uiRes;  
 } 
 
@@ -311,39 +310,39 @@ unsigned int Script::ScrReadUint(void)
    
 short Script::ScrReadShort(void)
 { 
-   bool  fNeg = true;
-   short sRes = static_cast<short>(numeric(L"short", SHRT_MAX, &fNeg));
+    bool fNeg { true };
+    auto sRes { static_cast<short>(numeric(L"short", SHRT_MAX, &fNeg)) };
 
-   if (fNeg)
-      sRes = -sRes;
+    if (fNeg)
+       sRes = -sRes;
 
-   return sRes;  
+    return sRes;  
 } 
 
 //  ScrReadUshort: Try to read an unsigned short from open test script
    
 unsigned short Script::ScrReadUshort(void)
 { 
-   bool                 fNeg  = false;
-   unsigned short const usRes = static_cast<unsigned short>(numeric(L"unsigned short", USHRT_MAX, &fNeg));
-   return usRes;  
+    bool       fNeg  { false };
+    auto const usRes { static_cast<unsigned short>(numeric(L"unsigned short", USHRT_MAX, &fNeg)) };
+    return usRes;  
 } 
 
 //  ScrReadUchar: Try to read an unsigned character from open test script
    
 unsigned char Script::ScrReadUchar(void)
 { 
-   bool                fNeg   = false;
-   unsigned char const uchRes = static_cast<unsigned char>(numeric(L"unsigned char", UCHAR_MAX, &fNeg));
-   return uchRes;  
+    bool       fNeg   { false };
+    auto const uchRes { static_cast<unsigned char>(numeric(L"unsigned char", UCHAR_MAX, &fNeg)) };
+    return uchRes;  
 }
 
 // ScrReadChar: Try to read a character from open test script
    
 wchar_t Script::ScrReadChar(void)
 { 
-   bool    fNeg   = false;   
-   wchar_t wchRes = L'\0'; 
+    bool    fNeg   { false };
+    wchar_t wchRes { L'\0' }; 
                
    m_scanner.SetExpectedToken(L"char");
    
@@ -386,7 +385,7 @@ wchar_t Script::ScrReadChar(void)
 //                  Return code is a pointer to a string in an internal buffer 
 //                  This pointer is valid until next call of a Scr.. function
    
-wstring const Script::ScrReadString(void)
+wstring Script::ScrReadString(void)
 { 
    m_scanner.SetExpectedToken(L"string");
 
@@ -429,7 +428,7 @@ void Script::ScrSetNewLineHook(ScriptFunctor const * const pHook)
         Scanner::SetNewLineTrigger(nullptr);
 }
 
-bool const Script::ScrOpen(wstring const & wstrPath)
+bool Script::ScrOpen(wstring const & wstrPath)
 { 
     m_bStop = false;
     try 
@@ -446,7 +445,7 @@ bool const Script::ScrOpen(wstring const & wstrPath)
     return true;
 }
 
-bool const Script::ReadNextToken()  // returns true, if token was successfully read
+bool Script::ReadNextToken()  // returns true, if token was successfully read
 {                                   // or end of file reached         
     if (m_bStop)                    // false, if token was bad 
         return false;
@@ -464,7 +463,7 @@ bool const Script::ReadNextToken()  // returns true, if token was successfully r
     return true;
 }
 
-bool const Script::ProcessToken()
+bool Script::ProcessToken()
 {
     try 
     {  
@@ -496,7 +495,7 @@ bool const Script::ProcessToken()
     return true;
 }         
 
-bool const Script::ScrClose()
+bool Script::ScrClose()
 { 
     try 
     {     
@@ -516,7 +515,7 @@ bool const Script::ScrClose()
 class EchoScriptLine: public ScriptFunctor
 {
 public:
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
         wcout << Scanner::COMMENT_SYMBOL << script.GetActLine();
     }
@@ -524,7 +523,7 @@ public:
 
 //  ScrProcess: Process a test script
 
-bool const Script::ScrProcess(wstring const & wstrPath)
+bool Script::ScrProcess(wstring const & wstrPath)
 { 
     static EchoScriptLine newLineHook;
     if (!ScrOpen(wstrPath))   // could not open file 
@@ -548,9 +547,9 @@ void Script::Clear()
 	SymbolTable::Clear();
 }
 
-long const Script::GetPercentRead()
+long Script::GetPercentRead()
 {
-    long long const filePos = GetFilePos();
+    long long const filePos { GetFilePos() };
     if ((filePos < 0) || (numeric_limits<long>::max() / 100 < filePos))
         return 100L;
     else if (m_fileSize == 0)

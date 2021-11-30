@@ -76,8 +76,6 @@ Neuron & Neuron::operator=(Neuron const & rhs)
 	return * this;
 }
 
-Neuron::~Neuron() { }
-
 bool Neuron::operator==(Nob const & rhs) const
 {
 	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };

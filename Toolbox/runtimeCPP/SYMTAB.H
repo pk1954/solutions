@@ -44,12 +44,12 @@ public:
     unsigned long         GetUlongConst () const { assert(m_type == tSTYPE::ULongConst ); return   m_ulValue;   };
 
 private:
-    tSTYPE                 m_type      { tSTYPE::UnknownSTYPE };
-    ScriptFunctor const *  m_pFunc     { nullptr };  // type: Function    
-    long                   m_lValue    { 0L };       // type: LogConst    
-    unsigned long          m_ulValue   { 0L };       // type: ULongConst  
-    wstring                m_wstrValue { L"" };      // type: StringConst 
-    double                 m_dValue    { 0.0f };     // type: FloatConst  
+    tSTYPE                m_type      { tSTYPE::UnknownSTYPE };
+    ScriptFunctor const * m_pFunc     { nullptr };  // type: Function    
+    long                  m_lValue    { 0L };       // type: LogConst    
+    unsigned long         m_ulValue   { 0L };       // type: ULongConst  
+    wstring               m_wstrValue { L"" };      // type: StringConst 
+    double                m_dValue    { 0.0f };     // type: FloatConst  
 };
 
 class SymbolTable

@@ -27,7 +27,7 @@ public:
         m_pWinManager(pWinManager)
     { };
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
 	    UINT uiResId = script.ScrReadUint();
 
@@ -63,7 +63,7 @@ public:
         m_pWinManager(pWinManager)
     { };
 
-    virtual void operator() (Script & script) const
+    void operator() (Script & script) const final
     {
 	    UINT const uiResId  = script.ScrReadUint();
 		INT const  iCmdShow = script.ScrReadInt();  // WM_HIDE, WM_SHOW, ...
@@ -160,7 +160,7 @@ public:
         m_pWinManager(pWinManager)
     { };
     
-    virtual void operator() (Script & script) const     // process one monitor configuration
+    void operator() (Script & script) const final     // process one monitor configuration
     {
         CHECK_MON_STRUCT monStruct;
         monStruct.m_pScript = & script;

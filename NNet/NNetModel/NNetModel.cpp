@@ -40,7 +40,7 @@ Nob const * NNetModel::GetConstNob(NobId const id) const
 	return m_Nobs.GetAt(id);
 }
 
-void NNetModel::Reconnect(NobId const id)
+void NNetModel::Reconnect(NobId const id) const
 {
 	if (Nob * pNod { m_Nobs.GetAt(id) })
 		pNod->Reconnect();
@@ -56,7 +56,7 @@ void NNetModel::ClearDynamicData()
 	m_Nobs.Apply2All([&](Nob & nob) { nob.ClearDynamicData(); }); 
 }
 
-bool const NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
+bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 {
 	return m_description.GetDescriptionLine(iLine, wstrLine);
 }
@@ -108,7 +108,7 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 	}
 }
 
-NobId const NNetModel::FindNobAt
+NobId NNetModel::FindNobAt
 (
 	MicroMeterPnt const & umPoint, 
 	NobCrit       const & crit 

@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "scanner.h"
-#include "errhndl.h"
+#include "ERRHNDL.H"
 
 using std::wstring;
 using std::wostream;

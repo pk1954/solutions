@@ -237,8 +237,7 @@ public:
         auto  const param(static_cast< ParamType::Value >(script.ScrReadUint()));
         assert(param == ParamType::Value::pulseRate);
         script.ScrReadSpecial(L'=');
-        float const fValue { Cast2Float(script.ScrReadFloat()) };
-//        GetWriterInterface().GetNobPtr<InputNeuron *>(id)->SetBaseFrequency(fHertz(fValue));
+        Cast2Float(script.ScrReadFloat()); // 
     }
 };
 
@@ -448,5 +447,5 @@ unique_ptr<NNetModel> NNetModelImporter::GetImportedModel()
 
 UPNobList NNetModelImporter::GetUPNobs() const
 { 
-    return move(m_upImportedModel->GetUPNobs()); 
+    return m_upImportedModel->GetUPNobs(); 
 }

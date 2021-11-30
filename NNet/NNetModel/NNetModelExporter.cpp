@@ -33,12 +33,12 @@ void NNetModelExporter::Initialize(NNetModelReaderInterface * const pNMRI)
     m_pNMRI = pNMRI;
 }
 
-size_t const NNetModelExporter::getCompactIdVal(NobId const id) 
+size_t NNetModelExporter::getCompactIdVal(NobId const id) 
 { 
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
 }
 
-void NNetModelExporter::writeHeader(wostream & out)
+void NNetModelExporter::writeHeader(wostream & out) const
 {
     static int const BUF_SIZE { 128 };
 

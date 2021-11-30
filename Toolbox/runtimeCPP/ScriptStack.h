@@ -5,7 +5,7 @@
 #pragma once
 
 #include <stack>
-#include "SCRIPT.h"
+#include "SCRIPT.H"
 
 using std::unique_ptr;
 using std::make_unique;
@@ -14,23 +14,23 @@ using std::stack;
 class ScriptStack
 {
 public:
-    static Script * const OpenScript()
+    static Script * OpenScript()
     {
         m_stack.push(make_unique<Script>());
         return GetScript();
     }
 
-    static Script* const GetScript()
+    static Script* GetScript()
     {
         return m_stack.empty() ? nullptr : m_stack.top().get();
     }
 
-    static bool const IsScriptActive()
+    static bool IsScriptActive()
     {
         return ! m_stack.empty();
     }
 
-    static bool const SingleStepMode()
+    static bool SingleStepMode()
     {
         return m_bSingleStepMode;
     }

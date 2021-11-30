@@ -31,29 +31,29 @@ public:
     unsigned short ScrReadUshort (void);
     wchar_t        ScrReadChar   (void); 
     unsigned char  ScrReadUchar  (void); 
-	wstring const  ScrReadString (void);
-	void           ScrReadString (wstring const);
+	wstring        ScrReadString (void);
+	void           ScrReadString (wstring const &);
 	void           ScrReadSpecial(wchar_t const); 
 
 // Helper routines for error handlers 
 
 	void SetExpectedToken(wstring const & wstrExp) { m_scanner.SetExpectedToken(wstrExp); }
 
-	wstring const GetActPath         () const { return m_scanner.GetActPath      (); }
-	wstring const GetActLine         () const { return m_scanner.GetActLine      (); }
-	int     const GetActLineNr       () const { return m_scanner.GetActLineNr    (); }
-	int     const GetActStartPos     () const { return m_scanner.GetActStartPos  (); }
-	int     const GetActEndPos       () const { return m_scanner.GetActEndPos    (); }
-	wstring const GetActExpectedToken() const { return m_scanner.GetExpectedToken(); }
-	bool    const IsActive           () const { return m_scanner.IsActive        (); }
+	wstring GetActPath         () const { return m_scanner.GetActPath      (); }
+	wstring GetActLine         () const { return m_scanner.GetActLine      (); }
+	int     GetActLineNr       () const { return m_scanner.GetActLineNr    (); }
+	int     GetActStartPos     () const { return m_scanner.GetActStartPos  (); }
+	int     GetActEndPos       () const { return m_scanner.GetActEndPos    (); }
+	wstring GetActExpectedToken() const { return m_scanner.GetExpectedToken(); }
+	bool    IsActive           () const { return m_scanner.IsActive        (); }
 
 // utility functions
 
 	Scanner & GetScanner() { return m_scanner; }
 
-	long      const GetPercentRead();
-	long long const GetFilePos    ()       { return m_scanner.GetFilePos(); };
-	uintmax_t const GetFileSize   () const { return m_fileSize; };
+	long      GetPercentRead();
+	long long GetFilePos    ()       { return m_scanner.GetFilePos(); };
+	uintmax_t GetFileSize   () const { return m_fileSize; };
 
 	static void ScrSetWrapHook(ScriptFunctor const * const);
 	static void Clear();
@@ -62,11 +62,11 @@ public:
 
 // script processing
 
-	bool const ScrOpen(wstring const &);
-	bool const ReadNextToken();
-	bool const ProcessToken();
-	bool const ScrClose();
-	bool const ScrProcess(wstring const &);
+	bool ScrOpen(wstring const &);
+	bool ReadNextToken();
+	bool ProcessToken();
+	bool ScrClose();
+	bool ScrProcess(wstring const &);
 
 	void SetEcho(bool const bMode) { m_bEchoScript = bMode; }
 

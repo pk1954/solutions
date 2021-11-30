@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NamedType.h"
-#include "script.h"
+#include "SCRIPT.H"
 #include "Track.h"
 #include "TrackNr.h"
 #include "SignalId.h"
@@ -52,14 +52,18 @@ public:
 		return ! (*this == other);
 	}
 
-	TrackNr  const GetTrackNr () const { return trackNr; }
-	SignalNr const GetSignalNr() const { return signalNr; }
+	TrackNr  GetTrackNr () const { return trackNr; }
+	SignalNr GetSignalNr() const { return signalNr; }
 
 	friend wostream & operator<< (wostream & out, SignalId const & id)
 	{
 		out << L" (" << id.trackNr << L"|" << id.signalNr << L")";
 		return out;
 	}
+
+	inline static wchar_t const SEPARATOR     { L'|' };
+	inline static wchar_t const OPEN_BRACKET  { L'(' };
+	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
 	TrackNr  trackNr;

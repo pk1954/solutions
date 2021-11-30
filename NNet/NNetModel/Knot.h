@@ -32,11 +32,11 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsKnotType(); }
 
-	void      SetDir(Radian const r)  override { /* Knot has no direction */ };
-	Radian    GetDir       () const   override { return Radian::NULL_VAL(); };
-	mV        GetNextOutput() const   override { return m_mVinputBuffer; }
-	bool      CompStep     ()         override { return false; }
-	NobIoMode GetIoMode    () const   override { return NobIoMode::internal; }
+	void      SetDir(Radian const r) override { /* Knot has no direction */ };
+	Radian    GetDir       () const  override { return Radian::NULL_VAL(); };
+	mV        GetNextOutput() const  override { return m_mVinputBuffer; }
+	bool      CompStep     ()        override { return false; }
+	NobIoMode GetIoMode    () const  override { return NobIoMode::internal; }
 
 	void DrawExterior(DrawContext const &, tHighlight const) const override;
 	void DrawInterior(DrawContext const &, tHighlight const) const override;

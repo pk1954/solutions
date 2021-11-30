@@ -21,7 +21,7 @@ class BaseKnot : public Nob
 public:
 
 	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
-	~BaseKnot() = default;
+	~BaseKnot() override = default;
 
 	virtual bool operator==(Nob const &) const;
 
@@ -98,9 +98,6 @@ public:
 
 	MicroMeterRect GetRect4Text() const;
 
-	PipeList const & GetIncoming() const { return m_inPipes; }
-	PipeList const & GetOutgoing() const { return m_outPipes; }
-
 	inline static wchar_t const OPEN_BRACKET  { L'{' };
 	inline static wchar_t const NR_SEPARATOR  { L':' };
 	inline static wchar_t const ID_SEPARATOR  { L',' };
@@ -131,7 +128,7 @@ MicroMeterPnt CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & l
 	{ 
 		pBaseKnot->Apply2AllInPipes
 		(
-			[&](Pipe & pipe) 
+			[&](Pipe const & pipe) 
 			{ 
 				MicroMeterPnt pnt { pipe.GetStartPoint() };
 				if (PointToLine(line, pnt) < 0.0_MicroMeter)
@@ -142,7 +139,7 @@ MicroMeterPnt CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & l
 		);
 		pBaseKnot->Apply2AllOutPipes
 		(
-			[&](Pipe & pipe) 
+			[&](Pipe const & pipe) 
 			{ 
 				MicroMeterPnt pnt { pipe.GetEndPoint() };
 				if (PointToLine(line, pnt) < 0.0_MicroMeter)

@@ -57,30 +57,30 @@ public:
 	int  GetNrOfTracks() const;
 	bool NoTracks     () const;
 
-	bool const IsValid(TrackNr const trackNr) const;
-	bool const IsValid(SignalId const &) const;
+	bool IsValid(TrackNr const trackNr) const;
+	bool IsValid(SignalId const &) const;
 
 	void InsertTrack(TrackNr const);
 	void DeleteTrack(TrackNr const);
 
 	void SetHighSigObservable(Observable * pObs) { m_pHighSigObservable = pObs; }
 
-	SignalId const SetHighlightedSignal(MicroMeterPnt const &);
-	SignalId const SetHighlightedSignal(Signal        const &);
-	SignalId const SetHighlightedSignal(SignalId      const  );
-	SignalId const ResetHighlightedSignal();
+	SignalId SetHighlightedSignal(MicroMeterPnt const &);
+	SignalId SetHighlightedSignal(Signal        const &);
+	SignalId SetHighlightedSignal(SignalId      const  );
+	SignalId ResetHighlightedSignal();
 
-	SignalNr       const AddSignal            (TrackNr  const, MicroMeterCircle const &);
-	SignalNr       const AddSignal            (TrackNr  const, unique_ptr<Signal>);
-	void                 AddSignal            (SignalId const &, unique_ptr<Signal>);
-	SignalNr       const MoveSignal           (SignalId const &, TrackNr  const);
-	Signal const * const GetSignalPtr         (SignalId const &) const;
-	Signal       * const GetSignalPtr         (SignalId const &);
-	Signal       * const FindSignal           (Signal::Crit    const &) const;
-	SignalId       const FindSignalId         (Signal::Crit    const &) const;
-	Signal       * const FindSensor           (MicroMeterPnt const &) const;
-	Signal const * const GetHighlightedSignal () const;
-	Signal       * const GetHighlightedSignal ();
+	SignalNr       AddSignal            (TrackNr  const, MicroMeterCircle const &);
+	SignalNr       AddSignal            (TrackNr  const, unique_ptr<Signal>);
+	void           AddSignal            (SignalId const &, unique_ptr<Signal>);
+	SignalNr       MoveSignal           (SignalId const &, TrackNr  const);
+	Signal const * GetSignalPtr         (SignalId const &) const;
+	Signal       * GetSignalPtr         (SignalId const &);
+	Signal       * FindSignal           (Signal::Crit    const &) const;
+	SignalId       FindSignalId         (Signal::Crit    const &) const;
+	Signal       * FindSensor           (MicroMeterPnt const &) const;
+	Signal const * GetHighlightedSignal () const;
+	Signal       * GetHighlightedSignal ();
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 
@@ -89,18 +89,18 @@ public:
 	void Apply2AllSignals       (SignalId::Func const &) const;
 	void Apply2AllSignals       (Signal::Func   const &) const;
 
-	SignalId const GetHighlightedSignalId()       const { return m_idSigHighlighted; }
-	TrackNr  const GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }
-	bool     const IsAnySignalSelected()          const { return m_idSigHighlighted.IsNotNull(); }
-	bool     const IsSelected(SignalId const &id) const { return m_idSigHighlighted == id; }
-	bool     const IsEmptyTrack(TrackNr const)    const;
+	SignalId GetHighlightedSignalId()       const { return m_idSigHighlighted; }
+	TrackNr  GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }
+	bool     IsAnySignalSelected()          const { return m_idSigHighlighted.IsNotNull(); }
+	bool     IsSelected(SignalId const &id) const { return m_idSigHighlighted == id; }
+	bool     IsEmptyTrack(TrackNr const)    const;
 
 	static void HandleException(MonitorDataException const &);
 
 private:
-	Track       * const getTrack(TrackNr const);
-	Track const * const getTrack(TrackNr const) const;
-	unique_ptr<Signal>  removeSignal(SignalId const &);
+	Track            * getTrack(TrackNr const);
+	Track      const * getTrack(TrackNr const) const;
+	unique_ptr<Signal> removeSignal(SignalId const &);
 
 	Observable              * m_pHighSigObservable { nullptr };
 	SignalId                  m_idSigHighlighted   {};

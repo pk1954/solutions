@@ -27,11 +27,11 @@ public:
 
 	Neuron & operator=(Neuron const &); // copy assignment operator
 
-	virtual ~Neuron();
+	virtual ~Neuron() = default;
 
 	virtual bool operator==(Nob const &) const override;
 
-	virtual void Check() const;
+	void Check() const override;
 
 	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
 

@@ -8,7 +8,7 @@
 #include "NobId.h"
 #include "NNetWrapperHelpers.h"
 
-MicroMeter const ScrReadMicroMeter(Script & script)
+MicroMeter ScrReadMicroMeter(Script & script)
 {
 	float const fValue = Cast2Float(script.ScrReadFloat());
 	if (fabs(fValue) > MAX_MICRO_METER.GetValue())
@@ -16,7 +16,7 @@ MicroMeter const ScrReadMicroMeter(Script & script)
 	return MicroMeter(fValue);
 }
 
-MicroMeterPnt const ScrReadMicroMeterPnt(Script & script)
+MicroMeterPnt ScrReadMicroMeterPnt(Script & script)
 {
 	script.ScrReadSpecial(MicroMeterPnt::OPEN_BRACKET);
 	MicroMeter const x(ScrReadMicroMeter(script));
@@ -26,7 +26,7 @@ MicroMeterPnt const ScrReadMicroMeterPnt(Script & script)
 	return MicroMeterPnt(x, y);
 }
 
-MicroMeterCircle const ScrReadMicroMeterCircle(Script & script)
+MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 {
 	script.ScrReadSpecial(MicroMeterCircle::OPEN_BRACKET);
 	MicroMeterPnt umCenter { ScrReadMicroMeterPnt(script) };
@@ -36,7 +36,7 @@ MicroMeterCircle const ScrReadMicroMeterCircle(Script & script)
 	return MicroMeterCircle(umCenter, umRadius);
 }
 
-MicroMeterPosDir const ScrReadMicroMeterPosDir(Script & script)
+MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
 {
 	script.ScrReadSpecial(MicroMeterPosDir::OPEN_BRACKET);
 	MicroMeterPnt const umPnt(ScrReadMicroMeterPnt(script));
@@ -46,7 +46,7 @@ MicroMeterPosDir const ScrReadMicroMeterPosDir(Script & script)
 	return MicroMeterPosDir(umPnt, rad);
 }
 
-MicroMeterPntVector const ScrReadMicroMeterPntVector(Script& script)
+MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
 {
 	MicroMeterPntVector umPntVector;
 	script.ScrReadSpecial(MicroMeterPntVector::OPEN_BRACKET);
@@ -63,12 +63,22 @@ MicroMeterPntVector const ScrReadMicroMeterPntVector(Script& script)
 	return umPntVector;
 }
 
-NobId const ScrReadNobId(Script& script)
+SignalId ScrReadSignalId(Script& script)
+{
+	script.ScrReadSpecial(SignalId::OPEN_BRACKET);
+	TrackNr  const trackNr(script.ScrReadInt());
+	script.ScrReadSpecial(SignalId::SEPARATOR);
+	SignalNr const signalNr(script.ScrReadInt());
+	script.ScrReadSpecial(SignalId::CLOSE_BRACKET);
+	return SignalId(trackNr, signalNr);
+}
+
+NobId ScrReadNobId(Script& script)
 {
 	return NobId(script.ScrReadLong());
 }
 
-NobType const ScrReadNobType(Script& script)
+NobType ScrReadNobType(Script& script)
 {
 	unsigned int uiVal { script.ScrReadUint() };
 	if (uiVal >= NobType::NR_OF_NOB_TYPES)
@@ -76,7 +86,7 @@ NobType const ScrReadNobType(Script& script)
 	return static_cast<NobType::Value>(uiVal);
 }
 
-unique_ptr<NobIdList> const ScrReadNobIdList(Script& script)
+unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 {
 	unique_ptr<NobIdList> upNobIds  { make_unique<NobIdList>() };
 	script.ScrReadSpecial(NobIdList::OPEN_BRACKET);
@@ -93,7 +103,7 @@ unique_ptr<NobIdList> const ScrReadNobIdList(Script& script)
 	return move(upNobIds);
 }
 
-ParamType::Value const ScrReadParamType(Script& script)
+ParamType::Value ScrReadParamType(Script& script)
 {
 	unsigned long const ulParamType { script.ScrReadUlong() };
 	if (ulParamType > static_cast<unsigned long>(ParamType::Value::tParameterLastGlobal))

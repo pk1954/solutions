@@ -6,7 +6,7 @@
 
 #include <string>
 #include <unordered_map>
-#include "errhndl.h"
+#include "ERRHNDL.H"
 #include "win32_util.h"
 #include "win32_baseWindow.h"
 #include "win32_baseDialog.h"
@@ -19,8 +19,8 @@ class RootWindow;
 class WinManager
 {
 public:
-    WinManager();
-    virtual ~WinManager() { };
+
+	WinManager();
 
 	void AddWindow(wstring const, UINT const, HWND,               bool const, bool const);
 	void AddWindow(wstring const, UINT const, BaseWindow const &, bool const, bool const);
@@ -36,12 +36,12 @@ public:
 		m_map.clear ();
 	}
 
-	std::wstring const GetWindowName(UINT const id) const // can throw out_of_range exception
+	wstring GetWindowName(UINT const id) const // can throw out_of_range exception
     {
         return m_map.at(id).m_wstr;
     }
 
-	HWND const GetHWND(UINT const id) const // can throw out_of_range exception
+	HWND GetHWND(UINT const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_hwnd;
 	}
@@ -63,12 +63,12 @@ public:
 		Util::AdjustLeft(GetHWND(id), pixYpos);
 	}
 
-	BaseWindow const * const GetBaseWindow(UINT const id) const // can throw out_of_range exception
+	BaseWindow const * GetBaseWindow(UINT const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_pBaseWindow;
 	}
 
-	INT const GetIdFromRootWindow(HWND const hwnd)
+	INT GetIdFromRootWindow(HWND const hwnd) const
 	{
 		for (auto & pp : m_map)
 			if (pp.second.m_hwnd == hwnd)
@@ -76,17 +76,17 @@ public:
 		return -1;
 	}
 
-    bool const IsMoveable(UINT const id) const // can throw out_of_range exception
+    bool IsMoveable(UINT const id) const // can throw out_of_range exception
     {
         return m_map.at(id).m_bTrackPosition;
     }
 
-	bool const IsSizeable(UINT const id) const // can throw out_of_range exception
+	bool IsSizeable(UINT const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_bTrackSize;
 	}
 
-	bool const IsVisible(UINT const id) const // can throw out_of_range exception
+	bool IsVisible(UINT const id) const // can throw out_of_range exception
 	{
 		return IsWindowVisible(GetHWND(id));
 	}

@@ -27,8 +27,8 @@ public:
 		NNetModelImporter &, 
 		HWND const
 	);
-	bool ReadPreferences();
-	bool WritePreferences();
+	bool ReadPreferences () const;
+	bool WritePreferences() const;
 
 private:
 	vector<unique_ptr<WrapBase>> m_prefVector;

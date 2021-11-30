@@ -7,7 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NobId.h"
 #include "NNetModelStorage.h"

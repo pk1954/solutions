@@ -15,12 +15,12 @@ class BaseRefreshRate
 public:
 
 	BaseRefreshRate();
-	~BaseRefreshRate();
+	virtual ~BaseRefreshRate();
 
 	virtual void Trigger() = 0;
 
 	void SetRefreshRate(milliseconds const);
-	milliseconds GetRefreshRate();
+	milliseconds GetRefreshRate() const;
 
 	void Notify(bool const bImmediately)
 	{

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Version.h"
 #include "Resource.h"
-#include "commctrl.h"
+#include "CommCtrl.h"
 #include "win32_util_resource.h"
 #include "win32_fatalError.h"
 #include "win32_stopwatch.h"
