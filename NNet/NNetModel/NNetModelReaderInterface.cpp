@@ -135,7 +135,13 @@ bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst
 		if (nrIn + nrOut == 0)
 			return false;
 		else if (typeSrc.IsKnotType() && typeDst.IsKnotType())
-			return true;
+		{
+			if ((nrIn<=2) && (nrOut<=1))
+				return true;                // Synapse
+			if ((nrIn<=1) && (nrOut<=2))
+				return true;                // Branch
+			return false;
+		}
 		else if (nrOut <= 1)   // OutputNeuron 
 			return true;
 		else 

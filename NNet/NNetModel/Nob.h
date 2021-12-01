@@ -29,8 +29,9 @@ using NobFuncC    = function<void  (Nob const &)>;
 using NobFunc     = function<void  (Nob       &)>;
 using NobCrit     = function<bool  (Nob const &)>;
 using Nob2NobFunc = function<Nob * (Nob const *)>;
+using AddMenuFunc = function<void  (int const  )>;
 
-static NobCrit const NobCritAlwaysTrue { [](auto & s) { return true; } };
+static NobCrit const NobCritAlwaysTrue { [](auto &) { return true; } };
 
 enum class NobIoMode { input, output, internal };
 
@@ -39,11 +40,11 @@ class Nob
 public:
 	static void Initialize(Param const & param) { m_pParameters = & param; }
 
-	static bool TypeFits(NobType const type) { return true; }  // every nob type is a Nob
+	static bool TypeFits(NobType const) { return true; }  // every nob type is a Nob
 
 	Nob(NobType const);
 	Nob(Nob const &);
-	virtual ~Nob() {}
+	virtual ~Nob() = default;
 
 	virtual void Check() const;
 	virtual void Dump() const;
@@ -54,30 +55,30 @@ public:
 	virtual void SetDir   (Radian const);
 	virtual void SetPos   (MicroMeterPnt  const &);
 	virtual void SetPosDir(MicroMeterPosDir const &);
+	virtual void AppendMenuItems(AddMenuFunc const &) const;
 
 	virtual MicroMeterPosDir GetPosDir() const;
 
-	virtual Radian        GetDir       ()                                      const = 0;
-	virtual MicroMeterPnt GetPos       ()                                      const = 0;
-	virtual NobIoMode     GetIoMode    ()                                      const = 0;
-	virtual void          DrawExterior (DrawContext const &, tHighlight const) const = 0;
-	virtual void          DrawInterior (DrawContext const &, tHighlight const) const = 0;
-	virtual void          Prepare      ()                                            = 0;
-	virtual bool          CompStep     ()                                            = 0;
-	virtual void          Recalc       ()                                            = 0;
-	virtual bool          IsIncludedIn (MicroMeterRect  const &)               const = 0;
-	virtual bool          Includes     (MicroMeterPnt const &)                 const = 0;
-	virtual void          Expand       (MicroMeterRect &)                      const = 0;
-	virtual void          MoveNob      (MicroMeterPnt const &)                       = 0;
-	virtual void          RotateNob    (MicroMeterPnt const &, Radian const)         = 0;
-	virtual void          Link         (Nob const &, Nob2NobFunc const &)            = 0;
+	virtual Radian        GetDir         ()                                      const = 0;
+	virtual MicroMeterPnt GetPos         ()                                      const = 0;
+	virtual NobIoMode     GetIoMode      ()                                      const = 0;
+	virtual void          DrawExterior   (DrawContext const &, tHighlight const) const = 0;
+	virtual void          DrawInterior   (DrawContext const &, tHighlight const) const = 0;
+	virtual void          Prepare        ()                                            = 0;
+	virtual bool          CompStep       ()                                            = 0;
+	virtual void          Recalc         ()                                            = 0;
+	virtual bool          IsIncludedIn   (MicroMeterRect  const &)               const = 0;
+	virtual bool          Includes       (MicroMeterPnt const &)                 const = 0;
+	virtual void          Expand         (MicroMeterRect &)                      const = 0;
+	virtual void          MoveNob        (MicroMeterPnt const &)                       = 0;
+	virtual void          RotateNob      (MicroMeterPnt const &, Radian const)         = 0;
+	virtual void          Link           (Nob const &, Nob2NobFunc const &)            = 0;
 
 	virtual mV   GetNextOutput()  const { return m_mVinputBuffer; }
 	virtual bool IsCompositeNob() const { return false; }
 
 	virtual void Select(bool const bOn) { m_bSelected = bOn; }
 	virtual void ClearDynamicData()     { m_mVinputBuffer.Set2Zero(); }
-	virtual void SetId(NobId const id)  { m_identifier = id; }
 	virtual void Reconnect()            {};
 	
 	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
@@ -111,6 +112,8 @@ public:
 	bool  HasParentNob() const        { return m_pNobParent != nullptr; }
 	Nob * GetParentNob() const        { return m_pNobParent; }
 	void  SetParentNob(Nob * const p) { m_pNobParent = p; }
+
+	void  SetId(NobId const id)  { m_identifier = id; }
 
 protected:
 
@@ -147,7 +150,7 @@ template <Nob_t T> bool HasType(Nob const & nob)
 }
 
 template <Nob_t T>
-inline MicroMeterLine  CalcMaxDistLine(vector<T *> const & list) // find two nobs with maximum distance
+inline MicroMeterLine CalcMaxDistLine(vector<T *> const & list) // find two nobs with maximum distance
 {
 	MicroMeter     maxDist { 0.0_MicroMeter };   	
 	MicroMeterLine lineMax { MicroMeterLine::ZERO_VAL() };

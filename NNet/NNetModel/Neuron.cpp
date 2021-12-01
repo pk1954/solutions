@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <sstream> 
 #include <iomanip>
+#include "Resource.h"
 #include "win32_sound.h"
 #include "win32_thread.h"
 #include "win32_graphicsInterface.h"
@@ -16,7 +17,6 @@
 #include "Pipe.h"
 #include "Neuron.h"
 
-using std::chrono::microseconds;
 using std::fixed;
 using std::wstring;
 using std::wostringstream;
@@ -38,11 +38,6 @@ Neuron::Neuron(BaseKnot const & src, NobType const type)
 {
 	SetType(type);
 	SetExtension(NEURON_RADIUS);
-}
-
-void Neuron::Check() const
-{
-	BaseKnot::Check();
 }
 
 static void CALLBACK BeepFunc
@@ -205,4 +200,13 @@ Neuron * Cast2Neuron(Nob * pNob)
 {
 	assert(pNob->IsAnyNeuron());
 	return static_cast<Neuron *>(pNob);
+}
+
+void Neuron::AppendMenuItems(AddMenuFunc const & add) const
+{
+	if (IsNeuron())
+		add(IDD_SPLIT_NEURON);        
+	add(IDD_TRIGGER_SOUND_DLG);
+	add(IDD_STOP_ON_TRIGGER);      
+	BaseKnot::AppendMenuItems(add);
 }

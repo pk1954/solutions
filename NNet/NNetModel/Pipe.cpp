@@ -5,23 +5,16 @@
 #include "stdafx.h"
 #include <cmath>
 #include <assert.h>
-#include "Geometry.h"
+#include "Resource.h"
 #include "DrawContext.h"
-#include "tHighlightType.h"
 #include "NNetParameters.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Pipe.h"
 
-using std::fixed;
-using std::wstring;
-using std::wostringstream;
-
-#include <sstream> 
-#include <iomanip>
-using std::fill;
 using std::wcout;
 using std::endl;
+using std::ranges::fill;
 
 Pipe::Pipe(BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd)
   :	Nob(NobType::Value::pipe),
@@ -39,8 +32,6 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
 	m_potIndex  (src.m_potIndex ),
 	m_potential (src.m_potential)
 { }
-
-Pipe::~Pipe() { }
 
 void Pipe::Dump() const
 {
@@ -84,7 +75,7 @@ MicroMeterPnt Pipe::GetPos() const
 void Pipe::ClearDynamicData()
 {
 	Nob::ClearDynamicData();
-	fill(m_potential.begin(), m_potential.end(), 0.0_mV);
+	fill(m_potential, 0.0_mV);
 }
 
 void Pipe::Recalc()
@@ -250,11 +241,11 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 		MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
 		if (! umVector.IsCloseToZero())
 		{
-			size_t          const nrOfSegments { m_potential.size() };
+			size_t        const nrOfSegments { m_potential.size() };
 			MicroMeterPnt const umSegVec     { umVector / Cast2Float(nrOfSegments) };
 			MicroMeterPnt       umPoint      { GetStartPoint() };
-			size_t          const potIndex     { m_potIndex };
-			size_t                index        { potIndex }; 
+			size_t        const potIndex     { m_potIndex };
+			size_t              index        { potIndex }; 
 			do 
 			{
 				if (++index == m_potential.size()) 
@@ -285,8 +276,8 @@ bool Pipe::CompStep()
 mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 {
 	mV mVresult { 0._mV };
-	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
-	if (! umVector.IsCloseToZero())
+	
+	if (MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() }; ! umVector.IsCloseToZero())
 	{
 		size_t        const nrOfSegments  { m_potential.size() };
 		MicroMeterPnt const umSegVec      { umVector / Cast2Float(nrOfSegments) };
@@ -310,6 +301,15 @@ mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 		} while (index != potIndex);
 	}
 	return mVresult;
+}
+
+void Pipe::AppendMenuItems(AddMenuFunc const & add) const
+{
+	add(IDD_ADD_OUTGOING2PIPE);
+	add(IDD_ADD_INCOMING2PIPE);
+	add(IDD_INSERT_NEURON);
+	add(IDD_INSERT_KNOT);   
+	Nob::AppendMenuItems(add);
 }
 
 Pipe const * Cast2Pipe(Nob const * pNob)

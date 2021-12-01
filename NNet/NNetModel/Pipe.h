@@ -24,9 +24,11 @@ public:
 
 	Pipe(Pipe const &);   // copy constructor
 
-	~Pipe() final;
+	~Pipe() final = default;
 
 	virtual bool operator==(Nob const &) const;
+
+	void AppendMenuItems(AddMenuFunc const &) const final;
 
 	void Dump() const override;
 

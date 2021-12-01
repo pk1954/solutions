@@ -23,6 +23,8 @@ public:
 
 	~InputConnector() final = default;
 
+	void AppendMenuItems(AddMenuFunc const &) const final;
+
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
 	void DrawExterior(DrawContext const &, tHighlight const) const final;

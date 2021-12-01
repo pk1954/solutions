@@ -29,6 +29,8 @@ public:
 	virtual BaseKnot & operator+=(BaseKnot const &);
 	virtual BaseKnot & operator-=(BaseKnot const &);
 
+	void AppendMenuItems(AddMenuFunc const &) const override;
+
 	MicroMeterPnt GetPos() const final { return m_circle.GetPos(); }
 
 	void Dump        ()                               const override;

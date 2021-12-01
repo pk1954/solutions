@@ -30,6 +30,8 @@ public:
 
 	void Check() const override;
 
+	void AppendMenuItems(AddMenuFunc const &) const final;
+
 	static bool TypeFits(NobType const type) { return type.IsKnotType(); }
 
 	void      SetDir(Radian const r) override { /* Knot has no direction */ };

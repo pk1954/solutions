@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <assert.h>
+#include "Resource.h"
 #include "Geometry.h"
 #include "DrawContext.h"
 #include "BaseKnot.h"
@@ -224,4 +225,13 @@ BaseKnot * Cast2BaseKnot(Nob * nob)
 	assert(! nob->IsPipe());
 	assert(! nob->IsUndefined());
 	return static_cast<BaseKnot *>(nob);
+}
+
+void BaseKnot::AppendMenuItems(AddMenuFunc const & add) const
+{
+	if (GetNrOfConnections() > 1) 
+		add(IDD_DISC_BASEKNOT);
+	if (HasOutgoing())
+		add(IDM_SELECT_SUBTREE);   
+	Nob::AppendMenuItems(add);
 }

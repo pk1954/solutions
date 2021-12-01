@@ -27,11 +27,11 @@ public:
 
 	Neuron & operator=(Neuron const &); // copy assignment operator
 
-	virtual ~Neuron() = default;
+	~Neuron() override = default;
 
-	virtual bool operator==(Nob const &) const override;
+	bool operator==(Nob const &) const override;
 
-	void Check() const override;
+	void AppendMenuItems(AddMenuFunc const &) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
 
@@ -43,15 +43,16 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
-	virtual void      SetDir(Radian const r) { };
-	virtual void      DrawExterior  (DrawContext const &, tHighlight const) const;
-	virtual void      DrawInterior  (DrawContext const &, tHighlight const) const;
-	virtual void      DrawNeuronText(DrawContext const &) const;
-	virtual void      ClearDynamicData();
-	virtual bool      CompStep();
-	virtual mV        GetNextOutput() const;
-	virtual Radian    GetDir()        const { return Radian::NULL_VAL(); };
-	virtual NobIoMode GetIoMode()     const { return NobIoMode::internal; }
+	void      SetDir(Radian const)  override { };
+	void      DrawExterior  (DrawContext const &, tHighlight const) const override;
+	void      DrawInterior  (DrawContext const &, tHighlight const) const override;
+	void      ClearDynamicData() override;
+	bool      CompStep() override;
+	mV        GetNextOutput() const override;
+	Radian    GetDir()        const override { return Radian::NULL_VAL(); };
+	NobIoMode GetIoMode()     const override { return NobIoMode::internal; }
+
+	virtual void DrawNeuronText(DrawContext const &) const;
 
 	void Recalc() final;
 	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }

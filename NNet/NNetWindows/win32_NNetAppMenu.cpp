@@ -10,6 +10,7 @@
 #include "ComputeThread.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
+#include "win32_util_resource.h"
 #include "win32_MainWindow.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"

@@ -18,7 +18,7 @@ using std::endl;
 class FatalError
 {
 public:
-	static void Happened(long const errnr, wstring const errText)
+	static void Happened(long const errnr, wstring const & errText)
 	{
 		wostringstream wBuffer;
 		wBuffer << L"Error number:  " << errnr   << endl;

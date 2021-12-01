@@ -17,6 +17,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
 #include "win32_sound.h"
+#include "win32_util_resource.h"
 #include "win32_NNetController.h"
 #include "win32_NNetWindow.h"
 
@@ -139,9 +140,7 @@ void NNetWindow::DrawSensors() const
 {
 	try
 	{
-		MonitorData    const & mon     { m_pNMRI->GetConstMonitorData() };
-		Signal const * const   pSignal { mon.GetHighlightedSignal() };
-		mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
+		m_pNMRI->GetConstMonitorData().Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
 	}
 	catch (MonitorDataException const & e)
 	{
@@ -152,8 +151,7 @@ void NNetWindow::DrawSensors() const
 
 void NNetWindow::DrawHighlightedSensor() const
 {
-	MonitorData    const & mon     { m_pNMRI->GetConstMonitorData() };
-	Signal const * const   pSignal { mon.GetHighlightedSignal() };
+	Signal const * const pSignal { m_pNMRI->GetConstMonitorData().GetHighlightedSignal() };
 	if (pSignal)
 		pSignal->Draw(m_context, true);
 }

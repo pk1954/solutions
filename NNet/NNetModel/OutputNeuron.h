@@ -18,20 +18,22 @@ public:
 	explicit OutputNeuron(MicroMeterPnt const &);
 	explicit OutputNeuron(BaseKnot      const &);
 
-	virtual ~OutputNeuron() {};
+	~OutputNeuron() final = default;
 
-	virtual void Check() const;
+	void Check() const final;
 
-	virtual bool operator==(Nob const &) const override;
+	bool operator==(Nob const &) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsOutputNeuronType(); }
 
-	virtual void DrawExterior(DrawContext const &, tHighlight const) const override;
-	virtual void DrawInterior(DrawContext const &, tHighlight const) const override;
+	void DrawExterior(DrawContext const &, tHighlight const) const override;
+	void DrawInterior(DrawContext const &, tHighlight const) const override;
 
-	virtual bool Includes(MicroMeterPnt const &) const final;
+	bool Includes(MicroMeterPnt const &) const final;
 
-	virtual NobIoMode GetIoMode() const final { return NobIoMode::output; }
+	NobIoMode GetIoMode() const final { return NobIoMode::output; }
+
+	void AppendMenuItems(AddMenuFunc const &) const final;
 
 private:
 

@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Resource.h"
 #include "SCANNER.H"
 #include "NNetColors.h"
 #include "Nob.h"
@@ -119,4 +120,13 @@ MicroMeterPosDir CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
 	MicroMeterPnt const umPosOffset  { umDirVector * umOffset.GetValue() };
 	MicroMeterPnt const umPosTarget  { nob.GetPos() + umPosOffset };
 	return MicroMeterPosDir(umPosTarget, radianTarget);
+}
+
+void Nob::AppendMenuItems(AddMenuFunc const & add) const
+{
+	if (IsSelected())
+		add(IDM_DESELECT_NOB);
+	else
+		add(IDM_SELECT_NOB);
+	add(IDD_DELETE_NOB);
 }

@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Resource.h"
 #include "DrawContext.h"
 #include "IoNeuron.h"
 #include "InputConnector.h"
@@ -53,4 +54,11 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         );
     }
     IoConnector::DrawExterior(context, type);
+}
+
+void InputConnector::AppendMenuItems(AddMenuFunc const & add) const
+{
+    add(IDM_SIGNAL_DESIGNER);
+    add(IDM_TRIGGER_STIMULUS);
+    IoConnector::AppendMenuItems(add);
 }

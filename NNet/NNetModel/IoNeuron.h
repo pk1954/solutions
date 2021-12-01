@@ -26,13 +26,11 @@ public:
 		SetId(src.GetId());
 	}
 
-	void Check() const { Neuron::Check(); }
+	void RotateNob(MicroMeterPnt const &, Radian const) final;
 
-	virtual void RotateNob(MicroMeterPnt const &, Radian const);
-
-	virtual MicroMeterPosDir GetPosDir() const;
-	virtual Radian           GetDir()    const;
-	virtual void             SetDir(Radian const);
+	MicroMeterPosDir GetPosDir()    const override;
+	Radian           GetDir()       const override;
+	void             SetDir(Radian const) override;
 
 	                          // IoNeurons can be locked or unlocked
 	void LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction

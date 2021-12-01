@@ -7,13 +7,10 @@
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
-#include "PipeList.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "BaseKnot.h"
 #include "Knot.h"
-
-using std::swap;
 
 class Connect2BaseKnotCommand : public NNetCommand
 {
@@ -46,8 +43,6 @@ public:
 		m_upResult->AddIncoming(m_baseKnotSrc);
 		m_upResult->AddOutgoing(m_baseKnotSrc);
 	}
-
-	~Connect2BaseKnotCommand() { }
 
 	void Do() final
 	{

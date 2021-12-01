@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "ComputeThread.h"
+#include "win32_util_resource.h"
 #include "win32_simulationControl.h"
 
 void SimulationControl::Initialize

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <assert.h>
+#include "Resource.h"
 #include "tHighlightType.h"
 #include "DrawContext.h"
 #include "Knot.h"
@@ -73,4 +74,25 @@ void Knot::EvaluateSelectionStatus()
 			[&](Pipe const &p) { return p.IsSelected(); }  // if any connected pipe is selected
 		)                                                  // knot must also be selected
 	);
+}
+
+void Knot::AppendMenuItems(AddMenuFunc const & add) const
+{
+	if (
+		((GetNrOfIncomingConnections() <= 1) && (GetNrOfOutgoingConnections() <= 1)) ||
+		((GetNrOfIncomingConnections() <= 2) && (GetNrOfOutgoingConnections() == 0)) 
+	   ) add(IDD_ADD_OUTGOING2KNOT);
+
+	if (
+		((GetNrOfIncomingConnections() <= 1) && (GetNrOfOutgoingConnections() <= 1)) ||
+		((GetNrOfIncomingConnections() == 0) &&	(GetNrOfOutgoingConnections() <= 2)) 
+	   ) add(IDD_ADD_INCOMING2KNOT);
+
+	if ((GetNrOfIncomingConnections() == 0) && (GetNrOfOutgoingConnections() <= 1))
+		add(IDD_APPEND_INPUT_NEURON);
+
+	if (! HasOutgoing()) 
+		add(IDD_APPEND_OUTPUT_NEURON);
+
+	BaseKnot::AppendMenuItems(add);
 }

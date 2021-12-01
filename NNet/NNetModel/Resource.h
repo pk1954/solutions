@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "win32_util_resource.h"
-
 // identifiers below 100 are reserved for win32_utilities
 // application identifiers start at 100
 

@@ -3,15 +3,9 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Resource.h"
 #include "DrawContext.h"
 #include "OutputNeuron.h"
-
-using std::fixed;
-using std::wstring;
-using std::wostringstream;
-using std::fill;
-using std::wcout;
-using std::endl;
 
 OutputNeuron::OutputNeuron(MicroMeterPnt const & upCenter)
 	: IoNeuron(upCenter, NobType::Value::outputNeuron)
@@ -64,4 +58,12 @@ void OutputNeuron::drawPlug
 
 	context.DrawLine(umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,          colF);
 	context.DrawLine(umCenter + umDirVector *  V,         umP, GetExtension() * (M + 1.2f), colF);
+}
+
+void OutputNeuron::AppendMenuItems(AddMenuFunc const & add) const
+{
+	add(IDD_ADD_INCOMING2KNOT);
+	add(IDD_TRIGGER_SOUND_DLG);
+	add(IDD_STOP_ON_TRIGGER);   
+	IoNeuron::AppendMenuItems(add);
 }

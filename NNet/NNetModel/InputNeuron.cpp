@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <iomanip>
 #include <sstream> 
+#include "Resource.h"
 #include "DrawContext.h"
 #include "tHighlightType.h"
 #include "ParameterType.h"
@@ -31,15 +32,13 @@ InputNeuron::InputNeuron(BaseKnot const & baseKnot)
 	SetOutgoing(baseKnot);
 }
 
-InputNeuron::~InputNeuron() {}
-
 void InputNeuron::Check() const
 {
 	Neuron::Check();
 	assert(!HasIncoming());
 }
 
-fHertz const InputNeuron::GetActFrequency() const
+fHertz InputNeuron::GetActFrequency() const
 {
 	return HasParentNob()
 		? static_cast<InputConnector *>(GetParentNob())->GetActFrequency()
@@ -104,4 +103,11 @@ void InputNeuron::drawSocket
 	context.DrawLine(umStart, umEndCenter,   umSize,    colF);
 	context.DrawLine(umLine + umOrthoVector, umWidthLR, colF);
 	context.DrawLine(umLine - umOrthoVector, umWidthLR, colF);
+}
+
+void InputNeuron::AppendMenuItems(AddMenuFunc const & add) const
+{
+	if (! HasOutgoing())
+		add(IDD_ADD_OUTGOING2KNOT);
+	IoNeuron::AppendMenuItems(add);
 }

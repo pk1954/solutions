@@ -215,6 +215,7 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="NobIdList.h" />
     <ClInclude Include="PipeList.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
     <ClInclude Include="Segment.h" />

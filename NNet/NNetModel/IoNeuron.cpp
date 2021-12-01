@@ -17,7 +17,7 @@ MicroMeterPnt IoNeuron::determineVector() const
 
 	Apply2AllConnectedPipes
 	(
-		[&](Pipe & pipe) { umVector += Normalize(pipe.GetVector());	} 
+		[&umVector](Pipe const & pipe) { umVector += Normalize(pipe.GetVector()); } 
 	);
 
 	if (umVector.IsZero())

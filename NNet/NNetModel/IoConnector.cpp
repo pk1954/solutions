@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Resource.h"
 #include "MicroMeterPosDir.h"
 #include "IoNeuron.h"
 #include "Neuron.h"
@@ -219,6 +220,12 @@ MicroMeterLine IoConnector::CalcMaxDistLine() const // find two nobs with maximu
 MicroMeterPnt IoConnector::CalcOrthoVector(MicroMeterLine const & line) const 
 {
     return ::CalcOrthoVector<IoNeuron>(m_list, line);
+}
+
+void IoConnector::AppendMenuItems(AddMenuFunc const & add) const
+{
+    add(IDD_DISC_IOCONNECTOR);        
+    Nob::AppendMenuItems(add);
 }
 
 IoConnector const * Cast2IoConnector(Nob const * pNob)

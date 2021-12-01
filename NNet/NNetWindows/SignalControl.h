@@ -28,7 +28,7 @@ public:
 		NNetModelCommands      &
 	);
 
-	virtual ~SignalControl();
+	~SignalControl() final;
 
 	static void Initialize(Param & param) 
 	{ 

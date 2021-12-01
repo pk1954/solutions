@@ -26,6 +26,8 @@ public:
 
 	~IoConnector() override = default;
 
+	void AppendMenuItems(AddMenuFunc const &) const override;
+
 	void Check() const override;
 	void Dump () const override;
 

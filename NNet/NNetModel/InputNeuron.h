@@ -5,14 +5,11 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "SignalGenerator.h"
 #include "IoNeuron.h"
 
 class Nob;
 class BaseKnot;
 class DrawContext;
-
-using std::shared_ptr;
 
 class InputNeuron : public IoNeuron
 {
@@ -21,21 +18,23 @@ public:
 	explicit InputNeuron(MicroMeterPnt const &);
 	explicit InputNeuron(BaseKnot      const &);
 
-	virtual ~InputNeuron();
+	~InputNeuron() final = default;
 
-	virtual void Check() const;
+	void Check() const final;
 
 	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
-	fHertz const GetActFrequency() const;
+	fHertz GetActFrequency() const;
 
-	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
-	virtual void DrawInterior(DrawContext const &, tHighlight const) const;
+	void DrawExterior(DrawContext const &, tHighlight const) const final;
+	void DrawInterior(DrawContext const &, tHighlight const) const final;
 
-	virtual NobIoMode GetIoMode() const { return NobIoMode::input; }
+	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
-	virtual void Prepare();
-	virtual bool Includes(MicroMeterPnt const &) const;
+	void Prepare() final;
+	bool Includes(MicroMeterPnt const &) const final;
+
+	void AppendMenuItems(AddMenuFunc const &) const final;
 
 private:
 

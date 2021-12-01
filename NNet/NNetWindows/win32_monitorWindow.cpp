@@ -17,6 +17,7 @@
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
+#include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 
 using std::find;
