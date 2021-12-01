@@ -13,6 +13,7 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "Knot.h"
+#include "Neuron.h"
 #include "InputConnector.h"
 #include "InputNeuron.h"
 
@@ -34,7 +35,7 @@ InputNeuron::InputNeuron(BaseKnot const & baseKnot)
 
 void InputNeuron::Check() const
 {
-	Neuron::Check();
+	IoNeuron::Check();
 	assert(!HasIncoming());
 }
 

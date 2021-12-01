@@ -44,15 +44,14 @@ public:
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
 	void      SetDir(Radian const)  override { };
-	void      DrawExterior  (DrawContext const &, tHighlight const) const override;
-	void      DrawInterior  (DrawContext const &, tHighlight const) const override;
-	void      ClearDynamicData() override;
-	bool      CompStep() override;
+	void      ClearDynamicData()    override;
+	bool      CompStep()            override;
 	mV        GetNextOutput() const override;
 	Radian    GetDir()        const override { return Radian::NULL_VAL(); };
 	NobIoMode GetIoMode()     const override { return NobIoMode::internal; }
 
-	virtual void DrawNeuronText(DrawContext const &) const;
+	void DrawExterior(DrawContext const &, tHighlight const) const override;
+	void DrawInterior(DrawContext const &, tHighlight const) const override;
 
 	void Recalc() final;
 	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }

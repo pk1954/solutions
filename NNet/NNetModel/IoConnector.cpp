@@ -10,6 +10,8 @@
 #include "IoConnector.h"
 
 using std::make_unique;
+using std::wcout;
+using std::endl;
 
 IoConnector::IoConnector(NobType const nobType)
     :	Nob(nobType)

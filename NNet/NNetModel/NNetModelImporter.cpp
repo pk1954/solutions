@@ -8,6 +8,7 @@
 #include "ERRHNDL.H"
 #include "SignalFactory.h"
 #include "Knot.h"
+#include "Neuron.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
 #include "MonitorData.h"

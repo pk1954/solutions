@@ -3,11 +3,12 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "scanner.h"
+#include "SCANNER.H"
 #include <assert.h>
 #include <filesystem>
 #include "Signal.h"
 #include "Track.h"
+#include "Neuron.h"
 #include "InputNeuron.h"
 #include "BaseKnot.h"
 #include "InputConnector.h"

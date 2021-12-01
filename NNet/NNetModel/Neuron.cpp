@@ -154,14 +154,6 @@ void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umR
 	context.DisplayText(umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow);
 }
 
-void Neuron::DrawNeuronText(DrawContext const & context) const
-{ 
-	//wostringstream m_wBuffer;
-	//m_wBuffer.precision(2);
-	//m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
-	//DisplayText(context, GetRect4Text(), m_wBuffer.str());
-}
-
 MicroMeterPnt Neuron::getAxonHillockPos() const
 {
 	Pipe          const & axon         { GetFirstOutgoing() };
@@ -204,9 +196,8 @@ Neuron * Cast2Neuron(Nob * pNob)
 
 void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 {
+	add(IDD_ADD_INCOMING2KNOT);
 	if (IsNeuron())
 		add(IDD_SPLIT_NEURON);        
-	add(IDD_TRIGGER_SOUND_DLG);
-	add(IDD_STOP_ON_TRIGGER);      
 	BaseKnot::AppendMenuItems(add);
 }

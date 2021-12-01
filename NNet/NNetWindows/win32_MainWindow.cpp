@@ -412,11 +412,10 @@ void MainWindow::doPaint()
 			DrawArrowsInRect(pixRect, m_arrowSize);
 	}
 
-	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
-	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
-	DrawInteriorInRect  (pixRect, [&](Nob const & n) { return n.IsIoConnector(); }); 
-	DrawNeuronTextInRect(pixRect);
+	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
+	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
+	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsIoConnector(); }); 
 
 	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
 	{
@@ -430,7 +429,6 @@ void MainWindow::doPaint()
 	{
 		m_pNMRI->DrawExterior  (m_nobHighlighted, context, tHighlight::highlighted);
 		m_pNMRI->DrawInterior  (m_nobHighlighted, context, tHighlight::highlighted);
-		m_pNMRI->DrawNeuronText(m_nobHighlighted, context);
 	}
 	else 
 	{

@@ -10,6 +10,7 @@
 #include "Segment.h"
 #include "win32_scale.h"
 #include "Pipe.h"
+#include "Neuron.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
 #include "NNetParameters.h"
@@ -121,19 +122,6 @@ void NNetWindow::DrawArrowsInRect(PixelRect const & rect, MicroMeter const umSiz
 		umRect,	
 		[&](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
 	);
-}
-
-void NNetWindow::DrawNeuronTextInRect(PixelRect const & rect) const
-{
-	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	if (PixelSize() <= 2.5_MicroMeter)
-	{
-		m_pNMRI->GetUPNobsC().Apply2AllInRect<Neuron>
-		(
-			umRect,
-			[&](Neuron const & n) { n.DrawNeuronText(m_context); } 
-		);
-	}
 }
 
 void NNetWindow::DrawSensors() const

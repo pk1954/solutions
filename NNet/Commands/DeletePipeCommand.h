@@ -9,7 +9,7 @@
 #include "NNetCommand.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
-#include "BaseKnot.h"
+#include "Neuron.h"
 #include "Knot.h"
 #include "Pipe.h"
 

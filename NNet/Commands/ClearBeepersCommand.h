@@ -7,7 +7,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
-#include "BaseKnot.h"
+#include "Neuron.h"
 
 class ClearBeepersCommand : public NNetCommand
 {

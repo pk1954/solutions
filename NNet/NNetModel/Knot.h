@@ -44,7 +44,5 @@ public:
 	void DrawInterior(DrawContext const &, tHighlight const) const override;
 	void Recalc      ()  override { };
 
-	virtual void DrawNeuronText(PixelCoordsFp const &) const {};
-
 	void EvaluateSelectionStatus();
 };

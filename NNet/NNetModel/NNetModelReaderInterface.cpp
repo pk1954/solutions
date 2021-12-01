@@ -200,18 +200,6 @@ const
 		p->DrawInterior(context, type);
 }
 
-void NNetModelReaderInterface::DrawNeuronText
-(
-	NobId       const   id, 
-	DrawContext const & context
-) 
-const
-{
-	if (auto p { m_pModel->GetNobConstPtr<Neuron const *>(id) })
-		if (p)
-			p->DrawNeuronText(context);
-}
-
 void NNetModelReaderInterface::DrawLine
 (
 	MicroMeterLine const & umLine, 

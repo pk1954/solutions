@@ -91,10 +91,9 @@ public:
 	bool  GetDescriptionLine(int const, wstring &)                               const;
 	NobId FindNobAt(MicroMeterPnt const &, NobCrit const & = NobCritAlwaysTrue)  const;
 
-	void DrawExterior  (NobId          const,   DrawContext const &, tHighlight const) const;
-	void DrawInterior  (NobId          const,   DrawContext const &, tHighlight const) const;
-	void DrawNeuronText(NobId          const,   DrawContext const &)                   const;
-	void DrawLine      (MicroMeterLine const &, DrawContext const &)                   const;
+	void DrawExterior(NobId          const,   DrawContext const &, tHighlight const) const;
+	void DrawInterior(NobId          const,   DrawContext const &, tHighlight const) const;
+	void DrawLine    (MicroMeterLine const &, DrawContext const &)                   const;
 
 	template <Nob_t T> bool IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
 

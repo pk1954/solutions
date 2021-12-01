@@ -63,7 +63,5 @@ void OutputNeuron::drawPlug
 void OutputNeuron::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_ADD_INCOMING2KNOT);
-	add(IDD_TRIGGER_SOUND_DLG);
-	add(IDD_STOP_ON_TRIGGER);   
-	IoNeuron::AppendMenuItems(add);
+	BaseKnot::AppendMenuItems(add);
 }

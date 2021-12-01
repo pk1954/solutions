@@ -8,9 +8,6 @@
 #include "MicroMeterPosDir.h"
 #include "Neuron.h"
 
-using std::wcout;
-using std::endl;
-
 class IoNeuron : public Neuron
 {
 public:
