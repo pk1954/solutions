@@ -14,7 +14,7 @@ class ParameterDialog : public BaseDialog
 {
 public:
 	ParameterDialog();
-	~ParameterDialog();
+	~ParameterDialog() final;
 
 	void Start(HWND const, NNetModelCommands * const, Param * const);
 	void Stop();

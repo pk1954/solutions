@@ -36,10 +36,10 @@ public:
 		Observable                     &
 	);
 
-	void Stop();
+	void Stop() final;
 	void Reset();
 
-	virtual LPARAM AddContextMenuEntries(HMENU const);
+	LPARAM AddContextMenuEntries(HMENU const) final;
 
 	NobId GetTargetNobId     () const { return m_nobTarget; }
 	NobId GetHighlightedNobId() const { return m_nobHighlighted; }
@@ -54,7 +54,7 @@ public:
 			m_pCoordObservable->NotifyAll(false);
 	}
 
-	MicroMeterPnt const GetCursorPos() const;
+	MicroMeterPnt GetCursorPos() const;
 
 	void CenterModel();
 	void CenterSelection();

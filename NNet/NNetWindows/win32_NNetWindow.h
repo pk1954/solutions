@@ -30,7 +30,7 @@ public:
 		NNetController                 &
 	);
 
-	void Stop();
+	virtual void Stop();
 
 	MicroMeterRect GetViewRect() const;
 

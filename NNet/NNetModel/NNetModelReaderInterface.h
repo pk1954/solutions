@@ -55,12 +55,12 @@ public:
 	wstring             GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float               GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}
-	UPNobList   const & GetUPNobs()                            const { return m_pModel->GetUPNobs(); }
-	unsigned int        GetNrOf(NobType const type)            const { return GetUPNobs().GetCounter(type); }
-	unsigned int        GetNrOfNobs()                          const { return GetUPNobs().GetCounter(); }
-	bool                AnyNobsSelected()                      const { return GetUPNobs().AnyNobsSelected(); }
-	bool                IsValidNobId(NobId const id)           const { return GetUPNobs().IsValidNobId(id); }
-	size_t              GetSizeOfNobList()                     const { return GetUPNobs().Size(); }
+	UPNobList   const & GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
+	unsigned int        GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
+	unsigned int        GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
+	bool                AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
+	bool                IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
+	size_t              GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
 	Signal            * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
 	SignalId            GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 

@@ -88,14 +88,14 @@ void NNetModelExporter::writeNobs(wostream & out)
     }
     out << L"NrOfNobs = " << idCompact << endl;
     out << endl;
-    m_pNMRI->GetUPNobs().Apply2All<BaseKnot   >([&](BaseKnot    const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<Pipe       >([&](Pipe        const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobs().Apply2All<IoConnector>([&](IoConnector const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobsC().Apply2All<BaseKnot   >([&](BaseKnot    const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobsC().Apply2All<Pipe       >([&](Pipe        const & s) { writeNob(out, s); });
+    m_pNMRI->GetUPNobsC().Apply2All<IoConnector>([&](IoConnector const & s) { writeNob(out, s); });
 }
 
 void NNetModelExporter::writeNobParameters(wostream & out)   // Legacy
 {
-    m_pNMRI->GetUPNobs().Apply2All<InputConnector>
+    m_pNMRI->GetUPNobsC().Apply2All<InputConnector>
     (
         [&](InputConnector const & inpConn)
         { 
@@ -110,7 +110,7 @@ void NNetModelExporter::writeNobParameters(wostream & out)   // Legacy
 
 void NNetModelExporter::writeTriggerSounds(wostream & out)
 {
-    m_pNMRI->GetUPNobs().Apply2All<Neuron>
+    m_pNMRI->GetUPNobsC().Apply2All<Neuron>
     (
         [&](Neuron const & neuron) 
         { 

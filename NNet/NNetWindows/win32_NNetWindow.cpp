@@ -83,7 +83,7 @@ void NNetWindow::DrawInteriorInRect
 ) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	m_pNMRI->GetUPNobs().Apply2AllInRect<Nob>
+	m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
 	(
 		umRect,
 		[&](Nob const & s) 
@@ -101,7 +101,7 @@ void NNetWindow::DrawExteriorInRect
 ) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	m_pNMRI->GetUPNobs().Apply2AllInRect<Nob>
+	m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
 	(
 		umRect,
 		[&](Nob const & s) 
@@ -115,7 +115,7 @@ void NNetWindow::DrawExteriorInRect
 void NNetWindow::DrawArrowsInRect(PixelRect const & rect, MicroMeter const umSize) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	m_pNMRI->GetUPNobs().Apply2AllInRect<Pipe>
+	m_pNMRI->GetUPNobsC().Apply2AllInRect<Pipe>
 	(
 		umRect,	
 		[&](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
@@ -127,7 +127,7 @@ void NNetWindow::DrawNeuronTextInRect(PixelRect const & rect) const
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
 	if (PixelSize() <= 2.5_MicroMeter)
 	{
-		m_pNMRI->GetUPNobs().Apply2AllInRect<Neuron>
+		m_pNMRI->GetUPNobsC().Apply2AllInRect<Neuron>
 		(
 			umRect,
 			[&](Neuron const & n) { n.DrawNeuronText(m_context); } 

@@ -18,7 +18,7 @@
 #include "NNetModelCommands.h"
 #include "win32_fatalError.h"
 #include "win32_command.h"
-#include "win32_MonitorWindow.h"
+#include "win32_monitorWindow.h"
 #include "win32_MainWindow.h"
 
 using std::unordered_map;
@@ -95,7 +95,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_MAKE_CONNECTOR,         L"Make connector"              },
 		{ IDD_NEW_INPUT_NEURON,       L"New input neuron" 		     },
 		{ IDD_NEW_OUTPUT_NEURON,      L"New output neuron"		     },
-		//{ IDD_PULSE_RATE,             L"Pulse rate"                  },
 		{ IDM_TRIGGER_STIMULUS,       L"Trigger stimulus"            },
 		{ IDM_SIGNAL_DESIGNER,        L"Signal designer"             },
 		{ IDM_SELECT_NOB,             L"Select nob"                  },
@@ -211,7 +210,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	return static_cast<LPARAM>(m_nobHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
 }
 
-MicroMeterPnt const MainWindow::GetCursorPos() const
+MicroMeterPnt MainWindow::GetCursorPos() const
 {
 	PixelPoint const pixPoint { GetRelativeCrsrPosition() };
 	return IsInClientRect(pixPoint)
@@ -436,7 +435,7 @@ void MainWindow::centerAndZoomRect
 	float              const fRatioFactor 
 )
 {
-	MicroMeterRect umRect { m_pNMRI->GetUPNobs().CalcEnclosingRect(mode) };
+	MicroMeterRect umRect { m_pNMRI->GetUPNobsC().CalcEnclosingRect(mode) };
 	PixelCoordsFp  coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	(

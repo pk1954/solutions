@@ -23,12 +23,11 @@
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_appTitle.h"
-#include "win32_actionTimer.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
 #include "win32_MiniWindow.h"
 #include "win32_MainWindow.h"
-#include "win32_MonitorWindow.h"
+#include "win32_monitorWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
 #include "win32_parameterDlg.h"
@@ -79,7 +78,7 @@ class NNetAppWindow : public BaseWindow
 {
 public:
 	NNetAppWindow();
-	~NNetAppWindow();
+	~NNetAppWindow() override;
 
 	virtual void Start(MessagePump &);
 	virtual void Stop();
@@ -162,5 +161,5 @@ private:
 	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
 
-	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
+	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };
