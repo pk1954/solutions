@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "Scanner.h"
+#include "SCANNER.H"
 #include "NNetColors.h"
 #include "Nob.h"
 #include "debug.h"

@@ -128,7 +128,7 @@ void NNetModelExporter::writeTriggerSounds(wostream & out)
 
 void NNetModelExporter::writeMonitorData(wostream & out) const
 {
-    MonitorData const & monitorData { m_pNMRI->GetMonitorData() };
+    MonitorData const & monitorData { m_pNMRI->GetConstMonitorData() };
 
     out << L"NrOfTracks " << monitorData.GetNrOfTracks() << endl;
 

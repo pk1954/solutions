@@ -50,7 +50,7 @@ public:
 	MicroMeterPnt       GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
 	Nob         const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	fMicroSecs          GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
-	MonitorData const & GetMonitorData()                       const { return m_pModel->GetMonitorData(); }
+	MonitorData const & GetConstMonitorData()                  const { return m_pModel->GetMonitorData(); }
 	fMicroSecs          TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
 	wstring             GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float               GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
@@ -61,8 +61,8 @@ public:
 	bool                AnyNobsSelected()                      const { return GetUPNobs().AnyNobsSelected(); }
 	bool                IsValidNobId(NobId const id)           const { return GetUPNobs().IsValidNobId(id); }
 	size_t              GetSizeOfNobList()                     const { return GetUPNobs().Size(); }
-	Signal            * FindSensor(MicroMeterPnt const & p)    const { return GetMonitorData().FindSensor(p); }
-	SignalId            GetHighlightedSignalId()               const { return GetMonitorData().GetHighlightedSignalId(); }
+	Signal            * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
+	SignalId            GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 
 	bool IsInputConnector(NobId const id) const 
 	{

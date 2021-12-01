@@ -6,10 +6,10 @@
 
 #include <chrono>
 #include <vector>
-#include "Windowsx.h"
-#include "commctrl.h"
+#include "windowsx.h"
+#include "CommCtrl.h"
 #include "PixelTypes.h"
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "win32_tooltip.h"
 #include "win32_util.h"
 

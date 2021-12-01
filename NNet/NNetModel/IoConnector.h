@@ -24,31 +24,31 @@ public:
 
 	explicit IoConnector(NobType const);
 
-	virtual ~IoConnector() = default;
+	~IoConnector() override = default;
 
-	virtual void Check() const;
-	virtual void Dump () const;
+	void Check() const override;
+	void Dump () const override;
 
-	virtual MicroMeterPnt GetPos() const;
+	MicroMeterPnt GetPos() const override;
 
-	virtual void DrawExterior(DrawContext    const &, tHighlight const) const;
-	virtual void DrawInterior(DrawContext    const &, tHighlight const) const;
-	virtual void Expand      (MicroMeterRect       &)                   const;
-	virtual bool IsIncludedIn(MicroMeterRect const &)                   const;
-	virtual bool Includes    (MicroMeterPnt  const &)                   const;
-	virtual void RotateNob   (MicroMeterPnt  const &, Radian const);
-	virtual void MoveNob     (MicroMeterPnt  const &);
-	virtual void Recalc      ();
-	virtual void Link        (Nob const &, Nob2NobFunc const &);
-	virtual void Select      (bool const);
-	virtual void SetParentPointers();
-	virtual void ClearParentPointers();
+	void DrawExterior(DrawContext    const &, tHighlight const) const override;
+	void DrawInterior(DrawContext    const &, tHighlight const) const override;
+	void Expand      (MicroMeterRect       &)                   const override;
+	bool IsIncludedIn(MicroMeterRect const &)                   const override;
+	bool Includes    (MicroMeterPnt  const &)                   const override;
+	void RotateNob   (MicroMeterPnt  const &, Radian const) override;
+	void MoveNob     (MicroMeterPnt  const &) override;
+	void Recalc      () override;
+	void Link        (Nob const &, Nob2NobFunc const &) override;
+	void Select      (bool const) override;
+	void SetParentPointers();
+	void ClearParentPointers();
 
-	virtual void Prepare     () {}
-	virtual bool CompStep    () { return false; }
+	void Prepare     () override {}
+	bool CompStep    () override { return false; }
 
-	virtual bool             IsCompositeNob() { return true; }
-	virtual MicroMeterPosDir GetPosDir() const;
+	bool             IsCompositeNob() const final { return true; }
+	MicroMeterPosDir GetPosDir     () const final;
 
 	void             Push(IoNeuron * const);
 	IoNeuron       * Pop();
@@ -57,16 +57,15 @@ public:
 
 	void LockDirection();
 	void UnlockDirection();
-
 	void AlignDirection();
 
 	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
 
-	Radian GetDir() const;
+	Radian GetDir() const override;
 
-	virtual void SetDir   (Radian           const );
-	virtual void SetPos   (MicroMeterPnt    const &);
-	virtual void SetPosDir(MicroMeterPosDir const &);
+	void SetDir   (Radian           const  ) override;
+	void SetPos   (MicroMeterPnt    const &) override;
+	void SetPosDir(MicroMeterPosDir const &) override;
 
 	void Apply2All(function<void(IoNeuron &)> const & func) const;
 

@@ -5,22 +5,11 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NobId.h"
 #include "D2D_DrawContext.h"
-#include "tHighlightType.h"
-#include "SmoothMoveFp.h"
 #include "win32_modelWindow.h"
 
-using std::wstring;
-using std::function;
-using std::make_unique;
-
-class Signal;
-class Observable;
 class ActionTimer;
 class NNetController;
-class ObserverInterface;
-class ControllerInterface;
 class NNetModelReaderInterface;
 
 class NNetWindow : public ModelWindow
@@ -29,6 +18,7 @@ public:
 	static void InitClass(ActionTimer * const);
 
 	NNetWindow();
+	~NNetWindow() override;
 
 	void Start
 	(
@@ -42,14 +32,12 @@ public:
 
 	void Stop();
 
-	virtual ~NNetWindow();
+	MicroMeterRect GetViewRect() const;
 
-	MicroMeterRect const GetViewRect() const;
-
-	DrawContext          & GetDrawContext()       { return m_context; }
-	PixelCoordsFp  const & GetCoordC     () const { return m_context.GetCoordC(); }
-	PixelCoordsFp        & GetCoord      ()       { return m_context.GetCoord (); }
-	MicroMeter     const   PixelSize     () const { return m_context.GetPixelSize(); }
+	DrawContext         & GetDrawContext()       { return m_context; }
+	PixelCoordsFp const & GetCoordC     () const { return m_context.GetCoordC(); }
+	PixelCoordsFp       & GetCoord      ()       { return m_context.GetCoord (); }
+	MicroMeter            PixelSize     () const { return m_context.GetPixelSize(); }
 
 	void DrawInteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
 	void DrawExteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
@@ -58,12 +46,12 @@ public:
 
 protected:
 
-	virtual void OnPaint      ();
-	virtual bool OnSize       (WPARAM const, LPARAM const);
-	virtual bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const);
-	virtual void OnLButtonDown(WPARAM const, LPARAM const) {}
-
-	virtual void doPaint() = 0;
+    void OnPaint      () override;
+    bool OnSize       (WPARAM const, LPARAM const) override;
+    bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const) override;
+    void OnLButtonDown(WPARAM const, LPARAM const)  override {}
+   
+    virtual void doPaint() = 0;
 
 	void DrawSensors() const;
 	void DrawHighlightedSensor() const;
@@ -74,8 +62,8 @@ protected:
 	D2D_driver                       m_graphics { };
 
 private:
-	NNetWindow             (NNetWindow const &);  // noncopyable class 
-	NNetWindow & operator= (NNetWindow const &);  // noncopyable class 
+	NNetWindow             (NNetWindow const &);           // noncopyable class 
+	NNetWindow & operator= (NNetWindow const &) = delete;  // noncopyable class 
 
 	NNetController * m_pController { nullptr };
 	D2D_DrawContext  m_context     { };

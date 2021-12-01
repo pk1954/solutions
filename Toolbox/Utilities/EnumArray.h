@@ -7,6 +7,8 @@
 #include <functional>
 #include <array>
 
+using std::array;
+
 // EnumArray: template for classes providing arrays over enum
 // Requirements:
 //  - base class T has a member enum class with name "Id"
@@ -35,15 +37,8 @@ public:
 		return m_tArray.at(static_cast<unsigned short>(index)); 
 	}
 
-	T * begin()
-	{ 
-		return m_tArray.begin();
-	}
-
-	T * end()
-	{ 
-		return m_tArray.end(); 
-	}
+	T * begin()	{ return m_tArray.begin(); }
+	T * end()	{ return m_tArray.end(); }
 
 	void operator= (T const val)
 	{
@@ -64,5 +59,5 @@ public:
 private:
 	static int constexpr COUNT = static_cast<int>(INDEX_TYPE::Id::count);
 
-    std::array < T, COUNT > m_tArray;
+    array <T, COUNT> m_tArray;
 };

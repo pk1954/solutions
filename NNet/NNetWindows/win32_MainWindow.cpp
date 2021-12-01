@@ -120,7 +120,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 
 	if (IsUndefined(m_nobHighlighted))  // no nob selected, cursor on background
 	{
-		if (m_pNMRI->GetMonitorData().GetHighlightedSignal())
+		if (m_pNMRI->GetConstMonitorData().GetHighlightedSignal())
 			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
 		else
 		{
@@ -343,7 +343,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				setTargetNob();
 			}
 		}
-		else if (m_pNMRI->GetMonitorData().IsAnySignalSelected())
+		else if (m_pNMRI->GetConstMonitorData().IsAnySignalSelected())
 		{   
 			m_pModelCommands->MoveSensor(m_pNMRI->GetHighlightedSignalId(), umDelta);
 			Notify(false); 

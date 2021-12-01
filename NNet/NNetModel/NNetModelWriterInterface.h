@@ -35,12 +35,12 @@ public:
     UPNobList               & GetUPNobs()      { return m_pModel->GetUPNobs(); }
     Param                   & GetParams()      { return m_pModel->GetParams(); }
     MonitorData             & GetMonitorData() { return m_pModel->GetMonitorData(); }
-    unique_ptr<vector<Nob *>> GetSelection()   { return move(GetUPNobs().GetAllSelected()); }
+    unique_ptr<vector<Nob *>> GetSelection()   { return GetUPNobs().GetAllSelected(); }
 
     void  ResetModel      () { m_pModel->ResetModel(); }
     void  ClearDynamicData() { m_pModel->ClearDynamicData(); }
 
-    void  Reconnect(NobId const id) { m_pModel->Reconnect(id); }
+    void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 
     void  SelectSubtree(BaseKnot  * const p, bool  const b) { m_pModel->SelectSubtree(p, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }

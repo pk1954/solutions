@@ -20,11 +20,9 @@ OutputConnector::OutputConnector(vector<IoNeuron *> & src)
 }
 
 OutputConnector::OutputConnector(vector<IoNeuron *> && src)
-    :	IoConnector(NobType::Value::outputConnector)
+  :	IoConnector(NobType::Value::outputConnector)
 {
-    for (auto it : src)
-        m_list.push_back(it);
-    src.clear();
+    m_list = move(src);
 }
 
 void OutputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const

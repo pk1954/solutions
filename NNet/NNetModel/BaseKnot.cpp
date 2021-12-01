@@ -97,8 +97,8 @@ void BaseKnot::ClearConnections()
 
 void BaseKnot::Reconnect() 
 { 
-	m_inPipes .Apply2All([&](Pipe & pipe) { pipe.SetEndKnot  (this); });
-	m_outPipes.Apply2All([&](Pipe & pipe) { pipe.SetStartKnot(this); });
+	m_inPipes .Apply2All([this](Pipe & pipe) { pipe.SetEndKnot  (this); });
+	m_outPipes.Apply2All([this](Pipe & pipe) { pipe.SetStartKnot(this); });
 }
 
 void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
@@ -138,8 +138,8 @@ void BaseKnot::Check() const
 	Nob::Check();
 	m_inPipes .Check();
 	m_outPipes.Check();
-	Apply2AllInPipes ([&](Pipe & p) { assert(p.GetEndKnotId  () == GetId()); });
-	Apply2AllOutPipes([&](Pipe & p) { assert(p.GetStartKnotId() == GetId()); });
+	Apply2AllInPipes ([&](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
+	Apply2AllOutPipes([&](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 
 void BaseKnot::Apply2AllConnectedPipes(PipeFunc const &f) const 

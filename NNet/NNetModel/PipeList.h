@@ -43,8 +43,23 @@ public:
 
 	void Clear() { m_list.clear(); }
 
-	void Apply2All (PipeFunc const &) const;
-	bool Apply2AllB(PipeCrit const &) const; 
+	template<class FUNC>
+	void Apply2All(FUNC const &f) const 
+	{ 
+		for (auto & it : m_list) 
+			f(* it); 
+	}
+
+	template<class FUNC>
+	bool Apply2AllB(FUNC const &f) const 
+	{ 
+		for (auto & it : m_list) 
+		{ 
+			if (f(* it))
+				return true;
+		}
+		return false;
+	}
 
 private:
 	vector<Pipe *> m_list {};

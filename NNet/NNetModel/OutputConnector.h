@@ -9,8 +9,6 @@
 #include "tHighlightType.h"
 #include "IoConnector.h"
 
-using std::unique_ptr;
-
 class IoNeuron;
 class DrawContext;
 
@@ -21,10 +19,10 @@ public:
 	static bool TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
 
 	OutputConnector();
-	OutputConnector(vector<IoNeuron *> &);
-	OutputConnector(vector<IoNeuron *> &&);
+	explicit OutputConnector(vector<IoNeuron *> &);
+	explicit OutputConnector(vector<IoNeuron *> &&);
 
-	virtual ~OutputConnector() {}
+	~OutputConnector() final = default;
 
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 

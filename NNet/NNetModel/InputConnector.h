@@ -10,8 +10,6 @@
 #include "SignalGenerator.h"
 #include "IoConnector.h"
 
-using std::unique_ptr;
-
 class IoNeuron;
 class DrawContext;
 
@@ -23,11 +21,11 @@ public:
 
 	explicit InputConnector(vector<IoNeuron *> &&);
 
-	virtual ~InputConnector() {}
+	~InputConnector() final = default;
 
-	virtual NobIoMode GetIoMode() const { return NobIoMode::input; }
+	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
-	virtual void DrawExterior(DrawContext const &, tHighlight const) const;
+	void DrawExterior(DrawContext const &, tHighlight const) const final;
 
 	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
 	void Tick           () { m_signalGenerator.Tick(); }

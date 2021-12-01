@@ -71,7 +71,7 @@ NNetWindow::~NNetWindow()
 	m_pController = nullptr;
 }
 
-MicroMeterRect const NNetWindow::GetViewRect() const 
+MicroMeterRect NNetWindow::GetViewRect() const 
 { 
 	return GetCoordC().Transform2MicroMeterRect(GetClPixelRect()); 
 };
@@ -139,11 +139,11 @@ void NNetWindow::DrawSensors() const
 {
 	try
 	{
-		MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
+		MonitorData    const & mon     { m_pNMRI->GetConstMonitorData() };
 		Signal const * const   pSignal { mon.GetHighlightedSignal() };
 		mon.Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
 	}
-	catch (MonitorDataException & e)
+	catch (MonitorDataException const & e)
 	{
 		SendCommand2Application(IDM_STOP, 0);
 		MonitorData::HandleException(e);
@@ -152,7 +152,7 @@ void NNetWindow::DrawSensors() const
 
 void NNetWindow::DrawHighlightedSensor() const
 {
-	MonitorData    const & mon     { m_pNMRI->GetMonitorData() };
+	MonitorData    const & mon     { m_pNMRI->GetConstMonitorData() };
 	Signal const * const   pSignal { mon.GetHighlightedSignal() };
 	if (pSignal)
 		pSignal->Draw(m_context, true);

@@ -3,13 +3,15 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "Scanner.h"
+#include "SCANNER.H"
 #include "Pipe.h"
 #include "PipeList.h"
 
 using std::endl;
 using std::wcout;
 using std::make_unique;
+using std::ranges::find;
+using std::ranges::replace;
 
 unique_ptr<PipeList>PipeList::Clone() const 
 {
@@ -36,7 +38,7 @@ void PipeList::Check() const
 
 void PipeList::Remove(Pipe * const p) 
 { 
-	auto res = find(begin(m_list), end(m_list), p);
+	auto res = find(m_list, p);
 	assert(res != end(m_list));
 	m_list.erase(res);
 }
@@ -44,32 +46,16 @@ void PipeList::Remove(Pipe * const p)
 void PipeList::Replace(Pipe * const pDel, Pipe * const pAdd) 
 { 
 	assert(pAdd);
-	replace(m_list.begin(), m_list.end(), pDel, pAdd); 
-}
-
-void PipeList::Apply2All(PipeFunc const &f) const 
-{ 
-	for (auto & it : m_list) 
-		f(* it); 
-}
-
-bool PipeList::Apply2AllB(PipeCrit const &f) const 
-{ 
-	for (auto & it : m_list) 
-	{ 
-		if (f(* it))
-			return true;
-	}
-	return false;
+	replace(m_list, pDel, pAdd); 
 }
 
 void PipeList::Recalc() const
 { 
-	Apply2All([&](Pipe & pipe) { pipe.Recalc(); }); 
+	Apply2All([](Pipe & pipe) { pipe.Recalc(); }); 
 }
 
 wostream & operator<<(wostream & out, PipeList const & pl)
 {
-	pl.Apply2All([&](Pipe & pipe) { out << pipe; });
+	pl.Apply2All([&out](Pipe const & pipe) { out << pipe; });
 	return out;
 }
