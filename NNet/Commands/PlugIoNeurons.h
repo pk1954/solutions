@@ -15,9 +15,9 @@ class PlugIoNeurons : public NNetCommand
 public:
     PlugIoNeurons
     (
-        IoNeuron & connectorAnimated, 
-        IoNeuron & nobTarget
-   )
+        IoNeuron       & connectorAnimated, 
+        IoNeuron const & nobTarget
+    )
       : m_nobTarget(nobTarget),
         m_nobAnimated(connectorAnimated)
     {

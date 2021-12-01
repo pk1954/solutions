@@ -11,6 +11,7 @@
 #include "Direct2D.h"
 
 using std::wstring;
+using std::bit_cast;
 
 D2D_driver::~D2D_driver()
 {
@@ -30,7 +31,7 @@ void D2D_driver::createResources()
 	(
 		DWRITE_FACTORY_TYPE_SHARED,
 		__uuidof(m_pDWriteFactory),
-		reinterpret_cast<IUnknown **>(& m_pDWriteFactory)
+		bit_cast<IUnknown **>(& m_pDWriteFactory)
 	);
 	assert(SUCCEEDED(m_hr));
 
@@ -207,7 +208,7 @@ void D2D_driver::FillGradientRect
 	HRESULT hr;
 	ID2D1GradientStopCollection * pGradientStopColl = nullptr;
 	D2D1_GRADIENT_STOP            gradientStops[2] { { 0.0f, colF1 }, { 1.0f, colF2 } };
-	hr = m_pRenderTarget->CreateGradientStopCollection(	gradientStops, 2, & pGradientStopColl);
+	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops, 2, & pGradientStopColl);
 	assert(SUCCEEDED(hr));
 
 	ID2D1LinearGradientBrush * m_pLinearGradientBrush;
@@ -243,7 +244,7 @@ void D2D_driver::FillGradientEllipse
 	HRESULT hr;
 	ID2D1GradientStopCollection * pGradientStopColl { nullptr };
 	D2D1_GRADIENT_STOP            gradientStops[2]  { { 0.0f, colF1 }, { 1.0f, colF2 } };
-	hr = m_pRenderTarget->CreateGradientStopCollection(	gradientStops, 2, & pGradientStopColl);
+	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops, 2, & pGradientStopColl);
 	assert(SUCCEEDED(hr));
 
 	ID2D1RadialGradientBrush * m_pRadialGradientBrush;

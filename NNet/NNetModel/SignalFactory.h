@@ -18,8 +18,6 @@ class SignalFactory
 {
 public:
 
-    virtual ~SignalFactory() {};
-
     static void Initialize
     (
         NNetModelReaderInterface const & modelReaderInterface,

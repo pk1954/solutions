@@ -41,13 +41,13 @@ public:
         m_upAnimation->Start(m_animated, m_start);
     }
 
-    virtual void UpdateUI()
+    void UpdateUI() final
     {
         m_animated.SetPosDir(m_upAnimation->GetActual());
         Command::UpdateUI();
     }
 
-    virtual bool IsAsyncCommand() 
+    bool IsAsyncCommand() final
     { 
         return true; 
     };

@@ -11,28 +11,18 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "ERRHNDL.H"
-#include "scanner.h"
+#include "SCANNER.H"
 #include "Input.h"
                   
 #define IS_ONE_OF(S,C)  (((C)!=L'\0')&&(wcschr((S),static_cast<int>(C))!=nullptr))
 #define HEX2DIGIT(C)    ((C)-(isdigit(C)?'0':(((C)>='a')?'a':'A')))
                                     
-Scanner::Scanner()
-: m_wstrPath(L""),
-  m_wstrToken(),
-  m_inbuf(),
-  m_ulValue(0),
-  m_wchValue(L'\0'),
-  m_dValue(0.0),
-  m_wstrExpected()
-{}
-
 // OpenInputFile
 //
 //   Error conditions: File name (including path) too long
 //                     File could not be opened                 
 
-void Scanner::OpenInputFile(wstring const & wstrFile) // (path) name of file to be opened
+void Scanner::OpenInputFile(wstring_view wstrFile) // (path) name of file to be opened
 {
     m_wstrPath = wstrFile;
     m_inbuf.Open(m_wstrPath);
@@ -48,7 +38,7 @@ void Scanner::CloseInputFile()
 
 wchar_t Scanner::SkipSpace()
 {
-   static wchar_t const * const wszDelimiters = L" \t\f\n\r";
+    static wchar_t const * const wszDelimiters { L" \t\f\n\r" };
 
    wchar_t wchAct;
    for (;;)
@@ -91,11 +81,11 @@ tTOKEN Scanner::ScanName(wchar_t wchAct)   // first char of name
 
 tTOKEN Scanner::ScanUnsigned()
 {
-   int const iErrnoSav = errno;  // standard C runtime lib
+   int const iErrnoSav { errno };  // standard C runtime lib
    tTOKEN    tokRes;
-
+   
    errno = 0;
-
+   
    if (m_inbuf.IsFloat())
    {
       tokRes = tTOKEN::Float;
@@ -106,10 +96,10 @@ tTOKEN Scanner::ScanUnsigned()
       tokRes = tTOKEN::Number;
       m_ulValue = m_inbuf.ReadNumber();
    }
-
+   
    if (errno)
        ScriptErrorHandler::numericValueError();
-
+   
    errno = iErrnoSav;
    return tokRes;
 }
@@ -121,7 +111,7 @@ tTOKEN Scanner::ScanString()
 {                        
    for (;;)
    {
-      wchar_t wchAct = m_inbuf.ReadNextChar();
+       wchar_t wchAct { m_inbuf.ReadNextChar() };
       if ((wchAct == L'\n') || (wchAct == L'\0'))
           ScriptErrorHandler::stringConstError();
       else if (wchAct == '"')
@@ -143,7 +133,7 @@ tTOKEN Scanner::ScanString()
 
 tTOKEN Scanner::ScanCharacter()
 {  
-   wchar_t wchAct = m_inbuf.ReadNextChar();
+   wchar_t wchAct { m_inbuf.ReadNextChar() };
    m_wstrToken += L'\'';  
    m_wstrToken += wchAct;
    if (wchAct == L'\\')
@@ -186,7 +176,7 @@ tTOKEN Scanner::ScanCharacter()
    {                
       m_wchValue = wchAct;
    }
-
+ 
    if (m_inbuf.ReadNextChar() != L'\'')
    {
       m_inbuf.SetStartMarker();
@@ -200,7 +190,7 @@ tTOKEN Scanner::ScanCharacter()
    
 wchar_t Scanner::ReadOneOf(wstring const & strValid) 
 { 
-	wchar_t chRes = (wchar_t)0;                      
+	wchar_t chRes { L'\0' };
 
 	SetExpectedToken(L"one of \"" + strValid + L"\"");
 
@@ -235,7 +225,7 @@ wchar_t Scanner::ReadOneOf(wstring const & strValid)
 
 tTOKEN Scanner::NextToken(bool const fStartMarker)
 {
-   wchar_t const wchAct = SkipSpace();         // try to find new token 
+    wchar_t const wchAct { SkipSpace() };   // try to find new token 
    
    if (fStartMarker)
       m_inbuf.SetStartMarker(); // mark start of token in input buffer  

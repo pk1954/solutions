@@ -10,7 +10,7 @@
 
 #include <string>
 #include <exception>
-#include "scanner.h"
+#include "SCANNER.H"
 
 using std::wcout;
 using std::wstring;
@@ -40,8 +40,8 @@ public:
 
     struct ScriptException: public exception
     {
-        ScriptException() {};
-        ScriptException(short const sErrNr, wstring const msg)
+        ScriptException() = default;
+        ScriptException(short const sErrNr, wstring const & msg)
           : m_sErrNr(sErrNr),
             m_wstrMessage(msg)
         {}

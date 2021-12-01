@@ -16,7 +16,7 @@ using std::unique_ptr;
 class SplitNeuronCmd : public NNetCommand
 {
 public:
-    SplitNeuronCmd(NobId const id)
+    explicit SplitNeuronCmd(NobId const id)
       : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
     {
         MicroMeterPnt umPos { m_neuron.GetPos() };
@@ -28,7 +28,7 @@ public:
         m_upOutputNeuron->MoveNob((m_neuron.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }
 
-    virtual ~SplitNeuronCmd() {}
+    ~SplitNeuronCmd() final = default;
 
     void Do() final
     {

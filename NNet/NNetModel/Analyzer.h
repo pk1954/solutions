@@ -28,8 +28,8 @@ public:
 	static void SetStatusBarDisplay(DisplayFunctor * const func) { m_pStatusBarDisplay = func; }
 	static void SetEscFunc (bool (* func)()) { m_pEscFunc = func; }
 
-	static NobStack const FindLoop   (NNetModelReaderInterface const &);
-	static NobStack const FindAnomaly(NNetModelReaderInterface const &);
+	static NobStack FindLoop   (NNetModelReaderInterface const &);
+	static NobStack FindAnomaly(NNetModelReaderInterface const &);
 
 private:
 
@@ -43,7 +43,7 @@ private:
 	static bool findLoop(Nob const &);
 	static bool hasAnomaly(Knot const &);
 
-	static void statusDisplay(wstring const str) 
+	static void statusDisplay(wstring const & str) 
 	{ 
 		if (m_pStatusBarDisplay)
 			(* m_pStatusBarDisplay)(str);

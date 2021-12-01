@@ -12,18 +12,17 @@
 using std::endl;
 using std::to_wstring;
 
-NobStack const ModelAnalyzer::FindLoop(NNetModelReaderInterface const & nmri)
+NobStack ModelAnalyzer::FindLoop(NNetModelReaderInterface const & nmri)
 {
 	int const iNrOfNobs { Cast2Int(nmri.GetSizeOfNobList()) };
 
 	for (int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfNobs + 1; iMaxLoopSize += 2)
 	{
-		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
 		statusDisplay(wstring(L"Looking for loop of size ") + to_wstring(iMaxLoopSize) + L". Press ESC to stop.");
 		m_nobStack.clear();
-		if (nmri.GetUPNobs().Apply2AllB<BaseKnot>([&](BaseKnot const & b) { return findLoop(b); }))
+		if (nmri.GetUPNobs().Apply2AllB<BaseKnot>([](BaseKnot const & b) { return findLoop(b); }))
 		{
 			if (m_bStop)  
 			{
@@ -45,8 +44,9 @@ NobStack const ModelAnalyzer::FindLoop(NNetModelReaderInterface const & nmri)
 
 // findLoop - try to find a loop in model
 //
-// returns true, if loop found (m_bStop == false) or aborted by user (m_bStop == true). 
-//         false, if analysis completed and no loop found
+// return value:
+//  - true, if loop found (m_bStop == false) or aborted by user (m_bStop == true). 
+//  - false, if analysis completed and no loop found
 
 bool ModelAnalyzer::findLoop(Nob const & nob)
 {
@@ -102,12 +102,12 @@ bool ModelAnalyzer::hasAnomaly(Knot const & knot)
 
 	if (! knot.HasIncoming())
 	{
-		knot.Apply2AllOutPipes([&](Pipe & pipe) { m_nobStack.push_back(& pipe); });
+		knot.Apply2AllOutPipes([&](Pipe const & pipe) { m_nobStack.push_back(& pipe); });
 		bFoundAnomaly = true;
 	}
 	else if (! knot.HasOutgoing())
 	{
-		knot.Apply2AllInPipes([&](Pipe & pipe) { m_nobStack.push_back(& pipe); });
+		knot.Apply2AllInPipes([&](Pipe const & pipe) { m_nobStack.push_back(& pipe); });
 		bFoundAnomaly = true;
 	}
 
@@ -117,11 +117,10 @@ bool ModelAnalyzer::hasAnomaly(Knot const & knot)
 	return bFoundAnomaly; 
 }
 
-NobStack const ModelAnalyzer::FindAnomaly(NNetModelReaderInterface const & nmri)
+NobStack ModelAnalyzer::FindAnomaly(NNetModelReaderInterface const & nmri)
 {
 	m_nobStack.clear();
-	bool const bFound { nmri.GetUPNobs().Apply2AllB<Knot>([&](Knot const & k) { return hasAnomaly(k); }) };
-	if (! bFound)
+	if (! nmri.GetUPNobs().Apply2AllB<Knot>([&](Knot const & k) { return hasAnomaly(k); }))
 		statusDisplay(L"no anomalies found");
 	return m_nobStack;
 }

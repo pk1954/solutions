@@ -35,5 +35,5 @@ public:
 		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
 
-	virtual NobId GetAffectedNob() const { return NO_NOB;	}
+	NobId GetAffectedNob() const final { return NO_NOB; }
 };

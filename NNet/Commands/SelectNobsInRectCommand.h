@@ -11,7 +11,7 @@
 class SelectNobsInRectCommand : public SelectionCommand
 {
 public:
-	SelectNobsInRectCommand(MicroMeterRect const & rect)
+	explicit SelectNobsInRectCommand(MicroMeterRect const & rect)
 	  :	m_rect(rect)
 	{ }
 
@@ -26,7 +26,7 @@ public:
 			{ 
 				if (s.IsPipe())
 				{
-					Pipe & pipe { static_cast<Pipe &>(s) };
+					Pipe const & pipe { static_cast<Pipe const &>(s) };
 					if (!m_rect.Includes(pipe.GetStartPoint()))
 						return;
 					if (!m_rect.Includes(pipe.GetEndPoint()))
@@ -34,9 +34,9 @@ public:
 				}
 				if (s.IsKnot())
 				{
-					Knot & knot { static_cast<Knot &>(s) };
-					bool bIn  { knot.Apply2AllInPipesB ([&](Pipe const & p){ return m_rect.Includes(p.GetStartPoint()); }) };
-					bool bOut { knot.Apply2AllOutPipesB([&](Pipe const & p){ return m_rect.Includes(p.GetEndPoint  ()); }) };
+					Knot const & knot { static_cast<Knot const &>(s) };
+					bool const bIn  { knot.Apply2AllInPipesB ([&](Pipe const & p){ return m_rect.Includes(p.GetStartPoint()); }) };
+					bool const bOut { knot.Apply2AllOutPipesB([&](Pipe const & p){ return m_rect.Includes(p.GetEndPoint  ()); }) };
 					if ( ! (bIn||bOut) )
 						return;          // knot would be orphan in selection
 				}

@@ -364,7 +364,7 @@ void NNetModelCommands::ToggleStopOnTrigger(NobId const id)
 	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCommand>(id));
 }
 
-SignalId const NNetModelCommands::SetHighlightedSignal(MicroMeterPnt const & umPos)
+SignalId NNetModelCommands::SetHighlightedSignal(MicroMeterPnt const & umPos)
 {
 	return m_pNMWI->GetMonitorData().SetHighlightedSignal(umPos);
 }

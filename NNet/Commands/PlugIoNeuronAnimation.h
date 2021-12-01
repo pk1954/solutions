@@ -31,7 +31,7 @@ public:
         AddPhase(make_unique<PlugIoNeurons     >(m_nobAnimated, m_nobTarget));
     }
 
-    virtual ~PlugIoNeuronAnimation() {};
+    ~PlugIoNeuronAnimation() final = default;
 
     void Do() final
     {
@@ -45,7 +45,7 @@ public:
         m_nobAnimated.UnlockDirection();
     }
 
-    virtual bool IsAsyncCommand() 
+    bool IsAsyncCommand() final
     { 
         return true; 
     };

@@ -35,7 +35,7 @@ public:
 		pSignal->SizeSensor(m_fFactor);
 	}
 
-	virtual bool CombineCommands(Command const & src) 
+	bool CombineCommands(Command const & src) final
 	{ 
 		SizeSensorCmd const & cmdSrc { static_cast<SizeSensorCmd const &>(src) };
 		if (m_signalId != cmdSrc.m_signalId)
