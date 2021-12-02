@@ -56,9 +56,6 @@ void MonitorWindow::Start
 	m_horzCoord.SetZoomFactor(1.3f);
 	m_horzCoord.RegisterObserver(this);
 
-	//m_horzScale.InitHorzScale(&m_horzCoord, &m_graphics, L"s", 1e6f);
-	//m_horzScale.Recalc();
-
 	m_vertCoord.SetPixelSize(0.2f);
 	m_vertCoord.SetPixelSizeLimits(0.001f, 100.f);   
 	m_vertCoord.SetZoomFactor(1.3f);
@@ -86,11 +83,6 @@ void MonitorWindow::Stop()
 
 LPARAM MonitorWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	//if (m_bShowScale)
-	//	AppendMenu(hPopupMenu, MF_STRING, IDD_RULER_OFF, L"Ruler off");
-	//else
-	//	AppendMenu(hPopupMenu, MF_STRING, IDD_RULER_ON,  L"Ruler on");
-
 	if (m_measurement.IsActive())
 		AppendMenu(hPopupMenu, MF_STRING, IDD_MEASUREMENT_OFF, L"Measurement off");
 	else
@@ -108,12 +100,12 @@ LPARAM MonitorWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
-fPixel const MonitorWindow::getSignalValue(Signal const & signal, fMicroSecs const time) const
+fPixel MonitorWindow::getSignalValue(Signal const & signal, fMicroSecs const time) const
 {
 	return m_vertCoord.Transform2fPixelSize(signal.GetDataPoint(time));
 }
 
-fMicroSecs const MonitorWindow::findNextMax(Signal const & signal, fPixel const fPixX) const
+fMicroSecs MonitorWindow::findNextMax(Signal const & signal, fPixel const fPixX) const
 {
 	fMicroSecs const usEnd  { m_pNMRI->GetSimulationTime() };
 	fPixel     const fTicks { m_fPixWinWidth - fPixX };
@@ -122,7 +114,7 @@ fMicroSecs const MonitorWindow::findNextMax(Signal const & signal, fPixel const 
 	return usMax;
 }
 
-fPixel const MonitorWindow::getSignalOffset(SignalId const & idSignal) const
+fPixel MonitorWindow::getSignalOffset(SignalId const & idSignal) const
 { 
 	fPixel fPixOffset { calcTrackHeight() * Cast2Float(idSignal.GetTrackNr().GetValue()+1) }; 
 	if (m_pMonitorData->IsSelected(idSignal))  
@@ -148,7 +140,7 @@ void MonitorWindow::highlightSignal(SignalId const & idNew)
 	}
 }
 
-TrackNr const MonitorWindow::findPos4NewTrack(PIXEL const pixCrsrPosY) const
+TrackNr MonitorWindow::findPos4NewTrack(PIXEL const pixCrsrPosY) const
 {
 	fPixel const fPixTrackHeight  { calcTrackHeight() };
 	fPixel const fPixCrsrYpos     { Convert2fPixel(pixCrsrPosY) };
@@ -161,11 +153,10 @@ TrackNr const MonitorWindow::findPos4NewTrack(PIXEL const pixCrsrPosY) const
 	return trackNr;
 }
 
-fPixel const MonitorWindow::calcTrackHeight() const
+fPixel MonitorWindow::calcTrackHeight() const
 {
 	fPixel const fPixRectHeight  { Convert2fPixel(GetClientWindowHeight()) };
 	fPixel const fPixExtraSpace  { 10.0_fPixel };
-	//fPixel const fPixExtraSpace  { m_bShowScale ? 60.0_fPixel : 10.0_fPixel };
 	fPixel const fPixFreeHeight  { fPixRectHeight - fPixExtraSpace };
 	fPixel const fPixTrackHeight { 
 									  m_pMonitorData->NoTracks() 
@@ -209,9 +200,6 @@ void MonitorWindow::doPaint() const
 
 	m_pMonitorData->Apply2AllSignals([&](SignalId const id) { paintSignal(id); });
 
-	//if (m_bShowScale)
-	//	m_horzScale.Display();
-
 	if (m_trackNrHighlighted.IsNotNull())  // paint background of selected track
 	{
 		fPixel         const fPHeight { calcTrackHeight() };
@@ -226,7 +214,7 @@ void MonitorWindow::doPaint() const
 		m_graphics.FillDiamond(calcDiamondPos(), 4.0_fPixel, NNetColors::COL_DIAMOND);
 }
 
-fPixelPoint const MonitorWindow::calcDiamondPos() const
+fPixelPoint MonitorWindow::calcDiamondPos() const
 {
 	SignalId const & idSignal { m_pMonitorData->GetHighlightedSignalId() };
 	Signal   const * pSignal  { m_pMonitorData->GetSignalPtr(idSignal) };
@@ -242,7 +230,7 @@ fPixelPoint const MonitorWindow::calcDiamondPos() const
 	return fPixelPoint(fPixMaxX, fPixYvalue);
 }
 
-SignalNr const MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptCrsr) const
+SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptCrsr) const
 {
 	SignalNr signalNrRes { SignalNr::NULL_VAL() };
 
@@ -279,7 +267,7 @@ SignalNr const MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const
 	return (fPixBestDelta <= Convert2fPixel(10_PIXEL)) ? signalNrRes : SignalNr::NULL_VAL();
 }
 
-TrackNr const MonitorWindow::findTrack(PIXEL const pixPosY) const
+TrackNr MonitorWindow::findTrack(PIXEL const pixPosY) const
 {
 	fPixel  const fPixTrackHeight { calcTrackHeight() };
 	fPixel  const fPixCrsrYpos    { Convert2fPixel(pixPosY) };
@@ -321,17 +309,8 @@ bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		break;
 
 	case IDD_MEASUREMENT_ON:
-		//m_bShowScale = false;
 		m_measurement.SetActive(true);
 		break;
-
-	//case IDD_RULER_OFF:
-	//	m_bShowScale = false;
-	//	break;
-
-	//case IDD_RULER_ON:
-	//	m_bShowScale = true;
-	//	break;
 
 	case IDD_DELETE_EEG_SENSOR:
 		PostCommand2Application(wmId, 0);
@@ -367,16 +346,12 @@ bool MonitorWindow::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
 
 bool MonitorWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
-	static const float BORDER { 0.1f };
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_graphics.Resize(width, height);
 	m_fPixWinWidth = Convert2fPixel(PIXEL(width));
-	fPixel fPixWinHeight { Convert2fPixel(PIXEL(height)) };
 	m_measurement.SetClientRectSize(PIXEL(width), PIXEL(height));
 	m_horzCoord.SetOffset(m_fPixWinWidth * 0.1f);
-	//m_horzScale.SetOrthoOffset(fPixWinHeight - 20._fPixel);
-	//m_horzScale.Recalc();
 	return true;
 }
 

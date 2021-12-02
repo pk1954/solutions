@@ -35,30 +35,30 @@ public:
 
 private:
 
-	SignalNr   const findSignal       (TrackNr const, PixelPoint const &) const;
-	fPixel     const calcTrackHeight  () const;
-	TrackNr    const findTrack        (PIXEL const) const;
-	TrackNr    const findPos4NewTrack (PIXEL const) const;
-	fPixel     const getSignalOffset  (SignalId   const &) const;
-	fPixel     const getSignalValue   (Signal const &, fMicroSecs const) const;
-	fMicroSecs const findNextMax      (Signal const &, fPixel     const) const;
-	void             highlightSignal  (SignalId const &);
+	SignalNr   findSignal       (TrackNr const, PixelPoint const &) const;
+	fPixel     calcTrackHeight  () const;
+	TrackNr    findTrack        (PIXEL const) const;
+	TrackNr    findPos4NewTrack (PIXEL const) const;
+	fPixel     getSignalOffset  (SignalId   const &) const;
+	fPixel     getSignalValue   (Signal const &, fMicroSecs const) const;
+	fMicroSecs findNextMax      (Signal const &, fPixel     const) const;
+	void       highlightSignal  (SignalId const &);
 
 	void doPaint() const;
 	void paintSignal(SignalId const &) const;
 
-	fPixelPoint const calcDiamondPos() const;
+	fPixelPoint calcDiamondPos() const;
 
-	virtual void OnPaint();
-	virtual bool OnSize              (WPARAM const, LPARAM const);
-	virtual void OnMouseWheel        (WPARAM const, LPARAM const);
-	virtual void OnMouseMove         (WPARAM const, LPARAM const);
-	virtual bool OnMouseLeave        (WPARAM const, LPARAM const);
-	virtual void OnLButtonUp         (WPARAM const, LPARAM const);
-	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const);
-	virtual bool OnShow              (WPARAM const, LPARAM const);
-	virtual bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
-	virtual void OnChar              (WPARAM const, LPARAM const) { };
+	void OnPaint()                                        final;
+	bool OnSize              (WPARAM const, LPARAM const) final;
+	void OnMouseWheel        (WPARAM const, LPARAM const) final;
+	void OnMouseMove         (WPARAM const, LPARAM const) final;
+	bool OnMouseLeave        (WPARAM const, LPARAM const) final;
+	void OnLButtonUp         (WPARAM const, LPARAM const) final;
+	void OnLeftButtonDblClick(WPARAM const, LPARAM const) final;
+	bool OnShow              (WPARAM const, LPARAM const) final;
+	bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	void OnChar              (WPARAM const, LPARAM const) final { };
 
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };
@@ -76,10 +76,8 @@ private:
 	PixelPoint   m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL        m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel       m_fPixWinWidth       { 0.0_fPixel };
-	//bool         m_bShowScale         { false };
 	Measurement  m_measurement;
 
-	//Scale<fMicroSecs>      m_horzScale;
 	PixCoordFp<fMicroSecs> m_horzCoord;
 	PixCoordFp<float>      m_vertCoord;
 };
