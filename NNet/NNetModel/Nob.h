@@ -25,6 +25,7 @@ using std::wostream;
 using std::wstring;
 
 using UPNob       = unique_ptr<Nob>;
+using UPNobC      = unique_ptr<const Nob>;
 using NobFuncC    = function<void  (Nob const &)>;
 using NobFunc     = function<void  (Nob       &)>;
 using NobCrit     = function<bool  (Nob const &)>;
@@ -42,7 +43,7 @@ public:
 
 	static bool TypeFits(NobType const) { return true; }  // every nob type is a Nob
 
-	Nob(NobType const);
+	explicit Nob(NobType const);
 	Nob(Nob const &);
 	virtual ~Nob() = default;
 
@@ -169,3 +170,5 @@ inline MicroMeterLine CalcMaxDistLine(vector<T *> const & list) // find two nobs
 		lineMax.Normalize();
 	return lineMax;
 }
+
+static bool IsSelected(UPNob const & upNob) { return upNob && upNob->IsSelected(); }

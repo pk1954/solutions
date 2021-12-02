@@ -78,42 +78,6 @@ MicroMeterRect NNetWindow::GetViewRect() const
 	return GetCoordC().Transform2MicroMeterRect(GetClPixelRect()); 
 };
 
-void NNetWindow::DrawInteriorInRect
-(
-	PixelRect const & rect, 
-	NobCrit   const & crit 
-) const
-{
-	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
-	(
-		umRect,
-		[&](Nob const & s) 
-		{ 
-			if (crit(s)) 
-				s.DrawInterior(m_context, tHighlight::normal); 
-		} 
-	);
-}
-
-void NNetWindow::DrawExteriorInRect
-(
-	PixelRect const & rect, 
-	NobCrit   const & crit 
-) const
-{
-	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
-	(
-		umRect,
-		[&](Nob const & s) 
-		{ 
-			if (crit(s)) 
-				s.DrawExterior(m_context, tHighlight::normal); 
-		} 
-	);
-}
-
 void NNetWindow::DrawArrowsInRect(PixelRect const & rect, MicroMeter const umSize) const
 {
 	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };

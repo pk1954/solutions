@@ -1,4 +1,4 @@
-// CopySelectionCommand.cpp
+// CopySelectedNobs.cpp
 //
 // Commands
 
@@ -23,7 +23,7 @@ unordered_map<Nob       *, Nob const *> m_mapCopy2model {}; // maps copy to mode
 size_t    m_nrOfNobs { 0 };
 UPNobList m_nobs2Add {};
 
-Nob * const model2copy(Nob   const * const);
+Nob * model2copy(Nob   const * const);
 Nob const & copy2model(Nob * const); 
 
 void add2copy(Nob const &, UPNob);
@@ -37,7 +37,7 @@ UPNobList CopySelectedNobs(NNetModelWriterInterface & nmwi)
 
 	nmwi.GetUPNobs().Apply2AllSelected<Nob>  // create copy of selected nobs
 	(
-		[&](Nob const & nobModel) { add2copy(nobModel, move(ShallowCopy(nobModel))); }
+		[](Nob const & nobModel) { add2copy(nobModel, ShallowCopy(nobModel)); }
 	); 	
 	
 	// m_nobs2Add has contiguous NobIds
@@ -78,9 +78,8 @@ void add2copy(Nob const & nobModel, UPNob upNobCopy)
 
 void addMissingKnot(BaseKnot const & baseKnotModel)
 {
-	Nob * pNobCopy { model2copy(&baseKnotModel) };
-	if (!pNobCopy)
-		add2copy(baseKnotModel, move(make_unique<Knot>(baseKnotModel.GetPos())));
+	if (!model2copy(&baseKnotModel))
+		add2copy(baseKnotModel, make_unique<Knot>(baseKnotModel.GetPos()));
 }
 
 Nob const & copy2model(Nob * const pNobCopy) 
@@ -92,7 +91,7 @@ Nob const & copy2model(Nob * const pNobCopy)
 	return * it->second;
 }
 
-Nob * const model2copy(Nob const * const pNobModel) 
+Nob * model2copy(Nob const * const pNobModel) 
 { 
 	assert(pNobModel);
 	assert(IsDefined(pNobModel->GetId()));

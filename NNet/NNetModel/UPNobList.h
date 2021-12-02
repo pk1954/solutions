@@ -15,6 +15,7 @@ using std::array;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
+using std::ranges::any_of;
 
 class NobIdList;
 
@@ -22,7 +23,7 @@ class UPNobList
 {
 public:
 
-	UPNobList() { }
+	UPNobList() = default;
 	UPNobList(const UPNobList &);
 	~UPNobList();
 
@@ -51,7 +52,6 @@ public:
 	void         SetNob2Slot      (UPNob);              // only for special situations
 	void         CheckNobList     ()                                     const;
 	void         Dump             ()                                     const;
-	bool         AnyNobsSelected  ()                                     const;
 	bool         Contains         (Nob const *)                          const;
 	unsigned int CountInSelection (NobType const)                        const;
 	unsigned int GetCounter       (NobType const)                        const;
@@ -76,6 +76,8 @@ public:
 	NobId Push(UPNob);
 	UPNob Pop() { return Pop<Nob>(); }
 
+	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }
+
 	void MoveFrom(UPNobList &, size_t);
 
 	template <Nob_t T>
@@ -83,7 +85,7 @@ public:
 	{
 		unique_ptr<T> upT { unique_ptr<T>(static_cast<T*>(m_list.back().release())) };
 		if (upT)
-			decCounter(upT->GetNobType());
+			decCounter(*upT);
 		m_list.pop_back();
 		return move(upT);
 	}
@@ -111,25 +113,25 @@ public:
 	template <Nob_t T>    // const version
 	void Apply2AllSelected(function<void(T const &)> const & func) const
 	{
-		Apply2All<T>({	[&](T const & s) { if (s.IsSelected()) func(s); } });
+		Apply2All<T>([func](T const & s) { if (s.IsSelected()) func(s); });
 	}
 
 	template <Nob_t T>    // non const version
 	void Apply2AllSelected(function<void(T &)> const & func) 
 	{
-		Apply2All<T>({	[&](T & s) { if (s.IsSelected()) func(s); } });
+		Apply2All<T>([func](T & s) { if (s.IsSelected()) func(s); });
 	}
 
 	template <Nob_t T>   // const version
 	void Apply2AllInRect(MicroMeterRect const & r, function<void(T const &)> const & func) const
 	{
-		Apply2All<T>([&](T const & s) { if (s.IsIncludedIn(r)) func(s); });
+		Apply2All<T>([&r, &func](T const & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
 	template <Nob_t T>   // non const version
 	void Apply2AllInRect(MicroMeterRect const & r, function<void(T &)> const & func)
 	{
-		Apply2All<T>([&](T & s) { if (s.IsIncludedIn(r)) func(s); });
+		Apply2All<T>([&r, &func](T & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
 	template <Nob_t T>  // used only in Analyzer. TODO: find simpler solution
@@ -151,20 +153,13 @@ public:
 
 private:
 
-	unsigned int const & counter(NobType const) const;
-	unsigned int       & counter(NobType const);
+	unsigned int & counter(Nob const & nob)
+	{ 
+		return m_nobsOfType[static_cast<unsigned int>(nob.GetNobType().GetValue())]; 
+	}
 
-	void incCounter(NobType const t) { ++counter(t); }
-	void decCounter(NobType const t) { --counter(t); }
-
-	void incCounter(Nob const * const ps) { if (ps) incCounter(ps->GetNobType()); }
-	void decCounter(Nob const * const ps) { if (ps) decCounter(ps->GetNobType()); }
-
-	void incCounter(UPNob const & ups) { incCounter(ups.get()); }
-	void decCounter(UPNob const & ups) { decCounter(ups.get()); }
-
-	void incCounter(NobId const & id) { incCounter(GetAt(id)); }
-	void decCounter(NobId const & id) { decCounter(GetAt(id)); }
+	void incCounter(Nob const & nob) { ++counter(nob); }
+	void decCounter(Nob const & nob) { --counter(nob); }
 
 	void countNobs();
 	void copy(UPNobList const &);

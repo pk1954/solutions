@@ -39,10 +39,37 @@ public:
 	PixelCoordsFp       & GetCoord      ()       { return m_context.GetCoord (); }
 	MicroMeter            PixelSize     () const { return m_context.GetPixelSize(); }
 
-	void DrawInteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
-	void DrawExteriorInRect  (PixelRect  const &, NobCrit const &  ) const;
-	void DrawNeuronTextInRect(PixelRect  const &                   ) const;
-	void DrawArrowsInRect    (PixelRect  const &, MicroMeter const ) const;
+	void DrawArrowsInRect(PixelRect  const &, MicroMeter const ) const;
+
+	template<class CRIT>
+	void DrawInteriorInRect
+	(
+		PixelRect const & rect, 
+		CRIT      const & crit 
+	) const
+	{
+		MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
+		m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
+		(
+			umRect,
+			[&](Nob const & s) { if (crit(s)) s.DrawInterior(m_context, tHighlight::normal); } 
+		);
+	}
+
+	template<class CRIT>
+	void DrawExteriorInRect
+	(
+		PixelRect const & rect, 
+		CRIT      const & crit 
+	) const
+	{
+		MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
+		m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
+		(
+			umRect,
+			[&](Nob const & s) { if (crit(s)) s.DrawExterior(m_context, tHighlight::normal); } 
+		);
+	}
 
 protected:
 

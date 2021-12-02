@@ -25,8 +25,6 @@ public:
 		outputNeuron,
 		neuron,
 		knot,
-		synapse,
-		branch,
 		bend,
 		pipe,
 		undefined,

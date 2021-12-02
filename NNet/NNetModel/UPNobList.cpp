@@ -85,7 +85,7 @@ UPNob UPNobList::ExtractNob(NobId const id)
 
 	UPNob upNob { move(m_list[id.GetValue()]) };
 	if (upNob)
-		decCounter(id);
+		decCounter(*upNob.get());
 	return move(upNob);
 }
 
@@ -102,7 +102,7 @@ void UPNobList::SetNob2Slot(NobId const id, UPNob upNob)
 	assert(IsEmptySlot(id));
 	assert(upNob);
 
-	incCounter(upNob);
+	incCounter(*upNob.get());
 	m_list[id.GetValue()] = move(upNob);
 }
 
@@ -113,8 +113,8 @@ Nob * UPNobList::ReplaceNob(UPNob upT)
 	assert(IsDefined(id));
 	assert(IsValidNobId(id));
 
-	incCounter(upT);
-	decCounter(id);
+	incCounter(*upT.get());
+	decCounter(*GetAt(id));
 
 	UPNob tmp = move(upT);
 	m_list[id.GetValue()].swap(tmp);
@@ -127,7 +127,7 @@ NobId UPNobList::Push(UPNob upNob)
 	if (upNob)
 	{
 		upNob->SetId(idNewSlot);
-		incCounter(upNob);
+		incCounter(*upNob.get());
 	}
 	m_list.push_back(move(upNob));
 	return idNewSlot;
@@ -156,8 +156,8 @@ void UPNobList::copy(const UPNobList & rhs)
 		if (pNobDst)
 			pNobDst->Link
 			(
-				*rhs.GetAt(pNobDst->GetId()),                        // the src nob used as template for links
-				[&](Nob const *pSrc){ return GetAt(pSrc->GetId()); } // how to get dst nob from src nob
+				*rhs.GetAt(pNobDst->GetId()),                           // the src nob used as template for links
+				[this](Nob const *pSrc){ return GetAt(pSrc->GetId()); } // how to get dst nob from src nob
 		    );
 	}
 
@@ -245,14 +245,6 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 	return move(upNobs);
 }
 
-bool UPNobList::AnyNobsSelected() const
-{
-	for (auto const & it : m_list)
-		if (it && it->IsSelected())
-			return true;
-	return false;
-}
-
 void UPNobList::Apply2All(NobFuncC const & func) const
 {
 	for (auto const & it : m_list)
@@ -312,22 +304,12 @@ unsigned int UPNobList::CountInSelection(NobType const nobType) const
 
 unsigned int UPNobList::GetCounter(NobType const t) const 
 { 
-	return counter(t); 
+	return m_nobsOfType[static_cast<unsigned int>(t.GetValue())]; 
 }
 
 unsigned int UPNobList::GetCounter() const 
 { 
 	return accumulate(m_nobsOfType.begin(), m_nobsOfType.end(), 0); 
-}
-
-unsigned int const & UPNobList::counter(NobType const t) const 
-{ 
-	return m_nobsOfType[static_cast<unsigned int>(t.GetValue())]; 
-}
-
-unsigned int & UPNobList::counter(NobType const t)       
-{ 
-	return const_cast<unsigned int &>(static_cast<const UPNobList&>(*this).counter(t)); 
 }
 
 void UPNobList::countNobs()
