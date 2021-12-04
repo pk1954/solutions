@@ -4,11 +4,11 @@
 
 #include "stdafx.h"
 #include <array>
-#include "Richedit.h"
 #include "Resource.h"
 #include "win32_descriptionWindow.h"
 
 using std::array;
+using std::bit_cast;
 
 static WORD const ID_EDIT_CTRL { 100 };
 
@@ -22,23 +22,11 @@ static LRESULT CALLBACK OwnerDrawEditBox
     DWORD_PTR dwRefData
 )
 {
-    auto * const pDescWin = (DescriptionWindow *)dwRefData;
+    auto * const pDescWin = bit_cast<DescriptionWindow *>(dwRefData);
     switch (uMsg)
     {
     case WM_MOUSEWHEEL:
-    {  
-        int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-        bool const bDirection { iDelta > 0 };
-        bool       bResult    { true };
-
-        for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
-        {
-            int iNewSize = pDescWin->m_iFontSize + (bDirection ? -1 : +1);
-            bResult = pDescWin->SetFontSize(iNewSize);
-        }
-        if (!bResult)
-            MessageBeep(MB_ICONWARNING);
-    }
+        pDescWin->OnMouseWheel(wParam, lParam);
         break;
 
     default: 
@@ -83,7 +71,12 @@ void DescriptionWindow::Start(HWND const hwndParent)
         0,
         L"EDIT",                 // predefined class 
         nullptr,        
-        WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOHSCROLL|ES_AUTOVSCROLL, 
+        WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL
+        |ES_MULTILINE     // enables multi line edit 
+        |ES_WANTRETURN    // Enter key -> CR
+        |ES_AUTOHSCROLL   // horizontal scroll bar
+        |ES_AUTOVSCROLL   // vertical scroll bar
+        |ES_EX_ZOOMABLE,  // not working
         0, 0, 0, 0,              // set size in WM_SIZE message 
         hwndDlg,                 // parent window 
         (HMENU)ID_EDIT_CTRL,     // control id
@@ -200,7 +193,7 @@ bool DescriptionWindow::delChar()
     ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
     if (dwSelStart == dwSelEnd)
     {
-        if (dwSelStart == ::Edit_GetTextLength(m_hwndEdit) )  // if cursor is at end
+        if (dwSelStart == ::Edit_GetTextLength(m_hwndEdit))  // if cursor is at end
             return false;                                     // nothing to delete
         Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
     }
@@ -220,4 +213,19 @@ bool DescriptionWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
    );
 
     return true;
+}
+
+void DescriptionWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+{  
+    int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+    bool const bDirection { iDelta > 0 };
+    bool       bResult    { true };
+
+    for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
+    {
+        int iNewSize = m_iFontSize + (bDirection ? -1 : +1);
+        bResult = SetFontSize(iNewSize);
+    }
+    if (!bResult)
+        MessageBeep(MB_ICONWARNING);
 }

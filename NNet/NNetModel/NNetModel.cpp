@@ -48,12 +48,12 @@ void NNetModel::Reconnect(NobId const id) const
 
 void NNetModel::RecalcAllNobs() 
 { 
-	m_Nobs.Apply2All([this](Nob & nob) { nob.Recalc(); });
+	m_Nobs.Apply2All([](Nob & nob) { nob.Recalc(); });
 } 
 
 void NNetModel::ClearDynamicData() 
 { 
-	m_Nobs.Apply2All([this](Nob & nob) { nob.ClearDynamicData(); }); 
+	m_Nobs.Apply2All([](Nob & nob) { nob.ClearDynamicData(); }); 
 }
 
 bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const

@@ -22,7 +22,7 @@ public:
 		m_pNMRI   = pNMRI;
 	}
 
-    virtual void Notify(bool const bImmediate) 
+    void Notify(bool const bImmediate) final 
     { 
 		SetUnsavedChanges(true);
 	}

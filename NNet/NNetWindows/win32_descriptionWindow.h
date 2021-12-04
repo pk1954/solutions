@@ -33,9 +33,10 @@ private:
 	HWND  m_hwndEdit  { nullptr };
 	bool  m_bDirty    { false };
 
-	void OnPaint  () final { /* all painting done by edit control */ };
-	bool OnSize   (WPARAM const, LPARAM const) final;
-	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	void OnPaint     () final { /* all painting done by edit control */ };
+	bool OnSize      (WPARAM const, LPARAM const) final;
+	void OnMouseWheel(WPARAM const, LPARAM const) final;
+	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 
 	bool delChar();
 	void fontSize();
