@@ -36,15 +36,15 @@ private:
 
 	NobIdList m_CompactIds;
 
-	size_t getCompactIdVal(NobId const);
+	int getCompactIdVal(NobId const) const;
 
-	void writeNob             (wostream &, Nob         const &);
-	void writePipe            (wostream &, Pipe        const &);
-	void writeIoConnector     (wostream &, IoConnector const &);
+	void writeNob             (wostream &, Nob         const &) const;
+	void writePipe            (wostream &, Pipe        const &) const;
+	void writeIoConnector     (wostream &, IoConnector const &) const;
 	void writeDescription     (wostream &) const;
 	void writeMonitorData     (wostream &) const;
-	void writeTriggerSounds   (wostream &);
-	void writeNobParameters   (wostream &);
+	void writeTriggerSounds   (wostream &) const;
+	void writeNobParameters   (wostream &) const;
 	void writeGlobalParameters(wostream &) const;
 	void writeNobs            (wostream &);
 	void writeHeader          (wostream &) const;

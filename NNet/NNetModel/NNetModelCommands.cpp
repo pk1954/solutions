@@ -57,6 +57,7 @@
 #include "SetTriggerSoundCommand.h"
 #include "SizeSensorCmd.h"
 #include "SplitNeuronCmd.h"
+#include "ToggleEmphModeCmd.h"
 #include "ToggleStopOnTriggerCommand.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
@@ -520,6 +521,13 @@ void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << rect << endl;
 	m_pCmdStack->PushCommand(make_unique<SelectNobsInRectCommand>(rect));
+}
+
+void NNetModelCommands::ToggleEmphMode(NobId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 
 void NNetModelCommands::TriggerStimulus(NobId const id)

@@ -34,7 +34,7 @@ void NNetModelExporter::Initialize(NNetModelReaderInterface * const pNMRI)
     m_pNMRI = pNMRI;
 }
 
-size_t NNetModelExporter::getCompactIdVal(NobId const id) 
+int NNetModelExporter::getCompactIdVal(NobId const id) const
 { 
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
 }
@@ -66,7 +66,7 @@ void NNetModelExporter::writeGlobalParameters(wostream & out) const
 {
     ParamType::Apply2GlobalParameters
     (
-        [&](ParamType::Value const & par) 
+        [this, &out](ParamType::Value const & par) 
         {
             out << L"GlobalParameter " << ParamType::GetName(par) << L" = "
                 << m_pNMRI->GetParameter(par) 
@@ -81,24 +81,20 @@ void NNetModelExporter::writeNobs(wostream & out)
     NobId idCompact(0);
     for (int i = 0; i < m_CompactIds.Size(); ++i)
     {
-        m_CompactIds.SetAt
-        (
-            i, 
-            m_pNMRI->GetConstNob(NobId(i)) ? idCompact++ : NobId()
-       );
+        m_CompactIds.SetAt(i, m_pNMRI->GetConstNob(NobId(i)) ? idCompact++ : NobId());
     }
     out << L"NrOfNobs = " << idCompact << endl;
     out << endl;
-    m_pNMRI->GetUPNobsC().Apply2All<BaseKnot   >([&](BaseKnot    const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobsC().Apply2All<Pipe       >([&](Pipe        const & s) { writeNob(out, s); });
-    m_pNMRI->GetUPNobsC().Apply2All<IoConnector>([&](IoConnector const & s) { writeNob(out, s); });
+    m_pNMRI->Apply2All<BaseKnot   >([this, &out](BaseKnot    const & s) { writeNob(out, s); });
+    m_pNMRI->Apply2All<Pipe       >([this, &out](Pipe        const & s) { writeNob(out, s); });
+    m_pNMRI->Apply2All<IoConnector>([this, &out](IoConnector const & s) { writeNob(out, s); });
 }
 
-void NNetModelExporter::writeNobParameters(wostream & out)   // Legacy
+void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
 {
-    m_pNMRI->GetUPNobsC().Apply2All<InputConnector>
+    m_pNMRI->Apply2All<InputConnector>
     (
-        [&](InputConnector const & inpConn)
+        [this, &out](InputConnector const & inpConn)
         { 
             NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
             SignalGenerator const & sigGen { inpConn.GetSignalGenerator() };
@@ -109,11 +105,11 @@ void NNetModelExporter::writeNobParameters(wostream & out)   // Legacy
    );
 }
 
-void NNetModelExporter::writeTriggerSounds(wostream & out)
+void NNetModelExporter::writeTriggerSounds(wostream & out) const
 {
-    m_pNMRI->GetUPNobsC().Apply2All<Neuron>
+    m_pNMRI->Apply2All<Neuron>
     (
-        [&](Neuron const & neuron) 
+        [this, &out](Neuron const & neuron) 
         { 
             if (neuron.HasTriggerSound())
             {
@@ -135,7 +131,7 @@ void NNetModelExporter::writeMonitorData(wostream & out) const
 
     monitorData.Apply2AllSignals
     (
-        [&](SignalId const idSignal)
+        [&out, monitorData](SignalId const idSignal)
         {
             Signal const * const pSignal { monitorData.GetSignalPtr(idSignal) };
             out << L"Signal "; 
@@ -158,7 +154,7 @@ void NNetModelExporter::writeDescription(wostream & out) const
     }
 }
 
-void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe)
+void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe) const
 {
     out << Pipe::OPEN_BRACKET 
         << getCompactIdVal(pipe.GetStartKnotId()) 
@@ -167,7 +163,7 @@ void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe)
         << Pipe::CLOSE_BRACKET;
 }
 
-void NNetModelExporter::writeIoConnector(wostream & out, IoConnector const & conn)
+void NNetModelExporter::writeIoConnector(wostream & out, IoConnector const & conn) const
 {
     assert(conn.Size() > 0);
     out << BaseKnot::OPEN_BRACKET << conn.Size() << BaseKnot::NR_SEPARATOR;
@@ -180,7 +176,7 @@ void NNetModelExporter::writeIoConnector(wostream & out, IoConnector const & con
     out << BaseKnot::CLOSE_BRACKET;
 }
 
-void NNetModelExporter::writeNob(wostream & out, Nob const & nob)
+void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
 {
     if (nob.IsDefined())
     {

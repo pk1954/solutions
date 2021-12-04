@@ -22,26 +22,18 @@ ConnAnimationCommand::ConnAnimationCommand()
     
     modelNobs.Apply2All<IoNeuron>
     (
-        [&](IoNeuron & s)	
+        [this, nobType](IoNeuron & s)	
         { 
             if (s.IsSelected() && (s.GetNobType() == nobType)) 
                 m_nobsAnimated.push_back(&s); 
         } 
     );
 
-    MicroMeterLine line{ CalcMaxDistLine<IoNeuron>(m_nobsAnimated) };
+    MicroMeterLine line { CalcMaxDistLine<IoNeuron>(m_nobsAnimated) };
     if (line.IsZero())
         return;
 
-    MicroMeterLine orthoLine { line.OrthoLine() };
-    sort
-    (
-        m_nobsAnimated,
-        [&](auto & p1, auto & p2) 
-        { 
-            return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos()); 
-        } 
-    );
+    sortNobsAnimated(line);
 
     MicroMeterPntVector umPntVector(m_nobsAnimated);  // before animation
 
@@ -76,4 +68,17 @@ NobType ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
     return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
         ? NobType::Value::inputNeuron 
         : NobType::Value::outputNeuron;
+}
+
+void ConnAnimationCommand::sortNobsAnimated(MicroMeterLine const & line)
+{
+    MicroMeterLine orthoLine { line.OrthoLine() };
+    sort
+    (
+        m_nobsAnimated,
+        [&](auto & p1, auto & p2) 
+        { 
+            return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos()); 
+        } 
+    );
 }

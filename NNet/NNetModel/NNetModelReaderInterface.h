@@ -95,9 +95,15 @@ public:
 	void DrawInterior(NobId          const,   DrawContext const &, tHighlight const) const;
 	void DrawLine    (MicroMeterLine const &, DrawContext const &)                   const;
 
+	MicroMeterPnt OrthoVector(NobId const) const;
+
 	template <Nob_t T> bool IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
 
-	MicroMeterPnt OrthoVector(NobId const) const;
+	template <Nob_t T>    // const version
+	void Apply2All(function<void(T const&)> const& func) const
+	{
+		GetUPNobsC().Apply2All<T>(func);
+	}
 
 protected:
 	NNetModel * m_pModel;

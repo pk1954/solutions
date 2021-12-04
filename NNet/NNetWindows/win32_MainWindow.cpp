@@ -9,7 +9,6 @@
 #include "Signal.h"
 #include "MicroMeterPntVector.h"
 #include "Knot.h"
-#include "Knot.h"
 #include "Neuron.h"
 #include "IoConnector.h"
 #include "NobException.h"
@@ -101,7 +100,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_SELECT_NOB,           L"Select nob"               },
 		{ IDM_SELECT_SUBTREE,       L"Select subtree"           },
 		{ IDD_STOP_ON_TRIGGER,      L"Stop on trigger on/off"   },
-		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"            }
+		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"            },
+		{ IDD_EMPHASIZE,            L"Feedback line (on/off)"   }
 	};
 	AppendMenu(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));
 }
@@ -125,7 +125,10 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			[&](int const id){ appendMenu(hPopupMenu, id); }
 		);
 		if ( m_pNMRI->IsPipe(m_nobHighlighted) )
+		{
+			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
 			appendMenu(hPopupMenu, ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
+		}
 	}
 	else  // no nob selected, cursor on background
 	{
@@ -404,18 +407,18 @@ void MainWindow::doPaint()
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
-		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
-		DrawExteriorInRect(pixRect, [&](Nob const & n) { return n.IsIoConnector(); }); 
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 		if (ArrowsVisible())
 			DrawArrowsInRect(pixRect, m_arrowSize);
 	}
 
-	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
-	DrawInteriorInRect(pixRect, [&](Nob const & n) { return n.IsIoConnector(); }); 
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
 	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
 	{
@@ -427,8 +430,8 @@ void MainWindow::doPaint()
 	}
 	else if (IsDefined(m_nobHighlighted))  // draw highlighted nob again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior  (m_nobHighlighted, context, tHighlight::highlighted);
-		m_pNMRI->DrawInterior  (m_nobHighlighted, context, tHighlight::highlighted);
+		m_pNMRI->DrawExterior(m_nobHighlighted, context, tHighlight::highlighted);
+		m_pNMRI->DrawInterior(m_nobHighlighted, context, tHighlight::highlighted);
 	}
 	else 
 	{

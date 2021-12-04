@@ -54,32 +54,45 @@ MicroMeterPosDir Nob::GetPosDir() const
 	return MicroMeterPosDir(GetPos(), GetDir()); 
 };
 
-D2D1::ColorF Nob::GetInteriorColor(mV const voltageInput) const
+ColorF Nob::GetInteriorColor(mV const voltageInput) const
 {
 	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage)) };
 	float const colorComponent { min(voltageInput / peakVoltage, 1.0f)};
 	float const fAlphaChannel  { m_bSelected ? 0.7f : 1.0f };
-	return D2D1::ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
+	return ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
 }
 
-D2D1::ColorF Nob::GetExteriorColor(tHighlight const type) const 
+ColorF Nob::GetExteriorColor(tHighlight const type) const 
 {
-	return (type == tHighlight::highlighted) ? NNetColors::EXT_HIGHLIGHTED : NNetColors::EXT_NORMAL;
+	if (type == tHighlight::highlighted) 
+		return NNetColors::EXT_HIGHLIGHTED;
+	else 
+		 return IsEmphasized() ? NNetColors::EXT_EMPHASIZED : NNetColors::EXT_NORMAL;
 };
 
-D2D1::ColorF Nob::GetInteriorColor(tHighlight const type) const 
+ColorF Nob::GetInteriorColor(tHighlight const type) const 
 {
 	Nob const * pNob { this };
 	while (pNob->HasParentNob())
 		pNob = pNob->GetParentNob();
-	switch (type)
-	{
-	case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
-	case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
-	case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
-	case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
-	}
-	assert(false);
+	if (IsEmphasized())
+		switch (type)
+		{
+		case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_EMP_SELECTED : NNetColors::INT_EMPHASIZED;
+		case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_EMP_SELECTED : NNetColors::INT_EMPHASIZED;
+		case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
+		case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
+		default: assert(false);
+		}
+	else
+		switch (type)
+		{
+		case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
+		case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
+		case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
+		case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
+		default: assert(false);
+		}
 	return NNetColors::INT_NORMAL;
 };
 

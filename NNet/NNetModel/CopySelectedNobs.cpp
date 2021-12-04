@@ -45,7 +45,7 @@ UPNobList CopySelectedNobs(NNetModelWriterInterface & nmwi)
 	
 	// add Knots to pipe endpoints missing in copy
 
-	for (size_t i = 0; i < m_nobs2Add.Size(); ++i)      // cannot use range-based loop.
+	for (int i = 0; i < m_nobs2Add.Size(); ++i)      // cannot use range-based loop.
 	{                                                   // m_nobs2Add modified in loop.
 		Nob * pNobCopy { m_nobs2Add.GetAt(NobId(i)) };
 		if (pNobCopy->IsPipe())
@@ -58,11 +58,12 @@ UPNobList CopySelectedNobs(NNetModelWriterInterface & nmwi)
 
 	m_nobs2Add.Apply2All  // fix links
 	(
-		[&](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }
+		[](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }
 	);
 
 	m_nobs2Add.Move(PIPE_WIDTH);  // dislocate copy
-	return move(m_nobs2Add);
+
+	return m_nobs2Add;
 }
 
 //////  local functions /////////////////////////////////

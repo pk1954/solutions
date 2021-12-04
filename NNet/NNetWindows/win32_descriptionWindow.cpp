@@ -11,13 +11,12 @@ static WORD const ID_EDIT_CTRL { 42 };
 
 static LRESULT CALLBACK OwnerDrawEditBox(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
 {
-    DescriptionWindow * const pDescWin = (DescriptionWindow *)dwRefData;
+    auto * const pDescWin = (DescriptionWindow *)dwRefData;
     switch (uMsg)
     {
     case WM_MOUSEWHEEL:
     {  
         int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-        bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
         bool const bDirection { iDelta > 0 };
         bool       bResult    { true };
 
@@ -38,7 +37,7 @@ static LRESULT CALLBACK OwnerDrawEditBox(HWND hwnd, UINT uMsg, WPARAM wParam, LP
     return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
-bool const DescriptionWindow::SetFontSize(int const iSize)
+bool DescriptionWindow::SetFontSize(int const iSize)
 {
     static int const MIN_SIZE { 12 };
     static int const MAX_SIZE { 36 };
@@ -72,13 +71,13 @@ void DescriptionWindow::Start(HWND const hwndParent)
     (
         0,
         L"EDIT",                 // predefined class 
-        NULL,        
+        nullptr,        
         WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOHSCROLL|ES_AUTOVSCROLL, 
         0, 0, 0, 0,              // set size in WM_SIZE message 
         hwndDlg,                 // parent window 
         (HMENU)ID_EDIT_CTRL,     // control id
         GetModuleHandle(nullptr), 
-        NULL
+        nullptr
     );
 
     (void)SetWindowSubclass(m_hwndEdit, OwnerDrawEditBox, 0, (DWORD_PTR)this) ;
@@ -128,12 +127,12 @@ void DescriptionWindow::SetDescription(wstring const wstrDesc)
     Edit_SetText(m_hwndEdit, wstrDesc.c_str());
 }
 
-int const DescriptionWindow::GetLineCount() const
+int DescriptionWindow::GetLineCount() const
 {
     return Edit_GetLineCount(m_hwndEdit);
 }
 
-bool const DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & wstrDst) const
+bool DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & wstrDst) const
 {
     if (iLineNr < GetLineCount())
     {
@@ -166,9 +165,7 @@ bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixe
 
     // other commands
 
-    int const wmId = LOWORD(wParam);
-
-    switch (wmId) 
+    switch (int const wmId = LOWORD(wParam)) 
     { 
     case IDM_SELECT_ALL:
         Edit_SetSel(m_hwndEdit, 0, -1); 
@@ -186,15 +183,14 @@ bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixe
     return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }
 
-bool const DescriptionWindow::delChar()
+bool DescriptionWindow::delChar()
 {
     DWORD dwSelStart { 0L };
     DWORD dwSelEnd   { 0L };
     ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
     if (dwSelStart == dwSelEnd)
     {
-        int iNrOfChars { ::Edit_GetTextLength(m_hwndEdit) };  
-        if (dwSelStart == iNrOfChars)                         // if cursor is at end
+        if (dwSelStart == ::Edit_GetTextLength(m_hwndEdit) )  // if cursor is at end
             return false;                                     // nothing to delete
         Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
     }

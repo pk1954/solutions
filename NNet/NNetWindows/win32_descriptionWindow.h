@@ -16,15 +16,16 @@ public:
 	void Start(HWND const);
 	void Stop();
 
-	bool const SetFontSize(int const);
-	int  const GetFontSize() { return m_iFontSize; }
+	bool SetFontSize(int const);
+	int  GetFontSize() const { return m_iFontSize; }
 
-	virtual void       ClearDescription();
-	virtual void       SetDescription(wstring const);
-	virtual int  const GetLineCount() const;
-    virtual bool const GetDescriptionLine(int const, wstring &) const;
-	virtual bool const IsDirty() { return m_bDirty; };
-	virtual void       ResetDirtyFlag() { m_bDirty = false; };
+	int  GetLineCount      ()                     const final;
+	bool GetDescriptionLine(int const, wstring &) const final;
+	void ClearDescription  ()                           final;
+	void SetDescription    (wstring const)              final;
+
+	bool IsDirty()        final { return m_bDirty; };
+	void ResetDirtyFlag() final { m_bDirty = false; };
 
 private:
 	int   m_iFontSize { 20 };
@@ -32,11 +33,11 @@ private:
 	HWND  m_hwndEdit  { nullptr };
 	bool  m_bDirty    { false };
 
-	virtual void OnPaint  () { };
-	virtual bool OnSize   (WPARAM const, LPARAM const);
-	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	void OnPaint  () final { /* all painting done by edit control */ };
+	bool OnSize   (WPARAM const, LPARAM const) final;
+	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 
-	bool const delChar();
+	bool delChar();
 	void fontSize();
 
 	friend static LRESULT CALLBACK OwnerDrawEditBox(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);

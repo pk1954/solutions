@@ -30,4 +30,5 @@ private:
     bool m_bAllOk { false };
 
     NobType determineNobType(UPNobList const &) const;
+    void    sortNobsAnimated(MicroMeterLine const &);
 };

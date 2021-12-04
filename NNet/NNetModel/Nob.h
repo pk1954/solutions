@@ -17,6 +17,7 @@
 class Nob;
 class DrawContext;
 
+using D2D1::ColorF;
 using std::is_base_of;
 using std::remove_pointer_t;
 using std::remove_pointer;
@@ -60,25 +61,27 @@ public:
 
 	virtual MicroMeterPosDir GetPosDir() const;
 
-	virtual Radian        GetDir         ()                                      const = 0;
-	virtual MicroMeterPnt GetPos         ()                                      const = 0;
-	virtual NobIoMode     GetIoMode      ()                                      const = 0;
-	virtual void          DrawExterior   (DrawContext const &, tHighlight const) const = 0;
-	virtual void          DrawInterior   (DrawContext const &, tHighlight const) const = 0;
-	virtual void          Prepare        ()                                            = 0;
-	virtual bool          CompStep       ()                                            = 0;
-	virtual void          Recalc         ()                                            = 0;
-	virtual bool          IsIncludedIn   (MicroMeterRect  const &)               const = 0;
-	virtual bool          Includes       (MicroMeterPnt const &)                 const = 0;
-	virtual void          Expand         (MicroMeterRect &)                      const = 0;
-	virtual void          MoveNob        (MicroMeterPnt const &)                       = 0;
-	virtual void          RotateNob      (MicroMeterPnt const &, Radian const)         = 0;
-	virtual void          Link           (Nob const &, Nob2NobFunc const &)            = 0;
+	virtual Radian        GetDir      ()                                      const = 0;
+	virtual MicroMeterPnt GetPos      ()                                      const = 0;
+	virtual NobIoMode     GetIoMode   ()                                      const = 0;
+	virtual void          DrawExterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void          DrawInterior(DrawContext const &, tHighlight const) const = 0;
+	virtual void          Expand      (MicroMeterRect       &)                const = 0;
+	virtual bool          IsIncludedIn(MicroMeterRect const &)                const = 0;
+	virtual bool          Includes    (MicroMeterPnt  const &)                const = 0;
+	virtual void          MoveNob     (MicroMeterPnt  const &)                      = 0;
+	virtual void          RotateNob   (MicroMeterPnt  const &, Radian const)        = 0;
+	virtual void          Prepare     ()                                            = 0;
+	virtual bool          CompStep    ()                                            = 0;
+	virtual void          Recalc      ()                                            = 0;
+	virtual void          Link        (Nob const &, Nob2NobFunc const &)            = 0;
+
+	virtual void Select   (bool const bOn) { m_bSelected   = bOn; }
+	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
 
 	virtual mV   GetNextOutput()  const { return m_mVinputBuffer; }
 	virtual bool IsCompositeNob() const { return false; }
 
-	virtual void Select(bool const bOn) { m_bSelected = bOn; }
 	virtual void ClearDynamicData()     { m_mVinputBuffer.Set2Zero(); }
 	virtual void Reconnect()            {};
 	
@@ -86,6 +89,7 @@ public:
 	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
 	bool    IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }
 	bool    IsSelected   () const { return m_bSelected; }
+	bool    IsEmphasized () const { return m_bEmphasized; }
 	bool    IsDefined    () const { return ::IsDefined(m_identifier); }
 	wstring GetName      () const { return NobType::GetName(m_type.GetValue()); }
 	NobType GetNobType   () const { return m_type; }
@@ -114,7 +118,7 @@ public:
 	Nob * GetParentNob() const        { return m_pNobParent; }
 	void  SetParentNob(Nob * const p) { m_pNobParent = p; }
 
-	void  SetId(NobId const id)  { m_identifier = id; }
+	void  SetId(NobId const id) { m_identifier = id; }
 
 protected:
 
@@ -122,10 +126,10 @@ protected:
 
 	inline static Param const * m_pParameters{ nullptr };
 
-	D2D1::ColorF GetExteriorColor(tHighlight const) const;
-	D2D1::ColorF GetInteriorColor(tHighlight const) const;
-	D2D1::ColorF GetInteriorColor(mV const) const;
-	D2D1::ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
+	ColorF GetExteriorColor(tHighlight const) const;
+	ColorF GetInteriorColor(tHighlight const) const;
+	ColorF GetInteriorColor(mV const) const;
+	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	float GetFillLevel(mV const) const;
 	float GetFillLevel() const { return GetFillLevel(GetVoltage()); };
@@ -134,10 +138,11 @@ protected:
 
 private:
 
-	NobType m_type       { NobType::Value::undefined };
-	bool    m_bSelected  { false };
-	NobId   m_identifier { NO_NOB };
-	Nob   * m_pNobParent { nullptr };
+	NobType m_type        { NobType::Value::undefined };
+	Nob   * m_pNobParent  { nullptr };
+	NobId   m_identifier  { NO_NOB };
+	bool    m_bSelected   { false };
+	bool    m_bEmphasized { false };
 };
 
 MicroMeterPosDir CalcOffsetPosDir(Nob const &, MicroMeter const);

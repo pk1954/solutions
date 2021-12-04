@@ -32,18 +32,20 @@ void D2D_DrawContext::DrawLine
 (
 	MicroMeterPnt const & umStartPoint, 
 	MicroMeterPnt const & umEndPoint, 
-	MicroMeter      const   umWidth, 
-	D2D1::ColorF    const   col
+	MicroMeter    const   umWidth, 
+	ColorF        const   col,
+	fPixel        const   fPixMin
 ) const
 {
 	if (umStartPoint != umEndPoint)
 	{
+		fPixel const fPixWidth { max(m_coord.Transform2fPixel(umWidth), fPixMin) };
 		m_pGraphics->DrawLine
 		(
 			m_coord.Transform2fPixelPos(umStartPoint),
 			m_coord.Transform2fPixelPos(umEndPoint  ),
-			m_coord.Transform2fPixel   (umWidth     ),
-			m_bNoColors ? D2D1::ColorF::Black : col 
+			fPixWidth,
+			m_bNoColors ? ColorF::Black : col 
 		);
 	}
 }
@@ -52,7 +54,7 @@ void D2D_DrawContext::DrawLine
 (
 	MicroMeterLine const & umLine, 
 	MicroMeter     const   umWidth, 
-	D2D1::ColorF   const   col
+	ColorF         const   col
 ) const
 {
 	DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), umWidth, col	);
@@ -61,21 +63,21 @@ void D2D_DrawContext::DrawLine
 void D2D_DrawContext::FillCircle
 (
 	MicroMeterCircle const & umCircle,
-	D2D1::ColorF     const   col  
+	ColorF           const   col  
 ) const
 {
 	m_pGraphics->FillCircle
 	(
 		m_coord.Transform2fPixelCircle(umCircle), 
-		m_bNoColors ? D2D1::ColorF::Black : col 
+		m_bNoColors ? ColorF::Black : col 
 	);
 }
 
 void D2D_DrawContext::FillGradientCircle
 (
 	MicroMeterCircle const & umCircle,
-	D2D1::ColorF     const   col1,  
-	D2D1::ColorF     const   col2  
+	ColorF           const   col1,  
+	ColorF           const   col2  
 ) const
 {
 	m_pGraphics->FillGradientCircle(m_coord.Transform2fPixelCircle(umCircle), col1, col2);
@@ -84,14 +86,14 @@ void D2D_DrawContext::FillGradientCircle
 void D2D_DrawContext::DrawCircle
 (
 	MicroMeterCircle const & umCircle,
-	D2D1::ColorF     const   col,
+	ColorF           const   col,
 	MicroMeter       const   umWidth
 ) const
 {
 	m_pGraphics->DrawCircle
 	(
 		m_coord.Transform2fPixelCircle(umCircle), 
-		m_bNoColors ? D2D1::ColorF::Black : col,
+		m_bNoColors ? ColorF::Black : col,
 		m_coord.Transform2fPixel(umWidth)
 	);
 }
@@ -99,27 +101,27 @@ void D2D_DrawContext::DrawCircle
 void D2D_DrawContext::FillEllipse
 (
 	MicroMeterEllipse const & umEllipse,
-	D2D1::ColorF      const   col  
+	ColorF            const   col  
 ) const
 {
 	m_pGraphics->FillEllipse
 	(
 		m_coord.Transform2fPixelEllipse(umEllipse), 
-		m_bNoColors ? D2D1::ColorF::Black : col 
+		m_bNoColors ? ColorF::Black : col 
 	);
 }
 
 void D2D_DrawContext::DrawEllipse
 (
 	MicroMeterEllipse const & umEllipse,
-	D2D1::ColorF     const   col,
-	MicroMeter       const   umWidth
+	ColorF            const   col,
+	MicroMeter        const   umWidth
 ) const
 {
 	m_pGraphics->DrawEllipse
 	(
 		m_coord.Transform2fPixelEllipse(umEllipse), 
-		m_bNoColors ? D2D1::ColorF::Black : col,
+		m_bNoColors ? ColorF::Black : col,
 		m_coord.Transform2fPixel(umWidth)
 	);
 }
@@ -128,9 +130,9 @@ void D2D_DrawContext::FillArrow
 (
 	MicroMeterPnt const & umPos, 
 	MicroMeterPnt const & umVector, 
-	MicroMeter      const   umSize, 
-	MicroMeter      const   umWidth, 
-	D2D1::ColorF    const   col
+	MicroMeter    const   umSize, 
+	MicroMeter    const   umWidth, 
+	ColorF        const   col
 ) const
 {
 	m_pGraphics->FillArrow
@@ -139,16 +141,16 @@ void D2D_DrawContext::FillArrow
 		m_coord.Transform2fPixelSize(umVector), 
 		m_coord.Transform2fPixel    (umSize),
 		m_coord.Transform2fPixel    (umWidth),
-		m_bNoColors ? D2D1::ColorF::Black : col 
+		m_bNoColors ? ColorF::Black : col 
 	);
 }
 
-void D2D_DrawContext::FillRectangle(MicroMeterRect const & umRect, D2D1::ColorF col) const 
+void D2D_DrawContext::FillRectangle(MicroMeterRect const & umRect, ColorF col) const 
 {
 	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
 }
 
-void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, D2D1::ColorF col) const 
+void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, ColorF col) const 
 {
 	if (IsTooSmall(umRect))
 	{
@@ -181,7 +183,7 @@ void D2D_DrawContext::DisplayText
 (
 	MicroMeterRect      const & umRect,
 	wstring             const & wstr,
-	D2D1::ColorF        const   colF,
+	ColorF              const   colF,
 	IDWriteTextFormat * const   pTextFormat
 ) const
 {

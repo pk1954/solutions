@@ -56,17 +56,15 @@
 #define IDD_MEASUREMENT_OFF        166
 #define IDD_ADD_TRACK              168
 #define IDD_DELETE_TRACK           169
+#define IDD_EMPHASIZE              170
+
+#define IDD_SOUND_ON               200
+#define IDD_SOUND_OFF              202
+#define IDX_PLAY_SOUND             203
 								   
-#define IDD_SOUND_ON               171
-#define IDD_SOUND_OFF              172
-#define IDX_PLAY_SOUND             173
-								   
-#define IDD_AUTO_OPEN_ON           181
-#define IDD_AUTO_OPEN_OFF          182
-								   
-#define IDM_PLUS                   191
-#define IDM_MINUS                  192
-								   
+#define IDD_AUTO_OPEN_ON           210
+#define IDD_AUTO_OPEN_OFF          211
+								   								   
 #define IDM_MONITOR_WINDOW         330
 #define IDD_ADD_EEG_SENSOR         345
 #define IDD_DELETE_EEG_SENSOR      346

@@ -7,6 +7,7 @@
 #include "NNetColors.h"
 #include "DrawContext.h"
 #include "Direct2D.h"
+#include "PixelTypes.h"
 #include "MoreTypes.h"
 #include "NobId.h"
 
@@ -27,69 +28,70 @@ public:
 	(
 		MicroMeterPnt const &, 
 		MicroMeterPnt const &,
-		MicroMeter      const,
-		D2D1::ColorF    const  
+		MicroMeter    const,
+		D2D1::ColorF  const,
+		fPixel        const = 1._fPixel
 	) const;
 
-	virtual void DrawLine
+	void DrawLine
 	(
 		MicroMeterLine const &, 
 		MicroMeter     const,
 		D2D1::ColorF   const  
-	) const;
+	) const override;
 
-	virtual void FillCircle
+	void FillCircle
 	(
 		MicroMeterCircle const &,
 		D2D1::ColorF     const    
-	) const;
+	) const override;
 
-	virtual void FillGradientCircle
+	void FillGradientCircle
 	(
 		MicroMeterCircle const &,
 		D2D1::ColorF     const,  
 		D2D1::ColorF     const  
-	) const;
+	) const override;
 
-	virtual void DrawCircle
+	void DrawCircle
 	(
 		MicroMeterCircle const &,
 		D2D1::ColorF     const,
 		MicroMeter       const
-	) const;
+	) const override;
 
-	virtual void FillEllipse
+	void FillEllipse
 	(
 		MicroMeterEllipse const &,
 		D2D1::ColorF      const  
-	) const;
+	) const override;
 
-	virtual void DrawEllipse
+	void DrawEllipse
 	(
 		MicroMeterEllipse const &,
 		D2D1::ColorF      const,
 		MicroMeter        const   
-	) const;
+	) const override;
 
-	virtual void FillArrow
+	void FillArrow
 	(
 		MicroMeterPnt const &,
 		MicroMeterPnt const &,
 		MicroMeter      const,
 		MicroMeter      const,
 		D2D1::ColorF    const  
-	) const;
+	) const override;
 
-	virtual void FillRectangle (MicroMeterRect const &, D2D1::ColorF) const; 
-	virtual void DrawTranspRect(MicroMeterRect const &, D2D1::ColorF) const; 
+	void FillRectangle (MicroMeterRect const &, D2D1::ColorF) const override; 
+	void DrawTranspRect(MicroMeterRect const &, D2D1::ColorF) const override; 
 
-	virtual void DisplayText
+	void DisplayText
 	(
 		MicroMeterRect      const &,
 		std::wstring        const &,
 		D2D1::ColorF        const,
 		IDWriteTextFormat * const = nullptr
-	) const;
+	) const override;
 
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };

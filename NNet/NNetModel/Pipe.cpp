@@ -229,12 +229,21 @@ void Pipe::DrawArrows
 
 void Pipe::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
-	context.DrawLine(GetStartPoint(), GetEndPoint(), PIPE_WIDTH, GetExteriorColor(type));
+	MicroMeter umWidth { PIPE_WIDTH };
+	if (IsEmphasized())
+		umWidth *= 2.f;
+	context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetExteriorColor(type));
 }
 
 void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-	static MicroMeter const umWidth { PIPE_WIDTH * PIPE_INTERIOR };
+	MicroMeter umWidth      { PIPE_WIDTH * PIPE_INTERIOR };
+	fPixel     fPixMinWidth { 1._fPixel };
+	if (IsEmphasized())
+	{
+		umWidth      *= 2.f;
+		fPixMinWidth  = 3.f;
+	}
 
 	if (IsNormal(type) && ! IsSelected())
 	{
@@ -252,14 +261,14 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 					index = 0; 
 
 				MicroMeterPnt const umPointNext { umPoint + umSegVec };
-				context.DrawLine(umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]));
+				context.DrawLine(umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]), fPixMinWidth);
 				umPoint = umPointNext;
 			} while (index != potIndex);
 		}
 	}
 	else
 	{
-		context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type));
+		context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type), fPixMinWidth);
 	}
 }
 

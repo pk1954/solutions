@@ -11,7 +11,7 @@
 class AnalyzeCommand : public SelectionCommand
 {
 public:
-	AnalyzeCommand(NobStack const stack)
+	explicit AnalyzeCommand(NobStack const & stack)
 		: m_result(stack)
 	{}
 
@@ -25,6 +25,6 @@ public:
 		}
 	}
 
-protected:
+private:
 	NobStack m_result;
 };

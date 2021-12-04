@@ -186,6 +186,9 @@
     <ClInclude Include="SetStimulusParamsCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ToggleEmphModeCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

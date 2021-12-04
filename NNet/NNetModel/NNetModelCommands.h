@@ -98,6 +98,7 @@ public:
     void SetTriggerSound    (NobId const, SoundDescr const &);
     void SizeSensor         (SignalId const &, float const);
     void SplitNeuron        (NobId const);
+    void ToggleEmphMode     (NobId const);
     void ToggleStopOnTrigger(NobId const);
     void TriggerStimulus    (NobId const);
 
