@@ -3,13 +3,24 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include <array>
 #include "Richedit.h"
 #include "Resource.h"
 #include "win32_descriptionWindow.h"
 
-static WORD const ID_EDIT_CTRL { 42 };
+using std::array;
 
-static LRESULT CALLBACK OwnerDrawEditBox(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+static WORD const ID_EDIT_CTRL { 100 };
+
+static LRESULT CALLBACK OwnerDrawEditBox
+(
+    HWND     hwnd, 
+    UINT     uMsg, 
+    WPARAM   wParam, 
+    LPARAM   lParam, 
+    UINT_PTR,          // unused 
+    DWORD_PTR dwRefData
+)
 {
     auto * const pDescWin = (DescriptionWindow *)dwRefData;
     switch (uMsg)
@@ -122,7 +133,7 @@ void DescriptionWindow::ClearDescription()
     Edit_SetText(m_hwndEdit, L"");
 }
 
-void DescriptionWindow::SetDescription(wstring const wstrDesc)
+void DescriptionWindow::SetDescription(wstring const & wstrDesc)
 {
     Edit_SetText(m_hwndEdit, wstrDesc.c_str());
 }
@@ -137,15 +148,15 @@ bool DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & wstrDst)
     if (iLineNr < GetLineCount())
     {
         static const int BUFLEN { 1024 };
-        alignas(int) wchar_t buffer[BUFLEN];  // Edit_GetLine interpretes begin of buffer as int
-        int iCharsRead { Edit_GetLine(m_hwndEdit, iLineNr, buffer, BUFLEN) };
+        alignas(int) array <wchar_t, BUFLEN> buffer;
+        int iCharsRead { Edit_GetLine(m_hwndEdit, iLineNr, &buffer, BUFLEN) };
         wstrDst.clear();
         for (int i = 0; i < iCharsRead; ++i)  // copy line to wstrDst 
         {                                     // removing CR and LF characters
             wchar_t c { buffer[i] };
             if ((c != L'\r') &&(c != L'\n'))
                 wstrDst += c;
-         }
+        }
             
         return true;
     }

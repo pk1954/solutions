@@ -22,7 +22,7 @@ public:
 	int  GetLineCount      ()                     const final;
 	bool GetDescriptionLine(int const, wstring &) const final;
 	void ClearDescription  ()                           final;
-	void SetDescription    (wstring const)              final;
+	void SetDescription    (wstring const &)            final;
 
 	bool IsDirty()        final { return m_bDirty; };
 	void ResetDirtyFlag() final { m_bDirty = false; };
