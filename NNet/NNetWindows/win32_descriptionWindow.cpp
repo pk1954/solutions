@@ -138,9 +138,8 @@ bool DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & wstrDst)
     {
         static const int BUFLEN { 1024 };
         alignas(int) wchar_t buffer[BUFLEN];  // Edit_GetLine interpretes begin of buffer as int
-        int iLineIndex  = Edit_LineIndex (m_hwndEdit, iLineNr);
-        int iLineLength = Edit_LineLength(m_hwndEdit, iLineIndex);
-        int iCharsRead  = Edit_GetLine   (m_hwndEdit, iLineNr, buffer, BUFLEN);
+        int iCharsRead { Edit_GetLine(m_hwndEdit, iLineNr, buffer, BUFLEN) };
+        wstrDst.clear();
         for (int i = 0; i < iCharsRead; ++i)  // copy line to wstrDst 
         {                                     // removing CR and LF characters
             wchar_t c { buffer[i] };
