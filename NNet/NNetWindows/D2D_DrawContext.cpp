@@ -62,15 +62,14 @@ void D2D_DrawContext::DrawLine
 
 void D2D_DrawContext::FillCircle
 (
-	MicroMeterCircle const & umCircle,
-	ColorF           const   col  
+	MicroMeterCircle const & umC,
+	ColorF           const   col,
+	fPixel           const   fPixMin
 ) const
 {
-	m_pGraphics->FillCircle
-	(
-		m_coord.Transform2fPixelCircle(umCircle), 
-		m_bNoColors ? ColorF::Black : col 
-	);
+	fPixel       const fPixRadius { max(m_coord.Transform2fPixel   (umC.GetRadius()), fPixMin) };
+	fPixelCircle const fPixCircle (     m_coord.Transform2fPixelPos(umC.GetPos   ()), fPixRadius);
+	m_pGraphics->FillCircle(fPixCircle, m_bNoColors ? ColorF::Black : col);
 }
 
 void D2D_DrawContext::FillGradientCircle

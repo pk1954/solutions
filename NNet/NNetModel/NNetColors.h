@@ -43,8 +43,8 @@ public:
 	inline static ColorF const EXT_TARGET_FIT   { INT_TARGET_FIT };
 	inline static ColorF const EXT_TARGET_NOFIT { INT_TARGET_NOFIT }; 
 	inline static ColorF const EXT_EMPHASIZED   { 0.1f, 0.9f, 0.1f, 1.0f };
-	inline static ColorF const INT_EMPHASIZED   { 0.7f, 0.9f, 0.7f, 1.0f };
-	inline static ColorF const INT_EMP_SELECTED { 0.1f, 0.1f, 1.0f, 1.0f };
+	inline static ColorF const INT_EMPHASIZED   { 0.2f, 0.4f, 0.2f, 1.0f };
+	inline static ColorF const INT_EMP_SELECTED { INT_SELECTED };
 
 	// color used when neurons trigger
 	inline static ColorF const INT_TRIGGER    { 1.0f, 1.0f, 0.0f, 1.0f };

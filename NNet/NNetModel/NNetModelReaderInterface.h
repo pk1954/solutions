@@ -105,6 +105,12 @@ public:
 		GetUPNobsC().Apply2All<T>(func);
 	}
 
+	template <Nob_t T>   // const version
+	void Apply2AllInRect(MicroMeterRect const & r, function<void(T const &)> const & func) const
+	{
+		GetUPNobsC().Apply2AllInRect<T>(r, func);
+	}
+
 protected:
 	NNetModel * m_pModel;
 

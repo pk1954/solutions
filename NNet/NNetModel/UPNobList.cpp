@@ -69,10 +69,10 @@ bool UPNobList::operator==(UPNobList const & other) const
 		{
 			return false;
 		}
-		if ((pNob != nullptr) && (pNobOther != nullptr))
+		// Now either both ptrs are null or none
+		if ((pNob != nullptr) && (*pNob != *pNobOther))
 		{
-			if (*pNob != *pNobOther)
-				return false;
+			return false;
 		}
 	}
 	return true;
@@ -243,42 +243,6 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 			upNobs->push_back(it.get());
 	}
 	return move(upNobs);
-}
-
-void UPNobList::Apply2All(NobFuncC const & func) const
-{
-	for (auto const & it : m_list)
-		if (it)
-			func(* it.get()); 
-}                        
-
-void UPNobList::Apply2All(NobFunc const & func)
-{
-	for (auto const & it : m_list)
-		if (it)
-			func(* it.get()); 
-}                        
-
-bool UPNobList::Apply2AllB(NobCrit const & func) const
-{
-	for (auto & it : m_list)
-		if (it && func(* it.get()))
-			return true;
-	return false;
-}
-
-void UPNobList::Apply2AllSelected(NobType const type, NobFunc const & func)
-{
-	for (auto & it : m_list)
-		if (it && it->IsSelected() && (it->GetNobType() == type))
-			func(* it.get()); 
-}
-
-void UPNobList::Apply2AllSelected(NobType const type, NobFuncC const & func) const
-{
-	for (auto & it : m_list)
-		if (it && it->IsSelected() && (it->GetNobType() == type))
-			func(* it.get()); 
 }
 
 void UPNobList::SelectAllNobs(bool const bOn) 

@@ -143,7 +143,7 @@ static LRESULT CALLBACK BaseWndProc
 	}
     else
 	{
-		if (BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetRootWindow(hwnd)))
+		if (auto * pBaseWin = static_cast<BaseWindow *>(GetRootWindow(hwnd)))
         {
             if (pBaseWin->UserProc(message, wParam, lParam))
                 return (LRESULT)0;

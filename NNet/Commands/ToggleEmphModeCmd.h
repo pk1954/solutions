@@ -12,19 +12,22 @@
 class ToggleEmphModeCmd : public NNetCommand
 {
 public:
-	ToggleEmphModeCmd(NobId const id)
-	  :	m_idNob(id)
+	explicit ToggleEmphModeCmd(NobId const id)
+	  : m_pPipe(m_pNMWI->GetNobPtr<Pipe*>(id))
 	{
-		assert(IsDefined(m_idNob));
-		assert(m_pNMWI->IsPipe(m_idNob));
+		assert(m_pPipe);
 	}
 
 	void Do() final
 	{ 
-		Pipe & pipe { * m_pNMWI->GetNobPtr<Pipe *>(m_idNob) };
-		pipe.Emphasize(!pipe.IsEmphasized());
+		m_pPipe->Emphasize(!m_pPipe->IsEmphasized());
+	}
+
+	void Undo() final
+	{ 
+		Do();
 	}
 
 private:
-	NobId const m_idNob;
+	Pipe * m_pPipe { nullptr };
 };

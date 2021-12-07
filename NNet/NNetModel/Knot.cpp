@@ -17,10 +17,13 @@ Knot::Knot(BaseKnot const & src)
 
 void Knot::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
+	MicroMeter umWidth { GetExtension() };
+	if (IsEmphasized())
+		umWidth *= 2.f;
 	switch (type)
 	{
 	case tHighlight::normal:
-		context.FillCircle(MicroMeterCircle(GetPos(), GetExtension()), NNetColors::EXT_NORMAL);
+		context.FillCircle(MicroMeterCircle(GetPos(), umWidth), GetExteriorColor(type));
 		break;
 	case tHighlight::highlighted:
 		context.FillCircle(MicroMeterCircle(GetPos(), 30.0_MicroMeter), NNetColors::EXT_HIGHLIGHTED);
@@ -39,19 +42,26 @@ void Knot::DrawExterior(DrawContext const & context, tHighlight const type) cons
 
 void Knot::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
+	float  fWidth       { PIPE_INTERIOR };
+	fPixel fPixMinWidth { 1._fPixel };
+	if (IsEmphasized())
+	{
+		fWidth      *= 2.f;
+		fPixMinWidth = 3.f;
+	}
 	switch (type)
 	{
 	case tHighlight::normal:
-		context.FillCircle(GetCircle() * PIPE_INTERIOR, GetInteriorColor(type));
+		context.FillCircle(GetCircle() * fWidth, GetInteriorColor(type), fPixMinWidth);
 		break;
 	case tHighlight::highlighted:
-		context.FillCircle(GetCircle() * PIPE_INTERIOR, GetInteriorColor(type));
+		context.FillCircle(GetCircle() * fWidth, GetInteriorColor(type), fPixMinWidth);
 		break;
 	case tHighlight::targetFit:
-		context.FillCircle(GetCircle() * PIPE_INTERIOR, NNetColors::INT_NORMAL);
+		context.FillCircle(GetCircle() * fWidth, NNetColors::INT_NORMAL, fPixMinWidth);
 		break;
 	case tHighlight::targetNoFit:
-		context.FillCircle(GetCircle() * PIPE_INTERIOR, NNetColors::INT_NORMAL);
+		context.FillCircle(GetCircle() * fWidth, NNetColors::INT_NORMAL, fPixMinWidth);
 		break;
 	default:
 		assert(false);
@@ -95,4 +105,16 @@ void Knot::AppendMenuItems(AddMenuFunc const & add) const
 		add(IDD_APPEND_OUTPUT_NEURON);
 
 	BaseKnot::AppendMenuItems(add);
+}
+
+void Knot::Emphasize(bool const bOn, bool bDownStream) 
+{ 
+	Nob::Emphasize(bOn);
+	if ((GetNrOfIncomingConnections() == 1) && (GetNrOfOutgoingConnections() == 1))
+	{
+		if (bDownStream)
+			GetFirstOutgoing().Emphasize(bOn, true);
+		else
+			GetFirstIncoming().Emphasize(bOn, false);
+	}
 }

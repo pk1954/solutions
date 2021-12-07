@@ -27,8 +27,6 @@ using std::wstring;
 
 using UPNob       = unique_ptr<Nob>;
 using UPNobC      = unique_ptr<const Nob>;
-using NobFuncC    = function<void  (Nob const &)>;
-using NobFunc     = function<void  (Nob       &)>;
 using NobCrit     = function<bool  (Nob const &)>;
 using Nob2NobFunc = function<Nob * (Nob const *)>;
 using AddMenuFunc = function<void  (int const  )>;

@@ -11,13 +11,3 @@ enum class tHighlight
 	targetFit,
 	targetNoFit
 };
-
-static bool IsHighlighted(tHighlight const type)
-{
-	return type == tHighlight::highlighted;
-}
-
-static bool IsNormal(tHighlight const type)
-{
-	return type == tHighlight::normal;
-}

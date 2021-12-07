@@ -3,33 +3,15 @@
 // Commands
 
 #include "stdafx.h"
-#include <unordered_map>
 #include "Nob.h"
 #include "Knot.h"
 #include "BaseKnot.h"
-#include "NamedType.h"
 #include "NNetModelWriterInterface.h"
 #include "CopySelectedNobs.h"
 
-using std::vector;
-using std::unordered_map;
-using std::unique_ptr;
-using std::make_unique;
 using std::make_pair;
 
-unordered_map<Nob const *, Nob       *> m_mapModel2copy {}; // maps model to copy
-unordered_map<Nob       *, Nob const *> m_mapCopy2model {}; // maps copy to model
-
-size_t    m_nrOfNobs { 0 };
-UPNobList m_nobs2Add {};
-
-Nob * model2copy(Nob   const * const);
-Nob const & copy2model(Nob * const); 
-
-void add2copy(Nob const &, UPNob);
-void addMissingKnot(BaseKnot const &);
-
-UPNobList CopySelectedNobs(NNetModelWriterInterface & nmwi)
+UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 { 
 	m_mapCopy2model.clear();
 	m_mapModel2copy.clear();
@@ -68,7 +50,7 @@ UPNobList CopySelectedNobs(NNetModelWriterInterface & nmwi)
 
 //////  local functions /////////////////////////////////
 
-void add2copy(Nob const & nobModel, UPNob upNobCopy)
+void CopySelectedNobs::add2copy(Nob const & nobModel, UPNob upNobCopy)
 {
 	Nob * const pNobCopy { upNobCopy.get() };
 	assert(pNobCopy);
@@ -77,13 +59,13 @@ void add2copy(Nob const & nobModel, UPNob upNobCopy)
 	m_nobs2Add.Push(move(upNobCopy));
 }
 
-void addMissingKnot(BaseKnot const & baseKnotModel)
+void CopySelectedNobs::addMissingKnot(BaseKnot const & baseKnotModel)
 {
 	if (!model2copy(&baseKnotModel))
 		add2copy(baseKnotModel, make_unique<Knot>(baseKnotModel.GetPos()));
 }
 
-Nob const & copy2model(Nob * const pNobCopy) 
+Nob const & CopySelectedNobs::copy2model(Nob * const pNobCopy) 
 { 
 	assert(pNobCopy);
 	assert(IsDefined(pNobCopy->GetId()));
@@ -92,7 +74,7 @@ Nob const & copy2model(Nob * const pNobCopy)
 	return * it->second;
 }
 
-Nob * model2copy(Nob const * const pNobModel) 
+Nob * CopySelectedNobs::model2copy(Nob const * const pNobModel) 
 { 
 	assert(pNobModel);
 	assert(IsDefined(pNobModel->GetId()));

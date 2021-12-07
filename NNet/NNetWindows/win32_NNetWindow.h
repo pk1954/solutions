@@ -39,7 +39,7 @@ public:
 	PixelCoordsFp       & GetCoord      ()       { return m_context.GetCoord (); }
 	MicroMeter            PixelSize     () const { return m_context.GetPixelSize(); }
 
-	void DrawArrowsInRect(PixelRect  const &, MicroMeter const ) const;
+	void DrawArrowsInRect(PixelRect const &, MicroMeter const) const;
 
 	template<class CRIT>
 	void DrawInteriorInRect

@@ -46,9 +46,15 @@ public:
 		ColorF        const
 	) const = 0;
 
+	virtual void FillCircle
+	(
+		MicroMeterCircle const &, 
+		ColorF           const,
+		fPixel           const = 1._fPixel
+	) const = 0;
+
 	virtual void DrawCircle        (MicroMeterCircle  const &, ColorF const, MicroMeter const) const = 0;
 	virtual void DrawEllipse       (MicroMeterEllipse const &, ColorF const, MicroMeter const) const = 0;
-	virtual void FillCircle        (MicroMeterCircle  const &, ColorF const) const = 0;
 	virtual void FillEllipse       (MicroMeterEllipse const &, ColorF const) const = 0;
 	virtual void FillRectangle     (MicroMeterRect    const &, ColorF const) const = 0;
 	virtual void FillGradientCircle(MicroMeterCircle  const &, ColorF const, ColorF const) const = 0;

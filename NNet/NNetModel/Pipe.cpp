@@ -53,8 +53,8 @@ bool Pipe::operator==(Nob const & rhs) const
 	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };
 	return
 	(this->Nob::operator==(rhs))                             && 
-	(m_pKnotStart->GetId() == pipeRhs.m_pKnotStart->GetId()) &&
-	(m_pKnotEnd  ->GetId() == pipeRhs.m_pKnotEnd  ->GetId());
+	(GetStartKnotId() == pipeRhs.GetStartKnotId()) &&
+	(GetEndKnotId  () == pipeRhs.GetEndKnotId());
 }
 
 NobId Pipe::GetStartKnotId() const 
@@ -216,14 +216,21 @@ void Pipe::DrawArrows
 {
 	MicroMeterPnt const umStartPoint { GetStartPoint() };
 	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
+	MicroMeter          umArrowSize  { umSize };
+	MicroMeter          umArrowWidth { PIPE_WIDTH / 2 };
+	if (IsEmphasized())
+	{
+		umArrowSize  *= 2.f;
+		umArrowWidth *= 2.f;
+	}
 
 	context.FillArrow
 	(
 		(umEndPoint * 2.f + umStartPoint) / 3.f , 
 		umEndPoint - umStartPoint, 
-		umSize,
-		PIPE_WIDTH / 2, 
-		NNetColors::EXT_NORMAL
+		umArrowSize,
+		umArrowWidth, 
+		GetExteriorColor(tHighlight::normal)
 	);
 }
 
@@ -245,30 +252,29 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 		fPixMinWidth  = 3.f;
 	}
 
-	if (IsNormal(type) && ! IsSelected())
+	if ((type != tHighlight::normal) || IsSelected())
 	{
-		MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
-		if (! umVector.IsCloseToZero())
-		{
-			size_t        const nrOfSegments { m_potential.size() };
-			MicroMeterPnt const umSegVec     { umVector / Cast2Float(nrOfSegments) };
-			MicroMeterPnt       umPoint      { GetStartPoint() };
-			size_t        const potIndex     { m_potIndex };
-			size_t              index        { potIndex }; 
-			do 
-			{
-				if (++index == m_potential.size()) 
-					index = 0; 
-
-				MicroMeterPnt const umPointNext { umPoint + umSegVec };
-				context.DrawLine(umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]), fPixMinWidth);
-				umPoint = umPointNext;
-			} while (index != potIndex);
-		}
+		context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type), fPixMinWidth);
 	}
 	else
 	{
-		context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type), fPixMinWidth);
+		MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
+		if (umVector.IsCloseToZero())
+			return;
+		size_t        const nrOfSegments { m_potential.size() };
+		MicroMeterPnt const umSegVec     { umVector / Cast2Float(nrOfSegments) };
+		MicroMeterPnt       umPoint      { GetStartPoint() };
+		size_t        const potIndex     { m_potIndex };
+		size_t              index        { potIndex }; 
+		do 
+		{
+			if (++index == m_potential.size()) 
+				index = 0; 
+
+			MicroMeterPnt const umPointNext { umPoint + umSegVec };
+			context.DrawLine(umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]), fPixMinWidth);
+			umPoint = umPointNext;
+		} while (index != potIndex);
 	}
 }
 
@@ -341,4 +347,22 @@ wostream & operator<< (wostream & out, Pipe const & pipe)
 		<< pipe.GetEndKnotId() 
 		<< Pipe::CLOSE_BRACKET;
 	return out;
+}
+
+void Pipe::Emphasize(bool const bOn, bool bDownStream) 
+{ 
+	Nob::Emphasize(bOn); 
+	if (!bDownStream && m_pKnotStart->IsKnot())
+		static_cast<Knot *>(m_pKnotStart)->Emphasize(bOn, false);
+	if (bDownStream && m_pKnotEnd->IsKnot())
+		static_cast<Knot *>(m_pKnotEnd)->Emphasize(bOn, true);
+}
+
+void Pipe::Emphasize(bool const bOn) 
+{ 
+	Nob::Emphasize(bOn); 
+	if (m_pKnotStart->IsKnot())
+		static_cast<Knot *>(m_pKnotStart)->Emphasize(bOn, false);
+	if (m_pKnotEnd->IsKnot())
+		static_cast<Knot *>(m_pKnotEnd)->Emphasize(bOn, true);
 }

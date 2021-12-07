@@ -34,11 +34,11 @@ class DeletePipeCommand : public NNetCommand
 {
 public:
 
-	DeletePipeCommand(Nob &nob)
+	explicit DeletePipeCommand(Nob &nob)
 	  :	m_pipe(*Cast2Pipe(&nob))
 	{
-		BaseKnot & startKnot = * m_pipe.GetStartKnotPtr();
-		BaseKnot & endKnot   = * m_pipe.GetEndKnotPtr();
+		BaseKnot const & startKnot = * m_pipe.GetStartKnotPtr();
+		BaseKnot const & endKnot   = * m_pipe.GetEndKnotPtr();
 		if (startKnot.IsNeuron() && (startKnot.GetNrOfOutgoingConnections() == 1))  //case 2.3: prepare output neuron 
 		{
 			m_upOutputNeuron = make_unique<OutputNeuron>(startKnot); // gets only incoming pipes from startKnot
@@ -51,7 +51,7 @@ public:
 		}
 	}
 
-	~DeletePipeCommand(){ }
+	~DeletePipeCommand() final = default;
 
 	void Do() final
 	{
@@ -61,7 +61,7 @@ public:
 		{
 			if (startKnot.IsNeuron())                                  // case 2.3: Replace neuron by output neuron
 			{
-				m_upStartKnot = move(m_pNMWI->ReplaceInModel<OutputNeuron,Neuron>(move(m_upOutputNeuron)));
+				m_upStartKnot = m_pNMWI->ReplaceInModel<OutputNeuron,Neuron>(move(m_upOutputNeuron));
 				m_caseStart = 23;
 			}
 			else if (startKnot.IsKnot())

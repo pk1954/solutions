@@ -57,11 +57,6 @@ public:
 	unsigned int GetCounter       (NobType const)                        const;
 	unsigned int GetCounter       ()                                     const;
 	NobId        FindNobAt        (MicroMeterPnt const, NobCrit const &) const;
-	bool         Apply2AllB       (                     NobCrit const &) const;
-	void         Apply2All        (NobFuncC const &)                     const;
-	void         Apply2All        (NobFunc  const &);
-	void         Apply2AllSelected(NobType const, NobFuncC const &)      const;
-	void         Apply2AllSelected(NobType const, NobFunc  const &);
 	void         Move             (MicroMeterPnt const &);
 
 	MicroMeterPnt CenterOfGravity(NobCrit const &) const;
@@ -88,6 +83,31 @@ public:
 			decCounter(*upT);
 		m_list.pop_back();
 		return move(upT);
+	}
+
+	template<class FUNC>
+	void Apply2All(FUNC const & func) const
+	{
+		for (auto const & it : m_list)
+			if (it)
+				func(* it.get()); 
+	}                        
+
+	template<class FUNC>
+	bool Apply2AllB(FUNC const & func) const
+	{
+		for (auto & it : m_list)
+			if (it && func(* it.get()))
+				return true;
+		return false;
+	}
+
+	template<class FUNC>
+	void Apply2AllSelected(NobType const type, FUNC const & func) const
+	{
+		for (auto & it : m_list)
+			if (it && it->IsSelected() && (it->GetNobType() == type))
+				func(* it.get()); 
 	}
 
 	template <Nob_t T>    // const version

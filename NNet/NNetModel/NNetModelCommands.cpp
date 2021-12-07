@@ -276,7 +276,7 @@ void NNetModelCommands::CopySelection()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(CopySelectedNobs(*m_pNMWI)));
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(CopySelectedNobs::Do(*m_pNMWI)));
 }
 
 void NNetModelCommands::CreateInitialNobs()

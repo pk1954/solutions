@@ -59,7 +59,10 @@ ColorF Nob::GetInteriorColor(mV const voltageInput) const
 	mV    const peakVoltage    { mV(m_pParameters->GetParameterValue(ParamType::Value::peakVoltage)) };
 	float const colorComponent { min(voltageInput / peakVoltage, 1.0f)};
 	float const fAlphaChannel  { m_bSelected ? 0.7f : 1.0f };
-	return ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
+	if (IsEmphasized() &&  (colorComponent < 0.01f))
+		return NNetColors::INT_EMPHASIZED;
+	else 
+		return ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
 }
 
 ColorF Nob::GetExteriorColor(tHighlight const type) const 
@@ -67,7 +70,7 @@ ColorF Nob::GetExteriorColor(tHighlight const type) const
 	if (type == tHighlight::highlighted) 
 		return NNetColors::EXT_HIGHLIGHTED;
 	else 
-		 return IsEmphasized() ? NNetColors::EXT_EMPHASIZED : NNetColors::EXT_NORMAL;
+		return IsEmphasized() ? NNetColors::EXT_EMPHASIZED : NNetColors::EXT_NORMAL;
 };
 
 ColorF Nob::GetInteriorColor(tHighlight const type) const 

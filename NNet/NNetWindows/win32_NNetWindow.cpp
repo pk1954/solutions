@@ -78,12 +78,15 @@ MicroMeterRect NNetWindow::GetViewRect() const
 	return GetCoordC().Transform2MicroMeterRect(GetClPixelRect()); 
 };
 
-void NNetWindow::DrawArrowsInRect(PixelRect const & rect, MicroMeter const umSize) const
+void NNetWindow::DrawArrowsInRect
+(
+	PixelRect  const & rect, 
+	MicroMeter const   umSize
+) const
 {
-	MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
-	m_pNMRI->GetUPNobsC().Apply2AllInRect<Pipe>
+	m_pNMRI->Apply2AllInRect<Pipe>
 	(
-		umRect,	
+		GetCoordC().Transform2MicroMeterRect(rect),	
 		[&](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
 	);
 }

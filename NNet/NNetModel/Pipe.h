@@ -37,8 +37,15 @@ public:
 	void SetStartKnot(BaseKnot * const);
 	void SetEndKnot  (BaseKnot * const);
 
-	BaseKnot * GetStartKnotPtr() const { return m_pKnotStart; }
-	BaseKnot * GetEndKnotPtr  () const { return m_pKnotEnd;   }
+	void Emphasize(bool const) final;
+	void Emphasize(bool const, bool const);
+
+	BaseKnot * GetStartKnotPtr() { return m_pKnotStart; }
+	BaseKnot * GetEndKnotPtr  () { return m_pKnotEnd;   }
+
+	BaseKnot const * GetStartKnotPtr() const { return m_pKnotStart; }
+	BaseKnot const * GetEndKnotPtr  () const { return m_pKnotEnd;   }
+	size_t           GetNrOfSegments() const { return m_potential.size(); }
 
 	NobId         GetStartKnotId() const;
 	NobId         GetEndKnotId  () const;
@@ -46,8 +53,6 @@ public:
 	MicroMeterPnt GetEndPoint   () const; 
 	MicroMeter    GetLength     () const;
 	MicroMeterPnt GetVector     () const; 
-
-	size_t GetNrOfSegments() const { return m_potential.size(); }
 
 	void          RotateNob(MicroMeterPnt const &, Radian const) final { /* Pipe dir defined by endpoints */ }
 	void          SetDir   (Radian const)                        final { /* Pipe dir defined by endpoints */ };
@@ -75,8 +80,8 @@ public:
 
 	void DrawArrows(DrawContext const &, MicroMeter const) const;
 
-	void DislocateEndPoint  (MicroMeter d =  PIPE_WIDTH) { dislocate(GetEndKnotPtr  (), d); }
-	void DislocateStartPoint(MicroMeter d = -PIPE_WIDTH) { dislocate(GetStartKnotPtr(), d); }
+	void DislocateEndPoint  (MicroMeter d =  PIPE_WIDTH) { dislocate(m_pKnotEnd,   d); }
+	void DislocateStartPoint(MicroMeter d = -PIPE_WIDTH) { dislocate(m_pKnotStart, d); }
 
 	inline static wstring const SEPARATOR     { L"->" };
 	inline static wchar_t const OPEN_BRACKET  { L'(' };

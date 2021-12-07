@@ -11,6 +11,9 @@
 #include "MoreTypes.h"
 #include "NobId.h"
 
+using std::wstring;
+using D2D1::ColorF;
+
 class D2D_DrawContext: public DrawContext
 {
 public:
@@ -24,52 +27,53 @@ public:
 	void Resize(int const, int const);
 	void SetStdFontSize(MicroMeter const &);
 
-	virtual void DrawLine
+	void DrawLine
 	(
 		MicroMeterPnt const &, 
 		MicroMeterPnt const &,
 		MicroMeter    const,
-		D2D1::ColorF  const,
+		ColorF        const,
 		fPixel        const = 1._fPixel
-	) const;
+	) const override;
 
 	void DrawLine
 	(
 		MicroMeterLine const &, 
 		MicroMeter     const,
-		D2D1::ColorF   const  
+		ColorF         const  
 	) const override;
 
 	void FillCircle
 	(
 		MicroMeterCircle const &,
-		D2D1::ColorF     const    
+		ColorF           const,
+		fPixel           const = 1._fPixel
 	) const override;
 
 	void FillGradientCircle
 	(
 		MicroMeterCircle const &,
-		D2D1::ColorF     const,  
-		D2D1::ColorF     const  
+		ColorF           const,  
+		ColorF           const  
 	) const override;
 
 	void DrawCircle
 	(
 		MicroMeterCircle const &,
-		D2D1::ColorF     const,
+		ColorF           const,
 		MicroMeter       const
 	) const override;
 
 	void FillEllipse
 	(
 		MicroMeterEllipse const &,
-		D2D1::ColorF      const  
+		ColorF            const  
 	) const override;
 
 	void DrawEllipse
 	(
 		MicroMeterEllipse const &,
-		D2D1::ColorF      const,
+		ColorF            const,
 		MicroMeter        const   
 	) const override;
 
@@ -77,19 +81,19 @@ public:
 	(
 		MicroMeterPnt const &,
 		MicroMeterPnt const &,
-		MicroMeter      const,
-		MicroMeter      const,
-		D2D1::ColorF    const  
+		MicroMeter    const,
+		MicroMeter    const,
+		ColorF        const  
 	) const override;
 
-	void FillRectangle (MicroMeterRect const &, D2D1::ColorF) const override; 
-	void DrawTranspRect(MicroMeterRect const &, D2D1::ColorF) const override; 
+	void FillRectangle (MicroMeterRect const &, ColorF) const override; 
+	void DrawTranspRect(MicroMeterRect const &, ColorF) const override; 
 
 	void DisplayText
 	(
 		MicroMeterRect      const &,
-		std::wstring        const &,
-		D2D1::ColorF        const,
+		wstring             const &,
+		ColorF              const,
 		IDWriteTextFormat * const = nullptr
 	) const override;
 
