@@ -69,7 +69,13 @@ public:
 	void SetPos   (MicroMeterPnt    const &) override;
 	void SetPosDir(MicroMeterPosDir const &) override;
 
-	void Apply2All(function<void(IoNeuron &)> const & func) const;
+	template <class FUNC>
+	void Apply2All(FUNC const & func) const
+	{
+		for (auto pNob : m_list) 
+			if (pNob)
+				func(* pNob);
+	}                        
 
 	MicroMeterLine CalcMaxDistLine() const;
 	MicroMeterPnt  CalcOrthoVector(MicroMeterLine const &) const;

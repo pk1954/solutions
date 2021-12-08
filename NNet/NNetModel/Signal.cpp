@@ -31,14 +31,14 @@ Signal::~Signal()
     m_observable.UnregisterObserver(this);
 }
 
-float const Signal::GetSignalValue() const
+float Signal::GetSignalValue() const
 {
     float fResult   { 0.0f };
     float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
 
     m_nmri.GetUPNobsC().Apply2All<BaseKnot>
     (		
-        [&](BaseKnot const & b) 
+        [this, fDsBorder, &fResult](BaseKnot const & b) 
         {  
             float fDsBaseKnot { DistSquare(b.GetPos(), m_circle.GetPos()) };
             if (fDsBaseKnot < fDsBorder)  // is b in circle?
@@ -72,7 +72,7 @@ void Signal::Draw
     );
 }
 
-int const Signal::time2index(fMicroSecs const usParam) const
+int Signal::time2index(fMicroSecs const usParam) const
 {
     fMicroSecs const timeTilStart { usParam - m_timeStart };
     float      const fNrOfPoints  { timeTilStart / m_nmri.TimeResolution() };
@@ -82,7 +82,7 @@ int const Signal::time2index(fMicroSecs const usParam) const
     return index;
 }
 
-fMicroSecs const Signal::index2time(int const index) const
+fMicroSecs Signal::index2time(int const index) const
 {
     float      const fNrOfPoints  { static_cast<float>(index) };
     fMicroSecs const timeTilStart { m_nmri.TimeResolution() * fNrOfPoints };
@@ -90,13 +90,13 @@ fMicroSecs const Signal::index2time(int const index) const
     return usResult;
 }
 
-float const Signal::GetDataPoint(fMicroSecs const time) const
+float Signal::GetDataPoint(fMicroSecs const time) const
 {
     int index { time2index(time) };
     return (index < 0) ? NAN : m_data[index];
 }
 
-fMicroSecs const Signal::FindNextMaximum(fMicroSecs const time) const
+fMicroSecs Signal::FindNextMaximum(fMicroSecs const time) const
 {
     int index { time2index(time) };
     if (index < 0)

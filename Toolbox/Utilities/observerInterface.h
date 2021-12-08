@@ -17,7 +17,7 @@
 class ObserverInterface
 {
 public:
-    virtual ~ObserverInterface() {};
+    virtual ~ObserverInterface() = default;
 
     virtual void Notify(bool const) = 0;
 };

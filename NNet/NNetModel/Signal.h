@@ -6,8 +6,8 @@
 
 #include <vector>
 #include <math.h>    
-#include "Observable.h"
-#include "ObserverInterface.h"
+#include "observable.h"
+#include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 
@@ -29,24 +29,24 @@ public:
         NNetModelReaderInterface const &,
         Observable                     &,
         MicroMeterCircle         const & 
-   );
+    );
 
-    virtual ~Signal();
+    ~Signal() override;
 
-    bool const operator==(Signal const & rhs) const
+    bool operator==(Signal const & rhs) const
     {
         return m_circle == rhs.m_circle;
     }
 
-    fMicroSecs const GetStartTime() const { return m_timeStart; }
+    fMicroSecs GetStartTime() const { return m_timeStart; }
 
-    float      const GetDataPoint   (fMicroSecs const)     const;
-    fMicroSecs const FindNextMaximum(fMicroSecs const)     const;
-    void             Draw(DrawContext const &, bool const) const;
-    float      const GetSignalValue()                      const;
-    void             WriteSignalData(wostream &)           const;
+    float      GetDataPoint   (fMicroSecs const)     const;
+    fMicroSecs FindNextMaximum(fMicroSecs const)     const;
+    void       Draw(DrawContext const &, bool const) const;
+    float      GetSignalValue()                      const;
+    void       WriteSignalData(wostream &)           const;
 
-    void  Notify(bool const);
+    void  Notify(bool const) final;
 
     bool  Includes(MicroMeterPnt const pos) const { return m_circle.Includes(pos); }
 
@@ -56,7 +56,7 @@ public:
     void  SetSensorSize(MicroMeter    const   umSize ) { m_circle.SetRadius(umSize); }
 
     MicroMeterPnt    const & GetCenter() const { return m_circle.GetPos(); }
-    MicroMeter       const   GetRadius() const { return m_circle.GetRadius(); }
+    MicroMeter               GetRadius() const { return m_circle.GetRadius(); }
     MicroMeterCircle const & GetCircle() const { return m_circle; }
 
     void Set2Null() { m_circle.Set2Null(); }
@@ -74,6 +74,6 @@ private:
     fMicroSecs       m_timeStart { 0._MicroSecs };
     vector<float>    m_data      { };
 
-    int        const time2index(fMicroSecs const) const;
-    fMicroSecs const index2time(int        const) const;
+    int        time2index(fMicroSecs const) const;
+    fMicroSecs index2time(int        const) const;
 };

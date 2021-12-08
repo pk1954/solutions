@@ -164,7 +164,7 @@ void BaseKnot::Prepare()
 	//		m_mVinputBuffer += pPipe->GetNextOutput();
 	//}
 
-	Apply2AllInPipes([&](Pipe & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
+	Apply2AllInPipes([this](Pipe const & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 }
 
 bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 

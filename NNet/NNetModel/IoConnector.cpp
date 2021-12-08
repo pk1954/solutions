@@ -131,13 +131,6 @@ void IoConnector::Recalc()
         it->Recalc();
 }
 
-void IoConnector::Apply2All(function<void(IoNeuron &)> const & func) const
-{
-    for (auto pNob : m_list) 
-        if (pNob)
-            func(* pNob);
-}                        
-
 void IoConnector::SetDir(Radian const radianNew)
 {
     MicroMeterPnt umPntPivot { GetPos() };
