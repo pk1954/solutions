@@ -6,7 +6,7 @@
 
 #include <assert.h>
 #include <vector>
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 
 using std::vector;
 
@@ -49,5 +49,5 @@ public:
 
 private:
 
-	vector< ObserverInterface * > m_aView;
+	vector<ObserverInterface *> m_aView;
 };

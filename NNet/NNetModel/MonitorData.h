@@ -23,7 +23,7 @@ struct MonitorDataException: public exception
 	(
 		MonitorData const & data,
 		TrackNr     const   trackNr,
-		wstring     const   msg
+		wstring     const & msg
 	)
 	  : m_data(data),
 		m_trackNr(trackNr),
@@ -70,24 +70,24 @@ public:
 	SignalId SetHighlightedSignal(SignalId      const  );
 	SignalId ResetHighlightedSignal();
 
-	SignalNr       AddSignal            (TrackNr  const, MicroMeterCircle const &);
-	SignalNr       AddSignal            (TrackNr  const, unique_ptr<Signal>);
+	SignalNr       AddSignal            (TrackNr  const,   MicroMeterCircle const &);
+	SignalNr       AddSignal            (TrackNr  const,   unique_ptr<Signal>);
 	void           AddSignal            (SignalId const &, unique_ptr<Signal>);
 	SignalNr       MoveSignal           (SignalId const &, TrackNr  const);
-	Signal const * GetSignalPtr         (SignalId const &) const;
 	Signal       * GetSignalPtr         (SignalId const &);
-	Signal       * FindSignal           (Signal::Crit    const &) const;
-	SignalId       FindSignalId         (Signal::Crit    const &) const;
+	Signal const * GetSignalPtr         (SignalId const &)      const;
+	Signal       * FindSignal           (Signal::Crit  const &) const;
+	SignalId       FindSignalId         (Signal::Crit  const &) const;
 	Signal       * FindSensor           (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal () const;
 	Signal       * GetHighlightedSignal ();
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 
-	void Apply2AllTracks        (TrackNrFunc const &) const;
-	void Apply2AllSignalsInTrack(TrackNr const, SignalNrFunc const &) const;
-	void Apply2AllSignals       (SignalId::Func const &) const;
-	void Apply2AllSignals       (Signal::Func   const &) const;
+	void     Apply2AllTracks        (TrackNrFunc const &)                 const;
+	void     Apply2AllSignalsInTrack(TrackNr const, SignalNrFunc const &) const;
+	void     Apply2AllSignals       (SignalId::Func const &)              const;
+	void     Apply2AllSignals       (Signal::Func   const &)              const;
 
 	SignalId GetHighlightedSignalId()       const { return m_idSigHighlighted; }
 	TrackNr  GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }

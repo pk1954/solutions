@@ -40,12 +40,14 @@ public:
         return m_circle == rhs.m_circle;
     }
 
+    void       Recalc();
+
     fMicroSecs GetStartTime() const { return m_timeStart; }
 
     float      GetDataPoint   (fMicroSecs const)     const;
     fMicroSecs FindNextMaximum(fMicroSecs const)     const;
     void       Draw(DrawContext const &, bool const) const;
-    float      GetSignalValue()                 ; //     const;
+    float      GetSignalValue()                      const;
     void       WriteSignalData(wostream &)           const;
 
     void  Notify(bool const) final;
@@ -79,5 +81,4 @@ private:
 
     int        time2index(fMicroSecs const) const;
     fMicroSecs index2time(int        const) const;
-    void       recalcSrcList();
 };

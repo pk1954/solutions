@@ -12,7 +12,7 @@
 using std::wstring;
 using std::wostringstream;
 
-using TEXT_POSITION = NamedType< int, struct TEXT_POSITION_Parameter >;
+using TEXT_POSITION = NamedType<int, struct TEXT_POSITION_Parameter>;
 
 constexpr TEXT_POSITION operator"" _TEXT_POSITION(unsigned long long ull)
 {
@@ -22,7 +22,7 @@ constexpr TEXT_POSITION operator"" _TEXT_POSITION(unsigned long long ull)
 class TextBuffer
 {
 public:
-	virtual ~TextBuffer() {}
+	virtual ~TextBuffer() = default;
 
     void Initialize(PIXEL const,	PIXEL const);
 
@@ -44,14 +44,14 @@ public:
         m_pixHorizontalPos = LEFT_MARGIN + m_pixHorRaster * pos.GetValue();
     }
 
-	void nextLine(wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION)
+	void nextLine(wstring const & data, TEXT_POSITION iHorPos = 1_TEXT_POSITION)
 	{
 		nextLine(iHorPos);
 		AlignRight();
 		printString(data);
 	}
 
-	void header(wstring data)
+	void header(wstring const & data)
 	{
 		nextLine();
 		AlignLeft();

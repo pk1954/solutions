@@ -5,29 +5,27 @@
 #pragma once
 
 #include <chrono>
-#include "Observable.h"
+#include "observable.h"
 #include "MoreTypes.h"
 #include "ParameterType.h"
-
-using namespace std::chrono;
 
 class Param : public Observable
 {
 public:
 	bool operator==(Param const & rhs) const;
 
-	float const GetParameterValue(ParamType::Value const) const;
+	float       GetParameterValue(ParamType::Value const) const;
 	void        SetParameterValue(ParamType::Value const, float const);
 
-	fHertz      const StimulusMaxFreq() const { return m_stimulusMaxFreq; }
-	fMicroSecs  const StimulusMaxTime() const { return m_stimulusMaxTime; }
-	fHertz      const BaseFrequency  () const { return m_baseFrequency;   }
-	mV          const Threshold      () const { return m_threshold; 	  }
-	mV          const PeakVoltage    () const { return m_peakVoltage;     }
-	fMicroSecs  const PulseWidth     () const { return m_pulseWidth;      }
-	fMicroSecs  const RefractPeriod  () const { return m_refractPeriod;   }
-	meterPerSec const PulseSpeed     () const { return m_pulseSpeed;      }
-	fMicroSecs  const TimeResolution () const { return m_usResolution;    }
+	fHertz      StimulusMaxFreq() const { return m_stimulusMaxFreq; }
+	fMicroSecs  StimulusMaxTime() const { return m_stimulusMaxTime; }
+	fHertz      BaseFrequency  () const { return m_baseFrequency;   }
+	mV          Threshold      () const { return m_threshold; 	    }
+	mV          PeakVoltage    () const { return m_peakVoltage;     }
+	fMicroSecs  PulseWidth     () const { return m_pulseWidth;      }
+	fMicroSecs  RefractPeriod  () const { return m_refractPeriod;   }
+	meterPerSec PulseSpeed     () const { return m_pulseSpeed;      }
+	fMicroSecs  TimeResolution () const { return m_usResolution;    }
 
 private:
 	fHertz      m_stimulusMaxFreq { 50.0_fHertz       };

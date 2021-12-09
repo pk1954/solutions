@@ -33,7 +33,7 @@ Signal::~Signal()
     m_observable.UnregisterObserver(this);
 }
 
-void Signal::recalcSrcList()
+void Signal::Recalc()
 {
     float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
     m_sigSrc.clear();
@@ -59,10 +59,8 @@ void Signal::recalcSrcList()
     );
 }
 
-float Signal::GetSignalValue() // const
+float Signal::GetSignalValue() const
 {
-    recalcSrcList();
-
     float fResult { 0.0f };
     for ( auto const& it : m_sigSrc )
         fResult += it.src.GetVoltage().GetValue() * it.fFactor;

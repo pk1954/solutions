@@ -57,7 +57,7 @@ public:
     bool          IsCaptured()                const { return ::GetCapture() == m_hwnd; }
 	int			  GetWindowTextLength()       const { return ::GetWindowTextLength(m_hwnd); }        
 
-	void SetRefreshRate(milliseconds const);
+	void SetRefreshRate(milliseconds const) const;
 	
     void Show(tBoolOp const op) const { Util::Show(m_hwnd, op); }
     void Show(bool    const b ) const { Util::Show(m_hwnd, b ); }

@@ -8,18 +8,18 @@
 bool Param::operator==(Param const & rhs) const
 {
 	return
-		(m_stimulusMaxFreq == rhs.m_stimulusMaxFreq ) &&
-		(m_stimulusMaxTime == rhs.m_stimulusMaxTime ) &&
-		(m_baseFrequency   == rhs.m_baseFrequency   ) &&
-		(m_pulseWidth      == rhs.m_pulseWidth      ) &&
-		(m_pulseSpeed      == rhs.m_pulseSpeed      ) &&
-		(m_threshold       == rhs.m_threshold       ) && 
-		(m_peakVoltage     == rhs.m_peakVoltage     ) &&
-		(m_refractPeriod   == rhs.m_refractPeriod   ) &&
-		(m_usResolution    == rhs.m_usResolution    );
+	(m_stimulusMaxFreq == rhs.m_stimulusMaxFreq ) &&
+	(m_stimulusMaxTime == rhs.m_stimulusMaxTime ) &&
+	(m_baseFrequency   == rhs.m_baseFrequency   ) &&
+	(m_pulseWidth      == rhs.m_pulseWidth      ) &&
+	(m_pulseSpeed      == rhs.m_pulseSpeed      ) &&
+	(m_threshold       == rhs.m_threshold       ) && 
+	(m_peakVoltage     == rhs.m_peakVoltage     ) &&
+	(m_refractPeriod   == rhs.m_refractPeriod   ) &&
+	(m_usResolution    == rhs.m_usResolution    );
 }
 
-float const Param::GetParameterValue(ParamType::Value const param) const
+float Param::GetParameterValue(ParamType::Value const param) const
 {
 	switch (param)
 	{

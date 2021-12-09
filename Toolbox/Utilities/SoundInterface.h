@@ -6,7 +6,7 @@
 
 #include <string>
 #include "MoreTypes.h"
-#include "Observable.h"
+#include "observable.h"
 
 using std::wstring;
 
@@ -20,6 +20,8 @@ struct SoundDescr
 class Sound
 {
 public:
+	virtual ~Sound() = default;
+
 	void Initialize(Observable * const pObservable)
 	{
 		m_pObservable = pObservable;

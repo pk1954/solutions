@@ -15,7 +15,7 @@ public:
         m_acceleration = 4.0f * DISTANCE / static_cast<float>(uiNrOfSteps * uiNrOfSteps);
     }
 
-    float const GetPos() const { return m_pos; }
+    float GetPos() const { return m_pos; }
 
     bool Next() // returns true if target reached
     {

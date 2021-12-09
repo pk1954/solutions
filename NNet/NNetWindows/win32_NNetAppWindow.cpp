@@ -63,6 +63,8 @@ using std::wostringstream;
 using std::filesystem::path;
 using std::source_location;
 
+using namespace std::chrono;
+
 NNetAppWindow::NNetAppWindow()
 {
 	Neuron::SetSound(& m_sound);
@@ -481,6 +483,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_model.SetDescriptionUI(m_descWindow);
 				m_appTitle.SetUnsavedChanges(false);
 				m_mainNNetWindow.CenterModel();
+				m_model.GetParams().RegisterObserver(& m_parameterDlg);
+				m_model.GetParams().RegisterObserver(& m_computeThread);
+				m_model.GetParams().NotifyAll(false);
 			}
 			break;
 

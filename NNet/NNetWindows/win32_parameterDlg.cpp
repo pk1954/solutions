@@ -17,14 +17,19 @@ ParameterDialog::ParameterDialog()
   : BaseDialog()
 { }
 
-ParameterDialog::~ParameterDialog()
-{ }
+ParameterDialog::~ParameterDialog() = default;
+
+void ParameterDialog::Notify(bool const bImmediate)
+{
+	resetParameters();
+	BaseDialog::Notify(bImmediate);
+}
 
 void ParameterDialog::resetParameter   // refresh edit field with data from model
 (
 	HWND             const hwndEditField,
 	ParamType::Value const parameter
-)
+) const
 {
 	StdDialogBox::SetParameterValue(hwndEditField, m_pParams->GetParameterValue(parameter));
 }
@@ -116,7 +121,7 @@ void ParameterDialog::Start
 	m_pParams   = pParams;
 
 	int iYpos { 10 };
-	m_hwndBaseFrequency    = addParameter(hwndDlg, ParamType::Value::baseFrequency,   iYpos); 
+	m_hwndBaseFrequency    = addParameter(hwndDlg, ParamType::Value::baseFrequency,  iYpos); 
 	m_hwndPeakVoltage      = addParameter(hwndDlg, ParamType::Value::peakVoltage,    iYpos); 
 	m_hwndThreshold        = addParameter(hwndDlg, ParamType::Value::threshold,      iYpos); 
 	m_hwndPulseWidth       = addParameter(hwndDlg, ParamType::Value::pulseWidth,     iYpos); 

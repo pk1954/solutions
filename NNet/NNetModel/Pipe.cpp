@@ -31,21 +31,13 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
 	m_pKnotEnd  (nullptr),
 	m_potIndex  (src.m_potIndex ),
 	m_potential (src.m_potential)
-{ }
+{ 
+}
 
 void Pipe::Dump() const
 {
 	Nob::Dump();
 	wcout << L' ' << * this << endl;
-}
-
-void Pipe::init(const Pipe & rhs)
-{
-	Nob::operator=(rhs);
-	m_pKnotStart = nullptr;
-	m_pKnotEnd   = nullptr;
-	m_potIndex   = rhs.m_potIndex;
-	m_potential  = rhs.m_potential;
 }
 
 bool Pipe::operator==(Nob const & rhs) const 

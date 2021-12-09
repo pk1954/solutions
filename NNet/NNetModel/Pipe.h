@@ -155,8 +155,6 @@ private:
 	size_t     m_potIndex   { 0 };
 	vector<mV> m_potential  { };
 
-	void init(const Pipe &);
-
 	void dislocate(BaseKnot * const, MicroMeter const);
 };
 

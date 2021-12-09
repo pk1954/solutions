@@ -77,8 +77,8 @@ bool NNetModel::Compute()
 {
 	bool bStop {false};
 	m_timeStamp += m_param.TimeResolution();
-	m_Nobs.Apply2All([&](Nob &s) { s.Prepare(); });
-	m_Nobs.Apply2All([&](Nob &s) { if (s.CompStep()) bStop = true; });
+	m_Nobs.Apply2All(      [](Nob &s) { s.Prepare(); });
+	m_Nobs.Apply2All([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;
 }
 

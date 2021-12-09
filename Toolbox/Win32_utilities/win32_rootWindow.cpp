@@ -113,7 +113,7 @@ void RootWindow::SetWindowHandle(HWND const hwnd)
 	m_hwndApp = GetAncestor(m_hwnd, GA_ROOTOWNER);
 };
 
-void RootWindow::SetRefreshRate(milliseconds const msRate) 
+void RootWindow::SetRefreshRate(milliseconds const msRate) const
 { 
 	m_upRefreshRate->SetRefreshRate(msRate); 
 }

@@ -19,6 +19,8 @@ public:
 	void Start(HWND const, NNetModelCommands * const, Param * const);
 	void Stop();
 
+	void Notify(bool const) final;
+
 private:
 	static DWORD const STYLE { WS_CHILD | WS_VISIBLE };
 	static int   const HORZ_SPACE {  8 };
@@ -39,15 +41,15 @@ private:
 	HWND createButton     (HWND const, wchar_t  const * const, int const, int const, int const, int const, HMENU const);
 	HWND createEditField  (HWND const, ParamType::Value const, int &,     int const, int const);
 	HWND createStaticField(HWND const, wchar_t  const * const, int &,     int const, int const);
-	void resetParameter   (HWND const, ParamType::Value const);
+	void resetParameter   (HWND const, ParamType::Value const) const;
 	void applyParameter   (HWND const, ParamType::Value const);
 	HWND addParameter     (HWND const, ParamType::Value const, int &);
-	void applyParameters();
 	void resetParameters();
+	void applyParameters();
 
 	ParameterDialog             (ParameterDialog const &);  // noncopyable class 
 	ParameterDialog & operator= (ParameterDialog const &);  // noncopyable class 
 
-	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
-	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
+	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	bool UserProc(UINT const, WPARAM const, LPARAM const) final ;
 };

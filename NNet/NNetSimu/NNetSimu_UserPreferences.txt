@@ -1,4 +1,4 @@
 DescWinFontSize 12
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Solutions\NNet\Models\PROT01 6-stuf-5-rueck.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\Models\x3.mod"

@@ -9,18 +9,19 @@
 
 using std::vector;
 
+using tRingbuf = vector<double>;
+
 class RingBuffer
 {
 public:
 
-RingBuffer(size_t size)
-  :	m_ringbufSum(0.0)
+explicit RingBuffer(size_t size)
 {
 	m_ringbuf.resize(size, 0.0);
 	m_iter = m_ringbuf.begin();
 }
 
-~RingBuffer() {}
+~RingBuffer() = default;
 
 void Add(double const dValue)
 {
@@ -31,16 +32,14 @@ void Add(double const dValue)
 		m_iter = m_ringbuf.begin();
 }
 
-double GetAverage()
+double GetAverage() const
 {
 	assert(m_ringbuf.size() > 0);
-	return m_ringbufSum / m_ringbuf.size();
+	return m_ringbufSum / static_cast<double>(m_ringbuf.size());
 }
 
 private:
-    typedef vector< double > tRingbuf;
-
     tRingbuf::iterator m_iter;
     tRingbuf           m_ringbuf;
-    double             m_ringbufSum;
+    double             m_ringbufSum { 0.0 };
 };
