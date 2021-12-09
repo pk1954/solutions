@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "SignalSource.h"
 #include "PixelTypes.h"
 #include "CircleType.h"
 #include "MoreTypes.h"
@@ -16,7 +17,7 @@ class NNetModel;
 
 struct IDWriteTextFormat;
 
-class BaseKnot : public Nob
+class BaseKnot : public Nob, public SignalSource
 {
 public:
 
@@ -31,7 +32,9 @@ public:
 
 	void AppendMenuItems(AddMenuFunc const &) const override;
 
-	MicroMeterPnt GetPos() const final { return m_circle.GetPos(); }
+	MicroMeterPnt GetPos()       const final    { return m_circle.GetPos(); }
+	mV            GetVoltage()   const override { return m_mVinputBuffer; }
+	float         GetFillLevel() const          { return Nob::GetFillLevel(GetVoltage()); };
 
 	void Dump        ()                               const override;
 	void Check       ()                               const override;

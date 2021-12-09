@@ -76,7 +76,7 @@ public:
 		return Hypot(npA - npB);
 	}
 
-	friend float const DistSquare(PointType const pntA, PointType const pntB)
+	friend float DistSquare(PointType const pntA, PointType const pntB)
 	{
 		PointType delta {pntA - pntB};
 		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();

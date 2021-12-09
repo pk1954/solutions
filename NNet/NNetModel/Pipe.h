@@ -5,7 +5,9 @@
 #pragma once
 
 #include <vector>
+#include "SignalSource.h"
 #include "MoreTypes.h"
+#include "PointType.h"
 #include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
@@ -88,6 +90,63 @@ public:
 	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 	friend wostream & operator<< (wostream &, Pipe const &);
+
+	MicroMeterPnt GetSegmentVector() const
+	{
+		MicroMeterPnt const umVector     { GetEndPoint() - GetStartPoint() };
+		size_t        const nrOfSegments { m_potential.size() };
+		MicroMeterPnt const umpSegVec    { umVector / Cast2Float(nrOfSegments) };
+		return umpSegVec;
+	}
+
+	template <class FUNC>
+	void Apply2AllSegments(FUNC const & func) const
+	{
+		size_t index { m_potIndex }; 
+		do 
+		{
+			if (++index == m_potential.size()) 
+				index = 0; 
+			func(Segment(*this, index));
+		} while (index != m_potIndex);
+	}
+
+	class Segment : public SignalSource
+	{
+	public:
+		Segment(Pipe const & pipe, size_t const index)
+			: m_pipe(pipe),
+			  m_index(index)
+		{}
+
+		Pipe  const & GetPipe    () const       { return m_pipe; }
+		size_t        GetIndex   () const       { return m_index; }
+		MicroMeterPnt GetVector  () const	    { return m_pipe.GetSegmentVector(); }
+		MicroMeterPnt GetStartPnt() const       { return getPos(0.0f); }
+		MicroMeterPnt GetEndPnt  () const       { return getPos(1.0f); }
+		MicroMeterPnt GetPos     () const final { return getPos(0.5f); }
+		mV            GetVoltage () const final	{ return m_pipe.m_potential[getIndex(m_index)]; }
+	
+	private:
+		Pipe   const & m_pipe;
+		size_t const   m_index;
+
+		size_t getIndex(size_t const ind) const
+		{
+			size_t index { ind + m_pipe.m_potIndex };
+			size_t limit { m_pipe.m_potential.size() };
+			if (index >= limit)
+				index -= limit;
+			return index;
+		}
+
+		MicroMeterPnt getPos(float const fOffset) const
+		{
+			MicroMeterPnt const umpSegVec { m_pipe.GetSegmentVector() };
+			float         const fPosition { (static_cast<float>(getIndex(m_index)) + fOffset) };
+			return m_pipe.GetStartPoint() + umpSegVec * fPosition;
+		}
+	};
 
 private:
 	

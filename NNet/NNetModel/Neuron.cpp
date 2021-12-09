@@ -109,7 +109,6 @@ mV Neuron::waveFunction(fMicroSecs const time) const
 void Neuron::ClearDynamicData()
 {
 	m_usSinceLastPulse = 0._MicroSecs;
-	Nob::ClearDynamicData();
 }
 
 bool Neuron::CompStep()
@@ -170,7 +169,7 @@ void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) co
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 { 
-	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor(type) };
+	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : Nob::GetInteriorColor(type) };
 	context.FillCircle(GetCircle() * NEURON_INTERIOR, color);
 	if (HasAxon())
 		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);

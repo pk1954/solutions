@@ -57,7 +57,7 @@ SoundDescr NNetModelReaderInterface::GetTriggerSound(NobId const id) const
 
 mV NNetModelReaderInterface::GetVoltage(NobId const id) const
 {
-	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 

@@ -43,7 +43,7 @@ public:
         startTimer();
     }
 
-    ANIM_PAR const GetActual()
+    ANIM_PAR GetActual()
     {
         ANIM_PAR result;
         AcquireSRWLockExclusive(& m_srwlData);

@@ -258,23 +258,23 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 	}
 	else
 	{
-		MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
-		if (umVector.IsCloseToZero())
-			return;
-		size_t        const nrOfSegments { m_potential.size() };
-		MicroMeterPnt const umSegVec     { umVector / Cast2Float(nrOfSegments) };
-		MicroMeterPnt       umPoint      { GetStartPoint() };
-		size_t        const potIndex     { m_potIndex };
-		size_t              index        { potIndex }; 
-		do 
-		{
-			if (++index == m_potential.size()) 
-				index = 0; 
-
-			MicroMeterPnt const umPointNext { umPoint + umSegVec };
-			context.DrawLine(umPoint, umPointNext, umWidth, GetInteriorColor(m_potential[index]), fPixMinWidth);
-			umPoint = umPointNext;
-		} while (index != potIndex);
+		Apply2AllSegments
+		(
+			[this, &context, umWidth, fPixMinWidth](Segment const & segment)
+			{
+				MicroMeterPnt umpStart  { segment.GetStartPnt() };
+				MicroMeterPnt umpVector { segment.GetVector  () };
+				mV            voltage   { segment.GetVoltage () };
+				context.DrawLine
+				(
+					umpStart, 
+					umpStart + umpVector, 
+					umWidth, 
+					GetInteriorColor(voltage), 
+					fPixMinWidth
+				);
+			}
+		);
 	}
 }
 

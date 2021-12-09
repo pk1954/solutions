@@ -28,22 +28,22 @@ public:
         m_p2(l.m_p2)
     {}
 
-    LineType() {}
+    LineType() = default;
 
-    bool const operator==(LineType const & a) const { return (m_p1 == a.m_p1) && (m_p2 == a.m_p2); }
-    bool const operator!=(LineType const & a) const { return (m_p1 != a.m_p1) || (m_p2 != a.m_p2); }
+    bool operator==(LineType const & a) const { return (m_p1 == a.m_p1) && (m_p2 == a.m_p2); }
+    bool operator!=(LineType const & a) const { return (m_p1 != a.m_p1) || (m_p2 != a.m_p2); }
 
-    LineType const operator+= (POS_TYPE const a) { m_p1 += a; m_p2 += a; return * this; }
-    LineType const operator-= (POS_TYPE const a) { m_p1 -= a; m_p2 -= a; return * this; }
+    LineType operator+= (POS_TYPE const a) { m_p1 += a; m_p2 += a; return * this; }
+    LineType operator-= (POS_TYPE const a) { m_p1 -= a; m_p2 -= a; return * this; }
 
-    friend LineType const operator+ (LineType const l, POS_TYPE const p) 
+    friend LineType operator+ (LineType const l, POS_TYPE const p) 
     { 
         LineType res { l }; 
         res += p; 
         return res; 
     };
 
-    friend LineType const operator- (LineType const l, POS_TYPE const p) 
+    friend LineType operator- (LineType const l, POS_TYPE const p) 
     { 
         LineType res { l }; 
         res -= p; 
@@ -56,31 +56,31 @@ public:
         m_p2 = p2; 
     }
 
-    BASE_TYPE const Length() const
+    BASE_TYPE Length() const
     {
         return Distance(m_p1, m_p2);
     }
 
-    POS_TYPE const GetVector() const 
+    POS_TYPE GetVector() const 
     {
         return m_p2 - m_p1;
     }
 
-    POS_TYPE const GetStartPoint() const { return m_p1; }
-    POS_TYPE const GetEndPoint  () const { return m_p2; }
-    POS_TYPE const GetCenter    () const { return (m_p1 + m_p2) * 0.5f; }
+    POS_TYPE GetStartPoint() const { return m_p1; }
+    POS_TYPE GetEndPoint  () const { return m_p2; }
+    POS_TYPE GetCenter    () const { return (m_p1 + m_p2) * 0.5f; }
 
-    POS_TYPE const OrthoVector() const
+    POS_TYPE OrthoVector() const
     {
         return GetVector().OrthoVector().ScaledTo(1.0_MicroMeter);
     }
 
-    LineType const OrthoLine() const
+    LineType OrthoLine() const
     {
         return LineType(m_p1, m_p1 + OrthoVector());
     }
 
-    friend BASE_TYPE const PointToLine(LineType const & l, POS_TYPE const & p0)
+    friend BASE_TYPE PointToLine(LineType const & l, POS_TYPE const & p0)
     {
         POS_TYPE  const p01 { p0     - l.m_p1 };
         POS_TYPE  const p12 { l.m_p1 - l.m_p2 };

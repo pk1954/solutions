@@ -157,13 +157,6 @@ bool BaseKnot::Apply2AllConnectedPipesB(PipeCrit const &c) const
 void BaseKnot::Prepare()
 {
 	m_mVinputBuffer.Set2Zero();
-
-	//for (Pipe * pPipe : m_incoming) 
-	//{ 
-	//	if (pPipe != nullptr)
-	//		m_mVinputBuffer += pPipe->GetNextOutput();
-	//}
-
 	Apply2AllInPipes([this](Pipe const & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 }
 

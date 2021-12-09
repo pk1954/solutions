@@ -10,10 +10,12 @@
 #include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "SignalSource.h"
 
 using std::vector;
 
 class Signal;
+class SignalSource;
 class DrawContext;
 class NNetModelReaderInterface;
 
@@ -43,7 +45,7 @@ public:
     float      GetDataPoint   (fMicroSecs const)     const;
     fMicroSecs FindNextMaximum(fMicroSecs const)     const;
     void       Draw(DrawContext const &, bool const) const;
-    float      GetSignalValue()                      const;
+    float      GetSignalValue()                 ; //     const;
     void       WriteSignalData(wostream &)           const;
 
     void  Notify(bool const) final;
@@ -72,8 +74,10 @@ private:
 
     MicroMeterCircle m_circle    { MicroMeterCircle::NULL_VAL() };
     fMicroSecs       m_timeStart { 0._MicroSecs };
-    vector<float>    m_data      { };
+    vector<float>    m_fTimeLine { };
+    vector<SigElem>  m_sigSrc { };
 
     int        time2index(fMicroSecs const) const;
     fMicroSecs index2time(int        const) const;
+    void       recalcSrcList();
 };

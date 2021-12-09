@@ -92,7 +92,6 @@ public:
 	wstring GetName      () const { return NobType::GetName(m_type.GetValue()); }
 	NobType GetNobType   () const { return m_type; }
 	NobId   GetId        () const { return m_identifier; }
-	mV      GetVoltage   () const { return m_mVinputBuffer; }
 
 	MicroMeter GetPosX() const { return GetPos().GetX(); }
 	MicroMeter GetPosY() const { return GetPos().GetY(); }
@@ -130,7 +129,6 @@ protected:
 	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	float GetFillLevel(mV const) const;
-	float GetFillLevel() const { return GetFillLevel(GetVoltage()); };
 
 	void SetType(NobType const type) { m_type = type; }
 
