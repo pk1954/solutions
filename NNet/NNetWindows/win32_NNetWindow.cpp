@@ -7,7 +7,7 @@
 #include "util.h"
 #include "Resource.h"
 #include "MoreTypes.h"
-#include "Segment.h"
+//#include "Segment.h"
 #include "win32_scale.h"
 #include "Pipe.h"
 #include "Neuron.h"
@@ -87,7 +87,7 @@ void NNetWindow::DrawArrowsInRect
 	m_pNMRI->Apply2AllInRect<Pipe>
 	(
 		GetCoordC().Transform2MicroMeterRect(rect),	
-		[&](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
+		[this, umSize](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
 	);
 }
 
@@ -95,7 +95,7 @@ void NNetWindow::DrawSensors() const
 {
 	try
 	{
-		m_pNMRI->GetConstMonitorData().Apply2AllSignals([&](Signal const & sig) { sig.Draw(m_context, false); });
+		m_pNMRI->GetConstMonitorData().Apply2AllSignalsC([this](Signal const & sig) { sig.Draw(m_context, false); });
 	}
 	catch (MonitorDataException const & e)
 	{

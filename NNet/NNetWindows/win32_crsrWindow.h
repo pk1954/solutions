@@ -18,7 +18,7 @@ class CrsrWindow: public TextWindow
 {
 public:
 	CrsrWindow();
-	virtual ~CrsrWindow();
+	~CrsrWindow() final;
 
 	void Start
 	(
@@ -29,18 +29,22 @@ public:
 
 	void Stop();
 
-	virtual void DoPaint(TextBuffer &);
+	void DoPaint(TextBuffer &) final;
 
 private:
 	MainWindow               const * m_pMainWindow { nullptr };
 	NNetModelReaderInterface const * m_pNMRI       { nullptr };
 
-	void printMicroMeter(TextBuffer &, MicroMeter const);
-	void printMilliSecs (TextBuffer &, MilliSecs  const);
-	void printDegrees   (TextBuffer &, Degrees    const);
-	void printVoltage   (TextBuffer &, mV         const);
+	void printPositionInfo(TextBuffer &, MicroMeterPnt const) const;
+	void printSignalInfo  (TextBuffer &, SignalId      const) const;
+	void printNobInfo     (TextBuffer &, NobId         const) const;
 
-	template <typename T> void printFrequency(TextBuffer & textBuf, T const freq)
+	void printMicroMeter(TextBuffer &, MicroMeter const) const;
+	void printMilliSecs (TextBuffer &, MilliSecs  const) const;
+	void printDegrees   (TextBuffer &, Degrees    const) const;
+	void printVoltage   (TextBuffer &, mV         const) const;
+
+	template <typename T> void printFrequency(TextBuffer & textBuf, T const freq) const
 	{
 		wostringstream wBuffer;
 		wBuffer << fixed << setprecision(1) << freq.GetValue() << L"Hz ";

@@ -122,7 +122,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	{
 		m_pNMRI->GetConstNob(m_nobHighlighted)->AppendMenuItems
 		(
-			[&](int const id){ appendMenu(hPopupMenu, id); }
+			[hPopupMenu](int const id){ appendMenu(hPopupMenu, id); }
 		);
 		if ( m_pNMRI->IsPipe(m_nobHighlighted) )
 		{
@@ -223,7 +223,7 @@ void MainWindow::setTargetNob()
 	m_nobTarget = m_pNMRI->FindNobAt
 	(
 		m_pNMRI->GetNobPos(m_nobHighlighted),
-		[&](Nob const & s) 
+		[this](Nob const & s) 
 		{ 
 			return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); 
 		}

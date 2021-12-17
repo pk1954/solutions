@@ -399,6 +399,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_RUN:
+			m_nmwi.RecalcSignals();
 			m_computeThread.RunComputation();
 			break;
 

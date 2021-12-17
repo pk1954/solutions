@@ -61,7 +61,7 @@ public:
 	bool                AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
 	bool                IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
 	size_t              GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
-	Signal            * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
+	Signal      const * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
 	SignalId            GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 
 	bool IsInputConnector(NobId const id) const 

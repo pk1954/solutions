@@ -35,22 +35,14 @@ public:
 
 	static SignalId const & NULL_VAL() 
 	{ 
-		static SignalId res { SignalId(TrackNr::NULL_VAL(), SignalNr::NULL_VAL()) }; 
+		static SignalId const res { SignalId(TrackNr::NULL_VAL(), SignalNr::NULL_VAL()) }; 
 		return res;
 	};
 
 	bool IsNull   () const { return trackNr.IsNull() || signalNr.IsNull(); }
 	bool IsNotNull() const { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
 
-	auto operator== (const SignalId & other) const
-	{
-		return (trackNr == other.trackNr) && (signalNr == other.signalNr);
-	}
-
-	auto operator!= (const SignalId & other) const
-	{
-		return ! (*this == other);
-	}
+	bool operator== (const SignalId & other) const = default;
 
 	TrackNr  GetTrackNr () const { return trackNr; }
 	SignalNr GetSignalNr() const { return signalNr; }

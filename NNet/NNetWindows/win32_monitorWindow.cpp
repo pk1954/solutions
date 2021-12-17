@@ -61,13 +61,13 @@ void MonitorWindow::Start
 	m_vertCoord.SetZoomFactor(1.3f);
 	m_vertCoord.RegisterObserver(this);
 
-	m_hCrsrNS = LoadCursor(NULL, IDC_SIZENS);
-	m_hCrsrWE = LoadCursor(NULL, IDC_SIZEWE);
+	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
+	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);
 }
 
 void MonitorWindow::Reset()
 {
-	m_trackStruct.hwndTrack = HWND(0);
+	m_trackStruct.hwndTrack = nullptr;
 	m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
 	(void)TrackMouseEvent(& m_trackStruct);
 }
@@ -168,7 +168,7 @@ fPixel MonitorWindow::calcTrackHeight() const
 
 void MonitorWindow::paintSignal(SignalId const & idSignal) const
 {
-	Signal const * const pSignal { m_pMonitorData->GetSignalPtr(idSignal) };
+	Signal const * const pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) };
 	if (pSignal == nullptr)
 		return;
 
@@ -198,7 +198,7 @@ void MonitorWindow::doPaint() const
 	if (m_pMonitorData->NoTracks())
 		return;
 
-	m_pMonitorData->Apply2AllSignals([&](SignalId const id) { paintSignal(id); });
+	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
 
 	if (m_trackNrHighlighted.IsNotNull())  // paint background of selected track
 	{
@@ -217,7 +217,7 @@ void MonitorWindow::doPaint() const
 fPixelPoint MonitorWindow::calcDiamondPos() const
 {
 	SignalId const & idSignal { m_pMonitorData->GetHighlightedSignalId() };
-	Signal   const * pSignal  { m_pMonitorData->GetSignalPtr(idSignal) };
+	Signal   const * pSignal  { m_pMonitorData->GetConstSignalPtr(idSignal) };
 	if (!pSignal)
 		return fPP_NULL;
 	PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
@@ -239,22 +239,21 @@ SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptC
 	if (trackNr.IsNull())
 		return signalNrRes;
 
-	fMicroSecs  const timeStart       { m_horzCoord.Transform2logUnitPos(0.0_fPixel) };
 	fPixelPoint const fPixPtCrsr      { Convert2fPixelPoint(ptCrsr) };
 	fMicroSecs  const umTime          { m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
 	fPixel      const fPixTrackHeight { calcTrackHeight() };
 	fPixel      const fPixTrackBottom { fPixTrackHeight * static_cast<float>(trackNr.GetValue() + 1) };  
 	fPixel      const fPixCrsrY       { fPixTrackBottom - fPixPtCrsr.GetY() };  // vertical distance from crsr pos to zero line of track
 	fPixel            fPixBestDelta   { fPixel::MAX_VAL() };
-	m_pMonitorData->Apply2AllSignalsInTrack
+	m_pMonitorData->Apply2AllSignalsInTrackC
 	(
 		trackNr,
 		[&](SignalNr const signalNr)
 		{
-			Signal const & signal { * m_pMonitorData->GetSignalPtr(SignalId(trackNr, signalNr)) };
-			if (umTime >= signal.GetStartTime())
+			Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(SignalId(trackNr, signalNr)) };
+			if (pSignal && (umTime >= pSignal->GetStartTime()))
 			{
-				fPixel const fPixDelta     { fPixCrsrY - getSignalValue(signal, umTime) };
+				fPixel const fPixDelta     { fPixCrsrY - getSignalValue(*pSignal, umTime) };
 				fPixel const fPixDeltaAbs  { fPixDelta.GetAbs() };
 				if (fPixDeltaAbs < fPixBestDelta)
 				{

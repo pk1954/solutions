@@ -15,6 +15,7 @@
 
 using std::chrono::milliseconds;
 using std::unique_ptr;
+using std::wstring;
 using std::function;
 using std::vector;
 
@@ -28,7 +29,7 @@ public:
     RootWindow();
     ~RootWindow() override;
 
-	void StartRootWindow(function<bool()> const);
+	void StartRootWindow(function<bool()> const &);
 
     HWND GetWindowHandle() const { return m_hwnd; };
 
@@ -74,24 +75,24 @@ public:
 		m_hwnd = nullptr;
 	}
 
-	HWND CreateBalloonToolTip(int const id, LPWSTR const t) const
+	HWND CreateBalloonToolTip(int const id, LPWSTR const &t) const
 	{
 		return ::CreateBalloonToolTip(m_hwnd, id, t);	
 	}
 
-	HWND CreateStdToolTip(int const id, LPWSTR const t) const
+	HWND CreateStdToolTip(int const id, LPWSTR const &t) const
 	{ 
 		return ::CreateStdToolTip(m_hwnd, id, t);	
 	}
 
-	HWND CreateWindowToolTip(LPWSTR const t) const
+	HWND CreateWindowToolTip(LPWSTR const &t) const
 	{ 
 		return ::CreateWindowToolTip(m_hwnd, t);	
 	}
 
-	HWND CreateRectToolTip(int const id, PixelRect * const pRect, LPWSTR const t) const
+	HWND CreateRectToolTip(int const id, PixelRect & rect, LPWSTR const &t) const
 	{ 
-		return ::CreateRectToolTip(m_hwnd, id, pRect, t);	
+		return ::CreateRectToolTip(m_hwnd, id, &rect, t);
 	}
 
 	HBITMAP CreateCompatibleBitmap(HDC const hDC) const
@@ -135,7 +136,7 @@ public:
         return ::SendDlgItemMessage(m_hwnd, iItem, msg, wParam, lParam);
     }
 
-	void SetDlgText(int const iItem, wchar_t const * const wstrText)
+	void SetDlgText(int const iItem, wchar_t const * const wstrText) const
 	{
 		Util::SetText(GetDlgItem(iItem), wstrText);
 	}
@@ -247,7 +248,7 @@ private:
 	function<bool()> m_visibilityCriterion { nullptr };
 	bool             m_bShowRefreshRateDlg { true };
 
-	void addWinMenu(HMENU const, std::wstring const) const;
+	void addWinMenu(HMENU const, wstring const &) const;
 	void adjustWinMenu(HMENU const) const;
 	void contextMenu(PixelPoint const &);
 

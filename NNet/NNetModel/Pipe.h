@@ -12,7 +12,7 @@
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Nob.h"
-#include "Segment.h"
+//#include "Segment.h"
 
 using std::vector;
 
@@ -22,13 +22,15 @@ class BaseKnot;
 class Pipe : public Nob
 {
 public:
+	using SegNr = NamedType<size_t, struct segNr_Parameter>;
+
 	Pipe(BaseKnot * const, BaseKnot * const);
 
 	Pipe(Pipe const &);   // copy constructor
 
 	~Pipe() final = default;
 
-	virtual bool operator==(Nob const &) const;
+	bool operator==(Nob const &) const;
 
 	void AppendMenuItems(AddMenuFunc const &) const final;
 
@@ -55,6 +57,7 @@ public:
 	MicroMeterPnt GetEndPoint   () const; 
 	MicroMeter    GetLength     () const;
 	MicroMeterPnt GetVector     () const; 
+	MicroMeter    GetSegLength  () const { return GetLength() / Cast2Float(GetNrOfSegments()); };
 
 	void          RotateNob(MicroMeterPnt const &, Radian const) final { /* Pipe dir defined by endpoints */ }
 	void          SetDir   (Radian const)                        final { /* Pipe dir defined by endpoints */ };
@@ -79,6 +82,7 @@ public:
 	void          Select          (bool const)                                  final;
 
 	mV GetVoltageAt(MicroMeterPnt const &) const;
+	mV GetVoltage(SegNr const segNr) const { return m_potential[segNr2index(segNr)]; };
 
 	void DrawArrows(DrawContext const &, MicroMeter const) const;
 
@@ -93,69 +97,50 @@ public:
 
 	MicroMeterPnt GetSegmentVector() const
 	{
-		MicroMeterPnt const umVector     { GetEndPoint() - GetStartPoint() };
-		size_t        const nrOfSegments { m_potential.size() };
-		MicroMeterPnt const umpSegVec    { umVector / Cast2Float(nrOfSegments) };
+		MicroMeterPnt const umVector  { GetEndPoint() - GetStartPoint() };
+		MicroMeterPnt const umpSegVec { umVector / Cast2Float(GetNrOfSegments()) };
 		return umpSegVec;
+	}
+
+	MicroMeterPnt GetSegmentCenter(SegNr const segNr) const
+	{
+		return getSegmentPos(segNr, 0.5f);
+	}
+
+	MicroMeterPnt GetSegmentStart(SegNr const segNr) const
+	{
+		return getSegmentPos(segNr, 0.0f);
+	}
+
+	MicroMeterPnt GetSegmentEnd(SegNr const segNr) const
+	{
+		return getSegmentPos(segNr, 1.0f);
 	}
 
 	template <class FUNC>
 	void Apply2AllSegments(FUNC const & func) const
 	{
-		size_t index { m_potIndex }; 
-		do 
-		{
-			if (++index == m_potential.size()) 
-				index = 0; 
-			func(Segment(*this, index));
-		} while (index != m_potIndex);
+		for (auto segNr = SegNr(0); segNr.GetValue() < GetNrOfSegments(); ++segNr )
+			func(segNr);
 	}
 
-	class Segment : public SignalSource
-	{
-	public:
-		Segment(Pipe const & pipe, size_t const index)
-			: m_pipe(pipe),
-			  m_index(index)
-		{}
-
-		Pipe  const & GetPipe    () const       { return m_pipe; }
-		size_t        GetIndex   () const       { return m_index; }
-		MicroMeterPnt GetVector  () const	    { return m_pipe.GetSegmentVector(); }
-		MicroMeterPnt GetStartPnt() const       { return getPos(0.0f); }
-		MicroMeterPnt GetEndPnt  () const       { return getPos(1.0f); }
-		MicroMeterPnt GetPos     () const final { return getPos(0.5f); }
-		mV            GetVoltage () const final	{ return m_pipe.m_potential[getIndex(m_index)]; }
-	
-	private:
-		Pipe   const & m_pipe;
-		size_t const   m_index;
-
-		size_t getIndex(size_t const ind) const
-		{
-			size_t index { ind + m_pipe.m_potIndex };
-			size_t limit { m_pipe.m_potential.size() };
-			if (index >= limit)
-				index -= limit;
-			return index;
-		}
-
-		MicroMeterPnt getPos(float const fOffset) const
-		{
-			MicroMeterPnt const umpSegVec { m_pipe.GetSegmentVector() };
-			float         const fPosition { (static_cast<float>(getIndex(m_index)) + fOffset) };
-			return m_pipe.GetStartPoint() + umpSegVec * fPosition;
-		}
-	};
-
 private:
-	
 	BaseKnot * m_pKnotStart { nullptr };
 	BaseKnot * m_pKnotEnd   { nullptr };
-	size_t     m_potIndex   { 0 };
+	size_t     m_potIndex   { 0 };   // index in m_potential if SegNr 0
 	vector<mV> m_potential  { };
 
 	void dislocate(BaseKnot * const, MicroMeter const);
+	size_t segNr2index(SegNr const) const;
+
+	MicroMeterPnt getSegmentPos(SegNr const segNr, float const fPos) const
+	{
+		MicroMeterPnt const umVector  { GetEndPoint() - GetStartPoint() };
+		MicroMeterPnt const umpSegVec { umVector / Cast2Float(GetNrOfSegments()) };
+		float         const fPosition { (static_cast<float>(segNr.GetValue()) + fPos) };
+		return GetStartPoint() + umpSegVec * fPosition;
+	}
+
 };
 
 Pipe const * Cast2Pipe(Nob const *);

@@ -14,8 +14,7 @@
 using std::vector;
 using std::unique_ptr;
 
-using SignalNr     = NamedType<int, struct SignalNrParam>;
-using SignalNrFunc = function<void(SignalNr const &)>;
+using SignalNr = NamedType<int, struct SignalNrParam>;
 
 class SignalId;
 
@@ -36,19 +35,53 @@ public:
 	void CheckSignals() const;
 
 	void               AddSignal   (unique_ptr<Signal>, SignalNr const);
-	SignalNr     const AddSignal   (unique_ptr<Signal>);
+	SignalNr           AddSignal   (unique_ptr<Signal>);
 	unique_ptr<Signal> RemoveSignal(SignalNr const);
 
-	Signal const * const GetSignalPtr(SignalNr const) const;
-	Signal       * const GetSignalPtr(SignalNr const);
-	bool           const IsValid     (SignalNr const) const;
-	bool           const IsEmpty     () const { return m_signals.empty(); }
+	Signal const * GetConstSignalPtr(SignalNr const) const;
+	Signal       * GetSignalPtr     (SignalNr const);
+	bool           IsValid          (SignalNr const) const;
+	bool           IsEmpty          () const { return m_signals.empty(); }
 
-	void Apply2AllSignals(SignalNrFunc const &) const;
-	void Apply2AllSignals(Signal::Func   const &) const;
+	template<class FUNC>
+	void Apply2AllSignalNrsC(FUNC const & func) const
+	{
+		for (int i = 0; i < m_signals.size(); ++i)
+			func(SignalNr(i)); 
+	}             
 
-	Signal * const FindSignal  (Signal::Crit const &);
-	SignalNr const FindSignalNr(Signal::Crit const &) const;
+	template<class FUNC>
+	void Apply2AllSignalsC(FUNC const & func) const
+	{
+		for (int i = 0; i < m_signals.size(); ++i)
+		{
+			if (Signal const * pSignal { GetConstSignalPtr(SignalNr(i)) })
+				func(* pSignal); 
+		}
+	}             
+
+	template<class FUNC>
+	void Apply2AllSignals(FUNC const & func)
+	{
+		for (int i = 0; i < m_signals.size(); ++i)
+			if (Signal * pSignal { GetSignalPtr(SignalNr(i)) })
+				func(* pSignal); 
+	}             
+
+	template<class CRIT>
+	SignalNr FindSignalNr(CRIT const & crit) const
+	{
+		for (int i = 0; i < m_signals.size(); ++i)
+		{ 
+			SignalNr       const signalNr { SignalNr(i) };
+			Signal const * const pSignal  { GetConstSignalPtr(signalNr) };
+			if (pSignal && crit(*pSignal))
+				return signalNr;  
+		}
+		return SignalNr::NULL_VAL();
+	}
+
+	Signal const * FindSignal(Signal::Crit const &) const;
 
 private:
 	vector<unique_ptr<Signal>> m_signals;

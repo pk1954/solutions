@@ -21,7 +21,7 @@ bool MonitorData::operator==(MonitorData const & rhs) const
 MonitorData::MonitorData(const MonitorData& rhs)  // copy constructor
 {
 	for (auto const & upTrack : rhs.m_tracks)
-		m_tracks.push_back(move(make_unique<Track>(*upTrack.get())));
+		m_tracks.push_back(make_unique<Track>(*upTrack.get()));
 }
 
 MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignment operator
@@ -30,7 +30,7 @@ MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignme
 	{
 		m_tracks.clear();
 		for (auto const & upTrack : rhs.m_tracks)
-			m_tracks.push_back(move(make_unique<Track>(*upTrack.get())));
+			m_tracks.push_back(make_unique<Track>(*upTrack.get()));
 	}
 	return * this;
 }
@@ -74,12 +74,12 @@ SignalId MonitorData::SetHighlightedSignal(SignalId const id)
 
 SignalId MonitorData::SetHighlightedSignal(Signal const &sigNew)
 {
-	return SetHighlightedSignal(FindSignalId([&](Signal const &s){ return &s == &sigNew; }));
+	return SetHighlightedSignal(FindSignalId([&sigNew](Signal const &s){ return &s == &sigNew; }));
 }
 
 SignalId MonitorData::SetHighlightedSignal(MicroMeterPnt const& umPos)
 {
-	return SetHighlightedSignal(FindSignalId([&](Signal const &s){ return s.Includes(umPos); }));
+	return SetHighlightedSignal(FindSignalId([&umPos](Signal const &s){ return s.Includes(umPos); }));
 }
 
 SignalId MonitorData::ResetHighlightedSignal()
@@ -132,7 +132,7 @@ SignalNr MonitorData::AddSignal
 SignalNr MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
 	assert(IsValid(id) && IsValid(trackNrDst));
-	SignalNr sigNr { AddSignal(trackNrDst, move(removeSignal(id))) };
+	SignalNr sigNr { AddSignal(trackNrDst, removeSignal(id)) };
 	if (id == m_idSigHighlighted)
 		SetHighlightedSignal(SignalId(trackNrDst, sigNr));
 	return sigNr;
@@ -146,46 +146,10 @@ void MonitorData::DeleteTrack(TrackNr const trackNr)
 		throw MonitorDataException(*this, trackNr, L"DeleteTrack");
 }
 
-void MonitorData::Apply2AllTracks(TrackNrFunc const & func) const
-{
-	for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
-		func(trackNr); 
-}                        
-
-void MonitorData::Apply2AllSignalsInTrack(TrackNr const trackNr, SignalNrFunc const & func) const
-{
-	if (IsValid(trackNr))
-		getTrack(trackNr)->Apply2AllSignals(func);
-	else
-	    throw MonitorDataException(*this, trackNr, L"Apply2AllSignalsInTrack");
-}                        
-
-void MonitorData::Apply2AllSignals(SignalId::Func const & func) const
-{
-	for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
-	{ 
-		getTrack(trackNr)->Apply2AllSignals   // getTrack may throw MonitorDataException
-		(
-			[&](SignalNr const & signalNr) { func(SignalId(trackNr, signalNr)); }
-		);
-	}
-}                        
-
-void MonitorData::Apply2AllSignals(Signal::Func const & func) const
-{
-	for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
-	{ 
-		getTrack(trackNr)->Apply2AllSignals  // getTrack may throw MonitorDataException
-		(
-			[&](Signal const & signal)	{ func(signal); }
-		);
-	}
-}                        
-
-Signal * MonitorData::FindSignal(Signal::Crit const & crit) const
+Signal const * MonitorData::FindSignal(Signal::Crit const & crit) const
 {
 	for (unique_ptr<Track> const & upTrack: m_tracks) 
-		if (Signal * const pSignal { upTrack->FindSignal(crit) })
+		if (Signal const * const pSignal { upTrack->FindSignal(crit) })
 			return pSignal;
 	return nullptr;
 }                        
@@ -212,11 +176,11 @@ Signal * MonitorData::GetSignalPtr(SignalId const & id)
 	throw MonitorDataException(*this, trackNr, L"GetSignalPtr");
 }
 
-Signal const * MonitorData::GetSignalPtr(SignalId const & id) const
+Signal const * MonitorData::GetConstSignalPtr(SignalId const & id) const
 {
 	return id.IsNull()
 		   ? nullptr
-	       : getTrack(id.GetTrackNr())->GetSignalPtr(id.GetSignalNr());
+	       : getTrack(id.GetTrackNr())->GetConstSignalPtr(id.GetSignalNr());
 }
 
 Signal * MonitorData::GetHighlightedSignal()
@@ -229,7 +193,7 @@ Signal * MonitorData::GetHighlightedSignal()
 
 Signal const * MonitorData::GetHighlightedSignal() const
 {
-	return GetSignalPtr(m_idSigHighlighted);
+	return GetConstSignalPtr(m_idSigHighlighted);
 }
 
 bool MonitorData::IsValid(TrackNr const trackNr) const
@@ -269,9 +233,9 @@ bool MonitorData::IsEmptyTrack(TrackNr const trackNr) const
 	throw MonitorDataException(*this, trackNr, L"IsEmptyTrack");
 }
 
-Signal * MonitorData::FindSensor(MicroMeterPnt const & umPos) const
+Signal const * MonitorData::FindSensor(MicroMeterPnt const & umPos) const
 {
-	return FindSignal([&](Signal const & s) { return s.Includes(umPos); });
+	return FindSignal([&umPos](Signal const & s) { return s.Includes(umPos); });
 }
 
 void MonitorData::HandleException(MonitorDataException const & e)

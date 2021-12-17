@@ -8,9 +8,11 @@
 #include "win32_baseRefreshRate.h"
 #include "win32_rootWindow.h"
 
+using std::bit_cast;
+
 RootWindow * GetRootWindow(HWND const hwnd)
 {
-	RootWindow * pRootWin = reinterpret_cast<RootWindow *>(GetUserDataPtr(hwnd));
+	auto pRootWin = bit_cast<RootWindow *>(GetUserDataPtr(hwnd));
 	return (pRootWin && pRootWin->GetWindowHandle())
 		   ? pRootWin
 		   : nullptr;
@@ -19,11 +21,11 @@ RootWindow * GetRootWindow(HWND const hwnd)
 class RootWindow::WindowRefreshRate : public BaseRefreshRate
 {
 public:
-	WindowRefreshRate(RootWindow * const pRootWin)
+	explicit WindowRefreshRate(RootWindow * const pRootWin)
 		: m_pRootWin(pRootWin)
 	{ }
 
-	virtual void Trigger()
+	void Trigger() final
 	{
 		m_pRootWin->Trigger();
 	}
@@ -42,7 +44,7 @@ RootWindow::~RootWindow()
 	m_hwnd = nullptr; 
 }
 
-void RootWindow::StartRootWindow(function<bool()> const visibilityCriterion)
+void RootWindow::StartRootWindow(function<bool()> const &visibilityCriterion)
 {
 	m_visibilityCriterion = visibilityCriterion;
 
@@ -53,7 +55,7 @@ void RootWindow::StartRootWindow(function<bool()> const visibilityCriterion)
 		  : tOnOffAuto::off;
 }
 
-void RootWindow::addWinMenu(HMENU const hMenuParent, std::wstring const strTitle) const
+void RootWindow::addWinMenu(HMENU const hMenuParent, wstring const & strTitle) const
 {
 	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 	HMENU const hMenu = CreatePopupMenu();
@@ -90,17 +92,20 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 
 	(void)SetForegroundWindow(GetWindowHandle());
 
-	UINT const uiID = (UINT)TrackPopupMenu
+	auto const uiID = static_cast<UINT>
 	(
-		hPopupMenu, 
-		TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
-		crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
-		0, 
-		GetWindowHandle(),
-		nullptr 
-	);        
+		TrackPopupMenu
+	    (
+			hPopupMenu, 
+			TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
+			crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
+			0, 
+			GetWindowHandle(),
+			nullptr 
+	    )
+	);
 
-	(void)DestroyMenu(hPopupMenu);
+	DestroyMenu(hPopupMenu);
 
 	if (uiID != 0)
 		OnCommand(uiID, lParam, Screen2Client(crsrPosScreen));
@@ -125,7 +130,7 @@ void RootWindow::Notify(bool const bImmediately)
 
 void RootWindow::SetTrackBarPos(INT const idTrackbar, LONG const lPos) const
 {
-	(void)SendDlgItemMessage
+	SendDlgItemMessage
 	(  
 		idTrackbar, TBM_SETPOS, 
 		static_cast<WPARAM>(true),                   // redraw flag 
@@ -135,14 +140,14 @@ void RootWindow::SetTrackBarPos(INT const idTrackbar, LONG const lPos) const
 
 void RootWindow::SetTrackBarRange(INT const idTrackbar, LONG const lMin, LONG const lMax) const
 {
-	(void)SendDlgItemMessage
+	SendDlgItemMessage
 	(
 		idTrackbar, 
 		TBM_SETRANGEMIN, 
 		static_cast<WPARAM>(false),                   // redraw flag 
 		static_cast<LPARAM>(lMin) 
 	);
-	(void)SendDlgItemMessage
+	SendDlgItemMessage
 	(
 		idTrackbar, 
 		TBM_SETRANGEMAX, 
@@ -159,9 +164,7 @@ void RootWindow::SetWindowVisibility(tOnOffAuto const mode)
 
 bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	UINT const uiCmdId  = LOWORD(wParam);
-
-	switch (uiCmdId)
+	switch (UINT const uiCmdId { LOWORD(wParam) } )
 	{
 	case IDM_WINDOW_ON:
 		SetWindowVisibility(tOnOffAuto::on);

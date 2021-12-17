@@ -6,7 +6,7 @@
 
 #include <exception>
 #include <vector>
-#include "Observable.h"
+#include "observable.h"
 #include "NamedType.h"
 #include "Signal.h"
 #include "Track.h"
@@ -75,19 +75,59 @@ public:
 	void           AddSignal            (SignalId const &, unique_ptr<Signal>);
 	SignalNr       MoveSignal           (SignalId const &, TrackNr  const);
 	Signal       * GetSignalPtr         (SignalId const &);
-	Signal const * GetSignalPtr         (SignalId const &)      const;
-	Signal       * FindSignal           (Signal::Crit  const &) const;
+	Signal const * GetConstSignalPtr    (SignalId const &)      const;
+	Signal const * FindSignal           (Signal::Crit  const &) const;
 	SignalId       FindSignalId         (Signal::Crit  const &) const;
-	Signal       * FindSensor           (MicroMeterPnt const &) const;
+	Signal const * FindSensor           (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal () const;
 	Signal       * GetHighlightedSignal ();
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 
-	void     Apply2AllTracks        (TrackNrFunc const &)                 const;
-	void     Apply2AllSignalsInTrack(TrackNr const, SignalNrFunc const &) const;
-	void     Apply2AllSignals       (SignalId::Func const &)              const;
-	void     Apply2AllSignals       (Signal::Func   const &)              const;
+	template<class FUNC>
+	void Apply2AllSignalIdsC(FUNC const & func) const
+	{
+		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+		{ 
+			getTrack(trackNr)->Apply2AllSignalNrsC   // getTrack may throw MonitorDataException
+			(
+				[&func, &trackNr](SignalNr const & signalNr) { func(SignalId(trackNr, signalNr)); }
+			);
+		}
+	}                        
+
+	template<class FUNC>
+	void Apply2AllSignals(FUNC const & func)
+	{
+		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+		{ 
+			getTrack(trackNr)->Apply2AllSignals  // getTrack may throw MonitorDataException
+			(
+				[&func](Signal & signal) { func(signal); }
+			);
+		}
+	}                        
+
+	template<class FUNC>
+	void Apply2AllSignalsC(FUNC const & func) const
+	{
+		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+		{ 
+			getTrack(trackNr)->Apply2AllSignalsC  // getTrack may throw MonitorDataException
+			(
+				[&func](Signal const & signal) { func(signal); }
+			);
+		}
+	}                        
+
+	template<class FUNC>
+	void Apply2AllSignalsInTrackC(TrackNr const trackNr, FUNC const & func) const
+	{
+		if (IsValid(trackNr))
+			getTrack(trackNr)->Apply2AllSignalNrsC(func);
+		else
+			throw MonitorDataException(*this, trackNr, L"Apply2AllSignalsInTrack");
+	}                        
 
 	SignalId GetHighlightedSignalId()       const { return m_idSigHighlighted; }
 	TrackNr  GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }

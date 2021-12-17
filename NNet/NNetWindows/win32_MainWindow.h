@@ -94,7 +94,7 @@ private:
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
 	void zoomStep         (float const, fPixelPoint const);
 
-	virtual void doPaint();
+	void doPaint() final;
 
-	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
+	bool UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

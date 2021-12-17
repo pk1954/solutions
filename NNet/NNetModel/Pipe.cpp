@@ -44,7 +44,7 @@ bool Pipe::operator==(Nob const & rhs) const
 {
 	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };
 	return
-	(this->Nob::operator==(rhs))                             && 
+	(this->Nob::operator==(rhs))                   && 
 	(GetStartKnotId() == pipeRhs.GetStartKnotId()) &&
 	(GetEndKnotId  () == pipeRhs.GetEndKnotId());
 }
@@ -82,6 +82,7 @@ void Pipe::Recalc()
 		m_potIndex = 0;
 	}
 }
+
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
 	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
@@ -240,8 +241,8 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 	fPixel     fPixMinWidth { 1._fPixel };
 	if (IsEmphasized())
 	{
-		umWidth      *= 2.f;
-		fPixMinWidth  = 3.f;
+		umWidth     *= 2.f;
+		fPixMinWidth = 3.f;
 	}
 
 	if ((type != tHighlight::normal) || IsSelected())
@@ -252,17 +253,14 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 	{
 		Apply2AllSegments
 		(
-			[this, &context, umWidth, fPixMinWidth](Segment const & segment)
+			[this, &context, umWidth, fPixMinWidth](SegNr const segNr)
 			{
-				MicroMeterPnt umpStart  { segment.GetStartPnt() };
-				MicroMeterPnt umpVector { segment.GetVector  () };
-				mV            voltage   { segment.GetVoltage () };
 				context.DrawLine
 				(
-					umpStart, 
-					umpStart + umpVector, 
+					GetSegmentStart(segNr), 
+					GetSegmentEnd(segNr), 
 					umWidth, 
-					GetInteriorColor(voltage), 
+					GetInteriorColor(GetVoltage(segNr)), 
 					fPixMinWidth
 				);
 			}
@@ -286,15 +284,14 @@ mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 	
 	if (MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() }; ! umVector.IsCloseToZero())
 	{
-		size_t        const nrOfSegments  { m_potential.size() };
-		MicroMeterPnt const umSegVec      { umVector / Cast2Float(nrOfSegments) };
+		MicroMeterPnt const umSegVec      { umVector / Cast2Float(GetNrOfSegments()) };
 		MicroMeterPnt const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
 		MicroMeterPnt       umPoint       { GetStartPoint() };
 		size_t        const potIndex      { m_potIndex };
 		size_t              index         { potIndex }; 
 		do 
 		{
-			if (++index == m_potential.size()) 
+			if (++index == GetNrOfSegments()) 
 				index = 0; 
 
 			MicroMeterPnt const umPoint2 { umPoint + umSegVec };
@@ -357,4 +354,12 @@ void Pipe::Emphasize(bool const bOn)
 		static_cast<Knot *>(m_pKnotStart)->Emphasize(bOn, false);
 	if (m_pKnotEnd->IsKnot())
 		static_cast<Knot *>(m_pKnotEnd)->Emphasize(bOn, true);
+}
+
+size_t Pipe::segNr2index(SegNr const segNr) const
+{
+	size_t index { segNr.GetValue() + m_potIndex };
+	if (index >= GetNrOfSegments())
+		index -= GetNrOfSegments();
+	return index;
 }

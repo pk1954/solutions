@@ -327,7 +327,7 @@ void NNetModelImporter::Initialize()
 
     NobType::Apply2All
     (
-        [&](NobType const & type) 
+        [](NobType const & type) 
         {
             SymbolTable::ScrDefConst
             (
@@ -339,7 +339,7 @@ void NNetModelImporter::Initialize()
 
     ParamType::Apply2AllParameters
     (
-        [&](ParamType::Value const & param) 
+        [](ParamType::Value const & param) 
         {
             SymbolTable::ScrDefConst
             (

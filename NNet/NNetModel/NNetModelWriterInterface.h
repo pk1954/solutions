@@ -25,12 +25,13 @@ using std::move;
 class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
-    void        CreateInitialNobs();
-    void        RemoveOrphans();
-    void        SelectBeepers();
-    void        SelectNob(NobId const, bool const);
-    void        ToggleStopOnTrigger(NobId const);
-    Nob * const GetNob(NobId const);
+    void  CreateInitialNobs();
+    void  RemoveOrphans();
+    void  SelectBeepers();
+    void  SelectNob(NobId const, bool const);
+    void  ToggleStopOnTrigger(NobId const);
+    void  RecalcSignals();
+    Nob * GetNob(NobId const);
 
     UPNobList               & GetUPNobs()      { return m_pModel->GetUPNobs(); }
     Param                   & GetParams()      { return m_pModel->GetParams(); }

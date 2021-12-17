@@ -34,7 +34,7 @@ void NNetModelWriterInterface::CreateInitialNobs()
 	GetUPNobs().Push(move(upNewPipe));      
 }
 
-Nob * const NNetModelWriterInterface::GetNob(NobId const id)
+Nob * NNetModelWriterInterface::GetNob(NobId const id)
 { 
 	return const_cast<Nob *>(m_pModel->GetConstNob(id));
 }
@@ -54,7 +54,7 @@ void NNetModelWriterInterface::SelectBeepers()
 { 
 	GetUPNobs().Apply2All<Neuron>
 	(
-		[&](Neuron &n) 
+		[](Neuron &n) 
 		{ 
 			if (n.HasTriggerSound()) 
 				n.Select(true); 
@@ -66,7 +66,7 @@ void NNetModelWriterInterface::RemoveOrphans()
 {
 	GetUPNobs().Apply2All<Knot>                              
 	(                                                       
-		[&](Knot const & knot)
+		[this](Knot const & knot)
 		{
 			if (knot.IsOrphan())
 				RemoveFromModel<Knot>(knot);
@@ -77,4 +77,12 @@ void NNetModelWriterInterface::RemoveOrphans()
 void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const & umPosDir)
 {
 	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
+}
+
+void NNetModelWriterInterface::RecalcSignals()
+{
+	m_pModel->GetMonitorData().Apply2AllSignals
+	(
+		[](Signal & signal){ signal.Recalc(); }
+	);
 }

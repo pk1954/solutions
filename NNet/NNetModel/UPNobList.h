@@ -43,25 +43,23 @@ public:
 	void   IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
 	void   ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
 
-	void         Clear            ();
-	void         SelectAllNobs    (bool const);
-	void         DeselectAllNobs  () { SelectAllNobs(false); }
-	UPNob        ExtractNob       (NobId const);	
-	Nob        * ReplaceNob       (UPNob);	
-	void         SetNob2Slot      (NobId const, UPNob); // only for special situations
-	void         SetNob2Slot      (UPNob);              // only for special situations
-	void         CheckNobList     ()                                     const;
-	void         Dump             ()                                     const;
-	bool         Contains         (Nob const *)                          const;
-	unsigned int CountInSelection (NobType const)                        const;
-	unsigned int GetCounter       (NobType const)                        const;
-	unsigned int GetCounter       ()                                     const;
-	NobId        FindNobAt        (MicroMeterPnt const, NobCrit const &) const;
-	void         Move             (MicroMeterPnt const &);
+	void         Clear           ();
+	UPNob        ExtractNob      (NobId const);	
+	Nob        * ReplaceNob      (UPNob);	
+	void         SetNob2Slot     (NobId const, UPNob); // only for special situations
+	void         SetNob2Slot     (UPNob);              // only for special situations
+	void         SelectAllNobs   (bool const)            const;
+	void         DeselectAllNobs ()                      const { SelectAllNobs(false); }
+	void         CheckNobList    ()                      const;
+	void         Dump            ()                      const;
+	bool         Contains        (Nob const *)           const;
+	unsigned int CountInSelection(NobType const)         const;
+	unsigned int GetCounter      (NobType const)         const;
+	unsigned int GetCounter      ()                      const;
+	void         Move            (MicroMeterPnt const &) const;
+	void         Reconnect       (NobId const)           const;
 
 	MicroMeterPnt CenterOfGravity(NobCrit const &) const;
-
-	void Reconnect(NobId const);
 
 	unique_ptr<vector<Nob *>> GetAllSelected();
 
@@ -74,6 +72,23 @@ public:
 	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }
 
 	void MoveFrom(UPNobList &, size_t);
+
+	template<class CRIT>
+	NobId FindNobAt(MicroMeterPnt const pnt, CRIT const & crit) const
+	{
+		for (size_t i = m_list.size(); i --> 0;)	
+		{
+			Nob const * pNob = m_list[i].get();
+			if (pNob && pNob->Includes(pnt))
+			{
+				while (pNob->HasParentNob())
+					pNob = pNob->GetParentNob();
+				if (crit(* pNob))
+					return pNob->GetId();
+			}
+		};
+		return NobId(NO_NOB);
+	}
 
 	template <Nob_t T>
 	unique_ptr<T> Pop()

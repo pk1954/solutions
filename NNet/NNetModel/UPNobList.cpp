@@ -214,26 +214,6 @@ MicroMeterRect UPNobList::CalcEnclosingRect(SelMode const mode) const
 	return rect;
 }
 
-NobId UPNobList::FindNobAt
-(
-	MicroMeterPnt const   pnt, 
-	NobCrit       const & crit 
-) const
-{
-	for (size_t i = m_list.size(); i --> 0;)	
-	{
-		Nob const * pNob = m_list[i].get();
-		if (pNob && pNob->Includes(pnt))
-		{
-			while (pNob->HasParentNob())
-				pNob = pNob->GetParentNob();
-			if (crit(* pNob))
-				return pNob->GetId();
-		}
-	};
-	return NobId(NO_NOB);
-}
-
 unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 {
 	auto upNobs { make_unique<vector<Nob*>>() };
@@ -245,16 +225,16 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 	return move(upNobs);
 }
 
-void UPNobList::SelectAllNobs(bool const bOn) 
+void UPNobList::SelectAllNobs(bool const bOn) const
 { 
-	for (auto & it : m_list)
+	for (auto const & it : m_list)
 		if (it)
 			it->Select(bOn);
 }
 
-void UPNobList::Move(MicroMeterPnt const& delta)
+void UPNobList::Move(MicroMeterPnt const& delta) const
 {
-	for (auto & it : m_list)
+	for (auto const & it : m_list)
 		if (it)
 			it->MoveNob(delta);
 }
@@ -262,7 +242,7 @@ void UPNobList::Move(MicroMeterPnt const& delta)
 unsigned int UPNobList::CountInSelection(NobType const nobType) const
 {
 	unsigned int uiNr { 0 };
-	Apply2AllSelected(nobType, [&](auto & s) { ++uiNr; });
+	Apply2AllSelected(nobType, [&uiNr](auto &) { ++uiNr; });
 	return uiNr;
 }
 
@@ -290,10 +270,10 @@ void UPNobList::countNobs()
 
 bool UPNobList::Contains(Nob const * pNob) const 
 { 
-	return Apply2AllB([&](Nob const & nob) { return pNob == &nob; }); 
+	return Apply2AllB([pNob](Nob const & nob) { return pNob == &nob; }); 
 }
 
-void UPNobList::Reconnect(NobId const id)
+void UPNobList::Reconnect(NobId const id) const
 {
 	if (Nob * pNod { GetAt(id) })
 		pNod->Reconnect();

@@ -18,6 +18,7 @@
 #include "win32_crsrWindow.h"
 
 using std::setprecision;
+using std::to_wstring;
 
 CrsrWindow::CrsrWindow() :
 	TextWindow()
@@ -55,11 +56,7 @@ void CrsrWindow::Stop()
 	Show(false);
 }
 
-void CrsrWindow::printMicroMeter
-(
-	TextBuffer     & textBuf,
-	MicroMeter const um 
-)
+void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um) const
 {
 	wostringstream wBuffer;
 	MicroMeter     umAbs { abs(um.GetValue()) };
@@ -73,7 +70,7 @@ void CrsrWindow::printMicroMeter
 	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees)
+void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees) const
 {
 	wostringstream wBuffer;
 	wBuffer << degrees.GetValue() << L"°";
@@ -81,14 +78,14 @@ void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees)
 	textBuf.nextLine();
 }
 
-void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec)
+void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec) const
 {
 	wostringstream wBuffer;
 	wBuffer << msec.GetValue() << L" msec";
 	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage)
+void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage) const
 {
 	wostringstream wBuffer;
 	wBuffer << voltage.GetValue() << L"mV";
@@ -97,7 +94,21 @@ void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage)
 
 void CrsrWindow::DoPaint(TextBuffer & textBuf)
 {
-	MicroMeterPnt const umPoint { m_pMainWindow->GetCursorPos() };
+	printPositionInfo(textBuf, m_pMainWindow->GetCursorPos());
+
+	SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
+	if (sigId.IsNotNull())
+		printSignalInfo(textBuf, sigId);
+	else
+	{
+		NobId const nobId { m_pMainWindow->GetHighlightedNobId() };
+		if (IsDefined(nobId))
+			printNobInfo(textBuf, nobId);
+	}
+}
+
+void CrsrWindow::printPositionInfo(TextBuffer& textBuf, MicroMeterPnt const umPoint) const
+{
 	if (umPoint.IsNull())
 	{
 		textBuf.AlignLeft();
@@ -109,12 +120,28 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	printMicroMeter(textBuf, umPoint.GetX());
 	printMicroMeter(textBuf, umPoint.GetY());
 	textBuf.nextLine();
+}
 
-	NobId const id { m_pMainWindow->GetHighlightedNobId() };
+void CrsrWindow::printSignalInfo(TextBuffer& textBuf, SignalId const id) const
+{
+	Signal const & signal { * m_pNMRI->GetConstMonitorData().GetConstSignalPtr(id) };
+	textBuf.AlignRight(); textBuf.printString(L"Signal at ");
+	printMicroMeter(textBuf, signal.GetCenter().GetX()); 
+    printMicroMeter(textBuf, signal.GetCenter().GetY()); 
+	textBuf.nextLine();
+	textBuf.AlignRight(); 
+	textBuf.printString(L"Radius ");
+	printMicroMeter(textBuf, signal.GetRadius()); 
+	textBuf.nextLine();
+	textBuf.AlignRight(); textBuf.printString(L"# BaseKnots ");
+	textBuf.printString(to_wstring(signal.GetNrOfBaseKnotElements())); 
+	textBuf.nextLine();
+	textBuf.AlignRight(); textBuf.printString(L"# Pipe segments ");
+	textBuf.printString(to_wstring(signal.GetNrOfPipeSegElements())); 
+}
 
-	if (IsUndefined(id))
-		return;
-
+void CrsrWindow::printNobInfo(TextBuffer & textBuf, NobId const id) const 
+{
 	NobType const type { m_pNMRI->GetNobType(id) };
 
 	textBuf.AlignRight(); textBuf.printString(L"Nob #");
@@ -131,7 +158,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	{
 		textBuf.AlignRight(); textBuf.printString(L"# segments:");
 		textBuf.AlignLeft();  textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
-		potential = m_pNMRI->GetVoltageAt(id, umPoint);
+		potential = m_pNMRI->GetVoltageAt(id, m_pMainWindow->GetCursorPos());
 	}
 	else 
 	{
@@ -149,8 +176,8 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 		{
 			textBuf.AlignRight(); textBuf.nextLine(L"trigger sound:");
 			textBuf.AlignLeft();  printFrequency(textBuf, sound.m_frequency);
-			                      printMilliSecs(textBuf, sound.m_duration);
-			                      textBuf.printString(L"msec");
+			printMilliSecs(textBuf, sound.m_duration);
+			textBuf.printString(L"msec");
 			textBuf.nextLine();
 		}
 	}

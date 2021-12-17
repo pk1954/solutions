@@ -7,11 +7,11 @@
 #include "NNetColors.h"
 #include "NNetModelReaderInterface.h"
 #include "BaseKnot.h"
-#include "Pipe.h"
 #include "Signal.h"
 
 using std::wcout;
 using std::endl;
+using std::make_unique;
 
 Signal::Signal
 (
@@ -25,6 +25,7 @@ Signal::Signal
     m_timeStart(nmri.GetSimulationTime())
 {
     m_fTimeLine.clear();
+    SetSensorSize(circle.GetRadius());
     m_observable.RegisterObserver(this);
 }
 
@@ -33,37 +34,48 @@ Signal::~Signal()
     m_observable.UnregisterObserver(this);
 }
 
+void Signal::add2list(BaseKnot const & baseKnot)
+{
+    float fDistance { DistSquare(baseKnot.GetPos(), m_circle.GetPos()) };
+    if (fDistance < m_fDsBorder)  // is segment in circle?
+    {
+        float fFactor { 1.0f - fDistance / m_fDsBorder };
+        m_baseKnotElements.push_back(BaseKnotElem(&baseKnot, fFactor));
+    }
+}
+
+void Signal::add2list(Pipe const & pipe) 
+{  
+    pipe.Apply2AllSegments
+    (
+        [this, &pipe](Pipe::SegNr const segNr) 
+        { 
+            MicroMeter const umSegLen { pipe.GetSegLength() };
+            float fDistance { DistSquare(pipe.GetSegmentCenter(segNr), m_circle.GetPos()) };
+            if (fDistance < m_fDsBorder)  // is segment in circle?
+            {
+                float fFactor { 1.0f - fDistance / m_fDsBorder };
+                m_pipeSegElements.push_back(SegmentElem(&pipe, segNr, fFactor));
+            }
+        }
+    );
+} 
+
 void Signal::Recalc()
 {
-    float fDsBorder { m_circle.GetRadius().GetValue() * m_circle.GetRadius().GetValue() };
-    m_sigSrc.clear();
-    m_nmri.GetUPNobsC().Apply2All<BaseKnot>
-    (		
-        [this, fDsBorder](SignalSource const & sigSrc) 
-        {  
-            sigSrc.Add2List(m_sigSrc, m_circle.GetPos(), fDsBorder);
-        } 
-    );
-    m_nmri.GetUPNobsC().Apply2All<Pipe>
-    (		
-        [this, fDsBorder](Pipe const & pipe) 
-        {  
-            pipe.Apply2AllSegments
-            (
-                [this, fDsBorder](SignalSource const & sigSrc)
-                {
-                    sigSrc.Add2List(m_sigSrc, m_circle.GetPos(), fDsBorder);
-                }
-            );
-        } 
-    );
+    m_baseKnotElements.clear();
+    m_pipeSegElements.clear();
+    m_nmri.GetUPNobsC().Apply2All<BaseKnot>([this](BaseKnot const & src ) { add2list(src ); });
+    m_nmri.GetUPNobsC().Apply2All<Pipe>    ([this](Pipe     const & pipe) { add2list(pipe); });
 }
 
 float Signal::GetSignalValue() const
 {
     float fResult { 0.0f };
-    for ( auto const& it : m_sigSrc )
-        fResult += it.src.GetVoltage().GetValue() * it.fFactor;
+    for ( auto const& it : m_baseKnotElements )
+        fResult += it.m_pBaseKnot->GetVoltage().GetValue() * it.m_fFactor;
+    for ( auto const& it : m_pipeSegElements )
+        fResult += it.m_pPipe->GetVoltage(it.m_segNr).GetValue() * it.m_fFactor;
     return fResult;
 }
 
@@ -132,7 +144,7 @@ void Signal::Notify(bool const bImmediate)
     m_fTimeLine.push_back(GetSignalValue());
 }
 
-void Signal::CheckSignal() 
+void Signal::CheckSignal() const 
 {
 #ifdef _DEBUG
     if (m_circle.IsNull())

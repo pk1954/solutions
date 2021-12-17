@@ -29,7 +29,7 @@ void Track::AddSignal
 	m_signals.insert(m_signals.begin() + signalNr.GetValue(), move(pSignal));
 }
 
-SignalNr const Track::AddSignal(unique_ptr<Signal> upSignal)
+SignalNr Track::AddSignal(unique_ptr<Signal> upSignal)
 {
 	m_signals.push_back(move(upSignal));
 	return SignalNr(Cast2Int(m_signals.size()) - 1);
@@ -47,47 +47,22 @@ unique_ptr<Signal> Track::RemoveSignal(SignalNr const signalNr)
 	return nullptr;
 }
 
-void Track::Apply2AllSignals(SignalNrFunc const & func) const
+Signal const * Track::FindSignal(Signal::Crit const & crit) const
 {
-	for (int i = 0; i < m_signals.size(); ++i)
-		func(SignalNr(i)); 
-}             
-
-void Track::Apply2AllSignals(Signal::Func const & func) const
-{
-	for (int i = 0; i < m_signals.size(); ++i)
-		if (Signal const * const pSignal { GetSignalPtr(SignalNr(i)) })
-			func(* pSignal); 
-}             
-
-Signal * const Track::FindSignal(Signal::Crit const & crit)
-{
-	return GetSignalPtr(FindSignalNr(crit));
+	return GetConstSignalPtr(FindSignalNr(crit));
 }
 
-SignalNr const Track::FindSignalNr(Signal::Crit const & crit) const
-{
-	for (int i = 0; i < m_signals.size(); ++i)
-	{ 
-		SignalNr       const signalNr { SignalNr(i) };
-		Signal const * const pSignal  { GetSignalPtr(signalNr) };
-		if (pSignal && crit(*pSignal))
-			return signalNr;  
-	}
-	return SignalNr::NULL_VAL();
-}
-
-Signal const * const Track::GetSignalPtr(SignalNr const signalNr) const
+Signal const * Track::GetConstSignalPtr(SignalNr const signalNr) const
 {
 	return IsValid(signalNr) ? m_signals[signalNr.GetValue()].get() : nullptr;
 }
 
-Signal * const Track::GetSignalPtr(SignalNr const signalNr) // calling const version 
+Signal * Track::GetSignalPtr(SignalNr const signalNr) // calling const version 
 {
-	return const_cast<Signal*>(static_cast<const Track&>(*this).GetSignalPtr(signalNr));
+	return IsValid(signalNr) ? m_signals[signalNr.GetValue()].get() : nullptr;
 }
 
-bool const Track::IsValid(SignalNr const signalNr) const
+bool Track::IsValid(SignalNr const signalNr) const
 {
 	return (0 <= signalNr.GetValue()) && (signalNr.GetValue() < m_signals.size());
 }

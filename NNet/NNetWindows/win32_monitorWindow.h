@@ -31,7 +31,7 @@ public:
 	void Reset();
 	void Stop();
 
-	virtual LPARAM AddContextMenuEntries(HMENU const);
+	LPARAM AddContextMenuEntries(HMENU const) final;
 
 private:
 
