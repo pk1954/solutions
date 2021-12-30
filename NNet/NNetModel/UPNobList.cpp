@@ -278,18 +278,3 @@ void UPNobList::Reconnect(NobId const id) const
 	if (Nob * pNod { GetAt(id) })
 		pNod->Reconnect();
 }
-
-MicroMeterPnt UPNobList::CenterOfGravity(NobCrit const& crit) const
-{
-	MicroMeterPnt umPntRes { MicroMeterPnt::ZERO_VAL() };
-	size_t        counter  { 0 };
-
-	for (auto & it : m_list)
-		if (it && crit(*it))
-		{ 
-			umPntRes += it->GetPos();
-			++counter;
-		}
-	umPntRes /= static_cast<float>(counter);
-	return umPntRes;
-}

@@ -59,8 +59,6 @@ public:
 	void         Move            (MicroMeterPnt const &) const;
 	void         Reconnect       (NobId const)           const;
 
-	MicroMeterPnt CenterOfGravity(NobCrit const &) const;
-
 	unique_ptr<vector<Nob *>> GetAllSelected();
 
 	enum class SelMode { allNobs, selectedNobs };
@@ -72,6 +70,22 @@ public:
 	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }
 
 	void MoveFrom(UPNobList &, size_t);
+
+	template<class CRIT>
+	MicroMeterPnt CenterOfGravity(CRIT const & crit) const
+	{
+		MicroMeterPnt umPntRes { MicroMeterPnt::ZERO_VAL() };
+		size_t        counter  { 0 };
+
+		for (auto & it : m_list)
+			if (it && crit(*it))
+			{ 
+				umPntRes += it->GetPos();
+				++counter;
+			}
+		umPntRes /= static_cast<float>(counter);
+		return umPntRes;
+	}
 
 	template<class CRIT>
 	NobId FindNobAt(MicroMeterPnt const pnt, CRIT const & crit) const

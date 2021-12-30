@@ -88,8 +88,18 @@ public:
 		return pNob && pNob->IsKnot();
 	}
 
-	bool  GetDescriptionLine(int const, wstring &)                               const;
-	NobId FindNobAt(MicroMeterPnt const &, NobCrit const & = NobCritAlwaysTrue)  const;
+	NobId FindNobAt(MicroMeterPnt const & umPnt) const
+	{
+		return m_pModel->FindNobAt(umPnt, [](auto &) { return true; });
+	}
+
+	template<class CRIT>
+	NobId FindNobAt(MicroMeterPnt const & umPnt, CRIT const & crit) const
+	{
+		return m_pModel->FindNobAt(umPnt, crit);
+	}
+
+	bool GetDescriptionLine(int const, wstring &) const;
 
 	void DrawExterior(NobId          const,   DrawContext const &, tHighlight const) const;
 	void DrawInterior(NobId          const,   DrawContext const &, tHighlight const) const;

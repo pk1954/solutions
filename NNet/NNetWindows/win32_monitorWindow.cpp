@@ -102,7 +102,10 @@ LPARAM MonitorWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 
 fPixel MonitorWindow::getSignalValue(Signal const & signal, fMicroSecs const time) const
 {
-	return m_vertCoord.Transform2fPixelSize(signal.GetDataPoint(time));
+	float const fSignal { signal.GetDataPoint(time) };
+	return (fSignal == NAN)
+		   ? fPixel::NULL_VAL()
+		   : m_vertCoord.Transform2fPixelSize(signal.GetDataPoint(time));
 }
 
 fMicroSecs MonitorWindow::findNextMax(Signal const & signal, fPixel const fPixX) const
@@ -182,12 +185,17 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 	fMicroSecs   const usIncrement  { (fPointsInWin > usPixelSize.GetValue()) ? usPixelSize : usResolution };
 	fMicroSecs   const usEnd        { m_pNMRI->GetSimulationTime() };
 	fMicroSecs   const timeStart    { max(usEnd - usInWindow, pSignal->GetStartTime()) };
-	fPixelPoint        prevPoint    { m_fPixWinWidth, fPixYoff - getSignalValue(*pSignal, usEnd) };
-
+	fPixel             fPixSignal   { getSignalValue(*pSignal, usEnd) };
+	if (fPixSignal.IsNull())
+		return;
+	fPixelPoint prevPoint { m_fPixWinWidth, fPixYoff - fPixSignal };
 	for (fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement)
 	{
+		fPixSignal = getSignalValue(*pSignal, time);
+		if (fPixSignal.IsNull())
+			return;
 		fPixel      const fPixX    { m_fPixWinWidth - m_horzCoord.Transform2fPixelSize(usEnd - time) }; 
-		fPixelPoint const actPoint { fPixX, fPixYoff - getSignalValue(*pSignal, time) };
+		fPixelPoint const actPoint { fPixX, fPixYoff - fPixSignal };
 		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
@@ -211,23 +219,29 @@ void MonitorWindow::doPaint() const
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
 	if (m_measurement.TrackingActive())
-		m_graphics.FillDiamond(calcDiamondPos(), 4.0_fPixel, NNetColors::COL_DIAMOND);
+	{
+		fPixelPoint const fPixDiamondPos { MonitorWindow::calcDiamondPos() };
+		if (fPixDiamondPos.IsNotNull())
+			m_graphics.FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
+	}
 }
 
 fPixelPoint MonitorWindow::calcDiamondPos() const
 {
-	SignalId const & idSignal { m_pMonitorData->GetHighlightedSignalId() };
-	Signal   const * pSignal  { m_pMonitorData->GetConstSignalPtr(idSignal) };
+	SignalId   const & idSignal   { m_pMonitorData->GetHighlightedSignalId() };
+	Signal     const * pSignal    { m_pMonitorData->GetConstSignalPtr(idSignal) };
 	if (!pSignal)
+		return fPP_NULL;
+	fMicroSecs const usEnd        { m_pNMRI->GetSimulationTime() };
+	fPixel     const fPixSignal   { getSignalValue(*pSignal, usEnd) };
+	if (fPixSignal.IsNull())
 		return fPP_NULL;
 	PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
 	fPixel     const fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
 	fMicroSecs const usMax        { findNextMax(*pSignal, fPixCrsrX) };
-	fMicroSecs const usEnd        { m_pNMRI->GetSimulationTime() };
 	fPixel     const fPixMaxX     { m_fPixWinWidth - m_horzCoord.Transform2fPixelSize(usEnd-usMax) };
 	fPixel     const fPixYoff     { getSignalOffset(idSignal) };
-	fPixel     const fPixYvalue   { fPixYoff - getSignalValue(*pSignal, usMax) };
-	return fPixelPoint(fPixMaxX, fPixYvalue);
+	return fPixelPoint(fPixMaxX, fPixYoff - fPixSignal);
 }
 
 SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptCrsr) const
@@ -240,7 +254,7 @@ SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptC
 		return signalNrRes;
 
 	fPixelPoint const fPixPtCrsr      { Convert2fPixelPoint(ptCrsr) };
-	fMicroSecs  const umTime          { m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
+	fMicroSecs  const usTime          { m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
 	fPixel      const fPixTrackHeight { calcTrackHeight() };
 	fPixel      const fPixTrackBottom { fPixTrackHeight * static_cast<float>(trackNr.GetValue() + 1) };  
 	fPixel      const fPixCrsrY       { fPixTrackBottom - fPixPtCrsr.GetY() };  // vertical distance from crsr pos to zero line of track
@@ -251,14 +265,18 @@ SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptC
 		[&](SignalNr const signalNr)
 		{
 			Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(SignalId(trackNr, signalNr)) };
-			if (pSignal && (umTime >= pSignal->GetStartTime()))
+			if (pSignal && (usTime >= pSignal->GetStartTime()))
 			{
-				fPixel const fPixDelta     { fPixCrsrY - getSignalValue(*pSignal, umTime) };
-				fPixel const fPixDeltaAbs  { fPixDelta.GetAbs() };
-				if (fPixDeltaAbs < fPixBestDelta)
+				fPixel const fPixSignal { getSignalValue(*pSignal, usTime) };
+				if (fPixSignal.IsNotNull())
 				{
-					fPixBestDelta = fPixDeltaAbs;
-					signalNrRes = signalNr;
+					fPixel const fPixDelta    { fPixCrsrY - fPixSignal };
+					fPixel const fPixDeltaAbs { fPixDelta.GetAbs() };
+					if (fPixDeltaAbs < fPixBestDelta)
+					{
+						fPixBestDelta = fPixDeltaAbs;
+						signalNrRes = signalNr;
+					}
 				}
 			}
 		}

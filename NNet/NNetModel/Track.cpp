@@ -47,11 +47,6 @@ unique_ptr<Signal> Track::RemoveSignal(SignalNr const signalNr)
 	return nullptr;
 }
 
-Signal const * Track::FindSignal(Signal::Crit const & crit) const
-{
-	return GetConstSignalPtr(FindSignalNr(crit));
-}
-
 Signal const * Track::GetConstSignalPtr(SignalNr const signalNr) const
 {
 	return IsValid(signalNr) ? m_signals[signalNr.GetValue()].get() : nullptr;

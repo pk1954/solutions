@@ -172,11 +172,6 @@ bool NNetModelReaderInterface::isConnectedToPipe(NobId const idNob, NobId const 
 	return (idNob == m_pModel->GetStartKnotId(idPipe)) || (idNob == m_pModel->GetEndKnotId(idPipe));
 }
 
-NobId NNetModelReaderInterface::FindNobAt(MicroMeterPnt const & umPnt, NobCrit const & crit) const
-{
-	return m_pModel->FindNobAt(umPnt, crit);
-}
-
 void NNetModelReaderInterface::DrawExterior
 (
 	NobId       const   id,

@@ -27,11 +27,8 @@ using std::wstring;
 
 using UPNob       = unique_ptr<Nob>;
 using UPNobC      = unique_ptr<const Nob>;
-using NobCrit     = function<bool  (Nob const &)>;
 using Nob2NobFunc = function<Nob * (Nob const *)>;
 using AddMenuFunc = function<void  (int const  )>;
-
-static NobCrit const NobCritAlwaysTrue { [](auto &) { return true; } };
 
 enum class NobIoMode { input, output, internal };
 
@@ -127,8 +124,6 @@ protected:
 	ColorF GetInteriorColor(tHighlight const) const;
 	ColorF GetInteriorColor(mV const) const;
 	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
-
-	float GetFillLevel(mV const) const;
 
 	void SetType(NobType const type) { m_type = type; }
 

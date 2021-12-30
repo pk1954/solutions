@@ -10,7 +10,6 @@
 #include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
-#include "SignalSource.h"
 #include "Pipe.h"
 
 using std::vector;
@@ -18,15 +17,12 @@ using std::unique_ptr;
 
 class Signal;
 class BaseKnot;
-class SignalSource;
 class DrawContext;
 class NNetModelReaderInterface;
 
 class Signal : public ObserverInterface  // observes signal source 
 {
 public:
-
-    using Crit = function<bool(Signal const &)>;
 
     Signal
     (
@@ -37,42 +33,31 @@ public:
 
     ~Signal() override;
 
-    bool operator==(Signal const & rhs) const
-    {
-        return m_circle == rhs.m_circle;
-    }
+    bool operator==(Signal const & rhs) const { return m_circle == rhs.m_circle; }
+
+    void       SetSensorPos (MicroMeterPnt const &);
+    void       MoveSensor   (MicroMeterPnt const &);
+    void       SizeSensor   (float         const);
+    void       SetSensorSize(MicroMeter    const);
 
     void       Recalc();
-
-    fMicroSecs GetStartTime() const { return m_timeStart; }
-
+    float      GetSignalValue()                      const;
     float      GetDataPoint   (fMicroSecs const)     const;
     fMicroSecs FindNextMaximum(fMicroSecs const)     const;
     void       Draw(DrawContext const &, bool const) const;
-    float      GetSignalValue()                      const;
     void       WriteSignalData(wostream &)           const;
 
-    void  Notify(bool const) final;
+    fMicroSecs               GetStartTime   () const { return m_timeStart; }
+    MicroMeterPnt    const & GetCenter      () const { return m_circle.GetPos(); }
+    MicroMeter               GetRadius      () const { return m_circle.GetRadius(); }
+    MicroMeterCircle const & GetCircle      () const { return m_circle; }
+    size_t                   GetNrOfElements() const { return m_segElements.size(); }
 
-    bool  Includes(MicroMeterPnt const pos) const { return m_circle.Includes(pos); }
-
-    void  SetSensorPos (MicroMeterPnt const & umPos  ) { m_circle.SetPos(umPos); }
-    void  MoveSensor   (MicroMeterPnt const & umDelta) { m_circle += umDelta; }
-    void  SizeSensor   (float         const   factor ) { SetSensorSize(GetRadius() * factor); }
-    void  SetSensorSize(MicroMeter    const   umSize ) 
-    { 
-        m_circle.SetRadius(umSize); 
-        m_fDsBorder = umSize.GetValue() * umSize.GetValue();
-    }
-
-    MicroMeterPnt    const & GetCenter() const { return m_circle.GetPos(); }
-    MicroMeter               GetRadius() const { return m_circle.GetRadius(); }
-    MicroMeterCircle const & GetCircle() const { return m_circle; }
-
-    size_t GetNrOfBaseKnotElements() const { return m_baseKnotElements.size(); }
-    size_t GetNrOfPipeSegElements () const { return m_pipeSegElements .size(); }
+    bool Includes(MicroMeterPnt const pos) const { return m_circle.Includes(pos); }
 
     void Set2Null() { m_circle.Set2Null(); }
+
+    void Notify(bool const) final;
 
     void Check() const {};
     void Dump()  const;
@@ -87,22 +72,19 @@ private:
     float            m_fDsBorder { };
     fMicroSecs       m_timeStart { 0._MicroSecs };
     vector<float>    m_fTimeLine { };
-    struct BaseKnotElem
-    {
-        BaseKnot const * m_pBaseKnot;
-        float    const   m_fFactor;
-    };
-    vector<BaseKnotElem> m_baseKnotElements { };
     struct SegmentElem
     {
         Pipe        const * m_pPipe;
-        Pipe::SegNr const   m_segNr;
+        Pipe::SegNr const   m_segNr; 
         float       const   m_fFactor;
+        float GetSignalValue() const
+        {
+            return m_pPipe->GetVoltage(m_segNr).GetValue() * m_fFactor;
+        }
     };
-    vector<SegmentElem> m_pipeSegElements { };
+    vector<SegmentElem> m_segElements { };
 
     int        time2index(fMicroSecs const) const;
     fMicroSecs index2time(int        const) const;
-    void       add2list(BaseKnot const &);
     void       add2list(Pipe const &);
 };

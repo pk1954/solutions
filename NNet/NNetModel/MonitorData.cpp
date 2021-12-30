@@ -146,26 +146,6 @@ void MonitorData::DeleteTrack(TrackNr const trackNr)
 		throw MonitorDataException(*this, trackNr, L"DeleteTrack");
 }
 
-Signal const * MonitorData::FindSignal(Signal::Crit const & crit) const
-{
-	for (unique_ptr<Track> const & upTrack: m_tracks) 
-		if (Signal const * const pSignal { upTrack->FindSignal(crit) })
-			return pSignal;
-	return nullptr;
-}                        
-
-SignalId MonitorData::FindSignalId(Signal::Crit const & crit) const
-{
-	for (int i = 0; i < m_tracks.size(); ++i)
-	{ 
-		TrackNr  const trackNr  { TrackNr(i) };
-		SignalNr const signalNr { getTrack(trackNr)->FindSignalNr(crit) };
-		if (signalNr.IsNotNull())
-			return SignalId(trackNr, signalNr);
-	}
-	return SignalId::NULL_VAL();
-}
-
 Signal * MonitorData::GetSignalPtr(SignalId const & id)
 {
 	if (id.IsNull())

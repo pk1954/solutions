@@ -99,11 +99,6 @@ ColorF Nob::GetInteriorColor(tHighlight const type) const
 	return NNetColors::INT_NORMAL;
 };
 
-float Nob::GetFillLevel(mV const voltageInput) const
-{
-	return voltageInput.GetValue() / m_pParameters->GetParameterValue(ParamType::Value::threshold);
-}
-
 void Nob::Check() const
 {
 #ifdef _DEBUG

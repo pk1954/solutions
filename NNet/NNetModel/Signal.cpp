@@ -34,48 +34,40 @@ Signal::~Signal()
     m_observable.UnregisterObserver(this);
 }
 
-void Signal::add2list(BaseKnot const & baseKnot)
-{
-    float fDistance { DistSquare(baseKnot.GetPos(), m_circle.GetPos()) };
-    if (fDistance < m_fDsBorder)  // is segment in circle?
-    {
-        float fFactor { 1.0f - fDistance / m_fDsBorder };
-        m_baseKnotElements.push_back(BaseKnotElem(&baseKnot, fFactor));
-    }
-}
-
 void Signal::add2list(Pipe const & pipe) 
 {  
-    pipe.Apply2AllSegments
-    (
-        [this, &pipe](Pipe::SegNr const segNr) 
-        { 
-            MicroMeter const umSegLen { pipe.GetSegLength() };
-            float fDistance { DistSquare(pipe.GetSegmentCenter(segNr), m_circle.GetPos()) };
-            if (fDistance < m_fDsBorder)  // is segment in circle?
-            {
-                float fFactor { 1.0f - fDistance / m_fDsBorder };
-                m_pipeSegElements.push_back(SegmentElem(&pipe, segNr, fFactor));
-            }
+    MicroMeter    const umSegLen  { m_circle.GetRadius() / 10.0f };
+    MicroMeter    const umPipeLen { pipe.GetLength() };
+    float         const fNrSteps  { max(1.0f, umPipeLen / umSegLen) };
+    float         const fInc      { 1.0f / fNrSteps };
+    MicroMeterPnt const umpInc    { pipe.GetVector() / fNrSteps };
+    MicroMeterPnt       umpRun    { pipe.GetStartPoint() };
+    float               fRun      { 0.0f }; 
+    do
+    {
+        float const fDistance { DistSquare(umpRun, m_circle.GetPos()) };
+        if (fDistance < m_fDsBorder)  // is segment in circle?
+        {
+            Pipe::SegNr const segNr   { pipe.GetSegNr(fRun) };
+            float       const fFactor { 1.0f - fDistance / m_fDsBorder };
+            m_segElements.push_back(SegmentElem(&pipe, segNr, fFactor));
         }
-    );
+        umpRun += umpInc;
+        fRun   += fInc;
+    } while (fRun <= 1.0f);
 } 
 
 void Signal::Recalc()
 {
-    m_baseKnotElements.clear();
-    m_pipeSegElements.clear();
-    m_nmri.GetUPNobsC().Apply2All<BaseKnot>([this](BaseKnot const & src ) { add2list(src ); });
-    m_nmri.GetUPNobsC().Apply2All<Pipe>    ([this](Pipe     const & pipe) { add2list(pipe); });
+    m_segElements.clear();
+    m_nmri.GetUPNobsC().Apply2All<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
 }
 
 float Signal::GetSignalValue() const
 {
     float fResult { 0.0f };
-    for ( auto const& it : m_baseKnotElements )
-        fResult += it.m_pBaseKnot->GetVoltage().GetValue() * it.m_fFactor;
-    for ( auto const& it : m_pipeSegElements )
-        fResult += it.m_pPipe->GetVoltage(it.m_segNr).GetValue() * it.m_fFactor;
+    for (auto const& it : m_segElements)
+        fResult += it.GetSignalValue();
     return fResult;
 }
 
@@ -162,4 +154,27 @@ void Signal::Dump() const
     for (auto it : m_fTimeLine)
         wcout << it << endl;
     wcout << ')' << endl;
+}
+
+void Signal::SetSensorPos(MicroMeterPnt const & umPos) 
+{ 
+    m_circle.SetPos(umPos); 
+    Recalc();
+}
+
+void Signal::SetSensorSize(MicroMeter const  umSize ) 
+{ 
+    m_circle.SetRadius(umSize); 
+    m_fDsBorder = umSize.GetValue() * umSize.GetValue();
+    Recalc();
+}
+
+void Signal::MoveSensor(MicroMeterPnt const & umDelta) 
+{ 
+    SetSensorPos(m_circle.GetPos() + umDelta);
+}
+
+void Signal::SizeSensor(float const factor) 
+{ 
+    SetSensorSize(GetRadius() * factor); 
 }

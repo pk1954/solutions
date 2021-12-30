@@ -98,7 +98,7 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 		pBaseKnot->Select(bOn);
 		pBaseKnot->Apply2AllOutPipes
 		(
-			[&](Pipe & pipe) 
+			[this, bOn](Pipe & pipe) 
 			{ 
 				pipe.Select(bOn); 
 				if (pipe.GetEndKnotPtr()->IsKnot())
@@ -106,33 +106,6 @@ void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
 			} 
 		);
 	}
-}
-
-NobId NNetModel::FindNobAt
-(
-	MicroMeterPnt const & umPoint, 
-	NobCrit       const & crit 
-) const
-{	
-	NobId idRes { NO_NOB };
-
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsIoConnector() && crit(s); });
-	if (IsDefined(idRes))
-		return idRes;
-
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsAnyNeuron() && (!s.HasParentNob()) && crit(s); });
-	if (IsDefined(idRes))
-		return idRes;
-
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsKnot() && crit(s); }); 	
-	if (IsDefined(idRes))
-		return idRes;
-
-	idRes = m_Nobs.FindNobAt(umPoint, [&](Nob const & s) { return s.IsPipe() && crit(s); });
-	if (IsDefined(idRes))
-		return idRes;
-
-	return NO_NOB;
 }
 
 void NNetModel::DumpModel

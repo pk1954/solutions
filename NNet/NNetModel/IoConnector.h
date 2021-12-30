@@ -38,14 +38,11 @@ public:
 	void Expand      (MicroMeterRect       &)                   const override;
 	bool IsIncludedIn(MicroMeterRect const &)                   const override;
 	bool Includes    (MicroMeterPnt  const &)                   const override;
-	void RotateNob   (MicroMeterPnt  const &, Radian const) override;
-	void MoveNob     (MicroMeterPnt  const &) override;
-	void Recalc      () override;
-	void Link        (Nob const &, Nob2NobFunc const &) override;
-	void Select      (bool const) override;
-	void SetParentPointers();
-	void ClearParentPointers();
-
+	void RotateNob   (MicroMeterPnt  const &, Radian const)           override;
+	void MoveNob     (MicroMeterPnt  const &)                         override;
+	void Recalc      ()                                               override;
+	void Link        (Nob const &, Nob2NobFunc const &)               override;
+	void Select      (bool const)                                     override;
 	void Prepare     () override {}
 	bool CompStep    () override { return false; }
 
@@ -56,6 +53,8 @@ public:
 	IoNeuron       * Pop();
 	IoNeuron const & GetElem(size_t const) const;
 	size_t           Size() const;
+	void             SetParentPointers();
+	void             ClearParentPointers();
 
 	void LockDirection();
 	void UnlockDirection();

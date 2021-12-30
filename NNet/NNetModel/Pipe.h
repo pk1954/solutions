@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include "SignalSource.h"
 #include "MoreTypes.h"
 #include "PointType.h"
 #include "PixelTypes.h"
@@ -81,8 +80,11 @@ public:
 	void          ClearDynamicData()                                            final;
 	void          Select          (bool const)                                  final;
 
-	mV GetVoltageAt(MicroMeterPnt const &) const;
-	mV GetVoltage(SegNr const segNr) const { return m_potential[segNr2index(segNr)]; };
+	SegNr GetSegNr  (float const f)     const { return SegNr(Cast2Int(round(f * Cast2Float(GetNrOfSegments()-1)))); }
+	mV    GetVoltage(SegNr const segNr) const { return m_potential[segNr2index(segNr)]; }
+	mV    GetVoltage(float const f)     const { return GetVoltage(GetSegNr(f)); }
+
+	mV    GetVoltageAt(MicroMeterPnt const &) const;
 
 	void DrawArrows(DrawContext const &, MicroMeter const) const;
 

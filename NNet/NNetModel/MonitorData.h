@@ -76,13 +76,33 @@ public:
 	SignalNr       MoveSignal           (SignalId const &, TrackNr  const);
 	Signal       * GetSignalPtr         (SignalId const &);
 	Signal const * GetConstSignalPtr    (SignalId const &)      const;
-	Signal const * FindSignal           (Signal::Crit  const &) const;
-	SignalId       FindSignalId         (Signal::Crit  const &) const;
 	Signal const * FindSensor           (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal () const;
 	Signal       * GetHighlightedSignal ();
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
+
+	template<class CRIT>
+	Signal const * FindSignal(CRIT const & crit) const
+	{
+		for (unique_ptr<Track> const & upTrack: m_tracks) 
+			if (Signal const * const pSignal { upTrack->FindSignal(crit) })
+				return pSignal;
+		return nullptr;
+	}                        
+
+	template<class CRIT>
+	SignalId FindSignalId(CRIT const & crit) const
+	{
+		for (int i = 0; i < m_tracks.size(); ++i)
+		{ 
+			TrackNr  const trackNr  { TrackNr(i) };
+			SignalNr const signalNr { getTrack(trackNr)->FindSignalNr(crit) };
+			if (signalNr.IsNotNull())
+				return SignalId(trackNr, signalNr);
+		}
+		return SignalId::NULL_VAL();
+	}
 
 	template<class FUNC>
 	void Apply2AllSignalIdsC(FUNC const & func) const

@@ -133,11 +133,8 @@ void CrsrWindow::printSignalInfo(TextBuffer& textBuf, SignalId const id) const
 	textBuf.printString(L"Radius ");
 	printMicroMeter(textBuf, signal.GetRadius()); 
 	textBuf.nextLine();
-	textBuf.AlignRight(); textBuf.printString(L"# BaseKnots ");
-	textBuf.printString(to_wstring(signal.GetNrOfBaseKnotElements())); 
-	textBuf.nextLine();
-	textBuf.AlignRight(); textBuf.printString(L"# Pipe segments ");
-	textBuf.printString(to_wstring(signal.GetNrOfPipeSegElements())); 
+	textBuf.AlignRight(); textBuf.printString(L"#Segments ");
+	textBuf.printString(to_wstring(signal.GetNrOfElements())); 
 }
 
 void CrsrWindow::printNobInfo(TextBuffer & textBuf, NobId const id) const 

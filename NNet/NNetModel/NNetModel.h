@@ -55,8 +55,31 @@ public:
 	wstring             GetModelFilePath() const { return m_wstrModelFilePath; }
 	size_t              Size()             const { return m_Nobs.Size(); }
 
-	NobId FindNobAt(MicroMeterPnt const &, NobCrit const &) const;
-	bool  GetDescriptionLine(int const, wstring &)          const;
+	bool  GetDescriptionLine(int const, wstring &) const;
+	
+	template<class CRIT>
+	NobId FindNobAt(MicroMeterPnt const & umPoint, CRIT const & crit) const
+	{	
+		NobId idRes { NO_NOB };
+
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const & s) { return s.IsIoConnector() && crit(s); });
+		if (IsDefined(idRes))
+			return idRes;
+
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const & s) { return s.IsAnyNeuron() && (!s.HasParentNob()) && crit(s); });
+		if (IsDefined(idRes))
+			return idRes;
+
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const & s) { return s.IsKnot() && crit(s); }); 	
+		if (IsDefined(idRes))
+			return idRes;
+
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const & s) { return s.IsPipe() && crit(s); });
+		if (IsDefined(idRes))
+			return idRes;
+
+		return NO_NOB;
+	}
 
 	// non const functions
 

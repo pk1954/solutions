@@ -81,7 +81,11 @@ public:
 		return SignalNr::NULL_VAL();
 	}
 
-	Signal const * FindSignal(Signal::Crit const &) const;
+	template<class CRIT>
+	Signal const * FindSignal(CRIT const & crit) const
+	{
+		return GetConstSignalPtr(FindSignalNr(crit));
+	}
 
 private:
 	vector<unique_ptr<Signal>> m_signals;
