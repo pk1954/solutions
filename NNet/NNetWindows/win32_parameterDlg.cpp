@@ -101,9 +101,9 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPulseSpeed,       ParamType::Value::pulseSpeed    );
 }
 
-HWND ParameterDialog::createButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, HMENU const id)
+HWND ParameterDialog::createButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, int const id)
 {
-	HWND hwnd = CreateWindow(L"Button", text, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE, x, y, w, h, hwndParent, id, GetModuleHandle(nullptr), 0);
+	HWND hwnd = CreateWindow(L"Button", text, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE, x, y, w, h, hwndParent, (HMENU)id, GetModuleHandle(nullptr), 0);
 	return hwnd;
 }
 
@@ -114,8 +114,7 @@ void ParameterDialog::Start
 	Param             * const pParams 
 )
 {
-	HINSTANCE const hInstance { GetModuleHandle(nullptr) };
-	HWND      const hwndDlg   { StartBaseDialog(hwndParent, MAKEINTRESOURCE(IDM_PARAM_WINDOW), nullptr) };
+	HWND const hwndDlg { StartBaseDialog(hwndParent, MAKEINTRESOURCE(IDM_PARAM_WINDOW), nullptr) };
 
 	m_pCommands = pCommands;
 	m_pParams   = pParams;
@@ -129,8 +128,8 @@ void ParameterDialog::Start
 	m_hwndTimeResolution   = addParameter(hwndDlg, ParamType::Value::timeResolution, iYpos); 
 	m_hwndPulseSpeed       = addParameter(hwndDlg, ParamType::Value::pulseSpeed,     iYpos); 
 
-	createButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, (HMENU)IDD_APPLY_PARAMETERS);
-	createButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS);
+	createButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY_PARAMETERS);
+	createButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET_PARAMETERS);
 }
 
 void ParameterDialog::Stop()

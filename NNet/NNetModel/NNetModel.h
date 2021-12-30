@@ -85,8 +85,8 @@ public:
 
 	bool Compute();
 
-	void  RecalcAllNobs();
-	void  ClearDynamicData();
+	void  RecalcAllNobs() const;
+	void  ClearDynamicData() const;
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
 	void  SelectSubtree(BaseKnot * const, bool const);
@@ -96,7 +96,7 @@ public:
 	MonitorData & GetMonitorData() { return m_monitorData; }
 	Param       & GetParams()      { return m_param; }
 
-	void DeselectAllNobs     ()                     { m_Nobs.SelectAllNobs(false); }
+	void DeselectAllNobs     () const               { m_Nobs.SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine  (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }

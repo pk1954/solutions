@@ -8,9 +8,9 @@
 
 HWND BaseDialog::StartBaseDialog
 (
-    HWND             const hwndParent,
-    LPCTSTR          const lpTemplateName,
-	function<bool()> const visibilityCriterion
+    HWND             const   hwndParent,
+    LPCTSTR          const   lpTemplateName,
+	function<bool()> const & visibilityCriterion
 )
 {
 	HWND hwnd = CreateDialogParam
@@ -43,12 +43,12 @@ static INT_PTR CALLBACK BaseDialogProc
 {
 	if (message == WM_INITDIALOG)
 	{
-		SetUserDataPtr(hwnd, (LONG_PTR)lParam);
+		SetUserDataPtr(hwnd, lParam);
 		return INT_PTR(true);
 	}
 	else 
 	{
-		if (BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetRootWindow(hwnd)))
+		if (auto pBaseDialog = reinterpret_cast<BaseDialog *>(GetRootWindow(hwnd)))
 			return pBaseDialog->UserProc(message, wParam, lParam);         // normal case
 	}
 

@@ -262,7 +262,7 @@ SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptC
 	m_pMonitorData->Apply2AllSignalsInTrackC
 	(
 		trackNr,
-		[&](SignalNr const signalNr)
+		[this, &trackNr, &usTime, &fPixCrsrY, &fPixBestDelta, &signalNrRes](SignalNr const signalNr)
 		{
 			Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(SignalId(trackNr, signalNr)) };
 			if (pSignal && (usTime >= pSignal->GetStartTime()))
@@ -379,53 +379,60 @@ bool MonitorWindow::OnShow(WPARAM const wParam, LPARAM const lParam)
 	return false;
 }
 
+void MonitorWindow::moveOperation(PixelPoint const &pixCrsrPos)
+{
+	if (m_pixLast.IsNotNull())
+	{
+		if (m_measurement.TrackingActive())
+		{
+			m_measurement.MoveSelection(Convert2fPixel(pixCrsrPos.GetX()));
+			SetCursor(m_hCrsrWE);
+		}
+		else 
+		{
+			if (m_pMonitorData->IsAnySignalSelected())
+			{
+				m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
+				SetCursor(m_hCrsrNS);
+			}
+		}
+	}
+	m_pixLast = pixCrsrPos;
+}
+
+void MonitorWindow::selectSignal(PixelPoint const &pixCrsrPos)
+{
+	SignalNr const signalFound { findSignal(m_trackNrHighlighted, pixCrsrPos) };
+	if (signalFound.IsNotNull())
+	{
+		highlightSignal(SignalId(m_trackNrHighlighted, signalFound));
+		SetCursor(m_hCrsrNS);
+	}
+	else if (m_measurement.Select(Convert2fPixel(pixCrsrPos.GetX())))
+	{
+		SetCursor(m_hCrsrWE);
+	}
+}
+
+void MonitorWindow::selectTrack(PixelPoint const &pixCrsrPos)
+{
+	TrackNr const trackNrFound { findTrack(pixCrsrPos.GetY()) };
+	if (trackNrFound != m_trackNrHighlighted)
+		m_trackNrHighlighted = trackNrFound;
+}
+
 void MonitorWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam(lParam) };
 
 	if (! m_measurement.TrackingActive())
-	{
-		TrackNr const trackNrFound { findTrack(pixCrsrPos.GetY()) };
-		if (trackNrFound != m_trackNrHighlighted)
-		{
-			m_trackNrHighlighted = trackNrFound;
-			Trigger();   // cause repaint
-		}
-	}
+		selectTrack(pixCrsrPos);
 		
 	if (wParam & MK_LBUTTON)
-	{
-		if (m_pixLast.IsNotNull())
-		{
-			if (m_measurement.TrackingActive())
-			{
-				m_measurement.MoveSelection(Convert2fPixel(pixCrsrPos.GetX()));
-				SetCursor(m_hCrsrWE);
-			}
-			else 
-			{
-				if (m_pMonitorData->IsAnySignalSelected())
-				{
-					m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
-					SetCursor(m_hCrsrNS);
-				}
-			}
-		}
-		m_pixLast = pixCrsrPos;
-	}
+		moveOperation(pixCrsrPos);
 	else  // left button not pressed: select
-	{
-		SignalNr const signalFound { findSignal(m_trackNrHighlighted, pixCrsrPos) };
-		if (signalFound.IsNotNull())
-		{
-			highlightSignal(SignalId(m_trackNrHighlighted, signalFound));
-			SetCursor(m_hCrsrNS);
-		}
-		else if (m_measurement.Select(Convert2fPixel(pixCrsrPos.GetX())))
-		{
-			SetCursor(m_hCrsrWE);
-		}
-	}
+		selectSignal(pixCrsrPos);
+
 	Trigger();   // cause repaint
 	(void)TrackMouseEvent(& m_trackStruct);
 }

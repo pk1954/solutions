@@ -16,7 +16,7 @@ public:
 	(
 		HWND             const, 
 		LPCTSTR          const, 
-		function<bool()> const 
+		function<bool()> const &
 	);
 
 protected:

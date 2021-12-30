@@ -5,7 +5,6 @@
 #pragma once
 
 #include "SoundInterface.h"
-#include "win32_baseDialog.h"
 
 class TriggerSoundDialog
 {
@@ -19,11 +18,9 @@ public:
 		m_soundDesc(soundDesc)
 	{};
 
-	~TriggerSoundDialog() {};
-
 	void Show(HWND const);
 
-	SoundDescr const GetSound() { return m_soundDesc; }
+	SoundDescr GetSound() const { return m_soundDesc; }
 
 private:
 	Sound const * const m_pSound;
@@ -33,9 +30,9 @@ private:
 	TriggerSoundDialog & operator= (TriggerSoundDialog const &);  // noncopyable class 
 
 	void          onCommand(HWND const, WPARAM const, LPARAM const);
-	void          handleOnOff(HWND const);
-	void          initEditField(HWND const, int const, unsigned long const);
-	unsigned long evaluateEditField(HWND const, int const);
+	void          handleOnOff(HWND const) const;
+	void          initEditField(HWND const, int const, unsigned long const) const;
+	unsigned long evaluateEditField(HWND const, int const) const;
 	void          evaluate(HWND const);
 
 	friend static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);

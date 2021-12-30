@@ -26,22 +26,22 @@ public:
 
 	HWND WINAPI AddStaticControl(int const);
 	HWND WINAPI AddStaticControl(LPCTSTR const);
-	HWND WINAPI AddButton       (LPCTSTR const, HMENU const, DWORD const);
-    HWND WINAPI AddTrackBar     (HMENU);
+	HWND WINAPI AddButton       (LPCTSTR const, int const, DWORD const);
+    HWND WINAPI AddTrackBar     (int const);
 
 	void AddCustomControl(int const);
 
 	int  NewPart();
 	void LastPart();
 
-	void DisplayInPart(int const, wstring const);
-	void ClearPart(int const);
+	void DisplayInPart(int const, wstring const &) const;
+	void ClearPart(int const) const;
 
 private:
 
 	inline static PIXEL const STATUS_BAR_HEIGHT { 22_PIXEL };
 
-	HWND WINAPI addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, HMENU const);
+	HWND WINAPI addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, int const);
 
 	vector<PIXEL> m_statWidths;
 

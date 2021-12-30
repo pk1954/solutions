@@ -11,7 +11,6 @@
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Nob.h"
-//#include "Segment.h"
 
 using std::vector;
 

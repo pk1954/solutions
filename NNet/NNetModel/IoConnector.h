@@ -43,7 +43,7 @@ public:
 	void Recalc      ()                                               override;
 	void Link        (Nob const &, Nob2NobFunc const &)               override;
 	void Select      (bool const)                                     override;
-	void Prepare     () override {}
+	void Prepare     () override { /* nothing to prepare */ }
 	bool CompStep    () override { return false; }
 
 	bool             IsCompositeNob() const final { return true; }

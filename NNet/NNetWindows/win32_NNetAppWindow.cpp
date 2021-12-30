@@ -328,7 +328,7 @@ void NNetAppWindow::configureStatusBar()
 	iPartScriptLine = m_StatusBar.NewPart();
 	m_slowMotionDisplay.Initialize(& m_StatusBar, & m_SlowMotionRatio, iPartScriptLine);
 
-	SlowMotionControl::Add(& m_StatusBar);
+	SlowMotionControl::Add(m_StatusBar);
 
 	iPartScriptLine = m_StatusBar.NewPart();
 	m_ScriptHook.Initialize(& m_StatusBar, iPartScriptLine);

@@ -15,14 +15,23 @@
 using std::wostringstream;
 using std::wstring;
 
-void TriggerSoundDialog::initEditField(HWND const hDlg, int const id, unsigned long const ulValue)
+void TriggerSoundDialog::initEditField
+(
+	HWND          const hDlg, 
+	int           const id, 
+	unsigned long const ulValue
+) const
 {
 	wostringstream m_wstrBuffer;
 	m_wstrBuffer << ulValue;
 	SetWindowText(GetDlgItem(hDlg, id), m_wstrBuffer.str().c_str());
 }
 
-unsigned long TriggerSoundDialog::evaluateEditField(HWND const hDlg, int const id)
+unsigned long TriggerSoundDialog::evaluateEditField
+(
+	HWND const hDlg, 
+	int  const id
+) const
 {
 	static int const BUFLEN { 20 };
 
@@ -37,7 +46,7 @@ unsigned long TriggerSoundDialog::evaluateEditField(HWND const hDlg, int const i
 	return 0;
 }
 
-void TriggerSoundDialog::handleOnOff(HWND const hDlg)
+void TriggerSoundDialog::handleOnOff(HWND const hDlg) const
 {
 	bool bTriggerSoundOn { IsDlgButtonChecked(hDlg, IDC_TRIGGER_SOUND_ON) == BST_CHECKED };
 	EnableWindow(GetDlgItem(hDlg, IDC_TRIGGER_SOUND_FREQ), bTriggerSoundOn); 
@@ -88,7 +97,7 @@ static INT_PTR CALLBACK dialogProc
 	LPARAM const lParam
 )
 {
-	TriggerSoundDialog * pDlg = reinterpret_cast<TriggerSoundDialog *>(GetWindowLongPtr(hDlg, DWLP_USER));
+	auto pDlg = reinterpret_cast<TriggerSoundDialog *>(GetWindowLongPtr(hDlg, DWLP_USER));
 	switch (message)
 	{
 	case WM_INITDIALOG:

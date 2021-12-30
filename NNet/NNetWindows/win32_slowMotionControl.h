@@ -11,11 +11,9 @@ class SlowMotionControl
 {
 public:
 
-	static void Add(StatusBar * const pStatusBar)
+	static void Add(StatusBar & statusBar)
 	{ 
-		pStatusBar->AddButton(L" Slower ", (HMENU)IDM_SLOWER, BS_PUSHBUTTON); 
-		pStatusBar->AddButton(L" Faster ", (HMENU)IDM_FASTER, BS_PUSHBUTTON); 
+		statusBar.AddButton(L" Slower ", IDM_SLOWER, BS_PUSHBUTTON); 
+		statusBar.AddButton(L" Faster ", IDM_FASTER, BS_PUSHBUTTON); 
 	} 
-
-private:
 };

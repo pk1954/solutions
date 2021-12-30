@@ -35,6 +35,9 @@ public:
 
 private:
 
+	void       moveOperation    (PixelPoint const &);
+	void       selectSignal     (PixelPoint const &);
+	void       selectTrack      (PixelPoint const &);
 	SignalNr   findSignal       (TrackNr const, PixelPoint const &) const;
 	fPixel     calcTrackHeight  () const;
 	TrackNr    findTrack        (PIXEL const) const;

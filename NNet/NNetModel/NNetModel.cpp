@@ -46,12 +46,12 @@ void NNetModel::Reconnect(NobId const id) const
 		pNod->Reconnect();
 }
 
-void NNetModel::RecalcAllNobs() 
+void NNetModel::RecalcAllNobs() const
 { 
 	m_Nobs.Apply2All([](Nob & nob) { nob.Recalc(); });
 } 
 
-void NNetModel::ClearDynamicData() 
+void NNetModel::ClearDynamicData() const
 { 
 	m_Nobs.Apply2All([](Nob & nob) { nob.ClearDynamicData(); }); 
 }

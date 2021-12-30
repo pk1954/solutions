@@ -38,7 +38,7 @@ private:
 	HWND m_hwndTimeResolution  { nullptr };
 	HWND m_hwndPulseSpeed      { nullptr };
 		
-	HWND createButton     (HWND const, wchar_t  const * const, int const, int const, int const, int const, HMENU const);
+	HWND createButton     (HWND const, wchar_t  const * const, int const, int const, int const, int const, int const);
 	HWND createEditField  (HWND const, ParamType::Value const, int &,     int const, int const);
 	HWND createStaticField(HWND const, wchar_t  const * const, int &,     int const, int const);
 	void resetParameter   (HWND const, ParamType::Value const) const;
