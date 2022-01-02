@@ -31,14 +31,14 @@ public:
 		PostThreadMsg(anyMessageWillDo);
 	}
 
-	virtual ~TextWindowThread()	{ }
+	virtual ~TextWindowThread()	= default;
 
 	virtual void Trigger()
 	{
 		PostThreadMsg(anyMessageWillDo);
 	}
 
-	virtual void ThreadMsgDispatcher(MSG const msg)
+	void ThreadMsgDispatcher(MSG const msg) override 
 	{
         m_pTextBuffer->StartPainting();
 		m_textWindow.DoPaint(* m_pTextBuffer);

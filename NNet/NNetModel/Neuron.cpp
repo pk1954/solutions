@@ -40,7 +40,7 @@ Neuron::Neuron(BaseKnot const & src, NobType const type)
 	SetExtension(NEURON_RADIUS);
 }
 
-static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE instance, PVOID arg, PTP_WORK)
+static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID arg, PTP_WORK)
 {
 	Neuron const * pNeuron { static_cast<Neuron const *>(arg) };
 	Neuron::m_pSound->Beep(pNeuron->GetTriggerSound());

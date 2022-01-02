@@ -36,7 +36,7 @@ public:
 		pSignal->MoveSensor(-m_delta);
 	}
 
-	virtual bool CombineCommands(Command const & src) 
+	bool CombineCommands(Command const & src) final
 	{ 
 		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
 		if (m_signalId != cmdSrc.m_signalId)

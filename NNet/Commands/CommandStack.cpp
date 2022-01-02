@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "Observable.h"
+#include "observable.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_command.h"
 #include "CommandStack.h"
@@ -35,15 +35,17 @@ void CommandStack::clearRedoStack()
     assert(RedoStackEmpty());
 }
 
-bool CommandStack::canBeCombined(Command const * pCmd)
+bool CommandStack::canBeCombined(Command const * pCmd) const
 {
     if (UndoStackEmpty())
         return false;
     
-    if (! (typeid(previousCmd()) == typeid(*pCmd)) )
+    Command & prevCmd { previousCmd() };
+
+    if (! (typeid(prevCmd) == typeid(*pCmd)) )
         return false;
 
-    if (! previousCmd().CombineCommands(*pCmd))
+    if (! prevCmd.CombineCommands(*pCmd))
         return false;
 
     return true;

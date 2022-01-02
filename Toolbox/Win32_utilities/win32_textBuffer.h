@@ -7,19 +7,21 @@
 #include "windef.h"
 #include "TextBuffer.h"
 
+using std::wostringstream;
+
 class Win32_TextBuffer : public TextBuffer
 {
 public:
     Win32_TextBuffer(HDC const, PixelRectSize const &);
 
-	virtual ~Win32_TextBuffer() {}
+	~Win32_TextBuffer() override = default;
 
-	virtual void StartPainting();
+	void StartPainting() override;
 
-	virtual void PrintBuffer(std::wostringstream *, PIXEL const, PIXEL const);
+	void PrintBuffer(wostringstream *, PIXEL const, PIXEL const)  override;
 
-	virtual void AlignLeft();
-	virtual void AlignRight();
+	void AlignLeft () override;
+	void AlignRight() override;
 
 private:
 	PixelRect m_pixRect; // text buffer area 

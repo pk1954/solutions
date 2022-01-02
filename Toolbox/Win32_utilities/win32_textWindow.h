@@ -5,6 +5,9 @@
 
 #include "win32_baseWindow.h"
 #include "win32_textBuffer.h"
+//#include "win32_textWindowThread.h"
+
+using std::unique_ptr;
 
 class TextWindowThread;
 class RefreshTimer;
@@ -13,7 +16,7 @@ class TextWindow : public BaseWindow
 {
 public:
     TextWindow();
-	~TextWindow() override = default;
+	~TextWindow() override;
 
     void StartTextWindow
 	(
@@ -34,8 +37,9 @@ private:
 
 	void OnPaint() final;
 
-	RefreshTimer     * m_pRefreshTimer     { nullptr };
-	TextWindowThread * m_pTextWindowThread { nullptr };
-    HDC                m_hDC_Memory        { nullptr };
-	HBITMAP            m_hBitmap           { nullptr };
+	unique_ptr<TextWindowThread> m_upTextWindowThread;
+
+	RefreshTimer * m_pRefreshTimer { nullptr };
+    HDC            m_hDC_Memory    { nullptr };
+	HBITMAP        m_hBitmap       { nullptr };
 };

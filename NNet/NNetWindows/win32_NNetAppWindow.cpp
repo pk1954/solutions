@@ -575,7 +575,7 @@ bool NNetAppWindow::AskAndSave()
 	return true;
 }
 
-void NNetAppWindow::StartScript(wstring const & wstrFile)
+void NNetAppWindow::StartScript(wstring const & wstrFile) const
 {
 	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
 	Script * pScript { ScriptStack::OpenScript() };

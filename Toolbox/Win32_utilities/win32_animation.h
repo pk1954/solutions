@@ -118,7 +118,12 @@ private:
         m_pTpTimer = nullptr;
     } 
 
-    static void CALLBACK timerProc(PTP_CALLBACK_INSTANCE i, PVOID pContext, PTP_TIMER p)
+    static void CALLBACK timerProc
+    (
+        PTP_CALLBACK_INSTANCE, 
+        PVOID     pContext, 
+        PTP_TIMER p
+    )
     {
         bit_cast<Animation<ANIM_PAR> *>(pContext)->next();
     }

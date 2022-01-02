@@ -11,10 +11,13 @@
 #include "win32_textWindow.h"
 
 using std::function;
+using std::make_unique;
 
 TextWindow::TextWindow() :  
-    BaseWindow()
+	BaseWindow()
 { }
+
+TextWindow::~TextWindow() = default;
 
 void TextWindow::StartTextWindow
 (
@@ -45,7 +48,7 @@ void TextWindow::StartTextWindow
 	Util::MakeLayered(hwnd, true, 0, uiAlpha);
     SetWindowText(hwnd, szClass);
 	PixelRectSize pixRectSize { rect.GetSize() };
-	m_pTextWindowThread = new TextWindowThread
+	m_upTextWindowThread = make_unique<TextWindowThread>
 	(
 		m_hDC_Memory, 
 		pixRectSize,
@@ -57,10 +60,8 @@ void TextWindow::StartTextWindow
 
 void TextWindow::StopTextWindow()
 {
-    if (m_pTextWindowThread)
-	    m_pTextWindowThread->Terminate();
-	delete m_pTextWindowThread;
-	m_pTextWindowThread = nullptr;
+    if (m_upTextWindowThread)
+	    m_upTextWindowThread->Terminate();
 
 	DeleteObject(m_hBitmap);
 	m_hBitmap = nullptr;
@@ -71,8 +72,8 @@ void TextWindow::StopTextWindow()
 
 void TextWindow::Trigger()
 {
-	if (m_pTextWindowThread)
-		m_pTextWindowThread->Trigger();
+	if (m_upTextWindowThread)
+		m_upTextWindowThread->Trigger();
 }
 
 void TextWindow::OnPaint()

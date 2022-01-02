@@ -49,8 +49,8 @@ private:
     NNetModelWriterInterface  * m_pNMWI                  { nullptr };
     Observable                * m_pStaticModelObservable { nullptr };
 
-    Command & currentCmd () { return * m_CommandStack.at(m_iIndex); }
-    Command & previousCmd() { return * m_CommandStack.at(m_iIndex-1); }; 
+    Command & currentCmd () const { return * m_CommandStack.at(m_iIndex); }
+    Command & previousCmd() const { return * m_CommandStack.at(m_iIndex-1); }; 
 
     void set2OlderCmd()
     {
@@ -72,5 +72,5 @@ private:
 
     void clearRedoStack();
 
-    bool canBeCombined(Command const *);
+    bool canBeCombined(Command const *) const;
 };

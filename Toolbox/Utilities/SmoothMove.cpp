@@ -7,10 +7,6 @@
 #include <algorithm>
 #include "SmoothMove.h"
 
-SmoothMove::SmoothMove() :
-    m_pixVelocity(0)
-{}
-
 PixelPoint SmoothMove::Step(PixelPoint pixActual, PixelPoint pixDesired)  // returns new pixOffset, which is closer to pixTarget
 {
     PixelPoint pixDelta         = pixDesired - pixActual;
