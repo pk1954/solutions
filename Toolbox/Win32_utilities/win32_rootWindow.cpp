@@ -9,6 +9,7 @@
 #include "win32_rootWindow.h"
 
 using std::bit_cast;
+using std::make_unique;
 
 RootWindow * GetRootWindow(HWND const hwnd)
 {
@@ -36,7 +37,7 @@ private:
 
 RootWindow::RootWindow()
 {
-	m_upRefreshRate = std::make_unique<WindowRefreshRate>(this);
+	m_upRefreshRate = make_unique<WindowRefreshRate>(this);
 }
 
 RootWindow::~RootWindow() 
@@ -48,11 +49,10 @@ void RootWindow::StartRootWindow(function<bool()> const &visibilityCriterion)
 {
 	m_visibilityCriterion = visibilityCriterion;
 
-	m_visibilityMode = m_visibilityCriterion 
-		? tOnOffAuto::automatic 
-		: IsWindowVisible() 
-          ? tOnOffAuto::on 
-		  : tOnOffAuto::off;
+	if (m_visibilityCriterion)
+		m_visibilityMode = IsWindowVisible() ? tOnOffAuto::on : tOnOffAuto::off;
+	else
+		m_visibilityMode = tOnOffAuto::automatic;
 }
 
 void RootWindow::addWinMenu(HMENU const hMenuParent, wstring const & strTitle) const

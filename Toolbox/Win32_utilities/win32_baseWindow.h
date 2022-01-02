@@ -20,20 +20,20 @@ public:
 		LPCTSTR          const, 
 		DWORD            const, 
 		PixelRect        const *,
-		function<bool()> const
+		function<bool()> const &
 	);
 
 protected:
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
-	virtual void OnPaint             ()                           {};
-	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const) {};
-	virtual void OnMouseWheel        (WPARAM const, LPARAM const) {};
-	virtual void OnMouseMove         (WPARAM const, LPARAM const) {};
-	virtual void OnChar              (WPARAM const, LPARAM const) {};
-	virtual void OnLButtonDown       (WPARAM const, LPARAM const) {};
-	virtual void OnLButtonUp         (WPARAM const, LPARAM const) {};
+	virtual void OnPaint             ()                           { /* empty */ };
+	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnMouseWheel        (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnMouseMove         (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnChar              (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnLButtonDown       (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnLButtonUp         (WPARAM const, LPARAM const) { /* empty */ };
 	virtual bool OnRButtonDown       (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnRButtonUp         (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnSize              (WPARAM const, LPARAM const) { return false; };

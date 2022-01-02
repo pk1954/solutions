@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "win32_util_resource.h"
 #include "win32_util.h"
 #include "NNetModelReaderInterface.h"

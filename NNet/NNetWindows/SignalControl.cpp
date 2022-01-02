@@ -26,11 +26,11 @@ SignalControl::SignalControl
 	PixCoordFp<fHertz>     & vertCoord,
 	NNetModelCommands      & commands
 )
-  : m_computeThread(computeThread),
+  : m_commands(commands),
+	m_computeThread(computeThread),
 	m_signalGenerator(sigGen),
 	m_horzCoord(horzCoord),
-	m_vertCoord(vertCoord),
-	m_commands(commands)
+	m_vertCoord(vertCoord)
 {
 	m_signalGenerator.RegisterObserver(this);
 	m_horzCoord.RegisterObserver(this);
@@ -63,12 +63,12 @@ void SignalControl::Stop()
 	DestroyWindow();
 }
 
-fMicroSecs SignalControl::getTime(fPixel const fPix)
+fMicroSecs SignalControl::getTime(fPixel const fPix) const
 {
 	return m_horzCoord.Transform2logUnitPos(fPix);
 }
 
-fHertz SignalControl::getFreq(fPixel const fPix)
+fHertz SignalControl::getFreq(fPixel const fPix) const 
 {
 	return m_vertCoord.Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
 }

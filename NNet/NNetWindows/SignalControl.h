@@ -55,8 +55,8 @@ private:
 	bool OnMouseLeave(WPARAM const, LPARAM const) final;
 	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const) final;
 
-	fMicroSecs getTime(fPixel const);
-	fHertz     getFreq(fPixel const);
+	fMicroSecs getTime(fPixel const) const;
+	fHertz     getFreq(fPixel const) const;
 
 	fPixel getPixX(fMicroSecs const) const;
 	fPixel getPixY(fHertz     const) const;

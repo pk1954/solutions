@@ -36,13 +36,12 @@ Signal::~Signal()
 
 void Signal::add2list(Pipe const & pipe) 
 {  
-    MicroMeter    const umSegLen  { m_circle.GetRadius() / 10.0f };
-    MicroMeter    const umPipeLen { pipe.GetLength() };
-    float         const fNrSteps  { max(1.0f, umPipeLen / umSegLen) };
-    float         const fInc      { 1.0f / fNrSteps };
-    MicroMeterPnt const umpInc    { pipe.GetVector() / fNrSteps };
-    MicroMeterPnt       umpRun    { pipe.GetStartPoint() };
-    float               fRun      { 0.0f }; 
+    float         const NR_SEGS  { 10.0f };
+    float         const fIncCalc { m_circle.GetRadius() / (pipe.GetLength() * NR_SEGS) };
+    float         const fInc     { min(1.0f, fIncCalc) };
+    MicroMeterPnt const umpInc   { pipe.GetVector() * fInc };
+    MicroMeterPnt       umpRun   { pipe.GetStartPoint() };
+    float               fRun     { 0.0f }; 
     do
     {
         float const fDistance { DistSquare(umpRun, m_circle.GetPos()) };

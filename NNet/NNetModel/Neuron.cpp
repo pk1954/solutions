@@ -111,19 +111,28 @@ void Neuron::ClearDynamicData()
 	m_usSinceLastPulse = 0._MicroSecs;
 }
 
+void Neuron::Prepare()
+{
+	if (m_bTriggered)
+	{
+		if (m_usSinceLastPulse >= m_pParameters->PulseWidth() + m_pParameters->RefractPeriod()) 
+			m_bTriggered = false;
+	}
+	else 
+	{
+		BaseKnot::Prepare();
+	}
+}
+
 bool Neuron::CompStep()
 {
-	bool bTrigger 
-	{ 
-		(m_mVinputBuffer >= m_pParameters->Threshold()) && 
-		(m_usSinceLastPulse >= m_pParameters->PulseWidth() + m_pParameters->RefractPeriod()) 
-	};
+	bool bTrigger { m_mVinputBuffer >= m_pParameters->Threshold() };
 
 	if (bTrigger)
 	{
 		m_usSinceLastPulse = 0._MicroSecs;
-		m_mVinputBuffer    = 0._mV;
 		m_bTriggered       = true;
+		m_mVinputBuffer.Set2Zero();
 		if (HasTriggerSound() && m_pTpWork)
 			SubmitThreadpoolWork(m_pTpWork);
 	}
@@ -173,7 +182,6 @@ void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) co
 	context.FillCircle(GetCircle() * NEURON_INTERIOR, color);
 	if (HasAxon())
 		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
-	m_bTriggered = false;
 }
 
 Neuron const * Cast2Neuron(Nob const * pNob)

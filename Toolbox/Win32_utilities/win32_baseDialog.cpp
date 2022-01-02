@@ -48,7 +48,7 @@ static INT_PTR CALLBACK BaseDialogProc
 	}
 	else 
 	{
-		if (auto pBaseDialog = reinterpret_cast<BaseDialog *>(GetRootWindow(hwnd)))
+		if (auto pBaseDialog = static_cast<BaseDialog *>(GetRootWindow(hwnd)))
 			return pBaseDialog->UserProc(message, wParam, lParam);         // normal case
 	}
 

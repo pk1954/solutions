@@ -96,13 +96,13 @@ Radian IoConnector::GetDir() const
         : m_list.front()->GetDir();
 }
 
-void IoConnector::UnlockDirection() 
+void IoConnector::UnlockDirection() const 
 {
     for (auto & it: m_list)
         it->UnlockDirection(); 
 }
 
-void IoConnector::LockDirection() 
+void IoConnector::LockDirection() const 
 { 
     for (auto & it: m_list)
         it->LockDirection(); 
@@ -119,7 +119,7 @@ void IoConnector::SetParentPointers()
         it->SetParentNob(this);
 }
 
-void IoConnector::ClearParentPointers()
+void IoConnector::ClearParentPointers() const
 {
     for (auto & it: m_list)
         it->SetParentNob(nullptr);

@@ -31,6 +31,7 @@ public:
 
 	bool operator==(Nob const &) const override;
 
+	void Prepare        ()                          override;
 	void AppendMenuItems(AddMenuFunc const &) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
@@ -43,7 +44,7 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
-	void      SetDir(Radian const)  override { };
+	void      SetDir(Radian const)  override { /* empty */ };
 	void      ClearDynamicData()    override;
 	bool      CompStep()            override;
 	mV        GetNextOutput() const override;

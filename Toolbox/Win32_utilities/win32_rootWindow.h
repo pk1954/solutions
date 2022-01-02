@@ -101,37 +101,37 @@ public:
 		return ::CreateCompatibleBitmap(hDC, rectSize.GetXvalue(), rectSize.GetYvalue());
 	}
 	
-	LRESULT const PostCommand(WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT PostCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return PostMessage(WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT const SendCommand(WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT SendCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return SendMessage(WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT const SendNotifyCommand(WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT SendNotifyCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return SendNotifyMessage(WM_COMMAND, wParam, lParam);
 	}
 
-	LRESULT const PostMessage(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT PostMessage(unsigned int const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return ::PostMessage(m_hwnd, msg, wParam, lParam);
 	}
 
-	LRESULT const SendMessage(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const
+	LRESULT SendMessage(unsigned int const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return ::SendMessage(m_hwnd, msg, wParam, lParam);
 	}
 
-	LRESULT const SendNotifyMessage(UINT const msg, WPARAM const wParam, LPARAM const lParam) const
+	LRESULT SendNotifyMessage(unsigned int const msg, WPARAM const wParam, LPARAM const lParam) const
 	{
 		return ::SendNotifyMessage(m_hwnd, msg, wParam, lParam);
 	}
 
-	LRESULT const SendDlgItemMessage(int const iItem, UINT msg, WPARAM wParam, LPARAM lParam) const
+	LRESULT SendDlgItemMessage(int const iItem, unsigned int msg, WPARAM wParam, LPARAM lParam) const
     {
         return ::SendDlgItemMessage(m_hwnd, iItem, msg, wParam, lParam);
     }
@@ -141,7 +141,7 @@ public:
 		Util::SetText(GetDlgItem(iItem), wstrText);
 	}
 
-    LRESULT const DefWindowProc(UINT msg, WPARAM wParam, LPARAM lParam) const
+    LRESULT const DefWindowProc(unsigned int msg, WPARAM wParam, LPARAM lParam) const
     {
         return ::DefWindowProc(m_hwnd, msg, wParam, lParam);
     }

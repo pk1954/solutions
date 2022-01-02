@@ -54,11 +54,11 @@ public:
 	IoNeuron const & GetElem(size_t const) const;
 	size_t           Size() const;
 	void             SetParentPointers();
-	void             ClearParentPointers();
+	void             ClearParentPointers() const;
 
-	void LockDirection();
-	void UnlockDirection();
-	void AlignDirection();
+	void LockDirection  () const;
+	void UnlockDirection() const;
+	void AlignDirection ();
 
 	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
 

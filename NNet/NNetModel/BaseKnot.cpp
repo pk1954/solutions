@@ -75,12 +75,12 @@ void BaseKnot::MoveNob(MicroMeterPnt const & delta)
 
 void BaseKnot::AddIncoming(BaseKnot const & src) 
 { 
-	src.Apply2AllInPipes ([&](Pipe & pipe) { AddIncoming(& pipe); });
+	src.Apply2AllInPipes ([this](Pipe & pipe) { AddIncoming(& pipe); });
 }
 
 void BaseKnot::AddOutgoing(BaseKnot const & src) 
 { 
-	src.Apply2AllOutPipes([&](Pipe & pipe) { AddOutgoing(& pipe); });
+	src.Apply2AllOutPipes([this](Pipe & pipe) { AddOutgoing(& pipe); });
 }
 
 void BaseKnot::SetConnections(BaseKnot const & src) 
@@ -102,14 +102,14 @@ void BaseKnot::Reconnect()
 	m_outPipes.Apply2All([this](Pipe & pipe) { pipe.SetStartKnot(this); });
 }
 
-void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
+void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & f)
 {
-	BaseKnot const & baseKnotSrc { static_cast<BaseKnot const &>(nobSrc) };
+	BaseKnot const & src { static_cast<BaseKnot const &>(nobSrc) };
 	ClearConnections();
-	baseKnotSrc.Apply2AllOutPipes([&](Pipe const &p){AddOutgoing(static_cast<Pipe *>(dstFromSrc(&p)));});
-	baseKnotSrc.Apply2AllInPipes ([&](Pipe const &p){AddIncoming(static_cast<Pipe *>(dstFromSrc(&p)));});
-	if (baseKnotSrc.GetParentNob())
-		SetParentNob(dstFromSrc(baseKnotSrc.GetParentNob()));
+	src.Apply2AllOutPipes([this,f](Pipe const &p){AddOutgoing(static_cast<Pipe *>(f(&p)));});
+	src.Apply2AllInPipes ([this,f](Pipe const &p){AddIncoming(static_cast<Pipe *>(f(&p)));});
+	if (src.GetParentNob())
+		SetParentNob(f(src.GetParentNob()));
 }
 
 void BaseKnot::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
@@ -139,8 +139,8 @@ void BaseKnot::Check() const
 	Nob::Check();
 	m_inPipes .Check();
 	m_outPipes.Check();
-	Apply2AllInPipes ([&](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
-	Apply2AllOutPipes([&](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
+	Apply2AllInPipes ([this](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
+	Apply2AllOutPipes([this](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 
 void BaseKnot::Apply2AllConnectedPipes(PipeFunc const &f) const 
@@ -162,12 +162,12 @@ void BaseKnot::Prepare()
 
 bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 
 {
-	return m_outPipes.Apply2AllB([&](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
+	return m_outPipes.Apply2AllB([&pipeSucc](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
 }
 
 bool BaseKnot::IsSuccessorOf(Pipe const & pipePred) const
 {
-	return m_inPipes.Apply2AllB([&](Pipe const & pipe) { return & pipe == & pipePred; });
+	return m_inPipes.Apply2AllB([&pipePred](Pipe const & pipe) { return & pipe == & pipePred; });
 }
 
 bool BaseKnot::Includes(MicroMeterPnt const & point) const

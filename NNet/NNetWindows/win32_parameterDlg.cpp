@@ -70,9 +70,9 @@ HWND ParameterDialog::addParameter
 {
 	int  iXpos { 10 }; 
 
-	HWND hwndName = createStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, 120);
-	HWND hwndEdit = createEditField  (hwndDlg, parameter,                     iXpos, iYpos,  60);
-	HWND hwndUnit = createStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos,  40);
+	HWND const hwndName = createStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, 120);
+	HWND const hwndEdit = createEditField  (hwndDlg, parameter,                     iXpos, iYpos,  60);
+	HWND const hwndUnit = createStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos,  40);
 
 	iYpos += HEIGHT + VERT_SPACE;
 
