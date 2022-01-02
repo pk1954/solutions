@@ -45,7 +45,7 @@ RootWindow::~RootWindow()
 	m_hwnd = nullptr; 
 }
 
-void RootWindow::StartRootWindow(function<bool()> const &visibilityCriterion)
+void RootWindow::StartRootWindow(VisCrit const &visibilityCriterion)
 {
 	m_visibilityCriterion = visibilityCriterion;
 

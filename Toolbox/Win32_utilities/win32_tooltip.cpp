@@ -4,17 +4,17 @@
 
 #include "stdafx.h"
 #include <assert.h>
-#include <windows.h>
-#include <commctrl.h>
+#include <Windows.h>
+#include <CommCtrl.h>
 #include "win32_util.h"
 #include "win32_tooltip.h"
 
 HWND CreateRectToolTip
 (
-	HWND        const hwndParent,
-	int         const idTool,
-	PixelRect * const pRect,
-	LPCTSTR     const szText
+	HWND              const hwndParent,
+	int               const idTool,
+	PixelRect const * const pRect,
+	LPCTSTR           const szText
 )
 {
 	return CreateToolTipEx(hwndParent, idTool, true, pRect, szText);
@@ -51,11 +51,11 @@ HWND CreateBalloonToolTip
 
 HWND CreateToolTipEx
 (
-	HWND        const hwndParent,
-	int         const idTool,
-	bool        const bBalloon,
-	PixelRect * const pRect,
-	LPCTSTR     const szText
+	HWND              const hwndParent,
+	int               const idTool,
+	bool              const bBalloon,
+	PixelRect const * const pRect,
+	LPCTSTR           const szText
 )
 {
 	DWORD dwStyle = WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP; 

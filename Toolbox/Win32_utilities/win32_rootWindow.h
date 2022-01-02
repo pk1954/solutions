@@ -29,7 +29,7 @@ public:
     RootWindow();
     ~RootWindow() override;
 
-	void StartRootWindow(function<bool()> const &);
+	void StartRootWindow(VisCrit const &);
 
     HWND GetWindowHandle() const { return m_hwnd; };
 
@@ -90,7 +90,7 @@ public:
 		return ::CreateWindowToolTip(m_hwnd, t);	
 	}
 
-	HWND CreateRectToolTip(int const id, PixelRect & rect, LPWSTR const &t) const
+	HWND CreateRectToolTip(int const id, PixelRect const & rect, LPWSTR const &t) const
 	{ 
 		return ::CreateRectToolTip(m_hwnd, id, &rect, t);
 	}
@@ -242,11 +242,11 @@ private:
 	class WindowRefreshRate;
 	unique_ptr<WindowRefreshRate> m_upRefreshRate;
 
-	HWND             m_hwnd                { nullptr };
-	HWND             m_hwndApp             { nullptr };
-	tOnOffAuto       m_visibilityMode      { tOnOffAuto::on };
-	function<bool()> m_visibilityCriterion { nullptr };
-	bool             m_bShowRefreshRateDlg { true };
+	HWND       m_hwnd                { nullptr };
+	HWND       m_hwndApp             { nullptr };
+	tOnOffAuto m_visibilityMode      { tOnOffAuto::on };
+	VisCrit    m_visibilityCriterion { nullptr };
+	bool       m_bShowRefreshRateDlg { true };
 
 	void addWinMenu(HMENU const, wstring const &) const;
 	void adjustWinMenu(HMENU const) const;

@@ -7,12 +7,12 @@
 
 HWND BaseWindow::StartBaseWindow
 (
-    HWND             const   hwndParent,
-    UINT             const   uiClassStyle,
-    LPCTSTR          const   szClass,
-    DWORD            const   dwWindowStyle,
-	PixelRect        const * pRect,
-	function<bool()> const & visibilityCriterion
+    HWND      const   hwndParent,
+    UINT      const   uiClassStyle,
+    LPCTSTR   const   szClass,
+    DWORD     const   dwWindowStyle,
+	PixelRect const * pRect,
+	VisCrit   const & visibilityCriterion
 )
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);

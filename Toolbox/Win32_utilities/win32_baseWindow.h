@@ -15,12 +15,12 @@ public:
 
     HWND StartBaseWindow
 	(
-		HWND             const, 
-		UINT             const, 
-		LPCTSTR          const, 
-		DWORD            const, 
-		PixelRect        const *,
-		function<bool()> const &
+		HWND      const, 
+		UINT      const, 
+		LPCTSTR   const, 
+		DWORD     const, 
+		PixelRect const *,
+		VisCrit   const &
 	);
 
 protected:
@@ -36,11 +36,12 @@ protected:
 	virtual void OnLButtonUp         (WPARAM const, LPARAM const) { /* empty */ };
 	virtual bool OnRButtonDown       (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnRButtonUp         (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnSize              (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnShow              (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnMouseLeave        (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnSetCursor         (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnTimer             (WPARAM const, LPARAM const) { return false; };
+
+	bool OnSize (WPARAM const, LPARAM const) override { return false; };
 
 private:
 	

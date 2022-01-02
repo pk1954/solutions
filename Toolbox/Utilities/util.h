@@ -17,6 +17,8 @@ using std::abs;
 
 extern void UpperCase(std::wstring &);
 
+using VisCrit = function <bool()>;
+
 enum class tOnOffAuto : long
 {
 	on,
@@ -24,7 +26,7 @@ enum class tOnOffAuto : long
 	automatic
 };
 
-extern bool ApplyAutoCriterion(tOnOffAuto const, function<bool()>);
+extern bool ApplyAutoCriterion(tOnOffAuto const, VisCrit const &);
 
 using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 

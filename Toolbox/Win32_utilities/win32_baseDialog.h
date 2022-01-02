@@ -14,9 +14,9 @@ public:
 
     HWND StartBaseDialog
 	(
-		HWND             const, 
-		LPCTSTR          const, 
-		function<bool()> const &
+		HWND    const, 
+		LPCTSTR const, 
+		VisCrit const &
 	);
 
 protected:

@@ -21,12 +21,12 @@ TextWindow::~TextWindow() = default;
 
 void TextWindow::StartTextWindow
 (
-    HWND             const   hwndParent,
-	PixelRect        const & rect,
-	LPCTSTR          const   szClass,
-    UINT             const   uiAlpha,
-	bool             const   bAsync,
-	function<bool()> const & visibilityCriterion
+    HWND      const   hwndParent,
+	PixelRect const & rect,
+	LPCTSTR   const   szClass,
+    UINT      const   uiAlpha,
+	bool      const   bAsync,
+	VisCrit   const & visibilityCriterion
 )
 {
     HWND const hwnd = StartBaseWindow

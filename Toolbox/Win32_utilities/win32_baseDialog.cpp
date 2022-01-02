@@ -8,9 +8,9 @@
 
 HWND BaseDialog::StartBaseDialog
 (
-    HWND             const   hwndParent,
-    LPCTSTR          const   lpTemplateName,
-	function<bool()> const & visibilityCriterion
+    HWND    const   hwndParent,
+    LPCTSTR const   lpTemplateName,
+	VisCrit const & visibilityCriterion
 )
 {
 	HWND hwnd = CreateDialogParam

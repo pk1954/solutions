@@ -16,13 +16,12 @@ extern void UpperCase(std::wstring & str)
 
 bool ApplyAutoCriterion
 (
-	tOnOffAuto const onOffAuto,
-	function<bool()> crit
+	tOnOffAuto const   onOffAuto,
+	VisCrit    const & crit
 )
 {
-	return (onOffAuto == tOnOffAuto::on)
-		? true
-		: (onOffAuto == tOnOffAuto::off)
-		? false
-		: crit();
+	if (onOffAuto == tOnOffAuto::automatic)
+		return crit();
+	else 
+		return onOffAuto == tOnOffAuto::on;
 }

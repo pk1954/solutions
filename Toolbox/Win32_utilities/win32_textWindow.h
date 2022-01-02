@@ -5,7 +5,6 @@
 
 #include "win32_baseWindow.h"
 #include "win32_textBuffer.h"
-//#include "win32_textWindowThread.h"
 
 using std::unique_ptr;
 
@@ -20,12 +19,12 @@ public:
 
     void StartTextWindow
 	(
-		HWND             const, 
-		PixelRect        const &, 
-		LPCTSTR          const, 
-		UINT             const, 
-		bool             const, 
-		function<bool()> const &
+		HWND      const, 
+		PixelRect const &, 
+		LPCTSTR   const, 
+		UINT      const, 
+		bool      const, 
+		VisCrit   const &
 	);
 	void StopTextWindow();
 
