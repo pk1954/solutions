@@ -6,8 +6,6 @@
 
 Protocol version 1.7
 
-alskjdfhal
-
 GlobalParameter PulseSpeed = 0.1
 GlobalParameter PulseWidth = 2000
 GlobalParameter SignalLoss = 0

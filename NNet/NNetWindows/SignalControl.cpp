@@ -318,7 +318,7 @@ bool SignalControl::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
 
 bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (WORD const wId = LOWORD(wParam))
+	switch (auto const wId = LOWORD(wParam))
 	{
 	case IDD_RESET_PARAMETERS:
 		m_signalGenerator.LoadParameterValues();
