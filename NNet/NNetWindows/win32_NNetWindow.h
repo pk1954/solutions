@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "Direct2D.h"
 #include "D2D_DrawContext.h"
 #include "win32_modelWindow.h"
 
@@ -85,8 +86,7 @@ protected:
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	NNetModelReaderInterface const * m_pNMRI    { nullptr };
-	D2D_driver                       m_graphics { };
+	NNetModelReaderInterface const * m_pNMRI { nullptr };
 
 private:
 	NNetWindow             (NNetWindow const &);           // noncopyable class 

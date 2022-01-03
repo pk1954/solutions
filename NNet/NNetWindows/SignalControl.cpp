@@ -59,7 +59,6 @@ void SignalControl::Reset()
 void SignalControl::Stop()
 {
 	Reset();
-	m_graphics.ShutDown();
 	DestroyWindow();
 }
 

@@ -56,12 +56,6 @@ public:
 	Scale       & operator=(const Scale  &) = delete;
 	Scale const & operator=(const Scale &&) = delete;
 
-	~Scale() final
-	{
-		m_graphics.ShutDown();
-		DestroyWindow();
-	}
-
 	void SetOrthoOffset(fPixel const fPixOffset)
 	{
 		m_fPixOrthoOffset = fPixOffset;

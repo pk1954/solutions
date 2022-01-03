@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "D2D_DrawContext.h"
 #include "win32_scale.h"
 #include "MoreTypes.h"
 #include "Measurement.h"

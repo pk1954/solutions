@@ -14,20 +14,6 @@ class PixelCoordsFp
 {
 public:
 
-	PixelCoordsFp()
-		: m_fPixOffset(0.0_fPixel),
-		  m_pixelSize (DEFAULT_PIXEL_SIZE)
-	{}
-
-	PixelCoordsFp
-	(	
-		fPixelPoint const fPixOffset,
-		MicroMeter  const pixelSize
-	)
-		: m_fPixOffset(fPixOffset),
-		  m_pixelSize ()
-	{}
-
 	void Reset()
 	{
 		m_fPixOffset = 0.0_fPixel;
@@ -304,6 +290,6 @@ private:
 	inline static MicroMeter const DEFAULT_PIXEL_SIZE {    1.0_MicroMeter };  
 	inline static MicroMeter const MAXIMUM_PIXEL_SIZE { 2000.0_MicroMeter };  // 2 MilliMeter
 
-	fPixelPoint m_fPixOffset;
-	MicroMeter  m_pixelSize;
+	fPixelPoint m_fPixOffset { 0.0_fPixel };
+	MicroMeter  m_pixelSize  { DEFAULT_PIXEL_SIZE };
 };

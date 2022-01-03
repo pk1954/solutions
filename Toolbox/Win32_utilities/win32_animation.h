@@ -121,8 +121,8 @@ private:
     static void CALLBACK timerProc
     (
         PTP_CALLBACK_INSTANCE, 
-        PVOID     pContext, 
-        PTP_TIMER p
+        PVOID pContext, 
+        PTP_TIMER
     )
     {
         bit_cast<Animation<ANIM_PAR> *>(pContext)->next();

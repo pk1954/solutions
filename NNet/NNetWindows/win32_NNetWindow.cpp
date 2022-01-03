@@ -7,7 +7,6 @@
 #include "util.h"
 #include "Resource.h"
 #include "MoreTypes.h"
-//#include "Segment.h"
 #include "win32_scale.h"
 #include "Pipe.h"
 #include "Neuron.h"
@@ -52,12 +51,10 @@ void NNetWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_graphics.Initialize(hwnd);
-	m_context.Start(& m_graphics);
+	m_context.Start(hwnd);
 	m_pNMRI           = & modelReaderInterface;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
-	
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 

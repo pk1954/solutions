@@ -9,24 +9,10 @@
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
-using std::endl;
-
 template <typename LOG_UNIT>
 class PixCoordFp : public Observable
 {
 public:
-
-	//PixCoordFp()
-	//{}
-
-	//PixCoordFp
-	//(	
-	//	fPixel   const fPixOffset,
-	//	LOG_UNIT const pixelSize
-	//)
-	//  : m_fPixOffset(fPixOffset),
-	//	m_logPixelSize()
-	//{}
 
 	void Reset()
 	{
@@ -149,12 +135,6 @@ public:
 		res *= factor; 
 		return res; 
 	};
-
-	//friend wostream & operator<< (wostream & out, fPixel const & c)
-	//{
-	//	out << c.m_fPixOffset << L", " << c.m_logPixelSize << endl;
-	//	return out; 
-	//}
 
 	bool IsValidPixelSize(LOG_UNIT const size) const
 	{

@@ -242,11 +242,11 @@ private:
 	class WindowRefreshRate;
 	unique_ptr<WindowRefreshRate> m_upRefreshRate;
 
-	HWND       m_hwnd                { nullptr };
-	HWND       m_hwndApp             { nullptr };
 	tOnOffAuto m_visibilityMode      { tOnOffAuto::on };
 	VisCrit    m_visibilityCriterion { nullptr };
 	bool       m_bShowRefreshRateDlg { true };
+	HWND       m_hwndApp             { nullptr };
+	HWND       m_hwnd                { nullptr };
 
 	void addWinMenu(HMENU const, wstring const &) const;
 	void adjustWinMenu(HMENU const) const;

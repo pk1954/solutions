@@ -4,9 +4,8 @@
 
 #pragma once
 
-#include "NNetColors.h"
-#include "DrawContext.h"
 #include "Direct2D.h"
+#include "DrawContext.h"
 #include "PixelTypes.h"
 #include "MoreTypes.h"
 #include "NobId.h"
@@ -14,15 +13,17 @@
 using std::wstring;
 using D2D1::ColorF;
 
+class D2D_driver;
+
 class D2D_DrawContext: public DrawContext
 {
 public:
 
-	void Start(D2D_driver * const);
+	void Start(HWND const);
 	void Stop();
 
-	bool StartFrame() { return m_pGraphics->StartFrame(); }
-	void EndFrame  () { m_pGraphics->EndFrame(); }
+	bool StartFrame();
+	void EndFrame  ();
 
 	void Resize(int const, int const);
 	void SetStdFontSize(MicroMeter const &);
@@ -100,5 +101,5 @@ public:
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
-	D2D_driver * m_pGraphics;
+	D2D_driver m_graphics { };
 };

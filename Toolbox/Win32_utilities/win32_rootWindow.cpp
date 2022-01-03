@@ -42,7 +42,7 @@ RootWindow::RootWindow()
 
 RootWindow::~RootWindow() 
 { 
-	m_hwnd = nullptr; 
+	DestroyWindow();
 }
 
 void RootWindow::StartRootWindow(VisCrit const &visibilityCriterion)

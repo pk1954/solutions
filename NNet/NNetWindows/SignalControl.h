@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Direct2D.h"
 #include "D2D_DrawContext.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"

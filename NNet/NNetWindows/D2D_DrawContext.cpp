@@ -6,26 +6,36 @@
 #include "d2d1helper.h"
 #include "D2D_DrawContext.h"
 
-void D2D_DrawContext::Start(D2D_driver * const pGraphics)
+void D2D_DrawContext::Start(HWND const hwnd)
 {
+	m_graphics.Initialize(hwnd);
 	DrawContext::Initialize();
-	m_pGraphics = pGraphics;
 	SetStdFontSize(STD_FONT_SIZE);
 }
 
 void D2D_DrawContext::Stop()
 {
-	m_pGraphics->ShutDown();
+	m_graphics.ShutDown();
+}
+
+bool D2D_DrawContext::StartFrame() 
+{ 
+	return m_graphics.StartFrame(); 
+}
+
+void D2D_DrawContext::EndFrame() 
+{ 
+	m_graphics.EndFrame(); 
 }
 
 void D2D_DrawContext::Resize(int const width, int const height)
 {
-	m_pGraphics->Resize(width, height);
+	m_graphics.Resize(width, height);
 }
 
 void D2D_DrawContext::SetStdFontSize(MicroMeter const & size)
 {
-	m_pGraphics->SetStdFontSize(m_coord.Transform2fPixel(size).GetValue());
+	m_graphics.SetStdFontSize(m_coord.Transform2fPixel(size).GetValue());
 }
 
 void D2D_DrawContext::DrawLine
@@ -40,7 +50,7 @@ void D2D_DrawContext::DrawLine
 	if (umStartPoint != umEndPoint)
 	{
 		fPixel const fPixWidth { max(m_coord.Transform2fPixel(umWidth), fPixMin) };
-		m_pGraphics->DrawLine
+		m_graphics.DrawLine
 		(
 			m_coord.Transform2fPixelPos(umStartPoint),
 			m_coord.Transform2fPixelPos(umEndPoint  ),
@@ -69,7 +79,7 @@ void D2D_DrawContext::FillCircle
 {
 	fPixel       const fPixRadius { max(m_coord.Transform2fPixel   (umC.GetRadius()), fPixMin) };
 	fPixelCircle const fPixCircle (     m_coord.Transform2fPixelPos(umC.GetPos   ()), fPixRadius);
-	m_pGraphics->FillCircle(fPixCircle, m_bNoColors ? ColorF::Black : col);
+	m_graphics.FillCircle(fPixCircle, m_bNoColors ? ColorF::Black : col);
 }
 
 void D2D_DrawContext::FillGradientCircle
@@ -79,7 +89,7 @@ void D2D_DrawContext::FillGradientCircle
 	ColorF           const   col2  
 ) const
 {
-	m_pGraphics->FillGradientCircle(m_coord.Transform2fPixelCircle(umCircle), col1, col2);
+	m_graphics.FillGradientCircle(m_coord.Transform2fPixelCircle(umCircle), col1, col2);
 }
 
 void D2D_DrawContext::DrawCircle
@@ -89,7 +99,7 @@ void D2D_DrawContext::DrawCircle
 	MicroMeter       const   umWidth
 ) const
 {
-	m_pGraphics->DrawCircle
+	m_graphics.DrawCircle
 	(
 		m_coord.Transform2fPixelCircle(umCircle), 
 		m_bNoColors ? ColorF::Black : col,
@@ -103,7 +113,7 @@ void D2D_DrawContext::FillEllipse
 	ColorF            const   col  
 ) const
 {
-	m_pGraphics->FillEllipse
+	m_graphics.FillEllipse
 	(
 		m_coord.Transform2fPixelEllipse(umEllipse), 
 		m_bNoColors ? ColorF::Black : col 
@@ -117,7 +127,7 @@ void D2D_DrawContext::DrawEllipse
 	MicroMeter        const   umWidth
 ) const
 {
-	m_pGraphics->DrawEllipse
+	m_graphics.DrawEllipse
 	(
 		m_coord.Transform2fPixelEllipse(umEllipse), 
 		m_bNoColors ? ColorF::Black : col,
@@ -134,7 +144,7 @@ void D2D_DrawContext::FillArrow
 	ColorF        const   col
 ) const
 {
-	m_pGraphics->FillArrow
+	m_graphics.FillArrow
 	(
 		m_coord.Transform2fPixelPos (umPos),
 		m_coord.Transform2fPixelSize(umVector), 
@@ -146,14 +156,14 @@ void D2D_DrawContext::FillArrow
 
 void D2D_DrawContext::FillRectangle(MicroMeterRect const & umRect, ColorF col) const 
 {
-	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
+	m_graphics.FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
 }
 
 void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, ColorF col) const 
 {
 	if (IsTooSmall(umRect))
 	{
-		m_pGraphics->FillRectangle
+		m_graphics.FillRectangle
 		(
 			fPixelRect
 			(
@@ -162,19 +172,19 @@ void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, ColorF col) 
 			), 
 			col 
 		);
-		m_pGraphics->FillRectangle
+		m_graphics.FillRectangle
 		(
 			fPixelRect
 			(
 				m_coord.Transform2fPixelPos(umRect.GetStartPoint()), 
-				m_pGraphics->GetClRectSize() 
+				m_graphics.GetClRectSize() 
 			), 
 			col 
 		);
 	}
 	else
 	{
-		m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
+		m_graphics.FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
 	}
 }
 
@@ -186,5 +196,5 @@ void D2D_DrawContext::DisplayText
 	IDWriteTextFormat * const   pTextFormat
 ) const
 {
-	m_pGraphics->DisplayText(m_coord.Transform2fPixelRect(umRect), wstr, colF, pTextFormat);
+	m_graphics.DisplayText(m_coord.Transform2fPixelRect(umRect), wstr, colF, pTextFormat);
 }
