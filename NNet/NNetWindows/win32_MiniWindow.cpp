@@ -7,7 +7,6 @@
 #include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
-#include "PixelCoordsFp.h"
 #include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
 
@@ -27,7 +26,7 @@ void MiniWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		PixelPoint const ptCrsr { GetCrsrPosFromLparam(lParam) };  // screen coordinates
 		if (m_ptLast.IsNotNull())     // last cursor pos stored in m_ptLast
 		{
-			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
+			PixelPoint    const pixDelta { ptCrsr - m_ptLast };
 			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize(pixDelta) }; 
 			m_pObservedNNetWindow->NNetMove(-umDelta);       // move the observed window in opposite direction
 		}
@@ -69,7 +68,7 @@ void MiniWindow::doPaint()
 	if (m_pObservedNNetWindow)
 	{
 		DrawSensors();
-		DrawExteriorInRect(GetClPixelRect(), [&](Nob const & n) { return true; }); 
+		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		GetDrawContext().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		DrawHighlightedSensor();
 	}

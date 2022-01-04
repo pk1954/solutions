@@ -5,20 +5,18 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "Direct2D.h"
 #include "D2D_DrawContext.h"
-#include "win32_modelWindow.h"
+#include "win32_baseWindow.h"
 
+class PixelCoordsFp;
 class ActionTimer;
 class NNetController;
 class NNetModelReaderInterface;
 
-class NNetWindow : public ModelWindow
+class NNetWindow : public BaseWindow
 {
 public:
-	static void InitClass(ActionTimer * const);
-
-	NNetWindow();
+	NNetWindow() = default;
 	~NNetWindow() override;
 
 	void Start
@@ -92,7 +90,7 @@ private:
 	NNetWindow             (NNetWindow const &);           // noncopyable class 
 	NNetWindow & operator= (NNetWindow const &) = delete;  // noncopyable class 
 
-	NNetController * m_pController { nullptr };
-	D2D_DrawContext  m_context     { };
-	fPixel           m_fPixRadiusLimit;
+	NNetController * m_pController     { nullptr };
+	D2D_DrawContext  m_context         { };
+	fPixel           m_fPixRadiusLimit { };
 };

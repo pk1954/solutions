@@ -23,15 +23,6 @@
 
 using std::function;
 
-void NNetWindow::InitClass(ActionTimer * const pActionTimer)
-{
-	ModelWindow::InitClass(pActionTimer);
-}
-
-NNetWindow::NNetWindow() :
-	ModelWindow()
-{ }
-
 void NNetWindow::Start
 (
 	HWND                     const   hwndApp, 
@@ -138,5 +129,5 @@ bool NNetWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	if (m_pController->HandleCommand(LOWORD(wParam), lParam, umPoint))
 		return true;
 
-	return ModelWindow::OnCommand(wParam, lParam, pixPoint);
+	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }

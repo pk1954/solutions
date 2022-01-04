@@ -14,6 +14,7 @@
 #include "win32_NNetWindow.h"
 
 class WinCommands;
+class ActionTimer;
 class NNetModelCommands;
 class ConnAnimationCommand;
 
@@ -22,6 +23,7 @@ using std::unique_ptr;
 class MainWindow : public NNetWindow
 {
 public:
+	static void InitClass(ActionTimer * const);
 
 	void Start
 	(
@@ -74,11 +76,12 @@ public:
 private:
 	 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
-	
+
+	inline static ActionTimer * m_pDisplayTimer { nullptr };
+
 //	Scale<fMicroSecs> m_horzScale;
 
-	MicroMeter m_arrowSize { STD_ARROW_SIZE };
-
+	MicroMeter          m_arrowSize            { STD_ARROW_SIZE };
 	MicroMeterRect      m_rectSelection        { };
 	MicroMeterPnt       m_umPntSelectionAnchor { };
 	NobId               m_nobHighlighted       { NO_NOB };

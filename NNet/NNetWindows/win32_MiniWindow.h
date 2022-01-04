@@ -4,31 +4,31 @@
 
 #pragma once
 
-#include "ObserverInterface.h"
-#include "win32_MainWindow.h"
+#include "observerInterface.h"
+#include "win32_NNetWindow.h"
 
 class MiniWindow : public NNetWindow
 {
 public:
 
-	virtual void   OnMouseWheel         (WPARAM const, LPARAM const) { };  // mini window cannot be zoomed 
-	virtual bool   OnRButtonUp          (WPARAM const, LPARAM const) { return false; }
-	virtual bool   OnRButtonDown        (WPARAM const, LPARAM const) { return false; }
-	virtual void   OnLButtonUp          (WPARAM const, LPARAM const) { };
-	virtual void   OnLeftButtonDblClick (WPARAM const, LPARAM const) { };
-	virtual void   OnChar               (WPARAM const, LPARAM const) { };
+	void   OnMouseWheel         (WPARAM const, LPARAM const) final { };  // mini window cannot be zoomed 
+	bool   OnRButtonUp          (WPARAM const, LPARAM const) final { return false; }
+	bool   OnRButtonDown        (WPARAM const, LPARAM const) final { return false; }
+	void   OnLButtonUp          (WPARAM const, LPARAM const) final { };
+	void   OnLeftButtonDblClick (WPARAM const, LPARAM const) final { };
+	void   OnChar               (WPARAM const, LPARAM const) final { };
 
-	virtual void   OnMouseMove          (WPARAM const, LPARAM const);
+	void   OnMouseMove          (WPARAM const, LPARAM const) final;
 
-	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0; }
+	LPARAM AddContextMenuEntries(HMENU const) final { return 0; }
 
-	virtual void   Notify(bool const);
+	void   Notify(bool const) final;
 
 	void ObservedNNetWindow(MainWindow * const);
 
 private:
 
-	virtual void doPaint();
+	void doPaint() final;
 
 	MainWindow * m_pObservedNNetWindow { nullptr }; // Observed NNetWindow (or nullptr)
 };

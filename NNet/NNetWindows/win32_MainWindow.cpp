@@ -15,6 +15,7 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "win32_ActionTimer.h"
 #include "win32_util_resource.h"
 #include "win32_fatalError.h"
 #include "win32_command.h"
@@ -25,6 +26,11 @@ using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
 using std::to_wstring;
+
+void MainWindow::InitClass(ActionTimer * const pActionTimer)
+{
+	m_pDisplayTimer = pActionTimer;
+}
 
 void MainWindow::Start
 (

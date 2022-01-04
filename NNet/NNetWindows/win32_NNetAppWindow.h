@@ -20,6 +20,7 @@
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
+#include "win32_actionTimer.h"
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_appTitle.h"
