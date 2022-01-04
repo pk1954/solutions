@@ -6,9 +6,10 @@
 #include <sstream> 
 #include "util.h"
 
+using std::wstring;
 using std::wostringstream;
 
-extern void UpperCase(std::wstring & str)
+extern void UpperCase(wstring & str)
 {
 	for (auto & c: str) 
 		c = toupper(c);

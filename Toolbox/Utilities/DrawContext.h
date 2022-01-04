@@ -1,10 +1,10 @@
 // DrawContext.h
 //
-// NNetModel
+// Utilities
 
 #pragma once
 
-#include "NNetColors.h"
+#include "d2d1helper.h"
 #include "PixelTypes.h"
 #include "PixelCoordsFp.h"
 

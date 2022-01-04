@@ -1,6 +1,6 @@
 // D2D_DrawContext.h
 //
-// NNetWindows
+// Win32_utilities
 
 #pragma once
 
@@ -8,7 +8,6 @@
 #include "DrawContext.h"
 #include "PixelTypes.h"
 #include "MoreTypes.h"
-#include "NobId.h"
 
 using std::wstring;
 using D2D1::ColorF;

@@ -72,9 +72,6 @@
     <ClCompile Include="win32_descriptionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D2D_DrawContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NNetWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComputeThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D2D_DrawContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_crsrWindow.h">

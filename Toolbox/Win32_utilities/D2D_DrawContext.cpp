@@ -1,6 +1,6 @@
 // DrawContext.cpp
 //
-// NNetWindows
+// Win32_utilities
 
 #include "stdafx.h"
 #include "d2d1helper.h"

@@ -575,7 +575,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ComputeThread.cpp" />
-    <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
@@ -600,7 +599,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ComputeThread.h" />
-    <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="Measurement.h" />
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="SignalControl.h" />
