@@ -7,6 +7,7 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
+#include "PixCoordFp.h"
 
 using std::endl;
 
@@ -16,20 +17,22 @@ public:
 
 	void Reset()
 	{
-		m_fPixOffset = 0.0_fPixel;
-		m_pixelSize  = DEFAULT_PIXEL_SIZE;
+		m_xDim.SetPixelSize(DEFAULT_PIXEL_SIZE);
+		m_yDim.SetPixelSize(DEFAULT_PIXEL_SIZE);
+		m_xDim.SetOffset(0.0_fPixel);
+		m_yDim.SetOffset(0.0_fPixel);
 	}
 
 	//////// transformations MicroMeter <---> fPixel ////////
 
 	fPixel Transform2fPixel(MicroMeter const param) const
 	{ 
-		return fPixel(param / m_pixelSize);
+		return fPixel(param / pixelSize());
 	}
 
 	MicroMeter Transform2MicroMeter(fPixel const fPixel) const
 	{ 
-		return m_pixelSize * fPixel.GetValue();
+		return pixelSize() * fPixel.GetValue();
 	}
 
 	fPixelPoint Transform2fPixelSize(MicroMeterPnt const np) const
@@ -54,17 +57,17 @@ public:
 
 	MicroMeterPnt Transform2MicroMeterPntPos(fPixelPoint const pp) const
 	{ 
-		return Transform2MicroMeterPntSize(pp + m_fPixOffset);
+		return Transform2MicroMeterPntSize(pp + GetPixelOffset());
 	}
 
 	MicroMeterPnt Transform2MicroMeterPntPos(PixelPoint const pixPoint) const
 	{ 
-		return Transform2MicroMeterPntSize(::Convert2fPixelPoint(pixPoint) + m_fPixOffset);
+		return Transform2MicroMeterPntSize(::Convert2fPixelPoint(pixPoint) + GetPixelOffset());
 	}
 
 	fPixelPoint Transform2fPixelPos(MicroMeterPnt const np) const
 	{ 
-		return Transform2fPixelSize(np) - m_fPixOffset;
+		return Transform2fPixelSize(np) - GetPixelOffset();
 	}
 
 	MicroMeterRect Transform2MicroMeterRect(fPixelRect const & fPixRect) const
@@ -186,17 +189,46 @@ public:
 	
 	//////// queries ////////
 
-	MicroMeter  GetPixelSize()   const { return m_pixelSize; };
-	fPixelPoint GetPixelOffset() const { return m_fPixOffset; }
+	MicroMeter  GetPixelSize() const 
+	{ 
+		return m_xDim.GetPixelSize(); 
+	}
+
+	fPixelPoint GetPixelOffset() const 
+	{ 
+		return fPixelPoint(m_xDim.GetPixelOffset(), m_yDim.GetPixelOffset()); 
+	}
 
 	//////// manipulation functions ////////
 
-	void SetPixelSize  (MicroMeter    const pixelSize ) { m_pixelSize  = pixelSize;  }
-	void SetPixelOffset(fPixelPoint   const fPixOffset) { m_fPixOffset = fPixOffset; }
-	void Set           (PixelCoordsFp const newVals   ) { * this = newVals; }
+	void SetPixelSize(MicroMeter const pixelSize) 
+	{ 
+		m_xDim.SetPixelSize(pixelSize);
+		m_yDim.SetPixelSize(pixelSize);
+	}
+	
+	void SetPixelOffset(fPixelPoint const fPixOffset) 
+	{ 
+		m_xDim.SetOffset(fPixOffset.GetX());
+		m_yDim.SetOffset(fPixOffset.GetY());
+	}
 
-	void Move(PixelPoint    const pntDelta) { m_fPixOffset -= ::Convert2fPixelPoint(pntDelta); }
-	void Move(MicroMeterPnt const umDelta ) { m_fPixOffset -= Transform2fPixelSize (umDelta); }
+	void Set(PixelCoordsFp const & newVals) 
+	{ 
+		* this = newVals; 
+	}
+
+	void Move(PixelPoint const & pntDelta) 
+	{ 
+		m_xDim.Move(Convert2fPixel(pntDelta.GetX()));
+		m_yDim.Move(Convert2fPixel(pntDelta.GetY()));
+	}
+
+	void Move(MicroMeterPnt const & umDelta) 
+	{ 
+		m_xDim.Move(Transform2fPixel(umDelta.GetX()));
+		m_yDim.Move(Transform2fPixel(umDelta.GetY()));
+	}
 
 	bool Zoom(MicroMeter const pixelSize)
 	{
@@ -231,53 +263,53 @@ public:
 		return ClipToMinMax<MicroMeter>(sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE);
 	}
 
-	PixelCoordsFp operator+= (PixelCoordsFp const a) 
+	PixelCoordsFp operator+= (PixelCoordsFp const & a) 
 	{ 
-		m_fPixOffset += a.m_fPixOffset;
-		m_pixelSize  += a.m_pixelSize; 
+		m_xDim += a.m_xDim;
+		m_yDim += a.m_yDim;
 		return * this; 
 	}
 
-	PixelCoordsFp operator-= (PixelCoordsFp const a) 
+	PixelCoordsFp operator-= (PixelCoordsFp const & a) 
 	{ 
-		m_fPixOffset -= a.m_fPixOffset;
-		m_pixelSize  -= a.m_pixelSize; 
+		m_xDim -= a.m_xDim;
+		m_yDim -= a.m_yDim;
 		return * this; 
 	}
 
 	PixelCoordsFp operator*= (float const factor) 
 	{ 
-		m_fPixOffset *= factor;
-		m_pixelSize  *= factor; 
+		m_xDim *= factor;
+		m_yDim *= factor; 
 		return * this; 
 	}
 
-	friend PixelCoordsFp operator+ (PixelCoordsFp const a, PixelCoordsFp const b) 
+	friend PixelCoordsFp operator+ (PixelCoordsFp const & a, PixelCoordsFp const & b) 
 	{ 
 		PixelCoordsFp res { a }; 
 		res += b; 
 		return res; 
 	};
 
-	friend PixelCoordsFp operator- (PixelCoordsFp const a, PixelCoordsFp const b) 
+	friend PixelCoordsFp operator- (PixelCoordsFp const & a, PixelCoordsFp const & b) 
 	{ 
 		PixelCoordsFp res { a }; 
 		res -= b; 
 		return res; 
 	};
 
-	friend PixelCoordsFp operator* (PixelCoordsFp const a, float const factor) 
+	friend PixelCoordsFp operator* (PixelCoordsFp const & a, float const factor) 
 	{ 
 		PixelCoordsFp res { a }; 
 		res *= factor; 
 		return res; 
 	};
 
-	friend wostream & operator<< (wostream & out, PixelCoordsFp const & c)
-	{
-		out << c.m_fPixOffset << L", " << c.m_pixelSize << endl;
-		return out; 
-	}
+	//friend wostream & operator<< (wostream & out, PixelCoordsFp const & c)
+	//{
+	//	out << c.m_fPixOffset << L", " << c.m_pixelSize << endl;
+	//	return out; 
+	//}
 
 	bool IsValidPixelSize(MicroMeter const size) const
 	{
@@ -290,6 +322,8 @@ private:
 	inline static MicroMeter const DEFAULT_PIXEL_SIZE {    1.0_MicroMeter };  
 	inline static MicroMeter const MAXIMUM_PIXEL_SIZE { 2000.0_MicroMeter };  // 2 MilliMeter
 
-	fPixelPoint m_fPixOffset { 0.0_fPixel };
-	MicroMeter  m_pixelSize  { DEFAULT_PIXEL_SIZE };
+	PixCoordFp<MicroMeter> m_xDim;
+	PixCoordFp<MicroMeter> m_yDim;
+
+	MicroMeter pixelSize() const { return m_xDim.GetPixelSize(); }
 };

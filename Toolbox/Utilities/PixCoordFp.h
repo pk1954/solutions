@@ -154,7 +154,7 @@ public:
 		ClipToMinMax(m_logPixelSize, fMin, fMax);
 	}
 	
-	void SetZoomFactor(float  const f) 
+	void SetZoomFactor(float const f) 
 	{ 
 		m_fZoomFactor = f; 
 	};
