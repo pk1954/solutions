@@ -44,7 +44,7 @@ private:
 	inline static fPixel const LINE_WIDTH_STD { 1.0_fPixel };
 	inline static fPixel const LINE_WIDTH_HI  { 3.0_fPixel };
 
-	void DoPaint() const final;
+	void DoPaint() final;
 
 	bool OnSize      (WPARAM const, LPARAM const) final;
 	void OnMouseMove (WPARAM const, LPARAM const) final;

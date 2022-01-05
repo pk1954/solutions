@@ -197,7 +197,7 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 	}
 }
 
-void MonitorWindow::DoPaint() const
+void MonitorWindow::DoPaint()
 {
 	try
 	{

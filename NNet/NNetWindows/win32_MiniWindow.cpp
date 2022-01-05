@@ -63,7 +63,7 @@ void MiniWindow::Notify(bool const bImmediately)
 	}
 }
 
-void MiniWindow::DoPaint() const
+void MiniWindow::DoPaint()
 {
 	if (m_pObservedNNetWindow)
 	{

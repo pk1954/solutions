@@ -50,7 +50,7 @@ private:
 
 	fPixelPoint calcDiamondPos() const;
 
-	void DoPaint() const final;
+	void DoPaint() final;
 
 	bool OnSize              (WPARAM const, LPARAM const) final;
 	void OnMouseWheel        (WPARAM const, LPARAM const) final;

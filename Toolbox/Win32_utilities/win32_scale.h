@@ -13,7 +13,7 @@
 #include "dwrite.h"
 #include "PixelTypes.h"
 #include "PixCoordFp.h"
-#include "win32_baseWindow.h"
+#include "win32_graphicsWindow.h"
 
 using std::wostringstream;
 using std::to_wstring;
@@ -24,7 +24,7 @@ class D2D_driver;
 struct IDWriteTextFormat;
 
 template <typename LogUnits>
-class Scale : public BaseWindow
+class Scale : public GraphicsWindow
 {
 public:
 
@@ -46,8 +46,7 @@ public:
 			nullptr,
 			nullptr
 		);
-		m_graphics.Initialize(hwnd);
-		m_trackStruct.hwndTrack = hwnd;
+		GraphicsWindow::Initialize(hwnd);
 		m_pTextFormat = m_graphics.NewTextFormat(12.f);
 	}
 
@@ -78,9 +77,6 @@ private:
 	inline static fPixel   const TEXT_HORZ_EXT  { 20._fPixel };
 	inline static fPixel   const TEXT_VERT_EXT  { 10._fPixel };
 
-	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
-	D2D_driver      m_graphics    {};
-
 	PixCoordFp<LogUnits> & m_pixCoord;
 
 	IDWriteTextFormat    * m_pTextFormat    { nullptr };
@@ -99,7 +95,7 @@ private:
 
 	// private functions
 
-	void doPaint()
+	void DoPaint()
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };  
 
@@ -154,7 +150,7 @@ private:
 	void OnMouseMove(WPARAM const wParam, LPARAM const lParam) final
 	{
 		Trigger();   // cause repaint
-		(void)TrackMouseEvent(& m_trackStruct);
+		TrackMouse();
 	}
 
 	bool OnMouseLeave(WPARAM const wParam, LPARAM const lParam) final
@@ -163,26 +159,9 @@ private:
 		return false;
 	}
 
-	void OnPaint() final
-	{
-		if (IsWindowVisible())
-		{
-			PAINTSTRUCT ps;
-			BeginPaint(&ps);
-			if (m_graphics.StartFrame())
-			{
-				doPaint();
-				m_graphics.EndFrame();
-			}
-			EndPaint(&ps);
-		}
-	}
-
 	bool OnSize(WPARAM const wParam, LPARAM const lParam) final
 	{
-		UINT width  = LOWORD(lParam);
-		UINT height = HIWORD(lParam);
-		m_graphics.Resize(width, height);
+		GraphicsWindow::OnSize(wParam, lParam);
 		Notify(false);
 		return true;
 	}

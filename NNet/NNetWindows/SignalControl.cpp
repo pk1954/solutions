@@ -99,7 +99,7 @@ fPixelPoint SignalControl::getGraphPnt(fMicroSecs const time) const
 	return getPixPnt(time, m_signalGenerator.GetFrequency(time));
 }
 
-void SignalControl::DoPaint() const
+void SignalControl::DoPaint()
 {
 	m_graphics.FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 

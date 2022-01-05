@@ -28,7 +28,7 @@ public:
 
 private:
 
-	void DoPaint() const final;
+	void DoPaint() final;
 
 	MainWindow * m_pObservedNNetWindow { nullptr }; // Observed NNetWindow (or nullptr)
 };

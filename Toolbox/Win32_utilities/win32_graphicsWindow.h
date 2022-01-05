@@ -57,7 +57,7 @@ public:
 		return true;
 	}
 
-	virtual void DoPaint() const = 0;
+	virtual void DoPaint() = 0;
 
 protected:
 	D2D_driver      m_graphics { };

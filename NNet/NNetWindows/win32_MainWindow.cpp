@@ -399,7 +399,7 @@ void MainWindow::OnPaint()
 
 /////////////////////// local functions ////////////////////////////////
 
-void MainWindow::DoPaint() const
+void MainWindow::DoPaint()
 {
 	PixelRect   const   pixRect { GetClPixelRect () };
 	DrawContext const & context { GetDrawContextC() };
