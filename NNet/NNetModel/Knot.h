@@ -11,7 +11,6 @@
 #include "Pipe.h"
 
 class DrawContext;
-class PixelCoordsFp;
 class NNetModel;
 
 using std::unique_ptr;

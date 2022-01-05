@@ -25,7 +25,7 @@ using std::function;
 
 void NNetWindow::Start
 (
-	HWND                     const   hwndApp, 
+	HWND                     const   hwndParent, 
 	DWORD                    const   dwStyle,
 	bool                     const   bShowRefreshRateDialog,
 	fPixel                   const   fPixLimit,
@@ -33,17 +33,8 @@ void NNetWindow::Start
 	NNetController                 & controller
 )
 {
-	HWND hwnd = StartBaseWindow
-	(
-		hwndApp,
-		CS_OWNDC | CS_DBLCLKS,
-		L"ClassNNetWindow",
-		dwStyle,
-		nullptr,
-		nullptr
-	);
-	GraphicsWindow::Initialize(hwnd);
-	m_context.Start(&m_graphics);
+	GraphicsWindow::Initialize(hwndParent, L"ClassNNetWindow", dwStyle);
+	m_context.Start(m_upGraphics.get());
 	m_pNMRI           = & modelReaderInterface;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
@@ -58,7 +49,7 @@ NNetWindow::~NNetWindow()
 
 MicroMeterRect NNetWindow::GetViewRect() const 
 { 
-	return GetCoordC().Transform2MicroMeterRect(GetClPixelRect()); 
+	return GetCoordC().Transform2logUnitRect(GetClPixelRect()); 
 };
 
 void NNetWindow::DrawArrowsInRect
@@ -69,7 +60,7 @@ void NNetWindow::DrawArrowsInRect
 {
 	m_pNMRI->Apply2AllInRect<Pipe>
 	(
-		GetCoordC().Transform2MicroMeterRect(rect),	
+		GetCoordC().Transform2logUnitRect(rect),	
 		[this, umSize](Pipe const & s) { s.DrawArrows(m_context, umSize); } 
 	);
 }
@@ -103,7 +94,7 @@ bool NNetWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 
 bool NNetWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	MicroMeterPnt const umPoint { GetCoordC().Transform2MicroMeterPntPos(pixPoint) };
+	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
 	if (m_pController->HandleCommand(LOWORD(wParam), lParam, umPoint))
 		return true;
 

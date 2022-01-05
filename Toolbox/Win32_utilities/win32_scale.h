@@ -37,17 +37,8 @@ public:
  	: m_bVertScale(bVertScale),
 	  m_pixCoord(pixCoord)
 	{
-		HWND hwnd = StartBaseWindow
-		(
-			hwndParent,
-			CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, 
-			L"ClassScale",
-			WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-			nullptr,
-			nullptr
-		);
-		GraphicsWindow::Initialize(hwnd);
-		m_pTextFormat = m_graphics.NewTextFormat(12.f);
+		GraphicsWindow::Initialize(hwndParent, L"ClassScale", WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+		m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
 	}
 
 	Scale(Scale  &) = delete;
@@ -95,7 +86,7 @@ private:
 
 	// private functions
 
-	void DoPaint()
+	void DoPaint() final
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };  
 
@@ -104,7 +95,7 @@ private:
 		float       const fExp           { floor(log10) };
 		float       const fFractPart     { log10 - fExp };
 		float       const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
-		fPixel      const fPixSizeA      { m_bVertScale ? m_graphics.GetClRectHeight() : m_graphics.GetClRectWidth() };
+		fPixel      const fPixSizeA      { m_bVertScale ? m_upGraphics->GetClRectHeight() : m_upGraphics->GetClRectWidth() };
 		fPixel      const fPixScaleLen   { fPixSizeA - m_pixCoord.GetPixelOffset() - m_fPixBorder }; 
 		LogUnits    const logScaleLen    { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
 		fPixelPoint const fPixPntOffset 
@@ -132,9 +123,9 @@ private:
 		setTextBox(textBox);
 
 		if (CrsrInClientRect())
-			m_graphics.FillBackground(D2D1::ColorF::Aquamarine);
+			m_upGraphics->FillBackground(D2D1::ColorF::Aquamarine);
 
-		m_graphics.DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
+		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
 
 		displayTicks(textBox);
 		fPixelPoint fPixPos 
@@ -183,7 +174,7 @@ private:
 
 	fPixel getClHeight() const
 	{
-		return m_graphics.GetClRectHeight();
+		return m_upGraphics->GetClRectHeight();
 	}
 
 	void setScaleParams()
@@ -243,7 +234,7 @@ private:
 			? fPixelPoint(m_fPixPntStart.GetX() + fDir, getClHeight() - fTickA)
 			: fPixelPoint(fTickA,                       m_fPixPntStart.GetY() + fDir)
 		};
-		m_graphics.DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, SCALE_COLOR);
+		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, SCALE_COLOR);
 	}
 
 	void displayTicks(fPixelRect const & textBox) const
@@ -274,6 +265,6 @@ private:
 		wstring    const & wstr
 	) const
 	{
-		m_graphics.DisplayText(textBox, wstr, SCALE_COLOR, m_pTextFormat);
+		m_upGraphics->DisplayText(textBox, wstr, SCALE_COLOR, m_pTextFormat);
 	}
 };

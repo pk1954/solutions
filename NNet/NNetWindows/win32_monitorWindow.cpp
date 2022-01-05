@@ -32,23 +32,14 @@ void MonitorWindow::Start
 	MonitorData                    & monitorData 
 )
 {
-	HWND hwnd = StartBaseWindow
-	(
-		hwndParent,
-		CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, 
-		L"ClassMonitorWindow",
-		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
-		nullptr,
-		nullptr
-	);
+	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorWindow", WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX);
 	m_pSound         =   pSound;
 	m_pController    =   pController;
 	m_pModelCommands =   pModelCommands;
 	m_pNMRI          = & nmri;
 	m_pMonitorData   = & monitorData;
-	GraphicsWindow::Initialize(hwnd);
-	SetWindowText(hwnd, L"Monitor");
-	m_measurement.Initialize(& m_graphics);
+	SetWindowText(L"Monitor");
+	m_measurement.Initialize(m_upGraphics.get());
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 4000._MicroSecs); 
@@ -192,7 +183,7 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 			return;
 		fPixel      const fPixX    { m_fPixWinWidth - m_horzCoord.Transform2fPixelSize(usEnd - time) }; 
 		fPixelPoint const actPoint { fPixX, fPixYoff - fPixSignal };
-		m_graphics.DrawLine(prevPoint, actPoint, fPixWidth, color);
+		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color);
 		prevPoint = actPoint;
 	}
 }
@@ -211,7 +202,7 @@ void MonitorWindow::DoPaint()
 			fPixel         const fPHeight { calcTrackHeight() };
 			fPixelPoint    const pos      {	0._fPixel, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
 			fPixelRectSize const size     {	m_fPixWinWidth + 1, fPHeight };
-			m_graphics.FillRectangle(fPixelRect(pos, size), NNetColors::COL_BEACON);
+			m_upGraphics->FillRectangle(fPixelRect(pos, size), NNetColors::COL_BEACON);
 		}
 
 		m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
@@ -220,7 +211,7 @@ void MonitorWindow::DoPaint()
 		{
 			fPixelPoint const fPixDiamondPos { MonitorWindow::calcDiamondPos() };
 			if (fPixDiamondPos.IsNotNull())
-				m_graphics.FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
+				m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
 		}
 	}
 	catch (MonitorDataException const & e)

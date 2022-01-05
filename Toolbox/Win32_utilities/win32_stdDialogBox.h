@@ -13,7 +13,7 @@ static INT_PTR CALLBACK dialogProc(HWND const,	UINT const, WPARAM const, LPARAM 
 class StdDialogBox
 {
 public:
-	static float Show(HWND const, float, wstring const, wstring const);
+	static float Show(HWND const, float, wstring const &, wstring const &);
 	static void  SetParameterValue(HWND const, float const);
 	static bool  Evaluate(HWND const, float &);
 

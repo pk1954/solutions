@@ -16,10 +16,10 @@ static wstring m_wstrTitle;  // the title bar text of the dialog
 
 float StdDialogBox::Show
 (
-	HWND    const hwndParent, 
-	float         fValue,
-	wstring const wstrTitle,
-	wstring const wstrUnit
+	HWND    const   hwndParent, 
+	float           fValue,
+	wstring const & wstrTitle,
+	wstring const & wstrUnit
 )
 {
 	m_wstrTitle = wstrTitle;
@@ -36,7 +36,7 @@ void StdDialogBox::SetParameterValue(HWND const hwndEditField, float const fValu
 {
 	wostringstream m_wstrBuffer;
 	m_wstrBuffer << fValue;
-	SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
+	::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
 }
 
 bool StdDialogBox::Evaluate(HWND const hwndEditField, float & fValue)
@@ -81,9 +81,9 @@ INT_PTR CALLBACK dialogProc
 	{
 	case WM_INITDIALOG:
 	{
-		SetWindowText(hDlg, m_wstrTitle.c_str());
+		::SetWindowText(hDlg, m_wstrTitle.c_str());
 		StdDialogBox::SetParameterValue(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
-		SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
+		::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
 		SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
 		SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 		return INT_PTR(true);

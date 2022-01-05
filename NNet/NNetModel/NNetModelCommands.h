@@ -6,6 +6,7 @@
 
 #include <string>
 #include "BoolOp.h"
+#include "Uniform2D.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "MonitorData.h"
@@ -19,7 +20,6 @@ class Observable;
 class NobIdList;
 class CommandStack;
 class AlignAnimation;
-class PixelCoordsFp;
 class NNetModelImporter;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
@@ -60,7 +60,7 @@ public:
     void AnalyzeAnomalies   ();
     void AnalyzeLoops       ();
     void AnimateArrows      (MicroMeter &, MicroMeter const);
-    void AnimateCoord       (PixelCoordsFp &, PixelCoordsFp const);
+    void AnimateCoord       (Uniform2D<MicroMeter> &, Uniform2D<MicroMeter> const &);
     void AppendInputNeuron  (NobId const);
     void AppendOutputNeuron (NobId const);
     void ClearBeepers       ();

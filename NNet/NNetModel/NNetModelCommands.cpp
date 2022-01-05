@@ -37,7 +37,7 @@
 #include "NewNeuronCommandT.h"
 #include "NNetModelImporter.h"
 #include "NNetModelStorage.h"
-#include "PixelCoordsFp.h"
+#include "Uniform2D.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoNeuronAnimation.h"
 #include "RestrictSelectionCommand.h"
@@ -178,8 +178,8 @@ void NNetModelCommands::AnalyzeLoops()
 
 void NNetModelCommands::AnimateCoord
 (
-	PixelCoordsFp     & actual, 
-	PixelCoordsFp const target
+	Uniform2D<MicroMeter>       & actual, 
+	Uniform2D<MicroMeter> const & target
 )
 {
 	if (IsTraceOn())

@@ -8,7 +8,6 @@
 #include "D2D_DrawContext.h"
 #include "win32_graphicsWindow.h"
 
-class PixelCoordsFp;
 class ActionTimer;
 class NNetController;
 class NNetModelReaderInterface;
@@ -31,11 +30,11 @@ public:
 
 	MicroMeterRect GetViewRect() const;
 
-	DrawContext   const & GetDrawContextC() const { return m_context; }
-	DrawContext         & GetDrawContext ()       { return m_context; }
-	PixelCoordsFp const & GetCoordC      () const { return m_context.GetCoordC(); }
-	PixelCoordsFp       & GetCoord       ()       { return m_context.GetCoord (); }
-	MicroMeter            PixelSize      () const { return m_context.GetPixelSize(); }
+	DrawContext           const & GetDrawContextC() const { return m_context; }
+	DrawContext                 & GetDrawContext ()       { return m_context; }
+	Uniform2D<MicroMeter> const & GetCoordC      () const { return m_context.GetCoordC(); }
+	Uniform2D<MicroMeter>       & GetCoord       ()       { return m_context.GetCoord (); }
+	MicroMeter                    PixelSize      () const { return m_context.GetPixelSize(); }
 
 	void DrawArrowsInRect(PixelRect const &, MicroMeter const) const;
 
@@ -46,7 +45,7 @@ public:
 		CRIT      const & crit 
 	) const
 	{
-		MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
+		MicroMeterRect const umRect { GetCoordC().Transform2logUnitRect(rect) };
 		m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
 		(
 			umRect,
@@ -61,7 +60,7 @@ public:
 		CRIT      const & crit 
 	) const
 	{
-		MicroMeterRect const umRect { GetCoordC().Transform2MicroMeterRect(rect) };
+		MicroMeterRect const umRect { GetCoordC().Transform2logUnitRect(rect) };
 		m_pNMRI->GetUPNobsC().Apply2AllInRect<Nob>
 		(
 			umRect,

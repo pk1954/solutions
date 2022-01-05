@@ -6,7 +6,7 @@
 
 #include "d2d1helper.h"
 #include "PixelTypes.h"
-#include "PixelCoordsFp.h"
+#include "Uniform2D.h"
 
 using std::wstring;
 using D2D1::ColorF;
@@ -67,8 +67,8 @@ public:
 		IDWriteTextFormat * const = nullptr
 	) const = 0;
 
-	PixelCoordsFp const & GetCoordC() const { return m_coord; }
-	PixelCoordsFp       & GetCoord ()       { return m_coord; }
+	Uniform2D<MicroMeter> const & GetCoordC() const { return m_coord; }
+	Uniform2D<MicroMeter>       & GetCoord ()       { return m_coord; }
 
 	MicroMeter  GetPixelSize  () const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset() const { return m_coord.GetPixelOffset(); }
@@ -84,11 +84,11 @@ public:
 
 	bool IsTooSmall(MicroMeterRect const & rect) const
 	{
-		MicroMeter const umMin { m_coord.Transform2MicroMeter(10._fPixel) };
+		MicroMeter const umMin { m_coord.Transform2logUnit(10._fPixel) };
 		return (rect.GetHeight() < umMin) || (rect.GetWidth() < umMin);
 	}
 
 protected:
-	bool          m_bNoColors { false };
-	PixelCoordsFp m_coord     { };
+	bool                  m_bNoColors { false };
+	Uniform2D<MicroMeter> m_coord     { };
 };

@@ -170,7 +170,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main grid window
 
-	SetWindowText(m_miniNNetWindow.GetWindowHandle(), L"Mini window");
+	::SetWindowText(m_miniNNetWindow.GetWindowHandle(), L"Mini window");
 
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow, & m_nmri);
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands, & m_model.GetParams());

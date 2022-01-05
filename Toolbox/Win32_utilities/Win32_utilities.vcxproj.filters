@@ -188,6 +188,9 @@
     <ClCompile Include="D2D_DrawContext.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="win32_graphicsWindow.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32_utilities.rc">

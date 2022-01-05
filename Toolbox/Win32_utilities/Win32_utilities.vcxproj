@@ -210,6 +210,7 @@
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
     <ClCompile Include="win32_escape.cpp" />
+    <ClCompile Include="win32_graphicsWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="win32_stdDialogBox.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />

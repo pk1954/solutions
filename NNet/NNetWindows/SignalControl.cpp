@@ -35,18 +35,7 @@ SignalControl::SignalControl
 	m_signalGenerator.RegisterObserver(this);
 	m_horzCoord.RegisterObserver(this);
 	m_vertCoord.RegisterObserver(this);
-
-	HWND hwnd = StartBaseWindow
-	(
-		hwndParent,
-		CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, 
-		L"ClassSignalControl",
-		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
-		nullptr,
-		nullptr
-	);
-
-	GraphicsWindow::Initialize(hwnd);
+	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE);
 }
 
 fMicroSecs SignalControl::getTime(fPixel const fPix) const
@@ -101,7 +90,7 @@ fPixelPoint SignalControl::getGraphPnt(fMicroSecs const time) const
 
 void SignalControl::DoPaint()
 {
-	m_graphics.FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
+	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fMicroSecs   const usResolution { m_signalGenerator.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
@@ -119,8 +108,8 @@ void SignalControl::DoPaint()
 	{
 		fPixelPoint const actPoint  { getGraphPnt(time) };
 		fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-		m_graphics.DrawLine(prevPoint, stepPoint, m_fPixLineWidth, color);
-		m_graphics.DrawLine(stepPoint, actPoint,  m_fPixLineWidth, color);
+		m_upGraphics->DrawLine(prevPoint, stepPoint, m_fPixLineWidth, color);
+		m_upGraphics->DrawLine(stepPoint, actPoint,  m_fPixLineWidth, color);
 		prevPoint = actPoint;
 	}
 
@@ -161,37 +150,37 @@ void SignalControl::displayPoint
 	D2D1::ColorF const col
 ) const
 {
-	m_graphics.FillDiamond(getGraphPnt(time), wDiamond, col);
+	m_upGraphics->FillDiamond(getGraphPnt(time), wDiamond, col);
 	displayFreqLine(time, wLine, col);
 	displayTimeLine(time, wLine, col);
 }
 
 void SignalControl::displayBaseFrequency
 (
-	fPixel       const w, 
+	fPixel       const width, 
 	D2D1::ColorF const colF
 ) 
 const
 {		
 	fMicroSecs   const timeStart { 0.0_MicroSecs };
 	fMicroSecs   const timeEnd   { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	m_graphics.DrawLine
+	m_upGraphics->DrawLine
 	(
 		getPixPnt(timeStart, m_signalGenerator.FreqBase()), 
 		getPixPnt(timeEnd,   m_signalGenerator.FreqBase()), 
-		w,
+		width,
 		colF
 	);
 }
 
 void SignalControl::displayFreqLine(fMicroSecs const time, fPixel const w, D2D1::ColorF const colF) const
 {
-	m_graphics.DrawLine(getGraphPnt(time), getPixPnt(0.0_MicroSecs, m_signalGenerator.GetFrequency(time)), w, colF);
+	m_upGraphics->DrawLine(getGraphPnt(time), getPixPnt(0.0_MicroSecs, m_signalGenerator.GetFrequency(time)), w, colF);
 }
 
 void SignalControl::displayTimeLine(fMicroSecs const time, fPixel const w, D2D1::ColorF const colF) const
 {
-	m_graphics.DrawLine(getGraphPnt(time), getPixPnt(time, 0.0_fHertz),  w, colF);
+	m_upGraphics->DrawLine(getGraphPnt(time), getPixPnt(time, 0.0_fHertz),  w, colF);
 }
 
 bool SignalControl::OnSize(WPARAM const wParam, LPARAM const lParam)

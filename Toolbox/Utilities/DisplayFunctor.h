@@ -9,6 +9,6 @@
 class DisplayFunctor
 {
 public:
-	virtual ~DisplayFunctor() {};
+	virtual ~DisplayFunctor() = default;
 	virtual void operator() (std::wstring const &) = 0;
 };

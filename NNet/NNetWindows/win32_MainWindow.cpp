@@ -155,7 +155,7 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 {
 	PixelPoint const pixPoint { GetRelativeCrsrPosition() };
 	return IsInClientRect(pixPoint)
-		? GetCoordC().Transform2MicroMeterPntPos(pixPoint)
+		? GetCoordC().Transform2logUnitPntPos(pixPoint)
 		: NP_NULL;
 }
 
@@ -164,7 +164,7 @@ void MainWindow::zoomStep(float const fFactor, fPixelPoint const fPixPointCenter
 	MicroMeter const newSize { GetCoordC().GetPixelSize() * fFactor };
 	if ( GetCoordC().IsValidPixelSize(newSize) )
 	{
-		MicroMeterPnt const umPntcenter { GetCoordC().Transform2MicroMeterPntPos(fPixPointCenter) }; // compute center ** BEFORE ** zooming!
+		MicroMeterPnt const umPntcenter { GetCoordC().Transform2logUnitPntPos(fPixPointCenter) }; // compute center ** BEFORE ** zooming!
 		GetDrawContext().Zoom(newSize);
 		GetDrawContext().Center(umPntcenter, fPixPointCenter);
 //		m_horzScale.SetPixelSize(newSize.GetValue());
@@ -243,7 +243,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		m_pCursorPosObservable->NotifyAll(false);
 
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
 
 	if (wParam == 0)                     // no mouse buttons or special keyboard keys pressed
 	{
@@ -267,7 +267,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	
 	if (wParam & MK_LBUTTON)        // Left mouse button
 	{
-		MicroMeterPnt const umLastPos { GetCoordC().Transform2MicroMeterPntPos(ptLast) };
+		MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
 		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
 		if (umDelta.IsZero())
 			return;
@@ -342,7 +342,7 @@ bool MainWindow::OnRButtonUp(WPARAM const wParam, LPARAM const lParam)
 bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2MicroMeterPntPos(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
 
 	m_umPntSelectionAnchor = umCrsrPos;
 	SetFocus();
@@ -355,7 +355,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 
 	PixelPoint    const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
 	fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
-	MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2MicroMeterPntPos(fPixPointCrsr) };
+	MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
 	int           const iDelta        { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 	float         const fFactor       { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
 	SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
@@ -376,8 +376,8 @@ void MainWindow::centerAndZoomRect
 	float              const fRatioFactor 
 )
 {
-	MicroMeterRect umRect { m_pNMRI->GetUPNobsC().CalcEnclosingRect(mode) };
-	PixelCoordsFp  coordTarget;
+	MicroMeterRect        umRect { m_pNMRI->GetUPNobsC().CalcEnclosingRect(mode) };
+	Uniform2D<MicroMeter> coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	(
 		GetCoord().ComputeZoom(umRect.ScaleRect(NEURON_RADIUS), GetClRectSize(), fRatioFactor) 

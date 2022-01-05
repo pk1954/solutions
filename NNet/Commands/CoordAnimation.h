@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "win32_animation.h"
 #include "NNetParameters.h"
-#include "PixelCoordsFp.h"
+#include "Uniform2D.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_command.h"
 
@@ -15,7 +15,7 @@ using std::function;
 
 class CoordAnimation : public Command
 {
-    using ANIM_TYPE = PixelCoordsFp;
+    using ANIM_TYPE = Uniform2D<MicroMeter>;
     using ANIMATION = Animation<ANIM_TYPE>;
 public:
     CoordAnimation

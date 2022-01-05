@@ -64,7 +64,7 @@ void DescriptionWindow::Start(HWND const hwndParent)
         nullptr
     );
 
-    SetWindowText(hwndDlg, L"Model description");
+    SetWindowText(L"Model description");
 
     m_hwndEdit = CreateWindowEx
     (
@@ -123,12 +123,12 @@ void DescriptionWindow::Stop()
 
 void DescriptionWindow::ClearDescription()
 {
-    Edit_SetText(m_hwndEdit, L"");
+    ::Edit_SetText(m_hwndEdit, L"");
 }
 
 void DescriptionWindow::SetDescription(wstring const & wstrDesc)
 {
-    Edit_SetText(m_hwndEdit, wstrDesc.c_str());
+    ::Edit_SetText(m_hwndEdit, wstrDesc.c_str());
 }
 
 int DescriptionWindow::GetLineCount() const

@@ -30,7 +30,7 @@ SignalDesigner::SignalDesigner
 		nullptr
 	);
 
-	SetWindowText(hwnd, L"SignalDesigner");
+	SetWindowText(L"SignalDesigner");
 
 	m_upSignalControl = make_unique<SignalControl>
 	(
