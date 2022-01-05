@@ -63,6 +63,7 @@ public:
 	void ShowArrows(bool const);
 	bool ArrowsVisible() const; 
 
+	void OnPaint() final;
 	bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const) final;
 	bool OnSize              (WPARAM const, LPARAM const) final;
 	bool OnRButtonDown       (WPARAM const, LPARAM const) final;
@@ -71,7 +72,6 @@ public:
 	void OnLeftButtonDblClick(WPARAM const, LPARAM const) final;
 	void OnLButtonUp         (WPARAM const, LPARAM const) final;
 	bool OnRButtonUp         (WPARAM const, LPARAM const) final;
-	void OnPaint             () final;
 
 private:
 	 
@@ -97,7 +97,7 @@ private:
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
 	void zoomStep         (float const, fPixelPoint const);
 
-	void doPaint() final;
+	void DoPaint() const final;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

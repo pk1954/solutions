@@ -34,7 +34,7 @@ public:
 		(void)TrackMouseEvent(& m_trackStruct);
 	}
 
-	void OnPaint() final
+	void OnPaint() override
 	{
 		if (IsWindowVisible())
 		{

@@ -63,13 +63,13 @@ void MiniWindow::Notify(bool const bImmediately)
 	}
 }
 
-void MiniWindow::doPaint() 
+void MiniWindow::DoPaint() const
 {
 	if (m_pObservedNNetWindow)
 	{
 		DrawSensors();
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
-		GetDrawContext().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
+		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		DrawHighlightedSensor();
 	}
 }

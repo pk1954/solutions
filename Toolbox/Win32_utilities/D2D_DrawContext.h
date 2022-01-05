@@ -18,13 +18,8 @@ class D2D_DrawContext: public DrawContext
 {
 public:
 
-	void Start(HWND const);
-	void Stop();
+	void Start(D2D_driver * const);
 
-	bool StartFrame();
-	void EndFrame  ();
-
-	void Resize(int const, int const);
 	void SetStdFontSize(MicroMeter const &);
 
 	void DrawLine
@@ -100,5 +95,5 @@ public:
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
-	D2D_driver m_graphics { };
+	D2D_driver * m_pGraphics;
 };

@@ -42,17 +42,12 @@ void NNetWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_context.Start(hwnd);
+	GraphicsWindow::Initialize(hwnd);
+	m_context.Start(&m_graphics);
 	m_pNMRI           = & modelReaderInterface;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
-}
-
-void NNetWindow::Stop()
-{
-	m_context.Stop();
-	DestroyWindow();
 }
 
 NNetWindow::~NNetWindow()
@@ -99,26 +94,9 @@ void NNetWindow::DrawHighlightedSensor() const
 		pSignal->Draw(m_context, true);
 }
 
-void NNetWindow::OnPaint()
-{
-	if (IsWindowVisible())
-	{
-		PAINTSTRUCT ps;
-		BeginPaint(&ps);
-		if (m_context.StartFrame())
-		{
-			doPaint();
-			m_context.EndFrame();
-		}
-		EndPaint(&ps);
-	}
-}
-
 bool NNetWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
-	UINT width  = LOWORD(lParam);
-	UINT height = HIWORD(lParam);
-	m_context.Resize(width, height);
+	GraphicsWindow::OnSize(wParam, lParam);
 	Notify(false);
 	return true;    // job done
 }

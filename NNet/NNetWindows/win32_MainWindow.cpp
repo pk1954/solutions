@@ -399,10 +399,10 @@ void MainWindow::OnPaint()
 
 /////////////////////// local functions ////////////////////////////////
 
-void MainWindow::doPaint() 
+void MainWindow::DoPaint() const
 {
-	PixelRect   const   pixRect { GetClPixelRect() };
-	DrawContext const & context { GetDrawContext() };
+	PixelRect   const   pixRect { GetClPixelRect () };
+	DrawContext const & context { GetDrawContextC() };
 
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);

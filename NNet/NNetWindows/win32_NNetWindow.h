@@ -6,14 +6,14 @@
 
 #include "MoreTypes.h"
 #include "D2D_DrawContext.h"
-#include "win32_baseWindow.h"
+#include "win32_graphicsWindow.h"
 
 class PixelCoordsFp;
 class ActionTimer;
 class NNetController;
 class NNetModelReaderInterface;
 
-class NNetWindow : public BaseWindow
+class NNetWindow : public GraphicsWindow
 {
 public:
 	NNetWindow() = default;
@@ -29,14 +29,13 @@ public:
 		NNetController                 &
 	);
 
-	virtual void Stop();
-
 	MicroMeterRect GetViewRect() const;
 
-	DrawContext         & GetDrawContext()       { return m_context; }
-	PixelCoordsFp const & GetCoordC     () const { return m_context.GetCoordC(); }
-	PixelCoordsFp       & GetCoord      ()       { return m_context.GetCoord (); }
-	MicroMeter            PixelSize     () const { return m_context.GetPixelSize(); }
+	DrawContext   const & GetDrawContextC() const { return m_context; }
+	DrawContext         & GetDrawContext ()       { return m_context; }
+	PixelCoordsFp const & GetCoordC      () const { return m_context.GetCoordC(); }
+	PixelCoordsFp       & GetCoord       ()       { return m_context.GetCoord (); }
+	MicroMeter            PixelSize      () const { return m_context.GetPixelSize(); }
 
 	void DrawArrowsInRect(PixelRect const &, MicroMeter const) const;
 
@@ -72,13 +71,10 @@ public:
 
 protected:
 
-    void OnPaint      () override;
     bool OnSize       (WPARAM const, LPARAM const) override;
     bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const) override;
     void OnLButtonDown(WPARAM const, LPARAM const)  override {}
    
-    virtual void doPaint() = 0;
-
 	void DrawSensors() const;
 	void DrawHighlightedSensor() const;
 
