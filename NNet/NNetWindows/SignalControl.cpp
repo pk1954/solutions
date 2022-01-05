@@ -114,8 +114,7 @@ fPixelPoint SignalControl::getGraphPnt(fMicroSecs const time) const
 
 void SignalControl::doPaint() const
 {
-	fPixelRect fPixRect = Convert2fPixelRect(GetClPixelRect());
-	m_graphics.FillRectangle(fPixRect, D2D1::ColorF::Ivory);
+	m_graphics.FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
 	D2D1::ColorF const color        { D2D1::ColorF::Black };
 	fMicroSecs   const usResolution { m_signalGenerator.GetParams().GetParameterValue(ParamType::Value::timeResolution) };

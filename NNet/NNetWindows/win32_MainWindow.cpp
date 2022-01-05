@@ -249,12 +249,12 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		m_pModelCommands->SetHighlightedSignal(umCrsrPos);
 		setHighlightedNob(umCrsrPos);
-		m_ptLast.Set2Null();             // make m_ptLast invalid
+		ClearPtLast();             // make m_ptLast invalid
 		return;
 	}
 
-	PixelPoint const ptLast = m_ptLast;
-	m_ptLast = ptCrsr;
+	PixelPoint const ptLast = GetPtLast();
+	SetPtLast(ptCrsr);
 	if (ptLast.IsNull())
 		return;
 

@@ -203,26 +203,34 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 
 void MonitorWindow::doPaint() const
 {
-	if (m_pMonitorData->NoTracks())
-		return;
-
-	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
-
-	if (m_trackNrHighlighted.IsNotNull())  // paint background of selected track
+	try
 	{
-		fPixel         const fPHeight { calcTrackHeight() };
-		fPixelPoint    const pos      {	0._fPixel, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
-		fPixelRectSize const size     {	m_fPixWinWidth + 1, fPHeight };
-		m_graphics.FillRectangle(fPixelRect(pos, size), NNetColors::COL_BEACON);
+		if (m_pMonitorData->NoTracks())
+			return;
+
+		m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
+
+		if (m_trackNrHighlighted.IsNotNull())  // paint background of selected track
+		{
+			fPixel         const fPHeight { calcTrackHeight() };
+			fPixelPoint    const pos      {	0._fPixel, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
+			fPixelRectSize const size     {	m_fPixWinWidth + 1, fPHeight };
+			m_graphics.FillRectangle(fPixelRect(pos, size), NNetColors::COL_BEACON);
+		}
+
+		m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
+
+		if (m_measurement.TrackingActive())
+		{
+			fPixelPoint const fPixDiamondPos { MonitorWindow::calcDiamondPos() };
+			if (fPixDiamondPos.IsNotNull())
+				m_graphics.FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
+		}
 	}
-
-	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
-
-	if (m_measurement.TrackingActive())
+	catch (MonitorDataException const & e)
 	{
-		fPixelPoint const fPixDiamondPos { MonitorWindow::calcDiamondPos() };
-		if (fPixDiamondPos.IsNotNull())
-			m_graphics.FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
+		SendCommand2Application(IDM_STOP, 0);
+		MonitorData::HandleException(e);
 	}
 }
 
@@ -300,15 +308,7 @@ void MonitorWindow::OnPaint()
 		BeginPaint(&ps);
 		if (m_graphics.StartFrame())
 		{
-			try
-			{
-				doPaint();
-			}
-			catch (MonitorDataException const & e)
-			{
-				SendCommand2Application(IDM_STOP, 0);
-				MonitorData::HandleException(e);
-			}
+			doPaint();
 			m_graphics.EndFrame();
 		}
 		EndPaint(&ps);

@@ -24,17 +24,17 @@ void MiniWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (wParam & MK_LBUTTON)       	// Left mouse button: move or edit action
 	{
 		PixelPoint const ptCrsr { GetCrsrPosFromLparam(lParam) };  // screen coordinates
-		if (m_ptLast.IsNotNull())     // last cursor pos stored in m_ptLast
+		if (GetPtLast().IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			PixelPoint    const pixDelta { ptCrsr - m_ptLast };
+			PixelPoint    const pixDelta { ptCrsr - GetPtLast() };
 			MicroMeterPnt const umDelta  { GetCoordC().Transform2MicroMeterPntSize(pixDelta) }; 
 			m_pObservedNNetWindow->NNetMove(-umDelta);       // move the observed window in opposite direction
 		}
-		m_ptLast = ptCrsr;
+		SetPtLast(ptCrsr);
 	}
 	else
 	{
-		m_ptLast.Set2Null();   // make m_ptLast invalid
+		ClearPtLast();   // make m_ptLast invalid
 	}
 }
 

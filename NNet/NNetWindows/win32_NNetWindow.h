@@ -82,9 +82,12 @@ protected:
 	void DrawSensors() const;
 	void DrawHighlightedSensor() const;
 
-	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
-
 	NNetModelReaderInterface const * m_pNMRI { nullptr };
+
+	PixelPoint GetPtLast() const { return m_ptLast; }
+
+	void SetPtLast(PixelPoint const & pt) { m_ptLast = pt; }
+	void ClearPtLast()                    { m_ptLast.Set2Null(); }
 
 private:
 	NNetWindow             (NNetWindow const &);           // noncopyable class 
@@ -93,4 +96,5 @@ private:
 	NNetController * m_pController     { nullptr };
 	D2D_DrawContext  m_context         { };
 	fPixel           m_fPixRadiusLimit { };
+	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
 };
