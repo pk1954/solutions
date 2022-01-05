@@ -46,9 +46,8 @@ void MonitorWindow::Start
 	m_pModelCommands =   pModelCommands;
 	m_pNMRI          = & nmri;
 	m_pMonitorData   = & monitorData;
-	m_graphics.Initialize(hwnd);
+	GraphicsWindow::Initialize(hwnd);
 	SetWindowText(hwnd, L"Monitor");
-	m_trackStruct.hwndTrack = hwnd;
 	m_measurement.Initialize(& m_graphics);
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
@@ -67,18 +66,15 @@ void MonitorWindow::Start
 
 void MonitorWindow::Reset()
 {
-	m_trackStruct.hwndTrack = nullptr;
-	m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
-	(void)TrackMouseEvent(& m_trackStruct);
+	m_pSound->Play(TEXT("DISAPPEAR_SOUND"));
+	GraphicsWindow::Reset();
 }
 
 void MonitorWindow::Stop()
 {
-	Reset();
+	GraphicsWindow::Stop();
 	m_pNMRI        = nullptr;
 	m_pMonitorData = nullptr;
-	m_graphics.ShutDown();
-	DestroyWindow();
 }
 
 LPARAM MonitorWindow::AddContextMenuEntries(HMENU const hPopupMenu)
@@ -201,7 +197,7 @@ void MonitorWindow::paintSignal(SignalId const & idSignal) const
 	}
 }
 
-void MonitorWindow::doPaint() const
+void MonitorWindow::DoPaint() const
 {
 	try
 	{
@@ -300,21 +296,6 @@ TrackNr MonitorWindow::findTrack(PIXEL const pixPosY) const
 	return m_pMonitorData->IsValid(trackNr) ? trackNr : TrackNr::NULL_VAL();
 }
 
-void MonitorWindow::OnPaint()
-{
-	if (IsWindowVisible())
-	{
-		PAINTSTRUCT ps;
-		BeginPaint(&ps);
-		if (m_graphics.StartFrame())
-		{
-			doPaint();
-			m_graphics.EndFrame();
-		}
-		EndPaint(&ps);
-	}
-}
-
 bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);
@@ -365,7 +346,7 @@ bool MonitorWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
-	m_graphics.Resize(width, height);
+	GraphicsWindow::OnSize(wParam, lParam);
 	m_fPixWinWidth = Convert2fPixel(PIXEL(width));
 	m_measurement.SetClientRectSize(PIXEL(width), PIXEL(height));
 	m_horzCoord.SetOffset(m_fPixWinWidth * 0.1f);
@@ -434,7 +415,7 @@ void MonitorWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		selectSignal(pixCrsrPos);
 
 	Trigger();   // cause repaint
-	(void)TrackMouseEvent(& m_trackStruct);
+	TrackMouse();
 }
 
 void MonitorWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam) 

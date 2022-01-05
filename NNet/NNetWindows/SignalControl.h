@@ -9,13 +9,13 @@
 #include "PixelTypes.h"
 #include "PixCoordFp.h"
 #include "NNetParameters.h"
-#include "win32_baseWindow.h"
+#include "win32_graphicsWindow.h"
 
 class SignalGenerator;
 class ComputeThread;
 class NNetModelCommands;
 
-class SignalControl : public BaseWindow
+class SignalControl : public GraphicsWindow
 {
 public:
 	SignalControl
@@ -35,9 +35,6 @@ public:
 		m_pParameters = & param; 
 	}
 
-	void Reset();
-	void Stop();
-
 private:
 
 	inline static D2D1::ColorF const COL_STD { D2D1::ColorF::Green };
@@ -47,9 +44,8 @@ private:
 	inline static fPixel const LINE_WIDTH_STD { 1.0_fPixel };
 	inline static fPixel const LINE_WIDTH_HI  { 3.0_fPixel };
 
-	void doPaint() const;
+	void DoPaint() const final;
 
-	void OnPaint     () final;
 	bool OnSize      (WPARAM const, LPARAM const) final;
 	void OnMouseMove (WPARAM const, LPARAM const) final;
 	bool OnMouseLeave(WPARAM const, LPARAM const) final;
@@ -81,19 +77,17 @@ private:
 	enum class tTrackMode { NONE, MAX_PNT, MAX_FREQ, MAX_TIME, BASE_FREQ };
 	enum class tZoomMode  { NONE, HORZ, VERT };
 
-	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
-
 	inline static Param * m_pParameters { nullptr };
 
-	NNetModelCommands      & m_commands;
-	ComputeThread    const & m_computeThread;
-	SignalGenerator        & m_signalGenerator;
+	NNetModelCommands   & m_commands;
+	ComputeThread const & m_computeThread;
+	SignalGenerator     & m_signalGenerator;
+	tTrackMode            m_trackMode      { tTrackMode::NONE };
+	fPixel                m_fPixGraphWidth { 0.0_fPixel };
+	fPixel                m_fPixLineWidth  { 1.0_fPixel };
+
 	PixCoordFp<fMicroSecs> & m_horzCoord;
 	PixCoordFp<fHertz>     & m_vertCoord;
-	D2D_driver               m_graphics       { };
-	tTrackMode               m_trackMode      { tTrackMode::NONE };
-	fPixel                   m_fPixGraphWidth { 0.0_fPixel };
-	fPixel                   m_fPixLineWidth  { 1.0_fPixel };
 
 	inline static fPixel const DIAMOND_SIZE { 4.0_fPixel };
 };

@@ -173,6 +173,7 @@
     <ClInclude Include="win32_clut.h" />
     <ClInclude Include="win32_delay.h" />
     <ClInclude Include="win32_fatalError.h" />
+    <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="win32_scale.h" />

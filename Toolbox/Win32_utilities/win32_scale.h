@@ -30,12 +30,12 @@ public:
 
 	Scale
 	(
-		HWND                   const hwndParent,
-		bool                   const bVertScale,
-		PixCoordFp<LogUnits> * const pPixCoord
+		HWND             const hwndParent,
+		bool             const bVertScale,
+		PixCoordFp<LogUnits> & pixCoord
 	)
  	: m_bVertScale(bVertScale),
-	  m_pPixCoord(pPixCoord)
+	  m_pixCoord(pixCoord)
 	{
 		HWND hwnd = StartBaseWindow
 		(
@@ -79,9 +79,10 @@ private:
 	inline static fPixel   const TEXT_VERT_EXT  { 10._fPixel };
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
+	D2D_driver      m_graphics    {};
 
-	D2D_driver             m_graphics       { };
-	PixCoordFp<LogUnits> * m_pPixCoord      { nullptr }; 
+	PixCoordFp<LogUnits> & m_pixCoord;
+
 	IDWriteTextFormat    * m_pTextFormat    { nullptr };
 	bool                   m_bOrientation   { true };  // true: ticks on negative side of scale
 	bool                   m_bVertScale     { false }; // true: vertical, false: horizontal
@@ -102,14 +103,14 @@ private:
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };  
 
-		LogUnits    const logMinTickDist { m_pPixCoord->Transform2logUnitSize(MIN_TICK_DIST) };
+		LogUnits    const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
 		float       const log10          { log10f(logMinTickDist.GetValue()) };
 		float       const fExp           { floor(log10) };
 		float       const fFractPart     { log10 - fExp };
 		float       const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
 		fPixel      const fPixSizeA      { m_bVertScale ? m_graphics.GetClRectHeight() : m_graphics.GetClRectWidth() };
-		fPixel      const fPixScaleLen   { fPixSizeA - m_pPixCoord->GetPixelOffset() - m_fPixBorder }; 
-		LogUnits    const logScaleLen    { m_pPixCoord->Transform2logUnitSize(fPixScaleLen) };
+		fPixel      const fPixScaleLen   { fPixSizeA - m_pixCoord.GetPixelOffset() - m_fPixBorder }; 
+		LogUnits    const logScaleLen    { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
 		fPixelPoint const fPixPntOffset 
 		{
 			m_bVertScale
@@ -118,13 +119,13 @@ private:
 		};
 
 		m_fPixPntStart = m_bVertScale
-		? fPixelPoint(m_fPixOrthoOffset,             getClHeight() - m_pPixCoord->GetPixelOffset())
-		: fPixelPoint(m_pPixCoord->GetPixelOffset(), getClHeight() - m_fPixOrthoOffset);
+		? fPixelPoint(m_fPixOrthoOffset,           getClHeight() - m_pixCoord.GetPixelOffset())
+		: fPixelPoint(m_pixCoord.GetPixelOffset(), getClHeight() - m_fPixOrthoOffset);
 		m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
-		m_logStart     = m_pPixCoord->Transform2logUnitPos(m_pPixCoord->GetPixelOffset());
-		m_logEnd       = m_logStart + logScaleLen;
+		m_logStart     = LogUnits(0.0f);
+		m_logEnd       = logScaleLen;
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
-		m_fPixTickDist = m_pPixCoord->Transform2fPixelSize(m_logTickDist);
+		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
 		setScaleParams();
 		renderScale();
 	}
@@ -193,7 +194,7 @@ private:
 		bool       bResult    { true };
 
 		for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
-			bResult = m_pPixCoord->Zoom(bDirection);
+			bResult = m_pixCoord.Zoom(bDirection);
 
 		if (!bResult)
 			MessageBeep(MB_ICONWARNING);
@@ -273,7 +274,7 @@ private:
 		{
 			fPixel fTickExt { (iRun % 5 == 0) ? LONG_TICK : (iRun % 2 == 0) ? MIDDLE_TICK : SMALL_TICK};
 			fPixel fPix     { m_fPixTickDist * static_cast<float>(iRun) };
-			fPixel fPixA    { m_pPixCoord->GetPixelOffset() + fPix	}; 
+			fPixel fPixA    { m_pixCoord.GetPixelOffset() + fPix }; 
 			displayTick(fPixA, fTickExt);
 			if (iRun % 10 == 0)
 			{

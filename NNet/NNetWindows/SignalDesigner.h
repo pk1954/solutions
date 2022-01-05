@@ -45,20 +45,11 @@ private:
 	void OnClose() final;
 	bool OnSize(WPARAM const, LPARAM const) final;
 
-	enum class tZoomMode  { NONE, HORZ, VERT };
-
-	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
-
 	inline static Param * m_pParameters { nullptr };
 
-	unique_ptr<SignalControl>     m_upSignalControl;
+	PixCoordFp<fMicroSecs>        m_horzCoord;
+	PixCoordFp<fHertz>            m_vertCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<Scale<fHertz>>     m_upVertScale;
-
-	tZoomMode              m_zoomMode      { tZoomMode::NONE };
-	fPixel                 m_fPixLineWidth { 1.0_fPixel };
-	PixCoordFp<fMicroSecs> m_horzCoord;
-	PixCoordFp<fHertz>     m_vertCoord;
-
-	inline static fPixel const DIAMOND_SIZE { 4.0_fPixel };
+	unique_ptr<SignalControl>     m_upSignalControl;
 };

@@ -46,20 +46,7 @@ SignalControl::SignalControl
 		nullptr
 	);
 
-	m_graphics.Initialize(hwnd);
-	m_trackStruct.hwndTrack = hwnd;
-}
-
-void SignalControl::Reset()
-{
-	m_trackStruct.hwndTrack = HWND(0);
-	(void)TrackMouseEvent(& m_trackStruct);
-}
-
-void SignalControl::Stop()
-{
-	Reset();
-	DestroyWindow();
+	GraphicsWindow::Initialize(hwnd);
 }
 
 fMicroSecs SignalControl::getTime(fPixel const fPix) const
@@ -112,7 +99,7 @@ fPixelPoint SignalControl::getGraphPnt(fMicroSecs const time) const
 	return getPixPnt(time, m_signalGenerator.GetFrequency(time));
 }
 
-void SignalControl::doPaint() const
+void SignalControl::DoPaint() const
 {
 	m_graphics.FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
@@ -207,29 +194,11 @@ void SignalControl::displayTimeLine(fMicroSecs const time, fPixel const w, D2D1:
 	m_graphics.DrawLine(getGraphPnt(time), getPixPnt(time, 0.0_fHertz),  w, colF);
 }
 
-void SignalControl::OnPaint()
-{
-	if (IsWindowVisible())
-	{
-		PAINTSTRUCT ps;
-		BeginPaint(&ps);
-		if (m_graphics.StartFrame())
-		{
-			doPaint();
-			m_graphics.EndFrame();
-		}
-		EndPaint(&ps);
-	}
-}
-
 bool SignalControl::OnSize(WPARAM const wParam, LPARAM const lParam)
 {
-	UINT width  = LOWORD(lParam);
-	UINT height = HIWORD(lParam);
+	GraphicsWindow::OnSize(wParam, lParam);
 
-	m_graphics.Resize(width, height);
-
-	m_fPixGraphWidth = Convert2fPixel(PIXEL(width));
+	m_fPixGraphWidth = Convert2fPixel(PIXEL(LOWORD(lParam)));
 
 	m_horzCoord.SetOffset(0.0_fPixel);
 	m_vertCoord.SetOffset(0.0_fPixel);
@@ -304,7 +273,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			m_trackMode = tTrackMode::NONE;
 	}
 	Trigger();   // cause repaint
-	(void)TrackMouseEvent(& m_trackStruct);
+	TrackMouse();
 }
 
 bool SignalControl::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)

@@ -7,13 +7,13 @@
 #include "win32_scale.h"
 #include "MoreTypes.h"
 #include "Measurement.h"
-#include "win32_baseWindow.h"
+#include "win32_graphicsWindow.h"
 #include "win32_NNetController.h"
 
 class NNetModelReaderInterface;
 class MonitorData;
 
-class MonitorWindow : public BaseWindow
+class MonitorWindow : public GraphicsWindow
 {
 public:
 
@@ -46,12 +46,12 @@ private:
 	fMicroSecs findNextMax      (Signal const &, fPixel     const) const;
 	void       highlightSignal  (SignalId const &);
 
-	void doPaint() const;
 	void paintSignal(SignalId const &) const;
 
 	fPixelPoint calcDiamondPos() const;
 
-	void OnPaint()                                        final;
+	void DoPaint() const final;
+
 	bool OnSize              (WPARAM const, LPARAM const) final;
 	void OnMouseWheel        (WPARAM const, LPARAM const) final;
 	void OnMouseMove         (WPARAM const, LPARAM const) final;
@@ -71,9 +71,7 @@ private:
 	NNetModelReaderInterface const * m_pNMRI          { nullptr };
 	MonitorData                    * m_pMonitorData   { nullptr };  
 
-	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
-	D2D_driver   m_graphics           { };
 	TrackNr      m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint   m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL        m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
