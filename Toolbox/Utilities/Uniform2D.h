@@ -6,7 +6,7 @@
 
 #include "util.h"
 #include "PixelTypes.h"
-#include "PixCoordFp.h"
+#include "PixFpDimension.h"
 
 template <typename LOG_UNIT>
 class Uniform2D
@@ -314,8 +314,8 @@ private:
 	inline static LOG_UNIT const DEFAULT_PIXEL_SIZE { LOG_UNIT(   1.0f) };  
 	inline static LOG_UNIT const MAXIMUM_PIXEL_SIZE { LOG_UNIT(2000.0f) };  // 2 MilliMeter
 
-	PixCoordFp<LOG_UNIT> m_xDim;
-	PixCoordFp<LOG_UNIT> m_yDim;
+	PixFpDimension<LOG_UNIT> m_xDim;
+	PixFpDimension<LOG_UNIT> m_yDim;
 
 	LOG_UNIT pixelSize() const { return m_xDim.GetPixelSize(); }
 };

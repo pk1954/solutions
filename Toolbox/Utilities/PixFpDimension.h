@@ -1,4 +1,4 @@
-// PixCoordFp.h : 
+// PixFpDimension.h : 
 //
 // Utilities
 
@@ -10,7 +10,7 @@
 #include "PixelTypes.h"
 
 template <typename LOG_UNIT>
-class PixCoordFp : public Observable
+class PixFpDimension : public Observable
 {
 public:
 
@@ -91,7 +91,7 @@ public:
 		SetPixelOffset(Transform2fPixelSize(umCenter) - fPntPix);
 	}
 
-	PixCoordFp operator+= (PixCoordFp const a) 
+	PixFpDimension operator+= (PixFpDimension const a) 
 	{ 
 		m_fPixOffset   += a.m_fPixOffset;
 		m_logPixelSize += a.m_logPixelSize; 
@@ -99,7 +99,7 @@ public:
 		return * this; 
 	}
 
-	PixCoordFp operator-= (PixCoordFp const a) 
+	PixFpDimension operator-= (PixFpDimension const a) 
 	{ 
 		m_fPixOffset   -= a.m_fPixOffset;
 		m_logPixelSize -= a.m_logPixelSize; 
@@ -107,7 +107,7 @@ public:
 		return * this; 
 	}
 
-	PixCoordFp operator*= (float const factor) 
+	PixFpDimension operator*= (float const factor) 
 	{ 
 		m_fPixOffset *= factor;
 		m_logPixelSize  *= factor; 
@@ -115,23 +115,23 @@ public:
 		return * this; 
 	}
 
-	friend PixCoordFp operator+ (PixCoordFp const a, PixCoordFp const b) 
+	friend PixFpDimension operator+ (PixFpDimension const a, PixFpDimension const b) 
 	{ 
-		PixCoordFp res { a }; 
+		PixFpDimension res { a }; 
 		res += b; 
 		return res; 
 	};
 
-	friend PixCoordFp operator- (PixCoordFp const a, PixCoordFp const b) 
+	friend PixFpDimension operator- (PixFpDimension const a, PixFpDimension const b) 
 	{ 
-		PixCoordFp res { a }; 
+		PixFpDimension res { a }; 
 		res -= b; 
 		return res; 
 	};
 
-	friend PixCoordFp operator* (PixCoordFp const a, float const factor) 
+	friend PixFpDimension operator* (PixFpDimension const a, float const factor) 
 	{ 
-		PixCoordFp res { a }; 
+		PixFpDimension res { a }; 
 		res *= factor; 
 		return res; 
 	};

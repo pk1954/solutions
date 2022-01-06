@@ -38,8 +38,8 @@ public:
 		Observable                     &
 	);
 
-	void Stop() final;
-	void Reset();
+	void Stop () final;
+	void Reset() final;
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 

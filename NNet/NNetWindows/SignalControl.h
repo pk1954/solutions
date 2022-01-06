@@ -7,7 +7,7 @@
 #include "Direct2D.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
-#include "PixCoordFp.h"
+#include "PixFpDimension.h"
 #include "NNetParameters.h"
 #include "win32_graphicsWindow.h"
 
@@ -20,12 +20,12 @@ class SignalControl : public GraphicsWindow
 public:
 	SignalControl
 	(
-		HWND             const, 
-		ComputeThread    const &, 
-		SignalGenerator        &,
-		PixCoordFp<fMicroSecs> &,
-		PixCoordFp<fHertz>     &,
-		NNetModelCommands      &
+		HWND                 const, 
+		ComputeThread        const &, 
+		SignalGenerator            &,
+		PixFpDimension<fMicroSecs> &,
+		PixFpDimension<fHertz>     &,
+		NNetModelCommands          &
 	);
 
 	~SignalControl() final;
@@ -86,8 +86,8 @@ private:
 	fPixel                m_fPixGraphWidth { 0.0_fPixel };
 	fPixel                m_fPixLineWidth  { 1.0_fPixel };
 
-	PixCoordFp<fMicroSecs> & m_horzCoord;
-	PixCoordFp<fHertz>     & m_vertCoord;
+	PixFpDimension<fMicroSecs> & m_horzCoord;
+	PixFpDimension<fHertz>     & m_vertCoord;
 
 	inline static fPixel const DIAMOND_SIZE { 4.0_fPixel };
 };

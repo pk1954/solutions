@@ -7,7 +7,7 @@
 #include <assert.h>
 #include "util.h"
 #include "win32_scale.h"
-#include "PixCoordFp.h"
+#include "PixFpDimension.h"
 #include "Signal.h"
 #include "Track.h"
 #include "Resource.h"

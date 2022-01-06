@@ -12,7 +12,7 @@
 #include "Direct2D.h"
 #include "dwrite.h"
 #include "PixelTypes.h"
-#include "PixCoordFp.h"
+#include "PixFpDimension.h"
 #include "win32_graphicsWindow.h"
 
 using std::wostringstream;
@@ -30,9 +30,9 @@ public:
 
 	Scale
 	(
-		HWND             const hwndParent,
-		bool             const bVertScale,
-		PixCoordFp<LogUnits> & pixCoord
+		HWND                 const hwndParent,
+		bool                 const bVertScale,
+		PixFpDimension<LogUnits> & pixCoord
 	)
  	: m_bVertScale(bVertScale),
 	  m_pixCoord(pixCoord)
@@ -68,7 +68,7 @@ private:
 	inline static fPixel   const TEXT_HORZ_EXT  { 20._fPixel };
 	inline static fPixel   const TEXT_VERT_EXT  { 10._fPixel };
 
-	PixCoordFp<LogUnits> & m_pixCoord;
+	PixFpDimension<LogUnits> & m_pixCoord;
 
 	IDWriteTextFormat    * m_pTextFormat    { nullptr };
 	bool                   m_bOrientation   { true };  // true: ticks on negative side of scale

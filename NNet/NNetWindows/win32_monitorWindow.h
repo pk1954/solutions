@@ -27,8 +27,8 @@ public:
 		MonitorData                    &
 	);
 
-	void Reset();
-	void Stop();
+	void Stop () final;
+	void Reset() final;
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
@@ -78,6 +78,6 @@ private:
 	fPixel       m_fPixWinWidth       { 0.0_fPixel };
 	Measurement  m_measurement;
 
-	PixCoordFp<fMicroSecs> m_horzCoord;
-	PixCoordFp<float>      m_vertCoord;
+	PixFpDimension<fMicroSecs> m_horzCoord;
+	PixFpDimension<float>      m_vertCoord;
 };

@@ -111,7 +111,7 @@
     <ClInclude Include="EllipseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PixCoordFp.h">
+    <ClInclude Include="PixFpDimension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

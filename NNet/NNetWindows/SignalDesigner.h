@@ -7,7 +7,7 @@
 #include "win32_scale.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
-#include "PixCoordFp.h"
+#include "PixFpDimension.h"
 #include "SignalControl.h"
 #include "win32_baseWindow.h"
 
@@ -47,8 +47,8 @@ private:
 
 	inline static Param * m_pParameters { nullptr };
 
-	PixCoordFp<fMicroSecs>        m_horzCoord;
-	PixCoordFp<fHertz>            m_vertCoord;
+	PixFpDimension<fMicroSecs>    m_horzCoord;
+	PixFpDimension<fHertz>        m_vertCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<Scale<fHertz>>     m_upVertScale;
 	unique_ptr<SignalControl>     m_upSignalControl;

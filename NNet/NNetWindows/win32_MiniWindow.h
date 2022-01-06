@@ -24,7 +24,7 @@ public:
 
 	void   Notify(bool const) final;
 
-	void ObservedNNetWindow(MainWindow * const);
+	void   ObservedNNetWindow(MainWindow * const);
 
 private:
 

@@ -19,12 +19,12 @@ SignalControl::~SignalControl()
 
 SignalControl::SignalControl
 (
-	HWND             const   hwndParent,
-	ComputeThread    const & computeThread,
-	SignalGenerator        & sigGen,
-	PixCoordFp<fMicroSecs> & horzCoord,
-	PixCoordFp<fHertz>     & vertCoord,
-	NNetModelCommands      & commands
+	HWND                 const   hwndParent,
+	ComputeThread        const & computeThread,
+	SignalGenerator            & sigGen,
+	PixFpDimension<fMicroSecs> & horzCoord,
+	PixFpDimension<fHertz>     & vertCoord,
+	NNetModelCommands          & commands
 )
   : m_commands(commands),
 	m_computeThread(computeThread),
