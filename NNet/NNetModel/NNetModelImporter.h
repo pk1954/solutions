@@ -40,7 +40,7 @@ public:
 
 	virtual ~ImportTermination() = default;
 
-	virtual void Reaction(ImportTermination::Result const, wstring const) = 0;
+	virtual void Reaction(ImportTermination::Result const, wstring const &) = 0;
 };
 
 class NNetModelImporter

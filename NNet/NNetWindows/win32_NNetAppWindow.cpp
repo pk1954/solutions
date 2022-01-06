@@ -187,29 +187,29 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_WinManager.AddWindow(L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false);
 	m_WinManager.AddWindow(L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false);
 
-	m_dynamicModelObservable.RegisterObserver(& m_mainNNetWindow);
-	m_dynamicModelObservable.RegisterObserver(& m_miniNNetWindow);
-	m_dynamicModelObservable.RegisterObserver(& m_monitorWindow);
-	m_dynamicModelObservable.RegisterObserver(& m_timeDisplay);
-	m_dynamicModelObservable.RegisterObserver(& m_crsrWindow);
-	m_staticModelObservable .RegisterObserver(& m_mainNNetWindow);
-	m_staticModelObservable .RegisterObserver(& m_miniNNetWindow);
-	m_staticModelObservable .RegisterObserver(& m_monitorWindow);
-	m_staticModelObservable .RegisterObserver(& m_performanceWindow);
-	m_staticModelObservable .RegisterObserver(& m_appTitle);
-	m_staticModelObservable .RegisterObserver(& m_undoRedoMenu);
-	m_highlightSigObservable.RegisterObserver(& m_mainNNetWindow);
-	m_highlightSigObservable.RegisterObserver(& m_monitorWindow);
-	m_cursorPosObservable   .RegisterObserver(& m_crsrWindow);
-	m_performanceObservable .RegisterObserver(& m_performanceWindow);
-	m_runObservable         .RegisterObserver(& m_simulationControl);
-	m_SlowMotionRatio       .RegisterObserver(& m_computeThread);
-	m_SlowMotionRatio       .RegisterObserver(& m_slowMotionDisplay);
-	m_model.GetParams()     .RegisterObserver(& m_parameterDlg);
-	m_model.GetParams()     .RegisterObserver(& m_computeThread);
-	m_soundOnObservable     .RegisterObserver(& m_appMenu);
-	m_coordObservable       .RegisterObserver(& m_miniNNetWindow);
-	m_coordObservable       .RegisterObserver(& m_mainNNetWindow);
+	m_dynamicModelObservable.RegisterObserver(m_mainNNetWindow);
+	m_dynamicModelObservable.RegisterObserver(m_miniNNetWindow);
+	m_dynamicModelObservable.RegisterObserver(m_monitorWindow);
+	m_dynamicModelObservable.RegisterObserver(m_timeDisplay);
+	m_dynamicModelObservable.RegisterObserver(m_crsrWindow);
+	m_staticModelObservable .RegisterObserver(m_mainNNetWindow);
+	m_staticModelObservable .RegisterObserver(m_miniNNetWindow);
+	m_staticModelObservable .RegisterObserver(m_monitorWindow);
+	m_staticModelObservable .RegisterObserver(m_performanceWindow);
+	m_staticModelObservable .RegisterObserver(m_appTitle);
+	m_staticModelObservable .RegisterObserver(m_undoRedoMenu);
+	m_highlightSigObservable.RegisterObserver(m_mainNNetWindow);
+	m_highlightSigObservable.RegisterObserver(m_monitorWindow);
+	m_cursorPosObservable   .RegisterObserver(m_crsrWindow);
+	m_performanceObservable .RegisterObserver(m_performanceWindow);
+	m_runObservable         .RegisterObserver(m_simulationControl);
+	m_SlowMotionRatio       .RegisterObserver(m_computeThread);
+	m_SlowMotionRatio       .RegisterObserver(m_slowMotionDisplay);
+	m_model.GetParams()     .RegisterObserver(m_parameterDlg);
+	m_model.GetParams()     .RegisterObserver(m_computeThread);
+	m_soundOnObservable     .RegisterObserver(m_appMenu);
+	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
+	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
 
 	configureStatusBar();
 	adjustChildWindows();
@@ -405,7 +405,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_STOP:
 			m_computeThread.StopComputation();
-			m_nmwi.ClearDynamicData();
+//			m_nmwi.ClearDynamicData();
 			break;
 
 		case IDM_SIGNAL_DESIGNER:
@@ -484,8 +484,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_model.SetDescriptionUI(m_descWindow);
 				m_appTitle.SetUnsavedChanges(false);
 				m_mainNNetWindow.CenterModel();
-				m_model.GetParams().RegisterObserver(& m_parameterDlg);
-				m_model.GetParams().RegisterObserver(& m_computeThread);
+				m_model.GetParams().RegisterObserver(m_parameterDlg);
+				m_model.GetParams().RegisterObserver(m_computeThread);
 				m_model.GetParams().NotifyAll(false);
 			}
 			break;
@@ -509,7 +509,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				return true;
 		}
 	}
-	catch (NobTypeException & e)
+	catch (NobTypeException const & e)
 	{
 		wcout << Scanner::COMMENT_START << L"Command failed: " << endl;
 		wcout << Scanner::COMMENT_START << L"File    : " << e.m_szFile  << endl;

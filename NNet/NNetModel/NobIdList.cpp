@@ -13,17 +13,11 @@ void NobIdList::Push(Nob const & nob)
     Push(nob.GetId()); 
 }
 
-NobId const NobIdList::Pop()
+NobId NobIdList::Pop()
 {
     NobId const id { m_list.back() };
     m_list.pop_back();
     return id;
-}
-
-void NobIdList::Apply2All(function<void(NobId const &)> const& func) const
-{
-    for (NobId const & id : m_list)
-        func(id);
 }
 
 wostream & operator<< (wostream & out, NobIdList const & v)

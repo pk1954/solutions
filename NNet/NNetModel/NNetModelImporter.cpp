@@ -377,6 +377,7 @@ void NNetModelImporter::importModel()
     }
     else
     {
+        m_upImportedModel.release();
         res = ImportTermination::Result::errorInFile;
     }
     m_upTermination->Reaction(res, m_wstrFile2Read);

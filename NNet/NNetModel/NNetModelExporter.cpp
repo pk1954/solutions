@@ -46,8 +46,8 @@ void NNetModelExporter::writeHeader(wostream & out) const
     out << Scanner::COMMENT_SYMBOL << L" NNetModel" << endl;
     out << Scanner::COMMENT_SYMBOL << L" Created " << Util::GetCurrentDateAndTime() << endl;
 
-    WCHAR  infoBuf[BUF_SIZE];
-    DWORD  bufCharCount = BUF_SIZE;
+    WCHAR infoBuf[BUF_SIZE];
+    DWORD bufCharCount { BUF_SIZE };
 
     // Get and display the name of the computer.
     GetComputerName(infoBuf, &bufCharCount);
@@ -163,17 +163,46 @@ void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe) const
         << Pipe::CLOSE_BRACKET;
 }
 
-void NNetModelExporter::writeIoConnector(wostream & out, IoConnector const & conn) const
+void NNetModelExporter::writePipeVoltage(wostream & out, Pipe const & pipe) const
+{
+    Pipe::SegNr const lastSeg(pipe.GetNrOfSegments() - 1);
+    out << Pipe::OPEN_BRACKET 
+        << pipe.GetNrOfSegments()
+        << BaseKnot::NR_SEPARATOR;
+    for (auto i = Pipe::SegNr(0); i < lastSeg; ++i)
+        out << pipe.GetVoltage(i) << BaseKnot::ID_SEPARATOR;
+    out << pipe.GetVoltage(lastSeg);
+    out << Pipe::CLOSE_BRACKET;
+}
+
+template <class FUNC>
+void writeIoConnData
+(
+    wostream          & out, 
+    IoConnector const & conn,
+    FUNC        const & func
+)
 {
     assert(conn.Size() > 0);
+    size_t const iLast { conn.Size() - 1 };
     out << BaseKnot::OPEN_BRACKET << conn.Size() << BaseKnot::NR_SEPARATOR;
-    for (size_t i = 0; i < conn.Size() - 1; ++i)
+    for (size_t i = 0; i < iLast; ++i)
     {
-        out << getCompactIdVal(conn.GetElem(i).GetId());
+        out << func(i);
         out << BaseKnot::ID_SEPARATOR;
     }
-    out << getCompactIdVal(conn.GetElem(conn.Size()-1).GetId());
+    out << func(iLast);
     out << BaseKnot::CLOSE_BRACKET;
+}
+
+void NNetModelExporter::writeIoConnector(wostream& out, IoConnector const& conn) const
+{
+    writeIoConnData(out, conn, [this, &conn](size_t const i){ return getCompactIdVal(conn.GetElem(i).GetId()); });
+}
+
+void NNetModelExporter::writeIoConnVoltage(wostream& out, IoConnector const& conn) const
+{
+    writeIoConnData(out, conn, [&conn](size_t const i){ return conn.GetElem(i).GetVoltage(); });
 }
 
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
@@ -197,6 +226,31 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
         case NobType::Value::inputConnector:
         case NobType::Value::outputConnector:
             writeIoConnector(out, static_cast<IoConnector const &>(nob));
+            break;
+
+        default:
+            assert(false);
+            break;
+        }
+        out << endl;
+
+        out << L"Voltage " << getCompactIdVal(nob.GetId()) << L" " << nob.GetName();
+        switch (nob.GetNobType().GetValue())
+        {
+        case NobType::Value::inputNeuron:
+        case NobType::Value::outputNeuron:
+        case NobType::Value::neuron:
+        case NobType::Value::knot:
+            out << static_cast<BaseKnot const &>(nob).GetVoltage();
+            break;
+
+        case NobType::Value::pipe:
+            writePipeVoltage(out, static_cast<Pipe const &>(nob));
+            break;
+
+        case NobType::Value::inputConnector:
+        case NobType::Value::outputConnector:
+            writeIoConnVoltage(out, static_cast<IoConnector const &>(nob));
             break;
 
         default:

@@ -14,7 +14,7 @@
 
 SignalControl::~SignalControl()
 {
-	m_signalGenerator.UnregisterObserver(this);
+	m_signalGenerator.UnregisterObserver(*this);
 }
 
 SignalControl::SignalControl
@@ -32,9 +32,9 @@ SignalControl::SignalControl
 	m_horzCoord(horzCoord),
 	m_vertCoord(vertCoord)
 {
-	m_signalGenerator.RegisterObserver(this);
-	m_horzCoord.RegisterObserver(this);
-	m_vertCoord.RegisterObserver(this);
+	m_signalGenerator.RegisterObserver(*this);
+	m_horzCoord.RegisterObserver(*this);
+	m_vertCoord.RegisterObserver(*this);
 	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE);
 }
 

@@ -44,12 +44,12 @@ void MonitorWindow::Start
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 4000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
-	m_horzCoord.RegisterObserver(this);
+	m_horzCoord.RegisterObserver(*this);
 
 	m_vertCoord.SetPixelSize(0.2f);
 	m_vertCoord.SetPixelSizeLimits(0.001f, 100.f);   
 	m_vertCoord.SetZoomFactor(1.3f);
-	m_vertCoord.RegisterObserver(this);
+	m_vertCoord.RegisterObserver(*this);
 
 	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);

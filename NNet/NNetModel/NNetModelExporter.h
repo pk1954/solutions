@@ -40,7 +40,9 @@ private:
 
 	void writeNob             (wostream &, Nob         const &) const;
 	void writePipe            (wostream &, Pipe        const &) const;
+	void writePipeVoltage     (wostream &, Pipe        const &) const;
 	void writeIoConnector     (wostream &, IoConnector const &) const;
+	void writeIoConnVoltage   (wostream &, IoConnector const &) const;
 	void writeDescription     (wostream &) const;
 	void writeMonitorData     (wostream &) const;
 	void writeTriggerSounds   (wostream &) const;

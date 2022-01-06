@@ -15,7 +15,7 @@ public:
 		m_msgImportFinished(msg)
 	{ }
 
-	virtual void Reaction(Result const res, wstring const name)
+	void Reaction(ImportTermination::Result const res, wstring const & name) final
 	{
 		switch (res)
 		{

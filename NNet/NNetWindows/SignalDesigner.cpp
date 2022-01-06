@@ -41,8 +41,8 @@ SignalDesigner::SignalDesigner
 		m_vertCoord,
 		commands
 	);
-
-	runObservable.RegisterObserver(m_upSignalControl.get());
+	SignalControl * pSigCtrl { m_upSignalControl.get() };
+	runObservable.RegisterObserver(*pSigCtrl);
 
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
 	m_upVertScale = make_unique<Scale<fHertz    >>(hwnd, true,  m_vertCoord);
@@ -50,7 +50,7 @@ SignalDesigner::SignalDesigner
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(100._MicroSecs, 1000000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
-	m_horzCoord.RegisterObserver(this);
+	m_horzCoord.RegisterObserver(*this);
 
 	m_upHorzScale->SetOrientation(false);
 	m_upHorzScale->Show(true);
@@ -58,7 +58,7 @@ SignalDesigner::SignalDesigner
 	m_vertCoord.SetPixelSize(0.25_fHertz);
 	m_vertCoord.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoord.SetZoomFactor(1.3f);
-	m_vertCoord.RegisterObserver(this);
+	m_vertCoord.RegisterObserver(*this);
 
 	m_upVertScale->SetOrientation(true);
 	m_upVertScale->Show(true);

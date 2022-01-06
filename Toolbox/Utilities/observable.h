@@ -12,14 +12,14 @@ class Observable
 public:
 	virtual ~Observable() = default;
 
-	void RegisterObserver(ObserverInterface * const pObserver)
+	void RegisterObserver(ObserverInterface & observer)
 	{
-		m_observers.Register(pObserver);
+		m_observers.Register(observer);
 	}
 
-	void UnregisterObserver(ObserverInterface * const pObserver)
+	void UnregisterObserver(ObserverInterface const & observer)
 	{
-		m_observers.Unregister(pObserver);
+		m_observers.Unregister(observer);
 	}
 
 	void UnregisterAllObservers()

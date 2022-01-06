@@ -26,12 +26,12 @@ Signal::Signal
 {
     m_fTimeLine.clear();
     SetSensorSize(circle.GetRadius());
-    m_observable.RegisterObserver(this);
+    m_observable.RegisterObserver(*this);
 }
 
 Signal::~Signal()
 {
-    m_observable.UnregisterObserver(this);
+    m_observable.UnregisterObserver(*this);
 }
 
 void Signal::add2list(Pipe const & pipe) 
