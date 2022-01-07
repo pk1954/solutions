@@ -1,6 +1,6 @@
 // NNetModelExporter.cpp
 //
-// NNetModel
+// ModelIO
 
 #include "stdafx.h"
 #include "SCANNER.H"

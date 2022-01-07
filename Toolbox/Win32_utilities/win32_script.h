@@ -7,8 +7,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <shobjidl.h> 
-#include "symtab.h"
+#include <ShObjidl.h> 
+#include "SYMTAB.H"
 
 using std::wstring;
 

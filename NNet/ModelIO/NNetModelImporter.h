@@ -1,6 +1,6 @@
 // NNetModelImporter.h 
 //
-// NNetModel
+// ModelIO
 
 #pragma once
 
@@ -10,7 +10,6 @@
 #include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NobId.h"
-#include "NNetModelStorage.h"
 #include "NNetModelWriterInterface.h"
 
 using std::unique_ptr;

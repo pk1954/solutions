@@ -9,6 +9,6 @@ class Script;
 class ScriptFunctor
 {
 public:
-    virtual ~ScriptFunctor() {};
+    virtual ~ScriptFunctor() = default;
     virtual void operator() (Script & script) const = 0;
 };

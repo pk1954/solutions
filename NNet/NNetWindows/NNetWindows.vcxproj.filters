@@ -81,6 +81,9 @@
     <ClCompile Include="SignalControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetModelCommands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -171,6 +174,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SignalControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NNetModelCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
