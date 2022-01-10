@@ -3,6 +3,7 @@
 // ModelIO
 
 #include "stdafx.h"
+#include "SCRIPT.H"
 #include "ERRHNDL.H"
 #include "Knot.h"
 #include "InputNeuron.h"
@@ -10,6 +11,7 @@
 #include "IoConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
+#include "NNetWrapperHelpers.h"
 #include "WrapCreateNob.h"
 
 using std::wcout;

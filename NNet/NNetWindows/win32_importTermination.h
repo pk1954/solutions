@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "ImportTermination.h"
 #include "NNetModelImporter.h"
 
 class NNetImportTermination : public ImportTermination

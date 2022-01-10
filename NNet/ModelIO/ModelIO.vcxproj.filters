@@ -30,6 +30,9 @@
     <ClInclude Include="WrapperBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ImportTermination.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetModelExporter.cpp">

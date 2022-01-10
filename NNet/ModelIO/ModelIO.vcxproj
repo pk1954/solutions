@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ImportTermination.h" />
     <ClInclude Include="NNetModelExporter.h" />
     <ClInclude Include="NNetModelImporter.h" />
     <ClInclude Include="NNetModelStorage.h" />

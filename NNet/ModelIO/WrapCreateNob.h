@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "SCRIPT.H"
-#include "NNetWrapperHelpers.h"
 #include "WrapperBase.h"
+
+class Script;
 
 class WrapCreateNob : public WrapperBase
 {

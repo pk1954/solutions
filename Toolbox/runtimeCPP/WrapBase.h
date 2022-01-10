@@ -16,7 +16,7 @@ using std::endl;
 class WrapBase : public ScriptFunctor
 {
 public:
-    WrapBase(wstring const & wstrName)
+    explicit WrapBase(wstring const & wstrName)
     {
         SymbolTable::ScrDefConst(wstrName, this);
     }

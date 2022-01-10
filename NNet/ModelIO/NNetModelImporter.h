@@ -26,21 +26,7 @@ class NNetModel;
 class UPNobList;
 class Observable;
 class WrapBase;
-
-class ImportTermination
-{
-public:
-	enum class Result
-	{
-		ok,
-		fileNotFound,
-		errorInFile
-	};
-
-	virtual ~ImportTermination() = default;
-
-	virtual void Reaction(ImportTermination::Result const, wstring const &) = 0;
-};
+class ImportTermination;
 
 class NNetModelImporter
 {

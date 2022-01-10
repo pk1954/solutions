@@ -22,6 +22,7 @@
 #include "win32_thread.h"
 #include "NNetModelStorage.h"
 #include "NNetModelImporter.h"
+#include "ImportTermination.h"
 #include "WrapCreateNob.h"
 #include "WrapperBase.h"
 
