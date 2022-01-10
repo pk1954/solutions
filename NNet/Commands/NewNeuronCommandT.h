@@ -15,12 +15,12 @@ template <typename T>
 class NewNeuronCommandT : public NNetCommand
 {
 public:
-	NewNeuronCommandT(MicroMeterPnt const & pos)
+	explicit NewNeuronCommandT(MicroMeterPnt const & pos)
 	{ 
 		m_upNeuronT = make_unique<T>(pos);
 	}
 
-	~NewNeuronCommandT() {}
+	~NewNeuronCommandT() final = default;
 
 	void Do() final 
 	{ 

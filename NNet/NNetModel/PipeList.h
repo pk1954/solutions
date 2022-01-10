@@ -43,15 +43,13 @@ public:
 
 	void Clear() { m_list.clear(); }
 
-	template<class FUNC>
-	void Apply2All(FUNC const &f) const 
+	void Apply2All(auto const &f) const 
 	{ 
 		for (auto & it : m_list) 
 			f(* it); 
 	}
 
-	template<class FUNC>
-	bool Apply2AllB(FUNC const &f) const 
+	bool Apply2AllB(auto const &f) const 
 	{ 
 		for (auto & it : m_list) 
 		{ 

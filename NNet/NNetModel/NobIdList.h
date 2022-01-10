@@ -29,8 +29,7 @@ public:
     void   Push  (Nob    const &);
     NobId  Pop   ();
 
-    template <class FUNC>
-    void Apply2All(FUNC const & func) const
+    void Apply2All(auto const & func) const
     {
         for (NobId const & id : m_list)
             func(id);

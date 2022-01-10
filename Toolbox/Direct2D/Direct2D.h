@@ -12,8 +12,7 @@ using std::wstring;
 
 struct IDWriteFactory;
 
-template<class Interface>
-inline void SafeRelease(Interface **ppInterfaceToRelease)
+inline void SafeRelease(auto **ppInterfaceToRelease)
 {
     if (*ppInterfaceToRelease != NULL)
     {

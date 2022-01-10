@@ -175,12 +175,11 @@ void NNetModelExporter::writePipeVoltage(wostream & out, Pipe const & pipe) cons
     out << Pipe::CLOSE_BRACKET;
 }
 
-template <class FUNC>
 void writeIoConnData
 (
     wostream          & out, 
     IoConnector const & conn,
-    FUNC        const & func
+    auto        const & func
 )
 {
     assert(conn.Size() > 0);

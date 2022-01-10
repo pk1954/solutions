@@ -82,8 +82,7 @@ public:
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 
-	template<class CRIT>
-	Signal const * FindSignal(CRIT const & crit) const
+	Signal const * FindSignal(auto const & crit) const
 	{
 		for (unique_ptr<Track> const & upTrack: m_tracks) 
 			if (Signal const * const pSignal { upTrack->FindSignal(crit) })
@@ -91,8 +90,7 @@ public:
 		return nullptr;
 	}                        
 
-	template<class CRIT>
-	SignalId FindSignalId(CRIT const & crit) const
+	SignalId FindSignalId(auto const & crit) const
 	{
 		for (int i = 0; i < m_tracks.size(); ++i)
 		{ 
@@ -104,8 +102,7 @@ public:
 		return SignalId::NULL_VAL();
 	}
 
-	template<class FUNC>
-	void Apply2AllSignalIdsC(FUNC const & func) const
+	void Apply2AllSignalIdsC(auto const & func) const
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{ 
@@ -116,8 +113,7 @@ public:
 		}
 	}                        
 
-	template<class FUNC>
-	void Apply2AllSignals(FUNC const & func)
+	void Apply2AllSignals(auto const & func)
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{ 
@@ -128,8 +124,7 @@ public:
 		}
 	}                        
 
-	template<class FUNC>
-	void Apply2AllSignalsC(FUNC const & func) const
+	void Apply2AllSignalsC(auto const & func) const
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{ 
@@ -140,8 +135,7 @@ public:
 		}
 	}                        
 
-	template<class FUNC>
-	void Apply2AllSignalsInTrackC(TrackNr const trackNr, FUNC const & func) const
+	void Apply2AllSignalsInTrackC(TrackNr const trackNr, auto const & func) const
 	{
 		if (IsValid(trackNr))
 			getTrack(trackNr)->Apply2AllSignalNrsC(func);

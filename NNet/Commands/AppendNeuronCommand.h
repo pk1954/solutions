@@ -12,7 +12,7 @@ template<typename T>
 class AppendNeuronCommand : public NNetCommand
 {
 public:
-	AppendNeuronCommand(NobId const idKnot)
+	explicit AppendNeuronCommand(NobId const idKnot)
 	{
 		Knot const * pKnot { m_pNMWI->GetNobPtr<Knot *>(idKnot) };
 		m_upNeuron = make_unique<T>(pKnot->GetPos());
@@ -20,7 +20,7 @@ public:
 		m_upNeuron->SetId(idKnot);
 	}
 
-	~AppendNeuronCommand() {}
+	~AppendNeuronCommand() final = default;
 
 	void Do() final 
 	{ 

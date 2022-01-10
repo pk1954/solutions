@@ -68,8 +68,7 @@ public:
 	void SetPos   (MicroMeterPnt    const &) override;
 	void SetPosDir(MicroMeterPosDir const &) override;
 
-	template <class FUNC>
-	void Apply2All(FUNC const & func) const
+	void Apply2All(auto const & func) const
 	{
 		for (auto pNob : m_list) 
 			if (pNob)

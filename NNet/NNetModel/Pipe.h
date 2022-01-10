@@ -118,8 +118,7 @@ public:
 		return getSegmentPos(segNr, 1.0f);
 	}
 
-	template <class FUNC>
-	void Apply2AllSegments(FUNC const & func) const
+	void Apply2AllSegments(auto const & func) const
 	{
 		for (auto segNr = SegNr(0); segNr.GetValue() < GetNrOfSegments(); ++segNr )
 			func(segNr);

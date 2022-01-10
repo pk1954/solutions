@@ -54,8 +54,7 @@ public:
 		AssertLimits<int>((int)m_value, (int)Value::nobTypeFirst, (int)Value::undefined);
 	}
 
-	template<class FUNC>
-	static constexpr void Apply2All(FUNC const & func)
+	static constexpr void Apply2All(auto const & func)
 	{
 		for (int i = 0; i <= static_cast<int>(NobType::Value::nobTypeLast); ++i)
 			func(static_cast<Value>(i));

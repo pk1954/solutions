@@ -93,8 +93,7 @@ public:
 		return m_pModel->FindNobAt(umPnt, [](auto &) { return true; });
 	}
 
-	template<class CRIT>
-	NobId FindNobAt(MicroMeterPnt const & umPnt, CRIT const & crit) const
+	NobId FindNobAt(MicroMeterPnt const & umPnt, auto const & crit) const
 	{
 		return m_pModel->FindNobAt(umPnt, crit);
 	}

@@ -57,8 +57,7 @@ public:
 
 	bool  GetDescriptionLine(int const, wstring &) const;
 	
-	template<class CRIT>
-	NobId FindNobAt(MicroMeterPnt const & umPoint, CRIT const & crit) const
+	NobId FindNobAt(MicroMeterPnt const & umPoint, auto const & crit) const
 	{	
 		NobId idRes { NO_NOB };
 
