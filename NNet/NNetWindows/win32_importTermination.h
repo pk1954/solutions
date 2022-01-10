@@ -19,20 +19,11 @@ public:
 	{
 		switch (res)
 		{
-		case ImportTermination::Result::ok:
-			SendMessage(m_hwndApp, WM_COMMAND, m_msgImportFinished, 0);
-			break;
-
-		case ImportTermination::Result::fileNotFound:
-			SendMessage(m_hwndApp, WM_COMMAND, IDX_FILE_NOT_FOUND, 0);
-			break;
-
-		case ImportTermination::Result::errorInFile:
-			SendMessage(m_hwndApp, WM_COMMAND, IDX_ERROR_IN_FILE, 0);
-			break;
-
-		default:
-			assert(false);
+		using enum ImportTermination::Result;
+		case ok:     	   SendMessage(m_hwndApp, WM_COMMAND, m_msgImportFinished, 0); break;
+		case fileNotFound: SendMessage(m_hwndApp, WM_COMMAND, IDX_FILE_NOT_FOUND,  0); break;
+		case errorInFile:  SendMessage(m_hwndApp, WM_COMMAND, IDX_ERROR_IN_FILE,   0); break;
+		default: assert(false);
 		}
 	};
 

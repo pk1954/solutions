@@ -53,21 +53,22 @@ ConnAnimationCommand::ConnAnimationCommand()
 
 NobType ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
 {
-    if (nobs.CountInSelection(NobType::Value::inputConnector) > 0)
-        return NobType::Value::undefined;
+    using enum NobType::Value;
+    if (nobs.CountInSelection(inputConnector) > 0)
+        return undefined;
 
-    if (nobs.CountInSelection(NobType::Value::outputConnector) > 0)
-        return NobType::Value::undefined;
+    if (nobs.CountInSelection(outputConnector) > 0)
+        return undefined;
 
-    unsigned int uiNrOfInputNeurons  { nobs.CountInSelection(NobType::Value::inputNeuron ) };
-    unsigned int uiNrOfOutputNeurons { nobs.CountInSelection(NobType::Value::outputNeuron) };
+    unsigned int uiNrOfInputNeurons  { nobs.CountInSelection(inputNeuron ) };
+    unsigned int uiNrOfOutputNeurons { nobs.CountInSelection(outputNeuron) };
 
     if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
-        return NobType::Value::undefined;
+        return undefined;
 
     return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-        ? NobType::Value::inputNeuron 
-        : NobType::Value::outputNeuron;
+        ? inputNeuron 
+        : outputNeuron;
 }
 
 void ConnAnimationCommand::sortNobsAnimated(MicroMeterLine const & line)

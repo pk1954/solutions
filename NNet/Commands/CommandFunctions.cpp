@@ -26,15 +26,11 @@ unique_ptr<NNetCommand> MakeDeleteCommand
 	if (nmwi.IsNobInModel(nob))
 		switch (nob.GetNobType().GetValue())
 		{
-		case NobType::Value::pipe:
-			upCmd = make_unique<DeletePipeCommand>(nob);
-			break;
-		case NobType::Value::inputConnector:
-		case NobType::Value::outputConnector:
-			upCmd = make_unique<DiscIoConnectorCmd>(nob, true);
-			break;
-		default:
-			upCmd = make_unique<DiscBaseKnotCmd>(nob, true);
+		using enum NobType::Value;
+		case pipe:            upCmd = make_unique<DeletePipeCommand>(nob);		  break;
+		case inputConnector:
+		case outputConnector: upCmd = make_unique<DiscIoConnectorCmd>(nob, true); break;
+		default:              upCmd = make_unique<DiscBaseKnotCmd>(nob, true);
 		}
 	return move(upCmd);
 }

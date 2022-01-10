@@ -81,24 +81,26 @@ HWND ParameterDialog::addParameter
 
 void ParameterDialog::resetParameters()  // refresh edit fields with data from model
 {
-	resetParameter(m_hwndBaseFrequency,    ParamType::Value::baseFrequency );
-	resetParameter(m_hwndPeakVoltage,      ParamType::Value::peakVoltage   );
-	resetParameter(m_hwndThreshold,        ParamType::Value::threshold     );
-	resetParameter(m_hwndPulseWidth,       ParamType::Value::pulseWidth    );
-	resetParameter(m_hwndRefractoryPeriod, ParamType::Value::refractPeriod );
-	resetParameter(m_hwndTimeResolution,   ParamType::Value::timeResolution);
-	resetParameter(m_hwndPulseSpeed,       ParamType::Value::pulseSpeed    );
+	using enum ParamType::Value;
+	resetParameter(m_hwndBaseFrequency,    baseFrequency );
+	resetParameter(m_hwndPeakVoltage,      peakVoltage   );
+	resetParameter(m_hwndThreshold,        threshold     );
+	resetParameter(m_hwndPulseWidth,       pulseWidth    );
+	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
+	resetParameter(m_hwndTimeResolution,   timeResolution);
+	resetParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {
-	applyParameter(m_hwndBaseFrequency,    ParamType::Value::baseFrequency );
-	applyParameter(m_hwndPeakVoltage,      ParamType::Value::peakVoltage   );
-	applyParameter(m_hwndThreshold,        ParamType::Value::threshold     );
-	applyParameter(m_hwndPulseWidth,       ParamType::Value::pulseWidth    );
-	applyParameter(m_hwndRefractoryPeriod, ParamType::Value::refractPeriod );
-	applyParameter(m_hwndTimeResolution,   ParamType::Value::timeResolution);
-	applyParameter(m_hwndPulseSpeed,       ParamType::Value::pulseSpeed    );
+	using enum ParamType::Value;
+	applyParameter(m_hwndBaseFrequency,    baseFrequency );
+	applyParameter(m_hwndPeakVoltage,      peakVoltage   );
+	applyParameter(m_hwndThreshold,        threshold     );
+	applyParameter(m_hwndPulseWidth,       pulseWidth    );
+	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
+	applyParameter(m_hwndTimeResolution,   timeResolution);
+	applyParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
 HWND ParameterDialog::createButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, int const id)
@@ -120,13 +122,14 @@ void ParameterDialog::Start
 	m_pParams   = pParams;
 
 	int iYpos { 10 };
-	m_hwndBaseFrequency    = addParameter(hwndDlg, ParamType::Value::baseFrequency,  iYpos); 
-	m_hwndPeakVoltage      = addParameter(hwndDlg, ParamType::Value::peakVoltage,    iYpos); 
-	m_hwndThreshold        = addParameter(hwndDlg, ParamType::Value::threshold,      iYpos); 
-	m_hwndPulseWidth       = addParameter(hwndDlg, ParamType::Value::pulseWidth,     iYpos); 
-	m_hwndRefractoryPeriod = addParameter(hwndDlg, ParamType::Value::refractPeriod,  iYpos); 
-	m_hwndTimeResolution   = addParameter(hwndDlg, ParamType::Value::timeResolution, iYpos); 
-	m_hwndPulseSpeed       = addParameter(hwndDlg, ParamType::Value::pulseSpeed,     iYpos); 
+	using enum ParamType::Value;
+	m_hwndBaseFrequency    = addParameter(hwndDlg, baseFrequency,  iYpos); 
+	m_hwndPeakVoltage      = addParameter(hwndDlg, peakVoltage,    iYpos); 
+	m_hwndThreshold        = addParameter(hwndDlg, threshold,      iYpos); 
+	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,     iYpos); 
+	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 
+	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
+	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,     iYpos); 
 
 	createButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY_PARAMETERS);
 	createButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET_PARAMETERS);

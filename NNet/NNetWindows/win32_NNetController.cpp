@@ -193,19 +193,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     return true;  // command has been processed
 }
 
-//void NNetController::pulseRateDlg(NobId const id)
-//{
-//    fHertz  const fOldValue { m_pNMRI->GetBaseFrequency(id) };
-//    if (fOldValue.IsNull())
-//        return;
-//    HWND    const hwndParent { m_pMainWindow->GetWindowHandle() };
-//    wstring const header     { ParamType::GetName(ParamType::Value::pulseRate) }; 
-//    wstring const unit       { ParamType::GetUnit(ParamType::Value::pulseRate) };
-//    fHertz  const fNewValue  { StdDialogBox::Show(hwndParent, fOldValue.GetValue(), header, unit) };
-//    if (fNewValue != fOldValue)
-//        m_pModelCommands->SetPulseRate(id, fNewValue);
-//}
-
 void NNetController::triggerSoundDlg(NobId const id)
 {
     NobType const type { m_pNMRI->GetNobType(id) };

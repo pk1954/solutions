@@ -23,17 +23,18 @@ Nob * WrapCreateNob::createNob(Script & script) const
     { 
         switch (nobType.GetValue())
         {
-        case NobType::Value::inputConnector:
-        case NobType::Value::outputConnector:
+        using enum NobType::Value;
+        case inputConnector:
+        case outputConnector:
             upNob = createIoConnector(script, nobType);
             break;
-        case NobType::Value::inputNeuron:
-        case NobType::Value::outputNeuron:
-        case NobType::Value::neuron:
-        case NobType::Value::knot:
+        case inputNeuron:
+        case outputNeuron:
+        case neuron:
+        case knot:
             upNob = createBaseKnot(script, nobType);
             break;
-        case NobType::Value::pipe:
+        case pipe:
             upNob = createPipe(script);
             break;
         default:
@@ -88,18 +89,11 @@ UPNob WrapCreateNob::createBaseKnot(Script & script, NobType const nobType) cons
     MicroMeterPnt const umPosition(ScrReadMicroMeterPnt(script));
     switch (nobType.GetValue())
     {
-    case NobType::Value::inputNeuron:
-        return make_unique<InputNeuron>(umPosition);
-
-    case NobType::Value::outputNeuron:
-        return make_unique<OutputNeuron>(umPosition);
-
-    case NobType::Value::neuron:
-        return make_unique<Neuron>(umPosition);
-
-    case NobType::Value::knot:
-        return make_unique<Knot>(umPosition);
-
+    using enum NobType::Value;
+    case inputNeuron:  return make_unique<InputNeuron>(umPosition);
+    case outputNeuron: return make_unique<OutputNeuron>(umPosition);
+    case neuron:       return make_unique<Neuron>(umPosition);
+    case knot:         return make_unique<Knot>(umPosition);
     default:
         assert(false);
         return nullptr;

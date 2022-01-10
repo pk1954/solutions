@@ -55,20 +55,11 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 {
 	switch ( par )
 	{
-	case ParamType::Value::stimulusMaxFreq:
-		m_freqMaxStim = f;
-		break;
-
-	case ParamType::Value::stimulusMaxTime:
-		m_usMax = f;
-		break;
-
-	case ParamType::Value::baseFrequency:
-		m_freqBase = f;
-		break;
-
-	default:
-		assert(false);
+		using enum ParamType::Value;
+		case stimulusMaxFreq: m_freqMaxStim = f; break;
+		case stimulusMaxTime: m_usMax       = f; break;
+		case baseFrequency:   m_freqBase    = f; break;
+		default: assert(false);
 	}
 	NotifyAll(false);
 }

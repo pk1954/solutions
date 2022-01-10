@@ -30,26 +30,14 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify!
 	NobType::Value type { nob.GetNobType().GetValue() };
 	switch (type)
 	{
-	case NobType::Value::inputConnector:
-		return Copy<InputConnector>(nob);
-
-	case NobType::Value::outputConnector:
-		return Copy<OutputConnector>(nob);
-
-	case NobType::Value::inputNeuron:
-		return Copy<InputNeuron>(nob);
-
-	case NobType::Value::outputNeuron:
-		return Copy<OutputNeuron>(nob);
-
-	case NobType::Value::knot:
-		return Copy<Knot>(nob);
-
-	case NobType::Value::neuron:
-		return Copy<Neuron>(nob);
-
-	case NobType::Value::pipe:
-		return Copy<Pipe>(nob);
+	using enum NobType::Value;
+	case inputConnector:  return Copy<InputConnector>(nob);
+	case outputConnector: return Copy<OutputConnector>(nob);
+	case inputNeuron:	  return Copy<InputNeuron>(nob);
+	case outputNeuron:	  return Copy<OutputNeuron>(nob);
+	case knot:		      return Copy<Knot>(nob);
+	case neuron:		  return Copy<Neuron>(nob);
+	case pipe:		      return Copy<Pipe>(nob);
 
 	default:
 		ThrowNobTypeException(nob);

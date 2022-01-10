@@ -96,11 +96,12 @@ void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
     (
         [this, &out](InputConnector const & inpConn)
         { 
+            using enum ParamType::Value;
             NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
             SignalGenerator const & sigGen { inpConn.GetSignalGenerator() };
-            out << L"SetParam" << id << ParamType::Value::baseFrequency   << sigGen.FreqBase() << endl; 
-            out << L"SetParam" << id << ParamType::Value::stimulusMaxFreq << sigGen.FreqMax()  << endl; 
-            out << L"SetParam" << id << ParamType::Value::stimulusMaxTime << sigGen.TimeMax()  << endl; 
+            out << L"SetParam" << id << baseFrequency   << sigGen.FreqBase() << endl; 
+            out << L"SetParam" << id << stimulusMaxFreq << sigGen.FreqMax()  << endl; 
+            out << L"SetParam" << id << stimulusMaxTime << sigGen.TimeMax()  << endl; 
         }
    );
 }
@@ -206,24 +207,25 @@ void NNetModelExporter::writeIoConnVoltage(wostream& out, IoConnector const& con
 
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
 {
+    using enum NobType::Value;
     if (nob.IsDefined())
     {
         out << L"CreateNob " << getCompactIdVal(nob.GetId()) << L" " << nob.GetName();
         switch (nob.GetNobType().GetValue())
         {
-        case NobType::Value::inputNeuron:
-        case NobType::Value::outputNeuron:
-        case NobType::Value::neuron:
-        case NobType::Value::knot:
+        case inputNeuron:
+        case outputNeuron:
+        case neuron:
+        case knot:
             out << static_cast<BaseKnot const &>(nob).GetPos();
             break;
 
-        case NobType::Value::pipe:
+        case pipe:
             writePipe(out, static_cast<Pipe const &>(nob));
             break;
 
-        case NobType::Value::inputConnector:
-        case NobType::Value::outputConnector:
+        case inputConnector:
+        case outputConnector:
             writeIoConnector(out, static_cast<IoConnector const &>(nob));
             break;
 
@@ -236,19 +238,19 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
         out << L"Voltage " << getCompactIdVal(nob.GetId()) << L" " << nob.GetName();
         switch (nob.GetNobType().GetValue())
         {
-        case NobType::Value::inputNeuron:
-        case NobType::Value::outputNeuron:
-        case NobType::Value::neuron:
-        case NobType::Value::knot:
+        case inputNeuron:
+        case outputNeuron:
+        case neuron:
+        case knot:
             out << static_cast<BaseKnot const &>(nob).GetVoltage();
             break;
 
-        case NobType::Value::pipe:
+        case pipe:
             writePipeVoltage(out, static_cast<Pipe const &>(nob));
             break;
 
-        case NobType::Value::inputConnector:
-        case NobType::Value::outputConnector:
+        case inputConnector:
+        case outputConnector:
             writeIoConnVoltage(out, static_cast<IoConnector const &>(nob));
             break;
 

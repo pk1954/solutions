@@ -12,34 +12,36 @@ using std::wstring;
 
 wstring NobType::GetName(NobType::Value const val)
 {
+	using enum NobType::Value;
 	static unordered_map < NobType::Value, wstring const > mapNob =
 	{
-		{ NobType::Value::undefined,       L"undefined"       },
-		{ NobType::Value::inputConnector,  L"inputConnector"  },
-		{ NobType::Value::outputConnector, L"outputConnector" },
-		{ NobType::Value::inputNeuron,     L"inputNeuron"     },
-		{ NobType::Value::outputNeuron,    L"outputNeuron"    },
-		{ NobType::Value::neuron,          L"neuron"          },
-		{ NobType::Value::pipe,            L"pipe"            },
-		{ NobType::Value::knot,            L"knot"            },
-		{ NobType::Value::bend,            L"bend"            }
+		{ undefined,       L"undefined"       },
+		{ inputConnector,  L"inputConnector"  },
+		{ outputConnector, L"outputConnector" },
+		{ inputNeuron,     L"inputNeuron"     },
+		{ outputNeuron,    L"outputNeuron"    },
+		{ neuron,          L"neuron"          },
+		{ pipe,            L"pipe"            },
+		{ knot,            L"knot"            },
+		{ bend,            L"bend"            }
 	};				  
 	return mapNob.at(val);
 }
 
 NobType::Value NobType::GetTypeFromName(wstring const & name)
 {
+	using enum NobType::Value;
 	static unordered_map < wstring, NobType::Value > mapNob =
 	{
-		{ L"undefined",       NobType::Value::undefined       },
-		{ L"inputConnector",  NobType::Value::inputConnector  },
-		{ L"outputConnector", NobType::Value::outputConnector },
-		{ L"inputNeuron",     NobType::Value::inputNeuron     },
-		{ L"outputNeuron",    NobType::Value::outputNeuron    },
-		{ L"neuron",          NobType::Value::neuron	      },
-		{ L"pipe",            NobType::Value::pipe	          },
-		{ L"knot",            NobType::Value::knot            },
-		{ L"bend",            NobType::Value::bend            }
+		{ L"undefined",       undefined       },
+		{ L"inputConnector",  inputConnector  },
+		{ L"outputConnector", outputConnector },
+		{ L"inputNeuron",     inputNeuron     },
+		{ L"outputNeuron",    outputNeuron    },
+		{ L"neuron",          neuron	      },
+		{ L"pipe",            pipe	          },
+		{ L"knot",            knot            },
+		{ L"bend",            bend            }
 	};				  
 	return mapNob.at(name);
 }
