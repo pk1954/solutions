@@ -48,10 +48,10 @@ void StatusBar::Start(HWND const hwndParent)
 
 	SetWindowHandle(hwndStatus);
 
-	(void)SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this) ;
+	(void)SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this);
 
-	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics(SM_CXSIZEFRAME))) + 10_PIXEL;
-	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics(SM_CYSIZEFRAME)));
+	m_pixBorderX      = static_cast<PIXEL>(GetSystemMetrics(SM_CXSIZEFRAME)) + 10_PIXEL;
+	m_pixBorderY      = static_cast<PIXEL>(GetSystemMetrics(SM_CYSIZEFRAME));
 	m_pixClientHeight = GetHeight() - m_pixBorderY;
 }
 
@@ -60,7 +60,7 @@ void StatusBar::AddCustomControl
 	int const width  // in number of characters
 )
 {
-	static PIXEL const FONT_WIDTH = PIXEL(9);
+	static auto const FONT_WIDTH = 9_PIXEL;
 	m_pixPosX += FONT_WIDTH * width;
 }
 

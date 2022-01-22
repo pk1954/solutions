@@ -105,7 +105,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 
 HWND ParameterDialog::createButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, int const id)
 {
-	HWND hwnd = CreateWindow(L"Button", text, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE, x, y, w, h, hwndParent, (HMENU)id, GetModuleHandle(nullptr), 0);
+	HWND hwnd = CreateWindow(L"Button", text, BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE, x, y, w, h, hwndParent, (HMENU)id, GetModuleHandle(nullptr), 0);
 	return hwnd;
 }
 
@@ -144,7 +144,7 @@ void ParameterDialog::Stop()
 
 bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	auto const wId = LOWORD(wParam);
+	auto const wId { LOWORD(wParam) };
 	switch (wId)
 	{
 	case IDD_APPLY_PARAMETERS:
