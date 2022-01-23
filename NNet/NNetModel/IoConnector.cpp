@@ -65,7 +65,7 @@ size_t IoConnector::Size() const
     return m_list.size(); 
 }
 
-IoNeuron const & IoConnector::GetElem(size_t const nr) const 
+IoNeuron & IoConnector::GetElem(size_t const nr) const 
 { 
     return * m_list.at(nr); 
 }

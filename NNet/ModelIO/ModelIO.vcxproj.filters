@@ -33,6 +33,9 @@
     <ClInclude Include="ImportTermination.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WrapVoltage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetModelExporter.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WrapCreateNob.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapVoltage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

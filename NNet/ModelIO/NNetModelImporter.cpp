@@ -24,6 +24,7 @@
 #include "NNetModelImporter.h"
 #include "ImportTermination.h"
 #include "WrapCreateNob.h"
+#include "WrapVoltage.h"
 #include "WrapperBase.h"
 
 using std::filesystem::exists;
@@ -180,6 +181,7 @@ void NNetModelImporter::Initialize()
     SymbolTable::ScrDefConst(L"NrOfTracks",      new WrapNrOfTracks     (* this));
     SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this));
     SymbolTable::ScrDefConst(L"SetParam",        new WrapSetParam       (* this));
+    SymbolTable::ScrDefConst(L"Voltage",         new WrapVoltage        (* this));
 
     NobType::Apply2All
     (

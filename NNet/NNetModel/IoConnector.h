@@ -51,7 +51,7 @@ public:
 
 	void             Push(IoNeuron * const);
 	IoNeuron       * Pop();
-	IoNeuron const & GetElem(size_t const) const;
+	IoNeuron       & GetElem(size_t const) const;
 	size_t           Size() const;
 	void             SetParentPointers();
 	void             ClearParentPointers() const;
@@ -59,6 +59,8 @@ public:
 	void LockDirection  () const;
 	void UnlockDirection() const;
 	void AlignDirection ();
+
+	size_t GetNrOfElements() { return m_list.size(); }
 
 	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
 

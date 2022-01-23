@@ -1,4 +1,4 @@
 DescWinFontSize 12
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Solutions\NNet\Models\dynTest.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"

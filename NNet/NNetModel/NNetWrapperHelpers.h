@@ -21,3 +21,4 @@ extern NobId                 ScrReadNobId              (Script &);
 extern SignalId              ScrReadSignalId           (Script &);
 extern NobType               ScrReadNobType            (Script &);
 extern ParamType::Value      ScrReadParamType          (Script &);
+extern mV                    ScrReadVoltage            (Script &);

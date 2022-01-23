@@ -23,5 +23,10 @@ protected:
     MonitorData              & GetMonitorData()     const { return m_modelImporter.GetWriterInterface().GetMonitorData(); }
     UPNobList                & GetUPNobsRef()       const { return m_modelImporter.GetWriterInterface().GetUPNobs(); }
 
+    template <Nob_t T> T& GetNobRef(NobId const id) const
+    {
+        return * GetWriterInterface().GetNobPtr<T*>(id);
+    }
+private:
     NNetModelImporter & m_modelImporter;
 };

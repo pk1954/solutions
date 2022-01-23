@@ -111,3 +111,9 @@ ParamType::Value ScrReadParamType(Script& script)
 	ParamType::Value param { static_cast<ParamType::Value>(ulParamType) };
 	return param;
 }
+
+mV ScrReadVoltage(Script& script)
+{
+	double const value { script.ScrReadFloat() };
+	return mV(Cast2Float(value));
+}

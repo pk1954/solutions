@@ -56,7 +56,7 @@ MicroMeterPosDir Nob::GetPosDir() const
 
 ColorF Nob::GetInteriorColor(mV const voltageInput) const
 {
-	mV    const threshold    { mV(m_pParameters->GetParameterValue(ParamType::Value::threshold)) };
+	mV const threshold { mV(m_pParameters->GetParameterValue(ParamType::Value::threshold)) };
 	if (IsAnyNeuron() && (voltageInput > threshold * 1.3f))
 	{
 		int x = 42;

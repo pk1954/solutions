@@ -129,6 +129,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -165,11 +166,13 @@
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="WrapCreateNob.h" />
     <ClInclude Include="WrapperBase.h" />
+    <ClInclude Include="WrapVoltage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetModelExporter.cpp" />
     <ClCompile Include="NNetModelImporter.cpp" />
     <ClCompile Include="WrapCreateNob.cpp" />
+    <ClCompile Include="WrapVoltage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

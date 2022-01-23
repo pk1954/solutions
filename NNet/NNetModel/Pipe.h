@@ -85,6 +85,8 @@ public:
 
 	mV    GetVoltageAt(MicroMeterPnt const &) const;
 
+	void  SetVoltage(SegNr const segNr, mV const v) { m_potential[segNr2index(segNr)] = v; }
+
 	void DrawArrows(DrawContext const &, MicroMeter const) const;
 
 	void DislocateEndPoint  (MicroMeter d =  PIPE_WIDTH) { dislocate(m_pKnotEnd,   d); }

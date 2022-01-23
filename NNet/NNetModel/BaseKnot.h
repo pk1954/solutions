@@ -33,6 +33,7 @@ public:
 
 	MicroMeterPnt GetPos()     const final { return m_circle.GetPos(); }
 	mV            GetVoltage() const       { return m_mVinputBuffer; }
+	void          SetVoltage(mV const v)   { m_mVinputBuffer  = v; }
 
 	void Dump        ()                               const override;
 	void Check       ()                               const override;
