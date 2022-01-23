@@ -23,16 +23,16 @@ public:
           m_radius(radius)
     {}
 
-    bool const operator==(CircleType const & a) const 
+    bool operator==(CircleType const & a) const 
     { 
         return (m_position == a.m_position) && (m_radius == a.m_radius); 
     }
 
-    CircleType const operator+= (POS_TYPE const a) { m_position += a; return * this; }
-    CircleType const operator-= (POS_TYPE const a) { m_position -= a; return * this; }
+    CircleType operator+= (POS_TYPE const a) { m_position += a; return * this; }
+    CircleType operator-= (POS_TYPE const a) { m_position -= a; return * this; }
 
-    CircleType const operator*= (float const d) { m_radius *= d; return * this; }
-    CircleType const operator/= (float const d) { m_radius /= d; return * this; }
+    CircleType operator*= (float const d) { m_radius *= d; return * this; }
+    CircleType operator/= (float const d) { m_radius /= d; return * this; }
 
     POS_TYPE  const & GetPos   () const { return m_position; }
     BASE_TYPE const & GetRadius() const { return m_radius; }
