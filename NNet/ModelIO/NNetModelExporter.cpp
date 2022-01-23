@@ -169,40 +169,32 @@ void NNetModelExporter::writePipeVoltage(wostream & out, Pipe const & pipe) cons
     Pipe::SegNr const lastSeg(pipe.GetNrOfSegments() - 1);
     out << Pipe::OPEN_BRACKET 
         << pipe.GetNrOfSegments()
-        << BaseKnot::NR_SEPARATOR;
-    for (auto i = Pipe::SegNr(0); i < lastSeg; ++i)
-        out << pipe.GetVoltage(i) << BaseKnot::ID_SEPARATOR;
-    out << pipe.GetVoltage(lastSeg);
-    out << Pipe::CLOSE_BRACKET;
-}
-
-void writeIoConnData
-(
-    wostream          & out, 
-    IoConnector const & conn,
-    auto        const & func
-)
-{
-    assert(conn.Size() > 0);
-    size_t const iLast { conn.Size() - 1 };
-    out << BaseKnot::OPEN_BRACKET << conn.Size() << BaseKnot::NR_SEPARATOR;
-    for (size_t i = 0; i < iLast; ++i)
+        << Pipe::NR_SEPARATOR;
+    for (auto i = Pipe::SegNr(0);; ++i)
     {
-        out << func(i);
-        out << BaseKnot::ID_SEPARATOR;
+        out << pipe.GetVoltage(i); 
+        if (i == lastSeg)
+            break;
+        out << Pipe::ID_SEPARATOR;
     }
-    out << func(iLast);
-    out << BaseKnot::CLOSE_BRACKET;
+    out << Pipe::CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writeIoConnector(wostream& out, IoConnector const& conn) const
 {
-    writeIoConnData(out, conn, [this, &conn](size_t const i){ return getCompactIdVal(conn.GetElem(i).GetId()); });
-}
-
-void NNetModelExporter::writeIoConnVoltage(wostream& out, IoConnector const& conn) const
-{
-    writeIoConnData(out, conn, [&conn](size_t const i){ return conn.GetElem(i).GetVoltage(); });
+    assert(conn.Size() > 0);
+    size_t const iLast { conn.Size() - 1 };
+    out << BaseKnot::OPEN_BRACKET 
+        << conn.Size() 
+        << BaseKnot::NR_SEPARATOR;
+    for (size_t i = 0;; ++i)
+    {
+        out << getCompactIdVal(conn.GetElem(i).GetId());
+        if (i == iLast)
+            break;
+        out << BaseKnot::ID_SEPARATOR;
+    }
+    out << BaseKnot::CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
@@ -251,7 +243,6 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
 
         case inputConnector:
         case outputConnector:
-            writeIoConnVoltage(out, static_cast<IoConnector const &>(nob));
             break;
 
         default:

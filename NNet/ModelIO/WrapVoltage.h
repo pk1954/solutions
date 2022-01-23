@@ -20,8 +20,7 @@ public:
 
 private:
 
-    void setVoltage           (Script &)              const;
-    void setBaseKnotVoltage   (Script &, NobId const) const;
-    void setPipeVoltage       (Script &, NobId const) const;
-    void setIoConnectorVoltage(Script &, NobId const) const;
+    void setVoltage        (Script &)              const;
+    void setBaseKnotVoltage(Script &, NobId const) const;
+    void setPipeVoltage    (Script &, NobId const) const;
 };

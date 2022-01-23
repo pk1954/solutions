@@ -65,14 +65,14 @@ public:
     bool IsZero   () const { return * this == ZERO_VAL(); };
     bool IsNotZero() const { return * this != ZERO_VAL(); };
 
-    friend CircleType const operator* (CircleType const a,  float const d) 
+    friend CircleType operator* (CircleType const a,  float const d) 
     { 
         CircleType res { a }; 
         res *= d; 
         return res; 
     };
 
-    friend CircleType const operator/ (CircleType const a,  float const d) 
+    friend CircleType operator/ (CircleType const a,  float const d) 
     { 
         CircleType res { a }; 
         res /= d; 

@@ -35,8 +35,7 @@ void WrapVoltage::setVoltage(Script & script) const
 
     case inputConnector:
     case outputConnector:
-        setIoConnectorVoltage(script, idFromScript);
-    break;
+        break;
 
     default:
         assert(false);
@@ -82,37 +81,6 @@ void WrapVoltage::setPipeVoltage
         wcout << "+++ Wrong number of pipe segments" << endl;
         wcout << "+++ " << nrOfSegmentsFromScript << L" != " << nrOfSegmentsFromModel << endl;
         throw ScriptErrorHandler::ScriptException(999, wstring(L"Error reading Pipe voltage") );
-    }
-    script.ScrReadSpecial(Pipe::CLOSE_BRACKET);
-}
-
-void WrapVoltage::setIoConnectorVoltage
-(
-    Script    & script,
-    NobId const idFromScript
-) const
-{
-    IoConnector & ioConnector { GetNobRef<IoConnector>(idFromScript) };
-    script.ScrReadSpecial(BaseKnot::OPEN_BRACKET);
-    size_t const nrOfElementsFromScript { script.ScrReadUlong() };
-    size_t const nrOfElementsFromModel  { ioConnector.GetNrOfElements() };
-    if (nrOfElementsFromScript == nrOfElementsFromModel)
-    {
-        size_t index(0);
-        for (;;)
-        {
-            mV const v {ScrReadVoltage(script)};
-            ioConnector.GetElem(index).SetVoltage(v);
-            if (++index == nrOfElementsFromScript)
-                break;
-            script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
-        }
-    }
-    else
-    {
-        wcout << "+++ Wrong number of IoConnector elements" << endl;
-        wcout << "+++ " << nrOfElementsFromScript << L" != " << nrOfElementsFromModel << endl;
-        throw ScriptErrorHandler::ScriptException(999, wstring(L"Error reading IoConnectorr voltage") );
     }
     script.ScrReadSpecial(Pipe::CLOSE_BRACKET);
 }
