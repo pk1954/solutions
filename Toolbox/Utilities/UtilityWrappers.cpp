@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <assert.h>
 #include "SCRIPT.H"
-#include "symtab.h"
+#include "SYMTAB.H"
 #include "trace.h"
 #include "BoolOp.h"
 #include "UtilityWrappers.h"

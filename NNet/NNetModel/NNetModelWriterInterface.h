@@ -49,7 +49,7 @@ public:
     void  SetModelFilePath  (wstring const & wstr) { m_pModel->SetModelFilePath  (wstr); }
     void  AddDescriptionLine(wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
     void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
-    void  DeselectAllNobs()                        { m_pModel->DeselectAllNobs(); }
+    void  DeselectAllNobs() const                  { m_pModel->DeselectAllNobs(); }
 
     template <Nob_t T>
     T GetNobPtr(NobId const id) 

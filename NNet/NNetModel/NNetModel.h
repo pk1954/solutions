@@ -37,6 +37,7 @@ public:
 	void DumpModel (char const * const, int const) const;
 
 	Nob const * GetConstNob (NobId const) const;
+	Nob       * GetNob      (NobId const);
 
 	fMicroSecs GetSimulationTime () const { return m_timeStamp; }
 
@@ -57,7 +58,7 @@ public:
 
 	bool  GetDescriptionLine(int const, wstring &) const;
 	
-	NobId FindNobAt(MicroMeterPnt const & umPoint, auto const & crit) const
+	NobId FindNobAt(MicroMeterPnt const & umPoint, auto const & crit) const // Template!
 	{	
 		NobId idRes { NO_NOB };
 
@@ -89,7 +90,7 @@ public:
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
 	void  SelectSubtree(BaseKnot * const, bool const);
-	void  Reconnect(NobId const) const;
+	void  Reconnect(NobId const);
 
 	UPNobList   & GetUPNobs()      { return m_Nobs; }
 	MonitorData & GetMonitorData() { return m_monitorData; }
@@ -102,6 +103,8 @@ public:
 	void SetDescriptionUI    (DescriptionUI & i)    { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable(Observable * obs)     { m_monitorData.SetHighSigObservable(obs); }
 	void SetSimulationTime   (fMicroSecs const newVal = 0._MicroSecs) { m_timeStamp = newVal; }
+
+	void CheckId(NobId const) const;
 
 private:
 

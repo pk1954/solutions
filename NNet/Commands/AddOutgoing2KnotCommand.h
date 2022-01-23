@@ -25,11 +25,11 @@ public:
 	{ 
 		m_pStart    = m_pNMWI->GetNobPtr<BaseKnot *>(m_idKnot);
 		m_upKnotNew = make_unique<Knot>(m_pos);
-		m_upPipe    = make_unique<Pipe>(m_pStart, m_upKnotNew.get());
+		m_upPipe    = MakePipe(m_pStart, m_upKnotNew.get());
 		m_upKnotNew->AddIncoming(m_upPipe.get());
 	}
 
-	~AddOutgoing2KnotCommand() {}
+	~AddOutgoing2KnotCommand() final = default;
 
 	void Do() final 
 	{ 

@@ -22,7 +22,7 @@ class Pipe : public Nob
 public:
 	using SegNr = NamedType<size_t, struct segNr_Parameter>;
 
-	Pipe(BaseKnot * const, BaseKnot * const);
+	Pipe(BaseKnot * const, BaseKnot * const, Param const &);
 
 	Pipe(Pipe const &);   // copy constructor
 
@@ -93,6 +93,8 @@ public:
 	void DislocateStartPoint(MicroMeter d = -PIPE_WIDTH) { dislocate(m_pKnotStart, d); }
 
 	inline static wstring const SEPARATOR     { L"->" };
+	inline static wchar_t const NR_SEPARATOR  { L':' };
+	inline static wchar_t const ID_SEPARATOR  { L',' };
 	inline static wchar_t const OPEN_BRACKET  { L'(' };
 	inline static wchar_t const CLOSE_BRACKET { L')' };
 
@@ -132,8 +134,9 @@ private:
 	size_t     m_potIndex   { 0 };   // index in m_potential if SegNr 0
 	vector<mV> m_potential  { };
 
-	void dislocate(BaseKnot * const, MicroMeter const);
+	void   dislocate(BaseKnot * const, MicroMeter const);
 	size_t segNr2index(SegNr const) const;
+	void   recalc(Param const &);
 
 	MicroMeterPnt getSegmentPos(SegNr const segNr, float const fPos) const
 	{

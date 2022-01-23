@@ -26,8 +26,8 @@ public:
 		m_upKnotInsert  = make_unique<Knot>(m_pos);
 		m_upKnotInsert->Select(m_pPipeOld->IsSelected());
 		m_upKnotOrtho   = make_unique<Knot>(m_pos + m_pNMWI->OrthoVector(m_idPipe));
-		m_upPipeOrtho   = make_unique<Pipe>(m_upKnotInsert.get(), m_upKnotOrtho.get());
-		m_upPipeExt     = make_unique<Pipe>(m_pStartKnotOld, m_upKnotInsert.get());	
+		m_upPipeOrtho   = MakePipe(m_upKnotInsert.get(), m_upKnotOrtho .get());
+		m_upPipeExt     = MakePipe(m_pStartKnotOld,      m_upKnotInsert.get());	
 
 		m_upKnotInsert->AddOutgoing(m_upPipeOrtho.get());
 		m_upKnotOrtho ->AddIncoming(m_upPipeOrtho.get());

@@ -33,16 +33,29 @@ void NNetModel::CheckModel() const
 #endif
 }
 
-Nob const * NNetModel::GetConstNob(NobId const id) const 
+void NNetModel::CheckId(NobId const id) const 
 {	
+#ifdef _DEBUG
 	if (IsUndefined(id) || ! m_Nobs.IsValidNobId(id))
 		throw NobException(id, L"");
+#endif
+}
+
+Nob const * NNetModel::GetConstNob(NobId const id) const 
+{	
+	CheckId(id);
 	return m_Nobs.GetAt(id);
 }
 
-void NNetModel::Reconnect(NobId const id) const
+Nob * NNetModel::GetNob(NobId const id)
+{	
+	CheckId(id);
+	return m_Nobs.GetAt(id);
+}
+
+void NNetModel::Reconnect(NobId const id)
 {
-	if (Nob * pNod { m_Nobs.GetAt(id) })
+	if (Nob * pNod { GetNob(id) })
 		pNod->Reconnect();
 }
 

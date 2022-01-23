@@ -21,11 +21,11 @@ public:
 		m_pPipe    (m_pNMWI->GetNobPtr<Pipe     *>(idPipe))
 	{
 		m_pStartKnot = m_pPipe->GetStartKnotPtr();
-		m_upNewPipe  = make_unique<Pipe>(m_pStartKnot, m_pBaseKnot);
+		m_upNewPipe  = MakePipe(m_pStartKnot, m_pBaseKnot);
 		m_upNewPipe->Select(m_pPipe->IsSelected());
 	}
 
-	virtual ~Connect2PipeCommand()	{ }
+	 ~Connect2PipeCommand() final = default;
 
 	void Do() final
 	{

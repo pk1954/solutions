@@ -16,13 +16,18 @@ using std::wcout;
 using std::endl;
 using std::ranges::fill;
 
-Pipe::Pipe(BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd)
+Pipe::Pipe
+(
+	BaseKnot * const   pKnotStart, 
+	BaseKnot * const   pKnotEnd,
+	Param      const & param
+)
   :	Nob(NobType::Value::pipe),
 	m_pKnotStart(pKnotStart),
 	m_pKnotEnd  (pKnotEnd)
 {
 	assert(pKnotStart && pKnotEnd);
-	Recalc();
+	recalc(param);
 }
 
 Pipe::Pipe(Pipe const & src) :  // copy constructor
@@ -70,16 +75,21 @@ void Pipe::ClearDynamicData()
 	fill(m_potential, 0.0_mV);
 }
 
+void Pipe::recalc(Param const & param)
+{
+	meterPerSec  const pulseSpeed    { meterPerSec(param.GetParameterValue(ParamType::Value::pulseSpeed)) };
+	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, param.TimeResolution()) };
+	MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
+	unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
+	m_potential.resize(iNrOfSegments, BASE_POTENTIAL);
+	m_potIndex = 0;
+}
+
 void Pipe::Recalc()
 {
 	if (m_pKnotStart && m_pKnotEnd)
 	{
-		meterPerSec  const pulseSpeed    { meterPerSec(m_pParameters->GetParameterValue(ParamType::Value::pulseSpeed)) };
-		MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, m_pParameters->TimeResolution()) };
-		MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
-		unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
-		m_potential.resize(iNrOfSegments, BASE_POTENTIAL);
-		m_potIndex = 0;
+		recalc(* m_pParameters);
 	}
 }
 

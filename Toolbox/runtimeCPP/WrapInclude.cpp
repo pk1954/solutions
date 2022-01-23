@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include <string>
-#include "script.h"
+#include "SCRIPT.H"
 
 //void WrapInclude::operator() (Script & script) const
 //{

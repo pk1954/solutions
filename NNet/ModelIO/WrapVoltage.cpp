@@ -26,10 +26,7 @@ void WrapVoltage::setVoltage(Script & script) const
     case outputNeuron:
     case neuron:
     case knot:
-        {
-            BaseKnot & baseKnot { GetNobRef<BaseKnot>(idFromScript) };
-            baseKnot.SetVoltage(ScrReadVoltage(script));
-        }
+        setBaseKnotVoltage(script, idFromScript);
         break;
 
     case pipe: 
@@ -47,6 +44,16 @@ void WrapVoltage::setVoltage(Script & script) const
     }
 }
 
+void WrapVoltage::setBaseKnotVoltage
+(
+    Script    & script,
+    NobId const idFromScript
+) const
+{
+    BaseKnot & baseKnot { GetNobRef<BaseKnot>(idFromScript) };
+    baseKnot.SetVoltage(ScrReadVoltage(script));
+}
+
 void WrapVoltage::setPipeVoltage
 (
     Script    & script,
@@ -57,6 +64,7 @@ void WrapVoltage::setPipeVoltage
     script.ScrReadSpecial(Pipe::OPEN_BRACKET);
     size_t const nrOfSegmentsFromScript { script.ScrReadUlong() };
     size_t const nrOfSegmentsFromModel  { pipe.GetNrOfSegments() };
+    script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
     if (nrOfSegmentsFromScript == nrOfSegmentsFromModel)
     {
         Pipe::SegNr segNr(0);
@@ -66,7 +74,7 @@ void WrapVoltage::setPipeVoltage
             pipe.SetVoltage(segNr, v);
             if ((++segNr).GetValue() == nrOfSegmentsFromScript)
                 break;
-            script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
+            script.ScrReadSpecial(Pipe::ID_SEPARATOR);
         }
     }
     else
