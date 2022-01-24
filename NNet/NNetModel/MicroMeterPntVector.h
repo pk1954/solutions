@@ -15,16 +15,20 @@ using std::endl;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
-using std::max_element;
 
 class MicroMeterPntVector
 {
 public:
 
-    MicroMeterPntVector() {}
+    MicroMeterPntVector() = default;
     MicroMeterPntVector(vector<IoNeuron *> const&);
 
-    void Apply2All(function<void(MicroMeterPosDir &)> const &);
+    template <class FUNC>
+    void Apply2All(FUNC const & func)
+    {
+        for (auto & elem: m_list)
+            func(elem);
+    }
 
     unsigned int Size() const;
 
@@ -53,9 +57,9 @@ public:
     MicroMeter     FindMaxPos() const;
     MicroMeterLine GetLine() const;
 
-    friend MicroMeterPntVector operator+ (MicroMeterPntVector const, MicroMeterPntVector const);
-    friend MicroMeterPntVector operator- (MicroMeterPntVector const, MicroMeterPntVector const); 
-    friend MicroMeterPntVector operator* (MicroMeterPntVector const, float const);
+    friend MicroMeterPntVector operator+ (MicroMeterPntVector const &, MicroMeterPntVector const &);
+    friend MicroMeterPntVector operator- (MicroMeterPntVector const &, MicroMeterPntVector const &); 
+    friend MicroMeterPntVector operator* (MicroMeterPntVector const &, float const);
 
     friend unsigned int CalcNrOfSteps(MicroMeterPntVector const &, MicroMeterPntVector const &);
 

@@ -26,19 +26,19 @@ public:
         m_radiusY(radiusY)
     {}
 
-    EllipseType(CircleType<BASE_TYPE> const & circle) 
+    explicit EllipseType(CircleType<BASE_TYPE> const & circle) 
         : m_position(circle.GetPos()),
         m_radiusX(circle.GetRadius()),
         m_radiusY(circle.GetRadius())
     {}
 
-    EllipseType(RectType<BASE_TYPE> const & rect) 
+    explicit EllipseType(RectType<BASE_TYPE> const & rect) 
         : m_position(rect.GetCenter()),
         m_radiusX(rect.GetWidth() / 2),
         m_radiusY(rect.GetHeight() / 2)
     {}
 
-    bool const operator==(EllipseType const & a) const 
+    bool operator==(EllipseType const & a) const 
     { 
         return 
         (m_position == a.m_position) &&
@@ -46,11 +46,11 @@ public:
         (m_radiusY  == a.m_radiusY);
     }
 
-    EllipseType const operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
-    EllipseType const operator-= (POS_TYPE const a) { m_position -= a.m_position; return * this; }
+    EllipseType operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
+    EllipseType operator-= (POS_TYPE const a) { m_position -= a.m_position; return * this; }
 
-    EllipseType const operator*= (float const d) { m_radiusX *= d; m_radiusY *= d; return * this; }
-    EllipseType const operator/= (float const d) { m_radiusX /= d; m_radiusY /= d; return * this; }
+    EllipseType operator*= (float const d) { m_radiusX *= d; m_radiusY *= d; return * this; }
+    EllipseType operator/= (float const d) { m_radiusX /= d; m_radiusY /= d; return * this; }
 
     POS_TYPE  const & GetPos() const { return m_position; }
     BASE_TYPE const & GetRadiusX () const { return m_radiusX; }

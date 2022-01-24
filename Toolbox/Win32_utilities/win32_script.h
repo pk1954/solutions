@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <ShObjidl.h> 
+#include <ShObjIdl.h> 
 #include "SYMTAB.H"
 
 using std::wstring;
@@ -24,8 +24,8 @@ public:
 	ScriptFile();
 	~ScriptFile();
 
-	static wstring const GetPathOfExecutable();
-	static wstring const AskForFileName(wstring const, wstring const, tFileMode const);
+	static wstring GetPathOfExecutable();
+	static wstring AskForFileName(wstring const &, wstring const &, tFileMode const);
 
 private:
 	static bool m_bInitialized;
@@ -33,7 +33,7 @@ private:
 	static IFileDialog * createOpenDialog();
 	static IFileDialog * createSaveDialog();
 
-	static bool    const setFileTypes       (IFileDialog *, wstring const, wstring const);
-	static bool    const setDefaultExtension(IFileDialog *, wstring const);
-	static wstring const getResult(IFileDialog * const);
+	static bool    setFileTypes       (IFileDialog *, wstring const &, wstring const &);
+	static bool    setDefaultExtension(IFileDialog *, wstring const &);
+	static wstring getResult(IFileDialog * const);
 };

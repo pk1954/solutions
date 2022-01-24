@@ -405,7 +405,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_STOP:
 			m_computeThread.StopComputation();
-//			m_nmwi.ClearDynamicData();
 			break;
 
 		case IDM_SIGNAL_DESIGNER:
@@ -414,13 +413,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_SCRIPT_DIALOG:
 			m_computeThread.StopComputation();
-			{
-				wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
-				if (!wstrFile.empty())
-					StartScript(wstrFile);
-				if (!ScriptStack::GetScript()->ReadNextToken())
-					ScriptStack::CloseScript();
-			}
+			processScript();
 			break;
 
 		case IDM_NEXT_SCRIPT_CMD:
@@ -460,7 +453,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_cmdStack.Clear();
 			m_modelImporter.Import
 			(
-				AskModelFile(), 
+				AskModelFile(tFileMode::read), 
 				make_unique<NNetImportTermination>(m_hwndApp, IDX_REPLACE_MODEL)
 			);
 			break;
@@ -468,7 +461,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_ADD_MODEL:
 			m_modelImporter.Import
 			(
-				AskModelFile(), 
+				AskModelFile(tFileMode::read), 
 				make_unique<NNetImportTermination>(m_hwndApp, IDM_ADD_IMPORTED_MODEL)
 			); 
 			break;
@@ -535,7 +528,7 @@ bool NNetAppWindow::SaveModelAs()
 	}
 	else
 	{
-		wstrModelPath = ScriptFile::AskForFileName(L"mod", L"Model files", tFileMode::write);
+		wstrModelPath = AskModelFile(tFileMode::write);
 		bool const bRes = wstrModelPath != L"";
 		if (bRes)
 		{
@@ -606,4 +599,13 @@ void NNetAppWindow::openSignalDesigner()
 			m_modelCommands
 		) 
 	};
+}
+
+void NNetAppWindow::processScript() const
+{
+	wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
+	if (!wstrFile.empty())
+		StartScript(wstrFile);
+	if (!ScriptStack::GetScript()->ReadNextToken())
+		ScriptStack::CloseScript();
 }

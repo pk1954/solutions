@@ -19,8 +19,8 @@ class IoNeuronsAnimation : public Command
 public:
     IoNeuronsAnimation
     (
-        vector<IoNeuron *> & animated,
-        ANIM_TYPE    const & target
+        vector<IoNeuron *> const & animated,
+        ANIM_TYPE          const & target
     )
       : m_animated(animated),
         m_start(animated),
@@ -42,14 +42,14 @@ public:
         m_upAnimation->Start(m_animated, m_start);
     }
 
-    virtual void UpdateUI()
+    void UpdateUI() final
     {
         for (size_t i = 0; i < m_animated.size(); ++i)
             m_animated.at(i)->SetPosDir(m_upAnimation->GetActual().GetPosDir(i));
         Command::UpdateUI();
     }
 
-    virtual bool IsAsyncCommand() 
+    bool IsAsyncCommand() final
     { 
         return true; 
     };

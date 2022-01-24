@@ -53,6 +53,8 @@ public:
         return res;
     };
 
+    friend MicroMeter Hypot(MicroMeterPosDir const & p) { return Hypot(p.GetPos()); }
+
 private:
     MicroMeterPnt m_pos;
     Radian        m_dir;

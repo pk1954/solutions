@@ -5,17 +5,13 @@
 #include "stdafx.h"
 #include "MicroMeterPntVector.h"
 
+using std::ranges::max_element;
+
 MicroMeterPntVector::MicroMeterPntVector(vector<IoNeuron *> const & nobList)
 {
     for (auto pNob : nobList) 
         if (pNob)
             Add(pNob->GetPosDir());
-}
-
-void MicroMeterPntVector::Apply2All(function<void(MicroMeterPosDir &)> const & func)
-{
-    for (auto & elem: m_list)
-        func(elem);
 }
 
 unsigned int MicroMeterPntVector::Size() const 
@@ -106,21 +102,21 @@ MicroMeterPntVector& MicroMeterPntVector::operator*= (float const factor)
     return * this; 
 }
 
-MicroMeterPntVector operator+ (MicroMeterPntVector const a, MicroMeterPntVector const b) 
+MicroMeterPntVector operator+ (MicroMeterPntVector const & a, MicroMeterPntVector const & b) 
 { 
     MicroMeterPntVector res { a }; 
     res += b; 
     return res; 
 };
 
-MicroMeterPntVector operator- (MicroMeterPntVector const a, MicroMeterPntVector const b) 
+MicroMeterPntVector operator- (MicroMeterPntVector const & a, MicroMeterPntVector const & b) 
 { 
     MicroMeterPntVector res { a }; 
     res -= b; 
     return res; 
 };
 
-MicroMeterPntVector operator* (MicroMeterPntVector const a, float const f) 
+MicroMeterPntVector operator* (MicroMeterPntVector const & a, float const f) 
 { 
     MicroMeterPntVector res { a }; 
     res *= f; 
@@ -145,13 +141,10 @@ Radian MicroMeterPntVector::FindMaxRadian() const
 {
     if (m_list.empty())
         return Radian::NULL_VAL();
-    MicroMeterPosDir const maxElement = * std::max_element
+    MicroMeterPosDir const maxElement = * max_element
     (
-        m_list.begin(), m_list.end(), 
-        [](MicroMeterPosDir const & a, MicroMeterPosDir const & b)
-        { 
-            return a.GetDir() < b.GetDir(); 
-        }
+        m_list, 
+        [](MicroMeterPosDir const & a, MicroMeterPosDir const & b) { return a.GetDir() < b.GetDir(); }
    );
     return maxElement.GetDir();
 }
@@ -160,15 +153,12 @@ MicroMeter MicroMeterPntVector::FindMaxPos() const
 {
     if (m_list.empty())
         return MicroMeter::NULL_VAL();
-    MicroMeterPosDir const maxElement = * std::max_element
+    MicroMeterPosDir const maxElement = * max_element
     (
-        m_list.begin(), m_list.end(), 
-        [](MicroMeterPosDir const & a, MicroMeterPosDir const & b)
-        { 
-            return Hypot(a.GetPos()) < Hypot(b.GetPos()); 
-        }
-   );
-    return Hypot(maxElement.GetPos());
+        m_list, 
+        [](MicroMeterPosDir const & a, MicroMeterPosDir const & b) { return Hypot(a) < Hypot(b); }
+    );
+    return Hypot(maxElement);
 }
 
 MicroMeterLine MicroMeterPntVector::GetLine() const

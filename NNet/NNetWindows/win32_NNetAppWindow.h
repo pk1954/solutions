@@ -20,7 +20,7 @@
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
-#include "win32_actionTimer.h"
+#include "win32_ActionTimer.h"
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_appTitle.h"
@@ -99,6 +99,7 @@ private:
 	void configureStatusBar();
 	void adjustChildWindows();
 	void openSignalDesigner();
+	void processScript() const;
 
 	bool SaveModelAs();
 	bool SaveModel();
@@ -110,9 +111,9 @@ private:
 		m_appTitle.SetUnsavedChanges(false);
 	}
 
-	wstring AskModelFile() const
+	wstring AskModelFile(enum class tFileMode const mode) const
 	{
-		return ScriptFile::AskForFileName(L"mod", L"Model files", tFileMode::read);
+		return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
 	}
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available

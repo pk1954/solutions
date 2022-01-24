@@ -19,7 +19,7 @@ using std::wstring;
 using std::wostringstream;
 using std::endl;
 
-wstring const ScriptFile::GetPathOfExecutable()
+wstring ScriptFile::GetPathOfExecutable()
 {
 	int iBufSize { 256 };
 	vector<wchar_t> buffer;
@@ -86,11 +86,11 @@ IFileDialog * ScriptFile::createSaveDialog()
     return pFileDlg;
 }
 
-bool const ScriptFile::setFileTypes
+bool ScriptFile::setFileTypes
 (
-    IFileDialog * pFileDlg, 
-    wstring const extension, 
-    wstring const description 
+    IFileDialog   * pFileDlg, 
+    wstring const & extension, 
+    wstring const & description 
 )
 {
     wstring           filter { L"*." + extension };
@@ -105,10 +105,10 @@ bool const ScriptFile::setFileTypes
     return true;
 }
 
-bool const ScriptFile::setDefaultExtension
+bool ScriptFile::setDefaultExtension
 (
     IFileDialog * pFileDlg, 
-    wstring const extension
+    wstring const & extension
 )
 {
     HRESULT hr { pFileDlg->SetDefaultExtension(extension.c_str()) };
@@ -121,7 +121,7 @@ bool const ScriptFile::setDefaultExtension
     return true;
 }
 
-wstring const ScriptFile::getResult(IFileDialog * const pFileDlg)
+wstring ScriptFile::getResult(IFileDialog * const pFileDlg)
 {
     HRESULT      hr;
     wstring      wstrRes { };
@@ -149,11 +149,11 @@ wstring const ScriptFile::getResult(IFileDialog * const pFileDlg)
     return wstrRes;
 }
 
-wstring const ScriptFile::AskForFileName
+wstring ScriptFile::AskForFileName
 (
-	wstring   const extension, 
-	wstring   const description,
-	tFileMode const mode
+	wstring   const & extension, 
+	wstring   const & description,
+	tFileMode const   mode
 )
 {
     IFileDialog * pFileDlg { nullptr }; 
