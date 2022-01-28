@@ -16,6 +16,7 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 using std::ranges::any_of;
+using std::ranges::for_each;
 
 class NobIdList;
 
@@ -114,43 +115,33 @@ public:
 		return move(upT);
 	}
 
-	template<class FUNC>
-	void Apply2All(FUNC const & func) const
+	void Apply2All(auto const & f) const
 	{
-		for (auto const & it : m_list)
-			if (it)
-				func(* it.get()); 
+		for_each(m_list, [&f](auto const & it){ if (it) f(* it.get()); } );
 	}                        
 
-	template<class FUNC>
-	bool Apply2AllB(FUNC const & func) const
+	bool Apply2AllB(auto const & f) const
 	{
-		for (auto & it : m_list)
-			if (it && func(* it.get()))
-				return true;
-		return false;
+		return any_of(m_list, [&f](auto const & it){ return it && f(* it.get());} );
 	}
 
-	template<class FUNC>
-	void Apply2AllSelected(NobType const type, FUNC const & func) const
+	void Apply2AllSelected(NobType const t, auto const & f) const
 	{
-		for (auto & it : m_list)
-			if (it && it->IsSelected() && (it->GetNobType() == type))
-				func(* it.get()); 
+		for_each(m_list, [&f,t](auto const & p){ if (p && p->IsSelected() && (p->GetNobType() == t)) f(* p.get()); } );
 	}
 
 	template <Nob_t T>    // const version
-	void Apply2All(function<void(T const &)> const & func) const
+	void Apply2All(auto const & func) const
 	{
 		for (auto const & it : m_list)
 		{ 
 			if (it && HasType<T>(*it))
 				func(static_cast<T const &>(*it));
-		};
+		}
 	}                        
 
 	template <Nob_t T>    // non const version
-	void Apply2All(function<void(T &)> const & func)
+	void Apply2All(auto const & func)
 	{
 		for (size_t i = 0; i < m_list.size(); ++i)  // use normal loop instead of range-based loop
 		{                                           // vector may be enlarged in loop
@@ -160,25 +151,25 @@ public:
 	}                        
 
 	template <Nob_t T>    // const version
-	void Apply2AllSelected(function<void(T const &)> const & func) const
+	void Apply2AllSelected(auto const & func) const
 	{
 		Apply2All<T>([func](T const & s) { if (s.IsSelected()) func(s); });
 	}
 
 	template <Nob_t T>    // non const version
-	void Apply2AllSelected(function<void(T &)> const & func) 
+	void Apply2AllSelected(auto const & func) 
 	{
 		Apply2All<T>([func](T & s) { if (s.IsSelected()) func(s); });
 	}
 
 	template <Nob_t T>   // const version
-	void Apply2AllInRect(MicroMeterRect const & r, function<void(T const &)> const & func) const
+	void Apply2AllInRect(MicroMeterRect const & r, auto const & func) const
 	{
 		Apply2All<T>([&r, &func](T const & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
 	template <Nob_t T>   // non const version
-	void Apply2AllInRect(MicroMeterRect const & r, function<void(T &)> const & func)
+	void Apply2AllInRect(MicroMeterRect const & r, auto const & func)
 	{
 		Apply2All<T>([&r, &func](T & s) { if (s.IsIncludedIn(r)) func(s); });
 	}

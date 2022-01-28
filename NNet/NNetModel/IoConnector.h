@@ -12,6 +12,7 @@
 
 using std::vector;
 using std::unique_ptr;
+using std::ranges::for_each;
 
 class DrawContext;
 class MicroMeterPosDir;
@@ -70,11 +71,9 @@ public:
 	void SetPos   (MicroMeterPnt    const &) override;
 	void SetPosDir(MicroMeterPosDir const &) override;
 
-	void Apply2All(auto const & func) const
+	void Apply2All(auto const & f) const
 	{
-		for (auto pNob : m_list) 
-			if (pNob)
-				func(* pNob);
+		for_each(m_list, [&f](auto * const p) { if (p) f(*p); } );
 	}                        
 
 	MicroMeterLine CalcMaxDistLine() const;

@@ -32,9 +32,9 @@ public:
         if (m_bRemove)
             m_connector.Apply2All
             (
-                [&](Neuron & n) 
+                [this](Neuron & n) 
                 { 
-                    if (unique_ptr<NNetCommand> upCmd { move(MakeDeleteCommand(*m_pNMWI, n)) })
+                    if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, n) })
                         m_cmdStack.Push(move(upCmd)); 
                 }
            );

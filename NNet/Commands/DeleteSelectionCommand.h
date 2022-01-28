@@ -14,24 +14,23 @@
 class DeleteSelectionCommand : public NNetCommand
 {
 public:
-	DeleteSelectionCommand() 
-	{}
+	DeleteSelectionCommand() = default;
 
 	void Do() final 
 	{ 
 		m_cmdStack.Initialize(m_pNMWI, nullptr);
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
-			[&](Nob & nob) 
+			[this](Nob & nob) 
 			{ 
-				if (unique_ptr<NNetCommand> upCmd { move(MakeDeleteCommand(*m_pNMWI, nob)) })
+				if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, nob) })
 				{
 					upCmd->Do();
 					m_pNMWI->CheckModel();
 					m_cmdStack.Push(move(upCmd));
 				}
 			}
-		); 
+		);
 	}
 
 	void Undo() final 

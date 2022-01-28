@@ -11,6 +11,8 @@ class Pipe;
 
 using std::vector;
 using std::unique_ptr;
+using std::ranges::any_of;
+using std::ranges::for_each;
 
 using PipeFunc = function<void(Pipe &)>;
 using PipeCrit = function<bool(Pipe const &)>;
@@ -29,7 +31,7 @@ public:
 	Pipe const & GetFirst() const { return * m_list.front(); }
 
 	void Add(Pipe   * const   p) { if (p) m_list.push_back(p); }
-	void Add(PipeList const & l) { l.Apply2All([&](Pipe &p) { Add(&p); }); }
+	void Add(PipeList const & l) { l.Apply2All([this](Pipe &p) { Add(&p); }); }
 
 	void Recalc() const;
 
@@ -45,18 +47,12 @@ public:
 
 	void Apply2All(auto const &f) const 
 	{ 
-		for (auto & it : m_list) 
-			f(* it); 
+		for_each(m_list, [&f](auto * const p) { f(*p); } );
 	}
 
 	bool Apply2AllB(auto const &f) const 
 	{ 
-		for (auto & it : m_list) 
-		{ 
-			if (f(* it))
-				return true;
-		}
-		return false;
+		return any_of(m_list, [&f](auto const * p) { return f(*p); });
 	}
 
 private:
