@@ -109,8 +109,7 @@ public:
 	unique_ptr<T> Pop()
 	{
 		unique_ptr<T> upT { unique_ptr<T>(static_cast<T*>(m_list.back().release())) };
-		if (upT)
-			decCounter(*upT);
+		decCounter(upT.get());
 		m_list.pop_back();
 		return move(upT);
 	}
@@ -198,8 +197,8 @@ private:
 		return m_nobsOfType[static_cast<unsigned int>(nob.GetNobType().GetValue())]; 
 	}
 
-	void incCounter(Nob const & nob) { ++counter(nob); }
-	void decCounter(Nob const & nob) { --counter(nob); }
+	void incCounter(Nob const * pNob) { if (pNob) ++counter(*pNob); }
+	void decCounter(Nob const * pNob) { if (pNob) --counter(*pNob); }
 
 	void countNobs();
 	void copy(UPNobList const &);

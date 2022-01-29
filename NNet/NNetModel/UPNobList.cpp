@@ -72,8 +72,7 @@ UPNob UPNobList::ExtractNob(NobId const id)
 	assert(IsValidNobId(id));
 
 	UPNob upNob { move(m_list[id.GetValue()]) };
-	if (upNob)
-		decCounter(*upNob.get());
+	decCounter(upNob.get());
 	return move(upNob);
 }
 
@@ -90,7 +89,7 @@ void UPNobList::SetNob2Slot(NobId const id, UPNob upNob)
 	assert(IsEmptySlot(id));
 	assert(upNob);
 
-	incCounter(*upNob.get());
+	incCounter(upNob.get());
 	m_list[id.GetValue()] = move(upNob);
 }
 
@@ -101,8 +100,8 @@ Nob * UPNobList::ReplaceNob(UPNob upT)
 	assert(IsDefined(id));
 	assert(IsValidNobId(id));
 
-	incCounter(*upT.get());
-	decCounter(*GetAt(id));
+	incCounter(upT.get());
+	decCounter(GetAt(id));
 
 	UPNob tmp = move(upT);
 	m_list[id.GetValue()].swap(tmp);
@@ -115,7 +114,7 @@ NobId UPNobList::Push(UPNob upNob)
 	if (upNob)
 	{
 		upNob->SetId(idNewSlot);
-		incCounter(*upNob.get());
+		incCounter(upNob.get());
 	}
 	m_list.push_back(move(upNob));
 	return idNewSlot;
