@@ -35,9 +35,9 @@ private:
 	MainWindow               const * m_pMainWindow { nullptr };
 	NNetModelReaderInterface const * m_pNMRI       { nullptr };
 
-	void printPositionInfo(TextBuffer &, MicroMeterPnt const) const;
-	void printSignalInfo  (TextBuffer &, SignalId      const) const;
-	void printNobInfo     (TextBuffer &, NobId         const) const;
+	void printPositionInfo(TextBuffer &, MicroMeterPnt const &)                 const;
+	void printNobInfo     (TextBuffer &, MicroMeterPnt const &, NobId    const) const;
+	void printSignalInfo  (TextBuffer &, MicroMeterPnt const &, SignalId const) const;
 
 	void printMicroMeter(TextBuffer &, MicroMeter const) const;
 	void printMilliSecs (TextBuffer &, MilliSecs  const) const;

@@ -162,6 +162,14 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         m_pMainWindow->ShowArrows(false);
         break;
 
+    case IDD_SENSOR_PNTS_ON:
+        m_pMainWindow->ShowSensorPoints(true);
+        break;
+
+    case IDD_SENSOR_PNTS_OFF:
+        m_pMainWindow->ShowSensorPoints(false);
+        break;
+
     case IDX_PLAY_SOUND:
         m_pSound->Play(reinterpret_cast<wchar_t *>(lParam)); 
         break;

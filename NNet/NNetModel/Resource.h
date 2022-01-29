@@ -63,7 +63,10 @@
 								   		
 #define       IDD_AUTO_OPEN_ON          210
 #define       IDD_AUTO_OPEN_OFF         211
-										 
+
+#define       IDD_SENSOR_PNTS_ON        220
+#define       IDD_SENSOR_PNTS_OFF       221
+
 #define       IDM_MONITOR_WINDOW        330
 #define       IDD_ADD_EEG_SENSOR        345
 #define       IDD_DELETE_EEG_SENSOR     346

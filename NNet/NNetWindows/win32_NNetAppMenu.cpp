@@ -18,9 +18,10 @@
 using std::make_unique;
 
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffArrows  (make_unique<OnOffPair>(this, IDD_ARROWS_ON,    IDD_ARROWS_OFF   )),
-    m_upOnOffSound   (make_unique<OnOffPair>(this, IDD_SOUND_ON,     IDD_SOUND_OFF    )),
-    m_upOnOffAutoOpen(make_unique<OnOffPair>(this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF))
+  : m_upOnOffArrows      (make_unique<OnOffPair>(this, IDD_ARROWS_ON,      IDD_ARROWS_OFF     )),
+    m_upOnOffSound       (make_unique<OnOffPair>(this, IDD_SOUND_ON,       IDD_SOUND_OFF      )),
+    m_upOnOffAutoOpen    (make_unique<OnOffPair>(this, IDD_AUTO_OPEN_ON,   IDD_AUTO_OPEN_OFF  )),
+    m_upOnOffSensorPoints(make_unique<OnOffPair>(this, IDD_SENSOR_PNTS_ON, IDD_SENSOR_PNTS_OFF))
 { }
 
 void NNetAppMenu::Start
@@ -100,7 +101,8 @@ void NNetAppMenu::Start
             AppendMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
             AppendMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
         }
-        m_upOnOffArrows->appendOnOffMenu(hMenuView, L"&Arrows");
+        m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
+        m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&SensorPoints");
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
     {
@@ -135,9 +137,10 @@ void NNetAppMenu::Notify(bool const bImmediately)
     enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(IDM_PARAM_WINDOW  ));
     enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
 
-    m_upOnOffArrows  ->enableOnOff(m_pMainWindow->ArrowsVisible());
-    m_upOnOffSound   ->enableOnOff(m_pSound->IsOn());
-    m_upOnOffAutoOpen->enableOnOff(AutoOpen::IsOn());
+    m_upOnOffSensorPoints->enableOnOff(m_pMainWindow->SensorsPointsVisible());
+    m_upOnOffArrows      ->enableOnOff(m_pMainWindow->ArrowsVisible());
+    m_upOnOffSound       ->enableOnOff(m_pSound->IsOn());
+    m_upOnOffAutoOpen    ->enableOnOff(AutoOpen::IsOn());
 
     DrawMenuBar(m_hwndApp);
 }

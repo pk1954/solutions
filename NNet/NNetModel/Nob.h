@@ -114,16 +114,16 @@ public:
 
 	void  SetId(NobId const id) { m_identifier = id; }
 
+	ColorF GetExteriorColor(tHighlight const) const;
+	ColorF GetInteriorColor(tHighlight const) const;
+	ColorF GetInteriorColor(mV const) const;
+	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
+
 protected:
 
 	mV m_mVinputBuffer { 0._mV };
 
 	inline static Param const * m_pParameters{ nullptr };
-
-	ColorF GetExteriorColor(tHighlight const) const;
-	ColorF GetInteriorColor(tHighlight const) const;
-	ColorF GetInteriorColor(mV const) const;
-	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	void SetType(NobType const type) { m_type = type; }
 

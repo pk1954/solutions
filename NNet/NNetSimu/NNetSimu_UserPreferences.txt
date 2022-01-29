@@ -1,3 +1,5 @@
+ShowArrows ON
+ShowSensorPoints ON
 DescWinFontSize 12
 SetAutoOpen ON
 SetSound ON

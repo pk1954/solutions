@@ -45,6 +45,15 @@ public:
         return DistSquare(pos, m_position) <= m_radius.GetValue() * m_radius.GetValue();
     }
 
+    float DistFactor(POS_TYPE const pos) const
+    {
+        float const fDsBorder   { m_radius.GetValue() * m_radius.GetValue() };
+        float const fDistSquare { DistSquare(pos, m_position) };
+        return (fDistSquare <= fDsBorder)  // pos in circle?
+            ? (1.0f - fDistSquare / fDsBorder)
+            : 0.0f;
+    }
+
     static CircleType const & NULL_VAL() 
     { 
         static CircleType res { CircleType(POS_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL()) }; 

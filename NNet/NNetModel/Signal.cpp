@@ -36,36 +36,30 @@ Signal::~Signal()
 
 void Signal::add2list(Pipe const & pipe) 
 {  
-    float         const NR_SEGS  { 10.0f };
-    float         const fIncCalc { m_circle.GetRadius() / (pipe.GetLength() * NR_SEGS) };
-    float         const fInc     { min(1.0f, fIncCalc) };
-    MicroMeterPnt const umpInc   { pipe.GetVector() * fInc };
-    MicroMeterPnt       umpRun   { pipe.GetStartPoint() };
-    float               fRun     { 0.0f }; 
-    do
+    float const DATA_PNTS { 10.0f };
+    float const fIncCalc  { m_circle.GetRadius() / (pipe.GetLength() * DATA_PNTS) };
+    float const fInc      { min(1.0f, fIncCalc) };
+    for (float fRun = 0.0f; fRun <= 1.0f; fRun += fInc)
     {
-        float const fDistance { DistSquare(umpRun, m_circle.GetPos()) };
-        if (fDistance < m_fDsBorder)  // is segment in circle?
+        MicroMeterPnt umpRun  { pipe.GetVector(fRun) };
+        float         fFactor { GetDistFactor(umpRun) };
+        if (fFactor > 0.0f)
         {
-            Pipe::SegNr const segNr   { pipe.GetSegNr(fRun) };
-            float       const fFactor { 1.0f - fDistance / m_fDsBorder };
-            m_segElements.push_back(SegmentElem(&pipe, segNr, fFactor));
+            m_dataPoints.push_back(SigDataPoint(&pipe, pipe.GetSegNr(fRun), umpRun, fFactor));
         }
-        umpRun += umpInc;
-        fRun   += fInc;
-    } while (fRun <= 1.0f);
+    }
 } 
 
 void Signal::Recalc()
 {
-    m_segElements.clear();
+    m_dataPoints.clear();
     m_nmri.GetUPNobsC().Apply2All<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
 }
 
 float Signal::GetSignalValue() const
 {
     float fResult { 0.0f };
-    for (auto const& it : m_segElements)
+    for (auto const & it : m_dataPoints)
         fResult += it.GetSignalValue();
     return fResult;
 }
@@ -87,6 +81,29 @@ void Signal::Draw
         NNetColors::EEG_SENSOR_1, 
         bHighlight ? NNetColors::EEG_SENSOR_HIGHLIGHTED : NNetColors::EEG_SENSOR_2
     );
+}
+
+void Signal::DrawDataPoints(DrawContext const & context) const
+{
+    for (auto const& it : m_dataPoints)
+    {
+        mV     const voltage { it.m_pPipe->GetVoltage(it.m_segNr) };
+        ColorF const col     { it.m_pPipe->GetInteriorColor(voltage) };
+        context.FillCircle(it.dataPointCircle(), col);
+    }
+}
+
+float Signal::GetDistFactor(MicroMeterPnt const & umPnt) const
+{
+    return m_circle.DistFactor(umPnt);
+}
+
+Signal::SigDataPoint const * Signal::findDataPoint(MicroMeterPnt const & umPnt) const
+{
+    for (auto const & it : m_dataPoints)
+        if (it.dataPointCircle().Includes(umPnt))
+            return &it;
+    return nullptr;
 }
 
 int Signal::time2index(fMicroSecs const usParam) const
@@ -161,7 +178,7 @@ void Signal::SetSensorPos(MicroMeterPnt const & umPos)
     Recalc();
 }
 
-void Signal::SetSensorSize(MicroMeter const  umSize ) 
+void Signal::SetSensorSize(MicroMeter const umSize) 
 { 
     m_circle.SetRadius(umSize); 
     m_fDsBorder = umSize.GetValue() * umSize.GetValue();

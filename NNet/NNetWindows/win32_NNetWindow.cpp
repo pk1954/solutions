@@ -78,11 +78,16 @@ void NNetWindow::DrawSensors() const
 	}
 }
 
-void NNetWindow::DrawHighlightedSensor() const
+void NNetWindow::DrawHighlightedSensor(Signal const * const pSignal) const
 {
-	Signal const * const pSignal { m_pNMRI->GetConstMonitorData().GetHighlightedSignal() };
 	if (pSignal)
 		pSignal->Draw(m_context, true);
+}
+
+void NNetWindow::DrawSensorDataPoints(Signal const * const pSignal) const
+{
+	if (pSignal)
+		pSignal->DrawDataPoints(m_context);
 }
 
 bool NNetWindow::OnSize(WPARAM const wParam, LPARAM const lParam)

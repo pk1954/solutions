@@ -41,7 +41,7 @@ void CrsrWindow::Start
 	StartTextWindow
 	(
 		hwndParent, 
-		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 500_PIXEL }, 
+		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 525_PIXEL }, 
 		L"CrsrWindow", 
 		100, 
 		true,
@@ -94,20 +94,26 @@ void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage) const
 
 void CrsrWindow::DoPaint(TextBuffer & textBuf)
 {
-	printPositionInfo(textBuf, m_pMainWindow->GetCursorPos());
+	MicroMeterPnt umPntCrsr { m_pMainWindow->GetCursorPos() };
+	printPositionInfo(textBuf, umPntCrsr);
 
 	SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
-	if (sigId.IsNotNull())
-		printSignalInfo(textBuf, sigId);
-	else
+	NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
+	if (IsDefined(nobId))
 	{
-		NobId const nobId { m_pMainWindow->GetHighlightedNobId() };
-		if (IsDefined(nobId))
-			printNobInfo(textBuf, nobId);
+		printNobInfo(textBuf, umPntCrsr, nobId);
+	}
+	if (sigId.IsNotNull())
+	{
+		printSignalInfo(textBuf, umPntCrsr, sigId);
 	}
 }
 
-void CrsrWindow::printPositionInfo(TextBuffer& textBuf, MicroMeterPnt const umPoint) const
+void CrsrWindow::printPositionInfo
+(
+	TextBuffer          & textBuf, 
+	MicroMeterPnt const & umPoint
+) const
 {
 	if (umPoint.IsNull())
 	{
@@ -115,64 +121,50 @@ void CrsrWindow::printPositionInfo(TextBuffer& textBuf, MicroMeterPnt const umPo
 		textBuf.printString(L"Cursor not in model window");
 		return;
 	}
-
 	textBuf.printString(L"Position: ");
 	printMicroMeter(textBuf, umPoint.GetX());
 	printMicroMeter(textBuf, umPoint.GetY());
 	textBuf.nextLine();
 }
 
-void CrsrWindow::printSignalInfo(TextBuffer& textBuf, SignalId const id) const
-{
-	Signal const & signal { * m_pNMRI->GetConstMonitorData().GetConstSignalPtr(id) };
-	textBuf.AlignRight(); textBuf.printString(L"Signal at ");
-	printMicroMeter(textBuf, signal.GetCenter().GetX()); 
-    printMicroMeter(textBuf, signal.GetCenter().GetY()); 
-	textBuf.nextLine();
-	textBuf.AlignRight(); 
-	textBuf.printString(L"Radius ");
-	printMicroMeter(textBuf, signal.GetRadius()); 
-	textBuf.nextLine();
-	textBuf.AlignRight(); textBuf.printString(L"#Segments ");
-	textBuf.printString(to_wstring(signal.GetNrOfElements())); 
-}
-
-void CrsrWindow::printNobInfo(TextBuffer & textBuf, NobId const id) const 
+void CrsrWindow::printNobInfo
+(
+	TextBuffer          & textBuf, 
+	MicroMeterPnt const & umPoint, 
+	NobId         const id
+) const 
 {
 	NobType const type { m_pNMRI->GetNobType(id) };
-
-	textBuf.AlignRight(); textBuf.printString(L"Nob #");
-	textBuf.AlignLeft();  textBuf.printNumber(id.GetValue());
+	textBuf.nextLine();
+	textBuf.AlignRight(); 
+	textBuf.printString(L"Nob #");
+	textBuf.AlignLeft();  
+	textBuf.printNumber(id.GetValue());
 	if (m_pNMRI->IsSelected(id))
 		textBuf.printString(L" selected");
 	textBuf.nextLine();
-	textBuf.AlignRight(); textBuf.printString(L"type:"); 
-	textBuf.AlignLeft();  textBuf.printString(NobType::GetName(type.GetValue())); 
+	textBuf.AlignRight(); 
+	textBuf.printString(L"type:"); 
+	textBuf.AlignLeft();  
+	textBuf.printString(NobType::GetName(type.GetValue())); 
 	textBuf.nextLine();
 
-	mV potential { 0.0_mV };
 	if (type.IsPipeType())
 	{
-		textBuf.AlignRight(); textBuf.printString(L"# segments:");
-		textBuf.AlignLeft();  textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
-		potential = m_pNMRI->GetVoltageAt(id, m_pMainWindow->GetCursorPos());
+		textBuf.AlignRight(); 
+		textBuf.printString(L"# segments:");
+		textBuf.AlignLeft();  
+		textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
 	}
-	else 
-	{
-		potential = m_pNMRI->GetVoltage(id);
-	}
-
-	textBuf.AlignRight(); textBuf.nextLine(L"potential ");
-	textBuf.AlignLeft();  printVoltage(textBuf, potential);
-	textBuf.nextLine();
-
 	if (type.IsAnyNeuronType())
 	{
 		SoundDescr sound { m_pNMRI->GetTriggerSound(id) };
 		if (sound.m_bOn)
 		{
-			textBuf.AlignRight(); textBuf.nextLine(L"trigger sound:");
-			textBuf.AlignLeft();  printFrequency(textBuf, sound.m_frequency);
+			textBuf.AlignRight(); 
+			textBuf.nextLine(L"trigger sound:");
+			textBuf.AlignLeft();  
+			printFrequency(textBuf, sound.m_frequency);
 			printMilliSecs(textBuf, sound.m_duration);
 			textBuf.printString(L"msec");
 			textBuf.nextLine();
@@ -180,14 +172,57 @@ void CrsrWindow::printNobInfo(TextBuffer & textBuf, NobId const id) const
 	}
 	if (type.IsIoConnectorType())
 	{
+		textBuf.AlignRight(); 
+		textBuf.printString(L"direction: ");
+		textBuf.AlignLeft();  
+		printDegrees(textBuf, m_pNMRI->GetDirection(id));
+		textBuf.nextLine();
 		if (type.IsInputConnectorType())
 		{
-			textBuf.AlignRight(); textBuf.printString(L"pulse freq: ");
-			textBuf.AlignLeft();  printFrequency(textBuf, m_pNMRI->GetActFrequency(id));
+			textBuf.AlignRight(); 
+			textBuf.printString(L"pulse freq: ");
+			textBuf.AlignLeft();  
+			printFrequency(textBuf, m_pNMRI->GetActFrequency(id));
 			textBuf.nextLine();
 		}
-		textBuf.AlignRight(); textBuf.printString(L"direction: ");
-		textBuf.AlignLeft();  printDegrees(textBuf, m_pNMRI->GetDirection(id));
-		textBuf.nextLine();
 	}
+ 	mV potential 
+	{ 
+		type.IsPipeType()
+		? m_pNMRI->GetVoltageAt(id, m_pMainWindow->GetCursorPos())
+		: m_pNMRI->GetVoltage(id)
+	};
+	textBuf.AlignRight(); 
+	textBuf.nextLine(L"potential ");
+	textBuf.AlignLeft();  
+	printVoltage(textBuf, potential);
+	textBuf.nextLine();
+}
+
+void CrsrWindow::printSignalInfo
+(
+	TextBuffer          & textBuf, 
+	MicroMeterPnt const & umPoint, 
+ 	SignalId      const id
+) const
+{
+	Signal const & signal { * m_pNMRI->GetConstMonitorData().GetConstSignalPtr(id) };
+	textBuf.nextLine();
+	textBuf.AlignRight(); 
+	textBuf.printString(L"Signal at ");
+	printMicroMeter(textBuf, signal.GetCenter().GetX()); 
+	printMicroMeter(textBuf, signal.GetCenter().GetY()); 
+	textBuf.nextLine();
+	textBuf.AlignRight(); 
+	textBuf.printString(L"Radius: ");
+	printMicroMeter(textBuf, signal.GetRadius()); 
+	textBuf.nextLine();
+	textBuf.AlignRight(); 
+	textBuf.printString(L"Data points: ");
+	textBuf.printString(to_wstring(signal.GetNrOfElements())); 
+	textBuf.nextLine();
+	textBuf.AlignRight(); 
+	textBuf.printString(L"Factor: ");
+	textBuf.printString(to_wstring(signal.GetDistFactor(m_pMainWindow->GetCursorPos()))); 
+	textBuf.nextLine();
 }

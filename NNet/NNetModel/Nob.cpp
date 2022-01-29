@@ -54,14 +54,14 @@ MicroMeterPosDir Nob::GetPosDir() const
 	return MicroMeterPosDir(GetPos(), GetDir()); 
 };
 
-ColorF Nob::GetInteriorColor(mV const voltageInput) const
+ColorF Nob::GetInteriorColor(mV const voltage) const
 {
 	mV const threshold { mV(m_pParameters->GetParameterValue(ParamType::Value::threshold)) };
-	if (IsAnyNeuron() && (voltageInput > threshold * 1.3f))
+	if (IsAnyNeuron() && (voltage > threshold * 1.3f))
 	{
 		int x = 42;
 	}
-	float const colorComponent { min(voltageInput / threshold, 1.0f)};
+	float const colorComponent { min(voltage / threshold, 1.0f)};
 	float const fAlphaChannel  { m_bSelected ? 0.7f : 1.0f };
 	if (IsEmphasized() &&  (colorComponent < 0.01f))
 		return NNetColors::INT_EMPHASIZED;

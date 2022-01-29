@@ -81,6 +81,7 @@ private:
 	CommandStack  const * m_pCommandStack  { nullptr };
 	Sound         const * m_pSound         { nullptr };
 
+	unique_ptr<OnOffPair> m_upOnOffSensorPoints;
 	unique_ptr<OnOffPair> m_upOnOffArrows;
 	unique_ptr<OnOffPair> m_upOnOffSound;
 	unique_ptr<OnOffPair> m_upOnOffAutoOpen;

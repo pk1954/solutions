@@ -75,7 +75,8 @@ protected:
     void OnLButtonDown(WPARAM const, LPARAM const)  override {}
    
 	void DrawSensors() const;
-	void DrawHighlightedSensor() const;
+	void DrawSensorDataPoints (Signal const * const) const;
+	void DrawHighlightedSensor(Signal const * const) const;
 
 	NNetModelReaderInterface const * m_pNMRI { nullptr };
 

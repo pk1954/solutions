@@ -14,6 +14,7 @@
 #include "NNetModelImporter.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
+#include "win32_MainWindow.h"
 #include "win32_descriptionWindow.h"
 #include "win32_importTermination.h"
 #include "win32_NNetAppMenu.h"
@@ -27,21 +28,60 @@ using std::wcout;
 using std::filesystem::exists;
 using std::filesystem::path;
 
-class WrapSetAutoOpen;
-class WrapSetSound;
-class WrapDescWinFontSize;
-class WrapReadModel;
-
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
 
 static wstring m_wstrPreferencesFile;
 
+class WrapShowArrows: public WrapBase
+{
+public:
+    WrapShowArrows(MainWindow & mainWin)
+      : WrapBase(L"ShowArrows"),
+        m_mainWin(mainWin)
+    {}
+
+    void operator() (Script & script) const final
+    {
+        m_mainWin.ShowArrows(static_cast<bool>(script.ScrReadUint()));
+    }
+
+    void Write(wostream & out) const final
+    {
+        out << (m_mainWin.ArrowsVisible() ? PREF_ON : PREF_OFF);
+    }
+
+private:
+    MainWindow & m_mainWin;
+};
+
+class WrapShowSensorPoints: public WrapBase
+{
+public:
+    WrapShowSensorPoints(MainWindow & mainWin)
+      : WrapBase(L"ShowSensorPoints"),
+        m_mainWin(mainWin)
+    {}
+
+    void operator() (Script & script) const final
+    {
+        m_mainWin.ShowSensorPoints(static_cast<bool>(script.ScrReadUint()));
+    }
+
+    void Write(wostream & out) const final
+    {
+        out << (m_mainWin.SensorsPointsVisible() ? PREF_ON : PREF_OFF);
+    }
+
+private:
+    MainWindow & m_mainWin;
+};
+
 class WrapSetAutoOpen: public WrapBase
 {
 public:
     WrapSetAutoOpen()
-      : WrapBase(L"SetAutoOpen")
+        : WrapBase(L"SetAutoOpen")
     {}
 
     void operator() (Script & script) const final
@@ -147,6 +187,7 @@ void Preferences::Initialize
 (
     NNetModelReaderInterface & nmri,
     DescriptionWindow        & descWin,
+    MainWindow               & mainWin,
     Sound                    & sound, 
     NNetModelImporter        & modelImporter,
     HWND                       hwndApp
@@ -161,6 +202,8 @@ void Preferences::Initialize
     m_wstrPreferencesFile = szBuffer;
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
+    m_prefVector.push_back(make_unique<WrapShowArrows>(mainWin));
+    m_prefVector.push_back(make_unique<WrapShowSensorPoints>(mainWin));
     m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
     m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
     m_prefVector.push_back(make_unique<WrapSetSound>(sound));

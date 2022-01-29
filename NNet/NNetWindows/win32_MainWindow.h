@@ -62,6 +62,8 @@ public:
 	void CenterSelection();
 	void ShowArrows(bool const);
 	bool ArrowsVisible() const; 
+	void ShowSensorPoints(bool const);
+	bool SensorsPointsVisible() const {	return m_bShowPnts; }
 
 	void OnPaint() final;
 	bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const) final;
@@ -90,6 +92,7 @@ private:
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
+	bool                m_bShowPnts            { false };
 
 	void setNoTarget      ();
 	void setTargetNob     ();

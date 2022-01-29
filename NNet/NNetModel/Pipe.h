@@ -55,6 +55,7 @@ public:
 	MicroMeterPnt GetEndPoint   () const; 
 	MicroMeter    GetLength     () const;
 	MicroMeterPnt GetVector     () const; 
+	MicroMeterPnt GetVector     (float const) const; 
 	MicroMeter    GetSegLength  () const { return GetLength() / Cast2Float(GetNrOfSegments()); };
 
 	void          RotateNob(MicroMeterPnt const &, Radian const) final { /* Pipe dir defined by endpoints */ }

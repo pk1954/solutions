@@ -14,6 +14,7 @@ using std::vector;
 class NNetModelReaderInterface;
 class NNetModelImporter;
 class DescriptionWindow;
+class MainWindow;
 class Sound;
 
 class Preferences
@@ -22,7 +23,8 @@ public:
 	void Initialize
 	(
 		NNetModelReaderInterface &,
-		DescriptionWindow &, 
+		DescriptionWindow &,
+		MainWindow &,
 		Sound &, 
 		NNetModelImporter &, 
 		HWND const

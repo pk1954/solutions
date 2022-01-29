@@ -201,6 +201,11 @@ void MainWindow::ShowArrows(bool const op)
 		m_pModelCommands->AnimateArrows(m_arrowSize, umTarget);
 }
 
+void MainWindow::ShowSensorPoints(bool const op) 
+{
+	m_bShowPnts = op;
+}
+
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
 //{
 //	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
@@ -401,8 +406,9 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
-	PixelRect   const   pixRect { GetClPixelRect () };
-	DrawContext const & context { GetDrawContextC() };
+	PixelRect   const         pixRect { GetClPixelRect () };
+	DrawContext const &       context { GetDrawContextC() };
+	Signal      const * const pSignal { m_pNMRI->GetConstMonitorData().GetHighlightedSignal() };
 
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
@@ -441,7 +447,11 @@ void MainWindow::DoPaint()
 	}
 	else 
 	{
-		DrawHighlightedSensor();
+		DrawHighlightedSensor(pSignal);
+	}
+	if (m_bShowPnts)
+	{
+		DrawSensorDataPoints(pSignal);
 	}
 }
 

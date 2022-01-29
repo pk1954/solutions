@@ -193,7 +193,7 @@ MicroMeter Pipe::GetLength() const
 
 bool Pipe::Includes(MicroMeterPnt const & point) const
 {
-	MicroMeterPnt const umVector{ GetEndPoint() - GetStartPoint() };
+	MicroMeterPnt const umVector{ GetVector() };
 	if (umVector.IsCloseToZero())
 		return false;
 	MicroMeterPnt const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
@@ -204,11 +204,25 @@ bool Pipe::Includes(MicroMeterPnt const & point) const
 
 MicroMeterPnt Pipe::GetVector() const
 {
+	assert(m_pKnotStart);
+	assert(m_pKnotEnd);
 	MicroMeterPnt const umStartPoint { GetStartPoint() };
 	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
-	MicroMeterPnt const umvector{ umEndPoint - umStartPoint };
-	assert(! umvector.IsCloseToZero());
-	return umvector;
+	MicroMeterPnt const umVector     { umEndPoint - umStartPoint };
+	assert(! umVector.IsCloseToZero());
+	return umVector;
+}
+
+MicroMeterPnt Pipe::GetVector(float const fFactor) const
+{
+	assert(m_pKnotStart);
+	assert(m_pKnotEnd);
+	MicroMeterPnt const umStartPoint { GetStartPoint() };
+	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
+	MicroMeterPnt const umVector     { umEndPoint - umStartPoint };
+	MicroMeterPnt const umResult     { umStartPoint + umVector * fFactor};
+	assert(! umResult.IsCloseToZero());
+	return umResult;
 }
 
 void Pipe::DrawArrows

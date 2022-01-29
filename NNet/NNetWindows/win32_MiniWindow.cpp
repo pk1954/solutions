@@ -70,6 +70,6 @@ void MiniWindow::DoPaint()
 		DrawSensors();
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
-		DrawHighlightedSensor();
+		DrawHighlightedSensor(m_pNMRI->GetConstMonitorData().GetHighlightedSignal());
 	}
 }
