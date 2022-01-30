@@ -32,7 +32,7 @@ void MonitorWindow::Start
 	MonitorData                    & monitorData 
 )
 {
-	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorWindow", WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX);
+	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION|WS_SIZEBOX);
 	m_pSound         =   pSound;
 	m_pController    =   pController;
 	m_pModelCommands =   pModelCommands;
@@ -209,7 +209,7 @@ void MonitorWindow::DoPaint()
 
 		if (m_measurement.TrackingActive())
 		{
-			fPixelPoint const fPixDiamondPos { MonitorWindow::calcDiamondPos() };
+			fPixelPoint const fPixDiamondPos { calcDiamondPos() };
 			if (fPixDiamondPos.IsNotNull())
 				m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
 		}
@@ -236,8 +236,8 @@ fPixelPoint MonitorWindow::calcDiamondPos() const
 	fMicroSecs const usMax        { findNextMax(*pSignal, fPixCrsrX) };
 	fPixel     const fPixMaxX     { m_fPixWinWidth - m_horzCoord.Transform2fPixelSize(usEnd-usMax) };
 	fPixel     const fPixYoff     { getSignalOffset(idSignal) };
-	return fPixelPoint(fPixMaxX, fPixYoff - fPixSignal);
-}
+	fPixel     const fPixYvalue   { fPixYoff - getSignalValue(*pSignal, usMax) };
+	return fPixelPoint(fPixMaxX, fPixYvalue);}
 
 SignalNr MonitorWindow::findSignal(TrackNr const trackNr, PixelPoint const & ptCrsr) const
 {
