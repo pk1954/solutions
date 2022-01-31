@@ -4,7 +4,13 @@
 
 #pragma once
 
+class NNetModelReaderInterface;
 class NNetModelCommands;
-class MainWindow;
+class NNetModelImporter;
 
-extern void DefineNNetWrappers(NNetModelReaderInterface * const, NNetModelCommands * const);
+extern void DefineNNetWrappers
+(
+    NNetModelReaderInterface * const, 
+    NNetModelCommands        * const,
+    NNetModelImporter        * const
+);

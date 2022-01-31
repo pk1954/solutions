@@ -37,7 +37,7 @@ public:
 	bool Import(wstring const &, unique_ptr<ImportTermination>);
 
 	unique_ptr<NNetModel> GetImportedModel();
-	UPNobList             GetUPNobs() const;
+	wstring const &       GetModelFileName() const { return m_wstrFile2Read; }
 
 	static void CheckImportedNobId(Script &, UPNobList const &, NobId const);
 

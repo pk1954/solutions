@@ -25,9 +25,9 @@ public:
 		Observable      * const
 	);
 
-	virtual void ThreadStartupFunc();
-	virtual void ThreadMsgDispatcher(MSG const) { }
-	virtual void Notify(bool const);
+	void ThreadStartupFunc() final;
+	void ThreadMsgDispatcher(MSG const) final { }
+	void Notify(bool const) final;
 
 	void SingleStep();
 	void ReleaseComputationLock();
@@ -68,6 +68,6 @@ private:
 	void stopComputation();
 	void reset();
 
-	fMicroSecs const simuTimeSinceLastReset();
-	fMicroSecs const netRealTimeSinceLastReset();
+	fMicroSecs simuTimeSinceLastReset() const;
+	fMicroSecs netRealTimeSinceLastReset() const;
 };

@@ -152,12 +152,12 @@ void ComputeThread::SingleStep()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-fMicroSecs const ComputeThread::simuTimeSinceLastReset()
+fMicroSecs ComputeThread::simuTimeSinceLastReset() const
 { 
 	return m_pModel->GetSimulationTime() - m_usSimuTimeAtLastReset; 
 };
 
-fMicroSecs const ComputeThread::netRealTimeSinceLastReset()
+fMicroSecs ComputeThread::netRealTimeSinceLastReset() const
 {
 	Ticks      ticksNet      { m_ticksNetRunning - m_ticksAtLastRun + m_hrTimer.ReadHiResTimer() };
 	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs(ticksNet) };

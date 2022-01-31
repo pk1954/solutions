@@ -132,8 +132,10 @@ void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & p
 void NNetModelCommands::AddModel()
 {
 	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(m_pModelImporter->GetUPNobs()));
+		TraceStream() << source_location::current().function_name() 
+		              << L" \"" << m_pModelImporter->GetModelFileName() << L"\" " << endl;
+	unique_ptr<NNetModel> upImportedModel { m_pModelImporter->GetImportedModel() };
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
 }
 
 void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & pos)
@@ -334,6 +336,7 @@ void NNetModelCommands::DiscIoConnector(NobId const id)
 		return;
 	m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(*pNob, false));
 }
+
 void NNetModelCommands::InsertTrack(TrackNr const nr)
 { 
 	if (IsTraceOn())

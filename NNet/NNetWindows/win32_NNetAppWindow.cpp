@@ -70,7 +70,7 @@ NNetAppWindow::NNetAppWindow()
 	Neuron::SetSound(& m_sound);
 	MainWindow::InitClass(& m_atDisplay);
 	DefineUtilityWrapperFunctions();
-	DefineNNetWrappers(& m_nmri, & m_modelCommands);
+	DefineNNetWrappers(& m_nmri, & m_modelCommands, &m_modelImporter);
 };
 
 NNetAppWindow::~NNetAppWindow() = default;
@@ -87,13 +87,14 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	SignalFactory  ::Initialize(m_nmri, m_dynamicModelObservable);
-	SignalDesigner ::Initialize(m_model.GetParams());
-	SignalGenerator::Initialize(m_model.GetParams());
-	Nob            ::Initialize(m_model.GetParams());
-	SignalGenerator::Initialize(m_model.GetParams());
-	Command        ::Initialize(&m_mainNNetWindow);
-	NNetCommand    ::Initialize(&m_nmwi);
+	SignalFactory        ::Initialize(m_nmri, m_dynamicModelObservable);
+	SignalDesigner       ::Initialize(m_model.GetParams());
+	SignalGenerator      ::Initialize(m_model.GetParams());
+	Nob                  ::Initialize(m_model.GetParams());
+	SignalGenerator      ::Initialize(m_model.GetParams());
+	Command              ::Initialize(&m_mainNNetWindow);
+	NNetCommand          ::Initialize(&m_nmwi);
+	NNetImportTermination::Initialize(m_hwndApp);
 
 	m_model.SetDescriptionUI(m_descWindow);
 	m_model.SetHighSigObservable(&m_highlightSigObservable);
@@ -454,7 +455,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_modelImporter.Import
 			(
 				AskModelFile(tFileMode::read), 
-				make_unique<NNetImportTermination>(m_hwndApp, IDX_REPLACE_MODEL)
+				NNetImportTermination::CreateNew(IDX_REPLACE_MODEL)
 			);
 			break;
 
@@ -462,8 +463,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_modelImporter.Import
 			(
 				AskModelFile(tFileMode::read), 
-				make_unique<NNetImportTermination>(m_hwndApp, IDM_ADD_IMPORTED_MODEL)
-			); 
+				NNetImportTermination::CreateNew(IDM_ADD_IMPORTED_MODEL)
+			);
 			break;
 
 		case IDX_REPLACE_MODEL:  //no user command, only internal usage

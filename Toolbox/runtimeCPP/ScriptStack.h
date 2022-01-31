@@ -48,5 +48,5 @@ public:
 
 private:
     inline static stack<unique_ptr<Script>> m_stack;
-    inline static bool                      m_bSingleStepMode { true };
+    inline static bool                      m_bSingleStepMode { false };
 };

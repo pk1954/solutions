@@ -6,15 +6,26 @@
 
 #include "Resource.h"
 #include "ImportTermination.h"
-#include "NNetModelImporter.h"
+
+using std::unique_ptr;
+using std::make_unique;
 
 class NNetImportTermination : public ImportTermination
 {
 public:
-	NNetImportTermination(HWND hwndApp, int msg)
-	  : m_hwndApp(hwndApp),
-		m_msgImportFinished(msg)
-	{ }
+	static void Initialize(HWND const hwndApp)
+	{
+		m_hwndApp = hwndApp;
+	}
+
+	static unique_ptr<NNetImportTermination> CreateNew(int const msg)
+	{
+		return make_unique<NNetImportTermination>(msg);
+	}
+
+	explicit NNetImportTermination(int const msg)
+	  :	m_msgImportFinished(msg)
+	{}
 
 	void Reaction(ImportTermination::Result const res, wstring const & name) final
 	{
@@ -29,6 +40,7 @@ public:
 	};
 
 private:
-	HWND m_hwndApp;
-	int  m_msgImportFinished;
+	inline static HWND m_hwndApp;
+
+	int m_msgImportFinished;
 };

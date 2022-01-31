@@ -11,20 +11,18 @@
 class BeeperThread: public Util::Thread
 {
 public:
-	BeeperThread(Sound * const pSound)
+	explicit BeeperThread(Sound * const pSound)
 		: m_pSound(pSound)
 	{ 
 		StartThread(L"BeeperThread", true);
 	}
-
-	~BeeperThread()	{ }
 
 	void Beep(Hertz hertz, MilliSecs msecs)
 	{
 		PostThreadMsg(IDM_BEEP, static_cast<WPARAM>(hertz.GetValue()), static_cast<LPARAM>(msecs.GetValue()));
 	}
 
-	virtual void ThreadMsgDispatcher(MSG const msg)
+	void ThreadMsgDispatcher(MSG const msg) final
 	{
 		assert(msg.message == IDM_BEEP);
 		SoundDescr desc 
