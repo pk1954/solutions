@@ -61,7 +61,7 @@ public:
 	void UnlockDirection() const;
 	void AlignDirection ();
 
-	size_t GetNrOfElements() { return m_list.size(); }
+	size_t GetNrOfElements() const { return m_list.size(); }
 
 	void Rotate(MicroMeterPnt const &, MicroMeterPnt const &);
 

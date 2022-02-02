@@ -28,8 +28,8 @@ BaseKnot::BaseKnot
 bool BaseKnot::operator==(Nob const & rhs) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
-	return (this->Nob::operator==(rhs))             &&
-	       GetPos().IsCloseTo(baseKnotRhs.GetPos()) &&
+	return (this->Nob::operator==(rhs))                   &&
+	       GetPos      ().IsCloseTo(baseKnotRhs.GetPos()) &&
 	       GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
 }
 

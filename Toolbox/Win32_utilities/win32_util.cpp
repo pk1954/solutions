@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <time.h>
 #include <sstream>
-#include "script.h"
+#include "SCRIPT.H"
 #include "win32_util.h"
 
 using std::wostream;
@@ -143,9 +143,9 @@ wstring Util::GetUserName()
 
 void Util::SetApplicationTitle
 (
-	HWND    const hwndApp, 
-	int     const iResource,
-    wstring const wstrAdd
+	HWND    const   hwndApp, 
+	int     const   iResource,
+    wstring const & wstrAdd
 )
 {
     static int const MAX_LOADSTRING = 100;

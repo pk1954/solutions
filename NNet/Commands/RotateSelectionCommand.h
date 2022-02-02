@@ -20,7 +20,7 @@ public:
 	{
 		m_umPntPivot = m_pNMWI->GetUPNobs().CenterOfGravity
 		(
-			[&](Nob const & nob){ return nob.IsSelected() && nob.IsAnyNeuron(); }
+			[](Nob const & nob){ return nob.IsSelected() && nob.IsAnyNeuron(); }
 		);
 		calcRadDelta(umPntOld, umPntNew);
 	}
@@ -34,6 +34,4 @@ public:
 	{ 
 		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
-
-	NobId GetAffectedNob() const final { return NO_NOB; }
 };

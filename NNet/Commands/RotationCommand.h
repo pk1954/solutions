@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 
@@ -13,7 +12,7 @@ class RotationCommand : public NNetCommand
 {
 public:
 
-	virtual bool CombineCommands(Command const & src) 
+	bool CombineCommands(Command const & src) override
 	{ 
 		RotationCommand const & srcCmd { static_cast<RotationCommand const &>(src) };
 		m_radDelta += srcCmd.m_radDelta;

@@ -12,7 +12,7 @@
 class MoveSelectionCommand : public NNetCommand
 {
 public:
-	MoveSelectionCommand(MicroMeterPnt const & delta)
+	explicit MoveSelectionCommand(MicroMeterPnt const & delta)
        : m_delta(delta)
 	{ }
 
@@ -40,9 +40,7 @@ public:
 		);
 	}
 
-	virtual NobId GetAffectedNob() const { return NO_NOB;	}
-
-	virtual bool CombineCommands(Command const & src) 
+	bool CombineCommands(Command const & src) final
 	{ 
 		MoveSelectionCommand const & srcCmd { static_cast<MoveSelectionCommand const &>(src) };
 		m_delta += srcCmd.m_delta;

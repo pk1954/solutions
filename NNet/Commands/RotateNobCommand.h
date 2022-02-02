@@ -34,7 +34,7 @@ public:
 		m_nob.RotateNob(m_umPntPivot, -m_radDelta);
 	}
 
-	virtual NobId GetAffectedNob() const { return m_nob.GetId(); }
+	NobId GetAffectedNob() const final { return m_nob.GetId(); } 
 
 private:
 	Nob & m_nob;

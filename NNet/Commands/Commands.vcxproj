@@ -98,6 +98,7 @@
     <ClInclude Include="SetStimulusParamsCmd.h" />
     <ClInclude Include="SetHighlightedSignalCmd.h" />
     <ClInclude Include="SingleNobAnimation.h" />
+    <ClInclude Include="SizeSelection.h" />
     <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />

@@ -11,12 +11,6 @@
 class SelectionCommand : public NNetCommand
 {
 public:
-	SelectionCommand()
-	  : m_upSelectedNobs(move(m_pNMWI->GetSelection()))
-	{}
-
-	void Do() override 
-	{}
 
 	void Undo() override
 	{
@@ -24,7 +18,7 @@ public:
 		for (auto it : *m_upSelectedNobs){ it->Select(true); };
 	}
 
-protected:
-	unique_ptr<vector<Nob *>> m_upSelectedNobs;
+private:
+	unique_ptr<vector<Nob *>> m_upSelectedNobs { m_pNMWI->GetSelection() };
 };
 
