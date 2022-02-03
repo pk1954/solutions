@@ -146,7 +146,7 @@ public:
 		{                                           // vector may be enlarged in loop
 			if (m_list[i] && HasType<T>(*m_list[i]))
 				func(static_cast<T &>(*m_list[i]));
-		};
+		}
 	}                        
 
 	template <Nob_t T>    // const version

@@ -189,7 +189,7 @@
     <ClInclude Include="ToggleEmphModeCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SizeSelection.h">
+    <ClInclude Include="SizeSelectionCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

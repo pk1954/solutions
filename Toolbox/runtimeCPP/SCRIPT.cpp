@@ -423,7 +423,7 @@ void Script::ScrSetNewLineHook(ScriptFunctor const * const pHook)
 {
     m_pNewLineHook = pHook;
     if (m_pNewLineHook)
-        Scanner::SetNewLineTrigger([&](){ (*m_pNewLineHook)(*this); });
+        Scanner::SetNewLineTrigger([this](){ (*m_pNewLineHook)(*this); });
     else
         Scanner::SetNewLineTrigger(nullptr);
 }

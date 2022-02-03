@@ -25,13 +25,13 @@ public:
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
-	void Do() final 
+	void Do() final
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
 	}
 
-	void Undo() final 
+	void Undo() final
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
 };

@@ -508,7 +508,7 @@ void DefineNNetWrappers
 
     ParamType::Apply2GlobalParameters
     ( 
-        [&](ParamType::Value const & param) 
+        [](ParamType::Value const & param) 
         {
             SymbolTable::ScrDefConst(ParamType::GetName(param), static_cast<unsigned long>(param));
         }

@@ -100,15 +100,15 @@ static MONITORINFO ScrReadMonitorInfo(Script & script)
     return monInfo;
 }
 
-static bool operator != (MONITORINFO const & a, MONITORINFO const b) 
+static bool operator != (MONITORINFO const & a, MONITORINFO const & b) 
 { 
     return (a.rcMonitor != b.rcMonitor) || (a.rcWork != b.rcWork) || (a.dwFlags != b.dwFlags);
 };
 
-static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
 {
-    CHECK_MON_STRUCT * const pMonStruct = (CHECK_MON_STRUCT *)dwData;
-    bool bRes = true;
+    auto * const pMonStruct { (CHECK_MON_STRUCT *)dwData };
+    bool         bRes       { true };
     try 
     {  
         Script * pScript = pMonStruct->m_pScript;
@@ -156,7 +156,7 @@ static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
 class WrapMonitorConfiguration : public ScriptFunctor
 {
 public:
-    WrapMonitorConfiguration(WinManager * pWinManager) :
+    explicit WrapMonitorConfiguration(WinManager * pWinManager) :
         m_pWinManager(pWinManager)
     { };
     
@@ -195,7 +195,7 @@ private:
     WinManager * m_pWinManager;
 };
 
-bool WinManager::GetWindowConfiguration()
+bool WinManager::GetWindowConfiguration() const
 {
     bool bRes { false };
 
@@ -244,11 +244,11 @@ struct DUMP_MON_STRUCT    // communication between DumpWindowCoordinates and Dum
     wofstream * m_postr;
 };
 
-static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
 {
-    DUMP_MON_STRUCT * const pMonStruct = (DUMP_MON_STRUCT *)dwData;
-    wofstream       * const postr      = pMonStruct->m_postr;
-    MONITORINFO       const monInfo    = Util::GetMonitorInfo(hMonitor);
+    auto      * const pMonStruct { (DUMP_MON_STRUCT*)dwData };
+    wofstream * const postr      { pMonStruct->m_postr };
+    MONITORINFO const monInfo    { Util::GetMonitorInfo(hMonitor) };
 
     ++(pMonStruct->m_iMonCounter);
 
@@ -281,25 +281,28 @@ void WinManager::dumpWindowCoordinates() const
 {
     wofstream ostr(m_strWindowConfigurationFile, wofstream::out);
     
-    for (const auto & it : m_map)
+    for (const auto & [key, value] : m_map )
 	{
-		if (it.second.m_bTrackPosition)
+		if (value.m_bTrackPosition)
 		{
-			HWND hwnd = it.second.m_hwnd;
+			HWND hwnd = value.m_hwnd;
 			if (hwnd != nullptr)
 			{
 				ostr << L"MoveWindow "
-					 << it.second.m_wstr << L" "
+					 << value.m_wstr << L" "
 					 << Util::GetWindowLeftPos(hwnd).GetValue() << L" "
 					 << Util::GetWindowTop    (hwnd).GetValue() << L" "
 				     << Util::GetWindowWidth  (hwnd).GetValue() << L" "
 				     << Util::GetWindowHeight (hwnd).GetValue() << endl;
 
 				ostr << L"ShowWindow " 
-					<< it.second.m_wstr << L" "
-					<< (IsWindowVisible(hwnd) 
+					<< value.m_wstr << L" "
+					<< (
+                        IsWindowVisible(hwnd) 
 						? (IsZoomed(hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
-						: L"SW_HIDE") << endl;
+						: L"SW_HIDE"
+                       )
+                   << endl;
 			}
 		}
 	}
@@ -319,9 +322,7 @@ void WinManager::StoreWindowConfiguration()
     dumpWindowCoordinates();    // Write window configuration to window configuration file
 }
 
-WinManager::WinManager() :
-    m_strWindowConfigurationFile(L""),
-    m_iNrOfMonitorConfigurations(0)
+WinManager::WinManager()
 {
     #define DEF_WINMAN_FUNC(name) SymbolTable::ScrDefConst(L#name, new Wrap##name##(this))
 
@@ -340,7 +341,7 @@ WinManager::WinManager() :
 
 void WinManager::addWindow
 (
-    wstring    const         wstrName, 
+    wstring    const &       wstrName, 
     UINT       const         id, 
     HWND       const         hwnd, 
     BaseWindow const * const pBaseWindow,
@@ -357,11 +358,11 @@ void WinManager::addWindow
 
 void WinManager::AddWindow
 (
-    wstring const wstrName, 
-    UINT    const id, 
-    HWND    const hwnd, 
-	bool    const bTrackPosition,
-	bool    const bTrackSize
+    wstring const & wstrName, 
+    UINT    const   id, 
+    HWND    const   hwnd, 
+	bool    const   bTrackPosition,
+	bool    const   bTrackSize
 )
 {
 	if (hwnd )
@@ -370,7 +371,7 @@ void WinManager::AddWindow
 
 void WinManager::AddWindow
 (
-	wstring    const   wstrName, 
+	wstring    const & wstrName, 
 	UINT       const   id, 
 	BaseWindow const & baseWindow,
 	bool       const   bTrackPosition,
@@ -382,7 +383,7 @@ void WinManager::AddWindow
 
 void WinManager::AddWindow
 (
-	wstring    const   wstrName, 
+	wstring    const & wstrName, 
 	UINT       const   id, 
 	BaseDialog const & baseDialog,
 	bool       const   bTrackPosition,

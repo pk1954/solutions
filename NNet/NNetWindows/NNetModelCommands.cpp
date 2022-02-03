@@ -54,6 +54,7 @@
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
 #include "SetTriggerSoundCommand.h"
+#include "SizeSelectionCmd.h"
 #include "SizeSensorCmd.h"
 #include "SplitNeuronCmd.h"
 #include "ToggleEmphModeCmd.h"
@@ -406,6 +407,13 @@ void NNetModelCommands::MoveSignal(SignalId const & id, TrackNr const trackNr)
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << trackNr << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
+}
+
+void NNetModelCommands::SizeSelection(float const fFactor)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << L" " << fFactor << endl;
+	m_pCmdStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
 }
 
 void NNetModelCommands::SizeSensor(SignalId const & id, float const fFactor)

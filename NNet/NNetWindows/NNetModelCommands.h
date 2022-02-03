@@ -96,6 +96,7 @@ public:
     void SetStimulusParams  (SignalGenerator &, fMicroSecs const, fHertz const);
     void SetNob             (NobId const, MicroMeterPosDir const);
     void SetTriggerSound    (NobId const, SoundDescr const &);
+    void SizeSelection      (float const);
     void SizeSensor         (SignalId const &, float const);
     void SplitNeuron        (NobId const);
     void ToggleEmphMode     (NobId const);

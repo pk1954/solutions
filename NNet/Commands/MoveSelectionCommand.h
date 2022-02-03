@@ -18,25 +18,17 @@ public:
 
 	void Do() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>
 		(
-			[&](Nob & nob) 
-			{ 
-				if (nob.IsBaseKnot())
-					nob.MoveNob(m_delta);
-			} 
+			[this](Nob & nob) { nob.MoveNob(m_delta); } 
 		);
 	}
 
 	void Undo() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>
 		(
-			[&](Nob & nob) 
-			{ 
-				if (nob.IsBaseKnot())
-					nob.MoveNob(-m_delta);
-			} 
+			[this](Nob & nob) { nob.MoveNob(-m_delta); } 
 		);
 	}
 

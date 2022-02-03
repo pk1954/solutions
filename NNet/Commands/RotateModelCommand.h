@@ -18,20 +18,17 @@ public:
 		MicroMeterPnt const & umPntNew
 	)
 	{
-		m_umPntPivot = m_pNMWI->GetUPNobs().CenterOfGravity
-		(
-			[&](Nob const & nob){ return nob.IsAnyNeuron(); }
-		);
+		m_umPntPivot = m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const & nob){ return nob.IsAnyNeuron(); });
 		calcRadDelta(umPntOld, umPntNew);
 	}
 
 	void Do() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2All<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2All<BaseKnot>([this](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
 	}
 
 	void Undo() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2All<BaseKnot>([&](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2All<BaseKnot>([this](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
 	}
 };

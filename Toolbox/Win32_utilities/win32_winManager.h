@@ -22,9 +22,9 @@ public:
 
 	WinManager();
 
-	void AddWindow(wstring const, UINT const, HWND,               bool const, bool const);
-	void AddWindow(wstring const, UINT const, BaseWindow const &, bool const, bool const);
-	void AddWindow(wstring const, UINT const, BaseDialog const &, bool const, bool const);
+	void AddWindow(wstring const &, UINT const, HWND,               bool const, bool const);
+	void AddWindow(wstring const &, UINT const, BaseWindow const &, bool const, bool const);
+	void AddWindow(wstring const &, UINT const, BaseDialog const &, bool const, bool const);
 
 	void RemoveWindow(UINT const id)
 	{
@@ -70,9 +70,9 @@ public:
 
 	INT GetIdFromRootWindow(HWND const hwnd) const
 	{
-		for (auto & pp : m_map)
-			if (pp.second.m_hwnd == hwnd)
-				return pp.first; 
+		for (const auto & [key, value] : m_map)
+			if (value.m_hwnd == hwnd)
+				return key; 
 		return -1;
 	}
 
@@ -96,7 +96,7 @@ public:
         Util::Show(GetHWND(id), op);
     }
 
-    void SetWindowConfigurationFile(std::wstring const fileName) 
+    void SetWindowConfigurationFile(wstring const & fileName) 
     { 
         m_strWindowConfigurationFile = fileName; 
     };
@@ -106,7 +106,7 @@ public:
         ++m_iNrOfMonitorConfigurations; 
     };
 
-    bool GetWindowConfiguration();
+    bool GetWindowConfiguration() const;
     void StoreWindowConfiguration();
 
 private:
@@ -124,8 +124,8 @@ private:
 
     unordered_map< UINT, MAP_ELEMENT > m_map;
     
-    wstring m_strWindowConfigurationFile;
-    int     m_iNrOfMonitorConfigurations;
+    wstring m_strWindowConfigurationFile { L"" };
+    int     m_iNrOfMonitorConfigurations { 0 };
 
 	ScriptErrorHandler::ScriptException m_errorInfo {};
 
@@ -134,7 +134,7 @@ private:
 
 	void addWindow
 	(
-		wstring    const,
+		wstring    const &,
 		UINT       const,
 		HWND       const,
 		BaseWindow const * const,

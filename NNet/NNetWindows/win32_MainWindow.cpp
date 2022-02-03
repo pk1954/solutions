@@ -358,19 +358,31 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
 	static float  const ZOOM_FACTOR { 1.1f };
 
-	PixelPoint    const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
-	fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
-	MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
-	int           const iDelta        { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-	float         const fFactor       { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
-	SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
-	bool          const bSizeSensor   { signalId.IsNotNull() && IsUndefined(m_nobHighlighted) };
-	for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
+	int   const iDelta  { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	float const fFactor { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
+
+	if (wParam & MK_SHIFT)     // operate on selection
 	{
-		if (bSizeSensor)
-			m_pModelCommands->SizeSensor(signalId, fFactor);
-		else
-			zoomStep(fFactor, fPixPointCrsr);
+		m_pModelCommands->SizeSelection(fFactor);
+	}
+	else
+	{
+		PixelPoint    const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
+		fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
+		MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
+		SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
+		bool          const bSizeSensor   { signalId.IsNotNull() && IsUndefined(m_nobHighlighted) };
+		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
+		{
+			if (bSizeSensor)
+			{
+				m_pModelCommands->SizeSensor(signalId, fFactor);
+			}
+			else
+			{
+				zoomStep(fFactor, fPixPointCrsr);
+			}
+		}
 	}
 	Notify(false); 
 }
