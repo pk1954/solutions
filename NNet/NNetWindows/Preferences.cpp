@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 #include "SCRIPT.H"
 #include "ERRHNDL.H"
@@ -22,8 +21,6 @@
 #include "Preferences.h"
 
 using std::wofstream;
-using std::wstring;
-using std::string;
 using std::wcout;
 using std::filesystem::exists;
 using std::filesystem::path;
@@ -31,12 +28,10 @@ using std::filesystem::path;
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
 
-static wstring m_wstrPreferencesFile;
-
 class WrapShowArrows: public WrapBase
 {
 public:
-    WrapShowArrows(MainWindow & mainWin)
+    explicit WrapShowArrows(MainWindow & mainWin)
       : WrapBase(L"ShowArrows"),
         m_mainWin(mainWin)
     {}
@@ -58,7 +53,7 @@ private:
 class WrapShowSensorPoints: public WrapBase
 {
 public:
-    WrapShowSensorPoints(MainWindow & mainWin)
+    explicit WrapShowSensorPoints(MainWindow & mainWin)
       : WrapBase(L"ShowSensorPoints"),
         m_mainWin(mainWin)
     {}

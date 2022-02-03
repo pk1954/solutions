@@ -7,9 +7,9 @@
 #include <algorithm>  // min/max/abs templates
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 #include <compare>
 #include "NamedType.h"
+#include "BasicTypes.h"
 
 using std::abs;
 using std::max;
@@ -205,6 +205,18 @@ public:
 			<< param.GetX() << SEPARATOR << param.GetY() 
 			<< CLOSE_BRACKET;
 		return out;
+	}
+
+	void Rotate(PointType const & pntPivot, Radian const radDelta)
+	{
+		PointType const pntVectorOld    { *this - pntPivot };
+		Radian    const radOld          { Vector2Radian(pntVectorOld) };
+		Radian    const radNew          { radOld + radDelta };
+		PointType const pntVectorNew    { Radian2Vector(radNew) };
+		BASE_TYPE const distFromPivot   { Hypot(pntVectorOld) };
+		PointType const pntVectorScaled { pntVectorNew.ScaledTo(distFromPivot) };
+		PointType const pntPosNew       { pntPivot + pntVectorScaled };
+		*this = pntPosNew;
 	}
 
 	inline static wchar_t const SEPARATOR     { L'|' };

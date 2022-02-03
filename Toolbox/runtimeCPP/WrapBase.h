@@ -6,7 +6,7 @@
 
 #include <string>
 #include <vector>
-#include "symtab.h"
+#include "SYMTAB.H"
 
 using std::wostream;
 using std::wstring;

@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "RotationCommand.h"
 
@@ -18,20 +17,21 @@ public:
 		MicroMeterPnt const & umPntNew
 	)
 	{
-		m_umPntPivot = m_pNMWI->GetUPNobs().CenterOfGravity
+		SetPivotPnt
 		(
-			[](Nob const & nob){ return nob.IsSelected() && nob.IsAnyNeuron(); }
+			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const &n){ return n.IsSelected() && n.IsAnyNeuron(); }),
+			umPntOld, 
+			umPntNew
 		);
-		calcRadDelta(umPntOld, umPntNew);
 	}
 
 	void Do() final
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot & b) { b.RotateNob(m_umPntPivot, m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot &b) { DoRotate(b); });
 	}
 
 	void Undo() final
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot & b) { b.RotateNob(m_umPntPivot, -m_radDelta); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot &b) { UndoRotate(b); });
 	}
 };

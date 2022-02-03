@@ -74,6 +74,11 @@ public:
     bool IsZero   () const { return * this == ZERO_VAL(); };
     bool IsNotZero() const { return * this != ZERO_VAL(); };
 
+    void Rotate(POS_TYPE const & pntPivot, Radian const radDelta)
+    {
+        m_position.Rotate(pntPivot, radDelta);
+    }
+
     friend CircleType operator* (CircleType const a,  float const d) 
     { 
         CircleType res { a }; 

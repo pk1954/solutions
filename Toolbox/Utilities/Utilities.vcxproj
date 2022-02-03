@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="BoolOp.h" />
     <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />

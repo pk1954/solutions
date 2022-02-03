@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModelWriterInterface.h"
 #include "RotationCommand.h"
 #include "Nob.h"
 
@@ -20,19 +19,11 @@ public:
 	)
 	  : m_nob(nob)
 	{
-		m_umPntPivot = nob.GetPos();
-		calcRadDelta(umPntOld, umPntNew);
+		SetPivotPnt(nob.GetPos(),umPntOld, umPntNew);
 	}
 
-	void Do() final 
-	{ 
-		m_nob.RotateNob(m_umPntPivot, m_radDelta);
-	}
-
-	void Undo() final 
-	{ 
-		m_nob.RotateNob(m_umPntPivot, -m_radDelta);
-	}
+	void Do  () final { DoRotate(m_nob); }
+	void Undo() final { UndoRotate(m_nob); }
 
 	NobId GetAffectedNob() const final { return m_nob.GetId(); } 
 

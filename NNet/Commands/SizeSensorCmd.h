@@ -17,23 +17,13 @@ public:
 		SignalId const & id,
 		float    const   fFactor
 	)
-      : m_signalId(id),
+      : m_pSignal(m_pNMWI->GetMonitorData().GetSignalPtr(id)),
+		m_signalId(id),
 		m_fFactor(fFactor)
 	{}
 
-	void Do() final 
-	{ 
-		Signal * pSignal = m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId);
-		assert(pSignal);
-		pSignal->SizeSensor(1.0f / m_fFactor);
-	}
-
-	void Undo() final 
-	{ 
-		Signal * pSignal = m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId);
-		assert(pSignal);
-		pSignal->SizeSensor(m_fFactor);
-	}
+	void Do  () final { m_pSignal->SizeSensor(1.0f / m_fFactor); }
+	void Undo() final { m_pSignal->SizeSensor(m_fFactor); }
 
 	bool CombineCommands(Command const & src) final
 	{ 
@@ -45,6 +35,7 @@ public:
 	};
 
 private:
+	Signal * m_pSignal;
 	SignalId m_signalId;
 	float    m_fFactor;
 };

@@ -39,8 +39,9 @@ public:
     void       MoveSensor   (MicroMeterPnt const &);
     void       SizeSensor   (float         const);
     void       SetSensorSize(MicroMeter    const);
-
+    void       RotateSensor (MicroMeterPnt const &, Radian const);
     void       Recalc();
+
     float      GetDistFactor(MicroMeterPnt const &)  const;
     float      GetSignalValue()                      const;
     float      GetDataPoint   (fMicroSecs const)     const;

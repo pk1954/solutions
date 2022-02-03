@@ -194,3 +194,8 @@ void Signal::SizeSensor(float const factor)
 { 
     SetSensorSize(GetRadius() * factor); 
 }
+
+void Signal::RotateSensor(MicroMeterPnt const & umPntPivot, Radian const radDelta)
+{
+    m_circle.Rotate(umPntPivot, radDelta);
+}

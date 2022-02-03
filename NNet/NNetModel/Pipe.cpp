@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include <cmath>
 #include <assert.h>
 #include "Resource.h"
 #include "DrawContext.h"

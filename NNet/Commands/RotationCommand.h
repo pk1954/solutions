@@ -21,13 +21,40 @@ public:
 
 protected:
 
-	void calcRadDelta(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
+	void SetPivotPnt
+	(
+		MicroMeterPnt const & umPnt,
+		MicroMeterPnt const & umPntOld, 
+		MicroMeterPnt const & umPntNew
+	)
 	{
-		Radian const radOld { Vector2Radian(umPntOld - m_umPntPivot) };
-		Radian const radNew { Vector2Radian(umPntNew - m_umPntPivot) };
+		Radian const radOld { Vector2Radian(umPntOld - umPnt) };
+		Radian const radNew { Vector2Radian(umPntNew - umPnt) };
 		m_radDelta = radNew - radOld;
+		m_umPntPivot = umPnt;
 	}
 
+	void DoRotate(Nob & nob) const	
+	{ 
+		nob.RotateNob(m_umPntPivot, m_radDelta);
+	}
+
+	void UndoRotate(Nob & nob) const	
+	{ 
+		nob.RotateNob(m_umPntPivot, -m_radDelta);
+	}
+
+	void DoRotateSensor(Signal & s) const	
+	{ 
+		s.RotateSensor(m_umPntPivot, m_radDelta);
+	}
+
+	void UndoRotateSensor(Signal & s) const	
+	{ 
+		s.RotateSensor(m_umPntPivot, -m_radDelta);
+	}
+
+private:
 	Radian        m_radDelta;
 	MicroMeterPnt m_umPntPivot;
 };

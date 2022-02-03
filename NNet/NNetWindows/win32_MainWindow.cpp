@@ -363,7 +363,10 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_SHIFT)     // operate on selection
 	{
-		m_pModelCommands->SizeSelection(fFactor);
+		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
+		{
+			m_pModelCommands->SizeSelection(fFactor);
+		}
 	}
 	else
 	{

@@ -12,7 +12,7 @@
 class SetHighlightedSignalCmd : public NNetCommand
 {
 public:
-	SetHighlightedSignalCmd(MicroMeterPnt const & umPos)
+	explicit SetHighlightedSignalCmd(MicroMeterPnt const & umPos)
       : m_umPos(umPos)
 	{ }
 
