@@ -18,6 +18,7 @@
 #include "win32_importTermination.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_script.h"
+#include "win32_util.h"
 #include "Preferences.h"
 
 using std::wofstream;
@@ -187,13 +188,9 @@ void Preferences::Initialize
     HWND                       hwndApp
 )
 {
-    wchar_t szBuffer[MAX_PATH];
-    DWORD const dwRes = GetCurrentDirectory(MAX_PATH, szBuffer);
-    assert(dwRes > 0);
-
     static wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
-    m_wstrPreferencesFile = szBuffer;
+    m_wstrPreferencesFile = Util::GetCurrentDir();
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
     m_prefVector.push_back(make_unique<WrapShowArrows>(mainWin));

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "windows.h"
+#include "Windows.h"
 #include "NamedType.h"
 #include "PixelTypes.h"
 #include "BoolOp.h"
@@ -239,7 +239,7 @@ namespace Util
 		return POINT2PixelPoint(pnt);
     }
 	
-    inline PixelPoint const Screen2Client(HWND const hwnd, PixelPoint const & pixPoint)
+    inline PixelPoint Screen2Client(HWND const hwnd, PixelPoint const & pixPoint)
     {
 		POINT pnt { PixelPoint2POINT(pixPoint) };
         (void)ScreenToClient(hwnd, &pnt);
@@ -365,6 +365,7 @@ namespace Util
     wstring   GetCurrentDateAndTime();
     wstring   GetComputerName();
     wstring   GetUserName();
+    wstring   GetCurrentDir();
     void      SetApplicationTitle(HWND const, int const, wstring const & = L"");
     void      StdOutConsole();
     bool      EscapeKeyPressed();

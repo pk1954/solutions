@@ -157,6 +157,14 @@ void Util::SetApplicationTitle
     SetWindowText(hwndApp, newTitle.c_str());
 }
 
+wstring Util::GetCurrentDir()
+{
+    static wchar_t szBuffer[MAX_PATH];
+    DWORD const dwRes = GetCurrentDirectory(MAX_PATH, szBuffer);
+    assert(dwRes > 0);
+    return wstring(szBuffer);
+}
+
 void Util::StdOutConsole()
 {
     FILE  * fp;

@@ -5,12 +5,10 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include "SYMTAB.H"
 
 using std::wostream;
 using std::wstring;
-using std::vector;
 using std::endl;
 
 class WrapBase : public ScriptFunctor

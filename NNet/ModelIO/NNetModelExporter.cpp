@@ -41,21 +41,10 @@ int NNetModelExporter::getCompactIdVal(NobId const id) const
 
 void NNetModelExporter::writeHeader(wostream & out) const
 {
-    static int const BUF_SIZE { 128 };
-
     out << Scanner::COMMENT_SYMBOL << L" NNetModel" << endl;
-    out << Scanner::COMMENT_SYMBOL << L" Created " << Util::GetCurrentDateAndTime() << endl;
-
-    WCHAR infoBuf[BUF_SIZE];
-    DWORD bufCharCount { BUF_SIZE };
-
-    // Get and display the name of the computer.
-    GetComputerName(infoBuf, &bufCharCount);
-    out << Scanner::COMMENT_SYMBOL << L" Computer name: " << infoBuf << endl;
-
-    // Get and display the user name.
-    GetUserName(infoBuf, &bufCharCount);
-    out << Scanner::COMMENT_SYMBOL << L" User name: " << infoBuf << endl; 
+    out << Scanner::COMMENT_SYMBOL << L" Created "        << Util::GetCurrentDateAndTime() << endl;
+    out << Scanner::COMMENT_SYMBOL << L" Computer name: " << Util::GetComputerName()       << endl;
+    out << Scanner::COMMENT_SYMBOL << L" User name: "     << Util::GetUserName()           << endl; 
     out << endl;
 
     out << L"Protocol version " << NNetModelStorage::PROTOCOL_VERSION << endl;
