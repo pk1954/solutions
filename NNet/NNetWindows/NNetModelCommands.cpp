@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <source_location>
 #include "AddNobsCommand.h"
+#include "AddIncoming2InputNeuronCmd.h"
 #include "AddIncoming2KnotCommand.h"
 #include "AddIncoming2PipeCommand.h"
 #include "AddOutgoing2KnotCommand.h"
@@ -121,6 +122,13 @@ void NNetModelCommands::AddIncoming2Knot(NobId const id, MicroMeterPnt const & p
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand(make_unique<AddIncoming2KnotCommand>(id, pos - STD_OFFSET));
+}
+
+void NNetModelCommands::AddIncoming2InputNeuron(NobId const id, MicroMeterPnt const & pos)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<AddIncoming2InputNeuronCmd>(id, pos - STD_OFFSET));
 }
 
 void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)

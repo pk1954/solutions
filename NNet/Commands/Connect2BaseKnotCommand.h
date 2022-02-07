@@ -48,7 +48,7 @@ public:
 	{
 		assert(m_upResult);
 		m_upResult->Reconnect();
-		m_upBaseKnotDst = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upResult));
+		m_upBaseKnotDst = m_pNMWI->ReplaceInModel<BaseKnot>(move(m_upResult));
 		m_upBaseKnotSrc = m_pNMWI->RemoveFromModel<BaseKnot>(m_baseKnotSrc); 
 		assert(m_upBaseKnotSrc);
 		assert(m_upBaseKnotDst);
@@ -58,8 +58,8 @@ public:
 	{
 		m_upBaseKnotDst->Reconnect();
 		m_upBaseKnotSrc->Reconnect();
-		m_upResult = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnotDst));
-		m_pNMWI->Restore2Model<BaseKnot>(move(m_upBaseKnotSrc));
+		m_upResult = m_pNMWI->ReplaceInModel<BaseKnot>(move(m_upBaseKnotDst));
+		m_pNMWI->Restore2Model(move(m_upBaseKnotSrc));
 	}
 
 private:

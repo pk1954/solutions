@@ -51,7 +51,7 @@ public:
     void Undo() final
     {
         m_upIoConnector->SetParentPointers();
-        m_pNMWI->Restore2Model<IoConnector>(move(m_upIoConnector));
+        m_pNMWI->Restore2Model(move(m_upIoConnector));
         if (m_bRemove)
             m_cmdStack.UndoAll();
     }

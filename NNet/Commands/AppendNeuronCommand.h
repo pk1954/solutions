@@ -25,13 +25,13 @@ public:
 	void Do() final 
 	{ 
 		m_upNeuron->Reconnect();
-		m_upKnot = m_pNMWI->ReplaceInModel<T,Knot>(move(m_upNeuron));
+		m_upKnot = m_pNMWI->ReplaceInModel<Knot>(move(m_upNeuron));
 	}
 
 	void Undo() final 
 	{ 
 		m_upKnot->Reconnect();
-		m_upNeuron = m_pNMWI->ReplaceInModel<Knot,T>(move(m_upKnot)); 
+		m_upNeuron = m_pNMWI->ReplaceInModel<T>(move(m_upKnot)); 
 	}
 
 private:

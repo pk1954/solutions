@@ -34,10 +34,10 @@ public:
 	}
 
 	void CheckModel() const;
+	void CheckId(NobId const) const;
 	void DumpModel (char const * const, int const) const;
 
-	Nob const * GetConstNob (NobId const) const;
-	Nob       * GetNob      (NobId const);
+	Nob const * GetConstNob(NobId const) const;
 
 	fMicroSecs GetSimulationTime () const { return m_timeStamp; }
 
@@ -81,12 +81,17 @@ public:
 		return NO_NOB;
 	}
 
+	// functions affecting Nob data, not model data
+
+	void RecalcAllNobs() const;
+	void ClearDynamicData() const;
+
 	// non const functions
+
+	Nob * GetNob (NobId const);
 
 	bool Compute();
 
-	void  RecalcAllNobs() const;
-	void  ClearDynamicData() const;
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
 	void  SelectSubtree(BaseKnot * const, bool const);
@@ -103,8 +108,6 @@ public:
 	void SetDescriptionUI    (DescriptionUI & i)    { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable(Observable * obs)     { m_monitorData.SetHighSigObservable(obs); }
 	void SetSimulationTime   (fMicroSecs const newVal = 0._MicroSecs) { m_timeStamp = newVal; }
-
-	void CheckId(NobId const) const;
 
 private:
 

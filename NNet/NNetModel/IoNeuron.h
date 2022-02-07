@@ -31,7 +31,7 @@ public:
 
 	                          // IoNeurons can be locked or unlocked
 	void LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
-	void UnlockDirection();   // unlocked: m_radDirection is null, displaed direction
+	void UnlockDirection();   // unlocked: m_radDirection is null, displayed direction
 	bool IsDirLocked() const; //           is computed depending on connected pipe(s)
 
 	MicroMeterPnt    GetScaledDirVector() const;

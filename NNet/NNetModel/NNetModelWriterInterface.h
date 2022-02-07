@@ -74,15 +74,14 @@ public:
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNob)));
     }
 
-    template <Nob_t NEW>
-    void Restore2Model(unique_ptr<NEW> up) 
+    void Restore2Model(unique_ptr<Nob> up) 
     {
-        assert(up);
-        GetUPNobs().ReplaceNob(move(up));
+        if (up)
+            GetUPNobs().ReplaceNob(move(up));
     }
 
-    template <Nob_t NEW, Nob_t OLD>
-    unique_ptr<OLD> ReplaceInModel(unique_ptr<NEW> upNew) 
+    template <Nob_t OLD>
+    unique_ptr<OLD> ReplaceInModel(unique_ptr<Nob> upNew) 
     {
         NobId id      { upNew.get()->GetId() };
         Nob * pNobOld { GetUPNobs().ReplaceNob(move(upNew)) };
@@ -102,6 +101,8 @@ public:
     { 
         return move(GetUPNobs().Pop<T>());
     }
+
+    unique_ptr<BaseKnot> FixBaseKnot(NobId const);
 
     ///////////////////////////////////////////////////////////
 

@@ -42,7 +42,7 @@ public:
         m_upOutputNeuron = m_pNMWI->PopFromModel<OutputNeuron>();
         m_upInputNeuron  = m_pNMWI->PopFromModel<InputNeuron >();
         m_upNeuron->Reconnect();
-        m_pNMWI->Restore2Model<Neuron>(move(m_upNeuron));
+        m_pNMWI->Restore2Model(move(m_upNeuron));
     }
 
 private:

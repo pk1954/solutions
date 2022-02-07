@@ -64,6 +64,18 @@ public:
 	Signal      const * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
 	SignalId            GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 
+	bool IsInputNeuron(NobId const id) const 
+	{
+		Nob const * const pNob { GetConstNob(id) };
+		return pNob && pNob->IsInputNeuron();
+	}
+
+	bool IsOutputNeuron(NobId const id) const 
+	{
+		Nob const * const pNob { GetConstNob(id) };
+		return pNob && pNob->IsOutputNeuron();
+	}
+
 	bool IsInputConnector(NobId const id) const 
 	{
 		Nob const * const pNob { GetConstNob(id) };

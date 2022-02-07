@@ -20,8 +20,8 @@ class PlugIoConnectors : public NNetCommand
 public:
     PlugIoConnectors
     (
-        IoConnector & conn1, 
-        IoConnector & conn2
+        IoConnector const & conn1, 
+        IoConnector const & conn2
     )
       : m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
         m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
@@ -65,12 +65,12 @@ public:
         for (size_t i = 0; i < m_size; ++i)
             m_upNeurons.push_back(m_pNMWI->PopFromModel<Neuron>());
 
-        m_upOutputConnector = m_pNMWI->ReplaceInModel<IoConnector, IoConnector>(move(m_upOutputConnector));
-        m_upInputConnector  = m_pNMWI->ReplaceInModel<IoConnector, IoConnector>(move(m_upInputConnector ));
+        m_upOutputConnector = m_pNMWI->ReplaceInModel<IoConnector>(move(m_upOutputConnector));
+        m_upInputConnector  = m_pNMWI->ReplaceInModel<IoConnector>(move(m_upInputConnector ));
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upOutputNeurons[i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upOutputNeurons[i]));
-            m_upInputNeurons [i] = m_pNMWI->ReplaceInModel<IoNeuron, IoNeuron>(move(m_upInputNeurons [i]));
+            m_upOutputNeurons[i] = m_pNMWI->ReplaceInModel<IoNeuron>(move(m_upOutputNeurons[i]));
+            m_upInputNeurons [i] = m_pNMWI->ReplaceInModel<IoNeuron>(move(m_upInputNeurons [i]));
         }
         (m_targetReachedFunc)();
     }

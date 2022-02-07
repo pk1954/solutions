@@ -110,5 +110,6 @@ void InputNeuron::AppendMenuItems(AddMenuFunc const & add) const
 {
 	if (! HasOutgoing())
 		add(IDD_ADD_OUTGOING2KNOT);
+	add(IDD_ADD_INCOMING2INPUT_NEURON);
 	IoNeuron::AppendMenuItems(add);
 }

@@ -22,8 +22,7 @@ wstring NobType::GetName(NobType::Value const val)
 		{ outputNeuron,    L"outputNeuron"    },
 		{ neuron,          L"neuron"          },
 		{ pipe,            L"pipe"            },
-		{ knot,            L"knot"            },
-		{ bend,            L"bend"            }
+		{ knot,            L"knot"            }
 	};				  
 	return mapNob.at(val);
 }
@@ -40,8 +39,7 @@ NobType::Value NobType::GetTypeFromName(wstring const & name)
 		{ L"outputNeuron",    outputNeuron    },
 		{ L"neuron",          neuron	      },
 		{ L"pipe",            pipe	          },
-		{ L"knot",            knot            },
-		{ L"bend",            bend            }
+		{ L"knot",            knot            }
 	};				  
 	return mapNob.at(name);
 }

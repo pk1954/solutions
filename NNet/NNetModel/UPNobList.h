@@ -72,8 +72,7 @@ public:
 
 	void MoveFrom(UPNobList &, size_t);
 
-	template<class CRIT>
-	MicroMeterPnt CenterOfGravity(CRIT const & crit) const
+	MicroMeterPnt CenterOfGravity(auto const & crit) const
 	{
 		MicroMeterPnt umPntRes { MicroMeterPnt::ZERO_VAL() };
 		size_t        counter  { 0 };
@@ -88,8 +87,7 @@ public:
 		return umPntRes;
 	}
 
-	template<class CRIT>
-	NobId FindNobAt(MicroMeterPnt const pnt, CRIT const & crit) const
+	NobId FindNobAt(MicroMeterPnt const pnt, auto const & crit) const
 	{
 		for (size_t i = m_list.size(); i --> 0;)	
 		{

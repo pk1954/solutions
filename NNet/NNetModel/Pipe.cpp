@@ -148,16 +148,20 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 
 void Pipe::SetStartKnot(BaseKnot * const pBaseKnot)
 {
-	assert(pBaseKnot);
-	m_pKnotStart = pBaseKnot;
-	Recalc();
+	if (pBaseKnot)
+	{
+		m_pKnotStart = pBaseKnot;
+		Recalc();
+	}
 }
 
 void Pipe::SetEndKnot(BaseKnot * const pBaseKnot)
 {
-	assert(pBaseKnot);
-	m_pKnotEnd = pBaseKnot;
-	Recalc();
+	if (pBaseKnot)
+	{
+		m_pKnotEnd = pBaseKnot;
+		Recalc();
+	}
 }
 
 void Pipe::dislocate(BaseKnot * const pBaseKnot, MicroMeter const dislocation)

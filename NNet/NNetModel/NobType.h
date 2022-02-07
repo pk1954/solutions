@@ -25,7 +25,6 @@ public:
 		outputNeuron,
 		neuron,
 		knot,
-		bend,
 		pipe,
 		undefined,
 		nobTypeLast  = pipe,

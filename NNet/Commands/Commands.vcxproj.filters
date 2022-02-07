@@ -192,6 +192,9 @@
     <ClInclude Include="SizeSelectionCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AddIncoming2InputNeuronCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

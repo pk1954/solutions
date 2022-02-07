@@ -77,6 +77,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
+		{ IDD_ADD_INCOMING2INPUT_NEURON,  L"Add incoming dendrite"    },
 		{ IDD_ADD_INCOMING2KNOT,    L"Add incoming dendrite"    },
 		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"    },
 		{ IDD_ADD_OUTGOING2KNOT,    L"Add outgoing dendrite"    },

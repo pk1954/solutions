@@ -7,15 +7,15 @@
 
 using std::wcout;
 using std::endl;
-using std::move;
+using std::make_unique;
 
 DiscBaseKnotCmd::DiscBaseKnotCmd
 (
     Nob      & nob,
     bool const bDelete 
 )
-  : m_bDelete(bDelete),
-    m_baseKnot(*Cast2BaseKnot(&nob))
+  : m_baseKnot(*Cast2BaseKnot(&nob)),
+    m_bDelete(bDelete)
 {
     m_idEndKnots  .Resize(m_baseKnot.GetNrOfIncomingConnections());
     m_idStartKnots.Resize(m_baseKnot.GetNrOfOutgoingConnections());
@@ -23,7 +23,7 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
     m_umPos = m_baseKnot.GetPos();
     m_baseKnot.Apply2AllInPipes
     (
-        [&](Pipe & pipe) // every incoming pipe needs a new end knot
+        [this](Pipe & pipe) // every incoming pipe needs a new end knot
         { 
             auto upKnotNew { make_unique<Knot>(m_umPos) };
             upKnotNew->Select(pipe.IsSelected());
@@ -33,7 +33,7 @@ DiscBaseKnotCmd::DiscBaseKnotCmd
     );  // Knots in m_endKnots have their incoming pipe set
     m_baseKnot.Apply2AllOutPipes
     (
-        [&](Pipe & pipe) // every outgoing pipe needs a new start knot
+        [this](Pipe & pipe) // every outgoing pipe needs a new start knot
         { 
             auto upKnotNew { make_unique<Knot>(m_umPos) };
             upKnotNew->Select(pipe.IsSelected());
@@ -100,6 +100,6 @@ void DiscBaseKnotCmd::Undo()
     if (m_bDelete) 
     {
         assert(m_upBaseKnot);
-        m_upBaseKnot = m_pNMWI->ReplaceInModel<BaseKnot,BaseKnot>(move(m_upBaseKnot));
+        m_upBaseKnot = m_pNMWI->ReplaceInModel<BaseKnot>(move(m_upBaseKnot));
     }
 }

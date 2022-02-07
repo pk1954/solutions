@@ -24,9 +24,9 @@ class DiscBaseKnotCmd : public NNetCommand
 public:
     DiscBaseKnotCmd(Nob &, bool const);
 
-    virtual ~DiscBaseKnotCmd() {}
+    ~DiscBaseKnotCmd() final = default;
 
-    virtual void Do  ();
+    void Do  () final;
     void Undo() final;
 
 private:

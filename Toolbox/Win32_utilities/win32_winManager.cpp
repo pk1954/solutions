@@ -23,7 +23,7 @@ using Util::operator<<;
 class WrapMoveWindow : public ScriptFunctor
 {
 public:
-    WrapMoveWindow(WinManager * pWinManager) :
+    explicit WrapMoveWindow(WinManager * pWinManager) :
         m_pWinManager(pWinManager)
     { };
 
@@ -59,7 +59,7 @@ private:
 class WrapShowWindow : public ScriptFunctor
 {
 public:
-    WrapShowWindow(WinManager * pWinManager) :
+    explicit WrapShowWindow(WinManager * pWinManager) :
         m_pWinManager(pWinManager)
     { };
 

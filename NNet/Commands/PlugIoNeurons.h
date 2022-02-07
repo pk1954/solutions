@@ -44,8 +44,8 @@ public:
         m_upNeuron = m_pNMWI->PopFromModel<Neuron>();
         m_upNobAnimated->Reconnect();
         m_upNobTarget  ->Reconnect();
-        m_upNobAnimated = m_pNMWI->ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobAnimated));
-        m_upNobTarget   = m_pNMWI->ReplaceInModel<IoNeuron,IoNeuron>(move(m_upNobTarget));
+        m_upNobAnimated = m_pNMWI->ReplaceInModel<IoNeuron>(move(m_upNobAnimated));
+        m_upNobTarget   = m_pNMWI->ReplaceInModel<IoNeuron>(move(m_upNobTarget));
         m_pNMWI->DeselectAllNobs();
         (m_targetReachedFunc)();
     }
