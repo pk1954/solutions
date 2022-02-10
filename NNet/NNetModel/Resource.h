@@ -80,8 +80,7 @@
 #define       IDD_APPEND_OUTPUT_NEURON      467
 #define       IDD_DELETE_NOB                468
 										
-#define       IDD_ADD_INCOMING2INPUT_NEURON 570
-#define       IDD_ADD_INCOMING2KNOT         571
+#define       IDD_ADD_INCOMING2BASEKNOT     571
 #define       IDD_ADD_INCOMING2PIPE         572
 #define       IDD_ADD_OUTGOING2KNOT         573
 #define       IDD_ADD_OUTGOING2PIPE         574

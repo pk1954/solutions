@@ -67,11 +67,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddIncoming2InputNeuronCmd.h" />
-    <ClInclude Include="AddIncoming2KnotCommand.h" />
+    <ClInclude Include="AddIncoming2BaseKnotCommand.h" />
     <ClInclude Include="AddIncoming2PipeCommand.h" />
     <ClInclude Include="AddNobsCommand.h" />
-    <ClInclude Include="AddOutgoing2KnotCommand.h" />
+    <ClInclude Include="AddOutgoing2BaseKnotCommand.h" />
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AddSignalCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />

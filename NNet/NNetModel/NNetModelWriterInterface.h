@@ -51,6 +51,11 @@ public:
     void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
     void  DeselectAllNobs() const                  { m_pModel->DeselectAllNobs(); }
 
+    void RemovePipeFromBaseKnot(NobId const id, Pipe * const p)
+    {
+        GetNobPtr<BaseKnot *>(id)->Remove(p);
+    }
+
     template <Nob_t T>
     T GetNobPtr(NobId const id) 
     {

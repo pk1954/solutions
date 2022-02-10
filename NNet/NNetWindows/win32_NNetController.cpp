@@ -342,12 +342,8 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->AddOutgoing2Knot(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_ADD_INCOMING2KNOT:
-        m_pModelCommands->AddIncoming2Knot(m_pMainWindow->GetHighlightedNobId(), umPoint);
-        break;
-
-    case IDD_ADD_INCOMING2INPUT_NEURON:
-        m_pModelCommands->AddIncoming2InputNeuron(m_pMainWindow->GetHighlightedNobId(), umPoint);
+    case IDD_ADD_INCOMING2BASEKNOT:
+        m_pModelCommands->AddIncoming2BaseKnot(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_ADD_OUTGOING2PIPE:

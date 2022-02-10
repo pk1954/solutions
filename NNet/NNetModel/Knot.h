@@ -20,7 +20,7 @@ class Knot : public BaseKnot
 {
 public:
 	explicit Knot(MicroMeterPnt const center)
-		: BaseKnot(center, NobType::Value::knot, PIPE_WIDTH / 2)
+		: BaseKnot(center, NobType::Value::knot, KNOT_WIDTH)
 	{}
 
 	explicit Knot(BaseKnot const &);
@@ -46,4 +46,8 @@ public:
 	void Recalc() final { };
 
 	void EvaluateSelectionStatus();
+
+private:
+
+	inline static MicroMeter const KNOT_WIDTH { PIPE_WIDTH / 2 };
 };

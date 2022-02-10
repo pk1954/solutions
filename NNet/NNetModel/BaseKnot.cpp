@@ -90,6 +90,13 @@ void BaseKnot::SetConnections(BaseKnot const & src)
 	Reconnect();
 }
 
+void BaseKnot::Remove(Pipe * const p) 
+{ 
+	if (m_outPipes.TryRemove(p)) return;
+	if (m_inPipes .TryRemove(p)) return;
+	assert(false);
+}
+
 void BaseKnot::ClearConnections()
 {
 	m_inPipes .Clear();

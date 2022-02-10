@@ -357,14 +357,14 @@ public:
     }
 };
 
-class WrapAddIncoming2Knot: public ScriptFunctor
+class WrapAddIncoming2BaseKnot: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddIncoming2Knot(idNob, umPos);
+        m_pCommands->AddIncoming2BaseKnot(idNob, umPos);
     }
 };
 
@@ -448,14 +448,13 @@ void DefineNNetWrappers
     m_pCommands      = pCommands;
     m_pModelImporter = pModelImporter;
 
-
     DEF_FUNC(AddModel);
     DEF_FUNC(AddSignal);
     DEF_FUNC(AnalyzeAnomalies);   
     DEF_FUNC(AnalyzeLoops);       
     DEF_FUNC(AppendInputNeuron);  
     DEF_FUNC(AppendOutputNeuron);  
-    DEF_FUNC(AddIncoming2Knot);   
+    DEF_FUNC(AddIncoming2BaseKnot);   
     DEF_FUNC(AddIncoming2Pipe);   
     DEF_FUNC(AddOutgoing2Knot);   
     DEF_FUNC(AddOutgoing2Pipe);   
@@ -502,7 +501,7 @@ void DefineNNetWrappers
     SymbolTable::ScrDefConst(L"APPEND_INPUT_NEURON",  static_cast<long>(IDD_APPEND_INPUT_NEURON));
     SymbolTable::ScrDefConst(L"APPEND_OUTPUT_NEURON", static_cast<long>(IDD_APPEND_OUTPUT_NEURON));
     SymbolTable::ScrDefConst(L"ADD_OUTGOING2KNOT",    static_cast<long>(IDD_ADD_OUTGOING2KNOT  ));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2KNOT",    static_cast<long>(IDD_ADD_INCOMING2KNOT  ));
+    SymbolTable::ScrDefConst(L"ADD_INCOMING2BASEKNOT",static_cast<long>(IDD_ADD_INCOMING2BASEKNOT));
     SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",    static_cast<long>(IDD_ADD_OUTGOING2PIPE  ));
     SymbolTable::ScrDefConst(L"ADD_INCOMING2PIPE",    static_cast<long>(IDD_ADD_INCOMING2PIPE  ));
 

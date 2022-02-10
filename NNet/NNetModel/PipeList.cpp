@@ -36,11 +36,19 @@ void PipeList::Check() const
 	}
 }
 
+bool PipeList::TryRemove(Pipe * const p) 
+{ 
+	auto res  { find(m_list, p) };
+	bool bRes { res != end(m_list) };
+	if (bRes)
+		m_list.erase(res);
+	return bRes;
+}
+
 void PipeList::Remove(Pipe * const p) 
 { 
-	auto res = find(m_list, p);
-	assert(res != end(m_list));
-	m_list.erase(res);
+	bool bRes { TryRemove(p) };
+	assert(bRes);
 }
 
 void PipeList::Replace(Pipe * const pDel, Pipe * const pAdd) 

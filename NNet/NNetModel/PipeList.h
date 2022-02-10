@@ -35,7 +35,8 @@ public:
 
 	void Recalc() const;
 
-	void Remove (Pipe * const);
+	void Remove    (Pipe * const);
+	bool TryRemove (Pipe * const);
 	void Replace(Pipe * const, Pipe * const);
 
 	bool IsEmpty   () const { return m_list.empty(); }

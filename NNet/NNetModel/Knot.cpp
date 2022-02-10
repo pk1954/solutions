@@ -11,9 +11,10 @@
 #include "Knot.h"
 
 Knot::Knot(BaseKnot const & src)
-	: BaseKnot(src)
+  : BaseKnot(src)
 {
 	SetType(NobType::Value::knot);
+	SetExtension(KNOT_WIDTH);
 }
 
 void Knot::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -82,8 +83,8 @@ void Knot::EvaluateSelectionStatus()
 	(
 		Apply2AllConnectedPipesB
 		(
-			[&](Pipe const &p) { return p.IsSelected(); }  // if any connected pipe is selected
-		)                                                  // knot must also be selected
+			[](Pipe const &p) { return p.IsSelected(); }  // if any connected pipe is selected
+		)                                                 // knot must also be selected
 	);
 }
 
@@ -97,7 +98,7 @@ void Knot::AppendMenuItems(AddMenuFunc const & add) const
 	if (
 		((GetNrOfIncomingConnections() <= 1) && (GetNrOfOutgoingConnections() <= 1)) ||
 		((GetNrOfIncomingConnections() == 0) &&	(GetNrOfOutgoingConnections() <= 2)) 
-	   ) add(IDD_ADD_INCOMING2KNOT);
+	   ) add(IDD_ADD_INCOMING2BASEKNOT);
 
 	if ((GetNrOfIncomingConnections() == 0) && (GetNrOfOutgoingConnections() <= 1))
 		add(IDD_APPEND_INPUT_NEURON);

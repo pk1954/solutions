@@ -24,10 +24,7 @@
     <ClInclude Include="DeletePipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddIncoming2PipeCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AddOutgoing2KnotCommand.h">
+    <ClInclude Include="AddOutgoing2BaseKnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClearBeepersCommand.h">
@@ -51,7 +48,7 @@
     <ClInclude Include="Connect2BaseKnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddIncoming2KnotCommand.h">
+    <ClInclude Include="AddIncoming2BaseKnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
@@ -192,7 +189,7 @@
     <ClInclude Include="SizeSelectionCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddIncoming2InputNeuronCmd.h">
+    <ClInclude Include="AddIncoming2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -80,11 +80,14 @@ void NNetModelWriterInterface::RecalcSignals()
 
 unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 {
-	BaseKnot const * pBaseKnot  { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
-	NobType  const   typeOld    { pBaseKnot->GetNobType() };
-	size_t   const   nrInPipes  { pBaseKnot->GetNrOfIncomingConnections() };
-	size_t   const   nrOutPipes { pBaseKnot->GetNrOfOutgoingConnections() };
-	NobType          typeNew    { NobType::Value::undefined };
+	BaseKnot const * pBaseKnot { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+
+	if (pBaseKnot == nullptr)
+		return unique_ptr<BaseKnot>();
+
+	size_t const nrInPipes  { pBaseKnot->GetNrOfIncomingConnections() };
+	size_t const nrOutPipes { pBaseKnot->GetNrOfOutgoingConnections() };
+	NobType      typeNew    { NobType::Value::undefined };
 
 	if (nrOutPipes == 0)
 	{
@@ -96,7 +99,7 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 		if ( nrInPipes == 0 )
 			typeNew = NobType::Value::inputNeuron;
 		else // one or several inPipes
-			typeNew = typeOld.IsKnotType() ? NobType::Value::knot : NobType::Value::neuron;
+			typeNew = pBaseKnot->IsNeuron() ? NobType::Value::neuron : NobType::Value::knot;
 	}
 	else // more than one outPipe
 	{
@@ -105,7 +108,7 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 		else // more than one inPipe
 			assert(false);
 	}
-	if (typeNew != typeOld)
+	if (typeNew !=pBaseKnot->GetNobType())
 	{
 		unique_ptr<BaseKnot> upBaseKnotNew { };
 		switch (typeNew.GetValue())
@@ -118,7 +121,7 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 			case undefined:	   break;
 			default:           assert(false);
 		}
-		return upBaseKnotNew
+ 		return upBaseKnotNew
                ? ReplaceInModel<BaseKnot>(move(upBaseKnotNew))
 			   : RemoveFromModel<BaseKnot>(id);		
 	}

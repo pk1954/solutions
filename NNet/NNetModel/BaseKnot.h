@@ -21,6 +21,7 @@ class BaseKnot : public Nob
 public:
 
 	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
+	BaseKnot(BaseKnot const &) = default;
 	~BaseKnot() override = default;
 
 	virtual bool operator==(Nob const &) const;
@@ -82,6 +83,7 @@ public:
 
 	void RemoveIncoming(Pipe * const p) { m_inPipes .Remove(p); } 
 	void RemoveOutgoing(Pipe * const p) { m_outPipes.Remove(p); }
+	void Remove        (Pipe * const); 
 
 	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) { m_inPipes .Replace(pDel, pAdd); }
 	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) { m_outPipes.Replace(pDel, pAdd); }
@@ -126,36 +128,36 @@ concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;
 template <BaseKnot_t T>
 MicroMeterPnt CalcOrthoVector(vector<T *> const & list, MicroMeterLine const & line)
 {
-	unsigned int uiLeftConnections  { 0 };
-	unsigned int uiRightConnections { 0 };
+	unsigned int nrLeft  { 0 };
+	unsigned int nrRight { 0 };
 	for (auto pBaseKnot : list)
 	{ 
 		pBaseKnot->Apply2AllInPipes
 		(
-			[&](Pipe const & pipe) 
+			[&line, &nrLeft, &nrRight](Pipe const & pipe) 
 			{ 
 				MicroMeterPnt pnt { pipe.GetStartPoint() };
 				if (PointToLine(line, pnt) < 0.0_MicroMeter)
-					++uiLeftConnections;
+					++nrLeft;
 				else
-					++uiRightConnections;
+					++nrRight;
 			}
 		);
 		pBaseKnot->Apply2AllOutPipes
 		(
-			[&](Pipe const & pipe) 
+			[&line, &nrLeft, &nrRight](Pipe const & pipe) 
 			{ 
 				MicroMeterPnt pnt { pipe.GetEndPoint() };
 				if (PointToLine(line, pnt) < 0.0_MicroMeter)
-					++uiRightConnections;
+					++nrRight;
 				else
-					++uiLeftConnections;
+					++nrLeft;
 			}
 		);
 	}	
 
 	MicroMeterPnt orthoVector { line.OrthoVector() };
-	if (uiRightConnections < uiLeftConnections)
+	if (nrRight < nrLeft)
 		orthoVector = -orthoVector;
 	return orthoVector;
 }

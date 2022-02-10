@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <fstream>
 #include "SCRIPT.H"
-#include "symtab.h"
+#include "SYMTAB.H"
 #include "UtilityWrappers.h"
 #include "win32_util.h"
 #include "win32_winManager.h"
@@ -351,7 +351,7 @@ void WinManager::addWindow
 {
     if (id != 0)
     {
-        m_map.insert(pair< UINT, MAP_ELEMENT >(id, { wstrName, pBaseWindow, hwnd, bTrackPosition, bTrackSize }));
+        m_map.try_emplace(id, MAP_ELEMENT(wstrName, pBaseWindow, hwnd, bTrackPosition, bTrackSize));
         SymbolTable::ScrDefConst(wstrName, static_cast<ULONG>(id));
     }
 }

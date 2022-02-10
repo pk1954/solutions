@@ -39,7 +39,7 @@ public:
 
 	void Undo() final
 	{
-		m_pNMWI->Restore2Model(move(m_upStartKnot));
+		m_pNMWI->Restore2Model(move(m_upStartKnot)); 
 		m_pNMWI->Restore2Model(move(m_upEndKnot));
 		m_pNMWI->GetNobPtr<BaseKnot *>(m_idStart)->AddOutgoing(m_upPipe.get());
 		m_pNMWI->GetNobPtr<BaseKnot *>(m_idEnd)  ->AddIncoming(m_upPipe.get());
@@ -49,8 +49,8 @@ public:
 	}
 
 private:
-	Pipe               & m_pipe;        // reference to original pipe to be removed from model
-	unique_ptr<Pipe>     m_upPipe;      // take responsibility for pipe between Do and Undo
+	Pipe               & m_pipe;    // reference to original pipe to be removed from model
+	unique_ptr<Pipe>     m_upPipe;  // take ownership of pipe between Do and Undo
 	NobId                m_idStart;
 	NobId                m_idEnd;
 	unique_ptr<BaseKnot> m_upStartKnot;

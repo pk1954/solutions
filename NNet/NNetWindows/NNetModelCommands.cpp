@@ -5,10 +5,9 @@
 #include "stdafx.h"
 #include <source_location>
 #include "AddNobsCommand.h"
-#include "AddIncoming2InputNeuronCmd.h"
-#include "AddIncoming2KnotCommand.h"
+#include "AddIncoming2BaseKnotCommand.h"
 #include "AddIncoming2PipeCommand.h"
-#include "AddOutgoing2KnotCommand.h"
+#include "AddOutgoing2BaseKnotCommand.h"
 #include "AddOutgoing2PipeCommand.h"
 #include "AddSignalCommand.h"
 #include "AnalyzeCommand.h"
@@ -117,18 +116,11 @@ void NNetModelCommands::ResetModel()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::AddIncoming2Knot(NobId const id, MicroMeterPnt const & pos)
+void NNetModelCommands::AddIncoming2BaseKnot(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddIncoming2KnotCommand>(id, pos - STD_OFFSET));
-}
-
-void NNetModelCommands::AddIncoming2InputNeuron(NobId const id, MicroMeterPnt const & pos)
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddIncoming2InputNeuronCmd>(id, pos - STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<AddIncoming2BaseKnotCommand>(id, pos - STD_OFFSET));
 }
 
 void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)
@@ -151,7 +143,7 @@ void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & p
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddOutgoing2KnotCommand>(id, pos + STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<AddOutgoing2BaseKnotCommand>(id, pos + STD_OFFSET));
 }
 
 void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
