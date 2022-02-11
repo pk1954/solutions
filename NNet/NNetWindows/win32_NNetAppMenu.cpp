@@ -79,6 +79,7 @@ void NNetAppMenu::Start
 
     HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
+        AppendMenu(hMenuAction, MF_STRING, IDM_RESET,   L"Reset dynamic data");
         AppendMenu(hMenuAction, MF_STRING, IDM_FORWARD, L"&Proceed single step");
         AppendMenu(hMenuAction, MF_STRING, IDM_RUN,     L"&Run");
         AppendMenu(hMenuAction, MF_STRING, IDM_STOP,    L"&Stop");

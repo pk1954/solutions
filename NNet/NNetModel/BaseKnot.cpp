@@ -97,6 +97,14 @@ void BaseKnot::Remove(Pipe * const p)
 	assert(false);
 }
 
+void BaseKnot::AddPipe(Pipe * const p, NobType const type)
+{
+	if (type.IsInputNeuronType())
+		AddIncoming(p);
+	else
+		AddOutgoing(p);
+}
+
 void BaseKnot::ClearConnections()
 {
 	m_inPipes .Clear();

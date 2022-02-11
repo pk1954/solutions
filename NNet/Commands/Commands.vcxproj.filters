@@ -24,16 +24,10 @@
     <ClInclude Include="DeletePipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddOutgoing2BaseKnotCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ClearBeepersCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectionCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AddOutgoing2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectAllCommand.h">
@@ -46,9 +40,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Connect2BaseKnotCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AddIncoming2BaseKnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
@@ -189,7 +180,10 @@
     <ClInclude Include="SizeSelectionCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddIncoming2PipeCommand.h">
+    <ClInclude Include="AddPipe2BaseKnotCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddPipe2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -123,7 +123,12 @@ bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };
 
-	if (typeSrc.IsKnotType() && typeDst.IsPipeType() )
+	//if (typeSrc.IsKnotType() && typeDst.IsPipeType())
+	//{
+	//	return true;
+	//}
+	//else 
+	if (typeSrc.IsBaseKnotType() && typeDst.IsPipeType())
 	{
 		return true;
 	}

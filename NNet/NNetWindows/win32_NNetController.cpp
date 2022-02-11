@@ -107,13 +107,13 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         {
             bRes = processModelCommand(wmId, lParam, umPoint);
         }
-        catch (NobException & e)
+        catch (NobException const & e)
         {
             wcout << Scanner::COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
             m_pNMRI->DUMP();
             FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
         }
-        catch (MonitorDataException & e)
+        catch (MonitorDataException const & e)
         {
             MonitorData::HandleException(e);
         }

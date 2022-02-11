@@ -395,6 +395,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_model.DUMP();
 			break;
 
+		case IDM_RESET:
+			m_model.ClearDynamicData();
+			break;
+
 		case IDM_FORWARD:
 			m_computeThread.SingleStep();
 			break;

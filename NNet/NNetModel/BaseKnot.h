@@ -80,6 +80,7 @@ public:
 
 	void AddIncoming(Pipe * const p) { m_inPipes .Add(p); }
 	void AddOutgoing(Pipe * const p) { m_outPipes.Add(p); }
+	void AddPipe(Pipe * const p, NobType );
 
 	void RemoveIncoming(Pipe * const p) { m_inPipes .Remove(p); } 
 	void RemoveOutgoing(Pipe * const p) { m_outPipes.Remove(p); }

@@ -5,10 +5,8 @@
 #include "stdafx.h"
 #include <source_location>
 #include "AddNobsCommand.h"
-#include "AddIncoming2BaseKnotCommand.h"
-#include "AddIncoming2PipeCommand.h"
-#include "AddOutgoing2BaseKnotCommand.h"
-#include "AddOutgoing2PipeCommand.h"
+#include "AddPipe2BaseKnotCmd.h"
+#include "AddPipe2PipeCommand.h"
 #include "AddSignalCommand.h"
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
@@ -120,14 +118,14 @@ void NNetModelCommands::AddIncoming2BaseKnot(NobId const id, MicroMeterPnt const
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddIncoming2BaseKnotCommand>(id, pos - STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos - STD_OFFSET, NobType::Value::inputNeuron));
 }
 
 void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddIncoming2PipeCommand>(id, pos));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::inputNeuron));
 }
 
 void NNetModelCommands::AddModel()
@@ -143,14 +141,14 @@ void NNetModelCommands::AddOutgoing2Knot(NobId const id, MicroMeterPnt const & p
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddOutgoing2BaseKnotCommand>(id, pos + STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos + STD_OFFSET, NobType::Value::outputNeuron));
 }
 
 void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddOutgoing2PipeCommand>(id, pos));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputNeuron));
 }
 
 void NNetModelCommands::AddSignal

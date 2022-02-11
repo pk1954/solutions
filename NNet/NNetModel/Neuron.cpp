@@ -108,7 +108,9 @@ mV Neuron::waveFunction(fMicroSecs const time) const
 
 void Neuron::ClearDynamicData()
 {
+	BaseKnot::ClearDynamicData();
 	m_usSinceLastPulse = 0._MicroSecs;
+	m_bTriggered = false;
 }
 
 void Neuron::Prepare()
