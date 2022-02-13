@@ -37,14 +37,19 @@ public:
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew2->Select(m_pPipeOld->IsSelected());
 	
-		m_pIoNeuron->AddIncoming(m_upPipeNew1.get());
-		m_pIoNeuron->AddOutgoing(m_upPipeNew2.get());
+		m_upKnotInsert->AddIncoming(m_upPipeNew1.get());
+		m_upKnotInsert->AddOutgoing(m_upPipeNew2.get());
 	}
 
 	 ~Connect2PipeCommand() final = default;
 
 	void Do() final
 	{
+		if (m_pIoNeuron->IsInputNeuron())
+			m_pIoNeuron->Apply2AllOutPipes([this](Pipe &p) { ConnectOutgoing(p, *m_upKnotInsert.get()); });
+		else
+			m_pIoNeuron->Apply2AllInPipes([this](Pipe &p) { ConnectIncoming(p, *m_upKnotInsert.get()); });
+
 		m_pStartKnot->ReplaceOutgoing(m_pPipeOld, m_upPipeNew1.get());
 		m_pEndKnot  ->ReplaceIncoming(m_pPipeOld, m_upPipeNew2.get());
 
@@ -67,6 +72,11 @@ public:
 
 		m_pEndKnot  ->ReplaceIncoming(m_upPipeNew2.get(), m_pPipeOld);
 		m_pStartKnot->ReplaceOutgoing(m_upPipeNew1.get(), m_pPipeOld);
+
+		if (m_pIoNeuron->IsInputNeuron())
+			m_pIoNeuron->Apply2AllOutPipes([this](Pipe &p) { p.SetStartKnot(m_pIoNeuron); });
+		else
+			m_pIoNeuron->Apply2AllInPipes([this](Pipe &p) { p.SetEndKnot(m_pIoNeuron); });
 	}
 
 private:

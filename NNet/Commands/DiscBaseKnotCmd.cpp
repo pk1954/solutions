@@ -1,105 +1,83 @@
-// DiscBaseKnotCmd.cpp
+// DeleteBaseKnotCmd.cpp
 //
 // NNetModel
 
 #include "stdafx.h"
-#include "DiscBaseKnotCmd.h"
+#include "DeleteBaseKnotCmd.h"
 
 using std::wcout;
 using std::endl;
 using std::make_unique;
 
-DiscBaseKnotCmd::DiscBaseKnotCmd
-(
-    Nob      & nob,
-    bool const bDelete 
-)
-  : m_baseKnot(*Cast2BaseKnot(&nob)),
-    m_bDelete(bDelete)
+DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
+  : m_baseKnot(*Cast2BaseKnot(&nob))
 {
-    m_idEndKnots  .Resize(m_baseKnot.GetNrOfIncomingConnections());
-    m_idStartKnots.Resize(m_baseKnot.GetNrOfOutgoingConnections());
+    m_idOutputNeurons.Resize(m_baseKnot.GetNrOfIncomingConnections());
+    m_idInputNeurons .Resize(m_baseKnot.GetNrOfOutgoingConnections());
 
     m_umPos = m_baseKnot.GetPos();
-    m_baseKnot.Apply2AllInPipes
-    (
-        [this](Pipe & pipe) // every incoming pipe needs a new end knot
-        { 
-            auto upKnotNew { make_unique<Knot>(m_umPos) };
-            upKnotNew->Select(pipe.IsSelected());
-            upKnotNew->AddIncoming(& pipe);          // prepare new knot as far as possible
-            m_endKnots.push_back(move(upKnotNew));   // store new knot for later
-        }                                            // but do not touch m_pBaseKnot
-    );  // Knots in m_endKnots have their incoming pipe set
     m_baseKnot.Apply2AllOutPipes
     (
-        [this](Pipe & pipe) // every outgoing pipe needs a new start knot
+        [this](Pipe & pipe) // every outgoing pipe needs a new InputNeuron as terminator
         { 
-            auto upKnotNew { make_unique<Knot>(m_umPos) };
-            upKnotNew->Select(pipe.IsSelected());
-            upKnotNew->AddOutgoing(& pipe);            // prepare new knot as far as possible
-            m_startKnots.push_back(move(upKnotNew));   // store new knot for later
-        }                                              // but do not touch m_pBaseKnot
-    );  // Knots in m_startKnots have their outgoing pipe set
-    if (m_baseKnot.IsKnot() || m_baseKnot.IsNeuron())
-        m_bDelete = true;
+            auto upInputNeuron { make_unique<InputNeuron>(m_umPos) };
+            upInputNeuron->Select(pipe.IsSelected());
+            upInputNeuron->AddOutgoing(& pipe);            // prepare new InputNeuron as far as possible
+            m_inputNeurons.push_back(move(upInputNeuron)); // store new InputNeuron for later
+        }                                                  // but do not touch m_pBaseKnot
+    );  // InputNeuron in m_inputNeurons have their outgoing pipe set
+    m_baseKnot.Apply2AllInPipes
+    (
+        [this](Pipe & pipe) // every incoming pipe needs a new OutputNeuron as terminator
+        { 
+            auto upOutputNeuron { make_unique<OutputNeuron>(m_umPos) };
+            upOutputNeuron->Select(pipe.IsSelected());
+            upOutputNeuron->AddIncoming(& pipe);             // prepare new OutputNeuron as far as possible
+            m_outputNeurons.push_back(move(upOutputNeuron)); // store new OutputNeuron for later
+        }                                                    // but do not touch m_pBaseKnot
+    );  // OutputNeuron in m_outputNeurons have their incoming pipe set
 }
 
-void DiscBaseKnotCmd::Do()
+void DeleteBaseKnotCmd::Do()
 {
-    for (size_t i = 0; i < m_startKnots.size(); ++i)
+    for (size_t i = 0; i < m_outputNeurons.size(); ++i)
     {
-        unique_ptr<Knot> & upKnot { m_startKnots[i] };
-        if (upKnot.get())
+        unique_ptr<OutputNeuron> & upOutputNeuron { m_outputNeurons[i] };
+        if (upOutputNeuron.get())
         {
-            Pipe & pipeOut { upKnot->GetFirstOutgoing() };
-            pipeOut.SetStartKnot(upKnot.get());
-            pipeOut.DislocateStartPoint();                     // dislocate new knot
-            m_idStartKnots.SetAt(i, m_pNMWI->Push2Model(move(upKnot)));
+            Pipe & pipeOut { upOutputNeuron->GetFirstIncoming() };
+            pipeOut.SetEndKnot(upOutputNeuron.get());
+            pipeOut.DislocateEndPoint();
+            m_idOutputNeurons.SetAt(i, m_pNMWI->Push2Model(move(upOutputNeuron)));
         }
     }
-    for (size_t i = 0; i < m_endKnots.size(); ++i)
+    for (size_t i = 0; i < m_inputNeurons.size(); ++i)
     {
-        unique_ptr<Knot> & upKnot { m_endKnots[i] };
-        if (upKnot.get())
+        unique_ptr<InputNeuron> & upInputNeuron { m_inputNeurons[i] };
+        if (upInputNeuron.get())
         {
-            Pipe & pipeIn { upKnot->GetFirstIncoming() };
-            pipeIn.SetEndKnot(upKnot.get());
-            pipeIn.DislocateEndPoint();                       // dislocate new knot 
-            m_idEndKnots.SetAt(i, m_pNMWI->Push2Model(move(upKnot)));
+            Pipe & pipeIn { upInputNeuron->GetFirstOutgoing() };
+            pipeIn.SetStartKnot(upInputNeuron.get());
+            pipeIn.DislocateStartPoint();
+            m_idInputNeurons.SetAt(i, m_pNMWI->Push2Model(move(upInputNeuron)));
         }
     }
-    m_baseKnot.ClearConnections();
-    if (m_bDelete)
-    {
-        m_upBaseKnot = m_pNMWI->RemoveFromModel<BaseKnot>(m_baseKnot);
-        assert(m_upBaseKnot);
-    }
+    m_upBaseKnot = m_pNMWI->RemoveFromModel<BaseKnot>(m_baseKnot);
 }
 
-void DiscBaseKnotCmd::Undo()
+void DeleteBaseKnotCmd::Undo()
 {
-    for (size_t i = m_endKnots.size(); i --> 0;)
+    for (size_t i = m_inputNeurons.size(); i --> 0;)
     {
-        NobId   idEndKnot { m_idEndKnots.Get(i) };
-        Knot  & knotEnd   { * m_pNMWI->GetNobPtr<Knot *>(idEndKnot) };
-        Pipe  & pipeIn    { knotEnd.GetFirstIncoming() };
-        pipeIn.SetEndKnot(&m_baseKnot);
-        m_baseKnot.AddIncoming(& pipeIn);
-        m_endKnots[i] = m_pNMWI->PopFromModel<Knot>();
+        if (auto pInputNeuron { m_pNMWI->GetNobPtr<InputNeuron *>(m_idInputNeurons.Get(i)) })
+            ConnectOutgoing(pInputNeuron->GetFirstOutgoing(), m_baseKnot);
+        m_inputNeurons[i] = m_pNMWI->PopFromModel<InputNeuron>();
     }
-    for (size_t i = m_startKnots.size(); i --> 0;)
+    for (size_t i = m_outputNeurons.size(); i --> 0;)
     {
-        NobId   idStartKnot { m_idStartKnots.Get(i) };
-        Knot  & knotStart   { * m_pNMWI->GetNobPtr<Knot *>(idStartKnot) };
-        Pipe  & pipeOut     { knotStart.GetFirstOutgoing() };
-        pipeOut.SetStartKnot(&m_baseKnot);
-        m_baseKnot.AddOutgoing(& pipeOut);
-        m_startKnots[i] = m_pNMWI->PopFromModel<Knot>();
+        if (auto pOutputNeuron { m_pNMWI->GetNobPtr<OutputNeuron *>(m_idOutputNeurons.Get(i)) })
+            ConnectIncoming(pOutputNeuron->GetFirstIncoming(), m_baseKnot);
+        m_outputNeurons[i] = m_pNMWI->PopFromModel<OutputNeuron>();
     }
-    if (m_bDelete) 
-    {
-        assert(m_upBaseKnot);
-        m_upBaseKnot = m_pNMWI->ReplaceInModel<BaseKnot>(move(m_upBaseKnot));
-    }
+    m_upBaseKnot = m_pNMWI->ReplaceInModel<BaseKnot>(move(m_upBaseKnot));
 }

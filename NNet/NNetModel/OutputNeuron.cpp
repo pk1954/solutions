@@ -62,6 +62,6 @@ void OutputNeuron::drawPlug
 
 void OutputNeuron::AppendMenuItems(AddMenuFunc const & add) const
 {
-	add(IDD_ADD_OUTGOING2KNOT);
+	add(IDD_ADD_OUTGOING2BASEKNOT);
 	IoNeuron::AppendMenuItems(add);
 }

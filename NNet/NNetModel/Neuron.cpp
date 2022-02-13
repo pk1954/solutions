@@ -204,7 +204,6 @@ Neuron * Cast2Neuron(Nob * pNob)
 
 void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 {
-	add(IDD_ADD_INCOMING2BASEKNOT);
 	if (IsNeuron())
 		add(IDD_SPLIT_NEURON);        
 	BaseKnot::AppendMenuItems(add);

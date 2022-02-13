@@ -15,6 +15,10 @@ using std::wcout;
 using std::endl;
 using std::ranges::fill;
 
+Pipe::Pipe()
+  :	Nob(NobType::Value::pipe)
+{}
+
 Pipe::Pipe
 (
 	BaseKnot * const   pKnotStart, 
@@ -164,10 +168,21 @@ void Pipe::SetEndKnot(BaseKnot * const pBaseKnot)
 	}
 }
 
-void Pipe::dislocate(BaseKnot * const pBaseKnot, MicroMeter const dislocation)
+void Pipe::DislocateEndPoint() 
 { 
-	pBaseKnot->MoveNob(GetVector().OrthoVector().ScaledTo(dislocation));
+	m_pKnotEnd->MoveNob(-dislocation());
 	Recalc();
+}
+
+void Pipe::DislocateStartPoint() 
+{ 
+	m_pKnotStart->MoveNob(dislocation());
+	Recalc();
+}
+
+MicroMeterPnt Pipe::dislocation() const
+{ 
+	return GetVector().ScaledTo(PIPE_WIDTH*5);
 }
 
 MicroMeterPnt Pipe::GetStartPoint() const 

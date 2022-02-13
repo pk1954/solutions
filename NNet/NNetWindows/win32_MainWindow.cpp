@@ -79,12 +79,10 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 	{
 		{ IDD_ADD_INCOMING2BASEKNOT,L"Add incoming dendrite"    },
 		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"    },
-		{ IDD_ADD_OUTGOING2KNOT,    L"Add outgoing dendrite"    },
+		{ IDD_ADD_OUTGOING2BASEKNOT,L"Add outgoing dendrite"    },
 		{ IDD_ADD_OUTGOING2PIPE,    L"Add outgoing dendrite"    },
 		{ IDD_ADD_EEG_SENSOR,       L"New EEG sensor" 		    },
 //		{ IDM_ALIGN_NOBS,           L"Align selected objects"   },
-		{ IDD_APPEND_INPUT_NEURON,  L"Add input neuron"         },
-		{ IDD_APPEND_OUTPUT_NEURON, L"Add output neuron"        },
 		{ IDD_ARROWS_OFF,           L"Arrows off"               },
 		{ IDD_ARROWS_ON,            L"Arrows on"                },
 		{ IDM_COPY_SELECTION,       L"Copy selection"           },
@@ -93,14 +91,12 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_DELETE_EEG_SENSOR,    L"Delete EEG sensor"        },
 		{ IDM_DESELECT_ALL,         L"Deselect all"             },
 		{ IDM_DESELECT_NOB,         L"Deselect nob"             },
-		{ IDD_DISC_BASEKNOT,        L"Disconnect"               },
 		{ IDD_DISC_IOCONNECTOR,     L"Disconnect"               },
 		{ IDD_SPLIT_NEURON,         L"Split (make I/O neurons)" },
 		{ IDD_INSERT_KNOT,          L"Insert knot"              },
 		{ IDD_INSERT_NEURON,        L"Insert neuron"            },
 		{ IDM_MAKE_CONNECTOR,       L"Make connector"           },
-		{ IDD_NEW_INPUT_NEURON,     L"New input neuron" 	    },
-		{ IDD_NEW_OUTPUT_NEURON,    L"New output neuron"	    },
+		{ IDD_NEW_IO_NEURON_PAIR,   L"New IO-neuron pair" 	    },
 		{ IDM_TRIGGER_STIMULUS,     L"Trigger stimulus"         },
 		{ IDM_SIGNAL_DESIGNER,      L"Signal designer"          },
 		{ IDM_SELECT_NOB,           L"Select nob"               },
@@ -142,9 +138,8 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
 		else
 		{
-			appendMenu(hPopupMenu, IDD_NEW_INPUT_NEURON );
-			appendMenu(hPopupMenu, IDD_NEW_OUTPUT_NEURON);
-			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR   );
+			appendMenu(hPopupMenu, IDD_NEW_IO_NEURON_PAIR);
+			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 		}
 	}
 

@@ -25,6 +25,7 @@ using std::move;
 class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
+    void  CreateIoNeuronPair(MicroMeterPnt const &);
     void  CreateInitialNobs();
     void  RemoveOrphans();
     void  SelectBeepers();
@@ -115,4 +116,7 @@ public:
     void ReduceSize  (long const nr) { GetUPNobs().ReduceSize(nr); }
 
     void SetPosDir(NobId const, MicroMeterPosDir const &);
-}; 
+};
+
+void ConnectIncoming(Pipe &, BaseKnot &);
+void ConnectOutgoing(Pipe &, BaseKnot &);

@@ -74,15 +74,12 @@
 								   	        
 #define       IDD_INSERT_KNOT               460
 #define       IDD_INSERT_NEURON             461
-#define       IDD_NEW_INPUT_NEURON          463
-#define       IDD_NEW_OUTPUT_NEURON         464
-#define       IDD_APPEND_INPUT_NEURON       466
-#define       IDD_APPEND_OUTPUT_NEURON      467
+#define       IDD_NEW_IO_NEURON_PAIR        463
 #define       IDD_DELETE_NOB                468
 										
 #define       IDD_ADD_INCOMING2BASEKNOT     571
 #define       IDD_ADD_INCOMING2PIPE         572
-#define       IDD_ADD_OUTGOING2KNOT         573
+#define       IDD_ADD_OUTGOING2BASEKNOT     573
 #define       IDD_ADD_OUTGOING2PIPE         574
 #define       IDD_TRIGGER_SOUND_DLG         575
 #define       IDC_TRIGGER_SOUND_ON          576
@@ -112,6 +109,5 @@
 										    
 #define       IDM_MAKE_CONNECTOR            674
 #define       IDD_DISC_IOCONNECTOR          676
-#define       IDD_DISC_BASEKNOT             677
 #define       IDD_SPLIT_NEURON              678
 									       

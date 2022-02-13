@@ -117,26 +117,6 @@ public:
     }
 };
 
-class WrapAppendInputNeuron: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId const id { ScrReadNobId(script) };
-        m_pCommands->AppendInputNeuron(id);
-    }
-};
-
-class WrapAppendOutputNeuron: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId const id { ScrReadNobId(script) };
-        m_pCommands->AppendOutputNeuron(id);
-    }
-};
-
 class WrapClearBeepers: public ScriptFunctor
 {
 public:
@@ -241,13 +221,13 @@ public:
     }
 };
 
-class WrapDiscBaseKnot: public ScriptFunctor
+class WrapDeleteBaseKnot: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId const id { ScrReadNobId(script) };
-        m_pCommands->DiscBaseKnot(id);
+        m_pCommands->DeleteBaseKnot(id);
     }
 };
 
@@ -346,14 +326,14 @@ public:
     }
 };
 
-class WrapAddOutgoing2Knot: public ScriptFunctor
+class WrapAddOutgoing2BaseKnot: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddOutgoing2Knot(idNob, umPos);
+        m_pCommands->AddOutgoing2BaseKnot(idNob, umPos);
     }
 };
 
@@ -390,23 +370,13 @@ public:
     }
 };
 
-class WrapNewInputNeuron: public ScriptFunctor
+class WrapNewIoNeuronPair: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->NewInputNeuron(umPos);
-    }
-};
-
-class WrapNewOutputNeuron: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->NewOutputNeuron(umPos);
+        m_pCommands->NewIoNeuronPair(umPos);
     }
 };
 
@@ -452,11 +422,9 @@ void DefineNNetWrappers
     DEF_FUNC(AddSignal);
     DEF_FUNC(AnalyzeAnomalies);   
     DEF_FUNC(AnalyzeLoops);       
-    DEF_FUNC(AppendInputNeuron);  
-    DEF_FUNC(AppendOutputNeuron);  
     DEF_FUNC(AddIncoming2BaseKnot);   
     DEF_FUNC(AddIncoming2Pipe);   
-    DEF_FUNC(AddOutgoing2Knot);   
+    DEF_FUNC(AddOutgoing2BaseKnot);   
     DEF_FUNC(AddOutgoing2Pipe);   
     DEF_FUNC(ClearBeepers);       
     DEF_FUNC(Connect);
@@ -464,15 +432,14 @@ void DefineNNetWrappers
     DEF_FUNC(CreateInitialNobs);
     DEF_FUNC(DeleteSelection);    
     DEF_FUNC(DeleteNob);        
-    DEF_FUNC(DiscBaseKnot);
+    DEF_FUNC(DeleteBaseKnot);
     DEF_FUNC(DiscIoConnector);         
     DEF_FUNC(Include);
     DEF_FUNC(InsertNeuron);       
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveSensor);      
     DEF_FUNC(MoveNob);          
-    DEF_FUNC(NewInputNeuron);     
-    DEF_FUNC(NewOutputNeuron);     
+    DEF_FUNC(NewIoNeuronPair);     
     DEF_FUNC(MakeIoConnector);
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          
@@ -489,21 +456,18 @@ void DefineNNetWrappers
     DEF_FUNC(RedoCommand);
     DEF_FUNC(Break);
 
-    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",        static_cast<long>(IDM_ANALYZE_LOOPS      ));
-    SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",    static_cast<long>(IDM_ANALYZE_ANOMALIES  ));
-    SymbolTable::ScrDefConst(L"DELETE_SELECTION",     static_cast<long>(IDM_DELETE_SELECTION   ));
-    SymbolTable::ScrDefConst(L"CLEAR_BEEPERS",        static_cast<long>(IDM_CLEAR_BEEPERS      ));
-    SymbolTable::ScrDefConst(L"SELECT_ALL_BEEPERS",   static_cast<long>(IDM_SELECT_ALL_BEEPERS ));
-    SymbolTable::ScrDefConst(L"COPY_SELECTION",       static_cast<long>(IDM_COPY_SELECTION     ));
-    SymbolTable::ScrDefConst(L"INSERT_NEURON",        static_cast<long>(IDD_INSERT_NEURON      ));
-    SymbolTable::ScrDefConst(L"NEW_INPUT_NEURON",     static_cast<long>(IDD_NEW_INPUT_NEURON   ));
-    SymbolTable::ScrDefConst(L"NEW_OUTPUT_NEURON",    static_cast<long>(IDD_NEW_OUTPUT_NEURON  ));
-    SymbolTable::ScrDefConst(L"APPEND_INPUT_NEURON",  static_cast<long>(IDD_APPEND_INPUT_NEURON));
-    SymbolTable::ScrDefConst(L"APPEND_OUTPUT_NEURON", static_cast<long>(IDD_APPEND_OUTPUT_NEURON));
-    SymbolTable::ScrDefConst(L"ADD_OUTGOING2KNOT",    static_cast<long>(IDD_ADD_OUTGOING2KNOT  ));
+    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",        static_cast<long>(IDM_ANALYZE_LOOPS        ));
+    SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",    static_cast<long>(IDM_ANALYZE_ANOMALIES    ));
+    SymbolTable::ScrDefConst(L"DELETE_SELECTION",     static_cast<long>(IDM_DELETE_SELECTION     ));
+    SymbolTable::ScrDefConst(L"CLEAR_BEEPERS",        static_cast<long>(IDM_CLEAR_BEEPERS        ));
+    SymbolTable::ScrDefConst(L"SELECT_ALL_BEEPERS",   static_cast<long>(IDM_SELECT_ALL_BEEPERS   ));
+    SymbolTable::ScrDefConst(L"COPY_SELECTION",       static_cast<long>(IDM_COPY_SELECTION       ));
+    SymbolTable::ScrDefConst(L"INSERT_NEURON",        static_cast<long>(IDD_INSERT_NEURON        ));
+    SymbolTable::ScrDefConst(L"NEW_IO_NEURON_PAIR",   static_cast<long>(IDD_NEW_IO_NEURON_PAIR   ));
+    SymbolTable::ScrDefConst(L"ADD_OUTGOING2BASEKNOT",static_cast<long>(IDD_ADD_OUTGOING2BASEKNOT));
     SymbolTable::ScrDefConst(L"ADD_INCOMING2BASEKNOT",static_cast<long>(IDD_ADD_INCOMING2BASEKNOT));
-    SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",    static_cast<long>(IDD_ADD_OUTGOING2PIPE  ));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2PIPE",    static_cast<long>(IDD_ADD_INCOMING2PIPE  ));
+    SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",    static_cast<long>(IDD_ADD_OUTGOING2PIPE    ));
+    SymbolTable::ScrDefConst(L"ADD_INCOMING2PIPE",    static_cast<long>(IDD_ADD_INCOMING2PIPE    ));
 
     ParamType::Apply2GlobalParameters
     ( 

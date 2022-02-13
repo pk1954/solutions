@@ -94,5 +94,5 @@ public:
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
-	D2D_driver * m_pGraphics;
+	D2D_driver * m_pGraphics { nullptr };
 };

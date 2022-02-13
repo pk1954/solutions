@@ -10,4 +10,4 @@ class NNetModelWriterInterface;
 class NNetCommand;
 class Nob;
 
-unique_ptr<NNetCommand> MakeDeleteCommand(NNetModelWriterInterface &, Nob &);
+unique_ptr<NNetCommand> MakeDeleteCommand(NNetModelWriterInterface const &, Nob &);

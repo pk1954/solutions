@@ -299,11 +299,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->DeleteSelection();
         break;
 
-    case IDD_DISC_BASEKNOT:
-        m_pSound->Play(TEXT("UNLOCK_SOUND")); 
-        m_pModelCommands->DiscBaseKnot(m_pMainWindow->GetHighlightedNobId());
-        break;
-
     case IDD_DISC_IOCONNECTOR:
         m_pSound->Play(TEXT("UNLOCK_SOUND")); 
         m_pModelCommands->DiscIoConnector(m_pMainWindow->GetHighlightedNobId());
@@ -322,24 +317,12 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->InsertNeuron(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_NEW_INPUT_NEURON:
-        m_pModelCommands->NewInputNeuron(umPoint);
+    case IDD_NEW_IO_NEURON_PAIR:
+        m_pModelCommands->NewIoNeuronPair(umPoint);
         break;
 
-    case IDD_NEW_OUTPUT_NEURON:
-        m_pModelCommands->NewOutputNeuron(umPoint);
-        break;
-
-    case IDD_APPEND_INPUT_NEURON:
-        m_pModelCommands->AppendInputNeuron(m_pMainWindow->GetHighlightedNobId());
-        break;
-
-    case IDD_APPEND_OUTPUT_NEURON:
-        m_pModelCommands->AppendOutputNeuron(m_pMainWindow->GetHighlightedNobId());
-        break;
-
-    case IDD_ADD_OUTGOING2KNOT:
-        m_pModelCommands->AddOutgoing2Knot(m_pMainWindow->GetHighlightedNobId(), umPoint);
+    case IDD_ADD_OUTGOING2BASEKNOT:
+        m_pModelCommands->AddOutgoing2BaseKnot(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
     case IDD_ADD_INCOMING2BASEKNOT:

@@ -22,37 +22,38 @@ public:
 		MicroMeterPnt const & pos,
 		NobType       const   type
 	)
-		:	m_idPipe(idPipe),
-		    m_pos(pos)
+		:	m_idPipe(idPipe)
 	{ 
 		assert(type.IsIoNeuronType());
 
 		m_pPipeOld     = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
 		m_pStartKnot   = m_pPipeOld->GetStartKnotPtr();
 		m_pEndKnot     = m_pPipeOld->GetEndKnotPtr();
-
-		m_upKnotInsert = make_unique<Knot>(m_pos);
-		if (type.IsInputNeuronType())
-		{
-			m_upExtPoint  = make_unique<InputNeuron>(m_pos - m_pNMWI->OrthoVector(m_idPipe));
-			m_upPipeOrtho = MakePipe(m_upExtPoint.get(), m_upKnotInsert.get());		
-		}
-		else
-		{
-			m_upExtPoint  = make_unique<OutputNeuron>(m_pos + m_pNMWI->OrthoVector(m_idPipe));
-			m_upPipeOrtho = MakePipe(m_upKnotInsert.get(), m_upExtPoint.get());
-		}
-		m_upPipeNew1 = MakePipe(m_pStartKnot,         m_upKnotInsert.get());	
-		m_upPipeNew2 = MakePipe(m_upKnotInsert.get(), m_pEndKnot);	
+		m_upKnotInsert = make_unique<Knot>(pos);
+		m_upPipeNew1   = MakePipe(m_pStartKnot,         m_upKnotInsert.get());	
+		m_upPipeNew2   = MakePipe(m_upKnotInsert.get(), m_pEndKnot);	
 
 		m_upKnotInsert->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew1  ->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew2  ->Select(m_pPipeOld->IsSelected());
 
-		m_upExtPoint  ->AddIncoming(m_upPipeOrtho.get());
-		m_upKnotInsert->AddOutgoing(m_upPipeOrtho.get());
 		m_upKnotInsert->AddIncoming(m_upPipeNew1.get());
 		m_upKnotInsert->AddOutgoing(m_upPipeNew2.get());
+
+		if (type.IsInputNeuronType())
+		{
+			m_upExtPoint  = make_unique<InputNeuron>(pos - m_pNMWI->OrthoVector(m_idPipe));
+			m_upPipeOrtho = MakePipe(m_upExtPoint.get(), m_upKnotInsert.get());		
+			m_upExtPoint  ->AddOutgoing(m_upPipeOrtho.get());
+			m_upKnotInsert->AddIncoming(m_upPipeOrtho.get());
+		}
+		else
+		{
+			m_upExtPoint  = make_unique<OutputNeuron>(pos + m_pNMWI->OrthoVector(m_idPipe));
+			m_upPipeOrtho = MakePipe(m_upKnotInsert.get(), m_upExtPoint.get());
+			m_upExtPoint  ->AddIncoming(m_upPipeOrtho.get());
+			m_upKnotInsert->AddOutgoing(m_upPipeOrtho.get());
+		}
 	}
 
 	~AddPipe2PipeCommand() final = default;
@@ -96,5 +97,4 @@ private:
 	unique_ptr<Knot>     m_upKnotInsert { nullptr };
 	unique_ptr<IoNeuron> m_upExtPoint   { nullptr }; 
 	NobId          const m_idPipe;
-	MicroMeterPnt  const m_pos; 
 };

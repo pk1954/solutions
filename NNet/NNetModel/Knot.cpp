@@ -90,21 +90,11 @@ void Knot::EvaluateSelectionStatus()
 
 void Knot::AppendMenuItems(AddMenuFunc const & add) const
 {
-	if (
-		((GetNrOfIncomingConnections() <= 1) && (GetNrOfOutgoingConnections() <= 1)) ||
-		((GetNrOfIncomingConnections() <= 2) && (GetNrOfOutgoingConnections() == 0)) 
-	   ) add(IDD_ADD_OUTGOING2KNOT);
-
-	if (
-		((GetNrOfIncomingConnections() <= 1) && (GetNrOfOutgoingConnections() <= 1)) ||
-		((GetNrOfIncomingConnections() == 0) &&	(GetNrOfOutgoingConnections() <= 2)) 
-	   ) add(IDD_ADD_INCOMING2BASEKNOT);
-
-	if ((GetNrOfIncomingConnections() == 0) && (GetNrOfOutgoingConnections() <= 1))
-		add(IDD_APPEND_INPUT_NEURON);
-
-	if (! HasOutgoing()) 
-		add(IDD_APPEND_OUTPUT_NEURON);
+	if ((GetNrOfIncomingConnections() == 1) && (GetNrOfOutgoingConnections() == 1)) 
+	{
+	   add(IDD_ADD_INCOMING2BASEKNOT);
+	   add(IDD_ADD_OUTGOING2BASEKNOT);
+	}
 
 	BaseKnot::AppendMenuItems(add);
 }

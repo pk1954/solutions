@@ -36,6 +36,17 @@ void PipeList::Check() const
 	}
 }
 
+void PipeList::Add(Pipe * const p) 
+{ 
+	if (p && (find(m_list, p) == end(m_list)))
+		m_list.push_back(p); 
+}
+
+void PipeList::Add(PipeList const & l) 
+{ 
+	l.Apply2All([this](Pipe &p) { Add(&p); }); 
+}
+
 bool PipeList::TryRemove(Pipe * const p) 
 { 
 	auto res  { find(m_list, p) };

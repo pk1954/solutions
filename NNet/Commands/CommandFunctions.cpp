@@ -8,7 +8,7 @@
 #include "DeletePipeCommand.h"
 #include "DiscIoConnectorCmd.h"
 #include "SplitNeuronCmd.h"
-#include "DiscBaseKnotCmd.h"
+#include "DeleteBaseKnotCmd.h"
 #include "NNetCommand.h"
 #include "NobType.h"
 #include "IoConnector.h"
@@ -18,8 +18,8 @@
 
 unique_ptr<NNetCommand> MakeDeleteCommand
 (
-	NNetModelWriterInterface & nmwi,
-	Nob                      & nob
+	NNetModelWriterInterface const & nmwi,
+	Nob                            & nob
 )
 {
 	unique_ptr<NNetCommand> upCmd;
@@ -30,7 +30,7 @@ unique_ptr<NNetCommand> MakeDeleteCommand
 		case pipe:            upCmd = make_unique<DeletePipeCommand>(nob);		  break;
 		case inputConnector:
 		case outputConnector: upCmd = make_unique<DiscIoConnectorCmd>(nob, true); break;
-		default:              upCmd = make_unique<DiscBaseKnotCmd>(nob, true);
+		default:              upCmd = make_unique<DeleteBaseKnotCmd>(nob);
 		}
 	return move(upCmd);
 }

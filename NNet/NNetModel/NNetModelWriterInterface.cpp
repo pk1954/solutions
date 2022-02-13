@@ -6,6 +6,7 @@
 #include "Pipe.h"
 #include "Knot.h"
 #include "Neuron.h"
+#include "IoNeuronPair.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "NobIdList.h"
@@ -14,14 +15,7 @@
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
-	unique_ptr<InputNeuron> upInputNeuron { make_unique<InputNeuron >(MicroMeterPnt(400.0_MicroMeter, 200.0_MicroMeter)) };
-	unique_ptr<OutputNeuron>upOutputNeuron{ make_unique<OutputNeuron>(MicroMeterPnt(400.0_MicroMeter, 800.0_MicroMeter)) };
-	unique_ptr<Pipe>        upNewPipe     { make_unique<Pipe>(upInputNeuron.get(), upOutputNeuron.get(), GetParams()) };
-	upInputNeuron ->AddOutgoing(upNewPipe.get());
-	upOutputNeuron->AddIncoming(upNewPipe.get());
-	GetUPNobs().Push(move(upInputNeuron));
-	GetUPNobs().Push(move(upOutputNeuron));       
-	GetUPNobs().Push(move(upNewPipe));
+	IoNeuronPair(MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
 }
 
 Nob * NNetModelWriterInterface::GetNob(NobId const id)
@@ -126,4 +120,16 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 			   : RemoveFromModel<BaseKnot>(id);		
 	}
 	return unique_ptr<BaseKnot>();
+}
+
+void ConnectIncoming(Pipe & p, BaseKnot & b)
+{
+	b.AddIncoming(&p);
+	p.SetEndKnot (&b);
+}
+
+void ConnectOutgoing(Pipe & p, BaseKnot & b)
+{
+	b.AddOutgoing (&p);
+	p.SetStartKnot(&b);
 }

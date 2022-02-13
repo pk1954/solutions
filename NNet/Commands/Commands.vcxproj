@@ -72,7 +72,6 @@
     <ClInclude Include="AddPipe2PipeCommand.h" />
     <ClInclude Include="AddSignalCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />
-    <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ArrowAnimation.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="CommandFunctions.h" />
@@ -100,12 +99,12 @@
     <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
-    <ClInclude Include="NewNeuronCommandT.h" />
+    <ClInclude Include="NewIoNeuronPairCmd.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DeleteTrackCommand.h" />
-    <ClInclude Include="DiscBaseKnotCmd.h" />
+    <ClInclude Include="DeleteBaseKnotCmd.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />

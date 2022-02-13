@@ -7,7 +7,7 @@
 #include <vector>
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
-#include "DiscBaseKnotCmd.h"
+#include "DeleteBaseKnotCmd.h"
 #include "CommandFunctions.h"
 #include "NNetCommand.h"
 #include "CommandStack.h"
