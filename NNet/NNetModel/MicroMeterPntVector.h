@@ -65,10 +65,6 @@ public:
 
     friend wostream & operator<< (wostream &, MicroMeterPntVector const &);
 
-    inline static wchar_t const OPEN_BRACKET  { L'(' };
-    inline static wchar_t const SEPARATOR     { L',' };
-    inline static wchar_t const CLOSE_BRACKET { L')' };
-
 private:
     float gapCount() const { return Cast2Float(Size() - 1); };
 

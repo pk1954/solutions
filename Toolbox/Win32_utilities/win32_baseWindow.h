@@ -27,21 +27,21 @@ protected:
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
-	virtual void OnPaint             ()                           { /* empty */ };
-	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnMouseWheel        (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnMouseMove         (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnChar              (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnLButtonDown       (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnLButtonUp         (WPARAM const, LPARAM const) { /* empty */ };
-	virtual bool OnRButtonDown       (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnRButtonUp         (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnShow              (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnMouseLeave        (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnSetCursor         (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnTimer             (WPARAM const, LPARAM const) { return false; };
+	virtual void OnPaint          ()                           { /* empty */ };
+	virtual void OnLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnMouseWheel     (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnMouseMove      (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnChar           (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnLButtonDown    (WPARAM const, LPARAM const) { /* empty */ };
+	virtual void OnLButtonUp      (WPARAM const, LPARAM const) { /* empty */ };
+	virtual bool OnRButtonDown    (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnRButtonUp      (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnShow           (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnMouseLeave     (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnSetCursor      (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnTimer          (WPARAM const, LPARAM const) { return false; };
 
-	bool OnSize (WPARAM const, LPARAM const) override { return false; };
+	bool OnSize(PIXEL const, PIXEL const) override { return false; };
 
 private:
 	

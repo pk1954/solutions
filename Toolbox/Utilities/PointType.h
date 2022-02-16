@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iomanip>
 #include <compare>
+#include "IoConstants.h"
 #include "NamedType.h"
 #include "BasicTypes.h"
 
@@ -218,10 +219,6 @@ public:
 		PointType const pntPosNew       { pntPivot + pntVectorScaled };
 		*this = pntPosNew;
 	}
-
-	inline static wchar_t const SEPARATOR     { L'|' };
-	inline static wchar_t const OPEN_BRACKET  { L'(' };
-	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
     BASE_TYPE m_x;

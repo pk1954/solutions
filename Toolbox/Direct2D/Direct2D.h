@@ -49,7 +49,7 @@ public:
     void DrawEllipse        (fPixelEllipse const &, D2D1::ColorF const, fPixel const) const;
     void FillArrow          (fPixelPoint   const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const) const;
     void FillDiamond        (fPixelPoint   const, fPixel const, D2D1::ColorF const) const;
-    void Resize             (int const, int const);
+    void Resize             (PIXEL const, PIXEL const);
     void FillBackground     (D2D1::ColorF const) const;
 
     fPixelRectSize GetClRectSize() const;

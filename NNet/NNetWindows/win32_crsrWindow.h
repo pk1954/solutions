@@ -37,7 +37,7 @@ private:
 
 	void printPositionInfo(TextBuffer &, MicroMeterPnt const &)                 const;
 	void printNobInfo     (TextBuffer &, MicroMeterPnt const &, NobId    const) const;
-	void printSignalInfo  (TextBuffer &, MicroMeterPnt const &, SignalId const) const;
+	void printSignalInfo  (TextBuffer &, SignalId const) const;
 
 	void printMicroMeter(TextBuffer &, MicroMeter const) const;
 	void printMilliSecs (TextBuffer &, MilliSecs  const) const;

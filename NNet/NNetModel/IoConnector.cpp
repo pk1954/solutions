@@ -235,16 +235,16 @@ IoConnector * Cast2IoConnector(Nob * pNob)
     return static_cast<IoConnector *>(pNob);
 }
 
-wostream & operator<< (wostream & out, IoConnector const & v)
+wostream & operator<< (wostream & out, IoConnector const & conn)
 {
-    out << BaseKnot::OPEN_BRACKET << v.m_list.size() << BaseKnot::NR_SEPARATOR;
-    for (auto & it: v.m_list)
+    out << LIST_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
+    for (auto & it: conn.m_list)
     {
         out << it->GetId();
-        if (&it == &v.m_list.back())
+        if (&it == &conn.m_list.back())
             break;
-        out << BaseKnot::ID_SEPARATOR;
+        out << ID_SEPARATOR;
     }
-    out << BaseKnot::CLOSE_BRACKET;
+    out << LIST_CLOSE_BRACKET;
     return out;
 }

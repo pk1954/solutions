@@ -105,7 +105,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	}
 	if (sigId.IsNotNull())
 	{
-		printSignalInfo(textBuf, umPntCrsr, sigId);
+		printSignalInfo(textBuf, sigId);
 	}
 }
 
@@ -201,28 +201,41 @@ void CrsrWindow::printNobInfo
 
 void CrsrWindow::printSignalInfo
 (
-	TextBuffer          & textBuf, 
-	MicroMeterPnt const & umPoint, 
- 	SignalId      const id
+	TextBuffer   & textBuf, 
+ 	SignalId const id
 ) const
 {
-	Signal const & signal { * m_pNMRI->GetConstMonitorData().GetConstSignalPtr(id) };
-	textBuf.nextLine();
-	textBuf.AlignRight(); 
-	textBuf.printString(L"Signal at ");
-	printMicroMeter(textBuf, signal.GetCenter().GetX()); 
-	printMicroMeter(textBuf, signal.GetCenter().GetY()); 
-	textBuf.nextLine();
-	textBuf.AlignRight(); 
-	textBuf.printString(L"Radius: ");
-	printMicroMeter(textBuf, signal.GetRadius()); 
-	textBuf.nextLine();
-	textBuf.AlignRight(); 
-	textBuf.printString(L"Data points: ");
-	textBuf.printString(to_wstring(signal.GetNrOfElements())); 
-	textBuf.nextLine();
-	textBuf.AlignRight(); 
-	textBuf.printString(L"Factor: ");
-	textBuf.printString(to_wstring(signal.GetDistFactor(m_pMainWindow->GetCursorPos()))); 
-	textBuf.nextLine();
+	try
+	{
+		MonitorData const & monData { m_pNMRI->GetConstMonitorData() };
+		Signal      const * pSignal { monData.GetConstSignalPtr(id) };
+		if (pSignal)
+		{
+			textBuf.nextLine();
+			textBuf.AlignRight(); 
+			textBuf.printString(L"Signal at ");
+			printMicroMeter(textBuf, pSignal->GetCenter().GetX()); 
+			printMicroMeter(textBuf, pSignal->GetCenter().GetY()); 
+			textBuf.nextLine();
+			textBuf.printString(L"In track nr ");
+			textBuf.printNumber(id.GetTrackNr().GetValue());
+			textBuf.nextLine();
+			textBuf.AlignRight(); 
+			textBuf.printString(L"Radius: ");
+			printMicroMeter(textBuf, pSignal->GetRadius()); 
+			textBuf.nextLine();
+			textBuf.AlignRight(); 
+			textBuf.printString(L"Data points: ");
+			textBuf.printString(to_wstring(pSignal->GetNrOfElements())); 
+			textBuf.nextLine();
+			textBuf.AlignRight(); 
+			textBuf.printString(L"Factor: ");
+			textBuf.printString(to_wstring(pSignal->GetDistFactor(m_pMainWindow->GetCursorPos()))); 
+			textBuf.nextLine();
+		}
+	}
+	catch (MonitorDataException const &)
+	{
+		// can happen, e.g. when tracks are deleted while model runs
+	}
 }

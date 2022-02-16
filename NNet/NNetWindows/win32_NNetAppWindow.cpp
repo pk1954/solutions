@@ -176,7 +176,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow, & m_nmri);
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands, & m_model.GetParams());
 	m_performanceWindow.Start(m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
-	m_monitorWindow    .Start(m_hwndApp, & m_sound, & m_NNetController, & m_modelCommands, m_nmri, m_model.GetMonitorData());
+	m_monitorWindow    .Start(m_hwndApp, m_sound, m_modelCommands, m_nmri, m_model.GetMonitorData());
 
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true );
 	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false);
@@ -274,7 +274,7 @@ void NNetAppWindow::Stop()
 	m_WinManager.RemoveAll();
 }
 
-bool NNetAppWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	adjustChildWindows();
 	return true;
@@ -478,6 +478,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_computeThread.StopComputation();
 				m_mainNNetWindow.Reset();
 				m_model = move(* m_modelImporter.GetImportedModel());
+				m_model.SetSimulationTime();
+				m_dynamicModelObservable.NotifyAll(false);
 				m_staticModelObservable.NotifyAll(false);
 				m_model.SetDescriptionUI(m_descWindow);
 				m_appTitle.SetUnsavedChanges(false);

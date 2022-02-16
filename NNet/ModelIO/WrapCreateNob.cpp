@@ -59,12 +59,12 @@ Nob * WrapCreateNob::createNob(Script & script) const
 
 UPNob WrapCreateNob::createPipe(Script & script) const
 {
-    script.ScrReadSpecial(Pipe::OPEN_BRACKET);
+    script.ScrReadSpecial(OPEN_BRACKET);
     NobId const idStart { ScrReadNobId(script) };
-    for (int i = 0; i < Pipe::SEPARATOR.length(); i++)
-        script.ScrReadSpecial(Pipe::SEPARATOR[i]);        
+    for (int i = 0; i < FROM_TO.size(); i++ )
+        script.ScrReadSpecial(FROM_TO[i]);        
     NobId const idEnd { ScrReadNobId(script) };
-    script.ScrReadSpecial(Pipe::CLOSE_BRACKET);
+    script.ScrReadSpecial(CLOSE_BRACKET);
     NNetModelImporter::CheckImportedNobId(script, GetUPNobsRef(), idStart);
     NNetModelImporter::CheckImportedNobId(script, GetUPNobsRef(), idEnd);
     if (idStart == idEnd)
@@ -105,9 +105,9 @@ UPNob WrapCreateNob::createBaseKnot(Script & script, NobType const nobType) cons
 UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) const 
 {
     vector<IoNeuron *> ioNeuronList;
-    script.ScrReadSpecial(BaseKnot::OPEN_BRACKET);
+    script.ScrReadSpecial(LIST_OPEN_BRACKET);
     int const iNrOfElements { script.ScrReadInt() };
-    script.ScrReadSpecial(BaseKnot::NR_SEPARATOR);
+    script.ScrReadSpecial(NR_SEPARATOR);
     for (int iElem { 0 };;)
     {
         NobId      const id        { ScrReadNobId(script) };
@@ -117,9 +117,9 @@ UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) c
         ioNeuronList.push_back(pIoNeuron);
         if (++iElem == iNrOfElements)
             break;
-        script.ScrReadSpecial(BaseKnot::ID_SEPARATOR);
+        script.ScrReadSpecial(ID_SEPARATOR);
     }
-    script.ScrReadSpecial(BaseKnot::CLOSE_BRACKET);
+    script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     unique_ptr<IoConnector> upIoConnector;
     if (nobType.IsInputConnectorType())
         upIoConnector = make_unique<InputConnector> (move(ioNeuronList));

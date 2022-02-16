@@ -208,11 +208,9 @@ void MainWindow::ShowSensorPoints(bool const op)
 //	SetCursor(hCrsr);
 //}
 
-bool MainWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	UINT width  = LOWORD(lParam);
-	UINT height = HIWORD(lParam);
-	NNetWindow::OnSize(wParam, lParam);
+	NNetWindow::OnSize(width, height);
 //	m_horzScale.SetOffset(fPixelPoint(Convert2fPixel(PIXEL(width)) * 0.1f, Convert2fPixel(PIXEL(height)) - 20._fPixel));
 	m_pCoordObservable->NotifyAll(false);
 	return true;
@@ -313,7 +311,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
-void MainWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam)
+void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
 	if (IsDefined(m_nobHighlighted) && !m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
 	{

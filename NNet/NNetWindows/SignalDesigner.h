@@ -43,7 +43,7 @@ private:
 	inline static PIXEL const TOP_OFFSET    {  0_PIXEL };
 
 	void OnClose() final;
-	bool OnSize(WPARAM const, LPARAM const) final;
+	bool OnSize(PIXEL const, PIXEL const) final;
 
 	inline static Param * m_pParameters { nullptr };
 

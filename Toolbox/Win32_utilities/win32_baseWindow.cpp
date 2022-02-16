@@ -89,7 +89,7 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         return false;
 
     case WM_LBUTTONDBLCLK:
-        OnLeftButtonDblClick(wParam, lParam);
+        OnLButtonDblClick(wParam, lParam);
         return true;
 
     case WM_MOUSEWHEEL:

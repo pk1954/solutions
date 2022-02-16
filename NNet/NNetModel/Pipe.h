@@ -93,12 +93,6 @@ public:
 	void DislocateEndPoint();
 	void DislocateStartPoint();
 
-	inline static wstring const SEPARATOR     { L"->" };
-	inline static wchar_t const NR_SEPARATOR  { L':' };
-	inline static wchar_t const ID_SEPARATOR  { L',' };
-	inline static wchar_t const OPEN_BRACKET  { L'(' };
-	inline static wchar_t const CLOSE_BRACKET { L')' };
-
 	friend wostream & operator<< (wostream &, Pipe const &);
 
 	MicroMeterPnt GetSegmentVector() const
@@ -146,7 +140,6 @@ private:
 		float         const fPosition { (static_cast<float>(segNr.GetValue()) + fPos) };
 		return GetStartPoint() + umpSegVec * fPosition;
 	}
-
 };
 
 Pipe const * Cast2Pipe(Nob const *);

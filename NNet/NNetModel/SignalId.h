@@ -49,13 +49,9 @@ public:
 
 	friend wostream & operator<< (wostream & out, SignalId const & id)
 	{
-		out << L" (" << id.trackNr << L"|" << id.signalNr << L")";
+		out << L" (" << id.trackNr << SEPARATOR << id.signalNr << L")";
 		return out;
 	}
-
-	inline static wchar_t const SEPARATOR     { L'|' };
-	inline static wchar_t const OPEN_BRACKET  { L'(' };
-	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
 	TrackNr  trackNr;

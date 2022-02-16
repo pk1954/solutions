@@ -5,6 +5,7 @@
 #pragma once
 
 #include "NamedType.h"
+#include "IoConstants.h"
 #include "PointType.h"
 
 template <typename BASE_TYPE> 
@@ -95,17 +96,13 @@ public:
 
     friend wostream & operator<< (wostream & out, CircleType const & param)
     {
-        out << CircleType::OPEN_BRACKET 
+        out << OPEN_BRACKET 
             << param.m_position 
-            << CircleType::SEPARATOR 
+            << ID_SEPARATOR 
             << param.m_radius.GetValue()
-            << CircleType::CLOSE_BRACKET;
+            << CLOSE_BRACKET;
         return out;
     }
-
-    inline static wchar_t const SEPARATOR     { L',' };
-    inline static wchar_t const OPEN_BRACKET  { L'(' };
-    inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
     POS_TYPE  m_position;

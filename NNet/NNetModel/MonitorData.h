@@ -102,6 +102,12 @@ public:
 		return SignalId::NULL_VAL();
 	}
 
+	void Apply2AllTracksC(auto const & func) const
+	{
+		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
+			func(trackNr);
+	}                        
+
 	void Apply2AllSignalIdsC(auto const & func) const
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)

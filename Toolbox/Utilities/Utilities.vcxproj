@@ -30,6 +30,7 @@
     <ClInclude Include="generationNr.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Int24.h" />
+    <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
     <ClInclude Include="LogarithmicTrackbar.h" />
     <ClInclude Include="MoreTypes.h" />

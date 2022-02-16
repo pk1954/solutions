@@ -23,7 +23,7 @@ protected:
 	void TrackMouse();
 
 	void OnPaint() override;
-	bool OnSize(WPARAM const, LPARAM const) override;
+	bool OnSize(PIXEL const, PIXEL const) override;
 
 	virtual void DoPaint() = 0;
 

@@ -194,7 +194,7 @@ void RootWindow::OnClose()
 	SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
 }
 
-bool RootWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool RootWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	return false;
 }
@@ -221,7 +221,7 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 		return true;
 
 	case WM_SIZE:
-		if (OnSize(wParam, lParam))
+		if (OnSize(static_cast<PIXEL>(LOWORD(lParam)), static_cast<PIXEL>(HIWORD(lParam))))
 			return true;
 		break;
 

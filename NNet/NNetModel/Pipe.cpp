@@ -372,11 +372,11 @@ Pipe * Cast2Pipe(Nob * pNob)
 
 wostream & operator<< (wostream & out, Pipe const & pipe)
 {
-	out << Pipe::OPEN_BRACKET 
+	out << OPEN_BRACKET 
 		<< pipe.GetStartKnotId() 
-		<< Pipe::SEPARATOR
+		<< FROM_TO
 		<< pipe.GetEndKnotId() 
-		<< Pipe::CLOSE_BRACKET;
+		<< CLOSE_BRACKET;
 	return out;
 }
 

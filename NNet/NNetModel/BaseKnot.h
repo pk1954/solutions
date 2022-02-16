@@ -105,11 +105,6 @@ public:
 
 	MicroMeterRect GetRect4Text() const;
 
-	inline static wchar_t const OPEN_BRACKET  { L'{' };
-	inline static wchar_t const NR_SEPARATOR  { L':' };
-	inline static wchar_t const ID_SEPARATOR  { L',' };
-	inline static wchar_t const CLOSE_BRACKET { L'}' };
-
 private:
 
 	void drawCircle(DrawContext const &, D2D1::ColorF const, MicroMeterCircle const) const;

@@ -35,7 +35,7 @@ SignalControl::SignalControl
 	m_signalGenerator.RegisterObserver(*this);
 	m_horzCoord.RegisterObserver(*this);
 	m_vertCoord.RegisterObserver(*this);
-	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE);
+	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
 }
 
 fMicroSecs SignalControl::getTime(fPixel const fPix) const
@@ -183,11 +183,11 @@ void SignalControl::displayTimeLine(fMicroSecs const time, fPixel const w, D2D1:
 	m_upGraphics->DrawLine(getGraphPnt(time), getPixPnt(time, 0.0_fHertz),  w, colF);
 }
 
-bool SignalControl::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 {
-	GraphicsWindow::OnSize(wParam, lParam);
+	GraphicsWindow::OnSize(width, height);
 
-	m_fPixGraphWidth = Convert2fPixel(PIXEL(LOWORD(lParam)));
+	m_fPixGraphWidth = Convert2fPixel(width);
 
 	m_horzCoord.SetOffset(0.0_fPixel);
 	m_vertCoord.SetOffset(0.0_fPixel);

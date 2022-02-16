@@ -60,7 +60,7 @@ public:
 		m_iPart      = iPart;
 	}
 
-	virtual void operator() (wstring const & line)
+	void operator() (wstring const & line) final
 	{
 		if (m_pStatusBar)
 		{
@@ -92,7 +92,7 @@ public:
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
-	bool OnSize   (WPARAM const, LPARAM const) final;
+	bool OnSize   (PIXEL  const, PIXEL  const) final;
 	void OnClose() final;
 	void OnPaint() final;
 

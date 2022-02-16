@@ -62,10 +62,8 @@ void GraphicsWindow::OnPaint()
 	}
 }
 
-bool GraphicsWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool GraphicsWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	UINT width  = LOWORD(lParam);
-	UINT height = HIWORD(lParam);
 	m_upGraphics->Resize(width, height);
 	return true;
 }

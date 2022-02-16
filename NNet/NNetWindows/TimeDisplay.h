@@ -16,7 +16,7 @@ public:
 
 	void Stop();
 
-	virtual void Notify(bool const);
+	void Notify(bool const) final;
 
 private:
 

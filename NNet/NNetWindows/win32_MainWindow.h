@@ -66,14 +66,14 @@ public:
 	bool SensorsPointsVisible() const {	return m_bShowPnts; }
 
 	void OnPaint() final;
-	bool OnCommand           (WPARAM const, LPARAM const, PixelPoint const) final;
-	bool OnSize              (WPARAM const, LPARAM const) final;
-	bool OnRButtonDown       (WPARAM const, LPARAM const) final;
-	void OnMouseWheel        (WPARAM const, LPARAM const) final;
-	void OnMouseMove         (WPARAM const, LPARAM const) final;
-	void OnLeftButtonDblClick(WPARAM const, LPARAM const) final;
-	void OnLButtonUp         (WPARAM const, LPARAM const) final;
-	bool OnRButtonUp         (WPARAM const, LPARAM const) final;
+	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
+	bool OnRButtonDown    (WPARAM const, LPARAM const) final;
+	void OnMouseWheel     (WPARAM const, LPARAM const) final;
+	void OnMouseMove      (WPARAM const, LPARAM const) final;
+	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
+	void OnLButtonUp      (WPARAM const, LPARAM const) final;
+	bool OnRButtonUp      (WPARAM const, LPARAM const) final;
+	bool OnSize           (PIXEL  const, PIXEL  const) final;
 
 private:
 	 

@@ -70,9 +70,8 @@ public:
 
 protected:
 
-    bool OnSize       (WPARAM const, LPARAM const) override;
-    bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const) override;
-    void OnLButtonDown(WPARAM const, LPARAM const)  override {}
+    bool OnSize   (PIXEL  const, PIXEL  const) override;
+    bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
    
 	void DrawSensors() const;
 	void DrawSensorDataPoints (Signal const * const) const;

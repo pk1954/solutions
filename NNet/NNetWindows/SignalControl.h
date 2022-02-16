@@ -46,7 +46,7 @@ private:
 
 	void DoPaint() final;
 
-	bool OnSize      (WPARAM const, LPARAM const) final;
+	bool OnSize      (PIXEL  const, PIXEL  const) final;
 	void OnMouseMove (WPARAM const, LPARAM const) final;
 	bool OnMouseLeave(WPARAM const, LPARAM const) final;
 	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const) final;

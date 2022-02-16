@@ -62,11 +62,11 @@ void D2D_driver::Initialize(HWND const hwnd)
 	createResources();
 }
 
-void D2D_driver::Resize(int const iWidth, int const iHeight)
+void D2D_driver::Resize(PIXEL const width, PIXEL const height)
 {
 	if (m_pRenderTarget)
 	{
-		m_pRenderTarget->Resize(D2D1::SizeU(iWidth, iHeight));
+		m_pRenderTarget->Resize(D2D1::SizeU(width.GetValue(), height.GetValue()));
 	}
 }
 

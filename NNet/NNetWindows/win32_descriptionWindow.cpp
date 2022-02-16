@@ -201,15 +201,15 @@ bool DescriptionWindow::delChar()
     return true;
 }
 
-bool DescriptionWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool DescriptionWindow::OnSize(PIXEL const width, PIXEL const height)
 {
     MoveWindow
     (
         m_hwndEdit, 
-        0, 0,           // starting x- and y-coordinates 
-        LOWORD(lParam), // width of client area 
-        HIWORD(lParam), // height of client area 
-        TRUE            // repaint window 
+        0, 0,               // starting x- and y-coordinates 
+        width.GetValue(),   // width of client area 
+        height.GetValue(),  // height of client area 
+        TRUE                // repaint window 
    );
 
     return true;

@@ -22,9 +22,9 @@ unique_ptr<PipeList>PipeList::Clone() const
 
 void PipeList::Dump() const
 {
-	wcout << Pipe::OPEN_BRACKET;
+	wcout << OPEN_BRACKET;
 	for (auto it : m_list) { wcout << it->GetId() << L' '; }
-	wcout << Pipe::CLOSE_BRACKET;
+	wcout << CLOSE_BRACKET;
 }
 
 void PipeList::Check() const

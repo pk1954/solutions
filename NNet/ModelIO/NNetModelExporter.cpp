@@ -146,44 +146,27 @@ void NNetModelExporter::writeDescription(wostream & out) const
 
 void NNetModelExporter::writePipe(wostream & out, Pipe const & pipe) const
 {
-    out << Pipe::OPEN_BRACKET 
+    out << OPEN_BRACKET 
         << getCompactIdVal(pipe.GetStartKnotId()) 
-        << Pipe::SEPARATOR
+        << FROM_TO
         << getCompactIdVal(pipe.GetEndKnotId()) 
-        << Pipe::CLOSE_BRACKET;
+        << CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writePipeVoltage(wostream & out, Pipe const & pipe) const
 {
     Pipe::SegNr const lastSeg(pipe.GetNrOfSegments() - 1);
-    out << Pipe::OPEN_BRACKET 
+    out << OPEN_BRACKET 
         << pipe.GetNrOfSegments()
-        << Pipe::NR_SEPARATOR;
+        << NR_SEPARATOR;
     for (auto i = Pipe::SegNr(0);; ++i)
     {
         out << pipe.GetVoltage(i); 
         if (i == lastSeg)
             break;
-        out << Pipe::ID_SEPARATOR;
+        out << ID_SEPARATOR;
     }
-    out << Pipe::CLOSE_BRACKET;
-}
-
-void NNetModelExporter::writeIoConnector(wostream& out, IoConnector const& conn) const
-{
-    assert(conn.Size() > 0);
-    size_t const iLast { conn.Size() - 1 };
-    out << BaseKnot::OPEN_BRACKET 
-        << conn.Size() 
-        << BaseKnot::NR_SEPARATOR;
-    for (size_t i = 0;; ++i)
-    {
-        out << getCompactIdVal(conn.GetElem(i).GetId());
-        if (i == iLast)
-            break;
-        out << BaseKnot::ID_SEPARATOR;
-    }
-    out << BaseKnot::CLOSE_BRACKET;
+    out << CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
@@ -207,7 +190,7 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
 
         case inputConnector:
         case outputConnector:
-            writeIoConnector(out, static_cast<IoConnector const &>(nob));
+            out << static_cast<IoConnector const &>(nob);
             break;
 
         default:

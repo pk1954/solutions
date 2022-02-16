@@ -90,9 +90,9 @@ void NNetWindow::DrawSensorDataPoints(Signal const * const pSignal) const
 		pSignal->DrawDataPoints(m_context);
 }
 
-bool NNetWindow::OnSize(WPARAM const wParam, LPARAM const lParam)
+bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	GraphicsWindow::OnSize(wParam, lParam);
+	GraphicsWindow::OnSize(width, height);
 	Notify(false);
 	return true;    // job done
 }

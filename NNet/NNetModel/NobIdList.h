@@ -37,10 +37,6 @@ public:
 
     friend wostream & operator<< (wostream &, NobIdList const &);
 
-    inline static wchar_t const OPEN_BRACKET  { L'(' };
-    inline static wchar_t const SEPARATOR     { L',' };
-    inline static wchar_t const CLOSE_BRACKET { L')' };
-
 private:
     vector<NobId> m_list {};
 };

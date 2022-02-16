@@ -39,6 +39,7 @@ public:
 	{
 		GraphicsWindow::Initialize(hwndParent, L"ClassScale", WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 		m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
+		pixCoord.RegisterObserver(*this);
 	}
 
 	Scale(Scale  &) = delete;
@@ -70,19 +71,19 @@ private:
 
 	PixFpDimension<LogUnits> & m_pixCoord;
 
-	IDWriteTextFormat    * m_pTextFormat    { nullptr };
-	bool                   m_bOrientation   { true };  // true: ticks on negative side of scale
-	bool                   m_bVertScale     { false }; // true: vertical, false: horizontal
-	fPixel                 m_fPixBorder     { 0._fPixel };
-	fPixel                 m_fPixOrthoOffset{ 0._fPixel };
-	fPixelPoint            m_fPixPntStart   {};
-	fPixelPoint            m_fPixPntEnd     {};
-	fPixel                 m_fPixTickDist   {};
-	LogUnits               m_logStart       {};
-	LogUnits               m_logEnd         {};
-	LogUnits               m_logTickDist    {};
-	float                  m_fUnitReduction {};
-	wstring                m_wstrUnit       {};
+	IDWriteTextFormat * m_pTextFormat    { nullptr };
+	bool                m_bOrientation   { true };  // true: ticks on negative side of scale
+	bool                m_bVertScale     { false }; // true: vertical, false: horizontal
+	fPixel              m_fPixBorder     { 0._fPixel };
+	fPixel              m_fPixOrthoOffset{ 0._fPixel };
+	fPixelPoint         m_fPixPntStart   {};
+	fPixelPoint         m_fPixPntEnd     {};
+	fPixel              m_fPixTickDist   {};
+	LogUnits            m_logStart       {};
+	LogUnits            m_logEnd         {};
+	LogUnits            m_logTickDist    {};
+	float               m_fUnitReduction {};
+	wstring             m_wstrUnit       {};
 
 	// private functions
 
@@ -105,9 +106,9 @@ private:
 			: fPixelPoint(fPixScaleLen, 0._fPixel)
 		};
 
-		m_fPixPntStart = m_bVertScale
-		? fPixelPoint(m_fPixOrthoOffset,           getClHeight() - m_pixCoord.GetPixelOffset())
-		: fPixelPoint(m_pixCoord.GetPixelOffset(), getClHeight() - m_fPixOrthoOffset);
+ 		m_fPixPntStart = m_bVertScale
+	   	                 ? fPixelPoint(m_fPixOrthoOffset,           getClHeight() - m_pixCoord.GetPixelOffset())
+	  	 				 : fPixelPoint(m_pixCoord.GetPixelOffset(), getClHeight() - m_fPixOrthoOffset);
 		m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
 		m_logStart     = LogUnits(0.0f);
 		m_logEnd       = logScaleLen;
@@ -150,9 +151,9 @@ private:
 		return false;
 	}
 
-	bool OnSize(WPARAM const wParam, LPARAM const lParam) final
+	bool OnSize(PIXEL const width, PIXEL const height) final
 	{
-		GraphicsWindow::OnSize(wParam, lParam);
+		GraphicsWindow::OnSize(width, height);
 		Notify(false);
 		return true;
 	}
@@ -169,7 +170,7 @@ private:
 		if (!bResult)
 			MessageBeep(MB_ICONWARNING);
 
-		Notify(false);
+		Notify(true);
 	}
 
 	fPixel getClHeight() const

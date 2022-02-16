@@ -70,6 +70,7 @@
 #define       IDM_MONITOR_WINDOW            330
 #define       IDD_ADD_EEG_SENSOR            345
 #define       IDD_DELETE_EEG_SENSOR         346
+#define       IDD_SCALE_EEG_SIGNALS         347
 #define       IDD_CONNECT                   350
 								   	        
 #define       IDD_INSERT_KNOT               460

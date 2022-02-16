@@ -49,21 +49,21 @@ MicroMeterPosDir& MicroMeterPosDir::operator*= (float const factor)
     return * this; 
 }
 
-MicroMeterPosDir const operator+ (MicroMeterPosDir const a, MicroMeterPosDir const b) 
+MicroMeterPosDir operator+ (MicroMeterPosDir const a, MicroMeterPosDir const b) 
 { 
     MicroMeterPosDir res { a }; 
     res += b; 
     return res; 
 };
 
-MicroMeterPosDir const operator- (MicroMeterPosDir const a, MicroMeterPosDir const b) 
+MicroMeterPosDir operator- (MicroMeterPosDir const a, MicroMeterPosDir const b) 
 { 
     MicroMeterPosDir res { a }; 
     res -= b; 
     return res; 
 };
 
-MicroMeterPosDir const operator* (MicroMeterPosDir const a, float const f) 
+MicroMeterPosDir operator* (MicroMeterPosDir const a, float const f) 
 { 
     MicroMeterPosDir res { a }; 
     res *= f; 
@@ -72,9 +72,9 @@ MicroMeterPosDir const operator* (MicroMeterPosDir const a, float const f)
 
 wostream & operator<< (wostream & out, MicroMeterPosDir const & posDir)
 {
-    out << MicroMeterPosDir::OPEN_BRACKET << posDir.m_pos 
-        << MicroMeterPosDir::SEPARATOR    << posDir.m_dir.GetValue() 
-        << MicroMeterPosDir::CLOSE_BRACKET;
+    out << OPEN_BRACKET << posDir.m_pos 
+        << SEPARATOR    << posDir.m_dir.GetValue() 
+        << CLOSE_BRACKET;
     return out;
 }
 

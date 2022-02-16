@@ -125,15 +125,15 @@ MicroMeterPntVector operator* (MicroMeterPntVector const & a, float const f)
 
 wostream & operator<< (wostream & out, MicroMeterPntVector const & v)
 {
-    out << MicroMeterPntVector::OPEN_BRACKET << v.m_list.size() << L":";
+    out << OPEN_BRACKET << v.m_list.size() << L":";
     for (auto & it: v.m_list)
     {
         out << it;
         if (&it == &v.m_list.back())
             break;
-        out << MicroMeterPntVector::SEPARATOR;
+        out << ID_SEPARATOR;
     }
-    out << MicroMeterPntVector::CLOSE_BRACKET;
+    out << CLOSE_BRACKET;
     return out; 
 }
 

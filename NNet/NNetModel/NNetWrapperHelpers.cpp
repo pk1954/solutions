@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
+#include "IoConstants.h"
 #include "NobId.h"
 #include "NNetWrapperHelpers.h"
 
@@ -18,38 +19,38 @@ MicroMeter ScrReadMicroMeter(Script & script)
 
 MicroMeterPnt ScrReadMicroMeterPnt(Script & script)
 {
-	script.ScrReadSpecial(MicroMeterPnt::OPEN_BRACKET);
+	script.ScrReadSpecial(OPEN_BRACKET);
 	MicroMeter const x(ScrReadMicroMeter(script));
-	script.ScrReadSpecial(MicroMeterPnt::SEPARATOR);
+	script.ScrReadSpecial(SEPARATOR);
 	MicroMeter const y(ScrReadMicroMeter(script));
-	script.ScrReadSpecial(MicroMeterPnt::CLOSE_BRACKET);
+	script.ScrReadSpecial(CLOSE_BRACKET);
 	return MicroMeterPnt(x, y);
 }
 
 MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
 {
-	script.ScrReadSpecial(MicroMeterCircle::OPEN_BRACKET);
+	script.ScrReadSpecial(OPEN_BRACKET);
 	MicroMeterPnt umCenter { ScrReadMicroMeterPnt(script) };
-	script.ScrReadSpecial(MicroMeterCircle::SEPARATOR);
+	script.ScrReadSpecial(ID_SEPARATOR);
 	MicroMeter      umRadius { ScrReadMicroMeter(script) };
-	script.ScrReadSpecial(MicroMeterCircle::CLOSE_BRACKET);
+	script.ScrReadSpecial(CLOSE_BRACKET);
 	return MicroMeterCircle(umCenter, umRadius);
 }
 
 MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
 {
-	script.ScrReadSpecial(MicroMeterPosDir::OPEN_BRACKET);
+	script.ScrReadSpecial(OPEN_BRACKET);
 	MicroMeterPnt const umPnt(ScrReadMicroMeterPnt(script));
-	script.ScrReadSpecial(MicroMeterPosDir::SEPARATOR);
+	script.ScrReadSpecial(SEPARATOR);
 	Radian const rad(Cast2Float(script.ScrReadFloat()));
-	script.ScrReadSpecial(MicroMeterPosDir::CLOSE_BRACKET);
+	script.ScrReadSpecial(CLOSE_BRACKET);
 	return MicroMeterPosDir(umPnt, rad);
 }
 
 MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
 {
 	MicroMeterPntVector umPntVector;
-	script.ScrReadSpecial(MicroMeterPntVector::OPEN_BRACKET);
+	script.ScrReadSpecial(OPEN_BRACKET);
 	int const iNrOfElements { script.ScrReadInt() };
 	script.ScrReadSpecial(L':');
 	for (int i = 0;;)
@@ -57,19 +58,19 @@ MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
 		umPntVector.Add(ScrReadMicroMeterPosDir(script));
 		if (++i == iNrOfElements)
 			break;
-		script.ScrReadSpecial(MicroMeterPntVector::SEPARATOR);
+		script.ScrReadSpecial(ID_SEPARATOR);
 	}
-	script.ScrReadSpecial(MicroMeterPntVector::CLOSE_BRACKET);
+	script.ScrReadSpecial(CLOSE_BRACKET);
 	return umPntVector;
 }
 
 SignalId ScrReadSignalId(Script& script)
 {
-	script.ScrReadSpecial(SignalId::OPEN_BRACKET);
+	script.ScrReadSpecial(OPEN_BRACKET);
 	TrackNr  const trackNr(script.ScrReadInt());
-	script.ScrReadSpecial(SignalId::SEPARATOR);
+	script.ScrReadSpecial(SEPARATOR);
 	SignalNr const signalNr(script.ScrReadInt());
-	script.ScrReadSpecial(SignalId::CLOSE_BRACKET);
+	script.ScrReadSpecial(CLOSE_BRACKET);
 	return SignalId(trackNr, signalNr);
 }
 
@@ -89,17 +90,17 @@ NobType ScrReadNobType(Script& script)
 unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 {
 	unique_ptr<NobIdList> upNobIds  { make_unique<NobIdList>() };
-	script.ScrReadSpecial(NobIdList::OPEN_BRACKET);
+	script.ScrReadSpecial(LIST_OPEN_BRACKET);
 	int const iNrOfElements { script.ScrReadInt() };
-	script.ScrReadSpecial(L':');
+	script.ScrReadSpecial(NR_SEPARATOR);
 	for (int i = 0;;)
 	{
 		upNobIds->Push(ScrReadNobId(script));
 		if (++i == iNrOfElements)
 			break;
-		script.ScrReadSpecial(NobIdList::SEPARATOR);
+		script.ScrReadSpecial(ID_SEPARATOR);
 	}
-	script.ScrReadSpecial(NobIdList::CLOSE_BRACKET);
+	script.ScrReadSpecial(LIST_CLOSE_BRACKET);
 	return move(upNobIds);
 }
 
