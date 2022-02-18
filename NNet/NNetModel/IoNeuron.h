@@ -23,8 +23,6 @@ public:
 		SetId(src.GetId());
 	}
 
-	void RotateNob(MicroMeterPnt const &, Radian const) final;
-
 	MicroMeterPosDir GetPosDir()    const override;
 	Radian           GetDir()       const override;
 	void             SetDir(Radian const) override;

@@ -44,12 +44,6 @@ Radian IoNeuron::GetDir() const
 		: Vector2Radian(determineVector());
 };
 
-void IoNeuron::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
-{
-	BaseKnot::RotateNob(umPntPivot, radDelta);
-	m_radDirection += radDelta;
-}
-
 MicroMeterPosDir IoNeuron::GetRawPosDir() const
 {
 	return MicroMeterPosDir(GetPos(), m_radDirection);
@@ -62,13 +56,13 @@ MicroMeterPosDir IoNeuron::GetPosDir() const
 
 void IoNeuron::UnlockDirection() 
 {
-	m_radDirection.Set2Null();
+	SetDir(Radian::NULL_VAL());
 }
 
 void IoNeuron::LockDirection() 
 { 
 	if (!IsDirLocked()) 
-		m_radDirection = Vector2Radian(determineVector());
+		SetDir(Vector2Radian(determineVector()));
 }
 
 void IoNeuron::SetDir(Radian const r) 
