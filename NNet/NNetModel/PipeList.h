@@ -30,13 +30,13 @@ public:
 
 	Pipe const & GetFirst() const { return * m_list.front(); }
 
-	void Add(Pipe * const);
+	void Add(Pipe &);
 	void Add(PipeList const &);
 
 	void Recalc() const;
 
-	void Remove    (Pipe * const);
-	bool TryRemove (Pipe * const);
+	void Remove    (Pipe &);
+	bool TryRemove (Pipe &);
 	void Replace(Pipe * const, Pipe * const);
 
 	bool IsEmpty   () const { return m_list.empty(); }

@@ -80,6 +80,7 @@
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CoordAnimation.h" />
+    <ClInclude Include="DeleteIoConnectorCmd.h" />
     <ClInclude Include="IoNeuronsAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSensorCmd.h" />

@@ -78,13 +78,11 @@ public:
 	Pipe const & GetFirstIncoming() const { return m_inPipes .GetFirst(); }
 	Pipe const & GetFirstOutgoing() const { return m_outPipes.GetFirst(); }
 
-	void AddIncoming(Pipe * const p) { m_inPipes .Add(p); }
-	void AddOutgoing(Pipe * const p) { m_outPipes.Add(p); }
-	void AddPipe(Pipe * const p, NobType );
+	void AddIncoming(Pipe & pipe) { m_inPipes .Add(pipe); }
+	void AddOutgoing(Pipe & pipe) { m_outPipes.Add(pipe); }
 
-	void RemoveIncoming(Pipe * const p) { m_inPipes .Remove(p); } 
-	void RemoveOutgoing(Pipe * const p) { m_outPipes.Remove(p); }
-	void Remove        (Pipe * const); 
+	void RemoveIncoming(Pipe & pipe) { m_inPipes .Remove(pipe); } 
+	void RemoveOutgoing(Pipe & pipe) { m_outPipes.Remove(pipe); }
 
 	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) { m_inPipes .Replace(pDel, pAdd); }
 	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) { m_outPipes.Replace(pDel, pAdd); }

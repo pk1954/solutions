@@ -124,12 +124,12 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 
 void ConnectIncoming(Pipe & p, BaseKnot & b)
 {
-	b.AddIncoming(&p);
+	b.AddIncoming(p);
 	p.SetEndKnot (&b);
 }
 
 void ConnectOutgoing(Pipe & p, BaseKnot & b)
 {
-	b.AddOutgoing (&p);
+	b.AddOutgoing (p);
 	p.SetStartKnot(&b);
 }

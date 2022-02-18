@@ -7,7 +7,7 @@
 #include <string>
 #include "Windows.h"
 #include "MoreTypes.h"
-#include "Mmsystem.h"
+#include "mmsystem.h"
 #include "SoundInterface.h"
 
 using std::wstring;
@@ -16,7 +16,7 @@ class WinSound : public Sound
 {
 public:
 
-	virtual void Play(wstring const sound) const 
+	void Play(wstring const & sound) const final
 	{
 		if (IsOn())
 		{
@@ -24,7 +24,7 @@ public:
 		}
 	}
 
-	virtual void Beep(SoundDescr const & desc) const
+	void Beep(SoundDescr const & desc) const final
 	{
 		if (
 			  IsOn() && desc.m_bOn && 

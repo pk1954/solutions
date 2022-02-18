@@ -25,13 +25,6 @@ public:
 	void ThreadMsgDispatcher(MSG const msg) final
 	{
 		assert(msg.message == IDM_BEEP);
-		SoundDescr desc 
-		{ 
-			true, 
-			static_cast<Hertz>    (Cast2UnsignedLong(msg.wParam)), 
-			static_cast<MilliSecs>(Cast2UnsignedLong(msg.lParam)) 
-		};
-//		m_pSound->Beep(desc);
 		m_pSound->Play(TEXT("SNAP_IN_SOUND"));
 	}
 

@@ -26,8 +26,8 @@ public:
 		m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
 		m_upBaseKnot  = make_unique<T>(m_umSplitPoint);
 		m_upPipeNew   = MakePipe(m_pStartKnot, m_upBaseKnot.get());
-		m_upBaseKnot->AddOutgoing(m_pPipe2Split);
-		m_upBaseKnot->AddIncoming(m_upPipeNew.get());
+		m_upBaseKnot->AddOutgoing(*m_pPipe2Split);
+		m_upBaseKnot->AddIncoming(*m_upPipeNew.get());
 	}
 
 	~InsertBaseKnotCommand() final = default;

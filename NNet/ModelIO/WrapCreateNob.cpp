@@ -80,8 +80,8 @@ UPNob WrapCreateNob::createPipe(Script & script) const
         BaseKnot * const pKnotStart { GetWriterInterface().GetNobPtr<BaseKnot *>(idStart) };
         BaseKnot * const pKnotEnd   { GetWriterInterface().GetNobPtr<BaseKnot *>(idEnd  ) };
         unique_ptr<Pipe> upPipe { make_unique<Pipe>(pKnotStart, pKnotEnd, GetWriterInterface().GetParams()) };
-        pKnotStart->AddOutgoing(upPipe.get());
-        pKnotEnd  ->AddIncoming(upPipe.get());
+        pKnotStart->AddOutgoing(*upPipe.get());
+        pKnotEnd  ->AddIncoming(*upPipe.get());
         return move(upPipe);
     }
 }

@@ -25,7 +25,6 @@ using std::move;
 class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
-    void  CreateIoNeuronPair(MicroMeterPnt const &);
     void  CreateInitialNobs();
     void  RemoveOrphans();
     void  SelectBeepers();
@@ -44,7 +43,7 @@ public:
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 
-    void  SelectSubtree(BaseKnot  * const p, bool  const b) { m_pModel->SelectSubtree(p, b); }
+    void  SelectSubtree(BaseKnot & baseKnot, bool  const b) { m_pModel->SelectSubtree(baseKnot, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
     void  SetModelFilePath  (wstring const & wstr) { m_pModel->SetModelFilePath  (wstr); }
@@ -52,9 +51,24 @@ public:
     void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
     void  DeselectAllNobs() const                  { m_pModel->DeselectAllNobs(); }
 
-    void RemovePipeFromBaseKnot(NobId const id, Pipe * const p)
+    void AddOutgoing(NobId const id, Pipe & pipe)
     {
-        GetNobPtr<BaseKnot *>(id)->Remove(p);
+        GetNobPtr<BaseKnot *>(id)->AddOutgoing(pipe);
+    }
+
+    void AddIncoming(NobId const id, Pipe & pipe)
+    {
+        GetNobPtr<BaseKnot *>(id)->AddIncoming(pipe);
+    }
+
+    void RemoveIncoming(NobId const id, Pipe & pipe)
+    {
+        GetNobPtr<BaseKnot *>(id)->RemoveIncoming(pipe);
+    }
+
+    void RemoveOutgoing(NobId const id, Pipe & pipe)
+    {
+        GetNobPtr<BaseKnot *>(id)->RemoveOutgoing(pipe);
     }
 
     template <Nob_t T>

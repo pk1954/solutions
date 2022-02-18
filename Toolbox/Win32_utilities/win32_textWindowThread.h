@@ -31,7 +31,7 @@ public:
 		PostThreadMsg(anyMessageWillDo);
 	}
 
-	virtual ~TextWindowThread()	= default;
+	~TextWindowThread()	override = default;
 
 	virtual void Trigger()
 	{

@@ -94,7 +94,7 @@ public:
 
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
-	void  SelectSubtree(BaseKnot * const, bool const);
+	void  SelectSubtree(BaseKnot &, bool const);
 	void  Reconnect(NobId const);
 
 	UPNobList   & GetUPNobs()      { return m_Nobs; }

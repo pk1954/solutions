@@ -75,12 +75,12 @@ void BaseKnot::MoveNob(MicroMeterPnt const & delta)
 
 void BaseKnot::AddIncoming(BaseKnot const & src) 
 { 
-	src.Apply2AllInPipes ([this](Pipe & pipe) { AddIncoming(& pipe); });
+	src.Apply2AllInPipes ([this](Pipe & pipe) { AddIncoming(pipe); });
 }
 
 void BaseKnot::AddOutgoing(BaseKnot const & src) 
 { 
-	src.Apply2AllOutPipes([this](Pipe & pipe) { AddOutgoing(& pipe); });
+	src.Apply2AllOutPipes([this](Pipe & pipe) { AddOutgoing(pipe); });
 }
 
 void BaseKnot::SetConnections(BaseKnot const & src) 
@@ -88,21 +88,6 @@ void BaseKnot::SetConnections(BaseKnot const & src)
 	SetIncoming(src);
 	SetOutgoing(src);
 	Reconnect();
-}
-
-void BaseKnot::Remove(Pipe * const p) 
-{ 
-	if (m_outPipes.TryRemove(p)) return;
-	if (m_inPipes .TryRemove(p)) return;
-	assert(false);
-}
-
-void BaseKnot::AddPipe(Pipe * const p, NobType const type)
-{
-	if (type.IsInputNeuronType())
-		AddIncoming(p);
-	else
-		AddOutgoing(p);
 }
 
 void BaseKnot::ClearConnections()
@@ -121,8 +106,8 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & f)
 {
 	BaseKnot const & src { static_cast<BaseKnot const &>(nobSrc) };
 	ClearConnections();
-	src.Apply2AllOutPipes([this,f](Pipe const &p){AddOutgoing(static_cast<Pipe *>(f(&p)));});
-	src.Apply2AllInPipes ([this,f](Pipe const &p){AddIncoming(static_cast<Pipe *>(f(&p)));});
+	src.Apply2AllOutPipes([this,f](Pipe const & p){AddOutgoing(static_cast<Pipe &>(*f(&p)));});
+	src.Apply2AllInPipes ([this,f](Pipe const & p){AddIncoming(static_cast<Pipe &>(*f(&p)));});
 	if (src.GetParentNob())
 		SetParentNob(f(src.GetParentNob()));
 }

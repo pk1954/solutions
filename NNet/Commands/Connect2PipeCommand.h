@@ -37,8 +37,8 @@ public:
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew2->Select(m_pPipeOld->IsSelected());
 	
-		m_upKnotInsert->AddIncoming(m_upPipeNew1.get());
-		m_upKnotInsert->AddOutgoing(m_upPipeNew2.get());
+		m_upKnotInsert->AddIncoming(*m_upPipeNew1.get());
+		m_upKnotInsert->AddOutgoing(*m_upPipeNew2.get());
 	}
 
 	 ~Connect2PipeCommand() final = default;

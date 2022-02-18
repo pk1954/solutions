@@ -104,21 +104,18 @@ void NNetModel::ResetModel()
 	SetSimulationTime();
 }
 
-void NNetModel::SelectSubtree(BaseKnot * const pBaseKnot, bool const bOn)
+void NNetModel::SelectSubtree(BaseKnot & baseKnot, bool const bOn)
 {
-	if (pBaseKnot)
-	{
-		pBaseKnot->Select(bOn);
-		pBaseKnot->Apply2AllOutPipes
-		(
-			[this, bOn](Pipe & pipe) 
-			{ 
-				pipe.Select(bOn); 
-				if (pipe.GetEndKnotPtr()->IsKnot())
-					SelectSubtree(pipe.GetEndKnotPtr(), bOn); 
-			} 
-		);
-	}
+	baseKnot.Select(bOn);
+	baseKnot.Apply2AllOutPipes
+	(
+		[this, bOn](Pipe & pipe) 
+		{ 
+			pipe.Select(bOn); 
+			if (pipe.GetEndKnotPtr()->IsKnot())
+				SelectSubtree(*pipe.GetEndKnotPtr(), bOn); 
+		} 
+	);
 }
 
 void NNetModel::DumpModel

@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "NNetModelWriterInterface.h"
 #include "DeletePipeCommand.h"
+#include "DeleteIoConnectorCmd.h"
 #include "DiscIoConnectorCmd.h"
 #include "SplitNeuronCmd.h"
 #include "DeleteBaseKnotCmd.h"
@@ -27,10 +28,15 @@ unique_ptr<NNetCommand> MakeDeleteCommand
 		switch (nob.GetNobType().GetValue())
 		{
 		using enum NobType::Value;
-		case pipe:            upCmd = make_unique<DeletePipeCommand>(nob);		  break;
+		case pipe:
+			upCmd = make_unique<DeletePipeCommand>(nob);
+			break;
 		case inputConnector:
-		case outputConnector: upCmd = make_unique<DiscIoConnectorCmd>(nob, true); break;
-		default:              upCmd = make_unique<DeleteBaseKnotCmd>(nob);
+		case outputConnector: 
+			upCmd = make_unique<DeleteIoConnectorCmd>(nob); 
+			break;
+		default:              
+			upCmd = make_unique<DeleteBaseKnotCmd>(nob);  // May create IoNeuron
 		}
 	return move(upCmd);
 }

@@ -57,9 +57,7 @@ public:
 	void             SetParentPointers();
 	void             ClearParentPointers() const;
 
-	void LockDirection  () const;
-	void UnlockDirection() const;
-	void AlignDirection ();
+	void AlignDirection();
 
 	size_t GetNrOfElements() const { return m_list.size(); }
 

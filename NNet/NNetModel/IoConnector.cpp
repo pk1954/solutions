@@ -96,18 +96,6 @@ Radian IoConnector::GetDir() const
         : m_list.front()->GetDir();
 }
 
-void IoConnector::UnlockDirection() const 
-{
-    for (auto & it: m_list)
-        it->UnlockDirection(); 
-}
-
-void IoConnector::LockDirection() const 
-{ 
-    for (auto & it: m_list)
-        it->LockDirection(); 
-}
-
 MicroMeterPosDir IoConnector::GetPosDir() const 
 { 
     return m_list.empty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir(GetPos(), GetDir());
@@ -117,12 +105,16 @@ void IoConnector::SetParentPointers()
 {
     for (auto & it: m_list)
         it->SetParentNob(this);
+    AlignDirection();
 }
 
 void IoConnector::ClearParentPointers() const
 {
     for (auto & it: m_list)
+    {
         it->SetParentNob(nullptr);
+        it->UnlockDirection();
+    }
 }
 
 void IoConnector::Recalc()

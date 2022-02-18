@@ -39,9 +39,8 @@ public:
 
     void Undo() final
     {
-        m_upIoConnector = move(m_pNMWI->PopFromModel<IoConnector>());
+        m_upIoConnector = m_pNMWI->PopFromModel<IoConnector>();
         m_upIoConnector->ClearParentPointers();
-        m_upIoConnector->UnlockDirection();
         (m_targetReachedFunc)();
     }
 

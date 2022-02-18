@@ -183,6 +183,9 @@
     <ClInclude Include="AddPipe2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DeleteIoConnectorCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

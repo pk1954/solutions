@@ -3,4 +3,4 @@ ShowSensorPoints ON
 DescWinFontSize 12
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Delivery\2022-02-01\PROT31cx.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"

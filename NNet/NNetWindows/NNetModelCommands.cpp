@@ -318,7 +318,7 @@ void NNetModelCommands::DiscIoConnector(NobId const id)
 	Nob * pNob { m_pNMWI->GetNob(id) };
 	if (! pNob)
 		return;
-	m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(*pNob, false));
+	m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(*pNob));
 }
 
 void NNetModelCommands::InsertTrack(TrackNr const nr)

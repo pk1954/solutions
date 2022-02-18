@@ -25,7 +25,7 @@ public:
 	void Do() final
 	{ 
 		SelectionCommand::Do();
-		m_pNMWI->SelectSubtree(m_pNMWI->GetNobPtr<BaseKnot *>(m_idNob), m_bOn);
+		m_pNMWI->SelectSubtree(*m_pNMWI->GetNobPtr<BaseKnot *>(m_idNob), m_bOn);
 	}
 
 private:

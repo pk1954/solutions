@@ -22,7 +22,7 @@ DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
         { 
             auto upInputNeuron { make_unique<InputNeuron>(m_umPos) };
             upInputNeuron->Select(pipe.IsSelected());
-            upInputNeuron->AddOutgoing(& pipe);            // prepare new InputNeuron as far as possible
+            upInputNeuron->AddOutgoing(pipe);            // prepare new InputNeuron as far as possible
             m_inputNeurons.push_back(move(upInputNeuron)); // store new InputNeuron for later
         }                                                  // but do not touch m_pBaseKnot
     );  // InputNeuron in m_inputNeurons have their outgoing pipe set
@@ -32,7 +32,7 @@ DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
         { 
             auto upOutputNeuron { make_unique<OutputNeuron>(m_umPos) };
             upOutputNeuron->Select(pipe.IsSelected());
-            upOutputNeuron->AddIncoming(& pipe);             // prepare new OutputNeuron as far as possible
+            upOutputNeuron->AddIncoming(pipe);             // prepare new OutputNeuron as far as possible
             m_outputNeurons.push_back(move(upOutputNeuron)); // store new OutputNeuron for later
         }                                                    // but do not touch m_pBaseKnot
     );  // OutputNeuron in m_outputNeurons have their incoming pipe set

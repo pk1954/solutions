@@ -37,22 +37,22 @@ public:
 		m_upPipeNew1  ->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew2  ->Select(m_pPipeOld->IsSelected());
 
-		m_upKnotInsert->AddIncoming(m_upPipeNew1.get());
-		m_upKnotInsert->AddOutgoing(m_upPipeNew2.get());
+		m_upKnotInsert->AddIncoming(*m_upPipeNew1.get());
+		m_upKnotInsert->AddOutgoing(*m_upPipeNew2.get());
 
 		if (type.IsInputNeuronType())
 		{
 			m_upExtPoint  = make_unique<InputNeuron>(pos - m_pNMWI->OrthoVector(m_idPipe));
 			m_upPipeOrtho = MakePipe(m_upExtPoint.get(), m_upKnotInsert.get());		
-			m_upExtPoint  ->AddOutgoing(m_upPipeOrtho.get());
-			m_upKnotInsert->AddIncoming(m_upPipeOrtho.get());
+			m_upExtPoint  ->AddOutgoing(*m_upPipeOrtho.get());
+			m_upKnotInsert->AddIncoming(*m_upPipeOrtho.get());
 		}
 		else
 		{
 			m_upExtPoint  = make_unique<OutputNeuron>(pos + m_pNMWI->OrthoVector(m_idPipe));
 			m_upPipeOrtho = MakePipe(m_upKnotInsert.get(), m_upExtPoint.get());
-			m_upExtPoint  ->AddIncoming(m_upPipeOrtho.get());
-			m_upKnotInsert->AddOutgoing(m_upPipeOrtho.get());
+			m_upExtPoint  ->AddIncoming(*m_upPipeOrtho.get());
+			m_upKnotInsert->AddOutgoing(*m_upPipeOrtho.get());
 		}
 	}
 
