@@ -79,8 +79,8 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 	if (pBaseKnot == nullptr)
 		return unique_ptr<BaseKnot>();
 
-	size_t const nrInPipes  { pBaseKnot->GetNrOfIncomingConnections() };
-	size_t const nrOutPipes { pBaseKnot->GetNrOfOutgoingConnections() };
+	size_t const nrInPipes  { pBaseKnot->GetNrOfInConns() };
+	size_t const nrOutPipes { pBaseKnot->GetNrOfOutConns() };
 	NobType      typeNew    { NobType::Value::undefined };
 
 	if (nrOutPipes == 0)

@@ -56,7 +56,12 @@ public:
 	void SetExtension(MicroMeter const um) { m_circle.SetRadius(um); }
 
 	bool IsPrecursorOf(Pipe const &) const;
-	bool IsSuccessorOf(Pipe const &) const ;
+	bool IsSuccessorOf(Pipe const &) const;
+
+	bool IsPrecursorOf(BaseKnot const &) const;
+	bool IsSuccessorOf(BaseKnot const &) const;
+
+	bool IsDirectlyConnectedTo(BaseKnot const & b) const;
 
 	bool HasIncoming() const { return m_inPipes.IsNotEmpty (); }
 	bool HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
@@ -68,9 +73,9 @@ public:
 	void SetConnections(BaseKnot const &); 
 	void ClearConnections();
 
-	size_t GetNrOfIncomingConnections() const { return m_inPipes .Size(); }
-	size_t GetNrOfOutgoingConnections() const { return m_outPipes.Size(); }
-	size_t GetNrOfConnections()         const { return m_inPipes .Size() + m_outPipes.Size(); }
+	size_t GetNrOfInConns    () const { return m_inPipes .Size(); }
+	size_t GetNrOfOutConns   () const { return m_outPipes.Size(); }
+	size_t GetNrOfConnections() const { return m_inPipes.Size() + m_outPipes.Size(); }
 
 	Pipe & GetFirstIncoming() { return m_inPipes .GetFirst(); }
 	Pipe & GetFirstOutgoing() { return m_outPipes.GetFirst(); }

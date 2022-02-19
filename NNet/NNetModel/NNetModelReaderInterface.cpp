@@ -67,16 +67,16 @@ mV NNetModelReaderInterface::GetVoltageAt(NobId const id, MicroMeterPnt const & 
 	return p ? p->GetVoltageAt(umPoint) : mV::NULL_VAL(); 
 }
 
-size_t NNetModelReaderInterface::GetNrOfOutgoingConnections(NobId const id) const 
+size_t NNetModelReaderInterface::GetNrOfOutConns(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
-	return p ? p->GetNrOfOutgoingConnections() : -1;
+	return p ? p->GetNrOfOutConns() : -1;
 }
 
-size_t NNetModelReaderInterface::GetNrOfIncomingConnections(NobId const id) const 
+size_t NNetModelReaderInterface::GetNrOfInConns(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
-	return p ? p->GetNrOfIncomingConnections() : -1;
+	return p ? p->GetNrOfInConns() : -1;
 }
 
 size_t NNetModelReaderInterface::GetNrOfConnections(NobId const id) const 
@@ -123,23 +123,24 @@ bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };
 
-	//if (typeSrc.IsKnotType() && typeDst.IsPipeType())
-	//{
-	//	return true;
-	//}
-	//else 
 	if (typeSrc.IsBaseKnotType() && typeDst.IsPipeType())
 	{
-		return true;
+		BaseKnot const & baseKnot { * m_pModel->GetNobConstPtr<BaseKnot const *>(idSrc) };
+		Pipe     const & pipe     { * m_pModel->GetNobConstPtr<Pipe     const *>(idDst)     };
+		return ! baseKnot.IsDirectlyConnectedTo(*pipe.GetStartKnotPtr()) &&
+			   ! baseKnot.IsDirectlyConnectedTo(*pipe.GetEndKnotPtr  ());
 	}
-	else if (typeSrc.IsBaseKnotType() && typeDst.IsBaseKnotType())
+
+	if (typeSrc.IsBaseKnotType() && typeDst.IsBaseKnotType())
 	{
-		size_t nrIn  = GetNrOfIncomingConnections(idSrc) + GetNrOfIncomingConnections(idDst);
-		size_t nrOut = GetNrOfOutgoingConnections(idSrc) + GetNrOfOutgoingConnections(idDst);
+		BaseKnot const & baseKnotSrc { * m_pModel->GetNobConstPtr<BaseKnot const *>(idSrc) };
+		BaseKnot const & baseKnotDst { * m_pModel->GetNobConstPtr<BaseKnot const *>(idDst) };
+		size_t   const   nrIn        { baseKnotSrc.GetNrOfInConns () + baseKnotDst.GetNrOfInConns () };
+		size_t   const   nrOut       { baseKnotSrc.GetNrOfOutConns() + baseKnotDst.GetNrOfOutConns() };
 
 		if (nrIn + nrOut == 0)
 			return false;
-		else if (typeSrc.IsKnotType() && typeDst.IsKnotType())
+		if (typeSrc.IsKnotType() && typeDst.IsKnotType())
 		{
 			if ((nrIn<=2) && (nrOut<=1))
 				return true;                // Synapse
@@ -147,7 +148,7 @@ bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst
 				return true;                // Branch
 			return false;
 		}
-		else if (nrOut <= 1)   // OutputNeuron 
+		if (nrOut <= 1)   // OutputNeuron 
 			return true;
 		else 
 			return false;

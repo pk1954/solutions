@@ -23,8 +23,8 @@ public:
 	  :	m_baseKnotSrc(*m_pNMWI->GetNobPtr<BaseKnot *>(idSrc)),
 		m_baseKnotDst(*m_pNMWI->GetNobPtr<BaseKnot *>(idDst))
 	{ 
-		size_t nrIn  = m_baseKnotSrc.GetNrOfIncomingConnections() + m_baseKnotDst.GetNrOfIncomingConnections();
-		size_t nrOut = m_baseKnotSrc.GetNrOfOutgoingConnections() + m_baseKnotDst.GetNrOfOutgoingConnections();
+		size_t nrIn  = m_baseKnotSrc.GetNrOfInConns () + m_baseKnotDst.GetNrOfInConns ();
+		size_t nrOut = m_baseKnotSrc.GetNrOfOutConns() + m_baseKnotDst.GetNrOfOutConns();
 
 		if (m_baseKnotSrc.IsKnot() && m_baseKnotDst.IsKnot())
 			m_upResult = make_unique<Knot>(m_baseKnotDst);

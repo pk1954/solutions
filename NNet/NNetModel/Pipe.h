@@ -45,6 +45,11 @@ public:
 	BaseKnot * GetStartKnotPtr() { return m_pKnotStart; }
 	BaseKnot * GetEndKnotPtr  () { return m_pKnotEnd;   }
 
+	bool IsConnectedTo(NobId const idBaseKnot) const
+	{
+		return (GetStartKnotId() == idBaseKnot) || (GetEndKnotId() == idBaseKnot);
+	}
+
 	BaseKnot const * GetStartKnotPtr() const { return m_pKnotStart; }
 	BaseKnot const * GetEndKnotPtr  () const { return m_pKnotEnd;   }
 	size_t           GetNrOfSegments() const { return m_potential.size(); }

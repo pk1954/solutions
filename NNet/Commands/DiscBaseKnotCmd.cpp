@@ -12,8 +12,8 @@ using std::make_unique;
 DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
   : m_baseKnot(*Cast2BaseKnot(&nob))
 {
-    m_idOutputNeurons.Resize(m_baseKnot.GetNrOfIncomingConnections());
-    m_idInputNeurons .Resize(m_baseKnot.GetNrOfOutgoingConnections());
+    m_idOutputNeurons.Resize(m_baseKnot.GetNrOfInConns());
+    m_idInputNeurons .Resize(m_baseKnot.GetNrOfOutConns());
 
     m_umPos = m_baseKnot.GetPos();
     m_baseKnot.Apply2AllOutPipes

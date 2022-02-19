@@ -51,6 +51,7 @@ void MonitorWindow::Start
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
 	m_upHorzScale->SetOrthoOffset(Convert2fPixel(SCALE_HEIGHT));
 	m_upHorzScale->SetOrientation(false);
+	m_upHorzScale->SetBorder(20._fPixel);
 	m_upHorzScale->Show(true);
 }
 

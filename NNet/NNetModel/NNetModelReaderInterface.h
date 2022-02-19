@@ -10,6 +10,7 @@
 #include "NobType.h"
 #include "NobId.h"
 #include "NNetModel.h"
+#include "Pipe.h"
 #include "SoundInterface.h"
 #include "tHighlightType.h"
 
@@ -29,22 +30,22 @@ public:
 
 	size_t Size() const { return m_pModel->Size(); }
 
-	bool       IsConnectionCandidate     (NobId const, NobId const) const;
-	bool       CanConnectTo              (NobId const, NobId const) const;
-	bool       IsConnectedTo             (NobId const, NobId const) const;
-	bool       IsSelected                (NobId const) const;
-	NobType    GetNobType                (NobId const) const;
-	size_t     GetNrOfSegments           (NobId const) const;
-	SoundDescr GetTriggerSound           (NobId const) const;
-	bool       HasIncoming               (NobId const) const;
-	bool       HasOutgoing               (NobId const) const;
-	size_t     GetNrOfOutgoingConnections(NobId const) const;
-	size_t     GetNrOfIncomingConnections(NobId const) const;
-	size_t     GetNrOfConnections        (NobId const) const;
-	mV         GetVoltage                (NobId const) const;
-	mV         GetVoltageAt              (NobId const, MicroMeterPnt const &) const;
-	Degrees    GetDirection              (NobId const) const; 
-	fHertz     GetActFrequency           (NobId const) const; 
+	bool       IsConnectionCandidate(NobId const, NobId const) const;
+	bool       CanConnectTo         (NobId const, NobId const) const;
+	bool       IsConnectedTo        (NobId const, NobId const) const;
+	bool       IsSelected           (NobId const) const;
+	NobType    GetNobType           (NobId const) const;
+	size_t     GetNrOfSegments      (NobId const) const;
+	SoundDescr GetTriggerSound      (NobId const) const;
+	bool       HasIncoming          (NobId const) const;
+	bool       HasOutgoing          (NobId const) const;
+	size_t     GetNrOfOutConns      (NobId const) const;
+	size_t     GetNrOfInConns       (NobId const) const;
+	size_t     GetNrOfConnections   (NobId const) const;
+	mV         GetVoltage           (NobId const) const;
+	mV         GetVoltageAt         (NobId const, MicroMeterPnt const &) const;
+	Degrees    GetDirection         (NobId const) const; 
+	fHertz     GetActFrequency      (NobId const) const; 
 
 	wstring             GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
 	MicroMeterPnt       GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }

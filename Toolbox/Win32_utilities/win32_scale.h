@@ -59,6 +59,11 @@ public:
 			m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
 	};
 
+	void SetBorder(fPixel const fPixBorder)
+	{
+		m_fPixBorder = fPixBorder;
+	}
+
 private:
 
 	inline static COLORREF const SCALE_COLOR    { RGB(0, 0, 0) };  // CLR_BLACK

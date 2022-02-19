@@ -155,12 +155,27 @@ void BaseKnot::Prepare()
 
 bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 
 {
-	return m_outPipes.Apply2AllB([&pipeSucc](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
+	return Apply2AllOutPipesB([&pipeSucc](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
 }
 
 bool BaseKnot::IsSuccessorOf(Pipe const & pipePred) const
 {
-	return m_inPipes.Apply2AllB([&pipePred](Pipe const & pipe) { return & pipe == & pipePred; });
+	return Apply2AllInPipesB([&pipePred](Pipe const & pipe) { return & pipe == & pipePred; });
+}
+
+bool BaseKnot::IsPrecursorOf(BaseKnot const & b) const 
+{
+	return Apply2AllOutPipesB([&b](Pipe const & p){ return p.GetEndKnotPtr() == &b; });
+}
+
+bool BaseKnot::IsSuccessorOf(BaseKnot const & b) const
+{
+	return Apply2AllInPipesB([&b](Pipe const & p){ return p.GetStartKnotPtr() == &b; });
+}
+
+bool BaseKnot::IsDirectlyConnectedTo(BaseKnot const & b) const
+{
+	return IsSuccessorOf(b) || IsPrecursorOf(b);
 }
 
 bool BaseKnot::Includes(MicroMeterPnt const & point) const

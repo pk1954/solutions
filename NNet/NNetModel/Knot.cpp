@@ -90,7 +90,7 @@ void Knot::EvaluateSelectionStatus()
 
 void Knot::AppendMenuItems(AddMenuFunc const & add) const
 {
-	if ((GetNrOfIncomingConnections() == 1) && (GetNrOfOutgoingConnections() == 1)) 
+	if ((GetNrOfInConns() == 1) && (GetNrOfOutConns() == 1)) 
 	{
 	   add(IDD_ADD_INCOMING2BASEKNOT);
 	   add(IDD_ADD_OUTGOING2BASEKNOT);
@@ -102,7 +102,7 @@ void Knot::AppendMenuItems(AddMenuFunc const & add) const
 void Knot::Emphasize(bool const bOn, bool bDownStream) 
 { 
 	Nob::Emphasize(bOn);
-	if ((GetNrOfIncomingConnections() == 1) && (GetNrOfOutgoingConnections() == 1))
+	if ((GetNrOfInConns() == 1) && (GetNrOfOutConns() == 1))
 	{
 		if (bDownStream)
 			GetFirstOutgoing().Emphasize(bOn, true);
