@@ -34,6 +34,7 @@ public:
 	void Stop();
 
 private:
+	inline static PIXEL const RIGHT_BORDER { 25_PIXEL };
 	inline static PIXEL const SCALE_HEIGHT { 30_PIXEL };
 
 	void OnPaint() final;

@@ -7,7 +7,7 @@
 #include "util.h"
 #include "Resource.h"
 #include "MoreTypes.h"
-#include "win32_scale.h"
+#include "Direct2D.h"
 #include "Pipe.h"
 #include "Neuron.h"
 #include "InputNeuron.h"

@@ -51,8 +51,10 @@ void MonitorWindow::Start
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
 	m_upHorzScale->SetOrthoOffset(Convert2fPixel(SCALE_HEIGHT));
 	m_upHorzScale->SetOrientation(false);
-	m_upHorzScale->SetBorder(20._fPixel);
+	m_upHorzScale->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
 	m_upHorzScale->Show(true);
+
+	m_upMonitorControl->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
 }
 
 void MonitorWindow::Stop()
@@ -66,7 +68,7 @@ void MonitorWindow::OnPaint()
 	{
 		m_upMonitorControl->Invalidate(false);
 		if (m_upMonitorControl->SignalOverdriven())
-			SetWindowText(L"Monitor  ***** Signal overdriven *****");
+			SetWindowText(L"Signal overdriven. Use auto scale.");
 		else
 			SetWindowText(L"Monitor");
 	}
@@ -77,5 +79,6 @@ bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 	PIXEL const monHeight { height - SCALE_HEIGHT };
 	m_upMonitorControl->Move(0_PIXEL,   0_PIXEL, width,    monHeight, true);
 	m_upHorzScale     ->Move(0_PIXEL, monHeight, width,	SCALE_HEIGHT, true);
+	m_horzCoord.SetOffset(Convert2fPixel(width-RIGHT_BORDER));
 	return true;
 }

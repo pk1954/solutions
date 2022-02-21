@@ -24,7 +24,7 @@ public:
 	void SetActive(bool const bState) { m_bActive = bState; }
 
 	bool IsActive()       const { return m_bActive; }
-	bool TrackingActive() const { return m_bSelectedLeft || m_bSelectedRight; }
+	bool TrackingActive() const { return m_bLeftActive || m_bRightActive; }
 
 	bool IsClose2LeftLimit (fPixel const) const;
 	bool IsClose2RightLimit(fPixel const) const;
@@ -36,14 +36,13 @@ private:
 	fPixel m_fPixClientWidth { fPixel::NULL_VAL() };
 	fPixel m_fPixClientHeight{ fPixel::NULL_VAL() };
 
-	fPixel m_fPixLeftLimit   { fPixel::NULL_VAL() };
-	fPixel m_fPixRightLimit  { fPixel::NULL_VAL() };
+	fPixel m_fPixSelLeft   { fPixel::NULL_VAL() };
+	fPixel m_fPixSelRight  { fPixel::NULL_VAL() };
 
-	bool m_bSelectedLeft  { false };
-	bool m_bSelectedRight { false };
+	bool m_bLeftActive  { false };
+	bool m_bRightActive { false };
 
 	bool m_bActive      { true };
-	bool m_bLimitsMoved { false };  // left or right limit moved by user?
 
 	inline static fPixel const GRADIENT_WIDTH { 10._fPixel };
 

@@ -17,10 +17,6 @@ class ActionTimer : public Observable
 {
 public:
 	ActionTimer()
-		: m_hrtimerSingleAction(),
-	      m_usSingleActionTime(0),
-		  m_hrtimerOverall(),
-		  m_dwCounter(0)
 	{
 		m_hrtimerOverall.Start();
 	}
@@ -38,12 +34,12 @@ public:
 		NotifyAll(false);
 	};
 
-	microseconds GetSingleActionTime()
+	microseconds GetSingleActionTime() const
 	{
 		return m_usSingleActionTime;
 	}
 
-	Hertz CalcActionFrequency(microseconds us, DWORD dwCount = 1)
+	Hertz CalcActionFrequency(microseconds us, DWORD dwCount = 1) const
 	{
 		static unsigned long long MICROSECONDS_TO_HERTZ_FACTOR = microseconds::period::den;
 		if (us == microseconds::zero())
@@ -66,8 +62,8 @@ public:
 
 private:
 
-	HiResTimer   m_hrtimerSingleAction;
-	HiResTimer   m_hrtimerOverall;
-	microseconds m_usSingleActionTime; 
-	DWORD        m_dwCounter;            // nr of executions
+	HiResTimer   m_hrtimerSingleAction { };
+	microseconds m_usSingleActionTime  { };
+	HiResTimer   m_hrtimerOverall      { };
+	DWORD        m_dwCounter           { 0 };   // nr of executions
 };

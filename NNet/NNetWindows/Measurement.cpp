@@ -26,8 +26,8 @@ void Measurement::ResetLimits()
 {
 	if (m_fPixClientWidth.IsNotNull())
 	{
-		m_fPixLeftLimit  = m_fPixClientWidth * 0.1f;
-		m_fPixRightLimit = m_fPixClientWidth * 0.9f;
+		m_fPixSelLeft  = m_fPixClientWidth * 0.1f;
+		m_fPixSelRight = m_fPixClientWidth * 0.9f;
 	}
 }
 
@@ -42,9 +42,9 @@ bool Measurement::Select(fPixel const fPix)
 {
 	if (m_bActive)
 	{
-		m_bSelectedLeft  = IsClose2LeftLimit (fPix);
-		m_bSelectedRight = IsClose2RightLimit(fPix);
-		if (m_bSelectedLeft || m_bSelectedRight)
+		m_bLeftActive  = IsClose2LeftLimit (fPix);
+		m_bRightActive = IsClose2RightLimit(fPix);
+		if (m_bLeftActive || m_bRightActive)
 			return true;
 	}
 	return false;
@@ -54,11 +54,10 @@ void Measurement::MoveSelection(fPixel const fPix)
 {
 	if (m_bActive)
 	{
-		if (m_bSelectedLeft && (fPix < m_fPixRightLimit))
-			m_fPixLeftLimit = fPix;
-		else if (m_bSelectedRight && (fPix > m_fPixLeftLimit))
-			m_fPixRightLimit = fPix;
-		m_bLimitsMoved = true;
+		if (m_bLeftActive && (fPix < m_fPixSelRight))
+			m_fPixSelLeft = fPix;
+		else if (m_bRightActive && (fPix > m_fPixSelLeft))
+			m_fPixSelRight = fPix;
 	}
 }
 
@@ -103,9 +102,9 @@ void Measurement::measuringArea() const
 {
 	fPixelRect const rect
 	{ 
-		m_fPixLeftLimit + (m_bSelectedLeft ? GRADIENT_WIDTH : 0.0_fPixel), 
+		m_fPixSelLeft + (m_bLeftActive ? GRADIENT_WIDTH : 0.0_fPixel), 
 		0._fPixel, 
-		m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPixel),
+		m_fPixSelRight - (m_bRightActive ? GRADIENT_WIDTH : 0.0_fPixel),
 		m_fPixClientHeight 
 	};
 	m_pGraphics->FillRectangle(rect, COL_WEAK);
@@ -113,11 +112,11 @@ void Measurement::measuringArea() const
 
 void Measurement::textArea(fMicroSecs const fMicroSecsPerPixel) const
 {
-	fPixel     const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
+	fPixel     const fPixDistance { m_fPixSelRight - m_fPixSelLeft };
 	fMicroSecs const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
 	fHertz     const frequency    { Frequency(usMeasured) };
 
-	fPixel fPosRight { m_fPixRightLimit - GRADIENT_WIDTH };
+	fPixel fPosRight { m_fPixSelRight - GRADIENT_WIDTH };
 	fPixel fPosTop   { GRADIENT_WIDTH };
 
 	fPixelRect fPixRect
@@ -141,23 +140,23 @@ void Measurement::textArea(fMicroSecs const fMicroSecsPerPixel) const
 
 bool Measurement::IsClose2LeftLimit (fPixel const fPix) const 
 { 
-	return (m_fPixLeftLimit <= fPix) && (fPix <= m_fPixLeftLimit + GRADIENT_WIDTH);
+	return (m_fPixSelLeft <= fPix) && (fPix <= m_fPixSelLeft + GRADIENT_WIDTH);
 }
 
 bool Measurement::IsClose2RightLimit(fPixel const fPix) const 
 { 
-	return (m_fPixRightLimit - GRADIENT_WIDTH <= fPix) && (fPix <= m_fPixRightLimit);
+	return (m_fPixSelRight - GRADIENT_WIDTH <= fPix) && (fPix <= m_fPixSelRight);
 }
 
 void Measurement::DisplayDynamicScale(fMicroSecs const fMicroSecsPerPixel) const
 {
 	if (m_bActive)
 	{
-		emphasizedLineLeft(m_fPixLeftLimit);
-		verticalLine(m_fPixLeftLimit);
+		emphasizedLineLeft(m_fPixSelLeft);
+		verticalLine(m_fPixSelLeft);
 		measuringArea();
-		emphasizedLineRight(m_fPixRightLimit);
-		verticalLine(m_fPixRightLimit);
+		emphasizedLineRight(m_fPixSelRight);
+		verticalLine(m_fPixSelRight);
 		textArea(fMicroSecsPerPixel);
 	}
 }

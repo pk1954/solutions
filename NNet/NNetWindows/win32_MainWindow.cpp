@@ -27,11 +27,6 @@ using std::unique_ptr;
 using std::make_unique;
 using std::to_wstring;
 
-void MainWindow::InitClass(ActionTimer * const pActionTimer)
-{
-	m_pDisplayTimer = pActionTimer;
-}
-
 void MainWindow::Start
 (
 	HWND                     const   hwndApp, 
@@ -42,7 +37,8 @@ void MainWindow::Start
 	NNetController                 & controller,
 	NNetModelCommands              & modelCommands,
 	Observable                     & cursorObservable,
-	Observable                     & coordObservable
+	Observable                     & coordObservable,
+	ActionTimer              * const pActionTimer
 )
 {
 	NNetWindow::Start
@@ -58,7 +54,7 @@ void MainWindow::Start
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
-//	m_horzScale.InitHorzScale(& m_graphics, L"m", 1e6f);
+	m_pDisplayTimer        = pActionTimer;
 }
 
 void MainWindow::Stop()
@@ -420,8 +416,6 @@ void MainWindow::DoPaint()
 
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
-
-//	m_horzScale.Display();
 
 	DrawSensors();
 

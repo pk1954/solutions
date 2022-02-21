@@ -43,6 +43,11 @@ public:
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
+	void SetRightBorder(fPixel const fPixBorder)
+	{
+		m_fPixRightBorder = fPixBorder;
+	}
+
 private:
 
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
@@ -85,6 +90,7 @@ private:
 	PixelPoint          m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL               m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel              m_fPixWinWidth       { 0.0_fPixel };
+	fPixel              m_fPixRightBorder    { 0.0_fPixel };
 	IDWriteTextFormat * m_pTextFormat        { nullptr };
 	float               m_fScaleFactor       { 1.0f };
 	fPixel              m_fPixMaxSignal      { 0.0_fPixel };

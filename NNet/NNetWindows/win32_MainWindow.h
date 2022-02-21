@@ -5,11 +5,9 @@
 #pragma once
 
 #include "Resource.h"
-#include "win32_scale.h"
 #include "BaseKnot.h"
 #include "MicroMeterPntVector.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_scale.h"
 #include "win32_animation.h"
 #include "win32_NNetWindow.h"
 
@@ -23,7 +21,6 @@ using std::unique_ptr;
 class MainWindow : public NNetWindow
 {
 public:
-	static void InitClass(ActionTimer * const);
 
 	void Start
 	(
@@ -35,7 +32,8 @@ public:
 		NNetController                 &,
 		NNetModelCommands              &,
 		Observable                     &,
-		Observable                     &
+		Observable                     &,
+		ActionTimer            * const
 	);
 
 	void Stop () final;
@@ -79,10 +77,7 @@ private:
 	 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 
-	inline static ActionTimer * m_pDisplayTimer { nullptr };
-
-//	Scale<fMicroSecs> m_horzScale;
-
+	ActionTimer       * m_pDisplayTimer        { nullptr };
 	MicroMeter          m_arrowSize            { STD_ARROW_SIZE };
 	MicroMeterRect      m_rectSelection        { };
 	MicroMeterPnt       m_umPntSelectionAnchor { };

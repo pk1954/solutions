@@ -68,7 +68,6 @@ using namespace std::chrono;
 NNetAppWindow::NNetAppWindow()
 {
 	Neuron::SetSound(& m_sound);
-	MainWindow::InitClass(& m_atDisplay);
 	DefineUtilityWrapperFunctions();
 	DefineNNetWrappers(& m_nmri, & m_modelCommands, &m_modelImporter);
 };
@@ -156,7 +155,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_NNetController,
 		m_modelCommands,
 		m_cursorPosObservable,
-		m_coordObservable
+		m_coordObservable,
+		& m_atDisplay
 	);
 
 	m_miniNNetWindow.Start

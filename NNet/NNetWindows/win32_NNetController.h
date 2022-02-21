@@ -23,11 +23,12 @@ class Signal;
 class Sound;
 
 using std::wstring;
+using std::wcout;
 
 class NNetController
 {
 public:
-	NNetController() {}
+	NNetController() = default;
 
 	void Initialize
 	(
