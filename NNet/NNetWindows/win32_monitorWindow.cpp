@@ -67,8 +67,8 @@ void MonitorWindow::OnPaint()
 	if (IsWindowVisible())
 	{
 		m_upMonitorControl->Invalidate(false);
-		if (m_upMonitorControl->SignalOverdriven())
-			SetWindowText(L"Signal overdriven. Use auto scale.");
+		if (m_upMonitorControl->SignalTooHigh())
+			SetWindowText(L"Signal too high. Use auto scale.");
 		else
 			SetWindowText(L"Monitor");
 	}

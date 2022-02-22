@@ -38,7 +38,7 @@ public:
 	void Stop () final;
 	void Reset() final;
 
-	bool SignalOverdriven() const;
+	bool SignalTooHigh() const;
 	void ScaleSignals();
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
