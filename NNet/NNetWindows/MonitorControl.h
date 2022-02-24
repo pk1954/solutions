@@ -69,7 +69,6 @@ private:
 	void        highlightSignal (SignalId const &);
 	fPixel      getSignalOffset (SignalId const &) const;
 	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
-	fMicroSecs  findNextMax     (Signal const &, fPixel     const) const;
 	fPixel      calcTrackHeight () const;
 	fPixelPoint calcDiamondPos  () const;
 
@@ -91,6 +90,7 @@ private:
 	PIXEL               m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel              m_fPixWinWidth       { 0.0_fPixel };
 	fPixel              m_fPixRightBorder    { 0.0_fPixel };
+	fPixel              m_fPixZeroX          { 0.0_fPixel };
 	IDWriteTextFormat * m_pTextFormat        { nullptr };
 	float               m_fScaleFactor       { 1.0f };
 	fPixel              m_fPixMaxSignal      { 0.0_fPixel };

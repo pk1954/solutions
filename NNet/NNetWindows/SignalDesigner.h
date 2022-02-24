@@ -48,7 +48,8 @@ private:
 	inline static Param * m_pParameters { nullptr };
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
-	PixFpDimension<fHertz>        m_vertCoord;
+	PixFpDimension<fHertz>        m_vertCoordHertz;
+	PixFpDimension<mV>            m_vertCoordmV;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<Scale<fHertz>>     m_upVertScale;
 	unique_ptr<SignalControl>     m_upSignalControl;
