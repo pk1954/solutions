@@ -27,6 +27,9 @@ public:
 
 private:
 
+	wstring const CAPTION { L"Mini window" };
+	wstring const & GetTitle() const final { return CAPTION; }
+
 	void DoPaint() final;
 
 	MainWindow * m_pObservedNNetWindow { nullptr }; // Observed NNetWindow (or nullptr)

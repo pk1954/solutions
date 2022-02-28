@@ -14,6 +14,7 @@
 #include "win32_util.h"
 
 using std::chrono::milliseconds;
+using std::wostringstream;
 using std::unique_ptr;
 using std::wstring;
 using std::function;
@@ -51,13 +52,20 @@ public:
 	bool          IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
 	bool          IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
 
-	bool          IsWindowVisible()              const { return ::IsWindowVisible(m_hwnd); }
-	HWND          SetCapture()                   const { return ::SetCapture     (m_hwnd); }
-    HWND          SetFocus()                     const { return ::SetFocus       (m_hwnd); }
-    HWND          GetDlgItem(int const iItem)    const { return ::GetDlgItem     (m_hwnd, iItem); }
-    bool          IsCaptured()                   const { return ::GetCapture() == m_hwnd; }
-	int			  GetWindowTextLength()          const { return ::GetWindowTextLength(m_hwnd); }        
-	bool          SetWindowText(LPCWSTR const s) const { return ::SetWindowText(m_hwnd, s); }
+	bool WindowHasCaption()      const { return ::GetWindowLong  (m_hwnd, GWL_STYLE) & WS_CAPTION; }
+	bool IsWindowVisible()       const { return ::IsWindowVisible(m_hwnd); }
+	HWND SetCapture()            const { return ::SetCapture     (m_hwnd); }
+    HWND SetFocus()              const { return ::SetFocus       (m_hwnd); }
+    HWND GetDlgItem(int const i) const { return ::GetDlgItem     (m_hwnd, i); }
+    bool IsCaptured()            const { return ::GetCapture() == m_hwnd; }
+	int	 GetWindowTextLength()   const { return ::GetWindowTextLength(m_hwnd); }    
+
+	bool SetWindowText(LPCWSTR        const   s) const { return ::SetWindowText(m_hwnd, s); }
+	bool SetWindowText(wstring        const & s) const { return   SetWindowText(s.c_str()); }
+	bool SetWindowText(wostringstream const & s) const { return   SetWindowText(s.str()); }
+
+	bool SetWindowText(HWND hwnd, wstring        const & s) const { return ::SetWindowText(hwnd, s.c_str()); }
+	bool SetWindowText(HWND hwnd, wostringstream const & s) const { return   SetWindowText(hwnd, s.str()); }
 
 	void SetRefreshRate(milliseconds const) const;
 	

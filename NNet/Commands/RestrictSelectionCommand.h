@@ -11,7 +11,7 @@
 class RestrictSelectionCommand : public SelectionCommand
 {
 public:
-	RestrictSelectionCommand(NobType::Value const val)
+	explicit RestrictSelectionCommand(NobType::Value const val)
 		: m_val(val)
 	{ }
 
@@ -20,7 +20,7 @@ public:
 		SelectionCommand::Do();
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
-			[&](Nob & s)
+			[this](Nob & s)
 			{ 
 				if (s.GetNobType() != m_val) 
 					s.Select(false); 

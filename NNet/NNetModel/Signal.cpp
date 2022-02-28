@@ -21,10 +21,9 @@ Signal::Signal
 ) :
     m_nmri(nmri),
     m_observable(observable),
-    m_circle(circle),
-    m_timeStart(nmri.GetSimulationTime())
+    m_circle(circle)
 {
-    m_fTimeLine.clear();
+    Reset();
     SetSensorSize(circle.GetRadius());
     m_observable.RegisterObserver(*this);
 }
@@ -32,6 +31,12 @@ Signal::Signal
 Signal::~Signal()
 {
     m_observable.UnregisterObserver(*this);
+}
+
+void Signal::Reset()    
+{ 
+    m_timeStart = m_nmri.GetSimulationTime();
+    m_fTimeLine.clear(); 
 }
 
 void Signal::add2list(Pipe const & pipe) 

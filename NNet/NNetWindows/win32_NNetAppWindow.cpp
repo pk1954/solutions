@@ -171,8 +171,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main grid window
 
-	::SetWindowText(m_miniNNetWindow.GetWindowHandle(), L"Mini window");
-
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow, & m_nmri);
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands, & m_model.GetParams());
 	m_performanceWindow.Start(m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
@@ -396,7 +394,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_RESET:
-			m_model.ClearDynamicData();
+			m_nmwi.ClearDynamicData();
 			break;
 
 		case IDM_FORWARD:
@@ -404,7 +402,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_RUN:
-			m_nmwi.RecalcSignals();
 			m_computeThread.RunComputation();
 			break;
 

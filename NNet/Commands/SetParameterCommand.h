@@ -19,8 +19,8 @@ public:
 		float            const   fNewValue 
 	)
 	  : m_parameter(parameter),
-		m_fNewValue(fNewValue),
-		m_fOldValue(param.GetParameterValue(parameter))
+		m_fOldValue(param.GetParameterValue(parameter)),
+		m_fNewValue(fNewValue)
 	{ }
 
 	void Do() final 

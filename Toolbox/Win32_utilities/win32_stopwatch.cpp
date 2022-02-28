@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <assert.h>
 #include "util.h"
-#include "windows.h"
+#include "Windows.h"
 #include "win32_stopwatch.h"
 
 using std::wcout;

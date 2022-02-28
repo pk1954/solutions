@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include "MoreTypes.h"
 #include "PixelTypes.h"
+#include "win32_hiResTimer.h"
 #include "win32_rootWindow.h"
 
 static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
@@ -22,6 +24,15 @@ public:
 		PixelRect const *,
 		VisCrit   const &
 	);
+
+	virtual void SetCaption() const;
+	virtual wstring const & GetTitle() const;
+
+	fMicroSecs GetPaintTime      () const { return m_usPaintTime; }
+	wstring    GetPaintTimeString() const { return Format2wstring(m_usPaintTime, 1); }
+
+	static void SetPerfMonMode(bool const b) { m_bPerfMonMode = b; }
+	static bool PerfMonMode() { return m_bPerfMonMode; }
 
 protected:
 
@@ -44,6 +55,11 @@ protected:
 	bool OnSize(PIXEL const, PIXEL const) override { return false; };
 
 private:
-	
+
+	inline static bool m_bPerfMonMode { false };
+
 	friend static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
+
+	HiResTimer m_paintTimer;
+	fMicroSecs m_usPaintTime { 0._MicroSecs };
 };

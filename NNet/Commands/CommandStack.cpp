@@ -51,6 +51,12 @@ bool CommandStack::canBeCombined(Command const * pCmd) const
     return true;
 }
 
+void CommandStack::notify() const
+{
+    if (m_pStaticModelObservable)
+        m_pStaticModelObservable->NotifyAll(true);
+}
+
 void CommandStack::Push(unique_ptr<Command> pCmd)
 {
     if (!canBeCombined(pCmd.get()))

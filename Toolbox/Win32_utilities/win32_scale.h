@@ -37,7 +37,7 @@ public:
  	: m_bVertScale(bVertScale),
 	  m_pixCoord(pixCoord)
 	{
-		GraphicsWindow::Initialize(hwndParent, L"ClassScale", WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+		GraphicsWindow::Initialize(hwndParent, L"ClassScale", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
 		m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
 		pixCoord.RegisterObserver(*this);
 	}

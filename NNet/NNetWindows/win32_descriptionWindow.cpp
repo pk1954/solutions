@@ -57,14 +57,12 @@ void DescriptionWindow::Start(HWND const hwndParent)
     HWND const hwndDlg = StartBaseWindow
     (
         hwndParent, 
-        CS_OWNDC | CS_DBLCLKS,
+        CS_OWNDC|CS_DBLCLKS,
         L"ModelDescWindow",
-		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
+		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION|WS_SIZEBOX,
         & rect,
         nullptr
     );
-
-    SetWindowText(L"Model description");
 
     m_hwndEdit = CreateWindowEx
     (
@@ -72,11 +70,11 @@ void DescriptionWindow::Start(HWND const hwndParent)
         L"EDIT",                 // predefined class 
         nullptr,        
         WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL
-        |ES_MULTILINE     // enables multi line edit 
-        |ES_WANTRETURN    // Enter key -> CR
-        |ES_AUTOHSCROLL   // horizontal scroll bar
-        |ES_AUTOVSCROLL   // vertical scroll bar
-        |ES_EX_ZOOMABLE,  // not working
+        |ES_MULTILINE            // enables multi line edit 
+        |ES_WANTRETURN           // Enter key -> CR
+        |ES_AUTOHSCROLL          // horizontal scroll bar
+        |ES_AUTOVSCROLL          // vertical scroll bar
+        |ES_EX_ZOOMABLE,         // not working
         0, 0, 0, 0,              // set size in WM_SIZE message 
         hwndDlg,                 // parent window 
         (HMENU)ID_EDIT_CTRL,     // control id

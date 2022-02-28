@@ -4,15 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
-#include "win32_animation.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "NNetModelWriterInterface.h"
-#include "MicroMeterPosDir.h"
 #include "NNetCommand.h"
 
-using std::function;
 using std::unique_ptr;
 using std::make_unique;
 

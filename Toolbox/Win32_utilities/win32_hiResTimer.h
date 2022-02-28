@@ -16,9 +16,9 @@ class HiResTimer
 {
 public:
     HiResTimer();
-	virtual ~HiResTimer() {};
+	virtual ~HiResTimer() = default;
 
-	Ticks const ReadHiResTimer() const
+	Ticks ReadHiResTimer() const
 	{
 		LARGE_INTEGER value;
 		(void)QueryPerformanceCounter(& value);
@@ -46,17 +46,17 @@ public:
 		m_bStarted = true;
 	}
 
-	Ticks const GetTicksTilStart() const
+	Ticks GetTicksTilStart() const
 	{
 		return ReadHiResTimer() - m_ticksOnStart;
 	}
 
-	fMicroSecs const GetMicroSecsTilStart() const
+	fMicroSecs GetMicroSecsTilStart() const
 	{
 		return TicksToMicroSecs(GetTicksTilStart());
 	}
 
-	microseconds const GetDuration()
+	microseconds GetDuration()
 	{
 		assert(! m_bStarted);
 
@@ -68,12 +68,12 @@ public:
 
 	void BusyWait(microseconds const, Ticks &);
 
-	fMicroSecs const TicksToMicroSecs(Ticks const ticks) const
+	fMicroSecs TicksToMicroSecs(Ticks const ticks) const
 	{
 		return fMicroSecs(ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue());
 	}
 
-	Ticks const MicroSecsToTicks(fMicroSecs const us) const
+	Ticks MicroSecsToTicks(fMicroSecs const us) const
 	{
 		return Ticks(static_cast<long long>((us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS));
 	}

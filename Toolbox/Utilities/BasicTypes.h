@@ -13,6 +13,7 @@
 
 using std::chrono::microseconds;
 using std::numeric_limits;
+using std::streamsize;
 
 ////////////// fMicroSecs /////////////////////////////////////
 
@@ -144,10 +145,11 @@ static MicroMeter Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); }
 
 int     StepsOfThousand(float fValue);
 wstring GetUnitPrefix  (int const);
-wstring Format2wstring (float const);
+
+wstring Format2wstring(float fValue, streamsize prec = 2);
 
 template<typename T>
-wstring Format2wstring(T const val)
+wstring Format2wstring(T const val, streamsize prec = 2)
 {
-	return Format2wstring(val.GetValue() / TypeAttribute<T>::factor) + TypeAttribute<T>::unit;
+	return Format2wstring(val.GetValue() / TypeAttribute<T>::factor, prec) + TypeAttribute<T>::unit;
 }

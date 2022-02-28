@@ -3,33 +3,11 @@
 // Utilities
 
 #include "stdafx.h"
-#include <sstream>
-#include <iomanip>
 #include "MoreTypes.h"
-
-using std::wostringstream;
-using std::setprecision;
-using std::fixed;
 
 int StepsOfThousand(float fValue)
 {
 	int iSteps { 0 };
-	//int iSteps2 { 0 };		
-	//float fLog1000;
-	//float fFloor;
-
-	//if ( fValue < 1.f )
-	//{
-	//	fLog1000 = log10(fValue) / 3.f;
-	//	fFloor   = floor(-fLog1000);
-	//	iSteps2  = -static_cast<int>(fFloor);
-	//}
-	//else
-	//{
-	//	fLog1000 = log10(fValue) / 3.f;
-	//	fFloor   = floor(fLog1000);
-	//	iSteps2  = static_cast<int>(fFloor);
-	//}
 
 	while (fValue < 1.f)
 	{
@@ -42,11 +20,6 @@ int StepsOfThousand(float fValue)
 		fValue *= 1e-3f;
 		--iSteps;
 	}
-
-	//if ( iSteps != iSteps2 )
-	//{
-	//	int x = 42;
-	//}
 
 	return iSteps;
 }
@@ -61,24 +34,4 @@ wstring GetUnitPrefix(int const iSteps)
 	if (wchPrefix != L' ')
 		wstrRes += wchPrefix;
 	return wstrRes;
-}
-
-wstring Format2wstring(float fValue)
-{
-	int iIndex { 0 };
-
-	if (IsCloseToZero(fValue))
-	{
-		fValue = 0.f;
-	}
-	else 
-	{
-		int iSteps = StepsOfThousand(fValue);
-		iIndex += iSteps;
-		fValue *= powf(1000.f, static_cast<float>(iSteps));
-	}
-
-	wostringstream wstrBuffer;
-	wstrBuffer << fixed << setprecision(2) << fValue << GetUnitPrefix(iIndex);
-	return wstrBuffer.str();
 }

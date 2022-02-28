@@ -33,7 +33,10 @@ private:
 	HWND  m_hwndEdit  { nullptr };
 	bool  m_bDirty    { false };
 
-	void OnPaint     () final { /* all painting done by edit control */ };
+	wstring const CAPTION { L"Model description" };
+	wstring const & GetTitle() const final { return CAPTION; }
+
+	void OnPaint     () final { /* all painting done by edit control */ }
 	bool OnSize      (PIXEL  const, PIXEL  const) final;
 	void OnMouseWheel(WPARAM const, LPARAM const) final;
 	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;

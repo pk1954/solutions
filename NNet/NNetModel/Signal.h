@@ -41,6 +41,7 @@ public:
     void       SetSensorSize(MicroMeter    const);
     void       RotateSensor (MicroMeterPnt const &, Radian const);
     void       Recalc();
+    void       Reset();
 
     float      GetDistFactor(MicroMeterPnt const &)  const;
     float      GetSignalValue()                      const;

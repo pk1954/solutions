@@ -22,7 +22,7 @@ public:
 		PostThreadMsg(IDM_BEEP, static_cast<WPARAM>(hertz.GetValue()), static_cast<LPARAM>(msecs.GetValue()));
 	}
 
-	void ThreadMsgDispatcher(MSG const msg) final
+	void ThreadMsgDispatcher(MSG const & msg) final
 	{
 		assert(msg.message == IDM_BEEP);
 		m_pSound->Play(TEXT("SNAP_IN_SOUND"));

@@ -26,7 +26,7 @@ public:
 	);
 
 	void ThreadStartupFunc() final;
-	void ThreadMsgDispatcher(MSG const) final { }
+	void ThreadMsgDispatcher(MSG const &) final { }
 	void Notify(bool const) final;
 
 	void SingleStep();

@@ -64,14 +64,6 @@ void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const 
 	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
 }
 
-void NNetModelWriterInterface::RecalcSignals()
-{
-	m_pModel->GetMonitorData().Apply2AllSignals
-	(
-		[](Signal & signal){ signal.Recalc(); }
-	);
-}
-
 unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 {
 	BaseKnot const * pBaseKnot { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };

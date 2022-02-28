@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "NNetModel.h"
-#include "Observable.h"
+#include "observable.h"
 #include "SlowMotionRatio.h"
 #include "win32_fatalError.h"
 #include "NNetParameters.h"

@@ -182,12 +182,14 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         m_pSound->Off();
         break;
 
-    case IDD_AUTO_OPEN_ON:
-        AutoOpen::On();
+    case IDD_PERF_MON_MODE_ON:
+        BaseWindow::SetPerfMonMode(true);
+        m_pWinManager->Apply2All([](BaseWindow const & w){ w.SetCaption(); });
         break;
 
-    case IDD_AUTO_OPEN_OFF:
-        AutoOpen::Off();
+    case IDD_PERF_MON_MODE_OFF:
+        BaseWindow::SetPerfMonMode(false);
+        m_pWinManager->Apply2All([](BaseWindow const & w){ w.SetCaption(); });
         break;
 
     case IDM_REFRESH:
@@ -203,13 +205,12 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 
 void NNetController::triggerSoundDlg(NobId const id)
 {
-    NobType const type { m_pNMRI->GetNobType(id) };
-    if (! type.IsAnyNeuronType())
-        return;
-
-    TriggerSoundDialog dialog(m_pSound, m_pNMRI->GetTriggerSound(id));
-    dialog.Show(m_pMainWindow->GetWindowHandle());
-    m_pModelCommands->SetTriggerSound(id, dialog.GetSound());
+    if (m_pNMRI->IsAnyNeuron(id))
+    {
+        TriggerSoundDialog dialog(m_pSound, m_pNMRI->GetTriggerSound(id));
+        dialog.Show(m_pMainWindow->GetWindowHandle());
+        m_pModelCommands->SetTriggerSound(id, dialog.GetSound());
+    }
 }
 
 bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint)
@@ -239,10 +240,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDM_SELECT_ALL_BEEPERS:
         m_pModelCommands->SelectAllBeepers();
         break;
-
-    //case IDD_PULSE_RATE:
-    //    pulseRateDlg(m_pMainWindow->GetHighlightedNobId());
-    //    break;
 
     case IDD_TRIGGER_SOUND_DLG:
         triggerSoundDlg(m_pMainWindow->GetHighlightedNobId());

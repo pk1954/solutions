@@ -84,7 +84,7 @@ public:
 	// functions affecting Nob data, not model data
 
 	void RecalcAllNobs() const;
-	void ClearDynamicData() const;
+	void ClearDynamicData();
 
 	// non const functions
 

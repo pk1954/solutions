@@ -32,8 +32,6 @@ void MonitorWindow::Start
 		nullptr
 	);
 
-	SetWindowText(L"Monitor");
-
 	m_upMonitorControl = make_unique<MonitorControl>
 	(
 		hwnd,
@@ -62,22 +60,34 @@ void MonitorWindow::Stop()
 	DestroyWindow();
 }
 
-void MonitorWindow::OnPaint()
+void MonitorWindow::SetCaption() const
 {
-	if (IsWindowVisible())
+	if (BaseWindow::PerfMonMode())
 	{
-		m_upMonitorControl->Invalidate(false);
-		if (m_upMonitorControl->SignalTooHigh())
+		wostringstream buffer;
+		buffer << L"Signals: " << m_upMonitorControl->GetPaintTimeString();
+		buffer << L"  Scale: " << m_upHorzScale     ->GetPaintTimeString();
+		SetWindowText(buffer);
+	}
+	else
+	{
+		if (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
 			SetWindowText(L"Signal too high. Use auto scale.");
 		else
 			SetWindowText(L"Monitor");
 	}
 }
 
+void MonitorWindow::OnPaint()
+{
+	m_upMonitorControl->Invalidate(false);
+	SetCaption();
+}
+
 bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	PIXEL const monHeight { height - SCALE_HEIGHT };
-	m_upMonitorControl->Move(0_PIXEL,   0_PIXEL, width,    monHeight, true);
+	m_upMonitorControl->Move(0_PIXEL, 0_PIXEL,   width, monHeight,    true);
 	m_upHorzScale     ->Move(0_PIXEL, monHeight, width,	SCALE_HEIGHT, true);
 	m_horzCoord.SetOffset(Convert2fPixel(width-RIGHT_BORDER));
 	return true;

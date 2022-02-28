@@ -34,6 +34,9 @@ private:
     ActionTimer                    * m_pDisplayTimer    { nullptr };
     SlowMotionRatio          const * m_pSlowMotionRatio { nullptr };
 
+    wstring const CAPTION { L"PerformanceWindow" };
+    wstring const & GetTitle() const final { return CAPTION; }
+
     void printMicroSecLine(TextBuffer &, wchar_t const * const, fMicroSecs const) const;
     void printFloatLine   (TextBuffer &, wchar_t const * const, float const, wchar_t const * const) const;
     void printIntLine     (TextBuffer &, wchar_t const * const, int const) const;

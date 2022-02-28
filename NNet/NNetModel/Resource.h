@@ -56,7 +56,9 @@
 #define       IDD_ADD_TRACK                 168
 #define       IDD_DELETE_TRACK              169
 #define       IDD_EMPHASIZE                 170
-									        
+#define       IDD_PERF_MON_MODE_ON          171
+#define       IDD_PERF_MON_MODE_OFF         172
+
 #define       IDD_SOUND_ON                  200
 #define       IDD_SOUND_OFF                 202
 #define       IDX_PLAY_SOUND                203

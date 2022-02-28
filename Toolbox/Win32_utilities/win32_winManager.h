@@ -36,6 +36,16 @@ public:
 		m_map.clear ();
 	}
 
+	void Apply2All(auto const & f) const
+	{
+		for (const auto & [key, value] : m_map)
+		{
+			BaseWindow const * const pBaseWindow { value.m_pBaseWindow };
+			if (pBaseWindow)
+				f(*pBaseWindow);
+		}
+	}                        
+
 	wstring GetWindowName(UINT const id) const // can throw out_of_range exception
     {
         return m_map.at(id).m_wstr;
@@ -122,7 +132,7 @@ private:
 		bool       const   m_bTrackSize;     // if true, winManager sets window size from config file
     };
 
-    unordered_map< UINT, MAP_ELEMENT > m_map;
+    unordered_map<UINT, MAP_ELEMENT> m_map;
     
     wstring m_strWindowConfigurationFile { L"" };
     int     m_iNrOfMonitorConfigurations { 0 };

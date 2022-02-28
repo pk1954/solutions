@@ -14,6 +14,7 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
 #include "win32_MainWindow.h"
+#include "win32_baseWindow.h"
 #include "win32_descriptionWindow.h"
 #include "win32_importTermination.h"
 #include "win32_NNetAppMenu.h"
@@ -92,6 +93,24 @@ public:
     void Write(wostream & out) const final
     {
         out << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF);
+    }
+};
+
+class WrapSetPerfMonMode: public WrapBase
+{
+public:
+    WrapSetPerfMonMode()
+        : WrapBase(L"SetPerfMonMode")
+    {}
+
+    void operator() (Script & script) const final
+    {
+        BaseWindow::SetPerfMonMode(static_cast<bool>(script.ScrReadUint()));
+    }
+
+    void Write(wostream & out) const final
+    {
+        out << (BaseWindow::PerfMonMode() ? PREF_ON : PREF_OFF);
     }
 };
 
@@ -199,6 +218,7 @@ void Preferences::Initialize
     m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
     m_prefVector.push_back(make_unique<WrapSetSound>(sound));
     m_prefVector.push_back(make_unique<WrapReadModel>(nmri, modelImporter, hwndApp));
+    m_prefVector.push_back(make_unique<WrapSetPerfMonMode>());
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON,  1L);

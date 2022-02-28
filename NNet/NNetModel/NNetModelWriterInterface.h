@@ -30,7 +30,6 @@ public:
     void  SelectBeepers();
     void  SelectNob(NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
-    void  RecalcSignals();
     Nob * GetNob(NobId const);
 
     UPNobList               & GetUPNobs()      { return m_pModel->GetUPNobs(); }

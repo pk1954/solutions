@@ -3,7 +3,13 @@
 // win32_utilities
 
 #include "stdafx.h"
+#include <chrono>
+#include "MoreTypes.h"
 #include "win32_baseWindow.h"
+
+using std::bit_cast;
+using std::chrono::milliseconds;
+using std::wostringstream;
 
 HWND BaseWindow::StartBaseWindow
 (
@@ -55,13 +61,31 @@ HWND BaseWindow::StartBaseWindow
         nullptr,
         hInstance, 
         this
-   );
+    );
     assert(hwnd != nullptr);
-    SetWindowHandle(hwnd);
 
+    SetWindowHandle(hwnd);
 	StartRootWindow(visibilityCriterion);
+    SetCaption();
 
 	return hwnd;
+}
+
+wstring const & BaseWindow::GetTitle() const
+{
+    static wstring const CAPTION { L"" };
+    return CAPTION;
+}
+
+void BaseWindow::SetCaption() const
+{
+    if (WindowHasCaption())
+    {
+        if (m_bPerfMonMode)
+            SetWindowText(GetPaintTimeString());
+        else
+            SetWindowText(GetTitle());
+    }
 }
 
 bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
@@ -77,7 +101,16 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         return false;
 
     case WM_PAINT:
-        OnPaint();
+        if (m_bPerfMonMode)
+        {
+            m_paintTimer.Start();
+            OnPaint();
+            m_paintTimer.Stop();
+            m_usPaintTime = m_paintTimer.GetMicroSecsTilStart();
+            SetCaption();
+        }
+        else
+            OnPaint();
         return false;
 
     case WM_SHOWWINDOW :

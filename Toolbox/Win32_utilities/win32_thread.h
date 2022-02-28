@@ -38,7 +38,7 @@ namespace Util
 		bool IsAsyncThread() const { return m_bAsync; }
 
 		virtual void ThreadStartupFunc() {};
-		virtual void ThreadMsgDispatcher(MSG const) = 0;
+		virtual void ThreadMsgDispatcher(MSG const &) = 0;
 		virtual void ThreadShutDownFunc() {};
 
 	private:

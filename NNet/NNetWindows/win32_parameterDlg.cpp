@@ -5,6 +5,7 @@
 #include "stdafx.h"
 
 #include <sstream>
+#include "win32_util_resource.h"
 #include "Resource.h"
 #include "win32_stdDialogBox.h"
 #include "NNetParameters.h"
@@ -144,15 +145,16 @@ void ParameterDialog::Stop()
 
 bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	auto const wId { LOWORD(wParam) };
-	switch (wId)
+	switch (LOWORD(wParam))
 	{
 	case IDD_APPLY_PARAMETERS:
 		applyParameters();
+		SendCommand2Application(IDM_RESET, 0);
 		return true;
 
 	case IDD_RESET_PARAMETERS:
 		resetParameters();
+		SendCommand2Application(IDM_RESET, 0);
 		return true;
 
 	default:

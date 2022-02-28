@@ -240,16 +240,16 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	if (fPixSignal.IsNull())
 		return;
 
-	D2D1::ColorF const color         { m_monitorData.IsSelected(idSignal) ? NNetColors::EEG_SENSOR_HIGHLIGHTED : D2D1::ColorF::Black };  // emphasize selected signal 
-	fPixel       const fPixWidth     { m_monitorData.IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
-	fPixel       const fPixYoff      { getSignalOffset(idSignal) };
-	fMicroSecs   const usPixelSize   { m_horzCoord.GetPixelSize() };
-	fMicroSecs   const usInWindow    { usPixelSize * m_fPixZeroX.GetValue() };
-	fMicroSecs   const usResolution  { m_nmri.TimeResolution() };
-	fMicroSecs   const usIncrement   { max(usPixelSize, usResolution) };
-	fMicroSecs   const usSimuStart   { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
-	fPixel       const fPixX         { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
-	fPixelPoint        prevPoint     { m_fPixZeroX, fPixYoff - fPixSignal };
+	D2D1::ColorF const color        { m_monitorData.IsSelected(idSignal) ? NNetColors::EEG_SENSOR_HIGHLIGHTED : D2D1::ColorF::Black };  // emphasize selected signal 
+	fPixel       const fPixWidth    { m_monitorData.IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
+	fPixel       const fPixYoff     { getSignalOffset(idSignal) };
+	fMicroSecs   const usPixelSize  { m_horzCoord.GetPixelSize() };
+	fMicroSecs   const usInWindow   { usPixelSize * m_fPixZeroX.GetValue() };
+	fMicroSecs   const usResolution { m_nmri.TimeResolution() };
+	fMicroSecs   const usIncrement  { max(usPixelSize, usResolution) };
+	fMicroSecs   const usSimuStart  { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
+	fPixel       const fPixX        { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
+	fPixelPoint        prevPoint    { m_fPixZeroX, fPixYoff - fPixSignal };
 	m_upGraphics->FillCircle(fPixelCircle(prevPoint, 4.0_fPixel), color);
 	for (fMicroSecs usSimu = usSimuEnd - usIncrement; usSimu >= usSimuStart; usSimu -= usIncrement)
 	{

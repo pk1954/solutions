@@ -38,7 +38,7 @@ public:
 		PostThreadMsg(anyMessageWillDo);
 	}
 
-	void ThreadMsgDispatcher(MSG const msg) override 
+	void ThreadMsgDispatcher(MSG const & msg) override 
 	{
         m_pTextBuffer->StartPainting();
 		m_textWindow.DoPaint(* m_pTextBuffer);
