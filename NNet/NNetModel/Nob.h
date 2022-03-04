@@ -141,7 +141,7 @@ MicroMeterPosDir CalcOffsetPosDir(Nob const &, MicroMeter const);
 template <typename T> 
 concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
 
-template <Nob_t T> bool HasType(Nob const & nob) 
+template <Nob_t T> bool HasType(Nob const & nob)
 { 
 	return remove_pointer<T>::type::TypeFits(nob.GetNobType()); 
 }

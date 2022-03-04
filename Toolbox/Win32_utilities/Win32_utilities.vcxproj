@@ -172,6 +172,7 @@
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_beeperThread.h" />
     <ClInclude Include="win32_clut.h" />
+    <ClInclude Include="win32_controls.h" />
     <ClInclude Include="win32_delay.h" />
     <ClInclude Include="win32_fatalError.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="win32_baseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
+    <ClCompile Include="win32_controls.cpp" />
     <ClCompile Include="win32_escape.cpp" />
     <ClCompile Include="win32_graphicsWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />

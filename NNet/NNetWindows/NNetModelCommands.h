@@ -90,7 +90,7 @@ public:
     void SelectNobsInRect    (MicroMeterRect const &);
     void SelectSubtree       (NobId const, bool const);
     void SetParameter        (ParamType::Value const, float const);
-    void SetStimulusParams   (SignalGenerator &, fMicroSecs const, fHertz const);
+    void SetStimulusParams   (SignalGenerator &, SignalGenerator const &);
     void SetNob              (NobId const, MicroMeterPosDir const);
     void SetTriggerSound     (NobId const, SoundDescr const &);
     void SizeSelection       (float const);

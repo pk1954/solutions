@@ -112,7 +112,7 @@ public:
 		return move(upT);
 	}
 
-	void Apply2All(auto const & f) const
+	void Apply2AllC(auto const & f) const
 	{
 		for_each(m_list, [&f](auto const & it){ if (it) f(* it.get()); } );
 	}                        
@@ -128,7 +128,7 @@ public:
 	}
 
 	template <Nob_t T>    // const version
-	void Apply2All(auto const & func) const
+	void Apply2AllC(auto const & func) const
 	{
 		for (auto const & it : m_list)
 		{ 
@@ -148,9 +148,9 @@ public:
 	}                        
 
 	template <Nob_t T>    // const version
-	void Apply2AllSelected(auto const & func) const
+	void Apply2AllSelectedC(auto const & func) const
 	{
-		Apply2All<T>([func](T const & s) { if (s.IsSelected()) func(s); });
+		Apply2AllC<T>([func](T const & s) { if (s.IsSelected()) func(s); });
 	}
 
 	template <Nob_t T>    // non const version
@@ -160,9 +160,9 @@ public:
 	}
 
 	template <Nob_t T>   // const version
-	void Apply2AllInRect(MicroMeterRect const & r, auto const & func) const
+	void Apply2AllInRectC(MicroMeterRect const & r, auto const & func) const
 	{
-		Apply2All<T>([&r, &func](T const & s) { if (s.IsIncludedIn(r)) func(s); });
+		Apply2AllC<T>([&r, &func](T const & s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
 	template <Nob_t T>   // non const version

@@ -590,17 +590,17 @@ void NNetAppWindow::openSignalDesigner()
 		return;
 	if (! m_nmri.IsOfType<InputConnector>(id))
 		return;
-	InputConnector       * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
-	SignalGenerator      & sigGen  { pInpCon->GetSignalGenerator() };
+	InputConnector * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
 	SignalDesigner const * pSigDes 
 	{ 
 		new SignalDesigner
 		(
 			m_mainNNetWindow.GetWindowHandle(),
 			m_computeThread,
-			sigGen,
+			pInpCon->GetSignalGenerator(),
 			m_runObservable,
-			m_modelCommands
+			m_modelCommands,
+			m_nmwi
 		) 
 	};
 }

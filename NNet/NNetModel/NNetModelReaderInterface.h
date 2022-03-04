@@ -128,15 +128,15 @@ public:
 	template <Nob_t T> bool IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
 
 	template <Nob_t T>    // const version
-	void Apply2All(auto const& func) const
+	void Apply2AllC(auto const& func) const
 	{
-		GetUPNobsC().Apply2All<T>(func);
+		GetUPNobsC().Apply2AllC<T>(func);
 	}
 
 	template <Nob_t T>   // const version
-	void Apply2AllInRect(MicroMeterRect const & r, auto const & func) const
+	void Apply2AllInRectC(MicroMeterRect const & r, auto const & func) const
 	{
-		GetUPNobsC().Apply2AllInRect<T>(r, func);
+		GetUPNobsC().Apply2AllInRectC<T>(r, func);
 	}
 
 protected:

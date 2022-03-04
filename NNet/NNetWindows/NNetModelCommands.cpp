@@ -524,9 +524,9 @@ void NNetModelCommands::TriggerStimulus(NobId const id)
 	m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
 }
 
-void NNetModelCommands::SetStimulusParams(SignalGenerator & s, fMicroSecs const t, fHertz const f)
+void NNetModelCommands::SetStimulusParams(SignalGenerator & dst, SignalGenerator const & src)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SetStimulusParamsCmd>(s, t, f));
+	m_pCmdStack->PushCommand(make_unique<SetStimulusParamsCmd>(dst, src));
 }

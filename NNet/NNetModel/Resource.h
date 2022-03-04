@@ -10,9 +10,10 @@
 #define       IDM_FATAL_ERROR  	            100
 								   	        
 #define       IDC_NNET_SIMU_MAIN  	        102
-#define       IDD_APPLY_PARAMETERS          105
-#define       IDD_RESET_PARAMETERS          106
-								   	        
+#define       IDD_APPLY                     105
+#define       IDD_APPLY2ALL                 106
+#define       IDD_RESET                     107
+
 #define       IDM_SCRIPT_DIALOG             110
 #define       IDM_UNDO                      115
 #define       IDM_REDO                      116

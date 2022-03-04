@@ -32,8 +32,8 @@ public:
 	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
 	void Tick           () { m_signalGenerator.Tick(); }
 
-	SignalGenerator       & GetSignalGenerator()       { return m_signalGenerator; }
-	SignalGenerator const & GetSignalGenerator() const { return m_signalGenerator; }
+	SignalGenerator       & GetSignalGenerator ()       { return m_signalGenerator; }
+	SignalGenerator const & GetSignalGeneratorC() const { return m_signalGenerator; }
 
 	fHertz GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
 

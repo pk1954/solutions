@@ -3,13 +3,13 @@
 // NNetWindows
 
 #include "stdafx.h"
-
 #include <sstream>
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "win32_stdDialogBox.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "win32_controls.h"
 #include "win32_parameterDlg.h"
 
 using std::wstring;
@@ -47,21 +47,6 @@ void ParameterDialog::applyParameter  // read out edit field and write data to m
 		m_pCommands->SetParameter(parameter, fValue);
 }
 
-HWND ParameterDialog::createStaticField(HWND const hwndParent, wchar_t const * const text, int & iXpos, int const iYpos, int const iWidth)
-{
-	HWND hwnd = CreateWindow(L"Static", text, STYLE, iXpos, iYpos, iWidth, HEIGHT, hwndParent, 0, GetModuleHandle(nullptr), 0);
-	iXpos += iWidth + HORZ_SPACE;
-	return hwnd;
-}
-
-HWND ParameterDialog::createEditField(HWND const hwndParent, ParamType::Value const parameter, int & iXpos, int const iYpos, int const iWidth)
-{
-	HWND hwnd = CreateWindow(L"Edit", 0, STYLE|ES_RIGHT, iXpos, iYpos, iWidth, HEIGHT, hwndParent, 0, GetModuleHandle(nullptr), 0);
-	resetParameter(hwnd, parameter);
-	iXpos += iWidth + HORZ_SPACE;
-	return hwnd;
-}
-
 HWND ParameterDialog::addParameter
 (
 	HWND             const hwndDlg,
@@ -69,13 +54,22 @@ HWND ParameterDialog::addParameter
 	int                  & iYpos
 )
 {
+	static const int NAME_WIDTH { 120 };
+	static const int EDIT_WIDTH {  60 };
+	static const int UNIT_WIDTH {  40 };
+	static int const HEIGHT     {  16 };
+
 	int  iXpos { 10 }; 
 
-	HWND const hwndName = createStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, 120);
-	HWND const hwndEdit = createEditField  (hwndDlg, parameter,                     iXpos, iYpos,  60);
-	HWND const hwndUnit = createStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos,  40);
+	CreateStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, NAME_WIDTH, HEIGHT);
+	iXpos += NAME_WIDTH + HORZ_SPACE;
+	HWND const hwndEdit = CreateEditField(hwndDlg,            iXpos, iYpos, EDIT_WIDTH, HEIGHT);
+	iXpos += EDIT_WIDTH + HORZ_SPACE;
+	CreateStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos, UNIT_WIDTH, HEIGHT);
 
 	iYpos += HEIGHT + VERT_SPACE;
+
+	resetParameter(hwndEdit, parameter);
 
 	return hwndEdit;
 }
@@ -104,12 +98,6 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
-HWND ParameterDialog::createButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, int const id)
-{
-	HWND hwnd = CreateWindow(L"Button", text, BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE, x, y, w, h, hwndParent, (HMENU)id, GetModuleHandle(nullptr), 0);
-	return hwnd;
-}
-
 void ParameterDialog::Start
 (
 	HWND                const hwndParent, 
@@ -132,8 +120,8 @@ void ParameterDialog::Start
 	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
 	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,     iYpos); 
 
-	createButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY_PARAMETERS);
-	createButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET_PARAMETERS);
+	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
+	CreateButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET);
 }
 
 void ParameterDialog::Stop()
@@ -147,12 +135,12 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 {
 	switch (LOWORD(wParam))
 	{
-	case IDD_APPLY_PARAMETERS:
+	case IDD_APPLY:
 		applyParameters();
 		SendCommand2Application(IDM_RESET, 0);
 		return true;
 
-	case IDD_RESET_PARAMETERS:
+	case IDD_RESET:
 		resetParameters();
 		SendCommand2Application(IDM_RESET, 0);
 		return true;

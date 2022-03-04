@@ -58,7 +58,7 @@ void NNetWindow::DrawArrowsInRect
 	MicroMeter const   umSize
 ) const
 {
-	m_pNMRI->Apply2AllInRect<Pipe>
+	m_pNMRI->Apply2AllInRectC<Pipe>
 	(
 		GetCoordC().Transform2logUnitRect(rect),	
 		[this, umSize](Pipe const & s) { s.DrawArrows(m_context, umSize); } 

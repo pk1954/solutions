@@ -64,9 +64,18 @@ public:
 		m_fPixRightBorder = fPixBorder;
 	}
 
+	void SetColor(D2D1::ColorF const col)
+	{
+		m_scaleColor = col;
+	}
+
+	D2D1::ColorF GetColor() const
+	{ 
+		return m_scaleColor; 
+	}
+
 private:
 
-	inline static COLORREF const SCALE_COLOR    { RGB(0, 0, 0) };  // CLR_BLACK
 	inline static fPixel   const LONG_TICK      { 10._fPixel };
 	inline static fPixel   const MIDDLE_TICK    {  7._fPixel };
 	inline static fPixel   const SMALL_TICK     {  5._fPixel };
@@ -82,6 +91,7 @@ private:
 	fPixel              m_fPixRightBorder{ 0._fPixel };
 	fPixel              m_fPixLeftBorder { 0._fPixel };
 	fPixel              m_fPixOrthoOffset{ 0._fPixel };
+	D2D1::ColorF        m_scaleColor     { D2D1::ColorF::Black };
 	fPixelPoint         m_fPixPntStart   {};
 	fPixelPoint         m_fPixPntEnd     {};
 	fPixel              m_fPixTickDist   {};
@@ -97,18 +107,18 @@ private:
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };  
 
-		LogUnits    const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
-		float       const log10          { log10f(logMinTickDist.GetValue()) };
-		float       const fExp           { floor(log10) };
-		float       const fFractPart     { log10 - fExp };
-		float       const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
-		fPixel      const fPixSizeA      { m_bVertScale ? m_upGraphics->GetClRectHeight() : m_upGraphics->GetClRectWidth() };
-		fPixel      const fPixScaleLen   { fPixSizeA - m_fPixRightBorder }; 
-		LogUnits    const logScaleLen    { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
+		LogUnits const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
+		float    const log10          { log10f(logMinTickDist.GetValue()) };
+		float    const fExp           { floor(log10) };
+		float    const fFractPart     { log10 - fExp };
+		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
+		fPixel   const fPixSizeA      { m_bVertScale ? m_upGraphics->GetClRectHeight() : m_upGraphics->GetClRectWidth() };
+		fPixel   const fPixScaleLen   { fPixSizeA - m_fPixRightBorder }; 
+		LogUnits const logScaleLen    { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
 
 		if ( m_bVertScale )
 		{
-			fPixelPoint const fPixPntOffset  = fPixelPoint(0._fPixel, - fPixScaleLen);
+			auto const fPixPntOffset { fPixelPoint(0._fPixel, -fPixScaleLen) };
 			m_fPixPntStart = fPixelPoint(m_fPixOrthoOffset, getClHeight() - m_pixCoord.GetPixelOffset());
 			m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
 			m_logStart     = LogUnits(0.0f);
@@ -138,7 +148,7 @@ private:
 		if (CrsrInClientRect())
 			m_upGraphics->FillBackground(D2D1::ColorF::Aquamarine);
 
-		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, SCALE_COLOR);
+		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, m_scaleColor);
 
 		displayTicks(textBox);
 		fPixel const fPixZeroPos = m_pixCoord.Transform2fPixelPos(LogUnits(0.0f));
@@ -248,7 +258,7 @@ private:
 			? fPixelPoint(m_fPixPntStart.GetX() + fDir, getClHeight() - fTickA)
 			: fPixelPoint(fTickA,                       m_fPixPntStart.GetY() + fDir)
 		};
-		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, SCALE_COLOR);
+		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, m_scaleColor);
 	}
 
 	void displayTicks(fPixelRect const & textBox) const
@@ -284,6 +294,6 @@ private:
 		wstring    const & wstr
 	) const
 	{
-		m_upGraphics->DisplayText(textBox, wstr, SCALE_COLOR, m_pTextFormat);
+		m_upGraphics->DisplayText(textBox, wstr, m_scaleColor, m_pTextFormat);
 	}
 };

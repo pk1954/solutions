@@ -74,20 +74,20 @@ void NNetModelExporter::writeNobs(wostream & out)
     }
     out << L"NrOfNobs = " << idCompact << endl;
     out << endl;
-    m_pNMRI->Apply2All<BaseKnot   >([this, &out](BaseKnot    const & s) { writeNob(out, s); });
-    m_pNMRI->Apply2All<Pipe       >([this, &out](Pipe        const & s) { writeNob(out, s); });
-    m_pNMRI->Apply2All<IoConnector>([this, &out](IoConnector const & s) { writeNob(out, s); });
+    m_pNMRI->Apply2AllC<BaseKnot   >([this, &out](BaseKnot    const & s) { writeNob(out, s); });
+    m_pNMRI->Apply2AllC<Pipe       >([this, &out](Pipe        const & s) { writeNob(out, s); });
+    m_pNMRI->Apply2AllC<IoConnector>([this, &out](IoConnector const & s) { writeNob(out, s); });
 }
 
 void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
 {
-    m_pNMRI->Apply2All<InputConnector>
+    m_pNMRI->Apply2AllC<InputConnector>
     (
         [this, &out](InputConnector const & inpConn)
         { 
             using enum ParamType::Value;
             NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
-            SignalGenerator const & sigGen { inpConn.GetSignalGenerator() };
+            SignalGenerator const & sigGen { inpConn.GetSignalGeneratorC() };
             out << L"SetParam" << id << baseFrequency   << sigGen.FreqBase() << endl; 
             out << L"SetParam" << id << stimulusMaxFreq << sigGen.FreqMax()  << endl; 
             out << L"SetParam" << id << stimulusMaxTime << sigGen.TimeMax()  << endl; 
@@ -97,7 +97,7 @@ void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
 
 void NNetModelExporter::writeTriggerSounds(wostream & out) const
 {
-    m_pNMRI->Apply2All<Neuron>
+    m_pNMRI->Apply2AllC<Neuron>
     (
         [this, &out](Neuron const & neuron) 
         { 

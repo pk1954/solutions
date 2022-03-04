@@ -232,11 +232,11 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 
 void MonitorControl::paintSignal(SignalId const & idSignal)
 {
-	Signal const * const pSignal { m_monitorData.GetConstSignalPtr(idSignal) };
+	Signal    const * const pSignal { m_monitorData.GetConstSignalPtr(idSignal) };
 	if (pSignal == nullptr)
 		return;
-	fMicroSecs const usSimuEnd  { m_nmri.GetSimulationTime() };
-	fPixel           fPixSignal { getSignalValue(*pSignal, usSimuEnd) };
+	fMicroSecs     const usSimuEnd  { m_nmri.GetSimulationTime() };
+	fPixel               fPixSignal { getSignalValue(*pSignal, usSimuEnd) };
 	if (fPixSignal.IsNull())
 		return;
 

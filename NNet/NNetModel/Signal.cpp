@@ -58,7 +58,7 @@ void Signal::add2list(Pipe const & pipe)
 void Signal::Recalc()
 {
     m_dataPoints.clear();
-    m_nmri.GetUPNobsC().Apply2All<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
+    m_nmri.GetUPNobsC().Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
 }
 
 float Signal::GetSignalValue() const

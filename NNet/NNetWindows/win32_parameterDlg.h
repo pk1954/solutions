@@ -22,10 +22,8 @@ public:
 	void Notify(bool const) final;
 
 private:
-	static DWORD const STYLE { WS_CHILD | WS_VISIBLE };
-	static int   const HORZ_SPACE {  8 };
-	static int   const VERT_SPACE { 14 };
-	static int   const HEIGHT     { 16 };
+	static int const HORZ_SPACE {  8 };
+	static int const VERT_SPACE { 14 };
 
 	Param             * m_pParams   { nullptr };
 	NNetModelCommands * m_pCommands { nullptr };
@@ -38,9 +36,6 @@ private:
 	HWND m_hwndTimeResolution  { nullptr };
 	HWND m_hwndPulseSpeed      { nullptr };
 		
-	HWND createButton     (HWND const, wchar_t  const * const, int const, int const, int const, int const, int const);
-	HWND createEditField  (HWND const, ParamType::Value const, int &,     int const, int const);
-	HWND createStaticField(HWND const, wchar_t  const * const, int &,     int const, int const);
 	void resetParameter   (HWND const, ParamType::Value const) const;
 	void applyParameter   (HWND const, ParamType::Value const);
 	HWND addParameter     (HWND const, ParamType::Value const, int &);

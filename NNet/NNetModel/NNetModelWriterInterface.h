@@ -77,6 +77,12 @@ public:
         return (pNob && HasType<T>(*pNob)) ? static_cast<T>(pNob) : nullptr;
     }
 
+    template <Nob_t T>  
+    void Apply2All(auto const& func)
+    {
+        GetUPNobs().Apply2All<T>(func);
+    }
+
     /// RemoveFromModel - ReplaceInModel/Restore2Model: Slot remains
 
     template <Nob_t OLD>

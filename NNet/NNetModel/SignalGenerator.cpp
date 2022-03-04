@@ -53,32 +53,47 @@ void SignalGenerator::LoadParameterValues()
 
 void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 {
-	switch ( par )
+	switch (par)
 	{
 		using enum ParamType::Value;
 		case stimulusMaxFreq: m_freqMaxStim = f; break;
 		case stimulusMaxTime: m_usMax       = f; break;
 		case baseFrequency:   m_freqBase    = f; break;
+		case peakVoltage:     m_mVpeak      = f; break;
 		default: assert(false);
 	}
 	NotifyAll(false);
 }
 
-void SignalGenerator::SetFreqBase(fHertz const f) 
-{ 
-	m_freqBase = f;
+void SignalGenerator::SetParams(SignalGenerator const& src)
+{
+	m_freqBase    = src.m_freqBase;
+	m_freqMaxStim = src.m_freqMaxStim;
+	m_usMax       = src.m_usMax;
+	m_mVpeak      = src.m_mVpeak;
 	NotifyAll(false);
 }
 
-void SignalGenerator::SetStimulusParams
-(
-	fMicroSecs const t,
-	fHertz     const f
-)
+void SignalGenerator::SetFreqBase(fHertz const f) 
+{ 
+	m_freqBase = max(0._fHertz, f);
+	NotifyAll(false);
+}
+
+void SignalGenerator::SetFreqMax(fHertz const f)
 {
-	if (t.IsNotNull())
-		m_usMax = t;
-	if (f.IsNotNull())
-		m_freqMaxStim = f;
+	m_freqMaxStim = max(0._fHertz, f);
+	NotifyAll(false);
+}
+
+void SignalGenerator::SetTimeMax(fMicroSecs const t)
+{
+	m_usMax = max(1._MicroSecs, t);
+	NotifyAll(false);
+}
+
+void SignalGenerator::SetPeakVoltage(mV const v)
+{
+	m_mVpeak = max(0._mV, v);
 	NotifyAll(false);
 }

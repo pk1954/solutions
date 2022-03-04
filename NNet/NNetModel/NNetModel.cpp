@@ -61,7 +61,7 @@ void NNetModel::Reconnect(NobId const id)
 
 void NNetModel::RecalcAllNobs() const
 { 
-	m_Nobs.Apply2All
+	m_Nobs.Apply2AllC
 	(
 		[](Nob & nob) 
 		{ 
@@ -72,7 +72,7 @@ void NNetModel::RecalcAllNobs() const
 
 void NNetModel::ClearDynamicData()
 { 
-	m_Nobs.Apply2All
+	m_Nobs.Apply2AllC
 	(
 		[](Nob & nob) 
 		{ 
@@ -110,8 +110,8 @@ bool NNetModel::Compute()
 {
 	bool bStop {false};
 	m_timeStamp += m_param.TimeResolution();
-	m_Nobs.Apply2All(      [](Nob &s) { s.Prepare(); });
-	m_Nobs.Apply2All([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
+	m_Nobs.Apply2AllC(      [](Nob &s) { s.Prepare(); });
+	m_Nobs.Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;
 }
 

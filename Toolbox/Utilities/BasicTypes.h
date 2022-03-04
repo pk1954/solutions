@@ -45,6 +45,9 @@ constexpr MicroMeter operator"" _MicroMeter(const long double d)
 	return MicroMeter(Cast2Float(d));
 }
 
+template <> const wstring TypeAttribute<MicroMeter>::unit   = L"m";
+template <> const float   TypeAttribute<MicroMeter>::factor = 1.e6f;
+
 inline MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
 ////////////// mV /////////////////////////////////////
@@ -55,6 +58,9 @@ constexpr mV operator"" _mV(const long double d)
 { 
 	return mV(Cast2Float(d));
 }
+
+template <> const wstring TypeAttribute<mV>::unit   = L"V";
+template <> const float   TypeAttribute<mV>::factor = 1.e3f;
 
 ////////////// PERCENT /////////////////////////////////////
 

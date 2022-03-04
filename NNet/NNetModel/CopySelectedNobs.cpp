@@ -38,7 +38,7 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 		}
 	}
 
-	m_nobs2Add.Apply2All  // fix links
+	m_nobs2Add.Apply2AllC  // fix links
 	(
 		[](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }
 	);

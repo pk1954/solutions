@@ -14,41 +14,35 @@ class SetStimulusParamsCmd : public NNetCommand
 public:
 	SetStimulusParamsCmd
 	(
-		SignalGenerator & sigGen,
-		fMicroSecs  const msec,
-		fHertz      const freq
+		SignalGenerator       & sigGenDst,
+		SignalGenerator const & sigGenSrc
 	)
-	  : m_sigGen(sigGen),
-		m_freqOld(sigGen.FreqMax()),
-		m_freqNew(freq),
-		m_msecOld(sigGen.TimeMax()),
-		m_msecNew(msec)
+	  : m_sigGenDst(sigGenDst),
+		m_sigGenOld(sigGenDst),
+		m_sigGenSrc(sigGenSrc)
 	{ }
 
     void Do() final
 	{ 
-		m_sigGen.SetStimulusParams(m_msecNew, m_freqNew);
+		m_sigGenDst.SetParams(m_sigGenSrc);
 	}
 
 	void Undo() final
 	{ 
-		m_sigGen.SetStimulusParams(m_msecOld, m_freqOld);
+		m_sigGenDst.SetParams(m_sigGenOld);
 	}
 
 	bool CombineCommands(Command const & src) final
 	{ 
 		SetStimulusParamsCmd const & srcCmd { static_cast<SetStimulusParamsCmd const &>(src) };
-		if (&m_sigGen != &srcCmd.m_sigGen)
+		if (&m_sigGenDst != &srcCmd.m_sigGenDst)
 			return false;
-		m_freqOld = srcCmd.m_freqOld;
-		m_msecOld = srcCmd.m_msecOld;
+		m_sigGenDst.SetParams(srcCmd.m_sigGenSrc); 
 		return true; 
 	};
 
 private:
-	SignalGenerator & m_sigGen;
-	fHertz            m_freqOld;
-	fHertz      const m_freqNew;
-	fMicroSecs        m_msecOld;
-	fMicroSecs  const m_msecNew;
+	SignalGenerator       & m_sigGenDst;
+	SignalGenerator const   m_sigGenOld;
+	SignalGenerator const & m_sigGenSrc;
 };

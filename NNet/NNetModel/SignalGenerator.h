@@ -32,9 +32,12 @@ public:
 	fMicroSecs TimeMax () const { return m_usMax;    };
 
 	void SetParam(ParamType::Value const, float const);
+	void SetParams(SignalGenerator const &);
 
-	void SetFreqBase(fHertz const);
-	void SetStimulusParams(fMicroSecs const, fHertz const);
+	void SetFreqBase   (fHertz const);
+	void SetFreqMax    (fHertz const);
+	void SetTimeMax    (fMicroSecs const);
+	void SetPeakVoltage(mV const);
 
 	bool       IsTriggerActive() const { return m_bTriggerActive; }
 	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
@@ -45,7 +48,7 @@ public:
 
 private:
 
-	float const CUT_OFF_FACTOR { 10.0f };
+	inline static float const CUT_OFF_FACTOR { 10.0f };
 
 	inline static Param * m_pParameters { nullptr };
 
@@ -55,4 +58,5 @@ private:
 	fHertz     m_freqBase    { };  // base frequency
 	fHertz     m_freqMaxStim { };  // max stimulus frequency in addition to base freq
 	fMicroSecs m_usMax       { };
+	mV         m_mVpeak      { };
 };
