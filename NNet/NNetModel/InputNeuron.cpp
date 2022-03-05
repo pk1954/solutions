@@ -57,6 +57,13 @@ void InputNeuron::Prepare()
 	m_mVinputBuffer += increasePerTick;
 }
 
+mV InputNeuron::WaveFunction(fMicroSecs const time) const
+{
+	return HasParentNob()
+	? static_cast<InputConnector *>(GetParentNob())->WaveFunction(time)
+	: Neuron::WaveFunction(time);
+}
+
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));

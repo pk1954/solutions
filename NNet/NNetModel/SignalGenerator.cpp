@@ -35,21 +35,21 @@ fHertz SignalGenerator::GetActFrequency() const
 	return GetFrequency(m_usSinceLastStimulus);
 }
 
-mV SignalGenerator::GetPeakCurr(fMicroSecs const uSecs) const
+mV SignalGenerator::GetVoltage(fMicroSecs const uSecs) const
 {
 	if (InStimulusRange(uSecs))
 	{
 		float const fFactor { uSecs / m_usMax };
-		mV    const curr    { m_mVmaxPeak * stimulusFunc(fFactor) };
-		return curr;
+		mV    const voltage { m_mVmaxPeak * stimulusFunc(fFactor) };
+		return voltage;
 	}
 	else
 		return m_pParameters->PeakVoltage();
 }
 
-mV SignalGenerator::GetActPeakCurr() const
+mV SignalGenerator::GetActVoltage() const
 {
-	return GetPeakCurr(m_usSinceLastStimulus);
+	return GetVoltage(m_usSinceLastStimulus);
 }
 
 void SignalGenerator::Tick()

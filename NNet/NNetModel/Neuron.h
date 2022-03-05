@@ -63,6 +63,8 @@ protected:
 
 	void DisplayText(DrawContext const &, MicroMeterRect const &, wstring const &) const;
 
+	virtual mV WaveFunction(fMicroSecs const) const;
+
 private:
 	mutable bool m_bTriggered { false };
 
@@ -74,8 +76,6 @@ private:
 	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
 
 	inline static Sound * m_pSound  { nullptr };
-
-	mV waveFunction(fMicroSecs const) const;
 
 	MicroMeterPnt getAxonHillockPos() const;
 

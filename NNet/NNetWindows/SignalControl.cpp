@@ -26,11 +26,11 @@ SignalControl::SignalControl
 	SignalGenerator            & signalGenerator,
 	PixFpDimension<fMicroSecs> & horzCoord,
 	PixFpDimension<fHertz>     & vertCoordFreq,
-	PixFpDimension<mV>         & vertCoordCurr
+	PixFpDimension<mV>         & vertCoordVolt
 )
   :	m_horzCoord(horzCoord),
 	m_vertCoordFreq(vertCoordFreq),
-	m_vertCoordCurr(vertCoordCurr),
+	m_vertCoordVolt(vertCoordVolt),
 	m_computeThread(computeThread),
 	m_signalGenerator(signalGenerator),
 	m_commands(commands)
@@ -38,7 +38,7 @@ SignalControl::SignalControl
 	m_signalGenerator.RegisterObserver(*this); // signal generator data can be changed fron outside
 	m_horzCoord      .RegisterObserver(*this); 
 	m_vertCoordFreq  .RegisterObserver(*this);
-	m_vertCoordCurr  .RegisterObserver(*this);
+	m_vertCoordVolt  .RegisterObserver(*this);
 	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
 }
 
@@ -52,9 +52,9 @@ fHertz SignalControl::getFreq(fPixel const fPix) const
 	return m_vertCoordFreq.Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
 }
 
-mV SignalControl::getCurr(fPixel const fPix) const 
+mV SignalControl::getVolt(fPixel const fPix) const 
 {
-	return m_vertCoordCurr.Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
+	return m_vertCoordVolt.Transform2logUnitPos(Convert2fPixel(GetClientWindowHeight()) - fPix);
 }
 
 fPixel SignalControl::getPixX(fMicroSecs const time) const
@@ -67,9 +67,9 @@ fPixel SignalControl::getPixYfreq(fHertz const freq) const
 	return Convert2fPixel(GetClientWindowHeight()) - m_vertCoordFreq.Transform2fPixelPos(freq);
 }
 
-fPixel SignalControl::getPixYcurr(mV const curr) const
+fPixel SignalControl::getPixYvolt(mV const voltage) const
 {
-	return Convert2fPixel(GetClientWindowHeight()) - m_vertCoordCurr.Transform2fPixelPos(curr);
+	return Convert2fPixel(GetClientWindowHeight()) - m_vertCoordVolt.Transform2fPixelPos(voltage);
 }
 
 fPixel SignalControl::getPixXmax() const
@@ -82,9 +82,9 @@ fPixel SignalControl::getPixYmaxFreq() const
 	return getPixYfreq(m_signalGenerator.FreqMax() + m_signalGenerator.FreqBase());
 }
 
-fPixel SignalControl::getPixYmaxCurr() const
+fPixel SignalControl::getPixYmaxVolt() const
 {
-	return getPixYcurr(m_signalGenerator.CurrMax());
+	return getPixYvolt(m_signalGenerator.VoltMax());
 }
 
 fPixel SignalControl::getPixYbase() const
@@ -97,9 +97,9 @@ fPixelPoint SignalControl::getPixPntFreq(fMicroSecs const time, fHertz const fre
 	return fPixelPoint(getPixX(time), getPixYfreq(freq));
 }
 
-fPixelPoint SignalControl::getPixPntCurr(fMicroSecs const time, mV const curr) const
+fPixelPoint SignalControl::getPixPntVolt(fMicroSecs const time, mV const voltage) const
 {
-	return fPixelPoint(getPixX(time), getPixYcurr(curr));
+	return fPixelPoint(getPixX(time), getPixYvolt(voltage));
 }
 
 fPixelPoint SignalControl::getPixPntMaxFreq() const
@@ -107,9 +107,9 @@ fPixelPoint SignalControl::getPixPntMaxFreq() const
 	return fPixelPoint(getPixXmax(), getPixYmaxFreq());
 }
 
-fPixelPoint SignalControl::getPixPntMaxCurr() const
+fPixelPoint SignalControl::getPixPntMaxVolt() const
 {
-	return fPixelPoint(getPixXmax(), getPixYmaxCurr());
+	return fPixelPoint(getPixXmax(), getPixYmaxVolt());
 }
 
 fPixelPoint SignalControl::getGraphPntFreq(fMicroSecs const time) const
@@ -117,55 +117,9 @@ fPixelPoint SignalControl::getGraphPntFreq(fMicroSecs const time) const
 	return getPixPntFreq(time, m_signalGenerator.GetFrequency(time));
 }
 
-fPixelPoint SignalControl::getGraphPntCurr(fMicroSecs const time) const
+fPixelPoint SignalControl::getGraphPntVolt(fMicroSecs const time) const
 {
-	return getPixPntCurr(time, m_signalGenerator.GetPeakCurr(time));
-}
-
-void SignalControl::paintFreqCurve(D2D1::ColorF const col) const
-{
-	fMicroSecs const usResolution { m_signalGenerator.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
-	fMicroSecs const usPixelSize  { m_horzCoord.GetPixelSize() };
-	fMicroSecs const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
-	fMicroSecs const timeStart    { 0.0_MicroSecs };
-	fMicroSecs const timeCutoff   { m_signalGenerator.CutoffTime() };
-	fMicroSecs       timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	fPixelPoint      prevPoint    { getGraphPntFreq(timeStart) };
-
-	if (timeCutoff < timeEnd)
-		timeEnd = timeCutoff;
-
-	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
-	{
-		fPixelPoint const actPoint  { getGraphPntFreq(time) };
-		fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-		m_upGraphics->DrawLine(prevPoint, stepPoint, m_fPixLineWidth, col);
-		m_upGraphics->DrawLine(stepPoint, actPoint,  m_fPixLineWidth, col);
-		prevPoint = actPoint;
-	}
-}
-
-void SignalControl::paintCurrCurve(D2D1::ColorF const col) const
-{
-	fMicroSecs const usResolution { m_signalGenerator.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
-	fMicroSecs const usPixelSize  { m_horzCoord.GetPixelSize() };
-	fMicroSecs const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
-	fMicroSecs const timeStart    { 0.0_MicroSecs };
-	fMicroSecs const timeCutoff   { m_signalGenerator.CutoffTime() };
-	fMicroSecs       timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	fPixelPoint      prevPoint    { getGraphPntCurr(timeStart) };
-
-	if (timeCutoff < timeEnd)
-		timeEnd = timeCutoff;
-
-	for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
-	{
-		fPixelPoint const actPoint  { getGraphPntCurr(time) };
-		fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-		m_upGraphics->DrawLine(prevPoint, stepPoint, m_fPixLineWidth, col);
-		m_upGraphics->DrawLine(stepPoint, actPoint,  m_fPixLineWidth, col);
-		prevPoint = actPoint;
-	}
+	return getPixPntVolt(time, m_signalGenerator.GetVoltage(time));
 }
 
 void SignalControl::highlightMovedObject() const
@@ -188,10 +142,10 @@ void SignalControl::highlightMovedObject() const
 		displayBaseFrequency(COL_HI, LINE_WIDTH_HI);
 		break;
 	case tMoveMode::MAX_CURR:
-		displayCurrLine(m_signalGenerator.TimeMax(), LINE_WIDTH_HI, COL_HI);
+		displayVoltLine(m_signalGenerator.TimeMax(), LINE_WIDTH_HI, COL_HI);
 		break;
 	case tMoveMode::MAX_CURR_PNT:
-		displayCurrMaxPoint(m_signalGenerator.TimeMax(), LINE_WIDTH_HI, COL_HI, DIAMOND_SIZE * 1.5f);
+		displayVoltMaxPoint(m_signalGenerator.TimeMax(), LINE_WIDTH_HI, COL_HI, DIAMOND_SIZE * 1.5f);
 		displayTimeLine    (m_signalGenerator.TimeMax(), LINE_WIDTH_HI, COL_HI);
 		break;
 	default:
@@ -208,7 +162,7 @@ void SignalControl::DoPaint()
 		if (m_signalGenerator.IsTriggerActive())
 		{
 			displayFreqMaxPoint(m_signalGenerator.TimeTilTrigger(), LINE_WIDTH_STD, m_colorFreq, DIAMOND_SIZE);
-			displayCurrMaxPoint(m_signalGenerator.TimeTilTrigger(), LINE_WIDTH_STD, m_colorCurr, DIAMOND_SIZE);
+			displayVoltMaxPoint(m_signalGenerator.TimeTilTrigger(), LINE_WIDTH_STD, m_colorVolt, DIAMOND_SIZE);
 			displayTimeLine    (m_signalGenerator.TimeTilTrigger(), LINE_WIDTH_STD, D2D1::ColorF::Black);
 		}
 	}
@@ -217,12 +171,12 @@ void SignalControl::DoPaint()
 		if (m_moveMode != tMoveMode::NONE)
 			highlightMovedObject();
 		displayFreqMaxPoint(m_signalGenerator.TimeMax(), LINE_WIDTH_STD, m_colorFreq, DIAMOND_SIZE);
-		displayCurrMaxPoint(m_signalGenerator.TimeMax(), LINE_WIDTH_STD, m_colorCurr, DIAMOND_SIZE);
+		displayVoltMaxPoint(m_signalGenerator.TimeMax(), LINE_WIDTH_STD, m_colorVolt, DIAMOND_SIZE);
 		displayTimeLine    (m_signalGenerator.TimeMax(), LINE_WIDTH_STD, D2D1::ColorF::Black);
 	}
 	displayBaseFrequency(m_colorFreq, LINE_WIDTH_STD);
-	paintFreqCurve(m_colorFreq);
-	paintCurrCurve(m_colorCurr);
+	paintCurve([this](fMicroSecs const t){ return getGraphPntFreq(t); }, m_colorFreq );
+	paintCurve([this](fMicroSecs const t){ return getGraphPntVolt(t); }, m_colorVolt );
 }
 
 void SignalControl::displayFreqMaxPoint
@@ -237,7 +191,7 @@ void SignalControl::displayFreqMaxPoint
 	displayFreqLine(time, wLine, col);
 }
 
-void SignalControl::displayCurrMaxPoint
+void SignalControl::displayVoltMaxPoint
 (
 	fMicroSecs   const time, 
 	fPixel       const wLine,
@@ -245,8 +199,8 @@ void SignalControl::displayCurrMaxPoint
 	fPixel       const wDiamond
 ) const
 {
-	m_upGraphics->FillDiamond(getGraphPntCurr(time), wDiamond, col);
-	displayCurrLine(time, wLine, col);
+	m_upGraphics->FillDiamond(getGraphPntVolt(time), wDiamond, col);
+	displayVoltLine(time, wLine, col);
 }
 
 void SignalControl::displayBaseFrequency
@@ -272,12 +226,12 @@ void SignalControl::displayFreqLine
 ) const
 {
 	fHertz      const freq         { m_signalGenerator.GetFrequency(time) };
-	fPixelPoint const fPixPntStart { getPixPntFreq(time, freq) };
+	fPixelPoint const fPixPntStart { getPixPntFreq(time,          freq) };
 	fPixelPoint const fPixPntEnd   { getPixPntFreq(0.0_MicroSecs, freq) };
 	m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, width, colF);
 }
 
-void SignalControl::displayCurrLine
+void SignalControl::displayVoltLine
 (
 	fMicroSecs   const time, 
 	fPixel       const width, 
@@ -285,9 +239,9 @@ void SignalControl::displayCurrLine
 ) const
 {
 	fMicroSecs  const timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
-	mV          const currPeak     { m_signalGenerator.GetPeakCurr(time) };
-	fPixelPoint const fPixPntStart { getPixPntCurr(time,    currPeak) };
-	fPixelPoint const fPixPntEnd   { getPixPntCurr(timeEnd, currPeak) };
+	mV          const voltPeak     { m_signalGenerator.GetVoltage(time) };
+	fPixelPoint const fPixPntStart { getPixPntVolt(time,    voltPeak) };
+	fPixelPoint const fPixPntEnd   { getPixPntVolt(timeEnd, voltPeak) };
 	m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, width, colF);
 }
 
@@ -299,8 +253,8 @@ void SignalControl::displayTimeLine
 ) const
 {
 	fPixel      const fPixFreq     { getPixYfreq(m_signalGenerator.GetFrequency(time)) };
-	fPixel      const fPixCurr     { getPixYcurr(m_signalGenerator.GetPeakCurr (time)) };
-	fPixel      const fPixEnd      { min(fPixFreq, fPixCurr) };
+	fPixel      const fPixVolt     { getPixYvolt(m_signalGenerator.GetVoltage (time)) };
+	fPixel      const fPixEnd      { min(fPixFreq, fPixVolt) };
 	fPixel      const fPixX        { getPixX(time) };
 	fPixel      const fPixStart    { getPixYfreq(0.0_fHertz) };
 	fPixelPoint const fPixPntStart { fPixelPoint(fPixX, fPixStart) };
@@ -335,7 +289,7 @@ bool SignalControl::freqMaxLineSelected(fPixelPoint const & pos) const
 
 bool SignalControl::currMaxLineSelected(fPixelPoint const & pos) const
 {
-	return (Distance(pos.GetY(), getPixYmaxCurr()) <= RECOG_DIST)
+	return (Distance(pos.GetY(), getPixYmaxVolt()) <= RECOG_DIST)
 		&& (pos.GetX() >= getPixXmax());
 }
 
@@ -355,7 +309,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		fMicroSecs const usNew   { getTime(fPixCrsrPos.GetX()) };
 		fHertz     const freqCrsr{ getFreq(fPixCrsrPos.GetY()) };
 		fHertz     const freqNew { freqCrsr - m_signalGenerator.FreqBase() };
-		mV         const currNew { getCurr(fPixCrsrPos.GetY()) };
+		mV         const currNew { getVolt(fPixCrsrPos.GetY()) };
 		m_sigGenNew.SetParams(m_signalGenerator);
 		switch (m_moveMode)
 		{
@@ -388,7 +342,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		if (Distance(fPixCrsrPos, getPixPntMaxFreq()) <= 20.0_fPixel) 
 			m_moveMode = tMoveMode::MAX_FREQ_PNT;
-		else if (Distance(fPixCrsrPos, getPixPntMaxCurr()) <= 20.0_fPixel) 
+		else if (Distance(fPixCrsrPos, getPixPntMaxVolt()) <= 20.0_fPixel) 
 			m_moveMode = tMoveMode::MAX_CURR_PNT;
 		else if (baseLineSelected(fPixCrsrPos))
 			m_moveMode = tMoveMode::BASE_FREQ;

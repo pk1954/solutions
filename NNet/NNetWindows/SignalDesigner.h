@@ -54,10 +54,10 @@ private:
 	HWND                          m_hwndApply2AllButton;
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<fHertz>        m_vertCoordFreq;
-	PixFpDimension<mV>            m_vertCoordCurr;
+	PixFpDimension<mV>            m_vertCoordVolt;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<Scale<fHertz>>     m_upVertScaleFreq;
-	unique_ptr<Scale<mV>>         m_upVertScaleCurr;
+	unique_ptr<Scale<mV>>         m_upVertScaleVolt;
 	unique_ptr<SignalControl>     m_upSignalControl;
 	SignalGenerator             & m_sigGen;
 	NNetModelCommands           & m_commands;

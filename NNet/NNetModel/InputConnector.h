@@ -37,6 +37,8 @@ public:
 
 	fHertz GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
 
+	mV WaveFunction(fMicroSecs const) const;
+
 private:
 
 	SignalGenerator m_signalGenerator;

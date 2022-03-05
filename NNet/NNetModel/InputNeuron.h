@@ -20,6 +20,8 @@ public:
 
 	~InputNeuron() final = default;
 
+	virtual mV WaveFunction(fMicroSecs const) const;
+
 	void Check() const final;
 
 	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }

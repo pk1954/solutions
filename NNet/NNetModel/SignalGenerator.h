@@ -24,15 +24,15 @@ public:
 
 	fHertz GetActFrequency()                 const;
 	fHertz GetFrequency   (fMicroSecs const) const;
-	mV     GetActPeakCurr ()                 const;
-	mV     GetPeakCurr    (fMicroSecs const) const;
+	mV     GetActVoltage  ()                 const;
+	mV     GetVoltage     (fMicroSecs const) const;
 
 	void LoadParameterValues();
 
 	fHertz     FreqBase() const { return m_freqBase;    }
 	fHertz     FreqMax () const { return m_freqMaxStim; }
 	fMicroSecs TimeMax () const { return m_usMax;       }
-	mV         CurrMax () const { return m_mVmaxPeak;   }
+	mV         VoltMax () const { return m_mVmaxPeak;   }
 
 	void SetParam(ParamType::Value const, float const);
 	void SetParams(SignalGenerator const &);

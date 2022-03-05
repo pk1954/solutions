@@ -101,7 +101,7 @@ void Neuron::Recalc()
 	m_factorU = 4.0f * m_factorW * m_pParameters->PeakVoltage().GetValue();
 };
 
-mV Neuron::waveFunction(fMicroSecs const time) const
+mV Neuron::WaveFunction(fMicroSecs const time) const
 {
 	return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }
@@ -149,7 +149,7 @@ bool Neuron::CompStep()
 mV Neuron::GetNextOutput() const
 {
 	return (m_usSinceLastPulse <= m_pParameters->PulseWidth())
-		   ? waveFunction(m_usSinceLastPulse)
+		   ? WaveFunction(m_usSinceLastPulse)
 		   : BASE_POTENTIAL;
 }
 

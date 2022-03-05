@@ -11,7 +11,7 @@
 class ToggleStopOnTriggerCommand : public NNetCommand
 {
 public:
-	ToggleStopOnTriggerCommand(NobId const id)
+	explicit ToggleStopOnTriggerCommand(NobId const id)
 		:	m_id(id)
 	{ }
 

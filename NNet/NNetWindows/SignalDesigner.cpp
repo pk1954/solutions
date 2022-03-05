@@ -47,7 +47,7 @@ SignalDesigner::SignalDesigner
 		m_sigGen,
 		m_horzCoord, 
 		m_vertCoordFreq,
-		m_vertCoordCurr
+		m_vertCoordVolt
 	);
 
 	runObservable.RegisterObserver(*m_upSignalControl.get());
@@ -56,11 +56,11 @@ SignalDesigner::SignalDesigner
 	static D2D1::ColorF COLOR_CURR { D2D1::ColorF::Blue  };
 
 	m_upSignalControl->SetFreqColor(COLOR_FREQ);
-	m_upSignalControl->SetCurrColor(COLOR_CURR);
+	m_upSignalControl->SetVoltColor(COLOR_CURR);
 
 	m_upHorzScale     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
 	m_upVertScaleFreq = make_unique<Scale<fHertz    >>(hwnd, true,  m_vertCoordFreq);
-	m_upVertScaleCurr = make_unique<Scale<mV        >>(hwnd, true,  m_vertCoordCurr);
+	m_upVertScaleVolt = make_unique<Scale<mV        >>(hwnd, true,  m_vertCoordVolt);
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(100._MicroSecs, 1000000._MicroSecs); 
@@ -76,19 +76,19 @@ SignalDesigner::SignalDesigner
 	mV    const mVmaxPeak         { m_pParameters->PeakVoltage() };
 	mV    const mVmaxPeakScaleLen { mVmaxPeak * 4.0f };
 	PIXEL const pixVertScaleLen   { STD_WINDOW_HEIGHT - TOP_OFFSET  - BOTTOM_OFFSET };
-	mV    const mVpixelSize       { mVmaxPeakScaleLen / pixVertScaleLen.GetValue() };
+	mV    const mVpixelSize       { mVmaxPeakScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
 
-	m_vertCoordCurr.SetPixelSize(mVpixelSize);
-	m_vertCoordCurr.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-	m_vertCoordCurr.SetZoomFactor(1.3f);
+	m_vertCoordVolt.SetPixelSize(mVpixelSize);
+	m_vertCoordVolt.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
+	m_vertCoordVolt.SetZoomFactor(1.3f);
 
 	m_upVertScaleFreq->SetOrientation(true);
 	m_upVertScaleFreq->SetColor(COLOR_FREQ);
 	m_upVertScaleFreq->Show(true);
 
-	m_upVertScaleCurr->SetOrientation(false);
-	m_upVertScaleCurr->SetColor(COLOR_CURR);
-	m_upVertScaleCurr->Show(true);
+	m_upVertScaleVolt->SetOrientation(false);
+	m_upVertScaleVolt->SetColor(COLOR_CURR);
+	m_upVertScaleVolt->Show(true);
 
 
 //	m_hwndTriggerButton   = CreateButton(hwnd, L"Trigger",      0, 0, 50, 20, IDM_TRIGGER_STIMULUS);
@@ -162,7 +162,7 @@ bool SignalDesigner::OnSize(PIXEL const width, PIXEL const height)
 		true
 	);
 
-	m_upVertScaleCurr->Move
+	m_upVertScaleVolt->Move
 	(
 		width - RIGHT_OFFSET,
 		TOP_OFFSET,
