@@ -57,30 +57,40 @@ private:
 
 	fMicroSecs getTime(fPixel const) const;
 	fHertz     getFreq(fPixel const) const;
+	mV         getCurr(fPixel const) const;
 
 	fPixel getPixX(fMicroSecs const) const;
-	fPixel getPixY(fHertz     const) const;
+	fPixel getPixYfreq(fHertz const) const;
+	fPixel getPixYcurr(mV     const) const;
 	fPixel getPixXmax() const;
-	fPixel getPixYmax() const;
+	fPixel getPixYmaxFreq() const;
+	fPixel getPixYmaxCurr() const;
 	fPixel getPixYbase() const;
 
-	fPixelPoint getPixPnt  (fMicroSecs const, fHertz const) const;
-	fPixelPoint getGraphPnt(fMicroSecs const) const;
-	fPixelPoint getPixPntMax() const;
+	fPixelPoint getPixPntFreq  (fMicroSecs const, fHertz const) const;
+	fPixelPoint getPixPntCurr  (fMicroSecs const, mV     const) const;
+	fPixelPoint getGraphPntFreq(fMicroSecs const) const;
+	fPixelPoint getGraphPntCurr(fMicroSecs const) const;
+	fPixelPoint getPixPntMaxFreq() const;
+	fPixelPoint getPixPntMaxCurr() const;
 
 	bool baseLineSelected   (fPixelPoint const &) const;
 	bool freqMaxLineSelected(fPixelPoint const &) const;
+	bool currMaxLineSelected(fPixelPoint const &) const;
 	bool timeMaxLineSelected(fPixelPoint const &) const;
 
 	void displayBaseFrequency(D2D1::ColorF const, fPixel const) const;
 	void displayFreqLine     (fMicroSecs const, fPixel const, D2D1::ColorF const) const;
+	void displayCurrLine     (fMicroSecs const, fPixel const, D2D1::ColorF const) const;
 	void displayTimeLine     (fMicroSecs const, fPixel const, D2D1::ColorF const) const;
-	void displayPoint        (fMicroSecs const, fPixel const, fPixel const, D2D1::ColorF const) const;
+	void displayFreqMaxPoint (fMicroSecs const, fPixel const, D2D1::ColorF const, fPixel const) const;
+	void displayCurrMaxPoint (fMicroSecs const, fPixel const, D2D1::ColorF const, fPixel const) const;
 
-	void paintSigGenData(D2D1::ColorF const) const;
+	void paintFreqCurve(D2D1::ColorF const) const;
+	void paintCurrCurve(D2D1::ColorF const) const;
 	void highlightMovedObject() const;
 
-	enum class tMoveMode { NONE, MAX_PNT, MAX_FREQ, MAX_TIME, BASE_FREQ };
+	enum class tMoveMode { NONE, MAX_FREQ_PNT, MAX_FREQ, MAX_TIME, BASE_FREQ, MAX_CURR_PNT, MAX_CURR };
 	enum class tZoomMode { NONE, HORZ, VERT };
 
 	inline static fPixel const DIAMOND_SIZE   {  4.0_fPixel };

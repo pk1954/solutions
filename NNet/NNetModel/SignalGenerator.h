@@ -24,12 +24,15 @@ public:
 
 	fHertz GetActFrequency()                 const;
 	fHertz GetFrequency   (fMicroSecs const) const;
+	mV     GetActPeakCurr ()                 const;
+	mV     GetPeakCurr    (fMicroSecs const) const;
 
 	void LoadParameterValues();
 
-	fHertz     FreqBase() const { return m_freqBase; };
-	fHertz     FreqMax () const { return m_freqMaxStim; };
-	fMicroSecs TimeMax () const { return m_usMax;    };
+	fHertz     FreqBase() const { return m_freqBase;    }
+	fHertz     FreqMax () const { return m_freqMaxStim; }
+	fMicroSecs TimeMax () const { return m_usMax;       }
+	mV         CurrMax () const { return m_mVmaxPeak;   }
 
 	void SetParam(ParamType::Value const, float const);
 	void SetParams(SignalGenerator const &);
@@ -47,6 +50,7 @@ public:
 	Param const & GetParams() const { return * m_pParameters; }
 
 private:
+	float stimulusFunc(float fParam) const { return exp(1.f - fParam) * fParam;	}
 
 	inline static float const CUT_OFF_FACTOR { 10.0f };
 
@@ -58,5 +62,5 @@ private:
 	fHertz     m_freqBase    { };  // base frequency
 	fHertz     m_freqMaxStim { };  // max stimulus frequency in addition to base freq
 	fMicroSecs m_usMax       { };
-	mV         m_mVpeak      { };
+	mV         m_mVmaxPeak   { };
 };

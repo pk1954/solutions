@@ -23,7 +23,7 @@ fHertz SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
 	if (InStimulusRange(uSecs))
 	{
 		float  const fFactor  { uSecs / m_usMax };
-		fHertz const freqStim { m_freqMaxStim * exp(1 - fFactor) * fFactor };
+		fHertz const freqStim { m_freqMaxStim * stimulusFunc(fFactor) };
 		return m_freqBase + freqStim;
 	}
 	else
@@ -33,6 +33,23 @@ fHertz SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
 fHertz SignalGenerator::GetActFrequency() const 
 { 
 	return GetFrequency(m_usSinceLastStimulus);
+}
+
+mV SignalGenerator::GetPeakCurr(fMicroSecs const uSecs) const
+{
+	if (InStimulusRange(uSecs))
+	{
+		float const fFactor { uSecs / m_usMax };
+		mV    const curr    { m_mVmaxPeak * stimulusFunc(fFactor) };
+		return curr;
+	}
+	else
+		return m_pParameters->PeakVoltage();
+}
+
+mV SignalGenerator::GetActPeakCurr() const
+{
+	return GetPeakCurr(m_usSinceLastStimulus);
 }
 
 void SignalGenerator::Tick()
@@ -48,6 +65,7 @@ void SignalGenerator::LoadParameterValues()
 	m_freqBase    = m_pParameters->BaseFrequency();
 	m_freqMaxStim = m_pParameters->StimulusMaxFreq();
 	m_usMax       = m_pParameters->StimulusMaxTime();
+	m_mVmaxPeak   = m_pParameters->PeakVoltage();
 	NotifyAll(false);
 }
 
@@ -59,7 +77,7 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 		case stimulusMaxFreq: m_freqMaxStim = f; break;
 		case stimulusMaxTime: m_usMax       = f; break;
 		case baseFrequency:   m_freqBase    = f; break;
-		case peakVoltage:     m_mVpeak      = f; break;
+		case peakVoltage:     m_mVmaxPeak   = f; break;
 		default: assert(false);
 	}
 	NotifyAll(false);
@@ -70,7 +88,7 @@ void SignalGenerator::SetParams(SignalGenerator const& src)
 	m_freqBase    = src.m_freqBase;
 	m_freqMaxStim = src.m_freqMaxStim;
 	m_usMax       = src.m_usMax;
-	m_mVpeak      = src.m_mVpeak;
+	m_mVmaxPeak   = src.m_mVmaxPeak;
 	NotifyAll(false);
 }
 
@@ -94,6 +112,6 @@ void SignalGenerator::SetTimeMax(fMicroSecs const t)
 
 void SignalGenerator::SetPeakVoltage(mV const v)
 {
-	m_mVpeak = max(0._mV, v);
+	m_mVmaxPeak = max(0._mV, v);
 	NotifyAll(false);
 }

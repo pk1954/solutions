@@ -27,6 +27,8 @@ SignalDesigner::SignalDesigner
 	m_commands(commands),
 	m_nmwi(nmwi)
 {
+	static PIXEL STD_WINDOW_HEIGHT { 450_PIXEL };
+
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
@@ -71,8 +73,13 @@ SignalDesigner::SignalDesigner
 	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
-	m_vertCoordCurr.SetPixelSize(0.25_mV);
-	m_vertCoordCurr.SetPixelSizeLimits(0.05_mV, 100._mV); 
+	mV    const mVmaxPeak         { m_pParameters->PeakVoltage() };
+	mV    const mVmaxPeakScaleLen { mVmaxPeak * 4.0f };
+	PIXEL const pixVertScaleLen   { STD_WINDOW_HEIGHT - TOP_OFFSET  - BOTTOM_OFFSET };
+	mV    const mVpixelSize       { mVmaxPeakScaleLen / pixVertScaleLen.GetValue() };
+
+	m_vertCoordCurr.SetPixelSize(mVpixelSize);
+	m_vertCoordCurr.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
 	m_vertCoordCurr.SetZoomFactor(1.3f);
 
 	m_upVertScaleFreq->SetOrientation(true);
@@ -87,7 +94,7 @@ SignalDesigner::SignalDesigner
 //	m_hwndTriggerButton   = CreateButton(hwnd, L"Trigger",      0, 0, 50, 20, IDM_TRIGGER_STIMULUS);
 	m_hwndApply2AllButton = CreateButton(hwnd, L"Apply to all", 0, 0, 80, 20, IDD_APPLY2ALL);
 
-	::MoveWindow(hwnd, 100, 100, 500, 450, true);
+	::MoveWindow(hwnd, 100, 100, 500, STD_WINDOW_HEIGHT.GetValue(), true);
 }
 
 void SignalDesigner::Stop()
