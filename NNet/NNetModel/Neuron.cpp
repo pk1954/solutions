@@ -98,7 +98,7 @@ SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound)
 void Neuron::Recalc() 
 {
 	m_factorW = 1.0f / m_pParameters->PulseWidth().GetValue();
-	m_factorU = 4.0f * m_factorW * m_pParameters->PeakVoltage().GetValue();
+	m_factorU = 4.0f * m_factorW * m_pParameters->NeuronPeakVolt().GetValue();
 };
 
 mV Neuron::WaveFunction(fMicroSecs const time) const
@@ -150,7 +150,7 @@ mV Neuron::GetNextOutput() const
 {
 	return (m_usSinceLastPulse <= m_pParameters->PulseWidth())
 		   ? WaveFunction(m_usSinceLastPulse)
-		   : BASE_POTENTIAL;
+		   : 0.0_mV;
 }
 
 void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const & text) const

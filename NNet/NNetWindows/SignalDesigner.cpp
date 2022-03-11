@@ -53,10 +53,10 @@ SignalDesigner::SignalDesigner
 	runObservable.RegisterObserver(*m_upSignalControl.get());
 
 	static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
-	static D2D1::ColorF COLOR_CURR { D2D1::ColorF::Blue  };
+	static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
-	m_upSignalControl->SetFreqColor(COLOR_FREQ);
-	m_upSignalControl->SetVoltColor(COLOR_CURR);
+	m_upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
+	m_upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT);
 
 	m_upHorzScale     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
 	m_upVertScaleFreq = make_unique<Scale<fHertz    >>(hwnd, true,  m_vertCoordFreq);
@@ -73,7 +73,7 @@ SignalDesigner::SignalDesigner
 	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
-	mV    const mVmaxPeak         { m_pParameters->PeakVoltage() };
+	mV    const mVmaxPeak         { m_sigGen.Voltage().peak };
 	mV    const mVmaxPeakScaleLen { mVmaxPeak * 4.0f };
 	PIXEL const pixVertScaleLen   { STD_WINDOW_HEIGHT - TOP_OFFSET  - BOTTOM_OFFSET };
 	mV    const mVpixelSize       { mVmaxPeakScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
@@ -87,7 +87,7 @@ SignalDesigner::SignalDesigner
 	m_upVertScaleFreq->Show(true);
 
 	m_upVertScaleVolt->SetOrientation(false);
-	m_upVertScaleVolt->SetColor(COLOR_CURR);
+	m_upVertScaleVolt->SetColor(COLOR_VOLT);
 	m_upVertScaleVolt->Show(true);
 
 

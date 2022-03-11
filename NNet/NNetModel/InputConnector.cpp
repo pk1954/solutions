@@ -63,6 +63,17 @@ void InputConnector::AppendMenuItems(AddMenuFunc const & add) const
     IoConnector::AppendMenuItems(add);
 }
 
+void InputConnector::Prepare()
+{
+    m_signalGenerator.Tick();
+    fHertz     const freq            { m_signalGenerator.GetActFrequency() };
+    fMicroSecs const time2Trigger    { PulseDuration(freq) };
+    float      const ticks2Trigger   { time2Trigger / m_pParameters->TimeResolution() };
+    mV         const increasePerTick { m_pParameters->Threshold() / ticks2Trigger };
+    m_mVinputBuffer += increasePerTick;
+    Apply2All([this](IoNeuron & n){ n.SetVoltage(m_mVinputBuffer); });
+}
+
 mV InputConnector::WaveFunction(fMicroSecs const time) const
 {
     mV const mVact { m_signalGenerator.GetVoltage(time) };

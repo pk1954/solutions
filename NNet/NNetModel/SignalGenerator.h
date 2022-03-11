@@ -29,22 +29,22 @@ public:
 
 	void LoadParameterValues();
 
-	fHertz     FreqBase() const { return m_freqBase;    }
-	fHertz     FreqMax () const { return m_freqMaxStim; }
-	fMicroSecs TimeMax () const { return m_usMax;       }
-	mV         VoltMax () const { return m_mVmaxPeak;   }
+	fMicroSecs        const & TimePeak () const { return m_usPeak; }
+	BASE_PEAK<fHertz> const & Frequency() const { return m_freq;  }
+	BASE_PEAK<mV>     const & Voltage  () const { return m_volt;  }
 
 	void SetParam(ParamType::Value const, float const);
 	void SetParams(SignalGenerator const &);
 
-	void SetFreqBase   (fHertz const);
-	void SetFreqMax    (fHertz const);
-	void SetTimeMax    (fMicroSecs const);
-	void SetPeakVoltage(mV const);
+	void SetBaseFreq(fHertz const);
+	void SetPeakFreq(fHertz const);
+	void SetBaseVolt(mV const);
+	void SetPeakVolt(mV const);
+	void SetTimePeak(fMicroSecs const); 
 
 	bool       IsTriggerActive() const { return m_bTriggerActive; }
 	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
-	fMicroSecs CutoffTime     () const { return m_usMax * CUT_OFF_FACTOR; }
+	fMicroSecs CutoffTime     () const { return m_usPeak * CUT_OFF_FACTOR; }
 	bool       InStimulusRange(fMicroSecs const t) const { return t < CutoffTime(); }
 
 	Param const & GetParams() const { return * m_pParameters; }
@@ -59,8 +59,7 @@ private:
 	bool       m_bTriggerActive      { false };
 	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
 
-	fHertz     m_freqBase    { };  // base frequency
-	fHertz     m_freqMaxStim { };  // max stimulus frequency in addition to base freq
-	fMicroSecs m_usMax       { };
-	mV         m_mVmaxPeak   { };
+	BASE_PEAK<fHertz> m_freq;
+	BASE_PEAK<mV>     m_volt;
+	fMicroSecs        m_usPeak { };
 };

@@ -23,6 +23,7 @@ public:
 
 	~InputConnector() final = default;
 
+	void Prepare() final;
 	void AppendMenuItems(AddMenuFunc const &) const final;
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
@@ -30,7 +31,6 @@ public:
 	void DrawExterior(DrawContext const &, tHighlight const) const final;
 
 	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
-	void Tick           () { m_signalGenerator.Tick(); }
 
 	SignalGenerator       & GetSignalGenerator ()       { return m_signalGenerator; }
 	SignalGenerator const & GetSignalGeneratorC() const { return m_signalGenerator; }

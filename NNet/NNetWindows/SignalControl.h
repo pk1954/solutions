@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <array>
 #include "Direct2D.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
@@ -11,6 +12,8 @@
 #include "SignalGenerator.h"
 #include "NNetParameters.h"
 #include "win32_graphicsWindow.h"
+
+using std::array;
 
 class ComputeThread;
 class NNetModelCommands;
@@ -37,25 +40,22 @@ public:
 		m_pParameters = & param; 
 	}
 
-	void SetFreqColor(D2D1::ColorF const col)
-	{
-		m_colorFreq = col;
-	}
+	enum class tColor { FREQ, VOLT, TIME, HIGH };
 
-	void SetVoltColor(D2D1::ColorF const col)
+	void SetColor(tColor const type, D2D1::ColorF const col)
 	{
-		m_colorVolt = col;
+		m_colTable[static_cast<int>(type)] = col;
 	}
 
 private:
 
 	void paintCurve(auto getPoint, D2D1::ColorF const col) const
 	{
-		fMicroSecs const usResolution { m_signalGenerator.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
+		fMicroSecs const usResolution { m_sigGen.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
 		fMicroSecs const usPixelSize  { m_horzCoord.GetPixelSize() };
 		fMicroSecs const usIncrement  { (usPixelSize > usResolution) ? usPixelSize : usResolution };
 		fMicroSecs const timeStart    { 0.0_MicroSecs };
-		fMicroSecs const timeCutoff   { m_signalGenerator.CutoffTime() };
+		fMicroSecs const timeCutoff   { m_sigGen.CutoffTime() };
 		fMicroSecs       timeEnd      { m_horzCoord.Transform2logUnitSize(m_fPixGraphWidth) };
 		fPixelPoint      prevPoint    { getPoint(timeStart) };
 
@@ -78,45 +78,59 @@ private:
 	void OnMouseMove (WPARAM const, LPARAM const) final;
 	bool OnMouseLeave(WPARAM const, LPARAM const) final;
 
-	fMicroSecs getTime(fPixel const) const;
-	fHertz     getFreq(fPixel const) const;
-	mV         getVolt(fPixel const) const;
+	fPixel     getY   (fPixel const fPix) const { return yBottom() - fPix; }
+	fMicroSecs getTime(fPixel const fPix) const { return m_horzCoord.Transform2logUnitPos(fPix); }
+	fHertz     getFreq(fPixel const fPix) const { return m_vertCoordFreq.Transform2logUnitPos(getY(fPix)); }
+	mV         getVolt(fPixel const fPix) const { return m_vertCoordVolt.Transform2logUnitPos(getY(fPix)); }
 
-	fPixel getPixX(fMicroSecs const) const;
-	fPixel getPixYfreq(fHertz const) const;
-	fPixel getPixYvolt(mV     const) const;
-	fPixel getPixXmax() const;
-	fPixel getPixYmaxFreq() const;
-	fPixel getPixYmaxVolt() const;
-	fPixel getPixYbase() const;
+	fPixel xTime(fMicroSecs const time) const { return fPixel(m_horzCoord.Transform2fPixelPos(time)); }
+	fPixel yPos (fPixel     const fPix) const { return yBottom() - fPix; }
+	fPixel yFreq(fHertz     const freq) const { return yPos(m_vertCoordFreq.Transform2fPixelPos(freq)); }
+	fPixel yVolt(mV         const volt) const { return yPos(m_vertCoordVolt.Transform2fPixelPos(volt)); }
 
-	fPixelPoint getPixPntFreq  (fMicroSecs const, fHertz const) const;
-	fPixelPoint getPixPntVolt  (fMicroSecs const, mV     const) const;
-	fPixelPoint getGraphPntFreq(fMicroSecs const) const;
-	fPixelPoint getGraphPntVolt(fMicroSecs const) const;
-	fPixelPoint getPixPntMaxFreq() const;
-	fPixelPoint getPixPntMaxVolt() const;
+	fPixel xLeft  () const { return Convert2fPixel(0_PIXEL); }
+	fPixel xRight () const { return Convert2fPixel(GetClientWindowWidth());  }
+	fPixel yBottom() const { return Convert2fPixel(GetClientWindowHeight()); }
+	fPixel xPeak  () const { return xTime(m_sigGen.TimePeak());	}
 
-	bool baseLineSelected   (fPixelPoint const &) const;
-	bool freqMaxLineSelected(fPixelPoint const &) const;
-	bool currMaxLineSelected(fPixelPoint const &) const;
-	bool timeMaxLineSelected(fPixelPoint const &) const;
+	fPixel yPeakVolt() const { return yVolt(m_sigGen.Voltage().peak); }
+	fPixel yBaseVolt() const { return yVolt(m_sigGen.Voltage().base); }
+	fPixel yPeakFreq() const { return yFreq(m_sigGen.Frequency().peak); }
+	fPixel yBaseFreq() const { return yFreq(m_sigGen.Frequency().base); }
 
-	void displayBaseFrequency(D2D1::ColorF const, fPixel const) const;
-	void displayFreqLine     (fMicroSecs const, fPixel const, D2D1::ColorF const) const;
-	void displayVoltLine     (fMicroSecs const, fPixel const, D2D1::ColorF const) const;
-	void displayTimeLine     (fMicroSecs const, fPixel const, D2D1::ColorF const) const;
-	void displayFreqMaxPoint (fMicroSecs const, fPixel const, D2D1::ColorF const, fPixel const) const;
-	void displayVoltMaxPoint (fMicroSecs const, fPixel const, D2D1::ColorF const, fPixel const) const;
+	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
+	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
+	fPixelPoint pixPntFreq(fMicroSecs const t) const { return pixPntFreq(t, m_sigGen.GetFrequency(t)); }
+	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, m_sigGen.GetVoltage(t)); }
 
+	fPixelPoint handleBaseFreq() const { return fPixelPoint(xLeft (), yBaseFreq()); }
+	fPixelPoint handlePeakFreq() const { return fPixelPoint(xLeft (), yPeakFreq()); }
+	fPixelPoint handleTimeFreq() const { return fPixelPoint(xPeak (), yPeakFreq()); }
+	fPixelPoint handleBaseVolt() const { return fPixelPoint(xRight(), yBaseVolt()); }
+	fPixelPoint handlePeakVolt() const { return fPixelPoint(xRight(), yPeakVolt()); }
+	fPixelPoint handleTimeVolt() const { return fPixelPoint(xPeak (), yPeakVolt()); }
+	fPixelPoint handlePeakTime() const { return fPixelPoint(xPeak (), yBottom  ()); }
+
+	void drawLine(tColor, fPixelPoint const &, fPixelPoint const &) const;
+	void drawDiam(tColor, fPixelPoint const &) const;
 	void highlightMovedObject() const;
 
-	enum class tMoveMode { NONE, MAX_FREQ_PNT, MAX_FREQ, MAX_TIME, BASE_FREQ, MAX_CURR_PNT, MAX_CURR };
-	enum class tZoomMode { NONE, HORZ, VERT };
+	void setMoveMode(fPixelPoint const &);
 
-	inline static fPixel const DIAMOND_SIZE   {  4.0_fPixel };
-	inline static fPixel const LINE_WIDTH_STD {  1.0_fPixel };
-	inline static fPixel const RECOG_DIST     { 10.0_fPixel };
+	enum class tMoveMode  { NONE, TIME, BASE_FREQ, PEAK_FREQ, TIME_FREQ, BASE_VOLT, PEAK_VOLT, TIME_VOLT };
+
+	array<D2D1::ColorF, 4> m_colTable 
+	{ 
+		D2D1::ColorF::Black, // FREQ
+		D2D1::ColorF::Black, // VOLT
+		D2D1::ColorF::Black, // TIME
+		D2D1::ColorF::Red    // HIGH
+	};
+
+	D2D1::ColorF getColor(tColor const type) const
+	{
+		return m_colTable[static_cast<int>(type)];
+	}
 
 	inline static Param * m_pParameters { nullptr };
 
@@ -124,7 +138,7 @@ private:
 	PixFpDimension<fHertz>     & m_vertCoordFreq;
 	PixFpDimension<mV>         & m_vertCoordVolt;
 	ComputeThread        const & m_computeThread;
-	SignalGenerator            & m_signalGenerator;
+	SignalGenerator            & m_sigGen;
 	NNetModelCommands          & m_commands;
 	SignalGenerator              m_sigGenNew;
 	tMoveMode                    m_moveMode       { tMoveMode::NONE };
@@ -132,4 +146,6 @@ private:
 	fPixel                       m_fPixLineWidth  { 1.0_fPixel };
 	D2D1::ColorF                 m_colorFreq      { D2D1::ColorF::Black };
 	D2D1::ColorF                 m_colorVolt      { D2D1::ColorF::Black };
+	D2D1::ColorF                 m_colorTime      { D2D1::ColorF::Black };
+	D2D1::ColorF                 m_colorHigh      { D2D1::ColorF::Red };
 };

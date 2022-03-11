@@ -20,20 +20,17 @@ public:
 
 	~InputNeuron() final = default;
 
-	virtual mV WaveFunction(fMicroSecs const) const;
-
 	void Check() const final;
 
 	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
-	fHertz GetActFrequency() const;
+	//fHertz GetActFrequency() const;
 
 	void DrawExterior(DrawContext const &, tHighlight const) const final;
 	void DrawInterior(DrawContext const &, tHighlight const) const final;
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
-	void Prepare() final;
 	bool Includes(MicroMeterPnt const &) const final;
 
 	void AppendMenuItems(AddMenuFunc const &) const final;

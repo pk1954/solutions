@@ -32,13 +32,8 @@ Degrees NNetModelReaderInterface::GetDirection(NobId const id) const
 
 fHertz NNetModelReaderInterface::GetActFrequency(NobId const id) const 
 { 
-	NobType const type { GetNobType(id) };
-	if (type.IsInputConnectorType())
-		return m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetActFrequency();
-	else if (type.IsInputNeuronType())
-		return m_pModel->GetNobConstPtr<InputNeuron const *>(id)->GetActFrequency();
-	else
-		return fHertz::NULL_VAL(); 
+	auto p { m_pModel->GetNobConstPtr<InputConnector const *>(id) };
+	return p ? p->GetActFrequency() : fHertz::NULL_VAL(); 
 }
 
 size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const

@@ -84,7 +84,7 @@ void Pipe::recalc(Param const & param)
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, param.TimeResolution()) };
 	MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
 	unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
-	m_potential.resize(iNrOfSegments, BASE_POTENTIAL);
+	m_potential.resize(iNrOfSegments, 0.0_mV);
 	m_potIndex = 0;
 }
 

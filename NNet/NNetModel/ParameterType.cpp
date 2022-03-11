@@ -14,18 +14,21 @@ wchar_t const * ParamType::GetName(ParamType::Value const p)
 	using enum ParamType::Value;
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
-		{ stimulusMaxFreq, L"StimulusMaxFreq"  },
-		{ stimulusMaxTime, L"StimulusMaxTime"  },
-		{ baseFrequency,   L"BaseFrequency"    },
-		{ pulseSpeed,      L"PulseSpeed"       },
-		{ pulseWidth,      L"PulseWidth"       },
-		{ threshold,       L"Threshold"        },
-		{ peakVoltage,     L"PeakVoltage"      },
-    	{ refractPeriod,   L"RefractoryPeriod" },
-	    { timeResolution,  L"TimeResolution"   },
-		{ signalLoss,      L"SignalLoss"       },   // Legacy
-		{ stdPulseRate,    L"StdPulseRate"     },   // Legacy
-    	{ pulseRate,       L"PulseRate"        }    // Legacy
+		{ inputPeakTime,  L"StimulusMaxTime"  }, // stimulus time til peak
+		{ inputPeakFreq,  L"StimulusMaxFreq"  }, // stimulus maximum frequency
+		{ inputPeakVolt,  L"StimulusMaxVolt"  }, // max amplitude of input connector stimuli
+		{ inputBaseFreq,  L"inputBaseFreq"    }, // frequency of normal input connector pulses
+		{ inputBaseVolt,  L"inputBaseVolt"    }, // amplitude of normal input connector pulses
+		{ neuronPeakVolt, L"PeakVoltage"      }, // peak voltage when neuron triggers
+		{ pulseSpeed,     L"PulseSpeed"       },
+		{ pulseWidth,     L"PulseWidth"       },
+		{ threshold,      L"Threshold"        },
+    	{ refractPeriod,  L"RefractoryPeriod" },
+	    { timeResolution, L"TimeResolution"   },
+		{ baseFrequency,  L"BaseFrequency"    },   // Legacy
+		{ signalLoss,     L"SignalLoss"       },   // Legacy
+		{ stdPulseRate,   L"StdPulseRate"     },   // Legacy
+    	{ pulseRate,      L"PulseRate"        }    // Legacy
 	};				  
 	
 	return mapParam.at(p);
@@ -36,13 +39,15 @@ wchar_t const * ParamType::GetUnit(ParamType::Value const p)
 	using enum ParamType::Value;
 	static unordered_map < ParamType::Value, wchar_t const * const > mapParam =
 	{
-		{ stimulusMaxFreq, L"Hz"    },
-		{ stimulusMaxTime, L"탎"    },
+		{ inputPeakFreq,   L"Hz"    },
+		{ inputPeakTime,   L"탎"    },
+		{ inputPeakVolt,   L"mV"    },
+		{ inputBaseVolt,   L"mV"    },
 		{ baseFrequency,   L"Hz"    },
 		{ pulseSpeed,      L"m/sec" },
 		{ pulseWidth,      L"탎"    },
 		{ threshold,       L"mV"    },
-		{ peakVoltage,     L"mV"    },
+		{ neuronPeakVolt,  L"mV"    },
     	{ refractPeriod,   L"탎"    },
 	    { timeResolution,  L"탎"    },
 		{ signalLoss,      L"1/탆"  },  // Legacy

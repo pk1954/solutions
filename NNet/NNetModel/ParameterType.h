@@ -14,16 +14,19 @@ class ParamType
 public:
 	enum class Value
 	{
-		stimulusMaxFreq,
-		stimulusMaxTime,
-		baseFrequency,
+		inputPeakTime,
+		inputPeakFreq,
+		inputPeakVolt,
+		inputBaseFreq,
+		inputBaseVolt,
+		neuronPeakVolt,   // peak voltage for neuron output
+		threshold,        // trigger voltage for neurons
 		pulseSpeed,
 		pulseWidth,
-		threshold,
-		peakVoltage,
 		refractPeriod,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
+		baseFrequency,  // legacy  
 		pulseRate,      // legacy
 		signalLoss,     // legacy
 		stdPulseRate,   // legacy

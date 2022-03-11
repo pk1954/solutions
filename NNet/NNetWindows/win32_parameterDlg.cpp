@@ -77,8 +77,7 @@ HWND ParameterDialog::addParameter
 void ParameterDialog::resetParameters()  // refresh edit fields with data from model
 {
 	using enum ParamType::Value;
-	resetParameter(m_hwndBaseFrequency,    baseFrequency );
-	resetParameter(m_hwndPeakVoltage,      peakVoltage   );
+	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	resetParameter(m_hwndThreshold,        threshold     );
 	resetParameter(m_hwndPulseWidth,       pulseWidth    );
 	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
@@ -89,8 +88,7 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {
 	using enum ParamType::Value;
-	applyParameter(m_hwndBaseFrequency,    baseFrequency );
-	applyParameter(m_hwndPeakVoltage,      peakVoltage   );
+	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	applyParameter(m_hwndThreshold,        threshold     );
 	applyParameter(m_hwndPulseWidth,       pulseWidth    );
 	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
@@ -112,8 +110,8 @@ void ParameterDialog::Start
 
 	int iYpos { 10 };
 	using enum ParamType::Value;
-	m_hwndBaseFrequency    = addParameter(hwndDlg, baseFrequency,  iYpos); 
-	m_hwndPeakVoltage      = addParameter(hwndDlg, peakVoltage,    iYpos); 
+//	m_hwndBaseFrequency    = addParameter(hwndDlg, baseFrequency,  iYpos); 
+	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt, iYpos); 
 	m_hwndThreshold        = addParameter(hwndDlg, threshold,      iYpos); 
 	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,     iYpos); 
 	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 

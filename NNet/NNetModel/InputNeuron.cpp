@@ -39,31 +39,13 @@ void InputNeuron::Check() const
 	assert(!HasIncoming());
 }
 
-fHertz InputNeuron::GetActFrequency() const
-{
-	return HasParentNob()
-		? static_cast<InputConnector *>(GetParentNob())->GetActFrequency()
-		: m_pParameters->BaseFrequency();
-}
-
-void InputNeuron::Prepare()
-{
-	if (HasParentNob())
-		static_cast<InputConnector *>(GetParentNob())->Tick();
-	fHertz     const freq            { GetActFrequency() };
-	fMicroSecs const time2Trigger    { PulseDuration(freq) };
-	float      const ticks2Trigger   { time2Trigger / m_pParameters->TimeResolution() };
-	mV         const increasePerTick { m_pParameters->Threshold() / ticks2Trigger };
-	m_mVinputBuffer += increasePerTick;
-}
-
-mV InputNeuron::WaveFunction(fMicroSecs const time) const
-{
-	return HasParentNob()
-	? static_cast<InputConnector *>(GetParentNob())->WaveFunction(time)
-	: Neuron::WaveFunction(time);
-}
-
+//fHertz InputNeuron::GetActFrequency() const
+//{
+//	return HasParentNob()
+//		? static_cast<InputConnector *>(GetParentNob())->GetActFrequency()
+//		: fHertz::NULL_VAL();
+//}
+//
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));

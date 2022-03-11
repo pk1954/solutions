@@ -138,7 +138,7 @@ unsigned long Script::numeric
          
       case tTOKEN::Name: // may be symbolic constant 
          {
-           Symbol const & symbol { SymbolTable::GetSymbolFromName(m_scanner.GetString()) };
+            Symbol const & symbol { SymbolTable::GetSymbolFromName(m_scanner.GetString()) };
             switch (symbol.GetSymbolType())
             {
                case tSTYPE::ULongConst:

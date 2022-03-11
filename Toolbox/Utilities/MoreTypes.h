@@ -32,3 +32,12 @@ using MicroMeterRectSize = SizeType<MicroMeter>;
 using MicroMeterLine     = LineType<MicroMeter>;
 using MicroMeterCircle   = CircleType <MicroMeter>;
 using MicroMeterEllipse  = EllipseType<MicroMeter>;
+
+template <typename UNIT>
+struct BASE_PEAK
+{
+	UNIT base;
+	UNIT peak;
+
+	bool operator==(BASE_PEAK const & rhs) const = default;
+};

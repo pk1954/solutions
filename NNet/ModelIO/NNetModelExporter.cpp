@@ -88,9 +88,10 @@ void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
             using enum ParamType::Value;
             NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
             SignalGenerator const & sigGen { inpConn.GetSignalGeneratorC() };
-            out << L"SetParam" << id << baseFrequency   << sigGen.FreqBase() << endl; 
-            out << L"SetParam" << id << stimulusMaxFreq << sigGen.FreqMax()  << endl; 
-            out << L"SetParam" << id << stimulusMaxTime << sigGen.TimeMax()  << endl; 
+            out << L"SetParam" << id << inputBaseVolt << sigGen.Voltage  ().base << endl; 
+            out << L"SetParam" << id << inputPeakVolt << sigGen.Voltage  ().peak << endl; 
+            out << L"SetParam" << id << inputPeakFreq << sigGen.Frequency().peak << endl; 
+            out << L"SetParam" << id << inputPeakTime << sigGen.TimePeak ()      << endl; 
         }
    );
 }

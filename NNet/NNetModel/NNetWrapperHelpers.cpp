@@ -107,7 +107,7 @@ unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 ParamType::Value ScrReadParamType(Script& script)
 {
 	unsigned long const ulParamType { script.ScrReadUlong() };
-	if (ulParamType > static_cast<unsigned long>(ParamType::Value::tParameterLastGlobal))
+	if (ulParamType > static_cast<unsigned long>(ParamType::Value::tParameterLast))
 		throw ScriptErrorHandler::ScriptException(999, wstring(L"unknown parameter type"));
 	ParamType::Value param { static_cast<ParamType::Value>(ulParamType) };
 	return param;

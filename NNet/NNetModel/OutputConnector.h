@@ -24,6 +24,8 @@ public:
 
 	~OutputConnector() final = default;
 
+	void Prepare() override { /* done by output neurons */  };
+
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
 	void DrawExterior(DrawContext const &, tHighlight const) const override;
