@@ -46,8 +46,8 @@ SignalDesigner::SignalDesigner
 		m_commands,
 		m_sigGen,
 		m_horzCoord, 
-		m_vertCoordFreq,
-		m_vertCoordVolt
+		&m_vertCoordFreq,
+		&m_vertCoordVolt
 	);
 
 	runObservable.RegisterObserver(*m_upSignalControl.get());

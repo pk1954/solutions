@@ -25,115 +25,35 @@ SignalControl::SignalControl
 	NNetModelCommands          & commands,
 	SignalGenerator            & sigGen,
 	PixFpDimension<fMicroSecs> & horzCoord,
-	PixFpDimension<fHertz>     & vertCoordFreq,
-	PixFpDimension<mV>         & vertCoordVolt
+	PixFpDimension<fHertz>     * pVertCoordFreq,
+	PixFpDimension<mV>         * pVertCoordVolt
 )
   :	m_horzCoord(horzCoord),
-	m_vertCoordFreq(vertCoordFreq),
-	m_vertCoordVolt(vertCoordVolt),
+	m_pVertCoordFreq(pVertCoordFreq),
+	m_pVertCoordVolt(pVertCoordVolt),
 	m_computeThread(computeThread),
 	m_sigGen(sigGen),
 	m_commands(commands)
 {
-	m_sigGen       .RegisterObserver(*this); // signal generator data can be changed fron outside
-	m_horzCoord    .RegisterObserver(*this); 
-	m_vertCoordFreq.RegisterObserver(*this);
-	m_vertCoordVolt.RegisterObserver(*this);
+	m_sigGen   .RegisterObserver(*this); // signal generator data can be changed fron outside
+	m_horzCoord.RegisterObserver(*this); 
+	if (m_pVertCoordFreq)
+		m_pVertCoordFreq->RegisterObserver(*this);
+	if (m_pVertCoordVolt)
+		m_pVertCoordVolt->RegisterObserver(*this);
 	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
-}
-
-void SignalControl::highlightMovedObject() const
-{
-	switch (m_moveMode)
-	{
-	case tMoveMode::TIME:
-		drawLine(tColor::HIGH, handlePeakTime(), handleTimeVolt());
-		drawLine(tColor::HIGH, handlePeakTime(), handleTimeFreq());
-		drawDiam(tColor::HIGH, handlePeakTime());
-		break;
-	case tMoveMode::PEAK_FREQ:
-		drawLine(tColor::HIGH, handlePeakFreq(), handleTimeFreq());
-		drawDiam(tColor::HIGH, handlePeakFreq());
-		break;
-	case tMoveMode::BASE_FREQ:
-		drawLine(tColor::HIGH, handleBaseFreq(), fPixelPoint(xRight(), yBaseFreq()));
-		drawDiam(tColor::HIGH, handleBaseFreq());
-		break;
-	case tMoveMode::TIME_FREQ:
-		drawLine(tColor::HIGH, handlePeakFreq(), handleTimeFreq());
-		drawLine(tColor::HIGH, handlePeakTime(), handleTimeVolt());
-		drawLine(tColor::HIGH, handlePeakTime(), handleTimeFreq());
-		drawDiam(tColor::HIGH, pixPntFreq(m_sigGen.TimePeak()));
-		break;
-	case tMoveMode::BASE_VOLT:
-		drawLine(tColor::HIGH, handleBaseVolt(), fPixelPoint(xLeft(), yBaseVolt()));
-		drawDiam(tColor::HIGH, handleBaseVolt());
-		break;
-	case tMoveMode::PEAK_VOLT:
-		drawLine(tColor::HIGH, handleTimeVolt(), handlePeakVolt());
-		drawDiam(tColor::HIGH, handlePeakVolt());
-		break;
-	case tMoveMode::TIME_VOLT:
-		drawLine(tColor::HIGH, handleTimeVolt(), handlePeakVolt());
-		drawLine(tColor::HIGH, handlePeakTime(), handleTimeVolt());
-		drawLine(tColor::HIGH, handlePeakTime(), handleTimeFreq());
-		drawDiam(tColor::HIGH, pixPntVolt(m_sigGen.TimePeak()));
-		break;
-	default:
-		break;
-	}
-}
-
-void SignalControl::DoPaint()
-{
-	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
-
-	if (m_computeThread.IsRunning())
-	{
-		if (m_sigGen.IsTriggerActive())
-		{
-			fMicroSecs  time   { m_sigGen.TimeTilTrigger() };
-			fPixelPoint pntFreq{ pixPntFreq(time) };
-			fPixelPoint pntVolt{ pixPntVolt(time) };
-			drawDiam(tColor::VOLT, pixPntVolt(time));
-			drawLine(tColor::FREQ, pntFreq, fPixelPoint(xLeft(),        pntFreq.GetY()));
-			drawLine(tColor::TIME, pntFreq, fPixelPoint(pntFreq.GetX(), yBottom()));
-			drawLine(tColor::VOLT, pntVolt, fPixelPoint(xRight(),       pntVolt.GetY()));
-			drawLine(tColor::TIME, pntVolt, fPixelPoint(pntVolt.GetX(), yBottom()));
-			drawDiam(tColor::FREQ, pntFreq);
-			drawDiam(tColor::VOLT, pntVolt);
-		}
-	}
-	else 
-	{
-		if (m_moveMode != tMoveMode::NONE)
-			highlightMovedObject();
-		drawLine(tColor::FREQ, handleBaseFreq(), fPixelPoint(xRight(), yBaseFreq()));
-		drawLine(tColor::VOLT, handleBaseVolt(), fPixelPoint(xLeft (), yBaseVolt()));
-		drawLine(tColor::VOLT, handleTimeVolt(), handlePeakVolt());
-		drawLine(tColor::FREQ, handlePeakFreq(), handleTimeFreq());
-		drawLine(tColor::TIME, handlePeakTime(), handleTimeVolt());
-		drawLine(tColor::TIME, handlePeakTime(), handleTimeFreq());
-		drawDiam(tColor::VOLT, handleBaseVolt());
-		drawDiam(tColor::VOLT, handlePeakVolt());
-		drawDiam(tColor::VOLT, pixPntVolt(m_sigGen.TimePeak()));
-		drawDiam(tColor::FREQ, handleBaseFreq());
-		drawDiam(tColor::FREQ, handlePeakFreq());
-		drawDiam(tColor::FREQ, pixPntFreq(m_sigGen.TimePeak()));
-		drawDiam(tColor::TIME, handlePeakTime());
-	}
-	paintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, m_colorFreq );
-	paintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, m_colorVolt );
 }
 
 void SignalControl::drawLine
 (
-	tColor   const   colType,
-	fPixelPoint  const & fPixPntStart, 
-	fPixelPoint  const & fPixPntEnd
+	tColor const colType,
+	tPos   const posStart,
+	tPos   const posEnd
 ) const
 {
-	fPixel       width { (colType == tColor::HIGH) ? 3.0_fPixel : 1.0_fPixel };
+	fPixelPoint const fPixPntStart { getPos(posStart) };
+	fPixelPoint const fPixPntEnd   { getPos(posEnd) };
+	fPixel       width { (colType == tColor::HIGH) ? HIGH_WIDTH : STD_WIDTH };
 	D2D1::ColorF col   { getColor(colType) };
 	col.a = 0.2f;
 	m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, width, col);
@@ -141,71 +61,168 @@ void SignalControl::drawLine
 
 void SignalControl::drawDiam
 (
-	tColor  const   colType,
-	fPixelPoint const & fPixPntPos
+	tColor const colType,
+	tPos   const pos
 ) const
 {
-	fPixel       size { (colType == tColor::HIGH) ? 8.0_fPixel : 5.0_fPixel };
-	D2D1::ColorF col  { getColor(colType) };
-	m_upGraphics->FillDiamond(fPixPntPos, size, col);
+	fPixelPoint  const fPixPnt { getPos(pos) };
+	fPixel       const size    { (colType == tColor::HIGH) ? HIGH_DIAMOND : STD_DIAMOND };
+	D2D1::ColorF const col     { getColor(colType) };
+	m_upGraphics->FillDiamond(fPixPnt, size, col);
+}
+
+void SignalControl::paintRunControls() const
+{
+	auto time          { m_sigGen.TimeTilTrigger() };
+
+	auto pntFreq       { pixPntFreq(time) };
+	auto pntFreqLeft   { fPixelPoint(       xLeft(), pntFreq.GetY()) };
+	auto pntFreqBottom { fPixelPoint(pntFreq.GetX(),      yBottom()) };
+	m_upGraphics->DrawLine(pntFreq, pntFreqLeft  , STD_WIDTH, getColor(tColor::FREQ));
+	m_upGraphics->DrawLine(pntFreq, pntFreqBottom, STD_WIDTH, getColor(tColor::TIME));
+	m_upGraphics->FillDiamond(pntFreq, STD_DIAMOND, getColor(tColor::FREQ));
+
+	auto pntVolt       { pixPntVolt(time) };
+	auto pntVoltRight  { fPixelPoint(      xRight(), pntVolt.GetY()) };
+	auto pntVoltBottom { fPixelPoint(pntVolt.GetX(),      yBottom()) };
+	m_upGraphics->DrawLine(pntVolt, pntVoltRight , STD_WIDTH, getColor(tColor::VOLT));
+	m_upGraphics->DrawLine(pntVolt, pntVoltBottom, STD_WIDTH, getColor(tColor::TIME));
+	m_upGraphics->FillDiamond(pntVolt, STD_DIAMOND, getColor(tColor::VOLT));
+}
+
+void SignalControl::calcHandles()
+{
+	m_handles[static_cast<int>(tPos::NONE     )] = fPixelPoint();
+	m_handles[static_cast<int>(tPos::TIME     )] = fPixelPoint(xPeak (), yBottom  ());
+
+	m_handles[static_cast<int>(tPos::BASE_FREQ)] = fPixelPoint(xLeft (), yBaseFreq());
+	m_handles[static_cast<int>(tPos::PEAK_FREQ)] = fPixelPoint(xLeft (), yPeakFreq());
+	m_handles[static_cast<int>(tPos::TIME_FREQ)] = fPixelPoint(xPeak (), yPeakFreq());
+	m_handles[static_cast<int>(tPos::BASA_FREQ)] = fPixelPoint(xRight(), yBaseFreq());
+
+	m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(xRight(), yBaseVolt());
+	m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(xRight(), yPeakVolt());
+	m_handles[static_cast<int>(tPos::TIME_VOLT)] = fPixelPoint(xPeak (), yPeakVolt());
+	m_handles[static_cast<int>(tPos::BASA_VOLT)] = fPixelPoint(xLeft (), yBaseVolt());
+}
+
+void SignalControl::highlightMovedObject() const
+{
+	switch (m_moveMode)
+	{
+	case tPos::TIME:
+		drawLine(tColor::HIGH, tPos::TIME, tPos::TIME_VOLT);
+		drawLine(tColor::HIGH, tPos::TIME, tPos::TIME_FREQ);
+		drawDiam(tColor::HIGH, tPos::TIME);
+		break;
+	case tPos::PEAK_FREQ:
+		drawLine(tColor::HIGH, tPos::PEAK_FREQ, tPos::TIME_FREQ);
+		drawDiam(tColor::HIGH, tPos::PEAK_FREQ);
+		break;
+	case tPos::BASE_FREQ:
+		drawLine(tColor::HIGH, tPos::BASE_FREQ, tPos::BASA_FREQ);
+		drawDiam(tColor::HIGH, tPos::BASE_FREQ);
+		break;
+	case tPos::TIME_FREQ:
+		drawLine(tColor::HIGH, tPos::PEAK_FREQ, tPos::TIME_FREQ);
+		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_VOLT);
+		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_FREQ);
+		drawDiam(tColor::HIGH, tPos::TIME);
+		break;
+	case tPos::BASE_VOLT:
+		drawLine(tColor::HIGH, tPos::BASE_VOLT, tPos::BASA_VOLT);
+		drawDiam(tColor::HIGH, tPos::BASE_VOLT);
+		break;
+	case tPos::PEAK_VOLT:
+		drawLine(tColor::HIGH, tPos::TIME_VOLT, tPos::PEAK_VOLT);
+		drawDiam(tColor::HIGH, tPos::PEAK_VOLT);
+		break;
+	case tPos::TIME_VOLT:
+		drawLine(tColor::HIGH, tPos::TIME_VOLT, tPos::PEAK_VOLT);
+		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_VOLT);
+		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_FREQ);
+		drawDiam(tColor::HIGH, tPos::TIME);
+		break;
+	default:
+		break;
+	}
+}
+
+void SignalControl::paintEditControls() const
+{
+	if (m_moveMode != tPos::NONE)
+		highlightMovedObject();
+	drawLine(tColor::FREQ, tPos::BASE_FREQ, tPos::BASA_FREQ);
+	drawLine(tColor::FREQ, tPos::PEAK_FREQ, tPos::TIME_FREQ);
+	drawLine(tColor::TIME, tPos::TIME     , tPos::TIME_FREQ);
+	drawDiam(tColor::FREQ, tPos::BASE_FREQ);
+	drawDiam(tColor::FREQ, tPos::PEAK_FREQ);
+	drawDiam(tColor::FREQ, tPos::TIME_FREQ);
+
+	drawLine(tColor::VOLT, tPos::BASE_VOLT, tPos::BASA_VOLT);
+	drawLine(tColor::VOLT, tPos::TIME_VOLT, tPos::PEAK_VOLT);
+	drawLine(tColor::TIME, tPos::TIME     , tPos::TIME_VOLT);
+	drawDiam(tColor::VOLT, tPos::BASE_VOLT);
+	drawDiam(tColor::VOLT, tPos::PEAK_VOLT);
+	drawDiam(tColor::VOLT, tPos::TIME_VOLT);
+
+	drawDiam(tColor::TIME, tPos::TIME);
+}
+
+void SignalControl::DoPaint()
+{
+	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
+	if ( !m_computeThread.IsRunning() )
+	{
+		calcHandles();
+		paintEditControls();
+	}
+	else if (m_sigGen.IsTriggerActive())
+	{
+		paintRunControls();
+	}
+	paintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, tColor::FREQ);
+	paintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, tColor::VOLT);
 }
 
 bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
-	m_fPixGraphWidth = Convert2fPixel(width);
+	m_fPixRight  = Convert2fPixel(width);
+	m_fPixBottom = Convert2fPixel(height);
 	Trigger();  // cause repaint
 	return true;
 }
 
-void SignalControl::setMoveMode(fPixelPoint const & pos)
+void SignalControl::setPos(fPixelPoint const & pos)
 {
-	tMoveMode moveMode     { tMoveMode::NONE };
-	fPixel    fPixDistBest { 10000._fPixel };
-	fPixel    fPixCandidate;
-	fPixCandidate = Distance(pos, handleBaseFreq());
+	m_moveMode = tPos::NONE;
+	fPixel fPixDistBest { 10000._fPixel };
+	
+	testPos(tPos::TIME,      pos, fPixDistBest);
+	
+	testPos(tPos::BASE_FREQ, pos, fPixDistBest);
+	testPos(tPos::PEAK_FREQ, pos, fPixDistBest);
+	testPos(tPos::TIME_FREQ, pos, fPixDistBest);
+
+	testPos(tPos::BASE_VOLT, pos, fPixDistBest);
+	testPos(tPos::PEAK_VOLT, pos, fPixDistBest);
+	testPos(tPos::TIME_VOLT, pos, fPixDistBest);
+}
+
+void SignalControl::testPos
+(
+	tPos        const tPosTest, 
+	fPixelPoint const posCrsr, 
+	fPixel          & fPixDistBest
+)
+{
+	fPixel const fPixCandidate = Distance(posCrsr, getPos(tPosTest));
 	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
 	{
 		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::BASE_FREQ;
+		m_moveMode   = tPosTest;
 	}
-	fPixCandidate = Distance(pos, handlePeakFreq());
-	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
-	{
-		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::PEAK_FREQ;
-	}
-	fPixCandidate = Distance(pos, handleTimeFreq());
-	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
-	{
-		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::TIME_FREQ;
-	}
-	fPixCandidate = Distance(pos, handleBaseVolt());
-	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
-	{
-		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::BASE_VOLT;
-	}
-	fPixCandidate = Distance(pos, handlePeakVolt());
-	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
-	{
-		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::PEAK_VOLT;
-	}
-	fPixCandidate = Distance(pos, handleTimeVolt());
-	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
-	{
-		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::TIME_VOLT;
-	}
-	fPixCandidate = Distance(pos, handlePeakTime());
-	if ((fPixCandidate <= 10.0_fPixel) && (fPixCandidate < fPixDistBest))
-	{
-		fPixDistBest = fPixCandidate;
-		moveMode = tMoveMode::TIME;
-	}
-	m_moveMode = moveMode;
 }
 
 void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -221,26 +238,26 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		m_sigGenNew.SetParams(m_sigGen);
 		switch (m_moveMode)
 		{
-		case tMoveMode::TIME:
+		case tPos::TIME:
 			m_sigGenNew.SetTimePeak(timeNew);
 			break;
-		case tMoveMode::BASE_FREQ:
+		case tPos::BASE_FREQ:
 			m_sigGenNew.SetBaseFreq(freqNew);
 			break;
-		case tMoveMode::PEAK_FREQ:
+		case tPos::PEAK_FREQ:
 			m_sigGenNew.SetPeakFreq(freqNew);
 			break;
-		case tMoveMode::TIME_FREQ:
+		case tPos::TIME_FREQ:
 			m_sigGenNew.SetPeakFreq(freqNew);
 			m_sigGenNew.SetTimePeak(timeNew);
 			break;
-		case tMoveMode::BASE_VOLT:
+		case tPos::BASE_VOLT:
 			m_sigGenNew.SetBaseVolt(voltNew);
 			break;
-		case tMoveMode::PEAK_VOLT:
+		case tPos::PEAK_VOLT:
 			m_sigGenNew.SetPeakVolt(voltNew);
 			break;
-		case tMoveMode::TIME_VOLT:
+		case tPos::TIME_VOLT:
 			m_sigGenNew.SetPeakVolt(voltNew);
 			m_sigGenNew.SetTimePeak(timeNew);
 			break;
@@ -251,7 +268,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else  // left button not pressed: select
 	{
-		setMoveMode(fPixCrsrPos);
+		setPos(fPixCrsrPos);
 		Trigger();   // cause repaint
 	}
 	TrackMouse();
@@ -259,7 +276,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 bool SignalControl::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
 {
-	m_moveMode = tMoveMode::NONE;
+	m_moveMode = tPos::NONE;
 	Trigger();   // cause repaint
 	return false;
 }

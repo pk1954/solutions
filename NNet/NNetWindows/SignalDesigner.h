@@ -44,6 +44,10 @@ private:
 	inline static PIXEL const RIGHT_OFFSET  { 35_PIXEL };
 	inline static PIXEL const TOP_OFFSET    {  0_PIXEL };
 
+	enum class DESIGN { INTEGRATED, STACKED };
+
+	DESIGN m_design { DESIGN::INTEGRATED };
+
 	void OnClose() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
