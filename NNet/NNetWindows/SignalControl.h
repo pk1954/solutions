@@ -28,9 +28,7 @@ public:
 		ComputeThread        const &, 
 		NNetModelCommands          &,
 		SignalGenerator            &,
-		PixFpDimension<fMicroSecs> &,
-		PixFpDimension<fHertz>     *,
-		PixFpDimension<mV>         *
+		PixFpDimension<fMicroSecs> *
 	);
 
 	~SignalControl() final;
@@ -46,6 +44,9 @@ public:
 	{
 		m_colTable[static_cast<int>(type)] = col;
 	}
+
+	void SetVertCoordFreq(PixFpDimension<fHertz> *);
+	void SetVertCoordVolt(PixFpDimension<mV>     *);
 
 private:
 
@@ -79,9 +80,9 @@ private:
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
 
-	PixFpDimension<fMicroSecs> & m_horzCoord;
-	PixFpDimension<fHertz>     * m_pVertCoordFreq;
-	PixFpDimension<mV>         * m_pVertCoordVolt;
+	PixFpDimension<fMicroSecs> * m_pHorzCoord;
+	PixFpDimension<fHertz>     * m_pVertCoordFreq { nullptr };
+	PixFpDimension<mV>         * m_pVertCoordVolt { nullptr };
 	ComputeThread        const & m_computeThread;
 	SignalGenerator            & m_sigGen;
 	NNetModelCommands          & m_commands;
@@ -95,7 +96,7 @@ private:
 	{
 		D2D1::ColorF const col          { getColor(colType) };
 		fMicroSecs   const usResolution { m_sigGen.GetParams().GetParameterValue(ParamType::Value::timeResolution) };
-		fMicroSecs   const usPixelSize  { m_horzCoord.GetPixelSize() };
+		fMicroSecs   const usPixelSize  { m_pHorzCoord->GetPixelSize() };
 		fMicroSecs   const usIncrement  { max(usPixelSize, usResolution) };
 		fMicroSecs   const timeStart    { 0.0_MicroSecs };
 		fMicroSecs   const timeEnd      { min(getTime(m_fPixRight), m_sigGen.CutoffTime()) };
@@ -122,12 +123,13 @@ private:
 	fPixel yBottom() const { return m_fPixBottom; }
 	fPixel xPeak  () const { return xTime(m_sigGen.TimePeak());	}
 
-	fPixel     getY   (fPixel const fPix) const { return m_fPixBottom - fPix; }
-	fMicroSecs getTime(fPixel const fPix) const { return m_horzCoord    .Transform2logUnitPos(fPix); }
-	fHertz     getFreq(fPixel const fPix) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(fPix)); }
-	mV         getVolt(fPixel const fPix) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(fPix)); }
+	fPixel getY(fPixel const fPix) const { return m_fPixBottom - fPix; }
 
-	fPixel xTime(fMicroSecs const time) const { return fPixel(m_horzCoord.Transform2fPixelPos(time)); }
+	fMicroSecs getTime(fPixelPoint const & p) const { return m_pHorzCoord->Transform2logUnitPos(p.GetX()); }
+	fHertz     getFreq(fPixelPoint const & p) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(p.GetY())); }
+	mV         getVolt(fPixelPoint const & p) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(p.GetY())); }
+
+	fPixel xTime(fMicroSecs const time) const { return fPixel(m_pHorzCoord->Transform2fPixelPos(time)); }
 	fPixel yFreq(fHertz     const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV         const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 

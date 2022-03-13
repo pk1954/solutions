@@ -21,7 +21,7 @@ protected:
 
 	virtual void Reset();
 
-	void Initialize(HWND const, LPCTSTR const, DWORD const);
+	HWND Initialize(HWND const, LPCTSTR const, DWORD const);
 	void TrackMouse();
 
 	void OnPaint() override;

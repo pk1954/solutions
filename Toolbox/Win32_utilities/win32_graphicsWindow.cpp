@@ -8,7 +8,7 @@
 
 using std::make_unique;
 
-void GraphicsWindow::Initialize
+HWND GraphicsWindow::Initialize
 (
 	HWND    const hwndParent,
 	LPCTSTR const szClass,
@@ -27,6 +27,7 @@ void GraphicsWindow::Initialize
 	);
 	m_upGraphics->Initialize(hwnd);
 	m_trackStruct.hwndTrack = hwnd;
+	return hwnd;
 }
 
 void GraphicsWindow::Reset()
