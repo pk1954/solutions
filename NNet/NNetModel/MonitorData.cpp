@@ -103,10 +103,7 @@ SignalNr MonitorData::AddSignal
 	unique_ptr<Signal> upSignal 
 )
 {
-	if (IsValid(trackNr))
-		return getTrack(trackNr)->AddSignal(move(upSignal));
-	else
-		return SignalNr::NULL_VAL();
+	return IsValid(trackNr) ? getTrack(trackNr)->AddSignal(move(upSignal)) : SignalNr::NULL_VAL();
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
@@ -155,9 +152,10 @@ Signal * MonitorData::GetSignalPtr(SignalId const & id)
 
 Signal const * MonitorData::GetConstSignalPtr(SignalId const & id) const
 {
-	return id.IsNull()
-		   ? nullptr
-	       : getTrack(id.GetTrackNr())->GetConstSignalPtr(id.GetSignalNr());
+	return (IsValid(id))
+		   ? getTrack(id.GetTrackNr())->GetConstSignalPtr(id.GetSignalNr())
+	       : nullptr;
+
 }
 
 Signal const * MonitorData::GetHighlightedSignal() const
@@ -198,8 +196,13 @@ Track * MonitorData::getTrack(TrackNr const trackNr) // calling const version
 bool MonitorData::IsEmptyTrack(TrackNr const trackNr) const 
 { 
 	return (IsValid(trackNr))
-		   ? getTrack(trackNr)->IsEmpty()
-		   : false;
+		? getTrack(trackNr)->IsEmpty()
+		: false;
+}
+
+bool MonitorData::AnyEmptyTracks() const 
+{ 
+	return Apply2AllTracksB([](Track const & track){ return track.IsEmpty(); });
 }
 
 Signal const * MonitorData::FindSensor(MicroMeterPnt const & umPos) const

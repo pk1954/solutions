@@ -103,7 +103,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	{
 		printNobInfo(textBuf, umPntCrsr, nobId);
 	}
-	if (sigId.IsNotNull())
+	if (sigId.IsValid())
 	{
 		printSignalInfo(textBuf, sigId);
 	}

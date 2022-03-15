@@ -13,7 +13,7 @@ class DeleteTrackCommand: public NNetCommand
 {
 public:
 
-    DeleteTrackCommand(TrackNr const trackNr)
+    explicit DeleteTrackCommand(TrackNr const trackNr)
         : m_trackNr(trackNr)
     {}
 

@@ -14,6 +14,7 @@
 
 using std::vector;
 using std::exception;
+using std::ranges::any_of;
 
 class MonitorData;
 
@@ -90,6 +91,17 @@ public:
 			func(trackNr);
 	}                        
 
+	void Apply2AllTracksRevC(auto const & func) const
+	{
+		for (auto trackNr = TrackNr(GetNrOfTracks()-1); trackNr >= TrackNr(0); --trackNr)
+			func(trackNr);
+	}                        
+
+	bool Apply2AllTracksB(auto const & func) const
+	{
+		return any_of(m_tracks, [&func](auto const & up) { return func(*up.get()); });
+	}                        
+
 	void Apply2AllSignalIdsC(auto const & func) const
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
@@ -134,9 +146,10 @@ public:
 
 	SignalId GetHighlightedSignalId()       const { return m_idSigHighlighted; }
 	TrackNr  GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }
-	bool     IsAnySignalSelected()          const { return m_idSigHighlighted.IsNotNull(); }
+	bool     IsAnySignalSelected()          const { return m_idSigHighlighted.IsValid(); }
 	bool     IsSelected(SignalId const &id) const { return m_idSigHighlighted == id; }
 	bool     IsEmptyTrack(TrackNr const)    const;
+	bool     AnyEmptyTracks()               const;
 
 private:
 	Track            * getTrack(TrackNr const);

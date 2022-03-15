@@ -39,8 +39,8 @@ public:
 		return res;
 	};
 
-	bool IsNull   () const { return trackNr.IsNull() || signalNr.IsNull(); }
-	bool IsNotNull() const { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
+	bool IsNull () const { return trackNr.IsNull() || signalNr.IsNull(); }
+	bool IsValid() const { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
 
 	bool operator== (const SignalId & other) const = default;
 

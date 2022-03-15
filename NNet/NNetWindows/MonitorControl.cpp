@@ -66,6 +66,9 @@ LPARAM MonitorControl::AddContextMenuEntries(HMENU const hPopupMenu)
 	if (m_trackNrHighlighted.IsNotNull() && m_monitorData.IsEmptyTrack(m_trackNrHighlighted))
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track");
 
+	if (m_monitorData.AnyEmptyTracks())
+		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_EMPTY_TRACKS, L"Delete empty tracks");
+
 	if (m_trackNrHighlighted.IsNotNull())
 		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"Add track");
 
@@ -371,6 +374,17 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		if (m_monitorData.GetNrOfTracks()==1)
 			PostMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
 		PostCommand2Application(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
+		break;
+
+	case IDD_DELETE_EMPTY_TRACKS:
+		m_monitorData.Apply2AllTracksRevC
+		(
+			[this](TrackNr const trackNr)
+			{  
+				if (m_monitorData.IsEmptyTrack(trackNr))
+					PostCommand2Application(IDD_DELETE_TRACK, static_cast<LPARAM>(trackNr.GetValue()));
+			}
+		);
 		break;
 
 	case IDD_SCALE_EEG_SIGNALS:

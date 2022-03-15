@@ -363,7 +363,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
 		MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
 		SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
-		bool          const bSizeSensor   { signalId.IsNotNull() && IsUndefined(m_nobHighlighted) };
+		bool          const bSizeSensor   { signalId.IsValid() && IsUndefined(m_nobHighlighted) };
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
 			if (bSizeSensor)
