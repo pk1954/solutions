@@ -205,37 +205,28 @@ void CrsrWindow::printSignalInfo
  	SignalId const id
 ) const
 {
-	try
+	if (Signal const * pSignal { m_pNMRI->GetConstMonitorData().GetConstSignalPtr(id) })
 	{
-		MonitorData const & monData { m_pNMRI->GetConstMonitorData() };
-		Signal      const * pSignal { monData.GetConstSignalPtr(id) };
-		if (pSignal)
-		{
-			textBuf.nextLine();
-			textBuf.AlignRight(); 
-			textBuf.printString(L"Signal at ");
-			printMicroMeter(textBuf, pSignal->GetCenter().GetX()); 
-			printMicroMeter(textBuf, pSignal->GetCenter().GetY()); 
-			textBuf.nextLine();
-			textBuf.printString(L"In track nr ");
-			textBuf.printNumber(id.GetTrackNr().GetValue());
-			textBuf.nextLine();
-			textBuf.AlignRight(); 
-			textBuf.printString(L"Radius: ");
-			printMicroMeter(textBuf, pSignal->GetRadius()); 
-			textBuf.nextLine();
-			textBuf.AlignRight(); 
-			textBuf.printString(L"Data points: ");
-			textBuf.printString(to_wstring(pSignal->GetNrOfElements())); 
-			textBuf.nextLine();
-			textBuf.AlignRight(); 
-			textBuf.printString(L"Factor: ");
-			textBuf.printString(to_wstring(pSignal->GetDistFactor(m_pMainWindow->GetCursorPos()))); 
-			textBuf.nextLine();
-		}
-	}
-	catch (MonitorDataException const &)
-	{
-		// can happen, e.g. when tracks are deleted while model runs
+		textBuf.nextLine();
+		textBuf.AlignRight(); 
+		textBuf.printString(L"Signal at ");
+		printMicroMeter(textBuf, pSignal->GetCenter().GetX()); 
+		printMicroMeter(textBuf, pSignal->GetCenter().GetY()); 
+		textBuf.nextLine();
+		textBuf.printString(L"In track nr ");
+		textBuf.printNumber(id.GetTrackNr().GetValue());
+		textBuf.nextLine();
+		textBuf.AlignRight(); 
+		textBuf.printString(L"Radius: ");
+		printMicroMeter(textBuf, pSignal->GetRadius()); 
+		textBuf.nextLine();
+		textBuf.AlignRight(); 
+		textBuf.printString(L"Data points: ");
+		textBuf.printString(to_wstring(pSignal->GetNrOfElements())); 
+		textBuf.nextLine();
+		textBuf.AlignRight(); 
+		textBuf.printString(L"Factor: ");
+		textBuf.printString(to_wstring(pSignal->GetDistFactor(m_pMainWindow->GetCursorPos()))); 
+		textBuf.nextLine();
 	}
 }

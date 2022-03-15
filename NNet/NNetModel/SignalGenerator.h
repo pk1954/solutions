@@ -6,6 +6,7 @@
 
 #include "MoreTypes.h"
 #include "observable.h"
+#include "ParameterType.h"
 
 class Param;
 

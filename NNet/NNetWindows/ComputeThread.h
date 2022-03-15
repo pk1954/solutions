@@ -32,6 +32,7 @@ public:
 	void SingleStep();
 	void ReleaseComputationLock();
 	void LockComputation();
+	void RunStopComputation();
 	void RunComputation();
 	void StopComputation();
 	bool IsRunning() const { return ! m_bStopped; }

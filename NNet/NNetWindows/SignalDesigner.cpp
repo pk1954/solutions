@@ -39,15 +39,6 @@ SignalDesigner::SignalDesigner
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
 
-	//HWND hwnd = StartBaseWindow
-	//(
-	//	hwndParent,
-	//	CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
-	//	L"ClassSigDesWindow",
-	//	WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE,
-	//	nullptr,
-	//	nullptr
-	//);
 	m_upSignalControl1 = make_unique<SignalControl>
 	(
 		hwnd,
@@ -113,7 +104,7 @@ SignalDesigner::SignalDesigner
 	m_upVertScaleVolt->SetColor(COLOR_VOLT);
 	m_upVertScaleVolt->Show(true);
 
-	::MoveWindow(hwnd, 100, 100, 500, STD_WINDOW_HEIGHT.GetValue(), true);
+	CenterIn(hwndParent, 500_PIXEL, STD_WINDOW_HEIGHT);
 }
 
 void SignalDesigner::Stop()
@@ -123,21 +114,17 @@ void SignalDesigner::Stop()
 
 void SignalDesigner::DoPaint()
 {
-	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Blue);
+	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
 }
 
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (auto const wId = LOWORD(wParam))
 	{
-	case IDD_APPLY2ALL:
-		m_nmwi.Apply2All<InputConnector>
-		(
-			[this](InputConnector & c)
-			{ 
-				m_commands.SetStimulusParams(c.GetSignalGenerator(), m_sigGen); 
-			}
-		);
+	case IDM_SIGNAL_DESIGNER_INTEGRATED:
+	case IDM_SIGNAL_DESIGNER_STACKED:
+		ToggleDesign();
+		design(GetClientWindowWidth(), GetClientWindowHeight());
 		return true;
 
 	default:
@@ -153,13 +140,13 @@ void SignalDesigner::OnClose()
 
 void SignalDesigner::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	m_design = (m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED;
-	design(GetClientWindowWidth(), GetClientWindowHeight());
+	SendCommand(IDM_SIGNAL_DESIGNER_INTEGRATED);
 	Trigger();  // cause repaint
 }
 
 bool SignalDesigner::OnSize(PIXEL const width, PIXEL const height)
 {
+	GraphicsWindow::OnSize(width, height);
 	design(width, height);
 	Trigger();  // cause repaint
 	return true;

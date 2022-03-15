@@ -13,7 +13,7 @@ using std::cout;
 using std::ios;
 using std::endl;
 
-wofstream OpenTraceFile(wstring const wszTraceFileName)
+wofstream OpenTraceFile(wstring const & wszTraceFileName)
 {
     wofstream traceStream;
     traceStream.open(wszTraceFileName, ios::out);
@@ -25,9 +25,9 @@ wofstream OpenTraceFile(wstring const wszTraceFileName)
     return traceStream;
 }
 
-void SwitchWcoutTo(wstring const wszTraceFileName)
+bool SwitchWcoutTo(wstring const & wszTraceFileName)
 {
     FILE  * fp;
     errno_t res = _wfreopen_s(&fp, wszTraceFileName.c_str(), L"w", stdout);
-    assert(res == 0);
+    return res == 0;
 }

@@ -35,16 +35,32 @@ public:
 		m_pParameters = & param; 
 	}
 
-	void Stop();
+	void Stop() final;
+
+	enum class DESIGN { INTEGRATED, STACKED };
+
+	static DESIGN GetDesign() 
+	{ 
+		return m_design; 
+	};
+
+	static void SetDesign(DESIGN const d) 
+	{ 
+		m_design = d; 
+	}
+
+	static void ToggleDesign() 
+	{ 
+		SetDesign((m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED);
+	}
 
 private:
 
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 
-	enum class DESIGN { INTEGRATED, STACKED };
 
-	DESIGN m_design { DESIGN::STACKED };
+	inline static DESIGN m_design { DESIGN::STACKED };
 
 	void design(PIXEL const, PIXEL const);
 

@@ -61,12 +61,11 @@ inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 #define IDM_SIMU_MODE                  80
 #define IDM_FORWARD                    81
 #define IDM_BACKWARDS                  82
-#define IDM_RUN                        83
-#define IDM_STOP                       84
-#define IDM_EDIT_UNDO                  85
-#define IDM_EDIT_REDO                  86
-#define IDM_MAX_SPEED                  87
-#define IDM_SIMULATION_SPEED           88
+#define IDM_RUN_STOP                   83
+#define IDM_EDIT_UNDO                  86
+#define IDM_EDIT_REDO                  87
+#define IDM_MAX_SPEED                  88
+#define IDM_SIMULATION_SPEED           89
 
 #define IDM_MOVE                       90
 

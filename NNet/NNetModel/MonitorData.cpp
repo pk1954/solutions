@@ -60,7 +60,7 @@ void MonitorData::InsertTrack(TrackNr const trackNr)
 
 unique_ptr<Signal> MonitorData::removeSignal(SignalId const & id)
 { 
-	return getTrack(id.GetTrackNr())->RemoveSignal(id.GetSignalNr()); // getTrack may throw MonitorDataException
+	return getTrack(id.GetTrackNr())->RemoveSignal(id.GetSignalNr());
 };
 
 SignalId MonitorData::SetHighlightedSignal(SignalId const id)
@@ -94,7 +94,7 @@ void MonitorData::AddSignal
 )
 {
 	assert(upSignal);
-	getTrack(id.GetTrackNr())->AddSignal(move(upSignal),id.GetSignalNr()); // getTrack may throw MonitorDataException
+	getTrack(id.GetTrackNr())->AddSignal(move(upSignal),id.GetSignalNr());
 }
 
 SignalNr MonitorData::AddSignal
@@ -104,9 +104,9 @@ SignalNr MonitorData::AddSignal
 )
 {
 	if (IsValid(trackNr))
-		return getTrack(trackNr)->AddSignal(move(upSignal)); // getTrack may throw MonitorDataException 
+		return getTrack(trackNr)->AddSignal(move(upSignal));
 	else
-		throw MonitorDataException(*this, trackNr, L"AddSignal(upSignal)");
+		return SignalNr::NULL_VAL();
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
@@ -123,17 +123,16 @@ SignalNr MonitorData::AddSignal
 	MicroMeterCircle const & umCircle 
 )
 {
-	if (IsValid(trackNr))
-		return AddSignal(trackNr, SignalFactory::MakeSignal(umCircle));
-	else 
-		throw MonitorDataException(*this, trackNr, L"AddSignal(upCircle)");
+	return (IsValid(trackNr))
+		   ? AddSignal(trackNr, SignalFactory::MakeSignal(umCircle))
+		   : SignalNr::NULL_VAL();
 }
 
 SignalNr MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
 	assert(IsValid(id) && IsValid(trackNrDst));
 	SignalNr sigNr { AddSignal(trackNrDst, removeSignal(id)) };
-	if (id == m_idSigHighlighted)
+	if ((sigNr.IsNotNull()) && (id == m_idSigHighlighted))
 		SetHighlightedSignal(SignalId(trackNrDst, sigNr));
 	return sigNr;
 }
@@ -142,8 +141,6 @@ void MonitorData::DeleteTrack(TrackNr const trackNr)
 {
 	if (IsValid(trackNr))
 		m_tracks.erase(m_tracks.begin() + trackNr.GetValue());
-	else 
-		throw MonitorDataException(*this, trackNr, L"DeleteTrack");
 }
 
 Signal * MonitorData::GetSignalPtr(SignalId const & id)
@@ -153,7 +150,7 @@ Signal * MonitorData::GetSignalPtr(SignalId const & id)
 	TrackNr const trackNr { id.GetTrackNr() };
 	if (IsValid(trackNr))
 		return getTrack(trackNr)->GetSignalPtr(id.GetSignalNr());
-	throw MonitorDataException(*this, trackNr, L"GetSignalPtr");
+	return nullptr;
 }
 
 Signal const * MonitorData::GetConstSignalPtr(SignalId const & id) const
@@ -161,14 +158,6 @@ Signal const * MonitorData::GetConstSignalPtr(SignalId const & id) const
 	return id.IsNull()
 		   ? nullptr
 	       : getTrack(id.GetTrackNr())->GetConstSignalPtr(id.GetSignalNr());
-}
-
-Signal * MonitorData::GetHighlightedSignal()
-{
-	TrackNr const trackNr { m_idSigHighlighted.GetTrackNr() };
-	if (IsValid(trackNr))
-		return getTrack(trackNr)->GetSignalPtr(m_idSigHighlighted.GetSignalNr());
-	throw MonitorDataException(*this, trackNr, L"GetHighlightedSignal");
 }
 
 Signal const * MonitorData::GetHighlightedSignal() const
@@ -196,9 +185,9 @@ void MonitorData::CheckTracks() const
 
 Track const * MonitorData::getTrack(TrackNr const trackNr) const
 {
-	if (IsValid(trackNr))
-		return m_tracks[trackNr.GetValue()].get();
-	throw MonitorDataException(*this, trackNr, L"getTrack");
+	return (IsValid(trackNr))
+		   ? m_tracks[trackNr.GetValue()].get()
+	       : nullptr;
 }
 
 Track * MonitorData::getTrack(TrackNr const trackNr) // calling const version 
@@ -208,21 +197,14 @@ Track * MonitorData::getTrack(TrackNr const trackNr) // calling const version
 
 bool MonitorData::IsEmptyTrack(TrackNr const trackNr) const 
 { 
-	if (IsValid(trackNr))
-		return getTrack(trackNr)->IsEmpty(); 
-	throw MonitorDataException(*this, trackNr, L"IsEmptyTrack");
+	return (IsValid(trackNr))
+		   ? getTrack(trackNr)->IsEmpty()
+		   : false;
 }
 
 Signal const * MonitorData::FindSensor(MicroMeterPnt const & umPos) const
 {
 	return FindSignal([&umPos](Signal const & s) { return s.Includes(umPos); });
-}
-
-void MonitorData::HandleException(MonitorDataException const & e)
-{
-	wcout << Scanner::COMMENT_START << L"MonitorWindow: " << e.m_wstrMessage << endl;
-	wcout << Scanner::COMMENT_START << L"TrackNr: "       << e.m_trackNr << endl;
-	FatalError::Happened(10, L"MonitorData failure");
 }
 
 void MonitorData::Dump() const

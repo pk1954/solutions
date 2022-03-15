@@ -27,7 +27,12 @@ SignalControl::SignalControl
 	m_commands(commands)
 {
 	m_sigGen.RegisterObserver(*this); // signal generator data can be changed fron outside
-	GraphicsWindow::Initialize(hwndParent, L"ClassSignalControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
+	GraphicsWindow::Initialize
+	(
+		hwndParent, 
+		L"ClassSignalControl", 
+		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
+	);
 }
 
 SignalControl::~SignalControl()
@@ -97,10 +102,11 @@ void SignalControl::paintRunControls() const
 
 	if (m_pVertCoordVolt)
 	{
-		auto pntVolt       { pixPntVolt(time) };
-		auto pntVoltRight  { fPixelPoint(      xRight(), pntVolt.GetY()) };
-		auto pntVoltBottom { fPixelPoint(pntVolt.GetX(),      yBottom()) };
-		m_upGraphics->DrawLine(pntVolt, pntVoltRight , STD_WIDTH, getColor(tColor::VOLT));
+		auto const pntVolt       { pixPntVolt(time) };
+		auto const dirPos        { m_pVertCoordFreq ? xRight() : xLeft () };
+		auto const pntVoltBase   { fPixelPoint(        dirPos, pntVolt.GetY()) };
+		auto const pntVoltBottom { fPixelPoint(pntVolt.GetX(),      yBottom()) };
+		m_upGraphics->DrawLine(pntVolt,   pntVoltBase, STD_WIDTH, getColor(tColor::VOLT));
 		m_upGraphics->DrawLine(pntVolt, pntVoltBottom, STD_WIDTH, getColor(tColor::TIME));
 		m_upGraphics->FillDiamond(pntVolt, STD_DIAMOND, getColor(tColor::VOLT));
 	}

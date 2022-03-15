@@ -37,7 +37,12 @@ public:
  	: m_bVertScale(bVertScale),
 	  m_pixCoord(pixCoord)
 	{
-		GraphicsWindow::Initialize(hwndParent, L"ClassScale", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
+		GraphicsWindow::Initialize
+		(
+			hwndParent, 
+			L"ClassScale", 
+			WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN
+		);
 		m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
 		pixCoord.RegisterObserver(*this);
 	}
@@ -145,8 +150,7 @@ private:
 		fPixelRect textBox {};
 		setTextBox(textBox);
 
-		if (CrsrInClientRect())
-			m_upGraphics->FillBackground(D2D1::ColorF::Aquamarine);
+		m_upGraphics->FillBackground(CrsrInClientRect() ? D2D1::ColorF::Aquamarine : D2D1::ColorF::Azure);
 
 		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, m_scaleColor);
 

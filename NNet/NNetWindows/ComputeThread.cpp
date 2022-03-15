@@ -68,6 +68,18 @@ void ComputeThread::LockComputation()
 	}
 }
 
+void ComputeThread::RunStopComputation()
+{
+	m_bStopped = ! m_bStopped;
+	if (! m_bComputationLocked)  // if not already stopped, stop now
+	{
+		if (m_bStopped)
+			stopComputation();
+		else
+			runComputation();
+	}
+}
+
 void ComputeThread::RunComputation()
 {
 	if (m_bStopped)

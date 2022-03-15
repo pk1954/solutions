@@ -25,15 +25,15 @@ public:
 	void Do() final 
 	{ 
 		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
-		assert(pSignal);
-		pSignal->MoveSensor(m_delta);
+		if (pSignal)
+			pSignal->MoveSensor(m_delta);
 	}
 
 	void Undo() final 
 	{ 
 		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
-		assert(pSignal);
-		pSignal->MoveSensor(-m_delta);
+		if (pSignal)
+			pSignal->MoveSensor(-m_delta);
 	}
 
 	bool CombineCommands(Command const & src) final

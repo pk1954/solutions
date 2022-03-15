@@ -17,23 +17,6 @@ using std::exception;
 
 class MonitorData;
 
-struct MonitorDataException: public exception
-{
-	MonitorDataException
-	(
-		MonitorData const & data,
-		TrackNr     const   trackNr,
-		wstring     const & msg
-	)
-	  : m_data(data),
-		m_trackNr(trackNr),
-		m_wstrMessage(msg)
-	{}
-	MonitorData const & m_data;
-	TrackNr     const   m_trackNr;
-	wstring     const   m_wstrMessage;
-};
-
 class MonitorData
 {
 public:
@@ -78,7 +61,6 @@ public:
 	Signal const * GetConstSignalPtr    (SignalId const &)      const;
 	Signal const * FindSensor           (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal () const;
-	Signal       * GetHighlightedSignal ();
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 
@@ -112,10 +94,11 @@ public:
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{ 
-			getTrack(trackNr)->Apply2AllSignalNrsC   // getTrack may throw MonitorDataException
-			(
-				[&func, &trackNr](SignalNr const & signalNr) { func(SignalId(trackNr, signalNr)); }
-			);
+			if (Track const * pTrack { getTrack(trackNr) })
+				pTrack->Apply2AllSignalNrsC
+				(
+					[&func, &trackNr](SignalNr const & signalNr) { func(SignalId(trackNr, signalNr)); }
+				);
 		}
 	}                        
 
@@ -123,10 +106,11 @@ public:
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{ 
-			getTrack(trackNr)->Apply2AllSignals  // getTrack may throw MonitorDataException
-			(
-				[&func](Signal & signal) { func(signal); }
-			);
+			if (Track * pTrack { getTrack(trackNr) })
+				pTrack->Apply2AllSignals  
+			    (
+					[&func](Signal & signal) { func(signal); }
+				);
 		}
 	}                        
 
@@ -134,10 +118,11 @@ public:
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{ 
-			getTrack(trackNr)->Apply2AllSignalsC  // getTrack may throw MonitorDataException
-			(
-				[&func](Signal const & signal) { func(signal); }
-			);
+			if (Track const * pTrack { getTrack(trackNr) })
+				pTrack->Apply2AllSignalsC  
+				(
+					[&func](Signal const & signal) { func(signal); }
+				);
 		}
 	}                        
 
@@ -145,8 +130,6 @@ public:
 	{
 		if (IsValid(trackNr))
 			getTrack(trackNr)->Apply2AllSignalNrsC(func);
-		else
-			throw MonitorDataException(*this, trackNr, L"Apply2AllSignalsInTrack");
 	}                        
 
 	SignalId GetHighlightedSignalId()       const { return m_idSigHighlighted; }
@@ -154,8 +137,6 @@ public:
 	bool     IsAnySignalSelected()          const { return m_idSigHighlighted.IsNotNull(); }
 	bool     IsSelected(SignalId const &id) const { return m_idSigHighlighted == id; }
 	bool     IsEmptyTrack(TrackNr const)    const;
-
-	static void HandleException(MonitorDataException const &);
 
 private:
 	Track            * getTrack(TrackNr const);

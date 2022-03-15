@@ -125,7 +125,6 @@ bool D2D_driver::StartFrame()
 	if (! m_pRenderTarget)
 		createResources();
 	m_pRenderTarget->BeginDraw();
-	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Azure));
 	return true;
 }
 
@@ -376,7 +375,7 @@ void D2D_driver::FillDiamond
 
 void D2D_driver::FillBackground(D2D1::ColorF const d2dCol) const
 {
-	FillRectangle(Convert2fPixelRect(Util::GetClPixelRect(m_hwnd)), d2dCol);
+	m_pRenderTarget->Clear(d2dCol);
 }
 
 ID2D1SolidColorBrush * D2D_driver::createBrush(D2D1::ColorF const d2dCol) const

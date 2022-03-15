@@ -78,6 +78,8 @@ public:
 	void SetTrackBarPos(INT const, LONG const) const;
 	void SetTrackBarRange(INT const, LONG const, LONG const) const;
 
+	void CenterIn(HWND const, PIXEL const, PIXEL const) const;
+
 	void DestroyWindow()
 	{ 
 		::DestroyWindow(m_hwnd);

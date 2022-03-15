@@ -111,6 +111,14 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 		OnCommand(uiID, lParam, Screen2Client(crsrPosScreen));
 }
 
+void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height) const
+{
+	PixelRect rect { Util::GetWindowRect(hwnd) };
+	PIXEL xPos { (rect.GetRight () + rect.GetLeft() - width ) / 2 };
+	PIXEL yPos { (rect.GetBottom() + rect.GetTop () - height) / 2 };
+	Move(xPos, yPos, width, height, true);
+}
+
 void RootWindow::SetWindowHandle(HWND const hwnd) 
 { 
 	assert(hwnd);

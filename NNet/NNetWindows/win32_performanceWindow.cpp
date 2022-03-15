@@ -121,7 +121,7 @@ void PerformanceWindow::DoPaint(TextBuffer & textBuf)
 		printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
 		NobType::Apply2All
 		(
-			[&](NobType const & type)
+			[this, &textBuf](NobType const & type)
 			{ printIntLine(textBuf, (NobType::GetName(type.GetValue()) + L":").c_str(), m_pNMRI->GetNrOf(type)); }
 		);
 		printIntLine(textBuf, L"Nobs:", m_pNMRI->GetNrOfNobs());

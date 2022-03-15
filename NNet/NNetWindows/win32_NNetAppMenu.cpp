@@ -8,6 +8,7 @@
 #include "CommandStack.h"
 #include "ComputeThread.h"
 #include "AutoOpen.h"
+#include "SignalDesigner.h"
 #include "SoundInterface.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
@@ -115,10 +116,9 @@ void NNetAppMenu::Start
 
     HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
-        AppendMenu(hMenuAction, MF_STRING, IDM_RESET,   L"Reset dynamic data");
-        AppendMenu(hMenuAction, MF_STRING, IDM_FORWARD, L"&Proceed single step");
-        AppendMenu(hMenuAction, MF_STRING, IDM_RUN,     L"&Run");
-        AppendMenu(hMenuAction, MF_STRING, IDM_STOP,    L"&Stop");
+        AppendMenu(hMenuAction, MF_STRING, IDM_RESET,    L"Reset dynamic data");
+        AppendMenu(hMenuAction, MF_STRING, IDM_FORWARD,  L"&Proceed single step");
+        AppendMenu(hMenuAction, MF_STRING, IDM_RUN_STOP, L"&Run/Stop");
         HMENU hMenuAnalyze = Util::PopupMenu(hMenuAction, L"&Analyze");
         {
             AppendMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops");
@@ -140,6 +140,11 @@ void NNetAppMenu::Start
         }
         m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
         m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&SensorPoints");
+        HMENU hMenuSignalDesigner = Util::PopupMenu(hMenuView, L"Signal&Designer");
+        {
+            AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_INTEGRATED, L"&Integrated");
+            AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_STACKED,    L"&STacked");
+        }
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
     {
@@ -165,8 +170,6 @@ void NNetAppMenu::Notify(bool const bImmediately)
 {
     enable(IDM_FORWARD, ! m_pComputeThread->IsRunning());
     enable(IDM_RESET,   ! m_pComputeThread->IsRunning());
-    enable(IDM_RUN,     ! m_pComputeThread->IsRunning());
-    enable(IDM_STOP,      m_pComputeThread->IsRunning());
 
     enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(IDM_DESC_WINDOW   ));
     enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(IDM_CRSR_WINDOW   ));
@@ -174,6 +177,9 @@ void NNetAppMenu::Notify(bool const bImmediately)
     enable(IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(IDM_MONITOR_WINDOW));
     enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(IDM_PARAM_WINDOW  ));
     enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
+
+    enable(IDM_SIGNAL_DESIGNER_INTEGRATED, SignalDesigner::GetDesign() == SignalDesigner::DESIGN::STACKED);
+    enable(IDM_SIGNAL_DESIGNER_STACKED,    SignalDesigner::GetDesign() == SignalDesigner::DESIGN::INTEGRATED);
 
     m_upOnOffArrows      ->enableOnOff(m_pMainWindow->ArrowsVisible());
     m_upOnOffSound       ->enableOnOff(m_pSound->IsOn());

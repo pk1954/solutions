@@ -22,8 +22,17 @@ public:
 		m_fFactor(fFactor)
 	{}
 
-	void Do  () final { m_pSignal->SizeSensor(1.0f / m_fFactor); }
-	void Undo() final { m_pSignal->SizeSensor(m_fFactor); }
+	void Do  () final 
+	{ 
+		if (m_pSignal)
+			m_pSignal->SizeSensor(1.0f / m_fFactor); 
+	}
+
+	void Undo() final 
+	{ 
+		if (m_pSignal)
+			m_pSignal->SizeSensor(m_fFactor); 
+	}
 
 	bool CombineCommands(Command const & src) final
 	{ 

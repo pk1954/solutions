@@ -56,6 +56,7 @@ void GraphicsWindow::OnPaint()
 		BeginPaint(&ps);
 		if (m_upGraphics->StartFrame())
 		{
+			m_upGraphics->FillBackground(D2D1::ColorF::Azure);
 			DoPaint();
 			m_upGraphics->EndFrame();
 		}

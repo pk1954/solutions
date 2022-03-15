@@ -113,10 +113,6 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
             m_pNMRI->DUMP();
             FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
         }
-        catch (MonitorDataException const & e)
-        {
-            MonitorData::HandleException(e);
-        }
         m_pComputeThread->ReleaseComputationLock();
     }
 

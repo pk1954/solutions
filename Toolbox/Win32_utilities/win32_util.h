@@ -261,11 +261,19 @@ namespace Util
         SetCursorPos(pnt.x, pnt.y);
     }
 
+    inline PixelRect GetWindowRect(HWND const hwnd)
+    {
+        RECT rect;
+        bool bRes = GetWindowRect(hwnd, &rect);
+        assert(bRes);
+        return RECT2PixelRect(rect);
+    }
+
     inline PixelRectSize GetWindowSize(HWND const hwnd)
     {
         RECT rect;
         bool bRes = GetWindowRect(hwnd, &rect);
-		assert(bRes);
+        assert(bRes);
         return PixelRectSizeFromRECT(rect);
     }
 

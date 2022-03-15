@@ -316,43 +316,33 @@ void MonitorControl::paintTrack(TrackNr const trackNr) const
 
 void MonitorControl::DoPaint()
 {
-	try
+	m_fPixMaxSignal = 0.0_fPixel;
+
+	if (m_monitorData.NoTracks())
+		return;
+
+	m_monitorData.Apply2AllTracksC   ([this](TrackNr  const trackNr) { paintTrack(trackNr); });
+	m_monitorData.Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id); });
+	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
+
+	if (m_measurement.TrackingActive())
 	{
-		m_fPixMaxSignal = 0.0_fPixel;
-
-		if (m_monitorData.NoTracks())
-			return;
-
-		m_monitorData.Apply2AllTracksC([this](TrackNr const trackNr) { paintTrack(trackNr); });
-
-		m_monitorData.Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
-
-		m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
-
-		if (m_measurement.TrackingActive())
-		{
-			fPixelPoint const fPixDiamondPos { calcDiamondPos() };
-			if (fPixDiamondPos.IsNotNull())
-				m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
-		}
-
-		if ( SignalTooHigh() )
-		{
-			m_upGraphics->FillRectangle
-			(
-				fPixelRect
-				(
-					fPixelPoint   (m_fPixZeroX, 0._fPixel),
-					fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
-				), 
-				NNetColors::COL_WARNING
-			);
-		}
+		fPixelPoint const fPixDiamondPos { calcDiamondPos() };
+		if (fPixDiamondPos.IsNotNull())
+			m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
 	}
-	catch (MonitorDataException const & e)
+
+	if ( SignalTooHigh() )
 	{
-		SendCommand2Application(IDM_STOP, 0);
-		MonitorData::HandleException(e);
+		m_upGraphics->FillRectangle
+		(
+			fPixelRect
+			(
+				fPixelPoint   (m_fPixZeroX, 0._fPixel),
+				fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
+			), 
+			NNetColors::COL_WARNING
+		);
 	}
 }
 

@@ -401,12 +401,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_computeThread.SingleStep();
 			break;
 
-		case IDM_RUN:
-			m_computeThread.RunComputation();
-			break;
-
-		case IDM_STOP:
-			m_computeThread.StopComputation();
+		case IDM_RUN_STOP:
+			m_computeThread.RunStopComputation();
 			break;
 
 		case IDM_SIGNAL_DESIGNER:
