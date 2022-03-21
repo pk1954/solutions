@@ -30,11 +30,6 @@ public:
 		NNetModelWriterInterface &
 	);
 
-	static void Initialize(Param & param) 
-	{ 
-		m_pParameters = & param; 
-	}
-
 	void Stop() final;
 
 	enum class DESIGN { INTEGRATED, STACKED };
@@ -69,8 +64,6 @@ private:
 	bool OnSize(PIXEL const, PIXEL const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
-
-	inline static Param * m_pParameters { nullptr };
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<fHertz>        m_vertCoordFreq;

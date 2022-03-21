@@ -26,7 +26,7 @@ public:
 
 	UPNobList() = default;
 	UPNobList(const UPNobList &);
-	~UPNobList();
+	~UPNobList() = default;
 
 	UPNobList & operator=  (UPNobList const &);
 	bool        operator== (UPNobList const &) const;

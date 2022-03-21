@@ -151,11 +151,6 @@ void UPNobList::copy(const UPNobList & rhs)
 	CheckNobList();
 }
 
-UPNobList::~UPNobList()
-{
-	Clear();
-}
-
 UPNobList::UPNobList(const UPNobList & rhs) // copy constructor
 {
 	copy(rhs);

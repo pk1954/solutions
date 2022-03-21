@@ -24,11 +24,10 @@ using std::setprecision;
 
 void PerformanceWindow::Start
 (
-	HWND                             const hwndParent,
-	NNetModelReaderInterface const * const pModelInterface,
-	ComputeThread                  * const pComputeThread,
-	SlowMotionRatio          const * const pSlowMotionRatio,
-	ActionTimer                    * const pDisplayTimer
+	HWND                    const hwndParent,
+	ComputeThread         * const pComputeThread,
+	SlowMotionRatio const * const pSlowMotionRatio,
+	ActionTimer           * const pDisplayTimer
 )
 {
 	StartTextWindow
@@ -40,16 +39,20 @@ void PerformanceWindow::Start
 		true,
 		nullptr
 	);
-	m_pSlowMotionRatio      = pSlowMotionRatio;
-	m_pComputeThread        = pComputeThread;
-	m_pDisplayTimer         = pDisplayTimer;
-	m_pNMRI = pModelInterface;
+	m_pSlowMotionRatio = pSlowMotionRatio;
+	m_pComputeThread   = pComputeThread;
+	m_pDisplayTimer    = pDisplayTimer;
 }
 
 void PerformanceWindow::Stop()
 {
 	TextWindow::StopTextWindow();
 	Show(false);
+}
+
+void PerformanceWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+{
+	m_pNMRI = pNMRI;
 }
 
 void PerformanceWindow::printMicroSecLine
@@ -119,11 +122,14 @@ void PerformanceWindow::DoPaint(TextBuffer & textBuf)
 		printMicroSecLine(textBuf, L"spent time:",    spent);
 		printFloatLine   (textBuf, L"workload:",      Cast2Float((spent / avail) * 100.0f), L"%");
 		printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
-		NobType::Apply2All
-		(
-			[this, &textBuf](NobType const & type)
-			{ printIntLine(textBuf, (NobType::GetName(type.GetValue()) + L":").c_str(), m_pNMRI->GetNrOf(type)); }
-		);
-		printIntLine(textBuf, L"Nobs:", m_pNMRI->GetNrOfNobs());
+		if (m_pNMRI)
+		{
+			NobType::Apply2All
+			(
+				[this, &textBuf](NobType const & type)
+				{ printIntLine(textBuf, (NobType::GetName(type.GetValue()) + L":").c_str(), m_pNMRI->GetNrOf(type)); }
+			);
+			printIntLine(textBuf, L"Nobs:", m_pNMRI->GetNrOfNobs());
+		}
 	}
 }

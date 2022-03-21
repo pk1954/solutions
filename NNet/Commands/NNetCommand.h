@@ -19,7 +19,7 @@ class NNetCommand : public Command
 public:
     ~NNetCommand() override = default;
 
-    static void Initialize(NNetModelWriterInterface * const pNMWI)
+    static void SetModelInterface(NNetModelWriterInterface * const pNMWI)
     {
         m_pNMWI = pNMWI;
     }
@@ -27,11 +27,6 @@ public:
     virtual NobId GetAffectedNob() const
     {
         return NO_NOB;
-    }
-
-    unique_ptr<Pipe> MakePipe(BaseKnot* const p1, BaseKnot* const p2)
-    {
-        return make_unique<Pipe>(p1, p2, m_pNMWI->GetParams());
     }
 
 protected:

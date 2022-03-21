@@ -27,12 +27,11 @@ class NNetModelReaderInterface;
 class NNetModelExporter
 {
 public:
-	void Initialize(NNetModelReaderInterface * const);
-	void WriteModel();
+	void WriteModel(NNetModelReaderInterface const &);
 
 private:
-	NNetModelReaderInterface * m_pNMRI                    { nullptr };
-	Observable               * m_unsavedChangesObservable { nullptr };
+	NNetModelReaderInterface const * m_pNMRI                    { nullptr };
+	Observable                     * m_unsavedChangesObservable { nullptr };
 
 	NobIdList m_CompactIds;
 

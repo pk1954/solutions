@@ -4,8 +4,9 @@
 
 #include "stdafx.h"
 #include "DrawContext.h"
+#include "UPNobList.h"
 #include "NNetColors.h"
-#include "NNetModelReaderInterface.h"
+#include "MeanFilter.h"
 #include "BaseKnot.h"
 #include "Signal.h"
 
@@ -15,16 +16,15 @@ using std::make_unique;
 
 Signal::Signal
 (
-    NNetModelReaderInterface const & nmri,
-    Observable                     & observable,
-    MicroMeterCircle         const & circle
+    Observable             & observable,
+    UPNobList        const & list,
+    MicroMeterCircle const & circle
 ) :
-    m_nmri(nmri),
     m_observable(observable),
     m_circle(circle)
 {
-    Reset();
-    SetSensorSize(circle.GetRadius());
+    m_upMeanFilter = make_unique<MeanFilter>();
+    SetSensorSize(list, circle.GetRadius());
     m_observable.RegisterObserver(*this);
 }
 
@@ -33,10 +33,10 @@ Signal::~Signal()
     m_observable.UnregisterObserver(*this);
 }
 
-void Signal::Reset()    
+void Signal::Reset(fMicroSecs const time)    
 { 
-    m_timeStart = m_nmri.GetSimulationTime();
-    m_fTimeLine.clear(); 
+    m_timeStart = time;
+    m_upMeanFilter->Reset(); 
 }
 
 void Signal::add2list(Pipe const & pipe) 
@@ -55,10 +55,19 @@ void Signal::add2list(Pipe const & pipe)
     }
 } 
 
-void Signal::Recalc()
+void Signal::Recalc(UPNobList const & list)
 {
     m_dataPoints.clear();
-    m_nmri.GetUPNobsC().Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
+    list.Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
+    m_upMeanFilter->Recalc();
+}
+
+void Signal::RecalcFilter(Param const & param) const
+{
+    fMicroSecs usTimeRes    { param.TimeResolution() };
+    fMicroSecs usFilterSize { param.FilterSize() };
+    size_t     filterSize   { static_cast<size_t>(usFilterSize/usTimeRes) };
+    m_upMeanFilter->SetFilterSize(filterSize);
 }
 
 float Signal::GetSignalValue() const
@@ -111,50 +120,67 @@ Signal::SigDataPoint const * Signal::findDataPoint(MicroMeterPnt const & umPnt) 
     return nullptr;
 }
 
-int Signal::time2index(fMicroSecs const usParam) const
+int Signal::time2index
+(
+    Param      const & param,
+    fMicroSecs const   usParam
+) const
 {
     fMicroSecs const timeTilStart { usParam - m_timeStart };
-    float      const fNrOfPoints  { timeTilStart / m_nmri.TimeResolution() };
+    float      const fNrOfPoints  { timeTilStart / param.TimeResolution() };
     int              index        { static_cast<int>(roundf(fNrOfPoints)) };
-    if (index >= m_fTimeLine.size())
-        index = Cast2UnsignedInt(m_fTimeLine.size() - 1);
+    size_t           nrOfElements { m_upMeanFilter->GetNrOfElements() };
+    if (index >= nrOfElements)
+        index = Cast2UnsignedInt(nrOfElements - 1);
     return index;
 }
 
-fMicroSecs Signal::index2time(int const index) const
+fMicroSecs Signal::index2time
+(
+    Param const & param,
+    int   const   index
+) const
 {
     float      const fNrOfPoints  { static_cast<float>(index) };
-    fMicroSecs const timeTilStart { m_nmri.TimeResolution() * fNrOfPoints };
+    fMicroSecs const timeTilStart { param.TimeResolution() * fNrOfPoints };
     fMicroSecs const usResult     { timeTilStart + m_timeStart };
     return usResult;
 }
 
-float Signal::GetDataPoint(fMicroSecs const time) const
+float Signal::GetDataPoint
+(
+    Param      const & param,
+    fMicroSecs const   time
+) const
 {
-    int index { time2index(time) };
-    return (index < 0) ? NAN : m_fTimeLine[index];
+    int index { time2index(param, time) };
+    return (index < 0) ? NAN : m_upMeanFilter->GetFiltered(index);
 }
 
-fMicroSecs Signal::FindNextMaximum(fMicroSecs const time) const
+fMicroSecs Signal::FindNextMaximum
+(
+    Param      const & param,
+    fMicroSecs const   time
+) const
 {
-    int index { time2index(time) };
+    int index { time2index(param, time) };
     if (index < 0)
         return fMicroSecs::NULL_VAL();
-    if ((index > 0) && (m_fTimeLine[index-1] > m_fTimeLine[index])) // falling values, go left
+    if ((index > 0) && (m_upMeanFilter->GetFiltered(index-1) > m_upMeanFilter->GetFiltered(index))) // falling values, go left
     {   
-        while ((--index > 0) && (m_fTimeLine[index-1] >= m_fTimeLine[index]));
+        while ((--index > 0) && (m_upMeanFilter->GetFiltered(index-1) >= m_upMeanFilter->GetFiltered(index)));
     }
     else   // climbing values, go right
     {
-        while ((index < m_fTimeLine.size() - 1) && (m_fTimeLine[index] <= m_fTimeLine[index+1]))
+        while ((index < m_upMeanFilter->GetLastIndex()) && (m_upMeanFilter->GetFiltered(index) <= m_upMeanFilter->GetFiltered(index+1)))
             ++index;
     }
-    return index2time(index);
+    return index2time(param, index);
 }
 
 void Signal::Notify(bool const bImmediate)
 {
-    m_fTimeLine.push_back(GetSignalValue());
+    m_upMeanFilter->Add(GetSignalValue());
 }
 
 void Signal::CheckSignal() const 
@@ -171,36 +197,53 @@ void Signal::Dump() const
 {
     wcout << L"circle:     " << m_circle << endl;
     wcout << L"time start: " << m_timeStart << endl;
-    wcout << '(' << endl;
-    for (auto it : m_fTimeLine)
-        wcout << it << endl;
-    wcout << ')' << endl;
+    m_upMeanFilter->Dump();
 }
 
-void Signal::SetSensorPos(MicroMeterPnt const & umPos) 
+void Signal::SetSensorPos
+(
+    UPNobList     const & list,
+    MicroMeterPnt const & umPos
+) 
 { 
     m_circle.SetPos(umPos); 
-    Recalc();
+    Recalc(list);
 }
 
-void Signal::SetSensorSize(MicroMeter const umSize) 
+void Signal::SetSensorSize
+(
+    UPNobList  const & list,
+    MicroMeter const   umSize
+) 
 { 
     m_circle.SetRadius(umSize); 
     m_fDsBorder = umSize.GetValue() * umSize.GetValue();
-    Recalc();
+    Recalc(list);
 }
 
-void Signal::MoveSensor(MicroMeterPnt const & umDelta) 
+void Signal::MoveSensor
+(
+    UPNobList     const & list,
+    MicroMeterPnt const & umDelta
+) 
 { 
-    SetSensorPos(m_circle.GetPos() + umDelta);
+    SetSensorPos(list, m_circle.GetPos() + umDelta);
 }
 
-void Signal::SizeSensor(float const factor) 
+void Signal::SizeSensor
+(
+    UPNobList const & list,
+    float     const   factor
+) 
 { 
-    SetSensorSize(GetRadius() * factor); 
+    SetSensorSize(list, GetRadius() * factor); 
 }
 
-void Signal::RotateSensor(MicroMeterPnt const & umPntPivot, Radian const radDelta)
+void Signal::RotateSensor
+(
+    MicroMeterPnt const & umPntPivot, 
+    Radian        const   radDelta
+)
 {
     m_circle.Rotate(umPntPivot, radDelta);
 }

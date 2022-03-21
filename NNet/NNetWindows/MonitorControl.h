@@ -14,9 +14,9 @@
 #include "SoundInterface.h"
 #include "win32_graphicsWindow.h"
 
-class NNetModelReaderInterface;
 class MonitorData;
 class NNetModelCommands;
+class NNetModelWriterInterface;
 
 struct IDWriteTextFormat;
 
@@ -26,18 +26,16 @@ public:
 	MonitorControl
 	(
 		HWND const, 
-		Sound                          &,
-		NNetModelCommands              &,
-		NNetModelReaderInterface const &,
-		MonitorData                    &,
-		PixFpDimension<fMicroSecs>     &
+		Sound                      &,
+		NNetModelCommands          &,
+		PixFpDimension<fMicroSecs> &
 	);
 
 	~MonitorControl() final = default;
 
 	void Stop () final;
 	void Reset() final;
-
+	void SetModelInterface(NNetModelWriterInterface * const);
 	bool SignalTooHigh() const;
 	void ScaleSignals();
 
@@ -80,10 +78,10 @@ private:
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };
 
-	Sound                          & m_sound;        
-	NNetModelCommands              & m_modelCommands;
-	NNetModelReaderInterface const & m_nmri;  
-	MonitorData                    & m_monitorData;
+	Sound                    & m_sound;        
+	NNetModelCommands        & m_modelCommands;
+	MonitorData              * m_pMonitorData { nullptr };
+	NNetModelWriterInterface * m_pNMWI        { nullptr };
 
 	TrackNr             m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint          m_pixLast            { PP_NULL };     // last cursor position during selection 

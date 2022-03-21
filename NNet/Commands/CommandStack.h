@@ -13,41 +13,30 @@ using std::make_unique;
 
 class Command;
 class Observable;
-class NNetModelWriterInterface;
+class NNetModelReaderInterface;
 
 class CommandStack
 {
 public:
 
-    void Initialize(NNetModelWriterInterface * const, Observable * const);
-
-    bool UndoStackEmpty() const 
-    { 
-        return m_iIndex == 0; 
-    }
-
-    bool RedoStackEmpty() const 
-    { 
-        return m_iIndex == m_CommandStack.size(); 
-    }
-
+    void Initialize(Observable * const);
+    void SetModelInterface(NNetModelReaderInterface const * const);
+    bool UndoStackEmpty() const; 
+    bool RedoStackEmpty() const; 
     void Push(unique_ptr<Command>);
-
     void PushCommand(unique_ptr<Command>);
     bool UndoCommand();
     bool RedoCommand();
-
     void Clear();
-
     void DoAll();
     void UndoAll();
 
 private:
 
-    vector<unique_ptr<Command>> m_CommandStack           { };
-    size_t                      m_iIndex                 { 0 };     // index into m_Commandstack
-    NNetModelWriterInterface  * m_pNMWI                  { nullptr };
-    Observable                * m_pStaticModelObservable { nullptr };
+    vector<unique_ptr<Command>>      m_CommandStack           { };
+    size_t                           m_iIndex                 { 0 }; // index into m_Commandstack
+    NNetModelReaderInterface const * m_pNMRI                  { nullptr };
+    Observable                     * m_pStaticModelObservable { nullptr };
 
     Command & currentCmd () const { return * m_CommandStack.at(m_iIndex); }
     Command & previousCmd() const { return * m_CommandStack.at(m_iIndex-1); }; 

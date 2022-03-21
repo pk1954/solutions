@@ -10,14 +10,19 @@
 
 class Param;
 
+struct SigGenData
+{
+	BASE_PEAK<fHertz> freq;
+	BASE_PEAK<mV>     volt;
+	fMicroSecs        usPeak;
+};
+
 class SignalGenerator : public Observable
 {
 public:
 
-	SignalGenerator();
-	~SignalGenerator() override = default;
-
-    static void Initialize(Param & param) { m_pParameters = & param; }
+	explicit SignalGenerator(Param &);
+	~SignalGenerator() final = default;
 
 	void Tick();
 	void TriggerStimulus();
@@ -28,14 +33,15 @@ public:
 	mV     GetActVoltage  ()                 const;
 	mV     GetVoltage     (fMicroSecs const) const;
 
-	void LoadParameterValues();
-
-	fMicroSecs        const & TimePeak () const { return m_usPeak; }
-	BASE_PEAK<fHertz> const & Frequency() const { return m_freq;  }
-	BASE_PEAK<mV>     const & Voltage  () const { return m_volt;  }
+	fMicroSecs        const & TimePeak () const { return m_data.usPeak; }
+	BASE_PEAK<fHertz> const & Frequency() const { return m_data.freq;  }
+	BASE_PEAK<mV>     const & Voltage  () const { return m_data.volt;  }
 
 	void SetParam(ParamType::Value const, float const);
-	void SetParams(SignalGenerator const &);
+	void SetParams(BASE_PEAK<fHertz>, BASE_PEAK<mV>, fMicroSecs);
+
+	void SetData(SigGenData const &);
+	SigGenData GetData() const;
 
 	void SetBaseFreq(fHertz const);
 	void SetPeakFreq(fHertz const);
@@ -45,7 +51,7 @@ public:
 
 	bool       IsTriggerActive() const { return m_bTriggerActive; }
 	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
-	fMicroSecs CutoffTime     () const { return m_usPeak * CUT_OFF_FACTOR; }
+	fMicroSecs CutoffTime     () const { return m_data.usPeak * CUT_OFF_FACTOR; }
 	bool       InStimulusRange(fMicroSecs const t) const { return t < CutoffTime(); }
 
 	Param const & GetParams() const { return * m_pParameters; }
@@ -55,12 +61,9 @@ private:
 
 	inline static float const CUT_OFF_FACTOR { 10.0f };
 
-	inline static Param * m_pParameters { nullptr };
-
+	Param    * m_pParameters         { nullptr };
 	bool       m_bTriggerActive      { false };
 	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
 
-	BASE_PEAK<fHertz> m_freq;
-	BASE_PEAK<mV>     m_volt;
-	fMicroSecs        m_usPeak { };
+	SigGenData m_data;
 };

@@ -29,25 +29,22 @@ using std::to_wstring;
 
 void MainWindow::Start
 (
-	HWND                     const   hwndApp, 
-	DWORD                    const   dwStyle,
-	bool                     const   bShowRefreshRateDialog,
-	fPixel                   const   fPixBeaconLimit,
-	NNetModelReaderInterface const & modelReaderInterface,
-	NNetController                 & controller,
-	NNetModelCommands              & modelCommands,
-	Observable                     & cursorObservable,
-	Observable                     & coordObservable,
-	ActionTimer              * const pActionTimer
+	HWND          const hwndApp, 
+	bool          const bShowRefreshRateDialog,
+	fPixel        const fPixBeaconLimit,
+	NNetController    & controller,
+	NNetModelCommands & modelCommands,
+	Observable        & cursorObservable,
+	Observable        & coordObservable,
+	ActionTimer * const pActionTimer
 )
 {
 	NNetWindow::Start
 	(
 		hwndApp, 
-		dwStyle,
+		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
-		modelReaderInterface,
 		controller
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);

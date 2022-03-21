@@ -148,7 +148,7 @@ public:
         {
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
         }
-        GetMonitorData().AddSignal(trackNr, umCircle);
+        GetMonitorData().AddSignal(GetUPNobsRef(), trackNr, umCircle);
     }
 };
 
@@ -294,7 +294,7 @@ bool NNetModelImporter::Import
 
     m_upTermination   = move(upTermination);
     m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
-    m_ImportedNMWI.Start(m_upImportedModel.get());
+    m_ImportedNMWI.SetModel(m_upImportedModel.get());
     m_wstrFile2Read = wstrPath;
     Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
     return true;

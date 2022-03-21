@@ -9,17 +9,14 @@
 using std::find;
 using std::make_unique;
 
-MonitorWindow::MonitorWindow() = default;
-
+MonitorWindow:: MonitorWindow() = default;
 MonitorWindow::~MonitorWindow() = default;
 
 void MonitorWindow::Start
 (
-	HWND                     const   hwndParent,
-	Sound                          & sound,
-	NNetModelCommands              & modelCommands,
-	NNetModelReaderInterface const & nmri,
-	MonitorData                    & monitorData 
+	HWND        const   hwndParent,
+	Sound             & sound,
+	NNetModelCommands & modelCmds
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -32,15 +29,7 @@ void MonitorWindow::Start
 		nullptr
 	);
 
-	m_upMonitorControl = make_unique<MonitorControl>
-	(
-		hwnd,
-		sound,
-		modelCommands,
-		nmri,
-		monitorData,
-		m_horzCoord
-	);
+	m_upMonitorControl = make_unique<MonitorControl>(hwnd, sound, modelCmds, m_horzCoord);
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 4000._MicroSecs); 
@@ -58,6 +47,11 @@ void MonitorWindow::Start
 void MonitorWindow::Stop()
 {
 	DestroyWindow();
+}
+
+void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI)
+{
+	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
 void MonitorWindow::SetCaption() const

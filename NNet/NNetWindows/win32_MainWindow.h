@@ -24,16 +24,14 @@ public:
 
 	void Start
 	(
-		HWND                     const,
-		DWORD                    const,
-		bool                     const,
-		fPixel                   const,
-		NNetModelReaderInterface const &,
-		NNetController                 &,
-		NNetModelCommands              &,
-		Observable                     &,
-		Observable                     &,
-		ActionTimer            * const
+		HWND   const,
+		bool   const,
+		fPixel const,
+		NNetController    &,
+		NNetModelCommands &,
+		Observable        &,
+		Observable        &,
+		ActionTimer * const
 	);
 
 	void Stop () final;

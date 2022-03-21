@@ -29,11 +29,6 @@ using std::put_time;
 using std::wofstream;
 using std::filesystem::path;
 
-void NNetModelExporter::Initialize(NNetModelReaderInterface * const pNMRI)
-{
-    m_pNMRI = pNMRI;
-}
-
 int NNetModelExporter::getCompactIdVal(NobId const id) const
 { 
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
@@ -85,13 +80,13 @@ void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
     (
         [this, &out](InputConnector const & inpConn)
         { 
-            using enum ParamType::Value;
-            NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
-            SignalGenerator const & sigGen { inpConn.GetSignalGeneratorC() };
-            out << L"SetParam" << id << inputBaseVolt << sigGen.Voltage  ().base << endl; 
-            out << L"SetParam" << id << inputPeakVolt << sigGen.Voltage  ().peak << endl; 
-            out << L"SetParam" << id << inputPeakFreq << sigGen.Frequency().peak << endl; 
-            out << L"SetParam" << id << inputPeakTime << sigGen.TimePeak ()      << endl; 
+            //using enum ParamType::Value;
+            //NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
+            //SignalGenerator const & sigGen { inpConn.GetSignalGeneratorC() };
+            //out << L"SetParam" << id << inputBaseVolt << sigGen.Voltage  ().base << endl; 
+            //out << L"SetParam" << id << inputPeakVolt << sigGen.Voltage  ().peak << endl; 
+            //out << L"SetParam" << id << inputPeakFreq << sigGen.Frequency().peak << endl; 
+            //out << L"SetParam" << id << inputPeakTime << sigGen.TimePeak ()      << endl; 
         }
    );
 }
@@ -122,7 +117,7 @@ void NNetModelExporter::writeMonitorData(wostream & out) const
 
     monitorData.Apply2AllSignalIdsC
     (
-        [&out, monitorData](SignalId const idSignal)
+        [&out, &monitorData](SignalId const idSignal)
         {
             Signal const * const pSignal { monitorData.GetConstSignalPtr(idSignal) };
             out << L"Signal "; 
@@ -250,8 +245,9 @@ void NNetModelExporter::write(wostream & out)
     fMicroSecs const usTilStart { timer.GetMicroSecsTilStart() }; //for tests only
 }
 
-void NNetModelExporter::WriteModel()
+void NNetModelExporter::WriteModel(NNetModelReaderInterface const & nmri)
 {
+    m_pNMRI = &nmri;
     wofstream modelFile(m_pNMRI->GetModelFilePath());
     write(modelFile);
     modelFile.close();

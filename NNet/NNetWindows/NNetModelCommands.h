@@ -18,6 +18,7 @@ class Param;
 class NNetCommand;
 class Observable;
 class NobIdList;
+struct SigGenData;
 class CommandStack;
 class AlignAnimation;
 class NNetModelImporter;
@@ -39,12 +40,11 @@ class NNetModelCommands
 public:
     void Initialize
     (
-        NNetModelReaderInterface * const, 
-        NNetModelWriterInterface * const,
-        NNetModelImporter        * const,
-        Observable               * const,
-        CommandStack             * const 
-   );
+        NNetModelImporter * const,
+        Observable        * const,
+        CommandStack      * const 
+    );
+    void SetModelInterface(NNetModelWriterInterface * const); 
 
     void ResetModel();
     void PushCommand(unique_ptr<NNetCommand>);
@@ -90,7 +90,7 @@ public:
     void SelectNobsInRect    (MicroMeterRect const &);
     void SelectSubtree       (NobId const, bool const);
     void SetParameter        (ParamType::Value const, float const);
-    void SetStimulusParams   (SignalGenerator &, SignalGenerator const &);
+    void SetSigGenData       (SignalGenerator &, SigGenData const &);
     void SetNob              (NobId const, MicroMeterPosDir const);
     void SetTriggerSound     (NobId const, SoundDescr const &);
     void SizeSelection       (float const);
@@ -109,7 +109,6 @@ private:
 
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
-    NNetModelReaderInterface * m_pNMRI                   { nullptr };
     NNetModelWriterInterface * m_pNMWI                   { nullptr };
     NNetModelImporter        * m_pModelImporter          { nullptr };
     Observable               * m_pDynamicModelObservable { nullptr };

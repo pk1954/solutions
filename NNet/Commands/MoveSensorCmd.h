@@ -26,14 +26,14 @@ public:
 	{ 
 		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
 		if (pSignal)
-			pSignal->MoveSensor(m_delta);
+			pSignal->MoveSensor(m_pNMWI->GetUPNobsC(), m_delta);
 	}
 
 	void Undo() final 
 	{ 
 		Signal * pSignal { m_pNMWI->GetMonitorData().GetSignalPtr(m_signalId) };
 		if (pSignal)
-			pSignal->MoveSensor(-m_delta);
+			pSignal->MoveSensor(m_pNMWI->GetUPNobsC(), -m_delta);
 	}
 
 	bool CombineCommands(Command const & src) final

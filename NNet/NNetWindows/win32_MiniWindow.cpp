@@ -10,6 +10,24 @@
 #include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
 
+void MiniWindow::Start
+(
+	HWND       const hwndParent, 
+	bool       const bShowRefreshRateDialog,
+	fPixel     const fPixBeaconLimit,
+	NNetController & controller
+)
+{
+	NNetWindow::Start
+	(
+		hwndParent, 
+		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
+		bShowRefreshRateDialog,
+		fPixBeaconLimit,
+		controller
+	);
+}
+
 void MiniWindow::ObservedNNetWindow(MainWindow * const pNNetWin)	
 { 
 	m_pObservedNNetWindow = pNNetWin;

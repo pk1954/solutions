@@ -28,7 +28,11 @@ public:
     {
         MonitorData & monitorData { m_pNMWI->GetMonitorData() };
         monitorData.InsertTrack(TrackNr(0));
-        m_signalId = SignalId(m_trackNr, monitorData.AddSignal(m_trackNr, m_umCircle));
+        m_signalId = SignalId
+        (
+            m_trackNr, 
+            monitorData.AddSignal(m_pNMWI->GetUPNobsC(), m_trackNr, m_umCircle)
+        );
     };
 
     void Undo() final

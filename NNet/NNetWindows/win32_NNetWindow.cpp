@@ -25,17 +25,15 @@ using std::function;
 
 void NNetWindow::Start
 (
-	HWND                     const   hwndParent, 
-	DWORD                    const   dwStyle,
-	bool                     const   bShowRefreshRateDialog,
-	fPixel                   const   fPixLimit,
-	NNetModelReaderInterface const & modelReaderInterface,
-	NNetController                 & controller
+	HWND       const hwndParent, 
+	DWORD      const dwStyle,
+	bool       const bShowRefreshRateDialog,
+	fPixel     const fPixLimit,
+	NNetController & controller
 )
 {
 	GraphicsWindow::Initialize(hwndParent, L"ClassNNetWindow", dwStyle);
 	m_context.Start(m_upGraphics.get());
-	m_pNMRI           = & modelReaderInterface;
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
@@ -45,6 +43,11 @@ NNetWindow::~NNetWindow()
 {
 	m_pNMRI       = nullptr;
 	m_pController = nullptr;
+}
+
+void NNetWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+{
+	m_pNMRI = pNMRI;
 }
 
 MicroMeterRect NNetWindow::GetViewRect() const 

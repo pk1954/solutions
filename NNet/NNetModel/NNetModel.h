@@ -39,7 +39,7 @@ public:
 
 	Nob const * GetConstNob(NobId const) const;
 
-	fMicroSecs GetSimulationTime () const { return m_timeStamp; }
+	fMicroSecs GetSimulationTime() const { return m_timeStamp; }
 
 	float GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
@@ -84,6 +84,7 @@ public:
 	// functions affecting Nob data, not model data
 
 	void RecalcAllNobs() const;
+	void RecalcFilters();
 	void ClearDynamicData();
 
 	// non const functions

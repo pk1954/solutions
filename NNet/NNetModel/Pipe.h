@@ -23,7 +23,7 @@ public:
 	using SegNr = NamedType<size_t, struct segNr_Parameter>;
 
 	Pipe();
-	Pipe(BaseKnot * const, BaseKnot * const, Param const &);
+	Pipe(BaseKnot * const, BaseKnot * const);
 	Pipe(Pipe const &);   // copy constructor
 
 	~Pipe() final = default;
@@ -53,6 +53,8 @@ public:
 	BaseKnot const * GetStartKnotPtr() const { return m_pKnotStart; }
 	BaseKnot const * GetEndKnotPtr  () const { return m_pKnotEnd;   }
 	size_t           GetNrOfSegments() const { return m_potential.size(); }
+
+	void SetNrOfSegments(size_t const n) { m_potential.resize(n); }
 
 	NobId         GetStartKnotId() const;
 	NobId         GetEndKnotId  () const;
@@ -136,7 +138,7 @@ private:
 
 	MicroMeterPnt dislocation() const;
 	size_t        segNr2index(SegNr const) const;
-	void          recalc(Param const &);
+	void          recalc();
 
 	MicroMeterPnt getSegmentPos(SegNr const segNr, float const fPos) const
 	{

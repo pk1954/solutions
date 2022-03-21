@@ -22,7 +22,6 @@ class Preferences
 public:
 	void Initialize
 	(
-		NNetModelReaderInterface &,
 		DescriptionWindow &,
 		MainWindow &,
 		Sound &, 

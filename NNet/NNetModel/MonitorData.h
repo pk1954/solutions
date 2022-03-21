@@ -27,8 +27,7 @@ public:
 	~MonitorData()                             = default;  // destructor
 	MonitorData(MonitorData&& rhs)             = delete;   // move constructor
 	MonitorData& operator=(const MonitorData&) = delete;   // copy assignment operator
-	
-	MonitorData(const MonitorData&);                       // copy constructor
+	MonitorData(const MonitorData&)            = delete;   // copy constructor
 	MonitorData& operator=(MonitorData&&) noexcept;        // move assignment operator
 
 	bool operator== (MonitorData const &) const;
@@ -54,7 +53,7 @@ public:
 	SignalId SetHighlightedSignal(SignalId      const  );
 	SignalId ResetHighlightedSignal();
 
-	SignalNr       AddSignal            (TrackNr  const,   MicroMeterCircle const &);
+	SignalNr       AddSignal            (UPNobList const &,	TrackNr const, MicroMeterCircle const &);
 	SignalNr       AddSignal            (TrackNr  const,   unique_ptr<Signal>);
 	void           AddSignal            (SignalId const &, unique_ptr<Signal>);
 	SignalNr       MoveSignal           (SignalId const &, TrackNr  const);

@@ -79,7 +79,7 @@ UPNob WrapCreateNob::createPipe(Script & script) const
     { 
         BaseKnot * const pKnotStart { GetWriterInterface().GetNobPtr<BaseKnot *>(idStart) };
         BaseKnot * const pKnotEnd   { GetWriterInterface().GetNobPtr<BaseKnot *>(idEnd  ) };
-        unique_ptr<Pipe> upPipe { make_unique<Pipe>(pKnotStart, pKnotEnd, GetWriterInterface().GetParams()) };
+        unique_ptr<Pipe> upPipe { make_unique<Pipe>(pKnotStart, pKnotEnd) };
         pKnotStart->AddOutgoing(*upPipe.get());
         pKnotEnd  ->AddIncoming(*upPipe.get());
         return move(upPipe);
@@ -122,7 +122,7 @@ UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) c
     script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     unique_ptr<IoConnector> upIoConnector;
     if (nobType.IsInputConnectorType())
-        upIoConnector = make_unique<InputConnector> (move(ioNeuronList));
+        upIoConnector = make_unique<InputConnector> (GetWriterInterface().GetParams(), move(ioNeuronList));
     else
         upIoConnector = make_unique<OutputConnector>(move(ioNeuronList));
     upIoConnector->AlignDirection();

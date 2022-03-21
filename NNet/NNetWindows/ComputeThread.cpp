@@ -3,32 +3,34 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "NNetModel.h"
 #include "observable.h"
 #include "SlowMotionRatio.h"
 #include "win32_fatalError.h"
 #include "NNetParameters.h"
+#include "NNetModelWriterInterface.h"
 #include "ComputeThread.h"
 
-void ComputeThread::Start
+void ComputeThread::Initialize
 (
-	NNetModel       * const pModel,
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
 	Observable      * const pPerformanceObservable,
 	Observable      * const pDynamicModelObservable
 ) 
 {
-	m_pModel                  = pModel;
 	m_pRunObservable          = pRunObservable;
 	m_pPerformanceObservable  = pPerformanceObservable;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
-	m_pModel->SetSimulationTime();
-	m_pPerformanceObservable->NotifyAll(false);
-	reset();
 	AcquireSRWLockExclusive(& m_srwlStopped);
 	BeginThread(L"ComputeThread"); 
+}
+
+void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
+{
+	m_pNMWI = pNMWI;
+	m_pNMWI->SetSimulationTime();
+	reset();
 }
 
 void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters have changed
@@ -40,10 +42,10 @@ void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters 
 void ComputeThread::reset()
 {
 	LockComputation();
-	m_usSimuTimeAtLastReset = m_pModel->GetSimulationTime();
+	m_usSimuTimeAtLastReset = m_pNMWI->GetSimulationTime();
 	m_ticksNetRunning       = Ticks(0);
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
-	m_usSimuTimeResolution  = m_pModel->GetParams().TimeResolution(); 
+	m_usSimuTimeResolution  = m_pNMWI->GetParams().TimeResolution(); 
 	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime(m_usSimuTimeResolution); 
 	ReleaseComputationLock();
 }
@@ -131,7 +133,7 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 			Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
 			while ((lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked))
 			{
-				if (m_pModel->Compute()) // returns true, if stop on trigger fires
+				if (m_pNMWI->Compute()) // returns true, if stop on trigger fires
 				{
 					m_bStopped = true;
 					m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
@@ -160,13 +162,13 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 
 void ComputeThread::SingleStep() 
 { 
-	m_pModel->Compute();
+	m_pNMWI->Compute();
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
 fMicroSecs ComputeThread::simuTimeSinceLastReset() const
 { 
-	return m_pModel->GetSimulationTime() - m_usSimuTimeAtLastReset; 
+	return m_pNMWI->GetSimulationTime() - m_usSimuTimeAtLastReset; 
 };
 
 fMicroSecs ComputeThread::netRealTimeSinceLastReset() const

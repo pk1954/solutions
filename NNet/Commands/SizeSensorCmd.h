@@ -25,13 +25,13 @@ public:
 	void Do  () final 
 	{ 
 		if (m_pSignal)
-			m_pSignal->SizeSensor(1.0f / m_fFactor); 
+			m_pSignal->SizeSensor(m_pNMWI->GetUPNobsC(), 1.0f / m_fFactor); 
 	}
 
 	void Undo() final 
 	{ 
 		if (m_pSignal)
-			m_pSignal->SizeSensor(m_fFactor); 
+			m_pSignal->SizeSensor(m_pNMWI->GetUPNobsC(), m_fFactor); 
 	}
 
 	bool CombineCommands(Command const & src) final

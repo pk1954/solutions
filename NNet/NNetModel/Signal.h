@@ -15,8 +15,11 @@
 using std::vector;
 using std::unique_ptr;
 
+class Param;
 class Signal;
 class BaseKnot;
+class UPNobList;
+class MeanFilter;
 class DrawContext;
 class NNetModelReaderInterface;
 
@@ -26,30 +29,31 @@ public:
 
     Signal
     (
-        NNetModelReaderInterface const &,
-        Observable                     &,
-        MicroMeterCircle         const & 
+        Observable             &,
+        UPNobList        const &,
+        MicroMeterCircle const & 
     );
 
     ~Signal() override;
 
     bool operator==(Signal const & rhs) const { return m_circle == rhs.m_circle; }
 
-    void       SetSensorPos (MicroMeterPnt const &);
-    void       MoveSensor   (MicroMeterPnt const &);
-    void       SizeSensor   (float         const);
-    void       SetSensorSize(MicroMeter    const);
+    void       SetSensorPos (UPNobList const &, MicroMeterPnt const &);
+    void       MoveSensor   (UPNobList const &, MicroMeterPnt const &);
+    void       SetSensorSize(UPNobList const &, MicroMeter    const);
+    void       SizeSensor   (UPNobList const &, float         const);
     void       RotateSensor (MicroMeterPnt const &, Radian const);
-    void       Recalc();
-    void       Reset();
+    void       RecalcFilter (Param const &) const;
+    void       Recalc       (UPNobList const &);
+    void       Reset        (fMicroSecs const);
 
-    float      GetDistFactor(MicroMeterPnt const &)  const;
-    float      GetSignalValue()                      const;
-    float      GetDataPoint   (fMicroSecs const)     const;
-    fMicroSecs FindNextMaximum(fMicroSecs const)     const;
-    void       Draw(DrawContext const &, bool const) const;
-    void       DrawDataPoints(DrawContext const &)   const;
-    void       WriteSignalData(wostream &)           const;
+    float      GetDataPoint   (Param const &, fMicroSecs const) const;
+    fMicroSecs FindNextMaximum(Param const &, fMicroSecs const) const;
+    float      GetDistFactor(MicroMeterPnt const &)             const;
+    float      GetSignalValue()                                 const;
+    void       Draw(DrawContext const &, bool const)            const;
+    void       DrawDataPoints(DrawContext const &)              const;
+    void       WriteSignalData(wostream &)                      const;
 
     fMicroSecs               GetStartTime   () const { return m_timeStart; }
     MicroMeterPnt    const & GetCenter      () const { return m_circle.GetPos(); }
@@ -69,13 +73,11 @@ public:
 
 private:
 
-    NNetModelReaderInterface const & m_nmri;
-    Observable                     & m_observable;
-
-    MicroMeterCircle m_circle    { MicroMeterCircle::NULL_VAL() };
-    float            m_fDsBorder { };
-    fMicroSecs       m_timeStart { 0._MicroSecs };
-    vector<float>    m_fTimeLine { };
+    Observable           & m_observable;
+    MicroMeterCircle       m_circle    { MicroMeterCircle::NULL_VAL() };
+    float                  m_fDsBorder { };
+    fMicroSecs             m_timeStart { 0._MicroSecs };
+    unique_ptr<MeanFilter> m_upMeanFilter;
     struct SigDataPoint
     {
         Pipe          const * m_pPipe;
@@ -96,7 +98,8 @@ private:
     vector<SigDataPoint> m_dataPoints { };
 
     SigDataPoint const * findDataPoint(MicroMeterPnt const &) const;
-    int                  time2index   (fMicroSecs    const  ) const;
-    fMicroSecs           index2time   (int           const  ) const;
-    void                 add2list     (Pipe          const &);
+
+    int        time2index(Param const &, fMicroSecs const  ) const;
+    fMicroSecs index2time(Param const &, int        const  ) const;
+    void       add2list  (Pipe const &);
 };

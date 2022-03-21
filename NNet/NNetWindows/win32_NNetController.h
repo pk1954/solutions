@@ -32,22 +32,22 @@ public:
 
 	void Initialize
 	(
-		NNetModelExporter        * const,
-		MainWindow               * const,
-		WinManager               * const,
-		NNetModelReaderInterface * const,
-		NNetModelCommands        * const,
-		ComputeThread            * const,
-		SlowMotionRatio          * const,
-		DisplayFunctor           * const,
-		Sound                    * const,
-		Preferences              * const,
-		CommandStack             * const,
-		MonitorWindow            * const
+		NNetModelExporter * const,
+		MainWindow        * const,
+		WinManager        * const,
+		NNetModelCommands * const,
+		ComputeThread     * const,
+		SlowMotionRatio   * const,
+		DisplayFunctor    * const,
+		Sound             * const,
+		Preferences       * const,
+		CommandStack      * const,
+		MonitorWindow     * const
 	);
 
 	virtual ~NNetController();
 
+	void SetModelInterface(NNetModelReaderInterface * const);
 	bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL);
 
 private:

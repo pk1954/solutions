@@ -18,14 +18,13 @@ public:
     void Start
     (
         HWND const, 
-        NNetModelReaderInterface const * const, 
-        ComputeThread                  * const, 
-        SlowMotionRatio          const * const, 
-        ActionTimer                    * const 
+        ComputeThread * const, 
+        SlowMotionRatio const * const, 
+        ActionTimer * const 
    );
 
 	void Stop();
-
+    void SetModelInterface(NNetModelReaderInterface * const);
     void DoPaint(TextBuffer &) final;
 
 private:

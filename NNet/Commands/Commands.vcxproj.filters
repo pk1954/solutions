@@ -168,7 +168,7 @@
     <ClInclude Include="SingleNobAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetStimulusParamsCmd.h">
+    <ClInclude Include="SetSigGenDataCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToggleEmphModeCmd.h">

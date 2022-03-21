@@ -31,13 +31,11 @@ CrsrWindow::~CrsrWindow()
 
 void CrsrWindow::Start
 (
-	HWND                     const         hwndParent,
-	MainWindow               const * const pNNetWindow,
-	NNetModelReaderInterface const * const pModelInterface
+	HWND       const         hwndParent,
+	MainWindow const * const pNNetWindow
 ) 
 {
 	m_pMainWindow = pNNetWindow;
-	m_pNMRI       = pModelInterface;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -54,6 +52,11 @@ void CrsrWindow::Stop()
 {
 	TextWindow::StopTextWindow();
 	Show(false);
+}
+
+void CrsrWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+{
+	m_pNMRI = pNMRI;
 }
 
 void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um) const
@@ -97,15 +100,18 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	MicroMeterPnt umPntCrsr { m_pMainWindow->GetCursorPos() };
 	printPositionInfo(textBuf, umPntCrsr);
 
-	SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
-	NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
-	if (IsDefined(nobId))
+	if (m_pNMRI)
 	{
-		printNobInfo(textBuf, umPntCrsr, nobId);
-	}
-	if (sigId.IsValid())
-	{
-		printSignalInfo(textBuf, sigId);
+		SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
+		NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
+		if (IsDefined(nobId))
+		{
+			printNobInfo(textBuf, umPntCrsr, nobId);
+		}
+		if (sigId.IsValid())
+		{
+			printSignalInfo(textBuf, sigId);
+		}
 	}
 }
 

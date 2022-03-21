@@ -4,27 +4,28 @@
 
 #pragma once
 
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "win32_hiResTimer.h"
 #include "win32_thread.h"
 
 class NNetModel;
 class Observable;
 class SlowMotionRatio;
+class NNetModelWriterInterface;
 
 class ComputeThread: public Util::Thread, public ObserverInterface
 {
 public:
 
-	void Start
+	void Initialize
 	(
-		NNetModel       * const,
 		SlowMotionRatio * const,
 		Observable      * const,
 		Observable      * const,
 		Observable      * const
 	);
 
+	void SetModelInterface(NNetModelWriterInterface * const);
 	void ThreadStartupFunc() final;
 	void ThreadMsgDispatcher(MSG const &) final { }
 	void Notify(bool const) final;
@@ -44,7 +45,8 @@ public:
 
 private:
 
-	NNetModel       * m_pModel                  { nullptr };
+	NNetModelWriterInterface * m_pNMWI          { nullptr };
+
 	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };

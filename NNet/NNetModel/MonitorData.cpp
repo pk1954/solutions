@@ -18,22 +18,22 @@ bool MonitorData::operator==(MonitorData const & rhs) const
 	return m_tracks == rhs.m_tracks;
 }
 
-MonitorData::MonitorData(const MonitorData& rhs)  // copy constructor
-{
-	for (auto const & upTrack : rhs.m_tracks)
-		m_tracks.push_back(make_unique<Track>(*upTrack.get()));
-}
+//MonitorData::MonitorData(const MonitorData& rhs)  // copy constructor
+//{
+//	for (auto const & upTrack : rhs.m_tracks)
+//		m_tracks.push_back(make_unique<Track>(*upTrack.get()));
+//}
 
-MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignment operator
-{
-	if (this != &rhs)
-	{
-		m_tracks.clear();
-		for (auto const & upTrack : rhs.m_tracks)
-			m_tracks.push_back(make_unique<Track>(*upTrack.get()));
-	}
-	return * this;
-}
+//MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignment operator
+//{
+//	if (this != &rhs)
+//	{
+//		m_tracks.clear();
+//		for (auto & upTrack : rhs.m_tracks)
+//			m_tracks.push_back(move(upTrack));
+//	}
+//	return * this;
+//}
 
 void MonitorData::Reset()
 {
@@ -116,12 +116,13 @@ unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
 
 SignalNr MonitorData::AddSignal
 (
+	UPNobList        const & list,
 	TrackNr          const   trackNr, 
 	MicroMeterCircle const & umCircle 
 )
 {
 	return (IsValid(trackNr))
-		   ? AddSignal(trackNr, SignalFactory::MakeSignal(umCircle))
+		   ? AddSignal(trackNr, SignalFactory::MakeSignal(list, umCircle))
 		   : SignalNr::NULL_VAL();
 }
 
@@ -145,9 +146,9 @@ Signal * MonitorData::GetSignalPtr(SignalId const & id)
 	if (id.IsNull())
 		return nullptr;
 	TrackNr const trackNr { id.GetTrackNr() };
-	if (IsValid(trackNr))
-		return getTrack(trackNr)->GetSignalPtr(id.GetSignalNr());
-	return nullptr;
+	return (IsValid(trackNr))
+		   ? getTrack(trackNr)->GetSignalPtr(id.GetSignalNr())
+		   : nullptr;
 }
 
 Signal const * MonitorData::GetConstSignalPtr(SignalId const & id) const
@@ -155,7 +156,6 @@ Signal const * MonitorData::GetConstSignalPtr(SignalId const & id) const
 	return (IsValid(id))
 		   ? getTrack(id.GetTrackNr())->GetConstSignalPtr(id.GetSignalNr())
 	       : nullptr;
-
 }
 
 Signal const * MonitorData::GetHighlightedSignal() const

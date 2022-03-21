@@ -38,6 +38,7 @@ public:
     unique_ptr<vector<Nob *>> GetSelection()   { return GetUPNobs().GetAllSelected(); }
 
     void  ResetModel      ()       { m_pModel->ResetModel(); }
+    void  RecalcFilters   ()       { m_pModel->RecalcFilters(); }
     void  ClearDynamicData() const { m_pModel->ClearDynamicData(); }
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
@@ -45,6 +46,7 @@ public:
     void  SelectSubtree(BaseKnot & baseKnot, bool  const b) { m_pModel->SelectSubtree(baseKnot, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
+    void  SetDescriptionUI  (DescriptionUI & ui)   { m_pModel->SetDescriptionUI(ui); }
     void  SetModelFilePath  (wstring const & wstr) { m_pModel->SetModelFilePath  (wstr); }
     void  AddDescriptionLine(wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
     void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
@@ -133,6 +135,9 @@ public:
 
     void IncreaseSize(long const nr) { GetUPNobs().IncreaseSize(nr); }
     void ReduceSize  (long const nr) { GetUPNobs().ReduceSize(nr); }
+
+    void SetSimulationTime() { m_pModel->SetSimulationTime(); }
+    bool Compute()           { return m_pModel->Compute(); }
 
     void SetPosDir(NobId const, MicroMeterPosDir const &);
 };

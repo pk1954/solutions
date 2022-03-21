@@ -25,6 +25,7 @@ wchar_t const * ParamType::GetName(ParamType::Value const p)
 		{ threshold,      L"Threshold"        },
     	{ refractPeriod,  L"RefractoryPeriod" },
 	    { timeResolution, L"TimeResolution"   },
+		{ filterSize,     L"FilterSize"       }, // multiples of timeResolution  
 		{ baseFrequency,  L"BaseFrequency"    },   // Legacy
 		{ signalLoss,     L"SignalLoss"       },   // Legacy
 		{ stdPulseRate,   L"StdPulseRate"     },   // Legacy
@@ -50,6 +51,7 @@ wchar_t const * ParamType::GetUnit(ParamType::Value const p)
 		{ neuronPeakVolt,  L"mV"    },
     	{ refractPeriod,   L"µs"    },
 	    { timeResolution,  L"µs"    },
+		{ filterSize,      L"µs"    },
 		{ signalLoss,      L"1/µm"  },  // Legacy
 		{ stdPulseRate,    L"Hz"    },  // Legacy
 		{ pulseRate,       L"Hz"    }   // Legacy

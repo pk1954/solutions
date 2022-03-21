@@ -33,6 +33,7 @@
     <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
     <ClInclude Include="LogarithmicTrackbar.h" />
+    <ClInclude Include="MeanFilter.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />

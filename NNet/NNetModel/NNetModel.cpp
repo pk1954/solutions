@@ -81,10 +81,10 @@ void NNetModel::ClearDynamicData()
 	); 
 	GetMonitorData().Apply2AllSignals
 	(
-		[](Signal & s) 
+		[this](Signal & s) 
 		{ 
-			s.Reset(); 
-			s.Recalc(); 
+			s.Reset(GetSimulationTime()); 
+			s.Recalc(m_Nobs); 
 		}
 	);
 }
@@ -92,6 +92,11 @@ void NNetModel::ClearDynamicData()
 bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 {
 	return m_description.GetDescriptionLine(iLine, wstrLine);
+}
+
+void NNetModel::RecalcFilters()
+{
+	GetMonitorData().Apply2AllSignals([this](Signal const & s) { s.RecalcFilter(m_param); });
 }
 
 float NNetModel::SetParam
@@ -102,7 +107,10 @@ float NNetModel::SetParam
 {
 	float fOldValue { m_param.GetParameterValue(param) };
 	m_param.SetParameterValue(param, fNewValue);
-	RecalcAllNobs();
+	if (param == ParamType::Value::filterSize)
+		RecalcFilters();
+	else
+		RecalcAllNobs();
 	return fOldValue;
 }
 

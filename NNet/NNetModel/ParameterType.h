@@ -25,7 +25,8 @@ public:
 		pulseWidth,
 		refractPeriod,
 		timeResolution,
-		tParameterLastGlobal = timeResolution,
+		filterSize,
+		tParameterLastGlobal = filterSize,
 		baseFrequency,  // legacy  
 		pulseRate,      // legacy
 		signalLoss,     // legacy

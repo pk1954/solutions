@@ -50,6 +50,7 @@ class Observable;
 class NNetModel;
 
 using std::wofstream;
+using std::unique_ptr;
 
 class StatusBarDisplayFunctor : public DisplayFunctor
 {
@@ -100,6 +101,7 @@ private:
 	void adjustChildWindows();
 	void openSignalDesigner();
 	void processScript() const;
+	void setModelInterface();
 
 	bool SaveModelAs();
 	bool SaveModel();
@@ -107,7 +109,7 @@ private:
 
 	void writeModel()
 	{
-		m_modelExporter.WriteModel();
+		m_modelExporter.WriteModel(*m_pNMRI);
 		m_appTitle.SetUnsavedChanges(false);
 	}
 
@@ -118,6 +120,10 @@ private:
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 
+	unique_ptr<NNetModel>      m_upModel;
+	NNetModelReaderInterface * m_pNMRI { nullptr };
+
+	NNetModelWriterInterface m_nmwi                   { };
 	HWND                     m_hwndConsole            { nullptr };
 	HWND                     m_hwndApp                { nullptr };
 	WinSound                 m_sound                  { };
@@ -138,8 +144,6 @@ private:
 	Observable               m_runObservable          { };
 	Observable               m_performanceObservable  { };
 	Observable               m_coordObservable        { };
-	NNetModelReaderInterface m_nmri                   { };
-	NNetModelWriterInterface m_nmwi                   { };
 	NNetModelCommands        m_modelCommands          { };
 	ComputeThread            m_computeThread          { };
 	DescriptionWindow        m_descWindow             { };
@@ -152,7 +156,6 @@ private:
 	NNetModelImporter        m_modelImporter          { };
 	NNetModelExporter        m_modelExporter          { };
 	StatusBarDisplayFunctor  m_statusBarDispFunctor   { };
-	NNetModel                m_model                  { };
 	NNetColors               m_NNetColors             { };
 	NNetController           m_NNetController         { };
 	SimulationControl        m_simulationControl      { };

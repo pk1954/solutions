@@ -16,24 +16,24 @@ public:
 	ParameterDialog();
 	~ParameterDialog() final;
 
-	void Start(HWND const, NNetModelCommands * const, Param * const);
+	void Start(HWND const, NNetModelCommands * const);
 	void Stop();
-
+	void SetModelInterface(NNetModelWriterInterface * const);
 	void Notify(bool const) final;
 
 private:
 	static int const HORZ_SPACE {  8 };
 	static int const VERT_SPACE { 14 };
 
-	Param             * m_pParams   { nullptr };
-	NNetModelCommands * m_pCommands { nullptr };
+	NNetModelWriterInterface * m_pNMWI     { nullptr };
+	NNetModelCommands        * m_pCommands { nullptr };
 
-	//HWND m_hwndBaseFrequency   { nullptr };
 	HWND m_hwndPeakVoltage     { nullptr };
 	HWND m_hwndThreshold       { nullptr };     
 	HWND m_hwndPulseWidth      { nullptr };
 	HWND m_hwndRefractoryPeriod{ nullptr };
 	HWND m_hwndTimeResolution  { nullptr };
+	HWND m_hwndFilterSize      { nullptr };
 	HWND m_hwndPulseSpeed      { nullptr };
 		
 	void resetParameter   (HWND const, ParamType::Value const) const;

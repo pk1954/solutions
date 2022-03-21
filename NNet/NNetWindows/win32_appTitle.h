@@ -12,17 +12,17 @@
 class AppTitle : public ObserverInterface
 {
 public:
-	void Initialize
-	(
-		HWND                             const hwndApp,
-		NNetModelReaderInterface const * const pNMRI
-	)
+	void Initialize(HWND const hwndApp)
 	{
 		m_hwndApp = hwndApp;
-		m_pNMRI   = pNMRI;
 	}
 
-    void Notify(bool const bImmediate) final 
+	void SetModelInterface(NNetModelReaderInterface const * const pNMRI)
+	{
+		m_pNMRI = pNMRI;
+	}
+
+	void Notify(bool const bImmediate) final 
     { 
 		SetUnsavedChanges(true);
 	}

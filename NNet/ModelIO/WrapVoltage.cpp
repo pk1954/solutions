@@ -61,26 +61,17 @@ void WrapVoltage::setPipeVoltage
 {
     Pipe & pipe { GetNobRef<Pipe>(idFromScript) };
     script.ScrReadSpecial(OPEN_BRACKET);
-    size_t const nrOfSegmentsFromScript { script.ScrReadUlong() };
-    size_t const nrOfSegmentsFromModel  { pipe.GetNrOfSegments() };
+    size_t const nrOfSegments { script.ScrReadUlong() };
+    pipe.SetNrOfSegments(nrOfSegments);
     script.ScrReadSpecial(NR_SEPARATOR);
-    if (nrOfSegmentsFromScript == nrOfSegmentsFromModel)
+    Pipe::SegNr segNr(0);
+    for (;;)
     {
-        Pipe::SegNr segNr(0);
-        for (;;)
-        {
-            mV const v {ScrReadVoltage(script)};
-            pipe.SetVoltage(segNr, v);
-            if ((++segNr).GetValue() == nrOfSegmentsFromScript)
-                break;
-            script.ScrReadSpecial(ID_SEPARATOR);
-        }
-    }
-    else
-    {
-        wcout << "+++ Wrong number of pipe segments" << endl;
-        wcout << "+++ " << nrOfSegmentsFromScript << L" != " << nrOfSegmentsFromModel << endl;
-        throw ScriptErrorHandler::ScriptException(999, wstring(L"Error reading Pipe voltage") );
+        mV const v {ScrReadVoltage(script)};
+        pipe.SetVoltage(segNr, v);
+        if ((++segNr).GetValue() == nrOfSegments)
+            break;
+        script.ScrReadSpecial(ID_SEPARATOR);
     }
     script.ScrReadSpecial(CLOSE_BRACKET);
 }

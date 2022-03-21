@@ -38,24 +38,22 @@ using std::to_wstring;
 
 void NNetController::Initialize
 (
-    NNetModelExporter        * const pModelExporter,
-    MainWindow               * const pMainWindow,
-    WinManager               * const pWinManager,
-    NNetModelReaderInterface * const pMRI,
-    NNetModelCommands        * const pModelCommands,
-    ComputeThread            * const pComputeThread,
-    SlowMotionRatio          * const pSlowMotionRatio,
-    DisplayFunctor           * const func,
-    Sound                    * const pSound,
-    Preferences              * const pPreferences,
-    CommandStack             * const pCommandStack,
-    MonitorWindow            * const pMonitorWindow
+    NNetModelExporter * const pModelExporter,
+    MainWindow        * const pMainWindow,
+    WinManager        * const pWinManager,
+    NNetModelCommands * const pModelCommands,
+    ComputeThread     * const pComputeThread,
+    SlowMotionRatio   * const pSlowMotionRatio,
+    DisplayFunctor    * const func,
+    Sound             * const pSound,
+    Preferences       * const pPreferences,
+    CommandStack      * const pCommandStack,
+    MonitorWindow     * const pMonitorWindow
 ) 
 {
     m_pModelExporter    = pModelExporter;
     m_pMainWindow       = pMainWindow;
     m_pWinManager       = pWinManager;
-    m_pNMRI             = pMRI;
     m_pModelCommands    = pModelCommands;
     m_pSlowMotionRatio  = pSlowMotionRatio;
     m_pComputeThread    = pComputeThread;
@@ -82,6 +80,11 @@ NNetController::~NNetController()
     m_pPreferences      = nullptr;
     m_pCommandStack     = nullptr;
     m_pMonitorWindow    = nullptr;
+}
+
+void NNetController::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+{
+    m_pNMRI = pNMRI;
 }
 
 bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint)

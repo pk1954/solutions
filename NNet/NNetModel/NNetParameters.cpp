@@ -16,7 +16,8 @@ bool Param::operator==(Param const & rhs) const
 	(m_threshold      == rhs.m_threshold     ) && 
 	(m_neuronPeakVolt == rhs.m_neuronPeakVolt) &&
 	(m_refractPeriod  == rhs.m_refractPeriod ) &&
-	(m_usResolution   == rhs.m_usResolution  );
+	(m_usResolution   == rhs.m_usResolution  ) &&
+	(m_usFilterSize   == rhs.m_usFilterSize  );
 }
 
 float Param::GetParameterValue(ParamType::Value const param) const
@@ -35,6 +36,7 @@ float Param::GetParameterValue(ParamType::Value const param) const
 		case neuronPeakVolt: return m_neuronPeakVolt.GetValue();
 		case refractPeriod:  return m_refractPeriod .GetValue();
 		case timeResolution: return m_usResolution  .GetValue();
+		case filterSize:     return m_usFilterSize  .GetValue();
 		case stdPulseRate:   return 0.0f;  // Legacy
 		case signalLoss:     return 0.0f;  // Legacy
 		case pulseRate:      return 0.0f;  // Legacy
@@ -64,6 +66,7 @@ void Param::SetParameterValue
 		case neuronPeakVolt: m_neuronPeakVolt = static_cast<mV         >(fNewValue); break;
 		case refractPeriod:  m_refractPeriod  = static_cast<fMicroSecs >(fNewValue); break;
 		case timeResolution: m_usResolution   = static_cast<fMicroSecs >(fNewValue); break;
+		case filterSize:     m_usFilterSize   = static_cast<fMicroSecs >(fNewValue); break;
 		case stdPulseRate:   break;  // Legacy
 		case signalLoss:     break;  // Legacy
 		case pulseRate:      break;  // Legacy

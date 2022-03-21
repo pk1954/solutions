@@ -7,6 +7,7 @@
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "win32_stdDialogBox.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "win32_controls.h"
@@ -32,7 +33,7 @@ void ParameterDialog::resetParameter   // refresh edit field with data from mode
 	ParamType::Value const parameter
 ) const
 {
-	StdDialogBox::SetParameterValue(hwndEditField, m_pParams->GetParameterValue(parameter));
+	StdDialogBox::SetParameterValue(hwndEditField, m_pNMWI->GetParams().GetParameterValue(parameter));
 }
 
 void ParameterDialog::applyParameter  // read out edit field and write data to model
@@ -41,7 +42,7 @@ void ParameterDialog::applyParameter  // read out edit field and write data to m
 	ParamType::Value const parameter
 )
 {
-	float const fOldValue { m_pParams->GetParameterValue(parameter) }; 
+	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(parameter) }; 
 	float       fValue    { fOldValue }; 
 	if (StdDialogBox::Evaluate(hwndEditField, fValue) && ! IsCloseToZero(fValue - fOldValue))
 		m_pCommands->SetParameter(parameter, fValue);
@@ -69,7 +70,7 @@ HWND ParameterDialog::addParameter
 
 	iYpos += HEIGHT + VERT_SPACE;
 
-	resetParameter(hwndEdit, parameter);
+//	resetParameter(hwndEdit, parameter);
 
 	return hwndEdit;
 }
@@ -82,6 +83,7 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 	resetParameter(m_hwndPulseWidth,       pulseWidth    );
 	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
 	resetParameter(m_hwndTimeResolution,   timeResolution);
+	resetParameter(m_hwndFilterSize,       filterSize    );
 	resetParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
@@ -93,20 +95,19 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPulseWidth,       pulseWidth    );
 	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
 	applyParameter(m_hwndTimeResolution,   timeResolution);
+	applyParameter(m_hwndFilterSize,       filterSize    );
 	applyParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
 void ParameterDialog::Start
 (
 	HWND                const hwndParent, 
-	NNetModelCommands * const pCommands,	
-	Param             * const pParams 
+	NNetModelCommands * const pCommands
 )
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, MAKEINTRESOURCE(IDM_PARAM_WINDOW), nullptr) };
 
 	m_pCommands = pCommands;
-	m_pParams   = pParams;
 
 	int iYpos { 10 };
 	using enum ParamType::Value;
@@ -116,6 +117,7 @@ void ParameterDialog::Start
 	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,     iYpos); 
 	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 
 	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
+	m_hwndFilterSize       = addParameter(hwndDlg, filterSize,     iYpos); 
 	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,     iYpos); 
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
@@ -125,8 +127,13 @@ void ParameterDialog::Start
 void ParameterDialog::Stop()
 {
 	m_pCommands = nullptr;
-	m_pParams   = nullptr;
+	m_pNMWI     = nullptr;
 	DestroyWindow();
+}
+
+void ParameterDialog::SetModelInterface(NNetModelWriterInterface * const pNMWI)
+{
+	m_pNMWI = pNMWI;
 }
 
 bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

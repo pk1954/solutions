@@ -12,14 +12,24 @@
 using std::wcout;
 using std::endl;
 
-void CommandStack::Initialize
-(
-    NNetModelWriterInterface * const pModel, 
-    Observable               * const pStaticModelObservable 
-)
+void CommandStack::Initialize(Observable * const pStaticModelObservable)
 {
-    m_pNMWI = pModel;
     m_pStaticModelObservable = pStaticModelObservable;
+}
+
+void CommandStack::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
+{
+    m_pNMRI = pNMRI;
+}
+
+bool CommandStack::UndoStackEmpty() const 
+{ 
+    return m_iIndex == 0; 
+}
+
+bool CommandStack::RedoStackEmpty() const 
+{ 
+    return m_iIndex == m_CommandStack.size(); 
 }
 
 void CommandStack::Clear()
@@ -70,40 +80,14 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
 {
     if (pCmd)
     {
-#ifdef _DEBUG
-        //NNetModel const & model { m_pNMWI->GetModel() };
-        //m_pNMWI->CheckModel();
-        //NNetModel modelSave1(model);
-        //m_pNMWI->CheckModel();
-#endif
         clearRedoStack();
-        m_pNMWI->CheckModel();
+        m_pNMRI->CheckModel();
         pCmd->Do();
         if (!pCmd->IsAsyncCommand())
             Command::NextScriptCommand(); // script continuation for syncronous commands
-        m_pNMWI->CheckModel();
+        m_pNMRI->CheckModel();
         Push(move(pCmd));
         notify();
-#ifdef _DEBUG
-        //NNetModel modelSave2(model);
-        //modelSave2.CheckModel();
-        //m_pNMWI->CheckModel();
-        //UndoCommand();
-        //m_pNMWI->CheckModel();
-        //if (!(model == modelSave1))
-        //{
-        //    model.DUMP();
-        //    modelSave1.DUMP();
-        //    int x = 42;
-        //}
-        //m_pNMWI->CheckModel();
-        //RedoCommand();
-        //m_pNMWI->CheckModel();
-        //if (!(model == modelSave2))
-        //{
-        //    int x = 42;
-        //}
-#endif
     }
     else
     {
@@ -116,9 +100,9 @@ bool CommandStack::UndoCommand()
     if (UndoStackEmpty())
        return false;
     set2OlderCmd();
-    m_pNMWI->CheckModel();
+    m_pNMRI->CheckModel();
     currentCmd().Undo();
-    m_pNMWI->CheckModel();
+    m_pNMRI->CheckModel();
     notify();
     return true;
 }
@@ -127,9 +111,9 @@ bool CommandStack::RedoCommand()
 {
     if (RedoStackEmpty()) 
         return false;
-    m_pNMWI->CheckModel();
+    m_pNMRI->CheckModel();
     currentCmd().Do();
-    m_pNMWI->CheckModel();
+    m_pNMRI->CheckModel();
     set2YoungerCmd();
     notify();
     return true;

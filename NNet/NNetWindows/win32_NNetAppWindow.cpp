@@ -69,11 +69,56 @@ NNetAppWindow::NNetAppWindow()
 {
 	Neuron::SetSound(& m_sound);
 	DefineUtilityWrapperFunctions();
-	DefineNNetWrappers(& m_nmri, & m_modelCommands, &m_modelImporter);
+	SignalFactory::Initialize(m_dynamicModelObservable);
+	Command      ::Initialize(&m_mainNNetWindow);
+	m_modelImporter.Initialize();
+	m_sound        .Initialize(&m_soundOnObservable);
+	m_cmdStack     .Initialize(&m_staticModelObservable);
+	m_modelCommands.Initialize(&m_modelImporter, &m_dynamicModelObservable, &m_cmdStack);
+	m_NNetController.Initialize
+	(
+		& m_modelExporter,
+		& m_mainNNetWindow,
+		& m_WinManager,
+		& m_modelCommands,
+		& m_computeThread,
+		& m_SlowMotionRatio,
+		& m_statusBarDispFunctor,
+		& m_sound,
+		& m_preferences,
+		& m_cmdStack,
+		& m_monitorWindow
+	);
+	m_computeThread.Initialize
+	(
+		& m_SlowMotionRatio, 
+		& m_runObservable, 
+		& m_performanceObservable, 
+		& m_dynamicModelObservable
+	);
+	InitializeNNetWrappers(&m_modelCommands, &m_modelImporter);
 };
 
 NNetAppWindow::~NNetAppWindow() = default;
 
+void NNetAppWindow::setModelInterface()
+{
+	NNetCommand       ::SetModelInterface(&m_nmwi);
+	m_parameterDlg     .SetModelInterface(&m_nmwi);
+	m_modelCommands    .SetModelInterface(&m_nmwi);
+	m_computeThread    .SetModelInterface(&m_nmwi);
+	m_monitorWindow    .SetModelInterface(&m_nmwi);
+	m_appTitle         .SetModelInterface(m_pNMRI);
+	m_cmdStack         .SetModelInterface(m_pNMRI);
+	m_NNetController   .SetModelInterface(m_pNMRI);
+	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
+	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
+	m_crsrWindow       .SetModelInterface(m_pNMRI);
+	m_performanceWindow.SetModelInterface(m_pNMRI);
+	NNetWrappersSetModelInterface        (m_pNMRI);
+	Nob::SetParams(&m_pNMRI->GetParams());
+	m_nmwi.SetSimulationTime();
+}
 void NNetAppWindow::Start(MessagePump & pump)
 {
 	m_hwndApp = StartBaseWindow
@@ -86,41 +131,16 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	SignalFactory        ::Initialize(m_nmri, m_dynamicModelObservable);
-	SignalDesigner       ::Initialize(m_model.GetParams());
-	SignalGenerator      ::Initialize(m_model.GetParams());
-	Nob                  ::Initialize(m_model.GetParams());
-	SignalGenerator      ::Initialize(m_model.GetParams());
-	Command              ::Initialize(&m_mainNNetWindow);
-	NNetCommand          ::Initialize(&m_nmwi);
 	NNetImportTermination::Initialize(m_hwndApp);
+	m_appTitle   .Initialize(m_hwndApp);
+	m_preferences.Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
 
-	m_model.SetDescriptionUI(m_descWindow);
-	m_model.SetHighSigObservable(&m_highlightSigObservable);
+	m_upModel = make_unique<NNetModel>();
+	m_nmwi.SetModel(m_upModel.get());
+	m_pNMRI = static_cast<NNetModelReaderInterface *>(&m_nmwi);
+	m_nmwi.SetDescriptionUI(m_descWindow);
 
-	m_modelImporter .Initialize();
-	m_modelExporter .Initialize(&m_nmri);
-	m_modelCommands .Initialize(&m_nmri, &m_nmwi, &m_modelImporter, &m_dynamicModelObservable, &m_cmdStack);
-	m_cmdStack      .Initialize(&m_nmwi, &m_staticModelObservable);
-	m_sound         .Initialize(&m_soundOnObservable);
-	m_appTitle      .Initialize(m_hwndApp, &m_nmri);
-	m_preferences   .Initialize(m_nmri, m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
-	m_NNetController.Initialize
-	(
-		& m_modelExporter,
-		& m_mainNNetWindow,
-		& m_WinManager,
-		& m_nmri,
-		& m_modelCommands,
-		& m_computeThread,
-		& m_SlowMotionRatio,
-		& m_statusBarDispFunctor,
-		& m_sound,
-		& m_preferences,
-		& m_cmdStack,
-		& m_monitorWindow
-	);
-
+//	m_nmwi.SetHighSigObservable(&m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(  0ms);   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate(200ms);
 	m_monitorWindow    .SetRefreshRate(  0ms);
@@ -128,30 +148,24 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_StatusBar        .SetRefreshRate(300ms);
 
-	m_nmri        .Start(& m_model);
-	m_nmwi        .Start(& m_model);
-	m_appMenu     .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow);
-	m_StatusBar   .Start(m_hwndApp);
-	m_descWindow  .Start(m_hwndApp);
-	m_undoRedoMenu.Start(& m_appMenu);
-	pump.RegisterWindow(m_descWindow.GetWindowHandle(), true);
+	m_appMenu          .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow);
+	m_StatusBar        .Start(m_hwndApp);
+	m_descWindow       .Start(m_hwndApp);
+	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
+	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands);
+	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
+	m_monitorWindow    .Start(m_hwndApp, m_sound, m_modelCommands);
+	m_undoRedoMenu     .Start(& m_appMenu);
 
-	m_computeThread.Start
-	(
-		& m_model, 
-		& m_SlowMotionRatio, 
-		& m_runObservable, 
-		& m_performanceObservable, 
-		& m_dynamicModelObservable 
-	);
+	setModelInterface();
+
+	pump.RegisterWindow(m_descWindow.GetWindowHandle(), true);
 
 	m_mainNNetWindow.Start
 	(
 		m_hwndApp, 
-		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		false,
 		30._fPixel,
-		m_nmri,
 		m_NNetController,
 		m_modelCommands,
 		m_cursorPosObservable,
@@ -159,22 +173,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 		& m_atDisplay
 	);
 
-	m_miniNNetWindow.Start
-	(
-		m_hwndApp, 
-		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
-		true,
-		5._fPixel,
-		m_nmri,
-		m_NNetController
-	);
+	m_miniNNetWindow.Start(m_hwndApp, true,	5._fPixel, m_NNetController);
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main grid window
-
-	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow, & m_nmri);
-	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands, & m_model.GetParams());
-	m_performanceWindow.Start(m_hwndApp, & m_nmri, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
-	m_monitorWindow    .Start(m_hwndApp, m_sound, m_modelCommands, m_nmri, m_model.GetMonitorData());
 
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true );
 	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false);
@@ -204,8 +205,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_runObservable         .RegisterObserver(m_simulationControl);
 	m_SlowMotionRatio       .RegisterObserver(m_computeThread);
 	m_SlowMotionRatio       .RegisterObserver(m_slowMotionDisplay);
-	m_model.GetParams()     .RegisterObserver(m_parameterDlg);
-	m_model.GetParams()     .RegisterObserver(m_computeThread);
+	m_nmwi.GetParams()      .RegisterObserver(m_parameterDlg);
+	m_nmwi.GetParams()      .RegisterObserver(m_computeThread);
 	m_soundOnObservable     .RegisterObserver(m_appMenu);
 	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
 	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
@@ -257,8 +258,6 @@ void NNetAppWindow::Stop()
 	m_performanceWindow.Stop();
 	m_parameterDlg     .Stop();
 	m_StatusBar        .Stop();
-	m_nmri             .Stop();
-	m_nmwi             .Stop();
 
 	m_staticModelObservable .UnregisterAllObservers();
 	m_dynamicModelObservable.UnregisterAllObservers();
@@ -266,10 +265,11 @@ void NNetAppWindow::Stop()
 	m_performanceObservable .UnregisterAllObservers();
 	m_runObservable         .UnregisterAllObservers();
 	m_SlowMotionRatio       .UnregisterAllObservers();
-	m_model.GetParams()     .UnregisterAllObservers();
+	m_nmwi.GetParams()      .UnregisterAllObservers();
 	m_soundOnObservable     .UnregisterAllObservers();
 
 	m_WinManager.RemoveAll();
+	m_nmwi.SetModel(nullptr);
 }
 
 bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -320,7 +320,7 @@ bool NNetAppWindow::UserProc
 void NNetAppWindow::configureStatusBar()
 {
 	int iPartScriptLine = 0;
-	m_timeDisplay.Start(& m_StatusBar, & m_nmri, iPartScriptLine);
+	m_timeDisplay.Start(& m_StatusBar, m_pNMRI, iPartScriptLine);
 
 	m_simulationControl.Initialize(& m_StatusBar, & m_computeThread);
 
@@ -390,7 +390,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_DUMP:
-			m_model.DUMP();
+			m_nmwi.DUMP();
 			break;
 
 		case IDM_RESET:
@@ -470,16 +470,21 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			{
 				m_computeThread.StopComputation();
 				m_mainNNetWindow.Reset();
-				m_model = move(* m_modelImporter.GetImportedModel());
-				m_model.SetSimulationTime();
+
+				m_upModel = m_modelImporter.GetImportedModel();
+				m_nmwi.SetModel(m_upModel.get());
+				m_nmwi.RecalcFilters();
+
+				setModelInterface();
+
 				m_dynamicModelObservable.NotifyAll(false);
 				m_staticModelObservable.NotifyAll(false);
-				m_model.SetDescriptionUI(m_descWindow);
+				m_nmwi.SetDescriptionUI(m_descWindow);
 				m_appTitle.SetUnsavedChanges(false);
 				m_mainNNetWindow.CenterModel();
-				m_model.GetParams().RegisterObserver(m_parameterDlg);
-				m_model.GetParams().RegisterObserver(m_computeThread);
-				m_model.GetParams().NotifyAll(false);
+				m_nmwi.GetParams().RegisterObserver(m_parameterDlg);
+				m_nmwi.GetParams().RegisterObserver(m_computeThread);
+				m_nmwi.GetParams().NotifyAll(false);
 			}
 			break;
 
@@ -517,7 +522,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 bool NNetAppWindow::SaveModelAs()
 {
-	wstring wstrModelPath { m_nmri.GetModelFilePath() };
+	wstring wstrModelPath { m_pNMRI->GetModelFilePath() };
 	if (wstrModelPath == L"")
 	{
 		wstrModelPath = path(ScriptFile::GetPathOfExecutable()).parent_path();
@@ -541,7 +546,7 @@ bool NNetAppWindow::SaveModelAs()
 
 bool NNetAppWindow::SaveModel()
 {
-	wstring wstrModelPath { m_nmri.GetModelFilePath() };
+	wstring wstrModelPath { m_pNMRI->GetModelFilePath() };
 	if (wstrModelPath == L"")
 	{
 		return SaveModelAs();
@@ -584,7 +589,7 @@ void NNetAppWindow::openSignalDesigner()
 	NobId const id { m_mainNNetWindow.GetHighlightedNobId() };
 	if (IsUndefined(id))
 		return;
-	if (! m_nmri.IsOfType<InputConnector>(id))
+	if (! m_pNMRI->IsOfType<InputConnector>(id))
 		return;
 	InputConnector * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
 	SignalDesigner const * pSigDes 

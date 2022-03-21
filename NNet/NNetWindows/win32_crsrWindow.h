@@ -20,15 +20,9 @@ public:
 	CrsrWindow();
 	~CrsrWindow() final;
 
-	void Start
-	(
-		HWND                             const, 
-		MainWindow               const * const,
-		NNetModelReaderInterface const * const
-	);
-
+	void Start(HWND const, MainWindow const * const);
 	void Stop();
-
+	void SetModelInterface(NNetModelReaderInterface * const);
 	void DoPaint(TextBuffer &) final;
 
 private:

@@ -9,7 +9,7 @@
 #include "win32_scale.h"
 #include "win32_baseWindow.h"
 
-class NNetModelReaderInterface;
+class NNetModelWriterInterface;
 class NNetModelCommands;
 class MonitorControl;
 class MonitorData;
@@ -22,16 +22,9 @@ public:
 	MonitorWindow();
 	~MonitorWindow() final;
 
-	void Start
-	(
-		HWND const, 
-		Sound                          &,
-		NNetModelCommands              &,
-		NNetModelReaderInterface const &, 
-		MonitorData                    &
-	);
-
+	void Start(HWND const, Sound &,	NNetModelCommands &);
 	void Stop();
+	void SetModelInterface(NNetModelWriterInterface * const);
 
 private:
 	inline static PIXEL const RIGHT_BORDER { 25_PIXEL };

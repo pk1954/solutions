@@ -22,8 +22,7 @@ class NNetModelReaderInterface
 {
 public:
 
-	void Start(NNetModel * const pModel) { m_pModel = pModel;  }
-	void Stop ()                         { m_pModel = nullptr; }
+	void SetModel(NNetModel * const pModel) { m_pModel = pModel;  }
 
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };
@@ -52,7 +51,9 @@ public:
 	Nob         const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	fMicroSecs          GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
 	MonitorData const & GetConstMonitorData()                  const { return m_pModel->GetMonitorData(); }
+	Param       const & GetParams()                            const { return m_pModel->GetParams(); };
 	fMicroSecs          TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
+	fMicroSecs          FilterSize()                           const { return m_pModel->GetParams().FilterSize(); };
 	wstring             GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float               GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}

@@ -10,6 +10,7 @@
 class MiniWindow : public NNetWindow
 {
 public:
+	void Start(HWND const, bool const, fPixel const, NNetController &);
 
 	void   OnMouseWheel     (WPARAM const, LPARAM const) final { };  // mini window cannot be zoomed 
 	bool   OnRButtonUp      (WPARAM const, LPARAM const) final { return false; }

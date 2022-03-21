@@ -407,14 +407,17 @@ public:
     }
 };
 
-void DefineNNetWrappers
+void NNetWrappersSetModelInterface(NNetModelReaderInterface * const pNMRI)
+{
+    m_pNMRI = pNMRI;
+};
+
+void InitializeNNetWrappers
 (
-    NNetModelReaderInterface * const pNMRI,
-    NNetModelCommands        * const pCommands,
-    NNetModelImporter        * const pModelImporter
+    NNetModelCommands * const pCommands,
+    NNetModelImporter * const pModelImporter
 )
 {
-    m_pNMRI          = pNMRI;
     m_pCommands      = pCommands;
     m_pModelImporter = pModelImporter;
 

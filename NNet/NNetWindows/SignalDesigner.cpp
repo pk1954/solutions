@@ -44,7 +44,7 @@ SignalDesigner::SignalDesigner
 		hwnd,
 		computeThread,
 		m_commands,
-		m_sigGen,
+		&m_sigGen,
 		&m_horzCoord 
 	);
 	m_upSignalControl2 = make_unique<SignalControl>
@@ -52,7 +52,7 @@ SignalDesigner::SignalDesigner
 		hwnd,
 		computeThread,
 		m_commands,
-		m_sigGen,
+		&m_sigGen,
 		&m_horzCoord
 	);
 	runObservable  .RegisterObserver(*m_upSignalControl1.get());

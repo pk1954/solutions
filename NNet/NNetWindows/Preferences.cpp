@@ -167,12 +167,10 @@ class WrapReadModel: public WrapBase
 public:
     WrapReadModel
     (
-        NNetModelReaderInterface & nmri,
-        NNetModelImporter        & modelImporter, 
-        HWND               const   hwndApp
+        NNetModelImporter & modelImporter, 
+        HWND        const   hwndApp
     )
     : WrapBase(L"ReadModel"),
-      m_nmri(nmri),
       m_modelImporter(modelImporter),
       m_hwndApp(hwndApp)
     {}
@@ -188,23 +186,21 @@ public:
 
     void Write(wostream & out) const final
     {
-        out <<  L"\""  << m_nmri.GetModelFilePath() << L"\"";
+        out << L"\"" << m_modelImporter.GetWriterInterface().GetModelFilePath() << L"\"";
     }
 
 private:
-    NNetModelReaderInterface & m_nmri;
-    NNetModelImporter        & m_modelImporter;
-    HWND                       m_hwndApp;
+    NNetModelImporter & m_modelImporter;
+    HWND                m_hwndApp;
 };
 
 void Preferences::Initialize
 (
-    NNetModelReaderInterface & nmri,
-    DescriptionWindow        & descWin,
-    MainWindow               & mainWin,
-    Sound                    & sound, 
-    NNetModelImporter        & modelImporter,
-    HWND                       hwndApp
+    DescriptionWindow & descWin,
+    MainWindow        & mainWin,
+    Sound             & sound, 
+    NNetModelImporter & modelImporter,
+    HWND                hwndApp
 )
 {
     static wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
@@ -217,7 +213,7 @@ void Preferences::Initialize
     m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
     m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
     m_prefVector.push_back(make_unique<WrapSetSound>(sound));
-    m_prefVector.push_back(make_unique<WrapReadModel>(nmri, modelImporter, hwndApp));
+    m_prefVector.push_back(make_unique<WrapReadModel>(modelImporter, hwndApp));
     m_prefVector.push_back(make_unique<WrapSetPerfMonMode>());
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);

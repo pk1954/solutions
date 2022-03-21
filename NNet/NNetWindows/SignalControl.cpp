@@ -7,7 +7,6 @@
 #include "PointType.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
-#include "SignalGenerator.h"
 #include "ComputeThread.h"
 #include "SignalControl.h"
 #include "NNetModelCommands.h"
@@ -18,15 +17,15 @@ SignalControl::SignalControl
 	HWND                 const   hwndParent,
 	ComputeThread        const & computeThread,
 	NNetModelCommands          & commands,
-	SignalGenerator            & sigGen,
+	SignalGenerator      * const pSigGen,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
   :	m_pHorzCoord(pHorzCoord),
 	m_computeThread(computeThread),
-	m_sigGen(sigGen),
+	m_pSigGen(pSigGen),
 	m_commands(commands)
 {
-	m_sigGen.RegisterObserver(*this); // signal generator data can be changed fron outside
+	m_pSigGen->RegisterObserver(*this); // signal generator data can be changed from outside
 	GraphicsWindow::Initialize
 	(
 		hwndParent, 
@@ -37,7 +36,7 @@ SignalControl::SignalControl
 
 SignalControl::~SignalControl()
 {
-	m_sigGen.UnregisterObserver(*this);
+	m_pSigGen->UnregisterObserver(*this);
 	m_pHorzCoord->UnregisterObserver(*this); 
 	m_pVertCoordFreq->UnregisterObserver(*this);
 	m_pVertCoordVolt->UnregisterObserver(*this);
@@ -88,7 +87,7 @@ void SignalControl::drawDiam
 
 void SignalControl::paintRunControls() const
 {
-	auto time { m_sigGen.TimeTilTrigger() };
+	auto time { m_pSigGen->TimeTilTrigger() };
 
 	if (m_pVertCoordFreq)
 	{
@@ -213,7 +212,7 @@ void SignalControl::DoPaint()
 		calcHandles();
 		paintEditControls();
 	}
-	else if (m_sigGen.IsTriggerActive())
+	else if (m_pSigGen->IsTriggerActive())
 	{
 		paintRunControls();
 	}
@@ -279,36 +278,37 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_LBUTTON)
 	{
-		m_sigGenNew.SetParams(m_sigGen);
+		SigGenData sigGenData { m_pSigGen->GetData() };
+
 		switch (m_moveMode)
 		{
 		case tPos::TIME:
-			m_sigGenNew.SetTimePeak(getTime(fPixCrsrPos));
+			sigGenData.usPeak    = getTime(fPixCrsrPos);
 			break;
 		case tPos::BASE_FREQ:
-			m_sigGenNew.SetBaseFreq(getFreq(fPixCrsrPos));
+			sigGenData.freq.base = getFreq(fPixCrsrPos);
 			break;
 		case tPos::PEAK_FREQ:
-			m_sigGenNew.SetPeakFreq(getFreq(fPixCrsrPos));
+			sigGenData.freq.peak = getFreq(fPixCrsrPos);
 			break;
 		case tPos::TIME_FREQ:
-			m_sigGenNew.SetPeakFreq(getFreq(fPixCrsrPos));
-			m_sigGenNew.SetTimePeak(getTime(fPixCrsrPos));
+			sigGenData.freq.peak = getFreq(fPixCrsrPos);
+			sigGenData.usPeak    = getTime(fPixCrsrPos);
 			break;
 		case tPos::BASE_VOLT:
-			m_sigGenNew.SetBaseVolt(getVolt(fPixCrsrPos));
+			sigGenData.volt.base = getVolt(fPixCrsrPos);
 			break;
 		case tPos::PEAK_VOLT:
-			m_sigGenNew.SetPeakVolt(getVolt(fPixCrsrPos));
+			sigGenData.volt.peak = getVolt(fPixCrsrPos);
 			break;
 		case tPos::TIME_VOLT:
-			m_sigGenNew.SetPeakVolt(getVolt(fPixCrsrPos));
-			m_sigGenNew.SetTimePeak(getTime(fPixCrsrPos));
+			sigGenData.volt.peak = getVolt(fPixCrsrPos);
+			sigGenData.usPeak    = getTime(fPixCrsrPos);
 			break;
 		default:
 			break;
 		}
-		m_commands.SetStimulusParams(m_sigGen, m_sigGenNew);
+		m_commands.SetSigGenData(*m_pSigGen, sigGenData);
 	}
 	else  // left button not pressed: select
 	{

@@ -21,16 +21,15 @@ Pipe::Pipe()
 
 Pipe::Pipe
 (
-	BaseKnot * const   pKnotStart, 
-	BaseKnot * const   pKnotEnd,
-	Param      const & param
+	BaseKnot * const pKnotStart, 
+	BaseKnot * const pKnotEnd
 )
   :	Nob(NobType::Value::pipe),
 	m_pKnotStart(pKnotStart),
 	m_pKnotEnd  (pKnotEnd)
 {
 	assert(pKnotStart && pKnotEnd);
-	recalc(param);
+	recalc();
 }
 
 Pipe::Pipe(Pipe const & src) :  // copy constructor
@@ -78,10 +77,10 @@ void Pipe::ClearDynamicData()
 	fill(m_potential, 0.0_mV);
 }
 
-void Pipe::recalc(Param const & param)
+void Pipe::recalc()
 {
-	meterPerSec  const pulseSpeed    { meterPerSec(param.GetParameterValue(ParamType::Value::pulseSpeed)) };
-	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, param.TimeResolution()) };
+	meterPerSec  const pulseSpeed    { meterPerSec(m_pParameters->GetParameterValue(ParamType::Value::pulseSpeed)) };
+	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, m_pParameters->TimeResolution()) };
 	MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
 	unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
 	m_potential.resize(iNrOfSegments, 0.0_mV);
@@ -92,7 +91,7 @@ void Pipe::Recalc()
 {
 	if (m_pKnotStart && m_pKnotEnd)
 	{
-		recalc(* m_pParameters);
+		recalc();
 	}
 }
 

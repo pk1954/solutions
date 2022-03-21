@@ -8,9 +8,10 @@ class NNetModelReaderInterface;
 class NNetModelCommands;
 class NNetModelImporter;
 
-extern void DefineNNetWrappers
+extern void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
+
+extern void InitializeNNetWrappers
 (
-    NNetModelReaderInterface * const, 
-    NNetModelCommands        * const,
-    NNetModelImporter        * const
+    NNetModelCommands * const,
+    NNetModelImporter * const
 );

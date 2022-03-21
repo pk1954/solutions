@@ -35,7 +35,7 @@ enum class NobIoMode { input, output, internal };
 class Nob
 {
 public:
-	static void Initialize(Param const & param) { m_pParameters = & param; }
+	static void SetParams(Param const * const pParams) { m_pParameters = pParams; }
 
 	static bool TypeFits(NobType const) { return true; }  // every nob type is a Nob
 

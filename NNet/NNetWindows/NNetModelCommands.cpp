@@ -46,7 +46,7 @@
 #include "SelectNobCommand.h"
 #include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
-#include "SetStimulusParamsCmd.h"
+#include "SetSigGenDataCmd.h"
 #include "SetHighlightedSignalCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
@@ -69,18 +69,22 @@ using std::source_location;
 
 void NNetModelCommands::Initialize
 (
-	NNetModelReaderInterface * const pNMRI,
-	NNetModelWriterInterface * const pNMWI,
-	NNetModelImporter        * const pModelImporter,
-	Observable               * const pDynamicModelObservable,
-	CommandStack             * const pCmdStack
+	NNetModelImporter * const pModelImporter,
+	Observable        * const pDynamicModelObservable,
+	CommandStack      * const pCmdStack
 ) 
 { 
-	m_pNMRI                   = pNMRI;
-	m_pNMWI                   = pNMWI;
 	m_pModelImporter          = pModelImporter;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pCmdStack               = pCmdStack;
+}
+
+void NNetModelCommands::SetModelInterface
+(
+	NNetModelWriterInterface * const pNMWI
+) 
+{ 
+	m_pNMWI = pNMWI;
 }
 
 void NNetModelCommands::UndoCommand()
@@ -165,14 +169,14 @@ void NNetModelCommands::AnalyzeAnomalies()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMRI)));
+	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMWI)));
 }
 
 void NNetModelCommands::AnalyzeLoops()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMRI)));
+	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMWI)));
 }
 
 void NNetModelCommands::AnimateCoord
@@ -204,13 +208,17 @@ void NNetModelCommands::ClearBeepers()
 	m_pCmdStack->PushCommand(make_unique<ClearBeepersCommand>());
 }
 
-void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
+void NNetModelCommands::Connect
+(
+	NobId const idSrc, 
+	NobId const idDst
+)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << idSrc << L" " << idDst << endl;
 
 	unique_ptr<Command> upCmd;
-	switch (m_pNMRI->GetNobType(idDst).GetValue())
+	switch (m_pNMWI->GetNobType(idDst).GetValue())
 	{
 	using enum NobType::Value;
 	case pipe:
@@ -221,11 +229,11 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 		upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
 		break;
 	case inputNeuron:
-		if (m_pNMRI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
+		if (m_pNMWI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
 			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMRI->GetNobType(idSrc).IsOutputNeuronType())
+		else if (m_pNMWI->GetNobType(idSrc).IsOutputNeuronType())
 		{
-			if (m_pNMRI->HasIncoming(idSrc) && m_pNMRI->HasOutgoing(idDst))
+			if (m_pNMWI->HasIncoming(idSrc) && m_pNMWI->HasOutgoing(idDst))
 				upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
 			else
 				upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
@@ -234,13 +242,13 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 			assert(false);
 		break;
 	case outputNeuron:
-		if (m_pNMRI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
+		if (m_pNMWI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
 			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMRI->GetNobType(idSrc).IsOutputNeuronType())  // connect two output neurons
+		else if (m_pNMWI->GetNobType(idSrc).IsOutputNeuronType())  // connect two output neurons
 			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMRI->GetNobType(idSrc).IsInputNeuronType())
+		else if (m_pNMWI->GetNobType(idSrc).IsInputNeuronType())
 		{
-			if (m_pNMRI->HasOutgoing(idSrc) && m_pNMRI->HasIncoming(idDst))
+			if (m_pNMWI->HasOutgoing(idSrc) && m_pNMWI->HasIncoming(idDst))
 				upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
 			else
 				upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
@@ -369,6 +377,13 @@ void NNetModelCommands::SetParameter(ParamType::Value const param, float const f
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << ParamType::GetName(param) << L" " << fNewValue << endl;
 	m_pCmdStack->PushCommand(make_unique<SetParameterCommand>(m_pNMWI->GetParams(), param, fNewValue));
+}
+
+void NNetModelCommands::SetSigGenData(SignalGenerator & dst, SigGenData const &data)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<SetSigGenDataCmd>(dst, data));
 }
 
 void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
@@ -522,11 +537,4 @@ void NNetModelCommands::TriggerStimulus(NobId const id)
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
-}
-
-void NNetModelCommands::SetStimulusParams(SignalGenerator & dst, SignalGenerator const & src)
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SetStimulusParamsCmd>(dst, src));
 }

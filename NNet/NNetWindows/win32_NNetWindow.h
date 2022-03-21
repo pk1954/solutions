@@ -20,13 +20,14 @@ public:
 
 	void Start
 	(
-		HWND                     const, 
-		DWORD                    const,
-		bool                     const,
-		fPixel                   const,
-		NNetModelReaderInterface const &,
-		NNetController                 &
+		HWND   const, 
+		DWORD  const,
+		bool   const,
+		fPixel const,
+		NNetController &
 	);
+
+	void SetModelInterface(NNetModelReaderInterface * const);
 
 	MicroMeterRect GetViewRect() const;
 

@@ -30,8 +30,8 @@ public:
 		assert(m_pIoNeuron.IsIoNeuron());
 
 		m_upKnotInsert = make_unique<Knot>(m_pos);
-		m_upPipeNew1   = MakePipe(m_pStartKnot, m_pIoNeuron);
-		m_upPipeNew2   = MakePipe(m_pIoNeuron,  m_pEndKnot);
+		m_upPipeNew1   = make_unique<Pipe>(m_pStartKnot, m_pIoNeuron);
+		m_upPipeNew2   = make_unique<Pipe>(m_pIoNeuron,  m_pEndKnot);
 
 		m_pIoNeuron ->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());

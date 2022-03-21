@@ -9,11 +9,11 @@ using std::move;
 using std::wcout;
 using std::endl;
 
-Track::Track(const Track & rhs) // copy constructor
-{
-	for (auto const & upSignal : rhs.m_signals)
-		AddSignal(move(SignalFactory::MakeSignal(*upSignal.get())));
-}
+//Track::Track(const Track & rhs) // copy constructor
+//{
+//	for (auto const & upSignal : rhs.m_signals)
+//		AddSignal(move(SignalFactory::MakeSignal(*upSignal.get())));
+//}
 
 bool Track::operator==(Track const & rhs) const
 {

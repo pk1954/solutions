@@ -19,7 +19,8 @@ public:
     explicit DeleteIoConnectorCmd(Nob & nob)
       : m_connector(*Cast2IoConnector(&nob))
     {
-        m_cmdStack.Initialize(m_pNMWI, nullptr);
+        m_cmdStack.Initialize(nullptr);
+        m_cmdStack.SetModelInterface(m_pNMWI);
         m_connector.Apply2All
         (
             [this](Neuron & n) 

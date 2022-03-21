@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetParameters.h"
-#include "Observable.h"
+#include "observable.h"
 #include "NobId.h"
 #include "Signal.h"
 
@@ -18,27 +18,20 @@ class SignalFactory
 {
 public:
 
-    static void Initialize
-    (
-        NNetModelReaderInterface const & modelReaderInterface,
-        Observable                     & observable
-    )
+    static void Initialize(Observable & observable)
     {
-        m_pNMRI       = & modelReaderInterface;
         m_pObservable = & observable;
     }
 
-    static unique_ptr<Signal>MakeSignal(Signal const & src)
+    static unique_ptr<Signal>MakeSignal
+    (
+        UPNobList        const & list,
+        MicroMeterCircle const & umCircle
+    )
     {
-        return make_unique<Signal>(* m_pNMRI, * m_pObservable, src.GetCircle());
-    }
-
-    static unique_ptr<Signal>MakeSignal(MicroMeterCircle const & umCircle)
-    {
-        return make_unique<Signal>(* m_pNMRI, * m_pObservable, umCircle);
+        return make_unique<Signal>(* m_pObservable, list, umCircle);
     }
 
 private:
-    inline static NNetModelReaderInterface const * m_pNMRI       { nullptr };
-    inline static Observable                     * m_pObservable { nullptr };
+    inline static Observable * m_pObservable { nullptr };
 };
