@@ -61,16 +61,16 @@ private:
 	void        moveOperation   (PixelPoint const &);
 	void        selectSignal    (PixelPoint const &);
 	void        selectTrack     (PixelPoint const &);
-	SignalNr    findSignal      (TrackNr const, PixelPoint const &) const;
+	SignalNr    findSignal      (TrackNr const, PixelPoint const &, bool const) const;
 	TrackNr     findTrack       (PIXEL const) const;
 	TrackNr     findPos4NewTrack(PIXEL const) const;
 	void        highlightSignal (SignalId const &);
 	fPixel      getSignalOffset (SignalId const &) const;
-	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
+	fPixel      getSignalValue  (Signal const &, fMicroSecs const, bool const) const;
 	fPixel      calcTrackHeight () const;
-	fPixelPoint calcDiamondPos  () const;
+	fPixelPoint calcDiamondPos  (bool const) const;
 
-	void paintSignal(SignalId const &);
+	void paintSignal(SignalId const &, bool const);
 	void paintTrack(TrackNr const) const;
 
 	void DoPaint() final;

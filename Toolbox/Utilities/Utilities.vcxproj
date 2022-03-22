@@ -61,6 +61,7 @@
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BoolOp.cpp" />
+    <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="TextBuffer.cpp" />

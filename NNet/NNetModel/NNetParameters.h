@@ -12,6 +12,7 @@
 class Param : public Observable
 {
 public:
+
 	bool operator==(Param const & rhs) const;
 
 	float       GetParameterValue(ParamType::Value const) const;

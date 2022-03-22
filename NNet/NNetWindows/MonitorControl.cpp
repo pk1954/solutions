@@ -90,7 +90,7 @@ void MonitorControl::selectSignal(PixelPoint const &pixCrsrPos)
 	}
 	else
 	{
-		SignalNr const signalFound { findSignal(m_trackNrHighlighted, pixCrsrPos) };
+		SignalNr const signalFound { findSignal(m_trackNrHighlighted, pixCrsrPos, true) };
 		if (signalFound.IsNotNull())
 		{
 			highlightSignal(SignalId(m_trackNrHighlighted, signalFound));
@@ -106,7 +106,12 @@ void MonitorControl::selectTrack(PixelPoint const &pixCrsrPos)
 		m_trackNrHighlighted = trackNrFound;
 }
 
-SignalNr MonitorControl::findSignal(TrackNr const trackNr, PixelPoint const & ptCrsr) const
+SignalNr MonitorControl::findSignal
+(
+	TrackNr    const   trackNr, 
+	PixelPoint const & ptCrsr,
+	bool       const   bFiltered
+) const
 {
 	SignalNr signalNrRes { SignalNr::NULL_VAL() };
 
@@ -119,12 +124,12 @@ SignalNr MonitorControl::findSignal(TrackNr const trackNr, PixelPoint const & pt
 	m_pMonitorData->Apply2AllSignalsInTrackC
 	(
 		trackNr,
-		[this, &trackNr, &usTime, &fPixPtCrsr, &fPixBestDelta, &signalNrRes](SignalNr const signalNr)
+		[this, &trackNr, &usTime, &fPixPtCrsr, &fPixBestDelta, &signalNrRes, bFiltered](SignalNr const signalNr)
 		{
 			SignalId idSignal { SignalId(trackNr, signalNr) };
 			if (Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) })
 			{
-				fPixel const fPixSignal { getSignalValue(*pSignal, usTime) };
+				fPixel const fPixSignal { getSignalValue(*pSignal, usTime, bFiltered) };
 				if (fPixSignal.IsNotNull())
 				{
 					fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
@@ -189,9 +194,19 @@ fPixel MonitorControl::getSignalOffset(SignalId const & idSignal) const
 	return fPixOffset;
 }
 
-fPixel MonitorControl::getSignalValue(Signal const & signal, fMicroSecs const usSimu) const
+fPixel MonitorControl::getSignalValue
+(
+	Signal     const & signal, 
+	fMicroSecs const   usSimu,
+	bool       const   bFiltered
+) const
 {
-	float const fSignal { signal.GetDataPoint(m_pNMWI->GetParams(), usSimu) };
+	float const fSignal 
+	{
+		bFiltered 
+		? signal.GetFilteredDataPoint(m_pNMWI->GetParams(), usSimu) 
+		: signal.GetRawDataPoint     (m_pNMWI->GetParams(), usSimu) 
+	};
 	return (fSignal == NAN)
 		? fPixel::NULL_VAL()
 		: m_vertCoord.Transform2fPixelSize(fSignal) * m_fScaleFactor;
@@ -208,14 +223,14 @@ fPixel MonitorControl::calcTrackHeight() const
 	return fPixTrackHeight;
 }
 
-fPixelPoint MonitorControl::calcDiamondPos() const
+fPixelPoint MonitorControl::calcDiamondPos(bool const bFiltered) const
 {
 	fPixelPoint        fPixDiamondPos { fPP_NULL };
 	SignalId   const & idSignal       { m_pMonitorData->GetHighlightedSignalId() };
 	if (Signal const * pSignal        { m_pMonitorData->GetConstSignalPtr(idSignal) })
 	{
 		fMicroSecs const usSimuEnd  { m_pNMWI->GetSimulationTime() };
-		fPixel     const fPixSignal { getSignalValue(*pSignal, usSimuEnd) };
+		fPixel     const fPixSignal { getSignalValue(*pSignal, usSimuEnd, bFiltered) };
 		if (fPixSignal.IsNotNull())
 		{
 			PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
@@ -228,20 +243,24 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 			fPixel     const fPixMaxX     { m_fPixZeroX + m_horzCoord.Transform2fPixelSize(usScaleMax) };
 
 			fPixel     const fPixYoff     { getSignalOffset(idSignal) };
-			fPixel     const fPixYpos     { fPixYoff - getSignalValue(*pSignal, usAbsMax) };
+			fPixel     const fPixYpos     { fPixYoff - getSignalValue(*pSignal, usAbsMax, bFiltered) };
 			fPixDiamondPos = fPixelPoint(fPixMaxX, fPixYpos);
 		}
 	}
 	return fPixDiamondPos;
 }
 
-void MonitorControl::paintSignal(SignalId const & idSignal)
+void MonitorControl::paintSignal
+(
+	SignalId const & idSignal,
+	bool     const   bFiltered 
+)
 {
 	Signal    const * const pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) };
 	if (pSignal == nullptr)
 		return;
 	fMicroSecs     const usSimuEnd  { m_pNMWI->GetSimulationTime() };
-	fPixel               fPixSignal { getSignalValue(*pSignal, usSimuEnd) };
+	fPixel               fPixSignal { getSignalValue(*pSignal, usSimuEnd, bFiltered) };
 	if (fPixSignal.IsNull())
 		return;
 
@@ -258,7 +277,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	m_upGraphics->FillCircle(fPixelCircle(prevPoint, 4.0_fPixel), color);
 	for (fMicroSecs usSimu = usSimuEnd - usIncrement; usSimu >= usSimuStart; usSimu -= usIncrement)
 	{
-		fPixSignal = getSignalValue(*pSignal, usSimu);
+		fPixSignal = getSignalValue(*pSignal, usSimu, bFiltered);
 		if (fPixSignal > m_fPixMaxSignal)
 			m_fPixMaxSignal = fPixSignal;
 		fPixelPoint const actPoint 
@@ -266,7 +285,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 			fPixX + m_horzCoord.Transform2fPixelSize(usSimu), 
 			fPixYoff - fPixSignal
 		};
-		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color);
+		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, bFiltered ? color : D2D1::ColorF::LightGray);
 		prevPoint = actPoint;
 	}
 }
@@ -327,12 +346,13 @@ void MonitorControl::DoPaint()
 		return;
 
 	m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const trackNr) { paintTrack(trackNr); });
-	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id); });
+	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id, false); });
+	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id, true); });
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
 	if (m_measurement.TrackingActive())
 	{
-		fPixelPoint const fPixDiamondPos { calcDiamondPos() };
+		fPixelPoint const fPixDiamondPos { calcDiamondPos(true) };
 		if (fPixDiamondPos.IsNotNull())
 			m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
 	}
@@ -469,7 +489,7 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	}
 	else
 	{
-		fPixelPoint const fPixDiamondPos { calcDiamondPos() };
+		fPixelPoint const fPixDiamondPos { calcDiamondPos(true) };
 		if (
 			  fPixDiamondPos.IsNotNull() && m_pMonitorData->IsAnySignalSelected() &&
               (m_measurement.IsClose2LeftLimit(fPixCrsrX) || m_measurement.IsClose2RightLimit(fPixCrsrX))

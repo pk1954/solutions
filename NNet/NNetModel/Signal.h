@@ -47,13 +47,14 @@ public:
     void       Recalc       (UPNobList const &);
     void       Reset        (fMicroSecs const);
 
-    float      GetDataPoint   (Param const &, fMicroSecs const) const;
-    fMicroSecs FindNextMaximum(Param const &, fMicroSecs const) const;
-    float      GetDistFactor(MicroMeterPnt const &)             const;
-    float      GetSignalValue()                                 const;
-    void       Draw(DrawContext const &, bool const)            const;
-    void       DrawDataPoints(DrawContext const &)              const;
-    void       WriteSignalData(wostream &)                      const;
+    float      GetFilteredDataPoint(Param const &, fMicroSecs const) const;
+    float      GetRawDataPoint     (Param const &, fMicroSecs const) const;
+    fMicroSecs FindNextMaximum     (Param const &, fMicroSecs const) const;
+    float      GetDistFactor       (MicroMeterPnt const &)           const;
+    float      GetSignalValue      ()                                const;
+    void       Draw                (DrawContext const &, bool const) const;
+    void       DrawDataPoints      (DrawContext const &)             const;
+    void       WriteSignalData     (wostream &)                      const;
 
     fMicroSecs               GetStartTime   () const { return m_timeStart; }
     MicroMeterPnt    const & GetCenter      () const { return m_circle.GetPos(); }

@@ -44,7 +44,8 @@ void ParameterDialog::applyParameter  // read out edit field and write data to m
 {
 	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(parameter) }; 
 	float       fValue    { fOldValue }; 
-	if (StdDialogBox::Evaluate(hwndEditField, fValue) && ! IsCloseToZero(fValue - fOldValue))
+	bool  const bOK       { StdDialogBox::Evaluate(hwndEditField, fValue) };
+	if (bOK && ! IsCloseToZero(fValue - fOldValue))
 		m_pCommands->SetParameter(parameter, fValue);
 }
 

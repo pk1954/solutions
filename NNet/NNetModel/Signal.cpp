@@ -147,7 +147,7 @@ fMicroSecs Signal::index2time
     return usResult;
 }
 
-float Signal::GetDataPoint
+float Signal::GetFilteredDataPoint
 (
     Param      const & param,
     fMicroSecs const   time
@@ -155,6 +155,16 @@ float Signal::GetDataPoint
 {
     int index { time2index(param, time) };
     return (index < 0) ? NAN : m_upMeanFilter->GetFiltered(index);
+}
+
+float Signal::GetRawDataPoint
+(
+    Param      const & param,
+    fMicroSecs const   time
+) const
+{
+    int index { time2index(param, time) };
+    return (index < 0) ? NAN : m_upMeanFilter->GetRaw(index);
 }
 
 fMicroSecs Signal::FindNextMaximum
