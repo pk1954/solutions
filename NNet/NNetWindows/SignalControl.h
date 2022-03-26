@@ -48,6 +48,10 @@ public:
 	void SetVertCoordFreq(PixFpDimension<fHertz> *);
 	void SetVertCoordVolt(PixFpDimension<mV>     *);
 
+	void ScaleTimeCoord();
+	void ScaleFreqCoord();
+	void ScaleVoltCoord();
+
 private:
 
 	enum class tPos { NONE, TIME, BASE_FREQ, PEAK_FREQ, TIME_FREQ, BASE_VOLT, PEAK_VOLT, TIME_VOLT, BASA_FREQ, BASA_VOLT };
@@ -132,10 +136,10 @@ private:
 	fPixel yFreq(fHertz     const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV         const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
-	fPixel yPeakVolt() const { return yVolt(m_pSigGen->Voltage().peak); }
-	fPixel yBaseVolt() const { return yVolt(m_pSigGen->Voltage().base); }
-	fPixel yPeakFreq() const { return yFreq(m_pSigGen->Frequency().peak); }
-	fPixel yBaseFreq() const { return yFreq(m_pSigGen->Frequency().base); }
+	fPixel yPeakVolt() const { return yVolt(m_pSigGen->Voltage().Peak()); }
+	fPixel yBaseVolt() const { return yVolt(m_pSigGen->Voltage().Base()); }
+	fPixel yPeakFreq() const { return yFreq(m_pSigGen->Frequency().Peak()); }
+	fPixel yBaseFreq() const { return yFreq(m_pSigGen->Frequency().Base()); }
 
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }

@@ -81,7 +81,7 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 	using enum ParamType::Value;
 	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	resetParameter(m_hwndThreshold,        threshold     );
-	resetParameter(m_hwndPulseWidth,       pulseWidth    );
+	resetParameter(m_hwndSpikeWidth,       spikeWidth    );
 	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
 	resetParameter(m_hwndTimeResolution,   timeResolution);
 	resetParameter(m_hwndFilterSize,       filterSize    );
@@ -93,7 +93,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	using enum ParamType::Value;
 	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	applyParameter(m_hwndThreshold,        threshold     );
-	applyParameter(m_hwndPulseWidth,       pulseWidth    );
+	applyParameter(m_hwndSpikeWidth,       spikeWidth    );
 	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
 	applyParameter(m_hwndTimeResolution,   timeResolution);
 	applyParameter(m_hwndFilterSize,       filterSize    );
@@ -115,7 +115,7 @@ void ParameterDialog::Start
 //	m_hwndBaseFrequency    = addParameter(hwndDlg, baseFrequency,  iYpos); 
 	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt, iYpos); 
 	m_hwndThreshold        = addParameter(hwndDlg, threshold,      iYpos); 
-	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,     iYpos); 
+	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth,     iYpos); 
 	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 
 	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
 	m_hwndFilterSize       = addParameter(hwndDlg, filterSize,     iYpos); 

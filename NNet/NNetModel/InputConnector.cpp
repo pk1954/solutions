@@ -84,7 +84,7 @@ void InputConnector::Prepare()
 mV InputConnector::WaveFunction(fMicroSecs const time) const
 {
     mV const mVact { m_signalGenerator.GetVoltage(time) };
-    float m_factorW = 1.0f / m_signalGenerator.GetParams().PulseWidth().GetValue();
+    float m_factorW = 1.0f / m_signalGenerator.GetParams().SpikeWidth().GetValue();
     float m_factorU = 4.0f * m_factorW * mVact.GetValue();
     return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }

@@ -27,9 +27,6 @@ SignalDesigner::SignalDesigner
 	m_commands(commands),
 	m_nmwi(nmwi)
 {
-	static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
-	static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
-
 	static PIXEL STD_WINDOW_HEIGHT { 450_PIXEL };
 
 	HWND hwnd = GraphicsWindow::Initialize
@@ -39,35 +36,8 @@ SignalDesigner::SignalDesigner
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
 
-	m_upSignalControl1 = make_unique<SignalControl>
-	(
-		hwnd,
-		computeThread,
-		m_commands,
-		&m_sigGen,
-		&m_horzCoord 
-	);
-	m_upSignalControl2 = make_unique<SignalControl>
-	(
-		hwnd,
-		computeThread,
-		m_commands,
-		&m_sigGen,
-		&m_horzCoord
-	);
-	runObservable  .RegisterObserver(*m_upSignalControl1.get());
-	m_horzCoord    .RegisterObserver(*m_upSignalControl1.get()); 
-	m_vertCoordFreq.RegisterObserver(*m_upSignalControl1.get());
-	m_vertCoordVolt.RegisterObserver(*m_upSignalControl1.get());
-	m_upSignalControl1->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
-	m_upSignalControl1->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT);
-
-	runObservable  .RegisterObserver(*m_upSignalControl2.get());
-	m_horzCoord    .RegisterObserver(*m_upSignalControl2.get()); 
-	m_vertCoordFreq.RegisterObserver(*m_upSignalControl2.get());
-	m_vertCoordVolt.RegisterObserver(*m_upSignalControl2.get());
-	m_upSignalControl2->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
-	m_upSignalControl2->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT);
+	m_upSignalControl1 = makeSignalControl(computeThread, runObservable);
+	m_upSignalControl2 = makeSignalControl(computeThread, runObservable);
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(100._MicroSecs, 1000000._MicroSecs); 
@@ -77,10 +47,11 @@ SignalDesigner::SignalDesigner
 	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
-	mV    const mVmaxPeak         { m_sigGen.Voltage().peak };
+	mV    const mVmaxPeak         { m_sigGen.Voltage().Peak() };
 	mV    const mVmaxPeakScaleLen { mVmaxPeak * 4.0f };
 	PIXEL const pixVertScaleLen   { STD_WINDOW_HEIGHT - 0_PIXEL  - H_SCALE_HEIGHT };
 	mV    const mVpixelSize       { mVmaxPeakScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
+
 	m_vertCoordVolt.SetPixelSize(mVpixelSize);
 	m_vertCoordVolt.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
 
@@ -107,6 +78,29 @@ SignalDesigner::SignalDesigner
 	CenterIn(hwndParent, 500_PIXEL, STD_WINDOW_HEIGHT);
 }
 
+unique_ptr<SignalControl> SignalDesigner::makeSignalControl
+(
+	ComputeThread const & computeThread,
+	Observable          & runObservable
+)
+{
+	unique_ptr<SignalControl> upSignalControl = make_unique<SignalControl>
+	(
+		GetWindowHandle(),
+		computeThread,
+		m_commands,
+		&m_sigGen,
+		&m_horzCoord 
+	);
+	runObservable  .RegisterObserver(*upSignalControl.get());
+	m_horzCoord    .RegisterObserver(*upSignalControl.get()); 
+	m_vertCoordFreq.RegisterObserver(*upSignalControl.get());
+	m_vertCoordVolt.RegisterObserver(*upSignalControl.get());
+	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
+	upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT);
+	return move(upSignalControl);
+}
+
 void SignalDesigner::Stop()
 {
 	DestroyWindow();
@@ -125,6 +119,12 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 	case IDM_SIGNAL_DESIGNER_STACKED:
 		ToggleDesign();
 		design(GetClientWindowWidth(), GetClientWindowHeight());
+		m_upSignalControl1->ScaleTimeCoord();
+		m_upSignalControl1->ScaleFreqCoord();
+		if (m_design == DESIGN::INTEGRATED)
+			m_upSignalControl1->ScaleVoltCoord();
+		else
+			m_upSignalControl2->ScaleVoltCoord();
 		return true;
 
 	default:

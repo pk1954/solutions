@@ -34,8 +34,8 @@ public:
 	mV     GetVoltage     (fMicroSecs const) const;
 
 	fMicroSecs        const & TimePeak () const { return m_data.usPeak; }
-	BASE_PEAK<fHertz> const & Frequency() const { return m_data.freq;  }
-	BASE_PEAK<mV>     const & Voltage  () const { return m_data.volt;  }
+	BASE_PEAK<fHertz> const & Frequency() const { return m_data.freq;   }
+	BASE_PEAK<mV>     const & Voltage  () const { return m_data.volt;   }
 
 	void SetParam(ParamType::Value const, float const);
 	void SetParams(BASE_PEAK<fHertz>, BASE_PEAK<mV>, fMicroSecs);

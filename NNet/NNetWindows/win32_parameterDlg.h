@@ -30,7 +30,7 @@ private:
 
 	HWND m_hwndPeakVoltage     { nullptr };
 	HWND m_hwndThreshold       { nullptr };     
-	HWND m_hwndPulseWidth      { nullptr };
+	HWND m_hwndSpikeWidth      { nullptr };
 	HWND m_hwndRefractoryPeriod{ nullptr };
 	HWND m_hwndTimeResolution  { nullptr };
 	HWND m_hwndFilterSize      { nullptr };

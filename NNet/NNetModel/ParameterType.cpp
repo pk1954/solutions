@@ -21,15 +21,16 @@ wchar_t const * ParamType::GetName(ParamType::Value const p)
 		{ inputBaseVolt,  L"inputBaseVolt"    }, // amplitude of normal input connector pulses
 		{ neuronPeakVolt, L"PeakVoltage"      }, // peak voltage when neuron triggers
 		{ pulseSpeed,     L"PulseSpeed"       },
-		{ pulseWidth,     L"PulseWidth"       },
+		{ spikeWidth,     L"SpikeWidth"       },
 		{ threshold,      L"Threshold"        },
     	{ refractPeriod,  L"RefractoryPeriod" },
 	    { timeResolution, L"TimeResolution"   },
 		{ filterSize,     L"FilterSize"       }, // multiples of timeResolution  
 		{ baseFrequency,  L"BaseFrequency"    },   // Legacy
 		{ signalLoss,     L"SignalLoss"       },   // Legacy
+		{ pulseWidth,     L"PulseWidth"       },   // Legacy
 		{ stdPulseRate,   L"StdPulseRate"     },   // Legacy
-    	{ pulseRate,      L"PulseRate"        }    // Legacy
+		{ pulseRate,      L"PulseRate"        }    // Legacy
 	};				  
 	
 	return mapParam.at(p);
@@ -46,7 +47,7 @@ wchar_t const * ParamType::GetUnit(ParamType::Value const p)
 		{ inputBaseVolt,   L"mV"    },
 		{ baseFrequency,   L"Hz"    },
 		{ pulseSpeed,      L"m/sec" },
-		{ pulseWidth,      L"탎"    },
+		{ spikeWidth,      L"탎"    },
 		{ threshold,       L"mV"    },
 		{ neuronPeakVolt,  L"mV"    },
     	{ refractPeriod,   L"탎"    },
@@ -54,6 +55,7 @@ wchar_t const * ParamType::GetUnit(ParamType::Value const p)
 		{ filterSize,      L"탎"    },
 		{ signalLoss,      L"1/탆"  },  // Legacy
 		{ stdPulseRate,    L"Hz"    },  // Legacy
+		{ pulseWidth,      L"탎"    },  // Legacy
 		{ pulseRate,       L"Hz"    }   // Legacy
 	};				  
 

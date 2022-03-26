@@ -15,8 +15,8 @@ public:
 
 	bool operator==(Param const & rhs) const;
 
-	float       GetParameterValue(ParamType::Value const) const;
-	void        SetParameterValue(ParamType::Value const, float const);
+	float GetParameterValue(ParamType::Value const) const;
+	void  SetParameterValue(ParamType::Value const, float const);
 
 	BASE_PEAK<fHertz> const & InputFreq() const { return m_inputFreq; }
 	BASE_PEAK<mV>     const & InputVolt() const { return m_inputVolt; }
@@ -24,7 +24,7 @@ public:
 	fMicroSecs  InputPeakTime () const { return m_inputPeakTime;  }
 	mV          NeuronPeakVolt() const { return m_neuronPeakVolt; }
 	mV          Threshold     () const { return m_threshold; 	  }
-	fMicroSecs  PulseWidth    () const { return m_pulseWidth;     }
+	fMicroSecs  SpikeWidth    () const { return m_spikeWidth;     }
 	fMicroSecs  RefractPeriod () const { return m_refractPeriod;  }
 	meterPerSec PulseSpeed    () const { return m_pulseSpeed;     }
 	fMicroSecs  TimeResolution() const { return m_usResolution;   }
@@ -38,7 +38,7 @@ private:
 	mV          m_neuronPeakVolt { 20._mV            };
 	mV          m_threshold      { 20._mV            };
 	meterPerSec m_pulseSpeed     { 120.0_meterPerSec };
-	fMicroSecs  m_pulseWidth     { 2000._MicroSecs   };   
+	fMicroSecs  m_spikeWidth     { 2000._MicroSecs   };   
 	fMicroSecs  m_refractPeriod  { 500._MicroSecs    };
 	fMicroSecs  m_usResolution   { 100._MicroSecs    };
 	fMicroSecs  m_usFilterSize   { m_usResolution    };

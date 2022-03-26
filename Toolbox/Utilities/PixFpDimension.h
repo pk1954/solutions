@@ -109,8 +109,8 @@ public:
 
 	PixFpDimension operator*= (float const factor) 
 	{ 
-		m_fPixOffset *= factor;
-		m_logPixelSize  *= factor; 
+		m_fPixOffset   *= factor;
+		m_logPixelSize *= factor; 
 		NotifyAll(false);
 		return * this; 
 	}

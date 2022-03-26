@@ -34,11 +34,12 @@ public:
 
 	bool CombineCommands(Command const & src) final
 	{ 
-		SetSigGenDataCmd const & srcCmd { static_cast<SetSigGenDataCmd const &>(src) };
-		if (&m_sigGen != &srcCmd.m_sigGen)
-			return false;
-		m_sigGen.SetData(m_dataNew); 
-		return true; 
+		return false;
+		//SetSigGenDataCmd const & srcCmd { static_cast<SetSigGenDataCmd const &>(src) };
+		//if (&m_sigGen != &srcCmd.m_sigGen)
+		//	return false;
+		//m_sigGen.SetData(m_dataNew); 
+		//return true; 
 	};
 
 private:

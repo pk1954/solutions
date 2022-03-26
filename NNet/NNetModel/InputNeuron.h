@@ -24,8 +24,6 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
-	//fHertz GetActFrequency() const;
-
 	void DrawExterior(DrawContext const &, tHighlight const) const final;
 	void DrawInterior(DrawContext const &, tHighlight const) const final;
 

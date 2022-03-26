@@ -22,7 +22,7 @@ public:
 		neuronPeakVolt,   // peak voltage for neuron output
 		threshold,        // trigger voltage for neurons
 		pulseSpeed,
-		pulseWidth,
+		spikeWidth,
 		refractPeriod,
 		timeResolution,
 		filterSize,
@@ -30,6 +30,7 @@ public:
 		baseFrequency,  // legacy  
 		pulseRate,      // legacy
 		signalLoss,     // legacy
+		pulseWidth,     // legacy
 		stdPulseRate,   // legacy
 		tParameterLast = stdPulseRate
 	};

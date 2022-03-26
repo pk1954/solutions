@@ -54,10 +54,13 @@ private:
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 
+	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
+	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
 	inline static DESIGN m_design { DESIGN::STACKED };
 
 	void design(PIXEL const, PIXEL const);
+	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &);
 
 	void DoPaint() final;
 	void OnClose() final;

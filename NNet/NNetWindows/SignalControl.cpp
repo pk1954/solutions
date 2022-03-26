@@ -222,11 +222,40 @@ void SignalControl::DoPaint()
 		paintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, tColor::VOLT);
 }
 
+void SignalControl::ScaleTimeCoord()
+{
+	fMicroSecs const umMaxVisible { getTime(m_fPixRight) };
+	fMicroSecs const umCutoff     { m_pSigGen->CutoffTime() };
+	float      const factor       { umCutoff / umMaxVisible };
+	*m_pHorzCoord  *= factor;
+}
+
+void SignalControl::ScaleFreqCoord()
+{
+	fHertz const fHertzMaxVisible { getFreq(0.0_fPixel) };
+	fHertz const fHertzPeak       { m_pSigGen->GetData().freq.Peak() };
+	float  const factor           { fHertzPeak / (fHertzMaxVisible * 0.9f) };
+	*m_pVertCoordFreq *= factor;
+}
+
+void SignalControl::ScaleVoltCoord()
+{
+	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
+	mV    const mVpeak       { m_pSigGen->GetData().volt.Peak() };
+	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
+	*m_pVertCoordVolt *= factor;
+}
+
 bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
 	m_fPixRight  = Convert2fPixel(width);
 	m_fPixBottom = Convert2fPixel(height);
+	ScaleTimeCoord();
+	if (m_pVertCoordFreq)
+		ScaleFreqCoord();
+	if (m_pVertCoordVolt)
+		ScaleVoltCoord();
 	Trigger();  // cause repaint
 	return true;
 }
@@ -283,27 +312,27 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		switch (m_moveMode)
 		{
 		case tPos::TIME:
-			sigGenData.usPeak    = getTime(fPixCrsrPos);
+			sigGenData.usPeak = getTime(fPixCrsrPos);
 			break;
 		case tPos::BASE_FREQ:
-			sigGenData.freq.base = getFreq(fPixCrsrPos);
+			sigGenData.freq.SetBase(getFreq(fPixCrsrPos));
 			break;
 		case tPos::PEAK_FREQ:
-			sigGenData.freq.peak = getFreq(fPixCrsrPos);
+			sigGenData.freq.SetPeak(getFreq(fPixCrsrPos));
 			break;
 		case tPos::TIME_FREQ:
-			sigGenData.freq.peak = getFreq(fPixCrsrPos);
-			sigGenData.usPeak    = getTime(fPixCrsrPos);
+			sigGenData.freq.SetPeak(getFreq(fPixCrsrPos));
+			sigGenData.usPeak = getTime(fPixCrsrPos);
 			break;
 		case tPos::BASE_VOLT:
-			sigGenData.volt.base = getVolt(fPixCrsrPos);
+			sigGenData.volt.SetBase(getVolt(fPixCrsrPos));
 			break;
 		case tPos::PEAK_VOLT:
-			sigGenData.volt.peak = getVolt(fPixCrsrPos);
+			sigGenData.volt.SetPeak(getVolt(fPixCrsrPos));
 			break;
 		case tPos::TIME_VOLT:
-			sigGenData.volt.peak = getVolt(fPixCrsrPos);
-			sigGenData.usPeak    = getTime(fPixCrsrPos);
+			sigGenData.volt.SetPeak(getVolt(fPixCrsrPos));
+			sigGenData.usPeak = getTime(fPixCrsrPos);
 			break;
 		default:
 			break;

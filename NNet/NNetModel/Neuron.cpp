@@ -97,7 +97,7 @@ SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound)
 
 void Neuron::Recalc() 
 {
-	m_factorW = 1.0f / m_pParameters->PulseWidth().GetValue();
+	m_factorW = 1.0f / m_pParameters->SpikeWidth().GetValue();
 	m_factorU = 4.0f * m_factorW * m_pParameters->NeuronPeakVolt().GetValue();
 };
 
@@ -117,7 +117,7 @@ void Neuron::Prepare()
 {
 	if (m_bTriggered)
 	{
-		if (m_usSinceLastPulse >= m_pParameters->PulseWidth() + m_pParameters->RefractPeriod()) 
+		if (m_usSinceLastPulse >= m_pParameters->SpikeWidth() + m_pParameters->RefractPeriod()) 
 			m_bTriggered = false;
 	}
 	else 
@@ -148,7 +148,7 @@ bool Neuron::CompStep()
 
 mV Neuron::GetNextOutput() const
 {
-	return (m_usSinceLastPulse <= m_pParameters->PulseWidth())
+	return (m_usSinceLastPulse <= m_pParameters->SpikeWidth())
 		   ? WaveFunction(m_usSinceLastPulse)
 		   : 0.0_mV;
 }

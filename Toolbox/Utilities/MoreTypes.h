@@ -34,10 +34,30 @@ using MicroMeterCircle   = CircleType <MicroMeter>;
 using MicroMeterEllipse  = EllipseType<MicroMeter>;
 
 template <typename UNIT>
-struct BASE_PEAK
+class BASE_PEAK
 {
-	UNIT base;
-	UNIT peak;
+public:
+	BASE_PEAK(UNIT b, UNIT p)
+	  : base(b),
+		peak(p)
+	{}
 
 	bool operator==(BASE_PEAK const & rhs) const = default;
+
+	UNIT Base() const { return base; }
+	UNIT Peak() const { return peak; }
+
+	void SetBase(UNIT v)
+	{
+		base = min(v, peak);
+	}
+
+	void SetPeak(UNIT v)
+	{
+		peak = max(v, base);
+	}
+
+private:
+	UNIT base;
+	UNIT peak;
 };

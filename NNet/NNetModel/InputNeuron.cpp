@@ -39,13 +39,6 @@ void InputNeuron::Check() const
 	assert(!HasIncoming());
 }
 
-//fHertz InputNeuron::GetActFrequency() const
-//{
-//	return HasParentNob()
-//		? static_cast<InputConnector *>(GetParentNob())->GetActFrequency()
-//		: fHertz::NULL_VAL();
-//}
-//
 void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));
