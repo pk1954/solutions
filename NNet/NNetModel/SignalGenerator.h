@@ -64,6 +64,5 @@ private:
 	Param    * m_pParameters         { nullptr };
 	bool       m_bTriggerActive      { false };
 	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
-
 	SigGenData m_data;
 };

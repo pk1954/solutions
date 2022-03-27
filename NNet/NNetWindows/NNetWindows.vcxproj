@@ -605,6 +605,7 @@
     <ClInclude Include="MonitorControl.h" />
     <ClInclude Include="NNetModelCommands.h" />
     <ClInclude Include="NNetWrappers.h" />
+    <ClInclude Include="PreviewControl.h" />
     <ClInclude Include="SignalControl.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="Preferences.h" />
@@ -613,6 +614,7 @@
     <ClInclude Include="SignalDesigner.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeDisplay.h" />
+    <ClInclude Include="TimeGraph.h" />
     <ClInclude Include="UndoRedoMenu.h" />
     <ClInclude Include="win32_appTitle.h" />
     <ClInclude Include="win32_crsrWindow.h" />

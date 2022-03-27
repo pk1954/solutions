@@ -11,7 +11,7 @@
 #include "PixFpDimension.h"
 #include "SignalGenerator.h"
 #include "NNetParameters.h"
-#include "win32_graphicsWindow.h"
+#include "TimeGraph.h"
 
 using std::array;
 
@@ -19,7 +19,7 @@ class ComputeThread;
 class NNetModelCommands;
 class NNetModelWriterInterface;
 
-class SignalControl : public GraphicsWindow
+class SignalControl : public TimeGraph
 {
 public:
 	SignalControl
@@ -32,11 +32,6 @@ public:
 	);
 
 	~SignalControl() final;
-
-	static void Initialize(Param & param) 
-	{ 
-		m_pParameters = & param; 
-	}
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
 
@@ -76,44 +71,14 @@ private:
 		return m_colTable[static_cast<int>(type)];
 	}
 
-	inline static Param * m_pParameters { nullptr };
-
-	fPixel const STD_WIDTH  { 1.0_fPixel };
-	fPixel const HIGH_WIDTH { 3.0_fPixel };
-
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
 
-	PixFpDimension<fMicroSecs> * m_pHorzCoord;
-	PixFpDimension<fHertz>     * m_pVertCoordFreq { nullptr };
-	PixFpDimension<mV>         * m_pVertCoordVolt { nullptr };
-	ComputeThread        const & m_computeThread;
-	SignalGenerator            * m_pSigGen;
-	NNetModelCommands          & m_commands;
-	tPos                         m_moveMode   { tPos::NONE };
-	fPixel                       m_fPixLeft   { 0.0_fPixel };
-	fPixel                       m_fPixRight  { 0.0_fPixel };
-	fPixel                       m_fPixBottom { 0.0_fPixel };
-
-	void paintCurve(auto getPoint, tColor const colType) const
-	{
-		D2D1::ColorF const col          { getColor(colType) };
-		fMicroSecs   const usResolution { m_pSigGen->GetParams().GetParameterValue(ParamType::Value::timeResolution) };
-		fMicroSecs   const usPixelSize  { m_pHorzCoord->GetPixelSize() };
-		fMicroSecs   const usIncrement  { max(usPixelSize, usResolution) };
-		fMicroSecs   const timeStart    { 0.0_MicroSecs };
-		fMicroSecs   const timeEnd      { min(getTime(m_fPixRight), m_pSigGen->CutoffTime()) };
-		fPixelPoint        prevPoint    { getPoint(timeStart) };
-
-		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
-		{
-			fPixelPoint const actPoint  { getPoint(time) };
-			fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-			m_upGraphics->DrawLine(prevPoint, stepPoint, STD_WIDTH, col);
-			m_upGraphics->DrawLine(stepPoint, actPoint,  STD_WIDTH, col);
-			prevPoint = actPoint;
-		}
-	}
+	PixFpDimension<fHertz> * m_pVertCoordFreq { nullptr };
+	PixFpDimension<mV>     * m_pVertCoordVolt { nullptr };
+	ComputeThread    const & m_computeThread;
+	NNetModelCommands      & m_commands;
+	tPos                     m_moveMode { tPos::NONE };
 
 	void DoPaint() final;
 
@@ -121,21 +86,15 @@ private:
 	void OnMouseMove (WPARAM const, LPARAM const) final;
 	bool OnMouseLeave(WPARAM const, LPARAM const) final;
 
-	fPixel xLeft  () const { return m_fPixLeft;   }
-	fPixel xRight () const { return m_fPixRight;  }
-	fPixel yBottom() const { return m_fPixBottom; }
-	fPixel xPeak  () const { return xTime(m_pSigGen->TimePeak());	}
+	fPixel getY(fPixel const fPix) const { return yBottom() - fPix; }
 
-	fPixel getY(fPixel const fPix) const { return m_fPixBottom - fPix; }
+	fHertz getFreq(fPixelPoint const & p) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(p.GetY())); }
+	mV     getVolt(fPixelPoint const & p) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(p.GetY())); }
 
-	fMicroSecs getTime(fPixelPoint const & p) const { return m_pHorzCoord->Transform2logUnitPos(p.GetX()); }
-	fHertz     getFreq(fPixelPoint const & p) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(p.GetY())); }
-	mV         getVolt(fPixelPoint const & p) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(p.GetY())); }
-
-	fPixel xTime(fMicroSecs const time) const { return fPixel(m_pHorzCoord->Transform2fPixelPos(time)); }
 	fPixel yFreq(fHertz     const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV         const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
+	fPixel xPeak    () const { return xTime(m_pSigGen->TimePeak());	}
 	fPixel yPeakVolt() const { return yVolt(m_pSigGen->Voltage().Peak()); }
 	fPixel yBaseVolt() const { return yVolt(m_pSigGen->Voltage().Base()); }
 	fPixel yPeakFreq() const { return yFreq(m_pSigGen->Frequency().Peak()); }

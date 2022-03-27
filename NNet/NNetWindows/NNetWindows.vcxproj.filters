@@ -185,5 +185,11 @@
     <ClInclude Include="MonitorControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PreviewControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

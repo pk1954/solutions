@@ -9,6 +9,7 @@
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
 #include "SignalControl.h"
+#include "PreviewControl.h"
 #include "win32_graphicsWindow.h"
 
 class NNetModelWriterInterface;
@@ -57,7 +58,8 @@ private:
 	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
 	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
-	inline static DESIGN m_design { DESIGN::STACKED };
+	inline static DESIGN m_design   { DESIGN::STACKED };
+	inline static bool   m_bPreview { true };
 
 	void design(PIXEL const, PIXEL const);
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &);
@@ -70,13 +72,17 @@ private:
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<fHertz>        m_vertCoordFreq;
-	PixFpDimension<mV>            m_vertCoordVolt;
+	PixFpDimension<mV>            m_vertCoordVolt1;
+	PixFpDimension<mV>            m_vertCoordVolt2;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale1;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale2;
+	unique_ptr<Scale<fMicroSecs>> m_upHorzScale3;
 	unique_ptr<Scale<fHertz>>     m_upVertScaleFreq;
-	unique_ptr<Scale<mV>>         m_upVertScaleVolt;
+	unique_ptr<Scale<mV>>         m_upVertScaleVolt1;
+	unique_ptr<Scale<mV>>         m_upVertScaleVolt2;
 	unique_ptr<SignalControl>     m_upSignalControl1;
 	unique_ptr<SignalControl>     m_upSignalControl2;
+	unique_ptr<PreviewControl>    m_upPreviewControl;
 	SignalGenerator             & m_sigGen;
 	NNetModelCommands           & m_commands;
 	NNetModelWriterInterface    & m_nmwi;

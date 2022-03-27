@@ -20,36 +20,36 @@ SignalControl::SignalControl
 	SignalGenerator      * const pSigGen,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
-  :	m_pHorzCoord(pHorzCoord),
+  : TimeGraph(hwndParent, pSigGen, pHorzCoord),
 	m_computeThread(computeThread),
-	m_pSigGen(pSigGen),
 	m_commands(commands)
 {
-	m_pSigGen->RegisterObserver(*this); // signal generator data can be changed from outside
-	GraphicsWindow::Initialize
-	(
-		hwndParent, 
-		L"ClassSignalControl", 
-		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
-	);
 }
 
 SignalControl::~SignalControl()
 {
-	m_pSigGen->UnregisterObserver(*this);
-	m_pHorzCoord->UnregisterObserver(*this); 
-	m_pVertCoordFreq->UnregisterObserver(*this);
-	m_pVertCoordVolt->UnregisterObserver(*this);
+	if (m_pVertCoordFreq)
+		m_pVertCoordFreq->UnregisterObserver(*this);
+	if (m_pVertCoordVolt)
+		m_pVertCoordVolt->UnregisterObserver(*this);
 }
 
 void SignalControl::SetVertCoordFreq(PixFpDimension<fHertz> * pCoord)
 {
+	if (m_pVertCoordFreq)
+		m_pVertCoordFreq->UnregisterObserver(*this);
 	m_pVertCoordFreq = pCoord;
+	if (m_pVertCoordFreq)
+		m_pVertCoordFreq->RegisterObserver(*this);
 }
 
 void SignalControl::SetVertCoordVolt(PixFpDimension<mV>* pCoord)
 {
+	if (m_pVertCoordVolt)
+		m_pVertCoordVolt->UnregisterObserver(*this);
 	m_pVertCoordVolt = pCoord;
+	if (m_pVertCoordVolt)
+		m_pVertCoordVolt->RegisterObserver(*this);
 }
 
 void SignalControl::drawLine
@@ -217,9 +217,9 @@ void SignalControl::DoPaint()
 		paintRunControls();
 	}
 	if (m_pVertCoordFreq)
-		paintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, tColor::FREQ);
+		paintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, getColor(tColor::FREQ));
 	if (m_pVertCoordVolt)
-		paintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, tColor::VOLT);
+		paintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, getColor(tColor::VOLT));
 }
 
 void SignalControl::ScaleTimeCoord()
@@ -248,10 +248,9 @@ void SignalControl::ScaleVoltCoord()
 
 bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 {
-	GraphicsWindow::OnSize(width, height);
-	m_fPixRight  = Convert2fPixel(width);
-	m_fPixBottom = Convert2fPixel(height);
-	ScaleTimeCoord();
+	TimeGraph::OnSize(width, height);
+	if (m_fPixRight > 0.0_fPixel)
+		ScaleTimeCoord();
 	if (m_pVertCoordFreq)
 		ScaleFreqCoord();
 	if (m_pVertCoordVolt)
