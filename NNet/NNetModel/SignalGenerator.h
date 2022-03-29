@@ -13,7 +13,7 @@ class Param;
 struct SigGenData
 {
 	BASE_PEAK<fHertz> freq;
-	BASE_PEAK<mV>     volt;
+	BASE_PEAK<mV>     amplit;
 	fMicroSecs        usPeak;
 };
 
@@ -31,11 +31,11 @@ public:
 	fHertz GetActFrequency()                 const;
 	fHertz GetFrequency   (fMicroSecs const) const;
 	mV     GetActVoltage  ()                 const;
-	mV     GetVoltage     (fMicroSecs const) const;
+	mV     GetAmplitude   (fMicroSecs const) const;
 
 	fMicroSecs        const & TimePeak () const { return m_data.usPeak; }
 	BASE_PEAK<fHertz> const & Frequency() const { return m_data.freq;   }
-	BASE_PEAK<mV>     const & Voltage  () const { return m_data.volt;   }
+	BASE_PEAK<mV>     const & Amplitude() const { return m_data.amplit; }
 
 	void SetParam(ParamType::Value const, float const);
 	void SetParams(BASE_PEAK<fHertz>, BASE_PEAK<mV>, fMicroSecs);
@@ -56,8 +56,23 @@ public:
 
 	Param const & GetParams() const { return * m_pParameters; }
 
-private:
 	float stimulusFunc(float fParam) const { return exp(1.f - fParam) * fParam;	}
+private:
+
+	template <typename T>
+	T getActValue(fMicroSecs const t, BASE_PEAK<T> const & par) const
+	{
+		T result { par.Base() };
+		if (InStimulusRange(t))
+		{
+			float const fFactor   { t / m_data.usPeak };
+			float const fStimulus { stimulusFunc(fFactor) };
+			T     const boost     { par.Boost() };
+			T     const stimulus  { boost * fStimulus };
+			result += stimulus;
+		}
+		return result;
+	}
 
 	inline static float const CUT_OFF_FACTOR { 10.0f };
 

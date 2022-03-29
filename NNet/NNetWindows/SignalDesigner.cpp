@@ -37,17 +37,17 @@ SignalDesigner::SignalDesigner
 	);
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(100._MicroSecs, 1000000._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 10000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
 	m_vertCoordFreq.SetPixelSize(0.25_fHertz);
 	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
-	mV    const mVmaxPeak         { m_sigGen.Voltage().Peak() };
-	mV    const mVmaxPeakScaleLen { mVmaxPeak * 4.0f };
-	PIXEL const pixVertScaleLen   { STD_WINDOW_HEIGHT - 0_PIXEL  - H_SCALE_HEIGHT };
-	mV    const mVpixelSize       { mVmaxPeakScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
+	mV    const mVpeakAmplitude    { m_sigGen.Amplitude().Peak() };
+	mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
+	PIXEL const pixVertScaleLen    { STD_WINDOW_HEIGHT - 0_PIXEL  - H_SCALE_HEIGHT };
+	mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
 
 	m_vertCoordVolt1.SetPixelSize(mVpixelSize);
 	m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
@@ -180,7 +180,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upSignalControl2->SetVertCoordVolt(&m_vertCoordVolt1);
 	m_upSignalControl2->SetVertCoordFreq(nullptr);
 
-	int   iNrOfTiles { 1 };
+	int iNrOfTiles { 1 };
 	if (m_design == DESIGN::STACKED)
 		++iNrOfTiles;
 	if (m_bPreview)

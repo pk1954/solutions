@@ -580,10 +580,12 @@
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
+    <ClCompile Include="PreviewControl.cpp" />
     <ClCompile Include="SignalControl.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="SignalDesigner.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
+    <ClCompile Include="TimeGraph.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_descriptionWindow.cpp" />
     <ClCompile Include="win32_MainWindow.cpp" />

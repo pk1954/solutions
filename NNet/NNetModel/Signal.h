@@ -100,7 +100,7 @@ private:
 
     SigDataPoint const * findDataPoint(MicroMeterPnt const &) const;
 
-    int        time2index(Param const &, fMicroSecs const  ) const;
-    fMicroSecs index2time(Param const &, int        const  ) const;
+    size_t     time2index(Param const &, fMicroSecs const  ) const;
+    fMicroSecs index2time(Param const &, size_t     const  ) const;
     void       add2list  (Pipe const &);
 };

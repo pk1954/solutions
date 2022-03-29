@@ -94,16 +94,16 @@ private:
 	fPixel yFreq(fHertz     const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV         const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
-	fPixel xPeak    () const { return xTime(m_pSigGen->TimePeak());	}
-	fPixel yPeakVolt() const { return yVolt(m_pSigGen->Voltage().Peak()); }
-	fPixel yBaseVolt() const { return yVolt(m_pSigGen->Voltage().Base()); }
-	fPixel yPeakFreq() const { return yFreq(m_pSigGen->Frequency().Peak()); }
-	fPixel yBaseFreq() const { return yFreq(m_pSigGen->Frequency().Base()); }
+	fPixel xPeak      () const { return xTime(m_pSigGen->TimePeak()); }
+	fPixel aPeakAmplit() const { return yVolt(m_pSigGen->Amplitude().Peak()); }
+	fPixel yBaseAmplit() const { return yVolt(m_pSigGen->Amplitude().Base()); }
+	fPixel yPeakFreq  () const { return yFreq(m_pSigGen->Frequency().Peak()); }
+	fPixel yBaseFreq  () const { return yFreq(m_pSigGen->Frequency().Base()); }
 
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
 	fPixelPoint pixPntFreq(fMicroSecs const t) const { return pixPntFreq(t, m_pSigGen->GetFrequency(t)); }
-	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, m_pSigGen->GetVoltage(t)); }
+	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, m_pSigGen->GetAmplitude(t)); }
 
 	void calcHandles();
 	void paintRunControls () const;

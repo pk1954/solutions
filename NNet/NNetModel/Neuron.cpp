@@ -184,10 +184,6 @@ void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) co
 	context.FillCircle(GetCircle() * NEURON_INTERIOR, color);
 	if (HasAxon())
 		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
-	else
-	{
-		int x = 42;
-	}
 }
 
 Neuron const * Cast2Neuron(Nob const * pNob)

@@ -127,10 +127,10 @@ void SignalControl::calcHandles()
 	{
 		fPixel const dirPos  { m_pVertCoordFreq ? xRight() : xLeft () };
 		fPixel const dirPosA { m_pVertCoordFreq ? xLeft () : xRight() };
-		m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(dirPos,  yBaseVolt());
-		m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(dirPos,  yPeakVolt());
-		m_handles[static_cast<int>(tPos::TIME_VOLT)] = fPixelPoint(xPeak(), yPeakVolt());
-		m_handles[static_cast<int>(tPos::BASA_VOLT)] = fPixelPoint(dirPosA, yBaseVolt());
+		m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(dirPos,  yBaseAmplit());
+		m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(dirPos,  aPeakAmplit());
+		m_handles[static_cast<int>(tPos::TIME_VOLT)] = fPixelPoint(xPeak(), aPeakAmplit());
+		m_handles[static_cast<int>(tPos::BASA_VOLT)] = fPixelPoint(dirPosA, yBaseAmplit());
 	}
 }
 
@@ -217,9 +217,9 @@ void SignalControl::DoPaint()
 		paintRunControls();
 	}
 	if (m_pVertCoordFreq)
-		paintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, getColor(tColor::FREQ));
+		PaintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, getColor(tColor::FREQ));
 	if (m_pVertCoordVolt)
-		paintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, getColor(tColor::VOLT));
+		PaintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, getColor(tColor::VOLT));
 }
 
 void SignalControl::ScaleTimeCoord()
@@ -241,7 +241,7 @@ void SignalControl::ScaleFreqCoord()
 void SignalControl::ScaleVoltCoord()
 {
 	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
-	mV    const mVpeak       { m_pSigGen->GetData().volt.Peak() };
+	mV    const mVpeak       { m_pSigGen->GetData().amplit.Peak() };
 	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
 	*m_pVertCoordVolt *= factor;
 }
@@ -324,13 +324,13 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			sigGenData.usPeak = getTime(fPixCrsrPos);
 			break;
 		case tPos::BASE_VOLT:
-			sigGenData.volt.SetBase(getVolt(fPixCrsrPos));
+			sigGenData.amplit.SetBase(getVolt(fPixCrsrPos));
 			break;
 		case tPos::PEAK_VOLT:
-			sigGenData.volt.SetPeak(getVolt(fPixCrsrPos));
+			sigGenData.amplit.SetPeak(getVolt(fPixCrsrPos));
 			break;
 		case tPos::TIME_VOLT:
-			sigGenData.volt.SetPeak(getVolt(fPixCrsrPos));
+			sigGenData.amplit.SetPeak(getVolt(fPixCrsrPos));
 			sigGenData.usPeak = getTime(fPixCrsrPos);
 			break;
 		default:

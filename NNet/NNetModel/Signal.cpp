@@ -120,7 +120,7 @@ Signal::SigDataPoint const * Signal::findDataPoint(MicroMeterPnt const & umPnt) 
     return nullptr;
 }
 
-int Signal::time2index
+size_t Signal::time2index
 (
     Param      const & param,
     fMicroSecs const   usParam
@@ -128,7 +128,7 @@ int Signal::time2index
 {
     fMicroSecs const timeTilStart { usParam - m_timeStart };
     float      const fNrOfPoints  { timeTilStart / param.TimeResolution() };
-    int              index        { static_cast<int>(roundf(fNrOfPoints)) };
+    size_t           index        { static_cast<size_t>(roundf(fNrOfPoints)) };
     size_t           nrOfElements { m_upMeanFilter->GetNrOfElements() };
     if (index >= nrOfElements)
         index = Cast2UnsignedInt(nrOfElements - 1);
@@ -137,8 +137,8 @@ int Signal::time2index
 
 fMicroSecs Signal::index2time
 (
-    Param const & param,
-    int   const   index
+    Param  const & param,
+    size_t const   index
 ) const
 {
     float      const fNrOfPoints  { static_cast<float>(index) };
@@ -153,7 +153,7 @@ float Signal::GetFilteredDataPoint
     fMicroSecs const   time
 ) const
 {
-    int index { time2index(param, time) };
+    size_t index { time2index(param, time) };
     return (index < 0) ? NAN : m_upMeanFilter->GetFiltered(index);
 }
 
@@ -163,7 +163,7 @@ float Signal::GetRawDataPoint
     fMicroSecs const   time
 ) const
 {
-    int index { time2index(param, time) };
+    size_t index { time2index(param, time) };
     return (index < 0) ? NAN : m_upMeanFilter->GetRaw(index);
 }
 
@@ -173,7 +173,7 @@ fMicroSecs Signal::FindNextMaximum
     fMicroSecs const   time
 ) const
 {
-    int index { time2index(param, time) };
+    size_t index { time2index(param, time) };
     if (index < 0)
         return fMicroSecs::NULL_VAL();
     if ((index > 0) && (m_upMeanFilter->GetFiltered(index-1) > m_upMeanFilter->GetFiltered(index))) // falling values, go left

@@ -44,8 +44,9 @@ public:
 
 	bool operator==(BASE_PEAK const & rhs) const = default;
 
-	UNIT Base() const { return base; }
-	UNIT Peak() const { return peak; }
+	UNIT Base()  const { return base; }
+	UNIT Peak()  const { return peak; }
+	UNIT Boost() const { return peak - base; }
 
 	void SetBase(UNIT v)
 	{
