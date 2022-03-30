@@ -8,9 +8,7 @@
 bool Param::operator==(Param const & rhs) const
 {
 	return
-	(m_inputPeakTime  == rhs.m_inputPeakTime ) &&
-	(m_inputFreq      == rhs.m_inputFreq     ) &&
-	(m_inputVolt      == rhs.m_inputVolt     ) &&
+	(m_sigGenData     == rhs.m_sigGenData    ) &&
 	(m_spikeWidth     == rhs.m_spikeWidth    ) &&
 	(m_pulseSpeed     == rhs.m_pulseSpeed    ) &&
 	(m_threshold      == rhs.m_threshold     ) && 
@@ -25,13 +23,13 @@ float Param::GetParameterValue(ParamType::Value const param) const
 	switch (param)
 	{
 		using enum ParamType::Value;
-		case inputPeakTime:  return m_inputPeakTime .GetValue();
-		case inputPeakFreq:  return m_inputFreq.Peak().GetValue();
-		case inputPeakVolt:  return m_inputVolt.Peak().GetValue();
-		case inputBaseFreq:  return m_inputFreq.Base().GetValue();
-		case inputBaseVolt:  return m_inputVolt.Base().GetValue();
+		case inputPeakTime:  return m_sigGenData.GetPeakTime().GetValue();
+		case inputPeakFreq:  return m_sigGenData.GetFreq  ().Peak().GetValue();
+		case inputPeakVolt:  return m_sigGenData.GetAmplit().Peak().GetValue();
+		case inputBaseFreq:  return m_sigGenData.GetFreq  ().Base().GetValue();
+		case inputBaseVolt:  return m_sigGenData.GetAmplit().Base().GetValue();
 		case pulseSpeed:	 return m_pulseSpeed    .GetValue();
-		case pulseWidth:                   // Legacy
+		case pulseWidth:     return m_spikeWidth    .GetValue();  // Legacy
 		case spikeWidth:	 return m_spikeWidth    .GetValue();
 		case threshold:  	 return m_threshold     .GetValue();
 		case neuronPeakVolt: return m_neuronPeakVolt.GetValue();
@@ -47,6 +45,12 @@ float Param::GetParameterValue(ParamType::Value const param) const
 	return 0.f;
 }
 
+void Param::SetSigGenData(SigGenData const& data)
+{
+	m_sigGenData = data;
+	NotifyAll(false);
+}
+
 void Param::SetParameterValue
 (
 	ParamType::Value const param, 
@@ -56,11 +60,11 @@ void Param::SetParameterValue
 	switch (param)
 	{
 		using enum ParamType::Value;
-		case inputPeakTime:  m_inputPeakTime  = static_cast<fMicroSecs >(fNewValue); break;	    
-		case inputPeakFreq:  m_inputFreq.SetPeak(static_cast<fHertz    >(fNewValue)); break;
-		case inputPeakVolt:  m_inputVolt.SetPeak(static_cast<mV        >(fNewValue)); break;
-		case inputBaseFreq:  m_inputFreq.SetBase(static_cast<fHertz    >(fNewValue)); break;
-		case inputBaseVolt:  m_inputVolt.SetBase(static_cast<mV        >(fNewValue)); break;
+		case inputPeakTime:  m_sigGenData.SetPeakTime(static_cast<fMicroSecs >(fNewValue)); break;
+		case inputPeakFreq:  m_sigGenData.SetFreqPeak(static_cast<fHertz     >(fNewValue)); break;
+		case inputPeakVolt:  m_sigGenData.SetAmplPeak(static_cast<mV         >(fNewValue)); break;
+		case inputBaseFreq:  m_sigGenData.SetFreqBase(static_cast<fHertz     >(fNewValue)); break;
+		case inputBaseVolt:  m_sigGenData.SetAmplBase(static_cast<mV         >(fNewValue)); break;
 		case pulseSpeed:	 m_pulseSpeed     = static_cast<meterPerSec>(fNewValue); break;
 		case pulseWidth:              // Legacy
 		case spikeWidth:	 m_spikeWidth     = static_cast<fMicroSecs >(fNewValue); break;
@@ -75,6 +79,5 @@ void Param::SetParameterValue
 		case baseFrequency:  break;  // Legacy
 		default: assert(false);
 	}
-
 	NotifyAll(false);
 }

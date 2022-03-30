@@ -8,22 +8,25 @@
 
 SignalGenerator::SignalGenerator(Param & param) 
   : m_pParameters(&param),
-	m_data
-	( 
-		SigGenData
-		(
-			param.InputFreq(), 
-			param.InputVolt(), 
-			param.InputPeakTime()
-		)
-	)
+	m_data(param.GetSigGenData())
+{}
+
+void SignalGenerator::Register(ObserverInterface & obs)
 {
+	m_data.RegisterObserver(obs);
+	m_stimulus.RegisterObserver(obs);
+}
+
+void SignalGenerator::Unregister(ObserverInterface & obs)
+{
+	m_data.UnregisterObserver(obs);
+	m_stimulus.UnregisterObserver(obs);
 }
 
 void SignalGenerator::SetData(SigGenData const & data) 
 { 
 	m_data = data; 
-	NotifyAll(false);
+	m_data.NotifyAll(false);
 }
 
 SigGenData SignalGenerator::GetData() const
@@ -33,37 +36,14 @@ SigGenData SignalGenerator::GetData() const
 
 void SignalGenerator::TriggerStimulus()
 {
-	m_usSinceLastStimulus = 0._MicroSecs;
-	m_bTriggerActive = true;
-	NotifyAll(false);
-}
-
-fHertz SignalGenerator::GetFrequency(fMicroSecs const uSecs) const
-{
-	return getActValue<fHertz>(uSecs, m_data.freq);
-}
-
-fHertz SignalGenerator::GetActFrequency() const 
-{ 
-	return GetFrequency(m_usSinceLastStimulus);
-}
-
-mV SignalGenerator::GetAmplitude(fMicroSecs const uSecs) const
-{
-	return getActValue<mV>(uSecs, m_data.amplit);
-}
-
-mV SignalGenerator::GetActVoltage() const
-{
-	return GetAmplitude(m_usSinceLastStimulus);
+	m_stimulus.TriggerStimulus();
 }
 
 void SignalGenerator::Tick()
 {
-	m_usSinceLastStimulus += m_pParameters->TimeResolution();
-	if (m_bTriggerActive && ! InStimulusRange(m_usSinceLastStimulus))
+	m_stimulus.Tick(m_pParameters->TimeResolution());
+	if (m_stimulus.IsTriggerActive() && ! m_data.InStimulusRange(m_stimulus.TimeTilTrigger()))
 		StopTrigger();
-	NotifyAll(false);
 }
 
 void SignalGenerator::SetParam(ParamType::Value const par, float const f)
@@ -71,55 +51,36 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	switch (par)
 	{
 		using enum ParamType::Value;
-		case baseFrequency: m_data.freq.SetBase(fHertz(f)); break;
-		case inputPeakFreq: m_data.freq.SetPeak(fHertz(f)); break;
-		case inputBaseVolt: m_data.amplit.SetBase(mV(f));     break;
-		case inputPeakVolt: m_data.amplit.SetPeak(mV(f));     break;
-		case inputPeakTime: m_data.usPeak = f;              break;
+		case baseFrequency: m_data.SetFreqBase(fHertz(f));     break;
+		case inputPeakFreq: m_data.SetFreqPeak(fHertz(f));     break;
+		case inputBaseVolt: m_data.SetAmplBase(mV(f));         break;
+		case inputPeakVolt: m_data.SetAmplPeak(mV(f));         break;
+		case inputPeakTime: m_data.SetPeakTime(fMicroSecs(f)); break;
 		default: assert(false);
 	}
-	NotifyAll(false);
 }
 
-void SignalGenerator::SetParams
-(
-	BASE_PEAK<fHertz> freq,
-	BASE_PEAK<mV>     amplit,
-	fMicroSecs        usPeak
-)
-{
-	m_data.freq   = freq;
-	m_data.usPeak = usPeak;
-	m_data.amplit   = amplit;
-	NotifyAll(false);
-}
-
-void SignalGenerator::SetBaseFreq(fHertz const f) 
+void SignalGenerator::SetFreqBase(fHertz const f) 
 { 
-	m_data.freq.SetBase(max(0._fHertz, f));
-	NotifyAll(false);
+	m_data.SetFreqBase(max(0._fHertz, f));
 }
 
-void SignalGenerator::SetPeakFreq(fHertz const f)
+void SignalGenerator::SetFreqPeak(fHertz const f)
 {
-	m_data.freq.SetPeak(max(0._fHertz, f));
-	NotifyAll(false);
+	m_data.SetFreqPeak(max(0._fHertz, f));
 }
 
 void SignalGenerator::SetTimePeak(fMicroSecs const t)
 {
-	m_data.usPeak = max(1._MicroSecs, t);
-	NotifyAll(false);
+	m_data.SetPeakTime(max(1._MicroSecs, t));
 }
 
 void SignalGenerator::SetBaseVolt(mV const v)
 {
-	m_data.amplit.SetBase(max(0._mV, v));
-	NotifyAll(false);
+	m_data.SetAmplBase(max(0._mV, v));
 }
 
 void SignalGenerator::SetPeakVolt(mV const v)
 {
-	m_data.amplit.SetPeak(max(0._mV, v));
-	NotifyAll(false);
+	m_data.SetAmplPeak(max(0._mV, v));
 }

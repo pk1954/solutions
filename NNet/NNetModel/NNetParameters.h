@@ -7,6 +7,7 @@
 #include <chrono>
 #include "observable.h"
 #include "MoreTypes.h"
+#include "SigGenData.h"
 #include "ParameterType.h"
 
 class Param : public Observable
@@ -18,10 +19,10 @@ public:
 	float GetParameterValue(ParamType::Value const) const;
 	void  SetParameterValue(ParamType::Value const, float const);
 
-	BASE_PEAK<fHertz> const & InputFreq() const { return m_inputFreq; }
-	BASE_PEAK<mV>     const & InputVolt() const { return m_inputVolt; }
+	SigGenData const & GetSigGenData() const { return m_sigGenData; }
 
-	fMicroSecs  InputPeakTime () const { return m_inputPeakTime;  }
+	void SetSigGenData(SigGenData const&);
+
 	mV          NeuronPeakVolt() const { return m_neuronPeakVolt; }
 	mV          Threshold     () const { return m_threshold; 	  }
 	fMicroSecs  SpikeWidth    () const { return m_spikeWidth;     }
@@ -31,10 +32,7 @@ public:
 	fMicroSecs  FilterSize    () const { return m_usFilterSize;   }
 
 private:
-	BASE_PEAK<fHertz> m_inputFreq     { 10.0_fHertz, 50.0_fHertz };
-	BASE_PEAK<mV>     m_inputVolt     { 10._mV, 20._mV };   
-	fMicroSecs        m_inputPeakTime { 500000._MicroSecs };  // 1/2 sec
-
+	SigGenData  m_sigGenData     { };
 	mV          m_neuronPeakVolt { 20._mV            };
 	mV          m_threshold      { 20._mV            };
 	meterPerSec m_pulseSpeed     { 120.0_meterPerSec };

@@ -17,7 +17,7 @@ public:
 	TimeGraph
 	(
 		HWND                   const hwndParent,
-		SignalGenerator      * const pSigGen,
+		SignalGenerator            & sigGen,
 		PixFpDimension<fMicroSecs> * pHorzCoord
 	);
 
@@ -32,21 +32,19 @@ protected:
 	fPixel m_fPixLeft   { 0.0_fPixel };
 
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
-	SignalGenerator            * m_pSigGen;
+	SignalGenerator            & m_sigGen;
 
 	void PaintCurve
 	(
 		auto               getPoint,
+		fMicroSecs   const usIncrement,
 		D2D1::ColorF const col          
 	) const
 	{
-		fMicroSecs const usResolution { m_pSigGen->GetParams().GetParameterValue(ParamType::Value::timeResolution) };
-		fMicroSecs const usPixelSize  { m_pHorzCoord->GetPixelSize() };
-		fMicroSecs const usIncrement  { usResolution }; //max(usPixelSize, usResolution) };
-		fMicroSecs const timeStart    { 0.0_MicroSecs };
-		fMicroSecs const usMax        { getTime(m_fPixRight) };
-		fMicroSecs const timeEnd      { usMax }; //min(usMax, m_pSigGen->CutoffTime()) };
-		fPixelPoint      prevPoint    { getPoint(timeStart) };
+		fMicroSecs const timeStart { 0.0_MicroSecs };
+		fMicroSecs const usMax     { getTime(m_fPixRight) };
+		fMicroSecs const timeEnd   { usMax };
+		fPixelPoint      prevPoint { getPoint(timeStart) };
 
 		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 		{

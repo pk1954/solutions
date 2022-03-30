@@ -6,78 +6,79 @@
 
 #include "MoreTypes.h"
 #include "observable.h"
+#include "observerInterface.h"
 #include "ParameterType.h"
+#include "SigGenData.h"
 
 class Param;
 
-struct SigGenData
+class Stimulus : public Observable
 {
-	BASE_PEAK<fHertz> freq;
-	BASE_PEAK<mV>     amplit;
-	fMicroSecs        usPeak;
+public:
+
+	void TriggerStimulus()
+	{
+		m_usSinceLastStimulus = 0._MicroSecs;
+		m_bTriggerActive = true;
+		NotifyAll(false);
+	}
+
+	void Tick(fMicroSecs const tIncr)
+	{
+		m_usSinceLastStimulus += tIncr;
+		NotifyAll(false);
+	}
+	void StopTrigger() { m_bTriggerActive = false; }
+
+	bool       IsTriggerActive() const { return m_bTriggerActive; }
+	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
+
+private:
+	bool       m_bTriggerActive      { false };
+	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
 };
 
-class SignalGenerator : public Observable
+class SignalGenerator
 {
 public:
 
 	explicit SignalGenerator(Param &);
-	~SignalGenerator() final = default;
 
 	void Tick();
 	void TriggerStimulus();
-	void StopTrigger() { m_bTriggerActive = false; }
+	void StopTrigger() { m_stimulus.StopTrigger(); }
 
-	fHertz GetActFrequency()                 const;
-	fHertz GetFrequency   (fMicroSecs const) const;
-	mV     GetActVoltage  ()                 const;
-	mV     GetAmplitude   (fMicroSecs const) const;
+	fHertz GetFrequency(fMicroSecs const uSecs) const { return m_data.GetFrequency(uSecs); }
+	mV     GetAmplitude(fMicroSecs const uSecs) const {	return m_data.GetAmplitude(uSecs); }
+	fHertz GetActFrequency()                    const { return GetFrequency(TimeTilTrigger()); }
+	mV     GetAmplitude   ()                    const {	return GetAmplitude(TimeTilTrigger());}
 
-	fMicroSecs        const & TimePeak () const { return m_data.usPeak; }
-	BASE_PEAK<fHertz> const & Frequency() const { return m_data.freq;   }
-	BASE_PEAK<mV>     const & Amplitude() const { return m_data.amplit; }
+	fMicroSecs        const & TimePeak () const { return m_data.GetPeakTime(); }
+	BASE_PEAK<fHertz> const & Frequency() const { return m_data.GetFreq();     }
+	BASE_PEAK<mV>     const & Amplitude() const { return m_data.GetAmplit();   }
 
 	void SetParam(ParamType::Value const, float const);
-	void SetParams(BASE_PEAK<fHertz>, BASE_PEAK<mV>, fMicroSecs);
 
 	void SetData(SigGenData const &);
 	SigGenData GetData() const;
 
-	void SetBaseFreq(fHertz const);
-	void SetPeakFreq(fHertz const);
+	void SetFreqBase(fHertz const);
+	void SetFreqPeak(fHertz const);
 	void SetBaseVolt(mV const);
 	void SetPeakVolt(mV const);
-	void SetTimePeak(fMicroSecs const); 
+	void SetTimePeak(fMicroSecs const);
+	void Register  (ObserverInterface &);
+	void Unregister(ObserverInterface &);
 
-	bool       IsTriggerActive() const { return m_bTriggerActive; }
-	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
-	fMicroSecs CutoffTime     () const { return m_data.usPeak * CUT_OFF_FACTOR; }
-	bool       InStimulusRange(fMicroSecs const t) const { return t < CutoffTime(); }
+	bool       IsTriggerActive() const { return m_stimulus.IsTriggerActive(); }
+	fMicroSecs TimeTilTrigger () const { return m_stimulus.TimeTilTrigger(); }
 
-	Param const & GetParams() const { return * m_pParameters; }
+	Param       & GetParams ()       { return * m_pParameters; }
+	Param const & GetParamsC() const { return * m_pParameters; }
 
-	float stimulusFunc(float fParam) const { return exp(1.f - fParam) * fParam;	}
 private:
 
-	template <typename T>
-	T getActValue(fMicroSecs const t, BASE_PEAK<T> const & par) const
-	{
-		T result { par.Base() };
-		if (InStimulusRange(t))
-		{
-			float const fFactor   { t / m_data.usPeak };
-			float const fStimulus { stimulusFunc(fFactor) };
-			T     const boost     { par.Boost() };
-			T     const stimulus  { boost * fStimulus };
-			result += stimulus;
-		}
-		return result;
-	}
-
-	inline static float const CUT_OFF_FACTOR { 10.0f };
-
-	Param    * m_pParameters         { nullptr };
-	bool       m_bTriggerActive      { false };
-	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
+	Param    * m_pParameters { nullptr };
+	Stimulus   m_stimulus;
 	SigGenData m_data;
 };

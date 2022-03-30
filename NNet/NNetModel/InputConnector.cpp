@@ -75,8 +75,8 @@ void InputConnector::Prepare()
     m_signalGenerator.Tick();
     fHertz     const freq            { m_signalGenerator.GetActFrequency() };
     fMicroSecs const time2Trigger    { PulseDuration(freq) };
-    float      const ticks2Trigger   { time2Trigger / m_signalGenerator.GetParams().TimeResolution() };
-    mV         const increasePerTick { m_signalGenerator.GetParams().Threshold() / ticks2Trigger };
+    float      const ticks2Trigger   { time2Trigger / m_signalGenerator.GetParamsC().TimeResolution() };
+    mV         const increasePerTick { m_signalGenerator.GetParamsC().Threshold() / ticks2Trigger };
     m_mVinputBuffer += increasePerTick;
     Apply2All([this](IoNeuron & n){ n.SetVoltage(m_mVinputBuffer); });
 }
@@ -84,7 +84,7 @@ void InputConnector::Prepare()
 mV InputConnector::WaveFunction(fMicroSecs const time) const
 {
     mV const amplitude { m_signalGenerator.GetAmplitude(time) };
-    float m_factorW = 1.0f / m_signalGenerator.GetParams().SpikeWidth().GetValue();
+    float m_factorW = 1.0f / m_signalGenerator.GetParamsC().SpikeWidth().GetValue();
     float m_factorU = 4.0f * m_factorW * amplitude.GetValue();
     return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }

@@ -88,9 +88,9 @@ SignalDesigner::SignalDesigner
 	m_upPreviewControl = make_unique<PreviewControl>
 	(
 		GetWindowHandle(),
-		&m_sigGen,
-		&m_horzCoord,
-		&m_vertCoordVolt2 
+		m_sigGen,
+		m_horzCoord,
+		m_vertCoordVolt2 
 	);
 
 	CenterIn(hwndParent, 500_PIXEL, STD_WINDOW_HEIGHT);
@@ -107,10 +107,11 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 		GetWindowHandle(),
 		computeThread,
 		m_commands,
-		&m_sigGen,
+		runObservable,
+		m_sigGen,
 		&m_horzCoord 
 	);
-	runObservable.RegisterObserver(*upSignalControl.get());
+	m_sigGen.GetParams().RegisterObserver(*this);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
 	upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT);
 	return move(upSignalControl);

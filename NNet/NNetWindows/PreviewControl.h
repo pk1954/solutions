@@ -13,16 +13,16 @@ class PreviewControl : public TimeGraph
 public:
 	PreviewControl
 	(
-		HWND                   const,
-		SignalGenerator      * const,
-		PixFpDimension<fMicroSecs> *,
-		PixFpDimension<mV>         *
+		HWND const,
+		SignalGenerator            &,
+		PixFpDimension<fMicroSecs> &,
+		PixFpDimension<mV>         &
 	);
 	~PreviewControl() final;
 
 private:
 
-	PixFpDimension<mV> * m_pVertCoord { nullptr };
+	PixFpDimension<mV> & m_vertCoord;
 
 	void DoPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;

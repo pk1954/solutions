@@ -12,6 +12,7 @@
 #include "CircleType.h"
 #include "EllipseType.h"
 
+using std::min;
 using MicroMeterPnt = PosType<MicroMeter>;
 
 inline static const MicroMeterPnt NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!

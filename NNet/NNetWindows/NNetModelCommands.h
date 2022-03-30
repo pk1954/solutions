@@ -18,7 +18,7 @@ class Param;
 class NNetCommand;
 class Observable;
 class NobIdList;
-struct SigGenData;
+class SigGenData;
 class CommandStack;
 class AlignAnimation;
 class NNetModelImporter;
