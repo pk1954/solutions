@@ -8,12 +8,14 @@
 #include "PixFpDimension.h"
 #include "TimeGraph.h"
 
+class BaseWindow;
+
 class PreviewControl : public TimeGraph
 {
 public:
 	PreviewControl
 	(
-		HWND const,
+		BaseWindow           const &,
 		SignalGenerator            &,
 		PixFpDimension<fMicroSecs> &,
 		PixFpDimension<mV>         &

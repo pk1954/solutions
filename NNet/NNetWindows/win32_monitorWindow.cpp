@@ -54,22 +54,13 @@ void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
-void MonitorWindow::SetCaption() const
-{
-	if (BaseWindow::PerfMonMode())
-	{
-		wostringstream buffer;
-		buffer << L"Signals: " << m_upMonitorControl->GetPaintTimeString();
-		buffer << L"  Scale: " << m_upHorzScale     ->GetPaintTimeString();
-		SetWindowText(buffer);
-	}
-	else
-	{
-		if (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
-			SetWindowText(L"Signal too high. Use auto scale.");
-		else
-			SetWindowText(L"Monitor");
-	}
+wstring const & MonitorWindow::GetTitle() const 
+{ 
+	static wstring const CAPTION { L"Monitor" };
+	static wstring const WARNING { L"Signal too high. Use auto scale." };
+	return (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
+           ? WARNING
+		   : CAPTION;
 }
 
 void MonitorWindow::OnPaint()

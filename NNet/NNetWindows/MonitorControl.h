@@ -34,7 +34,7 @@ public:
 	~MonitorControl() final = default;
 
 	void Stop () final;
-	void Reset() final;
+	void Reset();
 	void SetModelInterface(NNetModelWriterInterface * const);
 	bool SignalTooHigh() const;
 	void ScaleSignals();
@@ -49,10 +49,10 @@ public:
 private:
 
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
-	bool OnMouseLeave     (WPARAM const, LPARAM const) final;
+	void OnMouseLeave     () final;
 	bool OnShow           (WPARAM const, LPARAM const) final;
 	void OnMouseMove      (WPARAM const, LPARAM const) final;
-	void OnLButtonUp      (WPARAM const, LPARAM const) final;
+	bool OnLButtonUp      (WPARAM const, LPARAM const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	void OnChar           (WPARAM const, LPARAM const) final { /* */ };
 	void OnMouseWheel     (WPARAM const, LPARAM const) final;

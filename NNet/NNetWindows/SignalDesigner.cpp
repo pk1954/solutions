@@ -87,7 +87,7 @@ SignalDesigner::SignalDesigner
 	m_upSignalControl2 = makeSignalControl(computeThread, runObservable);
 	m_upPreviewControl = make_unique<PreviewControl>
 	(
-		GetWindowHandle(),
+		*this,
 		m_sigGen,
 		m_horzCoord,
 		m_vertCoordVolt2 

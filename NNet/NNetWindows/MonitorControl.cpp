@@ -50,7 +50,6 @@ void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 void MonitorControl::Reset()
 {
 	m_sound.Play(TEXT("DISAPPEAR_SOUND"));
-	GraphicsWindow::Reset();
 }
 
 void MonitorControl::Stop()
@@ -215,10 +214,12 @@ fPixel MonitorControl::getSignalValue
 fPixel MonitorControl::calcTrackHeight() const
 {
 	fPixel const fPixRectHeight  { Convert2fPixel(GetClientWindowHeight()) };
-	fPixel const fPixTrackHeight { 
-		m_pMonitorData->NoTracks() 
-		? fPixRectHeight 
-		: fPixRectHeight / Cast2Float(m_pMonitorData->GetNrOfTracks())
+	fPixel       fPixTrackHeight { fPixRectHeight };
+	if (m_pMonitorData)
+	{ 
+		int const iNrOfTracks { m_pMonitorData->GetNrOfTracks() };
+		if (iNrOfTracks > 0)
+			fPixTrackHeight /= Cast2Float(iNrOfTracks);
 	}; 
 	return fPixTrackHeight;
 }
@@ -423,11 +424,11 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 	return bRes; 
 }
 
-bool MonitorControl::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
+void MonitorControl::OnMouseLeave()
 {
 	if (! CrsrInClientRect())
 		m_trackNrHighlighted.Set2Null();
-	return false;
+	GraphicsWindow::OnMouseLeave();
 }
 
 bool MonitorControl::OnShow(WPARAM const wParam, LPARAM const lParam)
@@ -474,7 +475,8 @@ void MonitorControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		selectSignal(pixCrsrPos);
 
 	Trigger();   // cause repaint
-	TrackMouse();
+
+	GraphicsWindow::OnMouseMove(wParam, lParam);
 }
 
 void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam) 
@@ -502,7 +504,7 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	}
 };
 
-void MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam) 
+bool MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam) 
 {
 	if (
 		  (m_pMonitorData->GetSelectedTrackNr() != m_trackNrHighlighted) && 
@@ -515,6 +517,7 @@ void MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLast.Set2Null();
 	Trigger();  // cause repaint
+	return GraphicsWindow::OnLButtonUp(wParam, lParam);
 };
 
 void MonitorControl::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
@@ -540,6 +543,5 @@ bool MonitorControl::OnSize(PIXEL const width, PIXEL const height)
 	m_fPixWinWidth = Convert2fPixel(width);
 	m_fPixZeroX    = Convert2fPixel(width) - m_fPixRightBorder;
 	m_measurement.SetClientRectSize(width, height);
-
 	return true;
 }

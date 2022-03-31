@@ -35,7 +35,7 @@ public:
 	);
 
 	void Stop () final;
-	void Reset() final;
+	void Reset();
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
@@ -67,7 +67,7 @@ public:
 	void OnMouseWheel     (WPARAM const, LPARAM const) final;
 	void OnMouseMove      (WPARAM const, LPARAM const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
-	void OnLButtonUp      (WPARAM const, LPARAM const) final;
+	bool OnLButtonUp      (WPARAM const, LPARAM const) final;
 	bool OnRButtonUp      (WPARAM const, LPARAM const) final;
 	bool OnSize           (PIXEL  const, PIXEL  const) final;
 

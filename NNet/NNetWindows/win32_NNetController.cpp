@@ -183,12 +183,10 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 
     case IDD_PERF_MON_MODE_ON:
         BaseWindow::SetPerfMonMode(true);
-        m_pWinManager->Apply2All([](BaseWindow const & w){ w.SetCaption(); });
         break;
 
     case IDD_PERF_MON_MODE_OFF:
         BaseWindow::SetPerfMonMode(false);
-        m_pWinManager->Apply2All([](BaseWindow const & w){ w.SetCaption(); });
         break;
 
     case IDM_REFRESH:

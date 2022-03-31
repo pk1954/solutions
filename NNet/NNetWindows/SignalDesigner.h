@@ -33,6 +33,12 @@ public:
 
 	void Stop() final;
 
+	wstring const & GetTitle() const final
+	{
+		static wstring const CAPTION { L"Signal designer" };
+		return CAPTION;
+	}
+
 	enum class DESIGN { INTEGRATED, STACKED };
 
 	static DESIGN GetDesign() 

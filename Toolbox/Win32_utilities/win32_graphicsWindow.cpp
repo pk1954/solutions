@@ -26,26 +26,13 @@ HWND GraphicsWindow::Initialize
 		nullptr
 	);
 	m_upGraphics->Initialize(hwnd);
-	m_trackStruct.hwndTrack = hwnd;
 	return hwnd;
-}
-
-void GraphicsWindow::Reset()
-{
-	m_trackStruct.hwndTrack = HWND(0);
-	(void)TrackMouseEvent(& m_trackStruct);
 }
 
 void GraphicsWindow::Stop()
 {
-	Reset();
 	m_upGraphics->ShutDown();
 	DestroyWindow();
-}
-
-void GraphicsWindow::TrackMouse()
-{
-	(void)TrackMouseEvent(& m_trackStruct);
 }
 
 void GraphicsWindow::OnPaint()

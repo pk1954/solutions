@@ -66,7 +66,7 @@ HWND BaseWindow::StartBaseWindow
 
     SetWindowHandle(hwnd);
 	StartRootWindow(visibilityCriterion);
-    SetCaption();
+    SetWindowText(GetTitle());
 
 	return hwnd;
 }
@@ -77,16 +77,56 @@ wstring const & BaseWindow::GetTitle() const
     return CAPTION;
 }
 
+BaseWindow const * BaseWindow::GetParentBaseWin() const
+{
+    if (HWND hwndParent { GetParent(GetWindowHandle()) })
+    {
+        return static_cast<BaseWindow *>(GetRootWindow(hwndParent));
+    }
+    return nullptr;
+}
+
+void BaseWindow::trackMouse(bool const bOn)
+{
+    TRACKMOUSEEVENT tme;
+    tme.cbSize      = sizeof(TRACKMOUSEEVENT);
+    tme.dwFlags     = TME_HOVER | TME_LEAVE;
+    tme.hwndTrack   = bOn ? GetWindowHandle() : HWND(0);
+    tme.dwHoverTime = HOVER_DEFAULT;
+    TrackMouseEvent(&tme);
+};
+
+void BaseWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
+{
+    trackMouse(true);
+};
+
+void BaseWindow::OnMouseLeave()
+{
+    trackMouse(false);
+};
+
 void BaseWindow::SetCaption() const
+{
+    SetCaption(Format2wstring(m_usPaintTime, 1));
+}
+
+void BaseWindow::SetCaption(wstring const & text) const
 {
     if (WindowHasCaption())
     {
-        if (m_bPerfMonMode)
-            SetWindowText(GetPaintTimeString());
-        else
-            SetWindowText(GetTitle());
+        SetWindowText(m_bPerfMonMode ? text : GetTitle());
+    }
+    else if (BaseWindow const * pBaseWinParent{ GetParentBaseWin() } )
+    {
+        pBaseWinParent->SetCaption(text);
     }
 }
+
+void BaseWindow::OnMouseHover(WPARAM const wParam, LPARAM const lParam)
+{
+    SetCaption();
+};
 
 bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
@@ -100,6 +140,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         OnTimer(wParam, lParam);
         return false;
 
+    case WM_MOUSEHOVER:
+        OnMouseHover(wParam, lParam);
+        return false;
+
     case WM_PAINT:
         if (m_bPerfMonMode)
         {
@@ -107,7 +151,6 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
             OnPaint();
             m_paintTimer.Stop();
             m_usPaintTime = m_paintTimer.GetMicroSecsTilStart();
-            SetCaption();
         }
         else
             OnPaint();
@@ -130,9 +173,8 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         return true;
 
     case WM_MOUSELEAVE:
-        if (OnMouseLeave(wParam, lParam))
-            return true;
-        break;
+        OnMouseLeave();
+        return false;
 
     case WM_LBUTTONDOWN:
         OnLButtonDown(wParam, lParam);

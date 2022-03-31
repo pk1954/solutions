@@ -302,6 +302,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
 		}
 	}
+	NNetWindow::OnMouseMove(wParam, lParam);
 }
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
@@ -312,11 +313,12 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
-void MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
 	if (m_bTargetFits)
 		SendCommand2Application(IDD_CONNECT, 0	);
 	setNoTarget();
+	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
 
 bool MainWindow::OnRButtonUp(WPARAM const wParam, LPARAM const lParam)

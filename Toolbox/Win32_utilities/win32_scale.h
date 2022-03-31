@@ -169,13 +169,13 @@ private:
 	void OnMouseMove(WPARAM const wParam, LPARAM const lParam) final
 	{
 		Trigger();   // cause repaint
-		TrackMouse();
+		GraphicsWindow::OnMouseMove(wParam, lParam);
 	}
 
-	bool OnMouseLeave(WPARAM const wParam, LPARAM const lParam) final
+	void OnMouseLeave() final
 	{
 		Trigger();   // cause repaint
-		return false;
+		GraphicsWindow::OnMouseLeave();
 	}
 
 	bool OnSize(PIXEL const width, PIXEL const height) final

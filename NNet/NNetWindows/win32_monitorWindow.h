@@ -30,12 +30,10 @@ private:
 	inline static PIXEL const RIGHT_BORDER { 25_PIXEL };
 	inline static PIXEL const SCALE_HEIGHT { 30_PIXEL };
 
-	void SetCaption() const final;
 	void OnPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 
-	wstring const CAPTION { L"Monitor" };
-	wstring const & GetTitle() const final { return CAPTION; }
+	wstring const & GetTitle() const final;
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;

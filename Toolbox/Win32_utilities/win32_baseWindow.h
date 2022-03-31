@@ -25,11 +25,12 @@ public:
 		VisCrit   const &
 	);
 
-	virtual void SetCaption() const;
-	virtual wstring const & GetTitle() const;
+	void SetCaption() const;
+	
+	virtual void            SetCaption(wstring const &) const;
+	virtual wstring const & GetTitle  () const;
 
-	fMicroSecs GetPaintTime      () const { return m_usPaintTime; }
-	wstring    GetPaintTimeString() const { return Format2wstring(m_usPaintTime, 1); }
+	BaseWindow const * GetParentBaseWin() const;
 
 	static void SetPerfMonMode(bool const b) { m_bPerfMonMode = b; }
 	static bool PerfMonMode() { return m_bPerfMonMode; }
@@ -41,20 +42,23 @@ protected:
 	virtual void OnPaint          ()                           { /* empty */ };
 	virtual void OnLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnMouseWheel     (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnMouseMove      (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnChar           (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnLButtonDown    (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnLButtonUp      (WPARAM const, LPARAM const) { /* empty */ };
 	virtual bool OnRButtonDown    (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnRButtonUp      (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnLButtonUp      (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnShow           (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnMouseLeave     (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnSetCursor      (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnTimer          (WPARAM const, LPARAM const) { return false; };
+	virtual void OnMouseHover     (WPARAM const, LPARAM const);
+	virtual void OnMouseMove      (WPARAM const, LPARAM const);
+	virtual void OnMouseLeave     ();
 
 	bool OnSize(PIXEL const, PIXEL const) override { return false; };
 
 private:
+
+	void trackMouse(bool const);
 
 	inline static bool m_bPerfMonMode { false };
 

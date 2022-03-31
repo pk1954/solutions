@@ -262,8 +262,8 @@ void SignalControl::ScaleVoltCoord()
 bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 {
 	TimeGraph::OnSize(width, height);
-	if (m_fPixRight > 0.0_fPixel)
-		ScaleTimeCoord();
+	//if (m_fPixRight > 0.0_fPixel)
+	//	ScaleTimeCoord();
 	if (m_pVertCoordFreq)
 		ScaleFreqCoord();
 	if (m_pVertCoordVolt)
@@ -356,12 +356,12 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		setPos(fPixCrsrPos);
 		Trigger();   // cause repaint
 	}
-	TrackMouse();
+	TimeGraph::OnMouseMove(wParam, lParam);
 }
 
-bool SignalControl::OnMouseLeave(WPARAM const wParam, LPARAM const lParam)
+void SignalControl::OnMouseLeave()
 {
 	m_moveMode = tPos::NONE;
 	Trigger();   // cause repaint
-	return false;
+	GraphicsWindow::OnMouseLeave();
 }
