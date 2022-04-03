@@ -32,6 +32,7 @@
 #include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NewIoNeuronPairCmd.h"
+#include "NewSigGenCmd.h"
 #include "NNetModelImporter.h"
 #include "Uniform2D.h"
 #include "PlugIoConnectorAnimation.h"
@@ -407,6 +408,13 @@ void NNetModelCommands::MoveSignal(SignalId const & id, TrackNr const trackNr)
 	m_pCmdStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
 }
 
+void NNetModelCommands::NewSignalGenerator()
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<NewSigGenCmd>());
+}
+
 void NNetModelCommands::SizeSelection(float const fFactor)
 {
 	if (IsTraceOn())
@@ -532,9 +540,9 @@ void NNetModelCommands::ToggleEmphMode(NobId const id)
 	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 
-void NNetModelCommands::TriggerStimulus(NobId const id)
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
+void NNetModelCommands::TriggerStimulus(NobId const id)  //TODO
+{  
+	//if (IsTraceOn())
+	//	TraceStream() << source_location::current().function_name() << endl;
+	//m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
 }

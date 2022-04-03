@@ -7,7 +7,7 @@
 #include "NobType.h"
 #include "Nob.h"
 #include "tHighlightType.h"
-#include "SignalGenerator.h"
+//#include "SignalGenerator.h"
 #include "IoConnector.h"
 
 class Param;
@@ -26,23 +26,23 @@ public:
 
 	~InputConnector() final = default;
 
-	void Prepare() final;
+	void Prepare() final { /* */ };
 	void AppendMenuItems(AddMenuFunc const &) const final;
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
 	void DrawExterior(DrawContext const &, tHighlight const) const final;
 
-	void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
+	//void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
 
-	SignalGenerator       & GetSignalGenerator ()       { return m_signalGenerator; }
-	SignalGenerator const & GetSignalGeneratorC() const { return m_signalGenerator; }
+	//SignalGenerator       & GetSignalGenerator ()       { return m_signalGenerator; }
+	//SignalGenerator const & GetSignalGeneratorC() const { return m_signalGenerator; }
 
-	fHertz GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
+	//fHertz GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
 
-	mV WaveFunction(fMicroSecs const) const;
+	//mV WaveFunction(fMicroSecs const) const;
 
-private:
-
-	SignalGenerator m_signalGenerator;
+//private:
+//
+//	SignalGenerator m_signalGenerator;
 };

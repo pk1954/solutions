@@ -10,6 +10,8 @@
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
+#include "SignalGenerator.h"
+#include "UPSigGenList.h"
 #include "MonitorData.h"
 #include "UPNobList.h"
 #include "Pipe.h"
@@ -91,16 +93,21 @@ public:
 
 	Nob * GetNob (NobId const);
 
-	bool Compute();
+	bool     Compute();
+	void     ResetModel();
+	float    SetParam(ParamType::Value const, float const);
+	void     SelectSubtree(BaseKnot &, bool const);
+	void     Reconnect(NobId const);
 
-	void  ResetModel();
-	float SetParam(ParamType::Value const, float const);
-	void  SelectSubtree(BaseKnot &, bool const);
-	void  Reconnect(NobId const);
+	UPSigGen NewSigGen()                        { return      m_sigGenerators.NewSigGen(); }
+	UPSigGen RemoveSigGen(wstring const & name) { return move(m_sigGenerators.RemoveSigGen(name)); }
+	SigGenId PushSigGen(UPSigGen upSigGen)      { return      m_sigGenerators.PushSigGen(move(upSigGen)); }
+	UPSigGen PopSigGen()                        { return move(m_sigGenerators.PopSigGen()); }
 
-	UPNobList   & GetUPNobs()      { return m_Nobs; }
-	MonitorData & GetMonitorData() { return m_monitorData; }
-	Param       & GetParams()      { return m_param; }
+	UPNobList          & GetUPNobs()       { return m_Nobs; }
+	MonitorData        & GetMonitorData()  { return m_monitorData; }
+	Param              & GetParams()       { return m_param; }
+	UPSigGenList const & GetUPSigGenList() { return m_sigGenerators; }
 
 	void DeselectAllNobs     () const               { m_Nobs.SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }
@@ -113,6 +120,7 @@ public:
 private:
 
 	UPNobList        m_Nobs;
+	UPSigGenList     m_sigGenerators;
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;

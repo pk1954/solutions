@@ -9,6 +9,7 @@
 #include "ComputeThread.h"
 #include "AutoOpen.h"
 #include "SignalDesigner.h"
+#include "SignalGenerator.h"
 #include "SoundInterface.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
@@ -133,6 +134,7 @@ void NNetAppMenu::Start
         {
             AppendMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
             AppendMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
+            AppendMenu(hMenuWindows, MF_STRING, IDM_SIG_DESIGNER,   L"Show &signal designer window");
             AppendMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
             AppendMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
             AppendMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
@@ -143,7 +145,7 @@ void NNetAppMenu::Start
         HMENU hMenuSignalDesigner = Util::PopupMenu(hMenuView, L"Signal&Designer");
         {
             AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_INTEGRATED, L"&Integrated");
-            AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_STACKED,    L"&STacked");
+            AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_STACKED,    L"&Stacked");
         }
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");

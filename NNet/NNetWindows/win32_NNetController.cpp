@@ -214,6 +214,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 {
     switch (wmId)
     {
+    case IDD_NEW_SIGNAL_GENERATOR:
+        m_pModelCommands->NewSignalGenerator();
+        break;
+
     case IDM_UNDO:
         m_pModelCommands->UndoCommand();
         break;
@@ -248,10 +252,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_EMPHASIZE:
         m_pModelCommands->ToggleEmphMode(m_pMainWindow->GetHighlightedNobId());
-        break;
-
-    case IDM_SIGNAL_DESIGNER:
-        m_pMainWindow->PostCommand2Application(IDM_SIGNAL_DESIGNER, 0);
         break;
 
     case IDM_NNET_REFRESH_RATE:

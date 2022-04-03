@@ -8,11 +8,9 @@
 TimeGraph::TimeGraph
 (
 	HWND                   const hwndParent,
-	SignalGenerator            & sigGen,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
-  : m_pHorzCoord(pHorzCoord),
-	m_sigGen(sigGen)
+  : m_pHorzCoord(pHorzCoord)
 {
 	GraphicsWindow::Initialize
 	(
@@ -21,14 +19,20 @@ TimeGraph::TimeGraph
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	assert(m_pHorzCoord);
-	m_sigGen.Register(*this); // signal generator data can be changed from outside
 	m_pHorzCoord->RegisterObserver(*this); 
 };
 
 TimeGraph::~TimeGraph()
 {
 	m_pHorzCoord->UnregisterObserver(*this); 
-	m_sigGen.Unregister(*this);
+}
+
+void TimeGraph::SetSignalGenerator(SignalGenerator * const pSigGen)
+{
+	if (m_pSigGen)
+		m_pSigGen->Unregister(*this);
+	m_pSigGen = pSigGen;
+	m_pSigGen->Register(*this); // signal generator data can be changed from outside
 }
 
 fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 

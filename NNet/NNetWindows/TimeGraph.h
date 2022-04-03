@@ -17,11 +17,12 @@ public:
 	TimeGraph
 	(
 		HWND                   const hwndParent,
-		SignalGenerator            & sigGen,
 		PixFpDimension<fMicroSecs> * pHorzCoord
 	);
 
 	~TimeGraph();
+
+	void SetSignalGenerator(SignalGenerator * const);
 
 protected:
 	fPixel const STD_WIDTH  { 1.0_fPixel };
@@ -32,7 +33,7 @@ protected:
 	fPixel m_fPixLeft   { 0.0_fPixel };
 
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
-	SignalGenerator            & m_sigGen;
+	SignalGenerator            * m_pSigGen    { nullptr };
 
 	void PaintCurve
 	(

@@ -15,8 +15,8 @@ InputConnector::InputConnector
     Param & param,
     vector<IoNeuron *> && src
 )
-  : IoConnector(NobType::Value::inputConnector),
-    m_signalGenerator(SignalGenerator(param))
+  : IoConnector(NobType::Value::inputConnector) //,
+//    m_signalGenerator(SignalGenerator(param))
 {
     m_list = move(src);
 }
@@ -65,26 +65,25 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
 
 void InputConnector::AppendMenuItems(AddMenuFunc const & add) const
 {
-    add(IDM_SIGNAL_DESIGNER);
     add(IDM_TRIGGER_STIMULUS);
     IoConnector::AppendMenuItems(add);
 }
 
-void InputConnector::Prepare()
-{
-    m_signalGenerator.Tick();
-    fHertz     const freq            { m_signalGenerator.GetActFrequency() };
-    fMicroSecs const time2Trigger    { PulseDuration(freq) };
-    float      const ticks2Trigger   { time2Trigger / m_signalGenerator.GetParamsC().TimeResolution() };
-    mV         const increasePerTick { m_signalGenerator.GetParamsC().Threshold() / ticks2Trigger };
-    m_mVinputBuffer += increasePerTick;
-    Apply2All([this](IoNeuron & n){ n.SetVoltage(m_mVinputBuffer); });
-}
-
-mV InputConnector::WaveFunction(fMicroSecs const time) const
-{
-    mV const amplitude { m_signalGenerator.GetAmplitude(time) };
-    float m_factorW = 1.0f / m_signalGenerator.GetParamsC().SpikeWidth().GetValue();
-    float m_factorU = 4.0f * m_factorW * amplitude.GetValue();
-    return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
-}
+//void InputConnector::Prepare()
+//{
+//    m_signalGenerator.Tick();
+//    fHertz     const freq            { m_signalGenerator.GetActFrequency() };
+//    fMicroSecs const time2Trigger    { PulseDuration(freq) };
+//    float      const ticks2Trigger   { time2Trigger / m_signalGenerator.GetParamsC().TimeResolution() };
+//    mV         const increasePerTick { m_signalGenerator.GetParamsC().Threshold() / ticks2Trigger };
+//    m_mVinputBuffer += increasePerTick;
+//    Apply2All([this](IoNeuron & n){ n.SetVoltage(m_mVinputBuffer); });
+//}
+//
+//mV InputConnector::WaveFunction(fMicroSecs const time) const
+//{
+//    mV const amplitude { m_signalGenerator.GetAmplitude(time) };
+//    float m_factorW = 1.0f / m_signalGenerator.GetParamsC().SpikeWidth().GetValue();
+//    float m_factorU = 4.0f * m_factorW * amplitude.GetValue();
+//    return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
+//}

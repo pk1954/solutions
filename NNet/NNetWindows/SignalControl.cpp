@@ -21,27 +21,33 @@ SignalControl::SignalControl
 	ComputeThread        const & computeThread,
 	NNetModelCommands          & commands,
 	Observable                 & runObservable,
-	SignalGenerator            & sigGen,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
-  : TimeGraph(hwndParent, sigGen, pHorzCoord),
+  : TimeGraph(hwndParent, pHorzCoord),
 	m_computeThread(computeThread),
 	m_commands(commands),
-	m_runObservable(runObservable),
-	m_sigGen(sigGen)
+	m_runObservable(runObservable)
 {
-	m_runObservable     .RegisterObserver(*this);
-	m_sigGen.GetParams().RegisterObserver(*this);
+	m_runObservable.RegisterObserver(*this);
 }
 
 SignalControl::~SignalControl()
 {
-	m_sigGen.GetParams().UnregisterObserver(*this);
-	m_runObservable     .UnregisterObserver(*this);
+	if (m_pSigGen)
+		m_pSigGen->GetParams().UnregisterObserver(*this);
+	m_runObservable.UnregisterObserver(*this);
 	if (m_pVertCoordFreq)
 		m_pVertCoordFreq->UnregisterObserver(*this);
 	if (m_pVertCoordVolt)
 		m_pVertCoordVolt->UnregisterObserver(*this);
+}
+
+void SignalControl::SetSignalGenerator(SignalGenerator * const pSigGen)
+{
+	if (m_pSigGen)
+		m_pSigGen->GetParams().UnregisterObserver(*this);
+	m_pSigGen = pSigGen;
+	m_pSigGen->GetParams().RegisterObserver(*this);
 }
 
 void SignalControl::SetVertCoordFreq(PixFpDimension<fHertz> * pCoord)
@@ -97,7 +103,7 @@ void SignalControl::drawDiam
 
 void SignalControl::paintRunControls() const
 {
-	auto time { m_sigGen.TimeTilTrigger() };
+	auto time { m_pSigGen->TimeTilTrigger() };
 
 	if (m_pVertCoordFreq)
 	{
@@ -222,12 +228,12 @@ void SignalControl::DoPaint()
 		calcHandles();
 		paintEditControls();
 	}
-	else if (m_sigGen.IsTriggerActive())
+	else if (m_pSigGen->IsTriggerActive())
 	{
 		paintRunControls();
 	}
 	fMicroSecs const usPixelSize  { m_pHorzCoord->GetPixelSize() };
-	fMicroSecs const usResolution { m_sigGen.GetParamsC().TimeResolution() };
+	fMicroSecs const usResolution { m_pSigGen->GetParamsC().TimeResolution() };
 	fMicroSecs const usIncrement  { max(usPixelSize, usResolution) };
 	if (m_pVertCoordFreq)
 		PaintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, usIncrement, getColor(tColor::FREQ));
@@ -238,7 +244,7 @@ void SignalControl::DoPaint()
 void SignalControl::ScaleTimeCoord()
 {
 	fMicroSecs const umMaxVisible { getTime(m_fPixRight) };
-	fMicroSecs const umCutoff     { m_sigGen.GetData().CutoffTime() };
+	fMicroSecs const umCutoff     { m_pSigGen->GetData().CutoffTime() };
 	float      const factor       { umCutoff / umMaxVisible };
 	*m_pHorzCoord *= factor;
 }
@@ -246,7 +252,7 @@ void SignalControl::ScaleTimeCoord()
 void SignalControl::ScaleFreqCoord()
 {
 	fHertz const fHertzMaxVisible { getFreq(0.0_fPixel) };
-	fHertz const fHertzPeak       { m_sigGen.GetData().GetFreq().Peak() };
+	fHertz const fHertzPeak       { m_pSigGen->GetData().GetFreq().Peak() };
 	float  const factor           { fHertzPeak / (fHertzMaxVisible * 0.9f) };
 	*m_pVertCoordFreq *= factor;
 }
@@ -254,7 +260,7 @@ void SignalControl::ScaleFreqCoord()
 void SignalControl::ScaleVoltCoord()
 {
 	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
-	mV    const mVpeak       { m_sigGen.GetData().GetAmplit().Peak() };
+	mV    const mVpeak       { m_pSigGen->GetData().GetAmplit().Peak() };
 	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
 	*m_pVertCoordVolt *= factor;
 }
@@ -316,7 +322,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint  const pixCrsrPos  { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint const fPixCrsrPos { Convert2fPixelPoint(pixCrsrPos) };
-	SigGenData        m_sigGenData(m_sigGen.GetData());
+	SigGenData        m_sigGenData(m_pSigGen->GetData());
 
 	if (wParam & MK_LBUTTON)
 	{
@@ -348,7 +354,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		default:
 			break;
 		}
-		m_commands.SetSigGenData(m_sigGen, m_sigGenData);
+		m_commands.SetSigGenData(*m_pSigGen, m_sigGenData);
 		Notify(true);
 	}
 	else  // left button not pressed: select

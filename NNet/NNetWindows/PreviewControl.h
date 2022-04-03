@@ -16,10 +16,10 @@ public:
 	PreviewControl
 	(
 		BaseWindow           const &,
-		SignalGenerator            &,
 		PixFpDimension<fMicroSecs> &,
 		PixFpDimension<mV>         &
 	);
+
 	~PreviewControl() final;
 
 private:

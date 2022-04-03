@@ -7,6 +7,7 @@
 #include <assert.h>
 #include "ERRHNDL.H"
 #include "SignalFactory.h"
+#include "SignalGenerator.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
@@ -159,12 +160,24 @@ public:
 
     void operator() (Script & script) const final
     {
-        NobId            const id       { ScrReadNobId(script) };
-        ParamType::Value const param    { ScrReadParamType(script) };
-        float                  fVal     { Cast2Float(script.ScrReadFloat()) };
-        InputConnector       * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) };
-        if (pInpConn)
-            pInpConn->GetSignalGenerator().SetParam(param, fVal);
+        NobId            const id    { ScrReadNobId(script) };
+        ParamType::Value const param { ScrReadParamType(script) };
+        float                  fVal  { Cast2Float(script.ScrReadFloat()) };
+        if (InputConnector * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) })   // Legacy
+        {                                                                                         // Legacy
+            pInpConn->Apply2All                                                                   // Legacy
+            (                                                                                     // Legacy
+                [param, fVal](IoNeuron & n)                                                       // Legacy
+                {                                                                                 // Legacy
+                    auto & inputNeuron { static_cast<InputNeuron &>(n) };                         // Legacy
+                    inputNeuron.GetSignalGenerator().SetParam(param, fVal);                       // Legacy
+                }                                                                                 // Legacy
+            );                                                                                    // Legacy
+        }                                                                                         // Legacy 
+        else if ( InputNeuron * pInpNeuron { GetWriterInterface().GetNobPtr<InputNeuron*>(id) } ) // Legacy
+        {
+            pInpNeuron->GetSignalGenerator().SetParam(param, fVal);
+        }
     }
 };
 

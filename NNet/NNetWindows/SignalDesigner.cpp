@@ -14,27 +14,42 @@
 #include "NNetModelWriterInterface.h"
 #include "SignalDesigner.h"
 
-SignalDesigner::SignalDesigner
-(
-	HWND               const   hwndParent,
-	ComputeThread      const & computeThread,
-	SignalGenerator          & sigGen,
-	Observable               & runObservable,
-	NNetModelCommands        & commands,
-	NNetModelWriterInterface & nmwi
-)
-  : m_sigGen(sigGen),
-	m_commands(commands),
-	m_nmwi(nmwi)
-{
-	static PIXEL STD_WINDOW_HEIGHT { 450_PIXEL };
+//void NNetAppMenu::RefreshSigGenMenu(UPSigGenList const & list)
+//{
+//    DestroyMenu(m_hMenuSigGen);
+//
+//    m_hMenuSigGen = Util::PopupMenu(m_hMenu, L"&Signal generators");
+//    {
+//        AppendMenu(m_hMenuSigGen, MF_STRING, IDD_SIGNAL_GENERATOR_BASE, L"&Base");
+//        unsigned int uiId { IDD_SIGNAL_GENERATOR_BASE };
+//        list.Apply2All
+//        (
+//            [this, &uiId](SignalGenerator const * pSigGen)
+//            {
+//                AppendMenu(m_hMenuSigGen, MF_STRING, ++uiId, pSigGen->GetName().c_str());
+//            }
+//        );
+//        AppendMenu(m_hMenuSigGen, MF_STRING, IDD_NEW_SIGNAL_GENERATOR, L"Create &new");
+//    }
+//}
 
+
+void SignalDesigner::Initialize
+(
+	HWND          const   hwndParent,
+	ComputeThread const & computeThread,
+	Observable          & runObservable,
+	NNetModelCommands   * pCommands
+)
+{
 	HWND hwnd = GraphicsWindow::Initialize
 	(
 		hwndParent, 
 		L"ClassSigDesWindow", 
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
+
+	m_pCommands = pCommands;
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 10000._MicroSecs); 
@@ -43,19 +58,6 @@ SignalDesigner::SignalDesigner
 	m_vertCoordFreq.SetPixelSize(0.25_fHertz);
 	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
-
-	mV    const mVpeakAmplitude    { m_sigGen.Amplitude().Peak() };
-	mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
-	PIXEL const pixVertScaleLen    { STD_WINDOW_HEIGHT - 0_PIXEL  - H_SCALE_HEIGHT };
-	mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
-
-	m_vertCoordVolt1.SetPixelSize(mVpixelSize);
-	m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-	m_vertCoordVolt1.SetZoomFactor(1.3f);
-
-	m_vertCoordVolt2.SetPixelSize(mVpixelSize);
-	m_vertCoordVolt2.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-	m_vertCoordVolt2.SetZoomFactor(1.3f);
 
 	m_upHorzScale1     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
 	m_upHorzScale2     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
@@ -85,15 +87,18 @@ SignalDesigner::SignalDesigner
 
 	m_upSignalControl1 = makeSignalControl(computeThread, runObservable);
 	m_upSignalControl2 = makeSignalControl(computeThread, runObservable);
-	m_upPreviewControl = make_unique<PreviewControl>
-	(
-		*this,
-		m_sigGen,
-		m_horzCoord,
-		m_vertCoordVolt2 
-	);
+	m_upPreviewControl = make_unique<PreviewControl>(*this, m_horzCoord, m_vertCoordVolt2);
+}
 
-	CenterIn(hwndParent, 500_PIXEL, STD_WINDOW_HEIGHT);
+void SignalDesigner::SetSignalGenerator(SignalGenerator * const pSigGen)
+{
+	if (m_pSigGen)
+		m_pSigGen->GetParams().UnregisterObserver(*this);
+	m_pSigGen = pSigGen;
+	m_pSigGen->GetParams().RegisterObserver(*this);
+	m_upSignalControl1->SetSignalGenerator(m_pSigGen);
+	m_upSignalControl2->SetSignalGenerator(m_pSigGen);
+	m_upPreviewControl->SetSignalGenerator(m_pSigGen);
 }
 
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
@@ -106,12 +111,10 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 	(
 		GetWindowHandle(),
 		computeThread,
-		m_commands,
+		*m_pCommands,
 		runObservable,
-		m_sigGen,
 		&m_horzCoord 
 	);
-	m_sigGen.GetParams().RegisterObserver(*this);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
 	upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT);
 	return move(upSignalControl);
@@ -186,34 +189,34 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		++iNrOfTiles;
 	if (m_bPreview)
 		++iNrOfTiles;
-	PIXEL const HEIGHT         { height / iNrOfTiles };
-	PIXEL const CONTROL_HEIGHT { HEIGHT - H_SCALE_HEIGHT };
-	PIXEL CONTROL_WIDTH;
+	PIXEL const pixTileHeight    { height / iNrOfTiles };
+	PIXEL const pixControlHeight { pixTileHeight - H_SCALE_HEIGHT };
+	PIXEL pixControlWidth;
 
 	if (m_design == DESIGN::INTEGRATED)
 	{
-		CONTROL_WIDTH = width - V_SCALE_WIDTH - V_SCALE_WIDTH;
+		pixControlWidth = width - V_SCALE_WIDTH - V_SCALE_WIDTH;
 
 		m_upSignalControl1->SetVertCoordVolt(&m_vertCoordVolt1);
 		m_upVertScaleVolt1->SetOrthoOffset(0._fPixel);
 		m_upVertScaleVolt1->SetOrientation(false);
 
-		m_upVertScaleVolt1->Move(V_SCALE_WIDTH + CONTROL_WIDTH, 0_PIXEL, V_SCALE_WIDTH, CONTROL_HEIGHT, true);
+		m_upVertScaleVolt1->Move(V_SCALE_WIDTH + pixControlWidth, 0_PIXEL, V_SCALE_WIDTH, pixControlHeight, true);
 
 		m_upSignalControl2->Show(false);
 		m_upHorzScale2    ->Show(false);
 	}
 	else
 	{
-		CONTROL_WIDTH = width - V_SCALE_WIDTH;
+		pixControlWidth = width - V_SCALE_WIDTH;
 
 		m_upSignalControl1->SetVertCoordVolt(nullptr);
 		m_upVertScaleVolt1->SetOrthoOffset(fPixLeftOffset);
 		m_upVertScaleVolt1->SetOrientation(true);
 
-		m_upSignalControl2->Move(V_SCALE_WIDTH, HEIGHT,                  CONTROL_WIDTH, CONTROL_HEIGHT, true);
-		m_upVertScaleVolt1->Move(      0_PIXEL, HEIGHT,                  V_SCALE_WIDTH, CONTROL_HEIGHT, true);
-		m_upHorzScale2    ->Move(V_SCALE_WIDTH, HEIGHT + CONTROL_HEIGHT, CONTROL_WIDTH, H_SCALE_HEIGHT, true);
+		m_upSignalControl2->Move(V_SCALE_WIDTH, pixTileHeight,                    pixControlWidth, pixControlHeight, true);
+		m_upVertScaleVolt1->Move(      0_PIXEL, pixTileHeight,                    V_SCALE_WIDTH,   pixControlHeight, true);
+		m_upHorzScale2    ->Move(V_SCALE_WIDTH, pixTileHeight + pixControlHeight, pixControlWidth, H_SCALE_HEIGHT,  true);
 
 		m_upSignalControl2->Show(true);
 		m_upHorzScale2    ->Show(true);
@@ -224,15 +227,28 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_upVertScaleVolt2->SetOrthoOffset(fPixLeftOffset);
 		m_upVertScaleVolt2->SetOrientation(true);
 
-		m_upPreviewControl->Move(V_SCALE_WIDTH, height - HEIGHT, width - V_SCALE_WIDTH,         CONTROL_HEIGHT, true);
-		m_upVertScaleVolt2->Move(0_PIXEL,       height - HEIGHT,         V_SCALE_WIDTH,         CONTROL_HEIGHT, true);
-		m_upHorzScale3    ->Move(V_SCALE_WIDTH, height - H_SCALE_HEIGHT, width - V_SCALE_WIDTH, H_SCALE_HEIGHT, true);
+		m_upPreviewControl->Move(V_SCALE_WIDTH, height - pixTileHeight,  width - V_SCALE_WIDTH, pixControlHeight, true);
+		m_upVertScaleVolt2->Move(0_PIXEL,       height - pixTileHeight,          V_SCALE_WIDTH, pixControlHeight, true);
+		m_upHorzScale3    ->Move(V_SCALE_WIDTH, height - H_SCALE_HEIGHT, width - V_SCALE_WIDTH, H_SCALE_HEIGHT,   true);
 
 		m_upPreviewControl->Show(true);
 		m_upHorzScale3    ->Show(true);
 	}
 
-	m_upSignalControl1->Move(V_SCALE_WIDTH,        0_PIXEL, CONTROL_WIDTH, CONTROL_HEIGHT, true);
-	m_upHorzScale1    ->Move(V_SCALE_WIDTH, CONTROL_HEIGHT, CONTROL_WIDTH, H_SCALE_HEIGHT, true);
-	m_upVertScaleFreq ->Move(      0_PIXEL,        0_PIXEL, V_SCALE_WIDTH, CONTROL_HEIGHT, true);
+	m_upSignalControl1->Move(V_SCALE_WIDTH,          0_PIXEL, pixControlWidth, pixControlHeight, true);
+	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
+	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
+
+	mV    const mVpeakAmplitude    { m_pSigGen->Amplitude().Peak() };
+	mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
+	PIXEL const pixVertScaleLen    { height - H_SCALE_HEIGHT };
+	mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
+
+	m_vertCoordVolt1.SetPixelSize(mVpixelSize);
+	m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
+	m_vertCoordVolt1.SetZoomFactor(1.3f);
+
+	m_vertCoordVolt2.SetPixelSize(mVpixelSize);
+	m_vertCoordVolt2.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
+	m_vertCoordVolt2.SetZoomFactor(1.3f);
 }

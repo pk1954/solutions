@@ -37,9 +37,14 @@ public:
     MonitorData             & GetMonitorData() { return m_pModel->GetMonitorData(); }
     unique_ptr<vector<Nob *>> GetSelection()   { return GetUPNobs().GetAllSelected(); }
 
-    void  ResetModel      ()       { m_pModel->ResetModel(); }
-    void  RecalcFilters   ()       { m_pModel->RecalcFilters(); }
-    void  ClearDynamicData() const { m_pModel->ClearDynamicData(); }
+    void    ResetModel      ()       { m_pModel->ResetModel(); }
+    void    RecalcFilters   ()       { m_pModel->RecalcFilters(); }
+    void    ClearDynamicData() const { m_pModel->ClearDynamicData(); }
+
+    UPSigGen NewSigGen   ()                     { return      m_pModel->NewSigGen(); }
+    UPSigGen RemoveSigGen(wstring const & name) { return move(m_pModel->RemoveSigGen(name)); }
+    SigGenId PushSigGen(UPSigGen upSigGen)      { return      m_pModel->PushSigGen(move(upSigGen)); }
+    UPSigGen PopSigGen()                        { return move(m_pModel->PopSigGen()); }
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 

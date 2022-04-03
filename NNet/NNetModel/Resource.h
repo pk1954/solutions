@@ -95,8 +95,9 @@
 #define       IDM_CRSR_WINDOW                590
 #define       IDM_PARAM_WINDOW  	         591
 #define       IDM_PERF_WINDOW                592
-#define       IDM_DESC_WINDOW                594
-#define       IDM_NNET_REFRESH_RATE          593
+#define       IDM_DESC_WINDOW                593
+#define       IDM_SIG_DESIGNER               594
+#define       IDM_NNET_REFRESH_RATE          595
 									        
 #define       IDM_ANALYZE                    600
 #define       IDM_ANALYZE_LOOPS              601
@@ -109,11 +110,11 @@
 #define       IDM_SELECT_ALL_BEEPERS         655
 										     
 #define       IDM_TRIGGER_STIMULUS           660
-#define       IDM_SIGNAL_DESIGNER            661
 #define       IDM_SIGNAL_DESIGNER_INTEGRATED 662
 #define       IDM_SIGNAL_DESIGNER_STACKED    663
 
 #define       IDM_MAKE_CONNECTOR             674
 #define       IDD_DISC_IOCONNECTOR           676
 #define       IDD_SPLIT_NEURON               678
-									       
+
+#define       IDD_NEW_SIGNAL_GENERATOR       700

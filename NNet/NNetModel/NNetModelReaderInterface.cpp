@@ -32,7 +32,7 @@ Degrees NNetModelReaderInterface::GetDirection(NobId const id) const
 
 fHertz NNetModelReaderInterface::GetActFrequency(NobId const id) const 
 { 
-	auto p { m_pModel->GetNobConstPtr<InputConnector const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
 	return p ? p->GetActFrequency() : fHertz::NULL_VAL(); 
 }
 

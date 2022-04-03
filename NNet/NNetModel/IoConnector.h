@@ -68,9 +68,9 @@ public:
 	void SetPos   (MicroMeterPnt    const &) override;
 	void SetPosDir(MicroMeterPosDir const &) override;
 
-	void Apply2All(auto const & f) const
+	void Apply2All(auto const & func)
 	{
-		for_each(m_list, [&f](auto * const p) { if (p) f(*p); } );
+		for_each(m_list, [&func](auto * p) { if (p) func(*p); } );
 	}                        
 
 	MicroMeterLine CalcMaxDistLine() const;

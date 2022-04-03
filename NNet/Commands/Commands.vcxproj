@@ -85,6 +85,7 @@
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSensorCmd.h" />
     <ClInclude Include="MoveSignalCmd.h" />
+    <ClInclude Include="NewSigGenCmd.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectorAnimation.h" />
     <ClInclude Include="PlugIoConnectors.h" />

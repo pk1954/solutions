@@ -13,6 +13,7 @@ using std::unique_ptr;
 
 class MainWindow;
 class WinManager;
+class UPSigGenList;
 class CommandStack;
 class ComputeThread;
 
@@ -31,9 +32,7 @@ public:
 		Sound         const &,
 		MainWindow    const &
 	);
-
 	void AdjustUndoRedo();
-
 	void Notify(bool const) final;
 
 private:

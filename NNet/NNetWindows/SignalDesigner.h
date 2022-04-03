@@ -21,17 +21,17 @@ class Observable;
 class SignalDesigner : public GraphicsWindow
 {
 public:
-	SignalDesigner
+	void Initialize
 	(
 		HWND const, 
 		ComputeThread const &, 
-		SignalGenerator &,
 		Observable &,
-		NNetModelCommands &,
-		NNetModelWriterInterface &
+		NNetModelCommands *
 	);
 
 	void Stop() final;
+
+	void SetSignalGenerator(SignalGenerator * const);
 
 	wstring const & GetTitle() const final
 	{
@@ -89,7 +89,6 @@ private:
 	unique_ptr<SignalControl>     m_upSignalControl1;
 	unique_ptr<SignalControl>     m_upSignalControl2;
 	unique_ptr<PreviewControl>    m_upPreviewControl;
-	SignalGenerator             & m_sigGen;
-	NNetModelCommands           & m_commands;
-	NNetModelWriterInterface    & m_nmwi;
+	SignalGenerator             * m_pSigGen   { nullptr };
+	NNetModelCommands           * m_pCommands { nullptr };
 };

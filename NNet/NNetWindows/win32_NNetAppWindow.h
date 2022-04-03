@@ -99,9 +99,10 @@ private:
 
 	void configureStatusBar();
 	void adjustChildWindows();
-	void openSignalDesigner();
 	void processScript() const;
 	void setModelInterface();
+	void replaceModel();
+	void newModel();
 
 	bool SaveModelAs();
 	bool SaveModel();
@@ -120,22 +121,30 @@ private:
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 
+	int                        m_statusMessagePart { };
 	unique_ptr<NNetModel>      m_upModel;
-	NNetModelReaderInterface * m_pNMRI { nullptr };
+	NNetModelReaderInterface * m_pNMRI       { nullptr };
+	SignalGenerator          * m_pSigGenBase { nullptr };
+	HWND                       m_hwndConsole { nullptr };
+	HWND                       m_hwndApp     { nullptr };
 
-	NNetModelWriterInterface m_nmwi                   { };
-	HWND                     m_hwndConsole            { nullptr };
-	HWND                     m_hwndApp                { nullptr };
-	WinSound                 m_sound                  { };
-	int                      m_statusMessagePart      { };
-	WinManager               m_WinManager             { };
-	StatusBar                m_StatusBar              { };
-	AppTitle                 m_appTitle               { };
-	NNetAppMenu              m_appMenu                { };
 	ActionTimer              m_atComputation          { };
 	ActionTimer              m_atDisplay              { };
-	ScriptHook               m_ScriptHook             { };
-	SlowMotionRatio          m_SlowMotionRatio        { };
+	AppTitle                 m_appTitle               { };
+	CommandStack             m_cmdStack               { };
+	ComputeThread            m_computeThread          { };
+	CrsrWindow               m_crsrWindow             { };
+	DescriptionWindow        m_descWindow             { };
+	MainWindow               m_mainNNetWindow         { };
+	MiniWindow               m_miniNNetWindow         { };
+	MonitorWindow            m_monitorWindow          { };
+	NNetAppMenu              m_appMenu                { };
+	NNetColors               m_NNetColors             { };
+	NNetController           m_NNetController         { };
+	NNetModelCommands        m_modelCommands          { };
+	NNetModelExporter        m_modelExporter          { };
+	NNetModelImporter        m_modelImporter          { };
+	NNetModelWriterInterface m_nmwi                   { };
 	Observable               m_soundOnObservable      { };
 	Observable               m_highlightSigObservable { };
 	Observable               m_cursorPosObservable    { };
@@ -144,27 +153,21 @@ private:
 	Observable               m_runObservable          { };
 	Observable               m_performanceObservable  { };
 	Observable               m_coordObservable        { };
-	NNetModelCommands        m_modelCommands          { };
-	ComputeThread            m_computeThread          { };
-	DescriptionWindow        m_descWindow             { };
-	CrsrWindow               m_crsrWindow             { };
-	PerformanceWindow        m_performanceWindow      { };
-	MainWindow               m_mainNNetWindow         { };
-	MiniWindow               m_miniNNetWindow         { };
-	MonitorWindow            m_monitorWindow          { };
 	ParameterDialog          m_parameterDlg           { };
-	NNetModelImporter        m_modelImporter          { };
-	NNetModelExporter        m_modelExporter          { };
-	StatusBarDisplayFunctor  m_statusBarDispFunctor   { };
-	NNetColors               m_NNetColors             { };
-	NNetController           m_NNetController         { };
-	SimulationControl        m_simulationControl      { };
-	TimeDisplay              m_timeDisplay            { };
-	SlowMotionDisplay        m_slowMotionDisplay      { };
+	PerformanceWindow        m_performanceWindow      { };
 	Preferences              m_preferences            { };
-	CommandStack             m_cmdStack               { };
-	UndoRedoMenu             m_undoRedoMenu           { };
 	ScriptFile               m_scriptFile             { };
+	ScriptHook               m_ScriptHook             { };
+	SignalDesigner           m_signalDesigner         { };
+	SimulationControl        m_simulationControl      { };
+	SlowMotionDisplay        m_slowMotionDisplay      { };
+	SlowMotionRatio          m_SlowMotionRatio        { };
+	StatusBar                m_statusBar              { };
+	StatusBarDisplayFunctor  m_statusBarDispFunctor   { };
+	TimeDisplay              m_timeDisplay            { };
+	UndoRedoMenu             m_undoRedoMenu           { };
+	WinManager               m_WinManager             { };
+	WinSound                 m_sound                  { };
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

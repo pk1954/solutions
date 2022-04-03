@@ -34,7 +34,7 @@ public:
 
 	bool CombineCommands(Command const & src) final
 	{ 
-		return false;
+		return false;  //TODO
 		//SetSigGenDataCmd const & srcCmd { static_cast<SetSigGenDataCmd const &>(src) };
 		//if (&m_sigGen != &srcCmd.m_sigGen)
 		//	return false;

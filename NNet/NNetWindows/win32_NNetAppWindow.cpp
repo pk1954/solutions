@@ -140,16 +140,28 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_pNMRI = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
 
+	UPSigGen upSigGen { m_nmwi.NewSigGen() };
+	upSigGen->SetName(L"BaseSigGen");
+	m_pSigGenBase = upSigGen.get();
+	m_nmwi.PushSigGen(move(upSigGen));
+	m_signalDesigner.Initialize
+	(
+		m_hwndApp,
+		m_computeThread,
+		m_runObservable,
+		& m_modelCommands
+	);
+
 //	m_nmwi.SetHighSigObservable(&m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(  0ms);   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate(200ms);
 	m_monitorWindow    .SetRefreshRate(  0ms);
 	m_crsrWindow       .SetRefreshRate(100ms);
 	m_performanceWindow.SetRefreshRate(500ms);
-	m_StatusBar        .SetRefreshRate(300ms);
+	m_statusBar        .SetRefreshRate(300ms);
 
 	m_appMenu          .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow);
-	m_StatusBar        .Start(m_hwndApp);
+	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands);
@@ -178,7 +190,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main grid window
 
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true );
-	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false);
+	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_statusBar.GetWindowHandle(),  false, false);
 	m_WinManager.AddWindow(L"IDM_CRSR_WINDOW",    IDM_CRSR_WINDOW,    m_crsrWindow,                   true,  false);
 	m_WinManager.AddWindow(L"IDM_DESC_WINDOW",    IDM_DESC_WINDOW,    m_descWindow.GetWindowHandle(), true,  true );
 	m_WinManager.AddWindow(L"IDM_MAIN_WINDOW",    IDM_MAIN_WINDOW,    m_mainNNetWindow,               true,  false);
@@ -186,6 +198,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_WinManager.AddWindow(L"IDM_MONITOR_WINDOW", IDM_MONITOR_WINDOW, m_monitorWindow,                true,  true );
 	m_WinManager.AddWindow(L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false);
 	m_WinManager.AddWindow(L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false);
+	m_WinManager.AddWindow(L"IDM_SIG_DESIGNER",   IDM_SIG_DESIGNER,   m_signalDesigner,               true,  true );
 
 	m_dynamicModelObservable.RegisterObserver(m_mainNNetWindow);
 	m_dynamicModelObservable.RegisterObserver(m_miniNNetWindow);
@@ -220,7 +233,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_monitorWindow    .Show(false);
 	m_miniNNetWindow   .Show(true);
-	m_StatusBar        .Show(true);
+	m_statusBar        .Show(true);
 	m_mainNNetWindow   .Show(true);
 	m_crsrWindow       .Show(true);
 	m_parameterDlg     .Show(true);
@@ -257,7 +270,7 @@ void NNetAppWindow::Stop()
 	m_crsrWindow       .Stop();
 	m_performanceWindow.Stop();
 	m_parameterDlg     .Stop();
-	m_StatusBar        .Stop();
+	m_statusBar        .Stop();
 
 	m_staticModelObservable .UnregisterAllObservers();
 	m_dynamicModelObservable.UnregisterAllObservers();
@@ -320,25 +333,25 @@ bool NNetAppWindow::UserProc
 void NNetAppWindow::configureStatusBar()
 {
 	int iPartScriptLine = 0;
-	m_timeDisplay.Start(& m_StatusBar, m_pNMRI, iPartScriptLine);
+	m_timeDisplay.Start(& m_statusBar, m_pNMRI, iPartScriptLine);
 
-	m_simulationControl.Initialize(& m_StatusBar, & m_computeThread);
+	m_simulationControl.Initialize(& m_statusBar, & m_computeThread);
 
-	iPartScriptLine = m_StatusBar.NewPart();
-	m_slowMotionDisplay.Initialize(& m_StatusBar, & m_SlowMotionRatio, iPartScriptLine);
+	iPartScriptLine = m_statusBar.NewPart();
+	m_slowMotionDisplay.Initialize(& m_statusBar, & m_SlowMotionRatio, iPartScriptLine);
 
-	SlowMotionControl::Add(m_StatusBar);
+	SlowMotionControl::Add(m_statusBar);
 
-	iPartScriptLine = m_StatusBar.NewPart();
-	m_ScriptHook.Initialize(& m_StatusBar, iPartScriptLine);
-	m_StatusBar.ClearPart(iPartScriptLine);
+	iPartScriptLine = m_statusBar.NewPart();
+	m_ScriptHook.Initialize(& m_statusBar, iPartScriptLine);
+	m_statusBar.ClearPart(iPartScriptLine);
 
-	m_statusBarDispFunctor.Initialize(& m_StatusBar, iPartScriptLine);
+	m_statusBarDispFunctor.Initialize(& m_statusBar, iPartScriptLine);
 	ModelAnalyzer::SetStatusBarDisplay(& m_statusBarDispFunctor);
 	ModelAnalyzer::SetEscFunc         (& Util::EscapeKeyPressed);
 	m_statusMessagePart = iPartScriptLine;
 
-	m_StatusBar.LastPart();
+	m_statusBar.LastPart();
 	m_timeDisplay.Notify(true);
 	m_slowMotionDisplay.Notify(true);
 }
@@ -350,8 +363,8 @@ void NNetAppWindow::adjustChildWindows()
 	{
 		PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
 		PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
-		m_StatusBar.Resize();
-		pixAppClientWinHeight -= m_StatusBar.GetHeight();
+		m_statusBar.Resize();
+		pixAppClientWinHeight -= m_statusBar.GetHeight();
 
 		m_mainNNetWindow.Move  // use all available space for model window
 		(
@@ -405,10 +418,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_computeThread.RunStopComputation();
 			break;
 
-		case IDM_SIGNAL_DESIGNER:
-			openSignalDesigner();
-			break;
-
 		case IDM_SCRIPT_DIALOG:
 			m_computeThread.StopComputation();
 			processScript();
@@ -425,15 +434,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_NEW_MODEL:
 			if (AskAndSave())
-			{
-				m_computeThread.StopComputation();
-				m_mainNNetWindow.Reset();
-				m_modelCommands.ResetModel();
-				m_modelCommands.CreateInitialNobs();
-				m_staticModelObservable.NotifyAll(false);
-				m_appTitle.SetUnsavedChanges(true);
-				m_mainNNetWindow.CenterModel();
-			}
+				newModel();
 			break;
 
 		case IDM_SAVE_MODEL:
@@ -465,27 +466,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDX_REPLACE_MODEL:  //no user command, only internal usage
-			m_StatusBar.ClearPart(m_statusMessagePart);
+			m_statusBar.ClearPart(m_statusMessagePart);
 			if (AskAndSave())
-			{
-				m_computeThread.StopComputation();
-				m_mainNNetWindow.Reset();
-
-				m_upModel = m_modelImporter.GetImportedModel();
-				m_nmwi.SetModel(m_upModel.get());
-				m_nmwi.RecalcFilters();
-
-				setModelInterface();
-
-				m_dynamicModelObservable.NotifyAll(false);
-				m_staticModelObservable.NotifyAll(false);
-				m_nmwi.SetDescriptionUI(m_descWindow);
-				m_appTitle.SetUnsavedChanges(false);
-				m_mainNNetWindow.CenterModel();
-				m_nmwi.GetParams().RegisterObserver(m_parameterDlg);
-				m_nmwi.GetParams().RegisterObserver(m_computeThread);
-				m_nmwi.GetParams().NotifyAll(false);
-			}
+				replaceModel();
 			break;
 
 		case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
@@ -573,6 +556,38 @@ bool NNetAppWindow::AskAndSave()
 	return true;
 }
 
+void NNetAppWindow::newModel()
+{
+	m_computeThread.StopComputation();
+	m_mainNNetWindow.Reset();
+	m_modelCommands.ResetModel();
+	m_modelCommands.CreateInitialNobs();
+	m_staticModelObservable.NotifyAll(false);
+	m_appTitle.SetUnsavedChanges(true);
+	m_mainNNetWindow.CenterModel();
+}
+
+void NNetAppWindow::replaceModel()
+{
+	m_computeThread.StopComputation();
+	m_mainNNetWindow.Reset();
+
+	m_upModel = m_modelImporter.GetImportedModel();
+	m_nmwi.SetModel(m_upModel.get());
+	m_nmwi.RecalcFilters();
+
+	setModelInterface();
+
+	m_dynamicModelObservable.NotifyAll(false);
+	m_staticModelObservable.NotifyAll(false);
+	m_nmwi.SetDescriptionUI(m_descWindow);
+	m_appTitle.SetUnsavedChanges(false);
+	m_mainNNetWindow.CenterModel();
+	m_nmwi.GetParams().RegisterObserver(m_parameterDlg);
+	m_nmwi.GetParams().RegisterObserver(m_computeThread);
+	m_nmwi.GetParams().NotifyAll(false);
+}
+
 void NNetAppWindow::StartScript(wstring const & wstrFile) const
 {
 	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
@@ -582,28 +597,6 @@ void NNetAppWindow::StartScript(wstring const & wstrFile) const
 		pScript->ScrSetNewLineHook(& m_ScriptHook);
 		Command::NextScriptCommand();  // start reading script file
 	}
-}
-
-void NNetAppWindow::openSignalDesigner()
-{
-	NobId const id { m_mainNNetWindow.GetHighlightedNobId() };
-	if (IsUndefined(id))
-		return;
-	if (! m_pNMRI->IsOfType<InputConnector>(id))
-		return;
-	InputConnector * pInpCon { m_nmwi.GetNobPtr<InputConnector *>(id) };
-	SignalDesigner const * pSigDes 
-	{ 
-		new SignalDesigner
-		(
-			m_mainNNetWindow.GetWindowHandle(),
-			m_computeThread,
-			pInpCon->GetSignalGenerator(),
-			m_runObservable,
-			m_modelCommands,
-			m_nmwi
-		) 
-	};
 }
 
 void NNetAppWindow::processScript() const

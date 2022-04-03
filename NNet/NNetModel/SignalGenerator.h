@@ -9,44 +9,26 @@
 #include "observerInterface.h"
 #include "ParameterType.h"
 #include "SigGenData.h"
+#include "Stimulus.h"
 
 class Param;
+class UPSigGenList;
+class SignalGenerator;
 
-class Stimulus : public Observable
-{
-public:
+using std::wstring;
+using std::unique_ptr;
 
-	void TriggerStimulus()
-	{
-		m_usSinceLastStimulus = 0._MicroSecs;
-		m_bTriggerActive = true;
-		NotifyAll(false);
-	}
-
-	void Tick(fMicroSecs const tIncr)
-	{
-		m_usSinceLastStimulus += tIncr;
-		NotifyAll(false);
-	}
-	void StopTrigger() { m_bTriggerActive = false; }
-
-	bool       IsTriggerActive() const { return m_bTriggerActive; }
-	fMicroSecs TimeTilTrigger () const { return m_usSinceLastStimulus; }
-
-private:
-	bool       m_bTriggerActive      { false };
-	fMicroSecs m_usSinceLastStimulus { 0._MicroSecs };
-};
+using UPSigGen = unique_ptr<SignalGenerator>;
 
 class SignalGenerator
 {
 public:
 
-	explicit SignalGenerator(Param &);
+	explicit SignalGenerator(UPSigGenList &);
 
 	void Tick();
-	void TriggerStimulus();
-	void StopTrigger() { m_stimulus.StopTrigger(); }
+	void TriggerStimulus() { m_stimulus.TriggerStimulus(); }
+	void StopTrigger    () { m_stimulus.StopTrigger(); }
 
 	fHertz GetFrequency(fMicroSecs const uSecs) const { return m_data.GetFrequency(uSecs); }
 	mV     GetAmplitude(fMicroSecs const uSecs) const {	return m_data.GetAmplitude(uSecs); }
@@ -62,6 +44,9 @@ public:
 	void SetData(SigGenData const &);
 	SigGenData GetData() const;
 
+	void SetName(wstring const & name) { m_name = name; }
+	wstring const & GetName() const { return m_name; }
+
 	void SetFreqBase(fHertz const);
 	void SetFreqPeak(fHertz const);
 	void SetBaseVolt(mV const);
@@ -73,12 +58,15 @@ public:
 	bool       IsTriggerActive() const { return m_stimulus.IsTriggerActive(); }
 	fMicroSecs TimeTilTrigger () const { return m_stimulus.TimeTilTrigger(); }
 
-	Param       & GetParams ()       { return * m_pParameters; }
-	Param const & GetParamsC() const { return * m_pParameters; }
+	Param       & GetParams ();
+	Param const & GetParamsC() const;
 
 private:
 
-	Param    * m_pParameters { nullptr };
-	Stimulus   m_stimulus;
-	SigGenData m_data;
+	inline static int m_iCounter { 0 };
+
+	UPSigGenList & m_list;
+	Stimulus       m_stimulus;
+	SigGenData     m_data;
+	wstring        m_name;
 };

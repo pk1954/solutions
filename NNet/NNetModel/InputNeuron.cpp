@@ -12,6 +12,7 @@
 #include "NobType.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
+#include "SignalGenerator.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
@@ -87,6 +88,19 @@ void InputNeuron::drawSocket
 	context.DrawLine(umLine + umOrthoVector, umWidthLR, colF);
 	context.DrawLine(umLine - umOrthoVector, umWidthLR, colF);
 }
+
+void InputNeuron::Prepare()
+{
+    m_pSigGen->Tick();
+ 	Param      const & param         { m_pSigGen->GetParamsC() };
+    fHertz     const freq            { m_pSigGen->GetActFrequency() };
+    fMicroSecs const time2Trigger    { PulseDuration(freq) };
+	float      const ticks2Trigger   { time2Trigger / param.TimeResolution() };
+    mV         const increasePerTick { param.Threshold() / ticks2Trigger };
+    m_mVinputBuffer += increasePerTick;
+}
+
+fHertz InputNeuron::GetActFrequency() const { return m_pSigGen->GetActFrequency(); }
 
 void InputNeuron::AppendMenuItems(AddMenuFunc const & add) const
 {

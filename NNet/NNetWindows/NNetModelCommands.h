@@ -80,6 +80,7 @@ public:
     void MoveSignal          (SignalId const &, TrackNr const);
     void MoveNob             (NobId const, MicroMeterPnt const &);
     void NewIoNeuronPair     (MicroMeterPnt const &);
+    void NewSignalGenerator  ();
     void RestrictSelection   (NobType::Value const);
     void Rotate              (NobId const, MicroMeterPnt const &, MicroMeterPnt const &);
     void RotateModel         (MicroMeterPnt const &, MicroMeterPnt const &);

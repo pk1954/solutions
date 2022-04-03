@@ -9,11 +9,10 @@
 PreviewControl::PreviewControl
 (
 	BaseWindow           const & baseWinParent,
-	SignalGenerator            & sigGen,
 	PixFpDimension<fMicroSecs> & horzCoord,
 	PixFpDimension<mV>         & vertCoord
 )
-  : TimeGraph(baseWinParent.GetWindowHandle(), sigGen, &horzCoord),
+  : TimeGraph(baseWinParent.GetWindowHandle(), &horzCoord),
 	m_vertCoord(vertCoord)
 {
 	m_vertCoord.RegisterObserver(*this);
@@ -26,10 +25,10 @@ PreviewControl::~PreviewControl()
 
 void PreviewControl::DoPaint()
 {
-	fMicroSecs const usSpikeWidth { m_sigGen.GetParamsC().SpikeWidth() };
+	fMicroSecs const usSpikeWidth { m_pSigGen->GetParamsC().SpikeWidth() };
 	float      const factorW      { 1.0f / usSpikeWidth.GetValue() };
 	fMicroSecs       usLastPulse  { 0.0_MicroSecs };
-	fMicroSecs const usResolution { m_sigGen.GetParamsC().TimeResolution() };
+	fMicroSecs const usResolution { m_pSigGen->GetParamsC().TimeResolution() };
 
 	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
@@ -37,14 +36,14 @@ void PreviewControl::DoPaint()
 	(
 		[this, &usLastPulse, usSpikeWidth, factorW](fMicroSecs const t)
 		{ 
-			fMicroSecs const usPulse { PulseDuration(m_sigGen.GetFrequency(t)) };
+			fMicroSecs const usPulse { PulseDuration(m_pSigGen->GetFrequency(t)) };
 			fMicroSecs const time    { t - usLastPulse };
 			mV               voltage { 0.0_mV };
 			if (time > usPulse)
 				usLastPulse = t;
 			if (time <= usSpikeWidth)
 			{
-				mV const amplitude { m_sigGen.GetAmplitude(t) };
+				mV const amplitude { m_pSigGen->GetAmplitude(t) };
 				mV const mVfactor  { amplitude * 4.0f * factorW };
 				voltage = mVfactor * time.GetValue() * (1.0f - time.GetValue() * factorW);
 			}
@@ -79,5 +78,5 @@ fPixelPoint PreviewControl::pixPntVolt(fMicroSecs const t, mV const v) const
 
 fPixelPoint PreviewControl::pixPntVolt(fMicroSecs const t) const 
 { 
-	return pixPntVolt(t, m_sigGen.GetAmplitude(t)); 
+	return pixPntVolt(t, m_pSigGen->GetAmplitude(t)); 
 }

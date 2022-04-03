@@ -28,11 +28,12 @@ public:
 		ComputeThread        const &, 
 		NNetModelCommands          &,
 		Observable                 &,
-		SignalGenerator            &,
 		PixFpDimension<fMicroSecs> *
 	);
 
 	~SignalControl() final;
+
+	void SetSignalGenerator(SignalGenerator * const);
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
 
@@ -77,7 +78,7 @@ private:
 
 	PixFpDimension<fHertz> * m_pVertCoordFreq { nullptr };
 	PixFpDimension<mV>     * m_pVertCoordVolt { nullptr };
-	SignalGenerator        & m_sigGen;
+	SignalGenerator        * m_pSigGen        { nullptr };
 	ComputeThread    const & m_computeThread;
 	NNetModelCommands      & m_commands;
 	Observable             & m_runObservable;
@@ -94,19 +95,19 @@ private:
 	fHertz getFreq(fPixelPoint const & p) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(p.GetY())); }
 	mV     getVolt(fPixelPoint const & p) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(p.GetY())); }
 
-	fPixel yFreq(fHertz     const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
-	fPixel yVolt(mV         const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
+	fPixel yFreq(fHertz const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
+	fPixel yVolt(mV     const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
-	fPixel xPeak      () const { return xTime(m_sigGen.GetData().GetPeakTime()); }
-	fPixel aPeakAmplit() const { return yVolt(m_sigGen.GetData().GetAmplit().Peak()); }
-	fPixel yBaseAmplit() const { return yVolt(m_sigGen.GetData().GetAmplit().Base()); }
-	fPixel yPeakFreq  () const { return yFreq(m_sigGen.GetData().GetFreq().Peak()); }
-	fPixel yBaseFreq  () const { return yFreq(m_sigGen.GetData().GetFreq().Base()); }
+	fPixel xPeak      () const { return xTime(m_pSigGen->GetData().GetPeakTime()); }
+	fPixel aPeakAmplit() const { return yVolt(m_pSigGen->GetData().GetAmplit().Peak()); }
+	fPixel yBaseAmplit() const { return yVolt(m_pSigGen->GetData().GetAmplit().Base()); }
+	fPixel yPeakFreq  () const { return yFreq(m_pSigGen->GetData().GetFreq().Peak()); }
+	fPixel yBaseFreq  () const { return yFreq(m_pSigGen->GetData().GetFreq().Base()); }
 
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
-	fPixelPoint pixPntFreq(fMicroSecs const t) const { return pixPntFreq(t, m_sigGen.GetFrequency(t)); }
-	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, m_sigGen.GetAmplitude(t)); }
+	fPixelPoint pixPntFreq(fMicroSecs const t) const { return pixPntFreq(t, m_pSigGen->GetFrequency(t)); }
+	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, m_pSigGen->GetAmplitude(t)); }
 
 	void calcHandles();
 	void paintRunControls () const;

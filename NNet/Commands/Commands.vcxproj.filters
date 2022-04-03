@@ -186,6 +186,9 @@
     <ClInclude Include="DeleteIoConnectorCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NewSigGenCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

@@ -4,11 +4,14 @@
 
 #include "stdafx.h"
 #include "NNetParameters.h"
+#include "UPSigGenList.h"
 #include "SignalGenerator.h"
 
-SignalGenerator::SignalGenerator(Param & param) 
-  : m_pParameters(&param),
-	m_data(param.GetSigGenData())
+using std::to_wstring;
+
+SignalGenerator::SignalGenerator(UPSigGenList & list)
+	: m_list(list),
+	  m_name(list.GenerateUniqueName())
 {}
 
 void SignalGenerator::Register(ObserverInterface & obs)
@@ -23,6 +26,16 @@ void SignalGenerator::Unregister(ObserverInterface & obs)
 	m_stimulus.UnregisterObserver(obs);
 }
 
+Param const & SignalGenerator::GetParamsC() const 
+{ 
+	return m_list.GetParametersC(); 
+}
+
+Param & SignalGenerator::GetParams() 
+{ 
+	return m_list.GetParameters(); 
+}
+
 void SignalGenerator::SetData(SigGenData const & data) 
 { 
 	m_data = data; 
@@ -34,14 +47,9 @@ SigGenData SignalGenerator::GetData() const
 	return m_data; 
 }
 
-void SignalGenerator::TriggerStimulus()
-{
-	m_stimulus.TriggerStimulus();
-}
-
 void SignalGenerator::Tick()
 {
-	m_stimulus.Tick(m_pParameters->TimeResolution());
+	m_stimulus.Tick(m_list.GetParametersC().TimeResolution());
 	if (m_stimulus.IsTriggerActive() && ! m_data.InStimulusRange(m_stimulus.TimeTilTrigger()))
 		StopTrigger();
 }
