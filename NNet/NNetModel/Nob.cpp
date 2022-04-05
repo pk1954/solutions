@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "SCANNER.H"
+#include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Nob.h"
 #include "debug.h"
@@ -56,7 +57,7 @@ MicroMeterPosDir Nob::GetPosDir() const
 
 ColorF Nob::GetInteriorColor(mV const voltage) const
 {
-	mV const threshold { mV(m_pParameters->GetParameterValue(ParamType::Value::threshold)) };
+	mV const threshold { mV(GetParam()->GetParameterValue(ParamType::Value::threshold)) };
 	if (IsAnyNeuron() && (voltage > threshold * 1.3f))
 	{
 		int x = 42;

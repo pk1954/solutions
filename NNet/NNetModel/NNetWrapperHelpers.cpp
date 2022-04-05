@@ -7,6 +7,7 @@
 #include "SCRIPT.H"
 #include "IoConstants.h"
 #include "NobId.h"
+#include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
 
 MicroMeter ScrReadMicroMeter(Script & script)
@@ -117,4 +118,13 @@ mV ScrReadVoltage(Script& script)
 {
 	double const value { script.ScrReadFloat() };
 	return mV(Cast2Float(value));
+}
+
+SigGenData ScrReadSigGenData(Script& script)
+{
+	SigGenData sigGenData;
+	sigGenData.SetFreq    (ScrReadBasePeak<fHertz>    (script));
+	sigGenData.SetAmpl    (ScrReadBasePeak<mV>        (script));
+	sigGenData.SetPeakTime(ScrRead        <fMicroSecs>(script));
+	return sigGenData;
 }

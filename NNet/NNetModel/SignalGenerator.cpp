@@ -10,8 +10,13 @@
 using std::to_wstring;
 
 SignalGenerator::SignalGenerator(UPSigGenList & list)
-	: m_list(list),
-	  m_name(list.GenerateUniqueName())
+  : m_list(list),
+	m_name(list.GenerateUniqueName())
+{}
+
+SignalGenerator::SignalGenerator(UPSigGenList & list, wstring const & name)
+  : m_list(list),
+	m_name(name)
 {}
 
 void SignalGenerator::Register(ObserverInterface & obs)
@@ -26,16 +31,6 @@ void SignalGenerator::Unregister(ObserverInterface & obs)
 	m_stimulus.UnregisterObserver(obs);
 }
 
-Param const & SignalGenerator::GetParamsC() const 
-{ 
-	return m_list.GetParametersC(); 
-}
-
-Param & SignalGenerator::GetParams() 
-{ 
-	return m_list.GetParameters(); 
-}
-
 void SignalGenerator::SetData(SigGenData const & data) 
 { 
 	m_data = data; 
@@ -47,9 +42,9 @@ SigGenData SignalGenerator::GetData() const
 	return m_data; 
 }
 
-void SignalGenerator::Tick()
+void SignalGenerator::Tick(fMicroSecs const usResolution)
 {
-	m_stimulus.Tick(m_list.GetParametersC().TimeResolution());
+	m_stimulus.Tick(usResolution);
 	if (m_stimulus.IsTriggerActive() && ! m_data.InStimulusRange(m_stimulus.TimeTilTrigger()))
 		StopTrigger();
 }

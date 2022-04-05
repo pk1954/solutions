@@ -124,7 +124,6 @@ private:
 	int                        m_statusMessagePart { };
 	unique_ptr<NNetModel>      m_upModel;
 	NNetModelReaderInterface * m_pNMRI       { nullptr };
-	SignalGenerator          * m_pSigGenBase { nullptr };
 	HWND                       m_hwndConsole { nullptr };
 	HWND                       m_hwndApp     { nullptr };
 

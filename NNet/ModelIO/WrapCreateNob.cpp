@@ -92,7 +92,7 @@ UPNob WrapCreateNob::createBaseKnot(Script & script, NobType const nobType) cons
     switch (nobType.GetValue())
     {
     using enum NobType::Value;
-    case inputNeuron:  return make_unique<InputNeuron>(umPosition);
+    case inputNeuron:  return make_unique<InputNeuron>(GetWriterInterface().StdSigGen(), umPosition);
     case outputNeuron: return make_unique<OutputNeuron>(umPosition);
     case neuron:       return make_unique<Neuron>(umPosition);
     case knot:         return make_unique<Knot>(umPosition);

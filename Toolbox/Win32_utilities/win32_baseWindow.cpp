@@ -71,11 +71,7 @@ HWND BaseWindow::StartBaseWindow
 	return hwnd;
 }
 
-wstring const & BaseWindow::GetTitle() const
-{
-    static wstring const CAPTION { L"" };
-    return CAPTION;
-}
+wstring BaseWindow::GetTitle() const { return L""; }
 
 BaseWindow const * BaseWindow::GetParentBaseWin() const
 {

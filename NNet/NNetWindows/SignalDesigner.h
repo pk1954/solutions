@@ -9,7 +9,7 @@
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
 #include "SignalControl.h"
-#include "PreviewControl.h"
+#include "SignalPreview.h"
 #include "win32_graphicsWindow.h"
 
 class NNetModelWriterInterface;
@@ -31,12 +31,14 @@ public:
 
 	void Stop() final;
 
-	void SetSignalGenerator(SignalGenerator * const);
+	void SetSigGen(SignalGenerator * const);
 
-	wstring const & GetTitle() const final
+	wstring GetTitle() const final
 	{
-		static wstring const CAPTION { L"Signal designer" };
-		return CAPTION;
+		wstring title(L"Signal designer: ");
+		if (m_pSigGen)
+			title += m_pSigGen->GetName();
+		return title;
 	}
 
 	enum class DESIGN { INTEGRATED, STACKED };
@@ -71,7 +73,6 @@ private:
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &);
 
 	void DoPaint() final;
-	void OnClose() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
@@ -88,7 +89,7 @@ private:
 	unique_ptr<Scale<mV>>         m_upVertScaleVolt2;
 	unique_ptr<SignalControl>     m_upSignalControl1;
 	unique_ptr<SignalControl>     m_upSignalControl2;
-	unique_ptr<PreviewControl>    m_upPreviewControl;
+	unique_ptr<SignalPreview>     m_upSignalPreview;
 	SignalGenerator             * m_pSigGen   { nullptr };
 	NNetModelCommands           * m_pCommands { nullptr };
 };

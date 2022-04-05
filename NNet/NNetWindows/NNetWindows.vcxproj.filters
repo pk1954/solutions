@@ -87,7 +87,7 @@
     <ClCompile Include="MonitorControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PreviewControl.cpp">
+    <ClCompile Include="SignalPreview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TimeGraph.cpp">
@@ -191,7 +191,7 @@
     <ClInclude Include="MonitorControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PreviewControl.h">
+    <ClInclude Include="SignalPreview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TimeGraph.h">

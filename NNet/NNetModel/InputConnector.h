@@ -32,17 +32,4 @@ public:
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
 	void DrawExterior(DrawContext const &, tHighlight const) const final;
-
-	//void TriggerStimulus() { m_signalGenerator.TriggerStimulus(); }
-
-	//SignalGenerator       & GetSignalGenerator ()       { return m_signalGenerator; }
-	//SignalGenerator const & GetSignalGeneratorC() const { return m_signalGenerator; }
-
-	//fHertz GetActFrequency() const { return m_signalGenerator.GetActFrequency(); }
-
-	//mV WaveFunction(fMicroSecs const) const;
-
-//private:
-//
-//	SignalGenerator m_signalGenerator;
 };

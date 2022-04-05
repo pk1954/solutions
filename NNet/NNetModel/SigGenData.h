@@ -7,6 +7,9 @@
 #include "MoreTypes.h"
 #include "observable.h"
 
+using std::wcout;
+using std::wostream;
+
 class SigGenData : public Observable
 {
 public:
@@ -31,9 +34,9 @@ public:
 	bool operator==(SigGenData const& rhs) const
 	{
 		return
-			(m_freq   == rhs.m_freq  ) &&
-			(m_amplit == rhs.m_amplit) &&
-			(m_usPeak == rhs.m_usPeak);
+		(m_freq   == rhs.m_freq  ) &&
+		(m_amplit == rhs.m_amplit) &&
+		(m_usPeak == rhs.m_usPeak);
 	}
 
 	SigGenData & operator=(SigGenData const& rhs)
@@ -41,6 +44,7 @@ public:
 		m_freq   = rhs.m_freq;
 		m_amplit = rhs.m_amplit;
 		m_usPeak = rhs.m_usPeak;
+		NotifyAll(false);
 		return *this;
 	}
 
@@ -54,6 +58,12 @@ public:
 		NotifyAll(false);
 	}
 
+	void SetFreq(BASE_PEAK<fHertz> const freq) 
+	{ 
+		m_freq = freq; 
+		NotifyAll(false);
+	}
+
 	void SetFreqBase(fHertz const f) 
 	{ 
 		m_freq.SetBase(f); 
@@ -63,6 +73,12 @@ public:
 	void SetFreqPeak(fHertz const f) 
 	{ 
 		m_freq.SetPeak(f); 
+		NotifyAll(false);
+	}
+
+	void SetAmpl(BASE_PEAK<mV> const amplit) 
+	{ 
+		m_amplit = amplit; 
 		NotifyAll(false);
 	}
 
@@ -96,6 +112,12 @@ public:
 	fHertz GetFrequency(fMicroSecs const uSecs) const 
 	{	
 		return getActValue<fHertz>(uSecs, m_freq  ); 
+	}
+
+	friend wostream & operator<< (wostream & out, SigGenData const & data)
+	{
+		out << data.m_freq << data.m_amplit << L' ' << data.m_usPeak;
+		return out;
 	}
 
 private:

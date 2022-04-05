@@ -15,8 +15,12 @@ using std::make_unique;
 class IoNeuronPair
 {
 public:
-	explicit IoNeuronPair(MicroMeterPnt const & pos)
-	  :	m_upInputNeuron (make_unique<InputNeuron >(pos - m_umOffset)),
+	explicit IoNeuronPair
+	(
+		NNetModelWriterInterface & nmwi,
+		MicroMeterPnt      const & pos
+	)
+	  :	m_upInputNeuron (make_unique<InputNeuron >(nmwi.StdSigGen(), pos - m_umOffset)),
 	    m_upOutputNeuron(make_unique<OutputNeuron>(pos + m_umOffset)),
 	    m_upPipe        (make_unique<Pipe>())
 	{ 

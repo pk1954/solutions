@@ -42,7 +42,7 @@ public:
 
 		if (type.IsInputNeuronType())
 		{
-			m_upExtPoint  = make_unique<InputNeuron>(pos - m_pNMWI->OrthoVector(m_idPipe));
+			m_upExtPoint  = make_unique<InputNeuron>(m_pNMWI->StdSigGen(), pos - m_pNMWI->OrthoVector(m_idPipe));
 			m_upPipeOrtho = make_unique<Pipe>(m_upExtPoint.get(), m_upKnotInsert.get());		
 			m_upExtPoint  ->AddOutgoing(*m_upPipeOrtho.get());
 			m_upKnotInsert->AddIncoming(*m_upPipeOrtho.get());

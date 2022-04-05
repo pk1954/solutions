@@ -266,6 +266,7 @@
     <ClCompile Include="SignalGenerator.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="UPNobList.cpp" />
+    <ClCompile Include="UPSigGenList.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

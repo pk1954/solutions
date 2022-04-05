@@ -179,6 +179,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
     enable(IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(IDM_MONITOR_WINDOW));
     enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(IDM_PARAM_WINDOW  ));
     enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
+    enable(IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(IDM_SIG_DESIGNER  ));
 
     enable(IDM_SIGNAL_DESIGNER_INTEGRATED, SignalDesigner::GetDesign() == SignalDesigner::DESIGN::STACKED);
     enable(IDM_SIGNAL_DESIGNER_STACKED,    SignalDesigner::GetDesign() == SignalDesigner::DESIGN::INTEGRATED);

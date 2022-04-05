@@ -18,15 +18,14 @@ class SignalGenerator;
 using std::wstring;
 using std::unique_ptr;
 
-using UPSigGen = unique_ptr<SignalGenerator>;
-
 class SignalGenerator
 {
 public:
 
 	explicit SignalGenerator(UPSigGenList &);
+	SignalGenerator(UPSigGenList &, wstring const &);
 
-	void Tick();
+	void Tick(fMicroSecs const);
 	void TriggerStimulus() { m_stimulus.TriggerStimulus(); }
 	void StopTrigger    () { m_stimulus.StopTrigger(); }
 
@@ -57,9 +56,6 @@ public:
 
 	bool       IsTriggerActive() const { return m_stimulus.IsTriggerActive(); }
 	fMicroSecs TimeTilTrigger () const { return m_stimulus.TimeTilTrigger(); }
-
-	Param       & GetParams ();
-	Param const & GetParamsC() const;
 
 private:
 

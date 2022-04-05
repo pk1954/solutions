@@ -35,7 +35,7 @@ public:
 
 		if (m_type.IsInputNeuronType())
 		{
-			m_upExtPoint = make_unique<InputNeuron>(pos);
+			m_upExtPoint = make_unique<InputNeuron>(m_pNMWI->StdSigGen(), pos);
 			ConnectOutgoing(*m_upPipe.get(), *m_upExtPoint.get());
 			ConnectIncoming(*m_upPipe.get(), *m_upBaseKnotNew.get());
 			m_upBaseKnotNew->SetOutgoing(m_baseKnotOld);

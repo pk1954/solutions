@@ -33,7 +33,7 @@ public:
 		else if (nrOut == 1)
 		{
 			if (nrIn == 0)
-				m_upResult = make_unique<InputNeuron>(m_baseKnotDst);
+				m_upResult = make_unique<InputNeuron>(m_pNMWI->StdSigGen(), m_baseKnotDst);
 			else 
 				m_upResult = make_unique<Neuron>(m_baseKnotDst);
 		}

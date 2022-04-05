@@ -13,7 +13,6 @@ using std::unique_ptr;
 
 class MainWindow;
 class WinManager;
-class UPSigGenList;
 class CommandStack;
 class ComputeThread;
 

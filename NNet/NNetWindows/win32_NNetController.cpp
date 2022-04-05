@@ -130,6 +130,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         ShowAboutBox(m_pMainWindow->GetWindowHandle());
         break;
 
+    case IDM_SIG_DESIGNER:
     case IDM_PERF_WINDOW:
     case IDM_CRSR_WINDOW:
     case IDM_DESC_WINDOW:

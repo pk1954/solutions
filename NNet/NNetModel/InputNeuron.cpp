@@ -24,12 +24,22 @@ using std::setprecision;
 using std::wstring;
 using std::fixed;
 
-InputNeuron::InputNeuron(MicroMeterPnt const & upCenter)
-	: IoNeuron(upCenter, NobType::Value::inputNeuron)
+InputNeuron::InputNeuron
+(
+	SignalGenerator     * pSigGen, 
+	MicroMeterPnt const & upCenter
+)
+  : IoNeuron(upCenter, NobType::Value::inputNeuron),
+	m_pSigGen(pSigGen)
 { }
 
-InputNeuron::InputNeuron(BaseKnot const & baseKnot)
-	: IoNeuron(baseKnot, NobType::Value::inputNeuron)
+InputNeuron::InputNeuron
+(
+	SignalGenerator * pSigGen, 
+	BaseKnot  const & baseKnot
+)
+  : IoNeuron(baseKnot, NobType::Value::inputNeuron),
+	m_pSigGen(pSigGen)
 { 
 	SetOutgoing(baseKnot);
 }
@@ -91,12 +101,13 @@ void InputNeuron::drawSocket
 
 void InputNeuron::Prepare()
 {
-    m_pSigGen->Tick();
- 	Param      const & param         { m_pSigGen->GetParamsC() };
-    fHertz     const freq            { m_pSigGen->GetActFrequency() };
+	fMicroSecs usResolution { GetParam()->TimeResolution() };
+	m_pSigGen->Tick(usResolution);
+
+	fHertz     const freq            { m_pSigGen->GetActFrequency() };
     fMicroSecs const time2Trigger    { PulseDuration(freq) };
-	float      const ticks2Trigger   { time2Trigger / param.TimeResolution() };
-    mV         const increasePerTick { param.Threshold() / ticks2Trigger };
+	float      const ticks2Trigger   { time2Trigger / usResolution };
+    mV         const increasePerTick { GetParam()->Threshold() / ticks2Trigger };
     m_mVinputBuffer += increasePerTick;
 }
 

@@ -15,7 +15,7 @@
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
-	IoNeuronPair(MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
+	IoNeuronPair(*this, MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
 }
 
 Nob * NNetModelWriterInterface::GetNob(NobId const id)
@@ -102,7 +102,7 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 			using enum NobType::Value;
 			case knot:	       upBaseKnotNew = make_unique<Knot>        (*pBaseKnot); break;
 			case neuron:	   upBaseKnotNew = make_unique<Neuron>      (*pBaseKnot); break;
-			case inputNeuron:  upBaseKnotNew = make_unique<InputNeuron> (*pBaseKnot); break;
+			case inputNeuron:  upBaseKnotNew = make_unique<InputNeuron> (StdSigGen(), *pBaseKnot); break;
 			case outputNeuron: upBaseKnotNew = make_unique<OutputNeuron>(*pBaseKnot); break;
 			case undefined:	   break;
 			default:           assert(false);

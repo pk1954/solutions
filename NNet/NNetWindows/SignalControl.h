@@ -10,11 +10,11 @@
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
 #include "SignalGenerator.h"
-#include "NNetParameters.h"
 #include "TimeGraph.h"
 
 using std::array;
 
+class Param;
 class ComputeThread;
 class NNetModelCommands;
 class NNetModelWriterInterface;
@@ -33,7 +33,7 @@ public:
 
 	~SignalControl() final;
 
-	void SetSignalGenerator(SignalGenerator * const);
+	void SetSigGen(SignalGenerator * const);
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
 
@@ -49,7 +49,11 @@ public:
 	void ScaleFreqCoord();
 	void ScaleVoltCoord();
 
+	static void SetParams(Param * const pParams) { m_pParameters = pParams; }
+
 private:
+
+	inline static Param * m_pParameters{ nullptr };
 
 	enum class tPos { NONE, TIME, BASE_FREQ, PEAK_FREQ, TIME_FREQ, BASE_VOLT, PEAK_VOLT, TIME_VOLT, BASA_FREQ, BASA_VOLT };
 

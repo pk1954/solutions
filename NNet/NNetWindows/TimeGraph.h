@@ -1,4 +1,4 @@
-// TimeGraph.h
+// #include "Neuron.h"
 //
 // NNetWindows
 
@@ -22,9 +22,10 @@ public:
 
 	~TimeGraph();
 
-	void SetSignalGenerator(SignalGenerator * const);
+	void SetSigGen(SignalGenerator * const);
 
 protected:
+
 	fPixel const STD_WIDTH  { 1.0_fPixel };
 	fPixel const HIGH_WIDTH { 3.0_fPixel };
 

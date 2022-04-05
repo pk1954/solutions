@@ -96,6 +96,7 @@ bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 
 void NNetModel::RecalcFilters()
 {
+	MonitorData & data = GetMonitorData();
 	GetMonitorData().Apply2AllSignals([this](Signal const & s) { s.RecalcFilter(m_param); });
 }
 

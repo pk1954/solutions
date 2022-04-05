@@ -97,8 +97,8 @@ SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound)
 
 void Neuron::Recalc() 
 {
-	m_factorW = 1.0f / m_pParameters->SpikeWidth().GetValue();
-	m_factorU = 4.0f * m_factorW * m_pParameters->NeuronPeakVolt().GetValue();
+	m_factorW = 1.0f / GetParam()->SpikeWidth().GetValue();
+	m_factorU = 4.0f * m_factorW * GetParam()->NeuronPeakVolt().GetValue();
 };
 
 mV Neuron::WaveFunction(fMicroSecs const time) const
@@ -117,7 +117,7 @@ void Neuron::Prepare()
 {
 	if (m_bTriggered)
 	{
-		if (m_usSinceLastPulse >= m_pParameters->SpikeWidth() + m_pParameters->RefractPeriod()) 
+		if (m_usSinceLastPulse >= GetParam()->SpikeWidth() + GetParam()->RefractPeriod()) 
 			m_bTriggered = false;
 	}
 	else 
@@ -128,7 +128,7 @@ void Neuron::Prepare()
 
 bool Neuron::CompStep()
 {
-	bool bTrigger { m_mVinputBuffer >= m_pParameters->Threshold() };
+	bool bTrigger { m_mVinputBuffer >= GetParam()->Threshold() };
 
 	if (bTrigger)
 	{
@@ -140,7 +140,7 @@ bool Neuron::CompStep()
 	}
 	else
 	{
-		m_usSinceLastPulse += m_pParameters->TimeResolution();
+		m_usSinceLastPulse += GetParam()->TimeResolution();
 	}
 
 	return m_bStopOnTrigger && bTrigger;
@@ -148,7 +148,7 @@ bool Neuron::CompStep()
 
 mV Neuron::GetNextOutput() const
 {
-	return (m_usSinceLastPulse <= m_pParameters->SpikeWidth())
+	return (m_usSinceLastPulse <= GetParam()->SpikeWidth())
 		   ? WaveFunction(m_usSinceLastPulse)
 		   : 0.0_mV;
 }

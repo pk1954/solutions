@@ -27,10 +27,8 @@ TimeGraph::~TimeGraph()
 	m_pHorzCoord->UnregisterObserver(*this); 
 }
 
-void TimeGraph::SetSignalGenerator(SignalGenerator * const pSigGen)
+void TimeGraph::SetSigGen(SignalGenerator * const pSigGen)
 {
-	if (m_pSigGen)
-		m_pSigGen->Unregister(*this);
 	m_pSigGen = pSigGen;
 	m_pSigGen->Register(*this); // signal generator data can be changed from outside
 }

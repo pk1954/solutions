@@ -99,15 +99,24 @@ public:
 	void     SelectSubtree(BaseKnot &, bool const);
 	void     Reconnect(NobId const);
 
-	UPSigGen NewSigGen()                        { return      m_sigGenerators.NewSigGen(); }
-	UPSigGen RemoveSigGen(wstring const & name) { return move(m_sigGenerators.RemoveSigGen(name)); }
-	SigGenId PushSigGen(UPSigGen upSigGen)      { return      m_sigGenerators.PushSigGen(move(upSigGen)); }
-	UPSigGen PopSigGen()                        { return move(m_sigGenerators.PopSigGen()); }
+	SignalGenerator * StdSigGen() { return m_sigGenList.StdSigGen(); }
 
-	UPNobList          & GetUPNobs()       { return m_Nobs; }
-	MonitorData        & GetMonitorData()  { return m_monitorData; }
-	Param              & GetParams()       { return m_param; }
-	UPSigGenList const & GetUPSigGenList() { return m_sigGenerators; }
+	UPSigGen NewSigGen   ()                           { return      m_sigGenList.NewSigGen   ();      }
+	UPSigGen NewSigGen   (wstring const & name)       { return      m_sigGenList.NewSigGen   (name);  }
+	UPSigGen RemoveSigGen(wstring const & name)       { return move(m_sigGenList.RemoveSigGen(name)); }
+	bool     IsInList    (wstring const & name) const { return      m_sigGenList.IsInList    (name);  }
+	bool     IsValid     (SigGenId const  id  ) const { return      m_sigGenList.IsValid     (id);    }
+	SigGenId FindSigGen  (wstring const & name) const { return      m_sigGenList.FindSigGen  (name);  }
+	SigGenId PushSigGen  (UPSigGen upSigGen)          { return      m_sigGenList.PushSigGen(move(upSigGen)); }
+	UPSigGen PopSigGen   ()                           { return move(m_sigGenList.PopSigGen()); }
+
+	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_sigGenList.GetSigGen(id); }
+	SignalGenerator       * GetSigGen(SigGenId const id)       { return m_sigGenList.GetSigGen(id); }
+
+	UPNobList          & GetUPNobs()      { return m_Nobs; }
+	MonitorData        & GetMonitorData() { return m_monitorData; }
+	Param              & GetParams()      { return m_param; }
+	UPSigGenList const & GetSigGenList()  { return m_sigGenList; }
 
 	void DeselectAllNobs     () const               { m_Nobs.SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }
@@ -120,7 +129,7 @@ public:
 private:
 
 	UPNobList        m_Nobs;
-	UPSigGenList     m_sigGenerators;
+	UPSigGenList     m_sigGenList;
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;

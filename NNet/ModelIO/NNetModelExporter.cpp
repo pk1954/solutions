@@ -74,19 +74,17 @@ void NNetModelExporter::writeNobs(wostream & out)
     m_pNMRI->Apply2AllC<IoConnector>([this, &out](IoConnector const & s) { writeNob(out, s); });
 }
 
-void NNetModelExporter::writeNobParameters(wostream & out) const   // Legacy
+void NNetModelExporter::writeSigGenData(wostream & out) const
 {
-    m_pNMRI->Apply2AllC<InputConnector>
+    m_pNMRI->GetSigGenList().Apply2All
     (
-        [this, &out](InputConnector const & inpConn)
+        [this, &out](auto const & upSigGen)
         { 
-            //using enum ParamType::Value;
-            //NobId           const   id     { getCompactIdVal(inpConn.GetId()) };
-            //SignalGenerator const & sigGen { inpConn.GetSignalGeneratorC() };
-            //out << L"SetParam" << id << inputBaseVolt << sigGen.Voltage  ().base << endl; 
-            //out << L"SetParam" << id << inputPeakVolt << sigGen.Voltage  ().peak << endl; 
-            //out << L"SetParam" << id << inputPeakFreq << sigGen.Frequency().peak << endl; 
-            //out << L"SetParam" << id << inputPeakTime << sigGen.TimePeak ()      << endl; 
+            out << L"SignalGenerator \"" 
+                << upSigGen->GetName() 
+                << "\" " 
+                << upSigGen->GetData() 
+                << endl;
         }
    );
 }
@@ -234,7 +232,7 @@ void NNetModelExporter::write(wostream & out)
     out << endl;
     writeNobs(out);
     out << endl;
-    writeNobParameters(out);
+    writeSigGenData(out);
     out << endl;
     writeTriggerSounds(out);
     out << endl;

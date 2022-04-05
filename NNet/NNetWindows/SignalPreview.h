@@ -1,4 +1,4 @@
-// PreviewControl.h
+// SignalPreview.h
 //
 // NNetWindows
 
@@ -10,19 +10,23 @@
 
 class BaseWindow;
 
-class PreviewControl : public TimeGraph
+class SignalPreview : public TimeGraph
 {
 public:
-	PreviewControl
+	SignalPreview
 	(
 		BaseWindow           const &,
 		PixFpDimension<fMicroSecs> &,
 		PixFpDimension<mV>         &
 	);
 
-	~PreviewControl() final;
+	~SignalPreview() final;
+
+	static void SetParams(Param const * const pParams) { m_pParameters = pParams; }
 
 private:
+
+	inline static Param const * m_pParameters{ nullptr };
 
 	PixFpDimension<mV> & m_vertCoord;
 

@@ -20,7 +20,7 @@ DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
     (
         [this](Pipe & pipe) // every outgoing pipe needs a new InputNeuron as terminator
         { 
-            auto upInputNeuron { make_unique<InputNeuron>(m_umPos) };
+            auto upInputNeuron { make_unique<InputNeuron>(m_pNMWI->StdSigGen(), m_umPos) };
             upInputNeuron->Select(pipe.IsSelected());
             upInputNeuron->AddOutgoing(pipe);            // prepare new InputNeuron as far as possible
             m_inputNeurons.push_back(move(upInputNeuron)); // store new InputNeuron for later

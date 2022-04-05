@@ -23,6 +23,9 @@
 // infrastructure
 
 #include "util.h"
+#include "AutoOpen.h"
+#include "UndoRedoMenu.h"
+#include "win32_baseWindow.h"
 #include "NNetCommand.h"
 #include "observerInterface.h"
 #include "ConnAnimationCommand.h"
@@ -46,13 +49,11 @@
 
 // application
 
-#include "win32_baseWindow.h"
 #include "win32_aboutBox.h"
 #include "Analyzer.h"
-#include "AutoOpen.h"
 #include "Neuron.h"
+#include "TimeGraph.h"
 #include "InputConnector.h"
-#include "UndoRedoMenu.h"
 #include "win32_NNetAppWindow.h"
 
 using std::wcout;
@@ -116,9 +117,14 @@ void NNetAppWindow::setModelInterface()
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	NNetWrappersSetModelInterface        (m_pNMRI);
-	Nob::SetParams(&m_pNMRI->GetParams());
+	Nob          ::SetParams(&m_pNMRI->GetParams());
+	SignalPreview::SetParams(&m_pNMRI->GetParams());
+	SignalControl::SetParams(&m_nmwi.GetParams());
 	m_nmwi.SetSimulationTime();
+	m_nmwi.StdSigGen()->SetData(m_pNMRI->GetParams().GetSigGenData());
+	m_signalDesigner.SetSigGen(m_nmwi.StdSigGen());
 }
+
 void NNetAppWindow::Start(MessagePump & pump)
 {
 	m_hwndApp = StartBaseWindow
@@ -132,25 +138,14 @@ void NNetAppWindow::Start(MessagePump & pump)
 	);
 
 	NNetImportTermination::Initialize(m_hwndApp);
-	m_appTitle   .Initialize(m_hwndApp);
-	m_preferences.Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
+	m_appTitle      .Initialize(m_hwndApp);
+	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
+	m_signalDesigner.Initialize(m_hwndApp, m_computeThread, m_runObservable, & m_modelCommands);
 
 	m_upModel = make_unique<NNetModel>();
 	m_nmwi.SetModel(m_upModel.get());
 	m_pNMRI = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
-
-	UPSigGen upSigGen { m_nmwi.NewSigGen() };
-	upSigGen->SetName(L"BaseSigGen");
-	m_pSigGenBase = upSigGen.get();
-	m_nmwi.PushSigGen(move(upSigGen));
-	m_signalDesigner.Initialize
-	(
-		m_hwndApp,
-		m_computeThread,
-		m_runObservable,
-		& m_modelCommands
-	);
 
 //	m_nmwi.SetHighSigObservable(&m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(  0ms);   // immediate refresh
@@ -227,9 +222,10 @@ void NNetAppWindow::Start(MessagePump & pump)
 	configureStatusBar();
 	adjustChildWindows();
 
-	m_monitorWindow .Move(PixelRect{ 200_PIXEL, 0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
-	m_miniNNetWindow.Move(PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
-	m_descWindow    .Move(PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
+	m_monitorWindow .Move(PixelRect{ 200_PIXEL,   0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
+	m_miniNNetWindow.Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
+	m_descWindow    .Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
+	m_signalDesigner.Move(PixelRect{ 100_PIXEL, 100_PIXEL, 600_PIXEL, 500_PIXEL }, true);
 
 	m_monitorWindow    .Show(false);
 	m_miniNNetWindow   .Show(true);
@@ -239,6 +235,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Show(true);
 	m_performanceWindow.Show(true);
 	m_descWindow       .Show(true);
+	m_signalDesigner   .Show(true);
 
 	if (! m_WinManager.GetWindowConfiguration())
 		Util::Show(m_hwndApp, true);

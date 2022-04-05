@@ -8,6 +8,7 @@
 #include "ERRHNDL.H"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
+#include "UPSigGenList.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
@@ -160,23 +161,48 @@ public:
 
     void operator() (Script & script) const final
     {
-        NobId            const id    { ScrReadNobId(script) };
-        ParamType::Value const param { ScrReadParamType(script) };
-        float                  fVal  { Cast2Float(script.ScrReadFloat()) };
-        if (InputConnector * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) })   // Legacy
+        NobId            const id       { ScrReadNobId(script) };
+        ParamType::Value const param    { ScrReadParamType(script) };
+        float                  fVal     { Cast2Float(script.ScrReadFloat()) };
+        if (InputConnector   * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) })   // Legacy
         {                                                                                         // Legacy
             pInpConn->Apply2All                                                                   // Legacy
             (                                                                                     // Legacy
                 [param, fVal](IoNeuron & n)                                                       // Legacy
                 {                                                                                 // Legacy
                     auto & inputNeuron { static_cast<InputNeuron &>(n) };                         // Legacy
-                    inputNeuron.GetSignalGenerator().SetParam(param, fVal);                       // Legacy
+                    inputNeuron.GetSigGen().SetParam(param, fVal);                       // Legacy
                 }                                                                                 // Legacy
             );                                                                                    // Legacy
         }                                                                                         // Legacy 
         else if ( InputNeuron * pInpNeuron { GetWriterInterface().GetNobPtr<InputNeuron*>(id) } ) // Legacy
         {
-            pInpNeuron->GetSignalGenerator().SetParam(param, fVal);
+            pInpNeuron->GetSigGen().SetParam(param, fVal);
+        }
+    }
+};
+
+class WrapSignalGenerator : public WrapperBase
+{
+public:
+    using WrapperBase::WrapperBase;
+
+    void operator() (Script & script) const final
+    {
+        NNetModelWriterInterface & nmwi       { GetWriterInterface() };
+        wstring            const   name       { script.ScrReadString() };
+        SigGenData         const   sigGenData { ScrReadSigGenData(script) };
+        SigGenId           const   sigGenId   { nmwi.FindSigGen(name) };
+        if (nmwi.IsValid(sigGenId))
+        {
+            SignalGenerator * pSigGen { nmwi.GetSigGen(sigGenId) };
+            pSigGen->SetData(sigGenData);
+        }
+        else
+        {
+            UPSigGen upSigGen { move(nmwi.NewSigGen(name)) };
+            upSigGen->SetData(sigGenData);
+            nmwi.PushSigGen(move(upSigGen));
         }
     }
 };
@@ -195,6 +221,7 @@ void NNetModelImporter::Initialize()
     SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this));
     SymbolTable::ScrDefConst(L"SetParam",        new WrapSetParam       (* this));
     SymbolTable::ScrDefConst(L"Voltage",         new WrapVoltage        (* this));
+    SymbolTable::ScrDefConst(L"SignalGenerator", new WrapSignalGenerator(* this));
 
     NobType::Apply2All
     (
@@ -204,9 +231,9 @@ void NNetModelImporter::Initialize()
             (
                 NobType::GetName(type.GetValue()), 
                 static_cast<unsigned long>(type.GetValue()) 
-           );
+            );
         }
-   );
+    );
 
     ParamType::Apply2AllParameters
     (
@@ -216,9 +243,9 @@ void NNetModelImporter::Initialize()
             (
                 ParamType::GetName(param), 
                 static_cast<unsigned long>(param) 
-           );
+            );
         }
-   );
+    );
 }
 
 void NNetModelImporter::importModel() 

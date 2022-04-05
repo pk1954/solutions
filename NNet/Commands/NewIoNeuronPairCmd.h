@@ -12,8 +12,12 @@
 class NewIoNeuronPairCmd : public NNetCommand
 {
 public:
-	explicit NewIoNeuronPairCmd(MicroMeterPnt const & pos)
-		: m_IoNeuronPair(pos)
+	explicit NewIoNeuronPairCmd
+	(
+		NNetModelWriterInterface & nmwi,
+		MicroMeterPnt      const & pos
+	)
+		: m_IoNeuronPair(nmwi, pos)
 	{}
 
 	~NewIoNeuronPairCmd() final = default;

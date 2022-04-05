@@ -10,11 +10,11 @@
 #include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "MicroMeterPosDir.h"
-#include "NNetParameters.h"
 #include "NobType.h"
 #include "NobId.h"
 
 class Nob;
+class Param;
 class DrawContext;
 
 using D2D1::ColorF;
@@ -123,9 +123,9 @@ protected:
 
 	mV m_mVinputBuffer { 0._mV };
 
-	inline static Param const * m_pParameters{ nullptr };
-
 	void SetType(NobType const type) { m_type = type; }
+
+	Param const * GetParam() const { return m_pParameters; }
 
 private:
 
@@ -134,6 +134,8 @@ private:
 	NobId   m_identifier  { NO_NOB };
 	bool    m_bSelected   { false };
 	bool    m_bEmphasized { false };
+
+	inline static Param const * m_pParameters{ nullptr };
 };
 
 MicroMeterPosDir CalcOffsetPosDir(Nob const &, MicroMeter const);

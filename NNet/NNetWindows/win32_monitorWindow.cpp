@@ -54,13 +54,11 @@ void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
-wstring const & MonitorWindow::GetTitle() const 
+wstring MonitorWindow::GetTitle() const 
 { 
-	static wstring const CAPTION { L"Monitor" };
-	static wstring const WARNING { L"Signal too high. Use auto scale." };
 	return (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
-           ? WARNING
-		   : CAPTION;
+           ? L"Signal too high. Use auto scale."
+		   : L"Monitor";
 }
 
 void MonitorWindow::OnPaint()

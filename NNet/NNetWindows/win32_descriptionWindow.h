@@ -33,8 +33,7 @@ private:
 	HWND  m_hwndEdit  { nullptr };
 	bool  m_bDirty    { false };
 
-	wstring const CAPTION { L"Model description" };
-	wstring const & GetTitle() const final { return CAPTION; }
+	wstring GetTitle() const final { return L"Model description"; }
 
 	void OnPaint     () final { /* all painting done by edit control */ }
 	bool OnSize      (PIXEL  const, PIXEL  const) final;

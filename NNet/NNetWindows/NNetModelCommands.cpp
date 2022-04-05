@@ -487,7 +487,7 @@ void NNetModelCommands::NewIoNeuronPair(MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<NewIoNeuronPairCmd>(pos));
+	m_pCmdStack->PushCommand(make_unique<NewIoNeuronPairCmd>(* m_pNMWI, pos));
 }
 
 void NNetModelCommands::RestrictSelection(NobType::Value const val)

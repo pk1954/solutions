@@ -14,7 +14,7 @@
 #include "NNetModelWriterInterface.h"
 #include "SignalDesigner.h"
 
-//void NNetAppMenu::RefreshSigGenMenu(UPSigGenList const & list)
+//void NNetAppMenu::RefreshSigGenMenu(UPSigGenList const & list)  TODO
 //{
 //    DestroyMenu(m_hMenuSigGen);
 //
@@ -87,18 +87,16 @@ void SignalDesigner::Initialize
 
 	m_upSignalControl1 = makeSignalControl(computeThread, runObservable);
 	m_upSignalControl2 = makeSignalControl(computeThread, runObservable);
-	m_upPreviewControl = make_unique<PreviewControl>(*this, m_horzCoord, m_vertCoordVolt2);
+	m_upSignalPreview  = make_unique<SignalPreview>(*this, m_horzCoord, m_vertCoordVolt2);
 }
 
-void SignalDesigner::SetSignalGenerator(SignalGenerator * const pSigGen)
+void SignalDesigner::SetSigGen(SignalGenerator * const pSigGen)
 {
-	if (m_pSigGen)
-		m_pSigGen->GetParams().UnregisterObserver(*this);
 	m_pSigGen = pSigGen;
-	m_pSigGen->GetParams().RegisterObserver(*this);
-	m_upSignalControl1->SetSignalGenerator(m_pSigGen);
-	m_upSignalControl2->SetSignalGenerator(m_pSigGen);
-	m_upPreviewControl->SetSignalGenerator(m_pSigGen);
+	m_upSignalControl1->SetSigGen(m_pSigGen);
+	m_upSignalControl2->SetSigGen(m_pSigGen);
+	m_upSignalPreview ->SetSigGen(m_pSigGen);
+	SetCaption();
 }
 
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
@@ -150,11 +148,6 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 	}
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
-}
-
-void SignalDesigner::OnClose()
-{
-	Stop();
 }
 
 void SignalDesigner::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
@@ -227,28 +220,31 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_upVertScaleVolt2->SetOrthoOffset(fPixLeftOffset);
 		m_upVertScaleVolt2->SetOrientation(true);
 
-		m_upPreviewControl->Move(V_SCALE_WIDTH, height - pixTileHeight,  width - V_SCALE_WIDTH, pixControlHeight, true);
+		m_upSignalPreview ->Move(V_SCALE_WIDTH, height - pixTileHeight,  width - V_SCALE_WIDTH, pixControlHeight, true);
 		m_upVertScaleVolt2->Move(0_PIXEL,       height - pixTileHeight,          V_SCALE_WIDTH, pixControlHeight, true);
 		m_upHorzScale3    ->Move(V_SCALE_WIDTH, height - H_SCALE_HEIGHT, width - V_SCALE_WIDTH, H_SCALE_HEIGHT,   true);
 
-		m_upPreviewControl->Show(true);
-		m_upHorzScale3    ->Show(true);
+		m_upSignalPreview->Show(true);
+		m_upHorzScale3   ->Show(true);
 	}
 
 	m_upSignalControl1->Move(V_SCALE_WIDTH,          0_PIXEL, pixControlWidth, pixControlHeight, true);
 	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
-	mV    const mVpeakAmplitude    { m_pSigGen->Amplitude().Peak() };
-	mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
-	PIXEL const pixVertScaleLen    { height - H_SCALE_HEIGHT };
-	mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
+	if (m_pSigGen)
+	{
+		mV    const mVpeakAmplitude    { m_pSigGen->Amplitude().Peak() };
+		mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
+		PIXEL const pixVertScaleLen    { height - H_SCALE_HEIGHT };
+		mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
 
-	m_vertCoordVolt1.SetPixelSize(mVpixelSize);
-	m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-	m_vertCoordVolt1.SetZoomFactor(1.3f);
+		m_vertCoordVolt1.SetPixelSize(mVpixelSize);
+		m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
+		m_vertCoordVolt1.SetZoomFactor(1.3f);
 
-	m_vertCoordVolt2.SetPixelSize(mVpixelSize);
-	m_vertCoordVolt2.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-	m_vertCoordVolt2.SetZoomFactor(1.3f);
+		m_vertCoordVolt2.SetPixelSize(mVpixelSize);
+		m_vertCoordVolt2.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
+		m_vertCoordVolt2.SetZoomFactor(1.3f);
+	}
 }

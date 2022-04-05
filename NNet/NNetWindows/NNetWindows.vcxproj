@@ -580,7 +580,7 @@
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
-    <ClCompile Include="PreviewControl.cpp" />
+    <ClCompile Include="SignalPreview.cpp" />
     <ClCompile Include="SignalControl.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="SignalDesigner.cpp" />
@@ -607,7 +607,7 @@
     <ClInclude Include="MonitorControl.h" />
     <ClInclude Include="NNetModelCommands.h" />
     <ClInclude Include="NNetWrappers.h" />
-    <ClInclude Include="PreviewControl.h" />
+    <ClInclude Include="SignalPreview.h" />
     <ClInclude Include="SignalControl.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="Preferences.h" />

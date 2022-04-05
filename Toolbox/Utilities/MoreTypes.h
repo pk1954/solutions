@@ -59,6 +59,11 @@ public:
 		peak = max(v, base);
 	}
 
+	friend wostream & operator<< (wostream & out, BASE_PEAK<UNIT> const & data)
+	{
+		out << setw(5) << data.base << L' ' << data.peak << L' ';
+		return out;
+	}
 private:
 	UNIT base;
 	UNIT peak;

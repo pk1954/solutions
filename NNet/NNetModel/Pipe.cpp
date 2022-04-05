@@ -79,8 +79,8 @@ void Pipe::ClearDynamicData()
 
 void Pipe::recalc()
 {
-	meterPerSec  const pulseSpeed    { meterPerSec(m_pParameters->GetParameterValue(ParamType::Value::pulseSpeed)) };
-	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, m_pParameters->TimeResolution()) };
+	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
+	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
 	MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
 	unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
 	m_potential.resize(iNrOfSegments, 0.0_mV);
