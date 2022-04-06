@@ -22,9 +22,9 @@ public:
 
 	WinManager();
 
-	void AddWindow(wstring const &, UINT const, HWND,               bool const, bool const);
-	void AddWindow(wstring const &, UINT const, BaseWindow const &, bool const, bool const);
-	void AddWindow(wstring const &, UINT const, BaseDialog const &, bool const, bool const);
+	void AddWindow(wstring const &, UINT const, HWND,         bool const, bool const);
+	void AddWindow(wstring const &, UINT const, BaseWindow &, bool const, bool const);
+	void AddWindow(wstring const &, UINT const, BaseDialog &, bool const, bool const);
 
 	void RemoveWindow(UINT const id)
 	{
@@ -33,14 +33,19 @@ public:
 
 	void RemoveAll()
 	{
-		m_map.clear ();
+		m_map.clear();
+	}
+
+	void TriggerAll()
+	{
+		Apply2All([](BaseWindow &b){ b.Trigger(); });
 	}
 
 	void Apply2All(auto const & f) const
 	{
 		for (const auto & [key, value] : m_map)
 		{
-			BaseWindow const * const pBaseWindow { value.m_pBaseWindow };
+			BaseWindow * const pBaseWindow { value.m_pBaseWindow };
 			if (pBaseWindow)
 				f(*pBaseWindow);
 		}
@@ -125,11 +130,11 @@ private:
 
     struct MAP_ELEMENT
     {
-        wstring    const   m_wstr;
-		BaseWindow const * m_pBaseWindow;    // Normally WinManager handles BaseWindows
-		HWND       const   m_hwnd;           // but in some cases also naked HWNDs are used
-		bool       const   m_bTrackPosition; // if true, winManager sets window position from config file
-		bool       const   m_bTrackSize;     // if true, winManager sets window size from config file
+		BaseWindow  * m_pBaseWindow;    // Normally WinManager handles BaseWindows
+		wstring const m_wstr;
+		HWND    const m_hwnd;           // but in some cases also naked HWNDs are used
+		bool    const m_bTrackPosition; // if true, winManager sets window position from config file
+		bool    const m_bTrackSize;     // if true, winManager sets window size from config file
     };
 
     unordered_map<UINT, MAP_ELEMENT> m_map;
@@ -144,11 +149,11 @@ private:
 
 	void addWindow
 	(
-		wstring    const &,
-		UINT       const,
-		HWND       const,
-		BaseWindow const * const,
-		bool       const,
-		bool       const
+		wstring      const &,
+		UINT         const,
+		HWND         const,
+		BaseWindow * const,
+		bool         const,
+		bool         const
 	);
 };

@@ -33,13 +33,7 @@ public:
 
 	void SetSigGen(SignalGenerator * const);
 
-	wstring GetTitle() const final
-	{
-		wstring title(L"Signal designer: ");
-		if (m_pSigGen)
-			title += m_pSigGen->GetName();
-		return title;
-	}
+	wstring GetTitle() const final;
 
 	enum class DESIGN { INTEGRATED, STACKED };
 

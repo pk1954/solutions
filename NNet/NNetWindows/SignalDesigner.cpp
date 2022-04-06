@@ -123,9 +123,18 @@ void SignalDesigner::Stop()
 	DestroyWindow();
 }
 
+wstring SignalDesigner::GetTitle() const
+{
+	wstring title(L"Signal designer: ");
+	if (m_pSigGen)
+		title += m_pSigGen->GetName();
+	return title;
+}
+
 void SignalDesigner::DoPaint()
 {
 	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
+	SetCaption();
 }
 
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
