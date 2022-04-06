@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include "ERRHNDL.H"
 #include "win32_util.h"
+#include "win32_util_resource.h"
 #include "win32_baseWindow.h"
 #include "win32_baseDialog.h"
 
@@ -26,19 +27,15 @@ public:
 	void AddWindow(wstring const &, UINT const, BaseWindow &, bool const, bool const);
 	void AddWindow(wstring const &, UINT const, BaseDialog &, bool const, bool const);
 
-	void RemoveWindow(UINT const id)
+	void RemoveWindow(UINT const id) { m_map.erase(id);	}
+	void RemoveAll   ()              { m_map.clear(); }
+	void SetCaptions () 
 	{
-		m_map.erase(id);
-	}
-
-	void RemoveAll()
-	{
-		m_map.clear();
-	}
-
-	void TriggerAll()
-	{
-		Apply2All([](BaseWindow &b){ b.Trigger(); });
+		Apply2All
+		(
+			[](BaseWindow &b)
+			{ ::SendMessage(b.GetWindowHandle(), WM_APP_CAPTION, 0, 0); }
+		);
 	}
 
 	void Apply2All(auto const & f) const

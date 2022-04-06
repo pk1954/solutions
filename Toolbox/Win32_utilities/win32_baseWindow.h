@@ -27,8 +27,7 @@ public:
 
 	void SetCaption() const;
 	
-	virtual void    SetCaption(wstring const &) const;
-	virtual wstring GetTitle  () const;
+	virtual wstring GetTitle() const;
 
 	BaseWindow const * GetParentBaseWin() const;
 

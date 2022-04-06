@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <chrono>
 #include "MoreTypes.h"
+#include "win32_util_resource.h"
 #include "win32_baseWindow.h"
 
 using std::bit_cast;
@@ -104,18 +105,14 @@ void BaseWindow::OnMouseLeave()
 
 void BaseWindow::SetCaption() const
 {
-    SetCaption(Format2wstring(m_usPaintTime, 1));
-}
-
-void BaseWindow::SetCaption(wstring const & text) const
-{
+    wstring const caption { m_bPerfMonMode ? Format2wstring(m_usPaintTime, 1) : GetTitle() };
     if (WindowHasCaption())
     {
-        SetWindowText(m_bPerfMonMode ? text : GetTitle());
+        SetWindowText(caption);
     }
     else if (BaseWindow const * pBaseWinParent{ GetParentBaseWin() } )
     {
-        pBaseWinParent->SetCaption(text);
+        pBaseWinParent->SetWindowText(caption);
     }
 }
 
@@ -191,6 +188,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
 
     case WM_SETCURSOR:
         return OnSetCursor(wParam, lParam);
+
+    case WM_APP_CAPTION:
+        SetCaption();
+        break;
 
     default:
         break;

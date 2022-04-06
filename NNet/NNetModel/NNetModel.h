@@ -93,11 +93,11 @@ public:
 
 	Nob * GetNob (NobId const);
 
-	bool     Compute();
-	void     ResetModel();
-	float    SetParam(ParamType::Value const, float const);
-	void     SelectSubtree(BaseKnot &, bool const);
-	void     Reconnect(NobId const);
+	bool  Compute();
+	void  ResetModel();
+	float SetParam(ParamType::Value const, float const);
+	void  SelectSubtree(BaseKnot &, bool const);
+	void  Reconnect(NobId const);
 
 	SignalGenerator * StdSigGen() { return m_sigGenList.StdSigGen(); }
 

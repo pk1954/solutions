@@ -13,6 +13,7 @@ inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 // application defined window messages
 
 #define WM_APP_UI_CALL              WM_APP
+#define WM_APP_CAPTION              (WM_APP + 1)
 
 // identifiers below 100 are reserved for win32_utilities
 
