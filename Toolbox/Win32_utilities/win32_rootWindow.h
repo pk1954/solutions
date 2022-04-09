@@ -20,8 +20,13 @@ using std::wstring;
 using std::function;
 using std::vector;
 
+class RootWindow;
+
 inline LONG_PTR GetUserDataPtr(HWND hwnd)               { return GetWindowLongPtr(hwnd, GWLP_USERDATA); }
 inline void     SetUserDataPtr(HWND hwnd, LONG_PTR ptr) { (void) SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr); }
+
+RootWindow * GetRootWindow(HWND const);
+RootWindow * GetParentRootWindow(HWND const);
 
 class RootWindow : public ObserverInterface
 {
@@ -52,12 +57,19 @@ public:
 	bool          IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
 	bool          IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
 
+	RootWindow * GetRootWindow      () { return ::GetRootWindow      (m_hwnd); }
+	RootWindow * GetParentRootWindow() { return ::GetParentRootWindow(m_hwnd); }
+
+	RootWindow const * GetRootWindow      () const { return ::GetRootWindow      (m_hwnd); }
+	RootWindow const * GetParentRootWindow() const { return ::GetParentRootWindow(m_hwnd); }
+
 	bool WindowHasCaption()      const { return ::GetWindowLong  (m_hwnd, GWL_STYLE) & WS_CAPTION; }
 	bool IsWindowVisible()       const { return ::IsWindowVisible(m_hwnd); }
 	HWND SetCapture()            const { return ::SetCapture     (m_hwnd); }
     HWND SetFocus()              const { return ::SetFocus       (m_hwnd); }
-    HWND GetDlgItem(int const i) const { return ::GetDlgItem     (m_hwnd, i); }
-    bool IsCaptured()            const { return ::GetCapture() == m_hwnd; }
+	HWND GetParent()             const { return ::GetParent      (m_hwnd); }
+	HWND GetDlgItem(int const i) const { return ::GetDlgItem     (m_hwnd, i); }
+	bool IsCaptured()            const { return ::GetCapture() == m_hwnd; }
 	int	 GetWindowTextLength()   const { return ::GetWindowTextLength(m_hwnd); }    
 
 	bool SetWindowText(LPCWSTR        const   s) const { return ::SetWindowText(m_hwnd, s); }
@@ -238,11 +250,14 @@ public:
 	void ShowRefreshRateDlg(bool const bShow) { m_bShowRefreshRateDlg = bShow; }
 	void SetWindowVisibility(tOnOffAuto const);
 
+	void SetParentContextMenueMode(bool const b) { m_bParentContextMenue = b; }
+
 protected:
 
 	void SetWindowHandle(HWND const);
 
-	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	virtual bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	virtual bool OnMenuCommand(UINT   const, HMENU  const);
 	virtual bool OnSize(PIXEL const, PIXEL const);
 	virtual void OnClose();
 
@@ -258,6 +273,7 @@ private:
 	bool       m_bShowRefreshRateDlg { true };
 	HWND       m_hwndApp             { nullptr };
 	HWND       m_hwnd                { nullptr };
+	bool       m_bParentContextMenue { false };
 
 	void addWinMenu(HMENU const, wstring const &) const;
 	void adjustWinMenu(HMENU const) const;
@@ -268,7 +284,4 @@ private:
 		if (m_visibilityCriterion)
 			Show(ApplyAutoCriterion(onOffAuto, m_visibilityCriterion));
 	}
-
 };
-
-RootWindow * GetRootWindow(HWND const);

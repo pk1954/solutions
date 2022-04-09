@@ -14,26 +14,6 @@
 #include "NNetModelWriterInterface.h"
 #include "SignalDesigner.h"
 
-//void NNetAppMenu::RefreshSigGenMenu(UPSigGenList const & list)  TODO
-//{
-//    DestroyMenu(m_hMenuSigGen);
-//
-//    m_hMenuSigGen = Util::PopupMenu(m_hMenu, L"&Signal generators");
-//    {
-//        AppendMenu(m_hMenuSigGen, MF_STRING, IDD_SIGNAL_GENERATOR_BASE, L"&Base");
-//        unsigned int uiId { IDD_SIGNAL_GENERATOR_BASE };
-//        list.Apply2All
-//        (
-//            [this, &uiId](SignalGenerator const * pSigGen)
-//            {
-//                AppendMenu(m_hMenuSigGen, MF_STRING, ++uiId, pSigGen->GetName().c_str());
-//            }
-//        );
-//        AppendMenu(m_hMenuSigGen, MF_STRING, IDD_NEW_SIGNAL_GENERATOR, L"Create &new");
-//    }
-//}
-
-
 void SignalDesigner::Initialize
 (
 	HWND          const   hwndParent,
@@ -42,7 +22,7 @@ void SignalDesigner::Initialize
 	NNetModelCommands   * pCommands
 )
 {
-	HWND hwnd = GraphicsWindow::Initialize
+	HWND hwndSigDes = GraphicsWindow::Initialize
 	(
 		hwndParent, 
 		L"ClassSigDesWindow", 
@@ -59,12 +39,12 @@ void SignalDesigner::Initialize
 	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
-	m_upHorzScale1     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
-	m_upHorzScale2     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
-	m_upHorzScale3     = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
-	m_upVertScaleFreq  = make_unique<Scale<fHertz    >>(hwnd, true,  m_vertCoordFreq);
-	m_upVertScaleVolt1 = make_unique<Scale<mV        >>(hwnd, true,  m_vertCoordVolt1);
-	m_upVertScaleVolt2 = make_unique<Scale<mV        >>(hwnd, true,  m_vertCoordVolt2);
+	m_upHorzScale1     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
+	m_upHorzScale2     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
+	m_upHorzScale3     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
+	m_upVertScaleFreq  = make_unique<Scale<fHertz    >>(hwndSigDes, true,  m_vertCoordFreq);
+	m_upVertScaleVolt1 = make_unique<Scale<mV        >>(hwndSigDes, true,  m_vertCoordVolt1);
+	m_upVertScaleVolt2 = make_unique<Scale<mV        >>(hwndSigDes, true,  m_vertCoordVolt2);
 
 	m_upHorzScale1->SetOrientation(false);
 	m_upHorzScale1->Show(true);
@@ -88,6 +68,16 @@ void SignalDesigner::Initialize
 	m_upSignalControl1 = makeSignalControl(computeThread, runObservable);
 	m_upSignalControl2 = makeSignalControl(computeThread, runObservable);
 	m_upSignalPreview  = make_unique<SignalPreview>(*this, m_horzCoord, m_vertCoordVolt2);
+
+	m_upHorzScale1    ->SetParentContextMenueMode(true);
+	m_upHorzScale2    ->SetParentContextMenueMode(true);
+	m_upHorzScale3    ->SetParentContextMenueMode(true);
+	m_upVertScaleFreq ->SetParentContextMenueMode(true);
+	m_upVertScaleVolt1->SetParentContextMenueMode(true);
+	m_upVertScaleVolt2->SetParentContextMenueMode(true);
+	m_upSignalControl1->SetParentContextMenueMode(true);
+	m_upSignalControl2->SetParentContextMenueMode(true);
+	m_upSignalPreview ->SetParentContextMenueMode(true);
 }
 
 void SignalDesigner::SetSigGen(SignalGenerator * const pSigGen)

@@ -221,6 +221,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->NewSignalGenerator();
         break;
 
+    case IDD_SELECT_SIGNAL_GENERATOR:
+        m_pModelCommands->SetSignalGenerator(SigGenId(lParam));
+        break;
+        
     case IDM_UNDO:
         m_pModelCommands->UndoCommand();
         break;
@@ -258,7 +262,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_NNET_REFRESH_RATE:
-        m_pMainWindow->PostMessage(WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0);
+        m_pMainWindow->PostCommand(IDD_REFRESH_RATE_DIALOG, 0);
         break;
 
     case IDD_CONNECT:

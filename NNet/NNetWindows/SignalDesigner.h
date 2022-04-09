@@ -69,7 +69,7 @@ private:
 	void DoPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
-	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
+	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<fHertz>        m_vertCoordFreq;
@@ -86,4 +86,5 @@ private:
 	unique_ptr<SignalPreview>     m_upSignalPreview;
 	SignalGenerator             * m_pSigGen   { nullptr };
 	NNetModelCommands           * m_pCommands { nullptr };
+	HMENU                         m_hMenu     { nullptr };
 };

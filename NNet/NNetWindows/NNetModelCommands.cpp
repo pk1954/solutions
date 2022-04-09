@@ -51,6 +51,7 @@
 #include "SetHighlightedSignalCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
+#include "SetSigGenCmd.h"
 #include "SetTriggerSoundCommand.h"
 #include "SizeSelectionCmd.h"
 #include "SizeSensorCmd.h"
@@ -413,6 +414,13 @@ void NNetModelCommands::NewSignalGenerator()
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<NewSigGenCmd>());
+}
+
+void NNetModelCommands::SetSignalGenerator(SigGenId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << id << endl;
+	m_pCmdStack->PushCommand(make_unique<SetSigGenCmd>(id));
 }
 
 void NNetModelCommands::SizeSelection(float const fFactor)

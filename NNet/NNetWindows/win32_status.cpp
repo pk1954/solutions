@@ -101,7 +101,7 @@ HWND WINAPI StatusBar::addControl
     LPCTSTR const lpWindowName,
 	int     const width,
     DWORD   const dwStyle,
-    int     const hMenu
+    HMENU   const hMenu
 )
 {
 	int   const iWidth   { width ? width : static_cast<int>(wcslen(lpWindowName)) };
@@ -139,13 +139,13 @@ HWND WINAPI StatusBar::AddStaticControl(int const width)
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddButton(LPCTSTR const lpWindowName, int const hMenu, DWORD const dwStyle)
+HWND WINAPI StatusBar::AddButton(LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle)
 { 
 	HWND hwnd = addControl(WC_BUTTON, lpWindowName, 0, dwStyle, hMenu);
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddTrackBar(int const hMenu)
+HWND WINAPI StatusBar::AddTrackBar(HMENU const hMenu)
 { 
 	HWND hwnd = addControl(TRACKBAR_CLASS, L"   Trackbar Control   ", 0, WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu);
 	return hwnd;

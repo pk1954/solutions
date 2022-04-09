@@ -183,6 +183,72 @@ void Util::StdOutConsole()
 HMENU Util::PopupMenu(HMENU const hMenuParent, LPCTSTR const text)
 {
     HMENU hMenuPopup = CreatePopupMenu();
-    AppendMenu(hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text);
+    ::AppendMenu(hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text);
     return hMenuPopup;
+}
+
+void Util::SetNotifyByPos(HMENU const hMenu)  // activate MNS_NOTIFYBYPOS -> WM_MENUECOMMAND will be send
+{
+    MENUINFO m_mi = { 0 };
+    m_mi.cbSize = sizeof(m_mi);
+    m_mi.fMask = MIM_STYLE;
+    m_mi.dwStyle = MNS_NOTIFYBYPOS;
+    SetMenuInfo(hMenu, &m_mi);
+}
+
+void Util::SetMenuItemData
+(
+    HMENU    const hMenu,
+    UINT     const uiIndex,
+    UINT_PTR const data
+)
+{
+    MENUITEMINFO m_mii = { 0 };
+    m_mii.cbSize = sizeof(m_mii);
+    m_mii.fMask = MIIM_DATA;
+    m_mii.dwItemData = data;
+    bool bRes = SetMenuItemInfo(hMenu, uiIndex, true, &m_mii);
+    assert(bRes);
+}
+
+UINT_PTR Util::GetMenuItemData
+(
+    HMENU const hMenu,
+    UINT  const uiIndex
+)
+{
+    MENUITEMINFO m_mii = { 0 };
+    m_mii.cbSize = sizeof(m_mii);
+    m_mii.fMask = MIIM_DATA;
+    bool bRes = GetMenuItemInfo(hMenu, uiIndex, true, &m_mii);
+    assert(bRes);
+    return m_mii.dwItemData;
+}
+
+void Util::AddMenu
+(
+    HMENU    const hMenu,
+    UINT     const uFlags,
+    UINT_PTR const uIDNewItem,
+    LPCWSTR  const lpNewItem
+)
+{
+    ::AppendMenu(hMenu, uFlags, uIDNewItem, lpNewItem);
+    SetMenuItemData(hMenu, GetMenuItemCount(hMenu) - 1, uIDNewItem);
+}
+
+void Util::InsertMenuItem
+(
+    HMENU    const   hMenu,
+    UINT     const   uiPos,  // zero based position in menue
+    UINT_PTR const   uIDNewItem,
+    wstring  const & lpNewItem
+)
+{
+    MENUITEMINFO m_mii = { 0 };
+    m_mii.cbSize = sizeof(m_mii);
+    m_mii.fMask = MIIM_TYPE|MIIM_DATA|MIIM_STRING;
+    m_mii.dwItemData = uIDNewItem;
+    m_mii.dwTypeData = const_cast<LPTSTR>(lpNewItem.c_str());
+    ::InsertMenuItem(hMenu, uiPos, true, &m_mii);
 }

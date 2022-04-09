@@ -74,15 +74,6 @@ HWND BaseWindow::StartBaseWindow
 
 wstring BaseWindow::GetTitle() const { return L""; }
 
-BaseWindow const * BaseWindow::GetParentBaseWin() const
-{
-    if (HWND hwndParent { GetParent(GetWindowHandle()) })
-    {
-        return static_cast<BaseWindow *>(GetRootWindow(hwndParent));
-    }
-    return nullptr;
-}
-
 void BaseWindow::trackMouse(bool const bOn)
 {
     TRACKMOUSEEVENT tme;
@@ -110,7 +101,7 @@ void BaseWindow::SetCaption() const
     {
         SetWindowText(caption);
     }
-    else if (BaseWindow const * pBaseWinParent{ GetParentBaseWin() } )
+    else if (BaseWindow const * pBaseWinParent{ static_cast<BaseWindow const *>(GetParentRootWindow()) } )
     {
         pBaseWinParent->SetWindowText(caption);
     }

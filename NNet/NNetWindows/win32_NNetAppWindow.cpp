@@ -109,6 +109,7 @@ void NNetAppWindow::setModelInterface()
 	m_modelCommands    .SetModelInterface(&m_nmwi);
 	m_computeThread    .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
+	m_appMenu          .SetModelInterface(m_pNMRI);
 	m_appTitle         .SetModelInterface(m_pNMRI);
 	m_cmdStack         .SetModelInterface(m_pNMRI);
 	m_NNetController   .SetModelInterface(m_pNMRI);
@@ -206,6 +207,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_staticModelObservable .RegisterObserver(m_performanceWindow);
 	m_staticModelObservable .RegisterObserver(m_appTitle);
 	m_staticModelObservable .RegisterObserver(m_undoRedoMenu);
+	m_staticModelObservable .RegisterObserver(m_appMenu);
 	m_highlightSigObservable.RegisterObserver(m_mainNNetWindow);
 	m_highlightSigObservable.RegisterObserver(m_monitorWindow);
 	m_cursorPosObservable   .RegisterObserver(m_crsrWindow);

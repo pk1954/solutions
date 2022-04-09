@@ -117,4 +117,6 @@
 #define       IDD_DISC_IOCONNECTOR           676
 #define       IDD_SPLIT_NEURON               678
 
-#define       IDD_NEW_SIGNAL_GENERATOR       700
+#define       IDD_STD_SIGNAL_GENERATOR       700
+#define       IDD_SELECT_SIGNAL_GENERATOR    701
+#define       IDD_NEW_SIGNAL_GENERATOR       702

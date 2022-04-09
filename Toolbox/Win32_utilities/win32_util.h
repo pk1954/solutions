@@ -378,4 +378,9 @@ namespace Util
     void      StdOutConsole();
     bool      EscapeKeyPressed();
     HMENU     PopupMenu(HMENU const, LPCTSTR const);
+    void      SetNotifyByPos(HMENU const);
+    void      SetMenuItemData(HMENU const, UINT const, UINT_PTR const);
+    UINT_PTR  GetMenuItemData(HMENU const, UINT const);
+    void      AddMenu        (HMENU const, UINT const, UINT_PTR const, LPCWSTR const);
+    void      InsertMenuItem (HMENU const, UINT const, UINT_PTR const, wstring const &);
 };

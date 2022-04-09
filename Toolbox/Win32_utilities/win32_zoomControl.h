@@ -23,10 +23,10 @@ public:
 		HWND hwndStatusBar = pStatusBar->GetWindowHandle();
 
 		pStatusBar->AddStaticControl(L"Size");
-		pStatusBar->AddButton       (L" - ",     IDM_ZOOM_OUT, BS_PUSHBUTTON); 
-		pStatusBar->AddTrackBar     (            IDM_ZOOM_TRACKBAR); 
-		pStatusBar->AddButton       (L" + ",     IDM_ZOOM_IN,  BS_PUSHBUTTON); 
-		pStatusBar->AddButton       (L"  Fit  ", IDM_FIT_ZOOM, BS_PUSHBUTTON); 
+		pStatusBar->AddButton       (L" - ",     HMENU(IDM_ZOOM_OUT), BS_PUSHBUTTON); 
+		pStatusBar->AddTrackBar     (            HMENU(IDM_ZOOM_TRACKBAR)); 
+		pStatusBar->AddButton       (L" + ",     HMENU(IDM_ZOOM_IN),  BS_PUSHBUTTON); 
+		pStatusBar->AddButton       (L"  Fit  ", HMENU(IDM_FIT_ZOOM), BS_PUSHBUTTON); 
 
 		long const lMinPos = Cast2Long(dMin);
 		long const lMaxPos = Cast2Long(dMax);

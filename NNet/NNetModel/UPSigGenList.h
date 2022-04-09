@@ -46,6 +46,8 @@ public:
 
 private:
 
+    inline static wstring STD_SIG_GEN_NAME { L"Standard" };
+
     vector<UPSigGen> m_list;
 
     vector<UPSigGen>::      iterator getSigGen(wstring const &);

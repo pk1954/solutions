@@ -9,6 +9,7 @@
 #include "Uniform2D.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
+#include "UPSigGenList.h"
 #include "MonitorData.h"
 #include "IoNeuron.h"
 #include "NobType.h"
@@ -93,6 +94,7 @@ public:
     void SetParameter        (ParamType::Value const, float const);
     void SetSigGenData       (SignalGenerator &, SigGenData const &);
     void SetNob              (NobId const, MicroMeterPosDir const);
+    void SetSignalGenerator  (SigGenId const);
     void SetTriggerSound     (NobId const, SoundDescr const &);
     void SizeSelection       (float const);
     void SizeSensor          (SignalId const &, float const);

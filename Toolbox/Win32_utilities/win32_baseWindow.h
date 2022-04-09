@@ -29,8 +29,6 @@ public:
 	
 	virtual wstring GetTitle() const;
 
-	BaseWindow const * GetParentBaseWin() const;
-
 	static void SetPerfMonMode(bool const b) { m_bPerfMonMode = b; }
 	static bool PerfMonMode() { return m_bPerfMonMode; }
 

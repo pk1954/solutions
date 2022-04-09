@@ -46,6 +46,8 @@ public:
 	void SetName(wstring const & name) { m_name = name; }
 	wstring const & GetName() const { return m_name; }
 
+	UPSigGenList const & GetSigGenList() const {return m_list; }
+
 	void SetFreqBase(fHertz const);
 	void SetFreqPeak(fHertz const);
 	void SetBaseVolt(mV const);

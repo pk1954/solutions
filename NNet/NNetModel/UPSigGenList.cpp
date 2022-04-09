@@ -9,7 +9,7 @@
 UPSigGenList::UPSigGenList()
 {
     UPSigGen upSigGen { NewSigGen() };
-    upSigGen->SetName(L"StdSigGen");
+    upSigGen->SetName(STD_SIG_GEN_NAME);
     PushSigGen(move(upSigGen));
 }
 

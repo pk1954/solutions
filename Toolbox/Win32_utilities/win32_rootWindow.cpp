@@ -15,7 +15,15 @@ RootWindow * GetRootWindow(HWND const hwnd)
 {
 	auto pRootWin = bit_cast<RootWindow *>(GetUserDataPtr(hwnd));
 	return (pRootWin && pRootWin->GetWindowHandle())
-		   ? pRootWin
+		? pRootWin
+		: nullptr;
+}
+
+RootWindow * GetParentRootWindow(HWND const hwnd)
+{
+	HWND hwndParent { GetParent(hwnd) };
+	return hwndParent
+		   ? GetRootWindow(hwndParent)
 		   : nullptr;
 }
 
@@ -78,6 +86,12 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 
 	LPARAM lParam = AddContextMenuEntries(hPopupMenu); // arbitrary parameter, forwarded as lParam  
 
+	if (m_bParentContextMenue)
+	{
+		if (RootWindow * pParentRootWin { GetParentRootWindow() })
+			pParentRootWin->AddContextMenuEntries(hPopupMenu);
+	}
+
 	if (m_visibilityCriterion)
 	{
 		addWinMenu(hPopupMenu, L"Show window");
@@ -97,7 +111,7 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 		TrackPopupMenu
 	    (
 			hPopupMenu, 
-			TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
+			TPM_TOPALIGN|TPM_LEFTALIGN|TPM_RETURNCMD|TPM_NONOTIFY, 
 			crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
 			0, 
 			GetWindowHandle(),
@@ -152,14 +166,14 @@ void RootWindow::SetTrackBarRange(INT const idTrackbar, LONG const lMin, LONG co
 	(
 		idTrackbar, 
 		TBM_SETRANGEMIN, 
-		static_cast<WPARAM>(false),                   // redraw flag 
+		static_cast<WPARAM>(false),  // redraw flag 
 		static_cast<LPARAM>(lMin) 
 	);
 	SendDlgItemMessage
 	(
 		idTrackbar, 
 		TBM_SETRANGEMAX, 
-		static_cast<WPARAM>(true),                   // redraw flag 
+		static_cast<WPARAM>(true),  // redraw flag 
 		static_cast<LPARAM>(lMax) 
 	);
 }
@@ -197,6 +211,12 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	return true;
 }
 
+bool RootWindow::OnMenuCommand(UINT const uiIndex, HMENU const hMenu)
+{
+	UINT_PTR data { Util::GetMenuItemData(hMenu, uiIndex) };
+	return OnCommand(data, uiIndex);
+}
+
 void RootWindow::OnClose()
 {
 	SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
@@ -222,6 +242,16 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 	case WM_COMMAND:
 		if (OnCommand(wParam, lParam))
 			return true;
+		break;
+
+	case WM_MENUCOMMAND:
+	{
+		return OnMenuCommand
+		(
+			static_cast<UINT>(wParam), 
+			bit_cast<HMENU>(lParam)
+		);
+	}
 		break;
 
 	case WM_CLOSE:

@@ -38,8 +38,8 @@ public:
     void appendOnOffMenu(HMENU hMenu, LPCTSTR const title) const
     {
         HMENU hMenuPopup = Util::PopupMenu(hMenu, title);
-        AppendMenu(hMenuPopup, MF_STRING, m_iOn,  L"o&n");
-        AppendMenu(hMenuPopup, MF_STRING, m_iOff, L"o&ff");
+        Util::AddMenu(hMenuPopup, MF_STRING, m_iOn,  L"o&n");
+        Util::AddMenu(hMenuPopup, MF_STRING, m_iOff, L"o&ff");
     }
 
     void enableOnOff(bool const bCrit)
@@ -86,66 +86,71 @@ void NNetAppMenu::Start
 
     m_hMenu = CreateMenu();
 
+    Util::SetNotifyByPos(m_hMenu);
+
 	HBITMAP hBitmapUndo { LoadBitmap(hInstance, L"UNDO_BITMAP") };
 	HBITMAP hBitmapRedo { LoadBitmap(hInstance, L"REDO_BITMAP") };
 
     HMENU hMenuFile = Util::PopupMenu(m_hMenu, L"&File");
     {
-        AppendMenu(hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model" );
-        AppendMenu(hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model");
-        AppendMenu(hMenuFile, MF_STRING, IDM_ADD_MODEL,     L"&Add module");
-        AppendMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
-        AppendMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
-        AppendMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
-        AppendMenu(hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump");
-        AppendMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model" );
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_ADD_MODEL,     L"&Add module");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
     }
 
     HMENU hMenuEdit = Util::PopupMenu(m_hMenu, L"&Edit");
     {
         HMENU hMenuSelection = Util::PopupMenu(hMenuEdit, L"&Selection");
         {
-            AppendMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL,         L"&Select all");
-            AppendMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds");
-            AppendMenu(hMenuSelection, MF_STRING, IDM_DESELECT_ALL,       L"&Deselect all");
+            Util::AddMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL,         L"&Select all");
+            Util::AddMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds");
+            Util::AddMenu(hMenuSelection, MF_STRING, IDM_DESELECT_ALL,       L"&Deselect all");
         }
-        AppendMenu(hMenuEdit, MF_STRING, IDM_CLEAR_BEEPERS, L"Clear all trigger sounds");
+        Util::AddMenu(hMenuEdit, MF_STRING, IDM_CLEAR_BEEPERS, L"Clear all trigger sounds");
     }
 
-    AppendMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
-    AppendMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
+    Util::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
+    Util::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
+
+    m_hMenuSigGen = Util::PopupMenu(m_hMenu, L"&Signal generators");
+    addSigGenMenuEntries();
 
     HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
-        AppendMenu(hMenuAction, MF_STRING, IDM_RESET,    L"Reset dynamic data");
-        AppendMenu(hMenuAction, MF_STRING, IDM_FORWARD,  L"&Proceed single step");
-        AppendMenu(hMenuAction, MF_STRING, IDM_RUN_STOP, L"&Run/Stop");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_RESET,    L"Reset dynamic data");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,  L"&Proceed single step");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP, L"&Run/Stop");
         HMENU hMenuAnalyze = Util::PopupMenu(hMenuAction, L"&Analyze");
         {
-            AppendMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops");
-            AppendMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_ANOMALIES, L"Find &anomalies");
+            Util::AddMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops");
+            Util::AddMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_ANOMALIES, L"Find &anomalies");
         }
-        AppendMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL, L"&Center model");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL, L"&Center model");
     }
 
     HMENU hMenuView = Util::PopupMenu(m_hMenu, L"&View");
     {
         HMENU hMenuWindows = Util::PopupMenu(hMenuView, L"&Windows");
         {
-            AppendMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
-            AppendMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
-            AppendMenu(hMenuWindows, MF_STRING, IDM_SIG_DESIGNER,   L"Show &signal designer window");
-            AppendMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
-            AppendMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
-            AppendMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
-            AppendMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_SIG_DESIGNER,   L"Show &signal designer window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
+            Util::AddMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
         }
         m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
         m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&SensorPoints");
         HMENU hMenuSignalDesigner = Util::PopupMenu(hMenuView, L"Signal&Designer");
         {
-            AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_INTEGRATED, L"&Integrated");
-            AppendMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_STACKED,    L"&Stacked");
+            Util::AddMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_INTEGRATED, L"&Integrated");
+            Util::AddMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_STACKED,    L"&Stacked");
         }
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
@@ -156,11 +161,37 @@ void NNetAppMenu::Start
     }
     HMENU hMenuHelp = Util::PopupMenu(m_hMenu, L"&Help");
     {
-        AppendMenu(hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info...");
+        Util::AddMenu(hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info...");
     }
 
     bool bRes = SetMenu(m_hwndApp, m_hMenu);
     assert(bRes);
+}
+
+void NNetAppMenu::addSigGenMenuEntries()
+{
+    if (m_pNMRI)
+    {
+        m_pNMRI->GetSigGenList().Apply2All
+        (
+            [this](SignalGenerator const * pSigGen)
+            {
+                Util::AddMenu
+                (
+                    m_hMenuSigGen, 
+                    MF_STRING, 
+                    IDD_SELECT_SIGNAL_GENERATOR, 
+                    pSigGen->GetName().c_str()
+                );
+            }
+        );
+    }
+    Util::AddMenu(m_hMenuSigGen, MF_STRING, IDD_NEW_SIGNAL_GENERATOR, L"Create &new");
+}
+
+void NNetAppMenu::delSigGenMenuEntries()
+{
+    while (DeleteMenu(m_hMenuSigGen, 0, MF_BYPOSITION)) { };
 }
 
 void NNetAppMenu::enable(unsigned int const id, bool const bCrit)
@@ -189,6 +220,9 @@ void NNetAppMenu::Notify(bool const bImmediately)
     m_upOnOffAutoOpen    ->enableOnOff(AutoOpen::IsOn());
     m_upOnOffSensorPoints->enableOnOff(m_pMainWindow->SensorsPointsVisible());
     m_upOnOffPerfMonMode ->enableOnOff(BaseWindow::PerfMonMode());
+
+    delSigGenMenuEntries();
+    addSigGenMenuEntries();
 
     DrawMenuBar(m_hwndApp);
 }

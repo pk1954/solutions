@@ -390,12 +390,12 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_ADD_TRACK:
 		PostCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
-		PostMessage(WM_COMMAND, IDM_WINDOW_ON, 0);  // if window was not visible, show it now
+		PostCommand(IDM_WINDOW_ON, 0);  // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:
 		if (m_pMonitorData->GetNrOfTracks()==1)
-			PostMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
+			PostCommand(IDM_WINDOW_OFF, 0);
 		PostCommand2Application(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
 		break;
 
