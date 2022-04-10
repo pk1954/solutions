@@ -12,7 +12,6 @@
 #include "SignalPreview.h"
 #include "win32_graphicsWindow.h"
 
-class NNetModelWriterInterface;
 class NNetModelCommands;
 class SignalGenerator;
 class ComputeThread;
@@ -31,7 +30,17 @@ public:
 
 	void Stop() final;
 
-	void SetSigGen(SignalGenerator * const);
+	void SetModelInterface(NNetModelWriterInterface * const p)
+	{
+		assert(p);
+		if (m_pNMWI)
+			m_pNMWI->UnregisterSigGenActiveObserver(*this);
+		m_upSignalControl1->SetModelInterface(p);
+		m_upSignalControl2->SetModelInterface(p);
+		m_upSignalPreview ->SetModelInterface(p);
+		m_pNMWI = p;
+		m_pNMWI->RegisterSigGenActiveObserver(*this);
+	}
 
 	wstring GetTitle() const final;
 
@@ -84,7 +93,7 @@ private:
 	unique_ptr<SignalControl>     m_upSignalControl1;
 	unique_ptr<SignalControl>     m_upSignalControl2;
 	unique_ptr<SignalPreview>     m_upSignalPreview;
-	SignalGenerator             * m_pSigGen   { nullptr };
+	NNetModelWriterInterface    * m_pNMWI     { nullptr };
 	NNetModelCommands           * m_pCommands { nullptr };
 	HMENU                         m_hMenu     { nullptr };
 };

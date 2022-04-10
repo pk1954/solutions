@@ -26,7 +26,9 @@ extern T ScrRead(Script& script)
 template<typename T>
 extern BASE_PEAK<T> ScrReadBasePeak(Script & script)
 {
-    return BASE_PEAK<T>(ScrRead<T>(script), ScrRead<T>(script));
+    T const base { ScrRead<T>(script) };
+    T const peak { ScrRead<T>(script) };
+    return BASE_PEAK<T>(base, peak);
 }
 
 extern void DefineUtilityWrapperFunctions();

@@ -42,27 +42,28 @@ public:
     void RecalcFilters   ()       { m_pModel->RecalcFilters(); }
     void ClearDynamicData() const { m_pModel->ClearDynamicData(); }
 
-    UPSigGen NewSigGen()                              { return      m_pModel->NewSigGen(); }
-    UPSigGen NewSigGen   (wstring const & name)       { return      m_pModel->NewSigGen(name); }
-    SigGenId FindSigGen  (wstring const & name) const { return      m_pModel->FindSigGen(name); }
-    UPSigGen RemoveSigGen(wstring const & name)       { return move(m_pModel->RemoveSigGen(name)); }
-    SigGenId PushSigGen  (UPSigGen upSigGen)          { return      m_pModel->PushSigGen(move(upSigGen)); }
-    UPSigGen PopSigGen   ()                           { return move(m_pModel->PopSigGen()); }
-    bool     IsValid     (SigGenId const id)    const { return      m_pModel->IsValid(id); }
+    UPSigGen NewSigGen      ()                           { return      m_pModel->NewSigGen(); }
+    UPSigGen NewSigGen      (wstring const & name)       { return      m_pModel->NewSigGen(name); }
+    SigGenId FindSigGen     (wstring const & name) const { return      m_pModel->FindSigGen(name); }
+    UPSigGen RemoveSigGen   (wstring const & name)       { return move(m_pModel->RemoveSigGen(name)); }
+    SigGenId PushSigGen     (UPSigGen upSigGen)          { return      m_pModel->PushSigGen(move(upSigGen)); }
+    UPSigGen PopSigGen      ()                           { return move(m_pModel->PopSigGen()); }
+    bool     IsValid        (SigGenId const id)    const { return      m_pModel->IsValid(id); }
+    SigGenId SetSigGenActive(SigGenId const id)          { return      m_pModel->SetSigGenActive(id); }
 
-    SignalGenerator const * GetSigGen(SigGenId const id) const { return m_pModel->GetSigGen(id); }
-    SignalGenerator       * GetSigGen(SigGenId const id)       { return m_pModel->GetSigGen(id); }
+    SignalGenerator * GetSigGenActive()                  { return m_pModel->GetSigGenActive(); }
+    SignalGenerator * GetSigGen      (SigGenId const id) { return m_pModel->GetSigGen(id); }
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 
     void  SelectSubtree(BaseKnot & baseKnot, bool  const b) { m_pModel->SelectSubtree(baseKnot, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
-    void  SetDescriptionUI  (DescriptionUI & ui)   { m_pModel->SetDescriptionUI(ui); }
-    void  SetModelFilePath  (wstring const & wstr) { m_pModel->SetModelFilePath  (wstr); }
-    void  AddDescriptionLine(wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
-    void  DescriptionComplete()                    { m_pModel->DescriptionComplete(); }
-    void  DeselectAllNobs() const                  { m_pModel->DeselectAllNobs(); }
+    void  SetDescriptionUI  (DescriptionUI  & ui)   { m_pModel->SetDescriptionUI(ui); }
+    void  SetModelFilePath  (wstring  const & wstr) { m_pModel->SetModelFilePath  (wstr); }
+    void  AddDescriptionLine(wstring  const & wstr) { m_pModel->AddDescriptionLine(wstr); }
+    void  DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
+    void  DeselectAllNobs() const                   { m_pModel->DeselectAllNobs(); }
 
     void AddOutgoing(NobId const id, Pipe & pipe)
     {

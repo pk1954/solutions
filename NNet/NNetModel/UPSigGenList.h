@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Observable.h"
 #include "NamedType.h"
 
 class SignalGenerator;
@@ -16,19 +17,25 @@ using std::ranges::for_each;
 using SigGenId = NamedType<size_t, struct SigGenIdParam>;
 using UPSigGen = unique_ptr<SignalGenerator>;
 
-class UPSigGenList
+class UPSigGenList : public Observable
 {
 public:
     UPSigGenList();
 
     SignalGenerator       * StdSigGen() { return m_list.begin()->get(); }
-    SigGenId                FindSigGen         (wstring  const &) const;
+
+    SigGenId                FindSigGen(wstring  const &) const;
     SignalGenerator const * GetSigGen (SigGenId const  ) const;
     SignalGenerator       * GetSigGen (SigGenId const  );
     SignalGenerator       * GetSigGen (wstring  const &);
     SignalGenerator const * GetSigGen (wstring  const &) const;
-    bool                    IsInList           (wstring  const &) const;
-    bool                    IsValid(SigGenId const id) const { return id.GetValue() < m_list.size(); }
+    bool                    IsInList  (wstring  const &) const;
+
+    SigGenId                GetSigGenIdActive() const { return m_sigGenIdActive; }
+    SignalGenerator const * GetSigGenActive  () const { return GetSigGen(m_sigGenIdActive); }
+    SignalGenerator       * GetSigGenActive  ()       { return GetSigGen(m_sigGenIdActive); }
+
+    bool IsValid(SigGenId const id) const { return id.GetValue() < m_list.size(); }
 
     UPSigGen NewSigGen();
     UPSigGen NewSigGen(wstring  const &);
@@ -44,11 +51,20 @@ public:
         for_each(m_list, [&f](auto const & up) { f(up.get()); });
     }
 
+    SigGenId SetActive(SigGenId const id)
+    {
+        SigGenId sigGenIdOld { m_sigGenIdActive };
+        m_sigGenIdActive = id;
+        NotifyAll(false);
+        return sigGenIdOld;
+    }
+
 private:
 
     inline static wstring STD_SIG_GEN_NAME { L"Standard" };
 
     vector<UPSigGen> m_list;
+    SigGenId         m_sigGenIdActive { 0 };
 
     vector<UPSigGen>::      iterator getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;

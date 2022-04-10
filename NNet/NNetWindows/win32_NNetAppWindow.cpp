@@ -109,6 +109,7 @@ void NNetAppWindow::setModelInterface()
 	m_modelCommands    .SetModelInterface(&m_nmwi);
 	m_computeThread    .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
+	m_signalDesigner   .SetModelInterface(&m_nmwi);
 	m_appMenu          .SetModelInterface(m_pNMRI);
 	m_appTitle         .SetModelInterface(m_pNMRI);
 	m_cmdStack         .SetModelInterface(m_pNMRI);
@@ -118,12 +119,9 @@ void NNetAppWindow::setModelInterface()
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	NNetWrappersSetModelInterface        (m_pNMRI);
-	Nob          ::SetParams(&m_pNMRI->GetParams());
-	SignalPreview::SetParams(&m_pNMRI->GetParams());
-	SignalControl::SetParams(&m_nmwi.GetParams());
+	Nob::SetParams(&m_pNMRI->GetParams());
 	m_nmwi.SetSimulationTime();
-	m_nmwi.StdSigGen()->SetData(m_pNMRI->GetParams().GetSigGenData());
-	m_signalDesigner.SetSigGen(m_nmwi.StdSigGen());
+	//m_nmwi.StdSigGen()->SetData(m_pNMRI->GetParams().GetSigGenData());
 }
 
 void NNetAppWindow::Start(MessagePump & pump)
@@ -220,6 +218,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_soundOnObservable     .RegisterObserver(m_appMenu);
 	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
 	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
+	m_nmwi.RegisterSigGenActiveObserver(m_signalDesigner);
 
 	configureStatusBar();
 	adjustChildWindows();

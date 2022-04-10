@@ -46,27 +46,33 @@ public:
 	Degrees    GetDirection         (NobId const) const; 
 	fHertz     GetActFrequency      (NobId const) const; 
 
-	wstring              GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
-	MicroMeterPnt        GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
-	Nob          const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
-	fMicroSecs           GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
-	MonitorData  const & GetConstMonitorData()                  const { return m_pModel->GetMonitorData(); }
-	Param        const & GetParams()                            const { return m_pModel->GetParams(); };
-	fMicroSecs           TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
-	fMicroSecs           FilterSize()                           const { return m_pModel->GetParams().FilterSize(); };
-	wstring              GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
-	float                GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
-	bool                 IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}
-	UPNobList    const & GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
-	unsigned int         GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
-	unsigned int         GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
-	bool                 AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
-	bool                 IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
-	size_t               GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
-	Signal       const * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
-	SignalId             GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
-	UPSigGenList const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
-	bool                 IsInList(wstring const & name)         const { return m_pModel->IsInList(name); }
+	wstring                 GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
+	MicroMeterPnt           GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
+	Nob             const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
+	fMicroSecs              GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
+	MonitorData     const & GetConstMonitorData()                  const { return m_pModel->GetMonitorData(); }
+	Param           const & GetParams()                            const { return m_pModel->GetParams(); };
+	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
+	fMicroSecs              FilterSize()                           const { return m_pModel->GetParams().FilterSize(); };
+	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
+	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
+	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId());	}
+	UPNobList       const & GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
+	unsigned int            GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
+	unsigned int            GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
+	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
+	bool                    IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
+	size_t                  GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
+	Signal          const * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
+	SignalId                GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
+	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
+	SignalGenerator const * GetSigGenActive()                      const { return m_pModel->GetSigGenActive(); }
+	SignalGenerator const * GetSigGen(SigGenId const id)           const { return m_pModel->GetSigGen(id); }
+	SigGenId                GetSigGenIdActive()                    const { return m_pModel->GetSigGenIdActive(); }
+	bool                    IsInList(wstring const & name)         const { return m_pModel->IsInList(name); }
+
+	void RegisterSigGenActiveObserver  (ObserverInterface & o) { m_pModel->RegisterSigGenActiveObserver(o); }
+	void UnregisterSigGenActiveObserver(ObserverInterface & o) { m_pModel->UnregisterSigGenActiveObserver(o); }
 
 	bool IsAnyNeuron(NobId const id) const 
 	{

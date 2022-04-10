@@ -22,11 +22,7 @@ public:
 
 	~SignalPreview() final;
 
-	static void SetParams(Param const * const pParams) { m_pParameters = pParams; }
-
 private:
-
-	inline static Param const * m_pParameters{ nullptr };
 
 	PixFpDimension<mV> & m_vertCoord;
 

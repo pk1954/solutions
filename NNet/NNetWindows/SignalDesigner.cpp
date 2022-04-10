@@ -80,15 +80,6 @@ void SignalDesigner::Initialize
 	m_upSignalPreview ->SetParentContextMenueMode(true);
 }
 
-void SignalDesigner::SetSigGen(SignalGenerator * const pSigGen)
-{
-	m_pSigGen = pSigGen;
-	m_upSignalControl1->SetSigGen(m_pSigGen);
-	m_upSignalControl2->SetSigGen(m_pSigGen);
-	m_upSignalPreview ->SetSigGen(m_pSigGen);
-	SetCaption();
-}
-
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 (
 	ComputeThread const & computeThread,
@@ -115,10 +106,10 @@ void SignalDesigner::Stop()
 
 wstring SignalDesigner::GetTitle() const
 {
-	wstring title(L"Signal designer: ");
-	if (m_pSigGen)
-		title += m_pSigGen->GetName();
-	return title;
+	if (m_pNMWI) 
+		if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
+			return pSigGen->GetName();
+    return L"*****";
 }
 
 void SignalDesigner::DoPaint()
@@ -231,9 +222,9 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
-	if (m_pSigGen)
+	if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
 	{
-		mV    const mVpeakAmplitude    { m_pSigGen->Amplitude().Peak() };
+		mV    const mVpeakAmplitude    { pSigGen->Amplitude().Peak() };
 		mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
 		PIXEL const pixVertScaleLen    { height - H_SCALE_HEIGHT };
 		mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };

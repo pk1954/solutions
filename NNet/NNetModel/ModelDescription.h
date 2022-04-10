@@ -14,7 +14,7 @@ using std::wstring;
 class ModelDescription
 {
 public:
-	void SetDescriptionUI( DescriptionUI & descUI )
+	void SetDescriptionUI(DescriptionUI & descUI)
 	{
 		m_pDescUI = & descUI;
 		push2Editor();

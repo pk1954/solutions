@@ -7,6 +7,7 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "observable.h"
+#include "ObserverInterface.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
@@ -110,13 +111,20 @@ public:
 	SigGenId PushSigGen  (UPSigGen upSigGen)          { return      m_sigGenList.PushSigGen(move(upSigGen)); }
 	UPSigGen PopSigGen   ()                           { return move(m_sigGenList.PopSigGen()); }
 
-	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_sigGenList.GetSigGen(id); }
-	SignalGenerator       * GetSigGen(SigGenId const id)       { return m_sigGenList.GetSigGen(id); }
+	SigGenId                GetSigGenIdActive()                const { return m_sigGenList.GetSigGenIdActive(); }
+	SigGenId                SetSigGenActive(SigGenId const id)       { return m_sigGenList.SetActive(id); }
+	SignalGenerator const * GetSigGen      (SigGenId const id) const { return m_sigGenList.GetSigGen(id); }
+	SignalGenerator       * GetSigGen      (SigGenId const id)       { return m_sigGenList.GetSigGen(id); }
 
-	UPNobList          & GetUPNobs()      { return m_Nobs; }
-	MonitorData        & GetMonitorData() { return m_monitorData; }
-	Param              & GetParams()      { return m_param; }
-	UPSigGenList const & GetSigGenList()  { return m_sigGenList; }
+	UPNobList             & GetUPNobs()             { return m_Nobs; }
+	MonitorData           & GetMonitorData()        { return m_monitorData; }
+	Param                 & GetParams()             { return m_param; }
+	UPSigGenList    const & GetSigGenList()         { return m_sigGenList; }
+	SignalGenerator const * GetSigGenActive() const { return m_sigGenList.GetSigGenActive(); }
+	SignalGenerator       * GetSigGenActive()       { return m_sigGenList.GetSigGenActive(); }
+
+	void RegisterSigGenActiveObserver  (ObserverInterface & o) { m_sigGenList.RegisterObserver(o); }
+	void UnregisterSigGenActiveObserver(ObserverInterface & o) { m_sigGenList.UnregisterObserver(o); }
 
 	void DeselectAllNobs     () const               { m_Nobs.SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }

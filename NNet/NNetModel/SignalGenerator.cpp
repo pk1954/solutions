@@ -37,7 +37,7 @@ void SignalGenerator::SetData(SigGenData const & data)
 	m_data.NotifyAll(false);
 }
 
-SigGenData SignalGenerator::GetData() const
+SigGenData const & SignalGenerator::GetData() const
 { 
 	return m_data; 
 }

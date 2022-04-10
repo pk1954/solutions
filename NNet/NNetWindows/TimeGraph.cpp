@@ -27,12 +27,6 @@ TimeGraph::~TimeGraph()
 	m_pHorzCoord->UnregisterObserver(*this); 
 }
 
-void TimeGraph::SetSigGen(SignalGenerator * const pSigGen)
-{
-	m_pSigGen = pSigGen;
-	m_pSigGen->Register(*this); // signal generator data can be changed from outside
-}
-
 fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 
 { 
 	return m_pHorzCoord->Transform2logUnitPos(p.GetX()); 

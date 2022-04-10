@@ -9,6 +9,7 @@
 #include "PixFpDimension.h"
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
+#include "NNetModelWriterInterface.h"
 #include "win32_graphicsWindow.h"
 
 class TimeGraph : public GraphicsWindow
@@ -22,7 +23,17 @@ public:
 
 	~TimeGraph();
 
-	void SetSigGen(SignalGenerator * const);
+	void SetModelInterface(NNetModelWriterInterface * const p)
+	{
+		assert(p);
+		if (m_pNMWI)
+			m_pNMWI->UnregisterSigGenActiveObserver(*this);
+		if (GetParams())
+			GetParams()->UnregisterObserver(*this);
+		m_pNMWI = p;
+		m_pNMWI->RegisterSigGenActiveObserver(*this);
+		GetParams()->RegisterObserver(*this);
+	}
 
 protected:
 
@@ -34,7 +45,30 @@ protected:
 	fPixel m_fPixLeft   { 0.0_fPixel };
 
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
-	SignalGenerator            * m_pSigGen    { nullptr };
+	NNetModelWriterInterface   * m_pNMWI      { nullptr };
+
+	SignalGenerator const * GetSigGenActive() const 
+	{ 
+		return m_pNMWI->GetSigGenActive(); 
+	}
+
+	SignalGenerator * GetSigGenActive() 
+	{ 
+		return m_pNMWI->GetSigGenActive(); 
+	}
+
+	SigGenData const & GetSigGenData() const 
+	{ 
+		return GetSigGenActive()->GetData();
+	}
+
+	Param * GetParams() 
+	{ 
+		if (m_pNMWI)
+			return & m_pNMWI->GetParams();
+		else
+			return nullptr; 
+	}
 
 	void PaintCurve
 	(

@@ -41,7 +41,7 @@ public:
 	void SetParam(ParamType::Value const, float const);
 
 	void SetData(SigGenData const &);
-	SigGenData GetData() const;
+	SigGenData const & GetData() const;
 
 	void SetName(wstring const & name) { m_name = name; }
 	wstring const & GetName() const { return m_name; }

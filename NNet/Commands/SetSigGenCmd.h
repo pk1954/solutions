@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
@@ -15,16 +14,20 @@ class SetSigGenCmd : public NNetCommand
 public:
 	SetSigGenCmd(SigGenId const id)
 	{
+		m_sigGenIdNew = id;
 	}
 
 	void Do() final 
 	{ 
+		m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
 	}
 
 	void Undo() final 
 	{ 
+		m_pNMWI->SetSigGenActive(m_sigGenIdOld);
 	}
 
 private:
-	UPSigGen m_upSigGen;
+	SigGenId m_sigGenIdNew;
+	SigGenId m_sigGenIdOld;
 };
