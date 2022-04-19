@@ -80,6 +80,38 @@ void SignalDesigner::Initialize
 	m_upSignalPreview ->SetParentContextMenueMode(true);
 }
 
+void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
+{
+	assert(p);
+	m_upSignalControl1->SetModelInterface(p);
+	m_upSignalControl2->SetModelInterface(p);
+	m_upSignalPreview ->SetModelInterface(p);
+	m_pNMWI = p;
+}
+
+LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal ");
+	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input neurons");
+	AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
+
+	return 0L; // will be forwarded to HandleContextMenuCommand
+}
+
+void SignalDesigner::RegisterAtSigGen(SigGenId const id)
+{
+	m_upSignalControl1->RegisterAtSigGen(id);
+	m_upSignalControl2->RegisterAtSigGen(id);
+	m_upSignalPreview ->RegisterAtSigGen(id);
+}
+
+void SignalDesigner::UnregisterAtSigGen(SigGenId const id)
+{
+	m_upSignalControl1->UnregisterAtSigGen(id);
+	m_upSignalControl2->UnregisterAtSigGen(id);
+	m_upSignalPreview ->UnregisterAtSigGen(id);
+}
+
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 (
 	ComputeThread const & computeThread,
@@ -133,6 +165,18 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		else
 			m_upSignalControl2->ScaleVoltCoord();
 		return true;
+
+	case IDD_DELETE_SIGNAL_GENERATOR:
+		m_pCommands->DeleteSigGen();
+		break;
+
+	case IDD_RENAME_SIGNAL_GENERATOR:
+		m_pCommands->RenameSigGen();
+		break;
+
+	case IDD_SELECT_SIG_GEN_CLIENTS:
+		m_pCommands->SelectSigGenClients();
+		break;
 
 	default:
 		break;

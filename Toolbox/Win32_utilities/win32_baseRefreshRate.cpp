@@ -59,7 +59,7 @@ void BaseRefreshRate::startTimer(milliseconds const msTimer)
 		& m_hTimer,                     // output parameter 
 		nullptr,                        // use default timer queue
 		(WAITORTIMERCALLBACK)TimerProc, // the timer procedure
-		static_cast<void *>(this),    // pointer to this object as parameter to TimerProc
+		static_cast<void *>(this),      // pointer to this object as parameter to TimerProc
 		dwTime,                         // timer is signaled the first time after dwTime msecs
 		dwTime,                         // timer is signaled periodically every dwTime msecs
 		0                               // no flags

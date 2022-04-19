@@ -112,7 +112,6 @@ void ParameterDialog::Start
 
 	int iYpos { 10 };
 	using enum ParamType::Value;
-//	m_hwndBaseFrequency    = addParameter(hwndDlg, baseFrequency,  iYpos); 
 	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt, iYpos); 
 	m_hwndThreshold        = addParameter(hwndDlg, threshold,      iYpos); 
 	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth,     iYpos); 

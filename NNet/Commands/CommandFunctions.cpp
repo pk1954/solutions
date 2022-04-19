@@ -24,7 +24,7 @@ unique_ptr<NNetCommand> MakeDeleteCommand
 )
 {
 	unique_ptr<NNetCommand> upCmd;
-	if (nmwi.IsNobInModel(nob))
+	if (nmwi.IsNobInModel(nob) && !nob.HasParentNob())
 		switch (nob.GetNobType().GetValue())
 		{
 		using enum NobType::Value;

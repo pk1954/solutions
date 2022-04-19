@@ -7,7 +7,6 @@
 #include "NobType.h"
 #include "Nob.h"
 #include "tHighlightType.h"
-//#include "SignalGenerator.h"
 #include "IoConnector.h"
 
 class Param;

@@ -40,6 +40,5 @@ static INT_PTR CALLBACK About
 
 void ShowAboutBox(HWND const hwndParent) 
 {
-    HINSTANCE const hInstance = GetModuleHandle(nullptr);
-    (void)DialogBox(hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About);
+    (void)DialogBox(nullptr, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About);
 }

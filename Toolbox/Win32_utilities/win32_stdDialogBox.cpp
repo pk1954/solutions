@@ -32,11 +32,16 @@ float StdDialogBox::Show
 	return fValue;
 }
 
+void StdDialogBox::SetParameterValue(HWND const hwndEditField, wstring const text)
+{
+	::SetWindowText(hwndEditField, text.c_str());
+}
+
 void StdDialogBox::SetParameterValue(HWND const hwndEditField, float const fValue)
 {
 	wostringstream m_wstrBuffer;
 	m_wstrBuffer << fValue;
-	::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
+	SetParameterValue(hwndEditField, m_wstrBuffer.str());
 }
 
 bool StdDialogBox::Evaluate(HWND const hwndEditField, float & fValue)

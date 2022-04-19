@@ -6,10 +6,12 @@
 
 #include <vector>
 #include <functional>
+#include <source_location>
 
 using std::vector;
 using std::function;
 using std::unique_ptr;
+using std::source_location;
 
 class RootWindow;
 
@@ -32,6 +34,8 @@ public:
         return false;
     };
 
+    LRESULT PostCommand2Application(WPARAM const, LPARAM const) const;
+        
     void CallUI(bool const); // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin

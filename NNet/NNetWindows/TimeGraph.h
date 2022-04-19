@@ -23,17 +23,9 @@ public:
 
 	~TimeGraph();
 
-	void SetModelInterface(NNetModelWriterInterface * const p)
-	{
-		assert(p);
-		if (m_pNMWI)
-			m_pNMWI->UnregisterSigGenActiveObserver(*this);
-		if (GetParams())
-			GetParams()->UnregisterObserver(*this);
-		m_pNMWI = p;
-		m_pNMWI->RegisterSigGenActiveObserver(*this);
-		GetParams()->RegisterObserver(*this);
-	}
+	void SetModelInterface(NNetModelWriterInterface * const);
+	void RegisterAtSigGen(SigGenId const);
+	void UnregisterAtSigGen(SigGenId const);
 
 protected:
 
@@ -47,28 +39,10 @@ protected:
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
 	NNetModelWriterInterface   * m_pNMWI      { nullptr };
 
-	SignalGenerator const * GetSigGenActive() const 
-	{ 
-		return m_pNMWI->GetSigGenActive(); 
-	}
-
-	SignalGenerator * GetSigGenActive() 
-	{ 
-		return m_pNMWI->GetSigGenActive(); 
-	}
-
-	SigGenData const & GetSigGenData() const 
-	{ 
-		return GetSigGenActive()->GetData();
-	}
-
-	Param * GetParams() 
-	{ 
-		if (m_pNMWI)
-			return & m_pNMWI->GetParams();
-		else
-			return nullptr; 
-	}
+	SignalGenerator const * GetSigGenActive() const { return m_pNMWI->GetSigGenActive(); }
+	SignalGenerator       * GetSigGenActive()       { return m_pNMWI->GetSigGenActive(); }
+	SigGenData      const * GetSigGenData  () const { return & GetSigGenActive()->GetData(); }
+	Param                 * GetParams      ()       { return & m_pNMWI->GetParams(); }
 
 	void PaintCurve
 	(

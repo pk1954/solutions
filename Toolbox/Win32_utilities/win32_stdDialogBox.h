@@ -15,6 +15,7 @@ class StdDialogBox
 public:
 	static float Show(HWND const, float, wstring const &, wstring const &);
 	static void  SetParameterValue(HWND const, float const);
+	static void  SetParameterValue(HWND const, wstring const);
 	static bool  Evaluate(HWND const, float &);
 
 private:

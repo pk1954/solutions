@@ -70,6 +70,7 @@ public:
     void DeleteNob           (NobId const);
     void DeleteSelection     ();
     void DeleteSignal        (SignalId const &);
+    void DeleteSigGen        ();
     void DeleteTrack         (TrackNr const);
     void DiscIoConnector     (NobId const);
     void InsertKnot          (NobId const, MicroMeterPnt const &);
@@ -82,6 +83,7 @@ public:
     void MoveNob             (NobId const, MicroMeterPnt const &);
     void NewIoNeuronPair     (MicroMeterPnt const &);
     void NewSignalGenerator  ();
+    void RenameSigGen        ();
     void RestrictSelection   (NobType::Value const);
     void Rotate              (NobId const, MicroMeterPnt const &, MicroMeterPnt const &);
     void RotateModel         (MicroMeterPnt const &, MicroMeterPnt const &);
@@ -90,6 +92,7 @@ public:
     void SelectAllBeepers    ();
     void SelectNob           (NobId const, tBoolOp const);
     void SelectNobsInRect    (MicroMeterRect const &);
+    void SelectSigGenClients ();
     void SelectSubtree       (NobId const, bool const);
     void SetParameter        (ParamType::Value const, float const);
     void SetSigGenData       (SignalGenerator &, SigGenData const &);

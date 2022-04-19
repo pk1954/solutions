@@ -17,7 +17,6 @@
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
-#include "SignalDesigner.h"
 #include "win32_util.h"
 #include "win32_sound.h"
 #include "win32_script.h"
@@ -224,7 +223,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDD_SELECT_SIGNAL_GENERATOR:
         m_pModelCommands->SetSignalGenerator(SigGenId(lParam));
         break;
-        
+
     case IDM_UNDO:
         m_pModelCommands->UndoCommand();
         break;

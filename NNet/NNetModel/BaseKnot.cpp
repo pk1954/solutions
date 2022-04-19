@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "Geometry.h"
 #include "DrawContext.h"
+#include "NobException.h"
 #include "BaseKnot.h"
 
 using std::wcout;
@@ -132,8 +133,8 @@ void BaseKnot::Check() const
 	Nob::Check();
 	m_inPipes .Check();
 	m_outPipes.Check();
-	Apply2AllInPipes ([this](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
-	Apply2AllOutPipes([this](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
+	Apply2AllInPipes ([this](Pipe const & p) { NNetAssert(p.GetEndKnotId  () == GetId()); });
+	Apply2AllOutPipes([this](Pipe const & p) { NNetAssert(p.GetStartKnotId() == GetId()); });
 }
 
 void BaseKnot::Apply2AllConnectedPipes(PipeFunc const &f) const 

@@ -81,6 +81,7 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CoordAnimation.h" />
     <ClInclude Include="DeleteIoConnectorCmd.h" />
+    <ClInclude Include="DeleteSigGenCmd.h" />
     <ClInclude Include="IoNeuronsAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSensorCmd.h" />
@@ -91,9 +92,11 @@
     <ClInclude Include="PlugIoConnectors.h" />
     <ClInclude Include="PlugIoNeuronAnimation.h" />
     <ClInclude Include="PlugIoNeurons.h" />
+    <ClInclude Include="RenameSigGenCmd.h" />
     <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
     <ClInclude Include="RotationCommand.h" />
+    <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetSigGenCmd.h" />
     <ClInclude Include="SetSigGenDataCmd.h" />
     <ClInclude Include="SetHighlightedSignalCmd.h" />

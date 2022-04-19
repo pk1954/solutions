@@ -29,7 +29,16 @@ bool NNetModel::operator==(NNetModel const & rhs) const
 void NNetModel::CheckModel() const
 {
 #ifdef _DEBUG
-	m_Nobs.CheckNobList();
+	try
+	{
+		m_Nobs.CheckNobList();
+	}
+	catch (NNetException const& e)
+	{
+		NNetExceptionMessage(e);
+		wcout << Scanner::COMMENT_SYMBOL << L"Model dump:" << endl;
+		m_Nobs.Dump();	
+	}
 #endif
 }
 

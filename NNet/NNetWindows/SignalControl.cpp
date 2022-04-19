@@ -242,7 +242,7 @@ void SignalControl::DoPaint()
 void SignalControl::ScaleTimeCoord()
 {
 	fMicroSecs const umMaxVisible { getTime(m_fPixRight) };
-	fMicroSecs const umCutoff     { GetSigGenData().CutoffTime() };
+	fMicroSecs const umCutoff     { GetSigGenData()->CutoffTime() };
 	float      const factor       { umCutoff / umMaxVisible };
 	*m_pHorzCoord *= factor;
 }
@@ -250,7 +250,7 @@ void SignalControl::ScaleTimeCoord()
 void SignalControl::ScaleFreqCoord()
 {
 	fHertz const fHertzMaxVisible { getFreq(0.0_fPixel) };
-	fHertz const fHertzPeak       { GetSigGenData().GetFreq().Peak() };
+	fHertz const fHertzPeak       { GetSigGenData()->GetFreq().Peak() };
 	float  const factor           { fHertzPeak / (fHertzMaxVisible * 0.9f) };
 	*m_pVertCoordFreq *= factor;
 }
@@ -258,7 +258,7 @@ void SignalControl::ScaleFreqCoord()
 void SignalControl::ScaleVoltCoord()
 {
 	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
-	mV    const mVpeak       { GetSigGenData().GetAmplit().Peak() };
+	mV    const mVpeak       { GetSigGenData()->GetAmplit().Peak() };
 	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
 	*m_pVertCoordVolt *= factor;
 }

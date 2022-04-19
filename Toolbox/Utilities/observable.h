@@ -10,7 +10,6 @@
 class Observable
 {
 public:
-	virtual ~Observable() = default;
 
 	void RegisterObserver(ObserverInterface & observer)
 	{

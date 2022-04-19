@@ -30,33 +30,20 @@ public:
 
 	void Stop() final;
 
-	void SetModelInterface(NNetModelWriterInterface * const p)
-	{
-		assert(p);
-		if (m_pNMWI)
-			m_pNMWI->UnregisterSigGenActiveObserver(*this);
-		m_upSignalControl1->SetModelInterface(p);
-		m_upSignalControl2->SetModelInterface(p);
-		m_upSignalPreview ->SetModelInterface(p);
-		m_pNMWI = p;
-		m_pNMWI->RegisterSigGenActiveObserver(*this);
-	}
+	LPARAM AddContextMenuEntries(HMENU const) final;
+
+	void SetModelInterface(NNetModelWriterInterface * const);
 
 	wstring GetTitle() const final;
 
+	void RegisterAtSigGen  (SigGenId const);
+	void UnregisterAtSigGen(SigGenId const);
+
 	enum class DESIGN { INTEGRATED, STACKED };
 
-	static DESIGN GetDesign() 
-	{ 
-		return m_design; 
-	};
-
-	static void SetDesign(DESIGN const d) 
-	{ 
-		m_design = d; 
-	}
-
-	static void ToggleDesign() 
+	static DESIGN GetDesign()               { return m_design; };
+	static void   SetDesign(DESIGN const d) { m_design = d; }
+	static void   ToggleDesign() 
 	{ 
 		SetDesign((m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED);
 	}

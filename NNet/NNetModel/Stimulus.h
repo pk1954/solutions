@@ -7,7 +7,7 @@
 #include "MoreTypes.h"
 #include "observable.h"
 
-class Stimulus : public Observable
+class Stimulus : public Observable  // dynamic data of stimulus
 {
 public:
 

@@ -7,17 +7,18 @@
 #include "Observable.h"
 #include "NamedType.h"
 
-class SignalGenerator;
 using std::to_wstring;
 using std::unique_ptr;
 using std::make_unique;
 using std::ranges::find_if;
 using std::ranges::for_each;
 
+class SignalGenerator;
+
 using SigGenId = NamedType<size_t, struct SigGenIdParam>;
 using UPSigGen = unique_ptr<SignalGenerator>;
 
-class UPSigGenList : public Observable
+class UPSigGenList //: public Observable
 {
 public:
     UPSigGenList();
@@ -43,6 +44,8 @@ public:
     UPSigGen PopSigGen();
     UPSigGen RemoveSigGen(SigGenId const);
     UPSigGen RemoveSigGen(wstring const &);
+    UPSigGen RemoveSigGen();
+    void     InsertSigGen(UPSigGen, SigGenId const);
     wstring  GenerateUniqueName() const;
     size_t   Size() { return m_list.size(); }
 
@@ -55,7 +58,7 @@ public:
     {
         SigGenId sigGenIdOld { m_sigGenIdActive };
         m_sigGenIdActive = id;
-        NotifyAll(false);
+        //NotifyAll(false);
         return sigGenIdOld;
     }
 
@@ -68,6 +71,9 @@ private:
 
     vector<UPSigGen>::      iterator getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;
+
+    vector<UPSigGen>::      iterator getSigGen(SigGenId const);
+    vector<UPSigGen>::const_iterator getSigGen(SigGenId const) const;
 
     UPSigGen removeSigGen(vector<UPSigGen>::iterator);
 };

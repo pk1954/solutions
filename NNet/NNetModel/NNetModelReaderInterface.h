@@ -71,9 +71,6 @@ public:
 	SigGenId                GetSigGenIdActive()                    const { return m_pModel->GetSigGenIdActive(); }
 	bool                    IsInList(wstring const & name)         const { return m_pModel->IsInList(name); }
 
-	void RegisterSigGenActiveObserver  (ObserverInterface & o) { m_pModel->RegisterSigGenActiveObserver(o); }
-	void UnregisterSigGenActiveObserver(ObserverInterface & o) { m_pModel->UnregisterSigGenActiveObserver(o); }
-
 	bool IsAnyNeuron(NobId const id) const 
 	{
 		Nob const * const pNob { GetConstNob(id) };

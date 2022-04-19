@@ -3,14 +3,17 @@
 // Commands
 
 #include "stdafx.h"
+#include <source_location>
 #include "assert.h"
 #include "observable.h"
+#include "NobException.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_command.h"
 #include "CommandStack.h"
 
 using std::wcout;
 using std::endl;
+using std::source_location;
 
 void CommandStack::Initialize(Observable * const pStaticModelObservable)
 {
@@ -69,10 +72,18 @@ void CommandStack::notify() const
 
 void CommandStack::Push(unique_ptr<Command> pCmd)
 {
-    if (!canBeCombined(pCmd.get()))
+    try
     {
-        m_CommandStack.push_back(move(pCmd));
-        set2YoungerCmd();
+        if (!canBeCombined(pCmd.get()))
+        {
+            m_CommandStack.push_back(move(pCmd));
+            set2YoungerCmd();
+        }
+    }
+    catch (NNetException const& e)
+    {
+        NNetExceptionMessage(e);
+        wcout << Scanner::COMMENT_SYMBOL << L"Called from" << source_location::current().function_name() << endl;
     }
 }
 
@@ -97,25 +108,41 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
 
 bool CommandStack::UndoCommand()
 {
-    if (UndoStackEmpty())
-       return false;
-    set2OlderCmd();
-    m_pNMRI->CheckModel();
-    currentCmd().Undo();
-    m_pNMRI->CheckModel();
-    notify();
+    try
+    {
+        if (UndoStackEmpty())
+            return false;
+        set2OlderCmd();
+        m_pNMRI->CheckModel();
+        currentCmd().Undo();
+        m_pNMRI->CheckModel();
+        notify();
+    }
+    catch (NNetException const& e)
+    {
+        NNetExceptionMessage(e);
+        wcout << Scanner::COMMENT_SYMBOL << L"Called from" << source_location::current().function_name() << endl;
+    }
     return true;
 }
 
 bool CommandStack::RedoCommand()
 {
-    if (RedoStackEmpty()) 
-        return false;
-    m_pNMRI->CheckModel();
-    currentCmd().Do();
-    m_pNMRI->CheckModel();
-    set2YoungerCmd();
-    notify();
+    try
+    {
+        if (RedoStackEmpty()) 
+            return false;
+        m_pNMRI->CheckModel();
+        currentCmd().Do();
+        m_pNMRI->CheckModel();
+        set2YoungerCmd();
+        notify();
+    }
+    catch (NNetException const& e)
+    {
+        NNetExceptionMessage(e);
+        wcout << Scanner::COMMENT_SYMBOL << L"Called from" << source_location::current().function_name() << endl;
+    }
     return true;
 }
 

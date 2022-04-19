@@ -1,6 +1,6 @@
 // AddSignalCommand.h
 //
-// NNetModel
+// Commands
 
 #pragma once
 

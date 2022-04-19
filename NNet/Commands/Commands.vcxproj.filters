@@ -192,6 +192,15 @@
     <ClInclude Include="SetSigGenCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DeleteSigGenCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenameSigGenCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SelSigGenClientsCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

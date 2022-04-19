@@ -45,11 +45,15 @@ public:
     UPSigGen NewSigGen      ()                           { return      m_pModel->NewSigGen(); }
     UPSigGen NewSigGen      (wstring const & name)       { return      m_pModel->NewSigGen(name); }
     SigGenId FindSigGen     (wstring const & name) const { return      m_pModel->FindSigGen(name); }
+    UPSigGen RemoveSigGen   ()                           { return move(m_pModel->RemoveSigGen()); }
+    UPSigGen RemoveSigGen   (SigGenId const id)          { return move(m_pModel->RemoveSigGen(id)); }
     UPSigGen RemoveSigGen   (wstring const & name)       { return move(m_pModel->RemoveSigGen(name)); }
     SigGenId PushSigGen     (UPSigGen upSigGen)          { return      m_pModel->PushSigGen(move(upSigGen)); }
     UPSigGen PopSigGen      ()                           { return move(m_pModel->PopSigGen()); }
     bool     IsValid        (SigGenId const id)    const { return      m_pModel->IsValid(id); }
     SigGenId SetSigGenActive(SigGenId const id)          { return      m_pModel->SetSigGenActive(id); }
+
+    void InsertSigGen(UPSigGen up, SigGenId const id)    { return      m_pModel->InsertSigGen(move(up), id); }
 
     SignalGenerator * GetSigGenActive()                  { return m_pModel->GetSigGenActive(); }
     SignalGenerator * GetSigGen      (SigGenId const id) { return m_pModel->GetSigGen(id); }
@@ -65,24 +69,16 @@ public:
     void  DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
     void  DeselectAllNobs() const                   { m_pModel->DeselectAllNobs(); }
 
-    void AddOutgoing(NobId const id, Pipe & pipe)
-    {
-        GetNobPtr<BaseKnot *>(id)->AddOutgoing(pipe);
-    }
+    void AddOutgoing   (NobId const id, Pipe & pipe) { GetBaseKnot(id).AddOutgoing   (pipe); }
+    void AddIncoming   (NobId const id, Pipe & pipe) { GetBaseKnot(id).AddIncoming   (pipe); }
+    void RemoveIncoming(NobId const id, Pipe & pipe) { GetBaseKnot(id).RemoveIncoming(pipe); }
+    void RemoveOutgoing(NobId const id, Pipe & pipe) { GetBaseKnot(id).RemoveOutgoing(pipe); }
 
-    void AddIncoming(NobId const id, Pipe & pipe)
+    BaseKnot & GetBaseKnot(NobId const id)
     {
-        GetNobPtr<BaseKnot *>(id)->AddIncoming(pipe);
-    }
-
-    void RemoveIncoming(NobId const id, Pipe & pipe)
-    {
-        GetNobPtr<BaseKnot *>(id)->RemoveIncoming(pipe);
-    }
-
-    void RemoveOutgoing(NobId const id, Pipe & pipe)
-    {
-        GetNobPtr<BaseKnot *>(id)->RemoveOutgoing(pipe);
+        BaseKnot * pBaseKnot { GetNobPtr<BaseKnot *>(id) };
+        assert(pBaseKnot);
+        return * pBaseKnot;
     }
 
     template <Nob_t T>

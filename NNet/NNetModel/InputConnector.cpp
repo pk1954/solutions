@@ -15,8 +15,7 @@ InputConnector::InputConnector
     Param & param,
     vector<IoNeuron *> && src
 )
-  : IoConnector(NobType::Value::inputConnector) //,
-//    m_signalGenerator(SignalGenerator(param))
+  : IoConnector(NobType::Value::inputConnector)
 {
     m_list = move(src);
 }

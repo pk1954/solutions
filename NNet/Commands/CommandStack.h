@@ -6,6 +6,7 @@
 
 #include "assert.h"
 #include <vector>
+#include "NobException.h"
 
 using std::vector;
 using std::unique_ptr;
@@ -38,8 +39,15 @@ private:
     NNetModelReaderInterface const * m_pNMRI                  { nullptr };
     Observable                     * m_pStaticModelObservable { nullptr };
 
-    Command & currentCmd () const { return * m_CommandStack.at(m_iIndex); }
-    Command & previousCmd() const { return * m_CommandStack.at(m_iIndex-1); }; 
+    Command * getCmdPtr (size_t const index) const 
+    { 
+        Command * pCmd { m_CommandStack.at(index).get() };
+        NNetAssert(pCmd != nullptr);
+        return pCmd; 
+    }
+
+    Command & currentCmd () const { return * getCmdPtr(m_iIndex); }
+    Command & previousCmd() const { return * getCmdPtr(m_iIndex-1); }; 
 
     void set2OlderCmd()
     {

@@ -205,7 +205,10 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	default:
-		return false;
+		if (RootWindow * pParentRootWin { GetParentRootWindow() })
+			return pParentRootWin->OnCommand(wParam, lParam, pixPoint);
+		else
+			return false;
 	}
 
 	return true;

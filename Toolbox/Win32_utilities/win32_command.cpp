@@ -15,11 +15,16 @@ void Command::UpdateUI()
     m_pWin->Notify(false); 
 };
 
+LRESULT Command::PostCommand2Application(WPARAM const wParam, LPARAM const lParam) const
+{
+    return m_pWin->PostCommand2Application(wParam, lParam);
+}
+
 void Command::CallUI(bool const bTargetReached)  // runs in animation thread
 {
     PostMessage
     (
-        m_pWin->GetWindowHandle(), 
+        m_pWin->GetWindowHandle(),
         WM_APP_UI_CALL,            // calls DoCall from UI thread
         static_cast<WPARAM>(bTargetReached), 
         bit_cast<LPARAM>(this)

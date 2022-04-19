@@ -95,11 +95,11 @@ private:
 	fPixel yFreq(fHertz const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV     const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
-	fPixel xPeak      () const { return xTime(GetSigGenData().GetPeakTime()); }
-	fPixel aPeakAmplit() const { return yVolt(GetSigGenData().GetAmplit().Peak()); }
-	fPixel yBaseAmplit() const { return yVolt(GetSigGenData().GetAmplit().Base()); }
-	fPixel yPeakFreq  () const { return yFreq(GetSigGenData().GetFreq().Peak()); }
-	fPixel yBaseFreq  () const { return yFreq(GetSigGenData().GetFreq().Base()); }
+	fPixel xPeak      () const { return xTime(GetSigGenData()->GetPeakTime()); }
+	fPixel aPeakAmplit() const { return yVolt(GetSigGenData()->GetAmplit().Peak()); }
+	fPixel yBaseAmplit() const { return yVolt(GetSigGenData()->GetAmplit().Base()); }
+	fPixel yPeakFreq  () const { return yFreq(GetSigGenData()->GetFreq().Peak()); }
+	fPixel yBaseFreq  () const { return yFreq(GetSigGenData()->GetFreq().Base()); }
 
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }

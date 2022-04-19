@@ -11,6 +11,7 @@ UPSigGenList::UPSigGenList()
     UPSigGen upSigGen { NewSigGen() };
     upSigGen->SetName(STD_SIG_GEN_NAME);
     PushSigGen(move(upSigGen));
+    SetActive(SigGenId(0));
 }
 
 UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
@@ -33,6 +34,21 @@ vector<UPSigGen>::iterator UPSigGenList::getSigGen(wstring const & name)
 vector<UPSigGen>::const_iterator UPSigGenList::getSigGen(wstring const & name) const
 {
     return find_if(m_list, [&name](auto & it){ return it->GetName() == name; });
+}
+
+vector<UPSigGen>::iterator UPSigGenList::getSigGen(SigGenId const id)
+{
+    return m_list.begin() + id.GetValue();
+}
+
+vector<UPSigGen>::const_iterator UPSigGenList::getSigGen(SigGenId const id) const
+{
+    return m_list.begin() + id.GetValue();
+}
+
+void UPSigGenList::InsertSigGen(UPSigGen upSigGen, SigGenId const id)
+{
+    m_list.insert(getSigGen(id), move(upSigGen));
 }
 
 SigGenId UPSigGenList::FindSigGen(wstring const & name) const
@@ -93,12 +109,17 @@ UPSigGen UPSigGenList::PopSigGen()
 
 UPSigGen UPSigGenList::RemoveSigGen(SigGenId const id)
 {
-    return move(removeSigGen(m_list.begin() + id.GetValue()));
+    return move(removeSigGen(getSigGen(id)));
 }
 
 UPSigGen UPSigGenList::RemoveSigGen(wstring const & name)
 {
-    return move(removeSigGen(getSigGen(name)));
+    return move(removeSigGen(getSigGen(name)));  
+}
+
+UPSigGen UPSigGenList::RemoveSigGen()
+{
+    return move(RemoveSigGen(m_sigGenIdActive));  
 }
 
 wstring UPSigGenList::GenerateUniqueName() const

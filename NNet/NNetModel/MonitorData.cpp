@@ -39,7 +39,8 @@ void MonitorData::Reset()
 {
 	m_tracks.clear();
 	m_idSigHighlighted.Set2Null();
-	m_pHighSigObservable->NotifyAll(false);
+	if (m_pHighSigObservable)
+		m_pHighSigObservable->NotifyAll(false);
 }
 
 int MonitorData::GetNrOfTracks() const

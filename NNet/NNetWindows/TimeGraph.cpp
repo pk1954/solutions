@@ -27,6 +27,27 @@ TimeGraph::~TimeGraph()
 	m_pHorzCoord->UnregisterObserver(*this); 
 }
 
+void TimeGraph::SetModelInterface(NNetModelWriterInterface * const p)
+{
+	assert(p);
+	if (m_pNMWI)
+		GetParams()->UnregisterObserver(*this);
+	m_pNMWI = p;
+	GetParams()->RegisterObserver(*this);
+}
+
+void TimeGraph::RegisterAtSigGen(SigGenId const id)
+{
+	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
+		pSigGen->Register(*this);
+}
+
+void TimeGraph::UnregisterAtSigGen(SigGenId const id)
+{
+	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
+		pSigGen->Unregister(*this);
+}
+
 fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 
 { 
 	return m_pHorzCoord->Transform2logUnitPos(p.GetX()); 

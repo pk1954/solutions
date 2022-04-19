@@ -105,11 +105,15 @@ public:
 	UPSigGen NewSigGen   ()                           { return      m_sigGenList.NewSigGen   ();      }
 	UPSigGen NewSigGen   (wstring const & name)       { return      m_sigGenList.NewSigGen   (name);  }
 	UPSigGen RemoveSigGen(wstring const & name)       { return move(m_sigGenList.RemoveSigGen(name)); }
+	UPSigGen RemoveSigGen(SigGenId const id)          { return move(m_sigGenList.RemoveSigGen(id)); }
+	UPSigGen RemoveSigGen()                           { return move(m_sigGenList.RemoveSigGen()); }
 	bool     IsInList    (wstring const & name) const { return      m_sigGenList.IsInList    (name);  }
 	bool     IsValid     (SigGenId const  id  ) const { return      m_sigGenList.IsValid     (id);    }
 	SigGenId FindSigGen  (wstring const & name) const { return      m_sigGenList.FindSigGen  (name);  }
 	SigGenId PushSigGen  (UPSigGen upSigGen)          { return      m_sigGenList.PushSigGen(move(upSigGen)); }
 	UPSigGen PopSigGen   ()                           { return move(m_sigGenList.PopSigGen()); }
+
+	void InsertSigGen(UPSigGen up, SigGenId const id) { return      m_sigGenList.InsertSigGen(move(up), id); }
 
 	SigGenId                GetSigGenIdActive()                const { return m_sigGenList.GetSigGenIdActive(); }
 	SigGenId                SetSigGenActive(SigGenId const id)       { return m_sigGenList.SetActive(id); }
@@ -122,9 +126,6 @@ public:
 	UPSigGenList    const & GetSigGenList()         { return m_sigGenList; }
 	SignalGenerator const * GetSigGenActive() const { return m_sigGenList.GetSigGenActive(); }
 	SignalGenerator       * GetSigGenActive()       { return m_sigGenList.GetSigGenActive(); }
-
-	void RegisterSigGenActiveObserver  (ObserverInterface & o) { m_sigGenList.RegisterObserver(o); }
-	void UnregisterSigGenActiveObserver(ObserverInterface & o) { m_sigGenList.UnregisterObserver(o); }
 
 	void DeselectAllNobs     () const               { m_Nobs.SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }

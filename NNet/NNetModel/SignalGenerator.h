@@ -64,7 +64,7 @@ private:
 	inline static int m_iCounter { 0 };
 
 	UPSigGenList & m_list;
-	Stimulus       m_stimulus;
-	SigGenData     m_data;
+	Stimulus       m_stimulus;  //dynamic data
+	SigGenData     m_data;      
 	wstring        m_name;
 };

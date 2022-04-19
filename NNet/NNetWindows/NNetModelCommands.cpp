@@ -20,6 +20,7 @@
 #include "CoordAnimation.h"
 #include "CopySelectedNobs.h"
 #include "DeleteSelectionCommand.h"
+#include "DeleteSigGenCmd.h"
 #include "DeleteSignalCommand.h"
 #include "DeleteTrackCommand.h"
 #include "DeleteBaseKnotCmd.h"
@@ -37,6 +38,7 @@
 #include "Uniform2D.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoNeuronAnimation.h"
+#include "RenameSigGenCmd.h"
 #include "RestrictSelectionCommand.h"
 #include "RotateNobCommand.h"
 #include "RotateModelCommand.h"
@@ -49,6 +51,7 @@
 #include "SelectSubtreeCommand.h"
 #include "SetSigGenDataCmd.h"
 #include "SetHighlightedSignalCmd.h"
+#include "SelSigGenClientsCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
 #include "SetSigGenCmd.h"
@@ -421,6 +424,27 @@ void NNetModelCommands::SetSignalGenerator(SigGenId const id)
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<SetSigGenCmd>(id));
+}
+
+void NNetModelCommands::DeleteSigGen()
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<DeleteSigGenCmd>());
+}
+
+void NNetModelCommands::RenameSigGen()
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<RenameSigGenCmd>());
+}
+
+void NNetModelCommands::SelectSigGenClients()
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<SelSigGenClientsCmd>());
 }
 
 void NNetModelCommands::SizeSelection(float const fFactor)
