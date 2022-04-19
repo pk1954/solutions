@@ -3,16 +3,11 @@
 // Win32_utilities
 
 #include "stdafx.h"
-#include <sstream>
 #include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_stdDialogBox.h"
 
-using std::wostringstream;
-
-static float   m_fValue;     // the value to be edited in the dialog
-static wstring m_wstrUnit;   // the text to be displayed right of the edit box
-static wstring m_wstrTitle;  // the title bar text of the dialog
+using std::bit_cast;
 
 float StdDialogBox::Show
 (
@@ -26,52 +21,43 @@ float StdDialogBox::Show
 	m_wstrUnit  = wstrUnit;
 	m_fValue    = fValue;
 
-	if (IDOK == DialogBox(nullptr, MAKEINTRESOURCE(IDD_STD_EDIT_DIALOG), hwndParent, dialogProc))
+	if (IDOK == DialogBoxParam(nullptr, MAKEINTRESOURCE(IDD_STD_EDIT_DIALOG), hwndParent, dialogProc, bit_cast<LPARAM>(this)))
 		fValue = m_fValue;
 
 	return fValue;
 }
 
-void StdDialogBox::SetParameterValue(HWND const hwndEditField, wstring const text)
+void StdDialogBox::onInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-	::SetWindowText(hwndEditField, text.c_str());
+	::SetWindowText(hDlg, m_wstrTitle.c_str());
+	Util::SetEditField(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
+	::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
+	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
+	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 }
 
-void StdDialogBox::SetParameterValue(HWND const hwndEditField, float const fValue)
+void StdDialogBox::onCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-	wostringstream m_wstrBuffer;
-	m_wstrBuffer << fValue;
-	SetParameterValue(hwndEditField, m_wstrBuffer.str());
-}
-
-bool StdDialogBox::Evaluate(HWND const hwndEditField, float & fValue)
-{
-	static int const BUFLEN = 20;
-	static wchar_t wBuffer[BUFLEN];
-
-	float fNewValue { fValue };
-	bool  bResult   { false };
-
-	if (GetWindowText(hwndEditField, wBuffer, BUFLEN))
+	int id { LOWORD(wParam) };
+	switch (id)
 	{
-		wstring wstrEdit(wBuffer);
-
-		for (auto & c : wstrEdit)  // change german decimal comma to
-			if (c == L',')         // decimal point
-				c = L'.';
-		try
-		{
-			fNewValue = stof(wstrEdit);
-			fValue = fNewValue;
-			bResult = true;
-		} catch(...)
-		{
-			MessageBeep(MB_ICONWARNING);
-		}
+	case IDOK:
+	{
+		HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
+		if (Util::Evaluate(hwndEditCtl, m_fValue))
+			EndDialog(hDlg, IDOK);
+		else 
+			SetFocus(hwndEditCtl);
 	}
+	break;
 
-	SetParameterValue(hwndEditField, fValue);
-	return bResult;
+	case IDCANCEL:
+		EndDialog(hDlg, IDCANCEL);
+		break;
+
+	default:
+		break;
+	}
 }
 
 INT_PTR CALLBACK dialogProc
@@ -82,32 +68,17 @@ INT_PTR CALLBACK dialogProc
 	LPARAM const lParam 
 )
 {
+	auto pDlg = bit_cast<StdDialogBox *>(Util::GetUserDataPtr(hDlg));
 	switch (message)
 	{
 	case WM_INITDIALOG:
-		::SetWindowText(hDlg, m_wstrTitle.c_str());
-		StdDialogBox::SetParameterValue(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
-		::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
-		SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
-		SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
+		pDlg = bit_cast<StdDialogBox *>(lParam);
+		pDlg->onInitDlg(hDlg, wParam, lParam);
+		Util::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
 		break;
 
 	case WM_COMMAND:
-	{
-		int id { LOWORD(wParam) };
-		if (id == IDOK)
-		{
-			HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-			if (StdDialogBox::Evaluate(hwndEditCtl, m_fValue))
-				EndDialog(hDlg, IDOK);
-			else 
-				SetFocus(hwndEditCtl);
-		}
-		else if (id == IDCANCEL)
-		{
-			EndDialog(hDlg, IDCANCEL);
-		}
-	}
+		pDlg->onCommand(hDlg, wParam, lParam);
 		break;
 
 	default:

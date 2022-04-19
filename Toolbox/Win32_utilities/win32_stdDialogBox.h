@@ -8,17 +8,21 @@
 
 using std::wstring;
 
-static INT_PTR CALLBACK dialogProc(HWND const,	UINT const, WPARAM const, LPARAM const);
+static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
 class StdDialogBox
 {
 public:
-	static float Show(HWND const, float, wstring const &, wstring const &);
-	static void  SetParameterValue(HWND const, float const);
-	static void  SetParameterValue(HWND const, wstring const);
-	static bool  Evaluate(HWND const, float &);
+	float Show(HWND const, float, wstring const &, wstring const &);
 
 private:
 
-	friend static INT_PTR CALLBACK dialogProc(HWND const,	UINT const, WPARAM const, LPARAM const);
+	float   m_fValue;     // the value to be edited in the dialog
+	wstring m_wstrUnit;   // the text to be displayed right of the edit box
+	wstring m_wstrTitle;  // the title bar text of the dialog
+
+	virtual void onInitDlg(HWND const, WPARAM const, LPARAM const);
+	virtual void onCommand(HWND const, WPARAM const, LPARAM const);
+
+	friend static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 };

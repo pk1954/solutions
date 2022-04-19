@@ -6,11 +6,12 @@
 
 #include <chrono>
 #include "win32_util.h"
+#include "win32_stdDialogBox.h"
 
 using std::chrono::milliseconds;
 using namespace std::chrono_literals;
 
-class BaseRefreshRate
+class BaseRefreshRate : public StdDialogBox
 {
 public:
 

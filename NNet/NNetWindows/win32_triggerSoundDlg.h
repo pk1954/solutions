@@ -30,8 +30,8 @@ private:
 	TriggerSoundDialog & operator= (TriggerSoundDialog const &) = delete;  // noncopyable class 
 
 	void          onCommand(HWND const, WPARAM const, LPARAM const);
+	void          onInitDlg(HWND const, WPARAM const, LPARAM const);
 	void          handleOnOff(HWND const) const;
-	void          initEditField(HWND const, int const, unsigned long const) const;
 	unsigned long evaluateEditField(HWND const, int const) const;
 	void          evaluate(HWND const);
 

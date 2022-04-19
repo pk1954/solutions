@@ -4,13 +4,42 @@
 #include "stdafx.h"
 #include <iomanip>
 #include <time.h>
-#include <sstream>
 #include "SCRIPT.H"
 #include "win32_util.h"
 
 using std::wostream;
 using std::stringbuf;
 using std::ostream;
+
+bool Util::Evaluate(HWND const hwndEditField, float & fValue)
+{
+    static int const BUFLEN = 20;
+    static wchar_t wBuffer[BUFLEN];
+
+    float fNewValue { fValue };
+    bool  bResult   { false };
+
+    if (GetWindowText(hwndEditField, wBuffer, BUFLEN))
+    {
+        wstring wstrEdit(wBuffer);
+
+        for (auto & c : wstrEdit)  // change german decimal comma to
+            if (c == L',')         // decimal point
+                c = L'.';
+        try
+        {
+            fNewValue = stof(wstrEdit);
+            fValue = fNewValue;
+            bResult = true;
+        } catch(...)
+        {
+            MessageBeep(MB_ICONWARNING);
+        }
+    }
+
+    SetEditField(hwndEditField, fValue);
+    return bResult;
+}
 
 RECT Util::ScrReadRECT(Script & script)
 {

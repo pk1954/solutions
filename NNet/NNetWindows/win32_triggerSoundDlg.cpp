@@ -16,18 +16,6 @@ using std::wostringstream;
 using std::bit_cast;
 using std::wstring;
 
-void TriggerSoundDialog::initEditField
-(
-	HWND          const hDlg, 
-	int           const id, 
-	unsigned long const ulValue
-) const
-{
-	wostringstream m_wstrBuffer;
-	m_wstrBuffer << ulValue;
-	SetWindowText(GetDlgItem(hDlg, id), m_wstrBuffer.str().c_str());
-}
-
 unsigned long TriggerSoundDialog::evaluateEditField
 (
 	HWND const hDlg, 
@@ -60,6 +48,14 @@ void TriggerSoundDialog::evaluate(HWND const hDlg)
 	m_soundDesc.m_bOn       = IsDlgButtonChecked(hDlg, IDC_TRIGGER_SOUND_ON) == BST_CHECKED;
 	m_soundDesc.m_frequency = m_soundDesc.m_bOn ? Hertz    (evaluateEditField(hDlg, IDC_TRIGGER_SOUND_FREQ)) : 0_Hertz;
 	m_soundDesc.m_duration  = m_soundDesc.m_bOn ? MilliSecs(evaluateEditField(hDlg, IDC_TRIGGER_SOUND_MSEC)) : 0_MilliSecs;
+}
+
+void TriggerSoundDialog::onInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
+{
+	Util::SetEditField(GetDlgItem(hDlg, IDC_TRIGGER_SOUND_FREQ), m_soundDesc.m_frequency.GetValue());
+	Util::SetEditField(GetDlgItem(hDlg, IDC_TRIGGER_SOUND_MSEC), m_soundDesc.m_duration .GetValue());
+	CheckDlgButton               (hDlg, IDC_TRIGGER_SOUND_ON,    m_soundDesc.m_bOn ? BST_CHECKED : BST_UNCHECKED);
+	handleOnOff(hDlg);
 }
 
 void TriggerSoundDialog::onCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
@@ -103,12 +99,9 @@ static INT_PTR CALLBACK dialogProc
 	{
 	case WM_INITDIALOG:
 		pDlg = bit_cast<TriggerSoundDialog *>(lParam);
-		pDlg->initEditField(hDlg, IDC_TRIGGER_SOUND_FREQ, pDlg->m_soundDesc.m_frequency.GetValue());
-		pDlg->initEditField(hDlg, IDC_TRIGGER_SOUND_MSEC, pDlg->m_soundDesc.m_duration .GetValue());
-		CheckDlgButton     (hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_soundDesc.m_bOn ? BST_CHECKED : BST_UNCHECKED);
-		pDlg->handleOnOff(hDlg);
+		pDlg->onInitDlg(hDlg, wParam, lParam);
 		Util::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
-		return INT_PTR(true);
+		break;
 
 	case WM_COMMAND:
 		pDlg->onCommand(hDlg, wParam, lParam);
@@ -118,7 +111,7 @@ static INT_PTR CALLBACK dialogProc
 		break;
 	}
 
-	return INT_PTR(false);
+	return 0;
 }
 
 void TriggerSoundDialog::Show(HWND const hwndParent)

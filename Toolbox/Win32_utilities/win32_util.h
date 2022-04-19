@@ -10,8 +10,10 @@
 #include "BoolOp.h"
 
 #include <string>
+#include <sstream>
 #include <iostream>
 
+using std::wostringstream;
 using std::wostream;
 using std::wcout;
 using std::endl;
@@ -29,6 +31,15 @@ namespace Util
     { 
         (void) ::SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr); 
     }
+
+    void SetEditField(HWND const hwndEditField, auto const value)
+    {
+        wostringstream m_wstrBuffer;
+        m_wstrBuffer << value;
+        ::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
+    }
+
+    bool Evaluate    (HWND const, float &);
 
     wostream & operator << (wostream &, RECT const &);
 
