@@ -23,6 +23,7 @@ class NNetModelReaderInterface
 public:
 
 	void SetModel(NNetModel * const pModel) { m_pModel = pModel;  }
+	bool IsDefined() const { return m_pModel != nullptr; }
 
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };

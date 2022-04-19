@@ -33,7 +33,7 @@ SignalControl::SignalControl
 
 SignalControl::~SignalControl()
 {
-	if (GetParams())
+	if (m_pNMWI && m_pNMWI->IsDefined())
 		GetParams()->UnregisterObserver(*this);
 	m_runObservable.UnregisterObserver(*this);
 	if (m_pVertCoordFreq)

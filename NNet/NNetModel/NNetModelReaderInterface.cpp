@@ -111,8 +111,8 @@ bool NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, NobId co
 bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst) const
 {
 	assert(idSrc != idDst);
-	assert(IsDefined(idSrc));
-	assert(IsDefined(idDst));
+	assert(::IsDefined(idSrc));
+	assert(::IsDefined(idDst));
 	assert(!IsConnectedTo(idSrc, idDst));
 
 	NobType const typeSrc { GetNobType(idSrc) };
