@@ -201,7 +201,8 @@ static LRESULT CALLBACK BaseWndProc
 {
     if (message == WM_NCCREATE)    // retrieve Window instance from window creation data and associate
     {
-        SetUserDataPtr(hwnd, (LONG_PTR)((LPCREATESTRUCT)lParam)->lpCreateParams);
+        auto pCreateStruct { bit_cast<LPCREATESTRUCT>(lParam) };
+        Util::SetUserDataPtr(hwnd, bit_cast<LONG_PTR>(pCreateStruct->lpCreateParams));
         return true;
 	}
     else

@@ -26,8 +26,8 @@ private:
 	Sound const * const m_pSound;
 	SoundDescr          m_soundDesc;
 
-	TriggerSoundDialog             (TriggerSoundDialog const &);  // noncopyable class 
-	TriggerSoundDialog & operator= (TriggerSoundDialog const &);  // noncopyable class 
+	TriggerSoundDialog             (TriggerSoundDialog const &) = delete;  // noncopyable class 
+	TriggerSoundDialog & operator= (TriggerSoundDialog const &) = delete;  // noncopyable class 
 
 	void          onCommand(HWND const, WPARAM const, LPARAM const);
 	void          handleOnOff(HWND const) const;

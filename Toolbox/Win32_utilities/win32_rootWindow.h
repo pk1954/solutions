@@ -22,9 +22,6 @@ using std::vector;
 
 class RootWindow;
 
-inline LONG_PTR GetUserDataPtr(HWND hwnd)               { return GetWindowLongPtr(hwnd, GWLP_USERDATA); }
-inline void     SetUserDataPtr(HWND hwnd, LONG_PTR ptr) { (void) SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr); }
-
 RootWindow * GetRootWindow(HWND const);
 RootWindow * GetParentRootWindow(HWND const);
 

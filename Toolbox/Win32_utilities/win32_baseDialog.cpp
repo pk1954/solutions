@@ -43,7 +43,7 @@ static INT_PTR CALLBACK BaseDialogProc
 {
 	if (message == WM_INITDIALOG)
 	{
-		SetUserDataPtr(hwnd, lParam);
+		Util::SetUserDataPtr(hwnd, lParam);
 		return INT_PTR(true);
 	}
 	else 

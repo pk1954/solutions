@@ -85,36 +85,35 @@ INT_PTR CALLBACK dialogProc
 	switch (message)
 	{
 	case WM_INITDIALOG:
-	{
 		::SetWindowText(hDlg, m_wstrTitle.c_str());
 		StdDialogBox::SetParameterValue(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
 		::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
 		SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
 		SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
-		return INT_PTR(true);
-	}
+		break;
 
 	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK)
+	{
+		int id { LOWORD(wParam) };
+		if (id == IDOK)
 		{
 			HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
 			if (StdDialogBox::Evaluate(hwndEditCtl, m_fValue))
-				EndDialog(hDlg, LOWORD(wParam));
+				EndDialog(hDlg, IDOK);
 			else 
 				SetFocus(hwndEditCtl);
-			return INT_PTR(true);
 		}
-		else if (LOWORD(wParam) == IDCANCEL)
+		else if (id == IDCANCEL)
 		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return INT_PTR(true);
+			EndDialog(hDlg, IDCANCEL);
 		}
+	}
 		break;
 
 	default:
 		break;
 	}
 
-	return INT_PTR(false);
+	return 0;
 }
 

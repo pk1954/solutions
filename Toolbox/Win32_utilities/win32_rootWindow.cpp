@@ -13,7 +13,7 @@ using std::make_unique;
 
 RootWindow * GetRootWindow(HWND const hwnd)
 {
-	auto pRootWin = bit_cast<RootWindow *>(GetUserDataPtr(hwnd));
+	auto pRootWin = bit_cast<RootWindow *>(Util::GetUserDataPtr(hwnd));
 	return (pRootWin && pRootWin->GetWindowHandle())
 		? pRootWin
 		: nullptr;

@@ -20,6 +20,16 @@ class Script;
 
 namespace Util
 {
+    inline LONG_PTR GetUserDataPtr(HWND hwnd)
+    { 
+        return ::GetWindowLongPtr(hwnd, GWLP_USERDATA); 
+    }
+
+    inline void SetUserDataPtr(HWND hwnd, LONG_PTR ptr) 
+    { 
+        (void) ::SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr); 
+    }
+
     wostream & operator << (wostream &, RECT const &);
 
     RECT ScrReadRECT(Script &);

@@ -13,6 +13,7 @@
 #include "win32_triggerSoundDlg.h"
 
 using std::wostringstream;
+using std::bit_cast;
 using std::wstring;
 
 void TriggerSoundDialog::initEditField
@@ -97,16 +98,16 @@ static INT_PTR CALLBACK dialogProc
 	LPARAM const lParam
 )
 {
-	auto pDlg = reinterpret_cast<TriggerSoundDialog *>(GetWindowLongPtr(hDlg, DWLP_USER));
+	auto pDlg = bit_cast<TriggerSoundDialog *>(Util::GetUserDataPtr(hDlg));
 	switch (message)
 	{
 	case WM_INITDIALOG:
-		pDlg = reinterpret_cast<TriggerSoundDialog *>(lParam);
+		pDlg = bit_cast<TriggerSoundDialog *>(lParam);
 		pDlg->initEditField(hDlg, IDC_TRIGGER_SOUND_FREQ, pDlg->m_soundDesc.m_frequency.GetValue());
 		pDlg->initEditField(hDlg, IDC_TRIGGER_SOUND_MSEC, pDlg->m_soundDesc.m_duration .GetValue());
 		CheckDlgButton     (hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_soundDesc.m_bOn ? BST_CHECKED : BST_UNCHECKED);
 		pDlg->handleOnOff(hDlg);
-		::SetWindowLongPtr(hDlg, DWLP_USER, reinterpret_cast<LONG_PTR>(pDlg));
+		Util::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
 		return INT_PTR(true);
 
 	case WM_COMMAND:
@@ -122,5 +123,5 @@ static INT_PTR CALLBACK dialogProc
 
 void TriggerSoundDialog::Show(HWND const hwndParent)
 {
-	DialogBoxParam(nullptr, MAKEINTRESOURCE(IDD_TRIGGER_SOUND_DLG), hwndParent, dialogProc, reinterpret_cast<LPARAM>(this));
+	DialogBoxParam(nullptr, MAKEINTRESOURCE(IDD_TRIGGER_SOUND_DLG), hwndParent, dialogProc, bit_cast<LPARAM>(this));
 }
