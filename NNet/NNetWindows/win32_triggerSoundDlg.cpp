@@ -31,17 +31,12 @@ unsigned long TriggerSoundDialog::evaluateEditField
 	int  const id
 ) const
 {
-	static int const BUFLEN { 20 };
+	unsigned long ulNewValue;
 
-	wchar_t wBuffer[BUFLEN];
-
-	if (GetWindowText(GetDlgItem(hDlg, id), wBuffer, BUFLEN))
-	{
-		wstring wstrEdit(wBuffer);
-		return stoul(wstrEdit);
-	}
-
-	return 0;
+	if (m_soundDesc.m_bOn && Util::Evaluate(GetDlgItem(hDlg, id), ulNewValue))
+		return ulNewValue;
+	else 
+		return 0;
 }
 
 void TriggerSoundDialog::handleOnOff(HWND const hDlg) const
@@ -55,8 +50,8 @@ void TriggerSoundDialog::handleOnOff(HWND const hDlg) const
 void TriggerSoundDialog::evaluate(HWND const hDlg)
 {
 	m_soundDesc.m_bOn       = IsDlgButtonChecked(hDlg, IDC_TRIGGER_SOUND_ON) == BST_CHECKED;
-	m_soundDesc.m_frequency = m_soundDesc.m_bOn ? Hertz    (evaluateEditField(hDlg, IDC_TRIGGER_SOUND_FREQ)) : 0_Hertz;
-	m_soundDesc.m_duration  = m_soundDesc.m_bOn ? MilliSecs(evaluateEditField(hDlg, IDC_TRIGGER_SOUND_MSEC)) : 0_MilliSecs;
+	m_soundDesc.m_frequency = Hertz    (evaluateEditField(hDlg, IDC_TRIGGER_SOUND_FREQ));
+	m_soundDesc.m_duration  = MilliSecs(evaluateEditField(hDlg, IDC_TRIGGER_SOUND_MSEC));
 }
 
 void TriggerSoundDialog::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
