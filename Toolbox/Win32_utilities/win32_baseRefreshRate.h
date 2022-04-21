@@ -36,6 +36,9 @@ private:
 	HANDLE       m_hTimer        { nullptr };
 	milliseconds m_msRefreshRate { 0ms };
 	bool         m_bDirty        { true };
+	wstring      m_wstrUnit      {};    // the text to be displayed right of the edit box
+	wstring      m_wstrTitle     {};    // the title bar text of the dialog
+	float        m_fValue        {};    // the value to be edited in the dialog
 
 	void startTimer(milliseconds const);
 	void deleteTimer();
@@ -44,6 +47,9 @@ private:
 		Trigger();
 		m_bDirty = false;
 	}
+
+	void OnInitDlg(HWND const, WPARAM const, LPARAM const) final;
+	bool OnOK     (HWND const)                             final; 
 
 	static void CALLBACK TimerProc(void * const, bool const);
 };

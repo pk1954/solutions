@@ -13,16 +13,16 @@ static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM 
 class StdDialogBox
 {
 public:
-	float Show(HWND const, float, wstring const &, wstring const &);
+	virtual bool Show(HWND const, int const);
+
+protected:
+
+	virtual void OnInitDlg(HWND const, WPARAM const, LPARAM const) = 0;
+	virtual bool OnOK(HWND const)                                  = 0; 
+	virtual void OnCommand(HWND const, WPARAM const, LPARAM const);
 
 private:
 
-	float   m_fValue;     // the value to be edited in the dialog
-	wstring m_wstrUnit;   // the text to be displayed right of the edit box
-	wstring m_wstrTitle;  // the title bar text of the dialog
-
-	virtual void onInitDlg(HWND const, WPARAM const, LPARAM const);
-	virtual void onCommand(HWND const, WPARAM const, LPARAM const);
 
 	friend static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 };

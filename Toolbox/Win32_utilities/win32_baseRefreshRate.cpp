@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "win32_stdDialogBox.h"
+#include "win32_util_resource.h"
 #include "win32_baseRefreshRate.h"
 
 using std::wstring;
@@ -31,24 +32,33 @@ milliseconds BaseRefreshRate::GetRefreshRate() const
 	return m_msRefreshRate; 
 }
 
-void BaseRefreshRate::RefreshRateDialog(HWND const hwnd)
+bool BaseRefreshRate::OnOK(HWND const hDlg)
 {
-	static double MIN_REFRESH_RATE { 20.0 };
+	HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
+	bool bOK { Util::Evaluate(hwndEditCtl, m_fValue) };
+	if (bOK)
+		EndDialog(hDlg, IDOK);
+	else 
+		SetFocus(hwndEditCtl);
+	return bOK;
+}
 
-	double dNewValue = StdDialogBox::Show
-	(
-		hwnd,
-		static_cast<float>(GetRefreshRate().count()),
-		L"Refresh Rate",
-		L"milliseconds"
-	);
-	if (dNewValue < MIN_REFRESH_RATE)
+void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
+{
+	static float MIN_REFRESH_RATE { 20.0f };
+
+	m_fValue = static_cast<float>(GetRefreshRate().count());
+		
+	if (Show(hwndParent, IDD_STD_EDIT_DIALOG))
 	{
-		wstring text { L"Minimum refresh rate is " + to_wstring(MIN_REFRESH_RATE) + L" ms" };
-		MessageBox(nullptr, text.c_str(), nullptr, MB_OK);
-		dNewValue = MIN_REFRESH_RATE;
+		if (m_fValue < MIN_REFRESH_RATE)
+		{
+			wstring text { L"Minimum refresh rate is " + to_wstring(MIN_REFRESH_RATE) + L" ms" };
+			MessageBox(nullptr, text.c_str(), nullptr, MB_OK);
+			m_fValue = MIN_REFRESH_RATE;
+		}
+		SetRefreshRate(static_cast<milliseconds>(static_cast<long long>(m_fValue)));
 	}
-	SetRefreshRate(static_cast<milliseconds>(static_cast<long long>(dNewValue)));
 }
 
 void BaseRefreshRate::startTimer(milliseconds const msTimer)
@@ -74,6 +84,15 @@ void BaseRefreshRate::deleteTimer()
 		(void)DeleteTimerQueueTimer(nullptr, m_hTimer, INVALID_HANDLE_VALUE);
 		m_hTimer = nullptr;
 	}
+}
+
+void BaseRefreshRate::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
+{
+	::SetWindowText(hDlg, L"Refresh Rate");
+	Util::SetEditField(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
+	::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), L"milliseconds");
+	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
+	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 }
 
 void CALLBACK BaseRefreshRate::TimerProc(void * const lpParam, bool const TimerOrWaitFired)

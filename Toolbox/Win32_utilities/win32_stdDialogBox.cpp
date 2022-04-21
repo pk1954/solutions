@@ -9,47 +9,36 @@
 
 using std::bit_cast;
 
-float StdDialogBox::Show
+bool StdDialogBox::Show
 (
-	HWND    const   hwndParent, 
-	float           fValue,
-	wstring const & wstrTitle,
-	wstring const & wstrUnit
+	HWND const hwndParent,
+	int  const idDialog
 )
 {
-	m_wstrTitle = wstrTitle;
-	m_wstrUnit  = wstrUnit;
-	m_fValue    = fValue;
+	INT_PTR res 
+	{ 
+		DialogBoxParam
+		(
+			nullptr, 
+			MAKEINTRESOURCE(idDialog), 
+			hwndParent, 
+			dialogProc, 
+			bit_cast<LPARAM>(this)
+		) 
+	};
 
-	if (IDOK == DialogBoxParam(nullptr, MAKEINTRESOURCE(IDD_STD_EDIT_DIALOG), hwndParent, dialogProc, bit_cast<LPARAM>(this)))
-		fValue = m_fValue;
-
-	return fValue;
+	return res == IDOK;
 }
 
-void StdDialogBox::onInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
-{
-	::SetWindowText(hDlg, m_wstrTitle.c_str());
-	Util::SetEditField(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
-	::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
-	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
-	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
-}
-
-void StdDialogBox::onCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
+void StdDialogBox::OnCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
 	int id { LOWORD(wParam) };
 	switch (id)
 	{
 	case IDOK:
-	{
-		HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-		if (Util::Evaluate(hwndEditCtl, m_fValue))
+		if (OnOK(hDlg))
 			EndDialog(hDlg, IDOK);
-		else 
-			SetFocus(hwndEditCtl);
-	}
-	break;
+		break;
 
 	case IDCANCEL:
 		EndDialog(hDlg, IDCANCEL);
@@ -73,12 +62,12 @@ INT_PTR CALLBACK dialogProc
 	{
 	case WM_INITDIALOG:
 		pDlg = bit_cast<StdDialogBox *>(lParam);
-		pDlg->onInitDlg(hDlg, wParam, lParam);
 		Util::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
+		pDlg->OnInitDlg(hDlg, wParam, lParam);
 		break;
 
 	case WM_COMMAND:
-		pDlg->onCommand(hDlg, wParam, lParam);
+		pDlg->OnCommand(hDlg, wParam, lParam);
 		break;
 
 	default:

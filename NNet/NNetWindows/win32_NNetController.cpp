@@ -207,7 +207,7 @@ void NNetController::triggerSoundDlg(NobId const id)
     if (m_pNMRI->IsAnyNeuron(id))
     {
         TriggerSoundDialog dialog(m_pSound, m_pNMRI->GetTriggerSound(id));
-        dialog.Show(m_pMainWindow->GetWindowHandle());
+        dialog.Show(m_pMainWindow->GetWindowHandle(), IDD_TRIGGER_SOUND_DLG);
         m_pModelCommands->SetTriggerSound(id, dialog.GetSound());
     }
 }

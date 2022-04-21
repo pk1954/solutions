@@ -16,6 +16,15 @@ using std::wostringstream;
 using std::bit_cast;
 using std::wstring;
 
+TriggerSoundDialog::TriggerSoundDialog
+(
+	Sound      const * const pSound, 
+	SoundDescr const &       soundDesc 
+)
+  : m_pSound   (pSound),
+	m_soundDesc(soundDesc)
+{};
+
 unsigned long TriggerSoundDialog::evaluateEditField
 (
 	HWND const hDlg, 
@@ -50,7 +59,7 @@ void TriggerSoundDialog::evaluate(HWND const hDlg)
 	m_soundDesc.m_duration  = m_soundDesc.m_bOn ? MilliSecs(evaluateEditField(hDlg, IDC_TRIGGER_SOUND_MSEC)) : 0_MilliSecs;
 }
 
-void TriggerSoundDialog::onInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
+void TriggerSoundDialog::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
 	Util::SetEditField(GetDlgItem(hDlg, IDC_TRIGGER_SOUND_FREQ), m_soundDesc.m_frequency.GetValue());
 	Util::SetEditField(GetDlgItem(hDlg, IDC_TRIGGER_SOUND_MSEC), m_soundDesc.m_duration .GetValue());
@@ -58,20 +67,17 @@ void TriggerSoundDialog::onInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM 
 	handleOnOff(hDlg);
 }
 
-void TriggerSoundDialog::onCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
+bool TriggerSoundDialog::OnOK(HWND const hDlg)
+{
+	evaluate(hDlg);
+	return true;
+}
+
+void TriggerSoundDialog::OnCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
 	WORD id { LOWORD(wParam) };
 	switch (id)
 	{
-	case IDOK:
-		evaluate(hDlg);
-		EndDialog(hDlg, INT_PTR(true));
-		break;
-
-	case IDCANCEL:
-		EndDialog(hDlg, INT_PTR(false));
-		break;
-
 	case IDC_TRIGGER_SOUND_ON:
 		handleOnOff(hDlg);
 		break;
@@ -82,39 +88,7 @@ void TriggerSoundDialog::onCommand(HWND const hDlg, WPARAM const wParam, LPARAM 
 		break;
 
 	default:
+		StdDialogBox::OnCommand(hDlg,wParam, lParam);
 		break;
 	}
 }	
-
-static INT_PTR CALLBACK dialogProc
-(
-	HWND   const hDlg, 
-	UINT   const message, 
-	WPARAM const wParam, 
-	LPARAM const lParam
-)
-{
-	auto pDlg = bit_cast<TriggerSoundDialog *>(Util::GetUserDataPtr(hDlg));
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		pDlg = bit_cast<TriggerSoundDialog *>(lParam);
-		pDlg->onInitDlg(hDlg, wParam, lParam);
-		Util::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
-		break;
-
-	case WM_COMMAND:
-		pDlg->onCommand(hDlg, wParam, lParam);
-		break;
-
-	default:
-		break;
-	}
-
-	return 0;
-}
-
-void TriggerSoundDialog::Show(HWND const hwndParent)
-{
-	DialogBoxParam(nullptr, MAKEINTRESOURCE(IDD_TRIGGER_SOUND_DLG), hwndParent, dialogProc, bit_cast<LPARAM>(this));
-}
