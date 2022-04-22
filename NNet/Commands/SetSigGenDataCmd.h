@@ -34,16 +34,17 @@ public:
 
 	bool CombineCommands(Command const & src) final
 	{ 
-		return false;  //TODO
-		//SetSigGenDataCmd const & srcCmd { static_cast<SetSigGenDataCmd const &>(src) };
-		//if (&m_sigGen != &srcCmd.m_sigGen)
-		//	return false;
-		//m_sigGen.SetData(m_dataNew); 
-		//return true; 
+		SetSigGenDataCmd const & srcCmd     { static_cast<SetSigGenDataCmd const &>(src) };
+		SignalGenerator  const * pSigGenSrc { &srcCmd.m_sigGen };
+		if (&m_sigGen != pSigGenSrc)
+			return false;
+		m_dataNew = pSigGenSrc->GetData();
+		m_sigGen.SetData(m_dataNew); 
+		return true; 
 	};
 
 private:
 	SignalGenerator & m_sigGen;
-	SigGenData const  m_dataNew;
+	SigGenData        m_dataNew;
 	SigGenData const  m_dataOld;
 };
