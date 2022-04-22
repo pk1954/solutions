@@ -7,11 +7,9 @@
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
-#include "NNetCommand.h"
+#include "SigGenCommand.h"
 
-using std::make_unique;
-
-class NewSigGenCmd : public NNetCommand
+class NewSigGenCmd : public SigGenCommand
 {
 public:
 	NewSigGenCmd()
@@ -22,14 +20,14 @@ public:
 	void Do() final 
 	{ 
 		m_sigGenIdNew = m_pNMWI->PushSigGen(move(m_upSigGen));
-		m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
 		PostCommand2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
+		SetActiveSigGenId(m_sigGenIdNew);
 	}
 
 	void Undo() final 
 	{ 
-		m_pNMWI->SetSigGenActive(m_sigGenIdOld);
 		m_upSigGen = m_pNMWI->PopSigGen();
+		SetActiveSigGenId(m_sigGenIdOld);
 	}
 
 private:

@@ -11,6 +11,7 @@
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "ArrowAnimation.h"
+#include "AttachSigGenCmd.h"
 #include "ClearBeepersCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
@@ -49,9 +50,9 @@
 #include "SelectNobCommand.h"
 #include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
+#include "SelSigGenClientsCmd.h"
 #include "SetSigGenDataCmd.h"
 #include "SetHighlightedSignalCmd.h"
-#include "SelSigGenClientsCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
 #include "SetActiveSigGenCmd.h"
@@ -204,6 +205,13 @@ void NNetModelCommands::AnimateArrows
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
+}
+
+void NNetModelCommands::AttachSigGen(NobId const idInputNeuron)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << L" " << idInputNeuron << endl;
+	m_pCmdStack->PushCommand(make_unique<AttachSigGenCmd>(idInputNeuron));
 }
 
 void NNetModelCommands::ClearBeepers()

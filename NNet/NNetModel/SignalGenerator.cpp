@@ -55,28 +55,3 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 		default: assert(false);
 	}
 }
-
-void SignalGenerator::SetFreqBase(fHertz const f) 
-{ 
-	m_data.SetFreqBase(max(0._fHertz, f));
-}
-
-void SignalGenerator::SetFreqPeak(fHertz const f)
-{
-	m_data.SetFreqPeak(max(0._fHertz, f));
-}
-
-void SignalGenerator::SetTimePeak(fMicroSecs const t)
-{
-	m_data.SetPeakTime(max(1._MicroSecs, t));
-}
-
-void SignalGenerator::SetBaseVolt(mV const v)
-{
-	m_data.SetAmplBase(max(0._mV, v));
-}
-
-void SignalGenerator::SetPeakVolt(mV const v)
-{
-	m_data.SetAmplPeak(max(0._mV, v));
-}

@@ -222,7 +222,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_SELECT_SIGNAL_GENERATOR:
         m_pModelCommands->SetActiveSignalGenerator(SigGenId(lParam));
-        m_pMainWindow->PostCommand2Application(IDD_TRIGGER_SIGNAL_DESIGNER, 0);
         break;
 
     case IDM_UNDO:
@@ -379,6 +378,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDD_STOP_ON_TRIGGER:
         m_pModelCommands->ToggleStopOnTrigger(m_pMainWindow->GetHighlightedNobId());
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
+        break;
+
+    case IDD_ATTACH_SIGNAL_GENERATOR:
+        m_pModelCommands->AttachSigGen(m_pMainWindow->GetHighlightedNobId());
         break;
 
     default:

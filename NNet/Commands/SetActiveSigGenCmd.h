@@ -6,11 +6,9 @@
 
 #include "Resource.h"
 #include "SignalGenerator.h"
-#include "NNetCommand.h"
+#include "SigGenCommand.h"
 
-using std::make_unique;
-
-class SetActiveSigGenCmd : public NNetCommand
+class SetActiveSigGenCmd : public SigGenCommand
 {
 public:
 	SetActiveSigGenCmd(SigGenId const id)
@@ -20,12 +18,12 @@ public:
 
 	void Do() final 
 	{ 
-		m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
+		m_sigGenIdOld = SetActiveSigGenId(m_sigGenIdNew);
 	}
 
 	void Undo() final 
 	{ 
-		m_pNMWI->SetSigGenActive(m_sigGenIdOld);
+		SetActiveSigGenId(m_sigGenIdOld);
 	}
 
 private:

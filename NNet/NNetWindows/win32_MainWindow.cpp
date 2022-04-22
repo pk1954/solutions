@@ -70,32 +70,33 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
-		{ IDD_ADD_INCOMING2BASEKNOT,L"Add incoming dendrite"    },
-		{ IDD_ADD_INCOMING2PIPE,    L"Add incoming dendrite"    },
-		{ IDD_ADD_OUTGOING2BASEKNOT,L"Add outgoing dendrite"    },
-		{ IDD_ADD_OUTGOING2PIPE,    L"Add outgoing dendrite"    },
-		{ IDD_ADD_EEG_SENSOR,       L"New EEG sensor" 		    },
-//		{ IDM_ALIGN_NOBS,           L"Align selected objects"   },
-		{ IDD_ARROWS_OFF,           L"Arrows off"               },
-		{ IDD_ARROWS_ON,            L"Arrows on"                },
-		{ IDM_COPY_SELECTION,       L"Copy selection"           },
-		{ IDM_DELETE_SELECTION,     L"Delete selected objects"  },
-		{ IDD_DELETE_NOB,           L"Delete"                   },
-		{ IDD_DELETE_EEG_SENSOR,    L"Delete EEG sensor"        },
-		{ IDM_DESELECT_ALL,         L"Deselect all"             },
-		{ IDM_DESELECT_NOB,         L"Deselect nob"             },
-		{ IDD_DISC_IOCONNECTOR,     L"Disconnect"               },
-		{ IDD_SPLIT_NEURON,         L"Split (make I/O neurons)" },
-		{ IDD_INSERT_KNOT,          L"Insert knot"              },
-		{ IDD_INSERT_NEURON,        L"Insert neuron"            },
-		{ IDM_MAKE_CONNECTOR,       L"Make connector"           },
-		{ IDD_NEW_IO_NEURON_PAIR,   L"New IO-neuron pair" 	    },
-		{ IDM_TRIGGER_STIMULUS,     L"Trigger stimulus"         },
-		{ IDM_SELECT_NOB,           L"Select nob"               },
-		{ IDM_SELECT_SUBTREE,       L"Select subtree"           },
-		{ IDD_STOP_ON_TRIGGER,      L"Stop on trigger on/off"   },
-		{ IDD_TRIGGER_SOUND_DLG,    L"Trigger sound"            },
-		{ IDD_EMPHASIZE,            L"Feedback line (on/off)"   }
+		{ IDD_ADD_INCOMING2BASEKNOT,   L"Add incoming dendrite"          },
+		{ IDD_ADD_INCOMING2PIPE,       L"Add incoming dendrite"          },
+		{ IDD_ADD_OUTGOING2BASEKNOT,   L"Add outgoing dendrite"          },
+		{ IDD_ADD_OUTGOING2PIPE,       L"Add outgoing dendrite"          },
+		{ IDD_ADD_EEG_SENSOR,          L"New EEG sensor" 		         },
+//		{ IDM_ALIGN_NOBS,              L"Align selected objects"         },
+		{ IDD_ARROWS_OFF,              L"Arrows off"                     },
+		{ IDD_ARROWS_ON,               L"Arrows on"                      },
+		{ IDD_ATTACH_SIGNAL_GENERATOR, L"Attach active signal generator" },
+		{ IDM_COPY_SELECTION,          L"Copy selection"                 },
+		{ IDM_DELETE_SELECTION,        L"Delete selected objects"        },
+		{ IDD_DELETE_NOB,              L"Delete"                         },
+		{ IDD_DELETE_EEG_SENSOR,       L"Delete EEG sensor"              },
+		{ IDM_DESELECT_ALL,            L"Deselect all"                   },
+		{ IDM_DESELECT_NOB,            L"Deselect nob"                   },
+		{ IDD_DISC_IOCONNECTOR,        L"Disconnect"                     },
+		{ IDD_SPLIT_NEURON,            L"Split (make I/O neurons)"       },
+		{ IDD_INSERT_KNOT,             L"Insert knot"                    },
+		{ IDD_INSERT_NEURON,           L"Insert neuron"                  },
+		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
+		{ IDD_NEW_IO_NEURON_PAIR,      L"New IO-neuron pair" 	         },
+		{ IDM_TRIGGER_STIMULUS,        L"Trigger stimulus"               },
+		{ IDM_SELECT_NOB,              L"Select nob"                     },
+		{ IDM_SELECT_SUBTREE,          L"Select subtree"                 },
+		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
+		{ IDD_TRIGGER_SOUND_DLG,       L"Trigger sound"                  },
+		{ IDD_EMPHASIZE,               L"Feedback line (on/off)"         }
 	};
 	AppendMenu(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));
 }
@@ -122,6 +123,11 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		{
 			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
 			appendMenu(hPopupMenu, ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
+		}
+		else if ( m_pNMRI->IsInputNeuron(m_nobHighlighted) )
+		{
+			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGen(m_nobHighlighted))
+				appendMenu(hPopupMenu, IDD_ATTACH_SIGNAL_GENERATOR);  
 		}
 	}
 	else  // no nob selected, cursor on background

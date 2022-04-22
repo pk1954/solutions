@@ -30,22 +30,23 @@ public:
 
 	size_t Size() const { return m_pModel->Size(); }
 
-	bool       IsConnectionCandidate(NobId const, NobId const) const;
-	bool       CanConnectTo         (NobId const, NobId const) const;
-	bool       IsConnectedTo        (NobId const, NobId const) const;
-	bool       IsSelected           (NobId const) const;
-	NobType    GetNobType           (NobId const) const;
-	size_t     GetNrOfSegments      (NobId const) const;
-	SoundDescr GetTriggerSound      (NobId const) const;
-	bool       HasIncoming          (NobId const) const;
-	bool       HasOutgoing          (NobId const) const;
-	size_t     GetNrOfOutConns      (NobId const) const;
-	size_t     GetNrOfInConns       (NobId const) const;
-	size_t     GetNrOfConnections   (NobId const) const;
-	mV         GetVoltage           (NobId const) const;
-	mV         GetVoltageAt         (NobId const, MicroMeterPnt const &) const;
-	Degrees    GetDirection         (NobId const) const; 
-	fHertz     GetActFrequency      (NobId const) const; 
+	bool                    IsConnectionCandidate(NobId const, NobId const) const;
+	bool                    CanConnectTo         (NobId const, NobId const) const;
+	bool                    IsConnectedTo        (NobId const, NobId const) const;
+	bool                    IsSelected           (NobId const) const;
+	NobType                 GetNobType           (NobId const) const;
+	size_t                  GetNrOfSegments      (NobId const) const;
+	SoundDescr              GetTriggerSound      (NobId const) const;
+	bool                    HasIncoming          (NobId const) const;
+	bool                    HasOutgoing          (NobId const) const;
+	size_t                  GetNrOfOutConns      (NobId const) const;
+	size_t                  GetNrOfInConns       (NobId const) const;
+	size_t                  GetNrOfConnections   (NobId const) const;
+	mV                      GetVoltage           (NobId const) const;
+	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const &) const;
+	Degrees                 GetDirection         (NobId const) const; 
+	fHertz                  GetActFrequency      (NobId const) const; 
+	SignalGenerator const * GetSigGen            (NobId const) const;
 
 	wstring                 GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
 	MicroMeterPnt           GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
@@ -68,6 +69,7 @@ public:
 	SignalId                GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
 	SignalGenerator const * GetSigGenActive()                      const { return m_pModel->GetSigGenActive(); }
+	SignalGenerator       * GetSigGenStandard()                    const { return m_pModel->StdSigGen(); }
 	SignalGenerator const * GetSigGen(SigGenId const id)           const { return m_pModel->GetSigGen(id); }
 	SigGenId                GetSigGenIdActive()                    const { return m_pModel->GetSigGenIdActive(); }
 	bool                    IsInList(wstring const & name)         const { return m_pModel->IsInList(name); }

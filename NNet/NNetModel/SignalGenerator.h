@@ -48,12 +48,7 @@ public:
 
 	UPSigGenList const & GetSigGenList() const {return m_list; }
 
-	void SetFreqBase(fHertz const);
-	void SetFreqPeak(fHertz const);
-	void SetBaseVolt(mV const);
-	void SetPeakVolt(mV const);
-	void SetTimePeak(fMicroSecs const);
-	void Register  (ObserverInterface * const);
+	void Register(ObserverInterface * const);
 
 	bool       IsTriggerActive() const { return m_stimulus.IsTriggerActive(); }
 	fMicroSecs TimeTilTrigger () const { return m_stimulus.TimeTilTrigger(); }

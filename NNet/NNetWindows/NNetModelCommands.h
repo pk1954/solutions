@@ -62,6 +62,7 @@ public:
     void AnalyzeLoops            ();
     void AnimateArrows           (MicroMeter &, MicroMeter const);
     void AnimateCoord            (Uniform2D<MicroMeter> &, Uniform2D<MicroMeter> const &);
+    void AttachSigGen            (NobId const);
     void ClearBeepers            ();
     void Connect                 (NobId const, NobId const);
     void CopySelection           ();

@@ -18,6 +18,8 @@ class SignalGenerator;
 using SigGenId = NamedType<size_t, struct SigGenIdParam>;
 using UPSigGen = unique_ptr<SignalGenerator>;
 
+static const SigGenId STD_SIGGEN_ID (0);
+
 class UPSigGenList //: public Observable
 {
 public:

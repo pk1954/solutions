@@ -23,8 +23,9 @@ public:
 
 	void Check() const final;
 
-	//void SetSigGen(SignalGenerator * const p) { m_pSigGen = p; }
-	SignalGenerator & GetSigGen() { return * m_pSigGen; }
+	void SetSigGen(SignalGenerator * const p) { m_pSigGen = p; }
+	SignalGenerator       & GetSigGen()       { return * m_pSigGen; }
+	SignalGenerator const & GetSigGen() const { return * m_pSigGen; }
 
 	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }
 
