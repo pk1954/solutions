@@ -242,7 +242,7 @@ public:
 
 	void Notify(bool const) override;
 
-	virtual void Trigger()	{ Invalidate(false); }
+	virtual void Trigger() { Invalidate(false); }
 
 	void ShowRefreshRateDlg(bool const bShow) { m_bShowRefreshRateDlg = bShow; }
 	void SetWindowVisibility(tOnOffAuto const);

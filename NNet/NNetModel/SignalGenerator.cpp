@@ -19,22 +19,15 @@ SignalGenerator::SignalGenerator(UPSigGenList & list, wstring const & name)
 	m_name(name)
 {}
 
-void SignalGenerator::Register(ObserverInterface & obs)
+void SignalGenerator::Register(ObserverInterface * const pObs)
 {
-	m_data.RegisterObserver(obs);
-	m_stimulus.RegisterObserver(obs);
-}
-
-void SignalGenerator::Unregister(ObserverInterface & obs)
-{
-	m_data.UnregisterObserver(obs);
-	m_stimulus.UnregisterObserver(obs);
+	m_data.RegisterObserver(*pObs);
+	m_stimulus.RegisterObserver(*pObs);
 }
 
 void SignalGenerator::SetData(SigGenData const & data) 
 { 
 	m_data = data; 
-	m_data.NotifyAll(false);
 }
 
 SigGenData const & SignalGenerator::GetData() const

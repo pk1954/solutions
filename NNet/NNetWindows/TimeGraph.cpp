@@ -36,18 +36,6 @@ void TimeGraph::SetModelInterface(NNetModelWriterInterface * const p)
 	GetParams()->RegisterObserver(*this);
 }
 
-void TimeGraph::RegisterAtSigGen(SigGenId const id)
-{
-	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
-		pSigGen->Register(*this);
-}
-
-void TimeGraph::UnregisterAtSigGen(SigGenId const id)
-{
-	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
-		pSigGen->Unregister(*this);
-}
-
 fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 
 { 
 	return m_pHorzCoord->Transform2logUnitPos(p.GetX()); 

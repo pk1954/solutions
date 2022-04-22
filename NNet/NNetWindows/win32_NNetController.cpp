@@ -221,7 +221,8 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
-        m_pModelCommands->SetSignalGenerator(SigGenId(lParam));
+        m_pModelCommands->SetActiveSignalGenerator(SigGenId(lParam));
+        m_pMainWindow->PostCommand2Application(IDD_TRIGGER_SIGNAL_DESIGNER, 0);
         break;
 
     case IDM_UNDO:

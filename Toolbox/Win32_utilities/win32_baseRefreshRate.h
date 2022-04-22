@@ -47,7 +47,6 @@ private:
 		Trigger();
 		m_bDirty = false;
 	}
-
 	void OnInitDlg(HWND const, WPARAM const, LPARAM const) final;
 	bool OnOK     (HWND const)                             final; 
 

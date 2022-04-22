@@ -6,6 +6,8 @@
 #include "Resource.h"
 #include "PointType.h"
 #include "win32_controls.h"
+#include "win32_editLineBox.h"
+#include "win32_util_resource.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
@@ -91,7 +93,7 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal ");
+	AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input neurons");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
 
@@ -100,16 +102,8 @@ LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 
 void SignalDesigner::RegisterAtSigGen(SigGenId const id)
 {
-	m_upSignalControl1->RegisterAtSigGen(id);
-	m_upSignalControl2->RegisterAtSigGen(id);
-	m_upSignalPreview ->RegisterAtSigGen(id);
-}
-
-void SignalDesigner::UnregisterAtSigGen(SigGenId const id)
-{
-	m_upSignalControl1->UnregisterAtSigGen(id);
-	m_upSignalControl2->UnregisterAtSigGen(id);
-	m_upSignalPreview ->UnregisterAtSigGen(id);
+	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
+		pSigGen->Register(this);
 }
 
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
@@ -138,15 +132,20 @@ void SignalDesigner::Stop()
 
 wstring SignalDesigner::GetTitle() const
 {
-	if (m_pNMWI) 
+	if (m_pNMWI)
+	{
 		if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
 			return pSigGen->GetName();
+	}
     return L"*****";
 }
 
 void SignalDesigner::DoPaint()
 {
 	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
+	m_upSignalControl1->Notify(false);
+	m_upSignalControl2->Notify(false);
+	m_upSignalPreview ->Notify(false);
 	SetCaption();
 }
 
@@ -171,7 +170,12 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_RENAME_SIGNAL_GENERATOR:
-		m_pCommands->RenameSigGen();
+		{
+			wstring     wstrName { m_pNMWI->GetSigGenActive()->GetName() };
+			EditLineBox dlgBox(wstrName);
+			dlgBox.Show(GetWindowHandle());
+			m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdActive(),	wstrName);
+		}
 		break;
 
 	case IDD_SELECT_SIG_GEN_CLIENTS:

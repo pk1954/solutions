@@ -36,8 +36,7 @@ public:
 
 	wstring GetTitle() const final;
 
-	void RegisterAtSigGen  (SigGenId const);
-	void UnregisterAtSigGen(SigGenId const);
+	void RegisterAtSigGen(SigGenId const);
 
 	enum class DESIGN { INTEGRATED, STACKED };
 

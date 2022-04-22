@@ -189,7 +189,7 @@
     <ClInclude Include="NewSigGenCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetSigGenCmd.h">
+    <ClInclude Include="SetActiveSigGenCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeleteSigGenCmd.h">

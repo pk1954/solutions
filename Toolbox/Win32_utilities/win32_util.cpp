@@ -11,7 +11,21 @@ using std::wostream;
 using std::stringbuf;
 using std::ostream;
 
-bool Util::Evaluate(HWND const hwndEditField, unsigned long& ulValue)
+bool Util::Evaluate(HWND const hwndEditField, wstring & wstrValue)
+{	
+    static int const BUFLEN { 20 };
+    wchar_t wBuffer[BUFLEN];
+
+    if (GetWindowText(hwndEditField, wBuffer, BUFLEN))
+    {
+        wstrValue = wBuffer;
+        return true;
+    }
+
+    return false;
+}
+
+bool Util::Evaluate(HWND const hwndEditField, unsigned long & ulValue)
 {	
     static int const BUFLEN { 20 };
     wchar_t wBuffer[BUFLEN];

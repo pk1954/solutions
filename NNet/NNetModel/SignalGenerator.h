@@ -53,8 +53,7 @@ public:
 	void SetBaseVolt(mV const);
 	void SetPeakVolt(mV const);
 	void SetTimePeak(fMicroSecs const);
-	void Register  (ObserverInterface &);
-	void Unregister(ObserverInterface &);
+	void Register  (ObserverInterface * const);
 
 	bool       IsTriggerActive() const { return m_stimulus.IsTriggerActive(); }
 	fMicroSecs TimeTilTrigger () const { return m_stimulus.TimeTilTrigger(); }

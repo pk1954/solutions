@@ -54,7 +54,7 @@
 #include "SelSigGenClientsCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
-#include "SetSigGenCmd.h"
+#include "SetActiveSigGenCmd.h"
 #include "SetTriggerSoundCommand.h"
 #include "SizeSelectionCmd.h"
 #include "SizeSensorCmd.h"
@@ -419,11 +419,11 @@ void NNetModelCommands::NewSignalGenerator()
 	m_pCmdStack->PushCommand(make_unique<NewSigGenCmd>());
 }
 
-void NNetModelCommands::SetSignalGenerator(SigGenId const id)
+void NNetModelCommands::SetActiveSignalGenerator(SigGenId const id)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pCmdStack->PushCommand(make_unique<SetSigGenCmd>(id));
+	m_pCmdStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
 }
 
 void NNetModelCommands::DeleteSigGen()
@@ -433,11 +433,11 @@ void NNetModelCommands::DeleteSigGen()
 	m_pCmdStack->PushCommand(make_unique<DeleteSigGenCmd>());
 }
 
-void NNetModelCommands::RenameSigGen()
+void NNetModelCommands::RenameSigGen(SigGenId const id, wstring const & name)
 {
 	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<RenameSigGenCmd>());
+		TraceStream() << source_location::current().function_name() << L" " << id << L" " << name << endl;
+	m_pCmdStack->PushCommand(make_unique<RenameSigGenCmd>(id, name));
 }
 
 void NNetModelCommands::SelectSigGenClients()

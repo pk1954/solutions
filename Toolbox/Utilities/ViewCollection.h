@@ -5,10 +5,12 @@
 #pragma once
 
 #include <assert.h>
+#include <algorithm>
 #include <vector>
 #include "observerInterface.h"
 
 using std::vector;
+using std::ranges::count;
 
 class ViewCollection
 {
@@ -25,7 +27,8 @@ public:
 
 	void Register(ObserverInterface & observer)
 	{
-		m_aView.push_back(&observer);
+		if (count(m_aView, &observer) == 0)
+			m_aView.push_back(&observer);
 	}
 
 	void Unregister(ObserverInterface const & observer)

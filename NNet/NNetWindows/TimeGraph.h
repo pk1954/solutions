@@ -24,8 +24,6 @@ public:
 	~TimeGraph();
 
 	void SetModelInterface(NNetModelWriterInterface * const);
-	void RegisterAtSigGen(SigGenId const);
-	void UnregisterAtSigGen(SigGenId const);
 
 protected:
 

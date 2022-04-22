@@ -1,39 +1,34 @@
-// NewSigGenCmd.h
+// SetActiveSigGenCmd.h
 //
 // Commands
 
 #pragma once
 
 #include "Resource.h"
-#include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
 using std::make_unique;
 
-class NewSigGenCmd : public NNetCommand
+class SetActiveSigGenCmd : public NNetCommand
 {
 public:
-	NewSigGenCmd()
+	SetActiveSigGenCmd(SigGenId const id)
 	{
-		m_upSigGen = m_pNMWI->NewSigGen();
+		m_sigGenIdNew = id;
 	}
 
 	void Do() final 
 	{ 
-		m_sigGenIdNew = m_pNMWI->PushSigGen(move(m_upSigGen));
 		m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
-		PostCommand2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
 	}
 
 	void Undo() final 
 	{ 
 		m_pNMWI->SetSigGenActive(m_sigGenIdOld);
-		m_upSigGen = m_pNMWI->PopSigGen();
 	}
 
 private:
-	UPSigGen m_upSigGen;
 	SigGenId m_sigGenIdNew;
 	SigGenId m_sigGenIdOld;
 };
