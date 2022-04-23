@@ -44,8 +44,13 @@ size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 
 SignalGenerator const * NNetModelReaderInterface::GetSigGen(NobId const id) const
 {
-	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
-	return p ? &(p->GetSigGen()) : nullptr;
+	Nob const & nob { * m_pModel->GetConstNob(id) };
+	if (nob.IsInputNeuron())
+		return &m_pModel->GetNobConstPtr<InputNeuron const *>(id)->GetSigGen(); 
+	else if (nob.IsInputConnector())
+		return &m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetSigGen(); 
+	else
+		return nullptr;
 }
 
 SoundDescr NNetModelReaderInterface::GetTriggerSound(NobId const id) const

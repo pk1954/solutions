@@ -73,6 +73,7 @@
     <ClInclude Include="AddSignalCommand.h" />
     <ClInclude Include="AnalyzeCommand.h" />
     <ClInclude Include="ArrowAnimation.h" />
+    <ClInclude Include="AttachSIgGen2ConnCmd.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
@@ -98,7 +99,7 @@
     <ClInclude Include="RotationCommand.h" />
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
-    <ClInclude Include="AttachSigGenCmd.h" />
+    <ClInclude Include="AttachSigGen2LineCmd.h" />
     <ClInclude Include="SetSigGenDataCmd.h" />
     <ClInclude Include="SetHighlightedSignalCmd.h" />
     <ClInclude Include="SigGenCommand.h" />

@@ -11,7 +11,8 @@
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "ArrowAnimation.h"
-#include "AttachSigGenCmd.h"
+#include "AttachSigGen2ConnCmd.h"
+#include "AttachSigGen2LineCmd.h"
 #include "ClearBeepersCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
@@ -207,11 +208,18 @@ void NNetModelCommands::AnimateArrows
 	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
 }
 
-void NNetModelCommands::AttachSigGen(NobId const idInputNeuron)
+void NNetModelCommands::AttachSigGen2Line(NobId const idInputNeuron)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << idInputNeuron << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGenCmd>(idInputNeuron));
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(idInputNeuron));
+}
+
+void NNetModelCommands::AttachSigGen2Conn(NobId const idInputNeuron)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << L" " << idInputNeuron << endl;
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConnCmd>(idInputNeuron));
 }
 
 void NNetModelCommands::ClearBeepers()

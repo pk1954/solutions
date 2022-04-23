@@ -5,13 +5,13 @@
 #pragma once
 
 #include "NobType.h"
-#include "Nob.h"
-#include "tHighlightType.h"
 #include "IoConnector.h"
 
 class Param;
 class IoNeuron;
 class DrawContext;
+class InputNeuron;
+class SignalGenerator;
 
 using std::unique_ptr;
 
@@ -24,6 +24,13 @@ public:
 	explicit InputConnector(Param &, vector<IoNeuron *> &&);
 
 	~InputConnector() final = default;
+
+	InputNeuron & GetElem(size_t const) const;
+
+	SignalGenerator       & GetSigGen();
+	SignalGenerator const & GetSigGen() const;
+
+	void SetSigGen(SignalGenerator * const);
 
 	void Prepare() final { /* */ };
 	void AppendMenuItems(AddMenuFunc const &) const final;

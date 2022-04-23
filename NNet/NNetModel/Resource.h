@@ -125,4 +125,5 @@
 #define       IDD_SELECT_SIG_GEN_CLIENTS     705
 #define       IDD_REGISTER_SIG_GEN           706
 #define       IDD_TRIGGER_SIGNAL_DESIGNER    707
-#define       IDD_ATTACH_SIGNAL_GENERATOR    708
+#define       IDD_ATTACH_SIG_GEN_TO_LINE     708
+#define       IDD_ATTACH_SIG_GEN_TO_CONN     709

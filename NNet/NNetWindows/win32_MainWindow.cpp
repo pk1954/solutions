@@ -78,7 +78,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 //		{ IDM_ALIGN_NOBS,              L"Align selected objects"         },
 		{ IDD_ARROWS_OFF,              L"Arrows off"                     },
 		{ IDD_ARROWS_ON,               L"Arrows on"                      },
-		{ IDD_ATTACH_SIGNAL_GENERATOR, L"Attach active signal generator" },
+		{ IDD_ATTACH_SIG_GEN_TO_LINE,  L"Attach active signal generator" },
+		{ IDD_ATTACH_SIG_GEN_TO_CONN,  L"Attach active signal generator" },
 		{ IDM_COPY_SELECTION,          L"Copy selection"                 },
 		{ IDM_DELETE_SELECTION,        L"Delete selected objects"        },
 		{ IDD_DELETE_NOB,              L"Delete"                         },
@@ -127,7 +128,12 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		else if ( m_pNMRI->IsInputNeuron(m_nobHighlighted) )
 		{
 			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGen(m_nobHighlighted))
-				appendMenu(hPopupMenu, IDD_ATTACH_SIGNAL_GENERATOR);  
+				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
+		}
+		else if ( m_pNMRI->IsInputConnector(m_nobHighlighted) )
+		{
+			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGen(m_nobHighlighted))
+				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
 		}
 	}
 	else  // no nob selected, cursor on background

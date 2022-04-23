@@ -1,4 +1,4 @@
-// AttachSigGenCmd.h
+// AttachSigGen2LineCmd.h
 //
 // Commands
 
@@ -9,12 +9,10 @@
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
-using std::make_unique;
-
-class AttachSigGenCmd : public NNetCommand
+class AttachSigGen2LineCmd : public NNetCommand
 {
 public:
-	AttachSigGenCmd(NobId const nobId)
+	AttachSigGen2LineCmd(NobId const nobId)
 	  : m_inputNeuron(*m_pNMWI->GetNobPtr<InputNeuron *>(nobId)),
 		m_pSigGenOld(&m_inputNeuron.GetSigGen()),
 		m_pSigGenNew(m_pNMWI->GetSigGenActive())

@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "DrawContext.h"
 #include "IoNeuron.h"
+#include "InputNeuron.h"
 #include "InputConnector.h"
 
 using std::make_unique;
@@ -68,21 +69,28 @@ void InputConnector::AppendMenuItems(AddMenuFunc const & add) const
     IoConnector::AppendMenuItems(add);
 }
 
-//void InputConnector::Prepare()
-//{
-//    m_signalGenerator.Tick();
-//    fHertz     const freq            { m_signalGenerator.GetActFrequency() };
-//    fMicroSecs const time2Trigger    { PulseDuration(freq) };
-//    float      const ticks2Trigger   { time2Trigger / m_signalGenerator.GetParamsC().TimeResolution() };
-//    mV         const increasePerTick { m_signalGenerator.GetParamsC().Threshold() / ticks2Trigger };
-//    m_mVinputBuffer += increasePerTick;
-//    Apply2All([this](IoNeuron & n){ n.SetVoltage(m_mVinputBuffer); });
-//}
-//
-//mV InputConnector::WaveFunction(fMicroSecs const time) const
-//{
-//    mV const amplitude { m_signalGenerator.GetAmplitude(time) };
-//    float m_factorW = 1.0f / m_signalGenerator.GetParamsC().SpikeWidth().GetValue();
-//    float m_factorU = 4.0f * m_factorW * amplitude.GetValue();
-//    return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
-//}
+InputNeuron & InputConnector::GetElem(size_t const nr) const 
+{     
+    return static_cast<InputNeuron &>(IoConnector::GetElem(nr));  
+};
+
+SignalGenerator & InputConnector::GetSigGen()       
+{ 
+    return GetElem(0).GetSigGen(); 
+}
+
+SignalGenerator const & InputConnector::GetSigGen() const 
+{ 
+    return GetElem(0).GetSigGen(); 
+}
+
+void InputConnector::SetSigGen(SignalGenerator * const pSigGen) 
+{ 
+    Apply2All
+    (
+        [pSigGen](IoNeuron & n)
+        { 
+            static_cast<InputNeuron &>(n).SetSigGen(pSigGen); 
+        }
+    );
+}

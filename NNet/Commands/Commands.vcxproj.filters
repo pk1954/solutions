@@ -204,7 +204,10 @@
     <ClInclude Include="SigGenCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttachSigGenCmd.h">
+    <ClInclude Include="AttachSigGen2LineCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttachSIgGen2ConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

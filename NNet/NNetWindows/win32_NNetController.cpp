@@ -380,8 +380,12 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
-    case IDD_ATTACH_SIGNAL_GENERATOR:
-        m_pModelCommands->AttachSigGen(m_pMainWindow->GetHighlightedNobId());
+    case IDD_ATTACH_SIG_GEN_TO_LINE:
+        m_pModelCommands->AttachSigGen2Line(m_pMainWindow->GetHighlightedNobId());
+        break;
+
+    case IDD_ATTACH_SIG_GEN_TO_CONN:
+        m_pModelCommands->AttachSigGen2Conn(m_pMainWindow->GetHighlightedNobId());
         break;
 
     default:
