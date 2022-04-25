@@ -16,9 +16,9 @@ class MainWindow;
 class MakeConnAnimation : public NNetCommand
 {
 public:
-    explicit MakeConnAnimation(vector<IoNeuron *> && list)
+    explicit MakeConnAnimation(vector<IoLine *> && list)
     {
-        if (list.front()->IsInputNeuron())
+        if (list.front()->IsInputLine())
             m_upIoConnector = make_unique<InputConnector>(m_pNMWI->GetParams(), move(list));
         else 
             m_upIoConnector = make_unique<OutputConnector>(move(list));

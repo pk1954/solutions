@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "MicroMeterPosDir.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 #include "Neuron.h"
 #include "IoConnector.h"
 
@@ -48,14 +48,14 @@ void IoConnector::Select(bool const bOn)
         it->Select(bOn);
 }
 
-void IoConnector::Push(IoNeuron * const p) 
+void IoConnector::Push(IoLine * const p) 
 { 
     m_list.push_back(p); 
 }
 
-IoNeuron * IoConnector::Pop() 
+IoLine * IoConnector::Pop() 
 { 
-    IoNeuron * pRet { m_list.back() };
+    IoLine * pRet { m_list.back() };
     m_list.pop_back();
     return pRet;
 }
@@ -65,7 +65,7 @@ size_t IoConnector::Size() const
     return m_list.size(); 
 }
 
-IoNeuron & IoConnector::GetElem(size_t const nr) const 
+IoLine & IoConnector::GetElem(size_t const nr) const 
 { 
     return * m_list.at(nr); 
 }
@@ -73,7 +73,7 @@ IoNeuron & IoConnector::GetElem(size_t const nr) const
 void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     for (auto & it : m_list) 
-        it = static_cast<IoNeuron *>(dstFromSrc(it));
+        it = static_cast<IoLine *>(dstFromSrc(it));
 }
 
 void IoConnector::AlignDirection()
@@ -201,12 +201,12 @@ void IoConnector::Expand(MicroMeterRect & umRect) const
 
 MicroMeterLine IoConnector::CalcMaxDistLine() const // find two nobs with maximum distance
 {
-    return ::CalcMaxDistLine<IoNeuron>(m_list);
+    return ::CalcMaxDistLine<IoLine>(m_list);
 }
 
 MicroMeterPnt IoConnector::CalcOrthoVector(MicroMeterLine const & line) const 
 {
-    return ::CalcOrthoVector<IoNeuron>(m_list, line);
+    return ::CalcOrthoVector<IoLine>(m_list, line);
 }
 
 void IoConnector::AppendMenuItems(AddMenuFunc const & add) const

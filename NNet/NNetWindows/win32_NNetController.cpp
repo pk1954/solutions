@@ -265,7 +265,12 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_CONNECT:
-        m_pModelCommands->Connect(m_pMainWindow->GetHighlightedNobId(), m_pMainWindow->GetTargetNobId());
+        m_pModelCommands->Connect
+        (
+            m_pMainWindow->GetHighlightedNobId(), 
+            m_pMainWindow->GetTargetNobId(),
+            static_cast<ConnectionType>(lParam)
+        );
         break;
 
     case IDM_DELETE:   // keyboard delete key
@@ -317,8 +322,8 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->InsertNeuron(m_pMainWindow->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_NEW_IO_NEURON_PAIR:
-        m_pModelCommands->NewIoNeuronPair(umPoint);
+    case IDD_NEW_IO_LINE_PAIR:
+        m_pModelCommands->NewIoLinePair(umPoint);
         break;
 
     case IDD_ADD_OUTGOING2BASEKNOT:

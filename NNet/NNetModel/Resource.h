@@ -78,7 +78,7 @@
 								   	         
 #define       IDD_INSERT_KNOT                460
 #define       IDD_INSERT_NEURON              461
-#define       IDD_NEW_IO_NEURON_PAIR         463
+#define       IDD_NEW_IO_LINE_PAIR           463
 #define       IDD_DELETE_NOB                 468
 										    
 #define       IDD_ADD_INCOMING2BASEKNOT      571

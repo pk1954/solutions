@@ -23,7 +23,7 @@ public:
         m_cmdStack.SetModelInterface(m_pNMWI);
         m_connector.Apply2All
         (
-            [this](IoNeuron & n) 
+            [this](IoLine & n) 
             { 
                 if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, n) })
                     m_cmdStack.Push(move(upCmd)); 

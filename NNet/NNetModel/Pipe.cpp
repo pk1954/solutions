@@ -355,6 +355,7 @@ void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 	add(IDD_INSERT_NEURON);
 	add(IDD_INSERT_KNOT);   
 	Nob::AppendMenuItems(add);
+	add(IDD_DELETE_NOB);
 }
 
 Pipe const * Cast2Pipe(Nob const * pNob)

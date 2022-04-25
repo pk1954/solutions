@@ -9,8 +9,8 @@
 #include "NNetCommand.h"
 #include "NobId.h"
 #include "NobIdList.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
+#include "InputLine.h"
+#include "OutputLine.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 
@@ -28,11 +28,11 @@ public:
     void Undo() final;
 
 private:
-    BaseKnot                       & m_baseKnot;
-    unique_ptr<BaseKnot>             m_upBaseKnot;
-    MicroMeterPnt                    m_umPos         {};
-    vector<unique_ptr<OutputNeuron>> m_outputNeurons {};
-    vector<unique_ptr<InputNeuron>>  m_inputNeurons  {};
-    NobIdList                        m_idOutputNeurons  {};
-    NobIdList                        m_idInputNeurons    {};
+    BaseKnot                     & m_baseKnot;
+    unique_ptr<BaseKnot>           m_upBaseKnot;
+    MicroMeterPnt                  m_umPos         {};
+    vector<unique_ptr<OutputLine>> m_outputLines   {};
+    vector<unique_ptr<InputLine>>  m_inputLines    {};
+    NobIdList                      m_idOutputLines {};
+    NobIdList                      m_idInputLines  {};
 };

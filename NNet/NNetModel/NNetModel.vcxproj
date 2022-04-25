@@ -190,13 +190,13 @@
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="CopySelectedNobs.h" />
     <ClInclude Include="InputConnector.h" />
-    <ClInclude Include="IoNeuron.h" />
+    <ClInclude Include="IoLine.h" />
     <ClInclude Include="IoConnector.h" />
-    <ClInclude Include="IoNeuronPair.h" />
+    <ClInclude Include="IoLinePair.h" />
     <ClInclude Include="MicroMeterPntVector.h" />
     <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="DrawContext.h" />
-    <ClInclude Include="InputNeuron.h" />
+    <ClInclude Include="InputLine.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="MicroMeterPosDir.h" />
     <ClInclude Include="MonitorData.h" />
@@ -209,7 +209,7 @@
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="NobException.h" />
     <ClInclude Include="OutputConnector.h" />
-    <ClInclude Include="OutputNeuron.h" />
+    <ClInclude Include="OutputLine.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="NobIdList.h" />
     <ClInclude Include="PipeList.h" />
@@ -238,9 +238,9 @@
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="InputConnector.cpp" />
-    <ClCompile Include="IoNeuron.cpp" />
+    <ClCompile Include="IoLine.cpp" />
     <ClCompile Include="IoConnector.cpp" />
-    <ClCompile Include="InputNeuron.cpp" />
+    <ClCompile Include="InputLine.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="MicroMeterPntVector.cpp" />
     <ClCompile Include="MicroMeterPosDir.cpp" />
@@ -255,7 +255,7 @@
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="OutputConnector.cpp" />
-    <ClCompile Include="OutputNeuron.cpp" />
+    <ClCompile Include="OutputLine.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Nob.cpp" />
     <ClCompile Include="NobIdList.cpp" />

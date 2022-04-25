@@ -8,9 +8,9 @@
 #include "IoConnector.h"
 
 class Param;
-class IoNeuron;
+class IoLine;
 class DrawContext;
-class InputNeuron;
+class InputLine;
 class SignalGenerator;
 
 using std::unique_ptr;
@@ -21,11 +21,11 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
-	explicit InputConnector(Param &, vector<IoNeuron *> &&);
+	explicit InputConnector(Param &, vector<IoLine *> &&);
 
 	~InputConnector() final = default;
 
-	InputNeuron & GetElem(size_t const) const;
+	InputLine & GetElem(size_t const) const;
 
 	SignalGenerator       & GetSigGen();
 	SignalGenerator const & GetSigGen() const;

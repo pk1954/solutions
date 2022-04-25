@@ -36,7 +36,7 @@ unique_ptr<NNetCommand> MakeDeleteCommand
 			upCmd = make_unique<DeleteIoConnectorCmd>(nob); 
 			break;
 		default:              
-			upCmd = make_unique<DeleteBaseKnotCmd>(nob);  // May create IoNeuron
+			upCmd = make_unique<DeleteBaseKnotCmd>(nob);  // May create IoLine
 		}
 	return move(upCmd);
 }

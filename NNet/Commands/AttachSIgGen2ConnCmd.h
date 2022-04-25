@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NobId.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"

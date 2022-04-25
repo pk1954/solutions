@@ -10,7 +10,7 @@
 #include "Direct2D.h"
 #include "Pipe.h"
 #include "Neuron.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"

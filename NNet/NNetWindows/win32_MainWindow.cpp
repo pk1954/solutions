@@ -91,7 +91,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_INSERT_KNOT,             L"Insert knot"                    },
 		{ IDD_INSERT_NEURON,           L"Insert neuron"                  },
 		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
-		{ IDD_NEW_IO_NEURON_PAIR,      L"New IO-neuron pair" 	         },
+		{ IDD_NEW_IO_LINE_PAIR,        L"New IO-line pair"  	         },
 		{ IDM_TRIGGER_STIMULUS,        L"Trigger stimulus"               },
 		{ IDM_SELECT_NOB,              L"Select nob"                     },
 		{ IDM_SELECT_SUBTREE,          L"Select subtree"                 },
@@ -125,7 +125,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
 			appendMenu(hPopupMenu, ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
 		}
-		else if ( m_pNMRI->IsInputNeuron(m_nobHighlighted) )
+		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
 		{
 			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGen(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
@@ -142,7 +142,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
 		else
 		{
-			appendMenu(hPopupMenu, IDD_NEW_IO_NEURON_PAIR);
+			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
 			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 		}
 	}
@@ -222,8 +222,8 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void MainWindow::setNoTarget()
 {
-	m_nobTarget   = NO_NOB;
-	m_bTargetFits = false;
+	m_nobTarget = NO_NOB;
+	m_connType  = ConnectionType::ct_none;
 }
 
 void MainWindow::setTargetNob()
@@ -231,12 +231,9 @@ void MainWindow::setTargetNob()
 	m_nobTarget = m_pNMRI->FindNobAt
 	(
 		m_pNMRI->GetNobPos(m_nobHighlighted),
-		[this](Nob const & s) 
-		{ 
-			return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); 
-		}
+		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); }
 	);
-	m_bTargetFits = IsDefined(m_nobTarget) && m_pNMRI->CanConnectTo(m_nobHighlighted, m_nobTarget); 
+	m_connType = m_pNMRI->ConnectionResult(m_nobHighlighted, m_nobTarget);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -326,8 +323,8 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 
 bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_bTargetFits)
-		SendCommand2Application(IDD_CONNECT, 0	);
+	if (m_connType != ConnectionType::ct_none)
+		SendCommand2Application(IDD_CONNECT, static_cast<LPARAM>(m_connType));
 	setNoTarget();
 	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
@@ -446,7 +443,7 @@ void MainWindow::DoPaint()
 
 	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
 	{
-		tHighlight type { m_bTargetFits ? tHighlight::targetFit : tHighlight::targetNoFit };
+		tHighlight type { (m_connType == ConnectionType::ct_none) ? tHighlight::targetNoFit : tHighlight::targetFit };
 		m_pNMRI->DrawExterior(m_nobTarget, context, type);
 		m_pNMRI->DrawInterior(m_nobTarget, context, type);
 		m_pNMRI->DrawExterior(m_nobHighlighted, context, type);

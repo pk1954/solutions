@@ -13,7 +13,7 @@
 #include "DrawContext.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 #include "Pipe.h"
 #include "Neuron.h"
 

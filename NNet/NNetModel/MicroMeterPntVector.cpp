@@ -7,7 +7,7 @@
 
 using std::ranges::max_element;
 
-MicroMeterPntVector::MicroMeterPntVector(vector<IoNeuron *> const & nobList)
+MicroMeterPntVector::MicroMeterPntVector(vector<IoLine *> const & nobList)
 {
     for (auto pNob : nobList) 
         if (pNob)

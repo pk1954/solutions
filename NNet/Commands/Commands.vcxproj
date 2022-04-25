@@ -83,7 +83,7 @@
     <ClInclude Include="CoordAnimation.h" />
     <ClInclude Include="DeleteIoConnectorCmd.h" />
     <ClInclude Include="DeleteSigGenCmd.h" />
-    <ClInclude Include="IoNeuronsAnimation.h" />
+    <ClInclude Include="IoLinesAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSensorCmd.h" />
     <ClInclude Include="MoveSignalCmd.h" />
@@ -91,8 +91,8 @@
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectorAnimation.h" />
     <ClInclude Include="PlugIoConnectors.h" />
-    <ClInclude Include="PlugIoNeuronAnimation.h" />
-    <ClInclude Include="PlugIoNeurons.h" />
+    <ClInclude Include="PlugIoLineAnimation.h" />
+    <ClInclude Include="PlugIoLines.h" />
     <ClInclude Include="RenameSigGenCmd.h" />
     <ClInclude Include="RotateModelCommand.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
@@ -108,7 +108,7 @@
     <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
-    <ClInclude Include="NewIoNeuronPairCmd.h" />
+    <ClInclude Include="NewIoLinePairCmd.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
@@ -151,7 +151,7 @@
     <ClCompile Include="ConnAnimationCommand.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
-    <ClCompile Include="DiscBaseKnotCmd.cpp">
+    <ClCompile Include="DeleteBaseKnotCmd.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>

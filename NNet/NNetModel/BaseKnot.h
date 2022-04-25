@@ -61,7 +61,8 @@ public:
 	bool IsPrecursorOf(BaseKnot const &) const;
 	bool IsSuccessorOf(BaseKnot const &) const;
 
-	bool IsDirectlyConnectedTo(BaseKnot const & b) const;
+	bool IsDirectlyConnectedTo(BaseKnot const &) const;
+	bool IsDirectlyConnectedTo(Pipe     const &) const;
 
 	bool HasIncoming() const { return m_inPipes.IsNotEmpty (); }
 	bool HasOutgoing() const { return m_outPipes.IsNotEmpty(); }

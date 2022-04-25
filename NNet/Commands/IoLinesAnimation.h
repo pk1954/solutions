@@ -1,4 +1,4 @@
-// IoNeuronsAnimation.h
+// IoLinesAnimation.h
 //
 // Commands
 
@@ -12,14 +12,14 @@
 
 using std::function;
 
-class IoNeuronsAnimation : public Command
+class IoLinesAnimation : public Command
 {
     using ANIM_TYPE = MicroMeterPntVector;
     using ANIMATION = Animation<ANIM_TYPE>;
 public:
-    IoNeuronsAnimation
+    IoLinesAnimation
     (
-        vector<IoNeuron *> const & animated,
+        vector<IoLine *> const & animated,
         ANIM_TYPE          const & target
     )
       : m_animated(animated),
@@ -56,7 +56,7 @@ public:
 
 private:
 
-    vector<IoNeuron *>    m_animated;
+    vector<IoLine *>    m_animated;
     ANIM_TYPE       const m_start;
     ANIM_TYPE       const m_target;
     unsigned int          m_uiNrOfSteps;

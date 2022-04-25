@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include <algorithm>
 #include "NNetModelWriterInterface.h"
-#include "IoNeuron.h"
-#include "IoNeuronsAnimation.h"
+#include "IoLine.h"
+#include "IoLinesAnimation.h"
 #include "MakeConnAnimation.h"
 #include "ConnAnimationCommand.h"
 
@@ -20,16 +20,16 @@ ConnAnimationCommand::ConnAnimationCommand()
     if (nobType.IsUndefinedType())
         return;
     
-    modelNobs.Apply2All<IoNeuron>
+    modelNobs.Apply2All<IoLine>
     (
-        [this, nobType](IoNeuron & s)	
+        [this, nobType](IoLine & s)	
         { 
             if (s.IsSelected() && (s.GetNobType() == nobType)) 
                 m_nobsAnimated.push_back(&s); 
         } 
     );
 
-    MicroMeterLine line { CalcMaxDistLine<IoNeuron>(m_nobsAnimated) };
+    MicroMeterLine line { CalcMaxDistLine<IoLine>(m_nobsAnimated) };
     if (line.IsZero())
         return;
 
@@ -38,13 +38,13 @@ ConnAnimationCommand::ConnAnimationCommand()
     MicroMeterPntVector umPntVector(m_nobsAnimated);  // before animation
 
     umPntVector.Align(line);
-    AddPhase(make_unique<IoNeuronsAnimation>(m_nobsAnimated, umPntVector));  // after position alignment
+    AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after position alignment
 
-    umPntVector.SetDir(Vector2Radian(CalcOrthoVector<IoNeuron>(m_nobsAnimated, line)));
-    AddPhase(make_unique<IoNeuronsAnimation>(m_nobsAnimated, umPntVector));  // after direction alignment
+    umPntVector.SetDir(Vector2Radian(CalcOrthoVector<IoLine>(m_nobsAnimated, line)));
+    AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
-    AddPhase(make_unique<IoNeuronsAnimation>(m_nobsAnimated, umPntVector));  // after packing
+    AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after packing
 
     AddPhase(make_unique<MakeConnAnimation>(move(m_nobsAnimated)));
 
@@ -60,15 +60,15 @@ NobType ConnAnimationCommand::determineNobType(UPNobList const & nobs) const
     if (nobs.CountInSelection(outputConnector) > 0)
         return undefined;
 
-    unsigned int uiNrOfInputNeurons  { nobs.CountInSelection(inputNeuron ) };
-    unsigned int uiNrOfOutputNeurons { nobs.CountInSelection(outputNeuron) };
+    unsigned int uiNrOfInputLines  { nobs.CountInSelection(inputLine ) };
+    unsigned int uiNrOfOutputLines { nobs.CountInSelection(outputLine) };
 
-    if ((uiNrOfInputNeurons == 0) && (uiNrOfOutputNeurons == 0))
+    if ((uiNrOfInputLines == 0) && (uiNrOfOutputLines == 0))
         return undefined;
 
-    return (uiNrOfInputNeurons > uiNrOfOutputNeurons) 
-        ? inputNeuron 
-        : outputNeuron;
+    return (uiNrOfInputLines > uiNrOfOutputLines) 
+        ? inputLine 
+        : outputLine;
 }
 
 void ConnAnimationCommand::sortNobsAnimated(MicroMeterLine const & line)

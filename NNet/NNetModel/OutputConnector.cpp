@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 #include "DrawContext.h"
 #include "OutputConnector.h"
 
@@ -11,7 +11,7 @@ OutputConnector::OutputConnector()
     :	IoConnector(NobType::Value::outputConnector)
 {}
 
-OutputConnector::OutputConnector(vector<IoNeuron *> & src)
+OutputConnector::OutputConnector(vector<IoLine *> & src)
     :	IoConnector(NobType::Value::outputConnector)
 {
     for (auto it : src)
@@ -19,7 +19,7 @@ OutputConnector::OutputConnector(vector<IoNeuron *> & src)
     src.clear();
 }
 
-OutputConnector::OutputConnector(vector<IoNeuron *> && src)
+OutputConnector::OutputConnector(vector<IoLine *> && src)
   :	IoConnector(NobType::Value::outputConnector)
 {
     m_list = move(src);

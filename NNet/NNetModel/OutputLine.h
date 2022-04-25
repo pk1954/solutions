@@ -1,30 +1,30 @@
-// OutputNeuron.h
+// OutputLine.h
 //
 // NNetModel
 
 #pragma once
 
 #include "MoreTypes.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 
 class Nob;
 class BaseKnot;
 class DrawContext;
 
-class OutputNeuron : public IoNeuron
+class OutputLine : public IoLine
 {
 public:
 
-	explicit OutputNeuron(MicroMeterPnt const &);
-	explicit OutputNeuron(BaseKnot      const &);
+	explicit OutputLine(MicroMeterPnt const &);
+	explicit OutputLine(BaseKnot      const &);
 
-	~OutputNeuron() final = default;
+	~OutputLine() final = default;
 
 	void Check() const final;
 
 	bool operator==(Nob const &) const override;
 
-	static bool TypeFits(NobType const type) { return type.IsOutputNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsOutputLineType(); }
 
 	void DrawExterior(DrawContext const &, tHighlight const) const override;
 	void DrawInterior(DrawContext const &, tHighlight const) const override;

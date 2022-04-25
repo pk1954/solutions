@@ -81,11 +81,11 @@ private:
 	MicroMeterPnt       m_umPntSelectionAnchor { };
 	NobId               m_nobHighlighted       { NO_NOB };
 	NobId               m_nobTarget            { NO_NOB };
-	bool                m_bTargetFits          { false };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
 	bool                m_bShowPnts            { false };
+	ConnectionType      m_connType             { ConnectionType::ct_none };
 
 	void setNoTarget      ();
 	void setTargetNob     ();

@@ -9,7 +9,7 @@
 #include "Signal.h"
 #include "Track.h"
 #include "Neuron.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "BaseKnot.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
@@ -171,8 +171,8 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
         out << L"CreateNob " << getCompactIdVal(nob.GetId()) << L" " << nob.GetName();
         switch (nob.GetNobType().GetValue())
         {
-        case inputNeuron:
-        case outputNeuron:
+        case inputLine:
+        case outputLine:
         case neuron:
         case knot:
             out << static_cast<BaseKnot const &>(nob).GetPos();
@@ -196,8 +196,8 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
         out << L"Voltage " << getCompactIdVal(nob.GetId()) << L" " << nob.GetName();
         switch (nob.GetNobType().GetValue())
         {
-        case inputNeuron:
-        case outputNeuron:
+        case inputLine:
+        case outputLine:
         case neuron:
         case knot:
             out << static_cast<BaseKnot const &>(nob).GetVoltage();

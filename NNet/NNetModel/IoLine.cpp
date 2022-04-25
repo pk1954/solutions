@@ -1,17 +1,17 @@
-// IoNeuron.cpp 
+// IoLine.cpp 
 //
 // NNetModel
 
 #include "stdafx.h"
 #include "Pipe.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 
-MicroMeterPnt IoNeuron::GetScaledDirVector() const
+MicroMeterPnt IoLine::GetScaledDirVector() const
 {
 	return GetDirVector().ScaledTo(GetExtension());
 }
 
-MicroMeterPnt IoNeuron::determineVector() const
+MicroMeterPnt IoLine::determineVector() const
 {
 	MicroMeterPnt umVector { MicroMeterPnt::ZERO_VAL() };
 
@@ -26,7 +26,7 @@ MicroMeterPnt IoNeuron::determineVector() const
 	return umVector;
 }
 
-MicroMeterPnt IoNeuron::GetDirVector() const
+MicroMeterPnt IoLine::GetDirVector() const
 {
 	MicroMeterPnt umVector 
 	{ 
@@ -37,40 +37,40 @@ MicroMeterPnt IoNeuron::GetDirVector() const
 	return umVector.ScaledTo(GetExtension());
 }
 
-Radian IoNeuron::GetDir() const 
+Radian IoLine::GetDir() const 
 { 
 	return (IsDirLocked())
 		? m_radDirection
 		: Vector2Radian(determineVector());
 };
 
-MicroMeterPosDir IoNeuron::GetRawPosDir() const
+MicroMeterPosDir IoLine::GetRawPosDir() const
 {
 	return MicroMeterPosDir(GetPos(), m_radDirection);
 }
 
-MicroMeterPosDir IoNeuron::GetPosDir() const
+MicroMeterPosDir IoLine::GetPosDir() const
 {
 	return MicroMeterPosDir(GetPos(), Vector2Radian(GetDirVector()));
 }
 
-void IoNeuron::UnlockDirection() 
+void IoLine::UnlockDirection() 
 {
 	SetDir(Radian::NULL_VAL());
 }
 
-void IoNeuron::LockDirection() 
+void IoLine::LockDirection() 
 { 
 	if (!IsDirLocked()) 
 		SetDir(Vector2Radian(determineVector()));
 }
 
-void IoNeuron::SetDir(Radian const r) 
+void IoLine::SetDir(Radian const r) 
 { 
 	m_radDirection = r; 
 }
 
-bool IoNeuron::IsDirLocked() const
+bool IoLine::IsDirLocked() const
 {
 	return m_radDirection.IsNotNull();
 }

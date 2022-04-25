@@ -8,7 +8,7 @@
 #include "BoolOp.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 #include "NobId.h"
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"

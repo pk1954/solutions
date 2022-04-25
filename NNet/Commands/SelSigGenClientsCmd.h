@@ -6,7 +6,7 @@
 
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "SelectionCommand.h"
 
 using std::make_unique;
@@ -23,9 +23,9 @@ public:
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->DeselectAllNobs();
-		m_pNMWI->GetUPNobs().Apply2All<InputNeuron>
+		m_pNMWI->GetUPNobs().Apply2All<InputLine>
 		(
-			[&](InputNeuron & n)
+			[&](InputLine & n)
 			{ 
 				if (& n.GetSigGen() == m_pSigGen)
 				{

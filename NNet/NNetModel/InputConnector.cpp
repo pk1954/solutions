@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "DrawContext.h"
-#include "IoNeuron.h"
-#include "InputNeuron.h"
+#include "IoLine.h"
+#include "InputLine.h"
 #include "InputConnector.h"
 
 using std::make_unique;
@@ -14,7 +14,7 @@ using std::make_unique;
 InputConnector::InputConnector
 (
     Param & param,
-    vector<IoNeuron *> && src
+    vector<IoLine *> && src
 )
   : IoConnector(NobType::Value::inputConnector)
 {
@@ -69,9 +69,9 @@ void InputConnector::AppendMenuItems(AddMenuFunc const & add) const
     IoConnector::AppendMenuItems(add);
 }
 
-InputNeuron & InputConnector::GetElem(size_t const nr) const 
+InputLine & InputConnector::GetElem(size_t const nr) const 
 {     
-    return static_cast<InputNeuron &>(IoConnector::GetElem(nr));  
+    return static_cast<InputLine &>(IoConnector::GetElem(nr));  
 };
 
 SignalGenerator & InputConnector::GetSigGen()       
@@ -88,9 +88,9 @@ void InputConnector::SetSigGen(SignalGenerator * const pSigGen)
 { 
     Apply2All
     (
-        [pSigGen](IoNeuron & n)
+        [pSigGen](IoLine & n)
         { 
-            static_cast<InputNeuron &>(n).SetSigGen(pSigGen); 
+            static_cast<InputLine &>(n).SetSigGen(pSigGen); 
         }
     );
 }

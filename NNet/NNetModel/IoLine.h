@@ -1,4 +1,4 @@
-// IoNeuron.h
+// IoLine.h
 //
 // NNetModel
 
@@ -6,28 +6,36 @@
 
 #include "MoreTypes.h"
 #include "MicroMeterPosDir.h"
-#include "Neuron.h"
+#include "NNetParameters.h"
+#include "BaseKnot.h"
 
-class IoNeuron : public Neuron
+class IoLine : public BaseKnot
 {
 public:
-	static bool TypeFits(NobType const type) { return type.IsIoNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsIoLineType(); }
 
-	IoNeuron(MicroMeterPnt const & upCenter, NobType const type)
-		: Neuron(upCenter, type)
+	IoLine(MicroMeterPnt const & upCenter, NobType const type)
+		: BaseKnot(upCenter, type, NEURON_RADIUS)
 	{}
 
-	IoNeuron(BaseKnot const & src, NobType const type)
-		: Neuron(src.GetPos(), type)
+	IoLine(BaseKnot const & src, NobType const type)
+		: BaseKnot(src)
 	{
 		SetId(src.GetId());
+		SetType(type);
+		SetExtension(NEURON_RADIUS);
 	}
+
+	bool CompStep() final { return false; }
+	void Recalc()   final { };
 
 	MicroMeterPosDir GetPosDir()    const override;
 	Radian           GetDir()       const override;
 	void             SetDir(Radian const) override;
 
-	                          // IoNeurons can be locked or unlocked
+	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
+
+	                          // IoLines can be locked or unlocked
 	void LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
 	void UnlockDirection();   // unlocked: m_radDirection is null, displayed direction
 	bool IsDirLocked() const; //           is computed depending on connected pipe(s)

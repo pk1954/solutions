@@ -12,7 +12,7 @@ using std::vector;
 
 class WinCommands;
 class RootWindow;
-class IoNeuron;
+class IoLine;
 
 class ConnAnimationCommand : public NNetCommand
 {
@@ -25,7 +25,7 @@ public:
 
 private:
     
-    vector<IoNeuron *> m_nobsAnimated {};
+    vector<IoLine *> m_nobsAnimated {};
 
     bool m_bAllOk { false };
 

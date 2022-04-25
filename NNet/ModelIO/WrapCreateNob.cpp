@@ -6,8 +6,9 @@
 #include "SCRIPT.H"
 #include "ERRHNDL.H"
 #include "Knot.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
+#include "Neuron.h"
+#include "InputLine.h"
+#include "OutputLine.h"
 #include "IoConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
@@ -30,8 +31,8 @@ Nob * WrapCreateNob::createNob(Script & script) const
         case outputConnector:
             upNob = createIoConnector(script, nobType);
             break;
-        case inputNeuron:
-        case outputNeuron:
+        case inputLine:
+        case outputLine:
         case neuron:
         case knot:
             upNob = createBaseKnot(script, nobType);
@@ -92,10 +93,10 @@ UPNob WrapCreateNob::createBaseKnot(Script & script, NobType const nobType) cons
     switch (nobType.GetValue())
     {
     using enum NobType::Value;
-    case inputNeuron:  return make_unique<InputNeuron>(GetWriterInterface().StdSigGen(), umPosition);
-    case outputNeuron: return make_unique<OutputNeuron>(umPosition);
-    case neuron:       return make_unique<Neuron>(umPosition);
-    case knot:         return make_unique<Knot>(umPosition);
+    case inputLine:  return make_unique<InputLine>(GetWriterInterface().StdSigGen(), umPosition);
+    case outputLine: return make_unique<OutputLine>(umPosition);
+    case neuron:     return make_unique<Neuron>(umPosition);
+    case knot:       return make_unique<Knot>(umPosition);
     default:
         assert(false);
         return nullptr;
@@ -104,17 +105,17 @@ UPNob WrapCreateNob::createBaseKnot(Script & script, NobType const nobType) cons
 
 UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) const 
 {
-    vector<IoNeuron *> ioNeuronList;
+    vector<IoLine *> ioLineList;
     script.ScrReadSpecial(LIST_OPEN_BRACKET);
     int const iNrOfElements { script.ScrReadInt() };
     script.ScrReadSpecial(NR_SEPARATOR);
     for (int iElem { 0 };;)
     {
-        NobId      const id        { ScrReadNobId(script) };
-        IoNeuron * const pIoNeuron { GetWriterInterface().GetNobPtr<IoNeuron *>(id) };
-        if (! pIoNeuron)
+        NobId    const id      { ScrReadNobId(script) };
+        IoLine * const pIoLine { GetWriterInterface().GetNobPtr<IoLine *>(id) };
+        if (! pIoLine)
             throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found"));
-        ioNeuronList.push_back(pIoNeuron);
+        ioLineList.push_back(pIoLine);
         if (++iElem == iNrOfElements)
             break;
         script.ScrReadSpecial(ID_SEPARATOR);
@@ -122,9 +123,9 @@ UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) c
     script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     unique_ptr<IoConnector> upIoConnector;
     if (nobType.IsInputConnectorType())
-        upIoConnector = make_unique<InputConnector> (GetWriterInterface().GetParams(), move(ioNeuronList));
+        upIoConnector = make_unique<InputConnector> (GetWriterInterface().GetParams(), move(ioLineList));
     else
-        upIoConnector = make_unique<OutputConnector>(move(ioNeuronList));
+        upIoConnector = make_unique<OutputConnector>(move(ioLineList));
     upIoConnector->AlignDirection();
     return move(upIoConnector);
 }

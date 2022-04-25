@@ -179,6 +179,12 @@ bool BaseKnot::IsDirectlyConnectedTo(BaseKnot const & b) const
 	return IsSuccessorOf(b) || IsPrecursorOf(b);
 }
 
+bool BaseKnot::IsDirectlyConnectedTo(Pipe const & pipe) const
+{
+	return IsDirectlyConnectedTo(*pipe.GetStartKnotPtr()) || 
+		   IsDirectlyConnectedTo(*pipe.GetEndKnotPtr  ());
+}
+
 bool BaseKnot::Includes(MicroMeterPnt const & point) const
 {
 	return Distance(point, GetPos()) <= GetExtension();

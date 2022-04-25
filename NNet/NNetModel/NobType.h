@@ -21,8 +21,8 @@ public:
 	{
 		inputConnector,
 		outputConnector,
-		inputNeuron,
-		outputNeuron,
+		inputLine,
+		outputLine,
 		neuron,
 		knot,
 		pipe,
@@ -80,8 +80,8 @@ public:
 	bool IsUndefinedType      () const { return m_value == Value::undefined;       }
 	bool IsKnotType           () const { return m_value == Value::knot;            }
 	bool IsNeuronType         () const { return m_value == Value::neuron;          }
-	bool IsInputNeuronType    () const { return m_value == Value::inputNeuron;     }
-	bool IsOutputNeuronType   () const { return m_value == Value::outputNeuron;    }
+	bool IsInputLineType      () const { return m_value == Value::inputLine;       }
+	bool IsOutputLineType     () const { return m_value == Value::outputLine;      }
 	bool IsInputConnectorType () const { return m_value == Value::inputConnector;  }
 	bool IsOutputConnectorType() const { return m_value == Value::outputConnector; }
 
@@ -90,14 +90,14 @@ public:
 		return IsInputConnectorType() || IsOutputConnectorType();
 	}
 
-	bool IsIoNeuronType() const
+	bool IsIoLineType() const
 	{
-		return (m_value == Value::inputNeuron) || (m_value == Value::outputNeuron);
+		return (m_value == Value::inputLine) || (m_value == Value::outputLine);
 	}
 
 	bool IsAnyNeuronType() const
 	{
-		return (m_value == Value::neuron) || IsIoNeuronType();
+		return (m_value == Value::neuron) || IsIoLineType();
 	}
 
 	bool IsBaseKnotType() const

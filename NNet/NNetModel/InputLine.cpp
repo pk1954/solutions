@@ -1,4 +1,4 @@
-// InputNeuron.cpp 
+// InputLine.cpp 
 //
 // NNetModel
 
@@ -16,7 +16,7 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 
 using std::chrono::microseconds;
 using std::wostringstream;
@@ -24,58 +24,58 @@ using std::setprecision;
 using std::wstring;
 using std::fixed;
 
-InputNeuron::InputNeuron
+InputLine::InputLine
 (
 	SignalGenerator     * pSigGen, 
 	MicroMeterPnt const & upCenter
 )
-  : IoNeuron(upCenter, NobType::Value::inputNeuron),
+  : IoLine(upCenter, NobType::Value::inputLine),
 	m_pSigGen(pSigGen)
 { }
 
-InputNeuron::InputNeuron
+InputLine::InputLine
 (
 	SignalGenerator * pSigGen, 
 	BaseKnot  const & baseKnot
 )
-  : IoNeuron(baseKnot, NobType::Value::inputNeuron),
+  : IoLine(baseKnot, NobType::Value::inputLine),
 	m_pSigGen(pSigGen)
 { 
 	SetOutgoing(baseKnot);
 }
 
-void InputNeuron::Check() const
+void InputLine::Check() const
 {
-	IoNeuron::Check();
+	IoLine::Check();
 	assert(!HasIncoming());
 }
 
-void InputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
+void InputLine::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 2.0f, 0.1f, GetExteriorColor(type));
 }
 
-void InputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
+void InputLine::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
 	drawSocket(context, 1.6f, 0.0f, GetInteriorColor(type));
 }
 
-MicroMeterPnt InputNeuron::getOffset() const
+MicroMeterPnt InputLine::getOffset() const
 {
 	return GetScaledDirVector() * 0.7f;
 }
 
-MicroMeterPnt InputNeuron::getCenter() const
+MicroMeterPnt InputLine::getCenter() const
 {
 	return GetPos() - getOffset();
 }
 
-bool InputNeuron::Includes(MicroMeterPnt const & point) const
+bool InputLine::Includes(MicroMeterPnt const & point) const
 {
 	return Distance(point, getCenter()) <= GetExtension();
 }
 
-void InputNeuron::drawSocket
+void InputLine::drawSocket
 (
 	DrawContext  const & context, 
 	float        const   M,       // overall width/height                        
@@ -99,7 +99,7 @@ void InputNeuron::drawSocket
 	context.DrawLine(umLine - umOrthoVector, umWidthLR, colF);
 }
 
-void InputNeuron::Prepare()
+void InputLine::Prepare()
 {
 	fMicroSecs usResolution { GetParam()->TimeResolution() };
 	m_pSigGen->Tick(usResolution);
@@ -111,10 +111,10 @@ void InputNeuron::Prepare()
     m_mVinputBuffer += increasePerTick;
 }
 
-fHertz InputNeuron::GetActFrequency() const { return m_pSigGen->GetActFrequency(); }
+fHertz InputLine::GetActFrequency() const { return m_pSigGen->GetActFrequency(); }
 
-void InputNeuron::AppendMenuItems(AddMenuFunc const & add) const
+void InputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_ADD_INCOMING2BASEKNOT);
-	IoNeuron::AppendMenuItems(add);
+	IoLine::AppendMenuItems(add);
 }

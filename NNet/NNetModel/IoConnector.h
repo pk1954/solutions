@@ -16,7 +16,7 @@ using std::ranges::for_each;
 
 class DrawContext;
 class MicroMeterPosDir;
-class IoNeuron;
+class IoLine;
 
 class IoConnector: public Nob
 {
@@ -49,9 +49,9 @@ public:
 	bool             IsCompositeNob() const final { return true; }
 	MicroMeterPosDir GetPosDir     () const final;
 
-	void             Push(IoNeuron * const);
-	IoNeuron       * Pop();
-	IoNeuron       & GetElem(size_t const) const;
+	void             Push(IoLine * const);
+	IoLine         * Pop();
+	IoLine         & GetElem(size_t const) const;
 	size_t           Size() const;
 	void             SetParentPointers();
 	void             ClearParentPointers() const;
@@ -79,7 +79,7 @@ public:
 	friend wostream & operator<< (wostream &, IoConnector const &);
 
 protected:
-	vector<IoNeuron *> m_list {};
+	vector<IoLine *> m_list {};
 };
 
 IoConnector const * Cast2IoConnector(Nob const *);

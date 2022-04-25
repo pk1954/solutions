@@ -34,12 +34,12 @@
 #include "MoveSignalCmd.h"
 #include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
-#include "NewIoNeuronPairCmd.h"
+#include "NewIoLinePairCmd.h"
 #include "NewSigGenCmd.h"
 #include "NNetModelImporter.h"
 #include "Uniform2D.h"
 #include "PlugIoConnectorAnimation.h"
-#include "PlugIoNeuronAnimation.h"
+#include "PlugIoLineAnimation.h"
 #include "RenameSigGenCmd.h"
 #include "RestrictSelectionCommand.h"
 #include "RotateNobCommand.h"
@@ -128,14 +128,14 @@ void NNetModelCommands::AddIncoming2BaseKnot(NobId const id, MicroMeterPnt const
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos - STD_OFFSET, NobType::Value::inputNeuron));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos - STD_OFFSET, NobType::Value::inputLine));
 }
 
 void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::inputNeuron));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::inputLine));
 }
 
 void NNetModelCommands::AddModel()
@@ -151,14 +151,14 @@ void NNetModelCommands::AddOutgoing2BaseKnot(NobId const id, MicroMeterPnt const
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos + STD_OFFSET, NobType::Value::outputNeuron));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos + STD_OFFSET, NobType::Value::outputLine));
 }
 
 void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputNeuron));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputLine));
 }
 
 void NNetModelCommands::AddSignal
@@ -208,18 +208,18 @@ void NNetModelCommands::AnimateArrows
 	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
 }
 
-void NNetModelCommands::AttachSigGen2Line(NobId const idInputNeuron)
+void NNetModelCommands::AttachSigGen2Line(NobId const idInputLine)
 {
 	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << idInputNeuron << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(idInputNeuron));
+		TraceStream() << source_location::current().function_name() << L" " << idInputLine << endl;
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(idInputLine));
 }
 
-void NNetModelCommands::AttachSigGen2Conn(NobId const idInputNeuron)
+void NNetModelCommands::AttachSigGen2Conn(NobId const idInputLine)
 {
 	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << idInputNeuron << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConnCmd>(idInputNeuron));
+		TraceStream() << source_location::current().function_name() << L" " << idInputLine << endl;
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConnCmd>(idInputLine));
 }
 
 void NNetModelCommands::ClearBeepers()
@@ -231,58 +231,26 @@ void NNetModelCommands::ClearBeepers()
 
 void NNetModelCommands::Connect
 (
-	NobId const idSrc, 
-	NobId const idDst
+	NobId          const idSrc, 
+	NobId          const idDst,
+	ConnectionType const cType
 )
 {
+	using enum ConnectionType;
+
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << idSrc << L" " << idDst << endl;
 
 	unique_ptr<Command> upCmd;
-	switch (m_pNMWI->GetNobType(idDst).GetValue())
+	switch (cType)
 	{
-	using enum NobType::Value;
-	case pipe:
-		upCmd = make_unique<Connect2PipeCommand>(idSrc, idDst);
-		break;
-	case knot:
-	case neuron:
-		upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		break;
-	case inputNeuron:
-		if (m_pNMWI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
-			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMWI->GetNobType(idSrc).IsOutputNeuronType())
-		{
-			if (m_pNMWI->HasIncoming(idSrc) && m_pNMWI->HasOutgoing(idDst))
-				upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
-			else
-				upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		}
-		else
-			assert(false);
-		break;
-	case outputNeuron:
-		if (m_pNMWI->GetNobType(idSrc).IsKnotType())  // connect knot to output neuron
-			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMWI->GetNobType(idSrc).IsOutputNeuronType())  // connect two output neurons
-			upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		else if (m_pNMWI->GetNobType(idSrc).IsInputNeuronType())
-		{
-			if (m_pNMWI->HasOutgoing(idSrc) && m_pNMWI->HasIncoming(idDst))
-				upCmd = make_unique<PlugIoNeuronAnimation>(idSrc, idDst);
-			else
-				upCmd = make_unique<Connect2BaseKnotCommand>(idSrc, idDst);
-		}
-		else
-			assert(false);
-		break;
-	case inputConnector:
-	case outputConnector:
-		upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst); 
-		break;
-	default:
-		assert(false);
+		case ct_knot:
+		case ct_neuron:
+		case ct_outputline:  upCmd = make_unique<Connect2BaseKnotCommand> (idSrc, idDst, cType); break;
+		case ct_pipe:		 upCmd = make_unique<Connect2PipeCommand>     (idSrc, idDst);        break;
+		case ct_ioLine:		 upCmd = make_unique<PlugIoLineAnimation>     (idSrc, idDst);        break;
+		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst);        break;
+		default: assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));
 }
@@ -531,11 +499,11 @@ void NNetModelCommands::InsertNeuron(NobId const id, MicroMeterPnt const & pos)
 	m_pCmdStack->PushCommand(make_unique<InsertBaseKnotCommand<Neuron>>(id, pos));
 }
 
-void NNetModelCommands::NewIoNeuronPair(MicroMeterPnt const & pos)
+void NNetModelCommands::NewIoLinePair(MicroMeterPnt const & pos)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<NewIoNeuronPairCmd>(* m_pNMWI, pos));
+	m_pCmdStack->PushCommand(make_unique<NewIoLinePairCmd>(* m_pNMWI, pos));
 }
 
 void NNetModelCommands::RestrictSelection(NobType::Value const val)

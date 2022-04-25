@@ -9,7 +9,7 @@
 #include "InputConnector.h"
 #include "IoConnector.h"
 #include "Neuron.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "NNetModelReaderInterface.h"
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
@@ -32,7 +32,7 @@ Degrees NNetModelReaderInterface::GetDirection(NobId const id) const
 
 fHertz NNetModelReaderInterface::GetActFrequency(NobId const id) const 
 { 
-	auto p { m_pModel->GetNobConstPtr<InputNeuron const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<InputLine const *>(id) };
 	return p ? p->GetActFrequency() : fHertz::NULL_VAL(); 
 }
 
@@ -45,8 +45,8 @@ size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 SignalGenerator const * NNetModelReaderInterface::GetSigGen(NobId const id) const
 {
 	Nob const & nob { * m_pModel->GetConstNob(id) };
-	if (nob.IsInputNeuron())
-		return &m_pModel->GetNobConstPtr<InputNeuron const *>(id)->GetSigGen(); 
+	if (nob.IsInputLine())
+		return &m_pModel->GetNobConstPtr<InputLine const *>(id)->GetSigGen(); 
 	else if (nob.IsInputConnector())
 		return &m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetSigGen(); 
 	else
@@ -119,54 +119,79 @@ bool NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, NobId co
 	return true;
 }
 
-bool NNetModelReaderInterface::CanConnectTo(NobId const idSrc, NobId const idDst) const
+ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, NobId const idDst) const
 {
+	using enum ConnectionType;
+
+	if (::IsUndefined(idDst))
+		return ct_none;
+
 	assert(idSrc != idDst);
 	assert(::IsDefined(idSrc));
-	assert(::IsDefined(idDst));
 	assert(!IsConnectedTo(idSrc, idDst));
 
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };
 
-	if (typeSrc.IsBaseKnotType() && typeDst.IsPipeType())
-	{
-		BaseKnot const & baseKnot { * m_pModel->GetNobConstPtr<BaseKnot const *>(idSrc) };
-		Pipe     const & pipe     { * m_pModel->GetNobConstPtr<Pipe     const *>(idDst)     };
-		return ! baseKnot.IsDirectlyConnectedTo(*pipe.GetStartKnotPtr()) &&
-			   ! baseKnot.IsDirectlyConnectedTo(*pipe.GetEndKnotPtr  ());
-	}
+	BaseKnot    const * pBaseKnotSrc { nullptr };
+	BaseKnot    const * pBaseKnotDst { nullptr };
+	Pipe        const * pPipeDst     { nullptr };
+	IoConnector const * pConnSrc     { nullptr };
+	IoConnector const * pConnDst     { nullptr };
 
-	if (typeSrc.IsBaseKnotType() && typeDst.IsBaseKnotType())
-	{
-		BaseKnot const & baseKnotSrc { * m_pModel->GetNobConstPtr<BaseKnot const *>(idSrc) };
-		BaseKnot const & baseKnotDst { * m_pModel->GetNobConstPtr<BaseKnot const *>(idDst) };
-		size_t   const   nrIn        { baseKnotSrc.GetNrOfInConns () + baseKnotDst.GetNrOfInConns () };
-		size_t   const   nrOut       { baseKnotSrc.GetNrOfOutConns() + baseKnotDst.GetNrOfOutConns() };
+	     if (typeSrc.IsBaseKnotType   ()) pBaseKnotSrc = m_pModel->GetNobConstPtr<BaseKnot    const *>(idSrc);
+	else if (typeSrc.IsIoConnectorType()) pConnSrc     = m_pModel->GetNobConstPtr<IoConnector const *>(idSrc);
 
-		if (nrIn + nrOut == 0)
-			return false;
-		if (typeSrc.IsKnotType() && typeDst.IsKnotType())
+	     if (typeDst.IsBaseKnotType   ()) pBaseKnotDst = m_pModel->GetNobConstPtr<BaseKnot    const *>(idDst);
+	else if (typeDst.IsPipeType       ()) pPipeDst     = m_pModel->GetNobConstPtr<Pipe        const *>(idDst);
+	else if (typeDst.IsIoConnectorType()) pConnDst     = m_pModel->GetNobConstPtr<IoConnector const *>(idDst);
+
+	if (pBaseKnotSrc)
+	{
+		if (pPipeDst)
 		{
-			if ((nrIn<=2) && (nrOut<=1))
-				return true;                // Synapse
-			if ((nrIn<=1) && (nrOut<=2))
-				return true;                // Branch
-			return false;
+			if (pBaseKnotSrc->IsDirectlyConnectedTo(*pPipeDst)) 
+				return ct_none;
+			if (typeSrc.IsInputLineType())
+				return ct_pipe;
+			if (typeSrc.IsOutputLineType() && (pBaseKnotSrc->GetNrOfInConns() == 1))
+				return ct_pipe;
 		}
-		if (nrOut <= 1)   // OutputNeuron 
-			return true;
-		else 
-			return false;
+		else if (pBaseKnotDst)
+		{
+			size_t const nrIn  { pBaseKnotSrc->GetNrOfInConns () + pBaseKnotDst->GetNrOfInConns () };
+			size_t const nrOut { pBaseKnotSrc->GetNrOfOutConns() + pBaseKnotDst->GetNrOfOutConns() };
+
+			if ((typeSrc.IsOutputLineType() && typeDst.IsOutputLineType()) && (nrIn == 2))
+				return ct_outputline;
+
+			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType() && (typeDst != typeSrc))
+				return ct_ioLine;
+
+			if (
+				  (nrIn == 2) &&
+				  (
+					(typeSrc.IsNeuronType() && typeDst.IsOutputLineType()) || 
+					(typeDst.IsNeuronType() && typeSrc.IsOutputLineType()) 
+				  )
+			   )
+				return ct_neuron;
+
+			if ((typeSrc.IsKnotType() && typeDst.IsIoLineType()) || (typeDst.IsKnotType() && typeSrc.IsIoLineType()))
+			{
+				if ((nrIn==2) && (nrOut==1))
+					return ct_knot;                // Synapse
+				if ((nrIn==1) && (nrOut==2))
+					return ct_knot;                // Branch
+				return ct_none;
+			}
+		}
 	}
-	else if (typeSrc.IsIoConnectorType() && typeDst.IsIoConnectorType() && (typeDst != typeSrc))
-	{
-		IoConnector const & connSrc { * m_pModel->GetNobConstPtr<IoConnector const *>(idSrc) }; 
-		IoConnector const & connDst { * m_pModel->GetNobConstPtr<IoConnector const *>(idDst) }; 
-		if (connSrc.Size() == connDst.Size())
-			return true;
-	}
-	return false;
+
+	if (pConnSrc && pConnDst && (typeDst != typeSrc) && (pConnSrc->Size() == pConnDst->Size()))
+		return ct_ioConnector;
+
+	return ct_none;
 }
 
 bool NNetModelReaderInterface::IsConnectedTo(NobId const idSrc, NobId const idDst) const

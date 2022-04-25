@@ -18,8 +18,8 @@ wstring NobType::GetName(NobType::Value const val)
 		{ undefined,       L"undefined"       },
 		{ inputConnector,  L"inputConnector"  },
 		{ outputConnector, L"outputConnector" },
-		{ inputNeuron,     L"inputNeuron"     },
-		{ outputNeuron,    L"outputNeuron"    },
+		{ inputLine,       L"inputLine"       },
+		{ outputLine,      L"outputLine"      },
 		{ neuron,          L"neuron"          },
 		{ pipe,            L"pipe"            },
 		{ knot,            L"knot"            }
@@ -35,8 +35,10 @@ NobType::Value NobType::GetTypeFromName(wstring const & name)
 		{ L"undefined",       undefined       },
 		{ L"inputConnector",  inputConnector  },
 		{ L"outputConnector", outputConnector },
-		{ L"inputNeuron",     inputNeuron     },
-		{ L"outputNeuron",    outputNeuron    },
+		{ L"inputNeuron",     inputLine       },  // Legacy
+		{ L"inputLine",       inputLine       },
+		{ L"outputNeuron",    outputLine      },  // Legacy
+		{ L"outputLine",      outputLine      },
 		{ L"neuron",          neuron	      },
 		{ L"pipe",            pipe	          },
 		{ L"knot",            knot            }

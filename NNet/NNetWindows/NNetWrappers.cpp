@@ -27,11 +27,12 @@ class WrapConnect: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        NobId const idSrc { ScrReadNobId(script) };
-        NobId const idDst { ScrReadNobId(script) };
-        if (m_pNMRI->CanConnectTo(idSrc, idDst))
+        NobId          const idSrc { ScrReadNobId(script) };
+        NobId          const idDst { ScrReadNobId(script) };
+        ConnectionType const ctype { m_pNMRI->ConnectionResult(idSrc, idDst) };
+        if (ctype != ConnectionType::ct_none)
         {
-            m_pCommands->Connect(idSrc, idDst);
+            m_pCommands->Connect(idSrc, idDst, ctype);
         }
         else
         {
@@ -370,13 +371,13 @@ public:
     }
 };
 
-class WrapNewIoNeuronPair: public ScriptFunctor
+class WrapNewIoLinePair: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->NewIoNeuronPair(umPos);
+        m_pCommands->NewIoLinePair(umPos);
     }
 };
 
@@ -442,7 +443,7 @@ void InitializeNNetWrappers
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveSensor);      
     DEF_FUNC(MoveNob);          
-    DEF_FUNC(NewIoNeuronPair);     
+    DEF_FUNC(NewIoLinePair);     
     DEF_FUNC(MakeIoConnector);
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          
@@ -466,7 +467,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"SELECT_ALL_BEEPERS",   static_cast<long>(IDM_SELECT_ALL_BEEPERS   ));
     SymbolTable::ScrDefConst(L"COPY_SELECTION",       static_cast<long>(IDM_COPY_SELECTION       ));
     SymbolTable::ScrDefConst(L"INSERT_NEURON",        static_cast<long>(IDD_INSERT_NEURON        ));
-    SymbolTable::ScrDefConst(L"NEW_IO_NEURON_PAIR",   static_cast<long>(IDD_NEW_IO_NEURON_PAIR   ));
+    SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",     static_cast<long>(IDD_NEW_IO_LINE_PAIR   ));
     SymbolTable::ScrDefConst(L"ADD_OUTGOING2BASEKNOT",static_cast<long>(IDD_ADD_OUTGOING2BASEKNOT));
     SymbolTable::ScrDefConst(L"ADD_INCOMING2BASEKNOT",static_cast<long>(IDD_ADD_INCOMING2BASEKNOT));
     SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",    static_cast<long>(IDD_ADD_OUTGOING2PIPE    ));

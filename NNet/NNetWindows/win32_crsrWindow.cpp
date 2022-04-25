@@ -10,7 +10,7 @@
 #include "NNetModelReaderInterface.h"
 #include "Knot.h"
 #include "Neuron.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "Pipe.h"
 #include "win32_util.h"
 #include "win32_textBuffer.h"

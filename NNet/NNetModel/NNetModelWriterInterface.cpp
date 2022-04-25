@@ -6,16 +6,16 @@
 #include "Pipe.h"
 #include "Knot.h"
 #include "Neuron.h"
-#include "IoNeuronPair.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
+#include "IoLinePair.h"
+#include "InputLine.h"
+#include "OutputLine.h"
 #include "NobIdList.h"
 #include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
-	IoNeuronPair(*this, MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
+	IoLinePair(*this, MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
 }
 
 Nob * NNetModelWriterInterface::GetNob(NobId const id)
@@ -78,12 +78,12 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 	if (nrOutPipes == 0)
 	{
 		if (nrInPipes > 0) // one or several inPipes
-			typeNew = NobType::Value::outputNeuron;
+			typeNew = NobType::Value::outputLine;
 	}
 	else if (nrOutPipes == 1)
 	{
 		if ( nrInPipes == 0 )
-			typeNew = NobType::Value::inputNeuron;
+			typeNew = NobType::Value::inputLine;
 		else // one or several inPipes
 			typeNew = pBaseKnot->IsNeuron() ? NobType::Value::neuron : NobType::Value::knot;
 	}
@@ -100,12 +100,12 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 		switch (typeNew.GetValue())
 		{
 			using enum NobType::Value;
-			case knot:	       upBaseKnotNew = make_unique<Knot>        (*pBaseKnot); break;
-			case neuron:	   upBaseKnotNew = make_unique<Neuron>      (*pBaseKnot); break;
-			case inputNeuron:  upBaseKnotNew = make_unique<InputNeuron> (StdSigGen(), *pBaseKnot); break;
-			case outputNeuron: upBaseKnotNew = make_unique<OutputNeuron>(*pBaseKnot); break;
-			case undefined:	   break;
-			default:           assert(false);
+			case knot:	     upBaseKnotNew = make_unique<Knot>        (*pBaseKnot); break;
+			case neuron:	 upBaseKnotNew = make_unique<Neuron>      (*pBaseKnot); break;
+			case inputLine:  upBaseKnotNew = make_unique<InputLine> (StdSigGen(), *pBaseKnot); break;
+			case outputLine: upBaseKnotNew = make_unique<OutputLine>(*pBaseKnot); break;
+			case undefined:	 break;
+			default:         assert(false);
 		}
  		return upBaseKnotNew
                ? ReplaceInModel<BaseKnot>(move(upBaseKnotNew))

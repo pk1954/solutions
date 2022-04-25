@@ -22,8 +22,8 @@ void WrapVoltage::setVoltage(Script & script) const
     switch (nobType.GetValue())
     {
     using enum NobType::Value;
-    case inputNeuron:
-    case outputNeuron:
+    case inputLine:
+    case outputLine:
     case neuron:
     case knot:
         setBaseKnotVoltage(script, idFromScript);

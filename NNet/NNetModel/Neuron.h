@@ -12,7 +12,7 @@
 #include "BaseKnot.h"
 
 class DrawContext;
-class IoNeuron;
+class IoLine;
 class Pipe;
 
 using std::unique_ptr;
@@ -55,7 +55,6 @@ public:
 	void DrawInterior(DrawContext const &, tHighlight const) const override;
 
 	void Recalc() final;
-	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
 
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 

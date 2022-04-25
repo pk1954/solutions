@@ -7,8 +7,8 @@
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
+#include "InputLine.h"
+#include "OutputLine.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "NNetCommand.h"
@@ -24,7 +24,7 @@ public:
 	)
 		:	m_idPipe(idPipe)
 	{ 
-		assert(type.IsIoNeuronType());
+		assert(type.IsIoLineType());
 
 		m_pPipeOld     = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
 		m_pStartKnot   = m_pPipeOld->GetStartKnotPtr();
@@ -40,16 +40,16 @@ public:
 		m_upKnotInsert->AddIncoming(*m_upPipeNew1.get());
 		m_upKnotInsert->AddOutgoing(*m_upPipeNew2.get());
 
-		if (type.IsInputNeuronType())
+		if (type.IsInputLineType())
 		{
-			m_upExtPoint  = make_unique<InputNeuron>(m_pNMWI->StdSigGen(), pos - m_pNMWI->OrthoVector(m_idPipe));
+			m_upExtPoint  = make_unique<InputLine>(m_pNMWI->StdSigGen(), pos - m_pNMWI->OrthoVector(m_idPipe));
 			m_upPipeOrtho = make_unique<Pipe>(m_upExtPoint.get(), m_upKnotInsert.get());		
 			m_upExtPoint  ->AddOutgoing(*m_upPipeOrtho.get());
 			m_upKnotInsert->AddIncoming(*m_upPipeOrtho.get());
 		}
 		else
 		{
-			m_upExtPoint  = make_unique<OutputNeuron>(pos + m_pNMWI->OrthoVector(m_idPipe));
+			m_upExtPoint  = make_unique<OutputLine>(pos + m_pNMWI->OrthoVector(m_idPipe));
 			m_upPipeOrtho = make_unique<Pipe>(m_upKnotInsert.get(), m_upExtPoint.get());
 			m_upExtPoint  ->AddIncoming(*m_upPipeOrtho.get());
 			m_upKnotInsert->AddOutgoing(*m_upPipeOrtho.get());
@@ -76,7 +76,7 @@ public:
 	{ 
 		m_pNMWI->Restore2Model(move(m_upPipeOld));
 
-		m_upExtPoint   = m_pNMWI->PopFromModel<IoNeuron>();
+		m_upExtPoint   = m_pNMWI->PopFromModel<IoLine>();
 		m_upPipeOrtho  = m_pNMWI->PopFromModel<Pipe>();
 		m_upPipeNew2   = m_pNMWI->PopFromModel<Pipe>();
 		m_upPipeNew1   = m_pNMWI->PopFromModel<Pipe>();
@@ -95,6 +95,6 @@ private:
 	unique_ptr<Pipe>     m_upPipeNew2   { nullptr };
 	unique_ptr<Pipe>     m_upPipeOrtho  { nullptr };
 	unique_ptr<Knot>     m_upKnotInsert { nullptr };
-	unique_ptr<IoNeuron> m_upExtPoint   { nullptr }; 
+	unique_ptr<IoLine> m_upExtPoint   { nullptr }; 
 	NobId          const m_idPipe;
 };

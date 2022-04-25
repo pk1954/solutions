@@ -144,5 +144,4 @@ void Nob::AppendMenuItems(AddMenuFunc const & add) const
 		add(IDM_DESELECT_NOB);
 	else
 		add(IDM_SELECT_NOB);
-	add(IDD_DELETE_NOB);
 }

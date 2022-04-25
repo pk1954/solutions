@@ -108,7 +108,7 @@
     <ClInclude Include="MoveSelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NewIoNeuronPairCmd.h">
+    <ClInclude Include="NewIoLinePairCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplitNeuronCmd.h">
@@ -147,7 +147,7 @@
     <ClInclude Include="CoordAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IoNeuronsAnimation.h">
+    <ClInclude Include="IoLinesAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MakeConnAnimation.h">
@@ -159,10 +159,10 @@
     <ClInclude Include="PlugIoConnectors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlugIoNeuronAnimation.h">
+    <ClInclude Include="PlugIoLineAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlugIoNeurons.h">
+    <ClInclude Include="PlugIoLines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">
@@ -215,7 +215,7 @@
     <ClCompile Include="CommandStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DiscBaseKnotCmd.cpp">
+    <ClCompile Include="DeleteBaseKnotCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFunctions.cpp">

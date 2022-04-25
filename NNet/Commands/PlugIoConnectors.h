@@ -6,6 +6,7 @@
 
 #include <vector>
 #include "NobId.h"
+#include "Neuron.h"
 #include "NNetModelWriterInterface.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
@@ -37,8 +38,8 @@ public:
             upNeuron->SetOutgoing(m_inputConnector .GetElem(i));
             m_upNeurons.push_back(move(upNeuron));
         }
-        m_upOutputNeurons.resize(m_size);
-        m_upInputNeurons .resize(m_size);
+        m_upOutputLines.resize(m_size);
+        m_upInputLines .resize(m_size);
         m_pNMWI->CheckModel();
     }
 
@@ -54,8 +55,8 @@ public:
         m_upInputConnector  = m_pNMWI->RemoveFromModel<IoConnector>(m_inputConnector );
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upOutputNeurons[i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_outputConnector.GetElem(i));
-            m_upInputNeurons [i] = m_pNMWI->RemoveFromModel<IoNeuron>(m_inputConnector .GetElem(i));
+            m_upOutputLines[i] = m_pNMWI->RemoveFromModel<IoLine>(m_outputConnector.GetElem(i));
+            m_upInputLines [i] = m_pNMWI->RemoveFromModel<IoLine>(m_inputConnector .GetElem(i));
         }
         (m_targetReachedFunc)();
     }
@@ -69,24 +70,24 @@ public:
         m_upInputConnector  = m_pNMWI->ReplaceInModel<IoConnector>(move(m_upInputConnector ));
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upOutputNeurons[i] = m_pNMWI->ReplaceInModel<IoNeuron>(move(m_upOutputNeurons[i]));
-            m_upInputNeurons [i] = m_pNMWI->ReplaceInModel<IoNeuron>(move(m_upInputNeurons [i]));
+            m_upOutputLines[i] = m_pNMWI->ReplaceInModel<IoLine>(move(m_upOutputLines[i]));
+            m_upInputLines [i] = m_pNMWI->ReplaceInModel<IoLine>(move(m_upInputLines [i]));
         }
         (m_targetReachedFunc)();
     }
 
 private:
 
-    size_t                       m_size;
+    size_t                     m_size;
 
-    IoConnector          const & m_inputConnector;
-    IoConnector          const & m_outputConnector;
+    IoConnector        const & m_inputConnector;
+    IoConnector        const & m_outputConnector;
 
-    vector<unique_ptr<Neuron>>   m_upNeurons;              
+    vector<unique_ptr<Neuron>> m_upNeurons;              
 
-    // take ownership of IoConnectors and IoNeurons between Do and Undo
-    unique_ptr<IoConnector>      m_upInputConnector;
-    unique_ptr<IoConnector>      m_upOutputConnector;
-    vector<unique_ptr<IoNeuron>> m_upInputNeurons;              
-    vector<unique_ptr<IoNeuron>> m_upOutputNeurons;              
+    // take ownership of IoConnectors and IoLines between Do and Undo
+    unique_ptr<IoConnector>    m_upInputConnector;
+    unique_ptr<IoConnector>    m_upOutputConnector;
+    vector<unique_ptr<IoLine>> m_upInputLines;              
+    vector<unique_ptr<IoLine>> m_upOutputLines;              
 };

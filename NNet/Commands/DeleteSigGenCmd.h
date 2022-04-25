@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "InputNeuron.h"
+#include "InputLine.h"
 #include "SetActiveSigGenCmd.h"
 #include "SignalGenerator.h"
 #include "SigGenCommand.h"
@@ -18,12 +18,12 @@ public:
 	DeleteSigGenCmd()
 	{
 		m_sigGenId = m_pNMWI->GetSigGenIdActive();
-		m_pNMWI->Apply2All<InputNeuron>
+		m_pNMWI->Apply2All<InputLine>
 		(
-			[this](InputNeuron & n)
+			[this](InputLine & n)
 			{
 				if (&n.GetSigGen() == m_pSigGenActive)
-					m_affectedInputNeurons.push_back(&n);
+					m_affectedInputLines.push_back(&n);
 			}
 		);
 	}
@@ -31,7 +31,7 @@ public:
 	void Do() final 
 	{
 		SignalGenerator * m_pSigGenStandard { m_pNMWI->GetSigGenStandard() };
-		for (auto i : m_affectedInputNeurons)  // set all affected input lines to Standard
+		for (auto i : m_affectedInputLines)  // set all affected input lines to Standard
 			i->SetSigGen(m_pSigGenStandard);
 		m_upSigGen = move(m_pNMWI->RemoveSigGen(m_sigGenId));
 		SetActiveSigGenId(STD_SIGGEN_ID);
@@ -40,7 +40,7 @@ public:
 	void Undo() final 
 	{
 		m_pNMWI->InsertSigGen(move(m_upSigGen), m_sigGenId);
-		for (auto i : m_affectedInputNeurons)             // reset input lines
+		for (auto i : m_affectedInputLines)             // reset input lines
 			i->SetSigGen(m_pSigGenActive);
 		SetActiveSigGenId(m_sigGenId);
 	}
@@ -49,5 +49,5 @@ private:
 	SignalGenerator     * m_pSigGenActive { m_pNMWI->GetSigGenActive() };
 	SigGenId              m_sigGenId;
 	UPSigGen              m_upSigGen;
-	vector<InputNeuron *> m_affectedInputNeurons;
+	vector<InputLine *> m_affectedInputLines;
 };

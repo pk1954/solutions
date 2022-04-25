@@ -8,7 +8,7 @@
 #include <assert.h>   
 #include "MoreTypes.h"
 #include "PointType.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 #include "MicroMeterPosDir.h"
 
 using std::endl;
@@ -21,7 +21,7 @@ class MicroMeterPntVector
 public:
 
     MicroMeterPntVector() = default;
-    MicroMeterPntVector(vector<IoNeuron *> const&);
+    MicroMeterPntVector(vector<IoLine *> const&);
 
     template <class FUNC>
     void Apply2All(FUNC const & func)

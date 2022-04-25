@@ -8,8 +8,8 @@
 #include "NobType.h"
 #include "Knot.h"
 #include "Neuron.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
+#include "InputLine.h"
+#include "OutputLine.h"
 #include "NNetModel.h"
 
 using namespace std::chrono;

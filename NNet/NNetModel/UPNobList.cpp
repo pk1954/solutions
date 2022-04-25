@@ -10,8 +10,8 @@
 #include "Neuron.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
+#include "InputLine.h"
+#include "OutputLine.h"
 #include "NobIdList.h"
 #include "NobException.h"
 #include "UPNobList.h"
@@ -33,8 +33,8 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify!
 	using enum NobType::Value;
 	case inputConnector:  return Copy<InputConnector>(nob);
 	case outputConnector: return Copy<OutputConnector>(nob);
-	case inputNeuron:	  return Copy<InputNeuron>(nob);
-	case outputNeuron:	  return Copy<OutputNeuron>(nob);
+	case inputLine:   	  return Copy<InputLine>(nob);
+	case outputLine:	  return Copy<OutputLine>(nob);
 	case knot:		      return Copy<Knot>(nob);
 	case neuron:		  return Copy<Neuron>(nob);
 	case pipe:		      return Copy<Pipe>(nob);

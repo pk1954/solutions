@@ -1,50 +1,50 @@
-// OutputNeuron.cpp 
+// OutputLine.cpp 
 //
 // NNetModel
 
 #include "stdafx.h"
 #include "Resource.h"
 #include "DrawContext.h"
-#include "OutputNeuron.h"
+#include "OutputLine.h"
 
-OutputNeuron::OutputNeuron(MicroMeterPnt const & upCenter)
-	: IoNeuron(upCenter, NobType::Value::outputNeuron)
+OutputLine::OutputLine(MicroMeterPnt const & upCenter)
+	: IoLine(upCenter, NobType::Value::outputLine)
 {}
 
-OutputNeuron::OutputNeuron(BaseKnot const & baseKnot)
-	: IoNeuron(baseKnot, NobType::Value::outputNeuron)
+OutputLine::OutputLine(BaseKnot const & baseKnot)
+	: IoLine(baseKnot, NobType::Value::outputLine)
 {
 	SetIncoming(baseKnot);
 }
 
-void OutputNeuron::Check() const
+void OutputLine::Check() const
 {
-	Neuron::Check();
+	BaseKnot::Check();
 	assert(!HasOutgoing());
 }
 
-bool OutputNeuron::operator==(Nob const & rhs) const
+bool OutputLine::operator==(Nob const & rhs) const
 {
-	return this->Neuron::operator== (static_cast<OutputNeuron const &>(rhs));
+	return this->BaseKnot::operator== (static_cast<OutputLine const &>(rhs));
 }
 
-void OutputNeuron::DrawExterior(DrawContext const & context, tHighlight const type) const
+void OutputLine::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
 	drawPlug(context, 0.8f, 0.8f, GetExteriorColor(type));
 }
 
-void OutputNeuron::DrawInterior(DrawContext const & context, tHighlight const type) const
+void OutputLine::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
 	drawPlug(context, 0.4f, 0.6f, GetInteriorColor(type));
 }
 
-bool OutputNeuron::Includes(MicroMeterPnt const & point) const
+bool OutputLine::Includes(MicroMeterPnt const & point) const
 {
 	MicroMeterPnt const umCenter { GetPos() + GetScaledDirVector() * 0.5f };
 	return Distance(point, umCenter) <= GetExtension();
 }
 
-void OutputNeuron::drawPlug
+void OutputLine::drawPlug
 (
 	DrawContext  const & context, 
 	float        const   M,       // overall width/height                        
@@ -60,8 +60,8 @@ void OutputNeuron::drawPlug
 	context.DrawLine(umCenter + umDirVector *  V,         umP, GetExtension() * (M + 1.2f), colF);
 }
 
-void OutputNeuron::AppendMenuItems(AddMenuFunc const & add) const
+void OutputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_ADD_OUTGOING2BASEKNOT);
-	IoNeuron::AppendMenuItems(add);
+	IoLine::AppendMenuItems(add);
 }

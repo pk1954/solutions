@@ -1,25 +1,25 @@
-// InputNeuron.h
+// InputLine.h
 //
 // NNetModel
 
 #pragma once
 
 #include "MoreTypes.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 
 class Nob;
 class BaseKnot;
 class DrawContext;
 class SignalGenerator;
 
-class InputNeuron : public IoNeuron
+class InputLine : public IoLine
 {
 public:
 
-	explicit InputNeuron(SignalGenerator *, MicroMeterPnt const &);
-	explicit InputNeuron(SignalGenerator *, BaseKnot      const &);
+	explicit InputLine(SignalGenerator *, MicroMeterPnt const &);
+	explicit InputLine(SignalGenerator *, BaseKnot      const &);
 
-	~InputNeuron() final = default;
+	~InputLine() final = default;
 
 	void Check() const final;
 
@@ -27,7 +27,7 @@ public:
 	SignalGenerator       & GetSigGen()       { return * m_pSigGen; }
 	SignalGenerator const & GetSigGen() const { return * m_pSigGen; }
 
-	static bool TypeFits(NobType const type) { return type.IsInputNeuronType(); }
+	static bool TypeFits(NobType const type) { return type.IsInputLineType(); }
 
 	void Prepare() final;
 

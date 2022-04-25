@@ -99,9 +99,9 @@ public:
 	bool IsPipe           () const { return m_type.IsPipeType           (); }
 	bool IsKnot           () const { return m_type.IsKnotType           (); }
 	bool IsNeuron         () const { return m_type.IsNeuronType         (); }
-	bool IsIoNeuron       () const { return m_type.IsIoNeuronType       (); }
-	bool IsInputNeuron    () const { return m_type.IsInputNeuronType    (); }
-	bool IsOutputNeuron   () const { return m_type.IsOutputNeuronType   (); }
+	bool IsIoLine         () const { return m_type.IsIoLineType         (); }
+	bool IsInputLine      () const { return m_type.IsInputLineType      (); }
+	bool IsOutputLine     () const { return m_type.IsOutputLineType     (); }
 	bool IsAnyNeuron      () const { return m_type.IsAnyNeuronType      (); }
 	bool IsBaseKnot       () const { return m_type.IsBaseKnotType       (); }
 	bool IsUndefined      () const { return m_type.IsUndefinedType      (); }

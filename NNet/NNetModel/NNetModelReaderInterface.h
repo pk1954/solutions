@@ -18,6 +18,17 @@ class Nob;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 
+enum class ConnectionType
+{
+	ct_none,
+	ct_knot,
+	ct_neuron,
+	ct_outputline,
+	ct_pipe,
+	ct_ioLine,
+	ct_ioConnector
+};
+
 class NNetModelReaderInterface
 {
 public:
@@ -31,7 +42,7 @@ public:
 	size_t Size() const { return m_pModel->Size(); }
 
 	bool                    IsConnectionCandidate(NobId const, NobId const) const;
-	bool                    CanConnectTo         (NobId const, NobId const) const;
+	ConnectionType          ConnectionResult     (NobId const, NobId const) const;
 	bool                    IsConnectedTo        (NobId const, NobId const) const;
 	bool                    IsSelected           (NobId const) const;
 	NobType                 GetNobType           (NobId const) const;
@@ -80,16 +91,16 @@ public:
 		return pNob && pNob->IsAnyNeuron();
 	}
 
-	bool IsInputNeuron(NobId const id) const 
+	bool IsInputLine(NobId const id) const 
 	{
 		Nob const * const pNob { GetConstNob(id) };
-		return pNob && pNob->IsInputNeuron();
+		return pNob && pNob->IsInputLine();
 	}
 
-	bool IsOutputNeuron(NobId const id) const 
+	bool IsOutputLine(NobId const id) const 
 	{
 		Nob const * const pNob { GetConstNob(id) };
-		return pNob && pNob->IsOutputNeuron();
+		return pNob && pNob->IsOutputLine();
 	}
 
 	bool IsInputConnector(NobId const id) const 

@@ -11,7 +11,7 @@
 #include "MoreTypes.h"
 #include "UPSigGenList.h"
 #include "MonitorData.h"
-#include "IoNeuron.h"
+#include "IoLine.h"
 #include "NobType.h"
 #include "NobId.h"
 
@@ -27,6 +27,8 @@ class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 class MicroMeterPntVector;
 class SignalGenerator;
+
+enum class ConnectionType;
 
 struct SoundDescr;
 
@@ -65,7 +67,7 @@ public:
     void AttachSigGen2Conn       (NobId const);
     void AttachSigGen2Line       (NobId const);
     void ClearBeepers            ();
-    void Connect                 (NobId const, NobId const);
+    void Connect                 (NobId const, NobId const, ConnectionType const);
     void CopySelection           ();
     void CreateInitialNobs       ();
     void DeleteBaseKnot          (NobId const);
@@ -83,7 +85,7 @@ public:
     void MoveSensor              (SignalId const &, MicroMeterPnt const &);
     void MoveSignal              (SignalId const &, TrackNr const);
     void MoveNob                 (NobId const, MicroMeterPnt const &);
-    void NewIoNeuronPair         (MicroMeterPnt const &);
+    void NewIoLinePair         (MicroMeterPnt const &);
     void NewSignalGenerator      ();
     void RenameSigGen            (SigGenId const, wstring const &);
     void RestrictSelection       (NobType::Value const);

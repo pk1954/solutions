@@ -9,7 +9,7 @@
 #include "tHighlightType.h"
 #include "IoConnector.h"
 
-class IoNeuron;
+class IoLine;
 class DrawContext;
 
 class OutputConnector: public IoConnector
@@ -19,8 +19,8 @@ public:
 	static bool TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
 
 	OutputConnector();
-	explicit OutputConnector(vector<IoNeuron *> &);
-	explicit OutputConnector(vector<IoNeuron *> &&);
+	explicit OutputConnector(vector<IoLine *> &);
+	explicit OutputConnector(vector<IoLine *> &&);
 
 	~OutputConnector() final = default;
 

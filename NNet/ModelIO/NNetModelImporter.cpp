@@ -17,9 +17,9 @@
 #include "NobException.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
-#include "InputNeuron.h"
-#include "OutputNeuron.h"
-#include "IoNeuron.h"
+#include "InputLine.h"
+#include "OutputLine.h"
+#include "IoLine.h"
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "NNetModelStorage.h"
@@ -92,7 +92,7 @@ public:
 
     void operator() (Script & script) const final
     {
-        script.ScrReadString(L"InputNeuron");
+        script.ScrReadString(L"InputLine");
         NobId const id   (script.ScrReadLong());
         auto  const param(static_cast< ParamType::Value >(script.ScrReadUint()));
         assert(param == ParamType::Value::pulseRate);
@@ -164,18 +164,18 @@ public:
         NobId            const id       { ScrReadNobId(script) };
         ParamType::Value const param    { ScrReadParamType(script) };
         float                  fVal     { Cast2Float(script.ScrReadFloat()) };
-        if (InputConnector   * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) })   // Legacy
+        if (InputConnector   * pInpConn { GetWriterInterface().GetNobPtr<InputConnector *>(id) }) // Legacy
         {                                                                                         // Legacy
             pInpConn->Apply2All                                                                   // Legacy
             (                                                                                     // Legacy
-                [param, fVal](IoNeuron & n)                                                       // Legacy
+                [param, fVal](IoLine & n)                                                         // Legacy
                 {                                                                                 // Legacy
-                    auto & inputNeuron { static_cast<InputNeuron &>(n) };                         // Legacy
-                    inputNeuron.GetSigGen().SetParam(param, fVal);                       // Legacy
+                    auto & inputLine { static_cast<InputLine &>(n) };                             // Legacy
+                    inputLine.GetSigGen().SetParam(param, fVal);                                  // Legacy
                 }                                                                                 // Legacy
             );                                                                                    // Legacy
         }                                                                                         // Legacy 
-        else if ( InputNeuron * pInpNeuron { GetWriterInterface().GetNobPtr<InputNeuron*>(id) } ) // Legacy
+        else if ( InputLine * pInpNeuron { GetWriterInterface().GetNobPtr<InputLine*>(id) } )     // Legacy
         {
             pInpNeuron->GetSigGen().SetParam(param, fVal);
         }
@@ -234,6 +234,9 @@ void NNetModelImporter::Initialize()
             );
         }
     );
+
+    SymbolTable::ScrDefConst(L"inputNeuron",  static_cast<unsigned long>(NobType::Value::inputLine));  // Legacy
+    SymbolTable::ScrDefConst(L"outputNeuron", static_cast<unsigned long>(NobType::Value::outputLine)); // Legacy
 
     ParamType::Apply2AllParameters
     (
