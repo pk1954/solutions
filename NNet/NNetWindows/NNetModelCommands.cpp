@@ -556,9 +556,9 @@ void NNetModelCommands::ToggleEmphMode(NobId const id)
 	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 
-void NNetModelCommands::TriggerStimulus(NobId const id)  //TODO
+void NNetModelCommands::StartStimulus(NobId const id)  //TODO
 {  
 	//if (IsTraceOn())
 	//	TraceStream() << source_location::current().function_name() << endl;
-	//m_pNMWI->GetNobPtr<InputConnector *>(id)->TriggerStimulus();
+	//m_pNMWI->GetNobPtr<InputConnector *>(id)->StartStimulus();
 }

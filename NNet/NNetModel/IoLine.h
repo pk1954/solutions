@@ -27,7 +27,6 @@ public:
 	}
 
 	bool CompStep() final { return false; }
-	void Recalc()   final { };
 
 	MicroMeterPosDir GetPosDir()    const override;
 	Radian           GetDir()       const override;

@@ -47,15 +47,21 @@ void MeanFilter::Add(float const raw)
     }
 }
 
-float MeanFilter::GetRaw(size_t const index) const 
+float MeanFilter::GetRaw(SIG_INDEX const index) const 
 {
-    assert(index < m_raw.size());
+    if (index < m_raw.size())
+        return NAN;
+    if (index < 0)
+        return NAN;
     return m_raw[index];
 }
 
-float MeanFilter::GetFiltered(size_t const index) const
+float MeanFilter::GetFiltered(SIG_INDEX const index) const
 {
-    assert(index < m_filtered.size());
+    if (index < m_raw.size())
+        return NAN;
+    if (index < 0)
+        return NAN;
     return m_filtered[index];
 }
 
@@ -64,9 +70,9 @@ size_t MeanFilter::GetNrOfElements() const
     return m_raw.size(); 
 }
 
-size_t MeanFilter::GetLastIndex() const
+SIG_INDEX MeanFilter::GetLastIndex() const
 { 
-    return m_raw.size() - 1; 
+    return static_cast<SIG_INDEX>(m_raw.size()) - 1; 
 }
 
 void MeanFilter::SetFilterSize(size_t const newSize)

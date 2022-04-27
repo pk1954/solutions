@@ -10,7 +10,7 @@
 using std::array;
 using std::bit_cast;
 
-static WORD const ID_EDIT_CTRL { 100 };
+static WORD const ID_EDIT_CTRL { 2 };
 
 static LRESULT CALLBACK OwnerDrawEditBox
 (
@@ -26,7 +26,11 @@ static LRESULT CALLBACK OwnerDrawEditBox
     switch (uMsg)
     {
     case WM_MOUSEWHEEL:
-        pDescWin->OnMouseWheel(wParam, lParam);
+        if (LOWORD(wParam) & MK_CONTROL)
+        {
+            pDescWin->OnMouseWheel(wParam, lParam);
+            return 1;
+        }
         break;
 
     default: 

@@ -22,7 +22,7 @@ SignalGenerator::SignalGenerator(UPSigGenList & list, wstring const & name)
 void SignalGenerator::Register(ObserverInterface * const pObs)
 {
 	m_data.RegisterObserver(*pObs);
-	m_stimulus.RegisterObserver(*pObs);
+	RegisterObserver(*pObs);
 }
 
 void SignalGenerator::SetData(SigGenData const & data) 
@@ -35,11 +35,14 @@ SigGenData const & SignalGenerator::GetData() const
 	return m_data; 
 }
 
-void SignalGenerator::Tick(fMicroSecs const usResolution)
-{
-	m_stimulus.Tick(usResolution);
-	if (m_stimulus.IsTriggerActive() && ! m_data.InStimulusRange(m_stimulus.TimeTilTrigger()))
-		StopTrigger();
+fHertz SignalGenerator::GetFrequency(fMicroSecs const stimulusTime) const 
+{ 
+	return m_data.GetFrequency(stimulusTime); 
+}
+
+mV SignalGenerator::GetAmplitude(fMicroSecs const stimulusTime) const 
+{	
+	return m_data.GetAmplitude(stimulusTime); 
 }
 
 void SignalGenerator::SetParam(ParamType::Value const par, float const f)
@@ -54,4 +57,35 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 		case inputPeakTime: m_data.SetPeakTime(fMicroSecs(f)); break;
 		default: assert(false);
 	}
+}
+
+bool SignalGenerator::IsStimulusActive() const
+{ 
+	return m_data.InStimulusRange(GetStimulusTime());
+}
+
+void SignalGenerator::StartStimulus()
+{
+	m_usStartLastSpike = 0.0_MicroSecs;
+	m_usStartStimuTime = SimulationTime::Get();
+//	NotifyAll(false);
+}
+
+fMicroSecs SignalGenerator::GetStimulusTime() const // time til last stimulus start  
+{ 
+	return SimulationTime::Get() - m_usStartStimuTime; 
+}
+
+mV SignalGenerator::CalcVoltage
+(
+	fMicroSecs const stimulusTime,
+	fMicroSecs const spikeWidth
+)
+{
+	fMicroSecs const spikeTimeMax { SpikeTimeMax(GetFrequency(stimulusTime)) };
+	fMicroSecs const spikeTime    { stimulusTime - m_usStartLastSpike };
+	mV         const amplitude    { GetAmplitude(stimulusTime) };
+	if (spikeTime > spikeTimeMax)
+		m_usStartLastSpike = stimulusTime;
+	return ActionPotential(spikeTime, amplitude, spikeWidth);
 }

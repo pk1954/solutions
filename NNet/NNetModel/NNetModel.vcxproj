@@ -185,6 +185,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ActionPotential.h" />
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
@@ -222,8 +223,8 @@
     <ClInclude Include="NobId.h" />
     <ClInclude Include="SignalGenerator.h" />
     <ClInclude Include="SignalId.h" />
+    <ClInclude Include="SimulationTime.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Stimulus.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tHighlightType.h" />
     <ClInclude Include="ParameterType.h" />

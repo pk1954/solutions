@@ -9,6 +9,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
+#include "SimulationTime.h"
 #include "MonitorData.h"
 #include "MonitorControl.h"
 
@@ -128,16 +129,19 @@ SignalNr MonitorControl::findSignal
 			SignalId idSignal { SignalId(trackNr, signalNr) };
 			if (Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) })
 			{
-				fPixel const fPixSignal { getSignalValue(*pSignal, usTime, bFiltered) };
-				if (fPixSignal.IsNotNull())
+				if (usTime >= pSignal->GetStartTime())
 				{
-					fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
-					fPixel const fPixDelta    { fPixPtCrsr.GetY() - fPixYpos };
-					fPixel const fPixDeltaAbs { fPixDelta.GetAbs() };
-					if (fPixDeltaAbs < fPixBestDelta)
+					fPixel const fPixSignal { getSignalValue(*pSignal, usTime, bFiltered) };
+					if (fPixSignal.IsNotNull())
 					{
-						fPixBestDelta = fPixDeltaAbs;
-						signalNrRes = signalNr;
+						fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
+						fPixel const fPixDelta    { fPixPtCrsr.GetY() - fPixYpos };
+						fPixel const fPixDeltaAbs { fPixDelta.GetAbs() };
+						if (fPixDeltaAbs < fPixBestDelta)
+						{
+							fPixBestDelta = fPixDeltaAbs;
+							signalNrRes = signalNr;
+						}
 					}
 				}
 			}
@@ -230,7 +234,7 @@ fPixelPoint MonitorControl::calcDiamondPos(bool const bFiltered) const
 	SignalId   const & idSignal       { m_pMonitorData->GetHighlightedSignalId() };
 	if (Signal const * pSignal        { m_pMonitorData->GetConstSignalPtr(idSignal) })
 	{
-		fMicroSecs const usSimuEnd  { m_pNMWI->GetSimulationTime() };
+		fMicroSecs const usSimuEnd  { SimulationTime::Get() };
 		fPixel     const fPixSignal { getSignalValue(*pSignal, usSimuEnd, bFiltered) };
 		if (fPixSignal.IsNotNull())
 		{
@@ -238,14 +242,16 @@ fPixelPoint MonitorControl::calcDiamondPos(bool const bFiltered) const
 			fPixel     const fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
 			fMicroSecs const usScaleTime  { m_horzCoord.Transform2logUnitPos(fPixCrsrX) };
 			fMicroSecs const usAbsTime    { usSimuEnd + usScaleTime };
-			fMicroSecs const usAbsMax     { pSignal->FindNextMaximum(m_pNMWI->GetParams(), usAbsTime) };
-
-			fMicroSecs const usScaleMax   { usAbsMax - usSimuEnd };
-			fPixel     const fPixMaxX     { m_fPixZeroX + m_horzCoord.Transform2fPixelSize(usScaleMax) };
-
-			fPixel     const fPixYoff     { getSignalOffset(idSignal) };
-			fPixel     const fPixYpos     { fPixYoff - getSignalValue(*pSignal, usAbsMax, bFiltered) };
-			fPixDiamondPos = fPixelPoint(fPixMaxX, fPixYpos);
+			if (usAbsTime >= pSignal->GetStartTime())
+			{
+				fMicroSecs const usAbsMax   { pSignal->FindNextMaximum(m_pNMWI->GetParams(), usAbsTime) };
+				fMicroSecs const usScaleMax { usAbsMax - usSimuEnd };
+				fPixel     const fPixMaxX   { m_fPixZeroX + m_horzCoord.Transform2fPixelSize(usScaleMax) };
+				fPixel     const fPixYoff   { getSignalOffset(idSignal) };
+				fPixel     const fPixSigVal { getSignalValue(*pSignal, usAbsMax, bFiltered) };
+				if (fPixSigVal.IsNotNull())
+					fPixDiamondPos = fPixelPoint(fPixMaxX, fPixYoff - fPixSigVal);
+			}
 		}
 	}
 	return fPixDiamondPos;
@@ -257,11 +263,11 @@ void MonitorControl::paintSignal
 	bool     const   bFiltered 
 )
 {
-	Signal    const * const pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) };
+	Signal const * const pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) };
 	if (pSignal == nullptr)
 		return;
-	fMicroSecs     const usSimuEnd  { m_pNMWI->GetSimulationTime() };
-	fPixel               fPixSignal { getSignalValue(*pSignal, usSimuEnd, bFiltered) };
+	fMicroSecs const usSimuEnd  { SimulationTime::Get() };
+	fPixel           fPixSignal { getSignalValue(*pSignal, usSimuEnd, bFiltered) };
 	if (fPixSignal.IsNull())
 		return;
 
@@ -279,6 +285,7 @@ void MonitorControl::paintSignal
 	for (fMicroSecs usSimu = usSimuEnd - usIncrement; usSimu >= usSimuStart; usSimu -= usIncrement)
 	{
 		fPixSignal = getSignalValue(*pSignal, usSimu, bFiltered);
+		assert(fPixSignal.IsNotNull());
 		if (fPixSignal > m_fPixMaxSignal)
 			m_fPixMaxSignal = fPixSignal;
 		fPixelPoint const actPoint 
@@ -374,6 +381,8 @@ void MonitorControl::DoPaint()
 
 bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
+	bool bRes = false;
+
 	switch (int const wmId = LOWORD(wParam))
 	{
 	case IDD_MEASUREMENT_OFF:
@@ -389,8 +398,8 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_ADD_TRACK:
-		PostCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
-		PostCommand(IDM_WINDOW_ON, 0);  // if window was not visible, show it now
+		SendCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
+		SendCommand(IDM_WINDOW_ON, 0);  // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:
@@ -415,12 +424,11 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	default:
+	    bRes = BaseWindow::OnCommand(wParam, lParam, pixPoint);
 		break;
 	}
 
-	bool bRes = BaseWindow::OnCommand(wParam, lParam, pixPoint);
-	Trigger();
-
+	//Trigger();
 	return bRes; 
 }
 

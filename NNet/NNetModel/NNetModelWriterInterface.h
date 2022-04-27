@@ -145,8 +145,7 @@ public:
     void IncreaseSize(long const nr) { GetUPNobs().IncreaseSize(nr); }
     void ReduceSize  (long const nr) { GetUPNobs().ReduceSize(nr); }
 
-    void SetSimulationTime() { m_pModel->SetSimulationTime(); }
-    bool Compute()           { return m_pModel->Compute(); }
+    bool Compute() { return m_pModel->Compute(); }
 
     void SetPosDir(NobId const, MicroMeterPosDir const &);
 };

@@ -54,22 +54,16 @@ public:
 	void DrawExterior(DrawContext const &, tHighlight const) const override;
 	void DrawInterior(DrawContext const &, tHighlight const) const override;
 
-	void Recalc() final;
-
 	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 protected:
 
 	void DisplayText(DrawContext const &, MicroMeterRect const &, wstring const &) const;
 
-	virtual mV WaveFunction(fMicroSecs const) const;
-
 private:
 	mutable bool m_bTriggered { false };
 
 	SoundDescr m_triggerSound     {};
-	float      m_factorW          { 0.0f }; // Parameter of wave function
-	float      m_factorU          { 0.0f }; // Parameter of wave function
 	bool       m_bStopOnTrigger   { false };
 	PTP_WORK   m_pTpWork          { nullptr };  // Thread poolworker thread
 	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };

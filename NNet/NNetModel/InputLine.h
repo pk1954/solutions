@@ -36,8 +36,6 @@ public:
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
-	fHertz GetActFrequency() const;
-
 	bool Includes(MicroMeterPnt const &) const final;
 
 	void AppendMenuItems(AddMenuFunc const &) const final;

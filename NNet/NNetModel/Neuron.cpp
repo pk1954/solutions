@@ -11,6 +11,7 @@
 #include "win32_graphicsInterface.h"
 #include "win32_beeperThread.h"
 #include "DrawContext.h"
+#include "ActionPotential.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "IoLine.h"
@@ -23,9 +24,7 @@ using std::wostringstream;
 
 Neuron::Neuron(MicroMeterPnt const & upCenter, NobType const type)
   : BaseKnot(upCenter, type, NEURON_RADIUS)
-{
-	Recalc();
-}
+{}
 
 Neuron::Neuron(Neuron const & src)  // copy constructor
 	: BaseKnot(src)
@@ -51,8 +50,6 @@ void Neuron::init(const Neuron & rhs)
 	m_bStopOnTrigger   = rhs.m_bStopOnTrigger;
 	m_usSinceLastPulse = rhs.m_usSinceLastPulse;
 	m_bTriggered       = rhs.m_bTriggered;
-	m_factorW          = rhs.m_factorW;
-	m_factorU          = rhs.m_factorU;
 	m_triggerSound     = rhs.m_triggerSound;
 	m_pTpWork = (rhs.m_triggerSound.m_bOn )
 		      ? CreateThreadpoolWork(BeepFunc, this, nullptr)
@@ -71,8 +68,6 @@ bool Neuron::operator==(Nob const & rhs) const
 	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
 	return
 	(this->BaseKnot::operator== (neuronRhs))                             &&
-	IsCloseToZero(m_factorW - neuronRhs.m_factorW)                       &&
-	IsCloseToZero(m_factorU - neuronRhs.m_factorU)                       &&
 	(m_triggerSound.m_bOn       == neuronRhs.m_triggerSound.m_bOn)       &&
 	(m_triggerSound.m_frequency == neuronRhs.m_triggerSound.m_frequency) &&
 	(m_triggerSound.m_duration  == neuronRhs.m_triggerSound.m_duration);
@@ -93,17 +88,6 @@ SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound)
 	}
 	m_triggerSound = sound;
 	return oldValue;
-}
-
-void Neuron::Recalc() 
-{
-	m_factorW = 1.0f / GetParam()->SpikeWidth().GetValue();
-	m_factorU = 4.0f * m_factorW * GetParam()->NeuronPeakVolt().GetValue();
-};
-
-mV Neuron::WaveFunction(fMicroSecs const time) const
-{
-	return mV(m_factorU * time.GetValue() * (1.0f - time.GetValue() * m_factorW));
 }
 
 void Neuron::ClearDynamicData()
@@ -148,9 +132,9 @@ bool Neuron::CompStep()
 
 mV Neuron::GetNextOutput() const
 {
-	return (m_usSinceLastPulse <= GetParam()->SpikeWidth())
-		   ? WaveFunction(m_usSinceLastPulse)
-		   : 0.0_mV;
+	mV         const amplitude  { GetParam()->NeuronPeakVolt() };
+	fMicroSecs const spikeWidth { GetParam()->SpikeWidth() };
+	return ActionPotential(m_usSinceLastPulse, amplitude, spikeWidth);
 }
 
 void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const & text) const

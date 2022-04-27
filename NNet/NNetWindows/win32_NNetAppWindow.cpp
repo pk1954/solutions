@@ -53,6 +53,7 @@
 #include "Analyzer.h"
 #include "Neuron.h"
 #include "TimeGraph.h"
+#include "SimulationTime.h"
 #include "InputConnector.h"
 #include "win32_NNetAppWindow.h"
 
@@ -120,7 +121,7 @@ void NNetAppWindow::setModelInterface()
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	NNetWrappersSetModelInterface        (m_pNMRI);
 	Nob::SetParams(&m_pNMRI->GetParams());
-	m_nmwi.SetSimulationTime();
+	SimulationTime::Set();
 }
 
 void NNetAppWindow::Start(MessagePump & pump)
@@ -405,6 +406,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_RESET:
 			m_nmwi.ClearDynamicData();
+			m_dynamicModelObservable.NotifyAll(true);
 			break;
 
 		case IDM_FORWARD:

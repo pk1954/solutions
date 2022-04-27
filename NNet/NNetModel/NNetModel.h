@@ -42,8 +42,6 @@ public:
 
 	Nob const * GetConstNob(NobId const) const;
 
-	fMicroSecs GetSimulationTime() const { return m_timeStamp; }
-
 	float GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
 	MicroMeterPnt    GetNobPos      (NobId const id) const { return GetNobConstPtr<Nob  const *>(id)->GetPos         (); }
@@ -133,7 +131,6 @@ public:
 	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }
 	void SetDescriptionUI    (DescriptionUI & i)    { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable(Observable * obs)     { m_monitorData.SetHighSigObservable(obs); }
-	void SetSimulationTime   (fMicroSecs const newVal = 0._MicroSecs) { m_timeStamp = newVal; }
 
 private:
 
@@ -142,6 +139,5 @@ private:
 	ModelDescription m_description;
 	MonitorData      m_monitorData;
 	Param            m_param;
-	fMicroSecs       m_timeStamp         { 0._MicroSecs };
 	wstring          m_wstrModelFilePath { L"" };
 };

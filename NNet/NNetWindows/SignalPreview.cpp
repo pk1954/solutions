@@ -25,32 +25,21 @@ SignalPreview::~SignalPreview()
 
 void SignalPreview::DoPaint()
 {
-	if (SignalGenerator const * const pSigGen { GetSigGenActive() })
-	if (Param           const * const pParams { GetParams() })
+	if (SignalGenerator * const pSigGen { GetSigGenActive() })
+	if (Param     const * const pParams { GetParams() })
 	{
 		fMicroSecs const usSpikeWidth { pParams->SpikeWidth() };
-		float      const factorW      { 1.0f / usSpikeWidth.GetValue() };
-		fMicroSecs       usLastPulse  { 0.0_MicroSecs };
 		fMicroSecs const usResolution { pParams->TimeResolution() };
 
 		m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
+		pSigGen->StartStimulus();
 		PaintCurve
 		(
-			[this, &usLastPulse, usSpikeWidth, factorW, pSigGen](fMicroSecs const t)
-			{ 
-				fMicroSecs const usPulse { PulseDuration(pSigGen->GetFrequency(t)) };
-				fMicroSecs const time    { t - usLastPulse };
-				mV               voltage { 0.0_mV };
-				if (time > usPulse)
-					usLastPulse = t;
-				if (time <= usSpikeWidth)
-				{
-					mV const amplitude { pSigGen->GetAmplitude(t) };
-					mV const mVfactor  { amplitude * 4.0f * factorW };
-					voltage = mVfactor * time.GetValue() * (1.0f - time.GetValue() * factorW);
-				}
-				return pixPntVolt(t, voltage); 
+			[this, usSpikeWidth, pSigGen](fMicroSecs const stimulusTime)
+			{
+				mV voltage = pSigGen->CalcVoltage(stimulusTime, usSpikeWidth);
+				return pixPntVolt(stimulusTime, voltage); 
 			}, 
 			usResolution,
 			D2D1::ColorF::Black

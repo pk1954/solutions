@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "NobException.h"
+#include "SimulationTime.h"
 #include "NobType.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -20,7 +21,6 @@ bool NNetModel::operator==(NNetModel const & rhs) const
 {
 	return
 	(m_Nobs              == rhs.m_Nobs             ) &&
-	(m_timeStamp         == rhs.m_timeStamp        ) &&
 	(m_wstrModelFilePath == rhs.m_wstrModelFilePath) &&
 	(m_monitorData       == rhs.m_monitorData      ) &&
 	(m_param             == rhs.m_param            );
@@ -74,28 +74,16 @@ void NNetModel::RecalcAllNobs() const
 	(
 		[](Nob & nob) 
 		{ 
-			nob.Recalc(); 
+			//nob.Recalc(); 
 		}
 	);
 } 
 
 void NNetModel::ClearDynamicData()
 { 
-	m_Nobs.Apply2AllC
-	(
-		[](Nob & nob) 
-		{ 
-			nob.ClearDynamicData(); 
-		}
-	); 
-	GetMonitorData().Apply2AllSignals
-	(
-		[this](Signal & s) 
-		{ 
-			s.Reset(GetSimulationTime()); 
-			s.Recalc(m_Nobs); 
-		}
-	);
+	SimulationTime::Set();
+	m_Nobs.Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
+	GetMonitorData().Apply2AllSignals([this](Signal & s) { s.Reset(m_Nobs); });
 }
 
 bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
@@ -127,7 +115,7 @@ float NNetModel::SetParam
 bool NNetModel::Compute()
 {
 	bool bStop {false};
-	m_timeStamp += m_param.TimeResolution();
+	SimulationTime::Tick(m_param.TimeResolution());
 	m_Nobs.Apply2AllC(      [](Nob &s) { s.Prepare(); });
 	m_Nobs.Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;
@@ -139,7 +127,7 @@ void NNetModel::ResetModel()
 	m_Nobs.Clear();
 	m_monitorData.Reset();
 	m_description.ClearDescription();
-	SetSimulationTime();
+	SimulationTime::Set();
 }
 
 void NNetModel::SelectSubtree(BaseKnot & baseKnot, bool const bOn)

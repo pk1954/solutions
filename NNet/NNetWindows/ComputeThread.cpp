@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "observable.h"
+#include "SimulationTime.h"
 #include "SlowMotionRatio.h"
 #include "win32_fatalError.h"
 #include "NNetParameters.h"
@@ -29,7 +30,7 @@ void ComputeThread::Initialize
 void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
 	m_pNMWI = pNMWI;
-	m_pNMWI->SetSimulationTime();
+	SimulationTime::Set();
 	reset();
 }
 
@@ -42,7 +43,7 @@ void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters 
 void ComputeThread::reset()
 {
 	LockComputation();
-	m_usSimuTimeAtLastReset = m_pNMWI->GetSimulationTime();
+	m_usSimuTimeAtLastReset = SimulationTime::Get();
 	m_ticksNetRunning       = Ticks(0);
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
 	m_usSimuTimeResolution  = m_pNMWI->GetParams().TimeResolution(); 
@@ -168,7 +169,7 @@ void ComputeThread::SingleStep()
 
 fMicroSecs ComputeThread::simuTimeSinceLastReset() const
 { 
-	return m_pNMWI->GetSimulationTime() - m_usSimuTimeAtLastReset; 
+	return SimulationTime::Get() - m_usSimuTimeAtLastReset; 
 };
 
 fMicroSecs ComputeThread::netRealTimeSinceLastReset() const

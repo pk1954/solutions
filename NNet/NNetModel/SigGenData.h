@@ -106,7 +106,7 @@ public:
 
 	mV GetAmplitude(fMicroSecs const uSecs)	const 
 	{	
-		return getActValue<mV>    (uSecs, m_amplit); 
+		return getActValue<mV>(uSecs, m_amplit); 
 	}
 
 	fHertz GetFrequency(fMicroSecs const uSecs) const 

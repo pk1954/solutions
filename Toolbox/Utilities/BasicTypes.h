@@ -80,7 +80,7 @@ Hertz constexpr operator"" _Hertz(unsigned long long ull)
 	return Hertz(Cast2UnsignedLong(ull));
 }
 
-static microseconds PulseDuration(Hertz const freq)
+static microseconds SpikeTimeMax(Hertz const freq)
 {
 	return (freq.GetValue() == 0) 
 		? microseconds((numeric_limits<long long>::max)())
@@ -99,7 +99,7 @@ fHertz constexpr operator"" _fHertz(long double dl)
 template <> const wstring TypeAttribute<fHertz>::unit   = L"Hz";
 template <> const float   TypeAttribute<fHertz>::factor = 1.f;
 
-static fMicroSecs PulseDuration(fHertz const freq)
+static fMicroSecs SpikeTimeMax(fHertz const freq)
 {
 	return IsCloseToZero(freq.GetValue()) 
 		? fMicroSecs((numeric_limits<float>::max)())

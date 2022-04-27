@@ -56,13 +56,11 @@ public:
 	mV                      GetVoltage           (NobId const) const;
 	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const &) const;
 	Degrees                 GetDirection         (NobId const) const; 
-	fHertz                  GetActFrequency      (NobId const) const; 
 	SignalGenerator const * GetSigGen            (NobId const) const;
 
 	wstring                 GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
 	MicroMeterPnt           GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
 	Nob             const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
-	fMicroSecs              GetSimulationTime()                    const { return m_pModel->GetSimulationTime(); }
 	MonitorData     const & GetConstMonitorData()                  const { return m_pModel->GetMonitorData(); }
 	Param           const & GetParams()                            const { return m_pModel->GetParams(); };
 	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };

@@ -30,12 +30,6 @@ Degrees NNetModelReaderInterface::GetDirection(NobId const id) const
 	return p ? Radian2Degrees(p->GetDir()) : Degrees::NULL_VAL(); 
 }
 
-fHertz NNetModelReaderInterface::GetActFrequency(NobId const id) const 
-{ 
-	auto p { m_pModel->GetNobConstPtr<InputLine const *>(id) };
-	return p ? p->GetActFrequency() : fHertz::NULL_VAL(); 
-}
-
 size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<Pipe const *>(id) };

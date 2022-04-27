@@ -108,7 +108,7 @@ public:
     void SplitNeuron             (NobId const);
     void ToggleEmphMode          (NobId const);
     void ToggleStopOnTrigger     (NobId const);
-    void TriggerStimulus         (NobId const);
+    void StartStimulus           (NobId const);
 
     SignalId SetHighlightedSignal(MicroMeterPnt const &);
 

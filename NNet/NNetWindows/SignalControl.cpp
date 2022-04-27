@@ -93,10 +93,8 @@ void SignalControl::drawDiam
 	}
 }
 
-void SignalControl::paintRunControls(SignalGenerator const * pSigGen) const
+void SignalControl::paintRunControls(fMicroSecs const time) const
 {
-	auto time { pSigGen ? pSigGen->TimeTilTrigger() : 0.0_MicroSecs };
-
 	if (m_pVertCoordFreq)
 	{
 		auto pntFreq       { pixPntFreq(time) };
@@ -217,14 +215,14 @@ void SignalControl::DoPaint()
 	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 	if (SignalGenerator const * pSigGen { GetSigGenActive() })
 	{
-		if ( !m_computeThread.IsRunning() )
+		if (!m_computeThread.IsRunning())
 		{
 			calcHandles();
 			paintEditControls();
 		}
-		else if (pSigGen->IsTriggerActive())
+		else if (pSigGen->IsStimulusActive())
 		{
-			paintRunControls(pSigGen);
+			paintRunControls(pSigGen->GetStimulusTime());
 		}
 		if (Param * pParam { GetParams() })
 		{

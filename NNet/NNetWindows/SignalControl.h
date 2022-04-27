@@ -107,7 +107,7 @@ private:
 	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, GetSigGenActive()->GetAmplitude(t)); }
 
 	void calcHandles();
-	void paintRunControls (SignalGenerator const *) const;
+	void paintRunControls (fMicroSecs const) const;
 	void paintEditControls() const;
 	void drawLine(tColor, tPos const, tPos const) const;
 	void drawDiam(tColor, tPos const) const;

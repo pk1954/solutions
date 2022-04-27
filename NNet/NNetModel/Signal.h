@@ -10,6 +10,7 @@
 #include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "MeanFilter.h"
 #include "Pipe.h"
 
 using std::vector;
@@ -19,7 +20,6 @@ class Param;
 class Signal;
 class BaseKnot;
 class UPNobList;
-class MeanFilter;
 class DrawContext;
 class NNetModelReaderInterface;
 
@@ -45,7 +45,7 @@ public:
     void       RotateSensor (MicroMeterPnt const &, Radian const);
     void       RecalcFilter (Param const &) const;
     void       Recalc       (UPNobList const &);
-    void       Reset        (fMicroSecs const);
+    void       Reset        (UPNobList const &);
 
     float      GetFilteredDataPoint(Param const &, fMicroSecs const) const;
     float      GetRawDataPoint     (Param const &, fMicroSecs const) const;
@@ -100,7 +100,7 @@ private:
 
     SigDataPoint const * findDataPoint(MicroMeterPnt const &) const;
 
-    size_t     time2index(Param const &, fMicroSecs const  ) const;
-    fMicroSecs index2time(Param const &, size_t     const  ) const;
+    SIG_INDEX  time2index(Param const &, fMicroSecs const) const;
+    fMicroSecs index2time(Param const &, SIG_INDEX  const) const;
     void       add2list  (Pipe const &);
 };

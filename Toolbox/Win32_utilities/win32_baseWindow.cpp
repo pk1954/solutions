@@ -72,7 +72,7 @@ HWND BaseWindow::StartBaseWindow
 	return hwnd;
 }
 
-wstring BaseWindow::GetTitle() const { return L""; }
+wstring BaseWindow::GetTitle() const { return L"+++++"; }
 
 void BaseWindow::trackMouse(bool const bOn)
 {

@@ -1,6 +1,6 @@
 ShowArrows ON
 ShowSensorPoints ON
-DescWinFontSize 12
+DescWinFontSize 18
 SetAutoOpen ON
 SetSound ON
 ReadModel "D:\SW-projects\Delivery\2022-02-01\PROT31cx_new.mod"

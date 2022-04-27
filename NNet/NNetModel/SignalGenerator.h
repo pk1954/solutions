@@ -7,9 +7,10 @@
 #include "MoreTypes.h"
 #include "observable.h"
 #include "observerInterface.h"
+#include "SimulationTime.h"
 #include "ParameterType.h"
+#include "ActionPotential.h"
 #include "SigGenData.h"
-#include "Stimulus.h"
 
 class Param;
 class UPSigGenList;
@@ -18,21 +19,15 @@ class SignalGenerator;
 using std::wstring;
 using std::unique_ptr;
 
-class SignalGenerator
+class SignalGenerator : public Observable
 {
 public:
 
 	explicit SignalGenerator(UPSigGenList &);
 	SignalGenerator(UPSigGenList &, wstring const &);
 
-	void Tick(fMicroSecs const);
-	void TriggerStimulus() { m_stimulus.TriggerStimulus(); }
-	void StopTrigger    () { m_stimulus.StopTrigger(); }
-
-	fHertz GetFrequency(fMicroSecs const uSecs) const { return m_data.GetFrequency(uSecs); }
-	mV     GetAmplitude(fMicroSecs const uSecs) const {	return m_data.GetAmplitude(uSecs); }
-	fHertz GetActFrequency()                    const { return GetFrequency(TimeTilTrigger()); }
-	mV     GetAmplitude   ()                    const {	return GetAmplitude(TimeTilTrigger());}
+	fHertz GetFrequency(fMicroSecs const) const;
+	mV     GetAmplitude(fMicroSecs const) const;
 
 	fMicroSecs        const & TimePeak () const { return m_data.GetPeakTime(); }
 	BASE_PEAK<fHertz> const & Frequency() const { return m_data.GetFreq();     }
@@ -40,25 +35,29 @@ public:
 
 	void SetParam(ParamType::Value const, float const);
 
-	void SetData(SigGenData const &);
+	void               SetData(SigGenData const &);
 	SigGenData const & GetData() const;
 
-	void SetName(wstring const & name) { m_name = name; }
-	wstring const & GetName() const { return m_name; }
+	void            SetName(wstring const & name) { m_name = name; }
+	wstring const & GetName() const               { return m_name; }
 
 	UPSigGenList const & GetSigGenList() const {return m_list; }
 
 	void Register(ObserverInterface * const);
 
-	bool       IsTriggerActive() const { return m_stimulus.IsTriggerActive(); }
-	fMicroSecs TimeTilTrigger () const { return m_stimulus.TimeTilTrigger(); }
+	mV CalcVoltage(fMicroSecs const, fMicroSecs const);
+
+	bool IsStimulusActive() const;
+
+	void StartStimulus();
+
+	fMicroSecs GetStimulusTime() const; // time til last stimulus start  
 
 private:
 
-	inline static int m_iCounter { 0 };
-
 	UPSigGenList & m_list;
-	Stimulus       m_stimulus;  //dynamic data
 	SigGenData     m_data;      
 	wstring        m_name;
+	fMicroSecs     m_usStartLastSpike { 0.0_MicroSecs }; // in stimulus time
+	fMicroSecs     m_usStartStimuTime { 0.0_MicroSecs }; // in SimuTime
 };

@@ -136,6 +136,8 @@ wstring SignalDesigner::GetTitle() const
 	{
 		if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
 			return pSigGen->GetName();
+		else 
+			return L"#####";
 	}
     return L"*****";
 }

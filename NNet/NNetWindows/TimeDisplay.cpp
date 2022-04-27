@@ -11,6 +11,7 @@
 #include "win32_status.h"
 #include "win32_baseRefreshRate.h"
 #include "NNetModelReaderInterface.h"
+#include "SimulationTime.h"
 #include "TimeDisplay.h"
 
 using std::to_wstring;
@@ -36,7 +37,7 @@ public:
 
 	void Trigger() final
 	{
-		fMicroSecs const time { m_pNMRI->GetSimulationTime() };
+		fMicroSecs const time { SimulationTime::Get() };
 		m_pStatusBar->DisplayInPart(m_iPartInStatusBar, Format2wstring(time));
 	}
 

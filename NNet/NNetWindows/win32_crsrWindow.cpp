@@ -183,14 +183,6 @@ void CrsrWindow::printNobInfo
 		textBuf.AlignLeft();  
 		printDegrees(textBuf, m_pNMRI->GetDirection(id));
 		textBuf.nextLine();
-		if (type.IsInputConnectorType())
-		{
-			textBuf.AlignRight(); 
-			textBuf.printString(L"pulse freq: ");
-			textBuf.AlignLeft();  
-			printFrequency(textBuf, m_pNMRI->GetActFrequency(id));
-			textBuf.nextLine();
-		}
 	}
  	mV potential 
 	{ 

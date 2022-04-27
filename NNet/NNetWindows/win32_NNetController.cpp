@@ -253,7 +253,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_TRIGGER_STIMULUS:
-        m_pModelCommands->TriggerStimulus(m_pMainWindow->GetHighlightedNobId());
+        m_pModelCommands->StartStimulus(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_EMPHASIZE:

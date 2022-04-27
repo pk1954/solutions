@@ -12,15 +12,19 @@ using std::vector;
 using std::wcout;
 using std::endl;
 
+using SIG_INDEX = long; 
+
+inline static SIG_INDEX INVALID_SIG_INDEX { -1 };
+
 class MeanFilter
 {
 public:
 
-    size_t GetFilterSize()           const;
-    float  GetRaw     (size_t const) const;
-    float  GetFiltered(size_t const) const;
-    size_t GetNrOfElements()         const;
-    size_t GetLastIndex()            const;
+    size_t    GetFilterSize  ()                const;
+    float     GetRaw         (SIG_INDEX const) const;
+    float     GetFiltered    (SIG_INDEX const) const;
+    size_t    GetNrOfElements()                const;
+    SIG_INDEX GetLastIndex   ()                const;
 
     void Reset();
     void Recalc();

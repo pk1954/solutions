@@ -13,6 +13,7 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
+#include "SimulationTime.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
@@ -101,17 +102,10 @@ void InputLine::drawSocket
 
 void InputLine::Prepare()
 {
-	fMicroSecs usResolution { GetParam()->TimeResolution() };
-	m_pSigGen->Tick(usResolution);
-
-	fHertz     const freq            { m_pSigGen->GetActFrequency() };
-    fMicroSecs const time2Trigger    { PulseDuration(freq) };
-	float      const ticks2Trigger   { time2Trigger / usResolution };
-    mV         const increasePerTick { GetParam()->Threshold() / ticks2Trigger };
-    m_mVinputBuffer += increasePerTick;
+	fMicroSecs const stimulusTime { m_pSigGen->GetStimulusTime() };
+	fMicroSecs const spikeWidth   { GetParam()->SpikeWidth() };
+	m_mVinputBuffer = m_pSigGen->CalcVoltage(stimulusTime, spikeWidth);
 }
-
-fHertz InputLine::GetActFrequency() const { return m_pSigGen->GetActFrequency(); }
 
 void InputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
