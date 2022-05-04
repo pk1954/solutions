@@ -9,8 +9,7 @@
 #include "SignalId.h"
 #include "NobType.h"
 #include "NobIdList.h"
-#include "SigGenData.h"
-#include "SigGenData.h"
+#include "SigGenStaticData.h"
 #include "ParameterType.h"
 #include "MicroMeterPntVector.h"
 
@@ -24,4 +23,4 @@ extern SignalId              ScrReadSignalId           (Script &);
 extern NobType               ScrReadNobType            (Script &);
 extern ParamType::Value      ScrReadParamType          (Script &);
 extern mV                    ScrReadVoltage            (Script &);
-extern SigGenData            ScrReadSigGenData         (Script &);
+extern SigGenStaticData      ScrReadSigGenStaticData   (Script &);

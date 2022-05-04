@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
 #include "InputLine.h"

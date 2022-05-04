@@ -63,6 +63,7 @@
     <ClCompile Include="BoolOp.cpp" />
     <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
+    <ClCompile Include="observerInterface.cpp" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="trace.cpp" />

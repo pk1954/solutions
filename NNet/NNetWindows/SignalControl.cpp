@@ -21,21 +21,25 @@ SignalControl::SignalControl
 	ComputeThread        const & computeThread,
 	NNetModelCommands          & commands,
 	Observable                 & runObservable,
+	Observable                 & dynamicModelObservable,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
   : TimeGraph(hwndParent, pHorzCoord),
 	m_computeThread(computeThread),
 	m_commands(commands),
-	m_runObservable(runObservable)
+	m_runObservable(runObservable),
+	m_dynamicModelObservable(dynamicModelObservable)
 {
-	m_runObservable.RegisterObserver(*this);
+	m_runObservable         .RegisterObserver(*this);
+	m_dynamicModelObservable.RegisterObserver(*this);
 }
 
 SignalControl::~SignalControl()
 {
 	if (m_pNMWI && m_pNMWI->IsDefined())
 		GetParams()->UnregisterObserver(*this);
-	m_runObservable.UnregisterObserver(*this);
+	m_runObservable         .UnregisterObserver(*this);
+	m_dynamicModelObservable.UnregisterObserver(*this);
 	if (m_pVertCoordFreq)
 		m_pVertCoordFreq->UnregisterObserver(*this); //TODO: check Register...
 	if (m_pVertCoordVolt)
@@ -97,7 +101,7 @@ void SignalControl::paintRunControls(fMicroSecs const time) const
 {
 	if (m_pVertCoordFreq)
 	{
-		auto pntFreq       { pixPntFreq(time) };
+		auto pntFreq       { pixPntStimulusFreq(time) };
 		auto pntFreqLeft   { fPixelPoint(       xLeft(), pntFreq.GetY()) };
 		auto pntFreqBottom { fPixelPoint(pntFreq.GetX(),      yBottom()) };
 		m_upGraphics->DrawLine(pntFreq, pntFreqLeft  , STD_WIDTH, getColor(tColor::FREQ));
@@ -107,7 +111,7 @@ void SignalControl::paintRunControls(fMicroSecs const time) const
 
 	if (m_pVertCoordVolt)
 	{
-		auto const pntVolt       { pixPntVolt(time) };
+		auto const pntVolt       { pixPntStimulusVolt(time) };
 		auto const dirPos        { m_pVertCoordFreq ? xRight() : xLeft () };
 		auto const pntVoltBase   { fPixelPoint(        dirPos, pntVolt.GetY()) };
 		auto const pntVoltBottom { fPixelPoint(pntVolt.GetX(),      yBottom()) };
@@ -230,9 +234,19 @@ void SignalControl::DoPaint()
 			fMicroSecs const usResolution { pParam->TimeResolution() };
 			fMicroSecs const usIncrement  { max(usPixelSize, usResolution) };
 			if (m_pVertCoordFreq)
-				PaintCurve([this](fMicroSecs const t){ return pixPntFreq(t); }, usIncrement, getColor(tColor::FREQ));
+				PaintCurve
+				(
+					[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
+					usIncrement, 
+					getColor(tColor::FREQ)
+				);
 			if (m_pVertCoordVolt)
-				PaintCurve([this](fMicroSecs const t){ return pixPntVolt(t); }, usIncrement, getColor(tColor::VOLT));
+				PaintCurve
+				(
+					[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
+					usIncrement, 
+					getColor(tColor::VOLT)
+				);
 		}
 	}
 }
@@ -240,7 +254,7 @@ void SignalControl::DoPaint()
 void SignalControl::ScaleTimeCoord()
 {
 	fMicroSecs const umMaxVisible { getTime(m_fPixRight) };
-	fMicroSecs const umCutoff     { GetSigGenData()->CutoffTime() };
+	fMicroSecs const umCutoff     { GetSigGenStaticData()->CutoffTime() };
 	float      const factor       { umCutoff / umMaxVisible };
 	*m_pHorzCoord *= factor;
 }
@@ -248,7 +262,7 @@ void SignalControl::ScaleTimeCoord()
 void SignalControl::ScaleFreqCoord()
 {
 	fHertz const fHertzMaxVisible { getFreq(0.0_fPixel) };
-	fHertz const fHertzPeak       { GetSigGenData()->GetFreq().Peak() };
+	fHertz const fHertzPeak       { GetSigGenStaticData()->GetFrequency().Peak() };
 	float  const factor           { fHertzPeak / (fHertzMaxVisible * 0.9f) };
 	*m_pVertCoordFreq *= factor;
 }
@@ -256,7 +270,7 @@ void SignalControl::ScaleFreqCoord()
 void SignalControl::ScaleVoltCoord()
 {
 	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
-	mV    const mVpeak       { GetSigGenData()->GetAmplit().Peak() };
+	mV    const mVpeak       { GetSigGenStaticData()->GetAmplitude().Peak() };
 	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
 	*m_pVertCoordVolt *= factor;
 }
@@ -268,11 +282,11 @@ bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 	{
 		//if (m_fPixRight > 0.0_fPixel)
 		//	ScaleTimeCoord();
-		if (m_pVertCoordFreq)
-			ScaleFreqCoord();
-		if (m_pVertCoordVolt)
-			ScaleVoltCoord();
-		Trigger();  // cause repaint
+		//if (m_pVertCoordFreq)
+		//	ScaleFreqCoord();
+		//if (m_pVertCoordVolt)
+		//	ScaleVoltCoord();
+		//Trigger();  // cause repaint
 	}
 	return true;
 }
@@ -323,39 +337,39 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		PixelPoint  const pixCrsrPos  { GetCrsrPosFromLparam(lParam) };
 		fPixelPoint const fPixCrsrPos { Convert2fPixelPoint(pixCrsrPos) };
-		SigGenData        m_sigGenData(pSigGen->GetData());
+		SigGenStaticData  sigGenData(pSigGen->GetStaticData());
 
 		if (wParam & MK_LBUTTON)
 		{
 			switch (m_moveMode)
 			{
 			case tPos::TIME:
-				m_sigGenData.SetPeakTime(getTime(fPixCrsrPos));
+				sigGenData.SetPeakTime(getTime(fPixCrsrPos));
 				break;
 			case tPos::BASE_FREQ:
-				m_sigGenData.SetFreqBase(getFreq(fPixCrsrPos));
+				sigGenData.SetFreqBase(getFreq(fPixCrsrPos));
 				break;
 			case tPos::PEAK_FREQ:
-				m_sigGenData.SetFreqPeak(getFreq(fPixCrsrPos));
+				sigGenData.SetFreqPeak(getFreq(fPixCrsrPos));
 				break;
 			case tPos::TIME_FREQ:
-				m_sigGenData.SetFreqPeak(getFreq(fPixCrsrPos));
-				m_sigGenData.SetPeakTime(getTime(fPixCrsrPos));
+				sigGenData.SetFreqPeak(getFreq(fPixCrsrPos));
+				sigGenData.SetPeakTime(getTime(fPixCrsrPos));
 				break;
 			case tPos::BASE_VOLT:
-				m_sigGenData.SetAmplBase(getVolt(fPixCrsrPos));
+				sigGenData.SetAmplBase(getVolt(fPixCrsrPos));
 				break;
 			case tPos::PEAK_VOLT:
-				m_sigGenData.SetAmplPeak(getVolt(fPixCrsrPos));
+				sigGenData.SetAmplPeak(getVolt(fPixCrsrPos));
 				break;
 			case tPos::TIME_VOLT:
-				m_sigGenData.SetAmplPeak(getVolt(fPixCrsrPos));
-				m_sigGenData.SetPeakTime(getTime(fPixCrsrPos));
+				sigGenData.SetAmplPeak(getVolt(fPixCrsrPos));
+				sigGenData.SetPeakTime(getTime(fPixCrsrPos));
 				break;
 			default:
 				break;
 			}
-			m_commands.SetSigGenData(* GetSigGenActive(), m_sigGenData);
+			m_commands.SetSigGenStaticData(* GetSigGenActive(), sigGenData);
 			Notify(true);
 		}
 		else  // left button not pressed: select

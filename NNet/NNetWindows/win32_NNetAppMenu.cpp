@@ -122,9 +122,9 @@ void NNetAppMenu::Start
 
     HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_RESET,    L"Reset dynamic data");
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,  L"&Proceed single step");
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP, L"&Run/Stop");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,            L"&Proceed single step");
+        Util::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP,           L"&Run/Stop");
         HMENU hMenuAnalyze = Util::PopupMenu(hMenuAction, L"&Analyze");
         {
             Util::AddMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops");
@@ -172,7 +172,7 @@ void NNetAppMenu::addSigGenMenuEntries()
 {
     if (m_pNMRI)
     {
-        m_pNMRI->GetSigGenList().Apply2All
+        m_pNMRI->GetSigGenList().Apply2AllC
         (
             [this](SignalGenerator const * pSigGen)
             {
@@ -202,7 +202,7 @@ void NNetAppMenu::enable(unsigned int const id, bool const bCrit)
 void NNetAppMenu::Notify(bool const bImmediately)
 {
     enable(IDM_FORWARD, ! m_pComputeThread->IsRunning());
-    enable(IDM_RESET,   ! m_pComputeThread->IsRunning());
+    enable(IDM_RESET_DYNAMIC_DATA,   ! m_pComputeThread->IsRunning());
 
     enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(IDM_DESC_WINDOW   ));
     enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(IDM_CRSR_WINDOW   ));

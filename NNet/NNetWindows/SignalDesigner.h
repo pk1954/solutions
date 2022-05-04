@@ -13,7 +13,6 @@
 #include "win32_graphicsWindow.h"
 
 class NNetModelCommands;
-class SignalGenerator;
 class ComputeThread;
 class Observable;
 
@@ -25,6 +24,7 @@ public:
 		HWND const, 
 		ComputeThread const &, 
 		Observable &,
+		Observable &,
 		NNetModelCommands *
 	);
 
@@ -34,7 +34,7 @@ public:
 
 	void SetModelInterface(NNetModelWriterInterface * const);
 
-	wstring GetTitle() const final;
+	wstring GetCaption() const final;
 
 	void RegisterAtSigGen(SigGenId const);
 
@@ -56,16 +56,17 @@ private:
 	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
 	inline static DESIGN m_design   { DESIGN::STACKED };
-	inline static bool   m_bPreview { true };
+	inline static bool   m_bPreview { false };
 
 	void design(PIXEL const, PIXEL const);
-	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &);
+	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
 
 	void DoPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
 
+	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<fHertz>        m_vertCoordFreq;
 	PixFpDimension<mV>            m_vertCoordVolt1;

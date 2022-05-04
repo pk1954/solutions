@@ -5,14 +5,12 @@
 #pragma once
 
 #include <vector>
-#include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
-#include "NobId.h"
 #include "NobIdList.h"
-#include "InputLine.h"
-#include "OutputLine.h"
-#include "BaseKnot.h"
-#include "Knot.h"
+
+class InputLine;
+class OutputLine;
+class BaseKnot;
 
 using std::vector;
 using std::unique_ptr;

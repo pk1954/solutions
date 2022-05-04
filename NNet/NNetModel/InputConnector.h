@@ -27,13 +27,11 @@ public:
 
 	InputLine & GetElem(size_t const) const;
 
-	SignalGenerator       & GetSigGen();
-	SignalGenerator const & GetSigGen() const;
-
-	void SetSigGen(SignalGenerator * const);
+	void SetSigGen(SignalGenerator * const p)  final;
+	SignalGenerator       * GetSigGen ()       final;
+	SignalGenerator const * GetSigGenC() const final;
 
 	void Prepare() final { /* */ };
-	void AppendMenuItems(AddMenuFunc const &) const final;
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 

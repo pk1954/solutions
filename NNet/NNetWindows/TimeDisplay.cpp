@@ -8,72 +8,55 @@
 #include <iostream>
 #include <sstream> 
 #include <string> 
-#include "win32_status.h"
-#include "win32_baseRefreshRate.h"
-#include "NNetModelReaderInterface.h"
 #include "SimulationTime.h"
+#include "win32_status.h"
+#include "NNetModelReaderInterface.h"
 #include "TimeDisplay.h"
 
+using std::make_unique;
 using std::to_wstring;
 using std::wstring;
 using std::wostringstream;
 
 /////// inner class TimeDisplay::RefreshRate ///////
 
-class TimeDisplay::RefreshRate : public BaseRefreshRate
+TimeDisplay::RefreshRate::RefreshRate	
+(
+	StatusBar * pStatusBar,
+	int         iPartInStatusBar
+)
+  :	m_pStatusBar      (pStatusBar),
+	m_iPartInStatusBar(iPartInStatusBar)
+{ 
+}
+
+void TimeDisplay::RefreshRate::Trigger()
 {
-public:
-	RefreshRate	
-	(
-		StatusBar                      * pStatusBar,
-		NNetModelReaderInterface const * pModelInterface,
-		int                              iPartInStatusBar
-	)
-	:	m_pStatusBar      (pStatusBar),
-		m_pNMRI           (pModelInterface),
-		m_iPartInStatusBar(iPartInStatusBar)
-	{ 
-	}
-
-	void Trigger() final
-	{
-		fMicroSecs const time { SimulationTime::Get() };
-		m_pStatusBar->DisplayInPart(m_iPartInStatusBar, Format2wstring(time));
-	}
-
-private:
-	StatusBar                      * m_pStatusBar       { nullptr };
-	NNetModelReaderInterface const * m_pNMRI            { nullptr };
-	int                              m_iPartInStatusBar { -1 };
-};
+	fMicroSecs const time { SimulationTime::Get() };
+	m_pStatusBar->DisplayInPart(m_iPartInStatusBar, Format2wstring(time));
+}
 
 /////// functions of class TimeDisplay ///////
 
-void TimeDisplay::Start
+TimeDisplay::~TimeDisplay() = default;
+
+void TimeDisplay::Initialize
 (
-	StatusBar                      * pStatusBar,
-	NNetModelReaderInterface const * pModelInterface,
-	int                              iPartInStatusBar
+	StatusBar * pStatusBar,
+	int         iPartInStatusBar
 )
 {
-	m_pRefreshRate = new RefreshRate
+	m_upRefreshRate = make_unique<RefreshRate>
 	(
 		pStatusBar,
-		pModelInterface,
 		iPartInStatusBar
 	);
-	m_pRefreshRate->SetRefreshRate(300ms);
+	m_upRefreshRate->SetRefreshRate(300ms);
 	pStatusBar->AddCustomControl(8);        // nr of characters 
-}
-
-void TimeDisplay::Stop()
-{
-	delete m_pRefreshRate;
-	m_pRefreshRate = nullptr;
 }
 
 void TimeDisplay::Notify(bool const bImmediately)
 {
-	if (m_pRefreshRate)
-		m_pRefreshRate->Notify(bImmediately);
+	if (m_upRefreshRate)
+		m_upRefreshRate->Notify(bImmediately);
 }

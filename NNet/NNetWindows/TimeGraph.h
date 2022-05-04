@@ -37,10 +37,10 @@ protected:
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
 	NNetModelWriterInterface   * m_pNMWI      { nullptr };
 
-	SignalGenerator const * GetSigGenActive() const { return m_pNMWI->GetSigGenActive(); }
-	SignalGenerator       * GetSigGenActive()       { return m_pNMWI->GetSigGenActive(); }
-	SigGenData      const * GetSigGenData  () const { return & GetSigGenActive()->GetData(); }
-	Param                 * GetParams      ()       { return & m_pNMWI->GetParams(); }
+	SignalGenerator  const * GetSigGenActive    () const { return m_pNMWI->GetSigGenActive(); }
+	SignalGenerator        * GetSigGenActive    ()       { return m_pNMWI->GetSigGenActive(); }
+	SigGenStaticData const * GetSigGenStaticData() const { return & GetSigGenActive()->GetStaticData(); }
+	Param                  * GetParams          ()       { return & m_pNMWI->GetParams(); }
 
 	void PaintCurve
 	(

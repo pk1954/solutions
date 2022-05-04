@@ -25,11 +25,11 @@ public:
 		Observable      * const
 	);
 
+	void Reset();
 	void SetModelInterface(NNetModelWriterInterface * const);
 	void ThreadStartupFunc() final;
 	void ThreadMsgDispatcher(MSG const &) final { }
 	void Notify(bool const) final;
-
 	void SingleStep();
 	void ReleaseComputationLock();
 	void LockComputation();
@@ -69,8 +69,8 @@ private:
 
 	void runComputation();
 	void stopComputation();
-	void reset();
 
 	fMicroSecs simuTimeSinceLastReset() const;
 	fMicroSecs netRealTimeSinceLastReset() const;
+	long       getCyclesTodo() const;
 };

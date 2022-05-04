@@ -120,9 +120,9 @@ mV ScrReadVoltage(Script& script)
 	return mV(Cast2Float(value));
 }
 
-SigGenData ScrReadSigGenData(Script& script)
+SigGenStaticData ScrReadSigGenStaticData(Script& script)
 {
-	SigGenData sigGenData;
+	SigGenStaticData sigGenData;
 	sigGenData.SetFreq    (ScrReadBasePeak<fHertz>    (script));
 	sigGenData.SetAmpl    (ScrReadBasePeak<mV>        (script));
 	sigGenData.SetPeakTime(ScrRead        <fMicroSecs>(script));

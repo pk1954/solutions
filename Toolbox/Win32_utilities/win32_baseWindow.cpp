@@ -67,12 +67,10 @@ HWND BaseWindow::StartBaseWindow
 
     SetWindowHandle(hwnd);
 	StartRootWindow(visibilityCriterion);
-    SetWindowText(GetTitle());
+    SetWindowText(GetCaption());
 
 	return hwnd;
 }
-
-wstring BaseWindow::GetTitle() const { return L"+++++"; }
 
 void BaseWindow::trackMouse(bool const bOn)
 {
@@ -94,9 +92,24 @@ void BaseWindow::OnMouseLeave()
     trackMouse(false);
 };
 
+wstring BaseWindow::GetCaption() const 
+{ 
+    wstring wstrCaption { L"+++++" };
+
+    if (WindowHasCaption())
+    {
+        wstrCaption = GetWindowText();
+    }
+    else if (BaseWindow const * pBaseWinParent{ static_cast<BaseWindow const *>(GetParentRootWindow()) } )
+    {
+        wstrCaption = pBaseWinParent->GetCaption();
+    }
+    return wstrCaption;
+}
+
 void BaseWindow::SetCaption() const
 {
-    wstring const caption { m_bPerfMonMode ? Format2wstring(m_usPaintTime, 1) : GetTitle() };
+    wstring const caption { m_bPerfMonMode ? Format2wstring(m_usPaintTime, 1) : GetCaption() };
     if (WindowHasCaption())
     {
         SetWindowText(caption);

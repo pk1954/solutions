@@ -355,7 +355,7 @@ void MonitorControl::DoPaint()
 
 	m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const trackNr) { paintTrack(trackNr); });
 	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id, false); });
-	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id, true); });
+//	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id, true); });
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
 	if (m_measurement.TrackingActive())

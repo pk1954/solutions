@@ -16,6 +16,7 @@
 class Nob;
 class Param;
 class DrawContext;
+class SignalGenerator;
 
 using D2D1::ColorF;
 using std::is_base_of;
@@ -80,7 +81,11 @@ public:
 
 	virtual void ClearDynamicData()     { m_mVinputBuffer.Set2Zero(); }
 	virtual void Reconnect()            {};
-	
+
+	virtual void                    SetSigGen (SignalGenerator * const) { }
+	virtual SignalGenerator       * GetSigGen ()                        { return nullptr; }
+	virtual SignalGenerator const * GetSigGenC() const                  { return nullptr; }
+
 	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input;    }
 	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output;   }
 	bool    IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }

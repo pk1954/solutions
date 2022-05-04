@@ -1,4 +1,4 @@
-// SigGenData.h
+// SigGenStaticData.h
 //
 // NNetModel
 
@@ -10,11 +10,11 @@
 using std::wcout;
 using std::wostream;
 
-class SigGenData : public Observable
+class SigGenStaticData : public Observable
 {
 public:
 
-	SigGenData
+	SigGenStaticData
 	(
 		BASE_PEAK<fHertz> f,
 		BASE_PEAK<mV>     a,
@@ -25,13 +25,13 @@ public:
 		m_usPeak(t)
 	{}
 
-	SigGenData()
+	SigGenStaticData()
       :	m_freq(10.0_fHertz, 50.0_fHertz),
 		m_amplit(10._mV, 20._mV),
 		m_usPeak(500000._MicroSecs)  // 1/2 sec
 	{}
 
-	bool operator==(SigGenData const& rhs) const
+	bool operator==(SigGenStaticData const& rhs) const
 	{
 		return
 		(m_freq   == rhs.m_freq  ) &&
@@ -39,7 +39,7 @@ public:
 		(m_usPeak == rhs.m_usPeak);
 	}
 
-	SigGenData & operator=(SigGenData const& rhs)
+	SigGenStaticData & operator=(SigGenStaticData const& rhs)
 	{
 		m_freq   = rhs.m_freq;
 		m_amplit = rhs.m_amplit;
@@ -48,9 +48,9 @@ public:
 		return *this;
 	}
 
-	fMicroSecs                GetPeakTime() const { return m_usPeak; }
-	BASE_PEAK<fHertz> const & GetFreq    () const { return m_freq;   }
-	BASE_PEAK<mV>     const & GetAmplit  () const { return m_amplit; }
+	fMicroSecs                GetPeakTime () const { return m_usPeak; }
+	BASE_PEAK<fHertz> const & GetFrequency() const { return m_freq;   }
+	BASE_PEAK<mV>     const & GetAmplitude() const { return m_amplit; }
 
 	void SetPeakTime(fMicroSecs const t) 
 	{ 
@@ -104,17 +104,17 @@ public:
 		return t < CutoffTime(); 
 	}
 
-	mV GetAmplitude(fMicroSecs const uSecs)	const 
+	mV GetStimulusAmplitude(fMicroSecs const uSecs)	const 
 	{	
-		return getActValue<mV>(uSecs, m_amplit); 
+		return getStimulusValue<mV>(uSecs, m_amplit); 
 	}
 
-	fHertz GetFrequency(fMicroSecs const uSecs) const 
+	fHertz GetStimulusFrequency(fMicroSecs const uSecs) const 
 	{	
-		return getActValue<fHertz>(uSecs, m_freq  ); 
+		return getStimulusValue<fHertz>(uSecs, m_freq  ); 
 	}
 
-	friend wostream & operator<< (wostream & out, SigGenData const & data)
+	friend wostream & operator<< (wostream & out, SigGenStaticData const & data)
 	{
 		out << data.m_freq << data.m_amplit << L' ' << data.m_usPeak;
 		return out;
@@ -129,7 +129,7 @@ private:
 	inline static float const CUT_OFF_FACTOR { 10.0f };
 
 	template <typename T>
-	T getActValue
+	T getStimulusValue
 	(
 		fMicroSecs   const   t, 
 		BASE_PEAK<T> const & par

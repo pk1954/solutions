@@ -52,7 +52,7 @@ void NNetModelExporter::writeGlobalParameters(wostream & out) const
     (
         [this, &out](ParamType::Value const & par) 
         {
-            out << L"GlobalParameter " << ParamType::GetName(par) << L" = "
+            out << L"GlobalParameter" << par << L" = "
                 << m_pNMRI->GetParameter(par) 
                 << endl; 
         }
@@ -74,16 +74,16 @@ void NNetModelExporter::writeNobs(wostream & out)
     m_pNMRI->Apply2AllC<IoConnector>([this, &out](IoConnector const & s) { writeNob(out, s); });
 }
 
-void NNetModelExporter::writeSigGenData(wostream & out) const
+void NNetModelExporter::writeSigGenStaticData(wostream & out) const
 {
-    m_pNMRI->GetSigGenList().Apply2All
+    m_pNMRI->GetSigGenList().Apply2AllC
     (
         [this, &out](auto const & upSigGen)
         { 
             out << L"SignalGenerator \"" 
                 << upSigGen->GetName() 
                 << "\" " 
-                << upSigGen->GetData() 
+                << upSigGen->GetStaticData() 
                 << endl;
         }
    );
@@ -232,7 +232,7 @@ void NNetModelExporter::write(wostream & out)
     out << endl;
     writeNobs(out);
     out << endl;
-    writeSigGenData(out);
+    writeSigGenStaticData(out);
     out << endl;
     writeTriggerSounds(out);
     out << endl;

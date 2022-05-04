@@ -27,7 +27,7 @@ public:
 		(
 			[&](InputLine & n)
 			{ 
-				if (& n.GetSigGen() == m_pSigGen)
+				if (n.GetSigGen() == m_pSigGen)
 				{
 					n.Select(true);
 					if (n.HasParentNob())

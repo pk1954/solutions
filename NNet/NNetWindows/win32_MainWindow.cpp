@@ -80,6 +80,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_ARROWS_ON,               L"Arrows on"                      },
 		{ IDD_ATTACH_SIG_GEN_TO_LINE,  L"Attach active signal generator" },
 		{ IDD_ATTACH_SIG_GEN_TO_CONN,  L"Attach active signal generator" },
+		{ IDD_ATTACH_SIG_GEN_TO_SEL,   L"Attach active signal generator" },
 		{ IDM_COPY_SELECTION,          L"Copy selection"                 },
 		{ IDM_DELETE_SELECTION,        L"Delete selected objects"        },
 		{ IDD_DELETE_NOB,              L"Delete"                         },
@@ -92,7 +93,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_INSERT_NEURON,           L"Insert neuron"                  },
 		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
 		{ IDD_NEW_IO_LINE_PAIR,        L"New IO-line pair"  	         },
-		{ IDM_TRIGGER_STIMULUS,        L"Trigger stimulus"               },
 		{ IDM_SELECT_NOB,              L"Select nob"                     },
 		{ IDM_SELECT_SUBTREE,          L"Select subtree"                 },
 		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
@@ -111,6 +111,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hSelectionMenu, IDM_COPY_SELECTION  );
 		appendMenu(hSelectionMenu, IDM_DELETE_SELECTION);
 		appendMenu(hSelectionMenu, IDM_MAKE_CONNECTOR  );
+		appendMenu(hSelectionMenu, IDD_ATTACH_SIG_GEN_TO_SEL);  
 //		appendMenu(hSelectionMenu, IDM_ALIGN_NOBS      );
 	}
 
@@ -127,12 +128,12 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGen(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
 		}
 		else if ( m_pNMRI->IsInputConnector(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGen(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
 		}
 	}

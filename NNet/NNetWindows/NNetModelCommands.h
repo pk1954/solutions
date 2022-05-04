@@ -19,7 +19,7 @@ class Param;
 class NNetCommand;
 class Observable;
 class NobIdList;
-class SigGenData;
+class SigGenStaticData;
 class CommandStack;
 class AlignAnimation;
 class NNetModelImporter;
@@ -66,6 +66,7 @@ public:
     void AnimateCoord            (Uniform2D<MicroMeter> &, Uniform2D<MicroMeter> const &);
     void AttachSigGen2Conn       (NobId const);
     void AttachSigGen2Line       (NobId const);
+    void AttachSigGen2Sel        ();
     void ClearBeepers            ();
     void Connect                 (NobId const, NobId const, ConnectionType const);
     void CopySelection           ();
@@ -85,7 +86,7 @@ public:
     void MoveSensor              (SignalId const &, MicroMeterPnt const &);
     void MoveSignal              (SignalId const &, TrackNr const);
     void MoveNob                 (NobId const, MicroMeterPnt const &);
-    void NewIoLinePair         (MicroMeterPnt const &);
+    void NewIoLinePair           (MicroMeterPnt const &);
     void NewSignalGenerator      ();
     void RenameSigGen            (SigGenId const, wstring const &);
     void RestrictSelection       (NobType::Value const);
@@ -100,7 +101,7 @@ public:
     void SelectSubtree           (NobId const, bool const);
     void SetActiveSignalGenerator(SigGenId const);
     void SetParameter            (ParamType::Value const, float const);
-    void SetSigGenData           (SignalGenerator &, SigGenData const &);
+    void SetSigGenStaticData     (SignalGenerator &, SigGenStaticData const &);
     void SetNob                  (NobId const, MicroMeterPosDir const);
     void SetTriggerSound         (NobId const, SoundDescr const &);
     void SizeSelection           (float const);
@@ -108,7 +109,7 @@ public:
     void SplitNeuron             (NobId const);
     void ToggleEmphMode          (NobId const);
     void ToggleStopOnTrigger     (NobId const);
-    void StartStimulus           (NobId const);
+    void StartStimulus           ();
 
     SignalId SetHighlightedSignal(MicroMeterPnt const &);
 

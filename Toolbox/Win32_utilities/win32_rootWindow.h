@@ -69,6 +69,8 @@ public:
 	bool IsCaptured()            const { return ::GetCapture() == m_hwnd; }
 	int	 GetWindowTextLength()   const { return ::GetWindowTextLength(m_hwnd); }    
 
+	wstring GetWindowText() const; 
+
 	bool SetWindowText(LPCWSTR        const   s) const { return ::SetWindowText(m_hwnd, s); }
 	bool SetWindowText(wstring        const & s) const { return   SetWindowText(s.c_str()); }
 	bool SetWindowText(wostringstream const & s) const { return   SetWindowText(s.str()); }

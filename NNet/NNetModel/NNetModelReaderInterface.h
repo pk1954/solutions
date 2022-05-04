@@ -33,7 +33,7 @@ class NNetModelReaderInterface
 {
 public:
 
-	void SetModel(NNetModel * const pModel) { m_pModel = pModel;  }
+	void SetModel(NNetModel * const pModel) { m_pModel = pModel; }
 	bool IsDefined() const { return m_pModel != nullptr; }
 
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
@@ -56,7 +56,7 @@ public:
 	mV                      GetVoltage           (NobId const) const;
 	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const &) const;
 	Degrees                 GetDirection         (NobId const) const; 
-	SignalGenerator const * GetSigGen            (NobId const) const;
+	SignalGenerator const * GetSigGenC           (NobId const) const;
 
 	wstring                 GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
 	MicroMeterPnt           GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }

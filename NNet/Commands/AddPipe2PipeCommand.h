@@ -87,14 +87,14 @@ public:
 	}
 
 private:
-	Pipe     *           m_pPipeOld     { nullptr };
-	BaseKnot *           m_pStartKnot   { nullptr };
-	BaseKnot *           m_pEndKnot     { nullptr };
-	unique_ptr<Pipe>     m_upPipeOld    { nullptr };
-	unique_ptr<Pipe>     m_upPipeNew1   { nullptr };
-	unique_ptr<Pipe>     m_upPipeNew2   { nullptr };
-	unique_ptr<Pipe>     m_upPipeOrtho  { nullptr };
-	unique_ptr<Knot>     m_upKnotInsert { nullptr };
+	Pipe     *         m_pPipeOld     { nullptr };
+	BaseKnot *         m_pStartKnot   { nullptr };
+	BaseKnot *         m_pEndKnot     { nullptr };
+	unique_ptr<Pipe>   m_upPipeOld    { nullptr };
+	unique_ptr<Pipe>   m_upPipeNew1   { nullptr };
+	unique_ptr<Pipe>   m_upPipeNew2   { nullptr };
+	unique_ptr<Pipe>   m_upPipeOrtho  { nullptr };
+	unique_ptr<Knot>   m_upKnotInsert { nullptr };
 	unique_ptr<IoLine> m_upExtPoint   { nullptr }; 
-	NobId          const m_idPipe;
+	NobId        const m_idPipe;
 };

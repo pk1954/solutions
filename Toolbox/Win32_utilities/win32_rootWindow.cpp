@@ -27,6 +27,16 @@ RootWindow * GetParentRootWindow(HWND const hwnd)
 		   : nullptr;
 }
 
+wstring RootWindow::GetWindowText() const
+{
+	wstring wstrResult;
+	int     iLength { GetWindowTextLength() };
+	vector<wchar_t> buffer(iLength + 1);
+	if (::GetWindowText(m_hwnd, buffer.data(), iLength) )
+		wstrResult = wstring(buffer.data(), iLength);
+	return wstrResult;
+}
+
 class RootWindow::WindowRefreshRate : public BaseRefreshRate
 {
 public:

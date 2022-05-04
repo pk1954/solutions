@@ -25,7 +25,7 @@ wchar_t const * ParamType::GetName(ParamType::Value const p)
 		{ threshold,      L"Threshold"        },
     	{ refractPeriod,  L"RefractoryPeriod" },
 	    { timeResolution, L"TimeResolution"   },
-		{ filterSize,     L"FilterSize"       }, // multiples of timeResolution  
+		{ filterSize,     L"FilterSize"       }, // 
 		{ baseFrequency,  L"BaseFrequency"    },   // Legacy
 		{ signalLoss,     L"SignalLoss"       },   // Legacy
 		{ pulseWidth,     L"PulseWidth"       },   // Legacy

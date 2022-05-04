@@ -26,7 +26,7 @@
 #define       IDM_FASTER                     131
 								   	         
 #define       IDM_ESCAPE                     140
-#define       IDM_RESET                      141
+#define       IDM_RESET_DYNAMIC_DATA         141
 #define       IDM_SELECT_ALL                 142 
 #define       IDM_SELECT_SUBTREE             143
 #define       IDM_SELECT_NOB                 144
@@ -127,3 +127,4 @@
 #define       IDD_TRIGGER_SIGNAL_DESIGNER    707
 #define       IDD_ATTACH_SIG_GEN_TO_LINE     708
 #define       IDD_ATTACH_SIG_GEN_TO_CONN     709
+#define       IDD_ATTACH_SIG_GEN_TO_SEL      710

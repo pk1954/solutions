@@ -27,7 +27,7 @@ public:
 
 	void SetCaption() const;
 	
-	virtual wstring GetTitle() const;
+	virtual wstring GetCaption() const;
 
 	static void SetPerfMonMode(bool const b) { m_bPerfMonMode = b; }
 	static bool PerfMonMode() { return m_bPerfMonMode; }

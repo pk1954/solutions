@@ -21,6 +21,7 @@ void SignalDesigner::Initialize
 	HWND          const   hwndParent,
 	ComputeThread const & computeThread,
 	Observable          & runObservable,
+	Observable          & dynamicModelObservable,
 	NNetModelCommands   * pCommands
 )
 {
@@ -31,14 +32,15 @@ void SignalDesigner::Initialize
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
 
+	m_pComputeThread = & computeThread;
 	m_pCommands = pCommands;
 
 	m_horzCoord.SetPixelSize(10000.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 10000._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 100000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
 	m_vertCoordFreq.SetPixelSize(0.25_fHertz);
-	m_vertCoordFreq.SetPixelSizeLimits(0.05_fHertz, 1._fHertz); 
+	m_vertCoordFreq.SetPixelSizeLimits(0.02_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
 	m_upHorzScale1     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
@@ -67,8 +69,8 @@ void SignalDesigner::Initialize
 	m_upVertScaleVolt2->SetColor(D2D1::ColorF::Black);
 	m_upVertScaleVolt2->Show(true);
 
-	m_upSignalControl1 = makeSignalControl(computeThread, runObservable);
-	m_upSignalControl2 = makeSignalControl(computeThread, runObservable);
+	m_upSignalControl1 = makeSignalControl(computeThread, runObservable, dynamicModelObservable);
+	m_upSignalControl2 = makeSignalControl(computeThread, runObservable, dynamicModelObservable);
 	m_upSignalPreview  = make_unique<SignalPreview>(*this, m_horzCoord, m_vertCoordVolt2);
 
 	m_upHorzScale1    ->SetParentContextMenueMode(true);
@@ -93,6 +95,8 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
+	if (m_pComputeThread->IsRunning())
+		AppendMenu(hPopupMenu, MF_STRING, IDM_TRIGGER_STIMULUS,    L"Stimulus");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input neurons");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
@@ -109,7 +113,8 @@ void SignalDesigner::RegisterAtSigGen(SigGenId const id)
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 (
 	ComputeThread const & computeThread,
-	Observable          & runObservable
+	Observable          & runObservable,
+	Observable          & dynamicModelObservable
 )
 {
 	unique_ptr<SignalControl> upSignalControl = make_unique<SignalControl>
@@ -118,6 +123,7 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 		computeThread,
 		*m_pCommands,
 		runObservable,
+		dynamicModelObservable,
 		&m_horzCoord 
 	);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
@@ -130,16 +136,16 @@ void SignalDesigner::Stop()
 	DestroyWindow();
 }
 
-wstring SignalDesigner::GetTitle() const
+wstring SignalDesigner::GetCaption() const
 {
 	if (m_pNMWI)
 	{
 		if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
 			return pSigGen->GetName();
 		else 
-			return L"#####";
+			return L"##### no SigGen found";
 	}
-    return L"*****";
+    return L"##### not ready";
 }
 
 void SignalDesigner::DoPaint()
@@ -147,7 +153,8 @@ void SignalDesigner::DoPaint()
 	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
 	m_upSignalControl1->Notify(false);
 	m_upSignalControl2->Notify(false);
-	m_upSignalPreview ->Notify(false);
+	if (m_bPreview)
+		m_upSignalPreview ->Notify(false);
 	SetCaption();
 }
 
@@ -157,14 +164,14 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 	{
 	case IDM_SIGNAL_DESIGNER_INTEGRATED:
 	case IDM_SIGNAL_DESIGNER_STACKED:
-		ToggleDesign();
-		design(GetClientWindowWidth(), GetClientWindowHeight());
-		m_upSignalControl1->ScaleTimeCoord();
-		m_upSignalControl1->ScaleFreqCoord();
-		if (m_design == DESIGN::INTEGRATED)
-			m_upSignalControl1->ScaleVoltCoord();
-		else
-			m_upSignalControl2->ScaleVoltCoord();
+		//ToggleDesign();
+		//design(GetClientWindowWidth(), GetClientWindowHeight());
+		//m_upSignalControl1->ScaleTimeCoord();
+		//m_upSignalControl1->ScaleFreqCoord();
+		//if (m_design == DESIGN::INTEGRATED)
+		//	m_upSignalControl1->ScaleVoltCoord();
+		//else
+		//	m_upSignalControl2->ScaleVoltCoord();
 		return true;
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
@@ -182,6 +189,10 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_SELECT_SIG_GEN_CLIENTS:
 		m_pCommands->SelectSigGenClients();
+		break;
+
+	case IDM_TRIGGER_STIMULUS:
+		m_pNMWI->GetSigGenActive()->StartStimulus();
 		break;
 
 	default:
@@ -279,11 +290,11 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		PIXEL const pixVertScaleLen    { height - H_SCALE_HEIGHT };
 		mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
 
-		m_vertCoordVolt1.SetPixelSize(mVpixelSize);
+	//	m_vertCoordVolt1.SetPixelSize(mVpixelSize);
 		m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
 		m_vertCoordVolt1.SetZoomFactor(1.3f);
 
-		m_vertCoordVolt2.SetPixelSize(mVpixelSize);
+	//	m_vertCoordVolt2.SetPixelSize(mVpixelSize);
 		m_vertCoordVolt2.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
 		m_vertCoordVolt2.SetZoomFactor(1.3f);
 	}

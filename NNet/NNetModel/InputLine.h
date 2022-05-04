@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "SigGenDynamicData.h"
 #include "IoLine.h"
 
 class Nob;
@@ -23,9 +24,9 @@ public:
 
 	void Check() const final;
 
-	void SetSigGen(SignalGenerator * const p) { m_pSigGen = p; }
-	SignalGenerator       & GetSigGen()       { return * m_pSigGen; }
-	SignalGenerator const & GetSigGen() const { return * m_pSigGen; }
+	void SetSigGen(SignalGenerator * const p)  final { m_pSigGen = p; }
+	SignalGenerator       * GetSigGen ()       final { return m_pSigGen; }
+	SignalGenerator const * GetSigGenC() const final { return m_pSigGen; }
 
 	static bool TypeFits(NobType const type) { return type.IsInputLineType(); }
 
@@ -42,6 +43,7 @@ public:
 
 private:
 
+//	SigGenDynamicData m_dynData {};
 	SignalGenerator * m_pSigGen { nullptr };
 
 	MicroMeterPnt getOffset() const;

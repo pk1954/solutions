@@ -84,6 +84,7 @@ void NNetModel::ClearDynamicData()
 	SimulationTime::Set();
 	m_Nobs.Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
 	GetMonitorData().Apply2AllSignals([this](Signal & s) { s.Reset(m_Nobs); });
+	m_sigGenList.Apply2All([](auto * p){ p->ClearDynamicData(); });
 }
 
 bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
@@ -106,7 +107,7 @@ float NNetModel::SetParam
 	float fOldValue { m_param.GetParameterValue(param) };
 	m_param.SetParameterValue(param, fNewValue);
 	if (param == ParamType::Value::filterSize)
-		RecalcFilters();
+		;  // RecalcFilters();
 	else
 		RecalcAllNobs();
 	return fOldValue;
@@ -114,8 +115,9 @@ float NNetModel::SetParam
 
 bool NNetModel::Compute()
 {
-	bool bStop {false};
+	bool bStop { false };
 	SimulationTime::Tick(m_param.TimeResolution());
+	m_sigGenList.Apply2All([this](SignalGenerator * p){ p->Prepare(m_param); });
 	m_Nobs.Apply2AllC(      [](Nob &s) { s.Prepare(); });
 	m_Nobs.Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;

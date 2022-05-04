@@ -15,7 +15,7 @@ class AttachSigGen2ConnCmd : public NNetCommand
 public:
 	AttachSigGen2ConnCmd(NobId const nobId)
 	  : m_inputConnector(*m_pNMWI->GetNobPtr<InputConnector *>(nobId)),
-		m_pSigGenOld(&m_inputConnector.GetSigGen()),
+		m_pSigGenOld(m_inputConnector.GetSigGen()),
 		m_pSigGenNew(m_pNMWI->GetSigGenActive())
 	{}
 

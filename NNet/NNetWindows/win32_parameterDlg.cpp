@@ -84,7 +84,7 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 	resetParameter(m_hwndSpikeWidth,       spikeWidth    );
 	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
 	resetParameter(m_hwndTimeResolution,   timeResolution);
-	resetParameter(m_hwndFilterSize,       filterSize    );
+//	resetParameter(m_hwndFilterSize,       filterSize    );
 	resetParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
@@ -96,7 +96,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndSpikeWidth,       spikeWidth    );
 	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
 	applyParameter(m_hwndTimeResolution,   timeResolution);
-	applyParameter(m_hwndFilterSize,       filterSize    );
+//	applyParameter(m_hwndFilterSize,       filterSize    );
 	applyParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
@@ -117,7 +117,7 @@ void ParameterDialog::Start
 	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth,     iYpos); 
 	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 
 	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
-	m_hwndFilterSize       = addParameter(hwndDlg, filterSize,     iYpos); 
+	//m_hwndFilterSize       = addParameter(hwndDlg, filterSize,     iYpos); 
 	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,     iYpos); 
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
@@ -142,12 +142,12 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	{
 	case IDD_APPLY:
 		applyParameters();
-		SendCommand2Application(IDM_RESET, 0);
+		SendCommand2Application(IDM_RESET_DYNAMIC_DATA, 0);
 		return true;
 
 	case IDD_RESET:
 		resetParameters();
-		SendCommand2Application(IDM_RESET, 0);
+		SendCommand2Application(IDM_RESET_DYNAMIC_DATA, 0);
 		return true;
 
 	default:

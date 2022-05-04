@@ -33,5 +33,4 @@ private:
 	fPixel yVolt(mV     const volt) const;
 
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV const v) const;
-	fPixelPoint pixPntVolt(fMicroSecs const t) const;
 };

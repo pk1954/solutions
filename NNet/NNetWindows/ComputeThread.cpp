@@ -31,16 +31,16 @@ void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
 	m_pNMWI = pNMWI;
 	SimulationTime::Set();
-	reset();
+	Reset();
 }
 
 void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters have changed
 {
-	reset();
+	Reset();
 	m_pRunObservable->NotifyAll(false);
 }
 
-void ComputeThread::reset()
+void ComputeThread::Reset()
 {
 	LockComputation();
 	m_usSimuTimeAtLastReset = SimulationTime::Get();
@@ -117,6 +117,14 @@ void ComputeThread::stopComputation()
 	m_pRunObservable->NotifyAll(false);
 }
 
+long ComputeThread::getCyclesTodo() const
+{
+	fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime(netRealTimeSinceLastReset()) };
+	fMicroSecs const usMissingSimuTime { usNominalSimuTime - simuTimeSinceLastReset() };          // compute missing simulation time
+	long       const lCycles           { Cast2Long(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
+	return max(0, lCycles);
+}
+
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
 {                                         // no thread messages used
 	for (;;)
@@ -125,13 +133,11 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 
 		while (! (m_bStopped || m_bComputationLocked))
 		{
-			fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime(netRealTimeSinceLastReset()) };
-			fMicroSecs const usMissingSimuTime { usNominalSimuTime - simuTimeSinceLastReset() };           // compute missing simulation time
-			long       const lCycles           { Cast2Long(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
-			long       const lCyclesTodo       { max(0, lCycles) };
-			long             lCyclesDone       { 0 };
-
 			Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
+
+			long const lCyclesTodo { getCyclesTodo() };
+			long       lCyclesDone { 0 };
+
 			while ((lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked))
 			{
 				if (m_pNMWI->Compute()) // returns true, if stop on trigger fires
@@ -142,6 +148,7 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 				m_pDynamicModelObservable->NotifyAll(false);
 				++lCyclesDone;
 			}
+
 			Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
 
 			if (lCyclesDone > 0)
@@ -174,7 +181,7 @@ fMicroSecs ComputeThread::simuTimeSinceLastReset() const
 
 fMicroSecs ComputeThread::netRealTimeSinceLastReset() const
 {
-	Ticks      ticksNet      { m_ticksNetRunning - m_ticksAtLastRun + m_hrTimer.ReadHiResTimer() };
+	Ticks      ticksNet      { m_ticksNetRunning + m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun };
 	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs(ticksNet) };
 	return usNetRealTime;
 }

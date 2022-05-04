@@ -28,7 +28,7 @@ public:
 
 private:
 
-	wstring GetTitle() const final { return L"Mini window"; }
+	wstring GetCaption() const final { return L"Mini window"; }
 
 	void DoPaint() final;
 

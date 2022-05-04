@@ -99,7 +99,7 @@ fHertz constexpr operator"" _fHertz(long double dl)
 template <> const wstring TypeAttribute<fHertz>::unit   = L"Hz";
 template <> const float   TypeAttribute<fHertz>::factor = 1.f;
 
-static fMicroSecs SpikeTimeMax(fHertz const freq)
+static fMicroSecs PulseDuration(fHertz const freq)
 {
 	return IsCloseToZero(freq.GetValue()) 
 		? fMicroSecs((numeric_limits<float>::max)())

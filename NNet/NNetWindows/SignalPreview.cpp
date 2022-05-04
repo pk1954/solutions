@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
 #include "SignalPreview.h"
 
@@ -28,17 +29,17 @@ void SignalPreview::DoPaint()
 	if (SignalGenerator * const pSigGen { GetSigGenActive() })
 	if (Param     const * const pParams { GetParams() })
 	{
-		fMicroSecs const usSpikeWidth { pParams->SpikeWidth() };
-		fMicroSecs const usResolution { pParams->TimeResolution() };
+		fMicroSecs  const usResolution { pParams->TimeResolution() };
+		SigGenDynamicData dynData      { };
 
 		m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
-		pSigGen->StartStimulus();
+		dynData.StartStimulus();
 		PaintCurve
 		(
-			[this, usSpikeWidth, pSigGen](fMicroSecs const stimulusTime)
+			[this, &dynData, pParams, pSigGen](fMicroSecs const stimulusTime)
 			{
-				mV voltage = pSigGen->CalcVoltage(stimulusTime, usSpikeWidth);
+				mV const voltage = dynData.CalcVoltage(*pSigGen, *pParams, stimulusTime);
 				return pixPntVolt(stimulusTime, voltage); 
 			}, 
 			usResolution,
@@ -67,9 +68,4 @@ fPixel SignalPreview::yVolt(mV const volt) const
 fPixelPoint SignalPreview::pixPntVolt(fMicroSecs const t, mV const v) const 
 { 
 	return fPixelPoint(xTime(t), yVolt(v)); 
-}
-
-fPixelPoint SignalPreview::pixPntVolt(fMicroSecs const t) const 
-{ 
-	return pixPntVolt(t, GetSigGenActive()->GetAmplitude(t));
 }

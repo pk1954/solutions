@@ -51,7 +51,12 @@ public:
     wstring  GenerateUniqueName() const;
     size_t   Size() { return m_list.size(); }
 
-    void Apply2All(auto const &f) const 
+    void Apply2All(auto const &f)  
+    { 
+        for_each(m_list, [&f](auto & up) { f(up.get()); });
+    }
+
+    void Apply2AllC(auto const &f) const
     { 
         for_each(m_list, [&f](auto const & up) { f(up.get()); });
     }

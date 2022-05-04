@@ -28,6 +28,7 @@ public:
 		ComputeThread            const &, 
 		NNetModelCommands              &,
 		Observable                     &,
+		Observable                     &,
 		PixFpDimension<fMicroSecs>     *
 	);
 
@@ -79,6 +80,7 @@ private:
 	ComputeThread    const & m_computeThread;
 	NNetModelCommands      & m_commands;
 	Observable             & m_runObservable;
+	Observable             & m_dynamicModelObservable;
 	tPos                     m_moveMode { tPos::NONE };
 
 	void DoPaint() final;
@@ -95,16 +97,16 @@ private:
 	fPixel yFreq(fHertz const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV     const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
-	fPixel xPeak      () const { return xTime(GetSigGenData()->GetPeakTime()); }
-	fPixel aPeakAmplit() const { return yVolt(GetSigGenData()->GetAmplit().Peak()); }
-	fPixel yBaseAmplit() const { return yVolt(GetSigGenData()->GetAmplit().Base()); }
-	fPixel yPeakFreq  () const { return yFreq(GetSigGenData()->GetFreq().Peak()); }
-	fPixel yBaseFreq  () const { return yFreq(GetSigGenData()->GetFreq().Base()); }
+	fPixel xPeak      () const { return xTime(GetSigGenStaticData()->GetPeakTime()); }
+	fPixel aPeakAmplit() const { return yVolt(GetSigGenStaticData()->GetAmplitude().Peak()); }
+	fPixel yBaseAmplit() const { return yVolt(GetSigGenStaticData()->GetAmplitude().Base()); }
+	fPixel yPeakFreq  () const { return yFreq(GetSigGenStaticData()->GetFrequency().Peak()); }
+	fPixel yBaseFreq  () const { return yFreq(GetSigGenStaticData()->GetFrequency().Base()); }
 
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
-	fPixelPoint pixPntFreq(fMicroSecs const t) const { return pixPntFreq(t, GetSigGenActive()->GetFrequency(t)); }
-	fPixelPoint pixPntVolt(fMicroSecs const t) const { return pixPntVolt(t, GetSigGenActive()->GetAmplitude(t)); }
+	fPixelPoint pixPntStimulusFreq(fMicroSecs const t) const { return pixPntFreq(t, GetSigGenActive()->GetStimulusFrequency(t)); }
+	fPixelPoint pixPntStimulusVolt(fMicroSecs const t) const { return pixPntVolt(t, GetSigGenActive()->GetStimulusAmplitude(t)); }
 
 	void calcHandles();
 	void paintRunControls (fMicroSecs const) const;

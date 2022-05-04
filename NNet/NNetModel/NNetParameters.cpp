@@ -23,11 +23,11 @@ float Param::GetParameterValue(ParamType::Value const param) const
 	switch (param)
 	{
 		using enum ParamType::Value;
-		case inputPeakTime:  return m_sigGenData.GetPeakTime().GetValue();
-		case inputPeakFreq:  return m_sigGenData.GetFreq  ().Peak().GetValue();
-		case inputPeakVolt:  return m_sigGenData.GetAmplit().Peak().GetValue();
-		case inputBaseFreq:  return m_sigGenData.GetFreq  ().Base().GetValue();
-		case inputBaseVolt:  return m_sigGenData.GetAmplit().Base().GetValue();
+		case inputPeakTime:  return m_sigGenData.GetPeakTime ().GetValue();
+		case inputPeakFreq:  return m_sigGenData.GetFrequency().Peak().GetValue();
+		case inputPeakVolt:  return m_sigGenData.GetAmplitude().Peak().GetValue();
+		case inputBaseFreq:  return m_sigGenData.GetFrequency().Base().GetValue();
+		case inputBaseVolt:  return m_sigGenData.GetAmplitude().Base().GetValue();
 		case pulseSpeed:	 return m_pulseSpeed    .GetValue();
 		case pulseWidth:     return m_spikeWidth    .GetValue();  // Legacy
 		case spikeWidth:	 return m_spikeWidth    .GetValue();
@@ -45,7 +45,7 @@ float Param::GetParameterValue(ParamType::Value const param) const
 	return 0.f;
 }
 
-void Param::SetSigGenData(SigGenData const& data)
+void Param::SetSigGenStaticData(SigGenStaticData const& data)
 {
 	m_sigGenData = data;
 	NotifyAll(false);

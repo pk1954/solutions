@@ -185,7 +185,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ActionPotential.h" />
+    <ClInclude Include="Spike.h" />
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="BaseKnot.h" />
@@ -215,7 +215,8 @@
     <ClInclude Include="NobIdList.h" />
     <ClInclude Include="PipeList.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SigGenData.h" />
+    <ClInclude Include="SigGenDynamicData.h" />
+    <ClInclude Include="SigGenStaticData.h" />
     <ClInclude Include="SigGenId.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="Signal.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="Nob.cpp" />
     <ClCompile Include="NobIdList.cpp" />
     <ClCompile Include="PipeList.cpp" />
+    <ClCompile Include="SigGenDynamicData.cpp" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="NobType.cpp" />

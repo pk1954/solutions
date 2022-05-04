@@ -13,6 +13,7 @@
 #include "ArrowAnimation.h"
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
+#include "AttachSigGen2SelCmd.h"
 #include "ClearBeepersCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
@@ -52,7 +53,7 @@
 #include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
-#include "SetSigGenDataCmd.h"
+#include "SetSigGenStaticDataCmd.h"
 #include "SetHighlightedSignalCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
@@ -215,6 +216,13 @@ void NNetModelCommands::AttachSigGen2Line(NobId const idInputLine)
 	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(idInputLine));
 }
 
+void NNetModelCommands::AttachSigGen2Sel()
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2SelCmd>());
+}
+
 void NNetModelCommands::AttachSigGen2Conn(NobId const idInputLine)
 {
 	if (IsTraceOn())
@@ -368,11 +376,11 @@ void NNetModelCommands::SetParameter(ParamType::Value const param, float const f
 	m_pCmdStack->PushCommand(make_unique<SetParameterCommand>(m_pNMWI->GetParams(), param, fNewValue));
 }
 
-void NNetModelCommands::SetSigGenData(SignalGenerator & dst, SigGenData const &data)
+void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticData const &data)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SetSigGenDataCmd>(dst, data));
+	m_pCmdStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(dst, data));
 }
 
 void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
@@ -556,9 +564,9 @@ void NNetModelCommands::ToggleEmphMode(NobId const id)
 	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 
-void NNetModelCommands::StartStimulus(NobId const id)  //TODO
+void NNetModelCommands::StartStimulus()
 {  
-	//if (IsTraceOn())
-	//	TraceStream() << source_location::current().function_name() << endl;
-	//m_pNMWI->GetNobPtr<InputConnector *>(id)->StartStimulus();
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pNMWI->GetSigGenActive()->StartStimulus();
 }

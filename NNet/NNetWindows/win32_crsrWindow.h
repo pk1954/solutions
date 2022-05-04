@@ -29,7 +29,7 @@ private:
 	MainWindow               const * m_pMainWindow { nullptr };
 	NNetModelReaderInterface const * m_pNMRI       { nullptr };
 
-	wstring GetTitle() const final { return L"CrsrWindow"; }
+	wstring GetCaption() const final { return L"CrsrWindow"; }
 
 	void printPositionInfo(TextBuffer &, MicroMeterPnt const &)                 const;
 	void printNobInfo     (TextBuffer &, MicroMeterPnt const &, NobId    const) const;

@@ -54,7 +54,7 @@ void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
-wstring MonitorWindow::GetTitle() const 
+wstring MonitorWindow::GetCaption() const 
 { 
 	return (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
            ? L"Signal too high. Use auto scale."

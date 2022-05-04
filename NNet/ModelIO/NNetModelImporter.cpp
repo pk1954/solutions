@@ -171,13 +171,13 @@ public:
                 [param, fVal](IoLine & n)                                                         // Legacy
                 {                                                                                 // Legacy
                     auto & inputLine { static_cast<InputLine &>(n) };                             // Legacy
-                    inputLine.GetSigGen().SetParam(param, fVal);                                  // Legacy
+                    inputLine.GetSigGen()->SetParam(param, fVal);                                  // Legacy
                 }                                                                                 // Legacy
             );                                                                                    // Legacy
         }                                                                                         // Legacy 
         else if ( InputLine * pInpNeuron { GetWriterInterface().GetNobPtr<InputLine*>(id) } )     // Legacy
         {
-            pInpNeuron->GetSigGen().SetParam(param, fVal);
+            pInpNeuron->GetSigGen()->SetParam(param, fVal);
         }
     }
 };
@@ -191,17 +191,17 @@ public:
     {
         NNetModelWriterInterface & nmwi       { GetWriterInterface() };
         wstring            const   name       { script.ScrReadString() };
-        SigGenData         const   sigGenData { ScrReadSigGenData(script) };
+        SigGenStaticData   const   sigGenData { ScrReadSigGenStaticData(script) };
         SigGenId           const   sigGenId   { nmwi.FindSigGen(name) };
         if (nmwi.IsValid(sigGenId))
         {
             SignalGenerator * pSigGen { nmwi.GetSigGen(sigGenId) };
-            pSigGen->SetData(sigGenData);
+            pSigGen->SetStaticData(sigGenData);
         }
         else
         {
             UPSigGen upSigGen { move(nmwi.NewSigGen(name)) };
-            upSigGen->SetData(sigGenData);
+            upSigGen->SetStaticData(sigGenData);
             nmwi.PushSigGen(move(upSigGen));
         }
     }

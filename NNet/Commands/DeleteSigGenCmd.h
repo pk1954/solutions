@@ -22,7 +22,7 @@ public:
 		(
 			[this](InputLine & n)
 			{
-				if (&n.GetSigGen() == m_pSigGenActive)
+				if (n.GetSigGen() == m_pSigGenActive)
 					m_affectedInputLines.push_back(&n);
 			}
 		);

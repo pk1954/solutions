@@ -139,7 +139,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetImportTermination::Initialize(m_hwndApp);
 	m_appTitle      .Initialize(m_hwndApp);
 	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
-	m_signalDesigner.Initialize(m_hwndApp, m_computeThread, m_runObservable, & m_modelCommands);
+	m_signalDesigner.Initialize(m_hwndApp, m_computeThread, m_runObservable, m_dynamicModelObservable, &m_modelCommands);
 
 	m_upModel = make_unique<NNetModel>();
 	m_nmwi.SetModel(m_upModel.get());
@@ -261,7 +261,6 @@ void NNetAppWindow::Stop()
 
 	m_computeThread.LockComputation();
 
-	m_timeDisplay      .Stop();
 	m_mainNNetWindow   .Stop();
 	m_miniNNetWindow   .Stop();
 	m_monitorWindow    .Stop();
@@ -330,24 +329,25 @@ bool NNetAppWindow::UserProc
 
 void NNetAppWindow::configureStatusBar()
 {
-	int iPartScriptLine = 0;
-	m_timeDisplay.Start(& m_statusBar, m_pNMRI, iPartScriptLine);
+	int iPart = 0;
+	m_timeDisplay.Initialize(& m_statusBar, iPart);
 
+	iPart = m_statusBar.NewPart();
 	m_simulationControl.Initialize(& m_statusBar, & m_computeThread);
 
-	iPartScriptLine = m_statusBar.NewPart();
-	m_slowMotionDisplay.Initialize(& m_statusBar, & m_SlowMotionRatio, iPartScriptLine);
+	iPart = m_statusBar.NewPart();
+	m_slowMotionDisplay.Initialize(& m_statusBar, & m_SlowMotionRatio, iPart);
 
 	SlowMotionControl::Add(m_statusBar);
 
-	iPartScriptLine = m_statusBar.NewPart();
-	m_ScriptHook.Initialize(& m_statusBar, iPartScriptLine);
-	m_statusBar.ClearPart(iPartScriptLine);
+	iPart = m_statusBar.NewPart();
+	m_ScriptHook.Initialize(& m_statusBar, iPart);
+	m_statusBar.ClearPart(iPart);
 
-	m_statusBarDispFunctor.Initialize(& m_statusBar, iPartScriptLine);
+	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
 	ModelAnalyzer::SetStatusBarDisplay(& m_statusBarDispFunctor);
 	ModelAnalyzer::SetEscFunc         (& Util::EscapeKeyPressed);
-	m_statusMessagePart = iPartScriptLine;
+	m_statusMessagePart = iPart;
 
 	m_statusBar.LastPart();
 	m_timeDisplay.Notify(true);
@@ -404,8 +404,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_nmwi.DUMP();
 			break;
 
-		case IDM_RESET:
+		case IDM_RESET_DYNAMIC_DATA:
 			m_nmwi.ClearDynamicData();
+			m_computeThread.Reset();
 			m_dynamicModelObservable.NotifyAll(true);
 			break;
 

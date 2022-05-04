@@ -36,13 +36,13 @@ size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 	return p ? p->GetNrOfSegments() : 0; 
 }
 
-SignalGenerator const * NNetModelReaderInterface::GetSigGen(NobId const id) const
+SignalGenerator const * NNetModelReaderInterface::GetSigGenC(NobId const id) const
 {
 	Nob const & nob { * m_pModel->GetConstNob(id) };
 	if (nob.IsInputLine())
-		return &m_pModel->GetNobConstPtr<InputLine const *>(id)->GetSigGen(); 
+		return m_pModel->GetNobConstPtr<InputLine const *>(id)->GetSigGenC(); 
 	else if (nob.IsInputConnector())
-		return &m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetSigGen(); 
+		return m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetSigGenC(); 
 	else
 		return nullptr;
 }

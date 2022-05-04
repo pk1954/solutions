@@ -102,9 +102,7 @@ void InputLine::drawSocket
 
 void InputLine::Prepare()
 {
-	fMicroSecs const stimulusTime { m_pSigGen->GetStimulusTime() };
-	fMicroSecs const spikeWidth   { GetParam()->SpikeWidth() };
-	m_mVinputBuffer = m_pSigGen->CalcVoltage(stimulusTime, spikeWidth);
+	m_mVinputBuffer = m_pSigGen->GetVoltage();
 }
 
 void InputLine::AppendMenuItems(AddMenuFunc const & add) const

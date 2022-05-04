@@ -86,12 +86,12 @@ bool UPSigGenList::IsInList(wstring const & name) const
 
 UPSigGen UPSigGenList::NewSigGen()
 {
-    return move(make_unique<SignalGenerator>(*this));
+    return move(make_unique<SignalGenerator>(GenerateUniqueName()));
 }
 
 UPSigGen UPSigGenList::NewSigGen(wstring const & name)
 {
-    return move(make_unique<SignalGenerator>(*this, name));
+    return move(make_unique<SignalGenerator>(name));
 }
 
 SigGenId UPSigGenList::PushSigGen(UPSigGen upSigGen)

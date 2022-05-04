@@ -9,6 +9,7 @@
 #include "NNetParameters.h"
 #include "SoundInterface.h"
 #include "tHighlightType.h"
+#include "Spike.h"
 #include "BaseKnot.h"
 
 class DrawContext;
@@ -63,10 +64,10 @@ protected:
 private:
 	mutable bool m_bTriggered { false };
 
-	SoundDescr m_triggerSound     {};
-	bool       m_bStopOnTrigger   { false };
-	PTP_WORK   m_pTpWork          { nullptr };  // Thread poolworker thread
-	fMicroSecs m_usSinceLastPulse { 0._MicroSecs };
+	SoundDescr m_triggerSound   {};
+	bool       m_bStopOnTrigger { false };
+	PTP_WORK   m_pTpWork        { nullptr };  // Thread poolworker thread
+    Spike      m_spike          { };
 
 	inline static Sound * m_pSound  { nullptr };
 

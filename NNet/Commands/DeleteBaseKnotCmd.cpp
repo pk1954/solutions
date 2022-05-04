@@ -3,6 +3,9 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "InputLine.h"
+#include "OutputLine.h"
+#include "BaseKnot.h"
 #include "DeleteBaseKnotCmd.h"
 
 using std::wcout;

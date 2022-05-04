@@ -63,25 +63,19 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
     IoConnector::DrawExterior(context, type);
 }
 
-void InputConnector::AppendMenuItems(AddMenuFunc const & add) const
-{
-    add(IDM_TRIGGER_STIMULUS);
-    IoConnector::AppendMenuItems(add);
-}
-
 InputLine & InputConnector::GetElem(size_t const nr) const 
 {     
     return static_cast<InputLine &>(IoConnector::GetElem(nr));  
 };
 
-SignalGenerator & InputConnector::GetSigGen()       
+SignalGenerator * InputConnector::GetSigGen()       
 { 
     return GetElem(0).GetSigGen(); 
 }
 
-SignalGenerator const & InputConnector::GetSigGen() const 
+SignalGenerator const * InputConnector::GetSigGenC() const 
 { 
-    return GetElem(0).GetSigGen(); 
+    return GetElem(0).GetSigGenC(); 
 }
 
 void InputConnector::SetSigGen(SignalGenerator * const pSigGen) 

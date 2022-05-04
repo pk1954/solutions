@@ -7,7 +7,7 @@
 #include <chrono>
 #include "observable.h"
 #include "MoreTypes.h"
-#include "SigGenData.h"
+#include "SigGenStaticData.h"
 #include "ParameterType.h"
 
 class Param : public Observable
@@ -19,9 +19,9 @@ public:
 	float GetParameterValue(ParamType::Value const) const;
 	void  SetParameterValue(ParamType::Value const, float const);
 
-	SigGenData const & GetSigGenData() const { return m_sigGenData; }
+	SigGenStaticData const & GetSigGenStaticData() const { return m_sigGenData; }
 
-	void SetSigGenData(SigGenData const&);
+	void SetSigGenStaticData(SigGenStaticData const&);
 
 	mV          NeuronPeakVolt() const { return m_neuronPeakVolt; }
 	mV          Threshold     () const { return m_threshold; 	  }
@@ -32,14 +32,14 @@ public:
 	fMicroSecs  FilterSize    () const { return m_usFilterSize;   }
 
 private:
-	SigGenData  m_sigGenData     { };
-	mV          m_neuronPeakVolt { 20._mV            };
-	mV          m_threshold      { 20._mV            };
-	meterPerSec m_pulseSpeed     { 120.0_meterPerSec };
-	fMicroSecs  m_spikeWidth     { 2000._MicroSecs   };   
-	fMicroSecs  m_refractPeriod  { 500._MicroSecs    };
-	fMicroSecs  m_usResolution   { 100._MicroSecs    };
-	fMicroSecs  m_usFilterSize   { m_usResolution    };
+	SigGenStaticData m_sigGenData     { };
+	mV               m_neuronPeakVolt { 20._mV            };
+	mV               m_threshold      { 20._mV            };
+	meterPerSec      m_pulseSpeed     { 120.0_meterPerSec };
+	fMicroSecs       m_spikeWidth     { 2000._MicroSecs   };   
+	fMicroSecs       m_refractPeriod  { 500._MicroSecs    };
+	fMicroSecs       m_usResolution   { 100._MicroSecs    };
+	fMicroSecs       m_usFilterSize   { m_usResolution    };
 };
 
 // geometry

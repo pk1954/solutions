@@ -33,7 +33,7 @@ private:
 	void OnPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 
-	wstring GetTitle() const final;
+	wstring GetCaption() const final;
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;

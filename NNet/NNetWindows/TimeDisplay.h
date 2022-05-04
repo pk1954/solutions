@@ -4,24 +4,34 @@
 
 #pragma once
 
-#include "ObserverInterface.h"
+#include "observerInterface.h"
+#include "win32_baseRefreshRate.h"
 
 class StatusBar;
-class NNetModelReaderInterface;
+
+using std::unique_ptr;
 
 class TimeDisplay : public ObserverInterface
 {
 public:
-	void Start(StatusBar *, NNetModelReaderInterface const *, int);
+	~TimeDisplay();
 
-	void Stop();
+	void Initialize(StatusBar *, int);
 
 	void Notify(bool const) final;
 
+	class RefreshRate : public BaseRefreshRate
+	{
+	public:
+		RefreshRate(StatusBar *, int);
+		void Trigger() final;
+
+	private:
+		StatusBar * m_pStatusBar       { nullptr };
+		int         m_iPartInStatusBar { -1 };
+	};
+
 private:
 
-	class RefreshRate;
-
-	RefreshRate * m_pRefreshRate { nullptr };
+	unique_ptr<RefreshRate> m_upRefreshRate;
 };
-

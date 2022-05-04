@@ -168,7 +168,7 @@
     <ClInclude Include="SingleNobAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetSigGenDataCmd.h">
+    <ClInclude Include="SetSigGenStaticDataCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToggleEmphModeCmd.h">
@@ -208,6 +208,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AttachSIgGen2ConnCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttachSigGen2SelCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -252,10 +252,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         triggerSoundDlg(m_pMainWindow->GetHighlightedNobId());
         break;
 
-    case IDM_TRIGGER_STIMULUS:
-        m_pModelCommands->StartStimulus(m_pMainWindow->GetHighlightedNobId());
-        break;
-
     case IDD_EMPHASIZE:
         m_pModelCommands->ToggleEmphMode(m_pMainWindow->GetHighlightedNobId());
         break;
@@ -387,6 +383,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_ATTACH_SIG_GEN_TO_LINE:
         m_pModelCommands->AttachSigGen2Line(m_pMainWindow->GetHighlightedNobId());
+        break;
+
+    case IDD_ATTACH_SIG_GEN_TO_SEL:
+        m_pModelCommands->AttachSigGen2Sel();
         break;
 
     case IDD_ATTACH_SIG_GEN_TO_CONN:

@@ -18,8 +18,6 @@ public:
 
 private:
 
-	class RefreshRate;
-
 	wstring           m_wstring          { };
 	int               m_iPartInStatusBar { -1 };
 	StatusBar       * m_pStatusBar       { nullptr };
