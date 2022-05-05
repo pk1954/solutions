@@ -55,5 +55,5 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 
 void SignalGenerator::Prepare(Param const & param)
 {
-	m_mVactual = m_dynData.CalcVoltage(* this, param);
+	m_mVactual = m_dynData.SetTime(m_statData, param);
 }

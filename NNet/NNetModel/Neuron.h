@@ -6,7 +6,6 @@
 
 #include <chrono>
 #include "MoreTypes.h"
-#include "NNetParameters.h"
 #include "SoundInterface.h"
 #include "tHighlightType.h"
 #include "Spike.h"
@@ -64,10 +63,10 @@ protected:
 private:
 	mutable bool m_bTriggered { false };
 
-	SoundDescr m_triggerSound   {};
+	SoundDescr m_triggerSound   { };
 	bool       m_bStopOnTrigger { false };
 	PTP_WORK   m_pTpWork        { nullptr };  // Thread poolworker thread
-    Spike      m_spike          { };
+	fMicroSecs m_usSpikeTime    { 0._MicroSecs };
 
 	inline static Sound * m_pSound  { nullptr };
 

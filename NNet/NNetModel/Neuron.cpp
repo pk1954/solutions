@@ -13,6 +13,7 @@
 #include "DrawContext.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
+#include "Spike.h"
 #include "IoLine.h"
 #include "Pipe.h"
 #include "Neuron.h"
@@ -47,7 +48,7 @@ static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID arg, PTP_WORK)
 void Neuron::init(const Neuron & rhs)
 {
 	m_bStopOnTrigger = rhs.m_bStopOnTrigger;
-	m_spike          = rhs.m_spike;
+	m_usSpikeTime    = rhs.m_usSpikeTime;
 	m_bTriggered     = rhs.m_bTriggered;
 	m_triggerSound   = rhs.m_triggerSound;
 	m_pTpWork = (rhs.m_triggerSound.m_bOn )
@@ -92,7 +93,7 @@ SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound)
 void Neuron::ClearDynamicData()
 {
 	BaseKnot::ClearDynamicData();
-	m_spike.Reset();
+	m_usSpikeTime = 0.0_MicroSecs;
 	m_bTriggered = false;
 }
 
@@ -100,7 +101,7 @@ void Neuron::Prepare()
 {
 	if (m_bTriggered)
 	{
-		if (m_spike.SpikeTime() >= GetParam()->SpikeWidth() + GetParam()->RefractPeriod() )
+		if (m_usSpikeTime > GetParam()->SpikeWidth() + GetParam()->RefractPeriod())
 			m_bTriggered = false;
 	}
 	else 
@@ -115,7 +116,7 @@ bool Neuron::CompStep()
 
 	if (bTrigger)
 	{
-		m_spike.Reset();
+		m_usSpikeTime = 0.0_MicroSecs;
 		m_bTriggered = true;
 		m_mVinputBuffer.Set2Zero();
 		if (HasTriggerSound() && m_pTpWork)
@@ -123,7 +124,7 @@ bool Neuron::CompStep()
 	}
 	else
 	{
-		m_spike.Tick(GetParam()->TimeResolution());
+		m_usSpikeTime += GetParam()->TimeResolution();
 	}
 
 	return m_bStopOnTrigger && bTrigger;
@@ -133,7 +134,7 @@ mV Neuron::GetNextOutput() const
 {
 	mV         const amplitude  { GetParam()->NeuronPeakVolt() };
 	fMicroSecs const spikeWidth { GetParam()->SpikeWidth() };
-	return m_spike.GetVoltage(m_spike.SpikeTime(), amplitude, spikeWidth);
+	return Spike::GetVoltage(amplitude, spikeWidth, m_usSpikeTime);
 }
 
 void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const & text) const

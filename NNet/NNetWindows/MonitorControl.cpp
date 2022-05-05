@@ -293,7 +293,7 @@ void MonitorControl::paintSignal
 			fPixX + m_horzCoord.Transform2fPixelSize(usSimu), 
 			fPixYoff - fPixSignal
 		};
-		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, bFiltered ? color : D2D1::ColorF::LightGray);
+		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color); // bFiltered ? color : D2D1::ColorF::LightGray);
 		prevPoint = actPoint;
 	}
 }

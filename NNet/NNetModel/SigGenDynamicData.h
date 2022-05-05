@@ -5,9 +5,8 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "Spike.h"
 
-class SignalGenerator;
+class SigGenStaticData;
 class Param;
 
 class SigGenDynamicData
@@ -15,30 +14,29 @@ class SigGenDynamicData
 public:
 
 	void Reset();
+	void StartSpike();
 	void StartStimulus();
+	void StopStimulus();
 
 	fMicroSecs GetStimulusTime() const;
 
-	mV CalcVoltage
+	mV SetTime
 	(
-		SignalGenerator const &,
-		Param           const &
+		SigGenStaticData const &,
+		Param            const &
 	);
 
-	mV CalcVoltage
+	mV SetTime
 	(
-		SignalGenerator const &,
-		Param           const &,
-		fMicroSecs      const
+		SigGenStaticData const &,
+		Param            const &,
+		fMicroSecs       const
 	);
 
 	bool IsStimulusActive() const { return m_stimulusActive; }
 
 private:
-	void reset();
-
 	bool       m_stimulusActive   { false };
-	fMicroSecs m_usStimuLastSpike { 0.0_MicroSecs }; // in stimulus time
 	fMicroSecs m_usSimuStartStimu { 0.0_MicroSecs }; // in simu time
-	Spike      m_spike            { };
+	fMicroSecs m_usSimuStartSpike { 0.0_MicroSecs }; // in simu time
 };

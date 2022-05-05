@@ -41,8 +41,14 @@ bool EditLineBox::OnOK(HWND const hDlg)
 
 void EditLineBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
+	{
+		HWND const hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
+		LONG_PTR   style       { GetWindowLongPtr(hwndEditCtl, GWL_STYLE) };
+		style &= ~ES_RIGHT;
+		SetWindowLongPtr(hwndEditCtl, GWL_STYLE, style);
+		Util::SetEditField(hwndEditCtl, m_wstrValue.c_str());
+	}
 	::SetWindowText(hDlg, m_wstrTitle.c_str());
-	Util::SetEditField(GetDlgItem(hDlg, IDD_EDIT_CTL), m_wstrValue.c_str());
 	::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
 	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
 	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);

@@ -45,7 +45,7 @@ public:
 	mV   GetVoltage      () const { return m_mVactual; }
 	bool IsStimulusActive() const { return m_dynData.IsStimulusActive(); }
 
-	void StartStimulus()    { m_dynData.StartStimulus(); }
+	void StartStimulus() { m_dynData.StartStimulus(); }
 
 	fMicroSecs GetStimulusTime() const { return m_dynData.GetStimulusTime(); }
 

@@ -49,7 +49,7 @@ void MeanFilter::Add(float const raw)
 
 float MeanFilter::GetRaw(SIG_INDEX const index) const 
 {
-    if (index < m_raw.size())
+    if (index >= m_raw.size())
         return NAN;
     if (index < 0)
         return NAN;

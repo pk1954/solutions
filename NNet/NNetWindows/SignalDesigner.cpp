@@ -97,9 +97,12 @@ LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_pComputeThread->IsRunning())
 		AppendMenu(hPopupMenu, MF_STRING, IDM_TRIGGER_STIMULUS,    L"Stimulus");
-	AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input neurons");
-	AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
+	if (m_pNMWI->GetSigGenActive() != m_pNMWI->GetSigGenStandard())
+	{
+		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
+		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
+	}
 
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
@@ -184,7 +187,8 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 			EditLineBox dlgBox(wstrName);
 			dlgBox.Show(GetWindowHandle());
 			m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdActive(),	wstrName);
-		}
+			SetCaption();
+	    }
 		break;
 
 	case IDD_SELECT_SIG_GEN_CLIENTS:

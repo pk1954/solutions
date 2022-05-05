@@ -37,10 +37,11 @@ void SignalPreview::DoPaint()
 		dynData.StartStimulus();
 		PaintCurve
 		(
-			[this, &dynData, pParams, pSigGen](fMicroSecs const stimulusTime)
+			[this, &dynData, pParams, pSigGen](fMicroSecs const stimuTime)
 			{
-				mV const voltage = dynData.CalcVoltage(*pSigGen, *pParams, stimulusTime);
-				return pixPntVolt(stimulusTime, voltage); 
+				SigGenStaticData const & statData { pSigGen->GetStaticData() };
+				mV               const   voltage  { dynData.SetTime(statData, *pParams, stimuTime) };
+				return pixPntVolt(stimuTime, voltage); 
 			}, 
 			usResolution,
 			D2D1::ColorF::Black
