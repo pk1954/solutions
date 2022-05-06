@@ -58,11 +58,12 @@ float MeanFilter::GetRaw(SIG_INDEX const index) const
 
 float MeanFilter::GetFiltered(SIG_INDEX const index) const
 {
-    if (index < m_raw.size())
-        return NAN;
-    if (index < 0)
-        return NAN;
-    return m_filtered[index];
+    return GetRaw(index);
+    //if (index >= m_filtered.size())
+    //    return NAN;
+    //if (index < 0)
+    //    return NAN;
+    //return m_filtered[index];
 }
 
 size_t MeanFilter::GetNrOfElements() const

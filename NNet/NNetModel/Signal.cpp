@@ -129,10 +129,7 @@ SIG_INDEX Signal::time2index
     assert(usParam >= m_timeStart);
     fMicroSecs const timeTilStart { usParam - m_timeStart };
     float      const fNrOfPoints  { timeTilStart / param.TimeResolution() };
-    SIG_INDEX        index        { static_cast<SIG_INDEX>(roundf(fNrOfPoints)) };
-    size_t           nrOfElements { m_upMeanFilter->GetNrOfElements() };
-    if (index >= nrOfElements)
-        index = INVALID_SIG_INDEX;
+    SIG_INDEX  const index        { static_cast<SIG_INDEX>(roundf(fNrOfPoints)) };
     return index;
 }
 
@@ -156,7 +153,10 @@ float Signal::GetFilteredDataPoint
     fMicroSecs const   time
 ) const
 {
-    SIG_INDEX index { time2index(param, time) };
+    SIG_INDEX index        { time2index(param, time) };
+    size_t    nrOfElements { m_upMeanFilter->GetNrOfElements() };
+    if (index >= nrOfElements)
+        index = INVALID_SIG_INDEX;
     return m_upMeanFilter->GetFiltered(index);
 }
 
@@ -177,6 +177,9 @@ fMicroSecs Signal::FindNextMaximum
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
+    size_t           nrOfElements { m_upMeanFilter->GetNrOfElements() };
+    if (index >= nrOfElements)
+        index = INVALID_SIG_INDEX;
     if ((index > 0) && (m_upMeanFilter->GetFiltered(index-1) > m_upMeanFilter->GetFiltered(index))) // falling values, go left
     {   
         while ((--index > 0) && (m_upMeanFilter->GetFiltered(index-1) >= m_upMeanFilter->GetFiltered(index)));

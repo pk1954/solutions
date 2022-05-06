@@ -93,6 +93,7 @@ public:
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
+	void OnNotify (WPARAM const, LPARAM const) final;
 	bool OnSize   (PIXEL  const, PIXEL  const) final;
 	void OnClose() final;
 	void OnPaint() final;

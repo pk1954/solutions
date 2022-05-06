@@ -312,10 +312,6 @@ bool NNetAppWindow::UserProc
 			m_appMenu.Notify(true);
 		break;
 
-	case WM_MOVE:
-		adjustChildWindows();
-		break;
-
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -386,6 +382,13 @@ void NNetAppWindow::OnClose()
 		Stop();
 	}
 	DestroyWindow();
+}
+
+void NNetAppWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)
+{
+	NMHDR const * nmhdr { bit_cast<NMHDR const *>(lParam) };
+	if (nmhdr->code == NM_DBLCLK)
+		SendCommand(IDM_RESET_DYNAMIC_DATA, 0);
 }
 
 bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
