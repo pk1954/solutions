@@ -87,6 +87,8 @@ private:
 
 	bool OnSize      (PIXEL  const, PIXEL  const) final;
 	void OnMouseMove (WPARAM const, LPARAM const) final;
+	bool OnLButtonDown(WPARAM const, LPARAM const) final;
+	bool OnLButtonUp  (WPARAM const, LPARAM const) final;
 	void OnMouseLeave() final;
 
 	fPixel getY(fPixel const fPix) const { return yBottom() - fPix; }

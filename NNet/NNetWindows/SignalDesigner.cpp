@@ -97,7 +97,7 @@ LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_pComputeThread->IsRunning())
 		AppendMenu(hPopupMenu, MF_STRING, IDM_TRIGGER_STIMULUS,    L"Stimulus");
-	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input neurons");
+	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input lines");
 	if (m_pNMWI->GetSigGenActive() != m_pNMWI->GetSigGenStandard())
 	{
 		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
@@ -110,7 +110,9 @@ LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 void SignalDesigner::RegisterAtSigGen(SigGenId const id)
 {
 	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
+	{
 		pSigGen->Register(this);
+	}
 }
 
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
@@ -157,7 +159,7 @@ void SignalDesigner::DoPaint()
 	m_upSignalControl1->Notify(false);
 	m_upSignalControl2->Notify(false);
 	if (m_bPreview)
-		m_upSignalPreview ->Notify(false);
+		m_upSignalPreview->Notify(false);
 	SetCaption();
 }
 

@@ -63,7 +63,7 @@ public:
 	bool WindowHasCaption()      const { return ::GetWindowLong  (m_hwnd, GWL_STYLE) & WS_CAPTION; }
 	bool IsWindowVisible()       const { return ::IsWindowVisible(m_hwnd); }
 	HWND SetCapture()            const { return ::SetCapture     (m_hwnd); }
-    HWND SetFocus()              const { return ::SetFocus       (m_hwnd); }
+	HWND SetFocus()              const { return ::SetFocus       (m_hwnd); }
 	HWND GetParent()             const { return ::GetParent      (m_hwnd); }
 	HWND GetDlgItem(int const i) const { return ::GetDlgItem     (m_hwnd, i); }
 	bool IsCaptured()            const { return ::GetCapture() == m_hwnd; }

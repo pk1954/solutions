@@ -387,3 +387,15 @@ void SignalControl::OnMouseLeave()
 	Trigger();   // cause repaint
 	GraphicsWindow::OnMouseLeave();
 }
+
+bool SignalControl::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
+{
+	SetCapture();
+	return false;
+}
+
+bool SignalControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+{
+	ReleaseCapture();
+	return false;
+}

@@ -178,12 +178,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         return false;
 
     case WM_LBUTTONDOWN:
-        OnLButtonDown(wParam, lParam);
-        return false;
+        return OnLButtonDown(wParam, lParam);
 
     case WM_LBUTTONUP:
-        OnLButtonUp(wParam, lParam);
-        return true;
+        return OnLButtonUp(wParam, lParam);
 
     case WM_RBUTTONDOWN:
         OnRButtonDown(wParam, lParam);

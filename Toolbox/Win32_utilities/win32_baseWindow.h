@@ -40,11 +40,11 @@ protected:
 	virtual void OnLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnMouseWheel     (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnChar           (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnLButtonDown    (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnNotify         (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnMove           (WPARAM const, LPARAM const) { /* empty */ };
 	virtual bool OnRButtonDown    (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnRButtonUp      (WPARAM const, LPARAM const) { return false; };
+	virtual bool OnLButtonDown    (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnLButtonUp      (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnShow           (WPARAM const, LPARAM const) { return false; };
 	virtual bool OnSetCursor      (WPARAM const, LPARAM const) { return false; };
