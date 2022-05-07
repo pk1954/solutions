@@ -235,6 +235,8 @@ void NNetModelImporter::Initialize()
         }
     );
 
+    SymbolTable::ScrDefConst(L"InputNeuron",  static_cast<unsigned long>(NobType::Value::inputLine));  // Legacy
+    SymbolTable::ScrDefConst(L"OutputNeuron", static_cast<unsigned long>(NobType::Value::outputLine)); // Legacy
     SymbolTable::ScrDefConst(L"inputNeuron",  static_cast<unsigned long>(NobType::Value::inputLine));  // Legacy
     SymbolTable::ScrDefConst(L"outputNeuron", static_cast<unsigned long>(NobType::Value::outputLine)); // Legacy
 
