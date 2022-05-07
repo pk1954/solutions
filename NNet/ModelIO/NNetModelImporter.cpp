@@ -207,6 +207,20 @@ public:
     }
 };
 
+class WrapActiveSigGen : public WrapperBase
+{
+public:
+    using WrapperBase::WrapperBase;
+
+    void operator() (Script & script) const final
+    {
+        NNetModelWriterInterface & nmwi { GetWriterInterface() };
+        SigGenId const sigGenId(script.ScrReadUint());
+        if (nmwi.IsValid(sigGenId))
+            nmwi.SetSigGenActive(sigGenId);
+    }
+};
+
 void NNetModelImporter::Initialize()
 {
     SymbolTable::ScrDefConst(L"circle",          NNetModelStorage::SIGSRC_CIRCLE );
@@ -222,6 +236,7 @@ void NNetModelImporter::Initialize()
     SymbolTable::ScrDefConst(L"SetParam",        new WrapSetParam       (* this));
     SymbolTable::ScrDefConst(L"Voltage",         new WrapVoltage        (* this));
     SymbolTable::ScrDefConst(L"SignalGenerator", new WrapSignalGenerator(* this));
+    SymbolTable::ScrDefConst(L"ActiveSigGen",    new WrapActiveSigGen   (* this));
 
     NobType::Apply2All
     (

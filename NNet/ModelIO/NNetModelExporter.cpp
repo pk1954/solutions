@@ -74,7 +74,7 @@ void NNetModelExporter::writeNobs(wostream & out)
     m_pNMRI->Apply2AllC<IoConnector>([this, &out](IoConnector const & s) { writeNob(out, s); });
 }
 
-void NNetModelExporter::writeSigGenStaticData(wostream & out) const
+void NNetModelExporter::writeSigGenData(wostream & out) const
 {
     m_pNMRI->GetSigGenList().Apply2AllC
     (
@@ -86,7 +86,8 @@ void NNetModelExporter::writeSigGenStaticData(wostream & out) const
                 << upSigGen->GetStaticData() 
                 << endl;
         }
-   );
+    );
+    out << L"ActiveSigGen " << m_pNMRI->GetSigGenIdActive() << endl;
 }
 
 void NNetModelExporter::writeTriggerSounds(wostream & out) const
@@ -249,7 +250,7 @@ void NNetModelExporter::write(wostream & out)
     out << endl;
     writeNobs(out);
     out << endl;
-    writeSigGenStaticData(out);
+    writeSigGenData(out);
     out << endl;
     writeTriggerSounds(out);
     out << endl;

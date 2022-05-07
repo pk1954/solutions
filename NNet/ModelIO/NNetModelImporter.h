@@ -4,27 +4,17 @@
 
 #pragma once
 
-#include <vector>
-#include <fstream>
 #include <string>
-#include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
 
 using std::unique_ptr;
-using std::wostream;
-using std::wstring;
-using std::vector;
 using std::wstring;
 
-class Param;
 class Script;
-class Pipe;
-class Nob;
 class NNetModel;
 class UPNobList;
-class Observable;
 class WrapBase;
 class ImportTermination;
 

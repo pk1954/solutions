@@ -44,7 +44,7 @@ private:
 	void writeDescription     (wostream &) const;
 	void writeMonitorData     (wostream &) const;
 	void writeTriggerSounds   (wostream &) const;
-	void writeSigGenStaticData(wostream &) const;
+	void writeSigGenData      (wostream &) const;
 	void writeGlobalParameters(wostream &) const;
 	void writeNobs            (wostream &);
 	void writeHeader          (wostream &) const;
