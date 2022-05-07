@@ -6,6 +6,10 @@
 #include "SignalGenerator.h"
 #include "UPSigGenList.h"
 
+using std::to_wstring;
+using std::make_unique;
+using std::ranges::find_if;
+
 UPSigGenList::UPSigGenList()
 {
     UPSigGen upSigGen { NewSigGen() };
@@ -21,6 +25,8 @@ UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
     else
     {
         UPSigGen upSigGen = move(*it);
+        if (upSigGen.get() == GetSigGenActive() )
+            SetActive(SigGenId(0));
         m_list.erase(it);
         return move(upSigGen);
     }

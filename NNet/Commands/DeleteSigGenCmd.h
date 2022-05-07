@@ -33,8 +33,7 @@ public:
 		SignalGenerator * m_pSigGenStandard { m_pNMWI->GetSigGenStandard() };
 		for (auto i : m_affectedInputLines)  // set all affected input lines to Standard
 			i->SetSigGen(m_pSigGenStandard);
-		m_upSigGen = move(m_pNMWI->RemoveSigGen(m_sigGenId));
-		SetActiveSigGenId(STD_SIGGEN_ID);
+		m_upSigGen = move(m_pNMWI->RemoveSigGen(m_sigGenId)); // sets active sigGen to standard
 	}
 
 	void Undo() final 

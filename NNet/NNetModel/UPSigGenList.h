@@ -4,14 +4,13 @@
 
 #pragma once
 
-#include "Observable.h"
+#include <vector>
 #include "NamedType.h"
 
-using std::to_wstring;
-using std::unique_ptr;
-using std::make_unique;
-using std::ranges::find_if;
 using std::ranges::for_each;
+using std::unique_ptr;
+using std::wstring;
+using std::vector;
 
 class SignalGenerator;
 
@@ -20,7 +19,7 @@ using UPSigGen = unique_ptr<SignalGenerator>;
 
 static const SigGenId STD_SIGGEN_ID (0);
 
-class UPSigGenList //: public Observable
+class UPSigGenList
 {
 public:
     UPSigGenList();
@@ -65,7 +64,6 @@ public:
     {
         SigGenId sigGenIdOld { m_sigGenIdActive };
         m_sigGenIdActive = id;
-        //NotifyAll(false);
         return sigGenIdOld;
     }
 

@@ -139,7 +139,14 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetImportTermination::Initialize(m_hwndApp);
 	m_appTitle      .Initialize(m_hwndApp);
 	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
-	m_signalDesigner.Initialize(m_hwndApp, m_computeThread, m_runObservable, m_dynamicModelObservable, &m_modelCommands);
+	m_signalDesigner.Initialize
+	(
+		m_hwndApp, 
+		m_computeThread, 
+		m_runObservable, 
+		m_dynamicModelObservable, 
+		&m_modelCommands
+	);
 
 	m_upModel = make_unique<NNetModel>();
 	m_nmwi.SetModel(m_upModel.get());

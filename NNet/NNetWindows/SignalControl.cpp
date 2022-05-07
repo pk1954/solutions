@@ -41,7 +41,7 @@ SignalControl::~SignalControl()
 	m_runObservable         .UnregisterObserver(*this);
 	m_dynamicModelObservable.UnregisterObserver(*this);
 	if (m_pVertCoordFreq)
-		m_pVertCoordFreq->UnregisterObserver(*this); //TODO: check Register...
+		m_pVertCoordFreq->UnregisterObserver(*this);
 	if (m_pVertCoordVolt)
 		m_pVertCoordVolt->UnregisterObserver(*this);
 }

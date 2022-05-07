@@ -218,10 +218,12 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     {
     case IDD_NEW_SIGNAL_GENERATOR:
         m_pModelCommands->NewSignalGenerator();
+        ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
         m_pModelCommands->SetActiveSignalGenerator(SigGenId(lParam));
+        ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
     case IDM_UNDO:

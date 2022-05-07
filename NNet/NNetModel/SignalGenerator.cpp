@@ -16,7 +16,11 @@ SignalGenerator::SignalGenerator(wstring const & name)
 void SignalGenerator::Register(ObserverInterface * const pObs)
 {
 	m_statData.RegisterObserver(*pObs);
-	RegisterObserver(*pObs);
+}
+
+void SignalGenerator::Unregister(ObserverInterface * const pObs)
+{
+	m_statData.UnregisterObserver(*pObs);
 }
 
 void SignalGenerator::SetStaticData(SigGenStaticData const & data) 

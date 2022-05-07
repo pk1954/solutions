@@ -49,7 +49,8 @@ public:
 
 	fMicroSecs GetStimulusTime() const { return m_dynData.GetStimulusTime(); }
 
-	void Register(ObserverInterface * const);
+	void Register  (ObserverInterface * const);
+	void Unregister(ObserverInterface * const);
 
 private:
 
