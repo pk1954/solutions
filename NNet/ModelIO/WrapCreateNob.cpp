@@ -105,6 +105,7 @@ UPNob WrapCreateNob::createBaseKnot(Script & script, NobType const nobType) cons
 
 UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) const 
 {
+    bool             bOK = true;
     vector<IoLine *> ioLineList;
     script.ScrReadSpecial(LIST_OPEN_BRACKET);
     int const iNrOfElements { script.ScrReadInt() };
@@ -114,18 +115,25 @@ UPNob WrapCreateNob::createIoConnector(Script & script, NobType const nobType) c
         NobId    const id      { ScrReadNobId(script) };
         IoLine * const pIoLine { GetWriterInterface().GetNobPtr<IoLine *>(id) };
         if (! pIoLine)
-            throw ScriptErrorHandler::ScriptException(999, wstring(L"NobId not found"));
-        ioLineList.push_back(pIoLine);
+        {
+            wcout << L"# +++ unexpected NobType. Ignoring IoConnector" << endl;
+            bOK = false;
+        }
+        if (bOK)
+            ioLineList.push_back(pIoLine);
         if (++iElem == iNrOfElements)
             break;
         script.ScrReadSpecial(ID_SEPARATOR);
     }
     script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     unique_ptr<IoConnector> upIoConnector;
-    if (nobType.IsInputConnectorType())
-        upIoConnector = make_unique<InputConnector> (GetWriterInterface().GetParams(), move(ioLineList));
-    else
-        upIoConnector = make_unique<OutputConnector>(move(ioLineList));
-    upIoConnector->AlignDirection();
+    if (bOK)
+    {
+        if (nobType.IsInputConnectorType())
+            upIoConnector = make_unique<InputConnector> (GetWriterInterface().GetParams(), move(ioLineList));
+        else
+            upIoConnector = make_unique<OutputConnector>(move(ioLineList));
+        upIoConnector->AlignDirection();
+    }
     return move(upIoConnector);
 }

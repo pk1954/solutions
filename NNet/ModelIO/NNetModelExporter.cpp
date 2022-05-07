@@ -163,6 +163,23 @@ void NNetModelExporter::writePipeVoltage(wostream & out, Pipe const & pipe) cons
     out << CLOSE_BRACKET;
 }
 
+void NNetModelExporter::writeIoConnector(wostream& out, IoConnector const& conn) const
+{
+    assert(conn.Size() > 0);
+    size_t const iLast { conn.Size() - 1 };
+    out << OPEN_BRACKET 
+        << conn.Size() 
+        << NR_SEPARATOR;
+    for (size_t i = 0;; ++i)
+    {
+        out << getCompactIdVal(conn.GetElem(i).GetId());
+        if (i == iLast)
+            break;
+        out << ID_SEPARATOR;
+    }
+    out << CLOSE_BRACKET;
+}
+
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
 {
     using enum NobType::Value;
@@ -184,7 +201,7 @@ void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const
 
         case inputConnector:
         case outputConnector:
-            out << static_cast<IoConnector const &>(nob);
+            writeIoConnector(out, static_cast<IoConnector const &>(nob));
             break;
 
         default:
