@@ -3,5 +3,5 @@ ShowSensorPoints ON
 DescWinFontSize 18
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\Models\PROT01 6-stuf-5-rueck.mod"
 SetPerfMonMode OFF

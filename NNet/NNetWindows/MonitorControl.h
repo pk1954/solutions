@@ -90,7 +90,6 @@ private:
 	fPixel              m_fPixRightBorder    { 0.0_fPixel };
 	fPixel              m_fPixZeroX          { 0.0_fPixel };
 	IDWriteTextFormat * m_pTextFormat        { nullptr };
-	float               m_fScaleFactor       { 1.0f };
 	fPixel              m_fPixMaxSignal      { 0.0_fPixel };
 	Measurement         m_measurement;
 

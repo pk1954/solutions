@@ -212,7 +212,7 @@ fPixel MonitorControl::getSignalValue
 	};
 	return (fSignal == NAN)
 		? fPixel::NULL_VAL()
-		: m_vertCoord.Transform2fPixelSize(fSignal) * m_fScaleFactor;
+		: m_vertCoord.Transform2fPixelSize(fSignal);
 }
 
 fPixel MonitorControl::calcTrackHeight() const
@@ -307,7 +307,10 @@ bool MonitorControl::SignalTooHigh() const
 void MonitorControl::ScaleSignals()
 {
 	if (m_fPixMaxSignal > 0.0_fPixel) 
-		m_fScaleFactor *= calcTrackHeight() / m_fPixMaxSignal;
+	{
+		float const factor { m_fPixMaxSignal / calcTrackHeight() };
+		m_vertCoord *= factor;
+	}
 }
 
 void MonitorControl::paintTrack(TrackNr const trackNr) const
