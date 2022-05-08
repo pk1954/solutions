@@ -32,6 +32,8 @@ void SignalDesigner::Initialize
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
 
+	runObservable.RegisterObserver(*this);
+
 	m_pComputeThread = & computeThread;
 	m_pCommands = pCommands;
 
@@ -90,6 +92,16 @@ void SignalDesigner::Initialize
 	m_upSignalControl1->SetParentContextMenueMode(true);
 	m_upSignalControl2->SetParentContextMenueMode(true);
 	m_upSignalPreview ->SetParentContextMenueMode(true);
+	m_hStimulusButton =	CreateButton
+	(
+		GetWindowHandle(), 
+		L" Stimulus ", 
+		0, 0, 
+		STIMULUS_BUTTON_WIDTH .GetValue(), 
+		STIMULUS_BUTTON_HEIGHT.GetValue(),
+		IDM_TRIGGER_STIMULUS
+	);
+	BringWindowToTop(m_hStimulusButton);
 }
 
 void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
@@ -103,8 +115,6 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	if (m_pComputeThread->IsRunning())
-		AppendMenu(hPopupMenu, MF_STRING, IDM_TRIGGER_STIMULUS,    L"Stimulus");
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input lines");
 	if (m_pNMWI->GetSigGenActive() != m_pNMWI->GetSigGenStandard())
 	{
@@ -169,6 +179,7 @@ void SignalDesigner::DoPaint()
 	if (m_bPreview)
 		m_upSignalPreview->Notify(false);
 	SetCaption();
+	EnableWindow(m_hStimulusButton, m_pComputeThread->IsRunning());
 }
 
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
@@ -296,4 +307,13 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upSignalControl1->Move(V_SCALE_WIDTH,          0_PIXEL, pixControlWidth, pixControlHeight, true);
 	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
+
+	PIXEL pixHorzCenter { V_SCALE_WIDTH + (pixControlWidth - STIMULUS_BUTTON_WIDTH) / 2 };
+	SetWindowPos 
+	(
+		m_hStimulusButton,
+		HWND_TOP,
+		pixHorzCenter.GetValue(), 10, 0, 0,
+		SWP_NOSIZE
+	);
 }

@@ -52,6 +52,9 @@ private:
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 
+	inline static PIXEL const STIMULUS_BUTTON_WIDTH  { 90_PIXEL };
+	inline static PIXEL const STIMULUS_BUTTON_HEIGHT { 30_PIXEL };
+
 	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
 	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
@@ -80,7 +83,8 @@ private:
 	unique_ptr<SignalControl>     m_upSignalControl1;
 	unique_ptr<SignalControl>     m_upSignalControl2;
 	unique_ptr<SignalPreview>     m_upSignalPreview;
-	NNetModelWriterInterface    * m_pNMWI     { nullptr };
-	NNetModelCommands           * m_pCommands { nullptr };
-	HMENU                         m_hMenu     { nullptr };
+	NNetModelWriterInterface    * m_pNMWI           { nullptr };
+	NNetModelCommands           * m_pCommands       { nullptr };
+	HMENU                         m_hMenu           { nullptr };
+	HWND                          m_hStimulusButton { nullptr };
 };
