@@ -251,29 +251,29 @@ void SignalControl::DoPaint()
 	}
 }
 
-void SignalControl::ScaleTimeCoord()
-{
-	fMicroSecs const umMaxVisible { getTime(m_fPixRight) };
-	fMicroSecs const umCutoff     { GetSigGenStaticData()->CutoffTime() };
-	float      const factor       { umCutoff / umMaxVisible };
-	*m_pHorzCoord *= factor;
-}
-
-void SignalControl::ScaleFreqCoord()
-{
-	fHertz const fHertzMaxVisible { getFreq(0.0_fPixel) };
-	fHertz const fHertzPeak       { GetSigGenStaticData()->GetFrequency().Peak() };
-	float  const factor           { fHertzPeak / (fHertzMaxVisible * 0.9f) };
-	*m_pVertCoordFreq *= factor;
-}
-
-void SignalControl::ScaleVoltCoord()
-{
-	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
-	mV    const mVpeak       { GetSigGenStaticData()->GetAmplitude().Peak() };
-	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
-	*m_pVertCoordVolt *= factor;
-}
+//void SignalControl::ScaleTimeCoord()
+//{
+//	fMicroSecs const umMaxVisible { getTime(m_fPixRight) };
+//	fMicroSecs const umCutoff     { GetSigGenStaticData()->CutoffTime() };
+//	float      const factor       { umCutoff / umMaxVisible };
+//	*m_pHorzCoord *= factor;
+//}
+//
+//void SignalControl::ScaleFreqCoord()
+//{
+//	fHertz const fHertzMaxVisible { getFreq(0.0_fPixel) };
+//	fHertz const fHertzPeak       { GetSigGenStaticData()->GetFrequency().Peak() };
+//	float  const factor           { fHertzPeak / (fHertzMaxVisible * 0.9f) };
+//	*m_pVertCoordFreq *= factor;
+//}
+//
+//void SignalControl::ScaleVoltCoord()
+//{
+//	mV    const mVmaxVisible { getVolt(0.0_fPixel) };
+//	mV    const mVpeak       { GetSigGenStaticData()->GetAmplitude().Peak() };
+//	float const factor       { mVpeak / (mVmaxVisible * 0.9f) };
+//	*m_pVertCoordVolt *= factor;
+//}
 
 bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
 {

@@ -179,12 +179,17 @@ namespace Util
 		};
     }
 
-	inline bool MoveWindow(HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw)
-	{
-		return ::MoveWindow(hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
-	}
+    inline bool MoveWindow(HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw)
+    {
+        return ::MoveWindow(hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
+    }
 
-	inline void SetText(HWND const hwnd, wchar_t const * const wstrText)
+    inline bool MoveWindow(HWND const hwnd, PixelRect const rect, bool const bRedraw)
+    {
+        return MoveWindow(hwnd, rect.GetLeft(), rect.GetTop(), rect.GetWidth(), rect.GetHeight(), bRedraw);
+    }
+
+    inline void SetText(HWND const hwnd, wchar_t const * const wstrText)
 	{
 		(void)::SendMessage(hwnd, WM_SETTEXT,	0, (LPARAM)(wstrText)	);
 	}
@@ -307,7 +312,7 @@ namespace Util
 
     inline PIXEL GetWindowHeight(HWND const hwnd)
     {
-		return GetWindowSize(hwnd).GetY();
+        return GetWindowSize(hwnd).GetY();
     }
 
     inline PIXEL GetWindowBottom(HWND const hwnd)
@@ -336,6 +341,20 @@ namespace Util
         RECT rect;
         (void)GetWindowRect(hwnd, &rect);
 		return PIXEL(PIXEL(rect.right));
+    }
+
+    inline void SetWindowHeight(HWND const hwnd, PIXEL const newHeight, bool const bRedraw)
+    {
+        PixelRect rect { GetWindowRect(hwnd) };
+        rect.SetHeight(newHeight);
+        MoveWindow(hwnd, rect, bRedraw);
+    }
+
+    inline void SetWindowWidth(HWND const hwnd, PIXEL const newWidth, bool const bRedraw)
+    {
+        PixelRect rect { GetWindowRect(hwnd) };
+        rect.SetWidth(newWidth);
+        MoveWindow(hwnd, rect, bRedraw);
     }
 
     inline bool CrsrInClientRect(HWND const hwnd)  // Is cursor position in client rect?

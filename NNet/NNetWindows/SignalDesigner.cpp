@@ -188,14 +188,14 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 	{
 	case IDM_SIGNAL_DESIGNER_INTEGRATED:
 	case IDM_SIGNAL_DESIGNER_STACKED:
-		//ToggleDesign();
-		//design(GetClientWindowWidth(), GetClientWindowHeight());
-		//m_upSignalControl1->ScaleTimeCoord();
-		//m_upSignalControl1->ScaleFreqCoord();
-		//if (m_design == DESIGN::INTEGRATED)
-		//	m_upSignalControl1->ScaleVoltCoord();
-		//else
-		//	m_upSignalControl2->ScaleVoltCoord();
+		{
+			PIXEL clientHeight    { GetClientWindowHeight() };
+			PIXEL newClientHeight { (m_design == DESIGN::INTEGRATED) ? (clientHeight*2) : (clientHeight/2) };
+			PIXEL newWinHeight    { GetWindowHeight() + newClientHeight - clientHeight };
+			SetWindowHeight(newWinHeight, false);
+			ToggleDesign();
+			design(GetClientWindowWidth(), GetClientWindowHeight());
+		}
 		return true;
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
@@ -308,12 +308,12 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
-	PIXEL pixHorzCenter { V_SCALE_WIDTH + (pixControlWidth - STIMULUS_BUTTON_WIDTH) / 2 };
-	SetWindowPos 
+	PIXEL pixHorzPos { (width - STIMULUS_BUTTON_WIDTH) / 2 };
+	::SetWindowPos 
 	(
 		m_hStimulusButton,
 		HWND_TOP,
-		pixHorzCenter.GetValue(), 10, 0, 0,
+		pixHorzPos.GetValue(), 10, 0, 0,
 		SWP_NOSIZE
 	);
 }

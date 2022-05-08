@@ -36,8 +36,10 @@ public:
 
     HWND GetWindowHandle() const { return m_hwnd; };
 
-    PIXEL         GetWindowTop()            const { return Util::GetWindowTop           (m_hwnd); }
-    PIXEL         GetWindowWidth()          const { return Util::GetWindowWidth         (m_hwnd); }
+	PIXEL         GetWindowTop()            const { return Util::GetWindowTop           (m_hwnd); }
+	PIXEL         GetWindowLeftPos()        const { return Util::GetWindowLeftPos       (m_hwnd); }
+	PIXEL         GetWindowRightPos()       const { return Util::GetWindowRightPos      (m_hwnd); }
+	PIXEL         GetWindowWidth()          const { return Util::GetWindowWidth         (m_hwnd); }
     PIXEL         GetWindowHeight()         const { return Util::GetWindowHeight        (m_hwnd); }
     PixelRectSize GetWindowSize()           const { return Util::GetWindowSize          (m_hwnd); }
     PixelRectSize GetClRectSize()           const { return Util::GetClRectSize          (m_hwnd); }
@@ -53,6 +55,9 @@ public:
 
 	bool          IsInClientRect(PixelPoint const & p) const { return Util::IsInClientRect(m_hwnd, p); }
 	bool          IsInClientRect(PixelRect  const & r) const { return Util::IsInClientRect(m_hwnd, r); }
+
+	void SetWindowWidth (PIXEL const w, bool const b) const { Util::SetWindowWidth (m_hwnd, w, b); }
+	void SetWindowHeight(PIXEL const h, bool const b) const { Util::SetWindowHeight(m_hwnd, h, b); }
 
 	RootWindow * GetRootWindow      () { return ::GetRootWindow      (m_hwnd); }
 	RootWindow * GetParentRootWindow() { return ::GetParentRootWindow(m_hwnd); }
