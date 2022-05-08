@@ -43,6 +43,14 @@ void SignalDesigner::Initialize
 	m_vertCoordFreq.SetPixelSizeLimits(0.02_fHertz, 1._fHertz); 
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
+	m_vertCoordVolt1.SetPixelSize(0.1_mV); 
+	m_vertCoordVolt1.SetPixelSizeLimits(0.01_mV, 10.0_mV); 
+	m_vertCoordVolt1.SetZoomFactor(1.3f);
+
+	m_vertCoordVolt2.SetPixelSize(0.1_mV); 
+	m_vertCoordVolt2.SetPixelSizeLimits(0.01_mV, 10.0_mV); 
+	m_vertCoordVolt2.SetZoomFactor(1.3f);
+
 	m_upHorzScale1     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
 	m_upHorzScale2     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
 	m_upHorzScale3     = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
@@ -288,20 +296,4 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upSignalControl1->Move(V_SCALE_WIDTH,          0_PIXEL, pixControlWidth, pixControlHeight, true);
 	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
-
-	if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
-	{
-		mV    const mVpeakAmplitude    { pSigGen->Amplitude().Peak() };
-		mV    const mVpeakAmplScaleLen { mVpeakAmplitude * 4.0f };
-		PIXEL const pixVertScaleLen    { height - H_SCALE_HEIGHT };
-		mV    const mVpixelSize        { mVpeakAmplScaleLen / static_cast<float>(pixVertScaleLen.GetValue()) };
-
-	//	m_vertCoordVolt1.SetPixelSize(mVpixelSize);
-		m_vertCoordVolt1.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-		m_vertCoordVolt1.SetZoomFactor(1.3f);
-
-	//	m_vertCoordVolt2.SetPixelSize(mVpixelSize);
-		m_vertCoordVolt2.SetPixelSizeLimits(mVpixelSize * 0.2f, mVpixelSize * 10.f); 
-		m_vertCoordVolt2.SetZoomFactor(1.3f);
-	}
 }

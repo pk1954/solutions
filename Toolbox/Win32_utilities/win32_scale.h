@@ -15,6 +15,8 @@
 #include "PixFpDimension.h"
 #include "win32_graphicsWindow.h"
 
+using std::fixed;
+using std::setprecision;
 using std::wostringstream;
 using std::to_wstring;
 using std::wstring;
@@ -207,9 +209,9 @@ private:
 
 	void setScaleParams()
 	{
-		float   const fFactor   { TypeAttribute<LogUnits>::factor };
-		float   const logDist10 { m_logTickDist.GetValue() * 10 };  // numbers every 10 ticks
-		int     const iSteps    { StepsOfThousand(logDist10 / fFactor) };
+		float   const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
+		float   const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
+		int     const iSteps    { StepsOfThousand(logDist10 / fFactor) };  
 		m_wstrUnit       = GetUnitPrefix(iSteps) + TypeAttribute<LogUnits>::unit;
 		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
 	}
@@ -274,6 +276,8 @@ private:
 		int      const iTickStart    { static_cast<int>(fStartTicks) };
 		int      const iTickEnd      { static_cast<int>(m_logEnd / m_logTickDist) };
 
+		wostringstream wstrBuffer;
+
 		for (int iTick = iTickStart; iTick <= iTickEnd; ++iTick)
 		{
 			fPixel fTickExt { (iTick % 5 == 0) ? LONG_TICK : (iTick % 2 == 0) ? MIDDLE_TICK : SMALL_TICK};
@@ -286,8 +290,11 @@ private:
 					               ? (fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fPix)) 
 					               : (fPixelPoint(fPix,                 m_fPixPntStart.GetY())) 
 				                 };
-				int         iLu  { static_cast<int>(round(fTick * fUnitTickDist)) };
-				display(textBox + fPos, to_wstring(iLu));
+				float const fLu  { round(fTick * fUnitTickDist * 1000.f) / 1000.f };	
+				int   const prec { (fLu == floor(fLu)) ? 0 : 1};
+				wstrBuffer.str(L"");
+				wstrBuffer << fixed << setprecision(prec) << fLu;
+				display(textBox + fPos, wstrBuffer.str());
 			}
 		}
 	}
