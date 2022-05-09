@@ -16,6 +16,8 @@
 #include "NNetModelWriterInterface.h"
 #include "SignalDesigner.h"
 
+using std::bit_cast;
+
 void SignalDesigner::Initialize
 (
 	HWND          const   hwndParent,
@@ -230,6 +232,45 @@ void SignalDesigner::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
 	SendCommand(IDM_SIGNAL_DESIGNER_INTEGRATED);
 	Trigger();  // cause repaint
+}
+
+void SignalDesigner::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale)
+{
+	switch (auto const wId = LOWORD(wParam))
+	{
+	case SC_LBUTTONDBLCLK:
+		{
+			float fFactor { 1.0 };
+			if (pScale == m_upHorzScale1.get())
+			{
+				fFactor = m_upSignalControl1->ScaleFactorTimeCoord();
+			}
+		    else if (pScale == m_upHorzScale2.get())
+			{
+				fFactor = m_upSignalControl2->ScaleFactorTimeCoord();
+			}
+			else if (pScale == m_upVertScaleFreq.get())
+			{
+				fFactor = m_upSignalControl1->ScaleFactorFreqCoord();
+			}
+			else if (pScale == m_upVertScaleVolt1.get())
+			{
+				if (m_design == DESIGN::INTEGRATED)
+					fFactor = m_upSignalControl1->ScaleFactorVoltCoord();
+				else
+					fFactor = m_upSignalControl2->ScaleFactorVoltCoord();
+			}
+			else if (pScale == m_upVertScaleVolt2.get())
+			{
+				fFactor = m_upSignalControl2->ScaleFactorVoltCoord();
+			}
+			pScale->Zoom(fFactor);
+		}
+		break;
+
+	default:
+		break;
+	}
 }
 
 bool SignalDesigner::OnSize(PIXEL const width, PIXEL const height)

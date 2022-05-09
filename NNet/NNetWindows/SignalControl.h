@@ -44,9 +44,9 @@ public:
 	void SetVertCoordFreq(PixFpDimension<fHertz> *);
 	void SetVertCoordVolt(PixFpDimension<mV>     *);
 
-	void ScaleTimeCoord();
-	void ScaleFreqCoord();
-	void ScaleVoltCoord();
+	float ScaleFactorTimeCoord();
+	float ScaleFactorFreqCoord();
+	float ScaleFactorVoltCoord();
 
 private:
 

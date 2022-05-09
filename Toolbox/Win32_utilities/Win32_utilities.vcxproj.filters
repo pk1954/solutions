@@ -126,10 +126,10 @@
     <ClInclude Include="win32_controls.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_oneLineDialog.h">
+    <ClInclude Include="win32_editLineBox.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_editLineBox.h">
+    <ClInclude Include="win32_baseScale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -204,6 +204,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_editLineBox.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_baseScale.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

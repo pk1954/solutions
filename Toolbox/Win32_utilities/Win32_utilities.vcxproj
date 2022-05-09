@@ -166,6 +166,7 @@
     <ClInclude Include="win32_aboutBox.h" />
     <ClInclude Include="win32_actionTimer.h" />
     <ClInclude Include="win32_animation.h" />
+    <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_command.h" />
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseRefreshRate.h" />
@@ -179,7 +180,6 @@
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_modelWindow.h" />
-    <ClInclude Include="win32_oneLineDialog.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_stdDialogBox.h" />
@@ -208,6 +208,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="win32_aboutBox.cpp" />
+    <ClCompile Include="win32_baseScale.cpp" />
     <ClCompile Include="win32_command.cpp" />
     <ClCompile Include="win32_baseDialog.cpp" />
     <ClCompile Include="win32_baseRefreshRate.cpp" />

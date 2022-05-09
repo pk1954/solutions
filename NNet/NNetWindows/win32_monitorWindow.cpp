@@ -29,14 +29,21 @@ void MonitorWindow::Start
 		nullptr
 	);
 
-	m_upMonitorControl = make_unique<MonitorControl>(hwnd, sound, modelCmds, m_horzCoord);
+	m_upMonitorControl = make_unique<MonitorControl>
+	(
+		hwnd, 
+		sound, 
+		modelCmds, 
+		m_horzCoord, 
+		m_vertCoord
+	);
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 4000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
-	m_upHorzScale->SetOrthoOffset(Convert2fPixel(SCALE_HEIGHT));
+	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
 	m_upHorzScale->SetOrientation(false);
 	m_upHorzScale->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
 	m_upHorzScale->Show(true);
@@ -69,9 +76,9 @@ void MonitorWindow::OnPaint()
 
 bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	PIXEL const monHeight { height - SCALE_HEIGHT };
+	PIXEL const monHeight { height - H_SCALE_HEIGHT };
 	m_upMonitorControl->Move(0_PIXEL, 0_PIXEL,   width, monHeight,    true);
-	m_upHorzScale     ->Move(0_PIXEL, monHeight, width,	SCALE_HEIGHT, true);
+	m_upHorzScale     ->Move(0_PIXEL, monHeight, width,	H_SCALE_HEIGHT, true);
 	m_horzCoord.SetOffset(Convert2fPixel(width-RIGHT_BORDER));
 	return true;
 }

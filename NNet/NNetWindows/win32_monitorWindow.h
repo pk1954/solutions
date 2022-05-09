@@ -27,8 +27,9 @@ public:
 	void SetModelInterface(NNetModelWriterInterface * const);
 
 private:
-	inline static PIXEL const RIGHT_BORDER { 25_PIXEL };
-	inline static PIXEL const SCALE_HEIGHT { 30_PIXEL };
+	inline static PIXEL const RIGHT_BORDER   { 25_PIXEL };
+	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
+	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 
 	void OnPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
@@ -36,6 +37,7 @@ private:
 	wstring GetCaption() const final;
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
+	PixFpDimension<float>         m_vertCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<MonitorControl>    m_upMonitorControl;
 };

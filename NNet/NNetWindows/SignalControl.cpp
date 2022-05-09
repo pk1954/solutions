@@ -251,28 +251,28 @@ void SignalControl::DoPaint()
 	}
 }
 
-void SignalControl::ScaleTimeCoord()
+float SignalControl::ScaleFactorTimeCoord()
 {
 	fMicroSecs const maxVisible { getTime(m_fPixRight) };
 	fMicroSecs const maxValue   { GetSigGenStaticData()->CutoffTime() };
 	float      const factor     { maxValue / maxVisible };
-	*m_pHorzCoord *= factor;
+	return factor;
 }
 
-void SignalControl::ScaleFreqCoord()
+float SignalControl::ScaleFactorFreqCoord()
 {
 	fHertz const maxVisible { getFreq(0.0_fPixel) * 0.9f };
 	fHertz const maxValue   { GetSigGenStaticData()->GetFrequency().Peak() };
 	float  const factor     { maxValue / maxVisible };
-	*m_pVertCoordFreq *= factor;
+	return factor;
 }
 
-void SignalControl::ScaleVoltCoord()
+float SignalControl::ScaleFactorVoltCoord()
 {
 	mV    const maxVisible { getVolt(0.0_fPixel) * 0.9f };
 	mV    const maxValue   { GetSigGenStaticData()->GetAmplitude().Peak() };
 	float const factor     { maxValue / maxVisible };
-	*m_pVertCoordVolt *= factor;
+	return factor;
 }
 
 bool SignalControl::OnSize(PIXEL const width, PIXEL const height)

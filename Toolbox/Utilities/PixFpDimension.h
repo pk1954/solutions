@@ -82,6 +82,11 @@ public:
 		return true;
 	}
 
+	void Zoom(float const factor)
+	{
+		*this *= factor;
+	}
+
 	void Center
 	(
 		LOG_UNIT const umCenter,   

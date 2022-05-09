@@ -68,6 +68,7 @@ private:
 	bool OnSize(PIXEL const, PIXEL const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
+	void OnScaleCommand   (WPARAM const, BaseScale * const) final;
 
 	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;

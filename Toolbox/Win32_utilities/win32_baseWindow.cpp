@@ -199,6 +199,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         SetCaption();
         break;
 
+    case WM_APP_SCALE_COMMAND:
+        OnScaleCommand(wParam, bit_cast<BaseScale *>(lParam));
+        break;
+
     default:
         break;
     }

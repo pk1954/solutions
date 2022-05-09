@@ -28,7 +28,8 @@ public:
 		HWND const, 
 		Sound                      &,
 		NNetModelCommands          &,
-		PixFpDimension<fMicroSecs> &
+		PixFpDimension<fMicroSecs> &,
+		PixFpDimension<float> &
 	);
 
 	~MonitorControl() final = default;
@@ -94,5 +95,5 @@ private:
 	Measurement         m_measurement;
 
 	PixFpDimension<fMicroSecs> & m_horzCoord;
-	PixFpDimension<float>        m_vertCoord;
+	PixFpDimension<float>      & m_vertCoord;
 };
