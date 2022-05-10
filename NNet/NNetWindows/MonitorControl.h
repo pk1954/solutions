@@ -29,16 +29,18 @@ public:
 		Sound                      &,
 		NNetModelCommands          &,
 		PixFpDimension<fMicroSecs> &,
-		PixFpDimension<float> &
+		PixFpDimension<float>      &
 	);
 
 	~MonitorControl() final = default;
 
-	void Stop () final;
-	void Reset();
-	void SetModelInterface(NNetModelWriterInterface * const);
-	bool SignalTooHigh() const;
-	void ScaleSignals();
+	void   Stop () final;
+	void   Reset();
+	void   SetModelInterface(NNetModelWriterInterface * const);
+	bool   SignalTooHigh() const;
+	float  ScaleFactor();
+	void   ScaleSignals();
+	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
@@ -73,6 +75,7 @@ private:
 
 	void paintSignal(SignalId const &, bool const);
 	void paintTrack(TrackNr const) const;
+	bool signalTooHigh(fPixel const) const;
 
 	void DoPaint() final;
 

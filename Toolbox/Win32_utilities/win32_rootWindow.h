@@ -133,9 +133,19 @@ public:
 		return PostMessage(WM_COMMAND, wParam, lParam);
 	}
 
+	LRESULT PostCommand2Parent(WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return PostMessage2Parent(WM_COMMAND, wParam, lParam);
+	}
+
 	LRESULT SendCommand(WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return SendMessage(WM_COMMAND, wParam, lParam);
+	}
+
+	LRESULT SendCommand2Parent(WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return SendMessage2Parent(WM_COMMAND, wParam, lParam);
 	}
 
 	LRESULT SendNotifyCommand(WPARAM const wParam, LPARAM const lParam = 0) const
@@ -148,9 +158,19 @@ public:
 		return ::PostMessage(m_hwnd, msg, wParam, lParam);
 	}
 
+	LRESULT PostMessage2Parent(unsigned int const msg, WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return ::PostMessage(GetParent(), msg, wParam, lParam);
+	}
+
 	LRESULT SendMessage(unsigned int const msg, WPARAM const wParam, LPARAM const lParam = 0) const
 	{
 		return ::SendMessage(m_hwnd, msg, wParam, lParam);
+	}
+
+	LRESULT SendMessage2Parent(unsigned int const msg, WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return ::SendMessage(GetParent(), msg, wParam, lParam);
 	}
 
 	LRESULT SendNotifyMessage(unsigned int const msg, WPARAM const wParam, LPARAM const lParam) const

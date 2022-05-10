@@ -273,23 +273,24 @@ void MonitorControl::paintSignal
 	if (fPixSignal.IsNull())
 		return;
 
-	D2D1::ColorF const color        { m_pMonitorData->IsSelected(idSignal) ? NNetColors::EEG_SENSOR_HIGHLIGHTED : D2D1::ColorF::Black };  // emphasize selected signal 
-	fPixel       const fPixWidth    { m_pMonitorData->IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
-	fPixel       const fPixYoff     { getSignalOffset(idSignal) };
-	fMicroSecs   const usPixelSize  { m_horzCoord.GetPixelSize() };
-	fMicroSecs   const usInWindow   { usPixelSize * m_fPixZeroX.GetValue() };
-	fMicroSecs   const usResolution { m_pNMWI->TimeResolution() };
-	fMicroSecs   const usIncrement  { max(usPixelSize, usResolution) };
-	fMicroSecs   const usSimuStart  { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
-	fPixel       const fPixX        { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
-	fPixelPoint        prevPoint    { m_fPixZeroX, fPixYoff - fPixSignal };
+	D2D1::ColorF const color         { m_pMonitorData->IsSelected(idSignal) ? NNetColors::EEG_SENSOR_HIGHLIGHTED : D2D1::ColorF::Black };  // emphasize selected signal 
+	fPixel       const fPixWidth     { m_pMonitorData->IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
+	fPixel       const fPixYoff      { getSignalOffset(idSignal) };
+	fMicroSecs   const usPixelSize   { m_horzCoord.GetPixelSize() };
+	fMicroSecs   const usInWindow    { usPixelSize * m_fPixZeroX.GetValue() };
+	fMicroSecs   const usResolution  { m_pNMWI->TimeResolution() };
+	fMicroSecs   const usIncrement   { max(usPixelSize, usResolution) };
+	fMicroSecs   const usSimuStart   { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
+	fPixel       const fPixX         { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
+	fPixelPoint        prevPoint     { m_fPixZeroX, fPixYoff - fPixSignal };
+	fPixel             fPixMaxSignal { 0._fPixel };
 	m_upGraphics->FillCircle(fPixelCircle(prevPoint, 4.0_fPixel), color);
 	for (fMicroSecs usSimu = usSimuEnd - usIncrement; usSimu >= usSimuStart; usSimu -= usIncrement)
 	{
 		fPixSignal = getSignalValue(*pSignal, usSimu, bFiltered);
 		assert(fPixSignal.IsNotNull());
-		if (fPixSignal > m_fPixMaxSignal)
-			m_fPixMaxSignal = fPixSignal;
+		if (fPixSignal > fPixMaxSignal)
+			fPixMaxSignal = fPixSignal;
 		fPixelPoint const actPoint 
 		{ 
 			fPixX + m_horzCoord.Transform2fPixelSize(usSimu), 
@@ -298,21 +299,43 @@ void MonitorControl::paintSignal
 		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color); // bFiltered ? color : D2D1::ColorF::LightGray);
 		prevPoint = actPoint;
 	}
+
+	if ( signalTooHigh(fPixMaxSignal) )
+	{
+		m_upGraphics->FillRectangle
+		(
+			fPixelRect
+			(
+				fPixelPoint   (m_fPixZeroX, 0._fPixel),
+				fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
+			), 
+			NNetColors::COL_WARNING
+		);
+	}
+	m_fPixMaxSignal = fPixMaxSignal;
+}
+
+bool MonitorControl::signalTooHigh(fPixel const fPix) const
+{
+	fPixel const fPixTrackHeight { calcTrackHeight() };
+	return fPix > fPixTrackHeight;
 }
 
 bool MonitorControl::SignalTooHigh() const
 {
-	fPixel const fPixTrackHeight { calcTrackHeight() };
-	return m_fPixMaxSignal > fPixTrackHeight;
+	return signalTooHigh(m_fPixMaxSignal);
 }
 
+float MonitorControl::ScaleFactor()
+{
+	return (m_fPixMaxSignal > 0.0_fPixel) 
+		   ? m_fPixMaxSignal / calcTrackHeight()
+	       : 1.0f;
+}
 void MonitorControl::ScaleSignals()
 {
 	if (m_fPixMaxSignal > 0.0_fPixel) 
-	{
-		float const factor { m_fPixMaxSignal / calcTrackHeight() };
-		m_vertCoord *= factor;
-	}
+		m_vertCoord *= ScaleFactor();
 }
 
 void MonitorControl::paintTrack(TrackNr const trackNr) const
@@ -368,19 +391,6 @@ void MonitorControl::DoPaint()
 		fPixelPoint const fPixDiamondPos { calcDiamondPos(true) };
 		if (fPixDiamondPos.IsNotNull())
 			m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
-	}
-
-	if ( SignalTooHigh() )
-	{
-		m_upGraphics->FillRectangle
-		(
-			fPixelRect
-			(
-				fPixelPoint   (m_fPixZeroX, 0._fPixel),
-				fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
-			), 
-			NNetColors::COL_WARNING
-		);
 	}
 }
 
@@ -494,9 +504,8 @@ void MonitorControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam) 
 {
-	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam(lParam) };
-	fPixel     const fPixCrsrX  { Convert2fPixel(pixCrsrPos.GetX()) };
-
+	PixelPoint  const pixCrsrPos     { GetCrsrPosFromLparam(lParam) };
+	fPixel      const fPixCrsrX      { Convert2fPixel(pixCrsrPos.GetX()) };
 	if (fPixCrsrX > m_fPixZeroX)
 	{
 		if (SignalTooHigh())
@@ -506,9 +515,9 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	{
 		fPixelPoint const fPixDiamondPos { calcDiamondPos(true) };
 		if (
-			  fPixDiamondPos.IsNotNull() && m_pMonitorData->IsAnySignalSelected() &&
-              (m_measurement.IsClose2LeftLimit(fPixCrsrX) || m_measurement.IsClose2RightLimit(fPixCrsrX))
-	       )
+				fPixDiamondPos.IsNotNull() && m_pMonitorData->IsAnySignalSelected() &&
+				(m_measurement.IsClose2LeftLimit(fPixCrsrX) || m_measurement.IsClose2RightLimit(fPixCrsrX))
+			)
 		{
 			m_measurement.MoveSelection(fPixDiamondPos.GetX());
 			m_sound.Play(TEXT("SNAP_IN_SOUND")); 

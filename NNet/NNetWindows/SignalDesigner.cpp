@@ -72,13 +72,13 @@ void SignalDesigner::Initialize
 	m_upHorzScale3->Show(true);
 
 	m_upVertScaleFreq->SetOrientation(true);
-	m_upVertScaleFreq->SetColor(COLOR_FREQ);
+	m_upVertScaleFreq->SetScaleColor(COLOR_FREQ);
 	m_upVertScaleFreq->Show(true);
 
-	m_upVertScaleVolt1->SetColor(COLOR_VOLT);
+	m_upVertScaleVolt1->SetScaleColor(COLOR_VOLT);
 	m_upVertScaleVolt1->Show(true);
 
-	m_upVertScaleVolt2->SetColor(D2D1::ColorF::Black);
+	m_upVertScaleVolt2->SetScaleColor(D2D1::ColorF::Black);
 	m_upVertScaleVolt2->Show(true);
 
 	m_upSignalControl1 = makeSignalControl(computeThread, runObservable, dynamicModelObservable);
@@ -301,32 +301,30 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		++iNrOfTiles;
 	PIXEL const pixTileHeight    { height / iNrOfTiles };
 	PIXEL const pixControlHeight { pixTileHeight - H_SCALE_HEIGHT };
-	PIXEL pixControlWidth;
+	PIXEL const pixControlWidth  { width - V_SCALE_WIDTH };
 
 	if (m_design == DESIGN::INTEGRATED)
 	{
-		pixControlWidth = width - V_SCALE_WIDTH - V_SCALE_WIDTH;
-
 		m_upSignalControl1->SetVertCoordVolt(&m_vertCoordVolt1);
 		m_upVertScaleVolt1->SetOrthoOffset(0._fPixel);
 		m_upVertScaleVolt1->SetOrientation(false);
 
-		m_upVertScaleVolt1->Move(V_SCALE_WIDTH + pixControlWidth, 0_PIXEL, V_SCALE_WIDTH, pixControlHeight, true);
+		m_upVertScaleVolt1->Move(pixControlWidth, 0_PIXEL, V_SCALE_WIDTH, pixControlHeight, true);
+		m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth - V_SCALE_WIDTH, H_SCALE_HEIGHT, true);
 
 		m_upSignalControl2->Show(false);
 		m_upHorzScale2    ->Show(false);
 	}
 	else
 	{
-		pixControlWidth = width - V_SCALE_WIDTH;
-
 		m_upSignalControl1->SetVertCoordVolt(nullptr);
 		m_upVertScaleVolt1->SetOrthoOffset(fPixLeftOffset);
 		m_upVertScaleVolt1->SetOrientation(true);
 
-		m_upSignalControl2->Move(V_SCALE_WIDTH, pixTileHeight,                    pixControlWidth, pixControlHeight, true);
-		m_upVertScaleVolt1->Move(      0_PIXEL, pixTileHeight,                    V_SCALE_WIDTH,   pixControlHeight, true);
-		m_upHorzScale2    ->Move(V_SCALE_WIDTH, pixTileHeight + pixControlHeight, pixControlWidth, H_SCALE_HEIGHT,  true);
+		m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight,                  pixControlWidth, H_SCALE_HEIGHT,   true);
+		m_upSignalControl2->Move(V_SCALE_WIDTH, pixTileHeight,                     pixControlWidth, pixControlHeight, true);
+		m_upVertScaleVolt1->Move(      0_PIXEL, pixTileHeight,                     V_SCALE_WIDTH,   pixControlHeight, true);
+		m_upHorzScale2    ->Move(V_SCALE_WIDTH, pixTileHeight + pixControlHeight,  pixControlWidth, H_SCALE_HEIGHT,    true);
 
 		m_upSignalControl2->Show(true);
 		m_upHorzScale2    ->Show(true);
@@ -346,7 +344,6 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	}
 
 	m_upSignalControl1->Move(V_SCALE_WIDTH,          0_PIXEL, pixControlWidth, pixControlHeight, true);
-	m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth,   H_SCALE_HEIGHT, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
 	PIXEL pixHorzPos { (width - STIMULUS_BUTTON_WIDTH) / 2 };

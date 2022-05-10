@@ -3,6 +3,8 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include "Resource.h"
+#include "NNetColors.h"
 #include "MonitorControl.h"
 #include "win32_monitorWindow.h"
 
@@ -77,8 +79,25 @@ void MonitorWindow::OnPaint()
 bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	PIXEL const monHeight { height - H_SCALE_HEIGHT };
-	m_upMonitorControl->Move(0_PIXEL, 0_PIXEL,   width, monHeight,    true);
-	m_upHorzScale     ->Move(0_PIXEL, monHeight, width,	H_SCALE_HEIGHT, true);
-	m_horzCoord.SetOffset(Convert2fPixel(width-RIGHT_BORDER));
+	PIXEL const monWidth  { width  - RIGHT_BORDER  };
+	m_upMonitorControl->Move(0_PIXEL,  0_PIXEL,   width,         monHeight,      true);
+	m_upHorzScale     ->Move(0_PIXEL,  monHeight, width,	     H_SCALE_HEIGHT, true);
+	m_horzCoord.SetOffset(Convert2fPixel(width - RIGHT_BORDER));
 	return true;
+}
+
+void MonitorWindow::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale)
+{
+	switch (auto const wId = LOWORD(wParam))
+	{
+	case SC_LBUTTONDBLCLK:
+	{
+		if ( m_upMonitorControl->SignalTooHigh() )
+			m_vertCoord.Zoom(m_upMonitorControl->ScaleFactor());
+	}
+	break;
+
+	default:
+		break;
+	}
 }

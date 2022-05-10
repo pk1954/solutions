@@ -25,7 +25,7 @@ public:
 	inline static ColorF const COL_DIAMOND      { 0.0f, 1.0f, 0.0f, 1.0f };
 	inline static ColorF const COL_TRACK_EVEN   { 0.9f, 0.9f, 0.9f, 1.0f };
 	inline static ColorF const COL_TRACK_ODD    { 0.8f, 0.8f, 0.8f, 1.0f };
-	inline static ColorF const COL_WARNING      { 0.8f, 0.0f, 0.0f, 0.7f };
+	inline static ColorF const COL_WARNING      { 0.8f, 0.0f, 0.0f, 0.3f };
 
 	// colors for EEG sensors
 	inline static ColorF EEG_SENSOR_1           { 0.0f, 0.5f, 0.0f, 0.8f };

@@ -168,9 +168,7 @@ void NNetModelExporter::writeIoConnector(wostream& out, IoConnector const& conn)
 {
     assert(conn.Size() > 0);
     size_t const iLast { conn.Size() - 1 };
-    out << OPEN_BRACKET 
-        << conn.Size() 
-        << NR_SEPARATOR;
+    out << LIST_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
     for (size_t i = 0;; ++i)
     {
         out << getCompactIdVal(conn.GetElem(i).GetId());
@@ -178,7 +176,7 @@ void NNetModelExporter::writeIoConnector(wostream& out, IoConnector const& conn)
             break;
         out << ID_SEPARATOR;
     }
-    out << CLOSE_BRACKET;
+    out << LIST_CLOSE_BRACKET;
 }
 
 void NNetModelExporter::writeNob(wostream & out, Nob const & nob) const

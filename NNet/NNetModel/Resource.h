@@ -71,6 +71,7 @@
 #define       IDD_SENSOR_PNTS_OFF            221
 									         
 #define       IDM_MONITOR_WINDOW             330
+#define       IDD_SIGNAL_TOO_HIGH            340
 #define       IDD_ADD_EEG_SENSOR             345
 #define       IDD_DELETE_EEG_SENSOR          346
 #define       IDD_SCALE_EEG_SIGNALS          347

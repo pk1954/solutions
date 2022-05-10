@@ -29,10 +29,10 @@ public:
 private:
 	inline static PIXEL const RIGHT_BORDER   { 25_PIXEL };
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
-	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 
 	void OnPaint() final;
-	bool OnSize(PIXEL const, PIXEL const) final;
+	bool OnSize        (PIXEL  const, PIXEL       const) final;
+	void OnScaleCommand(WPARAM const, BaseScale * const) final;
 
 	wstring GetCaption() const final;
 
