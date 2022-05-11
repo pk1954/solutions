@@ -6,9 +6,41 @@
 #include "CommCtrl.h"
 #include "win32_controls.h"
 
-HWND CreateButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, INT_PTR const id)
+HWND CreateButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, INT_PTR const id, DWORD const dwStyle)
 {
-	HWND hwnd = CreateWindow(WC_BUTTON, text, BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE, x, y, w, h, hwndParent, reinterpret_cast<HMENU>(id), GetModuleHandle(nullptr), 0);
+	DWORD style { BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
+	HWND  hwnd  { 
+		CreateWindow
+		(
+			WC_BUTTON, 
+			text, 
+			style, 
+			x, y, w, h, 
+			hwndParent, 
+			reinterpret_cast<HMENU>(id), 
+			GetModuleHandle(nullptr), 
+			0
+		) 
+	};
+	return hwnd;
+}
+
+HWND CreateOwnerDrawButton(HWND const hwndParent, int const x, int const y, int const w, int const h, INT_PTR const id)
+{
+	HWND hwnd  
+	{ 
+		CreateWindow
+		(
+			WC_BUTTON, 
+			0,
+			WS_CHILD|WS_VISIBLE|BS_OWNERDRAW, 
+			x, y, w, h, 
+			hwndParent, 
+			reinterpret_cast<HMENU>(id), 
+			GetModuleHandle(nullptr), 
+			0
+		) 
+	};
 	return hwnd;
 }
 

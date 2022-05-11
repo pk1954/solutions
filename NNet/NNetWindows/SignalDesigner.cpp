@@ -104,6 +104,18 @@ void SignalDesigner::Initialize
 		IDM_TRIGGER_STIMULUS
 	);
 	BringWindowToTop(m_hStimulusButton);
+
+	m_hLayoutButton = CreateOwnerDrawButton
+	(
+		GetWindowHandle(), 
+		0, 0, 
+		V_SCALE_WIDTH .GetValue(),
+		H_SCALE_HEIGHT.GetValue(),
+		IDM_SIGNAL_DESIGNER_STACKED
+	);
+	assert(m_hLayoutButton);
+	m_upGraphicsLayoutButton = make_unique<D2D_driver>();
+	m_upGraphicsLayoutButton->Initialize(m_hLayoutButton);
 }
 
 void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
@@ -175,7 +187,7 @@ wstring SignalDesigner::GetCaption() const
 
 void SignalDesigner::DoPaint()
 {
-	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
+	m_upGraphics->FillBackground(BaseScale::COL_NORMAL);
 	m_upSignalControl1->Notify(false);
 	m_upSignalControl2->Notify(false);
 	if (m_bPreview)
@@ -195,9 +207,10 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 			PIXEL newClientHeight { (m_design == DESIGN::INTEGRATED) ? (clientHeight*2) : (clientHeight/2) };
 			PIXEL newWinHeight    { GetWindowHeight() + newClientHeight - clientHeight };
 			SetWindowHeight(newWinHeight, false);
-			ToggleDesign();
+			toggleDesign();
 			design(GetClientWindowWidth(), GetClientWindowHeight());
 		}
+		::InvalidateRect(m_hLayoutButton, nullptr, true);
 		return true;
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
@@ -228,11 +241,22 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }
 
-void SignalDesigner::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
+void SignalDesigner::OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * const pDiStruct) 
 {
-	SendCommand(IDM_SIGNAL_DESIGNER_INTEGRATED);
-	Trigger();  // cause repaint
-}
+	RECT         const rect     { pDiStruct->rcItem };
+	PixelRect    const pixRect  { Util::RECT2PixelRect(rect) };
+	fPixelRect   const fPixRect { Convert2fPixelRect(pixRect) };
+//	D2D1::ColorF const color    { Util::CrsrInClientRect(m_hLayoutButton) ? BaseScale::COL_HIGHLIGHTED : BaseScale::COL_NORMAL };
+	m_upGraphicsLayoutButton->StartFrame();
+	m_upGraphicsLayoutButton->FillBackground(BaseScale::COL_NORMAL);
+	m_upGraphicsLayoutButton->UpDownArrow
+	(
+		m_design == DESIGN::STACKED, // if stacked -> up arrow
+		fPixRect,
+		D2D1::ColorF::Black
+	);
+	m_upGraphicsLayoutButton->EndFrame();
+};
 
 void SignalDesigner::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale)
 {
@@ -343,8 +367,8 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_upHorzScale3   ->Show(true);
 	}
 
-	m_upSignalControl1->Move(V_SCALE_WIDTH,          0_PIXEL, pixControlWidth, pixControlHeight, true);
-	m_upVertScaleFreq ->Move(      0_PIXEL,          0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
+	m_upSignalControl1->Move(V_SCALE_WIDTH, 0_PIXEL, pixControlWidth, pixControlHeight, true);
+	m_upVertScaleFreq ->Move(      0_PIXEL, 0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
 	PIXEL pixHorzPos { (width - STIMULUS_BUTTON_WIDTH) / 2 };
 	::SetWindowPos 
@@ -352,6 +376,14 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_hStimulusButton,
 		HWND_TOP,
 		pixHorzPos.GetValue(), 10, 0, 0,
+		SWP_NOSIZE
+	);
+
+	::SetWindowPos 
+	(
+		m_hLayoutButton,
+		HWND_TOP,
+		0, pixControlHeight.GetValue(), 0, 0,
 		SWP_NOSIZE
 	);
 }

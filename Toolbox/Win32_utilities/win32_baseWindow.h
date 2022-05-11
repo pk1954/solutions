@@ -38,7 +38,8 @@ protected:
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
-	virtual void OnScaleCommand   (WPARAM const, BaseScale * const) { /* empty */ };
+	virtual void OnDrawItem       (WPARAM const, DRAWITEMSTRUCT const * const) { /* empty */ };;
+	virtual void OnScaleCommand   (WPARAM const, BaseScale            * const) { /* empty */ };
 	virtual void OnPaint          ()                           { /* empty */ };
 	virtual void OnLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnMouseWheel     (WPARAM const, LPARAM const) { /* empty */ };

@@ -147,11 +147,6 @@ void NNetAppMenu::Start
         }
         m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
         m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&SensorPoints");
-        HMENU hMenuSignalDesigner = Util::PopupMenu(hMenuView, L"Signal&Designer");
-        {
-            Util::AddMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_INTEGRATED, L"&Integrated");
-            Util::AddMenu(hMenuSignalDesigner, MF_STRING, IDM_SIGNAL_DESIGNER_STACKED,    L"&Stacked");
-        }
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
     {
@@ -211,9 +206,6 @@ void NNetAppMenu::Notify(bool const bImmediately)
     enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(IDM_PARAM_WINDOW  ));
     enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
     enable(IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(IDM_SIG_DESIGNER  ));
-
-    enable(IDM_SIGNAL_DESIGNER_INTEGRATED, SignalDesigner::GetDesign() == SignalDesigner::DESIGN::STACKED);
-    enable(IDM_SIGNAL_DESIGNER_STACKED,    SignalDesigner::GetDesign() == SignalDesigner::DESIGN::INTEGRATED);
 
     m_upOnOffArrows      ->enableOnOff(m_pMainWindow->ArrowsVisible());
     m_upOnOffSound       ->enableOnOff(m_pSound->IsOn());

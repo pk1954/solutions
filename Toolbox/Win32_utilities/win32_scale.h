@@ -52,13 +52,6 @@ public:
 
 private:
 
-	inline static fPixel const LONG_TICK      { 10._fPixel };
-	inline static fPixel const MIDDLE_TICK    {  7._fPixel };
-	inline static fPixel const SMALL_TICK     {  5._fPixel };
-	inline static fPixel const TEXT_DIST2LINE { LONG_TICK + 2._fPixel };
-	inline static fPixel const TEXT_HORZ_EXT  { 20._fPixel };
-	inline static fPixel const TEXT_VERT_EXT  { 10._fPixel };
-
 	PixFpDimension<LogUnits> & m_pixCoord;
 
 	wstring     m_wstrUnit       {};
@@ -125,7 +118,7 @@ private:
 		fPixelRect textBox {};
 		setTextBox(textBox);
 
-		m_upGraphics->FillBackground(CrsrInClientRect() ? D2D1::ColorF::Aquamarine : D2D1::ColorF::Azure);
+		m_upGraphics->FillBackground(CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL);
 
 		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, GetColor());
 
@@ -141,11 +134,6 @@ private:
 		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit);
 	}
 
-	fPixel getClHeight() const
-	{
-		return m_upGraphics->GetClRectHeight();
-	}
-
 	void setScaleParams()
 	{
 		float   const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
@@ -153,35 +141,6 @@ private:
 		int     const iSteps    { StepsOfThousand(logDist10 / fFactor) };  
 		m_wstrUnit       = GetUnitPrefix(iSteps) + TypeAttribute<LogUnits>::unit;
 		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
-	}
-
-	void setTextBox(fPixelRect & textBox) const
-	{
-		fPixel horzDist { 0._fPixel };
-		fPixel vertDist { 0._fPixel };
-
-		if (IsVertScale())  // vertical scale
-		{
-			horzDist = TEXT_DIST2LINE + TEXT_HORZ_EXT; 
-			if (GetOrientation())
-				horzDist = - horzDist;
-			vertDist -= 4._fPixel;
-		}
-		else  // horizontal scale
-		{
-			vertDist = TEXT_DIST2LINE + TEXT_VERT_EXT;
-			if (GetOrientation())
-				vertDist = - vertDist;
-			horzDist += 4._fPixel; 
-		}
-
-		textBox = fPixelRect
-		(
-			horzDist - TEXT_HORZ_EXT,    // left
-			vertDist - TEXT_VERT_EXT,    // top
-			horzDist + TEXT_HORZ_EXT,    // right
-			vertDist + TEXT_VERT_EXT     // bottom
-		);
 	}
 
 	void displayTick

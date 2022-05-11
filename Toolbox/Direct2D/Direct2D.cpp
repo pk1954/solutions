@@ -362,6 +362,32 @@ void D2D_driver::FillArrow
 	}
 }
 
+void D2D_driver::UpDownArrow(bool const bUpArrow, fPixelRect const & fPixRect, D2D1::ColorF const color) 
+{ 
+	fPixel       const fPixHorCenter { fPixRect.GetWidth() / 2 };
+	fPixel       const fPixHeight    { fPixRect.GetHeight() };
+	fPixel       const fPixArrWidth  { fPixHeight * 0.1f };
+	float        const fHorDist      { 0.2f };
+	fPixelPoint  const fPixStartPnt  { fPixHorCenter, fPixHeight * fHorDist };
+	fPixelPoint  const fPixEndPnt    { fPixHorCenter, fPixHeight * (1.0f - fHorDist) };
+
+	DrawLine
+	(
+		fPixStartPnt,
+		fPixelPoint(fPixHorCenter, fPixHeight * (1.0f - fHorDist)),
+		fPixHeight * 0.1f,
+		color
+	);
+	FillArrow
+	(
+		bUpArrow ? fPixStartPnt : fPixEndPnt,
+		fPixelPoint(0.0_fPixel, bUpArrow ? -1.0_fPixel : 1.0_fPixel),
+		fPixHeight * 0.2f,
+		fPixArrWidth,
+		color
+	);
+};
+
 void D2D_driver::FillDiamond
 (
 	fPixelPoint  const ptPos,

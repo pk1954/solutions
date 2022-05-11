@@ -40,12 +40,7 @@ public:
 
 	enum class DESIGN { INTEGRATED, STACKED };
 
-	static DESIGN GetDesign()               { return m_design; };
-	static void   SetDesign(DESIGN const d) { m_design = d; }
-	static void   ToggleDesign() 
-	{ 
-		SetDesign((m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED);
-	}
+	static DESIGN GetDesign() { return m_design; };
 
 private:
 
@@ -61,14 +56,19 @@ private:
 	inline static DESIGN m_design   { DESIGN::STACKED };
 	inline static bool   m_bPreview { false };
 
+	static void toggleDesign() 
+	{ 
+		m_design = (m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED;
+	}
+
 	void design(PIXEL const, PIXEL const);
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
 
-	void DoPaint() final;
-	bool OnSize(PIXEL const, PIXEL const) final;
-	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
-	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
-	void OnScaleCommand   (WPARAM const, BaseScale * const) final;
+	void DoPaint       ()                                             final;
+	bool OnSize        (PIXEL const, PIXEL const)                     final;
+	bool OnCommand     (WPARAM const, LPARAM const, PixelPoint const) final;
+	void OnScaleCommand(WPARAM const, BaseScale * const)              final;
+	void OnDrawItem    (WPARAM const, DRAWITEMSTRUCT const * const)   final;
 
 	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;
@@ -88,4 +88,7 @@ private:
 	NNetModelCommands           * m_pCommands       { nullptr };
 	HMENU                         m_hMenu           { nullptr };
 	HWND                          m_hStimulusButton { nullptr };
+	HWND                          m_hLayoutButton   { nullptr };
+
+	unique_ptr<D2D_driver> m_upGraphicsLayoutButton { nullptr };
 };

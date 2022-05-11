@@ -195,6 +195,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
     case WM_SETCURSOR:
         return OnSetCursor(wParam, lParam);
 
+    case WM_DRAWITEM:
+        OnDrawItem(wParam, bit_cast<DRAWITEMSTRUCT const *>(lParam));
+        return true;
+
     case WM_APP_CAPTION:
         SetCaption();
         break;
