@@ -180,6 +180,7 @@
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_modelWindow.h" />
+    <ClInclude Include="win32_PixelTypes.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_stdDialogBox.h" />

@@ -48,7 +48,7 @@ public:
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
     wstring  GenerateUniqueName() const;
-    size_t   Size() { return m_list.size(); }
+    size_t   Size() const { return m_list.size(); }
 
     void Apply2All(auto const &f)  
     { 

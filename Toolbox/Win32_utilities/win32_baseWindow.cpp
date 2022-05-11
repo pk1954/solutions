@@ -169,6 +169,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         OnLButtonDblClick(wParam, lParam);
         return true;
 
+    case WM_NCLBUTTONDBLCLK:
+        OnNCLButtonDblClick(wParam, lParam);
+        return true;
+
     case WM_MOUSEWHEEL:
         OnMouseWheel(wParam, lParam);
         return true;

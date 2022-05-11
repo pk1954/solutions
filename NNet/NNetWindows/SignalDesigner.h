@@ -64,11 +64,12 @@ private:
 	void design(PIXEL const, PIXEL const);
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
 
-	void DoPaint       ()                                             final;
-	bool OnSize        (PIXEL const, PIXEL const)                     final;
-	bool OnCommand     (WPARAM const, LPARAM const, PixelPoint const) final;
-	void OnScaleCommand(WPARAM const, BaseScale * const)              final;
-	void OnDrawItem    (WPARAM const, DRAWITEMSTRUCT const * const)   final;
+	void DoPaint            ()                                             final;
+	bool OnSize             (PIXEL const, PIXEL const)                     final;
+	bool OnCommand          (WPARAM const, LPARAM const, PixelPoint const) final;
+	void OnNCLButtonDblClick(WPARAM const, LPARAM const)                   final;
+	void OnScaleCommand     (WPARAM const, BaseScale * const)              final;
+	void OnDrawItem         (WPARAM const, DRAWITEMSTRUCT const * const)   final;
 
 	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;

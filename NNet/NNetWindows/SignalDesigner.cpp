@@ -8,6 +8,7 @@
 #include "win32_controls.h"
 #include "win32_editLineBox.h"
 #include "win32_util_resource.h"
+#include "win32_PixelTypes.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
@@ -243,20 +244,24 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 void SignalDesigner::OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * const pDiStruct) 
 {
-	RECT         const rect     { pDiStruct->rcItem };
-	PixelRect    const pixRect  { Util::RECT2PixelRect(rect) };
-	fPixelRect   const fPixRect { Convert2fPixelRect(pixRect) };
-//	D2D1::ColorF const color    { Util::CrsrInClientRect(m_hLayoutButton) ? BaseScale::COL_HIGHLIGHTED : BaseScale::COL_NORMAL };
 	m_upGraphicsLayoutButton->StartFrame();
 	m_upGraphicsLayoutButton->FillBackground(BaseScale::COL_NORMAL);
 	m_upGraphicsLayoutButton->UpDownArrow
 	(
 		m_design == DESIGN::STACKED, // if stacked -> up arrow
-		fPixRect,
+		Convert2fPixelRect(pDiStruct->rcItem),
 		D2D1::ColorF::Black
 	);
 	m_upGraphicsLayoutButton->EndFrame();
 };
+
+void SignalDesigner::OnNCLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
+{
+	SigGenId             sigGenId   { m_pNMWI->GetSigGenIdActive() };
+	UPSigGenList const & sigGenList { m_pNMWI->GetSigGenList() };
+	sigGenId = (sigGenId.GetValue() + 1) % sigGenList.Size();
+	PostCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, sigGenId.GetValue());
+}
 
 void SignalDesigner::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale)
 {
