@@ -10,11 +10,12 @@
 #include "observerInterface.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
-#include "MeanFilter.h"
 #include "Pipe.h"
 
 using std::vector;
 using std::unique_ptr;
+
+using SIG_INDEX = long; 
 
 class Param;
 class Signal;
@@ -47,8 +48,7 @@ public:
     void       Recalc       (UPNobList const &);
     void       Reset        (UPNobList const &);
 
-    float      GetFilteredDataPoint(Param const &, fMicroSecs const) const;
-    float      GetRawDataPoint     (Param const &, fMicroSecs const) const;
+    float      GetDataPoint     (Param const &, fMicroSecs const) const;
     fMicroSecs FindNextMaximum     (Param const &, fMicroSecs const) const;
     float      GetDistFactor       (MicroMeterPnt const &)           const;
     float      GetSignalValue      ()                                const;
@@ -74,11 +74,14 @@ public:
 
 private:
 
-    Observable           & m_observable;
-    MicroMeterCircle       m_circle    { MicroMeterCircle::NULL_VAL() };
-    float                  m_fDsBorder { };
-    fMicroSecs             m_timeStart { 0._MicroSecs };
-    unique_ptr<MeanFilter> m_upMeanFilter;
+    inline static SIG_INDEX INVALID_SIG_INDEX { -1 };
+
+    Observable     & m_observable;
+    MicroMeterCircle m_circle    { MicroMeterCircle::NULL_VAL() };
+    float            m_fDsBorder { };
+    fMicroSecs       m_timeStart { 0._MicroSecs };
+    vector<float>    m_data;
+
     struct SigDataPoint
     {
         Pipe          const * m_pPipe;
@@ -96,6 +99,7 @@ private:
             return MicroMeterCircle(m_umPos, PIPE_WIDTH * 0.5f);
         }
     };
+
     vector<SigDataPoint> m_dataPoints { };
 
     SigDataPoint const * findDataPoint(MicroMeterPnt const &) const;

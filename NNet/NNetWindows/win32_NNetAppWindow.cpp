@@ -253,6 +253,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	Show(true);
 
+//	::CreateWindowToolTip(m_statusBar.GetWindowHandle(), L"blah blah");
+
 	if (! AutoOpen::IsOn() || ! m_preferences.ReadPreferences())
 	{
 		m_modelCommands.ResetModel();

@@ -22,7 +22,7 @@ Signal::Signal
     m_observable(observable),
     m_circle(circle)
 {
-    m_upMeanFilter = make_unique<MeanFilter>();
+    //m_upMeanFilter = make_unique<MeanFilter>();
     SetSensorSize(list, circle.GetRadius());
     m_observable.RegisterObserver(*this);
 }
@@ -35,7 +35,7 @@ Signal::~Signal()
 void Signal::Reset(UPNobList const & list)    
 { 
     m_timeStart = 0.0_MicroSecs;
-    m_upMeanFilter->Reset(); 
+    //m_upMeanFilter->Reset(); 
     Recalc(list); 
 }
 
@@ -59,7 +59,7 @@ void Signal::Recalc(UPNobList const & list)
 {
     m_dataPoints.clear();
     list.Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
-    m_upMeanFilter->Recalc();
+    //m_upMeanFilter->Recalc();
 }
 
 void Signal::RecalcFilter(Param const & param) const
@@ -67,7 +67,7 @@ void Signal::RecalcFilter(Param const & param) const
     fMicroSecs usTimeRes    { param.TimeResolution() };
     fMicroSecs usFilterSize { param.FilterSize() };
     size_t     filterSize   { static_cast<size_t>(usFilterSize/usTimeRes) };
-    m_upMeanFilter->SetFilterSize(filterSize);
+    //m_upMeanFilter->SetFilterSize(filterSize);
 }
 
 float Signal::GetSignalValue() const
@@ -147,27 +147,18 @@ fMicroSecs Signal::index2time
     return usResult;
 }
 
-float Signal::GetFilteredDataPoint
-(
-    Param      const & param,
-    fMicroSecs const   time
-) const
-{
-    SIG_INDEX index        { time2index(param, time) };
-    size_t    nrOfElements { m_upMeanFilter->GetNrOfElements() };
-    if (index >= nrOfElements)
-        index = INVALID_SIG_INDEX;
-    return m_upMeanFilter->GetFiltered(index);
-}
-
-float Signal::GetRawDataPoint
+float Signal::GetDataPoint
 (
     Param      const & param,
     fMicroSecs const   time
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
-    return m_upMeanFilter->GetRaw(index);
+    if (index >= m_data.size())
+        return NAN;
+    if (index < 0)
+        return NAN;
+    return m_data[index];
 }
 
 fMicroSecs Signal::FindNextMaximum
@@ -177,16 +168,15 @@ fMicroSecs Signal::FindNextMaximum
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
-    size_t           nrOfElements { m_upMeanFilter->GetNrOfElements() };
-    if (index >= nrOfElements)
+    if (index >= m_data.size())
         index = INVALID_SIG_INDEX;
-    if ((index > 0) && (m_upMeanFilter->GetFiltered(index-1) > m_upMeanFilter->GetFiltered(index))) // falling values, go left
+    if ((index > 0) && (m_data[index - 1] > m_data[index])) // falling values, go left
     {   
-        while ((--index > 0) && (m_upMeanFilter->GetFiltered(index-1) >= m_upMeanFilter->GetFiltered(index)));
+        while ((--index > 0) && (m_data[index-1] >= m_data[index]));
     }
     else   // climbing values, go right
     {
-        while ((index < m_upMeanFilter->GetLastIndex()) && (m_upMeanFilter->GetFiltered(index) <= m_upMeanFilter->GetFiltered(index+1)))
+        while ((index < (m_data.size()-1)) && (m_data[index] <= m_data[index + 1]))
             ++index;
     }
     return index2time(param, index);
@@ -194,7 +184,7 @@ fMicroSecs Signal::FindNextMaximum
 
 void Signal::Notify(bool const bImmediate)
 {
-    m_upMeanFilter->Add(GetSignalValue());
+    m_data.push_back(GetSignalValue());
 }
 
 void Signal::CheckSignal() const 
@@ -211,7 +201,7 @@ void Signal::Dump() const
 {
     wcout << L"circle:     " << m_circle << endl;
     wcout << L"time start: " << m_timeStart << endl;
-    m_upMeanFilter->Dump();
+    //m_upMeanFilter->Dump();
 }
 
 void Signal::SetSensorPos

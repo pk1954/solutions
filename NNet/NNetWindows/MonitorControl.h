@@ -64,16 +64,16 @@ private:
 	void        moveOperation   (PixelPoint const &);
 	void        selectSignal    (PixelPoint const &);
 	void        selectTrack     (PixelPoint const &);
-	SignalNr    findSignal      (TrackNr const, PixelPoint const &, bool const) const;
+	SignalNr    findSignal      (TrackNr const, PixelPoint const &) const;
 	TrackNr     findTrack       (PIXEL const) const;
 	TrackNr     findPos4NewTrack(PIXEL const) const;
 	void        highlightSignal (SignalId const &);
 	fPixel      getSignalOffset (SignalId const &) const;
-	fPixel      getSignalValue  (Signal const &, fMicroSecs const, bool const) const;
+	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
 	fPixel      calcTrackHeight () const;
-	fPixelPoint calcDiamondPos  (bool const) const;
+	fPixelPoint calcDiamondPos  () const;
 
-	void paintSignal(SignalId const &, bool const);
+	void paintSignal(SignalId const &);
 	void paintTrack(TrackNr const) const;
 	bool signalTooHigh(fPixel const) const;
 
