@@ -59,7 +59,7 @@ public:
 	SignalGenerator const * GetSigGenC           (NobId const) const;
 
 	wstring                 GetTypeName (NobId const id)           const { return NobType::GetName(GetNobType(id).GetValue()); };
-	MicroMeterPnt           GetNobPos   (NobId const id)           const { return m_pModel->GetNobPos(id); }
+	MicroMeterPnt           GetNobPos   (NobId const id)           const { return m_pModel->GetNobConstPtr<Nob const *>(id)->GetPos(); }
 	Nob             const * GetConstNob (NobId const id)           const { return m_pModel->GetConstNob(id); }
 	MonitorData     const & GetConstMonitorData()                  const { return m_pModel->GetMonitorData(); }
 	Param           const & GetParams()                            const { return m_pModel->GetParams(); };
@@ -77,11 +77,12 @@ public:
 	Signal          const * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
 	SignalId                GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
-	SignalGenerator const * GetSigGenActive()                      const { return m_pModel->GetSigGenActive(); }
-	SignalGenerator       * GetSigGenStandard()                    const { return m_pModel->StdSigGen(); }
-	SignalGenerator const * GetSigGen(SigGenId const id)           const { return m_pModel->GetSigGen(id); }
-	SigGenId                GetSigGenIdActive()                    const { return m_pModel->GetSigGenIdActive(); }
-	bool                    IsInList(wstring const & name)         const { return m_pModel->IsInList(name); }
+	SignalGenerator const * GetSigGenActive()                      const { return m_pModel->GetSigGenList().GetSigGenActive(); }
+	SignalGenerator       * GetSigGenStandard()                    const { return m_pModel->GetSigGenList().StdSigGen(); }
+	SignalGenerator const * GetSigGen(SigGenId const id)           const { return m_pModel->GetSigGenList().GetSigGen(id); }
+	SigGenId                GetSigGenIdActive()                    const { return m_pModel->GetSigGenList().GetSigGenIdActive(); }
+	bool                    IsInList(wstring const & name)         const { return m_pModel->GetSigGenList().IsInList(name); }
+	UPSensorList    const & GetSensorList()                        const { return m_pModel->GetSensorList(); }
 
 	bool IsAnyNeuron(NobId const id) const 
 	{

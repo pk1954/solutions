@@ -28,12 +28,12 @@ public:
 	void Do() final 
 	{ 
 		m_pNMWI->GetUPNobs().Apply2All<BaseKnot>([this](BaseKnot &b) { DoRotate(b); });
-		m_pNMWI->GetMonitorData().Apply2AllSignals([this](Signal & s){ DoRotateSensor(s); });
+		m_pNMWI->GetSensorList().Apply2All([this] (Sensor * p) { DoRotateSensor(*p); });
 	}
 
 	void Undo() final 
 	{ 
 		m_pNMWI->GetUPNobs().Apply2All<BaseKnot>([this](BaseKnot &b) { UndoRotate(b); });
-		m_pNMWI->GetMonitorData().Apply2AllSignals([this](Signal & s){ UndoRotateSensor(s); });
+		m_pNMWI->GetSensorList().Apply2All([this](Sensor * p){ UndoRotateSensor(*p); });
 	}
 };

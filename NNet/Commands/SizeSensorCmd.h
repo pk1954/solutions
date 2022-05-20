@@ -14,37 +14,37 @@ class SizeSensorCmd : public NNetCommand
 public:
 	SizeSensorCmd
 	(
-		SignalId const & id,
+		SensorId const & id,
 		float    const   fFactor
 	)
-      : m_pSignal(m_pNMWI->GetMonitorData().GetSignalPtr(id)),
-		m_signalId(id),
+      : m_pSensor(m_pNMWI->GetSensorList().GetSensor(id)),
+		m_sensorId(id),
 		m_fFactor(fFactor)
 	{}
 
 	void Do  () final 
 	{ 
-		if (m_pSignal)
-			m_pSignal->SizeSensor(m_pNMWI->GetUPNobsC(), 1.0f / m_fFactor); 
+		if (m_pSensor)
+			m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), 1.0f / m_fFactor); 
 	}
 
 	void Undo() final 
 	{ 
-		if (m_pSignal)
-			m_pSignal->SizeSensor(m_pNMWI->GetUPNobsC(), m_fFactor); 
+		if (m_pSensor)
+			m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), m_fFactor); 
 	}
 
 	bool CombineCommands(Command const & src) final
 	{ 
 		SizeSensorCmd const & cmdSrc { static_cast<SizeSensorCmd const &>(src) };
-		if (m_signalId != cmdSrc.m_signalId)
+		if (m_sensorId != cmdSrc.m_sensorId)
 			return false;
 		m_fFactor *= cmdSrc.m_fFactor;
 		return true; 
 	};
 
 private:
-	Signal * m_pSignal;
-	SignalId m_signalId;
+	Sensor * m_pSensor;
+	SensorId m_sensorId;
 	float    m_fFactor;
 };

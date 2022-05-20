@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "SignalGenerator.h"
 #include "UPSigGenList.h"
 
 using std::to_wstring;
@@ -17,6 +16,8 @@ UPSigGenList::UPSigGenList()
     PushSigGen(move(upSigGen));
     SetActive(SigGenId(0));
 }
+
+UPSigGenList::~UPSigGenList() {}
 
 UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
 {
@@ -60,7 +61,7 @@ void UPSigGenList::InsertSigGen(UPSigGen upSigGen, SigGenId const id)
 SigGenId UPSigGenList::FindSigGen(wstring const & name) const
 {
     auto it { getSigGen(name) };
-    return static_cast<SigGenId>(it - m_list.begin());
+    return SigGenId(Cast2Int(it - m_list.begin()));
 }
 
 SignalGenerator const * UPSigGenList::GetSigGen(SigGenId const id) const
@@ -103,7 +104,7 @@ UPSigGen UPSigGenList::NewSigGen(wstring const & name)
 SigGenId UPSigGenList::PushSigGen(UPSigGen upSigGen)
 {
     m_list.push_back(move(upSigGen));
-    return static_cast<SigGenId>(m_list.size()-1);
+    return SigGenId(Cast2Int(m_list.size()-1));
 }
 
 UPSigGen UPSigGenList::PopSigGen()

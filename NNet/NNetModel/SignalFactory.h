@@ -23,13 +23,9 @@ public:
         m_pObservable = & observable;
     }
 
-    static unique_ptr<Signal>MakeSignal
-    (
-        UPNobList        const & list,
-        MicroMeterCircle const & umCircle
-    )
+    static unique_ptr<Signal>MakeSignal(Sensor & sensor)
     {
-        return make_unique<Signal>(* m_pObservable, list, umCircle);
+        return make_unique<Signal>(* m_pObservable, sensor);
     }
 
 private:

@@ -139,7 +139,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	}
 	else  // no nob selected, cursor on background
 	{
-		if (m_pNMRI->GetConstMonitorData().GetHighlightedSignal())
+		if (m_pNMRI->GetSensorList().IsAnySensorSelected())
 			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
 		else
 		{
@@ -245,9 +245,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
 
-	if (wParam == 0)                     // no mouse buttons or special keyboard keys pressed
+	if (wParam == 0)               // no mouse buttons or special keyboard keys pressed
 	{
-		m_pModelCommands->SetHighlightedSignal(umCrsrPos);
+		m_pModelCommands->SetHighlightedSensor(umCrsrPos);
 		setHighlightedNob(umCrsrPos);
 		ClearPtLast();             // make m_ptLast invalid
 		return;
@@ -283,9 +283,10 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				setTargetNob();
 			}
 		}
-		else if (m_pNMRI->GetConstMonitorData().IsAnySignalSelected())
+		else if (m_pNMRI->GetSensorList().IsAnySensorSelected())
 		{   
-			m_pModelCommands->MoveSensor(m_pNMRI->GetHighlightedSignalId(), umDelta);
+			SensorId const id { m_pNMRI->GetSensorList().GetSensorIdSelected() };
+			m_pModelCommands->MoveSensor(id, umDelta);
 			Notify(false); 
 		}
 		else if (wParam & MK_SHIFT)     // operate on selection
@@ -370,13 +371,13 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		PixelPoint    const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
 		fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
 		MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
-		SignalId      const signalId      { m_pModelCommands->SetHighlightedSignal(umCrsrPos) };
-		bool          const bSizeSensor   { signalId.IsValid() && IsUndefined(m_nobHighlighted) };
+		SensorId      const sensorId      { m_pModelCommands->SetHighlightedSensor(umCrsrPos) };
+		bool          const bSizeSensor   { sensorId.IsNotNull() && IsUndefined(m_nobHighlighted) };
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
 			if (bSizeSensor)
 			{
-				m_pModelCommands->SizeSensor(signalId, fFactor);
+				m_pModelCommands->SizeSensor(sensorId, fFactor);
 			}
 			else
 			{
@@ -420,7 +421,7 @@ void MainWindow::DoPaint()
 {
 	PixelRect   const         pixRect { GetClPixelRect () };
 	DrawContext const &       context { GetDrawContextC() };
-	Signal      const * const pSignal { m_pNMRI->GetConstMonitorData().GetHighlightedSignal() };
+	Sensor      const * const pSensor { m_pNMRI->GetSensorList().GetSensorSelected() };
 
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
@@ -457,11 +458,11 @@ void MainWindow::DoPaint()
 	}
 	else 
 	{
-		DrawHighlightedSensor(pSignal);
+		DrawHighlightedSensor(pSensor);
 	}
 	if (m_bShowPnts)
 	{
-		DrawSensorDataPoints(pSignal);
+		DrawSensorDataPoints(pSensor);
 	}
 }
 

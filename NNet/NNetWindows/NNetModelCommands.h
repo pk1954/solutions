@@ -10,6 +10,7 @@
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "UPSigGenList.h"
+#include "UPSensorList.h"
 #include "MonitorData.h"
 #include "IoLine.h"
 #include "NobType.h"
@@ -59,7 +60,7 @@ public:
     void AddModel                ();
     void AddOutgoing2BaseKnot    (NobId const, MicroMeterPnt const &);
     void AddOutgoing2Pipe        (NobId const, MicroMeterPnt const &);
-    void AddSignal               (MicroMeterCircle const &, TrackNr const);
+    void AddSensor               (MicroMeterCircle const &, TrackNr const);
     void AnalyzeAnomalies        ();
     void AnalyzeLoops            ();
     void AnimateArrows           (MicroMeter &, MicroMeter const);
@@ -83,7 +84,7 @@ public:
     void InsertTrack             (TrackNr const);
     bool MakeIoConnector         ();
     void MoveSelection           (MicroMeterPnt const &);
-    void MoveSensor              (SignalId const &, MicroMeterPnt const &);
+    void MoveSensor              (SensorId const, MicroMeterPnt const &);
     void MoveSignal              (SignalId const &, TrackNr const);
     void MoveNob                 (NobId const, MicroMeterPnt const &);
     void NewIoLinePair           (MicroMeterPnt const &);
@@ -105,13 +106,13 @@ public:
     void SetNob                  (NobId const, MicroMeterPosDir const);
     void SetTriggerSound         (NobId const, SoundDescr const &);
     void SizeSelection           (float const);
-    void SizeSensor              (SignalId const &, float const);
+    void SizeSensor              (SensorId const, float const);
     void SplitNeuron             (NobId const);
     void ToggleEmphMode          (NobId const);
     void ToggleStopOnTrigger     (NobId const);
     void StartStimulus           ();
 
-    SignalId SetHighlightedSignal(MicroMeterPnt const &);
+    SensorId SetHighlightedSensor(MicroMeterPnt const &);
 
 private:
 

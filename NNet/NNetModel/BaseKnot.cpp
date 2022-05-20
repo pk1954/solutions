@@ -150,8 +150,14 @@ bool BaseKnot::Apply2AllConnectedPipesB(PipeCrit const &c) const
 
 void BaseKnot::Prepare()
 {
+	//mV mVmaxDelta { 2.0_mV };       ++++++++ filter test ++++++++
+	//mV mVold { m_mVinputBuffer };
 	m_mVinputBuffer.Set2Zero();
 	Apply2AllInPipes([this](Pipe const & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
+	//if (m_mVinputBuffer > mVold + mVmaxDelta)
+	//	m_mVinputBuffer = mVold + mVmaxDelta;
+	//if (m_mVinputBuffer < mVold - mVmaxDelta)
+	//	m_mVinputBuffer = mVold - mVmaxDelta;
 }
 
 bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 

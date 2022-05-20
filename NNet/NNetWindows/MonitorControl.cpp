@@ -77,7 +77,7 @@ LPARAM MonitorControl::AddContextMenuEntries(HMENU const hPopupMenu)
 		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"Add track");
 
 	if (m_pMonitorData->IsAnySignalSelected())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_EEG_SENSOR, L"Delete signal");
+		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal");
 
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SCALE_EEG_SIGNALS, L"Auto scale");
 	
@@ -120,7 +120,7 @@ SignalNr MonitorControl::findSignal
 		return signalNrRes;
 
 	fPixelPoint const fPixPtCrsr    { Convert2fPixelPoint(ptCrsr) };
-	fMicroSecs  const usTime        { m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
+	fMicroSecs  const usTime        { - m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
 	fPixel            fPixBestDelta { fPixel::MAX_VAL() };
 	m_pMonitorData->Apply2AllSignalsInTrackC
 	(
@@ -369,8 +369,8 @@ void MonitorControl::DoPaint()
 
 	if (m_pMonitorData->NoTracks())
 		return;
-
-	m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const trackNr) { paintTrack(trackNr); });
+	if (m_pMonitorData->GetNrOfTracks() > 1)
+		m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const trackNr) { paintTrack(trackNr); });
 	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id); });
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
@@ -396,7 +396,7 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		m_measurement.SetActive(true);
 		break;
 
-	case IDD_DELETE_EEG_SENSOR:
+	case IDD_DELETE_SIGNAL:
 		PostCommand2Application(wmId, 0);
 		break;
 

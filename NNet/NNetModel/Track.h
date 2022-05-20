@@ -22,13 +22,6 @@ class Track
 {
 public:
 
-	//Track()                           = default;  // constructor   
-	//~Track()                          = default;  // destructor
-	//Track             (      Track&&) = delete;   // move constructor
-	//Track & operator= (const Track&)  = delete;   // copy assignment operator
-	//Track & operator= (      Track&&) = delete;   // move assignment operator
-	//Track             (const Track&)  = delete;   // copy constructor
-
 	bool operator==(Track const &) const;
 
 	void Dump()  const;

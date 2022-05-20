@@ -12,6 +12,8 @@
 #include "Neuron.h"
 #include "InputLine.h"
 #include "Pipe.h"
+#include "Signal.h"
+#include "Sensor.h"
 #include "win32_util.h"
 #include "win32_textBuffer.h"
 #include "win32_MainWindow.h"
@@ -207,24 +209,28 @@ void CrsrWindow::printSignalInfo
 	{
 		textBuf.nextLine();
 		textBuf.AlignRight(); 
-		textBuf.printString(L"Signal at ");
-		printMicroMeter(textBuf, pSignal->GetCenter().GetX()); 
-		printMicroMeter(textBuf, pSignal->GetCenter().GetY()); 
-		textBuf.nextLine();
-		textBuf.printString(L"In track nr ");
+		textBuf.printString(L"SIgnal in track nr ");
 		textBuf.printNumber(id.GetTrackNr().GetValue());
 		textBuf.nextLine();
-		textBuf.AlignRight(); 
-		textBuf.printString(L"Radius: ");
-		printMicroMeter(textBuf, pSignal->GetRadius()); 
-		textBuf.nextLine();
-		textBuf.AlignRight(); 
-		textBuf.printString(L"Data points: ");
-		textBuf.printString(to_wstring(pSignal->GetNrOfElements())); 
-		textBuf.nextLine();
-		textBuf.AlignRight(); 
-		textBuf.printString(L"Factor: ");
-		textBuf.printString(to_wstring(pSignal->GetDistFactor(m_pMainWindow->GetCursorPos()))); 
-		textBuf.nextLine();
+		if (pSignal->GetSigSrcType() == Signal::SIGSRC_CIRCLE)
+		{
+			Sensor const * psigSrc { static_cast<Sensor const *>(pSignal->GetSignalSource()) };
+			textBuf.AlignRight(); 
+			textBuf.printString(L"EEG-Sensor at ");
+			printMicroMeter(textBuf, psigSrc->GetCenter().GetX()); 
+			printMicroMeter(textBuf, psigSrc->GetCenter().GetY()); 
+			textBuf.nextLine();
+			textBuf.printString(L"Radius: ");
+			printMicroMeter(textBuf, psigSrc->GetRadius()); 
+			textBuf.nextLine();
+			textBuf.AlignRight(); 
+			textBuf.printString(L"Data points: ");
+			textBuf.printString(to_wstring(psigSrc->GetNrOfElements())); 
+			textBuf.nextLine();
+			textBuf.AlignRight(); 
+			textBuf.printString(L"Factor: ");
+			textBuf.printString(to_wstring(psigSrc->GetDistFactor(m_pMainWindow->GetCursorPos()))); 
+			textBuf.nextLine();
+		}
 	}
 }

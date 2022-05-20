@@ -459,7 +459,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDD_REGISTER_SIG_GEN:
-			m_signalDesigner.RegisterAtSigGen(SigGenId(lParam));
+			m_signalDesigner.RegisterAtSigGen(SigGenId(Cast2Int(lParam)));
 			break;
 
 		case IDM_SAVE_MODEL_AS:
@@ -593,7 +593,6 @@ void NNetAppWindow::replaceModel()
 	m_mainNNetWindow.Reset();
 	m_upModel = move(m_modelImporter.GetImportedModel());
 	m_nmwi.SetModel(m_upModel.get());
-	m_nmwi.RecalcFilters();
 
 	setModelInterface();
 

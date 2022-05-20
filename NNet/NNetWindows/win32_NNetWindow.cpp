@@ -8,6 +8,7 @@
 #include "Resource.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
+#include "Sensor.h"
 #include "Pipe.h"
 #include "Neuron.h"
 #include "InputLine.h"
@@ -73,16 +74,16 @@ void NNetWindow::DrawSensors() const
 	m_pNMRI->GetConstMonitorData().Apply2AllSignalsC([this](Signal const & sig) { sig.Draw(m_context, false); });
 }
 
-void NNetWindow::DrawHighlightedSensor(Signal const * const pSignal) const
+void NNetWindow::DrawHighlightedSensor(Sensor const * const pSensor) const
 {
-	if (pSignal)
-		pSignal->Draw(m_context, true);
+	if (pSensor)
+		pSensor->Draw(m_context, true);
 }
 
-void NNetWindow::DrawSensorDataPoints(Signal const * const pSignal) const
+void NNetWindow::DrawSensorDataPoints(Sensor const * const pSensor) const
 {
-	if (pSignal)
-		pSignal->DrawDataPoints(m_context);
+	if (pSensor)
+		pSensor->DrawDataPoints(m_context);
 }
 
 bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)

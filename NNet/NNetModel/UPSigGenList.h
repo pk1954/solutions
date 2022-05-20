@@ -6,15 +6,14 @@
 
 #include <vector>
 #include "NamedType.h"
+#include "SignalGenerator.h"
 
 using std::ranges::for_each;
 using std::unique_ptr;
 using std::wstring;
 using std::vector;
 
-class SignalGenerator;
-
-using SigGenId = NamedType<size_t, struct SigGenIdParam>;
+using SigGenId = NamedType<int, struct SigGenIdParam>;
 using UPSigGen = unique_ptr<SignalGenerator>;
 
 static const SigGenId STD_SIGGEN_ID (0);
@@ -23,6 +22,7 @@ class UPSigGenList
 {
 public:
     UPSigGenList();
+    ~UPSigGenList();
 
     SignalGenerator       * StdSigGen() { return m_list.begin()->get(); }
 

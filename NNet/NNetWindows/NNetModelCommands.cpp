@@ -7,7 +7,7 @@
 #include "AddNobsCommand.h"
 #include "AddPipe2BaseKnotCmd.h"
 #include "AddPipe2PipeCommand.h"
-#include "AddSignalCommand.h"
+#include "AddSensorSignalCmd.h"
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "ArrowAnimation.h"
@@ -54,7 +54,6 @@
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
 #include "SetSigGenStaticDataCmd.h"
-#include "SetHighlightedSignalCmd.h"
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
 #include "SetActiveSigGenCmd.h"
@@ -162,7 +161,7 @@ void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & p
 	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputLine));
 }
 
-void NNetModelCommands::AddSignal
+void NNetModelCommands::AddSensor
 (
 	MicroMeterCircle const & umCircle,
 	TrackNr          const   trackNr
@@ -170,7 +169,7 @@ void NNetModelCommands::AddSignal
 { 
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << umCircle << L" " << trackNr << endl;
-	m_pCmdStack->PushCommand(make_unique<AddSignalCommand>(umCircle, trackNr));
+	m_pCmdStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
 }
 
 void NNetModelCommands::AnalyzeAnomalies()
@@ -357,9 +356,12 @@ void NNetModelCommands::ToggleStopOnTrigger(NobId const id)
 	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCommand>(id));
 }
 
-SignalId NNetModelCommands::SetHighlightedSignal(MicroMeterPnt const & umPos)
+SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 {
-	return m_pNMWI->GetMonitorData().SetHighlightedSignal(umPos);
+	UPSensorList & list { m_pNMWI->GetSensorList() };
+	SensorId const id   { list.FindSensor(umPos) };
+	list.SetActive(id);
+	return id;
 }
 
 void NNetModelCommands::SetTriggerSound(NobId const id, SoundDescr const & sound)
@@ -390,7 +392,7 @@ void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
 	m_pCmdStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(id), delta));
 }
 
-void NNetModelCommands::MoveSensor(SignalId const & id, MicroMeterPnt const & delta)
+void NNetModelCommands::MoveSensor(SensorId const id, MicroMeterPnt const & delta)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << delta << endl;
@@ -446,7 +448,7 @@ void NNetModelCommands::SizeSelection(float const fFactor)
 	m_pCmdStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
 }
 
-void NNetModelCommands::SizeSensor(SignalId const & id, float const fFactor)
+void NNetModelCommands::SizeSensor(SensorId const id, float const fFactor)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << fFactor << endl;

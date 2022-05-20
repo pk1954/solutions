@@ -44,12 +44,12 @@ protected:
 		nob.RotateNob(m_umPntPivot, -m_radDelta);
 	}
 
-	void DoRotateSensor(Signal & s) const	
+	void DoRotateSensor(Sensor & s) const	
 	{ 
 		s.RotateSensor(m_umPntPivot, m_radDelta);
 	}
 
-	void UndoRotateSensor(Signal & s) const	
+	void UndoRotateSensor(Sensor & s) const	
 	{ 
 		s.RotateSensor(m_umPntPivot, -m_radDelta);
 	}

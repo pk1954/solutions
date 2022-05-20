@@ -73,12 +73,12 @@ SignalId MonitorData::SetHighlightedSignal(SignalId const id)
 	return signalIdOld;
 }
 
-SignalId MonitorData::SetHighlightedSignal(Signal const &sigNew)
+SignalId MonitorData::SetHighlightedSignal(Signal const & sigNew)
 {
 	return SetHighlightedSignal(FindSignalId([&sigNew](Signal const &s){ return &s == &sigNew; }));
 }
 
-SignalId MonitorData::SetHighlightedSignal(MicroMeterPnt const& umPos)
+SignalId MonitorData::SetHighlightedSignal(MicroMeterPnt const & umPos)
 {
 	return SetHighlightedSignal(FindSignalId([&umPos](Signal const &s){ return s.Includes(umPos); }));
 }
@@ -88,6 +88,16 @@ SignalId MonitorData::ResetHighlightedSignal()
 	return SetHighlightedSignal(SignalId::NULL_VAL());
 }
 
+SignalNr MonitorData::AddSignal
+(
+	TrackNr      const trackNr, 
+	unique_ptr<Signal> upSignal 
+)
+{
+	assert(upSignal);
+	return getTrack(trackNr)->AddSignal(move(upSignal));
+}
+
 void MonitorData::AddSignal
 (
 	SignalId   const & id, 
@@ -95,16 +105,19 @@ void MonitorData::AddSignal
 )
 {
 	assert(upSignal);
-	getTrack(id.GetTrackNr())->AddSignal(move(upSignal),id.GetSignalNr());
+	getTrack(id.GetTrackNr())->AddSignal(move(upSignal), id.GetSignalNr());
 }
 
-SignalNr MonitorData::AddSignal
+SignalNr MonitorData::AddSensorSignal
 (
-	TrackNr      const trackNr, 
-	unique_ptr<Signal> upSignal 
+	TrackNr const trackNr,
+	Sensor      & sensor
 )
 {
-	return IsValid(trackNr) ? getTrack(trackNr)->AddSignal(move(upSignal)) : SignalNr::NULL_VAL();
+	if (!IsValid(trackNr))
+		return SignalNr::NULL_VAL();
+	unique_ptr<Signal> upSignal { SignalFactory::MakeSignal(sensor) };
+	return getTrack(trackNr)->AddSignal(move(upSignal));
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
@@ -115,23 +128,11 @@ unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
 	return removeSignal(id);
 }
 
-SignalNr MonitorData::AddSignal
-(
-	UPNobList        const & list,
-	TrackNr          const   trackNr, 
-	MicroMeterCircle const & umCircle 
-)
-{
-	return (IsValid(trackNr))
-		   ? AddSignal(trackNr, SignalFactory::MakeSignal(list, umCircle))
-		   : SignalNr::NULL_VAL();
-}
-
 SignalNr MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
 	assert(IsValid(id) && IsValid(trackNrDst));
 	SignalNr sigNr { AddSignal(trackNrDst, removeSignal(id)) };
-	if ((sigNr.IsNotNull()) && (id == m_idSigHighlighted))
+	if ((sigNr.IsNotNull()) && (IsSelected(id)))
 		SetHighlightedSignal(SignalId(trackNrDst, sigNr));
 	return sigNr;
 }

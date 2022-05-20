@@ -222,7 +222,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
-        m_pModelCommands->SetActiveSignalGenerator(SigGenId(lParam));
+        m_pModelCommands->SetActiveSignalGenerator(SigGenId(Cast2Int(lParam)));
         ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
@@ -288,6 +288,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->DeleteSignal(m_pNMRI->GetConstMonitorData().GetHighlightedSignalId());
         break;
 
+    case IDD_DELETE_SIGNAL:
+        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
+        m_pModelCommands->DeleteSignal(m_pNMRI->GetConstMonitorData().GetHighlightedSignalId());
+        break;
+
     case IDD_ADD_TRACK:
         m_pModelCommands->InsertTrack(TrackNr(Cast2Int(lParam)));
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
@@ -341,7 +346,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_ADD_EEG_SENSOR:
-        m_pModelCommands->AddSignal(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
+        m_pModelCommands->AddSensor(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
         m_pMonitorWindow->Show(true);
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;

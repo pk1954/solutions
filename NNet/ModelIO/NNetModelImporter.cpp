@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <assert.h>
 #include "ERRHNDL.H"
+#include "Signal.h"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
 #include "UPSigGenList.h"
@@ -142,7 +143,7 @@ public:
         TrackNr          trackNr { ScrReadTrackNr(script) };
         script.ScrReadString(L"source");
         unsigned long    ulSigSrc { script.ScrReadUlong() };
-        if (ulSigSrc == NNetModelStorage::SIGSRC_CIRCLE)
+        if (ulSigSrc == Signal::SIGSRC_CIRCLE)
         {
             umCircle = ScrReadMicroMeterCircle(script);
         }
@@ -150,7 +151,9 @@ public:
         {
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
         }
-        GetMonitorData().AddSignal(GetUPNobsRef(), trackNr, umCircle);
+        unique_ptr<Sensor> upSensor { make_unique<Sensor>(umCircle, GetUPNobsRef()) };
+        GetMonitorData().AddSensorSignal(trackNr, *upSensor.get());
+        GetUPSensorsRef().PushSensor(move(upSensor));
     }
 };
 
@@ -171,7 +174,7 @@ public:
                 [param, fVal](IoLine & n)                                                         // Legacy
                 {                                                                                 // Legacy
                     auto & inputLine { static_cast<InputLine &>(n) };                             // Legacy
-                    inputLine.GetSigGen()->SetParam(param, fVal);                                  // Legacy
+                    inputLine.GetSigGen()->SetParam(param, fVal);                                 // Legacy
                 }                                                                                 // Legacy
             );                                                                                    // Legacy
         }                                                                                         // Legacy 
@@ -223,7 +226,7 @@ public:
 
 void NNetModelImporter::Initialize()
 {
-    SymbolTable::ScrDefConst(L"circle",          NNetModelStorage::SIGSRC_CIRCLE );
+    SymbolTable::ScrDefConst(L"circle",          static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
     SymbolTable::ScrDefConst(L"Description",     new WrapDescription    (* this));
     SymbolTable::ScrDefConst(L"Protocol",        new WrapProtocol       (* this));
     SymbolTable::ScrDefConst(L"GlobalParameter", new WrapGlobalParameter(* this));

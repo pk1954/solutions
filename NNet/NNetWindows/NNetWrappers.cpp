@@ -78,7 +78,7 @@ public:
     {
         MicroMeterCircle const umCircle { ScrReadMicroMeterCircle(script) };
         TrackNr          const trackNr  { ScrReadTrackNr(script) };
-        m_pCommands->AddSignal(umCircle, trackNr);
+        m_pCommands->AddSensor(umCircle, trackNr);
     }
 };
 
@@ -289,7 +289,7 @@ class WrapMoveSensor: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        SignalId      const id      { ScrReadSignalId(script) };
+        SensorId      const id      ( script.ScrReadUint() );
         MicroMeterPnt const umDelta { ScrReadMicroMeterPnt(script) };
         m_pCommands->MoveSensor(id, umDelta);
     }

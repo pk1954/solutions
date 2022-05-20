@@ -35,39 +35,36 @@ public:
     UPNobList               & GetUPNobs()      { return m_pModel->GetUPNobs(); }
     Param                   & GetParams()      { return m_pModel->GetParams(); }
     MonitorData             & GetMonitorData() { return m_pModel->GetMonitorData(); }
-    SignalGenerator         * StdSigGen()      { return m_pModel->StdSigGen(); }
     unique_ptr<vector<Nob *>> GetSelection()   { return GetUPNobs().GetAllSelected(); }
 
     void ResetModel      ()       { m_pModel->ResetModel(); }
-    void RecalcFilters   ()       { m_pModel->RecalcFilters(); }
     void ClearDynamicData() const { m_pModel->ClearDynamicData(); }
 
-    UPSigGen NewSigGen      ()                           { return      m_pModel->NewSigGen(); }
-    UPSigGen NewSigGen      (wstring const & name)       { return      m_pModel->NewSigGen(name); }
-    SigGenId FindSigGen     (wstring const & name) const { return      m_pModel->FindSigGen(name); }
-    UPSigGen RemoveSigGen   ()                           { return move(m_pModel->RemoveSigGen()); }
-    UPSigGen RemoveSigGen   (SigGenId const id)          { return move(m_pModel->RemoveSigGen(id)); }
-    UPSigGen RemoveSigGen   (wstring const & name)       { return move(m_pModel->RemoveSigGen(name)); }
-    SigGenId PushSigGen     (UPSigGen upSigGen)          { return      m_pModel->PushSigGen(move(upSigGen)); }
-    UPSigGen PopSigGen      ()                           { return move(m_pModel->PopSigGen()); }
-    bool     IsValid        (SigGenId const id)    const { return      m_pModel->IsValid(id); }
-    SigGenId SetSigGenActive(SigGenId const id)          { return      m_pModel->SetSigGenActive(id); }
+    SigGenId          FindSigGen     (wstring const & name)   const { return      m_pModel->GetSigGenList().FindSigGen(name); }
+    bool              IsValid        (SigGenId const id)      const { return      m_pModel->GetSigGenList().IsValid(id); }
+    SignalGenerator * StdSigGen      ()                             { return      m_pModel->GetSigGenList().StdSigGen(); }
+    UPSigGen          NewSigGen      ()                             { return      m_pModel->GetSigGenList().NewSigGen(); }
+    UPSigGen          NewSigGen      (wstring const & name)         { return      m_pModel->GetSigGenList().NewSigGen(name); }
+    SigGenId          PushSigGen     (UPSigGen upSigGen)            { return      m_pModel->GetSigGenList().PushSigGen(move(upSigGen)); }
+    SigGenId          SetSigGenActive(SigGenId const id)            { return      m_pModel->GetSigGenList().SetActive(id); }
+    void              InsertSigGen   (UPSigGen u, SigGenId const i) { return      m_pModel->GetSigGenList().InsertSigGen(move(u), i); }
+    SignalGenerator * GetSigGenActive()                             { return      m_pModel->GetSigGenList().GetSigGenActive(); }
+    SignalGenerator * GetSigGen      (SigGenId const id)            { return      m_pModel->GetSigGenList().GetSigGen(id); }
+    UPSigGen          RemoveSigGen   (SigGenId const id)            { return move(m_pModel->GetSigGenList().RemoveSigGen(id)); }
+    UPSigGen          PopSigGen      ()                             { return move(m_pModel->GetSigGenList().PopSigGen()); }
 
-    void InsertSigGen(UPSigGen up, SigGenId const id)    { return      m_pModel->InsertSigGen(move(up), id); }
-
-    SignalGenerator * GetSigGenActive()                  { return m_pModel->GetSigGenActive(); }
-    SignalGenerator * GetSigGen      (SigGenId const id) { return m_pModel->GetSigGen(id); }
+    UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 
     void  SelectSubtree(BaseKnot & baseKnot, bool  const b) { m_pModel->SelectSubtree(baseKnot, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
-    void  SetDescriptionUI         (DescriptionUI  & ui  ) { m_pModel->SetDescriptionUI(ui); }
-    void  SetModelFilePath         (wstring  const & wstr) { m_pModel->SetModelFilePath  (wstr); }
-    void  AddDescriptionLine       (wstring  const & wstr) { m_pModel->AddDescriptionLine(wstr); }
-    void  DescriptionComplete      ()                      { m_pModel->DescriptionComplete(); }
-    void  DeselectAllNobs          () const                { m_pModel->DeselectAllNobs(); }
+    void  SetDescriptionUI   (DescriptionUI  & ui  ) { m_pModel->SetDescriptionUI(ui); }
+    void  SetModelFilePath   (wstring  const & wstr) { m_pModel->SetModelFilePath  (wstr); }
+    void  AddDescriptionLine (wstring  const & wstr) { m_pModel->AddDescriptionLine(wstr); }
+    void  DescriptionComplete()                      { m_pModel->DescriptionComplete(); }
+    void  DeselectAllNobs    () const                { m_pModel->DeselectAllNobs(); }
 
     void AddOutgoing   (NobId const id, Pipe & pipe) { GetBaseKnot(id).AddOutgoing   (pipe); }
     void AddIncoming   (NobId const id, Pipe & pipe) { GetBaseKnot(id).AddIncoming   (pipe); }

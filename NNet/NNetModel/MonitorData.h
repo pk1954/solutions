@@ -53,14 +53,14 @@ public:
 	SignalId SetHighlightedSignal(SignalId      const  );
 	SignalId ResetHighlightedSignal();
 
-	SignalNr       AddSignal            (UPNobList const &,	TrackNr const, MicroMeterCircle const &);
-	SignalNr       AddSignal            (TrackNr  const,   unique_ptr<Signal>);
-	void           AddSignal            (SignalId const &, unique_ptr<Signal>);
-	SignalNr       MoveSignal           (SignalId const &, TrackNr  const);
-	Signal       * GetSignalPtr         (SignalId const &);
-	Signal const * GetConstSignalPtr    (SignalId const &)      const;
-	Signal const * FindSensor           (MicroMeterPnt const &) const;
-	Signal const * GetHighlightedSignal () const;
+	SignalNr       AddSensorSignal     (TrackNr  const, Sensor &);
+	SignalNr       AddSignal           (TrackNr  const, unique_ptr<Signal>);
+    void           AddSignal           (SignalId const &, unique_ptr<Signal>);
+	SignalNr       MoveSignal          (SignalId const &, TrackNr  const);
+	Signal       * GetSignalPtr        (SignalId const &);
+	Signal const * GetConstSignalPtr   (SignalId const &)      const;
+	Signal const * FindSensor          (MicroMeterPnt const &) const;
+	Signal const * GetHighlightedSignal() const;
 
 	unique_ptr<Signal> DeleteSignal(SignalId const &);
 

@@ -78,7 +78,7 @@
     <ClInclude Include="MoveNobCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddSignalCommand.h">
+    <ClInclude Include="AddSensorSignalCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeleteSignalCommand.h">
@@ -121,9 +121,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RotationCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SetHighlightedSignalCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveSensorCmd.h">

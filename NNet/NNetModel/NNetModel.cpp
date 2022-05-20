@@ -7,6 +7,7 @@
 #include "NobException.h"
 #include "SimulationTime.h"
 #include "NobType.h"
+#include "BaseKnot.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
@@ -62,6 +63,26 @@ Nob * NNetModel::GetNob(NobId const id)
 	return m_Nobs.GetAt(id);
 }
 
+BaseKnot const * NNetModel::GetStartKnotPtr(NobId const id) const 
+{ 
+	return GetNobConstPtr<Pipe const *>(id)->GetStartKnotPtr(); 
+}
+
+BaseKnot const * NNetModel::GetEndKnotPtr(NobId const id) const 
+{ 
+	return GetNobConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); 
+}
+
+NobId NNetModel::GetStartKnotId(NobId const idPipe) const 
+{ 
+	return GetStartKnotPtr(idPipe)->GetId(); 
+}
+
+NobId NNetModel::GetEndKnotId(NobId const idPipe) const 
+{ 
+	return GetEndKnotPtr  (idPipe)->GetId(); 
+}
+
 void NNetModel::Reconnect(NobId const id)
 {
 	if (Nob * pNod { GetNob(id) })
@@ -92,12 +113,6 @@ bool NNetModel::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 	return m_description.GetDescriptionLine(iLine, wstrLine);
 }
 
-void NNetModel::RecalcFilters()
-{
-	MonitorData & data = GetMonitorData();
-	GetMonitorData().Apply2AllSignals([this](Signal const & s) { s.RecalcFilter(m_param); });
-}
-
 float NNetModel::SetParam
 (
 	ParamType::Value const param, 
@@ -107,7 +122,7 @@ float NNetModel::SetParam
 	float fOldValue { m_param.GetParameterValue(param) };
 	m_param.SetParameterValue(param, fNewValue);
 	if (param == ParamType::Value::filterSize)
-		;  // RecalcFilters();
+		/* not used */ ;
 	else
 		RecalcAllNobs();
 	return fOldValue;

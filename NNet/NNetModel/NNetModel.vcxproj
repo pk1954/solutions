@@ -185,6 +185,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="SignalSource.h" />
+    <ClInclude Include="Sensor.h" />
     <ClInclude Include="Spike.h" />
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="AutoOpen.h" />
@@ -233,6 +235,7 @@
     <ClInclude Include="Track.h" />
     <ClInclude Include="TrackNr.h" />
     <ClInclude Include="UPNobList.h" />
+    <ClInclude Include="UPSensorList.h" />
     <ClInclude Include="UPSigGenList.h" />
   </ItemGroup>
   <ItemGroup>
@@ -267,8 +270,10 @@
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="NobType.cpp" />
     <ClCompile Include="SignalGenerator.cpp" />
+    <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="UPNobList.cpp" />
+    <ClCompile Include="UPSensorList.cpp" />
     <ClCompile Include="UPSigGenList.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
