@@ -36,9 +36,6 @@
     <ClInclude Include="MoreTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NamedType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="observable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MeanFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ListOfNamedObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

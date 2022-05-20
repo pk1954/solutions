@@ -32,10 +32,10 @@
     <ClInclude Include="Int24.h" />
     <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
+    <ClInclude Include="ListOfNamedObjects.h" />
     <ClInclude Include="LogarithmicTrackbar.h" />
     <ClInclude Include="MeanFilter.h" />
     <ClInclude Include="MoreTypes.h" />
-    <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />
     <ClInclude Include="observerInterface.h" />
     <ClInclude Include="PixFpDimension.h" />
