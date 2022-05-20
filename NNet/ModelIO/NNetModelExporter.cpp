@@ -87,7 +87,7 @@ void NNetModelExporter::writeSigGenData(wostream & out) const
                 << endl;
         }
     );
-    out << L"ActiveSigGen " << m_pNMRI->GetSigGenIdActive() << endl;
+    out << L"ActiveSigGen " << m_pNMRI->GetSigGenIdSelected() << endl;
 }
 
 void NNetModelExporter::writeTriggerSounds(wostream & out) const

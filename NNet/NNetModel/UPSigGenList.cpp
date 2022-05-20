@@ -19,6 +19,13 @@ UPSigGenList::UPSigGenList()
 
 UPSigGenList::~UPSigGenList() {}
 
+SigGenId UPSigGenList::SetActive(SigGenId const id)
+{
+    SigGenId sigGenIdOld { m_sigGenIdActive };
+    m_sigGenIdActive = id;
+    return sigGenIdOld;
+}
+
 UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
 {
     if (it == m_list.end())
@@ -26,7 +33,7 @@ UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
     else
     {
         UPSigGen upSigGen = move(*it);
-        if (upSigGen.get() == GetSigGenActive() )
+        if (upSigGen.get() == GetSigGenSelected() )
             SetActive(SigGenId(0));
         m_list.erase(it);
         return move(upSigGen);

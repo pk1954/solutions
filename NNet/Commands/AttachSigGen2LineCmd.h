@@ -15,7 +15,7 @@ public:
 	AttachSigGen2LineCmd(NobId const nobId)
 	  : m_inputLine(*m_pNMWI->GetNobPtr<InputLine *>(nobId)),
 		m_pSigGenOld(m_inputLine.GetSigGen()),
-		m_pSigGenNew(m_pNMWI->GetSigGenActive())
+		m_pSigGenNew(m_pNMWI->GetSigGenSelected())
 	{}
 
 	void Do() final 

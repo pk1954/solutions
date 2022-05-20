@@ -24,31 +24,24 @@ public:
     UPSigGenList();
     ~UPSigGenList();
 
-    SignalGenerator       * StdSigGen() { return m_list.begin()->get(); }
+    size_t Size() const { return m_list.size(); }
 
-    SigGenId                FindSigGen(wstring  const &) const;
-    SignalGenerator const * GetSigGen (SigGenId const  ) const;
-    SignalGenerator       * GetSigGen (SigGenId const  );
-    SignalGenerator       * GetSigGen (wstring  const &);
-    SignalGenerator const * GetSigGen (wstring  const &) const;
-    bool                    IsInList  (wstring  const &) const;
+    SignalGenerator const * GetSigGen(SigGenId const) const;
+    SignalGenerator       * GetSigGen(SigGenId const);
 
-    SigGenId                GetSigGenIdActive() const { return m_sigGenIdActive; }
-    SignalGenerator const * GetSigGenActive  () const { return GetSigGen(m_sigGenIdActive); }
-    SignalGenerator       * GetSigGenActive  ()       { return GetSigGen(m_sigGenIdActive); }
+    SigGenId                GetSigGenIdSelected() const { return m_sigGenIdActive; }
+    SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
+    SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
+    bool IsAnySigGenSelected()      const { return m_sigGenIdActive.IsNotNull(); }
     bool IsValid(SigGenId const id) const { return id.GetValue() < m_list.size(); }
 
-    UPSigGen NewSigGen();
-    UPSigGen NewSigGen(wstring  const &);
+    SigGenId SetActive(SigGenId const);
     SigGenId PushSigGen(UPSigGen);
     UPSigGen PopSigGen();
     UPSigGen RemoveSigGen(SigGenId const);
-    UPSigGen RemoveSigGen(wstring const &);
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
-    wstring  GenerateUniqueName() const;
-    size_t   Size() const { return m_list.size(); }
 
     void Apply2All(auto const &f)  
     { 
@@ -60,12 +53,16 @@ public:
         for_each(m_list, [&f](auto const & up) { f(up.get()); });
     }
 
-    SigGenId SetActive(SigGenId const id)
-    {
-        SigGenId sigGenIdOld { m_sigGenIdActive };
-        m_sigGenIdActive = id;
-        return sigGenIdOld;
-    }
+    SignalGenerator       * StdSigGen() { return m_list.begin()->get(); }
+
+    UPSigGen                NewSigGen();
+    SignalGenerator       * GetSigGen   (wstring const &);
+    SignalGenerator const * GetSigGen   (wstring const &) const;
+    bool                    IsInList    (wstring const &) const;
+    SigGenId                FindSigGen  (wstring const &) const;
+    UPSigGen                NewSigGen   (wstring const &);
+    UPSigGen                RemoveSigGen(wstring const &);
+    wstring                 GenerateUniqueName() const;
 
 private:
 

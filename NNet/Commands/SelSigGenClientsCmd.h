@@ -16,7 +16,7 @@ class SelSigGenClientsCmd : public SelectionCommand
 public:
 	SelSigGenClientsCmd()
 	{
-		m_pSigGen = m_pNMWI->GetSigGenActive();
+		m_pSigGen = m_pNMWI->GetSigGenSelected();
 	}
 
 	void Do() final 

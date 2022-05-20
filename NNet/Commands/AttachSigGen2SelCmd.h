@@ -17,7 +17,7 @@ class AttachSigGen2SelCmd : public NNetCommand
 {
 public:
 	AttachSigGen2SelCmd()
-	  : m_pSigGenNew(m_pNMWI->GetSigGenActive())
+	  : m_pSigGenNew(m_pNMWI->GetSigGenSelected())
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<InputLine>
 		(

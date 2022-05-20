@@ -85,7 +85,6 @@ private:
 
 	void DoPaint() final;
 
-	bool OnSize       (PIXEL  const, PIXEL  const) final;
 	void OnMouseMove  (WPARAM const, LPARAM const) final;
 	bool OnLButtonDown(WPARAM const, LPARAM const) final;
 	bool OnLButtonUp  (WPARAM const, LPARAM const) final;
@@ -107,8 +106,8 @@ private:
 
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
-	fPixelPoint pixPntStimulusFreq(fMicroSecs const t) const { return pixPntFreq(t, GetSigGenActive()->GetStimulusFrequency(t)); }
-	fPixelPoint pixPntStimulusVolt(fMicroSecs const t) const { return pixPntVolt(t, GetSigGenActive()->GetStimulusAmplitude(t)); }
+	fPixelPoint pixPntStimulusFreq(fMicroSecs const t) const { return pixPntFreq(t, GetSigGenSelected()->GetStimulusFrequency(t)); }
+	fPixelPoint pixPntStimulusVolt(fMicroSecs const t) const { return pixPntVolt(t, GetSigGenSelected()->GetStimulusAmplitude(t)); }
 
 	void calcHandles();
 	void paintRunControls (fMicroSecs const) const;

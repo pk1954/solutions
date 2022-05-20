@@ -40,18 +40,18 @@ public:
     void ResetModel      ()       { m_pModel->ResetModel(); }
     void ClearDynamicData() const { m_pModel->ClearDynamicData(); }
 
-    SigGenId          FindSigGen     (wstring const & name)   const { return      m_pModel->GetSigGenList().FindSigGen(name); }
-    bool              IsValid        (SigGenId const id)      const { return      m_pModel->GetSigGenList().IsValid(id); }
-    SignalGenerator * StdSigGen      ()                             { return      m_pModel->GetSigGenList().StdSigGen(); }
-    UPSigGen          NewSigGen      ()                             { return      m_pModel->GetSigGenList().NewSigGen(); }
-    UPSigGen          NewSigGen      (wstring const & name)         { return      m_pModel->GetSigGenList().NewSigGen(name); }
-    SigGenId          PushSigGen     (UPSigGen upSigGen)            { return      m_pModel->GetSigGenList().PushSigGen(move(upSigGen)); }
-    SigGenId          SetSigGenActive(SigGenId const id)            { return      m_pModel->GetSigGenList().SetActive(id); }
-    void              InsertSigGen   (UPSigGen u, SigGenId const i) { return      m_pModel->GetSigGenList().InsertSigGen(move(u), i); }
-    SignalGenerator * GetSigGenActive()                             { return      m_pModel->GetSigGenList().GetSigGenActive(); }
-    SignalGenerator * GetSigGen      (SigGenId const id)            { return      m_pModel->GetSigGenList().GetSigGen(id); }
-    UPSigGen          RemoveSigGen   (SigGenId const id)            { return move(m_pModel->GetSigGenList().RemoveSigGen(id)); }
-    UPSigGen          PopSigGen      ()                             { return move(m_pModel->GetSigGenList().PopSigGen()); }
+    SigGenId          FindSigGen       (wstring const & name)   const { return      m_pModel->GetSigGenList().FindSigGen(name); }
+    bool              IsValid          (SigGenId const id)      const { return      m_pModel->GetSigGenList().IsValid(id); }
+    SignalGenerator * StdSigGen        ()                             { return      m_pModel->GetSigGenList().StdSigGen(); }
+    UPSigGen          NewSigGen        ()                             { return      m_pModel->GetSigGenList().NewSigGen(); }
+    UPSigGen          NewSigGen        (wstring const & name)         { return      m_pModel->GetSigGenList().NewSigGen(name); }
+    SigGenId          PushSigGen       (UPSigGen upSigGen)            { return      m_pModel->GetSigGenList().PushSigGen(move(upSigGen)); }
+    SigGenId          SetSigGenActive  (SigGenId const id)            { return      m_pModel->GetSigGenList().SetActive(id); }
+    void              InsertSigGen     (UPSigGen u, SigGenId const i) { return      m_pModel->GetSigGenList().InsertSigGen(move(u), i); }
+    SignalGenerator * GetSigGenSelected()                             { return      m_pModel->GetSigGenList().GetSigGenSelected(); }
+    SignalGenerator * GetSigGen        (SigGenId const id)            { return      m_pModel->GetSigGenList().GetSigGen(id); }
+    UPSigGen          RemoveSigGen     (SigGenId const id)            { return move(m_pModel->GetSigGenList().RemoveSigGen(id)); }
+    UPSigGen          PopSigGen        ()                             { return move(m_pModel->GetSigGenList().PopSigGen()); }
 
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 

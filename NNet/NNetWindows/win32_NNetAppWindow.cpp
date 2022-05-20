@@ -172,7 +172,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	setModelInterface();
 
-	m_signalDesigner.RegisterAtSigGen(m_nmwi.GetSigGenIdActive());
+	m_signalDesigner.RegisterAtSigGen(m_nmwi.GetSigGenIdSelected());
 	pump.RegisterWindow(m_descWindow.GetWindowHandle(), true);
 
 	m_mainNNetWindow.Start
@@ -596,7 +596,7 @@ void NNetAppWindow::replaceModel()
 
 	setModelInterface();
 
-	m_signalDesigner.RegisterAtSigGen(m_nmwi.GetSigGenIdActive());
+	m_signalDesigner.RegisterAtSigGen(m_nmwi.GetSigGenIdSelected());
 	m_dynamicModelObservable.NotifyAll(false);
 	m_staticModelObservable.NotifyAll(false);
 	m_nmwi.SetDescriptionUI(m_descWindow);

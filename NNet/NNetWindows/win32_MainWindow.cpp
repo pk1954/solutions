@@ -128,12 +128,12 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGenC(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenSelected() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
 		}
 		else if ( m_pNMRI->IsInputConnector(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenActive() != m_pNMRI->GetSigGenC(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenSelected() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
 		}
 	}

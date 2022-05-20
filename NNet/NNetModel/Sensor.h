@@ -19,10 +19,10 @@ public:
     float GetSignalValue()                      const final;
     void  WriteData(wostream &)                 const final;
     void  Draw(DrawContext const &, bool const) const final;
+    bool  Includes(MicroMeterPnt const p)       const final { return m_circle.Includes(p); }
 
     void  DrawDataPoints(DrawContext   const &) const;
     float GetDistFactor (MicroMeterPnt const &) const;
-    bool  Includes      (MicroMeterPnt const p) const { return m_circle.Includes(p); }
    
     MicroMeterPnt    const & GetCenter      () const { return m_circle.GetPos(); }
     MicroMeter               GetRadius      () const { return m_circle.GetRadius(); }

@@ -131,7 +131,7 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input lines");
-	if (m_pNMWI->GetSigGenActive() != m_pNMWI->GetSigGenStandard())
+	if (m_pNMWI->GetSigGenSelected() != m_pNMWI->GetSigGenStandard())
 	{
 		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
@@ -178,7 +178,7 @@ wstring SignalDesigner::GetCaption() const
 {
 	if (m_pNMWI)
 	{
-		if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenActive() })
+		if (SignalGenerator const * pSigGen { m_pNMWI->GetSigGenSelected() })
 			return pSigGen->GetName();
 		else 
 			return L"##### no SigGen found";
@@ -220,10 +220,10 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_RENAME_SIGNAL_GENERATOR:
 		{
-			wstring     wstrName { m_pNMWI->GetSigGenActive()->GetName() };
+			wstring wstrName { m_pNMWI->GetSigGenSelected()->GetName() };
 			EditLineBox dlgBox(wstrName);
 			dlgBox.Show(GetWindowHandle());
-			m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdActive(),	wstrName);
+			m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdSelected(), wstrName);
 			SetCaption();
 	    }
 		break;
@@ -233,7 +233,7 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_TRIGGER_STIMULUS:
-		m_pNMWI->GetSigGenActive()->StartStimulus();
+		m_pNMWI->GetSigGenSelected()->StartStimulus();
 		break;
 
 	default:
@@ -257,7 +257,7 @@ void SignalDesigner::OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * cons
 
 void SignalDesigner::OnNCLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	SigGenId             sigGenId   { m_pNMWI->GetSigGenIdActive() };
+	SigGenId             sigGenId   { m_pNMWI->GetSigGenIdSelected() };
 	UPSigGenList const & sigGenList { m_pNMWI->GetSigGenList() };
 	sigGenId = (sigGenId.GetValue() + 1) % sigGenList.Size();
 	PostCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, sigGenId.GetValue());

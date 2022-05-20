@@ -13,7 +13,6 @@ using std::unique_ptr;
 using std::wstring;
 using std::vector;
 
-class Sensor;
 class UPNobList;
 
 using SensorId = NamedType<int, struct SensorIdParam>;
@@ -24,7 +23,7 @@ class UPSensorList
 public:
     ~UPSensorList();
 
-    size_t   Size() const { return m_list.size(); }
+    size_t Size() const { return m_list.size(); }
 
     Sensor const * GetSensor(SensorId const) const;
     Sensor       * GetSensor(SensorId const);
@@ -37,12 +36,10 @@ public:
     bool IsValid(SensorId const id) const { return id.GetValue() < m_list.size(); }
 
     SensorId SetActive(SensorId const);
-    UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
     SensorId PushSensor(UPSensor);
     UPSensor PopSensor();
     UPSensor RemoveSensor(SensorId const);
     void     InsertSensor(UPSensor, SensorId const);
-    SensorId FindSensor(MicroMeterPnt const &);
 
     void Apply2All(auto const &f)  
     { 
@@ -53,6 +50,9 @@ public:
     { 
         for_each(m_list, [&f](auto const & up) { f(up.get()); });
     }
+
+    UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
+    SensorId FindSensor(MicroMeterPnt const &);
 
 private:
 

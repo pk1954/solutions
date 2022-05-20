@@ -570,5 +570,5 @@ void NNetModelCommands::StartStimulus()
 {  
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pNMWI->GetSigGenActive()->StartStimulus();
+	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }

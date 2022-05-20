@@ -217,7 +217,7 @@ void SignalControl::paintEditControls() const
 void SignalControl::DoPaint()
 {
 	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
-	if (SignalGenerator const * pSigGen { GetSigGenActive() })
+	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
 	{
 		if (!m_computeThread.IsRunning())
 		{
@@ -275,22 +275,6 @@ float SignalControl::ScaleFactorVoltCoord()
 	return factor;
 }
 
-bool SignalControl::OnSize(PIXEL const width, PIXEL const height)
-{
-	TimeGraph::OnSize(width, height);
-	if (GetSigGenActive())
-	{
-		//if (m_fPixRight > 0.0_fPixel)
-		//	ScaleTimeCoord();
-		//if (m_pVertCoordFreq)
-		//	ScaleFreqCoord();
-		//if (m_pVertCoordVolt)
-		//	ScaleVoltCoord();
-		//Trigger();  // cause repaint
-	}
-	return true;
-}
-
 void SignalControl::setPos(fPixelPoint const & pos)
 {
 	m_moveMode = tPos::NONE;
@@ -333,7 +317,7 @@ void SignalControl::testPos
 
 void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if (SignalGenerator const * pSigGen { GetSigGenActive() })
+	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
 	{
 		PixelPoint  const pixCrsrPos  { GetCrsrPosFromLparam(lParam) };
 		fPixelPoint const fPixCrsrPos { Convert2fPixelPoint(pixCrsrPos) };
@@ -369,7 +353,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			default:
 				break;
 			}
-			m_commands.SetSigGenStaticData(* GetSigGenActive(), sigGenData);
+			m_commands.SetSigGenStaticData(* GetSigGenSelected(), sigGenData);
 			Notify(true);
 		}
 		else  // left button not pressed: select

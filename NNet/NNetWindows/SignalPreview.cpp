@@ -26,7 +26,7 @@ SignalPreview::~SignalPreview()
 
 void SignalPreview::DoPaint()
 {
-	if (SignalGenerator * const pSigGen { GetSigGenActive() })
+	if (SignalGenerator * const pSigGen { GetSigGenSelected() })
 	if (Param     const * const pParams { GetParams() })
 	{
 		fMicroSecs  const usResolution { pParams->TimeResolution() };

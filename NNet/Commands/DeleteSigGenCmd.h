@@ -17,7 +17,7 @@ class DeleteSigGenCmd : public SigGenCommand
 public:
 	DeleteSigGenCmd()
 	{
-		m_sigGenId = m_pNMWI->GetSigGenIdActive();
+		m_sigGenId = m_pNMWI->GetSigGenIdSelected();
 		m_pNMWI->Apply2All<InputLine>
 		(
 			[this](InputLine & n)
@@ -45,7 +45,7 @@ public:
 	}
 
 private:
-	SignalGenerator     * m_pSigGenActive { m_pNMWI->GetSigGenActive() };
+	SignalGenerator     * m_pSigGenActive { m_pNMWI->GetSigGenSelected() };
 	SigGenId              m_sigGenId;
 	UPSigGen              m_upSigGen;
 	vector<InputLine *> m_affectedInputLines;
