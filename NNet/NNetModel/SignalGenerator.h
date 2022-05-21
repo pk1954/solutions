@@ -5,8 +5,8 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "observable.h"
 #include "observerInterface.h"
+#include "SignalSource.h"
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
@@ -18,11 +18,19 @@ class SignalGenerator;
 using std::wstring;
 using std::unique_ptr;
 
-class SignalGenerator : public Observable
+class SignalGenerator : public SignalSource
 {
 public:
 
 	explicit SignalGenerator(wstring const &);
+
+	mV   GetSignalValue()              const final { return m_mVactual; };
+	bool Includes(MicroMeterPnt const) const final { return false; };
+
+	void Dump()                                const final {};
+	void WriteData(wostream &)                 const final {};
+	void Draw(DrawContext const &, bool const) const final {};
+	void Recalc(UPNobList const &)                   final {};
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;
@@ -42,7 +50,6 @@ public:
 	void ClearDynamicData() { m_dynData.Reset(); }
 	void Prepare(Param const &);
 
-	mV   GetVoltage      () const { return m_mVactual; }
 	bool IsStimulusActive() const { return m_dynData.IsStimulusActive(); }
 
 	void StartStimulus() { m_dynData.StartStimulus(); }

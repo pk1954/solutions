@@ -78,7 +78,7 @@ public:
 		}
 		if (bResult)
 			m_logPixelSize = logNewSize;
-		NotifyAll(false);
+		NotifyAll(true);
 		return true;
 	}
 
@@ -100,7 +100,7 @@ public:
 	{ 
 		m_fPixOffset   += a.m_fPixOffset;
 		m_logPixelSize += a.m_logPixelSize; 
-		NotifyAll(false);
+		NotifyAll(true);
 		return * this; 
 	}
 
@@ -108,7 +108,7 @@ public:
 	{ 
 		m_fPixOffset   -= a.m_fPixOffset;
 		m_logPixelSize -= a.m_logPixelSize; 
-		NotifyAll(false);
+		NotifyAll(true);
 		return * this; 
 	}
 
@@ -116,7 +116,7 @@ public:
 	{ 
 		m_fPixOffset   *= factor;
 		m_logPixelSize *= factor; 
-		NotifyAll(false);
+		NotifyAll(true);
 		return * this; 
 	}
 
@@ -149,7 +149,7 @@ public:
 	void SetPixelSize(LOG_UNIT const s) 
 	{ 
 		m_logPixelSize = s; 
-		NotifyAll(false);
+		NotifyAll(true);
 	}
 
 	void SetPixelSizeLimits(LOG_UNIT const fMin, LOG_UNIT const fMax)

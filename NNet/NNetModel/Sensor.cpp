@@ -28,12 +28,12 @@ void Sensor::Dump() const
     wcout << L"circle: " << m_circle << endl;
 }
 
-float Sensor::GetSignalValue() const
+mV Sensor::GetSignalValue() const
 {
-    float fResult { 0.0f };
+    mV mVResult { 0.0_mV };
     for (auto const & it : m_dataPoints)
-        fResult += it.GetSignalValue();
-    return fResult;
+        mVResult += it.GetSignalValue();
+    return mVResult;
 }
 
 void Sensor::Recalc(UPNobList const & list) 

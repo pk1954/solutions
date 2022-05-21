@@ -8,10 +8,12 @@
 #include <assert.h>
 #include <string>
 #include <limits>
+#include <vector>
 #include <streambuf>
 #include "NamedType.h"
 #include "debug.h"
 
+using std::vector;
 using std::function;
 using std::abs;
 
@@ -59,6 +61,18 @@ bool IsInRange(SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max
 	if (v < min)
 		return false;
 	return true;
+}
+
+template<typename T>
+bool IsValidIndex(long const index, vector<T> const &vec)
+{
+	return IsInRange<long>(index, 0L, static_cast<long>(vec.size()-1));
+}
+
+template<typename T>
+T GetVectorValue(long const index, vector<T> const &vec)
+{
+	return IsValidIndex(index, vec) ? vec[index] : T::NULL_VAL();
 }
 
 template<typename SOURCE_TYPE>

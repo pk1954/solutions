@@ -95,6 +95,7 @@ SignalNr MonitorData::AddSignal
 )
 {
 	assert(upSignal);
+	++m_iNrOfSignals;
 	return getTrack(trackNr)->AddSignal(move(upSignal));
 }
 
@@ -105,24 +106,14 @@ void MonitorData::AddSignal
 )
 {
 	assert(upSignal);
+	++m_iNrOfSignals;
 	getTrack(id.GetTrackNr())->AddSignal(move(upSignal), id.GetSignalNr());
-}
-
-SignalNr MonitorData::AddSensorSignal
-(
-	TrackNr const trackNr,
-	Sensor      & sensor
-)
-{
-	if (!IsValid(trackNr))
-		return SignalNr::NULL_VAL();
-	unique_ptr<Signal> upSignal { SignalFactory::MakeSignal(sensor) };
-	return getTrack(trackNr)->AddSignal(move(upSignal));
 }
 
 unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
 {
 	assert(IsValid(id));
+	--m_iNrOfSignals;
 	if (id == m_idSigHighlighted)
 		ResetHighlightedSignal();
 	return removeSignal(id);

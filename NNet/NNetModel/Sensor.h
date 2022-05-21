@@ -15,11 +15,11 @@ class Sensor : public SignalSource
 public:
     Sensor(MicroMeterCircle const &, UPNobList const &);
 
-    void  Dump()                                const final;
-    float GetSignalValue()                      const final;
-    void  WriteData(wostream &)                 const final;
-    void  Draw(DrawContext const &, bool const) const final;
-    bool  Includes(MicroMeterPnt const p)       const final { return m_circle.Includes(p); }
+    void Dump()                                const final;
+    mV   GetSignalValue()                      const final;
+    void WriteData(wostream &)                 const final;
+    void Draw(DrawContext const &, bool const) const final;
+    bool Includes(MicroMeterPnt const p)       const final { return m_circle.Includes(p); }
 
     void  DrawDataPoints(DrawContext   const &) const;
     float GetDistFactor (MicroMeterPnt const &) const;
@@ -44,9 +44,9 @@ private:
         MicroMeterPnt const   m_umPos;
         float         const   m_fFactor;
 
-        float GetSignalValue() const
+        mV GetSignalValue() const
         {
-            return m_pPipe->GetVoltage(m_segNr).GetValue() * m_fFactor;
+            return m_pPipe->GetVoltage(m_segNr) * m_fFactor;
         }
 
         MicroMeterCircle dataPointCircle() const

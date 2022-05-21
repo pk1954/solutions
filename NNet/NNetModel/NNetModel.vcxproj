@@ -269,6 +269,7 @@
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="NobType.cpp" />
+    <ClCompile Include="SignalFactory.cpp" />
     <ClCompile Include="SignalGenerator.cpp" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="Track.cpp" />

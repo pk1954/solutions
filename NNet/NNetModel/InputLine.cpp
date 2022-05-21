@@ -102,7 +102,7 @@ void InputLine::drawSocket
 
 void InputLine::Prepare()
 {
-	m_mVinputBuffer = m_pSigGen->GetVoltage();
+	m_mVinputBuffer = m_pSigGen->GetSignalValue();
 }
 
 void InputLine::AppendMenuItems(AddMenuFunc const & add) const

@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <assert.h>
 #include "ERRHNDL.H"
+#include "MoreTypes.h"
 #include "Signal.h"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
@@ -151,9 +152,7 @@ public:
         {
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
         }
-        unique_ptr<Sensor> upSensor { make_unique<Sensor>(umCircle, GetUPNobsRef()) };
-        GetMonitorData().AddSensorSignal(trackNr, *upSensor.get());
-        GetUPSensorsRef().PushSensor(move(upSensor));
+        SignalFactory::MakeSensorSignal(umCircle, trackNr, GetWriterInterface());
     }
 };
 

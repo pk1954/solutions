@@ -4,15 +4,12 @@
 
 #pragma once
 
-#include "NNetParameters.h"
+#include "MoreTypes.h"
 #include "observable.h"
-#include "NobId.h"
-#include "Signal.h"
+#include "SignalId.h"
+#include "TrackNr.h"
 
-using std::unique_ptr;
-using std::make_unique;
-
-class NNetModelReaderInterface;
+class NNetModelWriterInterface;
 
 class SignalFactory
 {
@@ -23,11 +20,14 @@ public:
         m_pObservable = & observable;
     }
 
-    static unique_ptr<Signal>MakeSignal(Sensor & sensor)
-    {
-        return make_unique<Signal>(* m_pObservable, sensor);
-    }
+    static SignalId MakeSensorSignal
+    (
+        MicroMeterCircle   const &, 
+        TrackNr            const,
+        NNetModelWriterInterface &
+    );
 
 private:
+
     inline static Observable * m_pObservable { nullptr };
 };

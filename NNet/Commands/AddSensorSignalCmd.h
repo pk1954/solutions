@@ -4,12 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
+#include "SignalFactory.h"
 #include "MonitorData.h"
 #include "NNetCommand.h"
-
-class NNetModelWriterInterface;
 
 class AddSensorSignalCmd: public NNetCommand
 {
@@ -26,12 +24,8 @@ public:
 
     void Do() final 
     {
-        MonitorData      & monitorData { m_pNMWI->GetMonitorData() };
-        unique_ptr<Sensor> upSensor    { make_unique<Sensor>(m_umCircle, m_pNMWI->GetUPNobsC()) };  // create sensor
-        monitorData.InsertTrack(m_trackNr);                                                         // create new track  
-        SignalNr     const signalNr    { monitorData.AddSensorSignal(m_trackNr, *upSensor.get()) }; // add to monitor      
-        m_signalId = SignalId(m_trackNr, signalNr);                                                 //  - creates signal & adds to track 
-        m_pNMWI->GetSensorList().PushSensor(move(upSensor));                                        // add to sensor list
+        m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
+        m_signalId = SignalFactory::MakeSensorSignal(m_umCircle, m_trackNr, *m_pNMWI);
     };
 
     void Undo() final

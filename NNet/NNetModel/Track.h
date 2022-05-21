@@ -8,7 +8,6 @@
 #include <vector>
 #include "observable.h"
 #include "NamedType.h"
-#include "SignalFactory.h"
 #include "Signal.h"
 
 using std::vector;

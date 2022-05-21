@@ -51,6 +51,7 @@
 
 #include "win32_aboutBox.h"
 #include "Analyzer.h"
+#include "SignalFactory.h"
 #include "Neuron.h"
 #include "TimeGraph.h"
 #include "SimulationTime.h"

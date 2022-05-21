@@ -32,9 +32,9 @@ public:
 
     ~Signal() override;
 
-    void       Reset        (UPNobList const &);
+    void Reset(UPNobList const &);
 
-    float      GetDataPoint   (Param const &, fMicroSecs const) const;
+    mV         GetDataPoint   (Param const &, fMicroSecs const) const;
     fMicroSecs FindNextMaximum(Param const &, fMicroSecs const) const;
     void       Draw           (DrawContext const &, bool const) const;
     void       WriteSignalData(wostream &)                      const;
@@ -62,7 +62,7 @@ private:
     Observable   & m_dynModelObservable;
     SignalSource & m_sigSource;
     fMicroSecs     m_timeStart;
-    vector<float>  m_data;
+    vector<mV>     m_data;
     int            m_iSourceType;
 
     SIG_INDEX  time2index(Param const &, fMicroSecs const) const;

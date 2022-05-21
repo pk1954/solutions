@@ -106,5 +106,6 @@ void BaseScale::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	if (!bResult)
 		MessageBeep(MB_ICONWARNING);
 
-	Notify(true);
+	UpdateWindow(GetWindowHandle());
+//	Notify(true);
 }

@@ -204,10 +204,10 @@ fPixel MonitorControl::getSignalValue
 	fMicroSecs const   usSimu
 ) const
 {
-	float const fSignal { signal.GetDataPoint(m_pNMWI->GetParams(), usSimu) };
-	return (fSignal == NAN)
+	mV const mVsignal { signal.GetDataPoint(m_pNMWI->GetParams(), usSimu) };
+	return (mVsignal.IsNull())
 		? fPixel::NULL_VAL()
-		: m_vertCoord.Transform2fPixelSize(fSignal);
+		: m_vertCoord.Transform2fPixelSize(mVsignal.GetValue());
 }
 
 fPixel MonitorControl::calcTrackHeight() const
@@ -262,17 +262,22 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	if (fPixSignal.IsNull())
 		return;
 
-	D2D1::ColorF const color         { m_pMonitorData->IsSelected(idSignal) ? NNetColors::EEG_SENSOR_HIGHLIGHTED : D2D1::ColorF::Black };  // emphasize selected signal 
-	fPixel       const fPixWidth     { m_pMonitorData->IsSelected(idSignal) ? 3.0_fPixel : 1.0_fPixel };  // emphasize selected signal 
-	fPixel       const fPixYoff      { getSignalOffset(idSignal) };
-	fMicroSecs   const usPixelSize   { m_horzCoord.GetPixelSize() };
-	fMicroSecs   const usInWindow    { usPixelSize * m_fPixZeroX.GetValue() };
-	fMicroSecs   const usResolution  { m_pNMWI->TimeResolution() };
-	fMicroSecs   const usIncrement   { max(usPixelSize, usResolution) };
-	fMicroSecs   const usSimuStart   { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
-	fPixel       const fPixX         { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
-	fPixelPoint        prevPoint     { m_fPixZeroX, fPixYoff - fPixSignal };
-	fPixel             fPixMaxSignal { 0._fPixel };
+	D2D1::ColorF color     { ColorF::Black };
+	fPixel       fPixWidth { 1.0_fPixel };
+	if (m_pMonitorData->IsSelected(idSignal) && (m_pMonitorData->GetNrOfSignals() >1)) 
+	{
+		color     = NNetColors::EEG_SENSOR_HIGHLIGHTED;  // emphasize selected signal 
+		fPixWidth =  3.0_fPixel;                         
+	}
+	fPixel     const fPixYoff      { getSignalOffset(idSignal) };
+	fMicroSecs const usPixelSize   { m_horzCoord.GetPixelSize() };
+	fMicroSecs const usInWindow    { usPixelSize * m_fPixZeroX.GetValue() };
+	fMicroSecs const usResolution  { m_pNMWI->TimeResolution() };
+	fMicroSecs const usIncrement   { max(usPixelSize, usResolution) };
+	fMicroSecs const usSimuStart   { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
+	fPixel     const fPixX         { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
+	fPixelPoint      prevPoint     { m_fPixZeroX, fPixYoff - fPixSignal };
+	fPixel           fPixMaxSignal { 0._fPixel };
 	m_upGraphics->FillCircle(fPixelCircle(prevPoint, 4.0_fPixel), color);
 	for (fMicroSecs usSimu = usSimuEnd - usIncrement; usSimu >= usSimuStart; usSimu -= usIncrement)
 	{
@@ -370,8 +375,8 @@ void MonitorControl::DoPaint()
 	if (m_pMonitorData->NoTracks())
 		return;
 	if (m_pMonitorData->GetNrOfTracks() > 1)
-		m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const trackNr) { paintTrack(trackNr); });
-	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id     ) { paintSignal(id); });
+		m_pMonitorData->Apply2AllTracksC([this](TrackNr const n) { paintTrack(n); });
+	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
 	if (m_measurement.TrackingActive())

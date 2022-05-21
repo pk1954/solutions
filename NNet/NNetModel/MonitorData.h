@@ -53,7 +53,6 @@ public:
 	SignalId SetHighlightedSignal(SignalId      const  );
 	SignalId ResetHighlightedSignal();
 
-	SignalNr       AddSensorSignal     (TrackNr  const, Sensor &);
 	SignalNr       AddSignal           (TrackNr  const, unique_ptr<Signal>);
     void           AddSignal           (SignalId const &, unique_ptr<Signal>);
 	SignalNr       MoveSignal          (SignalId const &, TrackNr  const);
@@ -143,6 +142,7 @@ public:
 			getTrack(trackNr)->Apply2AllSignalNrsC(func);
 	}                        
 
+	int      GetNrOfSignals()               const { return m_iNrOfSignals; }
 	SignalId GetHighlightedSignalId()       const { return m_idSigHighlighted; }
 	TrackNr  GetSelectedTrackNr ()          const { return m_idSigHighlighted.GetTrackNr(); }
 	bool     IsAnySignalSelected()          const { return m_idSigHighlighted.IsValid(); }
@@ -158,4 +158,5 @@ private:
 	Observable              * m_pHighSigObservable { nullptr };
 	SignalId                  m_idSigHighlighted   {};
 	vector<unique_ptr<Track>> m_tracks             {};
+	int                       m_iNrOfSignals       { 0 };
 };

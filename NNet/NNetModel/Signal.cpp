@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "util.h"
 #include "DrawContext.h"
 #include "SimulationTime.h"
 #include "UPNobList.h"
@@ -86,18 +87,14 @@ fMicroSecs Signal::index2time
     return usResult;
 }
 
-float Signal::GetDataPoint
+mV Signal::GetDataPoint
 (
     Param      const & param,
     fMicroSecs const   time
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
-    if (index >= m_data.size())
-        return NAN;
-    if (index < 0)
-        return NAN;
-    return m_data[index];
+    return GetVectorValue<mV>(index, m_data);
 }
 
 fMicroSecs Signal::FindNextMaximum
