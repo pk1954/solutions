@@ -49,7 +49,7 @@ fPixel TimeGraph::xTime(fMicroSecs const time) const
 bool TimeGraph::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
-	m_fPixRight  = Convert2fPixel(width);
+	m_fPixRight  = Convert2fPixel(width) - m_fPixRightBorder;
 	m_fPixBottom = Convert2fPixel(height);
 	return true;
 }

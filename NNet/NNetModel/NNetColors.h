@@ -18,20 +18,19 @@ public:
 	// POSITION_RECT is used in mini window to visualize position of main window area, transparent
 	inline static ColorF const POSITION_RECT    { 0.9f, 0.3f, 0.2f, 0.4f };
 
-	// color of beacon 
-	inline static ColorF const COL_BEACON       { 0.0f, 0.0f, 1.0f, 0.4f };
-
 	// colors EEG Monitor
 	inline static ColorF const COL_DIAMOND      { 0.0f, 1.0f, 0.0f, 1.0f };
 	inline static ColorF const COL_TRACK_EVEN   { 0.9f, 0.9f, 0.9f, 1.0f };
+	inline static ColorF const COL_TRACK_EVEN_H { 0.9f, 0.9f, 1.0f, 1.0f };
 	inline static ColorF const COL_TRACK_ODD    { 0.8f, 0.8f, 0.8f, 1.0f };
+	inline static ColorF const COL_TRACK_ODD_H  { 0.8f, 0.8f, 0.9f, 1.0f };
 	inline static ColorF const COL_WARNING      { 0.8f, 0.0f, 0.0f, 0.3f };
+	inline static ColorF const EEG_SIGNAL_HIGH  { 1.0f, 0.5f, 0.0f, 1.0f };
 
 	// colors for EEG sensors
-	inline static ColorF EEG_SENSOR_1           { 0.0f, 0.5f, 0.0f, 0.8f };
-	inline static ColorF EEG_SENSOR_2           { 1.0f, 1.0f, 0.0f, 0.4f };
-	inline static ColorF EEG_SENSOR_HIGHLIGHTED { 1.0f, 0.5f, 0.0f, 0.8f };
-	inline static ColorF EEG_SIGNAL_HIGHLIGHTED { 1.0f, 0.5f, 0.0f, 1.0f };
+	inline static ColorF const EEG_SENSOR_1     { 0.0f, 0.5f, 0.0f, 0.8f };
+	inline static ColorF const EEG_SENSOR_2     { 1.0f, 1.0f, 0.0f, 0.4f };
+	inline static ColorF const EEG_SENSOR_HIGH  { 1.0f, 0.5f, 0.0f, 0.8f };
 
 	// colors for neuron/pipe boundary
 	inline static ColorF const EXT_NORMAL       { 0.0f, 0.5f, 1.0f, 1.0f };

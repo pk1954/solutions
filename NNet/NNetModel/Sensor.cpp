@@ -58,7 +58,7 @@ void Sensor::Draw
     (
         m_circle, 
         NNetColors::EEG_SENSOR_1, 
-        bHighlight ? NNetColors::EEG_SENSOR_HIGHLIGHTED : NNetColors::EEG_SENSOR_2
+        bHighlight ? NNetColors::EEG_SENSOR_HIGH : NNetColors::EEG_SENSOR_2
     );
 }
 

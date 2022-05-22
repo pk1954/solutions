@@ -237,6 +237,8 @@ void SignalControl::DoPaint()
 				PaintCurve
 				(
 					[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
+					0.0_MicroSecs,
+					getTime(xRight()),
 					usIncrement, 
 					STD_WIDTH,
 					getColor(tColor::FREQ)
@@ -245,6 +247,8 @@ void SignalControl::DoPaint()
 				PaintCurve
 				(
 					[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
+					0.0_MicroSecs,
+					getTime(xRight()),
 					usIncrement,
 					STD_WIDTH,
 					getColor(tColor::VOLT)

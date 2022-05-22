@@ -12,7 +12,7 @@
 #include "Track.h"
 #include "TrackNr.h"
 #include "SoundInterface.h"
-#include "win32_graphicsWindow.h"
+#include "TimeGraph.h"
 
 class MonitorData;
 class NNetModelCommands;
@@ -20,7 +20,7 @@ class NNetModelWriterInterface;
 
 struct IDWriteTextFormat;
 
-class MonitorControl : public GraphicsWindow
+class MonitorControl : public TimeGraph
 {
 public:
 	MonitorControl
@@ -51,14 +51,6 @@ public:
 
 private:
 
-	void paintCurve
-	(
-		auto               getPoint,
-		fMicroSecs   const usIncrement,
-		fPixel       const fPixWidth,
-		D2D1::ColorF const col          
-	) const;
-
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 	void OnMouseLeave     () final;
 	bool OnShow           (WPARAM const, LPARAM const) final;
@@ -78,7 +70,6 @@ private:
 	void        highlightSignal (SignalId const &);
 	fPixel      getSignalOffset (SignalId const &) const;
 	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
-	fPixelPoint getPoint        (fMicroSecs const) const;
 	fPixel      calcTrackHeight () const;
 	fPixelPoint calcDiamondPos  () const;
 
@@ -104,9 +95,6 @@ private:
 	fPixel              m_fPixZeroX          { 0.0_fPixel };
 	IDWriteTextFormat * m_pTextFormat        { nullptr };
 	fPixel              m_fPixMaxSignal      { 0.0_fPixel };
-	Signal      const * m_pSignal            { nullptr };
-	fPixel              m_fPixYoff;
-	fPixel              m_fPixX;
 	Measurement         m_measurement;
 
 	PixFpDimension<fMicroSecs> & m_horzCoord;

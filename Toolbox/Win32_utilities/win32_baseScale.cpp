@@ -72,13 +72,15 @@ void BaseScale::display
 
 void BaseScale::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	Trigger();   // cause repaint
+	Invalidate(false);
+	UpdateWindow(GetWindowHandle());
 	GraphicsWindow::OnMouseMove(wParam, lParam);
 }
 
 void BaseScale::OnMouseLeave() 
 {
-	Trigger();   // cause repaint
+	Invalidate(false);
+	UpdateWindow(GetWindowHandle());
 	GraphicsWindow::OnMouseLeave();
 }
 

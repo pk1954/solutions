@@ -25,14 +25,17 @@ public:
 
 	void SetModelInterface(NNetModelWriterInterface * const);
 
+	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
+
 protected:
 
 	fPixel const STD_WIDTH  { 1.0_fPixel };
 	fPixel const HIGH_WIDTH { 3.0_fPixel };
 
-	fPixel m_fPixRight  { 0.0_fPixel };
-	fPixel m_fPixBottom { 0.0_fPixel };
-	fPixel m_fPixLeft   { 0.0_fPixel };
+	fPixel m_fPixRightBorder { 0.0_fPixel };
+	fPixel m_fPixRight       { 0.0_fPixel };
+	fPixel m_fPixBottom      { 0.0_fPixel };
+	fPixel m_fPixLeft        { 0.0_fPixel };
 
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
 	NNetModelWriterInterface   * m_pNMWI      { nullptr };
@@ -45,32 +48,40 @@ protected:
 	fPixel PaintCurve
 	(
 		auto               getPoint,
+		fMicroSecs   const timeStart,
+		fMicroSecs   const timeEnd,
 		fMicroSecs   const usIncrement,
 		fPixel       const fPixWidth,
 		D2D1::ColorF const color          
 	) const
 	{
-		fMicroSecs const timeStart     { 0.0_MicroSecs };
-		fMicroSecs const usMax         { getTime(m_fPixRight) };
-		fMicroSecs const timeEnd       { usMax };
-		fPixelPoint      prevPoint     { getPoint(timeStart) };
-		fPixel           fPixMaxSignal { 0._fPixel };
+		static const bool bHorzSteps { false };
+
+		fPixelPoint prevPoint     { getPoint(timeStart) };
+		fPixel      fPixMinSignal { fPixel::MAX_VAL() };
 
 		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 		{
 			fPixelPoint const actPoint   { getPoint(time) };
 			fPixel      const fPixSignal { actPoint.GetY() };
-			fPixelPoint const stepPoint  { actPoint.GetX(), prevPoint.GetY() };
-			if (fPixSignal > fPixMaxSignal)
-				fPixMaxSignal = fPixSignal;
-			if (prevPoint != stepPoint)
-				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, color);
-			if (stepPoint != actPoint)
-				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, color);
+			if (fPixSignal < fPixMinSignal)
+				fPixMinSignal = fPixSignal;
+			if (bHorzSteps)
+			{
+				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
+				if (prevPoint != stepPoint)
+					m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, color);
+				if (stepPoint != actPoint)
+					m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, color);
+			}
+			else
+			{
+				m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color);
+			}
 			prevPoint = actPoint;
 		}
 
-		return fPixMaxSignal;
+		return fPixMinSignal;
 	}
 
 	bool OnSize(PIXEL const, PIXEL const) override;
@@ -79,6 +90,6 @@ protected:
 	fPixel     xTime  (fMicroSecs  const  ) const;
 
 	fPixel xLeft  () const { return m_fPixLeft;   }
-	fPixel xRight () const { return m_fPixRight;  }
+	fPixel xRight () const { return m_fPixRight - m_fPixRightBorder; }
 	fPixel yBottom() const { return m_fPixBottom; }
 };

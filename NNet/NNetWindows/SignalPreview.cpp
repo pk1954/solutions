@@ -43,6 +43,8 @@ void SignalPreview::DoPaint()
 				mV const voltage { dynData.SetTime(statData, *pParams, stimuTime) };
 				return pixPntVolt(stimuTime, voltage); 
 			}, 
+			0.0_MicroSecs,
+			getTime(xRight()),
 			usResolution,
 			STD_WIDTH,
 			D2D1::ColorF::Black

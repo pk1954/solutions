@@ -51,9 +51,10 @@ public:
 	inline static D2D1::ColorF const COL_HIGHLIGHTED { D2D1::ColorF::Aquamarine };
 
 protected:
-	inline static fPixel const LONG_TICK      { 10._fPixel };
-	inline static fPixel const MIDDLE_TICK    {  7._fPixel };
-	inline static fPixel const SMALL_TICK     {  5._fPixel };
+
+	inline static fPixel const LONG_TICK   { 10._fPixel };
+	inline static fPixel const MIDDLE_TICK {  7._fPixel };
+	inline static fPixel const SMALL_TICK  {  5._fPixel };
 
 	void   display   (fPixelRect const &, wstring const &) const;
 	void   setTextBox(fPixelRect & textBox) const;
