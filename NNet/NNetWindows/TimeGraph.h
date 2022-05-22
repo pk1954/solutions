@@ -42,28 +42,35 @@ protected:
 	SigGenStaticData const * GetSigGenStaticData() const { return & GetSigGenSelected()->GetStaticData(); }
 	Param                  * GetParams          ()       { return & m_pNMWI->GetParams(); }
 
-	void PaintCurve
+	fPixel PaintCurve
 	(
 		auto               getPoint,
 		fMicroSecs   const usIncrement,
-		D2D1::ColorF const col          
+		fPixel       const fPixWidth,
+		D2D1::ColorF const color          
 	) const
 	{
-		fMicroSecs const timeStart { 0.0_MicroSecs };
-		fMicroSecs const usMax     { getTime(m_fPixRight) };
-		fMicroSecs const timeEnd   { usMax };
-		fPixelPoint      prevPoint { getPoint(timeStart) };
+		fMicroSecs const timeStart     { 0.0_MicroSecs };
+		fMicroSecs const usMax         { getTime(m_fPixRight) };
+		fMicroSecs const timeEnd       { usMax };
+		fPixelPoint      prevPoint     { getPoint(timeStart) };
+		fPixel           fPixMaxSignal { 0._fPixel };
 
 		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 		{
-			fPixelPoint const actPoint  { getPoint(time) };
-			fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
+			fPixelPoint const actPoint   { getPoint(time) };
+			fPixel      const fPixSignal { actPoint.GetY() };
+			fPixelPoint const stepPoint  { actPoint.GetX(), prevPoint.GetY() };
+			if (fPixSignal > fPixMaxSignal)
+				fPixMaxSignal = fPixSignal;
 			if (prevPoint != stepPoint)
-				m_upGraphics->DrawLine(prevPoint, stepPoint, STD_WIDTH, col);
+				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, color);
 			if (stepPoint != actPoint)
-				m_upGraphics->DrawLine(stepPoint, actPoint,  STD_WIDTH, col);
+				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, color);
 			prevPoint = actPoint;
 		}
+
+		return fPixMaxSignal;
 	}
 
 	bool OnSize(PIXEL const, PIXEL const) override;

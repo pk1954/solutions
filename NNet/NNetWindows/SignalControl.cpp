@@ -238,13 +238,15 @@ void SignalControl::DoPaint()
 				(
 					[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
 					usIncrement, 
+					STD_WIDTH,
 					getColor(tColor::FREQ)
 				);
 			if (m_pVertCoordVolt)
 				PaintCurve
 				(
 					[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
-					usIncrement, 
+					usIncrement,
+					STD_WIDTH,
 					getColor(tColor::VOLT)
 				);
 		}

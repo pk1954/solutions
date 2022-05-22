@@ -16,8 +16,6 @@ using std::vector;
 using SigGenId = NamedType<int, struct SigGenIdParam>;
 using UPSigGen = unique_ptr<SignalGenerator>;
 
-static const SigGenId STD_SIGGEN_ID (0);
-
 class UPSigGenList
 {
 public:

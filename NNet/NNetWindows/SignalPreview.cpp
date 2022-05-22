@@ -29,21 +29,22 @@ void SignalPreview::DoPaint()
 	if (SignalGenerator * const pSigGen { GetSigGenSelected() })
 	if (Param     const * const pParams { GetParams() })
 	{
-		fMicroSecs  const usResolution { pParams->TimeResolution() };
-		SigGenDynamicData dynData      { };
+		SigGenStaticData const & statData     { pSigGen->GetStaticData() };
+		fMicroSecs       const   usResolution { pParams->TimeResolution() };
+		SigGenDynamicData        dynData      { };
 
 		m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
 		dynData.StartStimulus();
 		PaintCurve
 		(
-			[this, &dynData, pParams, pSigGen](fMicroSecs const stimuTime)
+			[this, &dynData, &statData, pParams](fMicroSecs const stimuTime)
 			{
-				SigGenStaticData const & statData { pSigGen->GetStaticData() };
-				mV               const   voltage  { dynData.SetTime(statData, *pParams, stimuTime) };
+				mV const voltage { dynData.SetTime(statData, *pParams, stimuTime) };
 				return pixPntVolt(stimuTime, voltage); 
 			}, 
 			usResolution,
+			STD_WIDTH,
 			D2D1::ColorF::Black
 		);
 	}

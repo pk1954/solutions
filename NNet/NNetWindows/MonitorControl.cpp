@@ -252,13 +252,35 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 	return fPixDiamondPos;
 }
 
+fPixelPoint MonitorControl::getPoint(fMicroSecs const time) const
+{
+	fPixel fPixY = getSignalValue(*m_pSignal, time);
+	assert(fPixY.IsNotNull());
+	fPixelPoint const actPoint 
+	{ 
+		m_fPixX + m_horzCoord.Transform2fPixelSize(time), 
+		m_fPixYoff - fPixY
+	};
+	return actPoint;
+}
+
+void MonitorControl::paintCurve
+(
+	auto               getPoint,
+	fMicroSecs   const usIncrement,
+	fPixel       const fPixWidth,
+	D2D1::ColorF const col
+) const
+{
+}
+
 void MonitorControl::paintSignal(SignalId const & idSignal)
 {
-	Signal const * const pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) };
-	if (pSignal == nullptr)
+	m_pSignal = m_pMonitorData->GetConstSignalPtr(idSignal);
+	if (m_pSignal == nullptr)
 		return;
 	fMicroSecs const usSimuEnd  { SimulationTime::Get() };
-	fPixel           fPixSignal { getSignalValue(*pSignal, usSimuEnd) };
+	fPixel           fPixSignal { getSignalValue(*m_pSignal, usSimuEnd) };
 	if (fPixSignal.IsNull())
 		return;
 
@@ -269,32 +291,32 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		color     = NNetColors::EEG_SENSOR_HIGHLIGHTED;  // emphasize selected signal 
 		fPixWidth =  3.0_fPixel;                         
 	}
-	fPixel     const fPixYoff      { getSignalOffset(idSignal) };
+	m_fPixYoff = getSignalOffset(idSignal);
 	fMicroSecs const usPixelSize   { m_horzCoord.GetPixelSize() };
 	fMicroSecs const usInWindow    { usPixelSize * m_fPixZeroX.GetValue() };
 	fMicroSecs const usResolution  { m_pNMWI->TimeResolution() };
 	fMicroSecs const usIncrement   { max(usPixelSize, usResolution) };
-	fMicroSecs const usSimuStart   { max(usSimuEnd - usInWindow, pSignal->GetStartTime()) };
-	fPixel     const fPixX         { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd) };
-	fPixelPoint      prevPoint     { m_fPixZeroX, fPixYoff - fPixSignal };
+	fMicroSecs const usSimuStart   { max(usSimuEnd - usInWindow, m_pSignal->GetStartTime()) };
+    m_fPixX = m_fPixZeroX - m_horzCoord.Transform2fPixelSize(usSimuEnd);
+	fPixelPoint      prevPoint     { m_fPixZeroX, m_fPixYoff - fPixSignal };
 	fPixel           fPixMaxSignal { 0._fPixel };
 	m_upGraphics->FillCircle(fPixelCircle(prevPoint, 4.0_fPixel), color);
-	for (fMicroSecs usSimu = usSimuEnd - usIncrement; usSimu >= usSimuStart; usSimu -= usIncrement)
+
+	for (fMicroSecs time = usSimuEnd - usIncrement; time >= usSimuStart; time -= usIncrement)
 	{
-		fPixSignal = getSignalValue(*pSignal, usSimu);
-		assert(fPixSignal.IsNotNull());
+		fPixelPoint const actPoint   { getPoint(time) };
+		fPixel      const fPixSignal { m_fPixYoff - actPoint.GetX() };
+		fPixelPoint const stepPoint  { actPoint.GetX(), prevPoint.GetY() };
 		if (fPixSignal > fPixMaxSignal)
 			fPixMaxSignal = fPixSignal;
-		fPixelPoint const actPoint 
-		{ 
-			fPixX + m_horzCoord.Transform2fPixelSize(usSimu), 
-			fPixYoff - fPixSignal
-		};
-		m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color);
+		if (prevPoint != stepPoint)
+			m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, color);
+		if (stepPoint != actPoint)
+			m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, color);
 		prevPoint = actPoint;
 	}
 
-	if ( signalTooHigh(fPixMaxSignal) )
+	if (signalTooHigh(fPixMaxSignal))
 	{
 		m_upGraphics->FillRectangle
 		(
