@@ -72,7 +72,13 @@ bool IsValidIndex(long const index, vector<T> const &vec)
 template<typename T>
 T GetVectorValue(long const index, vector<T> const &vec)
 {
-	return IsValidIndex(index, vec) ? vec[index] : T::NULL_VAL();
+	if (vec.empty())
+		return T::NULL_VAL();
+	else
+	{
+		long const clippedIndex { ClipToMinMax(index, 0L, static_cast<long>(vec.size()-1)) }; 
+		return vec[clippedIndex];
+	}
 }
 
 template<typename SOURCE_TYPE>

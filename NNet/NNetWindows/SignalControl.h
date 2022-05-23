@@ -24,12 +24,12 @@ class SignalControl : public TimeGraph
 public:
 	SignalControl
 	(
-		HWND                     const, 
-		ComputeThread            const &, 
-		NNetModelCommands              &,
-		Observable                     &,
-		Observable                     &,
-		PixFpDimension<fMicroSecs>     *
+		HWND                 const, 
+		ComputeThread        const &, 
+		NNetModelCommands          &,
+		Observable                 &,
+		Observable                 &,
+		PixFpDimension<fMicroSecs> *
 	);
 
 	~SignalControl() final;

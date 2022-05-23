@@ -400,6 +400,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->AttachSigGen2Conn(m_pMainWindow->GetHighlightedNobId());
         break;
 
+    case IDM_TRIGGER_STIMULUS:
+        m_pMonitorWindow->StimulusTriggered();
+        break;
+
     default:
         return false;
     }

@@ -40,14 +40,12 @@ public:
 	bool   SignalTooHigh() const;
 	float  ScaleFactor();
 	void   ScaleSignals();
+	void   StimulusTriggered();
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
-	void SetRightBorder(fPixel const fPixBorder)
-	{
-		m_fPixRightBorder = fPixBorder;
-	}
+	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
 private:
 
@@ -70,33 +68,36 @@ private:
 	void        highlightSignal (SignalId const &);
 	fPixel      getSignalOffset (SignalId const &) const;
 	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
+	fPixel      getfPixXpos     (fMicroSecs const) const;
+	fPixelPoint getSignalPoint  (Signal const &, fMicroSecs const, fPixel const) const;
 	fPixel      calcTrackHeight () const;
 	fPixelPoint calcDiamondPos  () const;
 
+	void paintWarningRect();
+	void paintStimulusMarker();
 	void paintSignal(SignalId const &);
 	void paintTrack(TrackNr const) const;
-	bool signalTooHigh(fPixel const) const;
 
 	void DoPaint() final;
 
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };
 
-	Sound                    & m_sound;        
-	NNetModelCommands        & m_modelCommands;
-	MonitorData              * m_pMonitorData { nullptr };
-	NNetModelWriterInterface * m_pNMWI        { nullptr };
-
-	TrackNr             m_trackNrHighlighted { TrackNr::NULL_VAL() };
-	PixelPoint          m_pixLast            { PP_NULL };     // last cursor position during selection 
-	PIXEL               m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
-	fPixel              m_fPixWinWidth       { 0.0_fPixel };
-	fPixel              m_fPixRightBorder    { 0.0_fPixel };
-	fPixel              m_fPixZeroX          { 0.0_fPixel };
-	IDWriteTextFormat * m_pTextFormat        { nullptr };
-	fPixel              m_fPixMaxSignal      { 0.0_fPixel };
-	Measurement         m_measurement;
-
 	PixFpDimension<fMicroSecs> & m_horzCoord;
 	PixFpDimension<float>      & m_vertCoord;
+	Sound                      & m_sound;        
+	NNetModelCommands          & m_modelCommands;
+	MonitorData                * m_pMonitorData { nullptr };
+	NNetModelWriterInterface   * m_pNMWI        { nullptr };
+	IDWriteTextFormat          * m_pTextFormat  { nullptr };
+	Measurement                  m_measurement;
+
+	TrackNr    m_trackNrHighlighted { TrackNr::NULL_VAL() };
+	PixelPoint m_pixLast            { PP_NULL };     // last cursor position during selection 
+	PIXEL      m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
+	fPixel     m_fPixWinWidth       { 0.0_fPixel };
+	fPixel     m_fPixRightBorder    { 0.0_fPixel };
+	fPixel     m_fPixZeroX          { 0.0_fPixel };
+	fPixel     m_fPixMaxSignal      { 0.0_fPixel };
+	fMicroSecs m_usLastStimulus     { fMicroSecs::NULL_VAL() };
 };

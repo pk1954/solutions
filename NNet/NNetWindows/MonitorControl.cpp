@@ -224,25 +224,28 @@ fPixel MonitorControl::calcTrackHeight() const
 	return fPixTrackHeight;
 }
 
+fPixel MonitorControl::getfPixXpos(fMicroSecs const time) const
+{
+	return m_horzCoord.Transform2fPixelPos(time - SimulationTime::Get());
+}
+
 fPixelPoint MonitorControl::calcDiamondPos() const
 {
-	fPixelPoint        fPixDiamondPos { fPP_NULL };
-	SignalId   const & idSignal       { m_pMonitorData->GetHighlightedSignalId() };
-	if (Signal const * pSignal        { m_pMonitorData->GetConstSignalPtr(idSignal) })
+	fPixelPoint      fPixDiamondPos { fPP_NULL };
+	SignalId const & idSignal       { m_pMonitorData->GetHighlightedSignalId() };
+	if (Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) })
 	{
-		fMicroSecs const usSimuEnd  { SimulationTime::Get() };
-		fPixel     const fPixSignal { getSignalValue(*pSignal, usSimuEnd) };
+		fPixel const fPixSignal { getSignalValue(*pSignal, SimulationTime::Get()) };
 		if (fPixSignal.IsNotNull())
 		{
 			PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
 			fPixel     const fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
 			fMicroSecs const usScaleTime  { m_horzCoord.Transform2logUnitPos(fPixCrsrX) };
-			fMicroSecs const usAbsTime    { usSimuEnd + usScaleTime };
+			fMicroSecs const usAbsTime    { SimulationTime::Get() + usScaleTime };
 			if (usAbsTime >= pSignal->GetStartTime())
 			{
 				fMicroSecs const usAbsMax   { pSignal->FindNextMaximum(m_pNMWI->GetParams(), usAbsTime) };
-				fMicroSecs const usScaleMax { usAbsMax - usSimuEnd };
-				fPixel     const fPixMaxX   { m_fPixZeroX + m_horzCoord.Transform2fPixelSize(usScaleMax) };
+				fPixel     const fPixMaxX   { getfPixXpos(usAbsMax) };
 				fPixel     const fPixYoff   { getSignalOffset(idSignal) };
 				fPixel     const fPixSigVal { getSignalValue(*pSignal, usAbsMax) };
 				if (fPixSigVal.IsNotNull())
@@ -251,6 +254,29 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 		}
 	}
 	return fPixDiamondPos;
+}
+
+fPixelPoint MonitorControl::getSignalPoint
+(
+	Signal     const & signal, 
+	fMicroSecs const   time,
+	fPixel     const   fPixYoff
+) const
+{
+	return fPixelPoint(getfPixXpos(time), fPixYoff - getSignalValue(signal, time));
+}
+
+void MonitorControl::paintWarningRect()
+{
+	m_upGraphics->FillRectangle
+	(
+		fPixelRect
+		(
+			fPixelPoint   (m_fPixZeroX, 0._fPixel),
+			fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
+		), 
+		NNetColors::COL_WARNING
+	);
 }
 
 void MonitorControl::paintSignal(SignalId const & idSignal)
@@ -276,52 +302,28 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	fMicroSecs const usResolution { m_pNMWI->TimeResolution() };
 	fMicroSecs const usIncrement  { max(usPixelSize, usResolution) };
 	fMicroSecs const timeStart    { max(timeEnd - usVisible, pSignal->GetStartTime()) };
-	fPixel     const fPixX        { m_fPixZeroX - m_horzCoord.Transform2fPixelSize(timeEnd) };
 
 	fPixel fPixMinSignal = PaintCurve
 	(
-		[this, fPixX, fPixYoff, pSignal](fMicroSecs const time)
+		[this, fPixYoff, pSignal](fMicroSecs const time)
 		{
-			return fPixelPoint 
-			(
-				fPixX + m_horzCoord.Transform2fPixelSize(time), 
-				fPixYoff - getSignalValue(*pSignal, time)
-			);
+			return getSignalPoint(*pSignal, time, fPixYoff);
 		},
 		timeStart, timeEnd, usIncrement, fPixWidth, color          
 	);
 
-	fPixelPoint lastPoint
-	(
-		m_fPixZeroX,
-		fPixYoff - getSignalValue(*pSignal, timeEnd)
-	);
+	fPixelPoint lastPoint { getSignalPoint(*pSignal, SimulationTime::Get(), fPixYoff) };
 	m_upGraphics->FillCircle(fPixelCircle(lastPoint, 4.0_fPixel), color);
 
-	m_fPixMaxSignal = fPixYoff - fPixMinSignal;
-	if (signalTooHigh(m_fPixMaxSignal))
-	{
-		m_upGraphics->FillRectangle
-		(
-			fPixelRect
-			(
-				fPixelPoint   (m_fPixZeroX, 0._fPixel),
-				fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
-			), 
-			NNetColors::COL_WARNING
-		);
-	}
-}
-
-bool MonitorControl::signalTooHigh(fPixel const fPix) const
-{
-	fPixel const fPixTrackHeight { calcTrackHeight() };
-	return fPix > fPixTrackHeight;
+	fPixel fPixMaxSignal = fPixYoff - fPixMinSignal;
+	if (fPixMaxSignal > m_fPixMaxSignal)
+		m_fPixMaxSignal = fPixMaxSignal;
 }
 
 bool MonitorControl::SignalTooHigh() const
 {
-	return signalTooHigh(m_fPixMaxSignal);
+	fPixel const fPixTrackHeight { calcTrackHeight() };
+	return m_fPixMaxSignal > fPixTrackHeight;
 }
 
 float MonitorControl::ScaleFactor()
@@ -372,15 +374,42 @@ void MonitorControl::paintTrack(TrackNr const trackNr) const
 	);
 }
 
+void MonitorControl::StimulusTriggered() 
+{ 
+	m_usLastStimulus = SimulationTime::Get(); 
+}
+
+void MonitorControl::paintStimulusMarker()
+{
+	fPixel const fPixX      { getfPixXpos(m_usLastStimulus) };
+	fPixel const fPixBottom { Convert2fPixel(GetClientWindowHeight()) };
+	m_upGraphics->DrawLine
+	(
+		fPixelPoint(fPixX, 0._fPixel),
+		fPixelPoint(fPixX, fPixBottom),
+		1._fPixel, 
+		NNetColors::COL_STIMULUS_LINE
+	);
+}
+
 void MonitorControl::DoPaint()
 {
 	m_fPixMaxSignal = 0.0_fPixel;
 
 	if (m_pMonitorData->NoTracks())
 		return;
+
 	if (m_pMonitorData->GetNrOfTracks() > 1)
 		m_pMonitorData->Apply2AllTracksC([this](TrackNr const n) { paintTrack(n); });
+
 	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
+
+	if (SignalTooHigh())
+		paintWarningRect();
+
+	if (m_usLastStimulus.IsNotNull())
+		paintStimulusMarker();
+
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 
 	if (m_measurement.TrackingActive())
@@ -561,6 +590,7 @@ bool MonitorControl::OnSize(PIXEL const width, PIXEL const height)
 	GraphicsWindow::OnSize(width, height);
 	m_fPixWinWidth = Convert2fPixel(width);
 	m_fPixZeroX    = Convert2fPixel(width) - m_fPixRightBorder;
+	m_horzCoord.SetOffset(m_fPixZeroX);
 	m_measurement.SetClientRectSize(width, height);
 	return true;
 }

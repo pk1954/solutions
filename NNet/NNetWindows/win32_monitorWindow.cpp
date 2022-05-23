@@ -63,6 +63,11 @@ void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
+void MonitorWindow::StimulusTriggered()
+{
+	m_upMonitorControl->StimulusTriggered();
+}
+
 wstring MonitorWindow::GetCaption() const 
 { 
 	return (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
@@ -92,7 +97,7 @@ void MonitorWindow::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale
 	{
 	case SC_LBUTTONDBLCLK:
 	{
-		if ( m_upMonitorControl->SignalTooHigh() )
+		if (m_upMonitorControl->SignalTooHigh())
 			m_vertCoord.Zoom(m_upMonitorControl->ScaleFactor());
 	}
 	break;

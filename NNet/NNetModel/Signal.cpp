@@ -94,7 +94,13 @@ mV Signal::GetDataPoint
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
-    return GetVectorValue<mV>(index, m_data);
+    mV        mVres { GetVectorValue<mV>(index, m_data) };
+    return mVres;
+}
+
+void Signal::Notify(bool const bImmediate) // called by compute thread!
+{
+    m_data.push_back(m_sigSource.GetSignalValue());
 }
 
 fMicroSecs Signal::FindNextMaximum
@@ -116,11 +122,6 @@ fMicroSecs Signal::FindNextMaximum
             ++index;
     }
     return index2time(param, index);
-}
-
-void Signal::Notify(bool const bImmediate)
-{
-    m_data.push_back(m_sigSource.GetSignalValue());
 }
 
 void Signal::CheckSignal() const 

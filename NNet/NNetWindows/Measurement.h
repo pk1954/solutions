@@ -41,8 +41,7 @@ private:
 
 	bool m_bLeftActive  { false };
 	bool m_bRightActive { false };
-
-	bool m_bActive      { true };
+	bool m_bActive      { false };
 
 	inline static fPixel const GRADIENT_WIDTH { 10._fPixel };
 

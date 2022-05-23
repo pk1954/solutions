@@ -19,7 +19,7 @@ public:
 		return m_timeStamp; 
 	}
 
-	static void Tick(fMicroSecs const timeInc) 	
+	static void Tick(fMicroSecs const timeInc)  // called by compute thread!
 	{ 
 		m_timeStamp += timeInc; 
 	}

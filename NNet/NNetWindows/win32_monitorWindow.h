@@ -25,6 +25,7 @@ public:
 	void Start(HWND const, Sound &,	NNetModelCommands &);
 	void Stop();
 	void SetModelInterface(NNetModelWriterInterface * const);
+	void StimulusTriggered();
 
 private:
 	inline static PIXEL const RIGHT_BORDER   { 25_PIXEL };
