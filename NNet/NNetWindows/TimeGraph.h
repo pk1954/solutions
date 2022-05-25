@@ -50,15 +50,15 @@ protected:
 		auto               getPoint,
 		fMicroSecs   const timeStart,
 		fMicroSecs   const timeEnd,
-		fMicroSecs   const usIncrement,
 		fPixel       const fPixWidth,
 		D2D1::ColorF const color          
 	) const
 	{
-		static const bool bHorzSteps { false };
+		assert(m_pNMWI);
+		fMicroSecs const usIncrement { m_pNMWI->TimeResolution() };
 
-		fPixelPoint prevPoint     { getPoint(timeStart) };
 		fPixel      fPixMinSignal { fPixel::MAX_VAL() };
+		fPixelPoint prevPoint     { getPoint(timeStart) };
 
 		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 		{
@@ -66,7 +66,7 @@ protected:
 			fPixel      const fPixSignal { actPoint.GetY() };
 			if (fPixSignal < fPixMinSignal)
 				fPixMinSignal = fPixSignal;
-			if (bHorzSteps)
+			if (actPoint.GetX() - prevPoint.GetX() > 1._fPixel)
 			{
 				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
 				if (prevPoint != stepPoint)
@@ -80,7 +80,6 @@ protected:
 			}
 			prevPoint = actPoint;
 		}
-
 		return fPixMinSignal;
 	}
 

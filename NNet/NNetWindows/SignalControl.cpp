@@ -228,32 +228,24 @@ void SignalControl::DoPaint()
 		{
 			paintRunControls(pSigGen->GetStimulusTime());
 		}
-		if (Param * pParam { GetParams() })
-		{
-			fMicroSecs const usPixelSize  { m_pHorzCoord->GetPixelSize() };
-			fMicroSecs const usResolution { pParam->TimeResolution() };
-			fMicroSecs const usIncrement  { max(usPixelSize, usResolution) };
-			if (m_pVertCoordFreq)
-				PaintCurve
-				(
-					[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
-					0.0_MicroSecs,
-					getTime(xRight()),
-					usIncrement, 
-					STD_WIDTH,
-					getColor(tColor::FREQ)
-				);
-			if (m_pVertCoordVolt)
-				PaintCurve
-				(
-					[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
-					0.0_MicroSecs,
-					getTime(xRight()),
-					usIncrement,
-					STD_WIDTH,
-					getColor(tColor::VOLT)
-				);
-		}
+		if (m_pVertCoordFreq)
+			PaintCurve
+			(
+				[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
+				0.0_MicroSecs,
+				getTime(xRight()),
+				STD_WIDTH,
+				getColor(tColor::FREQ)
+			);
+		if (m_pVertCoordVolt)
+			PaintCurve
+			(
+				[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
+				0.0_MicroSecs,
+				getTime(xRight()),
+				STD_WIDTH,
+				getColor(tColor::VOLT)
+			);
 	}
 }
 

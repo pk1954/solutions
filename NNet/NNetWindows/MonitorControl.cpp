@@ -129,11 +129,11 @@ SignalNr MonitorControl::findSignal
 		[this, &trackNr, &usTime, &fPixPtCrsr, &fPixBestDelta, &signalNrRes](SignalNr const signalNr)
 		{
 			SignalId idSignal { SignalId(trackNr, signalNr) };
-			if (Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) })
+			if (Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) })
 			{
-				if (usTime >= pSignal->GetStartTime())
+				if (usTime >= pSig->GetStartTime())
 				{
-					fPixel const fPixSignal { getSignalValue(*pSignal, usTime) };
+					fPixel const fPixSignal { getSignalValue(*pSig, usTime) };
 					if (fPixSignal.IsNotNull())
 					{
 						fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
@@ -233,21 +233,21 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 {
 	fPixelPoint      fPixDiamondPos { fPP_NULL };
 	SignalId const & idSignal       { m_pMonitorData->GetHighlightedSignalId() };
-	if (Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) })
+	if (Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) })
 	{
-		fPixel const fPixSignal { getSignalValue(*pSignal, SimulationTime::Get()) };
+		fPixel const fPixSignal { getSignalValue(*pSig, SimulationTime::Get()) };
 		if (fPixSignal.IsNotNull())
 		{
 			PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
 			fPixel     const fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
 			fMicroSecs const usScaleTime  { m_horzCoord.Transform2logUnitPos(fPixCrsrX) };
 			fMicroSecs const usAbsTime    { SimulationTime::Get() + usScaleTime };
-			if (usAbsTime >= pSignal->GetStartTime())
+			if (usAbsTime >= pSig->GetStartTime())
 			{
-				fMicroSecs const usAbsMax   { pSignal->FindNextMaximum(m_pNMWI->GetParams(), usAbsTime) };
+				fMicroSecs const usAbsMax   { pSig->FindNextMaximum(m_pNMWI->GetParams(), usAbsTime) };
 				fPixel     const fPixMaxX   { getfPixXpos(usAbsMax) };
 				fPixel     const fPixYoff   { getSignalOffset(idSignal) };
-				fPixel     const fPixSigVal { getSignalValue(*pSignal, usAbsMax) };
+				fPixel     const fPixSigVal { getSignalValue(*pSig, usAbsMax) };
 				if (fPixSigVal.IsNotNull())
 					fPixDiamondPos = fPixelPoint(fPixMaxX, fPixYoff - fPixSigVal);
 			}
@@ -281,43 +281,38 @@ void MonitorControl::paintWarningRect()
 
 void MonitorControl::paintSignal(SignalId const & idSignal)
 {
-	Signal const * pSignal { m_pMonitorData->GetConstSignalPtr(idSignal) };
-	if (pSignal == nullptr)
+	Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) };
+	if (pSig == nullptr)
 		return;
 	fMicroSecs const timeEnd    { SimulationTime::Get() };
-	fPixel           fPixSignal { getSignalValue(*pSignal, timeEnd) };
+	fPixel           fPixSignal { getSignalValue(*pSig, timeEnd) };
 	if (fPixSignal.IsNull())
 		return;
 
-	D2D1::ColorF color     { ColorF::Black };
-	fPixel       fPixWidth { 1.0_fPixel };
+	fPixel     const offset    { getSignalOffset(idSignal) };
+	fMicroSecs const usVisible { m_horzCoord.Transform2logUnitPos(0._fPixel) };
+	fMicroSecs const timeStart { max(timeEnd + usVisible, pSig->GetStartTime()) };
+	D2D1::ColorF     color     { ColorF::Black };
+	fPixel           fPixWidth { 1.0_fPixel };
+
 	if (m_pMonitorData->IsSelected(idSignal) && (m_pMonitorData->GetNrOfSignals() >1)) 
 	{
 		color     = NNetColors::EEG_SIGNAL_HIGH;  // emphasize selected signal 
 		fPixWidth = 3.0_fPixel;                         
 	}
-	fPixel     const fPixYoff     { getSignalOffset(idSignal) };
-	fMicroSecs const usPixelSize  { m_horzCoord.GetPixelSize() };
-	fMicroSecs const usVisible    { usPixelSize * m_fPixZeroX.GetValue() };
-	fMicroSecs const usResolution { m_pNMWI->TimeResolution() };
-	fMicroSecs const usIncrement  { max(usPixelSize, usResolution) };
-	fMicroSecs const timeStart    { max(timeEnd - usVisible, pSignal->GetStartTime()) };
 
 	fPixel fPixMinSignal = PaintCurve
 	(
-		[this, fPixYoff, pSignal](fMicroSecs const time)
-		{
-			return getSignalPoint(*pSignal, time, fPixYoff);
-		},
-		timeStart, timeEnd, usIncrement, fPixWidth, color          
+		[this, offset, pSig](fMicroSecs const t) { return getSignalPoint(*pSig, t, offset); },
+		timeStart, timeEnd, fPixWidth, color          
 	);
 
-	fPixelPoint lastPoint { getSignalPoint(*pSignal, SimulationTime::Get(), fPixYoff) };
-	m_upGraphics->FillCircle(fPixelCircle(lastPoint, 4.0_fPixel), color);
-
-	fPixel fPixMaxSignal = fPixYoff - fPixMinSignal;
+	fPixel fPixMaxSignal = offset - fPixMinSignal;
 	if (fPixMaxSignal > m_fPixMaxSignal)
 		m_fPixMaxSignal = fPixMaxSignal;
+
+	fPixelPoint lastPoint { getSignalPoint(*pSig, SimulationTime::Get(), offset) };
+	m_upGraphics->FillCircle(fPixelCircle(lastPoint, 4.0_fPixel), color);
 }
 
 bool MonitorControl::SignalTooHigh() const

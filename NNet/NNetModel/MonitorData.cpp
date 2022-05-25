@@ -18,23 +18,6 @@ bool MonitorData::operator==(MonitorData const & rhs) const
 	return m_tracks == rhs.m_tracks;
 }
 
-//MonitorData::MonitorData(const MonitorData& rhs)  // copy constructor
-//{
-//	for (auto const & upTrack : rhs.m_tracks)
-//		m_tracks.push_back(make_unique<Track>(*upTrack.get()));
-//}
-
-//MonitorData& MonitorData::operator=(MonitorData&& rhs) noexcept // move assignment operator
-//{
-//	if (this != &rhs)
-//	{
-//		m_tracks.clear();
-//		for (auto & upTrack : rhs.m_tracks)
-//			m_tracks.push_back(move(upTrack));
-//	}
-//	return * this;
-//}
-
 void MonitorData::Reset()
 {
 	m_tracks.clear();

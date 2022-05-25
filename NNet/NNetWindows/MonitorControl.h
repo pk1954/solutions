@@ -88,7 +88,6 @@ private:
 	Sound                      & m_sound;        
 	NNetModelCommands          & m_modelCommands;
 	MonitorData                * m_pMonitorData { nullptr };
-	NNetModelWriterInterface   * m_pNMWI        { nullptr };
 	IDWriteTextFormat          * m_pTextFormat  { nullptr };
 	Measurement                  m_measurement;
 

@@ -45,7 +45,6 @@ void SignalPreview::DoPaint()
 			}, 
 			0.0_MicroSecs,
 			getTime(xRight()),
-			usResolution,
 			STD_WIDTH,
 			D2D1::ColorF::Black
 		);
