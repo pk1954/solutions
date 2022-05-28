@@ -74,9 +74,10 @@ private:
 	fPixelPoint calcDiamondPos  () const;
 
 	void paintWarningRect();
-	void paintStimulusMarker();
+	void paintStimulusMarkers();
 	void paintSignal(SignalId const &);
 	void paintTrack(TrackNr const) const;
+	void paintNumber(fPixel const, fPixel const, int const, D2D1::ColorF const) const;
 
 	void DoPaint() final;
 
@@ -98,5 +99,4 @@ private:
 	fPixel     m_fPixRightBorder    { 0.0_fPixel };
 	fPixel     m_fPixZeroX          { 0.0_fPixel };
 	fPixel     m_fPixMaxSignal      { 0.0_fPixel };
-	fMicroSecs m_usLastStimulus     { fMicroSecs::NULL_VAL() };
 };

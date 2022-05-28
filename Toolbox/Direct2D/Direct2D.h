@@ -53,11 +53,14 @@ public:
     void FillBackground     (D2D1::ColorF const) const;
     void UpDownArrow        (bool const, fPixelRect const &, D2D1::ColorF const);
 
+    void DrawLine(fPixelPoint const &, fPixelPoint const &, fPixel const, ID2D1SolidColorBrush *) const;
+
     fPixelRectSize GetClRectSize() const;
     fPixel         GetClRectWidth() const;
     fPixel         GetClRectHeight() const;
 
-    IDWriteTextFormat * NewTextFormat(float const) const;
+    ID2D1SolidColorBrush * CreateBrush(D2D1::ColorF const) const;
+    IDWriteTextFormat    * NewTextFormat(float const) const;
 
 private:
     HWND m_hwnd { nullptr };
@@ -69,7 +72,6 @@ private:
     IDWriteFactory        * m_pDWriteFactory { nullptr };
     IDWriteTextFormat     * m_pTextFormat    { nullptr };
 
-    ID2D1SolidColorBrush * createBrush(D2D1::ColorF const) const;
     void createResources();
     void discardResources();
 

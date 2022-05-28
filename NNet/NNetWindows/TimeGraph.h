@@ -62,6 +62,7 @@ protected:
 		fPixel      fPixMinSignal { fPixel::MAX_VAL() };
 		fPixelPoint prevPoint     { getPoint(timeStart) };
 
+		ID2D1SolidColorBrush * pBrush { m_upGraphics->CreateBrush(color) };
 		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 		{
 			fPixelPoint const actPoint   { getPoint(time) };
@@ -71,15 +72,16 @@ protected:
 			if (actPoint.GetX() - prevPoint.GetX() >= 2._fPixel)
 			{
 				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, color);
-				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, color);
+				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, pBrush);
+				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, pBrush);
 			}
 			else
 			{
-				m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, color);
+				m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, pBrush);
 			}
 			prevPoint = actPoint;
 		}
+		SafeRelease(& pBrush);
 		return fPixMinSignal;
 	}
 

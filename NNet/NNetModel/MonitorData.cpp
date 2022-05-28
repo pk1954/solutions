@@ -20,10 +20,16 @@ bool MonitorData::operator==(MonitorData const & rhs) const
 
 void MonitorData::Reset()
 {
+	m_usStimulusList.clear();
 	m_tracks.clear();
 	m_idSigHighlighted.Set2Null();
 	if (m_pHighSigObservable)
 		m_pHighSigObservable->NotifyAll(false);
+}
+
+void MonitorData::AddStimulus(fMicroSecs const time) 
+{ 
+	m_usStimulusList.push_back(time); 
 }
 
 int MonitorData::GetNrOfTracks() const

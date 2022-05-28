@@ -53,6 +53,7 @@ public:
 	SignalId SetHighlightedSignal(SignalId      const  );
 	SignalId ResetHighlightedSignal();
 
+	void           AddStimulus         (fMicroSecs const);
 	SignalNr       AddSignal           (TrackNr  const, unique_ptr<Signal>);
     void           AddSignal           (SignalId const &, unique_ptr<Signal>);
 	SignalNr       MoveSignal          (SignalId const &, TrackNr  const);
@@ -150,6 +151,8 @@ public:
 	bool     IsEmptyTrack(TrackNr const)    const;
 	bool     AnyEmptyTracks()               const;
 
+	vector<fMicroSecs> const & GetStimulusList() { return m_usStimulusList; }
+
 private:
 	Track            * getTrack(TrackNr const);
 	Track      const * getTrack(TrackNr const) const;
@@ -159,4 +162,5 @@ private:
 	SignalId                  m_idSigHighlighted   {};
 	vector<unique_ptr<Track>> m_tracks             {};
 	int                       m_iNrOfSignals       { 0 };
+	vector<fMicroSecs>        m_usStimulusList;
 };

@@ -53,6 +53,8 @@ void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 
 void MonitorControl::Reset()
 {
+	if (m_pMonitorData)
+		m_pMonitorData->Reset();
 	m_sound.Play(TEXT("DISAPPEAR_SOUND"));
 }
 
@@ -333,6 +335,27 @@ void MonitorControl::ScaleSignals()
 		m_vertCoord *= ScaleFactor();
 }
 
+void MonitorControl::paintNumber
+(
+	fPixel       const xPos,
+	fPixel       const yPos,
+	int          const iNr,
+	D2D1::ColorF const col
+) const
+{
+	m_upGraphics->DisplayText
+	(
+		fPixelRect
+		(
+			fPixelPoint   (xPos, yPos), 
+			fPixelRectSize(30._fPixel, 10._fPixel)
+		),
+		to_wstring(iNr), 
+		col, 
+		m_pTextFormat
+	);
+}
+
 void MonitorControl::paintTrack(TrackNr const trackNr) const
 {
 	ColorF const col 
@@ -354,37 +377,28 @@ void MonitorControl::paintTrack(TrackNr const trackNr) const
 		col
 	);
 
-	fPixel const TRACK_NR_WIDTH  { 15._fPixel };
-	fPixel const TRACK_NR_HEIGHT { 30._fPixel };
-	m_upGraphics->DisplayText
-	(
-		fPixelRect
-		(
-			fPixelPoint   (m_fPixWinWidth - TRACK_NR_WIDTH, fPixTrackTop), 
-			fPixelRectSize(TRACK_NR_WIDTH, TRACK_NR_HEIGHT)
-		),
-		to_wstring(trackNr.GetValue()), 
-		D2D1::ColorF::Black, 
-		m_pTextFormat
-	);
+	paintNumber(m_fPixWinWidth - 15._fPixel, fPixTrackTop, trackNr.GetValue(), D2D1::ColorF::Black);
 }
 
 void MonitorControl::StimulusTriggered() 
 { 
-	m_usLastStimulus = SimulationTime::Get(); 
+	m_pMonitorData->AddStimulus(SimulationTime::Get());
 }
 
-void MonitorControl::paintStimulusMarker()
+void MonitorControl::paintStimulusMarkers()
 {
-	fPixel const fPixX      { getfPixXpos(m_usLastStimulus) };
 	fPixel const fPixBottom { Convert2fPixel(GetClientWindowHeight()) };
-	m_upGraphics->DrawLine
-	(
-		fPixelPoint(fPixX, 0._fPixel),
-		fPixelPoint(fPixX, fPixBottom),
-		1._fPixel, 
-		NNetColors::COL_STIMULUS_LINE
-	);
+
+	int iStimulusNr { 1 };
+	for (auto it : m_pMonitorData->GetStimulusList())
+	{
+		fPixel      const fPixX     { getfPixXpos(it) };
+		fPixelPoint const fPixStart { fPixX, 0._fPixel };
+		fPixelPoint const fPixEnd   { fPixX, fPixBottom };
+		m_upGraphics->DrawLine(fPixStart, fPixEnd, 1._fPixel, NNetColors::COL_STIMULUS_LINE);
+		paintNumber(fPixX + 2._fPixel, 0._fPixel, iStimulusNr, NNetColors::COL_STIMULUS_LINE);
+		++iStimulusNr;
+	}
 }
 
 void MonitorControl::DoPaint()
@@ -402,8 +416,7 @@ void MonitorControl::DoPaint()
 	if (SignalTooHigh())
 		paintWarningRect();
 
-	if (m_usLastStimulus.IsNotNull())
-		paintStimulusMarker();
+	paintStimulusMarkers();
 
 	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
 

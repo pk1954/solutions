@@ -31,7 +31,7 @@ SignalControl::SignalControl
 	m_dynamicModelObservable(dynamicModelObservable)
 {
 	m_runObservable         .RegisterObserver(*this);
-	m_dynamicModelObservable.RegisterObserver(*this);
+	//m_dynamicModelObservable.RegisterObserver(*this);
 }
 
 SignalControl::~SignalControl()
@@ -39,7 +39,7 @@ SignalControl::~SignalControl()
 	if (m_pNMWI && m_pNMWI->IsDefined())
 		GetParams()->UnregisterObserver(*this);
 	m_runObservable         .UnregisterObserver(*this);
-	m_dynamicModelObservable.UnregisterObserver(*this);
+	//m_dynamicModelObservable.UnregisterObserver(*this);
 	if (m_pVertCoordFreq)
 		m_pVertCoordFreq->UnregisterObserver(*this);
 	if (m_pVertCoordVolt)

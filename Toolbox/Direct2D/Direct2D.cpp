@@ -137,7 +137,7 @@ void D2D_driver::DisplayText
 ) const
 {
 	IDWriteTextFormat    * pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
-	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	D2D1_RECT_F            d2Rect 
 	{ 
 		rect.GetLeft  ().GetValue(), 
@@ -163,7 +163,7 @@ void D2D_driver::EndFrame()
 
 void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel const fPixWidth) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	m_pRenderTarget->DrawRectangle
 	(
 		D2D1_RECT_F
@@ -182,7 +182,7 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, 
 
 void D2D_driver::FillRectangle(fPixelRect const & rect, D2D1::ColorF const colF) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	m_pRenderTarget->FillRectangle
 	(
 		D2D1_RECT_F
@@ -286,7 +286,7 @@ void D2D_driver::DrawLine
 	D2D1::ColorF const   colF
 ) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 
 	m_pRenderTarget->DrawLine
 	(
@@ -297,6 +297,23 @@ void D2D_driver::DrawLine
 	);
 
 	SafeRelease(& pBrush);
+}
+
+void D2D_driver::DrawLine
+(
+	fPixelPoint    const & fpp1, 
+	fPixelPoint    const & fpp2, 
+	fPixel         const   fpixWidth, 
+	ID2D1SolidColorBrush * pBrush
+) const
+{
+	m_pRenderTarget->DrawLine
+	(
+		D2D1_POINT_2F{ fpp1.GetXvalue(), fpp1.GetYvalue() }, 
+		D2D1_POINT_2F{ fpp2.GetXvalue(), fpp2.GetYvalue() },
+		pBrush,
+		fpixWidth.GetValue()
+	);
 }
 
 void D2D_driver::FillCircle
@@ -324,7 +341,7 @@ void D2D_driver::FillEllipse
 	D2D1::ColorF  const   colF
 ) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	m_pRenderTarget->FillEllipse(convertD2D(fPE), pBrush	);
 	SafeRelease(& pBrush);
 }
@@ -336,7 +353,7 @@ void D2D_driver::DrawEllipse
 	fPixel        const   fPixWidth
 ) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush(colF) };
+	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	m_pRenderTarget->DrawEllipse(convertD2D(fPE), pBrush, fPixWidth.GetValue(), nullptr);
 	SafeRelease(& pBrush);
 }
@@ -404,7 +421,7 @@ void D2D_driver::FillBackground(D2D1::ColorF const d2dCol) const
 	m_pRenderTarget->Clear(d2dCol);
 }
 
-ID2D1SolidColorBrush * D2D_driver::createBrush(D2D1::ColorF const d2dCol) const
+ID2D1SolidColorBrush * D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 {
 	ID2D1SolidColorBrush * pBrush;
 	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, & pBrush); 
