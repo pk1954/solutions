@@ -30,7 +30,6 @@ void SignalPreview::DoPaint()
 	if (Param     const * const pParams { GetParams() })
 	{
 		SigGenStaticData const & statData     { pSigGen->GetStaticData() };
-		fMicroSecs       const   usResolution { pParams->TimeResolution() };
 		SigGenDynamicData        dynData      { };
 
 		m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);

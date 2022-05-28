@@ -41,7 +41,7 @@ void MonitorWindow::Start
 	);
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 4000._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 100000._MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
