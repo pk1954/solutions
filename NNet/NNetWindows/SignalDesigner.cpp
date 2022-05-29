@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "PointType.h"
+#include "win32_arrowButton.h"
 #include "win32_controls.h"
 #include "win32_editLineBox.h"
 #include "win32_util_resource.h"
@@ -106,17 +107,10 @@ void SignalDesigner::Initialize
 	);
 	BringWindowToTop(m_hStimulusButton);
 
-	m_hLayoutButton = CreateOwnerDrawButton
-	(
-		GetWindowHandle(), 
-		0, 0, 
-		V_SCALE_WIDTH .GetValue(),
-		H_SCALE_HEIGHT.GetValue(),
-		IDM_SIGNAL_DESIGNER_STACKED
-	);
-	assert(m_hLayoutButton);
-	m_upGraphicsLayoutButton = make_unique<D2D_driver>();
-	m_upGraphicsLayoutButton->Initialize(m_hLayoutButton);
+	m_upArrowButton = make_unique<ArrowButton>(GetWindowHandle(), IDM_SIGNAL_DESIGNER_STACKED);
+	m_upArrowButton->SetBackgroundColor(BaseScale::COL_NORMAL);
+	m_upArrowButton->SetWindowWidth (V_SCALE_WIDTH,  false);
+	m_upArrowButton->SetWindowHeight(H_SCALE_HEIGHT, false);
 }
 
 void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
@@ -197,63 +191,57 @@ void SignalDesigner::DoPaint()
 	EnableWindow(m_hStimulusButton, m_pComputeThread->IsRunning());
 }
 
+void SignalDesigner::renameSigGen()
+{
+	wstring wstrName { m_pNMWI->GetSigGenSelected()->GetName() };
+	EditLineBox dlgBox(wstrName);
+	dlgBox.Show(GetWindowHandle());
+	m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdSelected(), wstrName);
+	SetCaption();
+}
+
+void SignalDesigner::toggleDesign()
+{
+	PIXEL clientHeight    { GetClientWindowHeight() };
+	PIXEL newClientHeight { (m_design == DESIGN::INTEGRATED) ? (clientHeight*2) : (clientHeight/2) };
+	PIXEL newWinHeight    { GetWindowHeight() + newClientHeight - clientHeight };
+	SetWindowHeight(newWinHeight, false);
+	m_design = (m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED;
+	m_upArrowButton->SetDirection(m_design == DESIGN::STACKED);
+	design(GetClientWindowWidth(), GetClientWindowHeight());
+	m_upArrowButton->Trigger();
+}
+
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (auto const wId = LOWORD(wParam))
 	{
 	case IDM_SIGNAL_DESIGNER_INTEGRATED:
 	case IDM_SIGNAL_DESIGNER_STACKED:
-		{
-			PIXEL clientHeight    { GetClientWindowHeight() };
-			PIXEL newClientHeight { (m_design == DESIGN::INTEGRATED) ? (clientHeight*2) : (clientHeight/2) };
-			PIXEL newWinHeight    { GetWindowHeight() + newClientHeight - clientHeight };
-			SetWindowHeight(newWinHeight, false);
-			toggleDesign();
-			design(GetClientWindowWidth(), GetClientWindowHeight());
-		}
-		::InvalidateRect(m_hLayoutButton, nullptr, true);
+		toggleDesign();
 		return true;
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
 		m_pCommands->DeleteSigGen();
-		break;
+		return true;
 
 	case IDD_RENAME_SIGNAL_GENERATOR:
-		{
-			wstring wstrName { m_pNMWI->GetSigGenSelected()->GetName() };
-			EditLineBox dlgBox(wstrName);
-			dlgBox.Show(GetWindowHandle());
-			m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdSelected(), wstrName);
-			SetCaption();
-	    }
-		break;
+		renameSigGen();
+		return true;
 
 	case IDD_SELECT_SIG_GEN_CLIENTS:
 		m_pCommands->SelectSigGenClients();
-		break;
+		return true;
 
 	case IDM_TRIGGER_STIMULUS:
 		m_pNMWI->GetSigGenSelected()->StartStimulus();
-		break;
+		return true;
 
 	default:
 		break;
 	}
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }
-
-void SignalDesigner::OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * const pDiStruct) 
-{
-	m_upGraphicsLayoutButton->StartFrame();
-	m_upGraphicsLayoutButton->FillBackground(BaseScale::COL_NORMAL);
-	m_upGraphicsLayoutButton->UpDownArrow
-	(
-		m_design == DESIGN::STACKED, // if stacked -> up arrow
-		Convert2fPixelRect(pDiStruct->rcItem),
-		D2D1::ColorF::Black
-	);
-	m_upGraphicsLayoutButton->EndFrame();
-};
 
 void SignalDesigner::OnNCLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
@@ -386,7 +374,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 
 	::SetWindowPos 
 	(
-		m_hLayoutButton,
+		m_upArrowButton->GetWindowHandle(),
 		HWND_TOP,
 		0, pixControlHeight.GetValue(), 0, 0,
 		SWP_NOSIZE

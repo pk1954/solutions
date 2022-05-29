@@ -56,7 +56,7 @@ void D2D_driver::discardResources()
 	SafeRelease(& m_pTextFormat);
 }
 
-void D2D_driver::Initialize(HWND const hwnd) 
+void D2D_driver::InitWindow(HWND const hwnd) 
 {
 	m_hwnd = hwnd;
 	createResources();
@@ -365,7 +365,7 @@ void D2D_driver::FillArrow
 	fPixel       const fPixSize,  
 	fPixel       const fPixWidth, 
 	D2D1::ColorF const colF
-	) const
+) const
 {
 	if (! ptVector.IsCloseToZero())
 	{
@@ -379,7 +379,12 @@ void D2D_driver::FillArrow
 	}
 }
 
-void D2D_driver::UpDownArrow(bool const bUpArrow, fPixelRect const & fPixRect, D2D1::ColorF const color) 
+void D2D_driver::UpDownArrow
+(
+	bool         const   bUpArrow, 
+	fPixelRect   const & fPixRect, 
+	D2D1::ColorF const   color
+) const 
 { 
 	fPixel       const fPixHorCenter { fPixRect.GetWidth() / 2 };
 	fPixel       const fPixHeight    { fPixRect.GetHeight() };

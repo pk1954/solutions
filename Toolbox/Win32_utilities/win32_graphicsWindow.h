@@ -1,6 +1,9 @@
 // win32_graphicsWindow.h : 
 //
 // Win32_utilities
+//
+// thin layer on top of BaseWindow
+// providing D2D graphics capability
 
 #pragma once
 

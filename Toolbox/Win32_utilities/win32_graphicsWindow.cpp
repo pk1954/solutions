@@ -25,7 +25,7 @@ HWND GraphicsWindow::Initialize
 		nullptr,
 		nullptr
 	);
-	m_upGraphics->Initialize(hwnd);
+	m_upGraphics->InitWindow(hwnd);
 	return hwnd;
 }
 

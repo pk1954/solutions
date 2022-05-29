@@ -33,7 +33,12 @@ void NNetWindow::Start
 	NNetController & controller
 )
 {
-	GraphicsWindow::Initialize(hwndParent, L"ClassNNetWindow", dwStyle);
+	GraphicsWindow::Initialize
+	(
+		hwndParent, 
+		L"ClassNNetWindow", 
+		dwStyle
+	);
 	m_context.Start(m_upGraphics.get());
 	m_pController     = & controller;
 	m_fPixRadiusLimit = fPixLimit;

@@ -166,6 +166,7 @@
     <ClInclude Include="win32_aboutBox.h" />
     <ClInclude Include="win32_actionTimer.h" />
     <ClInclude Include="win32_animation.h" />
+    <ClInclude Include="win32_arrowButton.h" />
     <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_command.h" />
     <ClInclude Include="win32_baseDialog.h" />

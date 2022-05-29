@@ -31,7 +31,7 @@ public:
     D2D_driver() = default;
     virtual ~D2D_driver();
 
-    void Initialize(HWND const);
+    void InitWindow(HWND const);
     bool StartFrame();
     void SetStdFontSize(float const);
     void DisplayText(fPixelRect const &, wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr) const;
@@ -51,7 +51,7 @@ public:
     void FillDiamond        (fPixelPoint   const, fPixel const, D2D1::ColorF const) const;
     void Resize             (PIXEL const, PIXEL const);
     void FillBackground     (D2D1::ColorF const) const;
-    void UpDownArrow        (bool const, fPixelRect const &, D2D1::ColorF const);
+    void UpDownArrow        (bool const, fPixelRect const &, D2D1::ColorF const) const;
 
     void DrawLine(fPixelPoint const &, fPixelPoint const &, fPixel const, ID2D1SolidColorBrush *) const;
 

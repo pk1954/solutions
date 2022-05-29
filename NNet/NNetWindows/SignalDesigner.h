@@ -10,6 +10,7 @@
 #include "PixFpDimension.h"
 #include "SignalControl.h"
 #include "SignalPreview.h"
+#include "win32_arrowButton.h"
 #include "win32_graphicsWindow.h"
 
 class NNetModelCommands;
@@ -40,7 +41,7 @@ public:
 
 	enum class DESIGN { INTEGRATED, STACKED };
 
-	static DESIGN GetDesign() { return m_design; };
+	DESIGN GetDesign() const { return m_design; };
 
 private:
 
@@ -53,14 +54,10 @@ private:
 	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
 	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
-	inline static DESIGN m_design   { DESIGN::STACKED };
 	inline static bool   m_bPreview { false };
 
-	static void toggleDesign() 
-	{ 
-		m_design = (m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED;
-	}
-
+	void renameSigGen();
+	void toggleDesign();
 	void design(PIXEL const, PIXEL const);
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
 
@@ -69,7 +66,6 @@ private:
 	bool OnCommand          (WPARAM const, LPARAM const, PixelPoint const) final;
 	void OnNCLButtonDblClick(WPARAM const, LPARAM const)                   final;
 	void OnScaleCommand     (WPARAM const, BaseScale * const)              final;
-	void OnDrawItem         (WPARAM const, DRAWITEMSTRUCT const * const)   final;
 
 	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;
@@ -85,11 +81,10 @@ private:
 	unique_ptr<SignalControl>     m_upSignalControl1;
 	unique_ptr<SignalControl>     m_upSignalControl2;
 	unique_ptr<SignalPreview>     m_upSignalPreview;
+	unique_ptr<ArrowButton>       m_upArrowButton;
 	NNetModelWriterInterface    * m_pNMWI           { nullptr };
 	NNetModelCommands           * m_pCommands       { nullptr };
 	HMENU                         m_hMenu           { nullptr };
 	HWND                          m_hStimulusButton { nullptr };
-	HWND                          m_hLayoutButton   { nullptr };
-
-	unique_ptr<D2D_driver> m_upGraphicsLayoutButton { nullptr };
+	DESIGN                        m_design          { DESIGN::STACKED };
 };
