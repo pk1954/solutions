@@ -72,7 +72,7 @@ HWND BaseWindow::StartBaseWindow
 	return hwnd;
 }
 
-void BaseWindow::trackMouse(bool const bOn)
+void BaseWindow::trackMouse(bool const bOn) const
 {
     TRACKMOUSEEVENT tme;
     tme.cbSize      = sizeof(TRACKMOUSEEVENT);

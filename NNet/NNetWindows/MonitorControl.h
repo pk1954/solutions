@@ -34,18 +34,16 @@ public:
 
 	~MonitorControl() final = default;
 
+	void   SetModelInterface(NNetModelWriterInterface * const) final;
+	LPARAM AddContextMenuEntries(HMENU const) final;
+
 	void   Stop () final;
 	void   Reset();
-	void   SetModelInterface(NNetModelWriterInterface * const);
 	bool   SignalTooHigh() const;
-	float  ScaleFactor();
+	float  ScaleFactor() const;
 	void   ScaleSignals();
 	void   StimulusTriggered();
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
-
-	LPARAM AddContextMenuEntries(HMENU const) final;
-
-	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
 private:
 
@@ -96,7 +94,6 @@ private:
 	PixelPoint m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL      m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel     m_fPixWinWidth       { 0.0_fPixel };
-	fPixel     m_fPixRightBorder    { 0.0_fPixel };
 	fPixel     m_fPixZeroX          { 0.0_fPixel };
 	fPixel     m_fPixMaxSignal      { 0.0_fPixel };
 };

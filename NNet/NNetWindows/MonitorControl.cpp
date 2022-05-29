@@ -24,10 +24,10 @@ MonitorControl::MonitorControl
 	PixFpDimension<float>      & vertCoord
 ) 
   : TimeGraph(hwndParent, &horzCoord),
-	m_sound        (sound),
-	m_modelCommands(modelCommands),
 	m_horzCoord    (horzCoord),
-	m_vertCoord    (vertCoord)
+	m_vertCoord    (vertCoord),
+	m_sound        (sound),
+	m_modelCommands(modelCommands)
 {
 	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
 	m_measurement.Initialize(m_upGraphics.get());
@@ -47,7 +47,7 @@ MonitorControl::MonitorControl
 
 void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
-	m_pNMWI = pNMWI;
+	TimeGraph::SetModelInterface(pNMWI);
 	m_pMonitorData = &m_pNMWI->GetMonitorData();
 }
 
@@ -323,7 +323,7 @@ bool MonitorControl::SignalTooHigh() const
 	return m_fPixMaxSignal > fPixTrackHeight;
 }
 
-float MonitorControl::ScaleFactor()
+float MonitorControl::ScaleFactor() const
 {
 	return (m_fPixMaxSignal > 0.0_fPixel) 
 		   ? m_fPixMaxSignal / calcTrackHeight()

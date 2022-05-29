@@ -3,7 +3,9 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include <chrono>
 #include <algorithm>  // min/max/abs templates
+#include "MoreTypes.h"
 #include "Resource.h"
 #include "PointType.h"
 #include "NNetParameters.h"
@@ -14,6 +16,8 @@
 #include "NNetModelReaderInterface.h"
 
 using std::max;
+
+using namespace std::chrono;
 
 SignalControl::SignalControl
 (
@@ -31,7 +35,8 @@ SignalControl::SignalControl
 	m_dynamicModelObservable(dynamicModelObservable)
 {
 	m_runObservable         .RegisterObserver(*this);
-	//m_dynamicModelObservable.RegisterObserver(*this);
+	m_dynamicModelObservable.RegisterObserver(*this);
+	SetRefreshRate(1000ms);
 }
 
 SignalControl::~SignalControl()
@@ -39,7 +44,7 @@ SignalControl::~SignalControl()
 	if (m_pNMWI && m_pNMWI->IsDefined())
 		GetParams()->UnregisterObserver(*this);
 	m_runObservable         .UnregisterObserver(*this);
-	//m_dynamicModelObservable.UnregisterObserver(*this);
+	m_dynamicModelObservable.UnregisterObserver(*this);
 	if (m_pVertCoordFreq)
 		m_pVertCoordFreq->UnregisterObserver(*this);
 	if (m_pVertCoordVolt)

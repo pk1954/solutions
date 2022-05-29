@@ -21,9 +21,9 @@ public:
 		PixFpDimension<fMicroSecs> * pHorzCoord
 	);
 
-	~TimeGraph();
+	~TimeGraph() override;
 
-	void SetModelInterface(NNetModelWriterInterface * const);
+	virtual void SetModelInterface(NNetModelWriterInterface * const);
 
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 

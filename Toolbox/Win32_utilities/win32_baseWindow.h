@@ -62,7 +62,7 @@ protected:
 
 private:
 
-	void trackMouse(bool const);
+	void trackMouse(bool const) const;
 
 	inline static bool m_bPerfMonMode { false };
 
