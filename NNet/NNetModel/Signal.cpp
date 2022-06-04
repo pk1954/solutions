@@ -9,7 +9,7 @@
 #include "UPNobList.h"
 #include "NNetColors.h"
 #include "BaseKnot.h"
-#include "Sensor.h"
+#include "SignalSource.h"
 #include "Signal.h"
 
 using std::wcout;
@@ -18,12 +18,12 @@ using std::make_unique;
 
 Signal::Signal
 (
-    Observable & observable,
-    Sensor     & sensor
+    Observable   & observable,
+    SignalSource & sigSrc
 ) 
     : m_dynModelObservable(observable),
-      m_sigSource(sensor),
-      m_timeStart(SimulationTime::Get())
+      m_sigSource(sigSrc)
+//      m_timeStart(SimulationTime::Get())
 {
     m_iSourceType = SIGSRC_CIRCLE;
     m_dynModelObservable.RegisterObserver(*this);
@@ -46,9 +46,26 @@ bool Signal::Includes(MicroMeterPnt const p) const
     return m_sigSource.Includes(p); 
 }
 
+void Signal::WriteSignalInfo(wostream & out) const
+{
+    m_sigSource.WriteInfo(out);
+}
+
 void Signal::WriteSignalData(wostream & out) const
 {
-    m_sigSource.WriteData(out);
+    size_t const iLast { m_data.size() - 1 };
+    out << L" StartTime " << m_timeStart << endl;
+    out << LIST_OPEN_BRACKET << m_data.size() << NR_SEPARATOR;
+    for (size_t i = 0;; ++i)
+    {
+        if (i % 10 == 0)
+            out << endl;
+        out << m_data[i];
+        if (i == iLast)
+            break;
+        out << ID_SEPARATOR;
+    }
+    out << endl << LIST_CLOSE_BRACKET << endl;
 }
 
 void Signal::Draw
@@ -98,9 +115,14 @@ mV Signal::GetDataPoint
     return mVres;
 }
 
+void Signal::Add(mV const val) 
+{
+    m_data.push_back(val);
+}
+
 void Signal::Notify(bool const bImmediate) // called by compute thread!
 {
-    m_data.push_back(m_sigSource.GetSignalValue());
+    Add(m_sigSource.GetSignalValue());
 }
 
 fMicroSecs Signal::FindNextMaximum

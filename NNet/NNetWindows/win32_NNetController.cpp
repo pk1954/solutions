@@ -43,7 +43,6 @@ void NNetController::Initialize
     NNetModelCommands * const pModelCommands,
     ComputeThread     * const pComputeThread,
     SlowMotionRatio   * const pSlowMotionRatio,
-    DisplayFunctor    * const func,
     Sound             * const pSound,
     Preferences       * const pPreferences,
     CommandStack      * const pCommandStack,
@@ -56,7 +55,6 @@ void NNetController::Initialize
     m_pModelCommands    = pModelCommands;
     m_pSlowMotionRatio  = pSlowMotionRatio;
     m_pComputeThread    = pComputeThread;
-    m_pStatusBarDisplay = func;
     m_pSound            = pSound;
     m_pPreferences      = pPreferences;
     m_pCommandStack     = pCommandStack;
@@ -73,7 +71,6 @@ NNetController::~NNetController()
     m_pModelCommands    = nullptr;
     m_pSlowMotionRatio  = nullptr;
     m_pComputeThread    = nullptr;
-    m_pStatusBarDisplay = nullptr;
     m_hCrsrWait         = nullptr;
     m_pSound            = nullptr;
     m_pPreferences      = nullptr;

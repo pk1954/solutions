@@ -17,7 +17,7 @@ public:
 
     void Dump()                                const final;
     mV   GetSignalValue()                      const final;
-    void WriteData(wostream &)                 const final;
+    void WriteInfo(wostream &)                 const final;
     void Draw(DrawContext const &, bool const) const final;
     bool Includes(MicroMeterPnt const p)       const final { return m_circle.Includes(p); }
 

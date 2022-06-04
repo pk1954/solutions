@@ -13,14 +13,14 @@ SignalGenerator::SignalGenerator(wstring const & name)
   : m_name(name)
 {}
 
-void SignalGenerator::Register(ObserverInterface * const pObs)
+void SignalGenerator::Register(ObserverInterface & obs)
 {
-	m_statData.RegisterObserver(*pObs);
+	m_statData.RegisterObserver(obs);
 }
 
-void SignalGenerator::Unregister(ObserverInterface * const pObs)
+void SignalGenerator::Unregister(ObserverInterface const & obs)
 {
-	m_statData.UnregisterObserver(*pObs);
+	m_statData.UnregisterObserver(obs);
 }
 
 void SignalGenerator::SetStaticData(SigGenStaticData const & data) 

@@ -8,6 +8,7 @@
 #include <math.h>    
 #include "observerInterface.h"
 #include "MoreTypes.h"
+#include "SimulationTime.h"
 #include "NNetParameters.h"
 
 using std::vector;
@@ -16,7 +17,6 @@ using std::unique_ptr;
 using SIG_INDEX = long; 
 
 class Param;
-class Sensor;
 class Signal;
 class BaseKnot;
 class UPNobList;
@@ -28,7 +28,7 @@ class Signal : public ObserverInterface  // observes signal source
 {
 public:
 
-    Signal(Observable &, Sensor &);
+    Signal(Observable &, SignalSource &);
 
     ~Signal() override;
 
@@ -37,11 +37,15 @@ public:
     mV         GetDataPoint   (Param const &, fMicroSecs const) const;
     fMicroSecs FindNextMaximum(Param const &, fMicroSecs const) const;
     void       Draw           (DrawContext const &, bool const) const;
+    void       WriteSignalInfo(wostream &)                      const;
     void       WriteSignalData(wostream &)                      const;
 
     bool Includes(MicroMeterPnt const) const;
 
     fMicroSecs GetStartTime() const { return m_timeStart; }
+    void       SetStartTime(fMicroSecs const t)  { m_timeStart = t; }
+
+    void Add(mV const);
 
     void Notify(bool const) final;
 
@@ -53,7 +57,8 @@ public:
 
     SignalSource const * GetSignalSource() const { return & m_sigSource; }
 
-    inline static int const SIGSRC_CIRCLE { 101 };
+    inline static int const SIGSRC_CIRCLE    { 101 };
+    inline static int const SIGSRC_GENERATOR { 102 };
 
 private:
 
@@ -61,7 +66,7 @@ private:
 
     Observable   & m_dynModelObservable;
     SignalSource & m_sigSource;
-    fMicroSecs     m_timeStart;
+    fMicroSecs     m_timeStart { SimulationTime::Get() };
     vector<mV>     m_data;
     int            m_iSourceType;
 

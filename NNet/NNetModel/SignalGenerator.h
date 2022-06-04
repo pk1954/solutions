@@ -21,6 +21,7 @@ using std::unique_ptr;
 class SignalGenerator : public SignalSource
 {
 public:
+	~SignalGenerator() final = default;
 
 	explicit SignalGenerator(wstring const &);
 
@@ -28,14 +29,17 @@ public:
 	bool Includes(MicroMeterPnt const) const final { return false; };
 
 	void Dump()                                const final {};
-	void WriteData(wostream &)                 const final {};
+	void WriteInfo(wostream &)                 const final {};
 	void Draw(DrawContext const &, bool const) const final {};
 	void Recalc(UPNobList const &)                   final {};
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;
 
-	fMicroSecs        const & TimePeak () const { return m_statData.GetPeakTime (); }
+	fHertz GetStimulusFrequency() const { return GetStimulusFrequency(GetStimulusTime()); };
+	mV     GetStimulusAmplitude() const { return GetStimulusAmplitude(GetStimulusTime()); };
+
+	fMicroSecs                TimePeak () const { return m_statData.GetPeakTime (); }
 	BASE_PEAK<fHertz> const & Frequency() const { return m_statData.GetFrequency(); }
 	BASE_PEAK<mV>     const & Amplitude() const { return m_statData.GetAmplitude(); }
 
@@ -56,8 +60,8 @@ public:
 
 	fMicroSecs GetStimulusTime() const { return m_dynData.GetStimulusTime(); }
 
-	void Register  (ObserverInterface * const);
-	void Unregister(ObserverInterface * const);
+	void Register  (ObserverInterface &);
+	void Unregister(ObserverInterface const &);
 
 private:
 

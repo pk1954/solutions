@@ -130,7 +130,7 @@ LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
 	}
-
+	AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_SIG_GEN_TO_MONITOR,  L"Add to EEG monitor");
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
@@ -138,7 +138,7 @@ void SignalDesigner::RegisterAtSigGen(SigGenId const id)
 {
 	if (SignalGenerator * pSigGen { m_pNMWI->GetSigGen(id) })
 	{
-		pSigGen->Register(this);
+		pSigGen->Register(*this);
 	}
 }
 
@@ -149,7 +149,7 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 	Observable          & dynamicModelObservable
 )
 {
-	unique_ptr<SignalControl> upSignalControl = make_unique<SignalControl>
+	auto upSignalControl = make_unique<SignalControl>
 	(
 		GetWindowHandle(),
 		computeThread,
@@ -231,6 +231,10 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_SELECT_SIG_GEN_CLIENTS:
 		m_pCommands->SelectSigGenClients();
+		return true;
+
+	case IDD_ADD_SIG_GEN_TO_MONITOR:
+		m_pCommands->AddSigGen2Monitor(TrackNr(0));
 		return true;
 
 	case IDM_TRIGGER_STIMULUS:

@@ -54,8 +54,6 @@ private:
 	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
 	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
-	inline static bool   m_bPreview { false };
-
 	void renameSigGen();
 	void toggleDesign();
 	void design(PIXEL const, PIXEL const);
@@ -87,4 +85,5 @@ private:
 	HMENU                         m_hMenu           { nullptr };
 	HWND                          m_hStimulusButton { nullptr };
 	DESIGN                        m_design          { DESIGN::STACKED };
+	bool                          m_bPreview        { false };
 };

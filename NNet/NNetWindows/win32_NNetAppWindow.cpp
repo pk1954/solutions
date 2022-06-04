@@ -86,7 +86,6 @@ NNetAppWindow::NNetAppWindow()
 		& m_modelCommands,
 		& m_computeThread,
 		& m_SlowMotionRatio,
-		& m_statusBarDispFunctor,
 		& m_sound,
 		& m_preferences,
 		& m_cmdStack,
@@ -122,7 +121,7 @@ void NNetAppWindow::setModelInterface()
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	NNetWrappersSetModelInterface        (m_pNMRI);
 	Nob::SetParams(&m_pNMRI->GetParams());
-	SimulationTime::Set();
+//	SimulationTime::Set();
 }
 
 void NNetAppWindow::Start(MessagePump & pump)
@@ -592,7 +591,7 @@ void NNetAppWindow::replaceModel()
 {
 	m_computeThread.StopComputation();
 	m_mainNNetWindow.Reset();
-	m_upModel = move(m_modelImporter.GetImportedModel());
+	m_upModel = m_modelImporter.GetImportedModel();
 	m_nmwi.SetModel(m_upModel.get());
 
 	setModelInterface();

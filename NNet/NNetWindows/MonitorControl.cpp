@@ -563,9 +563,10 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 bool MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam) 
 {
 	if (
-		  (m_pMonitorData->GetSelectedTrackNr() != m_trackNrHighlighted) && 
-		  (! m_measurement.TrackingActive())                           &&
-		  (m_pMonitorData->IsAnySignalSelected())
+		(m_trackNrHighlighted.IsNotNull()) && 
+		(m_pMonitorData->GetSelectedTrackNr() != m_trackNrHighlighted) && 
+		(! m_measurement.TrackingActive()) &&
+		(m_pMonitorData->IsAnySignalSelected())
 	   )
 	{
 		m_modelCommands.MoveSignal(m_pMonitorData->GetHighlightedSignalId(), m_trackNrHighlighted);

@@ -38,7 +38,6 @@ public:
 		NNetModelCommands * const,
 		ComputeThread     * const,
 		SlowMotionRatio   * const,
-		DisplayFunctor    * const,
 		Sound             * const,
 		Preferences       * const,
 		CommandStack      * const,
@@ -70,7 +69,6 @@ private:
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
 	NNetModelCommands        * m_pModelCommands         { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
-	DisplayFunctor           * m_pStatusBarDisplay      { nullptr };
 	Preferences              * m_pPreferences           { nullptr };
 	CommandStack             * m_pCommandStack          { nullptr };
 	MonitorWindow            * m_pMonitorWindow         { nullptr };

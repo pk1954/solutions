@@ -61,6 +61,7 @@ public:
     void AddOutgoing2BaseKnot    (NobId const, MicroMeterPnt const &);
     void AddOutgoing2Pipe        (NobId const, MicroMeterPnt const &);
     void AddSensor               (MicroMeterCircle const &, TrackNr const);
+    void AddSigGen2Monitor       (TrackNr const);
     void AnalyzeAnomalies        ();
     void AnalyzeLoops            ();
     void AnimateArrows           (MicroMeter &, MicroMeter const);

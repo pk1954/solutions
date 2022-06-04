@@ -90,6 +90,12 @@ void NNetModelExporter::writeSigGenData(wostream & out) const
     out << L"ActiveSigGen " << m_pNMRI->GetSigGenIdSelected() << endl;
 }
 
+void NNetModelExporter::writeSimulationTime(wostream & out) const
+{
+    fMicroSecs simuTime { SimulationTime::Get() };
+    out << L"SimulationTime " << simuTime << endl;
+}
+
 void NNetModelExporter::writeTriggerSounds(wostream & out) const
 {
     m_pNMRI->Apply2AllC<Neuron>
@@ -108,7 +114,7 @@ void NNetModelExporter::writeTriggerSounds(wostream & out) const
    );
 }
 
-void NNetModelExporter::writeMonitorData(wostream & out) const
+void NNetModelExporter::writeStaticMonitorData(wostream & out) const
 {
     MonitorData const & monitorData { m_pNMRI->GetConstMonitorData() };
 
@@ -118,15 +124,29 @@ void NNetModelExporter::writeMonitorData(wostream & out) const
     (
         [&out, &monitorData](SignalId const idSignal)
         {
-            Signal const * const pSignal { monitorData.GetConstSignalPtr(idSignal) };
-            out << L"Signal "; 
-            WriteTrackNr(out, idSignal.GetTrackNr());
-            out << L" source "; 
-            if (pSignal)
-                pSignal->WriteSignalData(out);
-            out << endl; 
+            if (Signal const * const pSignal { monitorData.GetConstSignalPtr(idSignal) })
+            {
+                out << L"SignalInfo " << idSignal << L" source "; 
+                pSignal->WriteSignalInfo(out);
+            }
         }
-   );
+    );
+}
+
+void NNetModelExporter::writeSignalData(wostream & out) const
+{
+    MonitorData const & monitorData { m_pNMRI->GetConstMonitorData() };
+    monitorData.Apply2AllSignalIdsC
+    (
+        [&out, &monitorData](SignalId const idSignal)
+        {
+            if (Signal const * const pSignal { monitorData.GetConstSignalPtr(idSignal) })
+            {
+                out << L"SignalData " << idSignal; 
+                pSignal->WriteSignalData(out);
+            }
+        }
+    );
 }
 
 void NNetModelExporter::writeDescription(wostream & out) const
@@ -252,7 +272,9 @@ void NNetModelExporter::write(wostream & out)
     out << endl;
     writeTriggerSounds(out);
     out << endl;
-    writeMonitorData(out);
+    writeStaticMonitorData(out);
+    out << endl;
+    writeSimulationTime(out);
     out << endl;
 
     timer.Stop();

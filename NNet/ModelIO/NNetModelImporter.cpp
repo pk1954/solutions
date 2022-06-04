@@ -133,7 +133,7 @@ public:
     }
 };
 
-class WrapSignal : public WrapperBase
+class WrapSignal : public WrapperBase  // Legacy
 {
 public:
     using WrapperBase::WrapperBase;
@@ -152,7 +152,57 @@ public:
         {
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
         }
-        SignalFactory::MakeSensorSignal(umCircle, trackNr, GetWriterInterface());
+//        SignalFactory::MakeSensorSignal(umCircle, trackNr, GetWriterInterface());
+    }
+};
+
+class WrapSignalInfo : public WrapperBase
+{
+public:
+    using WrapperBase::WrapperBase;
+
+    void operator() (Script & script) const final
+    {
+        MicroMeterCircle umCircle;
+        SignalId    const signalId { ScrReadSignalId(script) };
+        script.ScrReadString(L"source");
+        unsigned long const ulSigSrc { script.ScrReadUlong() };
+        if (ulSigSrc == Signal::SIGSRC_CIRCLE)
+        {
+            umCircle = ScrReadMicroMeterCircle(script);
+        }
+        else
+        {
+            throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
+        }
+        SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), GetWriterInterface());
+    }
+};
+
+class WrapSignalData : public WrapperBase
+{
+public:
+    using WrapperBase::WrapperBase;
+
+    void operator() (Script & script) const final
+    {
+        SignalId   const signalId    { ScrReadSignalId(script) };
+        Signal         * pSignal     { GetMonitorData().GetSignalPtr(signalId) };
+        script.ScrReadString(L"StartTime");
+        fMicroSecs const umStartTime { Cast2Float(script.ScrReadFloat()) };
+        pSignal->SetStartTime(umStartTime);
+        script.ScrReadSpecial(LIST_OPEN_BRACKET);
+        int const iNrOfElements { script.ScrReadInt() };
+        script.ScrReadSpecial(NR_SEPARATOR);
+        for (int iElem { 0 };;)
+        {
+            mV value { Cast2Float(script.ScrReadFloat()) };
+            pSignal->Add(value);
+            if (++iElem == iNrOfElements)
+                break;
+            script.ScrReadSpecial(ID_SEPARATOR);
+        }
+        script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     }
 };
 
@@ -223,6 +273,18 @@ public:
     }
 };
 
+class WrapSimulationTime : public WrapperBase
+{
+public:
+    using WrapperBase::WrapperBase;
+
+    void operator() (Script & script) const final
+    {
+        fMicroSecs simuTime { Cast2Float(script.ScrReadFloat()) };
+        SimulationTime::Set(simuTime);
+    }
+};
+
 void NNetModelImporter::Initialize()
 {
     SymbolTable::ScrDefConst(L"circle",          static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
@@ -234,11 +296,14 @@ void NNetModelImporter::Initialize()
     SymbolTable::ScrDefConst(L"NobParameter",    new WrapNobParameter   (* this));
     SymbolTable::ScrDefConst(L"TriggerSound",    new WrapTriggerSound   (* this));
     SymbolTable::ScrDefConst(L"NrOfTracks",      new WrapNrOfTracks     (* this));
-    SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this));
+    SymbolTable::ScrDefConst(L"Signal",          new WrapSignal         (* this)); // Legacy
+    SymbolTable::ScrDefConst(L"SignalInfo",      new WrapSignalInfo     (* this));
+    SymbolTable::ScrDefConst(L"SignalData",      new WrapSignalData     (* this));
     SymbolTable::ScrDefConst(L"SetParam",        new WrapSetParam       (* this));
     SymbolTable::ScrDefConst(L"Voltage",         new WrapVoltage        (* this));
     SymbolTable::ScrDefConst(L"SignalGenerator", new WrapSignalGenerator(* this));
     SymbolTable::ScrDefConst(L"ActiveSigGen",    new WrapActiveSigGen   (* this));
+    SymbolTable::ScrDefConst(L"SimulationTime",  new WrapSimulationTime (* this));
 
     NobType::Apply2All
     (

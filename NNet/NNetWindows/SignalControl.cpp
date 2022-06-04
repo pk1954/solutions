@@ -254,7 +254,7 @@ void SignalControl::DoPaint()
 	}
 }
 
-float SignalControl::ScaleFactorTimeCoord()
+float SignalControl::ScaleFactorTimeCoord() const
 {
 	fMicroSecs const maxVisible { getTime(m_fPixRight) };
 	fMicroSecs const maxValue   { GetSigGenStaticData()->CutoffTime() };
@@ -262,7 +262,7 @@ float SignalControl::ScaleFactorTimeCoord()
 	return factor;
 }
 
-float SignalControl::ScaleFactorFreqCoord()
+float SignalControl::ScaleFactorFreqCoord() const
 {
 	fHertz const maxVisible { getFreq(0.0_fPixel) * 0.9f };
 	fHertz const maxValue   { GetSigGenStaticData()->GetFrequency().Peak() };
@@ -270,7 +270,7 @@ float SignalControl::ScaleFactorFreqCoord()
 	return factor;
 }
 
-float SignalControl::ScaleFactorVoltCoord()
+float SignalControl::ScaleFactorVoltCoord() const
 {
 	mV    const maxVisible { getVolt(0.0_fPixel) * 0.9f };
 	mV    const maxValue   { GetSigGenStaticData()->GetAmplitude().Peak() };

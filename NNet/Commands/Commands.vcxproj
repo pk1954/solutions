@@ -71,6 +71,7 @@
     <ClInclude Include="AddPipe2BaseKnotCmd.h" />
     <ClInclude Include="AddPipe2PipeCommand.h" />
     <ClInclude Include="AddSensorSignalCmd.h" />
+    <ClInclude Include="AddSigGen2MonitorCmd.h" />
     <ClInclude Include="AnalyzeCommand.h" />
     <ClInclude Include="ArrowAnimation.h" />
     <ClInclude Include="AttachSIgGen2ConnCmd.h" />

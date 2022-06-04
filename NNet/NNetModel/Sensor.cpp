@@ -96,10 +96,11 @@ void Sensor::DrawDataPoints(DrawContext const & context) const
     }
 }
 
-void Sensor::WriteData(wostream& out) const
+void Sensor::WriteInfo(wostream& out) const
 {
     out << Signal::SIGSRC_CIRCLE; 
     out << GetCircle();
+    out << endl;
 }
 
 void Sensor::SetSensorPos

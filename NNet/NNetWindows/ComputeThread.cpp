@@ -30,7 +30,7 @@ void ComputeThread::Initialize
 void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
 	m_pNMWI = pNMWI;
-	SimulationTime::Set();
+//	SimulationTime::Set();
 	Reset();
 }
 

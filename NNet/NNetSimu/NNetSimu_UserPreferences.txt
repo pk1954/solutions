@@ -3,5 +3,5 @@ ShowSensorPoints ON
 DescWinFontSize 18
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Solutions\NNet\Models\PROT50x.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\Models\SigDataExport.mod"
 SetPerfMonMode OFF

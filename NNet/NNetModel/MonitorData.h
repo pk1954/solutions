@@ -151,7 +151,7 @@ public:
 	bool     IsEmptyTrack(TrackNr const)    const;
 	bool     AnyEmptyTracks()               const;
 
-	vector<fMicroSecs> const & GetStimulusList() { return m_usStimulusList; }
+	vector<fMicroSecs> const & GetStimulusList() const { return m_usStimulusList; }
 
 private:
 	Track            * getTrack(TrackNr const);

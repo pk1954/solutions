@@ -8,6 +8,7 @@
 #include "AddPipe2BaseKnotCmd.h"
 #include "AddPipe2PipeCommand.h"
 #include "AddSensorSignalCmd.h"
+#include "AddSigGen2MonitorCmd.h"
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "ArrowAnimation.h"
@@ -439,6 +440,13 @@ void NNetModelCommands::SelectSigGenClients()
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<SelSigGenClientsCmd>());
+}
+
+void NNetModelCommands::AddSigGen2Monitor(TrackNr const trackNr)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
 }
 
 void NNetModelCommands::SizeSelection(float const fFactor)

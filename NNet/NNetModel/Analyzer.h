@@ -26,7 +26,7 @@ class ModelAnalyzer
 {
 public:
 	static void SetStatusBarDisplay(DisplayFunctor * const func) { m_pStatusBarDisplay = func; }
-	static void SetEscFunc (bool (* func)()) { m_pEscFunc = func; }
+	static void SetEscFunc(auto const & func) { m_pEscFunc = func; }
 
 	static NobStack FindLoop   (NNetModelReaderInterface const &);
 	static NobStack FindAnomaly(NNetModelReaderInterface const &);

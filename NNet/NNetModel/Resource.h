@@ -130,3 +130,4 @@
 #define       IDD_ATTACH_SIG_GEN_TO_LINE     708
 #define       IDD_ATTACH_SIG_GEN_TO_CONN     709
 #define       IDD_ATTACH_SIG_GEN_TO_SEL      710
+#define       IDD_ADD_SIG_GEN_TO_MONITOR     711
