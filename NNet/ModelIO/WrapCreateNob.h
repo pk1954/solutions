@@ -4,19 +4,27 @@
 
 #pragma once
 
-#include "WrapperBase.h"
+#include "NNetWrapperBase.h"
 
 class Script;
 
-class WrapCreateNob : public WrapperBase
+class WrapCreateNob : public NNetWrapperBase
 {
 public:
-    using WrapperBase::WrapperBase;
+    using NNetWrapperBase::NNetWrapperBase;
 
     void operator() (Script & script) const final
     {   
         createNob(script);
     }
+
+    void Write(wostream & out) const final 
+    { 
+        NNetModelWriterInterface const & nmwi { m_modelIO.GetExportNMWI() };
+        nmwi.Apply2AllC<BaseKnot   >([this, &out](BaseKnot    const &s) { writeNob(out, s); });
+        nmwi.Apply2AllC<Pipe       >([this, &out](Pipe        const &s) { writeNob(out, s); });
+        nmwi.Apply2AllC<IoConnector>([this, &out](IoConnector const &s) { writeNob(out, s); });
+    };
 
 private:
 
@@ -24,4 +32,8 @@ private:
     UPNob createPipe       (Script &) const;
     UPNob createBaseKnot   (Script &, NobType const) const;
     UPNob createIoConnector(Script &, NobType const) const; 
-};
+
+    void writePipe       (wostream &, Pipe const &) const;
+    void writeIoConnector(wostream &, IoConnector const &) const;
+    void writeNob        (wostream &, Nob const &) const;
+ };

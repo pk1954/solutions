@@ -12,8 +12,7 @@
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
-#include "NNetModelImporter.h"
-#include "NNetModelExporter.h"
+#include "NNetModelIO.h"
 #include "CommandStack.h"
 #include "DisplayFunctor.h"
 #include "TimeDisplay.h"
@@ -111,7 +110,7 @@ private:
 
 	void writeModel()
 	{
-		m_modelExporter.WriteModel(*m_pNMRI);
+		m_modelIO.Export(m_nmwi);
 		m_appTitle.SetUnsavedChanges(false);
 	}
 
@@ -142,8 +141,7 @@ private:
 	NNetColors               m_NNetColors             { };
 	NNetController           m_NNetController         { };
 	NNetModelCommands        m_modelCommands          { };
-	NNetModelExporter        m_modelExporter          { };
-	NNetModelImporter        m_modelImporter          { };
+	NNetModelIO              m_modelIO                { };
 	NNetModelWriterInterface m_nmwi                   { };
 	Observable               m_soundOnObservable      { };
 	Observable               m_highlightSigObservable { };

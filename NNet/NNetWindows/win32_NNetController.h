@@ -9,7 +9,6 @@ class NNetModelCommands;
 class WinCommands;
 class SlowMotionRatio;
 class MonitorWindow;
-class NNetModelExporter;
 class DisplayFunctor;
 class ComputeThread;
 class NNetAppMenu;
@@ -32,7 +31,6 @@ public:
 
 	void Initialize
 	(
-		NNetModelExporter * const,
 		MainWindow        * const,
 		WinManager        * const,
 		NNetModelCommands * const,
@@ -62,7 +60,6 @@ private:
 	bool                       m_bBlockedUI             { false };
 	HCURSOR                    m_hCrsrWait              { nullptr };
 	Sound                    * m_pSound                 { nullptr };
-	NNetModelExporter        * m_pModelExporter         { nullptr };
 	MainWindow               * m_pMainWindow            { nullptr };
 	WinManager               * m_pWinManager            { nullptr };
 	ComputeThread            * m_pComputeThread         { nullptr };

@@ -57,10 +57,10 @@ class SymbolTable
 public:
 
     static void ScrDefConst(wstring const &, ScriptFunctor const * const);
-    static void ScrDefConst(wstring const &, wstring const &       );
-    static void ScrDefConst(wstring const &, long const            );
-    static void ScrDefConst(wstring const &, unsigned long const   );
-    static void ScrDefConst(wstring const &, double const          );
+    static void ScrDefConst(wstring const &, wstring const &    );
+    static void ScrDefConst(wstring const &, long const         );
+    static void ScrDefConst(wstring const &, unsigned long const);
+    static void ScrDefConst(wstring const &, double const       );
 
     static Symbol  const & GetSymbolFromName(wstring const &);
     static wstring const & GetSymbolName    (Symbol  const &);
@@ -70,6 +70,6 @@ public:
 private:
     static void addSymbol(wstring const &, Symbol const &);
 
-    inline static map < wstring, Symbol  > m_SymbolTab  {};
-    inline static map < Symbol,  wstring > m_ReverseTab {};
+    inline static map <wstring, Symbol, std::less<>> m_SymbolTab  {};
+    inline static map <Symbol,  wstring>             m_ReverseTab {};
 };

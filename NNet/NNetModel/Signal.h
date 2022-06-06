@@ -14,7 +14,7 @@
 using std::vector;
 using std::unique_ptr;
 
-using SIG_INDEX = long; 
+using SIG_INDEX = long;
 
 class Param;
 class Signal;
@@ -70,6 +70,6 @@ private:
     vector<mV>     m_data;
     int            m_iSourceType;
 
-    SIG_INDEX  time2index(Param const &, fMicroSecs const) const;
-    fMicroSecs index2time(Param const &, SIG_INDEX  const) const;
+    SIG_INDEX  time2index(Param const &, fMicroSecs) const;
+    fMicroSecs index2time(Param const &, SIG_INDEX const) const;
 };

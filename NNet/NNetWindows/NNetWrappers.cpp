@@ -13,14 +13,14 @@
 #include "UtilityWrappers.h"
 #include "DrawContext.h"
 #include "win32_importTermination.h"
-#include "NNetModelImporter.h"
+#include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelCommands.h"
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;
-static NNetModelImporter        * m_pModelImporter;
+static NNetModelIO              * m_pModelIO;
 
 class WrapConnect: public ScriptFunctor
 {
@@ -63,7 +63,7 @@ class WrapAddModel: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pModelImporter->Import
+        m_pModelIO->Import
         (
             script.ScrReadString(), 
             NNetImportTermination::CreateNew(IDM_ADD_IMPORTED_MODEL)
@@ -416,11 +416,11 @@ void NNetWrappersSetModelInterface(NNetModelReaderInterface * const pNMRI)
 void InitializeNNetWrappers
 (
     NNetModelCommands * const pCommands,
-    NNetModelImporter * const pModelImporter
+    NNetModelIO       * const pModelIO
 )
 {
     m_pCommands      = pCommands;
-    m_pModelImporter = pModelImporter;
+    m_pModelIO = pModelIO;
 
     DEF_FUNC(AddModel);
     DEF_FUNC(AddSignal);

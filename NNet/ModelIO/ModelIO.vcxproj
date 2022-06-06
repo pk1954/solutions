@@ -161,16 +161,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ImportTermination.h" />
-    <ClInclude Include="NNetModelExporter.h" />
-    <ClInclude Include="NNetModelImporter.h" />
+    <ClInclude Include="NNetModelIO.h" />
     <ClInclude Include="NNetModelStorage.h" />
+    <ClInclude Include="WrapActiveSigGen.h" />
     <ClInclude Include="WrapCreateNob.h" />
-    <ClInclude Include="WrapperBase.h" />
+    <ClInclude Include="NNetWrapperBase.h" />
+    <ClInclude Include="WrapDescription.h" />
+    <ClInclude Include="WrapGlobalParameter.h" />
+    <ClInclude Include="WrapNobParameter.h" />
+    <ClInclude Include="WrapNrOfNobs.h" />
+    <ClInclude Include="WrapNrOfTracks.h" />
+    <ClInclude Include="WrapProtocol.h" />
+    <ClInclude Include="WrapSetParam.h" />
+    <ClInclude Include="WrapSignal.h" />
+    <ClInclude Include="WrapSignalData.h" />
+    <ClInclude Include="WrapSignalGenerator.h" />
+    <ClInclude Include="WrapSignalInfo.h" />
+    <ClInclude Include="WrapSimulationTime.h" />
+    <ClInclude Include="WrapTriggerSound.h" />
     <ClInclude Include="WrapVoltage.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetModelExporter.cpp" />
-    <ClCompile Include="NNetModelImporter.cpp" />
+    <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapVoltage.cpp" />
   </ItemGroup>

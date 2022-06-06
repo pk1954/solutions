@@ -6,12 +6,12 @@
 
 class NNetModelReaderInterface;
 class NNetModelCommands;
-class NNetModelImporter;
+class NNetModelIO;
 
 extern void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
 
 extern void InitializeNNetWrappers
 (
     NNetModelCommands * const,
-    NNetModelImporter * const
+    NNetModelIO       * const
 );

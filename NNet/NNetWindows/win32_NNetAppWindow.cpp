@@ -74,13 +74,12 @@ NNetAppWindow::NNetAppWindow()
 	DefineUtilityWrapperFunctions();
 	SignalFactory::Initialize(m_dynamicModelObservable);
 	Command      ::Initialize(&m_mainNNetWindow);
-	m_modelImporter.Initialize();
+	m_modelIO      .Initialize();
 	m_sound        .Initialize(&m_soundOnObservable);
 	m_cmdStack     .Initialize(&m_staticModelObservable);
-	m_modelCommands.Initialize(&m_modelImporter, &m_dynamicModelObservable, &m_cmdStack);
+	m_modelCommands.Initialize(&m_modelIO, &m_dynamicModelObservable, &m_cmdStack);
 	m_NNetController.Initialize
 	(
-		& m_modelExporter,
 		& m_mainNNetWindow,
 		& m_WinManager,
 		& m_modelCommands,
@@ -98,7 +97,7 @@ NNetAppWindow::NNetAppWindow()
 		& m_performanceObservable, 
 		& m_dynamicModelObservable
 	);
-	InitializeNNetWrappers(&m_modelCommands, &m_modelImporter);
+	InitializeNNetWrappers(&m_modelCommands, &m_modelIO);
 };
 
 NNetAppWindow::~NNetAppWindow() = default;
@@ -119,6 +118,7 @@ void NNetAppWindow::setModelInterface()
 	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
 	m_performanceWindow.SetModelInterface(m_pNMRI);
+	m_preferences      .SetModelInterface(m_pNMRI);
 	NNetWrappersSetModelInterface        (m_pNMRI);
 	Nob::SetParams(&m_pNMRI->GetParams());
 //	SimulationTime::Set();
@@ -138,7 +138,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	NNetImportTermination::Initialize(m_hwndApp);
 	m_appTitle      .Initialize(m_hwndApp);
-	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelImporter, m_hwndApp);
+	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelIO, m_hwndApp);
 	m_signalDesigner.Initialize
 	(
 		m_hwndApp, 
@@ -470,7 +470,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_OPEN_MODEL:
 			m_cmdStack.Clear();
-			m_modelImporter.Import
+			m_modelIO.Import
 			(
 				AskModelFile(tFileMode::read), 
 				NNetImportTermination::CreateNew(IDX_REPLACE_MODEL)
@@ -478,7 +478,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_ADD_MODEL:
-			m_modelImporter.Import
+			m_modelIO.Import
 			(
 				AskModelFile(tFileMode::read), 
 				NNetImportTermination::CreateNew(IDM_ADD_IMPORTED_MODEL)
@@ -591,7 +591,7 @@ void NNetAppWindow::replaceModel()
 {
 	m_computeThread.StopComputation();
 	m_mainNNetWindow.Reset();
-	m_upModel = m_modelImporter.GetImportedModel();
+	m_upModel = m_modelIO.GetImportedModel();
 	m_nmwi.SetModel(m_upModel.get());
 
 	setModelInterface();

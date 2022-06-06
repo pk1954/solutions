@@ -11,6 +11,7 @@
 #include "Pipe.h"
 #include "IoConnector.h"
 #include "NNetWrapperHelpers.h"
+#include "NNetModelIO.h"
 #include "WrapVoltage.h"
 
 using std::wcout;
@@ -49,7 +50,7 @@ void WrapVoltage::setBaseKnotVoltage
     NobId const idFromScript
 ) const
 {
-    BaseKnot & baseKnot { GetNobRef<BaseKnot>(idFromScript) };
+    BaseKnot & baseKnot { * m_modelIO.GetImportNMWI().GetNobPtr<BaseKnot*>(idFromScript) };
     baseKnot.SetVoltage(ScrReadVoltage(script));
 }
 
@@ -59,7 +60,7 @@ void WrapVoltage::setPipeVoltage
     NobId const idFromScript
 ) const
 {
-    Pipe & pipe { GetNobRef<Pipe>(idFromScript) };
+    Pipe & pipe { * m_modelIO.GetImportNMWI().GetNobPtr<Pipe*>(idFromScript) };
     script.ScrReadSpecial(OPEN_BRACKET);
     size_t const nrOfSegments { script.ScrReadUlong() };
     pipe.SetNrOfSegments(nrOfSegments);
@@ -75,3 +76,51 @@ void WrapVoltage::setPipeVoltage
     }
     script.ScrReadSpecial(CLOSE_BRACKET);
 }
+
+void WrapVoltage::writePipeVoltage(wostream & out, Pipe const & pipe) const
+{
+    Pipe::SegNr const lastSeg(pipe.GetNrOfSegments() - 1);
+    out << OPEN_BRACKET 
+        << pipe.GetNrOfSegments()
+        << NR_SEPARATOR;
+    for (auto i = Pipe::SegNr(0);; ++i)
+    {
+        out << pipe.GetVoltage(i); 
+        if (i == lastSeg)
+            break;
+        out << ID_SEPARATOR;
+    }
+    out << CLOSE_BRACKET;
+}
+
+void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const 
+{
+    using enum NobType::Value;
+    if (nob.IsDefined())
+    {
+        WriteCmdName(out);
+        out << m_modelIO.GetCompactIdVal(nob.GetId()) << L" " << nob.GetName();
+        switch (nob.GetNobType().GetValue())
+        {
+        case NobType::Value::inputLine:
+        case outputLine:
+        case neuron:
+        case knot:
+            out << static_cast<BaseKnot const &>(nob).GetVoltage();
+            break;
+
+        case pipe:
+            writePipeVoltage(out, static_cast<Pipe const &>(nob));
+            break;
+
+        case inputConnector:
+        case outputConnector:
+            break;
+
+        default:
+            assert(false);
+            break;
+        }
+        out << endl;
+    }
+};

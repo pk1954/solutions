@@ -12,7 +12,6 @@
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "NobException.h"
-#include "NNetModelExporter.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
 #include "Signal.h"
@@ -37,7 +36,6 @@ using std::to_wstring;
 
 void NNetController::Initialize
 (
-    NNetModelExporter * const pModelExporter,
     MainWindow        * const pMainWindow,
     WinManager        * const pWinManager,
     NNetModelCommands * const pModelCommands,
@@ -49,7 +47,6 @@ void NNetController::Initialize
     MonitorWindow     * const pMonitorWindow
 ) 
 {
-    m_pModelExporter    = pModelExporter;
     m_pMainWindow       = pMainWindow;
     m_pWinManager       = pWinManager;
     m_pModelCommands    = pModelCommands;
@@ -64,18 +61,17 @@ void NNetController::Initialize
 
 NNetController::~NNetController()
 {
-    m_pModelExporter    = nullptr;
-    m_pMainWindow       = nullptr;
-    m_pWinManager       = nullptr;
-    m_pNMRI             = nullptr;
-    m_pModelCommands    = nullptr;
-    m_pSlowMotionRatio  = nullptr;
-    m_pComputeThread    = nullptr;
-    m_hCrsrWait         = nullptr;
-    m_pSound            = nullptr;
-    m_pPreferences      = nullptr;
-    m_pCommandStack     = nullptr;
-    m_pMonitorWindow    = nullptr;
+    m_pMainWindow      = nullptr;
+    m_pWinManager      = nullptr;
+    m_pNMRI            = nullptr;
+    m_pModelCommands   = nullptr;
+    m_pSlowMotionRatio = nullptr;
+    m_pComputeThread   = nullptr;
+    m_hCrsrWait        = nullptr;
+    m_pSound           = nullptr;
+    m_pPreferences     = nullptr;
+    m_pCommandStack    = nullptr;
+    m_pMonitorWindow   = nullptr;
 }
 
 void NNetController::SetModelInterface(NNetModelReaderInterface * const pNMRI)

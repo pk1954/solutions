@@ -23,7 +23,7 @@ class NobIdList;
 class SigGenStaticData;
 class CommandStack;
 class AlignAnimation;
-class NNetModelImporter;
+class NNetModelIO;
 class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 class MicroMeterPntVector;
@@ -44,9 +44,9 @@ class NNetModelCommands
 public:
     void Initialize
     (
-        NNetModelImporter * const,
-        Observable        * const,
-        CommandStack      * const 
+        NNetModelIO  * const,
+        Observable   * const,
+        CommandStack * const 
     );
     void SetModelInterface(NNetModelWriterInterface * const); 
 
@@ -123,6 +123,6 @@ private:
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
     NNetModelWriterInterface * m_pNMWI                   { nullptr };
-    NNetModelImporter        * m_pModelImporter          { nullptr };
+    NNetModelIO              * m_pModelIO          { nullptr };
     Observable               * m_pDynamicModelObservable { nullptr };
 };

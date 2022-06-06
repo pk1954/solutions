@@ -80,10 +80,11 @@ void Signal::Draw
 SIG_INDEX Signal::time2index
 (
     Param      const & param,
-    fMicroSecs const   usParam
+    fMicroSecs         usParam
 ) const
 {
-    assert(usParam >= m_timeStart);
+    if (usParam < m_timeStart)
+        return INVALID_SIG_INDEX;
     fMicroSecs const timeTilStart { usParam - m_timeStart };
     float      const fNrOfPoints  { timeTilStart / param.TimeResolution() };
     SIG_INDEX  const index        { static_cast<SIG_INDEX>(roundf(fNrOfPoints)) };
@@ -111,8 +112,9 @@ mV Signal::GetDataPoint
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
-    mV        mVres { GetVectorValue<mV>(index, m_data) };
-    return mVres;
+    return (index < 0)
+           ? mV::NULL_VAL()
+           : GetVectorValue<mV>(index, m_data);
 }
 
 void Signal::Add(mV const val) 
@@ -132,7 +134,7 @@ fMicroSecs Signal::FindNextMaximum
 ) const
 {
     SIG_INDEX index { time2index(param, time) };
-    if (index >= m_data.size())
+    if ((0 > index)||(index >= m_data.size()))
         index = INVALID_SIG_INDEX;
     if ((index > 0) && (m_data[index - 1] > m_data[index])) // falling values, go left
     {   

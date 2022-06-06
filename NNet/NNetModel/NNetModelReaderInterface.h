@@ -77,7 +77,7 @@ public:
 	Signal          const * FindSensor(MicroMeterPnt const & p)    const { return GetConstMonitorData().FindSensor(p); }
 	SignalId                GetHighlightedSignalId()               const { return GetConstMonitorData().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
-	SignalGenerator const * GetSigGenSelected()                      const { return m_pModel->GetSigGenList().GetSigGenSelected(); }
+	SignalGenerator const * GetSigGenSelected()                    const { return m_pModel->GetSigGenList().GetSigGenSelected(); }
 	SignalGenerator       * GetSigGenStandard()                    const { return m_pModel->GetSigGenList().StdSigGen(); }
 	SignalGenerator const * GetSigGen(SigGenId const id)           const { return m_pModel->GetSigGenList().GetSigGen(id); }
 	SigGenId                GetSigGenIdSelected()                  const { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }

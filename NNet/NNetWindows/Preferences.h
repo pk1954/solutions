@@ -11,8 +11,8 @@
 using std::wstring;
 using std::vector;
 
+class NNetModelIO;
 class NNetModelReaderInterface;
-class NNetModelImporter;
 class DescriptionWindow;
 class MainWindow;
 class Sound;
@@ -25,13 +25,16 @@ public:
 		DescriptionWindow &,
 		MainWindow &,
 		Sound &, 
-		NNetModelImporter &, 
+		NNetModelIO &, 
 		HWND const
 	);
+	void SetModelInterface(NNetModelReaderInterface const *);
+	NNetModelReaderInterface const * GetModelInterface() const { return m_pNMRI; };
 	bool ReadPreferences () const;
 	bool WritePreferences() const;
 
 private:
-	vector<unique_ptr<WrapBase>> m_prefVector;
-	wstring                      m_wstrPreferencesFile;
+	NNetModelReaderInterface const * m_pNMRI { nullptr };
+	vector<unique_ptr<WrapBase>>     m_prefVector;
+	wstring                          m_wstrPreferencesFile;
 };

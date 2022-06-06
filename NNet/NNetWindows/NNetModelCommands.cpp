@@ -38,7 +38,7 @@
 #include "MoveSelectionCommand.h"
 #include "NewIoLinePairCmd.h"
 #include "NewSigGenCmd.h"
-#include "NNetModelImporter.h"
+#include "NNetModelIO.h"
 #include "Uniform2D.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
@@ -77,12 +77,12 @@ using std::source_location;
 
 void NNetModelCommands::Initialize
 (
-	NNetModelImporter * const pModelImporter,
-	Observable        * const pDynamicModelObservable,
-	CommandStack      * const pCmdStack
+	NNetModelIO  * const pModelIO,
+	Observable   * const pDynamicModelObservable,
+	CommandStack * const pCmdStack
 ) 
 { 
-	m_pModelImporter          = pModelImporter;
+	m_pModelIO          = pModelIO;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pCmdStack               = pCmdStack;
 }
@@ -143,8 +143,8 @@ void NNetModelCommands::AddModel()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() 
-		              << L" \"" << m_pModelImporter->GetModelFileName() << L"\" " << endl;
-	unique_ptr<NNetModel> upImportedModel { m_pModelImporter->GetImportedModel() };
+		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
+	unique_ptr<NNetModel> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
 }
 

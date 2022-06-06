@@ -10,7 +10,7 @@
 #include "Resource.h"
 #include "AutoOpen.h"
 #include "SoundInterface.h"
-#include "NNetModelImporter.h"
+#include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
 #include "win32_MainWindow.h"
@@ -167,18 +167,20 @@ class WrapReadModel: public WrapBase
 public:
     WrapReadModel
     (
-        NNetModelImporter & modelImporter, 
+        Preferences const * pPref,
+        NNetModelIO       & modelIO, 
         HWND        const   hwndApp
     )
     : WrapBase(L"ReadModel"),
-      m_modelImporter(modelImporter),
+        m_pPref(pPref),
+        m_modelIO(modelIO),
       m_hwndApp(hwndApp)
     {}
 
     void operator() (Script & script) const final
     {
         wstring wstrFile { script.ScrReadString() };
-        if (! m_modelImporter.Import(wstrFile, NNetImportTermination::CreateNew(IDX_REPLACE_MODEL)))
+        if (! m_modelIO.Import(wstrFile, NNetImportTermination::CreateNew(IDX_REPLACE_MODEL)))
         {
             SendMessage(m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0);
         }
@@ -186,11 +188,12 @@ public:
 
     void Write(wostream & out) const final
     {
-        out << L"\"" << m_modelImporter.GetWriterInterface().GetModelFilePath() << L"\"";
+        out << L"\"" << m_pPref->GetModelInterface()->GetModelFilePath() << L"\"";
     }
 
 private:
-    NNetModelImporter & m_modelImporter;
+    Preferences const * m_pPref;
+    NNetModelIO       & m_modelIO;
     HWND                m_hwndApp;
 };
 
@@ -199,7 +202,7 @@ void Preferences::Initialize
     DescriptionWindow & descWin,
     MainWindow        & mainWin,
     Sound             & sound, 
-    NNetModelImporter & modelImporter,
+    NNetModelIO       & modelIO,
     HWND                hwndApp
 )
 {
@@ -213,7 +216,7 @@ void Preferences::Initialize
     m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
     m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
     m_prefVector.push_back(make_unique<WrapSetSound>(sound));
-    m_prefVector.push_back(make_unique<WrapReadModel>(modelImporter, hwndApp));
+    m_prefVector.push_back(make_unique<WrapReadModel>(this, modelIO, hwndApp));
     m_prefVector.push_back(make_unique<WrapSetPerfMonMode>());
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
@@ -235,6 +238,11 @@ bool Preferences::ReadPreferences() const
         wcout << Scanner::COMMENT_SYMBOL << L" +++ Using defaults" << endl;
         return false;
     }
+}
+
+void Preferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
+{
+    m_pNMRI = pNMRI;
 }
 
 bool Preferences::WritePreferences() const
