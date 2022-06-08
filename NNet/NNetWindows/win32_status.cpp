@@ -3,9 +3,12 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include "SCRIPT.H"
 #include "Resource.h"
 #include "win32_tooltip.h"
 #include "win32_status.h"
+
+using std::to_wstring;
 
 static LRESULT CALLBACK OwnerDrawStatusBar
 (
@@ -169,4 +172,23 @@ void StatusBar::DisplayInPart(int const iPart, wstring const & wstrLine) const
 void StatusBar::ClearPart(int const iPart) const
 {
 	(void)SendMessage(SB_SETTEXT, iPart, (LPARAM)L"");
+}
+
+void StatusBar::ReadProgressReport(int const iPart, Script * pScript) const
+{
+	long const lPercentage { pScript->GetPercentRead() };
+	DisplayInPart
+	(
+		iPart, 
+		L"Reading " +
+		pScript->GetActPath() + 
+		L" : " + 
+		to_wstring(lPercentage) + 
+		L'%'
+	);
+}
+
+void StatusBar::WriteProgressReport(int const iPart, wstring const & msg) const
+{
+	DisplayInPart(iPart, L"Writing : " + msg);
 }

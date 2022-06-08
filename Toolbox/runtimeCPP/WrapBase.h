@@ -21,9 +21,14 @@ public:
 
     virtual void Write(wostream& out) const = 0;
 
+    wstring const & GetName() const
+    {
+        return SymbolTable::GetSymbolName(Symbol(this));
+    }
+
     void WriteCmdName(wostream & out) const
     {
-        out << SymbolTable::GetSymbolName(Symbol(this)) << L" ";
+        out << GetName() << L" ";
     }
 
     void Write2(wostream & out) const

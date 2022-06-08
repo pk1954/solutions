@@ -54,34 +54,36 @@ protected:
 		D2D1::ColorF const color          
 	) const
 	{
-		fMicroSecs const usPixelSize  { m_pHorzCoord->GetPixelSize() };
-		fMicroSecs const usResolution { GetParams()->TimeResolution() };
-		fMicroSecs const usIncrement  { max(usPixelSize, usResolution) };
-		fMicroSecs const timeStart    { usIncrement * floor(timeStart0 / usIncrement) };
-
-		fPixel      fPixMinSignal { fPixel::MAX_VAL() };
-		fPixelPoint prevPoint     { getPoint(timeStart) };
-
-		ID2D1SolidColorBrush * pBrush { m_upGraphics->CreateBrush(color) };
-		for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
+		fMicroSecs const usPixelSize   { m_pHorzCoord->GetPixelSize() };
+		fMicroSecs const usResolution  { GetParams()->TimeResolution() };
+		fMicroSecs const usIncrement   { max(usPixelSize, usResolution) };
+		fMicroSecs const timeStart     { usIncrement * floor(timeStart0 / usIncrement) };
+		fPixel           fPixMinSignal { fPixel::MAX_VAL() };
+		fPixelPoint      prevPoint     { getPoint(timeStart) };
+		if (prevPoint.IsNotNull())
 		{
-			fPixelPoint const actPoint   { getPoint(time) };
-			fPixel      const fPixSignal { actPoint.GetY() };
-			if (fPixSignal < fPixMinSignal)
-				fPixMinSignal = fPixSignal;
-			if (actPoint.GetX() - prevPoint.GetX() >= 2._fPixel)
+			ID2D1SolidColorBrush * pBrush { m_upGraphics->CreateBrush(color) };
+			for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
 			{
-				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, pBrush);
-				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, pBrush);
+				fPixelPoint const actPoint { getPoint(time) };
+				if (actPoint.IsNull())
+					break;
+				if (actPoint.GetY() < fPixMinSignal)
+					fPixMinSignal = actPoint.GetY();
+				if (actPoint.GetX() - prevPoint.GetX() >= 2._fPixel)
+				{
+					fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
+					m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, pBrush);
+					m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, pBrush);
+				}
+				else
+				{
+					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, pBrush);
+				}
+				prevPoint = actPoint;
 			}
-			else
-			{
-				m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, pBrush);
-			}
-			prevPoint = actPoint;
+			SafeRelease(& pBrush);
 		}
-		SafeRelease(& pBrush);
 		return fPixMinSignal;
 	}
 

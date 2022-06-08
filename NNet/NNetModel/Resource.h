@@ -41,24 +41,27 @@
 #define       IDM_SAVE_MODEL_AS              152
 #define       IDM_OPEN_MODEL                 153
 #define       IDM_ADD_MODEL                  154
-#define       IDX_REPLACE_MODEL              155
-#define       IDX_FILE_NOT_FOUND             156
-#define       IDX_ERROR_IN_FILE              157
-#define       IDM_NEW_MODEL                  158
-#define       IDM_ADD_IMPORTED_MODEL         159
-								   	         
-#define       IDD_ARROWS_ON                  161
-#define       IDD_ARROWS_OFF                 162
-#define       IDD_RULER_ON                   163
-#define       IDD_RULER_OFF                  164
-#define       IDD_MEASUREMENT_ON             165
-#define       IDD_MEASUREMENT_OFF            166
-#define       IDD_ADD_TRACK                  168
-#define       IDD_DELETE_TRACK               169
-#define       IDD_EMPHASIZE                  170
-#define       IDD_PERF_MON_MODE_ON           171
-#define       IDD_PERF_MON_MODE_OFF          172
-#define       IDD_DELETE_EMPTY_TRACKS        173
+#define       IDM_NEW_MODEL                  155
+#define       IDM_ADD_IMPORTED_MODEL         156
+
+#define       IDX_READ_PROGRESS_REPORT       160
+#define       IDX_WRITE_PROGRESS_REPORT      161
+#define       IDX_REPLACE_MODEL              162
+#define       IDX_FILE_NOT_FOUND             163
+#define       IDX_ERROR_IN_FILE              164
+							   	         
+#define       IDD_ARROWS_ON                  180
+#define       IDD_ARROWS_OFF                 181
+#define       IDD_RULER_ON                   182
+#define       IDD_RULER_OFF                  183
+#define       IDD_MEASUREMENT_ON             184
+#define       IDD_MEASUREMENT_OFF            185
+#define       IDD_ADD_TRACK                  186
+#define       IDD_DELETE_TRACK               187
+#define       IDD_EMPHASIZE                  188
+#define       IDD_PERF_MON_MODE_ON           189
+#define       IDD_PERF_MON_MODE_OFF          190
+#define       IDD_DELETE_EMPTY_TRACKS        191
 
 #define       IDD_SOUND_ON                   200
 #define       IDD_SOUND_OFF                  202

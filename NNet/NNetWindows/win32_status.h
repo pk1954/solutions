@@ -10,6 +10,7 @@
 #include "win32_rootWindow.h"
 
 class NNetModelWriterInterface;
+class Script;
 
 using std::wstring;
 using std::vector;
@@ -36,6 +37,9 @@ public:
 
 	void DisplayInPart(int const, wstring const &) const;
 	void ClearPart(int const) const;
+
+	void ReadProgressReport (int const, Script *) const;
+	void WriteProgressReport(int const, wstring const &) const;
 
 private:
 

@@ -27,11 +27,14 @@ public:
 	void SetModelInterface(NNetModelWriterInterface * const);
 	void StimulusTriggered();
 
+	PixFpDimension<fMicroSecs> const & HorzCoord() const { return m_horzCoord; }
+	PixFpDimension<float>      const & VertCoord() const { return m_vertCoord; }
+
 private:
 	inline static PIXEL const RIGHT_BORDER   { 25_PIXEL };
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 
-	void OnPaint() final;
+	void OnPaint()                                       final;
 	bool OnSize        (PIXEL  const, PIXEL       const) final;
 	void OnScaleCommand(WPARAM const, BaseScale * const) final;
 

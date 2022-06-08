@@ -620,7 +620,7 @@
     <ClInclude Include="UndoRedoMenu.h" />
     <ClInclude Include="win32_appTitle.h" />
     <ClInclude Include="win32_crsrWindow.h" />
-    <ClInclude Include="win32_importTermination.h" />
+    <ClInclude Include="NNetInputOutputUI.h" />
     <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="win32_MiniWindow.h" />
     <ClInclude Include="win32_descriptionWindow.h" />

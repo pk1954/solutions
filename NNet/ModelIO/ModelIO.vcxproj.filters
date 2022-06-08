@@ -12,7 +12,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImportTermination.h">
+    <ClInclude Include="InputOutputUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelIO.h">
@@ -70,6 +70,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapSignalInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WrapEEGcoordSys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

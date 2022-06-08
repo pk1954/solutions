@@ -18,11 +18,7 @@ class Delay: public Observable
 {
 public:
 
-	Delay()
-	  : m_msGenerationDelay(DEFAULT_DELAY)
-	{}
-
-	milliseconds GetDelay()
+	milliseconds GetDelay() const
 	{
 		return m_msGenerationDelay;
 	};
@@ -46,5 +42,5 @@ public:
 
 private:
 
-	milliseconds m_msGenerationDelay; 
+	milliseconds m_msGenerationDelay { DEFAULT_DELAY };
 };

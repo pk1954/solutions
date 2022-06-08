@@ -30,7 +30,7 @@
 #include "observerInterface.h"
 #include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"
-#include "win32_importTermination.h"
+#include "NNetInputOutputUI.h"
 
 // scripting and tracing
 
@@ -68,16 +68,21 @@ using std::source_location;
 
 using namespace std::chrono;
 
+static HCURSOR m_hCrsrWait  { nullptr };
+static HCURSOR m_hCrsrArrow { nullptr };
+
 NNetAppWindow::NNetAppWindow()
 {
+	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
+	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 	Neuron::SetSound(& m_sound);
 	DefineUtilityWrapperFunctions();
-	SignalFactory::Initialize(m_dynamicModelObservable);
-	Command      ::Initialize(&m_mainNNetWindow);
-	m_modelIO      .Initialize();
-	m_sound        .Initialize(&m_soundOnObservable);
-	m_cmdStack     .Initialize(&m_staticModelObservable);
-	m_modelCommands.Initialize(&m_modelIO, &m_dynamicModelObservable, &m_cmdStack);
+	SignalFactory  ::Initialize(m_dynamicModelObservable);
+	Command        ::Initialize(&m_mainNNetWindow);
+	m_modelIO       .Initialize();
+	m_sound         .Initialize(&m_soundOnObservable);
+	m_cmdStack      .Initialize(&m_staticModelObservable);
+	m_modelCommands .Initialize(&m_modelIO, &m_dynamicModelObservable, &m_cmdStack);
 	m_NNetController.Initialize
 	(
 		& m_mainNNetWindow,
@@ -136,7 +141,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	NNetImportTermination::Initialize(m_hwndApp);
+	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle      .Initialize(m_hwndApp);
 	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelIO, m_hwndApp);
 	m_signalDesigner.Initialize
@@ -473,7 +478,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_modelIO.Import
 			(
 				AskModelFile(tFileMode::read), 
-				NNetImportTermination::CreateNew(IDX_REPLACE_MODEL)
+				NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)
 			);
 			break;
 
@@ -481,14 +486,22 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_modelIO.Import
 			(
 				AskModelFile(tFileMode::read), 
-				NNetImportTermination::CreateNew(IDM_ADD_IMPORTED_MODEL)
+				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
 			);
 			break;
 
+		case IDX_READ_PROGRESS_REPORT:  //no user command, only internal usage
+			m_statusBar.ReadProgressReport(m_statusMessagePart, bit_cast<Script *>(lParam));
+			break;
+
+		case IDX_WRITE_PROGRESS_REPORT:  //no user command, only internal usage
+			m_statusBar.WriteProgressReport(m_statusMessagePart, *bit_cast<wstring const *>(lParam));
+			break;
+
 		case IDX_REPLACE_MODEL:  //no user command, only internal usage
-			m_statusBar.ClearPart(m_statusMessagePart);
 			if (AskAndSave())
 				replaceModel();
+			m_statusBar.ClearPart(m_statusMessagePart);
 			break;
 
 		case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
@@ -531,7 +544,7 @@ bool NNetAppWindow::SaveModelAs()
 		wstrModelPath = path(ScriptFile::GetPathOfExecutable()).parent_path();
 		wstrModelPath += L"\\std.mod";
 		m_nmwi.SetModelFilePath(wstrModelPath);
-		writeModel();
+		WriteModel();
 		return true;
 	}
 	else
@@ -541,7 +554,7 @@ bool NNetAppWindow::SaveModelAs()
 		if (bRes)
 		{
 			m_nmwi.SetModelFilePath(wstrModelPath);
-			writeModel();
+			WriteModel();
 		}
 		return bRes;
 	}
@@ -556,7 +569,7 @@ bool NNetAppWindow::SaveModel()
 	}
 	else
 	{
-		writeModel();
+		WriteModel();
 		return true;
 	}
 }
@@ -625,4 +638,13 @@ void NNetAppWindow::processScript() const
 		StartScript(wstrFile);
 	if (!ScriptStack::GetScript()->ReadNextToken())
 		ScriptStack::CloseScript();
+}
+
+void NNetAppWindow::WriteModel()
+{
+	SetCursor(m_hCrsrWait);
+	m_modelIO.Export(m_nmwi, NNetInputOutputUI::CreateNew(0));
+	m_appTitle.SetUnsavedChanges(false);
+	m_statusBar.ClearPart(m_statusMessagePart);
+	SetCursor(m_hCrsrArrow);
 }

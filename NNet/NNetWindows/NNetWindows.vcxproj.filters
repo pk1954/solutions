@@ -167,7 +167,7 @@
     <ClInclude Include="win32_appTitle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_importTermination.h">
+    <ClInclude Include="NNetInputOutputUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_descriptionWindow.h">

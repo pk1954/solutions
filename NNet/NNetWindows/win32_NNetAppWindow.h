@@ -107,12 +107,7 @@ private:
 	bool SaveModelAs();
 	bool SaveModel();
 	bool AskAndSave();
-
-	void writeModel()
-	{
-		m_modelIO.Export(m_nmwi);
-		m_appTitle.SetUnsavedChanges(false);
-	}
+	void WriteModel();
 
 	wstring AskModelFile(enum class tFileMode const mode) const
 	{

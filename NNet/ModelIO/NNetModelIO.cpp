@@ -29,7 +29,7 @@
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "win32_hiResTimer.h"
-#include "ImportTermination.h"
+#include "InputOutputUI.h"
 #include "WrapDescription.h"
 #include "WrapGlobalParameter.h"
 #include "WrapNrOfNobs.h"
@@ -46,6 +46,7 @@
 #include "WrapSignalGenerator.h"
 #include "WrapCreateNob.h"
 #include "WrapVoltage.h"
+#include "WrapEEGcoordSys.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "NNetModelStorage.h"
@@ -80,6 +81,7 @@ void NNetModelIO::Initialize()
     m_wrapVector.push_back(make_unique<WrapSetParam       >(L"SetParam",        *this)); // Legacy
     m_wrapVector.push_back(make_unique<WrapSignal         >(L"Signal",          *this)); // Legacy
     m_wrapVector.push_back(make_unique<WrapNobParameter   >(L"NobParameter",    *this)); // Legacy
+//    m_wrapVector.push_back(make_unique<WrapEEGcoordSys    >(L"EEGcoordSys",     *this));
 
     NobType::Apply2All
     (
@@ -114,11 +116,34 @@ void NNetModelIO::Initialize()
 
 //////////////// import ////////////////
 
+struct IO_STRUCT  // IO thread -> timerProc
+{
+    InputOutputUI * pUI;
+    Script        * pScript;
+};
+
+static void CALLBACK timerProc
+(
+    PTP_CALLBACK_INSTANCE, 
+    PVOID pContext, 
+    PTP_TIMER
+)
+{
+    IO_STRUCT * pIoStruct { bit_cast<IO_STRUCT *>(pContext) };
+    pIoStruct->pUI->ReadProgressReport(pIoStruct->pScript);
+}
+
 void NNetModelIO::importModel() 
 {
-    ImportTermination::Result res;
-    Script                    script;
-    bool                      bSuccess { false };
+    InputOutputUI::Result res;
+    Script                script;
+    bool                  bSuccess { false };
+
+    unsigned int m_uiMsPeriod { 200 };
+    FILETIME     fileTime     { m_uiMsPeriod, 0 };
+    IO_STRUCT    uiStruct     { m_upImportUI.get(), &script };
+    m_pTpTimer = CreateThreadpoolTimer(timerProc, &uiStruct, nullptr);
+    SetThreadpoolTimer(m_pTpTimer, &fileTime, m_uiMsPeriod, m_uiMsPeriod);
 
     if (! m_wstrFile2Read.empty())
     {
@@ -137,14 +162,16 @@ void NNetModelIO::importModel()
         m_upImportedNMWI->RemoveOrphans();
         m_upImportedNMWI->SetModelFilePath(m_wstrFile2Read);
         m_upImportedNMWI->DescriptionComplete();
-        res = ImportTermination::Result::ok;
+        res = InputOutputUI::Result::ok;
     }
     else
     {
         m_upImportedModel.release();
-        res = ImportTermination::Result::errorInFile;
+        res = InputOutputUI::Result::errorInFile;
     }
-    m_upTermination->Reaction(res, m_wstrFile2Read);
+    if (m_pTpTimer)
+        CloseThreadpoolTimer(m_pTpTimer);
+    m_upImportUI->JobFinished(res, m_wstrFile2Read);
 }
 
 void NNetModelIO::CheckImportedNobId
@@ -182,8 +209,8 @@ static unsigned int __stdcall importModelThreadProc(void * data)
 
 bool NNetModelIO::Import
 (
-    wstring const & wstrPath,
-    unique_ptr<ImportTermination> upTermination
+    wstring           const & wstrPath,
+    unique_ptr<InputOutputUI> upInputUI
 )
 {
     if (wstrPath.empty())
@@ -194,11 +221,11 @@ bool NNetModelIO::Import
 
     if (! exists(wstrPath))
     {
-        upTermination->Reaction(ImportTermination::Result::fileNotFound, wstrPath);
+        upInputUI->JobFinished(InputOutputUI::Result::fileNotFound, wstrPath);
         return false;
     }
 
-    m_upTermination   = move(upTermination);
+    m_upImportUI      = move(upInputUI);
     m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
     m_upImportedNMWI->SetModel(m_upImportedModel.get());
@@ -217,7 +244,7 @@ unique_ptr<NNetModel> NNetModelIO::GetImportedModel()
 
 void NNetModelIO::writeHeader(wostream & out) const
 {
-    out << Scanner::COMMENT_SYMBOL << L" NNetModel" << endl;
+    out << Scanner::COMMENT_SYMBOL << L" NNetModel"       << endl;
     out << Scanner::COMMENT_SYMBOL << L" Created "        << Util::GetCurrentDateAndTime() << endl;
     out << Scanner::COMMENT_SYMBOL << L" Computer name: " << Util::GetComputerName()       << endl;
     out << Scanner::COMMENT_SYMBOL << L" User name: "     << Util::GetUserName()           << endl; 
@@ -244,7 +271,11 @@ size_t NNetModelIO::NrOfCompactIds() const
     return m_CompactIds.Size(); 
 }
 
-void NNetModelIO::Export(NNetModelWriterInterface const & nmwi)
+void NNetModelIO::Export
+(
+    NNetModelWriterInterface const & nmwi,
+    unique_ptr<InputOutputUI>        upOutputUI
+)
 {
     HiResTimer timer;
     timer.Start();
@@ -254,7 +285,10 @@ void NNetModelIO::Export(NNetModelWriterInterface const & nmwi)
     wofstream modelFile(nmwi.GetModelFilePath());
     writeHeader(modelFile);
     for (auto const & it : m_wrapVector)
+    {
+        upOutputUI->WriteProgressReport(it->GetName());
         it->Write(modelFile);
+    }
     modelFile.close();
     m_pExportNMWI = nullptr;
 

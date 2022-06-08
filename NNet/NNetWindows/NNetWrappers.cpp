@@ -12,7 +12,7 @@
 #include "win32_util.h"
 #include "UtilityWrappers.h"
 #include "DrawContext.h"
-#include "win32_importTermination.h"
+#include "NNetInputOutputUI.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
@@ -66,7 +66,7 @@ public:
         m_pModelIO->Import
         (
             script.ScrReadString(), 
-            NNetImportTermination::CreateNew(IDM_ADD_IMPORTED_MODEL)
+            NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
         );
     }
 };

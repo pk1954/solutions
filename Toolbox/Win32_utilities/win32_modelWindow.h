@@ -17,6 +17,7 @@ public:
 		m_pDisplayTimer = pActionTimer;
 		m_hCrsrArrow    = LoadCursor(nullptr, IDC_ARROW);
 		m_hCrsrMove     = LoadCursor(nullptr, IDC_HAND);
+		m_hCrsrWait     = LoadCursor(nullptr, IDC_WAIT);
 	}
 
 protected:
@@ -24,4 +25,5 @@ protected:
 	inline static ActionTimer * m_pDisplayTimer { nullptr };
 	inline static HCURSOR       m_hCrsrMove     { nullptr };
 	inline static HCURSOR       m_hCrsrArrow    { nullptr };
+	inline static HCURSOR       m_hCrsrWait     { nullptr };
 };

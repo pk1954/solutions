@@ -160,13 +160,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ImportTermination.h" />
+    <ClInclude Include="InputOutputUI.h" />
     <ClInclude Include="NNetModelIO.h" />
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="WrapActiveSigGen.h" />
     <ClInclude Include="WrapCreateNob.h" />
     <ClInclude Include="NNetWrapperBase.h" />
     <ClInclude Include="WrapDescription.h" />
+    <ClInclude Include="WrapEEGcoordSys.h" />
     <ClInclude Include="WrapGlobalParameter.h" />
     <ClInclude Include="WrapNobParameter.h" />
     <ClInclude Include="WrapNrOfNobs.h" />

@@ -16,7 +16,7 @@
 #include "win32_MainWindow.h"
 #include "win32_baseWindow.h"
 #include "win32_descriptionWindow.h"
-#include "win32_importTermination.h"
+#include "NNetInputOutputUI.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_script.h"
 #include "win32_util.h"
@@ -180,7 +180,7 @@ public:
     void operator() (Script & script) const final
     {
         wstring wstrFile { script.ScrReadString() };
-        if (! m_modelIO.Import(wstrFile, NNetImportTermination::CreateNew(IDX_REPLACE_MODEL)))
+        if (! m_modelIO.Import(wstrFile, NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
         {
             SendMessage(m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0);
         }
