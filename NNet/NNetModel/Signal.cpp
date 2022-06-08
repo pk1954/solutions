@@ -56,14 +56,11 @@ void Signal::WriteSignalData(wostream & out) const
     size_t const iLast { m_data.size() - 1 };
     out << L" StartTime " << m_timeStart << endl;
     out << LIST_OPEN_BRACKET << m_data.size() << NR_SEPARATOR;
-    for (size_t i = 0;; ++i)
+    for (size_t i = 0; i <= iLast; ++i)
     {
-        if (i % 10 == 0)
+        if (i % 12 == 0)
             out << endl;
         out << m_data[i];
-        if (i == iLast)
-            break;
-        out << ID_SEPARATOR;
     }
     out << endl << LIST_CLOSE_BRACKET << endl;
 }

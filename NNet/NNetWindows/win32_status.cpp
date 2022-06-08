@@ -190,5 +190,5 @@ void StatusBar::ReadProgressReport(int const iPart, Script * pScript) const
 
 void StatusBar::WriteProgressReport(int const iPart, wstring const & msg) const
 {
-	DisplayInPart(iPart, L"Writing : " + msg);
+	DisplayInPart(iPart, L"Writing " + msg);
 }

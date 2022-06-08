@@ -21,13 +21,10 @@ public:
         script.ScrReadSpecial(LIST_OPEN_BRACKET);
         int const iNrOfElements { script.ScrReadInt() };
         script.ScrReadSpecial(NR_SEPARATOR);
-        for (int iElem { 0 };;)
+        for (int iElem = 0; iElem < iNrOfElements; ++iElem)
         {
             mV value { Cast2Float(script.ScrReadFloat()) };
             pSignal->Add(value);
-            if (++iElem == iNrOfElements)
-                break;
-            script.ScrReadSpecial(ID_SEPARATOR);
         }
         script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     }
