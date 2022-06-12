@@ -70,13 +70,6 @@ void BaseScale::display
 	m_upGraphics->DisplayText(textBox, wstr, GetColor(), m_pTextFormat);
 }
 
-void BaseScale::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
-{
-	Invalidate(false);
-	UpdateWindow(GetWindowHandle());
-	GraphicsWindow::OnMouseMove(wParam, lParam);
-}
-
 void BaseScale::OnMouseLeave() 
 {
 	Invalidate(false);
@@ -96,18 +89,62 @@ void BaseScale::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	PostMessage2Parent(WM_APP_SCALE_COMMAND, SC_LBUTTONDBLCLK, bit_cast<LPARAM>(this));
 }
 
+void BaseScale::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
+{
+	if (!m_bLock2Zero)
+	{
+		if (wParam & MK_LBUTTON)
+		{
+			PIXEL const pixCrsr { IsVertScale() ? CrsrYpos(lParam) : CrsrXpos(lParam) };  // screen coordinates
+			PIXEL const pixLast { m_pixLast };
+			m_pixLast = pixCrsr;
+			if (pixLast.IsNotNull())
+				MoveCoord(pixCrsr - pixLast);
+		}
+		else
+		{
+			m_pixLast.Set2Null();
+		}
+	}
+	GraphicsWindow::OnMouseMove(wParam, lParam);
+}
+
 void BaseScale::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-	int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-	bool const bDirection { iDelta > 0 };
-	bool       bResult    { true };
+	bool             bResult    { true };
+	int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	bool       const bDirection { iDelta > 0 };
+	PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
+	PIXEL      const pixCrsr    { IsVertScale() ? ptCrsr.GetY() : ptCrsr.GetX() };
+	fPixel     const fPixCenter { m_bLock2Zero ? 0._fPixel : Convert2fPixel(pixCrsr) };
 
 	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
-		bResult = Zoom(bDirection);
+	{
+		bResult = ZoomCoordDir(bDirection, fPixCenter);
+	}
 
 	if (!bResult)
 		MessageBeep(MB_ICONWARNING);
 
-	UpdateWindow(GetWindowHandle());
-//	Notify(true);
+	GraphicsWindow::OnMouseWheel(wParam, lParam);
+}
+
+bool BaseScale::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
+{
+	SetCapture();
+	return false;
+}
+
+bool BaseScale::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+{
+	ReleaseCapture();
+	return false;
+}
+
+void BaseScale::Notify(bool const bImmediately)
+{
+	if (bImmediately)
+		UpdateImmediately();
+	else
+		GraphicsWindow::Notify(bImmediately);
 }

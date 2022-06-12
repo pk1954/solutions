@@ -29,10 +29,12 @@ public:
 		Sound                      &,
 		NNetModelCommands          &,
 		PixFpDimension<fMicroSecs> &,
-		PixFpDimension<float>      &
+		PixFpDimension<mV>         &
 	);
 
 	~MonitorControl() final = default;
+
+	void Notify(bool const) final;
 
 	void   SetModelInterface(NNetModelWriterInterface * const) final;
 	LPARAM AddContextMenuEntries(HMENU const) final;
@@ -71,8 +73,8 @@ private:
 	fPixel      calcTrackHeight () const;
 	fPixelPoint calcDiamondPos  () const;
 
-	void paintWarningRect();
-	void paintStimulusMarkers();
+	void paintWarningRect() const;
+	void paintStimulusMarkers() const;
 	void paintSignal(SignalId const &);
 	void paintTrack(TrackNr const) const;
 	void paintNumber(fPixel const, fPixel const, int const, D2D1::ColorF const) const;
@@ -83,7 +85,7 @@ private:
 	inline static HCURSOR m_hCrsrNS { nullptr };
 
 	PixFpDimension<fMicroSecs> & m_horzCoord;
-	PixFpDimension<float>      & m_vertCoord;
+	PixFpDimension<mV>         & m_vertCoord;
 	Sound                      & m_sound;        
 	NNetModelCommands          & m_modelCommands;
 	MonitorData                * m_pMonitorData { nullptr };

@@ -165,7 +165,7 @@ void RootWindow::SetTrackBarPos(INT const idTrackbar, LONG const lPos) const
 	SendDlgItemMessage
 	(  
 		idTrackbar, TBM_SETPOS, 
-		static_cast<WPARAM>(true),                   // redraw flag 
+		static_cast<WPARAM>(true),  // redraw flag 
 		static_cast<LPARAM>(lPos)
 	); 
 }

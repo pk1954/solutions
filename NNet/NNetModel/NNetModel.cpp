@@ -95,7 +95,7 @@ void NNetModel::RecalcAllNobs() const
 	(
 		[](Nob & nob) 
 		{ 
-			//nob.Recalc(); 
+			nob.Recalc(); 
 		}
 	);
 } 
@@ -104,7 +104,7 @@ void NNetModel::ClearDynamicData()
 { 
 	SimulationTime::Set();
 	m_Nobs.Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
-	GetMonitorData().Apply2AllSignals([this](Signal & s) { s.Reset(m_Nobs); });
+	GetMonitorData().Apply2AllSignals([](Signal & s) { s.Reset(); });
 	m_sigGenList.Apply2All([](auto * p){ p->ClearDynamicData(); });
 }
 

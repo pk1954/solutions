@@ -91,7 +91,6 @@ private:
 	void setTargetNob     ();
 	void setHighlightedNob(MicroMeterPnt const &);
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
-	void zoomStep         (float const, fPixelPoint const);
 
 	void DoPaint() final;
 

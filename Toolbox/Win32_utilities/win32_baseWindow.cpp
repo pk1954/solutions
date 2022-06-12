@@ -122,7 +122,7 @@ void BaseWindow::SetCaption() const
 
 void BaseWindow::OnMouseHover(WPARAM const wParam, LPARAM const lParam)
 {
-    SetCaption();
+ //   SetCaption();
 };
 
 bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)

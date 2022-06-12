@@ -34,12 +34,12 @@ public:
 	virtual void      AddPipelinePoint( fPixelPoint const &, COLORREF const ) = 0;
 	virtual void      RenderPipeline( ) = 0;
 
-	void SetStripMode( tBoolOp const bOp ) 
+	void SetStripMode(tBoolOp const bOp) 
 	{ 
-		ApplyOp( m_bStripMode, bOp ); 
+		ApplyOp(m_bStripMode, bOp); 
 	};
 
-	bool GetStripMode( ) 
+	bool GetStripMode() 
 	{ 
 		return m_bStripMode; 
 	};

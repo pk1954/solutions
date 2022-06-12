@@ -36,6 +36,7 @@
     <ClInclude Include="LogarithmicTrackbar.h" />
     <ClInclude Include="MeanFilter.h" />
     <ClInclude Include="MoreTypes.h" />
+    <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />
     <ClInclude Include="observerInterface.h" />
     <ClInclude Include="PixFpDimension.h" />

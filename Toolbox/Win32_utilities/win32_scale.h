@@ -66,14 +66,19 @@ private:
 
 	// private functions
 
-	bool Zoom(bool const bDirection) final
+	bool ZoomCoordDir(bool const bDirection, fPixel const fPixCenter) final
 	{
-		return m_pixCoord.Zoom(bDirection);
+		return m_pixCoord.ZoomDir(bDirection, fPixCenter);
 	}
 
-	void Zoom(float const factor) final
+	bool ZoomCoordFactor(float const factor, fPixel const fPixCenter) final
 	{
-		m_pixCoord.Zoom(factor);
+		return m_pixCoord.ZoomFactor(factor, fPixCenter);
+	}
+
+	void MoveCoord(PIXEL const pixDelta) final
+	{
+		m_pixCoord.Move(pixDelta);
 	}
 
 	void DoPaint() final

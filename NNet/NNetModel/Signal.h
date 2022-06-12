@@ -32,7 +32,7 @@ public:
 
     ~Signal() override;
 
-    void Reset(UPNobList const &);
+    void Reset();
 
     mV         GetDataPoint   (Param const &, fMicroSecs const) const;
     fMicroSecs FindNextMaximum(Param const &, fMicroSecs const) const;
@@ -45,12 +45,13 @@ public:
     fMicroSecs GetStartTime() const { return m_timeStart; }
     void       SetStartTime(fMicroSecs const t)  { m_timeStart = t; }
 
+    void Reserve(size_t const);
     void Add(mV const);
 
     void Notify(bool const) final;
 
-    void Check() const { /**/  };
-    void Dump()  const;
+    void Check()       const { /**/  };
+    void Dump()        const;
     void CheckSignal() const;
 
     int GetSigSrcType() const { return m_iSourceType; }

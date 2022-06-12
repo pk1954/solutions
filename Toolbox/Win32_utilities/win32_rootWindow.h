@@ -218,8 +218,9 @@ public:
         Move(rect.GetStartPoint(), rect.GetSize(), bRedraw);
     }
 
-	void Update() const
+	void UpdateImmediately() const
 	{
+		Invalidate(false);
 		(void)::UpdateWindow(m_hwnd);
 	}
 

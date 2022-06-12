@@ -25,8 +25,9 @@ class BaseScale : public GraphicsWindow
 public:
 	BaseScale(HWND const, bool const);
 
-	virtual bool Zoom(bool  const) { return false; }
-	virtual void Zoom(float const) {}
+	virtual bool ZoomCoordDir   (bool  const, fPixel const) = 0;
+	virtual bool ZoomCoordFactor(float const, fPixel const) = 0; 
+	virtual void MoveCoord(PIXEL const)                     = 0;
 
 	bool         IsVertScale   () const { return m_bVertScale; }
 	bool         GetOrientation() const { return m_bOrientation; }
@@ -39,13 +40,19 @@ public:
 	void SetScaleColor (D2D1::ColorF const col) { m_scaleColor      = col; }
 	void SetOrthoOffset(fPixel       const off) { m_fPixOrthoOffset = off; }
 
-	void SetOrientation(bool const); 
+	void SetOrientation(bool const);
+	void SetBlock2Zero(tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
+	bool GetBlock2Zero() const           { return m_bLock2Zero; }
 
-	void OnMouseMove      (WPARAM const, LPARAM const) final;
+	void OnMouseMove      (WPARAM const, LPARAM const) override;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	void OnMouseWheel     (WPARAM const, LPARAM const) final;
 	bool OnSize           (PIXEL  const, PIXEL  const) final;
+	bool OnLButtonDown    (WPARAM const, LPARAM const) final;
+	bool OnLButtonUp      (WPARAM const, LPARAM const) final;
 	void OnMouseLeave     () final;
+
+	void Notify(bool const) override;
 
 	inline static D2D1::ColorF const COL_NORMAL      { D2D1::ColorF::Azure };
 	inline static D2D1::ColorF const COL_HIGHLIGHTED { D2D1::ColorF::Aquamarine };
@@ -64,10 +71,12 @@ private:
 
 	D2D1::ColorF        m_scaleColor      { D2D1::ColorF::Black };
 	IDWriteTextFormat * m_pTextFormat     { nullptr };
-	bool                m_bOrientation    { true };  // true: ticks on negative side of scale
-	bool                m_bVertScale      { false }; // true: vertical, false: horizontal
+	bool                m_bOrientation    { true };     // true: ticks on negative side of scale
+	bool                m_bVertScale      { false };    // true: vertical, false: horizontal
 	fPixel              m_fPixLeftBorder  { 0._fPixel };
 	fPixel              m_fPixRightBorder { 0._fPixel };
 	fPixel              m_fPixOrthoOffset { 0._fPixel };
-};
+	PIXEL               m_pixLast         { PIXEL::NULL_VAL() }; // Last cursor position during selection 
+	bool                m_bLock2Zero      { false };
 
+};

@@ -21,7 +21,7 @@ MonitorControl::MonitorControl
 	Sound                      & sound,
 	NNetModelCommands          & modelCommands,
 	PixFpDimension<fMicroSecs> & horzCoord,
-	PixFpDimension<float>      & vertCoord
+	PixFpDimension<mV>         & vertCoord
 ) 
   : TimeGraph(hwndParent, &horzCoord),
 	m_horzCoord    (horzCoord),
@@ -37,8 +37,8 @@ MonitorControl::MonitorControl
 	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);
 
-	m_vertCoord.SetPixelSize(0.2f);
-	m_vertCoord.SetPixelSizeLimits(0.001f, 100.f);   
+	m_vertCoord.SetPixelSize(0.2_mV);
+	m_vertCoord.SetPixelSizeLimits(0.001_mV, 100._mV);   
 	m_vertCoord.SetZoomFactor(1.3f);
 
 	m_horzCoord.RegisterObserver(*this);
@@ -210,7 +210,7 @@ fPixel MonitorControl::getSignalValue
 	mV const mVsignal { signal.GetDataPoint(m_pNMWI->GetParams(), usSimu) };
 	return (mVsignal.IsNull())
 		? fPixel::NULL_VAL()
-		: m_vertCoord.Transform2fPixelSize(mVsignal.GetValue());
+		: m_vertCoord.Transform2fPixelSize(mVsignal);
 }
 
 fPixel MonitorControl::calcTrackHeight() const
@@ -268,7 +268,7 @@ fPixelPoint MonitorControl::getSignalPoint
 	return fPixelPoint(getfPixXpos(time), fPixYoff - getSignalValue(signal, time));
 }
 
-void MonitorControl::paintWarningRect()
+void MonitorControl::paintWarningRect() const
 {
 	m_upGraphics->FillRectangle
 	(
@@ -332,7 +332,7 @@ float MonitorControl::ScaleFactor() const
 void MonitorControl::ScaleSignals()
 {
 	if (m_fPixMaxSignal > 0.0_fPixel) 
-		m_vertCoord *= ScaleFactor();
+		m_vertCoord.ZoomFactor(ScaleFactor(), 0.0_fPixel);
 }
 
 void MonitorControl::paintNumber
@@ -385,7 +385,7 @@ void MonitorControl::StimulusTriggered()
 	m_pMonitorData->AddStimulus(SimulationTime::Get());
 }
 
-void MonitorControl::paintStimulusMarkers()
+void MonitorControl::paintStimulusMarkers() const
 {
 	fPixel const fPixBottom { Convert2fPixel(GetClientWindowHeight()) };
 
@@ -587,8 +587,8 @@ void MonitorControl::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 	{
 		bResult = bShiftKey 
-			? m_horzCoord.Zoom(bDirection)
-			: m_vertCoord.Zoom(bDirection);
+			? m_horzCoord.ZoomDir(bDirection, 0.0_fPixel)
+			: m_vertCoord.ZoomDir(bDirection, 0.0_fPixel);
 	}
 	if (!bResult)
 		MessageBeep(MB_ICONWARNING);
@@ -599,7 +599,15 @@ bool MonitorControl::OnSize(PIXEL const width, PIXEL const height)
 	GraphicsWindow::OnSize(width, height);
 	m_fPixWinWidth = Convert2fPixel(width);
 	m_fPixZeroX    = Convert2fPixel(width) - m_fPixRightBorder;
-	m_horzCoord.SetOffset(m_fPixZeroX);
+	//m_horzCoord.SetOffset(m_fPixZeroX);
 	m_measurement.SetClientRectSize(width, height);
 	return true;
+}
+
+void MonitorControl::Notify(bool const bImmediately)
+{
+	if (bImmediately)
+		UpdateImmediately();
+	else
+		TimeGraph::Notify(bImmediately);
 }

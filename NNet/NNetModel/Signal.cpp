@@ -36,9 +36,10 @@ Signal::~Signal()
     m_dynModelObservable.UnregisterObserver(*this);
 }
 
-void Signal::Reset(UPNobList const & list)    
+void Signal::Reset()    
 { 
     m_timeStart = 0.0_MicroSecs;
+    m_data.clear();
 }
 
 bool Signal::Includes(MicroMeterPnt const p) const 
@@ -76,8 +77,8 @@ void Signal::Draw
 
 SIG_INDEX Signal::time2index
 (
-    Param      const & param,
-    fMicroSecs         usParam
+    Param const & param,
+    fMicroSecs    usParam
 ) const
 {
     if (usParam < m_timeStart)
@@ -112,6 +113,11 @@ mV Signal::GetDataPoint
     return (index < 0)
            ? mV::NULL_VAL()
            : GetVectorValue<mV>(index, m_data);
+}
+
+void Signal::Reserve(size_t const size) 
+{
+    m_data.reserve(size);
 }
 
 void Signal::Add(mV const val) 

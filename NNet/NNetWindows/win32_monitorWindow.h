@@ -28,20 +28,19 @@ public:
 	void StimulusTriggered();
 
 	PixFpDimension<fMicroSecs> const & HorzCoord() const { return m_horzCoord; }
-	PixFpDimension<float>      const & VertCoord() const { return m_vertCoord; }
+	PixFpDimension<mV>         const & VertCoord() const { return m_vertCoord; }
 
 private:
 	inline static PIXEL const RIGHT_BORDER   { 25_PIXEL };
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 
-	void OnPaint()                                       final;
-	bool OnSize        (PIXEL  const, PIXEL       const) final;
-	void OnScaleCommand(WPARAM const, BaseScale * const) final;
+	void OnPaint()                          final;
+	bool OnSize (PIXEL  const, PIXEL const) final;
 
 	wstring GetCaption() const final;
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
-	PixFpDimension<float>         m_vertCoord;
+	PixFpDimension<mV>            m_vertCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<MonitorControl>    m_upMonitorControl;
 };

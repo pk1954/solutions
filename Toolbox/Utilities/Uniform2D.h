@@ -5,11 +5,12 @@
 #pragma once
 
 #include "util.h"
+#include "observable.h"
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
 
 template <typename LOG_UNIT>
-class Uniform2D
+class Uniform2D : public Observable
 {
 public:
 
@@ -187,7 +188,7 @@ public:
 	
 	//////// queries ////////
 
-	LOG_UNIT  GetPixelSize() const 
+	LOG_UNIT GetPixelSize() const 
 	{ 
 		return m_xDim.GetPixelSize(); 
 	}
@@ -199,16 +200,20 @@ public:
 
 	//////// manipulation functions ////////
 
-	void SetPixelSize(LOG_UNIT const pixelSize) 
+	void SetPixelSize(LOG_UNIT const logSize, bool const bNotify = true)
 	{ 
-		m_xDim.SetPixelSize(pixelSize);
-		m_yDim.SetPixelSize(pixelSize);
+		m_xDim.SetPixelSize(logSize, false);
+		m_yDim.SetPixelSize(logSize, false);
+		if (bNotify)
+			NotifyAll(true);
 	}
 	
-	void SetPixelOffset(fPixelPoint const fPixOffset) 
+	void SetPixelOffset(fPixelPoint const fPixOffset, bool const bNotify = true)
 	{ 
-		m_xDim.SetOffset(fPixOffset.GetX());
-		m_yDim.SetOffset(fPixOffset.GetY());
+		m_xDim.SetOffset(fPixOffset.GetX(), false);
+		m_yDim.SetOffset(fPixOffset.GetY(), false);
+		if (bNotify)
+			NotifyAll(true);
 	}
 
 	void Set(Uniform2D const & newVals) 
@@ -216,33 +221,53 @@ public:
 		* this = newVals; 
 	}
 
-	void Move(PixelPoint const & pntDelta) 
+	void Move(PixelPoint const & pixPntDelta) 
 	{ 
-		m_xDim.Move(Convert2fPixel(pntDelta.GetX()));
-		m_yDim.Move(Convert2fPixel(pntDelta.GetY()));
+		m_xDim.Move(Convert2fPixel(pixPntDelta.GetX()));
+		m_yDim.Move(Convert2fPixel(pixPntDelta.GetY()));
 	}
 
-	void Move(PosType<LOG_UNIT> const & umDelta) 
+	void Move(PosType<LOG_UNIT> const & logPntDelta) 
 	{ 
-		m_xDim.Move(Transform2fPixel(umDelta.GetX()));
-		m_yDim.Move(Transform2fPixel(umDelta.GetY()));
+		m_xDim.Move(Transform2fPixel(logPntDelta.GetX()));
+		m_yDim.Move(Transform2fPixel(logPntDelta.GetY()));
 	}
 
-	bool Zoom(LOG_UNIT const pixelSize)
+	bool Zoom(LOG_UNIT const logSize, bool const bNotify = true)
 	{
-		bool bValid = IsValidPixelSize(pixelSize);
+		bool bValid = IsValidPixelSize(logSize);
 		if (bValid)
-			SetPixelSize(pixelSize);
+			SetPixelSize(logSize, bNotify);
 		return bValid;
 	}
 
 	void Center
 	(
-		PosType<LOG_UNIT> const umPntCenter,   
-		fPixelPoint       const fPntPix  
+		PosType<LOG_UNIT> const logPntCenter,   
+		fPixelPoint       const fPntPix,
+		bool              const bNotify = true
 	)
 	{
-		SetPixelOffset(Transform2fPixelSize(umPntCenter) - fPntPix);
+		SetPixelOffset(Transform2fPixelSize(logPntCenter) - fPntPix, bNotify);
+	}
+
+	bool ZoomCenter
+	(
+		float       const fFactor,
+		fPixelPoint const fPixPntCenter,
+		bool        const bNotify = true
+	)
+	{
+		bool const bResX = m_xDim.ZoomCenter(fFactor, fPixPntCenter.GetX(), false);
+		bool const bResY = m_yDim.ZoomCenter(fFactor, fPixPntCenter.GetY(), false);
+		return bResX && bResY;
+	}
+
+	bool Zoom(bool const bDirection, fPixelPoint const & fPixPointCenter)
+	{
+		bool const bResX = m_xDim.ZoomDir(bDirection, fPixPointCenter.GetX(), false);
+		bool const bResY = m_yDim.ZoomDir(bDirection, fPixPointCenter.GetY(), false);
+		return bResX && bResY;
 	}
 
 	LOG_UNIT ComputeZoom

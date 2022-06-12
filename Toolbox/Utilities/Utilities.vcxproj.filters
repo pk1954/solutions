@@ -123,6 +123,9 @@
     <ClInclude Include="ListOfNamedObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NamedType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp">

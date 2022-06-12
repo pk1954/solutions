@@ -22,7 +22,7 @@ public:
 		m_fFactor(fFactor)
 	{}
 
-	void Do  () final 
+	void Do() final 
 	{ 
 		if (m_pSensor)
 			m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), 1.0f / m_fFactor); 

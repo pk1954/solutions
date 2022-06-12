@@ -18,6 +18,7 @@ public:
 	{
 		m_fPixOffset   = 0.0_fPixel;
 		m_logPixelSize = LOG_UNIT(1.0f);
+		NotifyAll(false);
 	}
 
 	//////// transformations LOG_UNIT <---> fPixel ////////
@@ -34,12 +35,12 @@ public:
 
 	fPixel Transform2fPixelPos(LOG_UNIT const np) const
 	{ 
-		return Transform2fPixelSize(np) + m_fPixOffset;
+		return Transform2fPixelSize(np) - m_fPixOffset;
 	}
 
 	LOG_UNIT Transform2logUnitPos(fPixel const fPixel) const
 	{ 
-		return Transform2logUnitSize(fPixel - m_fPixOffset);
+		return Transform2logUnitSize(fPixel + m_fPixOffset);
 	}
 
 	//////// transformations LOG_UNIT <---> PIXEL  ////////
@@ -56,44 +57,29 @@ public:
 
 	//////// manipulation functions ////////
 
-	void Move(fPixel   const fPixDelta) { m_fPixOffset -= fPixDelta; }
+	void Move(fPixel   const fPixDelta) { SetOffset(m_fPixOffset - fPixDelta); }
 	void Move(PIXEL    const pixDelta ) { Move(::Convert2fPixel(pixDelta)); }
 	void Move(LOG_UNIT const umDelta  ) { Move(Transform2fPixelSize(umDelta)); }
 
-	bool Zoom(bool const bDirection)
+	bool ZoomDir(bool const bDirection, fPixel const fPixCenter, bool const bNotify = true) 
 	{
-		bool     bResult { false };
-		LOG_UNIT logNewSize;
-		if (bDirection)
+		float const fFactor { bDirection ? 1.0f / m_fZoomFactor : m_fZoomFactor };
+		return ZoomFactor(fFactor, fPixCenter, bNotify);
+	}
+
+	bool ZoomFactor(float const fFactor, fPixel const fPixCenter, bool const bNotify = true) 
+	{
+		LOG_UNIT logNewSize { m_logPixelSize * fFactor };
+		if (IsValidPixelSize(logNewSize) )
 		{
-			logNewSize = m_logPixelSize / m_fZoomFactor;
-			if (logNewSize >= m_pixelSizeMin)
-				bResult = true;
-		}
-		else
-		{
-			logNewSize = m_logPixelSize * m_fZoomFactor;
-			if (logNewSize <= m_pixelSizeMax)
-				bResult = true;
-		}
-		if (bResult)
+			LOG_UNIT const logCenter { Transform2logUnitPos(fPixCenter) }; // compute center ** BEFORE ** zooming!
 			m_logPixelSize = logNewSize;
-		NotifyAll(true);
-		return true;
-	}
-
-	void Zoom(float const factor)
-	{
-		*this *= factor;
-	}
-
-	void Center
-	(
-		LOG_UNIT const umCenter,   
-		fPixel   const fPntPix  
-	)
-	{
-		SetPixelOffset(Transform2fPixelSize(umCenter) - fPntPix);
+			m_fPixOffset   = Transform2fPixelSize(logCenter) - fPixCenter;
+			if (bNotify)
+				NotifyAll(true);
+			return true;
+		}
+		return false;
 	}
 
 	PixFpDimension operator+= (PixFpDimension const a) 
@@ -146,17 +132,11 @@ public:
 		return (m_pixelSizeMin <= size) && (size <= m_pixelSizeMax); 
 	}
 
-	void SetPixelSize(LOG_UNIT const s) 
-	{ 
-		m_logPixelSize = s; 
-		NotifyAll(true);
-	}
-
 	void SetPixelSizeLimits(LOG_UNIT const fMin, LOG_UNIT const fMax)
 	{
 		m_pixelSizeMin = fMin;
 		m_pixelSizeMax = fMax;
-		ClipToMinMax(m_logPixelSize, fMin, fMax);
+		SetPixelSize(ClipToMinMax(m_logPixelSize, fMin, fMax));
 	}
 	
 	void SetZoomFactor(float const f) 
@@ -164,11 +144,24 @@ public:
 		m_fZoomFactor = f; 
 	};
 
-	void SetOffset(fPixel const o) 
+	void SetPixelSize(LOG_UNIT const s, bool const bNotify = true) 
+	{ 
+		m_logPixelSize = s; 
+		if (bNotify)
+			NotifyAll(true);
+	}
+
+	void SetOffset(fPixel const o, bool const bNotify = true) 
 	{
 		m_fPixOffset = o; 
-		NotifyAll(false);
+		if (bNotify)
+			NotifyAll(true);
 	}
+
+	float GetZoomFactor() const
+	{ 
+		return m_fZoomFactor; 
+	};
 
 private:
 

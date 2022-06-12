@@ -35,7 +35,7 @@ void MainWindow::Start
 	NNetController    & controller,
 	NNetModelCommands & modelCommands,
 	Observable        & cursorObservable,
-	Observable        & coordObservable,
+	Observable        & coordObservable,  
 	ActionTimer * const pActionTimer
 )
 {
@@ -159,24 +159,6 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::zoomStep(float const fFactor, fPixelPoint const fPixPointCenter)
-{
-	MicroMeter const newSize { GetCoordC().GetPixelSize() * fFactor };
-	if ( GetCoordC().IsValidPixelSize(newSize) )
-	{
-		MicroMeterPnt const umPntcenter { GetCoordC().Transform2logUnitPntPos(fPixPointCenter) }; // compute center ** BEFORE ** zooming!
-		GetDrawContext().Zoom(newSize);
-		GetDrawContext().Center(umPntcenter, fPixPointCenter);
-//		m_horzScale.SetPixelSize(newSize.GetValue());
-		if (m_pCoordObservable)
-			m_pCoordObservable->NotifyAll(false);
-	}
-	else
-	{
-		MessageBeep(MB_ICONWARNING);
-	}
-}
-
 void MainWindow::CenterModel()
 {
 	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
@@ -216,7 +198,6 @@ void MainWindow::ShowSensorPoints(bool const op)
 bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
-//	m_horzScale.SetOffset(fPixelPoint(Convert2fPixel(PIXEL(width)) * 0.1f, Convert2fPixel(PIXEL(height)) - 20._fPixel));
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
@@ -253,7 +234,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		return;
 	}
 
-	PixelPoint const ptLast = GetPtLast();
+	PixelPoint const ptLast { GetPtLast() };
 	SetPtLast(ptCrsr);
 	if (ptLast.IsNull())
 		return;
@@ -354,10 +335,11 @@ bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
 
 void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-	static float  const ZOOM_FACTOR { 1.1f };
+	static float const ZOOM_FACTOR { 1.1f };
 
-	int   const iDelta  { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-	float const fFactor { (iDelta > 0) ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
+	int   const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	bool  const bDirection { iDelta > 0 };
+	float const fFactor    { bDirection ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
 
 	if (wParam & MK_SHIFT)     // operate on selection
 	{
@@ -381,7 +363,15 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 			}
 			else
 			{
-				zoomStep(fFactor, fPixPointCrsr);
+				if (GetDrawContext().Zoom(bDirection, fPixPointCrsr))   // Not ok
+				{
+					if (m_pCoordObservable)
+						m_pCoordObservable->NotifyAll(false);
+				}
+				else
+				{
+					MessageBeep(MB_ICONWARNING);
+				}
 			}
 		}
 	}
@@ -398,13 +388,16 @@ void MainWindow::centerAndZoomRect
 	Uniform2D<MicroMeter> coordTarget;
 	coordTarget.SetPixelSize  // do not change order!
 	(
-		GetCoord().ComputeZoom(umRect.ScaleRect(NEURON_RADIUS), GetClRectSize(), fRatioFactor) 
+		GetCoord().ComputeZoom(umRect.ScaleRect(NEURON_RADIUS), GetClRectSize(), fRatioFactor),
+		false // do not notify
 	);
 	coordTarget.SetPixelOffset // do not change order! 
 	(
 		coordTarget.Transform2fPixelSize(umRect.GetCenter()) -  // SetPixelSize result is used here  
-		Convert2fPixelPoint(GetClRectCenter()) 
+		Convert2fPixelPoint(GetClRectCenter()), 
+		false // do not notify
 	);
+	coordTarget.NotifyAll(true);
 	m_pModelCommands->AnimateCoord(GetCoord(), coordTarget);
 }
 

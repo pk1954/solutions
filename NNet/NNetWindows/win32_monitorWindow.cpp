@@ -41,7 +41,7 @@ void MonitorWindow::Start
 	);
 
 	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
-	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 100000._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 1e6_MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
@@ -87,22 +87,6 @@ bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 	PIXEL const monWidth  { width  - RIGHT_BORDER  };
 	m_upMonitorControl->Move(0_PIXEL,  0_PIXEL,   width, monHeight,      true);
 	m_upHorzScale     ->Move(0_PIXEL,  monHeight, width, H_SCALE_HEIGHT, true);
-	m_horzCoord.SetOffset(Convert2fPixel(width - RIGHT_BORDER));
+	m_horzCoord.SetOffset(-Convert2fPixel(monWidth));
 	return true;
-}
-
-void MonitorWindow::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale)
-{
-	switch (auto const wId = LOWORD(wParam))
-	{
-	case SC_LBUTTONDBLCLK:
-	{
-		if (m_upMonitorControl->SignalTooHigh())
-			m_vertCoord.Zoom(m_upMonitorControl->ScaleFactor());
-	}
-	break;
-
-	default:
-		break;
-	}
 }

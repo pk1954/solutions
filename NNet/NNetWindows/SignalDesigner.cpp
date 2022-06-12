@@ -285,7 +285,7 @@ void SignalDesigner::OnScaleCommand(WPARAM const wParam, BaseScale * const pScal
 			{
 				fFactor = m_upSignalControl2->ScaleFactorVoltCoord();
 			}
-			pScale->Zoom(fFactor);
+			pScale->ZoomCoordFactor(fFactor, 0.0_fPixel);
 		}
 		break;
 
@@ -351,7 +351,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_upHorzScale2    ->Show(true);
 	}
 	
-	if ( m_bPreview )
+	if (m_bPreview)
 	{
 		m_upVertScaleVolt2->SetOrthoOffset(fPixLeftOffset);
 		m_upVertScaleVolt2->SetOrientation(true);

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <iomanip>
 #include <limits.h>
+#include "util.h"
 
 using std::wstring;
 using std::wostream;
@@ -165,6 +166,11 @@ public:
 
     bool IsNull   () const { return * this == NULL_VAL(); };
     bool IsNotNull() const { return * this != NULL_VAL(); };
+
+	bool IsInRange(auto const min, auto const max)
+	{
+		return ::IsInRange(*this, min, max);
+	}
 
 private:
     BASE_TYPE m_value;

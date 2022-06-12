@@ -10,7 +10,6 @@
 #include <limits>
 #include <vector>
 #include <streambuf>
-#include "NamedType.h"
 #include "debug.h"
 
 using std::vector;
@@ -29,8 +28,6 @@ enum class tOnOffAuto : long
 };
 
 extern bool ApplyAutoCriterion(tOnOffAuto const, VisCrit const &);
-
-using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 
 // not needed, makes strange problems 
 //template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
