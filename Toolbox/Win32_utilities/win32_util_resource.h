@@ -50,6 +50,8 @@ inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 #define IDM_MINI_WINDOW                39
 
 #define IDM_BEEP                       40
+#define IDM_SCALE_UNLOCK               41
+#define IDM_SCALE_LOCK2ZERO            42
 
 #define IDM_NEXT_SCRIPT_CMD            50
 

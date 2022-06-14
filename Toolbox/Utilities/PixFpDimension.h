@@ -61,20 +61,34 @@ public:
 	void Move(PIXEL    const pixDelta ) { Move(::Convert2fPixel(pixDelta)); }
 	void Move(LOG_UNIT const umDelta  ) { Move(Transform2fPixelSize(umDelta)); }
 
+	bool ZoomDir(bool const bDirection, LOG_UNIT const logCenter, bool const bNotify = true) 
+	{
+		return zoomFactor(calcFactor(bDirection), Transform2fPixelPos(logCenter), logCenter, bNotify);
+	}
+
 	bool ZoomDir(bool const bDirection, fPixel const fPixCenter, bool const bNotify = true) 
 	{
-		float const fFactor { bDirection ? 1.0f / m_fZoomFactor : m_fZoomFactor };
-		return ZoomFactor(fFactor, fPixCenter, bNotify);
+		return ZoomFactor(calcFactor(bDirection), fPixCenter, bNotify);
 	}
 
 	bool ZoomFactor(float const fFactor, fPixel const fPixCenter, bool const bNotify = true) 
 	{
+		return zoomFactor(fFactor, fPixCenter, Transform2logUnitPos(fPixCenter), bNotify);
+	}
+
+	bool zoomFactor
+	(
+		float    const fFactor, 
+		fPixel   const fPixCenter, 
+		LOG_UNIT const logCenter, 
+		bool     const bNotify = true
+	) 
+	{
 		LOG_UNIT logNewSize { m_logPixelSize * fFactor };
 		if (IsValidPixelSize(logNewSize) )
 		{
-			LOG_UNIT const logCenter { Transform2logUnitPos(fPixCenter) }; // compute center ** BEFORE ** zooming!
-			m_logPixelSize = logNewSize;
-			m_fPixOffset   = Transform2fPixelSize(logCenter) - fPixCenter;
+			m_logPixelSize = logNewSize;                                   // now zoom
+			m_fPixOffset   = Transform2fPixelSize(logCenter) - fPixCenter; // and fix offset
 			if (bNotify)
 				NotifyAll(true);
 			return true;
@@ -170,4 +184,9 @@ private:
 	LOG_UNIT m_pixelSizeMin {       1.0f };
 	LOG_UNIT m_pixelSizeMax {     100.0f };
 	float    m_fZoomFactor  {       1.1f };
+
+	float calcFactor(bool const bDirection) const
+	{
+		return bDirection ? 1.0f / m_fZoomFactor : m_fZoomFactor;
+	}
 };

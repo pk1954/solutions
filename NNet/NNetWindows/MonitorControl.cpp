@@ -477,7 +477,6 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 	}
 
-	//Trigger();
 	return bRes; 
 }
 
@@ -598,8 +597,7 @@ bool MonitorControl::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
 	m_fPixWinWidth = Convert2fPixel(width);
-	m_fPixZeroX    = Convert2fPixel(width) - m_fPixRightBorder;
-	//m_horzCoord.SetOffset(m_fPixZeroX);
+	m_fPixZeroX    = m_fPixWinWidth - m_fPixRightBorder;
 	m_measurement.SetClientRectSize(width, height);
 	return true;
 }

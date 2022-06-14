@@ -258,13 +258,7 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 		break;
 
 	case WM_MENUCOMMAND:
-	{
-		return OnMenuCommand
-		(
-			static_cast<UINT>(wParam), 
-			bit_cast<HMENU>(lParam)
-		);
-	}
+		return OnMenuCommand(static_cast<UINT>(wParam), bit_cast<HMENU>(lParam));
 		break;
 
 	case WM_CLOSE:

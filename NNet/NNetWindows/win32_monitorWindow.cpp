@@ -40,7 +40,7 @@ void MonitorWindow::Start
 		m_vertCoord
 	);
 
-	m_horzCoord.SetPixelSize(100.0_MicroSecs); 
+	m_horzCoord.SetPixelSize(DEFAULT_PIXEL_SIZE); 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 1e6_MicroSecs); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
@@ -48,9 +48,16 @@ void MonitorWindow::Start
 	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
 	m_upHorzScale->SetOrientation(false);
 	m_upHorzScale->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
+	m_upHorzScale->SetAllowUnlock(true);
 	m_upHorzScale->Show(true);
 
 	m_upMonitorControl->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
+}
+
+void MonitorWindow::ResetHorzCoord()
+{
+	m_horzCoord.SetPixelSize(DEFAULT_PIXEL_SIZE); 
+	m_horzCoord.SetOffset(Convert2fPixel(RIGHT_BORDER - GetClientWindowWidth()));
 }
 
 void MonitorWindow::Stop()
@@ -58,12 +65,12 @@ void MonitorWindow::Stop()
 	DestroyWindow();
 }
 
-void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI)
+void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI) const
 {
 	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
-void MonitorWindow::StimulusTriggered()
+void MonitorWindow::StimulusTriggered() const
 {
 	m_upMonitorControl->StimulusTriggered();
 }
@@ -75,6 +82,20 @@ wstring MonitorWindow::GetCaption() const
 		   : L"Monitor";
 }
 
+bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
+{
+	switch (int const wmId = LOWORD(wParam))
+	{
+	case IDM_SCALE_LOCK2ZERO:
+		ResetHorzCoord();
+		break;
+
+	default:
+		break;
+	}
+	return 0L;
+}
+
 void MonitorWindow::OnPaint()
 {
 	m_upMonitorControl->Invalidate(false);
@@ -84,9 +105,10 @@ void MonitorWindow::OnPaint()
 bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	PIXEL const monHeight { height - H_SCALE_HEIGHT };
-	PIXEL const monWidth  { width  - RIGHT_BORDER  };
+	PIXEL const monWidth  { width  - RIGHT_BORDER };
 	m_upMonitorControl->Move(0_PIXEL,  0_PIXEL,   width, monHeight,      true);
 	m_upHorzScale     ->Move(0_PIXEL,  monHeight, width, H_SCALE_HEIGHT, true);
-	m_horzCoord.SetOffset(-Convert2fPixel(monWidth));
+	if (m_upHorzScale->IsScaleLocked())
+		m_horzCoord.SetOffset(Convert2fPixel(-monWidth));
 	return true;
 }

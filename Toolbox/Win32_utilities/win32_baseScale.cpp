@@ -3,6 +3,7 @@
 // Toolbox\win32_utilities
 
 #include "stdafx.h"
+#include "win32_util_resource.h"
 #include "win32_baseScale.h"
 
 BaseScale::BaseScale
@@ -109,26 +110,6 @@ void BaseScale::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	GraphicsWindow::OnMouseMove(wParam, lParam);
 }
 
-void BaseScale::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
-{  
-	bool             bResult    { true };
-	int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-	bool       const bDirection { iDelta > 0 };
-	PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
-	PIXEL      const pixCrsr    { IsVertScale() ? ptCrsr.GetY() : ptCrsr.GetX() };
-	fPixel     const fPixCenter { m_bLock2Zero ? 0._fPixel : Convert2fPixel(pixCrsr) };
-
-	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
-	{
-		bResult = ZoomCoordDir(bDirection, fPixCenter);
-	}
-
-	if (!bResult)
-		MessageBeep(MB_ICONWARNING);
-
-	GraphicsWindow::OnMouseWheel(wParam, lParam);
-}
-
 bool BaseScale::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
 	SetCapture();
@@ -141,10 +122,43 @@ bool BaseScale::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	return false;
 }
 
+bool BaseScale::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
+{
+	switch (int const wmId = LOWORD(wParam))
+	{
+	case IDM_SCALE_UNLOCK:
+		if (m_bUnlockAllowed)
+			m_bLock2Zero = false;
+		break;
+
+	case IDM_SCALE_LOCK2ZERO:
+		if (m_bUnlockAllowed)
+			m_bLock2Zero = true;
+		SendCommand2Parent(wmId, 0);
+		break;
+
+	default:
+		break;
+	}
+	return false;
+}
+
 void BaseScale::Notify(bool const bImmediately)
 {
 	if (bImmediately)
 		UpdateImmediately();
 	else
 		GraphicsWindow::Notify(bImmediately);
+}
+
+LPARAM BaseScale::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	if (m_bUnlockAllowed)
+	{
+		if (m_bLock2Zero)
+			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_UNLOCK,    L"Unlock scale");
+		else
+			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_LOCK2ZERO, L"Lock scale");
+	}
+	return 0L; // will be forwarded to HandleContextMenuCommand
 }

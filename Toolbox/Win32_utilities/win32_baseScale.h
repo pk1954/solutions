@@ -25,7 +25,6 @@ class BaseScale : public GraphicsWindow
 public:
 	BaseScale(HWND const, bool const);
 
-	virtual bool ZoomCoordDir   (bool  const, fPixel const) = 0;
 	virtual bool ZoomCoordFactor(float const, fPixel const) = 0; 
 	virtual void MoveCoord(PIXEL const)                     = 0;
 
@@ -41,16 +40,17 @@ public:
 	void SetOrthoOffset(fPixel       const off) { m_fPixOrthoOffset = off; }
 
 	void SetOrientation(bool const);
-	void SetBlock2Zero(tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
-	bool GetBlock2Zero() const           { return m_bLock2Zero; }
+	void SetAllowUnlock(bool const b)     { m_bUnlockAllowed = b; }
+	void SetBlock2Zero (tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
+	bool IsScaleLocked() const            { return m_bLock2Zero; }
 
+	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) override;
 	void OnMouseMove      (WPARAM const, LPARAM const) override;
-	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
-	void OnMouseWheel     (WPARAM const, LPARAM const) final;
-	bool OnSize           (PIXEL  const, PIXEL  const) final;
-	bool OnLButtonDown    (WPARAM const, LPARAM const) final;
-	bool OnLButtonUp      (WPARAM const, LPARAM const) final;
-	void OnMouseLeave     () final;
+	bool OnSize           (PIXEL  const, PIXEL  const) override;
+	void OnLButtonDblClick(WPARAM const, LPARAM const) override;
+	bool OnLButtonDown    (WPARAM const, LPARAM const) override;
+	bool OnLButtonUp      (WPARAM const, LPARAM const) override;
+	void OnMouseLeave     () override;
 
 	void Notify(bool const) override;
 
@@ -77,6 +77,8 @@ private:
 	fPixel              m_fPixRightBorder { 0._fPixel };
 	fPixel              m_fPixOrthoOffset { 0._fPixel };
 	PIXEL               m_pixLast         { PIXEL::NULL_VAL() }; // Last cursor position during selection 
-	bool                m_bLock2Zero      { false };
+	bool                m_bLock2Zero      { true };
+	bool                m_bUnlockAllowed  { false };
 
+	LPARAM AddContextMenuEntries(HMENU const) override;
 };

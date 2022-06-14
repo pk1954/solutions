@@ -66,9 +66,26 @@ private:
 
 	// private functions
 
-	bool ZoomCoordDir(bool const bDirection, fPixel const fPixCenter) final
-	{
-		return m_pixCoord.ZoomDir(bDirection, fPixCenter);
+	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
+	{  
+		bool             bResult    { true };
+		int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+		bool       const bDirection { iDelta > 0 };
+		PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
+		fPixel           fPixCenter { Convert2fPixel(ptCrsr.GetX()) };
+
+		for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
+		{
+			if (IsScaleLocked())
+				bResult = m_pixCoord.ZoomDir(bDirection, LogUnits::ZERO_VAL());
+			else
+				bResult = m_pixCoord.ZoomDir(bDirection, fPixCenter);
+		}
+
+		if (!bResult)
+			MessageBeep(MB_ICONWARNING);
+
+		GraphicsWindow::OnMouseWheel(wParam, lParam);
 	}
 
 	bool ZoomCoordFactor(float const factor, fPixel const fPixCenter) final
@@ -129,11 +146,18 @@ private:
 
 		displayTicks(textBox);
 		fPixel const fPixZeroPos = m_pixCoord.Transform2fPixelPos(LogUnits(0.0f));
+		//fPixelPoint fPixPos 
+		//{ 
+		//	IsVertScale()
+		//	? fPixelPoint(0._fPixel, fPixZeroPos - 16._fPixel)
+		//	: fPixelPoint(fPixZeroPos + 10._fPixel, 0._fPixel)
+		//};
+
 		fPixelPoint fPixPos 
 		{ 
 			IsVertScale()
-			? fPixelPoint(0._fPixel, fPixZeroPos - 16._fPixel)
-			: fPixelPoint(fPixZeroPos + 10._fPixel, 0._fPixel)
+			? fPixelPoint(0._fPixel, m_fPixPntEnd.GetY() - 16._fPixel)
+			: fPixelPoint(m_fPixPntEnd.GetX() + 10._fPixel, 0._fPixel)
 		};
 
 		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit);
