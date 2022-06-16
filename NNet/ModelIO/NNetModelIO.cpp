@@ -43,6 +43,7 @@
 #include "WrapSignalInfo.h"
 #include "WrapActiveSigGen.h"
 #include "WrapSetParam.h"
+#include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
 #include "WrapCreateNob.h"
 #include "WrapVoltage.h"
@@ -72,6 +73,7 @@ void NNetModelIO::Initialize()
     m_wrapVector.push_back(make_unique<WrapCreateNob      >(L"CreateNob",       *this));
     m_wrapVector.push_back(make_unique<WrapVoltage        >(L"Voltage",         *this));
     m_wrapVector.push_back(make_unique<WrapSignalGenerator>(L"SignalGenerator", *this));
+    m_wrapVector.push_back(make_unique<WrapSetSigGen      >(L"SetSigGen",       *this));
     m_wrapVector.push_back(make_unique<WrapActiveSigGen   >(L"ActiveSigGen",    *this));
     m_wrapVector.push_back(make_unique<WrapTriggerSound   >(L"TriggerSound",    *this));
     m_wrapVector.push_back(make_unique<WrapNrOfTracks     >(L"NrOfTracks",      *this));
@@ -251,13 +253,13 @@ void NNetModelIO::writeHeader(wostream & out) const
     out << endl;
 }
 
-void NNetModelIO::compress(NNetModelWriterInterface const & nmwi)
+void NNetModelIO::compress(NNetModelReaderInterface const & nmri)
 {
-    m_CompactIds.Resize(nmwi.GetSizeOfNobList());
+    m_CompactIds.Resize(nmri.GetSizeOfNobList());
     NobId idCompact(0);
     for (int i = 0; i < m_CompactIds.Size(); ++i)
     {
-        m_CompactIds.SetAt(i, nmwi.GetConstNob(NobId(i)) ? idCompact++ : NobId());
+        m_CompactIds.SetAt(i, nmri.GetConstNob(NobId(i)) ? idCompact++ : NobId());
     }
 }
 
@@ -273,16 +275,16 @@ size_t NNetModelIO::NrOfCompactIds() const
 
 void NNetModelIO::Export
 (
-    NNetModelWriterInterface const & nmwi,
+    NNetModelReaderInterface const & nmri,
     unique_ptr<InputOutputUI>        upOutputUI
 )
 {
     HiResTimer timer;
     timer.Start();
 
-    m_pExportNMWI = & nmwi;
-    compress(nmwi);
-    wofstream modelFile(nmwi.GetModelFilePath());
+    m_pExportNMRI = & nmri;
+    compress(nmri);
+    wofstream modelFile(nmri.GetModelFilePath());
     writeHeader(modelFile);
     for (auto const & it : m_wrapVector)
     {
@@ -290,7 +292,7 @@ void NNetModelIO::Export
         it->Write(modelFile);
     }
     modelFile.close();
-    m_pExportNMWI = nullptr;
+    m_pExportNMRI = nullptr;
 
     timer.Stop();
     fMicroSecs const usTilStart { timer.GetMicroSecsTilStart() }; //for tests only

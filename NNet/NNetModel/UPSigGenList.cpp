@@ -17,7 +17,7 @@ UPSigGenList::UPSigGenList()
     SetActive(SigGenId(0));
 }
 
-UPSigGenList::~UPSigGenList() {}
+UPSigGenList::~UPSigGenList() = default;
 
 SigGenId UPSigGenList::SetActive(SigGenId const id)
 {

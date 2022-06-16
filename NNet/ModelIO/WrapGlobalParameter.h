@@ -28,7 +28,7 @@ public:
             [this, &out](ParamType::Value const & par) 
             {
                 out << L"GlobalParameter" << par << L" = "
-                    << m_modelIO.GetExportNMWI().GetParameter(par) 
+                    << m_modelIO.GetExportNMRI().GetParameter(par) 
                     << endl; 
             }
         );

@@ -43,20 +43,18 @@ public:
 
 	/// export ///
 
-	void Export(NNetModelWriterInterface const &, unique_ptr<InputOutputUI>);
+	void Export(NNetModelReaderInterface const &, unique_ptr<InputOutputUI>);
 
 	int    GetCompactIdVal(NobId const) const;
 	size_t NrOfCompactIds()             const;
 
-	NNetModelWriterInterface const & GetExportNMWI   () const { return * m_pExportNMWI; }
-  //MonitorWindow            const & GetMonitorWindow() const { return * m_pMonitorWindow; }
+	NNetModelReaderInterface const & GetExportNMRI() const { return * m_pExportNMRI; }
 
 private:
 
 	unique_ptr<InputOutputUI>            m_upImportUI;   
 	vector<unique_ptr<NNetWrapperBase>>  m_wrapVector;
 	TP_TIMER                           * m_pTpTimer { nullptr };
-	//MonitorWindow                const * m_pMonitorWindow { nullptr };
 
 	/// import ///
 
@@ -71,9 +69,9 @@ private:
 	/// export ///
 
 	NobIdList                        m_CompactIds;
-	NNetModelWriterInterface const * m_pExportNMWI { nullptr };  // valid only during export
+	NNetModelReaderInterface const * m_pExportNMRI { nullptr };  // valid only during export
 
-	void compress(NNetModelWriterInterface const &);
+	void compress(NNetModelReaderInterface const &);
 	void writeHeader(wostream &) const;
 };
 

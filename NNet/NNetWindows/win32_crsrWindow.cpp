@@ -205,7 +205,7 @@ void CrsrWindow::printSignalInfo
  	SignalId const id
 ) const
 {
-	if (Signal const * pSignal { m_pNMRI->GetConstMonitorData().GetConstSignalPtr(id) })
+	if (Signal const * pSignal { m_pNMRI->GetMonitorDataC().GetConstSignalPtr(id) })
 	{
 		textBuf.nextLine();
 		textBuf.AlignRight(); 

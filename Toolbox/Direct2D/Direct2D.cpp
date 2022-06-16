@@ -418,7 +418,9 @@ void D2D_driver::FillDiamond
 ) const
 {
 	fPixelPoint const ptOffset(fPixSize, fPixSize);
-	DrawLine(ptPos - ptOffset, ptPos + ptOffset, fPixSize * sqrtf(8.0f), colF);
+	fPixelPoint const ptStart(ptPos - ptOffset);
+	fPixelPoint const ptEnd  (ptPos + ptOffset);
+	DrawLine(ptStart, ptEnd, fPixSize * sqrtf(8.0f), colF);
 }
 
 void D2D_driver::FillBackground(D2D1::ColorF const d2dCol) const

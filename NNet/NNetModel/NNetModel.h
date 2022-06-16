@@ -7,7 +7,7 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "observable.h"
-#include "ObserverInterface.h"
+#include "observerInterface.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"

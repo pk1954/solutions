@@ -27,8 +27,8 @@ public:
 	PointType(BASE_TYPE const _b) : m_x(_b), m_y(_b) {}
 	PointType(BASE_TYPE const _x, BASE_TYPE const _y) : m_x(_x), m_y(_y) {}
 
-	bool const operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
-	bool const operator!=(PointType const & a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
+	bool      operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
+	bool      operator!=(PointType const & a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
 
     PointType operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
     PointType operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }

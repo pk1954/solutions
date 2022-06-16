@@ -128,18 +128,18 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenSelected() != m_pNMRI->GetSigGenC(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
 		}
 		else if ( m_pNMRI->IsInputConnector(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenSelected() != m_pNMRI->GetSigGenC(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
 		}
 	}
 	else  // no nob selected, cursor on background
 	{
-		if (m_pNMRI->GetSensorList().IsAnySensorSelected())
+		if (m_pNMRI->IsAnySensorSelected())
 			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
 		else
 		{
@@ -264,9 +264,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				setTargetNob();
 			}
 		}
-		else if (m_pNMRI->GetSensorList().IsAnySensorSelected())
+		else if (m_pNMRI->IsAnySensorSelected())
 		{   
-			SensorId const id { m_pNMRI->GetSensorList().GetSensorIdSelected() };
+			SensorId const id { m_pNMRI->GetSensorIdSelected() };
 			m_pModelCommands->MoveSensor(id, umDelta);
 			Notify(false); 
 		}
@@ -414,7 +414,7 @@ void MainWindow::DoPaint()
 {
 	PixelRect   const         pixRect { GetClPixelRect () };
 	DrawContext const &       context { GetDrawContextC() };
-	Sensor      const * const pSensor { m_pNMRI->GetSensorList().GetSensorSelected() };
+	Sensor      const * const pSensor { m_pNMRI->GetSensorSelectedC() };
 
 	if (m_rectSelection.IsNotEmpty())
 		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);

@@ -23,7 +23,6 @@ Signal::Signal
 ) 
     : m_dynModelObservable(observable),
       m_sigSource(sigSrc)
-//      m_timeStart(SimulationTime::Get())
 {
     m_iSourceType = SIGSRC_CIRCLE;
     m_dynModelObservable.RegisterObserver(*this);
@@ -55,7 +54,6 @@ void Signal::WriteSignalInfo(wostream & out) const
 void Signal::WriteSignalData(wostream & out) const
 {
     size_t const iLast { m_data.size() - 1 };
-    out << L" StartTime " << m_timeStart << endl;
     out << LIST_OPEN_BRACKET << m_data.size() << NR_SEPARATOR;
     for (size_t i = 0; i <= iLast; ++i)
     {
@@ -78,18 +76,18 @@ void Signal::Draw
 SIG_INDEX Signal::time2index
 (
     Param const & param,
-    fMicroSecs    usParam
+    SIMU_TIME    usSimu
 ) const
 {
-    if (usParam < m_timeStart)
+    if (usSimu < m_timeStart)
         return INVALID_SIG_INDEX;
-    fMicroSecs const timeTilStart { usParam - m_timeStart };
-    float      const fNrOfPoints  { timeTilStart / param.TimeResolution() };
-    SIG_INDEX  const index        { static_cast<SIG_INDEX>(roundf(fNrOfPoints)) };
+    fMicroSecs const usSignal    { usSimu - m_timeStart };
+    float      const fNrOfPoints { usSignal / param.TimeResolution() };
+    SIG_INDEX  const index       { static_cast<SIG_INDEX>(roundf(fNrOfPoints)) };
     return index;
 }
 
-fMicroSecs Signal::index2time
+SIMU_TIME Signal::index2time
 (
     Param     const & param,
     SIG_INDEX const   index
@@ -97,19 +95,19 @@ fMicroSecs Signal::index2time
 {
     if (index < 0)
         return 0.0_MicroSecs;
-    float      const fNrOfPoints  { static_cast<float>(index) };
-    fMicroSecs const timeTilStart { param.TimeResolution() * fNrOfPoints };
-    fMicroSecs const usResult     { timeTilStart + m_timeStart };
-    return usResult;
+    float      const fNrOfPoints { static_cast<float>(index) };
+    fMicroSecs const usSignal    { param.TimeResolution() * fNrOfPoints };
+    SIMU_TIME  const usSimu      { usSignal + m_timeStart };
+    return usSimu;
 }
 
 mV Signal::GetDataPoint
 (
-    Param      const & param,
-    fMicroSecs const   time
+    Param     const & param,
+    SIMU_TIME const   usSimu
 ) const
 {
-    SIG_INDEX index { time2index(param, time) };
+    SIG_INDEX index { time2index(param, usSimu) };
     return (index < 0)
            ? mV::NULL_VAL()
            : GetVectorValue<mV>(index, m_data);
@@ -130,13 +128,13 @@ void Signal::Notify(bool const bImmediate) // called by compute thread!
     Add(m_sigSource.GetSignalValue());
 }
 
-fMicroSecs Signal::FindNextMaximum
+SIMU_TIME Signal::FindNextMaximum
 (
-    Param      const & param,
-    fMicroSecs const   time
+    Param     const & param,
+    SIMU_TIME const   usSimu
 ) const
 {
-    SIG_INDEX index { time2index(param, time) };
+    SIG_INDEX index { time2index(param, usSimu) };
     if ((0 > index)||(index >= m_data.size()))
         index = INVALID_SIG_INDEX;
     if ((index > 0) && (m_data[index - 1] > m_data[index])) // falling values, go left

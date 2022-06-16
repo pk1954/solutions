@@ -76,7 +76,7 @@ void NNetWindow::DrawArrowsInRect
 
 void NNetWindow::DrawSensors() const
 {
-	m_pNMRI->GetConstMonitorData().Apply2AllSignalsC([this](Signal const & sig) { sig.Draw(m_context, false); });
+	m_pNMRI->GetMonitorDataC().Apply2AllSignalsC([this](Signal const & sig) { sig.Draw(m_context, false); });
 }
 
 void NNetWindow::DrawHighlightedSensor(Sensor const * const pSensor) const

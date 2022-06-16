@@ -12,10 +12,9 @@
 class AttachSigGen2LineCmd : public NNetCommand
 {
 public:
-	AttachSigGen2LineCmd(NobId const nobId)
+	explicit AttachSigGen2LineCmd(NobId const nobId)
 	  : m_inputLine(*m_pNMWI->GetNobPtr<InputLine *>(nobId)),
-		m_pSigGenOld(m_inputLine.GetSigGen()),
-		m_pSigGenNew(m_pNMWI->GetSigGenSelected())
+		m_pSigGenOld(m_inputLine.GetSigGen())
 	{}
 
 	void Do() final 
@@ -31,5 +30,5 @@ public:
 private:
 	InputLine       & m_inputLine;
 	SignalGenerator * m_pSigGenOld;
-	SignalGenerator * m_pSigGenNew;
+	SignalGenerator * m_pSigGenNew { m_pNMWI->GetSigGenSelected() };
 };

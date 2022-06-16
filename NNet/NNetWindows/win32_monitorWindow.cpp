@@ -93,7 +93,7 @@ bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	default:
 		break;
 	}
-	return 0L;
+	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }
 
 void MonitorWindow::OnPaint()

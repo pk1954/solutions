@@ -24,7 +24,7 @@ public:
 		wstring const & wstrCmdName { SymbolTable::GetSymbolName(Symbol(this)) };
 		wstring wstrLine;
 		int iLineNr = 0;
-		while (m_modelIO.GetExportNMWI().GetDescriptionLine(iLineNr++, wstrLine))
+		while (m_modelIO.GetExportNMRI().GetDescriptionLine(iLineNr++, wstrLine))
 		{
 			out << wstrCmdName << L" \"" << wstrLine << "\"" << endl;
 		}

@@ -20,10 +20,10 @@ public:
 
     void Write(wostream & out) const final 
     { 
-        NNetModelWriterInterface const & nmwi { m_modelIO.GetExportNMWI() };
-        nmwi.Apply2AllC<BaseKnot   >([this, &out](BaseKnot    const &s) { writeNob(out, s); });
-        nmwi.Apply2AllC<Pipe       >([this, &out](Pipe        const &s) { writeNob(out, s); });
-        nmwi.Apply2AllC<IoConnector>([this, &out](IoConnector const &s) { writeNob(out, s); });
+        NNetModelReaderInterface const & nmri { m_modelIO.GetExportNMRI() };
+        nmri.Apply2AllC<BaseKnot   >([this, &out](BaseKnot    const &s) { writeNob(out, s); });
+        nmri.Apply2AllC<Pipe       >([this, &out](Pipe        const &s) { writeNob(out, s); });
+        nmri.Apply2AllC<IoConnector>([this, &out](IoConnector const &s) { writeNob(out, s); });
     };
 
 private:

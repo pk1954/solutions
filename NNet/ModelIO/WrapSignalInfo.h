@@ -32,7 +32,7 @@ public:
 
     void Write(wostream & out) const final 
     {
-        MonitorData const & monitorData { m_modelIO.GetExportNMWI().GetConstMonitorData() };
+        MonitorData const & monitorData { m_modelIO.GetExportNMRI().GetMonitorDataC() };
         monitorData.Apply2AllSignalIdsC
         (
             [this, &out, &monitorData](SignalId const idSignal)

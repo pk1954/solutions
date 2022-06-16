@@ -75,6 +75,9 @@
     <ClInclude Include="WrapEEGcoordSys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WrapSetSigGen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

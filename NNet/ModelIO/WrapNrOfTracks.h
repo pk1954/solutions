@@ -21,6 +21,6 @@ public:
     void Write(wostream & out) const final 
     {
         WriteCmdName(out);
-        out << m_modelIO.GetExportNMWI().GetConstMonitorData().GetNrOfTracks() << endl;
+        out << m_modelIO.GetExportNMRI().GetMonitorDataC().GetNrOfTracks() << endl;
     };
 };

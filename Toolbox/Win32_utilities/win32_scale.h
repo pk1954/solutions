@@ -145,14 +145,6 @@ private:
 		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, GetColor());
 
 		displayTicks(textBox);
-		fPixel const fPixZeroPos = m_pixCoord.Transform2fPixelPos(LogUnits(0.0f));
-		//fPixelPoint fPixPos 
-		//{ 
-		//	IsVertScale()
-		//	? fPixelPoint(0._fPixel, fPixZeroPos - 16._fPixel)
-		//	: fPixelPoint(fPixZeroPos + 10._fPixel, 0._fPixel)
-		//};
-
 		fPixelPoint fPixPos 
 		{ 
 			IsVertScale()

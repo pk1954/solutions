@@ -21,6 +21,6 @@
 //    {
 //
 //        WriteCmdName(out);
-//  //      out << L"Nr 0 " << L"X " << m_modelIO.GetExportNMWI()
+//  //      out << L"Nr 0 " << L"X " << m_modelIO.GetExportNMRI()
 //    };
 //};

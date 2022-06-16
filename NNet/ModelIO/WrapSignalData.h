@@ -15,12 +15,13 @@ public:
     {
         SignalId   const signalId    { ScrReadSignalId(script) };
         Signal         * pSignal     { m_modelIO.GetImportNMWI().GetMonitorData().GetSignalPtr(signalId) };
-        script.ScrReadString(L"StartTime");
+                                     { script.ScrReadString(L"StartTime"); };
         fMicroSecs const umStartTime { Cast2Float(script.ScrReadFloat()) };
         pSignal->SetStartTime(umStartTime);
-        script.ScrReadSpecial(LIST_OPEN_BRACKET);
-        int const iNrOfElements { script.ScrReadInt() };
+                                     { script.ScrReadSpecial(LIST_OPEN_BRACKET); }
+        int const iNrOfElements      { script.ScrReadInt() };
         pSignal->Reserve(iNrOfElements);
+        
         script.ScrReadSpecial(NR_SEPARATOR);
         for (int iElem = 0; iElem < iNrOfElements; ++iElem)
         {
@@ -32,7 +33,7 @@ public:
 
     void Write(wostream & out) const final 
     {
-        MonitorData const & monitorData { m_modelIO.GetExportNMWI().GetConstMonitorData() };
+        MonitorData const & monitorData { m_modelIO.GetExportNMRI().GetMonitorDataC() };
         monitorData.Apply2AllSignalIdsC
         (
             [this, &out, &monitorData](SignalId const idSignal)
@@ -41,6 +42,7 @@ public:
                 {
                     WriteCmdName(out);
                     out << idSignal; 
+                    out << L" StartTime " << pSignal->GetStartTime() << endl;
                     pSignal->WriteSignalData(out);
                 }
             }

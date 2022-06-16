@@ -125,8 +125,7 @@ void NNetAppWindow::setModelInterface()
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	m_preferences      .SetModelInterface(m_pNMRI);
 	NNetWrappersSetModelInterface        (m_pNMRI);
-	Nob::SetParams(&m_pNMRI->GetParams());
-//	SimulationTime::Set();
+	Nob::SetParams(&m_pNMRI->GetParamsC());
 }
 
 void NNetAppWindow::Start(MessagePump & pump)
@@ -643,7 +642,7 @@ void NNetAppWindow::processScript() const
 void NNetAppWindow::WriteModel()
 {
 	SetCursor(m_hCrsrWait);
-	m_modelIO.Export(m_nmwi, NNetInputOutputUI::CreateNew(0));
+	m_modelIO.Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0));
 	m_appTitle.SetUnsavedChanges(false);
 	m_statusBar.ClearPart(m_statusMessagePart);
 	SetCursor(m_hCrsrArrow);

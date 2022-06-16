@@ -17,7 +17,6 @@ class AttachSigGen2SelCmd : public NNetCommand
 {
 public:
 	AttachSigGen2SelCmd()
-	  : m_pSigGenNew(m_pNMWI->GetSigGenSelected())
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<InputLine>
 		(
@@ -48,7 +47,7 @@ private:
 		SignalGenerator * pSigGen;
 	};
 	vector<SigGenAttachment> m_list;
-	SignalGenerator        * m_pSigGenNew;
+	SignalGenerator        * m_pSigGenNew { m_pNMWI->GetSigGenSelected() };
 
 	void push(Nob & nob)
 	{

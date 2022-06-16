@@ -13,10 +13,9 @@
 class AttachSigGen2ConnCmd : public NNetCommand
 {
 public:
-	AttachSigGen2ConnCmd(NobId const nobId)
+	explicit AttachSigGen2ConnCmd(NobId const nobId)
 	  : m_inputConnector(*m_pNMWI->GetNobPtr<InputConnector *>(nobId)),
-		m_pSigGenOld(m_inputConnector.GetSigGen()),
-		m_pSigGenNew(m_pNMWI->GetSigGenSelected())
+		m_pSigGenOld(m_inputConnector.GetSigGen())
 	{}
 
 	void Do() final 
@@ -30,7 +29,7 @@ public:
 	}
 
 private:
+	SignalGenerator * m_pSigGenNew { m_pNMWI->GetSigGenSelected() };
 	InputConnector  & m_inputConnector;
 	SignalGenerator * m_pSigGenOld;
-	SignalGenerator * m_pSigGenNew;
 };

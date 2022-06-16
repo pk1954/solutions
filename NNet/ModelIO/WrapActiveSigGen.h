@@ -22,6 +22,6 @@ public:
     void Write(wostream & out) const final 
     {
         WriteCmdName(out);
-        out << m_modelIO.GetExportNMWI().GetSigGenIdSelected() << endl;
+        out << m_modelIO.GetExportNMRI().GetSigGenIdSelected() << endl;
     };
 };

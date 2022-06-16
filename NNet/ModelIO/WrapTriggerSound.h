@@ -27,7 +27,7 @@ public:
 
     void Write(wostream & out) const final 
     {
-        m_modelIO.GetExportNMWI().Apply2AllC<Neuron>
+        m_modelIO.GetExportNMRI().Apply2AllC<Neuron>
         (
             [this, &out](Neuron const & neuron) 
             { 

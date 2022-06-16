@@ -123,19 +123,19 @@ SignalNr MonitorControl::findSignal
 		return signalNrRes;
 
 	fPixelPoint const fPixPtCrsr    { Convert2fPixelPoint(ptCrsr) };
-	fMicroSecs  const usTime        { - m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
+	fMicroSecs  const usSimuTime    { - m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
 	fPixel            fPixBestDelta { fPixel::MAX_VAL() };
 	m_pMonitorData->Apply2AllSignalsInTrackC
 	(
 		trackNr,
-		[this, &trackNr, &usTime, &fPixPtCrsr, &fPixBestDelta, &signalNrRes](SignalNr const signalNr)
+		[this, &trackNr, &usSimuTime, &fPixPtCrsr, &fPixBestDelta, &signalNrRes](SignalNr const signalNr)
 		{
 			SignalId idSignal { SignalId(trackNr, signalNr) };
 			if (Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) })
 			{
-				if (usTime >= pSig->GetStartTime())
+				if (usSimuTime >= pSig->GetStartTime())
 				{
-					fPixel const fPixSignal { getSignalValue(*pSig, usTime) };
+					fPixel const fPixSignal { getSignalValue(*pSig, usSimuTime) };
 					if (fPixSignal.IsNotNull())
 					{
 						fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
@@ -152,7 +152,6 @@ SignalNr MonitorControl::findSignal
 		}
 	);
 	return signalNrRes;
-//	return (fPixBestDelta <= Convert2fPixel(10_PIXEL)) ? signalNrRes : SignalNr::NULL_VAL();
 }
 
 TrackNr MonitorControl::findTrack(PIXEL const pixPosY) const
@@ -226,30 +225,24 @@ fPixel MonitorControl::calcTrackHeight() const
 	return fPixTrackHeight;
 }
 
-fPixel MonitorControl::getfPixXpos(fMicroSecs const time) const
-{
-	return m_horzCoord.Transform2fPixelPos(time - SimulationTime::Get());
-}
-
 fPixelPoint MonitorControl::calcDiamondPos() const
 {
 	fPixelPoint      fPixDiamondPos { fPP_NULL };
 	SignalId const & idSignal       { m_pMonitorData->GetHighlightedSignalId() };
+
 	if (Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) })
 	{
-		fPixel const fPixSignal { getSignalValue(*pSig, SimulationTime::Get()) };
-		if (fPixSignal.IsNotNull())
+		if (getSignalValue(*pSig, SimulationTime::Get()).IsNotNull())
 		{
 			PixelPoint const pixPointCrsr { GetRelativeCrsrPosition() };
 			fPixel     const fPixCrsrX    { Convert2fPixel(pixPointCrsr.GetX()) };
-			fMicroSecs const usScaleTime  { m_horzCoord.Transform2logUnitPos(fPixCrsrX) };
-			fMicroSecs const usAbsTime    { SimulationTime::Get() + usScaleTime };
-			if (usAbsTime >= pSig->GetStartTime())
+			fMicroSecs const usSimu       { pixel2simuTime(fPixCrsrX) };
+			if (usSimu >= pSig->GetStartTime())
 			{
-				fMicroSecs const usAbsMax   { pSig->FindNextMaximum(m_pNMWI->GetParams(), usAbsTime) };
-				fPixel     const fPixMaxX   { getfPixXpos(usAbsMax) };
+				fMicroSecs const usSimuMax  { pSig->FindNextMaximum(m_pNMWI->GetParams(), usSimu) };
+				fPixel     const fPixMaxX   { simu2pixelTime(usSimuMax) };
 				fPixel     const fPixYoff   { getSignalOffset(idSignal) };
-				fPixel     const fPixSigVal { getSignalValue(*pSig, usAbsMax) };
+				fPixel     const fPixSigVal { getSignalValue(*pSig, usSimuMax) };
 				if (fPixSigVal.IsNotNull())
 					fPixDiamondPos = fPixelPoint(fPixMaxX, fPixYoff - fPixSigVal);
 			}
@@ -261,11 +254,11 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 fPixelPoint MonitorControl::getSignalPoint
 (
 	Signal     const & signal, 
-	fMicroSecs const   time,
+	fMicroSecs const   usSimu,
 	fPixel     const   fPixYoff
 ) const
 {
-	return fPixelPoint(getfPixXpos(time), fPixYoff - getSignalValue(signal, time));
+	return fPixelPoint(simu2pixelTime(usSimu), fPixYoff - getSignalValue(signal, usSimu));
 }
 
 void MonitorControl::paintWarningRect() const
@@ -274,7 +267,7 @@ void MonitorControl::paintWarningRect() const
 	(
 		fPixelRect
 		(
-			fPixelPoint   (m_fPixZeroX, 0._fPixel),
+			fPixelPoint   (m_fPixRightLimit, 0._fPixel),
 			fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
 		), 
 		NNetColors::COL_WARNING
@@ -286,16 +279,25 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) };
 	if (pSig == nullptr)
 		return;
-	fMicroSecs const timeEnd    { SimulationTime::Get() };
-	fPixel           fPixSignal { getSignalValue(*pSig, timeEnd) };
-	if (fPixSignal.IsNull())
-		return;
 
-	fPixel     const offset    { getSignalOffset(idSignal) };
-	fMicroSecs const usVisible { m_horzCoord.Transform2logUnitPos(0._fPixel) };
-	fMicroSecs const timeStart { max(timeEnd + usVisible, pSig->GetStartTime()) };
-	D2D1::ColorF     color     { ColorF::Black };
-	fPixel           fPixWidth { 1.0_fPixel };
+	fPixel     const fPixHorzBegin { 0._fPixel };
+	fPixel     const fPixHorzEnd   { m_fPixWinWidth - m_fPixRightBorder };
+
+	fMicroSecs const usSimuBegin   { pixel2simuTime(fPixHorzBegin) };
+	fMicroSecs const usSimuEnd     { pixel2simuTime(fPixHorzEnd) };
+
+	fMicroSecs const usSimuZero    { pSig->GetStartTime() };
+	fMicroSecs const usSimuNow     { SimulationTime::Get() };
+
+	fMicroSecs const usSimuStart   { max(usSimuBegin, usSimuZero) };
+	fMicroSecs const usSimuStop    { min(usSimuEnd  , usSimuNow) };
+
+	fPixel     const fPixOffsetY   { getSignalOffset(idSignal) };
+	D2D1::ColorF     color         { ColorF::Black };
+	fPixel           fPixWidth     { 1.0_fPixel };
+
+	if (getSignalValue(*pSig, usSimuStop).IsNull())
+		return;
 
 	if (m_pMonitorData->IsSelected(idSignal) && (m_pMonitorData->GetNrOfSignals() >1)) 
 	{
@@ -305,15 +307,18 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 
 	fPixel fPixMinSignal = PaintCurve
 	(
-		[this, offset, pSig](fMicroSecs const t) { return getSignalPoint(*pSig, t, offset); },
-		timeStart, timeEnd, fPixWidth, color          
+		[this, fPixOffsetY, pSig](fMicroSecs const t) 
+		{ 
+			return getSignalPoint(*pSig, t, fPixOffsetY); 
+		},
+		usSimuStart, usSimuStop, fPixWidth, color          
 	);
 
-	fPixel fPixMaxSignal = offset - fPixMinSignal;
+	fPixel fPixMaxSignal = fPixOffsetY - fPixMinSignal;
 	if (fPixMaxSignal > m_fPixMaxSignal)
 		m_fPixMaxSignal = fPixMaxSignal;
 
-	fPixelPoint lastPoint { getSignalPoint(*pSig, SimulationTime::Get(), offset) };
+	fPixelPoint lastPoint { getSignalPoint(*pSig, usSimuNow, fPixOffsetY) };
 	m_upGraphics->FillCircle(fPixelCircle(lastPoint, 4.0_fPixel), color);
 }
 
@@ -392,10 +397,10 @@ void MonitorControl::paintStimulusMarkers() const
 	int iStimulusNr { 1 };
 	for (auto it : m_pMonitorData->GetStimulusList())
 	{
-		fPixel      const fPixX     { getfPixXpos(it) };
-		fPixelPoint const fPixStart { fPixX, 0._fPixel };
+		fPixel      const fPixX     { simu2pixelTime(it) };
+		fPixelPoint const fPixBegin { fPixX, 0._fPixel };
 		fPixelPoint const fPixEnd   { fPixX, fPixBottom };
-		m_upGraphics->DrawLine(fPixStart, fPixEnd, 1._fPixel, NNetColors::COL_STIMULUS_LINE);
+		m_upGraphics->DrawLine(fPixBegin, fPixEnd, 1._fPixel, NNetColors::COL_STIMULUS_LINE);
 		paintNumber(fPixX + 2._fPixel, 0._fPixel, iStimulusNr, NNetColors::COL_STIMULUS_LINE);
 		++iStimulusNr;
 	}
@@ -501,8 +506,8 @@ void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)
 		if (m_measurement.TrackingActive())
 		{
 			fPixel fPixNewPos { Convert2fPixel(pixCrsrPos.GetX()) };
-			if (fPixNewPos > m_fPixZeroX)
-				fPixNewPos = m_fPixZeroX;
+			if (fPixNewPos > m_fPixRightLimit)
+				fPixNewPos = m_fPixRightLimit;
 			m_measurement.MoveSelection(fPixNewPos);
 			SetCursor(m_hCrsrWE);
 		}
@@ -539,7 +544,7 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam(lParam) };
 	fPixel     const fPixCrsrX  { Convert2fPixel(pixCrsrPos.GetX()) };
-	if (fPixCrsrX > m_fPixZeroX)
+	if (fPixCrsrX > m_fPixRightLimit)
 	{
 		if (SignalTooHigh())
 			ScaleSignals();
@@ -596,8 +601,8 @@ void MonitorControl::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 bool MonitorControl::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
-	m_fPixWinWidth = Convert2fPixel(width);
-	m_fPixZeroX    = m_fPixWinWidth - m_fPixRightBorder;
+	m_fPixWinWidth   = Convert2fPixel(width);
+	m_fPixRightLimit = m_fPixWinWidth - m_fPixRightBorder;
 	m_measurement.SetClientRectSize(width, height);
 	return true;
 }

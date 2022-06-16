@@ -27,9 +27,9 @@ void MonitorData::Reset()
 		m_pHighSigObservable->NotifyAll(false);
 }
 
-void MonitorData::AddStimulus(fMicroSecs const time) 
+void MonitorData::AddStimulus(fMicroSecs const usSimuTime) 
 { 
-	m_usStimulusList.push_back(time); 
+	m_usStimulusList.push_back(usSimuTime); 
 }
 
 int MonitorData::GetNrOfTracks() const

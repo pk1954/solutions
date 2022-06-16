@@ -15,17 +15,18 @@ public:
 
     void operator() (Script & script) const final
     {
-        wstring          const name       { script.ScrReadString() };
-        SigGenStaticData const sigGenData { ScrReadSigGenStaticData(script) };
-        SigGenId         const sigGenId   { m_modelIO.GetImportNMWI().FindSigGen(name) };
-        if (m_modelIO.GetImportNMWI().IsValid(sigGenId))
+        NNetModelWriterInterface & nmwi       { m_modelIO.GetImportNMWI() };
+        wstring              const name       { script.ScrReadString() };
+        SigGenStaticData     const sigGenData { ScrReadSigGenStaticData(script) };
+        SigGenId             const sigGenId   { nmwi.FindSigGen(name) };
+        if (nmwi.IsValid(sigGenId))
         {
-            SignalGenerator * pSigGen { m_modelIO.GetImportNMWI().GetSigGen(sigGenId) };
+            SignalGenerator * pSigGen { nmwi.GetSigGen(sigGenId) };
             pSigGen->SetStaticData(sigGenData);
         }
         else
         {
-            UPSigGen upSigGen { m_modelIO.GetImportNMWI().NewSigGen(name) };
+            UPSigGen upSigGen { nmwi.NewSigGen(name) };
             upSigGen->SetStaticData(sigGenData);
             m_modelIO.GetImportNMWI().PushSigGen(move(upSigGen));
         }
@@ -33,7 +34,7 @@ public:
 
     void Write(wostream & out) const final 
     {
-        m_modelIO.GetExportNMWI().GetSigGenList().Apply2AllC
+        m_modelIO.GetExportNMRI().GetSigGenList().Apply2AllC
         (
             [this, &out](auto const & upSigGen)
             { 
@@ -43,6 +44,5 @@ public:
                     << endl;
             }
         );
-
     };
 };

@@ -15,6 +15,7 @@ using std::vector;
 using std::unique_ptr;
 
 using SIG_INDEX = long;
+using SIMU_TIME = fMicroSecs;
 
 class Param;
 class Signal;
@@ -34,16 +35,16 @@ public:
 
     void Reset();
 
-    mV         GetDataPoint   (Param const &, fMicroSecs const) const;
-    fMicroSecs FindNextMaximum(Param const &, fMicroSecs const) const;
-    void       Draw           (DrawContext const &, bool const) const;
-    void       WriteSignalInfo(wostream &)                      const;
-    void       WriteSignalData(wostream &)                      const;
+    mV        GetDataPoint   (Param const &, SIMU_TIME const) const;
+    SIMU_TIME FindNextMaximum(Param const &, SIMU_TIME const) const;
+    void      Draw           (DrawContext const &, bool const) const;
+    void      WriteSignalInfo(wostream &)                      const;
+    void      WriteSignalData(wostream &)                      const;
 
     bool Includes(MicroMeterPnt const) const;
 
-    fMicroSecs GetStartTime() const { return m_timeStart; }
-    void       SetStartTime(fMicroSecs const t)  { m_timeStart = t; }
+    SIMU_TIME GetStartTime() const { return m_timeStart; }
+    void      SetStartTime(SIMU_TIME const t) { m_timeStart = t; }
 
     void Reserve(size_t const);
     void Add(mV const);
@@ -67,10 +68,10 @@ private:
 
     Observable   & m_dynModelObservable;
     SignalSource & m_sigSource;
-    fMicroSecs     m_timeStart { SimulationTime::Get() };
+    SIMU_TIME      m_timeStart { SimulationTime::Get() };
     vector<mV>     m_data;
     int            m_iSourceType;
 
-    SIG_INDEX  time2index(Param const &, fMicroSecs) const;
-    fMicroSecs index2time(Param const &, SIG_INDEX const) const;
+    SIG_INDEX  time2index(Param const &, SIMU_TIME) const;
+    SIMU_TIME  index2time(Param const &, SIG_INDEX const) const;
 };

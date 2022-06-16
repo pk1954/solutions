@@ -32,7 +32,7 @@ void BaseScale::SetOrientation(bool const bMode)
 void BaseScale::setTextBox(fPixelRect & textBox) const
 {
 	static fPixel const TEXT_DIST2LINE { LONG_TICK + 2._fPixel };
-	static fPixel const TEXT_HORZ_EXT  { 20._fPixel };
+	static fPixel const TEXT_HORZ_EXT  { 30._fPixel };
 	static fPixel const TEXT_VERT_EXT  { 10._fPixel };
 
 	fPixel horzDist { 0._fPixel };
