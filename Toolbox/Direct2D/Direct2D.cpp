@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <array>
 #include <string.h>
 #include "d2d1.h"
 #include "dwrite.h"
@@ -10,6 +11,7 @@
 #include "PixelTypes.h"
 #include "Direct2D.h"
 
+using std::array;
 using std::wstring;
 using std::bit_cast;
 
@@ -138,13 +140,7 @@ void D2D_driver::DisplayText
 {
 	IDWriteTextFormat    * pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
 	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-	D2D1_RECT_F            d2Rect 
-	{ 
-		rect.GetLeft  ().GetValue(), 
-		rect.GetTop   ().GetValue(), 
-		rect.GetRight ().GetValue(), 
-		rect.GetBottom().GetValue() 
-	};
+	D2D1_RECT_F            d2Rect {	convertD2D(rect) };
 	m_pRenderTarget->DrawText(wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, pBrush);
 	SafeRelease(& pBrush);
 }
@@ -166,13 +162,7 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, 
 	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	m_pRenderTarget->DrawRectangle
 	(
-		D2D1_RECT_F
-		{ 
-			rect.GetLeft  ().GetValue(), 
-			rect.GetTop   ().GetValue(), 
-			rect.GetRight ().GetValue(), 
-			rect.GetBottom().GetValue() 
-		},
+		convertD2D(rect),
 		pBrush,
 		fPixWidth.GetValue(),
 		nullptr  // solid stroke
@@ -183,18 +173,22 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, 
 void D2D_driver::FillRectangle(fPixelRect const & rect, D2D1::ColorF const colF) const
 {
 	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-	m_pRenderTarget->FillRectangle
-	(
-		D2D1_RECT_F
-		{ 
-			rect.GetLeft  ().GetValue(), 
-			rect.GetTop   ().GetValue(), 
-			rect.GetRight ().GetValue(), 
-			rect.GetBottom().GetValue() 
-		},
-		pBrush 
-	);
+	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
 	SafeRelease(& pBrush);
+}
+
+ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
+(
+	D2D1::ColorF const colF1,
+	D2D1::ColorF const colF2 
+) const
+{
+	HRESULT hr;
+	ID2D1GradientStopCollection * pGradientStopColl = nullptr;
+	array<D2D1_GRADIENT_STOP,2>   gradientStops { D2D1_GRADIENT_STOP(0.0f, colF1), D2D1_GRADIENT_STOP(1.0f, colF2) };
+	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops.data(), 2, &pGradientStopColl);
+	assert(SUCCEEDED(hr));
+	return pGradientStopColl;
 }
 
 void D2D_driver::FillGradientRect
@@ -204,14 +198,9 @@ void D2D_driver::FillGradientRect
 	D2D1::ColorF const   colF2 
 ) const
 {
-	HRESULT hr;
-	ID2D1GradientStopCollection * pGradientStopColl = nullptr;
-	D2D1_GRADIENT_STOP            gradientStops[2] { { 0.0f, colF1 }, { 1.0f, colF2 } };
-	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops, 2, & pGradientStopColl);
-	assert(SUCCEEDED(hr));
-
-	ID2D1LinearGradientBrush * m_pLinearGradientBrush;
-	hr = m_pRenderTarget->CreateLinearGradientBrush
+	ID2D1GradientStopCollection * pGradientStopColl { simpleGradientStopCollection(colF1, colF2) };
+	ID2D1LinearGradientBrush    * m_pLinearGradientBrush;
+	HRESULT hr = m_pRenderTarget->CreateLinearGradientBrush
 	(
 		D2D1::LinearGradientBrushProperties
 		(D2D1::Point2F(rect.GetLeft().GetValue(), 0), D2D1::Point2F(rect.GetRight().GetValue(), 0)),
@@ -220,15 +209,8 @@ void D2D_driver::FillGradientRect
 	);
 	assert(SUCCEEDED(hr));
 
-	D2D1_RECT_F const d2dRect 
-	{ 
-		rect.GetLeft  ().GetValue(), 
-		rect.GetTop   ().GetValue(), 
-		rect.GetRight ().GetValue(), 
-		rect.GetBottom().GetValue() 
-	};
+	D2D1_RECT_F const d2dRect { convertD2D(rect) };
 	m_pRenderTarget->FillRectangle(& d2dRect, m_pLinearGradientBrush);
-
 	SafeRelease(& m_pLinearGradientBrush);
 	SafeRelease(& pGradientStopColl);
 }
@@ -240,19 +222,14 @@ void D2D_driver::FillGradientEllipse
 	D2D1::ColorF  const   colF2 
 ) const
 {
-	HRESULT hr;
-	ID2D1GradientStopCollection * pGradientStopColl { nullptr };
-	D2D1_GRADIENT_STOP            gradientStops[2]  { { 0.0f, colF1 }, { 1.0f, colF2 } };
-	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops, 2, & pGradientStopColl);
-	assert(SUCCEEDED(hr));
-
-	ID2D1RadialGradientBrush * m_pRadialGradientBrush;
-	hr = m_pRenderTarget->CreateRadialGradientBrush
+	ID2D1GradientStopCollection * pGradientStopColl { simpleGradientStopCollection(colF1, colF2) };
+	ID2D1RadialGradientBrush    * m_pRadialGradientBrush;
+	HRESULT hr = m_pRenderTarget->CreateRadialGradientBrush
 	(
 		D2D1::RadialGradientBrushProperties
 		(
-			D2D1::Point2F(fPE.GetPos().GetXvalue(), fPE.GetPos().GetYvalue()), 
-			D2D1::Point2F(0, 0), 
+			convertD2D(fPE.GetPos()),
+			convertD2D(fPP_ZERO),
 			fPE.GetRadiusX().GetValue(), 
 			fPE.GetRadiusY().GetValue() 
 		),
@@ -287,15 +264,7 @@ void D2D_driver::DrawLine
 ) const
 {
 	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-
-	m_pRenderTarget->DrawLine
-	(
-		D2D1_POINT_2F{ fpp1.GetXvalue(), fpp1.GetYvalue() }, 
-		D2D1_POINT_2F{ fpp2.GetXvalue(), fpp2.GetYvalue() },
-		pBrush,
-		fpixWidth.GetValue()
-	);
-
+	DrawLine(fpp1, fpp2, fpixWidth, pBrush);
 	SafeRelease(& pBrush);
 }
 
@@ -307,13 +276,7 @@ void D2D_driver::DrawLine
 	ID2D1SolidColorBrush * pBrush
 ) const
 {
-	m_pRenderTarget->DrawLine
-	(
-		D2D1_POINT_2F{ fpp1.GetXvalue(), fpp1.GetYvalue() }, 
-		D2D1_POINT_2F{ fpp2.GetXvalue(), fpp2.GetYvalue() },
-		pBrush,
-		fpixWidth.GetValue()
-	);
+	m_pRenderTarget->DrawLine(convertD2D(fpp1), convertD2D(fpp2), pBrush, fpixWidth.GetValue());
 }
 
 void D2D_driver::FillCircle
@@ -439,6 +402,17 @@ ID2D1SolidColorBrush * D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 D2D1_POINT_2F convertD2D(fPixelPoint const & fPP)
 {
 	return D2D1_POINT_2F{ fPP.GetXvalue(), fPP.GetYvalue() }; 
+}
+
+D2D1_RECT_F convertD2D(fPixelRect const & rect)
+{
+	return D2D1_RECT_F
+	{ 
+		rect.GetLeft  ().GetValue(), 
+		rect.GetTop   ().GetValue(), 
+		rect.GetRight ().GetValue(), 
+		rect.GetBottom().GetValue() 
+	};
 }
 
 D2D1_ELLIPSE convertD2D(fPixelEllipse const & fPE)

@@ -22,6 +22,7 @@ inline void SafeRelease(auto **ppInterfaceToRelease)
 }
 
 D2D1_POINT_2F convertD2D(fPixelPoint   const &);
+D2D1_RECT_F   convertD2D(fPixelRect    const &);
 D2D1_ELLIPSE  convertD2D(fPixelEllipse const &);
 
 class D2D_driver
@@ -74,6 +75,8 @@ private:
 
     void createResources();
     void discardResources();
+    
+    ID2D1GradientStopCollection * simpleGradientStopCollection(D2D1::ColorF const, D2D1::ColorF const) const;
 
     friend D2D1_POINT_2F convertD2D(fPixelPoint   const &);
     friend D2D1_ELLIPSE  convertD2D(fPixelEllipse const &);

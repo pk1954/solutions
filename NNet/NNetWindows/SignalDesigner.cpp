@@ -239,6 +239,7 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDM_TRIGGER_STIMULUS:
 		m_pNMWI->GetSigGenSelected()->StartStimulus();
+		SendCommand2Application(IDM_TRIGGER_STIMULUS, 0);
 		return true;
 
 	default:
