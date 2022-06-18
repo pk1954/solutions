@@ -36,6 +36,7 @@ public:
 	void CheckTracks() const;  // for debugging
 
 	void Reset();
+	void ClearDynamicData();
 
 	int  GetNrOfTracks() const;
 	bool NoTracks     () const;

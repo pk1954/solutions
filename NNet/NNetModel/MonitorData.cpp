@@ -20,11 +20,16 @@ bool MonitorData::operator==(MonitorData const & rhs) const
 
 void MonitorData::Reset()
 {
-	m_usStimulusList.clear();
 	m_tracks.clear();
 	m_idSigHighlighted.Set2Null();
 	if (m_pHighSigObservable)
 		m_pHighSigObservable->NotifyAll(false);
+}
+
+void MonitorData::ClearDynamicData() 
+{ 
+	m_usStimulusList.clear();
+	Apply2AllSignals([](Signal & s) { s.Reset(); });
 }
 
 void MonitorData::AddStimulus(fMicroSecs const usSimuTime) 
