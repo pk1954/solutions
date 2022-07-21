@@ -5,13 +5,14 @@
 #pragma once
 
 #include <string>
-#include "BoolOp.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "IoLine.h"
 #include "NobId.h"
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
+
+import BoolOp;
 
 class Pipe;
 class BaseKnot;

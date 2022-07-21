@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)Direct2D;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <AllProjectBMIsArePublic>false</AllProjectBMIsArePublic>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -276,6 +277,11 @@
     <ClCompile Include="UPNobList.cpp" />
     <ClCompile Include="UPSensorList.cpp" />
     <ClCompile Include="UPSigGenList.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,7 +5,8 @@
 #pragma once
 
 #include "PixelTypes.h"
-#include "BoolOp.h"
+
+import BoolOp;
 
 class Script;
 

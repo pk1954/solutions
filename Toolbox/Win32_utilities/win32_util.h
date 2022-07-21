@@ -7,11 +7,12 @@
 #include "Windows.h"
 #include "NamedType.h"
 #include "PixelTypes.h"
-#include "BoolOp.h"
 
 #include <string>
 #include <sstream>
 #include <iostream>
+
+import BoolOp;
 
 using std::wostringstream;
 using std::wostream;

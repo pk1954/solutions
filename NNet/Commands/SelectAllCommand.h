@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "BoolOp.h"
 #include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 

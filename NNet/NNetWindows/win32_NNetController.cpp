@@ -6,7 +6,6 @@
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
-#include "BoolOp.h"
 #include "Analyzer.h"
 #include "observable.h"
 #include "Preferences.h"

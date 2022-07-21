@@ -101,6 +101,7 @@
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalBMIDirectories>$(SolutionDir)\..\Toolbox\Utilities;%(AdditionalBMIDirectories)</AdditionalBMIDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,6 +161,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <AdditionalBMIDirectories>$(SolutionDir)\..\Toolbox\Utilities;%(AdditionalBMIDirectories)</AdditionalBMIDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -190,6 +192,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NNetSimuWindows.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

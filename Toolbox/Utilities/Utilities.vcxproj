@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
-    <ClInclude Include="BoolOp.h" />
     <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="DisplayFunctor.h" />
@@ -61,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
-    <ClCompile Include="BoolOp.cpp" />
+    <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="observerInterface.cpp" />

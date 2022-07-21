@@ -11,6 +11,8 @@
 #include "Spike.h"
 #include "BaseKnot.h"
 
+import BoolOp;
+
 class DrawContext;
 class IoLine;
 class Pipe;

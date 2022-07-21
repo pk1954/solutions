@@ -5,7 +5,6 @@
 #pragma once
 
 #include <string>
-#include "BoolOp.h"
 #include "Uniform2D.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
@@ -15,6 +14,8 @@
 #include "IoLine.h"
 #include "NobType.h"
 #include "NobId.h"
+
+import BoolOp;
 
 class Param;
 class NNetCommand;

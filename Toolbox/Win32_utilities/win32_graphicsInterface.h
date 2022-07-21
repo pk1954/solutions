@@ -6,8 +6,9 @@
 
 #include <string.h>
 #include "windows.h"
-#include "BoolOp.h"
 #include "PixelTypes.h"
+
+import BoolOp;
 
 using COLORREF = unsigned long;
 

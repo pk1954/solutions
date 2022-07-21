@@ -14,6 +14,8 @@
 
 #include "trace.h"
 
+import BoolOp;
+
 unique_ptr<NNetAppWindow> upApp;
 
 int APIENTRY wWinMain

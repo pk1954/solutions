@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "BoolOp.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "SelectionCommand.h"
 #include "BaseKnot.h"
+
+import BoolOp;
 
 class SelectNobCommand : public SelectionCommand
 {

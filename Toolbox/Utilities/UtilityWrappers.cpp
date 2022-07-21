@@ -7,8 +7,9 @@
 #include "SCRIPT.H"
 #include "SYMTAB.H"
 #include "trace.h"
-#include "BoolOp.h"
 #include "UtilityWrappers.h"
+
+import BoolOp;
 
 PIXEL ScrReadPixel(Script & script)
 {
