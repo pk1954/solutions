@@ -5,11 +5,12 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "observerInterface.h"
 #include "SignalSource.h"
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
+
+import ObserverInterface;
 
 class Param;
 class UPSigGenList;

@@ -4,13 +4,14 @@
 
 #pragma once
 
-#include "ObserverInterface.h"
 #include "win32_NNetAppMenu.h"
+
+import ObserverInterface;
 
 class UndoRedoMenu : public ObserverInterface
 {
 public:
-	virtual ~UndoRedoMenu() {}
+	virtual ~UndoRedoMenu() = default;
 
 	inline void Start(NNetAppMenu * const pAppMenu)
 	{

@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "observerInterface.h"
 #include "win32_NNetWindow.h"
+
+import ObserverInterface;
 
 class MiniWindow : public NNetWindow
 {

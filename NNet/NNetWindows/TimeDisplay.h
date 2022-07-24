@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "observerInterface.h"
 #include "win32_baseRefreshRate.h"
+
+import ObserverInterface;
 
 class StatusBar;
 

@@ -6,10 +6,11 @@
 
 #include <vector>
 #include <math.h>    
-#include "observerInterface.h"
 #include "MoreTypes.h"
 #include "SimulationTime.h"
 #include "NNetParameters.h"
+
+import ObserverInterface;
 
 using std::vector;
 using std::unique_ptr;

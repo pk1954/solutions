@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "observerInterface.h"
 #include "win32_hiResTimer.h"
 #include "win32_thread.h"
+
+import ObserverInterface;
 
 class NNetModel;
 class Observable;

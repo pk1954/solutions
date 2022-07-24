@@ -6,8 +6,8 @@
 
 #include <string>
 #include "win32_util.h"
-#include "observerInterface.h"
 
+import ObserverInterface;
 
 using std::wstring;
 using std::unique_ptr;

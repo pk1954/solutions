@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "observerInterface.h"
 #include "ViewCollection.h"
+
+import ObserverInterface;
 
 class Observable
 {

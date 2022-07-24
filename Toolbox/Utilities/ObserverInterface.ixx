@@ -1,8 +1,6 @@
-// observerInterface.h : 
+// ObserverInterface.ixx : 
 //
 // Utilities
-
-#pragma once
 
 // Observers need a way to be notified, if the object they observe has changed
 // They have to implement the pure virtual function "Notify" for this purpose
@@ -14,10 +12,12 @@
 // E.g. changes happening with high frequence should be notified with "false"
 // so that the observer has a change to process the changes in longer intervalls
 
-class ObserverInterface
+export module ObserverInterface;
+
+export class ObserverInterface
 {
 public:
-    virtual ~ObserverInterface();
+    virtual ~ObserverInterface() = default;
 
     virtual void Notify(bool const) = 0;
 };

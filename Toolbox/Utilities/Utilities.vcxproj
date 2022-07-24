@@ -37,7 +37,6 @@
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />
-    <ClInclude Include="observerInterface.h" />
     <ClInclude Include="PixFpDimension.h" />
     <ClInclude Include="Uniform2D.h" />
     <ClInclude Include="PixelTypes.h" />
@@ -63,7 +62,9 @@
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
-    <ClCompile Include="observerInterface.cpp" />
+    <ClCompile Include="Observable.ixx" />
+    <ClCompile Include="ObserverInterface.cpp" />
+    <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="trace.cpp" />

@@ -27,7 +27,6 @@
 #include "UndoRedoMenu.h"
 #include "win32_baseWindow.h"
 #include "NNetCommand.h"
-#include "observerInterface.h"
 #include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"
 #include "NNetInputOutputUI.h"
@@ -57,6 +56,8 @@
 #include "SimulationTime.h"
 #include "InputConnector.h"
 #include "win32_NNetAppWindow.h"
+
+import ObserverInterface;
 
 using std::wcout;
 using std::wstring;

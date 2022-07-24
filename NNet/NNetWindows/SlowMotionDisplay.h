@@ -2,9 +2,7 @@
 //
 // NNetSimu
 
-#pragma once
-
-#include "observerInterface.h"
+import ObserverInterface;
 
 class StatusBar;
 class SlowMotionRatio;

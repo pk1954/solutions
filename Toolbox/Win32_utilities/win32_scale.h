@@ -7,7 +7,6 @@
 #include <string> 
 #include <sstream> 
 #include "util.h"
-#include "observerInterface.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"
@@ -16,6 +15,8 @@
 #include "win32_baseScale.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsWindow.h"
+
+import ObserverInterface;
 
 using std::fixed;
 using std::setprecision;

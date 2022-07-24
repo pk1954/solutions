@@ -9,9 +9,10 @@
 #include "windowsx.h"
 #include "CommCtrl.h"
 #include "PixelTypes.h"
-#include "observerInterface.h"
 #include "win32_tooltip.h"
 #include "win32_util.h"
+
+import ObserverInterface;
 
 using std::chrono::milliseconds;
 using std::wostringstream;

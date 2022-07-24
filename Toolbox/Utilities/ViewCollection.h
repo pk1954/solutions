@@ -7,7 +7,8 @@
 #include <assert.h>
 #include <algorithm>
 #include <vector>
-#include "observerInterface.h"
+
+import ObserverInterface;
 
 using std::vector;
 using std::ranges::count;

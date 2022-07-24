@@ -7,7 +7,6 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "observable.h"
-#include "observerInterface.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
@@ -16,6 +15,8 @@
 #include "MonitorData.h"
 #include "UPNobList.h"
 #include "Pipe.h"
+
+import ObserverInterface;
 
 using std::unique_ptr;
 using std::move;

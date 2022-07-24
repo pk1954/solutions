@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include "observerInterface.h"
 #include "win32_util_resource.h"
 #include "win32_util.h"
 #include "NNetModelReaderInterface.h"
+
+import ObserverInterface;
 
 class AppTitle : public ObserverInterface
 {

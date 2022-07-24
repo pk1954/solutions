@@ -36,9 +36,6 @@
     <ClInclude Include="observable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="observerInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Uniform2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,10 +146,16 @@
     <ClCompile Include="MeanFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="observerInterface.cpp">
+    <ClCompile Include="ObserverInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BoolOp.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Observable.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObserverInterface.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
