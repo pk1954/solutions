@@ -11,8 +11,9 @@
 #include "NobId.h"
 #include "NNetModel.h"
 #include "Pipe.h"
-#include "SoundInterface.h"
 #include "tHighlightType.h"
+
+import SoundInterface;
 
 class Nob;
 

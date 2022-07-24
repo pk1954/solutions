@@ -8,7 +8,6 @@
 #include "SYMTAB.H"
 #include "NobType.h"
 #include "NobIdList.h"
-#include "SoundInterface.h"
 #include "win32_util.h"
 #include "UtilityWrappers.h"
 #include "DrawContext.h"
@@ -17,6 +16,8 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelCommands.h"
+
+import SoundInterface;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

@@ -6,12 +6,12 @@
 
 #include <chrono>
 #include "MoreTypes.h"
-#include "SoundInterface.h"
 #include "tHighlightType.h"
 #include "Spike.h"
 #include "BaseKnot.h"
 
 import BoolOp;
+import SoundInterface;
 
 class DrawContext;
 class IoLine;

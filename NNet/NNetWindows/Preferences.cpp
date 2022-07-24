@@ -9,7 +9,6 @@
 #include "ERRHNDL.H"
 #include "Resource.h"
 #include "AutoOpen.h"
-#include "SoundInterface.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
@@ -21,6 +20,8 @@
 #include "win32_script.h"
 #include "win32_util.h"
 #include "Preferences.h"
+
+import SoundInterface;
 
 using std::wofstream;
 using std::wcout;

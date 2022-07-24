@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "SoundInterface.h"
 #include "win32_thread.h"
 #include "win32_util_resource.h"
+
+import SoundInterface;
 
 class BeeperThread: public Util::Thread
 {

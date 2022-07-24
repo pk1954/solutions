@@ -1,6 +1,8 @@
-// SoundInterface.h
+// SoundInterface.ixx
 //
 // Toolbox\Utilities
+
+module;
 
 #pragma once
 
@@ -8,16 +10,18 @@
 #include "MoreTypes.h"
 #include "observable.h"
 
+export module SoundInterface;
+
 using std::wstring;
 
-struct SoundDescr
+export struct SoundDescr
 {
 	bool      m_bOn       { false };
 	Hertz     m_frequency { 0_Hertz };      
 	MilliSecs m_duration  { 0_MilliSecs };
 };
 
-class Sound
+export class Sound
 {
 public:
 	virtual ~Sound() = default;

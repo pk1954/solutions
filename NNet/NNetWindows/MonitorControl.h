@@ -11,8 +11,9 @@
 #include "Measurement.h"
 #include "Track.h"
 #include "TrackNr.h"
-#include "SoundInterface.h"
 #include "TimeGraph.h"
+
+import SoundInterface;
 
 class MonitorData;
 class NNetModelCommands;

@@ -10,12 +10,13 @@
 #include "AutoOpen.h"
 #include "SignalDesigner.h"
 #include "SignalGenerator.h"
-#include "SoundInterface.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
 #include "win32_MainWindow.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
+
+import SoundInterface;
 
 using std::make_unique;
 

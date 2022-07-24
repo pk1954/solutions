@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "SoundInterface.h"
 #include "win32_stdDialogBox.h"
+
+import SoundInterface;
 
 class TriggerSoundDialog : public StdDialogBox
 {

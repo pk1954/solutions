@@ -5,10 +5,11 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "SoundInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
 #include "Neuron.h"
+
+import SoundInterface;
 
 class SetTriggerSoundCommand : public NNetCommand
 {

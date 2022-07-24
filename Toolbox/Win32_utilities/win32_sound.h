@@ -8,7 +8,8 @@
 #include "Windows.h"
 #include "MoreTypes.h"
 #include "mmsystem.h"
-#include "SoundInterface.h"
+
+import SoundInterface;
 
 using std::wstring;
 
