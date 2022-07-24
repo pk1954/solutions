@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <string>
+#include <iostream>
+
 class NNetModelReaderInterface;
 class NNetModelCommands;
 class WinCommands;

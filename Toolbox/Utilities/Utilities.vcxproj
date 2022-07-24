@@ -22,7 +22,6 @@
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />
-    <ClInclude Include="DisplayFunctor.h" />
     <ClInclude Include="EllipseType.h" />
     <ClInclude Include="EnumArray.h" />
     <ClInclude Include="EventInterface.h" />
@@ -60,10 +59,10 @@
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BoolOp.ixx" />
+    <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="Observable.ixx" />
-    <ClCompile Include="ObserverInterface.cpp" />
     <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="TextBuffer.cpp" />

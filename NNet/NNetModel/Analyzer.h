@@ -9,7 +9,8 @@
 #include <string>
 #include <vector>
 #include "NNetModel.h"
-#include "DisplayFunctor.h"
+
+import DisplayFunctor;
 
 class Knot;
 class Nob;

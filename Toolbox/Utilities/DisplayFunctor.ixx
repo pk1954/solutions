@@ -2,11 +2,15 @@
 //
 // Utilities
 
+module;
+
 #pragma once
 
 #include <string>
 
-class DisplayFunctor
+export module DisplayFunctor;
+
+export class DisplayFunctor
 {
 public:
 	virtual ~DisplayFunctor() = default;

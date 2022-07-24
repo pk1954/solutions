@@ -87,9 +87,6 @@
     <ClInclude Include="SmoothMoveFp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayFunctor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LineType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -146,9 +143,6 @@
     <ClCompile Include="MeanFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObserverInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoolOp.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -156,6 +150,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ObserverInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayFunctor.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

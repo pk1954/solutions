@@ -14,7 +14,6 @@
 #include "ComputeThread.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
-#include "DisplayFunctor.h"
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
@@ -42,6 +41,8 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
+
+import DisplayFunctor;
 
 class ReadModelResult;
 class MessagePump;
