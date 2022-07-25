@@ -8,7 +8,8 @@
           
 #include <map>
 #include <assert.h>
-#include "SCRIPT.H"
+
+class ScriptFunctor;
 
 using std::map;
 
