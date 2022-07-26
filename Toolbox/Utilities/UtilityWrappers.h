@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "SCRIPT.H"
+#include "Script.h"
 #include "PixelTypes.h"
 
 import BoolOp;

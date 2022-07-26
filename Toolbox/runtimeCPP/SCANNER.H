@@ -1,7 +1,7 @@
 //                                                                         
-//  File:     SCANNER.H                                                    
+//  File:     Scanner.h                                                    
 //                                                                         
-// scanner.h - interface for scanner
+// Scanner.h - interface for scanner
 //
 
 #pragma once

@@ -4,8 +4,8 @@
 
 #include "stdafx.h"
 #include <fstream>
-#include "SCRIPT.H"
-#include "SYMTAB.H"
+#include "Script.h"
+#include "Symtab.h"
 #include "UtilityWrappers.h"
 #include "win32_util.h"
 #include "win32_winManager.h"

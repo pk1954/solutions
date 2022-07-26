@@ -1,7 +1,7 @@
 //                                                                         
-//  File:     SYMTAB.H                                                     
+// File:     Symtab.h                                                     
 //                                                                         
-// symtab.h - interface of symbol table 
+// interface of symbol table 
 //
 
 #pragma once

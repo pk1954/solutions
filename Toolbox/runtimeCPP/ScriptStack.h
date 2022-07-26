@@ -5,7 +5,7 @@
 #pragma once
 
 #include <stack>
-#include "SCRIPT.H"
+#include "Script.h"
 
 using std::unique_ptr;
 using std::make_unique;

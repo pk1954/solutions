@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include <filesystem>
 #include <assert.h>
-#include "ERRHNDL.H"
-#include "SCANNER.H"
+#include "ErrHndl.h"
+#include "Scanner.h"
 #include "MoreTypes.h"
 #include "Signal.h"
 #include "SignalFactory.h"

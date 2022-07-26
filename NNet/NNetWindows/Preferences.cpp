@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include <filesystem>
 #include <iostream>
-#include "SCRIPT.H"
-#include "ERRHNDL.H"
+#include "Script.h"
+#include "ErrHndl.h"
 #include "Resource.h"
 #include "AutoOpen.h"
 #include "NNetModelIO.h"

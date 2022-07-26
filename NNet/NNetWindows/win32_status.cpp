@@ -3,7 +3,7 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "SCRIPT.H"
+#include "Script.h"
 #include "Resource.h"
 #include "win32_tooltip.h"
 #include "win32_status.h"

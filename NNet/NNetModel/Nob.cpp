@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "SCANNER.H"
+#include "Scanner.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Nob.h"

@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include <map>
 #include <assert.h>
-#include "ERRHNDL.H"
-#include "SYMTAB.H"
+#include "ErrHndl.h"
+#include "Symtab.h"
 
 bool Symbol::operator< (const Symbol & rhs) const
 {
@@ -59,8 +59,8 @@ wstring const & SymbolTable::GetSymbolName(Symbol const & symbol)
 
 void SymbolTable::addSymbol(wstring const & wstrName, Symbol const & sym)
 {
-    m_SymbolTab[ wstrName ] = sym;
-    m_ReverseTab[ sym ] = wstrName;
+    m_SymbolTab[wstrName] = sym;
+    m_ReverseTab[sym] = wstrName;
 }
 
 void SymbolTable::ScrDefConst(wstring const & wstrName, ScriptFunctor const * const pFunc)

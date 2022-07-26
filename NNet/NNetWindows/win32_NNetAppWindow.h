@@ -6,7 +6,7 @@
 
 #include <fstream>
 #include <iostream>
-#include "SCRIPT.H"
+#include "Script.h"
 #include "ScriptStack.h"
 #include "NNetModel.h"
 #include "Preferences.h"

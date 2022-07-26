@@ -6,7 +6,7 @@
 
 #include <string>
 #include <unordered_map>
-#include "ERRHNDL.H"
+#include "ErrHndl.h"
 #include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"

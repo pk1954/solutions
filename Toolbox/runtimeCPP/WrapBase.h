@@ -5,7 +5,7 @@
 #pragma once
 
 #include <string>
-#include "SYMTAB.H"
+#include "Symtab.h"
 
 using std::wostream;
 using std::wstring;
@@ -14,6 +14,8 @@ using std::endl;
 class WrapBase : public ScriptFunctor
 {
 public:
+    virtual ~WrapBase() = default;
+
     explicit WrapBase(wstring const & wstrName)
     {
         SymbolTable::ScrDefConst(wstrName, this);

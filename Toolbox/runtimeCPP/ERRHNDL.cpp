@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "scanner.h"
-#include "ERRHNDL.H"
+#include "Scanner.h"
+#include "ErrHndl.h"
 
 using std::wstring;
 using std::wostream;

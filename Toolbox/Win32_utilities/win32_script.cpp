@@ -10,7 +10,7 @@
 #include <string> 
 #include <vector>
 #include "pathcch.h"
-#include "SCRIPT.H"
+#include "Script.h"
 #include "win32_script.h"
 
 using std::wcout;

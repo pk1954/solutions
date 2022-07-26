@@ -27,16 +27,16 @@
     <ClInclude Include="Input.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="SCANNER.H">
+    <ClInclude Include="Scanner.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="SCRIPT.H">
+    <ClInclude Include="Script.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="SYMTAB.H">
+    <ClInclude Include="Symtab.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ERRHNDL.H">
+    <ClInclude Include="ErrHndl.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="ScriptStack.h">
@@ -53,16 +53,16 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ERRHNDL.cpp">
+    <ClCompile Include="ErrHndl.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="INPUT.cpp">
+    <ClCompile Include="Input.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="SCRIPT.cpp">
+    <ClCompile Include="Script.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="SCRSCAN.cpp">
+    <ClCompile Include="ScrScan.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="symtab.cpp">

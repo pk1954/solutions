@@ -1,19 +1,19 @@
 //                                                                 
-//  File:     SCRIPT.H                                  
+// File:     Script.h                                  
 //                                   
 //
-// script.h - interface for runtime package of TESTTOOL
+// interface for runtime package of TESTTOOL
 //
 
 #pragma once
 
 #include <string>
-#include "SCANNER.H"
+#include "Scanner.h"
 #include "ScriptFunctor.h"
 
 using std::wstring;
 
-#define DEF_FUNC(name)        SymbolTable::ScrDefConst(L#name, new Wrap##name)
+#define DEF_FUNC(name)        SymbolTable::ScrDefConst(L#name, new Wrap##name)   
 #define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst(L#name, static_cast<unsigned long>(name))
 
 class Script

@@ -11,7 +11,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include "Input.h"
-#include "ERRHNDL.H"
+#include "ErrHndl.h"
 #include "ScriptFunctor.h"
 
 InputBuffer::InputBuffer() 

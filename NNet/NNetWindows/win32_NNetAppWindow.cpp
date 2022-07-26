@@ -34,7 +34,7 @@
 // scripting and tracing
 
 #include "trace.h"
-#include "SCRIPT.H"
+#include "Script.h"
 #include "Preferences.h"
 #include "NNetWrappers.h"
 #include "NobException.h"

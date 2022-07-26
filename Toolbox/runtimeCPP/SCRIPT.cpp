@@ -13,10 +13,10 @@
 #include <string.h>
 #include <assert.h>
 #include "util.h"
-#include "SCANNER.H"
-#include "ERRHNDL.H"
-#include "SCRIPT.H"
-#include "SYMTAB.H"
+#include "Scanner.h"
+#include "ErrHndl.h"
+#include "Script.h"
+#include "Symtab.h"
 
 using std::endl;
 using std::numeric_limits;

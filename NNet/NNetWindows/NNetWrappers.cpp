@@ -4,8 +4,8 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "ERRHNDL.H"
-#include "SYMTAB.H"
+#include "ErrHndl.h"
+#include "Symtab.h"
 #include "NobType.h"
 #include "NobIdList.h"
 #include "win32_util.h"
@@ -420,8 +420,8 @@ void InitializeNNetWrappers
     NNetModelIO       * const pModelIO
 )
 {
-    m_pCommands      = pCommands;
-    m_pModelIO = pModelIO;
+    m_pCommands = pCommands;
+    m_pModelIO  = pModelIO;
 
     DEF_FUNC(AddModel);
     DEF_FUNC(AddSignal);

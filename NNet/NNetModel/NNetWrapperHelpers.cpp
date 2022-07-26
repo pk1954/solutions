@@ -3,8 +3,8 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "ERRHNDL.H"
-#include "SCRIPT.H"
+#include "ErrHndl.h"
+#include "Script.h"
 #include "IoConstants.h"
 #include "NobId.h"
 #include "UtilityWrappers.h"

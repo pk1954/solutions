@@ -6,7 +6,7 @@
 
 #include "win32_status.h"
 #include "ScriptStack.h"
-#include "SCRIPT.H"
+#include "Script.h"
 
 using std::to_wstring;
 

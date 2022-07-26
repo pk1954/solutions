@@ -1,8 +1,8 @@
 //                                                                        
-//  File:     SCRSCAN.C                                                    
+// File:     ScrScan.cpp                                                    
 //                                                                         
 //
-// scrscan.c - scanner for test script 
+// scanner for test script 
 //
 
 #include "stdafx.h"
@@ -10,8 +10,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "ERRHNDL.H"
-#include "SCANNER.H"
+#include "ErrHndl.h"
+#include "Scanner.h"
 #include "Input.h"
                   
 #define IS_ONE_OF(S,C)  (((C)!=L'\0')&&(wcschr((S),static_cast<int>(C))!=nullptr))

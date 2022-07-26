@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include <iomanip>
 #include <time.h>
-#include "SCRIPT.H"
+#include "Script.h"
 #include "win32_util.h"
 
 using std::wostream;

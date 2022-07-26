@@ -4,8 +4,8 @@
 
 #include "stdafx.h"
 #include <assert.h>
-#include "SCRIPT.H"
-#include "SYMTAB.H"
+#include "Script.h"
+#include "Symtab.h"
 #include "trace.h"
 #include "UtilityWrappers.h"
 

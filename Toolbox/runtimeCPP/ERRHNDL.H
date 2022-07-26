@@ -1,16 +1,15 @@
 //                                                                        
-//  File:     ERRHNDL.H                             
+// File:     ErrHndl.h                             
 //                                                                    
 //
-// errhndl.h - interface for errhndl.c
-//
+// interface for runtime lib error handler
 //
 
 #pragma once
 
 #include <string>
 #include <exception>
-#include "SCANNER.H"
+#include "Scanner.h"
 
 using std::wcout;
 using std::wstring;

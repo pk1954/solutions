@@ -5,7 +5,7 @@
 #pragma once
 
 #include <iostream>
-#include "SCRIPT.H"
+#include "Script.h"
 
 using std::wostream;
 

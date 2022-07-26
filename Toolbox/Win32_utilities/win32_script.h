@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 #include <ShObjIdl.h> 
-#include "SYMTAB.H"
+#include "Symtab.h"
 
 using std::wstring;
 

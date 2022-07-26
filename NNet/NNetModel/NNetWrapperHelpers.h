@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "SCRIPT.H"
+#include "Script.h"
 #include "MoreTypes.h"
 #include "SignalId.h"
 #include "NobType.h"

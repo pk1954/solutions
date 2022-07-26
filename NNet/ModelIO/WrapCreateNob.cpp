@@ -3,8 +3,8 @@
 // ModelIO
 
 #include "stdafx.h"
-#include "SCRIPT.H"
-#include "ERRHNDL.H"
+#include "Script.h"
+#include "ErrHndl.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"

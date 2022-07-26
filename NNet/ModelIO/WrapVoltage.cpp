@@ -3,8 +3,8 @@
 // ModelIO
 
 #include "stdafx.h"
-#include "SCRIPT.H"
-#include "ERRHNDL.H"
+#include "Script.h"
+#include "ErrHndl.h"
 #include "Nob.h"
 #include "NobType.h"
 #include "BaseKnot.h"

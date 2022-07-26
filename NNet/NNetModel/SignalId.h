@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NamedType.h"
-#include "SCRIPT.H"
+#include "Script.h"
 #include "Track.h"
 #include "TrackNr.h"
 #include "SignalId.h"
