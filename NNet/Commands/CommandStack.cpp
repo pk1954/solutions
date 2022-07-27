@@ -5,11 +5,12 @@
 #include "stdafx.h"
 #include <source_location>
 #include "assert.h"
-#include "observable.h"
 #include "NobException.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_command.h"
 #include "CommandStack.h"
+
+import Observable;
 
 using std::wcout;
 using std::endl;

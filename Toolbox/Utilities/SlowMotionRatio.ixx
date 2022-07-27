@@ -8,7 +8,8 @@ module;
 
 #include <array>
 #include "MoreTypes.h"
-#include "observable.h"
+
+import Observable;
 
 export module SlowMotionRatio;
 

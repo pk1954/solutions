@@ -5,7 +5,8 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "observable.h"
+
+import Observable;
 
 using std::wcout;
 using std::wostream;

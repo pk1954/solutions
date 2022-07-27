@@ -30,7 +30,6 @@
     <ClInclude Include="MeanFilter.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="NamedType.h" />
-    <ClInclude Include="observable.h" />
     <ClInclude Include="PixFpDimension.h" />
     <ClInclude Include="SaveCast.h" />
     <ClInclude Include="Uniform2D.h" />
@@ -40,7 +39,6 @@
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="TextBuffer.h" />
     <ClInclude Include="UtilityWrappers.h" />
-    <ClInclude Include="ViewCollection.h" />
     <ClInclude Include="XArray.h" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +59,7 @@
     <ClCompile Include="util.cpp" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="UtilityWrappers.cpp" />
+    <ClCompile Include="ViewCollection.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D6E82F0A-C93F-4FA0-AACF-910EF2F59FDC}</ProjectGuid>

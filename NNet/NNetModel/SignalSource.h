@@ -6,7 +6,8 @@
 
 #include <ostream>
 #include "MoreTypes.h"
-#include "observable.h"
+
+import Observable;
 
 using std::wostream;
 

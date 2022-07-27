@@ -5,9 +5,10 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "observable.h"
 #include "SignalId.h"
 #include "TrackNr.h"
+
+import Observable;
 
 class NNetModelWriterInterface;
 

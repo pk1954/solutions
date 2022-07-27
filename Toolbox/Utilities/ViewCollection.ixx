@@ -1,6 +1,8 @@
-// ViewCollection.h
+// ViewCollection.ixx
 //
 // Utilities
+
+module;
 
 #pragma once
 
@@ -8,12 +10,14 @@
 #include <algorithm>
 #include <vector>
 
+export module ViewCollection;
+
 import ObserverInterface;
 
 using std::vector;
 using std::ranges::count;
 
-class ViewCollection
+export class ViewCollection
 {
 public:
 	virtual ~ViewCollection() = default;

@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "observable.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
@@ -16,6 +15,7 @@
 #include "Pipe.h"
 
 import ObserverInterface;
+import Observable;
 import Util;
 
 using std::unique_ptr;

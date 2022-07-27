@@ -5,10 +5,11 @@
 #pragma once
 
 #include <chrono>
-#include "observable.h"
 #include "MoreTypes.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
+
+import Observable;
 
 class Param : public Observable
 {

@@ -7,7 +7,6 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "Analyzer.h"
-#include "observable.h"
 #include "Preferences.h"
 #include "NobException.h"
 #include "ComputeThread.h"
@@ -31,6 +30,7 @@
 #include "win32_NNetController.h"
 
 import SlowMotionRatio;
+import Observable;
 
 using std::to_wstring;
 

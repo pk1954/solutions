@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "observable.h"
 #include "SimulationTime.h"
 #include "win32_fatalError.h"
 #include "NNetParameters.h"
@@ -11,6 +10,7 @@
 #include "ComputeThread.h"
 
 import SlowMotionRatio;
+import Observable;
 
 void ComputeThread::Initialize
 (

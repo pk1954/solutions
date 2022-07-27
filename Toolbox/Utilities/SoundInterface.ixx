@@ -8,9 +8,10 @@ module;
 
 #include <string>
 #include "MoreTypes.h"
-#include "observable.h"
 
 export module SoundInterface;
+
+import Observable;
 
 using std::wstring;
 

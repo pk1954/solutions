@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "observable.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
 import Util;
+import Observable;
 
 template <typename LOG_UNIT>
 class PixFpDimension : public Observable
