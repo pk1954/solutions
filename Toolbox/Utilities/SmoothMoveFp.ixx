@@ -1,10 +1,10 @@
-// SmoothMoveFp.h
+// SmoothMoveFp.ixx
 //
 // Utilities
 
-#pragma once
+export module SmoothMoveFp;
 
-class SmoothMoveFp
+export class SmoothMoveFp
 {
 public:
 

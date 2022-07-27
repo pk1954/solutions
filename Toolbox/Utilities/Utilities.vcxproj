@@ -40,14 +40,9 @@
     <ClInclude Include="Uniform2D.h" />
     <ClInclude Include="PixelTypes.h" />
     <ClInclude Include="PointType.h" />
-    <ClInclude Include="random.h" />
     <ClInclude Include="RectType.h" />
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="SlowMotionRatio.h" />
-    <ClInclude Include="SmoothMove.h" />
-    <ClInclude Include="SmoothMoveFp.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="TextBuffer.h" />
     <ClInclude Include="trace.h" />
     <ClInclude Include="util.h" />
@@ -64,6 +59,8 @@
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="SmoothMove.cpp" />
+    <ClCompile Include="SmoothMove.ixx" />
+    <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="trace.cpp" />

@@ -1,8 +1,7 @@
-// win32_textBuffer.cpp :
+// TextBuffer.cpp :
 //
 // Utilities
 
-#include "stdafx.h"
 #include <locale>
 #include <iomanip>
 #include "util.h"

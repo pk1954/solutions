@@ -2,7 +2,6 @@
 //
 // Utilities
 
-#include "stdafx.h"
 #include <assert.h>
 #include "Script.h"
 #include "Symtab.h"

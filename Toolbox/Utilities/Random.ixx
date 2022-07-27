@@ -1,11 +1,15 @@
-// random.h : 
+// Random.ixx : 
 //
+
+module;
 
 #pragma once
 
 #include "debug.h"
 
-class Random
+export module Random;
+
+export class Random
 {
 public:
 	Random()
@@ -13,10 +17,10 @@ public:
 		Initialize();
 	}
 
-    virtual ~Random() = default;
+	virtual ~Random() = default;
 
 	static unsigned int const MAX_VAL = 0x7fff;
-	
+
 	void Initialize()
 	{
 		m_ulRandomSeed = 0L;
@@ -61,7 +65,7 @@ public:
 
 private:
 
-    unsigned long m_ulRandomSeed;    // random generator
-    bool          m_bValid;          // random generator for standard distribution
-    double        m_dX2;             // random generator for standard distribution
+	unsigned long m_ulRandomSeed;    // random generator
+	bool          m_bValid;          // random generator for standard distribution
+	double        m_dX2;             // random generator for standard distribution
 };

@@ -1,10 +1,9 @@
 //                                                                        
-//  File:     INPUT.CPP                                                   
+//  File:     Input.cpp                                                   
 //                                                                        
-// input.c - low level input from script 
+//  low level input from script 
 //
 
-#include "stdafx.h"
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>

@@ -4,7 +4,6 @@
 // errhndl.cpp - error handler
 //
 
-#include "stdafx.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>

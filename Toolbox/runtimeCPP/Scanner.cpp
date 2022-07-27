@@ -5,7 +5,6 @@
 // scanner for test script 
 //
 
-#include "stdafx.h"
 #include <limits.h>   
 #include <string.h>
 #include <stdlib.h>

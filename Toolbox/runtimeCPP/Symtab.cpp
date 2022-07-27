@@ -2,7 +2,6 @@
 //  File:     symtab.cpp                                                    *
 //                                                                          *
  
-#include "stdafx.h"
 #include <map>
 #include <assert.h>
 #include "ErrHndl.h"

@@ -6,7 +6,8 @@
 
 #include "Windows.h"
 #include "win32_command.h"
-#include "SmoothMoveFp.h"
+
+import SmoothMoveFp;
 
 using std::bit_cast;
 

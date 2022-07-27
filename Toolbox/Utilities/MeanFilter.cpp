@@ -2,7 +2,6 @@
 //
 // Utilities
 
-#include "stdafx.h"
 #include "MeanFilter.h"
 
 void MeanFilter::Reset()

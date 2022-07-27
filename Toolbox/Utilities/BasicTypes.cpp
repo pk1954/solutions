@@ -2,7 +2,6 @@
 //
 // Utilities
 
-#include "stdafx.h"
 #include <sstream>
 #include <iomanip>
 #include "BasicTypes.h"

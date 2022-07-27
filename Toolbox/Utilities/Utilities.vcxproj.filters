@@ -45,9 +45,6 @@
     <ClInclude Include="PointType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,15 +52,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SlowMotionRatio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SmoothMove.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextBuffer.h">
@@ -82,9 +70,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SmoothMoveFp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LineType.h">
@@ -153,6 +138,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SoundInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SmoothMove.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SmoothMoveFp.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
