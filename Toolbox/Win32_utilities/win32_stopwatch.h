@@ -9,6 +9,7 @@
 #include "win32_hiResTimer.h"
 
 using std::wstring;
+using std::function;
 
 class Stopwatch
 {

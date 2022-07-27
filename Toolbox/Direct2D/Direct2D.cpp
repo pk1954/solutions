@@ -6,10 +6,11 @@
 #include <string.h>
 #include "d2d1.h"
 #include "dwrite.h"
-#include "util.h"
 #include "win32_util.h"
 #include "PixelTypes.h"
 #include "Direct2D.h"
+
+import Util;
 
 using std::array;
 using std::wstring;

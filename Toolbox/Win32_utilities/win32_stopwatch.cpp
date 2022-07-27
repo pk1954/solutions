@@ -9,7 +9,6 @@
 #include <iostream>
 #include <iomanip>
 #include <assert.h>
-#include "util.h"
 #include "Windows.h"
 #include "win32_stopwatch.h"
 

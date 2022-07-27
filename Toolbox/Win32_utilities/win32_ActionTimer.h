@@ -6,10 +6,11 @@
 
 #include <chrono>
 #include "minwindef.h"
-#include "util.h"
 #include "MoreTypes.h"
 #include "observable.h"
 #include "win32_hiResTimer.h"
+
+import Util;
 
 using std::chrono::milliseconds;
 

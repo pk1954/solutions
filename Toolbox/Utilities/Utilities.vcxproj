@@ -41,7 +41,6 @@
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="SlowMotionRatio.h" />
     <ClInclude Include="TextBuffer.h" />
-    <ClInclude Include="util.h" />
     <ClInclude Include="UtilityWrappers.h" />
     <ClInclude Include="ViewCollection.h" />
     <ClInclude Include="XArray.h" />
@@ -61,6 +60,7 @@
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="Trace.ixx" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="Util.ixx" />
     <ClCompile Include="UtilityWrappers.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

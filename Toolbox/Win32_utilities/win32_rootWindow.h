@@ -18,7 +18,6 @@ using std::chrono::milliseconds;
 using std::wostringstream;
 using std::unique_ptr;
 using std::wstring;
-using std::function;
 using std::vector;
 
 class RootWindow;

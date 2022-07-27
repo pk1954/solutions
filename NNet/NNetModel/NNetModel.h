@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "util.h"
 #include "MoreTypes.h"
 #include "observable.h"
 #include "ParameterType.h"
@@ -17,6 +16,7 @@
 #include "Pipe.h"
 
 import ObserverInterface;
+import Util;
 
 using std::unique_ptr;
 using std::move;

@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "util.h"
 #include "DrawContext.h"
 #include "SimulationTime.h"
 #include "UPNobList.h"
@@ -11,6 +10,8 @@
 #include "BaseKnot.h"
 #include "SignalSource.h"
 #include "Signal.h"
+
+import Util;
 
 using std::wcout;
 using std::endl;

@@ -1,8 +1,8 @@
-// Toolbox\util.h : 
+// Util.ixx : 
 //
 // Toolbox\Utilities
 
-#pragma once
+module;
 
 #include <functional>
 #include <string>
@@ -10,22 +10,24 @@
 #include <vector>
 #include <streambuf>
 
+export module Util;
+
 using std::vector;
 using std::function;
 using std::abs;
 
-extern void UpperCase(std::wstring &);
+export extern void UpperCase(std::wstring &);
 
-using VisCrit = function <bool()>;
+export using VisCrit = function <bool()>;
 
-enum class tOnOffAuto : long
+export enum class tOnOffAuto : long
 {
 	on,
 	off,
 	automatic
 };
 
-extern bool ApplyAutoCriterion(tOnOffAuto const, VisCrit const &);
+export extern bool ApplyAutoCriterion(tOnOffAuto const, VisCrit const &);
 
 // not needed, makes strange problems 
 //template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
@@ -33,12 +35,12 @@ extern bool ApplyAutoCriterion(tOnOffAuto const, VisCrit const &);
 //    return (SOURCE_TYPE(0) < val) - (val < SOURCE_TYPE(0));
 //}
 
-inline bool IsCloseToZero(float const f)
+export inline bool IsCloseToZero(float const f)
 {
 	return abs(f) < 1.e-10f;
 }
 
-template<typename SOURCE_TYPE>
+export template<typename SOURCE_TYPE>
 SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TYPE const max)
 {
 	if (val > max)
@@ -48,7 +50,7 @@ SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TY
 	return val;
 }
 
-template<typename SOURCE_TYPE>
+export template<typename SOURCE_TYPE>
 bool IsInRange(SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max)
 {
 	if (v > max)
@@ -58,13 +60,13 @@ bool IsInRange(SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max
 	return true;
 }
 
-template<typename T>
+export template<typename T>
 bool IsValidIndex(long const index, vector<T> const &vec)
 {
 	return IsInRange<long>(index, 0L, static_cast<long>(vec.size()-1));
 }
 
-template<typename T>
+export template<typename T>
 T GetVectorValue(long const index, vector<T> const &vec)
 {
 	if (vec.empty())

@@ -6,7 +6,6 @@
 
 #include <string> 
 #include <sstream> 
-#include "util.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"

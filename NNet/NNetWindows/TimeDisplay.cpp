@@ -9,8 +9,8 @@
 #include <sstream> 
 #include <string> 
 #include "SimulationTime.h"
-#include "win32_status.h"
 #include "NNetModelReaderInterface.h"
+#include "win32_status.h"
 #include "TimeDisplay.h"
 
 using std::make_unique;

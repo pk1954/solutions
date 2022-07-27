@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include <sstream> 
-#include "util.h"
 #include "Resource.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"

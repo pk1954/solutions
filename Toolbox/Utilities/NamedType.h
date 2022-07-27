@@ -10,7 +10,8 @@
 #include <iostream>
 #include <iomanip>
 #include <limits.h>
-#include "util.h"
+
+import Util;
 
 using std::wstring;
 using std::wostream;

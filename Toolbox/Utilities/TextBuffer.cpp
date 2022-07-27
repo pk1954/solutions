@@ -4,9 +4,10 @@
 
 #include <locale>
 #include <iomanip>
-#include "util.h"
 #include "PixelTypes.h"
-#include "textBuffer.h"
+#include "TextBuffer.h"
+
+import Util;
 
 using std::wstring;
 using std::setprecision;

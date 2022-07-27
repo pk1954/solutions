@@ -5,7 +5,6 @@
 #pragma once
 
 #include <string> 
-#include "util.h"
 #include "MoreTypes.h"
 #include "Direct2D.h"
 #include "dwrite.h"

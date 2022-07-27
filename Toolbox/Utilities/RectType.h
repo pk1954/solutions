@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <assert.h>
+
 template <typename BASE_TYPE> 
 class RectType
 {

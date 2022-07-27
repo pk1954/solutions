@@ -2,8 +2,11 @@
 //
 // Utilities
 
-#include <sstream> 
-#include "util.h"
+module;
+
+#include <string>
+
+module Util;
 
 using std::wstring;
 using std::wostringstream;

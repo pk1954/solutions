@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include "util.h"
 #include "observable.h"
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
+
+import Util;
 
 template <typename LOG_UNIT>
 class Uniform2D : public Observable

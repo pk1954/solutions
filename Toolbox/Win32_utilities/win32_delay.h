@@ -6,7 +6,6 @@
 
 #include <synchapi.h>
 #include <chrono>
-#include "util.h"
 #include "observable.h"
 
 using std::chrono::milliseconds;

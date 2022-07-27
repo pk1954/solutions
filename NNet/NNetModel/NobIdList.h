@@ -5,8 +5,9 @@
 #pragma once
 
 #include <vector>
-#include "util.h"
 #include "NobId.h"
+
+import Util;
 
 using std::vector;
 

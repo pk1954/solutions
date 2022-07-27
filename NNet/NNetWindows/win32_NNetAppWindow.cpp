@@ -22,7 +22,6 @@
 
 // infrastructure
 
-#include "util.h"
 #include "AutoOpen.h"
 #include "UndoRedoMenu.h"
 #include "win32_baseWindow.h"
@@ -56,6 +55,7 @@
 #include "InputConnector.h"
 #include "win32_NNetAppWindow.h"
 
+import Util;
 import Trace;
 import ObserverInterface;
 

@@ -1,13 +1,15 @@
 // win32_textBuffer.cpp :
 //
+// Toolbox\win32_utilities
 
 #include "stdafx.h"
 #include <locale>
 #include <iomanip>
-#include "util.h"
 #include "PixelTypes.h"
 #include "win32_util.h"
 #include "win32_textBuffer.h"
+
+import Util;
 
 using std::wstring;
 using std::wostringstream;

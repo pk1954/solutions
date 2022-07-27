@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "strsafe.h"
-#include "util.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
