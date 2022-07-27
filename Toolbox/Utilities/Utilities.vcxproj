@@ -40,7 +40,6 @@
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="SlowMotionRatio.h" />
     <ClInclude Include="TextBuffer.h" />
-    <ClInclude Include="trace.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="UtilityWrappers.h" />
     <ClInclude Include="ViewCollection.h" />
@@ -59,6 +58,7 @@
     <ClCompile Include="SoundInterface.ixx" />
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="trace.cpp" />
+    <ClCompile Include="Trace.ixx" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="UtilityWrappers.cpp" />
   </ItemGroup>

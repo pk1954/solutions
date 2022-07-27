@@ -1,13 +1,17 @@
-// trace.cpp
+// Trace.cpp
 //
 // Utilities
 
-#include <assert.h>
+module;
+
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "trace.h"
 
+module Trace;
+
+using std::wofstream;
+using std::wstring;
 using std::cout;
 using std::ios;
 using std::endl;

@@ -5,10 +5,10 @@
 #include <assert.h>
 #include "Script.h"
 #include "Symtab.h"
-#include "trace.h"
 #include "UtilityWrappers.h"
 
 import BoolOp;
+import Trace;
 
 PIXEL ScrReadPixel(Script & script)
 {

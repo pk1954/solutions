@@ -33,7 +33,6 @@
 
 // scripting and tracing
 
-#include "trace.h"
 #include "Script.h"
 #include "Preferences.h"
 #include "NNetWrappers.h"
@@ -57,6 +56,7 @@
 #include "InputConnector.h"
 #include "win32_NNetAppWindow.h"
 
+import Trace;
 import ObserverInterface;
 
 using std::wcout;

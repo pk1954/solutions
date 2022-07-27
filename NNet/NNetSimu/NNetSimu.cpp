@@ -12,9 +12,8 @@
 #include "win32_messagePump.h"
 #include "win32_NNetAppWindow.h"
 
-#include "trace.h"
-
 import BoolOp;
+import Trace;
 
 unique_ptr<NNetAppWindow> upApp;
 
