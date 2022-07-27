@@ -11,7 +11,7 @@
 #include <limits.h>  
 #include <string.h>
 #include <assert.h>
-#include "util.h"
+#include "SaveCast.h"
 #include "Scanner.h"
 #include "ErrHndl.h"
 #include "Script.h"

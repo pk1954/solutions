@@ -8,7 +8,7 @@
 #include <math.h>
 #include <limits>
 #include <chrono>
-#include "util.h"
+#include "SaveCast.h"
 #include "NamedType.h"
 
 using std::chrono::microseconds;

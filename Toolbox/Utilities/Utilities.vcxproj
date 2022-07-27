@@ -33,6 +33,7 @@
     <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />
     <ClInclude Include="PixFpDimension.h" />
+    <ClInclude Include="SaveCast.h" />
     <ClInclude Include="Uniform2D.h" />
     <ClInclude Include="PixelTypes.h" />
     <ClInclude Include="PointType.h" />
