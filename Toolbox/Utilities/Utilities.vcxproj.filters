@@ -48,9 +48,6 @@
     <ClInclude Include="IoConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MeanFilter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SaveCast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MeanFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BoolOp.ixx">

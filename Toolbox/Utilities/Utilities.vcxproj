@@ -25,7 +25,6 @@
     <ClInclude Include="EllipseType.h" />
     <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
-    <ClInclude Include="MeanFilter.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="PixFpDimension.h" />
     <ClInclude Include="SaveCast.h" />
@@ -41,7 +40,6 @@
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="Geometry.ixx" />
-    <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
