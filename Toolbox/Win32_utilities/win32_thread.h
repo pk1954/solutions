@@ -5,8 +5,10 @@
 #pragma once
 
 #include "string"
+#include "Windows.h"
 #include <assert.h>
-#include "win32_event.h"
+
+import Win32_Event;
 
 using std::wstring;
 
@@ -42,11 +44,11 @@ namespace Util
 		virtual void ThreadShutDownFunc() {};
 
 	private:
-		HANDLE  m_handle             { nullptr };
-		UINT    m_threadId           { 0 };
-		bool    m_bAsync             { false };
-		Event   m_eventThreadStarter { };
-		wstring m_strThreadName      { };
+		HANDLE      m_handle             { nullptr };
+		UINT        m_threadId           { 0 };
+		bool        m_bAsync             { false };
+		Win32_Event m_eventThreadStarter { };
+		wstring     m_strThreadName      { };
 
 		friend static unsigned int __stdcall Util::ThreadProc(void *);
 	};

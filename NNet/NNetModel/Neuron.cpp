@@ -6,10 +6,6 @@
 #include <sstream> 
 #include <iomanip>
 #include "Resource.h"
-#include "win32_sound.h"
-#include "win32_thread.h"
-#include "win32_graphicsInterface.h"
-#include "win32_beeperThread.h"
 #include "DrawContext.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"

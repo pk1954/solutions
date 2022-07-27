@@ -48,9 +48,6 @@
     <ClInclude Include="win32_stopwatch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_event.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_thread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -213,6 +210,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_baseScale.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_event.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

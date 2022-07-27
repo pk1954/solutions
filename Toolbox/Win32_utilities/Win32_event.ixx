@@ -1,31 +1,35 @@
-// win32_event.h
+// win32_event.ixx
 //
+// Toolbox\win32_utilities
+
+module;
 
 #pragma once
 
 #include "Windows.h"
 
+export module Win32_Event;
+
 import EventInterface;
 
 namespace Util
 {
-	class Event : public EventInterface
+	export class Win32_Event : public EventInterface
 	{
 	public:
-		Event()
-		  : m_eventHandle
-		    (
+		Win32_Event()
+		{ 
+			m_eventHandle =
 				CreateEvent
 				(
 					nullptr, // no security attributes
 					true,    // manual reset event 
 					false,   // initial state nonsignaled
 					nullptr  // no name for event
-				) 
-			)
-		{ }
+				);
+		}
 
-		~Event()
+		~Win32_Event()
 		{
 			(void)CloseHandle(m_eventHandle);
 			m_eventHandle = nullptr;
@@ -43,6 +47,6 @@ namespace Util
 		}
 
 	private:
-		HANDLE m_eventHandle;
+		HANDLE m_eventHandle { nullptr };
 	};
 };

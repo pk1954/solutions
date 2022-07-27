@@ -186,7 +186,6 @@
     <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_stdDialogBox.h" />
     <ClInclude Include="win32_textBuffer.h" />
-    <ClInclude Include="win32_event.h" />
     <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_script.h" />
@@ -219,6 +218,7 @@
     <ClCompile Include="win32_controls.cpp" />
     <ClCompile Include="win32_editLineBox.cpp" />
     <ClCompile Include="win32_escape.cpp" />
+    <ClCompile Include="Win32_event.ixx" />
     <ClCompile Include="win32_graphicsWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="win32_stdDialogBox.cpp" />

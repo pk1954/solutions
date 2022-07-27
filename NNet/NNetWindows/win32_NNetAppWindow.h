@@ -19,7 +19,6 @@
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
 #include "win32_ActionTimer.h"
-#include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_appTitle.h"
 #include "win32_winManager.h"
@@ -43,6 +42,7 @@
 #include "NNetColors.h"
 
 import DisplayFunctor;
+import Win32_Event;
 
 class ReadModelResult;
 class MessagePump;
