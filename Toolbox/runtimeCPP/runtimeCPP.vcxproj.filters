@@ -27,9 +27,6 @@
     <ClInclude Include="Input.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Scanner.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -48,6 +45,9 @@
     <ClInclude Include="WrapBase.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Scanner.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -62,10 +62,10 @@
     <ClCompile Include="Script.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ScrScan.cpp">
+    <ClCompile Include="Scanner.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="symtab.cpp">
+    <ClCompile Include="Symtab.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WrapInclude.cpp">

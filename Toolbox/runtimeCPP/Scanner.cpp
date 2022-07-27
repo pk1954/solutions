@@ -1,5 +1,5 @@
 //                                                                        
-// File:     ScrScan.cpp                                                    
+// File:     Scanner.cpp                                                    
 //                                                                         
 //
 // scanner for test script 

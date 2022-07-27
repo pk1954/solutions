@@ -182,14 +182,14 @@
     <ClCompile Include="ErrHndl.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Script.cpp" />
-    <ClCompile Include="ScrScan.cpp" />
+    <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="symtab.cpp" />
+    <ClCompile Include="Symtab.cpp" />
     <ClCompile Include="WrapInclude.cpp" />
   </ItemGroup>
   <ItemGroup>

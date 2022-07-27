@@ -5,11 +5,11 @@
 //
 
 #pragma once
-          
+
 #include <string>
 #include <stdio.h>
 #include "Input.h"
-   
+
 using std::wstring;
 using std::streampos;
 using std::wstring_view;
@@ -39,18 +39,18 @@ public:
     streampos GetFilePos()       { return m_inbuf.GetFilePos(); };
     bool      IsActive  () const { return m_inbuf.IsActive(); }
 
-   // Get next token from input file 
+    // Get next token from input file 
 
     tTOKEN NextToken(bool);
-   
-   // Get actual token, type according to NextToken return value 
+
+    // Get actual token, type according to NextToken return value 
 
     unsigned long   GetUlong    () const { return m_ulValue;   };
     wchar_t         GetCharacter() const { return m_wchValue;  };
     double          GetFloat    () const { return m_dValue;    };
     wstring const & GetString   () const { return m_wstrToken; }; 
 
-   // Helper routines for error handlers 
+    // Helper routines for error handlers 
 
     wstring const & GetActLine      () const { return m_inbuf.GetActLine    (); };
     int             GetActLineNr    () const { return m_inbuf.GetActLineNr  (); };
@@ -61,7 +61,7 @@ public:
 
     void SetExpectedToken(wstring_view s) { m_wstrExpected = s; }
 
-	wchar_t ReadOneOf(wstring const &);
+    wchar_t ReadOneOf(wstring const &);
 
 private:
     wchar_t SkipSpace    ();
