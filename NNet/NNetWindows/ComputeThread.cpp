@@ -5,11 +5,12 @@
 #include "stdafx.h"
 #include "observable.h"
 #include "SimulationTime.h"
-#include "SlowMotionRatio.h"
 #include "win32_fatalError.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 #include "ComputeThread.h"
+
+import SlowMotionRatio;
 
 void ComputeThread::Initialize
 (

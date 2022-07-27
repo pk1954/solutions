@@ -137,19 +137,19 @@ public:
 		}
 	}
 
-	bool const operator== (RectType const & a) const 
+	bool operator== (RectType const & a) const 
 	{ 
 		return (a.m_Left  == m_Left ) && (a.m_Top    == m_Top   ) && 
 			   (a.m_Right == m_Right) && (a.m_Bottom == m_Bottom); 
 	};
 
-    bool const operator!= (RectType const & a) const 
+    bool operator!= (RectType const & a) const 
 	{ 
 		return (a.m_Left  != m_Left ) || (a.m_Top    != m_Top   ) || 
 			   (a.m_Right != m_Right) || (a.m_Bottom != m_Bottom); 
 	};
 
-	RectType const ScaleRect(BASE_TYPE const val) const // positive values of val enlarge rectangle
+	RectType ScaleRect(BASE_TYPE const val) const // positive values of val enlarge rectangle
 	{                                                   // negative values reduce its size
 		return RectType
 		{
@@ -160,7 +160,7 @@ public:
 		};
 	}
 
-	RectType const operator+= (POS_TYPE const offset)
+	RectType operator+= (POS_TYPE const offset)
 	{ 
 		m_Left   += offset.GetX();
 		m_Top    += offset.GetY();
@@ -169,7 +169,7 @@ public:
 		return * this;
 	}
 
-	RectType const operator-= (POS_TYPE const offset)
+	RectType operator-= (POS_TYPE const offset)
 	{ 
 		m_Left   -= offset.GetX();
 		m_Top    -= offset.GetY();
@@ -183,21 +183,21 @@ public:
 		* this = ZERO_VAL();
 	}
 
-	friend RectType const operator+ (RectType const a, POS_TYPE const b	) 
+	friend RectType operator+ (RectType const a, POS_TYPE const b	) 
 	{ 
 		RectType res { a }; 
 		res += b; 
 		return res; 
 	}
 
-	friend RectType const operator- (RectType const a, POS_TYPE const b	) 
+	friend RectType operator- (RectType const a, POS_TYPE const b	) 
 	{ 
 		RectType res { a }; 
 		res -= b;
 		return res; 
 	}
 
-	friend RectType const Union(RectType const a, RectType const b	) 
+	friend RectType Union(RectType const a, RectType const b	) 
 	{ 
 		return RectType
 		{

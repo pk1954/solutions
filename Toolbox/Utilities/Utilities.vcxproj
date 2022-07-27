@@ -25,7 +25,6 @@
     <ClInclude Include="EllipseType.h" />
     <ClInclude Include="EnumArray.h" />
     <ClInclude Include="Geometry.h" />
-    <ClInclude Include="Int24.h" />
     <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
     <ClInclude Include="MeanFilter.h" />
@@ -39,7 +38,6 @@
     <ClInclude Include="PointType.h" />
     <ClInclude Include="RectType.h" />
     <ClInclude Include="RingBuffer.h" />
-    <ClInclude Include="SlowMotionRatio.h" />
     <ClInclude Include="TextBuffer.h" />
     <ClInclude Include="UtilityWrappers.h" />
     <ClInclude Include="ViewCollection.h" />
@@ -54,6 +52,7 @@
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
+    <ClCompile Include="SlowMotionRatio.ixx" />
     <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />
     <ClCompile Include="TextBuffer.cpp" />

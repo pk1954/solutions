@@ -9,7 +9,6 @@
 #include "Analyzer.h"
 #include "observable.h"
 #include "Preferences.h"
-#include "SlowMotionRatio.h"
 #include "NobException.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
@@ -30,6 +29,8 @@
 #include "NNetModelCommands.h"
 #include "win32_monitorWindow.h"
 #include "win32_NNetController.h"
+
+import SlowMotionRatio;
 
 using std::to_wstring;
 

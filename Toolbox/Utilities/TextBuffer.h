@@ -1,4 +1,4 @@
-// textBuffer.h 
+// TextBuffer.h 
 //
 // Utilities
 

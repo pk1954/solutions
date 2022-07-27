@@ -1,6 +1,8 @@
-// SlowMotionRatio.h
+// SlowMotionRatio.ixx
 //
 // Utilities
+
+module;
 
 #pragma once
 
@@ -8,9 +10,11 @@
 #include "MoreTypes.h"
 #include "observable.h"
 
+export module SlowMotionRatio;
+
 using std::array;
 
-class SlowMotionRatio : public Observable
+export class SlowMotionRatio : public Observable
 {
 public:
 
@@ -41,12 +45,12 @@ public:
 			return false;
 	}
 
-	fMicroSecs const RealTime2SimuTime(fMicroSecs const realTime) const
+	fMicroSecs RealTime2SimuTime(fMicroSecs const realTime) const
 	{
 		return realTime / m_fRatio;
 	}
 
-	fMicroSecs const SimuTime2RealTime(fMicroSecs const simuTime) const
+	fMicroSecs SimuTime2RealTime(fMicroSecs const simuTime) const
 	{
 		return simuTime * m_fRatio;
 	}

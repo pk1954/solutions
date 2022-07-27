@@ -11,15 +11,15 @@
 #include "Pipe.h"
 #include "Nob.h"
 #include "ComputeThread.h"
-#include "SlowMotionRatio.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_actionTimer.h"
 #include "win32_performanceWindow.h"
 
+import SlowMotionRatio;
+
 using std::wostringstream;
 using std::fixed;
 using std::setprecision;
-
 
 void PerformanceWindow::Start
 (
