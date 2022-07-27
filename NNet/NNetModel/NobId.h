@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NamedType.h"
+import NamedType;
 
 using NobId = NamedType<int, struct NobIdParam>;
 

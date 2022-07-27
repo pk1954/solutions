@@ -9,8 +9,9 @@
 #include <iomanip>
 #include <compare>
 #include "IoConstants.h"
-#include "NamedType.h"
 #include "BasicTypes.h"
+
+import NamedType;
 
 using std::abs;
 using std::max;

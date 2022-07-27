@@ -9,11 +9,14 @@
 #include <limits>
 #include <chrono>
 #include "SaveCast.h"
-#include "NamedType.h"
+
+import Util;
+import NamedType;
 
 using std::chrono::microseconds;
 using std::numeric_limits;
 using std::streamsize;
+using std::wstring;
 
 ////////////// fMicroSecs /////////////////////////////////////
 

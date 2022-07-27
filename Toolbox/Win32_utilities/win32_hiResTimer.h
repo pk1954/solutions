@@ -5,8 +5,9 @@
 #pragma once
 
 #include <chrono>
-#include "NamedType.h"
 #include "MoreTypes.h"
+
+import NamedType;
 
 using std::chrono::microseconds;
 

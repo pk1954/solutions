@@ -4,13 +4,14 @@
 
 #pragma once
 
-#include "NamedType.h"
 #include "BasicTypes.h"
 #include "PointType.h"
 #include "RectType.h"
 #include "LineType.h"
 #include "CircleType.h"
 #include "EllipseType.h"
+
+import NamedType;
 
 using std::min;
 using MicroMeterPnt = PosType<MicroMeter>;

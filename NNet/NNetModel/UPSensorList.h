@@ -5,8 +5,9 @@
 #pragma once
 
 #include <vector>
-#include "NamedType.h"
 #include "Sensor.h"
+
+import NamedType;
 
 using std::ranges::for_each;
 using std::unique_ptr;

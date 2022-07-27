@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "NamedType.h"
 #include "Script.h"
 #include "Track.h"
 #include "TrackNr.h"
 #include "SignalId.h"
+
+import NamedType;
 
 using std::vector;
 

@@ -6,12 +6,12 @@
 
 #include <exception>
 #include <vector>
-#include "NamedType.h"
 #include "Signal.h"
 #include "Track.h"
 #include "SignalId.h"
 
 import Observable;
+import NamedType;
 
 using std::vector;
 using std::exception;

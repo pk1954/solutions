@@ -6,10 +6,10 @@
 
 #include <memory>
 #include <vector>
-#include "NamedType.h"
 #include "Signal.h"
 
 import Observable;
+import NamedType;
 
 using std::vector;
 using std::unique_ptr;

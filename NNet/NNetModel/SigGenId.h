@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NamedType.h"
+import NamedType;
 
 using SigGenId = NamedType<int, struct SigGenIdParam>;
 

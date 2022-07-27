@@ -7,8 +7,9 @@
 #pragma once
 
 #include <math.h> 
-#include "NamedType.h"
 #include "PointType.h"
+
+import NamedType;
 
 using std::swap;
 

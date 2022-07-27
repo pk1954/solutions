@@ -9,9 +9,9 @@ module;
 #include <array>
 #include "MoreTypes.h"
 
-import Observable;
-
 export module SlowMotionRatio;
+
+import Observable;
 
 using std::array;
 

@@ -1,9 +1,11 @@
-// NamedType.h
+// NamedType.ixx
 //
 // Toolbox\Utilities
 //
 // Inspired by Jonathan Boccara
 // https://www.fluentcpp.com/
+
+module;
 
 #pragma once
 
@@ -11,27 +13,29 @@
 #include <iomanip>
 #include <limits.h>
 
+export module NamedType;
+
 import Util;
 
 using std::wstring;
 using std::wostream;
 using std::numeric_limits;
 
-template <typename T>
+export template <typename T>
 struct TypeAttribute 
 { 
 	static const wstring unit; 
 	static const float   factor; 
 };
 
-template <typename BASE_TYPE, typename Parameter>
+export template <typename BASE_TYPE, typename Parameter>
 class NamedType
 {
 public:
 
 	NamedType() : m_value(0) {}
-	
-    constexpr explicit NamedType(BASE_TYPE const value) : m_value(value) {}
+
+	constexpr explicit NamedType(BASE_TYPE const value) : m_value(value) {}
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
@@ -39,11 +43,11 @@ public:
 	constexpr BASE_TYPE GetAbsValue() const { return BASE_TYPE(abs(m_value)); }
 
 	bool operator== (NamedType const other) const { return m_value == other.GetValue(); }
-    bool operator!= (NamedType const other) const { return m_value != other.GetValue(); }
-    bool operator<= (NamedType const other) const { return m_value <= other.GetValue(); }
-    bool operator<  (NamedType const other) const { return m_value <  other.GetValue(); }
-    bool operator>= (NamedType const other) const { return m_value >= other.GetValue(); }
-    bool operator>  (NamedType const other) const { return m_value >  other.GetValue(); }
+	bool operator!= (NamedType const other) const { return m_value != other.GetValue(); }
+	bool operator<= (NamedType const other) const { return m_value <= other.GetValue(); }
+	bool operator<  (NamedType const other) const { return m_value <  other.GetValue(); }
+	bool operator>= (NamedType const other) const { return m_value >= other.GetValue(); }
+	bool operator>  (NamedType const other) const { return m_value >  other.GetValue(); }
 
 	bool IsZero       () const { return m_value == BASE_TYPE(0); };
 	bool IsNotZero    () const { return m_value != BASE_TYPE(0); };
@@ -69,7 +73,7 @@ public:
 	NamedType  operator+ () const { NamedType res { +m_value }; return res; }
 
 	NamedType  operator++() { ++m_value; return * this; }
-    NamedType  operator--() { --m_value; return * this; }
+	NamedType  operator--() { --m_value; return * this; }
 
 	NamedType  operator++(int) { NamedType tmp { *this }; operator++(); return tmp; }
 	NamedType  operator--(int) { NamedType tmp { *this }; operator--(); return tmp; }
@@ -165,8 +169,8 @@ public:
 	void Set2Null() { * this = NULL_VAL(); }
 	void Set2Zero() { * this = ZERO_VAL(); }
 
-    bool IsNull   () const { return * this == NULL_VAL(); };
-    bool IsNotNull() const { return * this != NULL_VAL(); };
+	bool IsNull   () const { return * this == NULL_VAL(); };
+	bool IsNotNull() const { return * this != NULL_VAL(); };
 
 	bool IsInRange(auto const min, auto const max)
 	{
@@ -174,5 +178,5 @@ public:
 	}
 
 private:
-    BASE_TYPE m_value;
+	BASE_TYPE m_value;
 };

@@ -29,7 +29,6 @@
     <ClInclude Include="LineType.h" />
     <ClInclude Include="MeanFilter.h" />
     <ClInclude Include="MoreTypes.h" />
-    <ClInclude Include="NamedType.h" />
     <ClInclude Include="PixFpDimension.h" />
     <ClInclude Include="SaveCast.h" />
     <ClInclude Include="Uniform2D.h" />
@@ -48,6 +47,7 @@
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
+    <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="SlowMotionRatio.ixx" />

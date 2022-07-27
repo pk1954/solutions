@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include "NamedType.h"
 #include <vector>
+
+import NamedType;
 
 using std::vector;
 

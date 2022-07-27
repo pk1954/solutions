@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "NamedType.h"
 #include "MoreTypes.h"
 #include "PointType.h"
 #include "RectType.h"
@@ -12,6 +11,7 @@
 #include "EllipseType.h"
 
 import Util;
+import NamedType;
 
 /////////////////// PIXEL ///////////////////////////////////
 

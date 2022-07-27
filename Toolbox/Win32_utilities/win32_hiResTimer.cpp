@@ -4,8 +4,9 @@
 
 #include "stdafx.h"
 #include <limits>     
-#include "NamedType.h"
 #include "win32_hiResTimer.h"
+
+import NamedType;
 
 HiResTimer::HiResTimer()
 {

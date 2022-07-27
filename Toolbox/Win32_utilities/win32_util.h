@@ -5,7 +5,6 @@
 #pragma once
 
 #include "Windows.h"
-#include "NamedType.h"
 #include "PixelTypes.h"
 
 #include <string>
@@ -13,6 +12,7 @@
 #include <iostream>
 
 import BoolOp;
+import NamedType;
 
 using std::wostringstream;
 using std::wostream;
