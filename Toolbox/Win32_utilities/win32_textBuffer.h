@@ -5,7 +5,8 @@
 #pragma once
 
 #include "windef.h"
-#include "TextBuffer.h"
+
+import TextBuffer;
 
 using std::wostringstream;
 

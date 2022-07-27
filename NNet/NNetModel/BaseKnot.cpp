@@ -2,10 +2,8 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include <assert.h>
 #include "Resource.h"
-#include "Geometry.h"
 #include "DrawContext.h"
 #include "NobException.h"
 #include "BaseKnot.h"

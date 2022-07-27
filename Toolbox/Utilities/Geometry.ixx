@@ -1,10 +1,10 @@
-// Geometry.h
+// Geometry.íxx
 //
 // Utilities
 
-#pragma once
+export module Geometry;
 
-template <typename T>
+export template <typename T>
 bool IsPointInRect  // check if point is in given rectangle
 (
 	T const P,  // The point in question
@@ -24,7 +24,7 @@ bool IsPointInRect  // check if point is in given rectangle
 	return true;
 }
 
-template <typename T>
+export template <typename T>
 bool IsPointInRect2  // check if point is in given rectangle
 (
 	T const point,  // The point in question

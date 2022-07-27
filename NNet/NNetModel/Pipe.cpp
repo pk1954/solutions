@@ -11,6 +11,8 @@
 #include "Knot.h"
 #include "Pipe.h"
 
+import Geometry;
+
 using std::wcout;
 using std::endl;
 using std::ranges::fill;

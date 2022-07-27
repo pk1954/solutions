@@ -2,10 +2,13 @@
 //
 // Utilities
 
+module;
+
 #include <locale>
 #include <iomanip>
 #include "PixelTypes.h"
-#include "TextBuffer.h"
+
+module TextBuffer;
 
 import Util;
 

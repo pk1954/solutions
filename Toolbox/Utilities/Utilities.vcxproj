@@ -23,8 +23,6 @@
     <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="EllipseType.h" />
-    <ClInclude Include="EnumArray.h" />
-    <ClInclude Include="Geometry.h" />
     <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
     <ClInclude Include="MeanFilter.h" />
@@ -35,16 +33,14 @@
     <ClInclude Include="PixelTypes.h" />
     <ClInclude Include="PointType.h" />
     <ClInclude Include="RectType.h" />
-    <ClInclude Include="RingBuffer.h" />
-    <ClInclude Include="TextBuffer.h" />
     <ClInclude Include="UtilityWrappers.h" />
-    <ClInclude Include="XArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="EventInterface.ixx" />
+    <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="MeanFilter.cpp" />
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="NamedType.ixx" />
@@ -54,6 +50,7 @@
     <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />
     <ClCompile Include="TextBuffer.cpp" />
+    <ClCompile Include="TextBuffer.ixx" />
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="Trace.ixx" />
     <ClCompile Include="util.cpp" />
