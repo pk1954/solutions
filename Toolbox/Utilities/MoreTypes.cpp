@@ -2,7 +2,6 @@
 //
 // Utilities
 
-#include "stdafx.h"
 #include "MoreTypes.h"
 
 int StepsOfThousand(float fValue)

@@ -4,7 +4,8 @@
 #pragma once
 
 #include "Windows.h"
-#include "EventInterface.h"
+
+import EventInterface;
 
 namespace Util
 {
