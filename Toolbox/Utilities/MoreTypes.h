@@ -4,16 +4,21 @@
 
 #pragma once
 
+#include <iomanip>
+#include <algorithm>
 #include "BasicTypes.h"
-#include "PointType.h"
 #include "RectType.h"
 #include "LineType.h"
 #include "CircleType.h"
 #include "EllipseType.h"
 
 import NamedType;
+import PointType;
 
 using std::min;
+using std::max;
+using std::setw;
+
 using MicroMeterPnt = PosType<MicroMeter>;
 
 inline static const MicroMeterPnt NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!

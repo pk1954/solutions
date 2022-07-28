@@ -5,6 +5,11 @@
 #pragma once
 
 #include <assert.h>
+#include <ostream>
+
+import PointType;
+
+using std::wostream;
 
 template <typename BASE_TYPE> 
 class RectType
@@ -208,7 +213,7 @@ public:
 		};
 	}
 
-	friend std::wostream & operator << (std::wostream & out, RectType const & rect)
+	friend wostream & operator << (wostream & out, RectType const & rect)
 	{
 		out << rect.GetStartPoint() << rect.GetEndPoint();
 		return out;

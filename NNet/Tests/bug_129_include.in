@@ -1,0 +1,54 @@
+SelectNobsInRect (-6058.94|-6764.72)(-5006.99|-6278.82)
+MakeIoConnector
+SelectNobsInRect (-3663.88|-7131.18)(-3605.41|-4610.57)
+SelectNobsInRect (-6652.23|-3155.38)(-4664.32|-2603.18)
+DeleteSelection 
+SelectNobsInRect (-6925.08|-2544.71)(-4846.22|-2018.50)
+MakeIoConnector
+UndoCommand
+MoveNob 531 (0.00|-7.53)
+MoveNob 531 (-3.76|-9.41)
+MoveNob 531 (-5.65|-15.05)
+MoveNob 531 (-11.29|-26.34)
+MoveNob 531 (-5.65|-16.94)
+MoveNob 531 (-1.88|-13.17)
+MoveNob 892 (0.00|-1.88)
+MoveNob 892 (0.00|-1.88)
+MoveNob 892 (-1.88|-1.88)
+MoveNob 892 (-1.88|-3.76)
+MoveNob 892 (-1.88|-5.65)
+MoveNob 892 (0.00|-7.53)
+MoveNob 892 (-1.88|-13.17)
+MoveNob 892 (-3.76|-7.53)
+MoveNob 892 (-1.88|-9.41)
+MoveNob 892 (0.00|-5.65)
+MoveNob 892 (-3.76|-7.53)
+MoveNob 892 (0.00|-7.53)
+MoveNob 892 (-1.88|-9.41)
+MoveNob 892 (0.00|-7.53)
+MoveNob 892 (-1.88|-7.53)
+MoveNob 892 (-1.88|-3.76)
+MoveNob 892 (0.00|-3.76)
+MoveNob 892 (0.00|-1.88)
+Connect 892 531
+SelectNobsInRect (-6370.19|-2544.65)(-5224.18|-2102.44)
+MakeIoConnector
+SelectNobsInRect (-16405.94|-2481.57)(-5189.47|-2304.33)
+SelectNobsInRect (-5425.88|-9659.32)(-124.86|-391.81)
+DeleteSelection 
+SelectNobsInRect (4119.19|-8217.70)(5531.14|-4211.71)
+SelectNobsInRect (-10459.97|-17575.94)(1163.96|-9432.63)
+DeleteSelection 
+SelectNobsInRect (-7865.93|-4572.91)(4546.06|286.81)
+DeleteSelection 
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+SelectNobsInRect (-13021.17|-15540.11)(-609.18|910.70)
+DeleteSelection 

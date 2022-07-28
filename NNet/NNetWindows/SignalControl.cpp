@@ -7,13 +7,14 @@
 #include <algorithm>  // min/max/abs templates
 #include "MoreTypes.h"
 #include "Resource.h"
-#include "PointType.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "ComputeThread.h"
 #include "SignalControl.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
+
+import PointType;
 
 using std::max;
 

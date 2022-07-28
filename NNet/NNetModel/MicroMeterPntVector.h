@@ -7,9 +7,10 @@
 #include <vector>
 #include <assert.h>   
 #include "MoreTypes.h"
-#include "PointType.h"
 #include "IoLine.h"
 #include "MicroMeterPosDir.h"
+
+import PointType;
 
 using std::endl;
 using std::vector;

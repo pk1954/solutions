@@ -1,14 +1,17 @@
-// PointType.h
+// PointType.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
+#include <assert.h>
 #include <algorithm>  // min/max/abs templates
 #include <iostream>
 #include <iomanip>
 #include <compare>
 #include "BasicTypes.h"
+
+export module PointType;
 
 import NamedType;
 import IoConstants;
@@ -19,7 +22,7 @@ using std::setw;
 using std::wostream;
 using std::hypot;
 
-template <typename BASE_TYPE, typename Parameter> 
+export template <typename BASE_TYPE, typename Parameter> 
 class PointType
 {
 public:
@@ -32,9 +35,9 @@ public:
 	bool      operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
 	bool      operator!=(PointType const & a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
 
-    PointType operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
-    PointType operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
-    PointType operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
+	PointType operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
+	PointType operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
+	PointType operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
 
 	PointType operator*= (int       const i) { m_x *= i; m_y *= i; return * this; }
 	PointType operator/= (int       const i) { m_x /= i; m_y /= i; return * this; }
@@ -66,13 +69,13 @@ public:
 		return res;
 	};
 
-    void Set2Zero() { * this = ZERO_VAL(); }
-    void Set2Null() { * this = NULL_VAL(); }
+	void Set2Zero() { * this = ZERO_VAL(); }
+	void Set2Null() { * this = NULL_VAL(); }
 
-    bool IsNull   () const { return * this == NULL_VAL(); };
-    bool IsNotNull() const { return * this != NULL_VAL(); };
-    bool IsZero   () const { return * this == ZERO_VAL(); };
-    bool IsNotZero() const { return * this != ZERO_VAL(); };
+	bool IsNull   () const { return * this == NULL_VAL(); };
+	bool IsNotNull() const { return * this != NULL_VAL(); };
+	bool IsZero   () const { return * this == ZERO_VAL(); };
+	bool IsNotZero() const { return * this != ZERO_VAL(); };
 
 	friend BASE_TYPE Distance(PointType const & npA, PointType const & npB)
 	{
@@ -223,13 +226,13 @@ public:
 	}
 
 private:
-    BASE_TYPE m_x;
-    BASE_TYPE m_y;
+	BASE_TYPE m_x;
+	BASE_TYPE m_y;
 };
 
 // PosType: A specialized PointType used to denote the position of something
 
-template <typename BASE_TYPE> 
+export template <typename BASE_TYPE> 
 class PosType: public PointType<BASE_TYPE, struct pos_tag> 
 {
 public:
@@ -242,7 +245,7 @@ public:
 
 // SizeType: A specialized PointType used to denote the size of something
 
-template <typename BASE_TYPE> 
+export template <typename BASE_TYPE> 
 class SizeType: public PointType<BASE_TYPE, struct siz_tag> 
 {
 public:

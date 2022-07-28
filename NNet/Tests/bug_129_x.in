@@ -1,0 +1,41 @@
+# *** Application start at Wed Sep  1 19:13:08 2021
+# *** Computer name: DESKTOP-D6AR9AH
+# *** User name:     Peter
+# *** Window configuration file WindowConfiguration24.cnf sucessfully processed
+# *** Read preferences file D:\SW-projects\Solutions\NNet\NNetSimu\NNetSimu_UserPreferences.txt
+# *** Reading file D:\SW-projects\Solutions\NNet\x64\Debug\std.mod
+# *** App.Start               291.82 ms
+# *** Reading file D:\SW-projects\Solutions\NNet\Models\8x3In3=ut2Ruck.mod
+SelectNobsInRect (-6457.23|-7201.05)(-4846.00|-6441.47)
+SelectAll 0
+DeleteNob 868
+DeleteNob 573
+DeleteNob 451
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (-7.51|15.03)
+MoveNob 978 (-17.53|27.55)
+MoveNob 978 (-5.01|10.02)
+MoveNob 978 (-5.01|5.01)
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (-2.50|5.01)
+MoveNob 978 (-2.50|7.51)
+MoveNob 978 (-5.01|15.03)
+MoveNob 978 (-2.50|10.02)
+MoveNob 978 (-5.01|10.02)
+MoveNob 978 (0.00|7.51)
+MoveNob 978 (-2.50|12.52)
+MoveNob 978 (0.00|12.52)
+MoveNob 978 (-2.50|7.51)
+MoveNob 978 (-2.50|10.02)
+MoveNob 978 (-2.50|10.02)
+MoveNob 978 (-2.50|12.52)
+MoveNob 978 (-5.01|22.54)
+MoveNob 978 (-2.50|15.03)
+MoveNob 978 (-5.01|30.06)
+MoveNob 978 (-2.50|12.52)
+MoveNob 978 (0.00|10.02)
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (0.00|2.50)
+DeleteNob 1329
+Include "D:\SW-projects\Solutions\NNet\Tests\bug_129_include.in"

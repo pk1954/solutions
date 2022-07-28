@@ -7,7 +7,8 @@
 #include <vector>
 #include <assert.h>   
 #include "MoreTypes.h"
-#include "PointType.h"
+
+import PointType;
 
 using std::vector;
 using std::unique_ptr;

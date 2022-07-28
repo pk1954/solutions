@@ -7,8 +7,6 @@
 
 module;
 
-#pragma once
-
 #include <iostream>
 #include <iomanip>
 #include <limits.h>

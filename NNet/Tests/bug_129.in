@@ -1,0 +1,94 @@
+# *** Application start at Wed Sep  1 19:13:08 2021
+# *** Computer name: DESKTOP-D6AR9AH
+# *** User name:     Peter
+# *** Window configuration file WindowConfiguration24.cnf sucessfully processed
+# *** Read preferences file D:\SW-projects\Solutions\NNet\NNetSimu\NNetSimu_UserPreferences.txt
+# *** Reading file D:\SW-projects\Solutions\NNet\x64\Debug\std.mod
+# *** App.Start               291.82 ms
+# *** Reading file D:\SW-projects\Solutions\NNet\Models\8x3In3=ut2Ruck.mod
+SelectNobsInRect (-6457.23|-7201.05)(-4846.00|-6441.47)
+SelectAll 0
+DeleteNob 868
+DeleteNob 573
+DeleteNob 451
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (-7.51|15.03)
+MoveNob 978 (-17.53|27.55)
+MoveNob 978 (-5.01|10.02)
+MoveNob 978 (-5.01|5.01)
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (-2.50|5.01)
+MoveNob 978 (-2.50|7.51)
+MoveNob 978 (-5.01|15.03)
+MoveNob 978 (-2.50|10.02)
+MoveNob 978 (-5.01|10.02)
+MoveNob 978 (0.00|7.51)
+MoveNob 978 (-2.50|12.52)
+MoveNob 978 (0.00|12.52)
+MoveNob 978 (-2.50|7.51)
+MoveNob 978 (-2.50|10.02)
+MoveNob 978 (-2.50|10.02)
+MoveNob 978 (-2.50|12.52)
+MoveNob 978 (-5.01|22.54)
+MoveNob 978 (-2.50|15.03)
+MoveNob 978 (-5.01|30.06)
+MoveNob 978 (-2.50|12.52)
+MoveNob 978 (0.00|10.02)
+MoveNob 978 (0.00|2.50)
+MoveNob 978 (0.00|2.50)
+DeleteNob 1329
+SelectNobsInRect (-6058.94|-6764.72)(-5006.99|-6278.82)
+MakeIoConnector
+SelectNobsInRect (-3663.88|-7131.18)(-3605.41|-4610.57)
+SelectNobsInRect (-6652.23|-3155.38)(-4664.32|-2603.18)
+DeleteSelection 
+SelectNobsInRect (-6925.08|-2544.71)(-4846.22|-2018.50)
+MakeIoConnector
+UndoCommand
+MoveNob 531 (0.00|-7.53)
+MoveNob 531 (-3.76|-9.41)
+MoveNob 531 (-5.65|-15.05)
+MoveNob 531 (-11.29|-26.34)
+MoveNob 531 (-5.65|-16.94)
+MoveNob 531 (-1.88|-13.17)
+MoveNob 892 (0.00|-1.88)
+MoveNob 892 (0.00|-1.88)
+MoveNob 892 (-1.88|-1.88)
+MoveNob 892 (-1.88|-3.76)
+MoveNob 892 (-1.88|-5.65)
+MoveNob 892 (0.00|-7.53)
+MoveNob 892 (-1.88|-13.17)
+MoveNob 892 (-3.76|-7.53)
+MoveNob 892 (-1.88|-9.41)
+MoveNob 892 (0.00|-5.65)
+MoveNob 892 (-3.76|-7.53)
+MoveNob 892 (0.00|-7.53)
+MoveNob 892 (-1.88|-9.41)
+MoveNob 892 (0.00|-7.53)
+MoveNob 892 (-1.88|-7.53)
+MoveNob 892 (-1.88|-3.76)
+MoveNob 892 (0.00|-3.76)
+MoveNob 892 (0.00|-1.88)
+Connect 892 531
+SelectNobsInRect (-6370.19|-2544.65)(-5224.18|-2102.44)
+MakeIoConnector
+SelectNobsInRect (-16405.94|-2481.57)(-5189.47|-2304.33)
+SelectNobsInRect (-5425.88|-9659.32)(-124.86|-391.81)
+DeleteSelection 
+SelectNobsInRect (4119.19|-8217.70)(5531.14|-4211.71)
+SelectNobsInRect (-10459.97|-17575.94)(1163.96|-9432.63)
+DeleteSelection 
+SelectNobsInRect (-7865.93|-4572.91)(4546.06|286.81)
+DeleteSelection 
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+UndoCommand
+SelectNobsInRect (-13021.17|-15540.11)(-609.18|910.70)
+DeleteSelection 

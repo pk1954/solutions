@@ -4,10 +4,13 @@
 
 #pragma once
 
-#include "PointType.h"
+#include <ostream>
 
 import NamedType;
+import PointType;
 import IoConstants;
+
+using std::wostream;
 
 template <typename BASE_TYPE> 
 class CircleType

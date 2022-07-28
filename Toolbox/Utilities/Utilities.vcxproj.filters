@@ -21,9 +21,6 @@
     <ClInclude Include="PixelTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IoConstants.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

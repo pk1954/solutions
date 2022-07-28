@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "PointType.h"
 #include "RectType.h"
 #include "CircleType.h"
 
 import NamedType;
+import PointType;
 
 template <typename BASE_TYPE> 
 class EllipseType

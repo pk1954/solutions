@@ -4,8 +4,6 @@
 
 module;
 
-#pragma once
-
 #include <array>
 #include "MoreTypes.h"
 

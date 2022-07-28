@@ -1,0 +1,763 @@
+# *** Application start at Fri Jan 28 23:46:38 2022
+# *** Version:       NNetSimu 2.6
+# *** Build date:    Jan 28 2022 23:35:57
+# *** Computer name: DESKTOP-4-PETER
+# *** User name:     Peter
+
+# *** Reading file MonitorConfigurations.cnf
+# *** End of file  MonitorConfigurations.cnf
+
+
+# *** Reading file WindowConfiguration27.cnf
+# *** End of file  WindowConfiguration27.cnf
+
+# *** Window configuration file WindowConfiguration27.cnf sucessfully processed
+# *** Read preferences file D:\SW-projects\Solutions\NNet\NNetSimu\NNetSimu_UserPreferences.txt
+
+# *** Reading file D:\SW-projects\Solutions\NNet\NNetSimu\NNetSimu_UserPreferences.txt
+# *** End of file  D:\SW-projects\Solutions\NNet\NNetSimu\NNetSimu_UserPreferences.txt
+
+# *** App.Start               563.60 ms
+
+# *** Reading file D:\SW-projects\Solutions\NNet\x64\Debug\std.mod
+## NNetModel
+## Created Fri Jan 28 16:28:45 2022
+#
+## Computer name: DESKTOP-4-PETER
+## User name: Peter
+#
+#Protocol version 1.8
+#
+#
+#
+#GlobalParameter StimulusMaxFreq = 50
+#GlobalParameter StimulusMaxTime = 500000
+#GlobalParameter BaseFrequency = 10
+#GlobalParameter PulseSpeed = 0.5
+#GlobalParameter PulseWidth = 2000
+#GlobalParameter Threshold = 20
+#GlobalParameter PeakVoltage = 10
+#GlobalParameter RefractoryPeriod = 500
+#GlobalParameter TimeResolution = 100
+#
+#NrOfNobs =  279
+#
+#CreateNob 3 knot( 630.305| 424.285)
+#Voltage 3 knot 0
+#CreateNob 4 knot( 505.666| 397.592)
+#Voltage 4 knot 0
+#CreateNob 8 knot( 654.945| 315.459)
+#Voltage 8 knot 0
+#CreateNob 9 knot( 928.649| 239.487)
+#Voltage 9 knot 0
+#CreateNob 16 knot( 1034.12| 1155.1)
+#Voltage 16 knot 0
+#CreateNob 17 knot( 760.421| 1231.08)
+#Voltage 17 knot 0
+#CreateNob 21 knot( 611.142| 1313.21)
+#Voltage 21 knot 0
+#CreateNob 22 knot( 735.781| 1339.9)
+#Voltage 22 knot 0
+#CreateNob 24 outputNeuron( 903.462| 1751.95)
+#Voltage 24 outputNeuron 0
+#CreateNob 25 outputNeuron( 730.315| 1659.15)
+#Voltage 25 outputNeuron 0
+#CreateNob 28 neuron( 849.226| 786.86)
+#Voltage 28 neuron 0
+#CreateNob 29 neuron( 669.284| 834.68)
+#Voltage 29 neuron 0
+#CreateNob 30 neuron( 497.763| 838.284)
+#Voltage 30 neuron 0
+#CreateNob 31 neuron( 1202.03| 816.904)
+#Voltage 31 neuron 0
+#CreateNob 32 neuron( 1373.55| 813.299)
+#Voltage 32 neuron 0
+#CreateNob 33 neuron( 1553.49| 765.479)
+#Voltage 33 neuron 0
+#CreateNob 34 outputNeuron( 1314.77| 1623.97)
+#Voltage 34 outputNeuron 0
+#CreateNob 37 outputNeuron( 1414.58| 1617.77)
+#Voltage 37 outputNeuron 0
+#CreateNob 38 outputNeuron( 1514.39| 1611.56)
+#Voltage 38 outputNeuron 0
+#CreateNob 40 knot( 1460.05| 1338.52)
+#Voltage 40 knot 0
+#CreateNob 41 knot( 1335.41| 1311.83)
+#Voltage 41 knot 0
+#CreateNob 45 knot( 1484.69| 1229.69)
+#Voltage 45 knot 0
+#CreateNob 46 knot( 1758.39| 1153.72)
+#Voltage 46 knot 0
+#CreateNob 54 knot( 1652.91| 238.106)
+#Voltage 54 knot 0
+#CreateNob 55 knot( 1379.21| 314.078)
+#Voltage 55 knot 0
+#CreateNob 59 knot( 1229.93| 396.211)
+#Voltage 59 knot 0
+#CreateNob 60 knot( 1354.57| 422.904)
+#Voltage 60 knot 0
+#CreateNob 64 knot( 882.765| 630.239)
+#Voltage 64 knot 0
+#CreateNob 65 knot( 1217.02| 464.25)
+#Voltage 65 knot 0
+#CreateNob 69 knot( 994.829| 1048.59)
+#Voltage 69 knot 0
+#CreateNob 70 knot( 1240.75| 972.88)
+#Voltage 70 knot 0
+#CreateNob 74 knot( 1306.16| 1258.33)
+#Voltage 74 knot 0
+#CreateNob 75 knot( 1000| 1261.1)
+#Voltage 75 knot 0
+#CreateNob 79 knot( 1279.72| 1103.07)
+#Voltage 79 knot 0
+#CreateNob 80 knot( 1420.47| 1000.01)
+#Voltage 80 knot 0
+#CreateNob 84 knot( 554.918| 1055.59)
+#Voltage 84 knot 0
+#CreateNob 85 knot( 694.821| 935.581)
+#Voltage 85 knot 0
+#CreateNob 89 knot( 1369.54| 723.528)
+#Voltage 89 knot 0
+#CreateNob 90 knot( 1630.7| 535.458)
+#Voltage 90 knot 0
+#CreateNob 97 knot( 1471.54| -1239.24)
+#Voltage 97 knot 0
+#CreateNob 98 knot( 1210.38| -1051.17)
+#Voltage 98 knot 0
+#CreateNob 102 knot( 535.662| -839.122)
+#Voltage 102 knot 0
+#CreateNob 103 knot( 395.759| -719.113)
+#Voltage 103 knot 0
+#CreateNob 107 knot( 1261.31| -774.693)
+#Voltage 107 knot 0
+#CreateNob 108 knot( 1120.56| -671.633)
+#Voltage 108 knot 0
+#CreateNob 112 knot( 840.841| -513.603)
+#Voltage 112 knot 0
+#CreateNob 113 knot( 1147| -516.373)
+#Voltage 113 knot 0
+#CreateNob 117 knot( 1081.59| -801.823)
+#Voltage 117 knot 0
+#CreateNob 118 knot( 835.67| -726.113)
+#Voltage 118 knot 0
+#CreateNob 122 knot( 1057.86| -1310.45)
+#Voltage 122 knot 0
+#CreateNob 123 knot( 723.606| -1144.46)
+#Voltage 123 knot 0
+#CreateNob 124 inputNeuron( 1194.24| -1850.58)
+#Voltage 124 inputNeuron 17.3402
+#CreateNob 127 inputNeuron( 1483.84| -2065.32)
+#Voltage 127 inputNeuron 17.1202
+#CreateNob 128 inputNeuron( 1952.37| -1965.15)
+#Voltage 128 inputNeuron 17.3602
+#CreateNob 130 knot( 1195.41| -1351.8)
+#Voltage 130 knot 0
+#CreateNob 131 knot( 1070.77| -1378.49)
+#Voltage 131 knot 0
+#CreateNob 135 knot( 1220.05| -1460.62)
+#Voltage 135 knot 0
+#CreateNob 136 knot( 1493.75| -1536.6)
+#Voltage 136 knot 0
+#CreateNob 143 knot( 1599.23| -620.983)
+#Voltage 143 knot 0
+#CreateNob 144 knot( 1325.53| -545.013)
+#Voltage 144 knot 0
+#CreateNob 148 knot( 1176.25| -462.873)
+#Voltage 148 knot 0
+#CreateNob 149 knot( 1300.89| -436.183)
+#Voltage 149 knot 0
+#CreateNob 153 neuron( 1374.33| -1029.22)
+#Voltage 153 neuron 0
+#CreateNob 154 neuron( 1194.39| -981.404)
+#Voltage 154 neuron 0
+#CreateNob 155 neuron( 1022.87| -977.799)
+#Voltage 155 neuron 0
+#CreateNob 156 neuron( 318.604| -956.419)
+#Voltage 156 neuron 0
+#CreateNob 157 neuron( 457.122| -989.359)
+#Voltage 157 neuron 0
+#CreateNob 158 neuron( 670.067| -1007.84)
+#Voltage 158 neuron 0
+#CreateNob 162 knot( 576.622| -434.803)
+#Voltage 162 knot 0
+#CreateNob 163 knot( 451.983| -461.493)
+#Voltage 163 knot 0
+#CreateNob 167 knot( 601.262| -543.623)
+#Voltage 167 knot 0
+#CreateNob 168 knot( 874.961| -619.603)
+#Voltage 168 knot 0
+#CreateNob 176 knot( 769.49| -1535.22)
+#Voltage 176 knot 0
+#CreateNob 177 knot( 495.786| -1459.24)
+#Voltage 177 knot 0
+#CreateNob 181 knot( 346.507| -1377.11)
+#Voltage 181 knot 0
+#CreateNob 182 knot( 471.146| -1350.42)
+#Voltage 182 knot 0
+#CreateNob 184 inputNeuron( 581.012| -1673.27)
+#Voltage 184 inputNeuron 17.3402
+#CreateNob 185 inputNeuron( 481.077| -1669.66)
+#Voltage 185 inputNeuron 17.1202
+#CreateNob 188 inputNeuron( 381.142| -1666.06)
+#Voltage 188 inputNeuron 17.3602
+#CreateNob 189 neuron( 1594.2| -219.135)
+#Voltage 189 neuron 0
+#CreateNob 190 neuron( 1252.24| -155.024)
+#Voltage 190 neuron 0
+#CreateNob 191 neuron( 1039.37| -183.689)
+#Voltage 191 neuron 0
+#CreateNob 192 neuron( 866.654| -264.802)
+#Voltage 192 neuron 0
+#CreateNob 193 neuron( 637.64| -180.522)
+#Voltage 193 neuron 0
+#CreateNob 194 neuron( 404.592| -100.277)
+#Voltage 194 neuron 0
+#CreateNob 195 knot( 921.016| 38.1498)
+#Voltage 195 knot 0
+#CreateNob 196 knot( 1073.03| -86.8463)
+#Voltage 196 knot 0
+#CreateNob 200 knot( 1323.64| 47.7719)
+#Voltage 200 knot 0
+#CreateNob 201 knot( 1600.8| -120.827)
+#Voltage 201 knot 0
+#CreateNob 205 knot( 1132.31| 117.965)
+#Voltage 205 knot 0
+#CreateNob 206 knot( 1292.88| -40.4242)
+#Voltage 206 knot 0
+#CreateNob 210 knot( 441.676| 137.422)
+#Voltage 210 knot 0
+#CreateNob 211 knot( 642.818| -60.9525)
+#Voltage 211 knot 0
+#CreateNob 215 outputNeuron( 473.315| 1756.45)
+#Voltage 215 outputNeuron 0
+#CreateNob 216 knot( 268.67| 1486.36)
+#Voltage 216 knot 0
+#CreateNob 217 knot( 551.842| 1504.11)
+#Voltage 217 knot 0
+#CreateNob 220 knot( -72.4017| -915.775)
+#Voltage 220 knot 0
+#CreateNob 221 knot( 364.287| -1551.76)
+#Voltage 221 knot 0
+#CreateNob 225 knot( 495.987| -1156.53)
+#Voltage 225 knot 0
+#CreateNob 226 knot( 682.696| -1336.88)
+#Voltage 226 knot 0
+#CreateNob 230 knot( 646.327| 5.91875)
+#Voltage 230 knot 0
+#CreateNob 231 knot( 858.713| -170.77)
+#Voltage 231 knot 0
+#CreateNob 235 knot( 666.657| 757.134)
+#Voltage 235 knot 0
+#CreateNob 236 knot( 863.335| 659.554)
+#Voltage 236 knot 0
+#CreateNob 240 knot( 452.987| 224.688)
+#Voltage 240 knot 0
+#CreateNob 241 knot( 646.387| 99.1261)
+#Voltage 241 knot 0
+#CreateNob 245 knot( 500.106| 594.317)
+#Voltage 245 knot 0
+#CreateNob 246 knot( 635.386| 513.498)
+#Voltage 246 knot 0
+#CreateNob 250 inputNeuron( 887.596| -1976.87)
+#Voltage 250 inputNeuron 13.1201
+#CreateNob 251 knot( 741.172| -1574.26)
+#Voltage 251 knot 0
+#CreateNob 254 knot( 438.155| -269.066)
+#Voltage 254 knot 0
+#CreateNob 255 knot( 679.707| -369.92)
+#Voltage 255 knot 0
+#CreateNob 259 knot( 661.136| -358.546)
+#Voltage 259 knot 0
+#CreateNob 260 knot( 685.284| -577.902)
+#Voltage 260 knot 0
+#CreateNob 264 knot( 1358.48| -1486.55)
+#Voltage 264 knot 0
+#CreateNob 265 knot( 1288.18| -362.057)
+#Voltage 265 knot 0
+#CreateNob 269 knot( 642.01| -1293.87)
+#Voltage 269 knot 0
+#CreateNob 270 knot( 580.309| -1004.33)
+#Voltage 270 knot 0
+#CreateNob 274 knot( 582.9| -1225.51)
+#Voltage 274 knot 0
+#CreateNob 275 knot( 472.144| -1316.91)
+#Voltage 275 knot 0
+#CreateNob 0 pipe(245->30)
+#Voltage 0 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 1 pipe(235->29)
+#Voltage 1 pipe(2: 0, 0)
+#CreateNob 2 pipe(236->28)
+#Voltage 2 pipe(3: 0, 0, 0)
+#CreateNob 5 pipe(4->3)
+#Voltage 5 pipe(3: 0, 0, 0)
+#CreateNob 6 pipe(240->4)
+#Voltage 6 pipe(4: 0, 0, 0, 0)
+#CreateNob 7 pipe(8->3)
+#Voltage 7 pipe(2: 0, 0)
+#CreateNob 10 pipe(9->8)
+#Voltage 10 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 11 pipe(195->9)
+#Voltage 11 pipe(4: 0, 0, 0, 0)
+#CreateNob 12 pipe(241->8)
+#Voltage 12 pipe(4: 0, 0, 0, 0)
+#CreateNob 13 pipe(85->17)
+#Voltage 13 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 14 pipe(69->16)
+#Voltage 14 pipe(2: 0, 0)
+#CreateNob 15 pipe(16->17)
+#Voltage 15 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 18 pipe(17->22)
+#Voltage 18 pipe(2: 0, 0)
+#CreateNob 19 pipe(84->21)
+#Voltage 19 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 20 pipe(21->22)
+#Voltage 20 pipe(3: 0, 0, 0)
+#CreateNob 23 pipe(75->24)
+#Voltage 23 pipe(10: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 26 pipe(22->25)
+#Voltage 26 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 27 pipe(217->215)
+#Voltage 27 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 35 pipe(41->34)
+#Voltage 35 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 36 pipe(40->37)
+#Voltage 36 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 39 pipe(46->38)
+#Voltage 39 pipe(10: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 42 pipe(41->40)
+#Voltage 42 pipe(3: 0, 0, 0)
+#CreateNob 43 pipe(74->41)
+#Voltage 43 pipe(1: 0)
+#CreateNob 44 pipe(45->40)
+#Voltage 44 pipe(2: 0, 0)
+#CreateNob 47 pipe(46->45)
+#Voltage 47 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 48 pipe(33->46)
+#Voltage 48 pipe(9: 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 49 pipe(80->45)
+#Voltage 49 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 51 pipe(200->55)
+#Voltage 51 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 52 pipe(201->54)
+#Voltage 52 pipe(7: 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 53 pipe(54->55)
+#Voltage 53 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 56 pipe(55->60)
+#Voltage 56 pipe(2: 0, 0)
+#CreateNob 57 pipe(205->59)
+#Voltage 57 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 58 pipe(59->60)
+#Voltage 58 pipe(3: 0, 0, 0)
+#CreateNob 61 pipe(90->33)
+#Voltage 61 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 62 pipe(89->32)
+#Voltage 62 pipe(2: 0, 0)
+#CreateNob 63 pipe(65->31)
+#Voltage 63 pipe(7: 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 66 pipe(65->64)
+#Voltage 66 pipe(7: 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 67 pipe(59->65)
+#Voltage 67 pipe(1: 0)
+#CreateNob 68 pipe(9->64)
+#Voltage 68 pipe(8: 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 71 pipe(70->69)
+#Voltage 71 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 72 pipe(31->70)
+#Voltage 72 pipe(3: 0, 0, 0)
+#CreateNob 73 pipe(28->69)
+#Voltage 73 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 76 pipe(75->74)
+#Voltage 76 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 77 pipe(16->75)
+#Voltage 77 pipe(2: 0, 0)
+#CreateNob 78 pipe(79->74)
+#Voltage 78 pipe(3: 0, 0, 0)
+#CreateNob 81 pipe(80->79)
+#Voltage 81 pipe(3: 0, 0, 0)
+#CreateNob 82 pipe(32->80)
+#Voltage 82 pipe(4: 0, 0, 0, 0)
+#CreateNob 83 pipe(70->79)
+#Voltage 83 pipe(3: 0, 0, 0)
+#CreateNob 86 pipe(85->84)
+#Voltage 86 pipe(4: 0, 0, 0, 0)
+#CreateNob 87 pipe(29->85)
+#Voltage 87 pipe(2: 0, 0)
+#CreateNob 88 pipe(30->84)
+#Voltage 88 pipe(4: 0, 0, 0, 0)
+#CreateNob 91 pipe(90->89)
+#Voltage 91 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 92 pipe(54->90)
+#Voltage 92 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 93 pipe(60->89)
+#Voltage 93 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 94 pipe(130->98)
+#Voltage 94 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 95 pipe(136->97)
+#Voltage 95 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 96 pipe(97->98)
+#Voltage 96 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 99 pipe(156->103)
+#Voltage 99 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 100 pipe(270->102)
+#Voltage 100 pipe(3: 0, 0, 0)
+#CreateNob 101 pipe(102->103)
+#Voltage 101 pipe(4: 0, 0, 0, 0)
+#CreateNob 104 pipe(117->108)
+#Voltage 104 pipe(3: 0, 0, 0)
+#CreateNob 105 pipe(154->107)
+#Voltage 105 pipe(4: 0, 0, 0, 0)
+#CreateNob 106 pipe(107->108)
+#Voltage 106 pipe(3: 0, 0, 0)
+#CreateNob 109 pipe(108->113)
+#Voltage 109 pipe(3: 0, 0, 0)
+#CreateNob 110 pipe(168->112)
+#Voltage 110 pipe(2: 0, 0)
+#CreateNob 111 pipe(112->113)
+#Voltage 111 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 114 pipe(158->118)
+#Voltage 114 pipe(7: 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 115 pipe(155->117)
+#Voltage 115 pipe(4: 0, 0, 0, 0)
+#CreateNob 116 pipe(117->118)
+#Voltage 116 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 119 pipe(226->123)
+#Voltage 119 pipe(4: 0, 0, 0, 0)
+#CreateNob 120 pipe(131->122)
+#Voltage 120 pipe(1: 0)
+#CreateNob 121 pipe(122->123)
+#Voltage 121 pipe(7: 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 125 pipe(122->155)
+#Voltage 125 pipe(7: 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 126 pipe(98->154)
+#Voltage 126 pipe(1: 0)
+#CreateNob 129 pipe(97->153)
+#Voltage 129 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 132 pipe(131->130)
+#Voltage 132 pipe(3: 0, 0, 0)
+#CreateNob 133 pipe(124->131)
+#Voltage 133 pipe(10: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 134 pipe(135->130)
+#Voltage 134 pipe(2: 0, 0)
+#CreateNob 137 pipe(264->135)
+#Voltage 137 pipe(3: 0, 0, 0)
+#CreateNob 138 pipe(128->136)
+#Voltage 138 pipe(13: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 139 pipe(127->135)
+#Voltage 139 pipe(13: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 140 pipe(107->144)
+#Voltage 140 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 141 pipe(153->143)
+#Voltage 141 pipe(9: 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 142 pipe(143->144)
+#Voltage 142 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 145 pipe(144->149)
+#Voltage 145 pipe(2: 0, 0)
+#CreateNob 146 pipe(113->148)
+#Voltage 146 pipe(1: 0)
+#CreateNob 147 pipe(148->149)
+#Voltage 147 pipe(3: 0, 0, 0)
+#CreateNob 150 pipe(143->189)
+#Voltage 150 pipe(8: 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 151 pipe(265->190)
+#Voltage 151 pipe(4: 0, 0, 0, 0)
+#CreateNob 152 pipe(148->191)
+#Voltage 152 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 159 pipe(254->194)
+#Voltage 159 pipe(3: 0, 0, 0)
+#CreateNob 160 pipe(162->193)
+#Voltage 160 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 161 pipe(112->192)
+#Voltage 161 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 164 pipe(163->162)
+#Voltage 164 pipe(3: 0, 0, 0)
+#CreateNob 165 pipe(103->163)
+#Voltage 165 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 166 pipe(167->162)
+#Voltage 166 pipe(2: 0, 0)
+#CreateNob 169 pipe(260->167)
+#Voltage 169 pipe(2: 0, 0)
+#CreateNob 170 pipe(118->168)
+#Voltage 170 pipe(2: 0, 0)
+#CreateNob 171 pipe(102->167)
+#Voltage 171 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 173 pipe(185->177)
+#Voltage 173 pipe(4: 0, 0, 0, 0)
+#CreateNob 174 pipe(251->176)
+#Voltage 174 pipe(1: 0)
+#CreateNob 175 pipe(176->177)
+#Voltage 175 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 178 pipe(177->182)
+#Voltage 178 pipe(2: 0, 0)
+#CreateNob 179 pipe(221->181)
+#Voltage 179 pipe(4: 0, 0, 0, 0)
+#CreateNob 180 pipe(181->182)
+#Voltage 180 pipe(3: 0, 0, 0)
+#CreateNob 183 pipe(123->158)
+#Voltage 183 pipe(3: 0, 0, 0)
+#CreateNob 186 pipe(225->157)
+#Voltage 186 pipe(3: 0, 0, 0)
+#CreateNob 187 pipe(181->156)
+#Voltage 187 pipe(8: 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 197 pipe(196->195)
+#Voltage 197 pipe(4: 0, 0, 0, 0)
+#CreateNob 198 pipe(191->196)
+#Voltage 198 pipe(2: 0, 0)
+#CreateNob 199 pipe(255->195)
+#Voltage 199 pipe(9: 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 202 pipe(201->200)
+#Voltage 202 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 203 pipe(189->201)
+#Voltage 203 pipe(2: 0, 0)
+#CreateNob 204 pipe(206->200)
+#Voltage 204 pipe(2: 0, 0)
+#CreateNob 207 pipe(206->205)
+#Voltage 207 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 208 pipe(190->206)
+#Voltage 208 pipe(2: 0, 0)
+#CreateNob 209 pipe(196->205)
+#Voltage 209 pipe(4: 0, 0, 0, 0)
+#CreateNob 212 pipe(211->210)
+#Voltage 212 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 213 pipe(193->211)
+#Voltage 213 pipe(2: 0, 0)
+#CreateNob 214 pipe(194->210)
+#Voltage 214 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 218 pipe(217->216)
+#Voltage 218 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 219 pipe(21->217)
+#Voltage 219 pipe(4: 0, 0, 0, 0)
+#CreateNob 222 pipe(220->221)
+#Voltage 222 pipe(15: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 223 pipe(188->221)
+#Voltage 223 pipe(2: 0, 0)
+#CreateNob 224 pipe(216->220)
+#Voltage 224 pipe(49: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 227 pipe(274->225)
+#Voltage 227 pipe(2: 0, 0)
+#CreateNob 228 pipe(176->226)
+#Voltage 228 pipe(4: 0, 0, 0, 0)
+#CreateNob 229 pipe(275->225)
+#Voltage 229 pipe(3: 0, 0, 0)
+#CreateNob 232 pipe(231->230)
+#Voltage 232 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 233 pipe(192->231)
+#Voltage 233 pipe(2: 0, 0)
+#CreateNob 234 pipe(211->230)
+#Voltage 234 pipe(1: 0)
+#CreateNob 237 pipe(236->235)
+#Voltage 237 pipe(4: 0, 0, 0, 0)
+#CreateNob 238 pipe(64->236)
+#Voltage 238 pipe(1: 0)
+#CreateNob 239 pipe(246->235)
+#Voltage 239 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 242 pipe(241->240)
+#Voltage 242 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 243 pipe(230->241)
+#Voltage 243 pipe(2: 0, 0)
+#CreateNob 244 pipe(210->240)
+#Voltage 244 pipe(2: 0, 0)
+#CreateNob 247 pipe(246->245)
+#Voltage 247 pipe(3: 0, 0, 0)
+#CreateNob 248 pipe(3->246)
+#Voltage 248 pipe(2: 0, 0)
+#CreateNob 249 pipe(4->245)
+#Voltage 249 pipe(4: 0, 0, 0, 0)
+#CreateNob 252 pipe(250->251)
+#Voltage 252 pipe(9: 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 253 pipe(184->251)
+#Voltage 253 pipe(4: 0, 0, 0, 0)
+#CreateNob 256 pipe(259->254)
+#Voltage 256 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 257 pipe(231->255)
+#Voltage 257 pipe(5: 0, 0, 0, 0, 0)
+#CreateNob 258 pipe(163->254)
+#Voltage 258 pipe(4: 0, 0, 0, 0)
+#CreateNob 261 pipe(260->259)
+#Voltage 261 pipe(4: 0, 0, 0, 0)
+#CreateNob 262 pipe(168->260)
+#Voltage 262 pipe(4: 0, 0, 0, 0)
+#CreateNob 263 pipe(255->259)
+#Voltage 263 pipe(1: 0)
+#CreateNob 266 pipe(265->264)
+#Voltage 266 pipe(23: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#CreateNob 267 pipe(149->265)
+#Voltage 267 pipe(2: 0, 0)
+#CreateNob 268 pipe(136->264)
+#Voltage 268 pipe(3: 0, 0, 0)
+#CreateNob 271 pipe(270->269)
+#Voltage 271 pipe(6: 0, 0, 0, 0, 0, 0)
+#CreateNob 272 pipe(157->270)
+#Voltage 272 pipe(2: 0, 0)
+#CreateNob 273 pipe(226->269)
+#Voltage 273 pipe(1: 0)
+#CreateNob 276 pipe(275->274)
+#Voltage 276 pipe(3: 0, 0, 0)
+#CreateNob 277 pipe(182->275)
+#Voltage 277 pipe(1: 0)
+#CreateNob 278 pipe(269->274)
+#Voltage 278 pipe(2: 0, 0)
+#CreateNob 50 outputConnector{3:34,37,38}
+#Voltage 50 outputConnector
+#CreateNob 172 inputConnector{3:188,185,184}
+#Voltage 172 inputConnector
+#
+#SetParam 172 BaseFrequency 10
+#SetParam 172 StimulusMaxFreq 50
+#SetParam 172 StimulusMaxTime 500000
+#
+#
+#NrOfTracks 1
+#Signal  track  0 source 101(( 425.142| -972.661),250)
+#
+# *** End of file  D:\SW-projects\Solutions\NNet\x64\Debug\std.mod
+
+#AnimateCoord
+SelectNobsInRect ( 1047.19| -2318.05)( 2299.55| -1587.10)
+MakeIoConnector
+MoveNob  279 ( 24.36| 0.00)
+MoveNob  279 ( 38.98| -4.87)
+MoveNob  279 ( 102.33| -9.75)
+MoveNob  279 ( 53.60| -4.87)
+MoveNob  279 ( 48.73| -4.87)
+MoveNob  279 ( 97.46| 0.00)
+MoveNob  279 ( 9.75| 0.00)
+MoveNob  279 ( 4.87| -4.87)
+MoveNob  279 ( 4.87| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( 0.00| -9.75)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -9.75| -24.36)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( -4.87| -14.62)
+MoveNob  279 ( -4.87| -9.75)
+MoveNob  279 ( -14.62| -14.62)
+MoveNob  279 ( -9.75| -4.87)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -14.62| -4.87)
+MoveNob  279 ( -19.49| -4.87)
+MoveNob  279 ( -14.62| 0.00)
+MoveNob  279 ( -9.75| -4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -14.62| 0.00)
+MoveNob  279 ( -38.98| 0.00)
+MoveNob  279 ( -34.11| 0.00)
+MoveNob  279 ( -38.98| 9.75)
+MoveNob  279 ( -34.11| 0.00)
+MoveNob  279 ( -34.11| 4.87)
+MoveNob  279 ( -34.11| 4.87)
+MoveNob  279 ( -73.10| 19.49)
+MoveNob  279 ( -53.60| 14.62)
+MoveNob  279 ( -34.11| 4.87)
+MoveNob  279 ( -4.87| 4.87)
+MoveNob  279 ( 901.51| 726.08)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( -4.87| -14.62)
+MoveNob  279 ( -14.62| -9.75)
+MoveNob  279 ( -9.75| -34.11)
+MoveNob  279 ( -19.49| -38.98)
+MoveNob  279 ( -19.49| -53.60)
+MoveNob  279 ( -19.49| -68.22)
+MoveNob  279 ( -19.49| -34.11)
+MoveNob  279 ( -9.75| -38.98)
+MoveNob  279 ( -19.49| -38.98)
+MoveNob  279 ( -14.62| -43.86)
+MoveNob  279 ( -19.49| -38.98)
+MoveNob  279 ( -38.98| -73.10)
+MoveNob  279 ( -19.49| -38.98)
+MoveNob  279 ( -24.37| -34.11)
+MoveNob  279 ( -9.75| -19.49)
+MoveNob  279 ( -9.75| -9.75)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( 0.00| -4.87)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -14.62| -4.87)
+MoveNob  279 ( -9.75| -4.87)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| -4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -24.36| 0.00)
+MoveNob  279 ( -14.62| 0.00)
+MoveNob  279 ( -24.37| -4.87)
+MoveNob  279 ( -19.49| -4.87)
+MoveNob  279 ( -24.37| -4.87)
+MoveNob  279 ( -34.11| 0.00)
+MoveNob  279 ( -43.86| 0.00)
+MoveNob  279 ( -38.98| 0.00)
+MoveNob  279 ( -24.36| 0.00)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -24.37| 0.00)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -9.75| 4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -9.75| 4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -4.87| 4.87)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -4.87| 0.00)
+MoveNob  279 ( -9.75| 4.87)
+MoveNob  279 ( -38.98| 4.87)
+MoveNob  279 ( -14.62| 4.87)
+MoveNob  279 ( -9.75| 0.00)
+MoveNob  279 ( -9.75| 4.87)
+UndoCommand
+UndoCommand
+RedoCommand
+DiscIoConnector  279
+MoveNob  128 ( 4.87| 4.87)
+MoveNob  128 ( 14.62| 14.62)
+MoveNob  128 ( 14.62| 9.75)
+MoveNob  128 ( 14.62| 14.62)
+MoveNob  128 ( 14.62| 9.75)
+MoveNob  128 ( 14.62| 9.75)
+MoveNob  128 ( 14.62| 9.75)
+MoveNob  128 ( 9.75| 4.87)
+MoveNob  128 ( 4.87| 4.87)
+MoveNob  128 ( 4.87| 4.87)
+MoveNob  128 ( 0.00| 4.87)
+MoveNob  128 ( 4.87| 0.00)
+UndoCommand
+MoveNob  127 ( -14.62| 0.00)
+MoveNob  127 ( -9.75| 0.00)
+MoveNob  127 ( -14.62| 0.00)
+MoveNob  127 ( -34.11| 0.00)
+MoveNob  127 ( -34.11| 0.00)
+MoveNob  127 ( -48.73| 4.87)
+MoveNob  127 ( -48.73| 0.00)
+MoveNob  127 ( -38.98| 0.00)
+MoveNob  127 ( -14.62| 0.00)
+MoveNob  127 ( -4.87| 0.00)
+UndoCommand
+UndoCommand

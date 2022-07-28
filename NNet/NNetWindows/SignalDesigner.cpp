@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "PointType.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
@@ -17,6 +16,8 @@
 #include "win32_util_resource.h"
 #include "win32_PixelTypes.h"
 #include "SignalDesigner.h"
+
+import PointType;
 
 using std::bit_cast;
 

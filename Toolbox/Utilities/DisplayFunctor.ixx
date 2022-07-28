@@ -1,10 +1,8 @@
-// DisplayFunctor.h
+// DisplayFunctor.ixx
 //
 // Utilities
 
 module;
-
-#pragma once
 
 #include <string>
 

@@ -4,8 +4,6 @@
 
 module;
 
-#pragma once
-
 #include "Windows.h"
 
 export module Win32_Event;

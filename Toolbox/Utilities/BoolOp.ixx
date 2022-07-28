@@ -8,8 +8,6 @@ module;
 #include <iostream>
 #include <unordered_map>
 
-//#pragma once
-
 export module BoolOp;
 
 using std::wostream;
