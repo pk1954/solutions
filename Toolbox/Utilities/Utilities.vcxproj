@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="debug.h" />
-    <ClInclude Include="EllipseType.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="PixFpDimension.h" />
     <ClInclude Include="SaveCast.h" />
@@ -35,6 +34,7 @@
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
     <ClCompile Include="DisplayFunctor.ixx" />
+    <ClCompile Include="EllipseType.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="IoConstants.ixx" />

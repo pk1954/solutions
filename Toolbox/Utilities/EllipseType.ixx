@@ -1,16 +1,18 @@
-// EllipseType.h
+// EllipseType.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
 #include "RectType.h"
+
+export module EllipseType;
 
 import NamedType;
 import PointType;
 import CircleType;
 
-template <typename BASE_TYPE> 
+export template <typename BASE_TYPE> 
 class EllipseType
 {
     using POS_TYPE = PosType<BASE_TYPE>;
@@ -22,7 +24,7 @@ public:
     }
 
     EllipseType(POS_TYPE const & pos, BASE_TYPE const radiusX, BASE_TYPE const radiusY) 
-      : m_position(pos),
+        : m_position(pos),
         m_radiusX(radiusX),
         m_radiusY(radiusY)
     {}
@@ -42,9 +44,9 @@ public:
     bool operator==(EllipseType const & a) const 
     { 
         return 
-        (m_position == a.m_position) &&
-        (m_radiusX  == a.m_radiusX) &&
-        (m_radiusY  == a.m_radiusY);
+            (m_position == a.m_position) &&
+            (m_radiusX  == a.m_radiusX) &&
+            (m_radiusY  == a.m_radiusY);
     }
 
     EllipseType operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
