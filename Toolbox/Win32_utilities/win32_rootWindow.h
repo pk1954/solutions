@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+#include <sstream>
 #include <chrono>
 #include <vector>
 #include "windowsx.h"
