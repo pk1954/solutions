@@ -5,10 +5,11 @@
 #include "stdafx.h"
 #include "ErrHndl.h"
 #include "Script.h"
-#include "IoConstants.h"
 #include "NobId.h"
 #include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
+
+import IoConstants;
 
 MicroMeter ScrReadMicroMeter(Script & script)
 {

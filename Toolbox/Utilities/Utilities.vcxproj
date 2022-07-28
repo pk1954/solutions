@@ -23,7 +23,6 @@
     <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="EllipseType.h" />
-    <ClInclude Include="IoConstants.h" />
     <ClInclude Include="LineType.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="PixFpDimension.h" />
@@ -40,6 +39,7 @@
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="Geometry.ixx" />
+    <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />

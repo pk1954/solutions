@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "IoConstants.h"
 #include "PointType.h"
 
 import NamedType;
+import IoConstants;
 
 template <typename BASE_TYPE> 
 class CircleType

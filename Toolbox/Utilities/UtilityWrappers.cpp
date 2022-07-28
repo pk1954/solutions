@@ -3,6 +3,7 @@
 // Utilities
 
 #include <assert.h>
+#include <string>
 #include "Script.h"
 #include "Symtab.h"
 #include "UtilityWrappers.h"

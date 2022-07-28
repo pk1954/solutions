@@ -8,10 +8,10 @@
 #include <iostream>
 #include <iomanip>
 #include <compare>
-#include "IoConstants.h"
 #include "BasicTypes.h"
 
 import NamedType;
+import IoConstants;
 
 using std::abs;
 using std::max;
