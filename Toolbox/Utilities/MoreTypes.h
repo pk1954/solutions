@@ -4,20 +4,22 @@
 
 #pragma once
 
+#include <ostream>
 #include <iomanip>
 #include <algorithm>
 #include "BasicTypes.h"
-#include "RectType.h"
 
 import NamedType;
 import PointType;
 import LineType;
 import EllipseType;
 import CircleType;
+import RectType;
 
 using std::min;
 using std::max;
 using std::setw;
+using std::wostream;
 
 using MicroMeterPnt = PosType<MicroMeter>;
 

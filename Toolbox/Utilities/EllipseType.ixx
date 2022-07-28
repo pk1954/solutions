@@ -2,15 +2,12 @@
 //
 // Utilities
 
-module;
-
-#include "RectType.h"
-
 export module EllipseType;
 
 import NamedType;
 import PointType;
 import CircleType;
+import RectType;
 
 export template <typename BASE_TYPE> 
 class EllipseType

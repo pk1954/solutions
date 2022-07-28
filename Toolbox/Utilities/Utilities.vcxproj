@@ -26,7 +26,6 @@
     <ClInclude Include="SaveCast.h" />
     <ClInclude Include="Uniform2D.h" />
     <ClInclude Include="PixelTypes.h" />
-    <ClInclude Include="RectType.h" />
     <ClInclude Include="UtilityWrappers.h" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +43,7 @@
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="PointType.ixx" />
+    <ClCompile Include="RectType.ixx" />
     <ClCompile Include="SlowMotionRatio.ixx" />
     <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />

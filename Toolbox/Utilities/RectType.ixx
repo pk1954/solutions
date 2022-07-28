@@ -1,17 +1,19 @@
-// RectType.h
+// RectType.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
 #include <assert.h>
 #include <ostream>
+
+export module RectType;
 
 import PointType;
 
 using std::wostream;
 
-template <typename BASE_TYPE> 
+export template <typename BASE_TYPE> 
 class RectType
 {
 	using POS_TYPE  = PosType<BASE_TYPE>;
@@ -19,12 +21,12 @@ class RectType
 
 public:
 
-    RectType() 
+	RectType() 
 	{ 
 		* this = ZERO_VAL(); 
 	}
 
- 	RectType
+	RectType
 	(
 		POS_TYPE const & pt1, 
 		POS_TYPE const & pt2 
@@ -60,23 +62,23 @@ public:
 		BASE_TYPE const right, 
 		BASE_TYPE const bottom 
 	) :
-        m_Left  (left), 
-        m_Top   (top), 
-        m_Right (right), 
-        m_Bottom(bottom)
-    { 
+		m_Left  (left), 
+		m_Top   (top), 
+		m_Right (right), 
+		m_Bottom(bottom)
+	{ 
 		assert(m_Bottom >= m_Top);
-    };
+	};
 
 	RectType
 	(
 		POS_TYPE  const & ptOrigin, 
 		SIZE_TYPE const & size 
 	) :
-        m_Left  (ptOrigin.GetX()),
-        m_Top   (ptOrigin.GetY()),
-        m_Right (m_Left + size.GetX() - BASE_TYPE(1)),
-        m_Bottom(m_Top  + size.GetY() - BASE_TYPE(1))
+		m_Left  (ptOrigin.GetX()),
+		m_Top   (ptOrigin.GetY()),
+		m_Right (m_Left + size.GetX() - BASE_TYPE(1)),
+		m_Bottom(m_Top  + size.GetY() - BASE_TYPE(1))
 	{
 		assert(m_Bottom >= m_Top);
 	}
@@ -88,27 +90,27 @@ public:
 	void SetWidth (BASE_TYPE const val) { m_Right  = m_Left + val; };
 	void SetHeight(BASE_TYPE const val) { m_Bottom = m_Top  + val; };
 
-    bool IsEmpty   () const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
+	bool IsEmpty   () const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
 	bool IsNotEmpty() const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
 
 	BASE_TYPE GetLeft  () const { return m_Left;   };
-    BASE_TYPE GetTop   () const { return m_Top;    };
-    BASE_TYPE GetRight () const { return m_Right;  };
-    BASE_TYPE GetBottom() const { return m_Bottom; };
+	BASE_TYPE GetTop   () const { return m_Top;    };
+	BASE_TYPE GetRight () const { return m_Right;  };
+	BASE_TYPE GetBottom() const { return m_Bottom; };
 
-    BASE_TYPE GetWidth () const { return m_Right  - m_Left + BASE_TYPE(BASE_TYPE(1)); }
+	BASE_TYPE GetWidth () const { return m_Right  - m_Left + BASE_TYPE(BASE_TYPE(1)); }
 	BASE_TYPE GetHeight() const { return m_Bottom - m_Top  + BASE_TYPE(BASE_TYPE(1)); }
 
-    SIZE_TYPE GetSize() const { return SIZE_TYPE(GetWidth(), GetHeight()); }
+	SIZE_TYPE GetSize() const { return SIZE_TYPE(GetWidth(), GetHeight()); }
 
-    POS_TYPE  GetStartPoint() const { return POS_TYPE(GetLeft (), GetTop   ()); }
-    POS_TYPE  GetEndPoint  () const { return POS_TYPE(GetRight(), GetBottom()); }
-    POS_TYPE  GetCenter    () const { return (GetStartPoint() + GetEndPoint()) / 2; }
+	POS_TYPE  GetStartPoint() const { return POS_TYPE(GetLeft (), GetTop   ()); }
+	POS_TYPE  GetEndPoint  () const { return POS_TYPE(GetRight(), GetBottom()); }
+	POS_TYPE  GetCenter    () const { return (GetStartPoint() + GetEndPoint()) / 2; }
 
 	bool Includes(POS_TYPE const pnt) const
 	{
 		return (m_Left <= pnt.GetX()) && (pnt.GetX() < m_Right) && 
-			   (m_Top  <= pnt.GetY()) && (pnt.GetY() < m_Bottom);
+			(m_Top  <= pnt.GetY()) && (pnt.GetY() < m_Bottom);
 	}
 
 	bool Includes(SIZE_TYPE const size) const
@@ -119,7 +121,7 @@ public:
 	bool Includes(RectType const & rect) const
 	{
 		return (m_Left <= rect.GetLeft()) && (rect.GetRight () < m_Right) && 
-			   (m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
+			(m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
 	}
 
 	bool IsIncludedIn(RectType const & rect) const
@@ -145,13 +147,13 @@ public:
 	bool operator== (RectType const & a) const 
 	{ 
 		return (a.m_Left  == m_Left ) && (a.m_Top    == m_Top   ) && 
-			   (a.m_Right == m_Right) && (a.m_Bottom == m_Bottom); 
+			(a.m_Right == m_Right) && (a.m_Bottom == m_Bottom); 
 	};
 
-    bool operator!= (RectType const & a) const 
+	bool operator!= (RectType const & a) const 
 	{ 
 		return (a.m_Left  != m_Left ) || (a.m_Top    != m_Top   ) || 
-			   (a.m_Right != m_Right) || (a.m_Bottom != m_Bottom); 
+			(a.m_Right != m_Right) || (a.m_Bottom != m_Bottom); 
 	};
 
 	RectType ScaleRect(BASE_TYPE const val) const // positive values of val enlarge rectangle
@@ -226,8 +228,8 @@ public:
 	};
 
 private:
-    BASE_TYPE m_Left;
-    BASE_TYPE m_Top;
-    BASE_TYPE m_Right;
-    BASE_TYPE m_Bottom;
+	BASE_TYPE m_Left;
+	BASE_TYPE m_Top;
+	BASE_TYPE m_Right;
+	BASE_TYPE m_Bottom;
 };

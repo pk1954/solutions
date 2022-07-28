@@ -5,13 +5,13 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "RectType.h"
 
 import Util;
 import NamedType;
 import PointType;
 import EllipseType;
 import CircleType;
+import RectType;
 
 /////////////////// PIXEL ///////////////////////////////////
 
