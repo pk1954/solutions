@@ -21,9 +21,6 @@
     <ClInclude Include="PixelTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityWrappers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PixFpDimension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,9 +39,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UtilityWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MoreTypes.cpp">

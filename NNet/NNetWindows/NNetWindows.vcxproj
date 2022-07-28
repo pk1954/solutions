@@ -281,14 +281,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Win32_utilities;$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Wrappers;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Win32_utilities;$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Win32_utilities;$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Wrappers;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Win32_utilities;$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
