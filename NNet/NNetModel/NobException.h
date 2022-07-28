@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <ostream>
 #include <exception>
 #include <source_location>
 #include "Scanner.h"
