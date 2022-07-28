@@ -1,31 +1,34 @@
-// LineType.h
+// LineType.ixx
 //
 // Utilities
 //
 // Line is defined by two PointType values
 
-#pragma once
+module;
 
+#include <algorithm>
 #include <math.h> 
+
+export module LineType;
 
 import NamedType;
 import PointType;
 
 using std::swap;
 
-template <typename BASE_TYPE> 
+export template <typename BASE_TYPE> 
 class LineType
 {
     using POS_TYPE = PosType<BASE_TYPE>;
 
 public:
     LineType(POS_TYPE const & p1, POS_TYPE const & p2)
-      : m_p1(p1),
+        : m_p1(p1),
         m_p2(p2)
     {}
 
     LineType(LineType const & l)
-      : m_p1(l.m_p1),
+        : m_p1(l.m_p1),
         m_p2(l.m_p2)
     {}
 

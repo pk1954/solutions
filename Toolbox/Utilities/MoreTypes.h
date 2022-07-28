@@ -8,12 +8,12 @@
 #include <algorithm>
 #include "BasicTypes.h"
 #include "RectType.h"
-#include "LineType.h"
 #include "CircleType.h"
 #include "EllipseType.h"
 
 import NamedType;
 import PointType;
+import LineType;
 
 using std::min;
 using std::max;
