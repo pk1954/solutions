@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
-    <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="EllipseType.h" />
     <ClInclude Include="MoreTypes.h" />
@@ -34,6 +33,7 @@
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BoolOp.ixx" />
+    <ClCompile Include="CircleType.ixx" />
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="Geometry.ixx" />

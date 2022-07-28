@@ -7,6 +7,8 @@
 #include "NNetParameters.h"
 #include "MicroMeterPosDir.h"
 
+import IoConstants;
+
 MicroMeterPosDir::MicroMeterPosDir()
     : m_pos(),
     m_dir()

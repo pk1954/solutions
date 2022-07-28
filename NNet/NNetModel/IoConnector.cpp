@@ -9,6 +9,8 @@
 #include "Neuron.h"
 #include "IoConnector.h"
 
+import IoConstants;
+
 using std::make_unique;
 using std::wcout;
 using std::endl;

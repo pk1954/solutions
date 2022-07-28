@@ -16,6 +16,8 @@
 #include "NNetModelIO.h"
 #include "WrapCreateNob.h"
 
+import IoConstants;
+
 using std::wcout;
 
 Nob * WrapCreateNob::createNob(Script & script) const

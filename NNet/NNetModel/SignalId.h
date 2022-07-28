@@ -10,6 +10,7 @@
 #include "SignalId.h"
 
 import NamedType;
+import IoConstants;
 
 using std::vector;
 

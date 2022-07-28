@@ -5,11 +5,12 @@
 #pragma once
 
 #include "PixelTypes.h"
-#include "CircleType.h"
 #include "MoreTypes.h"
 #include "PipeList.h"
 #include "Pipe.h"
 #include "Nob.h"
+
+import CircleType;
 
 class DrawContext;
 class NNetModel;

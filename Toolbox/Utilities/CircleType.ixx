@@ -1,10 +1,13 @@
-// CircleType.h
+// CircleType.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
 #include <ostream>
+#include "BasicTypes.h"
+
+export module CircleType;
 
 import NamedType;
 import PointType;
@@ -12,7 +15,7 @@ import IoConstants;
 
 using std::wostream;
 
-template <typename BASE_TYPE> 
+export template <typename BASE_TYPE> 
 class CircleType
 {
     using POS_TYPE = PosType<BASE_TYPE>;
@@ -25,7 +28,7 @@ public:
 
     CircleType(POS_TYPE const & pos, BASE_TYPE const radius)
         : m_position(pos),
-          m_radius(radius)
+        m_radius(radius)
     {}
 
     bool operator==(CircleType const & a) const 

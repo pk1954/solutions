@@ -6,6 +6,8 @@
 #include "Nob.h"
 #include "NobIdList.h"
 
+import IoConstants;
+
 using std::endl;
 
 void NobIdList::Push(Nob const & nob)

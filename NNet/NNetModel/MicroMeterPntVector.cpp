@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "MicroMeterPntVector.h"
 
+import IoConstants;
+
 using std::ranges::max_element;
 
 MicroMeterPntVector::MicroMeterPntVector(vector<IoLine *> const & nobList)

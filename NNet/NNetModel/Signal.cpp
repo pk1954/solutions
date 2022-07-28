@@ -12,6 +12,7 @@
 #include "Signal.h"
 
 import Util;
+import IoConstants;
 
 using std::wcout;
 using std::endl;

@@ -5,10 +5,10 @@
 #pragma once
 
 #include "RectType.h"
-#include "CircleType.h"
 
 import NamedType;
 import PointType;
+import CircleType;
 
 template <typename BASE_TYPE> 
 class EllipseType

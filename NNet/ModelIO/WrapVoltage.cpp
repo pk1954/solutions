@@ -14,6 +14,8 @@
 #include "NNetModelIO.h"
 #include "WrapVoltage.h"
 
+import IoConstants;
+
 using std::wcout;
 
 void WrapVoltage::setVoltage(Script & script) const

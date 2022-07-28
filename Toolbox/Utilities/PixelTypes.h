@@ -6,12 +6,12 @@
 
 #include "MoreTypes.h"
 #include "RectType.h"
-#include "CircleType.h"
 #include "EllipseType.h"
 
 import Util;
 import NamedType;
 import PointType;
+import CircleType;
 
 /////////////////// PIXEL ///////////////////////////////////
 

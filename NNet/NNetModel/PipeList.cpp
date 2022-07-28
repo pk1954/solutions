@@ -7,6 +7,8 @@
 #include "Pipe.h"
 #include "PipeList.h"
 
+import IoConstants;
+
 using std::endl;
 using std::wcout;
 using std::make_unique;
