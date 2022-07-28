@@ -38,7 +38,12 @@ void TimeGraph::SetModelInterface(NNetModelWriterInterface * const p)
 
 fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 
 { 
-	return m_pHorzCoord->Transform2logUnitPos(p.GetX()); 
+	return getTime(p.GetX()); 
+}
+
+fMicroSecs TimeGraph::getTime(fPixel const fPixX) const 
+{ 
+	return m_pHorzCoord->Transform2logUnitPos(fPixX); 
 }
 
 fPixel TimeGraph::xTime(fMicroSecs const time) const 

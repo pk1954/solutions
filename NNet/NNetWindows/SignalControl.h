@@ -92,8 +92,10 @@ private:
 
 	fPixel getY(fPixel const fPix) const { return yBottom() - fPix; }
 
-	fHertz getFreq(fPixelPoint const & p) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(p.GetY())); }
-	mV     getVolt(fPixelPoint const & p) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(p.GetY())); }
+	fHertz getFreq(fPixel      const fPixY) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(fPixY)); }
+	fHertz getFreq(fPixelPoint const & p  ) const { return getFreq(p.GetY()); }
+	mV     getVolt(fPixel      const fPixY) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(fPixY)); }
+	mV     getVolt(fPixelPoint const & p  ) const { return getVolt(p.GetY()); }
 
 	fPixel yFreq(fHertz const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV     const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }

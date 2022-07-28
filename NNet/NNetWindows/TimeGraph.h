@@ -90,6 +90,7 @@ protected:
 	bool OnSize(PIXEL const, PIXEL const) override;
 
 	fMicroSecs getTime(fPixelPoint const &) const;
+	fMicroSecs getTime(fPixel      const  ) const;
 	fPixel     xTime  (fMicroSecs  const  ) const;
 
 	fPixel xLeft  () const { return m_fPixLeft;   }

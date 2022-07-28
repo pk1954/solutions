@@ -91,13 +91,15 @@ public:
 
     static LineType const & NULL_VAL() 
     { 
-        static LineType res { LineType(BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL()) }; 
+        static const POS_TYPE posNull { POS_TYPE(BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL()) }; 
+        static const LineType res     { LineType(posNull, posNull) }; 
         return res;
     };
 
     static LineType const & ZERO_VAL() 
     { 
-        static LineType res { LineType(BASE_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL()) }; 
+        static const POS_TYPE posZero { POS_TYPE(BASE_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL()) }; 
+        static const LineType res     { LineType(posZero, posZero) }; 
         return res;
     };
 

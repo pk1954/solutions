@@ -25,8 +25,9 @@ class PointType
 public:
 
 	PointType() : m_x(BASE_TYPE::NULL_VAL()), m_y(BASE_TYPE::NULL_VAL()) { }
-	PointType(BASE_TYPE const _b) : m_x(_b), m_y(_b) {}
 	PointType(BASE_TYPE const _x, BASE_TYPE const _y) : m_x(_x), m_y(_y) {}
+
+	explicit PointType(BASE_TYPE const _b) : m_x(_b), m_y(_b) {}
 
 	bool      operator==(PointType const & a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
 	bool      operator!=(PointType const & a) const { return (m_x != a.m_x) || (m_y != a.m_y); }

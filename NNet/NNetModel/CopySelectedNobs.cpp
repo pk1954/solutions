@@ -43,7 +43,7 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 		[](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }
 	);
 
-	m_nobs2Add.Move(PIPE_WIDTH);  // dislocate copy
+	m_nobs2Add.Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));  // dislocate copy
 
 	return m_nobs2Add;
 }
