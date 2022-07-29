@@ -102,9 +102,6 @@
     <ClInclude Include="win32_beeperThread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="WindowLayout.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_animation.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
