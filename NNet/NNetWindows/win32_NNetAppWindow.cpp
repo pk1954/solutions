@@ -46,7 +46,6 @@
 
 // application
 
-#include "win32_aboutBox.h"
 #include "Analyzer.h"
 #include "SignalFactory.h"
 #include "Neuron.h"
@@ -58,6 +57,7 @@
 import Util;
 import Trace;
 import ObserverInterface;
+import Win32_AboutBox;
 
 using std::wcout;
 using std::wstring;

@@ -2,9 +2,12 @@
 //
 // Win32_utilities
 
+module;
+
 #include "stdafx.h"
 #include "win32_util_resource.h"
-#include "win32_aboutBox.h"
+
+module Win32_AboutBox;
 
 static INT_PTR CALLBACK About 
 (

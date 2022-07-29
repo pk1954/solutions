@@ -15,7 +15,6 @@
 #include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_script.h"
-#include "win32_aboutBox.h"
 #include "win32_MainWindow.h"
 #include "win32_winManager.h"
 #include "win32_fatalError.h"
@@ -31,6 +30,8 @@
 import SlowMotionRatio;
 import Observable;
 import Win32_Sound;
+import Win32_AboutBox;
+
 
 using std::to_wstring;
 
