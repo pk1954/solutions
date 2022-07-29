@@ -16,10 +16,11 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
-#include "win32_sound.h"
 #include "win32_util_resource.h"
 #include "win32_NNetController.h"
 #include "win32_NNetWindow.h"
+
+import Win32_Sound;
 
 using std::function;
 

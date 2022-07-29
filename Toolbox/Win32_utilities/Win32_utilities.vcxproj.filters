@@ -87,9 +87,6 @@
     <ClInclude Include="win32_modelWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_sound.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_clut.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -210,6 +207,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_event.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Sound.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

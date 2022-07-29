@@ -9,8 +9,9 @@
 #include <stdio.h>
 #include "Resource.h"
 #include "win32_util.h"
-#include "win32_sound.h"
 #include "win32_triggerSoundDlg.h"
+
+import Win32_Sound;
 
 using std::wostringstream;
 using std::bit_cast;

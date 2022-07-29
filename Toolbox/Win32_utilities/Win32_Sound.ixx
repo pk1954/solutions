@@ -1,19 +1,21 @@
-// win32_sound.h
+// Win32_Sound.ixx
 //
 // Toolbox\Win32_utilities
 
-#pragma once
+module;
 
 #include <string>
 #include "Windows.h"
 #include "MoreTypes.h"
 #include "mmsystem.h"
 
+export module Win32_Sound;
+
 import SoundInterface;
 
 using std::wstring;
 
-class WinSound : public Sound
+export class WinSound : public Sound
 {
 public:
 
@@ -28,14 +30,12 @@ public:
 	void Beep(SoundDescr const & desc) const final
 	{
 		if (
-			  IsOn() && desc.m_bOn && 
-			  (desc.m_frequency >= 37_Hertz) &&  // winapi limit 37 Hertz
-			  (desc.m_duration > 0_MilliSecs) 
-		  ) 
+			IsOn() && desc.m_bOn && 
+			(desc.m_frequency >= 37_Hertz) &&  // winapi limit 37 Hertz
+			(desc.m_duration > 0_MilliSecs) 
+			) 
 		{
-		   ::Beep(static_cast<DWORD>(desc.m_frequency.GetValue()), static_cast<DWORD>(desc.m_duration.GetValue()));
+			::Beep(static_cast<DWORD>(desc.m_frequency.GetValue()), static_cast<DWORD>(desc.m_duration.GetValue()));
 		}
 	}
-
-private:
 };

@@ -18,7 +18,6 @@
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
 #include "win32_ActionTimer.h"
-#include "win32_sound.h"
 #include "win32_appTitle.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
@@ -43,6 +42,7 @@
 import SlowMotionRatio;
 import DisplayFunctor;
 import Win32_Event;
+import Win32_Sound;
 
 class ReadModelResult;
 class MessagePump;

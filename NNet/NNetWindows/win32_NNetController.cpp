@@ -14,7 +14,6 @@
 #include "Signal.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
-#include "win32_sound.h"
 #include "win32_script.h"
 #include "win32_aboutBox.h"
 #include "win32_MainWindow.h"
@@ -31,6 +30,7 @@
 
 import SlowMotionRatio;
 import Observable;
+import Win32_Sound;
 
 using std::to_wstring;
 
