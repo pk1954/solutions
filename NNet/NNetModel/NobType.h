@@ -6,7 +6,6 @@
 
 #include <assert.h>
 #include <functional>
-#include <bitset>
 #include "debug.h"
 
 using std::function;
@@ -112,5 +111,3 @@ public:
 private:
 	Value m_value;
 };
-
-using std::bitset;

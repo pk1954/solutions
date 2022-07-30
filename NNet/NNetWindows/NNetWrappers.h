@@ -2,15 +2,13 @@
 //
 // NNetWindows
 
-#pragma once
-
 class NNetModelReaderInterface;
 class NNetModelCommands;
 class NNetModelIO;
 
-extern void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
+void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
 
-extern void InitializeNNetWrappers
+void InitializeNNetWrappers
 (
     NNetModelCommands * const,
     NNetModelIO       * const

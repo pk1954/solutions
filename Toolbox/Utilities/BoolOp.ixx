@@ -1,8 +1,8 @@
-module;
-
 // BoolOp.ixx : 
 //
 // Toolbox\Utilities
+
+module;
 
 #include <assert.h>
 #include <iostream>
