@@ -13,7 +13,6 @@
 #include "ComputeThread.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
-#include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
@@ -43,6 +42,7 @@ import SlowMotionRatio;
 import DisplayFunctor;
 import Win32_Event;
 import Win32_Sound;
+import TimeDisplay;
 
 class ReadModelResult;
 class MessagePump;

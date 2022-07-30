@@ -7,6 +7,7 @@
 #include "Windows.h"
 #include "PixelTypes.h"
 
+#include <assert.h>
 #include <string>
 #include <sstream>
 #include <iostream>

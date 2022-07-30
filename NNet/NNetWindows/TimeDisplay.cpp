@@ -4,19 +4,24 @@
 //
 // Displays time since start of simulation in status bar field
 
+module;
+
 #include "stdafx.h"
 #include <iostream>
 #include <sstream> 
 #include <string> 
+#include <chrono> 
 #include "SimulationTime.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_status.h"
-#include "TimeDisplay.h"
+
+module TimeDisplay;
 
 using std::make_unique;
 using std::to_wstring;
 using std::wstring;
 using std::wostringstream;
+using namespace std::chrono;
 
 /////// inner class TimeDisplay::RefreshRate ///////
 

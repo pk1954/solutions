@@ -1,18 +1,21 @@
-// TimeDisplay.h
+// TimeDisplay.ixx
 //
-// NNetSimu
+// NNetWindows
+
+module;
 
 #pragma once
 
 #include "win32_baseRefreshRate.h"
+#include "win32_status.h"
+
+export module TimeDisplay;
 
 import ObserverInterface;
 
-class StatusBar;
-
 using std::unique_ptr;
 
-class TimeDisplay : public ObserverInterface
+export class TimeDisplay : public ObserverInterface
 {
 public:
 	~TimeDisplay();
