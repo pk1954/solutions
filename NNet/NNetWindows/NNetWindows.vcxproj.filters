@@ -96,6 +96,9 @@
     <ClCompile Include="TimeDisplay.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SignalControl.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -180,9 +183,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SignalDesigner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SignalControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelCommands.h">

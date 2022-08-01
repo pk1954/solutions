@@ -1,8 +1,8 @@
-// SignalControl.h
+// SignalControl.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include <array>
 #include "Direct2D.h"
@@ -10,16 +10,16 @@
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
 #include "SignalGenerator.h"
+#include "ComputeThread.h"
 #include "TimeGraph.h"
+#include "NNetModelCommands.h"
+#include "NNetModelReaderInterface.h"
+
+export module SignalControl;
 
 using std::array;
 
-class Param;
-class ComputeThread;
-class NNetModelCommands;
-class NNetModelReaderInterface;
-
-class SignalControl : public TimeGraph
+export class SignalControl : public TimeGraph
 {
 public:
 	SignalControl

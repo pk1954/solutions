@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <assert.h>
 #include <chrono>
 #include "MoreTypes.h"
 

@@ -2,6 +2,8 @@
 //
 // NNetWindows
 
+module;
+
 #include "stdafx.h"
 #include <chrono>
 #include <algorithm>  // min/max/abs templates
@@ -10,9 +12,10 @@
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "ComputeThread.h"
-#include "SignalControl.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
+
+module SignalControl;
 
 import PointType;
 
