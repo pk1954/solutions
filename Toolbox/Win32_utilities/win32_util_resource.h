@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <Windows.h>
 #include <tchar.h>
 
 inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);

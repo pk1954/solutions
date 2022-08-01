@@ -1,16 +1,18 @@
-// win32_appTitle.h : 
+// Win32_AppTitle.ixx 
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "win32_util_resource.h"
 #include "win32_util.h"
 #include "NNetModelReaderInterface.h"
 
+export module AppTitle;
+
 import ObserverInterface;
 
-class AppTitle : public ObserverInterface
+export class AppTitle : public ObserverInterface
 {
 public:
 	void Initialize(HWND const hwndApp)
@@ -24,7 +26,7 @@ public:
 	}
 
 	void Notify(bool const bImmediate) final 
-    { 
+	{ 
 		SetUnsavedChanges(true);
 	}
 

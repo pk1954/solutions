@@ -589,6 +589,7 @@
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="TimeDisplay.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
+    <ClCompile Include="Win32_AppTitle.ixx" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_descriptionWindow.cpp" />
     <ClCompile Include="win32_MainWindow.cpp" />
@@ -618,7 +619,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
     <ClInclude Include="UndoRedoMenu.h" />
-    <ClInclude Include="win32_appTitle.h" />
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="NNetInputOutputUI.h" />
     <ClInclude Include="win32_MainWindow.h" />

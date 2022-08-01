@@ -102,6 +102,9 @@
     <ClCompile Include="Measurement.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_AppTitle.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -165,9 +168,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_monitorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_appTitle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetInputOutputUI.h">

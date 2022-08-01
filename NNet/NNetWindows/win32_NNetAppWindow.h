@@ -17,7 +17,6 @@
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
 #include "win32_ActionTimer.h"
-#include "win32_appTitle.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
 #include "win32_MiniWindow.h"
@@ -43,6 +42,7 @@ import DisplayFunctor;
 import Win32_Event;
 import Win32_Sound;
 import TimeDisplay;
+import AppTitle;
 
 class ReadModelResult;
 class MessagePump;
