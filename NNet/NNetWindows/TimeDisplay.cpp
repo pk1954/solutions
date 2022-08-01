@@ -6,7 +6,6 @@
 
 module;
 
-#include "stdafx.h"
 #include <iostream>
 #include <sstream> 
 #include <string> 

@@ -2,7 +2,6 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
 #include "ScriptStack.h"
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"

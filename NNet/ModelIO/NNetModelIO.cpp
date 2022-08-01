@@ -2,7 +2,6 @@
 //
 // ModelIO
 
-#include "stdafx.h"
 #include <filesystem>
 #include <assert.h>
 #include "ErrHndl.h"

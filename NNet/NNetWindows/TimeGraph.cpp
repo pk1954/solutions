@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "TimeGraph.h"
 
 TimeGraph::TimeGraph

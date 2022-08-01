@@ -1,7 +1,6 @@
 // win32_baseDialog.cpp
 //
 
-#include "stdafx.h"
 #include "win32_util.h"
 #include "win32_rootWindow.h"
 #include "win32_baseDialog.h"

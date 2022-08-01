@@ -2,7 +2,6 @@
 //
 // Toolbox Win32_utilities
 
-#include "stdafx.h"
 #include "PixelTypes.h"
 #include "win32_util_resource.h"
 #include "win32_baseRefreshRate.h"

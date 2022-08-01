@@ -2,7 +2,6 @@
 //
 // win32_utilities
 
-#include "stdafx.h"
 #include <limits>     
 #include "win32_hiResTimer.h"
 

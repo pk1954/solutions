@@ -2,7 +2,6 @@
 //
 // win32_utilities
 
-#include "stdafx.h"
 #include <chrono>
 #include "MoreTypes.h"
 #include "win32_util_resource.h"

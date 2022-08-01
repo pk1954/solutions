@@ -2,7 +2,6 @@
 //
 // NNetSimu
 
-#include "stdafx.h"
 #include "Windows.h"
 #include <chrono>
 #include <filesystem>

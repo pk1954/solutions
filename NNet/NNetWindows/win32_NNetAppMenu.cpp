@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include "Resource.h"
 #include "win32_util.h"
 #include "CommandStack.h"
