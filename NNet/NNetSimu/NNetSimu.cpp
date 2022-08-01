@@ -2,17 +2,15 @@
 //
 // NNetSimu
 
-#include "stdafx.h"
+#include <Windows.h>
 #include "Version.h"
 #include "Resource.h"
 #include "CommCtrl.h"
-#include "win32_util_resource.h"
-#include "win32_fatalError.h"
+#include "Scanner.h"
 #include "win32_stopwatch.h"
 #include "win32_messagePump.h"
 #include "win32_NNetAppWindow.h"
 
-import BoolOp;
 import Trace;
 
 unique_ptr<NNetAppWindow> upApp;
