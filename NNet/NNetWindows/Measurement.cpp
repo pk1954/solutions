@@ -2,11 +2,14 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
+module;
+
 #include <sstream> 
 #include <iomanip>
+#include <dwrite.h>
 #include "Direct2D.h"
-#include "Measurement.h"
+
+module Measurement;
 
 using std::wostringstream;
 using std::setprecision;

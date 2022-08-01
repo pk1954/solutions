@@ -1,16 +1,16 @@
-// Measurementhh
+// Measurement.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include <dwrite.h>
+#include "Direct2D.h"
 #include "PixelTypes.h"
 
-class D2D_driver;
+export module Measurement;
 
-struct IDWriteTextFormat;
-
-class Measurement
+export class Measurement
 {
 public:	
 

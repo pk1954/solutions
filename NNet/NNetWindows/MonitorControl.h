@@ -8,12 +8,12 @@
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
-#include "Measurement.h"
 #include "Track.h"
 #include "TrackNr.h"
 #include "TimeGraph.h"
 
 import SoundInterface;
+import Measurement;
 
 class MonitorData;
 class NNetModelCommands;
