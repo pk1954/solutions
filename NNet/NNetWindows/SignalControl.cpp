@@ -4,7 +4,6 @@
 
 module;
 
-#include "stdafx.h"
 #include <chrono>
 #include <algorithm>  // min/max/abs templates
 #include "MoreTypes.h"

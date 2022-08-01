@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <tchar.h>
+
 inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 
 #ifndef IDC_STATIC

@@ -2,7 +2,6 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
 #include "Direct2D.h"
 #include "win32_graphicsWindow.h"
 

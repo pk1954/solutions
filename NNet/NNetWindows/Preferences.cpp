@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include <filesystem>
 #include <iostream>
 #include "Script.h"

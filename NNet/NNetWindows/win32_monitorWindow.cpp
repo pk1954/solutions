@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include "Resource.h"
 #include "NNetColors.h"
 #include "MonitorControl.h"

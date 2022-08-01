@@ -6,6 +6,7 @@
 
 #include <assert.h>
 #include <chrono>
+#include <Windows.h>
 #include "MoreTypes.h"
 
 import NamedType;

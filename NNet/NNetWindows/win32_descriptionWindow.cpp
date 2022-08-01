@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include <array>
 #include "Resource.h"
 #include "win32_descriptionWindow.h"
