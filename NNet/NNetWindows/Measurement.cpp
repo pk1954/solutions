@@ -7,9 +7,11 @@ module;
 #include <sstream> 
 #include <iomanip>
 #include <dwrite.h>
-#include "Direct2D.h"
+#include "PixelTypes.h"
 
 module Measurement;
+
+import Direct2D;
 
 using std::wostringstream;
 using std::setprecision;

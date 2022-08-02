@@ -2,8 +2,9 @@
 //
 // Win32_utilities
 
-#include "Direct2D.h"
 #include "win32_graphicsWindow.h"
+
+import Direct2D;
 
 using std::make_unique;
 

@@ -4,13 +4,14 @@
 
 #pragma once
 
-#include "Direct2D.h"
 #include "MoreTypes.h"
 #include "PixFpDimension.h"
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_graphicsWindow.h"
+
+import Direct2D;
 
 class TimeGraph : public GraphicsWindow
 {

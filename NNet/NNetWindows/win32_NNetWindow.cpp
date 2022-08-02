@@ -6,7 +6,6 @@
 #include <sstream> 
 #include "Resource.h"
 #include "MoreTypes.h"
-#include "Direct2D.h"
 #include "Sensor.h"
 #include "Pipe.h"
 #include "Neuron.h"
@@ -19,6 +18,8 @@
 #include "win32_util_resource.h"
 #include "win32_NNetController.h"
 #include "win32_NNetWindow.h"
+
+import Direct2D;
 
 import Win32_Sound;
 

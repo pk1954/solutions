@@ -5,10 +5,11 @@
 module;
 
 #include <dwrite.h>
-#include "Direct2D.h"
 #include "PixelTypes.h"
 
 export module Measurement;
+
+import Direct2D;
 
 export class Measurement
 {

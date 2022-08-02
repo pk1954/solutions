@@ -7,7 +7,6 @@
 #include <string> 
 #include <sstream> 
 #include "MoreTypes.h"
-#include "Direct2D.h"
 #include "dwrite.h"
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
@@ -16,6 +15,7 @@
 #include "win32_graphicsWindow.h"
 
 import ObserverInterface;
+import Direct2D;
 
 using std::fixed;
 using std::setprecision;

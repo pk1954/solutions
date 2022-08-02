@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "Direct2D.h"
 #include "win32_controls.h"
 #include "win32_graphicsWindow.h"
+
+import Direct2D;
 
 class ArrowButton : public GraphicsWindow
 {

@@ -1,18 +1,21 @@
-// Direct2D.h
+// Direct2D.ixx
 //
 // Toolbox\Direct2D
 
-#pragma once
+module;
 
 #include <string.h>
+#include "dwrite.h"
 #include "d2d1helper.h"
 #include "PixelTypes.h"
 
+export module Direct2D;
+
 using std::wstring;
 
-struct IDWriteFactory;
+export class D2D1::ColorF;
 
-inline void SafeRelease(auto **ppInterfaceToRelease)
+export inline void SafeRelease(auto **ppInterfaceToRelease)
 {
     if (*ppInterfaceToRelease != NULL)
     {
@@ -21,11 +24,11 @@ inline void SafeRelease(auto **ppInterfaceToRelease)
     }
 }
 
-D2D1_POINT_2F convertD2D(fPixelPoint   const &);
-D2D1_RECT_F   convertD2D(fPixelRect    const &);
-D2D1_ELLIPSE  convertD2D(fPixelEllipse const &);
+export D2D1_POINT_2F convertD2D(fPixelPoint   const &);
+export D2D1_RECT_F   convertD2D(fPixelRect    const &);
+export D2D1_ELLIPSE  convertD2D(fPixelEllipse const &);
 
-class D2D_driver
+export class D2D_driver
 {
 public:
 
@@ -75,7 +78,7 @@ private:
 
     void createResources();
     void discardResources();
-    
+
     ID2D1GradientStopCollection * simpleGradientStopCollection(D2D1::ColorF const, D2D1::ColorF const) const;
 
     friend D2D1_POINT_2F convertD2D(fPixelPoint   const &);

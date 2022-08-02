@@ -1,14 +1,17 @@
 // Direct2D.cpp
 //
+// Toolbox\Direct2D
 
-#include "stdafx.h"
+module;
+
 #include <array>
 #include <string.h>
 #include "d2d1.h"
 #include "dwrite.h"
 #include "win32_util.h"
 #include "PixelTypes.h"
-#include "Direct2D.h"
+
+module Direct2D;
 
 import Util;
 

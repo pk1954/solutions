@@ -638,6 +638,9 @@
     <ClInclude Include="win32_triggerSoundDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
+      <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>

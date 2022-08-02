@@ -5,7 +5,6 @@
 module;
 
 #include <array>
-#include "Direct2D.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
@@ -16,6 +15,8 @@ module;
 #include "NNetModelReaderInterface.h"
 
 export module SignalControl;
+
+import Direct2D;
 
 using std::array;
 

@@ -3,9 +3,9 @@
 // Win32_utilities
 
 #include "stdafx.h"
-#include "d2d1helper.h"
-#include "Direct2D.h"
 #include "D2D_DrawContext.h"
+
+import Direct2D;
 
 void D2D_DrawContext::Start(D2D_driver * const pGraphics)
 {

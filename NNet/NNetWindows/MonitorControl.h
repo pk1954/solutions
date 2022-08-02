@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "Direct2D.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "PixFpDimension.h"
@@ -14,6 +13,7 @@
 
 import SoundInterface;
 import Measurement;
+import Direct2D;
 
 class MonitorData;
 class NNetModelCommands;

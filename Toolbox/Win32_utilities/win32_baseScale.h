@@ -6,11 +6,12 @@
 
 #include <string> 
 #include "MoreTypes.h"
-#include "Direct2D.h"
 #include "dwrite.h"
 #include "PixFpDimension.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsWindow.h"
+
+import Direct2D;
 
 using std::wstring;
 using std::bit_cast;
