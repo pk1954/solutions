@@ -8,10 +8,10 @@
 #include "win32_thread.h"
 
 import ObserverInterface;
+import SlowMotionRatio;
 
 class NNetModel;
 class Observable;
-class SlowMotionRatio;
 class NNetModelWriterInterface;
 
 class ComputeThread: public Util::Thread, public ObserverInterface

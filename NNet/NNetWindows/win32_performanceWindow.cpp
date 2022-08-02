@@ -1,8 +1,9 @@
-// win32_performanceWindow.cpp :
+// Win32_PerformanceWindow.cpp :
 //
-// EvoWindows
+// NNetWindows
 
-#include "stdafx.h"
+module;
+
 #include "strsafe.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -13,7 +14,8 @@
 #include "ComputeThread.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_actionTimer.h"
-#include "win32_performanceWindow.h"
+
+module PerformanceWindow;
 
 import SlowMotionRatio;
 

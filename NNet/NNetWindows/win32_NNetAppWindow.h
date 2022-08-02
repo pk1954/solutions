@@ -27,7 +27,6 @@
 #include "win32_parameterDlg.h"
 #include "win32_crsrWindow.h"
 #include "win32_descriptionWindow.h"
-#include "win32_performanceWindow.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
 #include "win32_script.h"
@@ -37,6 +36,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import PerformanceWindow;
 import SlowMotionRatio;
 import DisplayFunctor;
 import Win32_Event;

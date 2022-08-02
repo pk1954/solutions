@@ -1,17 +1,19 @@
-// win32_performanceWindow.h 
+// win32_performanceWindow.ixx
 //
-// EvoWindows
+// NNetWindows
 
-#pragma once
+module;
 
+#include "ComputeThread.h"
+#include "NNetModelReaderInterface.h"
+#include "win32_actionTimer.h"
 #include "win32_textWindow.h"
 
-class NNetModelReaderInterface;
-class SlowMotionRatio;
-class ComputeThread;
-class ActionTimer;
+export module PerformanceWindow;
 
-class PerformanceWindow: public TextWindow
+import SlowMotionRatio;
+
+export class PerformanceWindow: public TextWindow
 {
 public:
 
@@ -21,9 +23,9 @@ public:
         ComputeThread * const, 
         SlowMotionRatio const * const, 
         ActionTimer * const 
-   );
+    );
 
-	void Stop();
+    void Stop();
     void SetModelInterface(NNetModelReaderInterface * const);
     void DoPaint(TextBuffer &) final;
 

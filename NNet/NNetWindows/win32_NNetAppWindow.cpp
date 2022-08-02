@@ -56,6 +56,7 @@
 import Util;
 import Trace;
 import ObserverInterface;
+import PerformanceWindow;
 import Win32_AboutBox;
 
 using std::wcout;

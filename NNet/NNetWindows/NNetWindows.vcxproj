@@ -600,7 +600,8 @@
     <ClCompile Include="win32_NNetController.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
-    <ClCompile Include="win32_performanceWindow.cpp" />
+    <ClCompile Include="Win32_PerformanceWindow.cpp" />
+    <ClCompile Include="Win32_PerformanceWindow.ixx" />
     <ClCompile Include="win32_simulationControl.cpp" />
     <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_triggerSoundDlg.cpp" />
@@ -630,7 +631,6 @@
     <ClInclude Include="win32_NNetController.h" />
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_parameterDlg.h" />
-    <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_simulationControl.h" />
     <ClInclude Include="win32_slowMotionControl.h" />
