@@ -21,7 +21,7 @@ public:
         m_colorHi = RGB(255, 255, 255);
     };
    
-    virtual ~CLUT() {};
+    virtual ~CLUT() = default;
 
     void Allocate(CLUT_INDEX const);
     void SetClutBase(CLUT_INDEX const);
