@@ -22,7 +22,6 @@
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="MoreTypes.h" />
-    <ClInclude Include="PixFpDimension.h" />
     <ClInclude Include="SaveCast.h" />
     <ClInclude Include="Uniform2D.h" />
     <ClInclude Include="PixelTypes.h" />
@@ -41,6 +40,7 @@
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
+    <ClCompile Include="PixFpDimension.ixx" />
     <ClCompile Include="PointType.ixx" />
     <ClCompile Include="RectType.ixx" />
     <ClCompile Include="SlowMotionRatio.ixx" />

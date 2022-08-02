@@ -6,11 +6,11 @@
 
 #include "MoreTypes.h"
 #include "PixelTypes.h"
-#include "PixFpDimension.h"
 #include "Track.h"
 #include "TrackNr.h"
 #include "TimeGraph.h"
 
+import PixFpDimension;
 import SoundInterface;
 import Measurement;
 import Direct2D;

@@ -9,12 +9,12 @@
 #include "MoreTypes.h"
 #include "dwrite.h"
 #include "PixelTypes.h"
-#include "PixFpDimension.h"
 #include "win32_baseScale.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsWindow.h"
 
 import ObserverInterface;
+import PixFpDimension;
 import Direct2D;
 
 using std::fixed;

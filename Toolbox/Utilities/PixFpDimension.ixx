@@ -1,16 +1,18 @@
-// PixFpDimension.h : 
+// PixFpDimension.ixx 
 //
 // Utilities
 
-#pragma once
+module;
 
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
+export module PixFpDimension;
+
 import Util;
 import Observable;
 
-template <typename LOG_UNIT>
+export template <typename LOG_UNIT>
 class PixFpDimension : public Observable
 {
 public:
@@ -153,7 +155,7 @@ public:
 		m_pixelSizeMax = fMax;
 		SetPixelSize(ClipToMinMax(m_logPixelSize, fMin, fMax));
 	}
-	
+
 	void SetZoomFactor(float const f) 
 	{ 
 		m_fZoomFactor = f; 

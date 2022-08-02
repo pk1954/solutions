@@ -5,8 +5,9 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "PixFpDimension.h"
 #include "TimeGraph.h"
+
+import PixFpDimension;
 
 class BaseWindow;
 

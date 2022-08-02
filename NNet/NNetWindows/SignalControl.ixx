@@ -7,7 +7,6 @@ module;
 #include <array>
 #include "MoreTypes.h"
 #include "PixelTypes.h"
-#include "PixFpDimension.h"
 #include "SignalGenerator.h"
 #include "ComputeThread.h"
 #include "TimeGraph.h"
@@ -16,6 +15,7 @@ module;
 
 export module SignalControl;
 
+import PixFpDimension;
 import Direct2D;
 
 using std::array;

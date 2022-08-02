@@ -7,11 +7,11 @@
 #include <string> 
 #include "MoreTypes.h"
 #include "dwrite.h"
-#include "PixFpDimension.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsWindow.h"
 
 import Direct2D;
+import PixFpDimension;
 
 using std::wstring;
 using std::bit_cast;

@@ -6,12 +6,12 @@
 
 #include "MoreTypes.h"
 #include "PixelTypes.h"
-#include "PixFpDimension.h"
 #include "SignalPreview.h"
 #include "win32_scale.h"
 #include "win32_arrowButton.h"
 #include "win32_graphicsWindow.h"
 
+import PixFpDimension;
 import SignalControl;
 
 class NNetModelCommands;

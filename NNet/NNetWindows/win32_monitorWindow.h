@@ -5,9 +5,10 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "PixFpDimension.h"
 #include "win32_scale.h"
 #include "win32_baseWindow.h"
+
+import PixFpDimension;
 
 class NNetModelWriterInterface;
 class NNetModelCommands;
