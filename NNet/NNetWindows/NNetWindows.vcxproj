@@ -575,6 +575,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ComputeThread.cpp" />
+    <ClCompile Include="ComputeThread.ixx" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="Measurement.ixx" />
     <ClCompile Include="MonitorControl.cpp" />
@@ -609,7 +610,6 @@
     <ClCompile Include="win32_triggerSoundDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="MonitorControl.h" />
     <ClInclude Include="NNetModelCommands.h" />
     <ClInclude Include="NNetWrappers.h" />

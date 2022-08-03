@@ -5,10 +5,11 @@
 module;
 
 #include "Resource.h"
-#include "ComputeThread.h"
 #include "win32_util_resource.h"
 
 module SimulationControl;
+
+import ComputeThread;
 
 void SimulationControl::Initialize
 (

@@ -10,13 +10,13 @@ module;
 #include "Resource.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
-#include "ComputeThread.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 
 module SignalControl;
 
 import PointType;
+import ComputeThread;
 
 using std::max;
 

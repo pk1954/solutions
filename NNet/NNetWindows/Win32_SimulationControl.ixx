@@ -2,13 +2,10 @@
 //
 // NNetSimu
 
-module;
-
-#include "ComputeThread.h"
-
 export module SimulationControl;
 
 import ObserverInterface;
+import ComputeThread;
 import StatusBar;
 
 export class SimulationControl: public ObserverInterface

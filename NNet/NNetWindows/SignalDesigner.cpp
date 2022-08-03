@@ -7,7 +7,6 @@
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
-#include "ComputeThread.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_arrowButton.h"
@@ -18,6 +17,7 @@
 #include "SignalDesigner.h"
 
 import PointType;
+import ComputeThread;
 
 using std::bit_cast;
 

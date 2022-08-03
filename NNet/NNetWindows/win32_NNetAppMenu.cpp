@@ -5,7 +5,6 @@
 #include "Resource.h"
 #include "win32_util.h"
 #include "CommandStack.h"
-#include "ComputeThread.h"
 #include "AutoOpen.h"
 #include "SignalDesigner.h"
 #include "SignalGenerator.h"
@@ -16,6 +15,7 @@
 #include "win32_NNetAppMenu.h"
 
 import SoundInterface;
+import ComputeThread;
 
 using std::make_unique;
 

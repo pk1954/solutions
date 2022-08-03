@@ -9,7 +9,6 @@
 #include "Analyzer.h"
 #include "Preferences.h"
 #include "NobException.h"
-#include "ComputeThread.h"
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
@@ -31,7 +30,7 @@ import SlowMotionRatio;
 import Observable;
 import Win32_Sound;
 import Win32_AboutBox;
-
+import ComputeThread;
 
 using std::to_wstring;
 

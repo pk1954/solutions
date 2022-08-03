@@ -10,7 +10,6 @@
 #include "ScriptStack.h"
 #include "NNetModel.h"
 #include "Preferences.h"
-#include "ComputeThread.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
 #include "SlowMotionDisplay.h"
@@ -35,6 +34,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import ComputeThread;
 import SimulationControl;
 import PerformanceWindow;
 import SlowMotionRatio;

@@ -114,6 +114,9 @@
     <ClCompile Include="Win32_Status.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ComputeThread.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -135,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_triggerSoundDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ComputeThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_crsrWindow.h">

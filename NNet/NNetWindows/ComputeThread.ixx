@@ -1,20 +1,21 @@
-// ComputeThread.h
+// ComputeThread.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "win32_hiResTimer.h"
 #include "win32_thread.h"
 
+export module ComputeThread;
+
 import ObserverInterface;
+import Observable;
 import SlowMotionRatio;
 
-class NNetModel;
-class Observable;
-class NNetModelWriterInterface;
-
-class ComputeThread: public Util::Thread, public ObserverInterface
+export class ComputeThread: public Util::Thread, public ObserverInterface
 {
 public:
 
@@ -52,7 +53,7 @@ private:
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };
 	Observable      * m_pDynamicModelObservable { nullptr };
-	
+
 	bool              m_bStopped               { true };          // visible to UI
 	bool              m_bComputationLocked     { true };          // internal lock (short time)
 	HiResTimer        m_hrTimer                { };
