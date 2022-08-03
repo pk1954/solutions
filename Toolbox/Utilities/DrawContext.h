@@ -6,7 +6,8 @@
 
 #include "d2d1helper.h"
 #include "PixelTypes.h"
-#include "Uniform2D.h"
+
+import Uniform2D;
 
 using std::wstring;
 using D2D1::ColorF;

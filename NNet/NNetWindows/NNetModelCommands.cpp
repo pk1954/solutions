@@ -39,7 +39,6 @@
 #include "NewIoLinePairCmd.h"
 #include "NewSigGenCmd.h"
 #include "NNetModelIO.h"
-#include "Uniform2D.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
 #include "RenameSigGenCmd.h"
@@ -68,6 +67,8 @@
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 
+import Uniform2D;
+
 using std::wcout;
 using std::endl;
 using std::move;
@@ -82,7 +83,7 @@ void NNetModelCommands::Initialize
 	CommandStack * const pCmdStack
 ) 
 { 
-	m_pModelIO          = pModelIO;
+	m_pModelIO                = pModelIO;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pCmdStack               = pCmdStack;
 }

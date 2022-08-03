@@ -23,7 +23,6 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="SaveCast.h" />
-    <ClInclude Include="Uniform2D.h" />
     <ClInclude Include="PixelTypes.h" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +49,7 @@
     <ClCompile Include="TextBuffer.ixx" />
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="Trace.ixx" />
+    <ClCompile Include="Uniform2D.ixx" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="ViewCollection.ixx" />

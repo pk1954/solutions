@@ -5,7 +5,6 @@
 #pragma once
 
 #include <string>
-#include "Uniform2D.h"
 #include "ParameterType.h"
 #include "MoreTypes.h"
 #include "UPSigGenList.h"
@@ -16,6 +15,7 @@
 #include "NobId.h"
 
 import BoolOp;
+import Uniform2D;
 
 class Param;
 class NNetCommand;

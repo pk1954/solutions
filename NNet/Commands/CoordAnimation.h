@@ -7,9 +7,10 @@
 #include "MoreTypes.h"
 #include "win32_animation.h"
 #include "NNetParameters.h"
-#include "Uniform2D.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_command.h"
+
+import Uniform2D;
 
 using std::function;
 

@@ -1,16 +1,18 @@
-// Uniform2D.h : 
+// Uniform2D.ixx 
 //
-// Utilities
+// ToolBox\Utilities
 
-#pragma once
+module;
 
 #include "PixelTypes.h"
+
+export module Uniform2D;
 
 import Util;
 import Observable;
 import PixFpDimension;
 
-template <typename LOG_UNIT>
+export template <typename LOG_UNIT>
 class Uniform2D : public Observable
 {
 public:
@@ -73,10 +75,10 @@ public:
 	RectType<LOG_UNIT> Transform2logUnitRect(fPixelRect const & fPixRect) const
 	{ 
 		return RectType<LOG_UNIT>
-		(
-			Transform2logUnitPntPos(fPixRect.GetStartPoint()), 
-			Transform2logUnitPntPos(fPixRect.GetEndPoint  ()) 
-		);
+			(
+				Transform2logUnitPntPos(fPixRect.GetStartPoint()), 
+				Transform2logUnitPntPos(fPixRect.GetEndPoint  ()) 
+				);
 	}
 
 	fPixelRect Transform2fPixelRect(RectType<LOG_UNIT> const & umRect) const
@@ -91,10 +93,10 @@ public:
 	CircleType<LOG_UNIT> Transform2logUnitCircle(fPixelCircle const & fPixCircle) const
 	{
 		return CircleType<LOG_UNIT>
-		(
-			Transform2logUnitPntPos(fPixCircle.GetPos()),
-			Transform2logUnit      (fPixCircle.GetRadius  ())
-		);
+			(
+				Transform2logUnitPntPos(fPixCircle.GetPos()),
+				Transform2logUnit      (fPixCircle.GetRadius  ())
+				);
 	}
 
 	fPixelCircle Transform2fPixelCircle(CircleType<LOG_UNIT> const & umCircle) const
@@ -186,7 +188,7 @@ public:
 	{
 		return Transform2PixelRect(Transform2fPixelRect(umRect));
 	}
-	
+
 	//////// queries ////////
 
 	LOG_UNIT GetPixelSize() const 
@@ -208,7 +210,7 @@ public:
 		if (bNotify)
 			NotifyAll(true);
 	}
-	
+
 	void SetPixelOffset(fPixelPoint const fPixOffset, bool const bNotify = true)
 	{ 
 		m_xDim.SetOffset(fPixOffset.GetX(), false);
