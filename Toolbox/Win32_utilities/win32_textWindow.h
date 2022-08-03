@@ -4,7 +4,9 @@
 #pragma once
 
 #include "win32_baseWindow.h"
-#include "win32_textBuffer.h"
+
+import TextBuffer;
+import Win32_TextBuffer;
 
 using std::unique_ptr;
 

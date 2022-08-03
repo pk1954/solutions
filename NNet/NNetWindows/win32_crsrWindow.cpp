@@ -15,9 +15,10 @@
 #include "Signal.h"
 #include "Sensor.h"
 #include "win32_util.h"
-#include "win32_textBuffer.h"
 #include "win32_MainWindow.h"
 #include "win32_crsrWindow.h"
+
+import Win32_TextBuffer;
 
 using std::setprecision;
 using std::to_wstring;

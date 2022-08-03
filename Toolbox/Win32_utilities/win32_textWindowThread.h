@@ -5,8 +5,9 @@
 #pragma once
 
 #include "win32_textWindow.h"
-#include "win32_textBuffer.h"
 #include "win32_thread.h"
+
+import Win32_TextBuffer;
 
 using std::unique_ptr;
 using std::make_unique;

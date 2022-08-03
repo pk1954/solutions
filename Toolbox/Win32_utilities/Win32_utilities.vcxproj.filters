@@ -51,9 +51,6 @@
     <ClInclude Include="win32_thread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_textBuffer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textWindowThread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -201,6 +198,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_AboutBox.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_TextBuffer.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

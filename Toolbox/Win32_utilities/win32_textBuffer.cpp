@@ -1,13 +1,15 @@
-// win32_textBuffer.cpp :
+// Win32_TextBuffer.cpp :
 //
 // Toolbox\win32_utilities
 
-#include "stdafx.h"
+module;
+
 #include <locale>
 #include <iomanip>
 #include "PixelTypes.h"
 #include "win32_util.h"
-#include "win32_textBuffer.h"
+
+module Win32_TextBuffer;
 
 import Util;
 

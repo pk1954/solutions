@@ -1,19 +1,23 @@
-// win32_textBuffer.h 
+// Win32_TextBuffer.ixx
 //
-// win32_utilities
+// Toolbox\win32_utilities
 
-#pragma once
+module;
 
-#include "windef.h"
+#include <sstream>
+#include "Windows.h"
+#include "PixelTypes.h"
+
+export module Win32_TextBuffer;
 
 import TextBuffer;
 
 using std::wostringstream;
 
-class Win32_TextBuffer : public TextBuffer
+export class Win32_TextBuffer : public TextBuffer
 {
 public:
-    Win32_TextBuffer(HDC const, PixelRectSize const &);
+	Win32_TextBuffer(HDC const, PixelRectSize const &);
 
 	~Win32_TextBuffer() override = default;
 
@@ -26,5 +30,5 @@ public:
 
 private:
 	PixelRect m_pixRect; // text buffer area 
-    HDC       m_hDC;
+	HDC       m_hDC;
 };
