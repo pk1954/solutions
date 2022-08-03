@@ -1,11 +1,13 @@
-// win32_stdDialogBox.cpp
+// Win32_StdDialogBox.cpp
 //
-// Win32_utilities
+// Toolbox\Win32_utilities
 
-#include "stdafx.h"
+module;
+
 #include "win32_util.h"
 #include "win32_util_resource.h"
-#include "win32_stdDialogBox.h"
+
+module StdDialogBox;
 
 using std::bit_cast;
 

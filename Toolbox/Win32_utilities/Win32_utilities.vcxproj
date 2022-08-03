@@ -173,14 +173,12 @@
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_beeperThread.h" />
     <ClInclude Include="win32_controls.h" />
-    <ClInclude Include="win32_delay.h" />
     <ClInclude Include="win32_editLineBox.h" />
     <ClInclude Include="win32_fatalError.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_PixelTypes.h" />
     <ClInclude Include="win32_scale.h" />
-    <ClInclude Include="win32_stdDialogBox.h" />
     <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_script.h" />
@@ -216,7 +214,8 @@
     <ClCompile Include="win32_graphicsWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="Win32_Sound.ixx" />
-    <ClCompile Include="win32_stdDialogBox.cpp" />
+    <ClCompile Include="Win32_StdDialogBox.cpp" />
+    <ClCompile Include="Win32_StdDialogBox.ixx" />
     <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />

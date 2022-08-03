@@ -6,12 +6,13 @@
 #include <sstream>
 #include "win32_util_resource.h"
 #include "Resource.h"
-#include "win32_stdDialogBox.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "win32_controls.h"
 #include "win32_parameterDlg.h"
+
+import StdDialogBox;
 
 using std::wstring;
 

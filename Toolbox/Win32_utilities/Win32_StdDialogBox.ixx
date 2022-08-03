@@ -1,16 +1,19 @@
-// win32_stdDialogBox.h
+// Win32_StdDialogBox.ixx
 //
-// Win32_utilities
+// ToolBox\Win32_utilities
 
-#pragma once
+module;
 
 #include <string>
+#include "Windows.h"
+
+export module StdDialogBox;
 
 using std::wstring;
 
 static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
-class StdDialogBox
+export class StdDialogBox
 {
 public:
 	virtual bool Show(HWND const, int const);
@@ -22,7 +25,6 @@ protected:
 	virtual void OnCommand(HWND const, WPARAM const, LPARAM const);
 
 private:
-
 
 	friend static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 };

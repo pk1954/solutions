@@ -2,11 +2,11 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
 #include "win32_util.h"
-#include "win32_stdDialogBox.h"
 #include "win32_util_resource.h"
 #include "win32_editLineBox.h"
+
+import StdDialogBox;
 
 using std::wstring;
 using std::to_wstring;

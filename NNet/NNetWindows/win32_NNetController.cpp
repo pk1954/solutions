@@ -18,7 +18,6 @@
 #include "win32_winManager.h"
 #include "win32_fatalError.h"
 #include "win32_triggerSoundDlg.h"
-#include "win32_stdDialogBox.h"
 #include "win32_monitorWindow.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
@@ -31,6 +30,7 @@ import Observable;
 import Win32_Sound;
 import Win32_AboutBox;
 import ComputeThread;
+import StdDialogBox;
 
 using std::to_wstring;
 

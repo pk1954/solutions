@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "win32_stdDialogBox.h"
+import StdDialogBox;
 
 class EditLineBox : public StdDialogBox
 {

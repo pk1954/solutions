@@ -6,7 +6,8 @@
 
 #include <chrono>
 #include "win32_util.h"
-#include "win32_stdDialogBox.h"
+
+import StdDialogBox;
 
 using std::chrono::milliseconds;
 using namespace std::chrono_literals;
