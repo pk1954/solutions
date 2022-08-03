@@ -6,7 +6,8 @@
 
 #include "win32_util_resource.h"
 #include "win32_tooltip.h"
-#include "win32_status.h"
+
+import StatusBar;
 
 class ZoomControl
 {

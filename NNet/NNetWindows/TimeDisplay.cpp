@@ -12,9 +12,10 @@ module;
 #include <chrono> 
 #include "SimulationTime.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_status.h"
 
 module TimeDisplay;
+
+import StatusBar;
 
 using std::make_unique;
 using std::to_wstring;

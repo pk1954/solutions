@@ -16,7 +16,6 @@
 // interfaces of various windows
 
 #include "win32_NNetWindow.h"
-#include "win32_status.h"
 #include "win32_zoomControl.h"
 
 // infrastructure
@@ -55,6 +54,7 @@
 
 import Util;
 import Trace;
+import StatusBar;
 import ObserverInterface;
 import PerformanceWindow;
 import Win32_AboutBox;

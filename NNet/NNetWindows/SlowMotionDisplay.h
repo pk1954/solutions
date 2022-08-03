@@ -2,10 +2,14 @@
 //
 // NNetSimu
 
+#include <string>
+
 import ObserverInterface;
 
 class StatusBar;
 class SlowMotionRatio;
+
+using std::wstring;
 
 class SlowMotionDisplay : public ObserverInterface
 {

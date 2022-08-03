@@ -4,11 +4,11 @@
 //
 // Displays slow motion ratio in status bar field
 
-#include "stdafx.h"
-#include "win32_status.h"
+#include "SaveCast.h"
 #include "SlowMotionDisplay.h"
 
 import Util;
+import StatusBar;
 import SlowMotionRatio;
 
 using std::to_wstring;

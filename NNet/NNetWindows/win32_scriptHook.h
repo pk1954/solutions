@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "win32_status.h"
 #include "ScriptStack.h"
 #include "Script.h"
+
+import StatusBar;
 
 using std::to_wstring;
 

@@ -1,12 +1,16 @@
-// win32_status.cpp : Verwaltet die Status Bar
+// Win32_Status.cpp
 //
 // NNetWindows
 
-#include "stdafx.h"
+module;
+
+#include <Windows.h>
+#include <CommCtrl.h>
 #include "Script.h"
 #include "Resource.h"
 #include "win32_tooltip.h"
-#include "win32_status.h"
+
+module StatusBar;
 
 using std::to_wstring;
 

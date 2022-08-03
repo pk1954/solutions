@@ -5,7 +5,8 @@
 #pragma once
 
 #include "Resource.h"
-#include "win32_status.h"
+
+import StatusBar;
 
 class SlowMotionControl
 {

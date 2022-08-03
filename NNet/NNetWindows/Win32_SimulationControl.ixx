@@ -4,12 +4,12 @@
 
 module;
 
-#include "win32_status.h"
 #include "ComputeThread.h"
 
 export module SimulationControl;
 
 import ObserverInterface;
+import StatusBar;
 
 export class SimulationControl: public ObserverInterface
 {

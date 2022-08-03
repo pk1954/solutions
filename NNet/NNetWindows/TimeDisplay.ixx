@@ -7,11 +7,11 @@ module;
 #pragma once
 
 #include "win32_baseRefreshRate.h"
-#include "win32_status.h"
 
 export module TimeDisplay;
 
 import ObserverInterface;
+import StatusBar;
 
 using std::unique_ptr;
 

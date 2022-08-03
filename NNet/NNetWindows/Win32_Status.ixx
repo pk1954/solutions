@@ -1,22 +1,23 @@
-// win32_status.h 
+// Win32_Status.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include <string>
 #include <vector>
 #include <Windows.h>
+#include "Script.h"
 #include "PixelTypes.h"
+#include "NNetModelWriterInterface.h"
 #include "win32_rootWindow.h"
 
-class NNetModelWriterInterface;
-class Script;
+export module StatusBar;
 
 using std::wstring;
 using std::vector;
 
-class StatusBar : public RootWindow
+export class StatusBar : public RootWindow
 {
 public:
 
@@ -24,12 +25,12 @@ public:
 	void Stop();
 
 	PIXEL GetHeight() const;
-    void  Resize() const;
+	void  Resize() const;
 
 	HWND WINAPI AddStaticControl(int const);
 	HWND WINAPI AddStaticControl(LPCTSTR const);
 	HWND WINAPI AddButton       (LPCTSTR const, HMENU const, DWORD const);
-    HWND WINAPI AddTrackBar     (HMENU const);
+	HWND WINAPI AddTrackBar     (HMENU const);
 
 	void AddCustomControl(int const);
 
@@ -51,9 +52,9 @@ private:
 	vector<PIXEL> m_statWidths;
 
 	PIXEL m_pixClientHeight { 0_PIXEL };
-    PIXEL m_pixBorderX      { 0_PIXEL };
-    PIXEL m_pixBorderY      { 0_PIXEL };
-    PIXEL m_pixPosX         { 0_PIXEL };
+	PIXEL m_pixBorderX      { 0_PIXEL };
+	PIXEL m_pixBorderY      { 0_PIXEL };
+	PIXEL m_pixPosX         { 0_PIXEL };
 
 	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 
