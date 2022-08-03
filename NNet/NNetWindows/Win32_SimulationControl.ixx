@@ -1,16 +1,17 @@
-// win32_simulationControl.h
+// Win32_SimulationControl.ixx
 //
 // NNetSimu
 
-#pragma once
+module;
 
 #include "win32_status.h"
+#include "ComputeThread.h"
+
+export module SimulationControl;
 
 import ObserverInterface;
 
-class ComputeThread;
-
-class SimulationControl: public ObserverInterface
+export class SimulationControl: public ObserverInterface
 {
 public:
 

@@ -51,7 +51,7 @@
     <ClCompile Include="Win32_PerformanceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_simulationControl.cpp">
+    <ClCompile Include="Win32_SimulationControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_status.cpp">
@@ -108,6 +108,9 @@
     <ClCompile Include="Win32_PerformanceWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_SimulationControl.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -147,9 +150,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_parameterDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_simulationControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_slowMotionControl.h">

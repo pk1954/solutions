@@ -1,12 +1,14 @@
-// win32_simulationControl.cpp
+// Win32_SimulationControl.cpp
 //
 // NNetSimu
 
-#include "stdafx.h"
+module;
+
 #include "Resource.h"
 #include "ComputeThread.h"
 #include "win32_util_resource.h"
-#include "win32_simulationControl.h"
+
+module SimulationControl;
 
 void SimulationControl::Initialize
 (

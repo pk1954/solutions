@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <Windows.h>
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
