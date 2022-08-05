@@ -4,15 +4,17 @@
 
 #pragma once
 
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include <string>
 #include <limits>
 #include <chrono>
+#include <sstream>
+#include <numbers>
 #include "SaveCast.h"
 
 import Util;
 import NamedType;
 
+using std::numbers::pi;
 using std::chrono::microseconds;
 using std::numeric_limits;
 using std::streamsize;
@@ -138,7 +140,7 @@ using Degrees = NamedType<float, struct degrees_Parameter >;
 constexpr Radian  operator"" _Radian (const long double r) { return Radian (Cast2Float(r)); }
 constexpr Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
 
-inline float const RADIAN_FACTOR     { 180.0f/static_cast<float>(M_PI) };
+inline float const RADIAN_FACTOR     { static_cast<float>(180.0/pi) };
 inline float const INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
 
 static Radian  Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
