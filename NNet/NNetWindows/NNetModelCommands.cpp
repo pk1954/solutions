@@ -1,10 +1,8 @@
 // NNetModelCommands.cpp
 //
-// NNetModel
+// NNetWindows
 
-#include "stdafx.h"
 #include <source_location>
-#include "AddNobsCommand.h"
 #include "AddPipe2BaseKnotCmd.h"
 #include "AddPipe2PipeCommand.h"
 #include "AddSensorSignalCmd.h"
@@ -68,6 +66,7 @@
 #include "NNetModelCommands.h"
 
 import Uniform2D;
+import AddNobsCommand;
 
 using std::wcout;
 using std::endl;

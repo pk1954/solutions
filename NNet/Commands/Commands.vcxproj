@@ -67,7 +67,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddNobsCommand.h" />
     <ClInclude Include="AddPipe2BaseKnotCmd.h" />
     <ClInclude Include="AddPipe2PipeCommand.h" />
     <ClInclude Include="AddSensorSignalCmd.h" />
@@ -135,6 +134,7 @@
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddNobsCommand.ixx" />
     <ClCompile Include="CommandFunctions.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>

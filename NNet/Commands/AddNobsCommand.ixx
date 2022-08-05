@@ -1,19 +1,21 @@
-// AddNobsCommand.h
+// AddNobsCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "UPNobList.h"
 #include "SelectionCommand.h"
 #include "NNetModelWriterInterface.h"
 
-class AddNobsCommand : public SelectionCommand
+export module AddNobsCommand;
+
+export class AddNobsCommand : public SelectionCommand
 {
 public:
 
 	explicit AddNobsCommand(UPNobList const & nobs2Add)
-	  : m_nobs2Add(nobs2Add),
+		: m_nobs2Add(nobs2Add),
 		m_nrOfNobs(nobs2Add.Size())
 	{ 
 		m_nobs2Add.SelectAllNobs(true);

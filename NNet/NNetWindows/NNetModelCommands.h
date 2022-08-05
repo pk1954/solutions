@@ -1,6 +1,6 @@
 // NNetModelCommands.h
 //
-// NNetModel
+// NNetWindows
 
 #pragma once
 
