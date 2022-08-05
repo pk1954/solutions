@@ -8,9 +8,11 @@ module;
 
 export module DisplayFunctor;
 
+using std::wstring;
+
 export class DisplayFunctor
 {
 public:
 	virtual ~DisplayFunctor() = default;
-	virtual void operator() (std::wstring const &) = 0;
+	virtual void operator() (wstring const &) = 0;
 };

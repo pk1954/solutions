@@ -21,7 +21,6 @@
 // infrastructure
 
 #include "AutoOpen.h"
-#include "UndoRedoMenu.h"
 #include "win32_baseWindow.h"
 #include "NNetCommand.h"
 #include "ConnAnimationCommand.h"
@@ -58,6 +57,7 @@ import StatusBar;
 import ObserverInterface;
 import PerformanceWindow;
 import Win32_AboutBox;
+import UndoRedoMenu;
 
 using std::wcout;
 using std::wstring;

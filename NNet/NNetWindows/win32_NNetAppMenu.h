@@ -8,6 +8,7 @@
 #include "win32_util.h"
 
 import ObserverInterface;
+import SoundInterface;
 
 using std::wstring;
 using std::unique_ptr;

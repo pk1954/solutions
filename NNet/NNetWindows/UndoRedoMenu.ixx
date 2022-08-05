@@ -1,14 +1,16 @@
-// UndoRedoMenu.h
+// UndoRedoMenu.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "win32_NNetAppMenu.h"
 
+export module UndoRedoMenu;
+
 import ObserverInterface;
 
-class UndoRedoMenu : public ObserverInterface
+export class UndoRedoMenu : public ObserverInterface
 {
 public:
 	virtual ~UndoRedoMenu() = default;

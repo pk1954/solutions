@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <string>
 #include <fstream>
 #include <iostream>
 #include "Script.h"
@@ -12,7 +13,6 @@
 #include "Preferences.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
-#include "UndoRedoMenu.h"
 #include "MonitorData.h"
 #include "win32_ActionTimer.h"
 #include "win32_winManager.h"
@@ -33,6 +33,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import UndoRedoMenu;
 import SlowMotionDisplay;
 import ComputeThread;
 import SimulationControl;
@@ -49,6 +50,7 @@ class MessagePump;
 class Observable;
 class NNetModel;
 
+using std::wstring;
 using std::wofstream;
 using std::unique_ptr;
 
