@@ -16,8 +16,6 @@ import PixFpDimension;
 using std::wstring;
 using std::bit_cast;
 
-class D2D_driver;
-
 struct IDWriteTextFormat;
 
 class BaseScale : public GraphicsWindow

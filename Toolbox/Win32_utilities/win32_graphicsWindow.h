@@ -11,9 +11,9 @@
 #include "PixelTypes.h"
 #include "win32_baseWindow.h"
 
-using std::unique_ptr;
+import Direct2D;
 
-class D2D_driver;
+using std::unique_ptr;
 
 class GraphicsWindow : public BaseWindow
 {

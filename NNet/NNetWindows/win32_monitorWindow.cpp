@@ -5,6 +5,7 @@
 #include "Resource.h"
 #include "NNetColors.h"
 #include "MonitorControl.h"
+#include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 
 using std::find;

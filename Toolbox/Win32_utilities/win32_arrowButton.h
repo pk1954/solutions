@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Windows.h"
 #include "win32_controls.h"
 #include "win32_graphicsWindow.h"
 

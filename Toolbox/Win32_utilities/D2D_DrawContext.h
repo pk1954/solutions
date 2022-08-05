@@ -8,10 +8,10 @@
 #include "PixelTypes.h"
 #include "MoreTypes.h"
 
+import Direct2D;
+
 using std::wstring;
 using D2D1::ColorF;
-
-class D2D_driver;
 
 class D2D_DrawContext: public DrawContext
 {
