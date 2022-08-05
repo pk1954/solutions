@@ -1,22 +1,25 @@
-// SlowMotionDisplay.h
+// SlowMotionDisplay.ixx
 //
 // NNetSimu
 
+module;
+
 #include <string>
 
-import ObserverInterface;
+export module SlowMotionDisplay;
 
-class StatusBar;
-class SlowMotionRatio;
+import ObserverInterface;
+import StatusBar;
+import SlowMotionRatio;
 
 using std::wstring;
 
-class SlowMotionDisplay : public ObserverInterface
+export class SlowMotionDisplay : public ObserverInterface
 {
 public:
 	void Initialize(StatusBar *, SlowMotionRatio *, int);
 
-    void Notify(bool const) final;
+	void Notify(bool const) final;
 
 private:
 

@@ -4,10 +4,14 @@
 
 #pragma once
 
+#include <string>
 #include "MoreTypes.h"
 #include "PixelTypes.h"
+#include "Windows.h"
 #include "win32_hiResTimer.h"
 #include "win32_rootWindow.h"
+
+using std::wstring;
 
 static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
 

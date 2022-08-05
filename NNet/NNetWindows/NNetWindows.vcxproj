@@ -587,6 +587,7 @@
     <ClCompile Include="SignalControl.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="SignalDesigner.cpp" />
+    <ClCompile Include="SlowMotionDisplay.ixx" />
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="TimeDisplay.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
@@ -616,7 +617,6 @@
     <ClInclude Include="SignalPreview.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="Preferences.h" />
-    <ClInclude Include="SlowMotionDisplay.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SignalDesigner.h" />
     <ClInclude Include="targetver.h" />

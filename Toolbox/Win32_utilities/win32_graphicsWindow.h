@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "Windows.h"
+#include "PixelTypes.h"
 #include "win32_baseWindow.h"
 
 using std::unique_ptr;

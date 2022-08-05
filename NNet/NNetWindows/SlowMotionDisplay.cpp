@@ -4,8 +4,12 @@
 //
 // Displays slow motion ratio in status bar field
 
+module;
+
+#include <string>
 #include "SaveCast.h"
-#include "SlowMotionDisplay.h"
+
+module SlowMotionDisplay;
 
 import Util;
 import StatusBar;

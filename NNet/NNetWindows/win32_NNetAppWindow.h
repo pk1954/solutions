@@ -12,7 +12,6 @@
 #include "Preferences.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
-#include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
 #include "MonitorData.h"
 #include "win32_ActionTimer.h"
@@ -34,6 +33,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import SlowMotionDisplay;
 import ComputeThread;
 import SimulationControl;
 import PerformanceWindow;
