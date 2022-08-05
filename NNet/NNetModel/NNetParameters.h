@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include "SaveCast.h"
 #include "MoreTypes.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
