@@ -1,15 +1,18 @@
-// MoveSensorCmd.h
+// MoveSensorCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "Sensor.h"
+#include "UPSensorList.h"
 
-class MoveSensorCmd : public NNetCommand
+export module MoveSensorCmd;
+
+export class MoveSensorCmd : public NNetCommand
 {
 public:
 	MoveSensorCmd

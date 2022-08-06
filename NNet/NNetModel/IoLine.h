@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "NobType.h"
 #include "MicroMeterPosDir.h"
 #include "NNetParameters.h"
 #include "BaseKnot.h"

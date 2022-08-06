@@ -86,7 +86,6 @@
     <ClInclude Include="DeleteSigGenCmd.h" />
     <ClInclude Include="IoLinesAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
-    <ClInclude Include="MoveSensorCmd.h" />
     <ClInclude Include="MoveSignalCmd.h" />
     <ClInclude Include="NewSigGenCmd.h" />
     <ClInclude Include="NNetCommand.h" />
@@ -157,6 +156,7 @@
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <ClCompile Include="DeleteTrackCommand.ixx" />
+    <ClCompile Include="MoveSensorCmd.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">

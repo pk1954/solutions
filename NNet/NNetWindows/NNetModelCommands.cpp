@@ -29,7 +29,6 @@
 #include "InputConnector.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
-#include "MoveSensorCmd.h"
 #include "MoveSignalCmd.h"
 #include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
@@ -67,6 +66,7 @@
 import Uniform2D;
 import AddNobsCommand;
 import DeleteTrackCommand;
+import MoveSensorCmd;
 
 using std::wcout;
 using std::endl;
