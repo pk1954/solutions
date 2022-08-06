@@ -1,24 +1,29 @@
-// SignalDesigner.h
+// SignalDesigner.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include <string>
+#include <Windows.h>
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "SignalPreview.h"
+#include "NNetModelCommands.h"
 #include "win32_scale.h"
 #include "win32_arrowButton.h"
 #include "win32_graphicsWindow.h"
 
+export module SignalDesigner;
+
+import Observable;
 import PixFpDimension;
 import SignalControl;
+import ComputeThread;
 
-class NNetModelCommands;
-class ComputeThread;
-class Observable;
+using std::wstring;
 
-class SignalDesigner : public GraphicsWindow
+export class SignalDesigner : public GraphicsWindow
 {
 public:
 	void Initialize

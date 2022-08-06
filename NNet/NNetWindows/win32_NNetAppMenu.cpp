@@ -6,7 +6,6 @@
 #include "win32_util.h"
 #include "CommandStack.h"
 #include "AutoOpen.h"
-#include "SignalDesigner.h"
 #include "SignalGenerator.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
@@ -16,6 +15,7 @@
 
 import SoundInterface;
 import ComputeThread;
+import SignalDesigner;
 
 using std::make_unique;
 

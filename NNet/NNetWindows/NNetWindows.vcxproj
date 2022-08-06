@@ -583,6 +583,7 @@
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="SignalControl.ixx" />
+    <ClCompile Include="SignalDesigner.ixx" />
     <ClCompile Include="SignalPreview.cpp" />
     <ClCompile Include="SignalControl.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
@@ -620,7 +621,6 @@
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="SignalDesigner.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
     <ClInclude Include="win32_crsrWindow.h" />

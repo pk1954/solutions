@@ -26,7 +26,6 @@
 #include "win32_descriptionWindow.h"
 #include "win32_slowMotionControl.h"
 #include "win32_script.h"
-#include "SignalDesigner.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
@@ -35,6 +34,7 @@
 import ScriptHook;
 import UndoRedoMenu;
 import SlowMotionDisplay;
+import SignalDesigner;
 import ComputeThread;
 import SimulationControl;
 import PerformanceWindow;

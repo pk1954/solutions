@@ -2,22 +2,27 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
+module;
+
+#include <Windows.h>
 #include "Resource.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
+#include "win32_scale.h"
 #include "win32_arrowButton.h"
 #include "win32_controls.h"
 #include "win32_editLineBox.h"
 #include "win32_util_resource.h"
 #include "win32_PixelTypes.h"
-#include "SignalDesigner.h"
+
+module SignalDesigner;
 
 import PointType;
 import ComputeThread;
+import PixFpDimension;
 
 using std::bit_cast;
 
@@ -204,7 +209,7 @@ void SignalDesigner::renameSigGen()
 void SignalDesigner::toggleDesign()
 {
 	PIXEL clientHeight    { GetClientWindowHeight() };
-	PIXEL newClientHeight { (m_design == DESIGN::INTEGRATED) ? (clientHeight*2) : (clientHeight/2) };
+	PIXEL newClientHeight { (m_design == DESIGN::INTEGRATED) ? (clientHeight+clientHeight) : (clientHeight/2) };
 	PIXEL newWinHeight    { GetWindowHeight() + newClientHeight - clientHeight };
 	SetWindowHeight(newWinHeight, false);
 	m_design = (m_design == DESIGN::INTEGRATED) ? DESIGN::STACKED : DESIGN::INTEGRATED;
