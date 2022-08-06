@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <Windows.h>
 #include "win32_util.h"
 
 import ObserverInterface;

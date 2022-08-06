@@ -17,6 +17,7 @@ import NamedType;
 
 using std::wostringstream;
 using std::wostream;
+using std::wstring;
 using std::wcout;
 using std::endl;
 

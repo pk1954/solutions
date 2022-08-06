@@ -14,9 +14,10 @@ export module Util;
 
 using std::vector;
 using std::function;
+using std::wstring;
 using std::abs;
 
-export extern void UpperCase(std::wstring &);
+export extern void UpperCase(wstring &);
 
 export using VisCrit = function <bool()>;
 

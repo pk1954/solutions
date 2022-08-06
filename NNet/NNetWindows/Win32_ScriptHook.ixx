@@ -1,17 +1,19 @@
-// win32_scriptHook.h
+// Win32_ScriptHook.ixx
 //
 // NNetSimu
 
-#pragma once
+module;
 
 #include "ScriptStack.h"
 #include "Script.h"
+
+export module ScriptHook;
 
 import StatusBar;
 
 using std::to_wstring;
 
-class ScriptHook : public ScriptFunctor
+export class ScriptHook : public ScriptFunctor
 {
 public:
 	void Initialize

@@ -7,12 +7,14 @@ module;
 #include <iostream>
 #include <sstream> 
 #include <string> 
+#include <chrono>
 #include "PixelTypes.h"
 
 export module TextBuffer;
 
 using std::wstring;
 using std::wostringstream;
+using std::chrono::microseconds;
 
 export using TEXT_POSITION = NamedType<int, struct TEXT_POSITION_Parameter>;
 

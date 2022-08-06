@@ -16,7 +16,6 @@
 #include "MonitorData.h"
 #include "win32_ActionTimer.h"
 #include "win32_winManager.h"
-#include "win32_scriptHook.h"
 #include "win32_MiniWindow.h"
 #include "win32_MainWindow.h"
 #include "win32_monitorWindow.h"
@@ -33,6 +32,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import ScriptHook;
 import UndoRedoMenu;
 import SlowMotionDisplay;
 import ComputeThread;

@@ -605,6 +605,7 @@
     <ClCompile Include="win32_parameterDlg.cpp" />
     <ClCompile Include="Win32_PerformanceWindow.cpp" />
     <ClCompile Include="Win32_PerformanceWindow.ixx" />
+    <ClCompile Include="Win32_ScriptHook.ixx" />
     <ClCompile Include="Win32_SimulationControl.cpp" />
     <ClCompile Include="Win32_SimulationControl.ixx" />
     <ClCompile Include="Win32_Status.cpp" />
@@ -633,7 +634,6 @@
     <ClInclude Include="win32_NNetController.h" />
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_parameterDlg.h" />
-    <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_slowMotionControl.h" />
     <ClInclude Include="win32_triggerSoundDlg.h" />
   </ItemGroup>

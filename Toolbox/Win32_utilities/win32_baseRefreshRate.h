@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include <Windows.h>
 #include "win32_util.h"
 
 import StdDialogBox;
