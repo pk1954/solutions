@@ -1,11 +1,14 @@
-// win32_command.cpp
+// Win32_Command.cpp
 //
 // Win32_utilities
+
+module;
 
 #include "ScriptStack.h"
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"
-#include "win32_command.h"
+
+module Command;
 
 using std::bit_cast;
 

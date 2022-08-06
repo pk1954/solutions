@@ -6,7 +6,8 @@
 
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_command.h"
+
+import Command;
 
 class BaseKnot;
 class Pipe;

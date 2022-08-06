@@ -5,8 +5,8 @@
 #pragma once
 
 #include "Windows.h"
-#include "win32_command.h"
 
+import Command;
 import SmoothMoveFp;
 
 using std::bit_cast;

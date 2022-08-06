@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include <unordered_map>
 #include "MoreTypes.h"
 #include "Resource.h"
@@ -18,9 +17,10 @@
 #include "win32_ActionTimer.h"
 #include "win32_util_resource.h"
 #include "win32_fatalError.h"
-#include "win32_command.h"
 #include "win32_monitorWindow.h"
 #include "win32_MainWindow.h"
+
+import Command;
 
 using std::unordered_map;
 using std::unique_ptr;

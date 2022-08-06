@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include <sstream>
 #include "win32_util_resource.h"
 #include "Resource.h"

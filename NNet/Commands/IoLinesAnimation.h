@@ -8,7 +8,8 @@
 #include "win32_animation.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
-#include "win32_command.h"
+
+import Command;
 
 using std::function;
 

@@ -84,9 +84,6 @@
     <ClInclude Include="win32_animation.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_command.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_scale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -167,7 +164,7 @@
     <ClCompile Include="win32_escape.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_command.cpp">
+    <ClCompile Include="Win32_Command.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="D2D_DrawContext.cpp">
@@ -198,6 +195,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_StdDialogBox.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Command.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

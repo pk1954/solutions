@@ -8,7 +8,8 @@
 #include "win32_animation.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_command.h"
+
+import Command;
 
 using std::function;
 

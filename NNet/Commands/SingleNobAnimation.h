@@ -9,7 +9,8 @@
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
-#include "win32_command.h"
+
+import Command;
 
 using std::function;
 

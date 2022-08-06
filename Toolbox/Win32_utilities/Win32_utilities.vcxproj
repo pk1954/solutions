@@ -167,7 +167,6 @@
     <ClInclude Include="win32_animation.h" />
     <ClInclude Include="win32_arrowButton.h" />
     <ClInclude Include="win32_baseScale.h" />
-    <ClInclude Include="win32_command.h" />
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
@@ -203,10 +202,11 @@
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
     <ClCompile Include="win32_baseScale.cpp" />
-    <ClCompile Include="win32_command.cpp" />
+    <ClCompile Include="Win32_Command.cpp" />
     <ClCompile Include="win32_baseDialog.cpp" />
     <ClCompile Include="win32_baseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
+    <ClCompile Include="Win32_Command.ixx" />
     <ClCompile Include="win32_controls.cpp" />
     <ClCompile Include="win32_editLineBox.cpp" />
     <ClCompile Include="win32_escape.cpp" />

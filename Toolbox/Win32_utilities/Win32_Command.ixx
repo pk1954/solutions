@@ -1,21 +1,23 @@
-// win32_command.h
+// Win32_Command.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
 #include <vector>
 #include <functional>
 #include <source_location>
+#include <Windows.h>
+#include "win32_rootWindow.h"
+
+export module Command;
 
 using std::vector;
 using std::function;
 using std::unique_ptr;
 using std::source_location;
 
-class RootWindow;
-
-class Command
+export class Command
 {
 public:
     virtual ~Command() = default;
@@ -35,7 +37,7 @@ public:
     };
 
     LRESULT PostCommand2Application(WPARAM const, LPARAM const) const;
-        
+
     void CallUI(bool const); // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin

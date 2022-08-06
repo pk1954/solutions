@@ -7,10 +7,10 @@
 #include "assert.h"
 #include "NobException.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_command.h"
 #include "CommandStack.h"
 
 import Observable;
+import Command;
 
 using std::wcout;
 using std::endl;
