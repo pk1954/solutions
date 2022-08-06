@@ -1,10 +1,13 @@
-// win32_controls.cpp
+// Win32_Controls.cpp
 //
-// NNetWindows
+// Toolbox\Win32_utilities
 
-#include "stdafx.h"
+module;
+
+#include "Windows.h"
 #include "CommCtrl.h"
-#include "win32_controls.h"
+
+module Win32_Controls;
 
 HWND CreateButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, INT_PTR const id, DWORD const dwStyle)
 {

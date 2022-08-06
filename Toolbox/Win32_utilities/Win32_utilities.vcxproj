@@ -171,7 +171,6 @@
     <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_beeperThread.h" />
-    <ClInclude Include="win32_controls.h" />
     <ClInclude Include="win32_editLineBox.h" />
     <ClInclude Include="win32_fatalError.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
@@ -207,7 +206,8 @@
     <ClCompile Include="win32_baseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="Win32_Command.ixx" />
-    <ClCompile Include="win32_controls.cpp" />
+    <ClCompile Include="Win32_Controls.cpp" />
+    <ClCompile Include="Win32_Controls.ixx" />
     <ClCompile Include="win32_editLineBox.cpp" />
     <ClCompile Include="win32_escape.cpp" />
     <ClCompile Include="Win32_event.ixx" />

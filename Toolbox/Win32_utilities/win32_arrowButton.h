@@ -5,10 +5,10 @@
 #pragma once
 
 #include "Windows.h"
-#include "win32_controls.h"
 #include "win32_graphicsWindow.h"
 
 import Direct2D;
+import Win32_Controls;
 
 class ArrowButton : public GraphicsWindow
 {
