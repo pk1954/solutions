@@ -24,7 +24,6 @@
 #include "DeleteSelectionCommand.h"
 #include "DeleteSigGenCmd.h"
 #include "DeleteSignalCommand.h"
-#include "DeleteTrackCommand.h"
 #include "DeleteBaseKnotCmd.h"
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
@@ -67,6 +66,7 @@
 
 import Uniform2D;
 import AddNobsCommand;
+import DeleteTrackCommand;
 
 using std::wcout;
 using std::endl;

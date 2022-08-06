@@ -1,15 +1,18 @@
-// DeleteTrackCommand.h
+// DeleteTrackCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
+#include <assert.h>
 #include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "NNetCommand.h"
 
-class DeleteTrackCommand: public NNetCommand
+export module DeleteTrackCommand;
+
+export class DeleteTrackCommand: public NNetCommand
 {
 public:
 

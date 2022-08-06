@@ -9,12 +9,6 @@
 
 import Command;
 
-class BaseKnot;
-class Pipe;
-
-using std::unique_ptr;
-using std::make_unique;
-
 class NNetCommand : public Command
 {
 public:
