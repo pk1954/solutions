@@ -1,19 +1,23 @@
-// ArrowAnimation.h
+// ArrowAnimation.ixx
 //
 // Commands
 
-#pragma once
+module;
 
+#include <functional>
 #include "MoreTypes.h"
 #include "win32_animation.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
+export module ArrowAnimation;
+
 import Command;
 
 using std::function;
+using std::unique_ptr;
 
-class ArrowAnimation : public Command
+export class ArrowAnimation : public Command
 {
     using ANIM_TYPE = MicroMeter;
     using ANIMATION = Animation<ANIM_TYPE>;
@@ -23,7 +27,7 @@ public:
         ANIM_TYPE       & animated,
         ANIM_TYPE const & target
     )
-      : m_animated(animated),
+        : m_animated(animated),
         m_start(animated),
         m_target(target)
     {

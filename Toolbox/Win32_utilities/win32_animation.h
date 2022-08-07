@@ -4,12 +4,14 @@
 
 #pragma once
 
+#include <vector>
 #include "Windows.h"
 
 import Command;
 import SmoothMoveFp;
 
 using std::bit_cast;
+using std::vector;
 
 using AnimationScript = vector<DWORD>;
 

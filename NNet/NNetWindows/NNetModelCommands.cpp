@@ -9,7 +9,6 @@
 #include "AddSigGen2MonitorCmd.h"
 #include "AnalyzeCommand.h"
 #include "Analyzer.h"
-#include "ArrowAnimation.h"
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
 #include "AttachSigGen2SelCmd.h"
@@ -67,6 +66,7 @@ import Uniform2D;
 import AddNobsCommand;
 import DeleteTrackCommand;
 import MoveSensorCmd;
+import ArrowAnimation;
 
 using std::wcout;
 using std::endl;
