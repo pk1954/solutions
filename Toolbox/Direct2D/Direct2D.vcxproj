@@ -163,9 +163,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Direct2D.cpp" />
     <ClCompile Include="Direct2D.ixx" />
   </ItemGroup>

@@ -6,7 +6,8 @@
 
 #include <assert.h>
 #include <functional>
-#include "debug.h"
+
+import Debug;
 
 using std::function;
 using std::wostream;

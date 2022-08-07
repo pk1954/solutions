@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
-    <ClInclude Include="debug.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="SaveCast.h" />
     <ClInclude Include="PixelTypes.h" />
@@ -29,6 +28,10 @@
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
+    <ClCompile Include="Debug.ixx">
+      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
+      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
+    </ClCompile>
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="EllipseType.ixx" />
     <ClCompile Include="EventInterface.ixx" />
@@ -148,6 +151,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -189,6 +193,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

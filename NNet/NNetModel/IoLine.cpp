@@ -2,7 +2,8 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include "MoreTypes.h"
+#include "MicroMeterPosDir.h"
 #include "Pipe.h"
 #include "IoLine.h"
 

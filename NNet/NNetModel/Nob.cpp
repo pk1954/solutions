@@ -8,7 +8,8 @@
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Nob.h"
-#include "debug.h"
+
+import Debug;
 
 using std::move;
 using std::wcout;

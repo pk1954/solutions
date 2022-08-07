@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "debug.h"
+import Debug;
 
 template<typename SOURCE_TYPE>
 constexpr float Cast2Float(SOURCE_TYPE const value) 
