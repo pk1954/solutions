@@ -1,13 +1,15 @@
-// win32_tooltip.cpp
+// Win32_Tooltip.cpp
 //
 // win32_utilities
 
-#include "stdafx.h"
+module;
+
 #include <assert.h>
 #include <Windows.h>
 #include <CommCtrl.h>
 #include "win32_util.h"
-#include "win32_tooltip.h"
+
+module Tooltip;
 
 HWND CreateRectToolTip
 (

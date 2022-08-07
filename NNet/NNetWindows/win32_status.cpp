@@ -4,13 +4,16 @@
 
 module;
 
+#include <string>
 #include <Windows.h>
 #include <CommCtrl.h>
 #include "Script.h"
 #include "Resource.h"
-#include "win32_tooltip.h"
+#include "PixelTypes.h"
 
 module StatusBar;
+
+import Tooltip;
 
 using std::to_wstring;
 

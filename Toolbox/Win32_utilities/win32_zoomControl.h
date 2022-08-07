@@ -5,8 +5,8 @@
 #pragma once
 
 #include "win32_util_resource.h"
-#include "win32_tooltip.h"
 
+import Tooltip;
 import StatusBar;
 
 class ZoomControl

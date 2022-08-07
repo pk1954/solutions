@@ -12,10 +12,10 @@
 #include "windowsx.h"
 #include "CommCtrl.h"
 #include "PixelTypes.h"
-#include "win32_tooltip.h"
 #include "win32_util.h"
 
 import ObserverInterface;
+import Tooltip;
 
 using std::chrono::milliseconds;
 using std::wostringstream;
