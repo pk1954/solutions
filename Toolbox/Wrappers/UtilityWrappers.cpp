@@ -1,10 +1,11 @@
 // UtilityWrappers.cpp
 //
-// Utilities
+// Utilities\Wrappers
 
 #include <assert.h>
 #include "Script.h"
 #include "Symtab.h"
+#include "PixelTypes.h"
 #include "UtilityWrappers.h"
 
 import BoolOp;
@@ -61,7 +62,7 @@ class WrapOpenTraceFile : public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-		OpenTraceFile(script.ScrReadString());
+		//OpenTraceFile(script.ScrReadString());
     }
 };
 

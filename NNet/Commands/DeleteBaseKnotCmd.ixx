@@ -1,21 +1,22 @@
-// DeleteBaseKnotCmd.h
+// DeleteBaseKnotCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include <vector>
+#include "InputLine.h"
+#include "OutputLine.h"
+#include "BaseKnot.h"
 #include "NNetCommand.h"
 #include "NobIdList.h"
 
-class InputLine;
-class OutputLine;
-class BaseKnot;
+export module DeleteBaseKnotCmd;
 
 using std::vector;
 using std::unique_ptr;
 
-class DeleteBaseKnotCmd : public NNetCommand
+export class DeleteBaseKnotCmd : public NNetCommand
 {
 public:
     DeleteBaseKnotCmd(Nob &);

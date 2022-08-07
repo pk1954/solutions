@@ -2,11 +2,17 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+module;
+
+#include "Pipe.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "BaseKnot.h"
-#include "DeleteBaseKnotCmd.h"
+#include "NNetModelWriterInterface.h"
+
+module DeleteBaseKnotCmd;
+
+import SaveCast;
 
 using std::wcout;
 using std::endl;

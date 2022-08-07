@@ -110,7 +110,6 @@
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
-    <ClInclude Include="DeleteBaseKnotCmd.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />
@@ -155,6 +154,7 @@
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
+    <ClCompile Include="DeleteBaseKnotCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
   </ItemGroup>

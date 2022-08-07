@@ -23,7 +23,6 @@
 #include "DeleteSelectionCommand.h"
 #include "DeleteSigGenCmd.h"
 #include "DeleteSignalCommand.h"
-#include "DeleteBaseKnotCmd.h"
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
 #include "InsertBaseKnotCommand.h"
@@ -67,6 +66,7 @@ import AddNobsCommand;
 import DeleteTrackCommand;
 import MoveSensorCmd;
 import ArrowAnimation;
+import DeleteBaseKnotCmd;
 
 using std::wcout;
 using std::endl;

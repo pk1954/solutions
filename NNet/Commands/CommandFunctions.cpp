@@ -9,13 +9,14 @@
 #include "DeleteIoConnectorCmd.h"
 #include "DiscIoConnectorCmd.h"
 #include "SplitNeuronCmd.h"
-#include "DeleteBaseKnotCmd.h"
 #include "NNetCommand.h"
 #include "NobType.h"
 #include "IoConnector.h"
 #include "BaseKnot.h"
 #include "Nob.h"
 #include "CommandFunctions.h"
+
+import DeleteBaseKnotCmd;
 
 unique_ptr<NNetCommand> MakeDeleteCommand
 (
