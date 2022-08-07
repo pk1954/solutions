@@ -82,7 +82,6 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CoordAnimation.h" />
     <ClInclude Include="DeleteIoConnectorCmd.h" />
-    <ClInclude Include="DeleteSigGenCmd.h" />
     <ClInclude Include="IoLinesAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSignalCmd.h" />
@@ -155,6 +154,7 @@
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <ClCompile Include="DeleteBaseKnotCmd.ixx" />
+    <ClCompile Include="DeleteSigGenCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
   </ItemGroup>

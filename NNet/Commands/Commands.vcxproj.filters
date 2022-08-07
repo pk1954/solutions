@@ -174,9 +174,6 @@
     <ClInclude Include="SetActiveSigGenCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeleteSigGenCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenameSigGenCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -225,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeleteBaseKnotCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,18 +1,23 @@
-// DeleteSigGenCmd.h
+// DeleteSigGenCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
+#include <vector>
 #include "NNetModelWriterInterface.h"
 #include "InputLine.h"
 #include "SetActiveSigGenCmd.h"
 #include "SignalGenerator.h"
 #include "SigGenCommand.h"
+#include "UPSigGenList.h"
+
+export module DeleteSigGenCmd;
 
 using std::make_unique;
+using std::vector;
 
-class DeleteSigGenCmd : public SigGenCommand
+export class DeleteSigGenCmd : public SigGenCommand
 {
 public:
 	DeleteSigGenCmd()
@@ -20,11 +25,11 @@ public:
 		m_sigGenId = m_pNMWI->GetSigGenIdSelected();
 		m_pNMWI->Apply2All<InputLine>
 		(
-			[this](InputLine & n)
-			{
-				if (n.GetSigGen() == m_pSigGenActive)
-					m_affectedInputLines.push_back(&n);
-			}
+				[this](InputLine & n)
+				{
+					if (n.GetSigGen() == m_pSigGenActive)
+						m_affectedInputLines.push_back(&n);
+				}
 		);
 	}
 
