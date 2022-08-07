@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <Windows.h>
 #include "MoreTypes.h"
-#include "PixelTypes.h"
 #include "SignalPreview.h"
 #include "NNetModelCommands.h"
 #include "win32_scale.h"
@@ -20,6 +19,7 @@ import Observable;
 import PixFpDimension;
 import SignalControl;
 import ComputeThread;
+import PixelTypes;
 
 using std::wstring;
 

@@ -6,7 +6,6 @@ module;
 
 #include <array>
 #include "MoreTypes.h"
-#include "PixelTypes.h"
 #include "SignalGenerator.h"
 #include "TimeGraph.h"
 #include "NNetModelCommands.h"
@@ -17,6 +16,7 @@ export module SignalControl;
 import PixFpDimension;
 import ComputeThread;
 import Direct2D;
+import PixelTypes;
 
 using std::array;
 

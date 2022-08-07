@@ -8,10 +8,10 @@
 #pragma once
 
 #include "Windows.h"
-#include "PixelTypes.h"
 #include "win32_baseWindow.h"
 
 import Direct2D;
+import PixelTypes;
 
 using std::unique_ptr;
 

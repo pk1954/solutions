@@ -4,10 +4,12 @@
 
 #pragma once
 
+#include <string>
 #include "d2d1helper.h"
-#include "PixelTypes.h"
+#include "MoreTypes.h"
 
 import Uniform2D;
+import PixelTypes;
 
 using std::wstring;
 using D2D1::ColorF;

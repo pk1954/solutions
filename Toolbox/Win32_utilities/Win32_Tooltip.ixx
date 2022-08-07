@@ -6,9 +6,10 @@ module;
 
 #include <Windows.h>
 #include <windowsx.h>
-#include "PixelTypes.h"
 
 export module Tooltip;
+
+import PixelTypes;
 
 export HWND CreateToolTipEx     (HWND const, int const, bool const, PixelRect const * const, LPCTSTR const);
 export HWND CreateStdToolTip    (HWND const, int const, LPCTSTR const);

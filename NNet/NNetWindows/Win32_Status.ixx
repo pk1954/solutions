@@ -8,11 +8,12 @@ module;
 #include <vector>
 #include <Windows.h>
 #include "Script.h"
-#include "PixelTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_rootWindow.h"
 
 export module StatusBar;
+
+import PixelTypes;
 
 using std::wstring;
 using std::vector;

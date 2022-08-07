@@ -10,7 +10,6 @@
 #include "Pipe.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -20,8 +19,8 @@
 #include "win32_NNetWindow.h"
 
 import Direct2D;
-
 import Win32_Sound;
+import PixelTypes;
 
 using std::function;
 

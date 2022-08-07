@@ -4,13 +4,18 @@
 
 module;
 
-#include "PixelTypes.h"
+#include <algorithm>
 
 export module Uniform2D;
 
 import Util;
 import Observable;
 import PixFpDimension;
+import PixelTypes;
+import CircleType;
+import RectType;
+
+using std::max;
 
 export template <typename LOG_UNIT>
 class Uniform2D : public Observable

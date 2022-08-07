@@ -6,11 +6,11 @@ module;
 
 #include <sstream>
 #include "Windows.h"
-#include "PixelTypes.h"
 
 export module Win32_TextBuffer;
 
 import TextBuffer;
+import PixelTypes;
 
 using std::wostringstream;
 

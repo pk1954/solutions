@@ -11,11 +11,11 @@
 #include <vector>
 #include "windowsx.h"
 #include "CommCtrl.h"
-#include "PixelTypes.h"
 #include "win32_util.h"
 
 import ObserverInterface;
 import Tooltip;
+import PixelTypes;
 
 using std::chrono::milliseconds;
 using std::wostringstream;

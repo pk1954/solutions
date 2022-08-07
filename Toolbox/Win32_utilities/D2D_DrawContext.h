@@ -5,10 +5,10 @@
 #pragma once
 
 #include "DrawContext.h"
-#include "PixelTypes.h"
 #include "MoreTypes.h"
 
 import Direct2D;
+import PixelTypes;
 
 using std::wstring;
 using D2D1::ColorF;

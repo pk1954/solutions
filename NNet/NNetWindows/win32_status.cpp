@@ -9,11 +9,11 @@ module;
 #include <CommCtrl.h>
 #include "Script.h"
 #include "Resource.h"
-#include "PixelTypes.h"
 
 module StatusBar;
 
 import Tooltip;
+import PixelTypes;
 
 using std::to_wstring;
 

@@ -9,11 +9,11 @@ module;
 #include "d2d1.h"
 #include "dwrite.h"
 #include "win32_util.h"
-#include "PixelTypes.h"
 
 module Direct2D;
 
 import Util;
+import PixelTypes;
 
 using std::array;
 using std::wstring;

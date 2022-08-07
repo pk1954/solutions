@@ -8,9 +8,12 @@ module;
 #include <sstream> 
 #include <string> 
 #include <chrono>
-#include "PixelTypes.h"
 
 export module TextBuffer;
+
+import SaveCast;
+import NamedType;
+import PixelTypes;
 
 using std::wstring;
 using std::wostringstream;

@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "PixelTypes.h"
 #include "win32_util.h"
+
+import PixelTypes;
 
 fPixelRect Convert2fPixelRect(RECT const & rect)
 {

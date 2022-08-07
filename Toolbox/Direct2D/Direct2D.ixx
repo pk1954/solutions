@@ -4,12 +4,13 @@
 
 module;
 
-#include <string.h>
+#include <string>
 #include "dwrite.h"
 #include "d2d1helper.h"
-#include "PixelTypes.h"
 
 export module Direct2D;
+
+import PixelTypes;
 
 using std::wstring;
 

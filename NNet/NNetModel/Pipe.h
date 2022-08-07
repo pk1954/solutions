@@ -6,12 +6,12 @@
 
 #include <vector>
 #include "MoreTypes.h"
-#include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Nob.h"
 
 import PointType;
+import PixelTypes;
 
 using std::vector;
 

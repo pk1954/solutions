@@ -6,17 +6,19 @@ module;
 
 #include <locale>
 #include <iomanip>
-#include "PixelTypes.h"
+#include <chrono>
 
 module TextBuffer;
 
 import Util;
+import PixelTypes;
 
 using std::wstring;
 using std::setprecision;
 using std::setw;
 using std::fixed;
 using std::setprecision;
+using std::chrono::microseconds;
 
 void TextBuffer::Initialize
 (

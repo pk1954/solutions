@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "PixelTypes.h"
 #include "MoreTypes.h"
 #include "PipeList.h"
 #include "Pipe.h"
 #include "Nob.h"
 
 import CircleType;
+import PixelTypes;
 
 class DrawContext;
 class NNetModel;

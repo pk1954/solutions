@@ -6,10 +6,11 @@
 
 #include <string>
 #include "MoreTypes.h"
-#include "PixelTypes.h"
 #include "Windows.h"
 #include "win32_hiResTimer.h"
 #include "win32_rootWindow.h"
+
+import PixelTypes;
 
 using std::wstring;
 

@@ -6,12 +6,12 @@ module;
 
 #include <locale>
 #include <iomanip>
-#include "PixelTypes.h"
 #include "win32_util.h"
 
 module Win32_TextBuffer;
 
 import Util;
+import PixelTypes;
 
 using std::wstring;
 using std::wostringstream;

@@ -4,16 +4,16 @@
 
 #pragma once
 
-#include "Windows.h"
-#include "PixelTypes.h"
-
 #include <assert.h>
 #include <string>
 #include <sstream>
 #include <iostream>
+#include "MoreTypes.h"
+#include "Windows.h"
 
 import BoolOp;
 import NamedType;
+import PixelTypes;
 
 using std::wostringstream;
 using std::wostream;

@@ -5,12 +5,12 @@
 module;
 
 #include "MoreTypes.h"
-#include "PixelTypes.h"
 
 export module PixFpDimension;
 
 import Util;
 import Observable;
+import PixelTypes;
 
 export template <typename LOG_UNIT>
 class PixFpDimension : public Observable

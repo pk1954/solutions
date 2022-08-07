@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="MoreTypes.h" />
-    <ClInclude Include="PixelTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
@@ -41,6 +40,7 @@
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
+    <ClCompile Include="PixelTypes.ixx" />
     <ClCompile Include="PixFpDimension.ixx" />
     <ClCompile Include="PointType.ixx" />
     <ClCompile Include="RectType.ixx" />

@@ -5,7 +5,6 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "PixelTypes.h"
 #include "Track.h"
 #include "TrackNr.h"
 #include "TimeGraph.h"
@@ -14,6 +13,7 @@ import PixFpDimension;
 import SoundInterface;
 import Measurement;
 import Direct2D;
+import PixelTypes;
 
 class MonitorData;
 class NNetModelCommands;
