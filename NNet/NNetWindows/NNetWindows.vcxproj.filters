@@ -36,7 +36,7 @@
     <ClCompile Include="TimeDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_crsrWindow.cpp">
+    <ClCompile Include="Win32_CrsrWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_MiniWindow.cpp">
@@ -132,6 +132,9 @@
     <ClCompile Include="Preferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_CrsrWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -147,9 +150,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_triggerSoundDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_crsrWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_MainWindow.h">

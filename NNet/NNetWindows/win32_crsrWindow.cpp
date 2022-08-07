@@ -1,8 +1,9 @@
-// win32_crsrWindow.cpp :
+// Win32_CrsrWindow.cpp :
 //
 // NNetWindows
 
-#include "stdafx.h"
+module;
+
 #include <iostream>
 #include <sstream> 
 #include <string> 
@@ -16,12 +17,14 @@
 #include "Sensor.h"
 #include "win32_util.h"
 #include "win32_MainWindow.h"
-#include "win32_crsrWindow.h"
 
-import Win32_TextBuffer;
+module CrsrWindow;
+
+import TextBuffer;
 
 using std::setprecision;
 using std::to_wstring;
+using std::fixed;
 
 CrsrWindow::CrsrWindow() :
 	TextWindow()
@@ -140,7 +143,7 @@ void CrsrWindow::printNobInfo
 (
 	TextBuffer          & textBuf, 
 	MicroMeterPnt const & umPoint, 
-	NobId         const id
+	NobId         const   id
 ) const 
 {
 	NobType const type { m_pNMRI->GetNobType(id) };
@@ -175,7 +178,6 @@ void CrsrWindow::printNobInfo
 			textBuf.AlignLeft();  
 			printFrequency(textBuf, sound.m_frequency);
 			printMilliSecs(textBuf, sound.m_duration);
-			textBuf.printString(L"msec");
 			textBuf.nextLine();
 		}
 	}

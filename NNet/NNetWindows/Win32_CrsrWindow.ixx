@@ -1,20 +1,24 @@
-// win32_crsrWindow.h 
+// Win32_CrsrWindow.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include <iostream>
+#include "BasicTypes.h"
+#include "NNetModelReaderInterface.h"
+#include "win32_mainWindow.h"
 #include "win32_textWindow.h"
+
+export module CrsrWindow;
+
+import TextBuffer;
 
 using std::wostringstream;
 using std::setprecision;
 using std::fixed;
 
-class MainWindow;
-class NNetModelReaderInterface;
-
-class CrsrWindow: public TextWindow
+export class CrsrWindow: public TextWindow
 {
 public:
 	CrsrWindow();
@@ -40,7 +44,7 @@ private:
 	void printDegrees   (TextBuffer &, Degrees    const) const;
 	void printVoltage   (TextBuffer &, mV         const) const;
 
-	template <typename T> void printFrequency(TextBuffer & textBuf, T const freq) const
+	void printFrequency(TextBuffer & textBuf, Hertz const freq) const
 	{
 		wostringstream wBuffer;
 		wBuffer << fixed << setprecision(1) << freq.GetValue() << L"Hz ";

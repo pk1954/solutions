@@ -5,7 +5,7 @@
 module;
 
 #include <string>
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 
 export module SoundInterface;
 
