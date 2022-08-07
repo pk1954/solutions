@@ -7,11 +7,11 @@
 module;
 
 #include <string>
-#include "SaveCast.h"
 
 module SlowMotionDisplay;
 
 import Util;
+import SaveCast;
 import StatusBar;
 import SlowMotionRatio;
 

@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="MoreTypes.h" />
-    <ClInclude Include="SaveCast.h" />
     <ClInclude Include="PixelTypes.h" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +44,7 @@
     <ClCompile Include="PixFpDimension.ixx" />
     <ClCompile Include="PointType.ixx" />
     <ClCompile Include="RectType.ixx" />
+    <ClCompile Include="SaveCast.ixx" />
     <ClCompile Include="SlowMotionRatio.ixx" />
     <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />

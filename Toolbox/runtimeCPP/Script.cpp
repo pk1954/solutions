@@ -11,11 +11,12 @@
 #include <limits.h>  
 #include <string.h>
 #include <assert.h>
-#include "SaveCast.h"
 #include "Scanner.h"
 #include "ErrHndl.h"
 #include "Script.h"
 #include "Symtab.h"
+
+import SaveCast;
 
 using std::endl;
 using std::numeric_limits;
