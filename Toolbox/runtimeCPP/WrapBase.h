@@ -5,7 +5,9 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 #include "Symtab.h"
+#include "ScriptFunctor.h"
 
 using std::wostream;
 using std::wstring;

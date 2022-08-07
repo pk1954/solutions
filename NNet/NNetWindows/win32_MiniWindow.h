@@ -5,6 +5,7 @@
 #pragma once
 
 #include "win32_NNetWindow.h"
+#include "win32_mainWindow.h"
 
 import ObserverInterface;
 

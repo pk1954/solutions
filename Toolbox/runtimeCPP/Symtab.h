@@ -8,10 +8,12 @@
           
 #include <map>
 #include <assert.h>
+#include <string.h>
 
 class ScriptFunctor;
 
 using std::map;
+using std::wstring;
 
 enum class tSTYPE   // Type of symbolic value 
 { 

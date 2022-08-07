@@ -129,21 +129,18 @@
     <ClCompile Include="SignalDesigner.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Preferences.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Preferences.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetAppMenu.h">

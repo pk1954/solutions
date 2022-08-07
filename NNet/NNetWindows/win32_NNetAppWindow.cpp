@@ -30,7 +30,6 @@
 // scripting and tracing
 
 #include "Script.h"
-#include "Preferences.h"
 #include "NNetWrappers.h"
 #include "NobException.h"
 #include "UtilityWrappers.h"
@@ -58,6 +57,7 @@ import ObserverInterface;
 import PerformanceWindow;
 import Win32_AboutBox;
 import UndoRedoMenu;
+import Preferences;
 
 using std::wcout;
 using std::wstring;

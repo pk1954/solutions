@@ -10,7 +10,6 @@
 #include "Script.h"
 #include "ScriptStack.h"
 #include "NNetModel.h"
-#include "Preferences.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
 #include "MonitorData.h"
@@ -31,6 +30,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import Preferences;
 import ScriptHook;
 import UndoRedoMenu;
 import SlowMotionDisplay;

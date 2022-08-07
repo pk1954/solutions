@@ -2,6 +2,8 @@
 //
 // NNetWindows
 
+module;
+
 #include <filesystem>
 #include <iostream>
 #include "Script.h"
@@ -18,7 +20,8 @@
 #include "win32_NNetAppMenu.h"
 #include "win32_script.h"
 #include "win32_util.h"
-#include "Preferences.h"
+
+module Preferences;
 
 import SoundInterface;
 

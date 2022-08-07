@@ -7,7 +7,6 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "Analyzer.h"
-#include "Preferences.h"
 #include "NobException.h"
 #include "CommandStack.h"
 #include "Signal.h"
@@ -31,6 +30,7 @@ import Win32_Sound;
 import Win32_AboutBox;
 import ComputeThread;
 import StdDialogBox;
+import Preferences;
 
 using std::to_wstring;
 
