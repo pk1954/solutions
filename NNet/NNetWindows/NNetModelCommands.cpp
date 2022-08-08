@@ -17,7 +17,6 @@
 #include "ConnAnimationCommand.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
-#include "CoordAnimation.h"
 #include "CopySelectedNobs.h"
 #include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
@@ -64,6 +63,7 @@ import ArrowAnimation;
 import DeleteBaseKnotCmd;
 import DeleteSigGenCmd;
 import SelectNobsInRectCommand;
+import CoordAnimation;
 
 using std::wcout;
 using std::endl;

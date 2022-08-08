@@ -111,9 +111,6 @@
     <ClInclude Include="ConnAnimationCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoordAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IoLinesAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeletePipeCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoordAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

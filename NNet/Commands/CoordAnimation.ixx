@@ -1,12 +1,14 @@
-// CoordAnimation.h
+// CoordAnimation.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
+
+export module CoordAnimation;
 
 import Command;
 import Uniform2D;
@@ -14,7 +16,7 @@ import Animation;
 
 using std::make_unique;
 
-class CoordAnimation : public Command
+export class CoordAnimation : public Command
 {
     using ANIM_TYPE = Uniform2D<MicroMeter>;
     using ANIMATION = Animation<ANIM_TYPE>;
@@ -24,7 +26,7 @@ public:
         ANIM_TYPE       & animated,
         ANIM_TYPE const & target
     )
-      : m_animated(animated),
+        : m_animated(animated),
         m_start(animated),
         m_target(target)
     {

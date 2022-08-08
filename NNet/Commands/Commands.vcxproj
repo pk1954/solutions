@@ -79,7 +79,6 @@
     <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="Connect2BaseKnotCommand.h" />
     <ClInclude Include="Connect2PipeCommand.h" />
-    <ClInclude Include="CoordAnimation.h" />
     <ClInclude Include="DeleteIoConnectorCmd.h" />
     <ClInclude Include="IoLinesAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
@@ -147,6 +146,7 @@
     <ClCompile Include="ConnAnimationCommand.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
+    <ClCompile Include="CoordAnimation.ixx" />
     <ClCompile Include="DeleteBaseKnotCmd.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
