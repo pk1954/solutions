@@ -13,7 +13,6 @@
 #include "NNetModelIO.h"
 #include "CommandStack.h"
 #include "MonitorData.h"
-#include "win32_ActionTimer.h"
 #include "win32_winManager.h"
 #include "win32_MiniWindow.h"
 #include "win32_MainWindow.h"
@@ -45,6 +44,7 @@ import Win32_Sound;
 import TimeDisplay;
 import AppTitle;
 import StatusBar;
+import ActionTimer;
 
 class ReadModelResult;
 class MessagePump;

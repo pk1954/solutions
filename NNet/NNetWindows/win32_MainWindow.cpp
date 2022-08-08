@@ -14,13 +14,13 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
-#include "win32_ActionTimer.h"
 #include "win32_util_resource.h"
 #include "win32_fatalError.h"
 #include "win32_monitorWindow.h"
 #include "win32_MainWindow.h"
 
 import Command;
+import ActionTimer;
 
 using std::unordered_map;
 using std::unique_ptr;

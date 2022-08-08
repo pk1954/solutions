@@ -1,20 +1,23 @@
-// win32_actionTimer.h 
+// Win32_ActionTimer.ixx
 //
 // win32_utilities
 
-#pragma once
+module;
 
 #include <chrono>
-#include "minwindef.h"
+#include "Windows.h"
+#include "BasicTypes.h"
 #include "MoreTypes.h"
 #include "win32_hiResTimer.h"
+
+export module ActionTimer;
 
 import Util;
 import Observable;
 
 using std::chrono::milliseconds;
 
-class ActionTimer : public Observable
+export class ActionTimer : public Observable
 {
 public:
 	ActionTimer()

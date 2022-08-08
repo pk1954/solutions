@@ -163,7 +163,6 @@
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_actionTimer.h" />
     <ClInclude Include="win32_arrowButton.h" />
     <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_baseDialog.h" />
@@ -197,6 +196,7 @@
     </ClCompile>
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
+    <ClCompile Include="Win32_ActionTimer.ixx" />
     <ClCompile Include="Win32_Animation.ixx" />
     <ClCompile Include="win32_baseScale.cpp" />
     <ClCompile Include="Win32_Command.cpp" />

@@ -12,12 +12,12 @@ module;
 #include "Pipe.h"
 #include "Nob.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_actionTimer.h"
 
 module PerformanceWindow;
 
 import SlowMotionRatio;
 import ComputeThread;
+import ActionTimer;
 
 using std::wostringstream;
 using std::fixed;

@@ -5,13 +5,13 @@
 module;
 
 #include "NNetModelReaderInterface.h"
-#include "win32_actionTimer.h"
 #include "win32_textWindow.h"
 
 export module PerformanceWindow;
 
 import SlowMotionRatio;
 import ComputeThread;
+import ActionTimer;
 
 export class PerformanceWindow: public TextWindow
 {
@@ -20,9 +20,9 @@ public:
     void Start
     (
         HWND const, 
-        ComputeThread * const, 
+        ComputeThread         * const, 
         SlowMotionRatio const * const, 
-        ActionTimer * const 
+        ActionTimer           * const 
     );
 
     void Stop();
