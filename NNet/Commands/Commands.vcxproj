@@ -106,7 +106,6 @@
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewIoLinePairCmd.h" />
-    <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
@@ -128,7 +127,9 @@
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AddNobsCommand.ixx" />
+    <ClCompile Include="AddNobsCommand.ixx">
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+    </ClCompile>
     <ClCompile Include="ArrowAnimation.ixx" />
     <ClCompile Include="CommandFunctions.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
@@ -153,6 +154,7 @@
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <ClCompile Include="DeleteBaseKnotCmd.ixx" />
+    <ClCompile Include="DeletePipeCommand.ixx" />
     <ClCompile Include="DeleteSigGenCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
@@ -628,6 +630,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>

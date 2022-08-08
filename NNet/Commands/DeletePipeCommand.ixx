@@ -1,8 +1,8 @@
-// DeletePipeCommand.h
+// DeletePipeCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
@@ -14,17 +14,19 @@
 #include "Knot.h"
 #include "Pipe.h"
 
+export module DeletePipeCommand;
+
 using std::wcout;
 using std::endl;
 
-class DeletePipeCommand : public NNetCommand
+export class DeletePipeCommand : public NNetCommand
 {
 public:
 
 	explicit DeletePipeCommand(Nob &nob)
 		:	m_pipe   (*Cast2Pipe(&nob)),
-	        m_idStart(m_pipe.GetStartKnotPtr()->GetId()),
-		    m_idEnd  (m_pipe.GetEndKnotPtr()->GetId())
+		m_idStart(m_pipe.GetStartKnotPtr()->GetId()),
+		m_idEnd  (m_pipe.GetEndKnotPtr()->GetId())
 	{}
 
 	~DeletePipeCommand() final = default;
