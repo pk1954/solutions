@@ -11,7 +11,6 @@
 #include "BaseKnot.h"
 
 import BoolOp;
-import SoundInterface;
 
 class DrawContext;
 class IoLine;
@@ -31,18 +30,12 @@ public:
 
 	~Neuron() override = default;
 
-	bool operator==(Nob const &) const override;
-
 	void Prepare        ()                          override;
 	void AppendMenuItems(AddMenuFunc const &) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
 
-	bool       HasAxon         () const { return HasOutgoing(); }
-	bool       HasTriggerSound () const { return m_triggerSound.m_bOn; }
-	SoundDescr GetTriggerSound () const { return m_triggerSound; }
-
-	SoundDescr SetTriggerSound(SoundDescr const &);
+	bool HasAxon() const { return HasOutgoing(); }
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
@@ -56,8 +49,6 @@ public:
 	void DrawExterior(DrawContext const &, tHighlight const) const override;
 	void DrawInterior(DrawContext const &, tHighlight const) const override;
 
-	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
-
 protected:
 
 	void DisplayText(DrawContext const &, MicroMeterRect const &, wstring const &) const;
@@ -65,18 +56,12 @@ protected:
 private:
 	mutable bool m_bTriggered { false };
 
-	SoundDescr m_triggerSound   { };
 	bool       m_bStopOnTrigger { false };
-	PTP_WORK   m_pTpWork        { nullptr };  // Thread poolworker thread
 	fMicroSecs m_usSpikeTime    { 0._MicroSecs };
-
-	inline static Sound * m_pSound  { nullptr };
 
 	MicroMeterPnt getAxonHillockPos() const;
 
 	void init(const Neuron &);
-
-	friend static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID,	PTP_WORK);
 };
 
 Neuron const * Cast2Neuron(Nob const *);

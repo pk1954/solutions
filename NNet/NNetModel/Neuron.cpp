@@ -35,21 +35,12 @@ Neuron::Neuron(BaseKnot const & src, NobType const type)
 	SetExtension(NEURON_RADIUS);
 }
 
-static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID arg, PTP_WORK)
-{
-	Neuron const * pNeuron { static_cast<Neuron const *>(arg) };
-	Neuron::m_pSound->Beep(pNeuron->GetTriggerSound());
-}
-
 void Neuron::init(const Neuron & rhs)
 {
 	m_bStopOnTrigger = rhs.m_bStopOnTrigger;
 	m_usSpikeTime    = rhs.m_usSpikeTime;
 	m_bTriggered     = rhs.m_bTriggered;
-	m_triggerSound   = rhs.m_triggerSound;
-	m_pTpWork = (rhs.m_triggerSound.m_bOn )
-		      ? CreateThreadpoolWork(BeepFunc, this, nullptr)
-		      : nullptr;
+	BaseKnot::Init(rhs);
 }
 
 Neuron & Neuron::operator=(Neuron const & rhs)
@@ -57,33 +48,6 @@ Neuron & Neuron::operator=(Neuron const & rhs)
 	BaseKnot::operator=(rhs);
 	init(rhs);
 	return * this;
-}
-
-bool Neuron::operator==(Nob const & rhs) const
-{
-	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
-	return
-	(this->BaseKnot::operator== (neuronRhs))                             &&
-	(m_triggerSound.m_bOn       == neuronRhs.m_triggerSound.m_bOn)       &&
-	(m_triggerSound.m_frequency == neuronRhs.m_triggerSound.m_frequency) &&
-	(m_triggerSound.m_duration  == neuronRhs.m_triggerSound.m_duration);
-}
-
-SoundDescr Neuron::SetTriggerSound(SoundDescr const & sound) 
-{
-	SoundDescr oldValue { m_triggerSound };
-	if (m_triggerSound.m_bOn != sound.m_bOn)
-	{
-		if (sound.m_bOn )
-			m_pTpWork = CreateThreadpoolWork(BeepFunc, this, nullptr);
-		else
-		{
-			CloseThreadpoolWork(m_pTpWork);
-			m_pTpWork = nullptr;
-		}
-	}
-	m_triggerSound = sound;
-	return oldValue;
 }
 
 void Neuron::ClearDynamicData()
@@ -115,8 +79,7 @@ bool Neuron::CompStep()
 		m_usSpikeTime = 0.0_MicroSecs;
 		m_bTriggered = true;
 		m_mVinputBuffer.Set2Zero();
-		if (HasTriggerSound() && m_pTpWork)
-			SubmitThreadpoolWork(m_pTpWork);
+		BaseKnot::CompStep();
 	}
 	else
 	{
