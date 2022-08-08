@@ -1,13 +1,21 @@
-// win32_descriptionWindow.cpp
+// Win32_DescriptionWindow.cpp
 //
 // NNetWindows
 
+module;
+
+#include <string>
 #include <array>
+#include <Windows.h>
+#include <windowsx.h>
+#include <CommCtrl.h>
 #include "Resource.h"
-#include "win32_descriptionWindow.h"
+
+module DescriptionWindow;
 
 using std::array;
 using std::bit_cast;
+using std::wstring;
 
 static WORD const ID_EDIT_CTRL { 2 };
 

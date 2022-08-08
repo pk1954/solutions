@@ -1,16 +1,21 @@
-// win32_descriptionWindow.h : 
+// Win32_DescriptionWindow.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include <string>
+#include <Windows.h>
 #include "DescriptionUI.h"
 #include "win32_baseWindow.h"
 
+export module DescriptionWindow;
+
+import PixelTypes;
+
 using std::wstring;
 
-class DescriptionWindow : public BaseWindow, public DescriptionUI
+export class DescriptionWindow : public BaseWindow, public DescriptionUI
 {
 public:
 	void Start(HWND const);

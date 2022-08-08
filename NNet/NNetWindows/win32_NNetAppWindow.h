@@ -21,7 +21,6 @@
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
 #include "win32_parameterDlg.h"
-#include "win32_descriptionWindow.h"
 #include "win32_slowMotionControl.h"
 #include "win32_script.h"
 #include "NNetModelReaderInterface.h"
@@ -29,6 +28,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import DescriptionWindow;
 import CrsrWindow;
 import Preferences;
 import ScriptHook;

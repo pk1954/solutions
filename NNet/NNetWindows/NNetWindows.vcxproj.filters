@@ -69,7 +69,7 @@
     <ClCompile Include="Measurement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_descriptionWindow.cpp">
+    <ClCompile Include="Win32_DescriptionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetWrappers.cpp">
@@ -135,6 +135,9 @@
     <ClCompile Include="Win32_CrsrWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_DescriptionWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -171,9 +174,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetInputOutputUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_descriptionWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SingleNobAnimation.h">
