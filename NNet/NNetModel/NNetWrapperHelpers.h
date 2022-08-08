@@ -5,13 +5,14 @@
 #pragma once
 
 #include "Script.h"
-#include "MoreTypes.h"
 #include "SignalId.h"
 #include "NobType.h"
 #include "NobIdList.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 #include "MicroMeterPntVector.h"
+
+import MoreTypes;
 
 extern MicroMeter            ScrReadMicroMeter         (Script &);
 extern MicroMeterPnt         ScrReadMicroMeterPnt      (Script &);

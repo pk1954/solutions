@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include <iomanip>
 #include "Resource.h"
 #include "Scanner.h"
 #include "NNetParameters.h"
@@ -11,6 +11,7 @@
 
 import Debug;
 
+using std::setw;
 using std::move;
 using std::wcout;
 using std::wostream;

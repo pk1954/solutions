@@ -6,7 +6,6 @@
 #include <assert.h>
 #include "ErrHndl.h"
 #include "Scanner.h"
-#include "MoreTypes.h"
 #include "Signal.h"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
@@ -52,6 +51,8 @@
 #include "NNetWrapperBase.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
+
+import MoreTypes;
 
 using std::filesystem::exists;
 using std::wofstream;

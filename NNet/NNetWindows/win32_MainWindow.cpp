@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include <unordered_map>
-#include "MoreTypes.h"
 #include "Resource.h"
 #include "Signal.h"
 #include "MicroMeterPntVector.h"
@@ -19,6 +18,7 @@
 #include "win32_monitorWindow.h"
 #include "win32_MainWindow.h"
 
+import MoreTypes;
 import Command;
 import ActionTimer;
 

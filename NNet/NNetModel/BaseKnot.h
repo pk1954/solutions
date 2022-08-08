@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "PipeList.h"
 #include "Pipe.h"
 #include "Nob.h"
 
+import MoreTypes;
 import CircleType;
 import PixelTypes;
 

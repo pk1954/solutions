@@ -5,9 +5,9 @@
 #pragma once
 
 #include "DrawContext.h"
-#include "MoreTypes.h"
 
 import Direct2D;
+import MoreTypes;
 import PixelTypes;
 
 using std::wstring;

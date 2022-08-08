@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "SignalSource.h"
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
 
 import ObserverInterface;
+import MoreTypes;
 
 class Param;
 class UPSigGenList;

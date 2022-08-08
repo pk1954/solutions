@@ -6,7 +6,6 @@
 
 #include <string>
 #include "ParameterType.h"
-#include "MoreTypes.h"
 #include "UPSigGenList.h"
 #include "UPSensorList.h"
 #include "MonitorData.h"
@@ -14,6 +13,7 @@
 #include "NobType.h"
 #include "NobId.h"
 
+import MoreTypes;
 import BoolOp;
 import Uniform2D;
 

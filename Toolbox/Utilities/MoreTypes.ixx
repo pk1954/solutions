@@ -1,53 +1,55 @@
-// MoreTypes.h
+// MoreTypes.ixx
 //
-// Utilities
+// Toolbox\Utilities
 
-#pragma once
+module;
 
 #include <ostream>
 #include <iomanip>
 #include <algorithm>
 #include "BasicTypes.h"
 
+export module MoreTypes;
+
 import NamedType;
 import PointType;
+import RectType;
 import LineType;
 import EllipseType;
 import CircleType;
-import RectType;
 
 using std::min;
 using std::max;
 using std::setw;
 using std::wostream;
 
-using MicroMeterPnt = PosType<MicroMeter>;
+export using MicroMeterPnt = PosType<MicroMeter>;
 
-inline static const MicroMeterPnt NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!
-inline static const MicroMeterPnt NP_ZERO(MicroMeterPnt::ZERO_VAL());   // compiler generates call!
+export inline const MicroMeterPnt NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!
+export inline const MicroMeterPnt NP_ZERO(MicroMeterPnt::ZERO_VAL());   // compiler generates call!
 
-static MicroMeterPnt Radian2Vector(Radian const r)
+export MicroMeterPnt Radian2Vector(Radian const r)
 {
 	return MicroMeterPnt(Cos(r), Sin(r));
 }
 
-static Radian Vector2Radian(MicroMeterPnt const & umPnt)
+export Radian Vector2Radian(MicroMeterPnt const & umPnt)
 {
 	return Radian(atan2(umPnt.GetYvalue(),umPnt.GetXvalue()));
 }
 
-using MicroMeterRect     = RectType<MicroMeter>;
-using MicroMeterRectSize = SizeType<MicroMeter>;
-using MicroMeterLine     = LineType<MicroMeter>;
-using MicroMeterCircle   = CircleType <MicroMeter>;
-using MicroMeterEllipse  = EllipseType<MicroMeter>;
+export using MicroMeterRect     = RectType<MicroMeter>;
+export using MicroMeterRectSize = SizeType<MicroMeter>;
+export using MicroMeterLine     = LineType<MicroMeter>;
+export using MicroMeterEllipse  = EllipseType<MicroMeter>;
+export using MicroMeterCircle   = CircleType <MicroMeter>;
 
-template <typename UNIT>
+export template <typename UNIT>
 class BASE_PEAK
 {
 public:
 	BASE_PEAK(UNIT b, UNIT p)
-	  : base(b),
+		: base(b),
 		peak(p)
 	{}
 

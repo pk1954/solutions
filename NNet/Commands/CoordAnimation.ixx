@@ -4,12 +4,12 @@
 
 module;
 
-#include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
 export module CoordAnimation;
 
+import MoreTypes;
 import Command;
 import Uniform2D;
 import Animation;

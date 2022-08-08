@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "Script.h"
 
 import BoolOp;
 import SaveCast;
+import MoreTypes;
 import PixelTypes;
 
 class Script;

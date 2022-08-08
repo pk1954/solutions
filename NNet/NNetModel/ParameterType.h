@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <ostream>
+
 using std::wostream;
 
 class ParamType

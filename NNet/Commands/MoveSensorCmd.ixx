@@ -4,13 +4,14 @@
 
 module;
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "Sensor.h"
 #include "UPSensorList.h"
 
 export module MoveSensorCmd;
+
+import MoreTypes;
 
 export class MoveSensorCmd : public NNetCommand
 {

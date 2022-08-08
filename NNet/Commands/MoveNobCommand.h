@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "NobId.h"
 #include "Nob.h"
+
+import MoreTypes;
 
 class MoveNobCommand : public NNetCommand
 {

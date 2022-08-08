@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "win32_scale.h"
 #include "win32_baseWindow.h"
 
+import MoreTypes;
 import PixFpDimension;
 
 class NNetModelWriterInterface;

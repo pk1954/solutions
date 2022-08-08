@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "Track.h"
 #include "TrackNr.h"
 #include "TimeGraph.h"
 
+import MoreTypes;
 import PixFpDimension;
 import SoundInterface;
 import Measurement;

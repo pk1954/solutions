@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "SignalId.h"
 #include "TrackNr.h"
 
 import Observable;
+import MoreTypes;
 
 class NNetModelWriterInterface;
 

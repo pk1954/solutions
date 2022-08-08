@@ -3,9 +3,10 @@
 // win32_utilities
 
 #include <chrono>
-#include "MoreTypes.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
+
+import MoreTypes;
 
 using std::bit_cast;
 using std::chrono::milliseconds;

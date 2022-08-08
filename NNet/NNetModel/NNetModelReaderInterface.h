@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NobType.h"
 #include "NobId.h"
 #include "NNetModel.h"
 #include "Pipe.h"
 #include "tHighlightType.h"
 
+import MoreTypes;
 import SoundInterface;
 
 class Nob;

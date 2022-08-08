@@ -5,11 +5,11 @@
 #pragma once
 
 #include <string>
-#include "MoreTypes.h"
 #include "Windows.h"
 #include "win32_hiResTimer.h"
 #include "win32_rootWindow.h"
 
+import MoreTypes;
 import PixelTypes;
 
 using std::wstring;

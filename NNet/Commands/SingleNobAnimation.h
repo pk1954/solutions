@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 
+import MoreTypes;
 import Command;
 import Animation;
 

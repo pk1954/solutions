@@ -4,13 +4,14 @@
 
 module;
 
-#include "MoreTypes.h"
 #include "Pipe.h"
 #include "Knot.h"
 #include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
 export module SelectNobsInRectCommand;
+
+import MoreTypes;
 
 export class SelectNobsInRectCommand : public SelectionCommand
 {

@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <ostream>
+#include <algorithm>
 #include <functional>
 #include <fstream>
 #include <vector>
@@ -13,6 +15,7 @@ class Pipe;
 using std::vector;
 using std::function;
 using std::unique_ptr;
+using std::wostream;
 using std::ranges::any_of;
 using std::ranges::for_each;
 

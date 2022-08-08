@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
+
+import MoreTypes;
 
 class SizeSelectionCmd : public NNetCommand
 {

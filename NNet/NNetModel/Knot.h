@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 
 import Geometry;
+import MoreTypes;
 
 class DrawContext;
 class NNetModel;

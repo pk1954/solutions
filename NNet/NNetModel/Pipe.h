@@ -5,12 +5,12 @@
 #pragma once
 
 #include <vector>
-#include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Nob.h"
 
 import PointType;
+import MoreTypes;
 import PixelTypes;
 
 using std::vector;

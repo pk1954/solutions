@@ -4,12 +4,13 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "Nob.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
 #include "SingleNobAnimation.h"
 #include "PlugIoConnectors.h"
+
+import MoreTypes;
 
 class RootWindow;
 class NNetModelWriterInterface;

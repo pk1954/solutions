@@ -5,12 +5,13 @@
 #pragma once
 
 #include <chrono>
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 
 import Observable;
 import SaveCast;
+import MoreTypes;
 
 class Param : public Observable
 {

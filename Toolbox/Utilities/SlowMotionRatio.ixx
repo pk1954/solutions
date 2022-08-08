@@ -5,11 +5,12 @@
 module;
 
 #include <array>
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 
 export module SlowMotionRatio;
 
 import Observable;
+import MoreTypes;
 
 using std::array;
 

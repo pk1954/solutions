@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "BaseKnot.h"
+
+import MoreTypes;
 
 class MoveSelectionCommand : public NNetCommand
 {

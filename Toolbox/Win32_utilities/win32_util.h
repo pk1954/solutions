@@ -8,11 +8,12 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "MoreTypes.h"
 #include "Windows.h"
+#include "BasicTypes.h"
 
 import BoolOp;
 import NamedType;
+import MoreTypes;
 import PixelTypes;
 
 using std::wostringstream;

@@ -5,7 +5,6 @@
 module;
 
 #include <array>
-#include "MoreTypes.h"
 #include "SignalGenerator.h"
 #include "TimeGraph.h"
 #include "NNetModelCommands.h"
@@ -13,6 +12,7 @@ module;
 
 export module SignalControl;
 
+import MoreTypes;
 import PixFpDimension;
 import ComputeThread;
 import Direct2D;

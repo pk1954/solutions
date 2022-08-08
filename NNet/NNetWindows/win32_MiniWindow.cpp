@@ -2,13 +2,13 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
-#include "MoreTypes.h"
 #include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
+
+import MoreTypes;
 
 void MiniWindow::Start
 (

@@ -7,9 +7,10 @@
 #include <assert.h>
 #include <chrono>
 #include <Windows.h>
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 
 import NamedType;
+import MoreTypes;
 
 using std::chrono::microseconds;
 

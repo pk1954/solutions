@@ -2,10 +2,11 @@
 //
 // NNetModel
 
-#include "MoreTypes.h"
 #include "MicroMeterPosDir.h"
 #include "Pipe.h"
 #include "IoLine.h"
+
+import MoreTypes;
 
 MicroMeterPnt IoLine::GetScaledDirVector() const
 {

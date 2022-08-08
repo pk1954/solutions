@@ -6,12 +6,15 @@ module;
 
 #include <assert.h>
 #include <ostream>
+#include <algorithm>
 
 export module RectType;
 
 import PointType;
 
 using std::wostream;
+using std::min;
+using std::max;
 
 export template <typename BASE_TYPE> 
 class RectType

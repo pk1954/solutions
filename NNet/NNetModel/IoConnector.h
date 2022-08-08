@@ -5,11 +5,11 @@
 #pragma once
 
 #include <vector>
-#include "MoreTypes.h"
 #include "NobType.h"
 #include "Nob.h"
 
 import BoolOp;
+import MoreTypes;
 
 using std::vector;
 using std::unique_ptr;

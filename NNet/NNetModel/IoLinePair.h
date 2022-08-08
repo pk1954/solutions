@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "Pipe.h"
+
+import MoreTypes;
 
 using std::make_unique;
 

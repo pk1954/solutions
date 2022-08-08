@@ -4,13 +4,14 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
 #include "NobId.h"
 #include "Nob.h"
+
+import MoreTypes;
 
 class SetNobCommand : public NNetCommand
 {

@@ -5,12 +5,12 @@
 module;
 
 #include <functional>
-#include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
 export module ArrowAnimation;
 
+import MoreTypes;
 import Command;
 import Animation;
 

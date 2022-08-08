@@ -2,15 +2,12 @@
 //
 // Utilities
 
-module;
-
-#include "MoreTypes.h"
-
 export module PixelTypes;
 
 import SaveCast;
 import Util;
 import NamedType;
+import MoreTypes;
 import PointType;
 import EllipseType;
 import CircleType;

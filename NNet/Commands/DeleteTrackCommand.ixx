@@ -5,12 +5,13 @@
 module;
 
 #include <assert.h>
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "NNetCommand.h"
 
 export module DeleteTrackCommand;
+
+import MoreTypes;
 
 export class DeleteTrackCommand: public NNetCommand
 {

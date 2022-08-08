@@ -5,11 +5,11 @@
 #pragma once
 
 #include <string> 
-#include "MoreTypes.h"
 #include "dwrite.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsWindow.h"
 
+import MoreTypes;
 import Direct2D;
 import PixFpDimension;
 

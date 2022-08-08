@@ -6,11 +6,12 @@ module;
 
 #include <string>
 #include "Windows.h"
-#include "MoreTypes.h"
 #include "mmsystem.h"
+#include "BasicTypes.h"
 
 export module Win32_Sound;
 
+import MoreTypes;
 import SoundInterface;
 
 using std::wstring;

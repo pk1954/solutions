@@ -6,7 +6,6 @@ module;
 
 #include <chrono>
 #include <algorithm>  // min/max/abs templates
-#include "MoreTypes.h"
 #include "Resource.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
@@ -15,6 +14,7 @@ module;
 
 module SignalControl;
 
+import MoreTypes;
 import PointType;
 import ComputeThread;
 

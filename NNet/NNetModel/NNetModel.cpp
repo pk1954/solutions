@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "MoreTypes.h"
 #include "NobException.h"
 #include "SimulationTime.h"
 #include "NobType.h"
@@ -13,6 +12,8 @@
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "NNetModel.h"
+
+import MoreTypes;
 
 using namespace std::chrono;
 using std::wcout;

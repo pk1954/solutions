@@ -7,13 +7,13 @@
 #include <type_traits>   
 #include <functional>   
 #include "d2d1helper.h"
-#include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "MicroMeterPosDir.h"
 #include "NobType.h"
 #include "NobId.h"
 
 import BoolOp;
+import MoreTypes;
 
 class Nob;
 class Param;

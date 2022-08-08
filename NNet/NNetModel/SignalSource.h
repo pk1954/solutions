@@ -5,9 +5,10 @@
 #pragma once
 
 #include <ostream>
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 
 import Observable;
+import MoreTypes;
 
 using std::wostream;
 

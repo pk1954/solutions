@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "SigGenDynamicData.h"
 #include "IoLine.h"
+
+import MoreTypes;
 
 class Nob;
 class BaseKnot;

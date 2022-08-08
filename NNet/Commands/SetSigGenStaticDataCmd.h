@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "SignalGenerator.h"
+
+import MoreTypes;
 
 class SetSigGenStaticDataCmd : public NNetCommand
 {

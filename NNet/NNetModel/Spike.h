@@ -4,7 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
+#include <ostream>
+#include "BasicTypes.h"
+
+import MoreTypes;
 
 class Spike
 {

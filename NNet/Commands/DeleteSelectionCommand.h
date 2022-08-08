@@ -4,12 +4,13 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "CommandFunctions.h"
 #include "NobIdList.h"
 #include "CommandStack.h"
 #include "NNetCommand.h"
+
+import MoreTypes;
 
 class DeleteSelectionCommand : public NNetCommand
 {

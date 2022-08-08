@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include <sstream> 
 #include "Resource.h"
-#include "MoreTypes.h"
 #include "Sensor.h"
 #include "Pipe.h"
 #include "Neuron.h"
@@ -18,6 +17,7 @@
 #include "win32_NNetController.h"
 #include "win32_NNetWindow.h"
 
+import MoreTypes;
 import Direct2D;
 import Win32_Sound;
 import PixelTypes;

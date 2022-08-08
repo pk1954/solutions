@@ -9,7 +9,6 @@
 
 // Model interfaces
 
-#include "MoreTypes.h"
 #include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
 
@@ -50,6 +49,7 @@
 #include "InputConnector.h"
 #include "win32_NNetAppWindow.h"
 
+import MoreTypes;
 import Util;
 import Trace;
 import StatusBar;

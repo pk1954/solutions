@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
@@ -17,6 +16,7 @@
 import ObserverInterface;
 import Observable;
 import Util;
+import MoreTypes;
 
 using std::unique_ptr;
 using std::move;

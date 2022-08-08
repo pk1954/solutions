@@ -3,11 +3,12 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "MoreTypes.h"
 #include "win32_util.h"
 #include "NNetModelReaderInterface.h"
 #include "Knot.h"
 #include "Analyzer.h"
+
+import MoreTypes;
 
 using std::endl;
 using std::to_wstring;

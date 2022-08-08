@@ -5,10 +5,10 @@
 #pragma once
 
 #include <vector>
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
 
+import MoreTypes;
 import Command;
 import Animation;
 

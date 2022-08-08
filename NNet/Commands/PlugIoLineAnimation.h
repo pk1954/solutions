@@ -4,13 +4,14 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "Nob.h"
 #include "Neuron.h"
 #include "IoLine.h"
 #include "SingleNobAnimation.h"
 #include "NNetCommand.h"
 #include "PlugIoLines.h"
+
+import MoreTypes;
 
 class RootWindow;
 class NNetModelWriterInterface;

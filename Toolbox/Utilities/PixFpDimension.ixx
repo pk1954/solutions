@@ -2,14 +2,11 @@
 //
 // Utilities
 
-module;
-
-#include "MoreTypes.h"
-
 export module PixFpDimension;
 
 import Util;
 import Observable;
+import MoreTypes;
 import PixelTypes;
 
 export template <typename LOG_UNIT>

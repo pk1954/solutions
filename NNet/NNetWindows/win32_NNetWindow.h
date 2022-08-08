@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "D2D_DrawContext.h"
 #include "win32_graphicsWindow.h"
+
+import MoreTypes;
 
 class ActionTimer;
 class NNetController;

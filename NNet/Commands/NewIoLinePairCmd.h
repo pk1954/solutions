@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "IoLinePair.h"
+
+import MoreTypes;
 
 class NewIoLinePairCmd : public NNetCommand
 {

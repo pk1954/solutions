@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
-    <ClInclude Include="MoreTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicTypes.cpp" />
@@ -37,6 +36,7 @@
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LineType.ixx" />
     <ClCompile Include="MoreTypes.cpp" />
+    <ClCompile Include="MoreTypes.ixx" />
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />

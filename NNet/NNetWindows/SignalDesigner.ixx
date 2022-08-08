@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include <Windows.h>
-#include "MoreTypes.h"
 #include "SignalPreview.h"
 #include "NNetModelCommands.h"
 #include "win32_scale.h"
@@ -15,6 +14,7 @@ module;
 
 export module SignalDesigner;
 
+import MoreTypes;
 import Observable;
 import PixFpDimension;
 import SignalControl;

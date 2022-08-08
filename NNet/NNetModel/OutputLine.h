@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "IoLine.h"
+
+import MoreTypes;
 
 class Nob;
 class BaseKnot;

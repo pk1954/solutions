@@ -5,6 +5,7 @@
 #pragma once
 
 #include <assert.h>
+#include <ostream>
 
 import Debug;
 

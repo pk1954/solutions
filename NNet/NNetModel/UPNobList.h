@@ -6,9 +6,10 @@
 
 #include <array>
 #include <vector>
-#include "MoreTypes.h"
 #include "Nob.h"
 #include "NobId.h"
+
+import MoreTypes;
 
 using std::move;
 using std::array;

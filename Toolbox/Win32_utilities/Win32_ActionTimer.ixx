@@ -7,11 +7,11 @@ module;
 #include <chrono>
 #include "Windows.h"
 #include "BasicTypes.h"
-#include "MoreTypes.h"
 #include "win32_hiResTimer.h"
 
 export module ActionTimer;
 
+import MoreTypes;
 import Util;
 import Observable;
 

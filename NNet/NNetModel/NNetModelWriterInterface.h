@@ -6,13 +6,13 @@
 
 #include <string>
 #include "ParameterType.h"
-#include "MoreTypes.h"
 #include "IoLine.h"
 #include "NobId.h"
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 
 import BoolOp;
+import MoreTypes;
 
 class Pipe;
 class BaseKnot;

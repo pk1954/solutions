@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "RotationCommand.h"
 #include "Nob.h"
+
+import MoreTypes;
 
 class RotateNobCommand : public RotationCommand
 {

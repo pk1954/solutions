@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_graphicsWindow.h"
 
+import MoreTypes;
 import PixFpDimension;
 import Direct2D;
 

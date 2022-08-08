@@ -2,7 +2,15 @@
 //
 // Utilities
 
-#include "MoreTypes.h"
+module;
+
+#include <string>
+
+module MoreTypes;
+
+import Util;
+
+using std::wstring;
 
 int StepsOfThousand(float fValue)
 {

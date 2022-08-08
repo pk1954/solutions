@@ -6,10 +6,10 @@
 
 #include <vector>
 #include <assert.h>   
-#include "MoreTypes.h"
 #include "IoLine.h"
 #include "MicroMeterPosDir.h"
 
+import MoreTypes;
 import PointType;
 
 using std::endl;

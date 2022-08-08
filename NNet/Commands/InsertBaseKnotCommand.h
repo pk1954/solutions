@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
 #include "BaseKnot.h"
+
+import MoreTypes;
 
 template <BaseKnot_t T>
 class InsertBaseKnotCommand : public NNetCommand

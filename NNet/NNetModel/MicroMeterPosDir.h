@@ -4,15 +4,18 @@
 
 #pragma once
 
+#include <ostream>
 #include <vector>
 #include <assert.h>   
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 
+import MoreTypes;
 import PointType;
 
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
+using std::wostream;
 
 class Nob;
 

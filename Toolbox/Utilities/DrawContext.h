@@ -6,9 +6,10 @@
 
 #include <string>
 #include "d2d1helper.h"
-#include "MoreTypes.h"
+#include "BasicTypes.h"
 
 import Uniform2D;
+import MoreTypes;
 import PixelTypes;
 
 using std::wstring;

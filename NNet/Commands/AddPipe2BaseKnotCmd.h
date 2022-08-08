@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
@@ -14,6 +13,8 @@
 #include "BaseKnot.h"
 #include "Pipe.h"
 #include "Knot.h"
+
+import MoreTypes;
 
 class AddPipe2BaseKnotCommand : public NNetCommand
 {

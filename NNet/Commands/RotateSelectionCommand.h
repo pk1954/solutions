@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "MoreTypes.h"
 #include "NNetModelWriterInterface.h"
 #include "RotationCommand.h"
+
+import MoreTypes;
 
 class RotateSelectionCommand : public RotationCommand
 {
