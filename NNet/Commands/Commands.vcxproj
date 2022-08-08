@@ -120,7 +120,6 @@
     <ClInclude Include="SelectAllCommand.h" />
     <ClInclude Include="SelectionCommand.h" />
     <ClInclude Include="SelectNobCommand.h" />
-    <ClInclude Include="SelectNobsInRectCommand.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
     <ClInclude Include="SetParameterCommand.h" />
     <ClInclude Include="SetTriggerSoundCommand.h" />
@@ -157,6 +156,7 @@
     <ClCompile Include="DeleteSigGenCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
+    <ClCompile Include="SelectNobsInRectCommand.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">

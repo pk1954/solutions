@@ -43,7 +43,6 @@
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
 #include "SelectNobCommand.h"
-#include "SelectNobsInRectCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
 #include "SetSigGenStaticDataCmd.h"
@@ -67,6 +66,7 @@ import MoveSensorCmd;
 import ArrowAnimation;
 import DeleteBaseKnotCmd;
 import DeleteSigGenCmd;
+import SelectNobsInRectCommand;
 
 using std::wcout;
 using std::endl;

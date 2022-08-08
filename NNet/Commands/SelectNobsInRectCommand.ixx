@@ -1,18 +1,22 @@
-// SelectNobsInRectCommand.h
+// SelectNobsInRectCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "MoreTypes.h"
+#include "Pipe.h"
+#include "Knot.h"
 #include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
-class SelectNobsInRectCommand : public SelectionCommand
+export module SelectNobsInRectCommand;
+
+export class SelectNobsInRectCommand : public SelectionCommand
 {
 public:
 	explicit SelectNobsInRectCommand(MicroMeterRect const & rect)
-	  :	m_rect(rect)
+		:	m_rect(rect)
 	{ }
 
 	void Do() final

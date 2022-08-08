@@ -42,9 +42,6 @@
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SelectNobsInRectCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SelectAllBeepersCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -225,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeleteSigGenCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectNobsInRectCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
