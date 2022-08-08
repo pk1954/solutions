@@ -1,23 +1,22 @@
-// win32_animation.h
+// Win32_Animation.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
-#include <vector>
+#include "bit"
 #include "Windows.h"
+
+export module Animation;
 
 import Command;
 import SmoothMoveFp;
 
 using std::bit_cast;
-using std::vector;
-
-using AnimationScript = vector<DWORD>;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
-template <typename ANIM_PAR>
+export template <typename ANIM_PAR>
 class Animation
 {
 public:

@@ -6,13 +6,13 @@ module;
 
 #include <functional>
 #include "MoreTypes.h"
-#include "win32_animation.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
 export module ArrowAnimation;
 
 import Command;
+import Animation;
 
 using std::unique_ptr;
 

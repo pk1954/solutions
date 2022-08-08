@@ -8,8 +8,9 @@
 #include "BaseKnot.h"
 #include "MicroMeterPntVector.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_animation.h"
 #include "win32_NNetWindow.h"
+
+import Animation;
 
 class WinCommands;
 class ActionTimer;

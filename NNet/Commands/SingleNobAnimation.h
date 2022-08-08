@@ -5,12 +5,12 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "win32_animation.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 
 import Command;
+import Animation;
 
 using std::function;
 

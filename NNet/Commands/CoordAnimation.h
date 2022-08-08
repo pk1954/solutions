@@ -5,14 +5,14 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "win32_animation.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
 import Command;
 import Uniform2D;
+import Animation;
 
-using std::function;
+using std::make_unique;
 
 class CoordAnimation : public Command
 {

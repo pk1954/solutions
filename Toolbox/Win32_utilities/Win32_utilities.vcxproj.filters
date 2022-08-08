@@ -78,9 +78,6 @@
     <ClInclude Include="win32_beeperThread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_animation.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_scale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -198,6 +195,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Tooltip.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Animation.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

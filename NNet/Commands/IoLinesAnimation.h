@@ -4,14 +4,16 @@
 
 #pragma once
 
+#include <vector>
 #include "MoreTypes.h"
-#include "win32_animation.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
 
 import Command;
+import Animation;
 
-using std::function;
+using std::vector;
+using std::make_unique;
 
 class IoLinesAnimation : public Command
 {

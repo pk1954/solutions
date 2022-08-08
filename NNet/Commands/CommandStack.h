@@ -8,11 +8,12 @@
 #include <vector>
 #include "NobException.h"
 
+import Command;
+
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-class Command;
 class Observable;
 class NNetModelReaderInterface;
 
