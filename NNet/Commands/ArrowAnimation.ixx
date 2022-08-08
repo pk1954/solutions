@@ -14,7 +14,6 @@ export module ArrowAnimation;
 
 import Command;
 
-using std::function;
 using std::unique_ptr;
 
 export class ArrowAnimation : public Command

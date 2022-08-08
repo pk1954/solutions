@@ -1,8 +1,7 @@
-// ParamType::Value.cpp
+// ParameterType.cpp
 //
 // NNetModel
 
-#include "stdafx.h"
 #include <iostream>
 #include <unordered_map>
 #include "ParameterType.h"

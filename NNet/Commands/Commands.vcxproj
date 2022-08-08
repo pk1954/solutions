@@ -130,7 +130,9 @@
     <ClCompile Include="AddNobsCommand.ixx">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
-    <ClCompile Include="ArrowAnimation.ixx" />
+    <ClCompile Include="ArrowAnimation.ixx">
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
+    </ClCompile>
     <ClCompile Include="CommandFunctions.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>

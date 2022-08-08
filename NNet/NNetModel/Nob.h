@@ -5,6 +5,7 @@
 #pragma once
 
 #include <type_traits>   
+#include <functional>   
 #include "d2d1helper.h"
 #include "MoreTypes.h"
 #include "tHighlightType.h"
@@ -26,6 +27,7 @@ using std::remove_pointer;
 using std::unique_ptr;
 using std::wostream;
 using std::wstring;
+using std::function;
 
 using UPNob       = unique_ptr<Nob>;
 using UPNobC      = unique_ptr<const Nob>;

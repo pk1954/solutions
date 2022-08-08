@@ -5,11 +5,9 @@
 #pragma once
 
 #include <assert.h>
-#include <functional>
 
 import Debug;
 
-using std::function;
 using std::wostream;
 using std::wstring;
 using std::size_t;
