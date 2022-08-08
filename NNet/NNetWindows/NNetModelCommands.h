@@ -70,7 +70,6 @@ public:
     void AttachSigGen2Conn       (NobId const);
     void AttachSigGen2Line       (NobId const);
     void AttachSigGen2Sel        ();
-    void ClearBeepers            ();
     void Connect                 (NobId const, NobId const, ConnectionType const);
     void CopySelection           ();
     void CreateInitialNobs       ();
@@ -97,7 +96,6 @@ public:
     void RotateModel             (MicroMeterPnt const &, MicroMeterPnt const &);
     void RotateSelection         (MicroMeterPnt const &, MicroMeterPnt const &);
     void SelectAll               (bool const);
-    void SelectAllBeepers        ();
     void SelectNob               (NobId const, tBoolOp const);
     void SelectNobsInRect        (MicroMeterRect const &);
     void SelectSigGenClients     ();
@@ -106,7 +104,6 @@ public:
     void SetParameter            (ParamType::Value const, float const);
     void SetSigGenStaticData     (SignalGenerator &, SigGenStaticData const &);
     void SetNob                  (NobId const, MicroMeterPosDir const);
-    void SetTriggerSound         (NobId const, SoundDescr const &);
     void SizeSelection           (float const);
     void SizeSensor              (SensorId const, float const);
     void SplitNeuron             (NobId const);
@@ -124,6 +121,6 @@ private:
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
     NNetModelWriterInterface * m_pNMWI                   { nullptr };
-    NNetModelIO              * m_pModelIO          { nullptr };
+    NNetModelIO              * m_pModelIO                { nullptr };
     Observable               * m_pDynamicModelObservable { nullptr };
 };

@@ -55,25 +55,6 @@ FONT 8, "MS Shell Dlg", 0, 0, 1
 	DEFPUSHBUTTON "OK",                IDOK,         113, 53,  50, 14, WS_GROUP, WS_EX_LEFT
 }
 
-IDD_TRIGGER_SOUND_DLG DIALOGEX 0, 0, 160, 100
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Notification when Neuron triggers"
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-FONT 8, "MS Shell Dlg"
-{
-    CONTROL "Acoustic Signal", -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                 26,  9,  90,  9 
-    CONTROL "",                IDC_TRIGGER_SOUND_ON,   BUTTON, BS_AUTOCHECKBOX  | WS_CHILD  | WS_VISIBLE | WS_TABSTOP,               13,  8,  11, 12 
-    CONTROL "&Frequency:",     -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                 36, 22,  36, 11 
-    CONTROL "",                IDC_TRIGGER_SOUND_FREQ, EDIT,   ES_NUMBER        | WS_CHILD  | WS_VISIBLE | WS_BORDER  | WS_TABSTOP,  75, 21,  60, 14 
-    CONTROL "Hz",              -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                138, 22,  14, 11 
-    CONTROL "&Duration:",      -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                 36, 41,  32, 11 
-    CONTROL "",                IDC_TRIGGER_SOUND_MSEC, EDIT,   ES_NUMBER        | WS_CHILD  | WS_VISIBLE | WS_BORDER  | WS_TABSTOP,  75, 40,  60, 14 
-    CONTROL "msec",            -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                138, 41,  20, 11 
-    CONTROL "&Test sound",     IDC_TRIGGER_SOUND_TEST, BUTTON, BS_PUSHBUTTON    | BS_CENTER | WS_CHILD   | WS_VISIBLE | WS_TABSTOP,  16, 62, 120, 11 
-    CONTROL "&OK",             IDOK,                   BUTTON, BS_DEFPUSHBUTTON | WS_CHILD  | WS_VISIBLE | WS_TABSTOP,               16, 83,  50, 11 
-    CONTROL "&Cancel",         IDCANCEL,               BUTTON, BS_PUSHBUTTON    | WS_CHILD  | WS_VISIBLE | WS_TABSTOP,               86, 83,  50, 11 
-}
-
 // Do not remove definition of IDM_PARAM_WINDOW DIALOG although it's empty
 // CreateDialogParam needs resource
 

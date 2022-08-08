@@ -11,14 +11,11 @@
 
 import CircleType;
 import PixelTypes;
-import SoundInterface;
 
 class DrawContext;
 class NNetModel;
 
 struct IDWriteTextFormat;
-
-static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID, PTP_WORK);
 
 class BaseKnot : public Nob
 {
@@ -27,8 +24,6 @@ public:
 	BaseKnot(MicroMeterPnt const &, NobType const, MicroMeter const);
 	BaseKnot(BaseKnot const &) = default;
 	~BaseKnot() override = default;
-
-	void Init(const BaseKnot &);
 
 	virtual bool operator==(Nob const &) const;
 
@@ -45,7 +40,6 @@ public:
 	void Dump        ()                               const override;
 	void Check       ()                               const override;
 	void Prepare     ()                                     override;
-	bool CompStep    ()                                     override;
 	void Reconnect   ()                                     override;
 	void SetPos      (MicroMeterPnt  const &)               override;
 	void MoveNob     (MicroMeterPnt  const &)               override;
@@ -80,13 +74,6 @@ public:
 
 	void SetConnections(BaseKnot const &); 
 	void ClearConnections();
-
-	bool       HasTriggerSound () const { return m_triggerSound.m_bOn; }
-	SoundDescr GetTriggerSound () const { return m_triggerSound; }
-
-	SoundDescr SetTriggerSound(SoundDescr const &);
-
-	static void SetSound(Sound * const pSound) { m_pSound = pSound; }
 
 	size_t GetNrOfInConns    () const { return m_inPipes .Size(); }
 	size_t GetNrOfOutConns   () const { return m_outPipes.Size(); }
@@ -131,13 +118,6 @@ private:
 	PipeList         m_inPipes;
 	PipeList         m_outPipes;
 	MicroMeterCircle m_circle;
-	SoundDescr       m_triggerSound;
-
-	PTP_WORK m_pTpWork { nullptr };  // Thread poolworker thread
-
-	inline static Sound * m_pSound { nullptr };
-
-	friend static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID, PTP_WORK);
 };
 
 BaseKnot const * Cast2BaseKnot(Nob const *);

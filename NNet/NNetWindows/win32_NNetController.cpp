@@ -16,7 +16,6 @@
 #include "win32_MainWindow.h"
 #include "win32_winManager.h"
 #include "win32_fatalError.h"
-#include "win32_triggerSoundDlg.h"
 #include "win32_monitorWindow.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
@@ -195,16 +194,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     return true;  // command has been processed
 }
 
-void NNetController::triggerSoundDlg(NobId const id)
-{
-    if (m_pNMRI->IsAnyNeuron(id))
-    {
-        TriggerSoundDialog dialog(m_pSound, m_pNMRI->GetTriggerSound(id));
-        dialog.Show(m_pMainWindow->GetWindowHandle(), IDD_TRIGGER_SOUND_DLG);
-        m_pModelCommands->SetTriggerSound(id, dialog.GetSound());
-    }
-}
-
 bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint)
 {
     switch (wmId)
@@ -233,18 +222,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDM_COPY_SELECTION:
         m_pModelCommands->CopySelection();
-        break;
-
-    case IDM_CLEAR_BEEPERS:
-        m_pModelCommands->ClearBeepers();
-        break;
-
-    case IDM_SELECT_ALL_BEEPERS:
-        m_pModelCommands->SelectAllBeepers();
-        break;
-
-    case IDD_TRIGGER_SOUND_DLG:
-        triggerSoundDlg(m_pMainWindow->GetHighlightedNobId());
         break;
 
     case IDD_EMPHASIZE:

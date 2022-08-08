@@ -180,7 +180,6 @@
     <ClInclude Include="WrapSignalGenerator.h" />
     <ClInclude Include="WrapSignalInfo.h" />
     <ClInclude Include="WrapSimulationTime.h" />
-    <ClInclude Include="WrapTriggerSound.h" />
     <ClInclude Include="WrapVoltage.h" />
   </ItemGroup>
   <ItemGroup>

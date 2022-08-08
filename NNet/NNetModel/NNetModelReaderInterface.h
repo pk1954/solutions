@@ -48,7 +48,6 @@ public:
 	bool                    IsSelected           (NobId const) const;
 	NobType                 GetNobType           (NobId const) const;
 	size_t                  GetNrOfSegments      (NobId const) const;
-	SoundDescr              GetTriggerSound      (NobId const) const;
 	bool                    HasIncoming          (NobId const) const;
 	bool                    HasOutgoing          (NobId const) const;
 	size_t                  GetNrOfOutConns      (NobId const) const;

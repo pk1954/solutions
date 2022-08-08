@@ -169,7 +169,6 @@
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
-    <ClInclude Include="win32_beeperThread.h" />
     <ClInclude Include="win32_editLineBox.h" />
     <ClInclude Include="win32_fatalError.h" />
     <ClInclude Include="win32_graphicsWindow.h" />

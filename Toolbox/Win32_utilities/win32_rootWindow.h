@@ -13,6 +13,8 @@
 #include "CommCtrl.h"
 #include "win32_util.h"
 
+import SaveCast;
+import Util;
 import ObserverInterface;
 import Tooltip;
 import PixelTypes;

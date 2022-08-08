@@ -90,11 +90,6 @@
 #define       IDD_ADD_INCOMING2PIPE          572
 #define       IDD_ADD_OUTGOING2BASEKNOT      573
 #define       IDD_ADD_OUTGOING2PIPE          574
-#define       IDD_TRIGGER_SOUND_DLG          575
-#define       IDC_TRIGGER_SOUND_ON           576
-#define       IDC_TRIGGER_SOUND_FREQ         577
-#define       IDC_TRIGGER_SOUND_MSEC         578
-#define       IDC_TRIGGER_SOUND_TEST         579
 #define       IDD_STOP_ON_TRIGGER            580
 								   		     
 #define       IDM_CRSR_WINDOW                590
@@ -111,8 +106,6 @@
 							       		     
 #define       IDM_COPY_SELECTION             650 
 #define       IDM_DELETE_SELECTION           651
-#define       IDM_CLEAR_BEEPERS              654
-#define       IDM_SELECT_ALL_BEEPERS         655
 										     
 #define       IDM_TRIGGER_STIMULUS           660
 #define       IDM_SIGNAL_DESIGNER_INTEGRATED 662

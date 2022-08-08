@@ -76,7 +76,6 @@ NNetAppWindow::NNetAppWindow()
 {
 	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
-	Neuron::SetSound(& m_sound);
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
 	Command        ::Initialize(&m_mainNNetWindow);

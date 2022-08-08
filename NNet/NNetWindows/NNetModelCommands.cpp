@@ -12,7 +12,6 @@
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
 #include "AttachSigGen2SelCmd.h"
-#include "ClearBeepersCommand.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "ConnAnimationCommand.h"
@@ -39,7 +38,6 @@
 #include "RotateNobCommand.h"
 #include "RotateModelCommand.h"
 #include "RotateSelectionCommand.h"
-#include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
 #include "SelectNobCommand.h"
@@ -49,7 +47,6 @@
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
 #include "SetActiveSigGenCmd.h"
-#include "SetTriggerSoundCommand.h"
 #include "SizeSelectionCmd.h"
 #include "SizeSensorCmd.h"
 #include "SplitNeuronCmd.h"
@@ -230,13 +227,6 @@ void NNetModelCommands::AttachSigGen2Conn(NobId const idInputLine)
 	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConnCmd>(idInputLine));
 }
 
-void NNetModelCommands::ClearBeepers()
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << endl;
-	m_pCmdStack->PushCommand(make_unique<ClearBeepersCommand>());
-}
-
 void NNetModelCommands::Connect
 (
 	NobId          const idSrc, 
@@ -363,13 +353,6 @@ SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 	SensorId const id   { list.FindSensor(umPos) };
 	list.SetActive(id);
 	return id;
-}
-
-void NNetModelCommands::SetTriggerSound(NobId const id, SoundDescr const & sound)
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << id << L" " << sound.m_bOn << L" " << sound.m_frequency << L" " << sound.m_duration << endl;
-	m_pCmdStack->PushCommand(make_unique<SetTriggerSoundCommand>(id, sound));
 }
 
 void NNetModelCommands::SetParameter(ParamType::Value const param, float const fNewValue)
@@ -529,13 +512,6 @@ void NNetModelCommands::RestrictSelection(NobType::Value const val)
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << val << endl;
 	m_pCmdStack->PushCommand(make_unique<RestrictSelectionCommand>(val));
-}
-
-void NNetModelCommands::SelectAllBeepers()
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SelectAllBeepersCommand>());
 }
 
 void NNetModelCommands::SelectNob(NobId const id, tBoolOp const op)

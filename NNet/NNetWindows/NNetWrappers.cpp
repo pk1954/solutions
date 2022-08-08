@@ -119,15 +119,6 @@ public:
     }
 };
 
-class WrapClearBeepers: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->ClearBeepers();
-    }
-};
-
 class WrapCopySelection: public ScriptFunctor
 {
 public:
@@ -169,22 +160,6 @@ public:
     }
 };
 
-class WrapSetTriggerSound: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId const id { ScrReadNobId(script) };
-        SoundDescr desc 
-        {
-            script.ScrReadInt() != 0,
-            Hertz(script.ScrReadUlong()),
-            MilliSecs(script.ScrReadUlong())
-        };
-        m_pCommands->SetTriggerSound(id, desc);
-    }
-};
-
 class WrapToggleStopOnTrigger: public ScriptFunctor
 {
 public:
@@ -192,15 +167,6 @@ public:
     {
         NobId const id { ScrReadNobId(script) };
         m_pCommands->ToggleStopOnTrigger(id);
-    }
-};
-
-class WrapSelectAllBeepers: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->SelectAllBeepers();
     }
 };
 
@@ -431,7 +397,6 @@ void InitializeNNetWrappers
     DEF_FUNC(AddIncoming2Pipe);   
     DEF_FUNC(AddOutgoing2BaseKnot);   
     DEF_FUNC(AddOutgoing2Pipe);   
-    DEF_FUNC(ClearBeepers);       
     DEF_FUNC(Connect);
     DEF_FUNC(CopySelection);      
     DEF_FUNC(CreateInitialNobs);
@@ -448,13 +413,11 @@ void InitializeNNetWrappers
     DEF_FUNC(MakeIoConnector);
     DEF_FUNC(ResetModel);         
     DEF_FUNC(SelectAll);          
-    DEF_FUNC(SelectAllBeepers);   
     DEF_FUNC(SelectNob);        
     DEF_FUNC(SelectNobsInRect); 
     DEF_FUNC(SelectSubtree);      
     DEF_FUNC(SetParameter);    
     DEF_FUNC(SetPulseRate); 
-    DEF_FUNC(SetTriggerSound);
     DEF_FUNC(SplitNeuron);
     DEF_FUNC(ToggleStopOnTrigger);
     DEF_FUNC(UndoCommand);
@@ -464,8 +427,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",        static_cast<long>(IDM_ANALYZE_LOOPS        ));
     SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",    static_cast<long>(IDM_ANALYZE_ANOMALIES    ));
     SymbolTable::ScrDefConst(L"DELETE_SELECTION",     static_cast<long>(IDM_DELETE_SELECTION     ));
-    SymbolTable::ScrDefConst(L"CLEAR_BEEPERS",        static_cast<long>(IDM_CLEAR_BEEPERS        ));
-    SymbolTable::ScrDefConst(L"SELECT_ALL_BEEPERS",   static_cast<long>(IDM_SELECT_ALL_BEEPERS   ));
     SymbolTable::ScrDefConst(L"COPY_SELECTION",       static_cast<long>(IDM_COPY_SELECTION       ));
     SymbolTable::ScrDefConst(L"INSERT_NEURON",        static_cast<long>(IDD_INSERT_NEURON        ));
     SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",     static_cast<long>(IDD_NEW_IO_LINE_PAIR   ));

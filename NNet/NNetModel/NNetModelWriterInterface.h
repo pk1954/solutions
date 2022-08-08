@@ -28,7 +28,6 @@ class NNetModelWriterInterface : public NNetModelReaderInterface
 public:
     void  CreateInitialNobs();
     void  RemoveOrphans();
-    void  SelectBeepers();
     void  SelectNob(NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob(NobId const);

@@ -18,16 +18,10 @@
     <ClInclude Include="Connect2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClearBeepersCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectAllCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SetTriggerSoundCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectSubtreeCommand.h">
@@ -37,9 +31,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectAllBeepersCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SetParameterCommand.h">

@@ -40,7 +40,6 @@ void Neuron::init(const Neuron & rhs)
 	m_bStopOnTrigger = rhs.m_bStopOnTrigger;
 	m_usSpikeTime    = rhs.m_usSpikeTime;
 	m_bTriggered     = rhs.m_bTriggered;
-	BaseKnot::Init(rhs);
 }
 
 Neuron & Neuron::operator=(Neuron const & rhs)
@@ -77,9 +76,8 @@ bool Neuron::CompStep()
 	if (bTrigger)
 	{
 		m_usSpikeTime = 0.0_MicroSecs;
-		m_bTriggered = true;
+		m_bTriggered  = true;
 		m_mVinputBuffer.Set2Zero();
-		BaseKnot::CompStep();
 	}
 	else
 	{

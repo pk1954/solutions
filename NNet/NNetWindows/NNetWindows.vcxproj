@@ -614,7 +614,6 @@
     <ClCompile Include="Win32_SimulationControl.ixx" />
     <ClCompile Include="Win32_Status.cpp" />
     <ClCompile Include="Win32_Status.ixx" />
-    <ClCompile Include="win32_triggerSoundDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MonitorControl.h" />
@@ -634,7 +633,6 @@
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_parameterDlg.h" />
     <ClInclude Include="win32_slowMotionControl.h" />
-    <ClInclude Include="win32_triggerSoundDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">

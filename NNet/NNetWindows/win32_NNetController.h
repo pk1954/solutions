@@ -55,7 +55,6 @@ private:
 	bool       IsTraceOn  () const { return m_bTrace; }
 	wostream & TraceStream()       { return wcout; }
 
-	void triggerSoundDlg    (NobId const);
 	bool processUIcommand   (int const, LPARAM const);
 	bool processModelCommand(int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
 

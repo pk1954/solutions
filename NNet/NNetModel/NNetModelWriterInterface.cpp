@@ -35,18 +35,6 @@ void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
 
-void NNetModelWriterInterface::SelectBeepers() 
-{ 
-	GetUPNobs().Apply2All<Neuron>
-	(
-		[](Neuron &n) 
-		{ 
-			if (n.HasTriggerSound()) 
-				n.Select(true); 
-		} 
-	); 
-}
-
 void NNetModelWriterInterface::RemoveOrphans()
 {
 	GetUPNobs().Apply2All<Knot>                              

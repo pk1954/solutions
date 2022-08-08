@@ -34,7 +34,6 @@
 #include "WrapNrOfNobs.h"
 #include "WrapProtocol.h"
 #include "WrapNobParameter.h"
-#include "WrapTriggerSound.h"
 #include "WrapSignal.h"
 #include "WrapSignalData.h"
 #include "WrapSimulationTime.h"
@@ -74,7 +73,6 @@ void NNetModelIO::Initialize()
     m_wrapVector.push_back(make_unique<WrapSignalGenerator>(L"SignalGenerator", *this));
     m_wrapVector.push_back(make_unique<WrapSetSigGen      >(L"SetSigGen",       *this));
     m_wrapVector.push_back(make_unique<WrapActiveSigGen   >(L"ActiveSigGen",    *this));
-    m_wrapVector.push_back(make_unique<WrapTriggerSound   >(L"TriggerSound",    *this));
     m_wrapVector.push_back(make_unique<WrapNrOfTracks     >(L"NrOfTracks",      *this));
     m_wrapVector.push_back(make_unique<WrapSignalInfo     >(L"SignalInfo",      *this));
     m_wrapVector.push_back(make_unique<WrapSignalData     >(L"SignalData",      *this));

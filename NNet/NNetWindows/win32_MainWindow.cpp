@@ -96,7 +96,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_SELECT_NOB,              L"Select nob"                     },
 		{ IDM_SELECT_SUBTREE,          L"Select subtree"                 },
 		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
-		{ IDD_TRIGGER_SOUND_DLG,       L"Trigger sound"                  },
 		{ IDD_EMPHASIZE,               L"Feedback line on/off"           }
 	};
 	AppendMenu(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));

@@ -8,6 +8,7 @@ module;
 
 export module PixelTypes;
 
+import SaveCast;
 import Util;
 import NamedType;
 import PointType;

@@ -27,9 +27,6 @@
     <ClCompile Include="win32_NNetAppMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_triggerSoundDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ComputeThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetAppMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_triggerSoundDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_MainWindow.h">

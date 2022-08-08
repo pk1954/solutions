@@ -45,9 +45,6 @@
     <ClInclude Include="WrapNobParameter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WrapTriggerSound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WrapSignal.h">
       <Filter>Header Files</Filter>
     </ClInclude>

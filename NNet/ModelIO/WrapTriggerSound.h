@@ -22,7 +22,6 @@ public:
         script.ScrReadString(L"Hertz");
         MilliSecs const msec { script.ScrReadUlong() };
         script.ScrReadString(L"msec");
-        pNeuron->SetTriggerSound(SoundDescr{ true, freq, msec });
     }
 
     void Write(wostream & out) const final 

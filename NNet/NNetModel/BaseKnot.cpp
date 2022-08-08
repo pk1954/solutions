@@ -24,40 +24,12 @@ BaseKnot::BaseKnot
 	m_circle(center, extension)
 { }
 
-void BaseKnot::Init(const BaseKnot & rhs)
-{
-	m_triggerSound = rhs.m_triggerSound;
-	m_pTpWork      = (rhs.m_triggerSound.m_bOn )
-		? CreateThreadpoolWork(BeepFunc, this, nullptr)
-		: nullptr;
-}
-
 bool BaseKnot::operator==(Nob const & rhs) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
-	return (this->Nob::operator==(rhs))                                        &&
-	       (m_triggerSound.m_bOn       == baseKnotRhs.m_triggerSound.m_bOn)       &&
-	       (m_triggerSound.m_frequency == baseKnotRhs.m_triggerSound.m_frequency) &&
-	       (m_triggerSound.m_duration  == baseKnotRhs.m_triggerSound.m_duration)  &&
-	       GetPos().IsCloseTo(baseKnotRhs.GetPos())                               &&
+	return (this->Nob::operator==(rhs))                &&
+	       GetPos().IsCloseTo(baseKnotRhs.GetPos()) &&
 	       GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
-}
-
-SoundDescr BaseKnot::SetTriggerSound(SoundDescr const & sound) 
-{
-	SoundDescr oldValue { m_triggerSound };
-	if (m_triggerSound.m_bOn != sound.m_bOn)
-	{
-		if (sound.m_bOn )
-			m_pTpWork = CreateThreadpoolWork(BeepFunc, this, nullptr);
-		else
-		{
-			CloseThreadpoolWork(m_pTpWork);
-			m_pTpWork = nullptr;
-		}
-	}
-	m_triggerSound = sound;
-	return oldValue;
 }
 
 void BaseKnot::Dump() const
@@ -180,13 +152,6 @@ void BaseKnot::Prepare()
 	Apply2AllInPipes([this](Pipe const & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 }
 
-bool BaseKnot::CompStep()
-{
-	if (HasTriggerSound() && m_pTpWork)
-		SubmitThreadpoolWork(m_pTpWork);
-	return false;
-}
-
 bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 
 {
 	return Apply2AllOutPipesB([&pipeSucc](Pipe const & pipe) { return & pipe == & pipeSucc; }); 
@@ -273,15 +238,6 @@ void BaseKnot::AppendMenuItems(AddMenuFunc const & add) const
 	if (HasOutgoing())
 		add(IDM_SELECT_SUBTREE);   
 	if (IsAnyNeuron())
-	{
-		add(IDD_TRIGGER_SOUND_DLG);
 		add(IDD_STOP_ON_TRIGGER);      
-	}
 	Nob::AppendMenuItems(add);
-}
-
-static void CALLBACK BeepFunc(PTP_CALLBACK_INSTANCE, PVOID arg, PTP_WORK)
-{
-	BaseKnot const * pBaseKnot { static_cast<BaseKnot const *>(arg) };
-	BaseKnot::m_pSound->Beep(pBaseKnot->GetTriggerSound());
 }

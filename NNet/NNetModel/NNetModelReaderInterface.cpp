@@ -47,14 +47,6 @@ SignalGenerator const * NNetModelReaderInterface::GetSigGenC(NobId const id) con
 		return nullptr;
 }
 
-SoundDescr NNetModelReaderInterface::GetTriggerSound(NobId const id) const
-{
-	Nob const & nob { * m_pModel->GetConstNob(id) };
-	return nob.IsAnyNeuron()
-		   ? static_cast<Neuron const &>(nob).GetTriggerSound()
-		   : SoundDescr(); 
-}
-
 mV NNetModelReaderInterface::GetVoltage(NobId const id) const
 {
 	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };

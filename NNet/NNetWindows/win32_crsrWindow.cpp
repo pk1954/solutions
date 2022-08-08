@@ -168,19 +168,6 @@ void CrsrWindow::printNobInfo
 		textBuf.AlignLeft();  
 		textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
 	}
-	if (type.IsAnyNeuronType())
-	{
-		SoundDescr sound { m_pNMRI->GetTriggerSound(id) };
-		if (sound.m_bOn)
-		{
-			textBuf.AlignRight(); 
-			textBuf.nextLine(L"trigger sound:");
-			textBuf.AlignLeft();  
-			printFrequency(textBuf, sound.m_frequency);
-			printMilliSecs(textBuf, sound.m_duration);
-			textBuf.nextLine();
-		}
-	}
 	if (type.IsIoConnectorType())
 	{
 		textBuf.AlignRight(); 
