@@ -1,14 +1,17 @@
-// win32_slowMotionControl.h
+// Win32_SlowMotionControl.ixx
 //
 // NNetSimu
 
-#pragma once
+module;
 
+#include <Windows.h>
 #include "Resource.h"
+
+export module SlowMotionControl;
 
 import StatusBar;
 
-class SlowMotionControl
+export class SlowMotionControl
 {
 public:
 

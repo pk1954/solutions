@@ -612,6 +612,7 @@
     <ClCompile Include="Win32_ScriptHook.ixx" />
     <ClCompile Include="Win32_SimulationControl.cpp" />
     <ClCompile Include="Win32_SimulationControl.ixx" />
+    <ClCompile Include="WIn32_SlowMotionControl.ixx" />
     <ClCompile Include="Win32_Status.cpp" />
     <ClCompile Include="Win32_Status.ixx" />
   </ItemGroup>
@@ -632,7 +633,6 @@
     <ClInclude Include="win32_NNetController.h" />
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_parameterDlg.h" />
-    <ClInclude Include="win32_slowMotionControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
