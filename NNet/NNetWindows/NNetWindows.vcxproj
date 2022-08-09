@@ -604,7 +604,8 @@
     <ClCompile Include="win32_monitorWindow.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
     <ClCompile Include="win32_NNetAppWindow.cpp" />
-    <ClCompile Include="win32_NNetController.cpp" />
+    <ClCompile Include="NNetController.cpp" />
+    <ClCompile Include="NNetController.ixx" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
     <ClCompile Include="Win32_PerformanceWindow.cpp" />
@@ -621,7 +622,6 @@
     <ClInclude Include="NNetModelCommands.h" />
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="SignalPreview.h" />
-    <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
     <ClInclude Include="NNetInputOutputUI.h" />
@@ -630,7 +630,6 @@
     <ClInclude Include="win32_monitorWindow.h" />
     <ClInclude Include="win32_NNetAppMenu.h" />
     <ClInclude Include="win32_NNetAppWindow.h" />
-    <ClInclude Include="win32_NNetController.h" />
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_parameterDlg.h" />
   </ItemGroup>

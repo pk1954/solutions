@@ -1,33 +1,34 @@
-// win32_NNetController.h
+// NNetController.ixx
 //
-// NNetSimu
+// NNetWindows
 
-#pragma once
+module;
 
+#include <ostream>
 #include <string>
 #include <iostream>
+#include <Windows.h>
+#include "Signal.h"
+#include "CommandStack.h"
+#include "NNetModelCommands.h"
+#include "NNetModelReaderInterface.h"
+#include "win32_mainWindow.h"
+#include "win32_winManager.h"
+#include "win32_monitorWindow.h"
 
-class NNetModelReaderInterface;
-class NNetModelCommands;
-class WinCommands;
-class SlowMotionRatio;
-class MonitorWindow;
-class DisplayFunctor;
-class ComputeThread;
-class NNetAppMenu;
-class NNetModel;
-class MainWindow;
-class WinManager;
-class Preferences;
-class CommandStack;
-class Observable;
-class Signal;
-class Sound;
+export module NNetController;
 
-using std::wstring;
+import Observable;
+import SoundInterface;
+import ComputeThread;
+import MoreTypes;
+import SlowMotionRatio;
+import Preferences;
+
+using std::wostream;
 using std::wcout;
 
-class NNetController
+export class NNetController
 {
 public:
 	NNetController() = default;

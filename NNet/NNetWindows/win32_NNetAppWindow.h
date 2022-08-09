@@ -18,7 +18,6 @@
 #include "win32_MainWindow.h"
 #include "win32_monitorWindow.h"
 #include "win32_NNetAppMenu.h"
-#include "win32_NNetController.h"
 #include "win32_parameterDlg.h"
 #include "win32_script.h"
 #include "NNetModelReaderInterface.h"
@@ -45,6 +44,7 @@ import TimeDisplay;
 import AppTitle;
 import StatusBar;
 import ActionTimer;
+import NNetController;
 
 class ReadModelResult;
 class MessagePump;

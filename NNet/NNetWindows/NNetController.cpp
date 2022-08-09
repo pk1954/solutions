@@ -1,8 +1,9 @@
-// win32_NNetController.cpp
+// NNetController.cpp
 //
-// NNetSimu
+// NNetWindows
 
-#include "stdafx.h"
+module;
+
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
@@ -21,7 +22,8 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetModelCommands.h"
 #include "win32_monitorWindow.h"
-#include "win32_NNetController.h"
+
+module NNetController;
 
 import SlowMotionRatio;
 import Observable;

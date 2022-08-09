@@ -14,13 +14,13 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
 #include "win32_util_resource.h"
-#include "win32_NNetController.h"
 #include "win32_NNetWindow.h"
 
 import MoreTypes;
 import Direct2D;
 import Win32_Sound;
 import PixelTypes;
+import NNetController;
 
 using std::function;
 
