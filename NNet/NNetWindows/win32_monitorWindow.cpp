@@ -8,6 +8,9 @@
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 
+import PixelTypes;
+import SoundInterface;
+
 using std::find;
 using std::make_unique;
 

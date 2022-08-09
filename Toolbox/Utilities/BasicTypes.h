@@ -7,7 +7,6 @@
 #include <string>
 #include <limits>
 #include <chrono>
-#include <sstream>
 #include <numbers>
 
 import Util;
@@ -17,7 +16,6 @@ import SaveCast;
 using std::numbers::pi;
 using std::chrono::microseconds;
 using std::numeric_limits;
-using std::streamsize;
 using std::wstring;
 
 ////////////// fMicroSecs /////////////////////////////////////
@@ -151,16 +149,3 @@ static Degrees Normalize(Degrees const & d) { return Degrees(fmod(fabs(d.GetValu
 
 static MicroMeter Cos(Radian const r) { return MicroMeter(cos(r.GetValue())); } 
 static MicroMeter Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); } 
-
-////////////// Formatting /////////////////////////////////////
-
-int     StepsOfThousand(float fValue);
-wstring GetUnitPrefix  (int const);
-
-wstring Format2wstring(float fValue, streamsize prec = 2);
-
-template<typename T>
-wstring Format2wstring(T const val, streamsize prec = 2)
-{
-	return Format2wstring(val.GetValue() / TypeAttribute<T>::factor, prec) + TypeAttribute<T>::unit;
-}

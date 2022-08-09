@@ -6,7 +6,9 @@
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
 
+import Util;
 import MoreTypes;
+import PixelTypes;
 
 using std::bit_cast;
 using std::chrono::milliseconds;

@@ -5,6 +5,7 @@
 module;
 
 #include <functional>
+#include <sstream>
 #include <string>
 #include <limits>
 #include <vector>
@@ -15,6 +16,7 @@ export module Util;
 using std::vector;
 using std::function;
 using std::wstring;
+using std::streamsize;
 using std::abs;
 
 export extern void UpperCase(wstring &);
@@ -77,4 +79,14 @@ T GetVectorValue(long const index, vector<T> const &vec)
 		long const clippedIndex { ClipToMinMax(index, 0L, static_cast<long>(vec.size()-1)) }; 
 		return vec[clippedIndex];
 	}
+}
+
+export int     StepsOfThousand(float fValue);
+export wstring GetUnitPrefix  (int const);
+export wstring Format2wstring(float fValue, streamsize prec = 2);
+
+export template<typename T>
+wstring Format2wstring(T const val, streamsize prec = 2)
+{
+	return Format2wstring(val.GetValue() / TypeAttribute<T>::factor, prec) + TypeAttribute<T>::unit;
 }

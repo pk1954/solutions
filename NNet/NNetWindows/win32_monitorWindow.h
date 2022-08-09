@@ -8,6 +8,7 @@
 #include "win32_baseWindow.h"
 
 import MoreTypes;
+import PixelTypes;
 import PixFpDimension;
 
 class NNetModelWriterInterface;

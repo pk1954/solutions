@@ -22,7 +22,6 @@
     <ClInclude Include="BasicTypes.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
     <ClCompile Include="Debug.ixx">
@@ -35,7 +34,6 @@
     <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LineType.ixx" />
-    <ClCompile Include="MoreTypes.cpp" />
     <ClCompile Include="MoreTypes.ixx" />
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
@@ -53,7 +51,7 @@
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="Trace.ixx" />
     <ClCompile Include="Uniform2D.ixx" />
-    <ClCompile Include="util.cpp" />
+    <ClCompile Include="Util.cpp" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="ViewCollection.ixx" />
   </ItemGroup>

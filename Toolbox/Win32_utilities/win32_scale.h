@@ -11,6 +11,7 @@
 #include "win32_util_resource.h"
 #include "win32_graphicsWindow.h"
 
+import Util;
 import ObserverInterface;
 import MoreTypes;
 import PixFpDimension;
