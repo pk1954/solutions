@@ -100,7 +100,6 @@
     <ClInclude Include="SigGenCommand.h" />
     <ClInclude Include="SingleNobAnimation.h" />
     <ClInclude Include="SizeSelectionCmd.h" />
-    <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
@@ -158,6 +157,7 @@
     <ClCompile Include="MoveSensorCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
+    <ClCompile Include="SizeSensorCmd.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">

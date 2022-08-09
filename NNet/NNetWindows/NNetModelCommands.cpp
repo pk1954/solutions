@@ -46,7 +46,6 @@
 #include "SetNobCommand.h"
 #include "SetActiveSigGenCmd.h"
 #include "SizeSelectionCmd.h"
-#include "SizeSensorCmd.h"
 #include "SplitNeuronCmd.h"
 #include "ToggleEmphModeCmd.h"
 #include "ToggleStopOnTriggerCommand.h"
@@ -64,6 +63,7 @@ import DeleteSigGenCmd;
 import SelectNobsInRectCommand;
 import CoordAnimation;
 import NewIoLinePairCmd;
+import SizeSensorCmd;
 
 using std::wcout;
 using std::endl;

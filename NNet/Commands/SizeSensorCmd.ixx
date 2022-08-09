@@ -1,15 +1,17 @@
-// SizeSensorCmd.h
+// SizeSensorCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "Signal.h"
 #include "MonitorData.h"
 
-class SizeSensorCmd : public NNetCommand
+export module SizeSensorCmd;
+
+export class SizeSensorCmd : public NNetCommand
 {
 public:
 	SizeSensorCmd
@@ -17,7 +19,7 @@ public:
 		SensorId const & id,
 		float    const   fFactor
 	)
-      : m_pSensor(m_pNMWI->GetSensorList().GetSensor(id)),
+		: m_pSensor(m_pNMWI->GetSensorList().GetSensor(id)),
 		m_sensorId(id),
 		m_fFactor(fFactor)
 	{}
