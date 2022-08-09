@@ -1,16 +1,18 @@
-// NewIoLinePairCmd.h
+// NewIoLinePairCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "IoLinePair.h"
 
+export module NewIoLinePairCmd;
+
 import MoreTypes;
 
-class NewIoLinePairCmd : public NNetCommand
+export class NewIoLinePairCmd : public NNetCommand
 {
 public:
 	explicit NewIoLinePairCmd

@@ -103,7 +103,6 @@
     <ClInclude Include="SizeSensorCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
-    <ClInclude Include="NewIoLinePairCmd.h" />
     <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
@@ -157,6 +156,7 @@
     <ClCompile Include="DeleteSigGenCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
+    <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
   </ItemGroup>
   <ItemGroup>

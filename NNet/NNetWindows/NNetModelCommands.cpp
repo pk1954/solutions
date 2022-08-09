@@ -27,7 +27,6 @@
 #include "MoveSignalCmd.h"
 #include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
-#include "NewIoLinePairCmd.h"
 #include "NewSigGenCmd.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
@@ -64,6 +63,7 @@ import DeleteBaseKnotCmd;
 import DeleteSigGenCmd;
 import SelectNobsInRectCommand;
 import CoordAnimation;
+import NewIoLinePairCmd;
 
 using std::wcout;
 using std::endl;
