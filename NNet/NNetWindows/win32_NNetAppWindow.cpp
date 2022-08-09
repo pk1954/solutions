@@ -15,7 +15,6 @@
 // interfaces of various windows
 
 #include "win32_NNetWindow.h"
-#include "win32_zoomControl.h"
 
 // infrastructure
 

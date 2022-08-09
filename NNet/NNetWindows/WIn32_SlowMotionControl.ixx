@@ -1,6 +1,6 @@
 // Win32_SlowMotionControl.ixx
 //
-// NNetSimu
+// NNetWindows
 
 module;
 

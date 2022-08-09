@@ -63,9 +63,6 @@
     <ClInclude Include="win32_baseRefreshRate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_zoomControl.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_messagePump.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

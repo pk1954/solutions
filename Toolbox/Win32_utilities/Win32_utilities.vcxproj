@@ -184,7 +184,6 @@
     <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_util_resource.h" />
     <ClInclude Include="win32_winManager.h" />
-    <ClInclude Include="win32_zoomControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D2D_DrawContext.cpp" />

@@ -1,15 +1,19 @@
-// win32_zoomControl.h
+// Win32_ZoomControl.ixx
 //
 // win32_utilities
 
-#pragma once
+module;
 
+#include <Windows.h>
 #include "win32_util_resource.h"
 
+export module ZoomControl;
+
+import SaveCast;
 import Tooltip;
 import StatusBar;
 
-class ZoomControl
+export class ZoomControl
 {
 public:
 
