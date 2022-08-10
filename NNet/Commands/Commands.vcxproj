@@ -83,7 +83,6 @@
     <ClInclude Include="IoLinesAnimation.h" />
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="MoveSignalCmd.h" />
-    <ClInclude Include="NewSigGenCmd.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectorAnimation.h" />
     <ClInclude Include="PlugIoConnectors.h" />
@@ -156,6 +155,7 @@
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
+    <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
   </ItemGroup>

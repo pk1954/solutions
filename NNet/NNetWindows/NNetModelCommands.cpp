@@ -27,7 +27,6 @@
 #include "MoveSignalCmd.h"
 #include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
-#include "NewSigGenCmd.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
@@ -64,6 +63,7 @@ import SelectNobsInRectCommand;
 import CoordAnimation;
 import NewIoLinePairCmd;
 import SizeSensorCmd;
+import NewSigGenCmd;
 
 using std::wcout;
 using std::endl;

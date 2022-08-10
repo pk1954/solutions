@@ -1,15 +1,17 @@
-// NewSigGenCmd.h
+// NewSigGenCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
 #include "SigGenCommand.h"
 
-class NewSigGenCmd : public SigGenCommand
+export module NewSigGenCmd;
+
+export class NewSigGenCmd : public SigGenCommand
 {
 public:
 	NewSigGenCmd()
