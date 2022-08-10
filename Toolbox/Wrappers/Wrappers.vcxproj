@@ -27,10 +27,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UtilityWrappers.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="UtilityWrappers.cpp" />
+    <ClCompile Include="UtilityWrappers.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

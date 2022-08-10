@@ -30,7 +30,6 @@
 #include "Script.h"
 #include "NNetWrappers.h"
 #include "NobException.h"
-#include "UtilityWrappers.h"
 #include "win32_script.h"
 #include "win32_fatalError.h"
 
@@ -57,6 +56,7 @@ import PerformanceWindow;
 import Win32_AboutBox;
 import UndoRedoMenu;
 import Preferences;
+import UtilityWrappers;
 
 using std::wcout;
 using std::wstring;

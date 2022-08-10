@@ -1,14 +1,14 @@
 // NNetWrapperHelpers.cpp : wrapper functions for unit tests and scripting of application
 //
-// NNetWindows
+// NNetModel
 
 #include "ErrHndl.h"
 #include "Script.h"
 #include "NobId.h"
-#include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
 
 import IoConstants;
+import UtilityWrappers;
 
 MicroMeter ScrReadMicroMeter(Script & script)
 {

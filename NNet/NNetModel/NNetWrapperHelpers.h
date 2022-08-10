@@ -1,6 +1,6 @@
 // NNetWrapperHelpers.h : 
 //
-// NNetWindows
+// NNetModel
 
 #pragma once
 

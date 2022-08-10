@@ -7,7 +7,6 @@
 #include "Symtab.h"
 #include "NobType.h"
 #include "NobIdList.h"
-#include "UtilityWrappers.h"
 #include "DrawContext.h"
 #include "NNetInputOutputUI.h"
 #include "NNetModelIO.h"
@@ -16,6 +15,7 @@
 #include "NNetModelCommands.h"
 
 import SoundInterface;
+import UtilityWrappers;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

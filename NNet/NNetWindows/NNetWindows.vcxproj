@@ -643,6 +643,9 @@
     <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Wrappers\Wrappers.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Commands\Commands.vcxproj">
       <Project>{5f8877e6-8159-4cd4-84ac-53aa018885ac}</Project>
     </ProjectReference>

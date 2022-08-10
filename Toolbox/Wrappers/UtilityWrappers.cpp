@@ -2,10 +2,13 @@
 //
 // Utilities\Wrappers
 
+module;
+
 #include <cassert>
 #include "Script.h"
 #include "Symtab.h"
-#include "UtilityWrappers.h"
+
+module UtilityWrappers;
 
 import BoolOp;
 import Trace;
