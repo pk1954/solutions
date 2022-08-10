@@ -42,9 +42,6 @@
     <ClInclude Include="win32_rootWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_stopwatch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -114,9 +111,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_rootWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_stopwatch.cpp">
