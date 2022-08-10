@@ -1,12 +1,18 @@
-// MonitorControl.h
+// MonitorControl.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include <Windows.h>
 #include "Track.h"
 #include "TrackNr.h"
 #include "TimeGraph.h"
+#include "MonitorData.h"
+#include "NNetModelCommands.h"
+#include "NNetModelWriterInterface.h"
+
+export module MonitorControl;
 
 import MoreTypes;
 import PixFpDimension;
@@ -15,13 +21,9 @@ import Measurement;
 import Direct2D;
 import PixelTypes;
 
-class MonitorData;
-class NNetModelCommands;
-class NNetModelWriterInterface;
-
 struct IDWriteTextFormat;
 
-class MonitorControl : public TimeGraph
+export class MonitorControl : public TimeGraph
 {
 public:
 	MonitorControl

@@ -2,6 +2,9 @@
 //
 // NNetWindows
 
+module;
+
+#include <Windows.h>
 #include "dwrite.h"
 #include "Resource.h"
 #include "win32_util_resource.h"
@@ -10,7 +13,8 @@
 #include "NNetColors.h"
 #include "SimulationTime.h"
 #include "MonitorData.h"
-#include "MonitorControl.h"
+
+module MonitorControl;
 
 using std::to_wstring;
 

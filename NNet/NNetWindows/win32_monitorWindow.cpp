@@ -4,12 +4,12 @@
 
 #include "Resource.h"
 #include "NNetColors.h"
-#include "MonitorControl.h"
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 
 import PixelTypes;
 import SoundInterface;
+import MonitorControl;
 
 using std::find;
 using std::make_unique;

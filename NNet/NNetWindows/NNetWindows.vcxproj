@@ -578,6 +578,7 @@
     <ClCompile Include="ComputeThread.ixx" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="Measurement.ixx" />
+    <ClCompile Include="MomitorControl.ixx" />
     <ClCompile Include="MonitorControl.cpp" />
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
@@ -618,7 +619,6 @@
     <ClCompile Include="Win32_Status.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MonitorControl.h" />
     <ClInclude Include="NNetModelCommands.h" />
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="SignalPreview.h" />

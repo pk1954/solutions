@@ -141,6 +141,9 @@
     <ClCompile Include="NNetController.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MomitorControl.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -174,9 +177,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelCommands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MonitorControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SignalPreview.h">
