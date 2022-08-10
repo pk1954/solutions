@@ -5,7 +5,7 @@
 #pragma once
 
 #include <vector>
-#include <assert.h>   
+#include <cassert>   
 #include "IoLine.h"
 #include "MicroMeterPosDir.h"
 

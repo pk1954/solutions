@@ -7,7 +7,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
+#include <cassert>
 #include <ctype.h>
 #include "Input.h"
 #include "ErrHndl.h"

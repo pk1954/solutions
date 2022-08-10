@@ -2,8 +2,7 @@
 //
 // Commands
 
-#include "stdafx.h"
-#include <assert.h>
+#include <cassert>
 #include "NNetModelWriterInterface.h"
 #include "DeleteIoConnectorCmd.h"
 #include "DiscIoConnectorCmd.h"

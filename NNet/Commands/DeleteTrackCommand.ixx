@@ -4,7 +4,7 @@
 
 module;
 
-#include <assert.h>
+#include <cassert>
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "NNetCommand.h"

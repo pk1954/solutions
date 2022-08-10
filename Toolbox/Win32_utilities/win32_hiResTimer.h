@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <assert.h>
+#include <cassert>
 #include <chrono>
 #include <Windows.h>
 #include "BasicTypes.h"

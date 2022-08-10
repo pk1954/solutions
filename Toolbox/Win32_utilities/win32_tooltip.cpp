@@ -4,7 +4,7 @@
 
 module;
 
-#include <assert.h>
+#include <cassert>
 #include <Windows.h>
 #include <CommCtrl.h>
 #include "win32_util.h"

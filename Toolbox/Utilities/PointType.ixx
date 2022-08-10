@@ -4,7 +4,7 @@
 
 module;
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>  // min/max/abs templates
 #include <iostream>
 #include <iomanip>

@@ -3,7 +3,7 @@
 //                                                                          *
  
 #include <map>
-#include <assert.h>
+#include <cassert>
 #include "ErrHndl.h"
 #include "Symtab.h"
 

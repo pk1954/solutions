@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <tchar.h>
-#include <assert.h>
+#include <cassert>
 
 
 // reference additional headers your program requires here

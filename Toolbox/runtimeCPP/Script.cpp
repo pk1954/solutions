@@ -10,7 +10,7 @@
 #include <filesystem>
 #include <limits.h>  
 #include <string.h>
-#include <assert.h>
+#include <cassert>
 #include "Scanner.h"
 #include "ErrHndl.h"
 #include "Script.h"

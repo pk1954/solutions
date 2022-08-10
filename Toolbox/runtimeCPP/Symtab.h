@@ -7,7 +7,7 @@
 #pragma once
           
 #include <map>
-#include <assert.h>
+#include <cassert>
 #include <string.h>
 
 class ScriptFunctor;

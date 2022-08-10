@@ -6,7 +6,7 @@
 
 #include "string"
 #include "Windows.h"
-#include <assert.h>
+#include <cassert>
 
 import Win32_Event;
 

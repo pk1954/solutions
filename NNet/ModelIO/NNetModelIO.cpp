@@ -3,7 +3,7 @@
 // ModelIO
 
 #include <filesystem>
-#include <assert.h>
+#include <cassert>
 #include "ErrHndl.h"
 #include "Scanner.h"
 #include "Signal.h"

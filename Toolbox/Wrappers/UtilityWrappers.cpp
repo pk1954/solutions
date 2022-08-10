@@ -2,7 +2,7 @@
 //
 // Utilities\Wrappers
 
-#include <assert.h>
+#include <cassert>
 #include "Script.h"
 #include "Symtab.h"
 #include "UtilityWrappers.h"

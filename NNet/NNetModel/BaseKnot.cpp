@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include <assert.h>
+#include <cassert>
 #include "Resource.h"
 #include "DrawContext.h"
 #include "NobException.h"

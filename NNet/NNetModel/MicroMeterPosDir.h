@@ -6,7 +6,7 @@
 
 #include <ostream>
 #include <vector>
-#include <assert.h>   
+#include <cassert>   
 #include "BasicTypes.h"
 
 import MoreTypes;

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <assert.h>
+#include <cassert>
 #include <string>
 #include <sstream>
 #include <iostream>
