@@ -10,12 +10,12 @@
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
 #include "win32_MainWindow.h"
-#include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
 
 import SoundInterface;
 import ComputeThread;
 import SignalDesigner;
+import WinManager;
 
 using std::make_unique;
 

@@ -7,7 +7,8 @@
 #include "Symtab.h"
 #include "UtilityWrappers.h"
 #include "win32_util.h"
-#include "win32_winManager.h"
+
+import WinManager;
 
 using std::endl;
 using std::pair;

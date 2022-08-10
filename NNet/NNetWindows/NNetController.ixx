@@ -13,7 +13,6 @@ module;
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_mainWindow.h"
-#include "win32_winManager.h"
 #include "win32_monitorWindow.h"
 
 export module NNetController;
@@ -24,6 +23,7 @@ import ComputeThread;
 import MoreTypes;
 import SlowMotionRatio;
 import Preferences;
+import WinManager;
 
 using std::wostream;
 using std::wcout;

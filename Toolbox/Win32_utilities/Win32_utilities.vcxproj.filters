@@ -33,9 +33,6 @@
     <ClInclude Include="win32_util.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_winManager.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_baseDialog.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -186,6 +183,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_ActionTimer.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_WinManager.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

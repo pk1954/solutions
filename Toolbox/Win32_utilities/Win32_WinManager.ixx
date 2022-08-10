@@ -1,23 +1,25 @@
-// win32_winManager.h : 
+// win32_winManager.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
 #include <string>
 #include <unordered_map>
+#include <Windows.h>
 #include "ErrHndl.h"
 #include "win32_util.h"
 #include "win32_util_resource.h"
+#include "win32_rootWindow.h"
 #include "win32_baseWindow.h"
 #include "win32_baseDialog.h"
+
+export module WinManager;
 
 using std::wstring;
 using std::unordered_map;
 
-class RootWindow;
-
-class WinManager
+export class WinManager
 {
 public:
 
@@ -49,9 +51,9 @@ public:
 	}                        
 
 	wstring GetWindowName(UINT const id) const // can throw out_of_range exception
-    {
-        return m_map.at(id).m_wstr;
-    }
+	{
+		return m_map.at(id).m_wstr;
+	}
 
 	HWND GetHWND(UINT const id) const // can throw out_of_range exception
 	{
@@ -88,10 +90,10 @@ public:
 		return -1;
 	}
 
-    bool IsMoveable(UINT const id) const // can throw out_of_range exception
-    {
-        return m_map.at(id).m_bTrackPosition;
-    }
+	bool IsMoveable(UINT const id) const // can throw out_of_range exception
+	{
+		return m_map.at(id).m_bTrackPosition;
+	}
 
 	bool IsSizeable(UINT const id) const // can throw out_of_range exception
 	{
@@ -104,45 +106,45 @@ public:
 	}
 
 	void Show(UINT const id, tBoolOp const op) const
-    {
-        Util::Show(GetHWND(id), op);
-    }
+	{
+		Util::Show(GetHWND(id), op);
+	}
 
-    void SetWindowConfigurationFile(wstring const & fileName) 
-    { 
-        m_strWindowConfigurationFile = fileName; 
-    };
+	void SetWindowConfigurationFile(wstring const & fileName) 
+	{ 
+		m_strWindowConfigurationFile = fileName; 
+	};
 
-    void IncNrOfMonitorConfigurations() 
-    { 
-        ++m_iNrOfMonitorConfigurations; 
-    };
+	void IncNrOfMonitorConfigurations() 
+	{ 
+		++m_iNrOfMonitorConfigurations; 
+	};
 
-    bool GetWindowConfiguration() const;
-    void StoreWindowConfiguration();
+	bool GetWindowConfiguration() const;
+	void StoreWindowConfiguration();
 
 private:
-    wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
-    wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
+	wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
+	wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
 
-    struct MAP_ELEMENT
-    {
+	struct MAP_ELEMENT
+	{
 		BaseWindow  * m_pBaseWindow;    // Normally WinManager handles BaseWindows
 		wstring const m_wstr;
 		HWND    const m_hwnd;           // but in some cases also naked HWNDs are used
 		bool    const m_bTrackPosition; // if true, winManager sets window position from config file
 		bool    const m_bTrackSize;     // if true, winManager sets window size from config file
-    };
+	};
 
-    unordered_map<UINT, MAP_ELEMENT> m_map;
-    
-    wstring m_strWindowConfigurationFile { L"" };
-    int     m_iNrOfMonitorConfigurations { 0 };
+	unordered_map<UINT, MAP_ELEMENT> m_map;
+
+	wstring m_strWindowConfigurationFile { L"" };
+	int     m_iNrOfMonitorConfigurations { 0 };
 
 	ScriptErrorHandler::ScriptException m_errorInfo {};
 
-    void dumpMonitorConfiguration() const;
-    void dumpWindowCoordinates() const;
+	void dumpMonitorConfiguration() const;
+	void dumpWindowCoordinates() const;
 
 	void addWindow
 	(

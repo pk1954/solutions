@@ -182,7 +182,6 @@
     <ClInclude Include="win32_thread.h" />
     <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_util_resource.h" />
-    <ClInclude Include="win32_winManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D2D_DrawContext.cpp" />
@@ -218,6 +217,7 @@
     <ClCompile Include="Win32_Tooltip.ixx" />
     <ClCompile Include="win32_util.cpp" />
     <ClCompile Include="win32_winManager.cpp" />
+    <ClCompile Include="Win32_WinManager.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32_utilities.rc" />
