@@ -1,12 +1,9 @@
 //                                                                          
-//  File:     SCRIPT.C                                                      
+//  File: Script.cpp                                                   
 //                                                                          
-// 
-//  script.c - main loop for processing test scripts
+//  main loop for processing test scripts
 // 
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <filesystem>
 #include <limits.h>  
 #include <string.h>
