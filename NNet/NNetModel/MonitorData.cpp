@@ -2,7 +2,7 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
+#include <cassert>
 #include "Track.h"
 #include "SignalFactory.h"
 #include "win32_fatalError.h"

@@ -2,7 +2,7 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
+#include "Windows.h"
 #include "win32_util.h"
 
 // EscapeKeyPressed - Peek message queue of current thread for ESC key pressed

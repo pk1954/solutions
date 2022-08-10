@@ -2,10 +2,12 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
+#include <string>
 #include "D2D_DrawContext.h"
 
 import Direct2D;
+
+using std::wstring;
 
 void D2D_DrawContext::Start(D2D_driver * const pGraphics)
 {

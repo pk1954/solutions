@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "UPSigGenList.h"
 
 using std::to_wstring;

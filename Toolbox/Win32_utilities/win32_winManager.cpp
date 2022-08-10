@@ -2,7 +2,6 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
 #include <fstream>
 #include "Script.h"
 #include "Symtab.h"

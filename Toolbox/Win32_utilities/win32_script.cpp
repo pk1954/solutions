@@ -2,7 +2,7 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
+#include "Windows.h"
 #include "commdlg.h"
 #include <cassert> 
 #include <iostream>

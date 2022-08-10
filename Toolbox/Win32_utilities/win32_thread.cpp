@@ -2,8 +2,8 @@
 //
 // Toolbox\Win32_utilities
 
-#include "stdafx.h"
 #include <process.h>
+#include "Windows.h"
 #include "win32_thread.h"
 
 HANDLE Util::RunAsAsyncThread

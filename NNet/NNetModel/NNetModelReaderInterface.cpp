@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "Nob.h"
 #include "DrawContext.h"
 #include "NNetModel.h"

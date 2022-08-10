@@ -4,7 +4,7 @@
 
 module;
 
-#include "stdafx.h"
+#include "Windows.h"
 #include "win32_util_resource.h"
 
 module Win32_AboutBox;

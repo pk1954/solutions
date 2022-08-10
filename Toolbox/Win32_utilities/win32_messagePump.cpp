@@ -2,7 +2,8 @@
 //
 // win32_utilities
 
-#include "stdafx.h"
+#include <cassert>
+#include "Windows.h"
 #include "win32_messagePump.h"
 
 void MessagePump::SetAccelTable(HINSTANCE const hInstance, int const idResource)

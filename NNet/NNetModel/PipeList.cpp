@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "Scanner.h"
 #include "Pipe.h"
 #include "PipeList.h"

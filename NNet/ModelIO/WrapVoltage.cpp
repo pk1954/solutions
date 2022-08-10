@@ -2,7 +2,6 @@
 //
 // ModelIO
 
-#include "stdafx.h"
 #include "Script.h"
 #include "ErrHndl.h"
 #include "Nob.h"

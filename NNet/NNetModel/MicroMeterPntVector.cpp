@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include <cassert>
 #include "MicroMeterPntVector.h"
 
 import IoConstants;

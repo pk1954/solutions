@@ -2,8 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
-#include "win32_util.h"
+#include <cassert>
 #include "NNetModelReaderInterface.h"
 #include "Knot.h"
 #include "Analyzer.h"

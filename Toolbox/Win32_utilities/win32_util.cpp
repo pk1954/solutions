@@ -1,7 +1,6 @@
 // win32_util.cpp :
 //
 
-#include "stdafx.h"
 #include <iomanip>
 #include <time.h>
 #include "Script.h"

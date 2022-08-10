@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "Nob.h"
 #include "NobIdList.h"
 

@@ -2,7 +2,7 @@
 //
 // Commands
 
-#include "stdafx.h"
+#include <cassert>
 #include <source_location>
 #include "assert.h"
 #include "NobException.h"

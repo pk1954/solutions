@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "NobException.h"
 #include "SimulationTime.h"
 #include "NobType.h"

@@ -2,7 +2,7 @@
 //
 // Toolbox\win32_utilities
 
-#include "stdafx.h"
+#include "Windows.h"
 #include "win32_util_resource.h"
 #include "win32_baseScale.h"
 

@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "Resource.h"
 #include "DrawContext.h"
 #include "IoLine.h"

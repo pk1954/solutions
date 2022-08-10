@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include <cassert>
 #include "NNetParameters.h"
 
 bool Param::operator==(Param const & rhs) const

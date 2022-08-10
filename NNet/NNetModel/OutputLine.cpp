@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include <cassert>
 #include "Resource.h"
 #include "DrawContext.h"
 #include "OutputLine.h"

@@ -2,7 +2,6 @@
 //
 // Command
 
-#include "stdafx.h"
 #include <algorithm>
 #include "NNetModelWriterInterface.h"
 #include "IoLine.h"

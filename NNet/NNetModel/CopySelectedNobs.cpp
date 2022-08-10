@@ -2,7 +2,7 @@
 //
 // Commands
 
-#include "stdafx.h"
+#include <cassert>
 #include "Nob.h"
 #include "Knot.h"
 #include "BaseKnot.h"

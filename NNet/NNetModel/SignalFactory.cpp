@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "UPSensorList.h"

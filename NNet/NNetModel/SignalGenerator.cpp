@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include <cassert>
 #include "NNetParameters.h"
 #include "UPSigGenList.h"
 #include "SignalGenerator.h"

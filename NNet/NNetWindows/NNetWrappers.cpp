@@ -2,13 +2,11 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include "Resource.h"
 #include "ErrHndl.h"
 #include "Symtab.h"
 #include "NobType.h"
 #include "NobIdList.h"
-#include "win32_util.h"
 #include "UtilityWrappers.h"
 #include "DrawContext.h"
 #include "NNetInputOutputUI.h"

@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include <iomanip>
 #include <sstream> 
 #include "Resource.h"

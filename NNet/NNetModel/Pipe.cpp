@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include <cassert>
 #include "Resource.h"
 #include "DrawContext.h"
@@ -93,9 +92,7 @@ void Pipe::recalc()
 void Pipe::Recalc()
 {
 	if (m_pKnotStart && m_pKnotEnd)
-	{
 		recalc();
-	}
 }
 
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)

@@ -5,8 +5,6 @@
 //
 
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
 #include <cassert>
 #include <ctype.h>
 #include "Input.h"

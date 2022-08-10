@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include <sstream> 
 #include "Resource.h"
 #include "Sensor.h"
@@ -13,6 +12,7 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
+#include "Windows.h"
 #include "win32_util_resource.h"
 #include "win32_NNetWindow.h"
 

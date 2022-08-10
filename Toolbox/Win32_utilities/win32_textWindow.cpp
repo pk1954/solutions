@@ -2,8 +2,8 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
 #include <locale>
+#include "Windows.h"
 #include "win32_util.h"
 #include "win32_thread.h"
 #include "win32_util_resource.h"

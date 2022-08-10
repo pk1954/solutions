@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include "dwrite.h"
 #include "Resource.h"
 #include "win32_util_resource.h"

@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "stdafx.h"
+#include <cassert>
 #include "Pipe.h"
 #include "Knot.h"
 #include "Neuron.h"

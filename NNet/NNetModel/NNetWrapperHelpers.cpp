@@ -2,7 +2,6 @@
 //
 // NNetWindows
 
-#include "stdafx.h"
 #include "ErrHndl.h"
 #include "Script.h"
 #include "NobId.h"

@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
 #include "SignalPreview.h"

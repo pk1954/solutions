@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include <ostream>
 #include <unordered_map>
 #include "NobType.h"

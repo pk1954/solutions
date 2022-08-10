@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "stdafx.h"
 #include "DrawContext.h"
 #include "SimulationTime.h"
 #include "UPNobList.h"

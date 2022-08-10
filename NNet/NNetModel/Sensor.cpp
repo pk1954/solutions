@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "stdafx.h"
 #include "NNetColors.h"
 #include "Signal.h"
 #include "UPNobList.h"
