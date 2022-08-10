@@ -1,17 +1,19 @@
-// ToggleStopOnTriggerCommand.h
+// ToggleStopOnTriggerCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "NNetCommand.h"
 
-class ToggleStopOnTriggerCommand : public NNetCommand
+export module ToggleStopOnTriggerCmd;
+
+export class ToggleStopOnTriggerCmd : public NNetCommand
 {
 public:
-	explicit ToggleStopOnTriggerCommand(NobId const id)
+	explicit ToggleStopOnTriggerCmd(NobId const id)
 		:	m_id(id)
 	{ }
 

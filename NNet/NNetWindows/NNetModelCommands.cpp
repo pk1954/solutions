@@ -47,7 +47,6 @@
 #include "SizeSelectionCmd.h"
 #include "SplitNeuronCmd.h"
 #include "ToggleEmphModeCmd.h"
-#include "ToggleStopOnTriggerCommand.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -64,6 +63,7 @@ import CoordAnimation;
 import NewIoLinePairCmd;
 import SizeSensorCmd;
 import NewSigGenCmd;
+import ToggleStopOnTriggerCmd;
 
 using std::wcout;
 using std::endl;
@@ -344,7 +344,7 @@ void NNetModelCommands::ToggleStopOnTrigger(NobId const id)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << endl;
-	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCommand>(id));
+	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCmd>(id));
 }
 
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)

@@ -116,7 +116,6 @@
     <ClInclude Include="SelectSubtreeCommand.h" />
     <ClInclude Include="SetParameterCommand.h" />
     <ClInclude Include="ToggleEmphModeCmd.h" />
-    <ClInclude Include="ToggleStopOnTriggerCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx">
@@ -157,6 +156,7 @@
     <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
+    <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
