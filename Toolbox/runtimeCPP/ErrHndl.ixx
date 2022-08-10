@@ -1,33 +1,31 @@
 //                                                                        
-// File:     ErrHndl.h                             
+// ErrHndl.ixx                       
 //                                                                    
-//
 // interface for runtime lib error handler
-//
 
-#pragma once
+module;
 
 #include <string>
 #include <iostream>
 #include <exception>
 #include "Scanner.h"
 
+export module ErrHndl;
+
 using std::wcout;
 using std::wstring;
 using std::wostream;
 using std::exception;
 
-class Scanner;
-
-class ScriptErrorHandler
+export class ScriptErrorHandler
 {
 public:
 
     static void eofError(void);
     static void charError(void);
-	static void tokenError(void);
-	static void stringError(void);
-	static void numericError(void);
+    static void tokenError(void);
+    static void stringError(void);
+    static void numericError(void);
     static void negativeError(void);
     static void symbolError(wstring const &);
     static void typeError(void);
@@ -42,7 +40,7 @@ public:
     {
         ScriptException() = default;
         ScriptException(short const sErrNr, wstring const & msg)
-          : m_sErrNr(sErrNr),
+            : m_sErrNr(sErrNr),
             m_wstrMessage(msg)
         {}
         short   m_sErrNr      { 0 };               // error number               

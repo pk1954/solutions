@@ -1,17 +1,17 @@
-//                                                                          
-// File:     ERRHNDL.C                                                     
-//                                                                          
-// errhndl.cpp - error handler
+// Errhndl.cpp
 //
+// Toolbox\runtimeCPP
+
+module;
 
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <string>
 #include "Scanner.h"
-#include "ErrHndl.h"
+
+module ErrHndl;
 
 using std::wstring;
 using std::wostream;

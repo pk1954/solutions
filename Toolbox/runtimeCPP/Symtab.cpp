@@ -4,8 +4,9 @@
  
 #include <map>
 #include <cassert>
-#include "ErrHndl.h"
 #include "Symtab.h"
+
+import ErrHndl;
 
 bool Symbol::operator< (const Symbol & rhs) const
 {

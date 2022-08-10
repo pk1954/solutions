@@ -8,7 +8,7 @@
           
 #include <map>
 #include <cassert>
-#include <string.h>
+#include <string>
 
 class ScriptFunctor;
 

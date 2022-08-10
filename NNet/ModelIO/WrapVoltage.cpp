@@ -3,7 +3,6 @@
 // ModelIO
 
 #include "Script.h"
-#include "ErrHndl.h"
 #include "Nob.h"
 #include "NobType.h"
 #include "BaseKnot.h"
@@ -14,6 +13,7 @@
 #include "WrapVoltage.h"
 
 import IoConstants;
+import ErrHndl;
 
 using std::wcout;
 

@@ -5,14 +5,14 @@
 // scanner for test script 
 //
 
-#include <limits.h>   
-#include <string.h>
-#include <stdlib.h>
+#include <limits>   
+#include <string>
 #include <ctype.h>
-#include "ErrHndl.h"
 #include "Scanner.h"
 #include "Input.h"
                   
+import ErrHndl;
+
 #define IS_ONE_OF(S,C)  (((C)!=L'\0')&&(wcschr((S),static_cast<int>(C))!=nullptr))
 #define HEX2DIGIT(C)    ((C)-(isdigit(C)?'0':(((C)>='a')?'a':'A')))
                                     

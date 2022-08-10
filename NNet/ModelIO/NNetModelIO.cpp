@@ -4,7 +4,6 @@
 
 #include <filesystem>
 #include <cassert>
-#include "ErrHndl.h"
 #include "Scanner.h"
 #include "Signal.h"
 #include "SignalFactory.h"
@@ -52,6 +51,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
 
+import ErrHndl;
 import MoreTypes;
 
 using std::filesystem::exists;

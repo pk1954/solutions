@@ -167,7 +167,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ErrHndl.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Script.h" />
@@ -178,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ErrHndl.cpp" />
+    <ClCompile Include="ErrHndl.ixx" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scanner.cpp" />

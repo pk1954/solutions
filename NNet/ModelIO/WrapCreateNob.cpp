@@ -3,7 +3,6 @@
 // ModelIO
 
 #include "Script.h"
-#include "ErrHndl.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
@@ -15,6 +14,7 @@
 #include "NNetModelIO.h"
 #include "WrapCreateNob.h"
 
+import ErrHndl;
 import IoConstants;
 
 using std::wcout;

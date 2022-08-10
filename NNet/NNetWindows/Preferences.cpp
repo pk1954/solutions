@@ -7,7 +7,6 @@ module;
 #include <filesystem>
 #include <iostream>
 #include "Script.h"
-#include "ErrHndl.h"
 #include "Resource.h"
 #include "AutoOpen.h"
 #include "NNetModelIO.h"
@@ -22,6 +21,7 @@ module;
 
 module Preferences;
 
+import ErrHndl;
 import SoundInterface;
 import DescriptionWindow;
 

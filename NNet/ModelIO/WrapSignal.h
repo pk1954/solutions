@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "ErrHndl.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetWrapperBase.h"
+
+import ErrHndl;
 
 class WrapSignal : public NNetWrapperBase  // Legacy
 {

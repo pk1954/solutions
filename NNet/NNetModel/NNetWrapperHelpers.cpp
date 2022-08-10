@@ -2,11 +2,11 @@
 //
 // NNetModel
 
-#include "ErrHndl.h"
 #include "Script.h"
 #include "NobId.h"
 #include "NNetWrapperHelpers.h"
 
+import ErrHndl;
 import IoConstants;
 import UtilityWrappers;
 

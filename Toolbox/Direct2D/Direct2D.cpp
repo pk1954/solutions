@@ -5,7 +5,7 @@
 module;
 
 #include <array>
-#include <string.h>
+#include <string>
 #include "d2d1.h"
 #include "dwrite.h"
 #include "win32_util.h"

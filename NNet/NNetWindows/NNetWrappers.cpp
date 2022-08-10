@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include "Resource.h"
-#include "ErrHndl.h"
 #include "Symtab.h"
 #include "NobType.h"
 #include "NobIdList.h"
@@ -14,6 +13,7 @@
 #include "NNetWrapperHelpers.h"
 #include "NNetModelCommands.h"
 
+import ErrHndl;
 import SoundInterface;
 import UtilityWrappers;
 

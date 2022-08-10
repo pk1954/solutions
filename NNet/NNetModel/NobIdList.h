@@ -5,11 +5,13 @@
 #pragma once
 
 #include <vector>
+#include <ostream>
 #include "NobId.h"
 
 import Util;
 
 using std::vector;
+using std::wostream;
 
 class Nob;
 

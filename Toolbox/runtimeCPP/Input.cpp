@@ -8,8 +8,9 @@
 #include <cassert>
 #include <ctype.h>
 #include "Input.h"
-#include "ErrHndl.h"
 #include "ScriptFunctor.h"
+
+import ErrHndl;
 
 InputBuffer::InputBuffer() 
 {

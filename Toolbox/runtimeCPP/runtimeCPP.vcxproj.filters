@@ -27,9 +27,6 @@
     <ClInclude Include="Symtab.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ErrHndl.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="ScriptStack.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WrapInclude.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrHndl.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

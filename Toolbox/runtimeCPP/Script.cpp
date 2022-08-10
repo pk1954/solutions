@@ -5,17 +5,19 @@
 // 
 
 #include <filesystem>
-#include <limits.h>  
-#include <string.h>
+#include <ostream>
+#include <limits>  
+#include <string>
 #include <cassert>
 #include "Scanner.h"
-#include "ErrHndl.h"
 #include "Script.h"
 #include "Symtab.h"
 
 import SaveCast;
+import ErrHndl;
 
 using std::endl;
+using std::wcout;
 using std::numeric_limits;
 using std::filesystem::file_size;
 

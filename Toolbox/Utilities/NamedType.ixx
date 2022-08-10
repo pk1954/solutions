@@ -9,7 +9,7 @@ module;
 
 #include <iostream>
 #include <iomanip>
-#include <limits.h>
+#include <limits>
 
 export module NamedType;
 
