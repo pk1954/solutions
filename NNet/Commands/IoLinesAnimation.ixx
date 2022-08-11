@@ -1,12 +1,14 @@
-// IoLinesAnimation.h
+// IoLinesAnimation.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
+
+export module IoLinesAnimation;
 
 import MoreTypes;
 import Command;
@@ -15,7 +17,7 @@ import Animation;
 using std::vector;
 using std::make_unique;
 
-class IoLinesAnimation : public Command
+export class IoLinesAnimation : public Command
 {
     using ANIM_TYPE = MicroMeterPntVector;
     using ANIMATION = Animation<ANIM_TYPE>;
@@ -25,7 +27,7 @@ public:
         vector<IoLine *> const & animated,
         ANIM_TYPE          const & target
     )
-      : m_animated(animated),
+        : m_animated(animated),
         m_start(animated),
         m_target(target)
     {

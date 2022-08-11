@@ -3,11 +3,13 @@
 // Command
 
 #include <algorithm>
+#include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 #include "IoLine.h"
-#include "IoLinesAnimation.h"
 #include "MakeConnAnimation.h"
 #include "ConnAnimationCommand.h"
+
+import IoLinesAnimation;
 
 using std::make_unique;
 using std::ranges::sort;
