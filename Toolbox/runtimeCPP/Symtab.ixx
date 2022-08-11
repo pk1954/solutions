@@ -1,19 +1,20 @@
-// Symtab.h                                            *
+// Symtab.ixx                                    *
 //                                                                          *
 // Toolbox\runtimeCPP
 
-#pragma once
-          
+module;
+
 #include <map>
 #include <cassert>
 #include <string>
+#include "Script.h"
 
-class ScriptFunctor;
+export module Symtab;
 
 using std::map;
 using std::wstring;
 
-enum class tSTYPE   // Type of symbolic value 
+export enum class tSTYPE   // Type of symbolic value 
 { 
     UnknownSTYPE,   // symbol is not defined  
     Function,       // name of a function     
@@ -23,7 +24,7 @@ enum class tSTYPE   // Type of symbolic value
     StringConst     // string value           
 }; 
 
-class Symbol
+export class Symbol
 {
 public:
 
@@ -53,7 +54,7 @@ private:
     double                m_dValue    { 0.0f };     // type: FloatConst  
 };
 
-class SymbolTable
+export class SymbolTable
 {
 public:
 
@@ -66,7 +67,7 @@ public:
     static Symbol  const & GetSymbolFromName(wstring const &);
     static wstring const & GetSymbolName    (Symbol  const &);
 
-	static void Clear();
+    static void Clear();
 
 private:
     static void addSymbol(wstring const &, Symbol const &);

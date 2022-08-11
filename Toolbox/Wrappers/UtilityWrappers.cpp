@@ -6,13 +6,13 @@ module;
 
 #include <cassert>
 #include "Script.h"
-#include "Symtab.h"
 
 module UtilityWrappers;
 
 import BoolOp;
 import Trace;
 import PixelTypes;
+import Symtab;
 
 PIXEL ScrReadPixel(Script & script)
 {

@@ -2,11 +2,17 @@
 //                                                                          *
 // Toolbox\runtimeCPP
 
+module;
+
 #include <map>
 #include <cassert>
-#include "Symtab.h"
+#include <string>
+
+module Symtab;
 
 import ErrHndl;
+
+using std::wstring;
 
 bool Symbol::operator< (const Symbol & rhs) const
 {

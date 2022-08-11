@@ -9,10 +9,10 @@
 #include <cassert>
 #include "Scanner.h"
 #include "Script.h"
-#include "Symtab.h"
 
 import SaveCast;
 import ErrHndl;
+import Symtab;
 
 using std::endl;
 using std::wcout;

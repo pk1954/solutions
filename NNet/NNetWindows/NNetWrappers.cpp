@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include "Resource.h"
-#include "Symtab.h"
 #include "NobType.h"
 #include "NobIdList.h"
 #include "DrawContext.h"
@@ -16,6 +15,7 @@
 import ErrHndl;
 import SoundInterface;
 import UtilityWrappers;
+import Symtab;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

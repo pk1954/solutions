@@ -4,11 +4,11 @@
 
 #include <fstream>
 #include "Script.h"
-#include "Symtab.h"
 #include "win32_util.h"
 
 import UtilityWrappers;
 import WinManager;
+import Symtab;
 
 using std::endl;
 using std::pair;

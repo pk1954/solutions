@@ -6,8 +6,9 @@
 
 #include <string>
 #include <ostream>
-#include "Symtab.h"
 #include "Script.h"
+
+import Symtab;
 
 using std::wostream;
 using std::wstring;
