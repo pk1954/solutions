@@ -1,7 +1,7 @@
-//
-//  File:     symtab.cpp                                                    *
+// Symtab.cpp                                                    *
 //                                                                          *
- 
+// Toolbox\runtimeCPP
+
 #include <map>
 #include <cassert>
 #include "Symtab.h"

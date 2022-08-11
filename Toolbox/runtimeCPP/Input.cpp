@@ -8,7 +8,7 @@
 #include <cassert>
 #include <ctype.h>
 #include "Input.h"
-#include "ScriptFunctor.h"
+#include "Script.h"
 
 import ErrHndl;
 

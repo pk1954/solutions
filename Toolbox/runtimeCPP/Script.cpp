@@ -1,8 +1,6 @@
+//  Script.cpp                                                   
 //                                                                          
-//  File: Script.cpp                                                   
-//                                                                          
-//  main loop for processing test scripts
-// 
+// Toolbox\runtimeCPP
 
 #include <filesystem>
 #include <ostream>

@@ -1,8 +1,6 @@
+// Scanner.h                                                    
 //                                                                         
-//  File:     Scanner.h                                                    
-//                                                                         
-// Scanner.h - interface for scanner
-//
+// Toolbox\runtimeCPP
 
 #pragma once
 

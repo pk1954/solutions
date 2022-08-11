@@ -1,8 +1,6 @@
-//
-//                                                                         
-//  File:     Input.h                                                     
+// Input.h                                                     
 //                                                                        
-//
+// Toolbox\runtimeCPP
 
 #pragma once
          

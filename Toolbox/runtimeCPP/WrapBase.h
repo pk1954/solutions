@@ -7,7 +7,7 @@
 #include <string>
 #include <ostream>
 #include "Symtab.h"
-#include "ScriptFunctor.h"
+#include "Script.h"
 
 using std::wostream;
 using std::wstring;

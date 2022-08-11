@@ -1,20 +1,25 @@
-//                                                                 
-// File:     Script.h                                  
-//                                   
+// Script.h                                  
 //
-// interface for runtime package of TESTTOOL
-//
+// Toolbox\runtimeCPP
 
 #pragma once
 
 #include <string>
 #include "Scanner.h"
-#include "ScriptFunctor.h"
-
-using std::wstring;
 
 #define DEF_FUNC(name)        SymbolTable::ScrDefConst(L#name, new Wrap##name)   
 #define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst(L#name, static_cast<unsigned long>(name))
+
+using std::wstring;
+
+class Script;
+
+class ScriptFunctor
+{
+public:
+	virtual ~ScriptFunctor() = default;
+	virtual void operator() (Script & script) const = 0;
+};
 
 class Script
 {

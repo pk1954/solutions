@@ -1,8 +1,6 @@
-//                                                                         
-// File:     Symtab.h                                                     
-//                                                                         
-// interface of symbol table 
-//
+// Symtab.h                                            *
+//                                                                          *
+// Toolbox\runtimeCPP
 
 #pragma once
           

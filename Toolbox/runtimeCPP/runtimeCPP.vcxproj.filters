@@ -30,9 +30,6 @@
     <ClInclude Include="ScriptStack.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptFunctor.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="WrapBase.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
