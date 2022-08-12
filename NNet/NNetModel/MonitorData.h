@@ -17,8 +17,6 @@ using std::vector;
 using std::exception;
 using std::ranges::any_of;
 
-class MonitorData;
-
 class MonitorData
 {
 public:

@@ -109,7 +109,6 @@
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="RotateNobCommand.h" />
     <ClInclude Include="SetNobCommand.h" />
-    <ClInclude Include="SelectAllCommand.h" />
     <ClInclude Include="SelectionCommand.h" />
     <ClInclude Include="SelectNobCommand.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
@@ -154,6 +153,7 @@
     <ClCompile Include="MoveSensorCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="NewSigGenCmd.ixx" />
+    <ClCompile Include="SelectAllCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />

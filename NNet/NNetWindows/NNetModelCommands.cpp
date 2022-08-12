@@ -35,7 +35,6 @@
 #include "RotateNobCommand.h"
 #include "RotateModelCommand.h"
 #include "RotateSelectionCommand.h"
-#include "SelectAllCommand.h"
 #include "SelectionCommand.h"
 #include "SelectNobCommand.h"
 #include "SelectSubtreeCommand.h"
@@ -64,6 +63,7 @@ import NewIoLinePairCmd;
 import SizeSensorCmd;
 import NewSigGenCmd;
 import ToggleStopOnTriggerCmd;
+import SelectAllCommand;
 
 using std::wcout;
 using std::endl;

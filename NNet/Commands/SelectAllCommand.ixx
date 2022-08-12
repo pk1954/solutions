@@ -1,17 +1,19 @@
-// SelectAllCommand.h
+// SelectAllCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
-class SelectAllCommand : public SelectionCommand
+export module SelectAllCommand;
+
+export class SelectAllCommand : public SelectionCommand
 {
 public:
 	SelectAllCommand(bool const bOn)
-	  :	m_bOn(bOn)
+		:	m_bOn(bOn)
 	{ }
 
 	void Do() final 
