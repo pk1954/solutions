@@ -32,6 +32,7 @@
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="EllipseType.ixx" />
     <ClCompile Include="EventInterface.ixx" />
+    <ClCompile Include="fHertz.ixx" />
     <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LineType.ixx" />

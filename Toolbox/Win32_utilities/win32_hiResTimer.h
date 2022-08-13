@@ -11,6 +11,7 @@
 
 import NamedType;
 import MoreTypes;
+import fHertz;
 
 using std::chrono::microseconds;
 

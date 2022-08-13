@@ -11,8 +11,10 @@ module;
 
 module Measurement;
 
+import Util;
 import Direct2D;
 import PixelTypes;
+import fHertz;
 
 using std::wostringstream;
 using std::setprecision;

@@ -9,7 +9,6 @@
 #include <chrono>
 #include <numbers>
 
-import Util;
 import NamedType;
 import SaveCast;
 
@@ -88,32 +87,6 @@ static microseconds SpikeTimeMax(Hertz const freq)
 	return (freq.GetValue() == 0) 
 		? microseconds((numeric_limits<long long>::max)())
 		: microseconds(1000000L / freq.GetValue());
-}
-
-////////////// fHertz //////////////////////////////////////////
-
-using fHertz = NamedType< float, struct fHertz_Parameter >;
-
-fHertz constexpr operator"" _fHertz(long double dl)
-{
-	return fHertz(Cast2Float(dl));
-}
-
-template <> const wstring TypeAttribute<fHertz>::unit   = L"Hz";
-template <> const float   TypeAttribute<fHertz>::factor = 1.f;
-
-static fMicroSecs PulseDuration(fHertz const freq)
-{
-	return IsCloseToZero(freq.GetValue()) 
-		? fMicroSecs((numeric_limits<float>::max)())
-		: fMicroSecs(1e6f / freq.GetValue());
-}
-
-static fHertz Frequency(fMicroSecs const us)
-{
-	return IsCloseToZero(us.GetValue())
-		? fHertz((numeric_limits<float>::max)())
-		: fHertz(1e6f / us.GetValue());
 }
 
 ////////////// meterPerSec /////////////////////////////////////

@@ -8,6 +8,7 @@
 
 import Observable;
 import MoreTypes;
+import fHertz;
 
 using std::wcout;
 using std::wostream;

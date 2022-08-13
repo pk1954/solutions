@@ -13,6 +13,7 @@ module;
 
 export module PointType;
 
+import Util;
 import NamedType;
 import IoConstants;
 import AngleTypes;
