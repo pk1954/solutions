@@ -42,9 +42,6 @@
     <ClInclude Include="win32_stopwatch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_thread.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textWindowThread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -186,6 +183,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_ArrowButton.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Thread.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,10 +5,11 @@
 #include <locale>
 #include "Windows.h"
 #include "win32_util.h"
-#include "win32_thread.h"
 #include "win32_util_resource.h"
 #include "win32_textWindowThread.h"
 #include "win32_textWindow.h"
+
+import Thread;
 
 using std::function;
 using std::make_unique;

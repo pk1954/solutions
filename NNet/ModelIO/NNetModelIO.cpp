@@ -24,7 +24,6 @@
 #include "Track.h"
 #include "win32_util.h"
 #include "win32_script.h"
-#include "win32_thread.h"
 #include "win32_hiResTimer.h"
 #include "InputOutputUI.h"
 #include "WrapDescription.h"
@@ -53,6 +52,7 @@
 
 import ErrHndl;
 import MoreTypes;
+import Thread;
 
 using std::filesystem::exists;
 using std::wofstream;

@@ -7,13 +7,13 @@ module;
 #include "NNetModel.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_hiResTimer.h"
-#include "win32_thread.h"
 
 export module ComputeThread;
 
 import ObserverInterface;
 import Observable;
 import SlowMotionRatio;
+import Thread;
 
 export class ComputeThread: public Util::Thread, public ObserverInterface
 {

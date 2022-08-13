@@ -1,12 +1,14 @@
-// win32_thread.h : 
+// win32_thread.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
-#include "string"
-#include "Windows.h"
+#include <string>
 #include <cassert>
+#include "Windows.h"
+
+export module Thread;
 
 import Win32_Event;
 
@@ -14,11 +16,11 @@ using std::wstring;
 
 namespace Util
 {
-	HANDLE RunAsAsyncThread(unsigned int __stdcall (void *), void *, UINT * = nullptr);
+	export HANDLE RunAsAsyncThread(unsigned int __stdcall (void *), void *, UINT * = nullptr);
 
 	static unsigned int __stdcall ThreadProc(void *);
 
-	class Thread
+	export class Thread
 	{
 	public:
 

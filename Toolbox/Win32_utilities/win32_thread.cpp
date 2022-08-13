@@ -2,9 +2,16 @@
 //
 // Toolbox\Win32_utilities
 
+module;
+
+#include <string>
+#include <cassert>
 #include <process.h>
 #include "Windows.h"
-#include "win32_thread.h"
+
+module Thread;
+
+using std::wstring;
 
 HANDLE Util::RunAsAsyncThread
 (
