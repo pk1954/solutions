@@ -112,7 +112,6 @@
     <ClInclude Include="SelectNobCommand.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
     <ClInclude Include="SetParameterCommand.h" />
-    <ClInclude Include="ToggleEmphModeCmd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx">
@@ -156,6 +155,7 @@
     <ClCompile Include="SelectAllCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
+    <ClCompile Include="ToggleEmphModeCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
   </ItemGroup>
   <ItemGroup>

@@ -19,8 +19,6 @@ using std::make_unique;
 using std::ranges::any_of;
 using std::ranges::for_each;
 
-class NobIdList;
-
 class UPNobList
 {
 public:

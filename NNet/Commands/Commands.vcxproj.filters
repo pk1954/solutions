@@ -114,9 +114,6 @@
     <ClInclude Include="SetSigGenStaticDataCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ToggleEmphModeCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SizeSelectionCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -213,6 +210,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MoveNobCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleEmphModeCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

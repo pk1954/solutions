@@ -44,7 +44,6 @@
 #include "SetActiveSigGenCmd.h"
 #include "SizeSelectionCmd.h"
 #include "SplitNeuronCmd.h"
-#include "ToggleEmphModeCmd.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -64,6 +63,7 @@ import NewSigGenCmd;
 import ToggleStopOnTriggerCmd;
 import SelectAllCommand;
 import MoveNobCommand;
+import ToggleEmphModeCmd;
 
 using std::wcout;
 using std::endl;
