@@ -12,6 +12,7 @@
 #include "windowsx.h"
 #include "CommCtrl.h"
 #include "win32_util.h"
+#include "Win32_PIXEL.h"
 
 import SaveCast;
 import Util;

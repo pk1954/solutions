@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include <source_location>
-#include "assert.h"
 #include "NobException.h"
 #include "NNetModelWriterInterface.h"
 #include "CommandStack.h"

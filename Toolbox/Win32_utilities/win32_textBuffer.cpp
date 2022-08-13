@@ -6,7 +6,8 @@ module;
 
 #include <locale>
 #include <iomanip>
-#include "win32_util.h"
+#include "Windows.h"
+#include "Win32_PIXEL.h"
 
 module Win32_TextBuffer;
 

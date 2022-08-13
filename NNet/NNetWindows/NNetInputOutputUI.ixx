@@ -4,7 +4,7 @@
 
 module;
 
-#include <assert.h>
+#include <cassert>
 #include "Windows.h"
 #include "Resource.h"
 #include "InputOutputUI.h"

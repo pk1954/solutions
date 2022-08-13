@@ -6,9 +6,10 @@ module;
 
 #include <array>
 #include <string>
+#include <cassert>
 #include "d2d1.h"
 #include "dwrite.h"
-#include "win32_util.h"
+#include "Win32_PIXEL.h"
 
 module Direct2D;
 

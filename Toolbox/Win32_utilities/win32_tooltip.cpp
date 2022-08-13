@@ -7,7 +7,7 @@ module;
 #include <cassert>
 #include <Windows.h>
 #include <CommCtrl.h>
-#include "win32_util.h"
+#include "Win32_PIXEL.h"
 
 module Tooltip;
 

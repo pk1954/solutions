@@ -5,6 +5,7 @@
 #include <fstream>
 #include "Script.h"
 #include "win32_util.h"
+#include "Win32_PIXEL.h"
 
 import UtilityWrappers;
 import WinManager;
