@@ -73,8 +73,8 @@ void DefineUtilityWrapperFunctions()
 {
     SymbolTable::ScrDefConst(L"OpenTraceFile", new WrapOpenTraceFile);
 
-    DEF_ULONG_CONST(tBoolOp::opTrue);
-    DEF_ULONG_CONST(tBoolOp::opFalse);
-    DEF_ULONG_CONST(tBoolOp::opToggle);
-    DEF_ULONG_CONST(tBoolOp::opNoChange);
+    SymbolTable::ScrDefConst(L"tBoolOp::opTrue",     static_cast<unsigned long>(tBoolOp::opTrue    ));
+    SymbolTable::ScrDefConst(L"tBoolOp::opFalse",    static_cast<unsigned long>(tBoolOp::opFalse   ));
+    SymbolTable::ScrDefConst(L"tBoolOp::opToggle",   static_cast<unsigned long>(tBoolOp::opToggle  ));
+    SymbolTable::ScrDefConst(L"tBoolOp::opNoChange", static_cast<unsigned long>(tBoolOp::opNoChange));
 }

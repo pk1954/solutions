@@ -331,11 +331,11 @@ WinManager::WinManager()
     DEF_WINMAN_FUNC(ShowWindow);
     DEF_WINMAN_FUNC(MonitorConfiguration);
 
-    DEF_ULONG_CONST(SW_RESTORE);
-    DEF_ULONG_CONST(SW_SHOWNORMAL);
-    DEF_ULONG_CONST(SW_MAXIMIZE);
-    DEF_ULONG_CONST(SW_SHOW);
-    DEF_ULONG_CONST(SW_HIDE);
+    SymbolTable::ScrDefConst(L"SW_RESTORE",    static_cast<unsigned long>(SW_RESTORE   ));
+    SymbolTable::ScrDefConst(L"SW_SHOWNORMAL", static_cast<unsigned long>(SW_SHOWNORMAL));
+    SymbolTable::ScrDefConst(L"SW_MAXIMIZE",   static_cast<unsigned long>(SW_MAXIMIZE  ));
+    SymbolTable::ScrDefConst(L"SW_SHOW",       static_cast<unsigned long>(SW_SHOW      ));
+    SymbolTable::ScrDefConst(L"SW_HIDE",       static_cast<unsigned long>(SW_HIDE      ));
 
     #undef DEF_WINMAN_FUNC
 }

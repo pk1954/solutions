@@ -7,8 +7,6 @@
 #include <string>
 #include "Scanner.h"
 
-#define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst(L#name, static_cast<unsigned long>(name))
-
 using std::wstring;
 
 class Script;
