@@ -31,7 +31,6 @@
 #include "RotateNobCommand.h"
 #include "RotateModelCommand.h"
 #include "RotateSelectionCommand.h"
-#include "SelectionCommand.h"
 #include "SelectNobCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
@@ -64,6 +63,7 @@ import ToggleEmphModeCmd;
 import MoveSignalCmd;
 import DeleteSelectionCommand;
 import AddPipe2BaseKnotCommand;
+import SelectionCommand;
 
 using std::wcout;
 using std::endl;

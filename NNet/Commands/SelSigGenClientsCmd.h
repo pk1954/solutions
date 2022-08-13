@@ -7,7 +7,8 @@
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
 #include "InputLine.h"
-#include "SelectionCommand.h"
+
+import SelectionCommand;
 
 using std::make_unique;
 

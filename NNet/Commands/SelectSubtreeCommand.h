@@ -6,8 +6,9 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "SelectionCommand.h"
 #include "BaseKnot.h"
+
+import SelectionCommand;
 
 class SelectSubtreeCommand : public SelectionCommand
 {

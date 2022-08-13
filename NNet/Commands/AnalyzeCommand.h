@@ -6,7 +6,8 @@
 
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
-#include "SelectionCommand.h"
+
+import SelectionCommand;
 
 class AnalyzeCommand : public SelectionCommand
 {

@@ -7,11 +7,11 @@ module;
 #include "Pipe.h"
 #include "Knot.h"
 #include "NNetModelWriterInterface.h"
-#include "SelectionCommand.h"
 
 export module SelectNobsInRectCommand;
 
 import MoreTypes;
+import SelectionCommand;
 
 export class SelectNobsInRectCommand : public SelectionCommand
 {

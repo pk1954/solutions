@@ -5,9 +5,10 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "SelectionCommand.h"
 
 export module SelectAllCommand;
+
+import SelectionCommand;
 
 export class SelectAllCommand : public SelectionCommand
 {

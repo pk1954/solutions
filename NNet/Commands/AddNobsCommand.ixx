@@ -5,10 +5,11 @@
 module;
 
 #include "UPNobList.h"
-#include "SelectionCommand.h"
 #include "NNetModelWriterInterface.h"
 
 export module AddNobsCommand;
+
+import SelectionCommand;
 
 export class AddNobsCommand : public SelectionCommand
 {

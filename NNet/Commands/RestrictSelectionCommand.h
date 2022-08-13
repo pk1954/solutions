@@ -5,9 +5,9 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "SelectionCommand.h"
 
 import MoreTypes;
+import SelectionCommand;
 
 class RestrictSelectionCommand : public SelectionCommand
 {

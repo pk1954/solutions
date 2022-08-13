@@ -1,14 +1,19 @@
-// SelectionCommand.h
+// SelectionCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include <vector>
+#include "Nob.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 
-class SelectionCommand : public NNetCommand
+export module SelectionCommand;
+
+using std::unique_ptr;
+
+export class SelectionCommand : public NNetCommand
 {
 public:
 

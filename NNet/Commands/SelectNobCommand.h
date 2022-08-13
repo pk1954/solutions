@@ -6,10 +6,10 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "SelectionCommand.h"
 #include "BaseKnot.h"
 
 import BoolOp;
+import SelectionCommand;
 
 class SelectNobCommand : public SelectionCommand
 {
