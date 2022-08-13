@@ -6,12 +6,12 @@ module;
 
 #include <ostream>
 #include "BasicTypes.h"
-#include "AngleTypes.h"
 
 export module CircleType;
 
 import NamedType;
 import PointType;
+import AngleTypes;
 import IoConstants;
 
 using std::wostream;

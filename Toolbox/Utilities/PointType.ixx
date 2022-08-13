@@ -10,12 +10,12 @@ module;
 #include <iomanip>
 #include <compare>
 #include "BasicTypes.h"
-#include "AngleTypes.h"
 
 export module PointType;
 
 import NamedType;
 import IoConstants;
+import AngleTypes;
 
 using std::abs;
 using std::max;

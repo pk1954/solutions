@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AngleTypes.h" />
     <ClInclude Include="BasicTypes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AngleTypes.ixx" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
     <ClCompile Include="Debug.ixx">

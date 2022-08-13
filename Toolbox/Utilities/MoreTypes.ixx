@@ -8,7 +8,6 @@ module;
 #include <iomanip>
 #include <algorithm>
 #include "BasicTypes.h"
-#include "AngleTypes.h"
 
 export module MoreTypes;
 
@@ -18,6 +17,7 @@ import RectType;
 import LineType;
 import EllipseType;
 import CircleType;
+import AngleTypes;
 
 using std::min;
 using std::max;

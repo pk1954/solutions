@@ -6,13 +6,13 @@
 
 #include <chrono>
 #include "BasicTypes.h"
-#include "AngleTypes.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 
 import Observable;
 import SaveCast;
 import MoreTypes;
+import AngleTypes;
 
 class Param : public Observable
 {

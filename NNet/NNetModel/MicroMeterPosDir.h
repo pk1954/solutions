@@ -8,10 +8,10 @@
 #include <vector>
 #include <cassert>   
 #include "BasicTypes.h"
-#include "AngleTypes.h"
 
 import MoreTypes;
 import PointType;
+import AngleTypes;
 
 using std::vector;
 using std::unique_ptr;
