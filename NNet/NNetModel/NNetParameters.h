@@ -13,6 +13,7 @@ import Observable;
 import SaveCast;
 import MoreTypes;
 import AngleTypes;
+import SpeedType;
 
 class Param : public Observable
 {

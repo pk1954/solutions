@@ -48,6 +48,7 @@
     <ClCompile Include="SlowMotionRatio.ixx" />
     <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />
+    <ClCompile Include="SpeedType.ixx" />
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="TextBuffer.ixx" />
     <ClCompile Include="trace.cpp" />

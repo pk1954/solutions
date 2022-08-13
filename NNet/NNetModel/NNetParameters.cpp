@@ -5,6 +5,8 @@
 #include <cassert>
 #include "NNetParameters.h"
 
+import SpeedType;
+
 bool Param::operator==(Param const & rhs) const
 {
 	return

@@ -88,17 +88,3 @@ static microseconds SpikeTimeMax(Hertz const freq)
 		? microseconds((numeric_limits<long long>::max)())
 		: microseconds(1000000L / freq.GetValue());
 }
-
-////////////// meterPerSec /////////////////////////////////////
-
-using meterPerSec = NamedType<float, struct meterPerSec_Parameter >;
-
-constexpr meterPerSec operator"" _meterPerSec(const long double d)
-{ 
-	return meterPerSec(Cast2Float(d));
-}
-
-static MicroMeter CoveredDistance(meterPerSec const speed, fMicroSecs const time)
-{
-	return MicroMeter(speed.GetValue() * time.GetValue());
-}

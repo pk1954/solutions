@@ -12,6 +12,7 @@
 
 import Geometry;
 import IoConstants;
+import SpeedType;
 
 using std::wcout;
 using std::endl;
