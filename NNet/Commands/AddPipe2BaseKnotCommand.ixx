@@ -1,8 +1,8 @@
-// AddPipe2BaseKnotCommand.h
+// AddPipe2BaseKnotCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
@@ -14,9 +14,11 @@
 #include "Pipe.h"
 #include "Knot.h"
 
+export module AddPipe2BaseKnotCommand;
+
 import MoreTypes;
 
-class AddPipe2BaseKnotCommand : public NNetCommand
+export class AddPipe2BaseKnotCommand : public NNetCommand
 {
 public:
 	AddPipe2BaseKnotCommand
@@ -25,8 +27,8 @@ public:
 		MicroMeterPnt const & pos,
 		NobType       const   nobType
 	)
-		:	m_type(nobType),
-     		m_baseKnotOld(*m_pNMWI->GetNobPtr<BaseKnot*>(id))
+      :	m_type(nobType),
+		m_baseKnotOld(*m_pNMWI->GetNobPtr<BaseKnot*>(id))
 	{ 
 		m_upPipe = make_unique<Pipe>();
 

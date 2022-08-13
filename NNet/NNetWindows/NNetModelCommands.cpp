@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include <source_location>
-#include "AddPipe2BaseKnotCmd.h"
 #include "AddPipe2PipeCommand.h"
 #include "AddSensorSignalCmd.h"
 #include "AddSigGen2MonitorCmd.h"
@@ -64,6 +63,7 @@ import MoveNobCommand;
 import ToggleEmphModeCmd;
 import MoveSignalCmd;
 import DeleteSelectionCommand;
+import AddPipe2BaseKnotCommand;
 
 using std::wcout;
 using std::endl;

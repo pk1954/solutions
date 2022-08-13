@@ -9,6 +9,7 @@
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "BaseKnot.h"
+#include "Neuron.h"
 #include "Knot.h"
 
 class Connect2BaseKnotCommand : public NNetCommand
