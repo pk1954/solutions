@@ -1,15 +1,20 @@
-// MoveSignalCmd.h
+// MoveSignalCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "Signal.h"
+#include "SignalId.h"
+#include "Track.h"
+#include "TrackNr.h"
 #include "MonitorData.h"
 
-class MoveSignalCmd : public NNetCommand
+export module MoveSignalCmd;
+
+export class MoveSignalCmd : public NNetCommand
 {
 public:
 	MoveSignalCmd
@@ -17,7 +22,7 @@ public:
 		SignalId const & id,
 		TrackNr  const   trackNr
 	)
-	  : m_signalIdOld(id),
+      : m_signalIdOld(id),
 		m_trackNrNew(trackNr)
 	{}
 

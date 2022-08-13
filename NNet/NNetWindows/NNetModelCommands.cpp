@@ -24,7 +24,6 @@
 #include "InputConnector.h"
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
-#include "MoveSignalCmd.h"
 #include "MoveSelectionCommand.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
@@ -64,6 +63,7 @@ import ToggleStopOnTriggerCmd;
 import SelectAllCommand;
 import MoveNobCommand;
 import ToggleEmphModeCmd;
+import MoveSignalCmd;
 
 using std::wcout;
 using std::endl;

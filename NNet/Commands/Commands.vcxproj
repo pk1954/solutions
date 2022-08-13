@@ -81,7 +81,6 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="DeleteIoConnectorCmd.h" />
     <ClInclude Include="MakeConnAnimation.h" />
-    <ClInclude Include="MoveSignalCmd.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectorAnimation.h" />
     <ClInclude Include="PlugIoConnectors.h" />
@@ -150,6 +149,7 @@
     <ClCompile Include="IoLinesAnimation.ixx" />
     <ClCompile Include="MoveNobCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
+    <ClCompile Include="MoveSignalCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="SelectAllCommand.ixx" />
