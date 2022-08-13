@@ -583,6 +583,7 @@
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
+    <ClCompile Include="NNetWrappers.ixx" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="Preferences.ixx" />
     <ClCompile Include="SignalControl.ixx" />
@@ -621,7 +622,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NNetModelCommands.h" />
-    <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="SignalPreview.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />

@@ -147,6 +147,9 @@
     <ClCompile Include="NNetInputOutputUI.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetWrappers.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -171,9 +174,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_monitorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelCommands.h">

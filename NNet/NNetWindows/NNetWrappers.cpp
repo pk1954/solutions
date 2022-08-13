@@ -2,6 +2,8 @@
 //
 // NNetWindows
 
+module;
+
 #include "Resource.h"
 #include "NobType.h"
 #include "NobIdList.h"
@@ -10,6 +12,8 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelCommands.h"
+
+module NNetWrappers;
 
 import ErrHndl;
 import SoundInterface;

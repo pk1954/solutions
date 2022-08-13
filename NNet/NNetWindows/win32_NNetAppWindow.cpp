@@ -27,7 +27,6 @@
 // scripting and tracing
 
 #include "Script.h"
-#include "NNetWrappers.h"
 #include "NobException.h"
 #include "win32_script.h"
 #include "win32_fatalError.h"
@@ -57,6 +56,7 @@ import UndoRedoMenu;
 import Preferences;
 import UtilityWrappers;
 import NNetInputOutputUI;
+import NNetWrappers;
 
 using std::wcout;
 using std::wstring;
