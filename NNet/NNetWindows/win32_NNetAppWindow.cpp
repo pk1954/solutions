@@ -23,7 +23,6 @@
 #include "NNetCommand.h"
 #include "ConnAnimationCommand.h"
 #include "win32_messagePump.h"
-#include "NNetInputOutputUI.h"
 
 // scripting and tracing
 
@@ -57,6 +56,7 @@ import Win32_AboutBox;
 import UndoRedoMenu;
 import Preferences;
 import UtilityWrappers;
+import NNetInputOutputUI;
 
 using std::wcout;
 using std::wstring;

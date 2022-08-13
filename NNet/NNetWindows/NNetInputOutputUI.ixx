@@ -1,17 +1,21 @@
-// NNetInputOutputUI.h
+// NNetInputOutputUI.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include <assert.h>
+#include "Windows.h"
 #include "Resource.h"
 #include "InputOutputUI.h"
+
+export module NNetInputOutputUI;
 
 using std::unique_ptr;
 using std::make_unique;
 using std::bit_cast;
 
-class NNetInputOutputUI : public InputOutputUI
+export class NNetInputOutputUI : public InputOutputUI
 {
 public:
 	static void Initialize(HWND const hwndApp)
@@ -25,14 +29,14 @@ public:
 	}
 
 	explicit NNetInputOutputUI(int const msg)
-	  :	m_msgImportFinished(msg)
+		:	m_msgImportFinished(msg)
 	{}
 
 	void JobFinished(InputOutputUI::Result const res, wstring const & name) const final
 	{
 		switch (res)
 		{
-		using enum InputOutputUI::Result;
+			using enum InputOutputUI::Result;
 		case ok:     	   SendMessage(m_hwndApp, WM_COMMAND, m_msgImportFinished, 0); break;
 		case fileNotFound: SendMessage(m_hwndApp, WM_COMMAND, IDX_FILE_NOT_FOUND,  0); break;
 		case errorInFile:  SendMessage(m_hwndApp, WM_COMMAND, IDX_ERROR_IN_FILE,   0); break;

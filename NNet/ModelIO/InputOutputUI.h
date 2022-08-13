@@ -5,10 +5,9 @@
 #pragma once
 
 #include <string>
+#include "Script.h"
 
 using std::wstring;
-
-class Script;
 
 class InputOutputUI
 {

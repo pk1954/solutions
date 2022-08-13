@@ -580,6 +580,7 @@
     <ClCompile Include="Measurement.ixx" />
     <ClCompile Include="MomitorControl.ixx" />
     <ClCompile Include="MonitorControl.cpp" />
+    <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
@@ -624,7 +625,6 @@
     <ClInclude Include="SignalPreview.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
-    <ClInclude Include="NNetInputOutputUI.h" />
     <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="win32_MiniWindow.h" />
     <ClInclude Include="win32_monitorWindow.h" />

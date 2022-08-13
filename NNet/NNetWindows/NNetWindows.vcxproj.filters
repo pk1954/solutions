@@ -144,6 +144,9 @@
     <ClCompile Include="MomitorControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetInputOutputUI.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -168,9 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_monitorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetInputOutputUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetWrappers.h">

@@ -6,7 +6,6 @@
 #include "NobType.h"
 #include "NobIdList.h"
 #include "DrawContext.h"
-#include "NNetInputOutputUI.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
@@ -16,6 +15,7 @@ import ErrHndl;
 import SoundInterface;
 import UtilityWrappers;
 import Symtab;
+import NNetInputOutputUI;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;
