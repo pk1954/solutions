@@ -66,9 +66,6 @@
     <ClInclude Include="win32_graphicsWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_editLineBox.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_baseScale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -143,7 +140,7 @@
     <ClCompile Include="Win32_Controls.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_editLineBox.cpp">
+    <ClCompile Include="Win32_EditLineBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_baseScale.cpp">
@@ -192,6 +189,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_FatalError.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_EditLineBox.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,7 +12,6 @@ module;
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_scale.h"
-#include "win32_editLineBox.h"
 #include "win32_util_resource.h"
 #include "win32_PixelTypes.h"
 
@@ -23,6 +22,7 @@ import ComputeThread;
 import PixFpDimension;
 import Win32_Controls;
 import ArrowButton;
+import EditLineBox;
 
 using std::bit_cast;
 

@@ -1,12 +1,19 @@
-// win32_editLineBox.h : 
+// Win32_EditLineBox.ixx 
 //
 // Win32_utilities
 
-#pragma once
+module;
+
+#include <string>
+#include "Windows.h"
+
+export module EditLineBox;
 
 import StdDialogBox;
 
-class EditLineBox : public StdDialogBox
+using std::wstring;
+
+export class EditLineBox : public StdDialogBox
 {
 public:
 

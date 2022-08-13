@@ -167,7 +167,6 @@
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
-    <ClInclude Include="win32_editLineBox.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_PixelTypes.h" />
@@ -196,7 +195,8 @@
     <ClCompile Include="Win32_Command.ixx" />
     <ClCompile Include="Win32_Controls.cpp" />
     <ClCompile Include="Win32_Controls.ixx" />
-    <ClCompile Include="win32_editLineBox.cpp" />
+    <ClCompile Include="Win32_EditLineBox.cpp" />
+    <ClCompile Include="Win32_EditLineBox.ixx" />
     <ClCompile Include="win32_escape.cpp" />
     <ClCompile Include="Win32_event.ixx" />
     <ClCompile Include="Win32_FatalError.ixx" />

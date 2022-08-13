@@ -1,10 +1,15 @@
-// win32_refreshRate.cpp
+// Win32_EditLineBox.cpp
 //
 // Win32_utilities
 
+module;
+
+#include <string>
+#include "Windows.h"
 #include "win32_util.h"
 #include "win32_util_resource.h"
-#include "win32_editLineBox.h"
+
+module EditLineBox;
 
 import StdDialogBox;
 
