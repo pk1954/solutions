@@ -101,5 +101,8 @@
     <ClCompile Include="MoreTypes.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="U64Bit.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -50,6 +50,7 @@
     <ClCompile Include="TextBuffer.ixx" />
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="Trace.ixx" />
+    <ClCompile Include="U64Bit.ixx" />
     <ClCompile Include="Uniform2D.ixx" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Util.ixx" />
