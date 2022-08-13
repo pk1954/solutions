@@ -36,7 +36,7 @@
     <ClCompile Include="Win32_CrsrWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_MiniWindow.cpp">
+    <ClCompile Include="Win32_MiniWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_NNetAppWindow.cpp">
@@ -153,6 +153,9 @@
     <ClCompile Include="Win32_ParameterDlg.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_MiniWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -165,9 +168,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_MainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_MiniWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetAppWindow.h">

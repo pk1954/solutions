@@ -603,7 +603,8 @@
     <ClCompile Include="Win32_DescriptionWindow.cpp" />
     <ClCompile Include="Win32_DescriptionWindow.ixx" />
     <ClCompile Include="win32_MainWindow.cpp" />
-    <ClCompile Include="win32_MiniWindow.cpp" />
+    <ClCompile Include="Win32_MiniWindow.cpp" />
+    <ClCompile Include="Win32_MiniWindow.ixx" />
     <ClCompile Include="win32_monitorWindow.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
     <ClCompile Include="win32_NNetAppWindow.cpp" />
@@ -627,7 +628,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
     <ClInclude Include="win32_MainWindow.h" />
-    <ClInclude Include="win32_MiniWindow.h" />
     <ClInclude Include="win32_monitorWindow.h" />
     <ClInclude Include="win32_NNetAppMenu.h" />
     <ClInclude Include="win32_NNetAppWindow.h" />

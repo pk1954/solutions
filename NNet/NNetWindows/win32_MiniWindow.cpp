@@ -1,12 +1,15 @@
-// win32_MiniWindow.cpp
+// Win32_MiniWindow.cpp
 //
 // NNetWindows
+
+module;
 
 #include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "win32_MainWindow.h"
-#include "win32_MiniWindow.h"
+
+module MiniWindow;
 
 import MoreTypes;
 

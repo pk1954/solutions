@@ -1,15 +1,17 @@
-// win32_MiniWindow.h : 
+// Win32_MiniWindow.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "win32_NNetWindow.h"
 #include "win32_mainWindow.h"
 
+export module MiniWindow;
+
 import ObserverInterface;
 
-class MiniWindow : public NNetWindow
+export class MiniWindow : public NNetWindow
 {
 public:
 	void Start(HWND const, bool const, fPixel const, NNetController &);

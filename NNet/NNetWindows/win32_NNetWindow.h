@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include "Sensor.h"
 #include "D2D_DrawContext.h"
+#include "NNetModelReaderInterface.h"
 #include "win32_graphicsWindow.h"
 
 import MoreTypes;
