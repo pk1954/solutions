@@ -11,7 +11,6 @@ module;
 #include "SignalGenerator.h"
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
-#include "win32_MainWindow.h"
 
 module NNetAppMenu;
 
@@ -19,6 +18,7 @@ import SoundInterface;
 import ComputeThread;
 import SignalDesigner;
 import WinManager;
+import MainWindow;
 
 using std::make_unique;
 

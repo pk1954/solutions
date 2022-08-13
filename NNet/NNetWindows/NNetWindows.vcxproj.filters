@@ -57,7 +57,7 @@
     <ClCompile Include="SlowMotionDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_MainWindow.cpp">
+    <ClCompile Include="Win32_MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_monitorWindow.cpp">
@@ -159,15 +159,15 @@
     <ClCompile Include="Win32_NNetAppMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetAppWindow.h">

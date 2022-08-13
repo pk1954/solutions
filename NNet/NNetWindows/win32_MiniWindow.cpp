@@ -7,11 +7,11 @@ module;
 #include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
-#include "win32_MainWindow.h"
 
 module MiniWindow;
 
 import MoreTypes;
+import MainWindow;
 
 void MiniWindow::Start
 (

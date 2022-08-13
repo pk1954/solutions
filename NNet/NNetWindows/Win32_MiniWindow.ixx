@@ -5,11 +5,11 @@
 module;
 
 #include "win32_NNetWindow.h"
-#include "win32_mainWindow.h"
 
 export module MiniWindow;
 
 import ObserverInterface;
+import MainWindow;
 
 export class MiniWindow : public NNetWindow
 {

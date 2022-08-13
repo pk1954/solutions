@@ -1,6 +1,8 @@
-// win32_MainWindow.cpp
+// Win32_MainWindow.cpp
 //
 // NNetWindows
+
+module;
 
 #include <unordered_map>
 #include "Resource.h"
@@ -15,12 +17,15 @@
 #include "NNetModelCommands.h"
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
-#include "win32_MainWindow.h"
+#include "NNetModelReaderInterface.h"
+
+module MainWindow;
 
 import MoreTypes;
 import Command;
 import ActionTimer;
 import FatalError;
+import NNetController;
 
 using std::unordered_map;
 using std::unique_ptr;

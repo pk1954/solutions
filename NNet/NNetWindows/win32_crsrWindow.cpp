@@ -16,11 +16,11 @@ module;
 #include "Signal.h"
 #include "Sensor.h"
 #include "win32_util.h"
-#include "win32_MainWindow.h"
 
 module CrsrWindow;
 
 import TextBuffer;
+import MainWindow;
 
 using std::setprecision;
 using std::to_wstring;

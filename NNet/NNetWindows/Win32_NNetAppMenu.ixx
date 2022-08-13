@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <Windows.h>
 #include "win32_util.h"
-#include "win32_MainWindow.h"
 #include "CommandStack.h"
 #include "NNetModelReaderInterface.h"
 
@@ -17,6 +16,7 @@ import ObserverInterface;
 import SoundInterface;
 import WinManager;
 import ComputeThread;
+import MainWindow;
 
 using std::wstring;
 using std::unique_ptr;

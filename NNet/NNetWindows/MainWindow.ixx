@@ -1,25 +1,24 @@
-// win32_MainWindow.h : 
+// MainWindow.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "Resource.h"
 #include "BaseKnot.h"
 #include "MicroMeterPntVector.h"
+#include "ConnAnimationCommand.h"
+#include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_NNetWindow.h"
 
-import Animation;
+export module MainWindow;
 
-class WinCommands;
-class ActionTimer;
-class NNetModelCommands;
-class ConnAnimationCommand;
+import ActionTimer;
 
 using std::unique_ptr;
 
-class MainWindow : public NNetWindow
+export class MainWindow : public NNetWindow
 {
 public:
 
@@ -73,7 +72,7 @@ public:
 	bool OnSize           (PIXEL  const, PIXEL  const) final;
 
 private:
-	 
+
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 
 	ActionTimer       * m_pDisplayTimer        { nullptr };

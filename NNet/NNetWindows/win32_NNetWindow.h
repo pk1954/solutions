@@ -11,7 +11,6 @@
 
 import MoreTypes;
 
-class ActionTimer;
 class NNetController;
 class NNetModelReaderInterface;
 

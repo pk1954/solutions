@@ -7,12 +7,12 @@ module;
 #include <iostream>
 #include "BasicTypes.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_mainWindow.h"
 #include "win32_textWindow.h"
 
 export module CrsrWindow;
 
 import TextBuffer;
+import MainWindow;
 
 using std::wostringstream;
 using std::setprecision;

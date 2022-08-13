@@ -13,7 +13,6 @@
 #include "NNetModelIO.h"
 #include "CommandStack.h"
 #include "MonitorData.h"
-#include "win32_MainWindow.h"
 #include "win32_monitorWindow.h"
 #include "win32_script.h"
 #include "NNetModelReaderInterface.h"
@@ -45,6 +44,7 @@ import WinManager;
 import ParameterDialog;
 import MiniWindow;
 import NNetAppMenu;
+import MainWindow;
 
 class ReadModelResult;
 class MessagePump;

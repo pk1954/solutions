@@ -9,11 +9,11 @@ module;
 #include "WrapBase.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_mainWindow.h"
 
 export module Preferences;
 
 import DescriptionWindow;
+import MainWindow;
 
 using std::wstring;
 using std::vector;

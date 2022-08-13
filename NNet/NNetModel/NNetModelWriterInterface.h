@@ -21,8 +21,6 @@ class MicroMeterPntVector;
 using std::unique_ptr;
 using std::move;
 
-#define DUMP() DumpModel(__FILE__, __LINE__)
-
 class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:

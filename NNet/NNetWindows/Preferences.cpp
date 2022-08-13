@@ -12,7 +12,6 @@ module;
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
-#include "win32_MainWindow.h"
 #include "win32_baseWindow.h"
 #include "win32_script.h"
 #include "win32_util.h"
@@ -24,6 +23,7 @@ import SoundInterface;
 import DescriptionWindow;
 import NNetInputOutputUI;
 import NNetAppMenu;
+import MainWindow;
 
 using std::wofstream;
 using std::wcout;

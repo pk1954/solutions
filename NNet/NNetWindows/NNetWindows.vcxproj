@@ -576,6 +576,7 @@
   <ItemGroup>
     <ClCompile Include="ComputeThread.cpp" />
     <ClCompile Include="ComputeThread.ixx" />
+    <ClCompile Include="MainWindow.ixx" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="Measurement.ixx" />
     <ClCompile Include="MomitorControl.ixx" />
@@ -602,7 +603,7 @@
     <ClCompile Include="Win32_CrsrWindow.ixx" />
     <ClCompile Include="Win32_DescriptionWindow.cpp" />
     <ClCompile Include="Win32_DescriptionWindow.ixx" />
-    <ClCompile Include="win32_MainWindow.cpp" />
+    <ClCompile Include="Win32_MainWindow.cpp" />
     <ClCompile Include="Win32_MiniWindow.cpp" />
     <ClCompile Include="Win32_MiniWindow.ixx" />
     <ClCompile Include="win32_monitorWindow.cpp" />
@@ -628,7 +629,6 @@
     <ClInclude Include="SignalPreview.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
-    <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="win32_monitorWindow.h" />
     <ClInclude Include="win32_NNetAppWindow.h" />
     <ClInclude Include="win32_NNetWindow.h" />
