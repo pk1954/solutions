@@ -18,7 +18,6 @@
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
 #include "CopySelectedNobs.h"
-#include "DeleteSelectionCommand.h"
 #include "DeleteSignalCommand.h"
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
@@ -64,6 +63,7 @@ import SelectAllCommand;
 import MoveNobCommand;
 import ToggleEmphModeCmd;
 import MoveSignalCmd;
+import DeleteSelectionCommand;
 
 using std::wcout;
 using std::endl;

@@ -99,7 +99,6 @@
     <ClInclude Include="SizeSelectionCmd.h" />
     <ClInclude Include="SplitNeuronCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
-    <ClInclude Include="DeleteSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
     <ClInclude Include="InsertBaseKnotCommand.h" />
@@ -144,6 +143,7 @@
     </ClCompile>
     <ClCompile Include="DeleteBaseKnotCmd.ixx" />
     <ClCompile Include="DeletePipeCommand.ixx" />
+    <ClCompile Include="DeleteSelectionCommand.ixx" />
     <ClCompile Include="DeleteSigGenCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />

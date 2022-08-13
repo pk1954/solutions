@@ -1,8 +1,8 @@
-// DeleteSelectionCommand.h
+// DeleteSelectionCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "CommandFunctions.h"
@@ -10,9 +10,11 @@
 #include "CommandStack.h"
 #include "NNetCommand.h"
 
+export module DeleteSelectionCommand;
+
 import MoreTypes;
 
-class DeleteSelectionCommand : public NNetCommand
+export class DeleteSelectionCommand : public NNetCommand
 {
 public:
 	DeleteSelectionCommand() = default;
