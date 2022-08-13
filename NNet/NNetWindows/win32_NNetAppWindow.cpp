@@ -1,6 +1,6 @@
 // win32_NNetAppWindow.cpp
 //
-// NNetSimu
+// NNetWindows
 
 #include "Windows.h"
 #include <chrono>

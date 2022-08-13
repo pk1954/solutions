@@ -1,26 +1,27 @@
-// win32_NNetAppMenu.h
+// win32_NNetAppMenu.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include <string>
 #include <Windows.h>
 #include "win32_util.h"
+#include "win32_MainWindow.h"
+#include "CommandStack.h"
+#include "NNetModelReaderInterface.h"
+
+export module NNetAppMenu;
 
 import ObserverInterface;
 import SoundInterface;
+import WinManager;
+import ComputeThread;
 
 using std::wstring;
 using std::unique_ptr;
 
-class MainWindow;
-class WinManager;
-class CommandStack;
-class ComputeThread;
-class NNetModelReaderInterface;
-
-class NNetAppMenu : public ObserverInterface
+export class NNetAppMenu : public ObserverInterface
 {
 public:
 	NNetAppMenu();

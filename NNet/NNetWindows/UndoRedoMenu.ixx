@@ -2,13 +2,10 @@
 //
 // NNetWindows
 
-module;
-
-#include "win32_NNetAppMenu.h"
-
 export module UndoRedoMenu;
 
 import ObserverInterface;
+import NNetAppMenu;
 
 export class UndoRedoMenu : public ObserverInterface
 {

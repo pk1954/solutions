@@ -1,6 +1,8 @@
-// win32_NNetAppMenu.cpp
+// Win32_NNetAppMenu.cpp
 //
 // NNetWindows
+
+module;
 
 #include "Resource.h"
 #include "win32_util.h"
@@ -10,7 +12,8 @@
 #include "win32_util_resource.h"
 #include "win32_baseWindow.h"
 #include "win32_MainWindow.h"
-#include "win32_NNetAppMenu.h"
+
+module NNetAppMenu;
 
 import SoundInterface;
 import ComputeThread;

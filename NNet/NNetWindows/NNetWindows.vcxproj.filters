@@ -24,7 +24,7 @@
     <ClCompile Include="Preferences.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_NNetAppMenu.cpp">
+    <ClCompile Include="Win32_NNetAppMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComputeThread.cpp">
@@ -156,15 +156,15 @@
     <ClCompile Include="Win32_MiniWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_NNetAppMenu.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_NNetAppMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_MainWindow.h">

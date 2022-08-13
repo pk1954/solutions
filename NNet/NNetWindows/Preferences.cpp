@@ -14,7 +14,6 @@ module;
 #include "NNetParameters.h"
 #include "win32_MainWindow.h"
 #include "win32_baseWindow.h"
-#include "win32_NNetAppMenu.h"
 #include "win32_script.h"
 #include "win32_util.h"
 
@@ -24,6 +23,7 @@ import ErrHndl;
 import SoundInterface;
 import DescriptionWindow;
 import NNetInputOutputUI;
+import NNetAppMenu;
 
 using std::wofstream;
 using std::wcout;
