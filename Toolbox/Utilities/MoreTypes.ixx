@@ -8,6 +8,7 @@ module;
 #include <iomanip>
 #include <algorithm>
 #include "BasicTypes.h"
+#include "AngleTypes.h"
 
 export module MoreTypes;
 

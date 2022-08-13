@@ -8,6 +8,7 @@
 #include <vector>
 #include <cassert>   
 #include "BasicTypes.h"
+#include "AngleTypes.h"
 
 import MoreTypes;
 import PointType;

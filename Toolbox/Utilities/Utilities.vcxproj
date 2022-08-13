@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AngleTypes.h" />
     <ClInclude Include="BasicTypes.h" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ module;
 #include <iomanip>
 #include <compare>
 #include "BasicTypes.h"
+#include "AngleTypes.h"
 
 export module PointType;
 

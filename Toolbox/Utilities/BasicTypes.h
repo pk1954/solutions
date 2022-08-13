@@ -129,23 +129,3 @@ static MicroMeter CoveredDistance(meterPerSec const speed, fMicroSecs const time
 {
 	return MicroMeter(speed.GetValue() * time.GetValue());
 }
-
-////////////// Radian/Degrees /////////////////////////////////////////
-
-using Radian  = NamedType<float, struct radian_Parameter >;
-using Degrees = NamedType<float, struct degrees_Parameter >;
-
-constexpr Radian  operator"" _Radian (const long double r) { return Radian (Cast2Float(r)); }
-constexpr Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
-
-inline float const RADIAN_FACTOR     { static_cast<float>(180.0/pi) };
-inline float const INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
-
-static Radian  Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
-static Degrees Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
-
-static Radian  Normalize(Radian  const & r) { return Radian (fmod(fabs(r.GetValue()), RADIAN_FACTOR * 2.0f)); }
-static Degrees Normalize(Degrees const & d) { return Degrees(fmod(fabs(d.GetValue()), 360.0f)); }
-
-static MicroMeter Cos(Radian const r) { return MicroMeter(cos(r.GetValue())); } 
-static MicroMeter Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); } 
