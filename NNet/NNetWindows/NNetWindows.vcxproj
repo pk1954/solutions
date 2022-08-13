@@ -610,7 +610,8 @@
     <ClCompile Include="NNetController.cpp" />
     <ClCompile Include="NNetController.ixx" />
     <ClCompile Include="win32_NNetWindow.cpp" />
-    <ClCompile Include="win32_parameterDlg.cpp" />
+    <ClCompile Include="Win32_ParameterDlg.cpp" />
+    <ClCompile Include="Win32_ParameterDlg.ixx" />
     <ClCompile Include="Win32_PerformanceWindow.cpp" />
     <ClCompile Include="Win32_PerformanceWindow.ixx" />
     <ClCompile Include="Win32_ScriptHook.ixx" />
@@ -631,7 +632,6 @@
     <ClInclude Include="win32_NNetAppMenu.h" />
     <ClInclude Include="win32_NNetAppWindow.h" />
     <ClInclude Include="win32_NNetWindow.h" />
-    <ClInclude Include="win32_parameterDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">

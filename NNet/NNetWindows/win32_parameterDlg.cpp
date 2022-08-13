@@ -1,14 +1,18 @@
-// win32_parameterDlg.cpp
+// Win32_ParameterDlg.cpp
 //
 // NNetWindows
 
+module;
+
 #include <sstream>
+#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
-#include "win32_parameterDlg.h"
+
+module ParameterDialog;
 
 import StdDialogBox;
 import Win32_Controls;

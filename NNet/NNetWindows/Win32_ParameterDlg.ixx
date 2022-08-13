@@ -1,16 +1,17 @@
-// win32_parameterDlg.h
+// Win32_ParameterDlg.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include "NNetParameters.h"
+#include "NNetModelCommands.h"
+#include "NNetModelWriterInterface.h"
 #include "win32_baseDialog.h"
 
-class Param;
-class NNetModelCommands;
-class NNetModelWriterInterface;
+export module ParameterDialog;
 
-class ParameterDialog : public BaseDialog
+export class ParameterDialog : public BaseDialog
 {
 public:
 	ParameterDialog();
@@ -35,7 +36,7 @@ private:
 	HWND m_hwndTimeResolution  { nullptr };
 	HWND m_hwndFilterSize      { nullptr };
 	HWND m_hwndPulseSpeed      { nullptr };
-		
+
 	void resetParameter   (HWND const, ParamType::Value const) const;
 	void applyParameter   (HWND const, ParamType::Value const);
 	HWND addParameter     (HWND const, ParamType::Value const, int &);

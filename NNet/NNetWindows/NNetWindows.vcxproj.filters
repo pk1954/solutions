@@ -42,7 +42,7 @@
     <ClCompile Include="win32_NNetAppWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_parameterDlg.cpp">
+    <ClCompile Include="Win32_ParameterDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Win32_PerformanceWindow.cpp">
@@ -150,6 +150,9 @@
     <ClCompile Include="NNetWrappers.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_ParameterDlg.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
@@ -168,9 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetAppWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_parameterDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_monitorWindow.h">

@@ -17,7 +17,6 @@
 #include "win32_MainWindow.h"
 #include "win32_monitorWindow.h"
 #include "win32_NNetAppMenu.h"
-#include "win32_parameterDlg.h"
 #include "win32_script.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -45,6 +44,7 @@ import StatusBar;
 import ActionTimer;
 import NNetController;
 import WinManager;
+import ParameterDialog;
 
 class ReadModelResult;
 class MessagePump;
