@@ -57,9 +57,6 @@
     <ClInclude Include="win32_messagePump.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_fatalError.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_scale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -192,6 +189,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_PIXEL.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_FatalError.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

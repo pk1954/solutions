@@ -1,11 +1,10 @@
 // MonitorData.cpp 
 //
-// NNetWindows
+// NNetModel
 
 #include <cassert>
 #include "Track.h"
 #include "SignalFactory.h"
-#include "win32_fatalError.h"
 #include "MonitorData.h"
 
 using std::distance;

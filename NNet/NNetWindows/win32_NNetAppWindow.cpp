@@ -29,7 +29,6 @@
 #include "Script.h"
 #include "NobException.h"
 #include "win32_script.h"
-#include "win32_fatalError.h"
 
 // system and resources
 
@@ -57,6 +56,7 @@ import Preferences;
 import UtilityWrappers;
 import NNetInputOutputUI;
 import NNetWrappers;
+import FatalError;
 
 using std::wcout;
 using std::wstring;

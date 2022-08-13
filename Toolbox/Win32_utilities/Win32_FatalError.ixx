@@ -1,8 +1,8 @@
-// win32_fatalError.h
+// Win32_FatalError.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "Windows.h"
 #include <string>
@@ -10,12 +10,14 @@
 #include <sstream>
 #include <iostream>
 
+export module FatalError;
+
 using std::wstring;
 using std::wostringstream;
 using std::wcout;
 using std::endl;
 
-class FatalError
+export class FatalError
 {
 public:
 	static void Happened(long const errnr, wstring const & errText)
@@ -38,5 +40,4 @@ public:
 		int * pi = (int *)(x); //-V566
 		* pi = 23;
 	}
-
 };

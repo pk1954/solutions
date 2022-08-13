@@ -15,7 +15,6 @@ module;
 #include "win32_util.h"
 #include "win32_script.h"
 #include "win32_MainWindow.h"
-#include "win32_fatalError.h"
 #include "win32_monitorWindow.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
@@ -32,6 +31,7 @@ import ComputeThread;
 import StdDialogBox;
 import Preferences;
 import WinManager;
+import FatalError;
 
 using std::to_wstring;
 
