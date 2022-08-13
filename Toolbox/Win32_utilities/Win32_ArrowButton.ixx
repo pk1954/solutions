@@ -1,16 +1,18 @@
-// win32_arrowButton.h
+// win32_arrowButton.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "Windows.h"
 #include "win32_graphicsWindow.h"
 
+export module ArrowButton;
+
 import Direct2D;
 import Win32_Controls;
 
-class ArrowButton : public GraphicsWindow
+export class ArrowButton : public GraphicsWindow
 {
 public:
 
@@ -19,7 +21,7 @@ public:
 		HWND const hwndParent,
 		int  const id
 	)
-	  : m_idCommand(id)
+		: m_idCommand(id)
 	{
 		GraphicsWindow::Initialize(hwndParent, L"ArrowBotton", WS_CHILD | WS_VISIBLE);
 	}

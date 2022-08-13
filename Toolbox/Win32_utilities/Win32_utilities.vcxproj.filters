@@ -81,9 +81,6 @@
     <ClInclude Include="win32_PixelTypes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_arrowButton.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">
@@ -186,6 +183,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_WinManager.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_ArrowButton.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

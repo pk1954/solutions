@@ -9,7 +9,6 @@ module;
 #include "SignalPreview.h"
 #include "NNetModelCommands.h"
 #include "win32_scale.h"
-#include "win32_arrowButton.h"
 #include "win32_graphicsWindow.h"
 
 export module SignalDesigner;
@@ -20,6 +19,7 @@ import PixFpDimension;
 import SignalControl;
 import ComputeThread;
 import PixelTypes;
+import ArrowButton;
 
 using std::wstring;
 
