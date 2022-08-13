@@ -71,7 +71,7 @@ public:
 
 void DefineUtilityWrapperFunctions()
 {
-    DEF_FUNC(OpenTraceFile);
+    SymbolTable::ScrDefConst(L"OpenTraceFile", new WrapOpenTraceFile);
 
     DEF_ULONG_CONST(tBoolOp::opTrue);
     DEF_ULONG_CONST(tBoolOp::opFalse);
