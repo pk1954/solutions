@@ -25,7 +25,6 @@
 #include "InsertBaseKnotCommand.h"
 #include "InsertTrackCommand.h"
 #include "MoveSignalCmd.h"
-#include "MoveNobCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
@@ -64,6 +63,7 @@ import SizeSensorCmd;
 import NewSigGenCmd;
 import ToggleStopOnTriggerCmd;
 import SelectAllCommand;
+import MoveNobCommand;
 
 using std::wcout;
 using std::endl;

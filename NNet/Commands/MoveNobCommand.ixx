@@ -1,17 +1,19 @@
-// MoveNobCommand.h
+// MoveNobCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "NobId.h"
 #include "Nob.h"
 
+export module MoveNobCommand;
+
 import MoreTypes;
 
-class MoveNobCommand : public NNetCommand
+export class MoveNobCommand : public NNetCommand
 {
 public:
 	MoveNobCommand
@@ -19,7 +21,7 @@ public:
 		Nob                 & nob, 
 		MicroMeterPnt const & delta 
 	)
-	  : m_delta(delta),
+		: m_delta(delta),
 		m_nob(nob)
 	{ 
 		assert(&nob);
