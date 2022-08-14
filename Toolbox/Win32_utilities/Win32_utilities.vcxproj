@@ -167,7 +167,6 @@
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
-    <ClInclude Include="win32_PixelTypes.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_rootWindow.h" />
@@ -202,6 +201,7 @@
     <ClCompile Include="Win32_MessagePump.cpp" />
     <ClCompile Include="Win32_MessagePump.ixx" />
     <ClCompile Include="Win32_PIXEL.cpp" />
+    <ClCompile Include="Win32_PixelTypes.ixx" />
     <ClCompile Include="Win32_Sound.ixx" />
     <ClCompile Include="Win32_StdDialogBox.cpp" />
     <ClCompile Include="Win32_StdDialogBox.ixx" />

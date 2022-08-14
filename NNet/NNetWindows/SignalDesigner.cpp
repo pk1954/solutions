@@ -13,7 +13,6 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
-#include "win32_PixelTypes.h"
 
 module SignalDesigner;
 
@@ -23,6 +22,7 @@ import PixFpDimension;
 import Win32_Controls;
 import ArrowButton;
 import EditLineBox;
+import Win32_PixelTypes;
 
 using std::bit_cast;
 

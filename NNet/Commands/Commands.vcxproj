@@ -150,7 +150,7 @@
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
     <ClCompile Include="SetNobCommand.ixx" />
-    <ClCompile Include="SIgGenCommand.ixx" />
+    <ClCompile Include="SigGenCommand.ixx" />
     <ClCompile Include="SIngleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />

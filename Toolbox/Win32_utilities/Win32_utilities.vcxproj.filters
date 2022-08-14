@@ -60,9 +60,6 @@
     <ClInclude Include="win32_baseScale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_PixelTypes.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Win32_PIXEL.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -192,6 +189,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_MessagePump.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_PixelTypes.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

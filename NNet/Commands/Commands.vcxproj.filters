@@ -212,7 +212,7 @@
     <ClCompile Include="SIngleNobAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SIgGenCommand.ixx">
+    <ClCompile Include="SigGenCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
