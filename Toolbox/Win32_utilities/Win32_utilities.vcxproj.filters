@@ -39,9 +39,6 @@
     <ClInclude Include="win32_rootWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_stopwatch.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textWindowThread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -192,6 +189,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_BaseRefreshRate.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Stopwatch.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,16 +1,21 @@
-// win32_stopwatch.cpp
+// Win32_Stopwatch.cpp
 //
 // Toolbox/win32_utilities
 
-#pragma once
+module;
 
 #include <sstream> 
 #include <iostream>
 #include <iomanip>
 #include <cassert>
+#include <chrono>
 #include "Windows.h"
-#include "win32_stopwatch.h"
 
+module Stopwatch;
+
+import SaveCast;
+
+using std::wstring;
 using std::wcout;
 using std::setw;
 using std::fixed;
@@ -18,6 +23,7 @@ using std::endl;
 using std::setprecision;
 using std::left;
 using std::right;
+using std::chrono::microseconds;
 
 void Stopwatch::Start()
 {

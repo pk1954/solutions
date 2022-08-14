@@ -1,28 +1,30 @@
-// win32_stopwatch.h
+// Win32_Stopwatch.ixx
 //
 // Toolbox/win32_utilities
 
-#pragma once
+module;
 
 #include <string>
 #include <functional>
 #include "win32_hiResTimer.h"
 
+export module Stopwatch;
+
 using std::wstring;
 using std::function;
 
-class Stopwatch
+export class Stopwatch
 {
 public:
 	void Start();
 	void Stop(wstring const & wstr);
 
-void Clock(wstring const wstr, function<void()> code)
-{
-	Start();
-	code();
-	Stop(wstr);
-};
+	void Clock(wstring const wstr, function<void()> code)
+	{
+		Start();
+		code();
+		Stop(wstr);
+	};
 
 private:
 	HiResTimer m_hrtimer;
