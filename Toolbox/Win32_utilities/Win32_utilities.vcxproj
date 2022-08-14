@@ -162,9 +162,7 @@
   <ItemGroup>
     <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="Win32_PIXEL.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="win32_baseScale.h" />
-    <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_hiResTimer.h" />
@@ -184,10 +182,11 @@
     <ClCompile Include="Win32_BaseDialog.ixx" />
     <ClCompile Include="Win32_BaseRefreshRate.ixx" />
     <ClCompile Include="win32_baseScale.cpp" />
+    <ClCompile Include="Win32_BaseWindow.ixx" />
     <ClCompile Include="Win32_Command.cpp" />
     <ClCompile Include="Win32_BaseDialog.cpp" />
     <ClCompile Include="Win32_BaseRefreshRate.cpp" />
-    <ClCompile Include="win32_baseWindow.cpp" />
+    <ClCompile Include="Win32_BaseWindow.cpp" />
     <ClCompile Include="Win32_Command.ixx" />
     <ClCompile Include="Win32_Controls.cpp" />
     <ClCompile Include="Win32_Controls.ixx" />

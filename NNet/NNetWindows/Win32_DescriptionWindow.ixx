@@ -7,11 +7,11 @@ module;
 #include <string>
 #include <Windows.h>
 #include "DescriptionUI.h"
-#include "win32_baseWindow.h"
 
 export module DescriptionWindow;
 
 import PixelTypes;
+import BaseWindow;
 
 using std::wstring;
 

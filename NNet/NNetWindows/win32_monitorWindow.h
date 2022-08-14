@@ -4,19 +4,20 @@
 
 #pragma once
 
+#include <Windows.h>
 #include "win32_scale.h"
-#include "win32_baseWindow.h"
+#include "BasicTypes.h"
 #include "VoltageType.h"
+#include "MonitorData.h"
+#include "NNetModelCommands.h"
+#include "NNetModelWriterInterface.h"
 
 import MoreTypes;
 import PixelTypes;
 import PixFpDimension;
-
-class NNetModelWriterInterface;
-class NNetModelCommands;
-class MonitorControl;
-class MonitorData;
-class Sound;
+import BaseWindow;
+import MonitorControl;
+import SoundInterface;
 
 class MonitorWindow : public BaseWindow
 {

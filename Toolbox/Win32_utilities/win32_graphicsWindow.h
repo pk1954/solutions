@@ -7,11 +7,12 @@
 
 #pragma once
 
-#include "Windows.h"
-#include "win32_baseWindow.h"
+#include <memory>
+#include <Windows.h>
 
 import Direct2D;
 import PixelTypes;
+import BaseWindow;
 
 using std::unique_ptr;
 

@@ -6,6 +6,7 @@
 
 #include <string> 
 #include <sstream> 
+#include <iomanip> 
 #include "dwrite.h"
 #include "win32_baseScale.h"
 #include "win32_util_resource.h"

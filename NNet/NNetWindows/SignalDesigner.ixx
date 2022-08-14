@@ -70,7 +70,7 @@ private:
 	bool OnSize             (PIXEL const, PIXEL const)                     final;
 	bool OnCommand          (WPARAM const, LPARAM const, PixelPoint const) final;
 	void OnNCLButtonDblClick(WPARAM const, LPARAM const)                   final;
-	void OnScaleCommand     (WPARAM const, BaseScale * const)              final;
+	void OnScaleCommand     (WPARAM const, LPARAM const)                   final;
 
 	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;

@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "Windows.h"
+#include <Windows.h>
 #include "BasicTypes.h"
 
 import BoolOp;

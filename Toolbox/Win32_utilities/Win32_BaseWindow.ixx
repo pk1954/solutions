@@ -1,13 +1,16 @@
-// win32_baseWindow.h : 
+// Win32_BaseWindow.ixx
 //
-// win32_utilities
+// Win32_utilities
 
-#pragma once
+module;
 
 #include <string>
-#include "Windows.h"
+#include <Windows.h>
+#include "BasicTypes.h"
 #include "win32_hiResTimer.h"
 #include "win32_rootWindow.h"
+
+export module BaseWindow;
 
 import MoreTypes;
 import PixelTypes;
@@ -16,13 +19,11 @@ using std::wstring;
 
 static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
-class BaseScale;
-
-class BaseWindow : public RootWindow
+export class BaseWindow : public RootWindow
 {
 public:
 
-    HWND StartBaseWindow
+	HWND StartBaseWindow
 	(
 		HWND      const, 
 		UINT      const, 
@@ -33,7 +34,7 @@ public:
 	);
 
 	void SetCaption() const;
-	
+
 	virtual wstring GetCaption() const;
 
 	static void SetPerfMonMode(bool const b) { m_bPerfMonMode = b; }
@@ -44,7 +45,7 @@ protected:
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
 	virtual void OnDrawItem         (WPARAM const, DRAWITEMSTRUCT const * const) { /* empty */ };;
-	virtual void OnScaleCommand     (WPARAM const, BaseScale            * const) { /* empty */ };
+	virtual void OnScaleCommand     (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnPaint            ()                           { /* empty */ };
 	virtual void OnLButtonDblClick  (WPARAM const, LPARAM const) { /* empty */ };
 	virtual void OnNCLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
@@ -74,5 +75,5 @@ private:
 	friend static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
 	HiResTimer m_paintTimer;
-	fMicroSecs m_usPaintTime { 0._MicroSecs };
+	fMicroSecs m_usPaintTime { fMicroSecs(0) };
 };

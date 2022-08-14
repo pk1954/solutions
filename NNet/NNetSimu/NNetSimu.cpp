@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "CommCtrl.h"
 #include "Scanner.h"
+#include "win32_util.h"
 #include "win32_NNetAppWindow.h"
 
 import Trace;

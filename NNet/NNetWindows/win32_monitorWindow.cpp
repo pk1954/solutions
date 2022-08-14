@@ -2,8 +2,10 @@
 //
 // NNetWindows
 
+#include <Windows.h>
 #include "Resource.h"
 #include "NNetColors.h"
+#include "NNetModelCommands.h"
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 

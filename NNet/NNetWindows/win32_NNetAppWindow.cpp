@@ -2,7 +2,8 @@
 //
 // NNetWindows
 
-#include "Windows.h"
+#include <Windows.h>
+#include <CommCtrl.h>
 #include <chrono>
 #include <filesystem>
 #include <source_location>
@@ -18,8 +19,9 @@
 
 // infrastructure
 
+#include "win32_util.h"
+#include "Win32_PIXEL.h"
 #include "AutoOpen.h"
-#include "win32_baseWindow.h"
 #include "NNetCommand.h"
 #include "ConnAnimationCommand.h"
 
@@ -57,6 +59,7 @@ import FatalError;
 import TimeGraph;
 import MessagePump;
 import ScriptFile;
+import BaseWindow;
 
 using std::wcout;
 using std::wstring;

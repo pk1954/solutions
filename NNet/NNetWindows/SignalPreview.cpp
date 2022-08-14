@@ -5,7 +5,6 @@
 module;
 
 #include "Windows.h"
-#include "win32_BaseWindow.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
 #include "VoltageType.h"
@@ -14,6 +13,7 @@ module SignalPreview;
 
 import PixFpDimension;
 import TimeGraph;
+import BaseWindow;
 
 SignalPreview::SignalPreview
 (

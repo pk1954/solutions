@@ -15,6 +15,7 @@ module;
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"

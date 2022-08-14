@@ -1,15 +1,24 @@
-// win32_baseWindow.cpp
+// Win32_BaseWindow.cpp
 //
-// win32_utilities
+// Win32_utilities
 
+module;
+
+#include <string>
+#include <cassert>
 #include <chrono>
+#include "Windows.h"
+#include "win32_util.h"
 #include "win32_util_resource.h"
-#include "win32_baseWindow.h"
+#include "win32_RootWindow.h"
+
+module BaseWindow;
 
 import Util;
 import MoreTypes;
 import PixelTypes;
 
+using std::wstring;
 using std::bit_cast;
 using std::chrono::milliseconds;
 using std::wostringstream;
@@ -210,7 +219,7 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         break;
 
     case WM_APP_SCALE_COMMAND:
-        OnScaleCommand(wParam, bit_cast<BaseScale *>(lParam));
+        OnScaleCommand(wParam, lParam);
         break;
 
     default:

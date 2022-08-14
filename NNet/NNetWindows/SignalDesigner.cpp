@@ -263,8 +263,9 @@ void SignalDesigner::OnNCLButtonDblClick(WPARAM const wParam, LPARAM const lPara
 	PostCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, sigGenId.GetValue());
 }
 
-void SignalDesigner::OnScaleCommand(WPARAM const wParam, BaseScale * const pScale)
+void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)
 {
+	BaseScale * const pScale { bit_cast<BaseScale *>(lParam) };
 	switch (auto const wId = LOWORD(wParam))
 	{
 	case SC_LBUTTONDBLCLK:

@@ -4,7 +4,7 @@
 
 module;
 
-#include "win32_BaseWindow.h"
+#include "BasicTypes.h"
 #include "VoltageType.h"
 
 export module SignalPreview;
@@ -12,6 +12,7 @@ export module SignalPreview;
 import MoreTypes;
 import PixFpDimension;
 import TimeGraph;
+import BaseWindow;
 
 export class SignalPreview : public TimeGraph
 {

@@ -4,13 +4,13 @@
 
 module;
 
+#include <Windows.h>
 #include "Resource.h"
 #include "win32_util.h"
 #include "CommandStack.h"
 #include "AutoOpen.h"
 #include "SignalGenerator.h"
 #include "win32_util_resource.h"
-#include "win32_baseWindow.h"
 
 module NNetAppMenu;
 
@@ -19,6 +19,7 @@ import ComputeThread;
 import SignalDesigner;
 import WinManager;
 import MainWindow;
+import BaseWindow;
 
 using std::make_unique;
 
