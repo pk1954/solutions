@@ -92,7 +92,6 @@
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
     <ClInclude Include="AttachSigGen2LineCmd.h" />
-    <ClInclude Include="SetSigGenStaticDataCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
@@ -150,6 +149,7 @@
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
     <ClCompile Include="SetNobCommand.ixx" />
+    <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
     <ClCompile Include="SigGenCommand.ixx" />
     <ClCompile Include="SIngleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />

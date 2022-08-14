@@ -1,16 +1,18 @@
-// SetSigGenStaticDataCmd.h
+// SetSigGenStaticDataCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "SignalGenerator.h"
 
+export module SetSigGenStaticDataCmd;
+
 import MoreTypes;
 
-class SetSigGenStaticDataCmd : public NNetCommand
+export class SetSigGenStaticDataCmd : public NNetCommand
 {
 public:
 	SetSigGenStaticDataCmd
@@ -18,12 +20,12 @@ public:
 		SignalGenerator  & sigGen,
 		SigGenStaticData const & data
 	)
-	  : m_sigGen(sigGen),
+		: m_sigGen(sigGen),
 		m_dataNew(data),
 		m_dataOld(sigGen.GetStaticData())
 	{ }
 
-    void Do() final
+	void Do() final
 	{ 
 		m_sigGen.SetStaticData(m_dataNew);
 	}
