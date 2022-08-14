@@ -8,11 +8,11 @@ module;
 #include "win32_BaseWindow.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
-#include "TimeGraph.h"
 
 module SignalPreview;
 
 import PixFpDimension;
+import TimeGraph;
 
 SignalPreview::SignalPreview
 (

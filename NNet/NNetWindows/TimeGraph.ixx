@@ -1,19 +1,21 @@
-// #include "Neuron.h"
+// TimeGraph.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_graphicsWindow.h"
 
+export module TimeGraph;
+
 import MoreTypes;
 import PixFpDimension;
 import Direct2D;
 
-class TimeGraph : public GraphicsWindow
+export class TimeGraph : public GraphicsWindow
 {
 public:
 	TimeGraph

@@ -39,7 +39,6 @@
 #include "Analyzer.h"
 #include "SignalFactory.h"
 #include "Neuron.h"
-#include "TimeGraph.h"
 #include "SimulationTime.h"
 #include "InputConnector.h"
 #include "win32_NNetAppWindow.h"
@@ -57,6 +56,7 @@ import UtilityWrappers;
 import NNetInputOutputUI;
 import NNetWrappers;
 import FatalError;
+import TimeGraph;
 
 using std::wcout;
 using std::wstring;

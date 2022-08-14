@@ -5,12 +5,12 @@
 module;
 
 #include "win32_BaseWindow.h"
-#include "TimeGraph.h"
 
 export module SignalPreview;
 
 import MoreTypes;
 import PixFpDimension;
+import TimeGraph;
 
 export class SignalPreview : public TimeGraph
 {

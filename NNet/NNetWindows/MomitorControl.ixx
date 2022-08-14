@@ -4,10 +4,10 @@
 
 module;
 
+#include <dwrite.h>
 #include <Windows.h>
 #include "Track.h"
 #include "TrackNr.h"
-#include "TimeGraph.h"
 #include "MonitorData.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
@@ -20,8 +20,7 @@ import SoundInterface;
 import Measurement;
 import Direct2D;
 import PixelTypes;
-
-struct IDWriteTextFormat;
+import TimeGraph;
 
 export class MonitorControl : public TimeGraph
 {

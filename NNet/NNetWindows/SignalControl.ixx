@@ -6,7 +6,6 @@ module;
 
 #include <array>
 #include "SignalGenerator.h"
-#include "TimeGraph.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 
@@ -17,6 +16,7 @@ import PixFpDimension;
 import ComputeThread;
 import Direct2D;
 import PixelTypes;
+import TimeGraph;
 
 using std::array;
 

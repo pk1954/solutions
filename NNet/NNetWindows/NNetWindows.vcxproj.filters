@@ -165,12 +165,12 @@
     <ClCompile Include="SignalPreview.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimeGraph.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_NNetWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_NNetAppWindow.h">
@@ -180,9 +180,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelCommands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

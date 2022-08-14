@@ -2,7 +2,16 @@
 //
 // NNetModel
 
-#include "TimeGraph.h"
+module;
+
+#include <cassert>
+#include <Windows.h>
+#include "BasicTypes.h"
+#include "NNetModelWriterInterface.h"
+
+module TimeGraph;
+
+import PixelTypes;
 
 TimeGraph::TimeGraph
 (
