@@ -1,19 +1,21 @@
-// win32_baseDialog.h : 
+// Win32_BaseDialog.h : 
 //
-// win32_utilities
+// Win32_utilities
 
-#pragma once
+module;
 
 #include <Windows.h>
 #include "win32_rootWindow.h"
 
+export module BaseDialog;
+
 static INT_PTR CALLBACK BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
-class BaseDialog: public RootWindow
+export class BaseDialog: public RootWindow
 {
 public:
 
-    HWND StartBaseDialog
+	HWND StartBaseDialog
 	(
 		HWND    const, 
 		LPCTSTR const, 

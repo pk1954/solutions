@@ -1,9 +1,14 @@
-// win32_baseDialog.cpp
+// Win32_BaseDialog.cpp
 //
+// Win32_utilities
 
+module;
+
+#include <Windows.h>
 #include "win32_util.h"
 #include "win32_rootWindow.h"
-#include "win32_baseDialog.h"
+
+module BaseDialog;
 
 HWND BaseDialog::StartBaseDialog
 (

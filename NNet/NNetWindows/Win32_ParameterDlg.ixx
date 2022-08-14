@@ -7,9 +7,10 @@ module;
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_baseDialog.h"
 
 export module ParameterDialog;
+
+import BaseDialog;
 
 export class ParameterDialog : public BaseDialog
 {

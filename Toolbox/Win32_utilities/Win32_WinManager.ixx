@@ -11,11 +11,11 @@ module;
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"
 #include "win32_baseWindow.h"
-#include "win32_baseDialog.h"
 
 export module WinManager;
 
 import ErrHndl;
+import BaseDialog;
 
 using std::wstring;
 using std::unordered_map;
