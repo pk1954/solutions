@@ -1,19 +1,21 @@
-// win32_baseRefreshRate.h : 
+// Win32_BaseRefreshRate.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
 #include <chrono>
 #include <Windows.h>
 #include "win32_util.h"
 
+export module BaseRefreshRate;
+
 import StdDialogBox;
 
 using std::chrono::milliseconds;
-using namespace std::chrono_literals;
+using namespace std::chrono;
 
-class BaseRefreshRate : public StdDialogBox
+export class BaseRefreshRate : public StdDialogBox
 {
 public:
 

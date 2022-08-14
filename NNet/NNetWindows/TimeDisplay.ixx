@@ -4,14 +4,13 @@
 
 module;
 
-#pragma once
-
-#include "win32_baseRefreshRate.h"
+#include <memory>
 
 export module TimeDisplay;
 
 import ObserverInterface;
 import StatusBar;
+import BaseRefreshRate;
 
 using std::unique_ptr;
 

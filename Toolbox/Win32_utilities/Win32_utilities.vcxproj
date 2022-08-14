@@ -165,7 +165,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_baseDialog.h" />
-    <ClInclude Include="win32_baseRefreshRate.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
@@ -187,10 +186,11 @@
     <ClCompile Include="Win32_ActionTimer.ixx" />
     <ClCompile Include="Win32_Animation.ixx" />
     <ClCompile Include="Win32_ArrowButton.ixx" />
+    <ClCompile Include="Win32_BaseRefreshRate.ixx" />
     <ClCompile Include="win32_baseScale.cpp" />
     <ClCompile Include="Win32_Command.cpp" />
     <ClCompile Include="win32_baseDialog.cpp" />
-    <ClCompile Include="win32_baseRefreshRate.cpp" />
+    <ClCompile Include="Win32_BaseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="Win32_Command.ixx" />
     <ClCompile Include="Win32_Controls.cpp" />

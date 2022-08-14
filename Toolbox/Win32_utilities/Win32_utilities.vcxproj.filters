@@ -51,9 +51,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_baseRefreshRate.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_messagePump.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -116,7 +113,7 @@
     <ClCompile Include="Win32_AboutBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_baseRefreshRate.cpp">
+    <ClCompile Include="Win32_BaseRefreshRate.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_messagePump.cpp">
@@ -192,6 +189,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_EditLineBox.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_BaseRefreshRate.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

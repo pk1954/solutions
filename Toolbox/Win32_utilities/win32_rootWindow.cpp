@@ -3,10 +3,10 @@
 // Toolbox Win32_utilities
 
 #include "win32_util_resource.h"
-#include "win32_baseRefreshRate.h"
 #include "win32_rootWindow.h"
 
 import PixelTypes;
+import BaseRefreshRate;
 
 using std::bit_cast;
 using std::make_unique;
