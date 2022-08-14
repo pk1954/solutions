@@ -1,6 +1,8 @@
-// win32_script.cpp
+// Win32_Script.cpp
 //
 // Win32_utilities
+
+module;
 
 #include "Windows.h"
 #include "commdlg.h"
@@ -11,7 +13,9 @@
 #include <vector>
 #include "pathcch.h"
 #include "Script.h"
-#include "win32_script.h"
+#include <ShObjIdl.h> 
+
+module ScriptFile;
 
 using std::wcout;
 using std::vector;

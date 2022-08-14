@@ -27,7 +27,6 @@
 
 #include "Script.h"
 #include "NobException.h"
-#include "win32_script.h"
 
 // system and resources
 
@@ -57,6 +56,7 @@ import NNetWrappers;
 import FatalError;
 import TimeGraph;
 import MessagePump;
+import ScriptFile;
 
 using std::wcout;
 using std::wstring;

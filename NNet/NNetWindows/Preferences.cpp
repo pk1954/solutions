@@ -13,7 +13,6 @@ module;
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
 #include "win32_baseWindow.h"
-#include "win32_script.h"
 #include "win32_util.h"
 
 module Preferences;
@@ -24,6 +23,7 @@ import DescriptionWindow;
 import NNetInputOutputUI;
 import NNetAppMenu;
 import MainWindow;
+import ScriptFile;
 
 using std::wofstream;
 using std::wcout;

@@ -24,9 +24,6 @@
     <ClInclude Include="win32_hiResTimer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_script.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -71,7 +68,7 @@
     <ClCompile Include="win32_hiResTimer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_script.cpp">
+    <ClCompile Include="Win32_Script.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_textWindow.cpp">
@@ -192,6 +189,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_PixelTypes.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Script.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

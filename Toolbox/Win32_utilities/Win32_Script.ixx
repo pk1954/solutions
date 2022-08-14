@@ -1,25 +1,28 @@
-// win32_script.h : 
+// Win32_Script.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
+#include <string>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <ShObjIdl.h> 
 
+export module ScriptFile;
+
 import Symtab;
 
 using std::wstring;
 
-enum class tFileMode
+export enum class tFileMode
 {
 	read,
 	write
 };
 
-class ScriptFile
+export class ScriptFile
 {
 public:
 	ScriptFile();
