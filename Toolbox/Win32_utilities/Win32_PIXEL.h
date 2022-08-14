@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Windows.h"
 #include "BasicTypes.h"
+#include "Script.h"
 
 import BoolOp;
 import NamedType;
@@ -21,8 +22,6 @@ using std::wostream;
 using std::wstring;
 using std::wcout;
 using std::endl;
-
-class Script;
 
 namespace Util
 {
