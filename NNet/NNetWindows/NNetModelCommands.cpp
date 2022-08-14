@@ -21,7 +21,6 @@
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
 #include "InsertBaseKnotCommand.h"
-#include "InsertTrackCommand.h"
 #include "MoveSelectionCommand.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
@@ -64,6 +63,7 @@ import MoveSignalCmd;
 import DeleteSelectionCommand;
 import AddPipe2BaseKnotCommand;
 import SelectionCommand;
+import InsertTrackCommand;
 
 using std::wcout;
 using std::endl;

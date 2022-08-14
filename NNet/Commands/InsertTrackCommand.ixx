@@ -1,16 +1,18 @@
-// InsertTrackCommand.h
+// InsertTrackCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "NNetCommand.h"
 
+export module InsertTrackCommand;
+
 import MoreTypes;
 
-class InsertTrackCommand: public NNetCommand
+export class InsertTrackCommand: public NNetCommand
 {
 public:
 
