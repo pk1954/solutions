@@ -1,15 +1,17 @@
-// AnalyzeLoopsCommand.h
+// AnalyzeCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 
+export module AnalyzeCommand;
+
 import SelectionCommand;
 
-class AnalyzeCommand : public SelectionCommand
+export class AnalyzeCommand : public SelectionCommand
 {
 public:
 	explicit AnalyzeCommand(NobStack const & stack)

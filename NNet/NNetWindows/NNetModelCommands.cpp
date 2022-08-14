@@ -6,7 +6,6 @@
 #include "AddPipe2PipeCommand.h"
 #include "AddSensorSignalCmd.h"
 #include "AddSigGen2MonitorCmd.h"
-#include "AnalyzeCommand.h"
 #include "Analyzer.h"
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
@@ -64,6 +63,7 @@ import SplitNeuronCmd;
 import SizeSelectionCmd;
 import SetNobCommand;
 import SetSigGenStaticDataCmd;
+import AnalyzeCommand;
 
 using std::wcout;
 using std::endl;

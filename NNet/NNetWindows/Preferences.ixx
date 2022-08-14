@@ -14,11 +14,10 @@ export module Preferences;
 
 import DescriptionWindow;
 import MainWindow;
+import SoundInterface;
 
 using std::wstring;
 using std::vector;
-
-import SoundInterface;
 
 export class Preferences
 {
