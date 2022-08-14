@@ -7,9 +7,10 @@ module;
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
-#include "SigGenCommand.h"
 
 export module NewSigGenCmd;
+
+import SigGenCommand;
 
 export class NewSigGenCmd : public SigGenCommand
 {

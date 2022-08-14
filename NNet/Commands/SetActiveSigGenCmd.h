@@ -6,7 +6,8 @@
 
 #include "Resource.h"
 #include "SignalGenerator.h"
-#include "SigGenCommand.h"
+
+import SigGenCommand;
 
 class SetActiveSigGenCmd : public SigGenCommand
 {

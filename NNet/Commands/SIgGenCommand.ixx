@@ -1,14 +1,16 @@
-// SigGenCommand.h
+// SigGenCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "Resource.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
-class SigGenCommand : public NNetCommand
+export module SigGenCommand;
+
+export class SigGenCommand : public NNetCommand
 {
 public:
 	SigGenId SetActiveSigGenId(SigGenId const idNew)

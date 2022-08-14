@@ -9,10 +9,11 @@ module;
 #include "InputLine.h"
 #include "SetActiveSigGenCmd.h"
 #include "SignalGenerator.h"
-#include "SigGenCommand.h"
 #include "UPSigGenList.h"
 
 export module DeleteSigGenCmd;
+
+import SigGenCommand;
 
 using std::make_unique;
 using std::vector;
