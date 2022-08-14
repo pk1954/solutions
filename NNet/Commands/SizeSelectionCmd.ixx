@@ -1,19 +1,21 @@
-// SizeSelectionCmd.h
+// SizeSelectionCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 
+export module SizeSelectionCmd;
+
 import MoreTypes;
 
-class SizeSelectionCmd : public NNetCommand
+export class SizeSelectionCmd : public NNetCommand
 {
 public:
 	explicit SizeSelectionCmd(float const fFactor)
-	  : m_fFactor(fFactor)
+		: m_fFactor(fFactor)
 	{
 		m_umPntCenter = m_pNMWI->GetUPNobs().CenterOfGravity
 		(
@@ -28,11 +30,11 @@ private:
 	void sizeSelection(float const fFactor) const
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>
-		(
-			[this, fFactor](BaseKnot & b) 
-			{ 
-				b.SetPos(m_umPntCenter + (b.GetPos() - m_umPntCenter) * fFactor);
-			}
+			(
+				[this, fFactor](BaseKnot & b) 
+				{ 
+					b.SetPos(m_umPntCenter + (b.GetPos() - m_umPntCenter) * fFactor);
+				}
 		);
 	}
 

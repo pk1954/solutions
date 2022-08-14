@@ -95,7 +95,6 @@
     <ClInclude Include="SetSigGenStaticDataCmd.h" />
     <ClInclude Include="SigGenCommand.h" />
     <ClInclude Include="SingleNobAnimation.h" />
-    <ClInclude Include="SizeSelectionCmd.h" />
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
@@ -153,6 +152,7 @@
     <ClCompile Include="SelectAllCommand.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
+    <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
     <ClCompile Include="SplitNeuronCmd.ixx" />
     <ClCompile Include="ToggleEmphModeCmd.ixx" />

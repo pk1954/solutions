@@ -37,7 +37,6 @@
 #include "SetParameterCommand.h"
 #include "SetNobCommand.h"
 #include "SetActiveSigGenCmd.h"
-#include "SizeSelectionCmd.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -64,6 +63,7 @@ import AddPipe2BaseKnotCommand;
 import SelectionCommand;
 import InsertTrackCommand;
 import SplitNeuronCmd;
+import SizeSelectionCmd;
 
 using std::wcout;
 using std::endl;
