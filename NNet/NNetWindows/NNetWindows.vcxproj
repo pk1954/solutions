@@ -591,6 +591,7 @@
     <ClCompile Include="SignalDesigner.ixx" />
     <ClCompile Include="SignalPreview.cpp" />
     <ClCompile Include="SignalControl.cpp" />
+    <ClCompile Include="SignalPreview.ixx" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="SignalDesigner.cpp" />
     <ClCompile Include="SlowMotionDisplay.ixx" />
@@ -626,7 +627,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NNetModelCommands.h" />
-    <ClInclude Include="SignalPreview.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeGraph.h" />
     <ClInclude Include="win32_monitorWindow.h" />

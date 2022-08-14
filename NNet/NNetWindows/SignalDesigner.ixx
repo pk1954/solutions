@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include <Windows.h>
-#include "SignalPreview.h"
 #include "NNetModelCommands.h"
 #include "win32_scale.h"
 #include "win32_graphicsWindow.h"
@@ -20,6 +19,7 @@ import SignalControl;
 import ComputeThread;
 import PixelTypes;
 import ArrowButton;
+import SignalPreview;
 
 using std::wstring;
 

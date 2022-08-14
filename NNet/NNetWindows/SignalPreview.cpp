@@ -1,10 +1,18 @@
 // SignalPreview.cpp 
 //
-// NNetModel
+// NNetWindows
 
+module;
+
+#include "Windows.h"
+#include "win32_BaseWindow.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
-#include "SignalPreview.h"
+#include "TimeGraph.h"
+
+module SignalPreview;
+
+import PixFpDimension;
 
 SignalPreview::SignalPreview
 (

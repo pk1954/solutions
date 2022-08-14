@@ -1,17 +1,18 @@
-// SignalPreview.h
+// SignalPreview.ixx
 //
 // NNetWindows
 
-#pragma once
+module;
 
+#include "win32_BaseWindow.h"
 #include "TimeGraph.h"
+
+export module SignalPreview;
 
 import MoreTypes;
 import PixFpDimension;
 
-class BaseWindow;
-
-class SignalPreview : public TimeGraph
+export class SignalPreview : public TimeGraph
 {
 public:
 	SignalPreview
