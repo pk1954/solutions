@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="Hertz.h" />
+    <ClInclude Include="Percent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AngleTypes.ixx" />

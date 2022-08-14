@@ -15,6 +15,9 @@
     <ClInclude Include="Hertz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Percent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextBuffer.cpp">

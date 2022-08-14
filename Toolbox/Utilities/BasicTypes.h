@@ -63,12 +63,3 @@ constexpr mV operator"" _mV(const long double d)
 
 template <> const wstring TypeAttribute<mV>::unit   = L"V";
 template <> const float   TypeAttribute<mV>::factor = 1.e3f;
-
-////////////// PERCENT /////////////////////////////////////
-
-using PERCENT = NamedType< short, struct PERCENT_Parameter >;
-
-PERCENT constexpr operator"" _PERCENT(unsigned long long ull)
-{
-	return PERCENT(Cast2Short(ull));
-}

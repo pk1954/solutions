@@ -95,7 +95,7 @@
     <ClCompile Include="win32_rootWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_stopwatch.cpp">
+    <ClCompile Include="Win32_Stopwatch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_thread.cpp">
