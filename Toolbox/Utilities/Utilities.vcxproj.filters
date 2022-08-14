@@ -18,9 +18,6 @@
     <ClInclude Include="VoltageType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MilliSecs.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextBuffer.cpp">
@@ -123,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Percent.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MilliSecs.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

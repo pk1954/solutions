@@ -9,11 +9,11 @@ module;
 #include "mmsystem.h"
 #include "BasicTypes.h"
 #include "Hertz.h"
-#include "MilliSecs.h"
 
 export module Win32_Sound;
 
 import MoreTypes;
+import MilliSecs;
 import SoundInterface;
 
 using std::wstring;

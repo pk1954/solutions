@@ -6,12 +6,12 @@ module;
 
 #include <string>
 #include "BasicTypes.h"
-#include "MilliSecs.h"
 #include "Hertz.h"
 
 export module SoundInterface;
 
 import Observable;
+import MilliSecs;
 
 using std::wstring;
 

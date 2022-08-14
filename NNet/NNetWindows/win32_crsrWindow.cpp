@@ -17,10 +17,10 @@ module;
 #include "Sensor.h"
 #include "win32_util.h"
 #include "VoltageType.h"
-#include "MilliSecs.h"
 
 module CrsrWindow;
 
+import MilliSecs;
 import TextBuffer;
 import MainWindow;
 

@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="Hertz.h" />
-    <ClInclude Include="MilliSecs.h" />
     <ClInclude Include="VoltageType.h" />
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +38,7 @@
     <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LineType.ixx" />
+    <ClCompile Include="MilliSecs.ixx" />
     <ClCompile Include="MoreTypes.ixx" />
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
