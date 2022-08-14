@@ -16,6 +16,7 @@
 import MoreTypes;
 import BoolOp;
 import Uniform2D;
+import SoundInterface;
 
 class Param;
 class NNetCommand;
@@ -31,8 +32,6 @@ class MicroMeterPntVector;
 class SignalGenerator;
 
 enum class ConnectionType;
-
-struct SoundDescr;
 
 using std::wcout;
 using std::wstring;

@@ -25,10 +25,6 @@ using std::to_wstring;
 using std::wstring;
 using std::bit_cast;
 
-class D2D_driver;
-
-struct IDWriteTextFormat;
-
 template <typename LogUnits>
 class Scale : public BaseScale
 {
