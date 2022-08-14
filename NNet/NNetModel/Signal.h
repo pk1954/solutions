@@ -8,6 +8,7 @@
 #include <math.h>    
 #include "SimulationTime.h"
 #include "NNetParameters.h"
+#include "VoltageType.h"
 
 import ObserverInterface;
 import MoreTypes;

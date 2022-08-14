@@ -8,6 +8,7 @@ module;
 #include "win32_BaseWindow.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
+#include "VoltageType.h"
 
 module SignalPreview;
 

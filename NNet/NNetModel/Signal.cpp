@@ -9,6 +9,7 @@
 #include "BaseKnot.h"
 #include "SignalSource.h"
 #include "Signal.h"
+#include "VoltageType.h"
 
 import Util;
 import IoConstants;

@@ -6,6 +6,7 @@
 
 #include "win32_scale.h"
 #include "win32_baseWindow.h"
+#include "VoltageType.h"
 
 import MoreTypes;
 import PixelTypes;

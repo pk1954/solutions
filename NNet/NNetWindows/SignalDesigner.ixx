@@ -9,6 +9,7 @@ module;
 #include "NNetModelCommands.h"
 #include "win32_scale.h"
 #include "win32_graphicsWindow.h"
+#include "VoltageType.h"
 
 export module SignalDesigner;
 

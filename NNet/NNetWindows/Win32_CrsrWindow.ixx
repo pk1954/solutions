@@ -9,6 +9,7 @@ module;
 #include "Hertz.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_textWindow.h"
+#include "VoltageType.h"
 
 export module CrsrWindow;
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_map>
 #include "ParameterType.h"
+#include "VoltageType.h"
 
 using std::unordered_map;
 

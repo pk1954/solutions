@@ -11,6 +11,7 @@ module;
 #include "MonitorData.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
+#include "VoltageType.h"
 
 export module MonitorControl;
 

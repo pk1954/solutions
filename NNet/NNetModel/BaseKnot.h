@@ -7,6 +7,7 @@
 #include "PipeList.h"
 #include "Pipe.h"
 #include "Nob.h"
+#include "VoltageType.h"
 
 import MoreTypes;
 import CircleType;

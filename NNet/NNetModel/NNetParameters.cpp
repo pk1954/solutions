@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include "NNetParameters.h"
+#include "VoltageType.h"
 
 import SpeedType;
 

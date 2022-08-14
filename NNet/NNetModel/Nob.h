@@ -11,6 +11,7 @@
 #include "MicroMeterPosDir.h"
 #include "NobType.h"
 #include "NobId.h"
+#include "VoltageType.h"
 
 import BoolOp;
 import MoreTypes;

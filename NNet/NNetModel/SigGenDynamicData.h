@@ -5,6 +5,7 @@
 #pragma once
 
 #include "BasicTypes.h"
+#include "VoltageType.h"
 
 import MoreTypes;
 

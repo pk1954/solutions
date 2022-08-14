@@ -13,6 +13,7 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
+#include "VoltageType.h"
 
 module SignalDesigner;
 

@@ -9,6 +9,7 @@
 #include "UPNobList.h"
 #include "DrawContext.h"
 #include "Sensor.h"
+#include "VoltageType.h"
 
 using std::endl;
 

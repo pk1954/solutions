@@ -12,6 +12,7 @@
 #include "IoLine.h"
 #include "Pipe.h"
 #include "Neuron.h"
+#include "VoltageType.h"
 
 using std::fixed;
 using std::wstring;

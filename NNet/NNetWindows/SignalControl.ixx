@@ -8,6 +8,7 @@ module;
 #include "SignalGenerator.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
+#include "VoltageType.h"
 
 export module SignalControl;
 

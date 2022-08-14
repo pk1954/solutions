@@ -9,6 +9,7 @@
 #include "SimulationTime.h"
 #include "SignalGenerator.h"
 #include "SigGenDynamicData.h"
+#include "VoltageType.h"
 
 void SigGenDynamicData::Reset()
 {

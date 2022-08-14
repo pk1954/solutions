@@ -7,6 +7,7 @@
 #include <vector>
 #include "Pipe.h"
 #include "SignalSource.h"
+#include "VoltageType.h"
 
 class DrawContext;
 

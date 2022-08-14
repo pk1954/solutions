@@ -9,6 +9,7 @@
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Pipe.h"
+#include "VoltageType.h"
 
 import Geometry;
 import IoConstants;

@@ -11,6 +11,7 @@
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
 #include "WrapVoltage.h"
+#include "VoltageType.h"
 
 import IoConstants;
 import ErrHndl;

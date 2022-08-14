@@ -8,6 +8,7 @@
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
+#include "VoltageType.h"
 
 import ObserverInterface;
 import MoreTypes;

@@ -11,6 +11,7 @@
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 #include "MicroMeterPntVector.h"
+#include "VoltageType.h"
 
 import MoreTypes;
 

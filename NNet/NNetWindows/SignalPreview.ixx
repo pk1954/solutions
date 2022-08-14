@@ -5,6 +5,7 @@
 module;
 
 #include "win32_BaseWindow.h"
+#include "VoltageType.h"
 
 export module SignalPreview;
 

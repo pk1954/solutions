@@ -5,6 +5,7 @@
 #pragma once
 
 #include <iostream>
+#include "VoltageType.h"
 
 import Observable;
 import MoreTypes;

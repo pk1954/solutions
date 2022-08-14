@@ -5,6 +5,7 @@
 #pragma once
 
 #include "NNetWrapperBase.h"
+#include "VoltageType.h"
 
 class WrapSignalData : public NNetWrapperBase 
 {

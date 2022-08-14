@@ -13,6 +13,7 @@ module;
 #include "NNetColors.h"
 #include "SimulationTime.h"
 #include "MonitorData.h"
+#include "VoltageType.h"
 
 module MonitorControl;
 

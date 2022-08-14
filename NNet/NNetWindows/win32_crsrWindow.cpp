@@ -16,6 +16,7 @@ module;
 #include "Signal.h"
 #include "Sensor.h"
 #include "win32_util.h"
+#include "VoltageType.h"
 
 module CrsrWindow;
 

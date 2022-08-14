@@ -8,6 +8,7 @@
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Nob.h"
+#include "VoltageType.h"
 
 import Debug;
 
