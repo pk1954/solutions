@@ -1,10 +1,13 @@
-// win32_messagePump.cpp
+// Win32_MessagePump.cpp
 //
 // win32_utilities
 
+module;
+
 #include <cassert>
 #include "Windows.h"
-#include "win32_messagePump.h"
+
+module MessagePump;
 
 void MessagePump::SetAccelTable(HINSTANCE const hInstance, int const idResource)
 {

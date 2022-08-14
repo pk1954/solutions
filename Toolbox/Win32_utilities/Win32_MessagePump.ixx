@@ -1,20 +1,23 @@
-// win32_messagePump.h
+// Win32_MessagePump.ixx
 //
 // win32_utilities
 
-#pragma once
+module;
 
+#include "Windows.h"
 #include <vector>
+
+export module MessagePump;
 
 using std::vector;
 
-class MessagePump
+export class MessagePump
 {
 public:
 	void SetAccelTable(HINSTANCE const, int const);
 
 	void RegisterWindow(HWND const, bool const);
-	
+
 	int Run();
 
 private:

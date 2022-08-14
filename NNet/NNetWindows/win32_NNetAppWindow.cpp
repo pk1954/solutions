@@ -22,7 +22,6 @@
 #include "win32_baseWindow.h"
 #include "NNetCommand.h"
 #include "ConnAnimationCommand.h"
-#include "win32_messagePump.h"
 
 // scripting and tracing
 
@@ -57,6 +56,7 @@ import NNetInputOutputUI;
 import NNetWrappers;
 import FatalError;
 import TimeGraph;
+import MessagePump;
 
 using std::wcout;
 using std::wstring;
