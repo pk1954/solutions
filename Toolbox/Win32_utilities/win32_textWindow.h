@@ -11,7 +11,6 @@ import Win32_TextBuffer;
 using std::unique_ptr;
 
 class TextWindowThread;
-class RefreshTimer;
 
 class TextWindow : public BaseWindow
 {
@@ -40,7 +39,6 @@ private:
 
 	unique_ptr<TextWindowThread> m_upTextWindowThread;
 
-	RefreshTimer * m_pRefreshTimer { nullptr };
-    HDC            m_hDC_Memory    { nullptr };
-	HBITMAP        m_hBitmap       { nullptr };
+    HDC     m_hDC_Memory    { nullptr };
+	HBITMAP m_hBitmap       { nullptr };
 };
