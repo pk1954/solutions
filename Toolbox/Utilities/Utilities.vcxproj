@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="Hertz.h" />
-    <ClInclude Include="Percent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AngleTypes.ixx" />
@@ -42,6 +41,7 @@
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
+    <ClCompile Include="Percent.ixx" />
     <ClCompile Include="PixelTypes.ixx" />
     <ClCompile Include="PixFpDimension.ixx" />
     <ClCompile Include="PointType.ixx" />
