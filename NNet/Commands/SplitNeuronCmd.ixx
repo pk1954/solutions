@@ -1,8 +1,8 @@
-// SplitNeuronCmd.h
+// SplitNeuronCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
@@ -11,13 +11,15 @@
 #include "InputLine.h"
 #include "OutputLine.h"
 
+export module SplitNeuronCmd;
+
 using std::unique_ptr;
 
-class SplitNeuronCmd : public NNetCommand
+export class SplitNeuronCmd : public NNetCommand
 {
 public:
     explicit SplitNeuronCmd(NobId const id)
-      : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
+        : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
     {
         MicroMeterPnt umPos { m_neuron.GetPos() };
         m_upInputLine  = make_unique<InputLine >(m_pNMWI->StdSigGen(), umPos);

@@ -6,7 +6,6 @@
 #include "NNetModelWriterInterface.h"
 #include "DeleteIoConnectorCmd.h"
 #include "DiscIoConnectorCmd.h"
-#include "SplitNeuronCmd.h"
 #include "NNetCommand.h"
 #include "NobType.h"
 #include "IoConnector.h"
@@ -16,6 +15,7 @@
 
 import DeleteBaseKnotCmd;
 import DeletePipeCommand;
+import SplitNeuronCmd;
 
 unique_ptr<NNetCommand> MakeDeleteCommand
 (
