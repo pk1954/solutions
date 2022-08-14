@@ -5,23 +5,16 @@
 #pragma once
 
 #include <cassert>
-#include <string>
-#include <sstream>
 #include <iostream>
 #include "Windows.h"
 #include "BasicTypes.h"
 #include "Script.h"
 
-import BoolOp;
 import NamedType;
 import MoreTypes;
 import PixelTypes;
 
-using std::wostringstream;
 using std::wostream;
-using std::wstring;
-using std::wcout;
-using std::endl;
 
 namespace Util
 {
