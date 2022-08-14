@@ -1,12 +1,14 @@
-// SingleNobAnimation.h
+// SingleNobAnimation.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
+
+export module SingleNobAnimation;
 
 import MoreTypes;
 import Command;
@@ -14,7 +16,7 @@ import Animation;
 
 using std::function;
 
-class SingleNobAnimation : public Command
+export class SingleNobAnimation : public Command
 {
     using ANIM_TYPE = MicroMeterPosDir;
     using ANIMATION = Animation<ANIM_TYPE>;
@@ -24,7 +26,7 @@ public:
         Nob             & animated,
         ANIM_TYPE const & target
     )
-      : m_animated(animated),
+        : m_animated(animated),
         m_start(animated.GetPosDir()),
         m_target(target)
     {

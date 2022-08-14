@@ -7,11 +7,11 @@
 #include "Nob.h"
 #include "Neuron.h"
 #include "IoLine.h"
-#include "SingleNobAnimation.h"
 #include "NNetCommand.h"
 #include "PlugIoLines.h"
 
 import MoreTypes;
+import SingleNobAnimation;
 
 class RootWindow;
 class NNetModelWriterInterface;

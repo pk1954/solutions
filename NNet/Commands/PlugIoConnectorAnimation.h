@@ -7,10 +7,10 @@
 #include "Nob.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
-#include "SingleNobAnimation.h"
 #include "PlugIoConnectors.h"
 
 import MoreTypes;
+import SingleNobAnimation;
 
 class RootWindow;
 class NNetModelWriterInterface;
