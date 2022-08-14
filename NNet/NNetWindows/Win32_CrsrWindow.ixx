@@ -10,6 +10,7 @@ module;
 #include "NNetModelReaderInterface.h"
 #include "win32_textWindow.h"
 #include "VoltageType.h"
+#include "MilliSecs.h"
 
 export module CrsrWindow;
 

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
     <ClInclude Include="Hertz.h" />
+    <ClInclude Include="MilliSecs.h" />
     <ClInclude Include="VoltageType.h" />
   </ItemGroup>
   <ItemGroup>

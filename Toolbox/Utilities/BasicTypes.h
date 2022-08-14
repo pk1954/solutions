@@ -29,15 +29,6 @@ constexpr fMicroSecs operator"" _MicroSecs(const long double d)
 template <> const wstring TypeAttribute<fMicroSecs>::unit   = L"s";
 template <> const float   TypeAttribute<fMicroSecs>::factor = 1.e6f;
 
-////////////// MilliSecs /////////////////////////////////////
-
-using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
-
-constexpr MilliSecs operator"" _MilliSecs(const unsigned long long d)
-{
-	return MilliSecs(Cast2UnsignedLong(d));
-}
-
 ////////////// MicroMeter /////////////////////////////////////
 
 using MicroMeter = NamedType< float, struct MicroMeter_Parameter >;

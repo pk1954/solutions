@@ -9,6 +9,7 @@ module;
 #include "mmsystem.h"
 #include "BasicTypes.h"
 #include "Hertz.h"
+#include "MilliSecs.h"
 
 export module Win32_Sound;
 
@@ -35,7 +36,7 @@ public:
 			IsOn() && desc.m_bOn && 
 			(desc.m_frequency >= 37_Hertz) &&  // winapi limit 37 Hertz
 			(desc.m_duration > 0_MilliSecs) 
-			) 
+		   ) 
 		{
 			::Beep(static_cast<DWORD>(desc.m_frequency.GetValue()), static_cast<DWORD>(desc.m_duration.GetValue()));
 		}
