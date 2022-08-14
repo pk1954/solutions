@@ -72,19 +72,3 @@ PERCENT constexpr operator"" _PERCENT(unsigned long long ull)
 {
 	return PERCENT(Cast2Short(ull));
 }
-
-////////////// Hertz //////////////////////////////////////////
-
-using Hertz = NamedType< unsigned long, struct Hertz_Parameter >;
-
-Hertz constexpr operator"" _Hertz(unsigned long long ull)
-{
-	return Hertz(Cast2UnsignedLong(ull));
-}
-
-static microseconds SpikeTimeMax(Hertz const freq)
-{
-	return (freq.GetValue() == 0) 
-		? microseconds((numeric_limits<long long>::max)())
-		: microseconds(1000000L / freq.GetValue());
-}

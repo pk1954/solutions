@@ -8,6 +8,7 @@ module;
 #include "Windows.h"
 #include "mmsystem.h"
 #include "BasicTypes.h"
+#include "Hertz.h"
 
 export module Win32_Sound;
 

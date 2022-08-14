@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
+    <ClInclude Include="Hertz.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AngleTypes.ixx" />

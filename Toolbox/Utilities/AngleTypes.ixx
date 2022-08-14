@@ -5,6 +5,7 @@
 module;
 
 #include "BasicTypes.h"
+#include "Hertz.h"
 
 export module AngleTypes;
 
@@ -23,8 +24,8 @@ export inline float const INV_RADIAN_FACTOR { 1.0f/RADIAN_FACTOR };
 export Radian  Degrees2Radian(Degrees const d) { return Radian (d.GetValue() * INV_RADIAN_FACTOR); }
 export Degrees Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }
 
-export Radian  Normalize(Radian  const & r) { return Radian (fmod(fabs(r.GetValue()), RADIAN_FACTOR * 2.0f)); }
-export Degrees Normalize(Degrees const & d) { return Degrees(fmod(fabs(d.GetValue()), 360.0f)); }
+export Radian  Normalize(Radian  const & r) { return Radian (fmodf(fabsf(r.GetValue()), RADIAN_FACTOR * 2.0f)); }
+export Degrees Normalize(Degrees const & d) { return Degrees(fmodf(fabsf(d.GetValue()), 360.0f)); }
 
-export MicroMeter Cos(Radian const r) { return MicroMeter(cos(r.GetValue())); } 
-export MicroMeter Sin(Radian const r) { return MicroMeter(sin(r.GetValue())); } 
+export MicroMeter Cos(Radian const r) { return MicroMeter(cosf(r.GetValue())); } 
+export MicroMeter Sin(Radian const r) { return MicroMeter(sinf(r.GetValue())); } 

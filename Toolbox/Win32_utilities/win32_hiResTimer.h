@@ -8,6 +8,7 @@
 #include <chrono>
 #include <Windows.h>
 #include "BasicTypes.h"
+#include "Hertz.h"
 
 import NamedType;
 import MoreTypes;
