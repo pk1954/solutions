@@ -35,7 +35,6 @@
 #include "SelSigGenClientsCmd.h"
 #include "SetSigGenStaticDataCmd.h"
 #include "SetParameterCommand.h"
-#include "SetNobCommand.h"
 #include "SetActiveSigGenCmd.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
@@ -64,6 +63,7 @@ import SelectionCommand;
 import InsertTrackCommand;
 import SplitNeuronCmd;
 import SizeSelectionCmd;
+import SetNobCommand;
 
 using std::wcout;
 using std::endl;

@@ -1,8 +1,8 @@
-// SetNobCommand.h
+// SetNobCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
@@ -11,17 +11,19 @@
 #include "NobId.h"
 #include "Nob.h"
 
+export module SetNobCommand;
+
 import MoreTypes;
 
-class SetNobCommand : public NNetCommand
+export class SetNobCommand : public NNetCommand
 {
 public:
 	SetNobCommand
 	(
-		Nob                & nob, 
+		Nob                  & nob, 
 		MicroMeterPosDir const posDir
 	)
-      : m_nob(nob),
+	  : m_nob(nob),
 		m_posDir(posDir)
 	{}
 
@@ -39,5 +41,5 @@ public:
 
 private:
 	MicroMeterPosDir const m_posDir;
-	Nob                & m_nob;
+	Nob                  & m_nob;
 };
