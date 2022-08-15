@@ -93,7 +93,6 @@
     <ClInclude Include="AttachSigGen2LineCmd.h" />
     <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
-    <ClInclude Include="InsertBaseKnotCommand.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="RotateNobCommand.h" />
     <ClInclude Include="SelectNobCommand.h" />
@@ -137,6 +136,7 @@
     <ClCompile Include="DeleteSelectionCommand.ixx" />
     <ClCompile Include="DeleteSigGenCmd.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
+    <ClCompile Include="InsertBaseKnotCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />
     <ClCompile Include="MoveNobCommand.ixx" />

@@ -1,17 +1,20 @@
-// InsertBaseKnotCommand.h
+// InsertBaseKnotCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
-#include "NNetCommand.h"
+#include "Pipe.h"
 #include "BaseKnot.h"
+#include "NNetCommand.h"
+
+export module InsertBaseKnotCommand;
 
 import MoreTypes;
 
-template <BaseKnot_t T>
+export template <BaseKnot_t T>
 class InsertBaseKnotCommand : public NNetCommand
 {
 public:

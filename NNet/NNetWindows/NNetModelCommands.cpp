@@ -19,7 +19,6 @@
 #include "DeleteSignalCommand.h"
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
-#include "InsertBaseKnotCommand.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
@@ -64,6 +63,7 @@ import SetNobCommand;
 import SetSigGenStaticDataCmd;
 import AnalyzeCommand;
 import MoveSelectionCommand;
+import InsertBaseKnotCommand;
 
 using std::wcout;
 using std::endl;
