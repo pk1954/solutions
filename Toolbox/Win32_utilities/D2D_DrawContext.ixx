@@ -1,10 +1,12 @@
-// D2D_DrawContext.h
+// D2D_DrawContext.ixx
 //
 // Win32_utilities
 
-#pragma once
+module;
 
 #include "DrawContext.h"
+
+export module D2D_DrawContext;
 
 import Direct2D;
 import MoreTypes;
@@ -13,7 +15,7 @@ import PixelTypes;
 using std::wstring;
 using D2D1::ColorF;
 
-class D2D_DrawContext: public DrawContext
+export class D2D_DrawContext: public DrawContext
 {
 public:
 

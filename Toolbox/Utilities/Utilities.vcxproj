@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
+    <ClInclude Include="DrawContext.h" />
     <ClInclude Include="Hertz.h" />
     <ClInclude Include="VoltageType.h" />
   </ItemGroup>

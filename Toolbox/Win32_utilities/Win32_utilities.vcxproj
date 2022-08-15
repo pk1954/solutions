@@ -160,7 +160,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D2D_DrawContext.h" />
     <ClInclude Include="Win32_PIXEL.h" />
     <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
@@ -174,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D2D_DrawContext.cpp" />
+    <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
     <ClCompile Include="Win32_ActionTimer.ixx" />

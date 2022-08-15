@@ -1,13 +1,20 @@
-// DrawContext.cpp
+// D2D_DrawContext.cpp
 //
 // Win32_utilities
 
+module;
+
 #include <string>
-#include "D2D_DrawContext.h"
+#include <algorithm>
+#include "BasicTypes.h"
+
+module D2D_DrawContext;
 
 import Direct2D;
 
 using std::wstring;
+using D2D1::ColorF;
+using std::max;
 
 void D2D_DrawContext::Start(D2D_driver * const pGraphics)
 {
