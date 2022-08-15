@@ -159,13 +159,13 @@
     <ClCompile Include="Win32_NNetAppMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SignalPreview.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TimeGraph.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_MainWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

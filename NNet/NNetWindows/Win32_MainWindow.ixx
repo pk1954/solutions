@@ -1,11 +1,13 @@
-// MainWindow.ixx
+// Win32_MainWindow.ixx
 //
 // NNetWindows
 
 module;
 
+#include <Windows.h>
 #include "Resource.h"
 #include "BaseKnot.h"
+#include "UPNobList.h"
 #include "MicroMeterPntVector.h"
 #include "ConnAnimationCommand.h"
 #include "NNetModelCommands.h"
@@ -15,6 +17,7 @@ module;
 export module MainWindow;
 
 import ActionTimer;
+import PixelTypes;
 
 using std::unique_ptr;
 
