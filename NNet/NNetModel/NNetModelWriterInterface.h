@@ -5,20 +5,30 @@
 #pragma once
 
 #include <string>
-#include "ParameterType.h"
+#include <cassert>
+#include <xutility>
+#include "BaseKnot.h"
+#include "DescriptionUI.h"
 #include "IoLine.h"
+#include "MicroMeterPntVector.h"
+#include "MonitorData.h"
+#include "Nob.h"
 #include "NobId.h"
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
+#include "NNetParameters.h"
+#include "ParameterType.h"
+#include "Pipe.h"
+#include "SignalGenerator.h"
+#include "UPNobList.h"
+#include "UPSensorList.h"
+#include "UPSigGenList.h"
 
 import BoolOp;
 import MoreTypes;
 
-class Pipe;
-class BaseKnot;
-class MicroMeterPntVector;
-
 using std::unique_ptr;
+using std::string;
 using std::move;
 
 class NNetModelWriterInterface : public NNetModelReaderInterface

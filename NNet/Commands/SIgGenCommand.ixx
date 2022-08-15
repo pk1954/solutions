@@ -7,6 +7,7 @@ module;
 #include "Resource.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
+#include "UPSigGenList.h"
 
 export module SigGenCommand;
 

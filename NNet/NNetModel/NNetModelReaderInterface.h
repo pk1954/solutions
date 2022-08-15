@@ -6,18 +6,31 @@
 
 #pragma once
 
-#include "NobType.h"
+#include <string>
+#include "BasicTypes.h"
+#include "MonitorData.h"
+#include "Nob.h"
 #include "NobId.h"
+#include "NobType.h"
 #include "NNetModel.h"
+#include "NNetParameters.h"
 #include "Pipe.h"
+#include "Sensor.h"
+#include "Signal.h"
+#include "SignalGenerator.h"
 #include "tHighlightType.h"
+#include "UPNobList.h"
+#include "UPSensorList.h"
+#include "UPSigGenList.h"
+#include "VoltageType.h"
 
 import MoreTypes;
+import AngleTypes;
 import SoundInterface;
 
-class Nob;
-
 #define DUMP() DumpModel(__FILE__, __LINE__)
+
+using std::wstring;
 
 enum class ConnectionType
 {

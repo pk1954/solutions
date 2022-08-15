@@ -4,6 +4,7 @@
 
 module;
 
+#include "Nob.h"
 #include "Pipe.h"
 #include "Knot.h"
 #include "NNetModelWriterInterface.h"

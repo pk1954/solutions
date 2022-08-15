@@ -9,16 +9,13 @@
 #include <string>
 #include <vector>
 #include "NNetModel.h"
+#include "Knot.h"
+#include "Nob.h"
+#include "NNetModelReaderInterface.h"
 
 import DisplayFunctor;
 
-class Knot;
-class Nob;
-class NNetModelReaderInterface;
-class NNetModelWriterInterface;
-
 using std::vector;
-using std::wostream;
 using std::wstring;
 
 using NobStack = vector<Nob const *>;

@@ -4,6 +4,8 @@
 
 module;
 
+#include "Nob.h"
+#include "NobId.h"
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 
