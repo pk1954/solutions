@@ -578,7 +578,7 @@
     <ClCompile Include="ComputeThread.ixx" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="Measurement.ixx" />
-    <ClCompile Include="MomitorControl.ixx" />
+    <ClCompile Include="MonitorControl.ixx" />
     <ClCompile Include="MonitorControl.cpp" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetModelCommands.cpp" />

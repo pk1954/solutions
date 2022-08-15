@@ -141,7 +141,7 @@
     <ClCompile Include="NNetController.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MomitorControl.ixx">
+    <ClCompile Include="MonitorControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetInputOutputUI.ixx">

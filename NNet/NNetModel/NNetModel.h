@@ -86,16 +86,18 @@ public:
 
     // access functions to members 
 
-	UPSigGenList const & GetSigGenList()  const { return m_sigGenList; }
-	UPSigGenList       & GetSigGenList()        { return m_sigGenList; }
-	UPSensorList const & GetSensorList()  const { return m_sensorList; }
-	UPSensorList       & GetSensorList()        { return m_sensorList; }
-	UPNobList    const & GetUPNobs()      const { return m_Nobs; }
-	UPNobList          & GetUPNobs()            { return m_Nobs; }
-	MonitorData  const & GetMonitorData() const { return m_monitorData; }
-	MonitorData        & GetMonitorData()       { return m_monitorData; }
-	Param        const & GetParams()      const { return m_param; }
-	Param              & GetParams()            { return m_param; }
+	UPSigGenList const & GetSigGenList()       const { return m_sigGenList; }
+	UPSigGenList       & GetSigGenList()             { return m_sigGenList; }
+	UPSensorList const & GetSensorList()       const { return m_sensorList; }
+	UPSensorList       & GetSensorList()             { return m_sensorList; }
+	UPNobList    const & GetUPNobs()           const { return m_Nobs; }
+	UPNobList          & GetUPNobs()                 { return m_Nobs; }
+	MonitorData  const & GetMonitorData()      const { return m_monitorData; }
+	MonitorData        & GetMonitorData()            { return m_monitorData; }
+	Param        const & GetParams()           const { return m_param; }
+	Param              & GetParams()                 { return m_param; }
+	NobId                GetTargetNobId()      const { return m_nobTarget; }
+	NobId                GetHighlightedNobId() const { return m_nobHighlighted; }
 
 	// non const functions
 
@@ -113,6 +115,8 @@ public:
 	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }
 	void SetDescriptionUI    (DescriptionUI & i)    { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable(Observable * obs)     { m_monitorData.SetHighSigObservable(obs); }
+	void SetTargetNobId      (NobId const id)       { m_nobTarget      = id; }
+	void SetHighlightedNobId (NobId const id)       { m_nobHighlighted = id; }
 
 private:
 
@@ -123,4 +127,6 @@ private:
 	MonitorData      m_monitorData;
 	Param            m_param;
 	wstring          m_wstrModelFilePath { L"" };
+	NobId            m_nobHighlighted    { NO_NOB };
+	NobId            m_nobTarget         { NO_NOB };
 };

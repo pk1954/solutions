@@ -69,11 +69,13 @@ public:
     void  SelectSubtree(BaseKnot & baseKnot, bool  const b) { m_pModel->SelectSubtree(baseKnot, b); }
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
-    void  SetDescriptionUI   (DescriptionUI  & ui  ) { m_pModel->SetDescriptionUI(ui); }
-    void  SetModelFilePath   (wstring  const & wstr) { m_pModel->SetModelFilePath  (wstr); }
-    void  AddDescriptionLine (wstring  const & wstr) { m_pModel->AddDescriptionLine(wstr); }
+    void  SetDescriptionUI   (DescriptionUI  & ui  ) { m_pModel->SetDescriptionUI   (ui); }
+    void  SetModelFilePath   (wstring  const & wstr) { m_pModel->SetModelFilePath   (wstr); }
+    void  AddDescriptionLine (wstring  const & wstr) { m_pModel->AddDescriptionLine (wstr); }
     void  DescriptionComplete()                      { m_pModel->DescriptionComplete(); }
-    void  DeselectAllNobs    () const                { m_pModel->DeselectAllNobs(); }
+    void  DeselectAllNobs    () const                { m_pModel->DeselectAllNobs    (); }
+    void  SetTargetNobId     (NobId const id)        { m_pModel->SetTargetNobId     (id); }
+    void  SetHighlightedNobId(NobId const id)        { m_pModel->SetHighlightedNobId(id); }
 
     void AddOutgoing   (NobId const id, Pipe & pipe) { GetBaseKnot(id).AddOutgoing   (pipe); }
     void AddIncoming   (NobId const id, Pipe & pipe) { GetBaseKnot(id).AddIncoming   (pipe); }

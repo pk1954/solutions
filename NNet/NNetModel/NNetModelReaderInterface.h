@@ -98,6 +98,8 @@ public:
 	Sensor          const * GetSensorSelectedC()                   const { return m_pModel->GetSensorList().GetSensorSelected(); }
 	SensorId                GetSensorIdSelected()                  const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
 	bool                    IsAnySensorSelected()                  const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
+	NobId                   GetTargetNobId     ()                  const { return m_pModel->GetTargetNobId     (); }
+	NobId                   GetHighlightedNobId()                  const { return m_pModel->GetHighlightedNobId(); }
 
 	bool IsAnyNeuron(NobId const id) const 
 	{
