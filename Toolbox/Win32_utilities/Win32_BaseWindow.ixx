@@ -23,6 +23,8 @@ export class BaseWindow : public RootWindow
 {
 public:
 
+	~BaseWindow() override = default;
+
 	HWND StartBaseWindow
 	(
 		HWND      const, 

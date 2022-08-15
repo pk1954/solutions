@@ -20,6 +20,7 @@ class GraphicsWindow : public BaseWindow
 {
 public:
 	GraphicsWindow() = default;
+	~GraphicsWindow() override = default;
 
 	virtual void Stop();
 

@@ -2,9 +2,9 @@
 //
 // NNetModel
 
-#include "DrawContext.h"
 #include "SimulationTime.h"
 #include "UPNobList.h"
+#include "DrawContext.h"
 #include "NNetColors.h"
 #include "BaseKnot.h"
 #include "SignalSource.h"

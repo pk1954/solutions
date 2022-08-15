@@ -37,7 +37,7 @@ class RootWindow : public ObserverInterface
 public:
 
     RootWindow();
-    ~RootWindow() override;
+    virtual ~RootWindow() override;
 
 	void StartRootWindow(VisCrit const &);
 
