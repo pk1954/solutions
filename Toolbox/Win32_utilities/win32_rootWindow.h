@@ -9,7 +9,8 @@
 #include <sstream>
 #include <chrono>
 #include <vector>
-#include "windowsx.h"
+#include <Windows.h>
+#include <windowsx.h>
 #include "CommCtrl.h"
 #include "win32_util.h"
 #include "Win32_PIXEL.h"

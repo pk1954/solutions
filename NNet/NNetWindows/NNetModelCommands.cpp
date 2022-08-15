@@ -20,7 +20,6 @@
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
 #include "InsertBaseKnotCommand.h"
-#include "MoveSelectionCommand.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
@@ -64,6 +63,7 @@ import SizeSelectionCmd;
 import SetNobCommand;
 import SetSigGenStaticDataCmd;
 import AnalyzeCommand;
+import MoveSelectionCommand;
 
 using std::wcout;
 using std::endl;
