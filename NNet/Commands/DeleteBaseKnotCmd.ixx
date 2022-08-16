@@ -13,6 +13,8 @@ module;
 
 export module DeleteBaseKnotCmd;
 
+import PixelTypes;
+
 using std::vector;
 using std::unique_ptr;
 

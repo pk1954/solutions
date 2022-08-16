@@ -4,17 +4,19 @@
 
 #pragma once
 
-#include <exception>
 #include <vector>
-#include "Signal.h"
+#include <algorithm>
 #include "Track.h"
+#include "TrackNr.h"
 #include "SignalId.h"
+#include "Signal.h"
+#include "BasicTypes.h"
 
 import Observable;
 import NamedType;
 
 using std::vector;
-using std::exception;
+using std::unique_ptr;
 using std::ranges::any_of;
 
 class MonitorData

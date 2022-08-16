@@ -4,13 +4,19 @@
 
 module;
 
+#include <Windows.h>
 #include "Resource.h"
 #include "NNetColors.h"
+#include "DrawContext.h"
 #include "NNetParameters.h"
+#include "win32_NNetWindow.h"
 
 module MiniWindow;
 
 import MoreTypes;
+import PixelTypes;
+import MainWindow;
+import NNetController;
 import MainWindow;
 
 void MiniWindow::Start

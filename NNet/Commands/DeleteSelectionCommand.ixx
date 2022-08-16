@@ -7,12 +7,15 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "CommandFunctions.h"
 #include "NobIdList.h"
+#include "UPNobList.h"
 #include "CommandStack.h"
 #include "NNetCommand.h"
 
 export module DeleteSelectionCommand;
 
 import MoreTypes;
+
+using std::unique_ptr;
 
 export class DeleteSelectionCommand : public NNetCommand
 {

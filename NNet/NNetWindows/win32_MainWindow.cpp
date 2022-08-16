@@ -5,29 +5,39 @@
 module;
 
 #include <unordered_map>
+#include <Windows.h>
+#include <string>
 #include "Resource.h"
 #include "Signal.h"
 #include "MicroMeterPntVector.h"
+#include "NobId.h"
 #include "Knot.h"
 #include "Neuron.h"
+#include "UPNobList.h"
 #include "IoConnector.h"
 #include "NobException.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
+#include "DrawContext.h"
 #include "win32_util.h"
 #include "win32_util_resource.h"
+#include "win32_rootWindow.h"
 #include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
 
 module MainWindow;
 
+import Observable;
 import MoreTypes;
+import PixelTypes;
 import Command;
 import ActionTimer;
 import FatalError;
 import NNetController;
 import Preferences;
+import Uniform2D;
+import FatalError;
 
 using std::unordered_map;
 using std::unique_ptr;

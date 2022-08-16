@@ -6,9 +6,13 @@
 
 #include <vector>
 #include <math.h>    
+#include "BaseKnot.h"
+#include "UPNobList.h"
 #include "SimulationTime.h"
 #include "NNetParameters.h"
 #include "VoltageType.h"
+#include "SignalSource.h"
+#include "DrawContext.h"
 
 import ObserverInterface;
 import MoreTypes;
@@ -18,14 +22,6 @@ using std::unique_ptr;
 
 using SIG_INDEX = long;
 using SIMU_TIME = fMicroSecs;
-
-class Param;
-class Signal;
-class BaseKnot;
-class UPNobList;
-class DrawContext;
-class SignalSource;
-class NNetModelReaderInterface;
 
 class Signal : public ObserverInterface  // observes signal source 
 {
