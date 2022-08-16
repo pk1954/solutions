@@ -91,7 +91,6 @@
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
     <ClInclude Include="AttachSigGen2LineCmd.h" />
-    <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="DiscIoConnectorCmd.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="RotateNobCommand.h" />
@@ -135,6 +134,7 @@
     <ClCompile Include="DeletePipeCommand.ixx" />
     <ClCompile Include="DeleteSelectionCommand.ixx" />
     <ClCompile Include="DeleteSigGenCmd.ixx" />
+    <ClCompile Include="DeleteSignalCommand.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="InsertBaseKnotCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />

@@ -16,7 +16,6 @@
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
 #include "CopySelectedNobs.h"
-#include "DeleteSignalCommand.h"
 #include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
@@ -64,6 +63,7 @@ import SetSigGenStaticDataCmd;
 import AnalyzeCommand;
 import MoveSelectionCommand;
 import InsertBaseKnotCommand;
+import DeleteSignalCommand;
 
 using std::wcout;
 using std::endl;
