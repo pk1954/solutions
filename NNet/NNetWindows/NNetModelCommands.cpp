@@ -23,7 +23,6 @@
 #include "PlugIoLineAnimation.h"
 #include "RenameSigGenCmd.h"
 #include "RestrictSelectionCommand.h"
-#include "RotateNobCommand.h"
 #include "RotateModelCommand.h"
 #include "RotateSelectionCommand.h"
 #include "SelectNobCommand.h"
@@ -64,6 +63,7 @@ import AnalyzeCommand;
 import MoveSelectionCommand;
 import InsertBaseKnotCommand;
 import DeleteSignalCommand;
+import RotateNobCommand;
 
 using std::wcout;
 using std::endl;
