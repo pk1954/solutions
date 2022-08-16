@@ -4,15 +4,17 @@
 
 #pragma once
 
-#include "Script.h"
+#include <ostream>
+#include <functional>
 #include "Track.h"
 #include "TrackNr.h"
-#include "SignalId.h"
 
 import NamedType;
 import IoConstants;
 
 using std::vector;
+using std::function;
+using std::wostream;
 
 class SignalId
 {
