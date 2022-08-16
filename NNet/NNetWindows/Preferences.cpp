@@ -36,45 +36,45 @@ static wstring const PREF_OFF { L"OFF" };
 class WrapShowArrows: public WrapBase
 {
 public:
-    explicit WrapShowArrows(MainWindow & mainWin)
+    explicit WrapShowArrows(Preferences & pref)
       : WrapBase(L"ShowArrows"),
-        m_mainWin(mainWin)
+        m_pref(pref)
     {}
 
     void operator() (Script & script) const final
     {
-        m_mainWin.ShowArrows(static_cast<bool>(script.ScrReadUint()));
+        m_pref.SetArrows(static_cast<bool>(script.ScrReadUint()));
     }
 
     void Write(wostream & out) const final
     {
-        out << (m_mainWin.ArrowsVisible() ? PREF_ON : PREF_OFF);
+        out << (m_pref.ArrowsVisible() ? PREF_ON : PREF_OFF);
     }
 
 private:
-    MainWindow & m_mainWin;
+    Preferences & m_pref;
 };
 
 class WrapShowSensorPoints: public WrapBase
 {
 public:
-    explicit WrapShowSensorPoints(MainWindow & mainWin)
+    explicit WrapShowSensorPoints(Preferences & pref)
       : WrapBase(L"ShowSensorPoints"),
-        m_mainWin(mainWin)
+        m_pref(pref)
     {}
 
     void operator() (Script & script) const final
     {
-        m_mainWin.ShowSensorPoints(static_cast<bool>(script.ScrReadUint()));
+        m_pref.SetSensorPoints(static_cast<bool>(script.ScrReadUint()));
     }
 
     void Write(wostream & out) const final
     {
-        out << (m_mainWin.SensorsPointsVisible() ? PREF_ON : PREF_OFF);
+        out << (m_pref.SensorPointsVisible() ? PREF_ON : PREF_OFF);
     }
 
 private:
-    MainWindow & m_mainWin;
+    Preferences & m_pref;
 };
 
 class WrapSetAutoOpen: public WrapBase
@@ -175,8 +175,8 @@ public:
         HWND        const   hwndApp
     )
     : WrapBase(L"ReadModel"),
-        m_pPref(pPref),
-        m_modelIO(modelIO),
+      m_pPref(pPref),
+      m_modelIO(modelIO),
       m_hwndApp(hwndApp)
     {}
 
@@ -203,7 +203,6 @@ private:
 void Preferences::Initialize
 (
     DescriptionWindow & descWin,
-    MainWindow        & mainWin,
     Sound             & sound, 
     NNetModelIO       & modelIO,
     HWND                hwndApp
@@ -211,11 +210,13 @@ void Preferences::Initialize
 {
     static wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
+    m_hwndApp = hwndApp;
+
     m_wstrPreferencesFile = Util::GetCurrentDir();
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    m_prefVector.push_back(make_unique<WrapShowArrows>(mainWin));
-    m_prefVector.push_back(make_unique<WrapShowSensorPoints>(mainWin));
+    m_prefVector.push_back(make_unique<WrapShowArrows>(*this));
+    m_prefVector.push_back(make_unique<WrapShowSensorPoints>(*this));
     m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
     m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
     m_prefVector.push_back(make_unique<WrapSetSound>(sound));
@@ -246,6 +247,12 @@ bool Preferences::ReadPreferences() const
 void Preferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
 {
     m_pNMRI = pNMRI;
+}
+
+void Preferences::SetArrows(bool const bOn)
+{
+    m_bArrows = bOn;
+    SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, 0);
 }
 
 bool Preferences::WritePreferences() const

@@ -144,7 +144,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle      .Initialize(m_hwndApp);
-	m_preferences   .Initialize(m_descWindow, m_mainNNetWindow, m_sound, m_modelIO, m_hwndApp);
+	m_preferences   .Initialize(m_descWindow, m_sound, m_modelIO, m_hwndApp);
 	m_signalDesigner.Initialize
 	(
 		m_hwndApp, 
@@ -167,7 +167,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_statusBar        .SetRefreshRate(300ms);
 
-	m_appMenu          .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_mainNNetWindow);
+	m_appMenu          .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_preferences);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
@@ -186,6 +186,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_hwndApp, 
 		false,
 		30._fPixel,
+		m_preferences,
 		m_NNetController,
 		m_modelCommands,
 		m_cursorPosObservable,

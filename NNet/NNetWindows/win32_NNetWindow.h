@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <Windows.h>
 #include "Sensor.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_graphicsWindow.h"

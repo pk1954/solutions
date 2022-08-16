@@ -16,7 +16,7 @@ import ObserverInterface;
 import SoundInterface;
 import WinManager;
 import ComputeThread;
-import MainWindow;
+import Preferences;
 
 using std::wstring;
 using std::unique_ptr;
@@ -34,7 +34,7 @@ public:
 		WinManager    const &,
 		CommandStack  const &,
 		Sound         const &,
-		MainWindow    const &
+		Preferences   const &
 	);
 	void AdjustUndoRedo();
 	void Notify(bool const) final;
@@ -56,7 +56,7 @@ private:
 	HMENU                            m_hMenu          { nullptr };
 	HMENU                            m_hMenuSigGen    { nullptr };
 	ComputeThread            const * m_pComputeThread { nullptr };
-	MainWindow               const * m_pMainWindow    { nullptr };
+	Preferences              const * m_pPreferences   { nullptr };
 	WinManager               const * m_pWinManager    { nullptr };
 	CommandStack             const * m_pCommandStack  { nullptr };
 	Sound                    const * m_pSound         { nullptr };

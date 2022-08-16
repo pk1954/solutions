@@ -27,6 +27,7 @@ import Command;
 import ActionTimer;
 import FatalError;
 import NNetController;
+import Preferences;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -38,6 +39,7 @@ void MainWindow::Start
 	HWND          const hwndApp, 
 	bool          const bShowRefreshRateDialog,
 	fPixel        const fPixBeaconLimit,
+	Preferences       & preferences,
 	NNetController    & controller,
 	NNetModelCommands & modelCommands,
 	Observable        & cursorObservable,
@@ -54,6 +56,7 @@ void MainWindow::Start
 		controller
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
+	m_pPreferences         = & preferences;
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
@@ -129,7 +132,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		if ( m_pNMRI->IsPipe(m_nobHighlighted) )
 		{
 			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
-			appendMenu(hPopupMenu, ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
+			appendMenu(hPopupMenu, m_pPreferences->ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
 		{
@@ -175,22 +178,17 @@ void MainWindow::CenterSelection()
 		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
-bool MainWindow::ArrowsVisible() const
-{
-	return m_arrowSize > 0._MicroMeter;
-}
-
-void MainWindow::ShowArrows(bool const op)
+void MainWindow::AnimateArrows()
 {
 	MicroMeter oldVal { m_arrowSize };
-	MicroMeter umTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
+	MicroMeter umTarget = m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter;
 	if (umTarget != oldVal)
 		m_pModelCommands->AnimateArrows(m_arrowSize, umTarget);
 }
 
-void MainWindow::ShowSensorPoints(bool const op) 
+void MainWindow::SetSensorPoints() 
 {
-	m_bShowPnts = op;
+	m_bShowPnts = m_pPreferences->SensorPointsVisible();
 }
 
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
@@ -432,7 +430,7 @@ void MainWindow::DoPaint()
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
-		if (ArrowsVisible())
+		if (m_pPreferences->ArrowsVisible())
 			DrawArrowsInRect(pixRect, m_arrowSize);
 	}
 

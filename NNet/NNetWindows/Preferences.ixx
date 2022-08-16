@@ -13,7 +13,6 @@ module;
 export module Preferences;
 
 import DescriptionWindow;
-import MainWindow;
 import SoundInterface;
 
 using std::wstring;
@@ -25,7 +24,6 @@ public:
 	void Initialize
 	(
 		DescriptionWindow &,
-		MainWindow &,
 		Sound &, 
 		NNetModelIO &, 
 		HWND const
@@ -35,8 +33,17 @@ public:
 	bool ReadPreferences () const;
 	bool WritePreferences() const;
 
+	void SetArrows(bool const);
+	void SetSensorPoints(bool const bOn) { m_bSensorPoints = bOn; }
+
+	bool ArrowsVisible      () const { return m_bArrows; }
+	bool SensorPointsVisible() const { return m_bSensorPoints; }
+
 private:
-	NNetModelReaderInterface const * m_pNMRI { nullptr };
+	HWND                             m_hwndApp       { nullptr };
+	bool                             m_bArrows       { false };
+	bool                             m_bSensorPoints { false };
+	NNetModelReaderInterface const * m_pNMRI         { nullptr };
 	vector<unique_ptr<WrapBase>>     m_prefVector;
 	wstring                          m_wstrPreferencesFile;
 };

@@ -18,6 +18,7 @@ export module MainWindow;
 
 import ActionTimer;
 import PixelTypes;
+import Preferences;
 
 using std::unique_ptr;
 
@@ -30,6 +31,7 @@ public:
 		HWND   const,
 		bool   const,
 		fPixel const,
+		Preferences       &,
 		NNetController    &,
 		NNetModelCommands &,
 		Observable        &,
@@ -59,9 +61,8 @@ public:
 
 	void CenterModel();
 	void CenterSelection();
-	void ShowArrows(bool const);
-	bool ArrowsVisible() const; 
-	void ShowSensorPoints(bool const);
+	void AnimateArrows();
+	void SetSensorPoints();
 	bool SensorsPointsVisible() const {	return m_bShowPnts; }
 
 	void OnPaint() final;
@@ -78,8 +79,9 @@ private:
 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 
-	ActionTimer       * m_pDisplayTimer        { nullptr };
 	MicroMeter          m_arrowSize            { STD_ARROW_SIZE };
+	Preferences       * m_pPreferences         { nullptr };
+	ActionTimer       * m_pDisplayTimer        { nullptr };
 	MicroMeterRect      m_rectSelection        { };
 	MicroMeterPnt       m_umPntSelectionAnchor { };
 	NobId               m_nobHighlighted       { NO_NOB };

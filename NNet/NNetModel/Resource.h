@@ -50,18 +50,19 @@
 #define       IDX_FILE_NOT_FOUND             163
 #define       IDX_ERROR_IN_FILE              164
 							   	         
-#define       IDD_ARROWS_ON                  180
-#define       IDD_ARROWS_OFF                 181
-#define       IDD_RULER_ON                   182
-#define       IDD_RULER_OFF                  183
-#define       IDD_MEASUREMENT_ON             184
-#define       IDD_MEASUREMENT_OFF            185
-#define       IDD_ADD_TRACK                  186
-#define       IDD_DELETE_TRACK               187
-#define       IDD_EMPHASIZE                  188
-#define       IDD_PERF_MON_MODE_ON           189
-#define       IDD_PERF_MON_MODE_OFF          190
-#define       IDD_DELETE_EMPTY_TRACKS        191
+#define       IDD_ARROWS                     180
+#define       IDD_ARROWS_ON                  181
+#define       IDD_ARROWS_OFF                 182
+#define       IDD_RULER_ON                   183
+#define       IDD_RULER_OFF                  184
+#define       IDD_MEASUREMENT_ON             185
+#define       IDD_MEASUREMENT_OFF            186
+#define       IDD_ADD_TRACK                  187
+#define       IDD_DELETE_TRACK               188
+#define       IDD_EMPHASIZE                  189
+#define       IDD_PERF_MON_MODE_ON           190
+#define       IDD_PERF_MON_MODE_OFF          191
+#define       IDD_DELETE_EMPTY_TRACKS        192
 
 #define       IDD_SOUND_ON                   200
 #define       IDD_SOUND_OFF                  202
@@ -70,8 +71,9 @@
 #define       IDD_AUTO_OPEN_ON               210
 #define       IDD_AUTO_OPEN_OFF              211
 									         
-#define       IDD_SENSOR_PNTS_ON             220
-#define       IDD_SENSOR_PNTS_OFF            221
+#define       IDD_SENSOR_PNTS                220
+#define       IDD_SENSOR_PNTS_ON             221
+#define       IDD_SENSOR_PNTS_OFF            222
 									         
 #define       IDM_MONITOR_WINDOW             330
 #define       IDD_SIGNAL_TOO_HIGH            340

@@ -18,7 +18,7 @@ import SoundInterface;
 import ComputeThread;
 import SignalDesigner;
 import WinManager;
-import MainWindow;
+import Preferences;
 import BaseWindow;
 
 using std::make_unique;
@@ -73,7 +73,7 @@ void NNetAppMenu::Start
 	WinManager    const & winManager,
 	CommandStack  const & commandStack,
 	Sound         const & sound,
-    MainWindow    const & mainWindow
+    Preferences   const & preferences
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
@@ -83,7 +83,7 @@ void NNetAppMenu::Start
 	m_pWinManager    = & winManager;
 	m_pCommandStack  = & commandStack;
 	m_pSound         = & sound;
-    m_pMainWindow    = & mainWindow;
+    m_pPreferences   = & preferences;
 
     SendMessage(m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NNETSIMU)));
     SendMessage(m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL   )));
@@ -209,10 +209,10 @@ void NNetAppMenu::Notify(bool const bImmediately)
     enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
     enable(IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(IDM_SIG_DESIGNER  ));
 
-    m_upOnOffArrows      ->enableOnOff(m_pMainWindow->ArrowsVisible());
+    m_upOnOffArrows      ->enableOnOff(m_pPreferences->ArrowsVisible());
     m_upOnOffSound       ->enableOnOff(m_pSound->IsOn());
     m_upOnOffAutoOpen    ->enableOnOff(AutoOpen::IsOn());
-    m_upOnOffSensorPoints->enableOnOff(m_pMainWindow->SensorsPointsVisible());
+    m_upOnOffSensorPoints->enableOnOff(m_pPreferences->SensorPointsVisible());
     m_upOnOffPerfMonMode ->enableOnOff(BaseWindow::PerfMonMode());
 
     delSigGenMenuEntries();

@@ -147,20 +147,28 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
             MessageBeep(MB_ICONWARNING);
         break;
 
+    case IDD_ARROWS:
+        m_pMainWindow->AnimateArrows();
+        break;
+
     case IDD_ARROWS_ON:
-        m_pMainWindow->ShowArrows(true);
+        m_pPreferences->SetArrows(true);
         break;
 
     case IDD_ARROWS_OFF:
-        m_pMainWindow->ShowArrows(false);
+        m_pPreferences->SetArrows(false);
+        break;
+
+    case IDD_SENSOR_PNTS:
+        m_pMainWindow->SetSensorPoints();
         break;
 
     case IDD_SENSOR_PNTS_ON:
-        m_pMainWindow->ShowSensorPoints(true);
+        m_pPreferences->SetSensorPoints(true);
         break;
 
     case IDD_SENSOR_PNTS_OFF:
-        m_pMainWindow->ShowSensorPoints(false);
+        m_pPreferences->SetSensorPoints(false);
         break;
 
     case IDX_PLAY_SOUND:
