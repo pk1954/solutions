@@ -84,9 +84,6 @@
     <ClInclude Include="AttachSIgGen2ConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttachSigGen2SelCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AddSigGen2MonitorCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -213,6 +210,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RotateSelectionCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttachSigGen2SelCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

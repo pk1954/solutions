@@ -71,7 +71,6 @@
     <ClInclude Include="AddSensorSignalCmd.h" />
     <ClInclude Include="AddSigGen2MonitorCmd.h" />
     <ClInclude Include="AttachSIgGen2ConnCmd.h" />
-    <ClInclude Include="AttachSigGen2SelCmd.h" />
     <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="ConnAnimationCommand.h" />
@@ -102,6 +101,7 @@
     <ClCompile Include="ArrowAnimation.ixx">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="AttachSigGen2SelCmd.ixx" />
     <ClCompile Include="CommandFunctions.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>

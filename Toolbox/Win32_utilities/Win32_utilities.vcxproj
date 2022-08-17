@@ -208,6 +208,7 @@
     <ClCompile Include="Win32_Stopwatch.cpp" />
     <ClCompile Include="Win32_TextBuffer.ixx" />
     <ClCompile Include="win32_textWindow.cpp" />
+    <ClCompile Include="Win32_TextWindow.ixx" />
     <ClCompile Include="win32_thread.cpp" />
     <ClCompile Include="Win32_Thread.ixx" />
     <ClCompile Include="Win32_Tooltip.cpp" />

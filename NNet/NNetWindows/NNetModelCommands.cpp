@@ -9,7 +9,6 @@
 #include "Analyzer.h"
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
-#include "AttachSigGen2SelCmd.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "ConnAnimationCommand.h"
@@ -64,6 +63,7 @@ import RotateNobCommand;
 import SelectNobCommand;
 import RotateModelCommand;
 import RotateSelectionCommand;
+import AttachSigGen2SelCmd;
 
 using std::wcout;
 using std::endl;
