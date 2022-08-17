@@ -165,7 +165,6 @@
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_textWindow.h" />
-    <ClInclude Include="win32_textWindowThread.h" />
     <ClInclude Include="win32_util_resource.h" />
   </ItemGroup>
   <ItemGroup>

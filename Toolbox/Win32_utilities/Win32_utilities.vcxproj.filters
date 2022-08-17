@@ -24,9 +24,6 @@
     <ClInclude Include="win32_rootWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_textWindowThread.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_util_resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
