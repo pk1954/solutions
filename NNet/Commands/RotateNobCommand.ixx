@@ -4,12 +4,12 @@
 
 module;
 
-#include "RotationCommand.h"
 #include "Nob.h"
 
 export module RotateNobCommand;
 
 import MoreTypes;
+import RotationCommand;
 
 export class RotateNobCommand : public RotationCommand
 {

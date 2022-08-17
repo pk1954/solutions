@@ -86,7 +86,6 @@
     <ClInclude Include="PlugIoLines.h" />
     <ClInclude Include="RenameSigGenCmd.h" />
     <ClInclude Include="RotateSelectionCommand.h" />
-    <ClInclude Include="RotationCommand.h" />
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
     <ClInclude Include="AttachSigGen2LineCmd.h" />
@@ -144,6 +143,7 @@
     <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />
     <ClCompile Include="RotateNobCommand.ixx" />
+    <ClCompile Include="RotationCommand.ixx" />
     <ClCompile Include="SelectAllCommand.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelectNobCommand.ixx" />

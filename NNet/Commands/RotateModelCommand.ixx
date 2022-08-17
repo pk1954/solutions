@@ -5,11 +5,11 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "RotationCommand.h"
 
 export module RotateModelCommand;
 
 import MoreTypes;
+import RotationCommand;
 
 export class RotateModelCommand : public RotationCommand
 {
