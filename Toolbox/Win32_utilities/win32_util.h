@@ -22,8 +22,6 @@ using std::wstring;
 using std::wcout;
 using std::endl;
 
-class Script;
-
 namespace Util
 {
     inline LONG_PTR GetUserDataPtr(HWND hwnd)

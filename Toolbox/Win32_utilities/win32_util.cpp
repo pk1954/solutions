@@ -1,14 +1,18 @@
 // win32_util.cpp :
 //
+// Toolbox\Win32_utilities
 
 #include <iomanip>
 #include <time.h>
+#include <string.h>
+#include <Windows.h>
 #include "Script.h"
 #include "win32_util.h"
 
 using std::wostream;
 using std::stringbuf;
 using std::ostream;
+using std::stof;
 
 bool Util::Evaluate(HWND const hwndEditField, wstring & wstrValue)
 {	
