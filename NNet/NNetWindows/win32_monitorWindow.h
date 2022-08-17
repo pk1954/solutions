@@ -7,12 +7,12 @@
 #include <Windows.h>
 #include "win32_scale.h"
 #include "BasicTypes.h"
-#include "VoltageType.h"
 #include "MonitorData.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 
 import MoreTypes;
+import VoltageType;
 import PixelTypes;
 import PixFpDimension;
 import BaseWindow;

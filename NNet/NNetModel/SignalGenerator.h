@@ -8,10 +8,10 @@
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
-#include "VoltageType.h"
 
 import ObserverInterface;
 import MoreTypes;
+import VoltageType;
 
 class Param;
 class UPSigGenList;

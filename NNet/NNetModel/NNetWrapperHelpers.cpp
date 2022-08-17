@@ -5,8 +5,8 @@
 #include "Script.h"
 #include "NobId.h"
 #include "NNetWrapperHelpers.h"
-#include "VoltageType.h"
 
+import VoltageType;
 import ErrHndl;
 import IoConstants;
 import UtilityWrappers;

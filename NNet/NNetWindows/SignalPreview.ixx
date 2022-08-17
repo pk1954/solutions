@@ -5,11 +5,11 @@
 module;
 
 #include "BasicTypes.h"
-#include "VoltageType.h"
 
 export module SignalPreview;
 
 import MoreTypes;
+import VoltageType;
 import PixFpDimension;
 import TimeGraph;
 import BaseWindow;

@@ -8,11 +8,11 @@ module;
 #include "SignalGenerator.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
-#include "VoltageType.h"
 
 export module SignalControl;
 
 import MoreTypes;
+import VoltageType;
 import PixFpDimension;
 import ComputeThread;
 import Direct2D;

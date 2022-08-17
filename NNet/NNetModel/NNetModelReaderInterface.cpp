@@ -10,7 +10,8 @@
 #include "Neuron.h"
 #include "InputLine.h"
 #include "NNetModelReaderInterface.h"
-#include "VoltageType.h"
+
+import VoltageType;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {

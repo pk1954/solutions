@@ -11,7 +11,6 @@ module;
 #include "MonitorData.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
-#include "VoltageType.h"
 
 export module MonitorControl;
 
@@ -22,6 +21,7 @@ import Measurement;
 import Direct2D;
 import PixelTypes;
 import TimeGraph;
+import VoltageType;
 
 export class MonitorControl : public TimeGraph
 {

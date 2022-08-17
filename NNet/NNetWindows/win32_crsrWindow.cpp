@@ -15,11 +15,11 @@ module;
 #include "Pipe.h"
 #include "Signal.h"
 #include "Sensor.h"
-#include "VoltageType.h"
 
 module CrsrWindow;
 
 import MilliSecs;
+import VoltageType;
 import TextBuffer;
 import MainWindow;
 import Win32_Util;

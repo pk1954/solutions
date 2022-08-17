@@ -9,11 +9,11 @@
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Pipe.h"
-#include "VoltageType.h"
 
 import Geometry;
 import IoConstants;
 import SpeedType;
+import VoltageType;
 
 using std::wcout;
 using std::endl;

@@ -8,11 +8,11 @@
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Nob.h"
-#include "VoltageType.h"
 
 import PointType;
 import MoreTypes;
 import PixelTypes;
+import VoltageType;
 
 using std::vector;
 

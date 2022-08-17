@@ -5,9 +5,9 @@
 #pragma once
 
 #include "BasicTypes.h"
-#include "VoltageType.h"
 
 import MoreTypes;
+import VoltageType;
 
 class SigGenStaticData;
 class Param;

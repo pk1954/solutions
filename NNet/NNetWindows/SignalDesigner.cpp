@@ -13,11 +13,11 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
-#include "VoltageType.h"
 
 module SignalDesigner;
 
 import PointType;
+import VoltageType;
 import ComputeThread;
 import PixFpDimension;
 import Win32_Controls;

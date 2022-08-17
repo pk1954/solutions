@@ -8,9 +8,9 @@
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Nob.h"
-#include "VoltageType.h"
 
 import Debug;
+import VoltageType;
 
 using std::setw;
 using std::move;

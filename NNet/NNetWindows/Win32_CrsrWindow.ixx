@@ -8,11 +8,11 @@ module;
 #include "BasicTypes.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_textWindow.h"
-#include "VoltageType.h"
 
 export module CrsrWindow;
 
 import Hertz;
+import VoltageType;
 import MilliSecs;
 import TextBuffer;
 import MainWindow;

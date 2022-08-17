@@ -7,11 +7,11 @@ module;
 #include "Windows.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
-#include "VoltageType.h"
 
 module SignalPreview;
 
 import PixFpDimension;
+import VoltageType;
 import TimeGraph;
 import BaseWindow;
 

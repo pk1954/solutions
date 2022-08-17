@@ -11,11 +11,11 @@ module;
 #include "InputConnector.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
-#include "VoltageType.h"
 
 module SignalControl;
 
 import MoreTypes;
+import VoltageType;
 import PointType;
 import ComputeThread;
 

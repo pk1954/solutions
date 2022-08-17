@@ -6,7 +6,8 @@
 #include "NNetParameters.h"
 #include "UPSigGenList.h"
 #include "SignalGenerator.h"
-#include "VoltageType.h"
+
+import VoltageType;
 
 using std::to_wstring;
 

@@ -4,8 +4,8 @@
 
 #include <cassert>
 #include "NNetParameters.h"
-#include "VoltageType.h"
 
+import VoltageType;
 import SpeedType;
 
 bool Param::operator==(Param const & rhs) const

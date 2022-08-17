@@ -7,9 +7,9 @@
 #include "PipeList.h"
 #include "Pipe.h"
 #include "Nob.h"
-#include "VoltageType.h"
 
 import MoreTypes;
+import VoltageType;
 import CircleType;
 import PixelTypes;
 

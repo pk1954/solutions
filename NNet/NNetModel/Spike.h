@@ -6,9 +6,9 @@
 
 #include <ostream>
 #include "BasicTypes.h"
-#include "VoltageType.h"
 
 import MoreTypes;
+import VoltageType;
 
 class Spike
 {

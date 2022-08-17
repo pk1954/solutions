@@ -22,9 +22,9 @@
 #include "UPNobList.h"
 #include "UPSensorList.h"
 #include "UPSigGenList.h"
-#include "VoltageType.h"
 
 import MoreTypes;
+import VoltageType;
 import AngleTypes;
 import SoundInterface;
 

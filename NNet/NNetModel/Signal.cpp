@@ -9,10 +9,10 @@
 #include "BaseKnot.h"
 #include "SignalSource.h"
 #include "Signal.h"
-#include "VoltageType.h"
 
 import Util;
 import IoConstants;
+import VoltageType;
 
 using std::wcout;
 using std::endl;

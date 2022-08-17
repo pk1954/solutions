@@ -7,10 +7,10 @@
 #include "tHighlightType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
-#include "VoltageType.h"
 
 import Geometry;
 import MoreTypes;
+import VoltageType;
 
 class DrawContext;
 class NNetModel;

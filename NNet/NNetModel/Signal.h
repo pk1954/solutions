@@ -10,12 +10,12 @@
 #include "UPNobList.h"
 #include "SimulationTime.h"
 #include "NNetParameters.h"
-#include "VoltageType.h"
 #include "SignalSource.h"
 #include "DrawContext.h"
 
 import ObserverInterface;
 import MoreTypes;
+import VoltageType;
 
 using std::vector;
 using std::unique_ptr;

@@ -6,10 +6,10 @@
 
 #include <ostream>
 #include "BasicTypes.h"
-#include "VoltageType.h"
 
 import Observable;
 import MoreTypes;
+import VoltageType;
 
 using std::wostream;
 

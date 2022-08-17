@@ -5,10 +5,10 @@
 #pragma once
 
 #include <iostream>
-#include "VoltageType.h"
 
 import Observable;
 import MoreTypes;
+import VoltageType;
 import fHertz;
 
 using std::wcout;
