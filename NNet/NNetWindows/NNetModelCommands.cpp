@@ -25,7 +25,6 @@
 #include "RestrictSelectionCommand.h"
 #include "RotateModelCommand.h"
 #include "RotateSelectionCommand.h"
-#include "SelectNobCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
 #include "SetParameterCommand.h"
@@ -64,6 +63,7 @@ import MoveSelectionCommand;
 import InsertBaseKnotCommand;
 import DeleteSignalCommand;
 import RotateNobCommand;
+import SelectNobCommand;
 
 using std::wcout;
 using std::endl;
