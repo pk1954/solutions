@@ -7,12 +7,12 @@ module;
 #include <chrono>
 #include "Windows.h"
 #include "BasicTypes.h"
-#include "Hertz.h"
 #include "win32_hiResTimer.h"
 
 export module ActionTimer;
 
 import MoreTypes;
+import Hertz;
 import Util;
 import Observable;
 

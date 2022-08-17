@@ -5,7 +5,6 @@
 module;
 
 #include "BasicTypes.h"
-#include "Hertz.h"
 
 export module AngleTypes;
 

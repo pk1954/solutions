@@ -8,11 +8,11 @@
 #include <chrono>
 #include <Windows.h>
 #include "BasicTypes.h"
-#include "Hertz.h"
 
 import NamedType;
 import MoreTypes;
 import fHertz;
+import Hertz;
 
 using std::chrono::microseconds;
 

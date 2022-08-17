@@ -1,11 +1,13 @@
-// Hertz.h
+// Hertz.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
-#include <limits>
 #include <chrono>
+#include <limits>
+
+export module Hertz;
 
 import NamedType;
 import SaveCast;
@@ -13,14 +15,14 @@ import SaveCast;
 using std::chrono::microseconds;
 using std::numeric_limits;
 
-using Hertz = NamedType< unsigned long, struct Hertz_Parameter >;
+export using Hertz = NamedType< unsigned long, struct Hertz_Parameter >;
 
-Hertz constexpr operator"" _Hertz(unsigned long long ull)
+export Hertz constexpr operator"" _Hertz(unsigned long long ull)
 {
 	return Hertz(Cast2UnsignedLong(ull));
 }
 
-static microseconds SpikeTimeMax(Hertz const freq)
+export microseconds SpikeTimeMax(Hertz const freq)
 {
 	return (freq.GetValue() == 0) 
 		? microseconds((numeric_limits<long long>::max)())
