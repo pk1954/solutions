@@ -112,7 +112,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	if (m_pNMRI)
 	{
 		SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
-		NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
+		NobId    const nobId { m_pNMRI->GetHighlightedNobId() };
 		if (IsDefined(nobId))
 		{
 			printNobInfo(textBuf, umPntCrsr, nobId);

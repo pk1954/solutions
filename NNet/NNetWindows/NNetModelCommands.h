@@ -96,6 +96,7 @@ public:
     void SelectSigGenClients     ();
     void SelectSubtree           (NobId const, bool const);
     void SetActiveSignalGenerator(SigGenId const);
+    void SetHighlightedNob       (NobId const);
     void SetParameter            (ParamType::Value const, float const);
     void SetSigGenStaticData     (SignalGenerator &, SigGenStaticData const &);
     void SetNob                  (NobId const, MicroMeterPosDir const);

@@ -90,6 +90,7 @@
     <ClInclude Include="DiscIoConnectorCmd.h" />
     <ClInclude Include="RestrictSelectionCommand.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
+    <ClInclude Include="SetHighlightedNobCmd.h" />
     <ClInclude Include="SetParameterCommand.h" />
   </ItemGroup>
   <ItemGroup>

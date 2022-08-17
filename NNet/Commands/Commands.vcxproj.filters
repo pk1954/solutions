@@ -87,6 +87,9 @@
     <ClInclude Include="AddSigGen2MonitorCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SetHighlightedNobCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">
