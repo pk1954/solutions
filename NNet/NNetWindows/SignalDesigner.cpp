@@ -24,8 +24,10 @@ import Win32_Controls;
 import ArrowButton;
 import EditLineBox;
 import Win32_PixelTypes;
+import Direct2D;
 
 using std::bit_cast;
+using D2D1::ColorF;
 
 void SignalDesigner::Initialize
 (
@@ -87,7 +89,7 @@ void SignalDesigner::Initialize
 	m_upVertScaleVolt1->SetScaleColor(COLOR_VOLT);
 	m_upVertScaleVolt1->Show(true);
 
-	m_upVertScaleVolt2->SetScaleColor(D2D1::ColorF::Black);
+	m_upVertScaleVolt2->SetScaleColor(ColorF::Black);
 	m_upVertScaleVolt2->Show(true);
 
 	m_upSignalControl1 = makeSignalControl(computeThread, runObservable, dynamicModelObservable);

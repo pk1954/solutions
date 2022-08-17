@@ -21,8 +21,10 @@ import ComputeThread;
 import PixelTypes;
 import ArrowButton;
 import SignalPreview;
+import Direct2D;
 
 using std::wstring;
+using D2D1::ColorF;
 
 export class SignalDesigner : public GraphicsWindow
 {
@@ -58,8 +60,8 @@ private:
 	inline static PIXEL const STIMULUS_BUTTON_WIDTH  { 90_PIXEL };
 	inline static PIXEL const STIMULUS_BUTTON_HEIGHT { 30_PIXEL };
 
-	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
-	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
+	inline static ColorF COLOR_FREQ { ColorF::Green };
+	inline static ColorF COLOR_VOLT { ColorF::Blue  };
 
 	void renameSigGen();
 	void toggleDesign();
