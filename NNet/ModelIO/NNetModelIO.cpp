@@ -22,7 +22,6 @@
 #include "ModelDescription.h"
 #include "Signal.h"
 #include "Track.h"
-#include "win32_util.h"
 #include "win32_hiResTimer.h"
 #include "InputOutputUI.h"
 #include "WrapDescription.h"
@@ -53,6 +52,7 @@ import ErrHndl;
 import MoreTypes;
 import Thread;
 import ScriptFile;
+import Win32_Util;
 
 using std::filesystem::exists;
 using std::wofstream;

@@ -20,7 +20,6 @@ module;
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 #include "DrawContext.h"
-#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"
 #include "win32_monitorWindow.h"
@@ -38,6 +37,7 @@ import NNetController;
 import Preferences;
 import Uniform2D;
 import FatalError;
+import Win32_Util;
 
 using std::unordered_map;
 using std::unique_ptr;

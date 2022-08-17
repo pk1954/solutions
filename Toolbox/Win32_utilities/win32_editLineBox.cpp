@@ -6,12 +6,12 @@ module;
 
 #include <string>
 #include "Windows.h"
-#include "win32_util.h"
 #include "win32_util_resource.h"
 
 module EditLineBox;
 
 import StdDialogBox;
+import Win32_Util;
 
 using std::wstring;
 using std::to_wstring;

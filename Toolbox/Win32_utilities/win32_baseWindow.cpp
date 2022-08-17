@@ -8,7 +8,6 @@ module;
 #include <cassert>
 #include <chrono>
 #include "Windows.h"
-#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_RootWindow.h"
 
@@ -17,6 +16,7 @@ module BaseWindow;
 import Util;
 import MoreTypes;
 import PixelTypes;
+import Win32_Util;
 
 using std::wstring;
 using std::bit_cast;

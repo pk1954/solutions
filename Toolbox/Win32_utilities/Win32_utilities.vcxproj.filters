@@ -24,9 +24,6 @@
     <ClInclude Include="win32_textWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_util.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_rootWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -62,7 +59,7 @@
     <ClCompile Include="win32_textWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_util.cpp">
+    <ClCompile Include="Win32_Util.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_winManager.cpp">
@@ -189,6 +186,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="D2D_DrawContext.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WIn32_Util.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

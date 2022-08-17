@@ -3,13 +3,16 @@
 // Win32_utilities
 
 #include <locale>
+#include <cassert>
+#include <functional>
 #include "Windows.h"
-#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_textWindowThread.h"
 #include "win32_textWindow.h"
 
 import Thread;
+import Win32_Util;
+import BaseWindow;
 
 using std::function;
 using std::make_unique;

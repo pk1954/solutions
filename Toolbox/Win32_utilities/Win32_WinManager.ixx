@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <unordered_map>
 #include <Windows.h>
-#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"
 
@@ -16,6 +15,7 @@ export module WinManager;
 import ErrHndl;
 import BaseDialog;
 import BaseWindow;
+import Win32_Util;
 
 using std::wstring;
 using std::unordered_map;

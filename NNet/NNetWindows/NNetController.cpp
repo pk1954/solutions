@@ -12,7 +12,6 @@ module;
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
-#include "win32_util.h"
 #include "win32_monitorWindow.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
@@ -32,6 +31,7 @@ import WinManager;
 import FatalError;
 import MainWindow;
 import ScriptFile;
+import Win32_Util;
 
 using std::to_wstring;
 

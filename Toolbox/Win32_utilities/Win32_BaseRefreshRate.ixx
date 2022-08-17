@@ -4,14 +4,16 @@
 
 module;
 
+#include <string>
 #include <chrono>
 #include <Windows.h>
-#include "win32_util.h"
 
 export module BaseRefreshRate;
 
 import StdDialogBox;
+import Win32_Util;
 
+using std::wstring;
 using std::chrono::milliseconds;
 using namespace std::chrono;
 

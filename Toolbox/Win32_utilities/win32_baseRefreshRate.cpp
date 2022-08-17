@@ -1,17 +1,18 @@
 // Win32_RefreshRate.cpp
 //
-// Win32_utilities
+// Toolbox\Win32_utilities
 
 module;
 
+#include <cassert>
 #include <string>
 #include <chrono>
-#include "win32_util.h"
 #include "win32_util_resource.h"
 
 module BaseRefreshRate;
 
 import StdDialogBox;
+import Win32_Util;
 
 using std::wstring;
 using std::to_wstring;

@@ -15,7 +15,6 @@ module;
 #include "Pipe.h"
 #include "Signal.h"
 #include "Sensor.h"
-#include "win32_util.h"
 #include "VoltageType.h"
 
 module CrsrWindow;
@@ -23,7 +22,9 @@ module CrsrWindow;
 import MilliSecs;
 import TextBuffer;
 import MainWindow;
+import Win32_Util;
 
+using std::wostringstream;
 using std::setprecision;
 using std::to_wstring;
 using std::fixed;

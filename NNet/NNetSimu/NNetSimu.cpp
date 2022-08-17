@@ -7,12 +7,12 @@
 #include "Resource.h"
 #include "CommCtrl.h"
 #include "Scanner.h"
-#include "win32_util.h"
 #include "win32_NNetAppWindow.h"
 
 import Trace;
 import Stopwatch;
 import MessagePump;
+import Win32_Util;
 
 unique_ptr<NNetAppWindow> upApp;
 

@@ -2,8 +2,11 @@
 //
 // Win32_utilities
 
+module;
+
 #include "Windows.h"
-#include "win32_util.h"
+
+module Win32_Util;
 
 // EscapeKeyPressed - Peek message queue of current thread for ESC key pressed
 //

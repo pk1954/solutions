@@ -4,10 +4,12 @@
 
 module;
 
-#include "win32_util.h"
+#include <bit>
 #include "win32_util_resource.h"
 
 module StdDialogBox;
+
+import Win32_Util;
 
 using std::bit_cast;
 

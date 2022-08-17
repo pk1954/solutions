@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <string>
 #include "win32_textWindow.h"
 
 import Win32_TextBuffer;
@@ -11,6 +12,7 @@ import Thread;
 
 using std::unique_ptr;
 using std::make_unique;
+using std::wstring;
 
 class TextWindowThread: public Util::Thread
 {

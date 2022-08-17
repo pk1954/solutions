@@ -5,12 +5,12 @@
 module;
 
 #include "win32_util_resource.h"
-#include "win32_util.h"
 #include "NNetModelReaderInterface.h"
 
 export module AppTitle;
 
 import ObserverInterface;
+import Win32_Util;
 
 export class AppTitle : public ObserverInterface
 {

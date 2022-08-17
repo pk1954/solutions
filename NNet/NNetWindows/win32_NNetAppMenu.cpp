@@ -6,7 +6,6 @@ module;
 
 #include <Windows.h>
 #include "Resource.h"
-#include "win32_util.h"
 #include "CommandStack.h"
 #include "AutoOpen.h"
 #include "SignalGenerator.h"
@@ -20,6 +19,7 @@ import SignalDesigner;
 import WinManager;
 import Preferences;
 import BaseWindow;
+import Win32_Util;
 
 using std::make_unique;
 

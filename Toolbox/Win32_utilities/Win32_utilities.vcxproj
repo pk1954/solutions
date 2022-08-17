@@ -168,7 +168,6 @@
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_textWindow.h" />
     <ClInclude Include="win32_textWindowThread.h" />
-    <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_util_resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +215,8 @@
     <ClCompile Include="Win32_Thread.ixx" />
     <ClCompile Include="Win32_Tooltip.cpp" />
     <ClCompile Include="Win32_Tooltip.ixx" />
-    <ClCompile Include="win32_util.cpp" />
+    <ClCompile Include="Win32_Util.cpp" />
+    <ClCompile Include="WIn32_Util.ixx" />
     <ClCompile Include="win32_winManager.cpp" />
     <ClCompile Include="Win32_WinManager.ixx" />
   </ItemGroup>

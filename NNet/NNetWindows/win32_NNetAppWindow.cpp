@@ -19,7 +19,6 @@
 
 // infrastructure
 
-#include "win32_util.h"
 #include "Win32_PIXEL.h"
 #include "AutoOpen.h"
 #include "NNetCommand.h"
@@ -60,6 +59,7 @@ import TimeGraph;
 import MessagePump;
 import ScriptFile;
 import BaseWindow;
+import Win32_Util;
 
 using std::wcout;
 using std::wstring;
