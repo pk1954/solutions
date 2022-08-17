@@ -12,26 +12,22 @@
 #include "IoLine.h"
 #include "NobType.h"
 #include "NobId.h"
+#include "NNetParameters.h"
+#include "NNetCommand.h"
+#include "NobIdList.h"
+#include "SigGenStaticData.h"
+#include "CommandStack.h"
+#include "NNetModelIO.h"
+#include "NNetModelReaderInterface.h"
+#include "NNetModelWriterInterface.h"
+#include "MicroMeterPntVector.h"
+#include "SignalGenerator.h"
 
+import Observable;
 import MoreTypes;
 import BoolOp;
 import Uniform2D;
 import SoundInterface;
-
-class Param;
-class NNetCommand;
-class Observable;
-class NobIdList;
-class SigGenStaticData;
-class CommandStack;
-class AlignAnimation;
-class NNetModelIO;
-class NNetModelReaderInterface;
-class NNetModelWriterInterface;
-class MicroMeterPntVector;
-class SignalGenerator;
-
-enum class ConnectionType;
 
 using std::wcout;
 using std::wstring;
