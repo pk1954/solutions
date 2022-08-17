@@ -83,7 +83,6 @@
     <ClInclude Include="PlugIoConnectors.h" />
     <ClInclude Include="PlugIoLineAnimation.h" />
     <ClInclude Include="PlugIoLines.h" />
-    <ClInclude Include="RenameSigGenCmd.h" />
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
     <ClInclude Include="AttachSigGen2LineCmd.h" />
@@ -141,6 +140,7 @@
     <ClCompile Include="MoveSignalCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="NewSigGenCmd.ixx" />
+    <ClCompile Include="RenameSigGenCmd.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />
     <ClCompile Include="RotateNobCommand.ixx" />
     <ClCompile Include="RotateSelectionCommand.ixx" />

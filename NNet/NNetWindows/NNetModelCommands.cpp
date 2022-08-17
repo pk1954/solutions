@@ -20,7 +20,6 @@
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
-#include "RenameSigGenCmd.h"
 #include "RestrictSelectionCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
@@ -65,6 +64,7 @@ import SelectNobCommand;
 import RotateModelCommand;
 import RotateSelectionCommand;
 import AttachSigGen2SelCmd;
+import RenameSigGenCmd;
 
 using std::wcout;
 using std::endl;

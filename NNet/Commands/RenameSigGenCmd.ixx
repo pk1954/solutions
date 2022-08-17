@@ -1,36 +1,40 @@
-// RenameSigGenCmd.h
+// RenameSigGenCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
+#include <string>
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
+export module RenameSigGenCmd;
+
+using std::wstring;
 using std::make_unique;
 
-class RenameSigGenCmd : public NNetCommand
+export class RenameSigGenCmd : public NNetCommand
 {
 public:
-	RenameSigGenCmd(SigGenId const id, wstring const & name)
-	  : m_pSigGen(m_pNMWI->GetSigGen(id)),
+	RenameSigGenCmd(SigGenId const id, wstring const& name)
+		: m_pSigGen(m_pNMWI->GetSigGen(id)),
 		m_wstrNameOld(m_pSigGen->GetName()),
 		m_wstrNameNew(name)
 	{}
 
-	void Do() final 
+	void Do() final
 	{
 		m_pSigGen->SetName(m_wstrNameNew);
 	}
 
-	void Undo() final 
-	{ 
+	void Undo() final
+	{
 		m_pSigGen->SetName(m_wstrNameOld);
 	}
 
 private:
-	SignalGenerator * m_pSigGen;
+	SignalGenerator* m_pSigGen;
 	wstring           m_wstrNameOld;
 	wstring           m_wstrNameNew;
 };
