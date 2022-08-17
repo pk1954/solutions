@@ -91,6 +91,7 @@
     <ClInclude Include="SelectSubtreeCommand.h" />
     <ClInclude Include="SetHighlightedNobCmd.h" />
     <ClInclude Include="SetParameterCommand.h" />
+    <ClInclude Include="SetTargetNobCmd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx">

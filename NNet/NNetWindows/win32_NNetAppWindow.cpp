@@ -44,6 +44,7 @@
 import MoreTypes;
 import Util;
 import Trace;
+import Direct2D;
 import StatusBar;
 import ObserverInterface;
 import PerformanceWindow;
@@ -87,7 +88,6 @@ NNetAppWindow::NNetAppWindow()
 	m_modelCommands .Initialize(&m_modelIO, &m_dynamicModelObservable, &m_cmdStack);
 	m_NNetController.Initialize
 	(
-		& m_mainNNetWindow,
 		& m_WinManager,
 		& m_modelCommands,
 		& m_computeThread,
@@ -415,6 +415,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	{
 		switch (wmId)
 		{
+		case IDM_ABOUT:
+			ShowAboutBox(m_mainNNetWindow.GetWindowHandle());
+			break;
+
 		case IDM_EXIT:
 			PostMessage(WM_CLOSE, 0, 0);
 			break;
@@ -490,6 +494,28 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				AskModelFile(tFileMode::read), 
 				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
 			);
+			break;
+
+		case IDM_CENTER_MODEL:
+			m_mainNNetWindow.CenterModel();
+			break;
+
+		case IDD_SENSOR_PNTS:
+			m_mainNNetWindow.SetSensorPoints();
+			break;
+
+		case IDM_ANALYZE_LOOPS:
+			m_modelCommands.AnalyzeLoops();
+			m_mainNNetWindow.CenterSelection();
+			break;
+
+		case IDM_ANALYZE_ANOMALIES:
+			m_modelCommands.AnalyzeAnomalies();
+			m_mainNNetWindow.CenterSelection();
+			break;
+
+		case IDD_ARROWS:
+			m_mainNNetWindow.AnimateArrows();
 			break;
 
 		case IDX_READ_PROGRESS_REPORT:  //no user command, only internal usage

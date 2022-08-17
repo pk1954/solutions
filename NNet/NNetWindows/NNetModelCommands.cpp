@@ -26,6 +26,7 @@
 #include "SetParameterCommand.h"
 #include "SetActiveSigGenCmd.h"
 #include "SetHighlightedNobCmd.h"
+#include "SetTargetNobCmd.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
@@ -410,6 +411,13 @@ void NNetModelCommands::SetHighlightedNob(NobId const id)
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<SetHighlightedNobCmd>(id));
+}
+
+void NNetModelCommands::SetTargetNob(NobId const id)
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << id << endl;
+	m_pCmdStack->PushCommand(make_unique<SetTargetNobCmd>(id));
 }
 
 void NNetModelCommands::DeleteSigGen()

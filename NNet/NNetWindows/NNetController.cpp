@@ -23,7 +23,6 @@ module NNetController;
 import SlowMotionRatio;
 import Observable;
 import Win32_Sound;
-import Win32_AboutBox;
 import ComputeThread;
 import StdDialogBox;
 import Preferences;
@@ -37,7 +36,6 @@ using std::to_wstring;
 
 void NNetController::Initialize
 (
-    MainWindow        * const pMainWindow,
     WinManager        * const pWinManager,
     NNetModelCommands * const pModelCommands,
     ComputeThread     * const pComputeThread,
@@ -48,21 +46,19 @@ void NNetController::Initialize
     MonitorWindow     * const pMonitorWindow
 ) 
 {
-    m_pMainWindow       = pMainWindow;
-    m_pWinManager       = pWinManager;
-    m_pModelCommands    = pModelCommands;
-    m_pSlowMotionRatio  = pSlowMotionRatio;
-    m_pComputeThread    = pComputeThread;
-    m_pSound            = pSound;
-    m_pPreferences      = pPreferences;
-    m_pCommandStack     = pCommandStack;
-    m_pMonitorWindow    = pMonitorWindow;
-    m_hCrsrWait         = LoadCursor(NULL, IDC_WAIT);
+    m_pWinManager      = pWinManager;
+    m_pModelCommands   = pModelCommands;
+    m_pSlowMotionRatio = pSlowMotionRatio;
+    m_pComputeThread   = pComputeThread;
+    m_pSound           = pSound;
+    m_pPreferences     = pPreferences;
+    m_pCommandStack    = pCommandStack;
+    m_pMonitorWindow   = pMonitorWindow;
+    m_hCrsrWait        = LoadCursor(NULL, IDC_WAIT);
 }
 
 NNetController::~NNetController()
 {
-    m_pMainWindow      = nullptr;
     m_pWinManager      = nullptr;
     m_pNMRI            = nullptr;
     m_pModelCommands   = nullptr;
@@ -119,9 +115,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 {
     switch (wmId)
     {
-    case IDM_ABOUT:
-        ShowAboutBox(m_pMainWindow->GetWindowHandle());
-        break;
 
     case IDM_SIG_DESIGNER:
     case IDM_PERF_WINDOW:
@@ -131,10 +124,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     case IDM_MONITOR_WINDOW:
     case IDM_PARAM_WINDOW:
         ::SendMessage(m_pWinManager->GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
-        break;
-
-    case IDM_CENTER_MODEL:
-        m_pMainWindow->CenterModel();
         break;
 
     case IDM_SLOWER:
@@ -147,20 +136,12 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
             MessageBeep(MB_ICONWARNING);
         break;
 
-    case IDD_ARROWS:
-        m_pMainWindow->AnimateArrows();
-        break;
-
     case IDD_ARROWS_ON:
         m_pPreferences->SetArrows(true);
         break;
 
     case IDD_ARROWS_OFF:
         m_pPreferences->SetArrows(false);
-        break;
-
-    case IDD_SENSOR_PNTS:
-        m_pMainWindow->SetSensorPoints();
         break;
 
     case IDD_SENSOR_PNTS_ON:
@@ -191,10 +172,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     case IDD_PERF_MON_MODE_OFF:
         BaseWindow::SetPerfMonMode(false);
         m_pWinManager->SetCaptions();
-        break;
-
-    case IDM_REFRESH:
-        m_pMainWindow->Notify(lParam != 0);
         break;
 
     default:
@@ -242,7 +219,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->Connect
         (
             m_pNMRI->GetHighlightedNobId(),
-            m_pMainWindow->GetTargetNobId(),
+            m_pNMRI->GetTargetNobId(),
             static_cast<ConnectionType>(lParam)
         );
         break;
@@ -325,16 +302,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->AddSensor(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
         m_pMonitorWindow->Show(true);
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
-        break;
-
-    case IDM_ANALYZE_LOOPS:
-        m_pModelCommands->AnalyzeLoops();
-        m_pMainWindow->CenterSelection();
-        break;
-
-    case IDM_ANALYZE_ANOMALIES:
-        m_pModelCommands->AnalyzeAnomalies();
-        m_pMainWindow->CenterSelection();
         break;
 
     case IDM_DESELECT_ALL:

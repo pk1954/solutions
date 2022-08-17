@@ -23,7 +23,6 @@ import MoreTypes;
 import SlowMotionRatio;
 import Preferences;
 import WinManager;
-import MainWindow;
 
 using std::wostream;
 using std::wcout;
@@ -35,7 +34,6 @@ public:
 
 	void Initialize
 	(
-		MainWindow        * const,
 		WinManager        * const,
 		NNetModelCommands * const,
 		ComputeThread     * const,
@@ -63,7 +61,6 @@ private:
 	bool                       m_bBlockedUI             { false };
 	HCURSOR                    m_hCrsrWait              { nullptr };
 	Sound                    * m_pSound                 { nullptr };
-	MainWindow               * m_pMainWindow            { nullptr };
 	WinManager               * m_pWinManager            { nullptr };
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };

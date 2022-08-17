@@ -177,17 +177,6 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::CenterModel()
-{
-	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
-}
-
-void MainWindow::CenterSelection()
-{
-	if (m_pNMRI->AnyNobsSelected())
-		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
-}
-
 void MainWindow::AnimateArrows()
 {
 	MicroMeter oldVal { m_arrowSize };
@@ -217,18 +206,19 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void MainWindow::setNoTarget()
 {
-	m_nobTarget = NO_NOB;
+	m_pModelCommands->SetTargetNob(NO_NOB);
 	m_connType  = ConnectionType::ct_none;
 }
 
 void MainWindow::setTargetNob()
 {
-	m_nobTarget = m_pNMRI->FindNobAt
+	NobId nobIdTarget = m_pNMRI->FindNobAt
 	(
 		m_pNMRI->GetNobPos(m_pNMRI->GetHighlightedNobId()),
 		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_pNMRI->GetHighlightedNobId(), s.GetId()); }
 	);
-	m_connType = m_pNMRI->ConnectionResult(m_pNMRI->GetHighlightedNobId(), m_nobTarget);
+	m_pModelCommands->SetTargetNob(nobIdTarget);
+	m_connType = m_pNMRI->ConnectionResult(m_pNMRI->GetHighlightedNobId(), m_pNMRI->GetTargetNobId());
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -450,11 +440,11 @@ void MainWindow::DoPaint()
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
-	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
+	if (IsDefined(m_pNMRI->GetTargetNobId())) // draw target nob again to be sure that it is visible
 	{
 		tHighlight type { (m_connType == ConnectionType::ct_none) ? tHighlight::targetNoFit : tHighlight::targetFit };
-		m_pNMRI->DrawExterior(m_nobTarget, context, type);
-		m_pNMRI->DrawInterior(m_nobTarget, context, type);
+		m_pNMRI->DrawExterior(m_pNMRI->GetTargetNobId(), context, type);
+		m_pNMRI->DrawInterior(m_pNMRI->GetTargetNobId(), context, type);
 		m_pNMRI->DrawExterior(m_pNMRI->GetHighlightedNobId(), context, type);
 		m_pNMRI->DrawInterior(m_pNMRI->GetHighlightedNobId(), context, type);
 	}
@@ -505,10 +495,21 @@ bool MainWindow::UserProc
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DUMP();
 		wcout << L"highlighted = " << m_pNMRI->GetHighlightedNobId() << endl;
-		wcout << L"target      = " << m_nobTarget      << endl;
+		wcout << L"target      = " << m_pNMRI->GetTargetNobId()      << endl;
 		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
 	}
 	return bRes;
+}
+
+void MainWindow::CenterModel()
+{
+	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
+}
+
+void MainWindow::CenterSelection()
+{
+	if (m_pNMRI->AnyNobsSelected())
+		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

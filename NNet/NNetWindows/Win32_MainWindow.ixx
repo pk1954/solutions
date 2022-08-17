@@ -44,8 +44,6 @@ public:
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
-	NobId GetTargetNobId () const { return m_nobTarget; }
-
 	template <typename T>
 	void NNetMove(T const & delta)	
 	{ 
@@ -82,7 +80,6 @@ private:
 	ActionTimer       * m_pDisplayTimer        { nullptr };
 	MicroMeterRect      m_rectSelection        { };
 	MicroMeterPnt       m_umPntSelectionAnchor { };
-	NobId               m_nobTarget            { NO_NOB };
 	Observable        * m_pCoordObservable     { nullptr };
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };

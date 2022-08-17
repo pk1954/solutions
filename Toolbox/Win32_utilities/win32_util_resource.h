@@ -33,7 +33,6 @@ inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 #define IDM_EXIT                        5
 #define IDM_BLOCK_UI                    6
 
-#define IDM_REFRESH                     8
 #define IDD_REFRESH_RATE_DIALOG         9
 
 #define IDD_STD_EDIT_DIALOG            10
