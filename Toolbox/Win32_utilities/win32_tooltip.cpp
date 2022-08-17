@@ -7,9 +7,10 @@ module;
 #include <cassert>
 #include <Windows.h>
 #include <CommCtrl.h>
-#include "Win32_PIXEL.h"
 
 module Tooltip;
+
+import Win32_PIXEL;
 
 HWND CreateRectToolTip
 (

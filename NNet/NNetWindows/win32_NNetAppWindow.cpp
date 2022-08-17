@@ -19,7 +19,6 @@
 
 // infrastructure
 
-#include "Win32_PIXEL.h"
 #include "AutoOpen.h"
 #include "NNetCommand.h"
 #include "ConnAnimationCommand.h"
@@ -60,6 +59,7 @@ import MessagePump;
 import ScriptFile;
 import BaseWindow;
 import Win32_Util;
+import Win32_PIXEL;
 
 using std::wcout;
 using std::wstring;

@@ -160,7 +160,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Win32_PIXEL.h" />
     <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_scale.h" />
@@ -197,7 +196,6 @@
     <ClCompile Include="win32_graphicsWindow.cpp" />
     <ClCompile Include="Win32_MessagePump.cpp" />
     <ClCompile Include="Win32_MessagePump.ixx" />
-    <ClCompile Include="Win32_PIXEL.cpp" />
     <ClCompile Include="Win32_PixelTypes.ixx" />
     <ClCompile Include="Win32_Script.ixx" />
     <ClCompile Include="Win32_Sound.ixx" />
@@ -232,6 +230,9 @@
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBasics\WinBasics.vcxproj">
+      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Wrappers\Wrappers.vcxproj">
       <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>

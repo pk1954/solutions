@@ -12,7 +12,6 @@
 #include <Windows.h>
 #include <windowsx.h>
 #include "CommCtrl.h"
-#include "Win32_PIXEL.h"
 
 import SaveCast;
 import BoolOp;
@@ -21,6 +20,7 @@ import ObserverInterface;
 import Tooltip;
 import PixelTypes;
 import Win32_Util;
+import Win32_PIXEL;
 
 using std::chrono::milliseconds;
 using std::wostringstream;

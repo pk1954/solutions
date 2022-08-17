@@ -2,6 +2,7 @@
 //
 // Toolbox Win32_utilities
 
+#include <cassert>
 #include "win32_util_resource.h"
 #include "win32_rootWindow.h"
 

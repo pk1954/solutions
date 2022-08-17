@@ -42,9 +42,6 @@
     <ClInclude Include="win32_baseScale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Win32_PIXEL.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Win32_BaseWindow.cpp">
@@ -153,9 +150,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Thread.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Win32_PIXEL.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_FatalError.ixx">

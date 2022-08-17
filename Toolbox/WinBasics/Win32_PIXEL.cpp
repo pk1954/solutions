@@ -1,10 +1,18 @@
 // Win32_PIXEL.cpp 
 //
-// Toolbox\Win32_utilities
+// Toolbox\WinBasics
 
+module;
+
+#include <iostream>
 #include "Windows.h"
 #include "Script.h"
-#include "Win32_PIXEL.h"
+
+module Win32_PIXEL;
+
+import PixelTypes;
+
+using std::wostream;
 
 RECT Util::ScrReadRECT(Script & script)
 {

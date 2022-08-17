@@ -4,11 +4,12 @@
 
 module;
 
-#include "Win32_PIXEL.h"
+#include "Windows.h"
 
 export module Win32_PixelTypes;
 
 import PixelTypes;
+import Win32_PIXEL;
 
 export fPixelRect Convert2fPixelRect(RECT const & rect)
 {

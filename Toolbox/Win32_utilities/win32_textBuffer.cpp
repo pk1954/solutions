@@ -7,12 +7,12 @@ module;
 #include <locale>
 #include <iomanip>
 #include "Windows.h"
-#include "Win32_PIXEL.h"
 
 module Win32_TextBuffer;
 
 import Util;
 import PixelTypes;
+import Win32_PIXEL;
 
 using std::wstring;
 using std::wostringstream;

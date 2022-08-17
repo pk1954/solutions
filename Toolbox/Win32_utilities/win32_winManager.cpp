@@ -2,14 +2,16 @@
 //
 // Win32_utilities
 
+#include <cassert>
+#include <Windows.h>
 #include <fstream>
 #include "Script.h"
-#include "Win32_PIXEL.h"
 
 import UtilityWrappers;
 import WinManager;
 import Symtab;
 import Win32_Util;
+import Win32_PIXEL;
 
 using std::endl;
 using std::pair;
