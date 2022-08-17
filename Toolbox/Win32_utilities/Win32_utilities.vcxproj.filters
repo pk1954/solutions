@@ -18,9 +18,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_hiResTimer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -47,7 +44,7 @@
     <ClCompile Include="Win32_BaseWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_hiResTimer.cpp">
+    <ClCompile Include="win32_HiResTimer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Script.cpp">
@@ -183,6 +180,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WIn32_Util.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_HiResTimer.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

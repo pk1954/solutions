@@ -163,7 +163,6 @@
     <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_graphicsWindow.h" />
     <ClInclude Include="win32_scale.h" />
-    <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_textWindow.h" />
     <ClInclude Include="win32_textWindowThread.h" />
@@ -194,6 +193,7 @@
     <ClCompile Include="Win32_event.ixx" />
     <ClCompile Include="Win32_FatalError.ixx" />
     <ClCompile Include="win32_graphicsWindow.cpp" />
+    <ClCompile Include="Win32_HiResTimer.ixx" />
     <ClCompile Include="Win32_MessagePump.cpp" />
     <ClCompile Include="Win32_MessagePump.ixx" />
     <ClCompile Include="Win32_PixelTypes.ixx" />
@@ -203,7 +203,7 @@
     <ClCompile Include="Win32_StdDialogBox.ixx" />
     <ClCompile Include="Win32_Stopwatch.ixx" />
     <ClCompile Include="win32_textBuffer.cpp" />
-    <ClCompile Include="win32_hiResTimer.cpp" />
+    <ClCompile Include="win32_HiResTimer.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />
     <ClCompile Include="Win32_Script.cpp" />
     <ClCompile Include="Win32_Stopwatch.cpp" />

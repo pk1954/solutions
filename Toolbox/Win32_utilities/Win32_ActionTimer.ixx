@@ -4,10 +4,10 @@
 
 module;
 
+#include <cassert>
 #include <chrono>
 #include "Windows.h"
 #include "BasicTypes.h"
-#include "win32_hiResTimer.h"
 
 export module ActionTimer;
 
@@ -15,6 +15,7 @@ import MoreTypes;
 import Hertz;
 import Util;
 import Observable;
+import HiResTimer;
 
 using std::chrono::milliseconds;
 

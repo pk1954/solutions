@@ -6,9 +6,10 @@ module;
 
 #include <string>
 #include <functional>
-#include "win32_hiResTimer.h"
 
 export module Stopwatch;
+
+import HiResTimer;
 
 using std::wstring;
 using std::function;

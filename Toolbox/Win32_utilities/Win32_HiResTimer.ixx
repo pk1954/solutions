@@ -1,39 +1,41 @@
-// win32_hiResTimer.h : 
+// Win32_HiResTimer.ixx
 //
 // win32_utilities
 
-#pragma once
+module;
 
 #include <cassert>
 #include <chrono>
 #include <Windows.h>
 #include "BasicTypes.h"
 
+export module HiResTimer;
+
 import NamedType;
 import MoreTypes;
 import fHertz;
 import Hertz;
 
-using std::chrono::microseconds;
+export using std::chrono::microseconds;
 
-using Ticks = NamedType< long long, struct Ticks_Parameter >;
+export using Ticks = NamedType< long long, struct Ticks_Parameter >;
 
-class HiResTimer
+export class HiResTimer
 {
 public:
-    HiResTimer();
+	HiResTimer();
 	virtual ~HiResTimer() = default;
 
 	Ticks ReadHiResTimer() const
 	{
 		LARGE_INTEGER value;
-		(void)QueryPerformanceCounter(& value);
+		(void)QueryPerformanceCounter(&value);
 		return Ticks(value.QuadPart);
 	}
 
 	void Start()
 	{
-		if (! m_bStarted)
+		if (!m_bStarted)
 			m_ticksOnStart = ReadHiResTimer();
 		m_bStarted = true;
 	}
@@ -64,7 +66,7 @@ public:
 
 	microseconds GetDuration()
 	{
-		assert(! m_bStarted);
+		assert(!m_bStarted);
 
 		microseconds result = TicksToMicroseconds(m_ticksAccumulated);
 		m_ticksAccumulated = Ticks(0);
@@ -72,7 +74,7 @@ public:
 		return result;
 	}
 
-	void BusyWait(microseconds const, Ticks &);
+	void BusyWait(microseconds const, Ticks&);
 
 	fMicroSecs TicksToMicroSecs(Ticks const ticks) const
 	{
@@ -86,15 +88,15 @@ public:
 
 private:
 
-	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
-	float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
+	long long const MICROSECONDS_TO_SECONDS{ microseconds::period::den };
+	float     const fMICROSECS_TO_SECONDS{ static_cast<float>(MICROSECONDS_TO_SECONDS) };
 
- 	bool  m_bStarted         { false };
-	Ticks m_ticksOnStart     { Ticks(0) };
-	Ticks m_ticksAccumulated { Ticks(0) };
+	bool  m_bStarted{ false };
+	Ticks m_ticksOnStart{ Ticks(0) };
+	Ticks m_ticksAccumulated{ Ticks(0) };
 
-	inline static Hertz  m_frequency  { 0_Hertz };
-	inline static fHertz m_fFrequency { 0.0_fHertz};
+	inline static Hertz  m_frequency{ 0_Hertz };
+	inline static fHertz m_fFrequency{ 0.0_fHertz };
 
 	microseconds TicksToMicroseconds(Ticks const) const;
 	Ticks MicroSecondsToTicks(microseconds const) const;

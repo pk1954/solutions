@@ -1,9 +1,14 @@
-// win32_HiResTimer.cpp :
+// Win32_HiResTimer.cpp :
 //
 // win32_utilities
 
+module;
+
 #include <limits>     
-#include "win32_hiResTimer.h"
+#include <cassert>     
+#include <Windows.h>
+
+module HiResTimer;
 
 import NamedType;
 
