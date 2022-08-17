@@ -6,8 +6,8 @@
 
 #include <ostream>
 #include <functional>
-#include "Track.h"
 #include "TrackNr.h"
+#include "SignalNr.h"
 
 import NamedType;
 import IoConstants;

@@ -186,6 +186,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="SignalNr.h" />
     <ClInclude Include="SignalSource.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="Spike.h" />

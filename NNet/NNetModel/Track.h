@@ -7,16 +7,13 @@
 #include <memory>
 #include <vector>
 #include "Signal.h"
+#include "SignalNr.h"
 
 import Observable;
 import NamedType;
 
 using std::vector;
 using std::unique_ptr;
-
-using SignalNr = NamedType<int, struct SignalNrParam>;
-
-class SignalId;
 
 class Track
 {

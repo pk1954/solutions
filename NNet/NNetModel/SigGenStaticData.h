@@ -5,6 +5,7 @@
 #pragma once
 
 #include <iostream>
+#include "BasicTypes.h"
 
 import Observable;
 import MoreTypes;
