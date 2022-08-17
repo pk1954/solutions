@@ -23,7 +23,6 @@
 #include "PlugIoLineAnimation.h"
 #include "RenameSigGenCmd.h"
 #include "RestrictSelectionCommand.h"
-#include "RotateModelCommand.h"
 #include "RotateSelectionCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
@@ -64,6 +63,7 @@ import InsertBaseKnotCommand;
 import DeleteSignalCommand;
 import RotateNobCommand;
 import SelectNobCommand;
+import RotateModelCommand;
 
 using std::wcout;
 using std::endl;
