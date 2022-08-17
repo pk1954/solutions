@@ -99,7 +99,6 @@
 #define       IDM_PERF_WINDOW                592
 #define       IDM_DESC_WINDOW                593
 #define       IDM_SIG_DESIGNER               594
-#define       IDM_NNET_REFRESH_RATE          595
 									        
 #define       IDM_ANALYZE                    600
 #define       IDM_ANALYZE_LOOPS              601

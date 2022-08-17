@@ -19,6 +19,7 @@
 #include "NNetModelCommands.h"
 #include "NNetColors.h"
 
+import Observable;
 import SlowMotionControl;
 import DescriptionWindow;
 import CrsrWindow;
@@ -45,11 +46,7 @@ import MiniWindow;
 import NNetAppMenu;
 import MainWindow;
 import ScriptFile;
-
-class ReadModelResult;
-class MessagePump;
-class Observable;
-class NNetModel;
+import MessagePump;
 
 using std::wstring;
 using std::wofstream;

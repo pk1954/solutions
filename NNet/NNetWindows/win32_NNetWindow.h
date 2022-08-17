@@ -14,7 +14,6 @@ import D2D_DrawContext;
 import Uniform2D;
 
 class NNetController;
-class NNetModelReaderInterface;
 
 class NNetWindow : public GraphicsWindow
 {

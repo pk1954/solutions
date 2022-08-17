@@ -238,10 +238,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->ToggleEmphMode(m_pMainWindow->GetHighlightedNobId());
         break;
 
-    case IDM_NNET_REFRESH_RATE:
-        m_pMainWindow->PostCommand(IDD_REFRESH_RATE_DIALOG, 0);
-        break;
-
     case IDD_CONNECT:
         m_pModelCommands->Connect
         (
