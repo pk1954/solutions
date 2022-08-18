@@ -17,7 +17,6 @@
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
-#include "RestrictSelectionCommand.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
 #include "SetParameterCommand.h"
@@ -66,6 +65,7 @@ import RenameSigGenCmd;
 import AddPipe2PipeCommand;
 import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
+import RestrictSelectionCommand;
 
 using std::wcout;
 using std::endl;

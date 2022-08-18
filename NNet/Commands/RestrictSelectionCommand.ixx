@@ -1,15 +1,18 @@
-// RestrictSelectionCommand.h
+// RestrictSelectionCommand.ixx
 //
 // Commands
 
-#pragma once
+module;
 
+#include "NobType.h"
 #include "NNetModelWriterInterface.h"
+
+export module RestrictSelectionCommand;
 
 import MoreTypes;
 import SelectionCommand;
 
-class RestrictSelectionCommand : public SelectionCommand
+export class RestrictSelectionCommand : public SelectionCommand
 {
 public:
 	explicit RestrictSelectionCommand(NobType::Value const val)
@@ -17,14 +20,14 @@ public:
 	{ }
 
 	void Do() final
-	{ 
+	{
 		SelectionCommand::Do();
 		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
 		(
-			[this](Nob & s)
-			{ 
-				if (s.GetNobType() != m_val) 
-					s.Select(false); 
+			[this](Nob& s)
+			{
+				if (s.GetNobType() != m_val)
+					s.Select(false);
 			}
 		);
 	}
