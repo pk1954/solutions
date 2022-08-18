@@ -19,7 +19,6 @@
 #include "PlugIoLineAnimation.h"
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
-#include "SetParameterCommand.h"
 #include "SetActiveSigGenCmd.h"
 #include "SetHighlightedNobCmd.h"
 #include "SetTargetNobCmd.h"
@@ -66,6 +65,7 @@ import AddPipe2PipeCommand;
 import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
 import RestrictSelectionCommand;
+import SetParameterCommand;
 
 using std::wcout;
 using std::endl;
