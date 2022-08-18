@@ -67,7 +67,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddSigGen2MonitorCmd.h" />
     <ClInclude Include="AttachSIgGen2ConnCmd.h" />
     <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
@@ -98,6 +97,7 @@
     <ClCompile Include="AddPipe2BaseKnotCommand.ixx" />
     <ClCompile Include="AddPipe2PipeCommand.ixx" />
     <ClCompile Include="AddSensorSignalCmd.ixx" />
+    <ClCompile Include="AddSigGen2MonitorCmd.ixx" />
     <ClCompile Include="AnalyzeCommand.ixx" />
     <ClCompile Include="ArrowAnimation.ixx">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
@@ -153,7 +153,7 @@
     <ClCompile Include="SetNobCommand.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
     <ClCompile Include="SigGenCommand.ixx" />
-    <ClCompile Include="SIngleNobAnimation.ixx" />
+    <ClCompile Include="SingleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
     <ClCompile Include="SplitNeuronCmd.ixx" />

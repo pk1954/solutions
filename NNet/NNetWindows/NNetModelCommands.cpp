@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include <source_location>
-#include "AddSigGen2MonitorCmd.h"
 #include "Analyzer.h"
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
@@ -66,6 +65,7 @@ import AttachSigGen2SelCmd;
 import RenameSigGenCmd;
 import AddPipe2PipeCommand;
 import AddSensorSignalCmd;
+import AddSigGen2MonitorCmd;
 
 using std::wcout;
 using std::endl;

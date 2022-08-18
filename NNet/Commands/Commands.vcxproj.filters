@@ -75,9 +75,6 @@
     <ClInclude Include="AttachSIgGen2ConnCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddSigGen2MonitorCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SetHighlightedNobCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -173,7 +170,7 @@
     <ClCompile Include="SetNobCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SIngleNobAnimation.ixx">
+    <ClCompile Include="SingleNobAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SigGenCommand.ixx">
@@ -219,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddSensorSignalCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddSigGen2MonitorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
