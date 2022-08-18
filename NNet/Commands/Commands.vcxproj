@@ -67,7 +67,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddPipe2PipeCommand.h" />
     <ClInclude Include="AddSensorSignalCmd.h" />
     <ClInclude Include="AddSigGen2MonitorCmd.h" />
     <ClInclude Include="AttachSIgGen2ConnCmd.h" />
@@ -98,6 +97,7 @@
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>
     <ClCompile Include="AddPipe2BaseKnotCommand.ixx" />
+    <ClCompile Include="AddPipe2PipeCommand.ixx" />
     <ClCompile Include="AnalyzeCommand.ixx" />
     <ClCompile Include="ArrowAnimation.ixx">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>

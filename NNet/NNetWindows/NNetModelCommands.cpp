@@ -3,7 +3,6 @@
 // NNetWindows
 
 #include <source_location>
-#include "AddPipe2PipeCommand.h"
 #include "AddSensorSignalCmd.h"
 #include "AddSigGen2MonitorCmd.h"
 #include "Analyzer.h"
@@ -66,6 +65,7 @@ import RotateModelCommand;
 import RotateSelectionCommand;
 import AttachSigGen2SelCmd;
 import RenameSigGenCmd;
+import AddPipe2PipeCommand;
 
 using std::wcout;
 using std::endl;
