@@ -67,7 +67,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddSensorSignalCmd.h" />
     <ClInclude Include="AddSigGen2MonitorCmd.h" />
     <ClInclude Include="AttachSIgGen2ConnCmd.h" />
     <ClInclude Include="CommandFunctions.h" />
@@ -98,6 +97,7 @@
     </ClCompile>
     <ClCompile Include="AddPipe2BaseKnotCommand.ixx" />
     <ClCompile Include="AddPipe2PipeCommand.ixx" />
+    <ClCompile Include="AddSensorSignalCmd.ixx" />
     <ClCompile Include="AnalyzeCommand.ixx" />
     <ClCompile Include="ArrowAnimation.ixx">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
