@@ -4,9 +4,10 @@
 
 #include <cassert>
 #include "Resource.h"
-#include "DrawContext.h"
 #include "NobException.h"
 #include "BaseKnot.h"
+
+import DrawContext;
 
 using std::wcout;
 using std::endl;

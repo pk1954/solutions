@@ -6,9 +6,10 @@
 #include <cassert>
 #include "Resource.h"
 #include "tHighlightType.h"
-#include "DrawContext.h"
 #include "NNetColors.h"
 #include "Knot.h"
+
+import DrawContext;
 
 Knot::Knot(BaseKnot const & src)
   : BaseKnot(src)

@@ -4,16 +4,17 @@
 
 module;
 
-#include "DrawContext.h"
+#include <string>
+#include "BasicTypes.h"
 
 export module D2D_DrawContext;
 
 import Direct2D;
 import MoreTypes;
 import PixelTypes;
+import DrawContext;
 
 using std::wstring;
-using D2D1::ColorF;
 
 export class D2D_DrawContext: public DrawContext
 {
@@ -28,7 +29,7 @@ public:
 		MicroMeterPnt const &, 
 		MicroMeterPnt const &,
 		MicroMeter    const,
-		ColorF        const,
+		D2D1::ColorF  const,
 		fPixel        const = 1._fPixel
 	) const override;
 
@@ -36,40 +37,40 @@ public:
 	(
 		MicroMeterLine const &, 
 		MicroMeter     const,
-		ColorF         const  
+		D2D1::ColorF   const  
 	) const override;
 
 	void FillCircle
 	(
 		MicroMeterCircle const &,
-		ColorF           const,
+		D2D1::ColorF     const,
 		fPixel           const = 1._fPixel
 	) const override;
 
 	void FillGradientCircle
 	(
 		MicroMeterCircle const &,
-		ColorF           const,  
-		ColorF           const  
+		D2D1::ColorF     const,  
+		D2D1::ColorF     const  
 	) const override;
 
 	void DrawCircle
 	(
 		MicroMeterCircle const &,
-		ColorF           const,
+		D2D1::ColorF     const,
 		MicroMeter       const
 	) const override;
 
 	void FillEllipse
 	(
 		MicroMeterEllipse const &,
-		ColorF            const  
+		D2D1::ColorF      const  
 	) const override;
 
 	void DrawEllipse
 	(
 		MicroMeterEllipse const &,
-		ColorF            const,
+		D2D1::ColorF      const,
 		MicroMeter        const   
 	) const override;
 
@@ -79,17 +80,17 @@ public:
 		MicroMeterPnt const &,
 		MicroMeter    const,
 		MicroMeter    const,
-		ColorF        const  
+		D2D1::ColorF  const  
 	) const override;
 
-	void FillRectangle (MicroMeterRect const &, ColorF) const override; 
-	void DrawTranspRect(MicroMeterRect const &, ColorF) const override; 
+	void FillRectangle (MicroMeterRect const &, D2D1::ColorF) const override;
+	void DrawTranspRect(MicroMeterRect const &, D2D1::ColorF) const override;
 
 	void DisplayText
 	(
 		MicroMeterRect      const &,
 		wstring             const &,
-		ColorF              const,
+		D2D1::ColorF        const,
 		IDWriteTextFormat * const = nullptr
 	) const override;
 

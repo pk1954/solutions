@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicTypes.h" />
-    <ClInclude Include="DrawContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AngleTypes.ixx" />
@@ -31,6 +30,7 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
     <ClCompile Include="DisplayFunctor.ixx" />
+    <ClCompile Include="DrawContext.ixx" />
     <ClCompile Include="EllipseType.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="fHertz.ixx" />

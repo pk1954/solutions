@@ -7,10 +7,10 @@
 #include "NNetColors.h"
 #include "Signal.h"
 #include "UPNobList.h"
-#include "DrawContext.h"
 #include "Sensor.h"
 
 import VoltageType;
+import DrawContext;
 
 using std::endl;
 

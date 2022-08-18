@@ -4,8 +4,9 @@
 
 #include <cassert>
 #include "Resource.h"
-#include "DrawContext.h"
 #include "OutputLine.h"
+
+import DrawContext;
 
 OutputLine::OutputLine(MicroMeterPnt const & upCenter)
 	: IoLine(upCenter, NobType::Value::outputLine)

@@ -11,11 +11,11 @@
 #include "SimulationTime.h"
 #include "NNetParameters.h"
 #include "SignalSource.h"
-#include "DrawContext.h"
 
 import ObserverInterface;
 import MoreTypes;
 import VoltageType;
+import DrawContext;
 
 using std::vector;
 using std::unique_ptr;

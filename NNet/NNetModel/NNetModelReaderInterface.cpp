@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "Nob.h"
-#include "DrawContext.h"
 #include "NNetModel.h"
 #include "InputConnector.h"
 #include "IoConnector.h"
@@ -12,6 +11,7 @@
 #include "NNetModelReaderInterface.h"
 
 import VoltageType;
+import DrawContext;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {

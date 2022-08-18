@@ -7,7 +7,6 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 #include "NNetColors.h"
-#include "DrawContext.h"
 #include "NNetParameters.h"
 
 module MiniWindow;
@@ -18,6 +17,7 @@ import MainWindow;
 import NNetController;
 import MainWindow;
 import NNetWindow;
+import DrawContext;
 
 void MiniWindow::Start
 (

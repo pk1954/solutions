@@ -5,7 +5,6 @@
 #include <sstream> 
 #include <iomanip>
 #include "Resource.h"
-#include "DrawContext.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Spike.h"
@@ -14,6 +13,7 @@
 #include "Neuron.h"
 
 import VoltageType;
+import DrawContext;
 
 using std::fixed;
 using std::wstring;

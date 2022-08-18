@@ -7,11 +7,11 @@
 #include <ostream>
 #include "BasicTypes.h"
 #include "UPNobList.h"
-#include "DrawContext.h"
 
 import Observable;
 import MoreTypes;
 import VoltageType;
+import DrawContext;
 
 using std::wostream;
 

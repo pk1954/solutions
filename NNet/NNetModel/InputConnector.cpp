@@ -3,10 +3,11 @@
 // NNetModel
 
 #include "Resource.h"
-#include "DrawContext.h"
 #include "IoLine.h"
 #include "InputLine.h"
 #include "InputConnector.h"
+
+import DrawContext;
 
 using std::make_unique;
 

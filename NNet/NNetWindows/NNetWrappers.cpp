@@ -7,7 +7,6 @@ module;
 #include "Resource.h"
 #include "NobType.h"
 #include "NobIdList.h"
-#include "DrawContext.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
@@ -20,6 +19,7 @@ import SoundInterface;
 import UtilityWrappers;
 import Symtab;
 import NNetInputOutputUI;
+import DrawContext;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

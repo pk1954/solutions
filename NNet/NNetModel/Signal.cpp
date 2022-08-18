@@ -4,7 +4,6 @@
 
 #include "SimulationTime.h"
 #include "UPNobList.h"
-#include "DrawContext.h"
 #include "NNetColors.h"
 #include "BaseKnot.h"
 #include "SignalSource.h"
@@ -13,6 +12,7 @@
 import Util;
 import IoConstants;
 import VoltageType;
+import DrawContext;
 
 using std::wcout;
 using std::endl;

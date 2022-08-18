@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include "Resource.h"
-#include "DrawContext.h"
 #include "NNetParameters.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -14,6 +13,7 @@ import Geometry;
 import IoConstants;
 import SpeedType;
 import VoltageType;
+import DrawContext;
 
 using std::wcout;
 using std::endl;

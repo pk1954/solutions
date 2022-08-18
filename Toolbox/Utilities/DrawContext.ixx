@@ -1,21 +1,22 @@
-// DrawContext.h
+// DrawContext.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
 #include <string>
 #include "d2d1helper.h"
 #include "BasicTypes.h"
+
+export module DrawContext;
 
 import Uniform2D;
 import MoreTypes;
 import PixelTypes;
 
 using std::wstring;
-using D2D1::ColorF;
 
-class DrawContext
+export class DrawContext
 {
 public:
 	virtual ~DrawContext() = default;
@@ -30,7 +31,7 @@ public:
 		MicroMeterPnt const &, 
 		MicroMeterPnt const &, 
 		MicroMeter    const, 
-		ColorF        const,
+		D2D1::ColorF  const,
 		fPixel        const = 1._fPixel
 	) const = 0;
 
@@ -38,7 +39,7 @@ public:
 	(
 		MicroMeterLine const &, 
 		MicroMeter     const, 
-		ColorF         const
+		D2D1::ColorF   const
 	) const = 0;
 
 	virtual void FillArrow
@@ -47,27 +48,27 @@ public:
 		MicroMeterPnt const &, 
 		MicroMeter    const, 
 		MicroMeter    const, 
-		ColorF        const
+		D2D1::ColorF  const
 	) const = 0;
 
 	virtual void FillCircle
 	(
 		MicroMeterCircle const &, 
-		ColorF           const,
+		D2D1::ColorF     const,
 		fPixel           const = 1._fPixel
 	) const = 0;
 
-	virtual void DrawCircle        (MicroMeterCircle  const &, ColorF const, MicroMeter const) const = 0;
-	virtual void DrawEllipse       (MicroMeterEllipse const &, ColorF const, MicroMeter const) const = 0;
-	virtual void FillEllipse       (MicroMeterEllipse const &, ColorF const) const = 0;
-	virtual void FillRectangle     (MicroMeterRect    const &, ColorF const) const = 0;
-	virtual void FillGradientCircle(MicroMeterCircle  const &, ColorF const, ColorF const) const = 0;
-	virtual void DrawTranspRect    (MicroMeterRect    const &, ColorF const) const = 0;
+	virtual void DrawCircle        (MicroMeterCircle  const &, D2D1::ColorF const, MicroMeter const) const = 0;
+	virtual void DrawEllipse       (MicroMeterEllipse const &, D2D1::ColorF const, MicroMeter const) const = 0;
+	virtual void FillEllipse       (MicroMeterEllipse const &, D2D1::ColorF const) const = 0;
+	virtual void FillRectangle     (MicroMeterRect    const &, D2D1::ColorF const) const = 0;
+	virtual void FillGradientCircle(MicroMeterCircle  const &, D2D1::ColorF const, D2D1::ColorF const) const = 0;
+	virtual void DrawTranspRect    (MicroMeterRect    const &, D2D1::ColorF const) const = 0;
 	virtual void DisplayText
 	(
 		MicroMeterRect      const &,
 		wstring             const &,
-		ColorF              const,
+		D2D1::ColorF        const,
 		IDWriteTextFormat * const = nullptr
 	) const = 0;
 

@@ -3,8 +3,9 @@
 // NNetModel
 
 #include "IoLine.h"
-#include "DrawContext.h"
 #include "OutputConnector.h"
+
+import DrawContext;
 
 OutputConnector::OutputConnector()
     :	IoConnector(NobType::Value::outputConnector)

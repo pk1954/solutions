@@ -5,7 +5,6 @@
 #include <iomanip>
 #include <sstream> 
 #include "Resource.h"
-#include "DrawContext.h"
 #include "tHighlightType.h"
 #include "ParameterType.h"
 #include "NobType.h"
@@ -17,6 +16,8 @@
 #include "Neuron.h"
 #include "InputConnector.h"
 #include "InputLine.h"
+
+import DrawContext;
 
 using std::chrono::microseconds;
 using std::wostringstream;
