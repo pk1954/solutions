@@ -6,9 +6,11 @@
 
 #include <bit> 
 #include <string> 
+#include <Windows.h> 
 #include "dwrite.h"
 #include "win32_util_resource.h"
 
+import BoolOp;
 import PixelTypes;
 import MoreTypes;
 import Direct2D;

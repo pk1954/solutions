@@ -5,8 +5,11 @@
 #pragma once
 
 #include <string>
+#include <Windows.h>
 
+import Util;
 import TextBuffer;
+import PixelTypes;
 import Win32_TextBuffer;
 import BaseWindow;
 import Thread;
