@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "NobId.h"
 #include "NNetModelWriterInterface.h"
+#include "NobId.h"
 
 import Command;
 

@@ -5,12 +5,12 @@
 module;
 
 #include <iostream>
-#include "BasicTypes.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_textWindow.h"
 
 export module CrsrWindow;
 
+import BasicTypes;
 import Hertz;
 import VoltageType;
 import MilliSecs;

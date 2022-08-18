@@ -9,12 +9,12 @@ module;
 #include <iostream>
 #include <iomanip>
 #include <compare>
-#include "BasicTypes.h"
 
 export module PointType;
 
 import Util;
 import NamedType;
+import BasicTypes;
 import IoConstants;
 import AngleTypes;
 

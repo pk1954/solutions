@@ -4,13 +4,12 @@
 
 #pragma once
 
-#include "BasicTypes.h"
+#include "SigGenStaticData.h"
+#include "NNetParameters.h"
 
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
-
-class SigGenStaticData;
-class Param;
 
 class SigGenDynamicData
 {

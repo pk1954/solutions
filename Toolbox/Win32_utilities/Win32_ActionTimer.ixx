@@ -7,10 +7,10 @@ module;
 #include <cassert>
 #include <chrono>
 #include "Windows.h"
-#include "BasicTypes.h"
 
 export module ActionTimer;
 
+import BasicTypes;
 import MoreTypes;
 import Hertz;
 import Util;

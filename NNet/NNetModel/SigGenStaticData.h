@@ -5,9 +5,9 @@
 #pragma once
 
 #include <iostream>
-#include "BasicTypes.h"
 
 import Observable;
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
 import fHertz;

@@ -2,13 +2,11 @@
 //
 // NNetWindows
 
-module;
-
-#include "BasicTypes.h"
-
 export module SignalPreview;
 
+import BasicTypes;
 import MoreTypes;
+import PixelTypes;
 import VoltageType;
 import PixFpDimension;
 import TimeGraph;
@@ -33,8 +31,8 @@ private:
 	void DoPaint() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 
-	fPixel getY (fPixel const fPix) const;
-	fPixel yVolt(mV     const volt) const;
+	fPixel getY (fPixel const) const;
+	fPixel yVolt(mV     const) const;
 
-	fPixelPoint pixPntVolt(fMicroSecs const t, mV const v) const;
+	fPixelPoint pixPntVolt(fMicroSecs const, mV const) const;
 };

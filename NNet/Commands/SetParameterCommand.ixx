@@ -4,9 +4,9 @@
 
 module;
 
+#include "NNetModelWriterInterface.h"
 #include "ParameterType.h"
 #include "NNetParameters.h"
-#include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 
 export module SetParameterCommand;

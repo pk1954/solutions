@@ -2,22 +2,39 @@
 //
 // ModelIO
 
+#include <cassert>
+#include <iostream>
+#include <string>
+#include <vector>
 #include "Script.h"
+#include "NobId.h"
+#include "NobType.h"
+#include "Nob.h"
+#include "BaseKnot.h"
 #include "Knot.h"
+#include "Pipe.h"
 #include "Neuron.h"
+#include "IoLine.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "IoConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
+#include "UPNobList.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
+#include "WrapBase.h"
 #include "WrapCreateNob.h"
 
 import ErrHndl;
 import IoConstants;
 
+using std::vector;
+using std::wstring;
+using std::unique_ptr;
 using std::wcout;
+using std::endl;
 
 Nob * WrapCreateNob::createNob(Script & script) const
 {   

@@ -7,12 +7,12 @@ module;
 #include <cassert>
 #include <iostream>
 #include "Windows.h"
-#include "BasicTypes.h"
 #include "Script.h"
 
 export module Win32_PIXEL;
 
 import NamedType;
+import BasicTypes;
 import MoreTypes;
 import PixelTypes;
 

@@ -5,10 +5,10 @@
 module;
 
 #include <cstdint>
-#include "BasicTypes.h"
 
 export module U64Bit;
 
+import BasicTypes;
 import MoreTypes;
 
 namespace Util

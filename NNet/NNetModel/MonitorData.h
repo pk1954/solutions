@@ -10,10 +10,10 @@
 #include "TrackNr.h"
 #include "SignalId.h"
 #include "Signal.h"
-#include "BasicTypes.h"
 
 import Observable;
 import NamedType;
+import BasicTypes;
 
 using std::vector;
 using std::unique_ptr;

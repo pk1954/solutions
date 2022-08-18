@@ -4,8 +4,8 @@
 
 module;
 
-#include "NobType.h"
 #include "NNetModelWriterInterface.h"
+#include "NobType.h"
 
 export module RestrictSelectionCommand;
 

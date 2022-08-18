@@ -13,6 +13,7 @@
 #include "NNetParameters.h"
 
 import ObserverInterface;
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
 

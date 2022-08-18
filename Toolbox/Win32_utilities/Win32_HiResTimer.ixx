@@ -7,11 +7,11 @@ module;
 #include <cassert>
 #include <chrono>
 #include <Windows.h>
-#include "BasicTypes.h"
 
 export module HiResTimer;
 
 import NamedType;
+import BasicTypes;
 import MoreTypes;
 import fHertz;
 import Hertz;

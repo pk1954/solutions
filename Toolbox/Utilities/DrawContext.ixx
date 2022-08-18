@@ -6,11 +6,11 @@ module;
 
 #include <string>
 #include "d2d1helper.h"
-#include "BasicTypes.h"
 
 export module DrawContext;
 
 import Uniform2D;
+import BasicTypes;
 import MoreTypes;
 import PixelTypes;
 

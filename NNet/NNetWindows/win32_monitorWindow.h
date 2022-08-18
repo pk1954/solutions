@@ -6,11 +6,11 @@
 
 #include <Windows.h>
 #include "win32_scale.h"
-#include "BasicTypes.h"
 #include "MonitorData.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
 import PixelTypes;

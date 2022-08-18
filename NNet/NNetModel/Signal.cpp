@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "SimulationTime.h"
 #include "UPNobList.h"
 #include "NNetColors.h"
 #include "BaseKnot.h"
@@ -10,6 +9,7 @@
 #include "Signal.h"
 
 import Util;
+import BasicTypes;
 import IoConstants;
 import VoltageType;
 import DrawContext;

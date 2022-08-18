@@ -6,12 +6,14 @@ module;
 
 #include <cassert>
 #include <Windows.h>
-#include "BasicTypes.h"
 #include "NNetModelWriterInterface.h"
 
 module TimeGraph;
 
+import BasicTypes;
 import PixelTypes;
+import PixFpDimension;
+import GraphicsWindow;
 
 TimeGraph::TimeGraph
 (

@@ -5,11 +5,11 @@
 module;
 
 #include <string>
-#include "BasicTypes.h"
 
 export module D2D_DrawContext;
 
 import Direct2D;
+import BasicTypes;
 import MoreTypes;
 import PixelTypes;
 import DrawContext;

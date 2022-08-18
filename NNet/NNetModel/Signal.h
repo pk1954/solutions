@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <math.h>    
+#include <memory>    
 #include "BaseKnot.h"
 #include "UPNobList.h"
 #include "SimulationTime.h"

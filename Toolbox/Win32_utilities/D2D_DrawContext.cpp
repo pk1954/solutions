@@ -6,11 +6,11 @@ module;
 
 #include <string>
 #include <algorithm>
-#include "BasicTypes.h"
 
 module D2D_DrawContext;
 
 import Direct2D;
+import BasicTypes;
 
 using std::wstring;
 using D2D1::ColorF;

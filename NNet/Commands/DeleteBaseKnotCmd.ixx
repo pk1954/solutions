@@ -5,6 +5,7 @@
 module;
 
 #include <vector>
+#include "Nob.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "BaseKnot.h"

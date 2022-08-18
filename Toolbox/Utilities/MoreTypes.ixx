@@ -7,11 +7,11 @@ module;
 #include <ostream>
 #include <iomanip>
 #include <algorithm>
-#include "BasicTypes.h"
 
 export module MoreTypes;
 
 import NamedType;
+import BasicTypes;
 import PointType;
 import RectType;
 import LineType;

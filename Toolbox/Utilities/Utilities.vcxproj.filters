@@ -9,11 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="TextBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,6 +121,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DrawContext.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicTypes.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

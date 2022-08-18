@@ -4,15 +4,17 @@
 
 module;
 
+#include <string>
 #include <limits>
-#include "BasicTypes.h"
 
 export module fHertz;
 
 import Util;
+import BasicTypes;
 import NamedType;
 import SaveCast;
 
+using std::wstring;
 using std::numeric_limits;
 
 export using fHertz = NamedType< float, struct fHertz_Parameter >;

@@ -3,6 +3,7 @@
 // NNetWindows
 
 #include <source_location>
+#include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 #include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
@@ -21,7 +22,6 @@
 #include "SetActiveSigGenCmd.h"
 #include "SetHighlightedNobCmd.h"
 #include "SetTargetNobCmd.h"
-#include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 

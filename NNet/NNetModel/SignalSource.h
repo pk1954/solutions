@@ -5,10 +5,10 @@
 #pragma once
 
 #include <ostream>
-#include "BasicTypes.h"
 #include "UPNobList.h"
 
 import Observable;
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
 import DrawContext;

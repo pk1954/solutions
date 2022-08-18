@@ -5,7 +5,6 @@
 module;
 
 #include <ostream>
-#include "BasicTypes.h"
 
 export module CircleType;
 

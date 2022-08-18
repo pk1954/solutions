@@ -5,8 +5,8 @@
 #pragma once
 
 #include <ostream>
-#include "BasicTypes.h"
 
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
 

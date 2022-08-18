@@ -5,15 +5,21 @@
 module;
 
 #include "Windows.h"
+#include "NNetParameters.h"
+#include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
 
 module SignalPreview;
 
+import Direct2D;
+import BasicTypes;
+import PixelTypes;
 import PixFpDimension;
 import VoltageType;
-import TimeGraph;
 import BaseWindow;
+import GraphicsWindow;
+import TimeGraph;
 
 SignalPreview::SignalPreview
 (

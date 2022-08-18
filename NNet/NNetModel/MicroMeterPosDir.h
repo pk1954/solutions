@@ -7,8 +7,8 @@
 #include <ostream>
 #include <vector>
 #include <cassert>   
-#include "BasicTypes.h"
 
+import BasicTypes;
 import MoreTypes;
 import PointType;
 import AngleTypes;

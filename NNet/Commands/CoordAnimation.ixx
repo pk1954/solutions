@@ -5,10 +5,10 @@
 module;
 
 #include <memory>
-#include "BasicTypes.h"
 
 export module CoordAnimation;
 
+import BasicTypes;
 import MoreTypes;
 import Command;
 import Uniform2D;

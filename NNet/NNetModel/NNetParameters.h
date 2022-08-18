@@ -5,12 +5,12 @@
 #pragma once
 
 #include <chrono>
-#include "BasicTypes.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 
 import Observable;
 import SaveCast;
+import BasicTypes;
 import MoreTypes;
 import AngleTypes;
 import SpeedType;

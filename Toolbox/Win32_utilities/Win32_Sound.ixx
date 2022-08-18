@@ -7,10 +7,10 @@ module;
 #include <string>
 #include "Windows.h"
 #include "mmsystem.h"
-#include "BasicTypes.h"
 
 export module Win32_Sound;
 
+import BasicTypes;
 import MoreTypes;
 import MilliSecs;
 import Hertz;

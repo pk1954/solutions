@@ -5,9 +5,9 @@
 module;
 
 #include <Windows.h>
+#include "NNetModelWriterInterface.h"
 #include "SimulationTime.h"
 #include "NNetParameters.h"
-#include "NNetModelWriterInterface.h"
 
 module ComputeThread;
 

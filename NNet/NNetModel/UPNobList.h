@@ -6,6 +6,7 @@
 
 #include <array>
 #include <vector>
+#include <algorithm>
 #include "Nob.h"
 #include "NobId.h"
 

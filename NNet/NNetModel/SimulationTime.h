@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include "BasicTypes.h"
-
-import MoreTypes;
+import BasicTypes;
 
 class SimulationTime
 {

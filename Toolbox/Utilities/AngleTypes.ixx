@@ -4,12 +4,16 @@
 
 module;
 
-#include "BasicTypes.h"
+#include <math.h>
+#include <numbers>
 
 export module AngleTypes;
 
 import NamedType;
+import BasicTypes;
 import SaveCast;
+
+using std::numbers::pi;
 
 export using Radian  = NamedType<float, struct radian_Parameter >;
 export using Degrees = NamedType<float, struct degrees_Parameter >;

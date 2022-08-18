@@ -19,10 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicTypes.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="AngleTypes.ixx" />
+    <ClCompile Include="BasicTypes.ixx" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
     <ClCompile Include="Debug.ixx">

@@ -9,12 +9,12 @@ module;
 #include <sstream>
 #include <iostream>
 #include <Windows.h>
-#include "BasicTypes.h"
 
 export module Win32_Util;
 
 import BoolOp;
 import NamedType;
+import BasicTypes;
 import MoreTypes;
 import PixelTypes;
 

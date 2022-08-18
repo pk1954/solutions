@@ -7,10 +7,10 @@ module;
 #include <sstream> 
 #include <iomanip>
 #include <dwrite.h>
-#include "BasicTypes.h"
 
 module Measurement;
 
+import BasicTypes;
 import Util;
 import Direct2D;
 import PixelTypes;

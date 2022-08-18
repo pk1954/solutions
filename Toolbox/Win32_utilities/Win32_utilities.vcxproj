@@ -214,7 +214,7 @@
     <ClCompile Include="Win32_Tooltip.cpp" />
     <ClCompile Include="Win32_Tooltip.ixx" />
     <ClCompile Include="Win32_Util.cpp" />
-    <ClCompile Include="WIn32_Util.ixx" />
+    <ClCompile Include="Win32_Util.ixx" />
     <ClCompile Include="win32_winManager.cpp" />
     <ClCompile Include="Win32_WinManager.ixx" />
   </ItemGroup>

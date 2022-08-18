@@ -7,7 +7,6 @@
 #pragma once
 
 #include <string>
-#include "BasicTypes.h"
 #include "MonitorData.h"
 #include "Nob.h"
 #include "NobId.h"
@@ -23,6 +22,7 @@
 #include "UPSensorList.h"
 #include "UPSigGenList.h"
 
+import BasicTypes;
 import MoreTypes;
 import VoltageType;
 import AngleTypes;
