@@ -4,11 +4,11 @@
 
 #pragma once
 
+#include <bit> 
 #include <string> 
 #include <sstream> 
 #include <iomanip> 
 #include "dwrite.h"
-#include "win32_baseScale.h"
 #include "win32_util_resource.h"
 
 import Util;
@@ -18,6 +18,7 @@ import PixFpDimension;
 import Direct2D;
 import PixelTypes;
 import GraphicsWindow;
+import BaseScale;
 
 using std::fixed;
 using std::setprecision;

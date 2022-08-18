@@ -1,10 +1,24 @@
-// win32_baseScale.cpp
+// Win32_BaseScale.cpp
 //
 // Toolbox\win32_utilities
 
+module;
+
+#include <bit> 
+#include <string> 
 #include "Windows.h"
 #include "win32_util_resource.h"
-#include "win32_baseScale.h"
+
+module BaseScale;
+
+import BoolOp;
+import PixelTypes;
+import MoreTypes;
+import PixFpDimension;
+import GraphicsWindow;
+
+using std::wstring;
+using std::bit_cast;
 
 BaseScale::BaseScale
 (

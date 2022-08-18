@@ -160,7 +160,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_baseScale.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_textWindow.h" />
@@ -176,7 +175,8 @@
     <ClCompile Include="Win32_ArrowButton.ixx" />
     <ClCompile Include="Win32_BaseDialog.ixx" />
     <ClCompile Include="Win32_BaseRefreshRate.ixx" />
-    <ClCompile Include="win32_baseScale.cpp" />
+    <ClCompile Include="Win32_BaseScale.cpp" />
+    <ClCompile Include="Win32_BaseScale.ixx" />
     <ClCompile Include="Win32_BaseWindow.ixx" />
     <ClCompile Include="Win32_Command.cpp" />
     <ClCompile Include="Win32_BaseDialog.cpp" />
