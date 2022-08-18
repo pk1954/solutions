@@ -4,8 +4,8 @@
 
 module;
 
-#include "NNetParameters.h"
-#include "NNetModelWriterInterface.h"
+#include <memory>
+#include "BasicTypes.h"
 
 export module CoordAnimation;
 
@@ -14,6 +14,7 @@ import Command;
 import Uniform2D;
 import Animation;
 
+using std::unique_ptr;
 using std::make_unique;
 
 export class CoordAnimation : public Command
@@ -26,7 +27,7 @@ public:
         ANIM_TYPE       & animated,
         ANIM_TYPE const & target
     )
-        : m_animated(animated),
+      : m_animated(animated),
         m_start(animated),
         m_target(target)
     {

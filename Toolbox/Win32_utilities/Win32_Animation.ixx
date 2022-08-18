@@ -13,6 +13,7 @@ import Command;
 import SmoothMoveFp;
 
 using std::bit_cast;
+using std::move;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
