@@ -1,8 +1,8 @@
-// DeleteIoConnectorCmd.h
+// DeleteIoConnectorCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "CommandFunctions.h"
@@ -11,22 +11,24 @@
 #include "Nob.h"
 #include "IoConnector.h"
 
+export module DeleteIoConnectorCmd;
+
 using std::unique_ptr;
 
-class DeleteIoConnectorCmd : public NNetCommand
+export class DeleteIoConnectorCmd : public NNetCommand
 {
 public:
-    explicit DeleteIoConnectorCmd(Nob & nob)
-      : m_connector(*Cast2IoConnector(&nob))
+    explicit DeleteIoConnectorCmd(Nob& nob)
+        : m_connector(*Cast2IoConnector(&nob))
     {
         m_cmdStack.Initialize(nullptr);
         m_cmdStack.SetModelInterface(m_pNMWI);
         m_connector.Apply2All
         (
-            [this](IoLine & n) 
-            { 
-                if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, n) })
-                    m_cmdStack.Push(move(upCmd)); 
+            [this](IoLine& n)
+            {
+                if (unique_ptr<NNetCommand> upCmd{ MakeDeleteCommand(*m_pNMWI, n) })
+                    m_cmdStack.Push(move(upCmd));
             }
         );
     }
@@ -47,7 +49,7 @@ public:
 
 private:
 
-    IoConnector           & m_connector;
-    CommandStack            m_cmdStack      {};
-    unique_ptr<IoConnector> m_upIoConnector {};  
+    IoConnector& m_connector;
+    CommandStack            m_cmdStack{};
+    unique_ptr<IoConnector> m_upIoConnector{};
 };
