@@ -4,18 +4,17 @@
 
 #pragma once
 
+#include <string>
 #include "SignalSource.h"
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
+#include "UPSigGenList.h"
+#include "NNetParameters.h"
 
 import ObserverInterface;
 import MoreTypes;
 import VoltageType;
-
-class Param;
-class UPSigGenList;
-class SignalGenerator;
 
 using std::wstring;
 using std::unique_ptr;

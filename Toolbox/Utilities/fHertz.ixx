@@ -4,6 +4,7 @@
 
 module;
 
+#include <limits>
 #include "BasicTypes.h"
 
 export module fHertz;
@@ -11,6 +12,8 @@ export module fHertz;
 import Util;
 import NamedType;
 import SaveCast;
+
+using std::numeric_limits;
 
 export using fHertz = NamedType< float, struct fHertz_Parameter >;
 

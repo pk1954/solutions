@@ -6,15 +6,14 @@
 
 #include <ostream>
 #include "BasicTypes.h"
+#include "UPNobList.h"
+#include "DrawContext.h"
 
 import Observable;
 import MoreTypes;
 import VoltageType;
 
 using std::wostream;
-
-class UPNobList;
-class DrawContext;
 
 class SignalSource : public Observable
 {
