@@ -1,14 +1,16 @@
-// win32_graphicsWindow.h : 
+// Win32_GraphicsWindow.ixx
 //
 // Win32_utilities
 //
 // thin layer on top of BaseWindow
 // providing D2D graphics capability
 
-#pragma once
+module;
 
 #include <memory>
 #include <Windows.h>
+
+export module GraphicsWindow;
 
 import Direct2D;
 import PixelTypes;
@@ -16,7 +18,7 @@ import BaseWindow;
 
 using std::unique_ptr;
 
-class GraphicsWindow : public BaseWindow
+export class GraphicsWindow : public BaseWindow
 {
 public:
 	GraphicsWindow() = default;
@@ -33,5 +35,5 @@ protected:
 
 	virtual void DoPaint() = 0;
 
-	unique_ptr<D2D_driver> m_upGraphics { nullptr };
+	unique_ptr<D2D_driver> m_upGraphics{ nullptr };
 };

@@ -4,14 +4,16 @@
 
 #pragma once
 
+#include <bit> 
 #include <string> 
 #include "dwrite.h"
 #include "win32_util_resource.h"
-#include "win32_graphicsWindow.h"
 
+import PixelTypes;
 import MoreTypes;
 import Direct2D;
 import PixFpDimension;
+import GraphicsWindow;
 
 using std::wstring;
 using std::bit_cast;

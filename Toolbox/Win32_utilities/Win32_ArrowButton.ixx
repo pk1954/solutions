@@ -5,12 +5,12 @@
 module;
 
 #include "Windows.h"
-#include "win32_graphicsWindow.h"
 
 export module ArrowButton;
 
 import Direct2D;
 import Win32_Controls;
+import GraphicsWindow;
 
 export class ArrowButton : public GraphicsWindow
 {

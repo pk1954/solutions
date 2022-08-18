@@ -30,9 +30,6 @@
     <ClInclude Include="win32_scale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_graphicsWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_baseScale.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -95,7 +92,7 @@
     <ClCompile Include="D2D_DrawContext.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_graphicsWindow.cpp">
+    <ClCompile Include="Win32_GraphicsWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Controls.cpp">
@@ -183,6 +180,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_TextWindow.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_GraphicsWindow.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

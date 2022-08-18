@@ -1,10 +1,17 @@
-// win32_graphicsWindow.cpp : 
+// Win32_GraphicsWindow.cpp : 
 //
 // Win32_utilities
 
-#include "win32_graphicsWindow.h"
+module;
+
+#include <memory>
+#include <Windows.h>
+
+module GraphicsWindow;
 
 import Direct2D;
+import PixelTypes;
+import BaseWindow;
 
 using std::make_unique;
 

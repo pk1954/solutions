@@ -7,7 +7,6 @@ module;
 #include <Windows.h>
 #include "Sensor.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_graphicsWindow.h"
 
 export module NNetWindow;
 
@@ -15,6 +14,7 @@ import MoreTypes;
 import D2D_DrawContext;
 import Uniform2D;
 import NNetController;
+import GraphicsWindow;
 
 export class NNetWindow : public GraphicsWindow
 {

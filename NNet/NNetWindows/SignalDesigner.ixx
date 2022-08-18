@@ -8,7 +8,6 @@ module;
 #include <Windows.h>
 #include "NNetModelCommands.h"
 #include "win32_scale.h"
-#include "win32_graphicsWindow.h"
 
 export module SignalDesigner;
 
@@ -22,6 +21,7 @@ import PixelTypes;
 import ArrowButton;
 import SignalPreview;
 import Direct2D;
+import GraphicsWindow;
 
 using std::wstring;
 using D2D1::ColorF;
