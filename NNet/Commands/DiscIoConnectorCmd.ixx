@@ -1,21 +1,23 @@
-// DiscIoConnectorCmd.h
+// DiscIoConnectorCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "Nob.h"
 #include "IoConnector.h"
 
+export module DiscIoConnectorCmd;
+
 using std::unique_ptr;
 
-class DiscIoConnectorCmd : public NNetCommand
+export class DiscIoConnectorCmd : public NNetCommand
 {
 public:
-    explicit DiscIoConnectorCmd(Nob & nob)
-      : m_connector(*Cast2IoConnector(&nob))
+    explicit DiscIoConnectorCmd(Nob& nob)
+        : m_connector(*Cast2IoConnector(&nob))
     {}
 
     void Do() final
@@ -32,6 +34,6 @@ public:
 
 private:
 
-    IoConnector     const & m_connector;
-    unique_ptr<IoConnector> m_upIoConnector {};  
+    IoConnector     const& m_connector;
+    unique_ptr<IoConnector> m_upIoConnector{};
 };

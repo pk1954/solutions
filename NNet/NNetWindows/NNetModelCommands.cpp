@@ -12,7 +12,6 @@
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
 #include "CopySelectedNobs.h"
-#include "DiscIoConnectorCmd.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
@@ -66,6 +65,7 @@ import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
 import RestrictSelectionCommand;
 import SetParameterCommand;
+import DiscIoConnectorCmd;
 
 using std::wcout;
 using std::endl;
