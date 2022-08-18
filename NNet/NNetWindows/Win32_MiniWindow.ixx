@@ -4,12 +4,18 @@
 
 module;
 
-#include "win32_NNetWindow.h"
+#include <string>
+#include <Windows.h>
 
 export module MiniWindow;
 
 import ObserverInterface;
 import MainWindow;
+import NNetWindow;
+import PixelTypes;
+import NNetController;
+
+using std::wstring;
 
 export class MiniWindow : public NNetWindow
 {

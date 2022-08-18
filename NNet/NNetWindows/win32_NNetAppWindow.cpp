@@ -15,7 +15,6 @@
 
 // interfaces of various windows
 
-#include "win32_NNetWindow.h"
 
 // infrastructure
 
@@ -61,6 +60,7 @@ import ScriptFile;
 import BaseWindow;
 import Win32_Util;
 import Win32_PIXEL;
+import NNetWindow;
 
 using std::wcout;
 using std::wstring;

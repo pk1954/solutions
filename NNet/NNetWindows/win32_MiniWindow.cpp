@@ -9,7 +9,6 @@ module;
 #include "NNetColors.h"
 #include "DrawContext.h"
 #include "NNetParameters.h"
-#include "win32_NNetWindow.h"
 
 module MiniWindow;
 
@@ -18,6 +17,7 @@ import PixelTypes;
 import MainWindow;
 import NNetController;
 import MainWindow;
+import NNetWindow;
 
 void MiniWindow::Start
 (

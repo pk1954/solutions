@@ -12,13 +12,13 @@ module;
 #include "ConnAnimationCommand.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_NNetWindow.h"
 
 export module MainWindow;
 
 import ActionTimer;
 import PixelTypes;
 import Preferences;
+import NNetWindow;
 
 using std::unique_ptr;
 

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_NNetWindow.cpp">
+    <ClCompile Include="Win32_NNetWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetController.cpp">
@@ -168,11 +168,11 @@
     <ClCompile Include="Win32_MainWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_NNetWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_NNetWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_NNetAppWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>

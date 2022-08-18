@@ -1,6 +1,8 @@
-// win32_NNetWindow.cpp
+// Win32_NNetWindow.cpp
 //
 // NNetWindows
+
+module;
 
 #include <sstream> 
 #include "Resource.h"
@@ -14,7 +16,8 @@
 #include "NNetColors.h"
 #include "Windows.h"
 #include "win32_util_resource.h"
-#include "win32_NNetWindow.h"
+
+module NNetWindow;
 
 import MoreTypes;
 import Direct2D;
