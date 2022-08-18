@@ -1,16 +1,29 @@
-// win32_rootWindow.cpp
+// Win32_RootWindow.cpp
 //
 // Toolbox Win32_utilities
 
+module;
+
+#include <bit>
+#include <string>
+#include <memory>
 #include <cassert>
+#include <vector>
+#include <chrono>
+#include <Windows.h>
+#include "CommCtrl.h"
 #include "win32_util_resource.h"
-#include "win32_rootWindow.h"
+
+module RootWindow;
 
 import PixelTypes;
 import BaseRefreshRate;
 
+using std::vector;
+using std::wstring;
 using std::bit_cast;
 using std::make_unique;
+using std::chrono::milliseconds;
 
 RootWindow * GetRootWindow(HWND const hwnd)
 {

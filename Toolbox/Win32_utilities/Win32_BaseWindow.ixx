@@ -7,13 +7,13 @@ module;
 #include <string>
 #include <Windows.h>
 #include "BasicTypes.h"
-#include "win32_rootWindow.h"
 
 export module BaseWindow;
 
 import MoreTypes;
 import PixelTypes;
 import HiResTimer;
+import RootWindow;
 
 using std::wstring;
 

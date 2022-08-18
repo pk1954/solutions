@@ -8,9 +8,10 @@ module;
 #include <functional>
 #include <source_location>
 #include <Windows.h>
-#include "win32_rootWindow.h"
 
 export module Command;
+
+import RootWindow;
 
 using std::vector;
 using std::function;

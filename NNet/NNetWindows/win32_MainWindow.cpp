@@ -21,7 +21,6 @@ module;
 #include "NNetModelCommands.h"
 #include "DrawContext.h"
 #include "win32_util_resource.h"
-#include "win32_rootWindow.h"
 #include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
 
@@ -38,6 +37,7 @@ import Preferences;
 import Uniform2D;
 import FatalError;
 import Win32_Util;
+import RootWindow;
 
 using std::unordered_map;
 using std::unique_ptr;

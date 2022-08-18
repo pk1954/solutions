@@ -5,9 +5,10 @@
 module;
 
 #include <string>
+#include <memory>
 #include <Windows.h>
-#include "CommandStack.h"
 #include "NNetModelReaderInterface.h"
+#include "CommandStack.h"
 
 export module NNetAppMenu;
 

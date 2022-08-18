@@ -5,11 +5,11 @@
 module;
 
 #include <Windows.h>
-#include "win32_rootWindow.h"
 
 module BaseDialog;
 
 import Win32_Util;
+import RootWindow;
 
 HWND BaseDialog::StartBaseDialog
 (

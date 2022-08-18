@@ -4,8 +4,10 @@
 
 module;
 
+#include <cassert>
 #include <Windows.h>
 #include "Resource.h"
+#include "NNetModelReaderInterface.h"
 #include "CommandStack.h"
 #include "AutoOpen.h"
 #include "SignalGenerator.h"

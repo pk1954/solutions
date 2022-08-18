@@ -6,9 +6,11 @@ module;
 
 #include "ScriptStack.h"
 #include "win32_util_resource.h"
-#include "win32_rootWindow.h"
 
 module Command;
+
+import SaveCast;
+import RootWindow;
 
 using std::bit_cast;
 

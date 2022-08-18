@@ -9,11 +9,11 @@ module;
 #include <Windows.h>
 #include "Script.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_rootWindow.h"
 
 export module StatusBar;
 
 import PixelTypes;
+import RootWindow;
 
 using std::wstring;
 using std::vector;

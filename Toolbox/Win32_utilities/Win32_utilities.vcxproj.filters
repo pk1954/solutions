@@ -21,9 +21,6 @@
     <ClInclude Include="win32_textWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_rootWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_util_resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -53,7 +50,7 @@
     <ClCompile Include="Win32_BaseDialog.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_rootWindow.cpp">
+    <ClCompile Include="Win32_RootWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Stopwatch.cpp">
@@ -183,6 +180,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_BaseScale.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_RootWindow.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
