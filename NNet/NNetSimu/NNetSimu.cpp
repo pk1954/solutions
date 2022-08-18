@@ -2,17 +2,25 @@
 //
 // NNetSimu
 
+#include <ostream>
 #include <Windows.h>
 #include "Version.h"
+#include "win32_util_resource.h"
 #include "Resource.h"
 #include "CommCtrl.h"
 #include "Scanner.h"
-#include "win32_NNetAppWindow.h"
+#include "Script.h"
 
 import Trace;
 import Stopwatch;
 import MessagePump;
 import Win32_Util;
+import NNetAppWindow;
+
+using std::make_unique;
+using std::unique_ptr;
+using std::wcout;
+using std::endl;
 
 unique_ptr<NNetAppWindow> upApp;
 

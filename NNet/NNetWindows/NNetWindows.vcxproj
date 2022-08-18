@@ -580,6 +580,7 @@
     <ClCompile Include="Measurement.ixx" />
     <ClCompile Include="MonitorControl.ixx" />
     <ClCompile Include="MonitorControl.cpp" />
+    <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />
@@ -611,7 +612,7 @@
     <ClCompile Include="win32_monitorWindow.cpp" />
     <ClCompile Include="Win32_NNetAppMenu.cpp" />
     <ClCompile Include="Win32_NNetAppMenu.ixx" />
-    <ClCompile Include="win32_NNetAppWindow.cpp" />
+    <ClCompile Include="NNetAppWindow.cpp" />
     <ClCompile Include="NNetController.cpp" />
     <ClCompile Include="NNetController.ixx" />
     <ClCompile Include="Win32_NNetWindow.cpp" />
@@ -630,7 +631,6 @@
   <ItemGroup>
     <ClInclude Include="NNetModelCommands.h" />
     <ClInclude Include="win32_monitorWindow.h" />
-    <ClInclude Include="win32_NNetAppWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">

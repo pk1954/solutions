@@ -1,9 +1,13 @@
-// win32_NNetAppWindow.cpp
+// NNetAppWindow.cpp
 //
 // NNetWindows
 
+module;
+
+#include <bit>
 #include <Windows.h>
 #include <CommCtrl.h>
+#include <string>
 #include <chrono>
 #include <filesystem>
 #include <source_location>
@@ -25,10 +29,12 @@
 // scripting and tracing
 
 #include "Script.h"
+#include "ScriptStack.h"
 #include "NobException.h"
 
 // system and resources
 
+#include "win32_util_resource.h"
 #include "Resource.h"
 
 // application
@@ -38,7 +44,8 @@
 #include "Neuron.h"
 #include "SimulationTime.h"
 #include "InputConnector.h"
-#include "win32_NNetAppWindow.h"
+
+module NNetAppWindow;
 
 import MoreTypes;
 import Util;
@@ -71,6 +78,8 @@ using std::filesystem::path;
 using std::source_location;
 
 using namespace std::chrono;
+using std::to_wstring;
+using std::bit_cast;
 
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
