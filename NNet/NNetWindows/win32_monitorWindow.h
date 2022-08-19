@@ -5,7 +5,6 @@
 #pragma once
 
 #include <Windows.h>
-#include "win32_scale.h"
 #include "MonitorData.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
@@ -18,6 +17,7 @@ import PixFpDimension;
 import BaseWindow;
 import MonitorControl;
 import SoundInterface;
+import Scale;
 
 class MonitorWindow : public BaseWindow
 {

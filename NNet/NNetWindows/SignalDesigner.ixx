@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <Windows.h>
 #include "NNetModelCommands.h"
-#include "win32_scale.h"
 
 export module SignalDesigner;
 
@@ -22,6 +21,7 @@ import ArrowButton;
 import SignalPreview;
 import Direct2D;
 import GraphicsWindow;
+import Scale;
 
 using std::wstring;
 using D2D1::ColorF;

@@ -24,9 +24,6 @@
     <ClInclude Include="win32_util_resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_scale.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Win32_BaseWindow.cpp">
@@ -183,6 +180,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_RootWindow.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Scale.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

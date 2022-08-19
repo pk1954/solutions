@@ -160,7 +160,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_textWindow.h" />
     <ClInclude Include="win32_util_resource.h" />
   </ItemGroup>
@@ -196,6 +195,7 @@
     <ClCompile Include="Win32_MessagePump.ixx" />
     <ClCompile Include="Win32_PixelTypes.ixx" />
     <ClCompile Include="Win32_RootWindow.ixx" />
+    <ClCompile Include="Win32_Scale.ixx" />
     <ClCompile Include="Win32_Script.ixx" />
     <ClCompile Include="Win32_Sound.ixx" />
     <ClCompile Include="Win32_StdDialogBox.cpp" />

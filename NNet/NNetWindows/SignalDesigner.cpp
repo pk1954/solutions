@@ -11,7 +11,6 @@ module;
 #include "SignalGenerator.h"
 #include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
-#include "win32_scale.h"
 #include "win32_util_resource.h"
 
 module SignalDesigner;
@@ -25,6 +24,7 @@ import ArrowButton;
 import EditLineBox;
 import Win32_PixelTypes;
 import Direct2D;
+import Scale;
 
 using std::bit_cast;
 using D2D1::ColorF;
