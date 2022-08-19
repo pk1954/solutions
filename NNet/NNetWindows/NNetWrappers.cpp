@@ -10,7 +10,6 @@ module;
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
-#include "NNetModelCommands.h"
 
 module NNetWrappers;
 
@@ -20,6 +19,7 @@ import UtilityWrappers;
 import Symtab;
 import NNetInputOutputUI;
 import DrawContext;
+import NNetModelCommands;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

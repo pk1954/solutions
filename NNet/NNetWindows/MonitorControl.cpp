@@ -9,7 +9,6 @@ module;
 #include "Resource.h"
 #include "win32_util_resource.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetModelCommands.h"
 #include "NNetColors.h"
 #include "SimulationTime.h"
 #include "MonitorData.h"
@@ -17,6 +16,7 @@ module;
 module MonitorControl;
 
 import VoltageType;
+import NNetModelCommands;
 
 using std::to_wstring;
 

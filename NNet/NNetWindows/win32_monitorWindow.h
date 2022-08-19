@@ -6,7 +6,6 @@
 
 #include <Windows.h>
 #include "MonitorData.h"
-#include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 
 import BasicTypes;
@@ -17,6 +16,7 @@ import PixFpDimension;
 import BaseWindow;
 import MonitorControl;
 import SoundInterface;
+import NNetModelCommands;
 import Scale;
 
 class MonitorWindow : public BaseWindow

@@ -18,7 +18,6 @@ module;
 #include "NobException.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
-#include "NNetModelCommands.h"
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
@@ -38,6 +37,7 @@ import FatalError;
 import Win32_Util;
 import RootWindow;
 import DrawContext;
+import NNetModelCommands;
 
 using std::unordered_map;
 using std::unique_ptr;

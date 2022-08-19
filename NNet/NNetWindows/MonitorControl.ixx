@@ -9,7 +9,6 @@ module;
 #include "Track.h"
 #include "TrackNr.h"
 #include "MonitorData.h"
-#include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 
 export module MonitorControl;
@@ -22,6 +21,7 @@ import Direct2D;
 import PixelTypes;
 import TimeGraph;
 import VoltageType;
+import NNetModelCommands;
 
 export class MonitorControl : public TimeGraph
 {

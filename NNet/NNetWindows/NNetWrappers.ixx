@@ -5,10 +5,11 @@
 module;
 
 #include "NNetModelReaderInterface.h"
-#include "NNetModelCommands.h"
 #include "NNetModelIO.h"
 
 export module NNetWrappers;
+
+import NNetModelCommands;
 
 export void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
 

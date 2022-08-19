@@ -9,13 +9,13 @@ module;
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetParameters.h"
-#include "NNetModelCommands.h"
 
 module ParameterDialog;
 
 import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;
+import NNetModelCommands;
 
 using std::wstring;
 

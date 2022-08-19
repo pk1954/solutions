@@ -2,6 +2,8 @@
 //
 // NNetWindows
 
+module;
+
 #include <source_location>
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
@@ -22,7 +24,8 @@
 #include "SetActiveSigGenCmd.h"
 #include "SetHighlightedNobCmd.h"
 #include "NNetParameters.h"
-#include "NNetModelCommands.h"
+
+module NNetModelCommands;
 
 import Uniform2D;
 import AddNobsCommand;
@@ -66,6 +69,7 @@ import RestrictSelectionCommand;
 import SetParameterCommand;
 import DiscIoConnectorCmd;
 import SetTargetNobCmd;
+import NNetModelCommands;
 
 using std::wcout;
 using std::endl;

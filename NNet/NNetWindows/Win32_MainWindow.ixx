@@ -10,7 +10,6 @@ module;
 #include "UPNobList.h"
 #include "MicroMeterPntVector.h"
 #include "ConnAnimationCommand.h"
-#include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 
 export module MainWindow;
@@ -19,6 +18,7 @@ import ActionTimer;
 import PixelTypes;
 import Preferences;
 import NNetWindow;
+import NNetModelCommands;
 
 using std::unique_ptr;
 

@@ -5,13 +5,13 @@
 #include <Windows.h>
 #include "Resource.h"
 #include "NNetColors.h"
-#include "NNetModelCommands.h"
 #include "win32_util_resource.h"
 #include "win32_monitorWindow.h"
 
 import PixelTypes;
 import SoundInterface;
 import MonitorControl;
+import NNetModelCommands;
 
 using std::find;
 using std::make_unique;

@@ -5,12 +5,12 @@
 module;
 
 #include "NNetParameters.h"
-#include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 
 export module ParameterDialog;
 
 import BaseDialog;
+import NNetModelCommands;
 
 export class ParameterDialog : public BaseDialog
 {

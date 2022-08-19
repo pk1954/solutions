@@ -5,8 +5,10 @@
 module;
 
 #include <string>
+#include <memory>
 #include <Windows.h>
-#include "NNetModelCommands.h"
+#include "NNetModelWriterInterface.h"
+#include "UPSigGenList.h"
 
 export module SignalDesigner;
 
@@ -22,9 +24,10 @@ import SignalPreview;
 import Direct2D;
 import GraphicsWindow;
 import Scale;
+import NNetModelCommands;
 
 using std::wstring;
-using D2D1::ColorF;
+using std::unique_ptr;
 
 export class SignalDesigner : public GraphicsWindow
 {
@@ -60,8 +63,8 @@ private:
 	inline static PIXEL const STIMULUS_BUTTON_WIDTH  { 90_PIXEL };
 	inline static PIXEL const STIMULUS_BUTTON_HEIGHT { 30_PIXEL };
 
-	inline static ColorF COLOR_FREQ { ColorF::Green };
-	inline static ColorF COLOR_VOLT { ColorF::Blue  };
+	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
+	inline static D2D1::ColorF COLOR_VOLT { D2D1::ColorF::Blue  };
 
 	void renameSigGen();
 	void toggleDesign();

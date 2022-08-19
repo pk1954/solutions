@@ -174,12 +174,12 @@
     <ClCompile Include="NNetAppWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetModelCommands.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_monitorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetModelCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

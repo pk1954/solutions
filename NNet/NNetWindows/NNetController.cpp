@@ -15,7 +15,6 @@ module;
 #include "win32_monitorWindow.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
-#include "NNetModelCommands.h"
 #include "win32_monitorWindow.h"
 
 module NNetController;
@@ -31,6 +30,7 @@ import FatalError;
 import MainWindow;
 import ScriptFile;
 import Win32_Util;
+import NNetModelCommands;
 
 using std::to_wstring;
 

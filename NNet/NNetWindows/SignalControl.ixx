@@ -6,7 +6,6 @@ module;
 
 #include <array>
 #include "SignalGenerator.h"
-#include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 
 export module SignalControl;
@@ -18,9 +17,9 @@ import ComputeThread;
 import Direct2D;
 import PixelTypes;
 import TimeGraph;
+import NNetModelCommands;
 
 using std::array;
-using D2D1::ColorF;
 
 export class SignalControl : public TimeGraph
 {
@@ -39,7 +38,7 @@ public:
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
 
-	void SetColor(tColor const type, ColorF const col)
+	void SetColor(tColor const type, D2D1::ColorF const col)
 	{
 		m_colTable[static_cast<int>(type)] = col;
 	}
@@ -62,15 +61,15 @@ private:
 		return m_handles[static_cast<int>(mode)]; 
 	}
 
-	array<ColorF, 4> m_colTable 
+	array<D2D1::ColorF, 4> m_colTable
 	{ 
-		ColorF::Black, // FREQ
-		ColorF::Black, // VOLT
-		ColorF::Black, // TIME
-		ColorF::Red    // HIGH
+		D2D1::ColorF::Black, // FREQ
+		D2D1::ColorF::Black, // VOLT
+		D2D1::ColorF::Black, // TIME
+		D2D1::ColorF::Red    // HIGH
 	};
 
-	ColorF getColor(tColor const type) const 
+	D2D1::ColorF getColor(tColor const type) const
 	{
 		return m_colTable[static_cast<int>(type)];
 	}

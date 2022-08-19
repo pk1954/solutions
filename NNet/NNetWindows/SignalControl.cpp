@@ -9,7 +9,6 @@ module;
 #include "Resource.h"
 #include "NNetParameters.h"
 #include "InputConnector.h"
-#include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 
 module SignalControl;
@@ -18,6 +17,7 @@ import MoreTypes;
 import VoltageType;
 import PointType;
 import ComputeThread;
+import NNetModelCommands;
 
 using std::max;
 

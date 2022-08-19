@@ -10,7 +10,6 @@ module;
 #include <Windows.h>
 #include "Signal.h"
 #include "CommandStack.h"
-#include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_monitorWindow.h"
 
@@ -23,6 +22,7 @@ import MoreTypes;
 import SlowMotionRatio;
 import Preferences;
 import WinManager;
+import NNetModelCommands;
 
 using std::wostream;
 using std::wcout;
