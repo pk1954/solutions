@@ -11,7 +11,6 @@ module;
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "ConnAnimationCommand.h"
-#include "Connect2PipeCommand.h"
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
@@ -70,6 +69,7 @@ import NNetModelCommands;
 import SetHighlightedNobCmd;
 import AttachSigGen2ConnCmd;
 import Connect2BaseKnotCommand;
+import Connect2PipeCommand;
 
 using std::wcout;
 using std::endl;
