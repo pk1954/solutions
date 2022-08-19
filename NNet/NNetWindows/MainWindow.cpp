@@ -1,43 +1,29 @@
-// Win32_MainWindow.cpp
+// MainWindow.cpp
 //
 // NNetWindows
 
 module;
 
 #include <unordered_map>
-#include <Windows.h>
-#include <string>
 #include "Resource.h"
 #include "Signal.h"
 #include "MicroMeterPntVector.h"
-#include "NobId.h"
 #include "Knot.h"
 #include "Neuron.h"
-#include "UPNobList.h"
 #include "IoConnector.h"
 #include "NobException.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
+#include "NNetModelCommands.h"
 #include "win32_util_resource.h"
-#include "NNetModelReaderInterface.h"
+#include "win32_fatalError.h"
+#include "win32_monitorWindow.h"
 
 module MainWindow;
 
-import Observable;
 import MoreTypes;
-import PixelTypes;
-import Command;
 import ActionTimer;
-import FatalError;
-import NNetController;
-import Preferences;
-import Uniform2D;
-import FatalError;
-import Win32_Util;
-import RootWindow;
-import DrawContext;
-import NNetModelCommands;
-import MonitorWindow;
+import Command;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -49,7 +35,6 @@ void MainWindow::Start
 	HWND          const hwndApp, 
 	bool          const bShowRefreshRateDialog,
 	fPixel        const fPixBeaconLimit,
-	Preferences       & preferences,
 	NNetController    & controller,
 	NNetModelCommands & modelCommands,
 	Observable        & cursorObservable,
@@ -66,7 +51,6 @@ void MainWindow::Start
 		controller
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
-	m_pPreferences         = & preferences;
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
@@ -81,7 +65,7 @@ void MainWindow::Stop()
 
 void MainWindow::Reset()
 { 
-	m_pModelCommands->SetHighlightedNob(NO_NOB);
+	m_nobHighlighted = NO_NOB; 
 	setNoTarget(); 
 }
 
@@ -133,25 +117,25 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 //		appendMenu(hSelectionMenu, IDM_ALIGN_NOBS      );
 	}
 
-	if (IsDefined(m_pNMRI->GetHighlightedNobId()))
+	if (IsDefined(m_nobHighlighted))
 	{
-		m_pNMRI->GetConstNob(m_pNMRI->GetHighlightedNobId())->AppendMenuItems
+		m_pNMRI->GetConstNob(m_nobHighlighted)->AppendMenuItems
 		(
 			[hPopupMenu](int const id){ appendMenu(hPopupMenu, id); }
 		);
-		if ( m_pNMRI->IsPipe(m_pNMRI->GetHighlightedNobId()) )
+		if ( m_pNMRI->IsPipe(m_nobHighlighted) )
 		{
 			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
-			appendMenu(hPopupMenu, m_pPreferences->ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
+			appendMenu(hPopupMenu, ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
 		}
-		else if ( m_pNMRI->IsInputLine(m_pNMRI->GetHighlightedNobId()) )
+		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_pNMRI->GetHighlightedNobId()))
+			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
 		}
-		else if ( m_pNMRI->IsInputConnector(m_pNMRI->GetHighlightedNobId()) )
+		else if ( m_pNMRI->IsInputConnector(m_nobHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_pNMRI->GetHighlightedNobId()))
+			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
 		}
 	}
@@ -166,7 +150,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		}
 	}
 
-	return static_cast<LPARAM>(m_pNMRI->GetHighlightedNobId().GetValue()); // will be forwarded to HandleContextMenuCommand
+	return static_cast<LPARAM>(m_nobHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
 }
 
 MicroMeterPnt MainWindow::GetCursorPos() const
@@ -177,17 +161,33 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::AnimateArrows()
+void MainWindow::CenterModel()
+{
+	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
+}
+
+void MainWindow::CenterSelection()
+{
+	if (m_pNMRI->AnyNobsSelected())
+		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
+}
+
+bool MainWindow::ArrowsVisible() const
+{
+	return m_arrowSize > 0._MicroMeter;
+}
+
+void MainWindow::ShowArrows(bool const op)
 {
 	MicroMeter oldVal { m_arrowSize };
-	MicroMeter umTarget = m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter;
+	MicroMeter umTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
 	if (umTarget != oldVal)
 		m_pModelCommands->AnimateArrows(m_arrowSize, umTarget);
 }
 
-void MainWindow::SetSensorPoints() 
+void MainWindow::ShowSensorPoints(bool const op) 
 {
-	m_bShowPnts = m_pPreferences->SensorPointsVisible();
+	m_bShowPnts = op;
 }
 
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
@@ -206,19 +206,18 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void MainWindow::setNoTarget()
 {
-	m_pModelCommands->SetTargetNob(NO_NOB);
+	m_nobTarget = NO_NOB;
 	m_connType  = ConnectionType::ct_none;
 }
 
 void MainWindow::setTargetNob()
 {
-	NobId nobIdTarget = m_pNMRI->FindNobAt
+	m_nobTarget = m_pNMRI->FindNobAt
 	(
-		m_pNMRI->GetNobPos(m_pNMRI->GetHighlightedNobId()),
-		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_pNMRI->GetHighlightedNobId(), s.GetId()); }
+		m_pNMRI->GetNobPos(m_nobHighlighted),
+		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); }
 	);
-	m_pModelCommands->SetTargetNob(nobIdTarget);
-	m_connType = m_pNMRI->ConnectionResult(m_pNMRI->GetHighlightedNobId(), m_pNMRI->GetTargetNobId());
+	m_connType = m_pNMRI->ConnectionResult(m_nobHighlighted, m_nobTarget);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -255,15 +254,15 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
 		if (umDelta.IsZero())
 			return;
-		if (IsDefined(m_pNMRI->GetHighlightedNobId()))    // operate on single nob
+		if (IsDefined(m_nobHighlighted))    // operate on single nob
 		{
 			if (wParam & MK_CONTROL)
 			{
-				m_pModelCommands->Rotate(m_pNMRI->GetHighlightedNobId(), umLastPos, umCrsrPos);
+				m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
 			}
 			else
 			{
-				m_pModelCommands->MoveNob(m_pNMRI->GetHighlightedNobId(), umDelta);
+				m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
 				setTargetNob();
 			}
 		}
@@ -301,10 +300,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	NobId const id { m_pNMRI->GetHighlightedNobId() };
-	if (IsDefined(id) && !m_pNMRI->IsOfType<Knot>(id))
+	if (IsDefined(m_nobHighlighted) && !m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
 	{
-		m_pModelCommands->SelectNob(id, tBoolOp::opToggle);
+		m_pModelCommands->SelectNob(m_nobHighlighted, tBoolOp::opToggle);
 	}
 }
 
@@ -358,7 +356,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
 		MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
 		SensorId      const sensorId      { m_pModelCommands->SetHighlightedSensor(umCrsrPos) };
-		bool          const bSizeSensor   { sensorId.IsNotNull() && IsUndefined(m_pNMRI->GetHighlightedNobId()) };
+		bool          const bSizeSensor   { sensorId.IsNotNull() && IsUndefined(m_nobHighlighted) };
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
 			if (bSizeSensor)
@@ -431,7 +429,7 @@ void MainWindow::DoPaint()
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
-		if (m_pPreferences->ArrowsVisible())
+		if (ArrowsVisible())
 			DrawArrowsInRect(pixRect, m_arrowSize);
 	}
 
@@ -440,18 +438,18 @@ void MainWindow::DoPaint()
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
-	if (IsDefined(m_pNMRI->GetTargetNobId())) // draw target nob again to be sure that it is visible
+	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
 	{
 		tHighlight type { (m_connType == ConnectionType::ct_none) ? tHighlight::targetNoFit : tHighlight::targetFit };
-		m_pNMRI->DrawExterior(m_pNMRI->GetTargetNobId(), context, type);
-		m_pNMRI->DrawInterior(m_pNMRI->GetTargetNobId(), context, type);
-		m_pNMRI->DrawExterior(m_pNMRI->GetHighlightedNobId(), context, type);
-		m_pNMRI->DrawInterior(m_pNMRI->GetHighlightedNobId(), context, type);
+		m_pNMRI->DrawExterior(m_nobTarget, context, type);
+		m_pNMRI->DrawInterior(m_nobTarget, context, type);
+		m_pNMRI->DrawExterior(m_nobHighlighted, context, type);
+		m_pNMRI->DrawInterior(m_nobHighlighted, context, type);
 	}
-	else if (IsDefined(m_pNMRI->GetHighlightedNobId()))  // draw highlighted nob again to be sure that it is in foreground
+	else if (IsDefined(m_nobHighlighted))  // draw highlighted nob again to be sure that it is in foreground
 	{
-		m_pNMRI->DrawExterior(m_pNMRI->GetHighlightedNobId(), context, tHighlight::highlighted);
-		m_pNMRI->DrawInterior(m_pNMRI->GetHighlightedNobId(), context, tHighlight::highlighted);
+		m_pNMRI->DrawExterior(m_nobHighlighted, context, tHighlight::highlighted);
+		m_pNMRI->DrawInterior(m_nobHighlighted, context, tHighlight::highlighted);
 	}
 	else 
 	{
@@ -466,9 +464,9 @@ void MainWindow::DoPaint()
 void MainWindow::setHighlightedNob(MicroMeterPnt const & umCrsrPos)
 {
 	NobId const idHighlight { m_pNMRI->FindNobAt(umCrsrPos) };
-	if (idHighlight != m_pNMRI->GetHighlightedNobId())
+	if (idHighlight != m_nobHighlighted)
 	{
-		m_pModelCommands->SetHighlightedNob(idHighlight);
+		m_nobHighlighted = idHighlight; 
 		Notify(false);
 	}
 }
@@ -494,22 +492,11 @@ bool MainWindow::UserProc
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DUMP();
-		wcout << L"highlighted = " << m_pNMRI->GetHighlightedNobId() << endl;
-		wcout << L"target      = " << m_pNMRI->GetTargetNobId()      << endl;
+		wcout << L"highlighted = " << m_nobHighlighted << endl;
+		wcout << L"target      = " << m_nobTarget      << endl;
 		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
 	}
 	return bRes;
-}
-
-void MainWindow::CenterModel()
-{
-	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
-}
-
-void MainWindow::CenterSelection()
-{
-	if (m_pNMRI->AnyNobsSelected())
-		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

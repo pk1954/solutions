@@ -12,10 +12,8 @@ module;
 #include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
-#include "win32_monitorWindow.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_monitorWindow.h"
 
 module NNetController;
 
@@ -31,6 +29,7 @@ import MainWindow;
 import ScriptFile;
 import Win32_Util;
 import NNetModelCommands;
+import MonitorWindow;
 
 using std::to_wstring;
 

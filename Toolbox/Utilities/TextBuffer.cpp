@@ -14,7 +14,6 @@ import Util;
 import PixelTypes;
 
 using std::wstring;
-using std::setprecision;
 using std::setw;
 using std::fixed;
 using std::setprecision;

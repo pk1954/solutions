@@ -11,7 +11,6 @@ module;
 #include "Signal.h"
 #include "CommandStack.h"
 #include "NNetModelReaderInterface.h"
-#include "win32_monitorWindow.h"
 
 export module NNetController;
 
@@ -23,6 +22,7 @@ import SlowMotionRatio;
 import Preferences;
 import WinManager;
 import NNetModelCommands;
+import MonitorWindow;
 
 using std::wostream;
 using std::wcout;

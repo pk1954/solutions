@@ -13,7 +13,6 @@ module;
 #include "NNetModelIO.h"
 #include "CommandStack.h"
 #include "MonitorData.h"
-#include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
@@ -49,6 +48,8 @@ import MainWindow;
 import ScriptFile;
 import MessagePump;
 import NNetModelCommands;
+import MonitorWindow;
+import BaseWindow;
 
 using std::wstring;
 using std::wofstream;

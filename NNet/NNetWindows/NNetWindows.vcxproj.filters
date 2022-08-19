@@ -60,7 +60,7 @@
     <ClCompile Include="Win32_MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_monitorWindow.cpp">
+    <ClCompile Include="MonitorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Measurement.cpp">
@@ -177,10 +177,8 @@
     <ClCompile Include="NNetModelCommands.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="win32_monitorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="MonitorWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@ import GraphicsWindow;
 import BaseScale;
 
 using std::fixed;
+using std::streamsize;
 using std::setprecision;
 using std::wostringstream;
 using std::to_wstring;
@@ -206,14 +207,18 @@ private:
 			displayTick(fPix, fTickExt);
 			if (iTick % 10 == 0)
 			{
-				fPixelPoint fPos{ IsVertScale()
-								   ? (fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fPix))
-								   : (fPixelPoint(fPix,                 m_fPixPntStart.GetY()))
-				};
-				float const fLu{ round(fTick * fUnitTickDist * 1000.f) / 1000.f };
-				int   const prec{ (fLu == floor(fLu)) ? 0 : 1 };
+				fPixelPoint fPos { IsVertScale()
+								    ? (fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fPix))
+								    : (fPixelPoint(fPix,                 m_fPixPntStart.GetY()))
+				                 };
+				float  const fLu  { round(fTick * fUnitTickDist * 1000.f) / 1000.f };
 				wstrBuffer.str(L"");
-				wstrBuffer << fixed << setprecision(prec) << fLu;
+				wstrBuffer << fixed;
+				if (fLu == floor(fLu))
+					wstrBuffer << setprecision(0);
+				else
+					wstrBuffer << setprecision(1);
+				wstrBuffer << fLu;
 				display(textBox + fPos, wstrBuffer.str());
 			}
 		}

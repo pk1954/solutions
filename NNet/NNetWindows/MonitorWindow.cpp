@@ -1,12 +1,18 @@
-// win32_monitorWindow.cpp
+// MonitorWindow.cpp
 //
 // NNetWindows
 
+module;
+
+#include <string>
+#include <memory>
+#include <algorithm>
 #include <Windows.h>
 #include "Resource.h"
 #include "NNetColors.h"
 #include "win32_util_resource.h"
-#include "win32_monitorWindow.h"
+
+module MonitorWindow;
 
 import PixelTypes;
 import SoundInterface;
@@ -14,6 +20,7 @@ import MonitorControl;
 import NNetModelCommands;
 
 using std::find;
+using std::wstring;
 using std::make_unique;
 
 MonitorWindow:: MonitorWindow() = default;

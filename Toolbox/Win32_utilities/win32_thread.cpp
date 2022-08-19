@@ -1,4 +1,4 @@
-// win32_thread.cpp
+// Win32_Thread.cpp
 //
 // Toolbox\Win32_utilities
 
