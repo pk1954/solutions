@@ -84,7 +84,6 @@
     <ClInclude Include="AttachSigGen2LineCmd.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
     <ClInclude Include="SetHighlightedNobCmd.h" />
-    <ClInclude Include="SetTargetNobCmd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx">
@@ -152,6 +151,7 @@
     <ClCompile Include="SetNobCommand.ixx" />
     <ClCompile Include="SetParameterCommand.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
+    <ClCompile Include="SetTargetNobCmd.ixx" />
     <ClCompile Include="SigGenCommand.ixx" />
     <ClCompile Include="SingleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />

@@ -21,7 +21,6 @@
 #include "SelSigGenClientsCmd.h"
 #include "SetActiveSigGenCmd.h"
 #include "SetHighlightedNobCmd.h"
-#include "SetTargetNobCmd.h"
 #include "NNetParameters.h"
 #include "NNetModelCommands.h"
 
@@ -66,6 +65,7 @@ import AddSigGen2MonitorCmd;
 import RestrictSelectionCommand;
 import SetParameterCommand;
 import DiscIoConnectorCmd;
+import SetTargetNobCmd;
 
 using std::wcout;
 using std::endl;

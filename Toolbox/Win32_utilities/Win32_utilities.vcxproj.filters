@@ -74,7 +74,7 @@
     <ClCompile Include="Win32_StdDialogBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_escape.cpp">
+    <ClCompile Include="Win32_Escape.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Command.cpp">
@@ -95,7 +95,7 @@
     <ClCompile Include="Win32_BaseScale.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_event.ixx">
+    <ClCompile Include="Win32_Event.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_Sound.ixx">
