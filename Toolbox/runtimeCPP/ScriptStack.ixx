@@ -1,20 +1,22 @@
-// ScriptStack.h
+// ScriptStack.ixx
 //
 // runtimeCPP
 
-#pragma once
+module;
 
 #include <stack>
 #include "Script.h"
+
+export module ScriptStack;
 
 using std::unique_ptr;
 using std::make_unique;
 using std::stack;
 
-class ScriptStack
+export class ScriptStack
 {
 public:
-    static Script * OpenScript()
+    static Script* OpenScript()
     {
         m_stack.push(make_unique<Script>());
         return GetScript();
@@ -27,7 +29,7 @@ public:
 
     static bool IsScriptActive()
     {
-        return ! m_stack.empty();
+        return !m_stack.empty();
     }
 
     static bool SingleStepMode()
@@ -48,5 +50,5 @@ public:
 
 private:
     inline static stack<unique_ptr<Script>> m_stack;
-    inline static bool                      m_bSingleStepMode { false };
+    inline static bool                      m_bSingleStepMode{ false };
 };

@@ -4,12 +4,13 @@
 
 module;
 
-#include "ScriptStack.h"
+#include <string>
 #include "Script.h"
 
 export module ScriptHook;
 
 import StatusBar;
+import ScriptStack;
 
 using std::to_wstring;
 

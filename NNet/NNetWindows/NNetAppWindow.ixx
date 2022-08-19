@@ -8,7 +8,6 @@ module;
 #include <fstream>
 #include <iostream>
 #include "Script.h"
-#include "ScriptStack.h"
 #include "NNetModel.h"
 #include "NNetModelIO.h"
 #include "CommandStack.h"
@@ -50,6 +49,7 @@ import MessagePump;
 import NNetModelCommands;
 import MonitorWindow;
 import BaseWindow;
+import ScriptStack;
 
 using std::wstring;
 using std::wofstream;

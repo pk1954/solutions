@@ -29,7 +29,6 @@ module;
 // scripting and tracing
 
 #include "Script.h"
-#include "ScriptStack.h"
 #include "NobException.h"
 
 // system and resources
@@ -68,6 +67,7 @@ import BaseWindow;
 import Win32_Util;
 import Win32_PIXEL;
 import NNetWindow;
+import ScriptStack;
 
 using std::wcout;
 using std::wstring;

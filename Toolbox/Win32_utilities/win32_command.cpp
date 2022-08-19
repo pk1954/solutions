@@ -4,15 +4,18 @@
 
 module;
 
-#include "ScriptStack.h"
+#include <bit>
+#include <memory>
 #include "win32_util_resource.h"
 
 module Command;
 
 import SaveCast;
 import RootWindow;
+import ScriptStack;
 
 using std::bit_cast;
+using std::unique_ptr;
 
 void Command::UpdateUI() 
 { 
