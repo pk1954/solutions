@@ -73,7 +73,6 @@
     <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectorAnimation.h" />
-    <ClInclude Include="PlugIoConnectors.h" />
     <ClInclude Include="PlugIoLineAnimation.h" />
     <ClInclude Include="PlugIoLines.h" />
     <ClInclude Include="SelSigGenClientsCmd.h" />
@@ -137,6 +136,7 @@
     <ClCompile Include="MoveSignalCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="NewSigGenCmd.ixx" />
+    <ClCompile Include="PlugIoConnectors.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
     <ClCompile Include="RestrictSelectionCommand.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />

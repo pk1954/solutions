@@ -4,16 +4,14 @@
 
 #pragma once
 
+#include "NNetModelWriterInterface.h"
 #include "Nob.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
-#include "PlugIoConnectors.h"
 
 import MoreTypes;
 import SingleNobAnimation;
-
-class RootWindow;
-class NNetModelWriterInterface;
+import PlugIoConnectors;
 
 class PlugIoConnectorAnimation : public NNetCommand
 {
