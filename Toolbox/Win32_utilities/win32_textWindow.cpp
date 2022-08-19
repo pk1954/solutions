@@ -1,13 +1,16 @@
-// win32_textWindow.cpp :
+// Win32_TextWindow.cpp :
 //
 // Toolbox\Win32_utilities
+
+module;
 
 #include <locale>
 #include <cassert>
 #include <functional>
 #include "Windows.h"
 #include "win32_util_resource.h"
-#include "win32_textWindow.h"
+
+module TextWindow;
 
 import Thread;
 import Win32_Util;

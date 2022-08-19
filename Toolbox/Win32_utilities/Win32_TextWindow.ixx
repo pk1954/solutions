@@ -1,11 +1,14 @@
-// win32_textWindow.h 
+// Win32_TextWindow.ixx
 //
 // Toolbox\Win32_utilities
 
-#pragma once
+module;
 
 #include <string>
+#include <memory>
 #include <Windows.h>
+
+export module TextWindow;
 
 import Util;
 import TextBuffer;
@@ -20,24 +23,24 @@ using std::wstring;
 
 class TextWindowThread;
 
-class TextWindow : public BaseWindow
+export class TextWindow : public BaseWindow
 {
 public:
-    TextWindow();
+	TextWindow();
 	~TextWindow() override;
 
-    void StartTextWindow
+	void StartTextWindow
 	(
-		HWND      const, 
-		PixelRect const &, 
-		LPCTSTR   const, 
-		UINT      const, 
-		bool      const, 
-		VisCrit   const &
+		HWND      const,
+		PixelRect const&,
+		LPCTSTR   const,
+		UINT      const,
+		bool      const,
+		VisCrit   const&
 	);
 	void StopTextWindow();
 
-    virtual void DoPaint(TextBuffer &) = 0;
+	virtual void DoPaint(TextBuffer&) = 0;
 
 	void Trigger() final;
 
@@ -47,8 +50,8 @@ private:
 
 	unique_ptr<TextWindowThread> m_upTextWindowThread;
 
-    HDC     m_hDC_Memory    { nullptr };
-	HBITMAP m_hBitmap       { nullptr };
+	HDC     m_hDC_Memory{ nullptr };
+	HBITMAP m_hBitmap{ nullptr };
 };
 
 class TextWindowThread : public Util::Thread
@@ -57,9 +60,9 @@ public:
 	TextWindowThread
 	(
 		HDC             hDC_Memory,
-		PixelRectSize & pixSize,
-		TextWindow    & textWindow,
-		wstring const & strName,
+		PixelRectSize& pixSize,
+		TextWindow& textWindow,
+		wstring const& strName,
 		bool            bAsync
 	) :
 		m_textWindow(textWindow),
@@ -88,7 +91,7 @@ public:
 private:
 	const unsigned int anyMessageWillDo = 42;
 
-	TextWindow           & m_textWindow;
+	TextWindow& m_textWindow;
 	unique_ptr<TextBuffer> m_pTextBuffer;
 	HDC                    m_hDC;
 };

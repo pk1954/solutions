@@ -160,7 +160,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_textWindow.h" />
     <ClInclude Include="win32_util_resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -207,7 +206,7 @@
     <ClCompile Include="Win32_Script.cpp" />
     <ClCompile Include="Win32_Stopwatch.cpp" />
     <ClCompile Include="Win32_TextBuffer.ixx" />
-    <ClCompile Include="win32_textWindow.cpp" />
+    <ClCompile Include="Win32_TextWindow.cpp" />
     <ClCompile Include="Win32_TextWindow.ixx" />
     <ClCompile Include="Win32_Thread.cpp" />
     <ClCompile Include="Win32_Thread.ixx" />

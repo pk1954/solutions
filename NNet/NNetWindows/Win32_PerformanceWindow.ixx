@@ -5,13 +5,13 @@
 module;
 
 #include "NNetModelReaderInterface.h"
-#include "win32_textWindow.h"
 
 export module PerformanceWindow;
 
 import SlowMotionRatio;
 import ComputeThread;
 import ActionTimer;
+import TextWindow;
 
 export class PerformanceWindow: public TextWindow
 {

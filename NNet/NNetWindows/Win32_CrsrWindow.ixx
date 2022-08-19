@@ -6,7 +6,6 @@ module;
 
 #include <iostream>
 #include "NNetModelReaderInterface.h"
-#include "win32_textWindow.h"
 
 export module CrsrWindow;
 
@@ -16,6 +15,7 @@ import VoltageType;
 import MilliSecs;
 import TextBuffer;
 import MainWindow;
+import TextWindow;
 
 using std::wostringstream;
 using std::setprecision;
