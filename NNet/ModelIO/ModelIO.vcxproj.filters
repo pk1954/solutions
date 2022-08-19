@@ -10,6 +10,7 @@
     <ClCompile Include="WrapCreateNob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">

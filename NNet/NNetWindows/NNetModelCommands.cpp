@@ -7,7 +7,6 @@ module;
 #include <source_location>
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
-#include "AttachSigGen2ConnCmd.h"
 #include "AttachSigGen2LineCmd.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
@@ -70,6 +69,7 @@ import DiscIoConnectorCmd;
 import SetTargetNobCmd;
 import NNetModelCommands;
 import SetHighlightedNobCmd;
+import AttachSigGen2ConnCmd;
 
 using std::wcout;
 using std::endl;
