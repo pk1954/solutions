@@ -8,6 +8,8 @@
 #include "NNetModelIO.h"
 #include "NNetWrapperBase.h"
 
+import Symtab;
+
 class WrapDescription : public NNetWrapperBase
 {
 public:

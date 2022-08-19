@@ -171,7 +171,6 @@
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptStack.h" />
-    <ClInclude Include="WrapBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ErrHndl.cpp" />
@@ -181,6 +180,7 @@
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Symtab.cpp" />
     <ClCompile Include="Symtab.ixx" />
+    <ClCompile Include="WrapBase.ixx" />
     <ClCompile Include="WrapInclude.cpp" />
   </ItemGroup>
   <ItemGroup>

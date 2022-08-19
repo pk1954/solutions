@@ -24,11 +24,11 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
-#include "WrapBase.h"
 #include "WrapCreateNob.h"
 
 import ErrHndl;
 import IoConstants;
+import WrapBase;
 
 using std::vector;
 using std::wstring;

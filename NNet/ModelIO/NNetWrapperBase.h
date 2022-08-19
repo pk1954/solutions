@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "WrapBase.h"
 #include "NNetModelWriterInterface.h"
+
+import WrapBase;
 
 class MonitorData;
 class UPNobList;

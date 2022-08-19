@@ -24,6 +24,7 @@ import MainWindow;
 import ScriptFile;
 import BaseWindow;
 import Win32_Util;
+import Symtab;
 
 using std::wofstream;
 using std::wcout;
