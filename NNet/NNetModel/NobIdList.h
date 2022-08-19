@@ -6,14 +6,13 @@
 
 #include <vector>
 #include <ostream>
+#include "Nob.h"
 #include "NobId.h"
 
 import Util;
 
 using std::vector;
 using std::wostream;
-
-class Nob;
 
 class NobIdList
 {

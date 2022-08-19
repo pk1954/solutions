@@ -5,30 +5,29 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+#include <Windows.h>
+#include "NNetModelWriterInterface.h"
 #include "NobId.h"
+#include "UPNobList.h"
 #include "NobIdList.h"
 #include "InputOutputUI.h"
-#include "NNetWrapperBase.h"
-#include "NNetModelWriterInterface.h"
+#include "Script.h"
+#include "NNetModel.h"
+#include "InputOutputUI.h"
+
+import WrapBase;
 
 using std::unique_ptr;
+using std::wostream;
 using std::wstring;
-
-class Script;
-class NNetModel;
-class WrapBase;
-class InputOutputUI;
-class MonitorWindow;
 
 class NNetModelIO
 {
 public:
 	~NNetModelIO();
 
-	void Initialize
-	(
-//		MonitorWindow const *
-	);
+	void Initialize();
 
 	/// import ///
 
@@ -52,9 +51,9 @@ public:
 
 private:
 
-	unique_ptr<InputOutputUI>            m_upImportUI;   
-	vector<unique_ptr<NNetWrapperBase>>  m_wrapVector;
-	TP_TIMER                           * m_pTpTimer { nullptr };
+	unique_ptr<InputOutputUI>     m_upImportUI;   
+	vector<unique_ptr<WrapBase>>  m_wrapVector;
+	TP_TIMER                    * m_pTpTimer { nullptr };
 
 	/// import ///
 

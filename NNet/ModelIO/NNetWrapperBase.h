@@ -5,12 +5,11 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
+#include "MonitorData.h"
+#include "UPNobList.h"
+#include "NNetModelIO.h"
 
 import WrapBase;
-
-class MonitorData;
-class UPNobList;
-class NNetModelIO;
 
 class NNetWrapperBase : public WrapBase
 {
