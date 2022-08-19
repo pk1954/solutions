@@ -5,14 +5,13 @@
 #pragma once
 
 #include "SigGenDynamicData.h"
+#include "Nob.h"
+#include "BaseKnot.h"
+#include "SignalGenerator.h"
 #include "IoLine.h"
 
 import MoreTypes;
-
-class Nob;
-class BaseKnot;
-class DrawContext;
-class SignalGenerator;
+import DrawContext;
 
 class InputLine : public IoLine
 {

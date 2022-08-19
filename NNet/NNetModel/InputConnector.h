@@ -6,12 +6,12 @@
 
 #include "NobType.h"
 #include "IoConnector.h"
+#include "NNetParameters.h"
+#include "IoLine.h"
+#include "InputLine.h"
+#include "SignalGenerator.h"
 
-class Param;
-class IoLine;
-class DrawContext;
-class InputLine;
-class SignalGenerator;
+import DrawContext;
 
 using std::unique_ptr;
 
