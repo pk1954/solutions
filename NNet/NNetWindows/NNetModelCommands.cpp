@@ -22,7 +22,6 @@ module;
 #include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
 #include "SetActiveSigGenCmd.h"
-#include "SetHighlightedNobCmd.h"
 #include "NNetParameters.h"
 
 module NNetModelCommands;
@@ -70,6 +69,7 @@ import SetParameterCommand;
 import DiscIoConnectorCmd;
 import SetTargetNobCmd;
 import NNetModelCommands;
+import SetHighlightedNobCmd;
 
 using std::wcout;
 using std::endl;
