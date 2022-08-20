@@ -6,13 +6,13 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
-#include "CommandStack.h"
 #include "Nob.h"
 #include "IoConnector.h"
 
 export module DeleteIoConnectorCmd;
 
 import CommandFunctions;
+import CommandStack;
 
 using std::unique_ptr;
 

@@ -16,7 +16,6 @@ module;
 #include "NNetCommand.h"
 #include "NobIdList.h"
 #include "SigGenStaticData.h"
-#include "CommandStack.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -30,6 +29,7 @@ import MoreTypes;
 import BoolOp;
 import Uniform2D;
 import SoundInterface;
+import CommandStack;
 
 using std::wcout;
 using std::wstring;

@@ -67,7 +67,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandStack.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
   </ItemGroup>
@@ -101,6 +100,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
     </ClCompile>
+    <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="ConnAnimationCommand.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
     </ClCompile>

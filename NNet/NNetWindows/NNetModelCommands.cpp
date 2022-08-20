@@ -7,7 +7,6 @@ module;
 #include <source_location>
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
-#include "CommandStack.h"
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
@@ -70,6 +69,7 @@ import PlugIoConnectorAnimation;
 import PlugIoLineAnimation;
 import ConnAnimationCommand;
 import CommandFunctions;
+import CommandStack;
 
 using std::wcout;
 using std::endl;

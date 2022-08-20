@@ -10,7 +10,6 @@ module;
 #include "Script.h"
 #include "NNetModel.h"
 #include "NNetModelIO.h"
-#include "CommandStack.h"
 #include "MonitorData.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -50,6 +49,7 @@ import NNetModelCommands;
 import MonitorWindow;
 import BaseWindow;
 import ScriptStack;
+import CommandStack;
 
 using std::wstring;
 using std::wofstream;

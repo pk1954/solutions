@@ -8,7 +8,6 @@ module;
 #include <memory>
 #include <Windows.h>
 #include "NNetModelReaderInterface.h"
-#include "CommandStack.h"
 
 export module NNetAppMenu;
 
@@ -18,6 +17,7 @@ import WinManager;
 import ComputeThread;
 import Preferences;
 import Win32_Util;
+import CommandStack;
 
 using std::wstring;
 using std::unique_ptr;

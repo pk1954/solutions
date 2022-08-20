@@ -9,7 +9,6 @@ module;
 #include "Resource.h"
 #include "Analyzer.h"
 #include "NobException.h"
-#include "CommandStack.h"
 #include "Signal.h"
 #include "AutoOpen.h"
 #include "win32_util_resource.h"
@@ -30,6 +29,7 @@ import ScriptFile;
 import Win32_Util;
 import NNetModelCommands;
 import MonitorWindow;
+import CommandStack;
 
 using std::to_wstring;
 

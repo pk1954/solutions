@@ -2,11 +2,14 @@
 //
 // Commands
 
+module;
+
 #include <cassert>
 #include <source_location>
 #include "NobException.h"
 #include "NNetModelWriterInterface.h"
-#include "CommandStack.h"
+
+module CommandStack;
 
 import Observable;
 import Command;

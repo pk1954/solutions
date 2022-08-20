@@ -9,7 +9,6 @@ module;
 #include <iostream>
 #include <Windows.h>
 #include "Signal.h"
-#include "CommandStack.h"
 #include "NNetModelReaderInterface.h"
 
 export module NNetController;
@@ -23,6 +22,7 @@ import Preferences;
 import WinManager;
 import NNetModelCommands;
 import MonitorWindow;
+import CommandStack;
 
 using std::wostream;
 using std::wcout;

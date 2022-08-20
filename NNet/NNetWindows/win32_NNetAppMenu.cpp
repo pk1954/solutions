@@ -8,7 +8,6 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 #include "NNetModelReaderInterface.h"
-#include "CommandStack.h"
 #include "AutoOpen.h"
 #include "SignalGenerator.h"
 #include "win32_util_resource.h"
@@ -22,6 +21,7 @@ import WinManager;
 import Preferences;
 import BaseWindow;
 import Win32_Util;
+import CommandStack;
 
 using std::make_unique;
 
