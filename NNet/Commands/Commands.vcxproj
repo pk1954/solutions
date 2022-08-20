@@ -77,7 +77,6 @@
     <ClInclude Include="PlugIoLines.h" />
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
-    <ClInclude Include="SelectSubtreeCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx">
@@ -147,6 +146,7 @@
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelectNobCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
+    <ClCompile Include="SelectSubtreeCommand.ixx" />
     <ClCompile Include="SetHighlightedNobCmd.ixx" />
     <ClCompile Include="SetNobCommand.ixx" />
     <ClCompile Include="SetParameterCommand.ixx" />

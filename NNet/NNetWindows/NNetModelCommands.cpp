@@ -15,7 +15,6 @@ module;
 #include "NNetModelIO.h"
 #include "PlugIoConnectorAnimation.h"
 #include "PlugIoLineAnimation.h"
-#include "SelectSubtreeCommand.h"
 #include "SelSigGenClientsCmd.h"
 #include "SetActiveSigGenCmd.h"
 #include "NNetParameters.h"
@@ -70,6 +69,7 @@ import AttachSigGen2ConnCmd;
 import Connect2BaseKnotCommand;
 import Connect2PipeCommand;
 import AttachSigGen2LineCmd;
+import SelectSubtreeCommand;
 
 using std::wcout;
 using std::endl;
