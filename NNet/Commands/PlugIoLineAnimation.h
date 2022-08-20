@@ -4,17 +4,16 @@
 
 #pragma once
 
-#include "Nob.h"
-#include "Neuron.h"
+#include "NNetModelWriterInterface.h"
+#include "NobId.h"
 #include "IoLine.h"
 #include "NNetCommand.h"
-#include "PlugIoLines.h"
 
 import MoreTypes;
 import SingleNobAnimation;
+import PlugIoLines;
 
-class RootWindow;
-class NNetModelWriterInterface;
+using std::make_unique;
 
 class PlugIoLineAnimation : public NNetCommand
 {

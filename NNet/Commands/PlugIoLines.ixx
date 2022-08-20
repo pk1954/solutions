@@ -1,20 +1,22 @@
-// PlugIoLines.h
+// PlugIoLines.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include <cassert>
+#include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "Knot.h"
 #include "IoLine.h"
-#include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
+
+export module PlugIoLines;
 
 using std::unique_ptr;
 using std::make_unique;
 
-class PlugIoLines : public NNetCommand
+export class PlugIoLines : public NNetCommand
 {
 public:
     PlugIoLines
