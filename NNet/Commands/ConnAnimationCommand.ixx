@@ -5,13 +5,14 @@
 module;
 
 #include <vector>
-#include "UPNobList.h"
-#include "win32_rootWindow.h"
-#include "NobType.h"
 #include "IoLine.h"
+#include "NobType.h"
+#include "UPNobList.h"
 #include "NNetCommand.h"
 
 export module ConnAnimationCommand;
+
+import MoreTypes;
 
 using std::vector;
 
@@ -26,10 +27,10 @@ public:
 
 private:
 
-    vector<IoLine *> m_nobsAnimated {};
+    vector<IoLine*> m_nobsAnimated{};
 
-    bool m_bAllOk { false };
+    bool m_bAllOk{ false };
 
-    NobType determineNobType(UPNobList const &) const;
-    void    sortNobsAnimated(MicroMeterLine const &);
+    NobType determineNobType(UPNobList const&) const;
+    void    sortNobsAnimated(MicroMeterLine const&);
 };

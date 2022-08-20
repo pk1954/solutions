@@ -24,7 +24,6 @@ module;
 
 #include "AutoOpen.h"
 #include "NNetCommand.h"
-#include "ConnAnimationCommand.h"
 
 // scripting and tracing
 

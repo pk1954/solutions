@@ -9,7 +9,6 @@ module;
 #include "Analyzer.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
-#include "ConnAnimationCommand.h"
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
@@ -70,6 +69,7 @@ import SelectSubtreeCommand;
 import SelSigGenClientsCmd;
 import PlugIoConnectorAnimation;
 import PlugIoLineAnimation;
+import ConnAnimationCommand;
 
 using std::wcout;
 using std::endl;

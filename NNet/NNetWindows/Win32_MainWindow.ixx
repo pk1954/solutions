@@ -9,7 +9,6 @@ module;
 #include "BaseKnot.h"
 #include "UPNobList.h"
 #include "MicroMeterPntVector.h"
-#include "ConnAnimationCommand.h"
 #include "NNetModelReaderInterface.h"
 
 export module MainWindow;

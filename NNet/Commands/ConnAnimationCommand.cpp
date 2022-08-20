@@ -2,12 +2,16 @@
 //
 // Command
 
+module;
+
 #include <algorithm>
 #include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 #include "IoLine.h"
-#include "ConnAnimationCommand.h"
 
+module ConnAnimationCommand;
+
+import MoreTypes;
 import IoLinesAnimation;
 import MakeConnAnimation;
 

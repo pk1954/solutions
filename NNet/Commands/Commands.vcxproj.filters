@@ -24,9 +24,6 @@
     <ClInclude Include="NNetCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConnAnimationCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SetActiveSigGenCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -219,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlugIoLineAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnAnimationCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
