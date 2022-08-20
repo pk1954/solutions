@@ -7,7 +7,6 @@ module;
 #include <source_location>
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
-#include "AttachSigGen2LineCmd.h"
 #include "CommandStack.h"
 #include "CommandFunctions.h"
 #include "ConnAnimationCommand.h"
@@ -70,6 +69,7 @@ import SetHighlightedNobCmd;
 import AttachSigGen2ConnCmd;
 import Connect2BaseKnotCommand;
 import Connect2PipeCommand;
+import AttachSigGen2LineCmd;
 
 using std::wcout;
 using std::endl;

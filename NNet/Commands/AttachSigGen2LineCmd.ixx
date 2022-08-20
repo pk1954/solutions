@@ -1,28 +1,31 @@
-// AttachSigGen2LineCmd.h
+// AttachSigGen2LineCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
+#include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
-class AttachSigGen2LineCmd : public NNetCommand
+export module AttachSigGen2LineCmd;
+
+export class AttachSigGen2LineCmd : public NNetCommand
 {
 public:
 	explicit AttachSigGen2LineCmd(NobId const nobId)
-	  : m_inputLine(*m_pNMWI->GetNobPtr<InputLine *>(nobId)),
+	  : m_inputLine(*m_pNMWI->GetNobPtr<InputLine*>(nobId)),
 		m_pSigGenOld(m_inputLine.GetSigGen())
 	{}
 
-	void Do() final 
+	void Do() final
 	{
 		m_inputLine.SetSigGen(m_pSigGenNew);
 	}
 
-	void Undo() final 
+	void Undo() final
 	{
 		m_inputLine.SetSigGen(m_pSigGenOld);
 	}
@@ -30,5 +33,5 @@ public:
 private:
 	InputLine       & m_inputLine;
 	SignalGenerator * m_pSigGenOld;
-	SignalGenerator * m_pSigGenNew { m_pNMWI->GetSigGenSelected() };
+	SignalGenerator * m_pSigGenNew{ m_pNMWI->GetSigGenSelected() };
 };

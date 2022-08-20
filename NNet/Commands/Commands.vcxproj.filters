@@ -48,9 +48,6 @@
     <ClInclude Include="SelSigGenClientsCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttachSigGen2LineCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">
@@ -219,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlugIoConnectors.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttachSigGen2LineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

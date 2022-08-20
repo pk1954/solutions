@@ -77,7 +77,6 @@
     <ClInclude Include="PlugIoLines.h" />
     <ClInclude Include="SelSigGenClientsCmd.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
-    <ClInclude Include="AttachSigGen2LineCmd.h" />
     <ClInclude Include="SelectSubtreeCommand.h" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +92,7 @@
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
     </ClCompile>
     <ClCompile Include="AttachSigGen2ConnCmd.ixx" />
+    <ClCompile Include="AttachSigGen2LineCmd.ixx" />
     <ClCompile Include="AttachSigGen2SelCmd.ixx" />
     <ClCompile Include="CommandFunctions.cpp">
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
