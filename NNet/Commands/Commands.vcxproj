@@ -67,7 +67,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
@@ -94,6 +93,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NDEBUG;%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <RemoveUnreferencedCodeData Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</RemoveUnreferencedCodeData>
     </ClCompile>
+    <ClCompile Include="CommandFunctions.ixx" />
     <ClCompile Include="CommandStack.cpp">
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>

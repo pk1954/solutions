@@ -8,7 +8,6 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 #include "CommandStack.h"
-#include "CommandFunctions.h"
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
@@ -70,6 +69,7 @@ import SelSigGenClientsCmd;
 import PlugIoConnectorAnimation;
 import PlugIoLineAnimation;
 import ConnAnimationCommand;
+import CommandFunctions;
 
 using std::wcout;
 using std::endl;

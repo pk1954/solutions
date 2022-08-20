@@ -2,20 +2,19 @@
 //
 // Commands
 
+module;
+
 #include <cassert>
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
 #include "NobType.h"
-#include "IoConnector.h"
-#include "BaseKnot.h"
 #include "Nob.h"
-#include "CommandFunctions.h"
+
+module CommandFunctions;
 
 import DeleteBaseKnotCmd;
 import DeletePipeCommand;
-import SplitNeuronCmd;
 import DeleteIoConnectorCmd;
-import DiscIoConnectorCmd;
 
 unique_ptr<NNetCommand> MakeDeleteCommand
 (

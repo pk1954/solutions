@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "CommandFunctions.h"
 #include "NobIdList.h"
 #include "UPNobList.h"
 #include "CommandStack.h"
@@ -14,6 +13,7 @@ module;
 export module DeleteSelectionCommand;
 
 import MoreTypes;
+import CommandFunctions;
 
 using std::unique_ptr;
 
