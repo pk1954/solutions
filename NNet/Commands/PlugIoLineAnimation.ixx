@@ -1,13 +1,15 @@
-// PlugIoLineAnimation.h
+// PlugIoLineAnimation.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "IoLine.h"
 #include "NNetCommand.h"
+
+export module PlugIoLineAnimation;
 
 import MoreTypes;
 import SingleNobAnimation;
@@ -15,7 +17,7 @@ import PlugIoLines;
 
 using std::make_unique;
 
-class PlugIoLineAnimation : public NNetCommand
+export class PlugIoLineAnimation : public NNetCommand
 {
 public:
     PlugIoLineAnimation
@@ -23,8 +25,8 @@ public:
         NobId idAnimated,
         NobId idTarget
     )
-      : m_nobAnimated( * m_pNMWI->GetNobPtr<IoLine *>(idAnimated) ),
-        m_nobTarget  ( * m_pNMWI->GetNobPtr<IoLine *>(idTarget) )
+      : m_nobAnimated(*m_pNMWI->GetNobPtr<IoLine*>(idAnimated)),
+        m_nobTarget  (*m_pNMWI->GetNobPtr<IoLine*>(idTarget))
     {
         AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 3.0_MicroMeter)));
         AddPhase(make_unique<SingleNobAnimation>(m_nobAnimated, CalcOffsetPosDir(m_nobTarget, 1.4_MicroMeter)));
@@ -35,7 +37,7 @@ public:
 
     void Do() final
     {
-        m_nobAnimated.LockDirection(); 
+        m_nobAnimated.LockDirection();
         Command::Do();
     }
 
@@ -46,11 +48,11 @@ public:
     }
 
     bool IsAsyncCommand() final
-    { 
-        return true; 
+    {
+        return true;
     };
 
 private:
     IoLine & m_nobAnimated;
-    IoLine & m_nobTarget; 
+    IoLine & m_nobTarget;
 };

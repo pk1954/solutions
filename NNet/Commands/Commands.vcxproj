@@ -71,7 +71,6 @@
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="ConnAnimationCommand.h" />
     <ClInclude Include="NNetCommand.h" />
-    <ClInclude Include="PlugIoLineAnimation.h" />
     <ClInclude Include="SetActiveSigGenCmd.h" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +133,7 @@
     <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="PlugIoConnectorAnimation.ixx" />
     <ClCompile Include="PlugIoConnectors.ixx" />
+    <ClCompile Include="PlugIoLineAnimation.ixx" />
     <ClCompile Include="PlugIoLines.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
     <ClCompile Include="RestrictSelectionCommand.ixx" />

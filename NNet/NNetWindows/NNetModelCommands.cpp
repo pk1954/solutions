@@ -13,7 +13,6 @@ module;
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
-#include "PlugIoLineAnimation.h"
 #include "SetActiveSigGenCmd.h"
 #include "NNetParameters.h"
 
@@ -70,6 +69,7 @@ import AttachSigGen2LineCmd;
 import SelectSubtreeCommand;
 import SelSigGenClientsCmd;
 import PlugIoConnectorAnimation;
+import PlugIoLineAnimation;
 
 using std::wcout;
 using std::endl;
