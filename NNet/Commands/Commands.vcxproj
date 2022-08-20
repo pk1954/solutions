@@ -70,7 +70,6 @@
     <ClInclude Include="CommandFunctions.h" />
     <ClInclude Include="CommandStack.h" />
     <ClInclude Include="ConnAnimationCommand.h" />
-    <ClInclude Include="MakeConnAnimation.h" />
     <ClInclude Include="NNetCommand.h" />
     <ClInclude Include="PlugIoConnectorAnimation.h" />
     <ClInclude Include="PlugIoLineAnimation.h" />
@@ -128,6 +127,7 @@
     <ClCompile Include="InsertBaseKnotCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />
+    <ClCompile Include="MakeConnAnimation.ixx" />
     <ClCompile Include="MoveNobCommand.ixx" />
     <ClCompile Include="MoveSelectionCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />

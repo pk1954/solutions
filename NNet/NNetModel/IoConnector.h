@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include "NobType.h"
 #include "Nob.h"
 

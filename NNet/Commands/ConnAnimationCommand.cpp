@@ -6,10 +6,10 @@
 #include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 #include "IoLine.h"
-#include "MakeConnAnimation.h"
 #include "ConnAnimationCommand.h"
 
 import IoLinesAnimation;
+import MakeConnAnimation;
 
 using std::make_unique;
 using std::ranges::sort;
