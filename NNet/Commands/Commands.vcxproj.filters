@@ -27,9 +27,6 @@
     <ClInclude Include="ConnAnimationCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlugIoConnectorAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlugIoLineAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -219,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlugIoLines.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlugIoConnectorAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
