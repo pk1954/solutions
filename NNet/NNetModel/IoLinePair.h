@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <memory>
 #include "NNetModelWriterInterface.h"
 #include "InputLine.h"
 #include "OutputLine.h"
@@ -11,6 +12,7 @@
 
 import MoreTypes;
 
+using std::unique_ptr;
 using std::make_unique;
 
 class IoLinePair
@@ -38,7 +40,7 @@ public:
 
 	void Pop(NNetModelWriterInterface& nmwi)
 	{
-		m_upPipe         = nmwi.PopFromModel<Pipe>();
+		m_upPipe       = nmwi.PopFromModel<Pipe>();
 		m_upOutputLine = nmwi.PopFromModel<OutputLine>();
 		m_upInputLine  = nmwi.PopFromModel<InputLine>();
 	}

@@ -32,6 +32,7 @@
     <ClCompile Include="EllipseType.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="fHertz.ixx" />
+    <ClCompile Include="fMicroSecs.ixx" />
     <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="Hertz.ixx" />
     <ClCompile Include="IoConstants.ixx" />

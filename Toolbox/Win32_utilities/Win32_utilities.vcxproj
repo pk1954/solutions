@@ -200,8 +200,8 @@
     <ClCompile Include="Win32_StdDialogBox.cpp" />
     <ClCompile Include="Win32_StdDialogBox.ixx" />
     <ClCompile Include="Win32_Stopwatch.ixx" />
-    <ClCompile Include="win32_textBuffer.cpp" />
-    <ClCompile Include="win32_HiResTimer.cpp" />
+    <ClCompile Include="Win32_TextBuffer.cpp" />
+    <ClCompile Include="Win32_HiResTimer.cpp" />
     <ClCompile Include="Win32_RootWindow.cpp" />
     <ClCompile Include="Win32_Script.cpp" />
     <ClCompile Include="Win32_Stopwatch.cpp" />
@@ -214,7 +214,7 @@
     <ClCompile Include="Win32_Tooltip.ixx" />
     <ClCompile Include="Win32_Util.cpp" />
     <ClCompile Include="Win32_Util.ixx" />
-    <ClCompile Include="win32_winManager.cpp" />
+    <ClCompile Include="Win32_WinManager.cpp" />
     <ClCompile Include="Win32_WinManager.ixx" />
   </ItemGroup>
   <ItemGroup>

@@ -626,7 +626,7 @@
     <ClCompile Include="Win32_ScriptHook.ixx" />
     <ClCompile Include="Win32_SimulationControl.cpp" />
     <ClCompile Include="Win32_SimulationControl.ixx" />
-    <ClCompile Include="WIn32_SlowMotionControl.ixx" />
+    <ClCompile Include="Win32_SlowMotionControl.ixx" />
     <ClCompile Include="Win32_Status.cpp" />
     <ClCompile Include="Win32_Status.ixx" />
   </ItemGroup>

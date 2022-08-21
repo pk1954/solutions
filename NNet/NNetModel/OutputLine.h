@@ -5,12 +5,11 @@
 #pragma once
 
 #include "IoLine.h"
+#include "Nob.h"
+#include "BaseKnot.h"
 
 import MoreTypes;
-
-class Nob;
-class BaseKnot;
-class DrawContext;
+import DrawContext;
 
 class OutputLine : public IoLine
 {

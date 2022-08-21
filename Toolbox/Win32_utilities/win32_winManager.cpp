@@ -1,4 +1,4 @@
-// win32_winManager.cpp
+// Win32_WinManager.cpp
 //
 // Win32_utilities
 

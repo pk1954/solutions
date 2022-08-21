@@ -14,6 +14,8 @@ import BasicTypes;
 import MoreTypes;
 import AngleTypes;
 import SpeedType;
+import VoltageType;
+import fMicroSecs;
 
 class Param : public Observable
 {

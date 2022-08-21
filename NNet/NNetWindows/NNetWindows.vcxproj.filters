@@ -135,7 +135,7 @@
     <ClCompile Include="Win32_DescriptionWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WIn32_SlowMotionControl.ixx">
+    <ClCompile Include="Win32_SlowMotionControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetController.ixx">
