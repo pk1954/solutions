@@ -18,11 +18,6 @@ MicroMeterPosDir::MicroMeterPosDir(MicroMeterPnt const & pos, Radian const & dir
     m_dir(dir)
 {}
 
-MicroMeterPosDir::MicroMeterPosDir(Nob const & nob)
-  : m_pos(nob.GetPos()),
-    m_dir(nob.GetDir())
-{}
-
 MicroMeterPosDir& MicroMeterPosDir::operator+= (MicroMeterPnt const & pnt) 
 { 
     m_pos += pnt;

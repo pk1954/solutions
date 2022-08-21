@@ -18,16 +18,12 @@ using std::unique_ptr;
 using std::make_unique;
 using std::wostream;
 
-class Nob;
-
 class MicroMeterPosDir
 {
 public:
 
     MicroMeterPosDir();
     MicroMeterPosDir(MicroMeterPnt const &, Radian const &);
-
-    MicroMeterPosDir(Nob const &);
     
     MicroMeterPnt GetPos() const { return m_pos; }
     Radian        GetDir() const { return m_dir; }

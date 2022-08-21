@@ -21,11 +21,12 @@ export class SingleNobAnimation : public Command
 public:
     SingleNobAnimation
     (
-        Nob                    & animated,
+        Nob                    & nob,
         MicroMeterPosDir const & target
     )
-      : m_animated(animated),
-        m_start(animated.GetPosDir()),
+      : m_nob(nob),
+        m_animated(m_nob.GetPosDir()),
+        m_start(m_animated),
         m_target(target)
     {
         m_upAnimation = make_unique<Animation<MicroMeterPosDir>>(this);
@@ -44,7 +45,7 @@ public:
 
     void UpdateUI() final
     {
-        m_animated.SetPosDir(m_upAnimation->GetActual());
+        m_nob.SetPosDir(m_animated);
         Command::UpdateUI();
     }
 
@@ -55,7 +56,8 @@ public:
 
 private:
 
-    Nob                                   & m_animated;
+    Nob                                   & m_nob;
+    MicroMeterPosDir                        m_animated;
     MicroMeterPosDir                  const m_start;
     MicroMeterPosDir                  const m_target;
     unique_ptr<Animation<MicroMeterPosDir>> m_upAnimation;
