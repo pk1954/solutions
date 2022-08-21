@@ -6,7 +6,7 @@ module;
 
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
-#include "UPSigGenList.h"
+#include "SigGenId.h"
 #include "SignalGenerator.h"
 
 export module NewSigGenCmd;

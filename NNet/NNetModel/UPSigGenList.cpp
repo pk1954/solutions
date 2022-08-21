@@ -2,6 +2,10 @@
 //
 // NNetModel
 
+#include <string>
+#include <memory>
+#include <algorithm>
+#include "SigGenId.h"
 #include "UPSigGenList.h"
 
 using std::to_wstring;

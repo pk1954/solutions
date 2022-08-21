@@ -10,8 +10,8 @@ module;
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
-#include "SetActiveSigGenCmd.h"
 #include "NNetParameters.h"
+#include "SigGenId.h"
 
 module NNetModelCommands;
 
@@ -70,6 +70,7 @@ import PlugIoLineAnimation;
 import ConnAnimationCommand;
 import CommandFunctions;
 import CommandStack;
+import SetActiveSigGenCmd;
 
 using std::wcout;
 using std::endl;

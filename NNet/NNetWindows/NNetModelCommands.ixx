@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include "ParameterType.h"
-#include "UPSigGenList.h"
 #include "UPSensorList.h"
 #include "MonitorData.h"
 #include "IoLine.h"
@@ -21,6 +20,7 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPntVector.h"
 #include "SignalGenerator.h"
+#include "SigGenId.h"
 
 export module NNetModelCommands;
 

@@ -23,6 +23,7 @@ module;
 #include "Neuron.h"
 #include "SimulationTime.h"
 #include "InputConnector.h"
+#include "SigGenId.h"
 
 module NNetAppWindow;
 

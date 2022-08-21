@@ -9,6 +9,7 @@ module;
 #include "Resource.h"
 #include "Analyzer.h"
 #include "NobException.h"
+#include "SigGenId.h"
 #include "Signal.h"
 #include "AutoOpen.h"
 #include "win32_util_resource.h"

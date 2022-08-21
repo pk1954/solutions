@@ -16,6 +16,7 @@
 #include "Pipe.h"
 #include "Sensor.h"
 #include "Signal.h"
+#include "SigGenId.h"
 #include "SignalGenerator.h"
 #include "tHighlightType.h"
 #include "UPNobList.h"

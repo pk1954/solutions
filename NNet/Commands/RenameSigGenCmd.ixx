@@ -6,6 +6,7 @@ module;
 
 #include <string>
 #include "NNetModelWriterInterface.h"
+#include "SigGenId.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 

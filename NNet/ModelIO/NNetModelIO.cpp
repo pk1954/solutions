@@ -8,7 +8,6 @@
 #include "Signal.h"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
-#include "UPSigGenList.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Neuron.h"

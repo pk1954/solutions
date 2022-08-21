@@ -1,15 +1,16 @@
-// SetActiveSigGenCmd.h
+// SetActiveSigGenCmd.ixx
 //
 // Commands
 
-#pragma once
+module;
 
-#include "Resource.h"
-#include "SignalGenerator.h"
+#include "SigGenId.h"
+
+export module SetActiveSigGenCmd;
 
 import SigGenCommand;
 
-class SetActiveSigGenCmd : public SigGenCommand
+export class SetActiveSigGenCmd : public SigGenCommand
 {
 public:
 	SetActiveSigGenCmd(SigGenId const id)
@@ -17,13 +18,13 @@ public:
 		m_sigGenIdNew = id;
 	}
 
-	void Do() final 
-	{ 
+	void Do() final
+	{
 		m_sigGenIdOld = SetActiveSigGenId(m_sigGenIdNew);
 	}
 
-	void Undo() final 
-	{ 
+	void Undo() final
+	{
 		SetActiveSigGenId(m_sigGenIdOld);
 	}
 

@@ -19,10 +19,10 @@
 #include "NNetParameters.h"
 #include "ParameterType.h"
 #include "Pipe.h"
+#include "SigGenId.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
 #include "UPSensorList.h"
-#include "UPSigGenList.h"
 
 import BoolOp;
 import MoreTypes;

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include "SigGenId.h"
 #include "SignalGenerator.h"
 
 import NamedType;
@@ -14,7 +15,6 @@ using std::unique_ptr;
 using std::wstring;
 using std::vector;
 
-using SigGenId = NamedType<int, struct SigGenIdParam>;
 using UPSigGen = unique_ptr<SignalGenerator>;
 
 class UPSigGenList

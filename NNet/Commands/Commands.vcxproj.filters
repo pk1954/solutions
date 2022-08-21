@@ -18,9 +18,6 @@
     <ClInclude Include="NNetCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetActiveSigGenCmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">
@@ -219,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandStack.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetActiveSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
