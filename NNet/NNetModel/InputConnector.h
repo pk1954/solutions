@@ -27,9 +27,9 @@ public:
 
 	InputLine & GetElem(size_t const) const;
 
-	void SetSigGen(SignalGenerator * const p)  final;
-	SignalGenerator       * GetSigGen ()       final;
-	SignalGenerator const * GetSigGenC() const final;
+	void SetSigGen(SignalGenerator * const);
+	SignalGenerator       * GetSigGen ();
+	SignalGenerator const * GetSigGenC() const;
 
 	void Prepare() final { /* */ };
 

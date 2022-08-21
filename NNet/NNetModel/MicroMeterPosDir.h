@@ -33,7 +33,7 @@ public:
 
     bool operator==(MicroMeterPosDir const&) const = default;
 
-    MicroMeterPosDir& operator+= (MicroMeterPnt const &);
+    MicroMeterPosDir& operator+= (MicroMeterPnt    const &);
     MicroMeterPosDir& operator+= (MicroMeterPosDir const &); 
     MicroMeterPosDir& operator-= (MicroMeterPosDir const &); 
     MicroMeterPosDir& operator*= (float const); 

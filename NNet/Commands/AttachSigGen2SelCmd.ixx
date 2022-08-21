@@ -22,7 +22,7 @@ public:
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<InputLine>
 		(
-			[this](Nob& nob) { push(nob); }
+			[this](InputLine & inputLine) { push(&inputLine); }
 		);
 	}
 
@@ -30,7 +30,7 @@ public:
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<InputLine>
 		(
-			[this](Nob& nob) { nob.SetSigGen(m_pSigGenNew); }
+			[this](InputLine & inputLine) { inputLine.SetSigGen(m_pSigGenNew); }
 		);
 	}
 
@@ -38,7 +38,7 @@ public:
 	{
 		for (auto i : m_list)
 		{
-			m_pNMWI->GetNobPtr<InputLine*>(i.id)->SetSigGen(i.pSigGen);
+			m_pNMWI->GetNobPtr<InputLine*>(i.id)->SetSigGen(i.pSigGenOld);
 		}
 	}
 
@@ -46,13 +46,13 @@ private:
 	struct SigGenAttachment
 	{
 		NobId             id;
-		SignalGenerator * pSigGen;
+		SignalGenerator * pSigGenOld;
 	};
 	vector<SigGenAttachment> m_list;
-	SignalGenerator* m_pSigGenNew{ m_pNMWI->GetSigGenSelected() };
+	SignalGenerator        * m_pSigGenNew{ m_pNMWI->GetSigGenSelected() };
 
-	void push(Nob& nob)
+	void push(InputLine * pInputLine)
 	{
-		m_list.push_back(SigGenAttachment(nob.GetId(), nob.GetSigGen()));
+		m_list.push_back(SigGenAttachment(pInputLine->GetId(), pInputLine->GetSigGen()));
 	}
 };
