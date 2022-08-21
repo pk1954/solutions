@@ -9,7 +9,6 @@
 #include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
-#include "UPSigGenList.h"
 #include "NNetParameters.h"
 
 import ObserverInterface;

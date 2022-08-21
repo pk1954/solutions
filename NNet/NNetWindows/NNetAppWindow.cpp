@@ -11,32 +11,13 @@ module;
 #include <chrono>
 #include <filesystem>
 #include <source_location>
-
-// Model interfaces
-
 #include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
-
-// interfaces of various windows
-
-
-// infrastructure
-
 #include "AutoOpen.h"
-#include "NNetCommand.h"
-
-// scripting and tracing
-
 #include "Script.h"
 #include "NobException.h"
-
-// system and resources
-
 #include "win32_util_resource.h"
 #include "Resource.h"
-
-// application
-
 #include "Analyzer.h"
 #include "SignalFactory.h"
 #include "Neuron.h"
