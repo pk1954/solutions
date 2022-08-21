@@ -5,11 +5,10 @@
 #pragma once
 
 #include <unordered_map>
+#include "NNetModelWriterInterface.h"
+#include "BaseKnot.h"
+#include "Nob.h"
 #include "UPNobList.h"
-
-class NNetModelWriterInterface;
-class BaseKnot;
-class Nob;
 
 using std::unordered_map;
 
