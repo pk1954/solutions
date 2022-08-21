@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\ToolBox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\ToolBox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -198,6 +198,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
+      <Project>{96b4dbe7-f1de-43d4-be10-154dead2145a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\NNetWindows\NNetWindows.vcxproj">
       <Project>{4902962c-f97d-458f-9528-15dda5b7f846}</Project>

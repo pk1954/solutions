@@ -649,6 +649,9 @@
     <ProjectReference Include="..\Commands\Commands.vcxproj">
       <Project>{5f8877e6-8159-4cd4-84ac-53aa018885ac}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
+      <Project>{96b4dbe7-f1de-43d4-be10-154dead2145a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

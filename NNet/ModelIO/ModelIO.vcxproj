@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\Toolbox\runtimeCPP;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)\NNetModel;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\Toolbox\runtimeCPP;$(SolutionDir)\NNetModel;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\Toolbox\runtimeCPP;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)\NNetModel;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\Toolbox\runtimeCPP;$(SolutionDir)\NNetModel;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -197,6 +197,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
+      <Project>{96b4dbe7-f1de-43d4-be10-154dead2145a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
