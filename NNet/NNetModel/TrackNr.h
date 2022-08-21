@@ -7,6 +7,8 @@
 #include <iostream>
 #include "Script.h"
 
+import NamedType;
+
 using std::wostream;
 
 using TrackNr = NamedType< int, struct TrackNrParam >;
