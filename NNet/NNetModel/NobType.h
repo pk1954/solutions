@@ -5,7 +5,8 @@
 #pragma once
 
 #include <cassert>
-#include <ostream>
+#include <iostream>
+#include <functional>
 
 import Debug;
 

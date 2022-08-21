@@ -9,16 +9,15 @@
 #include "d2d1helper.h"
 #include "tHighlightType.h"
 #include "MicroMeterPosDir.h"
+#include "NNetParameters.h"
 #include "NobType.h"
 #include "NobId.h"
 
 import BoolOp;
 import MoreTypes;
 import VoltageType;
+import DrawContext;
 
-class Nob;
-class Param;
-class DrawContext;
 class SignalGenerator;
 
 using D2D1::ColorF;
@@ -29,6 +28,8 @@ using std::unique_ptr;
 using std::wostream;
 using std::wstring;
 using std::function;
+
+class Nob;
 
 using UPNob       = unique_ptr<Nob>;
 using UPNobC      = unique_ptr<const Nob>;
