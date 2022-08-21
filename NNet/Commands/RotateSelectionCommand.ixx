@@ -5,6 +5,7 @@
 module;
 
 #include "NNetModelWriterInterface.h"
+#include "BaseKnot.h"
 
 export module RotateSelectionCommand;
 

@@ -4,13 +4,15 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
+#include "Nob.h"
+#include "Sensor.h"
 
 export module RotationCommand;
 
 import MoreTypes;
 import AngleTypes;
+import Command;
 
 export class RotationCommand : public NNetCommand
 {

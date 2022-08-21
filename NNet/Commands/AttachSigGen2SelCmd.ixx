@@ -8,7 +8,6 @@ module;
 #include "Nob.h"
 #include "NobId.h"
 #include "InputLine.h"
-#include "InputConnector.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
@@ -30,8 +29,8 @@ public:
 	void Do() final
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<InputLine>
-			(
-				[this](Nob& nob) { nob.SetSigGen(m_pSigGenNew); }
+		(
+			[this](Nob& nob) { nob.SetSigGen(m_pSigGenNew); }
 		);
 	}
 
@@ -47,7 +46,7 @@ private:
 	struct SigGenAttachment
 	{
 		NobId             id;
-		SignalGenerator* pSigGen;
+		SignalGenerator * pSigGen;
 	};
 	vector<SigGenAttachment> m_list;
 	SignalGenerator* m_pSigGenNew{ m_pNMWI->GetSigGenSelected() };

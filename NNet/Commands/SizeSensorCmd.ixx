@@ -5,9 +5,9 @@
 module;
 
 #include "NNetModelWriterInterface.h"
+#include "Sensor.h"
+#include "UPSensorList.h"
 #include "NNetCommand.h"
-#include "Signal.h"
-#include "MonitorData.h"
 
 export module SizeSensorCmd;
 

@@ -4,6 +4,9 @@
 
 module;
 
+#include <vector>
+#include "NNetModelWriterInterface.h"
+#include "IoLine.h"
 #include "IoConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
@@ -11,6 +14,7 @@ module;
 
 export module MakeConnAnimation;
 
+using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
