@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "Spike.h"
 #include "NNetParameters.h"
 #include "SimulationTime.h"
 #include "SignalGenerator.h"
 #include "SigGenDynamicData.h"
 
 import VoltageType;
+import Spike;
 
 void SigGenDynamicData::Reset()
 {

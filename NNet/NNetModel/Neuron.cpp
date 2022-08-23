@@ -7,13 +7,13 @@
 #include "Resource.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
-#include "Spike.h"
 #include "IoLine.h"
 #include "Pipe.h"
 #include "Neuron.h"
 
 import VoltageType;
 import DrawContext;
+import Spike;
 
 using std::fixed;
 using std::wstring;

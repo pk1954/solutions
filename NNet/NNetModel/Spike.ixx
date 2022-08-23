@@ -1,16 +1,18 @@
-// Spike.h
+// Spike.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include <ostream>
+
+export module Spike;
 
 import BasicTypes;
 import MoreTypes;
 import VoltageType;
 
-class Spike
+export class Spike
 {
 public:
     static mV GetVoltage
@@ -22,11 +24,11 @@ public:
     {
         if (usSpikeTime <= usSpikeWidth)
         {
-            float const factorU { usSpikeTime / usSpikeWidth };
-            mV    const mVpot   { amplitude * 4.0f * factorU * (1.0f - factorU) };
+            float const factorU{ usSpikeTime / usSpikeWidth };
+            mV    const mVpot{ amplitude * 4.0f * factorU * (1.0f - factorU) };
             return mVpot;
         }
-        else 
+        else
             return 0.0_mV;
     }
 };
