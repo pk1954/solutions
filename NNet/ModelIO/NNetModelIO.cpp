@@ -4,7 +4,6 @@
 
 #include <filesystem>
 #include <cassert>
-#include "Scanner.h"
 #include "Signal.h"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
@@ -45,6 +44,7 @@
 #include "NNetWrapperBase.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
+#include "Scanner.h"
 
 import ErrHndl;
 import MoreTypes;

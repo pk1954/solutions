@@ -6,12 +6,12 @@ module;
 
 #include <filesystem>
 #include <iostream>
-#include "Script.h"
 #include "Resource.h"
 #include "AutoOpen.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
+#include "Script.h"
 
 module Preferences;
 

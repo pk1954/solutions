@@ -12,8 +12,8 @@ module;
 #include <string> 
 #include <vector>
 #include "pathcch.h"
-#include "Script.h"
 #include <ShObjIdl.h> 
+#include "Script.h"
 
 module ScriptFile;
 

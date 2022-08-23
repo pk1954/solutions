@@ -7,9 +7,9 @@
 #include <ostream>
 #include <exception>
 #include <source_location>
-#include "Scanner.h"
 #include "NobType.h"
 #include "NobId.h"
+#include "Scanner.h"
 
 using std::endl;
 using std::wcout;

@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Script.h"
 #include "NobId.h"
 #include "NobType.h"
 #include "Nob.h"
@@ -25,6 +24,7 @@
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
 #include "WrapCreateNob.h"
+#include "Script.h"
 
 import ErrHndl;
 import IoConstants;

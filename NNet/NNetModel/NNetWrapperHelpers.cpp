@@ -2,10 +2,21 @@
 //
 // NNetModel
 
+#include <cmath>
+#include "TrackNr.h"
+#include "SignalId.h"
+#include "NobType.h"
+#include "NobIdList.h"
+#include "SigGenStaticData.h"
+#include "ParameterType.h"
 #include "Script.h"
 #include "NobId.h"
+#include "SignalNr.h"
 #include "NNetWrapperHelpers.h"
 
+import SaveCast;
+import BasicTypes;
+import AngleTypes;
 import VoltageType;
 import ErrHndl;
 import IoConstants;

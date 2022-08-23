@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <stack>
 #include "Script.h"
 

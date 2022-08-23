@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include <functional>
 #include <string>
-#include <stdio.h>
+#include <iostream>
+#include <string_view>
 #include "Input.h"
 
+using std::function;
 using std::wstring;
 using std::streampos;
 using std::wstring_view;

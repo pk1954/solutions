@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-#include "Scanner.h"
+#include <cassert>
 #include "Pipe.h"
 #include "PipeList.h"
 

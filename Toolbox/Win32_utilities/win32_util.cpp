@@ -14,6 +14,7 @@ module;
 
 module Win32_Util;
 
+using std::wstring;
 using std::wostream;
 using std::stringbuf;
 using std::ostream;

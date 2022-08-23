@@ -46,15 +46,15 @@ export using MicroMeterEllipse  = EllipseType<MicroMeter>;
 export using MicroMeterCircle   = CircleType <MicroMeter>;
 
 export template <typename UNIT>
-class BASE_PEAK
+class BasePeak
 {
 public:
-	BASE_PEAK(UNIT b, UNIT p)
+	BasePeak(UNIT b, UNIT p)
 		: base(b),
 		peak(p)
 	{}
 
-	bool operator==(BASE_PEAK const & rhs) const = default;
+	bool operator==(BasePeak const & rhs) const = default;
 
 	UNIT Base()  const { return base; }
 	UNIT Peak()  const { return peak; }
@@ -70,7 +70,7 @@ public:
 		peak = max(v, base);
 	}
 
-	friend wostream & operator<< (wostream & out, BASE_PEAK<UNIT> const & data)
+	friend wostream & operator<< (wostream & out, BasePeak<UNIT> const & data)
 	{
 		out << setw(5) << data.base << L' ' << data.peak << L' ';
 		return out;

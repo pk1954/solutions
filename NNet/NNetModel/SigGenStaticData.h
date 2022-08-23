@@ -21,8 +21,8 @@ public:
 
 	SigGenStaticData
 	(
-		BASE_PEAK<fHertz> f,
-		BASE_PEAK<mV>     a,
+		BasePeak<fHertz> f,
+		BasePeak<mV>     a,
 		fMicroSecs        t
 	)
 	  :	m_freq(f),
@@ -53,9 +53,9 @@ public:
 		return *this;
 	}
 
-	fMicroSecs                GetPeakTime () const { return m_usPeak; }
-	BASE_PEAK<fHertz> const & GetFrequency() const { return m_freq;   }
-	BASE_PEAK<mV>     const & GetAmplitude() const { return m_amplit; }
+	fMicroSecs               GetPeakTime () const { return m_usPeak; }
+	BasePeak<fHertz> const & GetFrequency() const { return m_freq;   }
+	BasePeak<mV>     const & GetAmplitude() const { return m_amplit; }
 
 	void SetPeakTime(fMicroSecs const t) 
 	{ 
@@ -63,7 +63,7 @@ public:
 		NotifyAll(false);
 	}
 
-	void SetFreq(BASE_PEAK<fHertz> const freq) 
+	void SetFreq(BasePeak<fHertz> const freq) 
 	{ 
 		m_freq = freq; 
 		NotifyAll(false);
@@ -81,7 +81,7 @@ public:
 		NotifyAll(false);
 	}
 
-	void SetAmpl(BASE_PEAK<mV> const amplit) 
+	void SetAmpl(BasePeak<mV> const amplit) 
 	{ 
 		m_amplit = amplit; 
 		NotifyAll(false);
@@ -127,9 +127,9 @@ public:
 
 private:
 
-	BASE_PEAK<fHertz> m_freq;
-	BASE_PEAK<mV>     m_amplit;
-	fMicroSecs        m_usPeak;
+	BasePeak<fHertz> m_freq;
+	BasePeak<mV>     m_amplit;
+	fMicroSecs       m_usPeak;
 
 	inline static float const CUT_OFF_FACTOR { 10.0f };
 
@@ -137,7 +137,7 @@ private:
 	T getStimulusValue
 	(
 		fMicroSecs   const   t, 
-		BASE_PEAK<T> const & par
+		BasePeak<T> const & par
 	) const
 	{
 		T result { par.Base() };

@@ -7,7 +7,6 @@ module;
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <stdio.h>
 #include <string>
 #include "Scanner.h"
 

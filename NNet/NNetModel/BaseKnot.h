@@ -10,7 +10,6 @@
 
 import MoreTypes;
 import VoltageType;
-import CircleType;
 import PixelTypes;
 
 class DrawContext;

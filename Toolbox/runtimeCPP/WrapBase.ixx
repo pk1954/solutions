@@ -5,7 +5,7 @@
 module;
 
 #include <string>
-#include <ostream>
+#include <iostream>
 #include "Script.h"
 
 export module WrapBase;

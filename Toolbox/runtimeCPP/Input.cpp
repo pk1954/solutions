@@ -4,13 +4,18 @@
 //  low level input from script 
 //
 
+#include <ios>
 #include <string>
 #include <cassert>
 #include <ctype.h>
-#include "Input.h"
+#include <functional>
 #include "Script.h"
+#include "Input.h"
 
 import ErrHndl;
+
+using std::function;
+using std::wstring;
 
 InputBuffer::InputBuffer() 
 {

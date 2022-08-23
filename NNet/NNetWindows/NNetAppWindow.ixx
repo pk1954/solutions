@@ -7,13 +7,13 @@ module;
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "Script.h"
 #include "NNetModel.h"
 #include "NNetModelIO.h"
 #include "MonitorData.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
+#include "Script.h"
 
 export module NNetAppWindow;
 

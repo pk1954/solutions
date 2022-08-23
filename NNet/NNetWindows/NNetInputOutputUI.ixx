@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <cassert>
 #include "Windows.h"
 #include "Resource.h"

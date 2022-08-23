@@ -3,12 +3,12 @@
 // Toolbox\runtimeCPP
 
 #include <filesystem>
-#include <ostream>
+#include <iostream>
 #include <limits>  
 #include <string>
 #include <cassert>
-#include "Scanner.h"
 #include "Script.h"
+#include "Scanner.h"
 
 import SaveCast;
 import ErrHndl;
@@ -16,6 +16,7 @@ import Symtab;
 
 using std::endl;
 using std::wcout;
+using std::wstring;
 using std::numeric_limits;
 using std::filesystem::file_size;
 

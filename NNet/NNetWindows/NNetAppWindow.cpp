@@ -14,7 +14,6 @@ module;
 #include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
 #include "AutoOpen.h"
-#include "Script.h"
 #include "NobException.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
@@ -24,6 +23,7 @@ module;
 #include "SimulationTime.h"
 #include "InputConnector.h"
 #include "SigGenId.h"
+#include "Script.h"
 
 module NNetAppWindow;
 

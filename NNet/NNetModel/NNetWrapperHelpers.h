@@ -4,16 +4,18 @@
 
 #pragma once
 
-#include "Script.h"
 #include "SignalId.h"
 #include "NobType.h"
 #include "NobIdList.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 #include "MicroMeterPntVector.h"
+#include "Script.h"
 
 import MoreTypes;
 import VoltageType;
+
+using std::unique_ptr;
 
 extern MicroMeter            ScrReadMicroMeter         (Script &);
 extern MicroMeterPnt         ScrReadMicroMeterPnt      (Script &);

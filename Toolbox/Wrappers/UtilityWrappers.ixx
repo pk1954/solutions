@@ -28,11 +28,11 @@ T ScrRead(Script& script)
 }
 
 export template<typename T>
-BASE_PEAK<T> ScrReadBasePeak(Script & script)
+BasePeak<T> ScrReadBasePeak(Script & script)
 {
     T const base { ScrRead<T>(script) };
     T const peak { ScrRead<T>(script) };
-    return BASE_PEAK<T>(base, peak);
+    return BasePeak<T>(base, peak);
 }
 
 export void DefineUtilityWrapperFunctions();

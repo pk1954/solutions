@@ -12,9 +12,9 @@
 #include "UPNobList.h"
 #include "NobIdList.h"
 #include "InputOutputUI.h"
-#include "Script.h"
 #include "NNetModel.h"
 #include "InputOutputUI.h"
+#include "Script.h"
 
 import WrapBase;
 
@@ -51,9 +51,9 @@ public:
 
 private:
 
-	unique_ptr<InputOutputUI>     m_upImportUI;   
-	vector<unique_ptr<WrapBase>>  m_wrapVector;
-	TP_TIMER                    * m_pTpTimer { nullptr };
+	unique_ptr<InputOutputUI>    m_upImportUI;   
+	vector<unique_ptr<WrapBase>> m_wrapVector;
+	TP_TIMER                   * m_pTpTimer { nullptr };
 
 	/// import ///
 

@@ -41,8 +41,8 @@ public:
 	mV     GetStimulusAmplitude() const { return GetStimulusAmplitude(GetStimulusTime()); };
 
 	fMicroSecs                TimePeak () const { return m_statData.GetPeakTime (); }
-	BASE_PEAK<fHertz> const & Frequency() const { return m_statData.GetFrequency(); }
-	BASE_PEAK<mV>     const & Amplitude() const { return m_statData.GetAmplitude(); }
+	BasePeak<fHertz> const & Frequency() const { return m_statData.GetFrequency(); }
+	BasePeak<mV>     const & Amplitude() const { return m_statData.GetAmplitude(); }
 
 	void SetParam(ParamType::Value const, float const);
 

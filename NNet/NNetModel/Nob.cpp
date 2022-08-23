@@ -3,13 +3,18 @@
 // NNetModel
 
 #include <iomanip>
+#include <iostream>
 #include "Resource.h"
-#include "Scanner.h"
+#include "tHighLightType.h"
+#include "MicroMeterPosDir.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
+#include "NobType.h"
 #include "Nob.h"
+#include "Scanner.h"
 
 import Debug;
+import AngleTypes;
 import VoltageType;
 
 using std::setw;

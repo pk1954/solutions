@@ -2,7 +2,7 @@
 //
 // ModelIO
 
-#include "Script.h"
+#include <iostream>
 #include "Nob.h"
 #include "NobType.h"
 #include "BaseKnot.h"
@@ -11,6 +11,7 @@
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
 #include "WrapVoltage.h"
+#include "Script.h"
 
 import VoltageType;
 import IoConstants;

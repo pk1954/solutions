@@ -2,14 +2,14 @@
 //
 // NNetSimu
 
-#include <ostream>
+#include <iostream>
 #include <Windows.h>
 #include "Version.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "CommCtrl.h"
-#include "Scanner.h"
 #include "Script.h"
+#include "Scanner.h"
 
 import Trace;
 import Stopwatch;

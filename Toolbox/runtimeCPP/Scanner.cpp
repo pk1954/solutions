@@ -8,10 +8,14 @@
 #include <limits>   
 #include <string>
 #include <ctype.h>
+#include <string_view>
 #include "Scanner.h"
 #include "Input.h"
-                  
+
 import ErrHndl;
+
+using std::wstring;
+using std::wstring_view;
 
 #define IS_ONE_OF(S,C)  (((C)!=L'\0')&&(wcschr((S),static_cast<int>(C))!=nullptr))
 #define HEX2DIGIT(C)    ((C)-(isdigit(C)?'0':(((C)>='a')?'a':'A')))
