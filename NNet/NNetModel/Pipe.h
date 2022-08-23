@@ -6,13 +6,13 @@
 
 #include <vector>
 #include "NNetParameters.h"
-#include "tHighlightType.h"
 #include "Nob.h"
 
 import PointType;
 import MoreTypes;
 import PixelTypes;
 import VoltageType;
+import tHighlight;
 
 using std::vector;
 

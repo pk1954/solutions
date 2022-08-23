@@ -6,11 +6,11 @@
 
 #include "NobType.h"
 #include "Nob.h"
-#include "tHighlightType.h"
 #include "IoConnector.h"
+#include "IoLine.h"
 
-class IoLine;
-class DrawContext;
+import tHighlight;
+import DrawContext;
 
 class OutputConnector: public IoConnector
 {

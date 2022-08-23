@@ -18,7 +18,6 @@
 #include "Signal.h"
 #include "SigGenId.h"
 #include "SignalGenerator.h"
-#include "tHighlightType.h"
 #include "UPNobList.h"
 #include "UPSensorList.h"
 #include "UPSigGenList.h"
@@ -28,6 +27,7 @@ import MoreTypes;
 import VoltageType;
 import AngleTypes;
 import SoundInterface;
+import tHighlight;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 

@@ -5,7 +5,6 @@
 #include <iomanip>
 #include <sstream> 
 #include "Resource.h"
-#include "tHighlightType.h"
 #include "ParameterType.h"
 #include "NobType.h"
 #include "NNetColors.h"
@@ -18,6 +17,7 @@
 #include "InputLine.h"
 
 import DrawContext;
+import tHighlight;
 
 using std::chrono::microseconds;
 using std::wostringstream;

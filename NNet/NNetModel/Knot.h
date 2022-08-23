@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "tHighlightType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 
 import Geometry;
 import MoreTypes;
 import VoltageType;
+import tHighlight;
 
 class DrawContext;
 class NNetModel;

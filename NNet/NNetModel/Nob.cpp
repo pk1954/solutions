@@ -5,7 +5,6 @@
 #include <iomanip>
 #include <iostream>
 #include "Resource.h"
-#include "tHighLightType.h"
 #include "MicroMeterPosDir.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
@@ -16,6 +15,7 @@
 import Debug;
 import AngleTypes;
 import VoltageType;
+import tHighlight;
 
 using std::setw;
 using std::move;

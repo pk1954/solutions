@@ -5,12 +5,12 @@
 #pragma once
 
 #include <chrono>
-#include "tHighlightType.h"
 #include "Spike.h"
 #include "BaseKnot.h"
 
 import BoolOp;
 import MoreTypes;
+import tHighlight;
 
 class DrawContext;
 class IoLine;
