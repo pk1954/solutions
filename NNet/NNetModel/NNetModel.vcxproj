@@ -83,12 +83,10 @@
     <ClCompile Include="IoConnector.cpp" />
     <ClCompile Include="IoLine.cpp" />
     <ClCompile Include="Knot.cpp" />
-    <ClCompile Include="micro-profiler.initializer.cpp" />
     <ClCompile Include="MicroMeterPntVector.cpp" />
     <ClCompile Include="MicroMeterPosDir.cpp" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="NNetColors.cpp" />
     <ClCompile Include="NNetModel.cpp" />
     <ClCompile Include="NNetModelReaderInterface.cpp" />
     <ClCompile Include="NNetModelWriterInterface.cpp" />

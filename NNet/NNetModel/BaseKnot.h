@@ -11,11 +11,7 @@
 import MoreTypes;
 import VoltageType;
 import PixelTypes;
-
-class DrawContext;
-class NNetModel;
-
-struct IDWriteTextFormat;
+import DrawContext;
 
 class BaseKnot : public Nob
 {
