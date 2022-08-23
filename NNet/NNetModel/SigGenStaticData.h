@@ -23,7 +23,7 @@ public:
 	(
 		BasePeak<fHertz> f,
 		BasePeak<mV>     a,
-		fMicroSecs        t
+		fMicroSecs       t
 	)
 	  :	m_freq(f),
 		m_amplit(a),

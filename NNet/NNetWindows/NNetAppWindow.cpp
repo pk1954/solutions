@@ -13,7 +13,6 @@ module;
 #include <source_location>
 #include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
-#include "AutoOpen.h"
 #include "NobException.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
@@ -49,6 +48,7 @@ import Win32_Util;
 import Win32_PIXEL;
 import NNetWindow;
 import ScriptStack;
+import AutoOpen;
 
 using std::wcout;
 using std::wstring;

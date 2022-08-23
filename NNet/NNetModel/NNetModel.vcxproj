@@ -18,22 +18,130 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Commands\NNetCommand.h" />
+    <ClInclude Include="Analyzer.h" />
+    <ClInclude Include="BaseKnot.h" />
+    <ClInclude Include="CopySelectedNobs.h" />
+    <ClInclude Include="DescriptionUI.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="InputConnector.h" />
+    <ClInclude Include="InputLine.h" />
+    <ClInclude Include="IoConnector.h" />
+    <ClInclude Include="IoLine.h" />
+    <ClInclude Include="IoLinePair.h" />
+    <ClInclude Include="Knot.h" />
+    <ClInclude Include="MicroMeterPntVector.h" />
+    <ClInclude Include="MicroMeterPosDir.h" />
+    <ClInclude Include="ModelDescription.h" />
+    <ClInclude Include="MonitorData.h" />
+    <ClInclude Include="Neuron.h" />
+    <ClInclude Include="NNetColors.h" />
+    <ClInclude Include="NNetModel.h" />
+    <ClInclude Include="NNetModelReaderInterface.h" />
+    <ClInclude Include="NNetModelWriterInterface.h" />
+    <ClInclude Include="NNetParameters.h" />
+    <ClInclude Include="NNetWrapperHelpers.h" />
+    <ClInclude Include="Nob.h" />
+    <ClInclude Include="NobException.h" />
+    <ClInclude Include="NobId.h" />
+    <ClInclude Include="NobIdList.h" />
+    <ClInclude Include="NobType.h" />
+    <ClInclude Include="OutputConnector.h" />
+    <ClInclude Include="OutputLine.h" />
+    <ClInclude Include="ParameterType.h" />
+    <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PipeList.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Sensor.h" />
+    <ClInclude Include="SigGenDynamicData.h" />
+    <ClInclude Include="SigGenId.h" />
+    <ClInclude Include="SigGenStaticData.h" />
+    <ClInclude Include="Signal.h" />
+    <ClInclude Include="SignalFactory.h" />
+    <ClInclude Include="SignalGenerator.h" />
+    <ClInclude Include="SignalId.h" />
+    <ClInclude Include="SignalNr.h" />
+    <ClInclude Include="SignalSource.h" />
+    <ClInclude Include="SimulationTime.h" />
+    <ClInclude Include="Spike.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="tHighlightType.h" />
+    <ClInclude Include="Track.h" />
+    <ClInclude Include="TrackNr.h" />
+    <ClInclude Include="UPNobList.h" />
+    <ClInclude Include="UPSensorList.h" />
+    <ClInclude Include="UPSigGenList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Analyzer.cpp" />
+    <ClCompile Include="AutoOpen.ixx" />
+    <ClCompile Include="BaseKnot.cpp" />
+    <ClCompile Include="CopySelectedNobs.cpp" />
+    <ClCompile Include="InputConnector.cpp" />
+    <ClCompile Include="InputLine.cpp" />
+    <ClCompile Include="IoConnector.cpp" />
+    <ClCompile Include="IoLine.cpp" />
+    <ClCompile Include="Knot.cpp" />
+    <ClCompile Include="micro-profiler.initializer.cpp" />
+    <ClCompile Include="MicroMeterPntVector.cpp" />
+    <ClCompile Include="MicroMeterPosDir.cpp" />
+    <ClCompile Include="MonitorData.cpp" />
+    <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="NNetColors.cpp" />
+    <ClCompile Include="NNetModel.cpp" />
+    <ClCompile Include="NNetModelReaderInterface.cpp" />
+    <ClCompile Include="NNetModelWriterInterface.cpp" />
+    <ClCompile Include="NNetParameters.cpp" />
+    <ClCompile Include="NNetWrapperHelpers.cpp" />
+    <ClCompile Include="Nob.cpp" />
+    <ClCompile Include="NobIdList.cpp" />
+    <ClCompile Include="NobType.cpp" />
+    <ClCompile Include="OutputConnector.cpp" />
+    <ClCompile Include="OutputLine.cpp" />
+    <ClCompile Include="ParameterType.cpp" />
+    <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PipeList.cpp" />
+    <ClCompile Include="Sensor.cpp" />
+    <ClCompile Include="SigGenDynamicData.cpp" />
+    <ClCompile Include="Signal.cpp" />
+    <ClCompile Include="SignalFactory.cpp" />
+    <ClCompile Include="SignalGenerator.cpp" />
+    <ClCompile Include="Track.cpp" />
+    <ClCompile Include="UPNobList.cpp" />
+    <ClCompile Include="UPSensorList.cpp" />
+    <ClCompile Include="UPSigGenList.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
+      <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Wrappers\Wrappers.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{96B4DBE7-F1DE-43D4-BE10-154DEAD2145A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{93dedccb-8be5-48af-8e14-da2a19870565}</ProjectGuid>
     <RootNamespace>NNetModel</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,224 +179,83 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(IncludePath)</IncludePath>
-    <AllProjectBMIsArePublic>false</AllProjectBMIsArePublic>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Wrappers;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Wrappers;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <Lib />
-    <Lib>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </Lib>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <EnableParallelCodeGeneration>
-      </EnableParallelCodeGeneration>
-      <AdditionalOptions>%(AdditionalOptions) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib />
-    <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="SignalNr.h" />
-    <ClInclude Include="SignalSource.h" />
-    <ClInclude Include="Sensor.h" />
-    <ClInclude Include="Spike.h" />
-    <ClInclude Include="Analyzer.h" />
-    <ClInclude Include="AutoOpen.h" />
-    <ClInclude Include="BaseKnot.h" />
-    <ClInclude Include="CopySelectedNobs.h" />
-    <ClInclude Include="InputConnector.h" />
-    <ClInclude Include="IoLine.h" />
-    <ClInclude Include="IoConnector.h" />
-    <ClInclude Include="IoLinePair.h" />
-    <ClInclude Include="MicroMeterPntVector.h" />
-    <ClInclude Include="DescriptionUI.h" />
-    <ClInclude Include="DrawContext.h" />
-    <ClInclude Include="InputLine.h" />
-    <ClInclude Include="Knot.h" />
-    <ClInclude Include="MicroMeterPosDir.h" />
-    <ClInclude Include="MonitorData.h" />
-    <ClInclude Include="Neuron.h" />
-    <ClInclude Include="NNetColors.h" />
-    <ClInclude Include="NNetModel.h" />
-    <ClInclude Include="NNetModelReaderInterface.h" />
-    <ClInclude Include="NNetModelWriterInterface.h" />
-    <ClInclude Include="NNetParameters.h" />
-    <ClInclude Include="NNetWrapperHelpers.h" />
-    <ClInclude Include="NobException.h" />
-    <ClInclude Include="OutputConnector.h" />
-    <ClInclude Include="OutputLine.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="NobIdList.h" />
-    <ClInclude Include="PipeList.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="SigGenDynamicData.h" />
-    <ClInclude Include="SigGenStaticData.h" />
-    <ClInclude Include="SigGenId.h" />
-    <ClInclude Include="SignalFactory.h" />
-    <ClInclude Include="Signal.h" />
-    <ClInclude Include="Nob.h" />
-    <ClInclude Include="NobId.h" />
-    <ClInclude Include="SignalGenerator.h" />
-    <ClInclude Include="SignalId.h" />
-    <ClInclude Include="SimulationTime.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="tHighlightType.h" />
-    <ClInclude Include="ParameterType.h" />
-    <ClInclude Include="NobType.h" />
-    <ClInclude Include="Track.h" />
-    <ClInclude Include="TrackNr.h" />
-    <ClInclude Include="UPNobList.h" />
-    <ClInclude Include="UPSensorList.h" />
-    <ClInclude Include="UPSigGenList.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Analyzer.cpp" />
-    <ClCompile Include="BaseKnot.cpp" />
-    <ClCompile Include="CopySelectedNobs.cpp" />
-    <ClCompile Include="InputConnector.cpp" />
-    <ClCompile Include="IoLine.cpp" />
-    <ClCompile Include="IoConnector.cpp" />
-    <ClCompile Include="InputLine.cpp" />
-    <ClCompile Include="Knot.cpp" />
-    <ClCompile Include="MicroMeterPntVector.cpp" />
-    <ClCompile Include="MicroMeterPosDir.cpp" />
-    <ClCompile Include="MonitorData.cpp" />
-    <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="NNetModel.cpp">
-      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </EnableParallelCodeGeneration>
-    </ClCompile>
-    <ClCompile Include="NNetModelReaderInterface.cpp" />
-    <ClCompile Include="NNetModelWriterInterface.cpp" />
-    <ClCompile Include="NNetParameters.cpp" />
-    <ClCompile Include="NNetWrapperHelpers.cpp" />
-    <ClCompile Include="OutputConnector.cpp" />
-    <ClCompile Include="OutputLine.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="Nob.cpp" />
-    <ClCompile Include="NobIdList.cpp" />
-    <ClCompile Include="PipeList.cpp" />
-    <ClCompile Include="SigGenDynamicData.cpp" />
-    <ClCompile Include="Signal.cpp" />
-    <ClCompile Include="ParameterType.cpp" />
-    <ClCompile Include="NobType.cpp" />
-    <ClCompile Include="SignalFactory.cpp" />
-    <ClCompile Include="SignalGenerator.cpp" />
-    <ClCompile Include="Sensor.cpp" />
-    <ClCompile Include="Track.cpp" />
-    <ClCompile Include="UPNobList.cpp" />
-    <ClCompile Include="UPSensorList.cpp" />
-    <ClCompile Include="UPSigGenList.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
-      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
-      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Wrappers\Wrappers.vcxproj">
-      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

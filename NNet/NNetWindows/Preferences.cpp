@@ -7,7 +7,6 @@ module;
 #include <filesystem>
 #include <iostream>
 #include "Resource.h"
-#include "AutoOpen.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
@@ -25,6 +24,7 @@ import ScriptFile;
 import BaseWindow;
 import Win32_Util;
 import Symtab;
+import AutoOpen;
 
 using std::wofstream;
 using std::wcout;
