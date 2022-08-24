@@ -16,7 +16,6 @@ module;
 #include "NobException.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
-#include "Analyzer.h"
 #include "SignalFactory.h"
 #include "Neuron.h"
 #include "SimulationTime.h"
@@ -49,6 +48,7 @@ import Win32_PIXEL;
 import NNetWindow;
 import ScriptStack;
 import AutoOpen;
+import Analyzer;
 
 using std::wcout;
 using std::wstring;

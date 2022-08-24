@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Commands\NNetCommand.h" />
-    <ClInclude Include="Analyzer.h" />
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="CopySelectedNobs.h" />
     <ClInclude Include="DescriptionUI.h" />
@@ -72,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
+    <ClCompile Include="Analyzer.ixx" />
     <ClCompile Include="AutoOpen.ixx" />
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="CopySelectedNobs.cpp" />

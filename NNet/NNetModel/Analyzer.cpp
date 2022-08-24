@@ -2,14 +2,19 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
+#include <iostream>
 #include "NNetModelReaderInterface.h"
 #include "Knot.h"
-#include "Analyzer.h"
+
+module Analyzer;
 
 import MoreTypes;
 
 using std::endl;
+using std::wstring;
 using std::to_wstring;
 
 NobStack ModelAnalyzer::FindLoop(NNetModelReaderInterface const & nmri)

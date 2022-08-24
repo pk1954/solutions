@@ -7,7 +7,6 @@ module;
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
-#include "Analyzer.h"
 #include "NobException.h"
 #include "SigGenId.h"
 #include "Signal.h"

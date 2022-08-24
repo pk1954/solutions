@@ -7,11 +7,11 @@ module;
 #include "Nob.h"
 #include "NobId.h"
 #include "NNetModelWriterInterface.h"
-#include "Analyzer.h"
 
 export module AnalyzeCommand;
 
 import SelectionCommand;
+import Analyzer;
 
 export class AnalyzeCommand : public SelectionCommand
 {

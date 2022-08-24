@@ -6,7 +6,6 @@ module;
 
 #include <source_location>
 #include "NNetModelWriterInterface.h"
-#include "Analyzer.h"
 #include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
@@ -71,6 +70,7 @@ import ConnAnimationCommand;
 import CommandFunctions;
 import CommandStack;
 import SetActiveSigGenCmd;
+import Analyzer;
 
 using std::wcout;
 using std::endl;
