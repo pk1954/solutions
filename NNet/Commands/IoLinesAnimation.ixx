@@ -6,13 +6,13 @@ module;
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "MicroMeterPntVector.h"
 
 export module IoLinesAnimation;
 
 import MoreTypes;
 import Command;
 import Animation;
+import MicroMeterPntVector;
 
 using std::vector;
 using std::make_unique;

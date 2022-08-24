@@ -9,7 +9,6 @@ module;
 #include <string>
 #include "Resource.h"
 #include "Signal.h"
-#include "MicroMeterPntVector.h"
 #include "NobId.h"
 #include "Knot.h"
 #include "Neuron.h"

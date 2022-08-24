@@ -8,7 +8,6 @@ module;
 #include "Resource.h"
 #include "BaseKnot.h"
 #include "UPNobList.h"
-#include "MicroMeterPntVector.h"
 #include "NNetModelReaderInterface.h"
 
 export module MainWindow;

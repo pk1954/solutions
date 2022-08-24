@@ -10,7 +10,6 @@
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "NobIdList.h"
-#include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::CreateInitialNobs()

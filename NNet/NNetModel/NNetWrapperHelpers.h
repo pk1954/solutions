@@ -9,11 +9,11 @@
 #include "NobIdList.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
-#include "MicroMeterPntVector.h"
 #include "Script.h"
 
 import MoreTypes;
 import VoltageType;
+import MicroMeterPntVector;
 
 using std::unique_ptr;
 

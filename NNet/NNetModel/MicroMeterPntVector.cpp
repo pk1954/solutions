@@ -2,11 +2,21 @@
 //
 // NNetModel
 
+module;
+
+#include <vector>
 #include <cassert>
-#include "MicroMeterPntVector.h"
+#include <algorithm>
+#include <iostream>
+#include "NNetParameters.h"
+
+module MicroMeterPntVector;
 
 import IoConstants;
 
+using std::max;
+using std::vector;
+using std::wostream;
 using std::ranges::max_element;
 
 MicroMeterPntVector::MicroMeterPntVector(vector<IoLine *> const & nobList)
@@ -208,9 +218,8 @@ unsigned int CalcNrOfSteps
 )
 {
     MicroMeterPntVector const umPntVectorDiff { umPntVectorTarget - umPntVectorStart };
-    unsigned int        const fStepsFromRot   { CalcNrOfSteps(umPntVectorDiff.FindMaxRadian()) };
-    unsigned int        const fStepsFromMove  { CalcNrOfSteps(umPntVectorDiff.FindMaxPos()) };
-    unsigned int        const fSteps          { max(fStepsFromRot, fStepsFromMove) };
-    unsigned int        const uiSteps         { Cast2UnsignedInt(fSteps) + 1 };
+    unsigned int        const uiStepsFromRot  { CalcNrOfSteps(umPntVectorDiff.FindMaxRadian()) };
+    unsigned int        const uiStepsFromMove { CalcNrOfSteps(umPntVectorDiff.FindMaxPos()) };
+    unsigned int        const uiSteps         { max(uiStepsFromRot, uiStepsFromMove) + 1 };
     return uiSteps;
 }

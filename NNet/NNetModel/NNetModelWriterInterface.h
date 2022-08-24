@@ -10,7 +10,6 @@
 #include "BaseKnot.h"
 #include "DescriptionUI.h"
 #include "IoLine.h"
-#include "MicroMeterPntVector.h"
 #include "MonitorData.h"
 #include "Nob.h"
 #include "NobId.h"

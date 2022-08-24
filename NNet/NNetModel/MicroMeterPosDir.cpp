@@ -2,11 +2,14 @@
 //
 // NNetModel
 
+#include <algorithm>
 #include "Nob.h"
 #include "NNetParameters.h"
 #include "MicroMeterPosDir.h"
 
 import IoConstants;
+
+using std::max;
 
 MicroMeterPosDir::MicroMeterPosDir()
     : m_pos(),
@@ -80,10 +83,9 @@ unsigned int CalcNrOfSteps
     MicroMeterPosDir const & umPosDirTarget
 )
 {
-    MicroMeterPosDir const umPosDirDiff   { umPosDirTarget - umPosDirStart };
-    unsigned int     const fStepsFromRot  { CalcNrOfSteps(Normalize(umPosDirDiff.GetDir())) };
-    unsigned int     const fStepsFromMove { CalcNrOfSteps(Hypot    (umPosDirDiff.GetPos())) };
-    unsigned int     const fSteps         { max(fStepsFromRot, fStepsFromMove) };
-    unsigned int     const uiSteps        { Cast2UnsignedInt(fSteps) + 1 };
+    MicroMeterPosDir const umPosDirDiff    { umPosDirTarget - umPosDirStart };
+    unsigned int     const uiStepsFromRot  { CalcNrOfSteps(Normalize(umPosDirDiff.GetDir())) };
+    unsigned int     const uiStepsFromMove { CalcNrOfSteps(Hypot    (umPosDirDiff.GetPos())) };
+    unsigned int     const uiSteps         { max(uiStepsFromRot, uiStepsFromMove) + 1 };
     return uiSteps;
 }

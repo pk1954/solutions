@@ -5,7 +5,6 @@
 module;
 
 #include <algorithm>
-#include "MicroMeterPntVector.h"
 #include "NNetModelWriterInterface.h"
 #include "IoLine.h"
 
@@ -14,6 +13,7 @@ module ConnAnimationCommand;
 import MoreTypes;
 import IoLinesAnimation;
 import MakeConnAnimation;
+import MicroMeterPntVector;
 
 using std::make_unique;
 using std::ranges::sort;

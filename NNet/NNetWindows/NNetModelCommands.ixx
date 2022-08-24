@@ -18,7 +18,6 @@ module;
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
-#include "MicroMeterPntVector.h"
 #include "SignalGenerator.h"
 #include "SigGenId.h"
 

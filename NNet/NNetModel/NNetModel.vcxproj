@@ -31,7 +31,6 @@
     <ClInclude Include="IoLine.h" />
     <ClInclude Include="IoLinePair.h" />
     <ClInclude Include="Knot.h" />
-    <ClInclude Include="MicroMeterPntVector.h" />
     <ClInclude Include="MicroMeterPosDir.h" />
     <ClInclude Include="ModelDescription.h" />
     <ClInclude Include="MonitorData.h" />
@@ -82,6 +81,7 @@
     <ClCompile Include="IoLine.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="MicroMeterPntVector.cpp" />
+    <ClCompile Include="MicroMeterPointVector.ixx" />
     <ClCompile Include="MicroMeterPosDir.cpp" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
