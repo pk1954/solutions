@@ -6,15 +6,14 @@
 
 #include <chrono>
 #include "BaseKnot.h"
+#include "Pipe.h"
+#include "IoLine.h"
 
 import BoolOp;
 import MoreTypes;
 import tHighlight;
 import Spike;
-
-class DrawContext;
-class IoLine;
-class Pipe;
+import DrawContext;
 
 using std::unique_ptr;
 using std::make_unique;
