@@ -6,16 +6,18 @@
 
 #include <vector>
 #include <cassert>   
+#include <iostream>   
 #include "IoLine.h"
 #include "MicroMeterPosDir.h"
 
+import SaveCast;
+import BasicTypes;
 import MoreTypes;
 import PointType;
+import AngleTypes;
 
-using std::endl;
 using std::vector;
-using std::unique_ptr;
-using std::make_unique;
+using std::wostream;
 
 class MicroMeterPntVector
 {

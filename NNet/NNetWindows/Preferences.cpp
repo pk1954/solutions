@@ -28,6 +28,7 @@ import AutoOpen;
 
 using std::wofstream;
 using std::wcout;
+using std::endl;
 using std::filesystem::exists;
 using std::filesystem::path;
 

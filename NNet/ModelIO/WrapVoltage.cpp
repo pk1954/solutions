@@ -18,6 +18,7 @@ import IoConstants;
 import ErrHndl;
 
 using std::wcout;
+using std::endl;
 
 void WrapVoltage::setVoltage(Script & script) const
 {
