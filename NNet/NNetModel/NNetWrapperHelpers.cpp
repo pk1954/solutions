@@ -7,7 +7,6 @@
 #include "SignalId.h"
 #include "NobType.h"
 #include "SigGenStaticData.h"
-#include "ParameterType.h"
 #include "Script.h"
 #include "NobId.h"
 #include "SignalNr.h"
@@ -21,6 +20,7 @@ import ErrHndl;
 import IoConstants;
 import UtilityWrappers;
 import NobIdList;
+import ParamType;
 
 using std::unique_ptr;
 using std::make_unique;

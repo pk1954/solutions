@@ -46,7 +46,6 @@
     <ClInclude Include="NobType.h" />
     <ClInclude Include="OutputConnector.h" />
     <ClInclude Include="OutputLine.h" />
-    <ClInclude Include="ParameterType.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Sensor.h" />
@@ -94,6 +93,7 @@
     <ClCompile Include="OutputConnector.cpp" />
     <ClCompile Include="OutputLine.cpp" />
     <ClCompile Include="ParameterType.cpp" />
+    <ClCompile Include="ParameterType.ixx" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PipeList.cpp" />
     <ClCompile Include="PipeList.ixx" />

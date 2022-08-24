@@ -5,7 +5,6 @@
 module;
 
 #include <string>
-#include "ParameterType.h"
 #include "UPSensorList.h"
 #include "MonitorData.h"
 #include "IoLine.h"
@@ -29,6 +28,7 @@ import Uniform2D;
 import SoundInterface;
 import CommandStack;
 import NobIdList;
+import ParamType;
 
 using std::wcout;
 using std::wstring;

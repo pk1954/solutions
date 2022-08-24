@@ -6,7 +6,6 @@
 
 #include <chrono>
 #include "SigGenStaticData.h"
-#include "ParameterType.h"
 
 import Observable;
 import SaveCast;
@@ -16,6 +15,7 @@ import AngleTypes;
 import SpeedType;
 import VoltageType;
 import fMicroSecs;
+import ParamType;
 
 class Param : public Observable
 {

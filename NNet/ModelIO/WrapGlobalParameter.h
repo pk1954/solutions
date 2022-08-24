@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "ParameterType.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperBase.h"
+
+import ParamType;
 
 class WrapGlobalParameter : public NNetWrapperBase
 {

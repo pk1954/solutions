@@ -6,7 +6,6 @@
 
 #include <string>
 #include "SignalSource.h"
-#include "ParameterType.h"
 #include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
 #include "NNetParameters.h"
@@ -15,6 +14,7 @@ import ObserverInterface;
 import BasicTypes;
 import MoreTypes;
 import VoltageType;
+import ParamType;
 
 using std::wstring;
 using std::unique_ptr;

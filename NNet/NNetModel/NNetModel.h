@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
 #include "UPSensorList.h"
@@ -18,6 +17,7 @@ import Observable;
 import Util;
 import MoreTypes;
 import UPSigGenList;
+import ParamType;
 
 using std::unique_ptr;
 using std::move;

@@ -2,13 +2,17 @@
 //
 // NNetModel
 
+module;
+
 #include <iostream>
 #include <unordered_map>
-#include "ParameterType.h"
+
+module ParamType;
 
 import VoltageType;
 
 using std::unordered_map;
+using std::wostream;
 
 wchar_t const * ParamType::GetName(ParamType::Value const p)
 {
