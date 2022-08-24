@@ -6,7 +6,6 @@
 #include "TrackNr.h"
 #include "SignalId.h"
 #include "NobType.h"
-#include "NobIdList.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 #include "Script.h"
@@ -21,6 +20,10 @@ import VoltageType;
 import ErrHndl;
 import IoConstants;
 import UtilityWrappers;
+import NobIdList;
+
+using std::unique_ptr;
+using std::make_unique;
 
 MicroMeter ScrReadMicroMeter(Script & script)
 {

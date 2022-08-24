@@ -13,7 +13,6 @@ module;
 #include "NobId.h"
 #include "NNetParameters.h"
 #include "NNetCommand.h"
-#include "NobIdList.h"
 #include "SigGenStaticData.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
@@ -29,6 +28,7 @@ import BoolOp;
 import Uniform2D;
 import SoundInterface;
 import CommandStack;
+import NobIdList;
 
 using std::wcout;
 using std::wstring;

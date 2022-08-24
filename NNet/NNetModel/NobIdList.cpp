@@ -2,8 +2,11 @@
 //
 // NNetModel
 
+module;
+
 #include "Nob.h"
-#include "NobIdList.h"
+
+module NobIdList;
 
 import IoConstants;
 

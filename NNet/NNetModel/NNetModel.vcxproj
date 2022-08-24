@@ -43,7 +43,6 @@
     <ClInclude Include="Nob.h" />
     <ClInclude Include="NobException.h" />
     <ClInclude Include="NobId.h" />
-    <ClInclude Include="NobIdList.h" />
     <ClInclude Include="NobType.h" />
     <ClInclude Include="OutputConnector.h" />
     <ClInclude Include="OutputLine.h" />
@@ -91,6 +90,7 @@
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="Nob.cpp" />
     <ClCompile Include="NobIdList.cpp" />
+    <ClCompile Include="NobIdList.ixx" />
     <ClCompile Include="NobType.cpp" />
     <ClCompile Include="OutputConnector.cpp" />
     <ClCompile Include="OutputLine.cpp" />

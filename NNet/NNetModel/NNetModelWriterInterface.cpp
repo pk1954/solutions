@@ -9,8 +9,9 @@
 #include "IoLinePair.h"
 #include "InputLine.h"
 #include "OutputLine.h"
-#include "NobIdList.h"
 #include "NNetModelWriterInterface.h"
+
+import NobIdList;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {

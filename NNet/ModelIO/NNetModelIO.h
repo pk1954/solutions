@@ -10,13 +10,13 @@
 #include "NNetModelWriterInterface.h"
 #include "NobId.h"
 #include "UPNobList.h"
-#include "NobIdList.h"
 #include "InputOutputUI.h"
 #include "NNetModel.h"
 #include "InputOutputUI.h"
 #include "Script.h"
 
 import WrapBase;
+import NobIdList;
 
 using std::unique_ptr;
 using std::wostream;

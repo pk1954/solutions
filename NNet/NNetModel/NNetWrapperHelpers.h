@@ -6,7 +6,6 @@
 
 #include "SignalId.h"
 #include "NobType.h"
-#include "NobIdList.h"
 #include "SigGenStaticData.h"
 #include "ParameterType.h"
 #include "Script.h"
@@ -14,6 +13,7 @@
 import MoreTypes;
 import VoltageType;
 import MicroMeterPntVector;
+import NobIdList;
 
 using std::unique_ptr;
 

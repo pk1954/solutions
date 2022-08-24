@@ -6,7 +6,6 @@ module;
 
 #include "Resource.h"
 #include "NobType.h"
-#include "NobIdList.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
@@ -20,6 +19,7 @@ import Symtab;
 import NNetInputOutputUI;
 import DrawContext;
 import NNetModelCommands;
+import NobIdList;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

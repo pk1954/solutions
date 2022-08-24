@@ -10,11 +10,11 @@ module;
 #include "OutputLine.h"
 #include "BaseKnot.h"
 #include "NNetCommand.h"
-#include "NobIdList.h"
 
 export module DeleteBaseKnotCmd;
 
 import PixelTypes;
+import NobIdList;
 
 using std::vector;
 using std::unique_ptr;

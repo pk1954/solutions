@@ -12,9 +12,10 @@
 #include "OutputConnector.h"
 #include "InputLine.h"
 #include "OutputLine.h"
-#include "NobIdList.h"
 #include "NobException.h"
 #include "UPNobList.h"
+
+import NobIdList;
 
 using std::move;
 using std::accumulate;

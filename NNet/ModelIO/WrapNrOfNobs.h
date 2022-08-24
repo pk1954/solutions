@@ -5,10 +5,11 @@
 #pragma once
 
 #include "IoConnector.h"
-#include "NobIdList.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
 #include "NNetWrapperBase.h"
+
+import NobIdList;
 
 class WrapNrOfNobs : public NNetWrapperBase
 {
