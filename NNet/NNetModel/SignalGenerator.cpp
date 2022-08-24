@@ -4,10 +4,10 @@
 
 #include <cassert>
 #include "NNetParameters.h"
-#include "UPSigGenList.h"
 #include "SignalGenerator.h"
 
 import VoltageType;
+import UPSigGenList;
 
 using std::to_wstring;
 

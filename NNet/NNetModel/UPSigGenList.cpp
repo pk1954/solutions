@@ -2,14 +2,21 @@
 //
 // NNetModel
 
+module;
+
+#include <vector>
 #include <string>
 #include <memory>
 #include <algorithm>
 #include "SigGenId.h"
-#include "UPSigGenList.h"
 
+module UPSigGenList;
+
+using std::wstring;
+using std::vector;
 using std::to_wstring;
 using std::make_unique;
+using std::unique_ptr;
 using std::ranges::find_if;
 
 UPSigGenList::UPSigGenList()

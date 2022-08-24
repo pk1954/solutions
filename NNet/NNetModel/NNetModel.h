@@ -7,7 +7,6 @@
 #include "ParameterType.h"
 #include "NNetParameters.h"
 #include "ModelDescription.h"
-#include "UPSigGenList.h"
 #include "UPSensorList.h"
 #include "MonitorData.h"
 #include "UPNobList.h"
@@ -18,6 +17,7 @@ import ObserverInterface;
 import Observable;
 import Util;
 import MoreTypes;
+import UPSigGenList;
 
 using std::unique_ptr;
 using std::move;

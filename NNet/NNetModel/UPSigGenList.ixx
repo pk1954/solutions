@@ -1,12 +1,15 @@
-// UPSigGenList.h 
+// UPSigGenList.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
+#include <string>
 #include <vector>
 #include "SigGenId.h"
 #include "SignalGenerator.h"
+
+export module UPSigGenList;
 
 import NamedType;
 
@@ -15,9 +18,9 @@ using std::unique_ptr;
 using std::wstring;
 using std::vector;
 
-using UPSigGen = unique_ptr<SignalGenerator>;
+export using UPSigGen = unique_ptr<SignalGenerator>;
 
-class UPSigGenList
+export class UPSigGenList
 {
 public:
     UPSigGenList();
@@ -42,17 +45,17 @@ public:
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
 
-    void Apply2All(auto const &f)  
-    { 
-        for_each(m_list, [&f](auto & up) { f(up.get()); });
+    void Apply2All(auto const& f)
+    {
+        for_each(m_list, [&f](auto& up) { f(up.get()); });
     }
 
-    void Apply2AllC(auto const &f) const
-    { 
-        for_each(m_list, [&f](auto const & up) { f(up.get()); });
+    void Apply2AllC(auto const& f) const
+    {
+        for_each(m_list, [&f](auto const& up) { f(up.get()); });
     }
 
-    SignalGenerator       * StdSigGen() { return m_list.begin()->get(); }
+    SignalGenerator * StdSigGen() { return m_list.begin()->get(); }
 
     UPSigGen                NewSigGen();
     SignalGenerator       * GetSigGen   (wstring const &);
@@ -65,15 +68,15 @@ public:
 
 private:
 
-    inline static wstring STD_SIG_GEN_NAME { L"Standard" };
+    inline static wstring STD_SIG_GEN_NAME{ L"Standard" };
 
     vector<UPSigGen> m_list;
-    SigGenId         m_sigGenIdActive { 0 };
+    SigGenId         m_sigGenIdActive{ 0 };
 
-    vector<UPSigGen>::      iterator getSigGen(wstring const &);
+    vector<UPSigGen>::iterator       getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;
 
-    vector<UPSigGen>::      iterator getSigGen(SigGenId const);
+    vector<UPSigGen>::iterator       getSigGen(SigGenId const);
     vector<UPSigGen>::const_iterator getSigGen(SigGenId const) const;
 
     UPSigGen removeSigGen(vector<UPSigGen>::iterator);

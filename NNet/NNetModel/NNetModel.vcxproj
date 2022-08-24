@@ -65,7 +65,6 @@
     <ClInclude Include="TrackNr.h" />
     <ClInclude Include="UPNobList.h" />
     <ClInclude Include="UPSensorList.h" />
-    <ClInclude Include="UPSigGenList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
@@ -109,6 +108,7 @@
     <ClCompile Include="UPNobList.cpp" />
     <ClCompile Include="UPSensorList.cpp" />
     <ClCompile Include="UPSigGenList.cpp" />
+    <ClCompile Include="UPSigGenList.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">

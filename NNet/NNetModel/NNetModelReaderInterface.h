@@ -20,7 +20,6 @@
 #include "SignalGenerator.h"
 #include "UPNobList.h"
 #include "UPSensorList.h"
-#include "UPSigGenList.h"
 
 import BasicTypes;
 import MoreTypes;
@@ -28,6 +27,7 @@ import VoltageType;
 import AngleTypes;
 import SoundInterface;
 import tHighlight;
+import UPSigGenList;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 

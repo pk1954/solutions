@@ -8,7 +8,6 @@ module;
 #include <memory>
 #include <Windows.h>
 #include "NNetModelWriterInterface.h"
-#include "UPSigGenList.h"
 
 export module SignalDesigner;
 
@@ -25,6 +24,7 @@ import Direct2D;
 import GraphicsWindow;
 import Scale;
 import NNetModelCommands;
+import UPSigGenList;
 
 using std::wstring;
 using std::unique_ptr;
