@@ -24,7 +24,6 @@
 #include "WrapDescription.h"
 #include "WrapGlobalParameter.h"
 #include "WrapNrOfNobs.h"
-#include "WrapProtocol.h"
 #include "WrapNobParameter.h"
 #include "WrapSignal.h"
 #include "WrapSignalData.h"
@@ -52,6 +51,7 @@ import ScriptFile;
 import Win32_Util;
 import HiResTimer;
 import WrapVoltage;
+import WrapProtocol;
 
 using std::filesystem::exists;
 using std::wofstream;

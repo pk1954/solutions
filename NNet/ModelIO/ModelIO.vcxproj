@@ -172,7 +172,6 @@
     <ClInclude Include="WrapNobParameter.h" />
     <ClInclude Include="WrapNrOfNobs.h" />
     <ClInclude Include="WrapNrOfTracks.h" />
-    <ClInclude Include="WrapProtocol.h" />
     <ClInclude Include="WrapSetParam.h" />
     <ClInclude Include="WrapSetSigGen.h" />
     <ClInclude Include="WrapSignal.h" />
@@ -185,6 +184,7 @@
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="WrapCreateNob.cpp" />
+    <ClCompile Include="WrapProtocol.ixx" />
     <ClCompile Include="WrapVoltage.cpp" />
     <ClCompile Include="WrapVoltage.ixx" />
   </ItemGroup>

@@ -14,6 +14,9 @@
     <ClCompile Include="WrapVoltage.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapProtocol.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -38,9 +41,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapNrOfNobs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapProtocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapNobParameter.h">
