@@ -2,14 +2,18 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include "Pipe.h"
-#include "PipeList.h"
+
+module PipeList;
 
 import IoConstants;
 
 using std::endl;
 using std::wcout;
+using std::unique_ptr;
 using std::make_unique;
 using std::ranges::find;
 using std::ranges::replace;

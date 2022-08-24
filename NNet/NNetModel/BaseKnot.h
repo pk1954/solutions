@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "PipeList.h"
 #include "Pipe.h"
 #include "Nob.h"
 
@@ -12,6 +11,7 @@ import MoreTypes;
 import VoltageType;
 import PixelTypes;
 import DrawContext;
+import PipeList;
 
 class BaseKnot : public Nob
 {
