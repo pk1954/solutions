@@ -11,6 +11,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
+    <ClCompile Include="WrapVoltage.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -26,9 +29,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapCreateNob.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapVoltage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapDescription.h">

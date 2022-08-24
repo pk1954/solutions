@@ -2,6 +2,8 @@
 //
 // ModelIO
 
+module;
+
 #include <iostream>
 #include "Nob.h"
 #include "NobType.h"
@@ -10,8 +12,9 @@
 #include "IoConnector.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
-#include "WrapVoltage.h"
 #include "Script.h"
+
+module WrapVoltage;
 
 import VoltageType;
 import IoConstants;

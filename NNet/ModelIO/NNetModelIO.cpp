@@ -36,7 +36,6 @@
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
 #include "WrapCreateNob.h"
-#include "WrapVoltage.h"
 #include "WrapEEGcoordSys.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
@@ -52,6 +51,7 @@ import Thread;
 import ScriptFile;
 import Win32_Util;
 import HiResTimer;
+import WrapVoltage;
 
 using std::filesystem::exists;
 using std::wofstream;

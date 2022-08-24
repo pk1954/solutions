@@ -180,13 +180,13 @@
     <ClInclude Include="WrapSignalGenerator.h" />
     <ClInclude Include="WrapSignalInfo.h" />
     <ClInclude Include="WrapSimulationTime.h" />
-    <ClInclude Include="WrapVoltage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapVoltage.cpp" />
+    <ClCompile Include="WrapVoltage.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
