@@ -2,13 +2,17 @@
 //
 // Commands
 
-#include <cassert>
+module;
+
+#include <unordered_map>
 #include "Nob.h"
 #include "Knot.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
-#include "CopySelectedNobs.h"
 
+module CopySelectedNobs;
+
+using std::unordered_map;
 using std::make_pair;
 
 UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)

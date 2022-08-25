@@ -6,7 +6,6 @@ module;
 
 #include <source_location>
 #include "NNetModelWriterInterface.h"
-#include "CopySelectedNobs.h"
 #include "InputConnector.h"
 #include "NNetModelIO.h"
 #include "NNetParameters.h"
@@ -71,6 +70,7 @@ import CommandFunctions;
 import CommandStack;
 import SetActiveSigGenCmd;
 import Analyzer;
+import CopySelectedNobs;
 
 using std::wcout;
 using std::endl;
