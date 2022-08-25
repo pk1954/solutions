@@ -6,11 +6,11 @@
 
 #include <ostream>
 #include <functional>
-#include "TrackNr.h"
 #include "SignalNr.h"
 
 import NamedType;
 import IoConstants;
+import TrackNr;
 
 using std::vector;
 using std::function;

@@ -8,12 +8,12 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "NNetModelIO.h"
-#include "TrackNr.h"
 #include "Script.h"
 
 export module WrapNrOfTracks;
 
 import NNetWrapperBase;
+import TrackNr;
 
 using std::wostream;
 using std::endl;

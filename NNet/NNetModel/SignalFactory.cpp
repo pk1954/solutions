@@ -6,11 +6,12 @@
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "SignalId.h"
-#include "TrackNr.h"
 #include "SignalNr.h"
 #include "SignalSource.h"
 #include "SignalGenerator.h"
 #include "SignalFactory.h"
+
+import TrackNr;
 
 using std::unique_ptr;
 using std::make_unique;

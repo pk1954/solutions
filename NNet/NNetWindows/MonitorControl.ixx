@@ -7,7 +7,6 @@ module;
 #include <dwrite.h>
 #include <Windows.h>
 #include "Track.h"
-#include "TrackNr.h"
 #include "MonitorData.h"
 #include "NNetModelWriterInterface.h"
 
@@ -22,6 +21,7 @@ import Direct2D;
 import PixelTypes;
 import TimeGraph;
 import NNetModelCommands;
+import TrackNr;
 
 export class MonitorControl : public TimeGraph
 {

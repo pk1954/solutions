@@ -10,9 +10,10 @@ module;
 #include "MonitorData.h"
 #include "NNetCommand.h"
 #include "SignalId.h"
-#include "TrackNr.h"
 
 export module AddSigGen2MonitorCmd;
+
+import TrackNr;
 
 export class AddSigGen2MonitorCmd : public NNetCommand
 {

@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "TrackNr.h"
 #include "SignalId.h"
 #include "SignalFactory.h"
 #include "MonitorData.h"
@@ -14,6 +13,7 @@ module;
 export module AddSensorSignalCmd;
 
 import MoreTypes;
+import TrackNr;
 
 export class AddSensorSignalCmd : public NNetCommand
 {

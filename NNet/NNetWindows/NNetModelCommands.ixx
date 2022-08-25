@@ -11,7 +11,6 @@ module;
 #include "NobType.h"
 #include "NobId.h"
 #include "SignalId.h"
-#include "TrackNr.h"
 #include "NNetParameters.h"
 #include "NNetCommand.h"
 #include "SigGenStaticData.h"
@@ -31,6 +30,7 @@ import SoundInterface;
 import CommandStack;
 import NobIdList;
 import ParamType;
+import TrackNr;
 
 using std::wcout;
 using std::wstring;

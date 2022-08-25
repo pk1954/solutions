@@ -9,10 +9,11 @@ module;
 #include "Signal.h"
 #include "SignalId.h"
 #include "Track.h"
-#include "TrackNr.h"
 #include "MonitorData.h"
 
 export module MoveSignalCmd;
+
+import TrackNr;
 
 export class MoveSignalCmd : public NNetCommand
 {
