@@ -2,9 +2,14 @@
 //
 // NNetModel
 
+#include <memory>
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "UPSensorList.h"
+#include "SignalId.h"
+#include "TrackNr.h"
+#include "SignalNr.h"
+#include "SignalSource.h"
+#include "SignalGenerator.h"
 #include "SignalFactory.h"
 
 using std::unique_ptr;

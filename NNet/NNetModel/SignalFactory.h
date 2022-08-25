@@ -4,13 +4,14 @@
 
 #pragma once
 
+#include "NNetModelWriterInterface.h"
+#include "SignalSource.h"
 #include "SignalId.h"
+#include "SignalNr.h"
 #include "TrackNr.h"
 
 import Observable;
 import MoreTypes;
-
-class NNetModelWriterInterface;
 
 class SignalFactory
 {

@@ -10,6 +10,8 @@ module;
 #include "IoLine.h"
 #include "NobType.h"
 #include "NobId.h"
+#include "SignalId.h"
+#include "TrackNr.h"
 #include "NNetParameters.h"
 #include "NNetCommand.h"
 #include "SigGenStaticData.h"
@@ -41,9 +43,9 @@ export class NNetModelCommands
 public:
     void Initialize
     (
-        NNetModelIO* const,
-        Observable* const,
-        CommandStack* const
+        NNetModelIO  * const,
+        Observable   * const,
+        CommandStack * const
     );
     void SetModelInterface(NNetModelWriterInterface* const);
 

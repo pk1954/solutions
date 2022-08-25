@@ -4,10 +4,16 @@
 
 #pragma once
 
+#include <iostream>
 #include "MonitorData.h"
 #include "SignalFactory.h"
+#include "SignalId.h"
+#include "Script.h"
 
 import NNetWrapperBase;
+import ErrHndl;
+
+using std::wostream;
 
 class WrapSignalInfo : public NNetWrapperBase 
 {

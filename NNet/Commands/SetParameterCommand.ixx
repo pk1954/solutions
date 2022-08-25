@@ -8,9 +8,9 @@ module;
 #include "NNetParameters.h"
 #include "NNetCommand.h"
 
-import ParamType;
-
 export module SetParameterCommand;
+
+import ParamType;
 
 export class SetParameterCommand : public NNetCommand
 {

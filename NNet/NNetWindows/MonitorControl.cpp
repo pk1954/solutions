@@ -7,10 +7,12 @@ module;
 #include <Windows.h>
 #include "dwrite.h"
 #include "Resource.h"
+#include "SignalNr.h"
+#include "SignalId.h"
 #include "win32_util_resource.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetColors.h"
 #include "MonitorData.h"
+#include "NNetColors.h"
 
 module MonitorControl;
 
