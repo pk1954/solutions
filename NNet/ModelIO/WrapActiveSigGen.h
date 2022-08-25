@@ -4,7 +4,15 @@
 
 #pragma once
 
-#include "NNetWrapperBase.h"
+#include <iostream>
+#include "NNetModelReaderInterface.h"
+#include "SigGenId.h"
+#include "Script.h"
+
+import NNetWrapperBase;
+
+using std::wostream;
+using std::endl;
 
 class WrapActiveSigGen : public NNetWrapperBase 
 {

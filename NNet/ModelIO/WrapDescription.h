@@ -6,9 +6,9 @@
 
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
-#include "NNetWrapperBase.h"
 
 import Symtab;
+import NNetWrapperBase;
 
 class WrapDescription : public NNetWrapperBase
 {

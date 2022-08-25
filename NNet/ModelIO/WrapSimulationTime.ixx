@@ -5,15 +5,17 @@
 module;
 
 #include <iostream>
-#include "NNetWrapperBase.h"
 #include "Script.h"
 
 export module WrapSimulationTime;
 
 import SaveCast;
+import BasicTypes;
 import SimulationTime;
+import NNetWrapperBase;
 
 using std::endl;
+using std::wostream;
 
 export class WrapSimulationTime : public NNetWrapperBase
 {

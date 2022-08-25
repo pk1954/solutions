@@ -6,7 +6,8 @@
 
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
-#include "NNetWrapperBase.h"
+
+import NNetWrapperBase;
 
 class WrapSignalGenerator : public NNetWrapperBase 
 {

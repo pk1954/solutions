@@ -34,11 +34,9 @@
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
 #include "WrapCreateNob.h"
-#include "WrapEEGcoordSys.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "NNetModelStorage.h"
-#include "NNetWrapperBase.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
 #include "Scanner.h"
@@ -52,6 +50,7 @@ import HiResTimer;
 import WrapVoltage;
 import WrapProtocol;
 import WrapSimulationTime;
+import NNetWrapperBase;
 
 using std::filesystem::exists;
 using std::wofstream;
@@ -80,7 +79,6 @@ void NNetModelIO::Initialize()
     m_wrapVector.push_back(make_unique<WrapSetParam       >(L"SetParam",        *this)); // Legacy
     m_wrapVector.push_back(make_unique<WrapSignal         >(L"Signal",          *this)); // Legacy
     m_wrapVector.push_back(make_unique<WrapNobParameter   >(L"NobParameter",    *this)); // Legacy
-//    m_wrapVector.push_back(make_unique<WrapEEGcoordSys    >(L"EEGcoordSys",     *this));
 
     NobType::Apply2All
     (

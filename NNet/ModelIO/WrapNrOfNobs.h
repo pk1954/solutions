@@ -7,9 +7,9 @@
 #include "IoConnector.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
-#include "NNetWrapperBase.h"
 
 import NobIdList;
+import NNetWrapperBase;
 
 class WrapNrOfNobs : public NNetWrapperBase
 {

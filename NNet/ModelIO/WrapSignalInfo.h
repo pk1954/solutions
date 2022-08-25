@@ -6,7 +6,8 @@
 
 #include "MonitorData.h"
 #include "SignalFactory.h"
-#include "NNetWrapperBase.h"
+
+import NNetWrapperBase;
 
 class WrapSignalInfo : public NNetWrapperBase 
 {

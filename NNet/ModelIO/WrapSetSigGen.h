@@ -6,7 +6,8 @@
 
 #include "InputLine.h"
 #include "NNetModelIO.h"
-#include "NNetWrapperBase.h"
+
+import NNetWrapperBase;
 
 class WrapSetSigGen : public NNetWrapperBase 
 {

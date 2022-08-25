@@ -5,9 +5,9 @@
 #pragma once
 
 #include "NNetWrapperHelpers.h"
-#include "NNetWrapperBase.h"
 
 import ErrHndl;
+import NNetWrapperBase;
 
 class WrapSignal : public NNetWrapperBase  // Legacy
 {

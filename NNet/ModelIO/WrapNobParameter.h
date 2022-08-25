@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NNetWrapperBase.h"
+import NNetWrapperBase;
 
 class WrapNobParameter : public NNetWrapperBase  // Legacy
 {

@@ -12,10 +12,11 @@ module;
 #include "Pipe.h"
 #include "IoConnector.h"
 #include "NNetModelIO.h"
-#include "NNetWrapperBase.h"
 #include "Script.h"
 
 export module WrapVoltage;
+
+import NNetWrapperBase;
 
 using std::wostream;
 

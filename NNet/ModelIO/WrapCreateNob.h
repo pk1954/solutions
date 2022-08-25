@@ -4,9 +4,18 @@
 
 #pragma once
 
-#include "NNetWrapperBase.h"
+#include <iostream>
+#include "NNetModelReaderInterface.h"
+#include "BaseKnot.h"
+#include "Pipe.h"
+#include "IoConnector.h"
+#include "NobType.h"
+#include "Nob.h"
+#include "Script.h"
 
-class Script;
+import NNetWrapperBase;
+
+using std::wostream;
 
 class WrapCreateNob : public NNetWrapperBase
 {

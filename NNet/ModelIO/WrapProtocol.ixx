@@ -6,11 +6,13 @@ module;
 
 #include <iostream>
 #include "NNetModelStorage.h"
-#include "NNetWrapperBase.h"
 
 export module WrapProtocol;
 
+import NNetWrapperBase;
+
 using std::endl;
+using std::wostream;
 
 export class WrapProtocol : public NNetWrapperBase
 {
