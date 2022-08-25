@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "NobException.h"
-#include "SimulationTime.h"
 #include "NobType.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -13,6 +12,7 @@
 #include "NNetModel.h"
 
 import MoreTypes;
+import SimulationTime;
 
 using namespace std::chrono;
 using std::wcout;

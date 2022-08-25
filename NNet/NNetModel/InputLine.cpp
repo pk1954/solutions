@@ -9,7 +9,6 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
-#include "SimulationTime.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
@@ -18,6 +17,7 @@
 import DrawContext;
 import tHighlight;
 import ParamType;
+import SimulationTime;
 
 using std::chrono::microseconds;
 using std::wostringstream;

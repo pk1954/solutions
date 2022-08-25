@@ -10,13 +10,13 @@ module;
 #include "win32_util_resource.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
-#include "SimulationTime.h"
 #include "MonitorData.h"
 
 module MonitorControl;
 
 import VoltageType;
 import NNetModelCommands;
+import SimulationTime;
 
 using std::to_wstring;
 

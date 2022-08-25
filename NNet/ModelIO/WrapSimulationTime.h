@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "SimulationTime.h"
 #include "NNetWrapperBase.h"
+
+import SimulationTime;
 
 class WrapSimulationTime : public NNetWrapperBase 
 {

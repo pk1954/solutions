@@ -18,7 +18,6 @@ module;
 #include "Resource.h"
 #include "SignalFactory.h"
 #include "Neuron.h"
-#include "SimulationTime.h"
 #include "InputConnector.h"
 #include "SigGenId.h"
 #include "Script.h"
@@ -49,6 +48,7 @@ import NNetWindow;
 import ScriptStack;
 import AutoOpen;
 import Analyzer;
+import SimulationTime;
 
 using std::wcout;
 using std::wstring;

@@ -10,12 +10,12 @@ module;
 #include <sstream> 
 #include <string> 
 #include <chrono> 
-#include "SimulationTime.h"
 #include "NNetModelReaderInterface.h"
 
 module TimeDisplay;
 
 import StatusBar;
+import SimulationTime;
 
 using std::make_unique;
 using std::to_wstring;

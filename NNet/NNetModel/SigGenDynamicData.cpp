@@ -5,12 +5,12 @@
 #pragma once
 
 #include "NNetParameters.h"
-#include "SimulationTime.h"
 #include "SignalGenerator.h"
 #include "SigGenDynamicData.h"
 
 import VoltageType;
 import Spike;
+import SimulationTime;
 
 void SigGenDynamicData::Reset()
 {

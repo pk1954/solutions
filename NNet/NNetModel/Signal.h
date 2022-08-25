@@ -9,7 +9,6 @@
 #include <memory>    
 #include "BaseKnot.h"
 #include "UPNobList.h"
-#include "SimulationTime.h"
 #include "NNetParameters.h"
 #include "SignalSource.h"
 
@@ -17,6 +16,7 @@ import ObserverInterface;
 import MoreTypes;
 import VoltageType;
 import DrawContext;
+import SimulationTime;
 
 using std::vector;
 using std::unique_ptr;

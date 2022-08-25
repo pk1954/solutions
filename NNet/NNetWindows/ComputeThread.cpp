@@ -6,7 +6,6 @@ module;
 
 #include <Windows.h>
 #include "NNetModelWriterInterface.h"
-#include "SimulationTime.h"
 #include "NNetParameters.h"
 
 module ComputeThread;
@@ -15,6 +14,7 @@ import SlowMotionRatio;
 import Observable;
 import FatalError;
 import HiResTimer;
+import SimulationTime;
 
 void ComputeThread::Initialize
 (
