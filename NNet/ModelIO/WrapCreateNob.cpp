@@ -2,6 +2,8 @@
 //
 // ModelIO
 
+module;
+
 #include <cassert>
 #include <iostream>
 #include <string>
@@ -23,8 +25,9 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
-#include "WrapCreateNob.h"
 #include "Script.h"
+
+module WrapCreateNob;
 
 import ErrHndl;
 import IoConstants;

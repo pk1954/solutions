@@ -23,6 +23,9 @@
     <ClCompile Include="NNetWrapperBase.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapCreateNob.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -32,9 +35,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapCreateNob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapDescription.h">

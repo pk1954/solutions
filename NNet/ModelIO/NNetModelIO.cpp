@@ -33,7 +33,6 @@
 #include "WrapSetParam.h"
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
-#include "WrapCreateNob.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "NNetModelStorage.h"
@@ -51,6 +50,7 @@ import WrapVoltage;
 import WrapProtocol;
 import WrapSimulationTime;
 import NNetWrapperBase;
+import WrapCreateNob;
 
 using std::filesystem::exists;
 using std::wofstream;

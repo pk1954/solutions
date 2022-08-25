@@ -164,7 +164,6 @@
     <ClInclude Include="NNetModelIO.h" />
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="WrapActiveSigGen.h" />
-    <ClInclude Include="WrapCreateNob.h" />
     <ClInclude Include="WrapDescription.h" />
     <ClInclude Include="WrapGlobalParameter.h" />
     <ClInclude Include="WrapNobParameter.h" />
@@ -182,6 +181,7 @@
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="NNetWrapperBase.ixx" />
     <ClCompile Include="WrapCreateNob.cpp" />
+    <ClCompile Include="WrapCreateNob.ixx" />
     <ClCompile Include="WrapProtocol.ixx" />
     <ClCompile Include="WrapSimulationTime.ixx" />
     <ClCompile Include="WrapVoltage.cpp" />
