@@ -29,6 +29,9 @@
     <ClCompile Include="WrapNrOfNobs.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapNrOfTracks.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -50,9 +53,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapSignal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapNrOfTracks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapSetParam.h">

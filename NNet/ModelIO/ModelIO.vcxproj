@@ -167,7 +167,6 @@
     <ClInclude Include="WrapDescription.h" />
     <ClInclude Include="WrapGlobalParameter.h" />
     <ClInclude Include="WrapNobParameter.h" />
-    <ClInclude Include="WrapNrOfTracks.h" />
     <ClInclude Include="WrapSetParam.h" />
     <ClInclude Include="WrapSetSigGen.h" />
     <ClInclude Include="WrapSignal.h" />
@@ -182,6 +181,7 @@
     <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapCreateNob.ixx" />
     <ClCompile Include="WrapNrOfNobs.ixx" />
+    <ClCompile Include="WrapNrOfTracks.ixx" />
     <ClCompile Include="WrapProtocol.ixx" />
     <ClCompile Include="WrapSimulationTime.ixx" />
     <ClCompile Include="WrapVoltage.cpp" />
