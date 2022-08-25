@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "NNetWrapperHelpers.h"
+
 import NNetWrapperBase;
 import BasicTypes;
 

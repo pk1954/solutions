@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "NobId.h"
 #include "SignalId.h"
 #include "NobType.h"
 #include "SigGenStaticData.h"
