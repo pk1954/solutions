@@ -17,6 +17,9 @@
     <ClCompile Include="WrapProtocol.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapSimulationTime.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">

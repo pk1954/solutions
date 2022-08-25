@@ -27,7 +27,6 @@
 #include "WrapNobParameter.h"
 #include "WrapSignal.h"
 #include "WrapSignalData.h"
-#include "WrapSimulationTime.h"
 #include "WrapNrOfTracks.h"
 #include "WrapSignalInfo.h"
 #include "WrapActiveSigGen.h"
@@ -52,6 +51,7 @@ import Win32_Util;
 import HiResTimer;
 import WrapVoltage;
 import WrapProtocol;
+import WrapSimulationTime;
 
 using std::filesystem::exists;
 using std::wofstream;

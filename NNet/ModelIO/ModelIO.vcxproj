@@ -185,6 +185,7 @@
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapProtocol.ixx" />
+    <ClCompile Include="WrapSimulationTime.ixx" />
     <ClCompile Include="WrapVoltage.cpp" />
     <ClCompile Include="WrapVoltage.ixx" />
   </ItemGroup>
