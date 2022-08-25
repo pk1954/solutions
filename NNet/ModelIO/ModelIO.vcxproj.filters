@@ -32,6 +32,9 @@
     <ClCompile Include="WrapNrOfTracks.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapActiveSigGen.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -41,9 +44,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapGlobalParameter.h">
@@ -71,6 +71,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapSetSigGen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WrapDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -178,6 +178,7 @@
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="NNetWrapperBase.ixx" />
+    <ClCompile Include="WrapActiveSigGen.ixx" />
     <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapCreateNob.ixx" />
     <ClCompile Include="WrapNrOfNobs.ixx" />

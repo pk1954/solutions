@@ -27,7 +27,6 @@
 #include "WrapSignal.h"
 #include "WrapSignalData.h"
 #include "WrapSignalInfo.h"
-#include "WrapActiveSigGen.h"
 #include "WrapSetParam.h"
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
@@ -51,6 +50,7 @@ import NNetWrapperBase;
 import WrapCreateNob;
 import WrapNrOfNobs;
 import WrapNrOfTracks;
+import WrapActiveSigGen;
 
 using std::filesystem::exists;
 using std::wofstream;

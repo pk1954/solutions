@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <ostream>
+#include <iostream>
 #include <functional>
 #include "SignalNr.h"
 
