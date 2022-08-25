@@ -26,6 +26,9 @@
     <ClCompile Include="WrapCreateNob.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapNrOfNobs.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -41,9 +44,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapGlobalParameter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapNrOfNobs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapNobParameter.h">

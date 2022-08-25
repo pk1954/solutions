@@ -20,6 +20,7 @@ import BasicTypes;
 import IoConstants;
 import ErrHndl;
 
+using std::wostream;
 using std::wcout;
 using std::endl;
 

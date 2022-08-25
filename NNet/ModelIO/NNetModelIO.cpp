@@ -23,7 +23,6 @@
 #include "InputOutputUI.h"
 #include "WrapDescription.h"
 #include "WrapGlobalParameter.h"
-#include "WrapNrOfNobs.h"
 #include "WrapNobParameter.h"
 #include "WrapSignal.h"
 #include "WrapSignalData.h"
@@ -51,6 +50,7 @@ import WrapProtocol;
 import WrapSimulationTime;
 import NNetWrapperBase;
 import WrapCreateNob;
+import WrapNrOfNobs;
 
 using std::filesystem::exists;
 using std::wofstream;
