@@ -9,7 +9,7 @@ module;
 
 module ParamType;
 
-import VoltageType;
+import BasicTypes;
 
 using std::unordered_map;
 using std::wostream;

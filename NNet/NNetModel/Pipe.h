@@ -9,9 +9,9 @@
 #include "Nob.h"
 
 import PointType;
+import BasicTypes;
 import MoreTypes;
 import PixelTypes;
-import VoltageType;
 import tHighlight;
 
 using std::vector;

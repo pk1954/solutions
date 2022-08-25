@@ -13,7 +13,6 @@
 import ObserverInterface;
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import ParamType;
 
 using std::wstring;

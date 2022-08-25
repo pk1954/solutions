@@ -10,8 +10,8 @@ module;
 
 export module SignalControl;
 
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import PixFpDimension;
 import ComputeThread;
 import Direct2D;

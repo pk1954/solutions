@@ -12,7 +12,6 @@ export module MonitorWindow;
 
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import PixelTypes;
 import PixFpDimension;
 import BaseWindow;

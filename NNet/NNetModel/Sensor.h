@@ -8,7 +8,7 @@
 #include "Pipe.h"
 #include "SignalSource.h"
 
-import VoltageType;
+import BasicTypes;
 
 class DrawContext;
 

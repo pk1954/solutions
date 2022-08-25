@@ -10,7 +10,6 @@
 import Observable;
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import DrawContext;
 
 using std::wostream;

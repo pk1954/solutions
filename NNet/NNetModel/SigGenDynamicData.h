@@ -9,7 +9,6 @@
 
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 
 class SigGenDynamicData
 {

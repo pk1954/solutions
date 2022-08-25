@@ -8,7 +8,7 @@
 #include "SignalGenerator.h"
 #include "SigGenDynamicData.h"
 
-import VoltageType;
+import BasicTypes;
 import Spike;
 import SimulationTime;
 

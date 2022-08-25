@@ -11,8 +11,8 @@
 
 import Geometry;
 import IoConstants;
+import BasicTypes;
 import SpeedType;
-import VoltageType;
 import DrawContext;
 
 using std::wcout;

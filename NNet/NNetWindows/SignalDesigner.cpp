@@ -15,7 +15,7 @@ module;
 module SignalDesigner;
 
 import PointType;
-import VoltageType;
+import BasicTypes;
 import ComputeThread;
 import PixFpDimension;
 import Win32_Controls;

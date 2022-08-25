@@ -4,13 +4,12 @@
 
 module;
 
-#include <ostream>
+#include <iostream>
 
 export module Spike;
 
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 
 export class Spike
 {

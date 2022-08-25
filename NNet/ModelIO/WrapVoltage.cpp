@@ -16,7 +16,7 @@ module;
 
 module WrapVoltage;
 
-import VoltageType;
+import BasicTypes;
 import IoConstants;
 import ErrHndl;
 

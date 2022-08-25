@@ -14,7 +14,7 @@ module;
 
 module MonitorControl;
 
-import VoltageType;
+import BasicTypes;
 import NNetModelCommands;
 import SimulationTime;
 

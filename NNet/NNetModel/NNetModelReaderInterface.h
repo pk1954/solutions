@@ -23,7 +23,6 @@
 
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import AngleTypes;
 import SoundInterface;
 import tHighlight;

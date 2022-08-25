@@ -13,6 +13,7 @@ module;
 
 export module MonitorControl;
 
+import BasicTypes;
 import MoreTypes;
 import PixFpDimension;
 import SoundInterface;
@@ -20,7 +21,6 @@ import Measurement;
 import Direct2D;
 import PixelTypes;
 import TimeGraph;
-import VoltageType;
 import NNetModelCommands;
 
 export class MonitorControl : public TimeGraph

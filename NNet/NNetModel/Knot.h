@@ -8,8 +8,8 @@
 #include "Pipe.h"
 
 import Geometry;
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import tHighlight;
 
 class DrawContext;

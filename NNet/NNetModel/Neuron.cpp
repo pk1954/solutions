@@ -11,7 +11,7 @@
 #include "Pipe.h"
 #include "Neuron.h"
 
-import VoltageType;
+import BasicTypes;
 import DrawContext;
 import Spike;
 

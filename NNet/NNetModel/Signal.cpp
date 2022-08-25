@@ -11,7 +11,6 @@
 import Util;
 import BasicTypes;
 import IoConstants;
-import VoltageType;
 import DrawContext;
 
 using std::wcout;

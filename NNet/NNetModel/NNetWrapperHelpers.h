@@ -9,8 +9,8 @@
 #include "SigGenStaticData.h"
 #include "Script.h"
 
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import MicroMeterPntVector;
 import NobIdList;
 import ParamType;

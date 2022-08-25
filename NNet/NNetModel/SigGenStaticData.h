@@ -9,7 +9,6 @@
 import Observable;
 import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import fHertz;
 
 using std::wcout;

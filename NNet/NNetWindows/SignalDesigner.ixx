@@ -11,8 +11,8 @@ module;
 
 export module SignalDesigner;
 
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import Observable;
 import PixFpDimension;
 import SignalControl;

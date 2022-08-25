@@ -13,8 +13,8 @@
 #include "NobId.h"
 
 import BoolOp;
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import DrawContext;
 import tHighlight;
 

@@ -13,8 +13,8 @@ module;
 
 module SignalControl;
 
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import PointType;
 import ComputeThread;
 import NNetModelCommands;

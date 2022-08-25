@@ -16,7 +16,6 @@ import Direct2D;
 import BasicTypes;
 import PixelTypes;
 import PixFpDimension;
-import VoltageType;
 import BaseWindow;
 import GraphicsWindow;
 import TimeGraph;

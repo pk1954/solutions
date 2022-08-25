@@ -13,8 +13,8 @@
 #include "SignalSource.h"
 
 import ObserverInterface;
+import BasicTypes;
 import MoreTypes;
-import VoltageType;
 import DrawContext;
 import SimulationTime;
 

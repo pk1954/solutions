@@ -13,8 +13,8 @@
 #include "Scanner.h"
 
 import Debug;
+import BasicTypes;
 import AngleTypes;
-import VoltageType;
 import tHighlight;
 
 using std::setw;

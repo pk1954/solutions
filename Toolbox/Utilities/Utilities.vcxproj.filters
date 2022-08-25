@@ -117,9 +117,6 @@
     <ClCompile Include="Hertz.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VoltageType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DrawContext.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

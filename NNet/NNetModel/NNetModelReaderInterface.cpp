@@ -10,7 +10,7 @@
 #include "InputLine.h"
 #include "NNetModelReaderInterface.h"
 
-import VoltageType;
+import BasicTypes;
 import DrawContext;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const

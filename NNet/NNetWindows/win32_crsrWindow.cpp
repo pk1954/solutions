@@ -18,8 +18,8 @@ module;
 
 module CrsrWindow;
 
+import BasicTypes;
 import MilliSecs;
-import VoltageType;
 import TextBuffer;
 import MainWindow;
 import Win32_Util;

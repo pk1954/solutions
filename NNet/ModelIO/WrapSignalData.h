@@ -5,8 +5,7 @@
 #pragma once
 
 import NNetWrapperBase;
-
-import VoltageType;
+import BasicTypes;
 
 class WrapSignalData : public NNetWrapperBase 
 {

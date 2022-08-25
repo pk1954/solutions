@@ -6,7 +6,7 @@
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 
-import VoltageType;
+import BasicTypes;
 import UPSigGenList;
 
 using std::to_wstring;
