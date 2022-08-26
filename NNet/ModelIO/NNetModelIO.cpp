@@ -24,7 +24,6 @@
 #include "WrapDescription.h"
 #include "WrapGlobalParameter.h"
 #include "WrapNobParameter.h"
-#include "WrapSignalData.h"
 #include "WrapSetParam.h"
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
@@ -51,6 +50,7 @@ import WrapNrOfTracks;
 import WrapActiveSigGen;
 import WrapSignalInfo;
 import WrapSignal;
+import WrapSignalData;
 
 using std::filesystem::exists;
 using std::wofstream;
