@@ -12,10 +12,10 @@
 #include "UPNobList.h"
 #include "InputOutputUI.h"
 #include "NNetModel.h"
-#include "Script.h"
 
 import WrapBase;
 import NobIdList;
+import Script;
 
 using std::unique_ptr;
 using std::wostream;

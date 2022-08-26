@@ -4,14 +4,15 @@
 
 module;
 
-#include "Script.h"
+#include <compare>
 
 export module UtilityWrappers;
 
-import BoolOp;
+import BoolOp; 
 import SaveCast;
 import MoreTypes;
 import PixelTypes;
+import Script;
 
 export tBoolOp       ScrReadBoolOp       (Script &);
 export PIXEL         ScrReadPixel        (Script &);

@@ -7,9 +7,10 @@ module;
 #include <map>
 #include <cassert>
 #include <string>
-#include "Script.h"
 
 export module Symtab;
+
+import Script;
 
 using std::map;
 using std::wstring;

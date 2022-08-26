@@ -8,7 +8,6 @@
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "CommCtrl.h"
-#include "Script.h"
 #include "Scanner.h"
 
 import Trace;
@@ -16,6 +15,7 @@ import Stopwatch;
 import MessagePump;
 import Win32_Util;
 import NNetAppWindow;
+import Script;
 
 using std::make_unique;
 using std::unique_ptr;

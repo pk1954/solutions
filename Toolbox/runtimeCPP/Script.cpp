@@ -1,14 +1,17 @@
-//  Script.cpp                                                   
+// Script.cpp                                                   
 //                                                                          
 // Toolbox\runtimeCPP
+
+module;
 
 #include <filesystem>
 #include <iostream>
 #include <limits>  
 #include <string>
 #include <cassert>
-#include "Script.h"
 #include "Scanner.h"
+
+module Script;
 
 import SaveCast;
 import ErrHndl;

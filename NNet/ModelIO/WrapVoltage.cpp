@@ -12,13 +12,13 @@ module;
 #include "IoConnector.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
-#include "Script.h"
 
 module WrapVoltage;
 
 import BasicTypes;
 import IoConstants;
 import ErrHndl;
+import Script;
 
 using std::wostream;
 using std::wcout;

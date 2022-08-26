@@ -25,13 +25,13 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetModelIO.h"
-#include "Script.h"
 
 module WrapCreateNob;
 
 import ErrHndl;
 import IoConstants;
 import WrapBase;
+import Script;
 
 using std::vector;
 using std::wstring;

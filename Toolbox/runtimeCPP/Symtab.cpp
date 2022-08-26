@@ -7,11 +7,11 @@ module;
 #include <map>
 #include <cassert>
 #include <string>
-#include "Script.h"
 
 module Symtab;
 
 import ErrHndl;
+import Script;
 
 using std::wstring;
 

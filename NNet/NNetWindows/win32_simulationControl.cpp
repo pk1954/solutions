@@ -4,12 +4,14 @@
 
 module;
 
+#include <compare>
 #include "Resource.h"
 #include "win32_util_resource.h"
 
 module SimulationControl;
 
 import ComputeThread;
+import StatusBar;
 
 void SimulationControl::Initialize
 (

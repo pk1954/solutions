@@ -7,19 +7,24 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Script.h"
+#include "Scanner.h"
 
 import UtilityWrappers;
 import WinManager;
+import ErrHndl;
 import Symtab;
 import Win32_Util;
 import Win32_PIXEL;
+import Script;
+import BaseWindow;
+import BaseDialog;
 
 using std::endl;
 using std::pair;
 using std::wcout;
 using std::wofstream;
 using std::to_wstring;
+using std::wstring;
 
 using Util::operator==;
 using Util::operator!=;
@@ -261,11 +266,10 @@ static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwDa
     * postr << monInfo.rcMonitor         << L"   # monitor rectangle"   << endl;
     * postr << monInfo.rcWork            << L"   # work area rectangle" << endl;
     * postr << (
-                (monInfo.dwFlags == 0) 
-                ? L"0    # secondary monitor" 
-                : L"1    # primary monitor"
-            ) << endl;
-
+                   (monInfo.dwFlags == 0) 
+                   ? L"0    # secondary monitor" 
+                   : L"1    # primary monitor"
+               ) << endl;
     return true;
 }
 

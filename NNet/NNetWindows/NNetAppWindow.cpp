@@ -20,7 +20,6 @@ module;
 #include "Neuron.h"
 #include "InputConnector.h"
 #include "SigGenId.h"
-#include "Script.h"
 
 module NNetAppWindow;
 
@@ -49,6 +48,7 @@ import ScriptStack;
 import AutoOpen;
 import Analyzer;
 import SimulationTime;
+import Script;
 
 using std::wcout;
 using std::wstring;

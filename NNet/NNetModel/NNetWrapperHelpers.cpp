@@ -5,7 +5,6 @@
 #include <cmath>
 #include "NobType.h"
 #include "SigGenStaticData.h"
-#include "Script.h"
 #include "NobId.h"
 #include "SignalNr.h"
 #include "NNetWrapperHelpers.h"
@@ -20,6 +19,7 @@ import NobIdList;
 import ParamType;
 import TrackNr;
 import SignalId;
+import Script;
 
 using std::unique_ptr;
 using std::make_unique;

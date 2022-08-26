@@ -6,11 +6,11 @@ module;
 
 #include <string>
 #include <iostream>
-#include "Script.h"
 
 export module WrapBase;
 
 import Symtab;
+import Script;
 
 using std::wostream;
 using std::wstring;

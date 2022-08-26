@@ -9,7 +9,6 @@ module;
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
-#include "Script.h"
 
 module NNetWrappers;
 
@@ -21,6 +20,7 @@ import NNetInputOutputUI;
 import DrawContext;
 import NNetModelCommands;
 import NobIdList;
+import Script;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

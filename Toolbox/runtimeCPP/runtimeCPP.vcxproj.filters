@@ -48,11 +48,11 @@
     <ClCompile Include="ScriptStack.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Script.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Script.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Scanner.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

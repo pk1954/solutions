@@ -5,7 +5,7 @@
 module;
 
 #include <cassert>
-#include "Script.h"
+#include <compare>
 
 module UtilityWrappers;
 
@@ -14,6 +14,7 @@ import BoolOp;
 import Trace;
 import PixelTypes;
 import Symtab;
+import Script;
 
 PIXEL ScrReadPixel(Script & script)
 {

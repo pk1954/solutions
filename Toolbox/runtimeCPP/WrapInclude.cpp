@@ -11,7 +11,8 @@
 //   example or relative.
 
 #include <string>
-#include "Script.h"
+
+import Script;
 
 //void WrapInclude::operator() (Script & script) const
 //{

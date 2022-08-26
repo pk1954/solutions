@@ -12,9 +12,9 @@
 #include "InputLine.h"
 #include "NNetModelIO.h"
 #include "NobId.h"
-#include "Script.h"
 
 import NNetWrapperBase;
+import Script;
 
 using std::wstring;
 using std::wostream;

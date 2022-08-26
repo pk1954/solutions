@@ -7,11 +7,11 @@ module;
 #include <iostream>
 #include "NNetModelWriterInterface.h"
 #include "SigGenId.h"
-#include "Script.h"
 
 export module WrapActiveSigGen;
 
 import NNetWrapperBase;
+import Script;
 
 using std::wostream;
 using std::endl;

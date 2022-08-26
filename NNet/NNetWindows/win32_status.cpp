@@ -8,14 +8,15 @@ module;
 #include <Windows.h>
 #include <CommCtrl.h>
 #include "Resource.h"
-#include "Script.h"
 
 module StatusBar;
 
 import Tooltip;
 import PixelTypes;
+import Script;
 
 using std::to_wstring;
+using std::wstring;
 
 static LRESULT CALLBACK OwnerDrawStatusBar
 (

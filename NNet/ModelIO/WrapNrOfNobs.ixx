@@ -9,12 +9,12 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
 #include "UPNobList.h"
-#include "Script.h"
 
 export module WrapNrOfNobs;
 
 import NobIdList;
 import NNetWrapperBase;
+import Script;
 
 using std::wostream;
 using std::endl;

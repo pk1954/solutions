@@ -5,11 +5,11 @@
 module;
 
 #include <iostream>
-#include "Script.h"
 
 export module TrackNr;
 
 import NamedType;
+import Script;
 
 using std::wostream;
 

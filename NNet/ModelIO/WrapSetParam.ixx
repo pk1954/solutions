@@ -12,13 +12,13 @@ module;
 #include "InputConnector.h"
 #include "InputLine.h"
 #include "NobId.h"
-#include "Script.h"
 
 export module WrapSetParam;
 
 import NNetWrapperBase;
 import ParamType;
 import SaveCast;
+import Script;
 
 export class WrapSetParam : public NNetWrapperBase
 {

@@ -6,11 +6,11 @@ module;
 
 #include <filesystem>
 #include <iostream>
+#include <fstream>
 #include "Resource.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
-#include "Script.h"
 
 module Preferences;
 
@@ -25,6 +25,7 @@ import BaseWindow;
 import Win32_Util;
 import Symtab;
 import AutoOpen;
+import Script;
 
 using std::wofstream;
 using std::wcout;

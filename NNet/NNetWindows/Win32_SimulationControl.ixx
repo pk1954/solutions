@@ -2,6 +2,10 @@
 //
 // NNetSimu
 
+module;
+
+#include <compare>
+
 export module SimulationControl;
 
 import ObserverInterface;

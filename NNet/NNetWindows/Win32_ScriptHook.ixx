@@ -5,12 +5,12 @@
 module;
 
 #include <string>
-#include "Script.h"
 
 export module ScriptHook;
 
 import StatusBar;
 import ScriptStack;
+import Script;
 
 using std::to_wstring;
 

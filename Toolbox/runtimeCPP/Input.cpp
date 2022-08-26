@@ -9,10 +9,10 @@
 #include <cassert>
 #include <ctype.h>
 #include <functional>
-#include "Script.h"
 #include "Input.h"
 
 import ErrHndl;
+import Script;
 
 using std::function;
 using std::wstring;

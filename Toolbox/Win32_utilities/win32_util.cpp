@@ -10,7 +10,6 @@ module;
 #include <string>
 #include <iostream>
 #include <Windows.h>
-#include "Script.h"
 
 module Win32_Util;
 

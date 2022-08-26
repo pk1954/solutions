@@ -6,11 +6,11 @@ module;
 
 #include <iostream>
 #include "Windows.h"
-#include "Script.h"
 
 module Win32_PIXEL;
 
 import PixelTypes;
+import Script;
 
 using std::wostream;
 

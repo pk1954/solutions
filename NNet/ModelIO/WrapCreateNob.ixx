@@ -11,11 +11,11 @@ module;
 #include "IoConnector.h"
 #include "NobType.h"
 #include "Nob.h"
-#include "Script.h"
 
 export module WrapCreateNob;
 
 import NNetWrapperBase;
+import Script;
 
 using std::wostream;
 

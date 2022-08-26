@@ -13,7 +13,6 @@ module;
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
-#include "Script.h"
 
 export module NNetAppWindow;
 
@@ -50,6 +49,7 @@ import MonitorWindow;
 import BaseWindow;
 import ScriptStack;
 import CommandStack;
+import Script;
 
 using std::wstring;
 using std::wofstream;

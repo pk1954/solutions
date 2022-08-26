@@ -13,9 +13,10 @@ module;
 #include <vector>
 #include "pathcch.h"
 #include <ShObjIdl.h> 
-#include "Script.h"
 
 module ScriptFile;
+
+import Script;
 
 using std::wcout;
 using std::vector;

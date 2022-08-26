@@ -5,7 +5,8 @@
 #pragma once
 
 #include <string>
-#include "Script.h"
+
+import Script;
 
 using std::wstring;
 

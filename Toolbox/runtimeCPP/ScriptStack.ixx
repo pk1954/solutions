@@ -6,9 +6,10 @@ module;
 
 #include <memory>
 #include <stack>
-#include "Script.h"
 
 export module ScriptStack;
+
+import Script;
 
 using std::unique_ptr;
 using std::make_unique;
