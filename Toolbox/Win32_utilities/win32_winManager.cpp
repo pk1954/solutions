@@ -7,8 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Scanner.h"
 
+import Scanner;
 import UtilityWrappers;
 import WinManager;
 import ErrHndl;

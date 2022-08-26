@@ -3,6 +3,8 @@
 // ModelIO
 
 #include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <cassert>
 #include "Signal.h"
 #include "SignalFactory.h"
@@ -28,11 +30,11 @@
 #include "NNetModelStorage.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
-#include "Scanner.h"
 
 import WrapSignalGenerator;
 import WrapNobParameter;
 import ErrHndl;
+import Scanner;
 import MoreTypes;
 import Thread;
 import ScriptFile;
@@ -279,7 +281,8 @@ void NNetModelIO::Export
 
     m_pExportNMRI = & nmri;
     compress(nmri);
-    wofstream modelFile(nmri.GetModelFilePath());
+    wofstream modelFile;
+    modelFile.open(nmri.GetModelFilePath());
     writeHeader(modelFile);
     for (auto const & it : m_wrapVector)
     {

@@ -9,7 +9,8 @@
 #include <source_location>
 #include "NobType.h"
 #include "NobId.h"
-#include "Scanner.h"
+
+import Scanner;
 
 using std::endl;
 using std::wcout;

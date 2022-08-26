@@ -51,11 +51,11 @@
     <ClCompile Include="Script.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Scanner.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scanner.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

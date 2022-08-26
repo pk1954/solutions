@@ -9,13 +9,13 @@ module;
 #include <limits>  
 #include <string>
 #include <cassert>
-#include "Scanner.h"
 
 module Script;
 
 import SaveCast;
 import ErrHndl;
 import Symtab;
+import Scanner;
 
 using std::endl;
 using std::wcout;

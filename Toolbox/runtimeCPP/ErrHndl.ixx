@@ -8,9 +8,10 @@ module;
 #include <string>
 #include <iostream>
 #include <exception>
-#include "Scanner.h"
 
 export module ErrHndl;
+
+import Scanner;
 
 using std::wcout;
 using std::wstring;

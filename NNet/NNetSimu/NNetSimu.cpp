@@ -2,13 +2,14 @@
 //
 // NNetSimu
 
+#include <string>
 #include <iostream>
+#include <fstream>
 #include <Windows.h>
 #include "Version.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "CommCtrl.h"
-#include "Scanner.h"
 
 import Trace;
 import Stopwatch;
@@ -16,9 +17,11 @@ import MessagePump;
 import Win32_Util;
 import NNetAppWindow;
 import Script;
+import Scanner;
 
 using std::make_unique;
 using std::unique_ptr;
+using std::wstring;
 using std::wcout;
 using std::endl;
 

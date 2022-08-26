@@ -10,12 +10,12 @@
 #include "NNetColors.h"
 #include "NobType.h"
 #include "Nob.h"
-#include "Scanner.h"
 
 import Debug;
 import BasicTypes;
 import AngleTypes;
 import tHighlight;
+import Scanner;
 
 using std::setw;
 using std::move;

@@ -170,6 +170,7 @@
     <ClCompile Include="ErrHndl.cpp" />
     <ClCompile Include="ErrHndl.ixx" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Scanner.ixx" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Script.ixx" />
@@ -186,7 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Scanner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

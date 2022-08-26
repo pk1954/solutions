@@ -6,9 +6,10 @@ module;
 
 #include <string>
 #include <stdint.h>
-#include "Scanner.h"
 
 export module Script;
+
+import Scanner;
 
 using std::wstring;
 

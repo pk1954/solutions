@@ -4,6 +4,7 @@
 
 module;
 
+#include <compare>
 #include <Windows.h>
 #include "Sensor.h"
 #include "NNetModelReaderInterface.h"

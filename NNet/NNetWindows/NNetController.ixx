@@ -4,12 +4,13 @@
 
 module;
 
-#include <ostream>
+#include <compare>
+#include <iostream>
 #include <string>
 #include <iostream>
 #include <Windows.h>
-#include "Signal.h"
 #include "NNetModelReaderInterface.h"
+#include "Signal.h"
 
 export module NNetController;
 

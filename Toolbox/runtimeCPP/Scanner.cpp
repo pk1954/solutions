@@ -1,16 +1,17 @@
 //                                                                        
 // File:     Scanner.cpp                                                    
-//                                                                         
 //
 // scanner for test script 
-//
+
+module;
 
 #include <limits>   
 #include <string>
 #include <ctype.h>
 #include <string_view>
-#include "Scanner.h"
 #include "Input.h"
+
+module Scanner;
 
 import ErrHndl;
 

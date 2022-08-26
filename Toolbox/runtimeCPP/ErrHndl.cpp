@@ -8,9 +8,10 @@ module;
 #include <fstream>
 #include <iomanip>
 #include <string>
-#include "Scanner.h"
 
 module ErrHndl;
+
+import Scanner;
 
 using std::wstring;
 using std::wostream;

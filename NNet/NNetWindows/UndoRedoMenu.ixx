@@ -2,6 +2,10 @@
 //
 // NNetWindows
 
+module;
+
+#include <compare>
+
 export module UndoRedoMenu;
 
 import ObserverInterface;
