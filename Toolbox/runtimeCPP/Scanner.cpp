@@ -9,11 +9,11 @@ module;
 #include <string>
 #include <ctype.h>
 #include <string_view>
-#include "Input.h"
 
 module Scanner;
 
 import ErrHndl;
+import Input;
 
 using std::wstring;
 using std::wstring_view;

@@ -1,15 +1,16 @@
-//                                                                        
 //  File:     Input.cpp                                                   
 //                                                                        
 //  low level input from script 
-//
+
+module;
 
 #include <ios>
 #include <string>
 #include <cassert>
 #include <ctype.h>
 #include <functional>
-#include "Input.h"
+
+module Input;
 
 import ErrHndl;
 import Script;

@@ -54,10 +54,8 @@
     <ClCompile Include="Scanner.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
+    <ClCompile Include="Input.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,9 +8,10 @@ module;
 #include <string>
 #include <iostream>
 #include <string_view>
-#include "Input.h"
 
 export module Scanner;
+
+import Input;
 
 using std::function;
 using std::wstring;
