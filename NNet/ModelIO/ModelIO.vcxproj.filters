@@ -47,6 +47,9 @@
     <ClCompile Include="WrapSetParam.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapGlobalParameter.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -56,9 +59,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapGlobalParameter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapNobParameter.h">

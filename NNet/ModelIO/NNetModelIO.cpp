@@ -22,7 +22,6 @@
 #include "Track.h"
 #include "InputOutputUI.h"
 #include "WrapDescription.h"
-#include "WrapGlobalParameter.h"
 #include "WrapNobParameter.h"
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
@@ -51,6 +50,7 @@ import WrapSignalInfo;
 import WrapSignal;
 import WrapSignalData;
 import WrapSetParam;
+import WrapGlobalParameter;
 
 using std::filesystem::exists;
 using std::wofstream;
