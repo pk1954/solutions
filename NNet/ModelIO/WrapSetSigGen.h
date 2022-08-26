@@ -4,10 +4,22 @@
 
 #pragma once
 
+#include <string>
+#include <iostream>
+#include "NNetModelWriterInterface.h"
+#include "NNetWrapperHelpers.h"
+#include "SignalGenerator.h"
 #include "InputLine.h"
 #include "NNetModelIO.h"
+#include "NobId.h"
+#include "Script.h"
 
 import NNetWrapperBase;
+
+using std::wstring;
+using std::wostream;
+using std::wcout;
+using std::endl;
 
 class WrapSetSigGen : public NNetWrapperBase 
 {
