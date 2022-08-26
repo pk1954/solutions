@@ -6,13 +6,13 @@ module;
 
 #include <cassert>
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "BaseKnot.h"
 
 export module SelectNobCommand;
 
 import BoolOp;
 import SelectionCommand;
+import NobId;
 
 export class SelectNobCommand : public SelectionCommand
 {

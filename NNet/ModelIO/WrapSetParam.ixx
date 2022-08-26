@@ -11,7 +11,6 @@ module;
 #include "SignalGenerator.h"
 #include "InputConnector.h"
 #include "InputLine.h"
-#include "NobId.h"
 
 export module WrapSetParam;
 
@@ -19,6 +18,7 @@ import NNetWrapperBase;
 import ParamType;
 import SaveCast;
 import Script;
+import NobId;
 
 export class WrapSetParam : public NNetWrapperBase
 {

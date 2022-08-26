@@ -11,10 +11,10 @@
 #include "SignalGenerator.h"
 #include "InputLine.h"
 #include "NNetModelIO.h"
-#include "NobId.h"
 
 import NNetWrapperBase;
 import Script;
+import NobId;
 
 using std::wstring;
 using std::wostream;

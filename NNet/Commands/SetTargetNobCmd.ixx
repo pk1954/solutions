@@ -5,9 +5,10 @@
 module;
 
 #include "NNetCommand.h"
-#include "NobId.h"
 
 export module SetTargetNobCmd;
+
+import NobId;
 
 export class SetTargetNobCmd : public NNetCommand
 {

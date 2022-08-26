@@ -5,7 +5,6 @@
 module;
 
 #include "NNetCommand.h"
-#include "NobId.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "BaseKnot.h"
@@ -13,6 +12,8 @@ module;
 #include "Knot.h"
 
 export module Connect2BaseKnotCommand;
+
+import NobId;
 
 export class Connect2BaseKnotCommand : public NNetCommand
 {

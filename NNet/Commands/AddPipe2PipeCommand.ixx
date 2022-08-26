@@ -6,7 +6,6 @@ module;
 
 #include <cassert> 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "NobType.h"
 #include "InputLine.h"
 #include "OutputLine.h"
@@ -17,6 +16,7 @@ module;
 export module AddPipe2PipeCommand;
 
 import MoreTypes;
+import NobId;
 
 using std::unique_ptr;
 

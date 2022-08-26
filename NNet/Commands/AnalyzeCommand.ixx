@@ -5,13 +5,13 @@
 module;
 
 #include "Nob.h"
-#include "NobId.h"
 #include "NNetModelWriterInterface.h"
 
 export module AnalyzeCommand;
 
 import SelectionCommand;
 import Analyzer;
+import NobId;
 
 export class AnalyzeCommand : public SelectionCommand
 {

@@ -6,12 +6,13 @@ module;
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "Neuron.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
 
 export module PlugIoConnectors;
+
+import NobId;
 
 using std::vector;
 using std::unique_ptr;

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "NobId.h"
 #include "NobType.h"
 #include "SigGenStaticData.h"
 
@@ -15,6 +14,7 @@ import NobIdList;
 import ParamType;
 import SignalId;
 import Script;
+import NobId;
 
 using std::unique_ptr;
 

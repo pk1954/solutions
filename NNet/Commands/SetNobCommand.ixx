@@ -8,12 +8,12 @@ module;
 #include "MicroMeterPosDir.h"
 #include "IoConnector.h"
 #include "NNetCommand.h"
-#include "NobId.h"
 #include "Nob.h"
 
 export module SetNobCommand;
 
 import MoreTypes;
+import NobId;
 
 export class SetNobCommand : public NNetCommand
 {

@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "NNetCommand.h"
 #include "InputLine.h"
 #include "OutputLine.h"
@@ -15,6 +14,8 @@ module;
 #include "Pipe.h"
 
 export module DeletePipeCommand;
+
+import NobId;
 
 using std::wcout;
 using std::endl;

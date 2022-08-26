@@ -5,12 +5,12 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "BaseKnot.h"
 
 export module SelectSubtreeCommand;
 
 import SelectionCommand;
+import NobId;
 
 export class SelectSubtreeCommand : public SelectionCommand
 {

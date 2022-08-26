@@ -8,7 +8,6 @@ module;
 #include <iostream>
 #include <string>
 #include <vector>
-#include "NobId.h"
 #include "NobType.h"
 #include "Nob.h"
 #include "BaseKnot.h"
@@ -32,6 +31,7 @@ import ErrHndl;
 import IoConstants;
 import WrapBase;
 import Script;
+import NobId;
 
 using std::vector;
 using std::wstring;

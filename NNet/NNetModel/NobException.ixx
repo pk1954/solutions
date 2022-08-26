@@ -8,11 +8,11 @@ module;
 #include <exception>
 #include <source_location>
 #include "NobType.h"
-#include "NobId.h"
 
 export module NobException;
 
 import Scanner;
+import NobId;
 
 using std::endl;
 using std::wcout;

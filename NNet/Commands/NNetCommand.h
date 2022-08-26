@@ -5,9 +5,9 @@
 #pragma once
 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 
 import Command;
+import NobId;
 
 class NNetCommand : public Command
 {

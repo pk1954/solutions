@@ -6,7 +6,6 @@ module;
 
 #include <compare>
 #include <cassert>
-#include "NobId.h"
 
 export module WrapNobParameter;
 
@@ -14,6 +13,7 @@ import SaveCast;
 import NNetWrapperBase;
 import ParamType;
 import Script;
+import NobId;
 
 export class WrapNobParameter : public NNetWrapperBase  // Legacy
 {

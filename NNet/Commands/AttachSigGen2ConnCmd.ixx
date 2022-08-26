@@ -5,12 +5,13 @@
 module;
 
 #include "NNetCommand.h"
-#include "NobId.h"
 #include "InputLine.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
 
 export module AttachSigGen2ConnCmd;
+
+import NobId;
 
 export class AttachSigGen2ConnCmd : public NNetCommand
 {

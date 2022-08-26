@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "NNetCommand.h"
 #include "Neuron.h"
 #include "InputLine.h"
@@ -17,6 +16,7 @@ module;
 export module AddPipe2BaseKnotCommand;
 
 import MoreTypes;
+import NobId;
 
 export class AddPipe2BaseKnotCommand : public NNetCommand
 {

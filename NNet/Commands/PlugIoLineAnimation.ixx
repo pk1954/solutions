@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "IoLine.h"
 #include "NNetCommand.h"
 
@@ -14,6 +13,7 @@ export module PlugIoLineAnimation;
 import MoreTypes;
 import SingleNobAnimation;
 import PlugIoLines;
+import NobId;
 
 using std::make_unique;
 

@@ -6,12 +6,12 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
-#include "NobId.h"
 #include "Nob.h"
 
 export module MoveNobCommand;
 
 import MoreTypes;
+import NobId;
 
 export class MoveNobCommand : public NNetCommand
 {

@@ -12,7 +12,6 @@
 #include "IoLine.h"
 #include "MonitorData.h"
 #include "Nob.h"
-#include "NobId.h"
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
@@ -24,6 +23,7 @@ import MoreTypes;
 import ParamType;
 import SigGenId;
 import UPSensorList;
+import NobId;
 
 using std::unique_ptr;
 using std::string;

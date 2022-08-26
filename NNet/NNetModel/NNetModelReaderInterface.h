@@ -9,7 +9,6 @@
 #include <string>
 #include "MonitorData.h"
 #include "Nob.h"
-#include "NobId.h"
 #include "NobType.h"
 #include "NNetModel.h"
 #include "NNetParameters.h"
@@ -27,6 +26,7 @@ import AngleTypes;
 import SoundInterface;
 import tHighlight;
 import UPSigGenList;
+import NobId;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 

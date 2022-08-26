@@ -5,12 +5,12 @@
 module;
 
 #include "Nob.h"
-#include "NobId.h"
 
 export module RotateNobCommand;
 
 import MoreTypes;
 import RotationCommand;
+import NobId;
 
 export class RotateNobCommand : public RotationCommand
 {

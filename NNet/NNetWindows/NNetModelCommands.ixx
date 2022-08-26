@@ -8,7 +8,6 @@ module;
 #include "MonitorData.h"
 #include "IoLine.h"
 #include "NobType.h"
-#include "NobId.h"
 #include "NNetParameters.h"
 #include "NNetCommand.h"
 #include "SigGenStaticData.h"
@@ -31,6 +30,7 @@ import NobIdList;
 import ParamType;
 import TrackNr;
 import SignalId;
+import NobId;
 
 using std::wcout;
 using std::wstring;

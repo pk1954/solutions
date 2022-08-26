@@ -6,12 +6,13 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetCommand.h"
-#include "NobId.h"
 #include "Neuron.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 
 export module SplitNeuronCmd;
+
+import NobId;
 
 using std::unique_ptr;
 

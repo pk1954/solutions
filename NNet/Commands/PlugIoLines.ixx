@@ -6,12 +6,13 @@ module;
 
 #include <cassert>
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 #include "Knot.h"
 #include "IoLine.h"
 #include "NNetCommand.h"
 
 export module PlugIoLines;
+
+import NobId;
 
 using std::unique_ptr;
 using std::make_unique;

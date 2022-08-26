@@ -6,12 +6,13 @@ module;
 
 #include <vector>
 #include "Nob.h"
-#include "NobId.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
 export module AttachSigGen2SelCmd;
+
+import NobId;
 
 using std::vector;
 

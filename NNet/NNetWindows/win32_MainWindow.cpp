@@ -9,7 +9,6 @@ module;
 #include <string>
 #include "Resource.h"
 #include "Signal.h"
-#include "NobId.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "UPNobList.h"
@@ -37,6 +36,7 @@ import RootWindow;
 import DrawContext;
 import NNetModelCommands;
 import MonitorWindow;
+import NobId;
 
 using std::unordered_map;
 using std::unique_ptr;

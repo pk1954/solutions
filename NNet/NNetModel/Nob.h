@@ -10,13 +10,13 @@
 #include "MicroMeterPosDir.h"
 #include "NNetParameters.h"
 #include "NobType.h"
-#include "NobId.h"
 
 import BoolOp;
 import BasicTypes;
 import MoreTypes;
 import DrawContext;
 import tHighlight;
+import NobId;
 
 using D2D1::ColorF;
 using std::is_base_of;

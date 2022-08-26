@@ -10,11 +10,11 @@ module;
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Pipe.h"
-#include "NobId.h"
 
 export module Connect2PipeCommand;
 
 import MoreTypes;
+import NobId;
 
 using std::unique_ptr;
 using std::make_unique;

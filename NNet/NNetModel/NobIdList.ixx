@@ -7,11 +7,11 @@ module;
 #include <vector>
 #include <ostream>
 #include "Nob.h"
-#include "NobId.h"
 
 export module NobIdList;
 
 import Util;
+import NobId;
 
 using std::vector;
 using std::wostream;
