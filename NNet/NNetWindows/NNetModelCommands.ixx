@@ -5,7 +5,6 @@
 module;
 
 #include <string>
-#include "UPSensorList.h"
 #include "MonitorData.h"
 #include "IoLine.h"
 #include "NobType.h"
@@ -20,6 +19,7 @@ module;
 
 export module NNetModelCommands;
 
+import UPSensorList;
 import SigGenId;
 import Observable;
 import MoreTypes;

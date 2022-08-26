@@ -1,25 +1,28 @@
-// UPSensorList.h 
+// UPSensorList.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include <vector>
+#include <algorithm>
 #include "Sensor.h"
+#include "UPNobList.h"
+
+export module UPSensorList;
 
 import NamedType;
+import MoreTypes;
 
 using std::ranges::for_each;
 using std::unique_ptr;
 using std::wstring;
 using std::vector;
 
-class UPNobList;
+export using SensorId = NamedType<int, struct SensorIdParam>;
+export using UPSensor = unique_ptr<Sensor>;
 
-using SensorId = NamedType<int, struct SensorIdParam>;
-using UPSensor = unique_ptr<Sensor>;
-
-class UPSensorList
+export class UPSensorList
 {
 public:
     ~UPSensorList();
@@ -42,25 +45,25 @@ public:
     UPSensor RemoveSensor(SensorId const);
     void     InsertSensor(UPSensor, SensorId const);
 
-    void Apply2All(auto const &f)  
-    { 
-        for_each(m_list, [&f](auto & up) { f(up.get()); });
+    void Apply2All(auto const& f)
+    {
+        for_each(m_list, [&f](auto& up) { f(up.get()); });
     }
 
-    void Apply2AllC(auto const &f) const
-    { 
-        for_each(m_list, [&f](auto const & up) { f(up.get()); });
+    void Apply2AllC(auto const& f) const
+    {
+        for_each(m_list, [&f](auto const& up) { f(up.get()); });
     }
 
-    UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
-    SensorId FindSensor(MicroMeterPnt const &);
+    UPSensor NewSensor(MicroMeterCircle const&, UPNobList const&);
+    SensorId FindSensor(MicroMeterPnt const&);
 
 private:
 
     vector<UPSensor> m_list;
-    SensorId         m_sensorIdSelected { SensorId::NULL_VAL() };
+    SensorId         m_sensorIdSelected{ SensorId::NULL_VAL() };
 
-    vector<UPSensor>::      iterator getSensor(SensorId const);
+    vector<UPSensor>::iterator getSensor(SensorId const);
     vector<UPSensor>::const_iterator getSensor(SensorId const) const;
 
     UPSensor removeSensor(vector<UPSensor>::iterator);

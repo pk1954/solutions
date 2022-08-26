@@ -18,12 +18,12 @@
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
-#include "UPSensorList.h"
 
 import BoolOp;
 import MoreTypes;
 import ParamType;
 import SigGenId;
+import UPSensorList;
 
 using std::unique_ptr;
 using std::string;

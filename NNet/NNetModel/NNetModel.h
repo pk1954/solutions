@@ -6,7 +6,6 @@
 
 #include "NNetParameters.h"
 #include "ModelDescription.h"
-#include "UPSensorList.h"
 #include "MonitorData.h"
 #include "UPNobList.h"
 #include "BaseKnot.h"
@@ -18,6 +17,7 @@ import Util;
 import MoreTypes;
 import UPSigGenList;
 import ParamType;
+import UPSensorList;
 
 using std::unique_ptr;
 using std::move;

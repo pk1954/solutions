@@ -2,8 +2,11 @@
 //
 // NNetModel
 
+module;
+
 #include "Sensor.h"
-#include "UPSensorList.h"
+
+module UPSensorList;
 
 using std::to_wstring;
 using std::make_unique;

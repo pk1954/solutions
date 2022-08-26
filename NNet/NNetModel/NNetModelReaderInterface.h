@@ -18,8 +18,8 @@
 #include "Signal.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
-#include "UPSensorList.h"
 
+import UPSensorList;
 import SigGenId;
 import BasicTypes;
 import MoreTypes;
