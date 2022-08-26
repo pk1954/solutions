@@ -111,9 +111,6 @@
     <ClCompile Include="Percent.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MilliSecs.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Hertz.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

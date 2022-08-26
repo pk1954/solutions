@@ -17,6 +17,15 @@ using std::chrono::microseconds;
 using std::numeric_limits;
 using std::wstring;
 
+////////////// MilliSecs /////////////////////////////////////
+
+export using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
+
+export constexpr MilliSecs operator"" _MilliSecs(const unsigned long long d)
+{
+	return MilliSecs(Cast2UnsignedLong(d));
+}
+
 ////////////// fMicroSecs /////////////////////////////////////
 
 export using fMicroSecs = NamedType< float, struct MicroSecs_Parameter >;

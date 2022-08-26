@@ -11,7 +11,6 @@ export module CrsrWindow;
 
 import BasicTypes;
 import Hertz;
-import MilliSecs;
 import TextBuffer;
 import MainWindow;
 import TextWindow;

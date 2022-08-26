@@ -37,7 +37,6 @@
     <ClCompile Include="Hertz.ixx" />
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LineType.ixx" />
-    <ClCompile Include="MilliSecs.ixx" />
     <ClCompile Include="MoreTypes.ixx" />
     <ClCompile Include="NamedType.ixx" />
     <ClCompile Include="Observable.ixx" />

@@ -12,7 +12,6 @@ export module Win32_Sound;
 
 import BasicTypes;
 import MoreTypes;
-import MilliSecs;
 import Hertz;
 import SoundInterface;
 
