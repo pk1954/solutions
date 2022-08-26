@@ -7,6 +7,7 @@ module;
 #include <map>
 #include <cassert>
 #include <string>
+#include "Script.h"
 
 module Symtab;
 

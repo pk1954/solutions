@@ -186,7 +186,7 @@
   <ItemGroup>
     <ClInclude Include="Input.h" />
     <ClInclude Include="Scanner.h" />
-    <ClInclude Include="Scipt.h" />
+    <ClInclude Include="Script.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

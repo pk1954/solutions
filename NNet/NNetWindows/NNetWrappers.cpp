@@ -9,6 +9,7 @@ module;
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetWrapperHelpers.h"
+#include "Script.h"
 
 module NNetWrappers;
 

@@ -50,7 +50,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scipt.h">
+    <ClInclude Include="Script.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Scanner.h">

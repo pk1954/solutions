@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <stdint.h>
 #include "Scanner.h"
 
 using std::wstring;
