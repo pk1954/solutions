@@ -1,20 +1,32 @@
-// WrapSignalGenerator.h 
+// WrapSignalGenerator.ixx
 //
 // ModelIO
 
-#pragma once
+module;
 
+#include <string>
+#include <iostream>
+#include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
+#include "SigGenStaticData.h"
+#include "SignalGenerator.h"
 #include "NNetModelIO.h"
 
-import NNetWrapperBase;
+export module WrapSignalGenerator;
 
-class WrapSignalGenerator : public NNetWrapperBase 
+import NNetWrapperBase;
+import SigGenId;
+
+using std::wstring;
+using std::wostream;
+using std::endl;
+
+export class WrapSignalGenerator : public NNetWrapperBase
 {
 public:
     using NNetWrapperBase::NNetWrapperBase;
 
-    void operator() (Script & script) const final
+    void operator() (Script& script) const final
     {
         NNetModelWriterInterface & nmwi       { m_modelIO.GetImportNMWI() };
         wstring              const name       { script.ScrReadString() };
@@ -22,7 +34,7 @@ public:
         SigGenId             const sigGenId   { nmwi.FindSigGen(name) };
         if (nmwi.IsValid(sigGenId))
         {
-            SignalGenerator * pSigGen { nmwi.GetSigGen(sigGenId) };
+            SignalGenerator * pSigGen{ nmwi.GetSigGen(sigGenId) };
             pSigGen->SetStaticData(sigGenData);
         }
         else
@@ -33,15 +45,15 @@ public:
         }
     }
 
-    void Write(wostream & out) const final 
+    void Write(wostream & out) const final
     {
         m_modelIO.GetExportNMRI().GetSigGenList().Apply2AllC
         (
-            [this, &out](auto const & upSigGen)
-            { 
-                WriteCmdName(out);    
-                out << L"\"" << upSigGen->GetName() << "\" " 
-                    << upSigGen->GetStaticData() 
+            [this, &out](auto const& upSigGen)
+            {
+                WriteCmdName(out);
+                out << L"\"" << upSigGen->GetName() << "\" "
+                    << upSigGen->GetStaticData()
                     << endl;
             }
         );

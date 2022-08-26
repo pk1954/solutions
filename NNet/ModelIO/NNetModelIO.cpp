@@ -23,7 +23,6 @@
 #include "InputOutputUI.h"
 #include "WrapDescription.h"
 #include "WrapSetSigGen.h"
-#include "WrapSignalGenerator.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "NNetModelStorage.h"
@@ -31,6 +30,7 @@
 #include "NNetModelIO.h"
 #include "Scanner.h"
 
+import WrapSignalGenerator;
 import WrapNobParameter;
 import ErrHndl;
 import MoreTypes;

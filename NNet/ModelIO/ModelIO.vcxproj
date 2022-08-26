@@ -166,10 +166,10 @@
     <ClInclude Include="WrapActiveSigGen.h" />
     <ClInclude Include="WrapDescription.h" />
     <ClInclude Include="WrapSetSigGen.h" />
-    <ClInclude Include="WrapSignalGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
+    <ClCompile Include="Module.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="NNetWrapperBase.ixx" />
     <ClCompile Include="WrapActiveSigGen.ixx" />
@@ -183,6 +183,7 @@
     <ClCompile Include="WrapSetParam.ixx" />
     <ClCompile Include="WrapSignal.ixx" />
     <ClCompile Include="WrapSignalData.ixx" />
+    <ClCompile Include="WrapSignalGenerator.ixx" />
     <ClCompile Include="WrapSignalInfo.ixx" />
     <ClCompile Include="WrapSimulationTime.ixx" />
     <ClCompile Include="WrapVoltage.cpp" />

@@ -53,6 +53,12 @@
     <ClCompile Include="WrapNobParameter.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Module.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapSignalGenerator.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -65,9 +71,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapActiveSigGen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapSignalGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapSetSigGen.h">
