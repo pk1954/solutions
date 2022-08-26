@@ -13,7 +13,6 @@ export module HiResTimer;
 import NamedType;
 import BasicTypes;
 import MoreTypes;
-import fHertz;
 import Hertz;
 
 export using std::chrono::microseconds;

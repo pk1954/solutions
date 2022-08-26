@@ -102,9 +102,6 @@
     <ClCompile Include="AngleTypes.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fHertz.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SpeedType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
