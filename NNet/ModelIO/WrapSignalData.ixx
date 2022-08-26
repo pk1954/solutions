@@ -6,14 +6,15 @@ module;
 
 #include <iostream>
 #include "NNetWrapperHelpers.h"
-#include "SignalId.h"
 #include "Signal.h"
 #include "Script.h"
 
 export module WrapSignalData;
 
 import NNetWrapperBase;
+import IoConstants;
 import BasicTypes;
+import SignalId;
 
 using std::wostream;
 using std::endl;

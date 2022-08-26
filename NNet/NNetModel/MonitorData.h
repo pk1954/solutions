@@ -7,13 +7,13 @@
 #include <vector>
 #include <algorithm>
 #include "Track.h"
-#include "SignalId.h"
 #include "Signal.h"
 
 import Observable;
 import NamedType;
 import BasicTypes;
 import TrackNr;
+import SignalId;
 
 using std::vector;
 using std::unique_ptr;

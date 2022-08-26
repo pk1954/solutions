@@ -3,7 +3,6 @@
 // NNetModel
 
 #include <cmath>
-#include "SignalId.h"
 #include "NobType.h"
 #include "SigGenStaticData.h"
 #include "Script.h"
@@ -20,6 +19,7 @@ import UtilityWrappers;
 import NobIdList;
 import ParamType;
 import TrackNr;
+import SignalId;
 
 using std::unique_ptr;
 using std::make_unique;

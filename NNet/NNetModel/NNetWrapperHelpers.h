@@ -5,7 +5,6 @@
 #pragma once
 
 #include "NobId.h"
-#include "SignalId.h"
 #include "NobType.h"
 #include "SigGenStaticData.h"
 #include "Script.h"
@@ -15,6 +14,7 @@ import MoreTypes;
 import MicroMeterPntVector;
 import NobIdList;
 import ParamType;
+import SignalId;
 
 using std::unique_ptr;
 

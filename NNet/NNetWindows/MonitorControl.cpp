@@ -8,7 +8,6 @@ module;
 #include "dwrite.h"
 #include "Resource.h"
 #include "SignalNr.h"
-#include "SignalId.h"
 #include "win32_util_resource.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
@@ -19,6 +18,7 @@ module MonitorControl;
 import BasicTypes;
 import NNetModelCommands;
 import SimulationTime;
+import SignalId;
 
 using std::to_wstring;
 

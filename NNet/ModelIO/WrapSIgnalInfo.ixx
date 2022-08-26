@@ -8,13 +8,13 @@ module;
 #include "MonitorData.h"
 #include "NNetWrapperHelpers.h"
 #include "SignalFactory.h"
-#include "SignalId.h"
 #include "Script.h"
 
 export module WrapSignalInfo;
 
 import NNetWrapperBase;
 import ErrHndl;
+import SignalId;
 
 using std::wostream;
 

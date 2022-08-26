@@ -53,7 +53,6 @@
     <ClInclude Include="Signal.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="SignalGenerator.h" />
-    <ClInclude Include="SignalId.h" />
     <ClInclude Include="SignalNr.h" />
     <ClInclude Include="SignalSource.h" />
     <ClInclude Include="Track.h" />
@@ -98,6 +97,7 @@
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="SignalFactory.cpp" />
     <ClCompile Include="SignalGenerator.cpp" />
+    <ClCompile Include="SignalId.ixx" />
     <ClCompile Include="SimulationTime.ixx" />
     <ClCompile Include="Spike.ixx" />
     <ClCompile Include="tHighlightType.ixx" />
