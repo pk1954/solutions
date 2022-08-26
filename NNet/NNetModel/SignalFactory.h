@@ -6,12 +6,12 @@
 
 #include "NNetModelWriterInterface.h"
 #include "SignalSource.h"
-#include "SignalNr.h"
 
 import Observable;
 import MoreTypes;
 import TrackNr;
 import SignalId;
+import SignalNr;
 
 class SignalFactory
 {

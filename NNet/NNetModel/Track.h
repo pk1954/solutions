@@ -7,10 +7,10 @@
 #include <memory>
 #include <vector>
 #include "Signal.h"
-#include "SignalNr.h"
 
 import Observable;
 import NamedType;
+import SignalNr;
 
 using std::vector;
 using std::unique_ptr;

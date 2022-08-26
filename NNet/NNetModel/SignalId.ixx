@@ -6,13 +6,13 @@ module;
 
 #include <iostream>
 #include <functional>
-#include "SignalNr.h"
 
 export module SignalId;
 
 import NamedType;
 import IoConstants;
 import TrackNr;
+import SignalNr;
 
 using std::vector;
 using std::function;

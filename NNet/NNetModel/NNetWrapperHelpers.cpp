@@ -6,7 +6,6 @@
 #include "NobType.h"
 #include "SigGenStaticData.h"
 #include "NobId.h"
-#include "SignalNr.h"
 #include "NNetWrapperHelpers.h"
 
 import SaveCast;
@@ -20,6 +19,7 @@ import ParamType;
 import TrackNr;
 import SignalId;
 import Script;
+import SignalNr;
 
 using std::unique_ptr;
 using std::make_unique;
