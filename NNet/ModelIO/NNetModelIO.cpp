@@ -25,10 +25,10 @@
 #include "WrapSetSigGen.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
-#include "NNetModelStorage.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
 
+import NNetModelStorage;
 import NobException;
 import WrapSignalGenerator;
 import WrapNobParameter;

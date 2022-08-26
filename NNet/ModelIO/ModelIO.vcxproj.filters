@@ -62,15 +62,15 @@
     <ClCompile Include="WrapDescription.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetModelStorage.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetModelStorage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapSetSigGen.h">

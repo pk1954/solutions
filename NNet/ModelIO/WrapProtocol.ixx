@@ -5,11 +5,11 @@
 module;
 
 #include <iostream>
-#include "NNetModelStorage.h"
 
 export module WrapProtocol;
 
 import NNetWrapperBase;
+import NNetModelStorage;
 
 using std::endl;
 using std::wostream;
