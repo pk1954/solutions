@@ -16,7 +16,6 @@
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
-#include "SigGenId.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
 #include "UPSensorList.h"
@@ -24,6 +23,7 @@
 import BoolOp;
 import MoreTypes;
 import ParamType;
+import SigGenId;
 
 using std::unique_ptr;
 using std::string;

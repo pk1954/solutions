@@ -6,12 +6,12 @@ module;
 
 #include <string>
 #include <vector>
-#include "SigGenId.h"
 #include "SignalGenerator.h"
 
 export module UPSigGenList;
 
 import NamedType;
+import SigGenId;
 
 using std::ranges::for_each;
 using std::unique_ptr;

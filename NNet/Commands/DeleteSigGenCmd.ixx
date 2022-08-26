@@ -7,11 +7,11 @@ module;
 #include <vector>
 #include "NNetModelWriterInterface.h"
 #include "InputLine.h"
-#include "SigGenId.h"
 #include "SignalGenerator.h"
 
 export module DeleteSigGenCmd;
 
+import SigGenId;
 import SigGenCommand;
 import SetActiveSigGenCmd;
 

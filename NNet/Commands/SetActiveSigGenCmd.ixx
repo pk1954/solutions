@@ -2,13 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "SigGenId.h"
-
 export module SetActiveSigGenCmd;
 
 import SigGenCommand;
+import SigGenId;
 
 export class SetActiveSigGenCmd : public SigGenCommand
 {

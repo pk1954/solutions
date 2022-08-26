@@ -19,7 +19,6 @@ module;
 #include "SignalFactory.h"
 #include "Neuron.h"
 #include "InputConnector.h"
-#include "SigGenId.h"
 
 module NNetAppWindow;
 
@@ -47,6 +46,7 @@ import NNetWindow;
 import ScriptStack;
 import AutoOpen;
 import Analyzer;
+import SigGenId;
 import SimulationTime;
 import Script;
 

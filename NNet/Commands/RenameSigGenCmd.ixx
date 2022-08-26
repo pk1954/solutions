@@ -6,11 +6,12 @@ module;
 
 #include <string>
 #include "NNetModelWriterInterface.h"
-#include "SigGenId.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
 
 export module RenameSigGenCmd;
+
+import SigGenId;
 
 using std::wstring;
 using std::make_unique;

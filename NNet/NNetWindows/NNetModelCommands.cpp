@@ -9,10 +9,10 @@ module;
 #include "InputConnector.h"
 #include "NNetModelIO.h"
 #include "NNetParameters.h"
-#include "SigGenId.h"
 
 module NNetModelCommands;
 
+import SigGenId;
 import Uniform2D;
 import AddNobsCommand;
 import DeleteTrackCommand;

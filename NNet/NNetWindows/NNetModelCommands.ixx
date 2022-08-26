@@ -17,10 +17,10 @@ module;
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
-#include "SigGenId.h"
 
 export module NNetModelCommands;
 
+import SigGenId;
 import Observable;
 import MoreTypes;
 import BoolOp;

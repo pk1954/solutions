@@ -8,13 +8,13 @@ module;
 #include "Windows.h"
 #include "Resource.h"
 #include "NobException.h"
-#include "SigGenId.h"
 #include "Signal.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
 
 module NNetController;
 
+import SigGenId;
 import SlowMotionRatio;
 import Observable;
 import Win32_Sound;

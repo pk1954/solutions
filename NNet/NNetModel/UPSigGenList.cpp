@@ -8,9 +8,10 @@ module;
 #include <string>
 #include <memory>
 #include <algorithm>
-#include "SigGenId.h"
 
 module UPSigGenList;
+
+import SigGenId;
 
 using std::wstring;
 using std::vector;

@@ -6,11 +6,11 @@ module;
 
 #include "Resource.h"
 #include "NNetModelWriterInterface.h"
-#include "SigGenId.h"
 #include "SignalGenerator.h"
 
 export module NewSigGenCmd;
 
+import SigGenId;
 import Command;
 import SigGenCommand;
 

@@ -7,9 +7,10 @@ module;
 #include "Resource.h"
 #include "SignalGenerator.h"
 #include "NNetCommand.h"
-#include "SigGenId.h"
 
 export module SigGenCommand;
+
+import SigGenId;
 
 export class SigGenCommand : public NNetCommand
 {

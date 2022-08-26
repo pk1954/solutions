@@ -16,11 +16,11 @@
 #include "Pipe.h"
 #include "Sensor.h"
 #include "Signal.h"
-#include "SigGenId.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
 #include "UPSensorList.h"
 
+import SigGenId;
 import BasicTypes;
 import MoreTypes;
 import AngleTypes;
