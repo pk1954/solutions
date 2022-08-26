@@ -175,10 +175,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Wrappers;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)..\ToolBox\Direct2D;$(SolutionDir)..\ToolBox\runtimeCPP;$(SolutionDir)..\ToolBox\Utilities;$(SolutionDir)..\ToolBox\Wrappers;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -386,14 +386,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)\..\Toolbox\runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(SolutionDir)\..\Toolbox\runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
