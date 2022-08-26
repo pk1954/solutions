@@ -14,7 +14,6 @@ module;
 #include "Neuron.h"
 #include "UPNobList.h"
 #include "IoConnector.h"
-#include "NobException.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "win32_util_resource.h"
@@ -22,6 +21,7 @@ module;
 
 module MainWindow;
 
+import NobException;
 import Observable;
 import MoreTypes;
 import PixelTypes;
@@ -42,6 +42,7 @@ using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
 using std::to_wstring;
+using std::endl;
 
 void MainWindow::Start
 (

@@ -13,7 +13,6 @@ module;
 #include <source_location>
 #include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
-#include "NobException.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "SignalFactory.h"
@@ -22,6 +21,7 @@ module;
 
 module NNetAppWindow;
 
+import NobException;
 import MoreTypes;
 import Util;
 import Trace;
@@ -50,6 +50,7 @@ import SigGenId;
 import SimulationTime;
 import Script;
 
+using std::endl;
 using std::wcout;
 using std::wstring;
 using std::unique_ptr;

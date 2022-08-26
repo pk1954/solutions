@@ -2,7 +2,6 @@
 //
 // NNetModel
 
-#include "NobException.h"
 #include "NobType.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -13,6 +12,8 @@
 
 import MoreTypes;
 import SimulationTime;
+import NobException;
+import Scanner;
 
 using namespace std::chrono;
 using std::wcout;

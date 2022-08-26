@@ -12,10 +12,10 @@
 #include "OutputConnector.h"
 #include "InputLine.h"
 #include "OutputLine.h"
-#include "NobException.h"
 #include "UPNobList.h"
 
 import NobIdList;
+import NobException;
 
 using std::move;
 using std::accumulate;
@@ -41,7 +41,7 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify!
 	case pipe:		      return Copy<Pipe>(nob);
 
 	default:
-		ThrowNobTypeException(nob);
+		throw NobTypeException(nob.GetNobType(), __FILE__, __LINE__);
 		return nullptr;
 	}
 }

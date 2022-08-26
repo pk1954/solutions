@@ -163,7 +163,6 @@
     <ClInclude Include="InputOutputUI.h" />
     <ClInclude Include="NNetModelIO.h" />
     <ClInclude Include="NNetModelStorage.h" />
-    <ClInclude Include="WrapDescription.h" />
     <ClInclude Include="WrapSetSigGen.h" />
   </ItemGroup>
   <ItemGroup>

@@ -18,12 +18,10 @@
 #include "InputConnector.h"
 #include "OutputConnector.h"
 #include "MonitorData.h"
-#include "NobException.h"
 #include "ModelDescription.h"
 #include "Signal.h"
 #include "Track.h"
 #include "InputOutputUI.h"
-#include "WrapDescription.h"
 #include "WrapSetSigGen.h"
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
@@ -31,10 +29,12 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelIO.h"
 
+import NobException;
 import WrapSignalGenerator;
 import WrapNobParameter;
 import ErrHndl;
 import Scanner;
+import Symtab;
 import MoreTypes;
 import Thread;
 import ScriptFile;
@@ -53,6 +53,7 @@ import WrapSignal;
 import WrapSignalData;
 import WrapSetParam;
 import WrapGlobalParameter;
+import WrapDescription;
 
 using std::filesystem::exists;
 using std::wofstream;

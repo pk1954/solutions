@@ -6,13 +6,14 @@ module;
 
 #include <cassert>
 #include <source_location>
-#include "NobException.h"
 #include "NNetModelWriterInterface.h"
 
 module CommandStack;
 
 import Observable;
 import Command;
+import NobException;
+import Scanner;
 
 using std::wcout;
 using std::endl;

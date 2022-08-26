@@ -7,12 +7,12 @@ module;
 #include <cassert>
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "NobException.h"
 
 export module CommandStack;
 
 import Observable;
 import Command;
+import NobException;
 
 using std::vector;
 using std::unique_ptr;
@@ -41,10 +41,10 @@ private:
     NNetModelReaderInterface const* m_pNMRI{ nullptr };
     Observable* m_pStaticModelObservable{ nullptr };
 
-    Command* getCmdPtr(size_t const index) const
+    Command * getCmdPtr(size_t const index) const
     {
         Command* pCmd{ m_CommandStack.at(index).get() };
-        NNetAssert(pCmd != nullptr);
+        assert(pCmd != nullptr);
         return pCmd;
     }
 

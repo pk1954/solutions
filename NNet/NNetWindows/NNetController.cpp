@@ -7,13 +7,13 @@ module;
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
-#include "NobException.h"
 #include "Signal.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
 
 module NNetController;
 
+import NobException;
 import SigGenId;
 import SlowMotionRatio;
 import Observable;
@@ -32,6 +32,7 @@ import CommandStack;
 import AutoOpen;
 
 using std::to_wstring;
+using std::endl;
 
 void NNetController::Initialize
 (

@@ -4,10 +4,10 @@
 
 #include <cassert>
 #include "Resource.h"
-#include "NobException.h"
 #include "BaseKnot.h"
 
 import DrawContext;
+import NobException;
 
 using std::wcout;
 using std::endl;
@@ -132,8 +132,8 @@ void BaseKnot::Check() const
 	Nob::Check();
 	m_inPipes .Check();
 	m_outPipes.Check();
-	Apply2AllInPipes ([this](Pipe const & p) { NNetAssert(p.GetEndKnotId  () == GetId()); });
-	Apply2AllOutPipes([this](Pipe const & p) { NNetAssert(p.GetStartKnotId() == GetId()); });
+	Apply2AllInPipes ([this](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
+	Apply2AllOutPipes([this](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 
 void BaseKnot::Apply2AllConnectedPipes(PipeFunc const &f) const 

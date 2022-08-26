@@ -76,9 +76,6 @@
     <ClInclude Include="WrapSetSigGen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WrapDescription.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

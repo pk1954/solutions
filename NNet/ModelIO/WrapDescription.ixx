@@ -19,7 +19,7 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-class WrapDescription : public NNetWrapperBase
+export class WrapDescription : public NNetWrapperBase
 {
 public:
 	using NNetWrapperBase::NNetWrapperBase;
