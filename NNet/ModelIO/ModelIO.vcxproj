@@ -165,7 +165,6 @@
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="WrapActiveSigGen.h" />
     <ClInclude Include="WrapDescription.h" />
-    <ClInclude Include="WrapNobParameter.h" />
     <ClInclude Include="WrapSetSigGen.h" />
     <ClInclude Include="WrapSignalGenerator.h" />
   </ItemGroup>
@@ -177,6 +176,7 @@
     <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapCreateNob.ixx" />
     <ClCompile Include="WrapGlobalParameter.ixx" />
+    <ClCompile Include="WrapNobParameter.ixx" />
     <ClCompile Include="WrapNrOfNobs.ixx" />
     <ClCompile Include="WrapNrOfTracks.ixx" />
     <ClCompile Include="WrapProtocol.ixx" />

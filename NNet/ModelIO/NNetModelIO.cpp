@@ -22,7 +22,6 @@
 #include "Track.h"
 #include "InputOutputUI.h"
 #include "WrapDescription.h"
-#include "WrapNobParameter.h"
 #include "WrapSetSigGen.h"
 #include "WrapSignalGenerator.h"
 #include "NNetWrapperHelpers.h"
@@ -32,6 +31,7 @@
 #include "NNetModelIO.h"
 #include "Scanner.h"
 
+import WrapNobParameter;
 import ErrHndl;
 import MoreTypes;
 import Thread;

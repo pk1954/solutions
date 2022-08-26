@@ -50,6 +50,9 @@
     <ClCompile Include="WrapGlobalParameter.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapNobParameter.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputOutputUI.h">
@@ -59,9 +62,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetModelStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WrapNobParameter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrapActiveSigGen.h">
