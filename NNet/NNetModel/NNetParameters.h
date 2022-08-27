@@ -12,7 +12,6 @@ import BasicTypes;
 import MoreTypes;
 import AngleTypes;
 import SpeedType;
-import fMicroSecs;
 import ParamType;
 import SigGenStaticData;
 
