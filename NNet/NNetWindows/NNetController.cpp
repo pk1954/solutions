@@ -4,6 +4,7 @@
 
 module;
 
+#include <iostream>
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
@@ -32,6 +33,7 @@ import CommandStack;
 import AutoOpen;
 
 using std::to_wstring;
+using std::wcout;
 using std::endl;
 
 void NNetController::Initialize

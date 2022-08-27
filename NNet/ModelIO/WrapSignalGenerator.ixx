@@ -8,7 +8,6 @@ module;
 #include <iostream>
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
-#include "SigGenStaticData.h"
 #include "SignalGenerator.h"
 #include "NNetModelIO.h"
 
@@ -16,6 +15,7 @@ export module WrapSignalGenerator;
 
 import NNetWrapperBase;
 import SigGenId;
+import SigGenStaticData;
 
 using std::wstring;
 using std::wostream;

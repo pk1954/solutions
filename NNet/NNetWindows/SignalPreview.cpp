@@ -6,7 +6,6 @@ module;
 
 #include "Windows.h"
 #include "NNetParameters.h"
-#include "SigGenStaticData.h"
 #include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
 
@@ -19,6 +18,7 @@ import PixFpDimension;
 import BaseWindow;
 import GraphicsWindow;
 import TimeGraph;
+import SigGenStaticData;
 
 SignalPreview::SignalPreview
 (

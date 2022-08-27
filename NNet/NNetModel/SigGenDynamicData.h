@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "SigGenStaticData.h"
 #include "NNetParameters.h"
 
 import BasicTypes;
 import MoreTypes;
+import SigGenStaticData;
 
 class SigGenDynamicData
 {

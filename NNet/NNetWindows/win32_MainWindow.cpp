@@ -5,8 +5,9 @@
 module;
 
 #include <unordered_map>
-#include <Windows.h>
+#include <iostream>
 #include <string>
+#include <Windows.h>
 #include "Resource.h"
 #include "Signal.h"
 #include "Knot.h"
@@ -42,6 +43,7 @@ using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
 using std::to_wstring;
+using std::wcout;
 using std::endl;
 
 void MainWindow::Start

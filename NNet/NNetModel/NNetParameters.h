@@ -5,7 +5,6 @@
 #pragma once
 
 #include <chrono>
-#include "SigGenStaticData.h"
 
 import Observable;
 import SaveCast;
@@ -15,6 +14,7 @@ import AngleTypes;
 import SpeedType;
 import fMicroSecs;
 import ParamType;
+import SigGenStaticData;
 
 class Param : public Observable
 {

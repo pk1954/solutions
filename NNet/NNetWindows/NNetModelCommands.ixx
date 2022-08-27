@@ -10,7 +10,6 @@ module;
 #include "NobType.h"
 #include "NNetParameters.h"
 #include "NNetCommand.h"
-#include "SigGenStaticData.h"
 #include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -31,6 +30,7 @@ import ParamType;
 import TrackNr;
 import SignalId;
 import NobId;
+import SigGenStaticData;
 
 using std::wcout;
 using std::wstring;

@@ -5,20 +5,20 @@
 module;
 
 #include "NNetCommand.h"
-#include "SigGenStaticData.h"
 #include "SignalGenerator.h"
 
 export module SetSigGenStaticDataCmd;
 
 import MoreTypes;
 import Command;
+import SigGenStaticData;
 
 export class SetSigGenStaticDataCmd : public NNetCommand
 {
 public:
 	SetSigGenStaticDataCmd
 	(
-		SignalGenerator  & sigGen,
+		SignalGenerator        & sigGen,
 		SigGenStaticData const & data
 	)
 	  : m_sigGen(sigGen),

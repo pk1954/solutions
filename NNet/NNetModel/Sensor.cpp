@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <iostream> 
 #include "NNetColors.h"
 #include "Signal.h"
 #include "UPNobList.h"
@@ -13,6 +14,7 @@ import BasicTypes;
 import DrawContext;
 
 using std::endl;
+using std::wcout;
 
 Sensor::Sensor
 (

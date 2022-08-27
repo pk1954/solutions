@@ -46,7 +46,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="SigGenDynamicData.h" />
-    <ClInclude Include="SigGenStaticData.h" />
     <ClInclude Include="Signal.h" />
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="SignalGenerator.h" />
@@ -92,6 +91,7 @@
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="SigGenDynamicData.cpp" />
     <ClCompile Include="SigGenId.ixx" />
+    <ClCompile Include="SigGenStaticData.ixx" />
     <ClCompile Include="Signal.cpp" />
     <ClCompile Include="SignalFactory.cpp" />
     <ClCompile Include="SignalGenerator.cpp" />

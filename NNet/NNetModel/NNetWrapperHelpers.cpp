@@ -4,7 +4,6 @@
 
 #include <cmath>
 #include "NobType.h"
-#include "SigGenStaticData.h"
 #include "NNetWrapperHelpers.h"
 
 import SaveCast;
@@ -20,6 +19,7 @@ import SignalId;
 import Script;
 import SignalNr;
 import NobId;
+import SigGenStaticData;
 
 using std::unique_ptr;
 using std::make_unique;

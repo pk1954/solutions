@@ -3,6 +3,7 @@
 // NNetModel
 
 #include <cassert>
+#include <iostream>
 #include "Track.h"
 #include "SignalFactory.h"
 #include "MonitorData.h"
@@ -11,6 +12,7 @@ using std::distance;
 using std::make_unique;
 using std::move;
 using std::endl;
+using std::wcout;
 
 bool MonitorData::operator==(MonitorData const & rhs) const
 {
