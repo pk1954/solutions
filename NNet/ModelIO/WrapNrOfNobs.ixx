@@ -7,7 +7,6 @@ module;
 #include <iostream>
 #include "IoConnector.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetModelIO.h"
 #include "UPNobList.h"
 
 export module WrapNrOfNobs;
@@ -15,6 +14,7 @@ export module WrapNrOfNobs;
 import NobIdList;
 import NNetWrapperBase;
 import Script;
+import NNetModelIO;
 
 using std::wostream;
 using std::endl;

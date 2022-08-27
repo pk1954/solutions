@@ -7,13 +7,13 @@ module;
 #include <string>
 #include <iostream>
 #include "NNetModelWriterInterface.h"
-#include "NNetModelIO.h"
 
 export module WrapDescription;
 
 import Symtab;
 import NNetWrapperBase;
 import Script;
+import NNetModelIO;
 
 using std::wstring;
 using std::wostream;

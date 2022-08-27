@@ -6,7 +6,6 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
-#include "NNetModelIO.h"
 #include "NNetModel.h"
 #include "SignalGenerator.h"
 #include "InputConnector.h"
@@ -19,6 +18,7 @@ import ParamType;
 import SaveCast;
 import Script;
 import NobId;
+import NNetModelIO;
 
 export class WrapSetParam : public NNetWrapperBase
 {

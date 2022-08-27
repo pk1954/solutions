@@ -2,6 +2,8 @@
 //
 // ModelIO
 
+module;
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -24,7 +26,8 @@
 #include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetModelIO.h"
+
+module NNetModelIO;
 
 import NNetModelStorage;
 import NobException;

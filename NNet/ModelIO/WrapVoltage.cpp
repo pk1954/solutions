@@ -11,7 +11,6 @@ module;
 #include "Pipe.h"
 #include "IoConnector.h"
 #include "NNetWrapperHelpers.h"
-#include "NNetModelIO.h"
 
 module WrapVoltage;
 
@@ -19,6 +18,7 @@ import BasicTypes;
 import IoConstants;
 import ErrHndl;
 import Script;
+import NNetModelIO;
 
 using std::wostream;
 using std::wcout;

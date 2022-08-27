@@ -71,11 +71,9 @@
     <ClCompile Include="InputOutputUI.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="NNetModelIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="NNetModelIO.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

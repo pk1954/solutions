@@ -160,14 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="NNetModelIO.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
     <ClCompile Include="InputOutputUI.ixx" />
     <ClCompile Include="Module.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="NNetModelStorage.ixx" />
+    <ClCompile Include="NNetModelIO.ixx" />
     <ClCompile Include="NNetWrapperBase.ixx" />
     <ClCompile Include="WrapActiveSigGen.ixx" />
     <ClCompile Include="WrapCreateNob.cpp" />

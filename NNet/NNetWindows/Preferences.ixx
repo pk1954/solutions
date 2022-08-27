@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include <vector>
-#include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 
 export module Preferences;
@@ -14,6 +13,7 @@ export module Preferences;
 import DescriptionWindow;
 import SoundInterface;
 import WrapBase;
+import NNetModelIO;
 
 using std::wstring;
 using std::vector;

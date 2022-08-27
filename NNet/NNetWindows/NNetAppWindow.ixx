@@ -8,7 +8,6 @@ module;
 #include <fstream>
 #include <iostream>
 #include "NNetModel.h"
-#include "NNetModelIO.h"
 #include "MonitorData.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -50,6 +49,7 @@ import ScriptStack;
 import CommandStack;
 import Script;
 import NNetColors;
+import NNetModelIO;
 
 using std::wstring;
 using std::wofstream;

@@ -6,11 +6,11 @@ module;
 
 #include <string>
 #include <iostream>
-#include "NNetModelIO.h"
 
 export module NNetWrapperBase;
 
 import WrapBase;
+import NNetModelIO;
 
 using std::wstring;
 using std::wostream;

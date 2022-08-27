@@ -8,7 +8,6 @@ module;
 #include <iostream>
 #include <fstream>
 #include "Resource.h"
-#include "NNetModelIO.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetParameters.h"
 
@@ -26,6 +25,7 @@ import Win32_Util;
 import Symtab;
 import AutoOpen;
 import Script;
+import NNetModelIO;
 
 using std::wofstream;
 using std::wcout;

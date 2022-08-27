@@ -10,13 +10,13 @@ module;
 #include "BaseKnot.h"
 #include "Pipe.h"
 #include "IoConnector.h"
-#include "NNetModelIO.h"
 
 export module WrapVoltage;
 
 import NNetWrapperBase;
 import Script;
 import NobId;
+import NNetModelIO;
 
 using std::wostream;
 

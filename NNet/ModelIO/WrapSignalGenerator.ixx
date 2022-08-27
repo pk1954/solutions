@@ -9,13 +9,13 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "NNetWrapperHelpers.h"
 #include "SignalGenerator.h"
-#include "NNetModelIO.h"
 
 export module WrapSignalGenerator;
 
 import NNetWrapperBase;
 import SigGenId;
 import SigGenStaticData;
+import NNetModelIO;
 
 using std::wstring;
 using std::wostream;
