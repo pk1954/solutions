@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "SigGenDynamicData.h"
 #include "Nob.h"
 #include "BaseKnot.h"
 #include "SignalGenerator.h"
@@ -12,6 +11,7 @@
 
 import MoreTypes;
 import DrawContext;
+import SigGenDynamicData;
 
 class InputLine : public IoLine
 {

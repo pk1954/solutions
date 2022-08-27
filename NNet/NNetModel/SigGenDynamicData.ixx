@@ -1,16 +1,18 @@
-// SigGenDynamicData.h
+// SigGenDynamicData.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include "NNetParameters.h"
+
+export module SigGenDynamicData;
 
 import BasicTypes;
 import MoreTypes;
 import SigGenStaticData;
 
-class SigGenDynamicData
+export class SigGenDynamicData
 {
 public:
 
@@ -23,21 +25,21 @@ public:
 
 	mV SetTime
 	(
-		SigGenStaticData const &,
-		Param            const &
+		SigGenStaticData const&,
+		Param            const&
 	);
 
 	mV SetTime
 	(
-		SigGenStaticData const &,
-		Param            const &,
+		SigGenStaticData const&,
+		Param            const&,
 		fMicroSecs       const
 	);
 
 	bool IsStimulusActive() const { return m_stimulusActive; }
 
 private:
-	bool       m_stimulusActive   { false };
-	fMicroSecs m_usSimuStartStimu { 0.0_MicroSecs }; // in simu time
-	fMicroSecs m_usSimuStartSpike { 0.0_MicroSecs }; // in simu time
+	bool       m_stimulusActive{ false };
+	fMicroSecs m_usSimuStartStimu{ 0.0_MicroSecs }; // in simu time
+	fMicroSecs m_usSimuStartSpike{ 0.0_MicroSecs }; // in simu time
 };

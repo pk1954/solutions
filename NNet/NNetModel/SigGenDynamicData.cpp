@@ -2,11 +2,12 @@
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
-#include "SigGenDynamicData.h"
+
+module SigGenDynamicData;
 
 import BasicTypes;
 import Spike;

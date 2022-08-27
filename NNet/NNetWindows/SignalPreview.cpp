@@ -6,7 +6,6 @@ module;
 
 #include "Windows.h"
 #include "NNetParameters.h"
-#include "SigGenDynamicData.h"
 #include "SignalGenerator.h"
 
 module SignalPreview;
@@ -19,6 +18,7 @@ import BaseWindow;
 import GraphicsWindow;
 import TimeGraph;
 import SigGenStaticData;
+import SigGenDynamicData;
 
 SignalPreview::SignalPreview
 (
