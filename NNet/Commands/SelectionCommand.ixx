@@ -7,9 +7,10 @@ module;
 #include <vector>
 #include "Nob.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 
 export module SelectionCommand;
+
+import NNetCommand;
 
 using std::unique_ptr;
 

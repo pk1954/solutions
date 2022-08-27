@@ -7,12 +7,12 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
-#include "NNetCommand.h"
 
 export module InsertBaseKnotCommand;
 
 import MoreTypes;
 import NobId;
+import NNetCommand;
 
 export template <BaseKnot_t T>
 class InsertBaseKnotCommand : public NNetCommand

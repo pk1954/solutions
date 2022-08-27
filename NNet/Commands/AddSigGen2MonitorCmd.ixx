@@ -8,12 +8,12 @@ module;
 #include "SignalGenerator.h"
 #include "SignalFactory.h"
 #include "MonitorData.h"
-#include "NNetCommand.h"
 
 export module AddSigGen2MonitorCmd;
 
 import TrackNr;
 import SignalId;
+import NNetCommand;
 
 export class AddSigGen2MonitorCmd : public NNetCommand
 {

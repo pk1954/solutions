@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <algorithm>
 #include "Pipe.h"
 
 module PipeList;

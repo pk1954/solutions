@@ -4,7 +4,8 @@
 
 module;
 
-#include "NNetCommand.h"
+#include <cassert>
+#include "NNetModelReaderInterface.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "BaseKnot.h"
@@ -14,6 +15,9 @@ module;
 export module Connect2BaseKnotCommand;
 
 import NobId;
+import NNetCommand;
+
+using std::unique_ptr;
 
 export class Connect2BaseKnotCommand : public NNetCommand
 {
@@ -24,17 +28,17 @@ public:
 		NobId          const idDst,
 		ConnectionType const cType
 	)
-		: m_baseKnotSrc(*m_pNMWI->GetNobPtr<BaseKnot*>(idSrc)),
+	  : m_baseKnotSrc(*m_pNMWI->GetNobPtr<BaseKnot*>(idSrc)),
 		m_baseKnotDst(*m_pNMWI->GetNobPtr<BaseKnot*>(idDst))
 	{
 		using enum ConnectionType;
 
 		switch (cType)
 		{
-		case ct_knot:		m_upResult = make_unique<Knot>(m_baseKnotDst); break;
-		case ct_neuron:		m_upResult = make_unique<Neuron>(m_baseKnotDst); break;
-		case ct_outputline:	m_upResult = make_unique<OutputLine>(m_baseKnotDst); break;
-		default: assert(false);
+			case ct_knot:		m_upResult = make_unique<Knot>      (m_baseKnotDst); break;
+			case ct_neuron:		m_upResult = make_unique<Neuron>    (m_baseKnotDst); break;
+			case ct_outputline:	m_upResult = make_unique<OutputLine>(m_baseKnotDst); break;
+			default: assert(false);
 		}
 		m_upResult->AddIncoming(m_baseKnotSrc);
 		m_upResult->AddOutgoing(m_baseKnotSrc);
@@ -60,10 +64,10 @@ public:
 
 private:
 
-	BaseKnot const& m_baseKnotSrc;
-	BaseKnot const& m_baseKnotDst;
+	BaseKnot const & m_baseKnotSrc;
+	BaseKnot const & m_baseKnotDst;
 
-	unique_ptr<BaseKnot> m_upResult{ nullptr };
-	unique_ptr<BaseKnot> m_upBaseKnotSrc{ nullptr };
-	unique_ptr<BaseKnot> m_upBaseKnotDst{ nullptr };
+	unique_ptr<BaseKnot> m_upResult      { nullptr };
+	unique_ptr<BaseKnot> m_upBaseKnotSrc { nullptr };
+	unique_ptr<BaseKnot> m_upBaseKnotDst { nullptr };
 };

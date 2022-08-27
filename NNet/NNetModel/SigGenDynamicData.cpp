@@ -4,7 +4,6 @@
 
 module;
 
-#include "NNetParameters.h"
 #include "SignalGenerator.h"
 
 module SigGenDynamicData;
@@ -12,6 +11,7 @@ module SigGenDynamicData;
 import BasicTypes;
 import Spike;
 import SimulationTime;
+import NNetParameters;
 
 void SigGenDynamicData::Reset()
 {

@@ -9,6 +9,7 @@
 #include "SignalSource.h"
 
 import BasicTypes;
+import NNetParameters;
 
 class DrawContext;
 

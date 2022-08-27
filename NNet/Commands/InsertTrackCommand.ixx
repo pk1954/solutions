@@ -6,11 +6,11 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "NNetCommand.h"
 
 export module InsertTrackCommand;
 
 import MoreTypes;
+import NNetCommand;
 
 export class InsertTrackCommand: public NNetCommand
 {

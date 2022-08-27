@@ -6,11 +6,11 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "Sensor.h"
-#include "NNetCommand.h"
 
 export module SizeSensorCmd;
 
 import UPSensorList;
+import NNetCommand;
 
 export class SizeSensorCmd : public NNetCommand
 {

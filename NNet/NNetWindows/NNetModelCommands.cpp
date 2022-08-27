@@ -7,7 +7,6 @@ module;
 #include <source_location>
 #include "NNetModelWriterInterface.h"
 #include "InputConnector.h"
-#include "NNetParameters.h"
 
 module NNetModelCommands;
 
@@ -56,7 +55,7 @@ import DiscIoConnectorCmd;
 import SetTargetNobCmd;
 import NNetModelCommands;
 import SetHighlightedNobCmd;
-import AttachSigGen2ConnCmd;
+import AttachSigGen2ConCmd;
 import Connect2BaseKnotCommand;
 import Connect2PipeCommand;
 import AttachSigGen2LineCmd;
@@ -71,6 +70,7 @@ import SetActiveSigGenCmd;
 import Analyzer;
 import CopySelectedNobs;
 import NNetModelIO;
+import NNetParameters;
 
 using std::wcout;
 using std::endl;
@@ -231,7 +231,7 @@ void NNetModelCommands::AttachSigGen2Conn(NobId const idInputLine)
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << idInputLine << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConnCmd>(idInputLine));
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConCmd>(idInputLine));
 }
 
 void NNetModelCommands::Connect

@@ -5,23 +5,23 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetParameters.h"
-#include "NNetCommand.h"
 
 export module SetParameterCommand;
 
 import ParamType;
+import NNetParameters;
+import NNetCommand;
 
 export class SetParameterCommand : public NNetCommand
 {
 public:
 	SetParameterCommand
 	(
-		Param            const& param,
+		Param            const & param,
 		ParamType::Value const   parameter,
 		float            const   fNewValue
 	)
-		: m_parameter(parameter),
+	  : m_parameter(parameter),
 		m_fOldValue(param.GetParameterValue(parameter)),
 		m_fNewValue(fNewValue)
 	{ }

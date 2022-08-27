@@ -11,7 +11,6 @@ module;
 #include <chrono>
 #include <filesystem>
 #include <source_location>
-#include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
@@ -49,6 +48,7 @@ import Analyzer;
 import SigGenId;
 import SimulationTime;
 import Script;
+import NNetCommand;
 
 using std::endl;
 using std::wcout;

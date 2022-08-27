@@ -8,11 +8,11 @@ module;
 #include "IoLine.h"
 #include "NobType.h"
 #include "UPNobList.h"
-#include "NNetCommand.h"
 
 export module ConnAnimationCommand;
 
 import MoreTypes;
+import NNetCommand;
 
 using std::vector;
 

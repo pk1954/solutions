@@ -11,12 +11,12 @@ module;
 #include "OutputLine.h"
 #include "BaseKnot.h"
 #include "Knot.h"
-#include "NNetCommand.h"
 
 export module AddPipe2PipeCommand;
 
 import MoreTypes;
 import NobId;
+import NNetCommand;
 
 using std::unique_ptr;
 

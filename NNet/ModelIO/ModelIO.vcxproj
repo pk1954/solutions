@@ -160,7 +160,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
     <ClCompile Include="InputOutputUI.ixx" />
     <ClCompile Include="Module.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />

@@ -5,29 +5,27 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
+#include "nob.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "IoConnector.h"
-#include "Neuron.h"
-#include "Knot.h"
+#include "BaseKnot.h"
 #include "Pipe.h"
 
 export module DeletePipeCommand;
 
+import SaveCast;
 import NobId;
-
-using std::wcout;
-using std::endl;
+import NNetCommand;
 
 export class DeletePipeCommand : public NNetCommand
 {
 public:
 
-	explicit DeletePipeCommand(Nob &nob)
-		:	m_pipe   (*Cast2Pipe(&nob)),
+	explicit DeletePipeCommand(Nob & nob)
+	:	m_pipe   (*Cast2Pipe(&nob)),
 		m_idStart(m_pipe.GetStartKnotPtr()->GetId()),
-		m_idEnd  (m_pipe.GetEndKnotPtr()->GetId())
+		m_idEnd  (m_pipe.GetEndKnotPtr  ()->GetId())
 	{}
 
 	~DeletePipeCommand() final = default;

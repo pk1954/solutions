@@ -10,7 +10,6 @@ module;
 #include "Pipe.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "Windows.h"
@@ -24,6 +23,7 @@ import Win32_Sound;
 import PixelTypes;
 import NNetController;
 import NNetColors;
+import NNetParameters;
 
 using std::function;
 

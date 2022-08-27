@@ -5,11 +5,11 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NobId.h"
 
 export module NNetCommand;
 
 import Command;
+import NobId;
 
 export class NNetCommand : public Command
 {

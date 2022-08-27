@@ -10,7 +10,6 @@
     <ClCompile Include="WrapCreateNob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
     <ClCompile Include="WrapVoltage.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

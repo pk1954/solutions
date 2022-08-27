@@ -8,7 +8,6 @@
 #include <functional>   
 #include "d2d1helper.h"
 #include "MicroMeterPosDir.h"
-#include "NNetParameters.h"
 #include "NobType.h"
 
 import BoolOp;
@@ -17,6 +16,7 @@ import MoreTypes;
 import DrawContext;
 import tHighlight;
 import NobId;
+import NNetParameters;
 
 using D2D1::ColorF;
 using std::is_base_of;

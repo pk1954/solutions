@@ -15,133 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CommandStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteBaseKnotCmd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnAnimationCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AddNobsCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteTrackCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveSensorCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ArrowAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteBaseKnotCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteSigGenCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectNobsInRectCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeletePipeCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CoordAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NewIoLinePairCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SizeSensorCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NewSigGenCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ToggleStopOnTriggerCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IoLinesAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectAllCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveNobCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ToggleEmphModeCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveSignalCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteSelectionCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AddPipe2BaseKnotCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectionCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InsertTrackCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SplitNeuronCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SizeSelectionCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetNobCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SingleNobAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SigGenCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetSigGenStaticDataCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnalyzeCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveSelectionCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InsertBaseKnotCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteSignalCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateNobCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectNobCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateModelCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RotationCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateSelectionCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AttachSigGen2SelCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenameSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddPipe2PipeCommand.ixx">
@@ -153,58 +30,19 @@
     <ClCompile Include="AddSigGen2MonitorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RestrictSelectionCommand.ixx">
+    <ClCompile Include="AnalyzeCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetParameterCommand.ixx">
+    <ClCompile Include="ArrowAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteIoConnectorCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DiscIoConnectorCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetTargetNobCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetHighlightedNobCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AttachSigGen2ConnCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Connect2BaseKnotCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Connect2PipeCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlugIoConnectors.ixx">
+    <ClCompile Include="AttachSigGen2ConCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AttachSigGen2LineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelectSubtreeCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelSigGenClientsCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MakeConnAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlugIoLines.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlugIoConnectorAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlugIoLineAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnAnimationCommand.ixx">
+    <ClCompile Include="AttachSigGen2SelCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFunctions.ixx">
@@ -213,7 +51,172 @@
     <ClCompile Include="CommandStack.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConnAnimationCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Connect2BaseKnotCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Connect2PipeCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoordAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteBaseKnotCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteIoConnectorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeletePipeCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteSelectionCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteSigGenCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteSignalCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteTrackCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscIoConnectorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InsertBaseKnotCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InsertTrackCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IoLinesAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MakeConnAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveNobCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveSelectionCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveSensorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveSignalCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewIoLinePairCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewSigGenCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlugIoConnectorAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlugIoConnectors.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlugIoLineAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlugIoLines.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenameSigGenCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestrictSelectionCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateModelCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateNobCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateSelectionCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotationCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectAllCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectionCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectNobCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectNobsInRectCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectSubtreeCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelSigGenClientsCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SetActiveSigGenCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetHighlightedNobCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetNobCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetParameterCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetSigGenStaticDataCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetTargetNobCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SIgGenCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SIngleNobAnimation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SizeSelectionCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SizeSensorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SplitNeuronCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleEmphModeCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleStopOnTriggerCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnAnimationCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteBaseKnotCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

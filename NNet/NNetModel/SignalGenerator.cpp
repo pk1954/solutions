@@ -2,12 +2,14 @@
 //
 // NNetModel
 
+#include <string>
 #include <cassert>
-#include "NNetParameters.h"
 #include "SignalGenerator.h"
 
+import ObserverInterface;
 import BasicTypes;
 import UPSigGenList;
+import NNetParameters;
 
 using std::to_wstring;
 

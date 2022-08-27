@@ -6,7 +6,6 @@ module;
 
 #include <Windows.h>
 #include "Resource.h"
-#include "NNetParameters.h"
 #include "InputConnector.h"
 #include "SignalGenerator.h"
 #include "NNetModelWriterInterface.h"
@@ -25,6 +24,7 @@ import Win32_PixelTypes;
 import Direct2D;
 import Scale;
 import NNetModelCommands;
+import NNetParameters;
 
 using std::bit_cast;
 using D2D1::ColorF;

@@ -8,11 +8,11 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "Knot.h"
 #include "IoLine.h"
-#include "NNetCommand.h"
 
 export module PlugIoLines;
 
 import NobId;
+import NNetCommand;
 
 using std::unique_ptr;
 using std::make_unique;

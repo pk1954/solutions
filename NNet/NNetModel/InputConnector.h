@@ -4,16 +4,18 @@
 
 #pragma once
 
+#include <vector>
 #include "NobType.h"
 #include "IoConnector.h"
-#include "NNetParameters.h"
 #include "IoLine.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
 
 import DrawContext;
+import NNetParameters;
 
 using std::unique_ptr;
+using std::vector;
 
 class InputConnector: public IoConnector
 {

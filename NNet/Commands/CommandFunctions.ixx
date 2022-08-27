@@ -6,10 +6,11 @@ module;
 
 #include <memory>
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 #include "Nob.h"
 
 export module CommandFunctions;
+
+import NNetCommand;
 
 using std::unique_ptr;
 

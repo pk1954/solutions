@@ -8,7 +8,6 @@
 #include "NobType.h"
 #include "IoLine.h"
 #include "InputLine.h"
-#include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "IoConnector.h"
 #include "InputConnector.h"
@@ -17,6 +16,7 @@ import BasicTypes;
 import MoreTypes;
 import DrawContext;
 import tHighlight;
+import NNetParameters;
 
 using std::make_unique;
 using std::vector;

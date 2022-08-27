@@ -9,12 +9,12 @@ module;
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "BaseKnot.h"
-#include "NNetCommand.h"
 
 export module DeleteBaseKnotCmd;
 
 import PixelTypes;
 import NobIdList;
+import NNetCommand;
 
 using std::vector;
 using std::unique_ptr;

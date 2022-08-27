@@ -4,7 +4,7 @@
 
 module;
 
-#include "NNetParameters.h"
+#include <Windows.h>
 #include "SignalGenerator.h"
 #include "NNetModelWriterInterface.h"
 
@@ -14,6 +14,7 @@ import MoreTypes;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
+import NNetParameters;
 
 export class TimeGraph : public GraphicsWindow
 {

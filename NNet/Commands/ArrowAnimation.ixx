@@ -5,7 +5,6 @@
 module;
 
 #include <functional>
-#include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
 export module ArrowAnimation;
@@ -13,6 +12,7 @@ export module ArrowAnimation;
 import MoreTypes;
 import Command;
 import Animation;
+import NNetParameters;
 
 using std::unique_ptr;
 

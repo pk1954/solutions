@@ -6,11 +6,11 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "NNetCommand.h"
 
 export module DeleteSignalCommand;
 
 import MoreTypes;
+import NNetCommand;
 
 export class DeleteSignalCommand : public NNetCommand
 {

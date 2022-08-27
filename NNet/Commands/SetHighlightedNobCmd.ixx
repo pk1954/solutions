@@ -5,11 +5,11 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 
 export module SetHighlightedNobCmd;
 
 import NobId;
+import NNetCommand;
 
 export class SetHighlightedNobCmd : public NNetCommand
 {

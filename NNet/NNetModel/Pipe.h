@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include "NNetParameters.h"
 #include "Nob.h"
 
 import PointType;
@@ -13,6 +12,7 @@ import BasicTypes;
 import MoreTypes;
 import PixelTypes;
 import tHighlight;
+import NNetParameters;
 
 using std::vector;
 

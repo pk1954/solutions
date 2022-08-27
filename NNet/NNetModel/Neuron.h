@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include <string>
 #include <chrono>
+#include "NobType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 #include "IoLine.h"
@@ -15,6 +17,7 @@ import tHighlight;
 import Spike;
 import DrawContext;
 
+using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 

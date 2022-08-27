@@ -5,13 +5,13 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "InputLine.h"
 #include "SignalGenerator.h"
-#include "NNetCommand.h"
+#include "InputLine.h"
 
 export module AttachSigGen2LineCmd;
 
 import NobId;
+import NNetCommand;
 
 export class AttachSigGen2LineCmd : public NNetCommand
 {

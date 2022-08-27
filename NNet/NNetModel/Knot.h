@@ -4,12 +4,14 @@
 
 #pragma once
 
+#include "Nob.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 
 import Geometry;
 import BasicTypes;
 import MoreTypes;
+import AngleTypes;
 import tHighlight;
 
 class DrawContext;
@@ -22,7 +24,7 @@ class Knot : public BaseKnot
 {
 public:
 	explicit Knot(MicroMeterPnt const center)
-		: BaseKnot(center, NobType::Value::knot, KNOT_WIDTH)
+	  : BaseKnot(center, NobType::Value::knot, KNOT_WIDTH)
 	{}
 
 	explicit Knot(BaseKnot const &);

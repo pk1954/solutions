@@ -4,13 +4,13 @@
 
 module;
 
-#include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
 export module ParameterDialog;
 
 import BaseDialog;
 import NNetModelCommands;
+import NNetParameters;
 
 export class ParameterDialog : public BaseDialog
 {

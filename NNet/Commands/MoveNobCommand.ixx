@@ -5,13 +5,13 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 #include "Nob.h"
 
 export module MoveNobCommand;
 
 import MoreTypes;
 import NobId;
+import NNetCommand;
 
 export class MoveNobCommand : public NNetCommand
 {

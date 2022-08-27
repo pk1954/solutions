@@ -8,8 +8,6 @@ module;
 #include "MonitorData.h"
 #include "IoLine.h"
 #include "NobType.h"
-#include "NNetParameters.h"
-#include "NNetCommand.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
@@ -31,6 +29,8 @@ import SignalId;
 import NobId;
 import SigGenStaticData;
 import NNetModelIO;
+import NNetParameters;
+import NNetCommand;
 
 using std::wcout;
 using std::wstring;

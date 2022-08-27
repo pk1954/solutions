@@ -67,48 +67,40 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AddNobsCommand.ixx">
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-    </ClCompile>
+    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
+      <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AddNobsCommand.ixx" />
     <ClCompile Include="AddPipe2BaseKnotCommand.ixx" />
     <ClCompile Include="AddPipe2PipeCommand.ixx" />
     <ClCompile Include="AddSensorSignalCmd.ixx" />
     <ClCompile Include="AddSigGen2MonitorCmd.ixx" />
     <ClCompile Include="AnalyzeCommand.ixx" />
-    <ClCompile Include="ArrowAnimation.ixx">
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
-    </ClCompile>
-    <ClCompile Include="AttachSigGen2ConnCmd.ixx" />
+    <ClCompile Include="ArrowAnimation.ixx" />
+    <ClCompile Include="AttachSigGen2ConCmd.ixx" />
     <ClCompile Include="AttachSigGen2LineCmd.ixx" />
     <ClCompile Include="AttachSigGen2SelCmd.ixx" />
-    <ClCompile Include="CommandFunctions.cpp">
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
-      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NDEBUG;%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
-      <RemoveUnreferencedCodeData Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</RemoveUnreferencedCodeData>
-    </ClCompile>
+    <ClCompile Include="CommandFunctions.cpp" />
     <ClCompile Include="CommandFunctions.ixx" />
-    <ClCompile Include="CommandStack.cpp">
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
-    </ClCompile>
+    <ClCompile Include="CommandStack.cpp" />
     <ClCompile Include="CommandStack.ixx" />
-    <ClCompile Include="ConnAnimationCommand.cpp">
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-    </ClCompile>
+    <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="ConnAnimationCommand.ixx" />
     <ClCompile Include="Connect2BaseKnotCommand.ixx" />
     <ClCompile Include="Connect2PipeCommand.ixx" />
     <ClCompile Include="CoordAnimation.ixx" />
-    <ClCompile Include="DeleteBaseKnotCmd.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
-    </ClCompile>
+    <ClCompile Include="DeleteBaseKnotCmd.cpp" />
     <ClCompile Include="DeleteBaseKnotCmd.ixx" />
     <ClCompile Include="DeleteIoConnectorCmd.ixx" />
     <ClCompile Include="DeletePipeCommand.ixx" />
@@ -127,6 +119,7 @@
     <ClCompile Include="MoveSignalCmd.ixx" />
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="NewSigGenCmd.ixx" />
+    <ClCompile Include="NNetCommand.ixx" />
     <ClCompile Include="PlugIoConnectorAnimation.ixx" />
     <ClCompile Include="PlugIoConnectors.ixx" />
     <ClCompile Include="PlugIoLineAnimation.ixx" />
@@ -149,27 +142,13 @@
     <ClCompile Include="SetParameterCommand.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
     <ClCompile Include="SetTargetNobCmd.ixx" />
-    <ClCompile Include="SigGenCommand.ixx" />
-    <ClCompile Include="SingleNobAnimation.ixx" />
+    <ClCompile Include="SIgGenCommand.ixx" />
+    <ClCompile Include="SIngleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
     <ClCompile Include="SplitNeuronCmd.ixx" />
     <ClCompile Include="ToggleEmphModeCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
-      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
-      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
-      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
-      <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -5,11 +5,11 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 
 export module SizeSelectionCmd;
 
 import MoreTypes;
+import NNetCommand;
 
 export class SizeSelectionCmd : public NNetCommand
 {

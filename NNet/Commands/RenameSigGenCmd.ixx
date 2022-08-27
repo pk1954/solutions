@@ -7,11 +7,11 @@ module;
 #include <string>
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
-#include "NNetCommand.h"
 
 export module RenameSigGenCmd;
 
 import SigGenId;
+import NNetCommand;
 
 using std::wstring;
 using std::make_unique;

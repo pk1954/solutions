@@ -7,11 +7,11 @@ module;
 #include <cassert>
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "NNetCommand.h"
 
 export module DeleteTrackCommand;
 
 import MoreTypes;
+import NNetCommand;
 
 export class DeleteTrackCommand: public NNetCommand
 {

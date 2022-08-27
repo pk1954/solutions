@@ -8,11 +8,11 @@ module;
 #include "Nob.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
-#include "NNetCommand.h"
 
 export module AttachSigGen2SelCmd;
 
 import NobId;
+import NNetCommand;
 
 using std::vector;
 

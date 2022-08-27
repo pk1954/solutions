@@ -7,13 +7,13 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "MicroMeterPosDir.h"
 #include "IoConnector.h"
-#include "NNetCommand.h"
 #include "Nob.h"
 
 export module SetNobCommand;
 
 import MoreTypes;
 import NobId;
+import NNetCommand;
 
 export class SetNobCommand : public NNetCommand
 {

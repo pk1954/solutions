@@ -9,7 +9,6 @@ module;
 #include <fstream>
 #include "Resource.h"
 #include "NNetModelReaderInterface.h"
-#include "NNetParameters.h"
 
 module Preferences;
 
@@ -26,6 +25,7 @@ import Symtab;
 import AutoOpen;
 import Script;
 import NNetModelIO;
+import NNetParameters;
 
 using std::wofstream;
 using std::wcout;

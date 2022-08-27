@@ -6,10 +6,10 @@
 
 #include "NobType.h"
 #include "MicroMeterPosDir.h"
-#include "NNetParameters.h"
 #include "BaseKnot.h"
 
 import MoreTypes;
+import NNetParameters;
 
 class IoLine : public BaseKnot
 {

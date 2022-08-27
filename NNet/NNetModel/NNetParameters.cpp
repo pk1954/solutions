@@ -2,8 +2,11 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
-#include "NNetParameters.h"
+
+module NNetParameters;
 
 import BasicTypes;
 import SpeedType;

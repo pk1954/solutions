@@ -8,11 +8,11 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "Neuron.h"
 #include "IoConnector.h"
-#include "NNetCommand.h"
 
 export module PlugIoConnectors;
 
 import NobId;
+import NNetCommand;
 
 using std::vector;
 using std::unique_ptr;

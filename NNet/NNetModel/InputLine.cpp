@@ -6,18 +6,19 @@
 #include <sstream> 
 #include "Resource.h"
 #include "NobType.h"
-#include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputConnector.h"
 #include "InputLine.h"
 
+import Direct2D;
 import DrawContext;
 import tHighlight;
 import ParamType;
 import SimulationTime;
 import NNetColors;
+import NNetParameters;
 
 using std::chrono::microseconds;
 using std::wostringstream;

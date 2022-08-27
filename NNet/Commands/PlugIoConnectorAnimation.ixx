@@ -7,13 +7,13 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "Nob.h"
 #include "IoConnector.h"
-#include "NNetCommand.h"
 
 export module PlugIoConnectorAnimation;
 
 import MoreTypes;
 import SingleNobAnimation;
 import PlugIoConnectors;
+import NNetCommand;
 
 export class PlugIoConnectorAnimation : public NNetCommand
 {

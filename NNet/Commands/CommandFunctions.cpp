@@ -6,7 +6,6 @@ module;
 
 #include <cassert>
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 #include "NobType.h"
 #include "Nob.h"
 
@@ -15,6 +14,9 @@ module CommandFunctions;
 import DeleteBaseKnotCmd;
 import DeletePipeCommand;
 import DeleteIoConnectorCmd;
+import NNetCommand;
+
+using std::unique_ptr;
 
 unique_ptr<NNetCommand> MakeDeleteCommand
 (

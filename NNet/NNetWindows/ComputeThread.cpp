@@ -6,7 +6,6 @@ module;
 
 #include <Windows.h>
 #include "NNetModelWriterInterface.h"
-#include "NNetParameters.h"
 
 module ComputeThread;
 
@@ -15,6 +14,7 @@ import Observable;
 import FatalError;
 import HiResTimer;
 import SimulationTime;
+import NNetParameters;
 
 void ComputeThread::Initialize
 (

@@ -3,8 +3,8 @@
 // NNetModel
 
 #include <cassert>
+#include <algorithm>
 #include "Resource.h"
-#include "NNetParameters.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Pipe.h"
@@ -14,6 +14,7 @@ import IoConstants;
 import BasicTypes;
 import SpeedType;
 import DrawContext;
+import NNetParameters;
 
 using std::wcout;
 using std::endl;

@@ -7,7 +7,6 @@ module;
 #include <chrono>
 #include <algorithm>  // min/max/abs templates
 #include "Resource.h"
-#include "NNetParameters.h"
 #include "InputConnector.h"
 #include "NNetModelReaderInterface.h"
 
@@ -18,6 +17,7 @@ import MoreTypes;
 import PointType;
 import ComputeThread;
 import NNetModelCommands;
+import NNetParameters;
 
 using std::max;
 

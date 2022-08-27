@@ -4,11 +4,12 @@
 
 module;
 
-#include "NNetCommand.h"
+#include "NNetModelWriterInterface.h"
 
 export module SetTargetNobCmd;
 
 import NobId;
+import NNetCommand;
 
 export class SetTargetNobCmd : public NNetCommand
 {

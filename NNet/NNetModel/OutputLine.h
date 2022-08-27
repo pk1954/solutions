@@ -8,6 +8,7 @@
 #include "Nob.h"
 #include "BaseKnot.h"
 
+import tHighlight;
 import MoreTypes;
 import DrawContext;
 

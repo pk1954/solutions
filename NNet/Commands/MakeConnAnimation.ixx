@@ -10,9 +10,11 @@ module;
 #include "IoConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
-#include "NNetCommand.h"
 
 export module MakeConnAnimation;
+
+import NNetCommand;
+import NNetParameters;
 
 using std::vector;
 using std::unique_ptr;

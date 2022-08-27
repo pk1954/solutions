@@ -11,9 +11,10 @@
 #include "IoLine.h"
 #include "MonitorData.h"
 #include "Nob.h"
+#include "Pipe.h"
 #include "NNetModel.h"
+#include "MicroMeterPosDir.h"
 #include "NNetModelReaderInterface.h"
-#include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
 
@@ -24,9 +25,10 @@ import SigGenId;
 import UPSensorList;
 import NobId;
 import DescriptionUI;
+import NNetParameters;
 
 using std::unique_ptr;
-using std::string;
+using std::wstring;
 using std::move;
 
 class NNetModelWriterInterface : public NNetModelReaderInterface

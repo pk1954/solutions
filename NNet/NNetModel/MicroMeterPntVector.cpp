@@ -8,11 +8,11 @@ module;
 #include <cassert>
 #include <algorithm>
 #include <iostream>
-#include "NNetParameters.h"
 
 module MicroMeterPntVector;
 
 import IoConstants;
+import NNetParameters;
 
 using std::max;
 using std::vector;

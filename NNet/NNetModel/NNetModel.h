@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "NNetParameters.h"
 #include "ModelDescription.h"
 #include "MonitorData.h"
 #include "UPNobList.h"
@@ -18,6 +17,7 @@ import MoreTypes;
 import UPSigGenList;
 import ParamType;
 import UPSensorList;
+import NNetParameters;
 
 using std::unique_ptr;
 using std::move;

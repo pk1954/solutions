@@ -2,15 +2,12 @@
 //
 // NNetModel
 
-module;
-
-#include "NNetParameters.h"
-
 export module SigGenDynamicData;
 
 import BasicTypes;
 import MoreTypes;
 import SigGenStaticData;
+import NNetParameters;
 
 export class SigGenDynamicData
 {

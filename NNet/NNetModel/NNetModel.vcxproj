@@ -34,7 +34,6 @@
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetModelReaderInterface.h" />
     <ClInclude Include="NNetModelWriterInterface.h" />
-    <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="Nob.h" />
     <ClInclude Include="NobType.h" />
     <ClInclude Include="OutputConnector.h" />
@@ -72,6 +71,7 @@
     <ClCompile Include="NNetModelReaderInterface.cpp" />
     <ClCompile Include="NNetModelWriterInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
+    <ClCompile Include="NNetParameters.ixx" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="NNetWrapperHelpers.ixx" />
     <ClCompile Include="Nob.cpp" />

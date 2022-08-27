@@ -6,7 +6,6 @@
 #include <iostream>
 #include "Resource.h"
 #include "MicroMeterPosDir.h"
-#include "NNetParameters.h"
 #include "NobType.h"
 #include "Nob.h"
 
@@ -16,6 +15,7 @@ import AngleTypes;
 import tHighlight;
 import Scanner;
 import NNetColors;
+import NNetParameters;
 
 using std::setw;
 using std::move;

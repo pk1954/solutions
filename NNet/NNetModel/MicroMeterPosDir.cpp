@@ -4,10 +4,10 @@
 
 #include <algorithm>
 #include "Nob.h"
-#include "NNetParameters.h"
 #include "MicroMeterPosDir.h"
 
 import IoConstants;
+import NNetParameters;
 
 using std::max;
 

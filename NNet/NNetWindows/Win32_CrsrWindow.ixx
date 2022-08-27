@@ -6,6 +6,7 @@ module;
 
 #include <compare>
 #include <iostream>
+#include <iomanip>
 #include "NNetModelReaderInterface.h"
 
 export module CrsrWindow;

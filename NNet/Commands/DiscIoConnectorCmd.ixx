@@ -5,11 +5,12 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetCommand.h"
 #include "Nob.h"
 #include "IoConnector.h"
 
 export module DiscIoConnectorCmd;
+
+import NNetCommand;
 
 using std::unique_ptr;
 

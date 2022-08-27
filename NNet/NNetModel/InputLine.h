@@ -5,10 +5,13 @@
 #pragma once
 
 #include "Nob.h"
+#include "NobType.h"
 #include "BaseKnot.h"
 #include "SignalGenerator.h"
 #include "IoLine.h"
 
+import Direct2D;
+import tHighlight;
 import MoreTypes;
 import DrawContext;
 import SigGenDynamicData;

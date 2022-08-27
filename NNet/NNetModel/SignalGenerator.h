@@ -6,7 +6,6 @@
 
 #include <string>
 #include "SignalSource.h"
-#include "NNetParameters.h"
 
 import ObserverInterface;
 import BasicTypes;
@@ -14,6 +13,7 @@ import MoreTypes;
 import ParamType;
 import SigGenStaticData;
 import SigGenDynamicData;
+import NNetParameters;
 
 using std::wstring;
 using std::unique_ptr;

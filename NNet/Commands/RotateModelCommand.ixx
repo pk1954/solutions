@@ -5,19 +5,23 @@
 module;
 
 #include "NNetModelWriterInterface.h"
+#include "UPNobList.h"
+#include "Nob.h"
+#include "BaseKnot.h"
 
 export module RotateModelCommand;
 
 import MoreTypes;
 import RotationCommand;
+import UPSensorList;
 
 export class RotateModelCommand : public RotationCommand
 {
 public:
 	RotateModelCommand
 	(
-		MicroMeterPnt const& umPntOld,
-		MicroMeterPnt const& umPntNew
+		MicroMeterPnt const & umPntOld,
+		MicroMeterPnt const & umPntNew
 	)
 	{
 		SetPivotPnt

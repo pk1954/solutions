@@ -9,7 +9,6 @@
 #include <memory>    
 #include "BaseKnot.h"
 #include "UPNobList.h"
-#include "NNetParameters.h"
 #include "SignalSource.h"
 
 import ObserverInterface;
@@ -17,6 +16,7 @@ import BasicTypes;
 import MoreTypes;
 import DrawContext;
 import SimulationTime;
+import NNetParameters;
 
 using std::vector;
 using std::unique_ptr;

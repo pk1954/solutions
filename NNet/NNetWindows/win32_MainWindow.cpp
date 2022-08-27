@@ -14,7 +14,6 @@ module;
 #include "Neuron.h"
 #include "UPNobList.h"
 #include "IoConnector.h"
-#include "NNetParameters.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
 
@@ -38,6 +37,7 @@ import NNetModelCommands;
 import MonitorWindow;
 import NobId;
 import NNetColors;
+import NNetParameters;
 
 using std::unordered_map;
 using std::unique_ptr;
