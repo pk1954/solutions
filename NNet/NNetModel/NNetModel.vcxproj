@@ -31,7 +31,6 @@
     <ClInclude Include="ModelDescription.h" />
     <ClInclude Include="MonitorData.h" />
     <ClInclude Include="Neuron.h" />
-    <ClInclude Include="NNetColors.h" />
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetModelReaderInterface.h" />
     <ClInclude Include="NNetModelWriterInterface.h" />
@@ -69,6 +68,7 @@
     <ClCompile Include="MicroMeterPosDir.cpp" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="NNetColors.ixx" />
     <ClCompile Include="NNetModel.cpp" />
     <ClCompile Include="NNetModelReaderInterface.cpp" />
     <ClCompile Include="NNetModelWriterInterface.cpp" />

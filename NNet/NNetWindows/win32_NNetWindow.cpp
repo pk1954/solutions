@@ -13,7 +13,6 @@ module;
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetColors.h"
 #include "Windows.h"
 #include "win32_util_resource.h"
 
@@ -24,6 +23,7 @@ import Direct2D;
 import Win32_Sound;
 import PixelTypes;
 import NNetController;
+import NNetColors;
 
 using std::function;
 

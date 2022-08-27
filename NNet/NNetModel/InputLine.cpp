@@ -6,7 +6,6 @@
 #include <sstream> 
 #include "Resource.h"
 #include "NobType.h"
-#include "NNetColors.h"
 #include "NNetParameters.h"
 #include "SignalGenerator.h"
 #include "Knot.h"
@@ -18,6 +17,7 @@ import DrawContext;
 import tHighlight;
 import ParamType;
 import SimulationTime;
+import NNetColors;
 
 using std::chrono::microseconds;
 using std::wostringstream;

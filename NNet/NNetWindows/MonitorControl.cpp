@@ -10,7 +10,6 @@ module;
 #include "win32_util_resource.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "NNetColors.h"
 
 module MonitorControl;
 
@@ -19,6 +18,7 @@ import NNetModelCommands;
 import SimulationTime;
 import SignalId;
 import SignalNr;
+import NNetColors;
 
 using std::to_wstring;
 

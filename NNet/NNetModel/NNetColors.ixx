@@ -1,14 +1,16 @@
-// NNetColors.h
+// NNetColors.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include "d2d1helper.h"
 
-using D2D1::ColorF;
+export module NNetColors;
 
-class NNetColors								  
+export using D2D1::ColorF;
+
+export class NNetColors						  
 {												 
 public:											 
 
@@ -53,7 +55,7 @@ public:
 	inline static ColorF const INT_TRIGGER    { 1.0f, 1.0f, 0.0f, 1.0f };
 
 	// construct color with given alpha channel
-	static ColorF SetAlpha(ColorF col, float const alpha)
+	ColorF SetAlpha(ColorF col, float const alpha)
 	{
 		col.a = alpha;
 		return col;

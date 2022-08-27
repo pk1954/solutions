@@ -5,13 +5,13 @@
 #pragma once
 
 #include <iostream> 
-#include "NNetColors.h"
 #include "Signal.h"
 #include "UPNobList.h"
 #include "Sensor.h"
 
 import BasicTypes;
 import DrawContext;
+import NNetColors;
 
 using std::endl;
 using std::wcout;

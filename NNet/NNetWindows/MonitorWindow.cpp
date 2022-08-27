@@ -9,7 +9,6 @@ module;
 #include <algorithm>
 #include <Windows.h>
 #include "Resource.h"
-#include "NNetColors.h"
 #include "win32_util_resource.h"
 
 module MonitorWindow;
@@ -18,6 +17,7 @@ import PixelTypes;
 import SoundInterface;
 import MonitorControl;
 import NNetModelCommands;
+import NNetColors;
 
 using std::find;
 using std::wstring;

@@ -5,11 +5,11 @@
 #include <cassert>
 #include <cassert>
 #include "Resource.h"
-#include "NNetColors.h"
 #include "Knot.h"
 
 import DrawContext;
 import tHighlight;
+import NNetColors;
 
 Knot::Knot(BaseKnot const & src)
   : BaseKnot(src)

@@ -3,7 +3,6 @@
 // NNetModel
 
 #include "UPNobList.h"
-#include "NNetColors.h"
 #include "BaseKnot.h"
 #include "SignalSource.h"
 #include "Signal.h"
@@ -12,6 +11,7 @@ import Util;
 import BasicTypes;
 import IoConstants;
 import DrawContext;
+import NNetColors;
 
 using std::wcout;
 using std::endl;
