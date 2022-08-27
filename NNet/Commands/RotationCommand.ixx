@@ -5,7 +5,6 @@
 module;
 
 #include "Nob.h"
-#include "Sensor.h"
 
 export module RotationCommand;
 
@@ -13,6 +12,7 @@ import MoreTypes;
 import AngleTypes;
 import Command;
 import NNetCommand;
+import Sensor;
 
 export class RotationCommand : public NNetCommand
 {

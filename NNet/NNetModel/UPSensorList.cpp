@@ -5,11 +5,18 @@
 module;
 
 #include <string>
-#include "Sensor.h"
+#include <memory>
+#include <vector>
 
 module UPSensorList;
 
+import SaveCast;
+import Sensor;
+import MoreTypes;
+
+using std::vector;
 using std::to_wstring;
+using std::unique_ptr;
 using std::make_unique;
 using std::ranges::find_if;
 
@@ -89,7 +96,7 @@ SensorId UPSensorList::PushSensor(UPSensor upSensor)
 
 UPSensor UPSensorList::PopSensor()
 {
-    unique_ptr upSensor { move(m_list.back()) };
+    unique_ptr<Sensor> upSensor { move(m_list.back()) };
     m_list.pop_back();
     return move(upSensor);
 }

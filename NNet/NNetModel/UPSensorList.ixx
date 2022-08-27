@@ -6,13 +6,13 @@ module;
 
 #include <vector>
 #include <algorithm>
-#include "Sensor.h"
 #include "UPNobList.h"
 
 export module UPSensorList;
 
 import NamedType;
 import MoreTypes;
+import Sensor;
 
 using std::ranges::for_each;
 using std::unique_ptr;

@@ -12,7 +12,6 @@
 #include "NobType.h"
 #include "NNetModel.h"
 #include "Pipe.h"
-#include "Sensor.h"
 #include "Signal.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
@@ -27,6 +26,7 @@ import tHighlight;
 import UPSigGenList;
 import NobId;
 import NNetParameters;
+import Sensor;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 

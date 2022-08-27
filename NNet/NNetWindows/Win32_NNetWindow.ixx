@@ -6,7 +6,6 @@ module;
 
 #include <compare>
 #include <Windows.h>
-#include "Sensor.h"
 #include "NNetModelReaderInterface.h"
 
 export module NNetWindow;
@@ -16,6 +15,7 @@ import D2D_DrawContext;
 import Uniform2D;
 import NNetController;
 import GraphicsWindow;
+import Sensor;
 
 export class NNetWindow : public GraphicsWindow
 {
@@ -29,7 +29,7 @@ public:
 		DWORD  const,
 		bool   const,
 		fPixel const,
-		NNetController&
+		NNetController &
 	);
 
 	void SetModelInterface(NNetModelReaderInterface* const);

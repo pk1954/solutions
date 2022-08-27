@@ -6,7 +6,6 @@ module;
 
 #include <sstream> 
 #include "Resource.h"
-#include "Sensor.h"
 #include "Pipe.h"
 #include "Neuron.h"
 #include "InputLine.h"
@@ -24,6 +23,7 @@ import PixelTypes;
 import NNetController;
 import NNetColors;
 import NNetParameters;
+import Sensor;
 
 using std::function;
 

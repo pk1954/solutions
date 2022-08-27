@@ -2,12 +2,13 @@
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include <iostream> 
 #include "Signal.h"
 #include "UPNobList.h"
-#include "Sensor.h"
+
+module Sensor;
 
 import BasicTypes;
 import DrawContext;

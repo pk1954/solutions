@@ -1,19 +1,27 @@
-// Sensor.h : 
+// Sensor.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include <vector>
+#include <iostream>
 #include "Pipe.h"
+#include "UPNobList.h"
 #include "SignalSource.h"
 
+export module Sensor;
+
 import BasicTypes;
+import MoreTypes;
+import AngleTypes;
 import NNetParameters;
+import DrawContext;
 
-class DrawContext;
+using std::vector;
+using std::wostream;
 
-class Sensor : public SignalSource
+export class Sensor : public SignalSource
 {
 public:
     Sensor(MicroMeterCircle const &, UPNobList const &);
@@ -24,12 +32,12 @@ public:
     void Draw(DrawContext const &, bool const) const final;
     bool Includes(MicroMeterPnt const p)       const final { return m_circle.Includes(p); }
 
-    void  DrawDataPoints(DrawContext   const &) const;
-    float GetDistFactor (MicroMeterPnt const &) const;
-   
-    MicroMeterPnt    const & GetCenter      () const { return m_circle.GetPos(); }
-    MicroMeter               GetRadius      () const { return m_circle.GetRadius(); }
-    MicroMeterCircle const & GetCircle      () const { return m_circle; }
+    void  DrawDataPoints(DrawContext  const &) const;
+    float GetDistFactor(MicroMeterPnt const &) const;
+
+    MicroMeterPnt    const & GetCenter()       const { return m_circle.GetPos(); }
+    MicroMeter               GetRadius()       const { return m_circle.GetRadius(); }
+    MicroMeterCircle const & GetCircle()       const { return m_circle; }
     size_t                   GetNrOfElements() const { return m_dataPoints.size(); }
 
     void SetSensorPos (UPNobList const &, MicroMeterPnt const &);
@@ -58,8 +66,8 @@ private:
         }
     };
 
-    MicroMeterCircle     m_circle     { MicroMeterCircle::NULL_VAL() };
-    vector<SigDataPoint> m_dataPoints { };
+    MicroMeterCircle     m_circle{ MicroMeterCircle::NULL_VAL() };
+    vector<SigDataPoint> m_dataPoints{ };
 
     void Recalc(UPNobList const &) final;
 

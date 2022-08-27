@@ -14,7 +14,6 @@ module;
 #include "InputLine.h"
 #include "Pipe.h"
 #include "Signal.h"
-#include "Sensor.h"
 
 module CrsrWindow;
 
@@ -22,6 +21,7 @@ import BasicTypes;
 import TextBuffer;
 import MainWindow;
 import Win32_Util;
+import Sensor;
 
 using std::wostringstream;
 using std::setprecision;

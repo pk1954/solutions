@@ -5,13 +5,13 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "Sensor.h"
 
 export module MoveSensorCmd;
 
 import MoreTypes;
 import UPSensorList;
 import NNetCommand;
+import Sensor;
 
 export class MoveSensorCmd : public NNetCommand
 {
