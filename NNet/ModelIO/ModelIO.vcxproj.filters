@@ -52,9 +52,6 @@
     <ClCompile Include="WrapNobParameter.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Module.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapSignalGenerator.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

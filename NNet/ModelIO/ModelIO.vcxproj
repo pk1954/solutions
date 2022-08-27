@@ -161,7 +161,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="InputOutputUI.ixx" />
-    <ClCompile Include="Module.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="NNetModelStorage.ixx" />
     <ClCompile Include="NNetModelIO.ixx" />

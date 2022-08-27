@@ -240,7 +240,7 @@ void NNetModelCommands::Connect
 	NobId          const idDst,
 	ConnectionType const cType
 )
-{
+{ 
 	using enum ConnectionType;
 
 	if (IsTraceOn())
