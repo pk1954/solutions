@@ -9,13 +9,13 @@
 #include <Windows.h>
 #include "NNetModelWriterInterface.h"
 #include "UPNobList.h"
-#include "InputOutputUI.h"
 #include "NNetModel.h"
 
 import WrapBase;
 import NobIdList;
 import Script;
 import NobId;
+import InputOutputUI;
 
 using std::unique_ptr;
 using std::wostream;

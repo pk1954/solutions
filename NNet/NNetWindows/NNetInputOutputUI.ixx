@@ -6,15 +6,18 @@ module;
 
 #include <memory>
 #include <cassert>
-#include "Windows.h"
+#include <iostream>
+#include <Windows.h>
 #include "Resource.h"
-#include "InputOutputUI.h"
 
 export module NNetInputOutputUI;
+
+import InputOutputUI;
 
 using std::unique_ptr;
 using std::make_unique;
 using std::bit_cast;
+using std::wstring;
 
 export class NNetInputOutputUI : public InputOutputUI
 {

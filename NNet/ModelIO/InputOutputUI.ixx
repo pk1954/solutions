@@ -1,16 +1,18 @@
-// InputOutputUI.h 
+// InputOutputUI.ixx
 //
 // ModelIO
 
-#pragma once
+module;
 
 #include <string>
+
+export module InputOutputUI;
 
 import Script;
 
 using std::wstring;
 
-class InputOutputUI
+export class InputOutputUI
 {
 public:
 	enum class Result
@@ -23,6 +25,6 @@ public:
 	virtual ~InputOutputUI() = default;
 
 	virtual void JobFinished(InputOutputUI::Result const, wstring const &) const = 0;
-	virtual void ReadProgressReport(Script *)         { /* default: no report */ };
+	virtual void ReadProgressReport(Script *) { /* default: no report */ };
 	virtual void WriteProgressReport(wstring const &) { /* default: no report */ };
 };

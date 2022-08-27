@@ -160,11 +160,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="InputOutputUI.h" />
     <ClInclude Include="NNetModelIO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Commands\AttachSigGen2ConnCmd.ixx" />
+    <ClCompile Include="InputOutputUI.ixx" />
     <ClCompile Include="Module.ixx" />
     <ClCompile Include="NNetModelIO.cpp" />
     <ClCompile Include="NNetModelStorage.ixx" />
