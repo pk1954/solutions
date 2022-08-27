@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="..\Commands\NNetCommand.h" />
     <ClInclude Include="BaseKnot.h" />
-    <ClInclude Include="DescriptionUI.h" />
     <ClInclude Include="InputConnector.h" />
     <ClInclude Include="InputLine.h" />
     <ClInclude Include="IoConnector.h" />
@@ -59,6 +58,7 @@
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />
+    <ClCompile Include="DescriptionUI.ixx" />
     <ClCompile Include="InputConnector.cpp" />
     <ClCompile Include="InputLine.cpp" />
     <ClCompile Include="IoConnector.cpp" />

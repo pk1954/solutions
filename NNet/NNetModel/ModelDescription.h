@@ -6,7 +6,8 @@
 
 #include <vector>
 #include <string>
-#include "DescriptionUI.h"
+
+import DescriptionUI;
 
 using std::vector;
 using std::wstring;

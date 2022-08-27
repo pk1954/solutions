@@ -6,12 +6,12 @@ module;
 
 #include <string>
 #include <Windows.h>
-#include "DescriptionUI.h"
 
 export module DescriptionWindow;
 
 import PixelTypes;
 import BaseWindow;
+import DescriptionUI;
 
 using std::wstring;
 

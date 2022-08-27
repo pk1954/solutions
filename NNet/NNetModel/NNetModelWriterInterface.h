@@ -8,7 +8,6 @@
 #include <cassert>
 #include <xutility>
 #include "BaseKnot.h"
-#include "DescriptionUI.h"
 #include "IoLine.h"
 #include "MonitorData.h"
 #include "Nob.h"
@@ -24,6 +23,7 @@ import ParamType;
 import SigGenId;
 import UPSensorList;
 import NobId;
+import DescriptionUI;
 
 using std::unique_ptr;
 using std::string;
