@@ -11,7 +11,6 @@ module;
 export module CrsrWindow;
 
 import BasicTypes;
-import Hertz;
 import TextBuffer;
 import MainWindow;
 import TextWindow;

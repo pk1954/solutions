@@ -90,3 +90,19 @@ export fHertz Frequency(fMicroSecs const us)
 		? fHertz((numeric_limits<float>::max)())
 		: fHertz(1e6f / us.GetValue());
 }
+
+////////////// Hertz ////////////////////////////////////////
+
+export using Hertz = NamedType< unsigned long, struct Hertz_Parameter >;
+
+export Hertz constexpr operator"" _Hertz(unsigned long long ull)
+{
+	return Hertz(Cast2UnsignedLong(ull));
+}
+
+export microseconds SpikeTimeMax(Hertz const freq)
+{
+	return (freq.GetValue() == 0)
+		? microseconds((numeric_limits<long long>::max)())
+		: microseconds(1000000L / freq.GetValue());
+}

@@ -10,7 +10,6 @@ export module SoundInterface;
 
 import Observable;
 import BasicTypes;
-import Hertz;
 
 using std::wstring;
 

@@ -12,7 +12,6 @@ export module ActionTimer;
 
 import BasicTypes;
 import MoreTypes;
-import Hertz;
 import Util;
 import Observable;
 import HiResTimer;

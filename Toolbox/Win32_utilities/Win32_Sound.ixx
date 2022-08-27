@@ -12,7 +12,6 @@ export module Win32_Sound;
 
 import BasicTypes;
 import MoreTypes;
-import Hertz;
 import SoundInterface;
 
 using std::wstring;
