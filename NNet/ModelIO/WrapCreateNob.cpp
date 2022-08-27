@@ -22,7 +22,6 @@ module;
 #include "OutputConnector.h"
 #include "UPNobList.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetWrapperHelpers.h"
 
 module WrapCreateNob;
 
@@ -32,6 +31,7 @@ import WrapBase;
 import Script;
 import NobId;
 import NNetModelIO;
+import NNetWrapperHelpers;
 
 using std::vector;
 using std::wstring;

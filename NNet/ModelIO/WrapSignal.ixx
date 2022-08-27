@@ -5,7 +5,6 @@
 module;
 
 #include <string>
-#include "NNetWrapperHelpers.h"
 #include "Signal.h"
 
 export module WrapSignal;
@@ -14,6 +13,7 @@ import ErrHndl;
 import TrackNr;
 import MoreTypes;
 import NNetWrapperBase;
+import NNetWrapperHelpers;
 
 using std::wstring;
 

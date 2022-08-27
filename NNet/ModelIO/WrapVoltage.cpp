@@ -10,7 +10,6 @@ module;
 #include "BaseKnot.h"
 #include "Pipe.h"
 #include "IoConnector.h"
-#include "NNetWrapperHelpers.h"
 
 module WrapVoltage;
 
@@ -19,6 +18,7 @@ import IoConstants;
 import ErrHndl;
 import Script;
 import NNetModelIO;
+import NNetWrapperHelpers;
 
 using std::wostream;
 using std::wcout;

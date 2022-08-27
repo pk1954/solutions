@@ -6,7 +6,6 @@ module;
 
 #include <iostream>
 #include "MonitorData.h"
-#include "NNetWrapperHelpers.h"
 #include "SignalFactory.h"
 
 export module WrapSignalInfo;
@@ -15,6 +14,7 @@ import NNetWrapperBase;
 import ErrHndl;
 import SignalId;
 import Script;
+import NNetWrapperHelpers;
 
 using std::wostream;
 

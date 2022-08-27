@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <iostream>
 #include "NNetModelWriterInterface.h"
-#include "NNetWrapperHelpers.h"
 #include "SignalGenerator.h"
 #include "InputLine.h"
 
@@ -17,6 +16,7 @@ import NNetWrapperBase;
 import Script;
 import NobId;
 import NNetModelIO;
+import NNetWrapperHelpers;
 
 using std::wstring;
 using std::wostream;

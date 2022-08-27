@@ -2,9 +2,12 @@
 //
 // NNetModel
 
+module;
+
 #include <cmath>
 #include "NobType.h"
-#include "NNetWrapperHelpers.h"
+
+module NNetWrapperHelpers;
 
 import SaveCast;
 import BasicTypes;

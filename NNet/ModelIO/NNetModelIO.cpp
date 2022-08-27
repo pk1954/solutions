@@ -23,7 +23,6 @@ module;
 #include "ModelDescription.h"
 #include "Signal.h"
 #include "Track.h"
-#include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 
@@ -57,6 +56,7 @@ import WrapGlobalParameter;
 import WrapDescription;
 import WrapSetSigGen;
 import InputOutputUI;
+import NNetWrapperHelpers;
 
 using std::filesystem::exists;
 using std::wofstream;
