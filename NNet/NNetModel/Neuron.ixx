@@ -1,14 +1,16 @@
-// Neuron.h
+// Neuron.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include <string>
 #include <chrono>
 #include "NobType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
+
+export module Neuron;
 
 import BoolOp;
 import MoreTypes;
@@ -21,18 +23,18 @@ using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 
-class Neuron : public BaseKnot
+export class Neuron : public BaseKnot
 {
 public:
-	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
-	Neuron(BaseKnot      const &, NobType const = NobType::Value::neuron);
-	Neuron(Neuron const &);             // copy constructor
+	Neuron(MicroMeterPnt const&, NobType const = NobType::Value::neuron);
+	Neuron(BaseKnot      const&, NobType const = NobType::Value::neuron);
+	Neuron(Neuron const&);             // copy constructor
 
-	Neuron & operator=(Neuron const &); // copy assignment operator
+	Neuron& operator=(Neuron const&); // copy assignment operator
 
 	~Neuron() override = default;
 
-	void Prepare        ()                          override;
+	void Prepare()                                  override;
 	void AppendMenuItems(AddMenuFunc const &) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
@@ -48,23 +50,23 @@ public:
 	Radian    GetDir()        const override { return Radian::NULL_VAL(); };
 	NobIoMode GetIoMode()     const override { return NobIoMode::internal; }
 
-	void DrawExterior(DrawContext const &, tHighlight const) const override;
-	void DrawInterior(DrawContext const &, tHighlight const) const override;
+	void DrawExterior(DrawContext const&, tHighlight const) const override;
+	void DrawInterior(DrawContext const&, tHighlight const) const override;
 
 protected:
 
-	void DisplayText(DrawContext const &, MicroMeterRect const &, wstring const &) const;
+	void DisplayText(DrawContext const&, MicroMeterRect const&, wstring const&) const;
 
 private:
-	mutable bool m_bTriggered { false };
+	mutable bool m_bTriggered{ false };
 
-	bool       m_bStopOnTrigger { false };
-	fMicroSecs m_usSpikeTime    { 0._MicroSecs };
+	bool       m_bStopOnTrigger{ false };
+	fMicroSecs m_usSpikeTime{ 0._MicroSecs };
 
 	MicroMeterPnt getAxonHillockPos() const;
 
-	void init(const Neuron &);
+	void init(const Neuron&);
 };
 
-Neuron const * Cast2Neuron(Nob const *);
-Neuron       * Cast2Neuron(Nob       *);
+Neuron const* Cast2Neuron(Nob const*);
+Neuron* Cast2Neuron(Nob*);

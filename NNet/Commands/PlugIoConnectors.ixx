@@ -6,13 +6,13 @@ module;
 
 #include <vector>
 #include "NNetModelWriterInterface.h"
-#include "Neuron.h"
 #include "IoConnector.h"
 
 export module PlugIoConnectors;
 
 import NobId;
 import NNetCommand;
+import Neuron;
 
 using std::vector;
 using std::unique_ptr;

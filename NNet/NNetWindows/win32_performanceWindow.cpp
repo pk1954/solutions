@@ -4,9 +4,9 @@
 
 module;
 
-#include "strsafe.h"
+#include <iomanip>
+#include <sstream>
 #include "Knot.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "Pipe.h"
 #include "Nob.h"
@@ -18,10 +18,11 @@ import SlowMotionRatio;
 import ComputeThread;
 import ActionTimer;
 import OutputLine;
+import Neuron;
 
 using std::wostringstream;
-using std::fixed;
 using std::setprecision;
+using std::fixed;
 
 void PerformanceWindow::Start
 (

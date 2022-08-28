@@ -2,10 +2,10 @@
 //
 // NNetModel
 
+#include <iostream>
 #include "NobType.h"
 #include "BaseKnot.h"
 #include "Knot.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "NNetModel.h"
 
@@ -14,8 +14,8 @@ import SimulationTime;
 import NobException;
 import Scanner;
 import OutputLine;
+import Neuron;
 
-using namespace std::chrono;
 using std::wcout;
 using std::endl;
 

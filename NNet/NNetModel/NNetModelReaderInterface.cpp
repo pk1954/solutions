@@ -6,12 +6,12 @@
 #include "NNetModel.h"
 #include "InputConnector.h"
 #include "IoConnector.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "NNetModelReaderInterface.h"
 
 import BasicTypes;
 import DrawContext;
+import Neuron;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {

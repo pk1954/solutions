@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "Neuron.h"
 #include "InputLine.h"
 
 export module SplitNeuronCmd;
@@ -14,6 +13,7 @@ import NobId;
 import MoreTypes;
 import NNetCommand;
 import OutputLine;
+import Neuron;
 
 using std::unique_ptr;
 

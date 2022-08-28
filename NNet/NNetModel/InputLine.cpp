@@ -2,13 +2,13 @@
 //
 // NNetModel
 
+#include <chrono>
 #include <iomanip>
 #include <sstream> 
 #include "Resource.h"
 #include "NobType.h"
 #include "SignalGenerator.h"
 #include "Knot.h"
-#include "Neuron.h"
 #include "InputConnector.h"
 #include "InputLine.h"
 
@@ -19,6 +19,7 @@ import ParamType;
 import SimulationTime;
 import NNetColors;
 import NNetParameters;
+import Neuron;
 
 using std::chrono::microseconds;
 using std::wostringstream;

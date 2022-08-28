@@ -7,7 +7,6 @@ module;
 #include <sstream> 
 #include "Resource.h"
 #include "Pipe.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -25,6 +24,7 @@ import NNetController;
 import NNetColors;
 import NNetParameters;
 import Sensor;
+import Neuron;
 
 using std::function;
 

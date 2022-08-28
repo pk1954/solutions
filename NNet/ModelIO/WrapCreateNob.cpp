@@ -13,7 +13,6 @@ module;
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "Pipe.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "IoConnector.h"
 #include "InputConnector.h"
@@ -32,6 +31,7 @@ import NNetModelIO;
 import NNetWrapperHelpers;
 import IoLine;
 import OutputLine;
+import Neuron;
 
 using std::vector;
 using std::wstring;

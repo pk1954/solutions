@@ -2,11 +2,14 @@
 //
 // NNetModel
 
+module;
+
 #include <sstream> 
 #include <iomanip>
 #include "Resource.h"
 #include "Pipe.h"
-#include "Neuron.h"
+
+module Neuron;
 
 import BasicTypes;
 import DrawContext;

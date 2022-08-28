@@ -15,7 +15,6 @@ module;
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "SignalFactory.h"
-#include "Neuron.h"
 #include "InputConnector.h"
 
 module NNetAppWindow;
@@ -49,6 +48,7 @@ import SigGenId;
 import SimulationTime;
 import Script;
 import NNetCommand;
+import Neuron;
 
 using std::endl;
 using std::wcout;

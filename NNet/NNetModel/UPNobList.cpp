@@ -7,7 +7,6 @@
 #include "Knot.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
-#include "Neuron.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
 #include "InputLine.h"
@@ -16,6 +15,7 @@
 import NobIdList;
 import NobException;
 import OutputLine;
+import Neuron;
 
 using std::move;
 using std::accumulate;

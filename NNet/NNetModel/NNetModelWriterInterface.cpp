@@ -5,13 +5,13 @@
 #include <cassert>
 #include "Pipe.h"
 #include "Knot.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "NNetModelWriterInterface.h"
 
 import NobIdList;
 import IoLinePair;
 import OutputLine;
+import Neuron;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {

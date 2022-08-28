@@ -10,7 +10,6 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 #include "Knot.h"
-#include "Neuron.h"
 #include "UPNobList.h"
 #include "IoConnector.h"
 #include "win32_util_resource.h"
@@ -37,6 +36,7 @@ import MonitorWindow;
 import NobId;
 import NNetColors;
 import NNetParameters;
+import Neuron;
 
 using std::unordered_map;
 using std::unique_ptr;

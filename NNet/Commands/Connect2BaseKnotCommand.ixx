@@ -8,7 +8,6 @@ module;
 #include "NNetModelReaderInterface.h"
 #include "InputLine.h"
 #include "BaseKnot.h"
-#include "Neuron.h"
 #include "Knot.h"
 
 export module Connect2BaseKnotCommand;
@@ -16,6 +15,7 @@ export module Connect2BaseKnotCommand;
 import NobId;
 import NNetCommand;
 import OutputLine;
+import Neuron;
 
 using std::unique_ptr;
 

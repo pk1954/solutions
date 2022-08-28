@@ -12,7 +12,6 @@ module;
 #include "SignalGenerator.h"
 #include "BaseKnot.h"
 #include "Knot.h"
-#include "Neuron.h"
 #include "InputLine.h"
 #include "InputConnector.h"
 #include "MonitorData.h"
@@ -56,6 +55,7 @@ import NNetWrapperHelpers;
 import NNetParameters;
 import IoLine;
 import OutputLine;
+import Neuron;
 
 using std::filesystem::exists;
 using std::wofstream;
