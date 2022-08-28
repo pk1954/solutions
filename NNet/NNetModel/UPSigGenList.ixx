@@ -6,6 +6,7 @@ module;
 
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "SignalGenerator.h"
 
 export module UPSigGenList;

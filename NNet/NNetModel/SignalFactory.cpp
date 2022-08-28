@@ -5,9 +5,10 @@
 #include <memory>
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
-#include "SignalSource.h"
 #include "SignalGenerator.h"
 #include "SignalFactory.h"
+#include "SignalSource.h"
+#include "Signal.h"
 
 import TrackNr;
 import SignalId;

@@ -5,8 +5,8 @@
 module;
 
 #include <iostream> 
-#include "Signal.h"
 #include "UPNobList.h"
+#include "Signal.h"
 
 module Sensor;
 

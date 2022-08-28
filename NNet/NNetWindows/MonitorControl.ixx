@@ -9,6 +9,7 @@ module;
 #include "Track.h"
 #include "MonitorData.h"
 #include "NNetModelWriterInterface.h"
+#include "Signal.h"
 
 export module MonitorControl;
 

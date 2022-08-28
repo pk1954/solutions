@@ -8,7 +8,6 @@ module;
 #include <fstream>
 #include <iostream>
 #include <cassert>
-#include "Signal.h"
 #include "SignalFactory.h"
 #include "SignalGenerator.h"
 #include "BaseKnot.h"
@@ -21,9 +20,9 @@ module;
 #include "OutputConnector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
-#include "Signal.h"
 #include "Track.h"
 #include "NNetModelWriterInterface.h"
+#include "Signal.h"
 
 module NNetModelIO;
 

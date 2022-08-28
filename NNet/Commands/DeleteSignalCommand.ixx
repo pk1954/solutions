@@ -6,6 +6,7 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
+#include "Signal.h"
 
 export module DeleteSignalCommand;
 

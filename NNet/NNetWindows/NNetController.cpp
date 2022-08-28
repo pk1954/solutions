@@ -8,7 +8,6 @@ module;
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
-#include "Signal.h"
 #include "win32_util_resource.h"
 #include "NNetModelReaderInterface.h"
 

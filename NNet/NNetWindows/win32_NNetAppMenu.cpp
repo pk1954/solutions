@@ -10,6 +10,7 @@ module;
 #include "NNetModelReaderInterface.h"
 #include "SignalGenerator.h"
 #include "win32_util_resource.h"
+#include "Signal.h"
 
 module NNetAppMenu;
 

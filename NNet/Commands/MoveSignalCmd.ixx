@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "Signal.h"
 #include "Track.h"
 #include "MonitorData.h"
 

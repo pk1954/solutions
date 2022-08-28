@@ -1,9 +1,10 @@
 // CopySelectedNobs.cpp
 //
-// Commands
+// NNetModel
 
 module;
 
+#include <cassert>
 #include <unordered_map>
 #include "Nob.h"
 #include "Knot.h"

@@ -1,6 +1,6 @@
 // CopySelectedNobs.ixx
 //
-// Commands
+// NNetModel
 
 module;
 

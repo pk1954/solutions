@@ -7,6 +7,7 @@
 #include "Track.h"
 #include "SignalFactory.h"
 #include "MonitorData.h"
+#include "Signal.h"
 
 using std::distance;
 using std::make_unique;

@@ -9,7 +9,6 @@ module;
 #include <string>
 #include <Windows.h>
 #include "Resource.h"
-#include "Signal.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "UPNobList.h"

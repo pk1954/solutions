@@ -3,7 +3,11 @@
 // NNetModel
 
 #include <cassert>
+#include <iostream>
+#include "Signal.h"
 #include "Track.h"
+
+import SaveCast;
 
 using std::move;
 using std::wcout;

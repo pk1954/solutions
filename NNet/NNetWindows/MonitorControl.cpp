@@ -10,6 +10,7 @@ module;
 #include "win32_util_resource.h"
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
+#include "Signal.h"
 
 module MonitorControl;
 

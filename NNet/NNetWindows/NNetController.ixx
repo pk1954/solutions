@@ -10,7 +10,6 @@ module;
 #include <iostream>
 #include <Windows.h>
 #include "NNetModelReaderInterface.h"
-#include "Signal.h"
 
 export module NNetController;
 

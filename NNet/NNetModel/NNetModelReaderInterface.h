@@ -12,9 +12,9 @@
 #include "NobType.h"
 #include "NNetModel.h"
 #include "Pipe.h"
-#include "Signal.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
+#include "Signal.h"
 
 import UPSensorList;
 import SigGenId;

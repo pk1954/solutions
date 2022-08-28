@@ -13,6 +13,7 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "Windows.h"
 #include "win32_util_resource.h"
+#include "Signal.h"
 
 module NNetWindow;
 

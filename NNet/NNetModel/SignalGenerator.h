@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
+#include <iostream>
 #include "SignalSource.h"
 
 import ObserverInterface;
@@ -16,6 +18,7 @@ import SigGenDynamicData;
 import NNetParameters;
 
 using std::wstring;
+using std::wostream;
 using std::unique_ptr;
 
 class SignalGenerator : public SignalSource

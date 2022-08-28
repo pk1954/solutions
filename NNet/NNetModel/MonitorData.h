@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 #include <algorithm>
 #include "Track.h"
 #include "Signal.h"
@@ -15,6 +16,7 @@ import BasicTypes;
 import TrackNr;
 import SignalId;
 
+using std::function;
 using std::vector;
 using std::unique_ptr;
 using std::ranges::any_of;
