@@ -15,7 +15,6 @@ module;
 #include "Neuron.h"
 #include "InputLine.h"
 #include "OutputLine.h"
-#include "IoLine.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
 #include "MonitorData.h"
@@ -56,6 +55,7 @@ import WrapSetSigGen;
 import InputOutputUI;
 import NNetWrapperHelpers;
 import NNetParameters;
+import IoLine;
 
 using std::filesystem::exists;
 using std::wofstream;

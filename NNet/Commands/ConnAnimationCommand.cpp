@@ -6,7 +6,6 @@ module;
 
 #include <algorithm>
 #include "NNetModelWriterInterface.h"
-#include "IoLine.h"
 
 module ConnAnimationCommand;
 
@@ -14,6 +13,7 @@ import MoreTypes;
 import IoLinesAnimation;
 import MakeConnAnimation;
 import MicroMeterPntVector;
+import IoLine;
 
 using std::make_unique;
 using std::ranges::sort;

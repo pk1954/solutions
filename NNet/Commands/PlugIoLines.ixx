@@ -7,12 +7,12 @@ module;
 #include <cassert>
 #include "NNetModelWriterInterface.h"
 #include "Knot.h"
-#include "IoLine.h"
 
 export module PlugIoLines;
 
 import NobId;
 import NNetCommand;
+import IoLine;
 
 using std::unique_ptr;
 using std::make_unique;

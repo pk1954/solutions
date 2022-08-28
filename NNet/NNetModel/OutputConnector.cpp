@@ -2,10 +2,10 @@
 //
 // NNetModel
 
-#include "IoLine.h"
 #include "OutputConnector.h"
 
 import DrawContext;
+import IoLine;
 
 OutputConnector::OutputConnector()
     :	IoConnector(NobType::Value::outputConnector)

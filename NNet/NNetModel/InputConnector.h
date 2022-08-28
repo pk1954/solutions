@@ -7,12 +7,12 @@
 #include <vector>
 #include "NobType.h"
 #include "IoConnector.h"
-#include "IoLine.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
 
 import DrawContext;
 import NNetParameters;
+import IoLine;
 
 using std::unique_ptr;
 using std::vector;

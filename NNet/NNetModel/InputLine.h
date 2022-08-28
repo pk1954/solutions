@@ -8,13 +8,13 @@
 #include "NobType.h"
 #include "BaseKnot.h"
 #include "SignalGenerator.h"
-#include "IoLine.h"
 
 import Direct2D;
 import tHighlight;
 import MoreTypes;
 import DrawContext;
 import SigGenDynamicData;
+import IoLine;
 
 class InputLine : public IoLine
 {

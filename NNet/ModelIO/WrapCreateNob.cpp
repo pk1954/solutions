@@ -14,7 +14,6 @@ module;
 #include "Knot.h"
 #include "Pipe.h"
 #include "Neuron.h"
-#include "IoLine.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "IoConnector.h"
@@ -32,6 +31,7 @@ import Script;
 import NobId;
 import NNetModelIO;
 import NNetWrapperHelpers;
+import IoLine;
 
 using std::vector;
 using std::wstring;

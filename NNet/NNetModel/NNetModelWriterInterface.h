@@ -8,7 +8,6 @@
 #include <cassert>
 #include <xutility>
 #include "BaseKnot.h"
-#include "IoLine.h"
 #include "MonitorData.h"
 #include "Nob.h"
 #include "Pipe.h"
@@ -26,6 +25,7 @@ import UPSensorList;
 import NobId;
 import DescriptionUI;
 import NNetParameters;
+import IoLine;
 
 using std::unique_ptr;
 using std::wstring;

@@ -7,10 +7,10 @@
 #include "NobType.h"
 #include "Nob.h"
 #include "IoConnector.h"
-#include "IoLine.h"
 
 import tHighlight;
 import DrawContext;
+import IoLine;
 
 class OutputConnector: public IoConnector
 {

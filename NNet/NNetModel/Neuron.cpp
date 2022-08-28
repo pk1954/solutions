@@ -5,7 +5,6 @@
 #include <sstream> 
 #include <iomanip>
 #include "Resource.h"
-#include "IoLine.h"
 #include "Pipe.h"
 #include "Neuron.h"
 
@@ -14,6 +13,7 @@ import DrawContext;
 import Spike;
 import NNetColors;
 import NNetParameters;
+import IoLine;
 
 using std::fixed;
 using std::wstring;

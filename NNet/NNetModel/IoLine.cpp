@@ -2,9 +2,12 @@
 //
 // NNetModel
 
+module;
+
 #include "MicroMeterPosDir.h"
 #include "Pipe.h"
-#include "IoLine.h"
+
+module IoLine;
 
 import MoreTypes;
 

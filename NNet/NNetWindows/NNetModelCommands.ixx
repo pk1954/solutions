@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include "MonitorData.h"
-#include "IoLine.h"
 #include "NobType.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -31,6 +30,7 @@ import SigGenStaticData;
 import NNetModelIO;
 import NNetParameters;
 import NNetCommand;
+import IoLine;
 
 using std::wcout;
 using std::wstring;

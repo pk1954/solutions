@@ -9,13 +9,13 @@
 #include "NobType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
-#include "IoLine.h"
 
 import BoolOp;
 import MoreTypes;
 import tHighlight;
 import Spike;
 import DrawContext;
+import IoLine;
 
 using std::wstring;
 using std::unique_ptr;

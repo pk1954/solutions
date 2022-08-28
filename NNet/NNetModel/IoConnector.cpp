@@ -5,11 +5,11 @@
 #include <cassert>
 #include "Resource.h"
 #include "MicroMeterPosDir.h"
-#include "IoLine.h"
 #include "Neuron.h"
 #include "IoConnector.h"
 
 import IoConstants;
+import IoLine;
 
 using std::make_unique;
 using std::wcout;
