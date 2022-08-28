@@ -47,7 +47,7 @@ private:
 		Util::SetApplicationTitle
 		(
 			m_hwndApp, 
-			IDS_APP_TITLE, 
+			L"NNetSimu",
 			m_pNMRI->GetModelFilePath() + (m_bUnsavedChanges ? L" * " : L"") 
 		);
 	}

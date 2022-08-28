@@ -137,14 +137,11 @@ wstring Util::GetUserName()
 void Util::SetApplicationTitle
 (
 	HWND    const   hwndApp, 
-	int     const   iResource,
+    wstring const & wstrName,
     wstring const & wstrAdd
 )
 {
-    static int const MAX_LOADSTRING = 100;
-    static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
-    (void)LoadString(GetModuleHandle(nullptr), iResource, szTitle, MAX_LOADSTRING);
-    wstring newTitle { szTitle };
+    wstring newTitle { wstrName };
     if (wstrAdd != L"")
         newTitle += L" -" + wstrAdd;
     SetWindowText(hwndApp, newTitle.c_str());

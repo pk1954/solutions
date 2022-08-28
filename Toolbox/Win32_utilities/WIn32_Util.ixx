@@ -101,7 +101,7 @@ namespace Util
     export wstring   GetComputerName();
     export wstring   GetUserName();
     export wstring   GetCurrentDir();
-    export void      SetApplicationTitle(HWND const, int const, wstring const& = L"");
+    export void      SetApplicationTitle(HWND const, wstring const&, wstring const & = L"");
     export void      StdOutConsole();
     export bool      EscapeKeyPressed();
     export HMENU     PopupMenu(HMENU const, LPCTSTR const);

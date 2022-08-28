@@ -31,15 +31,6 @@ SELECTION_SOUND    WAVE "tap.wav"
 NOT_POSSIBLE_SOUND WAVE "no.wav"
 
 //
-// String Table resources
-//
-LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
-STRINGTABLE
-{
-    IDS_APP_TITLE "NNetSimu"
-}
-
-//
 // Dialog resources
 //
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
