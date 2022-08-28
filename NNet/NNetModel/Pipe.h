@@ -6,17 +6,22 @@
 
 #include <vector>
 #include "Nob.h"
+#include "NobType.h"
 
+import DrawContext;
+import NamedType;
+import SaveCast;
 import PointType;
 import BasicTypes;
+import AngleTypes;
 import MoreTypes;
 import PixelTypes;
 import tHighlight;
 import NNetParameters;
+import NobId;
 
 using std::vector;
 
-class DrawContext;
 class BaseKnot;
 
 class Pipe : public Nob

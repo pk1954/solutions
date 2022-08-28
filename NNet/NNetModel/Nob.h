@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <string>
+#include <iostream>
 #include <type_traits>   
 #include <functional>   
 #include "d2d1helper.h"
@@ -13,6 +15,7 @@
 import BoolOp;
 import BasicTypes;
 import MoreTypes;
+import AngleTypes;
 import DrawContext;
 import tHighlight;
 import NobId;
