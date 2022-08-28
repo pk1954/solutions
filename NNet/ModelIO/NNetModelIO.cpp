@@ -15,12 +15,12 @@ module;
 #include "Neuron.h"
 #include "InputLine.h"
 #include "InputConnector.h"
-#include "OutputConnector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
 #include "Track.h"
 #include "NNetModelWriterInterface.h"
 #include "Signal.h"
+#include "OutputConnector.h"
 
 module NNetModelIO;
 

@@ -11,6 +11,7 @@ module;
 export module IoLine;
 
 import MoreTypes;
+import AngleTypes;
 import NNetParameters;
 
 export class IoLine : public BaseKnot

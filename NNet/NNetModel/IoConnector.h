@@ -6,13 +6,18 @@
 
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include "NobType.h"
 #include "Nob.h"
 
 import BoolOp;
+import DrawContext;
 import MoreTypes;
+import AngleTypes;
+import tHighlight;
 
 using std::vector;
+using std::wostream;
 using std::unique_ptr;
 using std::ranges::for_each;
 
