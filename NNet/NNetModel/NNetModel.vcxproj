@@ -34,7 +34,6 @@
     <ClInclude Include="Nob.h" />
     <ClInclude Include="NobType.h" />
     <ClInclude Include="OutputConnector.h" />
-    <ClInclude Include="OutputLine.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Signal.h" />
@@ -80,6 +79,7 @@
     <ClCompile Include="NobType.cpp" />
     <ClCompile Include="OutputConnector.cpp" />
     <ClCompile Include="OutputLine.cpp" />
+    <ClCompile Include="OutputLine.ixx" />
     <ClCompile Include="ParameterType.cpp" />
     <ClCompile Include="ParameterType.ixx" />
     <ClCompile Include="Pipe.cpp" />

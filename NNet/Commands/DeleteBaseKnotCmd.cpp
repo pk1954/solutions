@@ -6,13 +6,13 @@ module;
 
 #include "Pipe.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 
 module DeleteBaseKnotCmd;
 
 import SaveCast;
+import OutputLine;
 
 using std::wcout;
 using std::endl;

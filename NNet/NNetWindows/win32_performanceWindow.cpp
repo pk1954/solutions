@@ -8,7 +8,6 @@ module;
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "Pipe.h"
 #include "Nob.h"
 #include "NNetModelReaderInterface.h"
@@ -18,6 +17,7 @@ module PerformanceWindow;
 import SlowMotionRatio;
 import ComputeThread;
 import ActionTimer;
+import OutputLine;
 
 using std::wostringstream;
 using std::fixed;

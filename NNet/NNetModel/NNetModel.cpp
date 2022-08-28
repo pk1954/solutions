@@ -7,13 +7,13 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "NNetModel.h"
 
 import MoreTypes;
 import SimulationTime;
 import NobException;
 import Scanner;
+import OutputLine;
 
 using namespace std::chrono;
 using std::wcout;

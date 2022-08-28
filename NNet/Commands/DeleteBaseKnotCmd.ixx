@@ -7,7 +7,6 @@ module;
 #include <vector>
 #include "Nob.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "BaseKnot.h"
 
 export module DeleteBaseKnotCmd;
@@ -15,6 +14,7 @@ export module DeleteBaseKnotCmd;
 import PixelTypes;
 import NobIdList;
 import NNetCommand;
+import OutputLine;
 
 using std::vector;
 using std::unique_ptr;

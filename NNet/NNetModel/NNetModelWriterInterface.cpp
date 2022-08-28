@@ -7,11 +7,11 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "NNetModelWriterInterface.h"
 
 import NobIdList;
 import IoLinePair;
+import OutputLine;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {

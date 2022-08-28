@@ -15,7 +15,6 @@ module;
 #include "Pipe.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "IoConnector.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
@@ -32,6 +31,7 @@ import NobId;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import IoLine;
+import OutputLine;
 
 using std::vector;
 using std::wstring;

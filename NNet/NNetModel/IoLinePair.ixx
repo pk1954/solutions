@@ -7,12 +7,12 @@ module;
 #include <memory>
 #include "NNetModelWriterInterface.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "Pipe.h"
 
 export module IoLinePair;
 
 import MoreTypes;
+import OutputLine;
 
 using std::unique_ptr;
 using std::make_unique;

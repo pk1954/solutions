@@ -2,11 +2,19 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include "Resource.h"
-#include "OutputLine.h"
+#include "Nob.h"
+#include "BaseKnot.h"
 
+module OutputLine;
+
+import tHighlight;
+import MoreTypes;
 import DrawContext;
+import IoLine;
 
 OutputLine::OutputLine(MicroMeterPnt const & upCenter)
 	: IoLine(upCenter, NobType::Value::outputLine)

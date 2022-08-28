@@ -7,7 +7,6 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "nob.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "IoConnector.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
@@ -17,6 +16,7 @@ export module DeletePipeCommand;
 import SaveCast;
 import NobId;
 import NNetCommand;
+import OutputLine;
 
 export class DeletePipeCommand : public NNetCommand
 {

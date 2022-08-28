@@ -14,7 +14,6 @@ module;
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputLine.h"
-#include "OutputLine.h"
 #include "InputConnector.h"
 #include "OutputConnector.h"
 #include "MonitorData.h"
@@ -56,6 +55,7 @@ import InputOutputUI;
 import NNetWrapperHelpers;
 import NNetParameters;
 import IoLine;
+import OutputLine;
 
 using std::filesystem::exists;
 using std::wofstream;
