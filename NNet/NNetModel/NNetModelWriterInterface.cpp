@@ -6,12 +6,12 @@
 #include "Pipe.h"
 #include "Knot.h"
 #include "Neuron.h"
-#include "IoLinePair.h"
 #include "InputLine.h"
 #include "OutputLine.h"
 #include "NNetModelWriterInterface.h"
 
 import NobIdList;
+import IoLinePair;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {

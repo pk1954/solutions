@@ -1,8 +1,8 @@
-// IoLinePair.h
+// IoLinePair.ixx
 //
 // Commands
 
-#pragma once
+module;
 
 #include <memory>
 #include "NNetModelWriterInterface.h"
@@ -10,12 +10,14 @@
 #include "OutputLine.h"
 #include "Pipe.h"
 
+export module IoLinePair;
+
 import MoreTypes;
 
 using std::unique_ptr;
 using std::make_unique;
 
-class IoLinePair
+export class IoLinePair
 {
 public:
 	explicit IoLinePair
@@ -23,15 +25,15 @@ public:
 		NNetModelWriterInterface & nmwi,
 		MicroMeterPnt      const & pos
 	)
-	  :	m_upInputLine (make_unique<InputLine >(nmwi.StdSigGen(), pos - m_umOffset)),
-	    m_upOutputLine(make_unique<OutputLine>(pos + m_umOffset)),
-	    m_upPipe        (make_unique<Pipe>())
-	{ 
+	  : m_upInputLine(make_unique<InputLine >(nmwi.StdSigGen(), pos - m_umOffset)),
+		m_upOutputLine(make_unique<OutputLine>(pos + m_umOffset)),
+		m_upPipe(make_unique<Pipe>())
+	{
 		ConnectOutgoing(*m_upPipe.get(), *m_upInputLine.get());
 		ConnectIncoming(*m_upPipe.get(), *m_upOutputLine.get());
 	}
 
-	void Push(NNetModelWriterInterface& nmwi)
+	void Push(NNetModelWriterInterface & nmwi)
 	{
 		nmwi.Push2Model(move(m_upInputLine));
 		nmwi.Push2Model(move(m_upOutputLine));
@@ -46,7 +48,7 @@ public:
 	}
 
 private:
-	inline static MicroMeterPnt const m_umOffset { 0.0_MicroMeter, 300.0_MicroMeter };
+	inline static MicroMeterPnt const m_umOffset{ 0.0_MicroMeter, 300.0_MicroMeter };
 
 	unique_ptr<InputLine>  m_upInputLine  { };
 	unique_ptr<OutputLine> m_upOutputLine { };

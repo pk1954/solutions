@@ -5,12 +5,12 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "IoLinePair.h"
 
 export module NewIoLinePairCmd;
 
 import MoreTypes;
 import NNetCommand;
+import IoLinePair;
 
 export class NewIoLinePairCmd : public NNetCommand
 {
