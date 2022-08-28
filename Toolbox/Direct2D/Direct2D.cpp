@@ -190,7 +190,7 @@ ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
 {
 	HRESULT hr;
 	ID2D1GradientStopCollection * pGradientStopColl = nullptr;
-	array<D2D1_GRADIENT_STOP,2>   gradientStops { D2D1_GRADIENT_STOP(0.0f, colF1), D2D1_GRADIENT_STOP(1.0f, colF2) };
+	array<D2D1_GRADIENT_STOP, 2>  gradientStops { D2D1_GRADIENT_STOP(0.0f, colF1), D2D1_GRADIENT_STOP(1.0f, colF2) };
 	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops.data(), 2, &pGradientStopColl);
 	assert(SUCCEEDED(hr));
 	return pGradientStopColl;

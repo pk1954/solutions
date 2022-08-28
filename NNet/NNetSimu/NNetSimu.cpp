@@ -18,6 +18,7 @@ import Win32_Util;
 import NNetAppWindow;
 import Script;
 import Scanner;
+import Accelerators;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -63,8 +64,11 @@ int APIENTRY wWinMain
 
 	upApp = make_unique<NNetAppWindow>();
 
+//	Accelerators acc;
+
 	MessagePump pump;
 	pump.SetAccelTable(hInstance, IDC_NNET_SIMU_MAIN);
+//	pump.SetAccelTable(acc.Get());
 	upApp->Start(pump);
 	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 

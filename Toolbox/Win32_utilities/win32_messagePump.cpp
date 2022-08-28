@@ -5,13 +5,19 @@
 module;
 
 #include <cassert>
+#include <array>
 #include "Windows.h"
 
 module MessagePump;
 
+void MessagePump::SetAccelTable(HACCEL const haccel)
+{
+	m_defaultAccelTable = haccel;
+}
+
 void MessagePump::SetAccelTable(HINSTANCE const hInstance, int const idResource)
 {
-	HACCEL haccel { LoadAccelerators(hInstance, MAKEINTRESOURCE(idResource)) };
+	HACCEL haccel{ LoadAccelerators(hInstance, MAKEINTRESOURCE(idResource)) };
 	m_defaultAccelTable = haccel;
 }
 
