@@ -2,13 +2,16 @@
 //
 // NNetModel
 
+module;
+
 #include <memory>
 #include "NNetModelWriterInterface.h"
 #include "MonitorData.h"
 #include "SignalGenerator.h"
-#include "SignalFactory.h"
 #include "SignalSource.h"
 #include "Signal.h"
+
+module SignalFactory;
 
 import TrackNr;
 import SignalId;

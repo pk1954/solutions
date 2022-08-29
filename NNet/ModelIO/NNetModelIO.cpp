@@ -8,7 +8,6 @@ module;
 #include <fstream>
 #include <iostream>
 #include <cassert>
-#include "SignalFactory.h"
 #include "SignalGenerator.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -56,6 +55,7 @@ import IoLine;
 import OutputLine;
 import Neuron;
 import Track;
+import SignalFactory;
 
 using std::filesystem::exists;
 using std::wofstream;

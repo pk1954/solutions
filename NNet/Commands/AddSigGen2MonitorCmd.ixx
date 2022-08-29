@@ -6,7 +6,6 @@ module;
 
 #include "NNetModelWriterInterface.h"
 #include "SignalGenerator.h"
-#include "SignalFactory.h"
 #include "MonitorData.h"
 
 export module AddSigGen2MonitorCmd;
@@ -14,6 +13,7 @@ export module AddSigGen2MonitorCmd;
 import TrackNr;
 import SignalId;
 import NNetCommand;
+import SignalFactory;
 
 export class AddSigGen2MonitorCmd : public NNetCommand
 {

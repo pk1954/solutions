@@ -1,11 +1,13 @@
-// SignalFactory.h : 
+// SignalFactory.ixx
 //
 // NNetModel
 
-#pragma once
+module;
 
 #include "NNetModelWriterInterface.h"
 #include "SignalSource.h"
+
+export module SignalFactory;
 
 import Observable;
 import MoreTypes;
@@ -13,36 +15,36 @@ import TrackNr;
 import SignalId;
 import SignalNr;
 
-class SignalFactory
+export class SignalFactory
 {
 public:
 
-    static void Initialize(Observable & observable)
+    static void Initialize(Observable& observable)
     {
-        m_pObservable = & observable;
+        m_pObservable = &observable;
     }
 
     static SignalId MakeSensorSignal
     (
-        MicroMeterCircle   const &, 
+        MicroMeterCircle   const&,
         TrackNr            const,
-        NNetModelWriterInterface &
+        NNetModelWriterInterface&
     );
 
     static SignalId MakeSigGenSignal
     (
         TrackNr            const,
-        NNetModelWriterInterface &
+        NNetModelWriterInterface&
     );
 
 private:
 
     static SignalNr addSignal
     (
-        SignalSource &,
+        SignalSource&,
         TrackNr const,
-        NNetModelWriterInterface &
+        NNetModelWriterInterface&
     );
 
-    inline static Observable * m_pObservable { nullptr };
+    inline static Observable* m_pObservable{ nullptr };
 };
