@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include "NobType.h"
 #include "Nob.h"
 #include "IoConnector.h"
 
@@ -13,6 +12,7 @@ import DrawContext;
 import MoreTypes;
 import IoLine;
 import tHighlight;
+import NobType;
 
 using std::vector;
 

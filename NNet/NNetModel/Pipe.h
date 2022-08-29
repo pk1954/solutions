@@ -6,7 +6,6 @@
 
 #include <vector>
 #include "Nob.h"
-#include "NobType.h"
 
 import DrawContext;
 import NamedType;
@@ -18,6 +17,7 @@ import MoreTypes;
 import PixelTypes;
 import tHighlight;
 import NNetParameters;
+import NobType;
 import NobId;
 
 using std::vector;

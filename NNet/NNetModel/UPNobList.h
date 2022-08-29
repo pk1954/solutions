@@ -8,10 +8,10 @@
 #include <vector>
 #include <algorithm>
 #include "Nob.h"
-#include "NobType.h"
 
 import MoreTypes;
 import NobId;
+import NobType;
 
 using std::move;
 using std::array;

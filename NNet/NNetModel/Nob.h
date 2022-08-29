@@ -10,7 +10,6 @@
 #include <type_traits>   
 #include <functional>   
 #include "d2d1helper.h"
-#include "NobType.h"
 
 import BoolOp;
 import BasicTypes;
@@ -21,6 +20,7 @@ import tHighlight;
 import NobId;
 import NNetParameters;
 import MicroMeterPosDir;
+import NobType;
 
 using D2D1::ColorF;
 using std::is_base_of;

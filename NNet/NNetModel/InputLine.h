@@ -5,7 +5,6 @@
 #pragma once
 
 #include "Nob.h"
-#include "NobType.h"
 #include "BaseKnot.h"
 #include "SignalGenerator.h"
 
@@ -15,6 +14,7 @@ import MoreTypes;
 import DrawContext;
 import SigGenDynamicData;
 import IoLine;
+import NobType;
 
 class InputLine : public IoLine
 {

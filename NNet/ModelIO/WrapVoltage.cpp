@@ -4,9 +4,9 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 #include "Nob.h"
-#include "NobType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 #include "IoConnector.h"
@@ -19,6 +19,7 @@ import ErrHndl;
 import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
+import NobType;
 
 using std::wostream;
 using std::wcout;

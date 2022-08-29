@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert> 
 #include <sstream> 
 #include <iomanip>
 #include "Resource.h"

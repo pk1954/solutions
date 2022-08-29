@@ -3,7 +3,6 @@
 // NNetModel
 
 #include <iostream>
-#include "NobType.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 #include "InputLine.h"
@@ -15,6 +14,7 @@ import NobException;
 import Scanner;
 import OutputLine;
 import Neuron;
+import NobType;
 
 using std::wcout;
 using std::endl;

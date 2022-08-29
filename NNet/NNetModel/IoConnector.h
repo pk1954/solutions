@@ -7,7 +7,6 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include "NobType.h"
 #include "Nob.h"
 
 import BoolOp;
@@ -17,6 +16,7 @@ import AngleTypes;
 import tHighlight;
 import DrawContext;
 import MicroMeterPosDir;
+import NobType;
 
 using std::vector;
 using std::wostream;

@@ -4,7 +4,7 @@
 
 module;
 
-#include "NobType.h"
+#include <memory>
 
 export module NNetWrapperHelpers;
 
@@ -17,6 +17,7 @@ import SignalId;
 import Script;
 import NobId;
 import SigGenStaticData;
+import NobType;
 
 using std::unique_ptr;
 

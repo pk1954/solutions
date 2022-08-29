@@ -8,7 +8,6 @@ module;
 #include <iostream>
 #include <string>
 #include <vector>
-#include "NobType.h"
 #include "Nob.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -32,6 +31,7 @@ import NNetWrapperHelpers;
 import IoLine;
 import OutputLine;
 import Neuron;
+import NobType;
 
 using std::vector;
 using std::wstring;

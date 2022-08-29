@@ -6,7 +6,6 @@ module;
 
 #include <cassert> 
 #include "NNetModelWriterInterface.h"
-#include "NobType.h"
 #include "InputLine.h"
 #include "BaseKnot.h"
 #include "Knot.h"
@@ -17,6 +16,7 @@ import MoreTypes;
 import NobId;
 import NNetCommand;
 import OutputLine;
+import NobType;
 
 using std::unique_ptr;
 

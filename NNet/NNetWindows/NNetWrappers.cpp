@@ -5,7 +5,6 @@
 module;
 
 #include "Resource.h"
-#include "NobType.h"
 #include "NNetModelReaderInterface.h"
 
 module NNetWrappers;
@@ -21,6 +20,7 @@ import NobIdList;
 import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
+import NobType;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

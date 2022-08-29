@@ -7,12 +7,12 @@ module;
 #include <iostream>
 #include <exception>
 #include <source_location>
-#include "NobType.h"
 
 export module NobException;
 
 import Scanner;
 import NobId;
+import NobType;
 
 using std::endl;
 using std::wcout;

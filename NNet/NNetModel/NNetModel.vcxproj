@@ -30,7 +30,6 @@
     <ClInclude Include="NNetModelReaderInterface.h" />
     <ClInclude Include="NNetModelWriterInterface.h" />
     <ClInclude Include="Nob.h" />
-    <ClInclude Include="NobType.h" />
     <ClInclude Include="OutputConnector.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Resource.h" />
@@ -75,6 +74,7 @@
     <ClCompile Include="NobIdList.cpp" />
     <ClCompile Include="NobIdList.ixx" />
     <ClCompile Include="NobType.cpp" />
+    <ClCompile Include="NobType.ixx" />
     <ClCompile Include="OutputConnector.cpp" />
     <ClCompile Include="OutputLine.cpp" />
     <ClCompile Include="OutputLine.ixx" />

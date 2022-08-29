@@ -5,7 +5,6 @@
 #include <vector>   
 #include "Resource.h"
 #include "Nob.h"
-#include "NobType.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
 #include "IoConnector.h"
@@ -17,6 +16,7 @@ import DrawContext;
 import tHighlight;
 import NNetParameters;
 import IoLine;
+import NobType;
 
 using std::make_unique;
 using std::vector;

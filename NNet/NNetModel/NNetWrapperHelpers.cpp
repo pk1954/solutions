@@ -5,7 +5,8 @@
 module;
 
 #include <cmath>
-#include "NobType.h"
+#include <string>
+#include <memory>
 
 module NNetWrapperHelpers;
 
@@ -23,9 +24,11 @@ import Script;
 import SignalNr;
 import NobId;
 import SigGenStaticData;
+import NobType;
 
 using std::unique_ptr;
 using std::make_unique;
+using std::wstring;
 
 MicroMeter ScrReadMicroMeter(Script & script)
 {

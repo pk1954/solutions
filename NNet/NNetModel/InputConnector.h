@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include "NobType.h"
 #include "IoConnector.h"
 #include "InputLine.h"
 #include "SignalGenerator.h"
@@ -13,6 +12,7 @@
 import DrawContext;
 import NNetParameters;
 import IoLine;
+import NobType;
 
 using std::unique_ptr;
 using std::vector;

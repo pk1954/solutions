@@ -2,10 +2,10 @@
 //
 // NNetModel
 
+#include <cassert> 
 #include <iomanip>
 #include <iostream>
 #include "Resource.h"
-#include "NobType.h"
 #include "Nob.h"
 
 import Debug;
@@ -16,6 +16,7 @@ import Scanner;
 import NNetColors;
 import NNetParameters;
 import MicroMeterPosDir;
+import NobType;
 
 using std::setw;
 using std::move;

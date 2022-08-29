@@ -3,7 +3,6 @@
 // NNetModel
 
 #include <vector>
-#include "NobType.h"
 #include "IoConnector.h"
 #include "OutputConnector.h"
 
@@ -11,6 +10,7 @@ import DrawContext;
 import MoreTypes;
 import IoLine;
 import tHighlight;
+import NobType;
 
 using std::vector;
 

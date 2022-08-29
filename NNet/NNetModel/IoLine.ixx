@@ -4,7 +4,6 @@
 
 module;
 
-#include "NobType.h"
 #include "BaseKnot.h"
 
 export module IoLine;
@@ -13,6 +12,7 @@ import MoreTypes;
 import AngleTypes;
 import NNetParameters;
 import MicroMeterPosDir;
+import NobType;
 
 export class IoLine : public BaseKnot
 {

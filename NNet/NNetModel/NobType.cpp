@@ -1,12 +1,16 @@
 // NobType.cpp
 //
 // NNetModel
+module;
 
-#include <ostream>
+#include <string>
+#include <iostream>
 #include <unordered_map>
-#include "NobType.h"
+
+module NobType;
 
 using std::unordered_map;
+using std::wostream;
 using std::wstring;
 
 wstring NobType::GetName(NobType::Value const val)

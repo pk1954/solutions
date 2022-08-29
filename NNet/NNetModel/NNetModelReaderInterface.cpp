@@ -2,6 +2,7 @@
 //
 // NNetModel
 
+#include <cassert> 
 #include "Nob.h"
 #include "NNetModel.h"
 #include "InputConnector.h"

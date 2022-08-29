@@ -5,12 +5,12 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NobType.h"
 
 export module RestrictSelectionCommand;
 
 import MoreTypes;
 import SelectionCommand;
+import NobType;
 
 export class RestrictSelectionCommand : public SelectionCommand
 {

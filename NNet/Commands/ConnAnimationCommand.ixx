@@ -5,7 +5,6 @@
 module;
 
 #include <vector>
-#include "NobType.h"
 #include "UPNobList.h"
 
 export module ConnAnimationCommand;
@@ -13,6 +12,7 @@ export module ConnAnimationCommand;
 import MoreTypes;
 import NNetCommand;
 import IoLine;
+import NobType;
 
 using std::vector;
 

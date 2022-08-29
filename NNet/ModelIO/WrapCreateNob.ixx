@@ -9,13 +9,13 @@ module;
 #include "BaseKnot.h"
 #include "Pipe.h"
 #include "IoConnector.h"
-#include "NobType.h"
 #include "Nob.h"
 
 export module WrapCreateNob;
 
 import NNetWrapperBase;
 import Script;
+import NobType;
 
 using std::wostream;
 

@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include <chrono>
-#include "NobType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
 
@@ -18,6 +17,7 @@ import tHighlight;
 import Spike;
 import DrawContext;
 import IoLine;
+import NobType;
 
 using std::wstring;
 using std::unique_ptr;
