@@ -2,10 +2,13 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include <iostream>
 #include "Signal.h"
-#include "Track.h"
+
+module Track;
 
 import SaveCast;
 

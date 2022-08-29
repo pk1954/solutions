@@ -16,7 +16,6 @@ module;
 #include "InputConnector.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
-#include "Track.h"
 #include "NNetModelWriterInterface.h"
 #include "Signal.h"
 #include "OutputConnector.h"
@@ -56,6 +55,7 @@ import NNetParameters;
 import IoLine;
 import OutputLine;
 import Neuron;
+import Track;
 
 using std::filesystem::exists;
 using std::wofstream;

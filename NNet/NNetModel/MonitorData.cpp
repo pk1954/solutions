@@ -4,10 +4,11 @@
 
 #include <cassert>
 #include <iostream>
-#include "Track.h"
 #include "SignalFactory.h"
 #include "MonitorData.h"
 #include "Signal.h"
+
+import Track;
 
 using std::distance;
 using std::make_unique;

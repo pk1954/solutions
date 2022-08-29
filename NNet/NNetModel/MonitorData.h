@@ -7,7 +7,6 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
-#include "Track.h"
 #include "Signal.h"
 
 import Observable;
@@ -15,6 +14,7 @@ import NamedType;
 import BasicTypes;
 import TrackNr;
 import SignalId;
+import Track;
 
 using std::function;
 using std::vector;

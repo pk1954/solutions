@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "Track.h"
 #include "MonitorData.h"
 
 export module MoveSignalCmd;
@@ -13,6 +12,7 @@ export module MoveSignalCmd;
 import TrackNr;
 import SignalId;
 import NNetCommand;
+import Track;
 
 export class MoveSignalCmd : public NNetCommand
 {

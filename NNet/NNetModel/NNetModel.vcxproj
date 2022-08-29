@@ -39,7 +39,6 @@
     <ClInclude Include="SignalFactory.h" />
     <ClInclude Include="SignalGenerator.h" />
     <ClInclude Include="SignalSource.h" />
-    <ClInclude Include="Track.h" />
     <ClInclude Include="UPNobList.h" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +99,7 @@
     <ClCompile Include="Spike.ixx" />
     <ClCompile Include="tHighlightType.ixx" />
     <ClCompile Include="Track.cpp" />
+    <ClCompile Include="Track.ixx" />
     <ClCompile Include="TrackNr.ixx" />
     <ClCompile Include="UPNobList.cpp" />
     <ClCompile Include="UPSensorList.cpp" />

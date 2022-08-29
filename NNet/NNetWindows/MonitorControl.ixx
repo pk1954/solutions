@@ -6,7 +6,6 @@ module;
 
 #include <dwrite.h>
 #include <Windows.h>
-#include "Track.h"
 #include "MonitorData.h"
 #include "NNetModelWriterInterface.h"
 #include "Signal.h"
@@ -23,6 +22,7 @@ import PixelTypes;
 import TimeGraph;
 import NNetModelCommands;
 import TrackNr;
+import Track;
 
 export class MonitorControl : public TimeGraph
 {
