@@ -13,7 +13,6 @@ module;
 #include "InputLine.h"
 #include "InputConnector.h"
 #include "MonitorData.h"
-#include "ModelDescription.h"
 #include "NNetModelWriterInterface.h"
 #include "Signal.h"
 #include "OutputConnector.h"
@@ -56,6 +55,7 @@ import Neuron;
 import Track;
 import SignalFactory;
 import Knot;
+import ModelDescription;
 
 using std::filesystem::exists;
 using std::wofstream;

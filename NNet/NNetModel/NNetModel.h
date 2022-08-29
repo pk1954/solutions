@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "ModelDescription.h"
 #include "MonitorData.h"
 #include "UPNobList.h"
 #include "BaseKnot.h"
@@ -18,6 +17,8 @@ import UPSigGenList;
 import ParamType;
 import UPSensorList;
 import NNetParameters;
+import ModelDescription;
+import DescriptionUI;
 
 using std::unique_ptr;
 using std::move;
