@@ -6,13 +6,13 @@ module;
 
 #include "Nob.h"
 #include "Pipe.h"
-#include "Knot.h"
 #include "NNetModelWriterInterface.h"
 
 export module SelectNobsInRectCommand;
 
 import MoreTypes;
 import SelectionCommand;
+import Knot;
 
 export class SelectNobsInRectCommand : public SelectionCommand
 {

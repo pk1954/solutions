@@ -8,7 +8,6 @@ module;
 #include "NNetModelWriterInterface.h"
 #include "InputLine.h"
 #include "BaseKnot.h"
-#include "Knot.h"
 
 export module AddPipe2PipeCommand;
 
@@ -17,6 +16,7 @@ import NobId;
 import NNetCommand;
 import OutputLine;
 import NobType;
+import Knot;
 
 using std::unique_ptr;
 

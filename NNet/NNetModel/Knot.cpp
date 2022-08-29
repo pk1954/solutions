@@ -2,12 +2,18 @@
 //
 // NNetModel
 
-#include <cassert>
+module;
+
 #include <cassert>
 #include "Resource.h"
-#include "Knot.h"
+#include "BaseKnot.h"
+#include "Pipe.h"
+
+module Knot;
 
 import DrawContext;
+import BasicTypes;
+import NobType;
 import tHighlight;
 import NNetColors;
 

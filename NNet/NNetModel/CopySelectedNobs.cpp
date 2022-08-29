@@ -7,11 +7,11 @@ module;
 #include <cassert>
 #include <unordered_map>
 #include "Nob.h"
-#include "Knot.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 
 module CopySelectedNobs;
+import Knot;
 
 using std::unordered_map;
 using std::make_pair;

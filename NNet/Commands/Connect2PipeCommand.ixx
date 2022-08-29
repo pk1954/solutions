@@ -7,7 +7,6 @@ module;
 #include <cassert>
 #include "NNetModelWriterInterface.h"
 #include "BaseKnot.h"
-#include "Knot.h"
 #include "Pipe.h"
 
 export module Connect2PipeCommand;
@@ -15,6 +14,7 @@ export module Connect2PipeCommand;
 import MoreTypes;
 import NobId;
 import NNetCommand;
+import Knot;
 
 using std::unique_ptr;
 using std::make_unique;

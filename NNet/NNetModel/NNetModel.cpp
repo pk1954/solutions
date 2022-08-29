@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "BaseKnot.h"
-#include "Knot.h"
 #include "InputLine.h"
 #include "NNetModel.h"
 
@@ -15,6 +14,7 @@ import Scanner;
 import OutputLine;
 import Neuron;
 import NobType;
+import Knot;
 
 using std::wcout;
 using std::endl;

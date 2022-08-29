@@ -9,7 +9,6 @@ module;
 #include <string>
 #include <Windows.h>
 #include "Resource.h"
-#include "Knot.h"
 #include "UPNobList.h"
 #include "IoConnector.h"
 #include "win32_util_resource.h"
@@ -37,6 +36,7 @@ import NobId;
 import NNetColors;
 import NNetParameters;
 import Neuron;
+import Knot;
 
 using std::unordered_map;
 using std::unique_ptr;

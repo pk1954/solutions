@@ -9,7 +9,6 @@ module;
 #include <string> 
 #include <iomanip>
 #include "NNetModelReaderInterface.h"
-#include "Knot.h"
 #include "InputLine.h"
 #include "Pipe.h"
 #include "Signal.h"
@@ -22,6 +21,7 @@ import MainWindow;
 import Win32_Util;
 import Sensor;
 import Neuron;
+import Knot;
 
 using std::wostringstream;
 using std::setprecision;

@@ -10,7 +10,6 @@ module;
 #include <cassert>
 #include "SignalGenerator.h"
 #include "BaseKnot.h"
-#include "Knot.h"
 #include "InputLine.h"
 #include "InputConnector.h"
 #include "MonitorData.h"
@@ -56,6 +55,7 @@ import OutputLine;
 import Neuron;
 import Track;
 import SignalFactory;
+import Knot;
 
 using std::filesystem::exists;
 using std::wofstream;

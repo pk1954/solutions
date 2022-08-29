@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include <numeric>
-#include "Knot.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
 #include "InputConnector.h"
@@ -16,6 +15,7 @@ import NobIdList;
 import NobException;
 import OutputLine;
 import Neuron;
+import Knot;
 
 using std::move;
 using std::accumulate;

@@ -6,7 +6,6 @@
 #include <algorithm>
 #include "Resource.h"
 #include "BaseKnot.h"
-#include "Knot.h"
 #include "Pipe.h"
 
 import Geometry;
@@ -15,6 +14,7 @@ import BasicTypes;
 import SpeedType;
 import DrawContext;
 import NNetParameters;
+import Knot;
 
 using std::wcout;
 using std::endl;

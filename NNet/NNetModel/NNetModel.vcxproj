@@ -23,7 +23,6 @@
     <ClInclude Include="InputConnector.h" />
     <ClInclude Include="InputLine.h" />
     <ClInclude Include="IoConnector.h" />
-    <ClInclude Include="Knot.h" />
     <ClInclude Include="ModelDescription.h" />
     <ClInclude Include="MonitorData.h" />
     <ClInclude Include="NNetModel.h" />
@@ -53,6 +52,7 @@
     <ClCompile Include="IoLine.ixx" />
     <ClCompile Include="IoLinePair.ixx" />
     <ClCompile Include="Knot.cpp" />
+    <ClCompile Include="Knot.ixx" />
     <ClCompile Include="MicroMeterPntVector.cpp" />
     <ClCompile Include="MicroMeterPointVector.ixx" />
     <ClCompile Include="MicroMeterPosDir.cpp" />

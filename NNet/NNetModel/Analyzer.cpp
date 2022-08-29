@@ -7,11 +7,11 @@ module;
 #include <cassert>
 #include <iostream>
 #include "NNetModelReaderInterface.h"
-#include "Knot.h"
 
 module Analyzer;
 
 import MoreTypes;
+import Knot;
 
 using std::endl;
 using std::wstring;

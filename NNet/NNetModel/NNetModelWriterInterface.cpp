@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include "Pipe.h"
-#include "Knot.h"
 #include "InputLine.h"
 #include "NNetModelWriterInterface.h"
 
@@ -12,6 +11,7 @@ import NobIdList;
 import IoLinePair;
 import OutputLine;
 import Neuron;
+import Knot;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {

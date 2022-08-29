@@ -8,7 +8,6 @@ module;
 #include "InputLine.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
-#include "Knot.h"
 
 export module AddPipe2BaseKnotCommand;
 
@@ -19,6 +18,7 @@ import IoLine;
 import OutputLine;
 import Neuron;
 import NobType;
+import Knot;
 
 export class AddPipe2BaseKnotCommand : public NNetCommand
 {

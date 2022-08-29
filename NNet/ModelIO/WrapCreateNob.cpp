@@ -10,7 +10,6 @@ module;
 #include <vector>
 #include "Nob.h"
 #include "BaseKnot.h"
-#include "Knot.h"
 #include "Pipe.h"
 #include "InputLine.h"
 #include "IoConnector.h"
@@ -32,6 +31,7 @@ import IoLine;
 import OutputLine;
 import Neuron;
 import NobType;
+import Knot;
 
 using std::vector;
 using std::wstring;

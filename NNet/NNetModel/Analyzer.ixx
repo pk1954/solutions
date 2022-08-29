@@ -9,13 +9,13 @@ module;
 #include <string>
 #include <vector>
 #include "NNetModel.h"
-#include "Knot.h"
 #include "Nob.h"
 #include "NNetModelReaderInterface.h"
 
 export module Analyzer;
 
 import DisplayFunctor;
+import Knot;
 
 using std::vector;
 using std::wstring;

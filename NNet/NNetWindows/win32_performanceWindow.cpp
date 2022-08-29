@@ -6,7 +6,6 @@ module;
 
 #include <iomanip>
 #include <sstream>
-#include "Knot.h"
 #include "InputLine.h"
 #include "Pipe.h"
 #include "Nob.h"
@@ -19,6 +18,7 @@ import ComputeThread;
 import ActionTimer;
 import OutputLine;
 import Neuron;
+import Knot;
 
 using std::wostringstream;
 using std::setprecision;

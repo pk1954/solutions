@@ -8,7 +8,6 @@
 #include <sstream> 
 #include "Resource.h"
 #include "SignalGenerator.h"
-#include "Knot.h"
 #include "InputConnector.h"
 #include "InputLine.h"
 
@@ -21,6 +20,7 @@ import NNetColors;
 import NNetParameters;
 import Neuron;
 import NobType;
+import Knot;
 
 using std::chrono::microseconds;
 using std::wostringstream;
