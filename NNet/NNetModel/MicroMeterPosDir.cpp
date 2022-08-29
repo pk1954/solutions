@@ -2,10 +2,15 @@
 //
 // NNetModel
 
+module;
+
 #include <algorithm>
 #include "Nob.h"
-#include "MicroMeterPosDir.h"
 
+module MicroMeterPosDir;
+
+import MoreTypes;
+import AngleTypes;
 import IoConstants;
 import NNetParameters;
 
@@ -75,17 +80,4 @@ wostream & operator<< (wostream & out, MicroMeterPosDir const & posDir)
         << SEPARATOR    << posDir.m_dir.GetValue() 
         << CLOSE_BRACKET;
     return out;
-}
-
-unsigned int CalcNrOfSteps
-(
-    MicroMeterPosDir const & umPosDirStart,
-    MicroMeterPosDir const & umPosDirTarget
-)
-{
-    MicroMeterPosDir const umPosDirDiff    { umPosDirTarget - umPosDirStart };
-    unsigned int     const uiStepsFromRot  { CalcNrOfSteps(Normalize(umPosDirDiff.GetDir())) };
-    unsigned int     const uiStepsFromMove { CalcNrOfSteps(Hypot    (umPosDirDiff.GetPos())) };
-    unsigned int     const uiSteps         { max(uiStepsFromRot, uiStepsFromMove) + 1 };
-    return uiSteps;
 }

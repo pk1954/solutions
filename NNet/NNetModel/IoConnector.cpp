@@ -4,13 +4,13 @@
 
 #include <cassert>
 #include "Resource.h"
-#include "MicroMeterPosDir.h"
 #include "BaseKnot.h"
 #include "IoConnector.h"
 
 import IoConstants;
 import IoLine;
 import Neuron;
+import MicroMeterPosDir;
 
 using std::make_unique;
 using std::wcout;

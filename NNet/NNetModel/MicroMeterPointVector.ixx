@@ -7,7 +7,6 @@ module;
 #include <vector>
 #include <cassert>   
 #include <iostream>   
-#include "MicroMeterPosDir.h"
 
 export module MicroMeterPntVector;
 
@@ -17,6 +16,7 @@ import MoreTypes;
 import PointType;
 import AngleTypes;
 import IoLine;
+import MicroMeterPosDir;
 
 using std::vector;
 using std::wostream;

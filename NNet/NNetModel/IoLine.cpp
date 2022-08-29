@@ -4,12 +4,12 @@
 
 module;
 
-#include "MicroMeterPosDir.h"
 #include "Pipe.h"
 
 module IoLine;
 
 import MoreTypes;
+import MicroMeterPosDir;
 
 MicroMeterPnt IoLine::GetScaledDirVector() const
 {

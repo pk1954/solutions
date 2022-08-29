@@ -24,7 +24,6 @@
     <ClInclude Include="InputLine.h" />
     <ClInclude Include="IoConnector.h" />
     <ClInclude Include="Knot.h" />
-    <ClInclude Include="MicroMeterPosDir.h" />
     <ClInclude Include="ModelDescription.h" />
     <ClInclude Include="MonitorData.h" />
     <ClInclude Include="NNetModel.h" />
@@ -59,6 +58,7 @@
     <ClCompile Include="MicroMeterPntVector.cpp" />
     <ClCompile Include="MicroMeterPointVector.ixx" />
     <ClCompile Include="MicroMeterPosDir.cpp" />
+    <ClCompile Include="MicroMeterPosDir.ixx" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="Neuron.ixx" />

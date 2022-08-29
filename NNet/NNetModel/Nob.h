@@ -5,11 +5,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <type_traits>   
 #include <functional>   
 #include "d2d1helper.h"
-#include "MicroMeterPosDir.h"
 #include "NobType.h"
 
 import BoolOp;
@@ -20,6 +20,7 @@ import DrawContext;
 import tHighlight;
 import NobId;
 import NNetParameters;
+import MicroMeterPosDir;
 
 using D2D1::ColorF;
 using std::is_base_of;
@@ -29,6 +30,7 @@ using std::unique_ptr;
 using std::wostream;
 using std::wstring;
 using std::function;
+using std::vector;
 
 class Nob;
 

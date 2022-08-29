@@ -12,7 +12,6 @@
 #include "Nob.h"
 #include "Pipe.h"
 #include "NNetModel.h"
-#include "MicroMeterPosDir.h"
 #include "NNetModelReaderInterface.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
@@ -26,6 +25,7 @@ import NobId;
 import DescriptionUI;
 import NNetParameters;
 import IoLine;
+import MicroMeterPosDir;
 
 using std::unique_ptr;
 using std::wstring;

@@ -6,13 +6,14 @@ module;
 
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
-#include "MicroMeterPosDir.h"
 
 export module SingleNobAnimation;
 
 import MoreTypes;
 import Command;
 import Animation;
+import MicroMeterPosDir;
+import MicroMeterPntVector;
 
 using std::function;
 
@@ -29,8 +30,12 @@ public:
         m_start(m_animated),
         m_target(target)
     {
+        MicroMeterPosDir const umPosDirDiff    { m_animated - m_target };
+        unsigned int     const uiStepsFromRot  { CalcNrOfSteps(Normalize(umPosDirDiff.GetDir())) };
+        unsigned int     const uiStepsFromMove { CalcNrOfSteps(Hypot(umPosDirDiff.GetPos())) };
+        unsigned int     const uiSteps         { max(uiStepsFromRot, uiStepsFromMove) + 1 };
         m_upAnimation = make_unique<Animation<MicroMeterPosDir>>(this);
-        m_upAnimation->SetNrOfSteps(CalcNrOfSteps(m_animated, m_target));
+        m_upAnimation->SetNrOfSteps(uiSteps);
     }
 
     void Do() final

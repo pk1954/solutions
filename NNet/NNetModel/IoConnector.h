@@ -9,7 +9,6 @@
 #include <iostream>
 #include "NobType.h"
 #include "Nob.h"
-#include "MicroMeterPosDir.h"
 
 import BoolOp;
 import DrawContext;
@@ -17,6 +16,7 @@ import MoreTypes;
 import AngleTypes;
 import tHighlight;
 import DrawContext;
+import MicroMeterPosDir;
 
 using std::vector;
 using std::wostream;
