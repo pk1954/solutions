@@ -9,7 +9,6 @@
 #include <string>
 #include "MonitorData.h"
 #include "Nob.h"
-#include "NNetModel.h"
 #include "Pipe.h"
 #include "SignalGenerator.h"
 #include "UPNobList.h"
@@ -27,6 +26,7 @@ import NobId;
 import NNetParameters;
 import Sensor;
 import NobType;
+import NNetModel;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 

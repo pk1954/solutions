@@ -2,10 +2,13 @@
 //
 // NNetModel
 
+module;
+
 #include <iostream>
 #include "BaseKnot.h"
 #include "InputLine.h"
-#include "NNetModel.h"
+
+module NNetModel;
 
 import MoreTypes;
 import SimulationTime;

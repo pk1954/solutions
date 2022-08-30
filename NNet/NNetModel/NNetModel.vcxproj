@@ -24,7 +24,6 @@
     <ClInclude Include="InputLine.h" />
     <ClInclude Include="IoConnector.h" />
     <ClInclude Include="MonitorData.h" />
-    <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetModelReaderInterface.h" />
     <ClInclude Include="NNetModelWriterInterface.h" />
     <ClInclude Include="Nob.h" />
@@ -62,6 +61,7 @@
     <ClCompile Include="Neuron.ixx" />
     <ClCompile Include="NNetColors.ixx" />
     <ClCompile Include="NNetModel.cpp" />
+    <ClCompile Include="NNetModel.ixx" />
     <ClCompile Include="NNetModelReaderInterface.cpp" />
     <ClCompile Include="NNetModelWriterInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />

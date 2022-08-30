@@ -5,7 +5,6 @@
 module;
 
 #include "NNetModelWriterInterface.h"
-#include "NNetModel.h"
 #include "SignalGenerator.h"
 #include "InputConnector.h"
 #include "InputLine.h"

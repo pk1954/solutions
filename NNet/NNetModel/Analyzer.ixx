@@ -8,7 +8,6 @@ module;
 
 #include <string>
 #include <vector>
-#include "NNetModel.h"
 #include "Nob.h"
 #include "NNetModelReaderInterface.h"
 
@@ -25,18 +24,18 @@ export using NobStack = vector<Nob const*>;
 export class ModelAnalyzer
 {
 public:
-	static void SetStatusBarDisplay(DisplayFunctor* const func) { m_pStatusBarDisplay = func; }
-	static void SetEscFunc(auto const& func) { m_pEscFunc = func; }
+	static void SetStatusBarDisplay(DisplayFunctor * const func) { m_pStatusBarDisplay = func; }
+	static void SetEscFunc(auto const & func) { m_pEscFunc = func; }
 
-	static NobStack FindLoop(NNetModelReaderInterface const&);
-	static NobStack FindAnomaly(NNetModelReaderInterface const&);
+	static NobStack FindLoop   (NNetModelReaderInterface const &);
+	static NobStack FindAnomaly(NNetModelReaderInterface const &);
 
 private:
 
-	inline static DisplayFunctor* m_pStatusBarDisplay{ nullptr };
-	inline static bool             m_bStop{ false };
-	inline static int              m_iRecDepth{ 0 };
-	inline static NobStack         m_nobStack{ };
+	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };
+	inline static bool             m_bStop             { false };
+	inline static int              m_iRecDepth         { 0 };
+	inline static NobStack         m_nobStack          { };
 
 	inline static bool (*m_pEscFunc)() { nullptr };
 

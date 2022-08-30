@@ -9,7 +9,6 @@ module;
 #include <Windows.h>
 #include "NNetModelWriterInterface.h"
 #include "UPNobList.h"
-#include "NNetModel.h"
 
 export module NNetModelIO;
 
@@ -18,6 +17,7 @@ import NobIdList;
 import Script;
 import NobId;
 import InputOutputUI;
+import NNetModel;
 
 using std::unique_ptr;
 using std::wostream;
@@ -69,7 +69,7 @@ private:
 	/// export ///
 
 	NobIdList                        m_CompactIds;
-	NNetModelReaderInterface const* m_pExportNMRI{ nullptr };  // valid only during export
+	NNetModelReaderInterface const * m_pExportNMRI{ nullptr };  // valid only during export
 
 	void compress(NNetModelReaderInterface const&);
 	void writeHeader(wostream&) const;

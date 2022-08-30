@@ -4,7 +4,6 @@
 
 #include <cassert> 
 #include "Nob.h"
-#include "NNetModel.h"
 #include "InputConnector.h"
 #include "IoConnector.h"
 #include "InputLine.h"
@@ -13,6 +12,7 @@
 import BasicTypes;
 import DrawContext;
 import Neuron;
+import NNetModel;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {

@@ -4,7 +4,6 @@
 
 module;
 
-#include "NNetModel.h"
 #include "NNetModelWriterInterface.h"
 
 export module ComputeThread;
