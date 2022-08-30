@@ -8,7 +8,6 @@
 #include <cassert>
 #include <xutility>
 #include "BaseKnot.h"
-#include "MonitorData.h"
 #include "Nob.h"
 #include "Pipe.h"
 #include "NNetModelReaderInterface.h"
@@ -26,6 +25,7 @@ import NNetParameters;
 import IoLine;
 import MicroMeterPosDir;
 import NNetModel;
+import MonitorData;
 
 using std::unique_ptr;
 using std::wstring;

@@ -6,7 +6,6 @@ module;
 
 #include <iostream>
 #include "NNetModelWriterInterface.h"
-#include "MonitorData.h"
 
 export module WrapNrOfTracks;
 
@@ -14,6 +13,7 @@ import NNetWrapperBase;
 import TrackNr;
 import Script;
 import NNetModelIO;
+import MonitorData;
 
 using std::wostream;
 using std::endl;

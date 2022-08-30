@@ -6,7 +6,6 @@ module;
 
 #include <memory>
 #include "NNetModelWriterInterface.h"
-#include "MonitorData.h"
 #include "SignalGenerator.h"
 #include "SignalSource.h"
 #include "Signal.h"
@@ -16,6 +15,7 @@ module SignalFactory;
 import TrackNr;
 import SignalId;
 import SignalNr;
+import MonitorData;
 
 using std::unique_ptr;
 using std::make_unique;

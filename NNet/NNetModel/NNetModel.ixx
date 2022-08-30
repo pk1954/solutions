@@ -4,7 +4,6 @@
 
 module;
 
-#include "MonitorData.h"
 #include "UPNobList.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
@@ -21,6 +20,7 @@ import UPSensorList;
 import NNetParameters;
 import ModelDescription;
 import DescriptionUI;
+import MonitorData;
 
 using std::unique_ptr;
 using std::move;

@@ -2,10 +2,13 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include <iostream>
-#include "MonitorData.h"
 #include "Signal.h"
+
+module MonitorData;
 
 import Track;
 import SignalFactory;

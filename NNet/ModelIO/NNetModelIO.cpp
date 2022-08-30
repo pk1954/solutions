@@ -12,7 +12,6 @@ module;
 #include "BaseKnot.h"
 #include "InputLine.h"
 #include "InputConnector.h"
-#include "MonitorData.h"
 #include "NNetModelWriterInterface.h"
 #include "Signal.h"
 #include "OutputConnector.h"
@@ -56,6 +55,7 @@ import Track;
 import SignalFactory;
 import Knot;
 import ModelDescription;
+import MonitorData;
 
 using std::filesystem::exists;
 using std::wofstream;

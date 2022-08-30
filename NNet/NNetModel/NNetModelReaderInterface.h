@@ -7,7 +7,6 @@
 #pragma once
 
 #include <string>
-#include "MonitorData.h"
 #include "Nob.h"
 #include "Pipe.h"
 #include "SignalGenerator.h"
@@ -27,6 +26,7 @@ import NNetParameters;
 import Sensor;
 import NobType;
 import NNetModel;
+import MonitorData;
 
 #define DUMP() DumpModel(__FILE__, __LINE__)
 
