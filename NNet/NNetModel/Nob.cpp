@@ -10,7 +10,6 @@
 
 import Debug;
 import BasicTypes;
-import AngleTypes;
 import tHighlight;
 import Scanner;
 import NNetColors;

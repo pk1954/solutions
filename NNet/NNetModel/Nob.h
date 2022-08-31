@@ -14,7 +14,6 @@
 import BoolOp;
 import BasicTypes;
 import MoreTypes;
-import AngleTypes;
 import DrawContext;
 import tHighlight;
 import NobId;

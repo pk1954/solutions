@@ -9,7 +9,6 @@ module;
 export module RotationCommand;
 
 import MoreTypes;
-import AngleTypes;
 import Command;
 import NNetCommand;
 import Sensor;

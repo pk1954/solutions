@@ -14,7 +14,6 @@ export module Sensor;
 
 import BasicTypes;
 import MoreTypes;
-import AngleTypes;
 import NNetParameters;
 import DrawContext;
 

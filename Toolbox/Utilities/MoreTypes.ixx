@@ -17,7 +17,6 @@ import RectType;
 import LineType;
 import EllipseType;
 import CircleType;
-import AngleTypes;
 
 using std::min;
 using std::max;

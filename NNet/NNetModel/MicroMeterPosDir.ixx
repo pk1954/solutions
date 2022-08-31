@@ -13,7 +13,6 @@ export module MicroMeterPosDir;
 import BasicTypes;
 import MoreTypes;
 import PointType;
-import AngleTypes;
 
 using std::vector;
 using std::unique_ptr;

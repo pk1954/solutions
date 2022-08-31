@@ -12,7 +12,6 @@ import NamedType;
 import SaveCast;
 import PointType;
 import BasicTypes;
-import AngleTypes;
 import MoreTypes;
 import PixelTypes;
 import tHighlight;

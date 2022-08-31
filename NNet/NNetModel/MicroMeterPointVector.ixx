@@ -14,7 +14,6 @@ import SaveCast;
 import BasicTypes;
 import MoreTypes;
 import PointType;
-import AngleTypes;
 import IoLine;
 import MicroMeterPosDir;
 

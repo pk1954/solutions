@@ -10,7 +10,6 @@ module;
 module MicroMeterPosDir;
 
 import MoreTypes;
-import AngleTypes;
 import IoConstants;
 import NNetParameters;
 

@@ -17,7 +17,6 @@ import UPSensorList;
 import SigGenId;
 import BasicTypes;
 import MoreTypes;
-import AngleTypes;
 import SoundInterface;
 import tHighlight;
 import UPSigGenList;

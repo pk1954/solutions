@@ -12,7 +12,6 @@ module NNetWrapperHelpers;
 
 import SaveCast;
 import BasicTypes;
-import AngleTypes;
 import ErrHndl;
 import IoConstants;
 import UtilityWrappers;

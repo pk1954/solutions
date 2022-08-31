@@ -9,8 +9,8 @@ module;
 export module CircleType;
 
 import NamedType;
+import BasicTypes;
 import PointType;
-import AngleTypes;
 import IoConstants;
 
 using std::wostream;

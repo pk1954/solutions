@@ -42,7 +42,7 @@ public:
 	fHertz GetStimulusFrequency() const { return GetStimulusFrequency(GetStimulusTime()); };
 	mV     GetStimulusAmplitude() const { return GetStimulusAmplitude(GetStimulusTime()); };
 
-	fMicroSecs                TimePeak () const { return m_statData.GetPeakTime (); }
+	fMicroSecs               TimePeak () const { return m_statData.GetPeakTime (); }
 	BasePeak<fHertz> const & Frequency() const { return m_statData.GetFrequency(); }
 	BasePeak<mV>     const & Amplitude() const { return m_statData.GetAmplitude(); }
 

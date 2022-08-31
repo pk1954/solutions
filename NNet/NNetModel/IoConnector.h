@@ -12,7 +12,6 @@
 import BoolOp;
 import DrawContext;
 import MoreTypes;
-import AngleTypes;
 import tHighlight;
 import DrawContext;
 import MicroMeterPosDir;

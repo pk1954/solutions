@@ -12,7 +12,6 @@ import Observable;
 import SaveCast;
 import BasicTypes;
 import MoreTypes;
-import AngleTypes;
 import SpeedType;
 import ParamType;
 import SigGenStaticData;

@@ -9,7 +9,7 @@ module;
 export module IoLine;
 
 import MoreTypes;
-import AngleTypes;
+import BasicTypes;
 import NNetParameters;
 import MicroMeterPosDir;
 import NobType;

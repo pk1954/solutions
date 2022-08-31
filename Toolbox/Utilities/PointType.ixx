@@ -16,7 +16,6 @@ import Util;
 import NamedType;
 import BasicTypes;
 import IoConstants;
-import AngleTypes;
 
 using std::abs;
 using std::max;

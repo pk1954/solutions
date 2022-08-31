@@ -13,7 +13,6 @@ export module Knot;
 import Geometry;
 import BasicTypes;
 import MoreTypes;
-import AngleTypes;
 import tHighlight;
 import DrawContext;
 
