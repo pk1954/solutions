@@ -10,7 +10,6 @@ export module SigGenStaticData;
 
 import Observable;
 import BasicTypes;
-import MoreTypes;
 import BasePeak;
 
 using std::wcout;
@@ -144,10 +143,10 @@ private:
 		T result { par.Base() };
 		if (InStimulusRange(t))
 		{
-			float const fFactor{ t / m_usPeak };
-			float const fStimulus{ exp(1.f - fFactor) * fFactor };
-			T     const boost{ par.Boost() };
-			T     const stimulus{ boost * fStimulus };
+			float const fFactor   { t / m_usPeak };
+			float const fStimulus { exp(1.f - fFactor) * fFactor };
+			T     const boost     { par.Boost() };
+			T     const stimulus  { boost * fStimulus };
 			result += stimulus;
 		}
 		return result;

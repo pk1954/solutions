@@ -25,7 +25,7 @@ export class MicroMeterPntVector
 public:
 
     MicroMeterPntVector() = default;
-    MicroMeterPntVector(vector<IoLine*> const&);
+    MicroMeterPntVector(vector<IoLine *> const &);
 
     template <class FUNC>
     void Apply2All(FUNC const& func)
@@ -38,20 +38,20 @@ public:
 
     MicroMeterPosDir GetPosDir(size_t const) const;
 
-    void SetPosDir(unsigned int const, MicroMeterPosDir const&);
+    void SetPosDir(unsigned int const, MicroMeterPosDir const &);
     void SetDir(Radian const);
-    void SetDir(MicroMeterPntVector const&);
-    void SetPos(MicroMeterPntVector const&);
+    void SetDir(MicroMeterPntVector const &);
+    void SetPos(MicroMeterPntVector const &);
     void Resize(size_t const);
-    void Add(MicroMeterPosDir const&);
-    void Add(MicroMeterPnt    const&, Radian const);
-    void Align(MicroMeterPnt    const&, MicroMeterPnt const&);
-    void Align(MicroMeterLine   const&, MicroMeter);
-    void Align(MicroMeterLine   const&);
+    void Add(MicroMeterPosDir const &);
+    void Add(MicroMeterPnt    const &, Radian const);
+    void Align(MicroMeterPnt  const &, MicroMeterPnt const &);
+    void Align(MicroMeterLine const &, MicroMeter);
+    void Align(MicroMeterLine const &);
     void Pack(MicroMeter);
     void Clear();
 
-    bool operator==(MicroMeterPntVector const&) const;
+    bool operator==(MicroMeterPntVector const &) const;
 
     MicroMeterPntVector& operator+= (MicroMeterPntVector const&);
     MicroMeterPntVector& operator-= (MicroMeterPntVector const&);

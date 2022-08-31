@@ -11,7 +11,6 @@
 
 import ObserverInterface;
 import BasicTypes;
-import MoreTypes;
 import ParamType;
 import SigGenStaticData;
 import SigGenDynamicData;
