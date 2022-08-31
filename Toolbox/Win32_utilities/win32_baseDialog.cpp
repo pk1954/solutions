@@ -14,18 +14,42 @@ import RootWindow;
 HWND BaseDialog::StartBaseDialog
 (
     HWND    const   hwndParent,
-    LPCTSTR const   lpTemplateName,
 	VisCrit const & visibilityCriterion
 )
 {
-	HWND hwnd = CreateDialogParam
+    static struct 
+    {
+        DWORD style;
+        DWORD dwExtendedStyle;
+        WORD  ccontrols;
+        short x;
+        short y;
+        short cx;
+        short cy;
+        WORD  menu;              // name or ordinal of a menu resource
+        WORD  windowClass;       // name or ordinal of a window class
+        WCHAR wszTitle[1];       // title string of the dialog box
+    } data = 
+    {
+       WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME, 
+       0x0,                     // exStyle;
+       0,                       // ccontrols
+       0, 0, 0, 0,
+       0,                       // menu: none
+       0,                       // window class: none
+       L""                      // Window caption
+    };
+
+    HWND hwnd = CreateDialogIndirectParam
     (
         nullptr,
-        lpTemplateName,
+        (LPCDLGTEMPLATEW) & data,
         hwndParent,
         BaseDialogProc,
         (LPARAM)this
    );
+
+    DWORD err = GetLastError();
 
 	SetWindowHandle(hwnd);
 	StartRootWindow(visibilityCriterion);

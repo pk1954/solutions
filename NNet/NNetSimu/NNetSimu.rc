@@ -33,28 +33,14 @@ NOT_POSSIBLE_SOUND WAVE "no.wav"
 //
 // Dialog resources
 //
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDD_ABOUTBOX DIALOGEX 0, 0, 170, 74
+IDD_ABOUTBOX DIALOG 0, 0, 170, 74
 STYLE DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
 CAPTION "About NNetSimu"
-FONT 8, "MS Shell Dlg", 0, 0, 1
 {
-    ICON          "",                  IDC_STATIC,    14, 14,  21, 20, SS_ICON, WS_EX_LEFT
-    LTEXT         VER_PRODUCTNAME_STR, IDC_STATIC,    42, 14, 114,  8, SS_LEFT | SS_NOPREFIX, WS_EX_LEFT
-	LTEXT         "Compile time",      IDC_STATIC,    42, 26, 114,  8, SS_LEFT,  WS_EX_LEFT
-	LTEXT         "",                  IDD_TIMESTAMP, 42, 38, 114,  8, SS_LEFT,  WS_EX_LEFT
-	DEFPUSHBUTTON "OK",                IDOK,         113, 53,  50, 14, WS_GROUP, WS_EX_LEFT
-}
-
-// Do not remove definition of IDM_PARAM_WINDOW DIALOG although it's empty
-// CreateDialogParam needs resource
-
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDM_PARAM_WINDOW DIALOG 0, 0, 200, 150
-STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
-CAPTION "Global parameters"
-FONT 8, "Ms Shell Dlg"
-{
+    LTEXT         VER_PRODUCTNAME_STR, IDC_STATIC,    42, 14, 114,  8, SS_LEFT
+	LTEXT         "Compile time",      IDC_STATIC,    42, 26, 114,  8, SS_LEFT
+	LTEXT         "",                  IDD_TIMESTAMP, 42, 38, 114,  8, SS_LEFT
+	DEFPUSHBUTTON "OK",                IDOK,         113, 53,  50, 14, WS_GROUP
 }
 
 //

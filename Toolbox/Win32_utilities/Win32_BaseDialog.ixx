@@ -16,14 +16,7 @@ export class BaseDialog: public RootWindow
 {
 public:
 
-	HWND StartBaseDialog
-	(
-		HWND    const, 
-		LPCTSTR const, 
-		VisCrit const &
-	);
-
-protected:
+	HWND StartBaseDialog(HWND const, VisCrit const &);
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 

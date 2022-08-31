@@ -110,7 +110,11 @@ void ParameterDialog::Start
 	NNetModelCommands * const pCommands
 )
 {
-	HWND const hwndDlg { StartBaseDialog(hwndParent, MAKEINTRESOURCE(IDM_PARAM_WINDOW), nullptr) };
+	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
+
+	SetWindowSize(300_PIXEL, 260_PIXEL, false);
+	SetWindowText(L"Global parameters");
+	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_SYSMENU);
 
 	m_pCommands = pCommands;
 
@@ -121,7 +125,6 @@ void ParameterDialog::Start
 	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth,     iYpos); 
 	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 
 	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
-	//m_hwndFilterSize       = addParameter(hwndDlg, filterSize,     iYpos); 
 	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,     iYpos); 
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);

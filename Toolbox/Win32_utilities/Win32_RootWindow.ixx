@@ -66,14 +66,15 @@ public:
 	bool          IsInClientRect(PixelPoint const& p) const { return Util::IsInClientRect(m_hwnd, p); }
 	bool          IsInClientRect(PixelRect  const& r) const { return Util::IsInClientRect(m_hwnd, r); }
 
-	void SetWindowWidth(PIXEL const w, bool const b) const { Util::SetWindowWidth(m_hwnd, w, b); }
+	void SetWindowWidth (PIXEL const w, bool const b) const { Util::SetWindowWidth (m_hwnd, w, b); }
 	void SetWindowHeight(PIXEL const h, bool const b) const { Util::SetWindowHeight(m_hwnd, h, b); }
+	void SetWindowSize  (PIXEL const w, PIXEL const h, bool const b) const { Util::SetWindowSize(m_hwnd, w, h, b); }
 
-	RootWindow* GetRootWindow() { return ::GetRootWindow(m_hwnd); }
-	RootWindow* GetParentRootWindow() { return ::GetParentRootWindow(m_hwnd); }
+	RootWindow * GetRootWindow      () { return ::GetRootWindow(m_hwnd); }
+	RootWindow * GetParentRootWindow() { return ::GetParentRootWindow(m_hwnd); }
 
-	RootWindow const* GetRootWindow() const { return ::GetRootWindow(m_hwnd); }
-	RootWindow const* GetParentRootWindow() const { return ::GetParentRootWindow(m_hwnd); }
+	RootWindow const * GetRootWindow      () const { return ::GetRootWindow(m_hwnd); }
+	RootWindow const * GetParentRootWindow() const { return ::GetParentRootWindow(m_hwnd); }
 
 	bool WindowHasCaption()      const { return ::GetWindowLong(m_hwnd, GWL_STYLE) & WS_CAPTION; }
 	bool IsWindowVisible()       const { return ::IsWindowVisible(m_hwnd); }
@@ -86,20 +87,22 @@ public:
 
 	wstring GetWindowText() const;
 
-	bool SetWindowText(LPCWSTR        const   s) const { return ::SetWindowText(m_hwnd, s); }
-	bool SetWindowText(wstring        const& s) const { return   SetWindowText(s.c_str()); }
-	bool SetWindowText(wostringstream const& s) const { return   SetWindowText(s.str()); }
+	DWORD SetWindowStyle(DWORD dwNew) const { return SetWindowLong(m_hwnd, GWL_STYLE, dwNew); }
 
-	bool SetWindowText(HWND hwnd, wstring        const& s) const { return ::SetWindowText(hwnd, s.c_str()); }
-	bool SetWindowText(HWND hwnd, wostringstream const& s) const { return   SetWindowText(hwnd, s.str()); }
+	bool SetWindowText(LPCWSTR        const   s) const { return ::SetWindowText(m_hwnd, s); }
+	bool SetWindowText(wstring        const & s) const { return   SetWindowText(s.c_str()); }
+	bool SetWindowText(wostringstream const & s) const { return   SetWindowText(s.str()); }
+
+	bool SetWindowText(HWND hwnd, wstring        const & s) const { return ::SetWindowText(hwnd, s.c_str()); }
+	bool SetWindowText(HWND hwnd, wostringstream const & s) const { return   SetWindowText(hwnd, s.str()); }
 
 	void SetRefreshRate(milliseconds const) const;
 
 	void Show(tBoolOp const op) const { Util::Show(m_hwnd, op); }
-	void Show(bool    const b) const { Util::Show(m_hwnd, b); }
+	void Show(bool    const b ) const { Util::Show(m_hwnd, b); }
 
 	HDC  BeginPaint(LPPAINTSTRUCT lpPaint) const { return ::BeginPaint(m_hwnd, lpPaint); }
-	bool EndPaint(LPPAINTSTRUCT lpPaint) const { return ::EndPaint(m_hwnd, lpPaint); }
+	bool EndPaint  (LPPAINTSTRUCT lpPaint) const { return ::EndPaint(m_hwnd, lpPaint); }
 
 	void SetTrackBarPos(INT const, LONG const) const;
 	void SetTrackBarRange(INT const, LONG const, LONG const) const;

@@ -227,8 +227,16 @@ namespace Util
 
     export inline void SetWindowWidth(HWND const hwnd, PIXEL const newWidth, bool const bRedraw)
     {
-        PixelRect rect { GetWindowRect(hwnd) };
+        PixelRect rect{ GetWindowRect(hwnd) };
         rect.SetWidth(newWidth);
+        MoveWindow(hwnd, rect, bRedraw);
+    }
+
+    export inline void SetWindowSize(HWND const hwnd, PIXEL const newWidth, PIXEL const newHeight, bool const bRedraw)
+    {
+        PixelRect rect{ GetWindowRect(hwnd) };
+        rect.SetWidth (newWidth);
+        rect.SetHeight(newHeight);
         MoveWindow(hwnd, rect, bRedraw);
     }
 
