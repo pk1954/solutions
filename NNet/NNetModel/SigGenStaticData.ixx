@@ -11,6 +11,7 @@ export module SigGenStaticData;
 import Observable;
 import BasicTypes;
 import MoreTypes;
+import BasePeak;
 
 using std::wcout;
 using std::wostream;

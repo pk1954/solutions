@@ -12,6 +12,7 @@ import BoolOp;
 import SaveCast;
 import MoreTypes;
 import PixelTypes;
+import BasePeak;
 import Script;
 
 export tBoolOp       ScrReadBoolOp       (Script &);

@@ -16,6 +16,7 @@ import ParamType;
 import SigGenStaticData;
 import SigGenDynamicData;
 import NNetParameters;
+import BasePeak;
 
 using std::wstring;
 using std::wostream;

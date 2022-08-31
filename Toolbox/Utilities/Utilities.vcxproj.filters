@@ -111,5 +111,8 @@
     <ClCompile Include="BasicTypes.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BasePeak.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
