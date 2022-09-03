@@ -7,41 +7,20 @@ module;
 #include "Windows.h"
 #include "win32_util_resource.h"
 
-module Win32_AboutBox;
+module AboutBox;
 
-static INT_PTR CALLBACK About 
-(
-    HWND   const hDlg,
-    UINT   const message,
-    WPARAM const wParam, 
-    LPARAM const lParam 
-)
+void AboutBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-    UNREFERENCED_PARAMETER(lParam);
-
-    switch (message)
-    {
-
-	case WM_INITDIALOG:
-		SetDlgItemText(hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP);
-		return INT_PTR(true);
-
-	case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            (void)EndDialog(hDlg, LOWORD(wParam));
-            return INT_PTR(true);
-        }
-        break;
-
-    default:
-        break;
-    }
-
-    return INT_PTR(false);
+    SetDlgItemText(hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP);
 }
 
-void ShowAboutBox(HWND const hwndParent) 
+bool AboutBox::OnOK(HWND const hDlg)
 {
-    (void)DialogBox(nullptr, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About);
+    (void)EndDialog(hDlg, 0);
+    return true;
+}
+
+void AboutBox::Show(HWND const hwndParent) 
+{
+    StdDialogBox::Show(hwndParent, IDD_ABOUTBOX);
 }

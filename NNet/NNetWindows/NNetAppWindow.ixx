@@ -12,6 +12,7 @@ module;
 
 export module NNetAppWindow;
 
+import AboutBox;
 import Observable;
 import SlowMotionControl;
 import DescriptionWindow;
@@ -126,6 +127,7 @@ private:
 	HWND                       m_hwndConsole{ nullptr };
 	HWND                       m_hwndApp{ nullptr };
 
+	AboutBox                 m_aboutBox{ };
 	ActionTimer              m_atComputation{ };
 	ActionTimer              m_atDisplay{ };
 	AppTitle                 m_appTitle{ };

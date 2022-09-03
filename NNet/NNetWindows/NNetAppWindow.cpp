@@ -26,7 +26,7 @@ import Direct2D;
 import StatusBar;
 import ObserverInterface;
 import PerformanceWindow;
-import Win32_AboutBox;
+import AboutBox;
 import UndoRedoMenu;
 import Preferences;
 import UtilityWrappers;
@@ -407,7 +407,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		switch (wmId)
 		{
 		case IDM_ABOUT:
-			ShowAboutBox(m_mainNNetWindow.GetWindowHandle());
+			m_aboutBox.Show(m_mainNNetWindow.GetWindowHandle());
 			break;
 
 		case IDM_EXIT:

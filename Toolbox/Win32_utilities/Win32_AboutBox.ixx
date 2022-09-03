@@ -6,6 +6,17 @@ module;
 
 #include <Windows.h>
 
-export module Win32_AboutBox;
+export module AboutBox;
 
-export void ShowAboutBox(HWND);
+import StdDialogBox;
+
+export class AboutBox : public StdDialogBox
+{
+public:
+    void Show(HWND);
+
+private:
+	void OnInitDlg(HWND const, WPARAM const, LPARAM const) final;
+	bool OnOK(HWND const)                                  final;
+};
+ 
