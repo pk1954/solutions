@@ -36,7 +36,7 @@ bool EditLineBox::Show(HWND const hwndParent)
 bool EditLineBox::OnOK(HWND const hDlg)
 {
 	HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-	bool bOK { Util::Evaluate(hwndEditCtl, m_wstrValue) };
+	bool bOK         { Util::Evaluate(hwndEditCtl, m_wstrValue) };
 	if (bOK)
 		EndDialog(hDlg, IDOK);
 	else 

@@ -44,7 +44,7 @@ milliseconds BaseRefreshRate::GetRefreshRate() const
 bool BaseRefreshRate::OnOK(HWND const hDlg)
 {
 	HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-	bool bOK { Util::Evaluate(hwndEditCtl, m_fValue) };
+	bool bOK         { Util::Evaluate(hwndEditCtl, m_fValue) };
 	if (bOK)
 		EndDialog(hDlg, IDOK);
 	else 

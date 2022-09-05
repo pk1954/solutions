@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <Windows.h>
-#include "Version.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
 #include "CommCtrl.h"
@@ -56,13 +55,15 @@ int APIENTRY wWinMain
 
 	SwitchWcoutTo(L"main_trace.out");
 
-	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
-	wcout << Scanner::COMMENT_START << L"Version:       " << VER_PRODUCTNAME_STR     << endl;
-	wcout << Scanner::COMMENT_START << L"Build date:    " << COMPILE_TIMESTAMP       << endl;
-	wcout << Scanner::COMMENT_START << L"Computer name: " << Util::GetComputerName() << endl;
-	wcout << Scanner::COMMENT_START << L"User name:     " << Util::GetUserName()     << endl;
+	wstring const wstrProdName { L"NNetSimu 3.6" };
 
-	upApp = make_unique<NNetAppWindow>();
+	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
+	wcout << Scanner::COMMENT_START << L"Version:       "       << wstrProdName << endl;
+	wcout << Scanner::COMMENT_START << L"Build date:    "       << COMPILE_TIMESTAMP       << endl;
+	wcout << Scanner::COMMENT_START << L"Computer name: "       << Util::GetComputerName() << endl;
+	wcout << Scanner::COMMENT_START << L"User name:     "       << Util::GetUserName()     << endl;
+
+	upApp = make_unique<NNetAppWindow>(wstrProdName);
 
 //	Accelerators acc;
 

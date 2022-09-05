@@ -4,12 +4,9 @@
 
 module;
 
-#include <string>
 #include "Windows.h"
 
 export module StdDialogBox;
-
-using std::wstring;
 
 static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 

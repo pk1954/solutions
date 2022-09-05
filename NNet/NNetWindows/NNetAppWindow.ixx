@@ -76,14 +76,14 @@ public:
 
 private:
 	wstring     m_wstring{ };
-	StatusBar* m_pStatusBar{ nullptr };
+	StatusBar * m_pStatusBar{ nullptr };
 	int         m_iPart{ 0 };
 };
 
 export class NNetAppWindow : public BaseWindow
 {
 public:
-	NNetAppWindow();
+	NNetAppWindow(wstring const &);
 	~NNetAppWindow() override;
 
 	virtual void Start(MessagePump&);

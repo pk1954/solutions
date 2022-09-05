@@ -13,18 +13,18 @@ HWND CreateButton(HWND const hwndParent, wchar_t const * const text, int const x
 {
 	DWORD style { BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
 	HWND  hwnd  { 
-		CreateWindow
-		(
-			WC_BUTTON, 
-			text, 
-			style, 
-			x, y, w, h, 
-			hwndParent, 
-			reinterpret_cast<HMENU>(id), 
-			GetModuleHandle(nullptr), 
-			0
-		) 
-	};
+					CreateWindow
+					(
+						WC_BUTTON, 
+						text, 
+						style, 
+						x, y, w, h, 
+						hwndParent, 
+						reinterpret_cast<HMENU>(id), 
+						GetModuleHandle(nullptr), 
+						0
+					) 
+				};
 	return hwnd;
 }
 

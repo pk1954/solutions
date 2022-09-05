@@ -4,14 +4,22 @@
 
 module;
 
+#include <string>
 #include "Windows.h"
 #include "win32_util_resource.h"
 
 module AboutBox;
 
+import Win32_Controls;
+
+using std::wstring;
+
 void AboutBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-    SetDlgItemText(hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP);
+    CreateStaticField(hDlg, m_wstrProdName.c_str(), 42, 14, 200, 20);
+    CreateStaticField(hDlg, L"Compile time",        42, 40, 200, 20);
+    CreateStaticField(hDlg, COMPILE_TIMESTAMP,      42, 66, 200, 20);
+    CreateButton     (hDlg, L"OK",                 200, 92,  50, 30, IDOK,  WS_GROUP);
 }
 
 bool AboutBox::OnOK(HWND const hDlg)
@@ -20,7 +28,12 @@ bool AboutBox::OnOK(HWND const hDlg)
     return true;
 }
 
-void AboutBox::Show(HWND const hwndParent) 
+void AboutBox::SetProductName(wstring const & wstrProdName)
+{
+    m_wstrProdName = wstrProdName;
+}
+
+void AboutBox::Show(HWND const hwndParent)
 {
     StdDialogBox::Show(hwndParent, IDD_ABOUTBOX);
 }

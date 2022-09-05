@@ -66,8 +66,9 @@ using std::bit_cast;
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
 
-NNetAppWindow::NNetAppWindow()
+NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 {
+	m_aboutBox.SetProductName(wstrProductName);
 	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 	DefineUtilityWrapperFunctions();
