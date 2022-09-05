@@ -7,8 +7,6 @@
 #include <Windows.h>
 #include <tchar.h>
 
-inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
-
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
 #endif
@@ -24,10 +22,6 @@ inline static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 #define SC_LBUTTONDBLCLK   1 
 
 // identifiers below 100 are reserved for win32_utilities
-
-#define IDS_APP_TITLE                   1
-#define IDD_ABOUTBOX                    2
-#define IDD_TIMESTAMP                   3
 
 #define IDM_ABOUT                       4
 #define IDM_EXIT                        5

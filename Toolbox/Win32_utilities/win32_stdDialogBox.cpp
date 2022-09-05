@@ -5,13 +5,32 @@
 module;
 
 #include <bit>
+#include <Windows.h>
 #include "win32_util_resource.h"
 
 module StdDialogBox;
 
 import Win32_Util;
+import DialogTemplate;
 
 using std::bit_cast;
+
+bool StdDialogBox::Show(HWND const hwndParent)
+{
+	INT_PTR res
+	{
+		DialogBoxIndirectParam
+		(
+			nullptr,
+		    (LPCDLGTEMPLATEW)&EMPTY_TEMPLATE,
+			hwndParent,
+			dialogProc,
+			bit_cast<LPARAM>(this)
+		)
+	};
+
+	return res == IDOK;
+}
 
 bool StdDialogBox::Show
 (
@@ -19,16 +38,16 @@ bool StdDialogBox::Show
 	int  const idDialog
 )
 {
-	INT_PTR res 
-	{ 
+	INT_PTR res
+	{
 		DialogBoxParam
 		(
-			nullptr, 
-			MAKEINTRESOURCE(idDialog), 
-			hwndParent, 
-			dialogProc, 
+			nullptr,
+			MAKEINTRESOURCE(idDialog),
+			hwndParent,
+			dialogProc,
 			bit_cast<LPARAM>(this)
-		) 
+		)
 	};
 
 	return res == IDOK;

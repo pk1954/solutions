@@ -18,6 +18,7 @@ import NNetAppWindow;
 import Script;
 import Scanner;
 import Accelerators;
+import AboutBox;
 
 using std::make_unique;
 using std::unique_ptr;

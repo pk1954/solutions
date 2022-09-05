@@ -1,4 +1,4 @@
-// Win32_BaseDialog.h : 
+// Win32_BaseDialog.ixx
 //
 // Win32_utilities
 

@@ -182,6 +182,7 @@
     <ClCompile Include="Win32_Command.ixx" />
     <ClCompile Include="Win32_Controls.cpp" />
     <ClCompile Include="Win32_Controls.ixx" />
+    <ClCompile Include="Win32_DialogTemplate.ixx" />
     <ClCompile Include="Win32_EditLineBox.cpp" />
     <ClCompile Include="Win32_EditLineBox.ixx" />
     <ClCompile Include="Win32_Escape.cpp" />

@@ -30,19 +30,6 @@ SELECTION_SOUND    WAVE "tap.wav"
 NOT_POSSIBLE_SOUND WAVE "no.wav"
 
 //
-// Dialog resources
-//
-IDD_ABOUTBOX DIALOG 0, 0, 170, 74
-STYLE DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
-CAPTION "About NNetSimu"
-{
-    // LTEXT         VER_PRODUCTNAME_STR, IDC_STATIC,    42, 14, 114,  8, SS_LEFT
-	// LTEXT         "Compile time",      IDC_STATIC,    42, 26, 114,  8, SS_LEFT
-	// LTEXT         "",                  IDD_TIMESTAMP, 42, 38, 114,  8, SS_LEFT
-	// DEFPUSHBUTTON "OK",                IDOK,         113, 53,  50, 14, WS_GROUP
-}
-
-//
 // Accelerator resources
 //
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
