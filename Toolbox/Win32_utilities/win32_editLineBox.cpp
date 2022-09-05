@@ -11,6 +11,8 @@ module;
 module EditLineBox;
 
 import StdDialogBox;
+import Win32_Controls;
+import Win32_PIXEL;
 import Win32_Util;
 
 using std::wstring;
@@ -30,31 +32,29 @@ EditLineBox::EditLineBox
 
 bool EditLineBox::Show(HWND const hwndParent)
 {
-	return StdDialogBox::Show(hwndParent, IDD_STD_EDIT_DIALOG);
+	return StdDialogBox::Show(hwndParent); // , IDD_STD_EDIT_DIALOG);
 }
 
 bool EditLineBox::OnOK(HWND const hDlg)
 {
-	HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-	bool bOK         { Util::Evaluate(hwndEditCtl, m_wstrValue) };
+	bool bOK { Util::Evaluate(m_hwndEditCtl, m_wstrValue) };
 	if (bOK)
 		EndDialog(hDlg, IDOK);
 	else 
-		SetFocus(hwndEditCtl);
+		SetFocus(m_hwndEditCtl);
 	return bOK;
 }
 
 void EditLineBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-	{
-		HWND const hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-		LONG_PTR   style       { GetWindowLongPtr(hwndEditCtl, GWL_STYLE) };
-		style &= ~ES_RIGHT;
-		SetWindowLongPtr(hwndEditCtl, GWL_STYLE, style);
-		Util::SetEditField(hwndEditCtl, m_wstrValue.c_str());
-	}
+	Util::SetWindowSize(hDlg, 340_PIXEL, 180_PIXEL, false);
+	m_hwndEditCtl =
+	CreateEditField  (hDlg,                      42, 40, 150, 20);
+	CreateStaticField(hDlg, m_wstrUnit.c_str(), 195, 40, 200, 20);
+	CreateButton     (hDlg, L"OK",              100, 92,  50, 30, IDOK, WS_GROUP);
+	CreateButton     (hDlg, L"Cancel",          200, 92,  50, 30, IDOK, WS_GROUP);
+	Util::SetEditField(m_hwndEditCtl, m_wstrValue);
 	::SetWindowText(hDlg, m_wstrTitle.c_str());
-	::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), m_wstrUnit.c_str());
 	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
 	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 }
