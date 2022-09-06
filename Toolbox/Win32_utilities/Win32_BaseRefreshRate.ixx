@@ -10,14 +10,14 @@ module;
 
 export module BaseRefreshRate;
 
-import StdDialogBox;
+import EditLineBox;
 import Win32_Util;
 
 using std::wstring;
 using std::chrono::milliseconds;
 using namespace std::chrono;
 
-export class BaseRefreshRate : public StdDialogBox
+export class BaseRefreshRate
 {
 public:
 
@@ -42,9 +42,10 @@ private:
 	HANDLE       m_hTimer        { nullptr };
 	milliseconds m_msRefreshRate { 0ms };
 	bool         m_bDirty        { true };
-	wstring      m_wstrUnit      {};    // the text to be displayed right of the edit box
-	wstring      m_wstrTitle     {};    // the title bar text of the dialog
-	float        m_fValue        {};    // the value to be edited in the dialog
+	float        m_fValue        { };    // the value to be edited in the dialog
+	wstring      m_wstrValue     { };    // m_fValue as text
+	wstring      m_wstrUnit      { };    // the text to be displayed right of the edit box
+	wstring      m_wstrTitle     { };    // the title bar text of the dialog
 
 	void startTimer(milliseconds const);
 	void deleteTimer();
@@ -53,8 +54,6 @@ private:
 		Trigger();
 		m_bDirty = false;
 	}
-	void OnInitDlg(HWND const, WPARAM const, LPARAM const) final;
-	bool OnOK     (HWND const)                             final; 
 
 	static void CALLBACK TimerProc(void * const, bool const);
 };

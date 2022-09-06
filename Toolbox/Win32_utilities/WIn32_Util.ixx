@@ -43,6 +43,8 @@ namespace Util
         ::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
     }
 
+    export bool Evaluate(wstring &, float &);
+
     export bool Evaluate(HWND const, wstring &);
     export bool Evaluate(HWND const, float &);
     export bool Evaluate(HWND const, unsigned long &);

@@ -6,7 +6,7 @@
 #include <commctrl.h>
 #include <richedit.h>
 #include "Resource.h"
-#include "win32_utilities.rc"
+#include "win32_util_resource.h"
 
 //
 // Icon resources

@@ -219,9 +219,6 @@
     <ClCompile Include="Win32_WinManager.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="win32_utilities.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
     </ProjectReference>

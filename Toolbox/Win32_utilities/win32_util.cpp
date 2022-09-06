@@ -37,12 +37,9 @@ bool Util::Evaluate(HWND const hwndEditField, wstring & wstrValue)
 
 bool Util::Evaluate(HWND const hwndEditField, unsigned long & ulValue)
 {	
-    static int const BUFLEN { 20 };
-    wchar_t wBuffer[BUFLEN];
-
-    if (GetWindowText(hwndEditField, wBuffer, BUFLEN))
+    wstring wstrEdit;
+    if (Evaluate(hwndEditField, wstrEdit))
     {
-        wstring wstrEdit(wBuffer);
         ulValue = stoul(wstrEdit);
         return true;
     }
@@ -50,34 +47,39 @@ bool Util::Evaluate(HWND const hwndEditField, unsigned long & ulValue)
     return false;
 }
 
+bool Util::Evaluate(wstring & wstr, float & fValue)
+{
+    bool  bResult { false };
+
+    for (wchar_t & c : wstr)  // change german decimal comma to
+        if (c == L',')     // decimal point
+            c = L'.';
+    try
+    {
+        float fNewValue = stof(wstr);
+        fValue = fNewValue;
+        bResult = true;
+    }
+    catch (...)
+    {
+        MessageBeep(MB_ICONWARNING);
+    }
+    return bResult;
+}
+
 bool Util::Evaluate(HWND const hwndEditField, float & fValue)
 {
-    static int const BUFLEN = 20;
-    static wchar_t wBuffer[BUFLEN];
-
-    float fNewValue { fValue };
-    bool  bResult   { false };
-
-    if (GetWindowText(hwndEditField, wBuffer, BUFLEN))
+    wstring wstrEdit;
+    if (Evaluate(hwndEditField, wstrEdit))
     {
-        wstring wstrEdit(wBuffer);
-
-        for (auto & c : wstrEdit)  // change german decimal comma to
-            if (c == L',')         // decimal point
-                c = L'.';
-        try
+        if (Evaluate(wstrEdit, fValue))
         {
-            fNewValue = stof(wstrEdit);
-            fValue = fNewValue;
-            bResult = true;
-        } catch(...)
-        {
-            MessageBeep(MB_ICONWARNING);
+            SetEditField(hwndEditField, fValue);
+            return true;
         }
     }
 
-    SetEditField(hwndEditField, fValue);
-    return bResult;
+    return false;
 }
 
 void Util::MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, UINT const uiAlpha)

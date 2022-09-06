@@ -13,6 +13,7 @@ module BaseRefreshRate;
 
 import StdDialogBox;
 import Win32_Util;
+import EditLineBox;
 
 using std::wstring;
 using std::to_wstring;
@@ -41,24 +42,14 @@ milliseconds BaseRefreshRate::GetRefreshRate() const
 	return m_msRefreshRate; 
 }
 
-bool BaseRefreshRate::OnOK(HWND const hDlg)
-{
-	HWND hwndEditCtl { GetDlgItem(hDlg, IDD_EDIT_CTL) };
-	bool bOK         { Util::Evaluate(hwndEditCtl, m_fValue) };
-	if (bOK)
-		EndDialog(hDlg, IDOK);
-	else 
-		SetFocus(hwndEditCtl);
-	return bOK;
-}
-
 void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
 {
 	static float MIN_REFRESH_RATE { 20.0f };
 
 	m_fValue = static_cast<float>(GetRefreshRate().count());
-		
-	if (Show(hwndParent, IDD_STD_EDIT_DIALOG))
+	wstring wstrValue = to_wstring(m_fValue);
+	EditLineBox dlgBox(wstrValue, L"Refresh Rate", L"ms");
+	if (dlgBox.Show(hwndParent) && Util::Evaluate(wstrValue, m_fValue))
 	{
 		if (m_fValue < MIN_REFRESH_RATE)
 		{
@@ -93,15 +84,6 @@ void BaseRefreshRate::deleteTimer()
 		(void)DeleteTimerQueueTimer(nullptr, m_hTimer, INVALID_HANDLE_VALUE);
 		m_hTimer = nullptr;
 	}
-}
-
-void BaseRefreshRate::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
-{
-	::SetWindowText(hDlg, L"Refresh Rate");
-	Util::SetEditField(GetDlgItem(hDlg, IDD_EDIT_CTL), m_fValue);
-	::SetWindowText(GetDlgItem(hDlg, IDC_STATIC), L"milliseconds");
-	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
-	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 }
 
 void CALLBACK BaseRefreshRate::TimerProc(void * const lpParam, bool const TimerOrWaitFired)

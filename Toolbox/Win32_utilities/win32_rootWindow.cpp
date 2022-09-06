@@ -16,6 +16,7 @@ module;
 
 module RootWindow;
 
+import BasicTypes;
 import PixelTypes;
 import BaseRefreshRate;
 
@@ -24,6 +25,7 @@ using std::wstring;
 using std::bit_cast;
 using std::make_unique;
 using std::chrono::milliseconds;
+using namespace std::chrono;
 
 RootWindow * GetRootWindow(HWND const hwnd)
 {
@@ -123,7 +125,7 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 	}
 
 	// TODO
-	//if (m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate() > 0ms))
+	//if (m_bShowRefreshRateDlg && (m_upRefreshRate->GetRefreshRate() > 0ms))
 	//{
 	//	(void)AppendMenu(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
 	//}

@@ -29,7 +29,6 @@
 
 #define IDD_REFRESH_RATE_DIALOG         9
 
-#define IDD_STD_EDIT_DIALOG            10
 #define IDD_EDIT_CTL                   11
 
 #define IDM_WINDOW_ON                  20

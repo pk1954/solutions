@@ -30,11 +30,6 @@ EditLineBox::EditLineBox
     m_wstrTitle(wstrTitle)
 {}
 
-bool EditLineBox::Show(HWND const hwndParent)
-{
-	return StdDialogBox::Show(hwndParent); // , IDD_STD_EDIT_DIALOG);
-}
-
 bool EditLineBox::OnOK(HWND const hDlg)
 {
 	bool bOK { Util::Evaluate(m_hwndEditCtl, m_wstrValue) };
