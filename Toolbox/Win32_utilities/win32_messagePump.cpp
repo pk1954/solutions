@@ -10,10 +10,10 @@ module;
 
 module MessagePump;
 
-void MessagePump::SetAccelTable(HACCEL const haccel)
-{
-	m_defaultAccelTable = haccel;
-}
+//void MessagePump::SetAccelTable(HACCEL const haccel)
+//{
+//	m_defaultAccelTable = haccel;
+//}
 
 void MessagePump::SetAccelTable(HINSTANCE const hInstance, int const idResource)
 {
@@ -26,7 +26,7 @@ void MessagePump::RegisterWindow(HWND const hwnd, bool const bIsDialog)
 	m_accEntries.push_back(AccEntry{ hwnd, bIsDialog });
 }
 
-bool MessagePump::accelerator( MSG & msg)
+bool MessagePump::accelerator(MSG & msg)
 {
 	for (AccEntry const & entry : m_accEntries)
 	{

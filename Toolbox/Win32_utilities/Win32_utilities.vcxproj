@@ -163,6 +163,7 @@
     <ClInclude Include="win32_util_resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AAA.cpp" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />

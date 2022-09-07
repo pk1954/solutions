@@ -14,7 +14,7 @@ using std::vector;
 export class MessagePump
 {
 public:
-	void SetAccelTable(HACCEL const);
+	//void SetAccelTable(HACCEL const);
 	void SetAccelTable(HINSTANCE const, int const);
 	void RegisterWindow(HWND const, bool const);
 

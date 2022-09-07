@@ -32,27 +32,6 @@ bool StdDialogBox::Show(HWND const hwndParent)
 	return res == IDOK;
 }
 
-bool StdDialogBox::Show
-(
-	HWND const hwndParent,
-	int  const idDialog
-)
-{
-	INT_PTR res
-	{
-		DialogBoxParam
-		(
-			nullptr,
-			MAKEINTRESOURCE(idDialog),
-			hwndParent,
-			dialogProc,
-			bit_cast<LPARAM>(this)
-		)
-	};
-
-	return res == IDOK;
-}
-
 void StdDialogBox::OnCommand(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
 	int id { LOWORD(wParam) };

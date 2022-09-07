@@ -14,7 +14,6 @@ export class StdDialogBox
 {
 public:
 	virtual bool Show(HWND const);
-	virtual bool Show(HWND const, int const);
 	virtual void OnCommand(HWND const, WPARAM const, LPARAM const);
 	virtual void OnInitDlg(HWND const, WPARAM const, LPARAM const) = 0;
 	virtual bool OnOK     (HWND const)                             = 0; 
