@@ -10,9 +10,7 @@ module;
 
 export module MicroMeterPosDir;
 
-import BasicTypes;
-import MoreTypes;
-import PointType;
+import Types;
 
 using std::vector;
 using std::unique_ptr;

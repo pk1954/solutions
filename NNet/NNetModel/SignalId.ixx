@@ -9,7 +9,7 @@ module;
 
 export module SignalId;
 
-import NamedType;
+import Types;
 import IoConstants;
 import TrackNr;
 import SignalNr;

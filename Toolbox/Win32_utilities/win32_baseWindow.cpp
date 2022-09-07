@@ -13,8 +13,7 @@ module;
 module BaseWindow;
 
 import Util;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import Win32_Util;
 import RootWindow;
 

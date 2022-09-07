@@ -10,7 +10,7 @@ module;
 
 module Sensor;
 
-import BasicTypes;
+import Types;
 import DrawContext;
 import NNetColors;
 

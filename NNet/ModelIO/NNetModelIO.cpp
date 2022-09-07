@@ -25,7 +25,7 @@ import WrapNobParameter;
 import ErrHndl;
 import Scanner;
 import Symtab;
-import MoreTypes;
+import Types;
 import Thread;
 import ScriptFile;
 import Win32_Util;

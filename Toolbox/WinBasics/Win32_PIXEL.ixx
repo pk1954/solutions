@@ -10,10 +10,7 @@ module;
 
 export module Win32_PIXEL;
 
-import NamedType;
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import Script;
 
 using std::wostream;

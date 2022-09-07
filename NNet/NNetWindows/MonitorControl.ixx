@@ -11,13 +11,11 @@ module;
 
 export module MonitorControl;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import PixFpDimension;
 import SoundInterface;
 import Measurement;
 import Direct2D;
-import PixelTypes;
 import TimeGraph;
 import NNetModelCommands;
 import TrackNr;

@@ -4,7 +4,7 @@
 
 export module NobId;
 
-import NamedType;
+import Types;
 
 export using NobId = NamedType<int, struct NobIdParam>;
 

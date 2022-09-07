@@ -10,7 +10,7 @@
 #include "SignalSource.h"
 
 import ObserverInterface;
-import BasicTypes;
+import Types;
 import ParamType;
 import SigGenStaticData;
 import SigGenDynamicData;

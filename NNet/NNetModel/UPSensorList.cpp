@@ -12,7 +12,7 @@ module UPSensorList;
 
 import SaveCast;
 import Sensor;
-import MoreTypes;
+import Types;
 
 using std::vector;
 using std::to_wstring;

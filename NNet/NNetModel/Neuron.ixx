@@ -12,7 +12,7 @@ module;
 export module Neuron;
 
 import BoolOp;
-import MoreTypes;
+import Types;
 import tHighlight;
 import Spike;
 import DrawContext;

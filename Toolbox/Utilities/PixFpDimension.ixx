@@ -6,8 +6,7 @@ export module PixFpDimension;
 
 import Util;
 import Observable;
-import MoreTypes;
-import PixelTypes;
+import Types;
 
 export template <typename LOG_UNIT>
 class PixFpDimension : public Observable

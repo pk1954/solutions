@@ -10,9 +10,7 @@ module;
 export module DrawContext;
 
 import Uniform2D;
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 
 using std::wstring;
 

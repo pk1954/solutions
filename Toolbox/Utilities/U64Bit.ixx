@@ -8,8 +8,7 @@ module;
 
 export module U64Bit;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 
 namespace Util
 {

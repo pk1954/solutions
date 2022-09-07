@@ -11,7 +11,6 @@ module;
 
 export module AddPipe2BaseKnotCommand;
 
-import MoreTypes;
 import NobId;
 import NNetCommand;
 import IoLine;

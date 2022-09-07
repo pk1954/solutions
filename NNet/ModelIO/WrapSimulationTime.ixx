@@ -9,7 +9,7 @@ module;
 export module WrapSimulationTime;
 
 import SaveCast;
-import BasicTypes;
+import Types;
 import SimulationTime;
 import NNetWrapperBase;
 import Script;

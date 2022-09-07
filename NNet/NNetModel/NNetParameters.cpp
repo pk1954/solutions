@@ -8,8 +8,7 @@ module;
 
 module NNetParameters;
 
-import BasicTypes;
-import SpeedType;
+import Types;
 
 bool Param::operator==(Param const & rhs) const
 {

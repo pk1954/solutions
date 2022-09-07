@@ -9,7 +9,7 @@ module;
 
 export module DescriptionWindow;
 
-import PixelTypes;
+import Types;
 import BaseWindow;
 import DescriptionUI;
 

@@ -8,7 +8,7 @@ module;
 
 export module PlugIoLineAnimation;
 
-import MoreTypes;
+import Types;
 import SingleNobAnimation;
 import PlugIoLines;
 import NobId;

@@ -10,8 +10,7 @@
 #include "IoConnector.h"
 #include "InputConnector.h"
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import DrawContext;
 import tHighlight;
 import NNetParameters;

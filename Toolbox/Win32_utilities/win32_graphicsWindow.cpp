@@ -10,7 +10,7 @@ module;
 module GraphicsWindow;
 
 import Direct2D;
-import PixelTypes;
+import Types;
 import BaseWindow;
 
 using std::make_unique;

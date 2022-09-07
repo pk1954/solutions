@@ -9,7 +9,7 @@
 #include "InputLine.h"
 #include "NNetModelReaderInterface.h"
 
-import BasicTypes;
+import Types;
 import DrawContext;
 import Neuron;
 import NNetModel;

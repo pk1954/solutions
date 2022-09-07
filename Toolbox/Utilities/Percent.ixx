@@ -2,9 +2,9 @@
 //
 // Utilities
 
-export module Percent;
+export module Types:Percent;
 
-import NamedType;
+import :NamedType;
 import SaveCast;
 
 export using PERCENT = NamedType< short, struct PERCENT_Parameter >;

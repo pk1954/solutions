@@ -8,7 +8,7 @@ module;
 
 export module AddSensorSignalCmd;
 
-import MoreTypes;
+import Types;
 import TrackNr;
 import SignalId;
 import NNetCommand;

@@ -9,7 +9,7 @@ module;
 
 export module DeleteSignalCommand;
 
-import MoreTypes;
+import Types;
 import NNetCommand;
 import MonitorData;
 

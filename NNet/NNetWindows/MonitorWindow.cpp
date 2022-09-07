@@ -13,7 +13,7 @@ module;
 
 module MonitorWindow;
 
-import PixelTypes;
+import Types;
 import SoundInterface;
 import MonitorControl;
 import NNetModelCommands;

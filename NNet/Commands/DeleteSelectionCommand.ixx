@@ -9,7 +9,7 @@ module;
 
 export module DeleteSelectionCommand;
 
-import MoreTypes;
+import Types;
 import CommandFunctions;
 import CommandStack;
 import NobIdList;

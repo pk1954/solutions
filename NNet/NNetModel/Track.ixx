@@ -11,7 +11,7 @@ module;
 export module Track;
 
 import Observable;
-import NamedType;
+import Types;
 import SignalNr;
 
 using std::vector;

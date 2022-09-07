@@ -11,7 +11,7 @@ module;
 
 export module DeleteBaseKnotCmd;
 
-import PixelTypes;
+import Types;
 import NobIdList;
 import NNetCommand;
 import OutputLine;

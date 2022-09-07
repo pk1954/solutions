@@ -8,7 +8,7 @@ module;
 
 export module RotationCommand;
 
-import MoreTypes;
+import Types;
 import Command;
 import NNetCommand;
 import Sensor;

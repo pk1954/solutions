@@ -9,7 +9,7 @@ module;
 
 export module IoLinesAnimation;
 
-import MoreTypes;
+import Types;
 import Command;
 import Animation;
 import MicroMeterPntVector;

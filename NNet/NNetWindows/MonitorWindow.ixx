@@ -9,9 +9,7 @@ module;
 
 export module MonitorWindow;
 
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import PixFpDimension;
 import BaseWindow;
 import MonitorControl;

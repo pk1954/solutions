@@ -10,7 +10,7 @@
 
 import Direct2D;
 import tHighlight;
-import MoreTypes;
+import Types;
 import DrawContext;
 import SigGenDynamicData;
 import IoLine;

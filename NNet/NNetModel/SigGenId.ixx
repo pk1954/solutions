@@ -4,7 +4,7 @@
 
 export module SigGenId;
 
-import NamedType;
+import Types;
 
 export using SigGenId = NamedType<int, struct SigGenIdParam>;
 

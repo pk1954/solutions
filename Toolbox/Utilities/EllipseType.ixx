@@ -2,12 +2,11 @@
 //
 // Utilities
 
-export module EllipseType;
+export module Types:EllipseType;
 
-import NamedType;
-import PointType;
-import CircleType;
-import RectType;
+import :PointType;
+import :RectType;
+import :CircleType;
 
 export template <typename BASE_TYPE> 
 class EllipseType

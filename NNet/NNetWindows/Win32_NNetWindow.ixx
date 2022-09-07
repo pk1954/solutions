@@ -10,7 +10,7 @@ module;
 
 export module NNetWindow;
 
-import MoreTypes;
+import Types;
 import D2D_DrawContext;
 import Uniform2D;
 import NNetController;

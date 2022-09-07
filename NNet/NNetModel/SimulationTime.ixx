@@ -4,7 +4,7 @@
 
 export module SimulationTime;
 
-import BasicTypes;
+import Types;
 
 export class SimulationTime
 {

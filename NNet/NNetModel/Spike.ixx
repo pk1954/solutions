@@ -8,8 +8,7 @@ module;
 
 export module Spike;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 
 export class Spike
 {

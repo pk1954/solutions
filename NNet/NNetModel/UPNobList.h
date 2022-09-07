@@ -9,7 +9,7 @@
 #include <algorithm>
 #include "Nob.h"
 
-import MoreTypes;
+import Types;
 import NobId;
 import NobType;
 

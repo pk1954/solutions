@@ -12,8 +12,7 @@
 #include "d2d1helper.h"
 
 import BoolOp;
-import BasicTypes;
-import MoreTypes;
+import Types;
 import DrawContext;
 import tHighlight;
 import NobId;

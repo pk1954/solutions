@@ -4,6 +4,6 @@
 
 export module SignalNr;
 
-import NamedType;
+import Types;
 
 export using SignalNr = NamedType<int, struct SignalNrParam>;

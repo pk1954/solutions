@@ -10,8 +10,7 @@ module;
 
 export module ActionTimer;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import Util;
 import Observable;
 import HiResTimer;

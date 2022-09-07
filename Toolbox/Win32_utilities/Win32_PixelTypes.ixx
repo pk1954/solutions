@@ -8,7 +8,7 @@ module;
 
 export module Win32_PixelTypes;
 
-import PixelTypes;
+import Types;
 import Win32_PIXEL;
 
 export fPixelRect Convert2fPixelRect(RECT const & rect)

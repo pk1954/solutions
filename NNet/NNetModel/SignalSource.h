@@ -8,8 +8,7 @@
 #include "UPNobList.h"
 
 import Observable;
-import BasicTypes;
-import MoreTypes;
+import Types;
 import DrawContext;
 
 using std::wostream;

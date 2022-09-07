@@ -12,7 +12,7 @@ module;
 module StatusBar;
 
 import Tooltip;
-import PixelTypes;
+import Types;
 import Script;
 
 using std::to_wstring;

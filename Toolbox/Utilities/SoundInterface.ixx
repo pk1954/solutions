@@ -9,7 +9,7 @@ module;
 export module SoundInterface;
 
 import Observable;
-import BasicTypes;
+import Types;
 
 using std::wstring;
 

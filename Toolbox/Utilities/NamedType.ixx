@@ -11,7 +11,7 @@ module;
 #include <iomanip>
 #include <limits>
 
-export module NamedType;
+export module Types:NamedType;
 
 import Util;
 

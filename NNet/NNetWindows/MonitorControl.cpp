@@ -13,7 +13,7 @@ module;
 
 module MonitorControl;
 
-import BasicTypes;
+import Types;
 import NNetModelCommands;
 import SimulationTime;
 import SignalId;

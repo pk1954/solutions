@@ -10,12 +10,11 @@ module;
 #include <iomanip>
 #include <compare>
 
-export module PointType;
+export module Types:PointType;
 
 import Util;
-import NamedType;
-import BasicTypes;
 import IoConstants;
+import :BasicTypes;
 
 using std::abs;
 using std::max;

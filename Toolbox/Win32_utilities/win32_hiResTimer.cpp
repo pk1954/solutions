@@ -10,7 +10,7 @@ module;
 
 module HiResTimer;
 
-import NamedType;
+import Types;
 
 HiResTimer::HiResTimer()
 {

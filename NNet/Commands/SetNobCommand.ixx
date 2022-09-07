@@ -10,7 +10,7 @@ module;
 
 export module SetNobCommand;
 
-import MoreTypes;
+import Types;
 import NobId;
 import NNetCommand;
 import MicroMeterPosDir;

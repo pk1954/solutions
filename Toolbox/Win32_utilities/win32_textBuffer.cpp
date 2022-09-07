@@ -11,7 +11,7 @@ module;
 module Win32_TextBuffer;
 
 import Util;
-import PixelTypes;
+import Types;
 import Win32_PIXEL;
 
 using std::wstring;

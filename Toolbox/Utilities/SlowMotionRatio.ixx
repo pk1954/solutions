@@ -9,8 +9,7 @@ module;
 export module SlowMotionRatio;
 
 import Observable;
-import BasicTypes;
-import MoreTypes;
+import Types;
 
 using std::array;
 

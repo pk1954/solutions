@@ -10,8 +10,7 @@ module;
 
 module MiniWindow;
 
-import MoreTypes;
-import PixelTypes;
+import Types;
 import MainWindow;
 import NNetController;
 import MainWindow;

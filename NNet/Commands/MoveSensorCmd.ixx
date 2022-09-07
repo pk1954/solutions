@@ -8,7 +8,7 @@ module;
 
 export module MoveSensorCmd;
 
-import MoreTypes;
+import Types;
 import UPSensorList;
 import NNetCommand;
 import Sensor;

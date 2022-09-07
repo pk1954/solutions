@@ -12,7 +12,7 @@ module;
 
 module Neuron;
 
-import BasicTypes;
+import Types;
 import DrawContext;
 import Spike;
 import NNetColors;

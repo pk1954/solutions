@@ -9,7 +9,7 @@ module;
 
 module Win32_PIXEL;
 
-import PixelTypes;
+import Types;
 import Script;
 
 using std::wostream;

@@ -9,8 +9,7 @@ module;
 module SignalPreview;
 
 import Direct2D;
-import BasicTypes;
-import PixelTypes;
+import Types;
 import PixFpDimension;
 import BaseWindow;
 import GraphicsWindow;

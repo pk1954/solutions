@@ -9,10 +9,9 @@ module;
 #include <algorithm>
 #include <math.h> 
 
-export module LineType;
+export module Types:LineType;
 
-import NamedType;
-import PointType;
+import :PointType;
 
 using std::swap;
 

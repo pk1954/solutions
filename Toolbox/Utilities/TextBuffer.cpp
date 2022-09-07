@@ -11,7 +11,7 @@ module;
 module TextBuffer;
 
 import Util;
-import PixelTypes;
+import Types;
 
 using std::wstring;
 using std::setw;

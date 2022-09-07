@@ -13,7 +13,7 @@ module;
 
 module WrapVoltage;
 
-import BasicTypes;
+import Types;
 import IoConstants;
 import ErrHndl;
 import Script;

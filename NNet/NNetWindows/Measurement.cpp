@@ -10,10 +10,9 @@ module;
 
 module Measurement;
 
-import BasicTypes;
+import Types;
 import Util;
 import Direct2D;
-import PixelTypes;
 
 using std::wostringstream;
 using std::setprecision;

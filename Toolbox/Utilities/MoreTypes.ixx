@@ -6,14 +6,14 @@ module;
 
 #include <math.h>
 
-export module MoreTypes;
+export module Types:MoreTypes;
 
-import BasicTypes;
-import PointType;
-import RectType;
-import LineType;
-import EllipseType;
-import CircleType;
+import :BasicTypes;
+import :CircleType;
+import :EllipseType;
+import :PointType;
+import :RectType;
+import :LineType;
 
 export using MicroMeterRect     = RectType<MicroMeter>;
 export using MicroMeterRectSize = SizeType<MicroMeter>;
@@ -32,5 +32,5 @@ export MicroMeterPnt Radian2Vector(Radian const r)
 
 export Radian Vector2Radian(MicroMeterPnt const& umPnt)
 {
-	return Radian(atan2(umPnt.GetYvalue(), umPnt.GetXvalue()));
+	return Radian(atan2f(umPnt.GetYvalue(), umPnt.GetXvalue()));
 }

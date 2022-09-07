@@ -10,7 +10,7 @@ module;
 
 module Analyzer;
 
-import MoreTypes;
+import Types;
 import Knot;
 
 using std::endl;

@@ -9,7 +9,7 @@ module;
 
 export module SingleNobAnimation;
 
-import MoreTypes;
+import Types;
 import Command;
 import Animation;
 import MicroMeterPosDir;

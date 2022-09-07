@@ -10,7 +10,7 @@ module;
 export module OutputLine;
 
 import tHighlight;
-import MoreTypes;
+import Types;
 import DrawContext;
 import IoLine;
 

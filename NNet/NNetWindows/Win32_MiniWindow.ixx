@@ -12,7 +12,7 @@ export module MiniWindow;
 import ObserverInterface;
 import MainWindow;
 import NNetWindow;
-import PixelTypes;
+import Types;
 import NNetController;
 
 using std::wstring;

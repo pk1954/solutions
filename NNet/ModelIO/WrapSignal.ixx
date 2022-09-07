@@ -11,7 +11,7 @@ export module WrapSignal;
 
 import ErrHndl;
 import TrackNr;
-import MoreTypes;
+import Types;
 import NNetWrapperBase;
 import NNetWrapperHelpers;
 

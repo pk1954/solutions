@@ -11,7 +11,7 @@ module;
 
 export module UPSigGenList;
 
-import NamedType;
+import Types;
 import SigGenId;
 
 using std::ranges::for_each;

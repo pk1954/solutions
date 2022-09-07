@@ -10,7 +10,7 @@ module;
 export module SplitNeuronCmd;
 
 import NobId;
-import MoreTypes;
+import Types;
 import NNetCommand;
 import OutputLine;
 import Neuron;

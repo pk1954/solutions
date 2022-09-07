@@ -18,8 +18,7 @@ module MainWindow;
 
 import NobException;
 import Observable;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import Command;
 import ActionTimer;
 import FatalError;

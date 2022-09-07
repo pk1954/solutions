@@ -8,7 +8,7 @@ module;
 
 module SigGenDynamicData;
 
-import BasicTypes;
+import Types;
 import Spike;
 import SimulationTime;
 import NNetParameters;

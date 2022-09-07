@@ -6,11 +6,9 @@ module;
 
 #include <ostream>
 
-export module CircleType;
+export module Types:CircleType;
 
-import NamedType;
-import BasicTypes;
-import PointType;
+import :PointType;
 import IoConstants;
 
 using std::wostream;

@@ -10,7 +10,7 @@ export module UtilityWrappers;
 
 import BoolOp; 
 import SaveCast;
-import PixelTypes;
+import Types;
 import BasePeak;
 import Script;
 

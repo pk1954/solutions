@@ -10,9 +10,7 @@ module;
 
 export module HiResTimer;
 
-import NamedType;
-import BasicTypes;
-import MoreTypes;
+import Types;
 
 export using std::chrono::microseconds;
 

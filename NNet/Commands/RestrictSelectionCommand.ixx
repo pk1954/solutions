@@ -8,7 +8,7 @@ module;
 
 export module RestrictSelectionCommand;
 
-import MoreTypes;
+import Types;
 import SelectionCommand;
 import NobType;
 

@@ -10,8 +10,7 @@
 
 import Geometry;
 import IoConstants;
-import BasicTypes;
-import SpeedType;
+import Types;
 import DrawContext;
 import NNetParameters;
 import Knot;

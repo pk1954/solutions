@@ -10,7 +10,7 @@ module;
 
 export module InsertBaseKnotCommand;
 
-import MoreTypes;
+import Types;
 import NobId;
 import NNetCommand;
 

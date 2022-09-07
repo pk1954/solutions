@@ -14,7 +14,7 @@ export module NNetModelCommands;
 import UPSensorList;
 import SigGenId;
 import Observable;
-import MoreTypes;
+import Types;
 import BoolOp;
 import Uniform2D;
 import SoundInterface;

@@ -11,7 +11,7 @@ export module WrapSignalData;
 
 import NNetWrapperBase;
 import IoConstants;
-import BasicTypes;
+import Types;
 import SignalId;
 import Script;
 import NNetWrapperHelpers;

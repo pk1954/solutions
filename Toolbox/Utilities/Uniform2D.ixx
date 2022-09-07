@@ -11,9 +11,7 @@ export module Uniform2D;
 import Util;
 import Observable;
 import PixFpDimension;
-import PixelTypes;
-import CircleType;
-import RectType;
+import Types;
 
 using std::max;
 

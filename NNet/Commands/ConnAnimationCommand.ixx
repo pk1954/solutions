@@ -9,7 +9,7 @@ module;
 
 export module ConnAnimationCommand;
 
-import MoreTypes;
+import Types;
 import NNetCommand;
 import IoLine;
 import NobType;

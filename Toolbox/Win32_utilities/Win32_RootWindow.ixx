@@ -18,9 +18,9 @@ export module RootWindow;
 import SaveCast;
 import BoolOp;
 import Util;
+import Types;
 import ObserverInterface;
 import Tooltip;
-import PixelTypes;
 import Win32_Util;
 import Win32_PIXEL;
 

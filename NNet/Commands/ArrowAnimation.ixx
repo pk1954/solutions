@@ -9,7 +9,7 @@ module;
 
 export module ArrowAnimation;
 
-import MoreTypes;
+import Types;
 import Command;
 import Animation;
 import NNetParameters;

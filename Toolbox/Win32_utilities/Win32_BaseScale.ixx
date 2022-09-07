@@ -13,8 +13,7 @@ module;
 export module BaseScale;
 
 import BoolOp;
-import PixelTypes;
-import MoreTypes;
+import Types;
 import Direct2D;
 import PixFpDimension;
 import GraphicsWindow;

@@ -8,7 +8,7 @@
 #include "Signal.h"
 
 import Util;
-import BasicTypes;
+import Types;
 import IoConstants;
 import DrawContext;
 import NNetColors;

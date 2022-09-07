@@ -10,7 +10,7 @@ module;
 
 export module Direct2D;
 
-import PixelTypes;
+import Types;
 
 using std::wstring;
 

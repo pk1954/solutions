@@ -8,8 +8,7 @@ module;
 
 export module CoordAnimation;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import Command;
 import Uniform2D;
 import Animation;

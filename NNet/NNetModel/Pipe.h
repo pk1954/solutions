@@ -8,12 +8,8 @@
 #include "Nob.h"
 
 import DrawContext;
-import NamedType;
+import Types;
 import SaveCast;
-import PointType;
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
 import tHighlight;
 import NNetParameters;
 import NobType;

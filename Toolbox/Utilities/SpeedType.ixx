@@ -2,10 +2,10 @@
 //
 // Utilities
 
-export module SpeedType;
+export module Types:SpeedType;
 
-import NamedType;
-import BasicTypes;
+import :NamedType;
+import :BasicTypes;
 import SaveCast;
 
 export using meterPerSec = NamedType<float, struct meterPerSec_Parameter >;

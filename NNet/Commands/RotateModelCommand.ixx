@@ -11,7 +11,7 @@ module;
 
 export module RotateModelCommand;
 
-import MoreTypes;
+import Types;
 import RotationCommand;
 import UPSensorList;
 

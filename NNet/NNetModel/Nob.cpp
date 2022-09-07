@@ -9,7 +9,7 @@
 #include "Nob.h"
 
 import Debug;
-import BasicTypes;
+import Types;
 import tHighlight;
 import Scanner;
 import NNetColors;

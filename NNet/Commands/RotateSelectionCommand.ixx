@@ -9,7 +9,7 @@ module;
 
 export module RotateSelectionCommand;
 
-import MoreTypes;
+import Types;
 import RotationCommand;
 
 export class RotateSelectionCommand : public RotationCommand

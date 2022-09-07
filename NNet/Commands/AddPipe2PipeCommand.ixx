@@ -11,7 +11,6 @@ module;
 
 export module AddPipe2PipeCommand;
 
-import MoreTypes;
 import NobId;
 import NNetCommand;
 import OutputLine;

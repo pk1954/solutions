@@ -10,7 +10,7 @@ module;
 module D2D_DrawContext;
 
 import Direct2D;
-import BasicTypes;
+import Types;
 
 using std::wstring;
 using D2D1::ColorF;

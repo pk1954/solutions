@@ -12,7 +12,7 @@ export module TextWindow;
 
 import Util;
 import TextBuffer;
-import PixelTypes;
+import Types;
 import Win32_TextBuffer;
 import BaseWindow;
 import Thread;

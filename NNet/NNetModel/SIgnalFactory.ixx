@@ -10,7 +10,7 @@ module;
 export module SignalFactory;
 
 import Observable;
-import MoreTypes;
+import Types;
 import TrackNr;
 import SignalId;
 import SignalNr;

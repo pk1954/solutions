@@ -10,12 +10,10 @@ module;
 
 export module SignalControl;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import PixFpDimension;
 import ComputeThread;
 import Direct2D;
-import PixelTypes;
 import TimeGraph;
 import NNetModelCommands;
 

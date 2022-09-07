@@ -12,7 +12,7 @@ module AboutBox;
 
 import Win32_Controls;
 import Win32_PIXEL;
-import PixelTypes;
+import Types;
 
 using std::wstring;
 

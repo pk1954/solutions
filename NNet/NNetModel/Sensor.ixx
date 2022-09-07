@@ -12,8 +12,7 @@ module;
 
 export module Sensor;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import NNetParameters;
 import DrawContext;
 

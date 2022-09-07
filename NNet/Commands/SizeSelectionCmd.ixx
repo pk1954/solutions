@@ -8,7 +8,7 @@ module;
 
 export module SizeSelectionCmd;
 
-import MoreTypes;
+import Types;
 import NNetCommand;
 
 export class SizeSelectionCmd : public NNetCommand

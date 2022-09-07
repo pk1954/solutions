@@ -16,7 +16,7 @@ export module NNetController;
 import Observable;
 import SoundInterface;
 import ComputeThread;
-import MoreTypes;
+import Types;
 import SlowMotionRatio;
 import Preferences;
 import WinManager;

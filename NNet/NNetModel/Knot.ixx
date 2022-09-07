@@ -11,8 +11,7 @@ module;
 export module Knot;
 
 import Geometry;
-import BasicTypes;
-import MoreTypes;
+import Types;
 import tHighlight;
 import DrawContext;
 

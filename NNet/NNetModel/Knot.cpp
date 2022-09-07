@@ -12,7 +12,7 @@ module;
 module Knot;
 
 import DrawContext;
-import BasicTypes;
+import Types;
 import NobType;
 import tHighlight;
 import NNetColors;

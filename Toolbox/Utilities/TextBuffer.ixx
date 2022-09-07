@@ -12,8 +12,7 @@ module;
 export module TextBuffer;
 
 import SaveCast;
-import NamedType;
-import PixelTypes;
+import Types;
 
 using std::wstring;
 using std::wostringstream;

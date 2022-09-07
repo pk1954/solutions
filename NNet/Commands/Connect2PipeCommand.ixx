@@ -11,7 +11,7 @@ module;
 
 export module Connect2PipeCommand;
 
-import MoreTypes;
+import Types;
 import NobId;
 import NNetCommand;
 import Knot;

@@ -10,7 +10,7 @@ module;
 
 export module PlugIoConnectorAnimation;
 
-import MoreTypes;
+import Types;
 import SingleNobAnimation;
 import PlugIoConnectors;
 import NNetCommand;

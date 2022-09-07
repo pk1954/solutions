@@ -11,7 +11,7 @@
 
 import BoolOp;
 import DrawContext;
-import MoreTypes;
+import Types;
 import tHighlight;
 import DrawContext;
 import MicroMeterPosDir;

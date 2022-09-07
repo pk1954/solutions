@@ -9,7 +9,7 @@ module;
 
 module ConnAnimationCommand;
 
-import MoreTypes;
+import Types;
 import IoLinesAnimation;
 import MakeConnAnimation;
 import MicroMeterPntVector;

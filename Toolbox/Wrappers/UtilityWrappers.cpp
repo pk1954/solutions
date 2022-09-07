@@ -12,7 +12,7 @@ module UtilityWrappers;
 import SaveCast;
 import BoolOp;
 import Trace;
-import PixelTypes;
+import Types;
 import Symtab;
 import Script;
 

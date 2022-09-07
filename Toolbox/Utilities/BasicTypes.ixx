@@ -10,10 +10,11 @@ module;
 #include <math.h>
 #include <numbers>
 
-export module BasicTypes;
+export module Types:BasicTypes;
 
-import Util;
-import NamedType;
+import :NamedType;
+import Util; 
+
 import SaveCast;
 
 using std::chrono::microseconds;

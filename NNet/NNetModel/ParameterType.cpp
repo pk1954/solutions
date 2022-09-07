@@ -9,7 +9,7 @@ module;
 
 module ParamType;
 
-import BasicTypes;
+import Types;
 
 using std::unordered_map;
 using std::wostream;

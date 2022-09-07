@@ -19,7 +19,7 @@ module;
 module NNetAppWindow;
 
 import NobException;
-import MoreTypes;
+import Types;
 import Util;
 import Trace;
 import Direct2D;

@@ -9,9 +9,7 @@ module;
 
 export module BaseWindow;
 
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import HiResTimer;
 import RootWindow;
 

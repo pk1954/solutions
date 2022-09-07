@@ -13,8 +13,7 @@
 #include "SignalSource.h"
 
 import ObserverInterface;
-import BasicTypes;
-import MoreTypes;
+import Types;
 import DrawContext;
 import SimulationTime;
 import NNetParameters;

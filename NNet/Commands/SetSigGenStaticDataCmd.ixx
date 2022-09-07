@@ -8,7 +8,7 @@ module;
 
 export module SetSigGenStaticDataCmd;
 
-import MoreTypes;
+import Types;
 import Command;
 import SigGenStaticData;
 import NNetCommand;

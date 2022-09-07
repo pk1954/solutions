@@ -8,7 +8,7 @@ module;
 
 export module InsertTrackCommand;
 
-import MoreTypes;
+import Types;
 import NNetCommand;
 import MonitorData;
 

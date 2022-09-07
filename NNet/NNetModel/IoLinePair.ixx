@@ -11,7 +11,7 @@ module;
 
 export module IoLinePair;
 
-import MoreTypes;
+import Types;
 import OutputLine;
 
 using std::unique_ptr;

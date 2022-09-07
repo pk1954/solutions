@@ -7,7 +7,7 @@
 #include "SignalGenerator.h"
 
 import ObserverInterface;
-import BasicTypes;
+import Types;
 import UPSigGenList;
 import NNetParameters;
 

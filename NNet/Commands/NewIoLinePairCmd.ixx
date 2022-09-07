@@ -8,7 +8,7 @@ module;
 
 export module NewIoLinePairCmd;
 
-import MoreTypes;
+import Types;
 import NNetCommand;
 import IoLinePair;
 

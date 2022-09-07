@@ -10,9 +10,7 @@ export module NNetParameters;
 
 import Observable;
 import SaveCast;
-import BasicTypes;
-import MoreTypes;
-import SpeedType;
+import Types;
 import ParamType;
 import SigGenStaticData;
 

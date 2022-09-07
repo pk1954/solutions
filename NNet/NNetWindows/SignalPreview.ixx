@@ -4,9 +4,7 @@
 
 export module SignalPreview;
 
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import PixFpDimension;
 import TimeGraph;
 import BaseWindow;

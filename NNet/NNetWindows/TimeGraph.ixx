@@ -10,7 +10,7 @@ module;
 
 export module TimeGraph;
 
-import MoreTypes;
+import Types;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;

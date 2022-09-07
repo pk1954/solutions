@@ -11,9 +11,7 @@ module;
 export module MicroMeterPntVector;
 
 import SaveCast;
-import BasicTypes;
-import MoreTypes;
-import PointType;
+import Types;
 import IoLine;
 import MicroMeterPosDir;
 

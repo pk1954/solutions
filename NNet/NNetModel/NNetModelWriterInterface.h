@@ -15,7 +15,7 @@
 #include "UPNobList.h"
 
 import BoolOp;
-import MoreTypes;
+import Types;
 import ParamType;
 import SigGenId;
 import UPSensorList;

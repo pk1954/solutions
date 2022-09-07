@@ -10,8 +10,7 @@ module;
 
 export module Win32_Sound;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import SoundInterface;
 
 using std::wstring;

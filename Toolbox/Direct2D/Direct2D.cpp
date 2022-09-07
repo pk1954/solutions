@@ -13,7 +13,6 @@ module;
 module Direct2D;
 
 import Util;
-import PixelTypes;
 import Win32_PIXEL;
 
 using std::array;

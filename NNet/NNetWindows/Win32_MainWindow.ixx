@@ -13,7 +13,7 @@ module;
 export module MainWindow;
 
 import ActionTimer;
-import PixelTypes;
+import Types;
 import Preferences;
 import NNetWindow;
 import NNetModelCommands;

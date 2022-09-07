@@ -11,7 +11,7 @@ module;
 
 export module CrsrWindow;
 
-import BasicTypes;
+import Types;
 import TextBuffer;
 import MainWindow;
 import TextWindow;

@@ -9,7 +9,7 @@ module;
 
 export module MoveSelectionCommand;
 
-import MoreTypes;
+import Types;
 import NNetCommand;
 
 export class MoveSelectionCommand : public NNetCommand

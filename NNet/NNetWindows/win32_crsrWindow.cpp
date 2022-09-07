@@ -15,7 +15,7 @@ module;
 
 module CrsrWindow;
 
-import BasicTypes;
+import Types;
 import TextBuffer;
 import MainWindow;
 import Win32_Util;

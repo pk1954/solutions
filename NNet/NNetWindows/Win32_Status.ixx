@@ -11,7 +11,7 @@ module;
 
 export module StatusBar;
 
-import PixelTypes;
+import Types;
 import RootWindow;
 import Script;
 

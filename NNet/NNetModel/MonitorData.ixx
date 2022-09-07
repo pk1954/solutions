@@ -12,8 +12,7 @@ module;
 export module MonitorData;
 
 import Observable;
-import NamedType;
-import BasicTypes;
+import Types;
 import TrackNr;
 import SignalId;
 import Track;

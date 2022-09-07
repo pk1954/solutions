@@ -16,8 +16,7 @@ module;
 
 module RootWindow;
 
-import BasicTypes;
-import PixelTypes;
+import Types;
 import BaseRefreshRate;
 
 using std::vector;

@@ -9,7 +9,7 @@ module;
 export module SigGenStaticData;
 
 import Observable;
-import BasicTypes;
+import Types;
 import BasePeak;
 
 using std::wcout;

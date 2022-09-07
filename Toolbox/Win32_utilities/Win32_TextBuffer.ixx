@@ -10,7 +10,7 @@ module;
 export module Win32_TextBuffer;
 
 import TextBuffer;
-import PixelTypes;
+import Types;
 
 using std::wostringstream;
 

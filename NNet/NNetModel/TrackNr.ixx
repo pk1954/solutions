@@ -8,7 +8,7 @@ module;
 
 export module TrackNr;
 
-import NamedType;
+import Types;
 import Script;
 
 using std::wostream;

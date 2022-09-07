@@ -8,9 +8,9 @@ module;
 #include <ostream>
 #include <algorithm>
 
-export module RectType;
+export module Types:RectType;
 
-import PointType;
+import :PointType;
 
 using std::wostream;
 using std::min;

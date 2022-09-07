@@ -9,7 +9,7 @@ module;
 
 export module MoveNobCommand;
 
-import MoreTypes;
+import Types;
 import NobId;
 import NNetCommand;
 

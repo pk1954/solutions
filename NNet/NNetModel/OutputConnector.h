@@ -9,7 +9,7 @@
 #include "IoConnector.h"
 
 import DrawContext;
-import MoreTypes;
+import Types;
 import IoLine;
 import tHighlight;
 import NobType;

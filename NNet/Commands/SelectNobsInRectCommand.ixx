@@ -10,7 +10,7 @@ module;
 
 export module SelectNobsInRectCommand;
 
-import MoreTypes;
+import Types;
 import SelectionCommand;
 import Knot;
 

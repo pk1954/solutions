@@ -9,7 +9,7 @@ module;
 
 module MicroMeterPosDir;
 
-import MoreTypes;
+import Types;
 import IoConstants;
 import NNetParameters;
 

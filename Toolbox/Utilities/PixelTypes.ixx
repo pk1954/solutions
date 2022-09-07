@@ -2,16 +2,15 @@
 //
 // Utilities
 
-export module PixelTypes;
+export module Types:PixelTypes;
 
 import SaveCast;
 import Util;
-import NamedType;
-import MoreTypes;
-import PointType;
-import EllipseType;
-import CircleType;
-import RectType;
+import :NamedType;
+import :CircleType;
+import :EllipseType;
+import :PointType;
+import :RectType;
 
 /////////////////// PIXEL ///////////////////////////////////
 

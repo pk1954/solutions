@@ -10,7 +10,7 @@ module;
 
 module NNetModel;
 
-import MoreTypes;
+import Types;
 import SimulationTime;
 import NobException;
 import Scanner;

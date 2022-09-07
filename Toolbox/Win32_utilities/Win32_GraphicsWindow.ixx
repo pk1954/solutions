@@ -13,7 +13,7 @@ module;
 export module GraphicsWindow;
 
 import Direct2D;
-import PixelTypes;
+import Types;
 import BaseWindow;
 
 using std::unique_ptr;

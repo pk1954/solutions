@@ -7,9 +7,7 @@
 #include "Pipe.h"
 #include "Nob.h"
 
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import DrawContext;
 import PipeList;
 

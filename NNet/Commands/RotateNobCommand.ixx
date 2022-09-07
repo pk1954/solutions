@@ -8,7 +8,7 @@ module;
 
 export module RotateNobCommand;
 
-import MoreTypes;
+import Types;
 import RotationCommand;
 import NobId;
 

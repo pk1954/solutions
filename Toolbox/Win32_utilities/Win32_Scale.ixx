@@ -15,10 +15,9 @@ export module Scale;
 
 import Util;
 import ObserverInterface;
-import MoreTypes;
+import Types;
 import PixFpDimension;
 import Direct2D;
-import PixelTypes;
 import GraphicsWindow;
 import BaseScale;
 

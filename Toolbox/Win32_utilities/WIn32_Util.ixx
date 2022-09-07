@@ -13,10 +13,7 @@ module;
 export module Win32_Util;
 
 import BoolOp;
-import NamedType;
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 
 using std::wostringstream;
 using std::wostream;

@@ -8,7 +8,7 @@ module;
 
 module IoLine;
 
-import MoreTypes;
+import Types;
 import MicroMeterPosDir;
 
 MicroMeterPnt IoLine::GetScaledDirVector() const

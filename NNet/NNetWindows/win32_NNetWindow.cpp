@@ -16,10 +16,9 @@ module;
 
 module NNetWindow;
 
-import MoreTypes;
+import Types;
 import Direct2D;
 import Win32_Sound;
-import PixelTypes;
 import NNetController;
 import NNetColors;
 import NNetParameters;

@@ -11,13 +11,11 @@ module;
 
 export module SignalDesigner;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import Observable;
 import PixFpDimension;
 import SignalControl;
 import ComputeThread;
-import PixelTypes;
 import ArrowButton;
 import SignalPreview;
 import Direct2D;

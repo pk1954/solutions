@@ -9,9 +9,7 @@ module;
 export module D2D_DrawContext;
 
 import Direct2D;
-import BasicTypes;
-import MoreTypes;
-import PixelTypes;
+import Types;
 import DrawContext;
 
 using std::wstring;

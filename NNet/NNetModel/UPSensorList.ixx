@@ -10,8 +10,7 @@ module;
 
 export module UPSensorList;
 
-import NamedType;
-import MoreTypes;
+import Types;
 import Sensor;
 
 using std::ranges::for_each;

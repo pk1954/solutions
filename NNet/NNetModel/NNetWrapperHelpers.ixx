@@ -8,8 +8,7 @@ module;
 
 export module NNetWrapperHelpers;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import MicroMeterPntVector;
 import NobIdList;
 import ParamType;

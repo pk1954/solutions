@@ -8,9 +8,8 @@ module;
 
 export module Measurement;
 
-import BasicTypes;
+import Types;
 import Direct2D;
-import PixelTypes;
 
 export class Measurement
 {

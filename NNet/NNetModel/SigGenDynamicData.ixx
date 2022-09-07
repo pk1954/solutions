@@ -4,8 +4,7 @@
 
 export module SigGenDynamicData;
 
-import BasicTypes;
-import MoreTypes;
+import Types;
 import SigGenStaticData;
 import NNetParameters;
 

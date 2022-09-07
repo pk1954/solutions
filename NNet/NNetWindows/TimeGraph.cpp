@@ -10,8 +10,7 @@ module;
 
 module TimeGraph;
 
-import BasicTypes;
-import PixelTypes;
+import Types;
 import PixFpDimension;
 import GraphicsWindow;
 

@@ -13,7 +13,6 @@ export module NNetModel;
 import ObserverInterface;
 import Observable;
 import Util;
-import MoreTypes;
 import UPSigGenList;
 import ParamType;
 import UPSensorList;
