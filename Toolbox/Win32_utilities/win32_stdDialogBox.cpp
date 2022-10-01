@@ -6,10 +6,10 @@ module;
 
 #include <bit>
 #include <Windows.h>
-#include "win32_util_resource.h"
 
 module StdDialogBox;
 
+import Win32_Util_Resource;
 import Win32_Util;
 import DialogTemplate;
 

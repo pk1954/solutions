@@ -8,10 +8,10 @@ module;
 #include <string> 
 #include <Windows.h> 
 #include "dwrite.h"
-#include "win32_util_resource.h"
 
 export module BaseScale;
 
+import Win32_Util_Resource;
 import BoolOp;
 import Types;
 import Direct2D;

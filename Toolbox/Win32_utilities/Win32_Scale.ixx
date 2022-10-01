@@ -9,10 +9,10 @@ module;
 #include <sstream> 
 #include <iomanip> 
 #include "dwrite.h"
-#include "win32_util_resource.h"
 
 export module Scale;
 
+import Win32_Util_Resource;
 import Util;
 import ObserverInterface;
 import Types;

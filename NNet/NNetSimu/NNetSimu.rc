@@ -6,7 +6,6 @@
 #include <commctrl.h>
 #include <richedit.h>
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 //
 // Icon resources
@@ -40,12 +39,6 @@ IDC_NNET_SIMU_MAIN ACCELERATORS
     "a",       IDM_SELECT_ALL,      VIRTKEY, CONTROL
     "s",       IDM_SAVE_MODEL,      VIRTKEY, CONTROL
     "c",       IDM_COPY_SELECTION,  VIRTKEY, CONTROL
-    "c",       IDM_CRSR_WINDOW,     ASCII,   ALT
-    "d",       IDM_DESC_WINDOW,     ASCII,   ALT
-    "p",       IDM_PARAM_WINDOW,    ASCII,   ALT
-    "m",       IDM_MINI_WINDOW,     ASCII,   ALT
-    "?",       IDM_ABOUT,           ASCII,   ALT
-    "n",       IDM_NEXT_SCRIPT_CMD, ASCII,   ALT
     VK_BACK,   IDM_UNDO,            VIRTKEY, ALT
     VK_DELETE, IDM_DELETE,          VIRTKEY
     VK_ESCAPE, IDM_ESCAPE,          VIRTKEY

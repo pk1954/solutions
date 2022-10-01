@@ -7,10 +7,11 @@ module;
 #include <cassert>
 #include <string>
 #include <chrono>
-#include "win32_util_resource.h"
+#include <Windows.h>
 
 module BaseRefreshRate;
 
+import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Util;
 import EditLineBox;

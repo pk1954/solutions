@@ -7,10 +7,10 @@ module;
 #include <sstream> 
 #include "Resource.h"
 #include "Windows.h"
-#include "win32_util_resource.h"
 
 module NNetWindow;
 
+import Win32_Util_Resource;
 import Types;
 import Direct2D;
 import Win32_Sound;

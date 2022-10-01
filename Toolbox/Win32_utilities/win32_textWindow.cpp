@@ -8,10 +8,10 @@ module;
 #include <cassert>
 #include <functional>
 #include "Windows.h"
-#include "win32_util_resource.h"
 
 module TextWindow;
 
+import Win32_Util_Resource;
 import Thread;
 import Win32_Util;
 import BaseWindow;

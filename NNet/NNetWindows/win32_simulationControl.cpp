@@ -6,10 +6,11 @@ module;
 
 #include <compare>
 #include "Resource.h"
-#include "win32_util_resource.h"
+#include <Windows.h>
 
 module SimulationControl;
 
+import Win32_Util_Resource;
 import ComputeThread;
 import StatusBar;
 
@@ -23,7 +24,7 @@ void SimulationControl::Initialize
 	m_pComputeThread = pComputeThread;
 
 	m_pStatusBar->AddButton(L"SingleStep", HMENU(IDM_FORWARD),  BS_PUSHBUTTON); 
-	m_pStatusBar->AddButton(L"   Run    ", HMENU(IDM_RUN_STOP), BS_PUSHBUTTON); 
+	m_pStatusBar->AddButton(L"   Run    ", HMENU(IDM_RUN_STOP), BS_PUSHBUTTON);
 
 	Notify(true);
 }

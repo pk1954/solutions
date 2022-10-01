@@ -9,10 +9,10 @@ module;
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 module NNetController;
 
+import Win32_Util_Resource;
 import SlowMotionRatio;
 import Observable;
 import Win32_Sound;

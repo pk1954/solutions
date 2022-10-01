@@ -6,10 +6,11 @@ module;
 
 #include <bit>
 #include <memory>
-#include "win32_util_resource.h"
+#include <Windows.h>
 
 module Command;
 
+import Win32_Util_Resource;
 import SaveCast;
 import RootWindow;
 import ScriptStack;

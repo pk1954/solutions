@@ -7,10 +7,10 @@ module;
 #include <bit> 
 #include <string> 
 #include "Windows.h"
-#include "win32_util_resource.h"
 
 module BaseScale;
 
+import Win32_Util_Resource;
 import BoolOp;
 import Types;
 import PixFpDimension;

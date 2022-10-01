@@ -12,10 +12,10 @@ module;
 #include <chrono>
 #include <Windows.h>
 #include "CommCtrl.h"
-#include "win32_util_resource.h"
 
 module RootWindow;
 
+import Win32_Util_Resource;
 import Types;
 import BaseRefreshRate;
 

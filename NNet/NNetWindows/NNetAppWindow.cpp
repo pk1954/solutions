@@ -12,11 +12,11 @@ module;
 #include <iostream>
 #include <filesystem>
 #include <source_location>
-#include "win32_util_resource.h"
 #include "Resource.h"
 
 module NNetAppWindow;
 
+import Win32_Util_Resource;
 import Types;
 import Util;
 import Trace;

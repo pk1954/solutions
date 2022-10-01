@@ -6,10 +6,10 @@ module;
 
 #include <string>
 #include "Windows.h"
-#include "win32_util_resource.h"
 
 module EditLineBox;
 
+import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Controls;
 import Win32_PIXEL;

@@ -7,10 +7,10 @@
 #include <fstream>
 #include <memory>
 #include <Windows.h>
-#include "win32_util_resource.h"
 #include "Resource.h"
 #include "CommCtrl.h"
 
+import Win32_Util_Resource;
 import Trace;
 import Stopwatch;
 import MessagePump;

@@ -9,10 +9,10 @@ module;
 #include <algorithm>
 #include <Windows.h>
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 module MonitorWindow;
 
+import Win32_Util_Resource;
 import Types;
 import SoundInterface;
 import MonitorControl;

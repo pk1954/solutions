@@ -8,10 +8,10 @@ module;
 #include <memory>
 #include <Windows.h>
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 module NNetAppMenu;
 
+import Win32_Util_Resource;
 import SoundInterface;
 import ComputeThread;
 import SignalDesigner;

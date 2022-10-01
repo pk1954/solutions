@@ -9,10 +9,10 @@ module;
 #include <string>
 #include <Windows.h>
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 module SignalDesigner;
 
+import Win32_Util_Resource;
 import Types;
 import ComputeThread;
 import PixFpDimension;

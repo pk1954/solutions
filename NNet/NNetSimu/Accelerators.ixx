@@ -8,10 +8,10 @@ module;
 #include <array>
 #include <Windows.h>
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 export module Accelerators;
 
+import Win32_Util_Resource;
 import SaveCast;
 
 using std::array;

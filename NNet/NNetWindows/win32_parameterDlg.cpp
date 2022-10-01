@@ -5,11 +5,12 @@
 module;
 
 #include <sstream>
-#include "win32_util_resource.h"
 #include "Resource.h"
+#include <Windows.h>
 
 module ParameterDialog;
 
+import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;

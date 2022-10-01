@@ -6,10 +6,10 @@ module;
 
 #include <string>
 #include "Windows.h"
-#include "win32_util_resource.h"
 
 module AboutBox;
 
+import Win32_Util_Resource;
 import Win32_Controls;
 import Win32_PIXEL;
 import Types;

@@ -7,10 +7,10 @@ module;
 #include <string>
 #include <unordered_map>
 #include <Windows.h>
-#include "win32_util_resource.h"
 
 export module WinManager;
 
+import Win32_Util_Resource;
 import ErrHndl;
 import BaseDialog;
 import BaseWindow;

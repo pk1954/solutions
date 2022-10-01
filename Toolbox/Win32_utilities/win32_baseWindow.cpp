@@ -8,10 +8,10 @@ module;
 #include <cassert>
 #include <chrono>
 #include "Windows.h"
-#include "win32_util_resource.h"
 
 module BaseWindow;
 
+import Win32_Util_Resource;
 import Util;
 import Types;
 import Win32_Util;

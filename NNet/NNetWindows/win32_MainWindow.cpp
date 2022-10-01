@@ -9,10 +9,10 @@ module;
 #include <string>
 #include <Windows.h>
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 module MainWindow;
 
+import Win32_Util_Resource;
 import Observable;
 import Types;
 import Command;

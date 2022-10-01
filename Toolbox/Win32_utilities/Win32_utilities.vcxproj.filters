@@ -18,11 +18,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_util_resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Win32_BaseWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -183,6 +178,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_DialogTemplate.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Util_Resource.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

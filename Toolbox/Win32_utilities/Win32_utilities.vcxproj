@@ -160,9 +160,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_util_resource.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />
@@ -215,6 +212,7 @@
     <ClCompile Include="Win32_Tooltip.ixx" />
     <ClCompile Include="Win32_Util.cpp" />
     <ClCompile Include="Win32_Util.ixx" />
+    <ClCompile Include="Win32_Util_Resource.ixx" />
     <ClCompile Include="Win32_WinManager.cpp" />
     <ClCompile Include="Win32_WinManager.ixx" />
   </ItemGroup>

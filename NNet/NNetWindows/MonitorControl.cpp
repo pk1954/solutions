@@ -9,10 +9,10 @@ module;
 #include <Windows.h>
 #include "dwrite.h"
 #include "Resource.h"
-#include "win32_util_resource.h"
 
 module MonitorControl;
 
+import Win32_Util_Resource;
 import Types;
 import NNetModelCommands;
 import SimulationTime;

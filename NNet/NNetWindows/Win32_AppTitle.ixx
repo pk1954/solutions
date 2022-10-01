@@ -5,10 +5,10 @@
 module;
 
 #include <Windows.h>
-#include "win32_util_resource.h"
 
 export module AppTitle;
 
+import Win32_Util_Resource;
 import ObserverInterface;
 import Win32_Util;
 import NNetModel;

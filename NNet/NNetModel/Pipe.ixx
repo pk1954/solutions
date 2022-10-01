@@ -57,7 +57,7 @@ public:
 	}
 
 	Nob const * GetStartKnotPtr() const { return m_pKnotStart; }   //TODO: Nob --> BaseKnot
-	Nob const * GetEndKnotPtr  () const { return m_pKnotEnd; }   //TODO: Nob --> BaseKnot
+	Nob const * GetEndKnotPtr  () const { return m_pKnotEnd;   }   //TODO: Nob --> BaseKnot
 	size_t      GetNrOfSegments() const { return m_potential.size(); }
 
 	void SetNrOfSegments(size_t const n) { m_potential.resize(n); }
