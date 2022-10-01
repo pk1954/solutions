@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-export module tHighlight;
+export module NNetModel:tHighlight;
 
 export enum class tHighlight
 {

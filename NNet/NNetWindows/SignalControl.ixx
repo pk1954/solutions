@@ -5,8 +5,7 @@
 module;
 
 #include <array>
-#include "SignalGenerator.h"
-#include "NNetModelReaderInterface.h"
+#include <Windows.h>
 
 export module SignalControl;
 
@@ -16,6 +15,7 @@ import ComputeThread;
 import Direct2D;
 import TimeGraph;
 import NNetModelCommands;
+import NNetModel;
 
 using std::array;
 

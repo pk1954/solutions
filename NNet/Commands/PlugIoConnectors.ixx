@@ -5,17 +5,18 @@
 module;
 
 #include <vector>
-#include "NNetModelWriterInterface.h"
-#include "IoConnector.h"
+#include <memory>
+#include <cassert>
 
 export module PlugIoConnectors;
 
-import NobId;
+import Types;
 import NNetCommand;
-import Neuron;
+import NNetModel;
 
 using std::vector;
 using std::unique_ptr;
+using std::make_unique;
 
 export class PlugIoConnectors : public NNetCommand
 {
@@ -25,7 +26,7 @@ public:
         IoConnector const& conn1,
         IoConnector const& conn2
     )
-        : m_inputConnector(conn1.IsInputNob() ? conn1 : conn2),
+      : m_inputConnector(conn1.IsInputNob() ? conn1 : conn2),
         m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
     {
         assert(m_inputConnector.Size() == m_outputConnector.Size());

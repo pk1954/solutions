@@ -4,9 +4,11 @@
 
 module;
 
+#include <compare>
 #include <string>
 #include <vector>
-#include "NNetModelReaderInterface.h"
+#include <memory>
+#include <Windows.h>
 
 export module Preferences;
 
@@ -14,9 +16,11 @@ import DescriptionWindow;
 import SoundInterface;
 import WrapBase;
 import NNetModelIO;
+import NNetModel;
 
 using std::wstring;
 using std::vector;
+using std::unique_ptr;
 
 export class Preferences
 {

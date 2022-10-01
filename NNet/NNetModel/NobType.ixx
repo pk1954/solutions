@@ -8,7 +8,7 @@ module;
 #include <iostream>
 #include <functional>
 
-export module NobType;
+export module NNetModel:NobType;
 
 import Debug;
 

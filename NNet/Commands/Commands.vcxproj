@@ -142,7 +142,7 @@
     <ClCompile Include="SetParameterCommand.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
     <ClCompile Include="SetTargetNobCmd.ixx" />
-    <ClCompile Include="SIgGenCommand.ixx" />
+    <ClCompile Include="SigGenCommand.ixx" />
     <ClCompile Include="SingleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />

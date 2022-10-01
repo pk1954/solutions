@@ -4,19 +4,19 @@
 
 module;
 
-#include "Pipe.h"
-#include "InputLine.h"
-#include "BaseKnot.h"
-#include "NNetModelWriterInterface.h"
+#include <iostream>
+#include <memory>
 
 module DeleteBaseKnotCmd;
 
 import SaveCast;
-import OutputLine;
+import NNetModel;
 
 using std::wcout;
 using std::endl;
+using std::move;
 using std::make_unique;
+using std::unique_ptr;
 
 DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
   : m_baseKnot(*Cast2BaseKnot(&nob))

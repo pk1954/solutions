@@ -6,16 +6,15 @@ module;
 
 #include <chrono>
 #include <algorithm>  // min/max/abs templates
+#include <Windows.h>
 #include "Resource.h"
-#include "InputConnector.h"
-#include "NNetModelReaderInterface.h"
 
 module SignalControl;
 
 import Types;
 import ComputeThread;
 import NNetModelCommands;
-import NNetParameters;
+import NNetModel;
 
 using std::max;
 

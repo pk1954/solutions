@@ -4,7 +4,8 @@
 
 module;
 
-#include "NNetModelReaderInterface.h"
+#include <string>
+#include <Windows.h>
 
 export module PerformanceWindow;
 
@@ -12,6 +13,9 @@ import SlowMotionRatio;
 import ComputeThread;
 import ActionTimer;
 import TextWindow;
+import NNetModel;
+
+using std::wstring;
 
 export class PerformanceWindow: public TextWindow
 {

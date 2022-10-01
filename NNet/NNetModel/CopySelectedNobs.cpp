@@ -5,16 +5,21 @@
 module;
 
 #include <cassert>
+#include <memory>
 #include <unordered_map>
-#include "Nob.h"
-#include "BaseKnot.h"
-#include "NNetModelWriterInterface.h"
 
-module CopySelectedNobs;
-import Knot;
+module NNetModel:CopySelectedNobs;
+
+import Types;
+import :NNetModelWriterInterface;
+import :UPNobList;
+import :BaseKnot;
+import :Knot;
+import :Nob;
 
 using std::unordered_map;
 using std::make_pair;
+using std::make_unique;
 
 UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 { 
@@ -38,8 +43,8 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 		if (pNobCopy->IsPipe())
 		{
 			Pipe const & pipeModel { static_cast<Pipe const &>(copy2model(pNobCopy)) };
-			addMissingKnot(*(pipeModel.GetStartKnotPtr()));
-			addMissingKnot(*(pipeModel.GetEndKnotPtr  ()));
+			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetStartKnotPtr())));
+			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetEndKnotPtr  ())));
 		}
 	}
 

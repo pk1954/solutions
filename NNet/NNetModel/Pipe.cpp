@@ -2,20 +2,30 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include <algorithm>
+#include <iostream>
 #include "Resource.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
+
+module NNetModel:Pipe;
 
 import Geometry;
 import IoConstants;
 import Types;
 import DrawContext;
-import NNetParameters;
-import Knot;
+import :tHighlight;
+import :NNetParameters;
+import :Knot;
+import :BaseKnot;
+import :NobType;
+import :NobId;
+import :Nob;
 
+using std::max;
 using std::wcout;
+using std::wostream;
 using std::endl;
 using std::ranges::fill;
 
@@ -25,8 +35,8 @@ Pipe::Pipe()
 
 Pipe::Pipe
 (
-	BaseKnot * const pKnotStart, 
-	BaseKnot * const pKnotEnd
+	Nob * const pKnotStart, //TODO: Nob --> BaseKnot
+	Nob * const pKnotEnd    //TODO: Nob --> BaseKnot
 )
   :	Nob(NobType::Value::pipe),
 	m_pKnotStart(pKnotStart),
@@ -86,7 +96,7 @@ void Pipe::recalc()
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
 	MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
-	unsigned int const iNrOfSegments { max(1, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
+	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
 	m_potential.resize(iNrOfSegments, 0.0_mV);
 	m_potIndex = 0;
 }
@@ -107,8 +117,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void Pipe::Check() const
 {
 	Nob::Check();
-	assert(m_pKnotStart->IsPrecursorOf(* this));
-	assert(m_pKnotEnd  ->IsSuccessorOf(* this));
+	assert(static_cast<BaseKnot *>(m_pKnotStart)->IsPrecursorOf(* this));
+	assert(static_cast<BaseKnot *>(m_pKnotEnd  )->IsSuccessorOf(* this));
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -151,7 +161,7 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 	return true;
 }
 
-void Pipe::SetStartKnot(BaseKnot * const pBaseKnot)
+void Pipe::SetStartKnot(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 {
 	if (pBaseKnot)
 	{
@@ -160,7 +170,7 @@ void Pipe::SetStartKnot(BaseKnot * const pBaseKnot)
 	}
 }
 
-void Pipe::SetEndKnot(BaseKnot * const pBaseKnot)
+void Pipe::SetEndKnot(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 {
 	if (pBaseKnot)
 	{

@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-export module SigGenId;
+export module NNetModel:SigGenId;
 
 import Types;
 

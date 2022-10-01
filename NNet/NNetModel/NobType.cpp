@@ -1,13 +1,14 @@
 // NobType.cpp
 //
 // NNetModel
+
 module;
 
 #include <string>
 #include <iostream>
 #include <unordered_map>
 
-module NobType;
+module NNetModel:NobType;
 
 using std::unordered_map;
 using std::wostream;

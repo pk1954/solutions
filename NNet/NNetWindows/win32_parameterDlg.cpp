@@ -7,7 +7,6 @@ module;
 #include <sstream>
 #include "win32_util_resource.h"
 #include "Resource.h"
-#include "NNetModelWriterInterface.h"
 
 module ParameterDialog;
 
@@ -15,7 +14,7 @@ import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;
 import NNetModelCommands;
-import NNetParameters;
+import NNetModel;
 
 using std::wstring;
 

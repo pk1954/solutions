@@ -5,15 +5,13 @@
 module;
 
 #include <iostream>
-#include "NNetModelWriterInterface.h"
 
 export module WrapNrOfTracks;
 
 import NNetWrapperBase;
-import TrackNr;
 import Script;
 import NNetModelIO;
-import MonitorData;
+import NNetModel;
 
 using std::wostream;
 using std::endl;

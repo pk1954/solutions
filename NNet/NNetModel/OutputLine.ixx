@@ -2,17 +2,14 @@
 //
 // NNetModel
 
-module;
+export module NNetModel:OutputLine;
 
-#include "Nob.h"
-#include "BaseKnot.h"
-
-export module OutputLine;
-
-import tHighlight;
 import Types;
 import DrawContext;
-import IoLine;
+import :tHighlight;
+import :IoLine;
+import :BaseKnot;
+import :Nob;
 
 export class OutputLine : public IoLine
 {
@@ -24,7 +21,7 @@ public:
 	~OutputLine() final = default;
 
 	void Check() const final;
-
+	
 	bool operator==(Nob const&) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsOutputLineType(); }

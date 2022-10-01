@@ -8,13 +8,13 @@ module;
 
 #include <string>
 #include <vector>
-#include "Nob.h"
-#include "NNetModelReaderInterface.h"
 
-export module Analyzer;
+export module NNetModel:Analyzer;
 
 import DisplayFunctor;
-import Knot;
+import :NNetModelReaderInterface;
+import :Knot;
+import :Nob;
 
 using std::vector;
 using std::wstring;

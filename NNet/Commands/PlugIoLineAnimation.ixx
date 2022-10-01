@@ -4,16 +4,15 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
+#include <memory>
 
 export module PlugIoLineAnimation;
 
 import Types;
 import SingleNobAnimation;
 import PlugIoLines;
-import NobId;
 import NNetCommand;
-import IoLine;
+import NNetModel;
 
 using std::make_unique;
 

@@ -4,14 +4,15 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "Signal.h"
+#include <memory>
 
 export module DeleteSignalCommand;
 
 import Types;
 import NNetCommand;
-import MonitorData;
+import NNetModel;
+
+using std::unique_ptr;
 
 export class DeleteSignalCommand : public NNetCommand
 {

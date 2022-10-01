@@ -4,17 +4,15 @@
 
 module;
 
+#include <string>
 #include <iostream>
 #include <exception>
 #include "Windows.h"
 #include "Resource.h"
 #include "win32_util_resource.h"
-#include "NNetModelReaderInterface.h"
 
 module NNetController;
 
-import NobException;
-import SigGenId;
 import SlowMotionRatio;
 import Observable;
 import Win32_Sound;
@@ -30,6 +28,7 @@ import NNetModelCommands;
 import MonitorWindow;
 import CommandStack;
 import AutoOpen;
+import NNetModel;
 
 using std::to_wstring;
 using std::wcout;
@@ -103,7 +102,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         catch (NobException const & e)
         {
             wcout << Scanner::COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
-            m_pNMRI->DUMP();
+            m_pNMRI->DumpModel(__FILE__, __LINE__);
             FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
         }
         m_pComputeThread->ReleaseComputationLock();

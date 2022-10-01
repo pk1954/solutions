@@ -2,18 +2,32 @@
 //
 // NNetModel
 
-#include <cassert>
-#include "Resource.h"
-#include "BaseKnot.h"
+module;
 
+#include <cassert>
+#include <functional>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include "Resource.h"
+
+module NNetModel:BaseKnot;
+
+import Types;
 import DrawContext;
-import NobException;
+import :Pipe;
+import :IoLine;
+import :NobException;
+import :NobType;
+import :Nob;
 
 using std::wcout;
 using std::endl;
 using std::find;
 using std::begin;
 using std::end;
+using std::vector;
+using std::function;
 
 BaseKnot::BaseKnot
 (
@@ -41,6 +55,11 @@ void BaseKnot::Dump() const
 	wcout << L" out";
 	m_outPipes.Dump();
 	wcout << endl;
+}
+
+bool BaseKnot::AnyConnectedPipesSelected() const
+{
+	return Apply2AllConnectedPipesB([](Pipe const& p) { return p.IsSelected(); });                                                
 }
 
 BaseKnot & BaseKnot::operator*=(float const f)
@@ -142,7 +161,7 @@ void BaseKnot::Apply2AllConnectedPipes(PipeFunc const &f) const
 	Apply2AllOutPipes(f); 
 }
 
-bool BaseKnot::Apply2AllConnectedPipesB(PipeCrit const &c) const 
+bool BaseKnot::Apply2AllConnectedPipesB(function<bool(Pipe const&)> const & c) const
 { 
 	return Apply2AllInPipesB(c) || Apply2AllOutPipesB(c); 
 }
@@ -180,8 +199,8 @@ bool BaseKnot::IsDirectlyConnectedTo(BaseKnot const & b) const
 
 bool BaseKnot::IsDirectlyConnectedTo(Pipe const & pipe) const
 {
-	return IsDirectlyConnectedTo(*pipe.GetStartKnotPtr()) || 
-		   IsDirectlyConnectedTo(*pipe.GetEndKnotPtr  ());
+	return IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetStartKnotPtr())) || 
+		   IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetEndKnotPtr  ()));
 }
 
 bool BaseKnot::Includes(MicroMeterPnt const & point) const

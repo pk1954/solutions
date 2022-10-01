@@ -8,7 +8,7 @@ module;
 #include <vector>
 #include <cassert>   
 
-export module MicroMeterPosDir;
+export module NNetModel:MicroMeterPosDir;
 
 import Types;
 

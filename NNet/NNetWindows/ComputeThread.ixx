@@ -4,15 +4,17 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
+#include <Windows.h>
 
 export module ComputeThread;
 
 import ObserverInterface;
 import Observable;
-import SlowMotionRatio;
 import HiResTimer;
 import Thread;
+import Types;
+import SlowMotionRatio;
+import NNetModel;
 
 export class ComputeThread: public Util::Thread, public ObserverInterface
 {

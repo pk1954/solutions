@@ -5,16 +5,12 @@
 module;
 
 #include <vector>
-#include "NNetModelWriterInterface.h"
-#include "IoConnector.h"
-#include "InputConnector.h"
-#include "OutputConnector.h"
+#include <memory>
 
 export module MakeConnAnimation;
 
 import NNetCommand;
-import NNetParameters;
-import IoLine;
+import NNetModel;
 
 using std::vector;
 using std::unique_ptr;

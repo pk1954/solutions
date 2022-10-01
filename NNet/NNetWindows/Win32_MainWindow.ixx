@@ -5,10 +5,8 @@
 module;
 
 #include <Windows.h>
+#include <memory>
 #include "Resource.h"
-#include "BaseKnot.h"
-#include "UPNobList.h"
-#include "NNetModelReaderInterface.h"
 
 export module MainWindow;
 
@@ -17,6 +15,7 @@ import Types;
 import Preferences;
 import NNetWindow;
 import NNetModelCommands;
+import NNetModel;
 
 using std::unique_ptr;
 

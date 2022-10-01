@@ -5,18 +5,20 @@
 module;
 
 #include <cassert>
+#include <iostream>
+#include <memory>
 #include <source_location>
-#include "NNetModelWriterInterface.h"
 
 module CommandStack;
 
 import Observable;
 import Command;
-import NobException;
+import NNetModel;
 import Scanner;
 
 using std::wcout;
 using std::endl;
+using std::unique_ptr;
 using std::source_location;
 
 void CommandStack::Initialize(Observable * const pStaticModelObservable)

@@ -186,7 +186,7 @@
     <ClCompile Include="SetTargetNobCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SIgGenCommand.ixx">
+    <ClCompile Include="SigGenCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SingleNobAnimation.ixx">

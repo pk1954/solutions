@@ -166,7 +166,6 @@
     <ClCompile Include="NNetModelIO.ixx" />
     <ClCompile Include="NNetWrapperBase.ixx" />
     <ClCompile Include="WrapActiveSigGen.ixx" />
-    <ClCompile Include="WrapCreateNob.cpp" />
     <ClCompile Include="WrapCreateNob.ixx" />
     <ClCompile Include="WrapDescription.ixx" />
     <ClCompile Include="WrapGlobalParameter.ixx" />

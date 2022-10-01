@@ -8,12 +8,11 @@ module;
 #include <cassert>   
 #include <iostream>   
 
-export module MicroMeterPntVector;
+export module NNetModel:MicroMeterPntVector;
 
 import SaveCast;
 import Types;
-import IoLine;
-import MicroMeterPosDir;
+import :IoLine;
 
 using std::vector;
 using std::wostream;

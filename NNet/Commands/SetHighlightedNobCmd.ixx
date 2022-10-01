@@ -2,14 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module SetHighlightedNobCmd;
 
-import NobId;
 import NNetCommand;
+import NNetModel;
 
 export class SetHighlightedNobCmd : public NNetCommand
 {

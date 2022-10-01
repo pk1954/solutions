@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <Windows.h>
 #include "win32_util_resource.h"
 #include "Resource.h"

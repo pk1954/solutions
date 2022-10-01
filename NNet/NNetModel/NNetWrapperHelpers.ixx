@@ -9,14 +9,8 @@ module;
 export module NNetWrapperHelpers;
 
 import Types;
-import MicroMeterPntVector;
-import NobIdList;
-import ParamType;
-import SignalId;
 import Script;
-import NobId;
-import SigGenStaticData;
-import NobType;
+import NNetModel;
 
 using std::unique_ptr;
 

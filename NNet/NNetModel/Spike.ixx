@@ -6,7 +6,7 @@ module;
 
 #include <iostream>
 
-export module Spike;
+export module NNetModel:Spike;
 
 import Types;
 

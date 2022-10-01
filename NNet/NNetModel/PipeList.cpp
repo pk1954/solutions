@@ -5,15 +5,17 @@
 module;
 
 #include <cassert>
+#include <iostream>
 #include <algorithm>
-#include "Pipe.h"
 
-module PipeList;
+module NNetModel:PipeList;
 
 import IoConstants;
+import :Pipe;
 
 using std::endl;
 using std::wcout;
+using std::wostream;
 using std::unique_ptr;
 using std::make_unique;
 using std::ranges::find;

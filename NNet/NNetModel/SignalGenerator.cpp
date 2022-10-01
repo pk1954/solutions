@@ -2,15 +2,21 @@
 //
 // NNetModel
 
+module;
+
 #include <string>
 #include <cassert>
-#include "SignalGenerator.h"
+
+module NNetModel:SignalGenerator;
 
 import ObserverInterface;
 import Types;
-import UPSigGenList;
-import NNetParameters;
+import :SigGenStaticData;
+import :UPSigGenList;
+import :NNetParameters;
+import :ParamType;
 
+using std::wstring;
 using std::to_wstring;
 
 SignalGenerator::SignalGenerator(wstring const & name)
@@ -61,7 +67,7 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	}
 }
 
-void SignalGenerator::Prepare(Param const & param)
+void SignalGenerator::Prepare(NNetParameters const & param)
 {
 	m_mVactual = m_dynData.SetTime(m_statData, param);
 }

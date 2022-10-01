@@ -4,8 +4,9 @@
 
 module;
 
+#include <string>
+#include <memory>
 #include <Windows.h>
-#include "NNetModelWriterInterface.h"
 
 export module MonitorWindow;
 
@@ -16,7 +17,10 @@ import MonitorControl;
 import SoundInterface;
 import NNetModelCommands;
 import Scale;
-import MonitorData;
+import NNetModel;
+
+using std::unique_ptr;
+using std::wstring;
 
 export class MonitorWindow : public BaseWindow
 {

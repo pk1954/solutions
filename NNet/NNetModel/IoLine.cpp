@@ -4,12 +4,16 @@
 
 module;
 
-#include "Pipe.h"
+#include <vector>
 
-module IoLine;
+module NNetModel:IoLine;
 
 import Types;
-import MicroMeterPosDir;
+import :MicroMeterPosDir;
+import :PipeList;
+import :Pipe;
+
+using std::vector;
 
 MicroMeterPnt IoLine::GetScaledDirVector() const
 {
@@ -78,4 +82,40 @@ void IoLine::SetDir(Radian const r)
 bool IoLine::IsDirLocked() const
 {
 	return m_radDirection.IsNotNull();
+}
+
+MicroMeterPnt CalcOrthoVector(vector<IoLine*> const& list, MicroMeterLine const& line)
+{
+	unsigned int nrLeft{ 0 };
+	unsigned int nrRight{ 0 };
+	for (auto pBaseKnot : list)
+	{
+		pBaseKnot->Apply2AllInPipes
+		(
+			[&line, &nrLeft, &nrRight](Pipe const& pipe)
+			{
+				MicroMeterPnt pnt{ pipe.GetStartPoint() };
+				if (PointToLine(line, pnt) < 0.0_MicroMeter)
+					++nrLeft;
+				else
+					++nrRight;
+			}
+		);
+		pBaseKnot->Apply2AllOutPipes
+		(
+			[&line, &nrLeft, &nrRight](Pipe const& pipe)
+			{
+				MicroMeterPnt pnt{ pipe.GetEndPoint() };
+				if (PointToLine(line, pnt) < 0.0_MicroMeter)
+					++nrRight;
+				else
+					++nrLeft;
+			}
+		);
+	}
+
+	MicroMeterPnt orthoVector{ line.OrthoVector() };
+	if (nrRight < nrLeft)
+		orthoVector = -orthoVector;
+	return orthoVector;
 }

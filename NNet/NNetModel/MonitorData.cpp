@@ -5,24 +5,28 @@
 module;
 
 #include <cassert>
+#include <memory>
+#include <iterator>
 #include <iostream>
-#include "Signal.h"
 
-module MonitorData;
+module NNetModel:MonitorData;
 
-import Track;
-import SignalFactory;
+import :SignalFactory;
+import :SignalId;
+import :Signal;
 
 using std::distance;
+using std::unique_ptr;
 using std::make_unique;
 using std::move;
 using std::endl;
 using std::wcout;
 
-bool MonitorData::operator==(MonitorData const & rhs) const
-{
-	return m_tracks == rhs.m_tracks;
-}
+//bool MonitorData::operator==(MonitorData const & rhs) const
+//{
+//	return m_tracks == rhs.m_tracks;
+//}
+// TODO
 
 void MonitorData::Reset()
 {

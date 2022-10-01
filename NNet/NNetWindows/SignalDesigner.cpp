@@ -4,11 +4,11 @@
 
 module;
 
+#include <memory>
+#include <cassert>
+#include <string>
 #include <Windows.h>
 #include "Resource.h"
-#include "InputConnector.h"
-#include "SignalGenerator.h"
-#include "NNetModelWriterInterface.h"
 #include "win32_util_resource.h"
 
 module SignalDesigner;
@@ -23,8 +23,11 @@ import Win32_PixelTypes;
 import Direct2D;
 import Scale;
 import NNetModelCommands;
-import NNetParameters;
+import NNetModel;
 
+using std::wstring;
+using std::unique_ptr;
+using std::make_unique;
 using std::bit_cast;
 using D2D1::ColorF;
 

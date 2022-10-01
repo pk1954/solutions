@@ -5,17 +5,20 @@
 module;
 
 #include <iostream> 
-#include "UPNobList.h"
-#include "Signal.h"
+#include <algorithm>
 
-module Sensor;
+module NNetModel:Sensor;
 
 import Types;
 import DrawContext;
-import NNetColors;
+import :NNetColors;
+import :UPNobList;
+import :Signal;
 
+using std::min;
 using std::endl;
 using std::wcout;
+using std::wostream;
 
 Sensor::Sensor
 (

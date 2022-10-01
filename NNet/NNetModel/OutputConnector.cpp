@@ -2,15 +2,17 @@
 //
 // NNetModel
 
+module;
+
 #include <vector>
-#include "IoConnector.h"
-#include "OutputConnector.h"
+
+module NNetModel:OutputConnector;
 
 import DrawContext;
 import Types;
-import IoLine;
-import tHighlight;
-import NobType;
+import :tHighlight;
+import :NobType;
+import :IoConnector;
 
 using std::vector;
 

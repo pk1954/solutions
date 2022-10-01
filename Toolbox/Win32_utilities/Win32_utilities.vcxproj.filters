@@ -185,8 +185,5 @@
     <ClCompile Include="Win32_DialogTemplate.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="AAA.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

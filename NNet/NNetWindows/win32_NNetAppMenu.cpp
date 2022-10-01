@@ -5,12 +5,10 @@
 module;
 
 #include <cassert>
+#include <memory>
 #include <Windows.h>
 #include "Resource.h"
-#include "NNetModelReaderInterface.h"
-#include "SignalGenerator.h"
 #include "win32_util_resource.h"
-#include "Signal.h"
 
 module NNetAppMenu;
 
@@ -23,6 +21,7 @@ import BaseWindow;
 import Win32_Util;
 import CommandStack;
 import AutoOpen;
+import NNetModel;
 
 using std::make_unique;
 

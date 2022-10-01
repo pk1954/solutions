@@ -2,18 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "IoConnector.h"
-#include "Nob.h"
-
 export module SetNobCommand;
 
 import Types;
-import NobId;
 import NNetCommand;
-import MicroMeterPosDir;
+import NNetModel;
 
 export class SetNobCommand : public NNetCommand
 {

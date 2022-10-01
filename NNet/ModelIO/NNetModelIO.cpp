@@ -6,20 +6,15 @@ module;
 
 #include <filesystem>
 #include <fstream>
+#include <string>
 #include <iostream>
 #include <cassert>
-#include "SignalGenerator.h"
-#include "BaseKnot.h"
-#include "InputLine.h"
-#include "InputConnector.h"
-#include "NNetModelWriterInterface.h"
-#include "Signal.h"
-#include "OutputConnector.h"
+#include <memory>
+#include <Windows.h>
 
 module NNetModelIO;
 
 import NNetModelStorage;
-import NobException;
 import WrapSignalGenerator;
 import WrapNobParameter;
 import ErrHndl;
@@ -47,20 +42,15 @@ import WrapDescription;
 import WrapSetSigGen;
 import InputOutputUI;
 import NNetWrapperHelpers;
-import NNetParameters;
-import IoLine;
-import OutputLine;
-import Neuron;
-import Track;
-import SignalFactory;
-import Knot;
-import ModelDescription;
-import MonitorData;
+import NNetModel;
 
 using std::filesystem::exists;
 using std::wofstream;
+using std::wostream;
 using std::make_unique;
+using std::unique_ptr;
 using std::to_wstring;
+using std::wstring;
 using std::bit_cast;
 using std::endl;
 
@@ -228,7 +218,7 @@ bool NNetModelIO::Import
     }
 
     m_upImportUI      = move(upInputUI);
-    m_upImportedModel = make_unique<NNetModel>(); // do not initialize here
+    m_upImportedModel = make_unique<Model>(); // do not initialize here
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
     m_upImportedNMWI->SetModel(m_upImportedModel.get());
     m_wstrFile2Read = wstrPath;
@@ -236,7 +226,7 @@ bool NNetModelIO::Import
     return true;
 }
 
-unique_ptr<NNetModel> NNetModelIO::GetImportedModel() 
+unique_ptr<Model> NNetModelIO::GetImportedModel() 
 { 
     m_upImportedNMWI.release();
     return move(m_upImportedModel);

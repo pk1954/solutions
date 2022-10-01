@@ -16,8 +16,7 @@ import NNetController;
 import MainWindow;
 import NNetWindow;
 import DrawContext;
-import NNetColors;
-import NNetParameters;
+import NNetModel;
 
 void MiniWindow::Start
 (

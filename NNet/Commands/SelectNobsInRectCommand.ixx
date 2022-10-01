@@ -4,15 +4,13 @@
 
 module;
 
-#include "Nob.h"
-#include "Pipe.h"
-#include "NNetModelWriterInterface.h"
+#include <functional>
 
 export module SelectNobsInRectCommand;
 
 import Types;
 import SelectionCommand;
-import Knot;
+import NNetModel;
 
 export class SelectNobsInRectCommand : public SelectionCommand
 {
@@ -41,8 +39,8 @@ public:
 				if (s.IsKnot())
 				{
 					Knot const & knot { static_cast<Knot const &>(s) };
-					bool const bIn  { knot.Apply2AllInPipesB ([&](Pipe const & p){ return m_rect.Includes(p.GetStartPoint()); }) };
-					bool const bOut { knot.Apply2AllOutPipesB([&](Pipe const & p){ return m_rect.Includes(p.GetEndPoint  ()); }) };
+					bool const   bIn  { startPointInRect(knot) };
+					bool const   bOut { endPointInRect  (knot) };
 					if ( ! (bIn||bOut) )
 						return;          // knot would be orphan in selection
 				}
@@ -52,5 +50,28 @@ public:
 	}
 
 private:
+
 	MicroMeterRect const m_rect;
+
+	bool startPointInRect(Knot const& knot)
+	{
+		return knot.Apply2AllInPipesB
+		(
+			[this](Pipe const& p)
+			{
+				return m_rect.Includes(p.GetStartPoint());
+			}
+		);
+	}
+
+	bool endPointInRect(Knot const& knot)
+	{
+		return knot.Apply2AllOutPipesB
+		(
+			[this](Pipe const& p)
+			{
+				return m_rect.Includes(p.GetEndPoint());
+			}
+		);
+	}
 };

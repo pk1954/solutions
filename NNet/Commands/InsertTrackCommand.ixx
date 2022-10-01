@@ -2,15 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module InsertTrackCommand;
 
 import Types;
 import NNetCommand;
-import MonitorData;
+import NNetModel;
 
 export class InsertTrackCommand: public NNetCommand
 {

@@ -7,9 +7,6 @@
     <ClCompile Include="NNetModelIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WrapCreateNob.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapVoltage.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -5,15 +5,13 @@
 module;
 
 #include <vector>
-#include "NNetModelWriterInterface.h"
-#include "InputLine.h"
-#include "SignalGenerator.h"
+#include <memory>
 
 export module DeleteSigGenCmd;
 
-import SigGenId;
 import SigGenCommand;
 import SetActiveSigGenCmd;
+import NNetModel;
 
 using std::make_unique;
 using std::vector;

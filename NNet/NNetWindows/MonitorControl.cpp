@@ -4,22 +4,19 @@
 
 module;
 
+#include <string>
+#include <cassert>
 #include <Windows.h>
 #include "dwrite.h"
 #include "Resource.h"
 #include "win32_util_resource.h"
-#include "NNetModelWriterInterface.h"
-#include "Signal.h"
 
 module MonitorControl;
 
 import Types;
 import NNetModelCommands;
 import SimulationTime;
-import SignalId;
-import SignalNr;
-import NNetColors;
-import MonitorData;
+import NNetModel;
 
 using std::to_wstring;
 

@@ -6,13 +6,8 @@ module;
 
 #include <sstream> 
 #include "Resource.h"
-#include "Pipe.h"
-#include "InputLine.h"
-#include "NNetModelReaderInterface.h"
-#include "NNetModelWriterInterface.h"
 #include "Windows.h"
 #include "win32_util_resource.h"
-#include "Signal.h"
 
 module NNetWindow;
 
@@ -20,10 +15,7 @@ import Types;
 import Direct2D;
 import Win32_Sound;
 import NNetController;
-import NNetColors;
-import NNetParameters;
-import Sensor;
-import Neuron;
+import NNetModel;
 
 using std::function;
 

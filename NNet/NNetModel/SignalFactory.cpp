@@ -5,17 +5,16 @@
 module;
 
 #include <memory>
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-#include "SignalSource.h"
-#include "Signal.h"
 
-module SignalFactory;
+module NNetModel:SignalFactory;
 
-import TrackNr;
-import SignalId;
-import SignalNr;
-import MonitorData;
+import Types;
+import :TrackNr;
+import :SignalNr;
+import :NNetModelWriterInterface;
+import :SignalGenerator;
+import :SignalSource;
+import :Signal;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -51,7 +50,7 @@ SignalId SignalFactory::MakeSigGenSignal
     NNetModelWriterInterface & nmwi
 )
 {
-    SignalGenerator * pSigGen { nmwi.GetSigGenSelected() };
-    SignalNr   const signalNr { addSignal(*pSigGen, trackNr, nmwi) };
+    SignalGenerator * pSigGen  { nmwi.GetSigGenSelected() };
+    SignalNr    const signalNr { addSignal(*pSigGen, trackNr, nmwi) };
     return SignalId(trackNr, signalNr);
 }

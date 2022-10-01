@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <memory>
 #include <Windows.h>
-#include "NNetModelReaderInterface.h"
 
 export module NNetAppMenu;
 
@@ -18,6 +17,7 @@ import ComputeThread;
 import Preferences;
 import Win32_Util;
 import CommandStack;
+import NNetModel;
 
 using std::wstring;
 using std::unique_ptr;

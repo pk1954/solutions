@@ -6,19 +6,14 @@ module;
 
 #include <iomanip>
 #include <sstream>
-#include "InputLine.h"
-#include "Pipe.h"
-#include "Nob.h"
-#include "NNetModelReaderInterface.h"
+#include <Windows.h>
 
 module PerformanceWindow;
 
 import SlowMotionRatio;
 import ComputeThread;
 import ActionTimer;
-import OutputLine;
-import Neuron;
-import Knot;
+import NNetModel;
 
 using std::wostringstream;
 using std::setprecision;

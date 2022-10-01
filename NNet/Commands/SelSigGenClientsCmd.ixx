@@ -4,13 +4,12 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-#include "InputLine.h"
+#include <memory>
 
 export module SelSigGenClientsCmd;
 
 import SelectionCommand;
+import NNetModel;
 
 using std::make_unique;
 
@@ -27,19 +26,19 @@ public:
 		SelectionCommand::Do();
 		m_pNMWI->DeselectAllNobs();
 		m_pNMWI->GetUPNobs().Apply2All<InputLine>
-			(
-				[&](InputLine& n)
+		(
+			[&](InputLine & n)
+			{
+				if (n.GetSigGen() == m_pSigGen)
 				{
-					if (n.GetSigGen() == m_pSigGen)
-					{
-						n.Select(true);
-						if (n.HasParentNob())
-							n.GetParentNob()->Select(true);
-					}
+					n.Select(true);
+					if (n.HasParentNob())
+						n.GetParentNob()->Select(true);
 				}
+			}
 		);
 	}
 
 private:
-	SignalGenerator const* m_pSigGen;
+	SignalGenerator const * m_pSigGen;
 };

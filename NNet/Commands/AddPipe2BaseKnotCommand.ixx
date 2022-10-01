@@ -4,20 +4,16 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "InputLine.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
+#include <memory>
 
 export module AddPipe2BaseKnotCommand;
 
-import NobId;
+import Types;
 import NNetCommand;
-import IoLine;
-import OutputLine;
-import Neuron;
-import NobType;
-import Knot;
+import NNetModel;
+
+using std::make_unique;
+using std::unique_ptr;
 
 export class AddPipe2BaseKnotCommand : public NNetCommand
 {

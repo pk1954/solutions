@@ -5,16 +5,17 @@
 module;
 
 #include <functional>
-#include "NNetModelWriterInterface.h"
+#include <memory>
 
 export module ArrowAnimation;
 
 import Types;
 import Command;
 import Animation;
-import NNetParameters;
+import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
 
 export class ArrowAnimation : public Command
 {

@@ -2,15 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "BaseKnot.h"
-
 export module RotateSelectionCommand;
 
 import Types;
 import RotationCommand;
+import NNetModel;
 
 export class RotateSelectionCommand : public RotationCommand
 {

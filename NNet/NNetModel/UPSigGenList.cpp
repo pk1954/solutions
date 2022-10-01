@@ -9,9 +9,9 @@ module;
 #include <memory>
 #include <algorithm>
 
-module UPSigGenList;
+module NNetModel:UPSigGenList;
 
-import SigGenId;
+import :SigGenId;
 
 using std::wstring;
 using std::vector;

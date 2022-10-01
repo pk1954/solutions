@@ -8,16 +8,14 @@ module;
 #include <sstream> 
 #include <iomanip>
 #include "Resource.h"
-#include "Pipe.h"
 
-module Neuron;
+module NNetModel:Neuron;
 
 import Types;
 import DrawContext;
-import Spike;
-import NNetColors;
-import NNetParameters;
-import IoLine;
+import :NNetColors;
+import :Spike;
+import :NNetParameters;
 
 using std::fixed;
 using std::wstring;

@@ -7,7 +7,6 @@ module;
 #include <string>
 #include <vector>
 #include <Windows.h>
-#include "NNetModelWriterInterface.h"
 
 export module StatusBar;
 

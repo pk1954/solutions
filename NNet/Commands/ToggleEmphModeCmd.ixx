@@ -4,13 +4,12 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "Pipe.h"
+#include <cassert>
 
 export module ToggleEmphModeCmd;
 
-import NobId;
 import NNetCommand;
+import NNetModel;
 
 export class ToggleEmphModeCmd : public NNetCommand
 {

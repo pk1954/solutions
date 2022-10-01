@@ -5,16 +5,17 @@
 module;
 
 #include <vector>
-#include "NNetModelWriterInterface.h"
+#include <memory>
 
 export module IoLinesAnimation;
 
 import Types;
 import Command;
 import Animation;
-import MicroMeterPntVector;
+import NNetModel;
 
 using std::vector;
+using std::unique_ptr;
 using std::make_unique;
 
 export class IoLinesAnimation : public Command

@@ -5,15 +5,15 @@
 module;
 
 #include <algorithm>
-#include "NNetModelWriterInterface.h"
+#include <memory>
+#include <vector>
 
 module ConnAnimationCommand;
 
 import Types;
 import IoLinesAnimation;
 import MakeConnAnimation;
-import MicroMeterPntVector;
-import IoLine;
+import NNetModel;
 
 using std::make_unique;
 using std::ranges::sort;
@@ -45,7 +45,7 @@ ConnAnimationCommand::ConnAnimationCommand()
     umPntVector.Align(line);
     AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after position alignment
 
-    umPntVector.SetDir(Vector2Radian(CalcOrthoVector<IoLine>(m_nobsAnimated, line)));
+    umPntVector.SetDir(Vector2Radian(CalcOrthoVector(m_nobsAnimated, line)));
     AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
@@ -82,9 +82,9 @@ void ConnAnimationCommand::sortNobsAnimated(MicroMeterLine const & line)
     sort
     (
         m_nobsAnimated,
-        [&](auto & p1, auto & p2) 
+        [&orthoLine](auto p1, auto p2) 
         { 
-            return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos()); 
+            return PointToLine(orthoLine, p1->GetPos()) < PointToLine(orthoLine, p2->GetPos());
         } 
     );
 }

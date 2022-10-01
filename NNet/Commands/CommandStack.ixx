@@ -6,13 +6,13 @@ module;
 
 #include <cassert>
 #include <vector>
-#include "NNetModelWriterInterface.h"
+#include <memory>
 
 export module CommandStack;
 
 import Observable;
 import Command;
-import NobException;
+import NNetModel;
 
 using std::vector;
 using std::unique_ptr;

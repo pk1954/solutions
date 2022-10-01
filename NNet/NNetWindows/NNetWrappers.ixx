@@ -4,12 +4,13 @@
 
 module;
 
-#include "NNetModelReaderInterface.h"
+#include <compare>
 
 export module NNetWrappers;
 
 import NNetModelCommands;
 import NNetModelIO;
+import NNetModel;
 
 export void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
 

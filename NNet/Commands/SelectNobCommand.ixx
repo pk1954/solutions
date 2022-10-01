@@ -5,14 +5,12 @@
 module;
 
 #include <cassert>
-#include "NNetModelWriterInterface.h"
-#include "BaseKnot.h"
 
 export module SelectNobCommand;
 
 import BoolOp;
 import SelectionCommand;
-import NobId;
+import NNetModel;
 
 export class SelectNobCommand : public SelectionCommand
 {

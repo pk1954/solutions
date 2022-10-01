@@ -7,9 +7,9 @@ module;
 #include <vector>
 #include <string>
 
-export module ModelDescription;
+export module NNetModel:ModelDescription;
 
-import DescriptionUI;
+import :DescriptionUI;
 
 using std::vector;
 using std::wstring;

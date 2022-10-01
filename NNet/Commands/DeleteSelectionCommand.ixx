@@ -4,16 +4,15 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "UPNobList.h"
+#include <memory>
 
 export module DeleteSelectionCommand;
 
 import Types;
 import CommandFunctions;
 import CommandStack;
-import NobIdList;
 import NNetCommand;
+import NNetModel;
 
 using std::unique_ptr;
 

@@ -5,12 +5,13 @@
 module;
 
 #include <unordered_map>
-#include "NNetModelWriterInterface.h"
-#include "BaseKnot.h"
-#include "Nob.h"
-#include "UPNobList.h"
 
-export module CopySelectedNobs;
+export module NNetModel:CopySelectedNobs;
+
+import :NNetModelWriterInterface;
+import :UPNobList;
+import :BaseKnot;
+import :Nob;
 
 using std::unordered_map;
 

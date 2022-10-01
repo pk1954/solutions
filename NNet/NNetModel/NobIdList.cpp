@@ -4,12 +4,15 @@
 
 module;
 
-#include "Nob.h"
+#include <iostream>
 
-module NobIdList;
+module NNetModel:NobIdList;
 
 import IoConstants;
+import :NobId;
+import :Nob;
 
+using std::wostream;
 using std::endl;
 
 void NobIdList::Push(Nob const & nob)

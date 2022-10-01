@@ -5,13 +5,12 @@
 module;
 
 #include <string>
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
+#include <memory>
 
 export module RenameSigGenCmd;
 
-import SigGenId;
 import NNetCommand;
+import NNetModel;
 
 using std::wstring;
 using std::make_unique;

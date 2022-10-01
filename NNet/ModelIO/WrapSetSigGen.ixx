@@ -6,17 +6,14 @@ module;
 
 #include <string>
 #include <iostream>
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-#include "InputLine.h"
 
 export module WrapSetSigGen;
 
 import NNetWrapperBase;
 import Script;
-import NobId;
 import NNetModelIO;
 import NNetWrapperHelpers;
+import NNetModel;
 
 using std::wstring;
 using std::wostream;
@@ -45,6 +42,7 @@ public:
             wcout << L"# +++ unknown signal generator.";
             bRes = false;
         }
+
         if (bRes)
             nmwi.GetNobPtr<InputLine*>(idFromScript)->SetSigGen(pSigGen);
         else

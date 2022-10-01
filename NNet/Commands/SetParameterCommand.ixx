@@ -2,22 +2,17 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module SetParameterCommand;
 
-import ParamType;
-import NNetParameters;
 import NNetCommand;
+import NNetModel;
 
 export class SetParameterCommand : public NNetCommand
 {
 public:
 	SetParameterCommand
 	(
-		Param            const & param,
+		NNetParameters   const & param,
 		ParamType::Value const   parameter,
 		float            const   fNewValue
 	)

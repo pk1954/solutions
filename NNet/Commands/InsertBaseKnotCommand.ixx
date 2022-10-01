@@ -4,15 +4,15 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "Pipe.h"
-#include "BaseKnot.h"
+#include <memory>
 
 export module InsertBaseKnotCommand;
 
 import Types;
-import NobId;
 import NNetCommand;
+import NNetModel;
+
+using std::unique_ptr;
 
 export template <BaseKnot_t T>
 class InsertBaseKnotCommand : public NNetCommand
@@ -27,7 +27,7 @@ public:
 		m_umSplitPoint(umSplitPoint)
 	{ 
 		m_pPipe2Split = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
-		m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr();
+		m_pStartKnot  = static_cast<BaseKnot *>(m_pPipe2Split->GetStartKnotPtr());
 		m_upBaseKnot  = make_unique<T>(m_umSplitPoint);
 		m_upPipeNew   = make_unique<Pipe>(m_pStartKnot, m_upBaseKnot.get());
 		m_upBaseKnot->AddOutgoing(*m_pPipe2Split);

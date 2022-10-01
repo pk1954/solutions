@@ -6,15 +6,14 @@ module;
 
 #include <vector>
 #include <iostream>
-#include "Pipe.h"
-#include "UPNobList.h"
-#include "SignalSource.h"
 
-export module Sensor;
+export module NNetModel:Sensor;
 
 import Types;
-import NNetParameters;
 import DrawContext;
+import :NNetParameters;
+import :SignalSource;
+import :Pipe;
 
 using std::vector;
 using std::wostream;

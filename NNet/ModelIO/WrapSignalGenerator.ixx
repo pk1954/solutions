@@ -6,16 +6,13 @@ module;
 
 #include <string>
 #include <iostream>
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
 
 export module WrapSignalGenerator;
 
 import NNetWrapperBase;
-import SigGenId;
-import SigGenStaticData;
 import NNetModelIO;
 import NNetWrapperHelpers;
+import NNetModel;
 
 using std::wstring;
 using std::wostream;

@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-export module NobId;
+export module NNetModel:NobId;
 
 import Types;
 

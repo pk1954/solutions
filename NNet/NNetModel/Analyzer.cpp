@@ -6,12 +6,17 @@ module;
 
 #include <cassert>
 #include <iostream>
-#include "NNetModelReaderInterface.h"
+#include <string>
 
-module Analyzer;
+module NNetModel:Analyzer;
 
 import Types;
-import Knot;
+import SaveCast;
+import :Nob;
+import :Knot;
+import :Pipe;
+import :BaseKnot;
+import :NNetModelReaderInterface;
 
 using std::endl;
 using std::wstring;

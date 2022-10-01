@@ -4,14 +4,16 @@
 
 module;
 
+#include <string>
+#include <memory>
 #include <vector>
 #include <algorithm>
-#include "UPNobList.h"
 
-export module UPSensorList;
+export module NNetModel:UPSensorList;
 
 import Types;
-import Sensor;
+import :UPNobList;
+import :Sensor;
 
 using std::ranges::for_each;
 using std::unique_ptr;
@@ -44,18 +46,18 @@ public:
     UPSensor RemoveSensor(SensorId const);
     void     InsertSensor(UPSensor, SensorId const);
 
-    void Apply2All(auto const& f)
+    void Apply2All(auto const & f)
     {
-        for_each(m_list, [&f](auto& up) { f(up.get()); });
+        for_each(m_list, [&f](auto & up) { f(up.get()); });
     }
 
-    void Apply2AllC(auto const& f) const
+    void Apply2AllC(auto const & f) const
     {
-        for_each(m_list, [&f](auto const& up) { f(up.get()); });
+        for_each(m_list, [&f](auto const & up) { f(up.get()); });
     }
 
-    UPSensor NewSensor(MicroMeterCircle const&, UPNobList const&);
-    SensorId FindSensor(MicroMeterPnt const&);
+    UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
+    SensorId FindSensor(MicroMeterPnt const &);
 
 private:
 

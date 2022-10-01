@@ -9,10 +9,12 @@ module;
 #include <algorithm>
 #include <iostream>
 
-module MicroMeterPntVector;
+module NNetModel:MicroMeterPntVector;
 
+import Types;
+import SaveCast;
 import IoConstants;
-import NNetParameters;
+import :IoLine;
 
 using std::max;
 using std::vector;
@@ -178,7 +180,7 @@ MicroMeterLine MicroMeterPntVector::GetLine() const
     return MicroMeterLine(m_list.front().GetPos(), m_list.back().GetPos());
 }
 
-void MicroMeterPntVector::Align(MicroMeterPnt const& umPntStart, MicroMeterPnt const& umPntOffset)
+void MicroMeterPntVector::Align(MicroMeterPnt const& umPntStart, MicroMeterPnt const & umPntOffset)
 {	
     MicroMeterPnt umPnt { umPntStart };
     Apply2All

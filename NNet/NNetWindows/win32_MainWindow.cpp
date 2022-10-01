@@ -9,14 +9,10 @@ module;
 #include <string>
 #include <Windows.h>
 #include "Resource.h"
-#include "UPNobList.h"
-#include "IoConnector.h"
 #include "win32_util_resource.h"
-#include "NNetModelReaderInterface.h"
 
 module MainWindow;
 
-import NobException;
 import Observable;
 import Types;
 import Command;
@@ -31,11 +27,7 @@ import RootWindow;
 import DrawContext;
 import NNetModelCommands;
 import MonitorWindow;
-import NobId;
-import NNetColors;
-import NNetParameters;
-import Neuron;
-import Knot;
+import NNetModel;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -493,7 +485,7 @@ bool MainWindow::UserProc
 	catch (NobException const & e)
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
-		m_pNMRI->DUMP();
+		m_pNMRI->DumpModel(__FILE__, __LINE__);
 		wcout << L"highlighted = " << m_pNMRI->GetHighlightedNobId() << endl;
 		wcout << L"target      = " << m_pNMRI->GetTargetNobId()      << endl;
 		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));

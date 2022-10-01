@@ -5,9 +5,8 @@
 module;
 
 #include <dwrite.h>
+#include <compare>
 #include <Windows.h>
-#include "NNetModelWriterInterface.h"
-#include "Signal.h"
 
 export module MonitorControl;
 
@@ -17,10 +16,9 @@ import SoundInterface;
 import Measurement;
 import Direct2D;
 import TimeGraph;
+import SimulationTime;
 import NNetModelCommands;
-import TrackNr;
-import Track;
-import MonitorData;
+import NNetModel;
 
 export class MonitorControl : public TimeGraph
 {

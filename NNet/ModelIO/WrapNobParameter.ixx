@@ -11,9 +11,8 @@ export module WrapNobParameter;
 
 import SaveCast;
 import NNetWrapperBase;
-import ParamType;
 import Script;
-import NobId;
+import NNetModel;
 
 export class WrapNobParameter : public NNetWrapperBase  // Legacy
 {

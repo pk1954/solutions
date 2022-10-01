@@ -2,14 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module ToggleStopOnTriggerCmd;
 
-import NobId;
 import NNetCommand;
+import NNetModel;
 
 export class ToggleStopOnTriggerCmd : public NNetCommand
 {

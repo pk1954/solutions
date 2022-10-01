@@ -4,14 +4,12 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
 #include "Resource.h"
-#include "SignalGenerator.h"
 
 export module SigGenCommand;
 
-import SigGenId;
 import NNetCommand;
+import NNetModel;
 
 export class SigGenCommand : public NNetCommand
 {

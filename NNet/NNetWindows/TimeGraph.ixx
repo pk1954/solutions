@@ -4,9 +4,8 @@
 
 module;
 
+#include <math.h>
 #include <Windows.h>
-#include "SignalGenerator.h"
-#include "NNetModelWriterInterface.h"
 
 export module TimeGraph;
 
@@ -14,7 +13,7 @@ import Types;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
-import NNetParameters;
+import NNetModel;
 
 export class TimeGraph : public GraphicsWindow
 {
@@ -47,7 +46,7 @@ protected:
 	SignalGenerator  const * GetSigGenSelected  () const { return m_pNMWI->GetSigGenSelected(); }
 	SignalGenerator        * GetSigGenSelected  ()       { return m_pNMWI->GetSigGenSelected(); }
 	SigGenStaticData const * GetSigGenStaticData() const { return & GetSigGenSelected()->GetStaticData(); }
-	Param                  * GetParams          () const { return & m_pNMWI->GetParams(); }
+	NNetParameters         * GetParams          () const { return & m_pNMWI->GetParams(); }
 
 	fPixel PaintCurve
 	(
@@ -61,7 +60,7 @@ protected:
 		fMicroSecs const usPixelSize   { m_pHorzCoord->GetPixelSize() };
 		fMicroSecs const usResolution  { GetParams()->TimeResolution() };
 		fMicroSecs const usIncrement   { max(usPixelSize, usResolution) };
-		fMicroSecs const timeStart     { usIncrement * floor(timeStart0 / usIncrement) };
+		fMicroSecs const timeStart     { usIncrement * Cast2Float(floor(timeStart0 / usIncrement)) };
 		fPixel           fPixMinSignal { fPixel::MAX_VAL() };
 		fPixelPoint      prevPoint     { getPoint(timeStart) };
 		if (prevPoint.IsNotNull())

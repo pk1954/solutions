@@ -2,12 +2,16 @@
 //
 // NNetWindows
 
+module;
+
+#include <compare>
+
 export module SignalPreview;
 
 import Types;
 import PixFpDimension;
 import TimeGraph;
-import BaseWindow;
+import NNetModel;
 
 export class SignalPreview : public TimeGraph
 {

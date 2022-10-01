@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include "SignalGenerator.h"
-
 module SignalPreview;
 
 import Direct2D;
@@ -14,9 +10,7 @@ import PixFpDimension;
 import BaseWindow;
 import GraphicsWindow;
 import TimeGraph;
-import SigGenStaticData;
-import SigGenDynamicData;
-import NNetParameters;
+import NNetModel;
 
 SignalPreview::SignalPreview
 (
@@ -37,8 +31,8 @@ SignalPreview::~SignalPreview()
 
 void SignalPreview::DoPaint()
 {
-	if (SignalGenerator * const pSigGen { GetSigGenSelected() })
-	if (Param     const * const pParams { GetParams() })
+	if (SignalGenerator      * const pSigGen { GetSigGenSelected() })
+	if (NNetParameters const * const pParams { GetParams() })
 	{
 		SigGenStaticData const & statData     { pSigGen->GetStaticData() };
 		SigGenDynamicData        dynData      { };

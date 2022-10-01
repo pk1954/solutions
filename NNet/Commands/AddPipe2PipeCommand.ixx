@@ -5,19 +5,16 @@
 module;
 
 #include <cassert> 
-#include "NNetModelWriterInterface.h"
-#include "InputLine.h"
-#include "BaseKnot.h"
+#include <memory>
 
 export module AddPipe2PipeCommand;
 
-import NobId;
+import Types;
 import NNetCommand;
-import OutputLine;
-import NobType;
-import Knot;
+import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
 
 export class AddPipe2PipeCommand : public NNetCommand
 {
@@ -25,19 +22,20 @@ public:
 	AddPipe2PipeCommand
 	(
 		NobId         const   idPipe,
-		MicroMeterPnt const& pos,
+		MicroMeterPnt const & pos,
 		NobType       const   type
 	)
 		: m_idPipe(idPipe)
 	{
+
 		assert(type.IsIoLineType());
 
-		m_pPipeOld = m_pNMWI->GetNobPtr<Pipe*>(m_idPipe);
-		m_pStartKnot = m_pPipeOld->GetStartKnotPtr();
-		m_pEndKnot = m_pPipeOld->GetEndKnotPtr();
+		m_pPipeOld     = m_pNMWI->GetNobPtr<Pipe*>(m_idPipe);
+		m_pStartKnot   = static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr());
+		m_pEndKnot     = static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr());
 		m_upKnotInsert = make_unique<Knot>(pos);
-		m_upPipeNew1 = make_unique<Pipe>(m_pStartKnot, m_upKnotInsert.get());
-		m_upPipeNew2 = make_unique<Pipe>(m_upKnotInsert.get(), m_pEndKnot);
+		m_upPipeNew1   = make_unique<Pipe>(m_pStartKnot, m_upKnotInsert.get());
+		m_upPipeNew2   = make_unique<Pipe>(m_upKnotInsert.get(), m_pEndKnot);
 
 		m_upKnotInsert->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());
@@ -93,14 +91,14 @@ public:
 	}
 
 private:
-	Pipe     * m_pPipeOld{ nullptr };
-	BaseKnot * m_pStartKnot{ nullptr };
-	BaseKnot * m_pEndKnot{ nullptr };
-	unique_ptr<Pipe>   m_upPipeOld{ nullptr };
-	unique_ptr<Pipe>   m_upPipeNew1{ nullptr };
-	unique_ptr<Pipe>   m_upPipeNew2{ nullptr };
-	unique_ptr<Pipe>   m_upPipeOrtho{ nullptr };
-	unique_ptr<Knot>   m_upKnotInsert{ nullptr };
-	unique_ptr<IoLine> m_upExtPoint{ nullptr };
+	Pipe             * m_pPipeOld     { nullptr };
+	BaseKnot         * m_pStartKnot   { nullptr };
+	BaseKnot         * m_pEndKnot     { nullptr };
+	unique_ptr<Pipe>   m_upPipeOld    { nullptr };
+	unique_ptr<Pipe>   m_upPipeNew1   { nullptr };
+	unique_ptr<Pipe>   m_upPipeNew2   { nullptr };
+	unique_ptr<Pipe>   m_upPipeOrtho  { nullptr };
+	unique_ptr<Knot>   m_upKnotInsert { nullptr };
+	unique_ptr<IoLine> m_upExtPoint   { nullptr };
 	NobId        const m_idPipe;
 };

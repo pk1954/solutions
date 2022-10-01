@@ -5,18 +5,13 @@
 module;
 
 #include <iostream>
-#include "NNetModelReaderInterface.h"
-#include "Nob.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
-#include "IoConnector.h"
 
 export module WrapVoltage;
 
 import NNetWrapperBase;
 import Script;
-import NobId;
 import NNetModelIO;
+import NNetModel;
 
 using std::wostream;
 

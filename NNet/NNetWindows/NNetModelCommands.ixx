@@ -4,33 +4,21 @@
 
 module;
 
+#include <vector>
 #include <string>
-#include "NNetModelReaderInterface.h"
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
+#include <iostream>
 
 export module NNetModelCommands;
 
-import UPSensorList;
-import SigGenId;
 import Observable;
 import Types;
 import BoolOp;
 import Uniform2D;
 import SoundInterface;
 import CommandStack;
-import NobIdList;
-import ParamType;
-import TrackNr;
-import SignalId;
-import NobId;
-import SigGenStaticData;
 import NNetModelIO;
-import NNetParameters;
 import NNetCommand;
-import IoLine;
-import NobType;
-import MonitorData;
+import NNetModel;
 
 using std::wcout;
 using std::wstring;
@@ -55,16 +43,16 @@ public:
     void RedoCommand();
 
     void AddIncoming2BaseKnot(NobId const, MicroMeterPnt const&);
-    void AddIncoming2Pipe(NobId const, MicroMeterPnt const&);
+    void AddIncoming2Pipe    (NobId const, MicroMeterPnt const&);
     void AddModel();
     void AddOutgoing2BaseKnot(NobId const, MicroMeterPnt const&);
-    void AddOutgoing2Pipe(NobId const, MicroMeterPnt const&);
-    void AddSensor(MicroMeterCircle const&, TrackNr const);
-    void AddSigGen2Monitor(TrackNr const);
+    void AddOutgoing2Pipe    (NobId const, MicroMeterPnt const&);
+    void AddSensor           (MicroMeterCircle const&, TrackNr const);
+    void AddSigGen2Monitor   (TrackNr const);
     void AnalyzeAnomalies();
     void AnalyzeLoops();
     void AnimateArrows(MicroMeter&, MicroMeter const);
-    void AnimateCoord(Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
+    void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void AttachSigGen2Conn(NobId const);
     void AttachSigGen2Line(NobId const);
     void AttachSigGen2Sel();

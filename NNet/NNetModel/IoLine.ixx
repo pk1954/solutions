@@ -4,14 +4,18 @@
 
 module;
 
-#include "BaseKnot.h"
+#include <vector>
 
-export module IoLine;
+export module NNetModel:IoLine;
 
 import Types;
-import NNetParameters;
-import MicroMeterPosDir;
-import NobType;
+import :NNetParameters;
+import :MicroMeterPosDir;
+import :NobType;
+import :BaseKnot;
+import :Nob;
+
+using std::vector;
 
 export class IoLine : public BaseKnot
 {
@@ -52,3 +56,5 @@ private:
 
 	Radian m_radDirection{ Radian::NULL_VAL() };
 };
+
+export MicroMeterPnt CalcOrthoVector(vector<IoLine*> const&, MicroMeterLine const&);

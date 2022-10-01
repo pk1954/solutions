@@ -2,7 +2,7 @@
 //
 // NNetModel
 
-export module SignalNr;
+export module NNetModel:SignalNr;
 
 import Types;
 

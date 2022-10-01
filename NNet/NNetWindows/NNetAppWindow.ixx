@@ -7,8 +7,7 @@ module;
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "NNetModelReaderInterface.h"
-#include "NNetModelWriterInterface.h"
+#include <Windows.h>
 
 export module NNetAppWindow;
 
@@ -47,10 +46,8 @@ import BaseWindow;
 import ScriptStack;
 import CommandStack;
 import Script;
-import NNetColors;
 import NNetModelIO;
 import NNetModel;
-import MonitorData;
 
 using std::wstring;
 using std::wofstream;
@@ -119,13 +116,13 @@ private:
 		return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
 	}
 
-	bool m_bStarted{ false }; // if true, model is visible, all functions available
+	bool m_bStarted { false }; // if true, model is visible, all functions available
 
 	int                        m_statusMessagePart{ };
-	unique_ptr<NNetModel>      m_upModel;
-	NNetModelReaderInterface* m_pNMRI{ nullptr };
-	HWND                       m_hwndConsole{ nullptr };
-	HWND                       m_hwndApp{ nullptr };
+	unique_ptr<Model>          m_upModel;
+	NNetModelReaderInterface * m_pNMRI       { nullptr };
+	HWND                       m_hwndConsole { nullptr };
+	HWND                       m_hwndApp     { nullptr };
 
 	AboutBox                 m_aboutBox{ };
 	ActionTimer              m_atComputation{ };

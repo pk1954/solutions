@@ -2,16 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-#include "InputLine.h"
-
 export module AttachSigGen2LineCmd;
 
-import NobId;
 import NNetCommand;
+import NNetModel;
 
 export class AttachSigGen2LineCmd : public NNetCommand
 {

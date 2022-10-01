@@ -6,18 +6,16 @@ module;
 
 #include <string>
 #include <chrono>
-#include "BaseKnot.h"
-#include "Pipe.h"
 
-export module Neuron;
+export module NNetModel:Neuron;
 
 import BoolOp;
 import Types;
-import tHighlight;
-import Spike;
 import DrawContext;
-import IoLine;
-import NobType;
+import :tHighlight;
+import :Spike;
+import :NobType;
+import :BaseKnot;
 
 using std::wstring;
 using std::unique_ptr;
@@ -26,9 +24,9 @@ using std::make_unique;
 export class Neuron : public BaseKnot
 {
 public:
-	Neuron(MicroMeterPnt const&, NobType const = NobType::Value::neuron);
-	Neuron(BaseKnot      const&, NobType const = NobType::Value::neuron);
-	Neuron(Neuron const&);             // copy constructor
+	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
+	Neuron(BaseKnot      const &, NobType const = NobType::Value::neuron);
+	Neuron(Neuron        const &);             // copy constructor
 
 	Neuron& operator=(Neuron const&); // copy assignment operator
 
@@ -68,5 +66,5 @@ private:
 	void init(const Neuron&);
 };
 
-Neuron const* Cast2Neuron(Nob const*);
-Neuron* Cast2Neuron(Nob*);
+export Neuron const * Cast2Neuron(Nob const *);
+export Neuron       * Cast2Neuron(Nob       *);

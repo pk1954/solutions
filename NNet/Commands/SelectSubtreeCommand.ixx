@@ -2,15 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "BaseKnot.h"
-
 export module SelectSubtreeCommand;
 
 import SelectionCommand;
-import NobId;
+import NNetModel;
 
 export class SelectSubtreeCommand : public SelectionCommand
 {

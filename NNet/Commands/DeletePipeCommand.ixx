@@ -4,19 +4,15 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "nob.h"
-#include "InputLine.h"
-#include "IoConnector.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
+#include <memory>
 
 export module DeletePipeCommand;
 
 import SaveCast;
-import NobId;
 import NNetCommand;
-import OutputLine;
+import NNetModel;
+
+using std::unique_ptr;
 
 export class DeletePipeCommand : public NNetCommand
 {

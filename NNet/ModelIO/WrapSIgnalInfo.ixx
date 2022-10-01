@@ -4,20 +4,20 @@
 
 module;
 
+#include <string>
 #include <iostream>
-#include "Signal.h"
 
 export module WrapSignalInfo;
 
 import NNetWrapperBase;
 import ErrHndl;
-import SignalId;
 import Script;
+import Types;
 import NNetWrapperHelpers;
-import SignalFactory;
-import MonitorData;
+import NNetModel;
 
 using std::wostream;
+using std::wstring;
 
 export class WrapSignalInfo : public NNetWrapperBase
 {
@@ -26,8 +26,8 @@ public:
 
     void operator() (Script& script) const final
     {
-        MicroMeterCircle    umCircle;
-        SignalId      const signalId { ScrReadSignalId(script) };
+        MicroMeterCircle umCircle;
+        SignalId   const signalId { ScrReadSignalId(script) };
         script.ScrReadString(L"source");
         unsigned long const ulSigSrc{ script.ScrReadUlong() };
         if (ulSigSrc == Signal::SIGSRC_CIRCLE)

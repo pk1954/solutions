@@ -2,16 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "Nob.h"
-#include "NNetModelWriterInterface.h"
-
 export module AnalyzeCommand;
 
 import SelectionCommand;
-import Analyzer;
-import NobId;
+import NNetModel;
 
 export class AnalyzeCommand : public SelectionCommand
 {

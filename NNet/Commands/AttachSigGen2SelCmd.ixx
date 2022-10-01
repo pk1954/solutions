@@ -5,14 +5,11 @@
 module;
 
 #include <vector>
-#include "Nob.h"
-#include "InputLine.h"
-#include "SignalGenerator.h"
 
 export module AttachSigGen2SelCmd;
 
-import NobId;
 import NNetCommand;
+import NNetModel;
 
 using std::vector;
 

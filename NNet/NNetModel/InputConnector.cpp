@@ -2,27 +2,31 @@
 //
 // NNetModel
 
+module;
+
 #include <vector>   
+#include <memory>   
 #include "Resource.h"
-#include "Nob.h"
-#include "InputLine.h"
-#include "SignalGenerator.h"
-#include "IoConnector.h"
-#include "InputConnector.h"
+
+module NNetModel:InputConnector;
 
 import Types;
 import DrawContext;
-import tHighlight;
-import NNetParameters;
-import IoLine;
-import NobType;
+import :tHighlight;
+import :SignalGenerator;
+import :NNetParameters;
+import :NobType;
+import :InputConnector;
+import :InputLine;
+import :IoConnector;
+import :IoLine;
 
 using std::make_unique;
 using std::vector;
 
 InputConnector::InputConnector
 (
-    Param & param,
+    NNetParameters & param,
     vector<IoLine *> && src
 )
   : IoConnector(NobType::Value::inputConnector)

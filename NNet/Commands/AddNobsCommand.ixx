@@ -2,14 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "UPNobList.h"
-#include "NNetModelWriterInterface.h"
-
 export module AddNobsCommand;
 
 import SelectionCommand;
+import NNetModel;
 
 export class AddNobsCommand : public SelectionCommand
 {

@@ -2,15 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module RestrictSelectionCommand;
 
 import Types;
 import SelectionCommand;
-import NobType;
+import NNetModel;
 
 export class RestrictSelectionCommand : public SelectionCommand
 {

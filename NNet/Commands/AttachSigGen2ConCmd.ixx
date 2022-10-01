@@ -2,22 +2,16 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-#include "InputConnector.h"
-
 export module AttachSigGen2ConCmd;
 
-import NobId;
 import NNetCommand;
+import NNetModel;
 
 export class AttachSigGen2ConCmd : public NNetCommand
 {
 public:
 	explicit AttachSigGen2ConCmd(NobId const nobId)
-	  : m_inputConnector(*m_pNMWI->GetNobPtr<InputConnector*>(nobId)),
+	  : m_inputConnector(* m_pNMWI->GetNobPtr<InputConnector *>(nobId)),
 		m_pSigGenOld(m_inputConnector.GetSigGen())
 	{}
 

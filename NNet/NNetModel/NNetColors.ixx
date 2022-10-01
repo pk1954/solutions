@@ -6,7 +6,7 @@ module;
 
 #include "d2d1helper.h"
 
-export module NNetColors;
+export module NNetModel:NNetColors;
 
 export using D2D1::ColorF;
 

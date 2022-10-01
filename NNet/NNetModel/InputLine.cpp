@@ -2,25 +2,27 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include <chrono>
 #include <iomanip>
 #include <sstream> 
 #include "Resource.h"
-#include "SignalGenerator.h"
-#include "InputConnector.h"
-#include "InputLine.h"
+
+module NNetModel:InputLine;
 
 import Direct2D;
 import DrawContext;
-import tHighlight;
-import ParamType;
 import SimulationTime;
-import NNetColors;
-import NNetParameters;
-import Neuron;
-import NobType;
-import Knot;
+import :tHighlight;
+import :SignalGenerator;
+import :ParamType;
+import :NNetColors;
+import :NNetParameters;
+import :NobType;
+import :IoLine;
+import :BaseKnot;
 
 using std::chrono::microseconds;
 using std::wostringstream;

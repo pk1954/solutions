@@ -2,16 +2,12 @@
 //
 // Commands
 
-module;
-
-#include "Nob.h"
-
 export module RotationCommand;
 
 import Types;
 import Command;
 import NNetCommand;
-import Sensor;
+import NNetModel;
 
 export class RotationCommand : public NNetCommand
 {

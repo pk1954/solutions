@@ -5,16 +5,14 @@
 module;
 
 #include <iostream>
-#include "NNetModelWriterInterface.h"
-#include "NNetModelReaderInterface.h"
 
 export module WrapGlobalParameter;
 
 import SaveCast;
-import ParamType;
 import NNetWrapperBase;
 import Script;
 import NNetModelIO;
+import NNetModel;
 
 using std::wostream;
 using std::endl;

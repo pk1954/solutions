@@ -6,12 +6,12 @@ module;
 
 #include <vector>
 #include <ostream>
-#include "Nob.h"
 
-export module NobIdList;
+export module NNetModel:NobIdList;
 
 import Util;
-import NobId;
+import :NobId;
+import :Nob;
 
 using std::vector;
 using std::wostream;

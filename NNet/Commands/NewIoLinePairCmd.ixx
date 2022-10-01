@@ -2,15 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module NewIoLinePairCmd;
 
 import Types;
 import NNetCommand;
-import IoLinePair;
+import NNetModel;
 
 export class NewIoLinePairCmd : public NNetCommand
 {

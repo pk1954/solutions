@@ -7,7 +7,8 @@ module;
 #include <compare>
 #include <iostream>
 #include <iomanip>
-#include "NNetModelReaderInterface.h"
+#include <string>
+#include <Windows.h>
 
 export module CrsrWindow;
 
@@ -15,9 +16,11 @@ import Types;
 import TextBuffer;
 import MainWindow;
 import TextWindow;
+import NNetModel;
 
 using std::wostringstream;
 using std::setprecision;
+using std::wstring;
 using std::fixed;
 
 export class CrsrWindow: public TextWindow

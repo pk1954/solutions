@@ -6,10 +6,6 @@ module;
 
 #include <cassert>
 #include <iostream>
-#include "Nob.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
-#include "IoConnector.h"
 
 module WrapVoltage;
 
@@ -19,7 +15,7 @@ import ErrHndl;
 import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
-import NobType;
+import NNetModel;
 
 using std::wostream;
 using std::wcout;

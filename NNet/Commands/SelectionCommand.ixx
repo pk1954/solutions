@@ -5,14 +5,15 @@
 module;
 
 #include <vector>
-#include "Nob.h"
-#include "NNetModelWriterInterface.h"
+#include <memory>
 
 export module SelectionCommand;
 
 import NNetCommand;
+import NNetModel;
 
 using std::unique_ptr;
+using std::vector;
 
 export class SelectionCommand : public NNetCommand
 {

@@ -1,19 +1,18 @@
-// Knot.ixx
+// Knot.ixx  
 //
 // NNetModel
 
 module;
 
-#include "Nob.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
+#include <memory>
 
-export module Knot;
+export module NNetModel:Knot;
 
+import DrawContext;
 import Geometry;
 import Types;
-import tHighlight;
-import DrawContext;
+import :tHighlight;
+import :BaseKnot;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -31,18 +30,18 @@ public:
 
 	void Check() const override;
 
-	void AppendMenuItems(AddMenuFunc const&) const final;
+	void AppendMenuItems(AddMenuFunc const &) const final;
 
 	static bool TypeFits(NobType const type) { return type.IsKnotType(); }
 
 	void      SetDir(Radian const r) final { /* Knot has no direction */ };
-	Radian    GetDir() const  final { return Radian::NULL_VAL(); };
+	Radian    GetDir()        const  final { return Radian::NULL_VAL(); };
 	mV        GetNextOutput() const  final { return m_mVinputBuffer; }
-	bool      CompStep()        final { return false; }
-	NobIoMode GetIoMode() const  final { return NobIoMode::internal; }
+	bool      CompStep()             final { return false; }
+	NobIoMode GetIoMode()     const  final { return NobIoMode::internal; }
 
-	void DrawExterior(DrawContext const&, tHighlight const) const final;
-	void DrawInterior(DrawContext const&, tHighlight const) const final;
+	void DrawExterior(DrawContext const &, tHighlight const) const final;
+	void DrawInterior(DrawContext const &, tHighlight const) const final;
 	void Emphasize(bool const, bool const);
 
 	void Recalc() final { };

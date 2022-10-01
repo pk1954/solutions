@@ -4,11 +4,12 @@
 
 module;
 
+#include <string>
 #include "Resource.h"
-#include "NNetModelReaderInterface.h"
 
 module NNetWrappers;
 
+import Types;
 import ErrHndl;
 import SoundInterface;
 import UtilityWrappers;
@@ -16,11 +17,12 @@ import Symtab;
 import NNetInputOutputUI;
 import DrawContext;
 import NNetModelCommands;
-import NobIdList;
 import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
-import NobType;
+import NNetModel;
+
+using std::wstring;
 
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;

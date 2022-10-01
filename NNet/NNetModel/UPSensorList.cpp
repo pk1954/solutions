@@ -7,12 +7,14 @@ module;
 #include <string>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
-module UPSensorList;
+module NNetModel:UPSensorList;
 
 import SaveCast;
-import Sensor;
 import Types;
+import :Sensor;
+import :UPNobList;
 
 using std::vector;
 using std::to_wstring;

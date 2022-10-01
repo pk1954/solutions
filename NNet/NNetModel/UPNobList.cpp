@@ -2,22 +2,30 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert>
 #include <numeric>
-#include "Pipe.h"
-#include "BaseKnot.h"
-#include "InputConnector.h"
-#include "OutputConnector.h"
-#include "InputLine.h"
-#include "UPNobList.h"
+#include <vector>
+#include <memory>
 
-import NobIdList;
-import NobException;
-import OutputLine;
-import Neuron;
-import Knot;
+module NNetModel:UPNobList;
+
+import :NobException;
+import :InputConnector;
+import :OutputConnector;
+import :InputLine;
+import :OutputLine;
+import :Knot;
+import :Neuron;
+import :Pipe;
+import :Nob;
+import :NobId;
 
 using std::move;
+using std::vector;
+using std::unique_ptr;
+using std::make_unique;
 using std::accumulate;
 
 void UPNobList::Clear()

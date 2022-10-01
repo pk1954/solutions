@@ -7,12 +7,12 @@ module;
 #include <iostream>
 #include <functional>
 
-export module SignalId;
+export module NNetModel:SignalId;
 
 import Types;
 import IoConstants;
-import TrackNr;
-import SignalNr;
+import :TrackNr;
+import :SignalNr;
 
 using std::vector;
 using std::function;

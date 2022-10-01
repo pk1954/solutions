@@ -5,13 +5,12 @@
 module;
 
 #include <cassert>
-#include "NNetModelWriterInterface.h"
 
 export module DeleteTrackCommand;
 
 import Types;
 import NNetCommand;
-import MonitorData;
+import NNetModel;
 
 export class DeleteTrackCommand: public NNetCommand
 {

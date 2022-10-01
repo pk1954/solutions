@@ -2,14 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module SizeSelectionCmd;
 
 import Types;
 import NNetCommand;
+import NNetModel;
 
 export class SizeSelectionCmd : public NNetCommand
 {

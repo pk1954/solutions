@@ -2,19 +2,24 @@
 //
 // NNetModel
 
-#include "UPNobList.h"
-#include "BaseKnot.h"
-#include "SignalSource.h"
-#include "Signal.h"
+module;
 
+#include <iostream>
+
+module NNetModel:Signal;
+
+import Observable;
 import Util;
 import Types;
 import IoConstants;
 import DrawContext;
-import NNetColors;
+import :NNetColors;
+import :SignalSource;
+import :NNetParameters;
 
 using std::wcout;
 using std::endl;
+using std::wostream;
 using std::make_unique;
 
 Signal::Signal
@@ -35,6 +40,18 @@ Signal::~Signal()
     m_sigSource         .UnregisterObserver(*this);
     m_dynModelObservable.UnregisterObserver(*this);
 }
+
+//bool Signal::operator==(Signal const & rhs) const
+//{
+//    if (&m_dynModelObservable != &rhs.m_dynModelObservable) return false;
+//    if (&m_sigSource          != &rhs.m_sigSource)          return false;
+//    if (m_timeStart           != rhs.m_timeStart)           return false;
+//    if (m_iSourceType         != rhs.m_iSourceType)         return false;
+//    if (m_data.size()         != rhs.m_data.size())         return false;
+//    if (!(m_data              == rhs.m_data))               return false;
+//    return true;
+//}
+// TODO
 
 void Signal::Reset()    
 { 
@@ -76,7 +93,7 @@ void Signal::Draw
 
 SIG_INDEX Signal::time2index
 (
-    Param const & param,
+    NNetParameters const & param,
     SIMU_TIME    usSimu
 ) const
 {
@@ -90,7 +107,7 @@ SIG_INDEX Signal::time2index
 
 SIMU_TIME Signal::index2time
 (
-    Param     const & param,
+    NNetParameters     const & param,
     SIG_INDEX const   index
 ) const
 {
@@ -104,7 +121,7 @@ SIMU_TIME Signal::index2time
 
 mV Signal::GetDataPoint
 (
-    Param     const & param,
+    NNetParameters     const & param,
     SIMU_TIME const   usSimu
 ) const
 {
@@ -131,7 +148,7 @@ void Signal::Notify(bool const bImmediate) // called by compute thread!
 
 SIMU_TIME Signal::FindNextMaximum
 (
-    Param     const & param,
+    NNetParameters     const & param,
     SIMU_TIME const   usSimu
 ) const
 {

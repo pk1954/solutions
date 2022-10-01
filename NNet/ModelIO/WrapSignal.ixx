@@ -5,13 +5,12 @@
 module;
 
 #include <string>
-#include "Signal.h"
 
 export module WrapSignal;
 
-import ErrHndl;
-import TrackNr;
 import Types;
+import ErrHndl;
+import NNetModel;
 import NNetWrapperBase;
 import NNetWrapperHelpers;
 

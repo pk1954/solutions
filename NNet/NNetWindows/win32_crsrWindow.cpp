@@ -8,10 +8,7 @@ module;
 #include <sstream> 
 #include <string> 
 #include <iomanip>
-#include "NNetModelReaderInterface.h"
-#include "InputLine.h"
-#include "Pipe.h"
-#include "Signal.h"
+#include <Windows.h>
 
 module CrsrWindow;
 
@@ -19,9 +16,7 @@ import Types;
 import TextBuffer;
 import MainWindow;
 import Win32_Util;
-import Sensor;
-import Neuron;
-import Knot;
+import NNetModel;
 
 using std::wostringstream;
 using std::setprecision;

@@ -2,15 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "Nob.h"
-
 export module RotateNobCommand;
 
 import Types;
 import RotationCommand;
-import NobId;
+import NNetModel;
 
 export class RotateNobCommand : public RotationCommand
 {

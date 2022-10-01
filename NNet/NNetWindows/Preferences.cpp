@@ -7,8 +7,9 @@ module;
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <Windows.h>
 #include "Resource.h"
-#include "NNetModelReaderInterface.h"
 
 module Preferences;
 
@@ -25,9 +26,12 @@ import Symtab;
 import AutoOpen;
 import Script;
 import NNetModelIO;
-import NNetParameters;
+import NNetModel;
 
+using std::make_unique;
 using std::wofstream;
+using std::wostream;
+using std::wstring;
 using std::wcout;
 using std::endl;
 using std::filesystem::exists;

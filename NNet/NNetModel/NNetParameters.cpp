@@ -6,11 +6,12 @@ module;
 
 #include <cassert>
 
-module NNetParameters;
+module NNetModel:NNetParameters;
 
 import Types;
+import :ParamType;
 
-bool Param::operator==(Param const & rhs) const
+bool NNetParameters::operator==(NNetParameters const & rhs) const
 {
 	return
 	(m_sigGenData     == rhs.m_sigGenData    ) &&
@@ -23,7 +24,7 @@ bool Param::operator==(Param const & rhs) const
 	(m_usFilterSize   == rhs.m_usFilterSize  );
 }
 
-float Param::GetParameterValue(ParamType::Value const param) const
+float NNetParameters::GetParameterValue(ParamType::Value const param) const
 {
 	switch (param)
 	{
@@ -50,13 +51,13 @@ float Param::GetParameterValue(ParamType::Value const param) const
 	return 0.f;
 }
 
-void Param::SetSigGenStaticData(SigGenStaticData const& data)
+void NNetParameters::SetSigGenStaticData(SigGenStaticData const& data)
 {
 	m_sigGenData = data;
 	NotifyAll(false);
 }
 
-void Param::SetParameterValue
+void NNetParameters::SetParameterValue
 (
 	ParamType::Value const param, 
 	float            const fNewValue 

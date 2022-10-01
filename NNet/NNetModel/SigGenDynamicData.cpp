@@ -2,16 +2,13 @@
 //
 // NNetModel
 
-module;
-
-#include "SignalGenerator.h"
-
-module SigGenDynamicData;
+module NNetModel:SigGenDynamicData;
 
 import Types;
-import Spike;
 import SimulationTime;
-import NNetParameters;
+import :SigGenStaticData;
+import :NNetParameters;
+import :Spike;
 
 void SigGenDynamicData::Reset()
 {
@@ -44,7 +41,7 @@ fMicroSecs SigGenDynamicData::GetStimulusTime() const
 mV SigGenDynamicData::SetTime
 (
 	SigGenStaticData const & statData,
-	Param            const & param
+	NNetParameters   const & param
 )
 {
 	return SetTime(statData, param, GetStimulusTime());
@@ -53,7 +50,7 @@ mV SigGenDynamicData::SetTime
 mV SigGenDynamicData::SetTime
 (
 	SigGenStaticData const & statData,
-	Param            const & param,
+	NNetParameters   const & param,
 	fMicroSecs       const   stimuTime  // time since last stimulus
 )
 {

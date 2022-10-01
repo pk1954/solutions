@@ -4,20 +4,16 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-#include "InputConnector.h"
-#include "InputLine.h"
+#include <compare>
 
 export module WrapSetParam;
 
 import NNetWrapperBase;
-import ParamType;
 import SaveCast;
 import Script;
-import NobId;
 import NNetModelIO;
 import NNetWrapperHelpers;
+import NNetModel;
 
 export class WrapSetParam : public NNetWrapperBase
 {
@@ -29,13 +25,13 @@ public:
         NobId            const id    { ScrReadNobId(script) };
         ParamType::Value const param { ScrReadParamType(script) };
         float                  fVal  { Cast2Float(script.ScrReadFloat()) };
-        if (InputConnector * pInpConn{ m_modelIO.GetImportNMWI().GetNobPtr<InputConnector*>(id) }) // Legacy
+        if (InputConnector * pInpConn { m_modelIO.GetImportNMWI().GetNobPtr<InputConnector*>(id) }) // Legacy
         {                                                                                          // Legacy
             pInpConn->Apply2All                                                                    // Legacy
             (                                                                                      // Legacy
                 [param, fVal](IoLine& n)                                                           // Legacy
                 {                                                                                  // Legacy
-                    auto& inputLine{ static_cast<InputLine &>(n) };                                 // Legacy
+                    auto & inputLine{ static_cast<InputLine &>(n) };                                 // Legacy
                     inputLine.GetSigGen()->SetParam(param, fVal);                                  // Legacy
                 }                                                                                  // Legacy
             );                                                                                     // Legacy

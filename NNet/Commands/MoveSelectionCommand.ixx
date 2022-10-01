@@ -2,15 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "BaseKnot.h"
-
 export module MoveSelectionCommand;
 
 import Types;
 import NNetCommand;
+import NNetModel;
 
 export class MoveSelectionCommand : public NNetCommand
 {

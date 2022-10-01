@@ -5,13 +5,14 @@
 module;
 
 #include <string>
+#include <compare>
 #include <Windows.h>
 
 export module DescriptionWindow;
 
 import Types;
 import BaseWindow;
-import DescriptionUI;
+import NNetModel;
 
 using std::wstring;
 

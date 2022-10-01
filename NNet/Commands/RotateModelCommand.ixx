@@ -2,18 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "UPNobList.h"
-#include "Nob.h"
-#include "BaseKnot.h"
-
 export module RotateModelCommand;
 
 import Types;
 import RotationCommand;
-import UPSensorList;
+import NNetModel;
 
 export class RotateModelCommand : public RotationCommand
 {

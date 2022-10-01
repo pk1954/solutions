@@ -7,15 +7,15 @@ module;
 #include <vector>
 #include <functional>
 #include <algorithm>
-#include "Signal.h"
 
-export module MonitorData;
+export module NNetModel:MonitorData;
 
 import Observable;
 import Types;
-import TrackNr;
-import SignalId;
-import Track;
+import :SignalId;
+import :Signal;
+import :TrackNr;
+import :Track;
 
 using std::function;
 using std::vector;
@@ -27,15 +27,15 @@ export class MonitorData
 public:
 	using TrackNrFunc = function<void(TrackNr const)>;
 
-	MonitorData() = default;  // constructor   
+	MonitorData()  = default;  // constructor   
 	~MonitorData() = default;  // destructor
-	MonitorData(MonitorData&& rhs) = delete;   // move constructor
-	MonitorData& operator=(const MonitorData&) = delete;   // copy assignment operator
-	MonitorData(const MonitorData&) = delete;   // copy constructor
-	MonitorData& operator=(MonitorData&&) noexcept;        // move assignment operator
+	MonitorData            (      MonitorData &&) = delete;   // move constructor
+	MonitorData & operator=(const MonitorData &)  = delete;   // copy assignment operator
+	MonitorData            (const MonitorData &)  = delete;   // copy constructor
+	MonitorData & operator=(      MonitorData &&) noexcept;   // move assignment operator
 
-	bool operator== (MonitorData const&) const;
-
+//	bool operator== (MonitorData const &) const;
+// TODO
 	void Dump() const;
 	void CheckTracks() const;  // for debugging
 
@@ -58,38 +58,38 @@ public:
 	SignalId SetHighlightedSignal(SignalId      const);
 	SignalId ResetHighlightedSignal();
 
-	void           AddStimulus(fMicroSecs const);
-	SignalNr       AddSignal(TrackNr  const, unique_ptr<Signal>);
-	void           AddSignal(SignalId const&, unique_ptr<Signal>);
-	SignalNr       MoveSignal(SignalId const&, TrackNr  const);
-	Signal       * GetSignalPtr(SignalId const&);
-	Signal const * GetConstSignalPtr(SignalId const&)      const;
-	Signal const * FindSensor(MicroMeterPnt const&) const;
+	void           AddStimulus      (fMicroSecs    const);
+	SignalNr       AddSignal        (TrackNr       const,   unique_ptr<Signal>);
+	void           AddSignal        (SignalId      const &, unique_ptr<Signal>);
+	SignalNr       MoveSignal       (SignalId      const &, TrackNr const);
+	Signal       * GetSignalPtr     (SignalId      const &);
+	Signal const * GetConstSignalPtr(SignalId      const &) const;
+	Signal const * FindSensor       (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal() const;
 
 	unique_ptr<Signal> DeleteSignal(SignalId const&);
 
-	Signal const* FindSignal(auto const& crit) const
+	Signal const * FindSignal(auto const& crit) const
 	{
 		for (unique_ptr<Track> const& upTrack : m_tracks)
-			if (Signal const* const pSignal{ upTrack->FindSignal(crit) })
+			if (Signal const * const pSignal{ upTrack->FindSignal(crit) })
 				return pSignal;
 		return nullptr;
 	}
 
-	SignalId FindSignalId(auto const& crit) const
+	SignalId FindSignalId(auto const & crit) const
 	{
 		for (int i = 0; i < m_tracks.size(); ++i)
 		{
-			TrackNr  const trackNr{ TrackNr(i) };
-			SignalNr const signalNr{ getTrack(trackNr)->FindSignalNr(crit) };
+			TrackNr  const trackNr  { TrackNr(i) };
+			SignalNr const signalNr { getTrack(trackNr)->FindSignalNr(crit) };
 			if (signalNr.IsNotNull())
 				return SignalId(trackNr, signalNr);
 		}
 		return SignalId::NULL_VAL();
 	}
 
-	void Apply2AllTracksC(auto const& func) const
+	void Apply2AllTracksC(auto const & func) const
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 			func(trackNr);
@@ -110,7 +110,7 @@ public:
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{
-			if (Track const* pTrack{ getTrack(trackNr) })
+			if (Track const * pTrack{ getTrack(trackNr) })
 				pTrack->Apply2AllSignalNrsC
 				(
 					[&func, &trackNr](SignalNr const& signalNr) { func(SignalId(trackNr, signalNr)); }
@@ -123,7 +123,7 @@ public:
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{
 			if (Track * pTrack{ getTrack(trackNr) })
-				pTrack->Apply2AllSignals([&func](Signal& signal) { func(signal); });
+				pTrack->Apply2AllSignals([&func](Signal & signal) { func(signal); });
 		}
 	}
 
@@ -131,8 +131,8 @@ public:
 	{
 		for (auto trackNr = TrackNr(0); trackNr < TrackNr(GetNrOfTracks()); ++trackNr)
 		{
-			if (Track const* pTrack{ getTrack(trackNr) })
-				pTrack->Apply2AllSignalsC([&func](Signal const& signal) { func(signal); });
+			if (Track const * pTrack{ getTrack(trackNr) })
+				pTrack->Apply2AllSignalsC([&func](Signal const & signal) { func(signal); });
 		}
 	}
 
@@ -153,13 +153,13 @@ public:
 	vector<fMicroSecs> const& GetStimulusList() const { return m_usStimulusList; }
 
 private:
-	Track* getTrack(TrackNr const);
-	Track      const* getTrack(TrackNr const) const;
+	Track            * getTrack(TrackNr const);
+	Track      const * getTrack(TrackNr const) const;
 	unique_ptr<Signal> removeSignal(SignalId const&);
 
-	Observable* m_pHighSigObservable{ nullptr };
-	SignalId                  m_idSigHighlighted{};
-	vector<unique_ptr<Track>> m_tracks{};
-	int                       m_iNrOfSignals{ 0 };
+	Observable              * m_pHighSigObservable { nullptr };
+	SignalId                  m_idSigHighlighted   { };
+	vector<unique_ptr<Track>> m_tracks             { };
+	int                       m_iNrOfSignals       { 0 };
 	vector<fMicroSecs>        m_usStimulusList;
 };

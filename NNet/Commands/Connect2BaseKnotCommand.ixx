@@ -5,19 +5,15 @@
 module;
 
 #include <cassert>
-#include "NNetModelReaderInterface.h"
-#include "InputLine.h"
-#include "BaseKnot.h"
+#include <memory>
 
 export module Connect2BaseKnotCommand;
 
-import NobId;
 import NNetCommand;
-import OutputLine;
-import Neuron;
-import Knot;
+import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
 
 export class Connect2BaseKnotCommand : public NNetCommand
 {

@@ -7,12 +7,13 @@ module;
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "SignalGenerator.h"
+#include <memory>
 
-export module UPSigGenList;
+export module NNetModel:UPSigGenList;
 
 import Types;
-import SigGenId;
+import :SigGenId;
+import :SignalGenerator;
 
 using std::ranges::for_each;
 using std::unique_ptr;

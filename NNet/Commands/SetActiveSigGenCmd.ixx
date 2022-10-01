@@ -5,7 +5,7 @@
 export module SetActiveSigGenCmd;
 
 import SigGenCommand;
-import SigGenId;
+import NNetModel;
 
 export class SetActiveSigGenCmd : public SigGenCommand
 {

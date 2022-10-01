@@ -4,19 +4,20 @@
 
 module;
 
+#include <iostream>
 #include <algorithm>
-#include "Nob.h"
 
-module MicroMeterPosDir;
+module NNetModel:MicroMeterPosDir;
 
 import Types;
 import IoConstants;
-import NNetParameters;
+import :NNetParameters;
 
 using std::max;
+using std::wostream;
 
 MicroMeterPosDir::MicroMeterPosDir()
-    : m_pos(),
+  : m_pos(),
     m_dir()
 {}
 

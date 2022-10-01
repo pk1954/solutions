@@ -6,16 +6,17 @@ module;
 
 #include <cassert>
 #include "Resource.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
 
-module Knot;
+module NNetModel:Knot;
 
 import DrawContext;
 import Types;
-import NobType;
-import tHighlight;
-import NNetColors;
+import :NobType;
+import :tHighlight;
+import :NNetColors;
+import :BaseKnot;
+import :PipeList;
+import :Pipe;
 
 Knot::Knot(BaseKnot const & src)
   : BaseKnot(src)
@@ -86,14 +87,8 @@ void Knot::Check() const
 
 void Knot::EvaluateSelectionStatus()
 {
-	Nob::Select
-	(
-		Apply2AllConnectedPipesB
-		(
-			[](Pipe const &p) { return p.IsSelected(); }  // if any connected pipe is selected
-		)                                                 // knot must also be selected
-	);
-}
+	Nob::Select(AnyConnectedPipesSelected()); // if any connected pipe is selected
+}                                             // knot must also be selected
 
 void Knot::AppendMenuItems(AddMenuFunc const & add) const
 {

@@ -6,13 +6,13 @@ module;
 
 #include <memory>
 #include <vector>
-#include "Signal.h"
 
-export module Track;
+export module NNetModel:Track;
 
 import Observable;
 import Types;
-import SignalNr;
+import :Signal;
+import :SignalNr;
 
 using std::vector;
 using std::unique_ptr;
@@ -21,8 +21,10 @@ export class Track
 {
 public:
 
-	bool operator==(Track const&) const;
+	~Track();
 
+//	bool operator==(Track const &) const;
+// TODO
 	void Dump()  const;
 	void CheckSignals() const;
 
@@ -43,17 +45,17 @@ public:
 	}
 
 	template<class FUNC>
-	void Apply2AllSignalsC(FUNC const& func) const
+	void Apply2AllSignalsC(FUNC const & func) const
 	{
 		for (int i = 0; i < m_signals.size(); ++i)
 		{
-			if (Signal const* pSignal{ GetConstSignalPtr(SignalNr(i)) })
+			if (Signal const * pSignal{ GetConstSignalPtr(SignalNr(i)) })
 				func(*pSignal);
 		}
 	}
 
 	template<class FUNC>
-	void Apply2AllSignals(FUNC const& func)
+	void Apply2AllSignals(FUNC const & func)
 	{
 		for (int i = 0; i < m_signals.size(); ++i)
 			if (Signal * pSignal{ GetSignalPtr(SignalNr(i)) })
@@ -61,12 +63,12 @@ public:
 	}
 
 	template<class CRIT>
-	SignalNr FindSignalNr(CRIT const& crit) const
+	SignalNr FindSignalNr(CRIT const & crit) const
 	{
 		for (int i = 0; i < m_signals.size(); ++i)
 		{
 			SignalNr       const signalNr{ SignalNr(i) };
-			Signal const* const pSignal{ GetConstSignalPtr(signalNr) };
+			Signal const * const pSignal{ GetConstSignalPtr(signalNr) };
 			if (pSignal && crit(*pSignal))
 				return signalNr;
 		}
@@ -74,7 +76,7 @@ public:
 	}
 
 	template<class CRIT>
-	Signal const* FindSignal(CRIT const& crit) const
+	Signal const * FindSignal(CRIT const & crit) const
 	{
 		return GetConstSignalPtr(FindSignalNr(crit));
 	}

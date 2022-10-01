@@ -15,15 +15,8 @@ import Types;
 import ErrHndl;
 import IoConstants;
 import UtilityWrappers;
-import NobIdList;
-import ParamType;
-import TrackNr;
-import SignalId;
 import Script;
-import SignalNr;
-import NobId;
-import SigGenStaticData;
-import NobType;
+import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;

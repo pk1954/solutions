@@ -4,24 +4,22 @@
 
 module;
 
+#include <vector>
 #include <string>
 #include <iostream>
 #include <Windows.h>
-#include "NNetModelWriterInterface.h"
-#include "UPNobList.h"
 
 export module NNetModelIO;
 
 import WrapBase;
-import NobIdList;
 import Script;
-import NobId;
 import InputOutputUI;
 import NNetModel;
 
 using std::unique_ptr;
 using std::wostream;
 using std::wstring;
+using std::vector;
 
 export class NNetModelIO
 {
@@ -36,7 +34,7 @@ public:
 
 	static void CheckImportedNobId(Script&, UPNobList const&, NobId const);
 
-	unique_ptr<NNetModel> GetImportedModel();
+	unique_ptr<Model> GetImportedModel();
 	wstring const& GetModelFileName() const { return m_wstrFile2Read; }
 
 	NNetModelWriterInterface& GetImportNMWI() { return *m_upImportedNMWI; }
@@ -59,7 +57,7 @@ private:
 	/// import ///
 
 	unique_ptr<NNetModelWriterInterface> m_upImportedNMWI;  // valid only during import
-	unique_ptr<NNetModel>                m_upImportedModel; // valid only during import
+	unique_ptr<Model>                    m_upImportedModel; // valid only during import
 	wstring                              m_wstrFile2Read;
 
 	void importModel();

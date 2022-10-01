@@ -5,16 +5,13 @@
 module;
 
 #include <cassert>
-#include "NNetModelWriterInterface.h"
-#include "BaseKnot.h"
-#include "Pipe.h"
+#include <memory>
 
 export module Connect2PipeCommand;
 
 import Types;
-import NobId;
 import NNetCommand;
-import Knot;
+import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -31,8 +28,8 @@ public:
 		m_idPipe(idPipe),
 		m_pIoLine(m_pNMWI->GetNobPtr<BaseKnot*>(idIoLine)),
 		m_pPipeOld(m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartKnot(m_pPipeOld->GetStartKnotPtr()),
-		m_pEndKnot(m_pPipeOld->GetEndKnotPtr()),
+		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr())),
+		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr())),
 		m_pos(m_pIoLine->GetPos())
 	{
 		assert(m_pIoLine->IsIoLine());

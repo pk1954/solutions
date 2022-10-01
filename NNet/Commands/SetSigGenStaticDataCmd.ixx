@@ -2,16 +2,12 @@
 //
 // Commands
 
-module;
-
-#include "SignalGenerator.h"
-
 export module SetSigGenStaticDataCmd;
 
 import Types;
 import Command;
-import SigGenStaticData;
 import NNetCommand;
+import NNetModel;
 
 export class SetSigGenStaticDataCmd : public NNetCommand
 {

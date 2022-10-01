@@ -4,13 +4,14 @@
 
 module;
 
+#include <cassert>
+#include <iostream>
+#include <memory>
 #include <source_location>
-#include "NNetModelWriterInterface.h"
-#include "InputConnector.h"
+#include <Windows.h>
 
 module NNetModelCommands;
 
-import SigGenId;
 import Uniform2D;
 import AddNobsCommand;
 import DeleteTrackCommand;
@@ -67,11 +68,10 @@ import ConnAnimationCommand;
 import CommandFunctions;
 import CommandStack;
 import SetActiveSigGenCmd;
-import Analyzer;
-import CopySelectedNobs;
 import NNetModelIO;
-import NNetParameters;
+import NNetModel;
 
+using std::wstring;
 using std::wcout;
 using std::endl;
 using std::move;
@@ -148,7 +148,7 @@ void NNetModelCommands::AddModel()
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() 
 		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
-	unique_ptr<NNetModel> upImportedModel { m_pModelIO->GetImportedModel() };
+	unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
 }
 
@@ -264,7 +264,8 @@ void NNetModelCommands::CopySelection()
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(CopySelectedNobs::Do(*m_pNMWI)));
+	UPNobList list { CopySelectedNobs::Do(*m_pNMWI) };
+	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(list));
 }
 
 void NNetModelCommands::CreateInitialNobs()

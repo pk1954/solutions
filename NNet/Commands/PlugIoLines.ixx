@@ -5,14 +5,12 @@
 module;
 
 #include <cassert>
-#include "NNetModelWriterInterface.h"
+#include <memory>
 
 export module PlugIoLines;
 
-import NobId;
 import NNetCommand;
-import IoLine;
-import Knot;
+import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;

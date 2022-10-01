@@ -5,14 +5,12 @@
 module;
 
 #include <vector>
-#include "UPNobList.h"
 
 export module ConnAnimationCommand;
 
 import Types;
 import NNetCommand;
-import IoLine;
-import NobType;
+import NNetModel;
 
 using std::vector;
 

@@ -5,16 +5,13 @@
 module;
 
 #include <vector>
-#include "Nob.h"
-#include "InputLine.h"
-#include "BaseKnot.h"
+#include <memory>
 
 export module DeleteBaseKnotCmd;
 
 import Types;
-import NobIdList;
 import NNetCommand;
-import OutputLine;
+import NNetModel;
 
 using std::vector;
 using std::unique_ptr;

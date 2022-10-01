@@ -2,17 +2,26 @@
 //
 // NNetModel
 
-#include <cassert>
-#include "Resource.h"
-#include "BaseKnot.h"
-#include "IoConnector.h"
+module;
 
+#include <cassert>
+#include <iostream>
+#include <memory>
+#include "Resource.h"
+
+module NNetModel:IoConnector;
+
+import Types;
 import IoConstants;
-import IoLine;
-import Neuron;
-import MicroMeterPosDir;
+import DrawContext;
+import :tHighlight;
+import :MicroMeterPosDir;
+import :NobType;
+import :IoLine;
+import :Nob;
 
 using std::make_unique;
+using std::wostream;
 using std::wcout;
 using std::endl;
 
@@ -209,7 +218,7 @@ MicroMeterLine IoConnector::CalcMaxDistLine() const // find two nobs with maximu
 
 MicroMeterPnt IoConnector::CalcOrthoVector(MicroMeterLine const & line) const 
 {
-    return ::CalcOrthoVector<IoLine>(m_list, line);
+    return ::CalcOrthoVector(m_list, line);
 }
 
 void IoConnector::AppendMenuItems(AddMenuFunc const & add) const

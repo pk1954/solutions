@@ -6,15 +6,14 @@ module;
 
 #include <cassert>
 #include "Resource.h"
-#include "Nob.h"
-#include "BaseKnot.h"
 
-module OutputLine;
+module NNetModel:OutputLine;
 
-import tHighlight;
+import :tHighlight;
 import Types;
 import DrawContext;
-import IoLine;
+import :IoLine;
+import :BaseKnot;
 
 OutputLine::OutputLine(MicroMeterPnt const & upCenter)
 	: IoLine(upCenter, NobType::Value::outputLine)

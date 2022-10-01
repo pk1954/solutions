@@ -4,18 +4,21 @@
 
 module;
 
-#include "BaseKnot.h"
-#include "NNetModelWriterInterface.h"
+#include <algorithm>
+#include <functional>
+#include <memory>
 
 export module SingleNobAnimation;
 
 import Types;
 import Command;
 import Animation;
-import MicroMeterPosDir;
-import MicroMeterPntVector;
+import NNetModel;
 
+using std::max;
 using std::function;
+using std::make_unique;
+using std::unique_ptr;
 
 export class SingleNobAnimation : public Command
 {

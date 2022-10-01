@@ -4,13 +4,14 @@
 
 module;
 
+#include <Windows.h>
 #include "win32_util_resource.h"
-#include "NNetModelReaderInterface.h"
 
 export module AppTitle;
 
 import ObserverInterface;
 import Win32_Util;
+import NNetModel;
 
 export class AppTitle : public ObserverInterface
 {

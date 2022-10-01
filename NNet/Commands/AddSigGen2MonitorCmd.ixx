@@ -2,18 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-#include "SignalGenerator.h"
-
 export module AddSigGen2MonitorCmd;
 
-import TrackNr;
-import SignalId;
 import NNetCommand;
-import SignalFactory;
-import MonitorData;
+import NNetModel;
 
 export class AddSigGen2MonitorCmd : public NNetCommand
 {
@@ -37,7 +29,7 @@ public:
 	};
 
 private:
-	SignalGenerator const* m_pSigGen;
-	TrackNr          const m_trackNr;
-	SignalId               m_signalId{};
+	SignalGenerator const * m_pSigGen;
+	TrackNr         const   m_trackNr;
+	SignalId                m_signalId{};
 };

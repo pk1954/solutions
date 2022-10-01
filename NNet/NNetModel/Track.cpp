@@ -6,21 +6,28 @@ module;
 
 #include <cassert>
 #include <iostream>
-#include "Signal.h"
+#include <vector>
+#include <memory>
 
-module Track;
+module NNetModel:Track;
 
 import SaveCast;
+import :Signal;
+import :SignalNr;
 
 using std::move;
 using std::wcout;
 using std::endl;
+using std::unique_ptr;
+using std::vector;
 
-bool Track::operator==(Track const & rhs) const
-{
-	return m_signals == rhs.m_signals;
-}
+Track::~Track() = default;
 
+//bool Track::operator==(Track const & rhs) const
+//{
+//	return m_signals == rhs.m_signals;
+//}
+// TODO
 void Track::AddSignal
 (
 	unique_ptr<Signal> pSignal,

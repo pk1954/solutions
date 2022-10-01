@@ -6,7 +6,7 @@ module;
 
 #include <iostream>
 
-export module SigGenStaticData;
+export module NNetModel:SigGenStaticData;
 
 import Observable;
 import Types;

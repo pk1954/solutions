@@ -9,16 +9,14 @@ module;
 #include <CommCtrl.h>
 #include <string>
 #include <chrono>
+#include <iostream>
 #include <filesystem>
 #include <source_location>
-#include "NNetModelReaderInterface.h"
 #include "win32_util_resource.h"
 #include "Resource.h"
-#include "InputConnector.h"
 
 module NNetAppWindow;
 
-import NobException;
 import Types;
 import Util;
 import Trace;
@@ -42,13 +40,10 @@ import Win32_PIXEL;
 import NNetWindow;
 import ScriptStack;
 import AutoOpen;
-import Analyzer;
-import SigGenId;
 import SimulationTime;
 import Script;
 import NNetCommand;
-import Neuron;
-import SignalFactory;
+import NNetModel;
 
 using std::endl;
 using std::wcout;
@@ -62,6 +57,7 @@ using std::source_location;
 using namespace std::chrono;
 using std::to_wstring;
 using std::bit_cast;
+using std::wcout;
 
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
@@ -146,7 +142,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		&m_modelCommands
 	);
 
-	m_upModel = make_unique<NNetModel>();
+	m_upModel = make_unique<Model>();
 	m_nmwi.SetModel(m_upModel.get());
 	m_pNMRI = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
@@ -416,7 +412,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_DUMP:
-			m_nmwi.DUMP();
+			m_nmwi.DumpModel(__FILE__, __LINE__);
 			break;
 
 		case IDM_RESET_DYNAMIC_DATA:

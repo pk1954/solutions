@@ -2,17 +2,27 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert> 
-#include "Nob.h"
-#include "InputConnector.h"
-#include "IoConnector.h"
-#include "InputLine.h"
-#include "NNetModelReaderInterface.h"
+#include <string> 
+#include <compare> 
+
+module NNetModel:NNetModelReaderInterface;
 
 import Types;
 import DrawContext;
-import Neuron;
-import NNetModel;
+import :tHighlight;
+import :NobId;
+import :Nob;
+import :SignalGenerator;
+import :InputLine;
+import :IoConnector;
+import :InputConnector;
+import :BaseKnot;
+import :Pipe;
+
+using std::wstring;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {

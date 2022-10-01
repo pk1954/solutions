@@ -6,13 +6,13 @@ module;
 
 #include <cassert>
 #include <Windows.h>
-#include "NNetModelWriterInterface.h"
 
 module TimeGraph;
 
 import Types;
 import PixFpDimension;
 import GraphicsWindow;
+import NNetModel;
 
 TimeGraph::TimeGraph
 (

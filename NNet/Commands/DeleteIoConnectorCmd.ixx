@@ -4,15 +4,14 @@
 
 module;
 
-#include "NNetModelWriterInterface.h"
-#include "Nob.h"
-#include "IoConnector.h"
+#include <memory>
 
 export module DeleteIoConnectorCmd;
 
 import CommandFunctions;
 import CommandStack;
 import NNetCommand;
+import NNetModel;
 
 using std::unique_ptr;
 
@@ -28,7 +27,7 @@ public:
         (
             [this](IoLine& n)
             {
-                if (unique_ptr<NNetCommand> upCmd{ MakeDeleteCommand(*m_pNMWI, n) })
+                if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, n) })
                     m_cmdStack.Push(move(upCmd));
             }
         );

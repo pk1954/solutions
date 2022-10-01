@@ -2,18 +2,11 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module AddSensorSignalCmd;
 
 import Types;
-import TrackNr;
-import SignalId;
 import NNetCommand;
-import SignalFactory;
-import MonitorData;
+import NNetModel;
 
 export class AddSensorSignalCmd : public NNetCommand
 {

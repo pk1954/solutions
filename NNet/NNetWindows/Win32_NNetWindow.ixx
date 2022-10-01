@@ -6,7 +6,6 @@ module;
 
 #include <compare>
 #include <Windows.h>
-#include "NNetModelReaderInterface.h"
 
 export module NNetWindow;
 
@@ -15,7 +14,9 @@ import D2D_DrawContext;
 import Uniform2D;
 import NNetController;
 import GraphicsWindow;
-import Sensor;
+import NNetModel;
+
+class Sensor;
 
 export class NNetWindow : public GraphicsWindow
 {
@@ -36,11 +37,11 @@ public:
 
 	MicroMeterRect GetViewRect() const;
 
-	DrawContext           const& GetDrawContextC() const { return m_context; }
-	DrawContext& GetDrawContext() { return m_context; }
-	Uniform2D<MicroMeter> const& GetCoordC() const { return m_context.GetCoordC(); }
-	Uniform2D<MicroMeter>& GetCoord() { return m_context.GetCoord(); }
-	MicroMeter                    PixelSize() const { return m_context.GetPixelSize(); }
+	DrawContext           const & GetDrawContextC() const { return m_context; }
+	DrawContext                 & GetDrawContext()        { return m_context; }
+	Uniform2D<MicroMeter> const & GetCoordC()       const { return m_context.GetCoordC(); }
+	Uniform2D<MicroMeter>       & GetCoord()              { return m_context.GetCoord(); }
+	MicroMeter                    PixelSize()       const { return m_context.GetPixelSize(); }
 
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
 
@@ -80,8 +81,8 @@ protected:
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
 	void DrawSensors() const;
-	void DrawSensorDataPoints(Sensor const* const) const;
-	void DrawHighlightedSensor(Sensor const* const) const;
+	void DrawSensorDataPoints (Sensor const * const) const;
+	void DrawHighlightedSensor(Sensor const * const) const;
 
 	NNetModelReaderInterface const* m_pNMRI{ nullptr };
 
@@ -94,7 +95,7 @@ private:
 	NNetWindow(NNetWindow const&);           // noncopyable class 
 	NNetWindow& operator= (NNetWindow const&) = delete;  // noncopyable class 
 
-	NNetController* m_pController{ nullptr };
+	NNetController * m_pController{ nullptr };
 	D2D_DrawContext  m_context{ };
 	fPixel           m_fPixRadiusLimit{ };
 	PixelPoint       m_ptLast{ PP_NULL };	// Last cursor position during selection 

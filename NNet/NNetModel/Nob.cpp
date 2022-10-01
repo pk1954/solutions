@@ -2,21 +2,26 @@
 //
 // NNetModel
 
+module;
+
 #include <cassert> 
 #include <iomanip>
 #include <iostream>
+#include <algorithm>
 #include "Resource.h"
-#include "Nob.h"
+
+module NNetModel:Nob;
 
 import Debug;
 import Types;
-import tHighlight;
 import Scanner;
-import NNetColors;
-import NNetParameters;
-import MicroMeterPosDir;
-import NobType;
+import :tHighlight;
+import :NNetColors;
+import :NNetParameters;
+import :MicroMeterPosDir;
+import :NobType;
 
+using std::min;
 using std::setw;
 using std::move;
 using std::wcout;

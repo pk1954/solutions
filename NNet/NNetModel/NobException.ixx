@@ -4,15 +4,16 @@
 
 module;
 
+#include <string>
 #include <iostream>
 #include <exception>
 #include <source_location>
 
-export module NobException;
+export module NNetModel:NobException;
 
 import Scanner;
-import NobId;
-import NobType;
+import :NobId;
+import :NobType;
 
 using std::endl;
 using std::wcout;

@@ -2,13 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module SelectAllCommand;
 
 import SelectionCommand;
+import NNetModel;
 
 export class SelectAllCommand : public SelectionCommand
 {

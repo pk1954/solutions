@@ -2,16 +2,24 @@
 //
 // NNetModel
 
-#include <cassert>
-#include "Pipe.h"
-#include "InputLine.h"
-#include "NNetModelWriterInterface.h"
+module;
 
-import NobIdList;
-import IoLinePair;
-import OutputLine;
-import Neuron;
-import Knot;
+#include <cassert>
+#include <memory>
+
+module NNetModel:NNetModelWriterInterface;
+
+import Types;
+import :IoLinePair;
+import :NobType;
+import :NobId;
+import :Nob;
+import :Knot;
+import :Neuron;
+import :BaseKnot;
+
+using std::make_unique;
+using std::unique_ptr;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
@@ -23,6 +31,23 @@ Nob * NNetModelWriterInterface::GetNob(NobId const id)
 	m_pModel->CheckId(id);
 	return m_pModel->GetNob(id);
 }
+
+BaseKnot & NNetModelWriterInterface::GetBaseKnot(NobId const id)
+{
+	BaseKnot* pBaseKnot{ GetNobPtr<BaseKnot*>(id) };
+	assert(pBaseKnot);
+	return *pBaseKnot;
+}
+
+void NNetModelWriterInterface::SelectSubtree(BaseKnot & baseKnot, bool  const b) 
+{ 
+	m_pModel->SelectSubtree(baseKnot, b); 
+}
+
+void NNetModelWriterInterface::AddOutgoing   (NobId const id, Pipe& pipe) { GetBaseKnot(id).AddOutgoing(pipe); }
+void NNetModelWriterInterface::AddIncoming   (NobId const id, Pipe& pipe) { GetBaseKnot(id).AddIncoming(pipe); }
+void NNetModelWriterInterface::RemoveIncoming(NobId const id, Pipe& pipe) { GetBaseKnot(id).RemoveIncoming(pipe); }
+void NNetModelWriterInterface::RemoveOutgoing(NobId const id, Pipe& pipe) { GetBaseKnot(id).RemoveOutgoing(pipe); }
 
 void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
 { 
@@ -88,10 +113,10 @@ unique_ptr<BaseKnot> NNetModelWriterInterface::FixBaseKnot(NobId const id)
 		switch (typeNew.GetValue())
 		{
 			using enum NobType::Value;
-			case knot:	     upBaseKnotNew = make_unique<Knot>        (*pBaseKnot); break;
-			case neuron:	 upBaseKnotNew = make_unique<Neuron>      (*pBaseKnot); break;
-			case inputLine:  upBaseKnotNew = make_unique<InputLine> (StdSigGen(), *pBaseKnot); break;
-			case outputLine: upBaseKnotNew = make_unique<OutputLine>(*pBaseKnot); break;
+			case knot:	     upBaseKnotNew = make_unique<Knot>      (* pBaseKnot);              break;
+			case neuron:	 upBaseKnotNew = make_unique<Neuron>    (* pBaseKnot);              break;
+			case inputLine:  upBaseKnotNew = make_unique<InputLine> (StdSigGen(), * pBaseKnot); break;
+			case outputLine: upBaseKnotNew = make_unique<OutputLine>(* pBaseKnot);              break;
 			case undefined:	 break;
 			default:         assert(false);
 		}

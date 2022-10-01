@@ -6,19 +6,19 @@ module;
 
 #include <chrono>
 
-export module NNetParameters;
+export module NNetModel:NNetParameters;
 
 import Observable;
 import SaveCast;
 import Types;
-import ParamType;
-import SigGenStaticData;
+import :ParamType;
+import :SigGenStaticData;
 
-export class Param : public Observable
+export class NNetParameters : public Observable
 {
 public:
 
-	bool operator==(Param const & rhs) const;
+	bool operator==(NNetParameters const & rhs) const;
 
 	float GetParameterValue(ParamType::Value const) const;
 	void  SetParameterValue(ParamType::Value const, float const);

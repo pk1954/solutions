@@ -17,7 +17,7 @@ import Types;
 import SoundInterface;
 import MonitorControl;
 import NNetModelCommands;
-import NNetColors;
+import NNetModel;
 
 using std::find;
 using std::wstring;

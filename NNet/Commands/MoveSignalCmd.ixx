@@ -2,17 +2,10 @@
 //
 // Commands
 
-module;
-
-#include "NNetModelWriterInterface.h"
-
 export module MoveSignalCmd;
 
-import TrackNr;
-import SignalId;
 import NNetCommand;
-import Track;
-import MonitorData;
+import NNetModel;
 
 export class MoveSignalCmd : public NNetCommand
 {
