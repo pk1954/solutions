@@ -29,8 +29,8 @@ public:
 
 	HWND WINAPI AddStaticControl(int const);
 	HWND WINAPI AddStaticControl(LPCTSTR const);
-	HWND WINAPI AddButton       (LPCTSTR const, HMENU const, DWORD const);
-	HWND WINAPI AddTrackBar     (HMENU const);
+	HWND WINAPI AddButton       (LPCTSTR const, int const, DWORD const);
+	HWND WINAPI AddTrackBar     (int const);
 
 	void AddCustomControl(int const);
 
@@ -47,7 +47,7 @@ private:
 
 	inline static PIXEL const STATUS_BAR_HEIGHT { 22_PIXEL };
 
-	HWND WINAPI addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, HMENU const);
+	HWND WINAPI addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, int const);
 
 	vector<PIXEL> m_statWidths;
 

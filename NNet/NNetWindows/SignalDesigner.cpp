@@ -107,18 +107,8 @@ void SignalDesigner::Initialize
 	m_upSignalControl1->SetParentContextMenueMode(true);
 	m_upSignalControl2->SetParentContextMenueMode(true);
 	m_upSignalPreview ->SetParentContextMenueMode(true);
-	m_hStimulusButton =	CreateButton
-	(
-		GetWindowHandle(), 
-		L" Stimulus ", 
-		0, 0, 
-		STIMULUS_BUTTON_WIDTH .GetValue(), 
-		STIMULUS_BUTTON_HEIGHT.GetValue(),
-		IDM_TRIGGER_STIMULUS
-	);
-	BringWindowToTop(m_hStimulusButton);
-
-	m_upArrowButton = make_unique<ArrowButton>(GetWindowHandle(), IDM_SIGNAL_DESIGNER_STACKED);
+	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
+	m_upArrowButton    = make_unique<ArrowButton>   (GetWindowHandle(), IDM_SIGNAL_DESIGNER_STACKED);
 	m_upArrowButton->SetBackgroundColor(BaseScale::COL_NORMAL);
 	m_upArrowButton->SetWindowWidth (V_SCALE_WIDTH,  false);
 	m_upArrowButton->SetWindowHeight(H_SCALE_HEIGHT, false);
@@ -199,7 +189,7 @@ void SignalDesigner::DoPaint()
 	if (m_bPreview)
 		m_upSignalPreview->Notify(false);
 	SetCaption();
-	EnableWindow(m_hStimulusButton, m_pComputeThread->IsRunning());
+	m_upStimulusButton->Enable(m_pComputeThread->IsRunning());
 }
 
 void SignalDesigner::renameSigGen()
@@ -246,11 +236,6 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_ADD_SIG_GEN_TO_MONITOR:
 		m_pCommands->AddSigGen2Monitor(TrackNr(0));
-		return true;
-
-	case IDM_TRIGGER_STIMULUS:
-		m_pNMWI->GetSigGenSelected()->StartStimulus();
-		SendCommand2Application(IDM_TRIGGER_STIMULUS, 0);
 		return true;
 
 	default:
@@ -380,15 +365,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upSignalControl1->Move(V_SCALE_WIDTH, 0_PIXEL, pixControlWidth, pixControlHeight, true);
 	m_upVertScaleFreq ->Move(      0_PIXEL, 0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
-	PIXEL pixHorzPos { (width - STIMULUS_BUTTON_WIDTH) / 2 };
-	::SetWindowPos 
-	(
-		m_hStimulusButton,
-		HWND_TOP,
-		pixHorzPos.GetValue(), 10, 0, 0,
-		SWP_NOSIZE
-	);
-
+	m_upStimulusButton->CenterInParentWin();
 	::SetWindowPos 
 	(
 		m_upArrowButton->GetWindowHandle(),

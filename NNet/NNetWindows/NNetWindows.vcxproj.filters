@@ -180,5 +180,8 @@
     <ClCompile Include="MonitorWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StimulusButton.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -161,7 +161,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands);
 	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
-	m_monitorWindow    .Start(m_hwndApp, m_sound, m_modelCommands);
+	m_monitorWindow    .Start(m_hwndApp, m_computeThread, m_sound, m_modelCommands);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
 	setModelInterface();

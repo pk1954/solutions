@@ -15,6 +15,7 @@ module MonitorWindow;
 import Win32_Util_Resource;
 import Types;
 import SoundInterface;
+import ComputeThread;
 import MonitorControl;
 import NNetModelCommands;
 import NNetModel;
@@ -28,9 +29,10 @@ MonitorWindow::~MonitorWindow() = default;
 
 void MonitorWindow::Start
 (
-	HWND        const   hwndParent,
-	Sound             & sound,
-	NNetModelCommands & modelCmds
+	HWND          const   hwndParent,
+	ComputeThread const & computeThread,
+	Sound               & sound,
+	NNetModelCommands   & modelCmds
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -64,6 +66,9 @@ void MonitorWindow::Start
 	m_upHorzScale->Show(true);
 
 	m_upMonitorControl->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
+
+	m_pComputeThread   = & computeThread;
+	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
 }
 
 void MonitorWindow::ResetHorzCoord()
@@ -112,6 +117,7 @@ void MonitorWindow::OnPaint()
 {
 	m_upMonitorControl->Invalidate(false);
 	SetCaption();
+	m_upStimulusButton->Enable(m_pComputeThread->IsRunning());
 }
 
 bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -122,5 +128,6 @@ bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 	m_upHorzScale     ->Move(0_PIXEL,  monHeight, width, H_SCALE_HEIGHT, true);
 	if (m_upHorzScale->IsScaleLocked())
 		m_horzCoord.SetOffset(Convert2fPixel(-monWidth));
+	m_upStimulusButton->CenterInParentWin();
 	return true;
 }

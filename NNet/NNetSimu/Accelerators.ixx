@@ -1,6 +1,6 @@
 // Accelerators.ixx
 //
-// NNetSimu
+// NNetSimu  
 
 module;
 
@@ -16,7 +16,7 @@ import SaveCast;
 
 using std::array;
 
-export class Accelerators
+export class Accelerators  // doesn't work
 {
 public:
     HACCEL Get()

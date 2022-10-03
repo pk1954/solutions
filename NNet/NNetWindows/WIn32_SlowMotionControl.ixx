@@ -18,7 +18,7 @@ public:
 
 	static void Add(StatusBar & statusBar)
 	{ 
-		statusBar.AddButton(L" Slower ", HMENU(IDM_SLOWER), BS_PUSHBUTTON); 
-		statusBar.AddButton(L" Faster ", HMENU(IDM_FASTER), BS_PUSHBUTTON); 
+		statusBar.AddButton(L" Slower ", IDM_SLOWER, BS_PUSHBUTTON); 
+		statusBar.AddButton(L" Faster ", IDM_FASTER, BS_PUSHBUTTON); 
 	} 
 };

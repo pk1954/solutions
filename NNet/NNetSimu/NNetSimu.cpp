@@ -67,7 +67,7 @@ int APIENTRY wWinMain
 
 	upApp = make_unique<NNetAppWindow>(wstrProdName);
 
-//	Accelerators acc;
+//	Accelerators acc; // doesn't work
 
 	MessagePump pump;
 	pump.SetAccelTable(hInstance, IDC_NNET_SIMU_MAIN);

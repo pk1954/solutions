@@ -14,6 +14,7 @@ export module SignalDesigner;
 import Types;
 import Observable;
 import PixFpDimension;
+import StimulusButton;
 import SignalControl;
 import ComputeThread;
 import ArrowButton;
@@ -75,7 +76,6 @@ private:
 	void OnNCLButtonDblClick(WPARAM const, LPARAM const)                   final;
 	void OnScaleCommand     (WPARAM const, LPARAM const)                   final;
 
-	ComputeThread         const * m_pComputeThread;
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<fHertz>        m_vertCoordFreq;
 	PixFpDimension<mV>            m_vertCoordVolt1;
@@ -90,10 +90,11 @@ private:
 	unique_ptr<SignalControl>     m_upSignalControl2;
 	unique_ptr<SignalPreview>     m_upSignalPreview;
 	unique_ptr<ArrowButton>       m_upArrowButton;
-	NNetModelWriterInterface    * m_pNMWI           { nullptr };
-	NNetModelCommands           * m_pCommands       { nullptr };
-	HMENU                         m_hMenu           { nullptr };
-	HWND                          m_hStimulusButton { nullptr };
-	DESIGN                        m_design          { DESIGN::STACKED };
-	bool                          m_bPreview        { false };
+	unique_ptr<StimulusButton>    m_upStimulusButton;
+	ComputeThread         const * m_pComputeThread { nullptr };
+	NNetModelWriterInterface    * m_pNMWI          { nullptr };
+	NNetModelCommands           * m_pCommands      { nullptr };
+	HMENU                         m_hMenu          { nullptr };
+	DESIGN                        m_design         { DESIGN::STACKED };
+	bool                          m_bPreview       { false };
 };

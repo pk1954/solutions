@@ -11,12 +11,14 @@ module;
 export module MonitorWindow;
 
 import Types;
+import Scale;
 import PixFpDimension;
 import BaseWindow;
+import ComputeThread;
 import MonitorControl;
+import StimulusButton;
 import SoundInterface;
 import NNetModelCommands;
-import Scale;
 import NNetModel;
 
 using std::unique_ptr;
@@ -29,7 +31,7 @@ public:
 	MonitorWindow();
 	~MonitorWindow() final;
 
-	void Start(HWND const, Sound&, NNetModelCommands&);
+	void Start(HWND const, ComputeThread const &, Sound &, NNetModelCommands &);
 	void Stop();
 	void SetModelInterface(NNetModelWriterInterface* const) const;
 	void StimulusTriggered() const;
@@ -52,6 +54,8 @@ private:
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<mV>            m_vertCoord;
+	ComputeThread         const * m_pComputeThread { nullptr };
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<MonitorControl>    m_upMonitorControl;
+	unique_ptr<StimulusButton>    m_upStimulusButton;
 };
