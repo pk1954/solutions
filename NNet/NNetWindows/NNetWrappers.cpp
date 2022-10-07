@@ -224,16 +224,6 @@ public:
     }
 };
 
-class WrapSetPulseRate: public ScriptFunctor  // Legacy
-{
-public:
-    void operator() (Script & script) const final
-    {
-        ScrReadNobId(script);
-        Cast2Float(script.ScrReadFloat());
-    }
-};
-
 class WrapSetParameter: public ScriptFunctor
 {
 public:
@@ -422,7 +412,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"SelectNobsInRect",     new WrapSelectNobsInRect); 
     SymbolTable::ScrDefConst(L"SelectSubtree",        new WrapSelectSubtree );
     SymbolTable::ScrDefConst(L"SetParameter",         new WrapSetParameter);
-    SymbolTable::ScrDefConst(L"SetPulseRate",         new WrapSetPulseRate); 
     SymbolTable::ScrDefConst(L"SplitNeuron",          new WrapSplitNeuron );
     SymbolTable::ScrDefConst(L"ToggleStopOnTrigger",  new WrapToggleStopOnTrigger );
     SymbolTable::ScrDefConst(L"UndoCommand",          new WrapUndoCommand );

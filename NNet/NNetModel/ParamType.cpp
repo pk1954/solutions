@@ -29,13 +29,7 @@ wchar_t const * ParamType::GetName(ParamType::Value const p)
 		{ spikeWidth,     L"SpikeWidth"       },
 		{ threshold,      L"Threshold"        },
     	{ refractPeriod,  L"RefractoryPeriod" },
-	    { timeResolution, L"TimeResolution"   },
-		{ filterSize,     L"FilterSize"       }, // 
-		{ baseFrequency,  L"BaseFrequency"    },   // Legacy
-		{ signalLoss,     L"SignalLoss"       },   // Legacy
-		{ pulseWidth,     L"PulseWidth"       },   // Legacy
-		{ stdPulseRate,   L"StdPulseRate"     },   // Legacy
-		{ pulseRate,      L"PulseRate"        }    // Legacy
+	    { timeResolution, L"TimeResolution"   }
 	};				  
 	
 	return mapParam.at(p);
@@ -50,18 +44,12 @@ wchar_t const * ParamType::GetUnit(ParamType::Value const p)
 		{ inputPeakTime,   L"탎"    },
 		{ inputPeakVolt,   L"mV"    },
 		{ inputBaseVolt,   L"mV"    },
-		{ baseFrequency,   L"Hz"    },
 		{ pulseSpeed,      L"m/sec" },
 		{ spikeWidth,      L"탎"    },
 		{ threshold,       L"mV"    },
 		{ neuronPeakVolt,  L"mV"    },
     	{ refractPeriod,   L"탎"    },
-	    { timeResolution,  L"탎"    },
-		{ filterSize,      L"탎"    },
-		{ signalLoss,      L"1/탆"  },  // Legacy
-		{ stdPulseRate,    L"Hz"    },  // Legacy
-		{ pulseWidth,      L"탎"    },  // Legacy
-		{ pulseRate,       L"Hz"    }   // Legacy
+	    { timeResolution,  L"탎"    }
 	};				  
 
 	return mapParam.at(p);

@@ -25,15 +25,9 @@ public:
 		pulseSpeed,
 		spikeWidth,
 		refractPeriod,
-		filterSize,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
-		baseFrequency,  // legacy  
-		pulseRate,      // legacy
-		signalLoss,     // legacy
-		pulseWidth,     // legacy
-		stdPulseRate,   // legacy
-		tParameterLast = stdPulseRate
+		tParameterLast = timeResolution
 	};
 
 	static wchar_t const* GetName(ParamType::Value const);

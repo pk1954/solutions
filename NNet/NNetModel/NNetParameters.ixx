@@ -33,7 +33,6 @@ public:
 	fMicroSecs  RefractPeriod () const { return m_refractPeriod; }
 	meterPerSec PulseSpeed    () const { return m_pulseSpeed; }
 	fMicroSecs  TimeResolution() const { return m_usResolution; }
-	fMicroSecs  FilterSize    () const { return m_usFilterSize; }
 
 private:
 	SigGenStaticData m_sigGenData     { };
@@ -43,7 +42,6 @@ private:
 	fMicroSecs       m_spikeWidth     { 2000._MicroSecs };
 	fMicroSecs       m_refractPeriod  { 500._MicroSecs };
 	fMicroSecs       m_usResolution   { 100._MicroSecs };
-	fMicroSecs       m_usFilterSize   { m_usResolution };
 };
 
 // geometry

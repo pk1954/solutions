@@ -130,10 +130,7 @@ float Model::SetParam
 {
 	float fOldValue { m_param.GetParameterValue(param) };
 	m_param.SetParameterValue(param, fNewValue);
-	if (param == ParamType::Value::filterSize)
-		/* not used */ ;
-	else
-		RecalcAllNobs();
+	RecalcAllNobs();
 	return fOldValue;
 }
 

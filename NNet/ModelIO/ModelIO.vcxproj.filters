@@ -34,19 +34,10 @@
     <ClCompile Include="WrapSignalInfo.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WrapSignal.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapSignalData.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WrapSetParam.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapGlobalParameter.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WrapNobParameter.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WrapSignalGenerator.ixx">

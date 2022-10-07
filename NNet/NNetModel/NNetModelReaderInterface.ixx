@@ -75,7 +75,6 @@ public:
 	MonitorData     const & GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	NNetParameters  const & GetParamsC()                           const { return m_pModel->GetParams(); };
 	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
-	fMicroSecs              FilterSize()                           const { return m_pModel->GetParams().FilterSize(); };
 	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }

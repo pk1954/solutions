@@ -27,8 +27,6 @@ public:
         m_modelIO(modelIO)
     {};
 
-    void Write(wostream & out) const override { /* for legacy commands */ };
-
 protected:
 
     NNetModelIO & m_modelIO;

@@ -88,7 +88,6 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 	resetParameter(m_hwndSpikeWidth,       spikeWidth    );
 	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
 	resetParameter(m_hwndTimeResolution,   timeResolution);
-//	resetParameter(m_hwndFilterSize,       filterSize    );
 	resetParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 
@@ -100,7 +99,6 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndSpikeWidth,       spikeWidth    );
 	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
 	applyParameter(m_hwndTimeResolution,   timeResolution);
-//	applyParameter(m_hwndFilterSize,       filterSize    );
 	applyParameter(m_hwndPulseSpeed,       pulseSpeed    );
 }
 

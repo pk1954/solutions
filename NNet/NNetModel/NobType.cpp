@@ -39,9 +39,7 @@ NobType::Value NobType::GetTypeFromName(wstring const & name)
 		{ L"undefined",       undefined       },
 		{ L"inputConnector",  inputConnector  },
 		{ L"outputConnector", outputConnector },
-		{ L"inputNeuron",     inputLine       },  // Legacy
 		{ L"inputLine",       inputLine       },
-		{ L"outputNeuron",    outputLine      },  // Legacy
 		{ L"outputLine",      outputLine      },
 		{ L"neuron",          neuron	      },
 		{ L"pipe",            pipe	          },

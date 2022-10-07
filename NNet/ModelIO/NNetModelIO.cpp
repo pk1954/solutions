@@ -16,7 +16,6 @@ module NNetModelIO;
 
 import NNetModelStorage;
 import WrapSignalGenerator;
-import WrapNobParameter;
 import ErrHndl;
 import Scanner;
 import Symtab;
@@ -34,9 +33,7 @@ import WrapNrOfNobs;
 import WrapNrOfTracks;
 import WrapActiveSigGen;
 import WrapSignalInfo;
-import WrapSignal;
 import WrapSignalData;
-import WrapSetParam;
 import WrapGlobalParameter;
 import WrapDescription;
 import WrapSetSigGen;
@@ -71,9 +68,6 @@ void NNetModelIO::Initialize()
     m_wrapVector.push_back(make_unique<WrapSignalInfo     >(L"SignalInfo",      *this));
     m_wrapVector.push_back(make_unique<WrapSignalData     >(L"SignalData",      *this));
     m_wrapVector.push_back(make_unique<WrapSimulationTime >(L"SimulationTime",  *this));
-    m_wrapVector.push_back(make_unique<WrapSetParam       >(L"SetParam",        *this)); // Legacy
-    m_wrapVector.push_back(make_unique<WrapSignal         >(L"Signal",          *this)); // Legacy
-    m_wrapVector.push_back(make_unique<WrapNobParameter   >(L"NobParameter",    *this)); // Legacy
 
     NobType::Apply2All
     (
@@ -87,11 +81,7 @@ void NNetModelIO::Initialize()
         }
     );
 
-    SymbolTable::ScrDefConst(L"circle",       static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
-    SymbolTable::ScrDefConst(L"InputNeuron",  static_cast<unsigned long>(NobType::Value::inputLine));  // Legacy
-    SymbolTable::ScrDefConst(L"OutputNeuron", static_cast<unsigned long>(NobType::Value::outputLine)); // Legacy
-    SymbolTable::ScrDefConst(L"inputNeuron",  static_cast<unsigned long>(NobType::Value::inputLine));  // Legacy
-    SymbolTable::ScrDefConst(L"outputNeuron", static_cast<unsigned long>(NobType::Value::outputLine)); // Legacy
+    SymbolTable::ScrDefConst(L"circle", static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
 
     ParamType::Apply2AllParameters
     (

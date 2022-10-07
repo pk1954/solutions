@@ -58,7 +58,6 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	switch (par)
 	{
 		using enum ParamType::Value;
-		case baseFrequency: m_statData.SetFreqBase(fHertz(f));     break;
 		case inputPeakFreq: m_statData.SetFreqPeak(fHertz(f));     break;
 		case inputBaseVolt: m_statData.SetAmplBase(mV(f));         break;
 		case inputPeakVolt: m_statData.SetAmplPeak(mV(f));         break;
