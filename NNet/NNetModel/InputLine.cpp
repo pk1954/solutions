@@ -17,6 +17,7 @@ import DrawContext;
 import SimulationTime;
 import :tHighlight;
 import :SignalGenerator;
+import :StdSigGen;
 import :ParamType;
 import :NNetColors;
 import :NNetParameters;
@@ -30,25 +31,10 @@ using std::setprecision;
 using std::wstring;
 using std::fixed;
 
-InputLine::InputLine
-(
-	SignalGenerator     * pSigGen, 
-	MicroMeterPnt const & upCenter
-)
+InputLine::InputLine(MicroMeterPnt const& upCenter)
   : IoLine(upCenter, NobType::Value::inputLine),
-	m_pSigGen(pSigGen)
+	m_pSigGen(StdSigGen::Get())
 { }
-
-InputLine::InputLine
-(
-	SignalGenerator * pSigGen, 
-	BaseKnot  const & baseKnot
-)
-  : IoLine(baseKnot, NobType::Value::inputLine),
-	m_pSigGen(pSigGen)
-{ 
-	SetOutgoing(baseKnot);
-}
 
 void InputLine::Check() const
 {
@@ -105,7 +91,7 @@ void InputLine::drawSocket
 	context.DrawLine(umLine - umOrthoVector, umWidthLR, colF);
 }
 
-void InputLine::Prepare()
+void InputLine::CollectInput()
 {
 	m_mVinputBuffer = m_pSigGen->GetSignalValue();
 }

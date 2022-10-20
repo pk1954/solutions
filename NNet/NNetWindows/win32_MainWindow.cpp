@@ -199,7 +199,7 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 void MainWindow::setNoTarget()
 {
 	m_pModelCommands->SetTargetNob(NO_NOB);
-	m_connType  = ConnectionType::ct_none;
+	m_connType = ConnectionType::ct_none;
 }
 
 void MainWindow::setTargetNob()
@@ -421,7 +421,7 @@ void MainWindow::DoPaint()
 	{
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot   (); }); // draw BaseKnots OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 		if (m_pPreferences->ArrowsVisible())
 			DrawArrowsInRect(pixRect, m_arrowSize);
@@ -429,7 +429,7 @@ void MainWindow::DoPaint()
 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot   (); }); // draw BaseKnots OVER Pipes
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
 	if (IsDefined(m_pNMRI->GetTargetNobId())) // draw target nob again to be sure that it is visible

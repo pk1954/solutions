@@ -28,7 +28,7 @@ public:
 
 	~OutputConnector() final = default;
 
-	void Prepare() override { /* done by output neurons */ };
+	void CollectInput() final { /* done by output neurons */ };
 
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 

@@ -36,7 +36,7 @@ public:
 	template <Nob_t T>
 	T GetNobConstPtr(NobId const id) const
 	{
-		Nob const* const pNob{ GetConstNob(id) };
+		Nob const* const pNob { GetConstNob(id) };
 		return (pNob && HasType<T>(*pNob)) ? static_cast<T>(pNob) : nullptr;
 	}
 
@@ -74,6 +74,14 @@ public:
 		if (IsDefined(idRes))
 			return idRes;
 
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsSynapse() && crit(s); });
+		if (IsDefined(idRes))
+			return idRes;
+
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsFork() && crit(s); });
+		if (IsDefined(idRes))
+			return idRes;
+
 		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsPipe() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
@@ -101,6 +109,11 @@ public:
 	NobId                  GetTargetNobId     () const { return m_nobTarget; }
 	NobId                  GetHighlightedNobId() const { return m_nobHighlighted; }
 
+	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
+	{
+		return m_sigGenList.GetSigGen(sigGenId);
+	}
+	
 	// non const functions
 
 	Nob * GetNob(NobId const);

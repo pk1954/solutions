@@ -26,14 +26,16 @@ using std::unique_ptr;
 export class SignalGenerator : public SignalSource
 {
 public:
+	explicit SignalGenerator(wstring const&);
+
 	~SignalGenerator() final = default;
 
-	explicit SignalGenerator(wstring const&);
+	static SignalGenerator StdSigGen;
 
 	mV   GetSignalValue()              const final { return m_mVactual; };
 	bool Includes(MicroMeterPnt const) const final { return false; };
 
-	void Dump()                                const final {};
+	void Dump()                               const final {};
 	void WriteInfo(wostream&)                 const final {};
 	void Draw(DrawContext const&, bool const) const final {};
 	void Recalc(UPNobList const&)                   final {};
@@ -44,16 +46,16 @@ public:
 	fHertz GetStimulusFrequency() const { return GetStimulusFrequency(GetStimulusTime()); };
 	mV     GetStimulusAmplitude() const { return GetStimulusAmplitude(GetStimulusTime()); };
 
-	fMicroSecs               TimePeak() const { return m_statData.GetPeakTime(); }
+	fMicroSecs              TimePeak()  const { return m_statData.GetPeakTime(); }
 	BasePeak<fHertz> const& Frequency() const { return m_statData.GetFrequency(); }
 	BasePeak<mV>     const& Amplitude() const { return m_statData.GetAmplitude(); }
 
 	void SetParam(ParamType::Value const, float const);
 
-	void                     SetStaticData(SigGenStaticData const&);
+	void                    SetStaticData(SigGenStaticData const&);
 	SigGenStaticData const& GetStaticData() const;
 
-	void            SetName(wstring const& name) { m_name = name; }
+	void           SetName(wstring const& name) { m_name = name; }
 	wstring const& GetName() const { return m_name; }
 
 	void ClearDynamicData() { m_dynData.Reset(); }

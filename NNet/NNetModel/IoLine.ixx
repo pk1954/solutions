@@ -22,17 +22,17 @@ export class IoLine : public BaseKnot
 public:
 	static bool TypeFits(NobType const type) { return type.IsIoLineType(); }
 
-	IoLine(MicroMeterPnt const& upCenter, NobType const type)
+	IoLine(MicroMeterPnt const & upCenter, NobType const type)
 		: BaseKnot(upCenter, type, NEURON_RADIUS)
 	{}
 
-	IoLine(BaseKnot const& src, NobType const type)
-		: BaseKnot(src)
-	{
-		SetId(src.GetId());
-		SetType(type);
-		SetExtension(NEURON_RADIUS);
-	}
+	//IoLine(BaseKnot const & src, NobType const type)
+	//	: BaseKnot(src)
+	//{
+	//	SetId(src.GetId());
+	//	SetType(type);
+	//	SetExtension(NEURON_RADIUS);
+	//}
 
 	bool CompStep() final { return false; }
 
@@ -50,6 +50,9 @@ public:
 	MicroMeterPnt    GetScaledDirVector() const;
 	MicroMeterPnt    GetDirVector() const;
 	MicroMeterPosDir GetRawPosDir() const;
+
+	virtual Pipe & GetPipe()     = 0;
+	virtual void   ConnectPipe() = 0;
 
 private:
 	MicroMeterPnt determineVector() const;

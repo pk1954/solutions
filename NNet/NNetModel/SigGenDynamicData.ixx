@@ -35,7 +35,7 @@ public:
 	bool IsStimulusActive() const { return m_stimulusActive; }
 
 private:
-	bool       m_stimulusActive{ false };
-	fMicroSecs m_usSimuStartStimu{ 0.0_MicroSecs }; // in simu time
-	fMicroSecs m_usSimuStartSpike{ 0.0_MicroSecs }; // in simu time
+	bool       m_stimulusActive   { false };
+	fMicroSecs m_usSimuStartStimu { 0.0_MicroSecs }; // in simu time
+	fMicroSecs m_usSimuStartSpike { 0.0_MicroSecs }; // in simu time
 };

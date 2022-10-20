@@ -27,21 +27,25 @@ public:
 
 	void SetSigGenStaticData(SigGenStaticData const&);
 
-	mV          NeuronPeakVolt() const { return m_neuronPeakVolt; }
-	mV          Threshold     () const { return m_threshold; }
-	fMicroSecs  SpikeWidth    () const { return m_spikeWidth; }
-	fMicroSecs  RefractPeriod () const { return m_refractPeriod; }
-	meterPerSec PulseSpeed    () const { return m_pulseSpeed; }
-	fMicroSecs  TimeResolution() const { return m_usResolution; }
+	mV          NeuronPeakVolt  () const { return m_neuronPeakVolt; }
+	mV          NeuronThreshold () const { return m_neuronThreshold; }
+	mV          SynapseThreshold() const { return m_synapseThreshold; }
+	fMicroSecs  SpikeWidth      () const { return m_spikeWidth; }
+	fMicroSecs  RefractPeriod   () const { return m_refractPeriod; }
+	meterPerSec PulseSpeed      () const { return m_pulseSpeed; }
+	fMicroSecs  TimeResolution  () const { return m_usResolution; }
+	fMicroSecs  SynapseBlockTime() const { return m_synapseBlockTime; }
 
 private:
-	SigGenStaticData m_sigGenData     { };
-	mV               m_neuronPeakVolt { 20._mV };
-	mV               m_threshold      { 20._mV };
-	meterPerSec      m_pulseSpeed     { 120.0_meterPerSec };
-	fMicroSecs       m_spikeWidth     { 2000._MicroSecs };
-	fMicroSecs       m_refractPeriod  { 500._MicroSecs };
-	fMicroSecs       m_usResolution   { 100._MicroSecs };
+	SigGenStaticData m_sigGenData       { };
+	mV               m_neuronPeakVolt   { 20._mV };
+	mV               m_neuronThreshold  { 20._mV };
+	mV               m_synapseThreshold { 20._mV };
+	fMicroSecs       m_synapseBlockTime { 10000._MicroSecs };
+	meterPerSec      m_pulseSpeed       { 120.0_meterPerSec };
+	fMicroSecs       m_spikeWidth       { 2000._MicroSecs };
+	fMicroSecs       m_refractPeriod    { 500._MicroSecs };
+	fMicroSecs       m_usResolution     { 100._MicroSecs };
 };
 
 // geometry

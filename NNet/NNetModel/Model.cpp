@@ -138,8 +138,8 @@ bool Model::Compute()
 {
 	bool bStop { false };
 	SimulationTime::Tick(m_param.TimeResolution());
-	m_sigGenList.Apply2All([this](SignalGenerator * p){ p->Prepare(m_param); });
-	m_Nobs.Apply2AllC(      [](Nob &s) { s.Prepare(); });
+	m_sigGenList.Apply2All([this](SignalGenerator * p) { p->Prepare(m_param); });
+	m_Nobs.Apply2AllC([]      (Nob &s) { s.CollectInput(); });
 	m_Nobs.Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;
 }

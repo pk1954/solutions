@@ -34,7 +34,8 @@ using std::wstring;
 export enum class ConnectionType
 {
 	ct_none,
-	ct_knot,
+	ct_synapse,
+	ct_fork,
 	ct_neuron,
 	ct_outputline,
 	ct_pipe,
@@ -70,7 +71,7 @@ public:
 	Degrees                 GetDirection         (NobId const) const;
 	SignalGenerator const * GetSigGenC           (NobId const) const;
 	wstring                 GetTypeName(NobId const id)            const { return NobType::GetName(GetNobType(id).GetValue()); };
-	MicroMeterPnt           GetNobPos  (NobId const id)            const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
+	MicroMeterPnt           GetNobPos  (NobId const id)            const { return m_pModel->GetNobConstPtr<Nob const *>(id)->GetPos(); }
 	Nob             const * GetConstNob(NobId const id)            const { return m_pModel->GetConstNob(id); }
 	MonitorData     const & GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	NNetParameters  const & GetParamsC()                           const { return m_pModel->GetParams(); };
@@ -88,7 +89,6 @@ public:
 	SignalId                GetHighlightedSignalId()               const { return GetMonitorDataC().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
 	SignalGenerator const * GetSigGenSelectedC()                   const { return m_pModel->GetSigGenList().GetSigGenSelected(); }
-	SignalGenerator       * GetSigGenStandard()                    const { return m_pModel->GetSigGenList().StdSigGen(); }
 	SignalGenerator const * GetSigGenC(SigGenId const id)          const { return m_pModel->GetSigGenList().GetSigGen(id); }
 	SigGenId                GetSigGenIdSelected()                  const { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }
 	bool                    IsInList(wstring const & name)         const { return m_pModel->GetSigGenList().IsInList(name); }
@@ -97,6 +97,7 @@ public:
 	bool                    IsAnySensorSelected()                  const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
 	NobId                   GetTargetNobId()                       const { return m_pModel->GetTargetNobId(); }
 	NobId                   GetHighlightedNobId()                  const { return m_pModel->GetHighlightedNobId(); }
+	BaseKnot        const * GetConstBaseKnotPtr(NobId const id)    const { return m_pModel->GetNobConstPtr<BaseKnot const *>(id); }
 
 	bool IsAnyNeuron(NobId const id) const
 	{
@@ -158,7 +159,11 @@ public:
 
 	MicroMeterPnt OrthoVector(NobId const) const;
 
-	template <Nob_t T> bool IsOfType(NobId const id) const { return T::TypeFits(GetNobType(id)); }
+	template <Nob_t T>
+	bool IsOfType(NobId const id) const 
+	{ 
+		return T::TypeFits(GetNobType(id)); 
+	}
 
 	template <Nob_t T>    // const version
 	void Apply2AllC(auto const& func) const

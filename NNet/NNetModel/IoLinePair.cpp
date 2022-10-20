@@ -23,7 +23,7 @@ IoLinePair::IoLinePair
 	NNetModelWriterInterface & nmwi,
 	MicroMeterPnt      const & pos
 )
-  :	m_upInputLine (make_unique<InputLine >(nmwi.StdSigGen(), pos - m_umOffset)),
+  :	m_upInputLine (make_unique<InputLine> (pos - m_umOffset)),
 	m_upOutputLine(make_unique<OutputLine>(pos + m_umOffset)),
 	m_upPipe      (make_unique<Pipe>())
 {

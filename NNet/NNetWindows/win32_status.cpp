@@ -129,7 +129,7 @@ HWND WINAPI StatusBar::addControl
 			pixWidth.GetValue(),             // width
 			m_pixClientHeight.GetValue(),    // height
 			GetWindowHandle(),               // parent window 
-			(HMENU)iMenu,                    // control identifier 
+			(HMENU)(UINT_PTR)iMenu,          // control identifier 
 			GetModuleHandle(nullptr),        // instance 
 			nullptr                          // no WM_CREATE parameter 
 		)

@@ -21,21 +21,14 @@ using std::fixed;
 using std::wstring;
 using std::wostringstream;
 
-Neuron::Neuron(MicroMeterPnt const & upCenter, NobType const type)
-  : BaseKnot(upCenter, type, NEURON_RADIUS)
+Neuron::Neuron(MicroMeterPnt const & upCenter)
+  : BaseKnot(upCenter, NobType::Value::neuron, NEURON_RADIUS)
 {}
 
 Neuron::Neuron(Neuron const & src)  // copy constructor
-	: BaseKnot(src)
+  : BaseKnot(src)
 { 
 	init(src);
-}
-
-Neuron::Neuron(BaseKnot const & src, NobType const type)
-	: BaseKnot(src)
-{
-	SetType(type);
-	SetExtension(NEURON_RADIUS);
 }
 
 void Neuron::init(const Neuron & rhs)
@@ -59,7 +52,7 @@ void Neuron::ClearDynamicData()
 	m_bTriggered = false;
 }
 
-void Neuron::Prepare()
+void Neuron::CollectInput()
 {
 	if (m_bTriggered)
 	{
@@ -68,13 +61,14 @@ void Neuron::Prepare()
 	}
 	else 
 	{
-		BaseKnot::Prepare();
+		m_mVinputBuffer.Set2Zero();
+		Apply2AllInPipes([this](Pipe const& pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 	}
 }
 
 bool Neuron::CompStep()
 {
-	bool bTrigger { m_mVinputBuffer >= GetParam()->Threshold() };
+	bool bTrigger { m_mVinputBuffer >= GetParam()->NeuronThreshold() };
 
 	if (bTrigger)
 	{

@@ -127,22 +127,12 @@ private:
     UPNob createBaseKnot(Script& script, NobType const nobType) const
     {
         MicroMeterPnt const umPosition(ScrReadMicroMeterPnt(script));
-        switch (nobType.GetValue())
-        {
-            using enum NobType::Value;
-        case inputLine:  return make_unique<InputLine>(m_modelIO.GetImportNMWI().StdSigGen(), umPosition);
-        case outputLine: return make_unique<OutputLine>(umPosition);
-        case neuron:     return make_unique<Neuron>(umPosition);
-        case knot:       return make_unique<Knot>(umPosition);
-        default:
-            assert(false);
-            return nullptr;
-        }
+        return BaseKnotFactory::Make(umPosition, nobType);
     }
 
     UPNob createIoConnector(Script& script, NobType const nobType) const
     {
-        bool             bOK = true;
+        bool            bOK = true;
         vector<IoLine*> ioLineList;
         script.ScrReadSpecial(LIST_OPEN_BRACKET);
         int const iNrOfElements{ script.ScrReadInt() };

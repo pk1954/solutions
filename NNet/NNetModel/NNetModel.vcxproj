@@ -30,6 +30,7 @@
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />
     <ClCompile Include="DescriptionUI.ixx" />
+    <ClCompile Include="Fork.ixx" />
     <ClCompile Include="InputConnector.cpp" />
     <ClCompile Include="InputConnector.ixx" />
     <ClCompile Include="InputLine.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Model.ixx" />
     <ClCompile Include="ModelDescription.ixx" />
+    <ClCompile Include="BaseKnotFactory.ixx" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="MonitorData.ixx" />
     <ClCompile Include="Neuron.cpp" />
@@ -98,6 +100,9 @@
     <ClCompile Include="SignalSource.ixx" />
     <ClCompile Include="SimulationTime.ixx" />
     <ClCompile Include="Spike.ixx" />
+    <ClCompile Include="StdSigGen.ixx" />
+    <ClCompile Include="Synapse.cpp" />
+    <ClCompile Include="Synapse.ixx" />
     <ClCompile Include="tHighlightType.ixx" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Track.ixx" />

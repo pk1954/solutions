@@ -140,7 +140,7 @@ void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & p
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::inputLine));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputLine));
 }
 
 void NNetModelCommands::AddModel()
@@ -163,7 +163,7 @@ void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & p
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputLine));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::inputLine));
 }
 
 void NNetModelCommands::AddSensor
@@ -249,7 +249,8 @@ void NNetModelCommands::Connect
 	unique_ptr<Command> upCmd;
 	switch (cType)
 	{
-		case ct_knot:
+		case ct_fork:
+		case ct_synapse:
 		case ct_neuron:
 		case ct_outputline:  upCmd = make_unique<Connect2BaseKnotCommand> (idSrc, idDst, cType); break;
 		case ct_pipe:		 upCmd = make_unique<Connect2PipeCommand>     (idSrc, idDst);        break;

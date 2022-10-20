@@ -25,7 +25,7 @@ public:
 	{ 
 		m_cmdStack.Initialize(nullptr);
 		m_cmdStack.SetModelInterface(m_pNMWI);
-		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>( [this](Nob & nob) { doDelete(nob); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>([this](Nob & nob) { doDelete(nob); });
 	}
 
 	void Undo() final 

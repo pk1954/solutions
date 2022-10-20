@@ -26,7 +26,7 @@ public:
         IoConnector const& conn1,
         IoConnector const& conn2
     )
-      : m_inputConnector(conn1.IsInputNob() ? conn1 : conn2),
+      : m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
         m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
     {
         assert(m_inputConnector.Size() == m_outputConnector.Size());
@@ -34,8 +34,7 @@ public:
         m_size = m_inputConnector.Size();
         for (size_t i = 0; i < m_size; ++i)
         {
-            MicroMeterPnt const umPos{ m_inputConnector.GetElem(i).GetPos() };
-            unique_ptr<Neuron>  upNeuron{ make_unique<Neuron>(umPos) };
+            unique_ptr<Neuron> upNeuron{ make_unique<Neuron>(m_inputConnector.GetElem(i).GetPos()) };
             upNeuron->SetIncoming(m_outputConnector.GetElem(i));
             upNeuron->SetOutgoing(m_inputConnector.GetElem(i));
             m_upNeurons.push_back(move(upNeuron));

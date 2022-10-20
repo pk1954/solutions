@@ -25,9 +25,6 @@ export using UPSigGen = unique_ptr<SignalGenerator>;
 export class UPSigGenList
 {
 public:
-    UPSigGenList();
-    ~UPSigGenList();
-
     size_t Size() const { return m_list.size(); }
 
     SignalGenerator const * GetSigGen(SigGenId const) const;
@@ -57,7 +54,7 @@ public:
         for_each(m_list, [&f](auto const& up) { f(up.get()); });
     }
 
-    SignalGenerator * StdSigGen() { return m_list.begin()->get(); }
+    //SignalGenerator * StdSigGen() { return m_list.begin()->get(); }
 
     UPSigGen                NewSigGen();
     SignalGenerator       * GetSigGen   (wstring const &);
@@ -70,10 +67,8 @@ public:
 
 private:
 
-    inline static wstring STD_SIG_GEN_NAME{ L"Standard" };
-
     vector<UPSigGen> m_list;
-    SigGenId         m_sigGenIdActive{ 0 };
+    SigGenId         m_sigGenIdActive { STD_SIGGEN };
 
     vector<UPSigGen>::iterator       getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;

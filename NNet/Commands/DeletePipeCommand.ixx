@@ -4,15 +4,18 @@
 
 module;
 
+#include <cassert>
 #include <memory>
 
 export module DeletePipeCommand;
 
+import Types;
 import SaveCast;
 import NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
 
 export class DeletePipeCommand : public NNetCommand
 {
@@ -44,14 +47,14 @@ public:
 			m_upOutputConnector->ClearParentPointers();
 		}
 
-		m_upStartKnot = m_pNMWI->FixBaseKnot(m_idStart);
-		m_upEndKnot   = m_pNMWI->FixBaseKnot(m_idEnd);
+		m_upStartKnot = fixBaseKnot(m_idStart);
+		m_upEndKnot   = fixBaseKnot(m_idEnd);
 	}
 
 	void Undo() final
 	{
-		m_pNMWI->Restore2Model(move(m_upStartKnot)); // Restore stert/end knot, 
-		m_pNMWI->Restore2Model(move(m_upEndKnot));   // if FixBaseKnot had removed
+		m_pNMWI->Restore2Model(move(m_upStartKnot)); // Restore start/end knot, 
+		m_pNMWI->Restore2Model(move(m_upEndKnot));   // if fixBaseKnot had removed
 
 		if (m_upOutputConnector) // restore IoConnector, if neccessary
 		{
@@ -72,8 +75,8 @@ public:
 		m_pNMWI->Reconnect(m_idStart);
 		m_pNMWI->Reconnect(m_idEnd);
 
-		//m_pNMWI->FixBaseKnot(m_idStart);
-		//m_pNMWI->FixBaseKnot(m_idEnd);
+		//m_pNMWI->fixBaseKnot(m_idStart);
+		//m_pNMWI->fixBaseKnot(m_idEnd);
 	}
 
 private:
@@ -85,4 +88,51 @@ private:
 	unique_ptr<BaseKnot>    m_upEndKnot;
 	unique_ptr<IoConnector> m_upInputConnector;
 	unique_ptr<IoConnector> m_upOutputConnector;
+
+	// fixBaseKnot: After a pipe deletion a BaseKnot may have changed type
+	//              e.g. If a Knot has lost its output pipe, it becomes an OutputLine
+
+	unique_ptr<BaseKnot> fixBaseKnot(NobId const id)
+	{
+		using enum NobType::Value;
+
+		BaseKnot const * pBaseKnot { m_pNMWI->GetConstBaseKnotPtr(id) };
+
+		if (pBaseKnot == nullptr)
+			return unique_ptr<BaseKnot>();
+
+		size_t const nrInPipes  { pBaseKnot->GetNrOfInConns() };
+		size_t const nrOutPipes { pBaseKnot->GetNrOfOutConns() };
+		NobType      typeNew    { undefined };
+
+		if (pBaseKnot->IsNeuron())
+		{
+			assert(nrOutPipes == 1);
+			if (nrInPipes == 0)	
+				typeNew = inputLine;
+		}
+		else
+		{
+	             if ((nrOutPipes == 1) && (nrInPipes == 1))	typeNew = knot;
+			else if ((nrOutPipes == 0) && (nrInPipes == 1))	typeNew = outputLine;
+			else if ((nrOutPipes == 1) && (nrInPipes == 0))	typeNew = inputLine;
+			else if ((nrOutPipes == 1) && (nrInPipes == 2))	typeNew = synapse;
+			else if ((nrOutPipes == 2) && (nrInPipes == 1))	typeNew = fork;
+		}
+
+		if (typeNew != pBaseKnot->GetNobType())
+		{
+			unique_ptr<BaseKnot> upBaseKnotNew { BaseKnotFactory::Make(pBaseKnot->GetPos(), typeNew) };
+			if (upBaseKnotNew)
+			{
+				upBaseKnotNew->SetIncoming(* pBaseKnot);
+				upBaseKnotNew->SetOutgoing(* pBaseKnot);
+				return m_pNMWI->ReplaceInModel<BaseKnot>(move(upBaseKnotNew));
+			}
+			else 
+				return m_pNMWI->RemoveFromModel<BaseKnot>(id);
+		}
+
+		return unique_ptr<BaseKnot>();
+	}
 };

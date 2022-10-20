@@ -31,13 +31,15 @@ private:
 	NNetModelWriterInterface * m_pNMWI     { nullptr };
 	NNetModelCommands        * m_pCommands { nullptr };
 
-	HWND m_hwndPeakVoltage     { nullptr };
-	HWND m_hwndThreshold       { nullptr };     
-	HWND m_hwndSpikeWidth      { nullptr };
-	HWND m_hwndRefractoryPeriod{ nullptr };
-	HWND m_hwndTimeResolution  { nullptr };
-	HWND m_hwndFilterSize      { nullptr };
-	HWND m_hwndPulseSpeed      { nullptr };
+	HWND m_hwndPeakVoltage      { nullptr };
+	HWND m_hwndNeuronThreshold  { nullptr };
+	HWND m_hwndSynapseThreshold { nullptr };
+	HWND m_hwndSynapseBlockTime { nullptr };
+	HWND m_hwndSpikeWidth       { nullptr };
+	HWND m_hwndRefractoryPeriod { nullptr };
+	HWND m_hwndTimeResolution   { nullptr };
+	HWND m_hwndFilterSize       { nullptr };
+	HWND m_hwndPulseSpeed       { nullptr };
 
 	void resetParameter   (HWND const, ParamType::Value const) const;
 	void applyParameter   (HWND const, ParamType::Value const);

@@ -83,23 +83,27 @@ HWND ParameterDialog::addParameter
 void ParameterDialog::resetParameters()  // refresh edit fields with data from model
 {
 	using enum ParamType::Value;
-	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt);
-	resetParameter(m_hwndThreshold,        threshold     );
-	resetParameter(m_hwndSpikeWidth,       spikeWidth    );
-	resetParameter(m_hwndRefractoryPeriod, refractPeriod );
-	resetParameter(m_hwndTimeResolution,   timeResolution);
-	resetParameter(m_hwndPulseSpeed,       pulseSpeed    );
+	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt );
+	resetParameter(m_hwndNeuronThreshold,  neuronThreshold);
+	resetParameter(m_hwndSynapseThreshold, synapseThreshold);
+	resetParameter(m_hwndSynapseBlockTime, synapseBlockTime);
+	resetParameter(m_hwndSpikeWidth,       spikeWidth     );
+	resetParameter(m_hwndRefractoryPeriod, refractPeriod  );
+	resetParameter(m_hwndTimeResolution,   timeResolution );
+	resetParameter(m_hwndPulseSpeed,       pulseSpeed     );
 }
 
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {
 	using enum ParamType::Value;
-	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt);
-	applyParameter(m_hwndThreshold,        threshold     );
-	applyParameter(m_hwndSpikeWidth,       spikeWidth    );
-	applyParameter(m_hwndRefractoryPeriod, refractPeriod );
-	applyParameter(m_hwndTimeResolution,   timeResolution);
-	applyParameter(m_hwndPulseSpeed,       pulseSpeed    );
+	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt );
+	applyParameter(m_hwndNeuronThreshold,  neuronThreshold);
+	applyParameter(m_hwndSynapseThreshold, synapseThreshold);
+	applyParameter(m_hwndSynapseBlockTime, synapseBlockTime);
+	applyParameter(m_hwndSpikeWidth,       spikeWidth     );
+	applyParameter(m_hwndRefractoryPeriod, refractPeriod  );
+	applyParameter(m_hwndTimeResolution,   timeResolution );
+	applyParameter(m_hwndPulseSpeed,       pulseSpeed     );
 }
 
 void ParameterDialog::Start
@@ -110,7 +114,7 @@ void ParameterDialog::Start
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
-	SetWindowSize(300_PIXEL, 260_PIXEL, false);
+	SetWindowSize(300_PIXEL, 300_PIXEL, false);
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_SYSMENU);
 
@@ -118,12 +122,14 @@ void ParameterDialog::Start
 
 	int iYpos { 10 };
 	using enum ParamType::Value;
-	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt, iYpos); 
-	m_hwndThreshold        = addParameter(hwndDlg, threshold,      iYpos); 
-	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth,     iYpos); 
-	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,  iYpos); 
-	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos); 
-	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,     iYpos); 
+	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt,   iYpos); 
+	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold,  iYpos);
+	m_hwndSynapseThreshold = addParameter(hwndDlg, synapseThreshold, iYpos);
+	m_hwndSynapseBlockTime = addParameter(hwndDlg, synapseBlockTime, iYpos);
+	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth,       iYpos);
+	m_hwndRefractoryPeriod = addParameter(hwndDlg, refractPeriod,    iYpos); 
+	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution,   iYpos); 
+	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,       iYpos); 
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET);

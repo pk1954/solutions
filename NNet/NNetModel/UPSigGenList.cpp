@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <vector>
 #include <string>
 #include <memory>
@@ -12,6 +13,7 @@ module;
 module NNetModel:UPSigGenList;
 
 import :SigGenId;
+import :StdSigGen;
 
 using std::wstring;
 using std::vector;
@@ -19,16 +21,6 @@ using std::to_wstring;
 using std::make_unique;
 using std::unique_ptr;
 using std::ranges::find_if;
-
-UPSigGenList::UPSigGenList()
-{
-    UPSigGen upSigGen { NewSigGen() };
-    upSigGen->SetName(STD_SIG_GEN_NAME);
-    PushSigGen(move(upSigGen));
-    SetActive(SigGenId(0));
-}
-
-UPSigGenList::~UPSigGenList() = default;
 
 SigGenId UPSigGenList::SetActive(SigGenId const id)
 {
@@ -45,7 +37,7 @@ UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
     {
         UPSigGen upSigGen = move(*it);
         if (upSigGen.get() == GetSigGenSelected() )
-            SetActive(SigGenId(0));
+            SetActive(STD_SIGGEN);
         m_list.erase(it);
         return move(upSigGen);
     }
@@ -63,16 +55,19 @@ vector<UPSigGen>::const_iterator UPSigGenList::getSigGen(wstring const & name) c
 
 vector<UPSigGen>::iterator UPSigGenList::getSigGen(SigGenId const id)
 {
+    assert(id != STD_SIGGEN);
     return m_list.begin() + id.GetValue();
 }
 
 vector<UPSigGen>::const_iterator UPSigGenList::getSigGen(SigGenId const id) const
 {
+    assert(id != STD_SIGGEN);
     return m_list.begin() + id.GetValue();
 }
 
 void UPSigGenList::InsertSigGen(UPSigGen upSigGen, SigGenId const id)
 {
+    assert(id != STD_SIGGEN);
     m_list.insert(getSigGen(id), move(upSigGen));
 }
 
@@ -84,12 +79,16 @@ SigGenId UPSigGenList::FindSigGen(wstring const & name) const
 
 SignalGenerator const * UPSigGenList::GetSigGen(SigGenId const id) const
 {
-    return m_list.at(id.GetValue()).get();
+    return (id == STD_SIGGEN)
+           ? StdSigGen::Get()
+           : m_list.at(id.GetValue()).get();
 }
 
 SignalGenerator * UPSigGenList::GetSigGen(SigGenId const id)
 {
-    return m_list.at(id.GetValue()).get();
+    return (id == STD_SIGGEN)
+        ? StdSigGen::Get()
+        : m_list.at(id.GetValue()).get();
 }
 
 SignalGenerator * UPSigGenList::GetSigGen(wstring const & name)
@@ -111,12 +110,12 @@ bool UPSigGenList::IsInList(wstring const & name) const
 
 UPSigGen UPSigGenList::NewSigGen()
 {
-    return move(make_unique<SignalGenerator>(GenerateUniqueName()));
+    return make_unique<SignalGenerator>(GenerateUniqueName());
 }
 
 UPSigGen UPSigGenList::NewSigGen(wstring const & name)
 {
-    return move(make_unique<SignalGenerator>(name));
+    return make_unique<SignalGenerator>(name);
 }
 
 SigGenId UPSigGenList::PushSigGen(UPSigGen upSigGen)
@@ -134,6 +133,7 @@ UPSigGen UPSigGenList::PopSigGen()
 
 UPSigGen UPSigGenList::RemoveSigGen(SigGenId const id)
 {
+    assert(id != STD_SIGGEN);
     return move(removeSigGen(getSigGen(id)));
 }
 

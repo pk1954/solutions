@@ -32,7 +32,9 @@ public:
 
     Signal(Observable &, SignalSource &);
 
-    ~Signal() override;
+    // TODO: Rule of 5
+
+    ~Signal() final;
 
     //bool operator==(Signal const &) const;
     // TODO

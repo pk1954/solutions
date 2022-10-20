@@ -21,7 +21,9 @@ public:
 		inputBaseFreq,
 		inputBaseVolt,
 		neuronPeakVolt,   // peak voltage for neuron output
-		threshold,        // trigger voltage for neurons
+		neuronThreshold,  // trigger voltage for neurons
+		synapseThreshold, // blocking voltage for synapses
+		synapseBlockTime, // blocking time for synapses
 		pulseSpeed,
 		spikeWidth,
 		refractPeriod,

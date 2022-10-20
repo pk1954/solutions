@@ -166,12 +166,6 @@ bool BaseKnot::Apply2AllConnectedPipesB(function<bool(Pipe const&)> const & c) c
 	return Apply2AllInPipesB(c) || Apply2AllOutPipesB(c); 
 }
 
-void BaseKnot::Prepare()
-{
-	m_mVinputBuffer.Set2Zero();
-	Apply2AllInPipes([this](Pipe const & pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
-}
-
 bool BaseKnot::IsPrecursorOf(Pipe const & pipeSucc) const 
 {
 	return Apply2AllOutPipesB([&pipeSucc](Pipe const & pipe) { return & pipe == & pipeSucc; }); 

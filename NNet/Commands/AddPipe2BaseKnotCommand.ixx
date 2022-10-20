@@ -36,7 +36,7 @@ public:
 
 		if (m_type.IsInputLineType())
 		{
-			m_upExtPoint = make_unique<InputLine>(m_pNMWI->StdSigGen(), pos);
+			m_upExtPoint = make_unique<InputLine>(pos);
 			ConnectOutgoing(*m_upPipe.get(), *m_upExtPoint.get());
 			ConnectIncoming(*m_upPipe.get(), *m_upBaseKnotNew.get());
 			m_upBaseKnotNew->SetOutgoing(m_baseKnotOld);
@@ -78,8 +78,8 @@ public:
 
 private:
 
-	NobType        const m_type;
-	BaseKnot const     & m_baseKnotOld;
+	NobType      const   m_type;
+	BaseKnot     const & m_baseKnotOld;
 	unique_ptr<BaseKnot> m_upBaseKnotOld { };
 	unique_ptr<BaseKnot> m_upBaseKnotNew { };
 	unique_ptr<IoLine>   m_upExtPoint    { };

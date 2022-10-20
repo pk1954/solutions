@@ -87,7 +87,7 @@ public:
 	void          Expand          (MicroMeterRect &)                      const final;
 	void          MoveNob         (MicroMeterPnt const &)                       final;
 	void          Link            (Nob const &, Nob2NobFunc const &)            final;
-	void          Prepare         ()                                            final;
+	void          CollectInput         ()                                            final;
 	bool          CompStep        ()                                            final;
 	void          Recalc          ()                                            final;
 	void          ClearDynamicData()                                            final;

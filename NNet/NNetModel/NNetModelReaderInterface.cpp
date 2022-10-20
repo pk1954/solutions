@@ -48,13 +48,13 @@ size_t NNetModelReaderInterface::GetNrOfSegments(NobId const id) const
 	return p ? p->GetNrOfSegments() : 0; 
 }
 
-SignalGenerator const * NNetModelReaderInterface::GetSigGenC(NobId const id) const
+SignalGenerator const* NNetModelReaderInterface::GetSigGenC(NobId const id) const
 {
-	Nob const & nob { * m_pModel->GetConstNob(id) };
+	Nob const& nob { *m_pModel->GetConstNob(id) };
 	if (nob.IsInputLine())
-		return m_pModel->GetNobConstPtr<InputLine const *>(id)->GetSigGenC(); 
+		return m_pModel->GetNobConstPtr<InputLine const*>(id)->GetSigGenC();
 	else if (nob.IsInputConnector())
-		return m_pModel->GetNobConstPtr<InputConnector const *>(id)->GetSigGenC(); 
+		return m_pModel->GetNobConstPtr<InputConnector const*>(id)->GetSigGenC();
 	else
 		return nullptr;
 }
@@ -157,14 +157,14 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 		}
 		else if (pBaseKnotDst)
 		{
-			size_t const nrIn  { pBaseKnotSrc->GetNrOfInConns () + pBaseKnotDst->GetNrOfInConns () };
-			size_t const nrOut { pBaseKnotSrc->GetNrOfOutConns() + pBaseKnotDst->GetNrOfOutConns() };
-
-			if ((typeSrc.IsOutputLineType() && typeDst.IsOutputLineType()) && (nrIn == 2))
-				return ct_outputline;
+			if ((typeSrc.IsOutputLineType() && typeDst.IsOutputLineType()))
+				return ct_none;
 
 			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType() && (typeDst != typeSrc))
 				return ct_ioLine;
+
+			size_t const nrIn  { pBaseKnotSrc->GetNrOfInConns () + pBaseKnotDst->GetNrOfInConns () };
+			size_t const nrOut { pBaseKnotSrc->GetNrOfOutConns() + pBaseKnotDst->GetNrOfOutConns() };
 
 			if (
 				  (nrIn == 2) &&
@@ -178,9 +178,9 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 			if ((typeSrc.IsKnotType() && typeDst.IsIoLineType()) || (typeDst.IsKnotType() && typeSrc.IsIoLineType()))
 			{
 				if ((nrIn==2) && (nrOut==1))
-					return ct_knot;                // Synapse
+					return ct_synapse;
 				if ((nrIn==1) && (nrOut==2))
-					return ct_knot;                // Branch
+					return ct_fork;
 				return ct_none;
 			}
 		}

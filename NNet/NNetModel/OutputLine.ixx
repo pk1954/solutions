@@ -16,7 +16,7 @@ export class OutputLine : public IoLine
 public:
 
 	explicit OutputLine(MicroMeterPnt const&);
-	explicit OutputLine(BaseKnot      const&);
+	//explicit OutputLine(BaseKnot      const&);
 
 	~OutputLine() final = default;
 
@@ -26,6 +26,8 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsOutputLineType(); }
 
+	void CollectInput()	override { m_mVinputBuffer = GetFirstIncoming().GetNextOutput(); }
+
 	void DrawExterior(DrawContext const&, tHighlight const) const override;
 	void DrawInterior(DrawContext const&, tHighlight const) const override;
 
@@ -34,6 +36,9 @@ public:
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
 	void AppendMenuItems(AddMenuFunc const&) const final;
+
+	Pipe & GetPipe()     final { return GetFirstIncoming(); }
+	void   ConnectPipe() final { GetPipe().SetEndKnot(this); };
 
 private:
 

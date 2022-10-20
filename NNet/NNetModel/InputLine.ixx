@@ -19,20 +19,19 @@ export class InputLine : public IoLine
 {
 public:
 
-	explicit InputLine(SignalGenerator *, MicroMeterPnt const&);
-	explicit InputLine(SignalGenerator *, BaseKnot      const&);
-
+	InputLine(MicroMeterPnt const &);
 	~InputLine() final = default;
 
 	void Check() const final;
 
-	void SetSigGen(SignalGenerator * const p)  { m_pSigGen = p; }
-	SignalGenerator       * GetSigGen ()       { return m_pSigGen; }
+	void SetSigGen(SignalGenerator* const p) { m_pSigGen = p; }
+
+	SignalGenerator       * GetSigGen()        { return m_pSigGen; }
 	SignalGenerator const * GetSigGenC() const { return m_pSigGen; }
 
 	static bool TypeFits(NobType const type) { return type.IsInputLineType(); }
 
-	void Prepare() final;
+	void CollectInput() final;
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;
@@ -43,9 +42,12 @@ public:
 
 	void AppendMenuItems(AddMenuFunc const&) const final;
 
+	Pipe & GetPipe()     final { return GetFirstOutgoing(); }
+	void   ConnectPipe() final { GetPipe().SetStartKnot(this); };
+
 private:
 
-	SignalGenerator * m_pSigGen{ nullptr };
+	SignalGenerator * m_pSigGen;
 
 	MicroMeterPnt getOffset() const;
 	MicroMeterPnt getCenter() const;

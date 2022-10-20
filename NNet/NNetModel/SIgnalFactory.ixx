@@ -47,5 +47,5 @@ private:
         NNetModelWriterInterface &
     );
 
-    inline static Observable * m_pObservable{ nullptr };
+    inline static Observable * m_pObservable { nullptr };
 };

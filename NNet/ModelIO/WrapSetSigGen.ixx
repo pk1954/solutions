@@ -27,11 +27,11 @@ public:
 
     void operator() (Script& script) const final
     {
-        NNetModelWriterInterface& nmwi{ m_modelIO.GetImportNMWI() };
-        NobId                const idFromScript{ ScrReadNobId(script) };
-        wstring              const nameSigGen{ script.ScrReadString() };
-        SignalGenerator* pSigGen{ nmwi.GetSigGen(nameSigGen) };
-        bool                       bRes{ true };
+        NNetModelWriterInterface & nmwi         { m_modelIO.GetImportNMWI() };
+        NobId                const idFromScript { ScrReadNobId(script) };
+        wstring              const nameSigGen   { script.ScrReadString() };
+        SignalGenerator          * pSigGen      { nmwi.GetSigGen(nameSigGen) };
+        bool                       bRes         { true };
         if (!nmwi.IsInputLine(idFromScript))
         {
             wcout << L"# +++ unexpected NobType.";
@@ -53,18 +53,18 @@ public:
     {
         NNetModelReaderInterface const& nmri{ m_modelIO.GetExportNMRI() };
         nmri.Apply2AllC<InputLine>
-            (
-                [this, nmri, &out](InputLine const& inputLine)
+        (
+            [this, nmri, &out](InputLine const& inputLine)
+            {
+                SignalGenerator const* pSigGen{ inputLine.GetSigGenC() };
+                if (pSigGen != StdSigGen::Get())
                 {
-                    SignalGenerator const* pSigGen{ inputLine.GetSigGenC() };
-                    if (pSigGen != nmri.GetSigGenStandard())
-                    {
-                        WriteCmdName(out);
-                        out << inputLine.GetId() << " "
-                            << L"\"" << pSigGen->GetName() << "\" "
-                            << endl;
-                    }
+                    WriteCmdName(out);
+                    out << inputLine.GetId() << " "
+                        << L"\"" << pSigGen->GetName() << "\" "
+                        << endl;
                 }
+            }
         );
     };
 };

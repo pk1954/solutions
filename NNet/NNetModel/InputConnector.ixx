@@ -35,11 +35,12 @@ public:
 
 	InputLine & GetElem(size_t const) const;
 
-	void SetSigGen(SignalGenerator * const);
-	SignalGenerator       * GetSigGen();
-	SignalGenerator const * GetSigGenC() const;
+	void SetSigGen(SignalGenerator* const);
 
-	void Prepare() final { /* */ };
+	SignalGenerator      * GetSigGen();
+	SignalGenerator const* GetSigGenC() const;
+
+	void CollectInput() final { /* */ };
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 

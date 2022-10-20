@@ -180,7 +180,7 @@ private:
 
 	fPixel   m_fPixOffset   { 0.0_fPixel };
 	LOG_UNIT m_logPixelSize {       1.0f };
-	LOG_UNIT m_pixelSizeMin {       1.0f };
+	LOG_UNIT m_pixelSizeMin {       0.2f };
 	LOG_UNIT m_pixelSizeMax {     100.0f };
 	float    m_fZoomFactor  {       1.1f };
 

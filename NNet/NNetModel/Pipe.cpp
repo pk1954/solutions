@@ -18,6 +18,7 @@ import DrawContext;
 import :tHighlight;
 import :NNetParameters;
 import :Knot;
+import :Synapse;
 import :BaseKnot;
 import :NobType;
 import :NobId;
@@ -127,11 +128,6 @@ void Pipe::Expand(MicroMeterRect & umRect) const
 	umRect.Expand(GetEndPoint  ());
 }
 
-void Pipe::Prepare()
-{
-	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
-}
-
 void Pipe::MoveNob(MicroMeterPnt const & delta)
 {
 	if (!m_pKnotStart->HasParentNob())
@@ -203,7 +199,21 @@ MicroMeterPnt Pipe::GetStartPoint() const
 
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	return m_pKnotEnd ? m_pKnotEnd->GetPos() : MicroMeterPnt::NULL_VAL();
+	if (! m_pKnotEnd)
+		return MicroMeterPnt::NULL_VAL();
+
+	MicroMeterPnt umEndPoint { m_pKnotEnd->GetPos() };
+	if (m_pKnotEnd->IsSynapse())
+	{
+		Pipe const & pipeAdd { static_cast<Synapse const*>(m_pKnotEnd)->GetAddPipe() };
+		if (&pipeAdd == this)
+		{
+			MicroMeterPnt const umVector { umEndPoint - GetStartPoint() };
+			MicroMeterPnt const umOffset { umVector.ScaledTo(PIPE_WIDTH * 1.5f) };
+			umEndPoint -= umOffset;
+		}
+	}
+	return umEndPoint;
 }
 
 void Pipe::Select(bool const bOn) 
@@ -225,9 +235,9 @@ bool Pipe::Includes(MicroMeterPnt const & point) const
 	MicroMeterPnt const umVector{ GetVector() };
 	if (umVector.IsCloseToZero())
 		return false;
-	MicroMeterPnt const umOrthoScaled{ umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
-	MicroMeterPnt       umPoint1     { GetStartPoint() };
-	MicroMeterPnt const umPoint2     { umPoint1 + umVector };
+	MicroMeterPnt const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
+	MicroMeterPnt const umPoint1      { GetStartPoint() };
+	MicroMeterPnt const umPoint2      { umPoint1 + umVector };
 	return IsPointInRect2<MicroMeterPnt>(point, umPoint1, umPoint2, umOrthoScaled);
 }
 
@@ -235,9 +245,7 @@ MicroMeterPnt Pipe::GetVector() const
 {
 	assert(m_pKnotStart);
 	assert(m_pKnotEnd);
-	MicroMeterPnt const umStartPoint { GetStartPoint() };
-	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
-	MicroMeterPnt const umVector     { umEndPoint - umStartPoint };
+	MicroMeterPnt const umVector { m_pKnotEnd->GetPos() - GetStartPoint() };
 	assert(! umVector.IsCloseToZero());
 	return umVector;
 }
@@ -246,10 +254,7 @@ MicroMeterPnt Pipe::GetVector(float const fFactor) const
 {
 	assert(m_pKnotStart);
 	assert(m_pKnotEnd);
-	MicroMeterPnt const umStartPoint { GetStartPoint() };
-	MicroMeterPnt const umEndPoint   { GetEndPoint  () };
-	MicroMeterPnt const umVector     { umEndPoint - umStartPoint };
-	MicroMeterPnt const umResult     { umStartPoint + umVector * fFactor};
+	MicroMeterPnt const umResult { GetStartPoint() + GetVector() * fFactor};
 	assert(! umResult.IsCloseToZero());
 	return umResult;
 }
@@ -272,7 +277,7 @@ void Pipe::DrawArrows
 
 	context.FillArrow
 	(
-		(umEndPoint * 2.f + umStartPoint) / 3.f , 
+		(umEndPoint * 2.f + umStartPoint) / 3.f, 
 		umEndPoint - umStartPoint, 
 		umArrowSize,
 		umArrowWidth, 
@@ -319,6 +324,11 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 			}
 		);
 	}
+}
+
+void Pipe::CollectInput()
+{
+	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
 }
 
 bool Pipe::CompStep()

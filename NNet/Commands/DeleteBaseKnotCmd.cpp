@@ -29,7 +29,7 @@ DeleteBaseKnotCmd::DeleteBaseKnotCmd(Nob & nob)
     (
         [this](Pipe & pipe) // every outgoing pipe needs a new InputLine as terminator
         { 
-            auto upInputLine { make_unique<InputLine>(m_pNMWI->StdSigGen(), m_umPos) };
+            auto upInputLine { make_unique<InputLine>(m_umPos) };
             upInputLine->Select(pipe.IsSelected());
             upInputLine->AddOutgoing(pipe);            // prepare new InputLine as far as possible
             m_inputLines.push_back(move(upInputLine)); // store new InputLine for later

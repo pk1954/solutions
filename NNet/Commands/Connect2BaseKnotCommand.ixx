@@ -9,6 +9,7 @@ module;
 
 export module Connect2BaseKnotCommand;
 
+import Types;
 import NNetCommand;
 import NNetModel;
 
@@ -27,13 +28,16 @@ public:
 	  : m_baseKnotSrc(*m_pNMWI->GetNobPtr<BaseKnot*>(idSrc)),
 		m_baseKnotDst(*m_pNMWI->GetNobPtr<BaseKnot*>(idDst))
 	{
+		MicroMeterPnt pos { m_baseKnotDst.GetPos() };
+
 		using enum ConnectionType;
 
 		switch (cType)
 		{
-			case ct_knot:		m_upResult = make_unique<Knot>      (m_baseKnotDst); break;
-			case ct_neuron:		m_upResult = make_unique<Neuron>    (m_baseKnotDst); break;
-			case ct_outputline:	m_upResult = make_unique<OutputLine>(m_baseKnotDst); break;
+		    case ct_fork:       m_upResult = make_unique<Fork>      (pos); break;
+			case ct_synapse:	m_upResult = make_unique<Synapse>   (pos); break;
+			case ct_neuron:		m_upResult = make_unique<Neuron>    (pos); break;
+			case ct_outputline:	m_upResult = make_unique<OutputLine>(pos); break;
 			default: assert(false);
 		}
 		m_upResult->AddIncoming(m_baseKnotSrc);

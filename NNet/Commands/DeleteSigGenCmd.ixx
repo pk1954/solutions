@@ -34,9 +34,8 @@ public:
 
 	void Do() final 
 	{
-		SignalGenerator * m_pSigGenStandard { m_pNMWI->GetSigGenStandard() };
 		for (auto i : m_affectedInputLines)  // set all affected input lines to Standard
-			i->SetSigGen(m_pSigGenStandard);
+			i->SetSigGen(StdSigGen::Get());
 		m_upSigGen = move(m_pNMWI->RemoveSigGen(m_sigGenId)); // sets active sigGen to standard
 	}
 
@@ -49,8 +48,8 @@ public:
 	}
 
 private:
-	SignalGenerator     * m_pSigGenActive { m_pNMWI->GetSigGenSelected() };
-	SigGenId              m_sigGenId;
-	UPSigGen              m_upSigGen;
+	SignalGenerator   * m_pSigGenActive { m_pNMWI->GetSigGenSelected() };
+	SigGenId            m_sigGenId;
+	UPSigGen            m_upSigGen;
 	vector<InputLine *> m_affectedInputLines;
 };

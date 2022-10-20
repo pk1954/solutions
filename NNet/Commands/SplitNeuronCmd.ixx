@@ -22,7 +22,7 @@ public:
         : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
     {
         MicroMeterPnt umPos { m_neuron.GetPos() };
-        m_upInputLine  = make_unique<InputLine >(m_pNMWI->StdSigGen(), umPos);
+        m_upInputLine  = make_unique<InputLine >(umPos);
         m_upOutputLine = make_unique<OutputLine>(umPos);
         m_upInputLine ->SetOutgoing(m_neuron);
         m_upOutputLine->SetIncoming(m_neuron);

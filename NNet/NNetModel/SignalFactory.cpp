@@ -51,6 +51,6 @@ SignalId SignalFactory::MakeSigGenSignal
 )
 {
     SignalGenerator * pSigGen  { nmwi.GetSigGenSelected() };
-    SignalNr    const signalNr { addSignal(*pSigGen, trackNr, nmwi) };
+    SignalNr  const   signalNr { addSignal(*pSigGen, trackNr, nmwi) };
     return SignalId(trackNr, signalNr);
 }

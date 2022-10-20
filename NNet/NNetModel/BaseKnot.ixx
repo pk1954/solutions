@@ -43,7 +43,6 @@ public:
 
 	void Dump()                                       const override;
 	void Check()                                      const override;
-	void Prepare()                                          override;
 	void Reconnect()                                        override;
 	void SetPos      (MicroMeterPnt  const &)               override;
 	void MoveNob     (MicroMeterPnt  const &)               override;
@@ -83,22 +82,28 @@ public:
 	size_t GetNrOfOutConns   () const { return m_outPipes.Size(); }
 	size_t GetNrOfConnections() const { return m_inPipes.Size() + m_outPipes.Size(); }
 
-	Pipe & GetFirstIncoming() { return m_inPipes.GetFirst(); }
-	Pipe & GetFirstOutgoing() { return m_outPipes.GetFirst(); }
+	Pipe       & GetIncoming(size_t const i) { return m_inPipes .Get(i); }
+	Pipe       & GetOutgoing(size_t const i) { return m_outPipes.Get(i); }
 
-	Pipe const & GetFirstIncoming() const { return m_inPipes.GetFirst(); }
-	Pipe const & GetFirstOutgoing() const { return m_outPipes.GetFirst(); }
+	Pipe const & GetIncoming(size_t const i) const { return m_inPipes .Get(i); }
+	Pipe const & GetOutgoing(size_t const i) const { return m_outPipes.Get(i); }
 
-	void AddIncoming(Pipe & pipe) { m_inPipes.Add(pipe); }
+	Pipe& GetFirstIncoming() { return m_inPipes.GetFirst(); }
+	Pipe& GetFirstOutgoing() { return m_outPipes.GetFirst(); }
+
+	Pipe const& GetFirstIncoming() const { return m_inPipes.GetFirst(); }
+	Pipe const& GetFirstOutgoing() const { return m_outPipes.GetFirst(); }
+
+	void AddIncoming(Pipe & pipe) { m_inPipes .Add(pipe); }
 	void AddOutgoing(Pipe & pipe) { m_outPipes.Add(pipe); }
 
-	void RemoveIncoming(Pipe & pipe) { m_inPipes.Remove(pipe); }
+	void RemoveIncoming(Pipe & pipe) { m_inPipes .Remove(pipe); }
 	void RemoveOutgoing(Pipe & pipe) { m_outPipes.Remove(pipe); }
 
 	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) { m_inPipes .Replace(pDel, pAdd); }
 	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) { m_outPipes.Replace(pDel, pAdd); }
 
-	void SetIncoming(PipeList const & l) { m_inPipes = l; }
+	void SetIncoming(PipeList const & l) { m_inPipes  = l; }
 	void SetOutgoing(PipeList const & l) { m_outPipes = l; }
 
 	void SetIncoming(BaseKnot const & b) { SetIncoming(b.m_inPipes); }

@@ -33,8 +33,10 @@ public:
 	void Dump() const;
 	void Check() const;
 
-	Pipe & GetFirst() { return * m_list.front(); }
+	Pipe       & Get(size_t const i)       { return * m_list.at(i); }
+	Pipe const & Get(size_t const i) const { return * m_list.at(i); }
 
+	Pipe       & GetFirst()       { return * m_list.front(); }
 	Pipe const & GetFirst() const { return * m_list.front(); }
 
 	void Add(Pipe &);

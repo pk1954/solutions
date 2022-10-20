@@ -19,12 +19,12 @@ OutputLine::OutputLine(MicroMeterPnt const & upCenter)
 	: IoLine(upCenter, NobType::Value::outputLine)
 {}
 
-OutputLine::OutputLine(BaseKnot const & baseKnot)
-	: IoLine(baseKnot, NobType::Value::outputLine)
-{
-	SetIncoming(baseKnot);
-}
-
+//OutputLine::OutputLine(BaseKnot const & baseKnot)
+//	: IoLine(baseKnot, NobType::Value::outputLine)
+//{
+//	SetIncoming(baseKnot);
+//}
+//
 void OutputLine::Check() const
 {
 	BaseKnot::Check();

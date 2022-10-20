@@ -27,6 +27,8 @@ public:
 		outputLine,
 		neuron,
 		knot,
+		fork,
+		synapse,
 		pipe,
 		undefined,
 		nobTypeLast = pipe,
@@ -81,6 +83,8 @@ public:
 	bool IsDefinedType        () const { return m_value != Value::undefined; }
 	bool IsUndefinedType      () const { return m_value == Value::undefined; }
 	bool IsKnotType           () const { return m_value == Value::knot; }
+	bool IsForkType           () const { return m_value == Value::fork; }
+	bool IsSynapseType        () const { return m_value == Value::synapse; }
 	bool IsNeuronType         () const { return m_value == Value::neuron; }
 	bool IsInputLineType      () const { return m_value == Value::inputLine; }
 	bool IsOutputLineType     () const { return m_value == Value::outputLine; }
@@ -102,9 +106,14 @@ public:
 		return (m_value == Value::neuron) || IsIoLineType();
 	}
 
+	bool IsAnyKnotType() const
+	{
+		return (m_value == Value::knot) || (m_value == Value::synapse) || (m_value == Value::fork);
+	}
+
 	bool IsBaseKnotType() const
 	{
-		return IsAnyNeuronType() || (m_value == Value::knot);
+		return IsAnyNeuronType() || IsAnyKnotType();
 	}
 
 	Value GetValue() const { return m_value; }

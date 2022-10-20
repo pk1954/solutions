@@ -126,7 +126,7 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input lines");
-	if (m_pNMWI->GetSigGenSelected() != m_pNMWI->GetSigGenStandard())
+	if (m_pNMWI->GetSigGenSelected() != StdSigGen::Get())
 	{
 		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");

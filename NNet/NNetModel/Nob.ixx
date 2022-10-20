@@ -74,13 +74,13 @@ public:
 	virtual bool          Includes    (MicroMeterPnt  const &)                   const = 0;
 	virtual void          MoveNob     (MicroMeterPnt  const &)                         = 0;
 	virtual void          RotateNob   (MicroMeterPnt  const &, Radian const)           = 0;
-	virtual void          Prepare() = 0;
-	virtual bool          CompStep() = 0;
+	virtual void          CollectInput()                                               = 0;
+	virtual bool          CompStep    ()                                               = 0;
 	virtual void          Link(Nob const &, Nob2NobFunc const &) = 0;
 
 	virtual void Recalc() { };
 
-	virtual void Select(bool const bOn) { m_bSelected = bOn; }
+	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
 
 	virtual mV   GetNextOutput()  const { return m_mVinputBuffer; }
@@ -107,6 +107,8 @@ public:
 	bool IsIoConnector    () const { return m_type.IsIoConnectorType(); }
 	bool IsPipe           () const { return m_type.IsPipeType(); }
 	bool IsKnot           () const { return m_type.IsKnotType(); }
+	bool IsFork           () const { return m_type.IsForkType(); }
+	bool IsSynapse        () const { return m_type.IsSynapseType(); }
 	bool IsNeuron         () const { return m_type.IsNeuronType(); }
 	bool IsIoLine         () const { return m_type.IsIoLineType(); }
 	bool IsInputLine      () const { return m_type.IsInputLineType(); }
@@ -118,7 +120,7 @@ public:
 	friend wostream & operator<< (wostream &, Nob const &);
 
 	bool  HasParentNob() const { return m_pNobParent != nullptr; }
-	Nob* GetParentNob () const { return m_pNobParent; }
+	Nob * GetParentNob() const { return m_pNobParent; }
 	void  SetParentNob(Nob* const p) { m_pNobParent = p; }
 
 	void  SetId(NobId const id) { m_identifier = id; }
@@ -144,7 +146,7 @@ private:
 	bool    m_bSelected   { false };
 	bool    m_bEmphasized { false };
 
-	inline static NNetParameters const * m_pParameters{ nullptr };
+	inline static NNetParameters const * m_pParameters { nullptr };
 };
 
 export MicroMeterPosDir CalcOffsetPosDir(Nob const&, MicroMeter const);

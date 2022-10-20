@@ -54,9 +54,9 @@ public:
 	{
 		MicroMeterRect const umRect{ GetCoordC().Transform2logUnitRect(rect) };
 		m_pNMRI->GetUPNobsC().Apply2AllInRectC<Nob>
-			(
-				umRect,
-				[&](Nob const& s) { if (crit(s)) s.DrawInterior(m_context, tHighlight::normal); }
+		(
+			umRect,
+			[&](Nob const& s) { if (crit(s)) s.DrawInterior(m_context, tHighlight::normal); }
 		);
 	}
 
@@ -69,9 +69,9 @@ public:
 	{
 		MicroMeterRect const umRect{ GetCoordC().Transform2logUnitRect(rect) };
 		m_pNMRI->GetUPNobsC().Apply2AllInRectC<Nob>
-			(
-				umRect,
-				[&](Nob const& s) { if (crit(s)) s.DrawExterior(m_context, tHighlight::normal); }
+		(
+			umRect,
+			[&](Nob const& s) { if (crit(s)) s.DrawExterior(m_context, tHighlight::normal); }
 		);
 	}
 

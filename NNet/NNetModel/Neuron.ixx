@@ -24,15 +24,16 @@ using std::make_unique;
 export class Neuron : public BaseKnot
 {
 public:
-	Neuron(MicroMeterPnt const &, NobType const = NobType::Value::neuron);
-	Neuron(BaseKnot      const &, NobType const = NobType::Value::neuron);
+	Neuron(MicroMeterPnt const &);
 	Neuron(Neuron        const &);             // copy constructor
 
 	Neuron& operator=(Neuron const&); // copy assignment operator
 
 	~Neuron() override = default;
 
-	void Prepare()                                  override;
+	void CollectInput()  final;
+	bool CompStep()      final;
+
 	void AppendMenuItems(AddMenuFunc const &) const override;
 
 	static bool TypeFits(NobType const type) { return type.IsNeuronType(); }
@@ -41,15 +42,14 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
-	void      SetDir(Radian const)  override { /* empty */ };
-	void      ClearDynamicData()    override;
-	bool      CompStep()            override;
-	mV        GetNextOutput() const override;
-	Radian    GetDir()        const override { return Radian::NULL_VAL(); };
-	NobIoMode GetIoMode()     const override { return NobIoMode::internal; }
+	void      SetDir(Radian const)  final { /* empty */ };
+	void      ClearDynamicData()    final;
+	mV        GetNextOutput() const final;
+	Radian    GetDir()        const final { return Radian::NULL_VAL(); };
+	NobIoMode GetIoMode()     const final { return NobIoMode::internal; }
 
-	void DrawExterior(DrawContext const&, tHighlight const) const override;
-	void DrawInterior(DrawContext const&, tHighlight const) const override;
+	void DrawExterior(DrawContext const&, tHighlight const) const final;
+	void DrawInterior(DrawContext const&, tHighlight const) const final;
 
 protected:
 
