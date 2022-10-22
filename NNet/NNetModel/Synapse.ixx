@@ -7,21 +7,24 @@ module;
 export module NNetModel:Synapse;
 
 import DrawContext;
-import :Knot;
+import :BaseKnot;
 import :NobType;
 import :Pipe;
 import :OutputLine;
 import :tHighlight;
 
-export class Synapse : public Knot
+export class Synapse : public BaseKnot
 {
 public:
 
     explicit Synapse(MicroMeterPnt const center)
-        : Knot(center, NobType::Value::synapse)
+        : BaseKnot(center, NobType::Value::synapse, KNOT_WIDTH)
     {}
 
     void Check() const final;
+
+    Radian    GetDir()    const final { return Radian::NULL_VAL(); };
+    NobIoMode GetIoMode() const final { return NobIoMode::internal; }
 
     void CollectInput()        final;
     bool CompStep()            final;

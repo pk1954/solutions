@@ -14,10 +14,11 @@ import DrawContext;
 import Types;
 import :NNetColors;
 import :NNetParameters;
+import :BaseKnot;
 
 void Synapse::Check() const
 {
-	Knot::Check();
+	BaseKnot::Check();
 }
 
 //void Synapse::Dump() const
@@ -34,20 +35,20 @@ void Synapse::Check() const
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
-	Knot::DrawExterior(context, type);
-	MicroMeterPnt    const umPos(GetAddPipe().GetEndPoint());
-	MicroMeter       const umSize(GetExtension() * 1.5f);
-	MicroMeterCircle const umCircle(umPos, umSize);
-	FillExternalCircle(context, umCircle, type);
+	//BaseKnot::DrawExterior(context, type);
+	//MicroMeterPnt    const umPos(GetAddPipe().GetEndPoint());
+	//MicroMeter       const umSize(GetExtension() * 1.5f);
+	//MicroMeterCircle const umCircle(umPos, umSize);
+	//FillExternalCircle(context, umCircle, type);
 }
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
 {
-	Knot::DrawInterior(context, type);
-	MicroMeterPnt    const umPos   (GetAddPipe().GetEndPoint());
-	MicroMeter       const umSize  (GetExtension() * 1.5f);
-	MicroMeterCircle const umCircle(umPos, umSize);
-	FillInternalCircle(context, umCircle, type);
+	//BaseKnot::DrawInterior(context, type);
+	//MicroMeterPnt    const umPos   (GetAddPipe().GetEndPoint());
+	//MicroMeter       const umSize  (GetExtension() * 1.5f);
+	//MicroMeterCircle const umCircle(umPos, umSize);
+	//FillInternalCircle(context, umCircle, type);
 }
 
 void Synapse::CollectInput()

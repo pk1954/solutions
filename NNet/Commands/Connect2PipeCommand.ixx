@@ -33,9 +33,9 @@ public:
 		m_pos(m_pIoLine->GetPos())
 	{
 		if (m_pIoLine->IsOutputLine())
-			m_upKnotInsert = make_unique<Synapse>(m_pos);
+			m_upBaseKnotInsert = make_unique<Synapse>(m_pos);
 		else
-			m_upKnotInsert = make_unique<Fork>(m_pos);
+			m_upBaseKnotInsert = make_unique<Fork>(m_pos);
 
 		m_upPipeNew1 = make_unique<Pipe>(m_pStartKnot, m_pIoLine);
 		m_upPipeNew2 = make_unique<Pipe>(m_pIoLine, m_pEndKnot);
@@ -44,20 +44,20 @@ public:
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew2->Select(m_pPipeOld->IsSelected());
 
-		m_upKnotInsert->AddIncoming(*m_upPipeNew1.get());
-		m_upKnotInsert->AddOutgoing(*m_upPipeNew2.get());
+		m_upBaseKnotInsert->AddIncoming(*m_upPipeNew1.get());
+		m_upBaseKnotInsert->AddOutgoing(*m_upPipeNew2.get());
 	}
 
 	~Connect2PipeCommand() final = default;
 
 	void Do() final
 	{
-		ConnectIoLine(* m_pIoLine, * m_upKnotInsert.get());
+		ConnectIoLine(* m_pIoLine, * m_upBaseKnotInsert.get());
 
 		m_pStartKnot->ReplaceOutgoing(m_pPipeOld, m_upPipeNew1.get());
 		m_pEndKnot  ->ReplaceIncoming(m_pPipeOld, m_upPipeNew2.get());
 
-		m_pNMWI->Push2Model(move(m_upKnotInsert));
+		m_pNMWI->Push2Model(move(m_upBaseKnotInsert));
 		m_pNMWI->Push2Model(move(m_upPipeNew1));
 		m_pNMWI->Push2Model(move(m_upPipeNew2));
 
@@ -72,7 +72,7 @@ public:
 
 		m_upPipeNew2 = m_pNMWI->PopFromModel<Pipe>();
 		m_upPipeNew1 = m_pNMWI->PopFromModel<Pipe>();
-		m_upKnotInsert = m_pNMWI->PopFromModel<Knot>();
+		m_upBaseKnotInsert = m_pNMWI->PopFromModel<BaseKnot>();
 
 		m_pEndKnot  ->ReplaceIncoming(m_upPipeNew2.get(), m_pPipeOld);
 		m_pStartKnot->ReplaceOutgoing(m_upPipeNew1.get(), m_pPipeOld);
@@ -89,9 +89,9 @@ private:
 	BaseKnot    * const m_pEndKnot;
 	MicroMeterPnt const m_pos;
 
-	unique_ptr<Pipe>   m_upPipeNew1;
-	unique_ptr<Pipe>   m_upPipeNew2;
-	unique_ptr<Pipe>   m_upPipeOld;
-	unique_ptr<Knot>   m_upKnotInsert;
-	unique_ptr<IoLine> m_upIoLine;
+	unique_ptr<Pipe>     m_upPipeNew1;
+	unique_ptr<Pipe>     m_upPipeNew2;
+	unique_ptr<Pipe>     m_upPipeOld;
+	unique_ptr<BaseKnot> m_upBaseKnotInsert;
+	unique_ptr<IoLine>   m_upIoLine;
 };

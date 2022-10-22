@@ -37,9 +37,10 @@ public:
 	mV        GetNextOutput() const  override { return m_mVinputBuffer; }
 	NobIoMode GetIoMode()     const  override { return NobIoMode::internal; }
 
-	void DrawExterior(DrawContext const &, tHighlight const) const override;
-	void DrawInterior(DrawContext const &, tHighlight const) const override;
 	void Emphasize(bool const, bool const);
+
+	void DrawExterior(DrawContext const&, tHighlight const) const final {};
+	void DrawInterior(DrawContext const&, tHighlight const) const final {};
 
 	void CollectInput()	override { m_mVinputBuffer = GetFirstIncoming().GetNextOutput(); }
 	bool CompStep    () override { return false; }
@@ -50,8 +51,4 @@ public:
 
 	void FillExternalCircle(DrawContext const&, MicroMeterCircle const&, tHighlight const) const;
 	void FillInternalCircle(DrawContext const&, MicroMeterCircle const&, tHighlight const) const;
-
-private:
-
-	inline static MicroMeter const KNOT_WIDTH { PIPE_WIDTH / 2 };
 };

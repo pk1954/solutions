@@ -126,8 +126,6 @@ private:
 	void drawCircle(DrawContext const&, D2D1::ColorF const, MicroMeterCircle const) const;
 	void drawCircle(DrawContext const&, D2D1::ColorF const, MicroMeter       const) const;
 
-	PipeList         m_inPipes;
-	PipeList         m_outPipes;
 	MicroMeterCircle m_circle;
 };
 

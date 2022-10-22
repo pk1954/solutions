@@ -56,6 +56,9 @@ protected:
 	void DisplayText(DrawContext const&, MicroMeterRect const&, wstring const&) const;
 
 private:
+	PipeList m_inPipes;
+	Pipe     m_pipeAxon;
+
 	mutable bool m_bTriggered{ false };
 
 	bool       m_bStopOnTrigger{ false };
