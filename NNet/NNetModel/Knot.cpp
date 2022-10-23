@@ -112,17 +112,6 @@ void Knot::EvaluateSelectionStatus()
 	Nob::Select(AnyConnectedPipesSelected()); // if any connected pipe is selected
 }                                             // knot must also be selected
 
-void Knot::AppendMenuItems(AddMenuFunc const & add) const
-{
-	if ((GetNrOfInConns() == 1) && (GetNrOfOutConns() == 1)) 
-	{
-	   add(IDD_ADD_INCOMING2BASEKNOT);
-	   add(IDD_ADD_OUTGOING2BASEKNOT);
-	}
-
-	BaseKnot::AppendMenuItems(add);
-}
-
 void Knot::Emphasize(bool const bOn, bool bDownStream) 
 { 
 	Nob::Emphasize(bOn);

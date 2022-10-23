@@ -251,7 +251,5 @@ void BaseKnot::AppendMenuItems(AddMenuFunc const & add) const
 {
 	if (HasOutgoing())
 		add(IDM_SELECT_SUBTREE);   
-	if (IsAnyNeuron())
-		add(IDD_STOP_ON_TRIGGER);      
 	Nob::AppendMenuItems(add);
 }

@@ -37,7 +37,7 @@ void IoConnector::Check() const
     for (auto it : m_list) 
     { 
         assert(it);
-        assert(it->IsAnyNeuron());
+        assert(it->IsIoLine());
     } 
     NobType const nobType { m_list.front()->GetNobType() };
     for (auto it : m_list) 

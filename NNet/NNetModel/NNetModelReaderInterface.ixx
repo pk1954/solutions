@@ -99,12 +99,6 @@ public:
 	NobId                   GetHighlightedNobId()                  const { return m_pModel->GetHighlightedNobId(); }
 	BaseKnot        const * GetConstBaseKnotPtr(NobId const id)    const { return m_pModel->GetNobConstPtr<BaseKnot const *>(id); }
 
-	bool IsAnyNeuron(NobId const id) const
-	{
-		Nob const* const pNob{ GetConstNob(id) };
-		return pNob && pNob->IsAnyNeuron();
-	}
-
 	bool IsInputLine(NobId const id) const
 	{
 		Nob const* const pNob{ GetConstNob(id) };

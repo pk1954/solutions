@@ -68,6 +68,3 @@ private:
 
 	void init(const Neuron&);
 };
-
-export Neuron const * Cast2Neuron(Nob const *);
-export Neuron       * Cast2Neuron(Nob       *);

@@ -58,7 +58,7 @@ public:
 
 	bool  GetDescriptionLine(int const, wstring&) const;
 
-	NobId FindNobAt(MicroMeterPnt const& umPoint, auto const& crit) const // Template!
+	NobId FindNobAt(MicroMeterPnt const& umPoint, auto const& crit) const // TODO: Template!
 	{
 		NobId idRes{ NO_NOB };
 
@@ -66,7 +66,11 @@ public:
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsAnyNeuron() && (!s.HasParentNob()) && crit(s); });
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsNeuron() && crit(s); });
+		if (IsDefined(idRes))
+			return idRes;
+
+		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoLine() && (!s.HasParentNob()) && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 

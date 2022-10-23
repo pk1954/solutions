@@ -23,7 +23,7 @@ public:
     void operator() (Script& script) const final
     {
         NNetModelWriterInterface & nmwi { m_modelIO.GetImportNMWI() };
-        SigGenId           const   id   { SigGenId(script.ScrReadUint()) };
+        SigGenId           const   id   { SigGenId(script.ScrReadInt()) };
         if (nmwi.IsValid(id))
             nmwi.SetSigGenActive(id);
     }

@@ -124,21 +124,10 @@ void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) co
 		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 }
 
-Neuron const * Cast2Neuron(Nob const * pNob)
-{
-	assert(pNob->IsAnyNeuron());
-	return static_cast<Neuron const *>(pNob);
-}
-
-Neuron * Cast2Neuron(Nob * pNob)
-{
-	assert(pNob->IsAnyNeuron());
-	return static_cast<Neuron *>(pNob);
-}
-
 void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 {
-	if (IsNeuron())
-		add(IDD_SPLIT_NEURON);        
+	add(IDD_ADD_INCOMING2BASEKNOT);
+	add(IDD_SPLIT_NEURON);
+	add(IDD_STOP_ON_TRIGGER);
 	BaseKnot::AppendMenuItems(add);
 }

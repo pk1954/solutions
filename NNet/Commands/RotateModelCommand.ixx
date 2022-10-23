@@ -19,7 +19,7 @@ public:
 	{
 		SetPivotPnt
 		(
-			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const& n) { return n.IsAnyNeuron(); }),
+			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const& n) { return n.IsBaseKnot(); }),
 			umPntOld,
 			umPntNew
 		);

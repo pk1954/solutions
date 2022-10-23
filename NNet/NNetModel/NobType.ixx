@@ -101,19 +101,13 @@ public:
 		return (m_value == Value::inputLine) || (m_value == Value::outputLine);
 	}
 
-	bool IsAnyNeuronType() const
-	{
-		return (m_value == Value::neuron) || IsIoLineType();
-	}
-
-	bool IsAnyKnotType() const
-	{
-		return (m_value == Value::knot) || (m_value == Value::synapse) || (m_value == Value::fork);
-	}
-
 	bool IsBaseKnotType() const
 	{
-		return IsAnyNeuronType() || IsAnyKnotType();
+		return IsIoLineType() || 
+			   (m_value == Value::neuron)  || 
+			   (m_value == Value::knot)    || 
+			   (m_value == Value::synapse) || 
+			   (m_value == Value::fork);
 	}
 
 	Value GetValue() const { return m_value; }
