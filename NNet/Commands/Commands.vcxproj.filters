@@ -54,7 +54,7 @@
     <ClCompile Include="ConnAnimationCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect2BaseKnotCommand.ixx">
+    <ClCompile Include="Connect2NeuronCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Connect2PipeCommand.ixx">
@@ -217,6 +217,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeleteBaseKnotCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateForkCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateSynapseCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

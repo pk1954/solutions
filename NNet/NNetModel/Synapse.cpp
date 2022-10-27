@@ -16,26 +16,26 @@ import :NNetColors;
 import :NNetParameters;
 import :BaseKnot;
 
+using std::wcout;
+using std::endl;
+
 void Synapse::Check() const
 {
 	BaseKnot::Check();
 }
 
-//void Synapse::Dump() const
-//{
-//	Nob::Dump();
-//	wcout << L" in";
-//	m_pPipeIn->Dump();
-//	wcout << L" out";
-//	m_pPipeOut->Dump();
-//	wcout << L" add";
-//	m_pPipeOut->Dump();
-//	wcout << endl;
-//}
+void Synapse::Dump() const
+{
+	BaseKnot::Dump();
+	wcout << L" tState " << static_cast<int>(m_state) << endl;
+	wcout << L" blocked " << m_usBlocked << endl;
+	wcout << L" addInput " << m_mVaddInput << endl;
+}
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
-	//BaseKnot::DrawExterior(context, type);
+	//MicroMeter const umRadius { PIPE_WIDTH };
+	//Ortho
 	//MicroMeterPnt    const umPos(GetAddPipe().GetEndPoint());
 	//MicroMeter       const umSize(GetExtension() * 1.5f);
 	//MicroMeterCircle const umCircle(umPos, umSize);

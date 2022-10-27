@@ -38,7 +38,7 @@ public:
         ConnectionType const ctype { m_pNMRI->ConnectionResult(idSrc, idDst) };
         if (ctype != ConnectionType::ct_none)
         {
-            m_pCommands->Connect(idSrc, idDst, ctype);
+            m_pCommands->Connect(idSrc, idDst);
         }
         else
         {

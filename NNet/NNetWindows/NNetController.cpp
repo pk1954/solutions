@@ -219,8 +219,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->Connect
         (
             m_pNMRI->GetHighlightedNobId(),
-            m_pNMRI->GetTargetNobId(),
-            static_cast<ConnectionType>(lParam)
+            m_pNMRI->GetTargetNobId()
         );
         break;
 
@@ -282,19 +281,19 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->NewIoLinePair(umPoint);
         break;
 
-    case IDD_ADD_OUTGOING2BASEKNOT:
+    case IDD_ADD_OUTGOING2BASEKNOT:  // case 11
         m_pModelCommands->AddOutgoing2BaseKnot(m_pNMRI->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_ADD_INCOMING2BASEKNOT:
+    case IDD_ADD_INCOMING2BASEKNOT: // case 9/10
         m_pModelCommands->AddIncoming2BaseKnot(m_pNMRI->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_ADD_OUTGOING2PIPE:
+    case IDD_ADD_OUTGOING2PIPE:  // case 7
         m_pModelCommands->AddOutgoing2Pipe(m_pNMRI->GetHighlightedNobId(), umPoint);
         break;
 
-    case IDD_ADD_INCOMING2PIPE:
+    case IDD_ADD_INCOMING2PIPE:  // case 8 
         m_pModelCommands->AddIncoming2Pipe(m_pNMRI->GetHighlightedNobId(), umPoint);
         break;
 

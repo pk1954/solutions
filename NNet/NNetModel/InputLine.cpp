@@ -98,6 +98,6 @@ void InputLine::CollectInput()
 
 void InputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
-	add(IDD_ADD_INCOMING2BASEKNOT);
+	add(IDD_ADD_INCOMING2BASEKNOT);   // case 10
 	IoLine::AppendMenuItems(add);
 }

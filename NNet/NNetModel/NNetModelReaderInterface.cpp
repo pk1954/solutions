@@ -151,43 +151,24 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 			if (pBaseKnotSrc->IsDirectlyConnectedTo(*pPipeDst)) 
 				return ct_none;
 			if (typeSrc.IsInputLineType())
-				return ct_pipe;
-			if (typeSrc.IsOutputLineType() && (pBaseKnotSrc->GetNrOfInConns() == 1))
-				return ct_pipe;
+				return ct_fork;      // case 1
+			if (typeSrc.IsOutputLineType())
+				return ct_synapse;   // case 2
 		}
 		else if (pBaseKnotDst)
 		{
-			if ((typeSrc.IsOutputLineType() && typeDst.IsOutputLineType()))
-				return ct_none;
-
 			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType() && (typeDst != typeSrc))
-				return ct_ioLine;
+				return ct_knot;      // case 4/5 - Input and output line plugged together. Result is a knot.
 
-			size_t const nrIn  { pBaseKnotSrc->GetNrOfInConns () + pBaseKnotDst->GetNrOfInConns () };
-			size_t const nrOut { pBaseKnotSrc->GetNrOfOutConns() + pBaseKnotDst->GetNrOfOutConns() };
+			if (typeSrc.IsOutputLineType() && typeDst.IsNeuronType())  // Output line plugged into neuron
+				return ct_neuron;    // case 3                         // result is a neuron with with one more input
 
-			if (
-				  (nrIn == 2) &&
-				  (
-					(typeSrc.IsNeuronType() && typeDst.IsOutputLineType()) || 
-					(typeDst.IsNeuronType() && typeSrc.IsOutputLineType()) 
-				  )
-			   )
-				return ct_neuron;
-
-			if ((typeSrc.IsKnotType() && typeDst.IsIoLineType()) || (typeDst.IsKnotType() && typeSrc.IsIoLineType()))
-			{
-				if ((nrIn==2) && (nrOut==1))
-					return ct_synapse;
-				if ((nrIn==1) && (nrOut==2))
-					return ct_fork;
-				return ct_none;
-			}
+			return ct_none;
 		}
 	}
 
 	if (pConnSrc && pConnDst && (typeDst != typeSrc) && (pConnSrc->Size() == pConnDst->Size()))
-		return ct_ioConnector;
+		return ct_ioConnector;    // case 6
 
 	return ct_none;
 }

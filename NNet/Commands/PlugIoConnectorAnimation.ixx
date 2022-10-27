@@ -19,7 +19,7 @@ using std::make_unique;
 export class PlugIoConnectorAnimation : public NNetCommand
 {
 public:
-    PlugIoConnectorAnimation
+    PlugIoConnectorAnimation  // Connect case 6
     (
         NobId idAnimated,
         NobId idTarget

@@ -126,7 +126,7 @@ void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) co
 
 void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 {
-	add(IDD_ADD_INCOMING2BASEKNOT);
+	add(IDD_ADD_INCOMING2BASEKNOT);  // case 9
 	add(IDD_SPLIT_NEURON);
 	add(IDD_STOP_ON_TRIGGER);
 	BaseKnot::AppendMenuItems(add);

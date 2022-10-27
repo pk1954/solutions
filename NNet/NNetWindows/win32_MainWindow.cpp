@@ -74,7 +74,7 @@ void MainWindow::Stop()
 void MainWindow::Reset()
 { 
 	m_pModelCommands->SetHighlightedNob(NO_NOB);
-	setNoTarget(); 
+	m_pModelCommands->SetTargetNob(NO_NOB);
 }
 
 void appendMenu(HMENU const hPopupMenu, int const idCommand)
@@ -196,10 +196,10 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 	return true;
 }
 
-void MainWindow::setNoTarget()
+bool MainWindow::connectionAllowed()
 {
-	m_pModelCommands->SetTargetNob(NO_NOB);
-	m_connType = ConnectionType::ct_none;
+	return ConnectionType::ct_none != 
+		   m_pNMRI->ConnectionResult(m_pNMRI->GetHighlightedNobId(), m_pNMRI->GetTargetNobId());
 }
 
 void MainWindow::setTargetNob()
@@ -210,7 +210,6 @@ void MainWindow::setTargetNob()
 		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_pNMRI->GetHighlightedNobId(), s.GetId()); }
 	);
 	m_pModelCommands->SetTargetNob(nobIdTarget);
-	m_connType = m_pNMRI->ConnectionResult(m_pNMRI->GetHighlightedNobId(), m_pNMRI->GetTargetNobId());
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -261,8 +260,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		}
 		else if (m_pNMRI->IsAnySensorSelected())
 		{   
-			SensorId const id { m_pNMRI->GetSensorIdSelected() };
-			m_pModelCommands->MoveSensor(id, umDelta);
+			m_pModelCommands->MoveSensor(m_pNMRI->GetSensorIdSelected(), umDelta);
 			Notify(false); 
 		}
 		else if (wParam & MK_SHIFT)     // operate on selection
@@ -302,9 +300,9 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 
 bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_connType != ConnectionType::ct_none)
-		SendCommand2Application(IDD_CONNECT, static_cast<LPARAM>(m_connType));
-	setNoTarget();
+	if (connectionAllowed())
+		SendCommand2Application(IDD_CONNECT, 0);
+	m_pModelCommands->SetTargetNob(NO_NOB);
 	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
 
@@ -434,7 +432,7 @@ void MainWindow::DoPaint()
 
 	if (IsDefined(m_pNMRI->GetTargetNobId())) // draw target nob again to be sure that it is visible
 	{
-		tHighlight type { (m_connType == ConnectionType::ct_none) ? tHighlight::targetNoFit : tHighlight::targetFit };
+		tHighlight type { connectionAllowed() ? tHighlight::targetFit : tHighlight::targetNoFit };
 		m_pNMRI->DrawExterior(m_pNMRI->GetTargetNobId(), context, type);
 		m_pNMRI->DrawInterior(m_pNMRI->GetTargetNobId(), context, type);
 		m_pNMRI->DrawExterior(m_pNMRI->GetHighlightedNobId(), context, type);

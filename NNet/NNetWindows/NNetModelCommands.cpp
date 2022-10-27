@@ -48,6 +48,8 @@ import RotateSelectionCommand;
 import AttachSigGen2SelCmd;
 import RenameSigGenCmd;
 import AddPipe2PipeCommand;
+import CreateSynapseCommand;
+import CreateForkCommand;
 import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
 import RestrictSelectionCommand;
@@ -57,7 +59,7 @@ import SetTargetNobCmd;
 import NNetModelCommands;
 import SetHighlightedNobCmd;
 import AttachSigGen2ConCmd;
-import Connect2BaseKnotCommand;
+import Connect2NeuronCommand;
 import Connect2PipeCommand;
 import AttachSigGen2LineCmd;
 import SelectSubtreeCommand;
@@ -129,18 +131,18 @@ void NNetModelCommands::ResetModel()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::AddIncoming2BaseKnot(NobId const id, MicroMeterPnt const & pos)
+void NNetModelCommands::AddIncoming2BaseKnot(NobId const id, MicroMeterPnt const & pos) // case 10
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos - STD_OFFSET, NobType::Value::inputLine));
 }
 
-void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)
+void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 8
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::outputLine));
+	m_pCmdStack->PushCommand(make_unique<CreateSynapseCommand>(id, pos));
 }
 
 void NNetModelCommands::AddModel()
@@ -152,18 +154,18 @@ void NNetModelCommands::AddModel()
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
 }
 
-void NNetModelCommands::AddOutgoing2BaseKnot(NobId const id, MicroMeterPnt const & pos)
+void NNetModelCommands::AddOutgoing2BaseKnot(NobId const id, MicroMeterPnt const & pos)  // case 11
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
 	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos + STD_OFFSET, NobType::Value::outputLine));
 }
 
-void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)
+void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 7
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2PipeCommand>(id, pos, NobType::Value::inputLine));
+	m_pCmdStack->PushCommand(make_unique<CreateForkCommand>(id, pos));
 }
 
 void NNetModelCommands::AddSensor
@@ -234,12 +236,7 @@ void NNetModelCommands::AttachSigGen2Conn(NobId const idInputLine)
 	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConCmd>(idInputLine));
 }
 
-void NNetModelCommands::Connect
-(
-	NobId          const idSrc, 
-	NobId          const idDst,
-	ConnectionType const cType
-)
+void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 { 
 	using enum ConnectionType;
 
@@ -247,15 +244,13 @@ void NNetModelCommands::Connect
 		TraceStream() << source_location::current().function_name() << L" " << idSrc << L" " << idDst << endl;
 
 	unique_ptr<Command> upCmd;
-	switch (cType)
+	switch (m_pNMWI->ConnectionResult(idSrc, idDst))
 	{
-		case ct_fork:
-		case ct_synapse:
-		case ct_neuron:
-		case ct_outputline:  upCmd = make_unique<Connect2BaseKnotCommand> (idSrc, idDst, cType); break;
-		case ct_pipe:		 upCmd = make_unique<Connect2PipeCommand>     (idSrc, idDst);        break;
-		case ct_ioLine:		 upCmd = make_unique<PlugIoLineAnimation>     (idSrc, idDst);        break;
-		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst);        break;
+		case ct_fork:                                                                             // case 1
+		case ct_synapse:	 upCmd = make_unique<Connect2PipeCommand>     (idSrc, idDst); break;  // case 2
+		case ct_neuron:      upCmd = make_unique<Connect2NeuronCommand>   (idSrc, idDst); break;  // case 3
+		case ct_knot:		 upCmd = make_unique<PlugIoLineAnimation>     (idSrc, idDst); break;  // case 4/5
+		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst); break;  // case 6
 		default: assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));

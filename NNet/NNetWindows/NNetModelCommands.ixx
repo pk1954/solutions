@@ -56,7 +56,7 @@ public:
     void AttachSigGen2Conn(NobId const);
     void AttachSigGen2Line(NobId const);
     void AttachSigGen2Sel();
-    void Connect(NobId const, NobId const, ConnectionType const);
+    void Connect(NobId const, NobId const);
     void CopySelection();
     void CreateInitialNobs();
     void DeleteBaseKnot(NobId const);

@@ -97,9 +97,11 @@
     <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="ConnAnimationCommand.ixx" />
-    <ClCompile Include="Connect2BaseKnotCommand.ixx" />
+    <ClCompile Include="Connect2NeuronCommand.ixx" />
     <ClCompile Include="Connect2PipeCommand.ixx" />
     <ClCompile Include="CoordAnimation.ixx" />
+    <ClCompile Include="CreateForkCommand.ixx" />
+    <ClCompile Include="CreateSynapseCommand.ixx" />
     <ClCompile Include="DeleteBaseKnotCmd.cpp" />
     <ClCompile Include="DeleteBaseKnotCmd.ixx" />
     <ClCompile Include="DeleteIoConnectorCmd.ixx" />

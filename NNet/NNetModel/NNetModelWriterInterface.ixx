@@ -127,7 +127,7 @@ public:
     template <Nob_t OLD>
     unique_ptr<OLD> ReplaceInModel(UPNob upNew)
     {
-        NobId id{ upNew.get()->GetId() };
+        NobId id      { upNew.get()->GetId() };
         Nob * pNobOld { GetUPNobs().ReplaceNob(move(upNew)) };
         Reconnect(id);
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNobOld)));

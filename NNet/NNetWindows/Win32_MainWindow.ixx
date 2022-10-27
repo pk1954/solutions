@@ -81,12 +81,11 @@ private:
 	Observable        * m_pCursorPosObservable { nullptr };
 	NNetModelCommands * m_pModelCommands       { nullptr };
 	bool                m_bShowPnts            { false };
-	ConnectionType      m_connType             { ConnectionType::ct_none };
 
-	void setNoTarget      ();
 	void setTargetNob     ();
 	void setHighlightedNob(MicroMeterPnt const &);
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
+	bool connectionAllowed();
 
 	void DoPaint() final;
 

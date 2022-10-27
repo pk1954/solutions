@@ -18,11 +18,11 @@ using std::unique_ptr;
 export class AddPipe2BaseKnotCommand : public NNetCommand
 {
 public:
-	AddPipe2BaseKnotCommand
-	(
-		NobId         const   id, 
-		MicroMeterPnt const & pos,
-		NobType       const   nobType
+	AddPipe2BaseKnotCommand             // Covers 3 cases:
+	(                                   // case 9:  Add new input for Neuron, creating new InputLine
+		NobId         const   id,       // case 10: Extend InputLine, adding a new knot
+		MicroMeterPnt const & pos,      // case 11: Extend Outputline, adding a new knot
+		NobType       const   nobType   // InputLine or OutputLine
 	)
       :	m_type(nobType),
 		m_baseKnotOld(*m_pNMWI->GetNobPtr<BaseKnot*>(id))
@@ -30,18 +30,18 @@ public:
 		m_upPipe = make_unique<Pipe>();
 
 		if (m_baseKnotOld.IsNeuron())
-			m_upBaseKnotNew = make_unique<Neuron>(m_baseKnotOld.GetPos());
+			m_upBaseKnotNew = make_unique<Neuron>(m_baseKnotOld.GetPos()); // case 9
 		else 
-			m_upBaseKnotNew = make_unique<Knot>(m_baseKnotOld.GetPos());
+			m_upBaseKnotNew = make_unique<Knot>(m_baseKnotOld.GetPos()); // case 10/11
 
-		if (m_type.IsInputLineType())
+		if (m_type.IsInputLineType())    // case 9/10
 		{
 			m_upExtPoint = make_unique<InputLine>(pos);
 			ConnectOutgoing(*m_upPipe.get(), *m_upExtPoint.get());
 			ConnectIncoming(*m_upPipe.get(), *m_upBaseKnotNew.get());
 			m_upBaseKnotNew->SetOutgoing(m_baseKnotOld);
-		}
-		else
+		} 
+		else                             // case 11
 		{
 			m_upExtPoint = make_unique<OutputLine>(pos);
 			ConnectIncoming(*m_upPipe.get(), *m_upExtPoint.get());

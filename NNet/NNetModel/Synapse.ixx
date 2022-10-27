@@ -21,6 +21,7 @@ public:
         : BaseKnot(center, NobType::Value::synapse, KNOT_WIDTH)
     {}
 
+    void Dump() const final;
     void Check() const final;
 
     Radian    GetDir()    const final { return Radian::NULL_VAL(); };

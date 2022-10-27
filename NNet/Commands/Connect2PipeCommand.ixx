@@ -19,7 +19,7 @@ using std::make_unique;
 export class Connect2PipeCommand : public NNetCommand
 {
 public:
-	Connect2PipeCommand
+	Connect2PipeCommand   // case 1/2
 	(
 		NobId const idIoLine,
 		NobId const idPipe
@@ -33,9 +33,9 @@ public:
 		m_pos(m_pIoLine->GetPos())
 	{
 		if (m_pIoLine->IsOutputLine())
-			m_upBaseKnotInsert = make_unique<Synapse>(m_pos);
+			m_upBaseKnotInsert = make_unique<Synapse>(m_pos);  // case 2
 		else
-			m_upBaseKnotInsert = make_unique<Fork>(m_pos);
+			m_upBaseKnotInsert = make_unique<Fork>(m_pos);  // case 1
 
 		m_upPipeNew1 = make_unique<Pipe>(m_pStartKnot, m_pIoLine);
 		m_upPipeNew2 = make_unique<Pipe>(m_pIoLine, m_pEndKnot);

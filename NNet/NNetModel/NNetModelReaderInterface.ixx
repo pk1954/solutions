@@ -36,10 +36,8 @@ export enum class ConnectionType
 	ct_none,
 	ct_synapse,
 	ct_fork,
+	ct_knot,
 	ct_neuron,
-	ct_outputline,
-	ct_pipe,
-	ct_ioLine,
 	ct_ioConnector
 };
 
