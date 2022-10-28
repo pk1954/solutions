@@ -15,6 +15,7 @@ module NNetModel:BaseKnot;
 
 import Types;
 import DrawContext;
+import :NNetColors;
 import :Pipe;
 import :IoLine;
 import :NobException;
@@ -57,10 +58,11 @@ void BaseKnot::Dump() const
 	wcout << endl;
 }
 
-bool BaseKnot::AnyConnectedPipesSelected() const
+void BaseKnot::EvaluateSelectionStatus()
 {
-	return Apply2AllConnectedPipesB([](Pipe const& p) { return p.IsSelected(); });                                                
-}
+	bool bSelected { Apply2AllConnectedPipesB([](Pipe const& p) { return p.IsSelected(); }) };
+	Nob::Select(bSelected);      // if any connected pipe is selected
+}                                // knot must also be selected
 
 BaseKnot & BaseKnot::operator*=(float const f)
 {
@@ -213,26 +215,6 @@ MicroMeterRect BaseKnot::GetRect4Text() const
 	};
 }
 
-void BaseKnot::drawCircle
-(
-	DrawContext      const & context, 
-	D2D1::ColorF     const   colF, 
-	MicroMeterCircle const   umCircle
-) const
-{
-	context.FillCircle(umCircle, colF);
-}
-
-void BaseKnot::drawCircle
-(
-	DrawContext  const & context, 
-	D2D1::ColorF const   colF, 
-	MicroMeter   const   umWidth
-) const
-{
-	context.FillCircle(MicroMeterCircle(GetPos(), umWidth), colF);
-}
-
 BaseKnot const * Cast2BaseKnot(Nob const * nob)
 {
 	assert(! nob->IsPipe());
@@ -252,4 +234,68 @@ void BaseKnot::AppendMenuItems(AddMenuFunc const & add) const
 	if (HasOutgoing())
 		add(IDM_SELECT_SUBTREE);   
 	Nob::AppendMenuItems(add);
+}
+
+void BaseKnot::FillExternalCircle
+(
+	DrawContext const& context,
+	tHighlight  const   type
+) const
+{
+	MicroMeterCircle    umCircle { GetCircle() };
+	MicroMeterPnt const umPos    { umCircle.GetPos() };
+	if (IsEmphasized())
+		umCircle *= 2.f;
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(umCircle, GetExteriorColor(type));
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(MicroMeterCircle(umPos, 30.0_MicroMeter), NNetColors::EXT_HIGHLIGHTED);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(MicroMeterCircle(umPos, 30.0_MicroMeter), NNetColors::EXT_TARGET_FIT);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(MicroMeterCircle(umPos, 30.0_MicroMeter), NNetColors::EXT_TARGET_NOFIT);
+		break;
+	default:
+		assert(false);
+		break;
+	}
+}
+
+void BaseKnot::FillInternalCircle
+(
+	DrawContext const& context,
+	tHighlight  const   type
+) const
+{
+	float  fWidth       { PIPE_INTERIOR };
+	fPixel fPixMinWidth { 1._fPixel };
+	if (IsEmphasized())
+	{
+		fWidth *= 2.f;
+		fPixMinWidth = 3.f;
+	}
+	MicroMeterCircle const umCircle { GetCircle() * fWidth };
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(umCircle, GetInteriorColor(type), fPixMinWidth);
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(umCircle, GetInteriorColor(type), fPixMinWidth);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	default:
+		assert(false);
+		break;
+	}
 }

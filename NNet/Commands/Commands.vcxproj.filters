@@ -21,9 +21,6 @@
     <ClCompile Include="AddPipe2BaseKnotCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AddPipe2PipeCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AddSensorSignalCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

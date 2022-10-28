@@ -117,14 +117,16 @@ public:
 	bool Apply2AllOutPipesB      (PipeCrit const & c) const { return m_outPipes.Apply2AllB(c); }
 	bool Apply2AllConnectedPipesB(PipeCrit const & c) const;
 
-	bool AnyConnectedPipesSelected() const;
-
 	MicroMeterRect GetRect4Text() const;
 
-private:
+	void EvaluateSelectionStatus();
 
-	void drawCircle(DrawContext const&, D2D1::ColorF const, MicroMeterCircle const) const;
-	void drawCircle(DrawContext const&, D2D1::ColorF const, MicroMeter       const) const;
+protected:
+
+	void FillExternalCircle(DrawContext const&, tHighlight const) const;
+	void FillInternalCircle(DrawContext const&, tHighlight const) const;
+
+private:
 
 	PipeList         m_inPipes;
 	PipeList         m_outPipes;

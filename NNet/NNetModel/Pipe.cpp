@@ -220,9 +220,9 @@ void Pipe::Select(bool const bOn)
 { 
 	Nob::Select(bOn);
 	if (m_pKnotStart->IsKnot())
-		static_cast<Knot *>(m_pKnotStart)->EvaluateSelectionStatus();
+		static_cast<BaseKnot *>(m_pKnotStart)->EvaluateSelectionStatus();
 	if (m_pKnotEnd  ->IsKnot())
-		static_cast<Knot *>(m_pKnotEnd)  ->EvaluateSelectionStatus();
+		static_cast<BaseKnot *>(m_pKnotEnd)  ->EvaluateSelectionStatus();
 }
 
 MicroMeter Pipe::GetLength() const

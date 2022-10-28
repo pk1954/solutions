@@ -37,16 +37,11 @@ public:
 
 	void Emphasize(bool const, bool const);
 
-	void DrawExterior(DrawContext const&, tHighlight const) const final {};
-	void DrawInterior(DrawContext const&, tHighlight const) const final {};
+	void DrawExterior(DrawContext const&, tHighlight const) const final;
+	void DrawInterior(DrawContext const&, tHighlight const) const final;
 
 	void CollectInput()	override { m_mVinputBuffer = GetFirstIncoming().GetNextOutput(); }
 	bool CompStep    () override { return false; }
 
 	void Recalc() override { };
-
-	void EvaluateSelectionStatus();
-
-	void FillExternalCircle(DrawContext const&, MicroMeterCircle const&, tHighlight const) const;
-	void FillInternalCircle(DrawContext const&, MicroMeterCircle const&, tHighlight const) const;
 };

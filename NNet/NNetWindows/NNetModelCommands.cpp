@@ -47,7 +47,6 @@ import RotateModelCommand;
 import RotateSelectionCommand;
 import AttachSigGen2SelCmd;
 import RenameSigGenCmd;
-import AddPipe2PipeCommand;
 import CreateSynapseCommand;
 import CreateForkCommand;
 import AddSensorSignalCmd;
