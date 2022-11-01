@@ -29,7 +29,8 @@ public:
 		m_upInputLine = make_unique<InputLine>(pos - m_pNMWI->OrthoVector(idPipe));
 		m_upPipeOrtho = make_unique<Pipe>(m_upInputLine.get(), m_upSynapse.get());
 		m_upInputLine->AddOutgoing(*m_upPipeOrtho.get());
-		m_upSynapse  ->SetAddPipe (*m_upPipeOrtho.get());
+		m_upSynapse->SetAddPipe(*m_upPipeOrtho.get());
+		m_upSynapse->SetMainPipe(*m_pPipe);
 	}
 
 	~CreateSynapseCommand() = default;

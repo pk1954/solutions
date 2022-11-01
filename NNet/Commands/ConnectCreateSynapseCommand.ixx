@@ -39,7 +39,6 @@ public:
 
 	void Do() final
 	{
-//		m_pOutputLine->GetPipe().SetEndPnt(m_upSynapse.get());
 		m_pNMWI->Push2Model(move(m_upSynapse));
 		m_upOutputLine = m_pNMWI->RemoveFromModel<OutputLine>(m_idOutputLine);
 	}

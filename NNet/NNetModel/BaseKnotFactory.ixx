@@ -40,7 +40,6 @@ public:
 			case neuron:	 upBaseKnot = make_unique<Neuron>    (umPos); break;
 			case inputLine:  upBaseKnot = make_unique<InputLine> (umPos); break;
 			case outputLine: upBaseKnot = make_unique<OutputLine>(umPos); break;
-			case synapse:    upBaseKnot = make_unique<Synapse>   (umPos); break;
 			case fork:       upBaseKnot = make_unique<Fork>      (umPos); break;
 			case undefined:	 break;
 			default:         assert(false);
