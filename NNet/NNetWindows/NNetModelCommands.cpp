@@ -59,7 +59,8 @@ import NNetModelCommands;
 import SetHighlightedNobCmd;
 import AttachSigGen2ConCmd;
 import Connect2NeuronCommand;
-import Connect2PipeCommand;
+import ConnectCreateSynapseCommand;
+import ConnectCreateForkCommand;
 import AttachSigGen2LineCmd;
 import SelectSubtreeCommand;
 import SelSigGenClientsCmd;
@@ -245,11 +246,11 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	unique_ptr<Command> upCmd;
 	switch (m_pNMWI->ConnectionResult(idSrc, idDst))
 	{
-		case ct_fork:                                                                             // case 1
-		case ct_synapse:	 upCmd = make_unique<Connect2PipeCommand>     (idSrc, idDst); break;  // case 2
-		case ct_neuron:      upCmd = make_unique<Connect2NeuronCommand>   (idSrc, idDst); break;  // case 3
-		case ct_knot:		 upCmd = make_unique<PlugIoLineAnimation>     (idSrc, idDst); break;  // case 4/5
-		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst); break;  // case 6
+		case ct_fork:        upCmd = make_unique<ConnectCreateForkCommand>   (idSrc, idDst); break;  // case 1                                                           // case 1
+		case ct_synapse:	 upCmd = make_unique<ConnectCreateSynapseCommand>(idSrc, idDst); break;  // case 2
+		case ct_neuron:      upCmd = make_unique<Connect2NeuronCommand>      (idSrc, idDst); break;  // case 3
+		case ct_knot:		 upCmd = make_unique<PlugIoLineAnimation>        (idSrc, idDst); break;  // case 4/5
+		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>   (idSrc, idDst); break;  // case 6
 		default: assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));

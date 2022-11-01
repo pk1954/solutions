@@ -94,39 +94,17 @@ void BaseKnot::MoveNob(MicroMeterPnt const & delta)
 	SetPos(GetPos() + delta);
 }
 
-void BaseKnot::AddIncoming(BaseKnot const & src) 
-{ 
-	src.Apply2AllInPipes ([this](Pipe & pipe) { AddIncoming(pipe); });
-}
-
-void BaseKnot::AddOutgoing(BaseKnot const & src) 
-{ 
-	src.Apply2AllOutPipes([this](Pipe & pipe) { AddOutgoing(pipe); });
-}
-
-void BaseKnot::SetConnections(BaseKnot const & src) 
-{ 
-	SetIncoming(src);
-	SetOutgoing(src);
-	Reconnect();
-}
-
-void BaseKnot::ClearConnections()
-{
-	m_inPipes .Clear();
-	m_outPipes.Clear();
-}
-
 void BaseKnot::Reconnect() 
 { 
-	m_inPipes .Apply2All([this](Pipe & pipe) { pipe.SetEndKnot  (this); });
-	m_outPipes.Apply2All([this](Pipe & pipe) { pipe.SetStartKnot(this); });
+	m_inPipes .Apply2All([this](Pipe & pipe) { pipe.SetEndPnt  (this); });
+	m_outPipes.Apply2All([this](Pipe & pipe) { pipe.SetStartPnt(this); });
 }
 
 void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & f)
 {
 	BaseKnot const & src { static_cast<BaseKnot const &>(nobSrc) };
-	ClearConnections();
+	m_inPipes.Clear();
+	m_outPipes.Clear();
 	src.Apply2AllOutPipes([this,f](Pipe const & p){AddOutgoing(static_cast<Pipe &>(*f(&p)));});
 	src.Apply2AllInPipes ([this,f](Pipe const & p){AddIncoming(static_cast<Pipe &>(*f(&p)));});
 	if (src.GetParentNob())
@@ -153,7 +131,15 @@ void BaseKnot::Check() const
 	Nob::Check();
 	m_inPipes .Check();
 	m_outPipes.Check();
-	Apply2AllInPipes ([this](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
+	Apply2AllInPipes 
+	(
+		[this](Pipe const & p) 
+		{ 
+			NobId idEndKnot = p.GetEndKnotId();
+			NobId id        = GetId();
+			assert(p.GetEndKnotId() == GetId());
+		}
+	);
 	Apply2AllOutPipes([this](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 

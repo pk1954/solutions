@@ -1,4 +1,4 @@
-// Connect2PipeCommand.ixx
+// ConnectCreateForkCommand.ixx
 //
 // Commands
 
@@ -7,7 +7,7 @@ module;
 #include <cassert>
 #include <memory>
 
-export module Connect2PipeCommand;
+export module ConnectCreateForkCommand;
 
 import Types;
 import NNetCommand;
@@ -16,10 +16,10 @@ import NNetModel;
 using std::unique_ptr;
 using std::make_unique;
 
-export class Connect2PipeCommand : public NNetCommand
+export class ConnectCreateForkCommand : public NNetCommand
 {
 public:
-	Connect2PipeCommand   // case 1/2
+	ConnectCreateForkCommand   // case 1
 	(
 		NobId const idIoLine,
 		NobId const idPipe
@@ -29,18 +29,17 @@ public:
 		m_pIoLine(m_pNMWI->GetNobPtr<IoLine*>(idIoLine)),
 		m_pPipeOld(m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
 		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr())),
-		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr())),
+		m_pEndKnot(static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr())),
 		m_pos(m_pIoLine->GetPos())
 	{
-		if (m_pIoLine->IsOutputLine())
-			m_upBaseKnotInsert = make_unique<Synapse>(m_pos);  // case 2
-		else
-			m_upBaseKnotInsert = make_unique<Fork>(m_pos);  // case 1
+		assert(m_pIoLine->IsInputLine());
+
+		m_upBaseKnotInsert = make_unique<Fork>(m_pos);  // case 1
 
 		m_upPipeNew1 = make_unique<Pipe>(m_pStartKnot, m_pIoLine);
 		m_upPipeNew2 = make_unique<Pipe>(m_pIoLine, m_pEndKnot);
 
-		m_pIoLine   ->Select(m_pPipeOld->IsSelected());
+		m_pIoLine->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew2->Select(m_pPipeOld->IsSelected());
 
@@ -48,21 +47,21 @@ public:
 		m_upBaseKnotInsert->AddOutgoing(*m_upPipeNew2.get());
 	}
 
-	~Connect2PipeCommand() final = default;
+	~ConnectCreateForkCommand() final = default;
 
 	void Do() final
 	{
-		ConnectIoLine(* m_pIoLine, * m_upBaseKnotInsert.get());
+		ConnectIoLine(*m_pIoLine, *m_upBaseKnotInsert.get());
 
 		m_pStartKnot->ReplaceOutgoing(m_pPipeOld, m_upPipeNew1.get());
-		m_pEndKnot  ->ReplaceIncoming(m_pPipeOld, m_upPipeNew2.get());
+		m_pEndKnot->ReplaceIncoming(m_pPipeOld, m_upPipeNew2.get());
 
 		m_pNMWI->Push2Model(move(m_upBaseKnotInsert));
 		m_pNMWI->Push2Model(move(m_upPipeNew1));
 		m_pNMWI->Push2Model(move(m_upPipeNew2));
 
-		m_upIoLine  = m_pNMWI->RemoveFromModel<IoLine>(m_idIoLine);
-		m_upPipeOld = m_pNMWI->RemoveFromModel<Pipe>  (m_idPipe);
+		m_upIoLine = m_pNMWI->RemoveFromModel<IoLine>(m_idIoLine);
+		m_upPipeOld = m_pNMWI->RemoveFromModel<Pipe>(m_idPipe);
 	}
 
 	void Undo() final
@@ -74,7 +73,7 @@ public:
 		m_upPipeNew1 = m_pNMWI->PopFromModel<Pipe>();
 		m_upBaseKnotInsert = m_pNMWI->PopFromModel<BaseKnot>();
 
-		m_pEndKnot  ->ReplaceIncoming(m_upPipeNew2.get(), m_pPipeOld);
+		m_pEndKnot->ReplaceIncoming(m_upPipeNew2.get(), m_pPipeOld);
 		m_pStartKnot->ReplaceOutgoing(m_upPipeNew1.get(), m_pPipeOld);
 
 		m_pIoLine->ConnectPipe();
@@ -83,10 +82,10 @@ public:
 private:
 	NobId         const m_idIoLine;
 	NobId         const m_idPipe;
-	IoLine      * const m_pIoLine;
-	Pipe        * const m_pPipeOld;
-	BaseKnot    * const m_pStartKnot;
-	BaseKnot    * const m_pEndKnot;
+	IoLine* const m_pIoLine;
+	Pipe* const m_pPipeOld;
+	BaseKnot* const m_pStartKnot;
+	BaseKnot* const m_pEndKnot;
 	MicroMeterPnt const m_pos;
 
 	unique_ptr<Pipe>     m_upPipeNew1;

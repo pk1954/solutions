@@ -55,7 +55,7 @@ void DeleteBaseKnotCmd::Do()
         if (upOutputLine.get())
         {
             Pipe & pipeOut { upOutputLine->GetFirstIncoming() };
-            pipeOut.SetEndKnot(upOutputLine.get());
+            pipeOut.SetEndPnt(upOutputLine.get());
             pipeOut.DislocateEndPoint();
             m_idOutputLines.SetAt(i, m_pNMWI->Push2Model(move(upOutputLine)));
         }
@@ -66,7 +66,7 @@ void DeleteBaseKnotCmd::Do()
         if (upInputLine.get())
         {
             Pipe & pipeIn { upInputLine->GetFirstOutgoing() };
-            pipeIn.SetStartKnot(upInputLine.get());
+            pipeIn.SetStartPnt(upInputLine.get());
             pipeIn.DislocateStartPoint();
             m_idInputLines.SetAt(i, m_pNMWI->Push2Model(move(upInputLine)));
         }

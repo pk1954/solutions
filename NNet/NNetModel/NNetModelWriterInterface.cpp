@@ -80,13 +80,13 @@ void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const 
 void ConnectIncoming(Pipe & p, BaseKnot & b)
 {
 	b.AddIncoming(p);
-	p.SetEndKnot (&b);
+	p.SetEndPnt (&b);
 }
 
 void ConnectOutgoing(Pipe & p, BaseKnot & b)
 {
 	b.AddOutgoing (p);
-	p.SetStartKnot(&b);
+	p.SetStartPnt(&b);
 }
 
 void ConnectIoLine(IoLine & l, BaseKnot & b)

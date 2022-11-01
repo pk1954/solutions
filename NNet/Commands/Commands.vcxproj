@@ -97,7 +97,8 @@
     <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="ConnAnimationCommand.ixx" />
     <ClCompile Include="Connect2NeuronCommand.ixx" />
-    <ClCompile Include="Connect2PipeCommand.ixx" />
+    <ClCompile Include="ConnectCreateForkCommand.ixx" />
+    <ClCompile Include="ConnectCreateSynapseCommand.ixx" />
     <ClCompile Include="CoordAnimation.ixx" />
     <ClCompile Include="CreateForkCommand.ixx" />
     <ClCompile Include="CreateSynapseCommand.ixx" />

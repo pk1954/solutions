@@ -72,15 +72,18 @@ public:
 	bool HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
 	bool IsOrphan()    const { return !(HasIncoming() || HasOutgoing()); }
 
-	void AddIncoming(BaseKnot const &);
-	void AddOutgoing(BaseKnot const &);
-
-	void SetConnections(BaseKnot const &);
-	void ClearConnections();
+	void AddIncoming(BaseKnot const& src) {	src.Apply2AllInPipes ([this](Pipe& pipe) { AddIncoming(pipe); }); }
+	void AddOutgoing(BaseKnot const& src) {	src.Apply2AllOutPipes([this](Pipe& pipe) { AddOutgoing(pipe); }); }
 
 	size_t GetNrOfInConns    () const { return m_inPipes.Size(); }
 	size_t GetNrOfOutConns   () const { return m_outPipes.Size(); }
 	size_t GetNrOfConnections() const { return m_inPipes.Size() + m_outPipes.Size(); }
+
+	void SetIncoming(size_t const i, Pipe * p) { m_inPipes .Set(i, p); }
+	void SetOutgoing(size_t const i, Pipe * p) { m_outPipes.Set(i, p); }
+
+	void ReserveInputConns (size_t const n) { m_inPipes.Resize(n); }
+	void ReserveOutputConns(size_t const n) { m_outPipes.Resize(n); }
 
 	Pipe       & GetIncoming(size_t const i) { return m_inPipes .Get(i); }
 	Pipe       & GetOutgoing(size_t const i) { return m_outPipes.Get(i); }

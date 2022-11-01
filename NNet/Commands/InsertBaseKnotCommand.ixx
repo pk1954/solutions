@@ -39,7 +39,7 @@ public:
 	void Do() final 
 	{ 
 		m_pStartKnot->ReplaceOutgoing(m_pPipe2Split, m_upPipeNew.get());
-		m_pPipe2Split->SetStartKnot(m_upBaseKnot.get());
+		m_pPipe2Split->SetStartPnt(m_upBaseKnot.get());
 		m_pNMWI->Push2Model(move(m_upBaseKnot));
 		m_pNMWI->Push2Model(move(m_upPipeNew));
 	}
@@ -48,7 +48,7 @@ public:
 	{ 
 		m_upPipeNew  = m_pNMWI->PopFromModel<Pipe>();
 		m_upBaseKnot = m_pNMWI->PopFromModel<T>();
-		m_pPipe2Split->SetStartKnot(m_pStartKnot);
+		m_pPipe2Split->SetStartPnt(m_pStartKnot);
 		m_pStartKnot->ReplaceOutgoing(m_upPipeNew.get(), m_pPipe2Split);
 	}
 

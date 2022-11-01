@@ -28,30 +28,28 @@ export class PipeList
 {
 public:
 
-	unique_ptr<PipeList>Clone() const;
-
 	void Dump() const;
 	void Check() const;
 
 	Pipe       & Get(size_t const i)       { return * m_list.at(i); }
 	Pipe const & Get(size_t const i) const { return * m_list.at(i); }
 
+	void Set(size_t const i, Pipe* p) { m_list[i] = p; }
+
 	Pipe       & GetFirst()       { return * m_list.front(); }
 	Pipe const & GetFirst() const { return * m_list.front(); }
 
-	void Add(Pipe &);
-	void Add(PipeList const&);
-
 	void Recalc() const;
 
-	void Remove   (Pipe &);
-	bool TryRemove(Pipe &);
-	void Replace  (Pipe * const, Pipe * const);
+	void Add(Pipe &);
+	void Remove(Pipe &);
+	void Replace(Pipe * const, Pipe * const);
 
 	bool IsEmpty   () const { return m_list.empty(); }
 	bool IsNotEmpty() const { return !IsEmpty(); }
 
 	size_t Size() const { return m_list.size(); }
+	void Resize(size_t const n) { m_list.resize(n); }
 
 	void Clear() { m_list.clear(); }
 

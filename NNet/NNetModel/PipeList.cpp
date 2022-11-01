@@ -21,13 +21,6 @@ using std::make_unique;
 using std::ranges::find;
 using std::ranges::replace;
 
-unique_ptr<PipeList>PipeList::Clone() const 
-{
-	unique_ptr<PipeList> upCopy { make_unique<PipeList>() };
-	upCopy->m_list = m_list;
-	return move(upCopy);
-}
-
 void PipeList::Dump() const
 {
 	wcout << OPEN_BRACKET;
@@ -50,24 +43,11 @@ void PipeList::Add(Pipe & pipe)
 		m_list.push_back(&pipe); 
 }
 
-void PipeList::Add(PipeList const & l) 
-{ 
-	l.Apply2All([this](Pipe & p) { Add(p); }); 
-}
-
-bool PipeList::TryRemove(Pipe & pipe) 
-{ 
-	auto res  { find(m_list, &pipe) };
-	bool bRes { res != end(m_list) };
-	if (bRes)
-		m_list.erase(res);
-	return bRes;
-}
-
 void PipeList::Remove(Pipe & pipe) 
 { 
-	bool bRes { TryRemove(pipe) };
-	assert(bRes);
+	auto res { find(m_list, &pipe) };
+	assert(res != end(m_list));
+	m_list.erase(res);
 }
 
 void PipeList::Replace(Pipe * const pDel, Pipe * const pAdd) 

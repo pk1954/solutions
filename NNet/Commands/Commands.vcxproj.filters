@@ -54,9 +54,6 @@
     <ClCompile Include="Connect2NeuronCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Connect2PipeCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CoordAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -220,6 +217,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CreateSynapseCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectCreateSynapseCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectCreateForkCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -29,6 +29,7 @@ using std::wcout;
 using std::wostream;
 using std::endl;
 using std::ranges::fill;
+using std::ranges::find;
 
 Pipe::Pipe()
   :	Nob(NobType::Value::pipe)
@@ -108,6 +109,23 @@ void Pipe::Recalc()
 		recalc();
 }
 
+void Pipe::AddSynapse(Nob * pSynapse)
+{
+	m_synapses.push_back(static_cast<Synapse *>(pSynapse));
+}
+
+void Pipe::RemoveSynapse(Nob* pSynapse)
+{
+	auto res { find(m_synapses, pSynapse) };
+	assert(res != end(m_synapses));
+	m_synapses.erase(res);
+}
+
+bool Pipe::IsConnectedSynapse(Nob const & synapse) const
+{
+	return find(m_synapses, &synapse) != end(m_synapses);
+}
+
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
 	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
@@ -157,7 +175,7 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 	return true;
 }
 
-void Pipe::SetStartKnot(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
+void Pipe::SetStartPnt(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 {
 	if (pBaseKnot)
 	{
@@ -166,7 +184,7 @@ void Pipe::SetStartKnot(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 	}
 }
 
-void Pipe::SetEndKnot(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
+void Pipe::SetEndPnt(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 {
 	if (pBaseKnot)
 	{

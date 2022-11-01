@@ -22,6 +22,7 @@ using std::vector;
 using std::wostream;
 
 //class BaseKnot;  // avoid circular reference
+//class Synapse;   // avoid circular reference
 
 export class Pipe : public Nob
 {
@@ -42,8 +43,12 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsPipeType(); }
 
-	void SetStartKnot(Nob * const);   //TODO: Nob --> BaseKnot
-	void SetEndKnot  (Nob * const);   //TODO: Nob --> BaseKnot
+	void SetStartPnt(Nob * const);   //TODO: Nob --> BaseKnot
+	void SetEndPnt  (Nob * const);   //TODO: Nob --> BaseKnot
+
+	void AddSynapse        (Nob *);              //TODO: Nob --> Synapse
+	void RemoveSynapse     (Nob *);              //TODO: Nob --> Synapse
+	bool IsConnectedSynapse(Nob const &) const;  //TODO: Nob --> Synapse
 
 	void Emphasize(bool const) final;
 	void Emphasize(bool const, bool const);
@@ -87,7 +92,7 @@ public:
 	void          Expand          (MicroMeterRect &)                      const final;
 	void          MoveNob         (MicroMeterPnt const &)                       final;
 	void          Link            (Nob const &, Nob2NobFunc const &)            final;
-	void          CollectInput         ()                                            final;
+	void          CollectInput    ()                                            final;
 	bool          CompStep        ()                                            final;
 	void          Recalc          ()                                            final;
 	void          ClearDynamicData()                                            final;
@@ -141,6 +146,8 @@ private:
 	Nob      * m_pKnotEnd   { nullptr };  //TODO: Nob --> BaseKnot
 	size_t     m_potIndex   { 0 };   // index in m_potential if SegNr 0
 	vector<mV> m_potential  { };
+
+	vector<Nob*> m_synapses;  //TODO: Nob --> Synapse
 
 	MicroMeterPnt dislocation() const;
 	size_t        segNr2index(SegNr const) const;

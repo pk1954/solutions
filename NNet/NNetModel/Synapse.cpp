@@ -21,7 +21,13 @@ using std::endl;
 
 void Synapse::Check() const
 {
-	BaseKnot::Check();
+	Nob::Check();
+	assert(GetNrOfInConns () == 2);
+	assert(GetNrOfOutConns() == 0);
+	GetAddPipe ().Check();
+	GetMainPipe().Check();
+	assert(GetAddPipe().GetEndKnotId() == GetId());
+	assert(GetMainPipe().IsConnectedSynapse(*this));
 }
 
 void Synapse::Dump() const
@@ -30,6 +36,12 @@ void Synapse::Dump() const
 	wcout << L" tState " << static_cast<int>(m_state) << endl;
 	wcout << L" blocked " << m_usBlocked << endl;
 	wcout << L" addInput " << m_mVaddInput << endl;
+}
+
+void Synapse::Reconnect()
+{
+	getMainPipe().AddSynapse(this);
+	getAddPipe ().SetEndPnt(this);
 }
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
