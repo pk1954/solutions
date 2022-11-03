@@ -7,24 +7,22 @@ module;
 export module NNetModel:Synapse;
 
 import DrawContext;
-import :BaseKnot;
+import :Nob;
 import :NobType;
 import :Pipe;
 import :OutputLine;
 import :tHighlight;
 
-export class Synapse : public BaseKnot
+export class Synapse : public Nob
 {
 public:
 
-    explicit Synapse(MicroMeterPnt const center)
-        : BaseKnot(center, NobType::Value::synapse, KNOT_WIDTH)
-    {
-        ReserveInputConns(2);
-    }
+    Synapse(Pipe&, Pipe&);
 
     void Dump()  const final;
     void Check() const final;
+
+    MicroMeter GetExtension() const { return NEURON_RADIUS; }
 
     Radian    GetDir()    const final { return Radian::NULL_VAL(); };
     NobIoMode GetIoMode() const final { return NobIoMode::internal; }
@@ -34,26 +32,29 @@ public:
     mV   GetNextOutput() const final;
     void Reconnect()           final;
 
-    Pipe const& GetAddPipe () const { return GetIncoming(ADD_INDEX); }
-    Pipe const& GetMainPipe() const { return GetIncoming(MAIN_INDEX); }
+    MicroMeterPnt GetPos()                                    const final;
+    void          Expand      (MicroMeterRect&)               const final;
+    bool          IsIncludedIn(MicroMeterRect const&)         const final;
+    bool          Includes    (MicroMeterPnt  const&)         const final;
+    void          SetPos      (MicroMeterPnt  const&)               final;
+    void          MoveNob     (MicroMeterPnt  const&)               final;
+    void          RotateNob   (MicroMeterPnt  const&, Radian const) final;
+    void          Link        (Nob const&, Nob2NobFunc const&)      final;
 
-    void SetAddPipe (Pipe & pipe) { SetIncoming(ADD_INDEX,  &pipe); }
-    void SetMainPipe(Pipe & pipe) { SetIncoming(MAIN_INDEX, &pipe); }
+    Pipe const& GetAddPipe () const { return m_pipeAdd; }
+    Pipe const& GetMainPipe() const { return m_pipeMain; }
 
     void DrawExterior(DrawContext const&, tHighlight const) const final;
     void DrawInterior(DrawContext const&, tHighlight const) const final;
 
 private:
 
-    static const size_t MAIN_INDEX { 0 };
-    static const size_t ADD_INDEX  { 1 };
-
     enum class tState { normal, addLineBlocked, stdInputBlocked };
 
     tState     m_state      { tState::normal };
     fMicroSecs m_usBlocked  { 0.0_MicroSecs };
     mV         m_mVaddInput { 0._mV };
-
-    Pipe & getAddPipe () { return GetIncoming(ADD_INDEX); }
-    Pipe & getMainPipe() { return GetIncoming(MAIN_INDEX); }
+    Pipe&      m_pipeMain;
+    Pipe&      m_pipeAdd;
+    float      m_fPosOnMainPipe;
 };

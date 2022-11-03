@@ -4,6 +4,7 @@
 
 module;
 
+#include <cmath>
 #include <cassert>
 #include <iostream>
 #include "Resource.h"
@@ -18,21 +19,64 @@ import :BaseKnot;
 
 using std::wcout;
 using std::endl;
+using std::fabs;
+
+Synapse::Synapse
+(
+	Pipe& pPipeMain,
+	Pipe& pPipeAdd
+)
+  : Nob(NobType::Value::synapse),
+	m_pipeMain(pPipeMain),
+	m_pipeAdd(pPipeAdd)
+{
+	MicroMeterPnt umPntMainVector { pPipeMain.GetVector() };
+	if (umPntMainVector.GetX().GetAbsValue() > umPntMainVector.GetY().GetAbsValue())
+	{
+		m_fPosOnMainPipe = (m_pipeAdd.GetEndPoint().GetX() - pPipeMain.GetStartPoint().GetX()) / umPntMainVector.GetX();
+	}
+	else
+	{
+		m_fPosOnMainPipe = (m_pipeAdd.GetEndPoint().GetY() - pPipeMain.GetStartPoint().GetY()) / umPntMainVector.GetY();
+	}
+}
+
+MicroMeterPnt Synapse::GetPos() const
+{
+	return m_pipeMain.GetStartPoint() + m_pipeMain.GetVector() * m_fPosOnMainPipe;
+}
+
+void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+{
+//	(position) .Rotate(umPntPivot, radDelta);
+}
+
+void Synapse::SetPos(MicroMeterPnt const& newPos)
+{
+	MoveNob(newPos - GetPos());
+}
+
+void Synapse::MoveNob(MicroMeterPnt const& delta)
+{
+	m_pipeMain.MoveNob(delta);
+}
 
 void Synapse::Check() const
 {
 	Nob::Check();
-	assert(GetNrOfInConns () == 2);
-	assert(GetNrOfOutConns() == 0);
-	GetAddPipe ().Check();
-	GetMainPipe().Check();
-	assert(GetAddPipe().GetEndKnotId() == GetId());
-	assert(GetMainPipe().IsConnectedSynapse(*this));
+	m_pipeAdd.Check();
+	m_pipeMain.Check();
+	assert(m_pipeAdd.GetEndKnotId() == GetId());
+	assert(m_pipeMain.IsConnectedSynapse(*this));
 }
 
 void Synapse::Dump() const
 {
-	BaseKnot::Dump();
+	Nob::Dump();
+	wcout << L" main";
+	m_pipeMain.Dump();
+	wcout << L" Add";
+	m_pipeAdd.Dump();
 	wcout << L" tState " << static_cast<int>(m_state) << endl;
 	wcout << L" blocked " << m_usBlocked << endl;
 	wcout << L" addInput " << m_mVaddInput << endl;
@@ -40,8 +84,30 @@ void Synapse::Dump() const
 
 void Synapse::Reconnect()
 {
-	getMainPipe().AddSynapse(this);
-	getAddPipe ().SetEndPnt(this);
+	m_pipeMain.AddSynapse(this);
+	m_pipeAdd.SetEndPnt(this);
+}
+
+void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
+{
+	Synapse const& src { static_cast<Synapse const&>(nobSrc) };
+	m_pipeMain = static_cast<Pipe&>(*f(&src.m_pipeMain));
+	m_pipeAdd  = static_cast<Pipe&>(*f(&src.m_pipeAdd));
+}
+
+bool Synapse::IsIncludedIn(MicroMeterRect const& umRect) const
+{
+	return umRect.Includes(GetPos());
+}
+
+void Synapse::Expand(MicroMeterRect& umRect) const
+{
+	umRect.Expand(GetPos());
+}
+
+bool Synapse::Includes(MicroMeterPnt const& point) const
+{
+	return Distance(point, GetPos()) <= GetExtension();
 }
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
@@ -65,8 +131,8 @@ void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) co
 
 void Synapse::CollectInput()
 {
-	m_mVinputBuffer = static_cast<Pipe const&>(GetIncoming(0)).GetEndKnotPtr()->GetNextOutput();
-	m_mVaddInput    = static_cast<Pipe const&>(GetIncoming(1)).GetEndKnotPtr()->GetNextOutput();
+	m_mVinputBuffer = m_pipeMain.GetEndKnotPtr()->GetNextOutput();
+	m_mVaddInput    = m_pipeAdd .GetEndKnotPtr()->GetNextOutput();
 }
 
 bool Synapse::CompStep()

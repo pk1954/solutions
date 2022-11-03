@@ -25,12 +25,12 @@ public:
 	)
       : m_pPipe(m_pNMWI->GetNobPtr<Pipe*>(idPipe))
 	{
-		m_upSynapse   = make_unique<Synapse>(pos);
+		OutputLine outputLine(pos);
 		m_upInputLine = make_unique<InputLine>(pos - m_pNMWI->OrthoVector(idPipe));
-		m_upPipeOrtho = make_unique<Pipe>(m_upInputLine.get(), m_upSynapse.get());
+		m_upPipeOrtho = make_unique<Pipe>(m_upInputLine.get(), &outputLine);
+		m_upSynapse   = make_unique<Synapse>(*m_pPipe, *m_upPipeOrtho.get());
 		m_upInputLine->AddOutgoing(*m_upPipeOrtho.get());
-		m_upSynapse->SetAddPipe(*m_upPipeOrtho.get());
-		m_upSynapse->SetMainPipe(*m_pPipe);
+		m_upPipeOrtho->SetEndPnt(m_upSynapse.get());
 	}
 
 	~CreateSynapseCommand() = default;
@@ -55,7 +55,7 @@ private:
 
 	Pipe * const          m_pPipe;
 	unique_ptr<Pipe>      m_upPipe;
-	unique_ptr<Synapse>   m_upSynapse;
 	unique_ptr<InputLine> m_upInputLine;
 	unique_ptr<Pipe>      m_upPipeOrtho;
+	unique_ptr<Synapse>   m_upSynapse;
 };

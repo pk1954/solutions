@@ -82,9 +82,6 @@ public:
 	void SetIncoming(size_t const i, Pipe * p) { m_inPipes .Set(i, p); }
 	void SetOutgoing(size_t const i, Pipe * p) { m_outPipes.Set(i, p); }
 
-	void ReserveInputConns (size_t const n) { m_inPipes.Resize(n); }
-	void ReserveOutputConns(size_t const n) { m_outPipes.Resize(n); }
-
 	Pipe       & GetIncoming(size_t const i) { return m_inPipes .Get(i); }
 	Pipe       & GetOutgoing(size_t const i) { return m_outPipes.Get(i); }
 

@@ -136,8 +136,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void Pipe::Check() const
 {
 	Nob::Check();
-	assert(static_cast<BaseKnot *>(m_pKnotStart)->IsPrecursorOf(* this));
-	assert(static_cast<BaseKnot *>(m_pKnotEnd  )->IsSuccessorOf(* this));
+	//assert(static_cast<BaseKnot *>(m_pKnotStart)->IsPrecursorOf(* this));
+	//assert(static_cast<BaseKnot *>(m_pKnotEnd  )->IsSuccessorOf(* this));
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -221,16 +221,16 @@ MicroMeterPnt Pipe::GetEndPoint() const
 		return MicroMeterPnt::NULL_VAL();
 
 	MicroMeterPnt umEndPoint { m_pKnotEnd->GetPos() };
-	if (m_pKnotEnd->IsSynapse())
-	{
-		Pipe const & pipeAdd { static_cast<Synapse const*>(m_pKnotEnd)->GetAddPipe() };
-		if (&pipeAdd == this)
-		{
-			MicroMeterPnt const umVector { umEndPoint - GetStartPoint() };
-			MicroMeterPnt const umOffset { umVector.ScaledTo(PIPE_WIDTH * 1.5f) };
-			umEndPoint -= umOffset;
-		}
-	}
+	//if (m_pKnotEnd->IsSynapse())
+	//{
+	//	Pipe const & pipeAdd { static_cast<Synapse const*>(m_pKnotEnd)->GetAddPipe() };
+	//	if (&pipeAdd == this)
+	//	{
+	//		MicroMeterPnt const umVector { umEndPoint - GetStartPoint() };
+	//		MicroMeterPnt const umOffset { umVector.ScaledTo(PIPE_WIDTH * 1.5f) };
+	//		umEndPoint -= umOffset;
+	//	}
+	//}
 	return umEndPoint;
 }
 

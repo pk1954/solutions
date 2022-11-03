@@ -29,9 +29,7 @@ public:
 		m_pPipe       (m_pNMWI->GetNobPtr<Pipe*>(idPipe))
 	{
 		assert(m_pOutputLine->IsOutputLine());
-		m_upSynapse = make_unique<Synapse>(m_pOutputLine->GetPos());
-		m_upSynapse->SetMainPipe(*m_pPipe);
-		m_upSynapse->SetAddPipe (m_pOutputLine->GetPipe());
+		m_upSynapse = make_unique<Synapse>(*m_pPipe, m_pOutputLine->GetPipe());
 		m_upSynapse->Select(m_pOutputLine->IsSelected());
 	}
 

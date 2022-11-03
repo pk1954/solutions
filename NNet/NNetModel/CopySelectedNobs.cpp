@@ -79,7 +79,7 @@ Nob const & CopySelectedNobs::copy2model(Nob * const pNobCopy)
 { 
 	assert(pNobCopy);
 	assert(IsDefined(pNobCopy->GetId()));
-	unordered_map<Nob *, Nob const *>::const_iterator const it { m_mapCopy2model.find(pNobCopy) };
+	auto const it { m_mapCopy2model.find(pNobCopy) };
 	assert(it != m_mapCopy2model.end());
 	return * it->second;
 }
@@ -88,6 +88,6 @@ Nob * CopySelectedNobs::model2copy(Nob const * const pNobModel)
 { 
 	assert(pNobModel);
 	assert(IsDefined(pNobModel->GetId()));
-	unordered_map<Nob const *, Nob *>::const_iterator const it { m_mapModel2copy.find(pNobModel) };
+	auto const it { m_mapModel2copy.find(pNobModel) };
 	return (it != m_mapModel2copy.end()) ? it->second : nullptr;
 }

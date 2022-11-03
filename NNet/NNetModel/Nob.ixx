@@ -76,7 +76,7 @@ public:
 	virtual void          RotateNob   (MicroMeterPnt  const &, Radian const)           = 0;
 	virtual void          CollectInput()                                               = 0;
 	virtual bool          CompStep    ()                                               = 0;
-	virtual void          Link(Nob const &, Nob2NobFunc const &) = 0;
+	virtual void          Link        (Nob const &, Nob2NobFunc const &)               = 0;
 
 	virtual void Recalc() { };
 
