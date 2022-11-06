@@ -53,6 +53,7 @@ export inline float         const NEURON_INTERIOR { 0.8f };                // Ne
 export inline float         const PIPE_INTERIOR   { 0.6f };                // Pipes have 60% interior, 40 % border 
 export inline MicroMeter    const NEURON_RADIUS   { 50.0_MicroMeter };
 export inline MicroMeter    const PIPE_WIDTH      { 20.0_MicroMeter };
+export inline MicroMeter    const PIPE_WIDTH_HIGH { 30.0_MicroMeter };
 export inline MicroMeter    const KNOT_WIDTH      { PIPE_WIDTH / 2 };
 export inline MicroMeterPnt const STD_OFFSET      { MicroMeterPnt(0._MicroMeter, NEURON_RADIUS * 2.0) };
 

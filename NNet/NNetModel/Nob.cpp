@@ -113,6 +113,70 @@ ColorF Nob::GetInteriorColor(tHighlight const type) const
 	return NNetColors::INT_NORMAL;
 };
 
+void Nob::FillExternalCircle
+(
+	DrawContext const& context,
+	tHighlight  const  type
+) const
+{
+	MicroMeterPnt const umPos    { GetPos() };
+	MicroMeterCircle    umCircle { umPos, KNOT_WIDTH };
+	if (IsEmphasized())
+		umCircle *= 2.f;
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(umCircle, GetExteriorColor(type));
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_HIGHLIGHTED);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_FIT);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_NOFIT);
+		break;
+	default:
+		assert(false);
+		break;
+	}
+}
+
+void Nob::FillInternalCircle
+(
+	DrawContext const& context,
+	tHighlight  const  type
+) const
+{
+	float  fWidth       { PIPE_INTERIOR };
+	fPixel fPixMinWidth { 1._fPixel };
+	if (IsEmphasized())
+	{
+		fWidth *= 2.f;
+		fPixMinWidth = 3.f;
+	}
+	MicroMeterCircle const umCircle { GetPos(), KNOT_WIDTH * fWidth };
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(umCircle, GetInteriorColor(type), fPixMinWidth);
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(umCircle, GetInteriorColor(type), fPixMinWidth);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	default:
+		assert(false);
+		break;
+	}
+}
+
 void Nob::Check() const
 {
 #ifdef _DEBUG

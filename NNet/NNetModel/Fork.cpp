@@ -4,10 +4,23 @@
 
 module;
 
+#include <cassert>
+
 module NNetModel:Fork;
 
 import DrawContext;
 import Types;
+
+void Fork::Check() const
+{
+	Nob::Check();
+	m_pPipeIn->Check();
+	m_pPipeOut1->Check();
+	m_pPipeOut2->Check();
+	assert(m_pPipeIn  ->GetEndKnotId()   == GetId());
+	assert(m_pPipeOut1->GetStartKnotId() == GetId());
+	assert(m_pPipeOut2->GetStartKnotId() == GetId());
+}
 
 bool Fork::IsIncludedIn(MicroMeterRect const& umRect) const
 {
@@ -48,4 +61,14 @@ void Fork::SetPos(MicroMeterPnt const& newPos)
 void Fork::MoveNob(MicroMeterPnt const& delta)
 {
 	SetPos(GetPos() + delta);
+}
+
+void Fork::DrawExterior(DrawContext const& context, tHighlight const type) const
+{
+	FillExternalCircle(context, type);
+}
+
+void Fork::DrawInterior(DrawContext const& context, tHighlight const type) const
+{
+	FillInternalCircle(context, type);
 }

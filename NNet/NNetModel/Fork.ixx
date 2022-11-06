@@ -31,7 +31,7 @@ public:
     void RotateNob(MicroMeterPnt  const&, Radian const) final;
     void Link     (Nob const&, Nob2NobFunc const&)      final;
 
-    //void Check() const final;
+    void Check() const final;
 
     //void Dump()  const final;
 
@@ -57,8 +57,8 @@ public:
         m_pPipeOut2 = pPipeOut2;
     }
 
-	void DrawExterior(DrawContext const &, tHighlight const) const final {};
-	void DrawInterior(DrawContext const &, tHighlight const) const final {};
+	void DrawExterior(DrawContext const &, tHighlight const) const final;
+	void DrawInterior(DrawContext const &, tHighlight const) const final;
     
     void CollectInput () final 
     {

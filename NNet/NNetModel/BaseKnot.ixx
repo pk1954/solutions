@@ -121,11 +121,6 @@ public:
 
 	void EvaluateSelectionStatus();
 
-protected:
-
-	void FillExternalCircle(DrawContext const&, tHighlight const) const;
-	void FillInternalCircle(DrawContext const&, tHighlight const) const;
-
 private:
 
 	PipeList         m_inPipes;

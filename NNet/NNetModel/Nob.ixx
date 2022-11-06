@@ -137,6 +137,9 @@ protected:
 
 	NNetParameters const * GetParam() const { return m_pParameters; }
 
+	void FillExternalCircle(DrawContext const&, tHighlight const) const;
+	void FillInternalCircle(DrawContext const&, tHighlight const) const;
+
 private:
 
 	NobType m_type        { NobType::Value::undefined };
