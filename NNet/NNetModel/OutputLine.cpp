@@ -70,6 +70,6 @@ void OutputLine::drawPlug
 
 void OutputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
-	add(IDD_ADD_OUTGOING2BASEKNOT);  // case 11
+	add(IDD_EXTEND_OUTPUTLINE);  // case 11
 	IoLine::AppendMenuItems(add);
 }

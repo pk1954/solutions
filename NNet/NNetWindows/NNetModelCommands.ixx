@@ -42,13 +42,14 @@ public:
     void UndoCommand();
     void RedoCommand();
 
-    void AddIncoming2BaseKnot(NobId const, MicroMeterPnt const&);
-    void AddIncoming2Pipe    (NobId const, MicroMeterPnt const&);
+    void ExtendInputLine   (NobId const, MicroMeterPnt const&);
+    void ExtendOutputLine  (NobId const, MicroMeterPnt const&);
+    void AddIncoming2Neuron(NobId const, MicroMeterPnt const&);
+    void AddIncoming2Pipe  (NobId const, MicroMeterPnt const&);
+    void AddOutgoing2Pipe  (NobId const, MicroMeterPnt const&);
     void AddModel();
-    void AddOutgoing2BaseKnot(NobId const, MicroMeterPnt const&);
-    void AddOutgoing2Pipe    (NobId const, MicroMeterPnt const&);
-    void AddSensor           (MicroMeterCircle const&, TrackNr const);
-    void AddSigGen2Monitor   (TrackNr const);
+    void AddSensor(MicroMeterCircle const&, TrackNr const);
+    void AddSigGen2Monitor(TrackNr const);
     void AnalyzeAnomalies();
     void AnalyzeLoops();
     void AnimateArrows(MicroMeter&, MicroMeter const);

@@ -289,25 +289,25 @@ public:
     }
 };
 
-class WrapAddOutgoing2BaseKnot: public ScriptFunctor
+class WrapExtendOutputLine: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddOutgoing2BaseKnot(idNob, umPos);
+        m_pCommands->ExtendOutputLine(idNob, umPos);
     }
 };
 
-class WrapAddIncoming2BaseKnot: public ScriptFunctor
+class WrapExtendInputLine : public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const idNob { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddIncoming2BaseKnot(idNob, umPos);
+        m_pCommands->ExtendInputLine(idNob, umPos);
     }
 };
 
@@ -384,50 +384,51 @@ void InitializeNNetWrappers
     m_pCommands = pCommands;
     m_pModelIO  = pModelIO;
 
-    SymbolTable::ScrDefConst(L"AddModel",             new WrapAddModel);
-    SymbolTable::ScrDefConst(L"AddSignal",            new WrapAddSignal );
-    SymbolTable::ScrDefConst(L"AnalyzeAnomalies",     new WrapAnalyzeAnomalies); 
-    SymbolTable::ScrDefConst(L"AnalyzeLoops",         new WrapAnalyzeLoops); 
-    SymbolTable::ScrDefConst(L"AddIncoming2BaseKnot", new WrapAddIncoming2BaseKnot); 
-    SymbolTable::ScrDefConst(L"AddIncoming2Pipe",     new WrapAddIncoming2Pipe); 
-    SymbolTable::ScrDefConst(L"AddOutgoing2BaseKnot", new WrapAddOutgoing2BaseKnot); 
-    SymbolTable::ScrDefConst(L"AddOutgoing2Pipe",     new WrapAddOutgoing2Pipe); 
-    SymbolTable::ScrDefConst(L"Connect",              new WrapConnect );
-    SymbolTable::ScrDefConst(L"CopySelection",        new WrapCopySelection );
-    SymbolTable::ScrDefConst(L"CreateInitialNobs",    new WrapCreateInitialNobs );
-    SymbolTable::ScrDefConst(L"DeleteSelection",      new WrapDeleteSelection );
-    SymbolTable::ScrDefConst(L"DeleteNob",            new WrapDeleteNob );
-    SymbolTable::ScrDefConst(L"DeleteBaseKnot",       new WrapDeleteBaseKnot);
-    SymbolTable::ScrDefConst(L"DiscIoConnector",      new WrapDiscIoConnector ); 
-    SymbolTable::ScrDefConst(L"Include",              new WrapInclude );
-    SymbolTable::ScrDefConst(L"InsertNeuron",         new WrapInsertNeuron); 
-    SymbolTable::ScrDefConst(L"MoveSelection",        new WrapMoveSelection );
-    SymbolTable::ScrDefConst(L"MoveSensor",           new WrapMoveSensor);
-    SymbolTable::ScrDefConst(L"MoveNob",              new WrapMoveNob );
-    SymbolTable::ScrDefConst(L"NewIoLinePair",        new WrapNewIoLinePair ); 
-    SymbolTable::ScrDefConst(L"MakeIoConnector",      new WrapMakeIoConnector );
-    SymbolTable::ScrDefConst(L"ResetModel",           new WrapResetModel); 
-    SymbolTable::ScrDefConst(L"SelectAll",            new WrapSelectAll );
-    SymbolTable::ScrDefConst(L"SelectNob",            new WrapSelectNob );
-    SymbolTable::ScrDefConst(L"SelectNobsInRect",     new WrapSelectNobsInRect); 
-    SymbolTable::ScrDefConst(L"SelectSubtree",        new WrapSelectSubtree );
-    SymbolTable::ScrDefConst(L"SetParameter",         new WrapSetParameter);
-    SymbolTable::ScrDefConst(L"SplitNeuron",          new WrapSplitNeuron );
-    SymbolTable::ScrDefConst(L"ToggleStopOnTrigger",  new WrapToggleStopOnTrigger );
-    SymbolTable::ScrDefConst(L"UndoCommand",          new WrapUndoCommand );
-    SymbolTable::ScrDefConst(L"RedoCommand",          new WrapRedoCommand );
-    SymbolTable::ScrDefConst(L"Break",                new WrapBreak );
+    SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
+    SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal );
+    SymbolTable::ScrDefConst(L"AnalyzeAnomalies",    new WrapAnalyzeAnomalies); 
+    SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
+    SymbolTable::ScrDefConst(L"ExtendInputLine",     new WrapExtendInputLine);
+    SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
+    SymbolTable::ScrDefConst(L"AddIncoming2Pipe",    new WrapAddIncoming2Pipe); 
+    SymbolTable::ScrDefConst(L"AddOutgoing2Pipe",    new WrapAddOutgoing2Pipe); 
+    SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
+    SymbolTable::ScrDefConst(L"CopySelection",       new WrapCopySelection );
+    SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
+    SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
+    SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
+    SymbolTable::ScrDefConst(L"DeleteBaseKnot",      new WrapDeleteBaseKnot);
+    SymbolTable::ScrDefConst(L"DiscIoConnector",     new WrapDiscIoConnector ); 
+    SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
+    SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 
+    SymbolTable::ScrDefConst(L"MoveSelection",       new WrapMoveSelection );
+    SymbolTable::ScrDefConst(L"MoveSensor",          new WrapMoveSensor);
+    SymbolTable::ScrDefConst(L"MoveNob",             new WrapMoveNob );
+    SymbolTable::ScrDefConst(L"NewIoLinePair",       new WrapNewIoLinePair ); 
+    SymbolTable::ScrDefConst(L"MakeIoConnector",     new WrapMakeIoConnector );
+    SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
+    SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );
+    SymbolTable::ScrDefConst(L"SelectNob",           new WrapSelectNob );
+    SymbolTable::ScrDefConst(L"SelectNobsInRect",    new WrapSelectNobsInRect); 
+    SymbolTable::ScrDefConst(L"SelectSubtree",       new WrapSelectSubtree );
+    SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
+    SymbolTable::ScrDefConst(L"SplitNeuron",         new WrapSplitNeuron );
+    SymbolTable::ScrDefConst(L"ToggleStopOnTrigger", new WrapToggleStopOnTrigger );
+    SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );
+    SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
+    SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
 
-    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",        static_cast<long>(IDM_ANALYZE_LOOPS        ));
-    SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",    static_cast<long>(IDM_ANALYZE_ANOMALIES    ));
-    SymbolTable::ScrDefConst(L"DELETE_SELECTION",     static_cast<long>(IDM_DELETE_SELECTION     ));
-    SymbolTable::ScrDefConst(L"COPY_SELECTION",       static_cast<long>(IDM_COPY_SELECTION       ));
-    SymbolTable::ScrDefConst(L"INSERT_NEURON",        static_cast<long>(IDD_INSERT_NEURON        ));
-    SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",     static_cast<long>(IDD_NEW_IO_LINE_PAIR   ));
-    SymbolTable::ScrDefConst(L"ADD_OUTGOING2BASEKNOT",static_cast<long>(IDD_ADD_OUTGOING2BASEKNOT));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2BASEKNOT",static_cast<long>(IDD_ADD_INCOMING2BASEKNOT));
-    SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",    static_cast<long>(IDD_ADD_OUTGOING2PIPE    ));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2PIPE",    static_cast<long>(IDD_ADD_INCOMING2PIPE    ));
+    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS       ));
+    SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",   static_cast<long>(IDM_ANALYZE_ANOMALIES   ));
+    SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION    ));
+    SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION      ));
+    SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON       ));
+    SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",    static_cast<long>(IDD_NEW_IO_LINE_PAIR    ));
+    SymbolTable::ScrDefConst(L"EXTEND_INPUTLINE",    static_cast<long>(IDD_EXTEND_INPUTLINE    ));
+    SymbolTable::ScrDefConst(L"EXTEND_OUTPUTLINE",   static_cast<long>(IDD_EXTEND_OUTPUTLINE   ));
+    SymbolTable::ScrDefConst(L"ADD_INCOMING2NEURON", static_cast<long>(IDD_ADD_INCOMING2NEURON ));
+    SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",   static_cast<long>(IDD_ADD_OUTGOING2PIPE   ));
+    SymbolTable::ScrDefConst(L"ADD_INCOMING2PIPE",   static_cast<long>(IDD_ADD_INCOMING2PIPE   ));
 
     ParamType::Apply2GlobalParameters
     ( 

@@ -18,7 +18,7 @@
     <ClCompile Include="AddNobsCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AddPipe2BaseKnotCommand.ixx">
+    <ClCompile Include="ExtendOutputLineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddSensorSignalCmd.ixx">
@@ -223,6 +223,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConnectCreateForkCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddPipe2NeuronCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtendInputLineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

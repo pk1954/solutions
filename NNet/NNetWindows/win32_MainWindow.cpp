@@ -81,9 +81,9 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
-		{ IDD_ADD_INCOMING2BASEKNOT,   L"Add incoming dendrite"          },
+		{ IDD_EXTEND_INPUTLINE,        L"Extend"                         },
+		{ IDD_EXTEND_OUTPUTLINE,       L"Extend"                         },
 		{ IDD_ADD_INCOMING2PIPE,       L"Add incoming dendrite"          },
-		{ IDD_ADD_OUTGOING2BASEKNOT,   L"Add outgoing dendrite"          },
 		{ IDD_ADD_OUTGOING2PIPE,       L"Add outgoing dendrite"          },
 		{ IDD_ADD_EEG_SENSOR,          L"New EEG sensor" 		         },
 //		{ IDM_ALIGN_NOBS,              L"Align selected objects"         },

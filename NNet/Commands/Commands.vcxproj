@@ -82,7 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx" />
-    <ClCompile Include="AddPipe2BaseKnotCommand.ixx" />
+    <ClCompile Include="ExtendOutputLineCmd.ixx" />
+    <ClCompile Include="AddPipe2NeuronCmd.ixx" />
     <ClCompile Include="AddSensorSignalCmd.ixx" />
     <ClCompile Include="AddSigGen2MonitorCmd.ixx" />
     <ClCompile Include="AnalyzeCommand.ixx" />
@@ -111,6 +112,7 @@
     <ClCompile Include="DeleteSignalCommand.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
+    <ClCompile Include="ExtendInputLineCmd.ixx" />
     <ClCompile Include="InsertBaseKnotCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />

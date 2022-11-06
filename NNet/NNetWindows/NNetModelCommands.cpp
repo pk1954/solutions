@@ -30,7 +30,9 @@ import MoveNobCommand;
 import ToggleEmphModeCmd;
 import MoveSignalCmd;
 import DeleteSelectionCommand;
-import AddPipe2BaseKnotCommand;
+import ExtendInputLineCmd;
+import ExtendOutputLineCmd;
+import AddPipe2NeuronCmd;
 import SelectionCommand;
 import InsertTrackCommand;
 import SplitNeuronCmd;
@@ -131,11 +133,25 @@ void NNetModelCommands::ResetModel()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::AddIncoming2BaseKnot(NobId const id, MicroMeterPnt const & pos) // case 10
+void NNetModelCommands::ExtendInputLine(NobId const id, MicroMeterPnt const& pos) // case 10
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos - STD_OFFSET, NobType::Value::inputLine));
+	m_pCmdStack->PushCommand(make_unique<ExtendInputLineCmd>(id, pos - STD_OFFSET));
+}
+
+void NNetModelCommands::ExtendOutputLine(NobId const id, MicroMeterPnt const& pos) // case 11
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<ExtendOutputLineCmd>(id, pos + STD_OFFSET));
+}
+
+void NNetModelCommands::AddIncoming2Neuron(NobId const id, MicroMeterPnt const& pos) // case 9
+{
+	if (IsTraceOn())
+		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
+	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(id, pos - STD_OFFSET));
 }
 
 void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 8
@@ -152,13 +168,6 @@ void NNetModelCommands::AddModel()
 		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
 	unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
-}
-
-void NNetModelCommands::AddOutgoing2BaseKnot(NobId const id, MicroMeterPnt const & pos)  // case 11
-{
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2BaseKnotCommand>(id, pos + STD_OFFSET, NobType::Value::outputLine));
 }
 
 void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 7
