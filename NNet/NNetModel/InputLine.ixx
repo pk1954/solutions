@@ -42,8 +42,7 @@ public:
 
 	void AppendMenuItems(AddMenuFunc const&) const final;
 
-	Pipe & GetPipe()     final { return GetFirstOutgoing(); }
-	void   ConnectPipe() final { GetPipe().SetStartPnt(this); };
+	Pipe & GetPipe() final { return GetFirstOutgoing(); }
 
 private:
 

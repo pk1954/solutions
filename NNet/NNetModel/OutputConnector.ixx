@@ -29,6 +29,7 @@ public:
 	~OutputConnector() final = default;
 
 	void CollectInput() final { /* done by output neurons */ };
+	void Reconnect()    final { /* nothing to connect */ };
 
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 

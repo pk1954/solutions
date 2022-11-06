@@ -435,8 +435,11 @@ void MainWindow::DoPaint()
 		tHighlight type { connectionAllowed() ? tHighlight::targetFit : tHighlight::targetNoFit };
 		m_pNMRI->DrawExterior(m_pNMRI->GetTargetNobId(), context, type);
 		m_pNMRI->DrawInterior(m_pNMRI->GetTargetNobId(), context, type);
-		m_pNMRI->DrawExterior(m_pNMRI->GetHighlightedNobId(), context, type);
-		m_pNMRI->DrawInterior(m_pNMRI->GetHighlightedNobId(), context, type);
+		if (IsDefined(m_pNMRI->GetHighlightedNobId()))
+		{
+			m_pNMRI->DrawExterior(m_pNMRI->GetHighlightedNobId(), context, type);
+			m_pNMRI->DrawInterior(m_pNMRI->GetHighlightedNobId(), context, type);
+		}
 	}
 	else if (IsDefined(m_pNMRI->GetHighlightedNobId()))  // draw highlighted nob again to be sure that it is in foreground
 	{

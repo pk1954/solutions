@@ -36,9 +36,9 @@ public:
 
 private:
 
-    vector<unique_ptr<Command>>      m_CommandStack{ };
-    size_t                           m_iIndex{ 0 }; // index into m_Commandstack
-    NNetModelReaderInterface const* m_pNMRI{ nullptr };
+    vector<unique_ptr<Command>>      m_CommandStack { };
+    size_t                           m_iIndex       { 0 }; // index into m_Commandstack
+    NNetModelReaderInterface const * m_pNMRI        { nullptr };
     Observable* m_pStaticModelObservable{ nullptr };
 
     Command * getCmdPtr(size_t const index) const
@@ -48,7 +48,7 @@ private:
         return pCmd;
     }
 
-    Command& currentCmd() const { return *getCmdPtr(m_iIndex); }
+    Command& currentCmd () const { return *getCmdPtr(m_iIndex); }
     Command& previousCmd() const { return *getCmdPtr(m_iIndex - 1); };
 
     void set2OlderCmd()

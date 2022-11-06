@@ -55,16 +55,16 @@ public:
 	Nob *        ReplaceNob(UPNob);
 	void         SetNob2Slot(NobId const, UPNob); // only for special situations
 	void         SetNob2Slot(UPNob);              // only for special situations
-	void         SelectAllNobs(bool const)            const;
-	void         DeselectAllNobs()                      const { SelectAllNobs(false); }
-	void         CheckNobList()                      const;
-	void         Dump()                      const;
-	bool         Contains(Nob const*)           const;
-	unsigned int CountInSelection(NobType const)         const;
-	unsigned int GetCounter(NobType const)         const;
-	unsigned int GetCounter()                      const;
-	void         Move(MicroMeterPnt const&) const;
-	void         Reconnect(NobId const)           const;
+	void         SelectAllNobs(bool const)              const;
+	void         DeselectAllNobs ()                     const { SelectAllNobs(false); }
+	void         CheckNobList    ()                     const;
+	void         Dump            ()                     const;
+	bool         Contains        (Nob const*)           const;
+	unsigned int CountInSelection(NobType const)        const;
+	unsigned int GetCounter      (NobType const)        const;
+	unsigned int GetCounter      ()                     const;
+	void         Move            (MicroMeterPnt const&) const;
+	void         Reconnect       (NobId const)          const;
 
 	unique_ptr<vector<Nob*>> GetAllSelected();
 

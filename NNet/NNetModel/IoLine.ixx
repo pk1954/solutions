@@ -51,8 +51,7 @@ public:
 	MicroMeterPnt    GetDirVector() const;
 	MicroMeterPosDir GetRawPosDir() const;
 
-	virtual Pipe & GetPipe()     = 0;
-	virtual void   ConnectPipe() = 0;
+	virtual Pipe & GetPipe() = 0;
 
 private:
 	MicroMeterPnt determineVector() const;

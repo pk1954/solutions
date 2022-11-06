@@ -20,26 +20,25 @@ export class CreateForkCommand : public NNetCommand
 public:
 	CreateForkCommand   // case 7
 	(
-		NobId         const  idPipe,
-		MicroMeterPnt const& pos
+		MicroMeterPnt const& pos,
+		NobId         const  idPipe
 	)
-      : m_idPipe(idPipe)
+      : m_idPipe    (idPipe),
+		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
+		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr())),
+		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr()))
 	{
 		m_upFork      = make_unique<Fork>(pos);
 		m_upExtPoint  = make_unique<OutputLine>(pos + m_pNMWI->OrthoVector(m_idPipe));
 		m_upPipeOrtho = make_unique<Pipe>(m_upFork.get(), m_upExtPoint.get());
-		m_upExtPoint->AddIncoming(*m_upPipeOrtho.get());
-		m_upFork    ->AddOutgoing(*m_upPipeOrtho.get());
-
-		m_pPipeOld   = m_pNMWI->GetNobPtr<Pipe*>(m_idPipe);
-		m_pStartKnot = static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr());
-		m_pEndKnot   = static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr());
 
 		m_upPipeNew1 = make_unique<Pipe>(m_pStartKnot, m_upFork.get());
 		m_upPipeNew2 = make_unique<Pipe>(m_upFork.get(), m_pEndKnot);
 
-		m_upFork->AddIncoming(*m_upPipeNew1.get());
-		m_upFork->AddOutgoing(*m_upPipeNew2.get());
+		m_upFork->SetIncoming(m_upPipeNew1.get());
+		m_upFork->SetOutgoing(m_upPipeNew2.get(), m_upPipeOrtho.get());
+
+		m_upExtPoint->AddIncoming(*m_upPipeOrtho.get());
 
 		m_upFork    ->Select(m_pPipeOld->IsSelected());
 		m_upPipeNew1->Select(m_pPipeOld->IsSelected());

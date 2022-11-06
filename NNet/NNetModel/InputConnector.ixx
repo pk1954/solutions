@@ -41,6 +41,7 @@ public:
 	SignalGenerator const* GetSigGenC() const;
 
 	void CollectInput() final { /* */ };
+	void Reconnect()    final { /* nothing to connect */ };
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 

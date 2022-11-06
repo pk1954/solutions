@@ -30,6 +30,9 @@ using std::wostream;
 using std::endl;
 using std::ranges::fill;
 using std::ranges::find;
+using std::unique_ptr;
+using std::make_unique;
+using std::pair;
 
 Pipe::Pipe()
   :	Nob(NobType::Value::pipe)
@@ -107,18 +110,6 @@ void Pipe::Recalc()
 {
 	if (m_pKnotStart && m_pKnotEnd)
 		recalc();
-}
-
-void Pipe::AddSynapse(Nob * pSynapse)
-{
-	m_synapses.push_back(static_cast<Synapse *>(pSynapse));
-}
-
-void Pipe::RemoveSynapse(Nob* pSynapse)
-{
-	auto res { find(m_synapses, pSynapse) };
-	assert(res != end(m_synapses));
-	m_synapses.erase(res);
 }
 
 bool Pipe::IsConnectedSynapse(Nob const & synapse) const
@@ -259,6 +250,11 @@ bool Pipe::Includes(MicroMeterPnt const & point) const
 	return IsPointInRect2<MicroMeterPnt>(point, umPoint1, umPoint2, umOrthoScaled);
 }
 
+bool Pipe::IsConnectedTo(NobId const idBaseKnot) const
+{
+	return (GetStartKnotId() == idBaseKnot) || (GetEndKnotId() == idBaseKnot);
+}
+
 MicroMeterPnt Pipe::GetVector() const
 {
 	assert(m_pKnotStart);
@@ -268,6 +264,39 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
+// Split: create two new pipes and add links to Synapses of existing Pipe
+//        do not affect Synapses themselves
+
+pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Pipe::Split(Nob & nobSplit) const
+{
+	unique_ptr<Pipe> upPipe1   { make_unique<Pipe>(m_pKnotStart, &nobSplit) };
+	unique_ptr<Pipe> upPipe2   { make_unique<Pipe>(&nobSplit, m_pKnotEnd) };
+	float            fPosSplit { PosOnPipe(nobSplit.GetPos()) };
+	for (auto it : m_synapses)
+	{
+		Synapse &    synapse  { static_cast<Synapse&>(*it) };
+		float  const fPos     { synapse.GetPosOnMainPipe() };
+		Pipe * const pPipeNew { (fPos < fPosSplit) ? upPipe1.get() : upPipe2.get() };
+		pPipeNew->m_synapses.push_back(&synapse);
+	}
+	return pair(move(upPipe1), move(upPipe2));
+}
+
+void Pipe::AddSynapse(Nob* pNob)
+{
+	assert(pNob->IsSynapse());
+	Synapse* pSynapse { static_cast<Synapse*>(pNob) };
+	pSynapse->SetMainPipe(this);
+	m_synapses.push_back(pSynapse);
+}
+
+void Pipe::RemoveSynapse(Nob* pSynapse)
+{
+	auto res { find(m_synapses, pSynapse) };
+	assert(res != end(m_synapses));
+	m_synapses.erase(res);
+}
+
 MicroMeterPnt Pipe::GetVector(float const fFactor) const
 {
 	assert(m_pKnotStart);
@@ -275,6 +304,27 @@ MicroMeterPnt Pipe::GetVector(float const fFactor) const
 	MicroMeterPnt const umResult { GetStartPoint() + GetVector() * fFactor};
 	assert(! umResult.IsCloseToZero());
 	return umResult;
+}
+
+float Pipe::PosOnPipe(MicroMeterPnt const& umPnt) const
+{
+	float fResult;
+	MicroMeterPnt const umPntVector { GetVector() };
+	if (umPntVector.GetX().GetAbsValue() > umPntVector.GetY().GetAbsValue())
+	{
+		fResult = (umPnt.GetX() - GetStartPoint().GetX()) / umPntVector.GetX();
+	}
+	else
+	{
+		fResult = (umPnt.GetY() - GetStartPoint().GetY()) / umPntVector.GetY();
+	}
+	return fResult;
+}
+
+void Pipe::FixSynapses() const
+{
+	for (auto it : m_synapses)
+		static_cast<Synapse*>(it)->GetAddPipe().SetEndPnt(it);
 }
 
 void Pipe::DrawArrows

@@ -116,7 +116,6 @@ private:
 	             if ((nrOutPipes == 1) && (nrInPipes == 1))	typeNew = knot;
 			else if ((nrOutPipes == 0) && (nrInPipes == 1))	typeNew = outputLine;
 			else if ((nrOutPipes == 1) && (nrInPipes == 0))	typeNew = inputLine;
-			else if ((nrOutPipes == 2) && (nrInPipes == 1))	typeNew = fork;
 		}
 
 		if (typeNew != pBaseKnot->GetNobType())

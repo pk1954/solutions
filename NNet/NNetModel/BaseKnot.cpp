@@ -131,15 +131,7 @@ void BaseKnot::Check() const
 	Nob::Check();
 	m_inPipes .Check();
 	m_outPipes.Check();
-	Apply2AllInPipes 
-	(
-		[this](Pipe const & p) 
-		{ 
-			NobId idEndKnot = p.GetEndKnotId();
-			NobId id        = GetId();
-			assert(p.GetEndKnotId() == GetId());
-		}
-	);
+	Apply2AllInPipes ([this](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
 	Apply2AllOutPipes([this](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
 }
 

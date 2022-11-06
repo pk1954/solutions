@@ -30,6 +30,7 @@
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />
     <ClCompile Include="DescriptionUI.ixx" />
+    <ClCompile Include="Fork.cpp" />
     <ClCompile Include="Fork.ixx" />
     <ClCompile Include="InputConnector.cpp" />
     <ClCompile Include="InputConnector.ixx" />

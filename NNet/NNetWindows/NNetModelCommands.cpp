@@ -165,7 +165,7 @@ void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & p
 {
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<CreateForkCommand>(id, pos));
+	m_pCmdStack->PushCommand(make_unique<CreateForkCommand>(pos, id));
 }
 
 void NNetModelCommands::AddSensor

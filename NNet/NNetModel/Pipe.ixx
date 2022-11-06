@@ -4,6 +4,7 @@
 
 module;
 
+#include <utility>
 #include <iostream>
 #include <vector>
 
@@ -18,8 +19,10 @@ import :NobType;
 import :NobId;
 import :Nob;
 
+using std::pair;
 using std::vector;
 using std::wostream;
+using std::unique_ptr;
 
 //class BaseKnot;  // avoid circular reference
 //class Synapse;   // avoid circular reference
@@ -49,17 +52,13 @@ public:
 	void AddSynapse        (Nob *);              //TODO: Nob --> Synapse
 	void RemoveSynapse     (Nob *);              //TODO: Nob --> Synapse
 	bool IsConnectedSynapse(Nob const &) const;  //TODO: Nob --> Synapse
+	bool IsConnectedTo     (NobId const) const;
 
 	void Emphasize(bool const) final;
 	void Emphasize(bool const, bool const);
 
 	Nob * GetStartKnotPtr() { return m_pKnotStart; }   //TODO: Nob --> BaseKnot
 	Nob * GetEndKnotPtr  () { return m_pKnotEnd; }     //TODO: Nob --> BaseKnot
-
-	bool IsConnectedTo(NobId const idBaseKnot) const
-	{
-		return (GetStartKnotId() == idBaseKnot) || (GetEndKnotId() == idBaseKnot);
-	}
 
 	Nob const * GetStartKnotPtr() const { return m_pKnotStart; }   //TODO: Nob --> BaseKnot
 	Nob const * GetEndKnotPtr  () const { return m_pKnotEnd;   }   //TODO: Nob --> BaseKnot
@@ -77,7 +76,10 @@ public:
 	MicroMeter    GetSegLength  () const { return GetLength() / Cast2Float(GetNrOfSegments()); };
 
 	void          RotateNob(MicroMeterPnt const&, Radian const) final { /* Pipe dir defined by endpoints */ }
-	void          SetDir(Radian const)                          final { /* Pipe dir defined by endpoints */ };
+	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
+	void          Reconnect()                                   final { /* nothing to connect */ };
+
+	pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Split(Nob &) const;
 
 	Radian        GetDir()        const final { return Vector2Radian(GetVector()); };
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
@@ -97,6 +99,8 @@ public:
 	void          Recalc          ()                                            final;
 	void          ClearDynamicData()                                            final;
 	void          Select          (bool const)                                  final;
+
+	float PosOnPipe(MicroMeterPnt const&) const;
 
 	SegNr GetSegNr  (float const f)     const { return SegNr(Cast2Int(round(f * Cast2Float(GetNrOfSegments() - 1)))); }
 	mV    GetVoltage(SegNr const segNr) const { return m_potential[segNr2index(segNr)]; }
@@ -140,6 +144,14 @@ public:
 		for (auto segNr = SegNr(0); segNr.GetValue() < GetNrOfSegments(); ++segNr)
 			func(segNr);
 	}
+
+	void Apply2AllSynapses(auto const& func) const
+	{
+		for (auto it : m_synapses)
+			func(it);
+	}
+
+	void FixSynapses() const;
 
 private:
 	Nob      * m_pKnotStart { nullptr };  //TODO: Nob --> BaseKnot

@@ -77,6 +77,7 @@ public:
 	virtual void          CollectInput()                                               = 0;
 	virtual bool          CompStep    ()                                               = 0;
 	virtual void          Link        (Nob const &, Nob2NobFunc const &)               = 0;
+	virtual void          Reconnect   ()                                               = 0;
 
 	virtual void Recalc() { };
 
@@ -87,7 +88,6 @@ public:
 	virtual bool IsCompositeNob() const { return false; }
 
 	virtual void ClearDynamicData() { m_mVinputBuffer.Set2Zero(); }
-	virtual void Reconnect() {};
 
 	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input; }
 	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output; }

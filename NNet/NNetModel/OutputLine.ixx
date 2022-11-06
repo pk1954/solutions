@@ -37,8 +37,7 @@ public:
 
 	void AppendMenuItems(AddMenuFunc const&) const final;
 
-	Pipe & GetPipe()     final { return GetFirstIncoming(); }
-	void   ConnectPipe() final { GetPipe().SetEndPnt(this); };
+	Pipe & GetPipe() final { return GetFirstIncoming(); }
 
 private:
 

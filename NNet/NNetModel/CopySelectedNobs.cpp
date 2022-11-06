@@ -18,8 +18,8 @@ import :Knot;
 import :Nob;
 
 using std::unordered_map;
-using std::make_pair;
 using std::make_unique;
+using std::pair;
 
 UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 { 
@@ -64,8 +64,8 @@ void CopySelectedNobs::add2copy(Nob const & nobModel, UPNob upNobCopy)
 {
 	Nob * const pNobCopy { upNobCopy.get() };
 	assert(pNobCopy);
-	m_mapModel2copy.insert(make_pair(&nobModel, pNobCopy));
-	m_mapCopy2model.insert(make_pair(pNobCopy, &nobModel));
+	m_mapModel2copy.insert(pair(&nobModel, pNobCopy));
+	m_mapCopy2model.insert(pair(pNobCopy, &nobModel));
 	m_nobs2Add.Push(move(upNobCopy));
 }
 

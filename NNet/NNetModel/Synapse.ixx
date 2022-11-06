@@ -17,7 +17,7 @@ export class Synapse : public Nob
 {
 public:
 
-    Synapse(Pipe&, Pipe&);
+    Synapse(Pipe * const, Pipe * const);
 
     void Dump()  const final;
     void Check() const final;
@@ -41,8 +41,14 @@ public:
     void          RotateNob   (MicroMeterPnt  const&, Radian const) final;
     void          Link        (Nob const&, Nob2NobFunc const&)      final;
 
-    Pipe const& GetAddPipe () const { return m_pipeAdd; }
-    Pipe const& GetMainPipe() const { return m_pipeMain; }
+    Pipe       & GetAddPipe()             { return *m_pPipeAdd; }
+    Pipe const & GetAddPipe()       const { return *m_pPipeAdd; }
+    Pipe       & GetMainPipe()            { return *m_pPipeMain; }
+    Pipe const & GetMainPipe()      const { return *m_pPipeMain; }
+    float        GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
+
+    void SetMainPipe(Pipe* const);
+    void ResetPos(MicroMeterPnt const&);
 
     void DrawExterior(DrawContext const&, tHighlight const) const final;
     void DrawInterior(DrawContext const&, tHighlight const) const final;
@@ -54,7 +60,7 @@ private:
     tState     m_state      { tState::normal };
     fMicroSecs m_usBlocked  { 0.0_MicroSecs };
     mV         m_mVaddInput { 0._mV };
-    Pipe&      m_pipeMain;
-    Pipe&      m_pipeAdd;
+    Pipe *     m_pPipeMain;
+    Pipe *     m_pPipeAdd;
     float      m_fPosOnMainPipe;
 };
