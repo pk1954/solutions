@@ -225,5 +225,11 @@
     <ClCompile Include="ExtendInputLineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetModelCommands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetModelCommands.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

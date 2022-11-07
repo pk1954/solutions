@@ -199,6 +199,9 @@
     <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Commands\Commands.vcxproj">
+      <Project>{5f8877e6-8159-4cd4-84ac-53aa018885ac}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
       <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
     </ProjectReference>

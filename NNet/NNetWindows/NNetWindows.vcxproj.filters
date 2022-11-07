@@ -78,9 +78,6 @@
     <ClCompile Include="SignalControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetModelCommands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MonitorControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -172,9 +169,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetAppWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetModelCommands.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MonitorWindow.ixx">

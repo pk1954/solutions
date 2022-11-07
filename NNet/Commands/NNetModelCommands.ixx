@@ -1,6 +1,6 @@
 // NNetModelCommands.ixx
 //
-// NNetWindows
+// Commands
 
 module;
 
@@ -33,6 +33,7 @@ public:
     (
         NNetModelIO  * const,
         Observable   * const,
+        Sound        * const,
         CommandStack * const
     );
     void SetModelInterface(NNetModelWriterInterface* const);
@@ -114,11 +115,12 @@ private:
     Nob * nobHighPtr() { return m_pNMWI->GetNob(m_nobHighlighted); }
     Nob & nobHigh()    { return * nobHighPtr(); }
 
-    NobId                      m_nobHighlighted         { NO_NOB };
-    NobId                      m_nobTarget              { NO_NOB };
-    bool                       m_bTrace                 { true };
-    CommandStack             * m_pCmdStack              { nullptr };
-    NNetModelWriterInterface * m_pNMWI                  { nullptr };
-    NNetModelIO              * m_pModelIO               { nullptr };
-    Observable               * m_pDynamicModelObservable{ nullptr };
+    NobId                      m_nobHighlighted          { NO_NOB };
+    NobId                      m_nobTarget               { NO_NOB };
+    bool                       m_bTrace                  { true };
+    CommandStack             * m_pCmdStack               { nullptr };
+    NNetModelWriterInterface * m_pNMWI                   { nullptr };
+    NNetModelIO              * m_pModelIO                { nullptr };
+    Observable               * m_pDynamicModelObservable { nullptr };
+    Sound                    * m_pSound                  { nullptr };
 };

@@ -22,9 +22,7 @@ public:
 	void Play(wstring const & sound) const final
 	{
 		if (IsOn())
-		{
 			::PlaySound(sound.c_str(), GetModuleHandle(NULL), SND_RESOURCE|SND_ASYNC|SND_NOSTOP); 
-		}
 	}
 
 	void Beep(SoundDescr const & desc) const final
@@ -37,5 +35,11 @@ public:
 		{
 			::Beep(static_cast<DWORD>(desc.m_frequency.GetValue()), static_cast<DWORD>(desc.m_duration.GetValue()));
 		}
+	}
+
+	void Warning() const final
+	{
+		if (IsOn())
+			MessageBeep(MB_ICONWARNING);
 	}
 };

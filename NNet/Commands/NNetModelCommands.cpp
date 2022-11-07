@@ -1,6 +1,6 @@
 // NNetModelCommands.cpp
 //
-// NNetWindows
+// Commands
 
 module;
 
@@ -8,11 +8,11 @@ module;
 #include <iostream>
 #include <memory>
 #include <source_location>
-#include <Windows.h>
 
 module NNetModelCommands;
 
 import Uniform2D;
+import SoundInterface;
 import AddNobsCommand;
 import DeleteTrackCommand;
 import MoveSensorCmd;
@@ -85,11 +85,13 @@ void NNetModelCommands::Initialize
 (
 	NNetModelIO  * const pModelIO,
 	Observable   * const pDynamicModelObservable,
+	Sound        * const pSound,
 	CommandStack * const pCmdStack
 ) 
 { 
 	m_pModelIO                = pModelIO;
 	m_pDynamicModelObservable = pDynamicModelObservable;
+	m_pSound                  = pSound;
 	m_pCmdStack               = pCmdStack;
 }
 
@@ -106,7 +108,7 @@ void NNetModelCommands::UndoCommand()
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
 	if (! m_pCmdStack->UndoCommand())
-		MessageBeep(MB_ICONWARNING);
+		m_pSound->Warning();
 }
 
 void NNetModelCommands::RedoCommand()
@@ -114,7 +116,7 @@ void NNetModelCommands::RedoCommand()
 	if (IsTraceOn())
 		TraceStream() << source_location::current().function_name() << endl;
 	if (! m_pCmdStack->RedoCommand())
-		MessageBeep(MB_ICONWARNING);
+		m_pSound->Warning();
 }
 
 void NNetModelCommands::PushCommand(unique_ptr<NNetCommand> upCmd)

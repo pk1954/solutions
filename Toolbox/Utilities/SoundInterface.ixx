@@ -30,9 +30,9 @@ public:
 		m_pObservable = pObservable;
 	}
 
-	virtual void Play(wstring const &) const = 0;
-
+	virtual void Play(wstring    const &) const = 0;
 	virtual void Beep(SoundDescr const &) const = 0;
+	virtual void Warning()                const = 0;
 
 	void On() const
 	{ 
