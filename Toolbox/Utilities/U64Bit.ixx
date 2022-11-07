@@ -24,6 +24,11 @@ namespace Util
             long longA;
             long longB;
         } l2;
+        struct twoInts
+        {
+            int intA;
+            int intB;
+        } i2;
         struct twoULongs
         {
             unsigned long ulA;
@@ -45,6 +50,28 @@ namespace Util
         U64Bit u;
         u.ui64 = ui64;
         return MicroMeterPnt(MicroMeter(u.f2.floatA), MicroMeter(u.f2.floatB));
+    }
+
+    export inline uint64_t Pack2UINT64(int const iA, int const iB)
+    {
+        U64Bit u;
+        u.i2.intA = iA;
+        u.i2.intB = iB;
+        return u.ui64;
+    }
+
+    export inline int UnpackIntA(uint64_t ui64)
+    {
+        U64Bit u;
+        u.ui64 = ui64;
+        return u.i2.intA;
+    }
+
+    export inline int UnpackIntB(uint64_t ui64)
+    {
+        U64Bit u;
+        u.ui64 = ui64;
+        return u.i2.intB;
     }
 
     export inline uint64_t Pack2UINT64(long const lA, long const lB)

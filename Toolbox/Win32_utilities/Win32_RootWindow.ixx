@@ -259,6 +259,11 @@ public:
 		return ::PostMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}
 
+	LRESULT SendMessage2Application(unsigned int const msg, WPARAM const wParam, LPARAM const lParam) const
+	{
+		return ::SendMessage(m_hwndApp, msg, wParam, lParam);
+	}
+
 	LRESULT SendCommand2Application(WPARAM const wParam, LPARAM const lParam) const
 	{
 		return ::SendMessage(m_hwndApp, WM_COMMAND, wParam, lParam);

@@ -52,6 +52,8 @@ public:
 
 	MicroMeterPnt GetCursorPos() const;
 
+	NobId GetHighlightedNobId() const {	return m_pModelCommands->GetHighlightedNob(); }
+
 	void CenterModel();
 	void CenterSelection();
 	void AnimateArrows();

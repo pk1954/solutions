@@ -141,11 +141,9 @@
     <ClCompile Include="SelectSubtreeCommand.ixx" />
     <ClCompile Include="SelSigGenClientsCmd.ixx" />
     <ClCompile Include="SetActiveSigGenCmd.ixx" />
-    <ClCompile Include="SetHighlightedNobCmd.ixx" />
     <ClCompile Include="SetNobCommand.ixx" />
     <ClCompile Include="SetParameterCommand.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
-    <ClCompile Include="SetTargetNobCmd.ixx" />
     <ClCompile Include="SigGenCommand.ixx" />
     <ClCompile Include="SingleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />

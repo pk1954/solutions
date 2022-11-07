@@ -12,6 +12,7 @@ module;
 
 module NNetController;
 
+import U64Bit;
 import Win32_Util_Resource;
 import SlowMotionRatio;
 import Observable;
@@ -212,19 +213,15 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_EMPHASIZE:
-        m_pModelCommands->ToggleEmphMode(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->ToggleEmphMode();
         break;
 
     case IDD_CONNECT:
-        m_pModelCommands->Connect
-        (
-            m_pNMRI->GetHighlightedNobId(),
-            m_pNMRI->GetTargetNobId()
-        );
+        m_pModelCommands->Connect();
         break;
 
     case IDM_DELETE:   // keyboard delete key
-        if (IsDefined(m_pNMRI->GetHighlightedNobId()))
+        if (IsDefined(m_pModelCommands->GetHighlightedNob()))
             processModelCommand(IDD_DELETE_NOB);
         else if (m_pNMRI->AnyNobsSelected())
             processModelCommand(IDM_DELETE_SELECTION);
@@ -232,7 +229,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_DELETE_NOB:
         m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
-        m_pModelCommands->DeleteNob(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->DeleteNob();
         break;
 
     case IDD_DELETE_EEG_SENSOR:
@@ -261,20 +258,20 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_DISC_IOCONNECTOR:
         m_pSound->Play(TEXT("UNLOCK_SOUND")); 
-        m_pModelCommands->DiscIoConnector(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->DiscIoConnector();
         break;
 
     case IDD_SPLIT_NEURON:
         m_pSound->Play(TEXT("UNLOCK_SOUND")); 
-        m_pModelCommands->SplitNeuron(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->SplitNeuron();
         break;
 
     case IDD_INSERT_KNOT:
-        m_pModelCommands->InsertKnot(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->InsertKnot(umPoint);
         break;
 
     case IDD_INSERT_NEURON:
-        m_pModelCommands->InsertNeuron(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->InsertNeuron(umPoint);
         break;
 
     case IDD_NEW_IO_LINE_PAIR:
@@ -282,23 +279,23 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_EXTEND_OUTPUTLINE:  // case 11
-        m_pModelCommands->ExtendOutputLine(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->ExtendOutputLine(umPoint);
         break;
 
     case IDD_EXTEND_INPUTLINE: // case 10
-        m_pModelCommands->ExtendInputLine(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->ExtendInputLine(umPoint);
         break;
 
     case IDD_ADD_INCOMING2NEURON: // case 9
-        m_pModelCommands->AddIncoming2Neuron(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->AddIncoming2Neuron(umPoint);
         break;
 
     case IDD_ADD_OUTGOING2PIPE:  // case 7
-        m_pModelCommands->AddOutgoing2Pipe(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->AddOutgoing2Pipe(umPoint);
         break;
 
     case IDD_ADD_INCOMING2PIPE:  // case 8 
-        m_pModelCommands->AddIncoming2Pipe(m_pNMRI->GetHighlightedNobId(), umPoint);
+        m_pModelCommands->AddIncoming2Pipe(umPoint);
         break;
 
     case IDD_ADD_EEG_SENSOR:
@@ -314,11 +311,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_SELECT_NOB:
-        m_pModelCommands->SelectNob(m_pNMRI->GetHighlightedNobId(), tBoolOp::opTrue);
+        m_pModelCommands->SelectNob(tBoolOp::opTrue);
         break;
 
     case IDM_DESELECT_NOB:
-        m_pModelCommands->SelectNob(m_pNMRI->GetHighlightedNobId(), tBoolOp::opFalse);
+        m_pModelCommands->SelectNob(tBoolOp::opFalse);
         break;
 
     case IDM_SELECT_ALL:
@@ -326,16 +323,16 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_SELECT_SUBTREE:
-        m_pModelCommands->SelectSubtree(m_pNMRI->GetHighlightedNobId(), true);
+        m_pModelCommands->SelectSubtree(true);
         break;
 
     case IDD_STOP_ON_TRIGGER:
-        m_pModelCommands->ToggleStopOnTrigger(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->ToggleStopOnTrigger();
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
     case IDD_ATTACH_SIG_GEN_TO_LINE:
-        m_pModelCommands->AttachSigGen2Line(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->AttachSigGen2Line();
         break;
 
     case IDD_ATTACH_SIG_GEN_TO_SEL:
@@ -343,7 +340,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_ATTACH_SIG_GEN_TO_CONN:
-        m_pModelCommands->AttachSigGen2Conn(m_pNMRI->GetHighlightedNobId());
+        m_pModelCommands->AttachSigGen2Conn();
         break;
 
     case IDM_TRIGGER_STIMULUS:

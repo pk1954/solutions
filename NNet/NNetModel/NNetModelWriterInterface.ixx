@@ -79,8 +79,8 @@ public:
     void  AddDescriptionLine (wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
     void  DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
     void  DeselectAllNobs    () const               { m_pModel->DeselectAllNobs(); }
-    void  SetTargetNobId     (NobId const id)       { m_pModel->SetTargetNobId(id); }
-    void  SetHighlightedNobId(NobId const id)       { m_pModel->SetHighlightedNobId(id); }
+    //void  SetTargetNobId     (NobId const id)       { m_pModel->SetTargetNobId(id); }
+    //void  SetHighlightedNobId(NobId const id)       { m_pModel->SetHighlightedNobId(id); }
 
     void AddOutgoing   (NobId const, Pipe &);
     void AddIncoming   (NobId const, Pipe &);

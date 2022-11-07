@@ -110,8 +110,8 @@ public:
 	MonitorData          & GetMonitorData     ()       { return m_monitorData; }
 	NNetParameters const & GetParams          () const { return m_param; }
 	NNetParameters       & GetParams          ()       { return m_param; }
-	NobId                  GetTargetNobId     () const { return m_nobTarget; }
-	NobId                  GetHighlightedNobId() const { return m_nobHighlighted; }
+	//NobId                  GetTargetNobId     () const { return m_nobTarget; }
+	//NobId                  GetHighlightedNobId() const { return m_nobHighlighted; }
 
 	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
 	{
@@ -134,8 +134,8 @@ public:
 	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }
 	void SetDescriptionUI    (DescriptionUI& i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable(Observable * obs)     { m_monitorData.SetHighSigObservable(obs); }
-	void SetTargetNobId      (NobId const   id)     { m_nobTarget = id; }
-	void SetHighlightedNobId (NobId const   id)     { m_nobHighlighted = id; }
+	//void SetTargetNobId      (NobId const   id)     { m_nobTarget = id; }
+	//void SetHighlightedNobId (NobId const   id)     { m_nobHighlighted = id; }
 
 private:
 
@@ -146,6 +146,6 @@ private:
 	MonitorData      m_monitorData;
 	NNetParameters   m_param;
 	wstring          m_wstrModelFilePath { L"" };
-	NobId            m_nobHighlighted    { NO_NOB };
-	NobId            m_nobTarget         { NO_NOB };
+	//NobId            m_nobHighlighted    { NO_NOB };
+	//NobId            m_nobTarget         { NO_NOB };
 };
