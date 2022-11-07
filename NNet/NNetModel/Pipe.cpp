@@ -272,6 +272,7 @@ pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Pipe::Split(Nob & nobSplit) const
 	unique_ptr<Pipe> upPipe1   { make_unique<Pipe>(m_pKnotStart, &nobSplit) };
 	unique_ptr<Pipe> upPipe2   { make_unique<Pipe>(&nobSplit, m_pKnotEnd) };
 	float            fPosSplit { PosOnPipe(nobSplit.GetPos()) };
+
 	for (auto it : m_synapses)
 	{
 		Synapse &    synapse  { static_cast<Synapse&>(*it) };
@@ -279,6 +280,11 @@ pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Pipe::Split(Nob & nobSplit) const
 		Pipe * const pPipeNew { (fPos < fPosSplit) ? upPipe1.get() : upPipe2.get() };
 		pPipeNew->m_synapses.push_back(&synapse);
 	}
+
+	nobSplit.Select(IsSelected());
+	upPipe1->Select(IsSelected());
+	upPipe2->Select(IsSelected());
+
 	return pair(move(upPipe1), move(upPipe2));
 }
 

@@ -20,7 +20,7 @@ using std::pair;
 export class ConnectCreateForkCommand : public NNetCommand
 {
 public:
-	ConnectCreateForkCommand   // case 1
+	ConnectCreateForkCommand   // case 1 : Existing InputLine is connected to Pipe
 	(
 		NobId const idIoLine,
 		NobId const idPipe
@@ -33,14 +33,9 @@ public:
 		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr()))
 	{
 		m_splitPipes = m_pPipeOld->Split(*m_pInputLine);
-
-		m_upFork = make_unique<Fork>(m_pInputLine->GetPos());
+		m_upFork     = make_unique<Fork>(m_pInputLine->GetPos());
 		m_upFork->SetIncoming(m_splitPipes.first .get());
 		m_upFork->SetOutgoing(m_splitPipes.second.get(), &m_pInputLine->GetPipe());
-
-		m_upFork           ->Select(m_pPipeOld->IsSelected());
-		m_splitPipes.first ->Select(m_pPipeOld->IsSelected());
-		m_splitPipes.second->Select(m_pPipeOld->IsSelected());
 	}
 
 	~ConnectCreateForkCommand() final = default;

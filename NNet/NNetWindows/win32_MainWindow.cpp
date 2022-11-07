@@ -209,7 +209,8 @@ void MainWindow::setTargetNob()
 		m_pNMRI->GetNobPos(m_pNMRI->GetHighlightedNobId()),
 		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_pNMRI->GetHighlightedNobId(), s.GetId()); }
 	);
-	m_pModelCommands->SetTargetNob(nobIdTarget);
+	if (nobIdTarget != m_pNMRI->GetTargetNobId())
+		m_pModelCommands->SetTargetNob(nobIdTarget);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
