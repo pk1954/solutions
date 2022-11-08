@@ -96,8 +96,6 @@
     <ClCompile Include="AttachSigGen2SelCmd.ixx" />
     <ClCompile Include="CommandFunctions.cpp" />
     <ClCompile Include="CommandFunctions.ixx" />
-    <ClCompile Include="CommandStack.cpp" />
-    <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="ConnAnimationCommand.ixx" />
     <ClCompile Include="Connect2NeuronCommand.ixx" />

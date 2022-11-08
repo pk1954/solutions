@@ -22,7 +22,6 @@ public:
         : m_connector(*Cast2IoConnector(&nob))
     {
         m_cmdStack.Initialize(nullptr);
-        m_cmdStack.SetModelInterface(m_pNMWI);
         m_connector.Apply2All
         (
             [this](IoLine& n)

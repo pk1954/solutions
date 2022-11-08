@@ -160,6 +160,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandStack.cpp" />
+    <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />

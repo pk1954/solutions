@@ -1,34 +1,26 @@
 // CommandStack.cpp
 //
-// Commands
+// Win32_utilities
 
 module;
 
 #include <cassert>
 #include <iostream>
 #include <memory>
-#include <source_location>
 
 module CommandStack;
 
 import Observable;
 import Command;
-import NNetModel;
 import Scanner;
 
 using std::wcout;
 using std::endl;
 using std::unique_ptr;
-using std::source_location;
 
 void CommandStack::Initialize(Observable * const pStaticModelObservable)
 {
     m_pStaticModelObservable = pStaticModelObservable;
-}
-
-void CommandStack::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
-{
-    m_pNMRI = pNMRI;
 }
 
 bool CommandStack::UndoStackEmpty() const 
@@ -78,18 +70,10 @@ void CommandStack::notify() const
 
 void CommandStack::Push(unique_ptr<Command> pCmd)
 {
-    try
+    if (!canBeCombined(pCmd.get()))
     {
-        if (!canBeCombined(pCmd.get()))
-        {
-            m_CommandStack.push_back(move(pCmd));
-            set2YoungerCmd();
-        }
-    }
-    catch (NNetException const& e)
-    {
-        NNetExceptionMessage(e);
-        wcout << Scanner::COMMENT_SYMBOL << L"Called from" << source_location::current().function_name() << endl;
+        m_CommandStack.push_back(move(pCmd));
+        set2YoungerCmd();
     }
 }
 
@@ -98,11 +82,9 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
     if (pCmd)
     {
         clearRedoStack();
-        m_pNMRI->CheckModel();
         pCmd->Do();
         if (!pCmd->IsAsyncCommand())
             Command::NextScriptCommand(); // script continuation for syncronous commands
-        m_pNMRI->CheckModel();
         Push(move(pCmd));
         notify();
     }
@@ -114,41 +96,21 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
 
 bool CommandStack::UndoCommand()
 {
-    try
-    {
-        if (UndoStackEmpty())
-            return false;
-        set2OlderCmd();
-        m_pNMRI->CheckModel();
-        currentCmd().Undo();
-        m_pNMRI->CheckModel();
-        notify();
-    }
-    catch (NNetException const& e)
-    {
-        NNetExceptionMessage(e);
-        wcout << Scanner::COMMENT_SYMBOL << L"Called from" << source_location::current().function_name() << endl;
-    }
+    if (UndoStackEmpty())
+        return false;
+    set2OlderCmd();
+    currentCmd().Undo();
+    notify();
     return true;
 }
 
 bool CommandStack::RedoCommand()
 {
-    try
-    {
-        if (RedoStackEmpty()) 
-            return false;
-        m_pNMRI->CheckModel();
-        currentCmd().Do();
-        m_pNMRI->CheckModel();
-        set2YoungerCmd();
-        notify();
-    }
-    catch (NNetException const& e)
-    {
-        NNetExceptionMessage(e);
-        wcout << Scanner::COMMENT_SYMBOL << L"Called from" << source_location::current().function_name() << endl;
-    }
+    if (RedoStackEmpty()) 
+        return false;
+    currentCmd().Do();
+    set2YoungerCmd();
+    notify();
     return true;
 }
 

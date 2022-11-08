@@ -1,6 +1,6 @@
 // CommandStack.ixx
 //
-// Commands
+// Win32_utilities
 
 module;
 
@@ -12,7 +12,6 @@ export module CommandStack;
 
 import Observable;
 import Command;
-import NNetModel;
 
 using std::vector;
 using std::unique_ptr;
@@ -23,7 +22,6 @@ export class CommandStack
 public:
 
     void Initialize(Observable* const);
-    void SetModelInterface(NNetModelReaderInterface const* const);
     bool UndoStackEmpty() const;
     bool RedoStackEmpty() const;
     void Push(unique_ptr<Command>);
@@ -36,10 +34,9 @@ public:
 
 private:
 
-    vector<unique_ptr<Command>>      m_CommandStack { };
-    size_t                           m_iIndex       { 0 }; // index into m_Commandstack
-    NNetModelReaderInterface const * m_pNMRI        { nullptr };
-    Observable* m_pStaticModelObservable{ nullptr };
+    vector<unique_ptr<Command>> m_CommandStack           { };
+    size_t                      m_iIndex                 { 0 }; // index into m_Commandstack
+    Observable                * m_pStaticModelObservable { nullptr };
 
     Command * getCmdPtr(size_t const index) const
     {

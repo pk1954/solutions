@@ -45,9 +45,6 @@
     <ClCompile Include="CommandFunctions.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommandStack.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnAnimationCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -196,9 +193,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConnAnimationCommand.cpp">
