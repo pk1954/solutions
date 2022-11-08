@@ -20,7 +20,7 @@ import :Pipe;
 import :IoLine;
 import :NobException;
 import :NobType;
-import :Nob;
+import :PosNob;
 
 using std::wcout;
 using std::endl;
@@ -36,7 +36,7 @@ BaseKnot::BaseKnot
 	NobType       const   type,
 	MicroMeter    const   extension
 )
-  : Nob(type),
+  : PosNob(type),
 	m_circle(center, extension)
 { }
 
@@ -158,12 +158,12 @@ bool BaseKnot::IsSuccessorOf(Pipe const & pipePred) const
 
 bool BaseKnot::IsPrecursorOf(BaseKnot const & b) const 
 {
-	return Apply2AllOutPipesB([&b](Pipe const & p){ return p.GetEndKnotPtr() == &b; });
+	return Apply2AllOutPipesB([&b](Pipe const & p){ return p.GetEndNobPtr() == &b; });
 }
 
 bool BaseKnot::IsSuccessorOf(BaseKnot const & b) const
 {
-	return Apply2AllInPipesB([&b](Pipe const & p){ return p.GetStartKnotPtr() == &b; });
+	return Apply2AllInPipesB([&b](Pipe const & p){ return p.GetStartNobPtr() == &b; });
 }
 
 bool BaseKnot::IsDirectlyConnectedTo(BaseKnot const & b) const
@@ -173,8 +173,8 @@ bool BaseKnot::IsDirectlyConnectedTo(BaseKnot const & b) const
 
 bool BaseKnot::IsDirectlyConnectedTo(Pipe const & pipe) const
 {
-	return IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetStartKnotPtr())) || 
-		   IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetEndKnotPtr  ()));
+	return IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetStartNobPtr())) || 
+		   IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetEndNobPtr  ()));
 }
 
 bool BaseKnot::Includes(MicroMeterPnt const & point) const

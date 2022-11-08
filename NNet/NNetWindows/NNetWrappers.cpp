@@ -33,12 +33,12 @@ class WrapConnect: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        NobId          const idSrc { m_pCommands->GetHighlightedNob() };
-        NobId          const idDst { m_pCommands->GetTargetNob() };
+        NobId          const idSrc { ScrReadNobId(script) };
+        NobId          const idDst { ScrReadNobId(script) };
         ConnectionType const ctype { m_pNMRI->ConnectionResult(idSrc, idDst) };
         if (ctype != ConnectionType::ct_none)
         {
-            m_pCommands->Connect();
+            m_pCommands->Connect(idSrc, idDst);
         }
         else
         {
@@ -148,8 +148,9 @@ class WrapSelectSubtree: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
+        NobId const id  { ScrReadNobId(script) };
         bool  const bOn { script.ScrReadInt() != 0 };
-        m_pCommands->SelectSubtree(bOn);
+        m_pCommands->SelectSubtree(id, bOn);
     }
 };
 
@@ -158,8 +159,9 @@ class WrapSelectNob: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
+        NobId   const id { ScrReadNobId(script) };
         tBoolOp const op { ScrReadBoolOp(script) };
-        m_pCommands->SelectNob(op);
+        m_pCommands->SelectNob(id, op);
     }
 };
 
@@ -168,7 +170,8 @@ class WrapToggleStopOnTrigger: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->ToggleStopOnTrigger();
+        NobId const id { ScrReadNobId(script) };
+        m_pCommands->ToggleStopOnTrigger(id);
     }
 };
 
@@ -186,7 +189,7 @@ class WrapDeleteNob: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->DeleteNob();
+        m_pCommands->DeleteNob(ScrReadNobId(script));
     }
 };
 
@@ -195,7 +198,7 @@ class WrapDeleteBaseKnot: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->DeleteBaseKnot();
+        m_pCommands->DeleteBaseKnot(ScrReadNobId(script));
     }
 };
 
@@ -204,7 +207,7 @@ class WrapDiscIoConnector: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->DiscIoConnector();
+        m_pCommands->DiscIoConnector(ScrReadNobId(script));
     }
 };
 
@@ -213,7 +216,7 @@ class WrapSplitNeuron: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->SplitNeuron();
+        m_pCommands->SplitNeuron(ScrReadNobId(script));
     }
 };
 
@@ -233,7 +236,9 @@ class WrapMoveNob: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->MoveNob(ScrReadMicroMeterPnt(script));
+        NobId         const id      { ScrReadNobId(script) };
+        MicroMeterPnt const umDelta { ScrReadMicroMeterPnt(script) };
+        m_pCommands->MoveNob(id, umDelta);
     }
 };
 
@@ -273,7 +278,9 @@ class WrapInsertNeuron: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->InsertNeuron(ScrReadMicroMeterPnt(script));
+        NobId         const id    { ScrReadNobId(script) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
+        m_pCommands->InsertNeuron(id, umPos);
     }
 };
 
@@ -282,7 +289,9 @@ class WrapExtendOutputLine: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->ExtendOutputLine(ScrReadMicroMeterPnt(script));
+        NobId         const id { ScrReadNobId(script) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
+        m_pCommands->ExtendOutputLine(id, umPos);
     }
 };
 
@@ -291,7 +300,9 @@ class WrapExtendInputLine : public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->ExtendInputLine(ScrReadMicroMeterPnt(script));
+        NobId         const id    { ScrReadNobId(script) };
+        MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
+        m_pCommands->ExtendInputLine(id, umPnt);
     }
 };
 
@@ -300,7 +311,9 @@ class WrapAddOutgoing2Pipe: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->AddOutgoing2Pipe(ScrReadMicroMeterPnt(script));
+        NobId         const id    { ScrReadNobId(script) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
+        m_pCommands->AddOutgoing2Pipe(id, umPos);
     }
 };
 
@@ -309,7 +322,9 @@ class WrapAddIncoming2Pipe: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->AddIncoming2Pipe(ScrReadMicroMeterPnt(script));
+        NobId         const id    { ScrReadNobId(script) };
+        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
+        m_pCommands->AddIncoming2Pipe(id, umPos);
     }
 };
 
@@ -365,7 +380,7 @@ void InitializeNNetWrappers
     m_pModelIO  = pModelIO;
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
-    SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal );
+    SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     SymbolTable::ScrDefConst(L"AnalyzeAnomalies",    new WrapAnalyzeAnomalies); 
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
     SymbolTable::ScrDefConst(L"ExtendInputLine",     new WrapExtendInputLine);

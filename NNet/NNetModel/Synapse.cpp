@@ -26,7 +26,7 @@ Synapse::Synapse
 	Pipe * const pPipeMain,
 	Pipe * const pPipeAdd
 )
-  : Nob(NobType::Value::synapse),
+  : PosNob(NobType::Value::synapse),
 	m_pPipeMain(pPipeMain),
 	m_pPipeAdd(pPipeAdd)
 {
@@ -39,7 +39,7 @@ MicroMeterPnt Synapse::GetPos() const
 }
 
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
-{
+{  // TODO
 //	(position) .Rotate(umPntPivot, radDelta);
 }
 
@@ -113,8 +113,40 @@ void Synapse::ResetPos(MicroMeterPnt const& newPos)
 	m_fPosOnMainPipe = m_pPipeMain->PosOnPipe(newPos);
 }
 
-void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
+void Synapse::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 {
+	assert(pDel == m_pPipeAdd);
+	m_pPipeAdd = pAdd;
+}
+
+void Synapse::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
+{
+	assert(false);
+}
+
+void Synapse::Apply2AllInPipes(PipeFunc const& f) const
+{
+	f(*m_pPipeMain);
+	f(*m_pPipeAdd);
+}
+
+void Synapse::Apply2AllOutPipes(PipeFunc const& f) const
+{
+	f(*m_pPipeMain);
+}
+
+bool Synapse::Apply2AllInPipesB(PipeCrit const& c) const
+{
+	return c(*m_pPipeMain) || c(*m_pPipeAdd);
+}
+
+bool Synapse::Apply2AllOutPipesB(PipeCrit const& c) const
+{
+	return c(*m_pPipeMain);
+}
+
+void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
+{ // TODO
 	//MicroMeter const umRadius { PIPE_WIDTH };
 	//Ortho
 	//MicroMeterPnt    const umPos(GetAddPipe().GetEndPoint());
@@ -124,7 +156,7 @@ void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) co
 }
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
-{
+{ // TODO
 	//BaseKnot::DrawInterior(context, type);
 	//MicroMeterPnt    const umPos   (GetAddPipe().GetEndPoint());
 	//MicroMeter       const umSize  (GetExtension() * 1.5f);
@@ -134,8 +166,8 @@ void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) co
 
 void Synapse::CollectInput()
 {
-	m_mVinputBuffer = m_pPipeMain->GetEndKnotPtr()->GetNextOutput();
-	m_mVaddInput    = m_pPipeAdd ->GetEndKnotPtr()->GetNextOutput();
+	m_mVinputBuffer = m_pPipeMain->GetEndNobPtr()->GetNextOutput();
+	m_mVaddInput    = m_pPipeAdd ->GetEndNobPtr()->GetNextOutput();
 }
 
 bool Synapse::CompStep()

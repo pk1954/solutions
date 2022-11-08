@@ -153,8 +153,8 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height) const
 {
 	PixelRect rect { Util::GetWindowRect(hwnd) };
-	PIXEL xPos { (rect.GetRight () + rect.GetLeft() - width ) / 2 };
-	PIXEL yPos { (rect.GetBottom() + rect.GetTop () - height) / 2 };
+	PIXEL     xPos { (rect.GetRight () + rect.GetLeft() - width ) / 2 };
+	PIXEL     yPos { (rect.GetBottom() + rect.GetTop () - height) / 2 };
 	Move(xPos, yPos, width, height, true);
 }
 

@@ -15,13 +15,13 @@ import DrawContext;
 import :Pipe;
 import :PipeList;
 import :NobType;
-import :Nob;
+import :PosNob;
 
 using std::vector;
 using std::is_base_of;
 using std::remove_pointer_t;
 
-export class BaseKnot : public Nob
+export class BaseKnot : public PosNob
 {
 public:
 
@@ -100,8 +100,8 @@ public:
 	void RemoveIncoming(Pipe & pipe) { m_inPipes .Remove(pipe); }
 	void RemoveOutgoing(Pipe & pipe) { m_outPipes.Remove(pipe); }
 
-	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) { m_inPipes .Replace(pDel, pAdd); }
-	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) { m_outPipes.Replace(pDel, pAdd); }
+	void ReplaceIncoming(Pipe * const pDel, Pipe * const pAdd) final { m_inPipes .Replace(pDel, pAdd); }
+	void ReplaceOutgoing(Pipe * const pDel, Pipe * const pAdd) final { m_outPipes.Replace(pDel, pAdd); }
 
 	void SetIncoming(PipeList const & l) { m_inPipes  = l; }
 	void SetOutgoing(PipeList const & l) { m_outPipes = l; }
@@ -109,12 +109,12 @@ public:
 	void SetIncoming(BaseKnot const & b) { SetIncoming(b.m_inPipes); }
 	void SetOutgoing(BaseKnot const & b) { SetOutgoing(b.m_outPipes); }
 
-	void Apply2AllInPipes       (PipeFunc const & f) const { m_inPipes.Apply2All(f); }
-	void Apply2AllOutPipes      (PipeFunc const & f) const { m_outPipes.Apply2All(f); }
+	void Apply2AllInPipes       (PipeFunc const & f) const final { m_inPipes.Apply2All(f); }
+	void Apply2AllOutPipes      (PipeFunc const & f) const final { m_outPipes.Apply2All(f); }
 	void Apply2AllConnectedPipes(PipeFunc const & f) const;
 
-	bool Apply2AllInPipesB       (PipeCrit const & c) const { return m_inPipes .Apply2AllB(c); }
-	bool Apply2AllOutPipesB      (PipeCrit const & c) const { return m_outPipes.Apply2AllB(c); }
+	bool Apply2AllInPipesB       (PipeCrit const & c) const final { return m_inPipes .Apply2AllB(c); }
+	bool Apply2AllOutPipesB      (PipeCrit const & c) const final { return m_outPipes.Apply2AllB(c); }
 	bool Apply2AllConnectedPipesB(PipeCrit const & c) const;
 
 	MicroMeterRect GetRect4Text() const;
@@ -122,10 +122,10 @@ public:
 	void EvaluateSelectionStatus();
 
 private:
-
-	PipeList         m_inPipes;
-	PipeList         m_outPipes;
 	MicroMeterCircle m_circle;
+
+	PipeList m_inPipes;
+	PipeList m_outPipes;
 };
 
 export BaseKnot const * Cast2BaseKnot(Nob const *);

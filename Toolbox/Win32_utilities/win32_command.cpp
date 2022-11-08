@@ -23,11 +23,6 @@ void Command::UpdateUI()
     m_pWin->Notify(false); 
 };
 
-LRESULT Command::PostCommand2Application(WPARAM const wParam, LPARAM const lParam) const
-{
-    return m_pWin->PostCommand2Application(wParam, lParam);
-}
-
 void Command::CallUI(bool const bTargetReached)  // runs in animation thread
 {
     PostMessage
@@ -103,11 +98,11 @@ void Command::blockUI() const
 void Command::unblockUI() const
 { 
     NextScriptCommand();   // script continuation for async commands
-    m_pWin->PostCommand2Application(IDM_BLOCK_UI, false);
+    PostCmd2Application(IDM_BLOCK_UI, false);
 };
 
 void Command::NextScriptCommand()
 {
     if (ScriptStack::IsScriptActive() && !ScriptStack::SingleStepMode())
-        m_pWin->PostCommand2Application(IDM_NEXT_SCRIPT_CMD, 0); 
+        PostCmd2Application(IDM_NEXT_SCRIPT_CMD, 0);
 }

@@ -43,8 +43,8 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 		if (pNobCopy->IsPipe())
 		{
 			Pipe const & pipeModel { static_cast<Pipe const &>(copy2model(pNobCopy)) };
-			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetStartKnotPtr())));
-			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetEndKnotPtr  ())));
+			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetStartNobPtr())));
+			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetEndNobPtr  ())));
 		}
 	}
 

@@ -26,14 +26,6 @@ public:
 		: BaseKnot(upCenter, type, NEURON_RADIUS)
 	{}
 
-	//IoLine(BaseKnot const & src, NobType const type)
-	//	: BaseKnot(src)
-	//{
-	//	SetId(src.GetId());
-	//	SetType(type);
-	//	SetExtension(NEURON_RADIUS);
-	//}
-
 	bool CompStep() final { return false; }
 
 	MicroMeterPosDir GetPosDir()    const override;

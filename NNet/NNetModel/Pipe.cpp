@@ -44,8 +44,8 @@ Pipe::Pipe
 	Nob * const pKnotEnd    //TODO: Nob --> BaseKnot
 )
   :	Nob(NobType::Value::pipe),
-	m_pKnotStart(pKnotStart),
-	m_pKnotEnd  (pKnotEnd)
+	m_pNobStart(pKnotStart),
+	m_pNobEnd  (pKnotEnd)
 {
 	assert(pKnotStart && pKnotEnd);
 	recalc();
@@ -53,8 +53,8 @@ Pipe::Pipe
 
 Pipe::Pipe(Pipe const & src) :  // copy constructor
 	Nob         (src),
-    m_pKnotStart(nullptr),
-	m_pKnotEnd  (nullptr),
+    m_pNobStart(nullptr),
+	m_pNobEnd  (nullptr),
 	m_potIndex  (src.m_potIndex ),
 	m_potential (src.m_potential)
 { 
@@ -77,17 +77,17 @@ bool Pipe::operator==(Nob const & rhs) const
 
 NobId Pipe::GetStartKnotId() const 
 { 
-	return m_pKnotStart->GetId(); 
+	return m_pNobStart->GetId(); 
 }
 
 NobId Pipe::GetEndKnotId() const 
 { 
-	return m_pKnotEnd->GetId(); 
+	return m_pNobEnd->GetId(); 
 }
 
 MicroMeterPnt Pipe::GetPos() const 
 { 
-	return (m_pKnotStart->GetPos() + m_pKnotEnd->GetPos()) / 2.0f; 
+	return (m_pNobStart->GetPos() + m_pNobEnd->GetPos()) / 2.0f; 
 }
 
 void Pipe::ClearDynamicData()
@@ -100,7 +100,7 @@ void Pipe::recalc()
 {
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
-	MicroMeter   const pipeLength    { Distance(m_pKnotStart->GetPos(), m_pKnotEnd->GetPos()) };
+	MicroMeter   const pipeLength    { Distance(m_pNobStart->GetPos(), m_pNobEnd->GetPos()) };
 	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
 	m_potential.resize(iNrOfSegments, 0.0_mV);
 	m_potIndex = 0;
@@ -108,7 +108,7 @@ void Pipe::recalc()
 
 void Pipe::Recalc()
 {
-	if (m_pKnotStart && m_pKnotEnd)
+	if (m_pNobStart && m_pNobEnd)
 		recalc();
 }
 
@@ -120,15 +120,15 @@ bool Pipe::IsConnectedSynapse(Nob const & synapse) const
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
 	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
-	m_pKnotStart = static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetStartKnotPtr()));
-	m_pKnotEnd   = static_cast<BaseKnot *>(dstFromSrc(pipeSrc.GetEndKnotPtr  ()));
+	m_pNobStart = static_cast<PosNob *>(dstFromSrc(pipeSrc.GetStartNobPtr()));
+	m_pNobEnd   = static_cast<PosNob *>(dstFromSrc(pipeSrc.GetEndNobPtr  ()));
 }
 
 void Pipe::Check() const
 {
 	Nob::Check();
-	//assert(static_cast<BaseKnot *>(m_pKnotStart)->IsPrecursorOf(* this));
-	//assert(static_cast<BaseKnot *>(m_pKnotEnd  )->IsSuccessorOf(* this));
+	//assert(static_cast<BaseKnot *>(m_pNobStart)->IsPrecursorOf(* this));
+	//assert(static_cast<BaseKnot *>(m_pNobEnd  )->IsSuccessorOf(* this));
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -139,10 +139,10 @@ void Pipe::Expand(MicroMeterRect & umRect) const
 
 void Pipe::MoveNob(MicroMeterPnt const & delta)
 {
-	if (!m_pKnotStart->HasParentNob())
-		m_pKnotStart->MoveNob(delta);
-	if (!m_pKnotEnd->HasParentNob())
-		m_pKnotEnd  ->MoveNob(delta);
+	if (!m_pNobStart->HasParentNob())
+		m_pNobStart->MoveNob(delta);
+	if (!m_pNobEnd->HasParentNob())
+		m_pNobEnd  ->MoveNob(delta);
 }
 
 // IsIncludedIn should be called IsPossiblyIncludedIn
@@ -151,16 +151,16 @@ void Pipe::MoveNob(MicroMeterPnt const & delta)
 
 bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const 
 { 
-	if ((m_pKnotStart->GetPosX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosX() < umRect.GetLeft()))
+	if ((m_pNobStart->GetPosX() < umRect.GetLeft()) && (m_pNobEnd->GetPosX() < umRect.GetLeft()))
 		return false;
 
-	if ((m_pKnotStart->GetPosX() > umRect.GetRight()) && (m_pKnotEnd->GetPosX() > umRect.GetRight()))
+	if ((m_pNobStart->GetPosX() > umRect.GetRight()) && (m_pNobEnd->GetPosX() > umRect.GetRight()))
 		return false;
 
-	if ((m_pKnotStart->GetPosY() > umRect.GetBottom()) && (m_pKnotEnd->GetPosY() > umRect.GetBottom()))
+	if ((m_pNobStart->GetPosY() > umRect.GetBottom()) && (m_pNobEnd->GetPosY() > umRect.GetBottom()))
 		return false;
 
-	if ((m_pKnotStart->GetPosY() < umRect.GetTop()) && (m_pKnotEnd->GetPosY() < umRect.GetTop()))
+	if ((m_pNobStart->GetPosY() < umRect.GetTop()) && (m_pNobEnd->GetPosY() < umRect.GetTop()))
 		return false;
 
 	return true;
@@ -170,7 +170,7 @@ void Pipe::SetStartPnt(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 {
 	if (pBaseKnot)
 	{
-		m_pKnotStart = pBaseKnot;
+		m_pNobStart = pBaseKnot;
 		Recalc();
 	}
 }
@@ -179,20 +179,20 @@ void Pipe::SetEndPnt(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
 {
 	if (pBaseKnot)
 	{
-		m_pKnotEnd = pBaseKnot;
+		m_pNobEnd = pBaseKnot;
 		Recalc();
 	}
 }
 
 void Pipe::DislocateEndPoint() 
 { 
-	m_pKnotEnd->MoveNob(-dislocation());
+	m_pNobEnd->MoveNob(-dislocation());
 	Recalc();
 }
 
 void Pipe::DislocateStartPoint() 
 { 
-	m_pKnotStart->MoveNob(dislocation());
+	m_pNobStart->MoveNob(dislocation());
 	Recalc();
 }
 
@@ -203,18 +203,18 @@ MicroMeterPnt Pipe::dislocation() const
 
 MicroMeterPnt Pipe::GetStartPoint() const 
 { 
-	return m_pKnotStart ? m_pKnotStart->GetPos() : MicroMeterPnt::NULL_VAL(); 
+	return m_pNobStart ? m_pNobStart->GetPos() : MicroMeterPnt::NULL_VAL(); 
 }
 
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	if (! m_pKnotEnd)
+	if (! m_pNobEnd)
 		return MicroMeterPnt::NULL_VAL();
 
-	MicroMeterPnt umEndPoint { m_pKnotEnd->GetPos() };
-	//if (m_pKnotEnd->IsSynapse())
+	MicroMeterPnt umEndPoint { m_pNobEnd->GetPos() };
+	//if (m_pNobEnd->IsSynapse())
 	//{
-	//	Pipe const & pipeAdd { static_cast<Synapse const*>(m_pKnotEnd)->GetAddPipe() };
+	//	Pipe const & pipeAdd { static_cast<Synapse const*>(m_pNobEnd)->GetAddPipe() };
 	//	if (&pipeAdd == this)
 	//	{
 	//		MicroMeterPnt const umVector { umEndPoint - GetStartPoint() };
@@ -228,10 +228,10 @@ MicroMeterPnt Pipe::GetEndPoint() const
 void Pipe::Select(bool const bOn) 
 { 
 	Nob::Select(bOn);
-	if (m_pKnotStart->IsKnot())
-		static_cast<BaseKnot *>(m_pKnotStart)->EvaluateSelectionStatus();
-	if (m_pKnotEnd  ->IsKnot())
-		static_cast<BaseKnot *>(m_pKnotEnd)  ->EvaluateSelectionStatus();
+	if (m_pNobStart->IsKnot())
+		static_cast<BaseKnot *>(m_pNobStart)->EvaluateSelectionStatus();
+	if (m_pNobEnd  ->IsKnot())
+		static_cast<BaseKnot *>(m_pNobEnd)  ->EvaluateSelectionStatus();
 }
 
 MicroMeter Pipe::GetLength() const
@@ -257,9 +257,9 @@ bool Pipe::IsConnectedTo(NobId const idBaseKnot) const
 
 MicroMeterPnt Pipe::GetVector() const
 {
-	assert(m_pKnotStart);
-	assert(m_pKnotEnd);
-	MicroMeterPnt const umVector { m_pKnotEnd->GetPos() - GetStartPoint() };
+	assert(m_pNobStart);
+	assert(m_pNobEnd);
+	MicroMeterPnt const umVector { m_pNobEnd->GetPos() - GetStartPoint() };
 	assert(! umVector.IsCloseToZero());
 	return umVector;
 }
@@ -269,8 +269,8 @@ MicroMeterPnt Pipe::GetVector() const
 
 pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Pipe::Split(Nob & nobSplit) const
 {
-	unique_ptr<Pipe> upPipe1   { make_unique<Pipe>(m_pKnotStart, &nobSplit) };
-	unique_ptr<Pipe> upPipe2   { make_unique<Pipe>(&nobSplit, m_pKnotEnd) };
+	unique_ptr<Pipe> upPipe1   { make_unique<Pipe>(m_pNobStart, &nobSplit) };
+	unique_ptr<Pipe> upPipe2   { make_unique<Pipe>(&nobSplit, m_pNobEnd) };
 	float            fPosSplit { PosOnPipe(nobSplit.GetPos()) };
 
 	for (auto it : m_synapses)
@@ -305,8 +305,8 @@ void Pipe::RemoveSynapse(Nob* pSynapse)
 
 MicroMeterPnt Pipe::GetVector(float const fFactor) const
 {
-	assert(m_pKnotStart);
-	assert(m_pKnotEnd);
+	assert(m_pNobStart);
+	assert(m_pNobEnd);
 	MicroMeterPnt const umResult { GetStartPoint() + GetVector() * fFactor};
 	assert(! umResult.IsCloseToZero());
 	return umResult;
@@ -402,7 +402,7 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 
 void Pipe::CollectInput()
 {
-	m_mVinputBuffer = m_pKnotStart->GetNextOutput();
+	m_mVinputBuffer = m_pNobStart->GetNextOutput();
 }
 
 bool Pipe::CompStep()
@@ -479,19 +479,19 @@ wostream & operator<< (wostream & out, Pipe const & pipe)
 void Pipe::Emphasize(bool const bOn, bool bDownStream) 
 { 
 	Nob::Emphasize(bOn); 
-	if (!bDownStream && m_pKnotStart->IsKnot())
-		static_cast<Knot *>(m_pKnotStart)->Emphasize(bOn, false);
-	if (bDownStream && m_pKnotEnd->IsKnot())
-		static_cast<Knot *>(m_pKnotEnd)->Emphasize(bOn, true);
+	if (!bDownStream && m_pNobStart->IsKnot())
+		static_cast<Knot *>(m_pNobStart)->Emphasize(bOn, false);
+	if (bDownStream && m_pNobEnd->IsKnot())
+		static_cast<Knot *>(m_pNobEnd)->Emphasize(bOn, true);
 }
 
 void Pipe::Emphasize(bool const bOn) 
 { 
 	Nob::Emphasize(bOn); 
-	if (m_pKnotStart->IsKnot())
-		static_cast<Knot *>(m_pKnotStart)->Emphasize(bOn, false);
-	if (m_pKnotEnd->IsKnot())
-		static_cast<Knot *>(m_pKnotEnd)->Emphasize(bOn, true);
+	if (m_pNobStart->IsKnot())
+		static_cast<Knot *>(m_pNobStart)->Emphasize(bOn, false);
+	if (m_pNobEnd->IsKnot())
+		static_cast<Knot *>(m_pNobEnd)->Emphasize(bOn, true);
 }
 
 size_t Pipe::segNr2index(SegNr const segNr) const

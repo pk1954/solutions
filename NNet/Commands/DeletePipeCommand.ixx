@@ -23,8 +23,8 @@ public:
 
 	explicit DeletePipeCommand(Nob & nob)
 	:	m_pipe   (*Cast2Pipe(&nob)),
-		m_idStart(m_pipe.GetStartKnotPtr()->GetId()),
-		m_idEnd  (m_pipe.GetEndKnotPtr  ()->GetId())
+		m_idStart(m_pipe.GetStartNobPtr()->GetId()),
+		m_idEnd  (m_pipe.GetEndNobPtr  ()->GetId())
 	{}
 
 	~DeletePipeCommand() final = default;
@@ -36,12 +36,12 @@ public:
 
 		m_upPipe = m_pNMWI->RemoveFromModel<Pipe>(m_pipe);
 
-		if (Nob const * pParent { m_pipe.GetStartKnotPtr()->GetParentNob() })
+		if (Nob const * pParent { m_pipe.GetStartNobPtr()->GetParentNob() })
 		{
 			m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
 			m_upInputConnector->ClearParentPointers();
 		}
-		if (Nob const * pParent { m_pipe.GetEndKnotPtr()->GetParentNob() })
+		if (Nob const * pParent { m_pipe.GetEndNobPtr()->GetParentNob() })
 		{
 			m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
 			m_upOutputConnector->ClearParentPointers();

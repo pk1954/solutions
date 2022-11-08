@@ -26,8 +26,8 @@ public:
 	)
       : m_idPipe    (idPipe),
 		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr())),
-		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr()))
+		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartNobPtr())),
+		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndNobPtr()))
 	{
 		m_upFork       = make_unique<Fork>(pos);
 		m_upOutputLine = make_unique<OutputLine>(pos + m_pNMWI->OrthoVector(m_idPipe));

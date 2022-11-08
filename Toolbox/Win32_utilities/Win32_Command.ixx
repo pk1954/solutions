@@ -5,6 +5,7 @@
 module;
 
 #include <vector>
+#include <iostream>
 #include <functional>
 #include <source_location>
 #include <Windows.h>
@@ -13,10 +14,12 @@ export module Command;
 
 import RootWindow;
 
+using std::wcout;
 using std::vector;
 using std::function;
 using std::unique_ptr;
 using std::source_location;
+using std::wostream;
 
 export class Command
 {
@@ -37,8 +40,6 @@ public:
         return false;
     };
 
-    LRESULT PostCommand2Application(WPARAM const, LPARAM const) const;
-
     void CallUI(bool const); // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
@@ -55,9 +56,18 @@ protected:
 
     function<void()> m_targetReachedFunc { nullptr };
 
+    static bool       IsTraceOn()   { return m_bTrace; }
+    static wostream & TraceStream() { return wcout; }
+
+    static LRESULT PostCmd2Application(WPARAM const wParam, LPARAM const lParam)
+    {
+        return m_pWin->PostCommand2Application(wParam, lParam);
+    }
+
 private:
 
-    inline static RootWindow  * m_pWin { nullptr };
+    inline static RootWindow * m_pWin   { nullptr };
+    inline static bool         m_bTrace { true };
 
     vector<unique_ptr<Command>> m_phases  { };  
     unsigned int                m_uiPhase { 0 };

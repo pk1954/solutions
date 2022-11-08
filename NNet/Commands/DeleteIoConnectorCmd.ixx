@@ -48,7 +48,7 @@ public:
 
 private:
 
-    IoConnector& m_connector;
-    CommandStack            m_cmdStack{};
-    unique_ptr<IoConnector> m_upIoConnector{};
+    IoConnector &           m_connector;
+    CommandStack            m_cmdStack;
+    unique_ptr<IoConnector> m_upIoConnector;
 };

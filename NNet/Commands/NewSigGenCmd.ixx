@@ -24,7 +24,7 @@ public:
 	void Do() final 
 	{ 
 		m_sigGenIdNew = m_pNMWI->PushSigGen(move(m_upSigGen));
-		PostCommand2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
+		PostCmd2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
 		SetActiveSigGenId(m_sigGenIdNew);
 	}
 

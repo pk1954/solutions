@@ -13,7 +13,7 @@ import Types;
 
 void Fork::Check() const
 {
-	Nob::Check();
+	PosNob::Check();
 	m_pPipeIn->Check();
 	m_pPipeOut1->Check();
 	m_pPipeOut2->Check();
@@ -43,6 +43,43 @@ void Fork::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 	m_pPipeIn   = static_cast<Pipe*>(f(src.m_pPipeIn  ));
 	m_pPipeOut1 = static_cast<Pipe*>(f(src.m_pPipeOut1));
 	m_pPipeOut2 = static_cast<Pipe*>(f(src.m_pPipeOut2));
+}
+
+void Fork::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) 
+{ 
+	assert(pDel == m_pPipeIn);
+	m_pPipeIn = pAdd;
+}
+
+void Fork::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) 
+{ 
+	if (pDel == m_pPipeOut1)
+		m_pPipeOut1 = pAdd;
+	else if (pDel == m_pPipeOut2)
+		m_pPipeOut2 = pAdd;
+	else
+		assert(false);
+}
+
+void Fork::Apply2AllInPipes(PipeFunc const& f) const 
+{ 
+	f(*m_pPipeIn);
+}
+
+void Fork::Apply2AllOutPipes(PipeFunc const& f) const 
+{ 
+	f(*m_pPipeOut1);
+	f(*m_pPipeOut2);
+}
+
+bool Fork::Apply2AllInPipesB(PipeCrit const& c) const 
+{ 
+	return c(*m_pPipeIn); 
+}
+
+bool Fork::Apply2AllOutPipesB(PipeCrit const& c) const 
+{ 
+	return c(*m_pPipeOut1) || c(*m_pPipeOut2);
 }
 
 void Fork::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)

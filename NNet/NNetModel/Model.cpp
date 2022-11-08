@@ -17,6 +17,7 @@ import :NobType;
 import :ParamType;
 import :NobId;
 import :Nob;
+import :PosNob;
 import :BaseKnot;
 import :Pipe;
 import :MonitorData;
@@ -72,24 +73,24 @@ Nob * Model::GetNob(NobId const id)
 	return m_Nobs.GetAt(id);
 }
 
-BaseKnot const * Model::GetStartKnotPtr(NobId const id) const 
+PosNob const * Model::GetStartNobPtr(NobId const id) const 
 { 
-	return static_cast<BaseKnot const*>(GetNobConstPtr<Pipe const *>(id)->GetStartKnotPtr());
+	return static_cast<PosNob const*>(GetNobConstPtr<Pipe const *>(id)->GetStartNobPtr());
 }
 
-BaseKnot const * Model::GetEndKnotPtr(NobId const id) const 
+PosNob const * Model::GetEndNobPtr(NobId const id) const
 { 
-	return static_cast<BaseKnot const*>(GetNobConstPtr<Pipe const *>(id)->GetEndKnotPtr());
+	return static_cast<PosNob const*>(GetNobConstPtr<Pipe const *>(id)->GetEndNobPtr());
 }
 
 NobId Model::GetStartKnotId(NobId const idPipe) const 
 { 
-	return GetStartKnotPtr(idPipe)->GetId(); 
+	return GetStartNobPtr(idPipe)->GetId(); 
 }
 
 NobId Model::GetEndKnotId(NobId const idPipe) const 
 { 
-	return GetEndKnotPtr(idPipe)->GetId(); 
+	return GetEndNobPtr(idPipe)->GetId(); 
 }
 
 void Model::Reconnect(NobId const id)
@@ -153,16 +154,17 @@ void Model::ResetModel()
 	SimulationTime::Set();
 }
 
-void Model::SelectSubtree(BaseKnot & baseKnot, bool const bOn)
+void Model::SelectSubtree(PosNob & posNob, bool const bOn)
 {
-	baseKnot.Select(bOn);
-	baseKnot.Apply2AllOutPipes
+	posNob.Select(bOn);
+	posNob.Apply2AllOutPipes
 	(
 		[this, bOn](Pipe & pipe) 
 		{ 
 			pipe.Select(bOn); 
-			if (pipe.GetEndKnotPtr()->IsKnot())
-				SelectSubtree(*static_cast<BaseKnot*>(pipe.GetEndKnotPtr()), bOn);
+			PosNob& posNob { *static_cast<PosNob*>(pipe.GetEndNobPtr()) };
+			if (posNob.IsKnot() || posNob.IsFork() || posNob.IsSynapse())
+				SelectSubtree(posNob, bOn);
 		} 
 	);
 }

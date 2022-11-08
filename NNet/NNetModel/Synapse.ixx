@@ -7,13 +7,13 @@ module;
 export module NNetModel:Synapse;
 
 import DrawContext;
-import :Nob;
+import :PosNob;
 import :NobType;
 import :Pipe;
 import :OutputLine;
 import :tHighlight;
 
-export class Synapse : public Nob
+export class Synapse : public PosNob
 {
 public:
 
@@ -49,6 +49,15 @@ public:
 
     void SetMainPipe(Pipe* const);
     void ResetPos(MicroMeterPnt const&);
+
+    void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
+    void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
+
+    void Apply2AllInPipes (PipeFunc const& f) const final;
+    void Apply2AllOutPipes(PipeFunc const& f) const final;
+
+    bool Apply2AllInPipesB (PipeCrit const& c) const final;
+    bool Apply2AllOutPipesB(PipeCrit const& c) const final;
 
     void DrawExterior(DrawContext const&, tHighlight const) const final;
     void DrawInterior(DrawContext const&, tHighlight const) const final;

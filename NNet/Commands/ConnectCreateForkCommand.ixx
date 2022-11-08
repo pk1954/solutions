@@ -29,8 +29,8 @@ public:
 		m_idPipe    (idPipe),
 		m_pInputLine(m_pNMWI->GetNobPtr<InputLine*>(idIoLine)),
 		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartKnotPtr())),
-		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndKnotPtr()))
+		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartNobPtr())),
+		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndNobPtr()))
 	{
 		m_splitPipes = m_pPipeOld->Split(*m_pInputLine);
 		m_upFork     = make_unique<Fork>(m_pInputLine->GetPos());

@@ -16,7 +16,7 @@ import :NobId;
 import :Nob;
 import :Knot;
 import :Neuron;
-import :BaseKnot;
+import :PosNob;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -39,9 +39,9 @@ BaseKnot & NNetModelWriterInterface::GetBaseKnot(NobId const id)
 	return *pBaseKnot;
 }
 
-void NNetModelWriterInterface::SelectSubtree(BaseKnot & baseKnot, bool  const b) 
+void NNetModelWriterInterface::SelectSubtree(PosNob & posNob, bool  const b) 
 { 
-	m_pModel->SelectSubtree(baseKnot, b); 
+	m_pModel->SelectSubtree(posNob, b); 
 }
 
 void NNetModelWriterInterface::AddOutgoing   (NobId const id, Pipe& pipe) { GetBaseKnot(id).AddOutgoing(pipe); }

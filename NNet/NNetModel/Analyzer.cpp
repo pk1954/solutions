@@ -83,7 +83,7 @@ bool ModelAnalyzer::findLoop(Nob const & nob)
 	}
 	else if (nob.IsPipe())
 	{
-		bResult = findLoop(* static_cast<Pipe const &>(nob).GetEndKnotPtr());  // recursion
+		bResult = findLoop(* static_cast<Pipe const &>(nob).GetEndNobPtr());  // recursion
 	}
 	else if (nob.IsBaseKnot())
 	{

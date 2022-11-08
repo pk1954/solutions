@@ -40,6 +40,7 @@ export import :OutputConnector;
 export import :ParamType;
 export import :Pipe;
 export import :PipeList;
+export import :PosNob;
 export import :Sensor;
 export import :SigGenDynamicData;
 export import :SigGenId;

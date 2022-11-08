@@ -17,6 +17,7 @@ import :UPNobList;
 import :MonitorData;
 import :UPSigGenList;
 import :UPSensorList;
+import :PosNob;
 import :BaseKnot;
 import :DescriptionUI;
 
@@ -46,9 +47,9 @@ public:
 
 	float GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
 
-	Nob      const * GetConstNob    (NobId const) const;
-	BaseKnot const * GetStartKnotPtr(NobId const) const;
-	BaseKnot const * GetEndKnotPtr  (NobId const) const;
+	Nob    const * GetConstNob   (NobId const) const;
+	PosNob const * GetStartNobPtr(NobId const) const;
+	PosNob const * GetEndNobPtr  (NobId const) const;
 
 	NobId GetStartKnotId(NobId const) const;
 	NobId GetEndKnotId  (NobId const) const;
@@ -125,7 +126,7 @@ public:
 	bool  Compute();
 	void  ResetModel();
 	float SetParam(ParamType::Value const, float const);
-	void  SelectSubtree(BaseKnot&, bool const);
+	void  SelectSubtree(PosNob&, bool const);
 	void  Reconnect(NobId const);
 
 	void DeselectAllNobs     ()               const { m_Nobs.SelectAllNobs(false); }

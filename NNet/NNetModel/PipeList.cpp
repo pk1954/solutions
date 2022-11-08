@@ -50,10 +50,13 @@ void PipeList::Remove(Pipe & pipe)
 	m_list.erase(res);
 }
 
-void PipeList::Replace(Pipe * const pDel, Pipe * const pAdd) 
+void PipeList::Replace(Nob * const pDel, Nob * const pAdd) 
 { 
 	assert(pAdd);
-	replace(m_list, pDel, pAdd); 
+	assert(pDel);
+	assert(pAdd->IsPipe());
+	assert(pDel->IsPipe());
+	replace(m_list, static_cast<Pipe *>(pDel), static_cast<Pipe*>(pAdd));
 }
 
 void PipeList::Recalc() const

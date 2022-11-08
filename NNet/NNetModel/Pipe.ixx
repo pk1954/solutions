@@ -5,6 +5,7 @@
 module;
 
 #include <utility>
+#include <functional>
 #include <iostream>
 #include <vector>
 
@@ -21,11 +22,17 @@ import :Nob;
 
 using std::pair;
 using std::vector;
+using std::function;
 using std::wostream;
 using std::unique_ptr;
 
-//class BaseKnot;  // avoid circular reference
+//class PosNob;    // avoid circular reference
 //class Synapse;   // avoid circular reference
+
+class Pipe;
+
+export using PipeFunc = function<void(Pipe&)>;
+export using PipeCrit = function<bool(Pipe const&)>;
 
 export class Pipe : public Nob
 {
@@ -46,8 +53,8 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsPipeType(); }
 
-	void SetStartPnt(Nob * const);   //TODO: Nob --> BaseKnot
-	void SetEndPnt  (Nob * const);   //TODO: Nob --> BaseKnot
+	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
+	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob
 
 	void AddSynapse        (Nob *);              //TODO: Nob --> Synapse
 	void RemoveSynapse     (Nob *);              //TODO: Nob --> Synapse
@@ -57,11 +64,11 @@ public:
 	void Emphasize(bool const) final;
 	void Emphasize(bool const, bool const);
 
-	Nob * GetStartKnotPtr() { return m_pKnotStart; }   //TODO: Nob --> BaseKnot
-	Nob * GetEndKnotPtr  () { return m_pKnotEnd; }     //TODO: Nob --> BaseKnot
+	Nob * GetStartNobPtr() { return m_pNobStart; }   //TODO: Nob --> PosNob
+	Nob * GetEndNobPtr  () { return m_pNobEnd; }     //TODO: Nob --> PosNob
 
-	Nob const * GetStartKnotPtr() const { return m_pKnotStart; }   //TODO: Nob --> BaseKnot
-	Nob const * GetEndKnotPtr  () const { return m_pKnotEnd;   }   //TODO: Nob --> BaseKnot
+	Nob const * GetStartNobPtr () const { return m_pNobStart; }   //TODO: Nob --> PosNob
+	Nob const * GetEndNobPtr   () const { return m_pNobEnd;   }   //TODO: Nob --> PosNob
 	size_t      GetNrOfSegments() const { return m_potential.size(); }
 
 	void SetNrOfSegments(size_t const n) { m_potential.resize(n); }
@@ -154,8 +161,8 @@ public:
 	void FixSynapses() const;
 
 private:
-	Nob      * m_pKnotStart { nullptr };  //TODO: Nob --> BaseKnot
-	Nob      * m_pKnotEnd   { nullptr };  //TODO: Nob --> BaseKnot
+	Nob      * m_pNobStart { nullptr };  //TODO: Nob --> BaseKnot
+	Nob      * m_pNobEnd   { nullptr };  //TODO: Nob --> BaseKnot
 	size_t     m_potIndex   { 0 };   // index in m_potential if SegNr 0
 	vector<mV> m_potential  { };
 

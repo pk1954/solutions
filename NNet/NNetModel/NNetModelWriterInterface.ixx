@@ -25,6 +25,7 @@ import :BaseKnot;
 import :Pipe;
 import :NobId;
 import :Nob;
+import :PosNob;
 import :DescriptionUI;
 import :MonitorData;
 import :UPSensorList;
@@ -45,7 +46,7 @@ public:
     void  SelectNob          (NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob             (NobId const);
-    void  SelectSubtree(BaseKnot &, bool const);
+    void  SelectSubtree      (PosNob &, bool const);
 
     UPNobList              & GetUPNobs     () { return m_pModel->GetUPNobs(); }
     NNetParameters         & GetParams     () { return m_pModel->GetParams(); }

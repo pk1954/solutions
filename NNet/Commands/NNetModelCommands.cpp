@@ -41,7 +41,7 @@ import SetNobCommand;
 import SetSigGenStaticDataCmd;
 import AnalyzeCommand;
 import MoveSelectionCommand;
-import InsertBaseKnotCommand;
+import InsertPosNobCommand;
 import DeleteSignalCommand;
 import RotateNobCommand;
 import SelectNobCommand;
@@ -105,7 +105,7 @@ void NNetModelCommands::SetModelInterface
 
 void NNetModelCommands::UndoCommand()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	if (! m_pCmdStack->UndoCommand())
 		m_pSound->Warning();
@@ -113,7 +113,7 @@ void NNetModelCommands::UndoCommand()
 
 void NNetModelCommands::RedoCommand()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	if (! m_pCmdStack->RedoCommand())
 		m_pSound->Warning();
@@ -126,55 +126,56 @@ void NNetModelCommands::PushCommand(unique_ptr<NNetCommand> upCmd)
 
 void NNetModelCommands::ResetModel()
 { 
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pNMWI->ResetModel();
 	m_pCmdStack->Clear();
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::ExtendInputLine(MicroMeterPnt const& pos) // case 10
+void NNetModelCommands::ExtendInputLine(NobId const id, MicroMeterPnt const& pos) // case 10
 {
-	if (IsTraceOn())
-		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<ExtendInputLineCmd>(m_nobHighlighted, pos - STD_OFFSET));
+	ExtendInputLineCmd::Push(*m_pCmdStack, id, pos);
+	//if (m_bTrace)
+	//	TraceStream() << source_location::current().function_name() << L" " << pos << endl;
+	//m_pCmdStack->PushCommand(make_unique<ExtendInputLineCmd>(id, pos - STD_OFFSET));
 }
 
-void NNetModelCommands::ExtendOutputLine(MicroMeterPnt const& pos) // case 11
+void NNetModelCommands::ExtendOutputLine(NobId const id, MicroMeterPnt const& pos) // case 11
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<ExtendOutputLineCmd>(m_nobHighlighted, pos + STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<ExtendOutputLineCmd>(id, pos + STD_OFFSET));
 }
 
-void NNetModelCommands::AddIncoming2Neuron(MicroMeterPnt const& pos) // case 9
+void NNetModelCommands::AddIncoming2Neuron(NobId const id, MicroMeterPnt const& pos) // case 9
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(m_nobHighlighted, pos - STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(id, pos - STD_OFFSET));
 }
 
-void NNetModelCommands::AddIncoming2Pipe(MicroMeterPnt const & pos)  // case 8
+void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 8
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<CreateSynapseCommand>(m_nobHighlighted, pos));
+	m_pCmdStack->PushCommand(make_unique<CreateSynapseCommand>(id, pos));
 }
 
 void NNetModelCommands::AddModel()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() 
 		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
 	unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
 }
 
-void NNetModelCommands::AddOutgoing2Pipe(MicroMeterPnt const & pos)  // case 7
+void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 7
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<CreateForkCommand>(pos, m_nobHighlighted));
+	m_pCmdStack->PushCommand(make_unique<CreateForkCommand>(pos, id));
 }
 
 void NNetModelCommands::AddSensor
@@ -183,21 +184,21 @@ void NNetModelCommands::AddSensor
 	TrackNr          const   trackNr
 )
 { 
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << umCircle << L" " << trackNr << endl;
 	m_pCmdStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
 }
 
 void NNetModelCommands::AnalyzeAnomalies()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMWI)));
 }
 
 void NNetModelCommands::AnalyzeLoops()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMWI)));
 }
@@ -208,7 +209,7 @@ void NNetModelCommands::AnimateCoord
 	Uniform2D<MicroMeter> const & target
 )
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<CoordAnimation>(actual, target));
 }
@@ -219,47 +220,47 @@ void NNetModelCommands::AnimateArrows
 	MicroMeter const umTarget
 )
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
 }
 
-void NNetModelCommands::AttachSigGen2Line()
+void NNetModelCommands::AttachSigGen2Line(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(m_nobHighlighted));
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(id));
 }
 
 void NNetModelCommands::AttachSigGen2Sel()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<AttachSigGen2SelCmd>());
 }
 
-void NNetModelCommands::AttachSigGen2Conn()
+void NNetModelCommands::AttachSigGen2Conn(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConCmd>(m_nobHighlighted));
+	m_pCmdStack->PushCommand(make_unique<AttachSigGen2ConCmd>(id));
 }
 
-void NNetModelCommands::Connect()
+void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 { 
 	using enum ConnectionType;
 
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 
 	unique_ptr<Command> upCmd;
-	switch (m_pNMWI->ConnectionResult(m_nobHighlighted, m_nobTarget))
+	switch (m_pNMWI->ConnectionResult(idSrc, idDst))
 	{
-		case ct_fork:        upCmd = make_unique<ConnectCreateForkCommand>   (m_nobHighlighted, m_nobTarget); break;  // case 1                                                           // case 1
-		case ct_synapse:	 upCmd = make_unique<ConnectCreateSynapseCommand>(m_nobHighlighted, m_nobTarget); break;  // case 2
-		case ct_neuron:      upCmd = make_unique<Connect2NeuronCommand>      (m_nobHighlighted, m_nobTarget); break;  // case 3
-		case ct_knot:		 upCmd = make_unique<PlugIoLineAnimation>        (m_nobHighlighted, m_nobTarget); break;  // case 4/5
-		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>   (m_nobHighlighted, m_nobTarget); break;  // case 6
+		case ct_fork:        upCmd = make_unique<ConnectCreateForkCommand>   (idSrc, idDst); break;  // case 1                                                           // case 1
+		case ct_synapse:	 upCmd = make_unique<ConnectCreateSynapseCommand>(idSrc, idDst); break;  // case 2
+		case ct_neuron:      upCmd = make_unique<Connect2NeuronCommand>      (idSrc, idDst); break;  // case 3
+		case ct_knot:		 upCmd = make_unique<PlugIoLineAnimation>        (idSrc, idDst); break;  // case 4/5
+		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>   (idSrc, idDst); break;  // case 6
 		default: assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));
@@ -267,7 +268,7 @@ void NNetModelCommands::Connect()
 
 void NNetModelCommands::CopySelection()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	UPNobList list { CopySelectedNobs::Do(*m_pNMWI) };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(list));
@@ -275,7 +276,7 @@ void NNetModelCommands::CopySelection()
 
 void NNetModelCommands::CreateInitialNobs()
 { 
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pNMWI->CreateInitialNobs();
 	m_pDynamicModelObservable->NotifyAll(false);
@@ -283,58 +284,62 @@ void NNetModelCommands::CreateInitialNobs()
 
 void NNetModelCommands::DeleteSignal(SignalId const & id)
 { 
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
 }
 
 void NNetModelCommands::DeleteSelection()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSelectionCommand>());
 }
 
-void NNetModelCommands::DeleteNob()
+void NNetModelCommands::DeleteNob(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, nobHigh()));
+	m_pSound->Play(L"DISAPPEAR_SOUND");
+	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id)));
 }
 
 void NNetModelCommands::DeleteTrack(TrackNr const nr)
 { 
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << nr << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
 }
 
-void NNetModelCommands::DeleteBaseKnot()
+void NNetModelCommands::DeleteBaseKnot(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	if (nobHighPtr())
-		m_pCmdStack->PushCommand(make_unique<DeleteBaseKnotCmd>(nobHigh()));
+	if (m_pNMWI->GetNob(id))
+		m_pCmdStack->PushCommand(make_unique<DeleteBaseKnotCmd>(*m_pNMWI->GetNob(id)));
 }
 
-void NNetModelCommands::DiscIoConnector()
+void NNetModelCommands::DiscIoConnector(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	if (nobHighPtr())
-	    m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(nobHigh()));
+	if (m_pNMWI->GetNob(id))
+	{
+		m_pSound->Play(L"UNLOCK_SOUND");
+		m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(*m_pNMWI->GetNob(id)));
+	}
 }
 
 void NNetModelCommands::InsertTrack(TrackNr const nr)
 { 
-	if (IsTraceOn())
-	TraceStream() << source_location::current().function_name() << nr << endl;
+	if (m_bTrace)
+		TraceStream() << source_location::current().function_name() << nr << endl;
 	m_pCmdStack->PushCommand(make_unique<InsertTrackCommand>(nr));
 }
 
 bool NNetModelCommands::MakeIoConnector()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	unique_ptr<ConnAnimationCommand> upCmd = { make_unique<ConnAnimationCommand>() };
 	bool bCmdOk = upCmd->IsCmdOk();
@@ -342,18 +347,20 @@ bool NNetModelCommands::MakeIoConnector()
 	return bCmdOk;
 }
 
-void NNetModelCommands::SplitNeuron()
+void NNetModelCommands::SplitNeuron(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SplitNeuronCmd>(m_nobHighlighted));
+	m_pSound->Play(L"UNLOCK_SOUND");
+	m_pCmdStack->PushCommand(make_unique<SplitNeuronCmd>(id));
 }
 
-void NNetModelCommands::ToggleStopOnTrigger()
+void NNetModelCommands::ToggleStopOnTrigger(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCmd>(m_nobHighlighted));
+	m_pSound->Play(L"SNAP_IN_SOUND");
+	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCmd>(id));
 }
 
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
@@ -366,201 +373,206 @@ SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 
 void NNetModelCommands::SetParameter(ParamType::Value const param, float const fNewValue)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << ParamType::GetName(param) << L" " << fNewValue << endl;
 	m_pCmdStack->PushCommand(make_unique<SetParameterCommand>(m_pNMWI->GetParams(), param, fNewValue));
 }
 
 void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticData const &data)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(dst, data));
 }
 
-void NNetModelCommands::MoveNob(MicroMeterPnt const & delta)
+void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << delta << endl;
-	m_pCmdStack->PushCommand(make_unique<MoveNobCommand>(nobHigh(), delta));
+	m_pCmdStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(id), delta));
 }
 
 void NNetModelCommands::MoveSensor(SensorId const id, MicroMeterPnt const & delta)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << delta << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveSensorCmd>(id, delta));
 }
 
 void NNetModelCommands::MoveSignal(SignalId const & id, TrackNr const trackNr)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << trackNr << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
 }
 
 void NNetModelCommands::NewSignalGenerator()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<NewSigGenCmd>());
 }
 
 void NNetModelCommands::SetActiveSignalGenerator(SigGenId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
 }
 
 void NNetModelCommands::DeleteSigGen()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSigGenCmd>());
 }
 
 void NNetModelCommands::RenameSigGen(SigGenId const id, wstring const & name)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << name << endl;
 	m_pCmdStack->PushCommand(make_unique<RenameSigGenCmd>(id, name));
 }
 
 void NNetModelCommands::SelectSigGenClients()
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<SelSigGenClientsCmd>());
 }
 
 void NNetModelCommands::AddSigGen2Monitor(TrackNr const trackNr)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
 }
 
 void NNetModelCommands::SizeSelection(float const fFactor)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << fFactor << endl;
 	m_pCmdStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
 }
 
 void NNetModelCommands::SizeSensor(SensorId const id, float const fFactor)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << id << L" " << fFactor << endl;
 	m_pCmdStack->PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
 }
 
 void NNetModelCommands::Rotate
 (
+	NobId         const   id,
 	MicroMeterPnt const & umPntOld, 
 	MicroMeterPnt const & umPntNew 
 )
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << umPntOld << L" " << umPntNew << endl;
-	m_pCmdStack->PushCommand(make_unique<RotateNobCommand>(nobHigh(), umPntOld, umPntNew));
+	m_pCmdStack->PushCommand(make_unique<RotateNobCommand>(*m_pNMWI->GetNob(id), umPntOld, umPntNew));
 }
 
-void NNetModelCommands::SetNob(MicroMeterPosDir const posDir)
+void NNetModelCommands::SetNob
+(
+	NobId            const id,
+	MicroMeterPosDir const posDir
+)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << posDir << endl;
-	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(nobHigh(), posDir));
+	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir));
 }
 
 void NNetModelCommands::MoveSelection(MicroMeterPnt const & delta)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << delta << endl;
 	m_pCmdStack->PushCommand(make_unique<MoveSelectionCommand>(delta));
 }
 
 void NNetModelCommands::RotateSelection(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << umPntOld << umPntNew << endl;
 	m_pCmdStack->PushCommand(make_unique<RotateSelectionCommand>(umPntOld, umPntNew));
 }
 
 void NNetModelCommands::RotateModel(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << umPntOld << umPntNew << endl;
 	m_pCmdStack->PushCommand(make_unique<RotateModelCommand>(umPntOld, umPntNew));
 }
 
-void NNetModelCommands::InsertKnot(MicroMeterPnt const & pos)
+void NNetModelCommands::InsertKnot(NobId const id, MicroMeterPnt const & pos)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<InsertBaseKnotCommand<Knot>>(m_nobHighlighted, pos));
+	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Knot>>(id, pos));
 }
 
-void NNetModelCommands::InsertNeuron(MicroMeterPnt const & pos)
+void NNetModelCommands::InsertNeuron(NobId const id, MicroMeterPnt const & pos)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<InsertBaseKnotCommand<Neuron>>(m_nobHighlighted, pos));
+	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Neuron>>(id, pos));
 }
 
 void NNetModelCommands::NewIoLinePair(MicroMeterPnt const & pos)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
 	m_pCmdStack->PushCommand(make_unique<NewIoLinePairCmd>(* m_pNMWI, pos));
 }
 
 void NNetModelCommands::RestrictSelection(NobType::Value const val)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << val << endl;
 	m_pCmdStack->PushCommand(make_unique<RestrictSelectionCommand>(val));
 }
 
-void NNetModelCommands::SelectNob(tBoolOp const op)
+void NNetModelCommands::SelectNob(NobId const id, tBoolOp const op)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << op << endl;
-	if (IsDefined(m_nobHighlighted))
-		m_pCmdStack->PushCommand(make_unique<SelectNobCommand>(m_nobHighlighted, op));
+	if (IsDefined(id))
+		m_pCmdStack->PushCommand(make_unique<SelectNobCommand>(id, op));
 }
 
 void NNetModelCommands::SelectAll(bool const bOn)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << bOn << endl;
 	m_pCmdStack->PushCommand(make_unique<SelectAllCommand>(bOn));
 }
 
-void NNetModelCommands::SelectSubtree(bool const bOn)
+void NNetModelCommands::SelectSubtree(NobId const id, bool const bOn)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << bOn << endl;
-	m_pCmdStack->PushCommand(make_unique<SelectSubtreeCommand>(m_nobHighlighted, bOn));
+	m_pCmdStack->PushCommand(make_unique<SelectSubtreeCommand>(id, bOn));
 }
 
 void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << rect << endl;
 	m_pCmdStack->PushCommand(make_unique<SelectNobsInRectCommand>(rect));
 }
 
-void NNetModelCommands::ToggleEmphMode()
+void NNetModelCommands::ToggleEmphMode(NobId const id)
 {
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(m_nobHighlighted));
+	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 
 void NNetModelCommands::StartStimulus()
 {  
-	if (IsTraceOn())
+	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }

@@ -114,7 +114,7 @@
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />
-    <ClCompile Include="InsertBaseKnotCommand.ixx" />
+    <ClCompile Include="InsertPosNobCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />
     <ClCompile Include="MakeConnAnimation.ixx" />

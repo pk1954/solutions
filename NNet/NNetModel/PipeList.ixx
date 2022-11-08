@@ -6,7 +6,6 @@ module;
 
 #include <iostream>
 #include <algorithm>
-#include <functional>
 #include <fstream>
 #include <vector>
 
@@ -15,14 +14,10 @@ export module NNetModel:PipeList;
 import :Pipe;
 
 using std::vector;
-using std::function;
 using std::unique_ptr;
 using std::wostream;
 using std::ranges::any_of;
 using std::ranges::for_each;
-
-export using PipeFunc = function<void(Pipe &)>;
-export using PipeCrit = function<bool(Pipe const &)>;
 
 export class PipeList
 {
@@ -43,7 +38,7 @@ public:
 
 	void Add(Pipe &);
 	void Remove(Pipe &);
-	void Replace(Pipe * const, Pipe * const);
+	void Replace(Nob * const, Nob * const);
 
 	bool IsEmpty   () const { return m_list.empty(); }
 	bool IsNotEmpty() const { return !IsEmpty(); }

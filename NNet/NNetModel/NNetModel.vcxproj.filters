@@ -296,5 +296,8 @@
     <ClCompile Include="Fork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PosNob.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

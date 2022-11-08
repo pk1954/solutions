@@ -78,7 +78,7 @@
     <ClCompile Include="DiscIoConnectorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InsertBaseKnotCommand.ixx">
+    <ClCompile Include="InsertPosNobCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InsertTrackCommand.ixx">
