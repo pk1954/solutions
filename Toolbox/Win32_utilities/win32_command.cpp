@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <bit>
 #include <memory>
 #include <Windows.h>

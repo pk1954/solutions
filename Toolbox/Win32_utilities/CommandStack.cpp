@@ -45,6 +45,35 @@ void CommandStack::clearRedoStack()
     assert(RedoStackEmpty());
 }
 
+Command* CommandStack::getCmdPtr(size_t const index) const
+{
+    Command* pCmd { m_CommandStack.at(index).get() };
+    assert(pCmd != nullptr);
+    return pCmd;
+}
+
+Command& CommandStack::currentCmd() const
+{
+    return *getCmdPtr(m_iIndex);
+}
+
+Command& CommandStack::previousCmd() const
+{
+    return *getCmdPtr(m_iIndex - 1);
+};
+
+void CommandStack::set2OlderCmd()
+{
+    assert(!UndoStackEmpty());
+    --m_iIndex;
+}
+
+void CommandStack::set2YoungerCmd()
+{
+    assert(m_iIndex < m_CommandStack.size());
+    ++m_iIndex;
+}
+
 bool CommandStack::canBeCombined(Command const * pCmd) const
 {
     if (UndoStackEmpty())

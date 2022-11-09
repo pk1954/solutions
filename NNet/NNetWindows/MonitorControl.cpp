@@ -17,6 +17,7 @@ import Types;
 import NNetModelCommands;
 import SimulationTime;
 import NNetModel;
+import MoveSignalCmd;
 
 using std::to_wstring;
 
@@ -578,7 +579,7 @@ bool MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 		(m_pMonitorData->IsAnySignalSelected())
 	   )
 	{
-		m_modelCommands.MoveSignal(m_pMonitorData->GetHighlightedSignalId(), m_trackNrHighlighted);
+		MoveSignalCmd::Push(m_pMonitorData->GetHighlightedSignalId(), m_trackNrHighlighted);
 	}
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLast.Set2Null();

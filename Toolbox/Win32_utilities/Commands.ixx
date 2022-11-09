@@ -4,12 +4,10 @@
 
 module;
 
-#include <cassert>
 #include <vector>
 #include <memory>
 #include <iostream>
 #include <functional>
-#include <source_location>
 #include <Windows.h>
 
 export module Commands;
@@ -22,8 +20,6 @@ using std::wcout;
 using std::wostream;
 using std::function;
 using std::unique_ptr;
-using std::make_unique;
-using std::source_location;
 
 class Command;
 
@@ -46,29 +42,15 @@ private:
 
     vector<unique_ptr<Command>> m_CommandStack { };
     size_t                      m_iIndex { 0 }; // index into m_Commandstack
+
     Observable* m_pStaticModelObservable { nullptr };
 
-    Command* getCmdPtr(size_t const index) const
-    {
-        Command* pCmd { m_CommandStack.at(index).get() };
-        assert(pCmd != nullptr);
-        return pCmd;
-    }
+    Command* getCmdPtr(size_t const) const;
+    Command& currentCmd () const;
+    Command& previousCmd() const;
 
-    Command& currentCmd() const { return *getCmdPtr(m_iIndex); }
-    Command& previousCmd() const { return *getCmdPtr(m_iIndex - 1); };
-
-    void set2OlderCmd()
-    {
-        assert(!UndoStackEmpty());
-        --m_iIndex;
-    }
-
-    void set2YoungerCmd()
-    {
-        assert(m_iIndex < m_CommandStack.size());
-        ++m_iIndex;
-    }
+    void set2OlderCmd();
+    void set2YoungerCmd();
 
     void notify() const;
     void clearRedoStack();
@@ -100,7 +82,7 @@ protected:
 
     function<void()> m_targetReachedFunc { nullptr };
 
-    static bool       IsTraceOn() { return m_bTrace; }
+    static bool      IsTraceOn()   { return m_bTrace; }
     static wostream& TraceStream() { return wcout; }
 
     static LRESULT PostCmd2Application(WPARAM const, LPARAM const);

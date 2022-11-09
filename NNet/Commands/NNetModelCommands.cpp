@@ -404,13 +404,6 @@ void NNetModelCommands::MoveSensor(SensorId const id, MicroMeterPnt const & delt
 	m_pCmdStack->PushCommand(make_unique<MoveSensorCmd>(id, delta));
 }
 
-void NNetModelCommands::MoveSignal(SignalId const & id, TrackNr const trackNr)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << id << L" " << trackNr << endl;
-	m_pCmdStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
-}
-
 void NNetModelCommands::NewSignalGenerator()
 {
 	if (m_bTrace)
