@@ -48,6 +48,8 @@ import RotateModelCommand;
 import RotateSelectionCommand;
 import AttachSigGen2SelCmd;
 import RenameSigGenCmd;
+import ConnectCreateSynapseCmd;
+import ConnectCreateForkCmd;
 import CreateSynapseCommand;
 import CreateForkCommand;
 import AddSensorSignalCmd;
@@ -58,8 +60,6 @@ import DiscIoConnectorCmd;
 import NNetModelCommands;
 import AttachSigGen2ConCmd;
 import Connect2NeuronCommand;
-import ConnectCreateSynapseCommand;
-import ConnectCreateForkCommand;
 import AttachSigGen2LineCmd;
 import SelectSubtreeCommand;
 import SelSigGenClientsCmd;
@@ -249,17 +249,30 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 { 
 	using enum ConnectionType;
 
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-
 	unique_ptr<Command> upCmd;
 	switch (m_pNMWI->ConnectionResult(idSrc, idDst))
 	{
-		case ct_fork:        upCmd = make_unique<ConnectCreateForkCommand>   (idSrc, idDst); break;  // case 1                                                           // case 1
-		case ct_synapse:	 upCmd = make_unique<ConnectCreateSynapseCommand>(idSrc, idDst); break;  // case 2
-		case ct_neuron:      upCmd = make_unique<Connect2NeuronCommand>      (idSrc, idDst); break;  // case 3
-		case ct_knot:		 upCmd = make_unique<PlugIoLineAnimation>        (idSrc, idDst); break;  // case 4/5
-		case ct_ioConnector: upCmd = make_unique<PlugIoConnectorAnimation>   (idSrc, idDst); break;  // case 6
+		case ct_fork:    ConnectCreateForkCmd::Push(idSrc, idDst); return; // case 1 
+		case ct_synapse:	 
+			if (m_bTrace)
+				TraceStream() << source_location::current().function_name() << endl;
+			upCmd = make_unique<ConnectCreateSynapseCmd>(idSrc, idDst); // case 2
+			break;  
+		case ct_neuron:      
+			if (m_bTrace)
+				TraceStream() << source_location::current().function_name() << endl;
+			upCmd = make_unique<Connect2NeuronCommand>      (idSrc, idDst); // case 3
+			break;  
+		case ct_knot:		 
+			if (m_bTrace)
+				TraceStream() << source_location::current().function_name() << endl;
+			upCmd = make_unique<PlugIoLineAnimation>        (idSrc, idDst); // case 4/5
+			break;  
+		case ct_ioConnector: 
+			if (m_bTrace)
+				TraceStream() << source_location::current().function_name() << endl;
+			upCmd = make_unique<PlugIoConnectorAnimation>   (idSrc, idDst); // case 6
+			break;  
 		default: assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));

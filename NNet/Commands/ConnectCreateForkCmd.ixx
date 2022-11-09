@@ -1,26 +1,34 @@
-// ConnectCreateForkCommand.ixx
+// ConnectCreateForkCmd.ixx
 //
 // Commands
 
 module;
 
 #include <cassert>
+#include <string>
 #include <memory>
+#include <iostream>
 
-export module ConnectCreateForkCommand;
+export module ConnectCreateForkCmd;
 
 import Types;
+import Symtab;
+import Script;
+import Commands;
+import NNetWrapperHelpers;
 import NNetCommand;
 import NNetModel;
 
+using std::endl;
+using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 using std::pair;
 
-export class ConnectCreateForkCommand : public NNetCommand
+export class ConnectCreateForkCmd : public NNetCommand
 {
 public:
-	ConnectCreateForkCommand   // case 1 : Existing InputLine is connected to Pipe
+	ConnectCreateForkCmd   // case 1 : Existing InputLine is connected to Pipe
 	(
 		NobId const idIoLine,
 		NobId const idPipe
@@ -38,7 +46,7 @@ public:
 		m_upFork->SetOutgoing(m_splitPipes.second.get(), &m_pInputLine->GetPipe());
 	}
 
-	~ConnectCreateForkCommand() final = default;
+	~ConnectCreateForkCmd() final = default;
 
 	void Do() final
 	{
@@ -75,7 +83,33 @@ public:
 		m_pInputLine->GetPipe().SetStartPnt(m_pInputLine);
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId idSrc, NobId idDst)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << L" " << idSrc << L" " << idDst << endl;
+		m_pStack->PushCommand(make_unique<ConnectCreateForkCmd>(idSrc, idDst));
+	}
+
 private:
+
+	inline static const wstring NAME { L"ConnectCreateFork" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId const idSrc { ScrReadNobId(script) };
+			NobId const idDst { ScrReadNobId(script) };
+			ConnectCreateForkCmd::Push(idSrc, idDst);
+		}
+	};
+
 	NobId       const m_idIoLine;
 	NobId       const m_idPipe;
 	InputLine * const m_pInputLine;

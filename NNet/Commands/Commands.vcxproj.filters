@@ -207,10 +207,10 @@
     <ClCompile Include="CreateSynapseCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectCreateSynapseCommand.ixx">
+    <ClCompile Include="ConnectCreateSynapseCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectCreateForkCommand.ixx">
+    <ClCompile Include="ConnectCreateForkCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddPipe2NeuronCmd.ixx">

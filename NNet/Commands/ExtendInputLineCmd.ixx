@@ -14,9 +14,9 @@ import Types;
 import Symtab;
 import Script;
 import Commands;
+import NNetWrapperHelpers;
 import NNetCommand;
 import NNetModel;
-import NNetWrapperHelpers;
 
 using std::endl;
 using std::wstring;

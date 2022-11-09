@@ -21,6 +21,8 @@ import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
+
+import ConnectCreateForkCmd;
 import ExtendInputLineCmd;
 
 using std::wstring;
@@ -384,12 +386,12 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     SymbolTable::ScrDefConst(L"AnalyzeAnomalies",    new WrapAnalyzeAnomalies); 
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
-    //SymbolTable::ScrDefConst(L"ExtendInputLine",     new WrapExtendInputLine);
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
     SymbolTable::ScrDefConst(L"AddIncoming2Pipe",    new WrapAddIncoming2Pipe); 
     SymbolTable::ScrDefConst(L"AddOutgoing2Pipe",    new WrapAddOutgoing2Pipe); 
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
+    ConnectCreateForkCmd::Register();
     SymbolTable::ScrDefConst(L"CopySelection",       new WrapCopySelection );
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );

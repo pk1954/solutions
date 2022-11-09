@@ -1,4 +1,4 @@
-// ConnectCreateSynapseCommand.ixx
+// ConnectCreateSynapseCmd.ixx
 //
 // Commands
 
@@ -7,7 +7,7 @@ module;
 #include <cassert>
 #include <memory>
 
-export module ConnectCreateSynapseCommand;
+export module ConnectCreateSynapseCmd;
 
 import Types;
 import NNetCommand;
@@ -16,10 +16,10 @@ import NNetModel;
 using std::unique_ptr;
 using std::make_unique;
 
-export class ConnectCreateSynapseCommand : public NNetCommand
+export class ConnectCreateSynapseCmd : public NNetCommand
 {
 public:
-	ConnectCreateSynapseCommand   // case 2: OutputLine connects to Pipe
+	ConnectCreateSynapseCmd   // case 2: OutputLine connects to Pipe
 	(
 		NobId const idOutputLine,
 		NobId const idPipe
@@ -33,7 +33,7 @@ public:
 		m_upSynapse->Select(m_pOutputLine->IsSelected());
 	}
 
-	~ConnectCreateSynapseCommand() final = default;
+	~ConnectCreateSynapseCmd() final = default;
 
 	void Do() final
 	{
