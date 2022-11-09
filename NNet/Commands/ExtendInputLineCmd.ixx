@@ -26,22 +26,6 @@ using std::unique_ptr;
 export class ExtendInputLineCmd : public NNetCommand
 {
 public:
-	static void Register()
-	{
-		SymbolTable::ScrDefConst(NAME, new WrapExtendInputLine);
-	}
-
-	static void Push
-	(
-		NobId                 nobId,
-		MicroMeterPnt const & pos
-	)
-	{
-		if (IsTraceOn())
-			TraceStream() << NAME << L" " << nobId << L" " << pos << endl;
-		m_pStack->PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos - STD_OFFSET));
-	}
-
 	ExtendInputLineCmd         // case 10: Extend InputLine, adding a new knot    
 	(                              
 		NobId         const  id,       
@@ -61,7 +45,7 @@ public:
 
 	void Do() final
 	{
-		m_inputLineOld.Apply2AllOutPipes([this](Pipe& p) { ConnectOutgoing(p, *m_upKnotNew.get()); });
+		ConnectOutgoing(m_inputLineOld.GetPipe(), *m_upKnotNew.get());
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upInputLineNew));
@@ -73,13 +57,27 @@ public:
 		m_upInputLineNew = m_pNMWI->PopFromModel<InputLine>();
 		m_upPipe         = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew      = m_pNMWI->PopFromModel<Knot>();
-		m_inputLineOld.Apply2AllOutPipes([this](Pipe& p) { ConnectOutgoing(p, *m_upInputLineOld.get()); });
+		ConnectOutgoing(m_inputLineOld.GetPipe(), *m_upInputLineOld.get());
 		m_pNMWI->Restore2Model(move(m_upInputLineOld));
+	}
+
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId nobId, MicroMeterPnt const & pos)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << L" " << nobId << L" " << pos << endl;
+		m_pStack->PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos - STD_OFFSET));
 	}
 
 private:
 
-	class WrapExtendInputLine : public ScriptFunctor
+	inline static const wstring NAME { L"ExtendInputLine" };
+
+	class Wrapper : public ScriptFunctor
 	{
 	public:
 		void operator() (Script& script) const final
@@ -90,9 +88,7 @@ private:
 		}
 	};
 
-	inline static const wstring NAME { L"ExtendInputLine" };
-
-	InputLine      const& m_inputLineOld;
+	InputLine           & m_inputLineOld;
 	unique_ptr<InputLine> m_upInputLineOld;
 	unique_ptr<Knot>      m_upKnotNew;
 	unique_ptr<InputLine> m_upInputLineNew;

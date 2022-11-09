@@ -30,7 +30,6 @@ import MoveNobCommand;
 import ToggleEmphModeCmd;
 import MoveSignalCmd;
 import DeleteSelectionCommand;
-import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import AddPipe2NeuronCmd;
 import SelectionCommand;
