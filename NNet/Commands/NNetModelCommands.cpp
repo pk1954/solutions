@@ -170,13 +170,6 @@ void NNetModelCommands::AddModel()
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->GetUPNobs()));
 }
 
-void NNetModelCommands::AddOutgoing2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 7
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<CreateForkCommand>(pos, id));
-}
-
 void NNetModelCommands::AddSensor
 (
 	MicroMeterCircle const & umCircle,

@@ -37,8 +37,8 @@ public:
 		m_idPipe    (idPipe),
 		m_pInputLine(m_pNMWI->GetNobPtr<InputLine*>(idIoLine)),
 		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartNobPtr())),
-		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndNobPtr()))
+		m_pStartNob(Cast2PosNob(m_pPipeOld->GetStartNobPtr())),
+		m_pEndNob  (Cast2PosNob(m_pPipeOld->GetEndNobPtr()))
 	{
 		m_splitPipes = m_pPipeOld->Split(*m_pInputLine);
 		m_upFork     = make_unique<Fork>(m_pInputLine->GetPos());
@@ -52,8 +52,8 @@ public:
 	{
 		m_pInputLine->GetPipe().SetStartPnt(m_upFork.get());
 
-		m_pStartKnot->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
-		m_pEndKnot  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
+		m_pStartNob->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
+		m_pEndNob  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
 
 		m_splitPipes.first ->FixSynapses();
 		m_splitPipes.second->FixSynapses();
@@ -77,8 +77,8 @@ public:
 		m_splitPipes.first  = m_pNMWI->PopFromModel<Pipe>();
 		m_upFork            = m_pNMWI->PopFromModel<Fork>();
 
-		m_pEndKnot  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
-		m_pStartKnot->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
+		m_pEndNob  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
+		m_pStartNob->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
 
 		m_pInputLine->GetPipe().SetStartPnt(m_pInputLine);
 	}
@@ -114,8 +114,8 @@ private:
 	NobId       const m_idPipe;
 	InputLine * const m_pInputLine;
 	Pipe      * const m_pPipeOld;
-	BaseKnot  * const m_pStartKnot;
-	BaseKnot  * const m_pEndKnot;
+	PosNob    * const m_pStartNob;
+	PosNob    * const m_pEndNob;
 
 	pair<unique_ptr<Pipe>, unique_ptr<Pipe>> m_splitPipes;
 

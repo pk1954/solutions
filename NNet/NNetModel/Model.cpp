@@ -162,7 +162,7 @@ void Model::SelectSubtree(PosNob & posNob, bool const bOn)
 		[this, bOn](Pipe & pipe) 
 		{ 
 			pipe.Select(bOn); 
-			PosNob& posNob { *static_cast<PosNob*>(pipe.GetEndNobPtr()) };
+			PosNob& posNob { *Cast2PosNob(pipe.GetEndNobPtr()) };
 			if (posNob.IsKnot() || posNob.IsFork() || posNob.IsSynapse())
 				SelectSubtree(posNob, bOn);
 		} 

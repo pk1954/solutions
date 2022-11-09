@@ -23,6 +23,7 @@ import NNetWrapperHelpers;
 import NNetModel;
 
 import ConnectCreateForkCmd;
+import CreateForkCommand;
 import ExtendInputLineCmd;
 
 using std::wstring;
@@ -298,28 +299,6 @@ public:
     }
 };
 
-//class WrapExtendInputLine : public ScriptFunctor
-//{
-//public:
-//    void operator() (Script & script) const final
-//    {
-//        NobId         const id    { ScrReadNobId(script) };
-//        MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
-//        m_pCommands->ExtendInputLine(id, umPnt);
-//    }
-//};
-
-class WrapAddOutgoing2Pipe: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId         const id    { ScrReadNobId(script) };
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddOutgoing2Pipe(id, umPos);
-    }
-};
-
 class WrapAddIncoming2Pipe: public ScriptFunctor
 {
 public:
@@ -389,7 +368,7 @@ void InitializeNNetWrappers
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
     SymbolTable::ScrDefConst(L"AddIncoming2Pipe",    new WrapAddIncoming2Pipe); 
-    SymbolTable::ScrDefConst(L"AddOutgoing2Pipe",    new WrapAddOutgoing2Pipe); 
+    CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();
     SymbolTable::ScrDefConst(L"CopySelection",       new WrapCopySelection );

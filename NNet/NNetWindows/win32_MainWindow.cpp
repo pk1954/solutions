@@ -28,6 +28,7 @@ import DrawContext;
 import NNetModelCommands;
 import MonitorWindow;
 import NNetModel;
+import CreateForkCommand;
 import ExtendInputLineCmd;
 
 using std::unordered_map;
@@ -568,7 +569,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		m_pModelCommands->NewIoLinePair(umPoint);
 		break;
 
-	case IDD_ADD_OUTGOING2PIPE:   m_pModelCommands->AddOutgoing2Pipe(m_nobHighlighted, umPoint);	break; // case 7
+	case IDD_ADD_OUTGOING2PIPE:   CreateForkCommand::Push(m_nobHighlighted, umPoint);	            break; // case 7
 	case IDD_ADD_INCOMING2PIPE:   m_pModelCommands->AddIncoming2Pipe(m_nobHighlighted, umPoint);	break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobHighlighted, umPoint);	break; // case 9
 	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);              break; // case 10

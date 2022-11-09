@@ -114,6 +114,7 @@ public:
 	bool IsInputLine      () const { return m_type.IsInputLineType(); }
 	bool IsOutputLine     () const { return m_type.IsOutputLineType(); }
 	bool IsBaseKnot       () const { return m_type.IsBaseKnotType(); }
+	bool IsPosNob         () const { return m_type.IsPosNobType(); }
 	bool IsUndefined      () const { return m_type.IsUndefinedType(); }
 
 	friend wostream & operator<< (wostream &, Nob const &);

@@ -4,14 +4,22 @@
 
 module;
 
+#include <string>
 #include <memory>
+#include <iostream>
 
 export module CreateForkCommand;
 
 import Types;
+import Symtab;
+import Script;
+import Commands;
+import NNetWrapperHelpers;
 import NNetModel;
 import NNetCommand;
 
+using std::endl;
+using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 using std::pair;
@@ -21,13 +29,13 @@ export class CreateForkCommand : public NNetCommand
 public:
 	CreateForkCommand   // case 7 : Split Pipe, create fork and outgoing Pipe with OutputLine 
 	(
-		MicroMeterPnt const& pos,
-		NobId         const  idPipe
+		NobId         const  idPipe,
+		MicroMeterPnt const& pos
 	)
       : m_idPipe    (idPipe),
 		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartKnot(static_cast<BaseKnot*>(m_pPipeOld->GetStartNobPtr())),
-		m_pEndKnot  (static_cast<BaseKnot*>(m_pPipeOld->GetEndNobPtr()))
+		m_pStartNob(Cast2PosNob(m_pPipeOld->GetStartNobPtr())),
+		m_pEndNob  (Cast2PosNob(m_pPipeOld->GetEndNobPtr()))
 	{
 		m_upFork       = make_unique<Fork>(pos);
 		m_upOutputLine = make_unique<OutputLine>(pos + m_pNMWI->OrthoVector(m_idPipe));
@@ -44,8 +52,8 @@ public:
 
 	void Do() final
 	{
-		m_pStartKnot->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
-		m_pEndKnot  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
+		m_pStartNob->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
+		m_pEndNob  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
 
 		m_splitPipes.first ->FixSynapses();
 		m_splitPipes.second->FixSynapses();
@@ -71,16 +79,41 @@ public:
 		m_splitPipes.first  = m_pNMWI->PopFromModel<Pipe>();
 		m_upFork            = m_pNMWI->PopFromModel<Fork>();
 
-		m_pEndKnot  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
-		m_pStartKnot->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
+		m_pEndNob  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
+		m_pStartNob->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
+	}
+
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId nobId, MicroMeterPnt const& pos)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << L" " << nobId << L" " << pos << endl;
+		m_pStack->PushCommand(make_unique<CreateForkCommand>(nobId, pos));
 	}
 
 private:
 
+	inline static const wstring NAME { L"CreateFork" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId         const id    { ScrReadNobId(script) };
+			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
+			CreateForkCommand::Push(id, umPnt);
+		}
+	};
+
 	NobId const m_idPipe;
 	Pipe      * m_pPipeOld;
-	BaseKnot  * m_pStartKnot;  // start point of old Pipe
-	BaseKnot  * m_pEndKnot;    // end point of old Pipe
+	PosNob    * m_pStartNob;  // start point of old Pipe
+	PosNob    * m_pEndNob;    // end point of old Pipe
 
 	pair<unique_ptr<Pipe>, unique_ptr<Pipe>> m_splitPipes;
 

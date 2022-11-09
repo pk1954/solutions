@@ -128,8 +128,8 @@ private:
 	PipeList m_outPipes;
 };
 
-export BaseKnot const * Cast2BaseKnot(Nob const *);
-export BaseKnot       * Cast2BaseKnot(Nob       *);
+export BaseKnot const* Cast2BaseKnot(Nob const*);
+export BaseKnot      * Cast2BaseKnot(Nob      *);
 
 export template <typename T>
 concept BaseKnot_t = is_base_of<BaseKnot, remove_pointer_t<T>>::value;

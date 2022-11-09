@@ -46,7 +46,6 @@ public:
     void ExtendOutputLine  (NobId const, MicroMeterPnt const&);
     void AddIncoming2Neuron(NobId const, MicroMeterPnt const&);
     void AddIncoming2Pipe  (NobId const, MicroMeterPnt const&);
-    void AddOutgoing2Pipe  (NobId const, MicroMeterPnt const&);
     void AddModel();
     void AddSensor(MicroMeterCircle const&, TrackNr const);
     void AddSigGen2Monitor(TrackNr const);
