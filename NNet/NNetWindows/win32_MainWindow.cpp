@@ -15,7 +15,7 @@ module MainWindow;
 import Win32_Util_Resource;
 import Observable;
 import Types;
-import Command;
+import Commands;
 import ActionTimer;
 import FatalError;
 import NNetController;
@@ -28,6 +28,7 @@ import DrawContext;
 import NNetModelCommands;
 import MonitorWindow;
 import NNetModel;
+import ExtendInputLineCmd;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -572,7 +573,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_EXTEND_INPUTLINE: // case 10
-		m_pModelCommands->ExtendInputLine(m_nobHighlighted, umPoint);
+		ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);
 		break;
 
 	case IDD_ADD_INCOMING2NEURON: // case 9

@@ -8,7 +8,7 @@ module;
 #include <memory>
 #include <Windows.h>
 
-module Command;
+module Commands;
 
 import Win32_Util_Resource;
 import SaveCast;
@@ -17,6 +17,18 @@ import ScriptStack;
 
 using std::bit_cast;
 using std::unique_ptr;
+
+class CommandStack;
+
+void Command::Initialize
+(
+    RootWindow   * const pWin,
+    CommandStack * const pStack
+)
+{
+    m_pWin = pWin;
+    m_pStack = pStack;
+}
 
 void Command::UpdateUI() 
 { 
@@ -105,4 +117,9 @@ void Command::NextScriptCommand()
 {
     if (ScriptStack::IsScriptActive() && !ScriptStack::SingleStepMode())
         PostCmd2Application(IDM_NEXT_SCRIPT_CMD, 0);
+}
+
+LRESULT Command::PostCmd2Application(WPARAM const wParam, LPARAM const lParam)
+{
+    return m_pWin->PostCommand2Application(wParam, lParam);
 }

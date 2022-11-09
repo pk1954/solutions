@@ -10,7 +10,7 @@ module;
 export module IoLinesAnimation;
 
 import Types;
-import Command;
+import Commands;
 import Animation;
 import NNetModel;
 

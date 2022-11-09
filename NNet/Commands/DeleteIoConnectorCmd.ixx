@@ -9,7 +9,7 @@ module;
 export module DeleteIoConnectorCmd;
 
 import CommandFunctions;
-import CommandStack;
+import Commands;
 import NNetCommand;
 import NNetModel;
 

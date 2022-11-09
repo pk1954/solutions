@@ -16,7 +16,7 @@ import WinManager;
 import ComputeThread;
 import Preferences;
 import Win32_Util;
-import CommandStack;
+import Commands;
 import NNetModel;
 
 using std::wstring;

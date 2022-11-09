@@ -21,6 +21,7 @@ import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
+import ExtendInputLineCmd;
 
 using std::wstring;
 
@@ -295,16 +296,16 @@ public:
     }
 };
 
-class WrapExtendInputLine : public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId         const id    { ScrReadNobId(script) };
-        MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
-        m_pCommands->ExtendInputLine(id, umPnt);
-    }
-};
+//class WrapExtendInputLine : public ScriptFunctor
+//{
+//public:
+//    void operator() (Script & script) const final
+//    {
+//        NobId         const id    { ScrReadNobId(script) };
+//        MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
+//        m_pCommands->ExtendInputLine(id, umPnt);
+//    }
+//};
 
 class WrapAddOutgoing2Pipe: public ScriptFunctor
 {
@@ -383,7 +384,8 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     SymbolTable::ScrDefConst(L"AnalyzeAnomalies",    new WrapAnalyzeAnomalies); 
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
-    SymbolTable::ScrDefConst(L"ExtendInputLine",     new WrapExtendInputLine);
+    //SymbolTable::ScrDefConst(L"ExtendInputLine",     new WrapExtendInputLine);
+    ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
     SymbolTable::ScrDefConst(L"AddIncoming2Pipe",    new WrapAddIncoming2Pipe); 
     SymbolTable::ScrDefConst(L"AddOutgoing2Pipe",    new WrapAddOutgoing2Pipe); 

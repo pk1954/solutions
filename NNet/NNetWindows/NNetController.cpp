@@ -26,7 +26,7 @@ import ScriptFile;
 import Win32_Util;
 import NNetModelCommands;
 import MonitorWindow;
-import CommandStack;
+import Commands;
 import AutoOpen;
 import NNetModel;
 

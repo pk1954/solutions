@@ -8,10 +8,9 @@ module;
 #include <iostream>
 #include <memory>
 
-module CommandStack;
+module Commands;
 
 import Observable;
-import Command;
 import Scanner;
 
 using std::wcout;

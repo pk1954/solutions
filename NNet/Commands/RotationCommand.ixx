@@ -5,7 +5,7 @@
 export module RotationCommand;
 
 import Types;
-import Command;
+import Commands;
 import NNetCommand;
 import NNetModel;
 

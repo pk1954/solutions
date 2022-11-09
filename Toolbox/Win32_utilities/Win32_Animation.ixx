@@ -9,7 +9,7 @@ module;
 
 export module Animation;
 
-import Command;
+import Commands;
 import SmoothMoveFp;
 
 using std::bit_cast;

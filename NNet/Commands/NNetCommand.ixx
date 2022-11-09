@@ -4,7 +4,7 @@
 
 export module NNetCommand;
 
-import Command;
+import Commands;
 import NNetModel;
 
 export class NNetCommand : public Command

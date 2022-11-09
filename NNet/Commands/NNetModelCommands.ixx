@@ -15,7 +15,7 @@ import Types;
 import BoolOp;
 import Uniform2D;
 import SoundInterface;
-import CommandStack;
+import Commands;
 import NNetModelIO;
 import NNetCommand;
 import NNetModel;
@@ -43,7 +43,6 @@ public:
     void UndoCommand();
     void RedoCommand();
 
-    void ExtendInputLine   (NobId const,MicroMeterPnt const&);
     void ExtendOutputLine  (NobId const, MicroMeterPnt const&);
     void AddIncoming2Neuron(NobId const, MicroMeterPnt const&);
     void AddIncoming2Pipe  (NobId const, MicroMeterPnt const&);

@@ -11,7 +11,7 @@ module;
 export module SingleNobAnimation;
 
 import Types;
-import Command;
+import Commands;
 import Animation;
 import NNetModel;
 

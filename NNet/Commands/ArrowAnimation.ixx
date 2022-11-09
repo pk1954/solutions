@@ -10,7 +10,7 @@ module;
 export module ArrowAnimation;
 
 import Types;
-import Command;
+import Commands;
 import Animation;
 import NNetModel;
 

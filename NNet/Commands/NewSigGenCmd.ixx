@@ -9,7 +9,7 @@ module;
 
 export module NewSigGenCmd;
 
-import Command;
+import Commands;
 import SigGenCommand;
 import NNetModel;
 

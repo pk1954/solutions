@@ -102,9 +102,6 @@
     <ClCompile Include="Win32_StdDialogBox.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Command.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Win32_Controls.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -186,7 +183,7 @@
     <ClCompile Include="CommandStack.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CommandStack.ixx">
+    <ClCompile Include="Commands.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

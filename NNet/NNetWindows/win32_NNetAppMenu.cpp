@@ -19,7 +19,7 @@ import WinManager;
 import Preferences;
 import BaseWindow;
 import Win32_Util;
-import CommandStack;
+import Commands;
 import AutoOpen;
 import NNetModel;
 

@@ -10,7 +10,7 @@ export module DeleteSelectionCommand;
 
 import Types;
 import CommandFunctions;
-import CommandStack;
+import Commands;
 import NNetCommand;
 import NNetModel;
 

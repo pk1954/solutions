@@ -1,66 +1,67 @@
-// CommandStack.ixx
+//// CommandStack.ixx
+////
+//// Win32_utilities
 //
-// Win32_utilities
-
-module;
-
-#include <cassert>
-#include <vector>
-#include <memory>
-
-export module CommandStack;
-
-import Observable;
-import Command;
-
-using std::vector;
-using std::unique_ptr;
-using std::make_unique;
-
-export class CommandStack
-{
-public:
-
-    void Initialize(Observable* const);
-    bool UndoStackEmpty() const;
-    bool RedoStackEmpty() const;
-    void Push(unique_ptr<Command>);
-    void PushCommand(unique_ptr<Command>);
-    bool UndoCommand();
-    bool RedoCommand();
-    void Clear();
-    void DoAll();
-    void UndoAll();
-
-private:
-
-    vector<unique_ptr<Command>> m_CommandStack           { };
-    size_t                      m_iIndex                 { 0 }; // index into m_Commandstack
-    Observable                * m_pStaticModelObservable { nullptr };
-
-    Command * getCmdPtr(size_t const index) const
-    {
-        Command* pCmd{ m_CommandStack.at(index).get() };
-        assert(pCmd != nullptr);
-        return pCmd;
-    }
-
-    Command& currentCmd () const { return *getCmdPtr(m_iIndex); }
-    Command& previousCmd() const { return *getCmdPtr(m_iIndex - 1); };
-
-    void set2OlderCmd()
-    {
-        assert(!UndoStackEmpty());
-        --m_iIndex;
-    }
-
-    void set2YoungerCmd()
-    {
-        assert(m_iIndex < m_CommandStack.size());
-        ++m_iIndex;
-    }
-
-    void notify() const;
-    void clearRedoStack();
-    bool canBeCombined(Command const*) const;
-};
+//module;
+//
+//#include <cassert>
+//#include <vector>
+//#include <memory>
+//
+//export module Commands:CommandStack;
+//
+//import Observable;
+//import :Command;
+//
+//using std::vector;
+//using std::unique_ptr;
+//using std::make_unique;
+//
+//export class CommandStack
+//{
+//public:
+//
+//    void Initialize(Observable* const);
+//    bool UndoStackEmpty() const;
+//    bool RedoStackEmpty() const;
+//    void Push(unique_ptr<Command>);
+//    void PushCommand(unique_ptr<Command>);
+//    bool UndoCommand();
+//    bool RedoCommand();
+//    void Clear();
+//    void DoAll();
+//    void UndoAll();
+//
+//private:
+//
+//    vector<unique_ptr<Command>> m_CommandStack           { };
+//    size_t                      m_iIndex                 { 0 }; // index into m_Commandstack
+//    Observable                * m_pStaticModelObservable { nullptr };
+//
+//    Command * getCmdPtr(size_t const index) const
+//    {
+//        Command* pCmd{ m_CommandStack.at(index).get() };
+//        assert(pCmd != nullptr);
+//        return pCmd;
+//    }
+//
+//    Command& currentCmd () const { return *getCmdPtr(m_iIndex); }
+//    Command& previousCmd() const { return *getCmdPtr(m_iIndex - 1); };
+//
+//    void set2OlderCmd()
+//    {
+//        assert(!UndoStackEmpty());
+//        --m_iIndex;
+//    }
+//
+//    void set2YoungerCmd()
+//    {
+//        assert(m_iIndex < m_CommandStack.size());
+//        ++m_iIndex;
+//    }
+//
+//    void notify() const;
+//    void clearRedoStack();
+//    bool canBeCombined(Command const*) const;
+//};
+//

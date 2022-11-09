@@ -21,7 +21,7 @@ import Preferences;
 import WinManager;
 import NNetModelCommands;
 import MonitorWindow;
-import CommandStack;
+import Commands;
 import NNetModel;
 
 using std::wostream;

@@ -9,7 +9,7 @@ module;
 export module CoordAnimation;
 
 import Types;
-import Command;
+import Commands;
 import Uniform2D;
 import Animation;
 

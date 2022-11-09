@@ -68,7 +68,7 @@ import PlugIoConnectorAnimation;
 import PlugIoLineAnimation;
 import ConnAnimationCommand;
 import CommandFunctions;
-import CommandStack;
+import Commands;
 import SetActiveSigGenCmd;
 import NNetModelIO;
 import NNetModel;
@@ -133,13 +133,13 @@ void NNetModelCommands::ResetModel()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::ExtendInputLine(NobId const id, MicroMeterPnt const& pos) // case 10
-{
-	ExtendInputLineCmd::Push(*m_pCmdStack, id, pos);
-	//if (m_bTrace)
-	//	TraceStream() << source_location::current().function_name() << L" " << pos << endl;
-	//m_pCmdStack->PushCommand(make_unique<ExtendInputLineCmd>(id, pos - STD_OFFSET));
-}
+//void NNetModelCommands::ExtendInputLine(NobId const id, MicroMeterPnt const& pos) // case 10
+//{
+//	ExtendInputLineCmd::Push(*m_pCmdStack, id, pos);
+//	//if (m_bTrace)
+//	//	TraceStream() << source_location::current().function_name() << L" " << pos << endl;
+//	//m_pCmdStack->PushCommand(make_unique<ExtendInputLineCmd>(id, pos - STD_OFFSET));
+//}
 
 void NNetModelCommands::ExtendOutputLine(NobId const id, MicroMeterPnt const& pos) // case 11
 {

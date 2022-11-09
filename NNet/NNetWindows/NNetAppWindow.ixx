@@ -44,7 +44,7 @@ import NNetModelCommands;
 import MonitorWindow;
 import BaseWindow;
 import ScriptStack;
-import CommandStack;
+import Commands;
 import Script;
 import NNetModelIO;
 import NNetModel;
