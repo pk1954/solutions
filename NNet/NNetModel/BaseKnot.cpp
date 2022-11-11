@@ -40,14 +40,6 @@ BaseKnot::BaseKnot
 	m_circle(center, extension)
 { }
 
-bool BaseKnot::operator==(Nob const & rhs) const
-{
-	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
-	return (this->Nob::operator==(rhs))                &&
-	       GetPos().IsCloseTo(baseKnotRhs.GetPos()) &&
-	       GetExtension().IsCloseTo(baseKnotRhs.GetExtension());
-}
-
 void BaseKnot::Dump() const
 {
 	Nob::Dump();
@@ -111,21 +103,6 @@ void BaseKnot::Link(Nob const & nobSrc,	Nob2NobFunc const & f)
 		SetParentNob(f(src.GetParentNob()));
 }
 
-void BaseKnot::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDelta)
-{
-	m_circle.Rotate(umPntPivot, radDelta);
-}
-
-bool BaseKnot::IsIncludedIn(MicroMeterRect const & umRect) const 
-{ 
-	return umRect.Includes(GetPos()); 
-}
-
-void BaseKnot::Expand(MicroMeterRect & umRect) const
-{
-	umRect.Expand(GetPos());
-}
-
 void BaseKnot::Check() const
 {
 	Nob::Check();
@@ -133,6 +110,11 @@ void BaseKnot::Check() const
 	m_outPipes.Check();
 	Apply2AllInPipes ([this](Pipe const & p) { assert(p.GetEndKnotId  () == GetId()); });
 	Apply2AllOutPipes([this](Pipe const & p) { assert(p.GetStartKnotId() == GetId()); });
+}
+
+void BaseKnot::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+{
+	m_circle.Rotate(umPntPivot, radDelta);
 }
 
 void BaseKnot::Apply2AllConnectedPipes(PipeFunc const &f) const 
@@ -175,11 +157,6 @@ bool BaseKnot::IsDirectlyConnectedTo(Pipe const & pipe) const
 {
 	return IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetStartNobPtr())) || 
 		   IsDirectlyConnectedTo(* static_cast<BaseKnot const *>(pipe.GetEndNobPtr  ()));
-}
-
-bool BaseKnot::Includes(MicroMeterPnt const & point) const
-{
-	return Distance(point, GetPos()) <= GetExtension();
 }
 
 MicroMeterRect BaseKnot::GetRect4Text() const

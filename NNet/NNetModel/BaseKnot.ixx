@@ -29,8 +29,6 @@ public:
 	BaseKnot(BaseKnot const &) = default;
 	~BaseKnot() override = default;
 
-	virtual bool operator==(Nob const &) const;
-
 	virtual BaseKnot & operator*=(float const);
 	virtual BaseKnot & operator+=(BaseKnot const &);
 	virtual BaseKnot & operator-=(BaseKnot const &);
@@ -41,21 +39,18 @@ public:
 	mV            GetVoltage()  const       { return m_mVinputBuffer; }
 	void          SetVoltage(mV const v)    { m_mVinputBuffer = v; }
 
-	void Dump()                                       const override;
-	void Check()                                      const override;
-	void Reconnect()                                        override;
-	void SetPos      (MicroMeterPnt  const &)               override;
-	void MoveNob     (MicroMeterPnt  const &)               override;
-	bool Includes    (MicroMeterPnt  const &)         const override;
-	bool IsIncludedIn(MicroMeterRect const &)         const override;
-	void Expand      (MicroMeterRect       &)         const override;
-	void RotateNob   (MicroMeterPnt  const &, Radian const) override;
-	void Link        (Nob const &, Nob2NobFunc const &)     override;
+	void Dump()                                  const override;
+	void Check()                                 const override;
+	void Reconnect()                                   override;
+	void SetPos   (MicroMeterPnt  const &)             override;
+	void MoveNob  (MicroMeterPnt  const &)             override;
+	void Link     (Nob const &, Nob2NobFunc const &)   override;
+	void RotateNob(MicroMeterPnt const&, Radian const) override;
 
 	static bool TypeFits(NobType const type) { return type.IsBaseKnotType(); }
 
-	MicroMeterCircle GetCircle()    const { return m_circle; }
-	MicroMeter       GetExtension() const { return m_circle.GetRadius(); }
+	MicroMeterCircle GetCircle()    const       { return m_circle; }
+	MicroMeter       GetExtension() const final { return m_circle.GetRadius(); }
 
 	void SetExtension(MicroMeter const um) { m_circle.SetRadius(um); }
 
@@ -70,14 +65,12 @@ public:
 
 	bool HasIncoming() const { return m_inPipes.IsNotEmpty(); }
 	bool HasOutgoing() const { return m_outPipes.IsNotEmpty(); }
-	bool IsOrphan()    const { return !(HasIncoming() || HasOutgoing()); }
 
 	void AddIncoming(BaseKnot const& src) {	src.Apply2AllInPipes ([this](Pipe& pipe) { AddIncoming(pipe); }); }
 	void AddOutgoing(BaseKnot const& src) {	src.Apply2AllOutPipes([this](Pipe& pipe) { AddOutgoing(pipe); }); }
 
-	size_t GetNrOfInConns    () const { return m_inPipes.Size(); }
-	size_t GetNrOfOutConns   () const { return m_outPipes.Size(); }
-	size_t GetNrOfConnections() const { return m_inPipes.Size() + m_outPipes.Size(); }
+	size_t GetNrOfInConns () const override { return m_inPipes.Size(); }
+	size_t GetNrOfOutConns() const override { return m_outPipes.Size(); }
 
 	void SetIncoming(size_t const i, Pipe * p) { m_inPipes .Set(i, p); }
 	void SetOutgoing(size_t const i, Pipe * p) { m_outPipes.Set(i, p); }
