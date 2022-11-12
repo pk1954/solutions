@@ -22,32 +22,29 @@ using std::wstring;
 using std::wostringstream;
 
 Neuron::Neuron(MicroMeterPnt const & upCenter)
-  : BaseKnot(upCenter, NobType::Value::neuron, NEURON_RADIUS)
+  : PosNob(NobType::Value::neuron),
+	m_circle(upCenter, NEURON_RADIUS)
 {}
-
-Neuron::Neuron(Neuron const & src)  // copy constructor
-  : BaseKnot(src)
-{ 
-	init(src);
-}
 
 void Neuron::init(const Neuron & rhs)
 {
 	m_bStopOnTrigger = rhs.m_bStopOnTrigger;
 	m_usSpikeTime    = rhs.m_usSpikeTime;
 	m_bTriggered     = rhs.m_bTriggered;
+	m_inPipes        = rhs.m_inPipes;
+	m_pPipeAxon      = rhs.m_pPipeAxon;
 }
 
 Neuron & Neuron::operator=(Neuron const & rhs)
 {
-	BaseKnot::operator=(rhs);
+	PosNob::operator=(rhs);
 	init(rhs);
 	return * this;
 }
 
 void Neuron::ClearDynamicData()
 {
-	BaseKnot::ClearDynamicData();
+	PosNob::ClearDynamicData();
 	m_usSpikeTime = 0.0_MicroSecs;
 	m_bTriggered = false;
 }
@@ -99,9 +96,23 @@ void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umR
 
 MicroMeterPnt Neuron::getAxonHillockPos() const
 {
-	Pipe          const & axon         { GetFirstOutgoing() };
-	MicroMeterPnt const   vectorScaled { axon.GetVector() * (GetExtension() / axon.GetLength()) };
+	float         const fRatio       { GetExtension() / m_pPipeAxon->GetLength() };
+	MicroMeterPnt const vectorScaled { m_pPipeAxon->GetVector() * fRatio };
 	return GetPos() + vectorScaled * NEURON_INTERIOR;
+//	return GetPos() + Normalize(m_pPipeAxon->GetVector()) * (NEURON_INTERIOR * NEURON_RADIUS);  //TODO: try this
+}
+
+void Neuron::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
+{
+	m_inPipes.Replace(pDel, pAdd);
+}
+
+void Neuron::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
+{
+	if (pDel == m_pPipeAxon)
+		m_pPipeAxon = pAdd;
+	else
+		assert(false);
 }
 
 void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -112,22 +123,48 @@ void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) co
 		context.FillCircle(GetCircle() * 1.2f, NNetColors::INT_TRIGGER);
 	}
 	context.FillCircle(GetCircle(), GetExteriorColor(type));
-	if (HasAxon())
-		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * 0.5f), GetExteriorColor(type));
+	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * 0.5f), GetExteriorColor(type));
 }
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 { 
 	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : Nob::GetInteriorColor(type) };
 	context.FillCircle(GetCircle() * NEURON_INTERIOR, color);
-	if (HasAxon())
-		context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
+	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 }
 
 void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_ADD_INCOMING2NEURON);  // case 9
-	add(IDD_SPLIT_NEURON);
+	if (GetNrOfInConns() == 1)
+		add(IDD_SPLIT_NEURON);
 	add(IDD_STOP_ON_TRIGGER);
-	BaseKnot::AppendMenuItems(add);
+	PosNob::AppendMenuItems(add);
 }
+
+void Neuron::MoveNob(MicroMeterPnt const& delta)
+{
+	SetPos(GetPos() + delta);
+}
+
+void Neuron::Link(Nob const& nobSrc, Nob2NobFunc const& f)
+{
+	Neuron const& src { static_cast<Neuron const&>(nobSrc) };
+	m_pPipeAxon = static_cast<Pipe*>(f(src.m_pPipeAxon));
+	m_inPipes.Clear();
+	src.Apply2AllInPipes([this, f](Pipe const& p) { m_inPipes.Add(static_cast<Pipe&>(*f(&p))); });
+	if (src.GetParentNob())
+		SetParentNob(f(src.GetParentNob()));
+}
+
+void Neuron::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+{
+	m_circle.Rotate(umPntPivot, radDelta);
+}
+
+void Neuron::Reconnect()
+{
+	m_inPipes.Apply2All([this](Pipe& pipe) { pipe.SetEndPnt(this); });
+	m_pPipeAxon->SetStartPnt(this);
+}
+

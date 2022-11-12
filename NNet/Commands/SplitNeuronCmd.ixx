@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <cassert>
 
 export module SplitNeuronCmd;
 
@@ -21,13 +22,14 @@ public:
     explicit SplitNeuronCmd(NobId const id)
         : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
     {
+        assert(m_neuron.GetNrOfInConns() == 1);
         MicroMeterPnt umPos { m_neuron.GetPos() };
         m_upInputLine  = make_unique<InputLine >(umPos);
         m_upOutputLine = make_unique<OutputLine>(umPos);
         m_upInputLine ->SetOutgoing(m_neuron);
         m_upOutputLine->SetIncoming(m_neuron);
-        m_upInputLine ->MoveNob((m_neuron.GetFirstOutgoing().GetEndPoint  ()-umPos).ScaledTo(NEURON_RADIUS*2));
-        m_upOutputLine->MoveNob((m_neuron.GetFirstIncoming().GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
+        m_upInputLine ->MoveNob((m_neuron.GetAxon         ()->GetEndPoint  ()-umPos).ScaledTo(NEURON_RADIUS*2));
+        m_upOutputLine->MoveNob((m_neuron.GetFirstIncoming()->GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }
 
     ~SplitNeuronCmd() final = default;

@@ -17,7 +17,7 @@ public:
 
 	void Do() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>
+		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
 			(
 				[this](Nob & nob) { nob.MoveNob(m_delta); } 
 		);
@@ -25,9 +25,9 @@ public:
 
 	void Undo() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>
-			(
-				[this](Nob & nob) { nob.MoveNob(-m_delta); } 
+		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
+		(
+			[this](Nob & nob) { nob.MoveNob(-m_delta); } 
 		);
 	}
 

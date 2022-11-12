@@ -19,7 +19,7 @@ import :SignalGenerator;
 import :InputLine;
 import :IoConnector;
 import :InputConnector;
-import :BaseKnot;
+import :PosNob;
 import :Pipe;
 
 using std::wstring;
@@ -61,7 +61,7 @@ SignalGenerator const* NNetModelReaderInterface::GetSigGenC(NobId const id) cons
 
 mV NNetModelReaderInterface::GetVoltage(NobId const id) const
 {
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<PosNob const *>(id) };
 	return p ? p->GetVoltage() : mV::NULL_VAL(); 
 }
 
@@ -73,32 +73,20 @@ mV NNetModelReaderInterface::GetVoltageAt(NobId const id, MicroMeterPnt const & 
 
 size_t NNetModelReaderInterface::GetNrOfOutConns(NobId const id) const 
 { 
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<PosNob const *>(id) };
 	return p ? p->GetNrOfOutConns() : -1;
 }
 
 size_t NNetModelReaderInterface::GetNrOfInConns(NobId const id) const 
 { 
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<PosNob const *>(id) };
 	return p ? p->GetNrOfInConns() : -1;
 }
 
 size_t NNetModelReaderInterface::GetNrOfConnections(NobId const id) const 
 { 
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
+	auto p { m_pModel->GetNobConstPtr<PosNob const *>(id) };
 	return p ? p->GetNrOfConnections() : -1;
-}
-
-bool NNetModelReaderInterface::HasIncoming(NobId const id) const
-{
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
-	return p ? p->HasIncoming() : false; 
-}
-
-bool NNetModelReaderInterface::HasOutgoing(NobId const id) const
-{
-	auto p { m_pModel->GetNobConstPtr<BaseKnot const *>(id) };
-	return p ? p->HasOutgoing() : false; 
 }
 
 bool NNetModelReaderInterface::GetDescriptionLine(int const iLine, wstring & wstrLine) const 
@@ -133,31 +121,31 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };
 
-	BaseKnot    const * pBaseKnotSrc { nullptr };
-	BaseKnot    const * pBaseKnotDst { nullptr };
+	PosNob    const * pPosNobSrc { nullptr };
+	PosNob    const * pPosNobDst { nullptr };
 	Pipe        const * pPipeDst     { nullptr };
 	IoConnector const * pConnSrc     { nullptr };
 	IoConnector const * pConnDst     { nullptr };
 
-	     if (typeSrc.IsBaseKnotType   ()) pBaseKnotSrc = m_pModel->GetNobConstPtr<BaseKnot    const *>(idSrc);
+	     if (typeSrc.IsPosNobType   ()) pPosNobSrc = m_pModel->GetNobConstPtr<PosNob    const *>(idSrc);
 	else if (typeSrc.IsIoConnectorType()) pConnSrc     = m_pModel->GetNobConstPtr<IoConnector const *>(idSrc);
 
-	     if (typeDst.IsBaseKnotType   ()) pBaseKnotDst = m_pModel->GetNobConstPtr<BaseKnot    const *>(idDst);
+	     if (typeDst.IsPosNobType   ()) pPosNobDst = m_pModel->GetNobConstPtr<PosNob    const *>(idDst);
 	else if (typeDst.IsPipeType       ()) pPipeDst     = m_pModel->GetNobConstPtr<Pipe        const *>(idDst);
 	else if (typeDst.IsIoConnectorType()) pConnDst     = m_pModel->GetNobConstPtr<IoConnector const *>(idDst);
 
-	if (pBaseKnotSrc)
+	if (pPosNobSrc)
 	{
 		if (pPipeDst)
 		{
-			if (pBaseKnotSrc->IsDirectlyConnectedTo(*pPipeDst)) 
+			if (pPosNobSrc->IsDirectlyConnectedTo(*pPipeDst)) 
 				return ct_none;
 			if (typeSrc.IsInputLineType())
 				return ct_fork;      // case 1
 			if (typeSrc.IsOutputLineType())
 				return ct_synapse;   // case 2
 		}
-		else if (pBaseKnotDst)
+		else if (pPosNobDst)
 		{
 			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType() && (typeDst != typeSrc))
 				return ct_knot;      // case 4/5 - Input and output line plugged together. Result is a knot.

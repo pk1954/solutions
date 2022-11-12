@@ -417,7 +417,7 @@ void MainWindow::DoPaint()
 	{
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot   (); }); // draw BaseKnots OVER Pipes
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 		if (m_pPreferences->ArrowsVisible())
 			DrawArrowsInRect(pixRect, m_arrowSize);
@@ -425,7 +425,7 @@ void MainWindow::DoPaint()
 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot   (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
 	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible

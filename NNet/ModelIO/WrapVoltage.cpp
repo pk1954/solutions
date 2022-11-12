@@ -32,7 +32,7 @@ void WrapVoltage::setVoltage(Script & script) const
     case outputLine:
     case neuron:
     case knot:
-        setBaseKnotVoltage(script, idFromScript);
+        setPosNobVoltage(script, idFromScript);
         break;
 
     case pipe: 
@@ -49,14 +49,14 @@ void WrapVoltage::setVoltage(Script & script) const
     }
 }
 
-void WrapVoltage::setBaseKnotVoltage
+void WrapVoltage::setPosNobVoltage
 (
     Script    & script,
     NobId const idFromScript
 ) const
 {
-    BaseKnot & baseKnot { * m_modelIO.GetImportNMWI().GetNobPtr<BaseKnot*>(idFromScript) };
-    baseKnot.SetVoltage(ScrReadVoltage(script));
+    PosNob & posNob { * m_modelIO.GetImportNMWI().GetNobPtr<PosNob*>(idFromScript) };
+    posNob.SetVoltage(ScrReadVoltage(script));
 }
 
 void WrapVoltage::setPipeVoltage
@@ -111,7 +111,7 @@ void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const
         case outputLine:
         case neuron:
         case knot:
-            out << static_cast<BaseKnot const &>(nob).GetVoltage();
+            out << static_cast<PosNob const &>(nob).GetVoltage();
             break;
 
         case pipe:

@@ -17,7 +17,7 @@ import AddNobsCommand;
 import DeleteTrackCommand;
 import MoveSensorCmd;
 import ArrowAnimation;
-import DeleteBaseKnotCmd;
+import DeletePosNobCmd;
 import DeleteSigGenCmd;
 import SelectNobsInRectCommand;
 import CoordAnimation;
@@ -181,13 +181,6 @@ void NNetModelCommands::AddSensor
 	m_pCmdStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
 }
 
-void NNetModelCommands::AnalyzeAnomalies()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindAnomaly(*m_pNMWI)));
-}
-
 void NNetModelCommands::AnalyzeLoops()
 {
 	if (m_bTrace)
@@ -316,12 +309,12 @@ void NNetModelCommands::DeleteTrack(TrackNr const nr)
 	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
 }
 
-void NNetModelCommands::DeleteBaseKnot(NobId const id)
+void NNetModelCommands::DeletePosNob(NobId const id)
 {
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	if (m_pNMWI->GetNob(id))
-		m_pCmdStack->PushCommand(make_unique<DeleteBaseKnotCmd>(*m_pNMWI->GetNob(id)));
+		m_pCmdStack->PushCommand(make_unique<DeletePosNobCmd>(*m_pNMWI->GetNob(id)));
 }
 
 void NNetModelCommands::DiscIoConnector(NobId const id)

@@ -502,11 +502,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_mainNNetWindow.CenterSelection();
 			break;
 
-		case IDM_ANALYZE_ANOMALIES:
-			m_modelCommands.AnalyzeAnomalies();
-			m_mainNNetWindow.CenterSelection();
-			break;
-
 		case IDD_ARROWS:
 			m_mainNNetWindow.AnimateArrows();
 			break;

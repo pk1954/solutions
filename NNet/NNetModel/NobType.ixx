@@ -101,14 +101,10 @@ public:
 		return (m_value == Value::inputLine) || (m_value == Value::outputLine);
 	}
 
-	bool IsBaseKnotType() const
-	{
-		return IsIoLineType() || (m_value == Value::neuron);
-	}
-
 	bool IsPosNobType() const
 	{
-		return IsBaseKnotType() ||
+		return IsNeuronType() ||
+			   IsIoLineType() ||
 			   (m_value == Value::knot) ||
 			   (m_value == Value::synapse) ||
 			   (m_value == Value::fork);

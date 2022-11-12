@@ -21,7 +21,6 @@ import :SignalGenerator;
 import :MicroMeterPosDir;
 import :UPSigGenList;
 import :SigGenId;
-import :BaseKnot;
 import :Pipe;
 import :NobId;
 import :Nob;
@@ -42,7 +41,6 @@ export class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
     void  CreateInitialNobs();
-    void  RemoveOrphans();
     void  SelectNob          (NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob             (NobId const);
@@ -80,15 +78,13 @@ public:
     void  AddDescriptionLine (wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
     void  DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
     void  DeselectAllNobs    () const               { m_pModel->DeselectAllNobs(); }
-    //void  SetTargetNobId     (NobId const id)       { m_pModel->SetTargetNobId(id); }
-    //void  SetHighlightedNobId(NobId const id)       { m_pModel->SetHighlightedNobId(id); }
 
     void AddOutgoing   (NobId const, Pipe &);
     void AddIncoming   (NobId const, Pipe &);
     void RemoveIncoming(NobId const, Pipe &);
     void RemoveOutgoing(NobId const, Pipe &);
 
-    BaseKnot & GetBaseKnot(NobId const);
+    PosNob & GetPosNob(NobId const);
 
     template <Nob_t T>
     T GetNobPtr(NobId const id)
@@ -157,6 +153,5 @@ public:
     void SetPosDir(NobId const, MicroMeterPosDir const&);
 };
 
-export void ConnectIncoming(Pipe   &, BaseKnot &);
-export void ConnectOutgoing(Pipe   &, BaseKnot &);
-export void ConnectIoLine  (IoLine &, BaseKnot &);
+//export void ConnectIncoming(Pipe &, PosNob &);
+//export void ConnectOutgoing(Pipe &, PosNob &);

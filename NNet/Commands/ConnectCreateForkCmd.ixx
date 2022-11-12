@@ -43,14 +43,14 @@ public:
 		m_splitPipes = m_pPipeOld->Split(*m_pInputLine);
 		m_upFork     = make_unique<Fork>(m_pInputLine->GetPos());
 		m_upFork->SetIncoming(m_splitPipes.first .get());
-		m_upFork->SetOutgoing(m_splitPipes.second.get(), &m_pInputLine->GetPipe());
+		m_upFork->SetOutgoing(m_splitPipes.second.get(), m_pInputLine->GetPipe());
 	}
 
 	~ConnectCreateForkCmd() final = default;
 
 	void Do() final
 	{
-		m_pInputLine->GetPipe().SetStartPnt(m_upFork.get());
+		m_pInputLine->GetPipe()->SetStartPnt(m_upFork.get());
 
 		m_pStartNob->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
 		m_pEndNob  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
@@ -80,7 +80,7 @@ public:
 		m_pEndNob  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
 		m_pStartNob->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
 
-		m_pInputLine->GetPipe().SetStartPnt(m_pInputLine);
+		m_pInputLine->GetPipe()->SetStartPnt(m_pInputLine);
 	}
 
 	static void Register()

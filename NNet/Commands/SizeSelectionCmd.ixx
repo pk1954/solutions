@@ -16,7 +16,7 @@ public:
 	{
 		m_umPntCenter = m_pNMWI->GetUPNobs().CenterOfGravity
 		(
-			[](Nob const & nob){ return nob.IsSelected() && nob.IsBaseKnot(); }
+			[](Nob const & nob){ return nob.IsSelected() && nob.IsPosNob(); }
 		);
 	}
 
@@ -26,9 +26,9 @@ public:
 private:
 	void sizeSelection(float const fFactor) const
 	{
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>
+		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
 			(
-				[this, fFactor](BaseKnot & b) 
+				[this, fFactor](PosNob & b) 
 				{ 
 					b.SetPos(m_umPntCenter + (b.GetPos() - m_umPntCenter) * fFactor);
 				}

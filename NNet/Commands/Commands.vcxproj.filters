@@ -54,7 +54,7 @@
     <ClCompile Include="CoordAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteBaseKnotCmd.ixx">
+    <ClCompile Include="DeletePosNobCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeleteIoConnectorCmd.ixx">
@@ -198,7 +198,7 @@
     <ClCompile Include="ConnAnimationCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteBaseKnotCmd.cpp">
+    <ClCompile Include="DeletePosNobCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CreateForkCommand.ixx">

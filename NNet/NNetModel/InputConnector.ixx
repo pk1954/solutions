@@ -18,7 +18,7 @@ import :Nob;
 import :IoConnector;
 import :InputLine;
 import :IoLine;
-import :BaseKnot;
+import :PosNob;
 
 using std::unique_ptr;
 using std::vector;

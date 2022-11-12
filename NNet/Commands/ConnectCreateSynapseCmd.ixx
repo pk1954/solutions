@@ -29,7 +29,7 @@ public:
 		m_pPipe       (m_pNMWI->GetNobPtr<Pipe*>(idPipe))
 	{
 		assert(m_pOutputLine->IsOutputLine());
-		m_upSynapse = make_unique<Synapse>(m_pPipe, &m_pOutputLine->GetPipe());
+		m_upSynapse = make_unique<Synapse>(m_pPipe, m_pOutputLine->GetPipe());
 		m_upSynapse->Select(m_pOutputLine->IsSelected());
 	}
 
@@ -46,7 +46,7 @@ public:
 		m_pNMWI->Restore2Model(move(m_upOutputLine));
 		m_upSynapse = m_pNMWI->PopFromModel<Synapse>();
 		m_pPipe->RemoveSynapse(m_upSynapse.get());
-		m_pOutputLine->GetPipe().SetEndPnt(m_pOutputLine);
+		m_pOutputLine->GetPipe()->SetEndPnt(m_pOutputLine);
 	}
 
 private:

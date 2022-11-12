@@ -43,7 +43,7 @@ public:
     void Write(wostream & out) const final
     {
         NNetModelReaderInterface const& nmri{ m_modelIO.GetExportNMRI() };
-        nmri.Apply2AllC<BaseKnot   >([this, &out](BaseKnot    const& s) { writeNob(out, s); });
+        nmri.Apply2AllC<PosNob     >([this, &out](PosNob    const& s) { writeNob(out, s); });
         nmri.Apply2AllC<Pipe       >([this, &out](Pipe        const& s) { writeNob(out, s); });
         nmri.Apply2AllC<IoConnector>([this, &out](IoConnector const& s) { writeNob(out, s); });
     };
@@ -71,8 +71,8 @@ private:
         }
         else
         {
-            BaseKnot * const pKnotStart { m_modelIO.GetImportNMWI().GetNobPtr<BaseKnot*>(idStart) };
-            BaseKnot * const pKnotEnd   { m_modelIO.GetImportNMWI().GetNobPtr<BaseKnot*>(idEnd) };
+            PosNob * const pKnotStart { m_modelIO.GetImportNMWI().GetNobPtr<PosNob*>(idStart) };
+            PosNob * const pKnotEnd   { m_modelIO.GetImportNMWI().GetNobPtr<PosNob*>(idEnd) };
             unique_ptr<Pipe> upPipe     { make_unique<Pipe>(pKnotStart, pKnotEnd) };
             pKnotStart->AddOutgoing(*upPipe.get());
             pKnotEnd  ->AddIncoming(*upPipe.get());
@@ -97,7 +97,7 @@ private:
         case outputLine:
         case neuron:
         case knot:
-            upNob = createBaseKnot(script, nobType);
+            upNob = createPosNob(script, nobType);
             break;
         case pipe:
             upNob = createPipe(script);
@@ -124,10 +124,10 @@ private:
         return pNob;
     }
 
-    UPNob createBaseKnot(Script& script, NobType const nobType) const
+    UPNob createPosNob(Script& script, NobType const nobType) const
     {
         MicroMeterPnt const umPosition(ScrReadMicroMeterPnt(script));
-        return BaseKnotFactory::Make(umPosition, nobType);
+        return PosNobFactory::Make(umPosition, nobType);
     }
 
     UPNob createIoConnector(Script& script, NobType const nobType) const
@@ -202,7 +202,7 @@ private:
             case outputLine:
             case neuron:
             case knot:
-                out << static_cast<BaseKnot const&>(nob).GetPos();
+                out << static_cast<PosNob const&>(nob).GetPos();
                 break;
 
             case pipe:

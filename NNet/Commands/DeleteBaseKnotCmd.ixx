@@ -1,4 +1,4 @@
-// DeleteBaseKnotCmd.ixx
+// DeletePosNobCmd.ixx
 //
 // Commands
 
@@ -7,7 +7,7 @@ module;
 #include <vector>
 #include <memory>
 
-export module DeleteBaseKnotCmd;
+export module DeletePosNobCmd;
 
 import Types;
 import NNetCommand;
@@ -16,19 +16,19 @@ import NNetModel;
 using std::vector;
 using std::unique_ptr;
 
-export class DeleteBaseKnotCmd : public NNetCommand
+export class DeletePosNobCmd : public NNetCommand
 {
 public:
-    DeleteBaseKnotCmd(Nob &);
+    DeletePosNobCmd(Nob &);
 
-    ~DeleteBaseKnotCmd() final = default;
+    ~DeletePosNobCmd() final = default;
 
     void Do  () final;
     void Undo() final;
 
 private:
-    BaseKnot                     & m_baseKnot;
-    unique_ptr<BaseKnot>           m_upBaseKnot;
+    PosNob                     & m_posNob;
+    unique_ptr<PosNob>           m_upPosNob;
     MicroMeterPnt                  m_umPos         {};
     vector<unique_ptr<OutputLine>> m_outputLines   {};
     vector<unique_ptr<InputLine>>  m_inputLines    {};

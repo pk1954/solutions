@@ -4,6 +4,8 @@
 
 module;
 
+#include <cassert>
+
 export module NNetModel:Synapse;
 
 import DrawContext;
@@ -33,8 +35,6 @@ public:
     void Reconnect()           final;
 
     MicroMeterPnt GetPos()                                    const final;
-    void          Expand      (MicroMeterRect&)               const final;
-    bool          IsIncludedIn(MicroMeterRect const&)         const final;
     bool          Includes    (MicroMeterPnt  const&)         const final;
     void          SetPos      (MicroMeterPnt  const&)               final;
     void          MoveNob     (MicroMeterPnt  const&)               final;
@@ -50,6 +50,21 @@ public:
     void SetMainPipe(Pipe* const);
     void ResetPos(MicroMeterPnt const&);
 
+    void SetIncoming(PosNob & src) final
+    {
+        assert(src.IsSynapse());
+        Synapse * pSynapseSrc { static_cast<Synapse *>(&src) };
+        m_pPipeAdd  = pSynapseSrc->m_pPipeAdd;
+        m_pPipeMain = pSynapseSrc->m_pPipeMain;
+    }
+
+    void SetOutgoing(PosNob & src) final
+    {
+        assert(src.IsSynapse());
+        Synapse * pSynapseSrc { static_cast<Synapse *>(&src) };
+        m_pPipeMain = pSynapseSrc->m_pPipeMain;
+    }
+
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
@@ -61,6 +76,9 @@ public:
 
     void DrawExterior(DrawContext const&, tHighlight const) const final;
     void DrawInterior(DrawContext const&, tHighlight const) const final;
+
+    size_t GetNrOfInConns () const final { return 2; }
+    size_t GetNrOfOutConns() const final { return 1; }
 
 private:
 

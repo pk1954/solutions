@@ -18,7 +18,6 @@ import :ParamType;
 import :NobId;
 import :Nob;
 import :PosNob;
-import :BaseKnot;
 import :Pipe;
 import :MonitorData;
 import :SignalGenerator;

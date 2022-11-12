@@ -141,7 +141,6 @@ void NNetModelIO::importModel()
     }
     if (bSuccess)
     {
-        m_upImportedNMWI->RemoveOrphans();
         m_upImportedNMWI->SetModelFilePath(m_wstrFile2Read);
         m_upImportedNMWI->DescriptionComplete();
         res = InputOutputUI::Result::ok;

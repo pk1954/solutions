@@ -92,15 +92,6 @@ public:
     }
 };
 
-class WrapAnalyzeAnomalies: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->AnalyzeAnomalies();
-    }
-};
-
 class WrapAnalyzeLoops: public ScriptFunctor
 {
 public:
@@ -197,12 +188,12 @@ public:
     }
 };
 
-class WrapDeleteBaseKnot: public ScriptFunctor
+class WrapDeletePosNob: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->DeleteBaseKnot(ScrReadNobId(script));
+        m_pCommands->DeletePosNob(ScrReadNobId(script));
     }
 };
 
@@ -363,7 +354,6 @@ void InitializeNNetWrappers
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
-    SymbolTable::ScrDefConst(L"AnalyzeAnomalies",    new WrapAnalyzeAnomalies); 
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
@@ -375,7 +365,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
-    SymbolTable::ScrDefConst(L"DeleteBaseKnot",      new WrapDeleteBaseKnot);
+    SymbolTable::ScrDefConst(L"DeletePosNob",        new WrapDeletePosNob);
     SymbolTable::ScrDefConst(L"DiscIoConnector",     new WrapDiscIoConnector ); 
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
     SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 
@@ -397,7 +387,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
 
     SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS       ));
-    SymbolTable::ScrDefConst(L"ANALYZE_ANOMALIES",   static_cast<long>(IDM_ANALYZE_ANOMALIES   ));
     SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION    ));
     SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION      ));
     SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON       ));

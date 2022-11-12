@@ -6,6 +6,7 @@ module;
 
 #include <array>
 #include <vector>
+#include <memory>
 #include <algorithm>
 #include <functional>
 

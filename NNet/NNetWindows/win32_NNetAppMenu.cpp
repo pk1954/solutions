@@ -130,10 +130,7 @@ void NNetAppMenu::Start
         Util::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,            L"&Proceed single step");
         Util::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP,           L"&Run/Stop");
         HMENU hMenuAnalyze = Util::PopupMenu(hMenuAction, L"&Analyze");
-        {
-            Util::AddMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS    , L"Find &loops");
-            Util::AddMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_ANOMALIES, L"Find &anomalies");
-        }
+            Util::AddMenu(hMenuAnalyze, MF_STRING, IDM_ANALYZE_LOOPS, L"Find &loops");
         Util::AddMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL, L"&Center model");
     }
 

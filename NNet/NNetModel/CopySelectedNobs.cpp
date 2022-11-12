@@ -13,7 +13,7 @@ module NNetModel:CopySelectedNobs;
 import Types;
 import :NNetModelWriterInterface;
 import :UPNobList;
-import :BaseKnot;
+import :PosNob;
 import :Knot;
 import :Nob;
 
@@ -43,8 +43,8 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 		if (pNobCopy->IsPipe())
 		{
 			Pipe const & pipeModel { static_cast<Pipe const &>(copy2model(pNobCopy)) };
-			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetStartNobPtr())));
-			addMissingKnot(*(static_cast<BaseKnot const *>(pipeModel.GetEndNobPtr  ())));
+			addMissingKnot(*(static_cast<PosNob const *>(pipeModel.GetStartNobPtr())));
+			addMissingKnot(*(static_cast<PosNob const *>(pipeModel.GetEndNobPtr  ())));
 		}
 	}
 
@@ -69,10 +69,10 @@ void CopySelectedNobs::add2copy(Nob const & nobModel, UPNob upNobCopy)
 	m_nobs2Add.Push(move(upNobCopy));
 }
 
-void CopySelectedNobs::addMissingKnot(BaseKnot const & baseKnotModel)
+void CopySelectedNobs::addMissingKnot(PosNob const & posNobModel)
 {
-	if (!model2copy(&baseKnotModel))
-		add2copy(baseKnotModel, make_unique<Knot>(baseKnotModel.GetPos()));
+	if (!model2copy(&posNobModel))
+		add2copy(posNobModel, make_unique<Knot>(posNobModel.GetPos()));
 }
 
 Nob const & CopySelectedNobs::copy2model(Nob * const pNobCopy) 

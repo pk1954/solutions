@@ -12,25 +12,36 @@ import Types;
 import :NNetParameters;
 import :MicroMeterPosDir;
 import :NobType;
-import :BaseKnot;
+import :PosNob;
 import :Nob;
 
 using std::vector;
 
-export class IoLine : public BaseKnot
+export class IoLine : public PosNob
 {
 public:
 	static bool TypeFits(NobType const type) { return type.IsIoLineType(); }
 
 	IoLine(MicroMeterPnt const & upCenter, NobType const type)
-		: BaseKnot(upCenter, type, NEURON_RADIUS)
+		: PosNob(type),
+		  m_circle(upCenter, NEURON_RADIUS)
 	{}
 
 	bool CompStep() final { return false; }
 
-	MicroMeterPosDir GetPosDir()    const override;
-	Radian           GetDir()       const override;
-	void             SetDir(Radian const) override;
+	MicroMeter       GetExtension() const final { return m_circle.GetRadius(); }
+	MicroMeterPnt    GetPos()       const final { return m_circle.GetPos(); }
+	MicroMeterPosDir GetPosDir()    const final;
+	Radian           GetDir()       const final;
+
+	void SetDir   (Radian const)                       final;
+	void MoveNob  (MicroMeterPnt const&)               final;
+	void RotateNob(MicroMeterPnt const&, Radian const) final;
+
+	void Link(Nob const&, Nob2NobFunc const&)          final;
+
+	void Apply2AllOutPipes (PipeFunc const& f) const   final;
+	bool Apply2AllOutPipesB(PipeCrit const& c) const   final;
 
 	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
 
@@ -43,12 +54,17 @@ public:
 	MicroMeterPnt    GetDirVector() const;
 	MicroMeterPosDir GetRawPosDir() const;
 
-	virtual Pipe & GetPipe() = 0;
+	Pipe       * GetPipe ()       { return m_pPipe; }
+	Pipe const * GetPipeC() const { return m_pPipe; }
+
+	void SetPipe(Pipe * pPipe) { m_pPipe = pPipe; }
 
 private:
 	MicroMeterPnt determineVector() const;
 
-	Radian m_radDirection{ Radian::NULL_VAL() };
+	MicroMeterCircle m_circle;
+	Radian           m_radDirection { Radian::NULL_VAL() };
+	Pipe           * m_pPipe        { nullptr };
 };
 
 export MicroMeterPnt CalcOrthoVector(vector<IoLine*> const&, MicroMeterLine const&);

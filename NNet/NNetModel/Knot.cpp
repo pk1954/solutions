@@ -13,7 +13,7 @@ import DrawContext;
 import Types;
 import :NobType;
 import :tHighlight;
-import :BaseKnot;
+import :PosNob;
 import :PipeList;
 import :Pipe;
 
@@ -29,18 +29,43 @@ void Knot::DrawInterior(DrawContext const & context, tHighlight const type) cons
 
 void Knot::Check() const
 {
-	BaseKnot::Check();
-	assert(! IsOrphan());
+	PosNob::Check();
 }
 
 void Knot::Emphasize(bool const bOn, bool bDownStream) 
 { 
 	Nob::Emphasize(bOn);
-	if ((GetNrOfInConns() == 1) && (GetNrOfOutConns() == 1))
-	{
-		if (bDownStream)
-			GetFirstOutgoing().Emphasize(bOn, true);
-		else
-			GetFirstIncoming().Emphasize(bOn, false);
-	}
+	if (bDownStream)
+		m_pPipeOut->Emphasize(bOn, true);
+	else
+		m_pPipeIn->Emphasize(bOn, false);
+}
+
+void Knot::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
+{
+	assert(pDel == m_pPipeIn);
+	m_pPipeIn = pAdd;
+}
+
+void Knot::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
+{
+	assert(pDel == m_pPipeOut);
+	m_pPipeOut = pAdd;
+}
+
+void Knot::MoveNob(MicroMeterPnt const& delta)
+{
+	SetPos(GetPos() + delta);
+}
+
+void Knot::Link(Nob const& nobSrc, Nob2NobFunc const& f)
+{
+	Knot const& src { static_cast<Knot const&>(nobSrc) };
+	m_pPipeIn  = static_cast<Pipe*>(f(src.m_pPipeIn));
+	m_pPipeOut = static_cast<Pipe*>(f(src.m_pPipeOut));
+}
+
+void Knot::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+{
+	m_circle.Rotate(umPntPivot, radDelta);
 }

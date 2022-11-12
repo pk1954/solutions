@@ -28,16 +28,18 @@ public:
 		m_upPipe          = make_unique<Pipe>();
 		m_upKnotNew       = make_unique<Knot>(m_outputLineOld.GetPos());
 		m_upOutputLineNew = make_unique<OutputLine>(pos);
-		ConnectIncoming(*m_upPipe.get(), *m_upOutputLineNew.get());
-		ConnectOutgoing(*m_upPipe.get(), *m_upKnotNew.get());
-		m_upKnotNew->SetIncoming(m_outputLineOld);
+		m_upPipe->SetStartPnt(m_upKnotNew.get());
+		m_upPipe->SetEndPnt  (m_upOutputLineNew.get());
+		m_upOutputLineNew->SetPipe(m_upPipe.get());
+		m_upKnotNew->SetOutgoing(m_upPipe.get());
+		m_upKnotNew->SetIncoming(m_outputLineOld.GetPipe());
 	}
 
 	~ExtendOutputLineCmd() final = default;
 
 	void Do() final 
 	{ 
-		m_outputLineOld.Apply2AllInPipes([this](Pipe &p){ ConnectIncoming(p, *m_upKnotNew.get()); });
+		m_outputLineOld.GetPipe()->SetEndPnt(m_upKnotNew.get());
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upOutputLineNew));
@@ -49,13 +51,13 @@ public:
 		m_upOutputLineNew = m_pNMWI->PopFromModel<OutputLine>();
 		m_upPipe          = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew       = m_pNMWI->PopFromModel<Knot>();
-		m_outputLineOld.Apply2AllInPipes([this](Pipe &p){ ConnectIncoming(p, *m_upOutputLineOld.get()); });
+		m_outputLineOld.GetPipe()->SetEndPnt(m_upOutputLineOld.get());
 		m_pNMWI->Restore2Model(move(m_upOutputLineOld)); 
 	}
 
 private:
 
-	BaseKnot       const & m_outputLineOld;
+	OutputLine           & m_outputLineOld;
 	unique_ptr<OutputLine> m_upOutputLineOld;
 	unique_ptr<Knot>       m_upKnotNew;
 	unique_ptr<OutputLine> m_upOutputLineNew;

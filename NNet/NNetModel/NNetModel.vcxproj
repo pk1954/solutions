@@ -25,8 +25,6 @@
     <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="Analyzer.ixx" />
     <ClCompile Include="AutoOpen.ixx" />
-    <ClCompile Include="BaseKnot.cpp" />
-    <ClCompile Include="BaseKnot.ixx" />
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />
     <ClCompile Include="DescriptionUI.ixx" />
@@ -51,7 +49,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Model.ixx" />
     <ClCompile Include="ModelDescription.ixx" />
-    <ClCompile Include="BaseKnotFactory.ixx" />
+    <ClCompile Include="PosNobFactory.ixx" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="MonitorData.ixx" />
     <ClCompile Include="Neuron.cpp" />

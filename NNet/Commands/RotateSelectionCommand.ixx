@@ -19,7 +19,7 @@ public:
 	{
 		SetPivotPnt
 		(
-			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const& n) { return n.IsSelected() && n.IsBaseKnot(); }),
+			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const& n) { return n.IsSelected() && n.IsPosNob(); }),
 			umPntOld,
 			umPntNew
 		);
@@ -27,11 +27,11 @@ public:
 
 	void Do() final
 	{
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot& b) { DoRotate(b); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>([this](PosNob& b) { DoRotate(b); });
 	}
 
 	void Undo() final
 	{
-		m_pNMWI->GetUPNobs().Apply2AllSelected<BaseKnot>([this](BaseKnot& b) { UndoRotate(b); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>([this](PosNob& b) { UndoRotate(b); });
 	}
 };

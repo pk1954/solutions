@@ -18,7 +18,7 @@ import :NobType;
 import :tHighlight;
 import :Model;
 import :Nob;
-import :BaseKnot;
+import :PosNob;
 import :NobId;
 import :UPNobList;
 import :UPSigGenList;
@@ -59,8 +59,6 @@ public:
 	bool                    IsSelected           (NobId const) const;
 	NobType                 GetNobType           (NobId const) const;
 	size_t                  GetNrOfSegments      (NobId const) const;
-	bool                    HasIncoming          (NobId const) const;
-	bool                    HasOutgoing          (NobId const) const;
 	size_t                  GetNrOfOutConns      (NobId const) const;
 	size_t                  GetNrOfInConns       (NobId const) const;
 	size_t                  GetNrOfConnections   (NobId const) const;
@@ -93,9 +91,7 @@ public:
 	Sensor          const * GetSensorSelectedC()                   const { return m_pModel->GetSensorList().GetSensorSelected(); }
 	SensorId                GetSensorIdSelected()                  const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
 	bool                    IsAnySensorSelected()                  const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
-	//NobId                   GetTargetNobId()                       const { return m_pModel->GetTargetNobId(); }
-	//NobId                   GetHighlightedNobId()                  const { return m_pModel->GetHighlightedNobId(); }
-	BaseKnot        const * GetConstBaseKnotPtr(NobId const id)    const { return m_pModel->GetNobConstPtr<BaseKnot const *>(id); }
+	PosNob          const * GetConstPosNobPtr(NobId const id)      const { return m_pModel->GetNobConstPtr<PosNob const *>(id); }
 
 	bool IsInputLine(NobId const id) const
 	{

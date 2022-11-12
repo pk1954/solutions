@@ -19,7 +19,7 @@ import :tHighlight;
 import :NNetParameters;
 import :Knot;
 import :Synapse;
-import :BaseKnot;
+import :PosNob;
 import :NobType;
 import :NobId;
 import :Nob;
@@ -40,8 +40,8 @@ Pipe::Pipe()
 
 Pipe::Pipe
 (
-	Nob * const pKnotStart, //TODO: Nob --> BaseKnot
-	Nob * const pKnotEnd    //TODO: Nob --> BaseKnot
+	Nob * const pKnotStart, //TODO: Nob --> PosNob
+	Nob * const pKnotEnd    //TODO: Nob --> PosNob
 )
   :	Nob(NobType::Value::pipe),
 	m_pNobStart(pKnotStart),
@@ -127,8 +127,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void Pipe::Check() const
 {
 	Nob::Check();
-	//assert(static_cast<BaseKnot *>(m_pNobStart)->IsPrecursorOf(* this));
-	//assert(static_cast<BaseKnot *>(m_pNobEnd  )->IsSuccessorOf(* this));
+	//assert(static_cast<PosNob *>(m_pNobStart)->IsPrecursorOf(* this));
+	//assert(static_cast<PosNob *>(m_pNobEnd  )->IsSuccessorOf(* this));
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -166,20 +166,20 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 	return true;
 }
 
-void Pipe::SetStartPnt(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
+void Pipe::SetStartPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
-	if (pBaseKnot)
+	if (pPosNob)
 	{
-		m_pNobStart = pBaseKnot;
+		m_pNobStart = pPosNob;
 		Recalc();
 	}
 }
 
-void Pipe::SetEndPnt(Nob * const pBaseKnot)  //TODO: Nob --> BaseKnot
+void Pipe::SetEndPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
-	if (pBaseKnot)
+	if (pPosNob)
 	{
-		m_pNobEnd = pBaseKnot;
+		m_pNobEnd = pPosNob;
 		Recalc();
 	}
 }
@@ -229,9 +229,9 @@ void Pipe::Select(bool const bOn)
 { 
 	Nob::Select(bOn);
 	if (m_pNobStart->IsKnot())
-		static_cast<BaseKnot *>(m_pNobStart)->EvaluateSelectionStatus();
+		static_cast<PosNob *>(m_pNobStart)->EvaluateSelectionStatus();
 	if (m_pNobEnd  ->IsKnot())
-		static_cast<BaseKnot *>(m_pNobEnd)  ->EvaluateSelectionStatus();
+		static_cast<PosNob *>(m_pNobEnd)  ->EvaluateSelectionStatus();
 }
 
 MicroMeter Pipe::GetLength() const
@@ -250,9 +250,9 @@ bool Pipe::Includes(MicroMeterPnt const & point) const
 	return IsPointInRect2<MicroMeterPnt>(point, umPoint1, umPoint2, umOrthoScaled);
 }
 
-bool Pipe::IsConnectedTo(NobId const idBaseKnot) const
+bool Pipe::IsConnectedTo(NobId const idPosNob) const
 {
-	return (GetStartKnotId() == idBaseKnot) || (GetEndKnotId() == idBaseKnot);
+	return (GetStartKnotId() == idPosNob) || (GetEndKnotId() == idPosNob);
 }
 
 MicroMeterPnt Pipe::GetVector() const

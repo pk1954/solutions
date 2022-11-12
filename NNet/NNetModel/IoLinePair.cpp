@@ -11,7 +11,7 @@ module NNetModel:IoLinePair;
 import Types;
 import :NNetModelWriterInterface;
 import :Pipe;
-import :BaseKnot;
+import :PosNob;
 import :InputLine;
 import :OutputLine;
 
@@ -27,8 +27,10 @@ IoLinePair::IoLinePair
 	m_upOutputLine(make_unique<OutputLine>(pos + m_umOffset)),
 	m_upPipe      (make_unique<Pipe>())
 {
-	ConnectOutgoing(* m_upPipe.get(), * m_upInputLine.get());
-	ConnectIncoming(* m_upPipe.get(), * m_upOutputLine.get());
+	m_upOutputLine->SetPipe(m_upPipe.get());
+	m_upInputLine ->SetPipe(m_upPipe.get());
+	m_upPipe->SetStartPnt(m_upOutputLine.get());
+	m_upPipe->SetEndPnt  (m_upInputLine.get());
 }
 
 IoLinePair::~IoLinePair() = default;

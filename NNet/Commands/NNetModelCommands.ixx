@@ -49,7 +49,6 @@ public:
     void AddModel();
     void AddSensor(MicroMeterCircle const&, TrackNr const);
     void AddSigGen2Monitor(TrackNr const);
-    void AnalyzeAnomalies();
     void AnalyzeLoops();
     void AnimateArrows(MicroMeter&, MicroMeter const);
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
@@ -59,7 +58,7 @@ public:
     void Connect(NobId const, NobId const);
     void CopySelection();
     void CreateInitialNobs();
-    void DeleteBaseKnot(NobId const);
+    void DeletePosNob(NobId const);
     void DeleteNob(NobId const);
     void DeleteSelection();
     void DeleteSignal(SignalId const&);

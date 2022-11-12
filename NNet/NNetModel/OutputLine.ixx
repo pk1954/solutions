@@ -2,13 +2,16 @@
 //
 // NNetModel
 
+module;
+
+#include <cassert>
+
 export module NNetModel:OutputLine;
 
 import Types;
 import DrawContext;
 import :tHighlight;
 import :IoLine;
-import :BaseKnot;
 import :Nob;
 
 export class OutputLine : public IoLine
@@ -16,7 +19,6 @@ export class OutputLine : public IoLine
 public:
 
 	explicit OutputLine(MicroMeterPnt const&);
-	//explicit OutputLine(BaseKnot      const&);
 
 	~OutputLine() final = default;
 
@@ -26,7 +28,16 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsOutputLineType(); }
 
-	void CollectInput()	override { m_mVinputBuffer = GetFirstIncoming().GetNextOutput(); }
+	void CollectInput()	override { m_mVinputBuffer = GetPipeC()->GetNextOutput(); }
+
+	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
+	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final { assert(false); }
+
+	void Apply2AllInPipes (PipeFunc const& f) const final {};
+	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
+
+	void SetIncoming(PosNob & src) final { assert(src.IsOutputLine()); SetPipe(static_cast<OutputLine &>(src).GetPipe()); }
+	void SetOutgoing(PosNob & src) final { assert(false); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const override;
 	void DrawInterior(DrawContext const&, tHighlight const) const override;
@@ -35,9 +46,12 @@ public:
 
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
+	void Reconnect() final;
+
 	void AppendMenuItems(AddMenuFunc const&) const final;
 
-	Pipe & GetPipe() final { return GetFirstIncoming(); }
+	size_t GetNrOfInConns () const final { return 1; }
+	size_t GetNrOfOutConns() const final { return 0; }
 
 private:
 

@@ -22,12 +22,7 @@ MicroMeterPnt IoLine::GetScaledDirVector() const
 
 MicroMeterPnt IoLine::determineVector() const
 {
-	MicroMeterPnt umVector { MicroMeterPnt::ZERO_VAL() };
-
-	Apply2AllConnectedPipes
-	(
-		[&umVector](Pipe const & pipe) { umVector += Normalize(pipe.GetVector()); } 
-	);
+	MicroMeterPnt umVector { Normalize(GetPipeC()->GetVector()) };
 
 	if (umVector.IsZero())
 		umVector = MicroMeterPnt(0.0_MicroMeter, 1.0_MicroMeter);
@@ -53,6 +48,27 @@ Radian IoLine::GetDir() const
 		: Vector2Radian(determineVector());
 };
 
+void IoLine::MoveNob(MicroMeterPnt const& delta)
+{
+	SetPos(GetPos() + delta);
+}
+
+void IoLine::Link(Nob const& nobSrc, Nob2NobFunc const& f)
+{
+	IoLine const& src { static_cast<IoLine const&>(nobSrc) };
+	SetPipe(static_cast<Pipe*>(f(src.GetPipeC())));
+}
+
+void IoLine::Apply2AllOutPipes(PipeFunc const& f) const
+{
+	f(*m_pPipe);
+}
+
+bool IoLine::Apply2AllOutPipesB(PipeCrit const& c) const
+{
+	return c(*GetPipeC());
+}
+
 MicroMeterPosDir IoLine::GetRawPosDir() const
 {
 	return MicroMeterPosDir(GetPos(), m_radDirection);
@@ -63,7 +79,12 @@ MicroMeterPosDir IoLine::GetPosDir() const
 	return MicroMeterPosDir(GetPos(), Vector2Radian(GetDirVector()));
 }
 
-void IoLine::UnlockDirection() 
+void IoLine::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+{
+	m_circle.Rotate(umPntPivot, radDelta);
+}
+
+void IoLine::UnlockDirection()
 {
 	SetDir(Radian::NULL_VAL());
 }
@@ -86,11 +107,11 @@ bool IoLine::IsDirLocked() const
 
 MicroMeterPnt CalcOrthoVector(vector<IoLine*> const& list, MicroMeterLine const& line)
 {
-	unsigned int nrLeft{ 0 };
-	unsigned int nrRight{ 0 };
-	for (auto pBaseKnot : list)
+	unsigned int nrLeft  { 0 };
+	unsigned int nrRight { 0 };
+	for (auto pPosNob : list)
 	{
-		pBaseKnot->Apply2AllInPipes
+		pPosNob->Apply2AllInPipes
 		(
 			[&line, &nrLeft, &nrRight](Pipe const& pipe)
 			{
@@ -101,7 +122,7 @@ MicroMeterPnt CalcOrthoVector(vector<IoLine*> const& list, MicroMeterLine const&
 					++nrRight;
 			}
 		);
-		pBaseKnot->Apply2AllOutPipes
+		pPosNob->Apply2AllOutPipes
 		(
 			[&line, &nrLeft, &nrRight](Pipe const& pipe)
 			{

@@ -23,7 +23,7 @@ import :NNetColors;
 import :NNetParameters;
 import :NobType;
 import :IoLine;
-import :BaseKnot;
+import :PosNob;
 
 using std::chrono::microseconds;
 using std::wostringstream;
@@ -39,7 +39,19 @@ InputLine::InputLine(MicroMeterPnt const& upCenter)
 void InputLine::Check() const
 {
 	IoLine::Check();
-	assert(!HasIncoming());
+}
+
+void InputLine::Reconnect()
+{
+	GetPipe()->SetStartPnt(this);
+};
+
+void InputLine::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
+{
+	if (pDel == GetPipe())
+		SetPipe(pAdd);
+	else
+		assert(false);
 }
 
 void InputLine::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -60,11 +72,6 @@ MicroMeterPnt InputLine::getOffset() const
 MicroMeterPnt InputLine::getCenter() const
 {
 	return GetPos() - getOffset();
-}
-
-bool InputLine::Includes(MicroMeterPnt const & point) const
-{
-	return Distance(point, getCenter()) <= GetExtension();
 }
 
 void InputLine::drawSocket

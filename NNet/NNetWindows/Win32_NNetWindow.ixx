@@ -16,8 +16,6 @@ import NNetController;
 import GraphicsWindow;
 import NNetModel;
 
-class Sensor;
-
 export class NNetWindow : public GraphicsWindow
 {
 public:

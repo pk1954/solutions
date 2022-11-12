@@ -54,7 +54,8 @@ public:
 	virtual void Check() const;
 	virtual void Dump() const;
 
-	bool operator==(Nob const & )    const;
+	virtual bool operator==(Nob const & ) const;
+
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };
 
 	virtual void SetDir   (Radian            const  );
@@ -113,7 +114,6 @@ public:
 	bool IsIoLine         () const { return m_type.IsIoLineType(); }
 	bool IsInputLine      () const { return m_type.IsInputLineType(); }
 	bool IsOutputLine     () const { return m_type.IsOutputLineType(); }
-	bool IsBaseKnot       () const { return m_type.IsBaseKnotType(); }
 	bool IsPosNob         () const { return m_type.IsPosNobType(); }
 	bool IsUndefined      () const { return m_type.IsUndefinedType(); }
 

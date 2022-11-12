@@ -9,8 +9,7 @@ module;
 export module NNetModel;
 
 export import :Analyzer;
-export import :BaseKnot;
-export import :BaseKnotFactory;
+export import :PosNobFactory;
 export import :CopySelectedNobs;
 export import :DescriptionUI;
 export import :Fork;

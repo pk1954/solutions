@@ -9,31 +9,43 @@ module;
 
 module NNetModel:OutputLine;
 
-import :tHighlight;
 import Types;
 import DrawContext;
+import :tHighlight;
 import :IoLine;
-import :BaseKnot;
+import :PosNob;
 
 OutputLine::OutputLine(MicroMeterPnt const & upCenter)
 	: IoLine(upCenter, NobType::Value::outputLine)
 {}
 
-//OutputLine::OutputLine(BaseKnot const & baseKnot)
-//	: IoLine(baseKnot, NobType::Value::outputLine)
+//OutputLine::OutputLine(PosNob const & posNob)
+//	: IoLine(posNob, NobType::Value::outputLine)
 //{
-//	SetIncoming(baseKnot);
+//	SetIncoming(posNob);
 //}
 //
 void OutputLine::Check() const
 {
-	BaseKnot::Check();
-	assert(!HasOutgoing());
+	PosNob::Check();
 }
 
 bool OutputLine::operator==(Nob const & rhs) const
 {
-	return this->BaseKnot::operator== (static_cast<OutputLine const &>(rhs));
+	return this->PosNob::operator== (static_cast<OutputLine const &>(rhs));
+}
+
+void OutputLine::Reconnect()
+{
+	GetPipe()->SetStartPnt(this);
+};
+
+void OutputLine::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
+{
+	if (pDel == GetPipe())
+		SetPipe(pAdd);
+	else
+		assert(false);
 }
 
 void OutputLine::DrawExterior(DrawContext const & context, tHighlight const type) const

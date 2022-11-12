@@ -15,7 +15,7 @@ import SaveCast;
 import :Nob;
 import :Knot;
 import :Pipe;
-import :BaseKnot;
+import :PosNob;
 import :NNetModelReaderInterface;
 
 using std::endl;
@@ -32,7 +32,7 @@ NobStack ModelAnalyzer::FindLoop(NNetModelReaderInterface const & nmri)
 		m_bStop     = false;
 		statusDisplay(wstring(L"Looking for loop of size ") + to_wstring(iMaxLoopSize) + L". Press ESC to stop.");
 		m_nobStack.clear();
-		if (nmri.GetUPNobsC().Apply2AllB<BaseKnot>([](BaseKnot const & b) { return findLoop(b); }))
+		if (nmri.GetUPNobsC().Apply2AllB<PosNob>([](PosNob const & b) { return findLoop(b); }))
 		{
 			if (m_bStop)  
 			{
@@ -85,9 +85,9 @@ bool ModelAnalyzer::findLoop(Nob const & nob)
 	{
 		bResult = findLoop(* static_cast<Pipe const &>(nob).GetEndNobPtr());  // recursion
 	}
-	else if (nob.IsBaseKnot())
+	else if (nob.IsPosNob())
 	{
-		bResult = static_cast<BaseKnot const &>(nob).Apply2AllOutPipesB
+		bResult = static_cast<PosNob const &>(nob).Apply2AllOutPipesB
 		(
 			[&](Pipe const & pipe) 
 			{ 
@@ -97,40 +97,11 @@ bool ModelAnalyzer::findLoop(Nob const & nob)
 	}
 	else
 	{
-		assert(false);  // nob is neither Pipe nor baseknot
+		assert(false);  // nob is neither Pipe nor PosNob
 	}
 
 	if (! bResult)
 		m_nobStack.pop_back(); // no loop in this branch
 
 	return bResult;
-}
-
-bool ModelAnalyzer::hasAnomaly(Knot const & knot)
-{
-	bool bFoundAnomaly { false };
-
-	if (! knot.HasIncoming())
-	{
-		knot.Apply2AllOutPipes([&](Pipe const & pipe) { m_nobStack.push_back(& pipe); });
-		bFoundAnomaly = true;
-	}
-	else if (! knot.HasOutgoing())
-	{
-		knot.Apply2AllInPipes([&](Pipe const & pipe) { m_nobStack.push_back(& pipe); });
-		bFoundAnomaly = true;
-	}
-
-	if (bFoundAnomaly)
-		m_nobStack.push_back(& knot);
-
-	return bFoundAnomaly; 
-}
-
-NobStack ModelAnalyzer::FindAnomaly(NNetModelReaderInterface const & nmri)
-{
-	m_nobStack.clear();
-	if (! nmri.GetUPNobsC().Apply2AllB<Knot>([&](Knot const & k) { return hasAnomaly(k); }))
-		statusDisplay(L"no anomalies found");
-	return m_nobStack;
 }

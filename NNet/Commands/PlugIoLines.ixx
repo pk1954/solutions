@@ -20,8 +20,8 @@ export class PlugIoLines : public NNetCommand
 public:
     PlugIoLines
     (
-        IoLine       & connectorAnimated, 
-        IoLine const & nobTarget
+        IoLine & connectorAnimated, 
+        IoLine & nobTarget
     )
       : m_nobTarget(nobTarget),
         m_nobAnimated(connectorAnimated)
@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    IoLine     const & m_nobTarget;
+    IoLine           & m_nobTarget;
     IoLine           & m_nobAnimated;
     unique_ptr<IoLine> m_upNobAnimated;
     unique_ptr<IoLine> m_upNobTarget;

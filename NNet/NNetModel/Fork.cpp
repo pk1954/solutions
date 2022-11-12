@@ -22,19 +22,9 @@ void Fork::Check() const
 	assert(m_pPipeOut2->GetStartKnotId() == GetId());
 }
 
-bool Fork::IsIncludedIn(MicroMeterRect const& umRect) const
+void Fork::MoveNob(MicroMeterPnt const& delta)
 {
-	return umRect.Includes(GetPos());
-}
-
-void Fork::Expand(MicroMeterRect& umRect) const
-{
-	umRect.Expand(GetPos());
-}
-
-bool Fork::Includes(MicroMeterPnt const& point) const
-{
-	return Distance(point, GetPos()) <= GetExtension();
+	SetPos(GetPos() + delta);
 }
 
 void Fork::Link(Nob const& nobSrc, Nob2NobFunc const& f)
@@ -45,7 +35,12 @@ void Fork::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 	m_pPipeOut2 = static_cast<Pipe*>(f(src.m_pPipeOut2));
 }
 
-void Fork::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) 
+void Fork::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+{
+	m_circle.Rotate(umPntPivot, radDelta);
+}
+
+void Fork::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 { 
 	assert(pDel == m_pPipeIn);
 	m_pPipeIn = pAdd;
@@ -82,22 +77,12 @@ bool Fork::Apply2AllOutPipesB(PipeCrit const& c) const
 	return c(*m_pPipeOut1) || c(*m_pPipeOut2);
 }
 
-void Fork::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
-{
-	m_circle.Rotate(umPntPivot, radDelta);
-}
-
 void Fork::SetPos(MicroMeterPnt const& newPos)
 {
 	m_circle.SetPos(newPos);
 	m_pPipeIn  ->Recalc();
 	m_pPipeOut1->Recalc();
 	m_pPipeOut2->Recalc();
-}
-
-void Fork::MoveNob(MicroMeterPnt const& delta)
-{
-	SetPos(GetPos() + delta);
 }
 
 void Fork::DrawExterior(DrawContext const& context, tHighlight const type) const

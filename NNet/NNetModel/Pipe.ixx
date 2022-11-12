@@ -40,7 +40,7 @@ public:
 	using SegNr = NamedType<size_t, struct segNr_Parameter>;
 
 	Pipe();
-	Pipe(Nob * const, Nob * const);   //TODO: Nob --> BaseKnot
+	Pipe(Nob * const, Nob * const);   //TODO: Nob --> PosNob
 	Pipe(Pipe const &);   // copy constructor
 
 	~Pipe() final = default;
@@ -161,8 +161,8 @@ public:
 	void FixSynapses() const;
 
 private:
-	Nob      * m_pNobStart { nullptr };  //TODO: Nob --> BaseKnot
-	Nob      * m_pNobEnd   { nullptr };  //TODO: Nob --> BaseKnot
+	Nob      * m_pNobStart { nullptr };  //TODO: Nob --> PosNob
+	Nob      * m_pNobEnd   { nullptr };  //TODO: Nob --> PosNob
 	size_t     m_potIndex   { 0 };   // index in m_potential if SegNr 0
 	vector<mV> m_potential  { };
 

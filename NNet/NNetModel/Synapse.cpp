@@ -15,7 +15,7 @@ import DrawContext;
 import Types;
 import :NNetColors;
 import :NNetParameters;
-import :BaseKnot;
+import :PosNob;
 
 using std::wcout;
 using std::endl;
@@ -93,16 +93,6 @@ void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 	m_pPipeAdd  = static_cast<Pipe*>(f(src.m_pPipeAdd));
 }
 
-bool Synapse::IsIncludedIn(MicroMeterRect const& umRect) const
-{
-	return umRect.Includes(GetPos());
-}
-
-void Synapse::Expand(MicroMeterRect& umRect) const
-{
-	umRect.Expand(GetPos());
-}
-
 bool Synapse::Includes(MicroMeterPnt const& point) const
 {
 	return Distance(point, GetPos()) <= GetExtension();
@@ -157,7 +147,7 @@ void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) co
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
 { // TODO
-	//BaseKnot::DrawInterior(context, type);
+	//PosNob::DrawInterior(context, type);
 	//MicroMeterPnt    const umPos   (GetAddPipe().GetEndPoint());
 	//MicroMeter       const umSize  (GetExtension() * 1.5f);
 	//MicroMeterCircle const umCircle(umPos, umSize);

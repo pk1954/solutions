@@ -2,6 +2,10 @@
 //
 // NNetModel
 
+module;
+
+#include <cassert>
+
 export module NNetModel:InputLine;
 
 import Direct2D;
@@ -12,7 +16,7 @@ import :SigGenDynamicData;
 import :Nob;
 import :NobType;
 import :IoLine;
-import :BaseKnot;
+import :PosNob;
 import :SignalGenerator;
 
 export class InputLine : public IoLine
@@ -33,16 +37,30 @@ public:
 
 	void CollectInput() final;
 
+	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final { assert(false); };
+	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
+
+	void Apply2AllInPipes (PipeFunc const& f) const final {};
+	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
+
+	void SetIncoming(PosNob & src) final { assert(false); }
+	void SetOutgoing(PosNob & src) final 
+	{ 
+		assert(src.IsInputLine()); 
+		SetPipe(static_cast<InputLine *>(&src)->GetPipe()); 
+	}
+
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;
 
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
-	bool Includes(MicroMeterPnt const&) const final;
+	void Reconnect() final;
 
 	void AppendMenuItems(AddMenuFunc const&) const final;
 
-	Pipe & GetPipe() final { return GetFirstOutgoing(); }
+	size_t GetNrOfInConns () const final { return 0; }
+	size_t GetNrOfOutConns() const final { return 1; }
 
 private:
 

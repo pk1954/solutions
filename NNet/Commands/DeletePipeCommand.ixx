@@ -47,14 +47,14 @@ public:
 			m_upOutputConnector->ClearParentPointers();
 		}
 
-		m_upStartKnot = fixBaseKnot(m_idStart);
-		m_upEndKnot   = fixBaseKnot(m_idEnd);
+		m_upStartNob = fixPosNob(m_idStart);
+		m_upEndNob   = fixPosNob(m_idEnd);
 	}
 
 	void Undo() final
 	{
-		m_pNMWI->Restore2Model(move(m_upStartKnot)); // Restore start/end knot, 
-		m_pNMWI->Restore2Model(move(m_upEndKnot));   // if fixBaseKnot had removed
+		m_pNMWI->Restore2Model(move(m_upStartNob)); // Restore start/end knot, 
+		m_pNMWI->Restore2Model(move(m_upEndNob));   // if fixPosNob had removed
 
 		if (m_upOutputConnector) // restore IoConnector, if neccessary
 		{
@@ -75,8 +75,8 @@ public:
 		m_pNMWI->Reconnect(m_idStart);
 		m_pNMWI->Reconnect(m_idEnd);
 
-		//m_pNMWI->fixBaseKnot(m_idStart);
-		//m_pNMWI->fixBaseKnot(m_idEnd);
+		//m_pNMWI->fixPosNob(m_idStart);
+		//m_pNMWI->fixPosNob(m_idEnd);
 	}
 
 private:
@@ -84,28 +84,28 @@ private:
 	unique_ptr<Pipe>        m_upPipe;  // take ownership of pipe between Do and Undo
 	NobId                   m_idStart;
 	NobId                   m_idEnd;
-	unique_ptr<BaseKnot>    m_upStartKnot;
-	unique_ptr<BaseKnot>    m_upEndKnot;
+	unique_ptr<PosNob>      m_upStartNob;
+	unique_ptr<PosNob>      m_upEndNob;
 	unique_ptr<IoConnector> m_upInputConnector;
 	unique_ptr<IoConnector> m_upOutputConnector;
 
-	// fixBaseKnot: After a pipe deletion a BaseKnot may have changed type
-	//              e.g. If a Knot has lost its output pipe, it becomes an OutputLine
+	// fixPosNob: After a pipe deletion a PosNob may have changed type
+	//            e.g. If a Knot has lost its output pipe, it becomes an OutputLine
 
-	unique_ptr<BaseKnot> fixBaseKnot(NobId const id)
+	unique_ptr<PosNob> fixPosNob(NobId const id)
 	{
 		using enum NobType::Value;
 
-		BaseKnot const * pBaseKnot { m_pNMWI->GetConstBaseKnotPtr(id) };
+		PosNob * pPosNob { & m_pNMWI->GetPosNob(id) };
 
-		if (pBaseKnot == nullptr)
-			return unique_ptr<BaseKnot>();
+		if (pPosNob == nullptr)
+			return unique_ptr<PosNob>();
 
-		size_t const nrInPipes  { pBaseKnot->GetNrOfInConns() };
-		size_t const nrOutPipes { pBaseKnot->GetNrOfOutConns() };
+		size_t const nrInPipes  { pPosNob->GetNrOfInConns() };
+		size_t const nrOutPipes { pPosNob->GetNrOfOutConns() };
 		NobType      typeNew    { undefined };
 
-		if (pBaseKnot->IsNeuron())
+		if (pPosNob->IsNeuron())
 		{
 			assert(nrOutPipes == 1);
 			if (nrInPipes == 0)	
@@ -118,19 +118,19 @@ private:
 			else if ((nrOutPipes == 1) && (nrInPipes == 0))	typeNew = inputLine;
 		}
 
-		if (typeNew != pBaseKnot->GetNobType())
+		if (typeNew != pPosNob->GetNobType())
 		{
-			unique_ptr<BaseKnot> upBaseKnotNew { BaseKnotFactory::Make(pBaseKnot->GetPos(), typeNew) };
-			if (upBaseKnotNew)
+			unique_ptr<PosNob> upPosNobNew { PosNobFactory::Make(pPosNob->GetPos(), typeNew) };
+			if (upPosNobNew)
 			{
-				upBaseKnotNew->SetIncoming(* pBaseKnot);
-				upBaseKnotNew->SetOutgoing(* pBaseKnot);
-				return m_pNMWI->ReplaceInModel<BaseKnot>(move(upBaseKnotNew));
+				upPosNobNew->SetIncoming(*pPosNob);
+				upPosNobNew->SetOutgoing(*pPosNob);
+				return m_pNMWI->ReplaceInModel<PosNob>(move(upPosNobNew));
 			}
 			else 
-				return m_pNMWI->RemoveFromModel<BaseKnot>(id);
+				return m_pNMWI->RemoveFromModel<PosNob>(id);
 		}
 
-		return unique_ptr<BaseKnot>();
+		return unique_ptr<PosNob>();
 	}
 };

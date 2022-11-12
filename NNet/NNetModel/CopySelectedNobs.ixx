@@ -10,7 +10,7 @@ export module NNetModel:CopySelectedNobs;
 
 import :NNetModelWriterInterface;
 import :UPNobList;
-import :BaseKnot;
+import :PosNob;
 import :Nob;
 
 using std::unordered_map;
@@ -32,5 +32,5 @@ private:
     static Nob const & copy2model(Nob * const);
 
     static void add2copy(Nob const &, UPNob);
-    static void addMissingKnot(BaseKnot const &);
+    static void addMissingKnot(PosNob const &);
 };
