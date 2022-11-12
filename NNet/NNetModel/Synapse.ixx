@@ -50,7 +50,7 @@ public:
     void SetMainPipe(Pipe* const);
     void ResetPos(MicroMeterPnt const&);
 
-    void SetIncoming(PosNob & src) final
+    void SetAllIncoming(PosNob & src) final
     {
         assert(src.IsSynapse());
         Synapse * pSynapseSrc { static_cast<Synapse *>(&src) };
@@ -58,7 +58,7 @@ public:
         m_pPipeMain = pSynapseSrc->m_pPipeMain;
     }
 
-    void SetOutgoing(PosNob & src) final
+    void SetAllOutgoing(PosNob & src) final
     {
         assert(src.IsSynapse());
         Synapse * pSynapseSrc { static_cast<Synapse *>(&src) };

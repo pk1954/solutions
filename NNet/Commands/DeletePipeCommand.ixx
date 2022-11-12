@@ -123,8 +123,8 @@ private:
 			unique_ptr<PosNob> upPosNobNew { PosNobFactory::Make(pPosNob->GetPos(), typeNew) };
 			if (upPosNobNew)
 			{
-				upPosNobNew->SetIncoming(*pPosNob);
-				upPosNobNew->SetOutgoing(*pPosNob);
+				upPosNobNew->SetAllIncoming(*pPosNob);
+				upPosNobNew->SetAllOutgoing(*pPosNob);
 				return m_pNMWI->ReplaceInModel<PosNob>(move(upPosNobNew));
 			}
 			else 

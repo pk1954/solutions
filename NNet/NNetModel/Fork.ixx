@@ -41,14 +41,14 @@ public:
 
     //void Dump()  const final;
 
-    void SetIncoming(PosNob & src) final 
+    void SetAllIncoming(PosNob & src) final 
     { 
         assert(src.IsFork());
         Fork * pForkSrc { static_cast<Fork *>(&src) };
         m_pPipeIn = pForkSrc->m_pPipeIn;
     }
 
-    void SetOutgoing(PosNob & src) final 
+    void SetAllOutgoing(PosNob & src) final 
     { 
         assert(src.IsFork());
         Fork * pForkSrc { static_cast<Fork *>(&src) };

@@ -26,8 +26,8 @@ public:
         MicroMeterPnt umPos { m_neuron.GetPos() };
         m_upInputLine  = make_unique<InputLine >(umPos);
         m_upOutputLine = make_unique<OutputLine>(umPos);
-        m_upInputLine ->SetOutgoing(m_neuron);
-        m_upOutputLine->SetIncoming(m_neuron);
+        m_upInputLine ->SetAllOutgoing(m_neuron);
+        m_upOutputLine->SetAllIncoming(m_neuron);
         m_upInputLine ->MoveNob((m_neuron.GetAxon         ()->GetEndPoint  ()-umPos).ScaledTo(NEURON_RADIUS*2));
         m_upOutputLine->MoveNob((m_neuron.GetFirstIncoming()->GetStartPoint()-umPos).ScaledTo(NEURON_RADIUS*2));
     }

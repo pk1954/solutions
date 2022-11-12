@@ -51,6 +51,8 @@ public:
 	Radian        GetDir()        const final { return Radian::NULL_VAL(); };
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
 
+	void SetPos   (MicroMeterPnt const& pos) final { m_circle.SetPos(pos); }
+
 	void MoveNob  (MicroMeterPnt const&)               final;
 	void RotateNob(MicroMeterPnt const&, Radian const) final;
 	void Link(Nob const&, Nob2NobFunc const&)          final;
@@ -67,6 +69,7 @@ public:
 	void ReplaceIncoming(Pipe* const, Pipe* const) final;
 	void ReplaceOutgoing(Pipe* const, Pipe* const) final;
 
+	void AddOutgoing(Pipe& pipe) final { SetAxon(&pipe); }
 	void AddIncoming(Pipe& pipe) final { m_inPipes.Add(pipe); }
 	void AddIncoming(Neuron const& neuron)
 	{
@@ -80,8 +83,8 @@ public:
 
 	void SetAxon(Pipe* pAxon) { m_pPipeAxon = pAxon; }
 
-	void SetIncoming(PosNob & src) final { assert(src.IsNeuron()); m_inPipes   = static_cast<Neuron &>(src).m_inPipes; }
-	void SetOutgoing(PosNob & src) final { assert(src.IsNeuron()); m_pPipeAxon = static_cast<Neuron &>(src).m_pPipeAxon; }
+	void SetAllIncoming(PosNob & src) final { assert(src.IsNeuron()); m_inPipes   = static_cast<Neuron &>(src).m_inPipes; }
+	void SetAllOutgoing(PosNob & src) final { assert(src.IsNeuron()); m_pPipeAxon = static_cast<Neuron &>(src).m_pPipeAxon; }
 
 	Pipe const * GetAxonC() const { return m_pPipeAxon; }
 	Pipe       * GetAxon ()       { return m_pPipeAxon; }

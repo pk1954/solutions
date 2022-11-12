@@ -43,12 +43,14 @@ public:
 	void Apply2AllInPipes (PipeFunc const& f) const final {};
 	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
 
-	void SetIncoming(PosNob & src) final { assert(false); }
-	void SetOutgoing(PosNob & src) final 
+	void SetAllIncoming(PosNob & src) final { assert(false); }
+	void SetAllOutgoing(PosNob & src) final 
 	{ 
 		assert(src.IsInputLine()); 
 		SetPipe(static_cast<InputLine *>(&src)->GetPipe()); 
 	}
+	
+	void AddOutgoing(Pipe & pipe) final { SetPipe(&pipe); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;

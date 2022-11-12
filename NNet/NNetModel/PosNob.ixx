@@ -116,8 +116,8 @@ public:
 	virtual void RemoveIncoming(Pipe&) { assert(false); }
 	virtual void RemoveOutgoing(Pipe&) { assert(false); }
 
-	virtual void SetIncoming(PosNob &) = 0;
-	virtual void SetOutgoing(PosNob &) = 0;
+	virtual void SetAllIncoming(PosNob &) = 0;
+	virtual void SetAllOutgoing(PosNob &) = 0;
 
 	static bool TypeFits(NobType const type) { return type.IsPosNobType(); }
 };

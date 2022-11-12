@@ -52,11 +52,6 @@ void Nob::SetDir(Radian const radian)
 	RotateNob(GetPos(), radian - GetDir()); 
 };
 
-void Nob::SetPos(MicroMeterPnt const & umPosNew) 
-{ 
-	MoveNob(umPosNew - GetPos()); 
-}
-
 void Nob::SetPosDir(MicroMeterPosDir const & umPosDir) 
 {
 	SetDir(umPosDir.GetDir());

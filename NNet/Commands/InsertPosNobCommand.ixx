@@ -14,7 +14,8 @@ import NNetModel;
 
 using std::unique_ptr;
 
-export template <PosNob_t T>
+//export template <PosNob_t T>
+export template <typename T>
 class InsertPosNobCommand : public NNetCommand
 {
 public:

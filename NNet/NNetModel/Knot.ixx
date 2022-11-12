@@ -45,15 +45,20 @@ public:
 	mV               GetNextOutput() const final { return m_mVinputBuffer; }
 	NobIoMode        GetIoMode()     const final { return NobIoMode::internal; }
 
+	void SetPos(MicroMeterPnt const& pos) final { m_circle.SetPos(pos); }
+
 	void MoveNob  (MicroMeterPnt  const&)               final;
 	void RotateNob(MicroMeterPnt  const&, Radian const) final;
 	void Link     (Nob const&, Nob2NobFunc const&)      final;
 
+	void AddOutgoing(Pipe& pipe) final { m_pPipeOut = &pipe; }
+	void AddIncoming(Pipe& pipe) final { m_pPipeIn  = &pipe; }
+
 	void SetIncoming(Pipe* pPipe) { m_pPipeIn  = pPipe; }
 	void SetOutgoing(Pipe* pPipe) { m_pPipeOut = pPipe; }
 
-	void SetIncoming(PosNob & src) final { assert(src.IsKnot()); m_pPipeIn  = static_cast<Knot &>(src).m_pPipeIn; }
-	void SetOutgoing(PosNob & src) final { assert(src.IsKnot()); m_pPipeOut = static_cast<Knot &>(src).m_pPipeOut; }
+	void SetAllIncoming(PosNob & src) final { assert(src.IsKnot()); m_pPipeIn  = static_cast<Knot &>(src).m_pPipeIn; }
+	void SetAllOutgoing(PosNob & src) final { assert(src.IsKnot()); m_pPipeOut = static_cast<Knot &>(src).m_pPipeOut; }
 
 	void Reconnect() final
 	{

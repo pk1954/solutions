@@ -35,8 +35,8 @@ public:
         for (size_t i = 0; i < m_size; ++i)
         {
             unique_ptr<Neuron> upNeuron{ make_unique<Neuron>(m_inputConnector.GetElem(i).GetPos()) };
-            upNeuron->SetIncoming(m_outputConnector.GetElem(i));
-            upNeuron->SetOutgoing(m_inputConnector.GetElem(i));
+            upNeuron->SetAllIncoming(m_outputConnector.GetElem(i));
+            upNeuron->SetAllOutgoing(m_inputConnector.GetElem(i));
             m_upNeurons.push_back(move(upNeuron));
         }
         m_upOutputLines.resize(m_size);
