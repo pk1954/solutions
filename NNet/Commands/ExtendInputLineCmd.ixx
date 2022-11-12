@@ -40,7 +40,7 @@ public:
 		m_upInputLineNew->SetPipe(m_upPipe.get());
 		m_upPipe->SetStartPnt(m_upInputLineNew.get());
 		
-		m_upKnotNew->SetIncoming(m_upPipe.get());
+		m_upKnotNew->AddIncoming(*m_upPipe.get());
 		m_upPipe->SetEndPnt (m_upKnotNew.get());
 	}
 

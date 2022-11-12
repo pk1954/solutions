@@ -31,8 +31,8 @@ public:
 		m_upPipe->SetStartPnt(m_upKnotNew.get());
 		m_upPipe->SetEndPnt  (m_upOutputLineNew.get());
 		m_upOutputLineNew->SetPipe(m_upPipe.get());
-		m_upKnotNew->SetOutgoing(m_upPipe.get());
-		m_upKnotNew->SetIncoming(m_outputLineOld.GetPipe());
+		m_upKnotNew->AddOutgoing(*m_upPipe.get());
+		m_upKnotNew->AddIncoming(*m_outputLineOld.GetPipe());
 	}
 
 	~ExtendOutputLineCmd() final = default;

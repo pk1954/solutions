@@ -54,9 +54,6 @@ public:
 	void AddOutgoing(Pipe& pipe) final { m_pPipeOut = &pipe; }
 	void AddIncoming(Pipe& pipe) final { m_pPipeIn  = &pipe; }
 
-	void SetIncoming(Pipe* pPipe) { m_pPipeIn  = pPipe; }
-	void SetOutgoing(Pipe* pPipe) { m_pPipeOut = pPipe; }
-
 	void SetAllIncoming(PosNob & src) final { assert(src.IsKnot()); m_pPipeIn  = static_cast<Knot &>(src).m_pPipeIn; }
 	void SetAllOutgoing(PosNob & src) final { assert(src.IsKnot()); m_pPipeOut = static_cast<Knot &>(src).m_pPipeOut; }
 

@@ -29,8 +29,8 @@ IoLinePair::IoLinePair
 {
 	m_upOutputLine->SetPipe(m_upPipe.get());
 	m_upInputLine ->SetPipe(m_upPipe.get());
-	m_upPipe->SetStartPnt(m_upOutputLine.get());
-	m_upPipe->SetEndPnt  (m_upInputLine.get());
+	m_upPipe->SetStartPnt(m_upInputLine.get());
+	m_upPipe->SetEndPnt  (m_upOutputLine.get());
 }
 
 IoLinePair::~IoLinePair() = default;

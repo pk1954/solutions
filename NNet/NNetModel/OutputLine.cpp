@@ -19,12 +19,6 @@ OutputLine::OutputLine(MicroMeterPnt const & upCenter)
 	: IoLine(upCenter, NobType::Value::outputLine)
 {}
 
-//OutputLine::OutputLine(PosNob const & posNob)
-//	: IoLine(posNob, NobType::Value::outputLine)
-//{
-//	SetIncoming(posNob);
-//}
-//
 void OutputLine::Check() const
 {
 	PosNob::Check();

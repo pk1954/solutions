@@ -63,15 +63,18 @@ public:
         m_pPipeOut2->SetStartPnt(this);
     };
 
-    void SetIncoming(Pipe * pPipeIn) 
-    { 
-        m_pPipeIn = pPipeIn; 
+    void AddIncoming(Pipe& pipe) final
+    {
+        m_pPipeIn = &pipe;
     }
 
-    void SetOutgoing(Pipe * pPipeOut1, Pipe * pPipeOut2) 
-    { 
-        m_pPipeOut1 = pPipeOut1;
-        m_pPipeOut2 = pPipeOut2;
+    void AddOutgoing(Pipe& pipe) final
+    {
+        assert(m_pPipeOut2 == nullptr);
+        if (m_pPipeOut1)
+            m_pPipeOut2 = &pipe;
+        else
+            m_pPipeOut1 = &pipe;
     }
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
