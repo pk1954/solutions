@@ -119,7 +119,7 @@ Nob * UPNobList::ReplaceNob(UPNob upT)
 
 NobId UPNobList::Push(UPNob upNob)	
 {
-	NobId idNewSlot { IdNewSlot() };
+	NobId const idNewSlot { NobId(Size()) };
 	if (upNob)
 	{
 		upNob->SetId(idNewSlot);

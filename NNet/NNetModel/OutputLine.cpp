@@ -31,7 +31,7 @@ bool OutputLine::operator==(Nob const & rhs) const
 
 void OutputLine::Reconnect()
 {
-	GetPipe()->SetStartPnt(this);
+	GetPipe()->SetEndPnt(this);
 };
 
 void OutputLine::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)

@@ -40,8 +40,7 @@ public:
 
 	bool   IsEmpty     ()               const { return   m_list.empty(); }
 	bool   IsNotEmpty  ()               const { return ! m_list.empty(); }
-	size_t Size        ()               const { return m_list.size(); }
-	NobId  IdNewSlot   ()	            const { return NobId(Cast2Long(m_list.size())); }
+	int    Size        ()               const { return Cast2Int(m_list.size()); }
 	bool   IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
 	bool   IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
 	bool   IsValidNobId(NobId const id) const { return id.GetValue() < Size(); }
