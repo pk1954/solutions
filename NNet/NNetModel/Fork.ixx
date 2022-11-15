@@ -19,10 +19,7 @@ export class Fork : public PosNob
 {
 public:
 
-    explicit Fork(MicroMeterPnt const center)
-      : PosNob(NobType::Value::fork),
-        m_circle(center, KNOT_WIDTH)
-    {}
+    explicit Fork(MicroMeterPnt const);
 
     size_t GetNrOfInConns () const final { return 1; }
     size_t GetNrOfOutConns() const final { return 2; }
@@ -41,41 +38,13 @@ public:
 
     //void Dump()  const final;
 
-    void SetAllIncoming(PosNob & src) final 
-    { 
-        assert(src.IsFork());
-        Fork * pForkSrc { static_cast<Fork *>(&src) };
-        m_pPipeIn = pForkSrc->m_pPipeIn;
-    }
+    void SetAllIncoming(PosNob&) final;
+    void SetAllOutgoing(PosNob&) final;
 
-    void SetAllOutgoing(PosNob & src) final 
-    { 
-        assert(src.IsFork());
-        Fork * pForkSrc { static_cast<Fork *>(&src) };
-        m_pPipeOut1 = pForkSrc->m_pPipeOut1;
-        m_pPipeOut2 = pForkSrc->m_pPipeOut2;
-    }
+    void Reconnect() final;
 
-    void Reconnect() final
-    { 
-        m_pPipeIn  ->SetEndPnt(this);
-        m_pPipeOut1->SetStartPnt(this);
-        m_pPipeOut2->SetStartPnt(this);
-    };
-
-    void AddIncoming(Pipe& pipe) final
-    {
-        m_pPipeIn = &pipe;
-    }
-
-    void AddOutgoing(Pipe& pipe) final
-    {
-        assert(m_pPipeOut2 == nullptr);
-        if (m_pPipeOut1)
-            m_pPipeOut2 = &pipe;
-        else
-            m_pPipeOut1 = &pipe;
-    }
+    void AddIncoming(Pipe&) final;
+    void AddOutgoing(Pipe&) final;
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;

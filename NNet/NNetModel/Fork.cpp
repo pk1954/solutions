@@ -11,6 +11,11 @@ module NNetModel:Fork;
 import DrawContext;
 import Types;
 
+Fork::Fork(MicroMeterPnt const center)
+  : PosNob(NobType::Value::fork),
+	m_circle(center, KNOT_WIDTH)
+{}
+
 void Fork::Check() const
 {
 	PosNob::Check();
@@ -29,7 +34,7 @@ void Fork::MoveNob(MicroMeterPnt const& delta)
 
 void Fork::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 {
-	Fork const& src { static_cast<Fork const&>(nobSrc) };
+	Fork const& src { *Cast2Fork(&nobSrc) };
 	m_pPipeIn   = static_cast<Pipe*>(f(src.m_pPipeIn  ));
 	m_pPipeOut1 = static_cast<Pipe*>(f(src.m_pPipeOut1));
 	m_pPipeOut2 = static_cast<Pipe*>(f(src.m_pPipeOut2));
@@ -93,4 +98,37 @@ void Fork::DrawExterior(DrawContext const& context, tHighlight const type) const
 void Fork::DrawInterior(DrawContext const& context, tHighlight const type) const
 {
 	FillInternalCircle(context, type);
+}
+
+void Fork::SetAllIncoming(PosNob& src)
+{
+	m_pPipeIn = Cast2Fork(&src)->m_pPipeIn;
+}
+
+void Fork::SetAllOutgoing(PosNob& src)
+{
+	Fork* pForkSrc { Cast2Fork(&src) };
+	m_pPipeOut1 = pForkSrc->m_pPipeOut1;
+	m_pPipeOut2 = pForkSrc->m_pPipeOut2;
+}
+
+void Fork::Reconnect()
+{
+	m_pPipeIn->SetEndPnt(this);
+	m_pPipeOut1->SetStartPnt(this);
+	m_pPipeOut2->SetStartPnt(this);
+};
+
+void Fork::AddIncoming(Pipe& pipe)
+{
+	m_pPipeIn = &pipe;
+}
+
+void Fork::AddOutgoing(Pipe& pipe)
+{
+	assert(m_pPipeOut2 == nullptr);
+	if (m_pPipeOut1)
+		m_pPipeOut2 = &pipe;
+	else
+		m_pPipeOut1 = &pipe;
 }
