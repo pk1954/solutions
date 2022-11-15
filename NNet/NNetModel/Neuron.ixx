@@ -27,7 +27,8 @@ using std::make_unique;
 export class Neuron : public PosNob
 {
 public:
-	Neuron(MicroMeterPnt const &);
+	Neuron(MicroMeterPnt const&);
+	Neuron(Neuron const&);
 
 	Neuron& operator=(Neuron const&); // copy assignment operator
 

@@ -21,10 +21,18 @@ using std::fixed;
 using std::wstring;
 using std::wostringstream;
 
-Neuron::Neuron(MicroMeterPnt const & upCenter)
-  : PosNob(NobType::Value::neuron),
+Neuron::Neuron(MicroMeterPnt const& upCenter)
+	: PosNob(NobType::Value::neuron),
 	m_circle(upCenter, NEURON_RADIUS)
 {}
+
+Neuron::Neuron(Neuron const& rhs)
+  : PosNob(NobType::Value::neuron),
+	m_circle(rhs.m_circle)
+{
+	PosNob::operator=(rhs);
+	init(rhs);
+}
 
 void Neuron::init(const Neuron & rhs)
 {
@@ -35,7 +43,7 @@ void Neuron::init(const Neuron & rhs)
 	m_pPipeAxon      = rhs.m_pPipeAxon;
 }
 
-Neuron & Neuron::operator=(Neuron const & rhs)
+Neuron & Neuron::operator=(Neuron const& rhs)
 {
 	PosNob::operator=(rhs);
 	init(rhs);

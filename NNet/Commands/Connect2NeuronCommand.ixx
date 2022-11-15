@@ -28,7 +28,7 @@ public:
 		m_neuronDst    (*m_pNMWI->GetNobPtr<Neuron*>    (idDst))
 	{
 		MicroMeterPnt pos { m_neuronDst.GetPos() };
-		m_upNeuronNew = make_unique<Neuron>(pos);               // create copy of Neuron
+		m_upNeuronNew = make_unique<Neuron>(m_neuronDst);       // create copy of Neuron
 		m_upNeuronNew->AddIncoming(*m_outputLineSrc.GetPipe()); // add incoming pipe
 	}
 
@@ -52,8 +52,8 @@ public:
 
 private:
 
-	OutputLine       & m_outputLineSrc;  // reference to original OutputLine
-	Neuron     const & m_neuronDst;      // reference to original Neuron
+	OutputLine & m_outputLineSrc;  // reference to original OutputLine
+	Neuron     & m_neuronDst;      // reference to original Neuron
 
 	unique_ptr<Neuron>     m_upNeuronNew     { nullptr };
 	unique_ptr<OutputLine> m_upOutputLineSrc { nullptr };

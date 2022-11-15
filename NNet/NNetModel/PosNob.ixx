@@ -25,71 +25,29 @@ public:
 	  : Nob(type)
 	{ }
 
-	bool operator==(Nob const & rhs) const override
-	{
-		PosNob const& posNobRhs { static_cast<PosNob const&>(rhs) };
-		return (this->Nob::operator==(rhs)) &&
-			GetPos      ().IsCloseTo(posNobRhs.GetPos()) &&
-			GetExtension().IsCloseTo(posNobRhs.GetExtension());
-	}
+	bool operator==(Nob const&) const override;
+
+	void Dump() const override;
 
 	mV GetVoltage()  const { return m_mVinputBuffer; }
 	void SetVoltage(mV const v) { m_mVinputBuffer = v; }
 
-	bool Includes(MicroMeterPnt const& point) const override
-	{
-		return Distance(point, GetPos()) <= GetExtension();
-	}
+	bool Includes    (MicroMeterPnt  const&) const override;
+	bool IsIncludedIn(MicroMeterRect const&) const final;
+	void Expand      (MicroMeterRect      &) const final;
 
-	bool IsIncludedIn(MicroMeterRect const& umRect) const final
-	{
-		return umRect.Includes(GetPos());
-	}
+	bool IsPrecursorOf        (Pipe   const&) const;
+	bool IsSuccessorOf        (Pipe   const&) const;
+	bool IsDirectlyConnectedTo(Pipe   const&) const;
+	bool IsPrecursorOf        (PosNob const&) const;
+	bool IsSuccessorOf        (PosNob const&) const;
+	bool IsDirectlyConnectedTo(PosNob const&) const;
 
-	void Expand(MicroMeterRect& umRect) const final
-	{
-		umRect.Expand(GetPos());
-	}
-
-	bool IsPrecursorOf(Pipe const& pipeSucc) const
-	{
-		return Apply2AllOutPipesB([&pipeSucc](Pipe const& pipe) { return &pipe == &pipeSucc; });
-	}
-
-	bool IsSuccessorOf(Pipe const& pipePred) const
-	{
-		return Apply2AllInPipesB([&pipePred](Pipe const& pipe) { return &pipe == &pipePred; });
-	}
-
-	bool IsPrecursorOf(PosNob const& b) const
-	{
-		return Apply2AllOutPipesB([&b](Pipe const& p) { return p.GetEndNobPtr() == &b; });
-	}
-
-	bool IsSuccessorOf(PosNob const& b) const
-	{
-		return Apply2AllInPipesB([&b](Pipe const& p) { return p.GetStartNobPtr() == &b; });
-	}
-	
-	bool IsDirectlyConnectedTo(PosNob const & posNob) const
-	{
-		return IsSuccessorOf(posNob) || IsPrecursorOf(posNob);
-	}
-
-	bool IsDirectlyConnectedTo(Pipe const& pipe) const
-	{
-		return IsDirectlyConnectedTo(*static_cast<PosNob const*>(pipe.GetStartNobPtr())) ||
-			   IsDirectlyConnectedTo(*static_cast<PosNob const*>(pipe.GetEndNobPtr()));
-	}
 	size_t GetNrOfConnections() const { return GetNrOfInConns() + GetNrOfOutConns(); }
 
 	MicroMeterCircle GetCircle() const { return MicroMeterCircle(GetPos(), GetExtension());	}
 
-	void EvaluateSelectionStatus()
-	{
-		bool bSelected { Apply2AllConnectedPipesB([](Pipe const& p) { return p.IsSelected(); }) };
-		Nob::Select(bSelected);      // if any connected pipe is selected
-	}                                // PosNob must also be selected
+	void EvaluateSelectionStatus();
 
 	virtual size_t GetNrOfInConns () const = 0;
 	virtual size_t GetNrOfOutConns() const = 0;
