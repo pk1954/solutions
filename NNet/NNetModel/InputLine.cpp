@@ -22,6 +22,7 @@ import :ParamType;
 import :NNetColors;
 import :NNetParameters;
 import :NobType;
+import :Neuron;
 import :IoLine;
 import :PosNob;
 
@@ -52,6 +53,21 @@ void InputLine::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 		SetPipe(pAdd);
 	else
 		assert(false);
+}
+
+void InputLine::SetAllIncoming(PosNob& src)
+{
+	assert(false);
+}
+
+void InputLine::SetAllOutgoing(PosNob& src)
+{
+	SetPipe(Cast2InputLine(&src)->GetPipe());
+}
+
+void InputLine::SetAllOutgoing(Neuron& src)
+{
+	SetPipe(src.GetAxon());
 }
 
 void InputLine::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -107,4 +123,18 @@ void InputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_EXTEND_INPUTLINE);   // case 10
 	IoLine::AppendMenuItems(add);
+}
+
+InputLine const* Cast2InputLine(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsInputLine());
+	return static_cast<InputLine const*>(pNob);
+}
+
+InputLine* Cast2InputLine(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsInputLine());
+	return static_cast<InputLine*>(pNob);
 }

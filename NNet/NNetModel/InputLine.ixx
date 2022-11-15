@@ -15,6 +15,7 @@ import :tHighlight;
 import :SigGenDynamicData;
 import :Nob;
 import :NobType;
+import :Neuron;
 import :IoLine;
 import :PosNob;
 import :SignalGenerator;
@@ -43,13 +44,10 @@ public:
 	void Apply2AllInPipes (PipeFunc const& f) const final {};
 	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
 
-	void SetAllIncoming(PosNob & src) final { assert(false); }
-	void SetAllOutgoing(PosNob & src) final 
-	{ 
-		assert(src.IsInputLine()); 
-		SetPipe(static_cast<InputLine *>(&src)->GetPipe()); 
-	}
-	
+	void SetAllIncoming(PosNob&) final;
+	void SetAllOutgoing(PosNob&) final;
+	void SetAllOutgoing(Neuron&);
+
 	void AddOutgoing(Pipe & pipe) final { SetPipe(&pipe); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
@@ -79,3 +77,6 @@ private:
 		D2D1::ColorF const
 	) const;
 };
+
+export InputLine const* Cast2InputLine(Nob const*);
+export InputLine      * Cast2InputLine(Nob      *);

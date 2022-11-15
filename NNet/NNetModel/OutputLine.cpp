@@ -26,7 +26,7 @@ void OutputLine::Check() const
 
 bool OutputLine::operator==(Nob const & rhs) const
 {
-	return this->PosNob::operator== (static_cast<OutputLine const &>(rhs));
+	return this->PosNob::operator== (*Cast2OutputLine(&rhs));
 }
 
 void OutputLine::Reconnect()
@@ -40,6 +40,16 @@ void OutputLine::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 		SetPipe(pAdd);
 	else
 		assert(false);
+}
+
+void OutputLine::SetAllOutgoing(PosNob& src) 
+{ 
+	assert(false); 
+}
+
+void OutputLine::SetAllIncoming(PosNob& src)
+{
+	SetPipe(Cast2OutputLine(&src)->GetPipe());
 }
 
 void OutputLine::DrawExterior(DrawContext const & context, tHighlight const type) const
@@ -78,4 +88,18 @@ void OutputLine::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_EXTEND_OUTPUTLINE);  // case 11
 	IoLine::AppendMenuItems(add);
+}
+
+OutputLine const* Cast2OutputLine(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsOutputLine());
+	return static_cast<OutputLine const*>(pNob);
+}
+
+OutputLine* Cast2OutputLine(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsOutputLine());
+	return static_cast<OutputLine*>(pNob);
 }

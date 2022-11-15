@@ -78,7 +78,7 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
 
 InputLine& InputConnector::GetElem(size_t const nr) const
 {
-    return static_cast<InputLine&>(IoConnector::GetElem(nr));
+    return *Cast2InputLine(&IoConnector::GetElem(nr));
 };
 
 SignalGenerator * InputConnector::GetSigGen()
@@ -97,7 +97,7 @@ void InputConnector::SetSigGen(SignalGenerator* const pSigGen)
     (
         [pSigGen](IoLine & n)
         { 
-            static_cast<InputLine &>(n).SetSigGen(pSigGen); 
+            Cast2InputLine(&n)->SetSigGen(pSigGen); 
         }
     );
 }

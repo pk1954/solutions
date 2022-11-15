@@ -85,6 +85,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 	{
 		{ IDD_EXTEND_INPUTLINE,        L"Extend"                         },
 		{ IDD_EXTEND_OUTPUTLINE,       L"Extend"                         },
+		{ IDD_ADD_INCOMING2NEURON,     L"Add incoming dendrite"          },
 		{ IDD_ADD_INCOMING2PIPE,       L"Add incoming dendrite"          },
 		{ IDD_ADD_OUTGOING2PIPE,       L"Add outgoing dendrite"          },
 		{ IDD_ADD_EEG_SENSOR,          L"New EEG sensor" 		         },

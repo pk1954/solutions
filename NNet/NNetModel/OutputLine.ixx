@@ -36,12 +36,9 @@ public:
 	void Apply2AllInPipes (PipeFunc const& f) const final {};
 	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
 
-	void SetAllOutgoing(PosNob& src) final { assert(false); }
-	void SetAllIncoming(PosNob & src) final
-	{ 
-		assert(src.IsOutputLine()); 
-		SetPipe(static_cast<OutputLine &>(src).GetPipe()); 
-	}
+	void SetAllOutgoing(PosNob&) final;
+	void SetAllIncoming(PosNob&) final;
+
 	void AddIncoming(Pipe& pipe) final { SetPipe(&pipe); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const override;
@@ -68,3 +65,6 @@ private:
 		D2D1::ColorF const
 	) const;
 };
+
+export OutputLine const* Cast2OutputLine(Nob const*);
+export OutputLine      * Cast2OutputLine(Nob      *);
