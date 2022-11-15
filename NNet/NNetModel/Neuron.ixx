@@ -84,13 +84,13 @@ public:
 
 	void SetAxon(Pipe* pAxon) { m_pPipeAxon = pAxon; }
 
-	void SetAllIncoming(PosNob & src) final { assert(src.IsNeuron()); m_inPipes   = static_cast<Neuron &>(src).m_inPipes; }
-	void SetAllOutgoing(PosNob & src) final { assert(src.IsNeuron()); m_pPipeAxon = static_cast<Neuron &>(src).m_pPipeAxon; }
+	void SetAllIncoming(PosNob &) final;
+	void SetAllOutgoing(PosNob &) final;
 
 	Pipe const * GetAxonC() const { return m_pPipeAxon; }
 	Pipe       * GetAxon ()       { return m_pPipeAxon; }
 
-	Pipe       * GetFirstIncoming() { return &m_inPipes.GetFirst(); }
+	Pipe * GetFirstIncoming() { return &m_inPipes.GetFirst(); }
 
 protected:
 
@@ -111,3 +111,6 @@ private:
 
 	void init(const Neuron&);
 };
+
+export Neuron const* Cast2Neuron(Nob const*);
+export Neuron      * Cast2Neuron(Nob      *);

@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 
 module NNetModel:PosNob;
@@ -76,3 +77,22 @@ void PosNob::EvaluateSelectionStatus()
 	bool bSelected { Apply2AllConnectedPipesB([](Pipe const& p) { return p.IsSelected(); }) };
 	Nob::Select(bSelected);      // if any connected pipe is selected
 }                                // PosNob must also be selected
+
+bool PosNob::Apply2AllConnectedPipesB(PipeCrit const& c) const
+{
+	return Apply2AllInPipesB(c) || Apply2AllOutPipesB(c);
+}
+
+PosNob const* Cast2PosNob(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsPosNob());
+	return static_cast<PosNob const*>(pNob);
+}
+
+PosNob* Cast2PosNob(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsPosNob());
+	return static_cast<PosNob*>(pNob);
+}

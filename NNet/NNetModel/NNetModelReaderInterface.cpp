@@ -83,12 +83,6 @@ size_t NNetModelReaderInterface::GetNrOfInConns(NobId const id) const
 	return p ? p->GetNrOfInConns() : -1;
 }
 
-size_t NNetModelReaderInterface::GetNrOfConnections(NobId const id) const 
-{ 
-	auto p { m_pModel->GetNobConstPtr<PosNob const *>(id) };
-	return p ? p->GetNrOfConnections() : -1;
-}
-
 bool NNetModelReaderInterface::GetDescriptionLine(int const iLine, wstring & wstrLine) const 
 {
 	return m_pModel->GetDescriptionLine(iLine, wstrLine);

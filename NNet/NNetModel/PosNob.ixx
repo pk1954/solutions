@@ -29,12 +29,12 @@ public:
 
 	void Dump() const override;
 
-	mV GetVoltage()  const { return m_mVinputBuffer; }
+	mV   GetVoltage()  const { return m_mVinputBuffer; }
 	void SetVoltage(mV const v) { m_mVinputBuffer = v; }
 
 	bool Includes    (MicroMeterPnt  const&) const override;
-	bool IsIncludedIn(MicroMeterRect const&) const final;
-	void Expand      (MicroMeterRect      &) const final;
+	bool IsIncludedIn(MicroMeterRect const&) const override;
+	void Expand      (MicroMeterRect      &) const override;
 
 	bool IsPrecursorOf        (Pipe   const&) const;
 	bool IsSuccessorOf        (Pipe   const&) const;
@@ -42,10 +42,6 @@ public:
 	bool IsPrecursorOf        (PosNob const&) const;
 	bool IsSuccessorOf        (PosNob const&) const;
 	bool IsDirectlyConnectedTo(PosNob const&) const;
-
-	size_t GetNrOfConnections() const { return GetNrOfInConns() + GetNrOfOutConns(); }
-
-	MicroMeterCircle GetCircle() const { return MicroMeterCircle(GetPos(), GetExtension());	}
 
 	void EvaluateSelectionStatus();
 
@@ -63,10 +59,7 @@ public:
 	virtual bool Apply2AllInPipesB (PipeCrit const& c) const = 0;
 	virtual bool Apply2AllOutPipesB(PipeCrit const& c) const = 0;
 
-	bool Apply2AllConnectedPipesB(PipeCrit const & c) const
-	{
-		return Apply2AllInPipesB(c) || Apply2AllOutPipesB(c);
-	}
+	bool Apply2AllConnectedPipesB(PipeCrit const&) const;
 
 	virtual void AddIncoming(Pipe&) { assert(false); }
 	virtual void AddOutgoing(Pipe&) { assert(false); }
@@ -80,19 +73,8 @@ public:
 	static bool TypeFits(NobType const type) { return type.IsPosNobType(); }
 };
 
-export PosNob const* Cast2PosNob(Nob const * pNob)
-{
-	assert(pNob);
-	assert(pNob->IsPosNob());
-	return static_cast<PosNob const*>(pNob);
-}
-
-export PosNob * Cast2PosNob(Nob * pNob)
-{
-	assert(pNob);
-	assert(pNob->IsPosNob());
-	return static_cast<PosNob *>(pNob);
-}
+export PosNob const* Cast2PosNob(Nob const*);
+export PosNob      * Cast2PosNob(Nob      *);
 
 export template <typename T>
 concept PosNob_t = is_base_of<PosNob, remove_pointer_t<T>>::value;

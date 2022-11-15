@@ -61,7 +61,6 @@ public:
 	size_t                  GetNrOfSegments      (NobId const) const;
 	size_t                  GetNrOfOutConns      (NobId const) const;
 	size_t                  GetNrOfInConns       (NobId const) const;
-	size_t                  GetNrOfConnections   (NobId const) const;
 	mV                      GetVoltage           (NobId const) const;
 	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const&) const;
 	Degrees                 GetDirection         (NobId const) const;

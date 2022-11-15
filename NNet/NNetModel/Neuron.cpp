@@ -127,17 +127,17 @@ void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) co
 {
 	if (m_bStopOnTrigger)
 	{
-		context.FillCircle(GetCircle() * 1.4f, GetExteriorColor(type));
-		context.FillCircle(GetCircle() * 1.2f, NNetColors::INT_TRIGGER);
+		context.FillCircle(m_circle * 1.4f, GetExteriorColor(type));
+		context.FillCircle(m_circle * 1.2f, NNetColors::INT_TRIGGER);
 	}
-	context.FillCircle(GetCircle(), GetExteriorColor(type));
+	context.FillCircle(m_circle, GetExteriorColor(type));
 	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * 0.5f), GetExteriorColor(type));
 }
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 { 
 	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : Nob::GetInteriorColor(type) };
-	context.FillCircle(GetCircle() * NEURON_INTERIOR, color);
+	context.FillCircle(m_circle * NEURON_INTERIOR, color);
 	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 }
 
@@ -157,7 +157,7 @@ void Neuron::MoveNob(MicroMeterPnt const& delta)
 
 void Neuron::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 {
-	Neuron const& src { static_cast<Neuron const&>(nobSrc) };
+	Neuron const& src { *Cast2Neuron(&nobSrc) };
 	m_pPipeAxon = static_cast<Pipe*>(f(src.m_pPipeAxon));
 	m_inPipes.Clear();
 	src.Apply2AllInPipes([this, f](Pipe const& p) { m_inPipes.Add(static_cast<Pipe&>(*f(&p))); });
@@ -176,3 +176,26 @@ void Neuron::Reconnect()
 	m_pPipeAxon->SetStartPnt(this);
 }
 
+void Neuron::SetAllIncoming(PosNob& src) 
+{ 
+	m_inPipes = Cast2Neuron(&src)->m_inPipes; 
+}
+
+void Neuron::SetAllOutgoing(PosNob& src) 
+{ 
+	m_pPipeAxon = Cast2Neuron(&src)->m_pPipeAxon; 
+}
+
+Neuron const* Cast2Neuron(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsNeuron());
+	return static_cast<Neuron const*>(pNob);
+}
+
+Neuron* Cast2Neuron(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsNeuron());
+	return static_cast<Neuron*>(pNob);
+}
