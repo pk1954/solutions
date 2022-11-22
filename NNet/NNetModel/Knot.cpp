@@ -69,3 +69,27 @@ void Knot::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
 	m_circle.Rotate(umPntPivot, radDelta);
 }
+
+void Knot::SetAllIncoming(PosNob& src)
+{
+	m_pPipeIn = Cast2Knot(&src)->m_pPipeIn;
+}
+
+void Knot::SetAllOutgoing(PosNob& src)
+{
+	m_pPipeIn = Cast2Knot(&src)->m_pPipeIn;
+}
+
+Knot const* Cast2Knot(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsKnot());
+	return static_cast<Knot const*>(pNob);
+}
+
+Knot* Cast2Knot(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsKnot());
+	return static_cast<Knot*>(pNob);
+}

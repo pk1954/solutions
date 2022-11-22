@@ -301,6 +301,7 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
 	if (connectionAllowed())
 		m_pModelCommands->Connect(m_nobHighlighted, m_nobTarget);
+	m_nobHighlighted = NO_NOB;
 	m_nobTarget = NO_NOB;
 	return NNetWindow::OnLButtonUp(wParam, lParam);
 }

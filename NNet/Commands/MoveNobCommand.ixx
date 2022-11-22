@@ -20,7 +20,7 @@ public:
 		Nob                 & nob, 
 		MicroMeterPnt const & delta 
 	)
-		: m_delta(delta),
+	  : m_delta(delta),
 		m_nob(nob)
 	{ 
 		assert(&nob);

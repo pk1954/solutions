@@ -54,8 +54,8 @@ public:
 	void AddOutgoing(Pipe& pipe) final { m_pPipeOut = &pipe; }
 	void AddIncoming(Pipe& pipe) final { m_pPipeIn  = &pipe; }
 
-	void SetAllIncoming(PosNob & src) final { assert(src.IsKnot()); m_pPipeIn  = static_cast<Knot &>(src).m_pPipeIn; }
-	void SetAllOutgoing(PosNob & src) final { assert(src.IsKnot()); m_pPipeOut = static_cast<Knot &>(src).m_pPipeOut; }
+	void SetAllIncoming(PosNob&) final;
+	void SetAllOutgoing(PosNob&) final;
 
 	void Reconnect() final
 	{
@@ -88,3 +88,6 @@ private:
 	Pipe* m_pPipeIn  { nullptr };
 	Pipe* m_pPipeOut { nullptr };
 };
+
+export Knot const* Cast2Knot(Nob const*);
+export Knot      * Cast2Knot(Nob      *);

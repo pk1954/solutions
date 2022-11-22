@@ -32,8 +32,8 @@ public:
         assert(m_nobTarget  .GetIoMode() != m_nobAnimated.GetIoMode());
 
         m_upKnot = make_unique<Knot>(m_nobTarget.GetPos());
-        m_upKnot->SetAllIncoming(m_nobAnimated.IsOutputNob() ? m_nobAnimated : m_nobTarget);
-        m_upKnot->SetAllOutgoing(m_nobAnimated.IsInputNob () ? m_nobAnimated : m_nobTarget);
+        m_upKnot->AddIncoming(*(m_nobAnimated.IsOutputNob() ? m_nobAnimated : m_nobTarget).GetPipe());
+        m_upKnot->AddOutgoing(*(m_nobAnimated.IsInputNob () ? m_nobAnimated : m_nobTarget).GetPipe());
     }
 
     void Do() final

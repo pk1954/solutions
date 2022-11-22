@@ -236,28 +236,25 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	using enum ConnectionType;
 
 	unique_ptr<Command> upCmd;
-	switch (m_pNMWI->ConnectionResult(idSrc, idDst))
+	ConnectionType connType { m_pNMWI->ConnectionResult(idSrc, idDst) };
+	if (m_bTrace)
+		TraceStream() << source_location::current().function_name() 
+		              << L"type " << static_cast<int>(connType) << endl;
+	switch (connType)
 	{
-		case ct_fork:    ConnectCreateForkCmd::Push(idSrc, idDst); return; // case 1 
+		case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);          // case 1 
+			return;
 		case ct_synapse:	 
-			if (m_bTrace)
-				TraceStream() << source_location::current().function_name() << endl;
-			upCmd = make_unique<ConnectCreateSynapseCmd>(idSrc, idDst); // case 2
+			upCmd = make_unique<ConnectCreateSynapseCmd>(idSrc, idDst);  // case 2
 			break;  
 		case ct_neuron:      
-			if (m_bTrace)
-				TraceStream() << source_location::current().function_name() << endl;
-			upCmd = make_unique<Connect2NeuronCommand>      (idSrc, idDst); // case 3
+			upCmd = make_unique<Connect2NeuronCommand>(idSrc, idDst);    // case 3
 			break;  
 		case ct_knot:		 
-			if (m_bTrace)
-				TraceStream() << source_location::current().function_name() << endl;
-			upCmd = make_unique<PlugIoLineAnimation>        (idSrc, idDst); // case 4/5
+			upCmd = make_unique<PlugIoLineAnimation>(idSrc, idDst);      // case 4/5
 			break;  
 		case ct_ioConnector: 
-			if (m_bTrace)
-				TraceStream() << source_location::current().function_name() << endl;
-			upCmd = make_unique<PlugIoConnectorAnimation>   (idSrc, idDst); // case 6
+			upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst); // case 6
 			break;  
 		default: assert(false);
 	}
@@ -387,6 +384,8 @@ void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
 {
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << delta << endl;
+	Nob* pNob = m_pNMWI->GetNob(id);
+	assert(pNob);
 	m_pCmdStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(id), delta));
 }
 
