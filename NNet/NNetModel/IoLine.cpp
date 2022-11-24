@@ -4,6 +4,7 @@
 
 module;
 
+#include <iostream>
 #include <vector>
 
 module NNetModel:IoLine;
@@ -86,12 +87,14 @@ void IoLine::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 
 void IoLine::UnlockDirection()
 {
+	std::wcout << L"UnlockDirection" << std::endl;
 	SetDir(Radian::NULL_VAL());
 }
 
 void IoLine::LockDirection() 
 { 
-	if (!IsDirLocked()) 
+	std::wcout << L"LockDirection" << std::endl;
+	if (!IsDirLocked())
 		SetDir(Vector2Radian(determineVector()));
 }
 

@@ -2,11 +2,18 @@
 //
 // Utilities
 
+module;
+
+#include <iostream>
+
 export module PixFpDimension;
 
 import Util;
+import IoConstants;
 import Observable;
 import Types;
+
+using std::wostream;
 
 export template <typename LOG_UNIT>
 class PixFpDimension : public Observable
@@ -175,6 +182,14 @@ public:
 	{ 
 		return m_fZoomFactor; 
 	};
+
+	friend wostream& operator<< (wostream& out, PixFpDimension<LOG_UNIT> const& dim)
+	{
+		out << OPEN_BRACKET << dim.m_fPixOffset
+			<< SEPARATOR << dim.m_logPixelSize
+			<< CLOSE_BRACKET;
+		return out;
+	}
 
 private:
 

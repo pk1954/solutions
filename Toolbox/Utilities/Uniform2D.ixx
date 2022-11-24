@@ -4,16 +4,19 @@
 
 module;
 
+#include <iostream>
 #include <algorithm>
 
 export module Uniform2D;
 
 import Util;
+import IoConstants;
 import Observable;
 import PixFpDimension;
 import Types;
 
 using std::max;
+using std::wostream;
 
 export template <typename LOG_UNIT>
 class Uniform2D : public Observable
@@ -81,7 +84,7 @@ public:
 			(
 				Transform2logUnitPntPos(fPixRect.GetStartPoint()), 
 				Transform2logUnitPntPos(fPixRect.GetEndPoint  ()) 
-				);
+			);
 	}
 
 	fPixelRect Transform2fPixelRect(RectType<LOG_UNIT> const & umRect) const
@@ -337,6 +340,14 @@ public:
 	bool IsValidPixelSize(LOG_UNIT const size) const
 	{
 		return (MINIMUM_PIXEL_SIZE <= size) && (size <= MAXIMUM_PIXEL_SIZE); 
+	}
+
+	friend wostream& operator<< (wostream& out, Uniform2D<LOG_UNIT> const& uniform2D)
+	{
+		out << OPEN_BRACKET << uniform2D.m_xDim
+			<< SEPARATOR << uniform2D.m_yDim
+			<< CLOSE_BRACKET;
+		return out;
 	}
 
 private:

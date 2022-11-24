@@ -94,7 +94,7 @@ void Command::Do()
 
 void Command::Undo()
 {
-    m_uiPhase = Cast2Int(m_phases.size());
+    m_uiPhase = Cast2UnsignedInt(m_phases.size());
     undoPhase();
 }
 

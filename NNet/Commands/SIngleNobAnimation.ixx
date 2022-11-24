@@ -4,6 +4,7 @@
 
 module;
 
+//#include <iostream>
 #include <algorithm>
 #include <functional>
 #include <memory>
@@ -43,16 +44,19 @@ public:
 
     void Do() final
     {
+        //std::wcout << L"SingleNobAnimation.Do" << std::endl;
         m_upAnimation->Start(m_animated, m_target);
     }
 
     void Undo() final
     {
+        //std::wcout << L"SingleNobAnimation.Undo" << std::endl;
         m_upAnimation->Start(m_animated, m_start);
     }
 
     void UpdateUI() final
     {
+        //std::wcout << L"UpdateUI " << m_animated << std::endl;
         m_nob.SetPosDir(m_animated);
         Command::UpdateUI();
     }

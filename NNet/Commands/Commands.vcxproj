@@ -117,6 +117,7 @@
     <ClCompile Include="InsertPosNobCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />
+    <ClCompile Include="LockDirection.ixx" />
     <ClCompile Include="MakeConnAnimation.ixx" />
     <ClCompile Include="MoveNobCommand.ixx" />
     <ClCompile Include="MoveSelectionCommand.ixx" />
@@ -129,7 +130,6 @@
     <ClCompile Include="NNetModelCommands.ixx" />
     <ClCompile Include="PlugIoConnectorAnimation.ixx" />
     <ClCompile Include="PlugIoConnectors.ixx" />
-    <ClCompile Include="PlugIoLineAnimation.ixx" />
     <ClCompile Include="PlugIoLines.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
     <ClCompile Include="RestrictSelectionCommand.ixx" />

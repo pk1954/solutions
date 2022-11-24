@@ -20,11 +20,11 @@ export class PlugIoLines : public NNetCommand
 public:
     PlugIoLines
     (
-        IoLine & connectorAnimated, 
-        IoLine & nobTarget
+        NobId idAnimated,
+        NobId idTarget
     )
-      : m_nobTarget(nobTarget),
-        m_nobAnimated(connectorAnimated)
+      : m_nobAnimated(*m_pNMWI->GetNobPtr<IoLine*>(idAnimated)),
+        m_nobTarget  (*m_pNMWI->GetNobPtr<IoLine*>(idTarget))
     {
         assert(m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob());
         assert(m_nobAnimated.GetIoMode() != NobIoMode::internal);
@@ -41,7 +41,6 @@ public:
         m_pNMWI->Push2Model(move(m_upKnot)); 
         m_upNobAnimated = m_pNMWI->RemoveFromModel<IoLine>(m_nobAnimated);
         m_upNobTarget   = m_pNMWI->RemoveFromModel<IoLine>(m_nobTarget);
-        (m_targetReachedFunc)();
     }
 
     void Undo() final
@@ -52,7 +51,6 @@ public:
         m_upNobAnimated = m_pNMWI->ReplaceInModel<IoLine>(move(m_upNobAnimated));
         m_upNobTarget   = m_pNMWI->ReplaceInModel<IoLine>(move(m_upNobTarget));
         m_pNMWI->DeselectAllNobs();
-        (m_targetReachedFunc)();
     }
 
 private:

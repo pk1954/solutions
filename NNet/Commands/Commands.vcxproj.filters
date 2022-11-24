@@ -54,9 +54,6 @@
     <ClCompile Include="CoordAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeletePosNobCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeleteIoConnectorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,9 +112,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlugIoConnectors.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlugIoLineAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlugIoLines.ixx">
@@ -198,9 +192,6 @@
     <ClCompile Include="ConnAnimationCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeletePosNobCmd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CreateForkCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -223,6 +214,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetModelCommands.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteBaseKnotCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteBaseKnotCmd.ixx" />
+    <ClCompile Include="LockDirection.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,6 +4,7 @@
 
 module;
 
+#include <iostream>
 #include "bit"
 #include "Windows.h"
 
@@ -43,6 +44,7 @@ public:
         {
             int x = 42;
         }
+        std::wcout << L"Start: origin = " << origin << L" target = " << target << std::endl;
         startTimer();
     }
 
@@ -97,16 +99,26 @@ private:
             if (m_bTargetReached)
             {
                 if (m_dwFlags & ANIMATION_RECURRING)
+                {
                     setActual(m_start);
-                else 
+                    m_pCmd->CallUI(true);
+                }
+                else
+                {
+                    m_pCmd->CallUI(true);
                     stopTimer();
+                }
             }
-            m_pCmd->CallUI(m_bTargetReached);
+            else
+            { 
+                m_pCmd->CallUI(false);
+            }
         }
     }
 
     void startTimer()  // runs in UI thread
     {
+        std::wcout << L"startTimer" << std::endl;
         FILETIME fileTime { m_uiMsPeriod, 0 };
         m_pTpTimer = CreateThreadpoolTimer(timerProc, this, nullptr);
         SetThreadpoolTimer(m_pTpTimer, &fileTime, m_uiMsPeriod, 50L);
@@ -114,8 +126,13 @@ private:
 
     void stopTimer()  // runs in animation thread
     { 
+        std::wcout << L"stopTimer" << std::endl;
         if (m_pTpTimer)
+        {
+            SetThreadpoolTimer(m_pTpTimer, NULL, 0, 0);
+            WaitForThreadpoolTimerCallbacks(m_pTpTimer, TRUE);
             CloseThreadpoolTimer(m_pTpTimer);
+        }
         m_pTpTimer = nullptr;
     } 
 
