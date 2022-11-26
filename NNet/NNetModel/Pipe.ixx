@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <utility>
 #include <functional>
 #include <iostream>
@@ -53,10 +54,7 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsPipeType(); }
 
-	void SetPos(MicroMeterPnt const& pos) final 
-	{ 
-		MoveNob(pos - GetPos()); 
-	}
+	void SetPos(MicroMeterPnt const& pos) final { assert(false); }
 
 	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
 	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob

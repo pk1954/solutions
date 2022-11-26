@@ -24,7 +24,7 @@ public:
     void Dump()  const final;
     void Check() const final;
 
-    MicroMeter GetExtension() const { return NEURON_RADIUS; }
+    MicroMeter GetExtension() const final { return NEURON_RADIUS; }
 
     Radian    GetDir()    const final { return Radian::NULL_VAL(); };
     NobIoMode GetIoMode() const final { return NobIoMode::internal; }
@@ -34,36 +34,15 @@ public:
     mV   GetNextOutput() const final;
     void Reconnect()           final;
 
-    MicroMeterPnt GetPos()                                    const final;
-    bool          Includes    (MicroMeterPnt  const&)         const final;
-    void          SetPos      (MicroMeterPnt  const&)               final;
-    void          MoveNob     (MicroMeterPnt  const&)               final;
-    void          RotateNob   (MicroMeterPnt  const&, Radian const) final;
-    void          Link        (Nob const&, Nob2NobFunc const&)      final;
+    MicroMeterPnt GetPos   ()                              const final;
+    bool          Includes (MicroMeterPnt  const&)         const final;
+    void          SetPos   (MicroMeterPnt  const&)               final;
+    void          MoveNob  (MicroMeterPnt  const&)               final;
+    void          RotateNob(MicroMeterPnt  const&, Radian const) final;
+    void          Link     (Nob const&, Nob2NobFunc const&)      final;
 
-    Pipe       & GetAddPipe()             { return *m_pPipeAdd; }
-    Pipe const & GetAddPipe()       const { return *m_pPipeAdd; }
-    Pipe       & GetMainPipe()            { return *m_pPipeMain; }
-    Pipe const & GetMainPipe()      const { return *m_pPipeMain; }
-    float        GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
-
-    void SetMainPipe(Pipe* const);
-    void ResetPos(MicroMeterPnt const&);
-
-    void SetAllIncoming(PosNob & src) final
-    {
-        assert(src.IsSynapse());
-        Synapse * pSynapseSrc { static_cast<Synapse *>(&src) };
-        m_pPipeAdd  = pSynapseSrc->m_pPipeAdd;
-        m_pPipeMain = pSynapseSrc->m_pPipeMain;
-    }
-
-    void SetAllOutgoing(PosNob & src) final
-    {
-        assert(src.IsSynapse());
-        Synapse * pSynapseSrc { static_cast<Synapse *>(&src) };
-        m_pPipeMain = pSynapseSrc->m_pPipeMain;
-    }
+    void SetAllIncoming(PosNob&) final;
+    void SetAllOutgoing(PosNob&) final;
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
@@ -79,6 +58,15 @@ public:
 
     size_t GetNrOfInConns () const final { return 2; }
     size_t GetNrOfOutConns() const final { return 1; }
+
+    Pipe      & GetAddPipe()             { return *m_pPipeAdd; }
+    Pipe const& GetAddPipe()       const { return *m_pPipeAdd; }
+    Pipe      & GetMainPipe()            { return *m_pPipeMain; }
+    Pipe const& GetMainPipe()      const { return *m_pPipeMain; }
+    float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
+
+    void SetMainPipe(Pipe* const);
+    void ResetPos(MicroMeterPnt const&);
 
 private:
 

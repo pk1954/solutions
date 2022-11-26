@@ -84,8 +84,13 @@ public:
 
 	friend float DistSquare(PointType const pntA, PointType const pntB)
 	{
-		PointType delta {pntA - pntB};
+		PointType delta { pntA - pntB };
 		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
+	}
+
+	friend float CrossProduct(PointType const pntA, PointType const pntB)
+	{
+		return pntA.GetXvalue() * pntB.GetYvalue() - pntA.GetYvalue() * pntB.GetXvalue();
 	}
 
 	bool IsCloseToZero() const

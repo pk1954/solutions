@@ -208,21 +208,7 @@ MicroMeterPnt Pipe::GetStartPoint() const
 
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	if (! m_pNobEnd)
-		return MicroMeterPnt::NULL_VAL();
-
-	MicroMeterPnt umEndPoint { m_pNobEnd->GetPos() };
-	//if (m_pNobEnd->IsSynapse())
-	//{
-	//	Pipe const & pipeAdd { static_cast<Synapse const*>(m_pNobEnd)->GetAddPipe() };
-	//	if (&pipeAdd == this)
-	//	{
-	//		MicroMeterPnt const umVector { umEndPoint - GetStartPoint() };
-	//		MicroMeterPnt const umOffset { umVector.ScaledTo(PIPE_WIDTH * 1.5f) };
-	//		umEndPoint -= umOffset;
-	//	}
-	//}
-	return umEndPoint;
+	return m_pNobEnd ? m_pNobEnd->GetPos() : MicroMeterPnt::NULL_VAL();
 }
 
 void Pipe::Select(bool const bOn) 
