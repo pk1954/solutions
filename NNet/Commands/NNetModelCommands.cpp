@@ -63,7 +63,7 @@ import Connect2NeuronCommand;
 import AttachSigGen2LineCmd;
 import SelectSubtreeCommand;
 import SelSigGenClientsCmd;
-import PlugIoConnectorAnimation;
+import PlugIoConnectors;
 import PlugIoLines;
 import ConnAnimationCommand;
 import CommandFunctions;
@@ -254,7 +254,7 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 			upCmd = make_unique<PlugIoLines>(idSrc, idDst);              // case 4/5
 			break;
 		case ct_ioConnector: 
-			upCmd = make_unique<PlugIoConnectorAnimation>(idSrc, idDst); // case 6
+			upCmd = make_unique<PlugIoConnectors>(idSrc, idDst);         // case 6
 			break;  
 		default: assert(false);
 	}

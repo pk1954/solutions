@@ -66,7 +66,7 @@ public:
 	Degrees                 GetDirection         (NobId const) const;
 	SignalGenerator const * GetSigGenC           (NobId const) const;
 	wstring                 GetTypeName(NobId const id)            const { return NobType::GetName(GetNobType(id).GetValue()); };
-	MicroMeterPnt           GetNobPos  (NobId const id)            const { return m_pModel->GetNobConstPtr<Nob const *>(id)->GetPos(); }
+	MicroMeterPnt           GetNobPos  (NobId const id)            const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
 	Nob             const * GetConstNob(NobId const id)            const { return m_pModel->GetConstNob(id); }
 	MonitorData     const & GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	NNetParameters  const & GetParamsC()                           const { return m_pModel->GetParams(); };
@@ -90,7 +90,7 @@ public:
 	Sensor          const * GetSensorSelectedC()                   const { return m_pModel->GetSensorList().GetSensorSelected(); }
 	SensorId                GetSensorIdSelected()                  const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
 	bool                    IsAnySensorSelected()                  const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
-	PosNob          const * GetConstPosNobPtr(NobId const id)      const { return m_pModel->GetNobConstPtr<PosNob const *>(id); }
+	PosNob          const * GetConstPosNobPtr(NobId const id)      const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
 
 	bool IsInputLine(NobId const id) const
 	{

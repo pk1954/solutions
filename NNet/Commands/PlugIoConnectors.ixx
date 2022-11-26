@@ -21,26 +21,24 @@ using std::make_unique;
 export class PlugIoConnectors : public NNetCommand
 {
 public:
-    PlugIoConnectors
-    (
-        IoConnector const& conn1,
-        IoConnector const& conn2
-    )
-      : m_inputConnector (conn1.IsInputNob () ? conn1 : conn2),
-        m_outputConnector(conn1.IsOutputNob() ? conn1 : conn2)
+    PlugIoConnectors(NobId idAnimated, NobId idTarget)
     {
-        assert(m_inputConnector.Size() == m_outputConnector.Size());
+        IoConnector* pNobAnimated { m_pNMWI->GetNobPtr<IoConnector*>(idAnimated) };
+        IoConnector* pNobTarget   { m_pNMWI->GetNobPtr<IoConnector*>(idTarget) };
+        m_pInputConnector  = pNobAnimated->IsInputNob () ? pNobAnimated : pNobTarget;
+        m_pOutputConnector = pNobAnimated->IsOutputNob() ? pNobAnimated : pNobTarget;
+        assert(m_pInputConnector->Size() == m_pOutputConnector->Size());
 
-        m_size = m_inputConnector.Size();
+        m_size = m_pInputConnector->Size();
         for (size_t i = 0; i < m_size; ++i)
         {
-            unique_ptr<Neuron> upNeuron{ make_unique<Neuron>(m_inputConnector.GetElem(i).GetPos()) };
-            upNeuron->SetAllIncoming(m_outputConnector.GetElem(i));
-            upNeuron->SetAllOutgoing(m_inputConnector.GetElem(i));
-            m_upNeurons.push_back(move(upNeuron));
+            unique_ptr<Knot> upKnot{ make_unique<Knot>(m_pInputConnector->GetElem(i).GetPos()) };
+            upKnot->AddIncoming(*m_pOutputConnector->GetElem(i).GetPipe());
+            upKnot->AddOutgoing(*m_pInputConnector ->GetElem(i).GetPipe());
+            m_upKnots.push_back(move(upKnot));
         }
         m_upOutputLines.resize(m_size);
-        m_upInputLines.resize(m_size);
+        m_upInputLines .resize(m_size);
         m_pNMWI->CheckModel();
     }
 
@@ -48,45 +46,44 @@ public:
     {
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_pNMWI->Push2Model(move(m_upNeurons.back()));
-            m_upNeurons.pop_back();
+            m_pNMWI->Push2Model(move(m_upKnots.back()));
+            m_upKnots.pop_back();
         }
 
-        m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_outputConnector);
-        m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_inputConnector);
+        m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*m_pOutputConnector);
+        m_upInputConnector  = m_pNMWI->RemoveFromModel<IoConnector>(*m_pInputConnector);
         for (size_t i = 0; i < m_size; ++i)
         {
-            m_upOutputLines[i] = m_pNMWI->RemoveFromModel<IoLine>(m_outputConnector.GetElem(i));
-            m_upInputLines[i] = m_pNMWI->RemoveFromModel<IoLine>(m_inputConnector.GetElem(i));
+            m_upOutputLines[i] = m_pNMWI->RemoveFromModel<IoLine>(m_pOutputConnector->GetElem(i));
+            m_upInputLines [i] = m_pNMWI->RemoveFromModel<IoLine>(m_pInputConnector ->GetElem(i));
         }
-        (m_targetReachedFunc)();
     }
 
     void Undo() final
     {
         for (size_t i = 0; i < m_size; ++i)
-            m_upNeurons.push_back(m_pNMWI->PopFromModel<Neuron>());
+            m_upKnots.push_back(m_pNMWI->PopFromModel<Knot>());
 
         m_upOutputConnector = m_pNMWI->ReplaceInModel<IoConnector>(move(m_upOutputConnector));
-        m_upInputConnector = m_pNMWI->ReplaceInModel<IoConnector>(move(m_upInputConnector));
+        m_upInputConnector  = m_pNMWI->ReplaceInModel<IoConnector>(move(m_upInputConnector));
         for (size_t i = 0; i < m_size; ++i)
         {
             m_upOutputLines[i] = m_pNMWI->ReplaceInModel<IoLine>(move(m_upOutputLines[i]));
-            m_upInputLines[i] = m_pNMWI->ReplaceInModel<IoLine>(move(m_upInputLines[i]));
+            m_upInputLines [i] = m_pNMWI->ReplaceInModel<IoLine>(move(m_upInputLines [i]));
         }
-        (m_targetReachedFunc)();
     }
 
 private:
 
-    size_t                     m_size;
+    size_t m_size;
 
-    IoConnector        const& m_inputConnector;
-    IoConnector        const& m_outputConnector;
+    IoConnector * m_pInputConnector;
+    IoConnector * m_pOutputConnector;
 
-    vector<unique_ptr<Neuron>> m_upNeurons;
+    vector<unique_ptr<Knot>> m_upKnots;
 
     // take ownership of IoConnectors and IoLines between Do and Undo
+
     unique_ptr<IoConnector>    m_upInputConnector;
     unique_ptr<IoConnector>    m_upOutputConnector;
     vector<unique_ptr<IoLine>> m_upInputLines;

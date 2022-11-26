@@ -152,6 +152,3 @@ public:
 
     void SetPosDir(NobId const, MicroMeterPosDir const&);
 };
-
-//export void ConnectIncoming(Pipe &, PosNob &);
-//export void ConnectOutgoing(Pipe &, PosNob &);

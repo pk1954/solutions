@@ -54,6 +54,9 @@ public:
 	void AddOutgoing(Pipe& pipe) final { m_pPipeOut = &pipe; }
 	void AddIncoming(Pipe& pipe) final { m_pPipeIn  = &pipe; }
 
+	virtual void RemoveIncoming(Pipe&) { assert(false); }
+	virtual void RemoveOutgoing(Pipe&) { assert(false); }
+
 	void SetAllIncoming(PosNob&) final;
 	void SetAllOutgoing(PosNob&) final;
 
