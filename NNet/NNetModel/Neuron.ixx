@@ -72,10 +72,8 @@ public:
 
 	void AddOutgoing(Pipe& pipe) final { SetAxon(&pipe); }
 	void AddIncoming(Pipe& pipe) final { m_inPipes.Add(pipe); }
-	void AddIncoming(Neuron const& neuron)
-	{
-		neuron.m_inPipes.Apply2All([this](Pipe& pipe) { AddIncoming(pipe); });
-	}
+
+	void AddIncoming(Neuron const&);
 
 	void RemoveIncoming(Pipe& pipe) final { m_inPipes.Remove(pipe); }
 

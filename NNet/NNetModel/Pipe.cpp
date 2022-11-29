@@ -100,8 +100,7 @@ void Pipe::recalc()
 {
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
-	MicroMeter   const pipeLength    { Distance(m_pNobStart->GetPos(), m_pNobEnd->GetPos()) };
-	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(pipeLength / segmentLength))) };
+	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(GetLength() / segmentLength))) };
 	m_potential.resize(iNrOfSegments, 0.0_mV);
 	m_potIndex = 0;
 }
@@ -209,6 +208,16 @@ MicroMeterPnt Pipe::GetStartPoint() const
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
 	return m_pNobEnd ? m_pNobEnd->GetPos() : MicroMeterPnt::NULL_VAL();
+}
+
+MicroMeter Pipe::DistPntToPipe(MicroMeterPnt const& umPoint) const
+{
+	return PointToLine
+	(
+		m_pNobStart->GetPos(),
+		m_pNobEnd->GetPos(),
+		umPoint
+	);
 }
 
 void Pipe::Select(bool const bOn) 

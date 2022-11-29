@@ -84,6 +84,7 @@ public:
 	MicroMeterPnt GetVector     () const;
 	MicroMeterPnt GetVector     (float const) const;
 	MicroMeter    GetSegLength  () const { return GetLength() / Cast2Float(GetNrOfSegments()); };
+	MicroMeter    DistPntToPipe(MicroMeterPnt const&) const;
 
 	void          RotateNob(MicroMeterPnt const&, Radian const) final { /* Pipe dir defined by endpoints */ }
 	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };

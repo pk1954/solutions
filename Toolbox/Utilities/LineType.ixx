@@ -12,8 +12,18 @@ module;
 export module Types:LineType;
 
 import :PointType;
+import Geometry;
 
 using std::swap;
+
+export template <typename BASE_TYPE>
+BASE_TYPE PointToLine(PosType<BASE_TYPE> const& l1, PosType<BASE_TYPE> const& l2, PosType<BASE_TYPE> const& p0)
+{
+    PosType<BASE_TYPE> const p01 { p0 - l1 };
+    PosType<BASE_TYPE> const p12 { l1 - l2 };
+    BASE_TYPE          const res { (p01.GetX() * p12.GetYvalue() - p01.GetY() * p12.GetXvalue()) / Distance(l1, l2).GetValue() };
+    return res;
+}
 
 export template <typename BASE_TYPE> 
 class LineType
@@ -83,15 +93,12 @@ public:
         return LineType(m_p1, m_p1 + OrthoVector());
     }
 
-    friend BASE_TYPE PointToLine(LineType const & l, POS_TYPE const & p0)
+    friend BASE_TYPE PointToLine(LineType const& l, POS_TYPE const& p0)
     {
-        POS_TYPE  const p01 { p0     - l.m_p1 };
-        POS_TYPE  const p12 { l.m_p1 - l.m_p2 };
-        BASE_TYPE const res { (p01.GetX() * p12.GetYvalue() - p01.GetY() * p12.GetXvalue()) / l.Length().GetValue() };
-        return res;
+        return PointToLine(l.m_p1, l.m_p2, p0);
     }
 
-    static LineType const & NULL_VAL() 
+   static LineType const & NULL_VAL()
     { 
         static const POS_TYPE posNull { POS_TYPE(BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL()) }; 
         static const LineType res     { LineType(posNull, posNull) }; 

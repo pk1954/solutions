@@ -110,6 +110,11 @@ MicroMeterPnt Neuron::getAxonHillockPos() const
 //	return GetPos() + Normalize(m_pPipeAxon->GetVector()) * (NEURON_INTERIOR * NEURON_RADIUS);  //TODO: try this
 }
 
+void Neuron::AddIncoming(Neuron const& neuron)
+{
+	neuron.m_inPipes.Apply2All([this](Pipe& pipe) { AddIncoming(pipe); });
+}
+
 void Neuron::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 {
 	m_inPipes.Replace(pDel, pAdd);

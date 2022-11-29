@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <cmath>
 
 export module NNetModel:Synapse;
 
@@ -66,16 +67,28 @@ public:
     float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
 
     void SetMainPipe(Pipe* const);
-    void ResetPos(MicroMeterPnt const&);
 
 private:
 
+    inline static MicroMeter const PIPE_HALF { PIPE_WIDTH * 0.5f };
+    inline static MicroMeter const RADIUS    { PIPE_HALF };
+    inline static MicroMeter const EXTENSION { PIPE_WIDTH * 1.0f };
+    inline static float      const SQRT3DIV3 { sqrtf(3.0f) / 3.0f };
+
+    void calcPos() const;
+    void resetPos(MicroMeterPnt const&);
+    void drawSynapse(DrawContext const&, MicroMeter const, MicroMeter const, D2D1::ColorF const) const;
+
     enum class tState { normal, addLineBlocked, stdInputBlocked };
 
-    tState     m_state      { tState::normal };
-    fMicroSecs m_usBlocked  { 0.0_MicroSecs };
-    mV         m_mVaddInput { 0._mV };
-    Pipe *     m_pPipeMain;
-    Pipe *     m_pPipeAdd;
-    float      m_fPosOnMainPipe;
+    mutable float         m_fDirection      { 1.0f };
+    mutable MicroMeterPnt m_umPntPipeAnchor { NP_NULL };
+    mutable MicroMeterPnt m_umPntCenter     { NP_NULL };
+
+    tState        m_state          { tState::normal };
+    fMicroSecs    m_usBlocked      { 0.0_MicroSecs };
+    mV            m_mVaddInput     { 0._mV };
+    Pipe *        m_pPipeMain;
+    Pipe *        m_pPipeAdd;
+    float         m_fPosOnMainPipe;
 };
