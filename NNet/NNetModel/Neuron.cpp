@@ -115,6 +115,11 @@ void Neuron::AddIncoming(Neuron const& neuron)
 	neuron.m_inPipes.Apply2All([this](Pipe& pipe) { AddIncoming(pipe); });
 }
 
+void Neuron::RemoveIncoming(Pipe* const pDel)
+{
+	m_inPipes.Remove(*pDel);
+}
+
 void Neuron::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 {
 	m_inPipes.Replace(pDel, pAdd);

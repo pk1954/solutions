@@ -142,6 +142,4 @@ private:
 	MonitorData      m_monitorData;
 	NNetParameters   m_param;
 	wstring          m_wstrModelFilePath { L"" };
-	//NobId            m_nobHighlighted    { NO_NOB };
-	//NobId            m_nobTarget         { NO_NOB };
 };

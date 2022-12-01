@@ -14,10 +14,24 @@ import DrawContext;
 import :tHighlight;
 import :IoLine;
 import :PosNob;
+import :Pipe;
 
-OutputLine::OutputLine(MicroMeterPnt const & upCenter)
-	: IoLine(upCenter, NobType::Value::outputLine)
+OutputLine::OutputLine(MicroMeterPnt const& umPntCenter)
+	: IoLine(umPntCenter, NobType::Value::outputLine)
 {}
+
+OutputLine::OutputLine(PosNob const& posNob)
+	: IoLine(posNob.GetPos(), NobType::Value::outputLine)
+{
+	SetId(posNob.GetId());
+}
+
+OutputLine::OutputLine(Pipe & pipe)
+	: IoLine(pipe.GetEndPoint(), NobType::Value::outputLine)
+{
+	SetId(pipe.GetEndNobPtr()->GetId());
+	SetPipe(&pipe);
+}
 
 void OutputLine::Check() const
 {

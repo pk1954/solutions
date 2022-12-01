@@ -29,6 +29,10 @@ public:
     Radian        GetDir()       const final { return Radian::NULL_VAL(); }
     NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
 
+    Pipe* GetFirstOutgoing () { return m_pPipeOut1; }
+    Pipe* GetSecondOutgoing() { return m_pPipeOut2; }
+    Pipe* GetIncoming()       { return m_pPipeIn; }
+
     void SetPos   (MicroMeterPnt  const&)               final;
     void MoveNob  (MicroMeterPnt  const&)               final;
     void RotateNob(MicroMeterPnt  const&, Radian const) final;

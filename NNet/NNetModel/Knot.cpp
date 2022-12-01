@@ -17,6 +17,18 @@ import :PosNob;
 import :PipeList;
 import :Pipe;
 
+Knot::Knot(MicroMeterPnt const& center)
+  : PosNob(NobType::Value::knot),
+	m_circle(center, KNOT_WIDTH)
+{}
+
+Knot::Knot(PosNob const& posNob)
+  : PosNob(NobType::Value::knot),
+	m_circle(posNob.GetPos(), KNOT_WIDTH)
+{
+	SetId(posNob.GetId());
+}
+
 void Knot::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
 	FillExternalCircle(context, type);

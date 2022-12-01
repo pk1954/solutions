@@ -44,10 +44,8 @@ void NNetModelWriterInterface::SelectSubtree(PosNob & posNob, bool  const b)
 	m_pModel->SelectSubtree(posNob, b); 
 }
 
-void NNetModelWriterInterface::AddOutgoing   (NobId const id, Pipe& pipe) { GetPosNob(id).AddOutgoing(pipe); }
-void NNetModelWriterInterface::AddIncoming   (NobId const id, Pipe& pipe) { GetPosNob(id).AddIncoming(pipe); }
-void NNetModelWriterInterface::RemoveIncoming(NobId const id, Pipe& pipe) { GetPosNob(id).RemoveIncoming(pipe); }
-void NNetModelWriterInterface::RemoveOutgoing(NobId const id, Pipe& pipe) { GetPosNob(id).RemoveOutgoing(pipe); }
+void NNetModelWriterInterface::AddOutgoing(NobId const id, Pipe& pipe) { GetPosNob(id).AddOutgoing(pipe); }
+void NNetModelWriterInterface::AddIncoming(NobId const id, Pipe& pipe) { GetPosNob(id).AddIncoming(pipe); }
 
 void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
 { 
@@ -64,15 +62,3 @@ void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const 
 {
 	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
 }
-
-//void ConnectIncoming(Pipe & pipe, PosNob & posNob)
-//{
-//	posNob.AddIncoming(pipe);
-//	pipe.SetEndPnt (&posNob);
-//}
-//
-//void ConnectOutgoing(Pipe & pipe, PosNob & posNob)
-//{
-//	posNob.AddOutgoing(pipe);
-//	pipe.SetStartPnt(&posNob);
-//}

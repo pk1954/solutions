@@ -58,7 +58,6 @@ public:
     void Connect(NobId const, NobId const);
     void CopySelection();
     void CreateInitialNobs();
-    void DeletePosNob(NobId const);
     void DeleteNob(NobId const);
     void DeleteSelection();
     void DeleteSignal(SignalId const&);

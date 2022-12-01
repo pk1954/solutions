@@ -37,6 +37,12 @@ InputLine::InputLine(MicroMeterPnt const& upCenter)
 	m_pSigGen(StdSigGen::Get())
 { }
 
+InputLine::InputLine(PosNob const& posNob)
+	: IoLine(posNob.GetPos(), NobType::Value::inputLine)
+{
+	SetId(posNob.GetId());
+}
+
 void InputLine::Check() const
 {
 	IoLine::Check();

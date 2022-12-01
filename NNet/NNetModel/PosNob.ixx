@@ -64,9 +64,6 @@ public:
 	virtual void AddIncoming(Pipe&) { assert(false); }
 	virtual void AddOutgoing(Pipe&) { assert(false); }
 
-	virtual void RemoveIncoming(Pipe&) { assert(false); }
-	virtual void RemoveOutgoing(Pipe&) { assert(false); }
-
 	virtual void SetAllIncoming(PosNob &) = 0;
 	virtual void SetAllOutgoing(PosNob &) = 0;
 

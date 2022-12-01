@@ -81,8 +81,6 @@ public:
 
     void AddOutgoing   (NobId const, Pipe &);
     void AddIncoming   (NobId const, Pipe &);
-    void RemoveIncoming(NobId const, Pipe &);
-    void RemoveOutgoing(NobId const, Pipe &);
 
     PosNob & GetPosNob(NobId const);
 

@@ -24,7 +24,9 @@ export class InputLine : public IoLine
 {
 public:
 
-	InputLine(MicroMeterPnt const &);
+	explicit InputLine(MicroMeterPnt const &);
+	explicit InputLine(PosNob const&);
+
 	~InputLine() final = default;
 
 	void Check() const final;

@@ -213,9 +213,11 @@
     <ClCompile Include="NNetModelCommands.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteBaseKnotCmd.cpp">
+    <ClCompile Include="DeleteNeuronInputCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteBaseKnotCmd.ixx" />
+    <ClCompile Include="DeleteForkOutputCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -23,10 +23,8 @@ using std::make_unique;
 export class Knot : public PosNob
 {
 public:
-	Knot(MicroMeterPnt const center, NobType const type = NobType::Value::knot)
-	  : PosNob(NobType::Value::knot),
-		m_circle(center, KNOT_WIDTH)
-	{}
+	explicit Knot(MicroMeterPnt const&);
+	explicit Knot(PosNob const&);
 
 	~Knot() = default;
 
@@ -45,6 +43,9 @@ public:
 	mV               GetNextOutput() const final { return m_mVinputBuffer; }
 	NobIoMode        GetIoMode()     const final { return NobIoMode::internal; }
 
+	Pipe * GetIncoming() { return m_pPipeIn; }
+	Pipe * GetOutgoing() { return m_pPipeOut; }
+
 	void SetPos(MicroMeterPnt const& pos) final { m_circle.SetPos(pos); }
 
 	void MoveNob  (MicroMeterPnt  const&)               final;
@@ -53,9 +54,6 @@ public:
 
 	void AddOutgoing(Pipe& pipe) final { m_pPipeOut = &pipe; }
 	void AddIncoming(Pipe& pipe) final { m_pPipeIn  = &pipe; }
-
-	virtual void RemoveIncoming(Pipe&) { assert(false); }
-	virtual void RemoveOutgoing(Pipe&) { assert(false); }
 
 	void SetAllIncoming(PosNob&) final;
 	void SetAllOutgoing(PosNob&) final;

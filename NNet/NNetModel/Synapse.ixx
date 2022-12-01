@@ -45,6 +45,9 @@ public:
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;
 
+    void RemoveFromMainPipe() { m_pPipeMain->RemoveSynapse(this); }
+    void Add2MainPipe()       { m_pPipeMain->AddSynapse(this); }
+
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
@@ -72,8 +75,9 @@ private:
 
     inline static MicroMeter const PIPE_HALF { PIPE_WIDTH * 0.5f };
     inline static MicroMeter const RADIUS    { PIPE_HALF };
-    inline static MicroMeter const EXTENSION { PIPE_WIDTH * 1.0f };
-    inline static float      const SQRT3DIV3 { sqrtf(3.0f) / 3.0f };
+    inline static MicroMeter const EXTENSION { PIPE_WIDTH * 0.7f };
+    inline static float      const SQRT3     { sqrtf(3.0f) };
+    inline static float      const SQRT3DIV3 { SQRT3 / 3.0f };
 
     void calcPos() const;
     void resetPos(MicroMeterPnt const&);

@@ -188,15 +188,6 @@ public:
     }
 };
 
-class WrapDeletePosNob: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->DeletePosNob(ScrReadNobId(script));
-    }
-};
-
 class WrapDiscIoConnector: public ScriptFunctor
 {
 public:
@@ -365,7 +356,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
-    SymbolTable::ScrDefConst(L"DeletePosNob",        new WrapDeletePosNob);
     SymbolTable::ScrDefConst(L"DiscIoConnector",     new WrapDiscIoConnector ); 
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
     SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 

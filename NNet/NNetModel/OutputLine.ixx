@@ -12,6 +12,7 @@ import Types;
 import DrawContext;
 import :tHighlight;
 import :IoLine;
+import :PosNob;
 import :Nob;
 
 export class OutputLine : public IoLine
@@ -19,6 +20,8 @@ export class OutputLine : public IoLine
 public:
 
 	explicit OutputLine(MicroMeterPnt const&);
+	explicit OutputLine(PosNob const&);
+	explicit OutputLine(Pipe &);
 
 	~OutputLine() final = default;
 

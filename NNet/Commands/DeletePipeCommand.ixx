@@ -6,6 +6,7 @@ module;
 
 #include <cassert>
 #include <memory>
+#include <vector>
 
 export module DeletePipeCommand;
 
@@ -13,124 +14,206 @@ import Types;
 import SaveCast;
 import NNetCommand;
 import NNetModel;
+import DeleteNeuronInputCmd;
+import DeleteForkOutputCmd;
 
 using std::unique_ptr;
 using std::make_unique;
+using std::vector;
 
-export class DeletePipeCommand : public NNetCommand
+template <Nob_t T>
+class RemoveNobCmd : public NNetCommand
 {
 public:
 
+	explicit RemoveNobCmd(NobId const id)
+		: m_id(id)
+	{}
+
+	void Do()   final { m_upNob = m_pNMWI->RemoveFromModel<T>(m_id); }
+	void Undo() final {	m_pNMWI->Restore2Model(move(m_upNob)); }
+
+private:
+	NobId         m_id;
+	unique_ptr<T> m_upNob;
+};
+
+template <Nob_t OLD, Nob_t NEW>
+class ReplaceNobCmd : public NNetCommand
+{
+public:
+
+	explicit ReplaceNobCmd(NobId const id)
+	{
+		m_upNew = make_unique<NEW>(*m_pNMWI->GetNobPtr<OLD *>(id));
+	}
+
+	void Do()   final { m_upOld = m_pNMWI->ReplaceInModel<OLD>(move(m_upNew)); }
+	void Undo() final {	m_upNew = m_pNMWI->ReplaceInModel<NEW>(move(m_upOld)); }
+
+private:
+	unique_ptr<OLD> m_upOld;
+	unique_ptr<NEW> m_upNew;
+};
+
+class SynapseEndCmd : public NNetCommand
+{
+public:
+
+	explicit SynapseEndCmd(NobId const id)
+		: m_id(id)
+	{}
+
+	void Do() final
+	{
+		m_upSynapse = m_pNMWI->RemoveFromModel<Synapse>(m_id);
+		m_upSynapse->RemoveFromMainPipe();
+	}
+
+	void Undo() final
+	{
+		m_upSynapse->Add2MainPipe();
+		m_pNMWI->Restore2Model(move(m_upSynapse));
+	}
+
+private:
+	NobId               m_id;
+	unique_ptr<Synapse> m_upSynapse;
+};
+
+class NeuronEndMultipleCmd : public NNetCommand
+{
+public:
+
+    NeuronEndMultipleCmd(Pipe& pipe, NobId const id)
+	  : m_pipe(pipe)
+	{
+		m_pNeuron = m_pNMWI->GetNobPtr<Neuron*>(id);
+	}
+
+	void Do()   final { m_pNeuron->RemoveIncoming(&m_pipe); }
+	void Undo() final {	m_pNeuron->AddIncoming   (m_pipe);	}
+
+private:
+	Pipe   & m_pipe;
+	Neuron * m_pNeuron;
+};
+
+class NeuronEndSingleCmd : public NNetCommand
+{
+public:
+
+	explicit NeuronEndSingleCmd(Pipe& pipe,	NobId const id)
+	{
+		m_upOutputLine = make_unique<OutputLine>(pipe);
+	}
+
+	void Do()   final { m_upNeuron     = m_pNMWI->ReplaceInModel<Neuron>    (move(m_upOutputLine)); }
+	void Undo() final {	m_upOutputLine = m_pNMWI->ReplaceInModel<OutputLine>(move(m_upNeuron)); }
+
+private:
+	unique_ptr<Neuron>     m_upNeuron;
+	unique_ptr<OutputLine> m_upOutputLine;
+};
+
+export class DeletePipeCommand : public NNetCommand
+{
+	using enum NobType::Value;
+public:
 	explicit DeletePipeCommand(Nob & nob)
 	:	m_pipe   (*Cast2Pipe(&nob)),
 		m_idStart(m_pipe.GetStartNobPtr()->GetId()),
 		m_idEnd  (m_pipe.GetEndNobPtr  ()->GetId())
-	{}
+	{
+		switch (m_pNMWI->GetNobType(m_idStart).GetValue())
+		{
+			case inputLine: m_upCmdStart = make_unique<RemoveNobCmd<InputLine>>        (m_idStart);	break;
+			case knot:      m_upCmdStart = make_unique<ReplaceNobCmd<Knot, OutputLine>>(m_idStart);	break;
+			case fork:      m_upCmdStart = make_unique<ReplaceNobCmd<Fork, Knot>>      (m_idStart);	break;
+			case neuron:    m_upCmdStart = make_unique<DeleteNeuronInputCmd>           (m_idStart);	break;
+			default:		assert(false);
+		}
+
+		switch (m_pNMWI->GetNobType(m_idEnd).GetValue())
+		{
+			case outputLine: m_upCmdEnd = make_unique<RemoveNobCmd<OutputLine>>      (m_idEnd);	break;
+			case knot:       m_upCmdEnd = make_unique<ReplaceNobCmd<Knot, InputLine>>(m_idEnd); break;
+			case fork:       m_upCmdEnd = make_unique<DeleteForkOutputCmd>           (m_idEnd); break;
+			case synapse:    m_upCmdEnd = make_unique<SynapseEndCmd>                 (m_idEnd); break;
+			case neuron:     if (m_pNMWI->GetNobPtr<Neuron*>(m_idEnd)->GetNrOfInConns() == 1)
+				                 m_upCmdEnd = make_unique<NeuronEndSingleCmd>(m_pipe, m_idEnd);
+					         else
+				                 m_upCmdEnd = make_unique<NeuronEndMultipleCmd>(m_pipe, m_idEnd);
+							 break;
+			default:         assert(false);
+		}
+	}
 
 	~DeletePipeCommand() final = default;
 
 	void Do() final
 	{
-		m_pNMWI->RemoveOutgoing(m_idStart, m_pipe);
-		m_pNMWI->RemoveIncoming(m_idEnd,   m_pipe);
+		m_upCmdStart->Do();
+		m_upCmdEnd  ->Do();
 
 		m_upPipe = m_pNMWI->RemoveFromModel<Pipe>(m_pipe);
 
-		if (Nob const * pParent { m_pipe.GetStartNobPtr()->GetParentNob() })
-		{
-			m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
-			m_upInputConnector->ClearParentPointers();
-		}
-		if (Nob const * pParent { m_pipe.GetEndNobPtr()->GetParentNob() })
-		{
-			m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
-			m_upOutputConnector->ClearParentPointers();
-		}
-
-		m_upStartNob = fixPosNob(m_idStart);
-		m_upEndNob   = fixPosNob(m_idEnd);
+		//if (Nob const * pParent { m_pipe.GetStartNobPtr()->GetParentNob() })
+		//{
+		//	m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
+		//	m_upInputConnector->ClearParentPointers();
+		//}
+		//if (Nob const * pParent { m_pipe.GetEndNobPtr()->GetParentNob() })
+		//{
+		//	m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
+		//	m_upOutputConnector->ClearParentPointers();
+		//}
 	}
 
 	void Undo() final
 	{
-		m_pNMWI->Restore2Model(move(m_upStartNob)); // Restore start/end knot, 
-		m_pNMWI->Restore2Model(move(m_upEndNob));   // if fixPosNob had removed
+		m_upCmdStart->Undo();
+		m_upCmdEnd  ->Undo();
 
-		if (m_upOutputConnector) // restore IoConnector, if neccessary
-		{
-			m_upOutputConnector->SetParentPointers();
-			m_pNMWI->Restore2Model(move(m_upOutputConnector));
-		}
-		if (m_upInputConnector) // restore IoConnector, if neccessary
-		{
-			m_upInputConnector->SetParentPointers();
-			m_pNMWI->Restore2Model(move(m_upInputConnector));
-		}
+		//m_upPipe = m_pNMWI->RemoveFromModel<Pipe>(m_pipe);
+
+		//if (Nob const* pParent { m_upPipe->GetStartNobPtr()->GetParentNob() })
+		//{
+		//	m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
+		//	m_upInputConnector->ClearParentPointers();
+		//}
+		//if (Nob const* pParent { m_upPipe->GetEndNobPtr()->GetParentNob() })
+		//{
+		//	m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
+		//	m_upOutputConnector->ClearParentPointers();
+		//}
+		//if (m_upOutputConnector) // restore IoConnector, if neccessary
+		//{
+		//	m_upOutputConnector->SetParentPointers();
+		//	m_pNMWI->Restore2Model(move(m_upOutputConnector));
+		//}
+		//if (m_upInputConnector) // restore IoConnector, if neccessary
+		//{
+		//	m_upInputConnector->SetParentPointers();
+		//	m_pNMWI->Restore2Model(move(m_upInputConnector));
+		//}
 
 		m_pNMWI->Restore2Model(move(m_upPipe));  // Restore pipe
 
-		m_pNMWI->AddOutgoing(m_idStart, m_pipe);
-		m_pNMWI->AddIncoming(m_idEnd,   m_pipe);
-
-		m_pNMWI->Reconnect(m_idStart);
-		m_pNMWI->Reconnect(m_idEnd);
-
-		//m_pNMWI->fixPosNob(m_idStart);
-		//m_pNMWI->fixPosNob(m_idEnd);
+		//m_pNMWI->Reconnect(m_idStart);  //TODO: Still needed?
+		//m_pNMWI->Reconnect(m_idEnd);    //TODO: Still needed?
 	}
 
 private:
 	Pipe                  & m_pipe;    // reference to original pipe to be removed from model
 	unique_ptr<Pipe>        m_upPipe;  // take ownership of pipe between Do and Undo
+
 	NobId                   m_idStart;
 	NobId                   m_idEnd;
-	unique_ptr<PosNob>      m_upStartNob;
-	unique_ptr<PosNob>      m_upEndNob;
+
 	unique_ptr<IoConnector> m_upInputConnector;
 	unique_ptr<IoConnector> m_upOutputConnector;
 
-	// fixPosNob: After a pipe deletion a PosNob may have changed type
-	//            e.g. If a Knot has lost its output pipe, it becomes an OutputLine
-
-	unique_ptr<PosNob> fixPosNob(NobId const id)
-	{
-		using enum NobType::Value;
-
-		PosNob * pPosNob { & m_pNMWI->GetPosNob(id) };
-
-		if (pPosNob == nullptr)
-			return unique_ptr<PosNob>();
-
-		size_t const nrInPipes  { pPosNob->GetNrOfInConns() };
-		size_t const nrOutPipes { pPosNob->GetNrOfOutConns() };
-		NobType      typeNew    { undefined };
-
-		if (pPosNob->IsNeuron())
-		{
-			assert(nrOutPipes == 1);
-			if (nrInPipes == 0)	
-				typeNew = inputLine;
-		}
-		else
-		{
-	             if ((nrOutPipes == 1) && (nrInPipes == 1))	typeNew = knot;
-			else if ((nrOutPipes == 0) && (nrInPipes == 1))	typeNew = outputLine;
-			else if ((nrOutPipes == 1) && (nrInPipes == 0))	typeNew = inputLine;
-		}
-
-		if (typeNew != pPosNob->GetNobType())
-		{
-			unique_ptr<PosNob> upPosNobNew { PosNobFactory::Make(pPosNob->GetPos(), typeNew) };
-			if (upPosNobNew)
-			{
-				upPosNobNew->SetAllIncoming(*pPosNob);
-				upPosNobNew->SetAllOutgoing(*pPosNob);
-				return m_pNMWI->ReplaceInModel<PosNob>(move(upPosNobNew));
-			}
-			else 
-				return m_pNMWI->RemoveFromModel<PosNob>(id);
-		}
-
-		return unique_ptr<PosNob>();
-	}
+	unique_ptr<NNetCommand> m_upCmdStart;
+	unique_ptr<NNetCommand> m_upCmdEnd;
 };

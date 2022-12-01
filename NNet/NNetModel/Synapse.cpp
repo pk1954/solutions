@@ -161,10 +161,10 @@ bool Synapse::Apply2AllOutPipesB(PipeCrit const& c) const
 
 void Synapse::calcPos() const
 {
-	static MicroMeter GAP         { PIPE_WIDTH * 0.2f };
-	static MicroMeter CENTER_DIST { EXTENSION * sqrtf(3.0f) / 3.0f };
-	static MicroMeter TOP_DIST    { EXTENSION * sqrtf(3.0f) };
-	static MicroMeter OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
+	static const MicroMeter GAP         { PIPE_WIDTH * 0.1f };
+	static const MicroMeter CENTER_DIST { EXTENSION * SQRT3DIV3 };
+	static const MicroMeter TOP_DIST    { EXTENSION * SQRT3 };
+	static const MicroMeter OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
 //	static MicroMeter OFF_DIST { RADIUS - PIPE_HALF }; // distance from mainpos to base line
 
 	MicroMeterPnt const umPntVector  { m_pPipeMain->GetVector() };
@@ -198,7 +198,6 @@ void Synapse::drawSynapse
 	context.FillCircle(MicroMeterCircle(umPntTop,   umRadius), col);
 	context.FillCircle(MicroMeterCircle(umPntBase1, umRadius), col);
 	context.FillCircle(MicroMeterCircle(umPntBase2, umRadius), col);
-	context.FillCircle(MicroMeterCircle(m_umPntCenter, EXTENSION * 0.5f), col);
 	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase1), umRadius * 2.0f, col);
 	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase2), umRadius * 2.0f, col);
 	context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, col);

@@ -67,6 +67,8 @@ public:
 	void Apply2AllOutPipes (PipeFunc const& f) const final { f(*m_pPipeAxon); }
 	bool Apply2AllOutPipesB(PipeCrit const& c) const final { return c(*m_pPipeAxon); }
 
+	void RemoveIncoming(Pipe* const);
+
 	void ReplaceIncoming(Pipe* const, Pipe* const) final;
 	void ReplaceOutgoing(Pipe* const, Pipe* const) final;
 
@@ -74,8 +76,6 @@ public:
 	void AddIncoming(Pipe& pipe) final { m_inPipes.Add(pipe); }
 
 	void AddIncoming(Neuron const&);
-
-	void RemoveIncoming(Pipe& pipe) final { m_inPipes.Remove(pipe); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;
