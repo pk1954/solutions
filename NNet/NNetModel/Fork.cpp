@@ -27,6 +27,17 @@ void Fork::Check() const
 	assert(m_pPipeOut2->GetStartKnotId() == GetId());
 }
 
+Pipe* Fork::GetOtherOutgoing(Pipe* pPipe)
+{
+	if (pPipe == m_pPipeOut1)
+		return m_pPipeOut2;
+	else if (pPipe == m_pPipeOut2)
+		return m_pPipeOut1;
+	else
+		assert(false);
+	return nullptr;
+}
+
 void Fork::MoveNob(MicroMeterPnt const& delta)
 {
 	SetPos(GetPos() + delta);
@@ -119,16 +130,16 @@ void Fork::Reconnect()
 	m_pPipeOut2->SetStartPnt(this);
 };
 
-void Fork::AddIncoming(Pipe& pipe)
+void Fork::AddIncoming(Pipe * pPipe)
 {
-	m_pPipeIn = &pipe;
+	m_pPipeIn = pPipe;
 }
 
-void Fork::AddOutgoing(Pipe& pipe)
+void Fork::AddOutgoing(Pipe * pPipe)
 {
 	assert(m_pPipeOut2 == nullptr);
 	if (m_pPipeOut1)
-		m_pPipeOut2 = &pipe;
+		m_pPipeOut2 = pPipe;
 	else
-		m_pPipeOut1 = &pipe;
+		m_pPipeOut1 = pPipe;
 }

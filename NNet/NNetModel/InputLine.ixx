@@ -25,7 +25,7 @@ export class InputLine : public IoLine
 public:
 
 	explicit InputLine(MicroMeterPnt const &);
-	explicit InputLine(PosNob const&);
+	explicit InputLine(PosNob&);
 
 	~InputLine() final = default;
 
@@ -50,7 +50,7 @@ public:
 	void SetAllOutgoing(PosNob&) final;
 	void SetAllOutgoing(Neuron&);
 
-	void AddOutgoing(Pipe & pipe) final { SetPipe(&pipe); }
+	void AddOutgoing(Pipe * pPipe) final { SetPipe(pPipe); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;

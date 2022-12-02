@@ -12,21 +12,27 @@ module NNetModel:OutputLine;
 import Types;
 import DrawContext;
 import :tHighlight;
+import :Synapse;
 import :IoLine;
 import :PosNob;
+import :Knot;
 import :Pipe;
 
 OutputLine::OutputLine(MicroMeterPnt const& umPntCenter)
 	: IoLine(umPntCenter, NobType::Value::outputLine)
 {}
 
-OutputLine::OutputLine(PosNob const& posNob)
+OutputLine::OutputLine(PosNob & posNob)
 	: IoLine(posNob.GetPos(), NobType::Value::outputLine)
 {
 	SetId(posNob.GetId());
+	if (posNob.IsSynapse())
+		SetPipe(Cast2Synapse(&posNob)->GetAddPipe());
+	else if (posNob.IsKnot())
+		SetPipe(Cast2Knot(&posNob)->GetIncoming());
 }
 
-OutputLine::OutputLine(Pipe & pipe)
+OutputLine::OutputLine(Pipe& pipe)
 	: IoLine(pipe.GetEndPoint(), NobType::Value::outputLine)
 {
 	SetId(pipe.GetEndNobPtr()->GetId());

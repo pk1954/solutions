@@ -43,7 +43,7 @@ public:
 	void Undo() final
 	{
 		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
-		m_upInputLine = m_pNMWI->PopFromModel<InputLine>();
+		m_upInputLine  = m_pNMWI->PopFromModel<InputLine>();
 		m_pNMWI->Restore2Model(move(m_upKnot));
 	}
 

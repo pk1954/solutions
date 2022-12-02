@@ -29,9 +29,11 @@ public:
     Radian        GetDir()       const final { return Radian::NULL_VAL(); }
     NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
 
+    Pipe* GetIncoming      () { return m_pPipeIn; }
     Pipe* GetFirstOutgoing () { return m_pPipeOut1; }
     Pipe* GetSecondOutgoing() { return m_pPipeOut2; }
-    Pipe* GetIncoming()       { return m_pPipeIn; }
+
+    Pipe* GetOtherOutgoing(Pipe*);
 
     void SetPos   (MicroMeterPnt  const&)               final;
     void MoveNob  (MicroMeterPnt  const&)               final;
@@ -47,8 +49,8 @@ public:
 
     void Reconnect() final;
 
-    void AddIncoming(Pipe&) final;
-    void AddOutgoing(Pipe&) final;
+    void AddIncoming(Pipe*) final;
+    void AddOutgoing(Pipe*) final;
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;

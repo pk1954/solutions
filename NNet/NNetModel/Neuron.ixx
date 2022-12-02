@@ -72,10 +72,10 @@ public:
 	void ReplaceIncoming(Pipe* const, Pipe* const) final;
 	void ReplaceOutgoing(Pipe* const, Pipe* const) final;
 
-	void AddOutgoing(Pipe& pipe) final { SetAxon(&pipe); }
-	void AddIncoming(Pipe& pipe) final { m_inPipes.Add(pipe); }
+	void AddOutgoing(Pipe* pPipe) final { SetAxon(pPipe); }
+	void AddIncoming(Pipe* pPipe) final { m_inPipes.Add(*pPipe); }
 
-	void AddIncoming(Neuron const&);
+	void AddIncoming(Neuron const *);
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;

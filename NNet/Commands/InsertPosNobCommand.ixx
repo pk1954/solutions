@@ -31,8 +31,8 @@ public:
 		m_pStartNob   = static_cast<PosNob *>(m_pPipe2Split->GetStartNobPtr());
 		m_upInsertNob = make_unique<T>(m_umSplitPoint);
 		m_upPipeNew   = make_unique<Pipe>(m_pStartNob, m_upInsertNob.get());
-		m_upInsertNob->AddOutgoing(*m_pPipe2Split);
-		m_upInsertNob->AddIncoming(*m_upPipeNew.get());
+		m_upInsertNob->AddOutgoing(m_pPipe2Split);
+		m_upInsertNob->AddIncoming(m_upPipeNew.get());
 	}
 
 	~InsertPosNobCommand() final = default;

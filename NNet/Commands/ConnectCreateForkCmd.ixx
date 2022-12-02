@@ -42,9 +42,9 @@ public:
 	{
 		m_splitPipes = m_pPipeOld->Split(*m_pInputLine);
 		m_upFork     = make_unique<Fork>(m_pInputLine->GetPos());
-		m_upFork->AddIncoming(*m_splitPipes.first .get());
-		m_upFork->AddOutgoing(*m_splitPipes.second.get());
-		m_upFork->AddOutgoing(*m_pInputLine->GetPipe());
+		m_upFork->AddIncoming(m_splitPipes.first .get());
+		m_upFork->AddOutgoing(m_splitPipes.second.get());
+		m_upFork->AddOutgoing(m_pInputLine->GetPipe());
 	}
 
 	~ConnectCreateForkCmd() final = default;

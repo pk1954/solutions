@@ -29,7 +29,7 @@ public:
 	{
 		MicroMeterPnt pos { m_neuronDst.GetPos() };
 		m_upNeuronNew = make_unique<Neuron>(m_neuronDst);       // create copy of Neuron
-		m_upNeuronNew->AddIncoming(*m_outputLineSrc.GetPipe()); // add incoming pipe
+		m_upNeuronNew->AddIncoming(m_outputLineSrc.GetPipe()); // add incoming pipe
 	}
 
 	void Do() final

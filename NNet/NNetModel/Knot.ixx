@@ -52,8 +52,8 @@ public:
 	void RotateNob(MicroMeterPnt  const&, Radian const) final;
 	void Link     (Nob const&, Nob2NobFunc const&)      final;
 
-	void AddOutgoing(Pipe& pipe) final { m_pPipeOut = &pipe; }
-	void AddIncoming(Pipe& pipe) final { m_pPipeIn  = &pipe; }
+	void AddOutgoing(Pipe* pPipe) final { m_pPipeOut = pPipe; }
+	void AddIncoming(Pipe* pPipe) final { m_pPipeIn  = pPipe; }
 
 	void SetAllIncoming(PosNob&) final;
 	void SetAllOutgoing(PosNob&) final;

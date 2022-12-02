@@ -63,10 +63,10 @@ public:
     size_t GetNrOfInConns () const final { return 2; }
     size_t GetNrOfOutConns() const final { return 1; }
 
-    Pipe      & GetAddPipe()             { return *m_pPipeAdd; }
-    Pipe const& GetAddPipe()       const { return *m_pPipeAdd; }
-    Pipe      & GetMainPipe()            { return *m_pPipeMain; }
-    Pipe const& GetMainPipe()      const { return *m_pPipeMain; }
+    Pipe      * GetAddPipe()             { return m_pPipeAdd; }
+    Pipe const* GetAddPipe()       const { return m_pPipeAdd; }
+    Pipe      * GetMainPipe()            { return m_pPipeMain; }
+    Pipe const* GetMainPipe()      const { return m_pPipeMain; }
     float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
 
     void SetMainPipe(Pipe* const);
@@ -96,3 +96,6 @@ private:
     Pipe *        m_pPipeAdd;
     float         m_fPosOnMainPipe;
 };
+
+export Synapse const* Cast2Synapse(Nob const*);
+export Synapse      * Cast2Synapse(Nob*);

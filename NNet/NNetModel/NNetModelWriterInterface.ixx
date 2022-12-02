@@ -79,8 +79,8 @@ public:
     void  DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
     void  DeselectAllNobs    () const               { m_pModel->DeselectAllNobs(); }
 
-    void AddOutgoing   (NobId const, Pipe &);
-    void AddIncoming   (NobId const, Pipe &);
+    void AddOutgoing(NobId const, Pipe *);
+    void AddIncoming(NobId const, Pipe *);
 
     PosNob & GetPosNob(NobId const);
 
@@ -108,8 +108,8 @@ public:
     template <Nob_t OLD>
     unique_ptr<OLD> RemoveFromModel(NobId const id)
     {
-        UPNob upNob{ GetUPNobs().ExtractNob(id) };
-        auto  pNob{ upNob.release() };
+        UPNob upNob { GetUPNobs().ExtractNob(id) };
+        auto  pNob  { upNob.release() };
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNob)));
     }
 

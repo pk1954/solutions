@@ -126,6 +126,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void Pipe::Check() const
 {
 	Nob::Check();
+	for (auto it : m_synapses)
+		it->Check();
 	//assert(static_cast<PosNob *>(m_pNobStart)->IsPrecursorOf(* this));
 	//assert(static_cast<PosNob *>(m_pNobEnd  )->IsSuccessorOf(* this));
 }
@@ -325,7 +327,7 @@ float Pipe::PosOnPipe(MicroMeterPnt const& umPnt) const
 void Pipe::FixSynapses() const
 {
 	for (auto it : m_synapses)
-		static_cast<Synapse*>(it)->GetAddPipe().SetEndPnt(it);
+		static_cast<Synapse*>(it)->GetAddPipe()->SetEndPnt(it);
 }
 
 void Pipe::DrawArrows

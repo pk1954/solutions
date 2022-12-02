@@ -42,11 +42,11 @@ public:
 		m_upPipeOrtho  = make_unique<Pipe>(m_upFork.get(), m_upOutputLine.get());
 		m_splitPipes   = m_pPipeOld->Split(*m_upFork.get());
 
-		m_upFork->AddIncoming(*m_splitPipes.first .get());
-		m_upFork->AddOutgoing(*m_splitPipes.second.get());
-		m_upFork->AddOutgoing(*m_upPipeOrtho.get());
+		m_upFork->AddIncoming(m_splitPipes.first .get());
+		m_upFork->AddOutgoing(m_splitPipes.second.get());
+		m_upFork->AddOutgoing(m_upPipeOrtho.get());
 
-		m_upOutputLine->AddIncoming(*m_upPipeOrtho.get());
+		m_upOutputLine->AddIncoming(m_upPipeOrtho.get());
 	}
 
 	~CreateForkCommand() = default;

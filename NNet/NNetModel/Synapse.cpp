@@ -78,10 +78,11 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 void Synapse::Check() const
 {
 	Nob::Check();
-	m_pPipeAdd->Check();
-	m_pPipeMain->Check();
+	assert(m_pPipeAdd);
+	assert(m_pPipeMain);
 	assert(m_pPipeAdd->GetEndKnotId() == GetId());
 	assert(m_pPipeMain->IsConnectedSynapse(*this));
+	m_pPipeAdd->Check();
 }
 
 void Synapse::Dump() const
@@ -257,4 +258,18 @@ mV Synapse::GetNextOutput() const
 		default: assert(false);
 	}
 	return 0._mV;
+}
+
+Synapse const* Cast2Synapse(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsSynapse());
+	return static_cast<Synapse const*>(pNob);
+}
+
+Synapse* Cast2Synapse(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsSynapse());
+	return static_cast<Synapse*>(pNob);
 }

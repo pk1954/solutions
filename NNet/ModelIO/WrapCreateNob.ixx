@@ -74,8 +74,8 @@ private:
             PosNob * const pKnotStart { m_modelIO.GetImportNMWI().GetNobPtr<PosNob*>(idStart) };
             PosNob * const pKnotEnd   { m_modelIO.GetImportNMWI().GetNobPtr<PosNob*>(idEnd) };
             unique_ptr<Pipe> upPipe     { make_unique<Pipe>(pKnotStart, pKnotEnd) };
-            pKnotStart->AddOutgoing(*upPipe.get());
-            pKnotEnd  ->AddIncoming(*upPipe.get());
+            pKnotStart->AddOutgoing(upPipe.get());
+            pKnotEnd  ->AddIncoming(upPipe.get());
             return move(upPipe);
         }
     }

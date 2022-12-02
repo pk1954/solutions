@@ -44,8 +44,8 @@ void NNetModelWriterInterface::SelectSubtree(PosNob & posNob, bool  const b)
 	m_pModel->SelectSubtree(posNob, b); 
 }
 
-void NNetModelWriterInterface::AddOutgoing(NobId const id, Pipe& pipe) { GetPosNob(id).AddOutgoing(pipe); }
-void NNetModelWriterInterface::AddIncoming(NobId const id, Pipe& pipe) { GetPosNob(id).AddIncoming(pipe); }
+void NNetModelWriterInterface::AddOutgoing(NobId const id, Pipe* p) { GetPosNob(id).AddOutgoing(p); }
+void NNetModelWriterInterface::AddIncoming(NobId const id, Pipe* p) { GetPosNob(id).AddIncoming(p); }
 
 void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
 { 

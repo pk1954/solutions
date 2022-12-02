@@ -25,6 +25,7 @@ import :NobType;
 import :Neuron;
 import :IoLine;
 import :PosNob;
+import :Knot;
 
 using std::chrono::microseconds;
 using std::wostringstream;
@@ -37,10 +38,15 @@ InputLine::InputLine(MicroMeterPnt const& upCenter)
 	m_pSigGen(StdSigGen::Get())
 { }
 
-InputLine::InputLine(PosNob const& posNob)
-	: IoLine(posNob.GetPos(), NobType::Value::inputLine)
+InputLine::InputLine(PosNob & posNob)
+  : IoLine(posNob.GetPos(), NobType::Value::inputLine),
+	m_pSigGen(StdSigGen::Get())
 {
 	SetId(posNob.GetId());
+	if (posNob.IsKnot())
+		SetPipe(Cast2Knot(&posNob)->GetOutgoing());
+	else if (posNob.IsNeuron())
+		SetPipe(Cast2Neuron(&posNob)->GetAxon());
 }
 
 void InputLine::Check() const

@@ -20,8 +20,8 @@ export class OutputLine : public IoLine
 public:
 
 	explicit OutputLine(MicroMeterPnt const&);
-	explicit OutputLine(PosNob const&);
-	explicit OutputLine(Pipe &);
+	explicit OutputLine(PosNob&);
+	explicit OutputLine(Pipe&);
 
 	~OutputLine() final = default;
 
@@ -42,7 +42,7 @@ public:
 	void SetAllOutgoing(PosNob&) final;
 	void SetAllIncoming(PosNob&) final;
 
-	void AddIncoming(Pipe& pipe) final { SetPipe(&pipe); }
+	void AddIncoming(Pipe * pPipe) final { SetPipe(pPipe); }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const override;
 	void DrawInterior(DrawContext const&, tHighlight const) const override;

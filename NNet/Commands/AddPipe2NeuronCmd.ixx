@@ -35,8 +35,8 @@ public:
 		m_upPipe->SetEndPnt  (m_upNeuronNew.get());
 
 		m_upNeuronNew->SetAxon(m_neuronOld.GetAxon()); // add axon
-		m_upNeuronNew->AddIncoming(m_neuronOld);       // add existing inputs 
-		m_upNeuronNew->AddIncoming(*m_upPipe.get());   // add new Pipe
+		m_upNeuronNew->AddIncoming(&m_neuronOld);       // add existing inputs 
+		m_upNeuronNew->AddIncoming(m_upPipe.get());   // add new Pipe
 
 		m_upInputLine->SetPipe(m_upPipe.get());
 	}

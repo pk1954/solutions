@@ -29,7 +29,10 @@ public:
 		Neuron* pNeuron { m_pNMWI->GetNobPtr<Neuron*>(m_id) };
 		pNeuron->Apply2AllInPipes
 		(
-			[this](Pipe& pipe) { m_outputLines.push_back(make_unique<OutputLine>(pipe)); }
+			[this](Pipe& pipe) 
+			{ 
+				m_outputLines.push_back(make_unique<OutputLine>(pipe));
+			}
 		);
 	}
 
@@ -42,6 +45,7 @@ public:
 			{
 				unique_ptr<OutputLine> upOutputLine { move(m_outputLines.back()) };
 				pipe.SetEndPnt(upOutputLine.get());
+				upOutputLine->SetPipe(&pipe);
 				m_pNMWI->Push2Model(move(upOutputLine));
 				m_outputLines.pop_back();
 			}

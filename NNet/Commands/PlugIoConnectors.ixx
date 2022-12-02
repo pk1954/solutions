@@ -33,8 +33,8 @@ public:
         for (size_t i = 0; i < m_size; ++i)
         {
             unique_ptr<Knot> upKnot{ make_unique<Knot>(m_pInputConnector->GetElem(i).GetPos()) };
-            upKnot->AddIncoming(*m_pOutputConnector->GetElem(i).GetPipe());
-            upKnot->AddOutgoing(*m_pInputConnector ->GetElem(i).GetPipe());
+            upKnot->AddIncoming(m_pOutputConnector->GetElem(i).GetPipe());
+            upKnot->AddOutgoing(m_pInputConnector ->GetElem(i).GetPipe());
             m_upKnots.push_back(move(upKnot));
         }
         m_upOutputLines.resize(m_size);
