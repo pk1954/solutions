@@ -30,22 +30,26 @@ public:
 	CreateForkCommand   // case 7 : Split Pipe, create fork and outgoing Pipe with OutputLine 
 	(
 		NobId         const  idPipe,
-		MicroMeterPnt const& pos
+		MicroMeterPnt const& umSplitPoint
 	)
-      : m_idPipe    (idPipe),
-		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartNob(Cast2PosNob(m_pPipeOld->GetStartNobPtr())),
-		m_pEndNob  (Cast2PosNob(m_pPipeOld->GetEndNobPtr()))
+      : 
+		/////////////////
+		m_idPipe2Split(idPipe),
+		m_pPipe2Split (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
+		m_pNobStart   (Cast2PosNob(m_pPipe2Split->GetStartNobPtr())),
+		m_pNobEnd     (Cast2PosNob(m_pPipe2Split->GetEndNobPtr()))
+		/////////////////
 	{
-		m_upFork       = make_unique<Fork>(pos);
-		m_upOutputLine = make_unique<OutputLine>(pos + m_pNMWI->OrthoVector(m_idPipe));
+		m_upFork       = make_unique<Fork>(umSplitPoint);
+		m_upOutputLine = make_unique<OutputLine>(umSplitPoint + m_pNMWI->OrthoVector(m_idPipe2Split));
 		m_upPipeOrtho  = make_unique<Pipe>(m_upFork.get(), m_upOutputLine.get());
-		m_splitPipes   = m_pPipeOld->Split(*m_upFork.get());
+		
+		/////////////////
+		m_splitPipes   = m_pPipe2Split->Split(*m_upFork.get());
+		m_fPosSplit    = m_pPipe2Split->PosOnPipe(m_upFork->GetPos());
+		/////////////////
 
-		m_upFork->AddIncoming(m_splitPipes.first .get());
-		m_upFork->AddOutgoing(m_splitPipes.second.get());
-		m_upFork->AddOutgoing(m_upPipeOrtho.get());
-
+		m_upFork      ->AddOutgoing(m_upPipeOrtho.get());
 		m_upOutputLine->AddIncoming(m_upPipeOrtho.get());
 	}
 
@@ -53,35 +57,43 @@ public:
 
 	void Do() final
 	{
-		m_pStartNob->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
-		m_pEndNob  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
-
-		m_splitPipes.first ->FixSynapses();
-		m_splitPipes.second->FixSynapses();
-
-		m_pNMWI->Push2Model(move(m_upFork));
+		/////////////////
+		m_pNobStart->ReplaceOutgoing(m_pPipe2Split, m_splitPipes.first .get());
+		m_pNobEnd  ->ReplaceIncoming(m_pPipe2Split, m_splitPipes.second.get());
+		m_pPipe2Split->Apply2AllSynapses
+		(
+			[this](Nob* pNob)
+			{
+				Pipe* pPipeNew { SelectPipe(pNob, m_splitPipes, m_fPosSplit) };
+				Cast2Synapse(pNob)->SetMainPipe(pPipeNew);
+			}
+		);
 		m_pNMWI->Push2Model(move(m_splitPipes.first ));
 		m_pNMWI->Push2Model(move(m_splitPipes.second));
+		/////////////////
+
+		m_pNMWI->Push2Model(move(m_upFork));
 		m_pNMWI->Push2Model(move(m_upPipeOrtho));
 		m_pNMWI->Push2Model(move(m_upOutputLine));
 
-		m_upPipeOld = m_pNMWI->RemoveFromModel<Pipe>(m_idPipe);
+		m_upPipe2Split = m_pNMWI->RemoveFromModel<Pipe>(m_idPipe2Split);
 	}
 
 	void Undo() final
 	{
-		m_upPipeOld->FixSynapses();
+		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
+		m_upPipeOrtho  = m_pNMWI->PopFromModel<Pipe>();
+		m_upFork       = m_pNMWI->PopFromModel<Fork>();
 
-		m_pNMWI->Restore2Model(move(m_upPipeOld));
-
-		m_upOutputLine      = m_pNMWI->PopFromModel<OutputLine>();
-		m_upPipeOrtho       = m_pNMWI->PopFromModel<Pipe>();
+		/////////////////
+		m_pNMWI->Restore2Model(move(m_upPipe2Split));
 		m_splitPipes.second = m_pNMWI->PopFromModel<Pipe>();
 		m_splitPipes.first  = m_pNMWI->PopFromModel<Pipe>();
-		m_upFork            = m_pNMWI->PopFromModel<Fork>();
-
-		m_pEndNob  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
-		m_pStartNob->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
+		m_pNobEnd  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipe2Split);
+		m_pNobStart->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipe2Split);
+		m_splitPipes.first ->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
+		m_splitPipes.second->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
+		/////////////////
 	}
 
 	static void Register()
@@ -111,15 +123,15 @@ private:
 		}
 	};
 
-	NobId const m_idPipe;
-	Pipe      * m_pPipeOld;
-	PosNob    * m_pStartNob;  // start point of old Pipe
-	PosNob    * m_pEndNob;    // end point of old Pipe
-
-	pair<unique_ptr<Pipe>, unique_ptr<Pipe>> m_splitPipes;
-
-	unique_ptr<Pipe>       m_upPipeOld;
 	unique_ptr<Fork>       m_upFork;
 	unique_ptr<OutputLine> m_upOutputLine;
 	unique_ptr<Pipe>       m_upPipeOrtho;
+
+	NobId      const m_idPipe2Split;
+	Pipe     * const m_pPipe2Split;
+	PosNob   * const m_pNobStart;
+	PosNob   * const m_pNobEnd;
+	PipePair         m_splitPipes;
+	unique_ptr<Pipe> m_upPipe2Split;
+	float            m_fPosSplit;
 };

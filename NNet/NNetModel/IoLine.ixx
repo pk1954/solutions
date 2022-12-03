@@ -34,8 +34,7 @@ public:
 	MicroMeterPosDir GetPosDir()    const final;
 	Radian           GetDir()       const final;
 
-	void SetPos(MicroMeterPnt const& pos) final { m_circle.SetPos(pos); }
-
+	void SetPos   (MicroMeterPnt const&)               final;
 	void SetDir   (Radian const)                       final;
 	void MoveNob  (MicroMeterPnt const&)               final;
 	void RotateNob(MicroMeterPnt const&, Radian const) final;

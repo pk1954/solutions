@@ -36,7 +36,6 @@ Synapse::Synapse
 
 MicroMeterPnt Synapse::GetPos() const
 {
-	calcPos();
 	return m_umPntPipeAnchor;
 }
 
@@ -73,6 +72,56 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 	MicroMeterPnt const umPntScaled { umPntOrtho.ScaledTo(umDist) };
 	MicroMeterPnt const umPntRoot   { umPntNew + umPntScaled };
 	resetPos(umPntRoot);
+	m_pPipeAdd->PositionChanged();
+}
+
+void Synapse::RemoveFromMainPipe() 
+{ 
+	m_pPipeMain->RemoveSynapse(this); 
+}
+
+void Synapse::Add2MainPipe() 
+{ 
+	m_pPipeMain->AddSynapse(this); 
+}
+
+void Synapse::SetMainPipe(Pipe* const pPipe)
+{
+	MicroMeterPnt umPntPos { GetPos() };
+	m_pPipeMain = pPipe;
+	resetPos(umPntPos);
+}
+
+void Synapse::ChangeMainPipe(Pipe* const pPipeNew)
+{
+	m_pPipeMain->RemoveSynapse(this);
+	pPipeNew->AddSynapse(this);
+	SetMainPipe(pPipeNew);
+}
+
+void Synapse::resetPos(MicroMeterPnt const& newPos)
+{
+	m_fPosOnMainPipe = m_pPipeMain->PosOnPipe(newPos);
+	m_fPosOnMainPipe = ClipToMinMax(m_fPosOnMainPipe, 0.0f, 1.0f);
+	RecalcPos();
+}
+
+void Synapse::RecalcPos() const
+{
+	static const MicroMeter GAP         { PIPE_WIDTH * 0.1f };
+	static const MicroMeter CENTER_DIST { EXTENSION * SQRT3DIV3 };
+	static const MicroMeter TOP_DIST    { EXTENSION * SQRT3 };
+	static const MicroMeter OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
+
+	MicroMeterPnt const umPntVector  { m_pPipeMain->GetVector() };
+	MicroMeterPnt const umPntAddDir  { m_pPipeAdd->GetStartPoint() - m_pPipeMain->GetStartPoint() };
+	MicroMeterPnt const umPntMainPos { m_pPipeMain->GetStartPoint() + m_pPipeMain->GetVector() * m_fPosOnMainPipe };
+	MicroMeterPnt const umPntOrtho   { umPntVector.OrthoVector() };
+	MicroMeter    const umCrit       { CrossProduct(umPntVector, umPntAddDir) };
+
+	m_fDirection = (umCrit < 0._MicroMeter) ? 1.0f : -1.0f;
+	m_umPntPipeAnchor = umPntMainPos + umPntOrtho.ScaledTo((TOP_DIST    + OFF_DIST) * m_fDirection);
+	m_umPntCenter     = umPntMainPos + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * m_fDirection);
 }
 
 void Synapse::Check() const
@@ -97,13 +146,6 @@ void Synapse::Dump() const
 	wcout << L" addInput " << m_mVaddInput << endl;
 }
 
-void Synapse::SetMainPipe(Pipe* const pPipe)
-{
-	MicroMeterPnt umPntPos { GetPos() };
-	m_pPipeMain = pPipe;
-	resetPos(umPntPos);
-}
-
 void Synapse::Reconnect()
 {
 	m_pPipeAdd->SetEndPnt(this);
@@ -119,13 +161,6 @@ void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 bool Synapse::Includes(MicroMeterPnt const& point) const
 {
 	return Distance(point, GetPos()) <= GetExtension();
-}
-
-void Synapse::resetPos(MicroMeterPnt const& newPos)
-{
-	m_fPosOnMainPipe = m_pPipeMain->PosOnPipe(newPos);
-	m_fPosOnMainPipe = ClipToMinMax(m_fPosOnMainPipe, 0.0f, 1.0f);
-	calcPos();
 }
 
 void Synapse::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
@@ -160,25 +195,6 @@ bool Synapse::Apply2AllOutPipesB(PipeCrit const& c) const
 	return c(*m_pPipeMain);
 }
 
-void Synapse::calcPos() const
-{
-	static const MicroMeter GAP         { PIPE_WIDTH * 0.1f };
-	static const MicroMeter CENTER_DIST { EXTENSION * SQRT3DIV3 };
-	static const MicroMeter TOP_DIST    { EXTENSION * SQRT3 };
-	static const MicroMeter OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
-//	static MicroMeter OFF_DIST { RADIUS - PIPE_HALF }; // distance from mainpos to base line
-
-	MicroMeterPnt const umPntVector  { m_pPipeMain->GetVector() };
-	MicroMeterPnt const umPntAddDir  { m_pPipeAdd->GetStartPoint() - m_pPipeMain->GetStartPoint() };
-	MicroMeterPnt const umPntMainPos { m_pPipeMain->GetStartPoint() + m_pPipeMain->GetVector() * m_fPosOnMainPipe };
-	MicroMeterPnt const umPntOrtho   { umPntVector.OrthoVector() };
-	MicroMeter    const umCrit       { CrossProduct(umPntVector, umPntAddDir) };
-
-	m_fDirection      = (umCrit < 0._MicroMeter) ? 1.0f : -1.0f;
-	m_umPntPipeAnchor = umPntMainPos + umPntOrtho.ScaledTo((TOP_DIST    + OFF_DIST) * m_fDirection);
-	m_umPntCenter     = umPntMainPos + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * m_fDirection);
-}
-
 void Synapse::drawSynapse
 (
 	DrawContext  const& context, 
@@ -206,14 +222,12 @@ void Synapse::drawSynapse
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
-	calcPos();
 	drawSynapse(context, RADIUS, EXTENSION, GetExteriorColor(type));
 }
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
 { 
 	static float const INTERIOR { 0.75f };
-	calcPos();
 	drawSynapse(context, RADIUS * INTERIOR, EXTENSION - RADIUS * (1.0f - INTERIOR), GetInteriorColor(type));
 }
 

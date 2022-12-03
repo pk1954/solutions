@@ -46,11 +46,10 @@ public:
 	Pipe * GetIncoming() { return m_pPipeIn; }
 	Pipe * GetOutgoing() { return m_pPipeOut; }
 
-	void SetPos(MicroMeterPnt const& pos) final { m_circle.SetPos(pos); }
-
-	void MoveNob  (MicroMeterPnt  const&)               final;
-	void RotateNob(MicroMeterPnt  const&, Radian const) final;
-	void Link     (Nob const&, Nob2NobFunc const&)      final;
+	void SetPos   (MicroMeterPnt const&)               final;
+	void MoveNob  (MicroMeterPnt const&)               final;
+	void RotateNob(MicroMeterPnt const&, Radian const) final;
+	void Link     (Nob const&, Nob2NobFunc const&)     final;
 
 	void AddOutgoing(Pipe* pPipe) final { m_pPipeOut = pPipe; }
 	void AddIncoming(Pipe* pPipe) final { m_pPipeIn  = pPipe; }
@@ -80,8 +79,6 @@ public:
 
 	void CollectInput()	final { m_mVinputBuffer = m_pPipeIn->GetNextOutput(); }
 	bool CompStep    () final { return false; }
-
-	void Recalc() final { };
 
 private:
 	MicroMeterCircle m_circle;

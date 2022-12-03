@@ -100,13 +100,7 @@ void Model::Reconnect(NobId const id)
 
 void Model::RecalcAllNobs() const
 { 
-	m_Nobs.Apply2AllC
-	(
-		[](Nob & nob) 
-		{ 
-			nob.Recalc(); 
-		}
-	);
+	m_Nobs.Apply2AllC([](Nob & nob) { nob.PositionChanged(); });
 } 
 
 void Model::ClearDynamicData()

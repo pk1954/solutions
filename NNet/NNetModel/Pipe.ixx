@@ -34,6 +34,7 @@ class Pipe;
 
 export using PipeFunc = function<void(Pipe&)>;
 export using PipeCrit = function<bool(Pipe const&)>;
+export using PipePair = pair<unique_ptr<Pipe>, unique_ptr<Pipe>>;
 
 export class Pipe : public Nob
 {
@@ -90,7 +91,7 @@ public:
 	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
 	void          Reconnect()                                   final { /* nothing to connect */ };
 
-	pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Split(Nob &) const;
+	PipePair Split(Nob &) const;
 
 	Radian        GetDir()        const final { return Vector2Radian(GetVector()); };
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
@@ -107,7 +108,7 @@ public:
 	void          Link            (Nob const &, Nob2NobFunc const &)            final;
 	void          CollectInput    ()                                            final;
 	bool          CompStep        ()                                            final;
-	void          Recalc          ()                                            final;
+	void          PositionChanged ()                                            final;
 	void          ClearDynamicData()                                            final;
 	void          Select          (bool const)                                  final;
 
@@ -125,6 +126,8 @@ public:
 
 	void DislocateEndPoint();
 	void DislocateStartPoint();
+
+	void RecalcSynapsePositions();
 
 	friend wostream & operator<< (wostream&, Pipe const&);
 
@@ -174,7 +177,8 @@ private:
 
 	MicroMeterPnt dislocation() const;
 	size_t        segNr2index(SegNr const) const;
-	void          recalc();
+	void          recalcSegments();
+	void          posChangedRecursive(Pipe const&);
 
 	MicroMeterPnt getSegmentPos(SegNr const segNr, float const fPos) const
 	{
@@ -187,3 +191,4 @@ private:
 
 export Pipe const * Cast2Pipe(Nob const *);
 export Pipe       * Cast2Pipe(Nob       *);
+export Pipe       * SelectPipe(Nob*, PipePair const&, float);

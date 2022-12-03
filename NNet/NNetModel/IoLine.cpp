@@ -98,7 +98,13 @@ void IoLine::LockDirection()
 		SetDir(Vector2Radian(determineVector()));
 }
 
-void IoLine::SetDir(Radian const r) 
+void IoLine::SetPos(MicroMeterPnt const& pos)
+{
+	m_circle.SetPos(pos);
+	m_pPipe->PositionChanged();
+}
+
+void IoLine::SetDir(Radian const r)
 { 
 	m_radDirection = r; 
 }

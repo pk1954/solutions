@@ -129,10 +129,10 @@ void IoConnector::ClearParentPointers() const
     }
 }
 
-void IoConnector::Recalc()
+void IoConnector::PositionChanged()
 {
     for (auto & it: m_list)
-        it->Recalc();
+        it->PositionChanged();
 }
 
 void IoConnector::SetDir(Radian const radianNew)
@@ -155,7 +155,7 @@ void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
     MicroMeterPnt const pos { GetPos() };
     assert(pos.IsNotNull());
     RotateNob(pos, umPosDir.GetDir() - GetDir());
-    MoveNob  (umPosDir.GetPos() - pos);
+    MoveNob(umPosDir.GetPos() - pos);
 }
 
 void IoConnector::MoveNob(MicroMeterPnt const & delta)       

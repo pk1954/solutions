@@ -33,18 +33,22 @@ public:
 		NobId const idIoLine,
 		NobId const idPipe
 	)
-	  : m_idIoLine  (idIoLine),
-		m_idPipe    (idPipe),
-		m_pInputLine(m_pNMWI->GetNobPtr<InputLine*>(idIoLine)),
-		m_pPipeOld  (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
-		m_pStartNob(Cast2PosNob(m_pPipeOld->GetStartNobPtr())),
-		m_pEndNob  (Cast2PosNob(m_pPipeOld->GetEndNobPtr()))
+	  : m_idIoLine    (idIoLine),
+		/////////////////
+		m_idPipe2Split(idPipe),
+		m_pPipe2Split (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
+		m_pNobStart   (Cast2PosNob(m_pPipe2Split->GetStartNobPtr())),
+		m_pNobEnd     (Cast2PosNob(m_pPipe2Split->GetEndNobPtr())),
+		/////////////////
+		m_pInputLine  (m_pNMWI->GetNobPtr<InputLine*>(idIoLine))
 	{
-		m_splitPipes = m_pPipeOld->Split(*m_pInputLine);
-		m_upFork     = make_unique<Fork>(m_pInputLine->GetPos());
-		m_upFork->AddIncoming(m_splitPipes.first .get());
-		m_upFork->AddOutgoing(m_splitPipes.second.get());
+		m_upFork = make_unique<Fork>(m_pInputLine->GetPos());
 		m_upFork->AddOutgoing(m_pInputLine->GetPipe());
+
+		/////////////////
+		m_splitPipes  = m_pPipe2Split->Split(*m_upFork.get());
+		m_fPosSplit   = m_pPipe2Split->PosOnPipe(m_pInputLine->GetPos());
+		/////////////////
 	}
 
 	~ConnectCreateForkCmd() final = default;
@@ -53,33 +57,40 @@ public:
 	{
 		m_pInputLine->GetPipe()->SetStartPnt(m_upFork.get());
 
-		m_pStartNob->ReplaceOutgoing(m_pPipeOld, m_splitPipes.first .get());
-		m_pEndNob  ->ReplaceIncoming(m_pPipeOld, m_splitPipes.second.get());
-
-		m_splitPipes.first ->FixSynapses();
-		m_splitPipes.second->FixSynapses();
-
-		m_pNMWI->Push2Model(move(m_upFork));
+		/////////////////
+		m_pNobStart->ReplaceOutgoing(m_pPipe2Split, m_splitPipes.first .get());
+		m_pNobEnd  ->ReplaceIncoming(m_pPipe2Split, m_splitPipes.second.get());
+		m_pPipe2Split->Apply2AllSynapses
+		(
+			[this](Nob* pNob)
+			{
+				Pipe* pPipeNew { SelectPipe(pNob, m_splitPipes, m_fPosSplit) };
+				Cast2Synapse(pNob)->SetMainPipe(pPipeNew);
+			}
+		);
 		m_pNMWI->Push2Model(move(m_splitPipes.first ));
 		m_pNMWI->Push2Model(move(m_splitPipes.second));
+		/////////////////
 
+		m_pNMWI->Push2Model(move(m_upFork));
 		m_upIoLine  = m_pNMWI->RemoveFromModel<InputLine>(m_idIoLine);
-		m_upPipeOld = m_pNMWI->RemoveFromModel<Pipe>     (m_idPipe);
+		m_upPipe2Split = m_pNMWI->RemoveFromModel<Pipe>     (m_idPipe2Split);
 	}
 
 	void Undo() final
 	{
-		m_upPipeOld->FixSynapses();
-
-		m_pNMWI->Restore2Model(move(m_upPipeOld));
 		m_pNMWI->Restore2Model(move(m_upIoLine));
+		m_upFork = m_pNMWI->PopFromModel<Fork>();
 
+		/////////////////
+		m_pNMWI->Restore2Model(move(m_upPipe2Split));
 		m_splitPipes.second = m_pNMWI->PopFromModel<Pipe>();
 		m_splitPipes.first  = m_pNMWI->PopFromModel<Pipe>();
-		m_upFork            = m_pNMWI->PopFromModel<Fork>();
-
-		m_pEndNob  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipeOld);
-		m_pStartNob->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipeOld);
+		m_pNobEnd  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipe2Split);
+		m_pNobStart->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipe2Split);
+		m_splitPipes.first ->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
+		m_splitPipes.second->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
+		/////////////////
 
 		m_pInputLine->GetPipe()->SetStartPnt(m_pInputLine);
 	}
@@ -111,16 +122,16 @@ private:
 		}
 	};
 
-	NobId       const m_idIoLine;
-	NobId       const m_idPipe;
-	InputLine * const m_pInputLine;
-	Pipe      * const m_pPipeOld;
-	PosNob    * const m_pStartNob;
-	PosNob    * const m_pEndNob;
-
-	pair<unique_ptr<Pipe>, unique_ptr<Pipe>> m_splitPipes;
-
-	unique_ptr<Pipe>      m_upPipeOld;
+	NobId           const m_idIoLine;
+	InputLine     * const m_pInputLine;
 	unique_ptr<Fork>      m_upFork;
 	unique_ptr<InputLine> m_upIoLine;
+
+	NobId      const m_idPipe2Split;
+	Pipe     * const m_pPipe2Split;
+	PosNob   * const m_pNobStart;
+	PosNob   * const m_pNobEnd;
+	PipePair         m_splitPipes;
+	unique_ptr<Pipe> m_upPipe2Split;
+	float            m_fPosSplit;
 };

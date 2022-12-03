@@ -45,8 +45,8 @@ public:
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;
 
-    void RemoveFromMainPipe() { m_pPipeMain->RemoveSynapse(this); }
-    void Add2MainPipe()       { m_pPipeMain->AddSynapse(this); }
+    void RemoveFromMainPipe();
+    void Add2MainPipe();
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
@@ -70,6 +70,9 @@ public:
     float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
 
     void SetMainPipe(Pipe* const);
+    void ChangeMainPipe(Pipe* const);
+
+    void RecalcPos() const;
 
 private:
 
@@ -79,7 +82,6 @@ private:
     inline static float      const SQRT3     { sqrtf(3.0f) };
     inline static float      const SQRT3DIV3 { SQRT3 / 3.0f };
 
-    void calcPos() const;
     void resetPos(MicroMeterPnt const&);
     void drawSynapse(DrawContext const&, MicroMeter const, MicroMeter const, D2D1::ColorF const) const;
 

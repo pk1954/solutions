@@ -48,15 +48,15 @@ Pipe::Pipe
 	m_pNobEnd  (pKnotEnd)
 {
 	assert(pKnotStart && pKnotEnd);
-	recalc();
+	PositionChanged();
 }
 
 Pipe::Pipe(Pipe const & src) :  // copy constructor
-	Nob         (src),
+	Nob        (src),
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
-	m_potIndex  (src.m_potIndex ),
-	m_potential (src.m_potential)
+	m_potIndex (src.m_potIndex ),
+	m_potential(src.m_potential)
 { 
 }
 
@@ -96,21 +96,6 @@ void Pipe::ClearDynamicData()
 	fill(m_potential, 0.0_mV);
 }
 
-void Pipe::recalc()
-{
-	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
-	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
-	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(GetLength() / segmentLength))) };
-	m_potential.resize(iNrOfSegments, 0.0_mV);
-	m_potIndex = 0;
-}
-
-void Pipe::Recalc()
-{
-	if (m_pNobStart && m_pNobEnd)
-		recalc();
-}
-
 bool Pipe::IsConnectedSynapse(Nob const & synapse) const
 {
 	return find(m_synapses, &synapse) != end(m_synapses);
@@ -128,8 +113,6 @@ void Pipe::Check() const
 	Nob::Check();
 	for (auto it : m_synapses)
 		it->Check();
-	//assert(static_cast<PosNob *>(m_pNobStart)->IsPrecursorOf(* this));
-	//assert(static_cast<PosNob *>(m_pNobEnd  )->IsSuccessorOf(* this));
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -172,7 +155,7 @@ void Pipe::SetStartPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 	if (pPosNob)
 	{
 		m_pNobStart = pPosNob;
-		Recalc();
+		PositionChanged();
 	}
 }
 
@@ -181,20 +164,18 @@ void Pipe::SetEndPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 	if (pPosNob)
 	{
 		m_pNobEnd = pPosNob;
-		Recalc();
+		PositionChanged();
 	}
 }
 
 void Pipe::DislocateEndPoint() 
 { 
 	m_pNobEnd->MoveNob(-dislocation());
-	Recalc();
 }
 
 void Pipe::DislocateStartPoint() 
 { 
 	m_pNobStart->MoveNob(dislocation());
-	Recalc();
 }
 
 MicroMeterPnt Pipe::dislocation() const
@@ -261,36 +242,86 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
+Pipe * SelectPipe
+(
+	Nob *           pNob,
+	PipePair const& splitPipes,
+	float           fPosSplit
+)
+{
+	return (Cast2Synapse(pNob)->GetPosOnMainPipe() < fPosSplit)
+		   ? splitPipes.first.get()
+		   : splitPipes.second.get();
+}
+
 // Split: create two new pipes and add links to Synapses of existing Pipe
 //        do not affect Synapses themselves
 
-pair<unique_ptr<Pipe>, unique_ptr<Pipe>> Pipe::Split(Nob & nobSplit) const
+PipePair Pipe::Split(Nob & nobSplit) const
 {
-	unique_ptr<Pipe> upPipe1   { make_unique<Pipe>(m_pNobStart, &nobSplit) };
-	unique_ptr<Pipe> upPipe2   { make_unique<Pipe>(&nobSplit, m_pNobEnd) };
-	float            fPosSplit { PosOnPipe(nobSplit.GetPos()) };
+	PosNob&  posNobSplit { *Cast2PosNob(&nobSplit) };
+	float    fPosSplit   { PosOnPipe(posNobSplit.GetPos()) };
+	PipePair splitPipes
+	{
+		make_unique<Pipe>(m_pNobStart, &posNobSplit),
+		make_unique<Pipe>(&posNobSplit, m_pNobEnd)
+	};
 
 	for (auto it : m_synapses)
 	{
-		Synapse &    synapse  { static_cast<Synapse&>(*it) };
-		float  const fPos     { synapse.GetPosOnMainPipe() };
-		Pipe * const pPipeNew { (fPos < fPosSplit) ? upPipe1.get() : upPipe2.get() };
-		pPipeNew->m_synapses.push_back(&synapse);
+		Pipe * const pPipeNew { SelectPipe(it, splitPipes, fPosSplit) };
+		pPipeNew->AddSynapse(Cast2Synapse(it));
 	}
 
-	nobSplit.Select(IsSelected());
-	upPipe1->Select(IsSelected());
-	upPipe2->Select(IsSelected());
+	posNobSplit.AddIncoming(splitPipes.first.get());
+	posNobSplit.AddOutgoing(splitPipes.second.get());
 
-	return pair(move(upPipe1), move(upPipe2));
+	posNobSplit.Select(IsSelected());
+	splitPipes.first->Select(IsSelected());
+	splitPipes.second->Select(IsSelected());
+
+	return splitPipes;
 }
 
 void Pipe::AddSynapse(Nob* pNob)
 {
 	assert(pNob->IsSynapse());
-	Synapse* pSynapse { static_cast<Synapse*>(pNob) };
-	pSynapse->SetMainPipe(this);
-	m_synapses.push_back(pSynapse);
+	m_synapses.push_back(pNob);
+}
+
+void Pipe::recalcSegments()
+{
+	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
+	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
+	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(GetLength() / segmentLength))) };
+	m_potential.resize(iNrOfSegments, 0.0_mV);
+	m_potIndex = 0;
+}
+
+void Pipe::PositionChanged()
+{
+	posChangedRecursive(*this);
+}
+
+void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
+{
+	if (m_pNobStart && m_pNobEnd)
+	{
+		Apply2AllSynapses
+		(
+			[this, &pipeOrigin](Nob* pNob)
+			{
+				Synapse* pSynapse { Cast2Synapse(pNob) };
+				Pipe   * pPipeAdd { pSynapse->GetAddPipe() };
+				if (pPipeAdd != &pipeOrigin)
+					pPipeAdd->posChangedRecursive(pipeOrigin);
+				pSynapse->RecalcPos();
+			}
+		);
+		if (m_pNobEnd->IsSynapse())
+			Cast2Synapse(m_pNobEnd)->RecalcPos();
+		recalcSegments();
+	}
 }
 
 void Pipe::RemoveSynapse(Nob* pSynapse)
@@ -322,12 +353,6 @@ float Pipe::PosOnPipe(MicroMeterPnt const& umPnt) const
 		fResult = (umPnt.GetY() - GetStartPoint().GetY()) / umPntVector.GetY();
 	}
 	return fResult;
-}
-
-void Pipe::FixSynapses() const
-{
-	for (auto it : m_synapses)
-		static_cast<Synapse*>(it)->GetAddPipe()->SetEndPnt(it);
 }
 
 void Pipe::DrawArrows

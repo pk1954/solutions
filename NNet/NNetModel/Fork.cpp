@@ -96,9 +96,9 @@ bool Fork::Apply2AllOutPipesB(PipeCrit const& c) const
 void Fork::SetPos(MicroMeterPnt const& newPos)
 {
 	m_circle.SetPos(newPos);
-	m_pPipeIn  ->Recalc();
-	m_pPipeOut1->Recalc();
-	m_pPipeOut2->Recalc();
+	m_pPipeIn  ->PositionChanged();
+	m_pPipeOut1->PositionChanged();
+	m_pPipeOut2->PositionChanged();
 }
 
 void Fork::DrawExterior(DrawContext const& context, tHighlight const type) const

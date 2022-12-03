@@ -52,8 +52,7 @@ public:
 	Radian        GetDir()        const final { return Radian::NULL_VAL(); };
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
 
-	void SetPos   (MicroMeterPnt const& pos) final { m_circle.SetPos(pos); }
-
+	void SetPos   (MicroMeterPnt const&)               final;
 	void MoveNob  (MicroMeterPnt const&)               final;
 	void RotateNob(MicroMeterPnt const&, Radian const) final;
 	void Link(Nob const&, Nob2NobFunc const&)          final;

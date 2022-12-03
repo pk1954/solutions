@@ -31,6 +31,7 @@ public:
 		assert(m_pOutputLine->IsOutputLine());
 		m_upSynapse = make_unique<Synapse>(m_pPipe, m_pOutputLine->GetPipe());
 		m_upSynapse->Select(m_pOutputLine->IsSelected());
+		m_upSynapse->SetMainPipe(m_pPipe);
 	}
 
 	~ConnectCreateSynapseCmd() final = default;

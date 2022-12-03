@@ -13,9 +13,10 @@ import NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
+using std::pair;
 
-//export template <PosNob_t T>
-export template <typename T>
+export template <PosNob_t POS_NOB>
 class InsertPosNobCommand : public NNetCommand
 {
 public:
@@ -24,42 +25,69 @@ public:
 		NobId         const   idPipe, 
 		MicroMeterPnt const & umSplitPoint 
 	)
-	  :	m_idPipe(idPipe),
-		m_umSplitPoint(umSplitPoint)
-	{ 
-		m_pPipe2Split = m_pNMWI->GetNobPtr<Pipe *>(m_idPipe);
-		m_pStartNob   = static_cast<PosNob *>(m_pPipe2Split->GetStartNobPtr());
-		m_upInsertNob = make_unique<T>(m_umSplitPoint);
-		m_upPipeNew   = make_unique<Pipe>(m_pStartNob, m_upInsertNob.get());
-		m_upInsertNob->AddOutgoing(m_pPipe2Split);
-		m_upInsertNob->AddIncoming(m_upPipeNew.get());
+	  : 
+		/////////////////
+		m_idPipe2Split(idPipe),
+		m_pPipe2Split (m_pNMWI->GetNobPtr<Pipe*>(idPipe)),
+		m_pNobStart   (Cast2PosNob(m_pPipe2Split->GetStartNobPtr())),
+		m_pNobEnd     (Cast2PosNob(m_pPipe2Split->GetEndNobPtr()))
+		/////////////////
+	{
+		m_upInsertNob = make_unique<POS_NOB>(umSplitPoint);
+
+		/////////////////
+		m_splitPipes  = m_pPipe2Split->Split(*m_upInsertNob.get());
+		m_fPosSplit   = m_pPipe2Split->PosOnPipe(umSplitPoint);
+		/////////////////
 	}
 
 	~InsertPosNobCommand() final = default;
 
 	void Do() final 
 	{ 
-		m_pStartNob->ReplaceOutgoing(m_pPipe2Split, m_upPipeNew.get());
-		m_pPipe2Split->SetStartPnt(m_upInsertNob.get());
+		/////////////////
+		m_pNobStart->ReplaceOutgoing(m_pPipe2Split, m_splitPipes.first.get());
+		m_pNobEnd  ->ReplaceIncoming(m_pPipe2Split, m_splitPipes.second.get());
+		m_pPipe2Split->Apply2AllSynapses
+		(
+			[this](Nob* pNob)
+			{
+				Pipe * pPipeNew { SelectPipe(pNob, m_splitPipes, m_fPosSplit) };
+				Cast2Synapse(pNob)->SetMainPipe(pPipeNew);
+			}
+		);
+		m_pNMWI->Push2Model(move(m_splitPipes.first));
+		m_pNMWI->Push2Model(move(m_splitPipes.second));
+		/////////////////
+
 		m_pNMWI->Push2Model(move(m_upInsertNob));
-		m_pNMWI->Push2Model(move(m_upPipeNew));
+		m_upPipe2Split = m_pNMWI->RemoveFromModel<Pipe>(m_idPipe2Split);
 	}
 
 	void Undo() final 
 	{ 
-		m_upPipeNew   = m_pNMWI->PopFromModel<Pipe>();
-		m_upInsertNob = m_pNMWI->PopFromModel<T>();
-		m_pPipe2Split->SetStartPnt(m_pStartNob);
-		m_pStartNob->ReplaceOutgoing(m_upPipeNew.get(), m_pPipe2Split);
+		m_upInsertNob       = m_pNMWI->PopFromModel<POS_NOB>();
+
+		/////////////////
+		m_pNMWI->Restore2Model(move(m_upPipe2Split));
+		m_splitPipes.second = m_pNMWI->PopFromModel<Pipe>();
+		m_splitPipes.first  = m_pNMWI->PopFromModel<Pipe>();
+		m_pNobStart->ReplaceOutgoing(m_splitPipes.first .get(), m_pPipe2Split);
+		m_pNobEnd  ->ReplaceIncoming(m_splitPipes.second.get(), m_pPipe2Split);
+		m_splitPipes.first ->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
+		m_splitPipes.second->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split);});
+		/////////////////
 	}
 
 private:
-	Pipe   * m_pPipe2Split { nullptr };
-	PosNob * m_pStartNob  { nullptr };
 
-	unique_ptr<Pipe> m_upPipeNew;
-	unique_ptr<T>    m_upInsertNob;
+	unique_ptr<POS_NOB> m_upInsertNob;
 
-	NobId         const m_idPipe;
-	MicroMeterPnt const m_umSplitPoint; 
+	NobId      const m_idPipe2Split;
+	Pipe     * const m_pPipe2Split;
+	PosNob   * const m_pNobStart;
+	PosNob   * const m_pNobEnd;
+	PipePair         m_splitPipes;
+	unique_ptr<Pipe> m_upPipe2Split;
+	float            m_fPosSplit;
 };

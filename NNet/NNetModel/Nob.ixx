@@ -80,7 +80,7 @@ public:
 	virtual void          Link        (Nob const &, Nob2NobFunc const &)               = 0;
 	virtual void          Reconnect   ()                                               = 0;
 
-	virtual void Recalc() { };
+	virtual void PositionChanged() { };
 
 	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
