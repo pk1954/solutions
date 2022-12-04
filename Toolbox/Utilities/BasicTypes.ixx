@@ -113,10 +113,10 @@ export microseconds SpikeTimeMax(Hertz const freq)
 
 ////////////// Radian/Degrees ////////////////////////////////////
 
-export using Radian = NamedType<float, struct radian_Parameter >;
-export using Degrees = NamedType<float, struct degrees_Parameter >;
+export using Radian  = NamedType<float, struct radian_Parameter>;
+export using Degrees = NamedType<float, struct degrees_Parameter>;
 
-export constexpr Radian  operator"" _Radian(const long double r) { return Radian(Cast2Float(r)); }
+export constexpr Radian  operator"" _Radian (const long double r) { return Radian(Cast2Float(r)); }
 export constexpr Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
 
 export inline float const RADIAN_FACTOR{ static_cast<float>(180.0 / pi) };

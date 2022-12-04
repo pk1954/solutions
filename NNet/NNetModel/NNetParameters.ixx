@@ -66,5 +66,5 @@ export unsigned int CalcNrOfSteps(MicroMeter const um)
 export unsigned int CalcNrOfSteps(Radian const rad)
 {
 	static Radian const radPerStep{ Degrees2Radian(6.0_Degrees) };
-	return Cast2UnsignedInt(rad / radPerStep);
+	return Cast2UnsignedInt(rad.GetAbs() / radPerStep);
 }

@@ -159,8 +159,9 @@ Radian MicroMeterPntVector::FindMaxRadian() const
     (
         m_list, 
         [](MicroMeterPosDir const & a, MicroMeterPosDir const & b) { return a.GetDir() < b.GetDir(); }
-   );
-    return maxElement.GetDir();
+    );
+    Radian const radMax { maxElement.GetDir() };
+    return radMax;
 }
 
 MicroMeter MicroMeterPntVector::FindMaxPos() const
