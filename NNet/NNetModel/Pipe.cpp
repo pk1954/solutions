@@ -242,47 +242,6 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
-Pipe * SelectPipe
-(
-	Nob *           pNob,
-	PipePair const& splitPipes,
-	float           fPosSplit
-)
-{
-	return (Cast2Synapse(pNob)->GetPosOnMainPipe() < fPosSplit)
-		   ? splitPipes.first.get()
-		   : splitPipes.second.get();
-}
-
-// Split: create two new pipes and add links to Synapses of existing Pipe
-//        do not affect Synapses themselves
-
-PipePair Pipe::Split(Nob & nobSplit) const
-{
-	PosNob&  posNobSplit { *Cast2PosNob(&nobSplit) };
-	float    fPosSplit   { PosOnPipe(posNobSplit.GetPos()) };
-	PipePair splitPipes
-	{
-		make_unique<Pipe>(m_pNobStart, &posNobSplit),
-		make_unique<Pipe>(&posNobSplit, m_pNobEnd)
-	};
-
-	for (auto it : m_synapses)
-	{
-		Pipe * const pPipeNew { SelectPipe(it, splitPipes, fPosSplit) };
-		pPipeNew->AddSynapse(Cast2Synapse(it));
-	}
-
-	posNobSplit.AddIncoming(splitPipes.first.get());
-	posNobSplit.AddOutgoing(splitPipes.second.get());
-
-	posNobSplit.Select(IsSelected());
-	splitPipes.first->Select(IsSelected());
-	splitPipes.second->Select(IsSelected());
-
-	return splitPipes;
-}
-
 void Pipe::AddSynapse(Nob* pNob)
 {
 	assert(pNob->IsSynapse());

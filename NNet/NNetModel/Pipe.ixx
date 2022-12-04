@@ -34,7 +34,6 @@ class Pipe;
 
 export using PipeFunc = function<void(Pipe&)>;
 export using PipeCrit = function<bool(Pipe const&)>;
-export using PipePair = pair<unique_ptr<Pipe>, unique_ptr<Pipe>>;
 
 export class Pipe : public Nob
 {
@@ -90,8 +89,6 @@ public:
 	void          RotateNob(MicroMeterPnt const&, Radian const) final { /* Pipe dir defined by endpoints */ }
 	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
 	void          Reconnect()                                   final { /* nothing to connect */ };
-
-	PipePair Split(Nob &) const;
 
 	Radian        GetDir()        const final { return Vector2Radian(GetVector()); };
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
@@ -191,4 +188,3 @@ private:
 
 export Pipe const * Cast2Pipe(Nob const *);
 export Pipe       * Cast2Pipe(Nob       *);
-export Pipe       * SelectPipe(Nob*, PipePair const&, float);

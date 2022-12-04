@@ -33,7 +33,7 @@ public:
 		NobId const idIoLine,
 		NobId const idPipe
 	)
-	  : SplitPipeCommand(idPipe, m_pNMWI->GetNobPos(idIoLine)),
+	  : SplitPipeCommand(idPipe),
 		m_idIoLine      (idIoLine),
 		m_pInputLine    (m_pNMWI->GetNobPtr<InputLine*>(idIoLine))
 	{

@@ -25,7 +25,7 @@ public:
 		NobId         const   idPipe, 
 		MicroMeterPnt const & umSplitPoint 
 	)
-      : SplitPipeCommand(idPipe, umSplitPoint)
+      : SplitPipeCommand(idPipe)
 	{
 		m_upInsertNob = make_unique<POS_NOB>(umSplitPoint);
 		SplitPipeCommand::InitSplit(*m_upInsertNob.get());

@@ -32,7 +32,7 @@ public:
 		NobId         const  idPipe,
 		MicroMeterPnt const& umSplitPoint
 	)
-      : SplitPipeCommand(idPipe, umSplitPoint)
+      : SplitPipeCommand(idPipe)
 	{
 		m_upFork       = make_unique<Fork>(umSplitPoint);
 		m_upOutputLine = make_unique<OutputLine>(umSplitPoint + m_pNMWI->OrthoVector(idPipe));
