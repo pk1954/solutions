@@ -150,6 +150,7 @@
     <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
     <ClCompile Include="SplitNeuronCmd.ixx" />
+    <ClCompile Include="SplitPipeCommand.ixx" />
     <ClCompile Include="ToggleEmphModeCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
   </ItemGroup>

@@ -219,5 +219,8 @@
     <ClCompile Include="DeleteForkOutputCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SplitPipeCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
