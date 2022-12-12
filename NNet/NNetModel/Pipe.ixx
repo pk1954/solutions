@@ -32,8 +32,9 @@ using std::unique_ptr;
 
 class Pipe;
 
-export using PipeFunc = function<void(Pipe&)>;
-export using PipeCrit = function<bool(Pipe const&)>;
+export using PipeFunc  = function<void(Pipe      &)>;
+export using PipeFuncC = function<void(Pipe const&)>;
+export using PipeCrit  = function<bool(Pipe const&)>;
 
 export class Pipe : public Nob
 {
@@ -162,7 +163,7 @@ public:
 			func(it);
 	}
 
-	void FixSynapses() const;
+	void RecalcSegments();
 
 private:
 	Nob      * m_pNobStart { nullptr };  //TODO: Nob --> PosNob
@@ -174,7 +175,6 @@ private:
 
 	MicroMeterPnt dislocation() const;
 	size_t        segNr2index(SegNr const) const;
-	void          recalcSegments();
 	void          posChangedRecursive(Pipe const&);
 
 	MicroMeterPnt getSegmentPos(SegNr const segNr, float const fPos) const

@@ -21,6 +21,10 @@ public:
 
     explicit Fork(MicroMeterPnt const);
 
+    Fork(Fork const&);
+
+    static bool TypeFits(NobType const type) { return type.IsForkType(); }
+
     size_t GetNrOfInConns () const final { return 1; }
     size_t GetNrOfOutConns() const final { return 2; }
 
@@ -29,9 +33,13 @@ public:
     Radian        GetDir()       const final { return Radian::NULL_VAL(); }
     NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
 
-    Pipe* GetIncoming      () { return m_pPipeIn; }
-    Pipe* GetFirstOutgoing () { return m_pPipeOut1; }
+    Pipe* GetIncoming()       { return m_pPipeIn; }
+    Pipe* GetFirstOutgoing()  { return m_pPipeOut1; }
     Pipe* GetSecondOutgoing() { return m_pPipeOut2; }
+
+    Pipe const * GetIncoming()       const { return m_pPipeIn; }
+    Pipe const * GetFirstOutgoing()  const { return m_pPipeOut1; }
+    Pipe const * GetSecondOutgoing() const { return m_pPipeOut2; }
 
     Pipe* GetOtherOutgoing(Pipe*);
 
@@ -55,8 +63,11 @@ public:
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
-    void Apply2AllInPipes (PipeFunc const& f) const final;
-    void Apply2AllOutPipes(PipeFunc const& f) const final;
+    void Apply2AllInPipes (PipeFunc const&) final;
+    void Apply2AllOutPipes(PipeFunc const&) final;
+
+    void Apply2AllInPipesC (PipeFuncC const&) const final;
+    void Apply2AllOutPipesC(PipeFuncC const&) const final;
 
     bool Apply2AllInPipesB (PipeCrit const& c) const final;
     bool Apply2AllOutPipesB(PipeCrit const& c) const final;

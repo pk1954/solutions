@@ -51,24 +51,32 @@ void Script::ScrReadSpecial(wchar_t const wchExpected)
 	}             
 }
 
-void Script::ScrReadString(wstring const & wstrExpected)
+void Script::ScrReadSpecialString(wstring const& wstrExpected)
 {
-	m_scanner.SetExpectedToken(wstrExpected);
+    m_scanner.SetExpectedToken(wstrExpected);
 
-	switch (m_scanner.NextToken(true))
-	{
-	case tTOKEN::End:         // end of file reached 
-		ScriptErrorHandler::eofError();
-		break;
+    for (int i = 0; i < wstrExpected.size(); i++)
+        ScrReadSpecial(wstrExpected[i]);
+}
 
-	case tTOKEN::Name:
-		if (m_scanner.GetString() != wstrExpected)
-			ScriptErrorHandler::stringError();
-		break;
+void Script::ScrReadString(wstring const& wstrExpected)
+{
+    m_scanner.SetExpectedToken(wstrExpected);
 
-	default: 
-		ScriptErrorHandler::stringError();
-	}             
+    switch (m_scanner.NextToken(true))
+    {
+    case tTOKEN::End:         // end of file reached 
+        ScriptErrorHandler::eofError();
+        break;
+
+    case tTOKEN::Name:
+        if (m_scanner.GetString() != wstrExpected)
+            ScriptErrorHandler::stringError();
+        break;
+
+    default:
+        ScriptErrorHandler::stringError();
+    }
 }
 
 //   readSign: Read '+' or '-'

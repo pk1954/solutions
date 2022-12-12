@@ -73,11 +73,11 @@ public:
 
     float SetParam(ParamType::Value const p, float const f) { return m_pModel->SetParam(p, f); }
 
-    void  SetDescriptionUI   (DescriptionUI & ui)   { m_pModel->SetDescriptionUI(ui); }
-    void  SetModelFilePath   (wstring const & wstr) { m_pModel->SetModelFilePath(wstr); }
-    void  AddDescriptionLine (wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
-    void  DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
-    void  DeselectAllNobs    () const               { m_pModel->DeselectAllNobs(); }
+    void SetDescriptionUI   (DescriptionUI & ui)   { m_pModel->SetDescriptionUI(ui); }
+    void SetModelFilePath   (wstring const & wstr) { m_pModel->SetModelFilePath(wstr); }
+    void AddDescriptionLine (wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
+    void DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
+    void DeselectAllNobs    () const               { m_pModel->DeselectAllNobs(); }
 
     void AddOutgoing(NobId const, Pipe *);
     void AddIncoming(NobId const, Pipe *);

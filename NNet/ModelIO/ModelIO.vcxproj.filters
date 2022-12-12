@@ -19,7 +19,7 @@
     <ClCompile Include="NNetWrapperBase.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WrapCreateNob.ixx">
+    <ClCompile Include="NobIo.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WrapNrOfNobs.ixx">
@@ -56,6 +56,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetModelIO.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NobIo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -47,8 +47,9 @@ Pipe::Pipe
 	m_pNobStart(pKnotStart),
 	m_pNobEnd  (pKnotEnd)
 {
-	assert(pKnotStart && pKnotEnd);
-	PositionChanged();
+	assert(pKnotStart);
+	assert(pKnotEnd);
+	RecalcSegments();
 }
 
 Pipe::Pipe(Pipe const & src) :  // copy constructor
@@ -56,7 +57,8 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
 	m_potIndex (src.m_potIndex ),
-	m_potential(src.m_potential)
+	m_potential(src.m_potential),
+	m_synapses(src.m_synapses)
 { 
 }
 
@@ -98,7 +100,10 @@ void Pipe::ClearDynamicData()
 
 bool Pipe::IsConnectedSynapse(Nob const & synapse) const
 {
-	return find(m_synapses, &synapse) != end(m_synapses);
+	for (Nob* nob : m_synapses)
+		if (nob->GetId() == synapse.GetId())
+			return true;
+	return false;
 }
 
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
@@ -106,6 +111,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
 	m_pNobStart = static_cast<PosNob *>(dstFromSrc(pipeSrc.GetStartNobPtr()));
 	m_pNobEnd   = static_cast<PosNob *>(dstFromSrc(pipeSrc.GetEndNobPtr  ()));
+	for (int i = 0; i < m_synapses.size(); ++i)
+		m_synapses[i] = static_cast<PosNob*>(dstFromSrc(pipeSrc.m_synapses[i]));
 }
 
 void Pipe::Check() const
@@ -152,20 +159,12 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 
 void Pipe::SetStartPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
-	if (pPosNob)
-	{
-		m_pNobStart = pPosNob;
-		PositionChanged();
-	}
+	m_pNobStart = pPosNob;
 }
 
 void Pipe::SetEndPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
-	if (pPosNob)
-	{
-		m_pNobEnd = pPosNob;
-		PositionChanged();
-	}
+	m_pNobEnd = pPosNob;
 }
 
 void Pipe::DislocateEndPoint() 
@@ -248,7 +247,7 @@ void Pipe::AddSynapse(Nob* pNob)
 	m_synapses.push_back(pNob);
 }
 
-void Pipe::recalcSegments()
+void Pipe::RecalcSegments()
 {
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
@@ -259,6 +258,7 @@ void Pipe::recalcSegments()
 
 void Pipe::PositionChanged()
 {
+	assert(IsPipe());
 	posChangedRecursive(*this);
 }
 
@@ -274,12 +274,12 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 				Pipe   * pPipeAdd { pSynapse->GetAddPipe() };
 				if (pPipeAdd != &pipeOrigin)
 					pPipeAdd->posChangedRecursive(pipeOrigin);
-				pSynapse->RecalcPos();
+				pSynapse->RecalcPositions();
 			}
 		);
 		if (m_pNobEnd->IsSynapse())
-			Cast2Synapse(m_pNobEnd)->RecalcPos();
-		recalcSegments();
+			Cast2Synapse(m_pNobEnd)->RecalcPositions();
+		RecalcSegments();
 	}
 }
 
@@ -451,7 +451,7 @@ wostream & operator<< (wostream & out, Pipe const & pipe)
 {
 	out << OPEN_BRACKET 
 		<< pipe.GetStartKnotId() 
-		<< FROM_TO
+		<< PIPE_TO
 		<< pipe.GetEndKnotId() 
 		<< CLOSE_BRACKET;
 	return out;

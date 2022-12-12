@@ -45,7 +45,7 @@ ConnAnimationCommand::ConnAnimationCommand()
     umPntVector.Align(line);
     AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after position alignment
 
-    umPntVector.SetDir(Vector2Radian(CalcOrthoVector(m_nobsAnimated, line)));
+    umPntVector.SetDirVector(::CalcOrthoVector(m_nobsAnimated, line));
     AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);

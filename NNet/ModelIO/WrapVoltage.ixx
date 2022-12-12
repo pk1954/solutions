@@ -28,7 +28,7 @@ public:
     void Write(wostream & out) const final
     {
         NNetModelReaderInterface const& nmwi{ m_modelIO.GetExportNMRI() };
-        nmwi.Apply2AllC<PosNob     >([this, &out](PosNob    const& s) { writeVoltage(out, s); });
+        nmwi.Apply2AllC<PosNob     >([this, &out](PosNob      const& s) { writeVoltage(out, s); });
         nmwi.Apply2AllC<Pipe       >([this, &out](Pipe        const& s) { writeVoltage(out, s); });
         nmwi.Apply2AllC<IoConnector>([this, &out](IoConnector const& s) { writeVoltage(out, s); });
     };

@@ -22,7 +22,7 @@ public:
     explicit MakeConnAnimation(vector<IoLine*>&& list)
     {
         if (list.front()->IsInputLine())
-            m_upIoConnector = make_unique<InputConnector>(m_pNMWI->GetParams(), move(list));
+            m_upIoConnector = make_unique<InputConnector>(move(list));
         else
             m_upIoConnector = make_unique<OutputConnector>(move(list));
     }

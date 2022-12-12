@@ -30,7 +30,9 @@ void WrapVoltage::setVoltage(Script & script) const
     using enum NobType::Value;
     case inputLine:
     case outputLine:
+    case synapse:
     case neuron:
+    case fork:
     case knot:
         setPosNobVoltage(script, idFromScript);
         break;
@@ -104,13 +106,15 @@ void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const
     if (nob.IsDefined())
     {
         WriteCmdName(out);
-        out << m_modelIO.GetCompactIdVal(nob.GetId()) << L" " << nob.GetName();
+        out << m_modelIO.GetCompactIdVal(nob.GetId()) << L" " << nob.GetTypeName();
         switch (nob.GetNobType().GetValue())
         {
         case NobType::Value::inputLine:
         case outputLine:
         case neuron:
         case knot:
+        case fork:
+        case synapse:
             out << static_cast<PosNob const &>(nob).GetVoltage();
             break;
 

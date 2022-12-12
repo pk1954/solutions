@@ -28,7 +28,7 @@ import WrapVoltage;
 import WrapProtocol;
 import WrapSimulationTime;
 import NNetWrapperBase;
-import WrapCreateNob;
+import NobIo;
 import WrapNrOfNobs;
 import WrapNrOfTracks;
 import WrapActiveSigGen;
@@ -59,7 +59,7 @@ void NNetModelIO::Initialize()
     m_wrapVector.push_back(make_unique<WrapDescription    >(L"Description",     *this));
     m_wrapVector.push_back(make_unique<WrapGlobalParameter>(L"GlobalParameter", *this));
     m_wrapVector.push_back(make_unique<WrapNrOfNobs       >(L"NrOfNobs",        *this));
-    m_wrapVector.push_back(make_unique<WrapCreateNob      >(L"CreateNob",       *this));
+    m_wrapVector.push_back(make_unique<NobIo              >(L"CreateNob",       *this));
     m_wrapVector.push_back(make_unique<WrapVoltage        >(L"Voltage",         *this));
     m_wrapVector.push_back(make_unique<WrapSignalGenerator>(L"SignalGenerator", *this));
     m_wrapVector.push_back(make_unique<WrapSetSigGen      >(L"SetSigGen",       *this));
@@ -141,6 +141,14 @@ void NNetModelIO::importModel()
     }
     if (bSuccess)
     {
+        m_upImportedNMWI->Apply2All<Synapse>
+        (
+            [](Synapse& synapse) { synapse.RecalcPositions(); }
+        );
+        m_upImportedNMWI->Apply2All<Pipe>
+        (
+            [](Pipe& pipe) { pipe.RecalcSegments(); }
+        );
         m_upImportedNMWI->SetModelFilePath(m_wstrFile2Read);
         m_upImportedNMWI->DescriptionComplete();
         res = InputOutputUI::Result::ok;
@@ -162,21 +170,17 @@ void NNetModelIO::CheckImportedNobId
     NobId     const   id 
 )
 {        
-    wstring const strNobId { to_wstring(id.GetValue()) };
     if (IsUndefined(id))
     {
+        wstring const strNobId { to_wstring(id.GetValue()) };
         script.SetExpectedToken(L"NobId != NO_NOB");
         throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
     }
     else if (! list.IsValidNobId(id))
     {
+        wstring const strNobId { to_wstring(id.GetValue()) };
         script.SetExpectedToken(L"id < " + to_wstring(list.Size()));
         throw ScriptErrorHandler::ScriptException(999, wstring(L"Invalid nob id: ") + strNobId);
-    }
-    else if (! list.IsNobDefined(id))
-    {
-        script.SetExpectedToken(L"Defined NobId");
-        throw ScriptErrorHandler::ScriptException(999, wstring(L"Nob is not defined: ") + strNobId);
     }
 };
 
@@ -235,11 +239,10 @@ void NNetModelIO::writeHeader(wostream & out) const
 void NNetModelIO::compress(NNetModelReaderInterface const & nmri)
 {
     m_CompactIds.Resize(nmri.GetSizeOfNobList());
-    NobId idCompact(0);
+    int iCount { 0 };
     for (int i = 0; i < m_CompactIds.Size(); ++i)
-    {
-        m_CompactIds.SetAt(i, nmri.GetConstNob(NobId(i)) ? idCompact++ : NobId());
-    }
+        m_CompactIds.SetAt(i, nmri.GetConstNob(NobId(i)) ? NobId(iCount++) : NO_NOB);
+    m_nrOfcompactIds = iCount;
 }
 
 int NNetModelIO::GetCompactIdVal(NobId const id) const
@@ -248,8 +251,8 @@ int NNetModelIO::GetCompactIdVal(NobId const id) const
 }
 
 size_t NNetModelIO::NrOfCompactIds() const 
-{ 
-    return m_CompactIds.Size(); 
+{
+    return m_nrOfcompactIds;
 }
 
 void NNetModelIO::Export

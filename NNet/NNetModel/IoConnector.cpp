@@ -91,7 +91,7 @@ void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 void IoConnector::AlignDirection()
 {
     MicroMeterLine const umLine   { m_list.front()->GetPos(), m_list.back()->GetPos() };
-    MicroMeterPnt  const umPntDir { CalcOrthoVector(umLine) };
+    MicroMeterPnt  const umPntDir { ::CalcOrthoVector(m_list, umLine) };
     for (auto it : m_list) { it->SetDirVector(umPntDir); }
 }
 
@@ -214,11 +214,6 @@ void IoConnector::Expand(MicroMeterRect & umRect) const
 MicroMeterLine IoConnector::CalcMaxDistLine() const // find two nobs with maximum distance
 {
     return ::CalcMaxDistLine<IoLine>(m_list);
-}
-
-MicroMeterPnt IoConnector::CalcOrthoVector(MicroMeterLine const & line) const 
-{
-    return ::CalcOrthoVector(m_list, line);
 }
 
 void IoConnector::AppendMenuItems(AddMenuFunc const & add) const

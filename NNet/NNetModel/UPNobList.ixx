@@ -49,6 +49,7 @@ public:
 	Nob &  GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
 	void   IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
 	void   ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
+	void   Reserve     (long  const nr)       { m_list.reserve(nr); }
 
 	void         Clear();
 	UPNob        ExtractNob(NobId const);

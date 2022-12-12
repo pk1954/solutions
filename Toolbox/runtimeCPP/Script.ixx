@@ -40,6 +40,7 @@ public:
 	wstring        ScrReadString(void);
 	void           ScrReadString(wstring const&);
 	void           ScrReadSpecial(wchar_t const);
+	void           ScrReadSpecialString(wstring const&);
 
 	// Helper routines for error handlers 
 

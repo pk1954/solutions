@@ -33,6 +33,7 @@ public:
 
 		m_upPipe->SetStartPnt(m_upInputLine.get());
 		m_upPipe->SetEndPnt  (m_upNeuronNew.get());
+		m_upPipe->PositionChanged();
 
 		m_upNeuronNew->SetAxon(m_neuronOld.GetAxon()); // add axon
 		m_upNeuronNew->AddIncoming(&m_neuronOld);       // add existing inputs 
@@ -45,7 +46,14 @@ public:
 
 	void Do() final
 	{
-		m_neuronOld.Apply2AllInPipes([this](Pipe& pipe) { pipe.SetEndPnt(m_upNeuronNew.get()); });
+		m_neuronOld.Apply2AllInPipes
+		(
+			[this](Pipe& pipe) 
+			{ 
+				pipe.SetEndPnt(m_upNeuronNew.get());
+				pipe.PositionChanged();
+			}
+		);
 		m_pNMWI->Push2Model(move(m_upNeuronNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upInputLine));
@@ -57,7 +65,14 @@ public:
 		m_upInputLine = m_pNMWI->PopFromModel<InputLine>();
 		m_upPipe      = m_pNMWI->PopFromModel<Pipe>();
 		m_upNeuronNew = m_pNMWI->PopFromModel<Neuron>();
-		m_neuronOld.Apply2AllInPipes([this](Pipe& pipe) { pipe.SetEndPnt(m_upNeuronOld.get()); });
+		m_neuronOld.Apply2AllInPipes
+		(
+			[this](Pipe& pipe) 
+			{ 
+				pipe.SetEndPnt(m_upNeuronOld.get()); 
+				pipe.PositionChanged();
+			}
+		);
 		m_pNMWI->Restore2Model(move(m_upNeuronOld));
 	}
 

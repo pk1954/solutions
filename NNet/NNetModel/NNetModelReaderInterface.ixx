@@ -152,6 +152,11 @@ public:
 		return T::TypeFits(GetNobType(id)); 
 	}
 
+	void Apply2AllC(auto const& func) const
+	{
+		GetUPNobsC().Apply2AllC(func);
+	}
+
 	template <Nob_t T>    // const version
 	void Apply2AllC(auto const& func) const
 	{

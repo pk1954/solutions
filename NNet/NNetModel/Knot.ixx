@@ -43,8 +43,11 @@ public:
 	mV               GetNextOutput() const final { return m_mVinputBuffer; }
 	NobIoMode        GetIoMode()     const final { return NobIoMode::internal; }
 
-	Pipe * GetIncoming() { return m_pPipeIn; }
-	Pipe * GetOutgoing() { return m_pPipeOut; }
+	Pipe* GetIncoming() { return m_pPipeIn; }
+	Pipe* GetOutgoing() { return m_pPipeOut; }
+
+	Pipe const * GetIncoming() const { return m_pPipeIn; }
+	Pipe const * GetOutgoing() const { return m_pPipeOut; }
 
 	void SetPos   (MicroMeterPnt const&)               final;
 	void MoveNob  (MicroMeterPnt const&)               final;
@@ -61,6 +64,8 @@ public:
 	{
 		m_pPipeIn ->SetEndPnt  (this);
 		m_pPipeOut->SetStartPnt(this);
+		m_pPipeIn->PositionChanged();
+		m_pPipeOut->PositionChanged();
 	};
 
 	void Emphasize(bool const, bool const);
@@ -68,8 +73,11 @@ public:
 	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
 	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
-	void Apply2AllInPipes (PipeFunc const& f) const final { f(*m_pPipeIn); }
-	void Apply2AllOutPipes(PipeFunc const& f) const final { f(*m_pPipeOut); }
+	void Apply2AllInPipes (PipeFunc const& f) final { f(*m_pPipeIn); }
+	void Apply2AllOutPipes(PipeFunc const& f) final { f(*m_pPipeOut); }
+
+	void Apply2AllInPipesC (PipeFuncC const& f) const final { f(*m_pPipeIn); }
+	void Apply2AllOutPipesC(PipeFuncC const& f) const final { f(*m_pPipeOut); }
 
 	bool Apply2AllInPipesB (PipeCrit const& c) const final { return c(*m_pPipeIn); }
 	bool Apply2AllOutPipesB(PipeCrit const& c) const final { return c(*m_pPipeOut); }

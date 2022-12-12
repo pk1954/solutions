@@ -60,11 +60,13 @@ public:
 	size_t GetNrOfOutConns() const final { return 1; }
 	size_t GetNrOfInConns () const final { return m_inPipes.Size(); }
 
-	void Apply2AllInPipes (PipeFunc const& f) const final { m_inPipes.Apply2All(f); }
-	bool Apply2AllInPipesB(PipeCrit const& c) const final { return m_inPipes.Apply2AllB(c); }
+	void Apply2AllInPipes (PipeFunc  const& f)       final { m_inPipes.Apply2All(f); }
+	void Apply2AllInPipesC(PipeFuncC const& f) const final { m_inPipes.Apply2All(f); }
+	bool Apply2AllInPipesB(PipeCrit  const& c) const final { return m_inPipes.Apply2AllB(c); }
 
-	void Apply2AllOutPipes (PipeFunc const& f) const final { f(*m_pPipeAxon); }
-	bool Apply2AllOutPipesB(PipeCrit const& c) const final { return c(*m_pPipeAxon); }
+	void Apply2AllOutPipes (PipeFunc  const& f)       final { f(*m_pPipeAxon); }
+	void Apply2AllOutPipesC(PipeFuncC const& f) const final { f(*m_pPipeAxon); }
+	bool Apply2AllOutPipesB(PipeCrit  const& c) const final { return c(*m_pPipeAxon); }
 
 	void RemoveIncoming(Pipe* const);
 
@@ -84,10 +86,12 @@ public:
 	void SetAllIncoming(PosNob &) final;
 	void SetAllOutgoing(PosNob &) final;
 
-	Pipe const * GetAxonC() const { return m_pPipeAxon; }
-	Pipe       * GetAxon ()       { return m_pPipeAxon; }
+	Pipe const * GetAxon() const { return m_pPipeAxon; }
+	Pipe       * GetAxon()       { return m_pPipeAxon; }
 
-	Pipe * GetFirstIncoming() { return &m_inPipes.GetFirst(); }
+	Pipe* GetFirstIncoming() { return &m_inPipes.GetFirst(); }
+
+	Pipe const * GetIncoming(size_t i) const { return &m_inPipes.Get(i); }
 
 protected:
 

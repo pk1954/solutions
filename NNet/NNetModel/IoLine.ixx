@@ -41,10 +41,7 @@ public:
 
 	void Link(Nob const&, Nob2NobFunc const&)          final;
 
-	void Apply2AllOutPipes (PipeFunc const& f) const   final;
-	bool Apply2AllOutPipesB(PipeCrit const& c) const   final;
-
-	void SetDirVector(MicroMeterPnt const p) { SetDir(Vector2Radian(p)); }
+	void SetDirVector(MicroMeterPnt const &p) { SetDir(Vector2Radian(p)); }
 
 	// IoLines can be locked or unlocked
 	void LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction

@@ -281,9 +281,6 @@
     <ClCompile Include="Fork.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PosNobFactory.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdSigGen.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

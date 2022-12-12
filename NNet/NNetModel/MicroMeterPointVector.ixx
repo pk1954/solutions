@@ -37,6 +37,7 @@ public:
 
     void SetPosDir(unsigned int const, MicroMeterPosDir const &);
     void SetDir(Radian const);
+    void SetDirVector(MicroMeterPnt const &p) { SetDir(Vector2Radian(p)); }
     void SetDir(MicroMeterPntVector const &);
     void SetPos(MicroMeterPntVector const &);
     void Resize(size_t const);

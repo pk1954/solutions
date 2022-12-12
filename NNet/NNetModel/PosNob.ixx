@@ -53,11 +53,14 @@ public:
 	virtual void ReplaceIncoming(Pipe* const, Pipe* const) = 0;
 	virtual void ReplaceOutgoing(Pipe* const, Pipe* const) = 0;
 
-	virtual void Apply2AllInPipes (PipeFunc const& f) const = 0;
-	virtual void Apply2AllOutPipes(PipeFunc const& f) const = 0;
+	virtual void Apply2AllInPipes (PipeFunc const&) = 0;
+	virtual void Apply2AllOutPipes(PipeFunc const&) = 0;
 
-	virtual bool Apply2AllInPipesB (PipeCrit const& c) const = 0;
-	virtual bool Apply2AllOutPipesB(PipeCrit const& c) const = 0;
+	virtual void Apply2AllInPipesC (PipeFuncC const&) const = 0;
+	virtual void Apply2AllOutPipesC(PipeFuncC const&) const = 0;
+
+	virtual bool Apply2AllInPipesB (PipeCrit const&) const = 0;
+	virtual bool Apply2AllOutPipesB(PipeCrit const&) const = 0;
 
 	bool Apply2AllConnectedPipesB(PipeCrit const&) const;
 

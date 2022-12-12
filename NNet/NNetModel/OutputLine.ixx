@@ -36,8 +36,21 @@ public:
 	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
 	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final { assert(false); }
 
-	void Apply2AllInPipes (PipeFunc const& f) const final {};
-	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
+	void Apply2AllOutPipes (PipeFunc  const& f)       final {};
+	void Apply2AllOutPipesC(PipeFuncC const& f) const final {};
+	bool Apply2AllOutPipesB(PipeCrit  const& c) const final { return false; }
+
+	void Apply2AllInPipes(PipeFunc const& f) final
+	{
+		Pipe * pPipe = GetPipe();
+		f(*pPipe);
+	}
+	void Apply2AllInPipesC(PipeFuncC const& f) const final
+	{
+		Pipe const* pPipe = GetPipeC();
+		f(*pPipe);
+	}
+	bool Apply2AllInPipesB(PipeCrit const& c) const final { return c(*GetPipeC()); }
 
 	void SetAllOutgoing(PosNob&) final;
 	void SetAllIncoming(PosNob&) final;

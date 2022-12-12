@@ -121,12 +121,12 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	IoConnector const * pConnSrc     { nullptr };
 	IoConnector const * pConnDst     { nullptr };
 
-	     if (typeSrc.IsPosNobType   ()) pPosNobSrc = m_pModel->GetNobConstPtr<PosNob    const *>(idSrc);
-	else if (typeSrc.IsIoConnectorType()) pConnSrc     = m_pModel->GetNobConstPtr<IoConnector const *>(idSrc);
+	     if (typeSrc.IsPosNobType     ()) pPosNobSrc = m_pModel->GetNobConstPtr<PosNob      const *>(idSrc);
+	else if (typeSrc.IsIoConnectorType()) pConnSrc   = m_pModel->GetNobConstPtr<IoConnector const *>(idSrc);
 
-	     if (typeDst.IsPosNobType   ()) pPosNobDst = m_pModel->GetNobConstPtr<PosNob    const *>(idDst);
-	else if (typeDst.IsPipeType       ()) pPipeDst     = m_pModel->GetNobConstPtr<Pipe        const *>(idDst);
-	else if (typeDst.IsIoConnectorType()) pConnDst     = m_pModel->GetNobConstPtr<IoConnector const *>(idDst);
+	     if (typeDst.IsPosNobType     ()) pPosNobDst = m_pModel->GetNobConstPtr<PosNob      const *>(idDst);
+	else if (typeDst.IsPipeType       ()) pPipeDst   = m_pModel->GetNobConstPtr<Pipe        const *>(idDst);
+	else if (typeDst.IsIoConnectorType()) pConnDst   = m_pModel->GetNobConstPtr<IoConnector const *>(idDst);
 
 	if (pPosNobSrc)
 	{

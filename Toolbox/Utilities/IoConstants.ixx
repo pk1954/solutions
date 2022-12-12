@@ -10,7 +10,8 @@ export module IoConstants;
 
 using std::wstring;
 
-export inline wstring const FROM_TO            { L"->" };
+export inline wstring const PIPE_FROM          { L"<-" };
+export inline wstring const PIPE_TO            { L"->" };
 export inline wchar_t const SEPARATOR          { L'|' };
 export inline wchar_t const NR_SEPARATOR       { L':' };
 export inline wchar_t const ID_SEPARATOR       { L',' };

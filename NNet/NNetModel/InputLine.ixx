@@ -24,7 +24,7 @@ export class InputLine : public IoLine
 {
 public:
 
-	explicit InputLine(MicroMeterPnt const &);
+	explicit InputLine(MicroMeterPnt const&);
 	explicit InputLine(PosNob&);
 
 	~InputLine() final = default;
@@ -33,8 +33,8 @@ public:
 
 	void SetSigGen(SignalGenerator* const p) { m_pSigGen = p; }
 
-	SignalGenerator       * GetSigGen()        { return m_pSigGen; }
-	SignalGenerator const * GetSigGenC() const { return m_pSigGen; }
+	SignalGenerator* GetSigGen() { return m_pSigGen; }
+	SignalGenerator const* GetSigGenC() const { return m_pSigGen; }
 
 	static bool TypeFits(NobType const type) { return type.IsInputLineType(); }
 
@@ -43,8 +43,13 @@ public:
 	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final { assert(false); };
 	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
-	void Apply2AllInPipes (PipeFunc const& f) const final {};
-	bool Apply2AllInPipesB(PipeCrit const& c) const final { return false; }
+	void Apply2AllInPipes (PipeFunc  const& f)       final {};
+	void Apply2AllInPipesC(PipeFuncC const& f) const final {};
+	bool Apply2AllInPipesB(PipeCrit  const& c) const final { return false; }
+
+	void Apply2AllOutPipes (PipeFunc  const& f)       final { f(*GetPipe ()); }
+	void Apply2AllOutPipesC(PipeFuncC const& f) const final { f(*GetPipeC()); }
+	bool Apply2AllOutPipesB(PipeCrit  const& c) const final { return c(*GetPipeC());	}
 
 	void SetAllIncoming(PosNob&) final;
 	void SetAllOutgoing(PosNob&) final;

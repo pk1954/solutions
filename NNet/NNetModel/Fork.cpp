@@ -16,6 +16,17 @@ Fork::Fork(MicroMeterPnt const center)
 	m_circle(center, KNOT_WIDTH)
 {}
 
+Fork::Fork(Fork const & rhs)
+	: PosNob(NobType::Value::fork)
+{
+	PosNob::operator=(rhs);
+
+	m_circle    = rhs.m_circle;
+	m_pPipeIn   = rhs.m_pPipeIn;
+	m_pPipeOut1 = rhs.m_pPipeOut1;
+	m_pPipeOut2 = rhs.m_pPipeOut2;
+}
+
 void Fork::Check() const
 {
 	PosNob::Check();
@@ -72,18 +83,29 @@ void Fork::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 		assert(false);
 }
 
-void Fork::Apply2AllInPipes(PipeFunc const& f) const 
-{ 
+void Fork::Apply2AllInPipes(PipeFunc const& f)
+{
 	f(*m_pPipeIn);
 }
 
-void Fork::Apply2AllOutPipes(PipeFunc const& f) const 
-{ 
+void Fork::Apply2AllOutPipes(PipeFunc const& f)
+{
 	f(*m_pPipeOut1);
 	f(*m_pPipeOut2);
 }
 
-bool Fork::Apply2AllInPipesB(PipeCrit const& c) const 
+void Fork::Apply2AllInPipesC(PipeFuncC const& f) const
+{
+	f(*m_pPipeIn);
+}
+
+void Fork::Apply2AllOutPipesC(PipeFuncC const& f) const
+{
+	f(*m_pPipeOut1);
+	f(*m_pPipeOut2);
+}
+
+bool Fork::Apply2AllInPipesB(PipeCrit const& c) const
 { 
 	return c(*m_pPipeIn); 
 }
@@ -126,8 +148,11 @@ void Fork::SetAllOutgoing(PosNob& src)
 void Fork::Reconnect()
 {
 	m_pPipeIn->SetEndPnt(this);
+	m_pPipeIn->PositionChanged();
 	m_pPipeOut1->SetStartPnt(this);
+	m_pPipeOut1->PositionChanged();
 	m_pPipeOut2->SetStartPnt(this);
+	m_pPipeOut1->PositionChanged();
 };
 
 void Fork::AddIncoming(Pipe * pPipe)

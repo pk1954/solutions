@@ -16,6 +16,8 @@ import :InputConnector;
 import :OutputConnector;
 import :InputLine;
 import :OutputLine;
+import :Synapse;
+import :Fork;
 import :Knot;
 import :Neuron;
 import :Pipe;
@@ -44,6 +46,8 @@ UPNob ShallowCopy(Nob const & nob)  //TODO: simplify!
 	case outputConnector: return Copy<OutputConnector>(nob);
 	case inputLine:   	  return Copy<InputLine>(nob);
 	case outputLine:	  return Copy<OutputLine>(nob);
+	case synapse:		  return Copy<Synapse>(nob);
+	case fork:		      return Copy<Fork>(nob);
 	case knot:		      return Copy<Knot>(nob);
 	case neuron:		  return Copy<Neuron>(nob);
 	case pipe:		      return Copy<Pipe>(nob);
@@ -93,13 +97,18 @@ void UPNobList::SetNob2Slot(UPNob upNob)
 
 void UPNobList::SetNob2Slot(NobId const id, UPNob upNob) 
 {
+	assert(upNob);
 	assert(IsDefined(id));
 	assert(IsValidNobId(id));
-	assert(IsEmptySlot(id));
-	assert(upNob);
-
-	incCounter(upNob.get());
-	m_list[id.GetValue()] = move(upNob);
+	if (IsEmptySlot(id))
+	{
+		incCounter(upNob.get());
+		m_list[id.GetValue()] = move(upNob);
+	}
+	else
+	{
+		ReplaceNob(move(upNob));
+	}
 }
 
 Nob * UPNobList::ReplaceNob(UPNob upT)

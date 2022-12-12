@@ -31,7 +31,7 @@ public:
 		synapse,
 		pipe,
 		undefined,
-		nobTypeLast = pipe,
+		nobTypeLast = undefined,
 		nobTypeFirst = inputConnector
 	};
 

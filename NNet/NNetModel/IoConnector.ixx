@@ -80,7 +80,6 @@ public:
 	}
 
 	MicroMeterLine CalcMaxDistLine() const;
-	MicroMeterPnt  CalcOrthoVector(MicroMeterLine const &) const;
 
 	friend wostream& operator<< (wostream &, IoConnector const &);
 

@@ -24,11 +24,7 @@ import :IoLine;
 using std::make_unique;
 using std::vector;
 
-InputConnector::InputConnector
-(
-    NNetParameters & param,
-    vector<IoLine *> && src
-)
+InputConnector::InputConnector(vector<IoLine *> && src)
   : IoConnector(NobType::Value::inputConnector)
 {
     m_list = move(src);

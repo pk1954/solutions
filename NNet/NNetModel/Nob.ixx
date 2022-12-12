@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -58,27 +59,29 @@ public:
 
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };
 
-	virtual void SetDir   (Radian            const  );
-	virtual void SetPos   (MicroMeterPnt     const &) = 0;
+	virtual void SetDir   (Radian            const);
+	virtual void SetPos   (MicroMeterPnt     const&) { assert(false); }
 	virtual void SetPosDir(MicroMeterPosDir  const &);
 	virtual void AppendMenuItems(AddMenuFunc const &) const;
 
 	virtual MicroMeterPosDir GetPosDir() const;
 
-	virtual Radian        GetDir      ()                                         const = 0;
-	virtual MicroMeterPnt GetPos      ()                                         const = 0;
-	virtual NobIoMode     GetIoMode   ()                                         const = 0;
-	virtual void          DrawExterior(DrawContext    const &, tHighlight const) const = 0;
-	virtual void          DrawInterior(DrawContext    const &, tHighlight const) const = 0;
-	virtual void          Expand      (MicroMeterRect       &)                   const = 0;
-	virtual bool          IsIncludedIn(MicroMeterRect const &)                   const = 0;
-	virtual bool          Includes    (MicroMeterPnt  const &)                   const = 0;
-	virtual void          MoveNob     (MicroMeterPnt  const &)                         = 0;
-	virtual void          RotateNob   (MicroMeterPnt  const &, Radian const)           = 0;
-	virtual void          CollectInput()                                               = 0;
-	virtual bool          CompStep    ()                                               = 0;
-	virtual void          Link        (Nob const &, Nob2NobFunc const &)               = 0;
-	virtual void          Reconnect   ()                                               = 0;
+	virtual bool          IsIncludedIn(MicroMeterRect const &) const { assert(false); return false; }
+	virtual bool          Includes    (MicroMeterPnt  const &) const { assert(false); return false; }
+	virtual bool          CompStep    ()                             { assert(false); return false; }
+
+	virtual Radian        GetDir()    const { assert(false); return 0.0_Radian; }
+	virtual MicroMeterPnt GetPos()    const { assert(false); return NP_NULL; }
+	virtual NobIoMode     GetIoMode() const { assert(false); return NobIoMode::internal; }
+
+	virtual void          DrawExterior(DrawContext    const &, tHighlight const) const {}
+	virtual void          DrawInterior(DrawContext    const &, tHighlight const) const {}
+	virtual void          Expand      (MicroMeterRect       &)                   const {}
+	virtual void          MoveNob     (MicroMeterPnt  const &)                         {}
+	virtual void          RotateNob   (MicroMeterPnt  const &, Radian const)           {}
+	virtual void          CollectInput()                                               {}
+	virtual void          Link        (Nob const &, Nob2NobFunc const &)               {}
+	virtual void          Reconnect   ()                                               {}
 
 	virtual void PositionChanged() { };
 
@@ -96,7 +99,7 @@ public:
 	bool    IsSelected   () const { return m_bSelected; }
 	bool    IsEmphasized () const { return m_bEmphasized; }
 	bool    IsDefined    () const { return ::IsDefined(m_identifier); }
-	wstring GetName      () const { return NobType::GetName(m_type.GetValue()); }
+	wstring GetTypeName  () const { return NobType::GetName(m_type.GetValue()); }
 	NobType GetNobType   () const { return m_type; }
 	NobId   GetId        () const { return m_identifier; }
 

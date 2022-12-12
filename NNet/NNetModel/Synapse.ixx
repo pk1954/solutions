@@ -10,6 +10,7 @@ module;
 export module NNetModel:Synapse;
 
 import DrawContext;
+import :NobId;
 import :PosNob;
 import :NobType;
 import :Pipe;
@@ -20,7 +21,11 @@ export class Synapse : public PosNob
 {
 public:
 
-    Synapse(Pipe * const, Pipe * const);
+    Synapse(Pipe* const, Pipe* const);
+    Synapse(Nob * const, Nob * const);
+    Synapse(Synapse const&);
+
+    static bool TypeFits(NobType const type) { return type.IsSynapseType(); }
 
     void Dump()  const final;
     void Check() const final;
@@ -30,10 +35,9 @@ public:
     Radian    GetDir()    const final { return Radian::NULL_VAL(); };
     NobIoMode GetIoMode() const final { return NobIoMode::internal; }
 
-    void CollectInput()        final;
-    bool CompStep()            final;
-    mV   GetNextOutput() const final;
-    void Reconnect()           final;
+    void CollectInput() final;
+    bool CompStep()     final;
+    void Reconnect()    final;
 
     MicroMeterPnt GetPos   ()                              const final;
     bool          Includes (MicroMeterPnt  const&)         const final;
@@ -51,8 +55,11 @@ public:
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
-    void Apply2AllInPipes (PipeFunc const& f) const final;
-    void Apply2AllOutPipes(PipeFunc const& f) const final;
+    void Apply2AllInPipes (PipeFunc const&) final;
+    void Apply2AllOutPipes(PipeFunc const&) final;
+
+    void Apply2AllInPipesC (PipeFuncC const&) const final;
+    void Apply2AllOutPipesC(PipeFuncC const&) const final;
 
     bool Apply2AllInPipesB (PipeCrit const& c) const final;
     bool Apply2AllOutPipesB(PipeCrit const& c) const final;
@@ -69,10 +76,13 @@ public:
     Pipe const* GetMainPipe()      const { return m_pPipeMain; }
     float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
 
-    void SetMainPipe(Pipe* const);
+    void SetPosOnMainPipe(float const);
+    void SetAddPipe    (Pipe* const);
+    void SetMainPipe   (Pipe* const);
     void ChangeMainPipe(Pipe* const);
 
-    void RecalcPos() const;
+    void RecalcAll(MicroMeterPnt const&);
+    void RecalcPositions() const;
 
 private:
 
@@ -82,21 +92,18 @@ private:
     inline static float      const SQRT3     { sqrtf(3.0f) };
     inline static float      const SQRT3DIV3 { SQRT3 / 3.0f };
 
-    void resetPos(MicroMeterPnt const&);
     void drawSynapse(DrawContext const&, MicroMeter const, MicroMeter const, D2D1::ColorF const) const;
-
-    enum class tState { normal, addLineBlocked, stdInputBlocked };
 
     mutable float         m_fDirection      { 1.0f };
     mutable MicroMeterPnt m_umPntPipeAnchor { NP_NULL };
     mutable MicroMeterPnt m_umPntCenter     { NP_NULL };
 
-    tState        m_state          { tState::normal };
-    fMicroSecs    m_usBlocked      { 0.0_MicroSecs };
-    mV            m_mVaddInput     { 0._mV };
-    Pipe *        m_pPipeMain;
-    Pipe *        m_pPipeAdd;
-    float         m_fPosOnMainPipe;
+    bool       m_bOutputBlocked { false };
+    fMicroSecs m_usBlocked      { 0.0_MicroSecs };
+    mV         m_mVaddInput     { 0._mV };
+    Pipe *     m_pPipeMain;
+    Pipe *     m_pPipeAdd;
+    float      m_fPosOnMainPipe;
 };
 
 export Synapse const* Cast2Synapse(Nob const*);

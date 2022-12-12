@@ -43,22 +43,26 @@ void PosNob::Expand(MicroMeterRect& umRect) const
 
 bool PosNob::IsPrecursorOf(Pipe const& pipeSucc) const
 {
-	return Apply2AllOutPipesB([&pipeSucc](Pipe const& pipe) { return &pipe == &pipeSucc; });
+	bool bRes = Apply2AllOutPipesB([&pipeSucc](Pipe const& pipe) { return &pipe == &pipeSucc; });
+	return bRes;
 }
 
 bool PosNob::IsSuccessorOf(Pipe const& pipePred) const
 {
-	return Apply2AllInPipesB([&pipePred](Pipe const& pipe) { return &pipe == &pipePred; });
+	bool bRes = Apply2AllInPipesB([&pipePred](Pipe const& pipe) { return &pipe == &pipePred; });
+	return bRes;
 }
 
 bool PosNob::IsPrecursorOf(PosNob const& b) const
 {
-	return Apply2AllOutPipesB([&b](Pipe const& p) { return p.GetEndNobPtr() == &b; });
+	bool bRes = Apply2AllOutPipesB([&b](Pipe const& p) { return p.GetEndNobPtr() == &b; });
+	return bRes;
 }
 
 bool PosNob::IsSuccessorOf(PosNob const& b) const
 {
-	return Apply2AllInPipesB([&b](Pipe const& p) { return p.GetStartNobPtr() == &b; });
+	bool bRes = Apply2AllInPipesB([&b](Pipe const& p) { return p.GetStartNobPtr() == &b; });
+	return bRes;
 }
 
 bool PosNob::IsDirectlyConnectedTo(PosNob const& posNob) const

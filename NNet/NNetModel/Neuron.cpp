@@ -74,7 +74,7 @@ void Neuron::CollectInput()
 	else 
 	{
 		m_mVinputBuffer.Set2Zero();
-		Apply2AllInPipes([this](Pipe const& pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
+		Apply2AllInPipesC([this](Pipe const& pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
 	}
 }
 
@@ -177,7 +177,7 @@ void Neuron::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 	Neuron const& src { *Cast2Neuron(&nobSrc) };
 	m_pPipeAxon = static_cast<Pipe*>(f(src.m_pPipeAxon));
 	m_inPipes.Clear();
-	src.Apply2AllInPipes([this, f](Pipe const& p) { m_inPipes.Add(static_cast<Pipe&>(*f(&p))); });
+	src.Apply2AllInPipesC([this, f](Pipe const& p) { m_inPipes.Add(static_cast<Pipe&>(*f(&p))); });
 	if (src.GetParentNob())
 		SetParentNob(f(src.GetParentNob()));
 }
@@ -189,8 +189,16 @@ void Neuron::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 
 void Neuron::Reconnect()
 {
-	m_inPipes.Apply2All([this](Pipe& pipe) { pipe.SetEndPnt(this); });
+	m_inPipes.Apply2All
+	(
+		[this](Pipe& pipe) 
+		{ 
+			pipe.SetEndPnt(this); 
+			pipe.PositionChanged();
+		}
+	);
 	m_pPipeAxon->SetStartPnt(this);
+	m_pPipeAxon->PositionChanged();
 }
 
 void Neuron::SetAllIncoming(PosNob& src) 

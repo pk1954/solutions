@@ -29,7 +29,7 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsInputConnectorType(); }
 
-	explicit InputConnector(NNetParameters &, vector<IoLine *> &&);
+	InputConnector(vector<IoLine *> &&);
 
 	~InputConnector() final = default;
 

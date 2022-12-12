@@ -30,6 +30,7 @@ public:
 	{
 		assert(m_pOutputLine->IsOutputLine());
 		m_upSynapse = make_unique<Synapse>(m_pPipe, m_pOutputLine->GetPipe());
+		m_upSynapse->RecalcAll(m_pOutputLine->GetPos());
 		m_upSynapse->Select(m_pOutputLine->IsSelected());
 		m_upSynapse->SetMainPipe(m_pPipe);
 	}
@@ -49,6 +50,7 @@ public:
 		m_upSynapse = m_pNMWI->PopFromModel<Synapse>();
 		m_pPipe->RemoveSynapse(m_upSynapse.get());
 		m_pOutputLine->GetPipe()->SetEndPnt(m_pOutputLine);
+		m_pOutputLine->GetPipe()->PositionChanged();
 	}
 
 private:

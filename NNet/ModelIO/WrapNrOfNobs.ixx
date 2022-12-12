@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 
 export module WrapNrOfNobs;
@@ -24,13 +25,14 @@ public:
     void operator() (Script& script) const final
     {
         script.ScrReadSpecial(L'=');
-        long        lNrOfNobs{ script.ScrReadLong() };
-        UPNobList& list{ m_modelIO.GetImportNMWI().GetUPNobs() };
+        long       lNrOfNobs { script.ScrReadLong() };
+        UPNobList& list      { m_modelIO.GetImportNMWI().GetUPNobs() };
+        assert(list.IsEmpty());
         list.IncreaseSize(lNrOfNobs);
     }
 
     void Write(wostream& out) const final
     {
         out << L"NrOfNobs = " << m_modelIO.NrOfCompactIds() << endl;
-    };
+    }
 };

@@ -24,14 +24,38 @@ using std::fabs;
 
 Synapse::Synapse
 (
-	Pipe * const pPipeMain,
-	Pipe * const pPipeAdd
+	Pipe* const pPipeMain,
+	Pipe* const pPipeAdd
 )
-  : PosNob(NobType::Value::synapse),
+	: PosNob(NobType::Value::synapse),
 	m_pPipeMain(pPipeMain),
 	m_pPipeAdd(pPipeAdd)
+{}
+
+Synapse::Synapse
+(
+	Nob* const pNobPipeMain,
+	Nob* const pNobPipeAdd
+)
+	: PosNob(NobType::Value::synapse),
+	m_pPipeMain(static_cast<Pipe*>(pNobPipeMain)),
+	m_pPipeAdd(static_cast<Pipe*>(pNobPipeAdd))
+{}
+
+Synapse::Synapse(Synapse const & rhs)
+	: PosNob(NobType::Value::synapse)
 {
-	resetPos(pPipeAdd->GetEndPoint());
+	PosNob::operator=(rhs);
+	m_pPipeMain      = rhs.m_pPipeMain;
+	m_pPipeAdd       = rhs.m_pPipeAdd;
+	m_fPosOnMainPipe = rhs.m_fPosOnMainPipe;
+}
+
+void Synapse::SetPosOnMainPipe(float const fPosNew)
+{
+	assert(fPosNew >= 0.0f);
+	assert(fPosNew <= 1.0f);
+	m_fPosOnMainPipe = fPosNew;
 }
 
 MicroMeterPnt Synapse::GetPos() const
@@ -71,7 +95,7 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 	MicroMeterPnt const umPntOrtho  { m_pPipeMain->GetVector().OrthoVector() };
 	MicroMeterPnt const umPntScaled { umPntOrtho.ScaledTo(umDist) };
 	MicroMeterPnt const umPntRoot   { umPntNew + umPntScaled };
-	resetPos(umPntRoot);
+	RecalcAll(umPntRoot);
 	m_pPipeAdd->PositionChanged();
 }
 
@@ -85,11 +109,16 @@ void Synapse::Add2MainPipe()
 	m_pPipeMain->AddSynapse(this); 
 }
 
+void Synapse::SetAddPipe(Pipe* const pPipe)
+{
+	m_pPipeAdd = pPipe;
+}
+
 void Synapse::SetMainPipe(Pipe* const pPipe)
 {
 	MicroMeterPnt umPntPos { GetPos() };
 	m_pPipeMain = pPipe;
-	resetPos(umPntPos);
+	RecalcAll(umPntPos);
 }
 
 void Synapse::ChangeMainPipe(Pipe* const pPipeNew)
@@ -99,14 +128,14 @@ void Synapse::ChangeMainPipe(Pipe* const pPipeNew)
 	SetMainPipe(pPipeNew);
 }
 
-void Synapse::resetPos(MicroMeterPnt const& newPos)
+void Synapse::RecalcAll(MicroMeterPnt const& newPos)
 {
 	m_fPosOnMainPipe = m_pPipeMain->PosOnPipe(newPos);
 	m_fPosOnMainPipe = ClipToMinMax(m_fPosOnMainPipe, 0.0f, 1.0f);
-	RecalcPos();
+	RecalcPositions();
 }
 
-void Synapse::RecalcPos() const
+void Synapse::RecalcPositions() const
 {
 	static const MicroMeter GAP         { PIPE_WIDTH * 0.1f };
 	static const MicroMeter CENTER_DIST { EXTENSION * SQRT3DIV3 };
@@ -141,14 +170,14 @@ void Synapse::Dump() const
 	m_pPipeMain->Dump();
 	wcout << L" Add";
 	m_pPipeAdd->Dump();
-	wcout << L" tState " << static_cast<int>(m_state) << endl;
-	wcout << L" blocked " << m_usBlocked << endl;
-	wcout << L" addInput " << m_mVaddInput << endl;
+	if (m_bOutputBlocked)
+		wcout << L"blocked since " << m_usBlocked << L"µs" << endl;
 }
 
 void Synapse::Reconnect()
 {
 	m_pPipeAdd->SetEndPnt(this);
+	m_pPipeAdd->PositionChanged();
 }
 
 void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
@@ -174,13 +203,24 @@ void Synapse::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 	assert(false);
 }
 
-void Synapse::Apply2AllInPipes(PipeFunc const& f) const
+void Synapse::Apply2AllInPipes(PipeFunc const& f)
 {
 	f(*m_pPipeMain);
 	f(*m_pPipeAdd);
 }
 
-void Synapse::Apply2AllOutPipes(PipeFunc const& f) const
+void Synapse::Apply2AllOutPipes(PipeFunc const& f)
+{
+	f(*m_pPipeMain);
+}
+
+void Synapse::Apply2AllInPipesC(PipeFuncC const& f) const
+{
+	f(*m_pPipeMain);
+	f(*m_pPipeAdd);
+}
+
+void Synapse::Apply2AllOutPipesC(PipeFuncC const& f) const
 {
 	f(*m_pPipeMain);
 }
@@ -239,39 +279,23 @@ void Synapse::CollectInput()
 
 bool Synapse::CompStep()
 {
-	if (m_state == tState::normal)
+	if (m_bOutputBlocked)
 	{
-	    mV const mVthreshold { GetParam()->SynapseThreshold() };
-		if (m_mVinputBuffer >= mVthreshold)
-		{
-			m_state = tState::stdInputBlocked;
-			m_usBlocked = 0.0_MicroSecs;
-		}
-		else if (m_mVaddInput >= mVthreshold)
-		{
-			m_state = tState::addLineBlocked;
-			m_usBlocked = 0.0_MicroSecs;
-		}
-	}
-	else  // one input blocked
-	{
+		m_mVinputBuffer = 0.0_mV;
 		m_usBlocked += GetParam()->TimeResolution();
 		if (m_usBlocked >= GetParam()->SynapseBlockTime())
-			m_state = tState::normal;
+			m_bOutputBlocked = false;
+	}
+	else
+	{
+		m_mVinputBuffer += m_mVaddInput;
+		if (m_mVinputBuffer >= GetParam()->SynapseThreshold())
+		{
+			m_bOutputBlocked = true;
+			m_usBlocked = 0.0_MicroSecs;
+		}
 	}
 	return false;  // no stop on trigger
-}
-
-mV Synapse::GetNextOutput() const
-{
-	switch (m_state)
-	{
-		case tState::normal:          return m_mVinputBuffer + m_mVaddInput;
-		case tState::addLineBlocked:  return m_mVinputBuffer;
-		case tState::stdInputBlocked: return m_mVaddInput;
-		default: assert(false);
-	}
-	return 0._mV;
 }
 
 Synapse const* Cast2Synapse(Nob const* pNob)

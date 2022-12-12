@@ -66,6 +66,7 @@ private:
 
 	/// export ///
 
+	size_t                           m_nrOfcompactIds { 0 };
 	NobIdList                        m_CompactIds;
 	NNetModelReaderInterface const * m_pExportNMRI{ nullptr };  // valid only during export
 

@@ -60,16 +60,6 @@ void IoLine::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 	SetPipe(static_cast<Pipe*>(f(src.GetPipeC())));
 }
 
-void IoLine::Apply2AllOutPipes(PipeFunc const& f) const
-{
-	f(*m_pPipe);
-}
-
-bool IoLine::Apply2AllOutPipesB(PipeCrit const& c) const
-{
-	return c(*GetPipeC());
-}
-
 MicroMeterPosDir IoLine::GetRawPosDir() const
 {
 	return MicroMeterPosDir(GetPos(), m_radDirection);
@@ -120,7 +110,7 @@ MicroMeterPnt CalcOrthoVector(vector<IoLine*> const& list, MicroMeterLine const&
 	unsigned int nrRight { 0 };
 	for (auto pPosNob : list)
 	{
-		pPosNob->Apply2AllInPipes
+		pPosNob->Apply2AllInPipesC
 		(
 			[&line, &nrLeft, &nrRight](Pipe const& pipe)
 			{
@@ -131,7 +121,7 @@ MicroMeterPnt CalcOrthoVector(vector<IoLine*> const& list, MicroMeterLine const&
 					++nrRight;
 			}
 		);
-		pPosNob->Apply2AllOutPipes
+		pPosNob->Apply2AllOutPipesC
 		(
 			[&line, &nrLeft, &nrRight](Pipe const& pipe)
 			{

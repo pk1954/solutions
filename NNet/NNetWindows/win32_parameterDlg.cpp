@@ -60,10 +60,10 @@ HWND ParameterDialog::addParameter
 	int                  & iYpos
 )
 {
-	static const int NAME_WIDTH { 120 };
+	static const int NAME_WIDTH { 125 };
 	static const int EDIT_WIDTH {  60 };
 	static const int UNIT_WIDTH {  40 };
-	static int const HEIGHT     {  16 };
+	static int const HEIGHT     {  14 };
 
 	int  iXpos { 10 }; 
 
@@ -74,8 +74,6 @@ HWND ParameterDialog::addParameter
 	CreateStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos, UNIT_WIDTH, HEIGHT);
 
 	iYpos += HEIGHT + VERT_SPACE;
-
-//	resetParameter(hwndEdit, parameter);
 
 	return hwndEdit;
 }
