@@ -15,7 +15,7 @@ import :UPNobList;
 
 using std::wostream;
 
-class SignalSource : public Observable
+export class SignalSource : public Observable
 {
 public:
     virtual ~SignalSource() = default;

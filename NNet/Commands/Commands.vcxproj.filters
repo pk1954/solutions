@@ -222,5 +222,8 @@
     <ClCompile Include="SplitPipeCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeleteSensorCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

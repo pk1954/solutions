@@ -212,13 +212,13 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_DELETE_EEG_SENSOR:
+        m_pModelCommands->DeleteSensor(m_pNMRI->GetSensorIdSelected());
         m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
-        m_pModelCommands->DeleteSignal(m_pNMRI->GetMonitorDataC().GetHighlightedSignalId());
         break;
 
     case IDD_DELETE_SIGNAL:
-        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
         m_pModelCommands->DeleteSignal(m_pNMRI->GetMonitorDataC().GetHighlightedSignalId());
+        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
         break;
 
     case IDD_ADD_TRACK:

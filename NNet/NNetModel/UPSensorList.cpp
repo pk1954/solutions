@@ -33,7 +33,6 @@ UPSensor UPSensorList::removeSensor(vector<UPSensor>::iterator it)
         UPSensor upSensor = move(*it);
         if (upSensor.get() == GetSensorSelected() )
             SetActive(SensorId(0));
-        m_list.erase(it);
         return move(upSensor);
     }
 }
@@ -70,15 +69,20 @@ Sensor * UPSensorList::GetSensor(SensorId const id)
     return IsValid(id) ? m_list.at(id.GetValue()).get() : nullptr;
 }
 
-SensorId UPSensorList::FindSensor(MicroMeterPnt const & umPos)
+SensorId UPSensorList::FindSensor(MicroMeterPnt const & umPos) const
 {
-    vector<UPSensor>::const_iterator it = 
-    {
-        find_if(m_list, [&umPos](auto & it){ return it->Includes(umPos); }        )
-    };
-    return (it == m_list.end()) 
-           ? SensorId::NULL_VAL() 
-           : SensorId(Cast2Int(it - m_list.begin()));
+    vector<UPSensor>::const_iterator it { find_if(m_list, [&umPos](auto& it) { return it ? it->Includes(umPos) : false; }) };
+    return (it == m_list.end())
+        ? SensorId::NULL_VAL()
+        : SensorId(Cast2Int(it - m_list.begin()));
+}
+
+SensorId UPSensorList::GetSensorId(Sensor const& sensor) const
+{
+    vector<UPSensor>::const_iterator it { find_if(m_list, [&sensor](auto const& it) { return it.get() == &sensor; }) };
+    return (it == m_list.end())
+        ? SensorId::NULL_VAL()
+        : SensorId(Cast2Int(it - m_list.begin()));
 }
 
 UPSensor UPSensorList::NewSensor

@@ -99,6 +99,12 @@ void Knot::SetAllOutgoing(PosNob& src)
 	m_pPipeIn = Cast2Knot(&src)->m_pPipeIn;
 }
 
+void Knot::AppendMenuItems(AddMenuFunc const& add) const
+{
+	Nob::AppendMenuItems(add);
+	add(IDD_DELETE_NOB);
+}
+
 Knot const* Cast2Knot(Nob const* pNob)
 {
 	assert(pNob);

@@ -18,8 +18,8 @@ public:
 	void Do() final 
 	{ 
 		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
-			(
-				[this](Nob & nob) { nob.MoveNob(m_delta); } 
+		(
+			[this](PosNob & posNob) { posNob.MoveNob(m_delta); } 
 		);
 	}
 
@@ -27,7 +27,7 @@ public:
 	{ 
 		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
 		(
-			[this](Nob & nob) { nob.MoveNob(-m_delta); } 
+			[this](PosNob & posNob) { posNob.MoveNob(-m_delta); } 
 		);
 	}
 

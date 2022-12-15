@@ -49,6 +49,13 @@ InputLine::InputLine(PosNob & posNob)
 		SetPipe(Cast2Neuron(&posNob)->GetAxon());
 }
 
+InputLine::InputLine(Pipe& pipe)
+	: IoLine(pipe.GetStartPoint(), NobType::Value::inputLine)
+{
+	SetId(pipe.GetStartNobPtr()->GetId());
+	SetPipe(&pipe);
+}
+
 void InputLine::Check() const
 {
 	IoLine::Check();

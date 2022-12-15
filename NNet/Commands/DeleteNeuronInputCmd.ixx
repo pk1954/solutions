@@ -2,7 +2,7 @@
 //
 // Commands
 //
-// handles only the input Pipes of a Neuron
+// handles only the input Pipes of a Neuron and the Neuron itself
 // not the axon Pipe
 
 module;
@@ -23,11 +23,10 @@ export class DeleteNeuronInputCmd : public NNetCommand
 {
 public:
 
-	explicit DeleteNeuronInputCmd(NobId const id)
-		: m_id(id)
+	explicit DeleteNeuronInputCmd(Nob * const pNob)
+		: m_pNeuron(Cast2Neuron(pNob))
 	{
-		Neuron* pNeuron { m_pNMWI->GetNobPtr<Neuron*>(m_id) };
-		pNeuron->Apply2AllInPipes
+		m_pNeuron->Apply2AllInPipes
 		(
 			[this](Pipe& pipe) 
 			{ 
@@ -38,16 +37,15 @@ public:
 
 	void Do() final
 	{
-		m_upNeuron = m_pNMWI->RemoveFromModel<Neuron>(m_id);
+		m_upNeuron = m_pNMWI->RemoveFromModel<Neuron>(m_pNeuron->GetId());
 		m_upNeuron->Apply2AllInPipes
 		(
 			[this](Pipe& pipe)
 			{
-				unique_ptr<OutputLine> upOutputLine { move(m_outputLines.back()) };
+				unique_ptr<OutputLine> upOutputLine { move(m_outputLines.front()) };
 				pipe.SetEndPnt(upOutputLine.get());
-				upOutputLine->SetPipe(&pipe);
 				m_pNMWI->Push2Model(move(upOutputLine));
-				m_outputLines.pop_back();
+				m_outputLines.erase(m_outputLines.begin());
 			}
 		);
 	}
@@ -66,7 +64,7 @@ public:
 	}
 
 private:
-	NobId                          m_id;
+	Neuron*                        m_pNeuron;
 	unique_ptr<Neuron>             m_upNeuron;
 	vector<unique_ptr<OutputLine>> m_outputLines;
 };

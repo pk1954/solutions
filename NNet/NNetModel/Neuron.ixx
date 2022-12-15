@@ -113,5 +113,16 @@ private:
 	void init(const Neuron&);
 };
 
-export Neuron const* Cast2Neuron(Nob const*);
-export Neuron      * Cast2Neuron(Nob      *);
+export Neuron const* Cast2Neuron(Nob const* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsNeuron());
+	return static_cast<Neuron const*>(pNob);
+}
+
+export Neuron* Cast2Neuron(Nob* pNob)
+{
+	assert(pNob);
+	assert(pNob->IsNeuron());
+	return static_cast<Neuron*>(pNob);
+}

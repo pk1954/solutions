@@ -80,7 +80,8 @@ public:
 	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
 	bool                    IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
 	size_t                  GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
-	Signal          const * FindSensor(MicroMeterPnt const & p)    const { return GetMonitorDataC().FindSensor(p); }
+	SignalId                FindSignalId(auto const & crit)        const { return GetMonitorDataC().FindSignalId(crit); }
+	SignalId                FindSignalId(MicroMeterPnt const & p)  const { return GetMonitorDataC().FindSignalId(p); }
 	SignalId                GetHighlightedSignalId()               const { return GetMonitorDataC().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
 	SignalGenerator const * GetSigGenSelectedC()                   const { return m_pModel->GetSigGenList().GetSigGenSelected(); }

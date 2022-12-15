@@ -26,6 +26,7 @@ public:
 
 	explicit InputLine(MicroMeterPnt const&);
 	explicit InputLine(PosNob&);
+	explicit InputLine(Pipe&);
 
 	~InputLine() final = default;
 

@@ -64,7 +64,7 @@ public:
 	SignalNr       MoveSignal       (SignalId      const &, TrackNr const);
 	Signal       * GetSignalPtr     (SignalId      const &);
 	Signal const * GetConstSignalPtr(SignalId      const &) const;
-	Signal const * FindSensor       (MicroMeterPnt const &) const;
+	SignalId       FindSignalId     (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal() const;
 
 	unique_ptr<Signal> DeleteSignal(SignalId const&);

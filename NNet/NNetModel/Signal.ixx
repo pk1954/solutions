@@ -64,8 +64,8 @@ public:
 
     SignalSource const * GetSignalSource() const { return &m_sigSource; }
 
-    inline static int const SIGSRC_CIRCLE{ 101 };
-    inline static int const SIGSRC_GENERATOR{ 102 };
+    inline static int const SIGSRC_CIRCLE    { 101 };
+    inline static int const SIGSRC_GENERATOR { 102 };
 
 private:
 

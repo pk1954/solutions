@@ -23,6 +23,8 @@ public:
 
     Fork(Fork const&);
 
+    void AppendMenuItems(AddMenuFunc const&) const final;
+
     static bool TypeFits(NobType const type) { return type.IsForkType(); }
 
     size_t GetNrOfInConns () const final { return 1; }
@@ -89,12 +91,14 @@ private:
 
 export Fork const* Cast2Fork(Nob const* pNob)
 {
+    assert(pNob);
     assert(pNob->IsFork());
     return static_cast<Fork const*>(pNob);
 }
 
 export Fork* Cast2Fork(Nob* pNob)
 {
+    assert(pNob);
     assert(pNob->IsFork());
     return static_cast<Fork*>(pNob);
 }

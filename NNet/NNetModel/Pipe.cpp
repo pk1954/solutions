@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <algorithm>
 #include <iostream>
+#include <vector>
 #include "Resource.h"
 
 module NNetModel:Pipe;
@@ -28,6 +29,7 @@ using std::max;
 using std::wcout;
 using std::wostream;
 using std::endl;
+using std::vector;
 using std::ranges::fill;
 using std::ranges::find;
 using std::unique_ptr;
@@ -57,7 +59,7 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
 	m_potIndex (src.m_potIndex ),
-	m_potential(src.m_potential),
+	m_segments(src.m_segments),
 	m_synapses(src.m_synapses)
 { 
 }
@@ -95,7 +97,8 @@ MicroMeterPnt Pipe::GetPos() const
 void Pipe::ClearDynamicData()
 {
 	Nob::ClearDynamicData();
-	fill(m_potential, 0.0_mV);
+	fill(m_segments, 0.0_mV);
+	RecalcSegments();
 }
 
 bool Pipe::IsConnectedSynapse(Nob const & synapse) const
@@ -159,11 +162,13 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 
 void Pipe::SetStartPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
+	assert(pPosNob);
 	m_pNobStart = pPosNob;
 }
 
 void Pipe::SetEndPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
+	assert(pPosNob);
 	m_pNobEnd = pPosNob;
 }
 
@@ -247,13 +252,34 @@ void Pipe::AddSynapse(Nob* pNob)
 	m_synapses.push_back(pNob);
 }
 
-void Pipe::RecalcSegments()
+void Pipe::SetNrOfSegments(size_t const n) const
+{
+	m_segments.resize(n, 0.0_mV);
+	m_bSegmentsDirty = false;
+	m_potIndex = 0;
+}
+
+void Pipe::recalcSegments() const
 {
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
 	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(GetLength() / segmentLength))) };
-	m_potential.resize(iNrOfSegments, 0.0_mV);
-	m_potIndex = 0;
+	SetNrOfSegments(iNrOfSegments);
+}
+
+MicroMeterPnt Pipe::getSegmentPos(SegNr const segNr, float const fPos) const
+{
+	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
+	MicroMeterPnt const umpSegVec { umVector / Cast2Float(GetNrOfSegments()) };
+	float         const fPosition { (static_cast<float>(segNr.GetValue()) + fPos) };
+	return GetStartPoint() + umpSegVec * fPosition;
+}
+
+vector<mV> const& Pipe::getSegments() const
+{
+	if (m_bSegmentsDirty)
+		recalcSegments();
+	return m_segments;
 }
 
 void Pipe::PositionChanged()
@@ -277,8 +303,6 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 				pSynapse->RecalcPositions();
 			}
 		);
-		if (m_pNobEnd->IsSynapse())
-			Cast2Synapse(m_pNobEnd)->RecalcPositions();
 		RecalcSegments();
 	}
 }
@@ -288,6 +312,13 @@ void Pipe::RemoveSynapse(Nob* pSynapse)
 	auto res { find(m_synapses, pSynapse) };
 	assert(res != end(m_synapses));
 	m_synapses.erase(res);
+}
+
+MicroMeterPnt Pipe::GetSegmentVector() const
+{
+	MicroMeterPnt const umVector  { GetEndPoint() - GetStartPoint() };
+	MicroMeterPnt const umpSegVec { umVector / Cast2Float(GetNrOfSegments()) };
+	return umpSegVec;
 }
 
 MicroMeterPnt Pipe::GetVector(float const fFactor) const
@@ -388,9 +419,9 @@ void Pipe::CollectInput()
 
 bool Pipe::CompStep()
 {
-	m_potential[m_potIndex] = m_mVinputBuffer;
+	m_segments[m_potIndex] = m_mVinputBuffer;
 	if (m_potIndex == 0)
-		m_potIndex = m_potential.size() - 1;  // caution!
+		m_potIndex = getSegments().size() - 1;  // caution!
 	else                                      // modification if m_potIndex
 		--m_potIndex;                         // must be atomic
 	return false;
@@ -415,7 +446,7 @@ mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 			MicroMeterPnt const umPoint2 { umPoint + umSegVec };
 			if (IsPointInRect2<MicroMeterPnt>(point, umPoint, umPoint2, umOrthoScaled))
 			{
-				mVresult = m_potential[index];
+				mVresult = getSegments()[index];
 				break;
 			}
 			umPoint = umPoint2;
@@ -433,18 +464,6 @@ void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 	add(IDD_INSERT_KNOT);   
 	Nob::AppendMenuItems(add);
 	add(IDD_DELETE_NOB);
-}
-
-Pipe const * Cast2Pipe(Nob const * pNob)
-{
-	assert(pNob->IsPipe());
-	return static_cast<Pipe const *>(pNob);
-}
-
-Pipe * Cast2Pipe(Nob * pNob)
-{
-	assert(pNob->IsPipe());
-	return static_cast<Pipe *>(pNob);
 }
 
 wostream & operator<< (wostream & out, Pipe const & pipe)

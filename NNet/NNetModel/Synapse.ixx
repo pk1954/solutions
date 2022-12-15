@@ -27,6 +27,8 @@ public:
 
     static bool TypeFits(NobType const type) { return type.IsSynapseType(); }
 
+    void AppendMenuItems(AddMenuFunc const&) const final;
+
     void Dump()  const final;
     void Check() const final;
 
@@ -82,7 +84,7 @@ public:
     void ChangeMainPipe(Pipe* const);
 
     void RecalcAll(MicroMeterPnt const&);
-    void RecalcPositions() const;
+    void RecalcPositions();
 
 private:
 
@@ -94,9 +96,11 @@ private:
 
     void drawSynapse(DrawContext const&, MicroMeter const, MicroMeter const, D2D1::ColorF const) const;
 
-    mutable float         m_fDirection      { 1.0f };
-    mutable MicroMeterPnt m_umPntPipeAnchor { NP_NULL };
-    mutable MicroMeterPnt m_umPntCenter     { NP_NULL };
+    MicroMeterPnt const& getCenter() const;
+
+    float         m_fDirection      { 1.0f };
+    MicroMeterPnt m_umPntPipeAnchor { NP_NULL };
+    MicroMeterPnt m_umPntCenter     { NP_NULL };
 
     bool       m_bOutputBlocked { false };
     fMicroSecs m_usBlocked      { 0.0_MicroSecs };
@@ -106,5 +110,16 @@ private:
     float      m_fPosOnMainPipe;
 };
 
-export Synapse const* Cast2Synapse(Nob const*);
-export Synapse      * Cast2Synapse(Nob*);
+export Synapse const* Cast2Synapse(Nob const* pNob)
+{
+    assert(pNob);
+    assert(pNob->IsSynapse());
+    return static_cast<Synapse const*>(pNob);
+}
+
+export Synapse* Cast2Synapse(Nob* pNob)
+{
+    assert(pNob);
+    assert(pNob->IsSynapse());
+    return static_cast<Synapse*>(pNob);
+}

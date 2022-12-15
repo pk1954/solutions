@@ -11,65 +11,66 @@ module;
 
 module NNetModelCommands;
 
-import Uniform2D;
-import SoundInterface;
 import AddNobsCommand;
-import DeleteTrackCommand;
-import MoveSensorCmd;
-import ArrowAnimation;
-import DeleteSigGenCmd;
-import SelectNobsInRectCommand;
-import CoordAnimation;
-import NewIoLinePairCmd;
-import SizeSensorCmd;
-import NewSigGenCmd;
-import ToggleStopOnTriggerCmd;
-import SelectAllCommand;
-import MoveNobCommand;
-import ToggleEmphModeCmd;
-import MoveSignalCmd;
-import DeleteSelectionCommand;
-import ExtendOutputLineCmd;
 import AddPipe2NeuronCmd;
-import SelectionCommand;
-import InsertTrackCommand;
-import SplitNeuronCmd;
-import SizeSelectionCmd;
-import SetNobCommand;
-import SetSigGenStaticDataCmd;
-import AnalyzeCommand;
-import MoveSelectionCommand;
-import InsertPosNobCommand;
-import DeleteSignalCommand;
-import RotateNobCommand;
-import SelectNobCommand;
-import RotateModelCommand;
-import RotateSelectionCommand;
-import AttachSigGen2SelCmd;
-import RenameSigGenCmd;
-import ConnectCreateSynapseCmd;
-import ConnectCreateForkCmd;
-import CreateSynapseCommand;
-import CreateForkCommand;
 import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
-import RestrictSelectionCommand;
-import SetParameterCommand;
-import DiscIoConnectorCmd;
-import NNetModelCommands;
+import AnalyzeCommand;
+import ArrowAnimation;
 import AttachSigGen2ConCmd;
-import Connect2NeuronCommand;
 import AttachSigGen2LineCmd;
-import SelectSubtreeCommand;
-import SelSigGenClientsCmd;
+import AttachSigGen2SelCmd;
+import Commands;
+import CommandFunctions;
+import ConnAnimationCommand;
+import CoordAnimation;
+import ConnectCreateForkCmd;
+import ConnectCreateSynapseCmd;
+import Connect2NeuronCommand;
+import CreateForkCommand;
+import CreateSynapseCommand;
+import DeleteSelectionCommand;
+import DeleteSensorCommand;
+import DeleteSigGenCmd;
+import DeleteSignalCommand;
+import DeleteTrackCommand;
+import DiscIoConnectorCmd;
+import ExtendOutputLineCmd;
+import InsertPosNobCommand;
+import InsertTrackCommand;
+import MoveNobCommand;
+import MoveSelectionCommand;
+import MoveSensorCmd;
+import MoveSignalCmd;
+import NewIoLinePairCmd;
+import NewSigGenCmd;
+import NNetModel;
+import NNetModelCommands;
+import NNetModelIO;
 import PlugIoConnectors;
 import PlugIoLines;
-import ConnAnimationCommand;
-import CommandFunctions;
-import Commands;
+import RenameSigGenCmd;
+import RestrictSelectionCommand;
+import RotateModelCommand;
+import RotateNobCommand;
+import RotateSelectionCommand;
+import SelectAllCommand;
+import SelectionCommand;
+import SelectNobCommand;
+import SelectNobsInRectCommand;
+import SelectSubtreeCommand;
 import SetActiveSigGenCmd;
-import NNetModelIO;
-import NNetModel;
+import SelSigGenClientsCmd;
+import SetNobCommand;
+import SetParameterCommand;
+import SetSigGenStaticDataCmd;
+import SizeSelectionCmd;
+import SizeSensorCmd;
+import SoundInterface;
+import SplitNeuronCmd;
+import ToggleEmphModeCmd;
+import ToggleStopOnTriggerCmd;
+import Uniform2D;
 
 using std::wstring;
 using std::wcout;
@@ -276,8 +277,15 @@ void NNetModelCommands::CreateInitialNobs()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::DeleteSignal(SignalId const & id)
-{ 
+void NNetModelCommands::DeleteSensor(SensorId const& id)
+{
+	if (m_bTrace)
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<DeleteSensorCommand>(id));
+}
+
+void NNetModelCommands::DeleteSignal(SignalId const& id)
+{
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));

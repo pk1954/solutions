@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include "Resource.h"
 
 module NNetModel:Fork;
 
@@ -167,4 +168,10 @@ void Fork::AddOutgoing(Pipe * pPipe)
 		m_pPipeOut2 = pPipe;
 	else
 		m_pPipeOut1 = pPipe;
+}
+
+void Fork::AppendMenuItems(AddMenuFunc const& add) const
+{
+	Nob::AppendMenuItems(add);
+	add(IDD_DELETE_NOB);
 }

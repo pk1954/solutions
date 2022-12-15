@@ -67,8 +67,8 @@ public:
 	{
 		for (int i = 0; i < m_signals.size(); ++i)
 		{
-			SignalNr       const signalNr{ SignalNr(i) };
-			Signal const * const pSignal{ GetConstSignalPtr(signalNr) };
+			SignalNr       const signalNr { SignalNr(i) };
+			Signal const * const pSignal  { GetConstSignalPtr(signalNr) };
 			if (pSignal && crit(*pSignal))
 				return signalNr;
 		}

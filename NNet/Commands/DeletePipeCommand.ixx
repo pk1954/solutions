@@ -60,9 +60,9 @@ class ForkStartCmd : public NNetCommand
 {
 public:
 
-	ForkStartCmd(Pipe& pipe, NobId const id)
+	ForkStartCmd(Pipe& pipe)
 	{
-		Fork* pFork { m_pNMWI->GetNobPtr<Fork*>(id) };
+		Fork* pFork { Cast2Fork(pipe.GetStartNobPtr()) };
 		m_upKnot = make_unique<Knot>(*pFork);
 		m_upKnot->AddIncoming(pFork->GetIncoming());
 		m_upKnot->AddOutgoing(pFork->GetOtherOutgoing(&pipe));
@@ -157,8 +157,8 @@ public:
 		{
 			case inputLine: m_upCmdStart = make_unique<RemoveNobCmd<InputLine>>        (m_idStart);	break;
 			case knot:      m_upCmdStart = make_unique<ReplaceNobCmd<Knot, OutputLine>>(m_idStart);	break;
-			case fork:      m_upCmdStart = make_unique<ForkStartCmd>           (m_pipe, m_idStart);	break;
-			case neuron:    m_upCmdStart = make_unique<DeleteNeuronInputCmd>           (m_idStart);	break;
+			case fork:      m_upCmdStart = make_unique<ForkStartCmd>                   (m_pipe);	break;
+			case neuron:    m_upCmdStart = make_unique<DeleteNeuronInputCmd>           (m_pipe.GetStartNobPtr()); break;
 			default:		assert(false);
 		}
 
@@ -166,7 +166,7 @@ public:
 		{
 			case outputLine: m_upCmdEnd = make_unique<RemoveNobCmd<OutputLine>>      (m_idEnd);	break;
 			case knot:       m_upCmdEnd = make_unique<ReplaceNobCmd<Knot, InputLine>>(m_idEnd); break;
-			case fork:       m_upCmdEnd = make_unique<DeleteForkOutputCmd>           (m_idEnd); break;
+			case fork:       m_upCmdEnd = make_unique<DeleteForkOutputCmd>           (m_pipe.GetEndNobPtr()); break;
 			case synapse:    m_upCmdEnd = make_unique<SynapseEndCmd>                 (m_idEnd); break;
 			case neuron:     if (m_pNMWI->GetNobPtr<Neuron*>(m_idEnd)->GetNrOfInConns() == 1)
 				                 m_upCmdEnd = make_unique<ReplaceNobCmd<Neuron, InputLine>>(m_idEnd);

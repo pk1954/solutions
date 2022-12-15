@@ -164,6 +164,7 @@ void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 	if (GetNrOfInConns() == 1)
 		add(IDD_SPLIT_NEURON);
 	add(IDD_STOP_ON_TRIGGER);
+	add(IDD_DELETE_NOB);
 	PosNob::AppendMenuItems(add);
 }
 
@@ -209,18 +210,4 @@ void Neuron::SetAllIncoming(PosNob& src)
 void Neuron::SetAllOutgoing(PosNob& src) 
 { 
 	m_pPipeAxon = Cast2Neuron(&src)->m_pPipeAxon; 
-}
-
-Neuron const* Cast2Neuron(Nob const* pNob)
-{
-	assert(pNob);
-	assert(pNob->IsNeuron());
-	return static_cast<Neuron const*>(pNob);
-}
-
-Neuron* Cast2Neuron(Nob* pNob)
-{
-	assert(pNob);
-	assert(pNob->IsNeuron());
-	return static_cast<Neuron*>(pNob);
 }

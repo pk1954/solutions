@@ -32,6 +32,7 @@ public:
 
     Sensor const * GetSensor(SensorId const) const;
     Sensor       * GetSensor(SensorId const);
+    SensorId       GetSensorId(Sensor const&) const;
 
     SensorId       GetSensorIdSelected() const { return m_sensorIdSelected; }
     Sensor const * GetSensorSelected  () const { return GetSensor(m_sensorIdSelected); }
@@ -57,7 +58,7 @@ public:
     }
 
     UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
-    SensorId FindSensor(MicroMeterPnt const &);
+    SensorId FindSensor(MicroMeterPnt const&) const;
 
 private:
 

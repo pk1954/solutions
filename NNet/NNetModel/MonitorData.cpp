@@ -202,9 +202,9 @@ bool MonitorData::AnyEmptyTracks() const
 	return Apply2AllTracksB([](Track const & track){ return track.IsEmpty(); });
 }
 
-Signal const * MonitorData::FindSensor(MicroMeterPnt const & umPos) const
+SignalId MonitorData::FindSignalId(MicroMeterPnt const & umPos) const
 {
-	return FindSignal([&umPos](Signal const & s) { return s.Includes(umPos); });
+	return FindSignalId([&umPos](Signal const & s) { return s.Includes(umPos); });
 }
 
 void MonitorData::Dump() const

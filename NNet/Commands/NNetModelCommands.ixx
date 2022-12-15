@@ -60,6 +60,7 @@ public:
     void CreateInitialNobs();
     void DeleteNob(NobId const);
     void DeleteSelection();
+    void DeleteSensor(SensorId const&);
     void DeleteSignal(SignalId const&);
     void DeleteSigGen();
     void DeleteTrack(TrackNr const);
