@@ -224,6 +224,7 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
 		m_pCommands->DeleteSigGen();
+		SetCaption();
 		return true;
 
 	case IDD_RENAME_SIGNAL_GENERATOR:

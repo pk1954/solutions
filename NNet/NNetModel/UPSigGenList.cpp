@@ -35,9 +35,9 @@ UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
         return UPSigGen(nullptr);
     else
     {
-        UPSigGen upSigGen = move(*it);
-        if (upSigGen.get() == GetSigGenSelected() )
+        if (it->get() == GetSigGenSelected())
             SetActive(STD_SIGGEN);
+        UPSigGen upSigGen = move(*it);
         m_list.erase(it);
         return move(upSigGen);
     }
@@ -74,7 +74,10 @@ void UPSigGenList::InsertSigGen(UPSigGen upSigGen, SigGenId const id)
 SigGenId UPSigGenList::FindSigGen(wstring const & name) const
 {
     auto it { getSigGen(name) };
-    return SigGenId(Cast2Int(it - m_list.begin()));
+    if (it != m_list.end())
+         return SigGenId(Cast2Int(it - m_list.begin()));
+    else 
+       return INVALID_SIGGEN;
 }
 
 SignalGenerator const * UPSigGenList::GetSigGen(SigGenId const id) const
@@ -99,13 +102,16 @@ SignalGenerator * UPSigGenList::GetSigGen(wstring const & name)
 
 SignalGenerator const * UPSigGenList::GetSigGen(wstring const & name) const
 {
+    if (name == StdSigGen::Get()->GetName())
+        return StdSigGen::Get();
     auto it { getSigGen(name) };
     return (it == m_list.end()) ? nullptr : it->get();
 }
 
 bool UPSigGenList::IsInList(wstring const & name) const
 {
-    return FindSigGen(name).GetValue() < m_list.size();
+    SigGenId id { FindSigGen(name) };
+    return IsValid(id) && (id != STD_SIGGEN);
 }
 
 UPSigGen UPSigGenList::NewSigGen()

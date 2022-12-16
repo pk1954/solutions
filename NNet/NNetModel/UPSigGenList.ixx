@@ -13,6 +13,7 @@ export module NNetModel:UPSigGenList;
 
 import Types;
 import :SigGenId;
+import :StdSigGen;
 import :SignalGenerator;
 
 using std::ranges::for_each;
@@ -34,8 +35,8 @@ public:
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
     SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
+    bool IsValid(SigGenId const id) const { return (STD_SIGGEN <= id) && (id.GetValue() < m_list.size()); }
     bool IsAnySigGenSelected()      const { return m_sigGenIdActive.IsNotNull(); }
-    bool IsValid(SigGenId const id) const { return id.GetValue() < m_list.size(); }
 
     SigGenId SetActive(SigGenId const);
     SigGenId PushSigGen(UPSigGen);
@@ -46,15 +47,15 @@ public:
 
     void Apply2All(auto const& f)
     {
+        f(StdSigGen::Get());
         for_each(m_list, [&f](auto& up) { f(up.get()); });
     }
 
     void Apply2AllC(auto const& f) const
     {
+        f(StdSigGen::Get());
         for_each(m_list, [&f](auto const& up) { f(up.get()); });
     }
-
-    //SignalGenerator * StdSigGen() { return m_list.begin()->get(); }
 
     UPSigGen                NewSigGen();
     SignalGenerator       * GetSigGen   (wstring const &);
