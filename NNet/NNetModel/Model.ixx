@@ -100,16 +100,16 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList   const & GetSigGenList      () const { return m_sigGenList; }
-	UPSigGenList         & GetSigGenList      ()       { return m_sigGenList; }
-	UPSensorList   const & GetSensorList      () const { return m_sensorList; }
-	UPSensorList         & GetSensorList      ()       { return m_sensorList; }
-	UPNobList      const & GetUPNobs          () const { return m_Nobs; }
-	UPNobList            & GetUPNobs          ()       { return m_Nobs; }
-	MonitorData    const & GetMonitorData     () const { return m_monitorData; }
-	MonitorData          & GetMonitorData     ()       { return m_monitorData; }
-	NNetParameters const & GetParams          () const { return m_param; }
-	NNetParameters       & GetParams          ()       { return m_param; }
+	UPSigGenList   const & GetSigGenList () const { return m_sigGenList; }
+	UPSigGenList         & GetSigGenList ()       { return m_sigGenList; }
+	UPSensorList   const & GetSensorList () const { return m_sensorList; }
+	UPSensorList         & GetSensorList ()       { return m_sensorList; }
+	UPNobList      const & GetUPNobs     () const { return m_Nobs; }
+	UPNobList            & GetUPNobs     ()       { return m_Nobs; }
+	MonitorData    const & GetMonitorData() const { return m_monitorData; }
+	MonitorData          & GetMonitorData()       { return m_monitorData; }
+	NNetParameters const & GetParams     () const { return m_param; }
+	NNetParameters       & GetParams     ()       { return m_param; }
 
 	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
 	{

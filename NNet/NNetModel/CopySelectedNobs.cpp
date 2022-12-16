@@ -36,21 +36,8 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 	// m_nobs2Add has contiguous NobIds
 	// links are still pointing to model nobs
 	
-	// add Knots to pipe endpoints missing in copy  //TODO: remove entire loop, verify that no longer needed
-
-	for (int i = 0; i < m_nobs2Add.Size(); ++i)      // cannot use range-based loop.
-	{                                                   // m_nobs2Add modified in loop.
-		Nob * pNobCopy { m_nobs2Add.GetAt(NobId(i)) };
-		if (pNobCopy->IsPipe())
-		{
-			Pipe const & pipeModel { static_cast<Pipe const &>(copy2model(pNobCopy)) };
-			addMissingKnot(*(static_cast<PosNob const *>(pipeModel.GetStartNobPtr())));
-			addMissingKnot(*(static_cast<PosNob const *>(pipeModel.GetEndNobPtr  ())));
-		}
-	}
-
 	m_nobs2Add.Apply2AllC([](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }); // fix links
-	m_nobs2Add.Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));  // dislocate copy
+	m_nobs2Add.Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));                                    // dislocate copy
 
 	return m_nobs2Add;
 }
