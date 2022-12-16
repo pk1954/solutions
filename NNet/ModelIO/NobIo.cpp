@@ -107,7 +107,7 @@ UPNob NobIo::createSynapse(Script& script) const
     script.ScrReadSpecial(CLOSE_BRACKET);
     unique_ptr<Synapse> upSynapse { make_unique<Synapse>(pNobPipeMain, pNobPipeAdd) };
     upSynapse->SetPosOnMainPipe(fPos);
-    pNobPipeMain->AddSynapse(upSynapse.get());
+    pNobPipeMain->CreateSynapse(upSynapse.get());
     return move(upSynapse);
 }
 

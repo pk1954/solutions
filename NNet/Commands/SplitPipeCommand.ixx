@@ -43,7 +43,7 @@ public:
 					? m_upPipeSplit1.get()
 					: m_upPipeSplit2.get()
 				};
-				pPipeNew->AddSynapse(Cast2Synapse(pNob));
+				pPipeNew->CreateSynapse(Cast2Synapse(pNob));
 			}
 		);
 
@@ -62,7 +62,7 @@ public:
 	{
 		Cast2PosNob(m_pPipe2Split->GetStartNobPtr())->ReplaceOutgoing(m_pPipe2Split, m_upPipeSplit1.get());
 		Cast2PosNob(m_pPipe2Split->GetEndNobPtr  ())->ReplaceIncoming(m_pPipe2Split, m_upPipeSplit2.get());
-		m_upPipeSplit1->Apply2AllSynapses ([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_upPipeSplit1.get()); });
+		m_upPipeSplit1->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_upPipeSplit1.get()); });
 		m_upPipeSplit2->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_upPipeSplit2.get()); });
 		m_pNMWI->Push2Model(move(m_upPipeSplit1));
 		m_pNMWI->Push2Model(move(m_upPipeSplit2));

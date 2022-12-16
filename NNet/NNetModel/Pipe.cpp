@@ -246,7 +246,7 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
-void Pipe::AddSynapse(Nob* pNob)
+void Pipe::CreateSynapse(Nob* pNob)
 {
 	assert(pNob->IsSynapse());
 	m_synapses.push_back(pNob);
@@ -303,6 +303,8 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 				pSynapse->RecalcPositions();
 			}
 		);
+		if (m_pNobEnd->IsSynapse())
+			Cast2Synapse(m_pNobEnd)->RecalcPositions();
 		RecalcSegments();
 	}
 }
@@ -459,7 +461,7 @@ mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDD_CREATE_FORK);
-	add(IDD_ADD_SYNAPSE);
+	add(IDD_CREATE_SYNAPSE);
 	add(IDD_INSERT_NEURON);
 	add(IDD_INSERT_KNOT);   
 	Nob::AppendMenuItems(add);

@@ -102,7 +102,7 @@ void Synapse::RemoveFromMainPipe()
 
 void Synapse::Add2MainPipe() 
 { 
-	m_pPipeMain->AddSynapse(this); 
+	m_pPipeMain->CreateSynapse(this); 
 }
 
 void Synapse::SetAddPipe(Pipe* const pPipe)
@@ -120,7 +120,7 @@ void Synapse::SetMainPipe(Pipe* const pPipe)
 void Synapse::ChangeMainPipe(Pipe* const pPipeNew)
 {
 	m_pPipeMain->RemoveSynapse(this);
-	pPipeNew->AddSynapse(this);
+	pPipeNew->CreateSynapse(this);
 	SetMainPipe(pPipeNew);
 }
 

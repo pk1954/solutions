@@ -111,7 +111,7 @@ public:
 	{
 		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
 		m_upSynapse->GetAddPipe()->SetEndPnt(m_upSynapse.get());
-		m_upSynapse->GetMainPipe()->AddSynapse(m_upSynapse.get());
+		m_upSynapse->GetMainPipe()->CreateSynapse(m_upSynapse.get());
 		m_pNMWI->Restore2Model(move(m_upSynapse));
 	}
 

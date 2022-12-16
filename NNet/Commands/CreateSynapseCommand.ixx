@@ -40,7 +40,7 @@ public:
 
 	void Do() final
 	{
-        m_pPipe->AddSynapse(m_upSynapse.get());
+        m_pPipe->CreateSynapse(m_upSynapse.get());
 		m_pNMWI->Push2Model(move(m_upSynapse));
 		m_pNMWI->Push2Model(move(m_upPipeOrtho));
 		m_pNMWI->Push2Model(move(m_upInputLine));

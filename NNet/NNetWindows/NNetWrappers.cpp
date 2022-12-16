@@ -281,14 +281,14 @@ public:
     }
 };
 
-class WrapAddSynapse: public ScriptFunctor
+class WrapCreateSynapse: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const id    { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddSynapse(id, umPos);
+        m_pCommands->CreateSynapse(id, umPos);
     }
 };
 
@@ -348,7 +348,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
-    SymbolTable::ScrDefConst(L"AddSynapse",          new WrapAddSynapse); 
+    SymbolTable::ScrDefConst(L"CreateSynapse",       new WrapCreateSynapse); 
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();
@@ -385,7 +385,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"EXTEND_OUTPUTLINE",   static_cast<long>(IDD_EXTEND_OUTPUTLINE  ));
     SymbolTable::ScrDefConst(L"ADD_INCOMING2NEURON", static_cast<long>(IDD_ADD_INCOMING2NEURON));
     SymbolTable::ScrDefConst(L"CREATE_FORK",         static_cast<long>(IDD_CREATE_FORK        ));
-    SymbolTable::ScrDefConst(L"ADD_SYNAPSE",         static_cast<long>(IDD_ADD_SYNAPSE        ));
+    SymbolTable::ScrDefConst(L"CREATE_SYNAPSE",      static_cast<long>(IDD_CREATE_SYNAPSE     ));
 
     ParamType::Apply2GlobalParameters
     ( 

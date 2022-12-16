@@ -60,7 +60,7 @@ public:
 	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
 	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob
 
-	void AddSynapse        (Nob *);              //TODO: Nob --> Synapse
+	void CreateSynapse     (Nob *);              //TODO: Nob --> Synapse
 	void RemoveSynapse     (Nob *);              //TODO: Nob --> Synapse
 	bool IsConnectedSynapse(Nob const &) const;  //TODO: Nob --> Synapse
 	bool IsConnectedTo     (NobId const) const;

@@ -91,7 +91,7 @@
 #define       IDD_EXTEND_INPUTLINE           570
 #define       IDD_EXTEND_OUTPUTLINE          571
 #define       IDD_ADD_INCOMING2NEURON        572
-#define       IDD_ADD_SYNAPSE                573
+#define       IDD_CREATE_SYNAPSE             573
 #define       IDD_CREATE_FORK                575
 #define       IDD_STOP_ON_TRIGGER            580
 								   		     
