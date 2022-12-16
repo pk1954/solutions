@@ -43,10 +43,11 @@ public:
 
     MicroMeterPnt GetPos   ()                              const final;
     bool          Includes (MicroMeterPnt  const&)         const final;
-    void          SetPos   (MicroMeterPnt  const&)               final;
     void          MoveNob  (MicroMeterPnt  const&)               final;
     void          RotateNob(MicroMeterPnt  const&, Radian const) final;
     void          Link     (Nob const&, Nob2NobFunc const&)      final;
+
+    void SetPos(MicroMeterPnt  const&) final { assert(false); }
 
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;
@@ -95,8 +96,6 @@ private:
     inline static float      const SQRT3DIV3 { SQRT3 / 3.0f };
 
     void drawSynapse(DrawContext const&, MicroMeter const, MicroMeter const, D2D1::ColorF const) const;
-
-    MicroMeterPnt const& getCenter() const;
 
     float         m_fDirection      { 1.0f };
     MicroMeterPnt m_umPntPipeAnchor { NP_NULL };

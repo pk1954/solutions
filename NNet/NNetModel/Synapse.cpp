@@ -49,6 +49,7 @@ Synapse::Synapse(Synapse const & rhs)
 	m_pPipeMain      = rhs.m_pPipeMain;
 	m_pPipeAdd       = rhs.m_pPipeAdd;
 	m_fPosOnMainPipe = rhs.m_fPosOnMainPipe;
+	RecalcPositions();
 }
 
 void Synapse::SetPosOnMainPipe(float const fPosNew)
@@ -56,11 +57,6 @@ void Synapse::SetPosOnMainPipe(float const fPosNew)
 	assert(fPosNew >= 0.0f);
 	assert(fPosNew <= 1.0f);
 	m_fPosOnMainPipe = fPosNew;
-}
-
-MicroMeterPnt const& Synapse::getCenter() const
-{
-	return m_umPntCenter;
 }
 
 MicroMeterPnt Synapse::GetPos() const
@@ -86,12 +82,6 @@ void Synapse::SetAllOutgoing(PosNob& src)
 	assert(src.IsSynapse());
 	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
 	m_pPipeMain = pSynapseSrc->m_pPipeMain;
-}
-
-void Synapse::SetPos(MicroMeterPnt const& newPos)
-{
-	assert(false);
-//	MoveNob(newPos - GetPos());
 }
 
 void Synapse::MoveNob(MicroMeterPnt const& delta)
@@ -249,12 +239,11 @@ void Synapse::drawSynapse
 	D2D1::ColorF const  col
 ) const
 {
-	MicroMeterPnt const umPntCenter    { getCenter() };
 	MicroMeter    const umTop          { umSize * ( 2.0f * SQRT3DIV3) * m_fDirection };
 	MicroMeter    const umBase         { umSize * (-1.0f * SQRT3DIV3) * m_fDirection };
 	MicroMeterPnt const umPntOrtho     { m_pPipeMain->GetVector().OrthoVector() };
-	MicroMeterPnt const umPntTop       { umPntCenter + umPntOrtho.ScaledTo(umTop) };
-	MicroMeterPnt const umPntBase      { umPntCenter + umPntOrtho.ScaledTo(umBase) };
+	MicroMeterPnt const umPntTop       { m_umPntCenter + umPntOrtho.ScaledTo(umTop) };
+	MicroMeterPnt const umPntBase      { m_umPntCenter + umPntOrtho.ScaledTo(umBase) };
 	MicroMeterPnt const umPntVecScaled { m_pPipeMain->GetVector().ScaledTo(umSize) };
 	MicroMeterPnt const umPntBase1     { umPntBase + umPntVecScaled };
 	MicroMeterPnt const umPntBase2     { umPntBase - umPntVecScaled };

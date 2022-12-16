@@ -267,6 +267,7 @@ void NNetModelCommands::CopySelection()
 		TraceStream() << source_location::current().function_name() << endl;
 	UPNobList list { CopySelectedNobs::Do(*m_pNMWI) };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(list));
+//	m_pNMWI->Apply2All<Synapse>([](Synapse& s) { s.RecalcPositions(); });
 }
 
 void NNetModelCommands::CreateInitialNobs()

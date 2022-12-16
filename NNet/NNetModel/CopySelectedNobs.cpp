@@ -13,6 +13,7 @@ module NNetModel:CopySelectedNobs;
 import Types;
 import :NNetModelWriterInterface;
 import :UPNobList;
+import :Synapse;
 import :PosNob;
 import :Knot;
 import :Nob;
@@ -35,7 +36,7 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 	// m_nobs2Add has contiguous NobIds
 	// links are still pointing to model nobs
 	
-	// add Knots to pipe endpoints missing in copy
+	// add Knots to pipe endpoints missing in copy  //TODO: remove entire loop, verify that no longer needed
 
 	for (int i = 0; i < m_nobs2Add.Size(); ++i)      // cannot use range-based loop.
 	{                                                   // m_nobs2Add modified in loop.
@@ -48,11 +49,7 @@ UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 		}
 	}
 
-	m_nobs2Add.Apply2AllC  // fix links
-	(
-		[](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }
-	);
-
+	m_nobs2Add.Apply2AllC([](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }); // fix links
 	m_nobs2Add.Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));  // dislocate copy
 
 	return m_nobs2Add;
