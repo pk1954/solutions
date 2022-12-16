@@ -154,7 +154,7 @@ void NNetModelCommands::AddIncoming2Neuron(NobId const id, MicroMeterPnt const& 
 	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(id, pos - STD_OFFSET));
 }
 
-void NNetModelCommands::AddIncoming2Pipe(NobId const id, MicroMeterPnt const & pos)  // case 8
+void NNetModelCommands::AddSynapse(NobId const id, MicroMeterPnt const & pos)  // case 8
 {
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << pos << endl;
@@ -267,7 +267,6 @@ void NNetModelCommands::CopySelection()
 		TraceStream() << source_location::current().function_name() << endl;
 	UPNobList list { CopySelectedNobs::Do(*m_pNMWI) };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(list));
-//	m_pNMWI->Apply2All<Synapse>([](Synapse& s) { s.RecalcPositions(); });
 }
 
 void NNetModelCommands::CreateInitialNobs()

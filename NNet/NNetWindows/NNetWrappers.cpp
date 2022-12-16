@@ -281,14 +281,14 @@ public:
     }
 };
 
-class WrapAddIncoming2Pipe: public ScriptFunctor
+class WrapAddSynapse: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const id    { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddIncoming2Pipe(id, umPos);
+        m_pCommands->AddSynapse(id, umPos);
     }
 };
 
@@ -348,7 +348,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
-    SymbolTable::ScrDefConst(L"AddIncoming2Pipe",    new WrapAddIncoming2Pipe); 
+    SymbolTable::ScrDefConst(L"AddSynapse",          new WrapAddSynapse); 
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();
@@ -376,16 +376,16 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
 
-    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS       ));
-    SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION    ));
-    SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION      ));
-    SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON       ));
-    SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",    static_cast<long>(IDD_NEW_IO_LINE_PAIR    ));
-    SymbolTable::ScrDefConst(L"EXTEND_INPUTLINE",    static_cast<long>(IDD_EXTEND_INPUTLINE    ));
-    SymbolTable::ScrDefConst(L"EXTEND_OUTPUTLINE",   static_cast<long>(IDD_EXTEND_OUTPUTLINE   ));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2NEURON", static_cast<long>(IDD_ADD_INCOMING2NEURON ));
-    SymbolTable::ScrDefConst(L"ADD_OUTGOING2PIPE",   static_cast<long>(IDD_ADD_OUTGOING2PIPE   ));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2PIPE",   static_cast<long>(IDD_ADD_INCOMING2PIPE   ));
+    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS      ));
+    SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION   ));
+    SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION     ));
+    SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON      ));
+    SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",    static_cast<long>(IDD_NEW_IO_LINE_PAIR   ));
+    SymbolTable::ScrDefConst(L"EXTEND_INPUTLINE",    static_cast<long>(IDD_EXTEND_INPUTLINE   ));
+    SymbolTable::ScrDefConst(L"EXTEND_OUTPUTLINE",   static_cast<long>(IDD_EXTEND_OUTPUTLINE  ));
+    SymbolTable::ScrDefConst(L"ADD_INCOMING2NEURON", static_cast<long>(IDD_ADD_INCOMING2NEURON));
+    SymbolTable::ScrDefConst(L"CREATE_FORK",         static_cast<long>(IDD_CREATE_FORK        ));
+    SymbolTable::ScrDefConst(L"ADD_SYNAPSE",         static_cast<long>(IDD_ADD_SYNAPSE        ));
 
     ParamType::Apply2GlobalParameters
     ( 

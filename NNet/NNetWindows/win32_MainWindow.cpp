@@ -86,8 +86,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_EXTEND_INPUTLINE,        L"Extend"                         },
 		{ IDD_EXTEND_OUTPUTLINE,       L"Extend"                         },
 		{ IDD_ADD_INCOMING2NEURON,     L"Add incoming dendrite"          },
-		{ IDD_ADD_INCOMING2PIPE,       L"Add incoming dendrite"          },
-		{ IDD_ADD_OUTGOING2PIPE,       L"Add outgoing dendrite"          },
+		{ IDD_ADD_SYNAPSE,             L"Add synapse"                    },
+		{ IDD_CREATE_FORK,             L"Create fork"                    },
 		{ IDD_ADD_EEG_SENSOR,          L"New EEG sensor" 		         },
 //		{ IDM_ALIGN_NOBS,              L"Align selected objects"         },
 		{ IDD_ARROWS_OFF,              L"Arrows off"                     },
@@ -571,8 +571,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		m_pModelCommands->NewIoLinePair(umPoint);
 		break;
 
-	case IDD_ADD_OUTGOING2PIPE:   CreateForkCommand::Push(m_nobHighlighted, umPoint);	            break; // case 7
-	case IDD_ADD_INCOMING2PIPE:   m_pModelCommands->AddIncoming2Pipe(m_nobHighlighted, umPoint);	break; // case 8 
+	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobHighlighted, umPoint);	            break; // case 7
+	case IDD_ADD_SYNAPSE:         m_pModelCommands->AddSynapse(m_nobHighlighted, umPoint);      	break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobHighlighted, umPoint);	break; // case 9
 	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);              break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:   m_pModelCommands->ExtendOutputLine(m_nobHighlighted, umPoint); 	break; // case 11
