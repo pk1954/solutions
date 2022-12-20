@@ -64,7 +64,7 @@ void InputLine::Check() const
 void InputLine::Reconnect()
 {
 	GetPipe()->SetStartPnt(this);
-	GetPipe()->PositionChanged();
+	GetPipe()->PosChanged();
 };
 
 void InputLine::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)

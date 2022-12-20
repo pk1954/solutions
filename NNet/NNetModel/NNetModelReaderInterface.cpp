@@ -115,11 +115,11 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };
 
-	PosNob    const * pPosNobSrc { nullptr };
-	PosNob    const * pPosNobDst { nullptr };
-	Pipe        const * pPipeDst     { nullptr };
-	IoConnector const * pConnSrc     { nullptr };
-	IoConnector const * pConnDst     { nullptr };
+	PosNob      const * pPosNobSrc { nullptr };
+	PosNob      const * pPosNobDst { nullptr };
+	Pipe        const * pPipeDst   { nullptr };
+	IoConnector const * pConnSrc   { nullptr };
+	IoConnector const * pConnDst   { nullptr };
 
 	     if (typeSrc.IsPosNobType     ()) pPosNobSrc = m_pModel->GetNobConstPtr<PosNob      const *>(idSrc);
 	else if (typeSrc.IsIoConnectorType()) pConnSrc   = m_pModel->GetNobConstPtr<IoConnector const *>(idSrc);

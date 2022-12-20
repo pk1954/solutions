@@ -33,7 +33,7 @@ public:
 
 		m_upPipe->SetStartPnt(m_upInputLine.get());
 		m_upPipe->SetEndPnt  (m_upNeuronNew.get());
-		m_upPipe->PositionChanged();
+		m_upPipe->PosChanged();
 
 		m_upNeuronNew->SetAxon(m_neuronOld.GetAxon()); // add axon
 		m_upNeuronNew->AddIncoming(&m_neuronOld);       // add existing inputs 
@@ -51,7 +51,7 @@ public:
 			[this](Pipe& pipe) 
 			{ 
 				pipe.SetEndPnt(m_upNeuronNew.get());
-				pipe.PositionChanged();
+				pipe.PosChanged();
 			}
 		);
 		m_pNMWI->Push2Model(move(m_upNeuronNew));
@@ -70,7 +70,7 @@ public:
 			[this](Pipe& pipe) 
 			{ 
 				pipe.SetEndPnt(m_upNeuronOld.get()); 
-				pipe.PositionChanged();
+				pipe.PosChanged();
 			}
 		);
 		m_pNMWI->Restore2Model(move(m_upNeuronOld));

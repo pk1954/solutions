@@ -129,10 +129,10 @@ void IoConnector::ClearParentPointers() const
     }
 }
 
-void IoConnector::PositionChanged()
+void IoConnector::PosChanged()
 {
     for (auto & it: m_list)
-        it->PositionChanged();
+        it->PosChanged();
 }
 
 void IoConnector::SetDir(Radian const radianNew)

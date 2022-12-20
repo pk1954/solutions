@@ -34,7 +34,7 @@ public:
 
 	void SetSigGen(SignalGenerator* const p) { m_pSigGen = p; }
 
-	SignalGenerator* GetSigGen() { return m_pSigGen; }
+	SignalGenerator      * GetSigGen() { return m_pSigGen; }
 	SignalGenerator const* GetSigGenC() const { return m_pSigGen; }
 
 	static bool TypeFits(NobType const type) { return type.IsInputLineType(); }

@@ -60,7 +60,7 @@ public:
 	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
 	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob
 
-	void CreateSynapse     (Nob *);              //TODO: Nob --> Synapse
+	void AddSynapse        (Nob *);              //TODO: Nob --> Synapse
 	void RemoveSynapse     (Nob *);              //TODO: Nob --> Synapse
 	bool IsConnectedSynapse(Nob const &) const;  //TODO: Nob --> Synapse
 	bool IsConnectedTo     (NobId const) const;
@@ -94,9 +94,10 @@ public:
 	void          Link            (Nob const &, Nob2NobFunc const &)            final;
 	void          CollectInput    ()                                            final;
 	bool          CompStep        ()                                            final;
-	void          PositionChanged ()                                            final;
+	void          PosChanged      ()                                            final;
 	void          ClearDynamicData()                                            final;
 	void          Select          (bool const)                                  final;
+	bool          FixOpenLinks    (PushFunc const&)                             final;
 	float         PosOnPipe       (MicroMeterPnt const&) const;
 	NobId         GetStartKnotId  ()                     const;
 	NobId         GetEndKnotId    ()                     const;
@@ -121,10 +122,7 @@ public:
 	void          DislocateEndPoint();
 	void          DislocateStartPoint();
 	void          RecalcSynapsePositions();
-	void          RecalcSegments()
-	{
-		m_bSegmentsDirty = true;
-	}
+	void          RecalcSegments() { m_bSegmentsDirty = true; }
 
 	void Apply2AllSegments(auto const& func) const
 	{
@@ -169,4 +167,16 @@ export Pipe* Cast2Pipe(Nob* pNob)
 {
 	assert(pNob->IsPipe());
 	return static_cast<Pipe*>(pNob);
+}
+
+export Pipe const& Cast2Pipe(Nob const& nob)
+{
+	assert(nob.IsPipe());
+	return *static_cast<Pipe const*>(&nob);
+}
+
+export Pipe& Cast2Pipe(Nob &nob)
+{
+	assert(nob.IsPipe());
+	return *static_cast<Pipe *>(&nob);
 }

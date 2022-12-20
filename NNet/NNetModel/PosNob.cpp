@@ -4,13 +4,21 @@
 
 module;
 
+#include <memory>
 #include <cassert>
 #include <iostream>
 
 module NNetModel:PosNob;
 
+import :Knot;
+import :InputLine;
+import :OutputLine;
+
 using std::wcout;
 using std::endl;
+using std::unique_ptr;
+using std::make_unique;
+
 
 void PosNob::Dump() const
 {
@@ -85,6 +93,32 @@ void PosNob::EvaluateSelectionStatus()
 bool PosNob::Apply2AllConnectedPipesB(PipeCrit const& c) const
 {
 	return Apply2AllInPipesB(c) || Apply2AllOutPipesB(c);
+}
+
+void PosNob::AttachInputLine(PushFunc const& push, Pipe& pipe)
+{
+	unique_ptr<InputLine> upInputLine { make_unique<InputLine>(GetPos()) };
+	upInputLine->SetPipe(&pipe);
+	pipe.SetStartPnt(upInputLine.get());
+	push(move(upInputLine));
+}
+
+void PosNob::AttachOutputLine(PushFunc const& push, Pipe& pipe)
+{
+	unique_ptr<OutputLine> upOutputLine { make_unique<OutputLine>(GetPos()) };
+	upOutputLine->SetPipe(&pipe);
+	pipe.SetEndPnt(upOutputLine.get());
+	push(move(upOutputLine));
+}
+
+void PosNob::AttachKnot(PushFunc const& push, Pipe& pipeIn, Pipe& pipeOut)
+{
+	unique_ptr<Knot> upKnot { make_unique<Knot>(GetPos()) };
+	upKnot->AddIncoming(&pipeIn);
+	upKnot->AddOutgoing(&pipeOut);
+	pipeOut.SetStartPnt(upKnot.get());
+	pipeIn.SetEndPnt(upKnot.get());
+	push(move(upKnot));
 }
 
 PosNob const* Cast2PosNob(Nob const* pNob)

@@ -47,7 +47,7 @@ public:
 	bool Includes    (MicroMeterPnt  const &)                   const override;
 	void RotateNob   (MicroMeterPnt  const &, Radian const)           override;
 	void MoveNob     (MicroMeterPnt  const &)                         override;
-	void PositionChanged()                                               override;
+	void PosChanged  ()                                               override;
 	void Link        (Nob const &, Nob2NobFunc const &)               override;
 	void Select      (bool const)                                     override;
 	bool CompStep    ()                                               override { return false; }

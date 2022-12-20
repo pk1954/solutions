@@ -53,8 +53,8 @@ Neuron & Neuron::operator=(Neuron const& rhs)
 void Neuron::SetPos(MicroMeterPnt const& newPos)
 {
 	m_circle.SetPos(newPos);
-	m_pPipeAxon->PositionChanged();
-	m_inPipes.Apply2All([](Pipe & pipe) { pipe.PositionChanged(); });
+	m_pPipeAxon->PosChanged();
+	m_inPipes.Apply2All([](Pipe & pipe) { pipe.PosChanged(); });
 }
 
 void Neuron::ClearDynamicData()
@@ -195,11 +195,39 @@ void Neuron::Reconnect()
 		[this](Pipe& pipe) 
 		{ 
 			pipe.SetEndPnt(this); 
-			pipe.PositionChanged();
+			pipe.PosChanged();
 		}
 	);
 	m_pPipeAxon->SetStartPnt(this);
-	m_pPipeAxon->PositionChanged();
+	m_pPipeAxon->PosChanged();
+}
+
+bool Neuron::FixOpenLinks(PushFunc const& push)
+{
+	//if axon missing create outgoing pipe and OutputLine at end
+	//if incoming Pipe missing, remove from m_inPipes
+	//if all incoming Pipes missing, create one incoming pipe and input line at end
+
+
+	//if ((m_pPipeIn == nullptr) && (m_pPipeOut == nullptr))
+	//	return true;
+	//if (m_pPipeIn == nullptr)
+	//{
+	//	unique_ptr<InputLine> upInputLine { make_unique<InputLine>(GetPos()) };
+	//	upInputLine->SetPipe(m_pPipeOut);
+	//	m_pPipeOut->SetEndPnt(upInputLine.get());
+	//	push(move(upInputLine));
+	//	return true;
+	//}
+	//if (m_pPipeOut == nullptr)
+	//{
+	//	unique_ptr<OutputLine> upOutputLine { make_unique<OutputLine>(GetPos()) };
+	//	upOutputLine->SetPipe(m_pPipeIn);
+	//	m_pPipeIn->SetStartPnt(upOutputLine.get());
+	//	push(move(upOutputLine));
+	//	return true;
+	//}
+	return false;
 }
 
 void Neuron::SetAllIncoming(PosNob& src) 

@@ -39,7 +39,7 @@ public:
 
 	void Do() final
 	{
-		m_pPipe->CreateSynapse(m_upSynapse.get());
+		m_pPipe->AddSynapse(m_upSynapse.get());
 		m_pNMWI->Push2Model(move(m_upSynapse));
 		m_upOutputLine = m_pNMWI->RemoveFromModel<OutputLine>(m_idOutputLine);
 	}
@@ -50,7 +50,7 @@ public:
 		m_upSynapse = m_pNMWI->PopFromModel<Synapse>();
 		m_pPipe->RemoveSynapse(m_upSynapse.get());
 		m_pOutputLine->GetPipe()->SetEndPnt(m_pOutputLine);
-		m_pOutputLine->GetPipe()->PositionChanged();
+		m_pOutputLine->GetPipe()->PosChanged();
 	}
 
 private:

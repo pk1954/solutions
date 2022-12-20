@@ -92,7 +92,7 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 	MicroMeterPnt const umPntScaled { umPntOrtho.ScaledTo(umDist) };
 	MicroMeterPnt const umPntRoot   { umPntNew + umPntScaled };
 	RecalcAll(umPntRoot);
-	m_pPipeAdd->PositionChanged();
+	m_pPipeAdd->PosChanged();
 }
 
 void Synapse::RemoveFromMainPipe() 
@@ -102,7 +102,7 @@ void Synapse::RemoveFromMainPipe()
 
 void Synapse::Add2MainPipe() 
 { 
-	m_pPipeMain->CreateSynapse(this); 
+	m_pPipeMain->AddSynapse(this); 
 }
 
 void Synapse::SetAddPipe(Pipe* const pPipe)
@@ -120,7 +120,7 @@ void Synapse::SetMainPipe(Pipe* const pPipe)
 void Synapse::ChangeMainPipe(Pipe* const pPipeNew)
 {
 	m_pPipeMain->RemoveSynapse(this);
-	pPipeNew->CreateSynapse(this);
+	pPipeNew->AddSynapse(this);
 	SetMainPipe(pPipeNew);
 }
 
@@ -173,7 +173,23 @@ void Synapse::Dump() const
 void Synapse::Reconnect()
 {
 	m_pPipeAdd->SetEndPnt(this);
-	m_pPipeAdd->PositionChanged();
+	m_pPipeAdd->PosChanged();
+}
+
+bool Synapse::FixOpenLinks(PushFunc const& push)
+{
+	if (m_pPipeAdd == nullptr)
+		return true;  //  destroy Synapse 
+
+	if (m_pPipeMain == nullptr)
+		AttachOutputLine(push, *m_pPipeAdd);
+	else
+	{
+		m_pPipeMain->AddSynapse(this);
+		return false;
+	}
+
+	return true;
 }
 
 void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)

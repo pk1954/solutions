@@ -18,6 +18,8 @@ import Types;
 import DrawContext;
 import :tHighlight;
 import :NNetParameters;
+import :OutputLine;
+import :InputLine;
 import :Knot;
 import :Synapse;
 import :PosNob;
@@ -59,8 +61,8 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
 	m_potIndex (src.m_potIndex ),
-	m_segments(src.m_segments),
-	m_synapses(src.m_synapses)
+	m_segments(src.m_segments)
+	// m_synapses(src.m_synapses)  // do not copy Synapses!
 { 
 }
 
@@ -246,7 +248,7 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
-void Pipe::CreateSynapse(Nob* pNob)
+void Pipe::AddSynapse(Nob* pNob)
 {
 	assert(pNob->IsSynapse());
 	m_synapses.push_back(pNob);
@@ -282,7 +284,14 @@ vector<mV> const& Pipe::getSegments() const
 	return m_segments;
 }
 
-void Pipe::PositionChanged()
+bool Pipe::FixOpenLinks(PushFunc const & push)
+{
+	assert(m_pNobStart);
+	assert(m_pNobEnd);
+	return false;
+}
+
+void Pipe::PosChanged()
 {
 	assert(IsPipe());
 	posChangedRecursive(*this);
@@ -460,6 +469,10 @@ mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 
 void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 {
+	if (IsSelected())
+		add(IDM_DESELECT_NOB);
+	else
+		add(IDM_SELECT_NOB);
 	add(IDD_CREATE_FORK);
 	add(IDD_CREATE_SYNAPSE);
 	add(IDD_INSERT_NEURON);

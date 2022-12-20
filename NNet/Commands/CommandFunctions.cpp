@@ -68,7 +68,7 @@ public:
 		m_upOutputLine          = make_unique<OutputLine>(*(m_pFork->GetIncoming()));
 	}
 
-	void Do()  final
+	void Do() final
 	{
 		m_pFork->GetIncoming()->SetEndPnt(m_upOutputLine.get());
 		m_pNMWI->Push2Model(move(m_upOutputLine));
@@ -111,7 +111,7 @@ public:
 	{
 		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
 		m_upSynapse->GetAddPipe()->SetEndPnt(m_upSynapse.get());
-		m_upSynapse->GetMainPipe()->CreateSynapse(m_upSynapse.get());
+		m_upSynapse->GetMainPipe()->AddSynapse(m_upSynapse.get());
 		m_pNMWI->Restore2Model(move(m_upSynapse));
 	}
 

@@ -71,6 +71,10 @@ public:
 	virtual void SetAllOutgoing(PosNob &) = 0;
 
 	static bool TypeFits(NobType const type) { return type.IsPosNobType(); }
+
+	void AttachOutputLine(PushFunc const&, Pipe&);
+	void AttachInputLine (PushFunc const&, Pipe&);
+	void AttachKnot      (PushFunc const&, Pipe&, Pipe&);
 };
 
 export PosNob const* Cast2PosNob(Nob const*);

@@ -33,14 +33,14 @@ public:
 		m_upSynapse  ->SetMainPipe(m_pPipe);
 		m_upInputLine->SetPipe(m_upPipeOrtho.get());
 		m_upPipeOrtho->SetEndPnt(m_upSynapse.get());
-		m_upPipeOrtho->PositionChanged();
+		m_upPipeOrtho->PosChanged();
 	}
 
 	~CreateSynapseCommand() = default;
 
 	void Do() final
 	{
-        m_pPipe->CreateSynapse(m_upSynapse.get());
+        m_pPipe->AddSynapse(m_upSynapse.get());
 		m_pNMWI->Push2Model(move(m_upSynapse));
 		m_pNMWI->Push2Model(move(m_upPipeOrtho));
 		m_pNMWI->Push2Model(move(m_upInputLine));

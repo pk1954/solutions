@@ -57,6 +57,8 @@ public:
 
 	void SetPipe(Pipe * pPipe) { m_pPipe = pPipe; }
 
+	bool FixOpenLinks(PushFunc const&) final { return m_pPipe == nullptr; }
+
 private:
 	MicroMeterPnt determineVector() const;
 

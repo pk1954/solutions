@@ -19,45 +19,60 @@ import :Knot;
 import :Nob;
 
 using std::unordered_map;
+using std::unique_ptr;
 using std::make_unique;
 using std::pair;
+using std::move;
 
-UPNobList CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
+unique_ptr<UPNobList> CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 { 
+	unique_ptr<UPNobList> m_upNobs2Add { make_unique<UPNobList>() };
+
 	m_mapCopy2model.clear();
 	m_mapModel2copy.clear();
-	m_nobs2Add.Clear();
 
 	nmwi.GetUPNobs().Apply2AllSelected<Nob>  // create copy of selected nobs
 	(
-		[](Nob const & nobModel) { add2copy(nobModel, ShallowCopy(nobModel)); }
+		[&m_upNobs2Add](Nob const & nobModel)
+		{ 
+			UPNob upNobCopy { ShallowCopy(nobModel) };
+			m_mapModel2copy.insert(pair(&nobModel, upNobCopy.get()));
+			m_mapCopy2model.insert(pair(upNobCopy.get(), &nobModel));
+			m_upNobs2Add->Push(move(upNobCopy));
+		}
 	); 	
-	
-	// m_nobs2Add has contiguous NobIds
-	// links are still pointing to model nobs
-	
-	m_nobs2Add.Apply2AllC([](Nob & nobDst) { nobDst.Link(copy2model(&nobDst), model2copy); }); // fix links
-	m_nobs2Add.Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));                                    // dislocate copy
 
-	return m_nobs2Add;
+	// m_upNobs2Add has contiguous NobIds. Links are still pointing to model nobs.
+	
+	m_upNobs2Add->Apply2AllC   // fix links
+	(
+		[](Nob & nobDst) 
+		{ 
+			nobDst.Link(copy2model(&nobDst), model2copy); 
+		}
+	);
+
+	for (int i = 0; i < m_upNobs2Add->Size(); ++i)         // cannot use range-based loop
+	{                                                      // m_upNobs2Add modified in loop
+		Nob* pNobCopy { m_upNobs2Add->GetAt(NobId(i)) };
+		bool bDestroyNob 
+		{ 
+			pNobCopy->FixOpenLinks
+			(
+				[&m_upNobs2Add](UPNob upNob) { m_upNobs2Add->Push(move(upNob)); }
+			) 
+		};
+		if (bDestroyNob)
+			m_upNobs2Add->ExtractNob(NobId(i));  //leaves gap in list (nullptr)
+	}
+
+	m_upNobs2Add->Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));  // dislocate copy
+
+	return move(m_upNobs2Add);
 }
 
 //////  local functions /////////////////////////////////
 
-void CopySelectedNobs::add2copy(Nob const & nobModel, UPNob upNobCopy)
-{
-	Nob * const pNobCopy { upNobCopy.get() };
-	assert(pNobCopy);
-	m_mapModel2copy.insert(pair(&nobModel, pNobCopy));
-	m_mapCopy2model.insert(pair(pNobCopy, &nobModel));
-	m_nobs2Add.Push(move(upNobCopy));
-}
-
-void CopySelectedNobs::addMissingKnot(PosNob const & posNobModel)
-{
-	if (!model2copy(&posNobModel))
-		add2copy(posNobModel, make_unique<Knot>(posNobModel.GetPos()));
-}
 
 Nob const & CopySelectedNobs::copy2model(Nob * const pNobCopy) 
 { 

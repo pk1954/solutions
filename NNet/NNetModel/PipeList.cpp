@@ -61,7 +61,7 @@ void PipeList::Replace(Nob * const pDel, Nob * const pAdd)
 
 void PipeList::Recalc() const
 { 
-	Apply2All([](Pipe & pipe) { pipe.PositionChanged(); });
+	Apply2All([](Pipe & pipe) { pipe.PosChanged(); });
 }
 
 wostream & operator<<(wostream & out, PipeList const & pl)

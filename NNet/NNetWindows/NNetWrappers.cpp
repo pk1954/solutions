@@ -281,14 +281,14 @@ public:
     }
 };
 
-class WrapCreateSynapse: public ScriptFunctor
+class WrapAddSynapse: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
         NobId         const id    { ScrReadNobId(script) };
         MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->CreateSynapse(id, umPos);
+        m_pCommands->AddSynapse(id, umPos);
     }
 };
 
@@ -348,7 +348,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
-    SymbolTable::ScrDefConst(L"CreateSynapse",       new WrapCreateSynapse); 
+    SymbolTable::ScrDefConst(L"AddSynapse",          new WrapAddSynapse); 
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();

@@ -38,8 +38,10 @@ export enum class NobIoMode { input, output, internal };
 
 class Nob;
 
+export using UPNob       = unique_ptr<Nob>;
 export using Nob2NobFunc = function<Nob * (Nob const *)>;
 export using AddMenuFunc = function<void(int const)>;
+export using PushFunc    = function<void(UPNob)>;
 
 export class Nob
 {
@@ -61,8 +63,8 @@ public:
 
 	virtual void SetDir   (Radian            const);
 	virtual void SetPos   (MicroMeterPnt     const&) { assert(false); }
-	virtual void SetPosDir(MicroMeterPosDir  const &);
-	virtual void AppendMenuItems(AddMenuFunc const &) const;
+	virtual void SetPosDir(MicroMeterPosDir  const&);
+	virtual void AppendMenuItems(AddMenuFunc const&) const;
 
 	virtual MicroMeterPosDir GetPosDir() const;
 
@@ -74,16 +76,15 @@ public:
 	virtual MicroMeterPnt GetPos()    const { assert(false); return NP_NULL; }
 	virtual NobIoMode     GetIoMode() const { assert(false); return NobIoMode::internal; }
 
-	virtual void          DrawExterior(DrawContext    const &, tHighlight const) const {}
-	virtual void          DrawInterior(DrawContext    const &, tHighlight const) const {}
-	virtual void          Expand      (MicroMeterRect       &)                   const {}
-	virtual void          MoveNob     (MicroMeterPnt  const &)                         {}
-	virtual void          RotateNob   (MicroMeterPnt  const &, Radian const)           {}
-	virtual void          CollectInput()                                               {}
-	virtual void          Link        (Nob const &, Nob2NobFunc const &)               {}
-	virtual void          Reconnect   ()                                               {}
-
-	virtual void PositionChanged() { };
+	virtual void DrawExterior(DrawContext    const &, tHighlight const) const {}
+	virtual void DrawInterior(DrawContext    const &, tHighlight const) const {}
+	virtual void Expand      (MicroMeterRect       &)                   const {}
+	virtual void MoveNob     (MicroMeterPnt  const &)                         {}
+	virtual void RotateNob   (MicroMeterPnt  const &, Radian const)           {}
+	virtual void CollectInput()                                               {}
+	virtual void Link        (Nob const &, Nob2NobFunc const &)               {}
+	virtual void Reconnect   ()                                               {}
+	virtual void PosChanged  ()                                               {}
 
 	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
@@ -92,6 +93,8 @@ public:
 	virtual bool IsCompositeNob() const { return false; }
 
 	virtual void ClearDynamicData() { m_mVinputBuffer.Set2Zero(); }
+
+	virtual bool FixOpenLinks(PushFunc const &) = 0;
 
 	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input; }
 	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output; }
@@ -185,8 +188,5 @@ inline MicroMeterLine CalcMaxDistLine(vector<T*> const& list) // find two nobs w
 		lineMax.Normalize();
 	return lineMax;
 }
-
-export using UPNob  = unique_ptr<Nob>;
-export using UPNobC = unique_ptr<const Nob>;
 
 export bool IsSelected(UPNob const& upNob) { return upNob && upNob->IsSelected(); }

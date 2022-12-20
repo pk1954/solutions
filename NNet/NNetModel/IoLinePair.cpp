@@ -31,7 +31,7 @@ IoLinePair::IoLinePair
 	m_upInputLine ->SetPipe(m_upPipe.get());
 	m_upPipe->SetStartPnt(m_upInputLine.get());
 	m_upPipe->SetEndPnt  (m_upOutputLine.get());
-	m_upPipe->PositionChanged();
+	m_upPipe->PosChanged();
 }
 
 IoLinePair::~IoLinePair() = default;

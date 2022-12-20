@@ -43,6 +43,8 @@ public:
 	void CollectInput() final { /* */ };
 	void Reconnect()    final { /* nothing to connect */ };
 
+	bool FixOpenLinks(PushFunc const&) final { return false; };
+
 	NobIoMode GetIoMode() const final { return NobIoMode::input; }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;

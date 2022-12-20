@@ -56,6 +56,7 @@ public:
 	void MoveNob  (MicroMeterPnt const&)               final;
 	void RotateNob(MicroMeterPnt const&, Radian const) final;
 	void Link(Nob const&, Nob2NobFunc const&)          final;
+	bool FixOpenLinks(PushFunc const&)                 final;
 
 	size_t GetNrOfOutConns() const final { return 1; }
 	size_t GetNrOfInConns () const final { return m_inPipes.Size(); }

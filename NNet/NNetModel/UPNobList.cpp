@@ -138,12 +138,6 @@ NobId UPNobList::Push(UPNob upNob)
 	return idNewSlot;
 }
 
-void UPNobList::MoveFrom(UPNobList & src, size_t nrOfItems)
-{
-	for (size_t i = 0; i < nrOfItems; ++i)
-		Push(src.Pop());
-}
-
 void UPNobList::copy(const UPNobList & rhs)
 {
 	rhs.CheckNobList();

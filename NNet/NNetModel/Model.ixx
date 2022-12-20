@@ -20,6 +20,7 @@ import :UPSensorList;
 import :PosNob;
 import :DescriptionUI;
 
+using std::make_unique;
 using std::unique_ptr;
 using std::wstring;
 using std::move;
@@ -28,10 +29,12 @@ export class Model
 {
 public:
 
-	// const functions
+	Model()
+	{
+		m_upNobs = make_unique<UPNobList>();
+	}
 
-	//bool operator==(Model const&) const;
-	// TODO
+	// const functions
 
 	template <Nob_t T>
 	T GetNobConstPtr(NobId const id) const
@@ -54,7 +57,7 @@ public:
 	NobId GetEndKnotId  (NobId const) const;
 
 	wstring GetModelFilePath() const { return m_wstrModelFilePath; }
-	size_t  Size()             const { return m_Nobs.Size(); }
+	size_t  Size()             const { return m_upNobs->Size(); }
 
 	bool  GetDescriptionLine(int const, wstring&) const;
 
@@ -62,31 +65,31 @@ public:
 	{
 		NobId idRes{ NO_NOB };
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoConnector() && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoConnector() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsNeuron() && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsNeuron() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoLine() && (!s.HasParentNob()) && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoLine() && (!s.HasParentNob()) && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsKnot() && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsKnot() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsSynapse() && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsSynapse() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsFork() && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsFork() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
-		idRes = m_Nobs.FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsPipe() && crit(s); });
+		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsPipe() && crit(s); });
 		if (IsDefined(idRes))
 			return idRes;
 
@@ -104,8 +107,9 @@ public:
 	UPSigGenList         & GetSigGenList ()       { return m_sigGenList; }
 	UPSensorList   const & GetSensorList () const { return m_sensorList; }
 	UPSensorList         & GetSensorList ()       { return m_sensorList; }
-	UPNobList      const & GetUPNobs     () const { return m_Nobs; }
-	UPNobList            & GetUPNobs     ()       { return m_Nobs; }
+	UPNobList      const & GetUPNobs     () const { return *m_upNobs.get(); }
+	UPNobList            & GetUPNobs     ()       { return *m_upNobs.get(); }
+	unique_ptr<UPNobList>  MoveUPNobs    ()       { return move(m_upNobs); }
 	MonitorData    const & GetMonitorData() const { return m_monitorData; }
 	MonitorData          & GetMonitorData()       { return m_monitorData; }
 	NNetParameters const & GetParams     () const { return m_param; }
@@ -126,7 +130,7 @@ public:
 	void  SelectSubtree(PosNob&, bool const);
 	void  Reconnect(NobId const);
 
-	void DeselectAllNobs     ()               const { m_Nobs.SelectAllNobs(false); }
+	void DeselectAllNobs     ()               const { m_upNobs->SelectAllNobs(false); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine  (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }
@@ -135,11 +139,11 @@ public:
 
 private:
 
-	UPNobList        m_Nobs;
-	UPSigGenList     m_sigGenList;
-	UPSensorList     m_sensorList;
-	ModelDescription m_description;
-	MonitorData      m_monitorData;
-	NNetParameters   m_param;
-	wstring          m_wstrModelFilePath { L"" };
+	unique_ptr<UPNobList> m_upNobs;
+	UPSigGenList          m_sigGenList;
+	UPSensorList          m_sensorList;
+	ModelDescription      m_description;
+	MonitorData           m_monitorData;
+	NNetParameters        m_param;
+	wstring               m_wstrModelFilePath { L"" };
 };

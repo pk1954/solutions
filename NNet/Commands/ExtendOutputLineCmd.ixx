@@ -30,7 +30,7 @@ public:
 		m_upOutputLineNew = make_unique<OutputLine>(pos);
 		m_upPipe->SetStartPnt(m_upKnotNew.get());
 		m_upPipe->SetEndPnt  (m_upOutputLineNew.get());
-		m_upPipe->PositionChanged();
+		m_upPipe->PosChanged();
 		m_upOutputLineNew->SetPipe(m_upPipe.get());
 		m_upKnotNew->AddOutgoing(m_upPipe.get());
 		m_upKnotNew->AddIncoming(m_outputLineOld.GetPipe());
@@ -41,7 +41,7 @@ public:
 	void Do() final 
 	{ 
 		m_outputLineOld.GetPipe()->SetEndPnt(m_upKnotNew.get());
-		m_outputLineOld.GetPipe()->PositionChanged();
+		m_outputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upOutputLineNew));
@@ -54,7 +54,7 @@ public:
 		m_upPipe          = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew       = m_pNMWI->PopFromModel<Knot>();
 		m_outputLineOld.GetPipe()->SetEndPnt(m_upOutputLineOld.get());
-		m_outputLineOld.GetPipe()->PositionChanged();
+		m_outputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Restore2Model(move(m_upOutputLineOld));
 	}
 

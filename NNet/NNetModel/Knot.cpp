@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <cassert>
 #include "Resource.h"
 
@@ -13,9 +14,14 @@ import DrawContext;
 import Types;
 import :NobType;
 import :tHighlight;
+import :InputLine;
+import :OutputLine;
 import :PosNob;
 import :PipeList;
 import :Pipe;
+
+using std::unique_ptr;
+using std::make_unique;
 
 Knot::Knot(MicroMeterPnt const& center)
   : PosNob(NobType::Value::knot),
@@ -68,13 +74,40 @@ void Knot::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 void Knot::SetPos(MicroMeterPnt const& pos) 
 { 
 	m_circle.SetPos(pos); 
-	m_pPipeIn->PositionChanged();
-	m_pPipeOut->PositionChanged();
+	m_pPipeIn->PosChanged();
+	m_pPipeOut->PosChanged();
 }
 
 void Knot::MoveNob(MicroMeterPnt const& delta)
 {
 	SetPos(GetPos() + delta);
+}
+
+void Knot::Reconnect()
+{
+	m_pPipeIn->SetEndPnt(this);
+	m_pPipeOut->SetStartPnt(this);
+	m_pPipeIn->PosChanged();
+	m_pPipeOut->PosChanged();
+};
+
+bool Knot::FixOpenLinks(PushFunc const& push)
+{
+	if (m_pPipeIn == nullptr)
+	{
+		if (m_pPipeOut == nullptr)
+			;  // orphaned nob, just destroy
+		else
+			AttachInputLine(push, *m_pPipeOut);
+	}
+	else
+	{
+		if (m_pPipeOut == nullptr)
+			AttachOutputLine(push, *m_pPipeIn);
+		else
+			return false; // all pipes ok, nothing to do
+	}
+	return true;
 }
 
 void Knot::Link(Nob const& nobSrc, Nob2NobFunc const& f)

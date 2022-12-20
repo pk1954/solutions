@@ -38,11 +38,20 @@ public:
 				}
 				if (s.IsKnot())
 				{
-					Knot const & knot { static_cast<Knot const &>(s) };
-					bool const   bIn  { startPointInRect(knot) };
-					bool const   bOut { endPointInRect  (knot) };
-					if ( ! (bIn||bOut) )
+					Knot const& knot { static_cast<Knot const&>(s) };
+					bool const  bIn  { m_rect.Includes(knot.GetIncoming()->GetStartPoint()) };
+					bool const  bOut { m_rect.Includes(knot.GetOutgoing()->GetEndPoint()) };
+					if (!(bIn || bOut))
 						return;          // knot would be orphan in selection
+				}
+				if (s.IsFork())
+				{
+					Fork const& fork  { static_cast<Fork const&>(s) };
+					bool const  bIn   { m_rect.Includes(fork.GetIncoming      ()->GetStartPoint()) };
+					bool const  bOut1 { m_rect.Includes(fork.GetFirstOutgoing ()->GetEndPoint()) };
+					bool const  bOut2 { m_rect.Includes(fork.GetSecondOutgoing()->GetEndPoint()) };
+					if (!(bIn || bOut1 || bOut2))
+						return;          // fork would be orphan in selection
 				}
 				s.Select(true);
 			}
@@ -52,26 +61,4 @@ public:
 private:
 
 	MicroMeterRect const m_rect;
-
-	bool startPointInRect(Knot const& knot)
-	{
-		return knot.Apply2AllInPipesB
-		(
-			[this](Pipe const& p)
-			{
-				return m_rect.Includes(p.GetStartPoint());
-			}
-		);
-	}
-
-	bool endPointInRect(Knot const& knot)
-	{
-		return knot.Apply2AllOutPipesB
-		(
-			[this](Pipe const& p)
-			{
-				return m_rect.Includes(p.GetEndPoint());
-			}
-		);
-	}
 };

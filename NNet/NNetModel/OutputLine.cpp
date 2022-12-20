@@ -62,7 +62,7 @@ void OutputLine::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 		assert(false);
 }
 
-void OutputLine::SetAllOutgoing(PosNob& src) 
+void OutputLine::SetAllOutgoing(PosNob& src)
 { 
 	assert(false); 
 }

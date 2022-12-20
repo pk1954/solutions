@@ -43,7 +43,7 @@ public:
 					? m_upPipeSplit1.get()
 					: m_upPipeSplit2.get()
 				};
-				pPipeNew->CreateSynapse(Cast2Synapse(pNob));
+				pPipeNew->AddSynapse(Cast2Synapse(pNob));
 			}
 		);
 

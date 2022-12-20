@@ -41,13 +41,13 @@ void Model::CheckModel() const
 #ifdef _DEBUG
 	try
 	{
-		m_Nobs.CheckNobList();
+		m_upNobs->CheckNobList();
 	}
 	catch (NNetException const& e)
 	{
 		NNetExceptionMessage(e);
 		wcout << Scanner::COMMENT_SYMBOL << L"Model dump:" << endl;
-		m_Nobs.Dump();	
+		m_upNobs->Dump();	
 	}
 #endif
 }
@@ -55,7 +55,7 @@ void Model::CheckModel() const
 void Model::CheckId(NobId const id) const 
 {	
 #ifdef _DEBUG
-	if (IsUndefined(id) || ! m_Nobs.IsValidNobId(id))
+	if (IsUndefined(id) || ! m_upNobs->IsValidNobId(id))
 		throw NobException(id, L"");
 #endif
 }
@@ -63,13 +63,13 @@ void Model::CheckId(NobId const id) const
 Nob const * Model::GetConstNob(NobId const id) const 
 {	
 	CheckId(id);
-	return m_Nobs.GetAt(id);
+	return m_upNobs->GetAt(id);
 }
 
 Nob * Model::GetNob(NobId const id)
 {	
 	CheckId(id);
-	return m_Nobs.GetAt(id);
+	return m_upNobs->GetAt(id);
 }
 
 PosNob const * Model::GetStartNobPtr(NobId const id) const 
@@ -100,14 +100,14 @@ void Model::Reconnect(NobId const id)
 
 void Model::RecalcAllNobs() const
 { 
-	m_Nobs.Apply2AllC([](Nob & nob) { nob.PositionChanged(); });
+	m_upNobs->Apply2AllC([](Nob & nob) { nob.PosChanged(); });
 } 
 
 void Model::ClearDynamicData()
 { 
 	SimulationTime::Set();
 	GetMonitorData().ClearDynamicData();
-	m_Nobs.Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
+	m_upNobs->Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
 	m_sigGenList.Apply2All([](auto * p){ p->ClearDynamicData(); });
 }
 
@@ -133,15 +133,15 @@ bool Model::Compute()
 	bool bStop { false };
 	SimulationTime::Tick(m_param.TimeResolution());
 	m_sigGenList.Apply2All([this](SignalGenerator * p) { p->Prepare(m_param); });
-	m_Nobs.Apply2AllC([]      (Nob &s) { s.CollectInput(); });
-	m_Nobs.Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
+	m_upNobs->Apply2AllC([]      (Nob &s) { s.CollectInput(); });
+	m_upNobs->Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;
 }
 
 void Model::ResetModel()
 {
 	m_wstrModelFilePath = L""; 
-	m_Nobs.Clear();
+	m_upNobs->Clear();
 	m_monitorData.Reset();
 	m_description.ClearDescription();
 	SimulationTime::Set();
@@ -170,6 +170,6 @@ void Model::DumpModel
 ) const
 {
 	wcout << Scanner::COMMENT_SYMBOL << L"--- Dump start (" << file << L" line " << line << L")" << endl;
-	m_Nobs.Dump();
+	m_upNobs->Dump();
 	wcout << Scanner::COMMENT_SYMBOL << L"--- Dump end ---" << endl;
 }

@@ -31,6 +31,8 @@ public:
 	void CollectInput() final { /* done by output neurons */ };
 	void Reconnect()    final { /* nothing to connect */ };
 
+	bool FixOpenLinks(PushFunc const&) final { return false; };
+
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const override;

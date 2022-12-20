@@ -17,17 +17,23 @@ public:
 
 	void Do() final 
 	{ 
-		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
-		(
-			[this](PosNob & posNob) { posNob.MoveNob(m_delta); } 
-		);
+		moveSelected(m_delta);
 	}
 
 	void Undo() final 
 	{ 
+		moveSelected(-m_delta);
+	}
+
+	void moveSelected(MicroMeterPnt const & delta)
+	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
 		(
-			[this](PosNob & posNob) { posNob.MoveNob(-m_delta); } 
+			[delta](PosNob& posNob)
+			{
+				if (!posNob.IsSynapse())         // Synapses are already implicitly moved 
+					posNob.MoveNob(delta);		 // by m_pipeAdd
+			}
 		);
 	}
 

@@ -91,7 +91,7 @@ void IoLine::LockDirection()
 void IoLine::SetPos(MicroMeterPnt const& pos)
 {
 	m_circle.SetPos(pos);
-	m_pPipe->PositionChanged();
+	m_pPipe->PosChanged();
 }
 
 void IoLine::SetDir(Radian const r)

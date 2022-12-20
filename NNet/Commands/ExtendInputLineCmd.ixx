@@ -39,11 +39,11 @@ public:
 
 		m_upInputLineNew->SetPipe(m_upPipe.get());
 		m_upPipe->SetStartPnt(m_upInputLineNew.get());
-		m_upPipe->PositionChanged();
+		m_upPipe->PosChanged();
 
 		m_upKnotNew->AddIncoming(m_upPipe.get());
 		m_upPipe->SetEndPnt(m_upKnotNew.get());
-		m_upPipe->PositionChanged();
+		m_upPipe->PosChanged();
 	}
 
 	~ExtendInputLineCmd() final = default;
@@ -52,7 +52,7 @@ public:
 	{
 		m_upKnotNew->AddOutgoing(m_inputLineOld.GetPipe());
 		m_inputLineOld.GetPipe()->SetStartPnt(m_upKnotNew.get());
-		m_inputLineOld.GetPipe()->PositionChanged();
+		m_inputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upInputLineNew));
@@ -66,7 +66,7 @@ public:
 		m_upKnotNew      = m_pNMWI->PopFromModel<Knot>();
 		m_upInputLineOld->AddOutgoing(m_inputLineOld.GetPipe());
 		m_inputLineOld.GetPipe()->SetStartPnt(m_upInputLineOld.get());
-		m_inputLineOld.GetPipe()->PositionChanged();
+		m_inputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Restore2Model(move(m_upInputLineOld));
 	}
 

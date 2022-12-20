@@ -2,38 +2,53 @@
 //
 // Commands
 
+module;
+
+#include <memory>
+
 export module AddNobsCommand;
 
 import SelectionCommand;
 import NNetModel;
 
+using std::unique_ptr;
+
 export class AddNobsCommand : public SelectionCommand
 {
 public:
 
-	explicit AddNobsCommand(UPNobList const & nobs2Add)
-		: m_nobs2Add(nobs2Add),
-		m_nrOfNobs(nobs2Add.Size())
+	explicit AddNobsCommand(unique_ptr<UPNobList> upNobs2Add)
+	  : m_upNobs2Add(move(upNobs2Add))
 	{ 
-		m_nobs2Add.SelectAllNobs(true);
-		m_nobs2Add.CheckNobList();
+		m_upNobs2Add->SelectAllNobs(true);
+		m_upNobs2Add->CheckNobList();
 	}
 
 	void Do() final 
 	{ 
 		SelectionCommand::Do();
 		m_pNMWI->DeselectAllNobs();
-		m_pNMWI->GetUPNobs().MoveFrom(m_nobs2Add, m_nrOfNobs);
+		m_nrOfNobs = 0;
+		while (m_upNobs2Add->IsNotEmpty())
+		{
+			UPNob upNob { m_upNobs2Add->Pop() };
+			if (upNob)
+			{
+				m_pNMWI->GetUPNobs().Push(move(upNob));
+				++m_nrOfNobs;
+			}
+		}
 		m_pNMWI->CheckModel();
 	}
 
 	void Undo() final
 	{ 
-		m_nobs2Add.MoveFrom(m_pNMWI->GetUPNobs(), m_nrOfNobs);
+		for (size_t i = 0; i < m_nrOfNobs; ++i)
+			m_upNobs2Add->Push(m_pNMWI->GetUPNobs().Pop());
 		SelectionCommand::Undo();
 	}
 
 private:
-	UPNobList m_nobs2Add;
-	size_t    m_nrOfNobs;
+	unique_ptr<UPNobList> m_upNobs2Add;
+	size_t                m_nrOfNobs;
 };

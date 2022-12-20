@@ -39,11 +39,11 @@ public:
 	size_t GetNrOfInConns () const final { return 1; }
 	size_t GetNrOfOutConns() const final { return 1; }
 
-	MicroMeter       GetExtension()  const       { return m_circle.GetRadius(); }
-	MicroMeterPnt    GetPos()        const final { return m_circle.GetPos(); }
-	Radian           GetDir()        const final { return Radian::NULL_VAL(); };
-	mV               GetNextOutput() const final { return m_mVinputBuffer; }
-	NobIoMode        GetIoMode()     const final { return NobIoMode::internal; }
+	MicroMeter    GetExtension()  const       { return m_circle.GetRadius(); }
+	MicroMeterPnt GetPos()        const final { return m_circle.GetPos(); }
+	Radian        GetDir()        const final { return Radian::NULL_VAL(); };
+	mV            GetNextOutput() const final { return m_mVinputBuffer; }
+	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
 
 	Pipe* GetIncoming() { return m_pPipeIn; }
 	Pipe* GetOutgoing() { return m_pPipeOut; }
@@ -62,13 +62,8 @@ public:
 	void SetAllIncoming(PosNob&) final;
 	void SetAllOutgoing(PosNob&) final;
 
-	void Reconnect() final
-	{
-		m_pPipeIn ->SetEndPnt  (this);
-		m_pPipeOut->SetStartPnt(this);
-		m_pPipeIn->PositionChanged();
-		m_pPipeOut->PositionChanged();
-	};
+	void Reconnect()                   final;
+	bool FixOpenLinks(PushFunc const&) final;
 
 	void Emphasize(bool const, bool const);
 

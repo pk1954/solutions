@@ -301,8 +301,8 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
 	if (connectionAllowed())
 		m_pModelCommands->Connect(m_nobHighlighted, m_nobTarget);
-	m_nobHighlighted = NO_NOB;
-	m_nobTarget = NO_NOB;
+	//m_nobHighlighted = NO_NOB;
+	//m_nobTarget = NO_NOB;
 	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
 
@@ -572,7 +572,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobHighlighted, umPoint);	            break; // case 7
-	case IDD_CREATE_SYNAPSE:      m_pModelCommands->CreateSynapse(m_nobHighlighted, umPoint);      	break; // case 8 
+	case IDD_CREATE_SYNAPSE:      m_pModelCommands->AddSynapse(m_nobHighlighted, umPoint);      	break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobHighlighted, umPoint);	break; // case 9
 	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);              break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:   m_pModelCommands->ExtendOutputLine(m_nobHighlighted, umPoint); 	break; // case 11

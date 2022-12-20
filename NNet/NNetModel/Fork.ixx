@@ -49,6 +49,7 @@ public:
     void MoveNob  (MicroMeterPnt  const&)               final;
     void RotateNob(MicroMeterPnt  const&, Radian const) final;
     void Link     (Nob const&, Nob2NobFunc const&)      final;
+    bool FixOpenLinks(PushFunc const&)                  final;
 
     void Check() const final;
 

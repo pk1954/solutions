@@ -77,8 +77,6 @@ public:
 
 	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }
 
-	void MoveFrom(UPNobList&, size_t);
-
 	MicroMeterPnt CenterOfGravity(auto const& crit) const
 	{
 		MicroMeterPnt umPntRes{ MicroMeterPnt::ZERO_VAL() };

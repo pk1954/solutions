@@ -149,7 +149,7 @@ export class DeletePipeCommand : public NNetCommand
 	using enum NobType::Value;
 public:
 	explicit DeletePipeCommand(Nob & nob)
-	:	m_pipe   (*Cast2Pipe(&nob)),
+	:	m_pipe   (Cast2Pipe(nob)),
 		m_idStart(m_pipe.GetStartNobPtr()->GetId()),
 		m_idEnd  (m_pipe.GetEndNobPtr  ()->GetId())
 	{
