@@ -140,17 +140,6 @@ public:
     }
 };
 
-class WrapSelectNob: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId   const id { ScrReadNobId(script) };
-        tBoolOp const op { ScrReadBoolOp(script) };
-        m_pCommands->SelectNob(id, op);
-    }
-};
-
 class WrapToggleStopOnTrigger: public ScriptFunctor
 {
 public:
@@ -348,7 +337,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
     SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );
     SelectAllConnectedCmd::Register();
-    SymbolTable::ScrDefConst(L"SelectNob",           new WrapSelectNob );
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
     SymbolTable::ScrDefConst(L"SplitNeuron",         new WrapSplitNeuron );
     SymbolTable::ScrDefConst(L"ToggleStopOnTrigger", new WrapToggleStopOnTrigger );

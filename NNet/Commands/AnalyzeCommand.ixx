@@ -17,10 +17,10 @@ public:
 	void Do() final 
 	{ 
 		SelectionCommand::Do();
-		if (!m_result.empty())
+		if (!m_result.empty())    //TODO: find solution for visualization of circle
 		{
-			m_pNMWI->DeselectAllNobs();
-			for (auto it : m_result) { m_pNMWI->SelectNob(it->GetId(), true); }
+			//m_pNMWI->DeselectAllNobs();
+			//for (auto it : m_result) { m_pNMWI->SelectNob(it->GetId(), true); }
 		}
 	}
 

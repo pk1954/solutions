@@ -81,7 +81,6 @@ public:
     void RotateModel(MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateSelection(MicroMeterPnt const&, MicroMeterPnt const&);
     void SelectAll(bool const);
-    void SelectNob(NobId const, tBoolOp const);
     void SelectSigGenClients();
     void SetActiveSignalGenerator(SigGenId const);
     void SetParameter(ParamType::Value const, float const);

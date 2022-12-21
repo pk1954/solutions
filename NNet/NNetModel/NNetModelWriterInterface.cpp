@@ -42,11 +42,11 @@ PosNob & NNetModelWriterInterface::GetPosNob(NobId const id)
 void NNetModelWriterInterface::AddOutgoing(NobId const id, Pipe* p) { GetPosNob(id).AddOutgoing(p); }
 void NNetModelWriterInterface::AddIncoming(NobId const id, Pipe* p) { GetPosNob(id).AddIncoming(p); }
 
-void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
-{ 
-	GetNobPtr<Nob *>(idNob)->Select(bOn); 
-}
-
+//void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
+//{ 
+//	GetNobPtr<Nob *>(idNob)->Select(bOn); 
+//}
+//
 void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 {
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })

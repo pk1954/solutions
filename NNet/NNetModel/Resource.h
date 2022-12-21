@@ -28,7 +28,6 @@
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
 #define       IDM_SELECT_ALL                 142 
-#define       IDM_SELECT_CONNECTED           144
 #define       IDM_SELECT_NOB                 145
 #define       IDM_DESELECT_ALL               146
 #define       IDM_DESELECT_SUBTREE           147

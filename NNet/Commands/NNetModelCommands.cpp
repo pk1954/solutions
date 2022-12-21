@@ -56,7 +56,7 @@ import RotateNobCommand;
 import RotateSelectionCommand;
 import SelectAllCommand;
 import SelectionCommand;
-import SelectNobCommand;
+import SelectAllConnectedCmd;
 import SetActiveSigGenCmd;
 import SelSigGenClientsCmd;
 import SetNobCommand;
@@ -518,14 +518,6 @@ void NNetModelCommands::RestrictSelection(NobType::Value const val)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << val << endl;
 	m_pCmdStack->PushCommand(make_unique<RestrictSelectionCommand>(val));
-}
-
-void NNetModelCommands::SelectNob(NobId const id, tBoolOp const op)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << op << endl;
-	if (IsDefined(id))
-		m_pCmdStack->PushCommand(make_unique<SelectNobCommand>(id, op));
 }
 
 void NNetModelCommands::SelectAll(bool const bOn)

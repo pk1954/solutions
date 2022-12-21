@@ -109,7 +109,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
 		{ IDD_NEW_IO_LINE_PAIR,        L"New IO-line pair"  	         },
 		{ IDM_SELECT_NOB,              L"Select nob"                     },
-		{ IDM_SELECT_CONNECTED,        L"Select all connected"           },
 		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
 		{ IDD_EMPHASIZE,               L"Feedback line on/off"           }
 	};
@@ -288,7 +287,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
 	if (IsDefined(m_nobHighlighted) && !m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
-		m_pModelCommands->SelectNob(m_nobHighlighted, tBoolOp::opToggle);
+		SelectAllConnectedCmd::Push(m_nobHighlighted, tBoolOp::opToggle);
 }
 
 bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
@@ -531,14 +530,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		m_pModelCommands->SplitNeuron(m_nobHighlighted);
 		break;
 
-	case IDM_SELECT_NOB:
-		m_pModelCommands->SelectNob(m_nobHighlighted,tBoolOp::opTrue);
-		break;
-
-	case IDM_DESELECT_NOB:
-		m_pModelCommands->SelectNob(m_nobHighlighted, tBoolOp::opFalse);
-		break;
-
 	case IDD_INSERT_KNOT:
 		m_pModelCommands->InsertKnot(m_nobHighlighted, umPoint);
 		break;
@@ -556,10 +547,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobHighlighted, umPoint);	break; // case 9
 	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);              break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:   m_pModelCommands->ExtendOutputLine(m_nobHighlighted, umPoint); 	break; // case 11
-
-	case IDM_SELECT_CONNECTED:
-		SelectAllConnectedCmd::Push();
-		break;
 
 	case IDD_STOP_ON_TRIGGER:
 		m_pModelCommands->ToggleStopOnTrigger(m_nobHighlighted);

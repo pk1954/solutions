@@ -14,6 +14,8 @@ import Symtab;
 import Script;
 import SelectionCommand;
 import NNetModel;
+import UtilityWrappers;
+import NNetWrapperHelpers;
 
 using std::endl;
 using std::wstring;
@@ -22,13 +24,15 @@ using std::make_unique;
 export class SelectAllConnectedCmd : public SelectionCommand
 {
 public:
-	SelectAllConnectedCmd()
-	{ }
+	SelectAllConnectedCmd(NobId const idNob, tBoolOp const bOp)
+	  : m_nobStart(*m_pNMWI->GetNobPtr<Nob *>(idNob)),
+		m_bOn(ApplyOp2(m_nobStart.IsSelected(), bOp))
+	{}
 
 	void Do() final
 	{
 		SelectionCommand::Do();
-		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>([](Nob& n){ n.SelectAllConnected(true); });
+		m_nobStart.SelectAllConnected(true);
 	}
 
 	static void Register()
@@ -36,11 +40,11 @@ public:
 		SymbolTable::ScrDefConst(NAME, new Wrapper);
 	}
 
-	static void Push()
+	static void Push(NobId const idNob, tBoolOp const bOp)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << endl;
-		m_pStack->PushCommand(make_unique<SelectAllConnectedCmd>());
+			TraceStream() << NAME << L' ' << idNob << L' ' << bOp << L' ' << endl;
+		m_pStack->PushCommand(make_unique<SelectAllConnectedCmd>(idNob, bOp));
 	}
 
 private:
@@ -52,9 +56,12 @@ private:
 	public:
 		void operator() (Script& script) const final
 		{
-			SelectAllConnectedCmd::Push();
+			NobId   const idSrc { ScrReadNobId(script) };
+			tBoolOp const bOp   { ScrReadBoolOp(script) };
+			SelectAllConnectedCmd::Push(idSrc, bOp);
 		}
 	};
 
+	Nob& m_nobStart;
 	bool m_bOn;
 };
