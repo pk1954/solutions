@@ -147,21 +147,6 @@ void Model::ResetModel()
 	SimulationTime::Set();
 }
 
-void Model::SelectSubtree(PosNob & posNob, bool const bOn)
-{
-	posNob.Select(bOn);
-	posNob.Apply2AllOutPipes
-	(
-		[this, bOn](Pipe & pipe) 
-		{ 
-			pipe.Select(bOn); 
-			PosNob& posNob { *Cast2PosNob(pipe.GetEndNobPtr()) };
-			if (posNob.IsKnot() || posNob.IsFork() || posNob.IsSynapse())
-				SelectSubtree(posNob, bOn);
-		} 
-	);
-}
-
 void Model::DumpModel
 (
 	char const * const file,

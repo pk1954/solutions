@@ -137,10 +137,10 @@
     <ClCompile Include="RotateSelectionCommand.ixx" />
     <ClCompile Include="RotationCommand.ixx" />
     <ClCompile Include="SelectAllCommand.ixx" />
+    <ClCompile Include="SelectAllConnectedCmd.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelectNobCommand.ixx" />
     <ClCompile Include="SelectNobsInRectCommand.ixx" />
-    <ClCompile Include="SelectSubtreeCommand.ixx" />
     <ClCompile Include="SelSigGenClientsCmd.ixx" />
     <ClCompile Include="SetActiveSigGenCmd.ixx" />
     <ClCompile Include="SetNobCommand.ixx" />

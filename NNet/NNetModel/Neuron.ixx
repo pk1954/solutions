@@ -56,7 +56,15 @@ public:
 	void MoveNob  (MicroMeterPnt const&)               final;
 	void RotateNob(MicroMeterPnt const&, Radian const) final;
 	void Link(Nob const&, Nob2NobFunc const&)          final;
-	bool FixOpenLinks(PushFunc const&)                 final;
+	void SelectAllConnected(bool const bFirst)         final
+	{
+		if (!IsSelected() || bFirst)
+		{
+			Nob::Select(true);
+			m_inPipes.SelectAllConnected();
+			m_pPipeAxon->SelectAllConnected(false);
+		}
+	}
 
 	size_t GetNrOfOutConns() const final { return 1; }
 	size_t GetNrOfInConns () const final { return m_inPipes.Size(); }

@@ -28,28 +28,28 @@
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
 #define       IDM_SELECT_ALL                 142 
-#define       IDM_SELECT_SUBTREE             143
-#define       IDM_SELECT_NOB                 144
-#define       IDM_DESELECT_ALL               145
-#define       IDM_DESELECT_SUBTREE           146
-#define       IDM_DESELECT_NOB               147
-#define       IDM_SELECTION                  148
-#define       IDM_DELETE                     149
+#define       IDM_SELECT_CONNECTED           144
+#define       IDM_SELECT_NOB                 145
+#define       IDM_DESELECT_ALL               146
+#define       IDM_DESELECT_SUBTREE           147
+#define       IDM_DESELECT_NOB               148
+#define       IDM_SELECTION                  149
+#define       IDM_DELETE                     150
 								   	         
-#define       IDM_SAVE_MODEL                 150
-#define       IDM_ASK_AND_SAVE_MODEL         151
-#define       IDM_SAVE_MODEL_AS              152
-#define       IDM_OPEN_MODEL                 153
-#define       IDM_ADD_MODEL                  154
-#define       IDM_NEW_MODEL                  155
-#define       IDM_ADD_IMPORTED_MODEL         156
-
 #define       IDX_READ_PROGRESS_REPORT       160
 #define       IDX_WRITE_PROGRESS_REPORT      161
 #define       IDX_REPLACE_MODEL              162
 #define       IDX_FILE_NOT_FOUND             163
 #define       IDX_ERROR_IN_FILE              164
 							   	         
+#define       IDM_SAVE_MODEL                 170
+#define       IDM_ASK_AND_SAVE_MODEL         171
+#define       IDM_SAVE_MODEL_AS              172
+#define       IDM_OPEN_MODEL                 173
+#define       IDM_ADD_MODEL                  174
+#define       IDM_NEW_MODEL                  175
+#define       IDM_ADD_IMPORTED_MODEL         176
+
 #define       IDD_ARROWS                     180
 #define       IDD_ARROWS_ON                  181
 #define       IDD_ARROWS_OFF                 182

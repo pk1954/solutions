@@ -58,6 +58,11 @@ public:
 		return any_of(m_list, [&f](auto const* p) { return f(*p); });
 	}
 
+	void SelectAllConnected()
+	{
+		for_each(m_list, [](auto* const p) { p->SelectAllConnected(false); });
+	}
+
 private:
 	vector<Pipe*> m_list{};
 };

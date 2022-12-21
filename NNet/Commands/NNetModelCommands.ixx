@@ -84,7 +84,6 @@ public:
     void SelectNob(NobId const, tBoolOp const);
     void SelectNobsInRect(MicroMeterRect const&);
     void SelectSigGenClients();
-    void SelectSubtree(NobId const, bool const);
     void SetActiveSignalGenerator(SigGenId const);
     void SetParameter(ParamType::Value const, float const);
     void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);

@@ -57,7 +57,16 @@ public:
 
 	void SetPipe(Pipe * pPipe) { m_pPipe = pPipe; }
 
-	bool FixOpenLinks(PushFunc const&) final { return m_pPipe == nullptr; }
+	void SelectAllConnected(bool const bFirst) final
+	{
+		if (!IsSelected() || bFirst)
+		{
+			Nob::Select(true);
+			m_pPipe->SelectAllConnected(false);
+			if (HasParentNob())
+				GetParentNob()->Select(true);
+		}
+	}
 
 private:
 	MicroMeterPnt determineVector() const;

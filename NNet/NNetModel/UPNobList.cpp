@@ -36,21 +36,21 @@ void UPNobList::Clear()
 	m_nobsOfType.fill(0);
 }
 
-UPNob ShallowCopy(Nob const & nob)  //TODO: simplify!  
+UPNob ShallowCopy(Nob const & nob)
 {
 	NobType::Value type { nob.GetNobType().GetValue() };
 	switch (type)
 	{
 	using enum NobType::Value;
-	case inputConnector:  return Copy<InputConnector>(nob);
-	case outputConnector: return Copy<OutputConnector>(nob);
-	case inputLine:   	  return Copy<InputLine>(nob);
-	case outputLine:	  return Copy<OutputLine>(nob);
-	case synapse:		  return Copy<Synapse>(nob);
-	case fork:		      return Copy<Fork>(nob);
-	case knot:		      return Copy<Knot>(nob);
-	case neuron:		  return Copy<Neuron>(nob);
-	case pipe:		      return Copy<Pipe>(nob);
+	case inputConnector:  return make_unique<InputConnector >(static_cast<InputConnector  const&>(nob));
+	case outputConnector: return make_unique<OutputConnector>(static_cast<OutputConnector const&>(nob));
+	case inputLine:   	  return make_unique<InputLine      >(static_cast<InputLine       const&>(nob));
+	case outputLine:	  return make_unique<OutputLine     >(static_cast<OutputLine      const&>(nob));
+	case synapse:		  return make_unique<Synapse        >(static_cast<Synapse         const&>(nob));
+	case fork:		      return make_unique<Fork           >(static_cast<Fork            const&>(nob));
+	case knot:		      return make_unique<Knot           >(static_cast<Knot            const&>(nob));
+	case neuron:		  return make_unique<Neuron         >(static_cast<Neuron          const&>(nob));
+	case pipe:		      return make_unique<Pipe           >(static_cast<Pipe            const&>(nob));
 
 	default:
 		throw NobTypeException(nob.GetNobType(), __FILE__, __LINE__);

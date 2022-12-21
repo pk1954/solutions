@@ -91,25 +91,6 @@ void Knot::Reconnect()
 	m_pPipeOut->PosChanged();
 };
 
-bool Knot::FixOpenLinks(PushFunc const& push)
-{
-	if (m_pPipeIn == nullptr)
-	{
-		if (m_pPipeOut == nullptr)
-			;  // orphaned nob, just destroy
-		else
-			AttachInputLine(push, *m_pPipeOut);
-	}
-	else
-	{
-		if (m_pPipeOut == nullptr)
-			AttachOutputLine(push, *m_pPipeIn);
-		else
-			return false; // all pipes ok, nothing to do
-	}
-	return true;
-}
-
 void Knot::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 {
 	Knot const& src { static_cast<Knot const&>(nobSrc) };

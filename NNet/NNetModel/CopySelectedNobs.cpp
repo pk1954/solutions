@@ -31,6 +31,11 @@ unique_ptr<UPNobList> CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 	m_mapCopy2model.clear();
 	m_mapModel2copy.clear();
 
+	nmwi.GetUPNobs().Apply2AllSelected<Nob>
+	(
+		[](Nob& n) { n.SelectAllConnected(true); }
+	);
+
 	nmwi.GetUPNobs().Apply2AllSelected<Nob>  // create copy of selected nobs
 	(
 		[&m_upNobs2Add](Nob const & nobModel)
@@ -51,20 +56,6 @@ unique_ptr<UPNobList> CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 			nobDst.Link(copy2model(&nobDst), model2copy); 
 		}
 	);
-
-	for (int i = 0; i < m_upNobs2Add->Size(); ++i)         // cannot use range-based loop
-	{                                                      // m_upNobs2Add modified in loop
-		Nob* pNobCopy { m_upNobs2Add->GetAt(NobId(i)) };
-		bool bDestroyNob 
-		{ 
-			pNobCopy->FixOpenLinks
-			(
-				[&m_upNobs2Add](UPNob upNob) { m_upNobs2Add->Push(move(upNob)); }
-			) 
-		};
-		if (bDestroyNob)
-			m_upNobs2Add->ExtractNob(NobId(i));  //leaves gap in list (nullptr)
-	}
 
 	m_upNobs2Add->Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));  // dislocate copy
 

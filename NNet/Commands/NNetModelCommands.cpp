@@ -58,7 +58,6 @@ import SelectAllCommand;
 import SelectionCommand;
 import SelectNobCommand;
 import SelectNobsInRectCommand;
-import SelectSubtreeCommand;
 import SetActiveSigGenCmd;
 import SelSigGenClientsCmd;
 import SetNobCommand;
@@ -535,13 +534,6 @@ void NNetModelCommands::SelectAll(bool const bOn)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << bOn << endl;
 	m_pCmdStack->PushCommand(make_unique<SelectAllCommand>(bOn));
-}
-
-void NNetModelCommands::SelectSubtree(NobId const id, bool const bOn)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << bOn << endl;
-	m_pCmdStack->PushCommand(make_unique<SelectSubtreeCommand>(id, bOn));
 }
 
 void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)

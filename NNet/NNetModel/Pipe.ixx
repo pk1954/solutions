@@ -97,7 +97,6 @@ public:
 	void          PosChanged      ()                                            final;
 	void          ClearDynamicData()                                            final;
 	void          Select          (bool const)                                  final;
-	bool          FixOpenLinks    (PushFunc const&)                             final;
 	float         PosOnPipe       (MicroMeterPnt const&) const;
 	NobId         GetStartKnotId  ()                     const;
 	NobId         GetEndKnotId    ()                     const;
@@ -134,6 +133,18 @@ public:
 	{
 		for (auto it : m_synapses)
 			func(it);
+	}
+
+	void SelectAllConnected(bool const bFirst) final
+	{
+		if (!IsSelected() || bFirst)
+		{
+			Nob::Select(true);
+			m_pNobStart->SelectAllConnected(false);
+			m_pNobEnd->SelectAllConnected(false);
+			for (auto it : m_synapses)
+				SelectAllConnected(false);
+		}
 	}
 
 	friend wostream& operator<< (wostream&, Pipe const&);

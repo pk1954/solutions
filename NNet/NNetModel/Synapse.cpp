@@ -176,22 +176,6 @@ void Synapse::Reconnect()
 	m_pPipeAdd->PosChanged();
 }
 
-bool Synapse::FixOpenLinks(PushFunc const& push)
-{
-	if (m_pPipeAdd == nullptr)
-		return true;  //  destroy Synapse 
-
-	if (m_pPipeMain == nullptr)
-		AttachOutputLine(push, *m_pPipeAdd);
-	else
-	{
-		m_pPipeMain->AddSynapse(this);
-		return false;
-	}
-
-	return true;
-}
-
 void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 {
 	Synapse const& src { static_cast<Synapse const&>(nobSrc) };

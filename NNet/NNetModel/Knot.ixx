@@ -62,8 +62,16 @@ public:
 	void SetAllIncoming(PosNob&) final;
 	void SetAllOutgoing(PosNob&) final;
 
-	void Reconnect()                   final;
-	bool FixOpenLinks(PushFunc const&) final;
+	void Reconnect()             final;
+	void SelectAllConnected(bool const bFirst) final
+	{
+		if (!IsSelected() || bFirst)
+		{
+			Nob::Select(true);
+			m_pPipeIn ->SelectAllConnected(false);
+			m_pPipeOut->SelectAllConnected(false);
+		}
+	}
 
 	void Emphasize(bool const, bool const);
 

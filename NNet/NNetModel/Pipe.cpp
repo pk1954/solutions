@@ -61,8 +61,8 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
 	m_potIndex (src.m_potIndex ),
-	m_segments(src.m_segments)
-	// m_synapses(src.m_synapses)  // do not copy Synapses!
+	m_segments(src.m_segments),
+	m_synapses(src.m_synapses)
 { 
 }
 
@@ -282,13 +282,6 @@ vector<mV> const& Pipe::getSegments() const
 	if (m_bSegmentsDirty)
 		recalcSegments();
 	return m_segments;
-}
-
-bool Pipe::FixOpenLinks(PushFunc const & push)
-{
-	assert(m_pNobStart);
-	assert(m_pNobEnd);
-	return false;
 }
 
 void Pipe::PosChanged()

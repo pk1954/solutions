@@ -25,6 +25,8 @@ import NNetModel;
 import ConnectCreateForkCmd;
 import CreateForkCommand;
 import ExtendInputLineCmd;
+import SelectAllConnectedCmd;
+import MoveSignalCmd;
 
 using std::wstring;
 
@@ -135,17 +137,6 @@ public:
     {
         bool const bOn { script.ScrReadInt() != 0 };
         m_pCommands->SelectAll(bOn);
-    }
-};
-
-class WrapSelectSubtree: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId const id  { ScrReadNobId(script) };
-        bool  const bOn { script.ScrReadInt() != 0 };
-        m_pCommands->SelectSubtree(id, bOn);
     }
 };
 
@@ -361,14 +352,15 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 
     SymbolTable::ScrDefConst(L"MoveSelection",       new WrapMoveSelection );
     SymbolTable::ScrDefConst(L"MoveSensor",          new WrapMoveSensor);
+    MoveSignalCmd::Register();
     SymbolTable::ScrDefConst(L"MoveNob",             new WrapMoveNob );
     SymbolTable::ScrDefConst(L"NewIoLinePair",       new WrapNewIoLinePair ); 
     SymbolTable::ScrDefConst(L"MakeIoConnector",     new WrapMakeIoConnector );
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
     SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );
+    SelectAllConnectedCmd::Register();
     SymbolTable::ScrDefConst(L"SelectNob",           new WrapSelectNob );
     SymbolTable::ScrDefConst(L"SelectNobsInRect",    new WrapSelectNobsInRect); 
-    SymbolTable::ScrDefConst(L"SelectSubtree",       new WrapSelectSubtree );
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
     SymbolTable::ScrDefConst(L"SplitNeuron",         new WrapSplitNeuron );
     SymbolTable::ScrDefConst(L"ToggleStopOnTrigger", new WrapToggleStopOnTrigger );

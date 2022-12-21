@@ -30,6 +30,7 @@ import MonitorWindow;
 import NNetModel;
 import CreateForkCommand;
 import ExtendInputLineCmd;
+import SelectAllConnectedCmd;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -108,7 +109,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
 		{ IDD_NEW_IO_LINE_PAIR,        L"New IO-line pair"  	         },
 		{ IDM_SELECT_NOB,              L"Select nob"                     },
-		{ IDM_SELECT_SUBTREE,          L"Select subtree"                 },
+		{ IDM_SELECT_CONNECTED,        L"Select all connected"           },
 		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
 		{ IDD_EMPHASIZE,               L"Feedback line on/off"           }
 	};
@@ -577,8 +578,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);              break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:   m_pModelCommands->ExtendOutputLine(m_nobHighlighted, umPoint); 	break; // case 11
 
-	case IDM_SELECT_SUBTREE:
-		m_pModelCommands->SelectSubtree(m_nobHighlighted, true);
+	case IDM_SELECT_CONNECTED:
+		SelectAllConnectedCmd::Push();
 		break;
 
 	case IDD_STOP_ON_TRIGGER:

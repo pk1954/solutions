@@ -156,48 +156,6 @@ void Fork::Reconnect()
 	m_pPipeOut1->PosChanged();
 };
 
-bool Fork::FixOpenLinks(PushFunc const& push) // returns true if Fork has to be destroyed
-{
-	if (m_pPipeIn == nullptr)
-	{
-		if (m_pPipeOut1 == nullptr)
-		{
-			if (m_pPipeOut2 != nullptr)
-				AttachInputLine(push, *m_pPipeOut2);
-			else
-				;  // orphaned nob, just destroy
-		}
-		else // m_pPipeOut1 != nullptr
-		{
-			if (m_pPipeOut2 == nullptr)  
-				AttachInputLine(push, *m_pPipeOut1);
-			else 
-			{
-				AttachInputLine(push, *m_pPipeOut1);
-				AttachInputLine(push, *m_pPipeOut2);
-			}
-		}
-	}
-	else  // m_pPipeIn != nullptr
-	{
-		if (m_pPipeOut1 == nullptr)
-		{
-			if (m_pPipeOut2 == nullptr)  
-				AttachOutputLine(push, *m_pPipeIn);
-			else 
-				AttachKnot(push, *m_pPipeIn, *m_pPipeOut2);
-		}
-		else // m_pPipeOut1 != nullptr
-		{
-			if (m_pPipeOut2 == nullptr) 
-				AttachKnot(push, *m_pPipeIn, *m_pPipeOut1);
-			else
-				return false; // all pipes ok, nothing to do
-		}
-	}
-	return true;
-}
-
 void Fork::AddIncoming(Pipe * pPipe)
 {
 	m_pPipeIn = pPipe;

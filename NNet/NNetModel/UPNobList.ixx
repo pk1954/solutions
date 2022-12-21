@@ -211,6 +211,3 @@ private:
 };
 
 export UPNob ShallowCopy(Nob const &);
-
-export template <Nob_t T>
-UPNob Copy(Nob const & nob) { return make_unique<T>(static_cast<T const&>(nob)); }
