@@ -230,17 +230,6 @@ public:
     }
 };
 
-class WrapSelectNobsInRect: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        MicroMeterPnt const umPntStart { ScrReadMicroMeterPnt(script) };
-        MicroMeterPnt const umPntEnd   { ScrReadMicroMeterPnt(script) };
-        m_pCommands->SelectNobsInRect(MicroMeterRect(umPntStart, umPntEnd));
-    }
-};
-
 class WrapMoveSelection: public ScriptFunctor
 {
 public:
@@ -360,7 +349,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );
     SelectAllConnectedCmd::Register();
     SymbolTable::ScrDefConst(L"SelectNob",           new WrapSelectNob );
-    SymbolTable::ScrDefConst(L"SelectNobsInRect",    new WrapSelectNobsInRect); 
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
     SymbolTable::ScrDefConst(L"SplitNeuron",         new WrapSplitNeuron );
     SymbolTable::ScrDefConst(L"ToggleStopOnTrigger", new WrapToggleStopOnTrigger );

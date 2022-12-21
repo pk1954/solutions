@@ -236,13 +236,6 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (ptLast.IsNull())
 		return;
 
-	if (wParam & MK_RBUTTON)        // Right mouse button: selection
-	{
-		m_rectSelection = MicroMeterRect(m_umPntSelectionAnchor, umCrsrPos);
-		Notify(false);
-		return;
-	}
-	
 	if (wParam & MK_LBUTTON)        // Left mouse button
 	{
 		MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
@@ -305,17 +298,6 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	//m_nobHighlighted = NO_NOB;
 	//m_nobTarget = NO_NOB;
 	return NNetWindow::OnLButtonUp(wParam, lParam);
-}
-
-bool MainWindow::OnRButtonUp(WPARAM const wParam, LPARAM const lParam)
-{
-	bool const bSelection { m_rectSelection.IsNotEmpty() };
-	if (bSelection)
-	{
-		m_pModelCommands->SelectNobsInRect(m_rectSelection);
-		m_rectSelection.SetZero();
-	}
-	return bSelection; // let base class handle other cases
 }
 
 bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
@@ -410,9 +392,6 @@ void MainWindow::DoPaint()
 	PixelRect   const         pixRect { GetClPixelRect () };
 	DrawContext const &       context { GetDrawContextC() };
 	Sensor      const * const pSensor { m_pNMRI->GetSensorSelectedC() };
-
-	if (m_rectSelection.IsNotEmpty())
-		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
 
 	DrawSensors();
 

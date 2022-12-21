@@ -141,9 +141,6 @@
     <ClCompile Include="SelectNobCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelectNobsInRectCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SelSigGenClientsCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

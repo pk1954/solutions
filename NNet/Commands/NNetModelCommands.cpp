@@ -57,7 +57,6 @@ import RotateSelectionCommand;
 import SelectAllCommand;
 import SelectionCommand;
 import SelectNobCommand;
-import SelectNobsInRectCommand;
 import SetActiveSigGenCmd;
 import SelSigGenClientsCmd;
 import SetNobCommand;
@@ -534,13 +533,6 @@ void NNetModelCommands::SelectAll(bool const bOn)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << bOn << endl;
 	m_pCmdStack->PushCommand(make_unique<SelectAllCommand>(bOn));
-}
-
-void NNetModelCommands::SelectNobsInRect(MicroMeterRect const & rect)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << rect << endl;
-	m_pCmdStack->PushCommand(make_unique<SelectNobsInRectCommand>(rect));
 }
 
 void NNetModelCommands::ToggleEmphMode(NobId const id)
