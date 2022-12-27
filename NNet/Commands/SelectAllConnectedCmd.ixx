@@ -32,7 +32,7 @@ public:
 	void Do() final
 	{
 		SelectionCommand::Do();
-		m_nobStart.SelectAllConnected(true);
+		m_nobStart.SelectAllConnected(true, m_bOn);
 	}
 
 	static void Register()

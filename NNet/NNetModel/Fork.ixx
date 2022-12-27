@@ -49,14 +49,14 @@ public:
     void MoveNob  (MicroMeterPnt  const&)               final;
     void RotateNob(MicroMeterPnt  const&, Radian const) final;
     void Link     (Nob const&, Nob2NobFunc const&)      final;
-    void SelectAllConnected(bool const bFirst) final
+    void SelectAllConnected(bool const bFirst, bool const bOn) final
     {
-        if (!IsSelected() || bFirst)
+        if ((IsSelected() != bOn) || bFirst)
         {
-            Nob::Select(true);
-            m_pPipeIn  ->SelectAllConnected(false);
-            m_pPipeOut1->SelectAllConnected(false );
-            m_pPipeOut2->SelectAllConnected(false);
+            Nob::Select(bOn);
+            m_pPipeIn->SelectAllConnected  (false, bOn);
+            m_pPipeOut1->SelectAllConnected(false, bOn);
+            m_pPipeOut2->SelectAllConnected(false, bOn);
         }
     }
 

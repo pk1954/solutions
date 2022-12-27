@@ -135,15 +135,15 @@ public:
 			func(it);
 	}
 
-	void SelectAllConnected(bool const bFirst) final
+	void SelectAllConnected(bool const bFirst, bool const bOn) final
 	{
-		if (!IsSelected() || bFirst)
+		if ((IsSelected() != bOn) || bFirst)
 		{
-			Nob::Select(true);
-			m_pNobStart->SelectAllConnected(false);
-			m_pNobEnd->SelectAllConnected(false);
+			Nob::Select(bOn);
+			m_pNobStart->SelectAllConnected(false, bOn);
+			m_pNobEnd->SelectAllConnected(false, bOn);
 			for (auto it : m_synapses)
-				SelectAllConnected(false);
+				it->SelectAllConnected(false, bOn);
 		}
 	}
 

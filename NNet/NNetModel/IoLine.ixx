@@ -57,14 +57,14 @@ public:
 
 	void SetPipe(Pipe * pPipe) { m_pPipe = pPipe; }
 
-	void SelectAllConnected(bool const bFirst) final
+	void SelectAllConnected(bool const bFirst, bool const bOn) final
 	{
-		if (!IsSelected() || bFirst)
+		if ((IsSelected() != bOn) || bFirst)
 		{
-			Nob::Select(true);
-			m_pPipe->SelectAllConnected(false);
+			Nob::Select(bOn);
+			m_pPipe->SelectAllConnected(false, bOn);
 			if (HasParentNob())
-				GetParentNob()->Select(true);
+				GetParentNob()->Select(bOn);
 		}
 	}
 

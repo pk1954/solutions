@@ -79,12 +79,16 @@ public:
 		for_each(m_list, [&func](auto* p) { if (p) func(*p); });
 	}
 
-	void SelectAllConnected(bool const bFirst) final
+	void SelectAllConnected(bool const bFirst, bool const bOn) final
 	{
-		if (!IsSelected() || bFirst)
+		if ((IsSelected() != bOn) || bFirst)
 		{
-			Nob::Select(true);
-			for_each(m_list, [](IoLine* p) { if (p) p->SelectAllConnected(false); });
+			Nob::Select(bOn);
+			for_each
+			(
+				m_list,
+				[bOn](IoLine* p) { if (p) p->SelectAllConnected(false, bOn); }
+			);
 		}
 	}
 

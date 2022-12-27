@@ -58,9 +58,9 @@ public:
 		return any_of(m_list, [&f](auto const* p) { return f(*p); });
 	}
 
-	void SelectAllConnected()
+	void SelectAllConnected(bool const bOn)
 	{
-		for_each(m_list, [](auto* const p) { p->SelectAllConnected(false); });
+		for_each(m_list, [bOn](auto* const p) { p->SelectAllConnected(false, bOn); });
 	}
 
 private:

@@ -94,7 +94,7 @@ public:
 
 	virtual void ClearDynamicData() { m_mVinputBuffer.Set2Zero(); }
 
-	virtual void SelectAllConnected(bool const) = 0;
+	virtual void SelectAllConnected(bool const, bool const) = 0;
 
 	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input; }
 	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output; }

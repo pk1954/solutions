@@ -56,13 +56,13 @@ public:
 	void MoveNob  (MicroMeterPnt const&)               final;
 	void RotateNob(MicroMeterPnt const&, Radian const) final;
 	void Link(Nob const&, Nob2NobFunc const&)          final;
-	void SelectAllConnected(bool const bFirst)         final
+	void SelectAllConnected(bool const bFirst, bool const bOn) final
 	{
-		if (!IsSelected() || bFirst)
+		if ((IsSelected() != bOn) || bFirst)
 		{
-			Nob::Select(true);
-			m_inPipes.SelectAllConnected();
-			m_pPipeAxon->SelectAllConnected(false);
+			Nob::Select(bOn);
+			m_inPipes.SelectAllConnected(bOn);
+			m_pPipeAxon->SelectAllConnected(false, bOn);
 		}
 	}
 
