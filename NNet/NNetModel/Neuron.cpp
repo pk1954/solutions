@@ -68,7 +68,7 @@ void Neuron::CollectInput()
 {
 	if (m_bTriggered)
 	{
-		if (m_usSpikeTime > GetParam()->SpikeWidth() + GetParam()->RefractPeriod())
+		if (m_usSpikeTime > GetParam()->PulseDistMin())
 			m_bTriggered = false;
 	}
 	else 

@@ -15,6 +15,7 @@ export class ParamType
 public:
 	enum class Value
 	{
+		pulseFreqMax,
 		inputPeakTime,
 		inputPeakFreq,
 		inputPeakVolt,
@@ -23,10 +24,8 @@ public:
 		neuronPeakVolt,   // peak voltage for neuron output
 		neuronThreshold,  // trigger voltage for neurons
 		synapseThreshold, // blocking voltage for synapses
-		synapseBlockTime, // blocking time for synapses
 		pulseSpeed,
 		spikeWidth,
-		refractPeriod,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
 		tParameterLast = timeResolution

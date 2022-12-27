@@ -279,7 +279,7 @@ bool Synapse::CompStep()
 	{
 		m_mVinputBuffer = 0.0_mV;
 		m_usBlocked += GetParam()->TimeResolution();
-		if (m_usBlocked >= GetParam()->SynapseBlockTime())
+		if (m_usBlocked > GetParam()->PulseDistMin())
 			m_bOutputBlocked = false;
 	}
 	else

@@ -31,12 +31,11 @@ private:
 	NNetModelWriterInterface * m_pNMWI     { nullptr };
 	NNetModelCommands        * m_pCommands { nullptr };
 
+	HWND m_hwndPulseFreqMax     { nullptr };
 	HWND m_hwndPeakVoltage      { nullptr };
 	HWND m_hwndNeuronThreshold  { nullptr };
 	HWND m_hwndSynapseThreshold { nullptr };
-	HWND m_hwndSynapseBlockTime { nullptr };
 	HWND m_hwndSpikeWidth       { nullptr };
-	HWND m_hwndRefractoryPeriod { nullptr };
 	HWND m_hwndTimeResolution   { nullptr };
 	HWND m_hwndFilterSize       { nullptr };
 	HWND m_hwndPulseSpeed       { nullptr };
