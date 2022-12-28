@@ -84,33 +84,31 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
-		{ IDD_EXTEND_INPUTLINE,        L"Extend"                         },
-		{ IDD_EXTEND_OUTPUTLINE,       L"Extend"                         },
-		{ IDD_ADD_INCOMING2NEURON,     L"Add incoming dendrite"          },
-		{ IDD_CREATE_SYNAPSE,          L"Create synapse"                 },
-		{ IDD_CREATE_FORK,             L"Create fork"                    },
-		{ IDD_ADD_EEG_SENSOR,          L"New EEG sensor" 		         },
-//		{ IDM_ALIGN_NOBS,              L"Align selected objects"         },
-		{ IDD_ARROWS_OFF,              L"Arrows off"                     },
-		{ IDD_ARROWS_ON,               L"Arrows on"                      },
-		{ IDD_ATTACH_SIG_GEN_TO_LINE,  L"Attach active signal generator" },
-		{ IDD_ATTACH_SIG_GEN_TO_CONN,  L"Attach active signal generator" },
-		{ IDD_ATTACH_SIG_GEN_TO_SEL,   L"Attach active signal generator" },
-		{ IDM_COPY_SELECTION,          L"Copy selection"                 },
-		{ IDM_DELETE_SELECTION,        L"Delete selected objects"        },
-		{ IDD_DELETE_NOB,              L"Delete"                         },
-		{ IDD_DELETE_EEG_SENSOR,       L"Delete EEG sensor"              },
-		{ IDM_DESELECT_ALL,            L"Deselect all"                   },
-		{ IDM_DESELECT_NOB,            L"Deselect nob"                   },
-		{ IDD_DISC_IOCONNECTOR,        L"Disconnect"                     },
-		{ IDD_SPLIT_NEURON,            L"Split (make I/O neurons)"       },
-		{ IDD_INSERT_KNOT,             L"Insert knot"                    },
-		{ IDD_INSERT_NEURON,           L"Insert neuron"                  },
-		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
-		{ IDD_NEW_IO_LINE_PAIR,        L"New IO-line pair"  	         },
-		{ IDM_SELECT_NOB,              L"Select nob"                     },
-		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
-		{ IDD_EMPHASIZE,               L"Feedback line on/off"           }
+		{ IDD_EXTEND_INPUTLINE,       L"Extend"                         },
+		{ IDD_EXTEND_OUTPUTLINE,      L"Extend"                         },
+		{ IDD_ADD_INCOMING2NEURON,    L"Add incoming dendrite"          },
+		{ IDD_CREATE_SYNAPSE,         L"Create synapse"                 },
+		{ IDD_CREATE_FORK,            L"Create fork"                    },
+		{ IDD_ADD_EEG_SENSOR,         L"New EEG sensor" 		        },
+		{ IDD_ARROWS_OFF,             L"Arrows off"                     },
+		{ IDD_ARROWS_ON,              L"Arrows on"                      },
+		{ IDD_ATTACH_SIG_GEN_TO_LINE, L"Attach active signal generator" },
+		{ IDD_ATTACH_SIG_GEN_TO_CONN, L"Attach active signal generator" },
+		{ IDD_ATTACH_SIG_GEN_TO_SEL,  L"Attach active signal generator" },
+		{ IDM_COPY_SELECTION,         L"Copy selection"                 },
+		{ IDM_DELETE_SELECTION,       L"Delete selected objects"        },
+		{ IDD_DELETE_NOB,             L"Delete"                         },
+		{ IDD_DELETE_EEG_SENSOR,      L"Delete EEG sensor"              },
+		{ IDM_DESELECT_ALL,           L"Deselect all"                   },
+		{ IDM_DESELECT_NOB,           L"Deselect nob"                   },
+		{ IDD_DISC_IOCONNECTOR,       L"Disconnect"                     },
+		{ IDD_SPLIT_NEURON,           L"Split (make I/O neurons)"       },
+		{ IDD_INSERT_KNOT,            L"Insert knot"                    },
+		{ IDD_INSERT_NEURON,          L"Insert neuron"                  },
+		{ IDD_NEW_IO_LINE_PAIR,       L"New IO-line pair"  	            },
+		{ IDM_SELECT_NOB,             L"Select nob"                     },
+		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"         },
+		{ IDD_EMPHASIZE,              L"Feedback line on/off"           }
 	};
 	AppendMenu(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));
 }
@@ -123,9 +121,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hSelectionMenu, IDM_DESELECT_ALL    );
 		appendMenu(hSelectionMenu, IDM_COPY_SELECTION  );
 		appendMenu(hSelectionMenu, IDM_DELETE_SELECTION);
-		appendMenu(hSelectionMenu, IDM_MAKE_CONNECTOR  );
 		appendMenu(hSelectionMenu, IDD_ATTACH_SIG_GEN_TO_SEL);  
-//		appendMenu(hSelectionMenu, IDM_ALIGN_NOBS      );
 	}
 
 	if (IsDefined(m_nobHighlighted))
@@ -293,7 +289,10 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
 	if (connectionAllowed())
+	{
 		m_pModelCommands->Connect(m_nobHighlighted, m_nobTarget);
+		Reset();
+	}
 	//m_nobHighlighted = NO_NOB;
 	//m_nobTarget = NO_NOB;
 	return NNetWindow::OnLButtonUp(wParam, lParam);
@@ -490,11 +489,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	switch (int const wmId { LOWORD(wParam) } )
 	{
 
-	case IDM_MAKE_CONNECTOR:
-		if (! m_pModelCommands->MakeIoConnector())
-			SendCommand2Application(IDX_PLAY_SOUND, reinterpret_cast<LPARAM>(TEXT("NOT_POSSIBLE_SOUND")));
-		break;
-
 	case IDD_EMPHASIZE:
 		m_pModelCommands->ToggleEmphMode(m_nobHighlighted);
 		break;
@@ -504,7 +498,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 			m_pModelCommands->DeleteNob(m_nobHighlighted);
 		else if (m_pNMRI->AnyNobsSelected())
 			m_pModelCommands->DeleteSelection();
-		break;
+		return true;
 
 	case IDD_DELETE_NOB:
 		m_pModelCommands->DeleteNob(m_nobHighlighted);

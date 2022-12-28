@@ -60,26 +60,11 @@ void IoConnector::Select(bool const bOn)
         it->Select(bOn);
 }
 
-void IoConnector::Push(IoLine * const p) 
-{ 
-    m_list.push_back(p); 
-}
-
 IoLine * IoConnector::Pop() 
 { 
     IoLine * pRet { m_list.back() };
     m_list.pop_back();
     return pRet;
-}
-
-size_t IoConnector::Size() const 
-{ 
-    return m_list.size(); 
-}
-
-IoLine & IoConnector::GetElem(size_t const nr) const 
-{ 
-    return * m_list.at(nr); 
 }
 
 void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
@@ -90,6 +75,8 @@ void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 
 void IoConnector::AlignDirection()
 {
+    if (m_list.empty())
+        return;
     MicroMeterLine const umLine   { m_list.front()->GetPos(), m_list.back()->GetPos() };
     MicroMeterPnt  const umPntDir { ::CalcOrthoVector(m_list, umLine) };
     for (auto it : m_list) { it->SetDirVector(umPntDir); }

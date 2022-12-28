@@ -216,5 +216,8 @@
     <ClCompile Include="SelectAllConnectedCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LockDirectionCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

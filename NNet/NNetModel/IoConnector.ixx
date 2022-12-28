@@ -55,16 +55,16 @@ public:
 	bool             IsCompositeNob() const final { return true; }
 	MicroMeterPosDir GetPosDir() const final;
 
-	void             Push(IoLine* const);
-	IoLine         * Pop();
-	IoLine         & GetElem(size_t const) const;
-	size_t           Size() const;
-	void             SetParentPointers();
-	void             ClearParentPointers() const;
+	IoLine * Pop();
+	void     Push(IoLine* const p)         { m_list.push_back(p); }
+	IoLine & GetElem(size_t const n) const { return *m_list.at(n); }
+	size_t   Size ()                 const { return m_list.size(); }
+	bool     Empty()                 const { return m_list.empty(); }
+	size_t   GetNrOfElements()       const { return m_list.size(); }
+	void     ClearParentPointers()   const;
+	void     SetParentPointers();
 
 	void AlignDirection();
-
-	size_t GetNrOfElements() const { return m_list.size(); }
 
 	void Rotate(MicroMeterPnt const&, MicroMeterPnt const&);
 

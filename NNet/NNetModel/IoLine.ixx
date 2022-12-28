@@ -44,8 +44,8 @@ public:
 	void SetDirVector(MicroMeterPnt const &p) { SetDir(Vector2Radian(p)); }
 
 	// IoLines can be locked or unlocked
-	void LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
-	void UnlockDirection();   // unlocked: m_radDirection is null, displayed direction
+	bool LockDirection();     // locked: m_radDirection is not null, it is displayed with this direction
+	bool UnlockDirection();   // unlocked: m_radDirection is null, displayed direction
 	bool IsDirLocked() const; //           is computed depending on connected pipe(s)
 
 	MicroMeterPnt    GetScaledDirVector() const;
@@ -64,7 +64,7 @@ public:
 			Nob::Select(bOn);
 			m_pPipe->SelectAllConnected(false, bOn);
 			if (HasParentNob())
-				GetParentNob()->Select(bOn);
+				GetParentNob()->SelectAllConnected(false, bOn);
 		}
 	}
 

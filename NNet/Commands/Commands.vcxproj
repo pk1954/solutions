@@ -120,6 +120,7 @@
     <ClCompile Include="InsertPosNobCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />
+    <ClCompile Include="LockDirectionCmd.ixx" />
     <ClCompile Include="MakeConnAnimation.ixx" />
     <ClCompile Include="MoveNobCommand.ixx" />
     <ClCompile Include="MoveSelectionCommand.ixx" />

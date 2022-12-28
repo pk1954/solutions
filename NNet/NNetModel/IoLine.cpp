@@ -75,17 +75,21 @@ void IoLine::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 	m_circle.Rotate(umPntPivot, radDelta);
 }
 
-void IoLine::UnlockDirection()
+bool IoLine::UnlockDirection()
 {
 	std::wcout << L"UnlockDirection" << std::endl;
+	bool bRes { IsDirLocked() };
 	SetDir(Radian::NULL_VAL());
+	return bRes;
 }
 
-void IoLine::LockDirection() 
+bool IoLine::LockDirection() 
 { 
 	std::wcout << L"LockDirection" << std::endl;
-	if (!IsDirLocked())
+	bool bRes { IsDirLocked() };
+	if (!bRes)
 		SetDir(Vector2Radian(determineVector()));
+	return bRes;
 }
 
 void IoLine::SetPos(MicroMeterPnt const& pos)

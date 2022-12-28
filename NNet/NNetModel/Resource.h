@@ -109,7 +109,6 @@
 #define       IDM_SIGNAL_DESIGNER_INTEGRATED 662
 #define       IDM_SIGNAL_DESIGNER_STACKED    663
 
-#define       IDM_MAKE_CONNECTOR             674
 #define       IDD_DISC_IOCONNECTOR           676
 #define       IDD_SPLIT_NEURON               678
 

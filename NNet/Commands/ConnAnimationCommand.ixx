@@ -17,7 +17,7 @@ using std::vector;
 export class ConnAnimationCommand : public NNetCommand
 {
 public:
-    ConnAnimationCommand();
+    ConnAnimationCommand(NobId const, NobId const);
 
     bool IsAsyncCommand() final { return true; };
 
@@ -29,6 +29,7 @@ private:
 
     bool m_bAllOk{ false };
 
-    NobType determineNobType(UPNobList const&) const;
+    //NobType determineNobType(UPNobList const&) const;
     void    sortNobsAnimated(MicroMeterLine const&);
+    void add2nobsAnimated(NobId const);
 };

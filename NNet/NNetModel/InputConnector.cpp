@@ -41,7 +41,7 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         MicroMeterPnt       umPnt1      { m_list.front()->GetPos() }; 
         MicroMeterPnt       umPnt2      { m_list.back ()->GetPos() }; 
         MicroMeterPnt const umPntDir    { (umPnt2 - umPnt1)     .ScaledTo(NEURON_RADIUS) };
-        MicroMeterPnt const umPntOrtho  { umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS) };
+        MicroMeterPnt const umPntOrtho  { -m_list.front()->GetDirVector().ScaledTo(NEURON_RADIUS) };
         MicroMeterPnt const umPntDirOff { umPntDir   * OFFSET };
         MicroMeterPnt const umPntOrtOff { umPntOrtho * OFFSET };
         MicroMeterPnt const umPntOrtCor { umPntOrtho * (1.0f + WIDTH) * 0.5f };

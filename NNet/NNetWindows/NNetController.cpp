@@ -195,6 +195,10 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
+    case IDM_DELETE:   // keyboard delete key
+        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, 0);
+        break;
+
     case IDM_UNDO:
         m_pModelCommands->UndoCommand();
         break;

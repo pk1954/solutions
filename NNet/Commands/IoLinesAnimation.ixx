@@ -38,8 +38,6 @@ public:
 
     void Do() final
     {
-        for (auto & it: m_animated)
-            it->LockDirection(); 
         m_upAnimation->Start(m_animated, m_target);
     }
 
@@ -62,7 +60,7 @@ public:
 
 private:
 
-    vector<IoLine *>    m_animated;
+    vector<IoLine *>      m_animated;
     ANIM_TYPE       const m_start;
     ANIM_TYPE       const m_target;
     unsigned int          m_uiNrOfSteps;

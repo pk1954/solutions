@@ -115,18 +115,26 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };
 
+	Nob const* pNobSrc { m_pModel->GetConstNob(idSrc) };
+	Nob const* pNobDst { m_pModel->GetConstNob(idDst) };
+
 	PosNob      const * pPosNobSrc { nullptr };
 	PosNob      const * pPosNobDst { nullptr };
 	Pipe        const * pPipeDst   { nullptr };
 	IoConnector const * pConnSrc   { nullptr };
 	IoConnector const * pConnDst   { nullptr };
 
-	     if (typeSrc.IsPosNobType     ()) pPosNobSrc = m_pModel->GetNobConstPtr<PosNob      const *>(idSrc);
-	else if (typeSrc.IsIoConnectorType()) pConnSrc   = m_pModel->GetNobConstPtr<IoConnector const *>(idSrc);
+	     if (typeSrc.IsPosNobType     ()) pPosNobSrc = static_cast<PosNob      const *>(pNobSrc);
+	else if (typeSrc.IsIoConnectorType()) pConnSrc   = static_cast<IoConnector const *>(pNobSrc);
+												
+	     if (typeDst.IsPosNobType     ()) pPosNobDst = static_cast<PosNob      const *>(pNobDst);
+	else if (typeDst.IsPipeType       ()) pPipeDst   = static_cast<Pipe        const *>(pNobDst);
+	else if (typeDst.IsIoConnectorType()) pConnDst   = static_cast<IoConnector const *>(pNobDst);
 
-	     if (typeDst.IsPosNobType     ()) pPosNobDst = m_pModel->GetNobConstPtr<PosNob      const *>(idDst);
-	else if (typeDst.IsPipeType       ()) pPipeDst   = m_pModel->GetNobConstPtr<Pipe        const *>(idDst);
-	else if (typeDst.IsIoConnectorType()) pConnDst   = m_pModel->GetNobConstPtr<IoConnector const *>(idDst);
+	if ((pNobSrc->GetIoMode() == pNobDst->GetIoMode()) && (pNobSrc->GetIoMode() != NobIoMode::internal))
+	{
+		return ct_connector; // case 12/13 - create Input/OutputConnector
+	}
 
 	if (pPosNobSrc)
 	{
@@ -141,8 +149,11 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 		}
 		else if (pPosNobDst)
 		{
-			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType() && (typeDst != typeSrc))
+			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType())
+			{
+				assert(typeDst != typeSrc);
 				return ct_knot;      // case 4/5 - Input and output line plugged together. Result is a knot.
+			}
 
 			if (typeSrc.IsOutputLineType() && typeDst.IsNeuronType())  // Output line plugged into neuron
 				return ct_neuron;    // case 3                         // result is a neuron with with one more input
@@ -152,7 +163,7 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	}
 
 	if (pConnSrc && pConnDst && (typeDst != typeSrc) && (pConnSrc->Size() == pConnDst->Size()))
-		return ct_ioConnector;    // case 6
+		return ct_plugConnectors;    // case 6
 
 	return ct_none;
 }

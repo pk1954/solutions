@@ -67,7 +67,7 @@ public:
     void InsertKnot  (NobId const, MicroMeterPnt const&);
     void InsertNeuron(NobId const, MicroMeterPnt const&);
     void InsertTrack(TrackNr const);
-    bool MakeIoConnector();
+    bool MakeIoConnector(NobId const, NobId const);
     void MoveSelection(MicroMeterPnt const&);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void MoveSignal(SignalId const&, TrackNr const);

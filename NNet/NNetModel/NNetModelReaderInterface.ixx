@@ -38,7 +38,8 @@ export enum class ConnectionType
 	ct_fork,
 	ct_knot,
 	ct_neuron,
-	ct_ioConnector
+	ct_connector,
+	ct_plugConnectors
 };
 
 export class NNetModelReaderInterface

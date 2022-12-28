@@ -66,7 +66,9 @@ class WrapMakeIoConnector: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        m_pCommands->MakeIoConnector();
+        NobId const id1 { ScrReadNobId(script) };
+        NobId const id2 { ScrReadNobId(script) };
+        m_pCommands->MakeIoConnector(id1, id2);
     }
 };
 

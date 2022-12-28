@@ -43,6 +43,5 @@ public:
     }
 
 private:
-
-    unique_ptr<IoConnector> m_upIoConnector{};
+        unique_ptr<IoConnector> m_upIoConnector{};
 };
