@@ -22,8 +22,6 @@
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Analyzer.cpp" />
-    <ClCompile Include="Analyzer.ixx" />
     <ClCompile Include="AutoOpen.ixx" />
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />

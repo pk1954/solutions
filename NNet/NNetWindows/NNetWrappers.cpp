@@ -94,15 +94,6 @@ public:
     }
 };
 
-class WrapAnalyzeLoops: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->AnalyzeLoops();
-    }
-};
-
 class WrapResetModel: public ScriptFunctor
 {
 public:
@@ -314,7 +305,6 @@ void InitializeNNetWrappers
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
-    SymbolTable::ScrDefConst(L"AnalyzeLoops",        new WrapAnalyzeLoops); 
     ExtendInputLineCmd::Register();
     SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
     SymbolTable::ScrDefConst(L"AddSynapse",          new WrapAddSynapse); 
@@ -344,7 +334,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
 
-    SymbolTable::ScrDefConst(L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS      ));
     SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION   ));
     SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION     ));
     SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON      ));

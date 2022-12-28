@@ -176,23 +176,6 @@ public:
 		Apply2All<T>([&r, &func](T& s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
-	template <Nob_t T>  // used only in Analyzer. TODO: find simpler solution
-	bool Apply2AllB(function<bool(T&)> const& crit) const
-	{
-		bool bResult{ false };
-		for (auto& it : m_list)
-		{
-			if (it)
-			{
-				if (HasType<T>(*it))
-					bResult = crit(static_cast<T&>(*it));
-				if (bResult)
-					break;
-			}
-		}
-		return bResult;
-	}
-
 private:
 
 	unsigned int& counter(Nob const& nob)

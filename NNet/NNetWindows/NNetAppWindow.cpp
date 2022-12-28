@@ -350,8 +350,6 @@ void NNetAppWindow::configureStatusBar()
 	m_statusBar.ClearPart(iPart);
 
 	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
-	ModelAnalyzer::SetStatusBarDisplay(& m_statusBarDispFunctor);
-	ModelAnalyzer::SetEscFunc         (& Util::EscapeKeyPressed);
 	m_statusMessagePart = iPart;
 
 	m_statusBar.LastPart();
@@ -495,11 +493,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDD_SENSOR_PNTS:
 			m_mainNNetWindow.SetSensorPoints();
-			break;
-
-		case IDM_ANALYZE_LOOPS:
-			m_modelCommands.AnalyzeLoops();
-			m_mainNNetWindow.CenterSelection();
 			break;
 
 		case IDD_ARROWS:

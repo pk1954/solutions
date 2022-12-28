@@ -15,7 +15,6 @@ import AddNobsCommand;
 import AddPipe2NeuronCmd;
 import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
-import AnalyzeCommand;
 import ArrowAnimation;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
@@ -177,13 +176,6 @@ void NNetModelCommands::AddSensor
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << umCircle << L" " << trackNr << endl;
 	m_pCmdStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
-}
-
-void NNetModelCommands::AnalyzeLoops()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AnalyzeCommand>(ModelAnalyzer::FindLoop(*m_pNMWI)));
 }
 
 void NNetModelCommands::AnimateCoord
