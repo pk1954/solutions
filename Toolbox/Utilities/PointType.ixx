@@ -212,7 +212,8 @@ public:
 
 	friend wostream & operator<< (wostream & out, PointType const & param)
 	{
-		out << OPEN_BRACKET 
+		out << L' '
+			<< OPEN_BRACKET
 			<< param.GetX() << SEPARATOR << param.GetY() 
 			<< CLOSE_BRACKET;
 		return out;

@@ -68,7 +68,6 @@ export inline void ApplyOp(bool & b, tBoolOp const op)
     b = ApplyOp2(b, op);
 }
 
-//export wchar_t const * GetBoolOpName(tBoolOp const);
 export wchar_t const * GetBoolOpName(tBoolOp const op)
 {
     static std::unordered_map < tBoolOp, wchar_t const * const > mapNames =
@@ -82,9 +81,8 @@ export wchar_t const * GetBoolOpName(tBoolOp const op)
     return mapNames.at(op);
 }
 
-//export wostream & operator<< (wostream &, tBoolOp const);
 export wostream & operator << (wostream & out, tBoolOp const op)
 {
-    out << L" " <<std::wstring(GetBoolOpName(op));
+    out << L" " << std:: wstring(GetBoolOpName(op));
     return out;
 }

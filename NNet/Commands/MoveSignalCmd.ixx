@@ -52,7 +52,7 @@ public:
 	static void Push(SignalId const& id, TrackNr const trackNr)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << L" " << id << L" " << trackNr << endl;
+			TraceStream() << NAME << id << trackNr << endl;
 		m_pStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
 	}
 

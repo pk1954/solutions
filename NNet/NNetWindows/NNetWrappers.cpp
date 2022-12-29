@@ -22,6 +22,7 @@ import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
 
+import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import CreateForkCommand;
 import ExtendInputLineCmd;
@@ -58,17 +59,6 @@ public:
             };
             throw ScriptErrorHandler::ScriptException(999, wstrMsg);
         }
-    }
-};
-
-class WrapMakeIoConnector: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId const id1 { ScrReadNobId(script) };
-        NobId const id2 { ScrReadNobId(script) };
-        m_pCommands->MakeIoConnector(id1, id2);
     }
 };
 
@@ -325,7 +315,7 @@ void InitializeNNetWrappers
     MoveSignalCmd::Register();
     SymbolTable::ScrDefConst(L"MoveNob",             new WrapMoveNob );
     SymbolTable::ScrDefConst(L"NewIoLinePair",       new WrapNewIoLinePair ); 
-    SymbolTable::ScrDefConst(L"MakeIoConnector",     new WrapMakeIoConnector );
+    ConnAnimationCommand::Register();
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
     SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );
     SelectAllConnectedCmd::Register();

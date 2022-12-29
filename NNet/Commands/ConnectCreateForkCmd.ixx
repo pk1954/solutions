@@ -70,7 +70,7 @@ public:
 	static void Push(NobId idSrc, NobId idDst)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << L" " << idSrc << L" " << idDst << endl;
+			TraceStream() << NAME << idSrc << idDst << endl;
 		m_pStack->PushCommand(make_unique<ConnectCreateForkCmd>(idSrc, idDst));
 	}
 
