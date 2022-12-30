@@ -198,12 +198,12 @@ public:
 		if (Nob const * pParent { m_pipe.GetStartNobPtr()->GetParentNob() })
 		{
 			m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
-			m_upInputConnector->ClearParentPointers();
+			m_upInputConnector->DisconnectIoLines();
 		}
 		if (Nob const * pParent { m_pipe.GetEndNobPtr()->GetParentNob() })
 		{
 			m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
-			m_upOutputConnector->ClearParentPointers();
+			m_upOutputConnector->DisconnectIoLines();
 		}
 		m_pNMWI->CheckModel();
 	}
@@ -217,21 +217,21 @@ public:
 		if (Nob const* pParent { m_upPipe->GetStartNobPtr()->GetParentNob() })
 		{
 			m_upInputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
-			m_upInputConnector->ClearParentPointers();
+			m_upInputConnector->DisconnectIoLines();
 		}
 		if (Nob const* pParent { m_upPipe->GetEndNobPtr()->GetParentNob() })
 		{
 			m_upOutputConnector = m_pNMWI->RemoveFromModel<IoConnector>(*pParent);
-			m_upOutputConnector->ClearParentPointers();
+			m_upOutputConnector->DisconnectIoLines();
 		}
 		if (m_upOutputConnector) // restore IoConnector, if neccessary
 		{
-			m_upOutputConnector->SetParentPointers();
+			m_upOutputConnector->ConnectIoLines();
 			m_pNMWI->Restore2Model(move(m_upOutputConnector));
 		}
 		if (m_upInputConnector) // restore IoConnector, if neccessary
 		{
-			m_upInputConnector->SetParentPointers();
+			m_upInputConnector->ConnectIoLines();
 			m_pNMWI->Restore2Model(move(m_upInputConnector));
 		}
 

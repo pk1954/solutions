@@ -83,20 +83,22 @@ public:
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
 	mV            GetNextOutput() const final { return getSegments().at(m_potIndex); }
 
-	MicroMeterPnt GetPos          ()                                      const final;
-	bool          IsIncludedIn    (MicroMeterRect const &)                const final;
-	bool          Includes        (MicroMeterPnt  const &)                const final;
-	void          Check           ()                                      const final;
-	void          DrawExterior    (DrawContext const &, tHighlight const) const final;
-	void          DrawInterior    (DrawContext const &, tHighlight const) const final;
-	void          Expand          (MicroMeterRect &)                      const final;
-	void          MoveNob         (MicroMeterPnt const &)                       final;
-	void          Link            (Nob const &, Nob2NobFunc const &)            final;
-	void          CollectInput    ()                                            final;
-	bool          CompStep        ()                                            final;
-	void          PosChanged      ()                                            final;
-	void          ClearDynamicData()                                            final;
-	void          Select          (bool const)                                  final;
+	MicroMeterPnt GetPos            ()                                      const final;
+	bool          IsIncludedIn      (MicroMeterRect const &)                const final;
+	bool          Includes          (MicroMeterPnt  const &)                const final;
+	void          Check             ()                                      const final;
+	void          DrawExterior      (DrawContext const &, tHighlight const) const final;
+	void          DrawInterior      (DrawContext const &, tHighlight const) const final;
+	void          Expand            (MicroMeterRect &)                      const final;
+	void          MoveNob           (MicroMeterPnt const &)                       final;
+	void          Link              (Nob const &, Nob2NobFunc const &)            final;
+	void          CollectInput      ()                                            final;
+	bool          CompStep          ()                                            final;
+	void          PosChanged        ()                                            final;
+	void          ClearDynamicData  ()                                            final;
+	void          Select            (bool const)                                  final;
+	void          SelectAllConnected(bool const, bool const)                      final;
+
 	float         PosOnPipe       (MicroMeterPnt const&) const;
 	NobId         GetStartKnotId  ()                     const;
 	NobId         GetEndKnotId    ()                     const;
@@ -133,18 +135,6 @@ public:
 	{
 		for (auto it : m_synapses)
 			func(it);
-	}
-
-	void SelectAllConnected(bool const bFirst, bool const bOn) final
-	{
-		if ((IsSelected() != bOn) || bFirst)
-		{
-			Nob::Select(bOn);
-			m_pNobStart->SelectAllConnected(false, bOn);
-			m_pNobEnd->SelectAllConnected(false, bOn);
-			for (auto it : m_synapses)
-				it->SelectAllConnected(false, bOn);
-		}
 	}
 
 	friend wostream& operator<< (wostream&, Pipe const&);

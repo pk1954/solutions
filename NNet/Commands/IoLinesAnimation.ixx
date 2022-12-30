@@ -26,7 +26,7 @@ public:
     IoLinesAnimation
     (
         vector<IoLine *> const & animated,
-        ANIM_TYPE          const & target
+        ANIM_TYPE        const & target
     )
         : m_animated(animated),
         m_start(animated),

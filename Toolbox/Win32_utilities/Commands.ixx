@@ -94,8 +94,9 @@ private:
     inline static RootWindow * m_pWin   { nullptr };
     inline static bool         m_bTrace { true };
 
-    vector<unique_ptr<Command>> m_phases  { };
-    unsigned int                m_uiPhase { 0 };
+    vector<unique_ptr<Command>> m_phases    { };
+    unsigned int                m_uiPhase   { 0 };
+    bool                        m_bUndoMode { false };
 
     void doPhase();
     void undoPhase();

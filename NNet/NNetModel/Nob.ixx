@@ -62,11 +62,11 @@ public:
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };
 
 	virtual void SetDir   (Radian            const);
-	virtual void SetPos   (MicroMeterPnt     const&) { assert(false); }
+	virtual void SetPos   (MicroMeterPnt     const&) = 0;
 	virtual void SetPosDir(MicroMeterPosDir  const&);
 	virtual void AppendMenuItems(AddMenuFunc const&) const;
 
-	virtual MicroMeterPosDir GetPosDir() const;
+	MicroMeterPosDir GetPosDir() { return MicroMeterPosDir(GetPos(), GetDir());	};
 
 	virtual bool          IsIncludedIn(MicroMeterRect const &) const { assert(false); return false; }
 	virtual bool          Includes    (MicroMeterPnt  const &) const { assert(false); return false; }
@@ -76,21 +76,24 @@ public:
 	virtual MicroMeterPnt GetPos()    const { assert(false); return NP_NULL; }
 	virtual NobIoMode     GetIoMode() const { assert(false); return NobIoMode::internal; }
 
-	virtual void DrawExterior(DrawContext    const &, tHighlight const) const {}
-	virtual void DrawInterior(DrawContext    const &, tHighlight const) const {}
-	virtual void Expand      (MicroMeterRect       &)                   const {}
-	virtual void MoveNob     (MicroMeterPnt  const &)                         {}
-	virtual void RotateNob   (MicroMeterPnt  const &, Radian const)           {}
-	virtual void CollectInput()                                               {}
-	virtual void Link        (Nob const &, Nob2NobFunc const &)               {}
-	virtual void Reconnect   ()                                               {}
-	virtual void PosChanged  ()                                               {}
+	virtual void DrawExterior  (DrawContext    const &, tHighlight const) const {}
+	virtual void DrawInterior  (DrawContext    const &, tHighlight const) const {}
+	virtual void Expand        (MicroMeterRect       &)                   const {}
+	virtual void MoveNob       (MicroMeterPnt  const &)                         {}
+	virtual void RotateNob     (MicroMeterPnt  const &, Radian const)           {}
+	virtual void CollectInput  ()                                               {}
+	virtual void Link          (Nob const &, Nob2NobFunc const &)               {}
+	virtual void Reconnect     ()                                               {}
+	virtual void PosChanged    ()                                               {}
+	virtual void DirectionDirty()                                               {}
 
 	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
 
 	virtual mV   GetNextOutput()  const { return m_mVinputBuffer; }
 	virtual bool IsCompositeNob() const { return false; }
+	virtual bool HasParentNob()   const { return false; }
+	virtual Nob* GetParentNob()   const { return nullptr; }
 
 	virtual void ClearDynamicData() { m_mVinputBuffer.Set2Zero(); }
 
@@ -125,10 +128,6 @@ public:
 
 	friend wostream & operator<< (wostream &, Nob const &);
 
-	bool  HasParentNob() const { return m_pNobParent != nullptr; }
-	Nob * GetParentNob() const { return m_pNobParent; }
-	void  SetParentNob(Nob* const p) { m_pNobParent = p; }
-
 	void  SetId(NobId const id) { m_identifier = id; }
 
 	ColorF GetExteriorColor(tHighlight const) const;
@@ -150,7 +149,6 @@ protected:
 private:
 
 	NobType m_type        { NobType::Value::undefined };
-	Nob   * m_pNobParent  { nullptr };
 	NobId   m_identifier  { NO_NOB };
 	bool    m_bSelected   { false };
 	bool    m_bEmphasized { false };

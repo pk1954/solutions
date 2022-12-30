@@ -38,18 +38,22 @@ void OutputConnector::DrawExterior(DrawContext const & context, tHighlight const
 {
     if (Size() > 1)
     {
-        MicroMeterPnt umPnt1     { m_list.front()->GetPos() }; 
-        MicroMeterPnt umPnt2     { m_list.back ()->GetPos() }; 
-        MicroMeterPnt umPntDir   { umPnt2 - umPnt1 };
-        MicroMeterPnt umPntOff   { umPntDir.ScaledTo(NEURON_RADIUS * 1.2f) };
-        MicroMeterPnt umOrthoVec { -umPntDir.OrthoVector().ScaledTo(NEURON_RADIUS * 0.1f) };
-        umPnt1 += umOrthoVec;
-        umPnt2 += umOrthoVec;
+        static float const WIDTH  { 0.2f };
+        static float const FACTOR { 1.0f + WIDTH };
+
+        MicroMeterPnt       umPnt1      { m_list.front()->GetPos() };
+        MicroMeterPnt       umPnt2      { m_list.back ()->GetPos() }; 
+        MicroMeterPnt const umPntDir    { umPnt2 - umPnt1 };
+        MicroMeterPnt const umPntOrtho  { GetDirVector().ScaledTo(NEURON_RADIUS) };
+        MicroMeterPnt const umPntOff    { umPntDir.ScaledTo(NEURON_RADIUS * FACTOR) };
+        MicroMeterPnt const umPntOrtCor { umPntOrtho * 0.2f };
+        umPnt1 += umPntOrtCor;
+        umPnt2 += umPntOrtCor;
         context.DrawLine
         (
             umPnt1 - umPntOff, 
             umPnt2 + umPntOff, 
-            m_list.front()->GetExtension() * 1.2f, 
+            m_list.front()->GetExtension() * FACTOR,
             GetExteriorColor(type)
        );
     }

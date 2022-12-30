@@ -81,7 +81,7 @@ bool PosNob::IsDirectlyConnectedTo(PosNob const& posNob) const
 bool PosNob::IsDirectlyConnectedTo(Pipe const& pipe) const
 {
 	return IsDirectlyConnectedTo(*static_cast<PosNob const*>(pipe.GetStartNobPtr())) ||
-		IsDirectlyConnectedTo(*static_cast<PosNob const*>(pipe.GetEndNobPtr()));
+           IsDirectlyConnectedTo(*static_cast<PosNob const*>(pipe.GetEndNobPtr()));
 }
 
 void PosNob::EvaluateSelectionStatus()

@@ -109,8 +109,8 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	if (::IsUndefined(idSrc))
 		return ct_none;
 
-	assert(idSrc != idDst);
-	assert(!IsConnectedTo(idSrc, idDst));
+	if (!IsConnectionCandidate(idSrc, idDst))
+		return ct_none;
 
 	NobType const typeSrc { GetNobType(idSrc) };
 	NobType const typeDst { GetNobType(idDst) };

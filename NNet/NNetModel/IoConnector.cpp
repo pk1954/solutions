@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <vector>
 #include "Resource.h"
 
 module NNetModel:IoConnector;
@@ -19,6 +20,8 @@ import :MicroMeterPosDir;
 import :NobType;
 import :IoLine;
 import :Nob;
+
+using std::vector;
 
 using std::make_unique;
 using std::wostream;
@@ -73,13 +76,11 @@ void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
         it = static_cast<IoLine *>(dstFromSrc(it));
 }
 
-void IoConnector::AlignDirection()
-{
-    if (m_list.empty())
-        return;
-    MicroMeterLine const umLine   { m_list.front()->GetPos(), m_list.back()->GetPos() };
-    MicroMeterPnt  const umPntDir { ::CalcOrthoVector(m_list, umLine) };
-    for (auto it : m_list) { it->SetDirVector(umPntDir); }
+Radian IoConnector::GetDir() const 
+{ 
+    if (m_radDirection.IsNull() && !m_list.empty())
+        m_radDirection = Vector2Radian(::CalcOrthoVector(m_list));
+    return m_radDirection;
 }
 
 MicroMeterPnt IoConnector::GetPos() const 
@@ -88,32 +89,17 @@ MicroMeterPnt IoConnector::GetPos() const
     return (m_list.front()->GetPos() + m_list.back()->GetPos()) * 0.5f; 
 }
 
-Radian IoConnector::GetDir() const 
-{ 
-    return m_list.empty() 
-        ? Radian::NULL_VAL() 
-        : m_list.front()->GetDir();
-}
-
-MicroMeterPosDir IoConnector::GetPosDir() const 
-{ 
-    return m_list.empty() ? MicroMeterPosDir::NULL_VAL() : MicroMeterPosDir(GetPos(), GetDir());
-}
-
-void IoConnector::SetParentPointers()
+void IoConnector::ConnectIoLines()
 {
     for (auto & it: m_list)
-        it->SetParentNob(this);
-    AlignDirection();
+        it->Connect2IoConnector(this);
+    DirectionDirty();
 }
 
-void IoConnector::ClearParentPointers() const
+void IoConnector::DisconnectIoLines() const
 {
     for (auto & it: m_list)
-    {
-        it->SetParentNob(nullptr);
-        it->UnlockDirection();
-    }
+        it->StandardDirection();
 }
 
 void IoConnector::PosChanged()
@@ -122,19 +108,20 @@ void IoConnector::PosChanged()
         it->PosChanged();
 }
 
-void IoConnector::SetDir(Radian const radianNew)
-{
-    MicroMeterPnt umPntPivot { GetPos() };
-    Radian        radDelta   { radianNew - GetDir() };
-    for (auto it : m_list) 
-    { 
-        it->RotateNob(umPntPivot, radDelta); 
-    }
-}
+//void IoConnector::SetDir(Radian const radianNew)
+//{
+//    MicroMeterPnt umPntPivot { GetPos() };
+//    Radian        radDelta   { radianNew - GetDir() };
+//    for (auto it : m_list) 
+//    { 
+//        it->RotateNob(umPntPivot, radDelta); 
+//    }
+//}
 
 void IoConnector::SetPos(MicroMeterPnt const & umPos)
 {
     MoveNob(umPos - GetPos());
+    DirectionDirty();
 }
 
 void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
@@ -155,6 +142,7 @@ void IoConnector::RotateNob(MicroMeterPnt const & umPntPivot, Radian const radDe
 {
     for (auto it : m_list) 
         it->RotateNob(umPntPivot, radDelta);
+    DirectionDirty();
 }
 
 void IoConnector::Rotate(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
@@ -233,4 +221,33 @@ wostream & operator<< (wostream & out, IoConnector const & conn)
     }
     out << LIST_CLOSE_BRACKET;
     return out;
+}
+
+MicroMeterPnt CalcOrthoVector(vector<IoLine*> const& list)
+{
+    int iReverse { 0 };
+    MicroMeterLine const umLine { list.front()->GetPos(), list.back()->GetPos() };
+    if (list.front()->IsOutputLine())
+        for (IoLine* pIoLine : list)
+        {
+            MicroMeterPnt pnt { pIoLine->GetPipe()->GetStartPoint() };
+            if (PointToLine(umLine, pnt) < 0.0_MicroMeter)
+                ++iReverse;
+            else
+                --iReverse;
+        }
+    else
+        for (IoLine* pIoLine : list)
+        {
+            MicroMeterPnt pnt { pIoLine->GetPipe()->GetEndPoint() };
+            if (PointToLine(umLine, pnt) < 0.0_MicroMeter)
+                --iReverse;
+            else
+                ++iReverse;
+        }
+
+    MicroMeterPnt orthoVector { umLine.OrthoVector() };
+    if (iReverse > 0)
+        orthoVector = -orthoVector;
+    return orthoVector;
 }

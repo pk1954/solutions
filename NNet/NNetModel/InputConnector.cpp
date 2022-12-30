@@ -35,16 +35,18 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
     if (Size() > 1)
     {
         static float const WIDTH  { 0.2f };
+        static float const FACTOR { (1.0f + WIDTH) * 0.5f };
         static float const OFFSET { 1.0f + WIDTH * 0.5f };
 
-        MicroMeter    const umWidth     { NEURON_RADIUS * WIDTH };
-        MicroMeterPnt       umPnt1      { m_list.front()->GetPos() }; 
-        MicroMeterPnt       umPnt2      { m_list.back ()->GetPos() }; 
-        MicroMeterPnt const umPntDir    { (umPnt2 - umPnt1)     .ScaledTo(NEURON_RADIUS) };
-        MicroMeterPnt const umPntOrtho  { -m_list.front()->GetDirVector().ScaledTo(NEURON_RADIUS) };
-        MicroMeterPnt const umPntDirOff { umPntDir   * OFFSET };
-        MicroMeterPnt const umPntOrtOff { umPntOrtho * OFFSET };
-        MicroMeterPnt const umPntOrtCor { umPntOrtho * (1.0f + WIDTH) * 0.5f };
+        MicroMeterPnt       umPnt1         { m_list.front()->GetPos() }; 
+        MicroMeterPnt       umPnt2         { m_list.back ()->GetPos() }; 
+        MicroMeterPnt const umPntDir       { (umPnt2 - umPnt1) };
+        MicroMeterPnt const umPntDirScaled { umPntDir.ScaledTo(NEURON_RADIUS) };
+        MicroMeterPnt const umPntOrtho     { - GetDirVector().ScaledTo(NEURON_RADIUS) };
+        MicroMeterPnt const umPntDirOff    { umPntDirScaled * OFFSET };
+        MicroMeterPnt const umPntOrtOff    { umPntOrtho     * OFFSET };
+        MicroMeterPnt const umPntOrtCor    { umPntOrtho     * FACTOR };
+        MicroMeter    const umWidth        { NEURON_RADIUS  * WIDTH };
         umPnt1 += umPntOrtCor;
         umPnt2 += umPntOrtCor;
         context.DrawLine
@@ -63,8 +65,8 @@ void InputConnector::DrawExterior(DrawContext const & context, tHighlight const 
         );
         context.DrawLine
         (
-            umPnt1 - umPntDir - umPntOrtho, 
-            umPnt2 + umPntDir - umPntOrtho, 
+            umPnt1 - umPntDirScaled - umPntOrtho,
+            umPnt2 + umPntDirScaled - umPntOrtho,
             umWidth, 
             GetExteriorColor(type)
         );

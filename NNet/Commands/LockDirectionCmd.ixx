@@ -24,7 +24,13 @@ public:
 	void Do() final
 	{
 		for (auto& it : m_ioLines)
-			m_bLocked.push_back(it->LockDirection());
+		{
+			bool bRes { it->IsDirLocked() };
+			if (!bRes)
+				it->LockDirection();
+			m_bLocked.push_back(bRes);
+		}
+
 		(m_targetReachedFunc)();
 	}
 
@@ -36,7 +42,7 @@ public:
 			if (m_bLocked[i])
 				it->LockDirection();
 			else 
-				it->UnlockDirection();
+				it->StandardDirection();
 			++i;
 		}
 		m_bLocked.clear();

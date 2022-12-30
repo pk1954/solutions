@@ -30,21 +30,20 @@ ConnAnimationCommand::ConnAnimationCommand
     add2nobsAnimated(id1);
     add2nobsAnimated(id2);
 
-    MicroMeterLine line { CalcMaxDistLine<IoLine>(m_nobsAnimated) };
-    if (line.IsZero())
+    MicroMeterLine umLine { CalcMaxDistLine<IoLine>(m_nobsAnimated) };
+    if (umLine.IsZero())
         return;
 
-    sortNobsAnimated(line);
+    sortNobsAnimated(umLine);
 
     MicroMeterPntVector umPntVector(m_nobsAnimated);  // before animation
 
-    umPntVector.Align(line);
-
     AddPhase(make_unique<LockDirectionCmd>(m_nobsAnimated));
 
+    umPntVector.Align(umLine);
     AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after position alignment
 
-    umPntVector.SetDirVector(::CalcOrthoVector(m_nobsAnimated, line));
+    umPntVector.SetDirVector(::CalcOrthoVector(m_nobsAnimated));
     AddPhase(make_unique<IoLinesAnimation>(m_nobsAnimated, umPntVector));  // after direction alignment
 
     umPntVector.Pack(NEURON_RADIUS * 2.0f);
@@ -70,9 +69,9 @@ void ConnAnimationCommand::add2nobsAnimated(NobId const idNob)
         assert(false);
 }
 
-void ConnAnimationCommand::sortNobsAnimated(MicroMeterLine const & line)
+void ConnAnimationCommand::sortNobsAnimated(MicroMeterLine const & umLine)
 {
-    MicroMeterLine orthoLine { line.OrthoLine() };
+    MicroMeterLine orthoLine { umLine.OrthoLine() };
     sort
     (
         m_nobsAnimated,

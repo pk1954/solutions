@@ -294,6 +294,8 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 {
 	if (m_pNobStart && m_pNobEnd)
 	{
+		m_pNobStart->DirectionDirty();
+		m_pNobEnd  ->DirectionDirty();
 		Apply2AllSynapses
 		(
 			[this, &pipeOrigin](Nob* pNob)
@@ -308,6 +310,18 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 		if (m_pNobEnd->IsSynapse())
 			Cast2Synapse(m_pNobEnd)->RecalcPositions();
 		RecalcSegments();
+	}
+}
+
+void Pipe::SelectAllConnected(bool const bFirst, bool const bOn)
+{
+	if ((IsSelected() != bOn) || bFirst)
+	{
+		Nob::Select(bOn);
+		m_pNobStart->SelectAllConnected(false, bOn);
+		m_pNobEnd->SelectAllConnected(false, bOn);
+		for (auto it : m_synapses)
+			it->SelectAllConnected(false, bOn);
 	}
 }
 

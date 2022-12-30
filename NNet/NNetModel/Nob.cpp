@@ -58,11 +58,6 @@ void Nob::SetPosDir(MicroMeterPosDir const & umPosDir)
 	SetPos(umPosDir.GetPos());
 };
 
-MicroMeterPosDir Nob::GetPosDir() const 
-{ 
-	return MicroMeterPosDir(GetPos(), GetDir()); 
-};
-
 ColorF Nob::GetInteriorColor(mV const voltage) const
 {
 	mV    const neuronThreshold { mV(GetParam()->GetParameterValue(ParamType::Value::neuronThreshold)) };
@@ -190,8 +185,8 @@ void Nob::Dump() const
 wostream & operator<< (wostream & out, Nob const & nob)
 {
 	out << setw(5) << nob.m_identifier << L' ' << nob.m_type;
-	if (nob.m_pNobParent)
-		out << L" (par " << nob.m_pNobParent->m_identifier << ")";
+	if (nob.HasParentNob())
+		out << L" (par " << nob.GetParentNob()->m_identifier << ")";
 	return out;
 }
 

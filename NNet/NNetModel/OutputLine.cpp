@@ -84,7 +84,7 @@ void OutputLine::DrawInterior(DrawContext const & context, tHighlight const type
 
 bool OutputLine::Includes(MicroMeterPnt const & point) const
 {
-	MicroMeterPnt const umCenter { GetPos() + GetScaledDirVector() * 0.5f };
+	MicroMeterPnt const umCenter { GetPos() + GetDirVector() * 0.5f };
 	return Distance(point, umCenter) <= GetExtension();
 }
 
@@ -97,7 +97,7 @@ void OutputLine::drawPlug
 ) const
 {
 	MicroMeterPnt const umDirVector { GetDirVector() };
-	MicroMeterPnt const umCenter    { GetPos() - GetScaledDirVector() * 0.1f };
+	MicroMeterPnt const umCenter    { GetPos() - GetDirVector() * 0.1f };
 	MicroMeterPnt const umP         { umCenter - umDirVector * (M * 0.5f - 0.2f) };
 
 	context.DrawLine(umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,          colF);

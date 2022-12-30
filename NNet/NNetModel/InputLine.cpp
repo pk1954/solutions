@@ -102,7 +102,7 @@ void InputLine::DrawInterior(DrawContext const & context, tHighlight const type)
 
 MicroMeterPnt InputLine::getOffset() const
 {
-	return GetScaledDirVector() * 0.7f;
+	return GetDirVector() * 0.7f;
 }
 
 MicroMeterPnt InputLine::getCenter() const

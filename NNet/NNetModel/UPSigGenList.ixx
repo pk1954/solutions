@@ -53,7 +53,7 @@ public:
 
     void Apply2AllC(auto const& f) const
     {
-        f(StdSigGen::Get());
+//        f(StdSigGen::Get());
         for_each(m_list, [&f](auto const& up) { f(up.get()); });
     }
 

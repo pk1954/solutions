@@ -65,8 +65,8 @@ MicroMeterPnt Synapse::GetPos() const
 }
 
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
-{  // TODO
-//	(position) .Rotate(umPntPivot, radDelta);
+{
+	RecalcPositions();
 }
 
 void Synapse::SetAllIncoming(PosNob& src)

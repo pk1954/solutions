@@ -152,7 +152,6 @@ UPNob NobIo::createIoConnector(Script& script, NobType const nobType) const
             upIoConnector = make_unique<InputConnector>(move(ioLineList));
         else
             upIoConnector = make_unique<OutputConnector>(move(ioLineList));
-//        upIoConnector->AlignDirection();
     }
     return move(upIoConnector);
 }
@@ -414,7 +413,7 @@ Nob* NobIo::createNob(Script& script) const
 
     if (pNob && nobType.IsIoConnectorType())
     {
-        static_cast<IoConnector*>(pNob)->SetParentPointers();
+        static_cast<IoConnector*>(pNob)->ConnectIoLines();
     }
 
     return pNob;

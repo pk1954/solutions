@@ -23,12 +23,12 @@ public:
     void Do() final
     {
         m_upIoConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_connector);
-        m_upIoConnector->ClearParentPointers();
+        m_upIoConnector->DisconnectIoLines();
     }
 
     void Undo() final
     {
-        m_upIoConnector->SetParentPointers();
+        m_upIoConnector->ConnectIoLines();
         m_pNMWI->Restore2Model(move(m_upIoConnector));
     }
 

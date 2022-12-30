@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -52,8 +53,7 @@ public:
 	void Select      (bool const)                                     override;
 	bool CompStep    ()                                               override { return false; }
 
-	bool             IsCompositeNob() const final { return true; }
-	MicroMeterPosDir GetPosDir() const final;
+	bool     IsCompositeNob() const final { return true; }
 
 	IoLine * Pop();
 	void     Push(IoLine* const p)         { m_list.push_back(p); }
@@ -61,16 +61,21 @@ public:
 	size_t   Size ()                 const { return m_list.size(); }
 	bool     Empty()                 const { return m_list.empty(); }
 	size_t   GetNrOfElements()       const { return m_list.size(); }
-	void     ClearParentPointers()   const;
-	void     SetParentPointers();
+	void     DisconnectIoLines()     const;
+	void     ConnectIoLines();
 
-	void AlignDirection();
+	void DirectionDirty() final { m_radDirection.Set2Null(); }  // lazy evaluation
 
 	void Rotate(MicroMeterPnt const&, MicroMeterPnt const&);
 
 	Radian GetDir() const override;
 
-	void SetDir   (Radian           const  ) override;
+	MicroMeterPnt GetDirVector() const
+	{
+		return Radian2Vector(GetDir());
+	}
+
+	void SetDir   (Radian           const  ) override { assert(false); }
 	void SetPos   (MicroMeterPnt    const &) override;
 	void SetPosDir(MicroMeterPosDir const &) override;
 
@@ -97,8 +102,11 @@ public:
 	friend wostream& operator<< (wostream &, IoConnector const &);
 
 protected:
-	vector<IoLine *> m_list {};
+	vector<IoLine *> m_list         { };
+	mutable Radian   m_radDirection { Radian::NULL_VAL() };  // lazy evaluation
 };
+
+export MicroMeterPnt CalcOrthoVector(vector<IoLine*> const&);
 
 export IoConnector const * Cast2IoConnector(Nob const *);
 export IoConnector       * Cast2IoConnector(Nob       *);
