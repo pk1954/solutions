@@ -13,6 +13,7 @@ export module DeletePipeCommand;
 import Types;
 import SaveCast;
 import NNetCommand;
+import NNetCommandStack;
 import NNetModel;
 import DeleteNeuronInputCmd;
 import DeleteForkOutputCmd;
@@ -252,5 +253,5 @@ private:
 	unique_ptr<NNetCommand> m_upCmdStart;
 	unique_ptr<NNetCommand> m_upCmdEnd;
 
-	CommandStack m_cmdStack {};
+	NNetCommandStack m_cmdStack {};
 };

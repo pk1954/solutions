@@ -26,12 +26,14 @@ OutputConnector::OutputConnector(vector<IoLine *> & src)
     for (auto it : src)
         m_list.push_back(it);
     src.clear();
+    ConnectIoLines();
 }
 
 OutputConnector::OutputConnector(vector<IoLine *> && src)
   :	IoConnector(NobType::Value::outputConnector)
 {
     m_list = move(src);
+    ConnectIoLines();
 }
 
 void OutputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const

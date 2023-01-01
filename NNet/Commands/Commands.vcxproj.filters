@@ -219,5 +219,8 @@
     <ClCompile Include="LockDirectionCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetCommandStack.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

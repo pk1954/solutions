@@ -8,6 +8,7 @@ module;
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <algorithm>
 #include "Resource.h"
 
 module NNetModel:IoConnector;
@@ -22,7 +23,7 @@ import :IoLine;
 import :Nob;
 
 using std::vector;
-
+using std::ranges::for_each;
 using std::make_unique;
 using std::wostream;
 using std::wcout;
@@ -63,6 +64,25 @@ void IoConnector::Select(bool const bOn)
         it->Select(bOn);
 }
 
+void IoConnector::SelectAllConnected(bool const bFirst, bool const bOn)
+{
+    if ((IsSelected() != bOn) || bFirst)
+    {
+        Nob::Select(bOn);
+        for_each
+        (
+            m_list,
+            [bOn](IoLine* p) { if (p) p->SelectAllConnected(false, bOn); }
+        );
+    }
+}
+
+void IoConnector::Push(IoLine* const p) 
+{ 
+    p->Connect2IoConnector(this);
+    m_list.push_back(p);
+}
+
 IoLine * IoConnector::Pop() 
 { 
     IoLine * pRet { m_list.back() };
@@ -74,6 +94,7 @@ void IoConnector::Link(Nob const & nobSrc, Nob2NobFunc const & dstFromSrc)
 {
     for (auto & it : m_list) 
         it = static_cast<IoLine *>(dstFromSrc(it));
+    ConnectIoLines();
 }
 
 Radian IoConnector::GetDir() const 

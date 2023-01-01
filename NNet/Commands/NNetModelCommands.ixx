@@ -18,6 +18,7 @@ import SoundInterface;
 import Commands;
 import NNetModelIO;
 import NNetCommand;
+import NNetCommandStack;
 import NNetModel;
 
 using std::wcout;
@@ -31,10 +32,10 @@ export class NNetModelCommands
 public:
     void Initialize
     (
-        NNetModelIO  * const,
-        Observable   * const,
-        Sound        * const,
-        CommandStack * const
+        NNetModelIO      * const,
+        Observable       * const,
+        Sound            * const,
+        NNetCommandStack * const
     );
     void SetModelInterface(NNetModelWriterInterface* const);
 

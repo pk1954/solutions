@@ -43,7 +43,7 @@ public:
 	int    Size        ()               const { return Cast2Int(m_list.size()); }
 	bool   IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
 	bool   IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
-	bool   IsValidNobId(NobId const id) const { return id.GetValue() < Size(); }
+	bool   IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
 	Nob *  Front       ()               const { return   m_list[0].get(); }
 	Nob *  GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
 	Nob &  GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }

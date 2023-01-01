@@ -106,9 +106,15 @@ public:
 		return pNob && pNob->IsOutputLine();
 	}
 
+	bool IsIoConnector(NobId const id) const
+	{
+		Nob const* const pNob { GetConstNob(id) };
+		return pNob && pNob->IsIoConnector();
+	}
+
 	bool IsInputConnector(NobId const id) const
 	{
-		Nob const* const pNob{ GetConstNob(id) };
+		Nob const* const pNob { GetConstNob(id) };
 		return pNob && pNob->IsInputConnector();
 	}
 

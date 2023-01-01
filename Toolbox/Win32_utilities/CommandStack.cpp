@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <functional>
 
 module Commands;
 
@@ -15,6 +16,7 @@ import Scanner;
 
 using std::wcout;
 using std::endl;
+using std::function;
 using std::unique_ptr;
 
 void CommandStack::Initialize(Observable * const pStaticModelObservable)
@@ -111,6 +113,7 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
     {
         clearRedoStack();
         pCmd->Do();
+        Check();
         if (!pCmd->IsAsyncCommand())
             Command::NextScriptCommand(); // script continuation for syncronous commands
         Push(move(pCmd));

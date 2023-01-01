@@ -44,6 +44,7 @@ import MoveSignalCmd;
 import NewIoLinePairCmd;
 import NewSigGenCmd;
 import NNetModel;
+import NNetCommandStack;
 import NNetModelCommands;
 import NNetModelIO;
 import PlugIoConnectors;
@@ -79,10 +80,10 @@ using std::source_location;
 
 void NNetModelCommands::Initialize
 (
-	NNetModelIO  * const pModelIO,
-	Observable   * const pDynamicModelObservable,
-	Sound        * const pSound,
-	CommandStack * const pCmdStack
+	NNetModelIO      * const pModelIO,
+	Observable       * const pDynamicModelObservable,
+	Sound            * const pSound,
+	NNetCommandStack * const pCmdStack
 ) 
 { 
 	m_pModelIO                = pModelIO;
@@ -128,14 +129,6 @@ void NNetModelCommands::ResetModel()
 	m_pCmdStack->Clear();
 	m_pDynamicModelObservable->NotifyAll(false);
 }
-
-//void NNetModelCommands::ExtendInputLine(NobId const id, MicroMeterPnt const& pos) // case 10
-//{
-//	ExtendInputLineCmd::Push(*m_pCmdStack, id, pos);
-//	//if (m_bTrace)
-//	//	TraceStream() << source_location::current().function_name() << pos << endl;
-//	//m_pCmdStack->PushCommand(make_unique<ExtendInputLineCmd>(id, pos - STD_OFFSET));
-//}
 
 void NNetModelCommands::ExtendOutputLine(NobId const id, MicroMeterPnt const& pos) // case 11
 {
@@ -230,7 +223,7 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() 
 		              << idSrc << idDst
-		              << L"type " << static_cast<int>(connType) << endl;
+		              << L" type " << static_cast<int>(connType) << endl;
 	switch (connType)
 	{
 		case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);          // case 1 

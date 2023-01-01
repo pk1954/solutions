@@ -56,7 +56,7 @@ public:
 	bool     IsCompositeNob() const final { return true; }
 
 	IoLine * Pop();
-	void     Push(IoLine* const p)         { m_list.push_back(p); }
+	void     Push(IoLine* const);
 	IoLine & GetElem(size_t const n) const { return *m_list.at(n); }
 	size_t   Size ()                 const { return m_list.size(); }
 	bool     Empty()                 const { return m_list.empty(); }
@@ -70,10 +70,7 @@ public:
 
 	Radian GetDir() const override;
 
-	MicroMeterPnt GetDirVector() const
-	{
-		return Radian2Vector(GetDir());
-	}
+	MicroMeterPnt GetDirVector() const { return Radian2Vector(GetDir()); }
 
 	void SetDir   (Radian           const  ) override { assert(false); }
 	void SetPos   (MicroMeterPnt    const &) override;
@@ -84,18 +81,7 @@ public:
 		for_each(m_list, [&func](auto* p) { if (p) func(*p); });
 	}
 
-	void SelectAllConnected(bool const bFirst, bool const bOn) final
-	{
-		if ((IsSelected() != bOn) || bFirst)
-		{
-			Nob::Select(bOn);
-			for_each
-			(
-				m_list,
-				[bOn](IoLine* p) { if (p) p->SelectAllConnected(false, bOn); }
-			);
-		}
-	}
+	void SelectAllConnected(bool const, bool const) final;
 
 	MicroMeterLine CalcMaxDistLine() const;
 

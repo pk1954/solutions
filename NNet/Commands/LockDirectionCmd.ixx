@@ -19,18 +19,18 @@ export class LockDirectionCmd : public NNetCommand
 public:
 	LockDirectionCmd(vector<IoLine*>&ioLines)
 		: m_ioLines(ioLines)
-	{}
+	{
+		for (auto& it : m_ioLines)
+		{
+			m_ioLineState.push_back(it->GetState());
+			m_pIoConnector.push_back(it->GetParentNob());
+		}
+	}
 
 	void Do() final
 	{
 		for (auto& it : m_ioLines)
-		{
-			bool bRes { it->IsDirLocked() };
-			if (!bRes)
-				it->LockDirection();
-			m_bLocked.push_back(bRes);
-		}
-
+			it->LockDirection();
 		(m_targetReachedFunc)();
 	}
 
@@ -39,17 +39,16 @@ public:
 		int i = 0;
 		for (auto& it : m_ioLines)
 		{
-			if (m_bLocked[i])
-				it->LockDirection();
-			else 
-				it->StandardDirection();
+			it->SetState(m_ioLineState[i], m_pIoConnector[i]);
 			++i;
 		}
-		m_bLocked.clear();
+		m_ioLineState.clear();
+		m_pIoConnector.clear();
 		(m_targetReachedFunc)();
 	}
 
 private:
-	vector<bool>    m_bLocked;
-	vector<IoLine*> m_ioLines;
+	vector<IoLine::State> m_ioLineState;
+	vector<Nob *>         m_pIoConnector;
+	vector<IoLine*>       m_ioLines;
 };

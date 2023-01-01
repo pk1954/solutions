@@ -129,6 +129,7 @@
     <ClCompile Include="NewIoLinePairCmd.ixx" />
     <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="NNetCommand.ixx" />
+    <ClCompile Include="NNetCommandStack.ixx" />
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetModelCommands.ixx" />
     <ClCompile Include="PlugIoConnectors.ixx" />

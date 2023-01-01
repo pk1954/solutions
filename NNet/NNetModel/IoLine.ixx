@@ -21,14 +21,16 @@ public:
 	static bool TypeFits(NobType const type) { return type.IsIoLineType(); }
 
 	IoLine(MicroMeterPnt const & upCenter, NobType const type)
-		: PosNob(type),
-		  m_circle(upCenter, NEURON_RADIUS)
+	  : PosNob(type),
+		m_umPosition(upCenter)
 	{}
+
+	void Check() const;
 
 	bool CompStep() final { return false; }
 
-	MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }
-	MicroMeterPnt GetPos()       const final { return m_circle.GetPos(); }
+	MicroMeter    GetExtension() const final { return NEURON_RADIUS; }
+	MicroMeterPnt GetPos()       const final { return m_umPosition; }
 	Radian        GetDir()       const final;
 
 	void SetPos   (MicroMeterPnt const&)               final;
@@ -38,6 +40,13 @@ public:
 	void Link     (Nob const&, Nob2NobFunc const&)     final;
 
 	void SetDirVector(MicroMeterPnt const &p) { SetDir(Vector2Radian(p)); }
+
+	enum class State
+	{
+		standard,
+		connected,
+		locked
+	};
 
 	// IoLines are in one of three states:
 	//
@@ -52,9 +61,49 @@ public:
 	//             HasParentNob() is false
 	//             m_radDirection is not Radian::NULL_VAL 
 
-	void StandardDirection  ()             { SetDir(Radian::NULL_VAL()); }
-	void Connect2IoConnector(Nob* const p) { m_pIoConnector = p; }
-	void LockDirection      ()             { SetDir(GetDir()); }
+	State GetState() const
+	{
+		if (HasParentNob())
+			return State::connected;
+		if (m_radDirection.IsNull())
+			return State::standard;
+		else
+			return State::locked;
+	}
+
+	void SetState(State const state, Nob* const p = nullptr)
+	{
+		switch (state)
+		{
+		case State::connected:
+			m_pIoConnector = p;
+			m_radDirection.Set2Null();
+			break;
+		case State::standard:
+			StandardDirection();
+			break;
+		case State::locked:
+			LockDirection();
+			break;
+		}
+	}
+
+	void StandardDirection()             
+	{ 
+		SetDir(Radian::NULL_VAL());
+	}
+
+	void Connect2IoConnector(Nob* const p) 
+	{ 
+		m_pIoConnector = p; 
+		m_radDirection.Set2Null();
+	}
+
+	void LockDirection()
+	{ 
+		SetDir(GetDir()); 
+	}
+
 	bool IsDirLocked() const { return m_radDirection.IsNotNull(); }
 
 	MicroMeterPnt GetDirVector() const;
@@ -64,22 +113,8 @@ public:
 
 	void SetPipe(Pipe * pPipe) { m_pPipe = pPipe; }
 
-	void SelectAllConnected(bool const bFirst, bool const bOn) final
-	{
-		if ((IsSelected() != bOn) || bFirst)
-		{
-			Nob::Select(bOn);
-			m_pPipe->SelectAllConnected(false, bOn);
-			if (HasParentNob())
-				GetParentNob()->SelectAllConnected(false, bOn);
-		}
-	}
-
-	void DirectionDirty() final 
-	{
-		if (HasParentNob())
-			m_pIoConnector->DirectionDirty();
-	}
+	void SelectAllConnected(bool const, bool const) final;
+	void DirectionDirty()                           final;
 
 	bool  HasParentNob() const final { return m_pIoConnector != nullptr; }
 	Nob * GetParentNob() const final { return m_pIoConnector; }
@@ -87,8 +122,8 @@ public:
 private:
 	Radian getDirection() const;
 
-	MicroMeterCircle m_circle;
-	Radian           m_radDirection { Radian::NULL_VAL() };
-	Pipe           * m_pPipe        { nullptr };
-	Nob            * m_pIoConnector { nullptr };
+	Pipe        * m_pPipe        { nullptr };
+	Nob         * m_pIoConnector { nullptr };
+	MicroMeterPnt m_umPosition;
+	Radian        m_radDirection { Radian::NULL_VAL() };
 };

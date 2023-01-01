@@ -11,6 +11,7 @@ export module DeleteIoConnectorCmd;
 import CommandFunctions;
 import Commands;
 import NNetCommand;
+import NNetCommandStack;
 import NNetModel;
 
 using std::unique_ptr;
@@ -49,6 +50,6 @@ public:
 private:
 
     IoConnector &           m_connector;
-    CommandStack            m_cmdStack;
+    NNetCommandStack        m_cmdStack;
     unique_ptr<IoConnector> m_upIoConnector;
 };

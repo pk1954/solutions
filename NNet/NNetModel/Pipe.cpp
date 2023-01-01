@@ -123,6 +123,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void Pipe::Check() const
 {
 	Nob::Check();
+	assert(m_pNobStart);
+	assert(m_pNobEnd);
 	for (auto it : m_synapses)
 		it->Check();
 }
@@ -135,6 +137,7 @@ void Pipe::Expand(MicroMeterRect & umRect) const
 
 void Pipe::MoveNob(MicroMeterPnt const & delta)
 {
+	Check();
 	if (!m_pNobStart->HasParentNob())
 		m_pNobStart->MoveNob(delta);
 	if (!m_pNobEnd->HasParentNob())

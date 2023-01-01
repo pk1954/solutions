@@ -27,6 +27,8 @@ export class CommandStack
 {
 public:
 
+    virtual void Check() = 0;
+
     void Initialize(Observable* const);
     bool UndoStackEmpty() const;
     bool RedoStackEmpty() const;

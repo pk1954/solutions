@@ -25,6 +25,8 @@ ConnAnimationCommand::ConnAnimationCommand
     NobId const id1,
     NobId const id2
 )
+  : m_id1(id1),
+    m_id2(id2)
 {
     m_nobsAnimated.clear();
     add2nobsAnimated(id1);
@@ -57,9 +59,7 @@ void ConnAnimationCommand::add2nobsAnimated(NobId const idNob)
     Nob* pNob { m_pNMWI->GetNob(idNob) };
     if (pNob->IsIoConnector())
     {
-        IoConnector* pIoConnector { static_cast<IoConnector*>(pNob) };
-        while (!pIoConnector->Empty())
-            m_nobsAnimated.push_back(pIoConnector->Pop());
+        static_cast<IoConnector*>(pNob)->Apply2All([this](IoLine& io) { m_nobsAnimated.push_back(&io); });
     }
     else if (pNob->IsIoLine())
     {

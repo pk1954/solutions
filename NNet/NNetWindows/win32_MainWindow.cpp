@@ -408,7 +408,7 @@ void MainWindow::DoPaint()
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
-	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
+	if (m_pNMRI->IsValidNobId(m_nobTarget)) // draw target nob again to be sure that it is visible
 	{
 		tHighlight type { connectionAllowed() ? tHighlight::targetFit : tHighlight::targetNoFit };
 		m_pNMRI->DrawExterior(m_nobTarget, context, type);
@@ -419,8 +419,8 @@ void MainWindow::DoPaint()
 			m_pNMRI->DrawInterior(m_nobHighlighted, context, type);
 		}
 	}
-	else if (IsDefined(m_nobHighlighted))  // draw highlighted nob again to be sure that it is in foreground
-	{
+	else if (m_pNMRI->IsValidNobId(m_nobHighlighted))  // draw highlighted nob again to be sure 
+	{                                                                    // that it is in foreground
 		m_pNMRI->DrawExterior(m_nobHighlighted, context, tHighlight::highlighted);
 		m_pNMRI->DrawInterior(m_nobHighlighted, context, tHighlight::highlighted);
 	}

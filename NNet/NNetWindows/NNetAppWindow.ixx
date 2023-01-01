@@ -41,6 +41,7 @@ import MainWindow;
 import ScriptFile;
 import MessagePump;
 import NNetModelCommands;
+import NNetCommandStack;
 import MonitorWindow;
 import BaseWindow;
 import ScriptStack;
@@ -128,7 +129,7 @@ private:
 	ActionTimer              m_atComputation;
 	ActionTimer              m_atDisplay;
 	AppTitle                 m_appTitle;
-	CommandStack             m_cmdStack;
+	NNetCommandStack         m_cmdStack;
 	ComputeThread            m_computeThread;
 	CrsrWindow               m_crsrWindow;
 	DescriptionWindow        m_descWindow;

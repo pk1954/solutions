@@ -55,7 +55,7 @@ void Model::CheckModel() const
 void Model::CheckId(NobId const id) const 
 {	
 #ifdef _DEBUG
-	if (IsUndefined(id) || ! m_upNobs->IsValidNobId(id))
+	if (! m_upNobs->IsValidNobId(id))
 		throw NobException(id, L"");
 #endif
 }

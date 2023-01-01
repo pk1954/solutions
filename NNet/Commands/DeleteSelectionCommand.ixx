@@ -11,6 +11,7 @@ export module DeleteSelectionCommand;
 import Types;
 import CommandFunctions;
 import Commands;
+import NNetCommandStack;
 import NNetCommand;
 import NNetModel;
 
@@ -45,5 +46,5 @@ private:
 		}
 	}
 
-	CommandStack m_cmdStack {};
+	NNetCommandStack m_cmdStack {};
 };

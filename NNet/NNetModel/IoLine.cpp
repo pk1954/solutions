@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 
 module NNetModel:IoLine;
@@ -13,6 +14,26 @@ import :MicroMeterPosDir;
 import :IoConnector;
 import :PipeList;
 import :Pipe;
+
+void IoLine::Check() const
+{
+	PosNob::Check();
+	if (HasParentNob())
+	{
+		assert(m_radDirection.IsNull());  // connected to IoConnector
+	}
+	else
+	{
+		if (m_radDirection.IsNull())
+		{
+			// standard case, direction is pipe vector
+		}
+		else
+		{
+			// locked, direction explicitely defined
+		}
+	}
+}
 
 Radian IoLine::getDirection() const
 {
@@ -46,14 +67,14 @@ void IoLine::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 
 void IoLine::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-	m_circle.Rotate(umPntPivot, radDelta);
+	m_umPosition.Rotate(umPntPivot, radDelta);
 	if (m_pIoConnector)
 		static_cast<IoConnector*>(m_pIoConnector)->DirectionDirty();
 }
 
 void IoLine::SetPos(MicroMeterPnt const& pos)
 {
-	m_circle.SetPos(pos);
+	m_umPosition = pos;
 	m_pPipe->PosChanged();
 	if (m_pIoConnector)
 		static_cast<IoConnector *>(m_pIoConnector)->DirectionDirty();
@@ -63,4 +84,21 @@ void IoLine::SetDir(Radian const r)
 { 
 	m_radDirection = r;
 	m_pIoConnector = nullptr;
+}
+
+void IoLine::SelectAllConnected(bool const bFirst, bool const bOn)
+{
+	if ((IsSelected() != bOn) || bFirst)
+	{
+		Nob::Select(bOn);
+		m_pPipe->SelectAllConnected(false, bOn);
+		if (HasParentNob())
+			GetParentNob()->SelectAllConnected(false, bOn);
+	}
+}
+
+void IoLine::DirectionDirty()
+{
+	if (HasParentNob())
+		m_pIoConnector->DirectionDirty();
 }
