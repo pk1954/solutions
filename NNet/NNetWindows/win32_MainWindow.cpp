@@ -201,11 +201,11 @@ bool MainWindow::connectionAllowed()
 		   m_pNMRI->ConnectionResult(m_nobHighlighted, m_nobTarget);
 }
 
-void MainWindow::setTargetNob()
+void MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
 {
 	m_nobTarget = m_pNMRI->FindNobAt
 	(
-		m_pNMRI->GetNobPos(m_nobHighlighted),
+		umCrsrPos,
 		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); }
 	);
 }
@@ -246,7 +246,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			else
 			{
 				m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
-				setTargetNob();
+				setTargetNob(umCrsrPos);
 			}
 		}
 		else if (m_pNMRI->IsAnySensorSelected())

@@ -60,31 +60,31 @@ public:
 	void SetSensorPoints();
 	bool SensorsPointsVisible() const { return m_bShowPnts; }
 
-	void OnPaint() final;
-	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
-	bool OnRButtonDown(WPARAM const, LPARAM const) final;
-	void OnMouseWheel(WPARAM const, LPARAM const) final;
-	void OnMouseMove(WPARAM const, LPARAM const) final;
-	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
-	bool OnLButtonUp(WPARAM const, LPARAM const) final;
-	bool OnSize(PIXEL  const, PIXEL  const) final;
+	void OnPaint()                                                       final;
+	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
+	bool OnRButtonDown    (WPARAM const, LPARAM const)                   final;
+	void OnMouseWheel     (WPARAM const, LPARAM const)                   final;
+	void OnMouseMove      (WPARAM const, LPARAM const)                   final;
+	void OnLButtonDblClick(WPARAM const, LPARAM const)                   final;
+	bool OnLButtonUp      (WPARAM const, LPARAM const)                   final;
+	bool OnSize           (PIXEL  const, PIXEL  const)                   final;
 
 private:
 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 
-	MicroMeter          m_arrowSize { STD_ARROW_SIZE };
-	Preferences* m_pPreferences { nullptr };
-	ActionTimer* m_pDisplayTimer { nullptr };
-	MicroMeterPnt       m_umPntSelectionAnchor { };
-	Observable* m_pCoordObservable { nullptr };
-	Observable* m_pCursorPosObservable { nullptr };
-	NNetModelCommands* m_pModelCommands { nullptr };
-	bool                m_bShowPnts { false };
-	NobId               m_nobHighlighted { NO_NOB };
-	NobId               m_nobTarget { NO_NOB };
+	MicroMeter         m_arrowSize            { STD_ARROW_SIZE };
+	Preferences*       m_pPreferences         { nullptr };
+	ActionTimer*       m_pDisplayTimer        { nullptr };
+	MicroMeterPnt      m_umPntSelectionAnchor { };
+	Observable*        m_pCoordObservable     { nullptr };
+	Observable*        m_pCursorPosObservable { nullptr };
+	NNetModelCommands* m_pModelCommands       { nullptr };
+	bool               m_bShowPnts            { false };
+	NobId              m_nobHighlighted       { NO_NOB };
+	NobId              m_nobTarget            { NO_NOB };
 
-	void setTargetNob();
+	void setTargetNob     (MicroMeterPnt const&);
 	void setHighlightedNob(MicroMeterPnt const&);
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool connectionAllowed();
