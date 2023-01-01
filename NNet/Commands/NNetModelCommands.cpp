@@ -34,7 +34,6 @@ import DeleteSigGenCmd;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import DiscIoConnectorCmd;
-import ExtendOutputLineCmd;
 import InsertPosNobCommand;
 import InsertTrackCommand;
 import MoveNobCommand;
@@ -128,13 +127,6 @@ void NNetModelCommands::ResetModel()
 	m_pNMWI->ResetModel();
 	m_pCmdStack->Clear();
 	m_pDynamicModelObservable->NotifyAll(false);
-}
-
-void NNetModelCommands::ExtendOutputLine(NobId const id, MicroMeterPnt const& pos) // case 11
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<ExtendOutputLineCmd>(id, pos + STD_OFFSET));
 }
 
 void NNetModelCommands::AddIncoming2Neuron(NobId const id, MicroMeterPnt const& pos) // case 9

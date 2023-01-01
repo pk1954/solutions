@@ -30,6 +30,7 @@ import MonitorWindow;
 import NNetModel;
 import CreateForkCommand;
 import ExtendInputLineCmd;
+import ExtendOutputLineCmd;
 import SelectAllConnectedCmd;
 
 using std::unordered_map;
@@ -539,8 +540,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobHighlighted, umPoint);	            break; // case 7
 	case IDD_CREATE_SYNAPSE:      m_pModelCommands->AddSynapse(m_nobHighlighted, umPoint);      	break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobHighlighted, umPoint);	break; // case 9
-	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd::Push(m_nobHighlighted, umPoint);              break; // case 10
-	case IDD_EXTEND_OUTPUTLINE:   m_pModelCommands->ExtendOutputLine(m_nobHighlighted, umPoint); 	break; // case 11
+	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd ::Push(m_nobHighlighted, umPoint);             break; // case 10
+	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd::Push(m_nobHighlighted, umPoint);         	break; // case 11
 
 	case IDD_STOP_ON_TRIGGER:
 		m_pModelCommands->ToggleStopOnTrigger(m_nobHighlighted);

@@ -26,8 +26,9 @@ import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import CreateForkCommand;
 import ExtendInputLineCmd;
-import SelectAllConnectedCmd;
+import ExtendOutputLineCmd;
 import MoveSignalCmd;
+import SelectAllConnectedCmd;
 
 using std::wstring;
 
@@ -222,17 +223,6 @@ public:
     }
 };
 
-class WrapExtendOutputLine: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId         const id { ScrReadNobId(script) };
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->ExtendOutputLine(id, umPos);
-    }
-};
-
 class WrapAddSynapse: public ScriptFunctor
 {
 public:
@@ -298,7 +288,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     ExtendInputLineCmd::Register();
-    SymbolTable::ScrDefConst(L"ExtendOutputLine",    new WrapExtendOutputLine);
+    ExtendOutputLineCmd::Register();
     SymbolTable::ScrDefConst(L"AddSynapse",          new WrapAddSynapse); 
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );

@@ -4,14 +4,21 @@
 
 module;
 
+#include <string>
 #include <memory>
+#include <iostream>
 
 export module ExtendOutputLineCmd;
 
 import Types;
+import Symtab;
+import Script;
+import NNetWrapperHelpers;
 import NNetCommand;
 import NNetModel;
 
+using std::endl;
+using std::wstring;
 using std::make_unique;
 using std::unique_ptr;
 
@@ -58,7 +65,32 @@ public:
 		m_pNMWI->Restore2Model(move(m_upOutputLineOld));
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId nobId, MicroMeterPnt const& pos)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << nobId << pos << endl;
+		m_pStack->PushCommand(make_unique<ExtendOutputLineCmd>(nobId, pos + STD_OFFSET));
+	}
+
 private:
+
+	inline static const wstring NAME { L"ExtendOutputLine" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId         const id    { ScrReadNobId(script) };
+			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
+			ExtendOutputLineCmd::Push(id, umPnt);
+		}
+	};
 
 	OutputLine           & m_outputLineOld;
 	unique_ptr<OutputLine> m_upOutputLineOld;
