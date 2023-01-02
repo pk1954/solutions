@@ -31,6 +31,7 @@ import NNetModel;
 import CreateForkCommand;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
+import MoveNobCommand;
 import SelectAllConnectedCmd;
 
 using std::unordered_map;
@@ -246,7 +247,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			}
 			else
 			{
-				m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
+				MoveNobCommand::Push(m_nobHighlighted, umDelta);
 				setTargetNob(umCrsrPos);
 			}
 		}

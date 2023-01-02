@@ -36,7 +36,6 @@ import DeleteTrackCommand;
 import DiscIoConnectorCmd;
 import InsertPosNobCommand;
 import InsertTrackCommand;
-import MoveNobCommand;
 import MoveSelectionCommand;
 import MoveSensorCmd;
 import MoveSignalCmd;
@@ -345,15 +344,6 @@ void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticD
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(dst, data));
-}
-
-void NNetModelCommands::MoveNob(NobId const id, MicroMeterPnt const & delta)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << L" " << delta << endl;
-	Nob* pNob = m_pNMWI->GetNob(id);
-	assert(pNob);
-	m_pCmdStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(id), delta));
 }
 
 void NNetModelCommands::MoveSensor(SensorId const id, MicroMeterPnt const & delta)

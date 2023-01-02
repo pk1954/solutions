@@ -44,7 +44,6 @@ public:
     void UndoCommand();
     void RedoCommand();
 
-    void ExtendOutputLine  (NobId const, MicroMeterPnt const&);
     void AddIncoming2Neuron(NobId const, MicroMeterPnt const&);
     void AddSynapse        (NobId const, MicroMeterPnt const&);
     void AddModel();
@@ -71,8 +70,6 @@ public:
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSelection(MicroMeterPnt const&);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
-    void MoveSignal(SignalId const&, TrackNr const);
-    void MoveNob(NobId const, MicroMeterPnt const&);
     void NewIoLinePair(MicroMeterPnt const&);
     void NewSignalGenerator();
     void RenameSigGen(SigGenId const, wstring const&);

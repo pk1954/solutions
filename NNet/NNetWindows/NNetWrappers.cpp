@@ -27,6 +27,7 @@ import ConnectCreateForkCmd;
 import CreateForkCommand;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
+import MoveNobCommand;
 import MoveSignalCmd;
 import SelectAllConnectedCmd;
 
@@ -181,17 +182,6 @@ public:
     }
 };
 
-class WrapMoveNob: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId         const id      { ScrReadNobId(script) };
-        MicroMeterPnt const umDelta { ScrReadMicroMeterPnt(script) };
-        m_pCommands->MoveNob(id, umDelta);
-    }
-};
-
 class WrapMoveSensor: public ScriptFunctor
 {
 public:
@@ -302,8 +292,8 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 
     SymbolTable::ScrDefConst(L"MoveSelection",       new WrapMoveSelection );
     SymbolTable::ScrDefConst(L"MoveSensor",          new WrapMoveSensor);
-    MoveSignalCmd::Register();
-    SymbolTable::ScrDefConst(L"MoveNob",             new WrapMoveNob );
+    MoveSignalCmd ::Register();
+    MoveNobCommand::Register();
     SymbolTable::ScrDefConst(L"NewIoLinePair",       new WrapNewIoLinePair ); 
     ConnAnimationCommand::Register();
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
