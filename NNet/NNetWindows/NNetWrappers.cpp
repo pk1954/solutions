@@ -29,6 +29,7 @@ import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import MoveNobCommand;
 import MoveSignalCmd;
+import NewIoLinePairCmd;
 import SelectAllConnectedCmd;
 
 using std::wstring;
@@ -224,16 +225,6 @@ public:
     }
 };
 
-class WrapNewIoLinePair: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->NewIoLinePair(umPos);
-    }
-};
-
 class WrapUndoCommand: public ScriptFunctor
 {
 public:
@@ -294,7 +285,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"MoveSensor",          new WrapMoveSensor);
     MoveSignalCmd ::Register();
     MoveNobCommand::Register();
-    SymbolTable::ScrDefConst(L"NewIoLinePair",       new WrapNewIoLinePair ); 
+    NewIoLinePairCmd::Register();
     ConnAnimationCommand::Register();
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
     SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );

@@ -467,13 +467,6 @@ void NNetModelCommands::InsertNeuron(NobId const id, MicroMeterPnt const & pos)
 	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Neuron>>(id, pos));
 }
 
-void NNetModelCommands::NewIoLinePair(MicroMeterPnt const & pos)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<NewIoLinePairCmd>(* m_pNMWI, pos));
-}
-
 void NNetModelCommands::RestrictSelection(NobType::Value const val)
 {
 	if (m_bTrace)

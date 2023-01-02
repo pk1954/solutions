@@ -32,6 +32,7 @@ import CreateForkCommand;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import MoveNobCommand;
+import NewIoLinePairCmd;
 import SelectAllConnectedCmd;
 
 using std::unordered_map;
@@ -535,7 +536,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_NEW_IO_LINE_PAIR:
-		m_pModelCommands->NewIoLinePair(umPoint);
+		NewIoLinePairCmd::Push(umPoint);
 		break;
 
 	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobHighlighted, umPoint);	            break; // case 7

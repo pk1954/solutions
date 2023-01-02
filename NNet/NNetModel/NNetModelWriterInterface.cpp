@@ -23,7 +23,7 @@ using std::unique_ptr;
 
 void NNetModelWriterInterface::CreateInitialNobs()
 {
-	IoLinePair(*this, MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
+	IoLinePair(MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);
 }
 
 Nob * NNetModelWriterInterface::GetNob(NobId const id)
@@ -42,11 +42,6 @@ PosNob & NNetModelWriterInterface::GetPosNob(NobId const id)
 void NNetModelWriterInterface::AddOutgoing(NobId const id, Pipe* p) { GetPosNob(id).AddOutgoing(p); }
 void NNetModelWriterInterface::AddIncoming(NobId const id, Pipe* p) { GetPosNob(id).AddIncoming(p); }
 
-//void NNetModelWriterInterface::SelectNob(NobId const idNob, bool const bOn) 
-//{ 
-//	GetNobPtr<Nob *>(idNob)->Select(bOn); 
-//}
-//
 void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 {
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })

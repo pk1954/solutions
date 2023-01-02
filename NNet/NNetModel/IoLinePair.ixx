@@ -1,6 +1,6 @@
 // IoLinePair.ixx
 //
-// Commands
+// NNetModel
 
 module;
 
@@ -20,7 +20,7 @@ using std::unique_ptr;
 export class IoLinePair
 {
 public:
-	explicit IoLinePair(NNetModelWriterInterface &,	MicroMeterPnt const &);
+	explicit IoLinePair(MicroMeterPnt const &);
 
 	~IoLinePair();
 

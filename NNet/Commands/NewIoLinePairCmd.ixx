@@ -2,21 +2,32 @@
 //
 // Commands
 
+module;
+
+#include <string>
+#include <memory>
+#include <iostream>
+
 export module NewIoLinePairCmd;
 
 import Types;
+import Symtab;
+import Script;
+import Commands;
+import NNetWrapperHelpers;
 import NNetCommand;
 import NNetModel;
+
+using std::endl;
+using std::wstring;
+using std::make_unique;
+using std::unique_ptr;
 
 export class NewIoLinePairCmd : public NNetCommand
 {
 public:
-	explicit NewIoLinePairCmd
-	(
-		NNetModelWriterInterface & nmwi,
-		MicroMeterPnt      const & pos
-	)
-		: m_IoLinePair(nmwi, pos)
+	explicit NewIoLinePairCmd(MicroMeterPnt const & pos)
+		: m_IoLinePair(pos)
 	{}
 
 	~NewIoLinePairCmd() final = default;
@@ -31,6 +42,30 @@ public:
 		m_IoLinePair.Pop(*m_pNMWI);
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(MicroMeterPnt const& pos)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << pos << endl;
+		m_pStack->PushCommand(make_unique<NewIoLinePairCmd>(pos));
+	}
+
 private:
+
+	inline static const wstring NAME { L"NewIoLinePair" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NewIoLinePairCmd::Push(ScrReadMicroMeterPnt(script));
+		}
+	};
+
 	IoLinePair m_IoLinePair;
 };
