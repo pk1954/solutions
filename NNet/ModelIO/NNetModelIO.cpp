@@ -8,6 +8,7 @@ module;
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <cassert>
 #include <memory>
 #include <Windows.h>
@@ -44,12 +45,14 @@ import NNetModel;
 using std::filesystem::exists;
 using std::wofstream;
 using std::wostream;
+using std::wostringstream;
 using std::make_unique;
 using std::unique_ptr;
 using std::to_wstring;
 using std::wstring;
 using std::bit_cast;
 using std::endl;
+using std::setprecision;
 
 NNetModelIO::~NNetModelIO() = default;
 
@@ -134,7 +137,23 @@ void NNetModelIO::importModel()
         {
             bSuccess = script.ScrProcess(m_wstrFile2Read);
         }
-        catch (NobException const & e)
+        catch (ProtocollException const& e)
+        {
+            wostringstream wBuffer;
+            wBuffer << L"Cannot read model file with old protocol version " << e.m_dVersion 
+                    << endl
+                    << L"This program needs at least protocol version " 
+                    << setprecision(2) << NNetModelStorage::PROTOCOL_VERSION 
+                    << endl;
+            MessageBox
+            (
+                nullptr,
+                wBuffer.str().c_str(),
+                L"Error reading model file",
+                MB_OK
+            );
+        }
+        catch (NobException const& e)
         {
             CheckImportedNobId(script, m_upImportedNMWI->GetUPNobs(), e.m_id);
         }
