@@ -70,7 +70,6 @@ public:
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSelection(MicroMeterPnt const&);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
-    void NewIoLinePair(MicroMeterPnt const&);
     void NewSignalGenerator();
     void RenameSigGen(SigGenId const, wstring const&);
     void RestrictSelection(NobType::Value const);

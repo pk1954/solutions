@@ -12,28 +12,28 @@ module;
 
 module MainWindow;
 
-import Win32_Util_Resource;
-import Observable;
-import Types;
-import Commands;
 import ActionTimer;
-import FatalError;
-import NNetController;
-import Preferences;
-import Uniform2D;
-import FatalError;
-import Win32_Util;
-import RootWindow;
-import DrawContext;
-import NNetModelCommands;
-import MonitorWindow;
-import NNetModel;
+import Commands;
 import CreateForkCommand;
+import DrawContext;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
-import MoveNobCommand;
+import FatalError;
 import NewIoLinePairCmd;
+import NNetController;
+import NNetModel;
+import NNetModelCommands;
+import MonitorWindow;
+import MoveNobCommand;
+import MoveSensorCmd;
+import Observable;
+import Preferences;
+import RootWindow;
 import SelectAllConnectedCmd;
+import Types;
+import Uniform2D;
+import Win32_Util;
+import Win32_Util_Resource;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -254,7 +254,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		}
 		else if (m_pNMRI->IsAnySensorSelected())
 		{   
-			m_pModelCommands->MoveSensor(m_pNMRI->GetSensorIdSelected(), umDelta);
+			MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
 			Notify(false); 
 		}
 		else if (wParam & MK_SHIFT)     // operate on selection
