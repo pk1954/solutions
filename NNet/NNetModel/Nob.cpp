@@ -203,5 +203,8 @@ MicroMeterPosDir CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
 
 void Nob::AppendMenuItems(AddMenuFunc const & add) const
 {
-	// no general commands for all Nobs
+	if (IsSelected())
+		add(IDM_DESELECT);
+	else
+		add(IDM_SELECT);
 }

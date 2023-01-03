@@ -27,12 +27,9 @@
 								   	         
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
-#define       IDM_SELECT_ALL                 142 
-#define       IDM_SELECT_NOB                 145
-#define       IDM_DESELECT_ALL               146
-#define       IDM_DESELECT_SUBTREE           147
-#define       IDM_DESELECT_NOB               148
-#define       IDM_SELECTION                  149
+#define       IDM_SELECT                     142
+#define       IDM_DESELECT                   143
+#define       IDM_SELECT_ALL                 144 
 #define       IDM_DELETE                     150
 								   	         
 #define       IDX_READ_PROGRESS_REPORT       160
@@ -122,5 +119,4 @@
 #define       IDD_TRIGGER_SIGNAL_DESIGNER    707
 #define       IDD_ATTACH_SIG_GEN_TO_LINE     708
 #define       IDD_ATTACH_SIG_GEN_TO_CONN     709
-#define       IDD_ATTACH_SIG_GEN_TO_SEL      710
 #define       IDD_ADD_SIG_GEN_TO_MONITOR     711

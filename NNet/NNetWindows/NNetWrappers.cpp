@@ -117,13 +117,12 @@ public:
     }
 };
 
-class WrapSelectAll: public ScriptFunctor
+class WrapDeselectModule: public ScriptFunctor
 {
 public:
     void operator() (Script & script) const final
     {
-        bool const bOn { script.ScrReadInt() != 0 };
-        m_pCommands->SelectAll(bOn);
+        m_pCommands->DeselectModule();
     }
 };
 
@@ -268,6 +267,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
+    SymbolTable::ScrDefConst(L"DeselectModule",      new WrapDeselectModule);
     SymbolTable::ScrDefConst(L"DiscIoConnector",     new WrapDiscIoConnector ); 
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
     SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 
@@ -278,7 +278,6 @@ void InitializeNNetWrappers
     NewIoLinePairCmd::Register();
     ConnAnimationCommand::Register();
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
-    SymbolTable::ScrDefConst(L"SelectAll",           new WrapSelectAll );
     SelectAllConnectedCmd::Register();
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
     SymbolTable::ScrDefConst(L"SplitNeuron",         new WrapSplitNeuron );

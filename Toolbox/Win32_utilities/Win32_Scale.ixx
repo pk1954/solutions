@@ -69,11 +69,11 @@ private:
 
 	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
 	{
-		bool             bResult{ true };
-		int        const iDelta{ GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-		bool       const bDirection{ iDelta > 0 };
-		PixelPoint const ptCrsr{ GetRelativeCrsrPosition() };  // screen coordinates
-		fPixel           fPixCenter{ Convert2fPixel(ptCrsr.GetX()) };
+		bool             bResult    { true };
+		int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+		bool       const bDirection { iDelta > 0 };
+		PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
+		fPixel           fPixCenter { Convert2fPixel(ptCrsr.GetX()) };
 
 		for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 		{
@@ -103,34 +103,34 @@ private:
 	{
 		static fPixel const MIN_TICK_DIST{ 6._fPixel };
 
-		LogUnits const logMinTickDist{ m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
-		float    const log10{ log10f(logMinTickDist.GetValue()) };
-		float    const fExp{ floor(log10) };
-		float    const fFractPart{ log10 - fExp };
-		float    const fFactor{ (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
-		fPixel   const fPixSizeA{ IsVertScale() ? m_upGraphics->GetClRectHeight() : m_upGraphics->GetClRectWidth() };
-		fPixel   const fPixScaleLen{ fPixSizeA - GetRightBorder() };
-		LogUnits const logScaleLen{ m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
+		LogUnits const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
+		float    const log10          { log10f(logMinTickDist.GetValue()) };
+		float    const fExp           { floor(log10) };
+		float    const fFractPart     { log10 - fExp };
+		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
+		fPixel   const fPixSizeA      { IsVertScale() ? m_upGraphics->GetClRectHeight() : m_upGraphics->GetClRectWidth() };
+		fPixel   const fPixScaleLen   { fPixSizeA - GetRightBorder() };
+		LogUnits const logScaleLen    { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
 
 		if (IsVertScale())
 		{
 			auto const fPixPntOffset{ fPixelPoint(0._fPixel, -fPixScaleLen) };
 			m_fPixPntStart = fPixelPoint(GetOrthoOffset(), getClHeight() - m_pixCoord.GetPixelOffset());
-			m_fPixPntEnd = m_fPixPntStart + fPixPntOffset;
-			m_logStart = LogUnits(0.0f);
-			m_logEnd = logScaleLen;
+			m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
+			m_logStart     = LogUnits(0.0f);
+			m_logEnd       = logScaleLen;
 		}
 		else
 		{
-			fPixel const fPixVertPos{ getClHeight() - GetOrthoOffset() };
-			fPixel const fPixHorzStart{ GetLeftBorder() };
-			fPixel const fPixHorzEnd{ m_upGraphics->GetClRectWidth() - GetRightBorder() };
+			fPixel const fPixVertPos   { getClHeight() - GetOrthoOffset() };
+			fPixel const fPixHorzStart { GetLeftBorder() };
+			fPixel const fPixHorzEnd   { m_upGraphics->GetClRectWidth() - GetRightBorder() };
 			m_fPixPntStart = fPixelPoint(fPixHorzStart, fPixVertPos);
-			m_fPixPntEnd = fPixelPoint(fPixHorzEnd, fPixVertPos);
-			m_logStart = m_pixCoord.Transform2logUnitPos(fPixHorzStart);
-			m_logEnd = m_pixCoord.Transform2logUnitPos(fPixHorzEnd);
+			m_fPixPntEnd   = fPixelPoint(fPixHorzEnd, fPixVertPos);
+			m_logStart     = m_pixCoord.Transform2logUnitPos(fPixHorzStart);
+			m_logEnd       = m_pixCoord.Transform2logUnitPos(fPixHorzEnd);
 		}
-		m_logTickDist = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
+		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
 		setScaleParams();
 		renderScale();

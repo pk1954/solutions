@@ -53,7 +53,6 @@ public:
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void AttachSigGen2Conn(NobId const);
     void AttachSigGen2Line(NobId const);
-    void AttachSigGen2Sel();
     void Connect(NobId const, NobId const);
     void CopySelection();
     void CreateInitialNobs();
@@ -63,6 +62,7 @@ public:
     void DeleteSignal(SignalId const&);
     void DeleteSigGen();
     void DeleteTrack(TrackNr const);
+    void DeselectModule();
     void DiscIoConnector(NobId const);
     void InsertKnot  (NobId const, MicroMeterPnt const&);
     void InsertNeuron(NobId const, MicroMeterPnt const&);
@@ -72,11 +72,9 @@ public:
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void NewSignalGenerator();
     void RenameSigGen(SigGenId const, wstring const&);
-    void RestrictSelection(NobType::Value const);
     void Rotate(NobId const, MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateModel(MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateSelection(MicroMeterPnt const&, MicroMeterPnt const&);
-    void SelectAll(bool const);
     void SelectSigGenClients();
     void SetActiveSignalGenerator(SigGenId const);
     void SetParameter(ParamType::Value const, float const);

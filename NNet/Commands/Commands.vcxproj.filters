@@ -36,9 +36,6 @@
     <ClCompile Include="AttachSigGen2LineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AttachSigGen2SelCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CommandFunctions.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
     <ClCompile Include="RenameSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RestrictSelectionCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RotateModelCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,7 +123,7 @@
     <ClCompile Include="RotationCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelectAllCommand.ixx">
+    <ClCompile Include="DeselectModuleCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectionCommand.ixx">

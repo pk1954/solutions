@@ -52,7 +52,7 @@ public:
 
 	MicroMeterPnt GetCursorPos() const;
 
-	NobId GetHighlightedNobId() const { return m_nobHighlighted; }
+	NobId GetHighlightedNobId() const { return m_nobIdHighlighted; }
 
 	void CenterModel();
 	void CenterSelection();
@@ -81,13 +81,17 @@ private:
 	Observable*        m_pCursorPosObservable { nullptr };
 	NNetModelCommands* m_pModelCommands       { nullptr };
 	bool               m_bShowPnts            { false };
-	NobId              m_nobHighlighted       { NO_NOB };
-	NobId              m_nobTarget            { NO_NOB };
+	NobId              m_nobIdHighlighted     { NO_NOB };
+	NobId              m_nobIdTarget          { NO_NOB };
+	bool               m_bSelectionActive     { false };
 
-	void setTargetNob     (MicroMeterPnt const&);
-	void setHighlightedNob(MicroMeterPnt const&);
+	void setTargetNob        (MicroMeterPnt const&);
+	bool setHighlightedNob   (MicroMeterPnt const&);
+	bool setHighlightedSensor(MicroMeterPnt const&);
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool connectionAllowed();
+	void select(NobId const);
+	void deselect();
 
 	void DoPaint() final;
 

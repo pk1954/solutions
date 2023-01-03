@@ -241,18 +241,9 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
-    case IDM_DESELECT_ALL:
     case IDM_ESCAPE:
-        m_pModelCommands->SelectAll(false);
+        m_pModelCommands->DeselectModule();
         Script::StopProcessing();
-        break;
-
-    case IDM_SELECT_ALL:
-        m_pModelCommands->SelectAll(true);
-        break;
-
-    case IDD_ATTACH_SIG_GEN_TO_SEL:
-        m_pModelCommands->AttachSigGen2Sel();
         break;
 
     case IDM_TRIGGER_STIMULUS:

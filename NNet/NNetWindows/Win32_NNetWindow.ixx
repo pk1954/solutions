@@ -93,8 +93,8 @@ private:
 	NNetWindow(NNetWindow const&);           // noncopyable class 
 	NNetWindow& operator= (NNetWindow const&) = delete;  // noncopyable class 
 
-	NNetController * m_pController{ nullptr };
-	D2D_DrawContext  m_context{ };
-	fPixel           m_fPixRadiusLimit{ };
-	PixelPoint       m_ptLast{ PP_NULL };	// Last cursor position during selection 
+	NNetController * m_pController     { nullptr };
+	D2D_DrawContext  m_context         { };
+	fPixel           m_fPixRadiusLimit { };
+	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
 };

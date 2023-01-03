@@ -18,7 +18,6 @@ import AddSigGen2MonitorCmd;
 import ArrowAnimation;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
-import AttachSigGen2SelCmd;
 import Commands;
 import CommandFunctions;
 import ConnAnimationCommand;
@@ -46,11 +45,10 @@ import NNetModelIO;
 import PlugIoConnectors;
 import PlugIoLines;
 import RenameSigGenCmd;
-import RestrictSelectionCommand;
 import RotateModelCommand;
 import RotateNobCommand;
 import RotateSelectionCommand;
-import SelectAllCommand;
+import DeselectModuleCmd;
 import SelectionCommand;
 import SelectAllConnectedCmd;
 import SetActiveSigGenCmd;
@@ -187,13 +185,6 @@ void NNetModelCommands::AttachSigGen2Line(NobId const id)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(id));
-}
-
-void NNetModelCommands::AttachSigGen2Sel()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2SelCmd>());
 }
 
 void NNetModelCommands::AttachSigGen2Conn(NobId const id)
@@ -458,18 +449,11 @@ void NNetModelCommands::InsertNeuron(NobId const id, MicroMeterPnt const & pos)
 	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Neuron>>(id, pos));
 }
 
-void NNetModelCommands::RestrictSelection(NobType::Value const val)
+void NNetModelCommands::DeselectModule()
 {
 	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << val << endl;
-	m_pCmdStack->PushCommand(make_unique<RestrictSelectionCommand>(val));
-}
-
-void NNetModelCommands::SelectAll(bool const bOn)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << bOn << endl;
-	m_pCmdStack->PushCommand(make_unique<SelectAllCommand>(bOn));
+		TraceStream() << source_location::current().function_name() << endl;
+	m_pCmdStack->PushCommand(make_unique<DeselectModuleCmd>());
 }
 
 void NNetModelCommands::ToggleEmphMode(NobId const id)

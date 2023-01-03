@@ -98,7 +98,6 @@
     <ClCompile Include="ArrowAnimation.ixx" />
     <ClCompile Include="AttachSigGen2ConCmd.ixx" />
     <ClCompile Include="AttachSigGen2LineCmd.ixx" />
-    <ClCompile Include="AttachSigGen2SelCmd.ixx" />
     <ClCompile Include="CommandFunctions.cpp" />
     <ClCompile Include="CommandFunctions.ixx" />
     <ClCompile Include="ConnAnimationCommand.cpp" />
@@ -135,12 +134,11 @@
     <ClCompile Include="PlugIoConnectors.ixx" />
     <ClCompile Include="PlugIoLines.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
-    <ClCompile Include="RestrictSelectionCommand.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />
     <ClCompile Include="RotateNobCommand.ixx" />
     <ClCompile Include="RotateSelectionCommand.ixx" />
     <ClCompile Include="RotationCommand.ixx" />
-    <ClCompile Include="SelectAllCommand.ixx" />
+    <ClCompile Include="DeselectModuleCmd.ixx" />
     <ClCompile Include="SelectAllConnectedCmd.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SelSigGenClientsCmd.ixx" />

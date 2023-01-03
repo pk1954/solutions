@@ -109,15 +109,6 @@ void NNetAppMenu::Start
         Util::AddMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
     }
 
-    HMENU hMenuEdit = Util::PopupMenu(m_hMenu, L"&Edit");
-    {
-        HMENU hMenuSelection = Util::PopupMenu(hMenuEdit, L"&Selection");
-        {
-            Util::AddMenu(hMenuSelection, MF_STRING, IDM_SELECT_ALL,   L"&Select all");
-            Util::AddMenu(hMenuSelection, MF_STRING, IDM_DESELECT_ALL, L"&Deselect all");
-        }
-    }
-
     Util::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
     Util::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
 

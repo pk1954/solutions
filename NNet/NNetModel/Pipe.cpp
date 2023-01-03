@@ -479,15 +479,11 @@ mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 
 void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 {
-	if (IsSelected())
-		add(IDM_DESELECT_NOB);
-	else
-		add(IDM_SELECT_NOB);
+	Nob::AppendMenuItems(add);
 	add(IDD_CREATE_FORK);
 	add(IDD_CREATE_SYNAPSE);
 	add(IDD_INSERT_NEURON);
 	add(IDD_INSERT_KNOT);   
-	Nob::AppendMenuItems(add);
 	add(IDD_DELETE_NOB);
 }
 

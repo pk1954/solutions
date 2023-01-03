@@ -48,7 +48,7 @@ public:
 
     bool Includes(POS_TYPE const pos) const
     {
-        return DistSquare(pos, m_position) <= m_radius.GetValue() * m_radius.GetValue();
+        return DistSquare(pos, m_position) <= m_radius.GetValue() * m_radius.GetValue();  //TODO: better use hypot?
     }
 
     float DistFactor(POS_TYPE const pos) const
