@@ -35,7 +35,6 @@ import DeleteTrackCommand;
 import DiscIoConnectorCmd;
 import InsertPosNobCommand;
 import InsertTrackCommand;
-import MoveSelectionCommand;
 import NewIoLinePairCmd;
 import NewSigGenCmd;
 import NNetModel;
@@ -412,13 +411,6 @@ void NNetModelCommands::SetNob
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << L" " << posDir << endl;
 	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir));
-}
-
-void NNetModelCommands::MoveSelection(MicroMeterPnt const & delta)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << delta << endl;
-	m_pCmdStack->PushCommand(make_unique<MoveSelectionCommand>(delta));
 }
 
 void NNetModelCommands::RotateSelection(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)

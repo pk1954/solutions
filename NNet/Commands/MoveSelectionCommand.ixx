@@ -2,11 +2,26 @@
 //
 // Commands
 
+module;
+
+#include <string>
+#include <memory>
+#include <iostream>
+
 export module MoveSelectionCommand;
 
 import Types;
+import Symtab;
+import Script;
+import Commands;
+import NNetWrapperHelpers;
 import NNetCommand;
 import NNetModel;
+
+using std::endl;
+using std::wstring;
+using std::make_unique;
+using std::unique_ptr;
 
 export class MoveSelectionCommand : public NNetCommand
 {
@@ -44,6 +59,30 @@ public:
 		return true; 
 	};
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(MicroMeterPnt const& delta)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << delta << endl;
+		m_pStack->PushCommand(make_unique<MoveSelectionCommand>(delta));
+	}
+
 private:
+
+	inline static const wstring NAME { L"MoveSelection" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			MoveSelectionCommand::Push(ScrReadMicroMeterPnt(script));
+		}
+	};
+
 	MicroMeterPnt m_delta;
 };

@@ -68,7 +68,6 @@ public:
     void InsertNeuron(NobId const, MicroMeterPnt const&);
     void InsertTrack(TrackNr const);
     bool MakeIoConnector(NobId const, NobId const);
-    void MoveSelection(MicroMeterPnt const&);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void NewSignalGenerator();
     void RenameSigGen(SigGenId const, wstring const&);

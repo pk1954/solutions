@@ -25,6 +25,7 @@ import NNetModel;
 import NNetModelCommands;
 import MonitorWindow;
 import MoveNobCommand;
+import MoveSelectionCommand;
 import MoveSensorCmd;
 import Observable;
 import Preferences;
@@ -251,7 +252,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (m_bSelectionActive)
 	{
-		m_pModelCommands->MoveSelection(umDelta);
+		MoveSelectionCommand::Push(umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
