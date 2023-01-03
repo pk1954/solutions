@@ -155,6 +155,7 @@ void NNetAppMenu::Start
     }
     HMENU hMenuHelp = Util::PopupMenu(m_hMenu, L"&Help");
     {
+        Util::AddMenu(hMenuHelp, MF_STRING, IDM_DOCU,  L"&Documentation");
         Util::AddMenu(hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info...");
     }
 

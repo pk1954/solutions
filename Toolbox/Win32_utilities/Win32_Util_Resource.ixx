@@ -20,7 +20,8 @@ export inline int const SC_LBUTTONDBLCLK     { 1 };
 
 // identifiers below 100 are reserved for win32_utilities
 
-export inline int const IDM_ABOUT               { 4 };
+export inline int const IDM_ABOUT               { 3 };
+export inline int const IDM_DOCU                { 4 };
 export inline int const IDM_EXIT                { 5 };
 export inline int const IDM_BLOCK_UI            { 6 };
 

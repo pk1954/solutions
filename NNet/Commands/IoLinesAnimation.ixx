@@ -63,6 +63,5 @@ private:
     vector<IoLine *>      m_animated;
     ANIM_TYPE       const m_start;
     ANIM_TYPE       const m_target;
-    unsigned int          m_uiNrOfSteps;
     unique_ptr<ANIMATION> m_upAnimation;
 };

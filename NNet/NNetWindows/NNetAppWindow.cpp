@@ -411,6 +411,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_aboutBox.Show(m_mainNNetWindow.GetWindowHandle());
 			break;
 
+		case IDM_DOCU:
+			ShellExecute(0, 0, L"https://nnetsimu.miraheze.org/wiki/Main_Page ", 0, 0, SW_SHOW);
+			break;
+
 		case IDM_EXIT:
 			PostMessage(WM_CLOSE, 0, 0);
 			break;
