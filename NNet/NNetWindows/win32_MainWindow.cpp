@@ -225,7 +225,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		m_pModelCommands->SetHighlightedSensor(umCrsrPos);
 		setHighlightedNob(umCrsrPos);
-		ClearPtLast();             // make m_ptLast invalid
+		ClearPtLast();                 // make m_ptLast invalid
 		return;
 	}
 
@@ -234,53 +234,41 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (ptLast.IsNull())
 		return;
 
-	if (wParam & MK_LBUTTON)        // Left mouse button
+	if (!(wParam & MK_LBUTTON))        // Left mouse button
+		return;
+
+	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
+	MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
+	if (umDelta.IsZero())
+		return;
+
+	if (wParam & MK_CONTROL)   // rotate
 	{
-		MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
-		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
-		if (umDelta.IsZero())
-			return;
-		if (IsDefined(m_nobHighlighted))    // operate on single nob
-		{
-			if (wParam & MK_CONTROL)
-			{
-				m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
-			}
-			else
-			{
-				MoveNobCommand::Push(m_nobHighlighted, umDelta);
-				setTargetNob(umCrsrPos);
-			}
-		}
-		else if (m_pNMRI->IsAnySensorSelected())
-		{   
-			MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
-			Notify(false); 
-		}
-		else if (wParam & MK_SHIFT)     // operate on selection
-		{
-			if (m_pNMRI->AnyNobsSelected())
-			{
-				if (wParam & MK_CONTROL)
-				{
-					m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
-				}
-				else 
-				{
-					m_pModelCommands->MoveSelection(umDelta);
-				}
-			}
-		}
-		else if (wParam & MK_CONTROL)     // rotate model
-		{
-			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
-		}
+		if (m_pNMRI->AnyNobsSelected())
+			m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
+		else if (IsDefined(m_nobHighlighted))           
+			m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
 		else 
-		{
-			NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
-		}
+			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
 	}
-	NNetWindow::OnMouseMove(wParam, lParam);
+	else if (m_pNMRI->AnyNobsSelected())
+	{
+		m_pModelCommands->MoveSelection(umDelta);
+	}
+	else if (IsDefined(m_nobHighlighted))    // move single nob
+	{
+		MoveNobCommand::Push(m_nobHighlighted, umDelta);
+		setTargetNob(umCrsrPos);
+	}
+	else if (m_pNMRI->IsAnySensorSelected())
+	{
+		MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
+		Notify(false);
+	}
+	else
+	{
+		NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
+	}
 }
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
@@ -296,8 +284,6 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 		m_pModelCommands->Connect(m_nobHighlighted, m_nobTarget);
 		Reset();
 	}
-	//m_nobHighlighted = NO_NOB;
-	//m_nobTarget = NO_NOB;
 	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
 

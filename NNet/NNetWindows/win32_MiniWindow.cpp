@@ -62,7 +62,6 @@ void MiniWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		ClearPtLast();   // make m_ptLast invalid
 	}
-	NNetWindow::OnMouseMove(wParam, lParam);
 }
 
 void MiniWindow::Notify(bool const bImmediately)
