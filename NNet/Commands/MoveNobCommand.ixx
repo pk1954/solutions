@@ -5,24 +5,11 @@
 module;
 
 #include <cassert>
-#include <string>
-#include <memory>
 #include <iostream>
 
 export module MoveNobCommand;
 
-import Types;
-import Symtab;
-import Script;
-import Commands;
-import NNetWrapperHelpers;
 import NNetCommand;
-import NNetModel;
-
-using std::endl;
-using std::wstring;
-using std::make_unique;
-using std::unique_ptr;
 
 export class MoveNobCommand : public NNetCommand
 {

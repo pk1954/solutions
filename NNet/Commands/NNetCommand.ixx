@@ -2,10 +2,25 @@
 //
 // Commands
 
+module;
+
+#include <string>
+#include <memory>
+#include <iostream>
+
 export module NNetCommand;
 
-import Commands;
-import NNetModel;
+export import Types;
+export import Symtab;
+export import Script;
+export import Commands;
+export import NNetModel;
+export import NNetWrapperHelpers;
+
+export using std::endl;
+export using std::wstring;
+export using std::make_unique;
+export using std::unique_ptr;
 
 export class NNetCommand : public Command
 {

@@ -5,24 +5,13 @@
 module;
 
 #include <vector>
-#include <memory>
 #include <iostream>
 
 export module ConnAnimationCommand;
 
-import Types;
-import Symtab;
-import Script;
-import NNetWrapperHelpers;
 import NNetCommand;
-import NNetModel;
 
-using std::move;
 using std::vector;
-using std::endl;
-using std::wstring;
-using std::unique_ptr;
-using std::make_unique;
 
 export class ConnAnimationCommand : public NNetCommand
 {

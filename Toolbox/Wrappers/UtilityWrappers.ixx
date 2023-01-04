@@ -8,7 +8,7 @@ module;
 
 export module UtilityWrappers;
 
-import BoolOp; 
+export import BoolOp; 
 import SaveCast;
 import Types;
 import BasePeak;

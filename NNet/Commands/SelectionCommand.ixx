@@ -9,8 +9,7 @@ module;
 
 export module SelectionCommand;
 
-import NNetCommand;
-import NNetModel;
+export import NNetCommand;
 
 using std::unique_ptr;
 using std::vector;

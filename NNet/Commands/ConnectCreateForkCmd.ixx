@@ -5,24 +5,13 @@
 module;
 
 #include <cassert>
-#include <string>
-#include <memory>
 #include <iostream>
 
 export module ConnectCreateForkCmd;
 
-import Types;
-import Symtab;
-import Script;
-import Commands;
-import NNetWrapperHelpers;
 import NNetModel;
 import SplitPipeCommand;
 
-using std::endl;
-using std::wstring;
-using std::unique_ptr;
-using std::make_unique;
 using std::pair;
 
 export class ConnectCreateForkCmd : public SplitPipeCommand
