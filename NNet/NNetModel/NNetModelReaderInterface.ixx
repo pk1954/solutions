@@ -132,8 +132,14 @@ public:
 
 	bool IsKnot(NobId const id) const
 	{
-		Nob const* const pNob{ GetConstNob(id) };
+		Nob const* const pNob { GetConstNob(id) };
 		return pNob && pNob->IsKnot();
+	}
+
+	bool IsSynapse(NobId const id) const
+	{
+		Nob const* const pNob { GetConstNob(id) };
+		return pNob && pNob->IsSynapse();
 	}
 
 	NobId FindNobAt(MicroMeterPnt const& umPnt) const

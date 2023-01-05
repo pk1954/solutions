@@ -22,6 +22,7 @@ import EditLineBox;
 import Win32_PixelTypes;
 import Direct2D;
 import Scale;
+import DeleteSigGenCmd;
 import NNetModelCommands;
 import NNetModel;
 
@@ -223,7 +224,7 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		return true;
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
-		m_pCommands->DeleteSigGen();
+		DeleteSigGenCmd::Push();
 		SetCaption();
 		return true;
 

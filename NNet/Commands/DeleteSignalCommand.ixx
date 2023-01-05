@@ -27,10 +27,11 @@ public:
         m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
         if (m_upSignal->GetSigSrcType() == Signal::SIGSRC_CIRCLE)
         {
-            SignalSource const* pSigSrc = m_upSignal->GetSignalSource();
+            SignalSource const* pSigSrc { m_upSignal->GetSignalSource() };
             Sensor       const* pSensor { static_cast<Sensor const *>(pSigSrc) };
             m_sensorId = m_pNMWI->GetSensorList().GetSensorId(*pSensor);
-            m_upSensor = move(m_pNMWI->GetSensorList().RemoveSensor(m_sensorId));
+            if (m_sensorId.IsNotNull())
+                m_upSensor = move(m_pNMWI->GetSensorList().RemoveSensor(m_sensorId));
         }
     };
 

@@ -101,6 +101,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDM_COPY_SELECTION,         L"Copy selection"                 },
 		{ IDM_DELETE_SELECTION,       L"Delete selected objects"        },
 		{ IDD_DELETE_NOB,             L"Delete"                         },
+		{ IDD_DETACH_NOB,             L"Detach"                         },
 		{ IDD_DELETE_EEG_SENSOR,      L"Delete EEG sensor"              },
 		{ IDD_DISC_IOCONNECTOR,       L"Disconnect"                     },
 		{ IDD_SPLIT_NEURON,           L"Split (make I/O neurons)"       },
@@ -237,7 +238,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		return;
 
 	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
-	MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
+	MicroMeterPnt       umDelta   { umCrsrPos - umLastPos };
 	if (umDelta.IsZero())
 		return;
 
@@ -256,6 +257,19 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
+		if (m_pNMRI->IsSynapse(m_nobIdHighlighted))
+		{ 
+			Synapse    const* pSynapse  { Cast2Synapse(m_pNMRI->GetConstPosNobPtr(m_nobIdHighlighted)) };
+			Pipe       const* pPipeMain { pSynapse->GetMainPipe() };
+			MicroMeter const  umDist    { pPipeMain->DistPntToPipe(umCrsrPos) };
+			if (umDist.GetAbs() > NEURON_RADIUS)
+			{
+				MicroMeterPnt const umPosOld { m_pNMRI->GetNobPos(m_nobIdHighlighted) };
+				m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+				if (setHighlightedNob(umPosOld))
+					umDelta = umCrsrPos - umPosOld;
+			}
+		}
 		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
 		setTargetNob(umCrsrPos);
 	}
@@ -520,6 +534,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 			m_pModelCommands->DeleteSelection();
 		return true;
 
+	case IDD_DETACH_NOB:
 	case IDD_DELETE_NOB:
 		m_pModelCommands->DeleteNob(m_nobIdHighlighted);
 		break;

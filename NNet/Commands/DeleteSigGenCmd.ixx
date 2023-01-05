@@ -5,7 +5,7 @@
 module;
 
 #include <vector>
-#include <memory>
+#include <iostream>
 
 export module DeleteSigGenCmd;
 
@@ -13,7 +13,6 @@ import SigGenCommand;
 import SetActiveSigGenCmd;
 import NNetModel;
 
-using std::make_unique;
 using std::vector;
 
 export class DeleteSigGenCmd : public SigGenCommand
@@ -47,7 +46,31 @@ public:
 		SetActiveSigGenId(m_sigGenId);
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push()
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << endl;
+		m_pStack->PushCommand(make_unique<DeleteSigGenCmd>());
+	}
+
 private:
+
+	inline static const wstring NAME { L"DeleteSigGen" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			DeleteSigGenCmd::Push();
+		}
+	};
+
 	SignalGenerator   * m_pSigGenActive { m_pNMWI->GetSigGenSelected() };
 	SigGenId            m_sigGenId;
 	UPSigGen            m_upSigGen;

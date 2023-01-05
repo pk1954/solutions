@@ -29,7 +29,6 @@ import CreateForkCommand;
 import CreateSynapseCommand;
 import DeleteSelectionCommand;
 import DeleteSensorCommand;
-import DeleteSigGenCmd;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import DiscIoConnectorCmd;
@@ -225,6 +224,7 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 		default: assert(false);
 	}
 	m_pCmdStack->PushCommand(move(upCmd));
+	m_pSound->Play(L"SNAP_IN_SOUND");
 }
 
 void NNetModelCommands::CopySelection()
@@ -346,13 +346,6 @@ void NNetModelCommands::SetActiveSignalGenerator(SigGenId const id)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
-}
-
-void NNetModelCommands::DeleteSigGen()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteSigGenCmd>());
 }
 
 void NNetModelCommands::RenameSigGen(SigGenId const id, wstring const & name)

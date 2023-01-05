@@ -60,7 +60,6 @@ public:
     void DeleteSelection();
     void DeleteSensor(SensorId const&);
     void DeleteSignal(SignalId const&);
-    void DeleteSigGen();
     void DeleteTrack(TrackNr const);
     void DeselectModule();
     void DiscIoConnector(NobId const);

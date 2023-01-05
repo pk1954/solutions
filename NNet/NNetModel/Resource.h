@@ -83,7 +83,8 @@
 #define       IDD_INSERT_NEURON              461
 #define       IDD_NEW_IO_LINE_PAIR           463
 #define       IDD_DELETE_NOB                 468
-										    
+#define       IDD_DETACH_NOB                 469
+
 #define       IDD_EXTEND_INPUTLINE           570
 #define       IDD_EXTEND_OUTPUTLINE          571
 #define       IDD_ADD_INCOMING2NEURON        572

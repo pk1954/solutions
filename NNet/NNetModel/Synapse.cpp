@@ -297,5 +297,5 @@ bool Synapse::CompStep()
 void Synapse::AppendMenuItems(AddMenuFunc const& add) const
 {
 	Nob::AppendMenuItems(add);
-	add(IDD_DELETE_NOB);
+	add(IDD_DETACH_NOB);
 }
