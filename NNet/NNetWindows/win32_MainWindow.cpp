@@ -15,6 +15,7 @@ module MainWindow;
 import ActionTimer;
 import Commands;
 import CreateForkCommand;
+import CreateSynapseCommand;
 import DrawContext;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
@@ -597,8 +598,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		NewIoLinePairCmd::Push(umPoint);
 		break;
 
-	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobIdHighlighted, umPoint);	                          break; // case 7
-	case IDD_CREATE_SYNAPSE:      m_pModelCommands->AddSynapse(m_nobIdHighlighted, umPoint);      	              break; // case 8 
+	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	                          break; // case 7
+	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	              break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
 	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET);            break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint + STD_OFFSET);         	  break; // case 11

@@ -25,6 +25,7 @@ import NNetModel;
 import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import CreateForkCommand;
+import CreateSynapseCommand;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import MoveNobCommand;
@@ -195,17 +196,6 @@ public:
     }
 };
 
-class WrapAddSynapse: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId         const id    { ScrReadNobId(script) };
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->AddSynapse(id, umPos);
-    }
-};
-
 class WrapUndoCommand: public ScriptFunctor
 {
 public:
@@ -251,7 +241,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     ExtendInputLineCmd::Register();
     ExtendOutputLineCmd::Register();
-    SymbolTable::ScrDefConst(L"AddSynapse",          new WrapAddSynapse); 
+    CreateSynapseCommand::Register();
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();

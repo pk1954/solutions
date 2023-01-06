@@ -151,6 +151,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         OnTimer(wParam, lParam);
         return false;
 
+    case WM_CHAR:
+        OnChar(wParam, lParam);
+        return false;
+
     case WM_MOUSEHOVER:
         OnMouseHover(wParam, lParam);
         return false;

@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <iostream>
 
 export module CreateSynapseCommand;
 
@@ -54,7 +55,32 @@ public:
 		m_pPipe->RemoveSynapse(m_upSynapse.get());
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId nobId, MicroMeterPnt const& pos)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << nobId << pos << endl;
+		m_pStack->PushCommand(make_unique<CreateSynapseCommand>(nobId, pos));
+	}
+
 private:
+
+	inline static const wstring NAME { L"CreateSynapse" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId         const id    { ScrReadNobId(script) };
+			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
+			CreateSynapseCommand::Push(id, umPnt);
+		}
+	};
 
 	Pipe * const          m_pPipe;
 	unique_ptr<Pipe>      m_upPipe;
