@@ -6,6 +6,7 @@ module;
 
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 export module AddPipe2NeuronCmd;
 
@@ -36,8 +37,8 @@ public:
 		m_upPipe->PosChanged();
 
 		m_upNeuronNew->SetAxon(m_neuronOld.GetAxon()); // add axon
-		m_upNeuronNew->AddIncoming(&m_neuronOld);       // add existing inputs 
-		m_upNeuronNew->AddIncoming(m_upPipe.get());   // add new Pipe
+		m_upNeuronNew->AddIncoming(&m_neuronOld);      // add existing inputs 
+		m_upNeuronNew->AddIncoming(m_upPipe.get());    // add new Pipe
 
 		m_upInputLine->SetPipe(m_upPipe.get());
 	}
@@ -76,7 +77,32 @@ public:
 		m_pNMWI->Restore2Model(move(m_upNeuronOld));
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId nobId, MicroMeterPnt const& pos)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << nobId << pos << endl;
+		m_pStack->PushCommand(make_unique<AddPipe2NeuronCmd>(nobId, pos));
+	}
+
 private:
+
+	inline static const wstring NAME { L"AddPipe2Neuron" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId         const id    { ScrReadNobId(script) };
+			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
+			AddPipe2NeuronCmd::Push(id, umPnt);
+		}
+	};
 
 	Neuron              & m_neuronOld;
 	unique_ptr<Neuron>    m_upNeuronOld;

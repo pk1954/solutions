@@ -13,6 +13,7 @@ module;
 module MainWindow;
 
 import ActionTimer;
+import AddPipe2NeuronCmd;
 import Commands;
 import CreateForkCommand;
 import CreateSynapseCommand;
@@ -598,11 +599,11 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		NewIoLinePairCmd::Push(umPoint);
 		break;
 
-	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	                          break; // case 7
-	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	              break; // case 8 
-	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
-	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET);            break; // case 10
-	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint + STD_OFFSET);         	  break; // case 11
+	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	            break; // case 7
+	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	    break; // case 8 
+	case IDD_ADD_INCOMING2NEURON: AddPipe2NeuronCmd   ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
+	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd  ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 10
+	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
 
 	case IDD_STOP_ON_TRIGGER:
 		m_pModelCommands->ToggleStopOnTrigger(m_nobIdHighlighted);

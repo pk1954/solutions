@@ -44,7 +44,6 @@ public:
     void UndoCommand();
     void RedoCommand();
 
-    void AddIncoming2Neuron(NobId const, MicroMeterPnt const&);
     void AddModel();
     void AddSensor(MicroMeterCircle const&, TrackNr const);
     void AddSigGen2Monitor(TrackNr const);

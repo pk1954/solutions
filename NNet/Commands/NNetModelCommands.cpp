@@ -121,13 +121,6 @@ void NNetModelCommands::ResetModel()
 	m_pDynamicModelObservable->NotifyAll(false);
 }
 
-void NNetModelCommands::AddIncoming2Neuron(NobId const id, MicroMeterPnt const& pos) // case 9
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(id, pos));
-}
-
 void NNetModelCommands::AddModel()
 {
 	if (m_bTrace)
