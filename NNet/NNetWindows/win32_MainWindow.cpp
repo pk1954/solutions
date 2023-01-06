@@ -517,6 +517,24 @@ void MainWindow::CenterSelection()
 		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
 }
 
+void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
+{
+	if ((wParam == VK_SPACE) && (GetKeyState(VK_LBUTTON) & 0x8000) && IsDefined(m_nobIdHighlighted))
+	{
+		Nob const* pNob { m_pNMRI->GetConstNob(m_nobIdHighlighted) };
+		if (pNob->IsIoLine())
+		{
+			MicroMeterPnt const umPoint  { pNob->GetPos() };
+			MicroMeterPnt const umPntVec { Radian2Vector(pNob->GetDir()).ScaledTo(MICRO_OFFSET) };
+			if (pNob->IsInputLine())
+				ExtendInputLineCmd::Push(m_nobIdHighlighted, umPoint - umPntVec);
+			else
+				ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint + umPntVec);
+			setHighlightedNob(umPoint);
+		}
+	}
+}
+
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
@@ -579,11 +597,11 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		NewIoLinePairCmd::Push(umPoint);
 		break;
 
-	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobIdHighlighted, umPoint);	            break; // case 7
-	case IDD_CREATE_SYNAPSE:      m_pModelCommands->AddSynapse(m_nobIdHighlighted, umPoint);      	break; // case 8 
-	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobIdHighlighted, umPoint);	break; // case 9
-	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd ::Push(m_nobIdHighlighted, umPoint);             break; // case 10
-	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint);         	break; // case 11
+	case IDD_CREATE_FORK:         CreateForkCommand::Push(m_nobIdHighlighted, umPoint);	                          break; // case 7
+	case IDD_CREATE_SYNAPSE:      m_pModelCommands->AddSynapse(m_nobIdHighlighted, umPoint);      	              break; // case 8 
+	case IDD_ADD_INCOMING2NEURON: m_pModelCommands->AddIncoming2Neuron(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
+	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET);            break; // case 10
+	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint + STD_OFFSET);         	  break; // case 11
 
 	case IDD_STOP_ON_TRIGGER:
 		m_pModelCommands->ToggleStopOnTrigger(m_nobIdHighlighted);

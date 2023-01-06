@@ -23,9 +23,11 @@ public:
 		m_upPipe          = make_unique<Pipe>();
 		m_upKnotNew       = make_unique<Knot>(m_outputLineOld.GetPos());
 		m_upOutputLineNew = make_unique<OutputLine>(pos);
+
 		m_upPipe->SetStartPnt(m_upKnotNew.get());
 		m_upPipe->SetEndPnt  (m_upOutputLineNew.get());
 		m_upPipe->PosChanged();
+		
 		m_upOutputLineNew->SetPipe(m_upPipe.get());
 		m_upKnotNew->AddOutgoing(m_upPipe.get());
 		m_upKnotNew->AddIncoming(m_outputLineOld.GetPipe());
@@ -35,12 +37,12 @@ public:
 
 	void Do() final 
 	{ 
-		m_outputLineOld.GetPipe()->SetEndPnt(m_upKnotNew.get());
-		m_outputLineOld.GetPipe()->PosChanged();
+		m_upOutputLineOld = m_pNMWI->RemoveFromModel<OutputLine>(m_outputLineOld);
+		m_upOutputLineOld->GetPipe()->SetEndPnt(m_upKnotNew.get());
+	//	m_upOutputLineOld->GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upOutputLineNew));
-		m_upOutputLineOld = m_pNMWI->RemoveFromModel<OutputLine>(m_outputLineOld);
 	}
 
 	void Undo() final 
@@ -49,7 +51,7 @@ public:
 		m_upPipe          = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew       = m_pNMWI->PopFromModel<Knot>();
 		m_outputLineOld.GetPipe()->SetEndPnt(m_upOutputLineOld.get());
-		m_outputLineOld.GetPipe()->PosChanged();
+//		m_outputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Restore2Model(move(m_upOutputLineOld));
 	}
 
@@ -62,7 +64,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId << pos << endl;
-		m_pStack->PushCommand(make_unique<ExtendOutputLineCmd>(nobId, pos + STD_OFFSET));
+		m_pStack->PushCommand(make_unique<ExtendOutputLineCmd>(nobId, pos));
 	}
 
 private:

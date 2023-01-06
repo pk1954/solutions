@@ -399,6 +399,11 @@ void NNetAppWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)
 		SendCommand(IDM_RESET_DYNAMIC_DATA, 0);
 }
 
+void NNetAppWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
+{
+	m_mainNNetWindow.OnChar(wParam, lParam);
+}
+
 bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);

@@ -126,7 +126,7 @@ void NNetModelCommands::AddIncoming2Neuron(NobId const id, MicroMeterPnt const& 
 {
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(id, pos - STD_OFFSET));
+	m_pCmdStack->PushCommand(make_unique<AddPipe2NeuronCmd>(id, pos));
 }
 
 void NNetModelCommands::AddSynapse(NobId const id, MicroMeterPnt const & pos)  // case 8

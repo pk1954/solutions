@@ -56,6 +56,7 @@ export inline MicroMeter    const PIPE_WIDTH      { 20.0_MicroMeter };
 export inline MicroMeter    const PIPE_WIDTH_HIGH { 30.0_MicroMeter };
 export inline MicroMeter    const KNOT_WIDTH      { PIPE_WIDTH / 2 };
 export inline MicroMeterPnt const STD_OFFSET      { MicroMeterPnt(0._MicroMeter, NEURON_RADIUS * 2.0) };
+export inline MicroMeter    const MICRO_OFFSET    { 1.0_MicroMeter };
 
 export unsigned int CalcNrOfSteps(MicroMeter const um)
 {

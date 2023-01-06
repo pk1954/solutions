@@ -27,7 +27,6 @@ public:
 	bool   OnRButtonDown    (WPARAM const, LPARAM const) final { return false; }
 	bool   OnLButtonUp      (WPARAM const, LPARAM const) final { return false; };
 	void   OnLButtonDblClick(WPARAM const, LPARAM const) final { };
-	void   OnChar           (WPARAM const, LPARAM const) final { };
 	void   OnMouseMove      (WPARAM const, LPARAM const) final;
 
 	LPARAM AddContextMenuEntries(HMENU const) final { return 0; }

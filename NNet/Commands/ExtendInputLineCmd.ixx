@@ -24,20 +24,19 @@ public:
 		m_upKnotNew      = make_unique<Knot>(m_inputLineOld.GetPos());
 		m_upInputLineNew = make_unique<InputLine>(pos);
 
-		m_upInputLineNew->SetPipe(m_upPipe.get());
 		m_upPipe->SetStartPnt(m_upInputLineNew.get());
-		m_upPipe->PosChanged();
-
-		m_upKnotNew->AddIncoming(m_upPipe.get());
 		m_upPipe->SetEndPnt(m_upKnotNew.get());
 		m_upPipe->PosChanged();
+
+		m_upInputLineNew->SetPipe(m_upPipe.get());
+		m_upKnotNew->AddIncoming(m_upPipe.get());
+		m_upKnotNew->AddOutgoing(m_inputLineOld.GetPipe());
 	}
 
 	~ExtendInputLineCmd() final = default;
 
 	void Do() final
 	{
-		m_upKnotNew->AddOutgoing(m_inputLineOld.GetPipe());
 		m_inputLineOld.GetPipe()->SetStartPnt(m_upKnotNew.get());
 		m_inputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upKnotNew));
@@ -51,7 +50,6 @@ public:
 		m_upInputLineNew = m_pNMWI->PopFromModel<InputLine>();
 		m_upPipe         = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew      = m_pNMWI->PopFromModel<Knot>();
-		m_upInputLineOld->AddOutgoing(m_inputLineOld.GetPipe());
 		m_inputLineOld.GetPipe()->SetStartPnt(m_upInputLineOld.get());
 		m_inputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Restore2Model(move(m_upInputLineOld));
@@ -66,7 +64,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId << pos << endl;
-		m_pStack->PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos - STD_OFFSET));
+		m_pStack->PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos));
 	}
 
 private:

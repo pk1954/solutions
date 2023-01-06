@@ -15,6 +15,7 @@ import DrawContext;
 import :tHighlight;
 import :NobId;
 import :Nob;
+import :Synapse;
 import :SignalGenerator;
 import :InputLine;
 import :IoConnector;
@@ -180,7 +181,17 @@ bool NNetModelReaderInterface::IsConnectedTo(NobId const idSrc, NobId const idDs
 
 bool NNetModelReaderInterface::isConnectedToPipe(NobId const idNob, NobId const idPipe) const
 {
-	return (idNob == m_pModel->GetStartKnotId(idPipe)) || (idNob == m_pModel->GetEndKnotId(idPipe));
+	if (idNob == m_pModel->GetStartKnotId(idPipe))
+		return true;
+    if (idNob == m_pModel->GetEndKnotId(idPipe))
+		return true;
+	Nob const* const pNob { GetConstNob(idNob) };
+	if (pNob->IsSynapse())
+	{
+		if (Cast2Synapse(pNob)->GetMainPipe()->GetId() == idPipe)
+			return true;
+	}
+	return false;
 }
 
 void NNetModelReaderInterface::DrawExterior
