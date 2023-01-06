@@ -56,7 +56,7 @@ public:
         }
     }
 
-    void SetPos(MicroMeterPnt  const&) final { assert(false); }
+    void SetPos(MicroMeterPnt  const&) final { /* will be computed */ }
 
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;

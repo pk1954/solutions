@@ -27,11 +27,11 @@ private:
 	void sizeSelection(float const fFactor) const
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
-			(
-				[this, fFactor](PosNob & b) 
-				{ 
-					b.SetPos(m_umPntCenter + (b.GetPos() - m_umPntCenter) * fFactor);
-				}
+		(
+			[this, fFactor](PosNob & b) 
+			{ 
+				b.SetPos(m_umPntCenter + (b.GetPos() - m_umPntCenter) * fFactor);
+			}
 		);
 	}
 

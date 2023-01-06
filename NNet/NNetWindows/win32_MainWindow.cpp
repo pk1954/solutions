@@ -563,6 +563,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		select(m_nobIdHighlighted);
 		break;
 
+	case IDM_ESCAPE:
 	case IDM_DESELECT:
 		deselect();
 		break;

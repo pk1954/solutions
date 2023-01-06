@@ -242,7 +242,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_ESCAPE:
-        m_pModelCommands->DeselectModule();
+        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, 0);
         Script::StopProcessing();
         break;
 
