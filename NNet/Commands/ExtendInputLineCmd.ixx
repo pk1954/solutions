@@ -37,12 +37,11 @@ public:
 
 	void Do() final
 	{
+		m_upInputLineOld = m_pNMWI->RemoveFromModel<InputLine>(m_inputLineOld);
 		m_inputLineOld.GetPipe()->SetStartPnt(m_upKnotNew.get());
-		m_inputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upInputLineNew));
-		m_upInputLineOld = m_pNMWI->RemoveFromModel<InputLine>(m_inputLineOld);
 	}
 
 	void Undo() final
@@ -51,7 +50,6 @@ public:
 		m_upPipe         = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew      = m_pNMWI->PopFromModel<Knot>();
 		m_inputLineOld.GetPipe()->SetStartPnt(m_upInputLineOld.get());
-		m_inputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Restore2Model(move(m_upInputLineOld));
 	}
 

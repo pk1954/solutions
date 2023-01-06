@@ -39,7 +39,6 @@ public:
 	{ 
 		m_upOutputLineOld = m_pNMWI->RemoveFromModel<OutputLine>(m_outputLineOld);
 		m_upOutputLineOld->GetPipe()->SetEndPnt(m_upKnotNew.get());
-	//	m_upOutputLineOld->GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upKnotNew));
 		m_pNMWI->Push2Model(move(m_upPipe));
 		m_pNMWI->Push2Model(move(m_upOutputLineNew));
@@ -51,7 +50,6 @@ public:
 		m_upPipe          = m_pNMWI->PopFromModel<Pipe>();
 		m_upKnotNew       = m_pNMWI->PopFromModel<Knot>();
 		m_outputLineOld.GetPipe()->SetEndPnt(m_upOutputLineOld.get());
-//		m_outputLineOld.GetPipe()->PosChanged();
 		m_pNMWI->Restore2Model(move(m_upOutputLineOld));
 	}
 
