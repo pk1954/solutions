@@ -268,15 +268,40 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
 
-    SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION   ));
-    SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION     ));
-    SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON      ));
-    SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",    static_cast<long>(IDD_NEW_IO_LINE_PAIR   ));
-    SymbolTable::ScrDefConst(L"EXTEND_INPUTLINE",    static_cast<long>(IDD_EXTEND_INPUTLINE   ));
-    SymbolTable::ScrDefConst(L"EXTEND_OUTPUTLINE",   static_cast<long>(IDD_EXTEND_OUTPUTLINE  ));
-    SymbolTable::ScrDefConst(L"ADD_INCOMING2NEURON", static_cast<long>(IDD_ADD_INCOMING2NEURON));
-    SymbolTable::ScrDefConst(L"CREATE_FORK",         static_cast<long>(IDD_CREATE_FORK        ));
-    SymbolTable::ScrDefConst(L"CREATE_SYNAPSE",      static_cast<long>(IDD_CREATE_SYNAPSE     ));
+    //SymbolTable::ScrDefConst(L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION   ));
+    //SymbolTable::ScrDefConst(L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION     ));
+    //SymbolTable::ScrDefConst(L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON      ));
+    //SymbolTable::ScrDefConst(L"NEW_IO_LINE_PAIR",    static_cast<long>(IDD_NEW_IO_LINE_PAIR   ));
+    //SymbolTable::ScrDefConst(L"EXTEND_INPUTLINE",    static_cast<long>(IDD_EXTEND_INPUTLINE   ));
+    //SymbolTable::ScrDefConst(L"EXTEND_OUTPUTLINE",   static_cast<long>(IDD_EXTEND_OUTPUTLINE  ));
+    //SymbolTable::ScrDefConst(L"ADD_INCOMING2NEURON", static_cast<long>(IDD_ADD_INCOMING2NEURON));
+    //SymbolTable::ScrDefConst(L"CREATE_FORK",         static_cast<long>(IDD_CREATE_FORK        ));
+    //SymbolTable::ScrDefConst(L"CREATE_SYNAPSE",      static_cast<long>(IDD_CREATE_SYNAPSE     ));
+
+    //SymbolTable::ScrDefConst(L"Extend"                        , static_cast<long>(IDD_EXTEND_INPUTLINE      ));
+    //SymbolTable::ScrDefConst(L"Extend"                        , static_cast<long>(IDD_EXTEND_OUTPUTLINE     ));
+    //SymbolTable::ScrDefConst(L"Add incoming dendrite"         , static_cast<long>(IDD_ADD_INCOMING2NEURON   ));
+    //SymbolTable::ScrDefConst(L"Create synapse"                , static_cast<long>(IDD_CREATE_SYNAPSE        ));
+    //SymbolTable::ScrDefConst(L"Create fork"                   , static_cast<long>(IDD_CREATE_FORK           ));
+    //SymbolTable::ScrDefConst(L"New EEG sensor" 		          , static_cast<long>(IDD_ADD_EEG_SENSOR        ));
+    //SymbolTable::ScrDefConst(L"Arrows off"                    , static_cast<long>(IDD_ARROWS_OFF            ));
+    //SymbolTable::ScrDefConst(L"Arrows on"                     , static_cast<long>(IDD_ARROWS_ON             ));
+    //SymbolTable::ScrDefConst(L"Attach active signal generator", static_cast<long>(IDD_ATTACH_SIG_GEN_TO_LINE));
+    //SymbolTable::ScrDefConst(L"Attach active signal generator", static_cast<long>(IDD_ATTACH_SIG_GEN_TO_CONN));
+    //SymbolTable::ScrDefConst(L"Copy selection"                , static_cast<long>(IDM_COPY_SELECTION        ));
+    //SymbolTable::ScrDefConst(L"Delete selected objects"       , static_cast<long>(IDM_DELETE_SELECTION      ));
+    //SymbolTable::ScrDefConst(L"Delete"                        , static_cast<long>(IDD_DELETE_NOB            ));
+    //SymbolTable::ScrDefConst(L"Detach"                        , static_cast<long>(IDD_DETACH_NOB            ));
+    //SymbolTable::ScrDefConst(L"Delete EEG sensor"             , static_cast<long>(IDD_DELETE_EEG_SENSOR     ));
+    //SymbolTable::ScrDefConst(L"Disconnect"                    , static_cast<long>(IDD_DISC_IOCONNECTOR      ));
+    //SymbolTable::ScrDefConst(L"Split (make I/O neurons)"      , static_cast<long>(IDD_SPLIT_NEURON          ));
+    //SymbolTable::ScrDefConst(L"Insert knot"                   , static_cast<long>(IDD_INSERT_KNOT           ));
+    //SymbolTable::ScrDefConst(L"Insert neuron"                 , static_cast<long>(IDD_INSERT_NEURON         ));
+    //SymbolTable::ScrDefConst(L"New IO-line pair"  	          , static_cast<long>(IDD_NEW_IO_LINE_PAIR      ));
+    //SymbolTable::ScrDefConst(L"Select"                        , static_cast<long>(IDM_SELECT                ));
+    //SymbolTable::ScrDefConst(L"Deselect"                      , static_cast<long>(IDM_DESELECT              ));
+    //SymbolTable::ScrDefConst(L"Stop on trigger on/off"        , static_cast<long>(IDD_STOP_ON_TRIGGER       ));
+    //SymbolTable::ScrDefConst(L"Feedback line on/off"          , static_cast<long>(IDD_EMPHASIZE             ));
 
     ParamType::Apply2GlobalParameters
     ( 

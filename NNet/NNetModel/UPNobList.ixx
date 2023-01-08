@@ -57,7 +57,7 @@ public:
 	void         SetNob2Slot(NobId const, UPNob); // only for special situations
 	void         SetNob2Slot(UPNob);              // only for special situations
 	void         SelectAllNobs(bool const)              const;
-	void         DeselectAllNobs ()                     const { SelectAllNobs(false); }
+	void         DeselectAllNobs ()                     const;
 	void         CheckNobList    ()                     const;
 	void         Dump            ()                     const;
 	bool         Contains        (Nob const*)           const;
@@ -75,7 +75,7 @@ public:
 	NobId Push(UPNob);
 	UPNob Pop() { return Pop<Nob>(); }
 
-	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }
+	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }  //TODO: optimize , cache in bool
 
 	MicroMeterPnt CenterOfGravity(auto const& crit) const
 	{

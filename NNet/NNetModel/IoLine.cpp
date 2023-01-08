@@ -86,14 +86,14 @@ void IoLine::SetDir(Radian const r)
 	m_pIoConnector = nullptr;
 }
 
-void IoLine::SelectAllConnected(bool const bFirst, bool const bOn)
+void IoLine::SelectAllConnected(bool const bFirst)
 {
-	if ((IsSelected() != bOn) || bFirst)
+	if (!IsSelected() || bFirst)
 	{
-		Nob::Select(bOn);
-		m_pPipe->SelectAllConnected(false, bOn);
+		Nob::Select(true);
+		m_pPipe->SelectAllConnected(false);
 		if (HasParentNob())
-			GetParentNob()->SelectAllConnected(false, bOn);
+			GetParentNob()->SelectAllConnected(false);
 	}
 }
 

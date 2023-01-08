@@ -316,15 +316,15 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 	}
 }
 
-void Pipe::SelectAllConnected(bool const bFirst, bool const bOn)
+void Pipe::SelectAllConnected(bool const bFirst)
 {
-	if ((IsSelected() != bOn) || bFirst)
+	if (!IsSelected() || bFirst)
 	{
-		Nob::Select(bOn);
-		m_pNobStart->SelectAllConnected(false, bOn);
-		m_pNobEnd->SelectAllConnected(false, bOn);
+		Nob::Select(true);
+		m_pNobStart->SelectAllConnected(false);
+		m_pNobEnd  ->SelectAllConnected(false);
 		for (auto it : m_synapses)
-			it->SelectAllConnected(false, bOn);
+			it->SelectAllConnected(false);
 	}
 }
 

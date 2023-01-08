@@ -13,6 +13,7 @@ export module MainWindow;
 import ActionTimer;
 import Types;
 import Preferences;
+import SelectionMenu;
 import NNetWindow;
 import NNetModelCommands;
 import NNetModel;
@@ -84,7 +85,7 @@ private:
 	bool               m_bShowPnts            { false };
 	NobId              m_nobIdHighlighted     { NO_NOB };
 	NobId              m_nobIdTarget          { NO_NOB };
-	bool               m_bSelectionActive     { false };
+	SelectionMenu      m_SelectionMenu;
 
 	void setTargetNob        (MicroMeterPnt const&);
 	bool setHighlightedNob   (MicroMeterPnt const&);
@@ -92,7 +93,6 @@ private:
 	void centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool connectionAllowed();
 	void select(NobId const);
-	void deselect();
 
 	void DoPaint() final;
 

@@ -299,3 +299,13 @@ void Synapse::AppendMenuItems(AddMenuFunc const& add) const
 	Nob::AppendMenuItems(add);
 	add(IDD_DETACH_NOB);
 }
+
+void Synapse::SelectAllConnected(bool const bFirst)
+{
+	if (!IsSelected() || bFirst)
+	{
+		Nob::Select(true);
+		m_pPipeMain->SelectAllConnected(false);
+		m_pPipeAdd ->SelectAllConnected(false);
+	}
+}

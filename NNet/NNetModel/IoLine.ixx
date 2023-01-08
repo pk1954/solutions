@@ -113,8 +113,8 @@ public:
 
 	void SetPipe(Pipe * pPipe) { m_pPipe = pPipe; }
 
-	void SelectAllConnected(bool const, bool const) final;
-	void DirectionDirty()                           final;
+	void SelectAllConnected(bool const) final;
+	void DirectionDirty    ()           final;
 
 	bool  HasParentNob() const final { return m_pIoConnector != nullptr; }
 	Nob * GetParentNob() const final { return m_pIoConnector; }

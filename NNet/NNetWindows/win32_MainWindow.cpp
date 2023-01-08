@@ -61,7 +61,7 @@ void MainWindow::Start
 	NNetWindow::Start
 	(
 		hwndApp, 
-		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
+		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
 		controller
@@ -72,11 +72,14 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
+	HWND hwnd = GetWindowHandle();
+	m_SelectionMenu.Start(hwnd);
 }
 
 void MainWindow::Stop()
 {
 	Reset();
+	m_SelectionMenu.Stop();
 	NNetWindow::Stop();
 }
 
@@ -100,8 +103,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_ARROWS_ON,              L"Arrows on"                      },
 		{ IDD_ATTACH_SIG_GEN_TO_LINE, L"Attach active signal generator" },
 		{ IDD_ATTACH_SIG_GEN_TO_CONN, L"Attach active signal generator" },
-		{ IDM_COPY_SELECTION,         L"Copy selection"                 },
-		{ IDM_DELETE_SELECTION,       L"Delete selected objects"        },
 		{ IDD_DELETE_NOB,             L"Delete"                         },
 		{ IDD_DETACH_NOB,             L"Detach"                         },
 		{ IDD_DELETE_EEG_SENSOR,      L"Delete EEG sensor"              },
@@ -111,7 +112,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_INSERT_NEURON,          L"Insert neuron"                  },
 		{ IDD_NEW_IO_LINE_PAIR,       L"New IO-line pair"  	            },
 		{ IDM_SELECT,                 L"Select"                         },
-		{ IDM_DESELECT,               L"Deselect"                       },
 		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"         },
 		{ IDD_EMPHASIZE,              L"Feedback line on/off"           }
 	};
@@ -122,9 +122,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_pNMRI->AnyNobsSelected())
 	{
-		appendMenu(hPopupMenu, IDM_DESELECT);
-		appendMenu(hPopupMenu, IDM_COPY_SELECTION);
-		appendMenu(hPopupMenu, IDM_DELETE_SELECTION);
+		// no context menu, use selection menu
 	}
 	else if (IsDefined(m_nobIdHighlighted))
 	{
@@ -222,7 +220,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
-		if (!m_bSelectionActive)
+		if (!m_pNMRI->AnyNobsSelected())
 		{
 			if (!setHighlightedNob(umCrsrPos))
 				setHighlightedSensor(umCrsrPos);
@@ -246,14 +244,14 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_CONTROL)   // rotate
 	{
-		if (m_bSelectionActive)
+		if (m_pNMRI->AnyNobsSelected())
 			m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
 		else if (IsDefined(m_nobIdHighlighted))           
 			m_pModelCommands->Rotate(m_nobIdHighlighted, umLastPos, umCrsrPos);
 		else 
 			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
 	}
-	else if (m_bSelectionActive)
+	else if (m_pNMRI->AnyNobsSelected())
 	{
 		MoveSelectionCommand::Push(umDelta);
 	}
@@ -287,15 +285,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 void MainWindow::select(NobId const idNob)
 {
-	SelectAllConnectedCmd::Push(idNob, tBoolOp::opTrue);
-	m_bSelectionActive = true;
+	SelectAllConnectedCmd::Push(idNob);
 	m_nobIdHighlighted = NO_NOB;
-}
-
-void MainWindow::deselect()
-{
-	m_pModelCommands->DeselectModule();
-	m_bSelectionActive = false;
+	m_SelectionMenu.Move(GetRelativeCrsrPosition());
 }
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
@@ -307,11 +299,11 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 		return;
 	if (m_pNMRI->IsSelected(idNob))
 	{
-		deselect();
+		m_pModelCommands->DeselectModule();
 		return;
 	}
-	if (m_bSelectionActive)  // selection active, but other selection desired
-		deselect();
+	if (m_pNMRI->AnyNobsSelected())  // selection active, but other selection desired
+		m_pModelCommands->DeselectModule();
 	select(idNob);
 }
 
@@ -362,7 +354,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 			}
 			else
 			{
-				PixelPoint  const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
+				PixelPoint  const ptCrsr        { GetRelativeCrsrPosition() };
 				fPixelPoint const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
 				if (GetDrawContext().Zoom(bDirection, fPixPointCrsr))   // Not ok
 				{
@@ -458,6 +450,8 @@ void MainWindow::DoPaint()
 	{
 		DrawSensorDataPoints(pSensor);
 	}
+
+	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
@@ -550,7 +544,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_DELETE:   // keyboard delete key
 		if (IsDefined(m_nobIdHighlighted))
 			m_pModelCommands->DeleteNob(m_nobIdHighlighted);
-		else if (m_bSelectionActive)
+		else if (m_pNMRI->AnyNobsSelected())
 			m_pModelCommands->DeleteSelection();
 		return true;
 
@@ -565,7 +559,15 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDM_ESCAPE:
 	case IDM_DESELECT:
-		deselect();
+		m_pModelCommands->DeselectModule();
+		break;
+
+	case IDM_DELETE_SELECTION:
+		m_pModelCommands->DeleteSelection();
+		break;
+
+	case IDM_COPY_SELECTION:
+		m_pModelCommands->CopySelection();
 		break;
 
 	case IDD_ATTACH_SIG_GEN_TO_LINE:
@@ -575,10 +577,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_ATTACH_SIG_GEN_TO_CONN:
 		m_pModelCommands->AttachSigGen2Conn(m_nobIdHighlighted);
 		break;
-
-	case IDM_DELETE_SELECTION:
-        m_pModelCommands->DeleteSelection();
-        break;
 
 	case IDD_DISC_IOCONNECTOR:
 		m_pModelCommands->DiscIoConnector(m_nobIdHighlighted);

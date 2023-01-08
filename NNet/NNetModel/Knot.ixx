@@ -63,13 +63,13 @@ public:
 	void SetAllOutgoing(PosNob&) final;
 
 	void Reconnect()             final;
-	void SelectAllConnected(bool const bFirst, bool const bOn) final
+	void SelectAllConnected(bool const bFirst) final
 	{
-		if ((IsSelected() != bOn) || bFirst)
+		if (!IsSelected() || bFirst)
 		{
-			Nob::Select(bOn);
-			m_pPipeIn->SelectAllConnected(false, bOn);
-			m_pPipeOut->SelectAllConnected(false, bOn);
+			Nob::Select(true);
+			m_pPipeIn ->SelectAllConnected(false);
+			m_pPipeOut->SelectAllConnected(false);
 		}
 	}
 

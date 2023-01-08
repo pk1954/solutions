@@ -368,7 +368,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	m_upVertScaleFreq ->Move(      0_PIXEL, 0_PIXEL, V_SCALE_WIDTH,   pixControlHeight, true);
 
 	m_upStimulusButton->CenterInParentWin();
-	::SetWindowPos 
+	::SetWindowPos // TODO: use RootWindow::Move?
 	(
 		m_upArrowButton->GetWindowHandle(),
 		HWND_TOP,

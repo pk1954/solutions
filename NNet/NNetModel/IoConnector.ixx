@@ -81,7 +81,7 @@ public:
 		for_each(m_list, [&func](auto* p) { if (p) func(*p); });
 	}
 
-	void SelectAllConnected(bool const, bool const) final;
+	void SelectAllConnected(bool const) final;
 
 	MicroMeterLine CalcMaxDistLine() const;
 

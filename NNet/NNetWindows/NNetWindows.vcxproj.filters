@@ -177,5 +177,11 @@
     <ClCompile Include="StimulusButton.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SelectionMenu.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectionMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -219,9 +219,16 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 	return move(upNobs);
 }
 
+void UPNobList::DeselectAllNobs() const
+{
+	for (auto const& it : m_list)
+		if (it)
+			it->Select(false);
+}
+
 void UPNobList::SelectAllNobs(bool const bOn) const
-{ 
-	for (auto const & it : m_list)
+{
+	for (auto const& it : m_list)
 		if (it)
 			it->Select(bOn);
 }

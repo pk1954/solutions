@@ -129,7 +129,7 @@ public:
 	float SetParam(ParamType::Value const, float const);
 	void  Reconnect(NobId const);
 
-	void DeselectAllNobs     ()               const { m_upNobs->SelectAllNobs(false); }
+	void DeselectAllNobs     ()               const { m_upNobs->DeselectAllNobs(); }
 	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine  (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }

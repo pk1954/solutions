@@ -16,6 +16,6 @@ public:
 	void Do() final 
 	{ 
 		SelectionCommand::Do();
-		m_pNMWI->GetUPNobs().SelectAllNobs(false); 
+		m_pNMWI->GetUPNobs().DeselectAllNobs();
 	}
 };

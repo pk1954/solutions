@@ -195,6 +195,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
+    case IDM_COPY_SELECTION:
     case IDM_DELETE:   // keyboard delete key
         ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, 0);
         break;
@@ -209,10 +210,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDM_ADD_IMPORTED_MODEL:
         m_pModelCommands->AddModel();
-        break;
-
-    case IDM_COPY_SELECTION:
-        m_pModelCommands->CopySelection();
         break;
 
     case IDD_DELETE_EEG_SENSOR:

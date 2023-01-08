@@ -97,7 +97,7 @@ public:
 	void          PosChanged        ()                                            final;
 	void          ClearDynamicData  ()                                            final;
 	void          Select            (bool const)                                  final;
-	void          SelectAllConnected(bool const, bool const)                      final;
+	void          SelectAllConnected(bool const)                                  final;
 
 	float         PosOnPipe       (MicroMeterPnt const&) const;
 	NobId         GetStartKnotId  ()                     const;

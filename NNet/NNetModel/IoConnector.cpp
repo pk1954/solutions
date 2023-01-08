@@ -64,15 +64,15 @@ void IoConnector::Select(bool const bOn)
         it->Select(bOn);
 }
 
-void IoConnector::SelectAllConnected(bool const bFirst, bool const bOn)
+void IoConnector::SelectAllConnected(bool const bFirst)
 {
-    if ((IsSelected() != bOn) || bFirst)
+    if (!IsSelected() || bFirst)
     {
-        Nob::Select(bOn);
+        Nob::Select(true);
         for_each
         (
             m_list,
-            [bOn](IoLine* p) { if (p) p->SelectAllConnected(false, bOn); }
+            [](IoLine* p) { if (p) p->SelectAllConnected(false); }
         );
     }
 }

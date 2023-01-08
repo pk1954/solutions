@@ -47,7 +47,6 @@ import RotateNobCommand;
 import RotateSelectionCommand;
 import DeselectModuleCmd;
 import SelectionCommand;
-import SelectAllConnectedCmd;
 import SetActiveSigGenCmd;
 import SelSigGenClientsCmd;
 import SetNobCommand;

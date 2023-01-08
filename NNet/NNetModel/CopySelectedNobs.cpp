@@ -31,11 +31,6 @@ unique_ptr<UPNobList> CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 	m_mapCopy2model.clear();
 	m_mapModel2copy.clear();
 
-	//nmwi.GetUPNobs().Apply2AllSelected<Nob>
-	//(
-	//	[](Nob& n) { n.SelectAllConnected(true); }
-	//);
-
 	nmwi.GetUPNobs().Apply2AllSelected<Nob>  // create copy of selected nobs
 	(
 		[&m_upNobs2Add](Nob const & nobModel)

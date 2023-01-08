@@ -587,6 +587,8 @@
     <ClCompile Include="NNetWrappers.ixx" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="Preferences.ixx" />
+    <ClCompile Include="SelectionMenu.cpp" />
+    <ClCompile Include="SelectionMenu.ixx" />
     <ClCompile Include="SignalControl.ixx" />
     <ClCompile Include="SignalDesigner.ixx" />
     <ClCompile Include="SignalPreview.cpp" />
