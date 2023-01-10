@@ -216,6 +216,16 @@ public:
 		return ::IsDlgButtonChecked(m_hwnd, iIdButton);
 	}
 
+	bool Move(PIXEL const xPos, PIXEL const yPos) const
+	{
+		return Util::MoveWindow(m_hwnd, xPos, yPos);
+	}
+
+	bool Move(PixelPoint const pos) const
+	{
+		return Util::MoveWindow(m_hwnd, pos);
+	}
+
 	void Move(PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw) const
 	{
 		(void)::MoveWindow(m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
@@ -311,12 +321,12 @@ private:
 	class WindowRefreshRate;
 	unique_ptr<WindowRefreshRate> m_upRefreshRate;
 
-	tOnOffAuto m_visibilityMode{ tOnOffAuto::on };
-	VisCrit    m_visibilityCriterion{ nullptr };
-	bool       m_bShowRefreshRateDlg{ true };
-	HWND       m_hwndApp{ nullptr };
-	HWND       m_hwnd{ nullptr };
-	bool       m_bParentContextMenue{ false };
+	tOnOffAuto m_visibilityMode      { tOnOffAuto::on };
+	VisCrit    m_visibilityCriterion { nullptr };
+	bool       m_bShowRefreshRateDlg { true };
+	HWND       m_hwndApp             { nullptr };
+	HWND       m_hwnd                { nullptr };
+	bool       m_bParentContextMenue { false };
 
 	void addWinMenu(HMENU const, wstring const&) const;
 	void adjustWinMenu(HMENU const) const;

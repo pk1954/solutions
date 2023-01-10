@@ -84,6 +84,16 @@ namespace Util
         return MoveWindow(hwnd, rect.GetLeft(), rect.GetTop(), rect.GetWidth(), rect.GetHeight(), bRedraw);
     }
 
+    export inline bool MoveWindow(HWND const hwnd, PIXEL const xPos, PIXEL const yPos)
+    {
+        return ::SetWindowPos(hwnd, HWND_TOP, xPos.GetValue(), yPos.GetValue(), 0, 0, SWP_NOSIZE);
+    }
+
+    export inline bool MoveWindow(HWND const hwnd, PixelPoint const pos)
+    {
+        return MoveWindow(hwnd, pos.GetX(), pos.GetY());
+    }
+
     export inline RECT GetClRect(HWND const hwnd) // left / top always 0
     {
         RECT rect;

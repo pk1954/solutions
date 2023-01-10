@@ -72,7 +72,7 @@ private:
 		bool             bResult    { true };
 		int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
 		bool       const bDirection { iDelta > 0 };
-		PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
+		PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };
 		fPixel           fPixCenter { Convert2fPixel(ptCrsr.GetX()) };
 
 		for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)

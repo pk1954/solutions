@@ -262,7 +262,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			Synapse    const* pSynapse  { Cast2Synapse(m_pNMRI->GetConstPosNobPtr(m_nobIdHighlighted)) };
 			Pipe       const* pPipeMain { pSynapse->GetMainPipe() };
 			MicroMeter const  umDist    { pPipeMain->DistPntToPipe(umCrsrPos) };
-			if (umDist.GetAbs() > NEURON_RADIUS)
+			if (umDist.GetAbs() > NEURON_RADIUS * 1.5f)
 			{
 				MicroMeterPnt const umPosOld { m_pNMRI->GetNobPos(m_nobIdHighlighted) };
 				m_pModelCommands->DeleteNob(m_nobIdHighlighted);

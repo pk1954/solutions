@@ -9,6 +9,7 @@ module;
 #include <sstream>
 #include <iostream>
 #include <Windows.h>
+#include "d2d1.h"
 
 export module Win32_Util;
 
@@ -23,6 +24,17 @@ using std::endl;
 
 namespace Util
 {
+    export inline COLORREF GetColorRef(D2D1::ColorF col)
+    {
+        COLORREF color =  RGB
+        (
+            static_cast<BYTE>(col.r * 255.0f), 
+            static_cast<BYTE>(col.g * 255.0f),
+            static_cast<BYTE>(col.b * 255.0f)
+        );
+        return color;
+    }
+
     export inline LONG_PTR GetUserDataPtr(HWND hwnd)
     {
         return ::GetWindowLongPtr(hwnd, GWLP_USERDATA);

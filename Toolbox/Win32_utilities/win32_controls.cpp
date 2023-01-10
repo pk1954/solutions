@@ -9,7 +9,17 @@ module;
 
 module Win32_Controls;
 
-HWND CreateButton(HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, INT_PTR const id, DWORD const dwStyle)
+HWND CreateButton
+(
+	HWND            const hwndParent, 
+	wchar_t const * const text, 
+	int             const x, 
+	int             const y, 
+	int             const w, 
+	int             const h, 
+	INT_PTR         const id, 
+	DWORD           const dwStyle
+)
 {
 	DWORD style { BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
 	HWND  hwnd  { 
