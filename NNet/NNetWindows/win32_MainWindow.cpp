@@ -547,11 +547,13 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 			m_pModelCommands->DeleteNob(m_nobIdHighlighted);
 		else if (m_pNMRI->AnyNobsSelected())
 			m_pModelCommands->DeleteSelection();
+		m_nobIdTarget = NO_NOB;
 		return true;
 
 	case IDD_DETACH_NOB:
 	case IDD_DELETE_NOB:
 		m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+		m_nobIdTarget = NO_NOB;
 		break;
 
 	case IDM_SELECT:
@@ -565,6 +567,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDM_DELETE_SELECTION:
 		m_pModelCommands->DeleteSelection();
+		m_nobIdTarget = NO_NOB;
 		break;
 
 	case IDM_COPY_SELECTION:
