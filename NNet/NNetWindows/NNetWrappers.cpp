@@ -22,6 +22,7 @@ import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
 
+import AddNobsCommand;
 import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import CreateForkCommand;
@@ -107,15 +108,6 @@ public:
     void operator() (Script & script) const final
     {
         m_pCommands->CreateInitialNobs();
-    }
-};
-
-class WrapCopySelection: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->CopySelection();
     }
 };
 
@@ -245,7 +237,7 @@ void InitializeNNetWrappers
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();
-    SymbolTable::ScrDefConst(L"CopySelection",       new WrapCopySelection );
+    AddNobsCommand::Register();
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );

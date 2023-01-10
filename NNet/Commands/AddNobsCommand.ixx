@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <iostream>
 
 export module AddNobsCommand;
 
@@ -48,7 +49,31 @@ public:
 		SelectionCommand::Undo();
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push()
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << endl;
+		m_pStack->PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs::Do(*m_pNMWI))));
+	}
+
 private:
+
+	inline static const wstring NAME { L"AddNobs" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			AddNobsCommand::Push();
+		}
+	};
+
 	unique_ptr<UPNobList> m_upNobs2Add;
 	size_t                m_nrOfNobs;
 };

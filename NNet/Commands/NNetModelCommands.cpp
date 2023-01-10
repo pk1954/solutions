@@ -211,13 +211,6 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	m_pSound->Play(L"SNAP_IN_SOUND");
 }
 
-void NNetModelCommands::CopySelection()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs::Do(*m_pNMWI))));
-}
-
 void NNetModelCommands::CreateInitialNobs()
 { 
 	if (m_bTrace)

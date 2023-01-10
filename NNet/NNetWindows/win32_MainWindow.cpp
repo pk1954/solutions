@@ -13,6 +13,7 @@ module;
 module MainWindow;
 
 import ActionTimer;
+import AddNobsCommand;
 import AddPipe2NeuronCmd;
 import Commands;
 import CreateForkCommand;
@@ -567,7 +568,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDM_COPY_SELECTION:
-		m_pModelCommands->CopySelection();
+		AddNobsCommand::Push();
 		break;
 
 	case IDD_ATTACH_SIG_GEN_TO_LINE:
