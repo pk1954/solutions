@@ -18,6 +18,7 @@ import AddPipe2NeuronCmd;
 import Commands;
 import CreateForkCommand;
 import CreateSynapseCommand;
+import DeselectModuleCmd;
 import DrawContext;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
@@ -300,11 +301,11 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 		return;
 	if (m_pNMRI->IsSelected(idNob))
 	{
-		m_pModelCommands->DeselectModule();
+		DeselectModuleCmd::Push();
 		return;
 	}
 	if (m_pNMRI->AnyNobsSelected())  // selection active, but other selection desired
-		m_pModelCommands->DeselectModule();
+		DeselectModuleCmd::Push();
 	select(idNob);
 }
 
@@ -562,7 +563,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDM_ESCAPE:
 	case IDM_DESELECT:
-		m_pModelCommands->DeselectModule();
+		DeselectModuleCmd::Push();
 		break;
 
 	case IDM_DELETE_SELECTION:

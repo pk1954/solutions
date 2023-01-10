@@ -58,7 +58,6 @@ public:
     void DeleteSensor(SensorId const&);
     void DeleteSignal(SignalId const&);
     void DeleteTrack(TrackNr const);
-    void DeselectModule();
     void DiscIoConnector(NobId const);
     void InsertKnot  (NobId const, MicroMeterPnt const&);
     void InsertNeuron(NobId const, MicroMeterPnt const&);

@@ -27,6 +27,7 @@ import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
+import DeselectModuleCmd;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import MoveNobCommand;
@@ -108,15 +109,6 @@ public:
     void operator() (Script & script) const final
     {
         m_pCommands->CreateInitialNobs();
-    }
-};
-
-class WrapDeselectModule: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->DeselectModule();
     }
 };
 
@@ -241,7 +233,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
-    SymbolTable::ScrDefConst(L"DeselectModule",      new WrapDeselectModule);
+    DeselectModuleCmd::Register();
     SymbolTable::ScrDefConst(L"DiscIoConnector",     new WrapDiscIoConnector ); 
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
     SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 

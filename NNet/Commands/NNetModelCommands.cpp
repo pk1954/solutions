@@ -45,7 +45,6 @@ import RenameSigGenCmd;
 import RotateModelCommand;
 import RotateNobCommand;
 import RotateSelectionCommand;
-import DeselectModuleCmd;
 import SelectionCommand;
 import SetActiveSigGenCmd;
 import SelSigGenClientsCmd;
@@ -409,13 +408,6 @@ void NNetModelCommands::InsertNeuron(NobId const id, MicroMeterPnt const & pos)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << pos << endl;
 	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Neuron>>(id, pos));
-}
-
-void NNetModelCommands::DeselectModule()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<DeselectModuleCmd>());
 }
 
 void NNetModelCommands::ToggleEmphMode(NobId const id)
