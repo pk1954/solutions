@@ -18,7 +18,7 @@ import :BasicTypes;
 
 using std::abs;
 using std::max;
-using std::setw;
+using std::setprecision;
 using std::wostream;
 using std::hypot;
 
@@ -79,7 +79,8 @@ public:
 
 	friend BASE_TYPE Distance(PointType const & npA, PointType const & npB)
 	{
-		return Hypot(npA - npB);
+		PointType diff { npA - npB };
+		return (diff.IsCloseToZero()) ? BASE_TYPE::ZERO_VAL() : Hypot(diff);
 	}
 
 	friend float DistSquare(PointType const pntA, PointType const pntB)
@@ -214,7 +215,7 @@ public:
 	{
 		out << L' '
 			<< OPEN_BRACKET
-			<< param.GetX() << SEPARATOR << param.GetY() 
+			<< setprecision(10) << param.GetX() << SEPARATOR << param.GetY() 
 			<< CLOSE_BRACKET;
 		return out;
 	}

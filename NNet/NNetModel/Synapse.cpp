@@ -49,7 +49,7 @@ Synapse::Synapse(Synapse const & rhs)
 	m_pPipeMain      = rhs.m_pPipeMain;
 	m_pPipeAdd       = rhs.m_pPipeAdd;
 	m_fPosOnMainPipe = rhs.m_fPosOnMainPipe;
-	RecalcPositions();
+	Recalc();
 }
 
 void Synapse::SetPosOnMainPipe(float const fPosNew)
@@ -59,14 +59,9 @@ void Synapse::SetPosOnMainPipe(float const fPosNew)
 	m_fPosOnMainPipe = fPosNew;
 }
 
-MicroMeterPnt Synapse::GetPos() const
-{
-	return m_umPntPipeAnchor;
-}
-
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-	RecalcPositions();
+	Recalc();
 }
 
 void Synapse::SetAllIncoming(PosNob& src)
@@ -128,15 +123,18 @@ void Synapse::RecalcAll(MicroMeterPnt const& newPos)
 {
 	m_fPosOnMainPipe = m_pPipeMain->PosOnPipe(newPos);
 	m_fPosOnMainPipe = ClipToMinMax(m_fPosOnMainPipe, 0.0f, 1.0f);
-	RecalcPositions();
+	Recalc();
 }
 
-void Synapse::RecalcPositions()
+void Synapse::Recalc()
 {
 	static const MicroMeter GAP         { PIPE_WIDTH * 0.1f };
 	static const MicroMeter CENTER_DIST { EXTENSION * SQRT3DIV3 };
 	static const MicroMeter TOP_DIST    { EXTENSION * SQRT3 };
 	static const MicroMeter OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
+
+	assert(m_fPosOnMainPipe >= 0.0f);
+	assert(m_fPosOnMainPipe <= 1.0f);
 
 	MicroMeterPnt const umPntVector  { m_pPipeMain->GetVector() };
 	MicroMeterPnt const umPntAddDir  { m_pPipeAdd->GetStartPoint() - m_pPipeMain->GetStartPoint() };
@@ -152,6 +150,8 @@ void Synapse::RecalcPositions()
 void Synapse::Check() const
 {
 	Nob::Check();
+	assert(m_fPosOnMainPipe >= 0.0f);
+	assert(m_fPosOnMainPipe <= 1.0f);
 	assert(m_pPipeAdd);
 	assert(m_pPipeMain);
 	assert(m_pPipeAdd->GetEndKnotId() == GetId());
@@ -254,6 +254,28 @@ void Synapse::drawSynapse
 	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase1), umRadius * 2.0f, col);
 	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase2), umRadius * 2.0f, col);
 	context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, col);
+
+	//MicroMeterRect const rect
+	//(
+	//	umPntBase.GetX() - umRadius,
+	//	umPntBase.GetY() - umRadius * 2.0f,
+	//	umPntBase.GetX() + umRadius,
+	//	umPntBase.GetY() + umRadius * 2.0f
+	//);
+	//Degrees angle { Vector2Degrees(umPntOrtho) };
+
+	//context.SetRotation(angle, m_umPntCenter);
+	//context.FillRoundedRectangle(rect, col, umRadius);
+	//angle += 120.0_Degrees;
+
+	//context.SetRotation(angle, m_umPntCenter);
+	//context.FillRoundedRectangle(rect, col, umRadius);
+	//angle += 120.0_Degrees;
+
+	//context.SetRotation(angle, m_umPntCenter);
+	//context.FillRoundedRectangle(rect, col, umRadius);
+
+	//context.Reset();
 }
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const

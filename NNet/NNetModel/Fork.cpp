@@ -116,12 +116,27 @@ bool Fork::Apply2AllOutPipesB(PipeCrit const& c) const
 	return c(*m_pPipeOut1) || c(*m_pPipeOut2);
 }
 
-void Fork::SetPos(MicroMeterPnt const& newPos)
+void Fork::SetPosNoFix(MicroMeterPnt const& newPos)
 {
 	m_circle.SetPos(newPos);
-	m_pPipeIn  ->PosChanged();
+}
+
+void Fork::Recalc()
+{
+	m_pPipeIn->PosChanged();
 	m_pPipeOut1->PosChanged();
 	m_pPipeOut2->PosChanged();
+}
+
+void Fork::SelectAllConnected(bool const bFirst)
+{
+	if (!IsSelected() || bFirst)
+	{
+		Nob::Select(true);
+		m_pPipeIn->SelectAllConnected(false);
+		m_pPipeOut1->SelectAllConnected(false);
+		m_pPipeOut2->SelectAllConnected(false);
+	}
 }
 
 void Fork::DrawExterior(DrawContext const& context, tHighlight const type) const

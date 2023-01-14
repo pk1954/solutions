@@ -72,12 +72,16 @@ void IoLine::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 		static_cast<IoConnector*>(m_pIoConnector)->DirectionDirty();
 }
 
-void IoLine::SetPos(MicroMeterPnt const& pos)
+void IoLine::SetPosNoFix(MicroMeterPnt const& pos)
 {
 	m_umPosition = pos;
+}
+
+void IoLine::Recalc()
+{
 	m_pPipe->PosChanged();
 	if (m_pIoConnector)
-		static_cast<IoConnector *>(m_pIoConnector)->DirectionDirty();
+		static_cast<IoConnector*>(m_pIoConnector)->DirectionDirty();
 }
 
 void IoLine::SetDir(Radian const r)

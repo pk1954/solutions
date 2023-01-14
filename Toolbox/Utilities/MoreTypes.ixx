@@ -34,3 +34,13 @@ export Radian Vector2Radian(MicroMeterPnt const& umPnt)
 {
 	return Radian(atan2f(umPnt.GetYvalue(), umPnt.GetXvalue()));
 }
+
+export MicroMeterPnt Degrees2Vector(Degrees const r)
+{
+	return Radian2Vector(Degrees2Radian(r));
+}
+
+export Degrees Vector2Degrees(MicroMeterPnt const& umPnt)
+{
+	return Radian2Degrees(Vector2Radian(umPnt));
+}

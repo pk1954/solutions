@@ -25,6 +25,7 @@ import NNetModel;
 import AddNobsCommand;
 import ConnAnimationCommand;
 import ConnectCreateForkCmd;
+import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
 import DeselectModuleCmd;
@@ -229,6 +230,7 @@ void InitializeNNetWrappers
     CreateForkCommand::Register();
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     ConnectCreateForkCmd::Register();
+    ConnSynapse2NewPipeCmd::Register();
     AddNobsCommand::Register();
     SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );

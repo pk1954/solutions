@@ -59,8 +59,11 @@ private:
 	unique_ptr<NNetModelWriterInterface> m_upImportedNMWI;  // valid only during import
 	unique_ptr<Model>                    m_upImportedModel; // valid only during import
 	wstring                              m_wstrFile2Read;
+	Radian                               m_radDislocate;
 
 	void importModel();
+	void fixProblems();
+	void dislocate(PosNob &);
 
 	friend static unsigned int __stdcall importModelThreadProc(void*);
 

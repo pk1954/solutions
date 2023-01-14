@@ -28,6 +28,16 @@ void D2D_DrawContext::SetStdFontSize(MicroMeter const & size)
 	m_pGraphics->SetStdFontSize(m_coord.Transform2fPixel(size).GetValue());
 }
 
+void D2D_DrawContext::SetRotation(Degrees const degrees, MicroMeterPnt const& umPntCenter) const
+{
+	m_pGraphics->SetRotation(degrees.GetValue(), m_coord.Transform2fPixelPos(umPntCenter));
+}
+
+void D2D_DrawContext::Reset() const
+{
+	m_pGraphics->Reset();
+}
+
 void D2D_DrawContext::DrawLine
 (
 	MicroMeterPnt const & umStartPoint, 
@@ -144,12 +154,17 @@ void D2D_DrawContext::FillArrow
 	);
 }
 
-void D2D_DrawContext::FillRectangle(MicroMeterRect const & umRect, ColorF col) const 
+void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, ColorF col) const
 {
 	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
 }
 
-void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, ColorF col) const 
+void D2D_DrawContext::FillRoundedRectangle(MicroMeterRect const& umRect, ColorF col, MicroMeter const umRadius) const
+{
+	m_pGraphics->FillRoundedRectangle(m_coord.Transform2fPixelRect(umRect), col, m_coord.Transform2fPixel(umRadius));
+}
+
+void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, ColorF col) const
 {
 	if (IsTooSmall(umRect))
 	{

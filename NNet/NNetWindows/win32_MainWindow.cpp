@@ -16,6 +16,7 @@ import ActionTimer;
 import AddNobsCommand;
 import AddPipe2NeuronCmd;
 import Commands;
+import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
 import DeselectModuleCmd;
@@ -203,12 +204,12 @@ bool MainWindow::connectionAllowed()
 		   m_pNMRI->ConnectionResult(m_nobIdHighlighted, m_nobIdTarget);
 }
 
-void MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
+NobId MainWindow::findTargetNob(MicroMeterPnt const& umCrsrPos)
 {
-	m_nobIdTarget = m_pNMRI->FindNobAt
+	return m_pNMRI->FindNobAt
 	(
 		umCrsrPos,
-		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_nobIdHighlighted, s.GetId()); }
+		[this](Nob const& s) { return m_pNMRI->IsConnectionCandidate(m_nobIdHighlighted, s.GetId()); }
 	);
 }
 
@@ -259,12 +260,26 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
+		NobId nobIdTarget { findTargetNob(umCrsrPos) };
 		if (m_pNMRI->IsSynapse(m_nobIdHighlighted))
 		{ 
 			Synapse    const* pSynapse  { Cast2Synapse(m_pNMRI->GetConstPosNobPtr(m_nobIdHighlighted)) };
 			Pipe       const* pPipeMain { pSynapse->GetMainPipe() };
-			MicroMeter const  umDist    { pPipeMain->DistPntToPipe(umCrsrPos) };
-			if (umDist.GetAbs() > NEURON_RADIUS * 1.5f)
+			if (IsDefined(nobIdTarget))
+			{
+				Nob const * pNob { m_pNMRI->GetConstNob(nobIdTarget) };
+				if (pNob->IsPipe())
+				{
+					Pipe const * pPipeNew { Cast2Pipe(pNob) };
+					if (pPipeMain != pPipeNew)
+					{
+						ConnSynapse2NewPipeCmd::Push(m_nobIdHighlighted, nobIdTarget, umDelta);
+						return;
+					}
+				}
+			}
+			MicroMeter const umDist { pPipeMain->DistPntToPipe(umCrsrPos) };
+			if (umDist.GetAbs() > NEURON_RADIUS * 1.5f)  // tear off synapse
 			{
 				MicroMeterPnt const umPosOld { m_pNMRI->GetNobPos(m_nobIdHighlighted) };
 				m_pModelCommands->DeleteNob(m_nobIdHighlighted);
@@ -273,7 +288,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			}
 		}
 		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
-		setTargetNob(umCrsrPos);
+		m_nobIdTarget = nobIdTarget;
 	}
 	else if (m_pNMRI->IsAnySensorSelected())
 	{
@@ -562,6 +577,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDM_ESCAPE:
+		m_nobIdTarget = NO_NOB;
+		m_nobIdHighlighted = NO_NOB;
 	case IDM_DESELECT:
 		DeselectModuleCmd::Push();
 		break;

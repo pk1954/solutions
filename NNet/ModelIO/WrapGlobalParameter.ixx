@@ -5,6 +5,7 @@
 module;
 
 #include <iostream>
+#include <iomanip>
 
 export module WrapGlobalParameter;
 
@@ -14,6 +15,7 @@ import Script;
 import NNetModelIO;
 import NNetModel;
 
+using std::setprecision;
 using std::wostream;
 using std::endl;
 
@@ -37,7 +39,7 @@ public:
             [this, &out](ParamType::Value const& par)
             {
                 out << L"GlobalParameter" << par << L" = "
-                    << m_modelIO.GetExportNMRI().GetParameter(par)
+                    << setprecision(10) << m_modelIO.GetExportNMRI().GetParameter(par)
                     << endl;
             }
         );

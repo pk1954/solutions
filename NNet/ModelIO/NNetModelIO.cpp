@@ -160,14 +160,9 @@ void NNetModelIO::importModel()
     }
     if (bSuccess)
     {
-        m_upImportedNMWI->Apply2All<Synapse>
-        (
-            [](Synapse& synapse) { synapse.RecalcPositions(); }
-        );
-        m_upImportedNMWI->Apply2All<Pipe>
-        (
-            [](Pipe& pipe) { pipe.RecalcSegments(); }
-        );
+        fixProblems();
+        m_upImportedNMWI->Apply2All<PosNob>([](PosNob& p) { p.Recalc(); });
+        m_upImportedNMWI->Apply2All<Pipe>  ([](Pipe  & p) { p.RecalcSegments(); });
         m_upImportedNMWI->SetModelFilePath(m_wstrFile2Read);
         m_upImportedNMWI->DescriptionComplete();
         res = InputOutputUI::Result::ok;
@@ -177,9 +172,37 @@ void NNetModelIO::importModel()
         m_upImportedModel.release();
         res = InputOutputUI::Result::errorInFile;
     }
+
     if (m_pTpTimer)
         CloseThreadpoolTimer(m_pTpTimer);
     m_upImportUI->JobFinished(res, m_wstrFile2Read);
+}
+
+void NNetModelIO::fixProblems()
+{
+    m_radDislocate = 0.3_Radian;
+    m_upImportedNMWI->Apply2All<Pipe>
+    (
+        [this](Pipe& pipe)
+        {
+            if ((pipe.GetEndPoint() - pipe.GetStartPoint()).IsCloseToZero())
+            {
+                dislocate(*Cast2PosNob(pipe.GetStartNobPtr()));
+                dislocate(*Cast2PosNob(pipe.GetEndNobPtr()));
+            }
+        }
+    );
+}
+
+void NNetModelIO::dislocate(PosNob& posNob)
+{
+    MicroMeterPnt umPnt { posNob.GetPos() };
+    MicroMeterPnt umPntDisloc { umPnt * 0.001f };
+    m_radDislocate += 0.1_Radian;
+    Normalize(m_radDislocate);
+    umPntDisloc.Rotate(NP_NULL, m_radDislocate);
+    umPnt += umPntDisloc;
+    posNob.SetPosNoFix(umPnt);
 }
 
 void NNetModelIO::CheckImportedNobId

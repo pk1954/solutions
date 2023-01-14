@@ -246,8 +246,8 @@ MicroMeterPnt Pipe::GetVector() const
 {
 	assert(m_pNobStart);
 	assert(m_pNobEnd);
-	MicroMeterPnt const umVector { m_pNobEnd->GetPos() - GetStartPoint() };
-	assert(! umVector.IsCloseToZero());
+	MicroMeterPnt umVector { m_pNobEnd->GetPos() - m_pNobStart->GetPos() };
+	assert(!umVector.IsCloseToZero());
 	return umVector;
 }
 
@@ -268,13 +268,14 @@ void Pipe::recalcSegments() const
 {
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
-	unsigned int const iNrOfSegments { max(1U, Cast2UnsignedInt(round(GetLength() / segmentLength))) };
-	SetNrOfSegments(iNrOfSegments);
+	MicroMeter   const pipeLength    { GetLength() };
+	unsigned int const iNrOfSegments { Cast2UnsignedInt(round(pipeLength / segmentLength)) };
+	SetNrOfSegments(max(1U, iNrOfSegments));
 }
 
 MicroMeterPnt Pipe::getSegmentPos(SegNr const segNr, float const fPos) const
 {
-	MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() };
+	MicroMeterPnt const umVector  { GetEndPoint() - GetStartPoint() };
 	MicroMeterPnt const umpSegVec { umVector / Cast2Float(GetNrOfSegments()) };
 	float         const fPosition { (static_cast<float>(segNr.GetValue()) + fPos) };
 	return GetStartPoint() + umpSegVec * fPosition;
@@ -307,11 +308,11 @@ void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
 				Pipe   * pPipeAdd { pSynapse->GetAddPipe() };
 				if (pPipeAdd != &pipeOrigin)
 					pPipeAdd->posChangedRecursive(pipeOrigin);
-				pSynapse->RecalcPositions();
+				pSynapse->Recalc();
 			}
 		);
 		if (m_pNobEnd->IsSynapse())
-			Cast2Synapse(m_pNobEnd)->RecalcPositions();
+			Cast2Synapse(m_pNobEnd)->Recalc();
 		RecalcSegments();
 	}
 }

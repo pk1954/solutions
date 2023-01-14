@@ -72,9 +72,10 @@ public:
 
 	MicroMeterPnt GetDirVector() const { return Radian2Vector(GetDir()); }
 
-	void SetDir   (Radian           const  ) override { assert(false); }
-	void SetPos   (MicroMeterPnt    const &) override;
-	void SetPosDir(MicroMeterPosDir const &) override;
+	void Recalc()                             override;
+	void SetDir(Radian                const ) override { assert(false); }
+	void SetPosNoFix(MicroMeterPnt    const&) override;
+	void SetPosDir  (MicroMeterPosDir const&) override;
 
 	void Apply2All(auto const& func)
 	{

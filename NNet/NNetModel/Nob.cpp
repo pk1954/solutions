@@ -47,7 +47,13 @@ bool Nob::operator==(Nob const & rhs) const
 	return true;
 }
 
-void Nob::SetDir(Radian const radian) 
+void Nob::SetPos(MicroMeterPnt const& umPos)
+{
+	SetPosNoFix(umPos);
+	Recalc();
+}
+
+void Nob::SetDir(Radian const radian)
 { 
 	RotateNob(GetPos(), radian - GetDir()); 
 };

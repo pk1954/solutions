@@ -71,9 +71,13 @@ void Knot::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 	m_pPipeOut = pAdd;
 }
 
-void Knot::SetPos(MicroMeterPnt const& pos) 
-{ 
-	m_circle.SetPos(pos); 
+void Knot::SetPosNoFix(MicroMeterPnt const& pos)
+{
+	m_circle.SetPos(pos);
+}
+
+void Knot::Recalc()
+{
 	m_pPipeIn->PosChanged();
 	m_pPipeOut->PosChanged();
 }

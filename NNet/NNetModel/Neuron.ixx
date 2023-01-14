@@ -52,11 +52,12 @@ public:
 	Radian        GetDir()        const final { return Radian::NULL_VAL(); };
 	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
 
-	void SetPos   (MicroMeterPnt const&)               final;
-	void MoveNob  (MicroMeterPnt const&)               final;
-	void RotateNob(MicroMeterPnt const&, Radian const) final;
-	void Link(Nob const&, Nob2NobFunc const&)          final;
-	void SelectAllConnected(bool const bFirst) final
+	void Recalc     ()                                   final;
+	void SetPosNoFix(MicroMeterPnt const&)               final;
+	void MoveNob    (MicroMeterPnt const&)               final;
+	void RotateNob  (MicroMeterPnt const&, Radian const) final;
+	void Link(Nob const&, Nob2NobFunc const&)            final;
+	void SelectAllConnected(bool const bFirst)           final
 	{
 		if (!IsSelected() || bFirst)
 		{

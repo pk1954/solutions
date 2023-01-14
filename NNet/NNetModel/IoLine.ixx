@@ -33,11 +33,12 @@ public:
 	MicroMeterPnt GetPos()       const final { return m_umPosition; }
 	Radian        GetDir()       const final;
 
-	void SetPos   (MicroMeterPnt const&)               final;
-	void SetDir   (Radian const)                       final;
-	void MoveNob  (MicroMeterPnt const&)               final;
-	void RotateNob(MicroMeterPnt const&, Radian const) final;
-	void Link     (Nob const&, Nob2NobFunc const&)     final;
+	void Recalc     ()                                   final;
+	void SetPosNoFix(MicroMeterPnt const&)               final;
+	void SetDir     (Radian const)                       final;
+	void MoveNob    (MicroMeterPnt const&)               final;
+	void RotateNob  (MicroMeterPnt const&, Radian const) final;
+	void Link       (Nob const&, Nob2NobFunc const&)     final;
 
 	void SetDirVector(MicroMeterPnt const &p) { SetDir(Vector2Radian(p)); }
 

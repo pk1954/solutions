@@ -61,10 +61,14 @@ public:
 
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };
 
-	virtual void SetDir   (Radian            const);
-	virtual void SetPos   (MicroMeterPnt     const&) = 0;
-	virtual void SetPosDir(MicroMeterPosDir  const&);
+	virtual void SetDir(Radian const );
+
+	virtual void Recalc     ()                        = 0;
+	virtual void SetPosNoFix(MicroMeterPnt    const&) = 0;
+	virtual void SetPosDir  (MicroMeterPosDir const&);
 	virtual void AppendMenuItems(AddMenuFunc const&) const;
+
+	void SetPos(MicroMeterPnt const&);
 
 	MicroMeterPosDir GetPosDir() { return MicroMeterPosDir(GetPos(), GetDir());	};
 

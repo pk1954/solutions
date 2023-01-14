@@ -139,9 +139,13 @@ void IoConnector::PosChanged()
 //    }
 //}
 
-void IoConnector::SetPos(MicroMeterPnt const & umPos)
+void IoConnector::SetPosNoFix(MicroMeterPnt const& umPos)
 {
     MoveNob(umPos - GetPos());
+}
+
+void IoConnector::Recalc()
+{
     DirectionDirty();
 }
 

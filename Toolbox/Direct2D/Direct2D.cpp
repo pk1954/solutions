@@ -174,11 +174,19 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, 
 	SafeRelease(& pBrush);
 }
 
-void D2D_driver::FillRectangle(fPixelRect const & rect, D2D1::ColorF const colF) const
+void D2D_driver::FillRectangle(fPixelRect const& rect, D2D1::ColorF const colF) const
 {
-	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
+	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
 	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
-	SafeRelease(& pBrush);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::FillRoundedRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel fRadius) const
+{
+	ID2D1SolidColorBrush* pBrush    { CreateBrush(colF) };
+	D2D1_ROUNDED_RECT     roundRect { convertD2D(rect), fRadius.GetValue(), fRadius.GetValue() };
+	m_pRenderTarget->FillRoundedRectangle(&roundRect, pBrush);
+	SafeRelease(&pBrush);
 }
 
 ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
@@ -401,6 +409,19 @@ ID2D1SolidColorBrush * D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, & pBrush); 
 	assert(hres == S_OK);
 	return pBrush;
+}
+
+void D2D_driver::SetRotation(float const fAngle, fPixelPoint const& ptCenter) const
+{
+	m_pRenderTarget->SetTransform
+	(
+		D2D1::Matrix3x2F::Rotation(fAngle, convertD2D(ptCenter))
+	);
+}
+
+void D2D_driver::Reset() const
+{
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 D2D1_POINT_2F convertD2D(fPixelPoint const & fPP)

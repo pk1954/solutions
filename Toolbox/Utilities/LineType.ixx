@@ -22,6 +22,10 @@ BASE_TYPE PointToLine(PosType<BASE_TYPE> const& l1, PosType<BASE_TYPE> const& l2
     PosType<BASE_TYPE> const p01 { p0 - l1 };
     PosType<BASE_TYPE> const p12 { l1 - l2 };
     BASE_TYPE          const res { (p01.GetX() * p12.GetYvalue() - p01.GetY() * p12.GetXvalue()) / Distance(l1, l2).GetValue() };
+    if (isnan(res.GetValue()))
+    {
+        int x = 42;
+    }
     return res;
 }
 

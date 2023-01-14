@@ -22,6 +22,9 @@ public:
 
 	void SetStdFontSize(MicroMeter const &);
 
+	void SetRotation(Degrees const, MicroMeterPnt const&) const override;
+	void Reset() const override;
+
 	void DrawLine
 	(
 		MicroMeterPnt const &, 
@@ -81,8 +84,9 @@ public:
 		D2D1::ColorF  const  
 	) const override;
 
-	void FillRectangle (MicroMeterRect const &, D2D1::ColorF) const override;
-	void DrawTranspRect(MicroMeterRect const &, D2D1::ColorF) const override;
+	void FillRectangle       (MicroMeterRect const&, D2D1::ColorF)                   const override;
+	void FillRoundedRectangle(MicroMeterRect const&, D2D1::ColorF, MicroMeter const) const override;
+	void DrawTranspRect      (MicroMeterRect const&, D2D1::ColorF)                   const override;
 
 	void DisplayText
 	(

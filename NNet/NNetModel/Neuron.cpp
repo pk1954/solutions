@@ -50,11 +50,15 @@ Neuron & Neuron::operator=(Neuron const& rhs)
 	return * this;
 }
 
-void Neuron::SetPos(MicroMeterPnt const& newPos)
+void Neuron::SetPosNoFix(MicroMeterPnt const& newPos)
 {
 	m_circle.SetPos(newPos);
+}
+
+void Neuron::Recalc()
+{
 	m_pPipeAxon->PosChanged();
-	m_inPipes.Apply2All([](Pipe & pipe) { pipe.PosChanged(); });
+	m_inPipes.Apply2All([](Pipe& pipe) { pipe.PosChanged(); });
 }
 
 void Neuron::ClearDynamicData()

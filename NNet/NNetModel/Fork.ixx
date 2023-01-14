@@ -45,20 +45,13 @@ public:
 
     Pipe* GetOtherOutgoing(Pipe*);
 
-    void SetPos   (MicroMeterPnt  const&)               final;
-    void MoveNob  (MicroMeterPnt  const&)               final;
-    void RotateNob(MicroMeterPnt  const&, Radian const) final;
-    void Link     (Nob const&, Nob2NobFunc const&)      final;
-    void SelectAllConnected(bool const bFirst) final
-    {
-        if (!IsSelected() || bFirst)
-        {
-            Nob::Select(true);
-            m_pPipeIn  ->SelectAllConnected(false);
-            m_pPipeOut1->SelectAllConnected(false);
-            m_pPipeOut2->SelectAllConnected(false);
-        }
-    }
+    void Recalc     ()                                    final;
+    void SetPosNoFix(MicroMeterPnt  const&)               final;
+    void MoveNob    (MicroMeterPnt  const&)               final;
+    void RotateNob  (MicroMeterPnt  const&, Radian const) final;
+    void Link       (Nob const&, Nob2NobFunc const&)      final;
+
+    void SelectAllConnected(bool const) final;
 
     void Check() const final;
 

@@ -51,10 +51,11 @@ public:
 	Pipe const * GetIncoming() const { return m_pPipeIn; }
 	Pipe const * GetOutgoing() const { return m_pPipeOut; }
 
-	void SetPos   (MicroMeterPnt const&)               final;
-	void MoveNob  (MicroMeterPnt const&)               final;
-	void RotateNob(MicroMeterPnt const&, Radian const) final;
-	void Link     (Nob const&, Nob2NobFunc const&)     final;
+	void Recalc     ()                                   final;
+	void SetPosNoFix(MicroMeterPnt const&)               final;
+	void MoveNob    (MicroMeterPnt const&)               final;
+	void RotateNob  (MicroMeterPnt const&, Radian const) final;
+	void Link       (Nob const&, Nob2NobFunc const&)     final;
 
 	void AddOutgoing(Pipe* pPipe) final { m_pPipeOut = pPipe; }
 	void AddIncoming(Pipe* pPipe) final { m_pPipeIn  = pPipe; }

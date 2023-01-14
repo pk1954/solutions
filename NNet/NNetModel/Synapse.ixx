@@ -41,18 +41,21 @@ public:
     bool CompStep()     final;
     void Reconnect()    final;
 
-    MicroMeterPnt GetPos   ()                              const final;
+    MicroMeterPnt GetPos() const final { return m_umPntPipeAnchor; }
+
     bool          Includes (MicroMeterPnt  const&)         const final;
     void          MoveNob  (MicroMeterPnt  const&)               final;
     void          RotateNob(MicroMeterPnt  const&, Radian const) final;
     void          Link     (Nob const&, Nob2NobFunc const&)      final;
     
-    void SelectAllConnected(bool const) final;
-
-    void SetPos(MicroMeterPnt  const&) final { /* will be computed */ }
+    void SelectAllConnected(bool const)    final;
+    void Recalc     ()                     final;
+    void SetPosNoFix(MicroMeterPnt const&) final { /* will be computed */ }
 
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;
+
+    void RecalcAll(MicroMeterPnt const&);
 
     void RemoveFromMainPipe();
     void Add2MainPipe();
@@ -85,9 +88,6 @@ public:
     void SetAddPipe    (Pipe* const);
     void SetMainPipe   (Pipe* const);
     void ChangeMainPipe(Pipe* const);
-
-    void RecalcAll(MicroMeterPnt const&);
-    void RecalcPositions();
 
 private:
 

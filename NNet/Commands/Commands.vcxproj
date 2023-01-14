@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNobsCommand.ixx" />
+    <ClCompile Include="ConnSynapse2NewPipeCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />
     <ClCompile Include="DeleteSensorCommand.ixx" />

@@ -55,7 +55,8 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsPipeType(); }
 
-	void SetPos(MicroMeterPnt const& pos) final { assert(false); }
+	void Recalc     ()                         final { assert(false); }
+	void SetPosNoFix(MicroMeterPnt const& pos) final { assert(false); }
 
 	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
 	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob

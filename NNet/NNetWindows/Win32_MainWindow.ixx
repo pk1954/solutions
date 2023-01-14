@@ -87,14 +87,14 @@ private:
 	NobId              m_nobIdTarget          { NO_NOB };
 	SelectionMenu      m_SelectionMenu;
 
-	void setTargetNob        (MicroMeterPnt const&);
-	bool setHighlightedNob   (MicroMeterPnt const&);
-	bool setHighlightedSensor(MicroMeterPnt const&);
-	void centerAndZoomRect(UPNobList::SelMode const, float const);
-	bool connectionAllowed();
-	void select(NobId const);
+	NobId findTargetNob(MicroMeterPnt const&);
+	bool  setHighlightedNob   (MicroMeterPnt const&);
+	bool  setHighlightedSensor(MicroMeterPnt const&);
+	void  centerAndZoomRect(UPNobList::SelMode const, float const);
+	bool  connectionAllowed();
+	void  select(NobId const);
 
-	void DoPaint() final;
+	void  DoPaint() final;
 
-	bool UserProc(UINT const, WPARAM const, LPARAM const) final;
+	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };
