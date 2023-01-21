@@ -60,7 +60,7 @@ void MonitorWindow::Start
 
 	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
 	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
-	m_upHorzScale->SetOrientation(false);
+	m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
 	m_upHorzScale->SetAllowUnlock(true);
 	m_upHorzScale->Show(true);

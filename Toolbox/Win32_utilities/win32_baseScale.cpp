@@ -35,9 +35,9 @@ BaseScale::BaseScale
 	m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
 }
 
-void BaseScale::SetOrientation(bool const bMode) 
+void BaseScale::SetTicksDir(bool const bMode) 
 { 
-	m_bOrientation = bMode; 
+	m_bTicksDir = bMode; 
 	if (m_bVertScale) 
 		m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
 };
@@ -54,14 +54,14 @@ void BaseScale::setTextBox(fPixelRect & textBox) const
 	if (IsVertScale())  // vertical scale
 	{
 		horzDist = TEXT_DIST2LINE + TEXT_HORZ_EXT; 
-		if (GetOrientation())
+		if (GetTicksDir())
 			horzDist = - horzDist;
 		vertDist -= 4._fPixel;
 	}
 	else  // horizontal scale
 	{
 		vertDist = TEXT_DIST2LINE + TEXT_VERT_EXT;
-		if (GetOrientation())
+		if (GetTicksDir())
 			vertDist = - vertDist;
 		horzDist += 4._fPixel; 
 	}

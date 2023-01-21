@@ -10,6 +10,7 @@ module;
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include <string>
 
 export module Types:NamedType;
 

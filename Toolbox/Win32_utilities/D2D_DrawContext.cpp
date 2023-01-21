@@ -19,7 +19,7 @@ using std::max;
 void D2D_DrawContext::Start(D2D_driver * const pGraphics)
 {
 	m_pGraphics = pGraphics;
-	DrawContext::Initialize();
+	Initialize();
 	SetStdFontSize(STD_FONT_SIZE);
 }
 

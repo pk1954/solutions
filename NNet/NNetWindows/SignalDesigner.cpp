@@ -76,16 +76,16 @@ void SignalDesigner::Initialize
 	m_upVertScaleVolt1 = make_unique<Scale<mV        >>(hwndSigDes, true,  m_vertCoordVolt1);
 	m_upVertScaleVolt2 = make_unique<Scale<mV        >>(hwndSigDes, true,  m_vertCoordVolt2);
 
-	m_upHorzScale1->SetOrientation(false);
+	m_upHorzScale1->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale1->Show(true);
 
-	m_upHorzScale2->SetOrientation(false);
+	m_upHorzScale2->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale2->Show(true);
 
-	m_upHorzScale3->SetOrientation(false);
+	m_upHorzScale3->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale3->Show(true);
 
-	m_upVertScaleFreq->SetOrientation(true);
+	m_upVertScaleFreq->SetTicksDir(BaseScale::TICKS_LEFT);
 	m_upVertScaleFreq->SetScaleColor(COLOR_FREQ);
 	m_upVertScaleFreq->Show(true);
 
@@ -328,7 +328,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	{
 		m_upSignalControl1->SetVertCoordVolt(&m_vertCoordVolt1);
 		m_upVertScaleVolt1->SetOrthoOffset(0._fPixel);
-		m_upVertScaleVolt1->SetOrientation(false);
+		m_upVertScaleVolt1->SetTicksDir(BaseScale::TICKS_RIGHT);
 
 		m_upVertScaleVolt1->Move(pixControlWidth, 0_PIXEL, V_SCALE_WIDTH, pixControlHeight, true);
 		m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth - V_SCALE_WIDTH, H_SCALE_HEIGHT, true);
@@ -340,7 +340,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	{
 		m_upSignalControl1->SetVertCoordVolt(nullptr);
 		m_upVertScaleVolt1->SetOrthoOffset(fPixLeftOffset);
-		m_upVertScaleVolt1->SetOrientation(true);
+		m_upVertScaleVolt1->SetTicksDir(BaseScale::TICKS_LEFT);
 
 		m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight,                  pixControlWidth, H_SCALE_HEIGHT,   true);
 		m_upSignalControl2->Move(V_SCALE_WIDTH, pixTileHeight,                     pixControlWidth, pixControlHeight, true);
@@ -354,7 +354,7 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 	if (m_bPreview)
 	{
 		m_upVertScaleVolt2->SetOrthoOffset(fPixLeftOffset);
-		m_upVertScaleVolt2->SetOrientation(true);
+		m_upVertScaleVolt2->SetTicksDir(BaseScale::TICKS_LEFT);
 
 		m_upSignalPreview ->Move(V_SCALE_WIDTH, height - pixTileHeight,  width - V_SCALE_WIDTH, pixControlHeight, true);
 		m_upVertScaleVolt2->Move(0_PIXEL,       height - pixTileHeight,          V_SCALE_WIDTH, pixControlHeight, true);

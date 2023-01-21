@@ -46,24 +46,24 @@ public:
 		pixCoord.RegisterObserver(*this);
 	}
 
-	Scale(Scale&) = delete;
-	Scale(Scale&&) = delete;
-	Scale& operator=(const Scale&) = delete;
+	Scale                 (      Scale& ) = delete;
+	Scale                 (      Scale&&) = delete;
+	Scale& operator=      (const Scale& ) = delete;
 	Scale const& operator=(const Scale&&) = delete;
 
 private:
 
 	PixFpDimension<LogUnits>& m_pixCoord;
 
-	wstring     m_wstrUnit{};
-	float       m_fUnitReduction{};
-	fPixelPoint m_fPixPntStart{};
-	fPixelPoint m_fPixPntEnd{};
-	fPixel      m_fPixTickDist{};
+	wstring     m_wstrUnit       {};
+	float       m_fUnitReduction {};
+	fPixelPoint m_fPixPntStart   {};
+	fPixelPoint m_fPixPntEnd     {};
+	fPixel      m_fPixTickDist   {};
 
-	LogUnits m_logStart{};
-	LogUnits m_logEnd{};
-	LogUnits m_logTickDist{};
+	LogUnits m_logStart    {};
+	LogUnits m_logEnd      {};
+	LogUnits m_logTickDist {};
 
 	// private functions
 
@@ -130,8 +130,10 @@ private:
 			m_logStart     = m_pixCoord.Transform2logUnitPos(fPixHorzStart);
 			m_logEnd       = m_pixCoord.Transform2logUnitPos(fPixHorzEnd);
 		}
+
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
+		
 		setScaleParams();
 		renderScale();
 	}
@@ -158,9 +160,9 @@ private:
 
 	void setScaleParams()
 	{
-		float   const fFactor{ TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
-		float   const logDist10{ m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
-		int     const iSteps{ StepsOfThousand(logDist10 / fFactor) };
+		float   const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
+		float   const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
+		int     const iSteps    { StepsOfThousand(logDist10 / fFactor) };
 		m_wstrUnit = GetUnitPrefix(iSteps) + TypeAttribute<LogUnits>::unit;
 		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
 	}
@@ -171,7 +173,7 @@ private:
 		fPixel const fTickExt
 	) const
 	{
-		fPixel      const fDir(GetOrientation() ? -fTickExt : fTickExt);
+		fPixel      const fDir(GetTicksDir() ? -fTickExt : fTickExt);
 		fPixelPoint const fPixPntStart
 		{
 			IsVertScale()
@@ -189,20 +191,20 @@ private:
 
 	void displayTicks(fPixelRect const& textBox) const
 	{
-		float    const fStartTicks{ m_logStart / m_logTickDist };
-		LogUnits const logFirstTick{ m_logTickDist * floor(fStartTicks) };
-		float    const fUnitTickDist{ m_logTickDist.GetValue() / m_fUnitReduction };
-		fPixel   const fPixZero{ m_pixCoord.Transform2fPixelPos(LogUnits(0.0f)) };
-		int      const iTickStart{ static_cast<int>(fStartTicks) };
-		int      const iTickEnd{ static_cast<int>(m_logEnd / m_logTickDist) };
+		float    const fStartTicks   { m_logStart / m_logTickDist };
+		LogUnits const logFirstTick  { m_logTickDist * floor(fStartTicks) };
+		float    const fUnitTickDist { m_logTickDist.GetValue() / m_fUnitReduction };
+		fPixel   const fPixZero      { m_pixCoord.Transform2fPixelPos(LogUnits(0.0f)) };
+		int      const iTickStart    { static_cast<int>(fStartTicks) };
+		int      const iTickEnd      { static_cast<int>(m_logEnd / m_logTickDist) };
 
 		wostringstream wstrBuffer;
 
 		for (int iTick = iTickStart; iTick <= iTickEnd; ++iTick)
 		{
-			fPixel fTickExt{ (iTick % 5 == 0) ? LONG_TICK : (iTick % 2 == 0) ? MIDDLE_TICK : SMALL_TICK };
-			float  fTick{ static_cast<float>(iTick) };
-			fPixel fPix{ fPixZero + m_fPixTickDist * fTick };
+			fPixel fTickExt { (iTick % 5 == 0) ? LONG_TICK : (iTick % 2 == 0) ? MIDDLE_TICK : SMALL_TICK };
+			float  fTick    { static_cast<float>(iTick) };
+			fPixel fPix     { fPixZero + m_fPixTickDist * fTick };
 			displayTick(fPix, fTickExt);
 			if (iTick % 10 == 0)
 			{

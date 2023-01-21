@@ -350,6 +350,9 @@ public:
 		return out;
 	}
 
+	PixFpDimension<LOG_UNIT> & GetXdim() { return m_xDim; }
+	PixFpDimension<LOG_UNIT> & GetYdim() { return m_yDim; }
+
 private:
 
 	inline static LOG_UNIT const MINIMUM_PIXEL_SIZE { LOG_UNIT(   0.1f) };
