@@ -78,6 +78,7 @@ protected:
 	void   display(fPixelRect const&, wstring const&) const;
 	void   setTextBox(fPixelRect& textBox) const;
 	fPixel getClHeight() const { return m_upGraphics->GetClRectHeight(); }
+	fPixel getClWidth () const { return m_upGraphics->GetClRectWidth (); }
 
 private:
 

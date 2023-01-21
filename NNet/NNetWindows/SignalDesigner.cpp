@@ -304,7 +304,8 @@ bool SignalDesigner::OnSize(PIXEL const width, PIXEL const height)
 
 void SignalDesigner::design(PIXEL const width, PIXEL const height)
 {
-	static fPixel const fPixLeftOffset   { Convert2fPixel(V_SCALE_WIDTH ) };
+	static fPixel const fPixLeftOffset   { Convert2fPixel(V_SCALE_WIDTH) };
+	static fPixel const fPixRightOffset  { Convert2fPixel(V_SCALE_WIDTH) };
 	static fPixel const fPixBottomOffset { Convert2fPixel(H_SCALE_HEIGHT) };
 
 	m_upVertScaleFreq ->SetOrthoOffset(fPixLeftOffset);

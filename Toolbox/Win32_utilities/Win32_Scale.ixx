@@ -108,13 +108,13 @@ private:
 		float    const fExp           { floor(log10) };
 		float    const fFractPart     { log10 - fExp };
 		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
-		fPixel   const fPixSizeA      { IsVertScale() ? m_upGraphics->GetClRectHeight() : m_upGraphics->GetClRectWidth() };
-		fPixel   const fPixScaleLen   { fPixSizeA - GetRightBorder() };
-		LogUnits const logScaleLen    { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
 
 		if (IsVertScale())
 		{
-			auto const fPixPntOffset{ fPixelPoint(0._fPixel, -fPixScaleLen) };
+			fPixel      const fPixSizeA     { getClHeight() };
+			fPixel      const fPixScaleLen  { fPixSizeA - GetTopBorder() - GetBottomBorder()  };
+			LogUnits    const logScaleLen   { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
+			fPixelPoint const fPixPntOffset { fPixelPoint(0._fPixel, -fPixScaleLen) };
 			m_fPixPntStart = fPixelPoint(GetOrthoOffset(), getClHeight() - m_pixCoord.GetPixelOffset());
 			m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
 			m_logStart     = LogUnits(0.0f);
@@ -122,9 +122,12 @@ private:
 		}
 		else
 		{
-			fPixel const fPixVertPos   { getClHeight() - GetOrthoOffset() };
-			fPixel const fPixHorzStart { GetLeftBorder() };
-			fPixel const fPixHorzEnd   { m_upGraphics->GetClRectWidth() - GetRightBorder() };
+			fPixel   const fPixSizeA     { getClWidth() };
+			fPixel   const fPixScaleLen  { fPixSizeA - GetLeftBorder() - GetRightBorder() };
+			LogUnits const logScaleLen   { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
+			fPixel   const fPixVertPos   { getClHeight() - GetOrthoOffset() };
+			fPixel   const fPixHorzStart { GetLeftBorder() };
+			fPixel   const fPixHorzEnd   { getClWidth() - GetRightBorder() };
 			m_fPixPntStart = fPixelPoint(fPixHorzStart, fPixVertPos);
 			m_fPixPntEnd   = fPixelPoint(fPixHorzEnd, fPixVertPos);
 			m_logStart     = m_pixCoord.Transform2logUnitPos(fPixHorzStart);
