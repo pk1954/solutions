@@ -109,31 +109,29 @@ private:
 		float    const fFractPart     { log10 - fExp };
 		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
 
+		fPixel fPixStart;
+		fPixel fPixEnd;
+		fPixel fPixPosOrtho;
+
 		if (IsVertScale())
 		{
-			fPixel      const fPixSizeA     { getClHeight() };
-			fPixel      const fPixScaleLen  { fPixSizeA - GetTopBorder() - GetBottomBorder()  };
-			LogUnits    const logScaleLen   { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
-			fPixelPoint const fPixPntOffset { fPixelPoint(0._fPixel, -fPixScaleLen) };
-			m_fPixPntStart = fPixelPoint(GetOrthoOffset(), getClHeight() - m_pixCoord.GetPixelOffset());
-			m_fPixPntEnd   = m_fPixPntStart + fPixPntOffset;
-			m_logStart     = LogUnits(0.0f);
-			m_logEnd       = logScaleLen;
+			fPixPosOrtho = GetOrthoOffset();
+			fPixStart = GetBottomBorder();
+			fPixEnd = getClHeight() - GetTopBorder();
+			m_fPixPntStart = fPixelPoint(fPixPosOrtho, fPixStart);
+			m_fPixPntEnd = fPixelPoint(fPixPosOrtho, fPixEnd);
 		}
 		else
 		{
-			fPixel   const fPixSizeA     { getClWidth() };
-			fPixel   const fPixScaleLen  { fPixSizeA - GetLeftBorder() - GetRightBorder() };
-			LogUnits const logScaleLen   { m_pixCoord.Transform2logUnitSize(fPixScaleLen) };
-			fPixel   const fPixVertPos   { getClHeight() - GetOrthoOffset() };
-			fPixel   const fPixHorzStart { GetLeftBorder() };
-			fPixel   const fPixHorzEnd   { getClWidth() - GetRightBorder() };
-			m_fPixPntStart = fPixelPoint(fPixHorzStart, fPixVertPos);
-			m_fPixPntEnd   = fPixelPoint(fPixHorzEnd, fPixVertPos);
-			m_logStart     = m_pixCoord.Transform2logUnitPos(fPixHorzStart);
-			m_logEnd       = m_pixCoord.Transform2logUnitPos(fPixHorzEnd);
+			fPixPosOrtho   = getClHeight() - GetOrthoOffset();
+			fPixStart      = GetLeftBorder();
+			fPixEnd        = getClWidth() - GetRightBorder();
+			m_fPixPntStart = fPixelPoint(fPixStart, fPixPosOrtho);
+			m_fPixPntEnd   = fPixelPoint(fPixEnd,   fPixPosOrtho);
 		}
 
+		m_logStart     = m_pixCoord.Transform2logUnitPos(fPixStart);
+		m_logEnd       = m_pixCoord.Transform2logUnitPos(fPixEnd);
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
 		

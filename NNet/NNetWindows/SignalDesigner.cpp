@@ -331,8 +331,14 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_upVertScaleVolt1->SetOrthoOffset(0._fPixel);
 		m_upVertScaleVolt1->SetTicksDir(BaseScale::TICKS_RIGHT);
 
+		//m_upVertScaleVolt1->SetTopBorder   ( 50._fPixel);
+		//m_upVertScaleVolt1->SetBottomBorder(100._fPixel);
+
 		m_upVertScaleVolt1->Move(pixControlWidth, 0_PIXEL, V_SCALE_WIDTH, pixControlHeight, true);
 		m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth - V_SCALE_WIDTH, H_SCALE_HEIGHT, true);
+		
+		//m_upHorzScale1->SetLeftBorder(50._fPixel);
+		//m_upHorzScale1->SetRightBorder(100._fPixel);
 
 		m_upSignalControl2->Show(false);
 		m_upHorzScale2    ->Show(false);
