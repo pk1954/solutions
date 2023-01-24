@@ -46,13 +46,13 @@ public:
 
 	void SetExpectedToken(wstring const& wstrExp) { m_scanner.SetExpectedToken(wstrExp); }
 
-	wstring GetActPath() const { return m_scanner.GetActPath(); }
-	wstring GetActLine() const { return m_scanner.GetActLine(); }
-	int     GetActLineNr() const { return m_scanner.GetActLineNr(); }
-	int     GetActStartPos() const { return m_scanner.GetActStartPos(); }
-	int     GetActEndPos() const { return m_scanner.GetActEndPos(); }
+	wstring GetActPath         () const { return m_scanner.GetActPath(); }
+	wstring GetActLine         () const { return m_scanner.GetActLine(); }
+	int     GetActLineNr       () const { return m_scanner.GetActLineNr(); }
+	int     GetActStartPos     () const { return m_scanner.GetActStartPos(); }
+	int     GetActEndPos       () const { return m_scanner.GetActEndPos(); }
 	wstring GetActExpectedToken() const { return m_scanner.GetExpectedToken(); }
-	bool    IsActive() const { return m_scanner.IsActive(); }
+	bool    IsActive           () const { return m_scanner.IsActive(); }
 
 	// utility functions
 
@@ -85,13 +85,13 @@ private:
 	unsigned long numeric(wstring const&, unsigned long, bool*);
 
 	Scanner   m_scanner;
-	tTOKEN    m_token{ tTOKEN::End };
-	bool      m_bEchoScript{ true };
-	uintmax_t m_fileSize{ 0 };
+	tTOKEN    m_token       { tTOKEN::End };
+	bool      m_bEchoScript { true };
+	uintmax_t m_fileSize    { 0 };
 
-	inline static bool                  m_bStop{ false };
-	inline static ScriptFunctor const* m_pWrapHook{ nullptr };
-	inline static ScriptFunctor const* m_pNewLineHook{ nullptr };
+	inline static bool                  m_bStop       { false };
+	inline static ScriptFunctor const* m_pWrapHook    { nullptr };
+	inline static ScriptFunctor const* m_pNewLineHook { nullptr };
 };
 
 export class WrapInclude : public ScriptFunctor

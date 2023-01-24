@@ -43,9 +43,9 @@ public:
 private:
     inline static function<void(void)> m_newLineTrigger{ nullptr };
 
-    wstring   m_wstrLine{ };          // buffer for script line
-    int       m_iLineNr{ 0 };        // actual line number  
-    wchar_t * m_pwchStart{ nullptr };  // pointer to start of current token 
-    wchar_t * m_pwchRead{ nullptr };  // pointer to next char in line 
-    wifstream m_ifstream{};
+    wstring   m_wstrLine  { };          // buffer for script line
+    int       m_iLineNr   { 0 };        // actual line number  
+    wchar_t * m_pwchStart { nullptr };  // pointer to start of current token 
+    wchar_t * m_pwchRead  { nullptr };  // pointer to next char in line 
+    wifstream m_ifstream  {};
 };

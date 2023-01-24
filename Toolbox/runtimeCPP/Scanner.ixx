@@ -32,8 +32,8 @@ export enum class tTOKEN    // Return value of NextToken
 export class Scanner
 {
 public:
-    inline static wchar_t const COMMENT_SYMBOL{ L'#' };
-    inline static wstring const COMMENT_START{ L"# *** " };
+    inline static wchar_t const COMMENT_SYMBOL { L'#' };
+    inline static wstring const COMMENT_START  { L"# *** " };
 
     void OpenInputFile(wstring_view);
     void CloseInputFile();
@@ -49,19 +49,19 @@ public:
 
     // Get actual token, type according to NextToken return value 
 
-    unsigned long   GetUlong() const { return m_ulValue; };
-    wchar_t         GetCharacter() const { return m_wchValue; };
-    double          GetFloat() const { return m_dValue; };
-    wstring const& GetString() const { return m_wstrToken; };
+    unsigned long  GetUlong    () const { return m_ulValue; };
+    wchar_t        GetCharacter() const { return m_wchValue; };
+    double         GetFloat    () const { return m_dValue; };
+    wstring const& GetString   () const { return m_wstrToken; };
 
     // Helper routines for error handlers 
 
-    wstring const& GetActLine() const { return m_inbuf.GetActLine(); };
-    int             GetActLineNr() const { return m_inbuf.GetActLineNr(); };
-    int             GetActStartPos() const { return m_inbuf.GetActStartPos(); };
-    int             GetActEndPos() const { return m_inbuf.GetActEndPos(); };
+    wstring const& GetActLine      () const { return m_inbuf.GetActLine(); };
+    int            GetActLineNr    () const { return m_inbuf.GetActLineNr(); };
+    int            GetActStartPos  () const { return m_inbuf.GetActStartPos(); };
+    int            GetActEndPos    () const { return m_inbuf.GetActEndPos(); };
     wstring const& GetExpectedToken() const { return m_wstrExpected; }
-    wstring const& GetActPath() const { return m_wstrPath; };
+    wstring const& GetActPath      () const { return m_wstrPath; };
 
     void SetExpectedToken(wstring_view s) { m_wstrExpected = s; }
 
@@ -74,11 +74,11 @@ private:
     tTOKEN  ScanString();
     tTOKEN  ScanCharacter();
 
-    wstring       m_wstrPath{ };       // name of input script 
-    wstring       m_wstrToken{ };
-    InputBuffer   m_inbuf{ };
-    unsigned long m_ulValue{ 0 };
-    wchar_t       m_wchValue{ L'\0' };
-    double        m_dValue{ 0.0 };
-    wstring       m_wstrExpected{ };
+    wstring       m_wstrPath     { };       // name of input script 
+    wstring       m_wstrToken    { };
+    InputBuffer   m_inbuf        { };
+    unsigned long m_ulValue      { 0 };
+    wchar_t       m_wchValue     { L'\0' };
+    double        m_dValue       { 0.0 };
+    wstring       m_wstrExpected { };
 };
