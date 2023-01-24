@@ -40,7 +40,7 @@ public:
 		bool                 const bVertScale,
 		PixFpDimension<LogUnits> & pixCoord
 	)
-		: BaseScale(hwndParent, bVertScale),
+	  : BaseScale(hwndParent, bVertScale),
 		m_pixCoord(pixCoord)
 	{
 		pixCoord.RegisterObserver(*this);
@@ -115,11 +115,11 @@ private:
 
 		if (IsVertScale())
 		{
-			fPixPosOrtho = GetOrthoOffset();
-			fPixStart = GetBottomBorder();
-			fPixEnd = getClHeight() - GetTopBorder();
+			fPixPosOrtho   = GetOrthoOffset();
+			fPixStart      = GetBottomBorder();
+			fPixEnd        = getClHeight() - GetTopBorder();
 			m_fPixPntStart = fPixelPoint(fPixPosOrtho, fPixStart);
-			m_fPixPntEnd = fPixelPoint(fPixPosOrtho, fPixEnd);
+			m_fPixPntEnd   = fPixelPoint(fPixPosOrtho, fPixEnd);
 		}
 		else
 		{
@@ -164,7 +164,8 @@ private:
 		float   const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
 		float   const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
 		int     const iSteps    { StepsOfThousand(logDist10 / fFactor) };
-		m_wstrUnit = GetUnitPrefix(iSteps) + TypeAttribute<LogUnits>::unit;
+		m_wstrUnit = GetUnitPrefix(iSteps);
+		m_wstrUnit += TypeAttribute<LogUnits>::unit;
 		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
 	}
 
@@ -178,14 +179,14 @@ private:
 		fPixelPoint const fPixPntStart
 		{
 			IsVertScale()
-			? fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fTickA)
-			: fPixelPoint(fTickA,                m_fPixPntStart.GetY())
+			? fPixelPoint(m_fPixPntStart.GetX(), yPos(fTickA))
+			: fPixelPoint(xPos(fTickA),          m_fPixPntStart.GetY())
 		};
 		fPixelPoint const fPixPntEnd
 		{
 			IsVertScale()
-			? fPixelPoint(m_fPixPntStart.GetX() + fDir, getClHeight() - fTickA)
-			: fPixelPoint(fTickA,                       m_fPixPntStart.GetY() + fDir)
+			? fPixelPoint(m_fPixPntStart.GetX() + fDir, yPos(fTickA))
+			: fPixelPoint(xPos(fTickA),                 m_fPixPntStart.GetY() + fDir)
 		};
 		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, GetColor());
 	}
@@ -210,8 +211,8 @@ private:
 			if (iTick % 10 == 0)
 			{
 				fPixelPoint fPos { IsVertScale()
-								    ? (fPixelPoint(m_fPixPntStart.GetX(), getClHeight() - fPix))
-								    : (fPixelPoint(fPix,                 m_fPixPntStart.GetY()))
+								    ? (fPixelPoint(m_fPixPntStart.GetX(), yPos(fPix)))
+								    : (fPixelPoint(xPos(fPix),            m_fPixPntStart.GetY()))
 				                 };
 				float  const fLu  { round(fTick * fUnitTickDist * 1000.f) / 1000.f };
 				wstrBuffer.str(L"");

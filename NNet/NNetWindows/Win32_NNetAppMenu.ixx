@@ -63,6 +63,7 @@ private:
 	Sound                    const * m_pSound         { nullptr };
 	NNetModelReaderInterface const * m_pNMRI          { nullptr };
 
+	unique_ptr<OnOffPair> m_upOnOffScales;
 	unique_ptr<OnOffPair> m_upOnOffArrows;
 	unique_ptr<OnOffPair> m_upOnOffSound;
 	unique_ptr<OnOffPair> m_upOnOffAutoOpen;

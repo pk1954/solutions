@@ -29,6 +29,7 @@ public:
 	virtual bool ZoomCoordFactor(float const, fPixel const) = 0;
 	virtual void MoveCoord(PIXEL const) = 0;
 
+	bool         IsInverted     () const { return m_bInverted; }
 	bool         IsVertScale    () const { return m_bVertScale; }
 	bool         GetTicksDir    () const { return m_bTicksDir; }
 	fPixel       GetLeftBorder  () const { return m_fPixLeftBorder; }
@@ -51,10 +52,11 @@ public:
 	inline static bool const TICKS_LEFT  { true };
 
 	void SetTicksDir(bool const);
+	void SetInverted(bool const b) { m_bInverted = b; }
 
 	void SetAllowUnlock(bool const b)    { m_bUnlockAllowed = b; }
 	void SetBlock2Zero(tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
-	bool IsScaleLocked() const { return m_bLock2Zero; }
+	bool IsScaleLocked() const           { return m_bLock2Zero; }
 
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) override;
 	void OnMouseMove      (WPARAM const, LPARAM const)                   override;
@@ -80,12 +82,16 @@ protected:
 	fPixel getClHeight() const { return m_upGraphics->GetClRectHeight(); }
 	fPixel getClWidth () const { return m_upGraphics->GetClRectWidth (); }
 
+	fPixel xPos(fPixel const x) const { return m_bInverted ? getClWidth() - x : x; }
+	fPixel yPos(fPixel const y) const { return m_bInverted ? getClHeight() - y : y; }
+
 private:
 
 	D2D1::ColorF        m_scaleColor       { D2D1::ColorF::Black };
 	IDWriteTextFormat * m_pTextFormat      { nullptr };
 	bool                m_bTicksDir        { true };     // true: ticks on negative side of scale
 	bool                m_bVertScale       { false };    // true: vertical, false: horizontal
+	bool                m_bInverted        { false };    // false: scale values grow from left to right / top to bottom
 	fPixel              m_fPixLeftBorder   { 0._fPixel };
 	fPixel              m_fPixRightBorder  { 0._fPixel };
 	fPixel              m_fPixTopBorder    { 0._fPixel };

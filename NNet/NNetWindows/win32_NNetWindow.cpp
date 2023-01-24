@@ -53,7 +53,9 @@ void NNetWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
 
 MicroMeterRect NNetWindow::GetViewRect() const 
 { 
-	return GetCoordC().Transform2logUnitRect(GetClPixelRect()); 
+	PixelRect      pixRect = GetClPixelRect();
+	MicroMeterRect umRect  = GetCoordC().Transform2logUnitRect(pixRect);
+	return GetCoordC().Transform2logUnitRect(GetClPixelRect());
 };
 
 void NNetWindow::DrawArrowsInRect

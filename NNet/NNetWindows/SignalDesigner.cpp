@@ -76,6 +76,13 @@ void SignalDesigner::Initialize
 	m_upVertScaleVolt1 = make_unique<Scale<mV        >>(hwndSigDes, true,  m_vertCoordVolt1);
 	m_upVertScaleVolt2 = make_unique<Scale<mV        >>(hwndSigDes, true,  m_vertCoordVolt2);
 
+	//m_upVertScaleVolt1->SetTopBorder   ( 50._fPixel);
+	//m_upVertScaleVolt1->SetBottomBorder(100._fPixel);
+
+	//m_upHorzScale1->SetLeftBorder(50._fPixel);
+	//m_upHorzScale1->SetRightBorder(100._fPixel);
+
+
 	m_upHorzScale1->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale1->Show(true);
 
@@ -85,13 +92,16 @@ void SignalDesigner::Initialize
 	m_upHorzScale3->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale3->Show(true);
 
+	m_upVertScaleFreq->SetInverted(true);
 	m_upVertScaleFreq->SetTicksDir(BaseScale::TICKS_LEFT);
 	m_upVertScaleFreq->SetScaleColor(COLOR_FREQ);
 	m_upVertScaleFreq->Show(true);
 
+	m_upVertScaleVolt1->SetInverted(true);
 	m_upVertScaleVolt1->SetScaleColor(COLOR_VOLT);
 	m_upVertScaleVolt1->Show(true);
 
+	m_upVertScaleVolt2->SetInverted(true);
 	m_upVertScaleVolt2->SetScaleColor(ColorF::Black);
 	m_upVertScaleVolt2->Show(true);
 
@@ -331,15 +341,9 @@ void SignalDesigner::design(PIXEL const width, PIXEL const height)
 		m_upVertScaleVolt1->SetOrthoOffset(0._fPixel);
 		m_upVertScaleVolt1->SetTicksDir(BaseScale::TICKS_RIGHT);
 
-		//m_upVertScaleVolt1->SetTopBorder   ( 50._fPixel);
-		//m_upVertScaleVolt1->SetBottomBorder(100._fPixel);
-
 		m_upVertScaleVolt1->Move(pixControlWidth, 0_PIXEL, V_SCALE_WIDTH, pixControlHeight, true);
 		m_upHorzScale1    ->Move(V_SCALE_WIDTH, pixControlHeight, pixControlWidth - V_SCALE_WIDTH, H_SCALE_HEIGHT, true);
 		
-		//m_upHorzScale1->SetLeftBorder(50._fPixel);
-		//m_upHorzScale1->SetRightBorder(100._fPixel);
-
 		m_upSignalControl2->Show(false);
 		m_upHorzScale2    ->Show(false);
 	}

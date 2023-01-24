@@ -38,13 +38,16 @@ public:
 	bool WritePreferences() const;
 
 	void SetArrows(bool const);
+	void SetScales(bool const);
 	void SetSensorPoints(bool const bOn) { m_bSensorPoints = bOn; }
 
+	bool ScalesVisible      () const { return m_bScales; }
 	bool ArrowsVisible      () const { return m_bArrows; }
 	bool SensorPointsVisible() const { return m_bSensorPoints; }
 
 private:
 	HWND                             m_hwndApp       { nullptr };
+	bool                             m_bScales       { false };
 	bool                             m_bArrows       { false };
 	bool                             m_bSensorPoints { false };
 	NNetModelReaderInterface const * m_pNMRI         { nullptr };

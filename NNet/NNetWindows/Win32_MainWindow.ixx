@@ -74,6 +74,9 @@ public:
 private:
 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
+	inline static PIXEL      const RIGHT_BORDER   { 25_PIXEL };
+	inline static PIXEL      const H_SCALE_HEIGHT { 30_PIXEL };
+	inline static PIXEL      const V_SCALE_WIDTH  { 35_PIXEL };
 
 	MicroMeter         m_arrowSize            { STD_ARROW_SIZE };
 	Preferences*       m_pPreferences         { nullptr };

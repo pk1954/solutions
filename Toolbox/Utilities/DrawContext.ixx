@@ -83,7 +83,10 @@ public:
 	void SetPixelSize  (MicroMeter    const s, bool const b = true) { m_coord.SetPixelSize  (s, b); }
 	void SetPixelOffset(fPixelPoint   const f, bool const b = true) { m_coord.SetPixelOffset(f, b); }
 	bool Zoom          (MicroMeter    const s, bool const b = true) { return m_coord.Zoom(s, b); }
-	void Center        (MicroMeterPnt const u, fPixelPoint const f, bool const b = true) { m_coord.Center(u, f, b); }
+	void Center        (MicroMeterPnt const u, fPixelPoint const f, bool const b = true) 
+	{ 
+		m_coord.Center(u, f, b); 
+	}
 
 	bool Zoom(bool const bDirection, fPixelPoint const & fPixPointCenter)
 	{

@@ -25,6 +25,7 @@ public:
 
 	void Reset()
 	{
+		m_xDim.SetPixelSizeLimits(MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE);
 		m_xDim.SetPixelSize(DEFAULT_PIXEL_SIZE);
 		m_yDim.SetPixelSize(DEFAULT_PIXEL_SIZE);
 		m_xDim.SetOffset(0.0_fPixel);
@@ -35,12 +36,12 @@ public:
 
 	fPixel Transform2fPixel(LOG_UNIT const param) const
 	{ 
-		return fPixel(param / pixelSize());
+		return fPixel(param / GetPixelSize());
 	}
 
 	LOG_UNIT Transform2logUnit(fPixel const fPixel) const
 	{ 
-		return pixelSize() * fPixel.GetValue();
+		return GetPixelSize() * fPixel.GetValue();
 	}
 
 	fPixelPoint Transform2fPixelSize(PosType<LOG_UNIT> const np) const
@@ -260,18 +261,6 @@ public:
 		SetPixelOffset(Transform2fPixelSize(logPntCenter) - fPntPix, bNotify);
 	}
 
-	bool ZoomCenter
-	(
-		float       const fFactor,
-		fPixelPoint const fPixPntCenter,
-		bool        const bNotify = true
-	)
-	{
-		bool const bResX = m_xDim.ZoomCenter(fFactor, fPixPntCenter.GetX(), false);
-		bool const bResY = m_yDim.ZoomCenter(fFactor, fPixPntCenter.GetY(), false);
-		return bResX && bResY;
-	}
-
 	bool Zoom(bool const bDirection, fPixelPoint const & fPixPointCenter)
 	{
 		bool const bResX = m_xDim.ZoomDir(bDirection, fPixPointCenter.GetX(), false);
@@ -361,6 +350,4 @@ private:
 
 	PixFpDimension<LOG_UNIT> m_xDim;
 	PixFpDimension<LOG_UNIT> m_yDim;
-
-	LOG_UNIT pixelSize() const { return m_xDim.GetPixelSize(); }
 };

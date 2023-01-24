@@ -77,6 +77,26 @@ void MainWindow::Start
 	m_pDisplayTimer        = pActionTimer;
 	HWND hwnd = GetWindowHandle();
 	m_SelectionMenu.Start(hwnd);
+
+	Uniform2D<MicroMeter>      & coord  { GetCoord() };
+	PixFpDimension<MicroMeter> & coordX { coord.GetXdim() };
+	PixFpDimension<MicroMeter> & coordY { coord.GetYdim() };
+
+	m_upHorzScale = make_unique<Scale<MicroMeter>>(hwnd, false, coordX);
+	m_upVertScale = make_unique<Scale<MicroMeter>>(hwnd, true,  coordY);
+
+	m_pCoordObservable->RegisterObserver(*m_upHorzScale.get());
+	m_pCoordObservable->RegisterObserver(*m_upVertScale.get());
+
+	m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
+	m_upHorzScale->SetAllowUnlock(true);
+	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
+	m_upHorzScale->SetLeftBorder (Convert2fPixel(V_SCALE_WIDTH));
+
+	m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
+	m_upVertScale->SetAllowUnlock(true);
+	m_upVertScale->SetOrthoOffset (Convert2fPixel(V_SCALE_WIDTH));
+	m_upHorzScale->SetBottomBorder(Convert2fPixel(H_SCALE_HEIGHT));
 }
 
 void MainWindow::Stop()
@@ -102,6 +122,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_CREATE_SYNAPSE,         L"Create synapse"                 },
 		{ IDD_CREATE_FORK,            L"Create fork"                    },
 		{ IDD_ADD_EEG_SENSOR,         L"New EEG sensor" 		        },
+		{ IDD_SCALES_OFF,             L"Scale off"                      },
+		{ IDD_SCALES_ON,              L"Scale on"                       },
 		{ IDD_ARROWS_OFF,             L"Arrows off"                     },
 		{ IDD_ARROWS_ON,              L"Arrows on"                      },
 		{ IDD_ATTACH_SIG_GEN_TO_LINE, L"Attach active signal generator" },
@@ -136,7 +158,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		if ( m_pNMRI->IsPipe(m_nobIdHighlighted) )
 		{
 			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
-			appendMenu(hPopupMenu, m_pPreferences->ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
+			appendMenu(hPopupMenu, m_pPreferences->ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
 		{
@@ -194,6 +216,12 @@ void MainWindow::SetSensorPoints()
 bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
+
+	PIXEL const pixHeight { height - H_SCALE_HEIGHT };
+
+	m_upHorzScale->Move(0_PIXEL, pixHeight, width, H_SCALE_HEIGHT, true);
+	m_upVertScale->Move(0_PIXEL, 0_PIXEL, V_SCALE_WIDTH, pixHeight, true);
+
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
@@ -629,6 +657,11 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_STOP_ON_TRIGGER:
 		m_pModelCommands->ToggleStopOnTrigger(m_nobIdHighlighted);
 		break;
+
+	case IDD_SCALES:
+		m_upHorzScale->Show(m_pPreferences->ScalesVisible());
+		m_upVertScale->Show(m_pPreferences->ScalesVisible());
+		return true;
 
 	default:
 		break;

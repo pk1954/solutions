@@ -68,23 +68,24 @@ void MiniWindow::Notify(bool const bImmediately)
 {
 	if (m_pObservedNNetWindow)
 	{
-		float          const EXTRA_SPACE_FACTOR { 1.2f };                              // give 20% more space (looks better)
-		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };     // current position of main window view 
-		MicroMeterRect const umRectModel { m_pNMRI->GetUPNobsC().CalcEnclosingRect() }; // current extension of model
-		MicroMeterRect const umRectShow  { Union(umRectMain, umRectModel) };           // all this should be visible  
-		fPixelPoint    const fpCenter    { Convert2fPixelPoint(GetClRectCenter()) };
-		MicroMeterPnt  const umPntTarget { umRectShow.GetCenter() };
-		MicroMeter     const umPixelSizeTarget
+		float            const EXTRA_SPACE_FACTOR { 1.2f };                              // give 20% more space (looks better)
+		MicroMeterRect   const umRectMain  { m_pObservedNNetWindow->GetViewRect() };     // current position of main window view 
+		MicroMeterRect   const umRectModel { m_pNMRI->GetUPNobsC().CalcEnclosingRect() }; // current extension of model
+		MicroMeterRect   const umRectShow  { Union(umRectMain, umRectModel) };           // all this should be visible  
+		fPixelPoint      const fpCenter    { Convert2fPixelPoint(GetClRectCenter()) };
+		MicroMeterPnt    const umPntTarget { umRectShow.GetCenter() };
+		Uniform2D<MicroMeter>& coord       { GetCoord() };
+		MicroMeter       const umPixelSizeTarget
 		{
-			GetCoordC().ComputeZoom
+			coord.ComputeZoom
 			(
 				umRectShow.ScaleRect(NEURON_RADIUS), 
 				GetClRectSize(),
 				EXTRA_SPACE_FACTOR
 			)
 		};
-		GetDrawContext().Zoom(umPixelSizeTarget);
-		GetDrawContext().Center(umPntTarget, fpCenter);
+		coord.Zoom(umPixelSizeTarget);
+		coord.Center(umPntTarget, fpCenter);
 		NNetWindow::Notify(false);
 	}
 }

@@ -104,24 +104,24 @@ public:
 
 	PixFpDimension operator+= (PixFpDimension const a)
 	{
-		m_fPixOffset += a.m_fPixOffset;
-		SetPixelSize(m_logPixelSize + a.m_logPixelSize);
+		m_fPixOffset   += a.m_fPixOffset;
+		m_logPixelSize += a.m_logPixelSize;
 		NotifyAll(true);
 		return *this;
 	}
 
 	PixFpDimension operator-= (PixFpDimension const a)
 	{
-		m_fPixOffset -= a.m_fPixOffset;
-		SetPixelSize(m_logPixelSize - a.m_logPixelSize);
+		m_fPixOffset   -= a.m_fPixOffset;
+		m_logPixelSize -= a.m_logPixelSize;
 		NotifyAll(true);
 		return *this;
 	}
 
 	PixFpDimension operator*= (float const factor)
 	{
-		m_fPixOffset *= factor;
-		SetPixelSize(m_logPixelSize * factor);
+		m_fPixOffset   *= factor;
+		m_logPixelSize *= factor;
 		NotifyAll(true);
 		return *this;
 	}

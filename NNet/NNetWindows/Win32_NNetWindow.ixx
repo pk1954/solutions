@@ -15,6 +15,7 @@ import Uniform2D;
 import NNetController;
 import GraphicsWindow;
 import NNetModel;
+import Scale;
 
 export class NNetWindow : public GraphicsWindow
 {
@@ -74,6 +75,9 @@ public:
 	}
 
 protected:
+
+	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
+	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
 
 	bool OnSize(PIXEL  const, PIXEL  const) override;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;

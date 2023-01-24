@@ -46,38 +46,43 @@
 #define       IDM_NEW_MODEL                  175
 #define       IDM_ADD_IMPORTED_MODEL         176
 
-#define       IDD_ARROWS                     180
-#define       IDD_ARROWS_ON                  181
-#define       IDD_ARROWS_OFF                 182
-#define       IDD_RULER_ON                   183
-#define       IDD_RULER_OFF                  184
-#define       IDD_MEASUREMENT_ON             185
-#define       IDD_MEASUREMENT_OFF            186
-#define       IDD_ADD_TRACK                  187
-#define       IDD_DELETE_TRACK               188
-#define       IDD_EMPHASIZE                  189
-#define       IDD_PERF_MON_MODE_ON           190
-#define       IDD_PERF_MON_MODE_OFF          191
-#define       IDD_DELETE_EMPTY_TRACKS        192
+#define       IDD_SCALES                     260
+#define       IDD_SCALES_ON                  261
+#define       IDD_SCALES_OFF                 262
 
-#define       IDD_SOUND_ON                   200
-#define       IDD_SOUND_OFF                  202
-#define       IDX_PLAY_SOUND                 203
+#define       IDD_ARROWS                     270
+#define       IDD_ARROWS_ON                  271
+#define       IDD_ARROWS_OFF                 272
+
+#define       IDD_RULER_ON                   283
+#define       IDD_RULER_OFF                  284
+#define       IDD_MEASUREMENT_ON             285
+#define       IDD_MEASUREMENT_OFF            286
+#define       IDD_ADD_TRACK                  287
+#define       IDD_DELETE_TRACK               288
+#define       IDD_EMPHASIZE                  289
+#define       IDD_PERF_MON_MODE_ON           290
+#define       IDD_PERF_MON_MODE_OFF          291
+#define       IDD_DELETE_EMPTY_TRACKS        292
+
+#define       IDD_SOUND_ON                   300
+#define       IDD_SOUND_OFF                  302
+#define       IDX_PLAY_SOUND                 303
 								   	         
-#define       IDD_AUTO_OPEN_ON               210
-#define       IDD_AUTO_OPEN_OFF              211
+#define       IDD_AUTO_OPEN_ON               310
+#define       IDD_AUTO_OPEN_OFF              311
 									         
-#define       IDD_SENSOR_PNTS                220
-#define       IDD_SENSOR_PNTS_ON             221
-#define       IDD_SENSOR_PNTS_OFF            222
+#define       IDD_SENSOR_PNTS                320
+#define       IDD_SENSOR_PNTS_ON             321
+#define       IDD_SENSOR_PNTS_OFF            322
 									         
-#define       IDM_MONITOR_WINDOW             330
-#define       IDD_SIGNAL_TOO_HIGH            340
-#define       IDD_ADD_EEG_SENSOR             345
-#define       IDD_DELETE_EEG_SENSOR          346
-#define       IDD_DELETE_SIGNAL              347
-#define       IDD_SCALE_EEG_SIGNALS          348
-#define       IDD_CONNECT                    350
+#define       IDM_MONITOR_WINDOW             430
+#define       IDD_SIGNAL_TOO_HIGH            440
+#define       IDD_ADD_EEG_SENSOR             445
+#define       IDD_DELETE_EEG_SENSOR          446
+#define       IDD_DELETE_SIGNAL              447
+#define       IDD_SCALE_EEG_SIGNALS          448
+#define       IDD_CONNECT                    450
 								   	         
 #define       IDD_INSERT_KNOT                460
 #define       IDD_INSERT_NEURON              461

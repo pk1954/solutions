@@ -40,26 +40,48 @@ using std::filesystem::path;
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
 
-class WrapShowArrows: public WrapBase
+class WrapShowScales : public WrapBase
 {
 public:
-    explicit WrapShowArrows(Preferences & pref)
+    explicit WrapShowScales(Preferences& pref)
+      : WrapBase(L"ShowScales"),
+        m_pref(pref)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        m_pref.SetScales(static_cast<bool>(script.ScrReadUint()));
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << (m_pref.ScalesVisible() ? PREF_ON : PREF_OFF);
+    }
+
+private:
+    Preferences& m_pref;
+};
+
+class WrapShowArrows : public WrapBase
+{
+public:
+    explicit WrapShowArrows(Preferences& pref)
       : WrapBase(L"ShowArrows"),
         m_pref(pref)
     {}
 
-    void operator() (Script & script) const final
+    void operator() (Script& script) const final
     {
         m_pref.SetArrows(static_cast<bool>(script.ScrReadUint()));
     }
 
-    void Write(wostream & out) const final
+    void Write(wostream& out) const final
     {
         out << (m_pref.ArrowsVisible() ? PREF_ON : PREF_OFF);
     }
 
 private:
-    Preferences & m_pref;
+    Preferences& m_pref;
 };
 
 class WrapShowSensorPoints: public WrapBase
@@ -222,6 +244,7 @@ void Preferences::Initialize
     m_wstrPreferencesFile = Util::GetCurrentDir();
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
+    m_prefVector.push_back(make_unique<WrapShowScales>(*this));
     m_prefVector.push_back(make_unique<WrapShowArrows>(*this));
     m_prefVector.push_back(make_unique<WrapShowSensorPoints>(*this));
     m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
@@ -260,6 +283,12 @@ void Preferences::SetArrows(bool const bOn)
 {
     m_bArrows = bOn;
     SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, 0);
+}
+
+void Preferences::SetScales(bool const bOn)
+{
+    m_bScales = bOn;
+    SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, 0);
 }
 
 bool Preferences::WritePreferences() const
