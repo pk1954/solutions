@@ -195,10 +195,10 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 
 void MainWindow::AnimateArrows()
 {
-	MicroMeter oldVal { m_arrowSize };
+	MicroMeter oldVal { m_umArrowSize };
 	MicroMeter umTarget = m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter;
 	if (umTarget != oldVal)
-		m_pModelCommands->AnimateArrows(m_arrowSize, umTarget);
+		m_pModelCommands->AnimateArrows(m_umArrowSize, umTarget);
 }
 
 void MainWindow::SetSensorPoints() 
@@ -462,8 +462,9 @@ void MainWindow::DoPaint()
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
-		if (m_pPreferences->ArrowsVisible())
-			DrawArrowsInRect(pixRect, m_arrowSize);
+//		if (m_pPreferences->ArrowsVisible())
+		if (m_umArrowSize > 0.0_MicroMeter)
+			DrawArrowsInRect(pixRect, m_umArrowSize);
 	}
 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
