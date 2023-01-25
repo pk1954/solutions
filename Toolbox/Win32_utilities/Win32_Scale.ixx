@@ -69,23 +69,25 @@ private:
 
 	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
 	{
-		bool             bResult    { true };
-		int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
-		bool       const bDirection { iDelta > 0 };
-		PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };
-		fPixel           fPixCenter { Convert2fPixel(ptCrsr.GetX()) };
-
-		for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
+		if (IsZoomAllowed())
 		{
-			if (IsScaleLocked())
-				bResult = m_pixCoord.ZoomDir(bDirection, LogUnits::ZERO_VAL());
-			else
-				bResult = m_pixCoord.ZoomDir(bDirection, fPixCenter);
+			bool             bResult    { true };
+			int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+			bool       const bDirection { iDelta > 0 };
+			PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };
+			fPixel           fPixCenter { Convert2fPixel(ptCrsr.GetX()) };
+
+			for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
+			{
+				if (IsScaleLocked())
+					bResult = m_pixCoord.ZoomDir(bDirection, LogUnits::ZERO_VAL());
+				else
+					bResult = m_pixCoord.ZoomDir(bDirection, fPixCenter);
+			}
+
+			if (!bResult)
+				MessageBeep(MB_ICONWARNING);
 		}
-
-		if (!bResult)
-			MessageBeep(MB_ICONWARNING);
-
 		GraphicsWindow::OnMouseWheel(wParam, lParam);
 	}
 

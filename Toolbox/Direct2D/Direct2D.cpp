@@ -426,7 +426,7 @@ void D2D_driver::Reset() const
 
 D2D1_POINT_2F convertD2D(fPixelPoint const & fPP)
 {
-	return D2D1_POINT_2F{ fPP.GetXvalue(), fPP.GetYvalue() }; 
+	return D2D1_POINT_2F { fPP.GetXvalue(), fPP.GetYvalue() }; 
 }
 
 D2D1_RECT_F convertD2D(fPixelRect const & rect)

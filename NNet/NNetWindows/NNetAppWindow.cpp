@@ -225,8 +225,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_nmwi.GetParams()      .RegisterObserver(m_parameterDlg);
 	m_nmwi.GetParams()      .RegisterObserver(m_computeThread);
 	m_soundOnObservable     .RegisterObserver(m_appMenu);
-	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
 	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
+	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
 
 	configureStatusBar();
 	adjustChildWindows();

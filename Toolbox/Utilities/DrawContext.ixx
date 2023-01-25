@@ -93,7 +93,7 @@ public:
 		return m_coord.Zoom(bDirection, fPixPointCenter);
 	}
 
-	void Move(auto const d) { m_coord.Move(d); }
+	void Move(auto const & d) { m_coord.Move(d); }
 
 	void SetNoColors(bool const bMode) { m_bNoColors = bMode; }
 

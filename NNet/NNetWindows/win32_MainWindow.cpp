@@ -90,11 +90,13 @@ void MainWindow::Start
 
 	m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale->SetAllowUnlock(true);
+	m_upHorzScale->SetZoomAllowed(false);
 	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
 	m_upHorzScale->SetLeftBorder (Convert2fPixel(V_SCALE_WIDTH));
 
 	m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
 	m_upVertScale->SetAllowUnlock(true);
+	m_upVertScale->SetZoomAllowed(false);
 	m_upVertScale->SetOrthoOffset (Convert2fPixel(V_SCALE_WIDTH));
 	m_upHorzScale->SetBottomBorder(Convert2fPixel(H_SCALE_HEIGHT));
 }

@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <math.h>
 #include <Windows.h>
 
@@ -57,36 +58,55 @@ protected:
 		D2D1::ColorF const color          
 	) const
 	{
-		fMicroSecs const usPixelSize   { m_pHorzCoord->GetPixelSize() };
 		fMicroSecs const usResolution  { GetParams()->TimeResolution() };
-		fMicroSecs const usIncrement   { max(usPixelSize, usResolution) };
-		fMicroSecs const timeStart     { usIncrement * Cast2Float(floor(timeStart0 / usIncrement)) };
+		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
 		fPixel           fPixMinSignal { fPixel::MAX_VAL() };
 		fPixelPoint      prevPoint     { getPoint(timeStart) };
-		if (prevPoint.IsNotNull())
+		if (prevPoint.IsNull())
+			return fPixMinSignal;
+
+		ID2D1SolidColorBrush * pBrush { m_upGraphics->CreateBrush(color) };
+
+		if (m_pHorzCoord->Transform2fPixelSize(usResolution) >= 3._fPixel)
 		{
-			ID2D1SolidColorBrush * pBrush { m_upGraphics->CreateBrush(color) };
-			for (fMicroSecs time = timeStart + usIncrement; time < timeEnd; time += usIncrement)
+			for (fMicroSecs time = timeStart + usResolution; time < timeEnd; time += usResolution)
 			{
 				fPixelPoint const actPoint { getPoint(time) };
 				if (actPoint.IsNull())
 					break;
 				if (actPoint.GetY() < fPixMinSignal)
 					fPixMinSignal = actPoint.GetY();
-				if (actPoint.GetX() - prevPoint.GetX() >= 2._fPixel)
-				{
-					fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-					m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, pBrush);
-					m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, pBrush);
-				}
-				else
-				{
-					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, pBrush);
-				}
+
+				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
+				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, pBrush);
+				m_upGraphics->DrawLine(stepPoint, actPoint, fPixWidth, pBrush);
 				prevPoint = actPoint;
 			}
-			SafeRelease(& pBrush);
 		}
+		else
+		{
+			fPixel fPixYmin { prevPoint.GetY() };
+
+			for (fMicroSecs time = timeStart + usResolution; time < timeEnd; time += usResolution)
+			{
+				fPixelPoint actPoint { getPoint(time) };
+				assert(actPoint.IsNotNull());
+				if (actPoint.GetY() < fPixYmin)
+				{
+					fPixYmin = actPoint.GetY();
+					if (fPixYmin < fPixMinSignal)
+						fPixMinSignal = fPixYmin;
+				}
+				if (actPoint.GetX() - prevPoint.GetX() > 1.0_fPixel)
+				{
+					actPoint.SetY(fPixYmin);
+					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, pBrush);
+					prevPoint = actPoint;
+					fPixYmin = fPixel::MAX_VAL();
+				}
+			}
+		}
+		SafeRelease(& pBrush);
 		return fPixMinSignal;
 	}
 
