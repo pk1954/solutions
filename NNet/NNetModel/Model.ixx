@@ -103,8 +103,14 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList   const & GetSigGenList () const { return m_sigGenList; }
-	UPSigGenList         & GetSigGenList ()       { return m_sigGenList; }
+	UPSigGenList   const & GetSigGenList () const 
+	{ 
+		return m_sigGenList; 
+	}
+	UPSigGenList         & GetSigGenList ()       
+	{ 
+		return m_sigGenList; 
+	}
 	UPSensorList   const & GetSensorList () const { return m_sensorList; }
 	UPSensorList         & GetSensorList ()       { return m_sensorList; }
 	UPNobList      const & GetUPNobs     () const { return *m_upNobs.get(); }

@@ -43,6 +43,8 @@ public:
     void SizeSensor   (UPNobList const &, float         const);
     void RotateSensor (MicroMeterPnt const &, Radian const);
 
+    void Recalc(UPNobList const &) final;
+
 private:
 
     struct SigDataPoint
@@ -66,9 +68,5 @@ private:
     MicroMeterCircle     m_circle{ MicroMeterCircle::NULL_VAL() };
     vector<SigDataPoint> m_dataPoints{ };
 
-    void Recalc(UPNobList const &) final;
-
     void add2list(Pipe const &);
-
-    SigDataPoint const * findDataPoint(MicroMeterPnt const &) const;
 };

@@ -204,6 +204,7 @@ void MainWindow::AnimateArrows()
 void MainWindow::SetSensorPoints() 
 {
 	m_bShowPnts = m_pPreferences->SensorPointsVisible();
+	Notify(false);
 }
 
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
@@ -462,7 +463,6 @@ void MainWindow::DoPaint()
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
-//		if (m_pPreferences->ArrowsVisible())
 		if (m_umArrowSize > 0.0_MicroMeter)
 			DrawArrowsInRect(pixRect, m_umArrowSize);
 	}

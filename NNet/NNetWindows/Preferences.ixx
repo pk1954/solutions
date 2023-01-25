@@ -37,9 +37,9 @@ public:
 	bool ReadPreferences () const;
 	bool WritePreferences() const;
 
-	void SetArrows(bool const);
-	void SetScales(bool const);
-	void SetSensorPoints(bool const bOn) { m_bSensorPoints = bOn; }
+	void SetArrows      (bool const);
+	void SetScales      (bool const);
+	void SetSensorPoints(bool const);
 
 	bool ScalesVisible      () const { return m_bScales; }
 	bool ArrowsVisible      () const { return m_bArrows; }

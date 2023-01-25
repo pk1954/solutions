@@ -85,14 +85,6 @@ void Sensor::add2list(Pipe const & pipe)
     }
 } 
 
-Sensor::SigDataPoint const * Sensor::findDataPoint(MicroMeterPnt const & umPnt) const
-{
-    for (auto const & it : m_dataPoints)
-        if (it.dataPointCircle().Includes(umPnt))
-            return &it;
-    return nullptr;
-}
-
 void Sensor::DrawDataPoints(DrawContext const & context) const
 {
     for (auto const& it : m_dataPoints)
