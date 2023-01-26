@@ -4,5 +4,5 @@ ShowSensorPoints ON
 DescWinFontSize 18
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Delivery\V4_1\TYP_AF_2.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
 SetPerfMonMode OFF

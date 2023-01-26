@@ -72,8 +72,8 @@ private:
 		}
 	};
 
-	Synapse * m_pSynapse;
-	Pipe    * m_pPipeOld;
-	Pipe    * m_pPipeNew; 
+	Synapse *           m_pSynapse;
+	Pipe    *           m_pPipeOld;
+	Pipe    *           m_pPipeNew; 
 	MicroMeterPnt const m_umPntDelta;
 };

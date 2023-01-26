@@ -70,31 +70,6 @@ void SymbolTable::addSymbol(wstring const & wstrName, Symbol const & sym)
     m_ReverseTab[sym] = wstrName;
 }
 
-void SymbolTable::ScrDefConst(wstring const & wstrName, ScriptFunctor const * const pFunc)
-{
-    addSymbol(wstrName, Symbol(pFunc));
-}
-
-void SymbolTable::ScrDefConst(wstring const & wstrName, long const lValue)
-{
-    addSymbol(wstrName, Symbol(lValue));
-}
-
-void SymbolTable::ScrDefConst(wstring const & wstrName, unsigned long const ulValue)
-{
-    addSymbol(wstrName, Symbol(ulValue));
-}
-
-void SymbolTable::ScrDefConst(wstring const & wstrName, double const dValue)
-{
-    addSymbol(wstrName, Symbol(dValue));
-}
-
-void SymbolTable::ScrDefConst(wstring const & wstrName, wstring const & wstrValue)
-{
-    addSymbol(wstrName, Symbol(wstrValue));
-}
-
 void SymbolTable::Clear()
 {
 	m_SymbolTab.clear();
