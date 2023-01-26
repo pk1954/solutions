@@ -97,6 +97,12 @@ void NNetModelIO::Initialize()
             );
         }
     );
+
+    SymbolTable::ScrDefConst
+    (
+        L"PeakVoltage",
+        static_cast<unsigned long>(ParamType::Value::neuronPeakVolt)
+    );   // legacy
 }
 
 //////////////// import ////////////////

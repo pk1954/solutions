@@ -29,6 +29,7 @@ import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
 import DeselectModuleCmd;
+import DiscIoConnectorCmd;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import MoveNobCommand;
@@ -142,15 +143,6 @@ public:
     }
 };
 
-class WrapDiscIoConnector: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->DiscIoConnector(ScrReadNobId(script));
-    }
-};
-
 class WrapSetParameter: public ScriptFunctor
 {
 public:
@@ -228,16 +220,14 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
     DeselectModuleCmd::Register();
-    SymbolTable::ScrDefConst(L"DiscIoConnector",     new WrapDiscIoConnector ); 
+    DiscIoConnectorCmd::Register();
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
-    SymbolTable::ScrDefConst(L"InsertNeuron",        new WrapInsertNeuron); 
     MoveSelectionCommand::Register();
     MoveSensorCmd::Register();
     MoveSignalCmd::Register();
     MoveNobCommand::Register();
     NewIoLinePairCmd::Register();
     ConnAnimationCommand::Register();
-    SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
     SelectAllConnectedCmd::Register();
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
     SplitNeuronCmd::Register();
@@ -245,6 +235,12 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
+
+    
+    SymbolTable::ScrDefConst(L"ResetModel", new WrapResetModel);  // No undo/redo
+
+    //template InsertPosNobCommand
+    SymbolTable::ScrDefConst(L"InsertNeuron", new WrapInsertNeuron);
 
     ParamType::Apply2GlobalParameters
     ( 

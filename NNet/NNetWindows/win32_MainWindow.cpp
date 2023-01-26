@@ -20,6 +20,7 @@ import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
 import DeselectModuleCmd;
+import DiscIoConnectorCmd;
 import DrawContext;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
@@ -633,7 +634,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_DISC_IOCONNECTOR:
-		m_pModelCommands->DiscIoConnector(m_nobIdHighlighted);
+		DiscIoConnectorCmd::Push(m_nobIdHighlighted);
 		break;
 
 	case IDD_SPLIT_NEURON:

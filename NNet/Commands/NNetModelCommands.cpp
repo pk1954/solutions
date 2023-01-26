@@ -30,7 +30,6 @@ import DeleteSelectionCommand;
 import DeleteSensorCommand;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
-import DiscIoConnectorCmd;
 import InsertPosNobCommand;
 import InsertTrackCommand;
 import NewIoLinePairCmd;
@@ -251,17 +250,6 @@ void NNetModelCommands::DeleteTrack(TrackNr const nr)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << nr << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
-}
-
-void NNetModelCommands::DiscIoConnector(NobId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	if (m_pNMWI->GetNob(id))
-	{
-		m_pSound->Play(L"UNLOCK_SOUND");
-		m_pCmdStack->PushCommand(make_unique<DiscIoConnectorCmd>(*m_pNMWI->GetNob(id)));
-	}
 }
 
 void NNetModelCommands::InsertTrack(TrackNr const nr)

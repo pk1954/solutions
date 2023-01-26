@@ -25,7 +25,7 @@ wchar_t const* ParamType::GetName(ParamType::Value const p)
 		{ inputPeakFreq,    L"StimulusMaxFreq"  }, // max frequency of input connector stimuli
 		{ inputBaseVolt,    L"inputBaseVolt"    }, // amplitude of normal input connector pulses
 		{ inputBaseFreq,    L"inputBaseFreq"    }, // frequency of normal input connector pulses
-		{ neuronPeakVolt,   L"PeakVoltage"      }, // peak output voltage when neuron triggers
+		{ neuronPeakVolt,   L"NeuronPeakVolt"   }, // peak output voltage when neuron triggers
 		{ neuronThreshold,  L"NeuronThreshold"  }, // threshold voltage for neuron triggers
 		{ synapseThreshold, L"SynapseThreshold" }, // threshold for synapse saturation blocking
 		{ pulseSpeed,       L"PulseSpeed"       },

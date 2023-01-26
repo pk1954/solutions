@@ -39,7 +39,7 @@ public:
 private:
 	SigGenStaticData m_sigGenData       { };
 	fHertz           m_freqMax          { 50.0_fHertz };
-	mV               m_neuronPeakVolt   { 20._mV };
+	mV               m_neuronPeakVolt   { 100._mV };
 	mV               m_neuronThreshold  { 20._mV };
 	mV               m_synapseThreshold { 20._mV };
 	meterPerSec      m_pulseSpeed       { 120.0_meterPerSec };
