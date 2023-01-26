@@ -10,6 +10,7 @@ module;
 
 export module NNetCommand;
 
+export import SoundInterface;
 export import Types;
 export import Symtab;
 export import Script;
@@ -27,9 +28,14 @@ export class NNetCommand : public Command
 public:
     ~NNetCommand() override = default;
 
-    static void SetModelInterface(NNetModelWriterInterface * const pNMWI)
+    static void SetModelInterface(NNetModelWriterInterface* const pNMWI)
     {
         m_pNMWI = pNMWI;
+    }
+
+    static void SetSound(Sound * pSound)
+    {
+        m_pSound = pSound;
     }
 
     virtual NobId GetAffectedNob() const
@@ -39,5 +45,6 @@ public:
 
 protected:
 
-    inline static NNetModelWriterInterface * m_pNMWI { nullptr };
+    inline static NNetModelWriterInterface * m_pNMWI  { nullptr };
+    inline static Sound *                    m_pSound { nullptr };
 };

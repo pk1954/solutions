@@ -40,6 +40,7 @@ public:
         m_upNeuron = m_pNMWI->RemoveFromModel<Neuron>(m_neuron);
         m_pNMWI->Push2Model(move(m_upInputLine));
         m_pNMWI->Push2Model(move(m_upOutputLine));
+        m_pSound->Play(L"UNLOCK_SOUND");
     }
 
     void Undo() final
@@ -48,6 +49,7 @@ public:
         m_upInputLine  = m_pNMWI->PopFromModel<InputLine >();
         m_upNeuron->Reconnect();
         m_pNMWI->Restore2Model(move(m_upNeuron));
+        m_pSound->Play(L"SNAP_IN_SOUND");
     }
 
     static void Register()

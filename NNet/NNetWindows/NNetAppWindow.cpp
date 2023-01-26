@@ -99,6 +99,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_dynamicModelObservable
 	);
 	InitializeNNetWrappers(&m_modelCommands, &m_modelIO);
+	NNetCommand::SetSound(&m_sound);
 };
 
 NNetAppWindow::~NNetAppWindow() = default;
@@ -185,8 +186,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_modelCommands,
 		m_cursorPosObservable,
 		m_coordObservable,
-		& m_atDisplay,
-		&m_sound
+		& m_atDisplay
 	);
 
 	m_miniNNetWindow.Start(m_hwndApp, true,	5._fPixel, m_NNetController);

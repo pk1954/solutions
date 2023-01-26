@@ -36,7 +36,6 @@ import Observable;
 import Preferences;
 import RootWindow;
 import SelectAllConnectedCmd;
-import SoundInterface;
 import SplitNeuronCmd;
 import Types;
 import Uniform2D;
@@ -60,8 +59,7 @@ void MainWindow::Start
 	NNetModelCommands & modelCommands,
 	Observable        & cursorObservable,
 	Observable        & coordObservable,  
-	ActionTimer * const pActionTimer,
-	Sound             * pSound
+	ActionTimer * const pActionTimer
 )
 {
 	NNetWindow::Start
@@ -78,7 +76,6 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
-	m_pSound = pSound;
 	HWND hwnd = GetWindowHandle();
 	m_SelectionMenu.Start(hwnd);
 
@@ -641,7 +638,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDD_SPLIT_NEURON:
 		SplitNeuronCmd::Push(m_nobIdHighlighted);
-		m_pSound->Play(L"UNLOCK_SOUND");
 		break;
 
 	case IDD_INSERT_KNOT:
