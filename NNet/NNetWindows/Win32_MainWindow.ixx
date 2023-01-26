@@ -11,6 +11,7 @@ module;
 export module MainWindow;
 
 import ActionTimer;
+import SoundInterface;
 import Types;
 import Preferences;
 import SelectionMenu;
@@ -34,7 +35,8 @@ public:
 		NNetModelCommands&,
 		Observable&,
 		Observable&,
-		ActionTimer* const
+		ActionTimer* const,
+		Sound* const
 	);
 
 	void Stop() final;
@@ -85,6 +87,7 @@ private:
 	Observable*        m_pCoordObservable     { nullptr };
 	Observable*        m_pCursorPosObservable { nullptr };
 	NNetModelCommands* m_pModelCommands       { nullptr };
+	Sound*             m_pSound               { nullptr };
 	bool               m_bShowPnts            { false };
 	NobId              m_nobIdHighlighted     { NO_NOB };
 	NobId              m_nobIdTarget          { NO_NOB };

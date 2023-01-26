@@ -54,7 +54,6 @@ import SetSigGenStaticDataCmd;
 import SizeSelectionCmd;
 import SizeSensorCmd;
 import SoundInterface;
-import SplitNeuronCmd;
 import ToggleEmphModeCmd;
 import ToggleStopOnTriggerCmd;
 import Uniform2D;
@@ -270,14 +269,6 @@ void NNetModelCommands::InsertTrack(TrackNr const nr)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << nr << endl;
 	m_pCmdStack->PushCommand(make_unique<InsertTrackCommand>(nr));
-}
-
-void NNetModelCommands::SplitNeuron(NobId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pSound->Play(L"UNLOCK_SOUND");
-	m_pCmdStack->PushCommand(make_unique<SplitNeuronCmd>(id));
 }
 
 void NNetModelCommands::ToggleStopOnTrigger(NobId const id)

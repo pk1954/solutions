@@ -37,6 +37,7 @@ import MoveSensorCmd;
 import MoveSignalCmd;
 import NewIoLinePairCmd;
 import SelectAllConnectedCmd;
+import SplitNeuronCmd;
 
 using std::wstring;
 
@@ -150,15 +151,6 @@ public:
     }
 };
 
-class WrapSplitNeuron: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->SplitNeuron(ScrReadNobId(script));
-    }
-};
-
 class WrapSetParameter: public ScriptFunctor
 {
 public:
@@ -248,7 +240,7 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"ResetModel",          new WrapResetModel); 
     SelectAllConnectedCmd::Register();
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
-    SymbolTable::ScrDefConst(L"SplitNeuron",         new WrapSplitNeuron );
+    SplitNeuronCmd::Register();
     SymbolTable::ScrDefConst(L"ToggleStopOnTrigger", new WrapToggleStopOnTrigger );
     SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );

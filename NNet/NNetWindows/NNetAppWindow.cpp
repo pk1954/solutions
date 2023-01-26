@@ -185,7 +185,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_modelCommands,
 		m_cursorPosObservable,
 		m_coordObservable,
-		& m_atDisplay
+		& m_atDisplay,
+		&m_sound
 	);
 
 	m_miniNNetWindow.Start(m_hwndApp, true,	5._fPixel, m_NNetController);

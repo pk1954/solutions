@@ -6,6 +6,7 @@ module;
 
 #include <memory>
 #include <cassert>
+#include <iostream>
 
 export module SplitNeuronCmd;
 
@@ -49,7 +50,31 @@ public:
         m_pNMWI->Restore2Model(move(m_upNeuron));
     }
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, new Wrapper);
+    }
+
+    static void Push(NobId nobId)
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << nobId << endl;
+        m_pStack->PushCommand(make_unique<SplitNeuronCmd>(nobId));
+    }
+
 private:
+
+    inline static const wstring NAME { L"SplitNeuron" };
+
+    class Wrapper : public ScriptFunctor
+    {
+    public:
+        void operator() (Script& script) const final
+        {
+            SplitNeuronCmd::Push(ScrReadNobId(script));
+        }
+    };
+
     Neuron               & m_neuron;
     unique_ptr<Neuron>     m_upNeuron     { };
     unique_ptr<InputLine>  m_upInputLine  { };
