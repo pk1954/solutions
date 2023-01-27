@@ -31,7 +31,6 @@ import DeleteSensorCommand;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import InsertPosNobCommand;
-import InsertTrackCommand;
 import NewIoLinePairCmd;
 import NewSigGenCmd;
 import NNetModel;
@@ -250,13 +249,6 @@ void NNetModelCommands::DeleteTrack(TrackNr const nr)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << nr << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
-}
-
-void NNetModelCommands::InsertTrack(TrackNr const nr)
-{ 
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << nr << endl;
-	m_pCmdStack->PushCommand(make_unique<InsertTrackCommand>(nr));
 }
 
 void NNetModelCommands::ToggleStopOnTrigger(NobId const id)

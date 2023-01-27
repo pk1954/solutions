@@ -32,6 +32,7 @@ import DeselectModuleCmd;
 import DiscIoConnectorCmd;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
+import InsertTrackCommand;
 import MoveNobCommand;
 import MoveSelectionCommand;
 import MoveSensorCmd;
@@ -216,6 +217,7 @@ void InitializeNNetWrappers
     DiscIoConnectorCmd::Register();
     ExtendInputLineCmd::Register();
     ExtendOutputLineCmd::Register();
+    InsertTrackCommand::Register();
     MoveNobCommand::Register();
     MoveSelectionCommand::Register();
     MoveSensorCmd::Register();

@@ -61,7 +61,6 @@ public:
     void DiscIoConnector(NobId const);
     void InsertKnot  (NobId const, MicroMeterPnt const&);
     void InsertNeuron(NobId const, MicroMeterPnt const&);
-    void InsertTrack(TrackNr const);
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void NewSignalGenerator();

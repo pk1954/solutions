@@ -29,6 +29,7 @@ import MonitorWindow;
 import Commands;
 import AutoOpen;
 import NNetModel;
+import InsertTrackCommand;
 
 using std::to_wstring;
 using std::wcout;
@@ -238,7 +239,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_ADD_TRACK:
-        m_pModelCommands->InsertTrack(TrackNr(Cast2Int(lParam)));
+        InsertTrackCommand::Push(TrackNr(Cast2Int(lParam)));
         break;
 
     case IDD_DELETE_TRACK:

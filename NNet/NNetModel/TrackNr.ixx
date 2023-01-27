@@ -21,8 +21,3 @@ export TrackNr ScrReadTrackNr(Script & script)
 	TrackNr const trackNr{ script.ScrReadInt() };
 	return trackNr;
 }
-
-export void WriteTrackNr(wostream & out, TrackNr const trackNr)
-{
-	out << L" track " << trackNr;
-}

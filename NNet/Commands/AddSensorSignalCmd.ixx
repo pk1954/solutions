@@ -17,7 +17,7 @@ public:
         MicroMeterCircle const & umCircle,
         TrackNr          const   trackNr
     )
-        : m_umCircle(umCircle),
+      : m_umCircle(umCircle),
         m_trackNr(trackNr)
     {}
 
