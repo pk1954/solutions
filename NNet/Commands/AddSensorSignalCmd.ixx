@@ -2,6 +2,10 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module AddSensorSignalCmd;
 
 import Types;
@@ -35,7 +39,36 @@ public:
         m_pSound->Play(L"DISAPPEAR_SOUND");
     };
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push
+	(
+		MicroMeterCircle const& umCircle,
+		TrackNr          const  trackNr
+	)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << umCircle << trackNr << endl;
+		m_pStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
+	}
+
 private:
+
+	inline static const wstring NAME { L"AddSensorSignal" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			MicroMeterCircle const umCircle { ScrReadMicroMeterCircle(script) };
+			TrackNr          const trackNr  { ScrReadTrackNr(script) };
+			AddSensorSignalCmd::Push(umCircle, trackNr);
+		}
+	};
 
     MicroMeterCircle const m_umCircle;
     TrackNr          const m_trackNr;

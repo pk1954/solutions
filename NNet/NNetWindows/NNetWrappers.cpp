@@ -23,6 +23,7 @@ import NNetWrapperHelpers;
 import NNetModel;
 
 import AddNobsCommand;
+import AddSensorSignalCmd;
 import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import ConnSynapse2NewPipeCmd;
@@ -86,17 +87,6 @@ public:
             script.ScrReadString(), 
             NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
         );
-    }
-};
-
-class WrapAddSignal: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        MicroMeterCircle const umCircle { ScrReadMicroMeterCircle(script) };
-        TrackNr          const trackNr  { ScrReadTrackNr(script) };
-        m_pCommands->AddSensor(umCircle, trackNr);
     }
 };
 
@@ -192,6 +182,7 @@ void InitializeNNetWrappers
     m_pModelIO  = pModelIO;
 
     AddNobsCommand::Register();
+    AddSensorSignalCmd::Register();
     ConnAnimationCommand::Register();
     ConnectCreateForkCmd::Register();
     ConnSynapse2NewPipeCmd::Register();
@@ -213,7 +204,6 @@ void InitializeNNetWrappers
     SplitNeuronCmd::Register();
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
-    SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );

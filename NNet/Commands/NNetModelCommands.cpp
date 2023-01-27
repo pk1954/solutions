@@ -13,7 +13,6 @@ module NNetModelCommands;
 
 import AddNobsCommand;
 import AddPipe2NeuronCmd;
-import AddSensorSignalCmd;
 import AddSigGen2MonitorCmd;
 import ArrowAnimation;
 import AttachSigGen2ConCmd;
@@ -114,17 +113,6 @@ void NNetModelCommands::AddModel()
 		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
 	unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
-}
-
-void NNetModelCommands::AddSensor
-(
-	MicroMeterCircle const & umCircle,
-	TrackNr          const   trackNr
-)
-{ 
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << umCircle << trackNr << endl;
-	m_pCmdStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
 }
 
 void NNetModelCommands::AnimateCoord

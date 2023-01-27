@@ -8,7 +8,9 @@ module;
 
 export module ConnSynapse2NewPipeCmd;
 
+import Types;
 import NNetCommand;
+import NNetModel;
 
 export class ConnSynapse2NewPipeCmd : public NNetCommand
 {
