@@ -136,6 +136,7 @@
     <ClCompile Include="PlugIoConnectors.ixx" />
     <ClCompile Include="PlugIoLines.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
+    <ClCompile Include="ResetModelCmd.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />
     <ClCompile Include="RotateNobCommand.ixx" />
     <ClCompile Include="RotateSelectionCommand.ixx" />

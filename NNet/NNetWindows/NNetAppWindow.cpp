@@ -45,6 +45,7 @@ import Script;
 import NNetCommand;
 import NNetModel;
 import CreateInitialNobsCmd;
+import ResetModelCmd;
 
 using std::endl;
 using std::wcout;
@@ -260,8 +261,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	if (! AutoOpen::IsOn() || ! m_preferences.ReadPreferences())
 	{
-		m_modelCommands.ResetModel();
+		ResetModelCmd::Push();
 		CreateInitialNobsCmd::Push();
+		m_dynamicModelObservable.NotifyAll(false);
 		m_staticModelObservable.NotifyAll(false);
 	}
 
@@ -460,8 +462,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return false;
 
 		case IDM_NEW_MODEL:
-			if (AskAndSave())
-				newModel();
+			if (MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\nContinue?", L"Warning", MB_YESNO) == IDYES)
+				if (AskAndSave())
+					newModel();
 			break;
 
 		case IDM_SAVE_MODEL:
@@ -615,9 +618,10 @@ void NNetAppWindow::newModel()
 {
 	m_computeThread.StopComputation();
 	m_mainNNetWindow.Reset();
-	m_modelCommands.ResetModel();
+	ResetModelCmd::Push();
 	CreateInitialNobsCmd::Push();
 	m_staticModelObservable.NotifyAll(false);
+	m_dynamicModelObservable.NotifyAll(false);
 	m_appTitle.SetUnsavedChanges(true);
 	m_mainNNetWindow.CenterModel();
 }

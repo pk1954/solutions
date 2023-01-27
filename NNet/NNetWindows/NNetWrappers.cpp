@@ -39,6 +39,7 @@ import MoveSelectionCommand;
 import MoveSensorCmd;
 import MoveSignalCmd;
 import NewIoLinePairCmd;
+import ResetModelCmd;
 import SelectAllConnectedCmd;
 import SplitNeuronCmd;
 
@@ -96,15 +97,6 @@ public:
         MicroMeterCircle const umCircle { ScrReadMicroMeterCircle(script) };
         TrackNr          const trackNr  { ScrReadTrackNr(script) };
         m_pCommands->AddSensor(umCircle, trackNr);
-    }
-};
-
-class WrapResetModel: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->ResetModel();
     }
 };
 
@@ -216,6 +208,7 @@ void InitializeNNetWrappers
     MoveSensorCmd::Register();
     MoveSignalCmd::Register();
     NewIoLinePairCmd::Register();
+    ResetModelCmd::Register();
     SelectAllConnectedCmd::Register();
     SplitNeuronCmd::Register();
 
@@ -232,8 +225,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
 
     
-    SymbolTable::ScrDefConst(L"ResetModel", new WrapResetModel);  // No undo/redo
-
     //template InsertPosNobCommand
     SymbolTable::ScrDefConst(L"InsertNeuron", new WrapInsertNeuron);
 

@@ -107,15 +107,6 @@ void NNetModelCommands::PushCommand(unique_ptr<NNetCommand> upCmd)
 	m_pCmdStack->PushCommand(move(upCmd));
 }
 
-void NNetModelCommands::ResetModel()
-{ 
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pNMWI->ResetModel();
-	m_pCmdStack->Clear();
-	m_pDynamicModelObservable->NotifyAll(false);
-}
-
 void NNetModelCommands::AddModel()
 {
 	if (m_bTrace)

@@ -39,7 +39,6 @@ public:
     );
     void SetModelInterface(NNetModelWriterInterface* const);
 
-    void ResetModel();
     void PushCommand(unique_ptr<NNetCommand>);
     void UndoCommand();
     void RedoCommand();
