@@ -52,7 +52,6 @@ public:
     void AttachSigGen2Conn(NobId const);
     void AttachSigGen2Line(NobId const);
     void Connect(NobId const, NobId const);
-    void CreateInitialNobs();
     void DeleteNob(NobId const);
     void DeleteSelection();
     void DeleteSensor(SensorId const&);

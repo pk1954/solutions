@@ -27,6 +27,7 @@ import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
+import CreateInitialNobsCmd;
 import CreateSynapseCommand;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
@@ -104,15 +105,6 @@ public:
     void operator() (Script & script) const final
     {
         m_pCommands->ResetModel();
-    }
-};
-
-class WrapCreateInitialNobs: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->CreateInitialNobs();
     }
 };
 
@@ -212,6 +204,7 @@ void InitializeNNetWrappers
     ConnectCreateForkCmd::Register();
     ConnSynapse2NewPipeCmd::Register();
     CreateForkCommand::Register();
+    CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();
     DeselectModuleCmd::Register();
     DiscIoConnectorCmd::Register();
@@ -229,7 +222,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
     SymbolTable::ScrDefConst(L"AddSignal",           new WrapAddSignal);
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
-    SymbolTable::ScrDefConst(L"CreateInitialNobs",   new WrapCreateInitialNobs );
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );

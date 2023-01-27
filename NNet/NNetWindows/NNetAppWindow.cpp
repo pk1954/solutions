@@ -44,6 +44,7 @@ import SimulationTime;
 import Script;
 import NNetCommand;
 import NNetModel;
+import CreateInitialNobsCmd;
 
 using std::endl;
 using std::wcout;
@@ -260,7 +261,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	if (! AutoOpen::IsOn() || ! m_preferences.ReadPreferences())
 	{
 		m_modelCommands.ResetModel();
-		m_modelCommands.CreateInitialNobs();
+		CreateInitialNobsCmd::Push();
+		m_staticModelObservable.NotifyAll(false);
 	}
 
 	m_bStarted = true;
@@ -614,7 +616,7 @@ void NNetAppWindow::newModel()
 	m_computeThread.StopComputation();
 	m_mainNNetWindow.Reset();
 	m_modelCommands.ResetModel();
-	m_modelCommands.CreateInitialNobs();
+	CreateInitialNobsCmd::Push();
 	m_staticModelObservable.NotifyAll(false);
 	m_appTitle.SetUnsavedChanges(true);
 	m_mainNNetWindow.CenterModel();

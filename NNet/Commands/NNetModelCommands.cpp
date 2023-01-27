@@ -207,14 +207,6 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	m_pSound->Play(L"SNAP_IN_SOUND");
 }
 
-void NNetModelCommands::CreateInitialNobs()
-{ 
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pNMWI->CreateInitialNobs();
-	m_pDynamicModelObservable->NotifyAll(false);
-}
-
 void NNetModelCommands::DeleteSensor(SensorId const& id)
 {
 	if (m_bTrace)

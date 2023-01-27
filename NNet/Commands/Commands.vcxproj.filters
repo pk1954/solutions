@@ -219,5 +219,8 @@
     <ClCompile Include="ConnSynapse2NewPipeCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CreateInitialNobsCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
