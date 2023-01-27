@@ -224,30 +224,25 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         m_pModelCommands->AddModel();
         break;
 
+    case IDD_ADD_EEG_SENSOR:
+        m_pModelCommands->AddSensor(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
+        m_pMonitorWindow->Show(true);
+        break;
+
     case IDD_DELETE_EEG_SENSOR:
         m_pModelCommands->DeleteSensor(m_pNMRI->GetSensorIdSelected());
-        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
         break;
 
     case IDD_DELETE_SIGNAL:
         m_pModelCommands->DeleteSignal(m_pNMRI->GetMonitorDataC().GetHighlightedSignalId());
-        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
         break;
 
     case IDD_ADD_TRACK:
         m_pModelCommands->InsertTrack(TrackNr(Cast2Int(lParam)));
-        m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
     case IDD_DELETE_TRACK:
         m_pModelCommands->DeleteTrack(TrackNr(Cast2Int(lParam)));
-        m_pSound->Play(TEXT("DISAPPEAR_SOUND")); 
-        break;
-
-    case IDD_ADD_EEG_SENSOR:
-        m_pModelCommands->AddSensor(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
-        m_pMonitorWindow->Show(true);
-        m_pSound->Play(TEXT("SNAP_IN_SOUND")); 
         break;
 
     case IDM_ESCAPE:

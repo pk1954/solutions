@@ -31,12 +31,14 @@ public:
             { return s.GetSignalSource() == m_upSensor.get(); }
         );
         m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
+        m_pSound->Play(L"DISAPPEAR_SOUND");
     };
 
     void Undo() final
     {
         m_pNMWI->GetSensorList().InsertSensor(move(m_upSensor), m_sensorId);
         m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
+        m_pSound->Play(L"SNAP_IN_SOUND");
     };
 
 private:

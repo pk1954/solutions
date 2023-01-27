@@ -33,6 +33,7 @@ public:
             if (m_sensorId.IsNotNull())
                 m_upSensor = move(m_pNMWI->GetSensorList().RemoveSensor(m_sensorId));
         }
+        m_pSound->Play(L"DISAPPEAR_SOUND");
     };
 
     void Undo() final
@@ -40,6 +41,7 @@ public:
         m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
         if (m_upSensor)
             m_pNMWI->GetSensorList().InsertSensor(move(m_upSensor), m_sensorId);
+        m_pSound->Play(L"SNAP_IN_SOUND");
     };
 
 private:
