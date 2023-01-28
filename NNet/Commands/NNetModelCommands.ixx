@@ -62,7 +62,6 @@ public:
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void NewSignalGenerator();
-    void RenameSigGen(SigGenId const, wstring const&);
     void Rotate(NobId const, MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateModel(MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateSelection(MicroMeterPnt const&, MicroMeterPnt const&);

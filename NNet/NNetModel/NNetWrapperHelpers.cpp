@@ -92,6 +92,11 @@ NobId ScrReadNobId(Script& script)
 	return NobId(script.ScrReadLong());
 }
 
+SigGenId ScrReadSigGenId(Script& script)
+{
+	return SigGenId(script.ScrReadInt());
+}
+
 NobType ScrReadNobType(Script& script)
 {
 	unsigned int uiVal { script.ScrReadUint() };

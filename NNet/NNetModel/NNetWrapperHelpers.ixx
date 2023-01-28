@@ -21,6 +21,7 @@ export MicroMeterPntVector   ScrReadMicroMeterPntVector(Script &);
 export unique_ptr<NobIdList> ScrReadNobIdList          (Script &);
 export NobId                 ScrReadNobId              (Script &);
 export SignalId              ScrReadSignalId           (Script &);
+export SigGenId              ScrReadSigGenId           (Script &);
 export NobType               ScrReadNobType            (Script &);
 export ParamType::Value      ScrReadParamType          (Script &);
 export mV                    ScrReadVoltage            (Script &);

@@ -23,6 +23,7 @@ import Win32_PixelTypes;
 import Direct2D;
 import Scale;
 import DeleteSigGenCmd;
+import RenameSigGenCmd;
 import NNetModelCommands;
 import NNetModel;
 
@@ -208,7 +209,7 @@ void SignalDesigner::renameSigGen()
 	wstring wstrName { m_pNMWI->GetSigGenSelected()->GetName() };
 	EditLineBox dlgBox(wstrName, L"Rename SignalGenerator");
 	if (dlgBox.Show(GetWindowHandle()))
-		m_pCommands->RenameSigGen(m_pNMWI->GetSigGenIdSelected(), wstrName);
+		RenameSigGenCmd::Push(m_pNMWI->GetSigGenIdSelected(), wstrName);
 	SetCaption();
 }
 

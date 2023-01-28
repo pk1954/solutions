@@ -40,6 +40,7 @@ import MoveSelectionCommand;
 import MoveSensorCmd;
 import MoveSignalCmd;
 import NewIoLinePairCmd;
+import RenameSigGenCmd;
 import ResetModelCmd;
 import SelectAllConnectedCmd;
 import SplitNeuronCmd;
@@ -199,6 +200,7 @@ void InitializeNNetWrappers
     MoveSensorCmd::Register();
     MoveSignalCmd::Register();
     NewIoLinePairCmd::Register();
+    RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     SelectAllConnectedCmd::Register();
     SplitNeuronCmd::Register();

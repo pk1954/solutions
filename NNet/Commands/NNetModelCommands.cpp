@@ -38,7 +38,6 @@ import NNetModelCommands;
 import NNetModelIO;
 import PlugIoConnectors;
 import PlugIoLines;
-import RenameSigGenCmd;
 import RotateModelCommand;
 import RotateNobCommand;
 import RotateSelectionCommand;
@@ -264,13 +263,6 @@ void NNetModelCommands::SetActiveSignalGenerator(SigGenId const id)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
-}
-
-void NNetModelCommands::RenameSigGen(SigGenId const id, wstring const & name)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << L" " << name << endl;
-	m_pCmdStack->PushCommand(make_unique<RenameSigGenCmd>(id, name));
 }
 
 void NNetModelCommands::SelectSigGenClients()
