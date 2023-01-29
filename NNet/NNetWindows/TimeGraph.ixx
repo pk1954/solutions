@@ -78,8 +78,8 @@ protected:
 					fPixMinSignal = actPoint.GetY();
 
 				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, pBrush);
-				m_upGraphics->DrawLine(stepPoint, actPoint, fPixWidth, pBrush);
+				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, *pBrush);
+				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, *pBrush);
 				prevPoint = actPoint;
 			}
 		}
@@ -100,7 +100,7 @@ protected:
 				if (actPoint.GetX() - prevPoint.GetX() > 1.0_fPixel)
 				{
 					actPoint.SetY(fPixYmin);
-					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, pBrush);
+					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, *pBrush);
 					prevPoint = actPoint;
 					fPixYmin = fPixel::MAX_VAL();
 				}

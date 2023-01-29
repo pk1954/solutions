@@ -39,7 +39,9 @@ public:
     void InitWindow(HWND const);
     bool StartFrame();
     void SetStdFontSize(float const);
-    void DisplayText(fPixelRect const &, wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, D2D1::ColorF const,  IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&,                      IDWriteTextFormat* = nullptr) const;
     void EndFrame();
     void ShutDown();
     void DrawRectangle       (fPixelRect    const &, D2D1::ColorF const, fPixel const) const;
@@ -47,7 +49,9 @@ public:
     void FillGradientRect    (fPixelRect    const &, D2D1::ColorF const, D2D1::ColorF const) const;
     void FillGradientEllipse (fPixelEllipse const &, D2D1::ColorF const, D2D1::ColorF const) const;
     void FillGradientCircle  (fPixelCircle  const &, D2D1::ColorF const, D2D1::ColorF const) const;
-    void DrawLine            (fPixelPoint   const &, fPixelPoint const &, fPixel const, D2D1::ColorF const) const;
+    void DrawLine            (fPixelPoint   const &, fPixelPoint const &, fPixel const, ID2D1Brush   const&) const;
+    void DrawLine            (fPixelPoint   const &, fPixelPoint const &, fPixel const, D2D1::ColorF const)  const;
+    void DrawLine            (fPixelPoint   const &, fPixelPoint const &, fPixel const) const;
     void FillCircle          (fPixelCircle  const &, D2D1::ColorF const) const;
     void DrawCircle          (fPixelCircle  const &, D2D1::ColorF const, fPixel const) const;
     void FillEllipse         (fPixelEllipse const &, D2D1::ColorF const) const;
@@ -61,14 +65,15 @@ public:
     void SetRotation         (float const, fPixelPoint const &) const;
     void Reset               () const;
 
-    void DrawLine(fPixelPoint const &, fPixelPoint const &, fPixel const, ID2D1SolidColorBrush *) const;
-
     fPixelRectSize GetClRectSize() const;
     fPixel         GetClRectWidth() const;
     fPixel         GetClRectHeight() const;
 
-    ID2D1SolidColorBrush * CreateBrush(D2D1::ColorF const) const;
-    IDWriteTextFormat    * NewTextFormat(float const) const;
+    IDWriteTextFormat * NewTextFormat(float const) const;
+
+    ID2D1SolidColorBrush* CreateBrush(D2D1::ColorF const) const;
+        
+    D2D1::ColorF SetColor(D2D1::ColorF const);
 
 private:
     HWND m_hwnd { nullptr };
@@ -79,6 +84,8 @@ private:
     ID2D1HwndRenderTarget * m_pRenderTarget  { nullptr };
     IDWriteFactory        * m_pDWriteFactory { nullptr };
     IDWriteTextFormat     * m_pTextFormat    { nullptr };
+    ID2D1SolidColorBrush  * m_pBrush         { nullptr };
+    D2D1::ColorF            m_color          { D2D1::ColorF::Black };
 
     void createResources();
     void discardResources();

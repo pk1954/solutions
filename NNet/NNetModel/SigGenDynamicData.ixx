@@ -13,7 +13,6 @@ export class SigGenDynamicData
 public:
 
 	void Reset();
-	void StartSpike();
 	void StartStimulus();
 	void StopStimulus();
 

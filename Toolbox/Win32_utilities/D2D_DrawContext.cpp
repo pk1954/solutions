@@ -197,9 +197,8 @@ void D2D_DrawContext::DisplayText
 (
 	MicroMeterRect      const & umRect,
 	wstring             const & wstr,
-	ColorF              const   colF,
 	IDWriteTextFormat * const   pTextFormat
 ) const
 {
-	m_pGraphics->DisplayText(m_coord.Transform2fPixelRect(umRect), wstr, colF, pTextFormat);
+	m_pGraphics->DisplayText(m_coord.Transform2fPixelRect(umRect), wstr, pTextFormat);
 }

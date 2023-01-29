@@ -29,22 +29,22 @@ public:
 	virtual bool ZoomCoordFactor(float const, fPixel const) = 0;
 	virtual void MoveCoord(PIXEL const) = 0;
 
-	bool         IsInverted     () const { return m_bInverted; }
-	bool         IsVertScale    () const { return m_bVertScale; }
-	bool         GetTicksDir    () const { return m_bTicksDir; }
-	fPixel       GetLeftBorder  () const { return m_fPixLeftBorder; }
-	fPixel       GetRightBorder () const { return m_fPixRightBorder; }
-	fPixel       GetTopBorder   () const { return m_fPixTopBorder; }
-	fPixel       GetBottomBorder() const { return m_fPixBottomBorder; }
-	fPixel       GetOrthoOffset () const { return m_fPixOrthoOffset; }
-	D2D1::ColorF GetColor       () const { return m_scaleColor; }
+	bool   IsInverted     () const { return m_bInverted; }
+	bool   IsVertScale    () const { return m_bVertScale; }
+	bool   GetTicksDir    () const { return m_bTicksDir; }
+	fPixel GetLeftBorder  () const { return m_fPixLeftBorder; }
+	fPixel GetRightBorder () const { return m_fPixRightBorder; }
+	fPixel GetTopBorder   () const { return m_fPixTopBorder; }
+	fPixel GetBottomBorder() const { return m_fPixBottomBorder; }
+	fPixel GetOrthoOffset () const { return m_fPixOrthoOffset; }
 
-	void SetTopBorder   (fPixel       const b)   { m_fPixTopBorder    = b; }
-	void SetBottomBorder(fPixel       const b)   { m_fPixBottomBorder = b; }
-	void SetRightBorder (fPixel       const b)   { m_fPixRightBorder  = b; }
-	void SetLeftBorder  (fPixel       const b)   { m_fPixLeftBorder   = b; }
-	void SetScaleColor  (D2D1::ColorF const col) { m_scaleColor       = col; }
-	void SetOrthoOffset (fPixel       const off) { m_fPixOrthoOffset  = off; }
+	void SetTopBorder   (fPixel const b)   { m_fPixTopBorder    = b; }
+	void SetBottomBorder(fPixel const b)   { m_fPixBottomBorder = b; }
+	void SetRightBorder (fPixel const b)   { m_fPixRightBorder  = b; }
+	void SetLeftBorder  (fPixel const b)   { m_fPixLeftBorder   = b; }
+	void SetOrthoOffset (fPixel const off) { m_fPixOrthoOffset  = off; }
+
+	D2D1::ColorF SetScaleColor(D2D1::ColorF const c) { return m_upGraphics->SetColor(c); }
 
 	inline static bool const TICKS_UP    { true };
 	inline static bool const TICKS_DOWN  { false };
@@ -79,6 +79,7 @@ protected:
 	inline static fPixel const SMALL_TICK  { 5._fPixel };
 
 	void   display(fPixelRect const&, wstring const&) const;
+	void   display(fPixelRect const&, wstring const&, D2D1::ColorF const) const;
 	void   setTextBox(fPixelRect& textBox) const;
 	fPixel getClHeight() const { return m_upGraphics->GetClRectHeight(); }
 	fPixel getClWidth () const { return m_upGraphics->GetClRectWidth (); }
@@ -88,20 +89,19 @@ protected:
 
 private:
 
-	D2D1::ColorF        m_scaleColor       { D2D1::ColorF::Black };
-	IDWriteTextFormat * m_pTextFormat      { nullptr };
-	bool                m_bTicksDir        { true };     // true: ticks on negative side of scale
-	bool                m_bVertScale       { false };    // true: vertical, false: horizontal
-	bool                m_bInverted        { false };    // false: scale values grow from left to right / top to bottom
-	fPixel              m_fPixLeftBorder   { 0._fPixel };
-	fPixel              m_fPixRightBorder  { 0._fPixel };
-	fPixel              m_fPixTopBorder    { 0._fPixel };
-	fPixel              m_fPixBottomBorder { 0._fPixel };
-	fPixel              m_fPixOrthoOffset  { 0._fPixel };
-	PIXEL               m_pixLast          { PIXEL::NULL_VAL() }; // Last cursor position during selection 
-	bool                m_bLock2Zero       { true };
-	bool                m_bUnlockAllowed   { false };
-	bool                m_bZoomAllowed     { true };
+	IDWriteTextFormat *m_pTextFormat      { nullptr };
+	bool               m_bTicksDir        { true };     // true: ticks on negative side of scale
+	bool               m_bVertScale       { false };    // true: vertical, false: horizontal
+	bool               m_bInverted        { false };    // false: scale values grow from left to right / top to bottom
+	fPixel             m_fPixLeftBorder   { 0._fPixel };
+	fPixel             m_fPixRightBorder  { 0._fPixel };
+	fPixel             m_fPixTopBorder    { 0._fPixel };
+	fPixel             m_fPixBottomBorder { 0._fPixel };
+	fPixel             m_fPixOrthoOffset  { 0._fPixel };
+	PIXEL              m_pixLast          { PIXEL::NULL_VAL() }; // Last cursor position during selection 
+	bool               m_bLock2Zero       { true };
+	bool               m_bUnlockAllowed   { false };
+	bool               m_bZoomAllowed     { true };
 
 	LPARAM AddContextMenuEntries(HMENU const) override;
 };

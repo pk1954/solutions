@@ -16,11 +16,6 @@ void SigGenDynamicData::Reset()
 	StopStimulus();
 }
 
-void SigGenDynamicData::StartSpike()
-{
-	m_usSimuStartSpike = SimulationTime::Get();
-}
-
 void SigGenDynamicData::StartStimulus()
 {
 	m_usSimuStartStimu = SimulationTime::Get();
@@ -56,14 +51,14 @@ mV SigGenDynamicData::SetTime
 {
 	mV         const amplitude   { m_stimulusActive ? statData.GetStimulusAmplitude(stimuTime) : statData.GetAmplitude().Base() };
 	fHertz     const frequency   { m_stimulusActive ? statData.GetStimulusFrequency(stimuTime) : statData.GetFrequency().Base() };
-	fMicroSecs const usSpikeTime { SimulationTime::Get() - m_usSimuStartSpike };
+	fMicroSecs const usSpikeTime { stimuTime - m_usSimuStartSpike };
 	mV         const mVresult    { Spike::GetVoltage(amplitude, param.SpikeWidth(), usSpikeTime) };
 
 	if (m_stimulusActive && !statData.InStimulusRange(stimuTime))
 		StopStimulus();
 
 	if (usSpikeTime > PulseDuration(frequency))  // start new spike?
-		StartSpike();
+		m_usSimuStartSpike = stimuTime;
 
 	return mVresult;
 }

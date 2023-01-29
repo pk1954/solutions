@@ -48,7 +48,7 @@ void SignalDesigner::Initialize
 		L"ClassSigDesWindow", 
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
-
+	m_bPreview = true;
 	runObservable.RegisterObserver(*this);
 
 	m_pComputeThread = & computeThread;

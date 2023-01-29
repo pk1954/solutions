@@ -96,5 +96,5 @@ private:
 	NNetModelCommands           * m_pCommands      { nullptr };
 	HMENU                         m_hMenu          { nullptr };
 	DESIGN                        m_design         { DESIGN::STACKED };
-	bool                          m_bPreview       { false };
+	bool                          m_bPreview       { true };
 };

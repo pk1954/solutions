@@ -143,22 +143,24 @@ private:
 
 	void renderScale()
 	{
+		D2D1::ColorF colBackGround { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
+
 		fPixelRect textBox{};
 		setTextBox(textBox);
 
-		m_upGraphics->FillBackground(CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL);
+		m_upGraphics->FillBackground(colBackGround);
 
-		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel, GetColor());
+		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel);
 
 		displayTicks(textBox);
 		fPixelPoint fPixPos
 		{
 			IsVertScale()
 			? fPixelPoint(0._fPixel, m_fPixPntEnd.GetY() - 16._fPixel)
-			: fPixelPoint(m_fPixPntEnd.GetX() + 10._fPixel, 0._fPixel)
+			: fPixelPoint(m_fPixPntStart.GetX() + 10._fPixel, 0._fPixel)
 		};
 
-		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit);
+		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);
 	}
 
 	void setScaleParams()
@@ -190,10 +192,13 @@ private:
 			? fPixelPoint(m_fPixPntStart.GetX() + fDir, yPos(fTickA))
 			: fPixelPoint(xPos(fTickA),                 m_fPixPntStart.GetY() + fDir)
 		};
-		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel, GetColor());
+		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, 1._fPixel);
 	}
 
-	void displayTicks(fPixelRect const& textBox) const
+	void displayTicks
+	(
+		fPixelRect const& textBox
+	) const
 	{
 		float    const fStartTicks   { m_logStart / m_logTickDist };
 		LogUnits const logFirstTick  { m_logTickDist * floor(fStartTicks) };

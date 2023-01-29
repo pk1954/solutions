@@ -92,7 +92,6 @@ public:
 	(
 		MicroMeterRect      const &,
 		wstring             const &,
-		D2D1::ColorF        const,
 		IDWriteTextFormat * const = nullptr
 	) const override;
 

@@ -103,10 +103,6 @@ public:
 
 	Pipe const * GetIncoming(size_t i) const { return &m_inPipes.Get(i); }
 
-protected:
-
-	void DisplayText(DrawContext const&, MicroMeterRect const&, wstring const&) const;
-
 private:
 	MicroMeterCircle m_circle;
 

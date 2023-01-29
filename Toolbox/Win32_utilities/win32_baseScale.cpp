@@ -7,6 +7,7 @@ module;
 #include <bit> 
 #include <string> 
 #include "Windows.h"
+#include "dwrite.h"
 
 module BaseScale;
 
@@ -77,14 +78,25 @@ void BaseScale::setTextBox(fPixelRect & textBox) const
 
 void BaseScale::display
 (
-	fPixelRect const & textBox,
-	wstring    const & wstr
+	fPixelRect const& textBox,
+	wstring    const& wstr
 ) const
 {
-	m_upGraphics->DisplayText(textBox, wstr, GetColor(), m_pTextFormat);
+	m_upGraphics->DisplayText(textBox, wstr, m_pTextFormat);
 }
 
-void BaseScale::OnMouseLeave() 
+void BaseScale::display
+(
+	fPixelRect   const& textBox,
+	wstring      const& wstr,
+	D2D1::ColorF const  col
+) const
+{
+	m_upGraphics->FillRectangle(textBox, col);
+	display(textBox, wstr);
+}
+
+void BaseScale::OnMouseLeave()
 {
 	Invalidate(false);
 	UpdateWindow(GetWindowHandle());

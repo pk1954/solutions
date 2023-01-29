@@ -107,12 +107,6 @@ mV Neuron::GetNextOutput() const
 	return Spike::GetVoltage(amplitude, spikeWidth, m_usSpikeTime);
 }
 
-void Neuron::DisplayText(DrawContext const & context, MicroMeterRect const & umRect, wstring const & text) const
-{
-	MicroMeterPnt const umPosHalfHeight { 0._MicroMeter, umRect.GetHeight()/2 };
-	context.DisplayText(umRect + umPosHalfHeight, text, D2D1::ColorF::GreenYellow);
-}
-
 MicroMeterPnt Neuron::getAxonHillockPos() const
 {
 	float         const fRatio       { GetExtension() / m_pPipeAxon->GetLength() };

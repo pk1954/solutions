@@ -52,6 +52,7 @@ void D2D_driver::createResources()
 	assert(SUCCEEDED(m_hr));
 
 	m_pTextFormat = NewTextFormat(12.0f);
+	SetColor(m_color);
 }
 
 void D2D_driver::discardResources() 
@@ -60,6 +61,7 @@ void D2D_driver::discardResources()
 	SafeRelease(& m_pDWriteFactory);
 	SafeRelease(& m_pRenderTarget);
 	SafeRelease(& m_pTextFormat);
+	SafeRelease(& m_pBrush);
 }
 
 void D2D_driver::InitWindow(HWND const hwnd) 
@@ -136,17 +138,38 @@ bool D2D_driver::StartFrame()
 
 void D2D_driver::DisplayText
 (
-	fPixelRect          const & rect, 
-	wstring             const & wstr,
-	D2D1::ColorF        const   colF,
-	IDWriteTextFormat * const   pTextFormat
+	fPixelRect         const& rect,
+	wstring            const& wstr,
+	ID2D1Brush         const& brush,
+	IDWriteTextFormat* const  pTextFormat
 ) const
 {
-	IDWriteTextFormat    * pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
-	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-	D2D1_RECT_F            d2Rect {	convertD2D(rect) };
-	m_pRenderTarget->DrawText(wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, pBrush);
-	SafeRelease(& pBrush);
+	IDWriteTextFormat* pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
+	D2D1_RECT_F const  d2Rect { convertD2D(rect) };
+	m_pRenderTarget->DrawText(wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, const_cast<ID2D1Brush*>(&brush));
+}
+
+void D2D_driver::DisplayText
+(
+	fPixelRect         const& rect,
+	wstring            const& wstr,
+	D2D1::ColorF       const  colF,
+	IDWriteTextFormat* const  pTextFormat
+) const
+{
+	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
+	DisplayText(rect, wstr, *pBrush, pTextFormat);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::DisplayText
+(
+	fPixelRect         const& rect,
+	wstring            const& wstr,
+	IDWriteTextFormat* const  pTextFormat
+) const
+{
+	DisplayText(rect, wstr, *m_pBrush, pTextFormat);
 }
 
 // Finish rendering; page flip.
@@ -269,26 +292,42 @@ void D2D_driver::FillGradientCircle
 
 void D2D_driver::DrawLine
 (
-	fPixelPoint  const & fpp1, 
-	fPixelPoint  const & fpp2, 
-	fPixel       const   fpixWidth, 
-	D2D1::ColorF const   colF
+	fPixelPoint const & fpp1,
+	fPixelPoint const & fpp2,
+	fPixel      const   fpixWidth,
+	ID2D1Brush  const & brush
 ) const
 {
-	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-	DrawLine(fpp1, fpp2, fpixWidth, pBrush);
-	SafeRelease(& pBrush);
+	m_pRenderTarget->DrawLine
+	(
+		convertD2D(fpp1),
+		convertD2D(fpp2),
+		const_cast<ID2D1Brush *>(&brush),
+		fpixWidth.GetValue()
+	);
 }
 
 void D2D_driver::DrawLine
 (
-	fPixelPoint    const & fpp1, 
-	fPixelPoint    const & fpp2, 
-	fPixel         const   fpixWidth, 
-	ID2D1SolidColorBrush * pBrush
+	fPixelPoint  const& fpp1,
+	fPixelPoint  const& fpp2,
+	fPixel       const   fpixWidth,
+	D2D1::ColorF const   colF
 ) const
 {
-	m_pRenderTarget->DrawLine(convertD2D(fpp1), convertD2D(fpp2), pBrush, fpixWidth.GetValue());
+	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
+	DrawLine(fpp1, fpp2, fpixWidth, *pBrush);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::DrawLine
+(
+	fPixelPoint const & fpp1, 
+	fPixelPoint const & fpp2, 
+	fPixel      const   fpixWidth
+) const
+{
+	DrawLine(fpp1, fpp2, fpixWidth, *m_pBrush);
 }
 
 void D2D_driver::FillCircle
@@ -403,12 +442,22 @@ void D2D_driver::FillBackground(D2D1::ColorF const d2dCol) const
 	m_pRenderTarget->Clear(d2dCol);
 }
 
-ID2D1SolidColorBrush * D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
+ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 {
-	ID2D1SolidColorBrush * pBrush;
-	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, & pBrush); 
+	ID2D1SolidColorBrush* pBrush;
+	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, &pBrush);
 	assert(hres == S_OK);
 	return pBrush;
+}
+
+D2D1::ColorF D2D_driver::SetColor(D2D1::ColorF const d2dCol)
+{
+	D2D1::ColorF colorOld = m_color;
+	m_color = d2dCol;
+	SafeRelease(&m_pBrush);
+	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(m_color, &m_pBrush);
+	assert(hres == S_OK);
+	return colorOld;
 }
 
 void D2D_driver::SetRotation(float const fAngle, fPixelPoint const& ptCenter) const
