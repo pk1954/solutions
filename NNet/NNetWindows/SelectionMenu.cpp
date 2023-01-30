@@ -39,7 +39,7 @@ void SelectionMenu::Start(HWND const hwndParent)
 
 void SelectionMenu::Stop()
 {
-	DestroyWindow();
+	BaseWindow::Stop();
 }
 
 bool SelectionMenu::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

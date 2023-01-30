@@ -77,11 +77,6 @@ void MonitorWindow::ResetHorzCoord()
 	m_horzCoord.SetOffset(Convert2fPixel(RIGHT_BORDER - GetClientWindowWidth()));
 }
 
-void MonitorWindow::Stop()
-{
-	DestroyWindow();
-}
-
 void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI) const
 {
 	m_upMonitorControl->SetModelInterface(pNMWI);
@@ -120,12 +115,12 @@ void MonitorWindow::OnPaint()
 	m_upStimulusButton->Enable(m_pComputeThread->IsRunning());
 }
 
-bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
+bool MonitorWindow::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeight)
 {
-	PIXEL const monHeight { height - H_SCALE_HEIGHT };
-	PIXEL const monWidth  { width  - RIGHT_BORDER };
-	m_upMonitorControl->Move(0_PIXEL,  0_PIXEL,   width, monHeight,      true);
-	m_upHorzScale     ->Move(0_PIXEL,  monHeight, width, H_SCALE_HEIGHT, true);
+	PIXEL const monHeight { pixClientHeight - H_SCALE_HEIGHT };
+	PIXEL const monWidth  { pixClientWidth  - RIGHT_BORDER };
+	m_upMonitorControl->Move(0_PIXEL,  0_PIXEL,   pixClientWidth, monHeight,      true);
+	m_upHorzScale     ->Move(0_PIXEL,  monHeight, pixClientWidth, H_SCALE_HEIGHT, true);
 	if (m_upHorzScale->IsScaleLocked())
 		m_horzCoord.SetOffset(Convert2fPixel(-monWidth));
 	m_upStimulusButton->CenterInParentWin();

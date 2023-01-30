@@ -34,19 +34,17 @@ public:
 	void SetDirection(bool const bDir)
 	{
 		m_bArrowDirUp = bDir;
+		Trigger();
 	}
 
 private:
 
 	void DoPaint() final
 	{
+		fPixelRect rect { Convert2fPixelRect(GetClPixelRect()) };
 		m_upGraphics->FillBackground(m_colBackground);
-		m_upGraphics->UpDownArrow
-		(
-			m_bArrowDirUp,
-			Convert2fPixelRect(GetClPixelRect()),
-			D2D1::ColorF::Black
-		);
+		m_upGraphics->UpDownArrow(m_bArrowDirUp, rect, D2D1::ColorF::Black);
+		m_upGraphics->DrawRectangle(rect, D2D1::ColorF::Black, 1._fPixel);
 	};
 
 	void OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * const pDiStruct) final

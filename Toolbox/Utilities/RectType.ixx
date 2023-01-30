@@ -75,23 +75,25 @@ public:
 
 	RectType
 	(
-		POS_TYPE  const & ptOrigin, 
+		POS_TYPE  const & pos, 
 		SIZE_TYPE const & size 
 	) :
-		m_Left  (ptOrigin.GetX()),
-		m_Top   (ptOrigin.GetY()),
+		m_Left  (pos.GetX()),
+		m_Top   (pos.GetY()),
 		m_Right (m_Left + size.GetX() - BASE_TYPE(1)),
 		m_Bottom(m_Top  + size.GetY() - BASE_TYPE(1))
 	{
 		assert(m_Bottom >= m_Top);
 	}
 
-	void SetLeft  (BASE_TYPE const val) { m_Left   = val; };
-	void SetTop   (BASE_TYPE const val) { m_Top    = val; };
-	void SetRight (BASE_TYPE const val) { m_Right  = val; };
-	void SetBottom(BASE_TYPE const val) { m_Bottom = val; };
-	void SetWidth (BASE_TYPE const val) { m_Right  = m_Left + val; };
-	void SetHeight(BASE_TYPE const val) { m_Bottom = m_Top  + val; };
+	void SetLeft  (BASE_TYPE const val) { m_Left   = val; }
+	void SetTop   (BASE_TYPE const val) { m_Top    = val; }
+	void SetRight (BASE_TYPE const val) { m_Right  = val; }
+	void SetBottom(BASE_TYPE const val) { m_Bottom = val; }
+	void SetWidth (BASE_TYPE const val) { m_Right  = m_Left + val - BASE_TYPE(BASE_TYPE(1)); }
+	void SetHeight(BASE_TYPE const val) { m_Bottom = m_Top  + val - BASE_TYPE(BASE_TYPE(1)); }
+	void SetPos   (POS_TYPE  const pos) { SetLeft (pos.GetX()); SetRight (pos.GetY()); }
+	void SetSize  (SIZE_TYPE const siz) { SetWidth(siz.GetX()); SetHeight(siz.GetY()); }
 
 	bool IsEmpty   () const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
 	bool IsNotEmpty() const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
@@ -113,7 +115,7 @@ public:
 	bool Includes(POS_TYPE const pnt) const
 	{
 		return (m_Left <= pnt.GetX()) && (pnt.GetX() < m_Right) && 
-			(m_Top  <= pnt.GetY()) && (pnt.GetY() < m_Bottom);
+               (m_Top  <= pnt.GetY()) && (pnt.GetY() < m_Bottom);
 	}
 
 	bool Includes(SIZE_TYPE const size) const
@@ -124,7 +126,7 @@ public:
 	bool Includes(RectType const & rect) const
 	{
 		return (m_Left <= rect.GetLeft()) && (rect.GetRight () < m_Right) && 
-			(m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
+			   (m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
 	}
 
 	bool IsIncludedIn(RectType const & rect) const
@@ -150,13 +152,13 @@ public:
 	bool operator== (RectType const & a) const 
 	{ 
 		return (a.m_Left  == m_Left ) && (a.m_Top    == m_Top   ) && 
-			(a.m_Right == m_Right) && (a.m_Bottom == m_Bottom); 
+			   (a.m_Right == m_Right) && (a.m_Bottom == m_Bottom); 
 	};
 
 	bool operator!= (RectType const & a) const 
 	{ 
 		return (a.m_Left  != m_Left ) || (a.m_Top    != m_Top   ) || 
-			(a.m_Right != m_Right) || (a.m_Bottom != m_Bottom); 
+			   (a.m_Right != m_Right) || (a.m_Bottom != m_Bottom); 
 	};
 
 	RectType ScaleRect(BASE_TYPE const val) const // positive values of val enlarge rectangle

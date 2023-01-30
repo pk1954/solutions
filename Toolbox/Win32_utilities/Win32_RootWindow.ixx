@@ -299,11 +299,13 @@ public:
 	void Notify(bool const) override;
 
 	virtual void Trigger() { Invalidate(false); }
+	virtual void Stop()	   { DestroyWindow(); }
 
 	void ShowRefreshRateDlg(bool const bShow) { m_bShowRefreshRateDlg = bShow; }
 	void SetWindowVisibility(tOnOffAuto const);
 
 	void SetParentContextMenueMode(bool const b) { m_bParentContextMenue = b; }
+
 
 protected:
 

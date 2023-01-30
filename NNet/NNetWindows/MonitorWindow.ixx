@@ -32,7 +32,6 @@ public:
 	~MonitorWindow() final;
 
 	void Start(HWND const, ComputeThread const &, Sound &, NNetModelCommands &);
-	void Stop();
 	void SetModelInterface(NNetModelWriterInterface* const) const;
 	void StimulusTriggered() const;
 	void ResetHorzCoord();

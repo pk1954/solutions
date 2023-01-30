@@ -126,7 +126,7 @@ void DescriptionWindow::fontSize()
 
 void DescriptionWindow::Stop()
 {
-    DestroyWindow();
+    BaseWindow::Stop();
     DeleteObject(m_hFont);
 }
 

@@ -14,6 +14,7 @@ import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;
+import BaseWindow;
 import NNetModelCommands;
 import NNetModel;
 
@@ -132,9 +133,9 @@ void ParameterDialog::Start
 
 void ParameterDialog::Stop()
 {
+	BaseDialog::Stop();
 	m_pCommands = nullptr;
 	m_pNMWI     = nullptr;
-	DestroyWindow();
 }
 
 void ParameterDialog::SetModelInterface(NNetModelWriterInterface * const pNMWI)

@@ -272,6 +272,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 void NNetAppWindow::Stop()
 {
+	BaseWindow::Stop();
 	m_bStarted = false;
 
 	m_computeThread.LockComputation();
@@ -394,7 +395,6 @@ void NNetAppWindow::OnClose()
 		m_WinManager.StoreWindowConfiguration();
 		Stop();
 	}
-	DestroyWindow();
 }
 
 void NNetAppWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)

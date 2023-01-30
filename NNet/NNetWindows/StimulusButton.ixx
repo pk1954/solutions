@@ -56,8 +56,8 @@ public:
 
 private:
 
-	inline static PIXEL const STIMULUS_BUTTON_WIDTH{ 90_PIXEL };
-	inline static PIXEL const STIMULUS_BUTTON_HEIGHT{ 30_PIXEL };
+	inline static PIXEL const STIMULUS_BUTTON_WIDTH  { 90_PIXEL };
+	inline static PIXEL const STIMULUS_BUTTON_HEIGHT { 30_PIXEL };
 
 	HWND m_hwndStimulusButton;
 	HWND m_hwndParent;

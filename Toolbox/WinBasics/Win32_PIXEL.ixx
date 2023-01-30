@@ -69,8 +69,8 @@ namespace Util
     {
         return PixelRectSize
         { 
-            PIXEL(rect.right - rect.left), 
-            PIXEL(rect.bottom - rect.top) 
+            PIXEL(rect.right  - rect.left + 1), 
+            PIXEL(rect.bottom - rect.top  + 1)
         };
     }
 
@@ -104,13 +104,13 @@ namespace Util
     export inline PIXEL GetClientWindowHeight(HWND const hwnd)
     {
         RECT rect = GetClRect(hwnd);                    
-        return PIXEL(PIXEL(rect.bottom - rect.top));
+        return PIXEL(PIXEL(rect.bottom - rect.top + 1));
     }
 
     export inline PIXEL GetClientWindowWidth(HWND const hwnd)
     {
         RECT rect = GetClRect(hwnd);
-        return PIXEL(PIXEL(rect.right - rect.left));
+        return PIXEL(PIXEL(rect.right - rect.left + 1));
     }
 
     export inline PixelRect GetClPixelRect(HWND const hwnd) // left / top always 0

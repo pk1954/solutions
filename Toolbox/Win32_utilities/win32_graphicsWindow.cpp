@@ -38,8 +38,8 @@ HWND GraphicsWindow::Initialize
 
 void GraphicsWindow::Stop()
 {
+	BaseWindow::Stop();
 	m_upGraphics->ShutDown();
-	DestroyWindow();
 }
 
 void GraphicsWindow::OnPaint()

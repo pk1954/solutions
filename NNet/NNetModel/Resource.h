@@ -109,8 +109,9 @@
 #define       IDM_DELETE_SELECTION           651
 										     
 #define       IDM_TRIGGER_STIMULUS           660
-#define       IDM_SIGNAL_DESIGNER_INTEGRATED 662
-#define       IDM_SIGNAL_DESIGNER_STACKED    663
+#define       IDM_SIGNAL_DESIGNER_LAYOUT     661
+#define       IDM_SIGNAL_DESIGNER_TOGGLE     662
+#define       IDM_SIGNAL_DESIGNER_PREVIEW    664
 
 #define       IDD_DISC_IOCONNECTOR           676
 #define       IDD_SPLIT_NEURON               678
