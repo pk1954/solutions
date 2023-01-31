@@ -60,16 +60,16 @@ void SignalDesigner::Initialize
 
 	// coords
 
-	m_horzCoord.SetPixelSize(1000.0_MicroSecs); 
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 10000._MicroSecs); 
+	m_horzCoord.SetPixelSize(5000.0_MicroSecs);
 	m_horzCoord.SetZoomFactor(1.3f);
 
-	m_vertCoordFreq.SetPixelSize(0.25_fHertz);
 	m_vertCoordFreq.SetPixelSizeLimits(0.02_fHertz, 1._fHertz); 
+	m_vertCoordFreq.SetPixelSize(0.5_fHertz);
 	m_vertCoordFreq.SetZoomFactor(1.3f);
 
-	m_vertCoordVolt.SetPixelSize(0.1_mV); 
 	m_vertCoordVolt.SetPixelSizeLimits(0.01_mV, 10.0_mV); 
+	m_vertCoordVolt.SetPixelSize(0.2_mV); 
 	m_vertCoordVolt.SetZoomFactor(1.3f);
 
 	// scales
@@ -273,33 +273,7 @@ void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)
 	switch (auto const wId = LOWORD(wParam))
 	{
 	case SC_LBUTTONDBLCLK:
-		{
-			float fFactor { 1.0 };
-			if (pScale == m_upHorzScale[0].get())
-			{
-				fFactor = m_upSignalControl[0]->ScaleFactorTimeCoord();
-			}
-		    else if (pScale == m_upHorzScale[1].get())
-			{
-				fFactor = m_upSignalControl[1]->ScaleFactorTimeCoord();
-			}
-			else if (pScale == m_upVertScaleFreq.get())
-			{
-				fFactor = m_upSignalControl[0]->ScaleFactorFreqCoord();
-			}
-			else if (pScale == m_upVertScaleVolt[0].get())
-			{
-				if (m_bIntegrated)
-					fFactor = m_upSignalControl[0]->ScaleFactorVoltCoord();
-				else
-					fFactor = m_upSignalControl[1]->ScaleFactorVoltCoord();
-			}
-			else if (pScale == m_upVertScaleVolt[1].get())
-			{
-				fFactor = m_upSignalControl[1]->ScaleFactorVoltCoord();
-			}
-			pScale->ZoomCoordFactor(fFactor, 0.0_fPixel);
-		}
+		scale(pScale);
 		break;
 
 	default:
@@ -312,6 +286,35 @@ bool SignalDesigner::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHei
 	adjustLayout(pixClientWidth, pixClientHeight);
 	Trigger();  // cause repaint
 	return true;
+}
+
+void SignalDesigner::scale(BaseScale* const pScale)
+{
+	float fFactor { 1.0 };
+	if (pScale == m_upHorzScale[0].get())
+	{
+		fFactor = m_upSignalControl[0]->ScaleFactorTimeCoord();
+	}
+	else if (pScale == m_upHorzScale[1].get())
+	{
+		fFactor = m_upSignalControl[1]->ScaleFactorTimeCoord();
+	}
+	else if (pScale == m_upVertScaleFreq.get())
+	{
+		fFactor = m_upSignalControl[0]->ScaleFactorFreqCoord();
+	}
+	else if (pScale == m_upVertScaleVolt[0].get())
+	{
+		if (m_bIntegrated)
+			fFactor = m_upSignalControl[0]->ScaleFactorVoltCoord();
+		else
+			fFactor = m_upSignalControl[1]->ScaleFactorVoltCoord();
+	}
+	else if (pScale == m_upVertScaleVolt[1].get())
+	{
+		fFactor = m_upSignalControl[1]->ScaleFactorVoltCoord();
+	}
+	pScale->ZoomCoordFactor(fFactor, 0.0_fPixel);
 }
 
 void SignalDesigner::adjustWindowHeight()

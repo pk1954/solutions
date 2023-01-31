@@ -103,13 +103,13 @@ namespace Util
 
     export inline PIXEL GetClientWindowHeight(HWND const hwnd)
     {
-        RECT rect = GetClRect(hwnd);                    
+        RECT rect { GetClRect(hwnd) };
         return PIXEL(PIXEL(rect.bottom - rect.top + 1));
     }
 
     export inline PIXEL GetClientWindowWidth(HWND const hwnd)
     {
-        RECT rect = GetClRect(hwnd);
+        RECT rect { GetClRect(hwnd) };
         return PIXEL(PIXEL(rect.right - rect.left + 1));
     }
 
@@ -125,19 +125,19 @@ namespace Util
 
     export inline PixelPoint GetClRectCenter(HWND const hwnd)
     {
-        PixelRectSize pixSize = GetClRectSize(hwnd);
+        PixelRectSize pixSize { GetClRectSize(hwnd) };
         return PixelPoint(pixSize.GetX() / 2, pixSize.GetY() / 2);
     }
 
     export inline bool IsInClientRect(HWND const hwnd, PixelPoint const pp)  // Is point in client rect?
     {
-        RECT const rect = GetClRect(hwnd);  
+        RECT const rect { GetClRect(hwnd) };
         return PtInRect(&rect, PixelPoint2POINT(pp));
     } 
 
     export inline bool IsInClientRect(HWND const hwnd, PixelRect const & pixRect)  // Is rect in client rect?
     {
-        RECT const rect = GetClRect(hwnd);  
+        RECT const rect { GetClRect(hwnd) };
         return PtInRect(&rect, PixelPoint2POINT(pixRect.GetStartPoint())) && 
             PtInRect(&rect, PixelPoint2POINT(pixRect.GetEndPoint  ()));
     } 
@@ -174,7 +174,7 @@ namespace Util
     export inline PixelRect GetWindowRect(HWND const hwnd)
     {
         RECT rect;
-        bool bRes = GetWindowRect(hwnd, &rect);
+        BOOL bRes { GetWindowRect(hwnd, &rect) };
         assert(bRes);
         return RECT2PixelRect(rect);
     }
@@ -182,7 +182,7 @@ namespace Util
     export inline PixelRectSize GetWindowSize(HWND const hwnd)
     {
         RECT rect;
-        bool bRes = GetWindowRect(hwnd, &rect);
+        BOOL bRes { GetWindowRect(hwnd, &rect) };
         assert(bRes);
         return PixelRectSizeFromRECT(rect);
     }

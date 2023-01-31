@@ -121,8 +121,8 @@ SIMU_TIME Signal::index2time
 
 mV Signal::GetDataPoint
 (
-    NNetParameters     const & param,
-    SIMU_TIME const   usSimu
+    NNetParameters const & param,
+    SIMU_TIME      const   usSimu
 ) const
 {
     SIG_INDEX index { time2index(param, usSimu) };

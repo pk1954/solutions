@@ -42,6 +42,7 @@ private:
 	void DoPaint() final
 	{
 		fPixelRect rect { Convert2fPixelRect(GetClPixelRect()) };
+		rect = rect.ScaleRect(-2._fPixel);
 		m_upGraphics->FillBackground(m_colBackground);
 		m_upGraphics->UpDownArrow(m_bArrowDirUp, rect, D2D1::ColorF::Black);
 		m_upGraphics->DrawRectangle(rect, D2D1::ColorF::Black, 1._fPixel);

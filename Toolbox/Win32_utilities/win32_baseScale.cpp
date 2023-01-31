@@ -41,12 +41,15 @@ void BaseScale::SetTicksDir(bool const bMode)
 	m_bTicksDir = bMode; 
 	if (m_bVertScale) 
 		m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
+	else
+		m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+
 };
 
 void BaseScale::setTextBox(fPixelRect & textBox) const
 {
 	static fPixel const TEXT_DIST2LINE { LONG_TICK + 2._fPixel };
-	static fPixel const TEXT_HORZ_EXT  { 30._fPixel };
+	static fPixel const TEXT_HORZ_EXT  { 20._fPixel };
 	static fPixel const TEXT_VERT_EXT  { 10._fPixel };
 
 	fPixel horzDist { 0._fPixel };
@@ -64,7 +67,7 @@ void BaseScale::setTextBox(fPixelRect & textBox) const
 		vertDist = TEXT_DIST2LINE + TEXT_VERT_EXT;
 		if (GetTicksDir())
 			vertDist = - vertDist;
-		horzDist += 4._fPixel; 
+		horzDist += TEXT_HORZ_EXT;
 	}
 
 	textBox = fPixelRect

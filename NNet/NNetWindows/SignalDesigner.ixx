@@ -23,6 +23,7 @@ import SignalPreview;
 import Direct2D;
 import BaseWindow;
 import Scale;
+import BaseScale;
 import NNetModelCommands;
 import NNetModel;
 
@@ -68,6 +69,8 @@ private:
 	void adjustLayout(PIXEL const, PIXEL const);
 	void adjustWindowHeight();
 	void renameSigGen();
+	void scale(BaseScale * const);
+
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
 
 	bool OnSize             (PIXEL const, PIXEL const)                     final;

@@ -103,7 +103,8 @@ private:
 
 	void DoPaint() final
 	{
-		static fPixel const MIN_TICK_DIST{ 6._fPixel };
+		static D2D1::ColorF const colBackGround { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
+		static fPixel       const MIN_TICK_DIST { 6._fPixel };
 
 		LogUnits const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
 		float    const log10          { log10f(logMinTickDist.GetValue()) };
@@ -114,6 +115,8 @@ private:
 		fPixel fPixStart;
 		fPixel fPixEnd;
 		fPixel fPixPosOrtho;
+
+		m_upGraphics->FillBackground(colBackGround);
 
 		if (IsVertScale())
 		{
@@ -130,6 +133,12 @@ private:
 			fPixEnd        = getClWidth() - GetRightBorder();
 			m_fPixPntStart = fPixelPoint(fPixStart, fPixPosOrtho);
 			m_fPixPntEnd   = fPixelPoint(fPixEnd,   fPixPosOrtho);
+			m_upGraphics->DrawLine
+			(
+				fPixelPoint(GetLeftBorder(), getClHeight() - 1.0_fPixel),
+				fPixelPoint(getClWidth(), getClHeight() - 1.0_fPixel),
+				1._fPixel
+			);
 		}
 
 		m_logStart     = m_pixCoord.Transform2logUnitPos(fPixStart);
@@ -138,26 +147,28 @@ private:
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
 		
 		setScaleParams();
-		renderScale();
+		renderScale(colBackGround);
+
+		if (!IsVertScale())
+			m_upGraphics->DrawLine
+			(
+				fPixelPoint(fPixStart, getClHeight() - 1.0_fPixel),
+				fPixelPoint(fPixEnd,   getClHeight() - 1.0_fPixel),
+				1._fPixel
+			);
 	}
 
-	void renderScale()
+	void renderScale(D2D1::ColorF const colBackGround)
 	{
-		D2D1::ColorF colBackGround { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
-
 		fPixelRect textBox{};
 		setTextBox(textBox);
-
-		m_upGraphics->FillBackground(colBackGround);
-
-		m_upGraphics->DrawLine(m_fPixPntStart, m_fPixPntEnd, 1._fPixel);
 
 		displayTicks(textBox);
 		fPixelPoint fPixPos
 		{
 			IsVertScale()
 			? fPixelPoint(0._fPixel, m_fPixPntEnd.GetY() - 16._fPixel)
-			: fPixelPoint(m_fPixPntStart.GetX() + 10._fPixel, 0._fPixel)
+			: fPixelPoint(m_fPixPntStart.GetX() + 12._fPixel, -1._fPixel)
 		};
 
 		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);

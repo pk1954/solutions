@@ -43,8 +43,8 @@ MonitorControl::MonitorControl
 	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);
 
-	m_vertCoord.SetPixelSize(0.2_mV);
 	m_vertCoord.SetPixelSizeLimits(0.001_mV, 100._mV);   
+	m_vertCoord.SetPixelSize(0.2_mV);
 	m_vertCoord.SetZoomFactor(1.3f);
 
 	m_horzCoord.RegisterObserver(*this);
@@ -264,7 +264,11 @@ fPixelPoint MonitorControl::getSignalPoint
 	fPixel     const   fPixYoff
 ) const
 {
-	return fPixelPoint(simu2pixelTime(usSimu), fPixYoff - getSignalValue(signal, usSimu));
+	return fPixelPoint
+	(
+		simu2pixelTime(usSimu), 
+		fPixYoff - getSignalValue(signal, usSimu) - 1.0_fPixel
+	);
 }
 
 void MonitorControl::paintWarningRect() const

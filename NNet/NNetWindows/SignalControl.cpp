@@ -79,6 +79,14 @@ void SignalControl::drawLine
 {
 	fPixelPoint const fPixPntStart { getPos(posStart) };
 	fPixelPoint const fPixPntEnd   { getPos(posEnd) };
+
+	if (
+		(fPixPntStart.GetX() != fPixPntEnd.GetX()) &&
+		(fPixPntStart.GetY() != fPixPntEnd.GetY())
+		)
+	{
+		int x = 42;
+	}
 	if (fPixPntStart.IsNotNull() && fPixPntEnd.IsNotNull())
 	{
 		fPixel       width { (colType == tColor::HIGH) ? HIGH_WIDTH : STD_WIDTH };
@@ -169,7 +177,7 @@ void SignalControl::highlightMovedObject() const
 		break;
 	case tPos::TIME_FREQ:
 		drawLine(tColor::HIGH, tPos::TIME_FREQ, tPos::PEAK_FREQ);
-		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_VOLT);
+		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_VOLT);  //only needed in integrated mode
 		drawLine(tColor::HIGH, tPos::TIME,      tPos::TIME_FREQ);
 		drawDiam(tColor::HIGH, tPos::TIME_FREQ);
 		break;
