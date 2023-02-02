@@ -32,13 +32,10 @@ public:
 
 	static SignalGenerator StdSigGen;
 
-	mV   GetSignalValue()              const final { return m_mVactual; };
-	bool Includes(MicroMeterPnt const) const final { return false; };
-
+	mV   GetSignalValue()                     const final { return m_mVactual; };
 	void Dump()                               const final {};
 	void WriteInfo(wostream&)                 const final {};
 	void Draw(DrawContext const&, bool const) const final {};
-	void Recalc(UPNobList const&)                   final {};
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;

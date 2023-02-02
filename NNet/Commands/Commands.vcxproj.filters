@@ -225,5 +225,11 @@
     <ClCompile Include="ResetModelCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddMicroSensorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DelMicroSensorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -287,5 +287,11 @@
     <ClCompile Include="PosNob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MicroSensor.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MicroSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

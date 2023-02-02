@@ -78,6 +78,8 @@
 									         
 #define       IDM_MONITOR_WINDOW             430
 #define       IDD_SIGNAL_TOO_HIGH            440
+#define       IDD_ADD_MICRO_SENSOR           441
+#define       IDD_DEL_MICRO_SENSOR           442
 #define       IDD_ADD_EEG_SENSOR             445
 #define       IDD_DELETE_EEG_SENSOR          446
 #define       IDD_DELETE_SIGNAL              447

@@ -35,7 +35,14 @@ public:
     static SignalId MakeSigGenSignal
     (
         TrackNr const,
-        NNetModelWriterInterface &
+        NNetModelWriterInterface&
+    );
+
+    static SignalId MakeMicroSensorSignal
+    (
+        NobId   const,
+        TrackNr const,
+        NNetModelWriterInterface&
     );
 
 private:

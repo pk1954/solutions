@@ -152,10 +152,10 @@ protected:
 
 private:
 
-	NobType m_type        { NobType::Value::undefined };
-	NobId   m_identifier  { NO_NOB };
-	bool    m_bSelected   { false };
-	bool    m_bEmphasized { false };
+	NobType m_type          { NobType::Value::undefined };
+	NobId   m_identifier    { NO_NOB };
+	bool    m_bSelected     { false };
+	bool    m_bEmphasized   { false };
 
 	inline static NNetParameters const * m_pParameters { nullptr };
 };

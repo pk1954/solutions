@@ -13,6 +13,7 @@ import Types;
 import DrawContext;
 import :NNetParameters;
 import :SignalSource;
+import :UPNobList;
 import :Pipe;
 
 using std::vector;
@@ -27,7 +28,8 @@ public:
     mV   GetSignalValue()                      const final;
     void WriteInfo(wostream &)                 const final;
     void Draw(DrawContext const &, bool const) const final;
-    bool Includes(MicroMeterPnt const p)       const final { return m_circle.Includes(p); }
+
+    bool Includes(MicroMeterPnt const p)       const { return m_circle.Includes(p); }
 
     void  DrawDataPoints(DrawContext  const &) const;
     float GetDistFactor(MicroMeterPnt const &) const;
@@ -41,9 +43,8 @@ public:
     void MoveSensor   (UPNobList const &, MicroMeterPnt const &);
     void SetSensorSize(UPNobList const &, MicroMeter    const);
     void SizeSensor   (UPNobList const &, float         const);
+    void Recalc       (UPNobList const &);
     void RotateSensor (MicroMeterPnt const &, Radian const);
-
-    void Recalc(UPNobList const &) final;
 
 private:
 

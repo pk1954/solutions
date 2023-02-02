@@ -87,12 +87,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddMicroSensorCmd.ixx" />
     <ClCompile Include="AddNobsCommand.ixx" />
     <ClCompile Include="ConnSynapse2NewPipeCmd.ixx" />
     <ClCompile Include="CreateInitialNobsCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />
     <ClCompile Include="DeleteSensorCommand.ixx" />
+    <ClCompile Include="DelMicroSensorCmd.ixx" />
     <ClCompile Include="ExtendOutputLineCmd.ixx" />
     <ClCompile Include="AddPipe2NeuronCmd.ixx" />
     <ClCompile Include="AddSensorSignalCmd.ixx" />

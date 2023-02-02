@@ -44,6 +44,8 @@
     <ClCompile Include="MicroMeterPointVector.ixx" />
     <ClCompile Include="MicroMeterPosDir.cpp" />
     <ClCompile Include="MicroMeterPosDir.ixx" />
+    <ClCompile Include="MicroSensor.cpp" />
+    <ClCompile Include="MicroSensor.ixx" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Model.ixx" />
     <ClCompile Include="ModelDescription.ixx" />

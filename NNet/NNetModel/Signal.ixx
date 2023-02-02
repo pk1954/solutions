@@ -46,7 +46,7 @@ public:
     void      WriteSignalInfo(wostream &)                      const;
     void      WriteSignalData(wostream &)                      const;
 
-    bool Includes(MicroMeterPnt const) const;
+    //bool Includes(MicroMeterPnt const) const;
 
     SIMU_TIME GetStartTime() const { return m_timeStart; }
     void      SetStartTime(SIMU_TIME const t) { m_timeStart = t; }

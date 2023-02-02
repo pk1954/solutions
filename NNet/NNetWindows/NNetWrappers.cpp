@@ -22,6 +22,7 @@ import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
 
+import AddMicroSensorCmd;
 import AddNobsCommand;
 import AddSensorSignalCmd;
 import ConnAnimationCommand;
@@ -30,6 +31,7 @@ import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateInitialNobsCmd;
 import CreateSynapseCommand;
+import DelMicroSensorCmd;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
 import ExtendInputLineCmd;
@@ -182,6 +184,7 @@ void InitializeNNetWrappers
     m_pCommands = pCommands;
     m_pModelIO  = pModelIO;
 
+    AddMicroSensorCmd::Register();
     AddNobsCommand::Register();
     AddSensorSignalCmd::Register();
     ConnAnimationCommand::Register();
@@ -190,6 +193,7 @@ void InitializeNNetWrappers
     CreateForkCommand::Register();
     CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();
+    DelMicroSensorCmd::Register();
     DeselectModuleCmd::Register();
     DiscIoConnectorCmd::Register();
     ExtendInputLineCmd::Register();

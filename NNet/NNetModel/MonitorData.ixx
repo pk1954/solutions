@@ -53,7 +53,7 @@ public:
 
 	void SetHighSigObservable(Observable * pObs) { m_pHighSigObservable = pObs; }
 
-	SignalId SetHighlightedSignal(MicroMeterPnt const &);
+	//SignalId SetHighlightedSignal(MicroMeterPnt const &);
 	SignalId SetHighlightedSignal(Signal        const &);
 	SignalId SetHighlightedSignal(SignalId      const);
 	SignalId ResetHighlightedSignal();
@@ -64,7 +64,7 @@ public:
 	SignalNr       MoveSignal       (SignalId      const &, TrackNr const);
 	Signal       * GetSignalPtr     (SignalId      const &);
 	Signal const * GetConstSignalPtr(SignalId      const &) const;
-	SignalId       FindSignalId     (MicroMeterPnt const &) const;
+//	SignalId       FindSignalId     (MicroMeterPnt const &) const;
 	Signal const * GetHighlightedSignal() const;
 
 	unique_ptr<Signal> DeleteSignal(SignalId const&);

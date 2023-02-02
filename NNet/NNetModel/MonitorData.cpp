@@ -82,10 +82,10 @@ SignalId MonitorData::SetHighlightedSignal(Signal const & sigNew)
 	return SetHighlightedSignal(FindSignalId([&sigNew](Signal const &s){ return &s == &sigNew; }));
 }
 
-SignalId MonitorData::SetHighlightedSignal(MicroMeterPnt const & umPos)
-{
-	return SetHighlightedSignal(FindSignalId([&umPos](Signal const &s){ return s.Includes(umPos); }));
-}
+//SignalId MonitorData::SetHighlightedSignal(MicroMeterPnt const & umPos)
+//{
+//	return SetHighlightedSignal(FindSignalId([&umPos](Signal const &s){ return s.Includes(umPos); }));
+//}
 
 SignalId MonitorData::ResetHighlightedSignal()
 {
@@ -202,11 +202,11 @@ bool MonitorData::AnyEmptyTracks() const
 	return Apply2AllTracksB([](Track const & track){ return track.IsEmpty(); });
 }
 
-SignalId MonitorData::FindSignalId(MicroMeterPnt const & umPos) const
-{
-	return FindSignalId([&umPos](Signal const & s) { return s.Includes(umPos); });
-}
-
+//SignalId MonitorData::FindSignalId(MicroMeterPnt const & umPos) const
+//{
+//	return FindSignalId([&umPos](Signal const & s) { return s.Includes(umPos); });
+//}
+//
 void MonitorData::Dump() const
 {
 	wcout << L"NrTracks: " << m_tracks.size() << endl;

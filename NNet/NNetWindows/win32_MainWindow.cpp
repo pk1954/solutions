@@ -13,12 +13,14 @@ module;
 module MainWindow;
 
 import ActionTimer;
+import AddMicroSensorCmd;
 import AddNobsCommand;
 import AddPipe2NeuronCmd;
 import Commands;
 import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
+import DelMicroSensorCmd;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
 import DrawContext;
@@ -135,6 +137,8 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_DELETE_NOB,             L"Delete"                         },
 		{ IDD_DETACH_NOB,             L"Detach"                         },
 		{ IDD_DELETE_EEG_SENSOR,      L"Delete EEG sensor"              },
+		{ IDD_ADD_MICRO_SENSOR,       L"Add micro sensor"               },
+		{ IDD_DEL_MICRO_SENSOR,       L"Delete micro sensor"            },
 		{ IDD_DISC_IOCONNECTOR,       L"Disconnect"                     },
 		{ IDD_SPLIT_NEURON,           L"Split (make I/O neurons)"       },
 		{ IDD_INSERT_KNOT,            L"Insert knot"                    },
@@ -653,6 +657,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		NewIoLinePairCmd::Push(umPoint);
 		break;
 
+	case IDD_ADD_MICRO_SENSOR:    AddMicroSensorCmd   ::Push(m_nobIdHighlighted);	                    break;
+	case IDD_DEL_MICRO_SENSOR:    DelMicroSensorCmd::Push(m_nobIdHighlighted);	                        break;
 	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	            break; // case 7
 	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	    break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: AddPipe2NeuronCmd   ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9

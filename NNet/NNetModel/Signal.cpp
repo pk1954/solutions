@@ -59,10 +59,10 @@ void Signal::Reset()
     m_data.clear();
 }
 
-bool Signal::Includes(MicroMeterPnt const p) const 
-{ 
-    return m_sigSource.Includes(p); 
-}
+//bool Signal::Includes(MicroMeterPnt const p) const 
+//{ 
+//    return m_sigSource.Includes(p); 
+//}
 
 void Signal::WriteSignalInfo(wostream & out) const
 {

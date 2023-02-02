@@ -210,4 +210,8 @@ MicroMeterPosDir CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
 void Nob::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDM_SELECT);
+	//if (m_pMicroSensor)
+	//	add(IDD_DEL_MICRO_SENSOR);
+	//else
+	//	add(IDD_ADD_MICRO_SENSOR);
 }
