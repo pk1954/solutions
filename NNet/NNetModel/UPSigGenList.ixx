@@ -53,7 +53,7 @@ public:
 
     void Apply2AllC(auto const& f) const
     {
-//        f(StdSigGen::Get());
+        f(StdSigGen::Get());
         for_each(m_list, [&f](auto const& up) { f(up.get()); });
     }
 
@@ -68,7 +68,7 @@ public:
 
 private:
 
-    vector<UPSigGen> m_list;
+    vector<UPSigGen> m_list;  // std siggen is ** not ** in list!
     SigGenId         m_sigGenIdActive { STD_SIGGEN };
 
     vector<UPSigGen>::iterator       getSigGen(wstring const &);

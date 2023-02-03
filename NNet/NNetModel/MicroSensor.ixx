@@ -10,7 +10,6 @@ export module NNetModel:MicroSensor;
 
 import Types;
 import DrawContext;
-import :NNetModelWriterInterface;
 import :SignalSource;
 import :NobId;
 import :Nob;
@@ -21,7 +20,7 @@ export class MicroSensor : public SignalSource
 {
 public:
 
-    MicroSensor(NobId const, NNetModelWriterInterface&);
+    MicroSensor(Nob * const);
 
     virtual ~MicroSensor() = default;
 
@@ -29,6 +28,8 @@ public:
     mV   GetSignalValue()                     const final;
     void WriteInfo(wostream&)                 const final;
     void Draw(DrawContext const&, bool const) const final;
+
+    NobId GetNobId() { return m_pNob->GetId(); }
 
 private:
 

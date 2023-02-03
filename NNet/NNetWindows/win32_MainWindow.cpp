@@ -164,10 +164,19 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		(
 			[hPopupMenu](int const id){ appendMenu(hPopupMenu, id); }
 		);
+
+		if (m_pNMRI->HasMicroSensor(m_nobIdHighlighted))
+			appendMenu(hPopupMenu, IDD_DEL_MICRO_SENSOR);
+		else
+			appendMenu(hPopupMenu, IDD_ADD_MICRO_SENSOR);
+
 		if ( m_pNMRI->IsPipe(m_nobIdHighlighted) )
 		{
-			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
-			appendMenu(hPopupMenu, m_pPreferences->ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);
+			appendMenu(hPopupMenu, IDD_EMPHASIZE);
+			if (m_pPreferences->ArrowsVisible())
+				appendMenu(hPopupMenu, IDD_ARROWS_OFF);
+			else
+				appendMenu(hPopupMenu, IDD_ARROWS_ON);
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
 		{
@@ -464,8 +473,6 @@ void MainWindow::DoPaint()
 	DrawContext const &       context { GetDrawContextC() };
 	Sensor      const * const pSensor { m_pNMRI->GetSensorSelectedC() };
 
-	DrawSensors();
-
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
@@ -501,6 +508,9 @@ void MainWindow::DoPaint()
 	{
 		DrawHighlightedSensor(pSensor);
 	}
+
+	DrawSensors();
+
 	if (m_bShowPnts)
 	{
 		DrawSensorDataPoints(pSensor);
@@ -617,6 +627,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_ESCAPE:
 		m_nobIdTarget = NO_NOB;
 		m_nobIdHighlighted = NO_NOB;
+
 	case IDM_DESELECT:
 		DeselectModuleCmd::Push();
 		break;
@@ -658,8 +669,8 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		NewIoLinePairCmd::Push(umPoint);
 		break;
 
-	case IDD_ADD_MICRO_SENSOR:    AddMicroSensorCmd   ::Push(m_nobIdHighlighted);	                    break;
-	case IDD_DEL_MICRO_SENSOR:    DelMicroSensorCmd::Push(m_nobIdHighlighted);	                        break;
+	case IDD_ADD_MICRO_SENSOR:    AddMicroSensorCmd   ::Push(m_nobIdHighlighted, TrackNr(0));	        break;
+	case IDD_DEL_MICRO_SENSOR:    DelMicroSensorCmd   ::Push(m_nobIdHighlighted);	                    break;
 	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	            break; // case 7
 	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	    break; // case 8 
 	case IDD_ADD_INCOMING2NEURON: AddPipe2NeuronCmd   ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9

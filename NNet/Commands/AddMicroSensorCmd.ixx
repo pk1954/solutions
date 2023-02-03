@@ -16,17 +16,25 @@ public:
 
 	AddMicroSensorCmd
 	(
-		NobId const nobId
+		NobId   const nobId,
+		TrackNr const trackNr
 	)
-      : m_nobId(nobId)
+      : m_nobId(nobId),
+		m_trackNr(trackNr)
 	{}
 
 	void Do() final
 	{
+		m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
+		m_signalId = SignalFactory::MakeMicroSensorSignal(m_nobId, m_trackNr, *m_pNMWI);
+		m_pSound->Play(L"SNAP_IN_SOUND");
 	};
 
 	void Undo() final
 	{
+		m_pNMWI->GetMonitorData().DeleteSignal(m_signalId);
+		m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
+		m_pSound->Play(L"DISAPPEAR_SOUND");
 	};
 
 	static void Register()
@@ -36,12 +44,13 @@ public:
 
 	static void Push
 	(
-		NobId const nobId
+		NobId   const nobId,
+		TrackNr const trackNr
 	)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId << endl;
-		m_pStack->PushCommand(make_unique<AddMicroSensorCmd>(nobId));
+			TraceStream() << NAME << nobId << trackNr << endl;
+		m_pStack->PushCommand(make_unique<AddMicroSensorCmd>(nobId, trackNr));
 	}
 
 private:
@@ -53,9 +62,13 @@ private:
 	public:
 		void operator() (Script& script) const final
 		{
-			AddMicroSensorCmd::Push(ScrReadNobId(script));
+			NobId   const nobId   { ScrReadNobId(script) };
+			TrackNr const trackNr { ScrReadTrackNr(script) };
+			AddMicroSensorCmd::Push(nobId, trackNr);
 		}
 	};
 
-	NobId const m_nobId;
+	NobId    const m_nobId;
+	TrackNr  const m_trackNr;
+	SignalId       m_signalId {};
 };

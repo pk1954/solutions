@@ -31,9 +31,12 @@ public:
 	inline static ColorF const EEG_SIGNAL_HIGH   { 1.0f, 0.5f, 0.0f, 1.0f };
 
 	// colors for EEG sensors
-	inline static ColorF const EEG_SENSOR_1     { 0.0f, 0.5f, 0.0f, 0.8f };
-	inline static ColorF const EEG_SENSOR_2     { 1.0f, 1.0f, 0.0f, 0.4f };
-	inline static ColorF const EEG_SENSOR_HIGH  { 1.0f, 0.5f, 0.0f, 0.8f };
+	inline static ColorF const EEG_SENSOR_1      { 0.0f, 0.5f, 0.0f, 0.8f };
+	inline static ColorF const EEG_SENSOR_2      { 1.0f, 1.0f, 0.0f, 0.4f };
+	inline static ColorF const EEG_SENSOR_HIGH   { 1.0f, 0.5f, 0.0f, 0.8f };
+
+	inline static ColorF const MICRO_SENSOR      { 0.7f, 0.7f, 0.0f, 0.8f };
+	inline static ColorF const MICRO_SENSOR_HIGH { 0.7f, 0.5f, 0.0f, 0.8f };
 
 	// colors for neuron/pipe boundary
 	inline static ColorF const EXT_NORMAL       { 0.0f, 0.5f, 1.0f, 1.0f };

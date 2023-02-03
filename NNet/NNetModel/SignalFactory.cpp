@@ -64,8 +64,9 @@ SignalId SignalFactory::MakeMicroSensorSignal
     NNetModelWriterInterface& nmwi
 )
 {
-    unique_ptr<MicroSensor> upMicroSensor { make_unique<MicroSensor>(nobId, nmwi) };
+    Nob *                   pNob          { nmwi.GetNob(nobId) };
+    unique_ptr<MicroSensor> upMicroSensor { make_unique<MicroSensor>(pNob) };
     SignalNr          const signalNr      { addSignal(*upMicroSensor.get(), trackNr, nmwi) };
- //   nmwi.GetSensorList().PushSensor(move(upSensor));
+    nmwi.GetMicroSensorList().PushMicroSensor(move(upMicroSensor));
     return SignalId(trackNr, signalNr);
 }

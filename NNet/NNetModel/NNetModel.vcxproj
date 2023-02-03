@@ -107,6 +107,8 @@
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Track.ixx" />
     <ClCompile Include="TrackNr.ixx" />
+    <ClCompile Include="UPMicroSensorList.cpp" />
+    <ClCompile Include="UPMicroSensorList.ixx" />
     <ClCompile Include="UPNobList.cpp" />
     <ClCompile Include="UPNobList.ixx" />
     <ClCompile Include="UPSensorList.cpp" />

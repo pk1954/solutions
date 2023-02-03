@@ -30,7 +30,7 @@ import Commands;
 import AutoOpen;
 import NNetModel;
 import InsertTrackCommand;
-import AddSensorSignalCmd;
+import AddSensorCmd;
 import DeleteSensorCmd;
 
 using std::to_wstring;
@@ -228,7 +228,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_ADD_EEG_SENSOR:
-        AddSensorSignalCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
+        AddSensorCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
         m_pMonitorWindow->Show(true);
         break;
 

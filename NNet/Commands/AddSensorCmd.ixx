@@ -1,4 +1,4 @@
-// AddSensorSignalCmd.ixx
+// AddSensorCmd.ixx
 //
 // Commands
 
@@ -6,15 +6,15 @@ module;
 
 #include <iostream>
 
-export module AddSensorSignalCmd;
+export module AddSensorCmd;
 
 import NNetCommand;
 
-export class AddSensorSignalCmd : public NNetCommand
+export class AddSensorCmd : public NNetCommand
 {
 public:
 
-    AddSensorSignalCmd
+    AddSensorCmd
     (
         MicroMeterCircle const & umCircle,
         TrackNr          const   trackNr
@@ -50,7 +50,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << umCircle << trackNr << endl;
-		m_pStack->PushCommand(make_unique<AddSensorSignalCmd>(umCircle, trackNr));
+		m_pStack->PushCommand(make_unique<AddSensorCmd>(umCircle, trackNr));
 	}
 
 private:
@@ -64,7 +64,7 @@ private:
 		{
 			MicroMeterCircle const umCircle { ScrReadMicroMeterCircle(script) };
 			TrackNr          const trackNr  { ScrReadTrackNr(script) };
-			AddSensorSignalCmd::Push(umCircle, trackNr);
+			AddSensorCmd::Push(umCircle, trackNr);
 		}
 	};
 

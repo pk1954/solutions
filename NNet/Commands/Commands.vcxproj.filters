@@ -21,7 +21,7 @@
     <ClCompile Include="ExtendOutputLineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AddSensorSignalCmd.ixx">
+    <ClCompile Include="AddSensorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddSigGen2MonitorCmd.ixx">

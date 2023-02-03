@@ -65,7 +65,7 @@ private:
     vector<UPSensor> m_list;
     SensorId         m_sensorIdSelected{ SensorId::NULL_VAL() };
 
-    vector<UPSensor>::iterator getSensor(SensorId const);
+    vector<UPSensor>::iterator       getSensor(SensorId const);
     vector<UPSensor>::const_iterator getSensor(SensorId const) const;
 
     UPSensor removeSensor(vector<UPSensor>::iterator);

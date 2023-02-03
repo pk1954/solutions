@@ -24,7 +24,7 @@ import NNetModel;
 
 import AddMicroSensorCmd;
 import AddNobsCommand;
-import AddSensorSignalCmd;
+import AddSensorCmd;
 import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import ConnSynapse2NewPipeCmd;
@@ -188,7 +188,7 @@ void InitializeNNetWrappers
 
     AddMicroSensorCmd::Register();
     AddNobsCommand::Register();
-    AddSensorSignalCmd::Register();
+    AddSensorCmd::Register();
     ConnAnimationCommand::Register();
     ConnectCreateForkCmd::Register();
     ConnSynapse2NewPipeCmd::Register();

@@ -17,6 +17,7 @@ import :UPNobList;
 import :MonitorData;
 import :UPSigGenList;
 import :UPSensorList;
+import :UPMicroSensorList;
 import :PosNob;
 import :DescriptionUI;
 
@@ -111,20 +112,22 @@ public:
 	{ 
 		return m_sigGenList; 
 	}
-	UPSensorList   const & GetSensorList () const { return m_sensorList; }
-	UPSensorList         & GetSensorList ()       { return m_sensorList; }
-	UPNobList      const & GetUPNobs     () const { return *m_upNobs.get(); }
-	UPNobList            & GetUPNobs     ()       { return *m_upNobs.get(); }
-	unique_ptr<UPNobList>  MoveUPNobs    ()       { return move(m_upNobs); }
-	MonitorData    const & GetMonitorData() const { return m_monitorData; }
-	MonitorData          & GetMonitorData()       { return m_monitorData; }
-	NNetParameters const & GetParams     () const { return m_param; }
-	NNetParameters       & GetParams     ()       { return m_param; }
-
+	UPSensorList      const& GetSensorList     () const { return m_sensorList; }
+	UPSensorList           & GetSensorList     ()       { return m_sensorList; }
+	UPMicroSensorList const& GetMicroSensorList() const { return m_microSensorList; }
+	UPMicroSensorList      & GetMicroSensorList()       { return m_microSensorList; }
+	UPNobList        const & GetUPNobs         () const { return *m_upNobs.get(); }
+	UPNobList              & GetUPNobs         ()       { return *m_upNobs.get(); }
+	unique_ptr<UPNobList>    MoveUPNobs        ()       { return move(m_upNobs); }
+	MonitorData      const & GetMonitorData    () const { return m_monitorData; }
+	MonitorData            & GetMonitorData    ()       { return m_monitorData; }
+	NNetParameters   const & GetParams         () const { return m_param; }
+	NNetParameters         & GetParams         ()       { return m_param; }
+										  
 	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
-	{
+	{									  
 		return m_sigGenList.GetSigGen(sigGenId);
-	}
+	}									  
 	
 	// non const functions
 
@@ -147,6 +150,7 @@ private:
 	unique_ptr<UPNobList> m_upNobs;
 	UPSigGenList          m_sigGenList;
 	UPSensorList          m_sensorList;
+	UPMicroSensorList     m_microSensorList;
 	ModelDescription      m_description;
 	MonitorData           m_monitorData;
 	NNetParameters        m_param;
