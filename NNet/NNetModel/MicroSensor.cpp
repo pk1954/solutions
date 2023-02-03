@@ -46,6 +46,7 @@ mV MicroSensor::GetSignalValue() const
 void MicroSensor::Draw
 (
     DrawContext const& context,
-    bool        const   bHighlight
+    bool        const  bHighlight
 ) const
-{}
+{
+}

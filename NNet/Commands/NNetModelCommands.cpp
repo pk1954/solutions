@@ -26,7 +26,6 @@ import ConnectCreateSynapseCmd;
 import Connect2NeuronCommand;
 import CreateForkCommand;
 import DeleteSelectionCommand;
-import DeleteSensorCommand;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import InsertPosNobCommand;
@@ -48,7 +47,6 @@ import SetNobCommand;
 import SetParameterCommand;
 import SetSigGenStaticDataCmd;
 import SizeSelectionCmd;
-import SizeSensorCmd;
 import SoundInterface;
 import ToggleEmphModeCmd;
 import ToggleStopOnTriggerCmd;
@@ -185,13 +183,6 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	m_pSound->Play(L"SNAP_IN_SOUND");
 }
 
-void NNetModelCommands::DeleteSensor(SensorId const& id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteSensorCommand>(id));
-}
-
 void NNetModelCommands::DeleteSignal(SignalId const& id)
 {
 	if (m_bTrace)
@@ -284,13 +275,6 @@ void NNetModelCommands::SizeSelection(float const fFactor)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << L" " << fFactor << endl;
 	m_pCmdStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
-}
-
-void NNetModelCommands::SizeSensor(SensorId const id, float const fFactor)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << L" " << fFactor << endl;
-	m_pCmdStack->PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
 }
 
 void NNetModelCommands::Rotate

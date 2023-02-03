@@ -93,7 +93,7 @@
     <ClCompile Include="CreateInitialNobsCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />
-    <ClCompile Include="DeleteSensorCommand.ixx" />
+    <ClCompile Include="DeleteSensorCmd.ixx" />
     <ClCompile Include="DelMicroSensorCmd.ixx" />
     <ClCompile Include="ExtendOutputLineCmd.ixx" />
     <ClCompile Include="AddPipe2NeuronCmd.ixx" />

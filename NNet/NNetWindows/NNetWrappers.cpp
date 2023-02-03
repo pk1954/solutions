@@ -31,6 +31,7 @@ import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateInitialNobsCmd;
 import CreateSynapseCommand;
+import DeleteSensorCmd;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
@@ -45,6 +46,7 @@ import NewIoLinePairCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
 import SelectAllConnectedCmd;
+import SizeSensorCmd;
 import SplitNeuronCmd;
 
 using std::wstring;
@@ -193,6 +195,7 @@ void InitializeNNetWrappers
     CreateForkCommand::Register();
     CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();
+    DeleteSensorCmd::Register();
     DelMicroSensorCmd::Register();
     DeselectModuleCmd::Register();
     DiscIoConnectorCmd::Register();
@@ -207,6 +210,7 @@ void InitializeNNetWrappers
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     SelectAllConnectedCmd::Register();
+    SizeSensorCmd::Register();
     SplitNeuronCmd::Register();
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);

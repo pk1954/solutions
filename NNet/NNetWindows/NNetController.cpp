@@ -31,6 +31,7 @@ import AutoOpen;
 import NNetModel;
 import InsertTrackCommand;
 import AddSensorSignalCmd;
+import DeleteSensorCmd;
 
 using std::to_wstring;
 using std::wcout;
@@ -232,7 +233,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_DELETE_EEG_SENSOR:
-        m_pModelCommands->DeleteSensor(m_pNMRI->GetSensorIdSelected());
+        DeleteSensorCmd::Push(m_pNMRI->GetSensorIdSelected());
         break;
 
     case IDD_DELETE_SIGNAL:

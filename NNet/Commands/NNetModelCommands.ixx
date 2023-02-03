@@ -53,7 +53,6 @@ public:
     void Connect(NobId const, NobId const);
     void DeleteNob(NobId const);
     void DeleteSelection();
-    void DeleteSensor(SensorId const&);
     void DeleteSignal(SignalId const&);
     void DeleteTrack(TrackNr const);
     void DiscIoConnector(NobId const);
@@ -71,7 +70,6 @@ public:
     void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);
     void SetNob(NobId const, MicroMeterPosDir const);
     void SizeSelection(float const);
-    void SizeSensor(SensorId const, float const);
     void ToggleEmphMode(NobId const);
     void ToggleStopOnTrigger(NobId const);
     void StartStimulus();

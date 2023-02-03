@@ -1,24 +1,22 @@
-// DeleteSensorCommand.ixx
+// DeleteSensorCmd.ixx
 //
 // Commands
 
 module;
 
-#include <memory>
+#include <iostream>
 
-export module DeleteSensorCommand;
+export module DeleteSensorCmd;
 
 import Types;
 import NNetCommand;
 import NNetModel;
 
-using std::unique_ptr;
-
-export class DeleteSensorCommand : public NNetCommand
+export class DeleteSensorCmd : public NNetCommand
 {
 public:
 
-    DeleteSensorCommand(SensorId const& id)
+    DeleteSensorCmd(SensorId const& id)
         : m_sensorId(id)
     {}
 
@@ -41,7 +39,31 @@ public:
         m_pSound->Play(L"SNAP_IN_SOUND");
     };
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, new Wrapper);
+    }
+
+    static void Push(SensorId id)
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << id << endl;
+        m_pStack->PushCommand(make_unique<DeleteSensorCmd>(id));
+    }
+
 private:
+
+    inline static const wstring NAME { L"DeleteSensor" };
+
+    class Wrapper : public ScriptFunctor
+    {
+    public:
+        void operator() (Script& script) const final
+        {
+            SensorId const id(script.ScrReadUint());
+            DeleteSensorCmd::Push(id);
+        }
+    };
 
     SensorId           m_sensorId {};
     SignalId           m_signalId {};

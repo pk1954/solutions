@@ -204,7 +204,7 @@
     <ClCompile Include="SplitPipeCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteSensorCommand.ixx">
+    <ClCompile Include="DeleteSensorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectAllConnectedCmd.ixx">

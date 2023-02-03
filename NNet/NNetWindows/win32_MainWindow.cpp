@@ -39,6 +39,7 @@ import Observable;
 import Preferences;
 import RootWindow;
 import SelectAllConnectedCmd;
+import SizeSensorCmd;
 import SplitNeuronCmd;
 import Types;
 import Uniform2D;
@@ -404,7 +405,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		{
 			if (bSizeSensor)
 			{
-				m_pModelCommands->SizeSensor(sensorId, fFactor);
+				SizeSensorCmd::Push(sensorId, fFactor);
 			}
 			else
 			{
