@@ -10,13 +10,13 @@ export module NNetModel:MicroSensor;
 
 import Types;
 import DrawContext;
-import :SignalSource;
+import :Sensor;
 import :NobId;
 import :Nob;
 
 using std::wostream;
 
-export class MicroSensor : public SignalSource
+export class MicroSensor : public Sensor
 {
 public:
 
@@ -29,9 +29,20 @@ public:
     void WriteInfo(wostream&)                 const final;
     void Draw(DrawContext const&, bool const) const final;
 
-    NobId GetNobId() { return m_pNob->GetId(); }
+    NobId GetNobId() const { return m_pNob->GetId(); }
+
+    Sensor::Type SensorType() const final { return Sensor::Type::microSensor; }
+
+    void RotateSensor(MicroMeterPnt const&, Radian const) final { /* nob does rotation */ };
 
 private:
 
     Nob* m_pNob;
 };
+
+export MicroSensor const* Cast2MicroSensor(Sensor const* pSensor)
+{
+    return pSensor && pSensor->IsMicroSensor()
+        ? static_cast<MicroSensor const*>(pSensor)
+        : nullptr;
+}

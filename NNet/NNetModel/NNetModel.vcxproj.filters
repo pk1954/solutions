@@ -86,7 +86,7 @@
     <ClCompile Include="PipeList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sensor.cpp">
+    <ClCompile Include="MacroSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SigGenDynamicData.cpp">
@@ -182,7 +182,7 @@
     <ClCompile Include="NNetParameters.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sensor.ixx">
+    <ClCompile Include="MacroSensor.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IoLinePair.ixx">
@@ -293,10 +293,7 @@
     <ClCompile Include="MicroSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UPMicroSensorList.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UPMicroSensorList.cpp">
+    <ClCompile Include="Sensor.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -112,6 +112,7 @@ public:
 	wstring GetTypeName  () const { return NobType::GetName(m_type.GetValue()); }
 	NobType GetNobType   () const { return m_type; }
 	NobId   GetId        () const { return m_identifier; }
+	mV      GetPotential () const { return m_mVinputBuffer; }
 
 	MicroMeter GetPosX() const { return GetPos().GetX(); }
 	MicroMeter GetPosY() const { return GetPos().GetY(); }

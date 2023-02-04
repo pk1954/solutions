@@ -17,7 +17,6 @@ import :UPNobList;
 import :MonitorData;
 import :UPSigGenList;
 import :UPSensorList;
-import :UPMicroSensorList;
 import :PosNob;
 import :DescriptionUI;
 
@@ -104,18 +103,10 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList   const & GetSigGenList () const 
-	{ 
-		return m_sigGenList; 
-	}
-	UPSigGenList         & GetSigGenList ()       
-	{ 
-		return m_sigGenList; 
-	}
+	UPSigGenList     const & GetSigGenList     () const { return m_sigGenList; }
+	UPSigGenList           & GetSigGenList     ()       { return m_sigGenList; }
 	UPSensorList      const& GetSensorList     () const { return m_sensorList; }
 	UPSensorList           & GetSensorList     ()       { return m_sensorList; }
-	UPMicroSensorList const& GetMicroSensorList() const { return m_microSensorList; }
-	UPMicroSensorList      & GetMicroSensorList()       { return m_microSensorList; }
 	UPNobList        const & GetUPNobs         () const { return *m_upNobs.get(); }
 	UPNobList              & GetUPNobs         ()       { return *m_upNobs.get(); }
 	unique_ptr<UPNobList>    MoveUPNobs        ()       { return move(m_upNobs); }
@@ -150,7 +141,6 @@ private:
 	unique_ptr<UPNobList> m_upNobs;
 	UPSigGenList          m_sigGenList;
 	UPSensorList          m_sensorList;
-	UPMicroSensorList     m_microSensorList;
 	ModelDescription      m_description;
 	MonitorData           m_monitorData;
 	NNetParameters        m_param;

@@ -11,6 +11,7 @@ module NNetModel:MicroSensor;
 import Types;
 import DrawContext;
 import :NNetColors;
+import :Signal;
 
 using std::endl;
 using std::wcout;
@@ -27,14 +28,18 @@ void MicroSensor::Dump() const
 
 void MicroSensor::WriteInfo(wostream& out) const
 {
-    out << "NobId";
+    out << Signal::SIGSRC_NOB;
     out << m_pNob->GetId();
     out << endl;
 }
 
 mV MicroSensor::GetSignalValue() const
 {
-    mV mVResult { m_pNob->GetNextOutput() };
+    mV mVResult { m_pNob->GetPotential() };
+    if (mVResult > 0.0_mV)
+    {
+        int x = 42;
+    }
     return mVResult;
 }
 

@@ -76,13 +76,13 @@ void NNetWindow::DrawSensors() const
 	m_pNMRI->GetMonitorDataC().Apply2AllSignalsC([this](Signal const & sig) { sig.Draw(m_context, false); });
 }
 
-void NNetWindow::DrawHighlightedSensor(Sensor const * const pSensor) const
+void NNetWindow::DrawHighlightedSensor(MacroSensor const * const pSensor) const
 {
 	if (pSensor)
 		pSensor->Draw(m_context, true);
 }
 
-void NNetWindow::DrawSensorDataPoints(Sensor const * const pSensor) const
+void NNetWindow::DrawSensorDataPoints(MacroSensor const * const pSensor) const
 {
 	if (pSensor)
 		pSensor->DrawDataPoints(m_context);

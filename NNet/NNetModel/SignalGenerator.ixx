@@ -32,6 +32,8 @@ public:
 
 	static SignalGenerator StdSigGen;
 
+	SignalSource::Type SignalSourceType() const final { return SignalSource::Type::sensor; }
+
 	mV   GetSignalValue()                     const final { return m_mVactual; };
 	void Dump()                               const final {};
 	void WriteInfo(wostream&)                 const final {};

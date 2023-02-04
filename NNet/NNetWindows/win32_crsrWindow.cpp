@@ -196,12 +196,12 @@ void CrsrWindow::printSignalInfo
 	{
 		textBuf.nextLine();
 		textBuf.AlignRight(); 
-		textBuf.printString(L"SIgnal in track nr ");
+		textBuf.printString(L"Signal in track nr ");
 		textBuf.printNumber(id.GetTrackNr().GetValue());
 		textBuf.nextLine();
 		if (pSignal->GetSigSrcType() == Signal::SIGSRC_CIRCLE)
 		{
-			Sensor const * psigSrc { static_cast<Sensor const *>(pSignal->GetSignalSource()) };
+			MacroSensor const * psigSrc { static_cast<MacroSensor const *>(pSignal->GetSignalSource()) };
 			textBuf.AlignRight(); 
 			textBuf.printString(L"EEG-Sensor at ");
 			printMicroMeter(textBuf, psigSrc->GetCenter().GetX()); 

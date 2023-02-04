@@ -22,7 +22,7 @@ import :PosNob;
 import :NobId;
 import :UPNobList;
 import :UPSigGenList;
-import :Sensor;
+import :MacroSensor;
 import :Signal;
 import :SigGenId;
 import :SignalGenerator;
@@ -82,7 +82,6 @@ public:
 	bool                    IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
 	size_t                  GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
 	SignalId                FindSignalId(auto const & crit)        const { return GetMonitorDataC().FindSignalId(crit); }
-//	SignalId                FindSignalId(MicroMeterPnt const & p)  const { return GetMonitorDataC().FindSignalId(p); }
 	SignalId                GetHighlightedSignalId()               const { return GetMonitorDataC().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
 	SignalGenerator const * GetSigGenSelectedC()                   const { return m_pModel->GetSigGenList().GetSigGenSelected(); }
@@ -92,10 +91,7 @@ public:
 	Sensor          const * GetSensorSelectedC()                   const { return m_pModel->GetSensorList().GetSensorSelected(); }
 	SensorId                GetSensorIdSelected()                  const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
 	bool                    IsAnySensorSelected()                  const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
-	MicroSensor     const * GetMicroSensorSelectedC()              const { return m_pModel->GetMicroSensorList().GetMicroSensorSelected(); }
-	MicroSensorId           GetMicroSensorIdSelected()             const { return m_pModel->GetMicroSensorList().GetMicroSensorIdSelected(); }
-	bool                    IsAnyMicroSensorSelected()             const { return m_pModel->GetMicroSensorList().IsAnyMicroSensorSelected(); }
-	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().FindMicroSensor(id) != MicroSensorId::NULL_VAL(); }
+	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetSensorList().FindSensor(id) != SensorId::NULL_VAL(); }
 	PosNob          const * GetConstPosNobPtr(NobId const id)      const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
 
 	bool IsInputLine(NobId const id) const

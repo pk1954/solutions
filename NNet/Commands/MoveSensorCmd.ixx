@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 
 export module MoveSensorCmd;
@@ -18,28 +19,28 @@ public:
 		SensorId      const & id,
 		MicroMeterPnt const & delta
 	)
-	  : m_sensorId(id),
-		m_delta(delta)
-	{}
+	  : m_delta(delta)
+	{
+		Sensor * pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
+		assert(pSensor);
+		assert(pSensor->IsMacroSensor());
+		m_pMacroSensor = static_cast<MacroSensor *>(pSensor);
+	}
 
 	void Do() final 
 	{ 
-		Sensor * pSensor { m_pNMWI->GetSensorList().GetSensor(m_sensorId) };
-		if (pSensor)
-			pSensor->MoveSensor(m_pNMWI->GetUPNobsC(), m_delta);
+		m_pMacroSensor->MoveSensor(m_pNMWI->GetUPNobsC(), m_delta);
 	}
 
 	void Undo() final 
 	{ 
-		Sensor * pSensor { m_pNMWI->GetSensorList().GetSensor(m_sensorId) };
-		if (pSensor)
-			pSensor->MoveSensor(m_pNMWI->GetUPNobsC(), -m_delta);
+		m_pMacroSensor->MoveSensor(m_pNMWI->GetUPNobsC(), -m_delta);
 	}
 
 	bool CombineCommands(Command const & src) final
 	{ 
 		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
-		if (m_sensorId != cmdSrc.m_sensorId)
+		if (m_pMacroSensor != cmdSrc.m_pMacroSensor)
 			return false;
 		m_delta += cmdSrc.m_delta;
 		return true; 
@@ -72,6 +73,6 @@ private:
 		}
 	};
 
-	SensorId      m_sensorId;
+	MacroSensor * m_pMacroSensor;
 	MicroMeterPnt m_delta;
 };

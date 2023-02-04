@@ -59,6 +59,7 @@ public:
 
     UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
     SensorId FindSensor(MicroMeterPnt const&) const;
+    SensorId FindSensor(NobId const) const;
 
 private:
 

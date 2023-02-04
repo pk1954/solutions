@@ -83,7 +83,8 @@
     <ClCompile Include="PipeList.cpp" />
     <ClCompile Include="PipeList.ixx" />
     <ClCompile Include="PosNob.ixx" />
-    <ClCompile Include="Sensor.cpp" />
+    <ClCompile Include="MacroSensor.cpp" />
+    <ClCompile Include="MacroSensor.ixx" />
     <ClCompile Include="Sensor.ixx" />
     <ClCompile Include="SigGenDynamicData.cpp" />
     <ClCompile Include="SigGenDynamicData.ixx" />
@@ -107,8 +108,6 @@
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Track.ixx" />
     <ClCompile Include="TrackNr.ixx" />
-    <ClCompile Include="UPMicroSensorList.cpp" />
-    <ClCompile Include="UPMicroSensorList.ixx" />
     <ClCompile Include="UPNobList.cpp" />
     <ClCompile Include="UPNobList.ixx" />
     <ClCompile Include="UPSensorList.cpp" />

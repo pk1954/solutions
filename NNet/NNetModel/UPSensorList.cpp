@@ -14,6 +14,8 @@ module NNetModel:UPSensorList;
 import SaveCast;
 import Types;
 import :Sensor;
+import :MacroSensor;
+import :MicroSensor;
 import :UPNobList;
 
 using std::vector;
@@ -69,9 +71,39 @@ Sensor * UPSensorList::GetSensor(SensorId const id)
     return IsValid(id) ? m_list.at(id.GetValue()).get() : nullptr;
 }
 
+SensorId UPSensorList::FindSensor(NobId const nobId) const
+{
+    vector<UPSensor>::const_iterator it
+    {
+        find_if
+        (
+            m_list,
+            [&nobId](UPSensor const & upSensor)
+            {
+                MicroSensor const * pMicroSensor { Cast2MicroSensor(upSensor.get()) };
+                return (pMicroSensor) ? (pMicroSensor->GetNobId() == nobId) : false;
+            }
+        )
+    };
+    return (it == m_list.end())
+        ? SensorId::NULL_VAL()
+        : SensorId(Cast2Int(it - m_list.begin()));
+}
+
 SensorId UPSensorList::FindSensor(MicroMeterPnt const & umPos) const
 {
-    vector<UPSensor>::const_iterator it { find_if(m_list, [&umPos](auto& it) { return it ? it->Includes(umPos) : false; }) };
+    vector<UPSensor>::const_iterator it 
+    { 
+        find_if
+        (
+            m_list, 
+            [&umPos](UPSensor const & upSensor) 
+            { 
+                MacroSensor const* pMacroSensor { Cast2MacroSensor(upSensor.get()) };
+                return (pMacroSensor) ? pMacroSensor->Includes(umPos) : false;
+            }
+        ) 
+    };
     return (it == m_list.end())
         ? SensorId::NULL_VAL()
         : SensorId(Cast2Int(it - m_list.begin()));
@@ -91,7 +123,7 @@ UPSensor UPSensorList::NewSensor
     UPNobList        const & list
 )
 {
-    return move(make_unique<Sensor>(circle, list));
+    return move(make_unique<MacroSensor>(circle, list));
 }
 
 SensorId UPSensorList::PushSensor(UPSensor upSensor)

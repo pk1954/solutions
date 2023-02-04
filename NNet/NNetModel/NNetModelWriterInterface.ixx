@@ -66,8 +66,7 @@ public:
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
 
-    UPSensorList     & GetSensorList     () { return m_pModel->GetSensorList(); }
-    UPMicroSensorList& GetMicroSensorList() { return m_pModel->GetMicroSensorList(); }
+    UPSensorList    & GetSensorList() { return m_pModel->GetSensorList(); }
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 

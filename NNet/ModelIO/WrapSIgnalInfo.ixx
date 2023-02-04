@@ -26,19 +26,23 @@ public:
 
     void operator() (Script& script) const final
     {
-        MicroMeterCircle umCircle;
         SignalId   const signalId { ScrReadSignalId(script) };
         script.ScrReadString(L"source");
-        unsigned long const ulSigSrc{ script.ScrReadUlong() };
+        unsigned long const ulSigSrc { script.ScrReadUlong() };
         if (ulSigSrc == Signal::SIGSRC_CIRCLE)
         {
-            umCircle = ScrReadMicroMeterCircle(script);
+            MicroMeterCircle umCircle = ScrReadMicroMeterCircle(script);
+            SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
+        }
+        else if (ulSigSrc == Signal::SIGSRC_NOB)
+        {
+            NobId nobId { ScrReadNobId(script) };
+            SignalFactory::MakeMicroSensorSignal(nobId, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
         }
         else
         {
             throw ScriptErrorHandler::ScriptException(999, wstring(L"Signal source type must be 101"));
         }
-        SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
     }
 
     void Write(wostream& out) const final

@@ -83,8 +83,8 @@ protected:
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
 	void DrawSensors() const;
-	void DrawSensorDataPoints (Sensor const * const) const;
-	void DrawHighlightedSensor(Sensor const * const) const;
+	void DrawSensorDataPoints (MacroSensor const * const) const;
+	void DrawHighlightedSensor(MacroSensor const * const) const;
 
 	NNetModelReaderInterface const* m_pNMRI{ nullptr };
 

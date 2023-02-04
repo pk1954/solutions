@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 
 export module SizeSensorCmd;
@@ -19,21 +20,22 @@ public:
 		SensorId const & id,
 		float    const   fFactor
 	)
-	  : m_pSensor(m_pNMWI->GetSensorList().GetSensor(id)),
-		m_sensorId(id),
+	  : m_sensorId(id),
 		m_fFactor(fFactor)
-	{}
+	{
+		Sensor* pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
+		assert(pSensor->IsMacroSensor());
+		m_pSensor = static_cast<MacroSensor*>(pSensor);
+	}
 
 	void Do() final 
 	{ 
-		if (m_pSensor)
-			m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), 1.0f / m_fFactor); 
+		m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), 1.0f / m_fFactor); 
 	}
 
 	void Undo() final 
 	{ 
-		if (m_pSensor)
-			m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), m_fFactor); 
+		m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), m_fFactor); 
 	}
 
 	bool CombineCommands(Command const & src) final
@@ -72,7 +74,7 @@ private:
 		}
 	};
 
-	Sensor * m_pSensor;
-	SensorId m_sensorId;
-	float    m_fFactor;
+	MacroSensor * m_pSensor;
+	SensorId      m_sensorId;
+	float         m_fFactor;
 };

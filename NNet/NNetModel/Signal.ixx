@@ -66,6 +66,7 @@ public:
 
     inline static int const SIGSRC_CIRCLE    { 101 };
     inline static int const SIGSRC_GENERATOR { 102 };
+    inline static int const SIGSRC_NOB       { 103 };
 
 private:
 

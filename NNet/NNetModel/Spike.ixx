@@ -22,8 +22,8 @@ public:
     {
         if (usSpikeTime <= usSpikeWidth)
         {
-            float const factorU{ usSpikeTime / usSpikeWidth };
-            mV    const mVpot{ amplitude * 4.0f * factorU * (1.0f - factorU) };
+            float const factorU { usSpikeTime / usSpikeWidth };
+            mV    const mVpot   { amplitude * 4.0f * factorU * (1.0f - factorU) };
             return mVpot;
         }
         else

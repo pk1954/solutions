@@ -36,6 +36,8 @@ public:
 	void StimulusTriggered() const;
 	void ResetHorzCoord();
 
+	fPixel GetSignalPos(SignalId const);
+
 	PixFpDimension<fMicroSecs> const& HorzCoord() const { return m_horzCoord; }
 	PixFpDimension<mV>         const& VertCoord() const { return m_vertCoord; }
 

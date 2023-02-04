@@ -469,9 +469,9 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
-	PixelRect   const         pixRect { GetClPixelRect () };
-	DrawContext const &       context { GetDrawContextC() };
-	Sensor      const * const pSensor { m_pNMRI->GetSensorSelectedC() };
+	PixelRect   const   pixRect              { GetClPixelRect () };
+	DrawContext const & context              { GetDrawContextC() };
+	MacroSensor const * pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensorSelectedC()) };
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -506,14 +506,15 @@ void MainWindow::DoPaint()
 	}
 	else 
 	{
-		DrawHighlightedSensor(pSensor);
+		if (pMacroSensorSelected)
+			DrawHighlightedSensor(pMacroSensorSelected);
 	}
 
 	DrawSensors();
 
-	if (m_bShowPnts)
+	if (m_bShowPnts && pMacroSensorSelected)
 	{
-		DrawSensorDataPoints(pSensor);
+		DrawSensorDataPoints(pMacroSensorSelected);
 	}
 
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());

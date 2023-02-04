@@ -126,3 +126,9 @@ bool MonitorWindow::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeig
 	m_upStimulusButton->CenterInParentWin();
 	return true;
 }
+
+fPixel MonitorWindow::GetSignalPos(SignalId const signalId)
+{
+	fPixel fPixRes { fPixel::NULL_VAL() };
+	return fPixRes;
+}
