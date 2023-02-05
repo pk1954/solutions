@@ -48,7 +48,6 @@ public:
     void AddSigGen2Monitor(TrackNr const);
     void AnimateArrows(MicroMeter&, MicroMeter const);
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
-    void AttachSigGen2Conn(NobId const);
     void Connect(NobId const, NobId const);
     void DeleteNob(NobId const);
     void DeleteSelection();

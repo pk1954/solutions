@@ -16,6 +16,7 @@ import ActionTimer;
 import AddMicroSensorCmd;
 import AddNobsCommand;
 import AddPipe2NeuronCmd;
+import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
 import Commands;
 import ConnSynapse2NewPipeCmd;
@@ -651,7 +652,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_ATTACH_SIG_GEN_TO_CONN:
-		m_pModelCommands->AttachSigGen2Conn(m_nobIdHighlighted);
+		AttachSigGen2ConCmd::Push(m_nobIdHighlighted);
 		break;
 
 	case IDD_DISC_IOCONNECTOR:

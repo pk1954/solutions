@@ -2,6 +2,10 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module AttachSigGen2ConCmd;
 
 import NNetCommand;
@@ -25,7 +29,31 @@ public:
 		m_inputConnector.SetSigGen(m_pSigGenOld);
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId const id)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << id << endl;
+		m_pStack->PushCommand(make_unique<AttachSigGen2ConCmd>(id));
+	}
+
 private:
+
+	inline static const wstring NAME { L"AttachSigGen2Con" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			AttachSigGen2ConCmd::Push(ScrReadNobId(script));
+		}
+	};
+
 	InputConnector  & m_inputConnector;
 	SignalGenerator * m_pSigGenOld;
 	SignalGenerator * m_pSigGenNew { m_pNMWI->GetSigGenSelected() };
