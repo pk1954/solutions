@@ -48,6 +48,7 @@ import ResetModelCmd;
 import SelectAllConnectedCmd;
 import SizeSensorCmd;
 import SplitNeuronCmd;
+import ToggleStopOnTriggerCmd;
 
 using std::wstring;
 
@@ -92,16 +93,6 @@ public:
             script.ScrReadString(), 
             NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
         );
-    }
-};
-
-class WrapToggleStopOnTrigger: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId const id { ScrReadNobId(script) };
-        m_pCommands->ToggleStopOnTrigger(id);
     }
 };
 
@@ -212,6 +203,7 @@ void InitializeNNetWrappers
     SelectAllConnectedCmd::Register();
     SizeSensorCmd::Register();
     SplitNeuronCmd::Register();
+    ToggleStopOnTriggerCmd::Register();
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
@@ -219,7 +211,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
     SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
-    SymbolTable::ScrDefConst(L"ToggleStopOnTrigger", new WrapToggleStopOnTrigger );
     SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );

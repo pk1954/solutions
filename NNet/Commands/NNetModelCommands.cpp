@@ -212,14 +212,6 @@ void NNetModelCommands::DeleteTrack(TrackNr const nr)
 	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
 }
 
-void NNetModelCommands::ToggleStopOnTrigger(NobId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pSound->Play(L"SNAP_IN_SOUND");
-	m_pCmdStack->PushCommand(make_unique<ToggleStopOnTriggerCmd>(id));
-}
-
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 {
 	UPSensorList & list { m_pNMWI->GetSensorList() };

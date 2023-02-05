@@ -41,6 +41,7 @@ import RootWindow;
 import SelectAllConnectedCmd;
 import SizeSensorCmd;
 import SplitNeuronCmd;
+import ToggleStopOnTriggerCmd;
 import Types;
 import Uniform2D;
 import Win32_Util;
@@ -681,7 +682,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
 
 	case IDD_STOP_ON_TRIGGER:
-		m_pModelCommands->ToggleStopOnTrigger(m_nobIdHighlighted);
+		ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);
 		break;
 
 	case IDD_SCALES:

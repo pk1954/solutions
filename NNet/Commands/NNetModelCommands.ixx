@@ -71,7 +71,6 @@ public:
     void SetNob(NobId const, MicroMeterPosDir const);
     void SizeSelection(float const);
     void ToggleEmphMode(NobId const);
-    void ToggleStopOnTrigger(NobId const);
     void StartStimulus();
 
     SensorId SetHighlightedSensor(MicroMeterPnt const&);
