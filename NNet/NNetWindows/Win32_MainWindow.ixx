@@ -35,6 +35,7 @@ public:
 		NNetModelCommands&,
 		Observable&,
 		Observable&,
+		Observable&,
 		ActionTimer* const,
 		MonitorWindow const *
 	);
@@ -72,6 +73,7 @@ public:
 	void OnLButtonDblClick(WPARAM const, LPARAM const)                   final;
 	bool OnLButtonUp      (WPARAM const, LPARAM const)                   final;
 	bool OnSize           (PIXEL  const, PIXEL  const)                   final;
+	bool OnMove           (PIXEL  const, PIXEL  const)                   final;
 
 private:
 
@@ -86,6 +88,7 @@ private:
 	MicroMeterPnt      m_umPntSelectionAnchor { };
 	Observable*        m_pCoordObservable     { nullptr };
 	Observable*        m_pCursorPosObservable { nullptr };
+	Observable*        m_pMoveObservable      { nullptr };
 	NNetModelCommands* m_pModelCommands       { nullptr };
 	bool               m_bShowPnts            { false };
 	NobId              m_nobIdHighlighted     { NO_NOB };

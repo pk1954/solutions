@@ -40,9 +40,9 @@ void D2D_DrawContext::Reset() const
 
 void D2D_DrawContext::DrawLine
 (
-	MicroMeterPnt const & umStartPoint, 
-	MicroMeterPnt const & umEndPoint, 
-	MicroMeter    const   umWidth, 
+	MicroMeterPnt const& umStartPoint,
+	MicroMeterPnt const& umEndPoint,
+	MicroMeter    const   umWidth,
 	ColorF        const   col,
 	fPixel        const   fPixMin
 ) const
@@ -53,9 +53,9 @@ void D2D_DrawContext::DrawLine
 		m_pGraphics->DrawLine
 		(
 			m_coord.Transform2fPixelPos(umStartPoint),
-			m_coord.Transform2fPixelPos(umEndPoint  ),
+			m_coord.Transform2fPixelPos(umEndPoint),
 			fPixWidth,
-			m_bNoColors ? ColorF::Black : col 
+			m_bNoColors ? ColorF::Black : col
 		);
 	}
 }

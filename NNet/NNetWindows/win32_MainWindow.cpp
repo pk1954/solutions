@@ -66,10 +66,12 @@ void MainWindow::Start
 	NNetModelCommands   & modelCommands,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,  
+	Observable          & pMoveObservable,
 	ActionTimer * const   pActionTimer,
 	MonitorWindow const * pMonitorWindow
 )
 {
+	m_pMoveObservable = &pMoveObservable;
 	NNetWindow::Start
 	(
 		hwndApp, 
@@ -249,6 +251,12 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
+
+bool MainWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
+{
+	m_pMoveObservable->NotifyAll(false);
+	return NNetWindow::OnMove(pixPosX, pixPosY);
+};
 
 bool MainWindow::connectionAllowed()
 {

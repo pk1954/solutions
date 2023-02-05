@@ -89,21 +89,20 @@ void NNetWindow::DrawSensors() const
 				Sensor       const * pSensor { Cast2Sensor(pSigSrc) };
 				if (pSensor)
 				{
-					TrackNr       const trackNr      { signalId.GetTrackNr() };
-					fPixel        const fPixY        { m_pMonitorWindow->GetTrackPos(trackNr) };
-					PixelPoint    const pixPos       { m_pMonitorWindow->GetWindowWidth(), Convert2PIXEL(fPixY) };
-					PixelPoint    const pixPosScreen { m_pMonitorWindow->Client2Screen(pixPos) };
-					PixelPoint    const pixPosMain   { Screen2Client(pixPosScreen) };
-					fPixelPoint   const fPixPosMain  { Convert2fPixelPoint(pixPosMain) };
-					MicroMeterPnt const umPosSensor  { pSensor->GetPosition() };
-					MicroMeterPnt const umPosMain    { GetCoordC().Transform2logUnitPntPos(fPixPosMain) };
-					m_context.DrawLine
+					TrackNr       const trackNr       { signalId.GetTrackNr() };
+					fPixel        const fPixY         { m_pMonitorWindow->GetTrackPos(trackNr) };
+					PixelPoint    const pixPos        { m_pMonitorWindow->GetWindowWidth(), Convert2PIXEL(fPixY) };
+					PixelPoint    const pixPosScreen  { m_pMonitorWindow->Client2Screen(pixPos) };
+					PixelPoint    const pixPosMain    { Screen2Client(pixPosScreen) };
+					fPixelPoint   const fPixPosMain   { Convert2fPixelPoint(pixPosMain) };
+					MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
+					fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
+					m_upGraphics->DrawLine
 					(
-						umPosMain,
-						umPosSensor,
-						1.0_MicroMeter,
-						D2D1::ColorF::Green,
-						2._fPixel
+						fPixPosMain,
+						fPixPosSensor,
+						2._fPixel,
+						D2D1::ColorF::Green
 					);
 				}
 			}

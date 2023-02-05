@@ -136,4 +136,3 @@ bool MonitorWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 	m_pMoveSizeObservable->NotifyAll(false);
 	return BaseWindow::OnMove(pixPosX, pixPosY);
 };
-

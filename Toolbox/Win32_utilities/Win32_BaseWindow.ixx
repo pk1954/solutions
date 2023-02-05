@@ -63,7 +63,7 @@ protected:
 	virtual void OnMouseMove        (WPARAM const, LPARAM const);
 	virtual void OnMouseLeave       ();
 	
-	bool OnMove(PIXEL const, PIXEL const) override { return false; };
+//	bool OnMove(PIXEL const, PIXEL const) override { return false; };
 	bool OnSize(PIXEL const, PIXEL const) override { return false; };
 
 private:

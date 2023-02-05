@@ -188,6 +188,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_modelCommands,
 		m_cursorPosObservable,
 		m_coordObservable,
+		m_staticModelObservable,
 		& m_atDisplay,
 		& m_monitorWindow
 	);
