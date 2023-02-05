@@ -585,6 +585,7 @@
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="NNetWrappers.ixx" />
+    <ClCompile Include="ParameterDlg.ixx" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="Preferences.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
@@ -621,7 +622,6 @@
     <ClCompile Include="NNetWindow.cpp" />
     <ClCompile Include="NNetWindow.ixx" />
     <ClCompile Include="ParameterDlg.cpp" />
-    <ClCompile Include="Win32_ParameterDlg.ixx" />
     <ClCompile Include="PerformanceWindow.cpp" />
     <ClCompile Include="PerformanceWindow.ixx" />
     <ClCompile Include="ScriptHook.ixx" />

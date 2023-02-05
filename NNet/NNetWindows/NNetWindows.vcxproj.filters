@@ -147,9 +147,6 @@
     <ClCompile Include="NNetWrappers.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_ParameterDlg.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MiniWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -181,6 +178,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectionMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParameterDlg.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
