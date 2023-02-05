@@ -15,7 +15,7 @@ import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;
 import BaseWindow;
-import NNetModelCommands;
+import SetParameterCommand;
 import NNetModel;
 
 using std::wstring;
@@ -51,7 +51,7 @@ void ParameterDialog::applyParameter  // read out edit field and write data to m
 	float       fValue    { fOldValue }; 
 	bool  const bOK       { Util::Evaluate(hwndEditField, fValue) };
 	if (bOK && ! IsCloseToZero(fValue - fOldValue))
-		m_pCommands->SetParameter(parameter, fValue);
+		SetParameterCommand::Push(parameter, fValue);
 }
 
 HWND ParameterDialog::addParameter

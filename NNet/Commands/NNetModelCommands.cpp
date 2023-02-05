@@ -220,13 +220,6 @@ SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 	return id;
 }
 
-void NNetModelCommands::SetParameter(ParamType::Value const param, float const fNewValue)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << ParamType::GetName(param) << L" " << fNewValue << endl;
-	m_pCmdStack->PushCommand(make_unique<SetParameterCommand>(m_pNMWI->GetParams(), param, fNewValue));
-}
-
 void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticData const &data)
 {
 	if (m_bTrace)

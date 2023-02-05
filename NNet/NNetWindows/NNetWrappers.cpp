@@ -46,6 +46,7 @@ import NewIoLinePairCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
 import SelectAllConnectedCmd;
+import SetParameterCommand;
 import SizeSensorCmd;
 import SplitNeuronCmd;
 import ToggleStopOnTriggerCmd;
@@ -111,17 +112,6 @@ public:
     void operator() (Script & script) const final
     {
         m_pCommands->DeleteNob(ScrReadNobId(script));
-    }
-};
-
-class WrapSetParameter: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        ParamType::Value const param  { static_cast<ParamType::Value>(script.ScrReadUlong()) };
-        float            const fValue { Cast2Float(script.ScrReadFloat()) };
-        m_pCommands->SetParameter(param, fValue);
     }
 };
 
@@ -201,6 +191,7 @@ void InitializeNNetWrappers
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     SelectAllConnectedCmd::Register();
+    SetParameterCommand::Register();
     SizeSensorCmd::Register();
     SplitNeuronCmd::Register();
     ToggleStopOnTriggerCmd::Register();
@@ -210,7 +201,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
-    SymbolTable::ScrDefConst(L"SetParameter",        new WrapSetParameter);
     SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
