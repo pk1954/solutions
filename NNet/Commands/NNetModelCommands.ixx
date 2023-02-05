@@ -49,7 +49,6 @@ public:
     void AnimateArrows(MicroMeter&, MicroMeter const);
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void AttachSigGen2Conn(NobId const);
-    void AttachSigGen2Line(NobId const);
     void Connect(NobId const, NobId const);
     void DeleteNob(NobId const);
     void DeleteSelection();

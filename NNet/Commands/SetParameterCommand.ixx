@@ -4,7 +4,6 @@
 
 module;
 
-#include <compare>
 #include <iostream>
 
 export module SetParameterCommand;

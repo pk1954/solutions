@@ -16,7 +16,6 @@ import AddPipe2NeuronCmd;
 import AddSigGen2MonitorCmd;
 import ArrowAnimation;
 import AttachSigGen2ConCmd;
-import AttachSigGen2LineCmd;
 import Commands;
 import CommandFunctions;
 import ConnAnimationCommand;
@@ -132,13 +131,6 @@ void NNetModelCommands::AnimateArrows
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
-}
-
-void NNetModelCommands::AttachSigGen2Line(NobId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pCmdStack->PushCommand(make_unique<AttachSigGen2LineCmd>(id));
 }
 
 void NNetModelCommands::AttachSigGen2Conn(NobId const id)
