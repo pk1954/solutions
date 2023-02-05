@@ -1,4 +1,4 @@
-// Win32_MainWindow.ixx
+// MainWindow.ixx
 //
 // NNetWindows
 

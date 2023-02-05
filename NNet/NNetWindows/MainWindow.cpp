@@ -5,101 +5,156 @@
 module;
 
 #include <unordered_map>
+#include <iostream>
+#include <string>
+#include <Windows.h>
 #include "Resource.h"
-#include "Signal.h"
-#include "MicroMeterPntVector.h"
-#include "Knot.h"
-#include "Neuron.h"
-#include "IoConnector.h"
-#include "NobException.h"
-#include "NNetColors.h"
-#include "NNetParameters.h"
-#include "NNetModelCommands.h"
-#include "win32_util_resource.h"
-#include "win32_fatalError.h"
-#include "win32_monitorWindow.h"
 
 module MainWindow;
 
-import MoreTypes;
 import ActionTimer;
-import Command;
+import AddMicroSensorCmd;
+import AddNobsCommand;
+import AddPipe2NeuronCmd;
+import AttachSigGen2ConCmd;
+import AttachSigGen2LineCmd;
+import Commands;
+import ConnSynapse2NewPipeCmd;
+import CreateForkCommand;
+import CreateSynapseCommand;
+import DelMicroSensorCmd;
+import DeselectModuleCmd;
+import DiscIoConnectorCmd;
+import DrawContext;
+import ExtendInputLineCmd;
+import ExtendOutputLineCmd;
+import FatalError;
+import NewIoLinePairCmd;
+import NNetController;
+import NNetModel;
+import NNetModelCommands;
+import MonitorWindow;
+import MoveNobCommand;
+import MoveSelectionCommand;
+import MoveSensorCmd;
+import Observable;
+import Preferences;
+import RootWindow;
+import SelectAllConnectedCmd;
+import SizeSensorCmd;
+import SplitNeuronCmd;
+import ToggleStopOnTriggerCmd;
+import Types;
+import Uniform2D;
+import Win32_Util;
+import Win32_Util_Resource;
 
 using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
 using std::to_wstring;
+using std::wcout;
+using std::endl;
 
 void MainWindow::Start
 (
-	HWND          const hwndApp, 
-	bool          const bShowRefreshRateDialog,
-	fPixel        const fPixBeaconLimit,
-	NNetController    & controller,
-	NNetModelCommands & modelCommands,
-	Observable        & cursorObservable,
-	Observable        & coordObservable,  
-	ActionTimer * const pActionTimer
+	HWND          const   hwndApp, 
+	bool          const   bShowRefreshRateDialog,
+	fPixel        const   fPixBeaconLimit,
+	Preferences         & preferences,
+	NNetController      & controller,
+	NNetModelCommands   & modelCommands,
+	Observable          & cursorObservable,
+	Observable          & coordObservable,  
+	Observable          & pMoveObservable,
+	ActionTimer * const   pActionTimer,
+	MonitorWindow const * pMonitorWindow
 )
 {
+	m_pMoveObservable = &pMoveObservable;
 	NNetWindow::Start
 	(
 		hwndApp, 
-		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
+		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
-		controller
+		controller,
+		pMonitorWindow
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
+	m_pPreferences         = & preferences;
 	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
+	HWND hwnd = GetWindowHandle();
+	m_SelectionMenu.Start(hwnd);
+
+	Uniform2D<MicroMeter>      & coord  { GetCoord() };
+	PixFpDimension<MicroMeter> & coordX { coord.GetXdim() };
+	PixFpDimension<MicroMeter> & coordY { coord.GetYdim() };
+
+	m_upHorzScale = make_unique<Scale<MicroMeter>>(hwnd, false, coordX);
+	m_upVertScale = make_unique<Scale<MicroMeter>>(hwnd, true,  coordY);
+
+	m_pCoordObservable->RegisterObserver(*m_upHorzScale.get());
+	m_pCoordObservable->RegisterObserver(*m_upVertScale.get());
+
+	m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
+	m_upHorzScale->SetAllowUnlock(true);
+	m_upHorzScale->SetZoomAllowed(false);
+	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
+	m_upHorzScale->SetLeftBorder (Convert2fPixel(V_SCALE_WIDTH));
+
+	m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
+	m_upVertScale->SetAllowUnlock(true);
+	m_upVertScale->SetZoomAllowed(false);
+	m_upVertScale->SetOrthoOffset (Convert2fPixel(V_SCALE_WIDTH));
+	m_upHorzScale->SetBottomBorder(Convert2fPixel(H_SCALE_HEIGHT));
 }
 
 void MainWindow::Stop()
 {
 	Reset();
+	m_SelectionMenu.Stop();
 	NNetWindow::Stop();
 }
 
 void MainWindow::Reset()
 { 
-	m_nobHighlighted = NO_NOB; 
-	setNoTarget(); 
+	m_nobIdHighlighted = NO_NOB;
+	m_nobIdTarget = NO_NOB;
 }
 
 void appendMenu(HMENU const hPopupMenu, int const idCommand)
 {
 	static unordered_map <int, LPCWSTR const> mapCommands =
 	{
-		{ IDD_ADD_INCOMING2BASEKNOT,   L"Add incoming dendrite"          },
-		{ IDD_ADD_INCOMING2PIPE,       L"Add incoming dendrite"          },
-		{ IDD_ADD_OUTGOING2BASEKNOT,   L"Add outgoing dendrite"          },
-		{ IDD_ADD_OUTGOING2PIPE,       L"Add outgoing dendrite"          },
-		{ IDD_ADD_EEG_SENSOR,          L"New EEG sensor" 		         },
-//		{ IDM_ALIGN_NOBS,              L"Align selected objects"         },
-		{ IDD_ARROWS_OFF,              L"Arrows off"                     },
-		{ IDD_ARROWS_ON,               L"Arrows on"                      },
-		{ IDD_ATTACH_SIG_GEN_TO_LINE,  L"Attach active signal generator" },
-		{ IDD_ATTACH_SIG_GEN_TO_CONN,  L"Attach active signal generator" },
-		{ IDD_ATTACH_SIG_GEN_TO_SEL,   L"Attach active signal generator" },
-		{ IDM_COPY_SELECTION,          L"Copy selection"                 },
-		{ IDM_DELETE_SELECTION,        L"Delete selected objects"        },
-		{ IDD_DELETE_NOB,              L"Delete"                         },
-		{ IDD_DELETE_EEG_SENSOR,       L"Delete EEG sensor"              },
-		{ IDM_DESELECT_ALL,            L"Deselect all"                   },
-		{ IDM_DESELECT_NOB,            L"Deselect nob"                   },
-		{ IDD_DISC_IOCONNECTOR,        L"Disconnect"                     },
-		{ IDD_SPLIT_NEURON,            L"Split (make I/O neurons)"       },
-		{ IDD_INSERT_KNOT,             L"Insert knot"                    },
-		{ IDD_INSERT_NEURON,           L"Insert neuron"                  },
-		{ IDM_MAKE_CONNECTOR,          L"Make connector"                 },
-		{ IDD_NEW_IO_LINE_PAIR,        L"New IO-line pair"  	         },
-		{ IDM_SELECT_NOB,              L"Select nob"                     },
-		{ IDM_SELECT_SUBTREE,          L"Select subtree"                 },
-		{ IDD_STOP_ON_TRIGGER,         L"Stop on trigger on/off"         },
-		{ IDD_EMPHASIZE,               L"Feedback line on/off"           }
+		{ IDD_EXTEND_INPUTLINE,       L"Extend"                         },
+		{ IDD_EXTEND_OUTPUTLINE,      L"Extend"                         },
+		{ IDD_ADD_INCOMING2NEURON,    L"Add incoming dendrite"          },
+		{ IDD_CREATE_SYNAPSE,         L"Create synapse"                 },
+		{ IDD_CREATE_FORK,            L"Create fork"                    },
+		{ IDD_ADD_EEG_SENSOR,         L"New EEG sensor" 		        },
+		{ IDD_SCALES_OFF,             L"Scale off"                      },
+		{ IDD_SCALES_ON,              L"Scale on"                       },
+		{ IDD_ARROWS_OFF,             L"Arrows off"                     },
+		{ IDD_ARROWS_ON,              L"Arrows on"                      },
+		{ IDD_ATTACH_SIG_GEN_TO_LINE, L"Attach active signal generator" },
+		{ IDD_ATTACH_SIG_GEN_TO_CONN, L"Attach active signal generator" },
+		{ IDD_DELETE_NOB,             L"Delete"                         },
+		{ IDD_DETACH_NOB,             L"Detach"                         },
+		{ IDD_DELETE_EEG_SENSOR,      L"Delete EEG sensor"              },
+		{ IDD_ADD_MICRO_SENSOR,       L"Add micro sensor"               },
+		{ IDD_DEL_MICRO_SENSOR,       L"Delete micro sensor"            },
+		{ IDD_DISC_IOCONNECTOR,       L"Disconnect"                     },
+		{ IDD_SPLIT_NEURON,           L"Split (make I/O neurons)"       },
+		{ IDD_INSERT_KNOT,            L"Insert knot"                    },
+		{ IDD_INSERT_NEURON,          L"Insert neuron"                  },
+		{ IDD_NEW_IO_LINE_PAIR,       L"New IO-line pair"  	            },
+		{ IDM_SELECT,                 L"Select"                         },
+		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"         },
+		{ IDD_EMPHASIZE,              L"Feedback line on/off"           }
 	};
 	AppendMenu(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));
 }
@@ -108,38 +163,40 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_pNMRI->AnyNobsSelected())
 	{
-		HMENU hSelectionMenu { Util::PopupMenu(hPopupMenu, L"Selection") };
-		appendMenu(hSelectionMenu, IDM_DESELECT_ALL    );
-		appendMenu(hSelectionMenu, IDM_COPY_SELECTION  );
-		appendMenu(hSelectionMenu, IDM_DELETE_SELECTION);
-		appendMenu(hSelectionMenu, IDM_MAKE_CONNECTOR  );
-		appendMenu(hSelectionMenu, IDD_ATTACH_SIG_GEN_TO_SEL);  
-//		appendMenu(hSelectionMenu, IDM_ALIGN_NOBS      );
+		// no context menu, use selection menu
 	}
-
-	if (IsDefined(m_nobHighlighted))
+	else if (IsDefined(m_nobIdHighlighted))
 	{
-		m_pNMRI->GetConstNob(m_nobHighlighted)->AppendMenuItems
+		m_pNMRI->GetConstNob(m_nobIdHighlighted)->AppendMenuItems
 		(
 			[hPopupMenu](int const id){ appendMenu(hPopupMenu, id); }
 		);
-		if ( m_pNMRI->IsPipe(m_nobHighlighted) )
+
+		if (m_pNMRI->HasMicroSensor(m_nobIdHighlighted))
+			appendMenu(hPopupMenu, IDD_DEL_MICRO_SENSOR);
+		else
+			appendMenu(hPopupMenu, IDD_ADD_MICRO_SENSOR);
+
+		if ( m_pNMRI->IsPipe(m_nobIdHighlighted) )
 		{
-			appendMenu(hPopupMenu, IDD_EMPHASIZE);  
-			appendMenu(hPopupMenu, ArrowsVisible() ? IDD_ARROWS_OFF : IDD_ARROWS_ON);  
+			appendMenu(hPopupMenu, IDD_EMPHASIZE);
+			if (m_pPreferences->ArrowsVisible())
+				appendMenu(hPopupMenu, IDD_ARROWS_OFF);
+			else
+				appendMenu(hPopupMenu, IDD_ARROWS_ON);
 		}
-		else if ( m_pNMRI->IsInputLine(m_nobHighlighted) )
+		else if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobIdHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
 		}
-		else if ( m_pNMRI->IsInputConnector(m_nobHighlighted) )
+		else if ( m_pNMRI->IsInputConnector(m_nobIdHighlighted) )
 		{
-			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobHighlighted))
+			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobIdHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
 		}
 	}
-	else  // no nob selected, cursor on background
+	else  // nothing selected, cursor on background
 	{
 		if (m_pNMRI->IsAnySensorSelected())
 			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
@@ -150,7 +207,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		}
 	}
 
-	return static_cast<LPARAM>(m_nobHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
+	return static_cast<LPARAM>(m_nobIdHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
 }
 
 MicroMeterPnt MainWindow::GetCursorPos() const
@@ -161,33 +218,18 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::CenterModel()
+void MainWindow::AnimateArrows()
 {
-	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
-}
-
-void MainWindow::CenterSelection()
-{
-	if (m_pNMRI->AnyNobsSelected())
-		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
-}
-
-bool MainWindow::ArrowsVisible() const
-{
-	return m_arrowSize > 0._MicroMeter;
-}
-
-void MainWindow::ShowArrows(bool const op)
-{
-	MicroMeter oldVal { m_arrowSize };
-	MicroMeter umTarget = op ? STD_ARROW_SIZE : 0._MicroMeter;
+	MicroMeter oldVal { m_umArrowSize };
+	MicroMeter umTarget = m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter;
 	if (umTarget != oldVal)
-		m_pModelCommands->AnimateArrows(m_arrowSize, umTarget);
+		m_pModelCommands->AnimateArrows(m_umArrowSize, umTarget);
 }
 
-void MainWindow::ShowSensorPoints(bool const op) 
+void MainWindow::SetSensorPoints() 
 {
-	m_bShowPnts = op;
+	m_bShowPnts = m_pPreferences->SensorPointsVisible();
+	Notify(false);
 }
 
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
@@ -200,24 +242,35 @@ void MainWindow::ShowSensorPoints(bool const op)
 bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
+
+	PIXEL const pixHeight { height - H_SCALE_HEIGHT };
+
+	m_upHorzScale->Move(0_PIXEL, pixHeight, width, H_SCALE_HEIGHT, true);
+	m_upVertScale->Move(0_PIXEL, 0_PIXEL, V_SCALE_WIDTH, pixHeight, true);
+
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
 
-void MainWindow::setNoTarget()
+bool MainWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 {
-	m_nobTarget = NO_NOB;
-	m_connType  = ConnectionType::ct_none;
+	m_pMoveObservable->NotifyAll(false);
+	return NNetWindow::OnMove(pixPosX, pixPosY);
+};
+
+bool MainWindow::connectionAllowed()
+{
+	return ConnectionType::ct_none != 
+		   m_pNMRI->ConnectionResult(m_nobIdHighlighted, m_nobIdTarget);
 }
 
-void MainWindow::setTargetNob()
+NobId MainWindow::findTargetNob(MicroMeterPnt const& umCrsrPos)
 {
-	m_nobTarget = m_pNMRI->FindNobAt
+	return m_pNMRI->FindNobAt
 	(
-		m_pNMRI->GetNobPos(m_nobHighlighted),
-		[this](Nob const & s) { return m_pNMRI->IsConnectionCandidate(m_nobHighlighted, s.GetId()); }
+		umCrsrPos,
+		[this](Nob const& s) { return m_pNMRI->IsConnectionCandidate(m_nobIdHighlighted, s.GetId()); }
 	);
-	m_connType = m_pNMRI->ConnectionResult(m_nobHighlighted, m_nobTarget);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -228,11 +281,14 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
 
-	if (wParam == 0)               // no mouse buttons or special keyboard keys pressed
+	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
-		m_pModelCommands->SetHighlightedSensor(umCrsrPos);
-		setHighlightedNob(umCrsrPos);
-		ClearPtLast();             // make m_ptLast invalid
+		if (!m_pNMRI->AnyNobsSelected())
+		{
+			if (!setHighlightedNob(umCrsrPos))
+				setHighlightedSensor(umCrsrPos);
+		}
+		ClearPtLast();                 // make m_ptLast invalid
 		return;
 	}
 
@@ -241,88 +297,101 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (ptLast.IsNull())
 		return;
 
-	if (wParam & MK_RBUTTON)        // Right mouse button: selection
-	{
-		m_rectSelection = MicroMeterRect(m_umPntSelectionAnchor, umCrsrPos);
-		Notify(false);
+	if (!(wParam & MK_LBUTTON))        // Left mouse button
 		return;
-	}
-	
-	if (wParam & MK_LBUTTON)        // Left mouse button
+
+	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
+	MicroMeterPnt       umDelta   { umCrsrPos - umLastPos };
+	if (umDelta.IsZero())
+		return;
+
+	if (wParam & MK_CONTROL)   // rotate
 	{
-		MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
-		MicroMeterPnt const umDelta   { umCrsrPos - umLastPos };
-		if (umDelta.IsZero())
-			return;
-		if (IsDefined(m_nobHighlighted))    // operate on single nob
-		{
-			if (wParam & MK_CONTROL)
-			{
-				m_pModelCommands->Rotate(m_nobHighlighted, umLastPos, umCrsrPos);
-			}
-			else
-			{
-				m_pModelCommands->MoveNob(m_nobHighlighted, umDelta);
-				setTargetNob();
-			}
-		}
-		else if (m_pNMRI->IsAnySensorSelected())
-		{   
-			SensorId const id { m_pNMRI->GetSensorIdSelected() };
-			m_pModelCommands->MoveSensor(id, umDelta);
-			Notify(false); 
-		}
-		else if (wParam & MK_SHIFT)     // operate on selection
-		{
-			if (m_pNMRI->AnyNobsSelected())
-			{
-				if (wParam & MK_CONTROL)
-				{
-					m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
-				}
-				else 
-				{
-					m_pModelCommands->MoveSelection(umDelta);
-				}
-			}
-		}
-		else if (wParam & MK_CONTROL)     // rotate model
-		{
-			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
-		}
+		if (m_pNMRI->AnyNobsSelected())
+			m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
+		else if (IsDefined(m_nobIdHighlighted))           
+			m_pModelCommands->Rotate(m_nobIdHighlighted, umLastPos, umCrsrPos);
 		else 
-		{
-			NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
-		}
+			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
 	}
-	NNetWindow::OnMouseMove(wParam, lParam);
+	else if (m_pNMRI->AnyNobsSelected())
+	{
+		MoveSelectionCommand::Push(umDelta);
+	}
+	else if (IsDefined(m_nobIdHighlighted))    // move single nob
+	{
+		NobId nobIdTarget { findTargetNob(umCrsrPos) };
+		if (m_pNMRI->IsSynapse(m_nobIdHighlighted))
+		{ 
+			Synapse    const* pSynapse  { Cast2Synapse(m_pNMRI->GetConstPosNobPtr(m_nobIdHighlighted)) };
+			Pipe       const* pPipeMain { pSynapse->GetMainPipe() };
+			if (IsDefined(nobIdTarget))
+			{
+				Nob const * pNob { m_pNMRI->GetConstNob(nobIdTarget) };
+				if (pNob->IsPipe())
+				{
+					Pipe const * pPipeNew { Cast2Pipe(pNob) };
+					if (pPipeMain != pPipeNew)
+					{
+						ConnSynapse2NewPipeCmd::Push(m_nobIdHighlighted, nobIdTarget, umDelta);
+						return;
+					}
+				}
+			}
+			MicroMeter const umDist { pPipeMain->DistPntToPipe(umCrsrPos) };
+			if (umDist.GetAbs() > NEURON_RADIUS * 1.5f)  // tear off synapse
+			{
+				MicroMeterPnt const umPosOld { m_pNMRI->GetNobPos(m_nobIdHighlighted) };
+				m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+				if (setHighlightedNob(umPosOld))
+					umDelta = umCrsrPos - umPosOld;
+			}
+		}
+		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
+		m_nobIdTarget = nobIdTarget;
+	}
+	else if (m_pNMRI->IsAnySensorSelected())
+	{
+		MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
+	}
+	else
+	{
+		NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
+	}
+}
+
+void MainWindow::select(NobId const idNob)
+{
+	SelectAllConnectedCmd::Push(idNob);
+	m_nobIdHighlighted = NO_NOB;
+	m_SelectionMenu.Move(GetRelativeCrsrPosition());
 }
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	if (IsDefined(m_nobHighlighted) && !m_pNMRI->IsOfType<Knot>(m_nobHighlighted))
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
+	NobId         const idNob     { m_pNMRI->FindNobAt(umCrsrPos) };
+	if (IsUndefined(idNob))
+		return;
+	if (m_pNMRI->IsSelected(idNob))
 	{
-		m_pModelCommands->SelectNob(m_nobHighlighted, tBoolOp::opToggle);
+		DeselectModuleCmd::Push();
+		return;
 	}
+	if (m_pNMRI->AnyNobsSelected())  // selection active, but other selection desired
+		DeselectModuleCmd::Push();
+	select(idNob);
 }
 
 bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_connType != ConnectionType::ct_none)
-		SendCommand2Application(IDD_CONNECT, static_cast<LPARAM>(m_connType));
-	setNoTarget();
-	return NNetWindow::OnLButtonUp(wParam, lParam);
-}
-
-bool MainWindow::OnRButtonUp(WPARAM const wParam, LPARAM const lParam)
-{
-	bool const bSelection { m_rectSelection.IsNotEmpty() };
-	if (bSelection)
+	if (connectionAllowed())
 	{
-		m_pModelCommands->SelectNobsInRect(m_rectSelection);
-		m_rectSelection.SetZero();
+		m_pModelCommands->Connect(m_nobIdHighlighted, m_nobIdTarget);
+		Reset();
 	}
-	return bSelection; // let base class handle other cases
+	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
 
 bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
@@ -343,7 +412,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	bool  const bDirection { iDelta > 0 };
 	float const fFactor    { bDirection ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
 
-	if (wParam & MK_SHIFT)     // operate on selection
+	if (m_pNMRI->AnyNobsSelected())     // operate on selection
 	{
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
@@ -352,19 +421,18 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	}
 	else
 	{
-		PixelPoint    const ptCrsr        { GetRelativeCrsrPosition() };  // screen coordinates
-		fPixelPoint   const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
-		MicroMeterPnt const umCrsrPos     { GetCoordC().Transform2logUnitPntPos(fPixPointCrsr) };
-		SensorId      const sensorId      { m_pModelCommands->SetHighlightedSensor(umCrsrPos) };
-		bool          const bSizeSensor   { sensorId.IsNotNull() && IsUndefined(m_nobHighlighted) };
+		SensorId const sensorId    { m_pNMRI->GetSensorIdSelected() };
+		bool     const bSizeSensor { sensorId.IsNotNull() && IsUndefined(m_nobIdHighlighted) };
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
 			if (bSizeSensor)
 			{
-				m_pModelCommands->SizeSensor(sensorId, fFactor);
+				SizeSensorCmd::Push(sensorId, fFactor);
 			}
 			else
 			{
+				PixelPoint  const ptCrsr        { GetRelativeCrsrPosition() };
+				fPixelPoint const fPixPointCrsr { Convert2fPixelPoint(ptCrsr) }; 
 				if (GetDrawContext().Zoom(bDirection, fPixPointCrsr))   // Not ok
 				{
 					if (m_pCoordObservable)
@@ -414,61 +482,75 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
-	PixelRect   const         pixRect { GetClPixelRect () };
-	DrawContext const &       context { GetDrawContextC() };
-	Sensor      const * const pSensor { m_pNMRI->GetSensorSelectedC() };
-
-	if (m_rectSelection.IsNotEmpty())
-		context.DrawTranspRect(m_rectSelection, NNetColors::SELECTION_RECT);
-
-	DrawSensors();
+	PixelRect   const   pixRect              { GetClPixelRect () };
+	DrawContext const & context              { GetDrawContextC() };
+	MacroSensor const * pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensorSelectedC()) };
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
-		if (ArrowsVisible())
-			DrawArrowsInRect(pixRect, m_arrowSize);
+		if (m_umArrowSize > 0.0_MicroMeter)
+			DrawArrowsInRect(pixRect, m_umArrowSize);
 	}
 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsBaseKnot (); }); // draw BaseKnots OVER Pipes
+	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
 	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
 
-	if (IsDefined(m_nobTarget)) // draw target nob again to be sure that it is visible
+	if (m_pNMRI->IsValidNobId(m_nobIdTarget)) // draw target nob again to be sure that it is visible
 	{
-		tHighlight type { (m_connType == ConnectionType::ct_none) ? tHighlight::targetNoFit : tHighlight::targetFit };
-		m_pNMRI->DrawExterior(m_nobTarget, context, type);
-		m_pNMRI->DrawInterior(m_nobTarget, context, type);
-		m_pNMRI->DrawExterior(m_nobHighlighted, context, type);
-		m_pNMRI->DrawInterior(m_nobHighlighted, context, type);
+		tHighlight type { connectionAllowed() ? tHighlight::targetFit : tHighlight::targetNoFit };
+		m_pNMRI->DrawExterior(m_nobIdTarget, context, type);
+		m_pNMRI->DrawInterior(m_nobIdTarget, context, type);
+		if (IsDefined(m_nobIdHighlighted))
+		{
+			m_pNMRI->DrawExterior(m_nobIdHighlighted, context, type);
+			m_pNMRI->DrawInterior(m_nobIdHighlighted, context, type);
+		}
 	}
-	else if (IsDefined(m_nobHighlighted))  // draw highlighted nob again to be sure that it is in foreground
-	{
-		m_pNMRI->DrawExterior(m_nobHighlighted, context, tHighlight::highlighted);
-		m_pNMRI->DrawInterior(m_nobHighlighted, context, tHighlight::highlighted);
+	else if (m_pNMRI->IsValidNobId(m_nobIdHighlighted))  // draw highlighted nob again to be sure 
+	{                                                                    // that it is in foreground
+		m_pNMRI->DrawExterior(m_nobIdHighlighted, context, tHighlight::highlighted);
+		m_pNMRI->DrawInterior(m_nobIdHighlighted, context, tHighlight::highlighted);
 	}
 	else 
 	{
-		DrawHighlightedSensor(pSensor);
+		if (pMacroSensorSelected)
+			DrawHighlightedSensor(pMacroSensorSelected);
 	}
-	if (m_bShowPnts)
+
+	DrawSensors();
+
+	if (m_bShowPnts && pMacroSensorSelected)
 	{
-		DrawSensorDataPoints(pSensor);
+		DrawSensorDataPoints(pMacroSensorSelected);
 	}
+
+	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
 
-void MainWindow::setHighlightedNob(MicroMeterPnt const & umCrsrPos)
+bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
 {
 	NobId const idHighlight { m_pNMRI->FindNobAt(umCrsrPos) };
-	if (idHighlight != m_nobHighlighted)
+	if (idHighlight != m_nobIdHighlighted)
 	{
-		m_nobHighlighted = idHighlight; 
+		m_nobIdHighlighted = idHighlight;
 		Notify(false);
 	}
+	return IsDefined(m_nobIdHighlighted);
+}
+
+bool MainWindow::setHighlightedSensor(MicroMeterPnt const& umCrsrPos)
+{
+	SensorId const idSensorOld { m_pNMRI->GetSensorIdSelected() };
+	SensorId const idSensorNew { m_pModelCommands->SetHighlightedSensor(umCrsrPos) };
+	if (idSensorNew != idSensorOld)
+		Notify(false);
+	return idSensorNew.IsNotNull();
 }
 
 bool MainWindow::UserProc
@@ -491,23 +573,132 @@ bool MainWindow::UserProc
 	catch (NobException const & e)
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
-		m_pNMRI->DUMP();
-		wcout << L"highlighted = " << m_nobHighlighted << endl;
-		wcout << L"target      = " << m_nobTarget      << endl;
+		m_pNMRI->DumpModel(__FILE__, __LINE__);
+		wcout << L"highlighted = " << m_nobIdHighlighted << endl;
+		wcout << L"target      = " << m_nobIdTarget << endl;
 		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
 	}
 	return bRes;
 }
 
+void MainWindow::CenterModel()
+{
+	centerAndZoomRect(UPNobList::SelMode::allNobs, 1.2f); // give 20% more space (looks better)
+}
+
+void MainWindow::CenterSelection()
+{
+	if (m_pNMRI->AnyNobsSelected())
+		centerAndZoomRect(UPNobList::SelMode::selectedNobs, 2.0f);
+}
+
+void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
+{
+	if ((wParam == VK_SPACE) && (GetKeyState(VK_LBUTTON) & 0x8000) && IsDefined(m_nobIdHighlighted))
+	{
+		Nob const* pNob { m_pNMRI->GetConstNob(m_nobIdHighlighted) };
+		if (pNob->IsIoLine())
+		{
+			MicroMeterPnt const umPoint  { pNob->GetPos() };
+			MicroMeterPnt const umPntVec { Radian2Vector(pNob->GetDir()).ScaledTo(MICRO_OFFSET) };
+			if (pNob->IsInputLine())
+				ExtendInputLineCmd::Push(m_nobIdHighlighted, umPoint - umPntVec);
+			else
+				ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint + umPntVec);
+			setHighlightedNob(umPoint);
+		}
+	}
+}
+
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
+	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
 	switch (int const wmId { LOWORD(wParam) } )
 	{
 
-	case IDM_MAKE_CONNECTOR:
-		if (! m_pModelCommands->MakeIoConnector())
-			SendCommand2Application(IDX_PLAY_SOUND, reinterpret_cast<LPARAM>(TEXT("NOT_POSSIBLE_SOUND")));
+	case IDD_EMPHASIZE:
+		m_pModelCommands->ToggleEmphMode(m_nobIdHighlighted);
 		break;
+
+	case IDM_DELETE:   // keyboard delete key
+		if (IsDefined(m_nobIdHighlighted))
+			m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+		else if (m_pNMRI->AnyNobsSelected())
+			m_pModelCommands->DeleteSelection();
+		m_nobIdTarget = NO_NOB;
+		return true;
+
+	case IDD_DETACH_NOB:
+	case IDD_DELETE_NOB:
+		m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+		m_nobIdTarget = NO_NOB;
+		break;
+
+	case IDM_SELECT:
+		select(m_nobIdHighlighted);
+		break;
+
+	case IDM_ESCAPE:
+		m_nobIdTarget = NO_NOB;
+		m_nobIdHighlighted = NO_NOB;
+
+	case IDM_DESELECT:
+		DeselectModuleCmd::Push();
+		break;
+
+	case IDM_DELETE_SELECTION:
+		m_pModelCommands->DeleteSelection();
+		m_nobIdTarget = NO_NOB;
+		break;
+
+	case IDM_COPY_SELECTION:
+		AddNobsCommand::Push();
+		break;
+
+	case IDD_ATTACH_SIG_GEN_TO_LINE:
+		AttachSigGen2LineCmd::Push(m_nobIdHighlighted);
+		break;
+
+	case IDD_ATTACH_SIG_GEN_TO_CONN:
+		AttachSigGen2ConCmd::Push(m_nobIdHighlighted);
+		break;
+
+	case IDD_DISC_IOCONNECTOR:
+		DiscIoConnectorCmd::Push(m_nobIdHighlighted);
+		break;
+
+	case IDD_SPLIT_NEURON:
+		SplitNeuronCmd::Push(m_nobIdHighlighted);
+		break;
+
+	case IDD_INSERT_KNOT:
+		m_pModelCommands->InsertKnot(m_nobIdHighlighted, umPoint);
+		break;
+
+	case IDD_INSERT_NEURON:
+		m_pModelCommands->InsertNeuron(m_nobIdHighlighted, umPoint);
+		break;
+
+	case IDD_NEW_IO_LINE_PAIR:
+		NewIoLinePairCmd::Push(umPoint);
+		break;
+
+	case IDD_ADD_MICRO_SENSOR:    AddMicroSensorCmd   ::Push(m_nobIdHighlighted, TrackNr(0));	        break;
+	case IDD_DEL_MICRO_SENSOR:    DelMicroSensorCmd   ::Push(m_nobIdHighlighted);	                    break;
+	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	            break; // case 7
+	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	    break; // case 8 
+	case IDD_ADD_INCOMING2NEURON: AddPipe2NeuronCmd   ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
+	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd  ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 10
+	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
+
+	case IDD_STOP_ON_TRIGGER:
+		ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);
+		break;
+
+	case IDD_SCALES:
+		m_upHorzScale->Show(m_pPreferences->ScalesVisible());
+		m_upVertScale->Show(m_pPreferences->ScalesVisible());
+		return true;
 
 	default:
 		break;

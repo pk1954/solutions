@@ -1,4 +1,4 @@
-// Win32_CrsrWindow.cpp :
+// CrsrWindow.cpp :
 //
 // NNetWindows
 

@@ -1,4 +1,4 @@
-// Win32_PerformanceWindow.cpp :
+// PerformanceWindow.cpp :
 //
 // NNetWindows
 

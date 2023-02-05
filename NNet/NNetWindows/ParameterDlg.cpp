@@ -1,4 +1,4 @@
-// Win32_ParameterDlg.cpp
+// ParameterDlg.cpp
 //
 // NNetWindows
 

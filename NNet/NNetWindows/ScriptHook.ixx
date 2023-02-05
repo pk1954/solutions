@@ -1,4 +1,4 @@
-// Win32_ScriptHook.ixx
+// ScriptHook.ixx
 //
 // NNetSimu
 

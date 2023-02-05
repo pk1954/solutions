@@ -1,4 +1,4 @@
-// Win32_SimulationControl.ixx
+// SimulationControl.ixx
 //
 // NNetSimu
 

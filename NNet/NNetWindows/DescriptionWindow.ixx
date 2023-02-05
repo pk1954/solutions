@@ -1,4 +1,4 @@
-// Win32_DescriptionWindow.ixx
+// DescriptionWindow.ixx
 //
 // NNetWindows
 

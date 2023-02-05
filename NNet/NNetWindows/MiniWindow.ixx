@@ -1,4 +1,4 @@
-// Win32_MiniWindow.ixx
+// MiniWindow.ixx
 //
 // NNetWindows
 

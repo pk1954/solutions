@@ -1,4 +1,4 @@
-// Win32_NNetAppMenu.cpp
+// NNetAppMenu.cpp
 //
 // NNetWindows
 

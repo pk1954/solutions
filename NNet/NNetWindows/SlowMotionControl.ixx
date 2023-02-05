@@ -1,4 +1,4 @@
-// Win32_SlowMotionControl.ixx
+// SlowMotionControl.ixx
 //
 // NNetWindows
 

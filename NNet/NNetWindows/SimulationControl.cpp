@@ -1,4 +1,4 @@
-// Win32_SimulationControl.cpp
+// SimulationControl.cpp
 //
 // NNetSimu
 
