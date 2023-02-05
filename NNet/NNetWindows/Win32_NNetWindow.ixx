@@ -29,7 +29,8 @@ public:
 		DWORD  const,
 		bool   const,
 		fPixel const,
-		NNetController &
+		NNetController &,
+		MonitorWindow const *
 	);
 
 	void SetModelInterface(NNetModelReaderInterface* const);
@@ -97,8 +98,9 @@ private:
 	NNetWindow(NNetWindow const&);           // noncopyable class 
 	NNetWindow& operator= (NNetWindow const&) = delete;  // noncopyable class 
 
-	NNetController * m_pController     { nullptr };
-	D2D_DrawContext  m_context         { };
-	fPixel           m_fPixRadiusLimit { };
-	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
+	MonitorWindow const * m_pMonitorWindow  { nullptr };
+	NNetController      * m_pController     { nullptr };
+	D2D_DrawContext       m_context         { };
+	fPixel                m_fPixRadiusLimit { };
+	PixelPoint            m_ptLast          { PP_NULL };	// Last cursor position during selection 
 };

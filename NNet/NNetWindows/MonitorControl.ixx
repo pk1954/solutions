@@ -47,6 +47,13 @@ public:
 	void   StimulusTriggered();
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
+	fPixel GetTrackPos(TrackNr const nr) const
+	{
+		fPixel const fPixTrackHeight { calcTrackHeight() };
+		fPixel const fPixTrackbottom { fPixTrackHeight * Cast2Float(nr.GetValue()+1) };
+		return fPixTrackbottom;
+	}
+
 private:
 
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;

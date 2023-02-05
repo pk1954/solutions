@@ -250,7 +250,12 @@ void RootWindow::OnClose()
 	SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
 }
 
-bool RootWindow::OnSize(PIXEL const width, PIXEL const height)
+bool RootWindow::OnSize(PIXEL const, PIXEL const)
+{
+	return false;
+}
+
+bool RootWindow::OnMove(PIXEL const, PIXEL const)
 {
 	return false;
 }
@@ -282,6 +287,11 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 
 	case WM_SIZE:
 		if (OnSize(static_cast<PIXEL>(LOWORD(lParam)), static_cast<PIXEL>(HIWORD(lParam))))
+			return true;
+		break;
+
+	case WM_MOVE:
+		if (OnMove(static_cast<PIXEL>(LOWORD(lParam)), static_cast<PIXEL>(HIWORD(lParam))))
 			return true;
 		break;
 

@@ -314,6 +314,7 @@ protected:
 	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
 	virtual bool OnMenuCommand(UINT   const, HMENU  const);
 	virtual bool OnSize(PIXEL const, PIXEL const);
+	virtual bool OnMove(PIXEL const, PIXEL const);
 	virtual void OnClose();
 
 	virtual bool CommonMessageHandler(UINT const, WPARAM const, LPARAM const);

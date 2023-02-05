@@ -55,15 +55,16 @@ using std::endl;
 
 void MainWindow::Start
 (
-	HWND          const hwndApp, 
-	bool          const bShowRefreshRateDialog,
-	fPixel        const fPixBeaconLimit,
-	Preferences       & preferences,
-	NNetController    & controller,
-	NNetModelCommands & modelCommands,
-	Observable        & cursorObservable,
-	Observable        & coordObservable,  
-	ActionTimer * const pActionTimer
+	HWND          const   hwndApp, 
+	bool          const   bShowRefreshRateDialog,
+	fPixel        const   fPixBeaconLimit,
+	Preferences         & preferences,
+	NNetController      & controller,
+	NNetModelCommands   & modelCommands,
+	Observable          & cursorObservable,
+	Observable          & coordObservable,  
+	ActionTimer * const   pActionTimer,
+	MonitorWindow const * pMonitorWindow
 )
 {
 	NNetWindow::Start
@@ -72,7 +73,8 @@ void MainWindow::Start
 		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
-		controller
+		controller,
+		pMonitorWindow
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 	m_pPreferences         = & preferences;

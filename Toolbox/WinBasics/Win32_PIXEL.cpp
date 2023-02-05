@@ -65,7 +65,7 @@ bool Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 )
 {
 	HWND const hwndParent { GetAncestor(hwnd, GA_PARENT) };
-	PixelPoint pixPoint{ pixRect.GetStartPoint() };
+	PixelPoint pixPoint   { pixRect.GetStartPoint() };
 	bool       bRes;
 
 	if (hwndParent)

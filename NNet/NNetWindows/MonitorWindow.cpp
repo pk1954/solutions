@@ -14,6 +14,7 @@ module MonitorWindow;
 
 import Win32_Util_Resource;
 import Types;
+import Observable;
 import SoundInterface;
 import ComputeThread;
 import MonitorControl;
@@ -32,9 +33,11 @@ void MonitorWindow::Start
 	HWND          const   hwndParent,
 	ComputeThread const & computeThread,
 	Sound               & sound,
-	NNetModelCommands   & modelCmds
+	NNetModelCommands   & modelCmds,
+	Observable          & observable
 )
 {
+	m_pMoveSizeObservable = &observable;
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
@@ -124,11 +127,13 @@ bool MonitorWindow::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeig
 	if (m_upHorzScale->IsScaleLocked())
 		m_horzCoord.SetOffset(Convert2fPixel(-monWidth));
 	m_upStimulusButton->CenterInParentWin();
+	m_pMoveSizeObservable->NotifyAll(false);
 	return true;
 }
 
-fPixel MonitorWindow::GetSignalPos(SignalId const signalId)
-{
-	fPixel fPixRes { fPixel::NULL_VAL() };
-	return fPixRes;
-}
+bool MonitorWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
+{ 
+	m_pMoveSizeObservable->NotifyAll(false);
+	return BaseWindow::OnMove(pixPosX, pixPosY);
+};
+

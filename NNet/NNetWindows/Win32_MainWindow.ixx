@@ -15,6 +15,7 @@ import Types;
 import Preferences;
 import SelectionMenu;
 import NNetWindow;
+import MonitorWindow;
 import NNetModelCommands;
 import NNetModel;
 
@@ -34,7 +35,8 @@ public:
 		NNetModelCommands&,
 		Observable&,
 		Observable&,
-		ActionTimer* const
+		ActionTimer* const,
+		MonitorWindow const *
 	);
 
 	void Stop() final;

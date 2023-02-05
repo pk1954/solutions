@@ -23,8 +23,9 @@ public:
         macroSensor
     };
 
-    virtual Type SensorType() const = 0;
-    virtual void RotateSensor(MicroMeterPnt const&, Radian const) = 0;
+    virtual MicroMeterPnt const &GetPosition()                              const = 0;
+    virtual Type                 SensorType()                               const = 0;
+    virtual void                 RotateSensor(MicroMeterPnt const&, Radian const) = 0;
 
     SignalSource::Type SignalSourceType() const final { return SignalSource::Type::sensor; }
 
@@ -32,3 +33,9 @@ public:
     bool IsMacroSensor() const { return SensorType() == Type::macroSensor; }
 };
 
+export Sensor const* Cast2Sensor(SignalSource const* pSigSrc)
+{
+    return pSigSrc && pSigSrc->IsSensor()
+        ? static_cast<Sensor const*>(pSigSrc)
+        : nullptr;
+}

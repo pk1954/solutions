@@ -21,11 +21,12 @@ using std::function;
 
 void NNetWindow::Start
 (
-	HWND       const hwndParent, 
-	DWORD      const dwStyle,
-	bool       const bShowRefreshRateDialog,
-	fPixel     const fPixLimit,
-	NNetController & controller
+	HWND            const hwndParent, 
+	DWORD           const dwStyle,
+	bool            const bShowRefreshRateDialog,
+	fPixel          const fPixLimit,
+	NNetController      & controller,
+	MonitorWindow const * pMonitorWindow
 )
 {
 	GraphicsWindow::Initialize
@@ -36,6 +37,7 @@ void NNetWindow::Start
 	);
 	m_context.Start(m_upGraphics.get());
 	m_pController     = & controller;
+	m_pMonitorWindow  = pMonitorWindow;
 	m_fPixRadiusLimit = fPixLimit;
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
@@ -73,7 +75,40 @@ void NNetWindow::DrawArrowsInRect
 
 void NNetWindow::DrawSensors() const
 {
-	m_pNMRI->GetMonitorDataC().Apply2AllSignalsC([this](Signal const & sig) { sig.Draw(m_context, false); });
+	MonitorData const & monData { m_pNMRI->GetMonitorDataC() };
+//	monData.Apply2AllSignalsC([this](Signal const& sig) { sig.Draw(m_context, false); });
+	monData.Apply2AllSignalIdsC
+	(
+		[this, &monData](SignalId const& signalId) 
+		{ 
+			Signal const * pSignal { monData.GetConstSignalPtr(signalId) };
+			pSignal->Draw(m_context, false);
+			if (m_pMonitorWindow)
+			{
+				SignalSource const * pSigSrc { pSignal->GetSignalSource() };
+				Sensor       const * pSensor { Cast2Sensor(pSigSrc) };
+				if (pSensor)
+				{
+					TrackNr       const trackNr      { signalId.GetTrackNr() };
+					fPixel        const fPixY        { m_pMonitorWindow->GetTrackPos(trackNr) };
+					PixelPoint    const pixPos       { m_pMonitorWindow->GetWindowWidth(), Convert2PIXEL(fPixY) };
+					PixelPoint    const pixPosScreen { m_pMonitorWindow->Client2Screen(pixPos) };
+					PixelPoint    const pixPosMain   { Screen2Client(pixPosScreen) };
+					fPixelPoint   const fPixPosMain  { Convert2fPixelPoint(pixPosMain) };
+					MicroMeterPnt const umPosSensor  { pSensor->GetPosition() };
+					MicroMeterPnt const umPosMain    { GetCoordC().Transform2logUnitPntPos(fPixPosMain) };
+					m_context.DrawLine
+					(
+						umPosMain,
+						umPosSensor,
+						1.0_MicroMeter,
+						D2D1::ColorF::Green,
+						2._fPixel
+					);
+				}
+			}
+		}
+	);
 }
 
 void NNetWindow::DrawHighlightedSensor(MacroSensor const * const pSensor) const

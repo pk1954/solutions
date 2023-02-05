@@ -30,7 +30,9 @@ public:
     void Draw(DrawContext const &, bool const) const final;
     void RotateSensor (MicroMeterPnt const &, Radian const) final;
 
-    bool Includes(MicroMeterPnt const p)       const { return m_circle.Includes(p); }
+    bool Includes(MicroMeterPnt const p) const { return m_circle.Includes(p); }
+
+    MicroMeterPnt const& GetPosition() const final { return GetCenter(); }
 
     void  DrawDataPoints(DrawContext  const &) const;
     float GetDistFactor(MicroMeterPnt const &) const;

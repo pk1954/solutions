@@ -311,8 +311,8 @@ void D2D_driver::DrawLine
 (
 	fPixelPoint  const& fpp1,
 	fPixelPoint  const& fpp2,
-	fPixel       const   fpixWidth,
-	D2D1::ColorF const   colF
+	fPixel       const  fpixWidth,
+	D2D1::ColorF const  colF
 ) const
 {
 	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
