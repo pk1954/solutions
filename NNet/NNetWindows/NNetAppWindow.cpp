@@ -156,7 +156,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_pNMRI = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
 
-//	m_nmwi.SetHighSigObservable(&m_highlightSigObservable);
+	m_upModel->SetHighSigObservable(&m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(  0ms);   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate(200ms);
 	m_monitorWindow    .SetRefreshRate(  0ms);

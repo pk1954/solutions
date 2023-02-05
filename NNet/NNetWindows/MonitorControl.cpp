@@ -129,7 +129,7 @@ SignalNr MonitorControl::findSignal
 		return signalNrRes;
 
 	fPixelPoint const fPixPtCrsr    { Convert2fPixelPoint(ptCrsr) };
-	fMicroSecs  const usSimuTime    { - m_horzCoord.Transform2logUnitPos(fPixPtCrsr.GetX()) };
+	fMicroSecs  const usSimuTime    { pixel2simuTime(fPixPtCrsr.GetX()) };
 	fPixel            fPixBestDelta { fPixel::MAX_VAL() };
 	m_pMonitorData->Apply2AllSignalsInTrackC
 	(
@@ -139,19 +139,16 @@ SignalNr MonitorControl::findSignal
 			SignalId idSignal { SignalId(trackNr, signalNr) };
 			if (Signal const * pSig { m_pMonitorData->GetConstSignalPtr(idSignal) })
 			{
-				if (usSimuTime >= pSig->GetStartTime())
+				fPixel const fPixSignal { getSignalValue(*pSig, usSimuTime) };
+				if (fPixSignal.IsNotNull())
 				{
-					fPixel const fPixSignal { getSignalValue(*pSig, usSimuTime) };
-					if (fPixSignal.IsNotNull())
+					fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
+					fPixel const fPixDelta    { fPixPtCrsr.GetY() - fPixYpos };
+					fPixel const fPixDeltaAbs { fPixDelta.GetAbs() };
+					if (fPixDeltaAbs < fPixBestDelta)
 					{
-						fPixel const fPixYpos     { getSignalOffset(idSignal) - fPixSignal };
-						fPixel const fPixDelta    { fPixPtCrsr.GetY() - fPixYpos };
-						fPixel const fPixDeltaAbs { fPixDelta.GetAbs() };
-						if (fPixDeltaAbs < fPixBestDelta)
-						{
-							fPixBestDelta = fPixDeltaAbs;
-							signalNrRes = signalNr;
-						}
+						fPixBestDelta = fPixDeltaAbs;
+						signalNrRes = signalNr;
 					}
 				}
 			}
