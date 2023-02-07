@@ -23,7 +23,6 @@ import ConnectCreateForkCmd;
 import ConnectCreateSynapseCmd;
 import Connect2NeuronCommand;
 import CreateForkCommand;
-import DeleteSelectionCommand;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import InsertPosNobCommand;
@@ -172,13 +171,6 @@ void NNetModelCommands::DeleteSignal(SignalId const& id)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
-}
-
-void NNetModelCommands::DeleteSelection()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteSelectionCommand>());
 }
 
 void NNetModelCommands::DeleteNob(NobId const id)

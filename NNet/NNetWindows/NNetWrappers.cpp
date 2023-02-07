@@ -32,6 +32,7 @@ import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateInitialNobsCmd;
 import CreateSynapseCommand;
+import DeleteSelectionCommand;
 import DeleteSensorCmd;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
@@ -97,15 +98,6 @@ public:
             script.ScrReadString(), 
             NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
         );
-    }
-};
-
-class WrapDeleteSelection: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->DeleteSelection();
     }
 };
 
@@ -181,6 +173,7 @@ void InitializeNNetWrappers
     CreateForkCommand::Register();
     CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();
+    DeleteSelectionCommand::Register();
     DeleteSensorCmd::Register();
     DelMicroSensorCmd::Register();
     DeselectModuleCmd::Register();
@@ -203,7 +196,6 @@ void InitializeNNetWrappers
 
     SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
     SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
-    SymbolTable::ScrDefConst(L"DeleteSelection",     new WrapDeleteSelection );
     SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
     SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
     SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );

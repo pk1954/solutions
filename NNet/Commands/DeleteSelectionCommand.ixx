@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <iostream>
 
 export module DeleteSelectionCommand;
 
@@ -34,7 +35,30 @@ public:
 		m_cmdStack.Clear();
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push()
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << endl;
+		m_pStack->PushCommand(make_unique<DeleteSelectionCommand>());
+	}
+
 private:
+
+	inline static const wstring NAME { L"DeleteSelection" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			DeleteSelectionCommand::Push();
+		}
+	};
 
 	void doDelete(Nob & nob)
 	{ 

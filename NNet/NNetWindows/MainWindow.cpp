@@ -22,6 +22,7 @@ import Commands;
 import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
+import DeleteSelectionCommand;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
@@ -624,7 +625,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		if (IsDefined(m_nobIdHighlighted))
 			m_pModelCommands->DeleteNob(m_nobIdHighlighted);
 		else if (m_pNMRI->AnyNobsSelected())
-			m_pModelCommands->DeleteSelection();
+			DeleteSelectionCommand::Push();
 		m_nobIdTarget = NO_NOB;
 		return true;
 
@@ -647,7 +648,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDM_DELETE_SELECTION:
-		m_pModelCommands->DeleteSelection();
+		DeleteSelectionCommand::Push();
 		m_nobIdTarget = NO_NOB;
 		break;
 
