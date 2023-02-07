@@ -10,13 +10,13 @@ module;
 #include <iomanip>
 #include <Windows.h>
 
-module CrsrWindow;
+module NNetWin32:CrsrWindow;
 
 import Types;
 import TextBuffer;
-import MainWindow;
 import Win32_Util;
 import NNetModel;
+import :MainWindow;
 
 using std::wostringstream;
 using std::setprecision;

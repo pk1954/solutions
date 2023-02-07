@@ -10,28 +10,28 @@ module;
 #include "Windows.h"
 #include "Resource.h"
 
-module NNetController;
+module NNetWin32:NNetController;
 
 import Win32_Util_Resource;
 import SlowMotionRatio;
 import Observable;
 import Win32_Sound;
-import ComputeThread;
 import StdDialogBox;
-import Preferences;
 import WinManager;
 import FatalError;
-import MainWindow;
 import ScriptFile;
 import Win32_Util;
 import NNetModelCommands;
-import MonitorWindow;
 import Commands;
 import AutoOpen;
 import NNetModel;
 import InsertTrackCommand;
 import AddSensorCmd;
 import DeleteSensorCmd;
+import :ComputeThread;
+import :MainWindow;
+import :Preferences;
+import :MonitorWindow;
 
 using std::to_wstring;
 using std::wcout;

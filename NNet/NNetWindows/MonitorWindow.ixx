@@ -8,19 +8,19 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module MonitorWindow;
+export module NNetWin32:MonitorWindow;
 
 import Types;
 import Scale;
 import Observable;
 import PixFpDimension;
 import BaseWindow;
-import ComputeThread;
-import MonitorControl;
-import StimulusButton;
 import SoundInterface;
 import NNetModelCommands;
 import NNetModel;
+import :ComputeThread;
+import :MonitorControl;
+import :StimulusButton;
 
 using std::unique_ptr;
 using std::wstring;

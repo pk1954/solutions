@@ -11,15 +11,15 @@
 #include "CommCtrl.h"
 
 import Win32_Util_Resource;
+import Win32_Util;
 import Trace;
 import Stopwatch;
 import MessagePump;
-import Win32_Util;
-import NNetAppWindow;
 import Script;
 import Scanner;
 import Accelerators;
 import AboutBox;
+import NNetWin32;
 
 using std::make_unique;
 using std::unique_ptr;

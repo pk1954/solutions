@@ -8,7 +8,7 @@ module;
 #include <math.h>
 #include <Windows.h>
 
-export module TimeGraph;
+export module NNetWin32:TimeGraph;
 
 import Types;
 import PixFpDimension;

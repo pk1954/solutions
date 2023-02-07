@@ -10,22 +10,22 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module SignalDesigner;
+export module NNetWin32:SignalDesigner;
 
 import Types;
 import Observable;
 import PixFpDimension;
-import StimulusButton;
-import SignalControl;
-import ComputeThread;
 import ArrowButton;
-import SignalPreview;
 import Direct2D;
 import BaseWindow;
 import Scale;
 import BaseScale;
 import NNetModelCommands;
 import NNetModel;
+import :ComputeThread;
+import :SignalControl;
+import :SignalPreview;
+import :StimulusButton;
 
 using std::array;
 using std::wstring;

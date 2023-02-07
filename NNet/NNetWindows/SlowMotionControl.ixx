@@ -8,9 +8,9 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-export module SlowMotionControl;
+export module NNetWin32:SlowMotionControl;
 
-import StatusBar;
+import :StatusBar;
 
 export class SlowMotionControl
 {

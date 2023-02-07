@@ -6,7 +6,7 @@ module;
 
 #include <Windows.h>
 
-export module AppTitle;
+export module NNetWin32:AppTitle;
 
 import Win32_Util_Resource;
 import ObserverInterface;

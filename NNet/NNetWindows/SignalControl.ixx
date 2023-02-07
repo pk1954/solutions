@@ -7,15 +7,15 @@ module;
 #include <array>
 #include <Windows.h>
 
-export module SignalControl;
+export module NNetWin32:SignalControl;
 
 import Types;
 import PixFpDimension;
-import ComputeThread;
 import Direct2D;
-import TimeGraph;
 import NNetModelCommands;
 import NNetModel;
+import :ComputeThread;
+import :TimeGraph;
 
 using std::array;
 

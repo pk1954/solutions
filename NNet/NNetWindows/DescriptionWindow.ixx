@@ -8,7 +8,7 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module DescriptionWindow;
+export module NNetWin32:DescriptionWindow;
 
 import Types;
 import BaseWindow;

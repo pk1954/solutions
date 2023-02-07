@@ -7,13 +7,13 @@ module;
 #include <string>
 #include <Windows.h>
 
-export module MiniWindow;
+export module NNetWin32:MiniWindow;
 
-import ObserverInterface;
-import MainWindow;
-import NNetWindow;
 import Types;
-import NNetController;
+import ObserverInterface;
+import :MainWindow;
+import :NNetController;
+import :NNetWindow;
 
 using std::wstring;
 

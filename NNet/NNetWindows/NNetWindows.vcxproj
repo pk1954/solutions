@@ -583,6 +583,7 @@
     <ClCompile Include="MonitorWindow.ixx" />
     <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
+    <ClCompile Include="NNetWin32.ixx" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="NNetWrappers.ixx" />
     <ClCompile Include="ParameterDlg.ixx" />
@@ -628,8 +629,8 @@
     <ClCompile Include="SimulationControl.cpp" />
     <ClCompile Include="SimulationControl.ixx" />
     <ClCompile Include="SlowMotionControl.ixx" />
-    <ClCompile Include="Status.cpp" />
-    <ClCompile Include="Status.ixx" />
+    <ClCompile Include="StatusBar.cpp" />
+    <ClCompile Include="StatusBar.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">

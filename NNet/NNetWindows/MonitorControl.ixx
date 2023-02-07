@@ -8,17 +8,17 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module MonitorControl;
+export module NNetWin32:MonitorControl;
 
 import Types;
 import PixFpDimension;
 import SoundInterface;
-import Measurement;
 import Direct2D;
-import TimeGraph;
 import SimulationTime;
 import NNetModelCommands;
 import NNetModel;
+import :Measurement;
+import :TimeGraph;
 
 export class MonitorControl : public TimeGraph
 {

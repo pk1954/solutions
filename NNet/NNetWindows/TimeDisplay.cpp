@@ -11,10 +11,10 @@ module;
 #include <string> 
 #include <chrono> 
 
-module TimeDisplay;
+module NNetWin32:TimeDisplay;
 
-import StatusBar;
 import SimulationTime;
+import :StatusBar;
 
 using std::make_unique;
 using std::to_wstring;

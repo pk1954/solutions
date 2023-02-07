@@ -8,15 +8,15 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module MiniWindow;
+module NNetWin32:MiniWindow;
 
 import Types;
-import MainWindow;
-import NNetController;
-import MainWindow;
-import NNetWindow;
 import DrawContext;
 import NNetModel;
+import :MainWindow;
+import :NNetController;
+import :MainWindow;
+import :NNetWindow;
 
 void MiniWindow::Start
 (

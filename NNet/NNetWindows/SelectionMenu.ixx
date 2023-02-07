@@ -7,7 +7,7 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module SelectionMenu;
+export module NNetWin32:SelectionMenu;
 
 import BaseWindow;
 

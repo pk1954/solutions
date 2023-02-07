@@ -6,13 +6,13 @@ module;
 
 #include <Windows.h>
 
-export module ComputeThread;
+export module NNetWin32:ComputeThread;
 
+import Types;
 import ObserverInterface;
 import Observable;
 import HiResTimer;
 import Thread;
-import Types;
 import SlowMotionRatio;
 import NNetModel;
 

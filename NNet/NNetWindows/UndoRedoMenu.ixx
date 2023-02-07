@@ -6,10 +6,10 @@ module;
 
 #include <compare>
 
-export module UndoRedoMenu;
+export module NNetWin32:UndoRedoMenu;
 
 import ObserverInterface;
-import NNetAppMenu;
+import :NNetAppMenu;
 
 export class UndoRedoMenu : public ObserverInterface
 {

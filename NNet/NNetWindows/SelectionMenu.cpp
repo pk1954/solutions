@@ -8,7 +8,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module SelectionMenu;
+module NNetWin32:SelectionMenu;
 
 import Win32_Controls;
 import NNetModel;

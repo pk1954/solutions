@@ -8,16 +8,16 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module NNetAppMenu;
+export module NNetWin32:NNetAppMenu;
 
 import ObserverInterface;
 import SoundInterface;
 import WinManager;
-import ComputeThread;
-import Preferences;
 import Win32_Util;
 import Commands;
 import NNetModel;
+import :ComputeThread;
+import :Preferences;
 
 using std::wstring;
 using std::unique_ptr;

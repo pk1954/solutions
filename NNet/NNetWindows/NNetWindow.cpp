@@ -8,14 +8,14 @@ module;
 #include "Resource.h"
 #include "Windows.h"
 
-module NNetWindow;
+module NNetWin32:NNetWindow;
 
 import Win32_Util_Resource;
 import Types;
 import Direct2D;
 import Win32_Sound;
-import NNetController;
 import NNetModel;
+import :NNetController;
 
 using std::function;
 

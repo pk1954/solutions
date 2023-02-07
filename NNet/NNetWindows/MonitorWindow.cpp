@@ -10,16 +10,16 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module MonitorWindow;
+module NNetWin32:MonitorWindow;
 
 import Win32_Util_Resource;
 import Types;
 import Observable;
 import SoundInterface;
-import ComputeThread;
-import MonitorControl;
 import NNetModelCommands;
 import NNetModel;
+import :ComputeThread;
+import :MonitorControl;
 
 using std::find;
 using std::wstring;

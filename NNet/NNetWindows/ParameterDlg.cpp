@@ -8,7 +8,7 @@ module;
 #include "Resource.h"
 #include <Windows.h>
 
-module ParameterDialog;
+module NNetWin32:ParameterDialog;
 
 import Win32_Util_Resource;
 import StdDialogBox;

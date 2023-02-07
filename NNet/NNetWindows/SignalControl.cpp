@@ -9,12 +9,12 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module SignalControl;
+module NNetWin32:SignalControl;
 
 import Types;
-import ComputeThread;
 import NNetModelCommands;
 import NNetModel;
+import :ComputeThread;
 
 using std::max;
 

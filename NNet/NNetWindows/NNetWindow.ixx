@@ -7,15 +7,15 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module NNetWindow;
+export module NNetWin32:NNetWindow;
 
 import Types;
-import D2D_DrawContext;
+import Scale;
 import Uniform2D;
-import NNetController;
+import D2D_DrawContext;
 import GraphicsWindow;
 import NNetModel;
-import Scale;
+import :NNetController;
 
 export class NNetWindow : public GraphicsWindow
 {

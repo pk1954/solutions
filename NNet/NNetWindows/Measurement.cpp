@@ -8,7 +8,7 @@ module;
 #include <iomanip>
 #include <dwrite.h>
 
-module Measurement;
+module NNetWin32:Measurement;
 
 import Types;
 import Util;

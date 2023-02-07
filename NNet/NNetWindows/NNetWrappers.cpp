@@ -7,14 +7,13 @@ module;
 #include <string>
 #include "Resource.h"
 
-module NNetWrappers;
+module NNetWin32:NNetWrappers;
 
 import Types;
 import ErrHndl;
 import SoundInterface;
 import UtilityWrappers;
 import Symtab;
-import NNetInputOutputUI;
 import DrawContext;
 import NNetModelCommands;
 import Script;
@@ -52,6 +51,8 @@ import SetParameterCommand;
 import SizeSensorCmd;
 import SplitNeuronCmd;
 import ToggleStopOnTriggerCmd;
+
+import :NNetInputOutputUI;
 
 using std::wstring;
 

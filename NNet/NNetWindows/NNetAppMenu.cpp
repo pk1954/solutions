@@ -9,19 +9,19 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module NNetAppMenu;
+module NNetWin32:NNetAppMenu;
 
 import Win32_Util_Resource;
 import SoundInterface;
-import ComputeThread;
-import SignalDesigner;
 import WinManager;
-import Preferences;
 import BaseWindow;
 import Win32_Util;
 import Commands;
 import AutoOpen;
 import NNetModel;
+import :ComputeThread;
+import :Preferences;
+import :SignalDesigner;
 
 using std::make_unique;
 

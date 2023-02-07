@@ -10,13 +10,13 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module Preferences;
+export module NNetWin32:Preferences;
 
-import DescriptionWindow;
 import SoundInterface;
 import WrapBase;
 import NNetModelIO;
 import NNetModel;
+import :DescriptionWindow;
 
 using std::wstring;
 using std::vector;

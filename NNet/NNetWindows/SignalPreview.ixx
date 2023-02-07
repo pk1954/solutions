@@ -6,11 +6,11 @@ module;
 
 #include <compare>
 
-export module SignalPreview;
+export module NNetWin32:SignalPreview;
 
 import Types;
 import PixFpDimension;
-import TimeGraph;
+import :TimeGraph;
 import NNetModel;
 
 export class SignalPreview : public TimeGraph

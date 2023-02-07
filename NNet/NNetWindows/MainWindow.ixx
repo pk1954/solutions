@@ -8,16 +8,16 @@ module;
 #include <memory>
 #include "Resource.h"
 
-export module MainWindow;
+export module NNetWin32:MainWindow;
 
-import ActionTimer;
 import Types;
-import Preferences;
-import SelectionMenu;
-import NNetWindow;
-import MonitorWindow;
+import ActionTimer;
 import NNetModelCommands;
 import NNetModel;
+import :Preferences;
+import :SelectionMenu;
+import :NNetWindow;
+import :MonitorWindow;
 
 using std::unique_ptr;
 

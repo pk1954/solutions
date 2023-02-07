@@ -8,11 +8,11 @@ module;
 #include "Resource.h"
 #include <Windows.h>
 
-module SimulationControl;
+module NNetWin32:SimulationControl;
 
 import Win32_Util_Resource;
-import ComputeThread;
-import StatusBar;
+import :ComputeThread;
+import :StatusBar;
 
 void SimulationControl::Initialize
 (

@@ -10,13 +10,12 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module SignalDesigner;
+module NNetWin32:SignalDesigner;
 
+import Types;
+import PixFpDimension;
 import Win32_Util;
 import Win32_Util_Resource;
-import Types;
-import ComputeThread;
-import PixFpDimension;
 import Win32_Controls;
 import ArrowButton;
 import EditLineBox;
@@ -27,6 +26,7 @@ import DeleteSigGenCmd;
 import RenameSigGenCmd;
 import NNetModelCommands;
 import NNetModel;
+import :ComputeThread;
 
 using std::wstring;
 using std::unique_ptr;

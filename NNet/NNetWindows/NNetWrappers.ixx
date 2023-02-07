@@ -6,7 +6,7 @@ module;
 
 #include <compare>
 
-export module NNetWrappers;
+export module NNetWin32:NNetWrappers;
 
 import NNetModelCommands;
 import NNetModelIO;

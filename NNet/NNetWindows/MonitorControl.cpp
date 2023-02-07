@@ -10,7 +10,7 @@ module;
 #include "dwrite.h"
 #include "Resource.h"
 
-module MonitorControl;
+module NNetWin32:MonitorControl;
 
 import Win32_Util_Resource;
 import Types;

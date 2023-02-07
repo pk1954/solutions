@@ -2,15 +2,15 @@
 //
 // NNetWindows
 
-module SignalPreview;
+module NNetWin32:SignalPreview;
 
-import Direct2D;
 import Types;
+import Direct2D;
 import PixFpDimension;
 import BaseWindow;
 import GraphicsWindow;
-import TimeGraph;
 import NNetModel;
+import :TimeGraph;
 
 SignalPreview::SignalPreview
 (

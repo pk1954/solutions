@@ -1,16 +1,16 @@
 // SimulationControl.ixx
 //
-// NNetSimu
+// NNetWindows
 
 module;
 
 #include <compare>
 
-export module SimulationControl;
+export module NNetWin32:SimulationControl;
 
 import ObserverInterface;
-import ComputeThread;
-import StatusBar;
+import :ComputeThread;
+import :StatusBar;
 
 export class SimulationControl: public ObserverInterface
 {

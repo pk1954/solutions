@@ -1,16 +1,16 @@
 // SlowMotionDisplay.ixx
 //
-// NNetSimu
+// NNetWindows
 
 module;
 
 #include <string>
 
-export module SlowMotionDisplay;
+export module NNetWin32:SlowMotionDisplay;
 
 import ObserverInterface;
-import StatusBar;
 import SlowMotionRatio;
+import :StatusBar;
 
 using std::wstring;
 

@@ -51,7 +51,7 @@
     <ClCompile Include="SimulationControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Status.cpp">
+    <ClCompile Include="StatusBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SlowMotionDisplay.cpp">
@@ -105,7 +105,7 @@
     <ClCompile Include="SimulationControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Status.ixx">
+    <ClCompile Include="StatusBar.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComputeThread.ixx">
@@ -181,6 +181,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParameterDlg.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetWin32.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

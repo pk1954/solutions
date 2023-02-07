@@ -7,13 +7,13 @@ module;
 #include <string>
 #include <Windows.h>
 
-export module PerformanceWindow;
+export module NNetWin32:PerformanceWindow;
 
 import SlowMotionRatio;
-import ComputeThread;
 import ActionTimer;
 import TextWindow;
 import NNetModel;
+import :ComputeThread;
 
 using std::wstring;
 

@@ -10,19 +10,19 @@ module;
 #include <iostream>
 #include <Windows.h>
 
-export module NNetController;
+export module NNetWin32:NNetController;
 
 import Observable;
 import SoundInterface;
-import ComputeThread;
-import Types;
 import SlowMotionRatio;
-import Preferences;
+import Types;
 import WinManager;
 import NNetModelCommands;
-import MonitorWindow;
 import Commands;
 import NNetModel;
+import :ComputeThread;
+import :Preferences;
+import :MonitorWindow;
 
 using std::wostream;
 using std::wcout;

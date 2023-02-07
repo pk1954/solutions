@@ -14,30 +14,22 @@ module;
 #include <source_location>
 #include "Resource.h"
 
-module NNetAppWindow;
+module NNetWin32:NNetAppWindow;
 
 import Win32_Util_Resource;
 import Types;
 import Util;
 import Trace;
 import Direct2D;
-import StatusBar;
 import ObserverInterface;
-import PerformanceWindow;
 import AboutBox;
-import UndoRedoMenu;
-import Preferences;
 import UtilityWrappers;
-import NNetInputOutputUI;
-import NNetWrappers;
 import FatalError;
-import TimeGraph;
 import MessagePump;
 import ScriptFile;
 import BaseWindow;
 import Win32_Util;
 import Win32_PIXEL;
-import NNetWindow;
 import ScriptStack;
 import AutoOpen;
 import SimulationTime;
@@ -46,6 +38,14 @@ import NNetCommand;
 import NNetModel;
 import CreateInitialNobsCmd;
 import ResetModelCmd;
+import :StatusBar;
+import :PerformanceWindow;
+import :Preferences;
+import :UndoRedoMenu;
+import :NNetInputOutputUI;
+import :NNetWindow;
+import :NNetWrappers;
+import :TimeGraph;
 
 using std::endl;
 using std::wcout;

@@ -11,7 +11,7 @@ module;
 #include <CommCtrl.h>
 #include "Resource.h"
 
-module DescriptionWindow;
+module NNetWin32:DescriptionWindow;
 
 using std::array;
 using std::bit_cast;

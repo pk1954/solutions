@@ -10,7 +10,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-export module NNetInputOutputUI;
+export module NNetWin32:NNetInputOutputUI;
 
 import InputOutputUI;
 

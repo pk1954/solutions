@@ -8,12 +8,12 @@ module;
 #include <sstream>
 #include <Windows.h>
 
-module PerformanceWindow;
+module NNetWin32:PerformanceWindow;
 
 import SlowMotionRatio;
-import ComputeThread;
 import ActionTimer;
 import NNetModel;
+import :ComputeThread;
 
 using std::wostringstream;
 using std::setprecision;

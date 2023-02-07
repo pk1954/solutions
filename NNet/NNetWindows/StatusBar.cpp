@@ -9,7 +9,7 @@ module;
 #include <CommCtrl.h>
 #include "Resource.h"
 
-module StatusBar;
+module NNetWin32:StatusBar;
 
 import Tooltip;
 import Types;

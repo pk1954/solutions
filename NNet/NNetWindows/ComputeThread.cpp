@@ -6,7 +6,7 @@ module;
 
 #include <Windows.h>
 
-module ComputeThread;
+module NNetWin32:ComputeThread;
 
 import SlowMotionRatio;
 import Observable;

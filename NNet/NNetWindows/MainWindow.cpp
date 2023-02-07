@@ -10,7 +10,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module MainWindow;
+module NNetWin32:MainWindow;
 
 import ActionTimer;
 import AddMicroSensorCmd;
@@ -30,15 +30,12 @@ import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import FatalError;
 import NewIoLinePairCmd;
-import NNetController;
 import NNetModel;
 import NNetModelCommands;
-import MonitorWindow;
 import MoveNobCommand;
 import MoveSelectionCommand;
 import MoveSensorCmd;
 import Observable;
-import Preferences;
 import RootWindow;
 import SelectAllConnectedCmd;
 import SizeSensorCmd;
@@ -48,6 +45,9 @@ import Types;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
+import :NNetController;
+import :MonitorWindow;
+import :Preferences;
 
 using std::unordered_map;
 using std::unique_ptr;

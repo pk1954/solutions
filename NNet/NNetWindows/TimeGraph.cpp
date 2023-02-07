@@ -7,7 +7,7 @@ module;
 #include <cassert>
 #include <Windows.h>
 
-module TimeGraph;
+module NNetWin32:TimeGraph;
 
 import Types;
 import PixFpDimension;

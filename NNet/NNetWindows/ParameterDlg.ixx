@@ -7,7 +7,7 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module ParameterDialog;
+export module NNetWin32:ParameterDialog;
 
 import BaseDialog;
 import NNetModelCommands;

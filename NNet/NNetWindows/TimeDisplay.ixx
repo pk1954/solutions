@@ -6,11 +6,11 @@ module;
 
 #include <memory>
 
-export module TimeDisplay;
+export module NNetWin32:TimeDisplay;
 
 import ObserverInterface;
-import StatusBar;
 import BaseRefreshRate;
+import :StatusBar;
 
 using std::unique_ptr;
 

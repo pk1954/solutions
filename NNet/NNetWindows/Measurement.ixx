@@ -6,7 +6,7 @@ module;
 
 #include <dwrite.h>
 
-export module Measurement;
+export module NNetWin32:Measurement;
 
 import Types;
 import Direct2D;

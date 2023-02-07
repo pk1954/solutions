@@ -1,6 +1,6 @@
 // SlowMotionDisplay.cpp
 //
-// NNetSimu
+// NNetWindows
 //
 // Displays slow motion ratio in status bar field
 
@@ -8,12 +8,12 @@ module;
 
 #include <string>
 
-module SlowMotionDisplay;
+module NNetWin32:SlowMotionDisplay;
 
 import Util;
 import SaveCast;
-import StatusBar;
 import SlowMotionRatio;
+import :StatusBar;
 
 using std::to_wstring;
 
