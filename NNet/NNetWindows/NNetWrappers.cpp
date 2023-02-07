@@ -194,15 +194,14 @@ void InitializeNNetWrappers
     SplitNeuronCmd::Register();
     ToggleStopOnTriggerCmd::Register();
 
-    SymbolTable::ScrDefConst(L"AddModel",            new WrapAddModel);
-    SymbolTable::ScrDefConst(L"Connect",             new WrapConnect );
-    SymbolTable::ScrDefConst(L"DeleteNob",           new WrapDeleteNob );
-    SymbolTable::ScrDefConst(L"Include",             new WrapInclude );
-    SymbolTable::ScrDefConst(L"UndoCommand",         new WrapUndoCommand );
-    SymbolTable::ScrDefConst(L"RedoCommand",         new WrapRedoCommand );
-    SymbolTable::ScrDefConst(L"Break",               new WrapBreak );
-
-    
+    SymbolTable::ScrDefConst(L"AddModel",    new WrapAddModel);
+    SymbolTable::ScrDefConst(L"Connect",     new WrapConnect );
+    SymbolTable::ScrDefConst(L"DeleteNob",   new WrapDeleteNob );
+    SymbolTable::ScrDefConst(L"Include",     new WrapInclude );
+    SymbolTable::ScrDefConst(L"UndoCommand", new WrapUndoCommand );
+    SymbolTable::ScrDefConst(L"RedoCommand", new WrapRedoCommand );
+    SymbolTable::ScrDefConst(L"Break",       new WrapBreak );
+   
     //template InsertPosNobCommand
     SymbolTable::ScrDefConst(L"InsertNeuron", new WrapInsertNeuron);
 

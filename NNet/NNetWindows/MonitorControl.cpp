@@ -27,8 +27,9 @@ MonitorControl::MonitorControl
 	Sound                      & sound,
 	NNetModelCommands          & modelCommands,
 	PixFpDimension<fMicroSecs> & horzCoord,
-	PixFpDimension<mV>         & vertCoord
-) 
+	PixFpDimension<mV>         & vertCoord,
+	Observable                 & observable
+)
   : TimeGraph(hwndParent, &horzCoord),
 	m_horzCoord    (horzCoord),
 	m_vertCoord    (vertCoord),
@@ -49,6 +50,8 @@ MonitorControl::MonitorControl
 
 	m_horzCoord.RegisterObserver(*this);
 	m_vertCoord.RegisterObserver(*this);
+
+	m_pMoveSizeObservable = &observable;
 }
 
 void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
@@ -325,10 +328,26 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	if (fPixMaxSignal > m_fPixMaxSignal)
 		m_fPixMaxSignal = fPixMaxSignal;
 
-	fPixelPoint lastPoint { getSignalPoint(*pSig, usSimuNow, fPixOffsetY) };
-	m_upGraphics->FillCircle(fPixelCircle(lastPoint, 4.0_fPixel), color);
+	fPixelPoint fPixPntSignalNow { getSignalPoint(*pSig, usSimuNow, fPixOffsetY) };
+	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), color);
 }
 
+PixelPoint MonitorControl::GetSignalStartPntScreen(SignalId const signalId) const
+{
+	Signal const* pSig { m_pMonitorData->GetConstSignalPtr(signalId) };
+	if (pSig == nullptr)
+		return PixelPoint::NULL_VAL();
+	fPixel      const fPixHorzEnd   { m_fPixWinWidth - m_fPixRightBorder };
+	fPixel      const fPixOffsetY   { getSignalOffset(signalId) };
+	fPixelPoint const fPixPntSignal
+	{
+		fPixHorzEnd,
+		fPixOffsetY - getSignalValue(*pSig, pixel2simuTime(fPixHorzEnd)) - 1.0_fPixel
+	};
+	PixelPoint  const pixPntSignal { Convert2PixelPoint(fPixPntSignal) };
+	PixelPoint  const pixPosScreen { Client2Screen(pixPntSignal) };
+	return pixPosScreen;
+}
 bool MonitorControl::SignalTooHigh() const
 {
 	fPixel const fPixTrackHeight { calcTrackHeight() };
@@ -523,6 +542,7 @@ void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)
 			if (m_pMonitorData->IsAnySignalSelected())
 			{
 				m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
+				m_pMoveSizeObservable->NotifyAll(false);
 				SetCursor(m_hCrsrNS);
 			}
 		}

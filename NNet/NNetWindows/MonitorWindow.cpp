@@ -54,7 +54,8 @@ void MonitorWindow::Start
 		sound, 
 		modelCmds, 
 		m_horzCoord, 
-		m_vertCoord
+		m_vertCoord,
+		observable
 	);
 
 	m_horzCoord.SetPixelSizeLimits(1._MicroSecs, 1e6_MicroSecs); 

@@ -37,7 +37,7 @@ public:
 	void StimulusTriggered() const;
 	void ResetHorzCoord();
 
-	fPixel GetTrackPos(TrackNr const nr) const { return m_upMonitorControl->GetTrackPos(nr); }
+	PixelPoint GetSignalStartPntScreen(SignalId const id) const { return m_upMonitorControl->GetSignalStartPntScreen(id); }
 
 	PixFpDimension<fMicroSecs> const& HorzCoord() const { return m_horzCoord; }
 	PixFpDimension<mV>         const& VertCoord() const { return m_vertCoord; }

@@ -29,7 +29,8 @@ public:
 		Sound                      &,
 		NNetModelCommands          &,
 		PixFpDimension<fMicroSecs> &,
-		PixFpDimension<mV>         &
+		PixFpDimension<mV>         &,
+		Observable                 &
 	);
 
 	~MonitorControl() final = default;
@@ -47,12 +48,7 @@ public:
 	void   StimulusTriggered();
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
-	fPixel GetTrackPos(TrackNr const nr) const
-	{
-		fPixel const fPixTrackHeight { calcTrackHeight() };
-		fPixel const fPixTrackbottom { fPixTrackHeight * Cast2Float(nr.GetValue()+1) };
-		return fPixTrackbottom;
-	}
+	PixelPoint GetSignalStartPntScreen(SignalId const) const;
 
 private:
 
@@ -103,8 +99,9 @@ private:
 	PixFpDimension<mV>         & m_vertCoord;
 	Sound                      & m_sound;        
 	NNetModelCommands          & m_modelCommands;
-	MonitorData                * m_pMonitorData { nullptr };
-	IDWriteTextFormat          * m_pTextFormat  { nullptr };
+	MonitorData                * m_pMonitorData        { nullptr };
+	IDWriteTextFormat          * m_pTextFormat         { nullptr };
+	Observable                 * m_pMoveSizeObservable { nullptr };;
 	Measurement                  m_measurement;
 
 	TrackNr    m_trackNrHighlighted { TrackNr::NULL_VAL() };
