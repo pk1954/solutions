@@ -36,10 +36,6 @@ void MicroSensor::WriteInfo(wostream& out) const
 mV MicroSensor::GetSignalValue() const
 {
     mV mVResult { m_pNob->GetPotential() };
-    if (mVResult > 0.0_mV)
-    {
-        int x = 42;
-    }
     return mVResult;
 }
 
@@ -52,7 +48,7 @@ void MicroSensor::Draw
     static fPixel const WIDTH { 5._fPixel };
 
     MicroMeter       const umRadius { context.GetCoordC().Transform2logUnit(30._fPixel) };
-    MicroMeterCircle const umCircle { m_pNob->GetPos(), umRadius };
+    MicroMeterCircle const umCircle { GetPosition(), umRadius };
     D2D1::ColorF     const col      { bHighlight ? NNetColors::MICRO_SENSOR_HIGH : NNetColors::MICRO_SENSOR };
     context.DrawCircle
     (
@@ -62,16 +58,16 @@ void MicroSensor::Draw
     );
     context.DrawLine
     (
-        MicroMeterPnt(m_pNob->GetPos().GetX() - umRadius, m_pNob->GetPos().GetY()),
-        MicroMeterPnt(m_pNob->GetPos().GetX() + umRadius, m_pNob->GetPos().GetY()),
+        MicroMeterPnt(GetPosition().GetX() - umRadius, GetPosition().GetY()),
+        MicroMeterPnt(GetPosition().GetX() + umRadius, GetPosition().GetY()),
         0._MicroMeter,
         col,
         WIDTH
     );
     context.DrawLine
     (
-        MicroMeterPnt(m_pNob->GetPos().GetX(), m_pNob->GetPos().GetY() - umRadius),
-        MicroMeterPnt(m_pNob->GetPos().GetX(), m_pNob->GetPos().GetY() + umRadius),
+        MicroMeterPnt(GetPosition().GetX(), GetPosition().GetY() - umRadius),
+        MicroMeterPnt(GetPosition().GetX(), GetPosition().GetY() + umRadius),
         0._MicroMeter,
         col,
         WIDTH

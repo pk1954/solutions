@@ -86,14 +86,15 @@ void NNetWindow::drawSignalCable(MonitorData const& monData, SignalId const& sig
 		static fPixel const VDIAMETER     { 10._fPixel };
 		PixelPoint    const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
 		fPixelPoint   const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
+		fPixelPoint   const fPixPosStart  { fPixPosSignal + fPixelPoint(HDIAMETER, 0.0_fPixel) };
 		MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
 		fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
-		fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosSignal };
-		fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f + HDIAMETER * 0.5f };
+		fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosStart };
+		fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f };
 		m_upGraphics->DrawBezier
 		(
-			fPixPosSignal,	
-			fPixPosSignal + fPixelPoint(fPixOffset, 0.0_fPixel),
+			fPixPosStart,
+			fPixPosStart + fPixelPoint(fPixOffset, 0.0_fPixel),
 			fPixPosSensor - fPixDelta * 0.3f,
 			fPixPosSensor, 
 			m_pBrushSensorCables, 

@@ -41,7 +41,8 @@ public:
     bool CompStep()     final;
     void Reconnect()    final;
 
-    MicroMeterPnt GetPos() const final { return m_umPntPipeAnchor; }
+    MicroMeterPnt GetPos()    const final { return m_umPntPipeAnchor; }
+    MicroMeterPnt GetCenter() const final { return m_umPntCenter; }
 
     bool          Includes (MicroMeterPnt  const&)         const final;
     void          MoveNob  (MicroMeterPnt  const&)               final;

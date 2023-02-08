@@ -78,6 +78,7 @@ public:
 
 	virtual Radian        GetDir()    const { assert(false); return 0.0_Radian; }
 	virtual MicroMeterPnt GetPos()    const { assert(false); return NP_NULL; }
+	virtual MicroMeterPnt GetCenter() const { return GetPos(); }
 	virtual NobIoMode     GetIoMode() const { assert(false); return NobIoMode::internal; }
 
 	virtual void DrawExterior  (DrawContext    const &, tHighlight const) const {}
