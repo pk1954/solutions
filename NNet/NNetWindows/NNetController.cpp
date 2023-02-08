@@ -28,6 +28,7 @@ import NNetModel;
 import InsertTrackCommand;
 import AddSensorCmd;
 import DeleteSensorCmd;
+import DeleteTrackCommand;
 import :ComputeThread;
 import :MainWindow;
 import :Preferences;
@@ -245,7 +246,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_DELETE_TRACK:
-        m_pModelCommands->DeleteTrack(TrackNr(Cast2Int(lParam)));
+        DeleteTrackCommand::Push(TrackNr(Cast2Int(lParam)));
         break;
 
     case IDM_ESCAPE:

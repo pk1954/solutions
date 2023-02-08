@@ -33,6 +33,7 @@ import CreateForkCommand;
 import CreateInitialNobsCmd;
 import CreateSynapseCommand;
 import DeleteSelectionCommand;
+import DeleteTrackCommand;
 import DeleteSensorCmd;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
@@ -174,6 +175,7 @@ void InitializeNNetWrappers
     CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();
     DeleteSelectionCommand::Register();
+    DeleteTrackCommand::Register();
     DeleteSensorCmd::Register();
     DelMicroSensorCmd::Register();
     DeselectModuleCmd::Register();

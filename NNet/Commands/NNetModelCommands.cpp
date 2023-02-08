@@ -24,7 +24,6 @@ import ConnectCreateSynapseCmd;
 import Connect2NeuronCommand;
 import CreateForkCommand;
 import DeleteSignalCommand;
-import DeleteTrackCommand;
 import InsertPosNobCommand;
 import NewIoLinePairCmd;
 import NewSigGenCmd;
@@ -179,13 +178,6 @@ void NNetModelCommands::DeleteNob(NobId const id)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pSound->Play(L"DISAPPEAR_SOUND");
 	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id)));
-}
-
-void NNetModelCommands::DeleteTrack(TrackNr const nr)
-{ 
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << nr << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteTrackCommand>(nr));
 }
 
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)

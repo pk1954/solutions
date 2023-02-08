@@ -52,7 +52,6 @@ public:
     void DeleteNob(NobId const);
     void DeleteSelection();
     void DeleteSignal(SignalId const&);
-    void DeleteTrack(TrackNr const);
     void DiscIoConnector(NobId const);
     void InsertKnot  (NobId const, MicroMeterPnt const&);
     void InsertNeuron(NobId const, MicroMeterPnt const&);
