@@ -29,7 +29,7 @@ public:
     void WriteInfo(wostream&)                 const final;
     void Draw(DrawContext const&, bool const) const final;
 
-    MicroMeterPnt const& GetPosition() const final { return m_pNob->GetPos(); }
+    MicroMeterPnt GetPosition() const final { return m_pNob->GetPos(); }
 
     NobId GetNobId() const { return m_pNob->GetId(); }
 

@@ -59,13 +59,20 @@ public:
 	virtual void SetRotation(Degrees const, MicroMeterPnt const&) const = 0;
 	virtual void Reset() const = 0;
 
-	virtual void DrawCircle          (MicroMeterCircle  const &, D2D1::ColorF const, MicroMeter const) const = 0;
-	virtual void DrawEllipse         (MicroMeterEllipse const &, D2D1::ColorF const, MicroMeter const) const = 0;
-	virtual void FillEllipse         (MicroMeterEllipse const &, D2D1::ColorF const) const = 0;
-	virtual void FillRectangle       (MicroMeterRect    const &, D2D1::ColorF const) const = 0;
+	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&, ID2D1SolidColorBrush*, fPixel const = 1._fPixel) const = 0;
+	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,                        fPixel const = 1._fPixel) const = 0;
+	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,	D2D1::ColorF  const,   fPixel const = 1._fPixel) const = 0;
+	virtual void DrawCircle   (MicroMeterCircle const&, ID2D1SolidColorBrush* const, fPixel const = 1._fPixel) const = 0;
+	virtual void DrawCircle   (MicroMeterCircle const&, D2D1::ColorF const,          fPixel const = 1._fPixel) const = 0;
+	virtual void DrawCircle   (MicroMeterCircle const&,                              fPixel const = 1._fPixel) const = 0;
+	virtual void DrawEllipse  (MicroMeterEllipse const &, D2D1::ColorF const, MicroMeter const)   const = 0;
+	virtual void FillEllipse  (MicroMeterEllipse const &)                                         const = 0;
+	virtual void FillEllipse  (MicroMeterEllipse const &, D2D1::ColorF const)                     const = 0;
+	virtual void FillEllipse  (MicroMeterEllipse const &, ID2D1SolidColorBrush* const)            const = 0;
+	virtual void FillRectangle(MicroMeterRect    const &, D2D1::ColorF const)                     const = 0;
 	virtual void FillGradientCircle  (MicroMeterCircle  const &, D2D1::ColorF const, D2D1::ColorF const) const = 0;
-	virtual void FillRoundedRectangle(MicroMeterRect    const &, D2D1::ColorF, MicroMeter const) const = 0;
-	virtual void DrawTranspRect      (MicroMeterRect    const &, D2D1::ColorF const) const = 0;
+	virtual void FillRoundedRectangle(MicroMeterRect    const &, D2D1::ColorF, MicroMeter const)         const = 0;
+	virtual void DrawTranspRect      (MicroMeterRect    const &, D2D1::ColorF const)                     const = 0;
 	virtual void DisplayText
 	(
 		MicroMeterRect      const &,
@@ -101,6 +108,8 @@ public:
 		MicroMeter const umMin { m_coord.Transform2logUnit(10._fPixel) };
 		return (rect.GetHeight() < umMin) || (rect.GetWidth() < umMin);
 	}
+
+	virtual void test() const = 0;
 
 protected:
 	bool                  m_bNoColors { false };

@@ -98,9 +98,12 @@ private:
 	NNetWindow(NNetWindow const&);           // noncopyable class 
 	NNetWindow& operator= (NNetWindow const&) = delete;  // noncopyable class 
 
-	MonitorWindow const * m_pMonitorWindow  { nullptr };
-	NNetController      * m_pController     { nullptr };
-	D2D_DrawContext       m_context         { };
-	fPixel                m_fPixRadiusLimit { };
-	PixelPoint            m_ptLast          { PP_NULL };	// Last cursor position during selection 
+	MonitorWindow const * m_pMonitorWindow     { nullptr };
+	NNetController      * m_pController        { nullptr };
+	ID2D1SolidColorBrush* m_pBrushSensorCables { nullptr };
+	D2D_DrawContext       m_context            { };
+	fPixel                m_fPixRadiusLimit    { };
+	PixelPoint            m_ptLast             { PP_NULL };	// Last cursor position during selection 
+
+	void drawSignalCable(MonitorData const&, SignalId const&) const;
 };

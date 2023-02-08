@@ -532,6 +532,9 @@ void MainWindow::DoPaint()
 	}
 
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
+
+	//DrawContext const & context              { GetDrawContextC() };
+	//m_pNMRI->test(context);
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)

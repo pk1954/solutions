@@ -1,4 +1,4 @@
-ShowScales ON
+ShowScales OFF
 ShowArrows ON
 ShowSensorPoints ON
 DescWinFontSize 18

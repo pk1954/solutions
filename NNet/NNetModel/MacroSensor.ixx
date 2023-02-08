@@ -32,7 +32,7 @@ public:
 
     bool Includes(MicroMeterPnt const p) const { return m_circle.Includes(p); }
 
-    MicroMeterPnt const& GetPosition() const final { return GetCenter(); }
+    MicroMeterPnt GetPosition() const final { return GetCenter(); }
 
     void  DrawDataPoints(DrawContext  const &) const;
     float GetDistFactor(MicroMeterPnt const &) const;

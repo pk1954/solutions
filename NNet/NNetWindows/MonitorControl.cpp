@@ -332,20 +332,16 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), color);
 }
 
-PixelPoint MonitorControl::GetSignalStartPntScreen(SignalId const signalId) const
+PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId) const
 {
 	Signal const* pSig { m_pMonitorData->GetConstSignalPtr(signalId) };
 	if (pSig == nullptr)
 		return PixelPoint::NULL_VAL();
-	fPixel      const fPixHorzEnd   { m_fPixWinWidth - m_fPixRightBorder };
-	fPixel      const fPixOffsetY   { getSignalOffset(signalId) };
-	fPixelPoint const fPixPntSignal
-	{
-		fPixHorzEnd,
-		fPixOffsetY - getSignalValue(*pSig, pixel2simuTime(fPixHorzEnd)) - 1.0_fPixel
-	};
-	PixelPoint  const pixPntSignal { Convert2PixelPoint(fPixPntSignal) };
-	PixelPoint  const pixPosScreen { Client2Screen(pixPntSignal) };
+	fPixel      const fPixTrackHeight { calcTrackHeight() };
+	fPixel      const fPixVertPos     { fPixTrackHeight * (signalId.GetTrackNr().GetValue() + 0.5f) };
+	fPixelPoint const fPixPntSignal	  { m_fPixWinWidth, fPixVertPos };
+	PixelPoint  const pixPntSignal    { Convert2PixelPoint(fPixPntSignal) };
+	PixelPoint  const pixPosScreen    { Client2Screen(pixPntSignal) };
 	return pixPosScreen;
 }
 bool MonitorControl::SignalTooHigh() const
@@ -535,7 +531,7 @@ void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)
 			if (fPixNewPos > m_fPixRightLimit)
 				fPixNewPos = m_fPixRightLimit;
 			m_measurement.MoveSelection(fPixNewPos);
-			SetCursor(m_hCrsrWE);
+//			SetCursor(m_hCrsrWE);
 		}
 		else 
 		{
@@ -543,7 +539,7 @@ void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)
 			{
 				m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
 				m_pMoveSizeObservable->NotifyAll(false);
-				SetCursor(m_hCrsrNS);
+//				SetCursor(m_hCrsrNS);
 			}
 		}
 	}

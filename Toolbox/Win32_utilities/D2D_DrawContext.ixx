@@ -55,18 +55,13 @@ public:
 		D2D1::ColorF     const  
 	) const override;
 
-	void DrawCircle
-	(
-		MicroMeterCircle const &,
-		D2D1::ColorF     const,
-		MicroMeter       const
-	) const override;
+	void DrawCircle(MicroMeterCircle const&, ID2D1SolidColorBrush* const, fPixel const) const override;
+	void DrawCircle(MicroMeterCircle const&, D2D1::ColorF const,          fPixel const) const override;
+	void DrawCircle(MicroMeterCircle const&,                              fPixel const) const override;
 
-	void FillEllipse
-	(
-		MicroMeterEllipse const &,
-		D2D1::ColorF      const  
-	) const override;
+	void FillEllipse(MicroMeterEllipse const&, ID2D1SolidColorBrush* const) const override;
+	void FillEllipse(MicroMeterEllipse const&, D2D1::ColorF const) const override;
+	void FillEllipse(MicroMeterEllipse const&) const override;
 
 	void DrawEllipse
 	(
@@ -94,6 +89,40 @@ public:
 		wstring             const &,
 		IDWriteTextFormat * const = nullptr
 	) const override;
+
+	void DrawBezier
+	(
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		ID2D1SolidColorBrush*,
+		fPixel const = 1._fPixel
+	) const override;
+
+	void DrawBezier
+	(
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		fPixel const = 1._fPixel
+	) const override;
+
+	void DrawBezier
+	(
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		MicroMeterPnt const&,
+		D2D1::ColorF  const,
+		fPixel const = 1._fPixel
+	) const override;
+
+	void test() const override
+	{
+		m_pGraphics->test();
+	}
 
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };

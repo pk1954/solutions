@@ -158,6 +158,12 @@ public:
 	void DrawInterior(NobId      const,   DrawContext const &, tHighlight const) const;
 	void DrawLine(MicroMeterLine const &, DrawContext const &)                   const;
 
+	void test(DrawContext const& context) const
+	{
+		context.test();
+	}
+
+
 	MicroMeterPnt OrthoVector(NobId const) const;
 
 	template <Nob_t T>

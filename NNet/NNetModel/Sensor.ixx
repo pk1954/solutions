@@ -23,9 +23,9 @@ public:
         macroSensor
     };
 
-    virtual MicroMeterPnt const &GetPosition()                              const = 0;
-    virtual Type                 SensorType()                               const = 0;
-    virtual void                 RotateSensor(MicroMeterPnt const&, Radian const) = 0;
+    virtual MicroMeterPnt GetPosition()                              const = 0;
+    virtual Type          SensorType()                               const = 0;
+    virtual void          RotateSensor(MicroMeterPnt const&, Radian const) = 0;
 
     SignalSource::Type SignalSourceType() const final { return SignalSource::Type::sensor; }
 

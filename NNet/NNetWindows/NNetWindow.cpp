@@ -36,9 +36,10 @@ void NNetWindow::Start
 		dwStyle
 	);
 	m_context.Start(m_upGraphics.get());
-	m_pController     = & controller;
-	m_pMonitorWindow  = pMonitorWindow;
-	m_fPixRadiusLimit = fPixLimit;
+	m_pController        = & controller;
+	m_pMonitorWindow     = pMonitorWindow;
+	m_fPixRadiusLimit    = fPixLimit;
+	m_pBrushSensorCables = m_upGraphics->CreateBrush(D2D1::ColorF::Green);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 
@@ -73,36 +74,50 @@ void NNetWindow::DrawArrowsInRect
 	);
 }
 
+void NNetWindow::drawSignalCable(MonitorData const& monData, SignalId const& signalId) const
+{
+	Signal       const* pSignal            { monData.GetConstSignalPtr(signalId) };
+	SignalSource const* pSigSrc            { pSignal->GetSignalSource() };
+	Sensor       const* pSensor            { Cast2Sensor(pSigSrc) };
+	PixelPoint   const  pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId) };
+	if (pSensor && pixPosScreenSignal.IsNotNull())
+	{
+		static fPixel const HDIAMETER     { 20._fPixel };
+		static fPixel const VDIAMETER     { 10._fPixel };
+		PixelPoint    const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
+		fPixelPoint   const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
+		MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
+		fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
+		fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosSignal };
+		fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f + HDIAMETER * 0.5f };
+		m_upGraphics->DrawBezier
+		(
+			fPixPosSignal,	
+			fPixPosSignal + fPixelPoint(fPixOffset, 0.0_fPixel),
+			fPixPosSensor - fPixDelta * 0.3f,
+			fPixPosSensor, 
+			m_pBrushSensorCables, 
+			2._fPixel
+		);
+		m_upGraphics->FillEllipse
+		(
+			fPixelEllipse(fPixPosSignal, HDIAMETER, VDIAMETER), 
+			m_pBrushSensorCables
+		);
+	}
+}
+
 void NNetWindow::DrawSensors() const
 {
 	MonitorData const & monData { m_pNMRI->GetMonitorDataC() };
-//	monData.Apply2AllSignalsC([this](Signal const& sig) { sig.Draw(m_context, false); });
-	monData.Apply2AllSignalIdsC
+	m_pNMRI->GetMonitorDataC().Apply2AllSignalIdsC
 	(
 		[this, &monData](SignalId const& signalId) 
 		{ 
-			Signal const * pSignal { monData.GetConstSignalPtr(signalId) };
+			Signal const* pSignal { monData.GetConstSignalPtr(signalId) };
 			pSignal->Draw(m_context, false);
 			if (m_pMonitorWindow)
-			{
-				SignalSource const * pSigSrc            { pSignal->GetSignalSource() };
-				Sensor       const * pSensor            { Cast2Sensor(pSigSrc) };
-				PixelPoint   const   pixPosScreenSignal { m_pMonitorWindow->GetSignalStartPntScreen(signalId) };
-				if (pSensor && pixPosScreenSignal.IsNotNull())
-				{
-					PixelPoint    const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
-					fPixelPoint   const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
-					MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
-					fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
-					m_upGraphics->DrawLine
-					(
-						fPixPosSignal,
-						fPixPosSensor,
-						2._fPixel,
-						D2D1::ColorF::Green
-					);
-				}
-			}
+				drawSignalCable(monData, signalId);
 		}
 	);
 }

@@ -94,30 +94,58 @@ void D2D_DrawContext::FillGradientCircle
 
 void D2D_DrawContext::DrawCircle
 (
-	MicroMeterCircle const & umCircle,
-	ColorF           const   col,
-	MicroMeter       const   umWidth
+	MicroMeterCircle      const& umCircle,
+	ID2D1SolidColorBrush* const  pBrush,
+	fPixel                const  fPixWidth
 ) const
 {
-	m_pGraphics->DrawCircle
-	(
-		m_coord.Transform2fPixelCircle(umCircle), 
-		m_bNoColors ? ColorF::Black : col,
-		m_coord.Transform2fPixel(umWidth)
-	);
+	m_pGraphics->DrawCircle(m_coord.Transform2fPixelCircle(umCircle), pBrush, fPixWidth);
+}
+
+void D2D_DrawContext::DrawCircle
+(
+	MicroMeterCircle const& umCircle,
+	ColorF           const  col,
+	fPixel           const  fPixWidth
+) const
+{
+	m_pGraphics->DrawCircle(m_coord.Transform2fPixelCircle(umCircle), col, fPixWidth);
+}
+
+void D2D_DrawContext::DrawCircle
+(
+	MicroMeterCircle const& umCircle, 
+	fPixel           const  fPixWidth
+) const
+{
+	m_pGraphics->DrawCircle(m_coord.Transform2fPixelCircle(umCircle), fPixWidth);
 }
 
 void D2D_DrawContext::FillEllipse
 (
-	MicroMeterEllipse const & umEllipse,
-	ColorF            const   col  
+	MicroMeterEllipse const& umEllipse,
+	ID2D1SolidColorBrush * const pBrush
+) const
+{
+	m_pGraphics->FillEllipse(m_coord.Transform2fPixelEllipse(umEllipse), pBrush);
+}
+
+void D2D_DrawContext::FillEllipse
+(
+	MicroMeterEllipse const& umEllipse,
+	ColorF            const   col
 ) const
 {
 	m_pGraphics->FillEllipse
 	(
-		m_coord.Transform2fPixelEllipse(umEllipse), 
-		m_bNoColors ? ColorF::Black : col 
+		m_coord.Transform2fPixelEllipse(umEllipse),
+		m_bNoColors ? ColorF::Black : col
 	);
+}
+
+void D2D_DrawContext::FillEllipse(MicroMeterEllipse const& umEllipse) const
+{
+	m_pGraphics->FillEllipse(m_coord.Transform2fPixelEllipse(umEllipse));
 }
 
 void D2D_DrawContext::DrawEllipse
@@ -132,6 +160,67 @@ void D2D_DrawContext::DrawEllipse
 		m_coord.Transform2fPixelEllipse(umEllipse), 
 		m_bNoColors ? ColorF::Black : col,
 		m_coord.Transform2fPixel(umWidth)
+	);
+}
+
+void D2D_DrawContext::DrawBezier
+(
+	MicroMeterPnt const& umPnt0,
+	MicroMeterPnt const& umPnt1,
+	MicroMeterPnt const& umPnt2,
+	MicroMeterPnt const& umPnt3,
+	ID2D1SolidColorBrush* pBrush,
+	fPixel        const  fPixWidth
+) const
+{
+	m_pGraphics->DrawBezier
+	(
+		m_coord.Transform2fPixelPos(umPnt0),
+		m_coord.Transform2fPixelPos(umPnt1),
+		m_coord.Transform2fPixelPos(umPnt2),
+		m_coord.Transform2fPixelPos(umPnt3),
+		pBrush,
+		fPixWidth
+	);
+}
+
+void D2D_DrawContext::DrawBezier
+(
+	MicroMeterPnt const& umPnt0,
+	MicroMeterPnt const& umPnt1,
+	MicroMeterPnt const& umPnt2,
+	MicroMeterPnt const& umPnt3,
+	D2D1::ColorF  const  col,
+	fPixel        const  fPixWidth
+) const
+{
+	m_pGraphics->DrawBezier
+	(
+		m_coord.Transform2fPixelPos(umPnt0),
+		m_coord.Transform2fPixelPos(umPnt1),
+		m_coord.Transform2fPixelPos(umPnt2),
+		m_coord.Transform2fPixelPos(umPnt3),
+		col,
+		fPixWidth
+	);
+}
+
+void D2D_DrawContext::DrawBezier
+(
+	MicroMeterPnt const& umPnt0,
+	MicroMeterPnt const& umPnt1,
+	MicroMeterPnt const& umPnt2,
+	MicroMeterPnt const& umPnt3,
+	fPixel        const  fPixWidth
+) const
+{
+	m_pGraphics->DrawBezier
+	(
+		m_coord.Transform2fPixelPos(umPnt0),
+		m_coord.Transform2fPixelPos(umPnt1),
+		m_coord.Transform2fPixelPos(umPnt2),
+		m_coord.Transform2fPixelPos(umPnt3),
+		fPixWidth
 	);
 }
 

@@ -52,16 +52,18 @@ void D2D_driver::createResources()
 	assert(SUCCEEDED(m_hr));
 
 	m_pTextFormat = NewTextFormat(12.0f);
+
 	SetColor(m_color);
 }
 
 void D2D_driver::discardResources() 
 {
-	SafeRelease(& m_pD2DFactory);
-	SafeRelease(& m_pDWriteFactory);
-	SafeRelease(& m_pRenderTarget);
-	SafeRelease(& m_pTextFormat);
-	SafeRelease(& m_pBrush);
+	SafeRelease(&m_pD2DFactory);
+	SafeRelease(&m_pDWriteFactory);
+	SafeRelease(&m_pRenderTarget);
+	SafeRelease(&m_pTextFormat);
+	SafeRelease(&m_pBrush);
+	SafeRelease(&m_pSink);
 }
 
 void D2D_driver::InitWindow(HWND const hwnd) 
@@ -332,44 +334,113 @@ void D2D_driver::DrawLine
 
 void D2D_driver::FillCircle
 (
-	fPixelCircle const & circle,
+	fPixelCircle const& circle,
+	ID2D1Brush * const pBrush
+) const
+{
+	FillEllipse(fPixelEllipse { circle }, pBrush);
+}
+
+void D2D_driver::FillCircle
+(
+	fPixelCircle const& circle,
 	D2D1::ColorF const   colF
 ) const
 {
 	FillEllipse(fPixelEllipse { circle }, colF);
 }
 
+void D2D_driver::FillCircle
+(
+	fPixelCircle const& circle
+) const
+{
+	FillEllipse(fPixelEllipse { circle });
+}
+
 void D2D_driver::DrawCircle
 (
-	fPixelCircle const & circle,
-	D2D1::ColorF const   colF,
-	fPixel       const   fPixWidth
+	fPixelCircle const& circle,
+	ID2D1Brush * const  pBrush,
+	fPixel       const  fPixWidth
+) const
+{
+	DrawEllipse(fPixelEllipse { circle }, pBrush, fPixWidth);
+}
+
+void D2D_driver::DrawCircle
+(
+	fPixelCircle const& circle,
+	D2D1::ColorF const  colF,
+	fPixel       const  fPixWidth
 ) const
 {
 	DrawEllipse(fPixelEllipse { circle }, colF, fPixWidth);
 }
 
-void D2D_driver::FillEllipse
+void D2D_driver::DrawCircle
 (
-	fPixelEllipse const & fPE,
-	D2D1::ColorF  const   colF
+	fPixelCircle const& circle,
+	fPixel       const  fPixWidth
 ) const
 {
-	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-	m_pRenderTarget->FillEllipse(convertD2D(fPE), pBrush	);
-	SafeRelease(& pBrush);
+	DrawEllipse(fPixelEllipse { circle }, fPixWidth);
+}
+
+void D2D_driver::FillEllipse
+(
+	fPixelEllipse const& fPE,
+	ID2D1Brush* const pBrush
+) const
+{
+	m_pRenderTarget->FillEllipse(convertD2D(fPE), pBrush);
+}
+
+void D2D_driver::FillEllipse
+(
+	fPixelEllipse const& fPE,
+	D2D1::ColorF  const  colF
+) const
+{
+	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
+	FillEllipse(fPE, pBrush);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::FillEllipse(fPixelEllipse const& fPE) const
+{
+	FillEllipse(fPE, m_pBrush);
 }
 
 void D2D_driver::DrawEllipse
 (
-	fPixelEllipse const & fPE,
+	fPixelEllipse const& fPE,
+	ID2D1Brush*   const  pBrush,
+	fPixel        const  fPixWidth
+) const
+{
+	m_pRenderTarget->DrawEllipse(convertD2D(fPE), pBrush, fPixWidth.GetValue(), nullptr);
+}
+
+void D2D_driver::DrawEllipse
+(
+	fPixelEllipse const& fPE,
 	D2D1::ColorF  const   colF,
 	fPixel        const   fPixWidth
 ) const
 {
-	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
-	m_pRenderTarget->DrawEllipse(convertD2D(fPE), pBrush, fPixWidth.GetValue(), nullptr);
-	SafeRelease(& pBrush);
+	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
+	DrawEllipse(fPE, pBrush, fPixWidth);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::DrawEllipse
+(
+	fPixelEllipse const& fPE,
+	fPixel        const  fPixWidth
+) const
+{
+	DrawEllipse(fPE, m_pBrush, fPixWidth);
 }
 
 void D2D_driver::FillArrow
@@ -498,3 +569,108 @@ D2D1_ELLIPSE convertD2D(fPixelEllipse const & fPE)
 		fPE.GetRadiusY().GetValue() 
 	}; 
 }
+
+void D2D_driver::DrawBezier
+(
+	fPixelPoint     const& fPixPnt0,
+	fPixelPoint     const& fPixPnt1,
+	fPixelPoint     const& fPixPnt2,
+	fPixelPoint     const& fPixPnt3,
+	ID2D1SolidColorBrush * pBrush,
+	fPixel          const  fPixWidth
+) const
+{
+	ID2D1PathGeometry* m_pPathGeometry { nullptr };
+	m_hr = m_pD2DFactory->CreatePathGeometry(&m_pPathGeometry);
+	assert(SUCCEEDED(m_hr));
+	m_hr = m_pPathGeometry->Open(&m_pSink);
+	assert(SUCCEEDED(m_hr));
+	m_pSink->BeginFigure(convertD2D(fPixPnt0), D2D1_FIGURE_BEGIN_HOLLOW);
+	m_pSink->AddBezier(D2D1::BezierSegment(convertD2D(fPixPnt1), convertD2D(fPixPnt2), convertD2D(fPixPnt3)));
+	m_pSink->EndFigure(D2D1_FIGURE_END_OPEN);
+	m_hr = m_pSink->Close();
+	SafeRelease(&m_pSink);
+	m_pRenderTarget->DrawGeometry(m_pPathGeometry, pBrush, fPixWidth.GetValue());
+	SafeRelease(&m_pPathGeometry);
+}
+
+void D2D_driver::DrawBezier
+(
+	fPixelPoint const& fPixPnt0,
+	fPixelPoint const& fPixPnt1,
+	fPixelPoint const& fPixPnt2,
+	fPixelPoint const& fPixPnt3,
+	fPixel      const  fPixWidth
+) const
+{
+	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, m_pBrush, fPixWidth);
+}
+
+void D2D_driver::DrawBezier
+(
+	fPixelPoint  const& fPixPnt0,
+	fPixelPoint  const& fPixPnt1,
+	fPixelPoint  const& fPixPnt2,
+	fPixelPoint  const& fPixPnt3,
+	D2D1::ColorF const  col,
+	fPixel       const  fPixWidth
+) const
+{
+	ID2D1SolidColorBrush* pBrush { CreateBrush(col) };
+	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, pBrush, fPixWidth);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::test() const
+{
+	ID2D1SolidColorBrush * pBrush          { CreateBrush(D2D1::ColorF::DarkBlue) };
+	ID2D1PathGeometry    * m_pPathGeometry { nullptr };
+	
+	m_hr = m_pD2DFactory->CreatePathGeometry(&m_pPathGeometry);
+	assert(SUCCEEDED(m_hr));
+
+	m_hr = m_pPathGeometry->Open(&m_pSink);
+	assert(SUCCEEDED(m_hr));
+
+	m_pSink->BeginFigure
+	(
+		D2D1::Point2F(0, 0),
+		D2D1_FIGURE_BEGIN_FILLED
+	);
+
+	m_pSink->AddLine(D2D1::Point2F(200, 0));
+
+	m_pSink->AddBezier
+	(
+		D2D1::BezierSegment
+		(
+			D2D1::Point2F(150, 50),
+			D2D1::Point2F(150, 150),
+			D2D1::Point2F(200, 200)
+		)
+	);
+
+	m_pSink->AddLine(D2D1::Point2F(0, 200));
+
+	m_pSink->AddBezier
+	(
+		D2D1::BezierSegment
+		(
+			D2D1::Point2F(50, 150),
+			D2D1::Point2F(50, 50),
+			D2D1::Point2F(0, 0)
+		)
+	);
+
+	m_pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
+
+	m_hr = m_pSink->Close();
+
+	SafeRelease(&m_pSink);
+
+	m_pRenderTarget->DrawGeometry(m_pPathGeometry, pBrush, 5);
+
+	SafeRelease(&m_pPathGeometry);
+	SafeRelease(&pBrush);
+}
+

@@ -49,7 +49,8 @@ void MicroSensor::Draw
     bool        const  bHighlight
 ) const
 {
-    MicroMeter       const umWidth  { context.GetCoordC().Transform2logUnit( 5._fPixel) };
+    static fPixel const WIDTH { 5._fPixel };
+
     MicroMeter       const umRadius { context.GetCoordC().Transform2logUnit(30._fPixel) };
     MicroMeterCircle const umCircle { m_pNob->GetPos(), umRadius };
     D2D1::ColorF     const col      { bHighlight ? NNetColors::MICRO_SENSOR_HIGH : NNetColors::MICRO_SENSOR };
@@ -57,20 +58,22 @@ void MicroSensor::Draw
     (
         umCircle, 
         col, 
-        umWidth
+        WIDTH
     );
     context.DrawLine
     (
         MicroMeterPnt(m_pNob->GetPos().GetX() - umRadius, m_pNob->GetPos().GetY()),
         MicroMeterPnt(m_pNob->GetPos().GetX() + umRadius, m_pNob->GetPos().GetY()),
-        umWidth,
-        col
+        0._MicroMeter,
+        col,
+        WIDTH
     );
     context.DrawLine
     (
         MicroMeterPnt(m_pNob->GetPos().GetX(), m_pNob->GetPos().GetY() - umRadius),
         MicroMeterPnt(m_pNob->GetPos().GetX(), m_pNob->GetPos().GetY() + umRadius),
-        umWidth,
-        col
+        0._MicroMeter,
+        col,
+        WIDTH
     );
 }
