@@ -30,6 +30,8 @@ import DrawContext;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
 import FatalError;
+import InsertKnotCommand;
+import InsertNeuronCommand;
 import NewIoLinePairCmd;
 import NNetModel;
 import NNetModelCommands;
@@ -676,11 +678,11 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_INSERT_KNOT:
-		m_pModelCommands->InsertKnot(m_nobIdHighlighted, umPoint);
+		InsertKnotCommand::Push(m_nobIdHighlighted, umPoint);
 		break;
 
 	case IDD_INSERT_NEURON:
-		m_pModelCommands->InsertNeuron(m_nobIdHighlighted, umPoint);
+		InsertNeuronCommand::Push(m_nobIdHighlighted, umPoint);
 		break;
 
 	case IDD_NEW_IO_LINE_PAIR:

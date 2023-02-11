@@ -40,6 +40,8 @@ import DeselectModuleCmd;
 import DiscIoConnectorCmd;
 import ExtendInputLineCmd;
 import ExtendOutputLineCmd;
+import InsertKnotCommand;
+import InsertNeuronCommand;
 import InsertTrackCommand;
 import MoveNobCommand;
 import MoveSelectionCommand;
@@ -111,17 +113,6 @@ public:
     }
 };
 
-class WrapInsertNeuron: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId         const id    { ScrReadNobId(script) };
-        MicroMeterPnt const umPos { ScrReadMicroMeterPnt(script) };
-        m_pCommands->InsertNeuron(id, umPos);
-    }
-};
-
 class WrapUndoCommand: public ScriptFunctor
 {
 public:
@@ -182,6 +173,8 @@ void InitializeNNetWrappers
     DiscIoConnectorCmd::Register();
     ExtendInputLineCmd::Register();
     ExtendOutputLineCmd::Register();
+    InsertKnotCommand::Register();
+    InsertNeuronCommand::Register();
     InsertTrackCommand::Register();
     MoveNobCommand::Register();
     MoveSelectionCommand::Register();
@@ -204,9 +197,6 @@ void InitializeNNetWrappers
     SymbolTable::ScrDefConst(L"RedoCommand", new WrapRedoCommand );
     SymbolTable::ScrDefConst(L"Break",       new WrapBreak );
    
-    //template InsertPosNobCommand
-    SymbolTable::ScrDefConst(L"InsertNeuron", new WrapInsertNeuron);
-
     ParamType::Apply2GlobalParameters
     ( 
         [](ParamType::Value const & param) 

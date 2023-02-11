@@ -120,7 +120,8 @@
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />
-    <ClCompile Include="InsertPosNobCommand.ixx" />
+    <ClCompile Include="InsertKnotCommand.ixx" />
+    <ClCompile Include="InsertNeuronCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
     <ClCompile Include="IoLinesAnimation.ixx" />
     <ClCompile Include="LockDirectionCmd.ixx" />

@@ -24,7 +24,6 @@ import ConnectCreateSynapseCmd;
 import Connect2NeuronCommand;
 import CreateForkCommand;
 import DeleteSignalCommand;
-import InsertPosNobCommand;
 import NewIoLinePairCmd;
 import NewSigGenCmd;
 import NNetModel;
@@ -265,20 +264,6 @@ void NNetModelCommands::RotateModel(MicroMeterPnt const & umPntOld, MicroMeterPn
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << umPntOld << umPntNew << endl;
 	m_pCmdStack->PushCommand(make_unique<RotateModelCommand>(umPntOld, umPntNew));
-}
-
-void NNetModelCommands::InsertKnot(NobId const id, MicroMeterPnt const & pos)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Knot>>(id, pos));
-}
-
-void NNetModelCommands::InsertNeuron(NobId const id, MicroMeterPnt const & pos)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << pos << endl;
-	m_pCmdStack->PushCommand(make_unique<InsertPosNobCommand<Neuron>>(id, pos));
 }
 
 void NNetModelCommands::ToggleEmphMode(NobId const id)

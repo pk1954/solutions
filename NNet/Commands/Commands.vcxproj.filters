@@ -69,9 +69,6 @@
     <ClCompile Include="DiscIoConnectorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InsertPosNobCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InsertTrackCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -229,6 +226,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DelMicroSensorCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InsertKnotCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InsertNeuronCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
