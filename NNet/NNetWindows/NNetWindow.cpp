@@ -82,11 +82,11 @@ void NNetWindow::drawSignalCable(MonitorData const& monData, SignalId const& sig
 	PixelPoint   const  pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId) };
 	if (pSensor && pixPosScreenSignal.IsNotNull())
 	{
-		static fPixel const HDIAMETER     { 20._fPixel };
-		static fPixel const VDIAMETER     { 10._fPixel };
+		static fPixel const HRADIUS       { 20._fPixel };
+		static fPixel const VRADIUS       { 10._fPixel };
 		PixelPoint    const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
 		fPixelPoint   const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
-		fPixelPoint   const fPixPosStart  { fPixPosSignal + fPixelPoint(HDIAMETER, 0.0_fPixel) };
+		fPixelPoint   const fPixPosStart  { fPixPosSignal + fPixelPoint(HRADIUS, 0.0_fPixel) };
 		MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
 		fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
 		fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosStart };
@@ -102,7 +102,7 @@ void NNetWindow::drawSignalCable(MonitorData const& monData, SignalId const& sig
 		);
 		m_upGraphics->FillEllipse
 		(
-			fPixelEllipse(fPixPosSignal, HDIAMETER, VDIAMETER), 
+			fPixelEllipse(fPixPosSignal, HRADIUS, VRADIUS), 
 			m_pBrushSensorCables
 		);
 	}

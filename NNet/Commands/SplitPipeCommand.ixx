@@ -74,7 +74,7 @@ public:
 		m_pNMWI->Restore2Model(move(m_upPipe2Split));
 		m_upPipeSplit2 = m_pNMWI->PopFromModel<Pipe>();
 		m_upPipeSplit1 = m_pNMWI->PopFromModel<Pipe>();
-		m_upPipeSplit1 ->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
+		m_upPipeSplit1->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
 		m_upPipeSplit2->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
 		Cast2PosNob(m_pPipe2Split->GetEndNobPtr())  ->ReplaceIncoming(m_upPipeSplit2.get(), m_pPipe2Split);
 		Cast2PosNob(m_pPipe2Split->GetStartNobPtr())->ReplaceOutgoing(m_upPipeSplit1.get(), m_pPipe2Split);

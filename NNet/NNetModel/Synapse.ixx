@@ -34,8 +34,12 @@ public:
 
     MicroMeter GetExtension() const final { return NEURON_RADIUS; }
 
-    Radian    GetDir()    const final { return Radian::NULL_VAL(); };
-    NobIoMode GetIoMode() const final { return NobIoMode::internal; }
+    Radian    GetDir()       const final { return Radian::NULL_VAL(); };
+    NobIoMode GetIoMode()    const final { return NobIoMode::internal; }
+    mV        GetPotential() const final 
+    { 
+        return m_mVaddInput; 
+    }
 
     void CollectInput() final;
     bool CompStep()     final;
@@ -44,10 +48,10 @@ public:
     MicroMeterPnt GetPos()    const final { return m_umPntPipeAnchor; }
     MicroMeterPnt GetCenter() const final { return m_umPntCenter; }
 
-    bool          Includes (MicroMeterPnt  const&)         const final;
-    void          MoveNob  (MicroMeterPnt  const&)               final;
-    void          RotateNob(MicroMeterPnt  const&, Radian const) final;
-    void          Link     (Nob const&, Nob2NobFunc const&)      final;
+    bool Includes (MicroMeterPnt  const&)         const final;
+    void MoveNob  (MicroMeterPnt  const&)               final;
+    void RotateNob(MicroMeterPnt  const&, Radian const) final;
+    void Link     (Nob const&, Nob2NobFunc const&)      final;
     
     void SelectAllConnected(bool const)    final;
     void Recalc     ()                     final;
@@ -86,9 +90,8 @@ public:
     float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
 
     void SetPosOnMainPipe(float const);
-    void SetAddPipe    (Pipe* const);
-    void SetMainPipe   (Pipe* const);
-    void ChangeMainPipe(Pipe* const);
+    void SetAddPipe (Pipe* const);
+    void SetMainPipe(Pipe* const);
 
 private:
 

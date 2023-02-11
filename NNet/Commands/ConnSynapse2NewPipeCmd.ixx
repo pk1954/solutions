@@ -31,14 +31,18 @@ public:
 
 	void Do() final
 	{
-		m_pSynapse->ChangeMainPipe(m_pPipeNew);
+		m_pPipeOld->RemoveSynapse(m_pSynapse);
 		m_pSynapse->MoveNob(m_umPntDelta);
+		m_pPipeNew->AddSynapse(m_pSynapse);
+		m_pSynapse->SetMainPipe(m_pPipeNew);
 	}
 
 	void Undo() final
 	{
-		m_pSynapse->ChangeMainPipe(m_pPipeOld);
+		m_pSynapse->SetMainPipe(m_pPipeOld);
+		m_pPipeNew->RemoveSynapse(m_pSynapse);
 		m_pSynapse->MoveNob(-m_umPntDelta);
+		m_pPipeOld->AddSynapse(m_pSynapse);
 	}
 
 	static void Register()

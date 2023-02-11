@@ -101,7 +101,9 @@ public:
 
 	void Do()  final
 	{
+		NNetModelWriterInterface& nmwi = *m_pNMWI;
 		m_upSynapse = m_pNMWI->RemoveFromModel<Synapse>(m_id);
+		Pipe* pPipeMain = m_upSynapse->GetMainPipe();
 		m_upSynapse->GetMainPipe()->RemoveSynapse(m_upSynapse.get());
 		m_upSynapse->GetAddPipe()->SetEndPnt(m_upOutputLine.get());
 		m_pNMWI->Push2Model(move(m_upOutputLine));

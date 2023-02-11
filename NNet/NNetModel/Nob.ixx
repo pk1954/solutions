@@ -95,6 +95,7 @@ public:
 	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
 
+	virtual mV   GetPotential()   const { return m_mVinputBuffer; }
 	virtual mV   GetNextOutput()  const { return m_mVinputBuffer; }
 	virtual bool IsCompositeNob() const { return false; }
 	virtual bool HasParentNob()   const { return false; }
@@ -113,7 +114,6 @@ public:
 	wstring GetTypeName  () const { return NobType::GetName(m_type.GetValue()); }
 	NobType GetNobType   () const { return m_type; }
 	NobId   GetId        () const { return m_identifier; }
-	mV      GetPotential () const { return m_mVinputBuffer; }
 
 	MicroMeter GetPosX() const { return GetPos().GetX(); }
 	MicroMeter GetPosY() const { return GetPos().GetY(); }
@@ -141,23 +141,23 @@ public:
 	ColorF GetInteriorColor(mV const) const;
 	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
+	NNetParameters const * GetParam() const { return m_pParameters; }
+
 protected:
 
 	mV m_mVinputBuffer{ 0._mV };
 
 	void SetType(NobType const type) { m_type = type; }
 
-	NNetParameters const * GetParam() const { return m_pParameters; }
-
 	void FillExternalCircle(DrawContext const&, tHighlight const) const;
 	void FillInternalCircle(DrawContext const&, tHighlight const) const;
 
 private:
 
-	NobType m_type          { NobType::Value::undefined };
-	NobId   m_identifier    { NO_NOB };
-	bool    m_bSelected     { false };
-	bool    m_bEmphasized   { false };
+	NobType m_type        { NobType::Value::undefined };
+	NobId   m_identifier  { NO_NOB };
+	bool    m_bSelected   { false };
+	bool    m_bEmphasized { false };
 
 	inline static NNetParameters const * m_pParameters { nullptr };
 };

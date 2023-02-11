@@ -52,13 +52,6 @@ Synapse::Synapse(Synapse const & rhs)
 	Recalc();
 }
 
-void Synapse::SetPosOnMainPipe(float const fPosNew)
-{
-	assert(fPosNew >= 0.0f);
-	assert(fPosNew <= 1.0f);
-	m_fPosOnMainPipe = fPosNew;
-}
-
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
 	Recalc();
@@ -105,18 +98,18 @@ void Synapse::SetAddPipe(Pipe* const pPipe)
 	m_pPipeAdd = pPipe;
 }
 
-void Synapse::SetMainPipe(Pipe* const pPipe)
+void Synapse::SetMainPipe(Pipe* const pPipeNew)
 {
 	MicroMeterPnt umPntPos { GetPos() };
-	m_pPipeMain = pPipe;
+	m_pPipeMain = pPipeNew;
 	RecalcAll(umPntPos);
 }
 
-void Synapse::ChangeMainPipe(Pipe* const pPipeNew)
+void Synapse::SetPosOnMainPipe(float const fPosNew)
 {
-	m_pPipeMain->RemoveSynapse(this);
-	pPipeNew->AddSynapse(this);
-	SetMainPipe(pPipeNew);
+	assert(fPosNew >= 0.0f);
+	assert(fPosNew <= 1.0f);
+	m_fPosOnMainPipe = fPosNew;
 }
 
 void Synapse::RecalcAll(MicroMeterPnt const& newPos)
@@ -254,6 +247,8 @@ void Synapse::drawSynapse
 	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase1), umRadius * 2.0f, col);
 	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase2), umRadius * 2.0f, col);
 	context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, col);
+	if (!m_bOutputBlocked)
+		context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, D2D1::ColorF::Yellow);
 
 	//MicroMeterRect const rect
 	//(
