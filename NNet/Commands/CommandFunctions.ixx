@@ -13,4 +13,4 @@ import NNetModel;
 
 using std::unique_ptr;
 
-export unique_ptr<NNetCommand> MakeDeleteCommand(NNetModelWriterInterface const&, Nob&);
+export unique_ptr<NNetCommand> MakeDeleteCommand(NNetModelWriterInterface &, NobId const);

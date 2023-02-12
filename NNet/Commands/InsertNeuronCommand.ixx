@@ -69,6 +69,5 @@ private:
 		}
 	};
 
-
 	unique_ptr<Neuron> m_upInsertNeuron;
 };

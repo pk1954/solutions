@@ -158,10 +158,11 @@ private:
 
 unique_ptr<NNetCommand> MakeDeleteCommand
 (
-	NNetModelWriterInterface const & nmwi,
-	Nob                            & nob
+	NNetModelWriterInterface & nmwi,
+	NobId              const   nobId
 )
 {
+	Nob& nob { *nmwi.GetNob(nobId) };
 	unique_ptr<NNetCommand> upCmd;
 	if (nmwi.IsNobInModel(nob) && !nob.HasParentNob())
 		switch (nob.GetNobType().GetValue())

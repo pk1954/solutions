@@ -176,7 +176,7 @@ void NNetModelCommands::DeleteNob(NobId const id)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pSound->Play(L"DISAPPEAR_SOUND");
-	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, *m_pNMWI->GetNob(id)));
+	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, id));
 }
 
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)

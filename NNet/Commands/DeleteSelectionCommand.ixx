@@ -62,7 +62,7 @@ private:
 
 	void doDelete(Nob & nob)
 	{ 
-		if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, nob) })
+		if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, nob.GetId()) })
 		{
 			upCmd->Do();
 			m_pNMWI->CheckModel();
