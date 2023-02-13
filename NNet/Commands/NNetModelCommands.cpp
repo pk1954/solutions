@@ -57,15 +57,13 @@ using std::source_location;
 void NNetModelCommands::Initialize
 (
 	NNetModelIO      * const pModelIO,
-	Observable       * const pDynamicModelObservable,
 	Sound            * const pSound,
 	NNetCommandStack * const pCmdStack
 ) 
 { 
-	m_pModelIO                = pModelIO;
-	m_pDynamicModelObservable = pDynamicModelObservable;
-	m_pSound                  = pSound;
-	m_pCmdStack               = pCmdStack;
+	m_pModelIO  = pModelIO;
+	m_pSound    = pSound;
+	m_pCmdStack = pCmdStack;
 }
 
 void NNetModelCommands::SetModelInterface

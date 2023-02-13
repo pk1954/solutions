@@ -33,7 +33,6 @@ public:
     void Initialize
     (
         NNetModelIO      * const,
-        Observable       * const,
         Sound            * const,
         NNetCommandStack * const
     );
@@ -75,6 +74,5 @@ private:
     CommandStack             * m_pCmdStack               { nullptr };
     NNetModelWriterInterface * m_pNMWI                   { nullptr };
     NNetModelIO              * m_pModelIO                { nullptr };
-    Observable               * m_pDynamicModelObservable { nullptr };
     Sound                    * m_pSound                  { nullptr };
 };
