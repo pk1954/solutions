@@ -32,6 +32,7 @@ import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateInitialNobsCmd;
 import CreateSynapseCommand;
+import DeleteNobCommand;
 import DeleteSelectionCommand;
 import DeleteTrackCommand;
 import DeleteSensorCmd;
@@ -104,15 +105,6 @@ public:
     }
 };
 
-class WrapDeleteNob: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->DeleteNob(ScrReadNobId(script));
-    }
-};
-
 class WrapUndoCommand: public ScriptFunctor
 {
 public:
@@ -165,6 +157,7 @@ void InitializeNNetWrappers
     CreateForkCommand::Register();
     CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();
+    DeleteNobCommand::Register();
     DeleteSelectionCommand::Register();
     DeleteTrackCommand::Register();
     DeleteSensorCmd::Register();
@@ -191,7 +184,6 @@ void InitializeNNetWrappers
 
     SymbolTable::ScrDefConst(L"AddModel",    new WrapAddModel);
     SymbolTable::ScrDefConst(L"Connect",     new WrapConnect );
-    SymbolTable::ScrDefConst(L"DeleteNob",   new WrapDeleteNob );
     SymbolTable::ScrDefConst(L"Include",     new WrapInclude );
     SymbolTable::ScrDefConst(L"UndoCommand", new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand", new WrapRedoCommand );

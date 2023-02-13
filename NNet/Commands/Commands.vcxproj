@@ -93,6 +93,8 @@
     <ClCompile Include="CreateInitialNobsCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />
+    <ClCompile Include="DeleteNobCommand.cpp" />
+    <ClCompile Include="DeleteNobCommand.ixx" />
     <ClCompile Include="DeleteSensorCmd.ixx" />
     <ClCompile Include="DelMicroSensorCmd.ixx" />
     <ClCompile Include="ExtendOutputLineCmd.ixx" />
@@ -102,8 +104,6 @@
     <ClCompile Include="ArrowAnimation.ixx" />
     <ClCompile Include="AttachSigGen2ConCmd.ixx" />
     <ClCompile Include="AttachSigGen2LineCmd.ixx" />
-    <ClCompile Include="CommandFunctions.cpp" />
-    <ClCompile Include="CommandFunctions.ixx" />
     <ClCompile Include="ConnAnimationCommand.cpp" />
     <ClCompile Include="ConnAnimationCommand.ixx" />
     <ClCompile Include="Connect2NeuronCommand.ixx" />
@@ -112,7 +112,6 @@
     <ClCompile Include="CoordAnimation.ixx" />
     <ClCompile Include="CreateForkCommand.ixx" />
     <ClCompile Include="CreateSynapseCommand.ixx" />
-    <ClCompile Include="DeleteIoConnectorCmd.ixx" />
     <ClCompile Include="DeletePipeCommand.ixx" />
     <ClCompile Include="DeleteSelectionCommand.ixx" />
     <ClCompile Include="DeleteSigGenCmd.ixx" />

@@ -36,9 +36,6 @@
     <ClCompile Include="AttachSigGen2LineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommandFunctions.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnAnimationCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,9 +43,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CoordAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteIoConnectorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeletePipeCommand.ixx">
@@ -162,9 +156,6 @@
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommandFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnAnimationCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -232,6 +223,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InsertNeuronCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteNobCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteNobCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

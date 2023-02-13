@@ -22,6 +22,7 @@ import Commands;
 import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
+import DeleteNobCommand;
 import DeleteSelectionCommand;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
@@ -345,7 +346,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			if (umDist.GetAbs() > NEURON_RADIUS * 1.5f)  // tear off synapse
 			{
 				MicroMeterPnt const umPosOld { m_pNMRI->GetNobPos(m_nobIdHighlighted) };
-				m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+				DeleteNobCommand::Push(m_nobIdHighlighted);
 				if (setHighlightedNob(umPosOld))
 					umDelta = umCrsrPos - umPosOld;
 			}
@@ -628,7 +629,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDM_DELETE:   // keyboard delete key
 		if (IsDefined(m_nobIdHighlighted))
-			m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+			DeleteNobCommand::Push(m_nobIdHighlighted);
 		else if (m_pNMRI->AnyNobsSelected())
 			DeleteSelectionCommand::Push();
 		m_nobIdTarget = NO_NOB;
@@ -636,7 +637,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDD_DETACH_NOB:
 	case IDD_DELETE_NOB:
-		m_pModelCommands->DeleteNob(m_nobIdHighlighted);
+		DeleteNobCommand::Push(m_nobIdHighlighted);
 		m_nobIdTarget = NO_NOB;
 		break;
 

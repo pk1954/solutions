@@ -16,7 +16,6 @@ import AddPipe2NeuronCmd;
 import AddSigGen2MonitorCmd;
 import ArrowAnimation;
 import Commands;
-import CommandFunctions;
 import ConnAnimationCommand;
 import CoordAnimation;
 import ConnectCreateForkCmd;
@@ -169,14 +168,6 @@ void NNetModelCommands::DeleteSignal(SignalId const& id)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << endl;
 	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
-}
-
-void NNetModelCommands::DeleteNob(NobId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pSound->Play(L"DISAPPEAR_SOUND");
-	m_pCmdStack->PushCommand(MakeDeleteCommand(*m_pNMWI, id));
 }
 
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)

@@ -10,8 +10,8 @@ module;
 export module DeleteSelectionCommand;
 
 import Types;
-import CommandFunctions;
 import Commands;
+import DeleteNobCommand;
 import NNetCommandStack;
 import NNetCommand;
 import NNetModel;
@@ -26,7 +26,18 @@ public:
 	void Do() final 
 	{ 
 		m_cmdStack.Initialize(nullptr);
-		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>([this](Nob & nob) { doDelete(nob); });
+		m_pNMWI->GetUPNobs().Apply2AllSelected<Nob>
+		(
+			[this](Nob & nob) 
+			{ 
+				if (unique_ptr<NNetCommand> upCmd { DeleteNobCommand::MakeCommand(nob.GetId()) })
+				{
+					upCmd->Do();
+					m_pNMWI->CheckModel();
+					m_cmdStack.Push(move(upCmd));
+				}
+			}
+		);
 	}
 
 	void Undo() final 
@@ -59,16 +70,6 @@ private:
 			DeleteSelectionCommand::Push();
 		}
 	};
-
-	void doDelete(Nob & nob)
-	{ 
-		if (unique_ptr<NNetCommand> upCmd { MakeDeleteCommand(*m_pNMWI, nob.GetId()) })
-		{
-			upCmd->Do();
-			m_pNMWI->CheckModel();
-			m_cmdStack.Push(move(upCmd));
-		}
-	}
 
 	NNetCommandStack m_cmdStack {};
 };
