@@ -54,7 +54,6 @@ public:
     void DiscIoConnector(NobId const);
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
-    void NewSignalGenerator();
     void Rotate(NobId const, MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateModel(MicroMeterPnt const&, MicroMeterPnt const&);
     void RotateSelection(MicroMeterPnt const&, MicroMeterPnt const&);

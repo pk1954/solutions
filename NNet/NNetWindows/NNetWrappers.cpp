@@ -49,6 +49,7 @@ import MoveSelectionCommand;
 import MoveSensorCmd;
 import MoveSignalCmd;
 import NewIoLinePairCmd;
+import NewSigGenCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
 import SelectAllConnectedCmd;
@@ -174,6 +175,7 @@ void InitializeNNetWrappers
     MoveSensorCmd::Register();
     MoveSignalCmd::Register();
     NewIoLinePairCmd::Register();
+    NewSigGenCmd::Register();
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     SelectAllConnectedCmd::Register();

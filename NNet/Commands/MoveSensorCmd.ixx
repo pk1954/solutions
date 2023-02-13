@@ -67,7 +67,7 @@ private:
 	public:
 		void operator() (Script& script) const final
 		{
-			SensorId      const id(script.ScrReadUint());
+			SensorId      const id      { script.ScrReadInt() };
 			MicroMeterPnt const umDelta { ScrReadMicroMeterPnt(script) };
 			MoveSensorCmd::Push(id, umDelta);
 		}

@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <iostream>
 #include "Resource.h"
 
 export module NewSigGenCmd;
@@ -34,8 +35,32 @@ public:
 		SetActiveSigGenId(m_sigGenIdOld);
 	}
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, new Wrapper);
+    }
+
+    static void Push()
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << endl;
+        m_pStack->PushCommand(make_unique<NewSigGenCmd>());
+    }
+
 private:
-	UPSigGen m_upSigGen;
+
+    inline static const wstring NAME { L"NewSigGen" };
+
+    class Wrapper : public ScriptFunctor
+    {
+    public:
+        void operator() (Script& script) const final
+        {
+            NewSigGenCmd::Push();
+        }
+    };
+
+    UPSigGen m_upSigGen;
 	SigGenId m_sigGenIdNew;
 	SigGenId m_sigGenIdOld;
 };

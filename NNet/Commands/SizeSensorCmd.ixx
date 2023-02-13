@@ -68,7 +68,7 @@ private:
 	public:
 		void operator() (Script& script) const final
 		{
-			SensorId const id(script.ScrReadUint());
+			SensorId const id      { script.ScrReadInt() };
 			float    const fFactor { Cast2Float(script.ScrReadFloat()) };
 			SizeSensorCmd::Push(id, fFactor);
 		}

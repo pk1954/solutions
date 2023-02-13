@@ -29,6 +29,7 @@ import InsertTrackCommand;
 import AddSensorCmd;
 import DeleteSensorCmd;
 import DeleteTrackCommand;
+import NewSigGenCmd;
 import :ComputeThread;
 import :MainWindow;
 import :Preferences;
@@ -202,7 +203,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     switch (wmId)
     {
     case IDD_NEW_SIGNAL_GENERATOR:
-        m_pModelCommands->NewSignalGenerator();
+        NewSigGenCmd::Push();
         ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
