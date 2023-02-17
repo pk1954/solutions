@@ -12,7 +12,7 @@ module NNetModel:Fork;
 import DrawContext;
 import Types;
 
-Fork::Fork(MicroMeterPnt const center)
+Fork::Fork(MicroMeterPnt const &center)
   : PosNob(NobType::Value::fork),
 	m_circle(center, KNOT_WIDTH)
 {}
@@ -21,7 +21,6 @@ Fork::Fork(Fork const & rhs)
 	: PosNob(NobType::Value::fork)
 {
 	PosNob::operator=(rhs);
-
 	m_circle    = rhs.m_circle;
 	m_pPipeIn   = rhs.m_pPipeIn;
 	m_pPipeOut1 = rhs.m_pPipeOut1;

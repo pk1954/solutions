@@ -21,8 +21,7 @@ export class Synapse : public PosNob
 {
 public:
 
-    Synapse(Pipe* const, Pipe* const);
-    Synapse(Nob * const, Nob * const);
+    Synapse(MicroMeterPnt const&);
     Synapse(Synapse const&);
 
     static bool TypeFits(NobType const type) { return type.IsSynapseType(); }
@@ -32,21 +31,16 @@ public:
     void Dump()  const final;
     void Check() const final;
 
-    MicroMeter GetExtension() const final { return NEURON_RADIUS; }
+    MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }
+    MicroMeterPnt GetPos()       const final { return m_circle.GetPos(); }
+    MicroMeterPnt GetAddPos()    const       { return m_umPntTop; }
 
-    Radian    GetDir()       const final { return Radian::NULL_VAL(); };
     NobIoMode GetIoMode()    const final { return NobIoMode::internal; }
-    mV        GetPotential() const final 
-    { 
-        return m_mVaddInput; 
-    }
+    mV        GetPotential() const final { return m_mVpotential; }
 
     void CollectInput() final;
     bool CompStep()     final;
     void Reconnect()    final;
-
-    MicroMeterPnt GetPos()    const final { return m_umPntPipeAnchor; }
-    MicroMeterPnt GetCenter() const final { return m_umPntCenter; }
 
     bool Includes (MicroMeterPnt  const&)         const final;
     void MoveNob  (MicroMeterPnt  const&)               final;
@@ -55,15 +49,15 @@ public:
     
     void SelectAllConnected(bool const)    final;
     void Recalc     ()                     final;
-    void SetPosNoFix(MicroMeterPnt const&) final { /* will be computed */ }
+    void SetPosNoFix(MicroMeterPnt const&) final;
 
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;
 
-    void RecalcAll(MicroMeterPnt const&);
+    void AddIncoming(Pipe*) final;
+    void AddOutgoing(Pipe*) final;
 
-    void RemoveFromMainPipe();
-    void Add2MainPipe();
+    void SetAddPipe(Pipe*);
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
@@ -83,36 +77,35 @@ public:
     size_t GetNrOfInConns () const final { return 2; }
     size_t GetNrOfOutConns() const final { return 1; }
 
-    Pipe      * GetAddPipe()             { return m_pPipeAdd; }
-    Pipe const* GetAddPipe()       const { return m_pPipeAdd; }
-    Pipe      * GetMainPipe()            { return m_pPipeMain; }
-    Pipe const* GetMainPipe()      const { return m_pPipeMain; }
-    float       GetPosOnMainPipe() const { return m_fPosOnMainPipe; }
-
-    void SetPosOnMainPipe(float const);
-    void SetAddPipe (Pipe* const);
-    void SetMainPipe(Pipe* const);
+    Pipe      * GetAddPipe()       { return m_pPipeAdd; }
+    Pipe const* GetAddPipe() const { return m_pPipeAdd; }
+    Pipe      * GetInPipe ()       { return m_pPipeIn; }
+    Pipe const* GetInPipe () const { return m_pPipeIn; }
+    Pipe      * GetOutPipe()       { return m_pPipeOut; }
+    Pipe const* GetOutPipe() const { return m_pPipeOut; }
 
 private:
 
     inline static MicroMeter const PIPE_HALF { PIPE_WIDTH * 0.5f };
     inline static MicroMeter const RADIUS    { PIPE_HALF };
-    inline static MicroMeter const EXTENSION { PIPE_WIDTH * 0.7f };
-    inline static float      const SQRT3     { sqrtf(3.0f) };
-    inline static float      const SQRT3DIV3 { SQRT3 / 3.0f };
+    inline static MicroMeter const EXTENSION { PIPE_WIDTH * 0.5f };
 
-    void drawSynapse(DrawContext const&, MicroMeter const, MicroMeter const, D2D1::ColorF const) const;
+    void drawSynapse(DrawContext const&, MicroMeter const, D2D1::ColorF const) const;
+    void recalc() const;
 
-    float         m_fDirection      { 1.0f };
-    MicroMeterPnt m_umPntPipeAnchor { NP_NULL };
-    MicroMeterPnt m_umPntCenter     { NP_NULL };
+    MicroMeterCircle m_circle;  // inpipe and outpipe meet here
+
+    mutable MicroMeterPnt m_umPntTop    { NP_NULL }; 
+    mutable MicroMeterPnt m_umPntBase1  { NP_NULL }; 
+    mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
+    mutable MicroMeterPnt m_umPntCenter { NP_NULL };
 
     bool       m_bOutputBlocked { false };
     fMicroSecs m_usBlocked      { 0.0_MicroSecs };
     mV         m_mVaddInput     { 0._mV };
-    Pipe *     m_pPipeMain;
+    Pipe *     m_pPipeIn;
+    Pipe *     m_pPipeOut;
     Pipe *     m_pPipeAdd;
-    float      m_fPosOnMainPipe;
 };
 
 export Synapse const* Cast2Synapse(Nob const* pNob)

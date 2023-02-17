@@ -79,7 +79,7 @@ void OutputLine::DrawExterior(DrawContext const & context, tHighlight const type
 
 void OutputLine::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-	drawPlug(context, 0.4f, 0.6f, GetInteriorColor(type));
+	drawPlug(context, 0.4f, 0.6f, GetInteriorColor(type, m_mVpotential));
 }
 
 bool OutputLine::Includes(MicroMeterPnt const & point) const

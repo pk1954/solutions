@@ -142,8 +142,8 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 			return;
 		case ct_synapse:	 
 			upCmd = make_unique<ConnectCreateSynapseCmd>(idSrc, idDst);  // case 2
-			break;  
-		case ct_neuron:      
+			break;
+		case ct_neuron:
 			upCmd = make_unique<Connect2NeuronCommand>(idSrc, idDst);    // case 3
 			break;  
 		case ct_knot:		 

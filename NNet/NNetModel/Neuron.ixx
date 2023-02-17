@@ -44,28 +44,20 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
-	void          SetDir(Radian const)  final { /* empty */ };
-	void          ClearDynamicData()    final;
-	mV            GetNextOutput() const final;
-	MicroMeter    GetExtension () const final { return m_circle.GetRadius(); }
-	MicroMeterPnt GetPos()        const final { return m_circle.GetPos(); }
-	Radian        GetDir()        const final { return Radian::NULL_VAL(); };
-	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
+	void          SetDir(Radian const) final { /* empty */ };
+	void          ClearDynamicData()   final;
+	mV            GetPotential() const final;
+	MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }
+	MicroMeterPnt GetPos()       const final { return m_circle.GetPos(); }
+	Radian        GetDir()       const final { return Radian::NULL_VAL(); };
+	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
 
 	void Recalc     ()                                   final;
 	void SetPosNoFix(MicroMeterPnt const&)               final;
 	void MoveNob    (MicroMeterPnt const&)               final;
 	void RotateNob  (MicroMeterPnt const&, Radian const) final;
 	void Link(Nob const&, Nob2NobFunc const&)            final;
-	void SelectAllConnected(bool const bFirst)           final
-	{
-		if (!IsSelected() || bFirst)
-		{
-			Nob::Select(true);
-			m_inPipes.SelectAllConnected();
-			m_pPipeAxon->SelectAllConnected(false);
-		}
-	}
+	void SelectAllConnected(bool const)                  final;
 
 	size_t GetNrOfOutConns() const final { return 1; }
 	size_t GetNrOfInConns () const final { return m_inPipes.Size(); }

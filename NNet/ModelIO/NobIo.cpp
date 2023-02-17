@@ -83,31 +83,96 @@ Pipe* NobIo::createPipe
     return pPipe;
 }
 
+///////////// Knot ////////////////////////////////////////
+
+void NobIo::writeKnot(wostream& out, Knot const& knot) const
+{
+    out << OPEN_BRACKET
+        << m_modelIO.GetCompactIdVal(knot.GetIncoming()->GetId())
+        << PIPE_TO
+        << knot.GetPos()
+        << PIPE_TO
+        << m_modelIO.GetCompactIdVal(knot.GetOutgoing()->GetId())
+        << CLOSE_BRACKET;
+}
+
+UPNob NobIo::createKnot(Script& script) const
+{
+    script.ScrReadSpecial(OPEN_BRACKET);
+    Pipe* pPipeIn { getPipePtr(ScrReadNobId(script)) };
+    script.ScrReadSpecialString(PIPE_TO);
+    MicroMeterPnt const umPos(ScrReadMicroMeterPnt(script));
+    script.ScrReadSpecialString(PIPE_TO);
+    Pipe* pPipeOut { getPipePtr(ScrReadNobId(script)) };
+    script.ScrReadSpecial(CLOSE_BRACKET);
+    unique_ptr<Knot> upKnot { make_unique<Knot>(umPos) };
+    upKnot->AddIncoming(pPipeIn);
+    upKnot->AddOutgoing(pPipeOut);
+    return move(upKnot);
+}
+
+///////////// Fork ////////////////////////////////////////
+
+void NobIo::writeFork(wostream& out, Fork const& fork) const
+{
+    out << OPEN_BRACKET
+        << m_modelIO.GetCompactIdVal(fork.GetIncoming()->GetId())
+        << PIPE_TO
+        << fork.GetPos()
+        << PIPE_TO
+        << m_modelIO.GetCompactIdVal(fork.GetFirstOutgoing()->GetId())
+        << ID_SEPARATOR
+        << m_modelIO.GetCompactIdVal(fork.GetSecondOutgoing()->GetId())
+        << CLOSE_BRACKET;
+}
+
+UPNob NobIo::createFork(Script& script) const
+{
+    script.ScrReadSpecial(OPEN_BRACKET);
+    Pipe* pPipeIn { getPipePtr(ScrReadNobId(script)) };
+    script.ScrReadSpecialString(PIPE_TO);
+    MicroMeterPnt const umPos(ScrReadMicroMeterPnt(script));
+    script.ScrReadSpecialString(PIPE_TO);
+    Pipe* pPipeOut1 { getPipePtr(ScrReadNobId(script)) };
+    script.ScrReadSpecial(ID_SEPARATOR);
+    Pipe* pPipeOut2 { getPipePtr(ScrReadNobId(script)) };
+    script.ScrReadSpecial(CLOSE_BRACKET);
+    unique_ptr<Fork> upFork { make_unique<Fork>(umPos) };
+    upFork->AddIncoming(pPipeIn);
+    upFork->AddOutgoing(pPipeOut1);
+    upFork->AddOutgoing(pPipeOut2);
+    return move(upFork);
+}
+
 ///////////// Synapse //////////////////////////////////////
 
 void NobIo::writeSynapse(wostream& out, Synapse const& synapse) const
 {
     out << OPEN_BRACKET
         << m_modelIO.GetCompactIdVal(synapse.GetAddPipe()->GetId())
+        << ID_SEPARATOR
+        << m_modelIO.GetCompactIdVal(synapse.GetInPipe()->GetId())
         << PIPE_TO
-        << m_modelIO.GetCompactIdVal(synapse.GetMainPipe()->GetId())
-        << SEPARATOR
-        << synapse.GetPosOnMainPipe()
+        << synapse.GetPos()
+        << PIPE_TO
+        << m_modelIO.GetCompactIdVal(synapse.GetOutPipe()->GetId())
         << CLOSE_BRACKET;
 }
 
 UPNob NobIo::createSynapse(Script& script) const
 {
     script.ScrReadSpecial(OPEN_BRACKET);
-    Pipe* pNobPipeAdd  { getPipePtr(ScrReadNobId(script)) };
+    Pipe* pPipeAdd { getPipePtr(ScrReadNobId(script)) };
+    script.ScrReadSpecial(ID_SEPARATOR);
+    Pipe* pPipeIn { getPipePtr(ScrReadNobId(script)) };
     script.ScrReadSpecialString(PIPE_TO);
-    Pipe* pNobPipeMain { getPipePtr(ScrReadNobId(script)) };
-    script.ScrReadSpecial(SEPARATOR);
-    float const fPos { Cast2Float(script.ScrReadFloat()) };
+    unique_ptr<Synapse> upSynapse { make_unique<Synapse>(ScrReadMicroMeterPnt(script)) };
+    script.ScrReadSpecialString(PIPE_TO);
+    Pipe* pPipeOut { getPipePtr(ScrReadNobId(script)) };
     script.ScrReadSpecial(CLOSE_BRACKET);
-    unique_ptr<Synapse> upSynapse { make_unique<Synapse>(pNobPipeMain, pNobPipeAdd) };
-    upSynapse->SetPosOnMainPipe(fPos);
-    pNobPipeMain->AddSynapse(upSynapse.get());
+    upSynapse->SetAddPipe(pPipeAdd);
+    upSynapse->AddIncoming(pPipeIn);
+    upSynapse->AddOutgoing(pPipeOut);
     return move(upSynapse);
 }
 
@@ -202,67 +267,6 @@ UPNob NobIo::createOutputLine(Script& script) const
     upOutputLine = make_unique<OutputLine>(umPos);
     upOutputLine->SetPipe(pPipe);
     return move(upOutputLine);
-}
-
-///////////// Knot ////////////////////////////////////////
-
-void NobIo::writeKnot(wostream& out, Knot const& knot) const
-{
-    out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(knot.GetIncoming()->GetId())
-        << PIPE_TO
-        << knot.GetPos()
-        << PIPE_TO
-        << m_modelIO.GetCompactIdVal(knot.GetOutgoing()->GetId())
-        << CLOSE_BRACKET;
-}
-
-UPNob NobIo::createKnot(Script& script) const
-{
-    script.ScrReadSpecial(OPEN_BRACKET);
-    Pipe* pPipeIn { getPipePtr(ScrReadNobId(script)) };
-    script.ScrReadSpecialString(PIPE_TO);
-    MicroMeterPnt const umPos(ScrReadMicroMeterPnt(script));
-    script.ScrReadSpecialString(PIPE_TO);
-    Pipe* pPipeOut { getPipePtr(ScrReadNobId(script)) };
-    script.ScrReadSpecial(CLOSE_BRACKET);
-    unique_ptr<Knot> upKnot { make_unique<Knot>(umPos) };
-    upKnot->AddIncoming(pPipeIn);
-    upKnot->AddOutgoing(pPipeOut);
-    return move(upKnot);
-}
-
-///////////// Fork ////////////////////////////////////////
-
-void NobIo::writeFork(wostream& out, Fork const& fork) const
-{
-    out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(fork.GetIncoming()->GetId())
-        << PIPE_TO
-        << fork.GetPos()
-        << PIPE_TO
-        << m_modelIO.GetCompactIdVal(fork.GetFirstOutgoing()->GetId())
-        << ID_SEPARATOR
-        << m_modelIO.GetCompactIdVal(fork.GetSecondOutgoing()->GetId())
-        << CLOSE_BRACKET;
-}
-
-UPNob NobIo::createFork(Script& script) const
-{
-    script.ScrReadSpecial(OPEN_BRACKET);
-    Pipe* pPipeIn { getPipePtr(ScrReadNobId(script)) };
-    script.ScrReadSpecialString(PIPE_TO);
-    MicroMeterPnt const umPos(ScrReadMicroMeterPnt(script));
-    script.ScrReadSpecialString(PIPE_TO);
-    Pipe* pPipeOut1 { getPipePtr(ScrReadNobId(script)) };
-    script.ScrReadSpecial(ID_SEPARATOR);
-    Pipe* pPipeOut2 { getPipePtr(ScrReadNobId(script)) };
-    script.ScrReadSpecial(CLOSE_BRACKET);
-    unique_ptr<Fork> upFork { make_unique<Fork>(umPos) };
-    upFork->AddIncoming(pPipeIn);
-    upFork->AddOutgoing(pPipeOut1);
-    upFork->AddOutgoing(pPipeOut2);
-    return move(upFork);
 }
 
 ///////////// Neuron ////////////////////////////////////////

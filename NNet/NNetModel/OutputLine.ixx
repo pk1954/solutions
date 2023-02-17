@@ -31,7 +31,7 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsOutputLineType(); }
 
-	void CollectInput()	override { m_mVinputBuffer = GetPipeC()->GetNextOutput(); }
+	void CollectInput()	override { m_mVpotential = GetPipeC()->GetPotential(); }
 
 	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
 	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final { assert(false); }

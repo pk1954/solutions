@@ -185,12 +185,6 @@ bool NNetModelReaderInterface::isConnectedToPipe(NobId const idNob, NobId const 
 		return true;
     if (idNob == m_pModel->GetEndKnotId(idPipe))
 		return true;
-	Nob const* const pNob { GetConstNob(idNob) };
-	if (pNob->IsSynapse())
-	{
-		if (Cast2Synapse(pNob)->GetMainPipe()->GetId() == idPipe)
-			return true;
-	}
 	return false;
 }
 

@@ -22,75 +22,28 @@ using std::wcout;
 using std::endl;
 using std::fabs;
 
-Synapse::Synapse
-(
-	Pipe* const pPipeMain,
-	Pipe* const pPipeAdd
-)
-	: PosNob(NobType::Value::synapse),
-	m_pPipeMain(pPipeMain),
-	m_pPipeAdd(pPipeAdd)
-{}
-
-Synapse::Synapse
-(
-	Nob* const pNobPipeMain,
-	Nob* const pNobPipeAdd
-)
-	: PosNob(NobType::Value::synapse),
-	m_pPipeMain(static_cast<Pipe*>(pNobPipeMain)),
-	m_pPipeAdd(static_cast<Pipe*>(pNobPipeAdd))
+Synapse::Synapse(MicroMeterPnt const &center)
+  : PosNob(NobType::Value::synapse),
+	m_circle(center, KNOT_WIDTH)
 {}
 
 Synapse::Synapse(Synapse const & rhs)
 	: PosNob(NobType::Value::synapse)
 {
 	PosNob::operator=(rhs);
-	m_pPipeMain      = rhs.m_pPipeMain;
-	m_pPipeAdd       = rhs.m_pPipeAdd;
-	m_fPosOnMainPipe = rhs.m_fPosOnMainPipe;
-	Recalc();
+	m_pPipeIn  = rhs.m_pPipeIn;
+	m_pPipeOut = rhs.m_pPipeOut;
+	m_pPipeAdd = rhs.m_pPipeAdd;
 }
 
-void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
+void Synapse::AddIncoming(Pipe* pPipe)
 {
-	Recalc();
+	m_pPipeIn = pPipe;
 }
 
-void Synapse::SetAllIncoming(PosNob& src)
+void Synapse::AddOutgoing(Pipe* pPipe)
 {
-	assert(src.IsSynapse());
-	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
-	m_pPipeAdd  = pSynapseSrc->m_pPipeAdd;
-	m_pPipeMain = pSynapseSrc->m_pPipeMain;
-}
-
-void Synapse::SetAllOutgoing(PosNob& src)
-{
-	assert(src.IsSynapse());
-	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
-	m_pPipeMain = pSynapseSrc->m_pPipeMain;
-}
-
-void Synapse::MoveNob(MicroMeterPnt const& delta)
-{
-	MicroMeterPnt const umPntNew    { GetPos() + delta };
-	MicroMeter    const umDist      { m_pPipeMain->DistPntToPipe(umPntNew) };
-	MicroMeterPnt const umPntOrtho  { m_pPipeMain->GetVector().OrthoVector() };
-	MicroMeterPnt const umPntScaled { umPntOrtho.ScaledTo(umDist) };
-	MicroMeterPnt const umPntRoot   { umPntNew + umPntScaled };
-	RecalcAll(umPntRoot);
-	m_pPipeAdd->PosChanged();
-}
-
-void Synapse::RemoveFromMainPipe() 
-{ 
-	m_pPipeMain->RemoveSynapse(this); 
-}
-
-void Synapse::Add2MainPipe() 
-{ 
-	m_pPipeMain->AddSynapse(this); 
+	m_pPipeOut = pPipe;
 }
 
 void Synapse::SetAddPipe(Pipe* const pPipe)
@@ -98,65 +51,89 @@ void Synapse::SetAddPipe(Pipe* const pPipe)
 	m_pPipeAdd = pPipe;
 }
 
-void Synapse::SetMainPipe(Pipe* const pPipeNew)
-{
-	MicroMeterPnt umPntPos { GetPos() };
-	m_pPipeMain = pPipeNew;
-	RecalcAll(umPntPos);
+void Synapse::SetPosNoFix(MicroMeterPnt const& newPos) 
+{ 
+	m_circle.SetPos(newPos); 
 }
 
-void Synapse::SetPosOnMainPipe(float const fPosNew)
+void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-	assert(fPosNew >= 0.0f);
-	assert(fPosNew <= 1.0f);
-	m_fPosOnMainPipe = fPosNew;
+// TODO: ???
 }
 
-void Synapse::RecalcAll(MicroMeterPnt const& newPos)
+void Synapse::SetAllIncoming(PosNob& src)
 {
-	m_fPosOnMainPipe = m_pPipeMain->PosOnPipe(newPos);
-	m_fPosOnMainPipe = ClipToMinMax(m_fPosOnMainPipe, 0.0f, 1.0f);
-	Recalc();
+	assert(src.IsSynapse());
+	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
+	m_pPipeAdd = pSynapseSrc->m_pPipeAdd;
+	m_pPipeIn  = pSynapseSrc->m_pPipeIn;
+}
+
+void Synapse::SetAllOutgoing(PosNob& src)
+{
+	assert(src.IsSynapse());
+	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
+	m_pPipeOut = pSynapseSrc->m_pPipeOut;
+}
+
+void Synapse::MoveNob(MicroMeterPnt const& delta)
+{
+	SetPos(GetPos() + delta);
+	m_pPipeAdd->PosChanged();
+	m_pPipeIn ->PosChanged();
+	m_pPipeOut->PosChanged();
+}
+
+void Synapse::recalc() const
+{
+	static float      const SQRT3       { sqrtf(3.0f) };
+	static float      const SQRT3DIV3   { SQRT3 / 3.0f };
+	static MicroMeter const GAP         { PIPE_WIDTH * 0.1f };
+	static MicroMeter const CENTER_DIST { EXTENSION * SQRT3DIV3 };
+	static MicroMeter const OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
+
+	MicroMeterPnt const umPntBaseVector { m_pPipeOut->GetEndPoint() - m_pPipeIn->GetStartPoint() };
+	MicroMeterPnt const umPntOrtho      { umPntBaseVector.OrthoVector() };
+	MicroMeterPnt const umPntAddDir     { GetPos() - m_pPipeAdd->GetStartPoint() };
+	MicroMeter    const umCrit          { CrossProduct(umPntBaseVector, umPntAddDir) };
+	float         const fDirection      { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
+	MicroMeterPnt const umPntCenter     { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
+	MicroMeter    const umTop           { EXTENSION * ( 2.0f * SQRT3DIV3) * fDirection };
+	MicroMeter    const umBase          { EXTENSION * (-1.0f * SQRT3DIV3) * fDirection };
+	MicroMeterPnt const umPntBase       { umPntCenter + umPntOrtho.ScaledTo(umBase) };
+	MicroMeterPnt const umPntVecScaled  { umPntBaseVector.ScaledTo(EXTENSION) };
+	m_umPntBase1  = umPntBase + umPntVecScaled;
+	m_umPntBase2  = umPntBase - umPntVecScaled;
+	m_umPntTop    = umPntCenter + umPntOrtho.ScaledTo(umTop);
+	m_umPntCenter = umPntCenter;
 }
 
 void Synapse::Recalc()
 {
-	static const MicroMeter GAP         { PIPE_WIDTH * 0.1f };
-	static const MicroMeter CENTER_DIST { EXTENSION * SQRT3DIV3 };
-	static const MicroMeter TOP_DIST    { EXTENSION * SQRT3 };
-	static const MicroMeter OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
-
-	assert(m_fPosOnMainPipe >= 0.0f);
-	assert(m_fPosOnMainPipe <= 1.0f);
-
-	MicroMeterPnt const umPntVector  { m_pPipeMain->GetVector() };
-	MicroMeterPnt const umPntAddDir  { m_pPipeAdd->GetStartPoint() - m_pPipeMain->GetStartPoint() };
-	MicroMeterPnt const umPntMainPos { m_pPipeMain->GetStartPoint() + m_pPipeMain->GetVector() * m_fPosOnMainPipe };
-	MicroMeterPnt const umPntOrtho   { umPntVector.OrthoVector() };
-	MicroMeter    const umCrit       { CrossProduct(umPntVector, umPntAddDir) };
-
-	m_fDirection      = (umCrit < 0._MicroMeter) ? 1.0f : -1.0f;
-	m_umPntPipeAnchor = umPntMainPos + umPntOrtho.ScaledTo((TOP_DIST    + OFF_DIST) * m_fDirection);
-	m_umPntCenter     = umPntMainPos + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * m_fDirection);
+	recalc();
 }
 
 void Synapse::Check() const
 {
-	Nob::Check();
-	assert(m_fPosOnMainPipe >= 0.0f);
-	assert(m_fPosOnMainPipe <= 1.0f);
+	PosNob::Check();
 	assert(m_pPipeAdd);
-	assert(m_pPipeMain);
-	assert(m_pPipeAdd->GetEndKnotId() == GetId());
-	assert(m_pPipeMain->IsConnectedSynapse(*this));
+	assert(m_pPipeIn);
+	assert(m_pPipeOut);
+	assert(m_pPipeAdd->GetEndKnotId  () == GetId());
+	assert(m_pPipeIn ->GetEndKnotId  () == GetId());
+	assert(m_pPipeOut->GetStartKnotId() == GetId());
 	m_pPipeAdd->Check();
+	m_pPipeIn ->Check();
+	m_pPipeOut->Check();
 }
 
 void Synapse::Dump() const
 {
 	Nob::Dump();
-	wcout << L" main";
-	m_pPipeMain->Dump();
+	wcout << L" In";
+	m_pPipeIn->Dump();
+	wcout << L" Out";
+	m_pPipeOut->Dump();
 	wcout << L" Add";
 	m_pPipeAdd->Dump();
 	if (m_bOutputBlocked)
@@ -172,83 +149,83 @@ void Synapse::Reconnect()
 void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 {
 	Synapse const& src { static_cast<Synapse const&>(nobSrc) };
-	m_pPipeMain = static_cast<Pipe*>(f(src.m_pPipeMain));
-	m_pPipeAdd  = static_cast<Pipe*>(f(src.m_pPipeAdd));
+	m_pPipeIn  = static_cast<Pipe*>(f(src.m_pPipeIn));
+	m_pPipeOut = static_cast<Pipe*>(f(src.m_pPipeOut));
+	m_pPipeAdd = static_cast<Pipe*>(f(src.m_pPipeAdd));
 }
 
 bool Synapse::Includes(MicroMeterPnt const& point) const
 {
-	return Distance(point, GetPos()) <= GetExtension();
+	bool bCircleIncludesPnt   { m_circle.Includes(point) };
+	bool bTriangleIncludesPnt { Distance(point, m_umPntCenter) <= EXTENSION	};
+	return bCircleIncludesPnt || bTriangleIncludesPnt;
 }
 
-void Synapse::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
+void Synapse::ReplaceIncoming(Pipe* const pDel, Pipe* const pNew)
 {
-	assert(pDel == m_pPipeAdd);
-	m_pPipeAdd = pAdd;
+	if (pDel == m_pPipeAdd)
+		m_pPipeAdd = pNew;
+	else if (pDel == m_pPipeIn)
+		m_pPipeIn = pNew;
+	else
+		assert(false);
 }
 
-void Synapse::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
+void Synapse::ReplaceOutgoing(Pipe* const pDel, Pipe* const pNew)
 {
-	assert(false);
+	assert(pDel == m_pPipeOut);
+	m_pPipeOut = pNew;
 }
 
 void Synapse::Apply2AllInPipes(PipeFunc const& f)
 {
-	f(*m_pPipeMain);
+	f(*m_pPipeIn);
 	f(*m_pPipeAdd);
 }
 
 void Synapse::Apply2AllOutPipes(PipeFunc const& f)
 {
-	f(*m_pPipeMain);
+	f(*m_pPipeOut);
 }
 
 void Synapse::Apply2AllInPipesC(PipeFuncC const& f) const
 {
-	f(*m_pPipeMain);
+	f(*m_pPipeIn);
 	f(*m_pPipeAdd);
 }
 
 void Synapse::Apply2AllOutPipesC(PipeFuncC const& f) const
 {
-	f(*m_pPipeMain);
+	f(*m_pPipeOut);
 }
 
 bool Synapse::Apply2AllInPipesB(PipeCrit const& c) const
 {
-	return c(*m_pPipeMain) || c(*m_pPipeAdd);
+	return c(*m_pPipeIn) || c(*m_pPipeAdd);
 }
 
 bool Synapse::Apply2AllOutPipesB(PipeCrit const& c) const
 {
-	return c(*m_pPipeMain);
+	return c(*m_pPipeOut);
 }
 
 void Synapse::drawSynapse
 (
 	DrawContext  const& context, 
 	MicroMeter   const  umRadius,
-	MicroMeter   const  umSize,
 	D2D1::ColorF const  col
 ) const
 {
-	MicroMeter    const umTop          { umSize * ( 2.0f * SQRT3DIV3) * m_fDirection };
-	MicroMeter    const umBase         { umSize * (-1.0f * SQRT3DIV3) * m_fDirection };
-	MicroMeterPnt const umPntOrtho     { m_pPipeMain->GetVector().OrthoVector() };
-	MicroMeterPnt const umPntTop       { m_umPntCenter + umPntOrtho.ScaledTo(umTop) };
-	MicroMeterPnt const umPntBase      { m_umPntCenter + umPntOrtho.ScaledTo(umBase) };
-	MicroMeterPnt const umPntVecScaled { m_pPipeMain->GetVector().ScaledTo(umSize) };
-	MicroMeterPnt const umPntBase1     { umPntBase + umPntVecScaled };
-	MicroMeterPnt const umPntBase2     { umPntBase - umPntVecScaled };
+	recalc();
 
-	context.FillCircle(MicroMeterCircle(umPntTop,   umRadius), col);
-	context.FillCircle(MicroMeterCircle(umPntBase1, umRadius), col);
-	context.FillCircle(MicroMeterCircle(umPntBase2, umRadius), col);
-	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase1), umRadius * 2.0f, col);
-	context.DrawLine(MicroMeterLine(umPntTop,   umPntBase2), umRadius * 2.0f, col);
-	context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, col);
-	if (!m_bOutputBlocked)
-		context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, D2D1::ColorF::Yellow);
+	context.FillCircle(MicroMeterCircle(m_umPntTop,   umRadius), col);
+	context.FillCircle(MicroMeterCircle(m_umPntBase1, umRadius), col);
+	context.FillCircle(MicroMeterCircle(m_umPntBase2, umRadius), col);
+	context.DrawLine(MicroMeterLine    (m_umPntTop,   m_umPntBase1), umRadius * 2.0f, col);
+	context.DrawLine(MicroMeterLine    (m_umPntTop,   m_umPntBase2), umRadius * 2.0f, col);
+	context.DrawLine(MicroMeterLine    (m_umPntBase1, m_umPntBase2), umRadius * 2.0f, col);
+	//if (!m_bOutputBlocked)
+	//	context.DrawLine(MicroMeterLine(umPntBase1, umPntBase2), umRadius * 2.0f, D2D1::ColorF::Yellow);
 
 	//MicroMeterRect const rect
 	//(
@@ -275,34 +252,39 @@ void Synapse::drawSynapse
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
-	drawSynapse(context, RADIUS, EXTENSION, GetExteriorColor(type));
+	drawSynapse(context, RADIUS, GetExteriorColor(type));
+	FillExternalCircle(context, type);
 }
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
 { 
-	static float const INTERIOR { 0.75f };
-	drawSynapse(context, RADIUS * INTERIOR, EXTENSION - RADIUS * (1.0f - INTERIOR), GetInteriorColor(type));
+	D2D1::ColorF const col { GetInteriorColor(type, m_mVaddInput) };
+	drawSynapse(context, RADIUS * PIPE_INTERIOR, col);
+	if (m_bOutputBlocked)
+		FillInternalCircle(context, tHighlight::blocked);
+	else
+		FillInternalCircle(context, type);
 }
 
 void Synapse::CollectInput()
 {
-	m_mVinputBuffer = m_pPipeMain->GetEndNobPtr()->GetNextOutput();
-	m_mVaddInput    = m_pPipeAdd ->GetEndNobPtr()->GetNextOutput();
+	m_mVpotential = m_pPipeIn ->GetEndNobPtr()->GetPotential();
+	m_mVaddInput  = m_pPipeAdd->GetPotential();
 }
 
 bool Synapse::CompStep()
 {
 	if (m_bOutputBlocked)
 	{
-		m_mVinputBuffer = 0.0_mV;
+		m_mVpotential = 0.0_mV;
 		m_usBlocked += GetParam()->TimeResolution();
 		if (m_usBlocked > GetParam()->PulseDistMin())
 			m_bOutputBlocked = false;
 	}
 	else
 	{
-		m_mVinputBuffer += m_mVaddInput;
-		if (m_mVinputBuffer >= GetParam()->SynapseThreshold())
+		m_mVpotential += m_mVaddInput;
+		if (m_mVpotential >= GetParam()->SynapseThreshold())
 		{
 			m_bOutputBlocked = true;
 			m_usBlocked = 0.0_MicroSecs;
@@ -322,7 +304,8 @@ void Synapse::SelectAllConnected(bool const bFirst)
 	if (!IsSelected() || bFirst)
 	{
 		Nob::Select(true);
-		m_pPipeMain->SelectAllConnected(false);
-		m_pPipeAdd ->SelectAllConnected(false);
+		m_pPipeIn ->SelectAllConnected(false);
+		m_pPipeOut->SelectAllConnected(false);
+		m_pPipeAdd->SelectAllConnected(false);
 	}
 }

@@ -95,13 +95,12 @@ public:
 	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
 
-	virtual mV   GetPotential()   const { return m_mVinputBuffer; }
-	virtual mV   GetNextOutput()  const { return m_mVinputBuffer; }
+	virtual mV   GetPotential()  const { return m_mVpotential; }
 	virtual bool IsCompositeNob() const { return false; }
 	virtual bool HasParentNob()   const { return false; }
 	virtual Nob* GetParentNob()   const { return nullptr; }
 
-	virtual void ClearDynamicData() { m_mVinputBuffer.Set2Zero(); }
+	virtual void ClearDynamicData() { m_mVpotential.Set2Zero(); }
 
 	virtual void SelectAllConnected(bool const) = 0;
 
@@ -137,15 +136,14 @@ public:
 	void  SetId(NobId const id) { m_identifier = id; }
 
 	ColorF GetExteriorColor(tHighlight const) const;
-	ColorF GetInteriorColor(tHighlight const) const;
+	ColorF GetInteriorColor(tHighlight const, mV const) const;
 	ColorF GetInteriorColor(mV const) const;
-	ColorF GetInteriorColor() const { return GetInteriorColor(m_mVinputBuffer); }
 
 	NNetParameters const * GetParam() const { return m_pParameters; }
 
 protected:
 
-	mV m_mVinputBuffer{ 0._mV };
+	mV m_mVpotential{ 0._mV };
 
 	void SetType(NobType const type) { m_type = type; }
 

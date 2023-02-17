@@ -77,20 +77,20 @@ void Neuron::CollectInput()
 	}
 	else 
 	{
-		m_mVinputBuffer.Set2Zero();
-		Apply2AllInPipesC([this](Pipe const& pipe) { m_mVinputBuffer += pipe.GetNextOutput(); }); // slow !!
+		m_mVpotential.Set2Zero();
+		Apply2AllInPipesC([this](Pipe const& pipe) { m_mVpotential += pipe.GetPotential(); }); // slow !!
 	}
 }
 
 bool Neuron::CompStep()
 {
-	bool bTrigger { m_mVinputBuffer >= GetParam()->NeuronThreshold() };
+	bool bTrigger { m_mVpotential >= GetParam()->NeuronThreshold() };
 
 	if (bTrigger)
 	{
 		m_usSpikeTime = 0.0_MicroSecs;
 		m_bTriggered  = true;
-		m_mVinputBuffer.Set2Zero();
+		m_mVpotential.Set2Zero();
 	}
 	else
 	{
@@ -100,7 +100,7 @@ bool Neuron::CompStep()
 	return m_bStopOnTrigger && bTrigger;
 }
 
-mV Neuron::GetNextOutput() const
+mV Neuron::GetPotential() const   // TODO: COmpute in CompStep?
 {
 	mV         const amplitude  { GetParam()->NeuronPeakVolt() };
 	fMicroSecs const spikeWidth { GetParam()->SpikeWidth() };
@@ -151,7 +151,7 @@ void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) co
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 { 
-	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : Nob::GetInteriorColor(type) };
+	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : Nob::GetInteriorColor(type, m_mVpotential) };
 	context.FillCircle(m_circle * NEURON_INTERIOR, color);
 	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 }
@@ -164,6 +164,16 @@ void Neuron::AppendMenuItems(AddMenuFunc const & add) const
 	add(IDD_STOP_ON_TRIGGER);
 	add(IDD_DELETE_NOB);
 	PosNob::AppendMenuItems(add);
+}
+
+void Neuron::SelectAllConnected(bool const bFirst)
+{
+	if (!IsSelected() || bFirst)
+	{
+		Nob::Select(true);
+		m_inPipes.SelectAllConnected();
+		m_pPipeAxon->SelectAllConnected(false);
+	}
 }
 
 void Neuron::MoveNob(MicroMeterPnt const& delta)

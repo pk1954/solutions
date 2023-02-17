@@ -77,54 +77,65 @@ private:
 	unique_ptr<Knot> m_upKnot;
 };
 
+class SynapseStartCmd : public NNetCommand
+{
+public:
+
+	SynapseStartCmd(Pipe& pipe)
+	  : m_pSynapse       (Cast2Synapse(pipe.GetStartNobPtr())),
+		m_upOutputLineIn (make_unique<OutputLine>(*m_pSynapse->GetInPipe())),
+		m_upOutputLineAdd(make_unique<OutputLine>(*m_pSynapse->GetAddPipe()))
+	{}
+
+	void Do()   final 
+	{ 
+		m_upSynapse = m_pNMWI->RemoveFromModel<Synapse>(m_pSynapse->GetId());
+		m_pSynapse->GetInPipe ()->SetEndPnt(m_upOutputLineIn .get());
+		m_pSynapse->GetAddPipe()->SetEndPnt(m_upOutputLineAdd.get());
+		m_pNMWI->Push2Model(move(m_upOutputLineIn));
+		m_pNMWI->Push2Model(move(m_upOutputLineAdd));
+	}
+
+	void Undo() final 
+	{ 
+		m_upOutputLineAdd = m_pNMWI->PopFromModel<OutputLine>();
+		m_upOutputLineIn  = m_pNMWI->PopFromModel<OutputLine>();
+		m_pSynapse->GetInPipe ()->SetEndPnt(m_upSynapse.get());
+		m_pSynapse->GetAddPipe()->SetEndPnt(m_upSynapse.get());
+		m_pNMWI->Restore2Model(move(m_upSynapse));
+	}
+
+private:
+	Synapse * const        m_pSynapse;
+	unique_ptr<Synapse>    m_upSynapse;
+	unique_ptr<OutputLine> m_upOutputLineIn;
+	unique_ptr<OutputLine> m_upOutputLineAdd;
+};
+
 class SynapseEndCmd : public NNetCommand
 {
 public:
-
-	explicit SynapseEndCmd(NobId const id)
-		: m_id(id)
-	{}
-
-	void Do() final
+	explicit SynapseEndCmd(Pipe & pipe)
 	{
-		m_upSynapse = m_pNMWI->RemoveFromModel<Synapse>(m_id);
-		m_upSynapse->RemoveFromMainPipe();
+		m_pSynapse = Cast2Synapse(pipe.GetEndNobPtr());
+		bool bDelAddPipe { &pipe == m_pSynapse->GetAddPipe() };
+		m_upKnot   = make_unique<Knot>(*m_pSynapse);
+		m_upKnot->AddOutgoing(m_pSynapse->GetOutPipe());
+		m_upKnot->AddIncoming
+		(
+			bDelAddPipe
+			? m_pSynapse->GetInPipe() 
+			: m_pSynapse->GetAddPipe()
+		);
 	}
 
-	void Undo() final
-	{
-		m_upSynapse->Add2MainPipe();
-		m_pNMWI->Restore2Model(move(m_upSynapse));
-	}
+	void Do()   final { m_upSynapse = m_pNMWI->ReplaceInModel<Synapse>(move(m_upKnot   )); }
+	void Undo() final { m_upKnot    = m_pNMWI->ReplaceInModel<Knot>   (move(m_upSynapse)); }
 
 private:
-	NobId               m_id;
+	Synapse *           m_pSynapse;
 	unique_ptr<Synapse> m_upSynapse;
-};
-
-class SynapseMainCmd : public NNetCommand
-{
-public:
-
-	explicit SynapseMainCmd(NobId const id)
-		: m_id(id)
-	{}
-
-	void Do() final
-	{
-		m_upSynapse = m_pNMWI->RemoveFromModel<Synapse>(m_id);
-		m_upSynapse->RemoveFromMainPipe();
-	}
-
-	void Undo() final
-	{
-		m_upSynapse->Add2MainPipe();
-		m_pNMWI->Restore2Model(move(m_upSynapse));
-	}
-
-private:
-	NobId               m_id;
-	unique_ptr<Synapse> m_upSynapse;
+	unique_ptr<Knot>    m_upKnot;
 };
 
 class NeuronEndMultipleCmd : public NNetCommand
@@ -159,6 +170,7 @@ public:
 			case inputLine: m_upCmdStart = make_unique<RemoveNobCmd<InputLine>>        (m_idStart);	break;
 			case knot:      m_upCmdStart = make_unique<ReplaceNobCmd<Knot, OutputLine>>(m_idStart);	break;
 			case fork:      m_upCmdStart = make_unique<ForkStartCmd>                   (m_pipe);	break;
+			case synapse:   m_upCmdEnd   = make_unique<SynapseStartCmd>                (m_pipe);    break;
 			case neuron:    m_upCmdStart = make_unique<DeleteNeuronInputCmd>           (m_pipe.GetStartNobPtr()); break;
 			default:		assert(false);
 		}
@@ -168,7 +180,7 @@ public:
 			case outputLine: m_upCmdEnd = make_unique<RemoveNobCmd<OutputLine>>      (m_idEnd);	break;
 			case knot:       m_upCmdEnd = make_unique<ReplaceNobCmd<Knot, InputLine>>(m_idEnd); break;
 			case fork:       m_upCmdEnd = make_unique<DeleteForkOutputCmd>           (m_pipe.GetEndNobPtr()); break;
-			case synapse:    m_upCmdEnd = make_unique<SynapseEndCmd>                 (m_idEnd); break;
+			case synapse:    m_upCmdEnd = make_unique<SynapseEndCmd>                 (m_pipe);  break;
 			case neuron:     if (m_pNMWI->GetNobPtr<Neuron*>(m_idEnd)->GetNrOfInConns() == 1)
 				                 m_upCmdEnd = make_unique<ReplaceNobCmd<Neuron, InputLine>>(m_idEnd);
 					         else
@@ -176,14 +188,6 @@ public:
 							 break;
 			default:         assert(false);
 		}
-
-		m_pipe.Apply2AllSynapses
-		(
-			[this](Nob * pNob)
-			{
-				m_cmdStack.Push(make_unique<ReplaceNobCmd<Synapse, OutputLine>>(pNob->GetId()));
-			}
-		);
 	}
 
 	~DeletePipeCommand() final = default;

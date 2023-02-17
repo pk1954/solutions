@@ -97,7 +97,7 @@ void InputLine::DrawExterior(DrawContext const & context, tHighlight const type)
 
 void InputLine::DrawInterior(DrawContext const & context, tHighlight const type) const
 {
-	drawSocket(context, 1.6f, 0.0f, GetInteriorColor(type));
+	drawSocket(context, 1.6f, 0.0f, GetInteriorColor(type, m_mVpotential));
 }
 
 MicroMeterPnt InputLine::getOffset() const
@@ -136,7 +136,7 @@ void InputLine::drawSocket
 
 void InputLine::CollectInput()
 {
-	m_mVinputBuffer = m_pSigGen->GetSignalValue();
+	m_mVpotential = m_pSigGen->GetSignalValue();
 }
 
 void InputLine::AppendMenuItems(AddMenuFunc const & add) const

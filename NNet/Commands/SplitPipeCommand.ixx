@@ -22,30 +22,10 @@ public:
 	  :	m_pPipe2Split(m_pNMWI->GetNobPtr<Pipe*>(idPipe))
 	{}
 
-	// InitSplit: create two new pipes and add links to Synapses of existing Pipe
-	//            do not affect Synapses themselves
-
 	void InitSplit(PosNob & posNobSplit)
 	{
 		m_upPipeSplit1 = make_unique<Pipe>(Cast2PosNob(m_pPipe2Split->GetStartNobPtr()), &posNobSplit);
 		m_upPipeSplit2 = make_unique<Pipe>(&posNobSplit, Cast2PosNob(m_pPipe2Split->GetEndNobPtr()));
-
-		float const fPosSplit { m_pPipe2Split->PosOnPipe(posNobSplit.GetPos()) };
-
-		m_pPipe2Split->Apply2AllSynapses
-		(
-			[this, fPosSplit](Nob* pNob)
-			{
-				float const fPosSynapse { Cast2Synapse(pNob)->GetPosOnMainPipe() };
-				Pipe* const pPipeNew
-				{
-					(fPosSynapse < fPosSplit)
-					? m_upPipeSplit1.get()
-					: m_upPipeSplit2.get()
-				};
-				pPipeNew->AddSynapse(Cast2Synapse(pNob));
-			}
-		);
 
 		posNobSplit.AddIncoming(m_upPipeSplit1.get());
 		posNobSplit.AddOutgoing(m_upPipeSplit2.get());
@@ -62,8 +42,6 @@ public:
 	{
 		Cast2PosNob(m_pPipe2Split->GetStartNobPtr())->ReplaceOutgoing(m_pPipe2Split, m_upPipeSplit1.get());
 		Cast2PosNob(m_pPipe2Split->GetEndNobPtr  ())->ReplaceIncoming(m_pPipe2Split, m_upPipeSplit2.get());
-		m_upPipeSplit1->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_upPipeSplit1.get()); });
-		m_upPipeSplit2->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_upPipeSplit2.get()); });
 		m_pNMWI->Push2Model(move(m_upPipeSplit1));
 		m_pNMWI->Push2Model(move(m_upPipeSplit2));
 		m_upPipe2Split = m_pNMWI->RemoveFromModel<Pipe>(m_pPipe2Split->GetId());
@@ -74,8 +52,6 @@ public:
 		m_pNMWI->Restore2Model(move(m_upPipe2Split));
 		m_upPipeSplit2 = m_pNMWI->PopFromModel<Pipe>();
 		m_upPipeSplit1 = m_pNMWI->PopFromModel<Pipe>();
-		m_upPipeSplit1->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
-		m_upPipeSplit2->Apply2AllSynapses([this](Nob* pNob) { Cast2Synapse(pNob)->SetMainPipe(m_pPipe2Split); });
 		Cast2PosNob(m_pPipe2Split->GetEndNobPtr())  ->ReplaceIncoming(m_upPipeSplit2.get(), m_pPipe2Split);
 		Cast2PosNob(m_pPipe2Split->GetStartNobPtr())->ReplaceOutgoing(m_upPipeSplit1.get(), m_pPipe2Split);
 	}

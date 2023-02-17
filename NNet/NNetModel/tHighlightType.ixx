@@ -9,5 +9,6 @@ export enum class tHighlight
 	normal,
 	highlighted,
 	targetFit,
-	targetNoFit
+	targetNoFit,
+	blocked
 };

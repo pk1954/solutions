@@ -48,7 +48,7 @@ public:
 	explicit DeleteKnotCmd(Nob& nob)
 		: m_pKnot(Cast2Knot(&nob))
 	{
-		m_upInputLine = make_unique<InputLine>(*m_pKnot->GetOutgoing());
+		m_upInputLine  = make_unique<InputLine >(*m_pKnot->GetOutgoing());
 		m_upOutputLine = make_unique<OutputLine>(*m_pKnot->GetIncoming());
 	}
 
@@ -64,7 +64,7 @@ public:
 	void Undo() final
 	{
 		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
-		m_upInputLine = m_pNMWI->PopFromModel<InputLine>();
+		m_upInputLine  = m_pNMWI->PopFromModel<InputLine>();
 		m_upOutputLine->GetPipe()->SetEndPnt(m_upKnot.get());
 		m_upInputLine->GetPipe()->SetStartPnt(m_upKnot.get());
 		m_pNMWI->Restore2Model(move(m_upKnot));
@@ -114,17 +114,18 @@ public:
 
 	explicit DeleteSynapseCmd(Nob& nob)
 	{
-		m_id = nob.GetId();
 		Synapse* pSynapse { Cast2Synapse(&nob) };
 		m_upOutputLine = make_unique<OutputLine>(*pSynapse->GetAddPipe());
+		m_upKnot       = make_unique<Knot>(*pSynapse);
+		m_upKnot->AddIncoming(pSynapse->GetInPipe());
+		m_upKnot->AddOutgoing(pSynapse->GetOutPipe());
 	}
 
 	void Do()  final
 	{
-		NNetModelWriterInterface& nmwi = *m_pNMWI;
-		m_upSynapse = m_pNMWI->RemoveFromModel<Synapse>(m_id);
-		Pipe* pPipeMain = m_upSynapse->GetMainPipe();
-		m_upSynapse->GetMainPipe()->RemoveSynapse(m_upSynapse.get());
+		m_upKnot->GetIncoming()->SetEndPnt  (m_upKnot.get());
+		m_upKnot->GetOutgoing()->SetStartPnt(m_upKnot.get());
+		m_upSynapse = m_pNMWI->ReplaceInModel<Synapse>(move(m_upKnot));
 		m_upSynapse->GetAddPipe()->SetEndPnt(m_upOutputLine.get());
 		m_pNMWI->Push2Model(move(m_upOutputLine));
 	}
@@ -132,13 +133,14 @@ public:
 	void Undo() final
 	{
 		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
-		m_upSynapse->GetAddPipe()->SetEndPnt(m_upSynapse.get());
-		m_upSynapse->GetMainPipe()->AddSynapse(m_upSynapse.get());
-		m_pNMWI->Restore2Model(move(m_upSynapse));
+		m_upOutputLine->GetPipe()->SetEndPnt(m_upSynapse.get());
+		m_upKnot = m_pNMWI->ReplaceInModel<Knot>(move(m_upSynapse));
+		m_upKnot->GetOutgoing()->SetStartPnt(m_upSynapse.get());
+		m_upKnot->GetIncoming()->SetEndPnt  (m_upSynapse.get());
 	}
 
 private:
-	NobId                  m_id;
+	unique_ptr<Knot>       m_upKnot;
 	unique_ptr<Synapse>    m_upSynapse;
 	unique_ptr<OutputLine> m_upOutputLine;
 };

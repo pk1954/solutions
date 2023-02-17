@@ -69,13 +69,13 @@ ColorF Nob::GetInteriorColor(mV const voltage) const
 	mV    const neuronThreshold { mV(GetParam()->GetParameterValue(ParamType::Value::neuronThreshold)) };
 	float const colorComponent  { min(voltage / neuronThreshold, 1.0f)};
 	float const fAlphaChannel   { m_bSelected ? 0.7f : 1.0f };
-	if (IsEmphasized() &&  (colorComponent < 0.01f))
+	if (IsEmphasized() && (colorComponent < 0.01f))
 		return NNetColors::INT_EMPHASIZED;
 	else 
 		return ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
 }
 
-ColorF Nob::GetExteriorColor(tHighlight const type) const 
+ColorF Nob::GetExteriorColor(tHighlight const type) const
 {
 	if (type == tHighlight::highlighted) 
 		return NNetColors::EXT_HIGHLIGHTED;
@@ -83,7 +83,7 @@ ColorF Nob::GetExteriorColor(tHighlight const type) const
 		return IsEmphasized() ? NNetColors::EXT_EMPHASIZED : NNetColors::EXT_NORMAL;
 };
 
-ColorF Nob::GetInteriorColor(tHighlight const type) const 
+ColorF Nob::GetInteriorColor(tHighlight const type, mV const voltage) const
 {
 	Nob const * pNob { this };
 	while (pNob->HasParentNob())
@@ -100,7 +100,7 @@ ColorF Nob::GetInteriorColor(tHighlight const type) const
 	else
 		switch (type)
 		{
-		case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor();
+		case tHighlight::normal:      return pNob->IsSelected() ? NNetColors::INT_SELECTED : GetInteriorColor(voltage);
 		case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
 		case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
 		case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
@@ -156,16 +156,19 @@ void Nob::FillInternalCircle
 	switch (type)
 	{
 	case tHighlight::normal:
-		context.FillCircle(umCircle, GetInteriorColor(type), fPixMinWidth);
+		context.FillCircle(umCircle, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
 		break;
 	case tHighlight::highlighted:
-		context.FillCircle(umCircle, GetInteriorColor(type), fPixMinWidth);
+		context.FillCircle(umCircle, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
 		break;
 	case tHighlight::targetFit:
 		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
 		break;
 	case tHighlight::targetNoFit:
 		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	case tHighlight::blocked:
+		context.FillCircle(umCircle, NNetColors::INT_BLOCKED, fPixMinWidth);
 		break;
 	default:
 		assert(false);

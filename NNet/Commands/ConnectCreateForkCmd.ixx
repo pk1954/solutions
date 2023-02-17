@@ -39,7 +39,7 @@ public:
 		m_pInputLine->GetPipe()->SetStartPnt(m_upFork.get());
 		m_pInputLine->GetPipe()->PosChanged();
 		m_pNMWI->Push2Model(move(m_upFork));
-		m_upIoLine  = m_pNMWI->RemoveFromModel<InputLine>(m_idIoLine);
+		m_upIoLine = m_pNMWI->RemoveFromModel<InputLine>(m_idIoLine);
 	}
 
 	void Undo() final

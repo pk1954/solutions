@@ -60,9 +60,8 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
 	Nob        (src),
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
-	m_potIndex (src.m_potIndex ),
-	m_segments(src.m_segments),
-	m_synapses(src.m_synapses)
+	m_potIndex (src.m_potIndex),
+	m_segments(src.m_segments)
 { 
 }
 
@@ -103,21 +102,11 @@ void Pipe::ClearDynamicData()
 	RecalcSegments();
 }
 
-bool Pipe::IsConnectedSynapse(Nob const & synapse) const
-{
-	for (Nob* nob : m_synapses)
-		if (nob->GetId() == synapse.GetId())
-			return true;
-	return false;
-}
-
 void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 {
 	Pipe const & pipeSrc { static_cast<Pipe const &>(nobSrc) };
 	m_pNobStart = static_cast<PosNob *>(dstFromSrc(pipeSrc.GetStartNobPtr()));
 	m_pNobEnd   = static_cast<PosNob *>(dstFromSrc(pipeSrc.GetEndNobPtr  ()));
-	for (int i = 0; i < m_synapses.size(); ++i)
-		m_synapses[i] = static_cast<PosNob*>(dstFromSrc(pipeSrc.m_synapses[i]));
 }
 
 void Pipe::Check() const
@@ -125,8 +114,6 @@ void Pipe::Check() const
 	Nob::Check();
 	assert(m_pNobStart);
 	assert(m_pNobEnd);
-	for (auto it : m_synapses)
-		it->Check();
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -199,7 +186,15 @@ MicroMeterPnt Pipe::GetStartPoint() const
 
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	return m_pNobEnd ? m_pNobEnd->GetPos() : MicroMeterPnt::NULL_VAL();
+	if (m_pNobEnd == nullptr)
+		return MicroMeterPnt::NULL_VAL();
+	if (m_pNobEnd->IsSynapse())
+	{
+		Synapse * pSynapse { Cast2Synapse(m_pNobEnd) };
+		if (this == pSynapse->GetAddPipe()) 
+			return pSynapse->GetAddPos();
+	} 
+	return m_pNobEnd->GetPos();
 }
 
 MicroMeter Pipe::DistPntToPipe(MicroMeterPnt const& umPoint) const
@@ -251,12 +246,6 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
-void Pipe::AddSynapse(Nob* pNob)
-{
-	assert(pNob->IsSynapse());
-	m_synapses.push_back(pNob);
-}
-
 void Pipe::SetNrOfSegments(size_t const n) const
 {
 	m_segments.resize(n, 0.0_mV);
@@ -291,29 +280,10 @@ vector<mV> const& Pipe::getSegments() const
 void Pipe::PosChanged()
 {
 	assert(IsPipe());
-	posChangedRecursive(*this);
-}
-
-void Pipe::posChangedRecursive(Pipe const& pipeOrigin)
-{
 	if (m_pNobStart && m_pNobEnd)
 	{
 		m_pNobStart->DirectionDirty();
 		m_pNobEnd  ->DirectionDirty();
-		Apply2AllSynapses
-		(
-			[this, &pipeOrigin](Nob* pNob)
-			{
-				Synapse* pSynapse { Cast2Synapse(pNob) };
-				Pipe   * pPipeAdd { pSynapse->GetAddPipe() };
-				if (pPipeAdd != &pipeOrigin)
-					pPipeAdd->posChangedRecursive(pipeOrigin);
-				pSynapse->Recalc();
-			}
-		);
-		if (m_pNobEnd->IsSynapse())
-			Cast2Synapse(m_pNobEnd)->Recalc();
-		RecalcSegments();
 	}
 }
 
@@ -324,16 +294,7 @@ void Pipe::SelectAllConnected(bool const bFirst)
 		Nob::Select(true);
 		m_pNobStart->SelectAllConnected(false);
 		m_pNobEnd  ->SelectAllConnected(false);
-		for (auto it : m_synapses)
-			it->SelectAllConnected(false);
 	}
-}
-
-void Pipe::RemoveSynapse(Nob* pSynapse)
-{
-	auto res { find(m_synapses, pSynapse) };
-	assert(res != end(m_synapses));
-	m_synapses.erase(res);
 }
 
 MicroMeterPnt Pipe::GetSegmentVector() const
@@ -350,21 +311,6 @@ MicroMeterPnt Pipe::GetVector(float const fFactor) const
 	MicroMeterPnt const umResult { GetStartPoint() + GetVector() * fFactor};
 	assert(! umResult.IsCloseToZero());
 	return umResult;
-}
-
-float Pipe::PosOnPipe(MicroMeterPnt const& umPnt) const
-{
-	float fResult;
-	MicroMeterPnt const umPntVector { GetVector() };
-	if (umPntVector.GetX().GetAbsValue() > umPntVector.GetY().GetAbsValue())
-	{
-		fResult = (umPnt.GetX() - GetStartPoint().GetX()) / umPntVector.GetX();
-	}
-	else
-	{
-		fResult = (umPnt.GetY() - GetStartPoint().GetY()) / umPntVector.GetY();
-	}
-	return fResult;
 }
 
 void Pipe::DrawArrows
@@ -413,7 +359,7 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 
 	if ((type != tHighlight::normal) || IsSelected())
 	{
-		context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type), fPixMinWidth);
+		context.DrawLine(GetStartPoint(), GetEndPoint(), umWidth, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
 	}
 	else
 	{
@@ -436,12 +382,12 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 
 void Pipe::CollectInput()
 {
-	m_mVinputBuffer = m_pNobStart->GetNextOutput();
+	m_mVpotential = m_pNobStart->GetPotential();
 }
 
 bool Pipe::CompStep()
 {
-	m_segments[m_potIndex] = m_mVinputBuffer;
+	m_segments[m_potIndex] = m_mVpotential;
 	if (m_potIndex == 0)
 		m_potIndex = getSegments().size() - 1;  // caution!
 	else                                      // modification if m_potIndex

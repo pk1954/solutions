@@ -29,8 +29,8 @@ public:
 
 	void Dump() const override;
 
-	mV   GetVoltage()  const { return m_mVinputBuffer; }
-	void SetVoltage(mV const v) { m_mVinputBuffer = v; }
+	mV   GetVoltage()  const { return m_mVpotential; }
+	void SetVoltage(mV const v) { m_mVpotential = v; }
 
 	bool Includes    (MicroMeterPnt  const&) const override;
 	bool IsIncludedIn(MicroMeterRect const&) const override;

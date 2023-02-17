@@ -19,7 +19,7 @@ import AddPipe2NeuronCmd;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
 import Commands;
-import ConnSynapse2NewPipeCmd;
+//import ConnSynapse2NewPipeCmd;
 import CreateForkCommand;
 import CreateSynapseCommand;
 import DeleteNobCommand;
@@ -324,35 +324,8 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
-		NobId nobIdTarget { findTargetNob(umCrsrPos) };
-		if (m_pNMRI->IsSynapse(m_nobIdHighlighted))
-		{ 
-			Synapse    const* pSynapse  { Cast2Synapse(m_pNMRI->GetConstPosNobPtr(m_nobIdHighlighted)) };
-			Pipe       const* pPipeMain { pSynapse->GetMainPipe() };
-			if (IsDefined(nobIdTarget))
-			{
-				Nob const * pNob { m_pNMRI->GetConstNob(nobIdTarget) };
-				if (pNob->IsPipe())
-				{
-					Pipe const * pPipeNew { Cast2Pipe(pNob) };
-					if (pPipeMain != pPipeNew)
-					{
-						ConnSynapse2NewPipeCmd::Push(m_nobIdHighlighted, nobIdTarget, umDelta);
-						return;
-					}
-				}
-			}
-			MicroMeter const umDist { pPipeMain->DistPntToPipe(umCrsrPos) };
-			if (umDist.GetAbs() > NEURON_RADIUS * 1.5f)  // tear off synapse
-			{
-				MicroMeterPnt const umPosOld { m_pNMRI->GetNobPos(m_nobIdHighlighted) };
-				DeleteNobCommand::Push(m_nobIdHighlighted);
-				if (setHighlightedNob(umPosOld))
-					umDelta = umCrsrPos - umPosOld;
-			}
-		}
 		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
-		m_nobIdTarget = nobIdTarget;
+		m_nobIdTarget = findTargetNob(umCrsrPos);
 	}
 	else if (m_pNMRI->IsAnySensorSelected())
 	{

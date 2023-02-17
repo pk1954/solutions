@@ -19,7 +19,7 @@ export class Fork : public PosNob
 {
 public:
 
-    explicit Fork(MicroMeterPnt const);
+    explicit Fork(MicroMeterPnt const&);
 
     Fork(Fork const&);
 
@@ -80,7 +80,7 @@ public:
     void DrawExterior(DrawContext const &, tHighlight const) const final;
 	void DrawInterior(DrawContext const &, tHighlight const) const final;
     
-    void CollectInput () final { m_mVinputBuffer = m_pPipeIn->GetNextOutput(); };
+    void CollectInput () final { m_mVpotential = m_pPipeIn->GetPotential(); };
 
     bool CompStep() final { return false; };
 

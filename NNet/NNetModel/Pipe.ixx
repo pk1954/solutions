@@ -28,7 +28,6 @@ using std::wostream;
 using std::unique_ptr;
 
 //class PosNob;    // avoid circular reference
-//class Synapse;   // avoid circular reference
 
 class Pipe;
 
@@ -61,10 +60,7 @@ public:
 	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
 	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob
 
-	void AddSynapse        (Nob *);              //TODO: Nob --> Synapse
-	void RemoveSynapse     (Nob *);              //TODO: Nob --> Synapse
-	bool IsConnectedSynapse(Nob const &) const;  //TODO: Nob --> Synapse
-	bool IsConnectedTo     (NobId const) const;
+	bool IsConnectedTo(NobId const) const;
 
 	void Emphasize(bool const) final;
 	void Emphasize(bool const, bool const);
@@ -80,9 +76,9 @@ public:
 	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
 	void          Reconnect()                                   final { /* nothing to connect */ };
 
-	Radian        GetDir()        const final { return Vector2Radian(GetVector()); };
-	NobIoMode     GetIoMode()     const final { return NobIoMode::internal; }
-	mV            GetNextOutput() const final { return getSegments().at(m_potIndex); }
+	Radian        GetDir()       const final { return Vector2Radian(GetVector()); };
+	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
+	mV            GetPotential() const final { return getSegments().at(m_potIndex); }
 
 	MicroMeterPnt GetPos            ()                                      const final;
 	bool          IsIncludedIn      (MicroMeterRect const &)                const final;
@@ -100,7 +96,6 @@ public:
 	void          Select            (bool const)                                  final;
 	void          SelectAllConnected(bool const)                                  final;
 
-	float         PosOnPipe       (MicroMeterPnt const&) const;
 	NobId         GetStartKnotId  ()                     const;
 	NobId         GetEndKnotId    ()                     const;
 	MicroMeterPnt GetStartPoint   ()                     const;
@@ -123,7 +118,6 @@ public:
 	void          DrawArrows(DrawContext const&, MicroMeter const) const;
 	void          DislocateEndPoint();
 	void          DislocateStartPoint();
-	void          RecalcSynapsePositions();
 	void          RecalcSegments() { m_bSegmentsDirty = true; }
 
 	void Apply2AllSegments(auto const& func) const
@@ -132,31 +126,23 @@ public:
 			func(segNr);
 	}
 
-	void Apply2AllSynapses(auto const& func) const
-	{
-		for (auto it : m_synapses)
-			func(it);
-	}
-
 	friend wostream& operator<< (wostream&, Pipe const&);
 
 private:
-	vector<Nob*> m_synapses;  //TODO: Nob --> Synapse
-	Nob        * m_pNobStart { nullptr };  //TODO: Nob --> PosNob
-	Nob        * m_pNobEnd   { nullptr };  //TODO: Nob --> PosNob
+	Nob * m_pNobStart { nullptr };  //TODO: Nob --> PosNob
+	Nob * m_pNobEnd   { nullptr };  //TODO: Nob --> PosNob
 
 	// mutable members - lazy evaluation
 
 	mutable size_t     m_potIndex       { 0 };   // index in m_segments if SegNr 0
 	mutable vector<mV> m_segments       { };
-	mutable bool       m_bSegmentsDirty { false };
+	mutable bool       m_bSegmentsDirty { true };
 
 	vector<mV> const& getSegments() const;
 	MicroMeterPnt     dislocation() const;
 	size_t            segNr2index(SegNr const) const;
 	void              recalcSegments() const;
 	MicroMeterPnt     getSegmentPos(SegNr const, float const) const;
-	void              posChangedRecursive(Pipe const&);
 };
 
 export Pipe const* Cast2Pipe(Nob const* pNob)
