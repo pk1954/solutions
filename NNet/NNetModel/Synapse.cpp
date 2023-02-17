@@ -58,7 +58,7 @@ void Synapse::SetPosNoFix(MicroMeterPnt const& newPos)
 
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-// TODO: ???
+	m_circle.Rotate(umPntPivot, radDelta);
 }
 
 void Synapse::SetAllIncoming(PosNob& src)

@@ -31,11 +31,7 @@ public:
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
 		(
-			[delta](PosNob& posNob)
-			{
-				if (!posNob.IsSynapse())         // Synapses are already implicitly moved 
-					posNob.MoveNob(delta);		 // by m_pipeAdd
-			}
+			[delta](PosNob& posNob)	{ posNob.MoveNob(delta); }
 		);
 	}
 
