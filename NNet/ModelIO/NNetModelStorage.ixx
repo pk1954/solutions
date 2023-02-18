@@ -14,7 +14,7 @@ export class NNetModelStorage
 {
 public:
 
-	inline static double const PROTOCOL_VERSION { 2.0 };
+	inline static double const PROTOCOL_VERSION { 3.0 };
 };
 
 export struct ProtocollException : public exception

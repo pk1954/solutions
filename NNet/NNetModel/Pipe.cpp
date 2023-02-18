@@ -280,11 +280,10 @@ vector<mV> const& Pipe::getSegments() const
 void Pipe::PosChanged()
 {
 	assert(IsPipe());
-	if (m_pNobStart && m_pNobEnd)
-	{
+	if (m_pNobStart)
 		m_pNobStart->DirectionDirty();
-		m_pNobEnd  ->DirectionDirty();
-	}
+	if (m_pNobEnd)
+		m_pNobEnd->DirectionDirty();
 }
 
 void Pipe::SelectAllConnected(bool const bFirst)

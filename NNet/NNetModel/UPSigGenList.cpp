@@ -73,6 +73,8 @@ void UPSigGenList::InsertSigGen(UPSigGen upSigGen, SigGenId const id)
 
 SigGenId UPSigGenList::FindSigGen(wstring const & name) const
 {
+    if (name == StdSigGen::Get()->GetName())
+        return STD_SIGGEN;
     auto it { getSigGen(name) };
     if (it != m_list.end())
          return SigGenId(Cast2Int(it - m_list.begin()));

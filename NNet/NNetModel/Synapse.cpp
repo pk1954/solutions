@@ -140,6 +140,11 @@ void Synapse::Dump() const
 		wcout << L"blocked since " << m_usBlocked << L"µs" << endl;
 }
 
+void Synapse::PosChanged()
+{
+	recalc();
+}
+
 void Synapse::Reconnect()
 {
 	m_pPipeAdd->SetEndPnt(this);
@@ -216,8 +221,6 @@ void Synapse::drawSynapse
 	D2D1::ColorF const  col
 ) const
 {
-	recalc();
-
 	context.FillCircle(MicroMeterCircle(m_umPntTop,   umRadius), col);
 	context.FillCircle(MicroMeterCircle(m_umPntBase1, umRadius), col);
 	context.FillCircle(MicroMeterCircle(m_umPntBase2, umRadius), col);

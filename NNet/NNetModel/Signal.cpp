@@ -71,9 +71,9 @@ void Signal::WriteSignalInfo(wostream & out) const
 
 void Signal::WriteSignalData(wostream & out) const
 {
-    size_t const iLast { m_data.size() - 1 };
+    size_t const iLast { m_data.size() };
     out << LIST_OPEN_BRACKET << m_data.size() << NR_SEPARATOR;
-    for (size_t i = 0; i <= iLast; ++i)
+    for (size_t i = 0; i < iLast; ++i)
     {
         if (i % 12 == 0)
             out << endl;

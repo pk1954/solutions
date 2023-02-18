@@ -33,7 +33,6 @@ public:
         { script.ScrReadSpecial(LIST_OPEN_BRACKET); }
         int const iNrOfElements{ script.ScrReadInt() };
         pSignal->Reserve(iNrOfElements);
-
         script.ScrReadSpecial(NR_SEPARATOR);
         for (int iElem = 0; iElem < iNrOfElements; ++iElem)
         {

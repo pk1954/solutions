@@ -184,10 +184,6 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		if ( m_pNMRI->IsPipe(m_nobIdHighlighted) )
 		{
 			appendMenu(hPopupMenu, IDD_EMPHASIZE);
-			if (m_pPreferences->ArrowsVisible())
-				appendMenu(hPopupMenu, IDD_ARROWS_OFF);
-			else
-				appendMenu(hPopupMenu, IDD_ARROWS_ON);
 		}
 		else if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
 		{

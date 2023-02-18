@@ -95,7 +95,7 @@ public:
 	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
 	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
 
-	virtual mV   GetPotential()  const { return m_mVpotential; }
+	virtual mV   GetPotential()   const { return m_mVpotential; }
 	virtual bool IsCompositeNob() const { return false; }
 	virtual bool HasParentNob()   const { return false; }
 	virtual Nob* GetParentNob()   const { return nullptr; }

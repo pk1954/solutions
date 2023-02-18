@@ -48,7 +48,8 @@ public:
     void Link     (Nob const&, Nob2NobFunc const&)      final;
     
     void SelectAllConnected(bool const)    final;
-    void Recalc     ()                     final;
+    void PosChanged()                      final;
+    void Recalc()                          final;
     void SetPosNoFix(MicroMeterPnt const&) final;
 
     void SetAllIncoming(PosNob&) final;

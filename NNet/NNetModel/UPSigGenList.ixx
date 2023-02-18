@@ -35,7 +35,7 @@ public:
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
     SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
-    bool IsValid(SigGenId const id) const { return (STD_SIGGEN <= id) && (id.GetValue() < m_list.size()); }
+    bool IsValid(SigGenId const id) const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
     bool IsAnySigGenSelected()      const { return m_sigGenIdActive.IsNotNull(); }
 
     SigGenId SetActive(SigGenId const);
