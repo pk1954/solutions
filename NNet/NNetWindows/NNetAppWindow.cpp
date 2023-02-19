@@ -153,7 +153,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_upModel->SetHighSigObservable(&m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(200ms);
 	m_miniNNetWindow   .SetRefreshRate(200ms);
-	m_monitorWindow    .SetRefreshRate( 50ms);
+	m_monitorWindow    .SetRefreshRate( 20ms);
 	m_crsrWindow       .SetRefreshRate(100ms);
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_statusBar        .SetRefreshRate(300ms);

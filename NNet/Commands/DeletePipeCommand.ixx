@@ -170,7 +170,7 @@ public:
 			case inputLine: m_upCmdStart = make_unique<RemoveNobCmd<InputLine>>        (m_idStart);	break;
 			case knot:      m_upCmdStart = make_unique<ReplaceNobCmd<Knot, OutputLine>>(m_idStart);	break;
 			case fork:      m_upCmdStart = make_unique<ForkStartCmd>                   (m_pipe);	break;
-			case synapse:   m_upCmdEnd   = make_unique<SynapseStartCmd>                (m_pipe);    break;
+			case synapse:   m_upCmdStart = make_unique<SynapseStartCmd>                (m_pipe);    break;
 			case neuron:    m_upCmdStart = make_unique<DeleteNeuronInputCmd>           (m_pipe.GetStartNobPtr()); break;
 			default:		assert(false);
 		}
