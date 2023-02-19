@@ -38,6 +38,7 @@ public:                    // pipe context menu: create synapse
 		m_upSynapse->AddOutgoing(m_upPipeOut.get());
 		m_upInputLine->SetPipe(m_upPipeAdd.get());
 		m_upPipeAdd->PosChanged();
+		m_upSynapse->Recalc();
 	}
 
 	~CreateSynapseCommand() = default;

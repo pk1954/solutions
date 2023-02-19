@@ -30,6 +30,7 @@ public:
 		m_upSynapse = make_unique<Synapse>(m_pOutputLine->GetPos());
 		m_upSynapse->SetAddPipe(m_pOutputLine->GetPipe());
 		SplitPipeCommand::InitSplit(*m_upSynapse.get());
+		m_upSynapse->Recalc();
 	}
 
 	~ConnectCreateSynapseCmd() final = default;

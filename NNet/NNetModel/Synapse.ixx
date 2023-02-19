@@ -42,10 +42,10 @@ public:
     bool CompStep()     final;
     void Reconnect()    final;
 
-    bool Includes (MicroMeterPnt  const&)         const final;
-    void MoveNob  (MicroMeterPnt  const&)               final;
-    void RotateNob(MicroMeterPnt  const&, Radian const) final;
-    void Link     (Nob const&, Nob2NobFunc const&)      final;
+    bool Includes (MicroMeterPnt const&)         const final;
+    void MoveNob  (MicroMeterPnt const&)               final;
+    void RotateNob(MicroMeterPnt const&, Radian const) final;
+    void Link     (Nob const&, Nob2NobFunc const&)     final;
     
     void SelectAllConnected(bool const)    final;
     void PosChanged()                      final;
@@ -107,6 +107,8 @@ private:
     Pipe *     m_pPipeIn;
     Pipe *     m_pPipeOut;
     Pipe *     m_pPipeAdd;
+
+    bool isDefined() const { return m_pPipeIn && m_pPipeOut && m_pPipeAdd; }
 };
 
 export Synapse const* Cast2Synapse(Nob const* pNob)

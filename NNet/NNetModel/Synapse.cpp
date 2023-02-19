@@ -59,21 +59,22 @@ void Synapse::SetPosNoFix(MicroMeterPnt const& newPos)
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
 	m_circle.Rotate(umPntPivot, radDelta);
+	recalc();
 }
 
 void Synapse::SetAllIncoming(PosNob& src)
 {
 	assert(src.IsSynapse());
 	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
-	m_pPipeAdd = pSynapseSrc->m_pPipeAdd;
-	m_pPipeIn  = pSynapseSrc->m_pPipeIn;
+	SetAddPipe(pSynapseSrc ->m_pPipeAdd);
+	AddIncoming(pSynapseSrc->m_pPipeIn);
 }
 
 void Synapse::SetAllOutgoing(PosNob& src)
 {
 	assert(src.IsSynapse());
 	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
-	m_pPipeOut = pSynapseSrc->m_pPipeOut;
+	AddOutgoing(pSynapseSrc->m_pPipeOut);
 }
 
 void Synapse::MoveNob(MicroMeterPnt const& delta)
@@ -82,6 +83,7 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 	m_pPipeAdd->PosChanged();
 	m_pPipeIn ->PosChanged();
 	m_pPipeOut->PosChanged();
+	recalc();
 }
 
 void Synapse::recalc() const
@@ -271,17 +273,18 @@ void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) co
 
 void Synapse::CollectInput()
 {
-	m_mVpotential = m_pPipeIn ->GetEndNobPtr()->GetPotential();
+	m_mVpotential = m_pPipeIn ->GetPotential();
 	m_mVaddInput  = m_pPipeAdd->GetPotential();
 }
 
 bool Synapse::CompStep()
 {
+	fMicroSecs usBlockTime = GetParam()->PulseDistMin();
 	if (m_bOutputBlocked)
 	{
 		m_mVpotential = 0.0_mV;
 		m_usBlocked += GetParam()->TimeResolution();
-		if (m_usBlocked > GetParam()->PulseDistMin())
+		if (m_usBlocked > usBlockTime)
 			m_bOutputBlocked = false;
 	}
 	else

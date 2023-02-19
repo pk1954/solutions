@@ -43,16 +43,15 @@ public:
 private:
 
     Pipe* getPipePtr(NobId const) const;
-    Nob * createNob(Script&) const;
 
-    Pipe * createPipe      (Script&, NobId const) const;
-
-    UPNob createSynapse    (Script&) const;
-    UPNob createNeuron     (Script&) const;
-    UPNob createKnot       (Script&) const;
-    UPNob createFork       (Script&) const;
-    UPNob createInputLine  (Script&) const;
-    UPNob createOutputLine (Script&) const;
+    Nob * createNob        (Script&)                const;
+    Pipe* createPipe       (Script&, NobId const)   const;
+    UPNob createSynapse    (Script&)                const;
+    UPNob createNeuron     (Script&)                const;
+    UPNob createKnot       (Script&)                const;
+    UPNob createFork       (Script&)                const;
+    UPNob createInputLine  (Script&)                const;
+    UPNob createOutputLine (Script&)                const;
     UPNob createIoConnector(Script&, NobType const) const;
 
     void writePipe       (wostream&, Pipe        const&) const;
