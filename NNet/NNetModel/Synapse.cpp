@@ -257,8 +257,9 @@ void Synapse::drawSynapse
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
-	drawSynapse(context, RADIUS, GetExteriorColor(type));
-	FillExternalCircle(context, type);
+	ColorF col { GetExteriorColor(type) };
+	drawSynapse(context, RADIUS, col);
+	context.FillCircle(m_circle, col);
 }
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
