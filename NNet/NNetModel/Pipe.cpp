@@ -92,7 +92,7 @@ NobId Pipe::GetEndKnotId() const
 
 MicroMeterPnt Pipe::GetPos() const 
 { 
-	return (m_pNobStart->GetPos() + m_pNobEnd->GetPos()) / 2.0f; 
+	return (m_pNobStart->GetPos() + GetEndPoint()) / 2.0f; 
 }
 
 void Pipe::ClearDynamicData()
@@ -202,7 +202,7 @@ MicroMeter Pipe::DistPntToPipe(MicroMeterPnt const& umPoint) const
 	return PointToLine
 	(
 		m_pNobStart->GetPos(),
-		m_pNobEnd->GetPos(),
+		GetEndPoint(),
 		umPoint
 	);
 }
@@ -241,7 +241,7 @@ MicroMeterPnt Pipe::GetVector() const
 {
 	assert(m_pNobStart);
 	assert(m_pNobEnd);
-	MicroMeterPnt umVector { m_pNobEnd->GetPos() - m_pNobStart->GetPos() };
+	MicroMeterPnt umVector { GetEndPoint() - m_pNobStart->GetPos() };
 	assert(!umVector.IsCloseToZero());
 	return umVector;
 }

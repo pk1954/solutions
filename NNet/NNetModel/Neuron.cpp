@@ -78,7 +78,7 @@ void Neuron::CollectInput()
 	else 
 	{
 		m_mVpotential.Set2Zero();
-		Apply2AllInPipesC([this](Pipe const& pipe) { m_mVpotential += pipe.GetPotential(); }); // slow !!
+		Apply2AllInPipesC([this](Pipe const& pipe) { m_mVpotential += pipe.GetPotential(); });
 	}
 }
 
@@ -151,7 +151,12 @@ void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) co
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 { 
-	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : Nob::GetInteriorColor(type, m_mVpotential) };
+	D2D1::ColorF const color
+	{
+		(m_bTriggered && (m_usSpikeTime < GetParam()->SpikeWidth()))
+		? NNetColors::INT_TRIGGER
+		: Nob::GetInteriorColor(type, m_mVpotential)
+	};
 	context.FillCircle(m_circle * NEURON_INTERIOR, color);
 	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 }
