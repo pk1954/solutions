@@ -57,18 +57,19 @@ public:
 	bool                    IsConnectionCandidate(NobId const, NobId const) const;
 	ConnectionType          ConnectionResult     (NobId const, NobId const) const;
 	bool                    IsConnectedTo        (NobId const, NobId const) const;
-	bool                    IsSelected           (NobId const) const;
-	NobType                 GetNobType           (NobId const) const;
-	size_t                  GetNrOfSegments      (NobId const) const;
-	size_t                  GetNrOfOutConns      (NobId const) const;
-	size_t                  GetNrOfInConns       (NobId const) const;
-	mV                      GetVoltage           (NobId const) const;
 	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const&) const;
-	Degrees                 GetDirection         (NobId const) const;
-	SignalGenerator const * GetSigGenC           (NobId const) const;
-	wstring                 GetTypeName(NobId const id)            const { return NobType::GetName(GetNobType(id).GetValue()); };
-	MicroMeterPnt           GetNobPos  (NobId const id)            const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
-	Nob             const * GetConstNob(NobId const id)            const { return m_pModel->GetConstNob(id); }
+	mV                      GetVoltage           (NobId const)     const;
+	bool                    IsSelected           (NobId const)     const;
+	NobType                 GetNobType           (NobId const)     const;
+	size_t                  GetNrOfSegments      (NobId const)     const;
+	size_t                  GetNrOfOutConns      (NobId const)     const;
+	size_t                  GetNrOfInConns       (NobId const)     const;
+	Degrees                 GetDirection         (NobId const)     const;
+	SignalGenerator const * GetSigGenC           (NobId const)     const;
+	wstring                 GetTypeName          (NobId const id)  const { return NobType::GetName(GetNobType(id).GetValue()); };
+	MicroMeterPnt           GetNobPos            (NobId const id)  const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
+	PosNob          const * GetConstPosNobPtr    (NobId const id)  const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
+	Nob             const * GetConstNob          (NobId const id)  const { return m_pModel->GetConstNob(id); }
 	MonitorData     const & GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	NNetParameters  const & GetParamsC()                           const { return m_pModel->GetParams(); };
 	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
@@ -88,11 +89,12 @@ public:
 	SignalGenerator const * GetSigGenC(SigGenId const id)          const { return m_pModel->GetSigGenList().GetSigGen(id); }
 	SigGenId                GetSigGenIdSelected()                  const { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }
 	bool                    IsInList(wstring const & name)         const { return m_pModel->GetSigGenList().IsInList(name); }
-	Sensor          const * GetSensorSelectedC()                   const { return m_pModel->GetSensorList().GetSensorSelected(); }
-	SensorId                GetSensorIdSelected()                  const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
-	bool                    IsAnySensorSelected()                  const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
-	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetSensorList().FindSensor(id) != SensorId::NULL_VAL(); }
-	PosNob          const * GetConstPosNobPtr(NobId const id)      const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
+
+	SensorId       GetSensorId   (NobId const id) const { return m_pModel->GetSensorList().FindSensor(id); }
+	bool           HasMicroSensor(NobId const id) const { return GetSensorId(id) != SensorId::NULL_VAL(); }
+	Sensor const * GetSensorSelectedC()           const { return m_pModel->GetSensorList().GetSensorSelected(); }
+	SensorId       GetSensorIdSelected()          const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
+	bool           IsAnySensorSelected()          const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
 
 	bool IsInputLine(NobId const id) const
 	{

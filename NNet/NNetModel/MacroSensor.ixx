@@ -28,7 +28,9 @@ public:
     mV   GetSignalValue()                      const final;
     void WriteInfo(wostream &)                 const final;
     void Draw(DrawContext const &, bool const) const final;
-    void RotateSensor (MicroMeterPnt const &, Radian const) final;
+    bool IsConnected()                         const final { return true; }
+
+    void RotateSensor(MicroMeterPnt const&, Radian const) final;
 
     bool Includes(MicroMeterPnt const p) const { return m_circle.Includes(p); }
 

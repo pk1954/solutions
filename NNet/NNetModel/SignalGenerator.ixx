@@ -38,6 +38,7 @@ public:
 	void Dump()                               const final {};
 	void WriteInfo(wostream&)                 const final {};
 	void Draw(DrawContext const&, bool const) const final {};
+	bool IsConnected()                        const final { return true; }
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;

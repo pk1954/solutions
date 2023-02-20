@@ -131,6 +131,7 @@ bool CommandStack::UndoCommand()
         return false;
     set2OlderCmd();
     currentCmd().Undo();
+    Check();
     notify();
     return true;
 }

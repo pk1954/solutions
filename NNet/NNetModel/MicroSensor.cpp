@@ -28,6 +28,9 @@ void MicroSensor::Dump() const
 
 void MicroSensor::WriteInfo(wostream& out) const
 {
+    if (!m_bConnected)
+        return;
+
     out << Signal::SIGSRC_NOB;
     out << m_pNob->GetId();
     out << endl;
@@ -35,7 +38,7 @@ void MicroSensor::WriteInfo(wostream& out) const
 
 mV MicroSensor::GetSignalValue() const
 {
-    mV mVResult { m_pNob->GetPotential() };
+    mV mVResult { m_bConnected ? m_pNob->GetPotential() : 0.0_mV };
     return mVResult;
 }
 
@@ -45,6 +48,9 @@ void MicroSensor::Draw
     bool        const  bHighlight
 ) const
 {
+    if (!m_bConnected)
+        return;
+
     static fPixel const WIDTH { 5._fPixel };
 
     MicroMeter       const umRadius { context.GetCoordC().Transform2logUnit(30._fPixel) };

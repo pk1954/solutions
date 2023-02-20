@@ -52,3 +52,13 @@ void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const 
 {
 	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
 }
+
+MicroSensor* NNetModelWriterInterface::GetMicroSensor(Nob* pNob)
+{
+    SensorId idSensor { GetSensorId(pNob->GetId()) };
+    if (idSensor == SensorId::NULL_VAL())
+        return nullptr;
+    Sensor     * pSensor      { GetSensorList().GetSensor(idSensor) };
+    MicroSensor* pMicroSensor { Cast2MicroSensor(pSensor) };
+    return pMicroSensor;
+}

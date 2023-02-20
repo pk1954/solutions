@@ -115,25 +115,35 @@ private:
 class SynapseEndCmd : public NNetCommand
 {
 public:
-	explicit SynapseEndCmd(Pipe & pipe)
+	explicit SynapseEndCmd(Pipe& pipe)
 	{
-		m_pSynapse = Cast2Synapse(pipe.GetEndNobPtr());
-		bool bDelAddPipe { &pipe == m_pSynapse->GetAddPipe() };
-		m_upKnot   = make_unique<Knot>(*m_pSynapse);
-		m_upKnot->AddOutgoing(m_pSynapse->GetOutPipe());
-		m_upKnot->AddIncoming
-		(
-			bDelAddPipe
-			? m_pSynapse->GetInPipe() 
-			: m_pSynapse->GetAddPipe()
-		);
+		Synapse* pSynapse { Cast2Synapse(pipe.GetEndNobPtr()) };
+		m_pInPipe  = (&pipe == pSynapse->GetAddPipe()) 
+			         ? pSynapse->GetInPipe() 
+			         : pSynapse->GetAddPipe();
+		m_pOutPipe = pSynapse->GetOutPipe();
+		m_upKnot   = make_unique<Knot>(*pSynapse);
+		m_upKnot->AddOutgoing(m_pOutPipe);
+		m_upKnot->AddIncoming(m_pInPipe);
 	}
 
-	void Do()   final { m_upSynapse = m_pNMWI->ReplaceInModel<Synapse>(move(m_upKnot   )); }
-	void Undo() final { m_upKnot    = m_pNMWI->ReplaceInModel<Knot>   (move(m_upSynapse)); }
+	void Do()   final 
+	{ 
+		m_pOutPipe->SetStartPnt(m_upKnot.get());
+		m_pInPipe ->SetEndPnt  (m_upKnot.get());
+		m_upSynapse = m_pNMWI->ReplaceInModel<Synapse>(move(m_upKnot));
+	}
+
+	void Undo() final 
+	{ 
+		m_pOutPipe->SetStartPnt(m_upSynapse.get());
+		m_pInPipe ->SetEndPnt  (m_upSynapse.get());
+		m_upKnot = m_pNMWI->ReplaceInModel<Knot>(move(m_upSynapse)); 
+	}
 
 private:
-	Synapse *           m_pSynapse;
+	Pipe* m_pInPipe;
+	Pipe* m_pOutPipe;
 	unique_ptr<Synapse> m_upSynapse;
 	unique_ptr<Knot>    m_upKnot;
 };

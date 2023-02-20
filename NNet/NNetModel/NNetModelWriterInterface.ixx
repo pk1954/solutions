@@ -25,6 +25,7 @@ import :Pipe;
 import :NobId;
 import :Nob;
 import :PosNob;
+import :MicroSensor;
 import :DescriptionUI;
 import :MonitorData;
 import :UPSensorList;
@@ -83,6 +84,8 @@ public:
 
     PosNob & GetPosNob(NobId const);
 
+    MicroSensor* GetMicroSensor(Nob*);
+
     template <Nob_t T>
     T GetNobPtr(NobId const id)
     {
@@ -109,13 +112,19 @@ public:
     {
         UPNob upNob { GetUPNobs().ExtractNob(id) };
         auto  pNob  { upNob.release() };
+        if (MicroSensor * pMicroSensor { GetMicroSensor(pNob) })
+            pMicroSensor->Disconnect();
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNob)));
     }
 
     void Restore2Model(UPNob up)
     {
         if (up)
+        {
+            if (MicroSensor * pMicroSensor { GetMicroSensor(up.get()) })
+                pMicroSensor->Connect();
             GetUPNobs().ReplaceNob(move(up));
+        }
     }
 
     template <Nob_t OLD>
