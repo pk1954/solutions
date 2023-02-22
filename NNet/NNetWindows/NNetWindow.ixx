@@ -45,6 +45,8 @@ public:
 
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
 
+	SignalId FindSignalHandle(MicroMeterPnt const&) const;
+
 	template<class CRIT>
 	void DrawInteriorInRect
 	(
@@ -87,7 +89,8 @@ protected:
 	void DrawSensorDataPoints (MacroSensor const * const) const;
 	void DrawHighlightedSensor(MacroSensor const * const) const;
 
-	NNetModelReaderInterface const* m_pNMRI{ nullptr };
+	NNetModelReaderInterface const* m_pNMRI          { nullptr };
+	MonitorWindow            const* m_pMonitorWindow { nullptr };
 
 	PixelPoint GetPtLast() const { return m_ptLast; }
 
@@ -95,15 +98,18 @@ protected:
 	void ClearPtLast() { m_ptLast.Set2Null(); }
 
 private:
-	NNetWindow(NNetWindow const&);           // noncopyable class 
+	NNetWindow(NNetWindow const&);                       // noncopyable class 
 	NNetWindow& operator= (NNetWindow const&) = delete;  // noncopyable class 
 
-	MonitorWindow const * m_pMonitorWindow     { nullptr };
-	NNetController      * m_pController        { nullptr };
-	ID2D1SolidColorBrush* m_pBrushSensorCables { nullptr };
-	D2D_DrawContext       m_context            { };
-	fPixel                m_fPixRadiusLimit    { };
-	PixelPoint            m_ptLast             { PP_NULL };	// Last cursor position during selection 
+	inline static fPixel const HRADIUS { 20._fPixel };
+	inline static fPixel const VRADIUS { 10._fPixel };
+
+	NNetController      * m_pController          { nullptr };
+	ID2D1SolidColorBrush* m_pBrushSensorNormal   { nullptr };
+	ID2D1SolidColorBrush* m_pBrushSensorSelected { nullptr };
+	D2D_DrawContext       m_context              { };
+	fPixel                m_fPixRadiusLimit      { };
+	PixelPoint            m_ptLast               { PP_NULL };	// Last cursor position during selection 
 
 	void drawSignalCable(MonitorData const&, SignalId const&) const;
 };

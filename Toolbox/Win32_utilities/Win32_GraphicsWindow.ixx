@@ -35,5 +35,8 @@ protected:
 
 	virtual void DoPaint() = 0;
 
+	fPixel GetClientHeight() const { return Convert2fPixel(GetClientWindowHeight()); }
+	fPixel GetClientWidth () const { return Convert2fPixel(GetClientWindowWidth()); }
+
 	unique_ptr<D2D_driver> m_upGraphics{ nullptr };
 };

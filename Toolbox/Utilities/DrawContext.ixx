@@ -109,8 +109,6 @@ public:
 		return (rect.GetHeight() < umMin) || (rect.GetWidth() < umMin);
 	}
 
-	virtual void test() const = 0;
-
 protected:
 	bool                  m_bNoColors { false };
 	Uniform2D<MicroMeter> m_coord     { };

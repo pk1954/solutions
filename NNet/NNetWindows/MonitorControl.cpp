@@ -51,7 +51,7 @@ MonitorControl::MonitorControl
 	m_horzCoord.RegisterObserver(*this);
 	m_vertCoord.RegisterObserver(*this);
 
-	m_pMoveSizeObservable = &observable;
+	m_pObservable = &observable;
 }
 
 void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
@@ -113,11 +113,25 @@ void MonitorControl::selectSignal(PixelPoint const &pixCrsrPos)
 	}
 }
 
+float MonitorControl::pixel2Track(PIXEL const pixPosY) const
+{
+	fPixel  const fPixTrackHeight { calcTrackHeight() };
+	fPixel  const fPixCrsrYpos    { Convert2fPixel(pixPosY) };
+	float   const fTrack          { fPixCrsrYpos / fPixTrackHeight };
+	return fTrack;
+}
+
 void MonitorControl::selectTrack(PixelPoint const &pixCrsrPos)
 {
-	TrackNr const trackNrFound { findTrack(pixCrsrPos.GetY()) };
-	if (trackNrFound != m_trackNrHighlighted)
-		m_trackNrHighlighted = trackNrFound;
+	TrackNr trackNr { Cast2Int(pixel2Track(pixCrsrPos.GetY())) };
+	if (!m_pMonitorData->IsValid(trackNr))
+		trackNr.Set2Null();
+	m_trackNrHighlighted = trackNr;
+}
+
+int MonitorControl::findTrackPos(PIXEL const pixPosY) const
+{
+	return Cast2Int(round(pixel2Track(pixPosY)));
 }
 
 SignalNr MonitorControl::findSignal
@@ -160,27 +174,6 @@ SignalNr MonitorControl::findSignal
 	return signalNrRes;
 }
 
-TrackNr MonitorControl::findTrack(PIXEL const pixPosY) const
-{
-	fPixel  const fPixTrackHeight { calcTrackHeight() };
-	fPixel  const fPixCrsrYpos    { Convert2fPixel(pixPosY) };
-	TrackNr const trackNr         { Cast2Int(fPixCrsrYpos / fPixTrackHeight) };
-	return m_pMonitorData->IsValid(trackNr) ? trackNr : TrackNr::NULL_VAL();
-}
-
-TrackNr MonitorControl::findPos4NewTrack(PIXEL const pixCrsrPosY) const
-{
-	fPixel const fPixTrackHeight  { calcTrackHeight() };
-	fPixel const fPixCrsrYpos     { Convert2fPixel(pixCrsrPosY) };
-	int    const iTrackNr         { Cast2Int(fPixCrsrYpos / fPixTrackHeight) };
-	fPixel const fPixTrackCenterY { fPixTrackHeight * (Cast2Float(iTrackNr) + 0.5f) };
-	TrackNr      trackNr          { m_trackNrHighlighted };
-	assert(trackNr.IsNotNull());
-	if (fPixCrsrYpos > fPixTrackCenterY)
-		++trackNr;
-	return trackNr;
-}
-
 void MonitorControl::highlightSignal(SignalId const & idNew)
 {
 	if (! m_pMonitorData->IsSelected(idNew))
@@ -200,7 +193,8 @@ void MonitorControl::highlightSignal(SignalId const & idNew)
 
 fPixel MonitorControl::getSignalOffset(SignalId const & idSignal) const
 { 
-	fPixel fPixOffset { calcTrackHeight() * Cast2Float(idSignal.GetTrackNr().GetValue()+1) }; 
+	fPixel const fPixTrackHeight { calcTrackHeight() };
+	fPixel       fPixOffset      { fPixTrackHeight * Cast2Float(idSignal.GetTrackNr().GetValue()+1) };
 	if (m_pMonitorData->IsSelected(idSignal))  
 		fPixOffset += Convert2fPixel(m_pixMoveOffsetY);  // may have move offset
 	return fPixOffset;
@@ -220,7 +214,7 @@ fPixel MonitorControl::getSignalValue
 
 fPixel MonitorControl::calcTrackHeight() const
 {
-	fPixel const fPixRectHeight  { Convert2fPixel(GetClientWindowHeight()) };
+	fPixel const fPixRectHeight  { GetClientHeight() };
 	fPixel       fPixTrackHeight { fPixRectHeight };
 	if (m_pMonitorData)
 	{ 
@@ -278,7 +272,7 @@ void MonitorControl::paintWarningRect() const
 		fPixelRect
 		(
 			fPixelPoint   (m_fPixRightLimit, 0._fPixel),
-			fPixelRectSize(m_fPixRightBorder, Convert2fPixel(GetClientWindowHeight()))
+			fPixelRectSize(m_fPixRightBorder, GetClientHeight())
 		), 
 		NNetColors::COL_WARNING
 	);
@@ -338,7 +332,7 @@ PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId) const
 	if (pSig == nullptr)
 		return PixelPoint::NULL_VAL();
 	fPixel      const fPixTrackHeight { calcTrackHeight() };
-	fPixel      const fPixVertPos     { fPixTrackHeight * (signalId.GetTrackNr().GetValue() + 0.5f) };
+	fPixel      const fPixVertPos     { getSignalOffset(signalId) - fPixTrackHeight * 0.5f };
 	fPixelPoint const fPixPntSignal	  { m_fPixWinWidth, fPixVertPos };
 	PixelPoint  const pixPntSignal    { Convert2PixelPoint(fPixPntSignal) };
 	PixelPoint  const pixPosScreen    { Client2Screen(pixPntSignal) };
@@ -414,7 +408,7 @@ void MonitorControl::StimulusTriggered()
 
 void MonitorControl::paintStimulusMarkers() const
 {
-	fPixel const fPixBottom { Convert2fPixel(GetClientWindowHeight()) };
+	fPixel const fPixBottom { GetClientHeight() };
 
 	int iStimulusNr { 1 };
 	for (auto it : m_pMonitorData->GetStimulusList())
@@ -474,7 +468,7 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_ADD_TRACK:
-		SendCommand2Application(wmId, static_cast<LPARAM>(findPos4NewTrack(pixPoint.GetY()).GetValue()));
+		SendCommand2Application(wmId, static_cast<LPARAM>(findTrackPos(pixPoint.GetY())));
 		SendCommand(IDM_WINDOW_ON, 0);  // if window was not visible, show it now
 		break;
 
@@ -521,6 +515,12 @@ bool MonitorControl::OnShow(WPARAM const wParam, LPARAM const lParam)
 	return false;
 }
 
+void MonitorControl::MoveHighlightedSignal(PIXEL const pixDelta)
+{
+	m_pixMoveOffsetY += pixDelta;
+	m_pObservable->NotifyAll(false);
+}
+
 void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)
 {
 	if (m_pixLast.IsNotNull())
@@ -531,16 +531,10 @@ void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)
 			if (fPixNewPos > m_fPixRightLimit)
 				fPixNewPos = m_fPixRightLimit;
 			m_measurement.MoveSelection(fPixNewPos);
-//			SetCursor(m_hCrsrWE);
 		}
-		else 
+		else if (m_pMonitorData->IsAnySignalSelected())
 		{
-			if (m_pMonitorData->IsAnySignalSelected())
-			{
-				m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
-				m_pMoveSizeObservable->NotifyAll(false);
-//				SetCursor(m_hCrsrNS);
-			}
+			MoveHighlightedSignal(pixCrsrPos.GetY() - m_pixLast.GetY());
 		}
 	}
 	m_pixLast = pixCrsrPos;
@@ -587,20 +581,23 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	}
 };
 
-bool MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam) 
+void MonitorControl::DropSignal()
 {
-	if (
-		(m_trackNrHighlighted.IsNotNull()) && 
-		(m_pMonitorData->GetSelectedTrackNr() != m_trackNrHighlighted) && 
-		(! m_measurement.TrackingActive()) &&
-		(m_pMonitorData->IsAnySignalSelected())
-	   )
+	if (int const iTrackDelta = findTrackPos(m_pixMoveOffsetY))
 	{
-		MoveSignalCmd::Push(m_pMonitorData->GetHighlightedSignalId(), m_trackNrHighlighted);
+		SignalId signalId   { m_pMonitorData->GetHighlightedSignalId() };
+		TrackNr  trackNrNew { signalId.GetTrackNr() + iTrackDelta };
+		MoveSignalCmd::Push(signalId, trackNrNew);
 	}
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLast.Set2Null();
 	Trigger();  // cause repaint
+};
+
+bool MonitorControl::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+{
+	if (!m_measurement.TrackingActive() && m_pMonitorData->IsAnySignalSelected())
+		DropSignal();
 	return GraphicsWindow::OnLButtonUp(wParam, lParam);
 };
 

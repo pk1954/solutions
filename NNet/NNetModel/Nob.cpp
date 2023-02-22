@@ -168,7 +168,7 @@ void Nob::FillInternalCircle
 		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
 		break;
 	case tHighlight::blocked:
-		context.FillCircle(umCircle, NNetColors::INT_BLOCKED, fPixMinWidth);
+		context.FillCircle(umCircle, NNetColors::EXT_NORMAL, fPixMinWidth);
 		break;
 	default:
 		assert(false);

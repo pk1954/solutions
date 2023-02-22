@@ -148,8 +148,8 @@ void Signal::Notify(bool const bImmediate) // called by compute thread!
 
 SIMU_TIME Signal::FindNextMaximum
 (
-    NNetParameters     const & param,
-    SIMU_TIME const   usSimu
+    NNetParameters const & param,
+    SIMU_TIME      const   usSimu
 ) const
 {
     SIG_INDEX index { time2index(param, usSimu) };

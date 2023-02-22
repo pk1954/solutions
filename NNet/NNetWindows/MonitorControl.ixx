@@ -49,6 +49,8 @@ public:
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
 	PixelPoint GetTrackPosScreen(SignalId const) const;
+	void       MoveHighlightedSignal(PIXEL const);
+	void       DropSignal();
 
 private:
 
@@ -66,8 +68,8 @@ private:
 	void        selectSignal    (PixelPoint const &);
 	void        selectTrack     (PixelPoint const &);
 	SignalNr    findSignal      (TrackNr const, PixelPoint const &) const;
-	TrackNr     findTrack       (PIXEL const) const;
-	TrackNr     findPos4NewTrack(PIXEL const) const;
+	float       pixel2Track     (PIXEL const) const;
+	int         findTrackPos    (PIXEL const) const;
 	void        highlightSignal (SignalId const &);
 	fPixel      getSignalOffset (SignalId const &) const;
 	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
@@ -99,9 +101,9 @@ private:
 	PixFpDimension<mV>         & m_vertCoord;
 	Sound                      & m_sound;        
 	NNetModelCommands          & m_modelCommands;
-	MonitorData                * m_pMonitorData        { nullptr };
-	IDWriteTextFormat          * m_pTextFormat         { nullptr };
-	Observable                 * m_pMoveSizeObservable { nullptr };;
+	MonitorData                * m_pMonitorData { nullptr };
+	IDWriteTextFormat          * m_pTextFormat  { nullptr };
+	Observable                 * m_pObservable  { nullptr };
 	Measurement                  m_measurement;
 
 	TrackNr    m_trackNrHighlighted { TrackNr::NULL_VAL() };

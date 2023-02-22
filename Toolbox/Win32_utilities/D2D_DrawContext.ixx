@@ -119,11 +119,6 @@ public:
 		fPixel const = 1._fPixel
 	) const override;
 
-	void test() const override
-	{
-		m_pGraphics->test();
-	}
-
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 

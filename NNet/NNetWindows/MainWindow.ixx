@@ -98,6 +98,7 @@ private:
 	NobId findTargetNob(MicroMeterPnt const&);
 	bool  setHighlightedNob   (MicroMeterPnt const&);
 	bool  setHighlightedSensor(MicroMeterPnt const&);
+	void  selectSignalHandle  (MicroMeterPnt const&);
 	void  centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool  connectionAllowed();
 	void  select(NobId const);

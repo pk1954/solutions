@@ -36,10 +36,11 @@ void NNetWindow::Start
 		dwStyle
 	);
 	m_context.Start(m_upGraphics.get());
-	m_pController        = & controller;
-	m_pMonitorWindow     = pMonitorWindow;
-	m_fPixRadiusLimit    = fPixLimit;
-	m_pBrushSensorCables = m_upGraphics->CreateBrush(D2D1::ColorF::Green);
+	m_pController          = & controller;
+	m_pMonitorWindow       = pMonitorWindow;
+	m_fPixRadiusLimit      = fPixLimit;
+	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
+	m_pBrushSensorSelected = m_upGraphics->CreateBrush(NNetColors::EEG_SIGNAL_HIGH);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 
@@ -98,20 +99,48 @@ void NNetWindow::drawSignalCable(MonitorData const& monData, SignalId const& sig
 	fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
 	fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosStart };
 	fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f };
+
+	ID2D1SolidColorBrush* pBrush 
+	{ 
+	    (monData.IsSelected(signalId) && (monData.GetNrOfSignals() > 1))
+		? m_pBrushSensorSelected
+		: m_pBrushSensorNormal 
+	};
 	m_upGraphics->DrawBezier
 	(
 		fPixPosStart,
 		fPixPosStart + fPixelPoint(fPixOffset, 0.0_fPixel),
 		fPixPosSensor - fPixDelta * 0.3f,
 		fPixPosSensor, 
-		m_pBrushSensorCables, 
+		pBrush, 
 		2._fPixel
 	);
 	m_upGraphics->FillEllipse
 	(
 		fPixelEllipse(fPixPosSignal, HRADIUS, VRADIUS), 
-		m_pBrushSensorCables
+		pBrush
 	);
+}
+
+SignalId NNetWindow::FindSignalHandle(MicroMeterPnt const& umPos) const
+{
+	fPixelPoint const fPixPos     { GetCoordC().Transform2fPixelPos(umPos) };
+	SignalId          sigIdResult { SignalId::NULL_VAL() };
+	m_pNMRI->GetMonitorDataC().Apply2AllSignalIdsC
+	(
+		[this, &fPixPos, &sigIdResult](SignalId const& sigIdRun)
+		{
+			PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(sigIdRun) };
+			if (pixPosScreenSignal.IsNotNull())
+			{
+				PixelPoint  const pixPosSignal { Screen2Client(pixPosScreenSignal) };
+				fPixelPoint const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
+				if (Distance(fPixPosSignal, fPixPos) <= HRADIUS)
+					sigIdResult = sigIdRun;
+			}
+		}
+	);
+	return sigIdResult;
 }
 
 void NNetWindow::DrawSensors() const

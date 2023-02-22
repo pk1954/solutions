@@ -64,7 +64,7 @@ bool SignalPreview::OnSize(PIXEL const width, PIXEL const height)
 
 fPixel SignalPreview::getY(fPixel const fPix) const 
 { 
-	return Convert2fPixel(GetClientWindowHeight()) - fPix; 
+	return GetClientHeight() - fPix; 
 }
 
 fPixel SignalPreview::yVolt(mV const volt) const 

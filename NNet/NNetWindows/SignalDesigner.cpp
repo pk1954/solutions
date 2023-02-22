@@ -333,10 +333,6 @@ void SignalDesigner::adjustWindowHeight()
 	PIXEL const pixWinHeight       { GetWindowHeight() };
 	PIXEL const pixWinHeightNew    { pixWinHeight - pixClientHeight + pixClientHeightNew };
 	SetWindowHeight(pixWinHeightNew, false);
-
-	PIXEL const pixXXX { GetClientWindowWidth() };
-	PIXEL const pixYYY { GetClientWindowHeight() };
-	int x = 42;
 }
 
 void SignalDesigner::adjustLayout

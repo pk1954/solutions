@@ -96,6 +96,9 @@ public:
 	SensorId       GetSensorIdSelected()          const { return m_pModel->GetSensorList().GetSensorIdSelected(); }
 	bool           IsAnySensorSelected()          const { return m_pModel->GetSensorList().IsAnySensorSelected(); }
 
+	SignalId SelectSignal(SignalId const id) const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
+	bool     IsAnySignalSelected()           const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
+
 	bool IsInputLine(NobId const id) const
 	{
 		Nob const* const pNob{ GetConstNob(id) };
@@ -159,12 +162,6 @@ public:
 	void DrawExterior(NobId      const,   DrawContext const &, tHighlight const) const;
 	void DrawInterior(NobId      const,   DrawContext const &, tHighlight const) const;
 	void DrawLine(MicroMeterLine const &, DrawContext const &)                   const;
-
-	void test(DrawContext const& context) const
-	{
-		context.test();
-	}
-
 
 	MicroMeterPnt OrthoVector(NobId const) const;
 

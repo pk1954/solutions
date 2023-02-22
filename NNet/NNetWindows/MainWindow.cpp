@@ -286,7 +286,8 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		if (!m_pNMRI->AnyNobsSelected())
 		{
 			if (!setHighlightedNob(umCrsrPos))
-				setHighlightedSensor(umCrsrPos);
+				if (!setHighlightedSensor(umCrsrPos))
+					selectSignalHandle(umCrsrPos);
 		}
 		ClearPtLast();                 // make m_ptLast invalid
 		return;
@@ -327,6 +328,10 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
 	}
+	else if (m_pNMRI->IsAnySignalSelected())
+	{
+		m_pMonitorWindow->MoveHighlightedSignal(ptCrsr.GetY() - ptLast.GetY());
+	}
 	else
 	{
 		NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
@@ -363,6 +368,10 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	{
 		m_pModelCommands->Connect(m_nobIdHighlighted, m_nobIdTarget);
 		Reset();
+	}
+	else if (m_pNMRI->IsAnySignalSelected()) 
+	{
+		m_pMonitorWindow->DropSignal();
 	}
 	return NNetWindow::OnLButtonUp(wParam, lParam);
 }
@@ -504,9 +513,6 @@ void MainWindow::DoPaint()
 	}
 
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
-
-	//DrawContext const & context              { GetDrawContextC() };
-	//m_pNMRI->test(context);
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
@@ -527,6 +533,12 @@ bool MainWindow::setHighlightedSensor(MicroMeterPnt const& umCrsrPos)
 	if (idSensorNew != idSensorOld)
 		Notify(false);
 	return idSensorNew.IsNotNull();
+}
+
+void MainWindow::selectSignalHandle(MicroMeterPnt const& umCrsrPos)
+{
+	SignalId const idSignal { FindSignalHandle(umCrsrPos) };
+	m_pNMRI->SelectSignal(idSignal);
 }
 
 bool MainWindow::UserProc

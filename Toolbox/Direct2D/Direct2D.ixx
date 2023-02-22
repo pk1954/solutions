@@ -77,10 +77,8 @@ public:
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, D2D1::ColorF const,     fPixel const) const;
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, ID2D1SolidColorBrush *, fPixel const) const;
 
-    void test() const;
-
-    fPixelRectSize GetClRectSize() const;
-    fPixel         GetClRectWidth() const;
+    fPixelRectSize GetClRectSize  () const;
+    fPixel         GetClRectWidth () const;
     fPixel         GetClRectHeight() const;
 
     IDWriteTextFormat * NewTextFormat(float const) const;
