@@ -19,6 +19,7 @@ void SigGenDynamicData::Reset()
 void SigGenDynamicData::StartStimulus()
 {
 	m_usSimuStartStimu = SimulationTime::Get();
+	m_usSimuStartSpike = 0.0_MicroSecs;
 	m_stimulusActive = true;
 }
 
