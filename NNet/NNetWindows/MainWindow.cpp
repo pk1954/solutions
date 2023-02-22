@@ -362,8 +362,15 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	select(idNob);
 }
 
+bool MainWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
+{
+	SetCapture();
+	return NNetWindow::OnLButtonDown(wParam, lParam);
+}
+
 bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
+	ReleaseCapture();
 	if (connectionAllowed())
 	{
 		m_pModelCommands->Connect(m_nobIdHighlighted, m_nobIdTarget);

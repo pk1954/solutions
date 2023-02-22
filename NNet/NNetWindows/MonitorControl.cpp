@@ -336,6 +336,11 @@ PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId) const
 	fPixelPoint const fPixPntSignal	  { m_fPixWinWidth, fPixVertPos };
 	PixelPoint  const pixPntSignal    { Convert2PixelPoint(fPixPntSignal) };
 	PixelPoint  const pixPosScreen    { Client2Screen(pixPntSignal) };
+
+	//TrackNr trackNr      { signalId.GetTrackNr() };
+	//size_t  iNrOfSignals { m_pMonitorData->GetNrOfSignals(trackNr) };
+	// TODO: vertical offset, sort handles to avoid cable intersection
+
 	return pixPosScreen;
 }
 bool MonitorControl::SignalTooHigh() const

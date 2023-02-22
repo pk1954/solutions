@@ -180,14 +180,21 @@ Track * MonitorData::getTrack(TrackNr const trackNr) // calling const version
 	return const_cast<Track *>(static_cast<const MonitorData&>(*this).getTrack(trackNr));
 }
 
-bool MonitorData::IsEmptyTrack(TrackNr const trackNr) const 
-{ 
+size_t MonitorData::GetNrOfSignals(TrackNr const trackNr) const
+{
+	return (IsValid(trackNr))
+		? getTrack(trackNr)->GetNrOfSignals()
+		: 0;
+}
+
+bool MonitorData::IsEmptyTrack(TrackNr const trackNr) const
+{
 	return (IsValid(trackNr))
 		? getTrack(trackNr)->IsEmpty()
 		: false;
 }
 
-bool MonitorData::AnyEmptyTracks() const 
+bool MonitorData::AnyEmptyTracks() const
 { 
 	return Apply2AllTracksB([](Track const & track){ return track.IsEmpty(); });
 }

@@ -35,7 +35,9 @@ public:
 	Signal const * GetConstSignalPtr(SignalNr const) const;
 	Signal       * GetSignalPtr     (SignalNr const);
 	bool           IsValid          (SignalNr const) const;
-	bool           IsEmpty() const { return m_signals.empty(); }
+
+	bool   IsEmpty()        const { return m_signals.empty(); }
+	size_t GetNrOfSignals() const { return m_signals.size(); }
 
 	template<class FUNC>
 	void Apply2AllSignalNrsC(FUNC const& func) const

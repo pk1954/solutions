@@ -71,7 +71,8 @@ public:
 	TrackNr        GetSelectedTrackNr()           const { return m_idSigHighlighted.GetTrackNr(); }
 	bool           IsAnySignalSelected()          const { return m_idSigHighlighted.IsValid(); }
 	bool           IsSelected(SignalId const& id) const { return m_idSigHighlighted == id; }
-	bool           IsEmptyTrack(TrackNr const)    const;
+	size_t         GetNrOfSignals(TrackNr const)  const;
+	bool           IsEmptyTrack  (TrackNr const)  const;
 	bool           AnyEmptyTracks()               const;
 
 	unique_ptr<Signal> DeleteSignal(SignalId const&);

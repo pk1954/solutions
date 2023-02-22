@@ -51,7 +51,7 @@ public:
 
 	bool operator== (const SignalId& other) const = default;
 
-	TrackNr  GetTrackNr() const { return trackNr; }
+	TrackNr  GetTrackNr () const { return trackNr; }
 	SignalNr GetSignalNr() const { return signalNr; }
 
 	friend wostream& operator<< (wostream& out, SignalId const& id)
