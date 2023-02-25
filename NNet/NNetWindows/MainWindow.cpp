@@ -41,6 +41,7 @@ import MoveSelectionCommand;
 import MoveSensorCmd;
 import Observable;
 import RootWindow;
+import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SizeSensorCmd;
 import SplitNeuronCmd;
@@ -309,7 +310,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (wParam & MK_CONTROL)   // rotate
 	{
 		if (m_pNMRI->AnyNobsSelected())
-			m_pModelCommands->RotateSelection(umLastPos, umCrsrPos);
+			RotateSelectionCommand::Push(umLastPos, umCrsrPos);
 		else if (IsDefined(m_nobIdHighlighted))           
 			m_pModelCommands->Rotate(m_nobIdHighlighted, umLastPos, umCrsrPos);
 		else 

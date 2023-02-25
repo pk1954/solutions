@@ -53,6 +53,7 @@ import NewIoLinePairCmd;
 import NewSigGenCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
+import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SetParameterCommand;
 import SizeSensorCmd;
@@ -180,6 +181,7 @@ void InitializeNNetWrappers
     NewSigGenCmd::Register();
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
+    RotateSelectionCommand::Register();
     SelectAllConnectedCmd::Register();
     SetParameterCommand::Register();
     SizeSensorCmd::Register();

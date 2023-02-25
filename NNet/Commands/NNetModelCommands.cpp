@@ -33,7 +33,6 @@ import PlugIoConnectors;
 import PlugIoLines;
 import RotateModelCommand;
 import RotateNobCommand;
-import RotateSelectionCommand;
 import SelectionCommand;
 import SetActiveSigGenCmd;
 import SelSigGenClientsCmd;
@@ -232,13 +231,6 @@ void NNetModelCommands::SetNob
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id << L" " << posDir << endl;
 	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir));
-}
-
-void NNetModelCommands::RotateSelection(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << umPntOld << umPntNew << endl;
-	m_pCmdStack->PushCommand(make_unique<RotateSelectionCommand>(umPntOld, umPntNew));
 }
 
 void NNetModelCommands::RotateModel(MicroMeterPnt const & umPntOld, MicroMeterPnt const & umPntNew)
