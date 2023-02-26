@@ -41,6 +41,7 @@ import MoveSelectionCommand;
 import MoveSensorCmd;
 import Observable;
 import RootWindow;
+import RotateModelCommand;
 import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SizeSensorCmd;
@@ -314,7 +315,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		else if (IsDefined(m_nobIdHighlighted))           
 			m_pModelCommands->Rotate(m_nobIdHighlighted, umLastPos, umCrsrPos);
 		else 
-			m_pModelCommands->RotateModel(umLastPos, umCrsrPos);
+			RotateModelCommand::Push(umLastPos, umCrsrPos);
 	}
 	else if (m_pNMRI->AnyNobsSelected())
 	{

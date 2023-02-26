@@ -53,6 +53,7 @@ import NewIoLinePairCmd;
 import NewSigGenCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
+import RotateModelCommand;
 import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SetParameterCommand;
@@ -181,6 +182,7 @@ void InitializeNNetWrappers
     NewSigGenCmd::Register();
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
+    RotateModelCommand::Register();
     RotateSelectionCommand::Register();
     SelectAllConnectedCmd::Register();
     SetParameterCommand::Register();

@@ -2,9 +2,12 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module RotateModelCommand;
 
-import Types;
 import RotationCommand;
 import NNetModel;
 
@@ -36,4 +39,34 @@ public:
 		m_pNMWI->GetUPNobs().Apply2All<PosNob>([this](PosNob& b) { UndoRotate(b); });
 		m_pNMWI->GetSensorList().Apply2All([this](Sensor* p) { UndoRotateSensor(*p); });
 	}
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push
+	(
+		MicroMeterPnt const& umPntOld,
+		MicroMeterPnt const& umPntNew
+	)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << umPntOld << umPntNew << endl;
+		m_pStack->PushCommand(make_unique<RotateModelCommand>(umPntOld, umPntNew));
+	}
+
+private:
+
+	inline static const wstring NAME { L"RotateModel" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			MicroMeterPnt const umPntOld { ScrReadMicroMeterPnt(script) };
+			MicroMeterPnt const umPntNew { ScrReadMicroMeterPnt(script) };
+			RotateModelCommand::Push(umPntOld, umPntNew);
+		}
+	};
 };

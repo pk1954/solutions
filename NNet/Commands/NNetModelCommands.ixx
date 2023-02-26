@@ -54,7 +54,6 @@ public:
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void Rotate(NobId const, MicroMeterPnt const&, MicroMeterPnt const&);
-    void RotateModel(MicroMeterPnt const&, MicroMeterPnt const&);
     void SelectSigGenClients();
     void SetActiveSignalGenerator(SigGenId const);
     void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);
