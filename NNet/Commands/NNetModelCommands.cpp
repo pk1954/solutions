@@ -159,13 +159,6 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	m_pSound->Play(L"SNAP_IN_SOUND");
 }
 
-void NNetModelCommands::DeleteSignal(SignalId const& id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
-	m_pCmdStack->PushCommand(make_unique<DeleteSignalCommand>(id));
-}
-
 SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 {
 	UPSensorList & list { m_pNMWI->GetSensorList() };

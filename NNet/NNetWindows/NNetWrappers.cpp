@@ -37,6 +37,7 @@ import DeleteNobCommand;
 import DeleteSelectionCommand;
 import DeleteTrackCommand;
 import DeleteSensorCmd;
+import DeleteSignalCommand;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
@@ -166,6 +167,7 @@ void InitializeNNetWrappers
     DeleteSelectionCommand::Register();
     DeleteTrackCommand::Register();
     DeleteSensorCmd::Register();
+    DeleteSignalCommand::Register();
     DelMicroSensorCmd::Register();
     DeselectModuleCmd::Register();
     DiscIoConnectorCmd::Register();

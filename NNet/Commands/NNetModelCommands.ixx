@@ -49,7 +49,6 @@ public:
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void Connect(NobId const, NobId const);
     void DeleteSelection();
-    void DeleteSignal(SignalId const&);
     void DiscIoConnector(NobId const);
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSensor(SensorId const, MicroMeterPnt const&);

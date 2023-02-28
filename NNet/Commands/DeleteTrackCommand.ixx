@@ -9,9 +9,7 @@ module;
 
 export module DeleteTrackCommand;
 
-import Types;
 import NNetCommand;
-import NNetModel;
 
 export class DeleteTrackCommand: public NNetCommand
 {

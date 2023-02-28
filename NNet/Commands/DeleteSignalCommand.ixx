@@ -5,14 +5,11 @@
 module;
 
 #include <memory>
+#include <iostream>
 
 export module DeleteSignalCommand;
 
-import Types;
 import NNetCommand;
-import NNetModel;
-
-using std::unique_ptr;
 
 export class DeleteSignalCommand : public NNetCommand
 {
@@ -45,7 +42,30 @@ public:
         m_pSound->Play(L"SNAP_IN_SOUND");
     };
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, new Wrapper);
+    }
+
+    static void Push(SignalId const signalId)
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << signalId << endl;
+        m_pStack->PushCommand(make_unique<DeleteSignalCommand>(signalId));
+    }
+
 private:
+
+    inline static const wstring NAME { L"DeleteSignal" };
+
+    class Wrapper : public ScriptFunctor
+    {
+    public:
+        void operator() (Script& script) const final
+        {
+            DeleteSignalCommand::Push(ScrReadSignalId(script));
+        }
+    };
 
     SensorId           m_sensorId;
     SignalId           m_signalId;

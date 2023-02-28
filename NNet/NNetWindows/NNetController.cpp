@@ -28,6 +28,7 @@ import NNetModel;
 import InsertTrackCommand;
 import AddSensorCmd;
 import DeleteSensorCmd;
+import DeleteSignalCommand;
 import DeleteTrackCommand;
 import NewSigGenCmd;
 import :ComputeThread;
@@ -239,7 +240,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_DELETE_SIGNAL:
-        m_pModelCommands->DeleteSignal(m_pNMRI->GetMonitorDataC().GetHighlightedSignalId());
+        DeleteSignalCommand::Push(m_pNMRI->GetMonitorDataC().GetHighlightedSignalId());
         break;
 
     case IDD_ADD_TRACK:
