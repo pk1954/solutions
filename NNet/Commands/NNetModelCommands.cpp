@@ -38,7 +38,6 @@ import SelSigGenClientsCmd;
 import SetNobCommand;
 import SetParameterCommand;
 import SetSigGenStaticDataCmd;
-import SizeSelectionCmd;
 import SoundInterface;
 import ToggleEmphModeCmd;
 import ToggleStopOnTriggerCmd;
@@ -193,13 +192,6 @@ void NNetModelCommands::AddSigGen2Monitor(TrackNr const trackNr)
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
-}
-
-void NNetModelCommands::SizeSelection(float const fFactor)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << L" " << fFactor << endl;
-	m_pCmdStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
 }
 
 void NNetModelCommands::Rotate

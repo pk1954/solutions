@@ -58,6 +58,7 @@ import RotateModelCommand;
 import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SetParameterCommand;
+import SizeSelectionCmd;
 import SizeSensorCmd;
 import SplitNeuronCmd;
 import ToggleStopOnTriggerCmd;
@@ -188,6 +189,7 @@ void InitializeNNetWrappers
     RotateSelectionCommand::Register();
     SelectAllConnectedCmd::Register();
     SetParameterCommand::Register();
+    SizeSelectionCmd::Register();
     SizeSensorCmd::Register();
     SplitNeuronCmd::Register();
     ToggleStopOnTriggerCmd::Register();

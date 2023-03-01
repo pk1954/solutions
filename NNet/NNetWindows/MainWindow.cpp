@@ -44,6 +44,7 @@ import RootWindow;
 import RotateModelCommand;
 import RotateSelectionCommand;
 import SelectAllConnectedCmd;
+import SizeSelectionCmd;
 import SizeSensorCmd;
 import SplitNeuronCmd;
 import ToggleStopOnTriggerCmd;
@@ -407,7 +408,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	{
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
-			m_pModelCommands->SizeSelection(fFactor);
+			SizeSelectionCmd::Push(fFactor);
 		}
 	}
 	else

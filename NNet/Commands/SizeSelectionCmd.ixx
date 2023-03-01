@@ -2,11 +2,13 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module SizeSelectionCmd;
 
-import Types;
 import NNetCommand;
-import NNetModel;
 
 export class SizeSelectionCmd : public NNetCommand
 {
@@ -23,7 +25,31 @@ public:
 	void Do  () final { sizeSelection(m_fFactor); }
 	void Undo() final { sizeSelection(1.0f / m_fFactor); }
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(float const fFactor)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << fFactor << endl;
+		m_pStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
+	}
+
 private:
+
+	inline static const wstring NAME { L"SizeSelection" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			SizeSelectionCmd::Push(Cast2Float(script.ScrReadFloat()));
+		}
+	};
+
 	void sizeSelection(float const fFactor) const
 	{
 		m_pNMWI->GetUPNobs().Apply2AllSelected<PosNob>
