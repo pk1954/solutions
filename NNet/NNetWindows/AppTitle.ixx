@@ -5,6 +5,7 @@
 module;
 
 #include <Windows.h>
+#include <string>
 
 export module NNetWin32:AppTitle;
 
@@ -12,6 +13,8 @@ import Win32_Util_Resource;
 import ObserverInterface;
 import Win32_Util;
 import NNetModel;
+
+using std::wstring;
 
 export class AppTitle : public ObserverInterface
 {
@@ -45,11 +48,12 @@ public:
 private:
 	void setAppTitle()
 	{
+		wstring wstr { m_bUnsavedChanges ? L" * " : L"" };
 		Util::SetApplicationTitle
 		(
 			m_hwndApp, 
 			L"NNetSimu",
-			m_pNMRI->GetModelFilePath() + (m_bUnsavedChanges ? L" * " : L"") 
+			m_pNMRI->GetModelFilePath() + wstr 
 		);
 	}
 

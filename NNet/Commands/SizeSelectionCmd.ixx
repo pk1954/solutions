@@ -9,6 +9,7 @@ module;
 export module SizeSelectionCmd;
 
 import NNetCommand;
+import SaveCast;
 
 export class SizeSelectionCmd : public NNetCommand
 {

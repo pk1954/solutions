@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasePeak.ixx" />
+    <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BasicTypes.ixx" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
@@ -55,7 +56,6 @@
     <ClCompile Include="Types.ixx" />
     <ClCompile Include="U64Bit.ixx" />
     <ClCompile Include="Uniform2D.ixx" />
-    <ClCompile Include="Util.cpp" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="ViewCollection.ixx" />
   </ItemGroup>

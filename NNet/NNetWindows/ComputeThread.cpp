@@ -14,6 +14,7 @@ import FatalError;
 import HiResTimer;
 import SimulationTime;
 import NNetModel;
+import SaveCast;
 
 void ComputeThread::Initialize
 (

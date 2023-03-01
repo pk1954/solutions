@@ -11,6 +11,7 @@ export module SizeSensorCmd;
 
 import NNetCommand;
 import NNetModel;
+import SaveCast;
 
 export class SizeSensorCmd : public NNetCommand
 {

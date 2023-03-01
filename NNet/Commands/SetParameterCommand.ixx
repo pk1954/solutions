@@ -10,6 +10,7 @@ export module SetParameterCommand;
 
 import NNetCommand;
 import NNetModel;
+import SaveCast;
 
 export class SetParameterCommand : public NNetCommand
 {
