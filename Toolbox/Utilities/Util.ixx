@@ -29,8 +29,6 @@ export enum class tOnOffAuto : long
 	automatic
 };
 
-export extern bool ApplyAutoCriterion(tOnOffAuto const, VisCrit const &);
-
 // not needed, makes strange problems 
 //template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
 //{
@@ -78,4 +76,16 @@ T GetVectorValue(long const index, vector<T> const &vec)
 		long const clippedIndex { ClipToMinMax(index, 0L, static_cast<long>(vec.size()-1)) }; 
 		return vec[clippedIndex];
 	}
+}
+
+export bool ApplyAutoCriterion
+(
+	tOnOffAuto const   onOffAuto,
+	VisCrit    const& crit
+)
+{
+	if (onOffAuto == tOnOffAuto::automatic)
+		return crit();
+	else
+		return onOffAuto == tOnOffAuto::on;
 }
