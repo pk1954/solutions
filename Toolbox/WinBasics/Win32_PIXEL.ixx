@@ -17,7 +17,7 @@ using std::wostream;
 
 namespace Util
 {
-    export wostream & operator << (wostream &, RECT const &);
+    export wostream & operator<< (wostream &, RECT const &);
 
     export RECT ScrReadRECT(Script &);
 

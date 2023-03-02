@@ -81,7 +81,7 @@ export wchar_t const * GetBoolOpName(tBoolOp const op)
     return mapNames.at(op);
 }
 
-export wostream & operator << (wostream & out, tBoolOp const op)
+export wostream & operator<< (wostream & out, tBoolOp const op)
 {
     out << L" " << std:: wstring(GetBoolOpName(op));
     return out;

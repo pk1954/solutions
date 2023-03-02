@@ -46,13 +46,24 @@ public:
     {
         m_modelIO.GetExportNMRI().GetSigGenList().Apply2AllC
         (
-            [this, &out](auto const& upSigGen)
+            [this, &out](auto const& pSigGen)
             {
                 WriteCmdName(out);
-                out << L"\"" << upSigGen->GetName() << "\" "
-                    << upSigGen->GetStaticData()
-                    << endl;
+                writeSigGen(out, pSigGen);
             }
         );
     };
+
+private:
+    void writeSigGen
+    (
+        wostream& out,
+        SignalGenerator const* pSigGen
+    ) const
+    {
+        SigGenStaticData const& data { pSigGen->GetStaticData() };
+        out << L"\"" << pSigGen->GetName() << "\" ";
+        out << data.GetFrequency() << data.GetAmplitude() << L' ' << data.GetPeakTime();
+        out << endl;
+    }
 };

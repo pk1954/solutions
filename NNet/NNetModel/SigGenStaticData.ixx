@@ -53,7 +53,7 @@ public:
 		return *this;
 	}
 
-	fMicroSecs                GetPeakTime() const { return m_usPeak; }
+	fMicroSecs               GetPeakTime () const { return m_usPeak; }
 	BasePeak<fHertz> const & GetFrequency() const { return m_freq; }
 	BasePeak<mV>     const & GetAmplitude() const { return m_amplit; }
 
@@ -119,11 +119,11 @@ public:
 		return getStimulusValue<fHertz>(uSecs, m_freq);
 	}
 
-	friend wostream& operator<< (wostream& out, SigGenStaticData const& data)
-	{
-		out << data.m_freq << data.m_amplit << L' ' << data.m_usPeak;
-		return out;
-	}
+	//friend wostream& operator<< (wostream& out, SigGenStaticData const& data)
+	//{
+	//	out << data.m_freq << data.m_amplit << L' ' << data.m_usPeak;
+	//	return out;
+	//}
 
 private:
 

@@ -58,7 +58,7 @@ wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 	return mapParam.at(p);
 }
 
-wostream& operator <<(wostream& out, ParamType::Value const p)
+wostream& operator<<(wostream& out, ParamType::Value const p)
 {
 	out << L" " << ParamType::GetName(p);
 	return out;

@@ -220,7 +220,7 @@ public:
 		};
 	}
 
-	friend wostream & operator << (wostream & out, RectType const & rect)
+	friend wostream & operator<< (wostream & out, RectType const & rect)
 	{
 		out << rect.GetStartPoint() << rect.GetEndPoint();
 		return out;

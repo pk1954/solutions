@@ -24,7 +24,7 @@ RECT Util::ScrReadRECT(Script & script)
     return rect;
 }
 
-wostream & Util::operator << (wostream & out, RECT const & rect)
+wostream & Util::operator<< (wostream & out, RECT const & rect)
 {
     out << rect.left << L' ' << rect.top << L' ' << rect.right << L' ' << rect.bottom;
     return out;

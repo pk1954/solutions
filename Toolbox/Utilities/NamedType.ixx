@@ -139,9 +139,9 @@ public:
 		return BASE_TYPE(a.GetValue() / b.GetValue());
 	}
 
-	friend wostream & operator << (wostream & out, NamedType const & param)
+	friend wostream & operator<< (wostream & out, NamedType const & param)
 	{
-		out << L" " << param.GetValue();
+		out << L" "; // << param.GetValue();
 		return out;
 	}
 
