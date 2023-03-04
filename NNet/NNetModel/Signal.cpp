@@ -77,7 +77,8 @@ void Signal::WriteSignalData(wostream & out) const
     {
         if (i % 12 == 0)
             out << endl;
-        out << m_data[i];
+        out << m_data[i].GetValue();
+        out << L' ';
     }
     out << endl << LIST_CLOSE_BRACKET << endl;
 }
@@ -176,5 +177,5 @@ void Signal::CheckSignal() const
 void Signal::Dump() const
 {
     m_sigSource.Dump();
-    wcout << L"time start: " << m_timeStart << endl;
+    wcout << L"time start: " << m_timeStart.GetValue() << endl;
 }

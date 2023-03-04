@@ -56,7 +56,7 @@ public:
 	static void Push(SensorId id, float const fFactor)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id << L" " << fFactor << endl;
+			TraceStream() << NAME << id.GetValue() << L" " << fFactor << endl;
 		m_pStack->PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
 	}
 

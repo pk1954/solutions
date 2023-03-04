@@ -42,7 +42,7 @@ public:
 
 	friend wostream & operator<< (wostream& out, BasePeak<UNIT> const& data)
 	{
-		out << setw(5) << data.base << L' ' << data.peak << L' ';
+		out << setw(5) << data.base.GetValue() << L' ' << data.peak.GetValue() << L' ';
 		return out;
 	}
 private:

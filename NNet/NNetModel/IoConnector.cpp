@@ -239,7 +239,7 @@ wostream & operator<< (wostream & out, IoConnector const & conn)
     out << LIST_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
     for (auto & it: conn.m_list)
     {
-        out << it->GetId();
+        out << it->GetId().GetValue();
         if (&it == &conn.m_list.back())
             break;
         out << ID_SEPARATOR;

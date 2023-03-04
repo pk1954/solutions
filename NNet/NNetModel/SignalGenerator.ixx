@@ -57,6 +57,7 @@ public:
 
 	void           SetName(wstring const& name) { m_name = name; }
 	wstring const& GetName() const { return m_name; }
+	void           WriteName(wostream& out) const { out << L"\"" << m_name << "\" "; }
 
 	void ClearDynamicData() { m_dynData.Reset(); }
 	void Prepare(NNetParameters const&);

@@ -61,7 +61,7 @@ public:
 	static void Push(NobId idSrc, NobId idDst)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << idSrc << idDst << endl;
+			TraceStream() << NAME << idSrc.GetValue() << L' ' << idDst.GetValue() << endl;
 		m_pStack->PushCommand(make_unique<ConnectCreateSynapseCmd>(idSrc, idDst));
 	}
 

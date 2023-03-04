@@ -47,7 +47,7 @@ public:
     static void Push(SensorId id)
     {
         if (IsTraceOn())
-            TraceStream() << NAME << id << endl;
+            TraceStream() << NAME << id.GetValue() << endl;
         m_pStack->PushCommand(make_unique<DeleteSensorCmd>(id));
     }
 

@@ -32,7 +32,7 @@ public:
 		if (unique_ptr<NNetCommand> upCmd { MakeCommand(id) })
 		{
 			if (IsTraceOn())
-				TraceStream() << NAME << id << endl;
+				TraceStream() << NAME << id.GetValue() << endl;
 			m_pSound->Play(L"DISAPPEAR_SOUND");
 			m_pStack->PushCommand(move(upCmd));
 		}

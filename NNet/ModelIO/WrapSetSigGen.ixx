@@ -60,9 +60,9 @@ public:
                 if (pSigGen != StdSigGen::Get())
                 {
                     WriteCmdName(out);
-                    out << inputLine.GetId() << " "
-                        << L"\"" << pSigGen->GetName() << "\" "
-                        << endl;
+                    out << inputLine.GetId().GetValue() << L' ';
+                    pSigGen->WriteName(out);
+                    out << endl;
                 }
             }
         );

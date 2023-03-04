@@ -46,7 +46,7 @@ public:
 	static void Push(NobId const nobId1, NobId const nobId2)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId1 << nobId2 << endl;
+			TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
 		m_pStack->PushCommand(make_unique<ConnAnimationCommand>(nobId1, nobId2));
 	}
 

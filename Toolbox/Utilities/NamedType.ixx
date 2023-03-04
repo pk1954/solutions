@@ -139,11 +139,11 @@ public:
 		return BASE_TYPE(a.GetValue() / b.GetValue());
 	}
 
-	friend wostream & operator<< (wostream & out, NamedType const & param)
-	{
-		out << L" "; // << param.GetValue();
-		return out;
-	}
+	//friend wostream & operator<< (wostream & out, NamedType const & param)
+	//{
+	//	out << L" " << param.GetValue();
+	//	return out;
+	//}
 
 	static NamedType MAX_VAL()
 	{

@@ -131,7 +131,7 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 	ConnectionType connType { m_pNMWI->ConnectionResult(idSrc, idDst) };
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() 
-		              << idSrc << idDst
+		              << idSrc.GetValue() << L' ' << idDst.GetValue()
 		              << L" type " << static_cast<int>(connType) << endl;
 	switch (connType)
 	{
@@ -176,7 +176,7 @@ void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticD
 void NNetModelCommands::SetActiveSignalGenerator(SigGenId const id)
 {
 	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
+		TraceStream() << source_location::current().function_name() << id.GetValue() << endl;
 	m_pCmdStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
 }
 
@@ -213,14 +213,14 @@ void NNetModelCommands::SetNob
 )
 {
 	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << L" " << posDir << endl;
+		TraceStream() << source_location::current().function_name() << id.GetValue() << L" " << posDir << endl;
 	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir));
 }
 
 void NNetModelCommands::ToggleEmphMode(NobId const id)
 {
 	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id << endl;
+		TraceStream() << source_location::current().function_name() << id.GetValue() << endl;
 	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 

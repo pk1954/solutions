@@ -119,12 +119,6 @@ public:
 		return getStimulusValue<fHertz>(uSecs, m_freq);
 	}
 
-	//friend wostream& operator<< (wostream& out, SigGenStaticData const& data)
-	//{
-	//	out << data.m_freq << data.m_amplit << L' ' << data.m_usPeak;
-	//	return out;
-	//}
-
 private:
 
 	BasePeak<fHertz> m_freq;

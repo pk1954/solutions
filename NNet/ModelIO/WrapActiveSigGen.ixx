@@ -31,6 +31,6 @@ public:
     void Write(wostream & out) const final
     {
         WriteCmdName(out);
-        out << m_modelIO.GetExportNMRI().GetSigGenIdSelected() << endl;
+        out << m_modelIO.GetExportNMRI().GetSigGenIdSelected().GetValue() << endl;
     };
 };

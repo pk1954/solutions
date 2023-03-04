@@ -23,7 +23,7 @@ MicroSensor::MicroSensor(Nob * const pNob)
 
 void MicroSensor::Dump() const
 {
-    wcout << L"NobId: " << m_pNob->GetId() << endl;
+    wcout << L"NobId: " << m_pNob->GetId().GetValue() << endl;
 }
 
 void MicroSensor::WriteInfo(wostream& out) const
@@ -32,7 +32,8 @@ void MicroSensor::WriteInfo(wostream& out) const
         return;
 
     out << Signal::SIGSRC_NOB;
-    out << m_pNob->GetId();
+    out << L' ';
+    out << m_pNob->GetId().GetValue();
     out << endl;
 }
 

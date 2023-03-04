@@ -32,7 +32,7 @@ wostream & operator<< (wostream & out, NobIdList const & v)
     out << OPEN_BRACKET << v.m_list.size() << L":";
     for (auto & it : v.m_list)
     {
-        out << it;
+        out << it.GetValue();
         if (&it == &v.m_list.back())
             break;
         out << SEPARATOR;

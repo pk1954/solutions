@@ -278,67 +278,67 @@ NobId MainWindow::findTargetNob(MicroMeterPnt const& umCrsrPos)
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_pCursorPosObservable)
-		m_pCursorPosObservable->NotifyAll(false);
+	//if (m_pCursorPosObservable)
+	//	m_pCursorPosObservable->NotifyAll(false);
 
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
+	//PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
+	//MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
 
-	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
-	{
-		if (!m_pNMRI->AnyNobsSelected())
-		{
-			if (!setHighlightedNob(umCrsrPos))
-				if (!setHighlightedSensor(umCrsrPos))
-					selectSignalHandle(umCrsrPos);
-		}
-		ClearPtLast();                 // make m_ptLast invalid
-		return;
-	}
+	//if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
+	//{
+	//	if (!m_pNMRI->AnyNobsSelected())
+	//	{
+	//		if (!setHighlightedNob(umCrsrPos))
+	//			if (!setHighlightedSensor(umCrsrPos))
+	//				selectSignalHandle(umCrsrPos);
+	//	}
+	//	ClearPtLast();                 // make m_ptLast invalid
+	//	return;
+	//}
 
-	PixelPoint const ptLast { GetPtLast() };
-	SetPtLast(ptCrsr);
-	if (ptLast.IsNull())
-		return;
+	//PixelPoint const ptLast { GetPtLast() };
+	//SetPtLast(ptCrsr);
+	//if (ptLast.IsNull())
+	//	return;
 
-	if (!(wParam & MK_LBUTTON))        // Left mouse button
-		return;
+	//if (!(wParam & MK_LBUTTON))        // Left mouse button
+	//	return;
 
-	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
-	MicroMeterPnt       umDelta   { umCrsrPos - umLastPos };
-	if (umDelta.IsZero())
-		return;
+	//MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
+	//MicroMeterPnt       umDelta   { umCrsrPos - umLastPos };
+	//if (umDelta.IsZero())
+	//	return;
 
-	if (wParam & MK_CONTROL)   // rotate
-	{
-		if (m_pNMRI->AnyNobsSelected())
-			RotateSelectionCommand::Push(umLastPos, umCrsrPos);
-		else if (IsDefined(m_nobIdHighlighted))           
-			m_pModelCommands->Rotate(m_nobIdHighlighted, umLastPos, umCrsrPos);
-		else 
-			RotateModelCommand::Push(umLastPos, umCrsrPos);
-	}
-	else if (m_pNMRI->AnyNobsSelected())
-	{
-		MoveSelectionCommand::Push(umDelta);
-	}
-	else if (IsDefined(m_nobIdHighlighted))    // move single nob
-	{
-		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
-		m_nobIdTarget = findTargetNob(umCrsrPos);
-	}
-	else if (m_pNMRI->IsAnySensorSelected())
-	{
-		MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
-	}
-	else if (m_pNMRI->IsAnySignalSelected())
-	{
-		m_pMonitorWindow->MoveHighlightedSignal(ptCrsr.GetY() - ptLast.GetY());
-	}
-	else
-	{
-		NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
-	}
+	//if (wParam & MK_CONTROL)   // rotate
+	//{
+	//	if (m_pNMRI->AnyNobsSelected())
+	//		RotateSelectionCommand::Push(umLastPos, umCrsrPos);
+	//	else if (IsDefined(m_nobIdHighlighted))           
+	//		m_pModelCommands->Rotate(m_nobIdHighlighted, umLastPos, umCrsrPos);
+	//	else 
+	//		RotateModelCommand::Push(umLastPos, umCrsrPos);
+	//}
+	//else if (m_pNMRI->AnyNobsSelected())
+	//{
+	//	MoveSelectionCommand::Push(umDelta);
+	//}
+	//else if (IsDefined(m_nobIdHighlighted))    // move single nob
+	//{
+	//	MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
+	//	m_nobIdTarget = findTargetNob(umCrsrPos);
+	//}
+	//else if (m_pNMRI->IsAnySensorSelected())
+	//{
+	//	MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
+	//}
+	//else if (m_pNMRI->IsAnySignalSelected())
+	//{
+	//	m_pMonitorWindow->MoveHighlightedSignal(ptCrsr.GetY() - ptLast.GetY());
+	//}
+	//else
+	//{
+	//	NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
+	//}
 }
 
 void MainWindow::select(NobId const idNob)
@@ -572,8 +572,8 @@ bool MainWindow::UserProc
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DumpModel(__FILE__, __LINE__);
-		wcout << L"highlighted = " << m_nobIdHighlighted << endl;
-		wcout << L"target      = " << m_nobIdTarget << endl;
+		wcout << L"highlighted = " << m_nobIdHighlighted.GetValue() << endl;
+		wcout << L"target      = " << m_nobIdTarget.GetValue() << endl;
 		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
 	}
 	return bRes;

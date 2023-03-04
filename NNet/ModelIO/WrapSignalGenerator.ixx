@@ -62,8 +62,10 @@ private:
     ) const
     {
         SigGenStaticData const& data { pSigGen->GetStaticData() };
-        out << L"\"" << pSigGen->GetName() << "\" ";
-        out << data.GetFrequency() << data.GetAmplitude() << L' ' << data.GetPeakTime();
+        pSigGen->WriteName(out);
+        out << data.GetFrequency();
+        out << data.GetAmplitude();
+        out << data.GetPeakTime().GetValue();
         out << endl;
     }
 };

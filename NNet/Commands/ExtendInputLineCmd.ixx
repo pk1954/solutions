@@ -61,7 +61,7 @@ public:
 	static void Push(NobId nobId, MicroMeterPnt const & pos)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId << pos << endl;
+			TraceStream() << NAME << nobId.GetValue() << pos << endl;
 		m_pStack->PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos));
 	}
 

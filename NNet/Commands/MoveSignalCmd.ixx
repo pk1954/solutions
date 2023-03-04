@@ -41,7 +41,7 @@ public:
 	static void Push(SignalId const& id, TrackNr const trackNr)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id << trackNr << endl;
+			TraceStream() << NAME << id << L' ' << trackNr.GetValue() << endl;
 		m_pStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
 	}
 

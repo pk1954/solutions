@@ -15,6 +15,7 @@ import SmoothMoveFp;
 
 using std::bit_cast;
 using std::move;
+using std::wcout;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
@@ -44,7 +45,7 @@ public:
         {
             int x = 42;
         }
-        std::wcout << L"Start: origin = " << origin << L" target = " << target << std::endl;
+       // wcout << L"Start: origin = " << origin << L" target = " << target << std::endl;
         startTimer();
     }
 

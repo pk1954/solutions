@@ -31,6 +31,6 @@ public:
     void Write(wostream& out) const final
     {
         WriteCmdName(out);
-        out << SimulationTime::Get() << endl;
+        out << SimulationTime::Get().GetValue() << endl;
     };
 };

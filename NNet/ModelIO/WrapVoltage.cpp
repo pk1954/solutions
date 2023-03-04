@@ -92,7 +92,7 @@ void WrapVoltage::writePipeVoltage(wostream & out, Pipe const & pipe) const
         << NR_SEPARATOR;
     for (auto i = Pipe::SegNr(0);; ++i)
     {
-        out << pipe.GetVoltage(i); 
+        out << pipe.GetVoltage(i).GetValue();
         if (i == lastSeg)
             break;
         out << ID_SEPARATOR;
@@ -115,7 +115,7 @@ void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const
         case knot:
         case fork:
         case synapse:
-            out << static_cast<PosNob const &>(nob).GetVoltage();
+            out << static_cast<PosNob const &>(nob).GetVoltage().GetValue();
             break;
 
         case pipe:

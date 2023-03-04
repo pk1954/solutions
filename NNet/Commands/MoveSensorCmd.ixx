@@ -54,7 +54,7 @@ public:
 	static void Push(SensorId id, MicroMeterPnt const& delta)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id << delta << endl;
+			TraceStream() << NAME << id.GetValue() << L' ' << delta << endl;
 		m_pStack->PushCommand(make_unique<MoveSensorCmd>(id, delta));
 	}
 

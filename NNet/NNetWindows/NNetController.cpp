@@ -14,6 +14,7 @@ module NNetWin32:NNetController;
 
 import Win32_Util_Resource;
 import SlowMotionRatio;
+import SaveCast;
 import Observable;
 import Win32_Sound;
 import StdDialogBox;

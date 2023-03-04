@@ -54,7 +54,7 @@ public:
 	static void Push(NobId nobId, MicroMeterPnt const& delta)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId << delta << endl;
+			TraceStream() << NAME << nobId.GetValue() << delta << endl;
 		m_pStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(nobId), delta));
 	}
 

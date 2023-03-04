@@ -32,7 +32,7 @@ public:
 	static void Push(NobId const idNob)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << L' ' << idNob << endl;
+			TraceStream() << NAME << L' ' << idNob.GetValue() << endl;
 		m_pStack->PushCommand(make_unique<SelectAllConnectedCmd>(idNob));
 	}
 

@@ -50,7 +50,7 @@ public:
 	)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << idPipe << umSplitPoint << endl;
+			TraceStream() << NAME << idPipe.GetValue() << umSplitPoint << endl;
 		m_pStack->PushCommand(make_unique<InsertKnotCommand>(idPipe, umSplitPoint));
 	}
 

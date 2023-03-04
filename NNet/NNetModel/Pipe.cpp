@@ -436,9 +436,9 @@ void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 wostream & operator<< (wostream & out, Pipe const & pipe)
 {
 	out << OPEN_BRACKET 
-		<< pipe.GetStartKnotId() 
+		<< pipe.GetStartKnotId().GetValue()
 		<< PIPE_TO
-		<< pipe.GetEndKnotId() 
+		<< pipe.GetEndKnotId().GetValue()
 		<< CLOSE_BRACKET;
 	return out;
 }
