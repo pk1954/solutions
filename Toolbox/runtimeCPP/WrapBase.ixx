@@ -35,7 +35,7 @@ public:
 
     void WriteCmdName(wostream& out) const
     {
-        out << GetName() << L" ";
+        out << GetName() << L' ';
     }
 
     void Write2(wostream& out) const

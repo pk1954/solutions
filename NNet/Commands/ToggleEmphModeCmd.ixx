@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <iostream>
 
 export module ToggleEmphModeCmd;
 
@@ -30,6 +31,30 @@ public:
 		Do();
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId const idNob)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << L' ' << idNob.GetValue() << endl;
+		m_pStack->PushCommand(make_unique<ToggleEmphModeCmd>(idNob));
+	}
+
 private:
+
+	inline static const wstring NAME { L"ToggleEmphMode" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			ToggleEmphModeCmd::Push(ScrReadNobId(script));
+		}
+	};
+
 	Pipe * m_pPipe { nullptr };
 };

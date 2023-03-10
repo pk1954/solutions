@@ -57,7 +57,6 @@ public:
     void SetActiveSignalGenerator(SigGenId const);
     void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);
     void SetNob(NobId const, MicroMeterPosDir const);
-    void ToggleEmphMode(NobId const);
     void StartStimulus();
 
     SensorId SetHighlightedSensor(MicroMeterPnt const&);

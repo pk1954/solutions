@@ -39,7 +39,6 @@ import SetNobCommand;
 import SetParameterCommand;
 import SetSigGenStaticDataCmd;
 import SoundInterface;
-import ToggleEmphModeCmd;
 import ToggleStopOnTriggerCmd;
 import Uniform2D;
 
@@ -215,13 +214,6 @@ void NNetModelCommands::SetNob
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << id.GetValue() << L" " << posDir << endl;
 	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir));
-}
-
-void NNetModelCommands::ToggleEmphMode(NobId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id.GetValue() << endl;
-	m_pCmdStack->PushCommand(make_unique<ToggleEmphModeCmd>(id));
 }
 
 void NNetModelCommands::StartStimulus()

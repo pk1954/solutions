@@ -106,7 +106,7 @@ void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const
     if (nob.IsDefined())
     {
         WriteCmdName(out);
-        out << m_modelIO.GetCompactIdVal(nob.GetId()) << L" " << nob.GetTypeName();
+        out << m_modelIO.GetCompactIdVal(nob.GetId()) << L' ' << nob.GetTypeName() << L' ';
         switch (nob.GetNobType().GetValue())
         {
         case NobType::Value::inputLine:
