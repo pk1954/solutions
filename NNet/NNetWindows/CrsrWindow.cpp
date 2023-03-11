@@ -143,7 +143,8 @@ void CrsrWindow::printNobInfo
 	NobId         const   id
 ) const 
 {
-	NobType const type { m_pNMRI->GetNobType(id) };
+	Nob     const& nob { *m_pNMRI->GetConstNob(id) };
+	NobType const  type { nob.GetNobType() };
 	textBuf.nextLine();
 	textBuf.AlignRight(); 
 	textBuf.printString(L"Nob #");
@@ -158,11 +159,20 @@ void CrsrWindow::printNobInfo
 	textBuf.printString(NobType::GetName(type.GetValue())); 
 	textBuf.nextLine();
 
+	if (type.IsInputLineType())
+	{
+		InputLine       const* pInputLine { Cast2InputLine(&nob) };
+		SignalGenerator const* pSigGen    { pInputLine->GetSigGenC() };
+		textBuf.AlignRight();
+		textBuf.printString(L"SigGen:");
+		textBuf.AlignLeft();
+		textBuf.printString(pSigGen->GetName());
+	}
 	if (type.IsPipeType())
 	{
-		textBuf.AlignRight(); 
+		textBuf.AlignRight();
 		textBuf.printString(L"# segments:");
-		textBuf.AlignLeft();  
+		textBuf.AlignLeft();
 		textBuf.printNumber(m_pNMRI->GetNrOfSegments(id));
 	}
 	if (type.IsIoConnectorType())
