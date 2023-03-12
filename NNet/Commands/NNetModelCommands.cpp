@@ -172,13 +172,6 @@ void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticD
 	m_pCmdStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(dst, data));
 }
 
-void NNetModelCommands::SetActiveSignalGenerator(SigGenId const id)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id.GetValue() << endl;
-	m_pCmdStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
-}
-
 void NNetModelCommands::SelectSigGenClients()
 {
 	if (m_bTrace)

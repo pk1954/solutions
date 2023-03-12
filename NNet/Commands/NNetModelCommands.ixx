@@ -54,7 +54,6 @@ public:
     void MoveSensor(SensorId const, MicroMeterPnt const&);
     void Rotate(NobId const, MicroMeterPnt const&, MicroMeterPnt const&);
     void SelectSigGenClients();
-    void SetActiveSignalGenerator(SigGenId const);
     void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);
     void SetNob(NobId const, MicroMeterPosDir const);
     void StartStimulus();

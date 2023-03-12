@@ -32,6 +32,7 @@ import DeleteSensorCmd;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import NewSigGenCmd;
+import SetActiveSigGenCmd;
 import :ComputeThread;
 import :MainWindow;
 import :Preferences;
@@ -210,7 +211,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
-        m_pModelCommands->SetActiveSignalGenerator(SigGenId(Cast2Int(lParam)-1));
+        SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)-1));
         ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
