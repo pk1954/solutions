@@ -186,18 +186,6 @@ void NNetModelCommands::AddSigGen2Monitor(TrackNr const trackNr)
 	m_pCmdStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
 }
 
-void NNetModelCommands::Rotate
-(
-	NobId         const   id,
-	MicroMeterPnt const & umPntOld, 
-	MicroMeterPnt const & umPntNew 
-)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << umPntOld << umPntNew << endl;
-	m_pCmdStack->PushCommand(make_unique<RotateNobCommand>(*m_pNMWI->GetNob(id), umPntOld, umPntNew));
-}
-
 void NNetModelCommands::SetNob
 (
 	NobId            const id,

@@ -54,6 +54,7 @@ import NewSigGenCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
 import RotateModelCommand;
+import RotateNobCommand;
 import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SetParameterCommand;
@@ -186,6 +187,7 @@ void InitializeNNetWrappers
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     RotateModelCommand::Register();
+    RotateNobCommand::Register();
     RotateSelectionCommand::Register();
     SelectAllConnectedCmd::Register();
     SetActiveSigGenCmd::Register();

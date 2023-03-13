@@ -2,9 +2,12 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module RotateNobCommand;
 
-import Types;
 import RotationCommand;
 import NNetModel;
 
@@ -13,13 +16,13 @@ export class RotateNobCommand : public RotationCommand
 public:
 	RotateNobCommand
 	(
-		Nob                 & nob,
+		NobId         const   id,
 		MicroMeterPnt const & umPntOld,
 		MicroMeterPnt const & umPntNew
 	)
-		: m_nob(nob)
+		: m_nob(*m_pNMWI->GetNob(id))
 	{
-		SetPivotPnt(nob.GetPos(), umPntOld, umPntNew);
+		SetPivotPnt(m_nob.GetPos(), umPntOld, umPntNew);
 	}
 
 	void Do()   final { DoRotate(m_nob); }
@@ -27,6 +30,38 @@ public:
 
 	NobId GetAffectedNob() const final { return m_nob.GetId(); }
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push
+	(
+		NobId         const  id,
+		MicroMeterPnt const& umPntOld,
+		MicroMeterPnt const& umPntNew
+	)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << id.GetValue() << L' ' << umPntOld << umPntNew << endl;
+		m_pStack->PushCommand(make_unique<RotateNobCommand>(id, umPntOld, umPntNew));
+	}
+
 private:
+
+	inline static const wstring NAME { L"RotateNob" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId         const idNob    { ScrReadNobId(script) };
+			MicroMeterPnt const umPntOld { ScrReadMicroMeterPnt(script) };
+			MicroMeterPnt const umPntNew { ScrReadMicroMeterPnt(script) };
+			RotateNobCommand::Push(idNob, umPntOld, umPntNew);
+		}
+	};
+
 	Nob & m_nob;
 };
