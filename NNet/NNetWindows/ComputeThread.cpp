@@ -53,10 +53,10 @@ void ComputeThread::Reset()
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
 	m_usSimuTimeResolution  = m_pNMWI->GetParams().TimeResolution(); 
 	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime(m_usSimuTimeResolution); 
-	ReleaseComputationLock();
+	UnlockComputation();
 }
 
-void ComputeThread::ReleaseComputationLock()
+void ComputeThread::UnlockComputation()
 {
 	if (m_bComputationLocked)
 	{
@@ -88,15 +88,15 @@ void ComputeThread::RunStopComputation()
 	}
 }
 
-void ComputeThread::RunComputation()
-{
-	if (m_bStopped)
-	{
-		m_bStopped = false;
-		if (! m_bComputationLocked)  // both locks are released. We can start to run
-			runComputation();
-	}
-}
+//void ComputeThread::RunComputation()
+//{
+//	if (m_bStopped)
+//	{
+//		m_bStopped = false;
+//		if (! m_bComputationLocked)  // both locks are released. We can start to run
+//			runComputation();
+//	}
+//}
 
 void ComputeThread::StopComputation()
 {
@@ -145,7 +145,7 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 
 			while ((lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked))
 			{
-				if (m_pNMWI->Compute()) // returns true, if stop on trigger fires
+				if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
 				{
 					m_bStopped = true;
 					m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
@@ -164,7 +164,7 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 			}
 
 			fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
-			fMicroSecs const usSleepTime { m_usTimeAvailPerCycle - usSpentInCompute };
+			fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
 			if (usSleepTime > 10000.0_MicroSecs)
 				Sleep(10);
 		}

@@ -34,10 +34,10 @@ public:
 	void ThreadMsgDispatcher(MSG const &) final { }
 	void Notify(bool const) final;
 	void SingleStep();
-	void ReleaseComputationLock();
+	void UnlockComputation();
 	void LockComputation();
 	void RunStopComputation();
-	void RunComputation();
+	//void RunComputation();
 	void StopComputation();
 	bool IsRunning() const { return ! m_bStopped; }
 
