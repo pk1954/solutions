@@ -22,6 +22,7 @@ import EditLineBox;
 import Win32_PixelTypes;
 import Direct2D;
 import Scale;
+import AddSigGen2MonitorCmd;
 import DeleteSigGenCmd;
 import RenameSigGenCmd;
 import NNetModelCommands;
@@ -250,7 +251,7 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		return true;
 
 	case IDD_ADD_SIG_GEN_TO_MONITOR:
-		m_pCommands->AddSigGen2Monitor(TrackNr(0));
+		AddSigGen2MonitorCmd::Push(TrackNr(0));
 		return true;
 
 	default:

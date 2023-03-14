@@ -24,6 +24,7 @@ import NNetModel;
 import AddMicroSensorCmd;
 import AddNobsCommand;
 import AddSensorCmd;
+import AddSigGen2MonitorCmd;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
 import ConnAnimationCommand;
@@ -157,6 +158,7 @@ void InitializeNNetWrappers
     AddMicroSensorCmd::Register();
     AddNobsCommand::Register();
     AddSensorCmd::Register();
+    AddSigGen2MonitorCmd::Register();
     AttachSigGen2ConCmd::Register();
     AttachSigGen2LineCmd::Register();
     ConnAnimationCommand::Register();

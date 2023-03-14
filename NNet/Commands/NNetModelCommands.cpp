@@ -13,7 +13,6 @@ module NNetModelCommands;
 
 import AddNobsCommand;
 import AddPipe2NeuronCmd;
-import AddSigGen2MonitorCmd;
 import ArrowAnimation;
 import Commands;
 import ConnAnimationCommand;
@@ -177,13 +176,6 @@ void NNetModelCommands::SelectSigGenClients()
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<SelSigGenClientsCmd>());
-}
-
-void NNetModelCommands::AddSigGen2Monitor(TrackNr const trackNr)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
 }
 
 void NNetModelCommands::SetNob

@@ -44,7 +44,6 @@ public:
 
     void AddModel();
     void AddSensor(MicroMeterCircle const&, TrackNr const);
-    void AddSigGen2Monitor(TrackNr const);
     void AnimateArrows(MicroMeter&, MicroMeter const);
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void Connect(NobId const, NobId const);

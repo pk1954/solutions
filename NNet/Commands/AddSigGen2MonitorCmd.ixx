@@ -2,6 +2,10 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module AddSigGen2MonitorCmd;
 
 import NNetCommand;
@@ -28,7 +32,31 @@ public:
 		m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
 	};
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(TrackNr const trackNr)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << trackNr.GetValue() << endl;
+		m_pStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
+	}
+
 private:
+
+	inline static const wstring NAME { L"AddSigGen2Monitor" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			AddSigGen2MonitorCmd(ScrReadTrackNr(script));
+		}
+	};
+
 	SignalGenerator const * m_pSigGen;
 	TrackNr         const   m_trackNr;
 	SignalId                m_signalId{};
