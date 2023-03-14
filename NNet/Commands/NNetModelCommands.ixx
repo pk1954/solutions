@@ -51,7 +51,6 @@ public:
     void DiscIoConnector(NobId const);
     bool MakeIoConnector(NobId const, NobId const);
     void MoveSensor(SensorId const, MicroMeterPnt const&);
-    void SelectSigGenClients();
     void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);
     void SetNob(NobId const, MicroMeterPosDir const);
     void StartStimulus();

@@ -151,7 +151,6 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	AppendMenu(hPopupMenu, MF_STRING, IDD_SELECT_SIG_GEN_CLIENTS,  L"Select related input lines");
 	if (m_pNMWI->GetSigGenSelected() != StdSigGen::Get())
 	{
 		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
@@ -244,10 +243,6 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDD_RENAME_SIGNAL_GENERATOR:
 		renameSigGen();
-		return true;
-
-	case IDD_SELECT_SIG_GEN_CLIENTS:
-		m_pCommands->SelectSigGenClients();
 		return true;
 
 	case IDD_ADD_SIG_GEN_TO_MONITOR:

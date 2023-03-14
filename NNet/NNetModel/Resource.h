@@ -123,7 +123,6 @@
 #define       IDD_NEW_SIGNAL_GENERATOR       702
 #define       IDD_DELETE_SIGNAL_GENERATOR    703
 #define       IDD_RENAME_SIGNAL_GENERATOR    704
-#define       IDD_SELECT_SIG_GEN_CLIENTS     705
 #define       IDD_REGISTER_SIG_GEN           706
 #define       IDD_TRIGGER_SIGNAL_DESIGNER    707
 #define       IDD_ATTACH_SIG_GEN_TO_LINE     708

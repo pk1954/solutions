@@ -120,9 +120,6 @@
     <ClCompile Include="SelectionCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelSigGenClientsCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SetActiveSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

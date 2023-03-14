@@ -30,10 +30,8 @@ import NNetModelCommands;
 import NNetModelIO;
 import PlugIoConnectors;
 import PlugIoLines;
-import RotateNobCommand;
 import SelectionCommand;
 import SetActiveSigGenCmd;
-import SelSigGenClientsCmd;
 import SetNobCommand;
 import SetParameterCommand;
 import SetSigGenStaticDataCmd;
@@ -169,13 +167,6 @@ void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticD
 	if (m_bTrace)
 		TraceStream() << source_location::current().function_name() << endl;
 	m_pCmdStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(dst, data));
-}
-
-void NNetModelCommands::SelectSigGenClients()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SelSigGenClientsCmd>());
 }
 
 void NNetModelCommands::SetNob
