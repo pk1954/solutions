@@ -24,11 +24,11 @@ export class MacroSensor : public Sensor
 public:
     MacroSensor(MicroMeterCircle const &, UPNobList const &);
 
-    void Dump()                                const final;
-    mV   GetSignalValue()                      const final;
-    void WriteInfo(wostream &)                 const final;
-    void Draw(DrawContext const &, bool const) const final;
-    bool IsConnected()                         const final { return true; }
+    void Dump()                                      const final;
+    mV   GetSignalValue()                            const final;
+    void WriteInfo(wostream &)                       const final;
+    void DrawSigSrc(DrawContext const &, bool const) const final;
+    bool IsConnected()                               const final { return true; }
 
     void RotateSensor(MicroMeterPnt const&, Radian const) final;
 

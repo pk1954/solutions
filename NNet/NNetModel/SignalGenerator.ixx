@@ -34,11 +34,11 @@ public:
 
 	SignalSource::Type SignalSourceType() const final { return SignalSource::Type::generator; }
 
-	mV   GetSignalValue()                     const final { return m_mVactual; };
-	void Dump()                               const final {};
-	void WriteInfo(wostream&)                 const final {};
-	void Draw(DrawContext const&, bool const) const final {};
-	bool IsConnected()                        const final { return true; }
+	mV   GetSignalValue()                           const final { return m_mVactual; };
+	void Dump()                                     const final {};
+	void WriteInfo(wostream&)                       const final {};
+	void DrawSigSrc(DrawContext const&, bool const) const final {};
+	bool IsConnected()                              const final { return true; }
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;
@@ -55,8 +55,8 @@ public:
 	void                    SetStaticData(SigGenStaticData const&);
 	SigGenStaticData const& GetStaticData() const;
 
-	void           SetName(wstring const& name) { m_name = name; }
-	wstring const& GetName() const { return m_name; }
+	void           SetName(wstring const& name)   { m_name = name; }
+	wstring const& GetName()                const { return m_name; }
 	void           WriteName(wostream& out) const { out << L"\"" << m_name << "\" "; }
 
 	void ClearDynamicData() { m_dynData.Reset(); }
@@ -73,6 +73,7 @@ public:
 
 private:
 
+	PixelPoint        m_pixPos;
 	mV                m_mVactual;
 	SigGenStaticData  m_statData;
 	SigGenDynamicData m_dynData;

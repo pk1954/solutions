@@ -75,53 +75,6 @@ void NNetWindow::DrawArrowsInRect
 	);
 }
 
-void NNetWindow::drawSignalCable(MonitorData const& monData, SignalId const& signalId) const
-{
-	Signal       const* pSignal { monData.GetConstSignalPtr(signalId) };
-	SignalSource const* pSigSrc { pSignal->GetSignalSource() };
-	if (!pSigSrc->IsConnected())
-		return;
-
-	Sensor const* pSensor { Cast2Sensor(pSigSrc) }; 
-	if (!pSensor)
-		return; // is not a sensor
-
-	PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId) };
-	if (pixPosScreenSignal.IsNull())
-		return;
-	
-	static fPixel const HRADIUS       { 20._fPixel };
-	static fPixel const VRADIUS       { 10._fPixel };
-	PixelPoint    const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
-	fPixelPoint   const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
-	fPixelPoint   const fPixPosStart  { fPixPosSignal + fPixelPoint(HRADIUS, 0.0_fPixel) };
-	MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
-	fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
-	fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosStart };
-	fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f };
-
-	ID2D1SolidColorBrush* pBrush 
-	{ 
-	    (monData.IsSelected(signalId) && (monData.GetNrOfSignals() > 1))
-		? m_pBrushSensorSelected
-		: m_pBrushSensorNormal 
-	};
-	m_upGraphics->DrawBezier
-	(
-		fPixPosStart,
-		fPixPosStart + fPixelPoint(fPixOffset, 0.0_fPixel),
-		fPixPosSensor - fPixDelta * 0.3f,
-		fPixPosSensor, 
-		pBrush, 
-		2._fPixel
-	);
-	m_upGraphics->FillEllipse
-	(
-		fPixelEllipse(fPixPosSignal, HRADIUS, VRADIUS), 
-		pBrush
-	);
-}
-
 SignalId NNetWindow::FindSignalHandle(MicroMeterPnt const& umPos) const
 {
 	fPixelPoint const fPixPos     { GetCoordC().Transform2fPixelPos(umPos) };
@@ -151,17 +104,70 @@ void NNetWindow::DrawSensors() const
 		[this, &monData](SignalId const& signalId) 
 		{ 
 			Signal const* pSignal { monData.GetConstSignalPtr(signalId) };
-			pSignal->Draw(m_context, false);
+			pSignal->DrawSigSrc(m_context, false);
 			if (m_pMonitorWindow)
-				drawSignalCable(monData, signalId);
+			{
+				ID2D1SolidColorBrush* const pBrush
+				{
+					(monData.IsSelected(signalId) && (monData.GetNrOfSignals() > 1))
+					? m_pBrushSensorSelected
+					: m_pBrushSensorNormal
+				};
+				drawSignalCable(signalId, pSignal, *pBrush);
+			}
 		}
+	);
+}
+
+void NNetWindow::drawSignalCable
+(
+	SignalId       const& signalId,
+	Signal         const* pSignal,
+	ID2D1SolidColorBrush& brush
+) const
+{
+	SignalSource const* pSigSrc { pSignal->GetSignalSource() };
+	if (!pSigSrc->IsConnected())
+		return;
+
+	Sensor const* pSensor { Cast2Sensor(pSigSrc) };
+	if (!pSensor)
+		return; // is not a sensor
+
+	PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId) };
+	if (pixPosScreenSignal.IsNull())
+		return;
+
+	static fPixel const HRADIUS       { 20._fPixel };
+	static fPixel const VRADIUS       { 10._fPixel };
+	PixelPoint    const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
+	fPixelPoint   const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
+	fPixelPoint   const fPixPosStart  { fPixPosSignal + fPixelPoint(HRADIUS, 0.0_fPixel) };
+	MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
+	fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
+	fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosStart };
+	fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f };
+
+	m_upGraphics->DrawBezier
+	(
+		fPixPosStart,
+		fPixPosStart + fPixelPoint(fPixOffset, 0.0_fPixel),
+		fPixPosSensor - fPixDelta * 0.3f,
+		fPixPosSensor,
+		&brush,
+		2._fPixel
+	);
+	m_upGraphics->FillEllipse
+	(
+		fPixelEllipse(fPixPosSignal, HRADIUS, VRADIUS),
+		&brush
 	);
 }
 
 void NNetWindow::DrawHighlightedSensor(MacroSensor const * const pSensor) const
 {
 	if (pSensor)
-		pSensor->Draw(m_context, true);
+		pSensor->DrawSigSrc(m_context, true);
 }
 
 void NNetWindow::DrawSensorDataPoints(MacroSensor const * const pSensor) const

@@ -82,7 +82,10 @@ protected:
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
 	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
 
-	bool OnSize(PIXEL  const, PIXEL  const) override;
+	ID2D1SolidColorBrush* m_pBrushSensorNormal   { nullptr };
+	ID2D1SolidColorBrush* m_pBrushSensorSelected { nullptr };
+
+	bool OnSize    (PIXEL const, PIXEL  const) override;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
 	void DrawSensors() const;
@@ -104,12 +107,10 @@ private:
 	inline static fPixel const HRADIUS { 20._fPixel };
 	inline static fPixel const VRADIUS { 10._fPixel };
 
-	NNetController      * m_pController          { nullptr };
-	ID2D1SolidColorBrush* m_pBrushSensorNormal   { nullptr };
-	ID2D1SolidColorBrush* m_pBrushSensorSelected { nullptr };
-	D2D_DrawContext       m_context              { };
-	fPixel                m_fPixRadiusLimit      { };
-	PixelPoint            m_ptLast               { PP_NULL };	// Last cursor position during selection 
+	NNetController * m_pController     { nullptr };
+	D2D_DrawContext  m_context         { };
+	fPixel           m_fPixRadiusLimit { };
+	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
 
-	void drawSignalCable(MonitorData const&, SignalId const&) const;
+	void drawSignalCable(SignalId const&, Signal const*, ID2D1SolidColorBrush&) const;
 };

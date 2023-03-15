@@ -172,21 +172,28 @@ public:
 		};
 	}
 
+	void MoveHorz(BASE_TYPE const offset)
+	{
+		m_Left  += offset;
+		m_Right += offset;
+	}
+
+	void MoveVert(BASE_TYPE const offset)
+	{
+		m_Top    += offset;
+		m_Bottom += offset;
+	}
+
 	RectType operator+= (POS_TYPE const offset)
-	{ 
-		m_Left   += offset.GetX();
-		m_Top    += offset.GetY();
-		m_Right  += offset.GetX();
-		m_Bottom += offset.GetY();
-		return * this;
+	{
+		MoveHorz(offset.GetX());
+		MoveVert(offset.GetY());
+		return *this;
 	}
 
 	RectType operator-= (POS_TYPE const offset)
 	{ 
-		m_Left   -= offset.GetX();
-		m_Top    -= offset.GetY();
-		m_Right  -= offset.GetX();
-		m_Bottom -= offset.GetY();
+		this += -offset;
 		return * this;
 	}
 

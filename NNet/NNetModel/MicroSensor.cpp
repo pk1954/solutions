@@ -43,7 +43,7 @@ mV MicroSensor::GetSignalValue() const
     return mVResult;
 }
 
-void MicroSensor::Draw
+void MicroSensor::DrawSigSrc
 (
     DrawContext const& context,
     bool        const  bHighlight

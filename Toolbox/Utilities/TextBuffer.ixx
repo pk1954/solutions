@@ -30,7 +30,7 @@ export class TextBuffer
 public:
 	virtual ~TextBuffer() = default;
 
-	void Initialize(PIXEL const,	PIXEL const);
+	void Initialize(PIXEL const, PIXEL const);
 
 	virtual void PrintBuffer(std::wostringstream *, PIXEL const, PIXEL const) = 0;
 

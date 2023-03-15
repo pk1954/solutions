@@ -206,10 +206,29 @@ void D2D_driver::FillRectangle(fPixelRect const& rect, D2D1::ColorF const colF) 
 	SafeRelease(&pBrush);
 }
 
-void D2D_driver::FillRoundedRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel fRadius) const
+void D2D_driver::DrawRoundedRectangle
+(
+	fPixelRect   const& rect, 
+	D2D1::ColorF const  colF, 
+	fPixel       const  fPixRadius,
+	fPixel       const  fPixStrokeWidth
+) const
 {
 	ID2D1SolidColorBrush* pBrush    { CreateBrush(colF) };
-	D2D1_ROUNDED_RECT     roundRect { convertD2D(rect), fRadius.GetValue(), fRadius.GetValue() };
+	D2D1_ROUNDED_RECT     roundRect { convertD2D(rect), fPixRadius.GetValue(), fPixRadius.GetValue() };
+	m_pRenderTarget->DrawRoundedRectangle(&roundRect, pBrush, fPixStrokeWidth.GetValue(), NULL);
+	SafeRelease(&pBrush);
+}
+
+void D2D_driver::FillRoundedRectangle
+(
+	fPixelRect   const& rect, 
+	D2D1::ColorF const  colF, 
+	fPixel       const  fPixRadius
+) const
+{
+	ID2D1SolidColorBrush* pBrush    { CreateBrush(colF) };
+	D2D1_ROUNDED_RECT     roundRect { convertD2D(rect), fPixRadius.GetValue(), fPixRadius.GetValue() };
 	m_pRenderTarget->FillRoundedRectangle(&roundRect, pBrush);
 	SafeRelease(&pBrush);
 }

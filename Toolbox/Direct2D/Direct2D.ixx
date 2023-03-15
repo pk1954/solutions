@@ -68,7 +68,8 @@ public:
     void FillDiamond         (fPixelPoint const, fPixel const, D2D1::ColorF const) const;
     void Resize              (PIXEL const, PIXEL const);
     void FillBackground      (D2D1::ColorF const) const;
-    void FillRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel) const;
+    void DrawRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const, fPixel const) const;
+    void FillRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const) const;
     void UpDownArrow         (bool  const, fPixelRect  const &, D2D1::ColorF const) const;
     void SetRotation         (float const, fPixelPoint const &) const;
     void Reset               () const;

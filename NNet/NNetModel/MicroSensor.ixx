@@ -24,11 +24,11 @@ public:
 
     virtual ~MicroSensor() = default;
 
-    void Dump()                               const final;
-    mV   GetSignalValue()                     const final;
-    void WriteInfo(wostream&)                 const final;
-    void Draw(DrawContext const&, bool const) const final;
-    bool IsConnected()                        const final { return m_bConnected; }
+    void Dump()                                     const final;
+    mV   GetSignalValue()                           const final;
+    void WriteInfo(wostream&)                       const final;
+    void DrawSigSrc(DrawContext const&, bool const) const final;
+    bool IsConnected()                              const final { return m_bConnected; }
 
     MicroMeterPnt GetPosition() const final { return m_pNob->GetCenter(); }
 

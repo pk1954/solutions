@@ -42,7 +42,7 @@ public:
 
     mV        GetDataPoint   (NNetParameters const &, SIMU_TIME const)  const;
     SIMU_TIME FindNextMaximum(NNetParameters const &, SIMU_TIME const)  const;
-    void      Draw           (DrawContext const &, bool const) const;
+    void      DrawSigSrc     (DrawContext const &, bool const) const;
     void      WriteSignalInfo(wostream &)                      const;
     void      WriteSignalData(wostream &)                      const;
 

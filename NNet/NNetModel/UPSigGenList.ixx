@@ -31,12 +31,15 @@ public:
     SignalGenerator const * GetSigGen(SigGenId const) const;
     SignalGenerator       * GetSigGen(SigGenId const);
 
+    SigGenId                GetSigGenId(SignalGenerator const&) const;
+
     SigGenId                GetSigGenIdSelected() const { return m_sigGenIdActive; }
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
     SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
-    bool IsValid(SigGenId const id) const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
-    bool IsAnySigGenSelected()      const { return m_sigGenIdActive.IsNotNull(); }
+    bool IsValid(SigGenId const id)    const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
+    bool IsAnySigGenSelected()         const { return m_sigGenIdActive.IsNotNull(); }
+    bool IsSelected(SigGenId const id) const { return id == m_sigGenIdActive; }
 
     SigGenId SetActive(SigGenId const);
     SigGenId PushSigGen(UPSigGen);

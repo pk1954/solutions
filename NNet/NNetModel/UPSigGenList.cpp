@@ -21,6 +21,7 @@ using std::to_wstring;
 using std::make_unique;
 using std::unique_ptr;
 using std::ranges::find_if;
+using std::ranges::for_each;
 
 SigGenId UPSigGenList::SetActive(SigGenId const id)
 {
@@ -163,4 +164,24 @@ wstring UPSigGenList::GenerateUniqueName() const
         candidate = L"SigGen " +  to_wstring(++iNr);
     while (GetSigGen(candidate) != nullptr);
     return candidate;
+}
+
+SigGenId UPSigGenList::GetSigGenId(SignalGenerator const& sigGen) const
+{
+    if (&sigGen == StdSigGen::Get())
+        return STD_SIGGEN;
+    SigGenId sigGenFound { };
+    SigGenId id { SigGenId(0) };
+    for_each
+    (
+        m_list,
+        [&sigGen, &sigGenFound, &id](auto& up)
+        {
+            if (&sigGen == up.get())
+                sigGenFound = id;
+            ++id;
+        }
+    );
+    assert(IsValid(sigGenFound)); 
+    return sigGenFound;
 }

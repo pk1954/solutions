@@ -55,7 +55,7 @@ float MacroSensor::GetDistFactor(MicroMeterPnt const & umPnt) const
     return m_circle.DistFactor(umPnt);
 }
 
-void MacroSensor::Draw
+void MacroSensor::DrawSigSrc
 (
     DrawContext const & context,
     bool        const   bHighlight
