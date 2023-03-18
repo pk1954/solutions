@@ -46,12 +46,12 @@ public:
     void SetPos   (POS_TYPE  const & newPos   ) { m_position = newPos; }
     void SetRadius(BASE_TYPE const   newRadius) { m_radius   = newRadius; }
 
-    bool Includes(POS_TYPE const pos) const
+    bool Includes(POS_TYPE const & pos) const
     {
         return DistSquare(pos, m_position) <= m_radius.GetValue() * m_radius.GetValue();  //TODO: better use hypot?
     }
 
-    float DistFactor(POS_TYPE const pos) const
+    float DistFactor(POS_TYPE const &pos) const
     {
         float const fDsBorder   { m_radius.GetValue() * m_radius.GetValue() };
         float const fDistSquare { DistSquare(pos, m_position) };

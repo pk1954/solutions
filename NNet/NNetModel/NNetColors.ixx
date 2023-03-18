@@ -20,6 +20,11 @@ public:
 	// POSITION_RECT is used in mini window to visualize position of main window area, transparent
 	inline static ColorF const POSITION_RECT    { 0.9f, 0.3f, 0.2f, 0.4f };
 
+	// colors for SignalGenerators
+
+	inline static ColorF const SIGGEN_NORMAL    { 1.0f, 1.0f, 0.9f, 1.0f };
+	inline static ColorF const SIGGEN_ACTIVE    { 1.0f, 1.0f, 0.6f, 1.0f };
+
 	// colors EEG Monitor
 	inline static ColorF const COL_DIAMOND       { 0.0f, 1.0f, 0.0f, 1.0f };
 	inline static ColorF const COL_STIMULUS_LINE { 0.5f, 0.1f, 0.1f, 1.0f };

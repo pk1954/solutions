@@ -84,8 +84,6 @@ private:
 	inline static PIXEL      const RIGHT_BORDER   { 25_PIXEL };
 	inline static PIXEL      const H_SCALE_HEIGHT { 30_PIXEL };
 	inline static PIXEL      const V_SCALE_WIDTH  { 35_PIXEL };
-	inline static fPixel     const SIGGEN_WIDTH   { 100._fPixel };
-	inline static fPixel     const SIGGEN_HEIGHT  { 50._fPixel };
 
 	MicroMeter         m_umArrowSize          { STD_ARROW_SIZE };
 	Preferences*       m_pPreferences         { nullptr };
@@ -95,7 +93,6 @@ private:
 	Observable*        m_pCursorPosObservable { nullptr };
 	Observable*        m_pMoveObservable      { nullptr };
 	NNetModelCommands* m_pModelCommands       { nullptr };
-	IDWriteTextFormat* m_pTextFormat          { nullptr };
 	bool               m_bShowPnts            { false };
 	NobId              m_nobIdHighlighted     { NO_NOB };
 	NobId              m_nobIdTarget          { NO_NOB };
@@ -108,10 +105,15 @@ private:
 	void  centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool  connectionAllowed();
 	void  select(NobId const);
-	void  drawSignalGenerators();
-	void  drawSigGen(SignalGenerator const&, fPixelRect);
-	void  drawInputCables();
-	void  drawInputCable(InputLine const&);
+	void  DrawInputCables(D2D_DrawContext&);
+	void  DrawInputCable
+	(
+		Uniform2D<MicroMeter> const&, 
+		D2D_driver*, 
+		SigGenId const, 
+		InputLine const&, 
+		ID2D1SolidColorBrush* const
+	);
 
 	void  DoPaint() final;
 

@@ -41,11 +41,11 @@ wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 	using enum ParamType::Value;
 	static unordered_map <ParamType::Value, wchar_t const* const> mapParam =
 	{
-		{ pulseFreqMax,     L"Hz"    },
+		{ pulseFreqMax,     TypeAttribute<fHertz>::unit.c_str() },
 		{ inputPeakTime,    L"µs"    },
-		{ inputPeakFreq,    L"Hz"    },
+		{ inputPeakFreq,    TypeAttribute<fHertz>::unit.c_str() },
 		{ inputPeakVolt,    L"mV"    },
-		{ inputBaseFreq,    L"Hz"    },
+		{ inputBaseFreq,    TypeAttribute<fHertz>::unit.c_str() },
 		{ inputBaseVolt,    L"mV"    },
 		{ neuronPeakVolt,   L"mV"    },
 		{ neuronThreshold,  L"mV"    },

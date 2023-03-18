@@ -124,8 +124,6 @@ void MainWindow::Start
 	m_upVertScale->SetZoomAllowed(false);
 	m_upVertScale->SetOrthoOffset (Convert2fPixel(V_SCALE_WIDTH));
 	m_upHorzScale->SetBottomBorder(Convert2fPixel(H_SCALE_HEIGHT));
-
-	m_pTextFormat = m_upGraphics->NewTextFormat(12.0f);
 }
 
 void MainWindow::Stop()
@@ -523,8 +521,8 @@ void MainWindow::DoPaint()
 	}
 
 	DrawSensors();
-	drawSignalGenerators();
-	drawInputCables();
+	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get());
+	DrawInputCables(m_context);
 
 	if (m_bShowPnts && pMacroSensorSelected)
 	{
@@ -534,69 +532,52 @@ void MainWindow::DoPaint()
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
 
-void MainWindow::drawSignalGenerators()
+void MainWindow::DrawInputCables(D2D_DrawContext& context)
 {
-	fPixelRect          fPixRect { 1._fPixel, 1._fPixel, SIGGEN_WIDTH, SIGGEN_HEIGHT };
-	UPSigGenList const& list     { m_pNMRI->GetSigGenList() };
-	list.Apply2AllC
+	UPSigGenList          const& list     { m_pNMRI->GetSigGenList() };
+	Uniform2D<MicroMeter> const& coord    { context.GetCoordC() };
+	D2D_driver                 * graphics { context.GetGraphics() };
+	m_pNMRI->Apply2AllC<InputLine>
 	(
-		[this, &fPixRect](auto const& pSigGen)
-		{
-			drawSigGen(*pSigGen, fPixRect);
-			fPixRect.MoveHorz(SIGGEN_WIDTH + 2._fPixel);
+		[this, &list, &coord, &graphics](InputLine const& inputLine)
+		{ 
+			SigGenId              const idSigGen { list.GetSigGenId(*inputLine.GetSigGenC()) };
+			ID2D1SolidColorBrush* const pBrush
+			{
+				(IsHighlighted(inputLine) || list.IsSelected(idSigGen))
+				? m_pBrushSensorSelected
+				: m_pBrushSensorNormal
+			};
+
+			DrawInputCable
+			(
+				coord,
+				graphics,
+				idSigGen,
+			    inputLine,
+				pBrush
+			); 
 		}
 	);
 }
 
-void MainWindow::drawSigGen
+void MainWindow::DrawInputCable
 (
-	SignalGenerator const &sigGen,
-	fPixelRect             fPixRect
+	Uniform2D<MicroMeter> const& coord,
+	D2D_driver                 * graphics,
+	SigGenId              const  idSigGen,
+	InputLine             const& inputLine,
+	ID2D1SolidColorBrush* const  pBrush
 )
 {
-	static  const fPixel CORNERS { 5._fPixel };
-	wostringstream wstrBuffer;
-	fHertz  const frequency { sigGen.GetStimulusFrequency() };
-	mV      const voltage   { sigGen.GetStimulusAmplitude() };
-	m_upGraphics->FillRoundedRectangle(fPixRect, D2D1::ColorF::Yellow, CORNERS);
-	m_upGraphics->DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
-	m_upGraphics->DisplayText(fPixRect, sigGen.GetName(), m_pTextFormat);
-
-	fPixRect.MoveVert(15.0_fPixel);
-	wstrBuffer.str(L"");
-	wstrBuffer << fixed << setprecision(1) << frequency.GetValue() << L" Hz";
-	m_upGraphics->DisplayText(fPixRect, wstrBuffer.str(), m_pTextFormat);
-
-	fPixRect.MoveVert(15.0_fPixel);
-	wstrBuffer.str(L"");
-	wstrBuffer << fixed << setprecision(1) << voltage.GetValue() << L" mV";
-	m_upGraphics->DisplayText(fPixRect, wstrBuffer.str(), m_pTextFormat);
-}
-
-void MainWindow::drawInputCables()
-{
-	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& inputLine){ drawInputCable(inputLine); });
-}
-
-void MainWindow::drawInputCable(InputLine const& inputLine)
-{
-	UPSigGenList          const& list     { m_pNMRI->GetSigGenList() };
-	SigGenId              const  idSigGen { list.GetSigGenId(*inputLine.GetSigGenC()) };
-	ID2D1SolidColorBrush* const  pBrush
-	{
-		(IsHighlighted(inputLine) || list.IsSelected(idSigGen))
-		? m_pBrushSensorSelected
-		: m_pBrushSensorNormal
-	};
-
 	MicroMeterPnt const umDirVector      { inputLine.GetDirVector() };
 	MicroMeterPnt const umCenter         { inputLine.GetPos() - umDirVector * 0.7f };
-	fPixelPoint   const fPixPosInputLine { GetCoordC().Transform2fPixelPos(umCenter) };
-	fPixelPoint   const fPixPosDir       { GetCoordC().Transform2fPixelSize(umDirVector) };
+	fPixelPoint   const fPixPosInputLine { coord.Transform2fPixelPos(umCenter) };
+	fPixelPoint   const fPixPosDir       { coord.Transform2fPixelSize(umDirVector) };
 	float         const fPosition        { Cast2Float(idSigGen.GetValue()) + 1.5f };
-	fPixelPoint   const fPixPosSigGen    { SIGGEN_WIDTH * fPosition, SIGGEN_HEIGHT };
+	fPixelPoint   const fPixPosSigGen    { SignalGenerator::SIGGEN_WIDTH * fPosition, SignalGenerator::SIGGEN_HEIGHT };
 
-	m_upGraphics->DrawBezier
+	graphics->DrawBezier
 	(
 		fPixPosSigGen,
 		fPixPosSigGen + fPixelPoint(0.0_fPixel, 100.0_fPixel),

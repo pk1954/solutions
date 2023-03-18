@@ -32,7 +32,7 @@ public:
 
     void RotateSensor(MicroMeterPnt const&, Radian const) final;
 
-    bool Includes(MicroMeterPnt const p) const { return m_circle.Includes(p); }
+    bool Includes(MicroMeterPnt const &p) const { return m_circle.Includes(p); }
 
     MicroMeterPnt GetPosition() const final { return GetCenter(); }
 

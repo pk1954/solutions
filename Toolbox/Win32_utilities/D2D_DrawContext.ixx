@@ -119,6 +119,8 @@ public:
 		fPixel const = 1._fPixel
 	) const override;
 
+	D2D_driver* GetGraphics() {	return m_pGraphics; }
+
 private:
 	inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 

@@ -32,14 +32,16 @@ public:
     SignalGenerator       * GetSigGen(SigGenId const);
 
     SigGenId                GetSigGenId(SignalGenerator const&) const;
+    SigGenId                GetSigGenId(MicroMeterPnt   const&) const;
 
     SigGenId                GetSigGenIdSelected() const { return m_sigGenIdActive; }
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
     SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
-    bool IsValid(SigGenId const id)    const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
-    bool IsAnySigGenSelected()         const { return m_sigGenIdActive.IsNotNull(); }
-    bool IsSelected(SigGenId const id) const { return id == m_sigGenIdActive; }
+    bool IsValid(SigGenId const id)           const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
+    bool IsAnySigGenSelected()                const { return m_sigGenIdActive.IsNotNull(); }
+    bool IsSelected(SigGenId const id)        const { return id == m_sigGenIdActive; }
+    bool IsSelected(SignalGenerator const &s) const { return &s == GetSigGenSelected(); }
 
     SigGenId SetActive(SigGenId const);
     SigGenId PushSigGen(UPSigGen);
@@ -47,6 +49,7 @@ public:
     UPSigGen RemoveSigGen(SigGenId const);
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
+    void     DrawSignalGenerators(D2D_driver&) const;
 
     void Apply2All(auto const& f)
     {

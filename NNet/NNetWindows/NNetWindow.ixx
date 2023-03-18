@@ -85,6 +85,8 @@ protected:
 	ID2D1SolidColorBrush* m_pBrushSensorNormal   { nullptr };
 	ID2D1SolidColorBrush* m_pBrushSensorSelected { nullptr };
 
+	D2D_DrawContext m_context { };
+
 	bool OnSize    (PIXEL const, PIXEL  const) override;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
@@ -108,7 +110,6 @@ private:
 	inline static fPixel const VRADIUS { 10._fPixel };
 
 	NNetController * m_pController     { nullptr };
-	D2D_DrawContext  m_context         { };
 	fPixel           m_fPixRadiusLimit { };
 	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
 

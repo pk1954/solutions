@@ -14,6 +14,7 @@ import Types;
 import :SigGenStaticData;
 import :UPSigGenList;
 import :NNetParameters;
+import :NNetColors;
 import :ParamType;
 
 using std::wstring;
@@ -69,4 +70,28 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 void SignalGenerator::Prepare(NNetParameters const & param)
 {
 	m_mVactual = m_dynData.SetTime(m_statData, param);
+}
+
+void SignalGenerator::DrawSigGen
+(
+	D2D_driver& graphics,
+	fPixelRect  fPixRect,
+	bool const  bSelected
+)
+{
+	if (!m_pTextFormat)
+		m_pTextFormat = graphics.NewTextFormat(12.0f);
+	static fPixel const CORNERS { 5._fPixel };
+	D2D1::ColorF  const col     { bSelected ? NNetColors::SIGGEN_ACTIVE : NNetColors::SIGGEN_NORMAL };
+	graphics.FillRoundedRectangle(fPixRect, col, CORNERS);
+	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
+	graphics.DisplayText(fPixRect, GetName(), m_pTextFormat);
+
+	fPixRect.MoveVert(15.0_fPixel);
+	fHertz const frequency { GetStimulusFrequency() };
+	graphics.DisplayText(fPixRect, Format2wstring<fHertz>(frequency, 1), m_pTextFormat);
+
+	fPixRect.MoveVert(15.0_fPixel);
+	mV const voltage { GetStimulusAmplitude() };
+	graphics.DisplayText(fPixRect, Format2wstring<mV>(voltage, 1), m_pTextFormat);
 }

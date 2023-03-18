@@ -14,6 +14,7 @@ module NNetModel:UPSigGenList;
 
 import :SigGenId;
 import :StdSigGen;
+import :SignalGenerator;
 
 using std::wstring;
 using std::vector;
@@ -185,3 +186,25 @@ SigGenId UPSigGenList::GetSigGenId(SignalGenerator const& sigGen) const
     assert(IsValid(sigGenFound)); 
     return sigGenFound;
 }
+
+SigGenId UPSigGenList::GetSigGenId(MicroMeterPnt const& umPnt) const
+{
+    //if (&sigGen == StdSigGen::Get())
+    //    return STD_SIGGEN;
+
+    return INVALID_SIGGEN;
+}
+
+void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
+{
+    fPixelRect fPixRect { 1._fPixel, 1._fPixel, SignalGenerator::SIGGEN_WIDTH, SignalGenerator::SIGGEN_HEIGHT };
+    Apply2AllC
+    (
+        [this, &fPixRect, &graphics](auto const& pSigGen)
+        {
+            pSigGen->DrawSigGen(graphics, fPixRect, IsSelected(*pSigGen));
+            fPixRect.MoveHorz(SignalGenerator::SIGGEN_WIDTH + 2._fPixel);
+        }
+    );
+}
+

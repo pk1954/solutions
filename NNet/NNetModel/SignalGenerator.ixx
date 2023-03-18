@@ -11,6 +11,7 @@ module;
 export module NNetModel:SignalGenerator;
 
 import ObserverInterface;
+import Direct2D;
 import Types;
 import BasePeak;
 import :ParamType;
@@ -39,6 +40,8 @@ public:
 	void WriteInfo(wostream&)                       const final {};
 	void DrawSigSrc(DrawContext const&, bool const) const final {};
 	bool IsConnected()                              const final { return true; }
+
+	void DrawSigGen(D2D_driver&, fPixelRect, bool const);
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;
@@ -71,11 +74,14 @@ public:
 	void Register(ObserverInterface&);
 	void Unregister(ObserverInterface const&);
 
+	inline static fPixel const SIGGEN_WIDTH { 100._fPixel };
+	inline static fPixel const SIGGEN_HEIGHT { 50._fPixel };
+
 private:
 
-	PixelPoint        m_pixPos;
-	mV                m_mVactual;
-	SigGenStaticData  m_statData;
-	SigGenDynamicData m_dynData;
-	wstring           m_name;
+	mV                 m_mVactual;
+	SigGenStaticData   m_statData;
+	SigGenDynamicData  m_dynData;
+	wstring            m_name;
+	IDWriteTextFormat* m_pTextFormat { nullptr };
 };
