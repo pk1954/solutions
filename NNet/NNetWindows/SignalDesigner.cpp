@@ -255,14 +255,6 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }
 
-void SignalDesigner::OnNCLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
-{
-	SigGenId             sigGenId   { m_pNMWI->GetSigGenIdSelected() };
-	UPSigGenList const & sigGenList { m_pNMWI->GetSigGenList() };
-	sigGenId = (sigGenId.GetValue() + 1) % sigGenList.Size();
-	PostCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, sigGenId.GetValue());
-}
-
 void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)
 {
 	BaseScale * const pScale { bit_cast<BaseScale *>(lParam) };

@@ -15,6 +15,7 @@ module NNetModel:UPSigGenList;
 import :SigGenId;
 import :StdSigGen;
 import :SignalGenerator;
+import :InputLine;
 
 using std::wstring;
 using std::vector;
@@ -187,12 +188,15 @@ SigGenId UPSigGenList::GetSigGenId(SignalGenerator const& sigGen) const
     return sigGenFound;
 }
 
-SigGenId UPSigGenList::GetSigGenId(MicroMeterPnt const& umPnt) const
+SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr) const
 {
-    //if (&sigGen == StdSigGen::Get())
-    //    return STD_SIGGEN;
-
-    return INVALID_SIGGEN;
+    fPixel fPixMaxX { DIST * Cast2Float(m_list.size() + 1) - GAP };
+    if (fPixCrsr.GetX() > fPixMaxX)
+        return INVALID_SIGGEN;
+    if (fPixCrsr.GetY() > SignalGenerator::SIGGEN_HEIGHT)
+        return INVALID_SIGGEN;
+    SigGenId id { Cast2Int(fPixCrsr.GetX() / SignalGenerator::SIGGEN_WIDTH) };
+    return id;
 }
 
 void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
@@ -203,8 +207,33 @@ void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
         [this, &fPixRect, &graphics](auto const& pSigGen)
         {
             pSigGen->DrawSigGen(graphics, fPixRect, IsSelected(*pSigGen));
-            fPixRect.MoveHorz(SignalGenerator::SIGGEN_WIDTH + 2._fPixel);
+            fPixRect.MoveHorz(DIST);
         }
     );
 }
 
+void UPSigGenList::DrawInputCable
+(
+    D2D_driver                 & graphics,
+    Uniform2D<MicroMeter> const& coord,
+    fPixel                const  fPixPos,
+    InputLine             const& inputLine,
+    ID2D1SolidColorBrush* const  pBrush
+) const
+{
+    MicroMeterPnt const umDirVector      { inputLine.GetDirVector() };
+    MicroMeterPnt const umCenter         { inputLine.GetPos() - umDirVector * 0.7f };
+    fPixelPoint   const fPixPosInputLine { coord.Transform2fPixelPos(umCenter) };
+    fPixelPoint   const fPixPosDir       { coord.Transform2fPixelSize(umDirVector) };
+    fPixelPoint   const fPixPosSigGen    { fPixPos, SignalGenerator::SIGGEN_HEIGHT };
+
+    graphics.DrawBezier
+    (
+        fPixPosSigGen,
+        fPixPosSigGen + fPixelPoint(0.0_fPixel, 100.0_fPixel),
+        fPixPosInputLine - fPixPosDir.ScaledTo(100.0_fPixel),
+        fPixPosInputLine,
+        pBrush,
+        2._fPixel
+    );
+}

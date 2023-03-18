@@ -19,6 +19,7 @@ import :SigGenStaticData;
 import :SigGenDynamicData;
 import :NNetParameters;
 import :SignalSource;
+import :SigGenId;
 
 using std::wstring;
 using std::wostream;

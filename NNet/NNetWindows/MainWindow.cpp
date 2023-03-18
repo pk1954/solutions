@@ -355,7 +355,7 @@ void MainWindow::select(NobId const idNob)
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
 	NobId         const idNob     { m_pNMRI->FindNobAt(umCrsrPos) };
 	if (IsUndefined(idNob))
@@ -372,6 +372,12 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 
 bool MainWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
+	PixelPoint   const  ptCrsr   { GetCrsrPosFromLparam(lParam) };
+	fPixelPoint  const  fPixCrsr { Convert2fPixelPoint(ptCrsr) };
+	UPSigGenList const& list     { m_pNMRI->GetSigGenList() };
+	SigGenId     const  idSigGen { list.GetSigGenId(fPixCrsr) };
+	if (idSigGen != INVALID_SIGGEN)
+		PostCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, idSigGen.GetValue());
 	SetCapture();
 	return NNetWindow::OnLButtonDown(wParam, lParam);
 }
@@ -479,24 +485,24 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
-	PixelRect   const   pixRect              { GetClPixelRect () };
-	DrawContext const & context              { GetDrawContextC() };
-	MacroSensor const * pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensorSelectedC()) };
+	PixelRect   const   pixRect { GetClPixelRect() };
+	DrawContext const& context { GetDrawContextC() };
+	MacroSensor const* pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensorSelectedC()) };
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
-		DrawExteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
+		DrawExteriorInRect(pixRect, [](Nob const& n) { return n.IsPipe() && !n.IsSelected(); });
+		DrawExteriorInRect(pixRect, [](Nob const& n) { return n.IsPipe() && n.IsSelected(); });
+		DrawExteriorInRect(pixRect, [](Nob const& n) { return n.IsPosNob(); }); // draw PosNobs OVER Pipes
+		DrawExteriorInRect(pixRect, [](Nob const& n) { return n.IsIoConnector(); });
 		if (m_umArrowSize > 0.0_MicroMeter)
 			DrawArrowsInRect(pixRect, m_umArrowSize);
 	}
 
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() && ! n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPipe() &&   n.IsSelected(); }); 
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsPosNob   (); }); // draw PosNobs OVER Pipes
-	DrawInteriorInRect(pixRect, [](Nob const & n) { return n.IsIoConnector(); }); 
+	DrawInteriorInRect(pixRect, [](Nob const& n) { return n.IsPipe() && !n.IsSelected(); });
+	DrawInteriorInRect(pixRect, [](Nob const& n) { return n.IsPipe() && n.IsSelected(); });
+	DrawInteriorInRect(pixRect, [](Nob const& n) { return n.IsPosNob(); }); // draw PosNobs OVER Pipes
+	DrawInteriorInRect(pixRect, [](Nob const& n) { return n.IsIoConnector(); });
 
 	if (m_pNMRI->IsValidNobId(m_nobIdTarget)) // draw target nob again to be sure that it is visible
 	{
@@ -514,7 +520,7 @@ void MainWindow::DoPaint()
 		m_pNMRI->DrawExterior(m_nobIdHighlighted, context, tHighlight::highlighted);
 		m_pNMRI->DrawInterior(m_nobIdHighlighted, context, tHighlight::highlighted);
 	}
-	else 
+	else
 	{
 		if (pMacroSensorSelected)
 			DrawHighlightedSensor(pMacroSensorSelected);
@@ -522,7 +528,7 @@ void MainWindow::DoPaint()
 
 	DrawSensors();
 	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get());
-	DrawInputCables(m_context);
+	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
 
 	if (m_bShowPnts && pMacroSensorSelected)
 	{
@@ -532,59 +538,27 @@ void MainWindow::DoPaint()
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
 
-void MainWindow::DrawInputCables(D2D_DrawContext& context)
+void MainWindow::drawInputCable(InputLine const& inputLine) const
 {
-	UPSigGenList          const& list     { m_pNMRI->GetSigGenList() };
-	Uniform2D<MicroMeter> const& coord    { context.GetCoordC() };
-	D2D_driver                 * graphics { context.GetGraphics() };
-	m_pNMRI->Apply2AllC<InputLine>
-	(
-		[this, &list, &coord, &graphics](InputLine const& inputLine)
-		{ 
-			SigGenId              const idSigGen { list.GetSigGenId(*inputLine.GetSigGenC()) };
-			ID2D1SolidColorBrush* const pBrush
-			{
-				(IsHighlighted(inputLine) || list.IsSelected(idSigGen))
-				? m_pBrushSensorSelected
-				: m_pBrushSensorNormal
-			};
-
-			DrawInputCable
-			(
-				coord,
-				graphics,
-				idSigGen,
-			    inputLine,
-				pBrush
-			); 
-		}
-	);
-}
-
-void MainWindow::DrawInputCable
-(
-	Uniform2D<MicroMeter> const& coord,
-	D2D_driver                 * graphics,
-	SigGenId              const  idSigGen,
-	InputLine             const& inputLine,
+	UPSigGenList          const& list      { m_pNMRI->GetSigGenList() };
+	SigGenId              const  idSigGen  { list.GetSigGenId(*inputLine.GetSigGenC()) };
+	float                 const  fPosition { Cast2Float(idSigGen.GetValue()) + 1.5f };
+	fPixel                const  fPixPos   { SignalGenerator::SIGGEN_WIDTH * fPosition };
+	D2D_driver                 & graphics  { *m_upGraphics.get() };
+	Uniform2D<MicroMeter> const& coord     { m_context.GetCoordC() };
 	ID2D1SolidColorBrush* const  pBrush
-)
-{
-	MicroMeterPnt const umDirVector      { inputLine.GetDirVector() };
-	MicroMeterPnt const umCenter         { inputLine.GetPos() - umDirVector * 0.7f };
-	fPixelPoint   const fPixPosInputLine { coord.Transform2fPixelPos(umCenter) };
-	fPixelPoint   const fPixPosDir       { coord.Transform2fPixelSize(umDirVector) };
-	float         const fPosition        { Cast2Float(idSigGen.GetValue()) + 1.5f };
-	fPixelPoint   const fPixPosSigGen    { SignalGenerator::SIGGEN_WIDTH * fPosition, SignalGenerator::SIGGEN_HEIGHT };
-
-	graphics->DrawBezier
+	{
+		(IsHighlighted(inputLine) || list.IsSelected(idSigGen))
+		? m_pBrushSensorSelected
+		: m_pBrushSensorNormal
+	};
+	list.DrawInputCable
 	(
-		fPixPosSigGen,
-		fPixPosSigGen + fPixelPoint(0.0_fPixel, 100.0_fPixel),
-		fPixPosInputLine - fPixPosDir.ScaledTo(100.0_fPixel),
-		fPixPosInputLine,
-		pBrush,
-		2._fPixel
+		graphics,
+		coord,
+		fPixPos,
+		inputLine,
+		pBrush
 	);
 }
 

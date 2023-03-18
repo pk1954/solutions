@@ -15,6 +15,7 @@ import Types;
 import :SigGenId;
 import :StdSigGen;
 import :SignalGenerator;
+import :InputLine;
 
 using std::ranges::for_each;
 using std::unique_ptr;
@@ -32,7 +33,7 @@ public:
     SignalGenerator       * GetSigGen(SigGenId const);
 
     SigGenId                GetSigGenId(SignalGenerator const&) const;
-    SigGenId                GetSigGenId(MicroMeterPnt   const&) const;
+    SigGenId                GetSigGenId(fPixelPoint     const&) const;
 
     SigGenId                GetSigGenIdSelected() const { return m_sigGenIdActive; }
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
@@ -50,6 +51,14 @@ public:
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
     void     DrawSignalGenerators(D2D_driver&) const;
+    void     DrawInputCable
+    (
+        D2D_driver&,
+        Uniform2D<MicroMeter> const&,
+        fPixel const,
+        InputLine const&,
+        ID2D1SolidColorBrush* const
+    ) const;
 
     void Apply2All(auto const& f)
     {
@@ -73,6 +82,8 @@ public:
     wstring                 GenerateUniqueName() const;
 
 private:
+    inline static const fPixel GAP  { 2._fPixel };
+    inline static const fPixel DIST { SignalGenerator::SIGGEN_WIDTH + GAP };
 
     vector<UPSigGen> m_list;  // std siggen is ** not ** in list!
     SigGenId         m_sigGenIdActive { STD_SIGGEN };

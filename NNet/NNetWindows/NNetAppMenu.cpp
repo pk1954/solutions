@@ -114,7 +114,7 @@ void NNetAppMenu::Start
     Util::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
 
     m_hMenuSigGen = Util::PopupMenu(m_hMenu, L"&Signal generators");
-    addSigGenMenuEntries();
+    Util::AddMenu(m_hMenuSigGen, MF_STRING, IDD_NEW_SIGNAL_GENERATOR, L"Create &new");
 
     HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
@@ -156,27 +156,6 @@ void NNetAppMenu::Start
     assert(bRes);
 }
 
-void NNetAppMenu::addSigGenMenuEntries()
-{
-    if (m_pNMRI)
-    {
-        m_pNMRI->GetSigGenList().Apply2AllC
-        (
-            [this](SignalGenerator const * pSigGen)
-            {
-                Util::AddMenu
-                (
-                    m_hMenuSigGen, 
-                    MF_STRING, 
-                    IDD_SELECT_SIGNAL_GENERATOR, 
-                    pSigGen->GetName().c_str()
-                );
-            }
-        );
-    }
-    Util::AddMenu(m_hMenuSigGen, MF_STRING, IDD_NEW_SIGNAL_GENERATOR, L"Create &new");
-}
-
 void NNetAppMenu::delSigGenMenuEntries()
 {
     while (DeleteMenu(m_hMenuSigGen, 0, MF_BYPOSITION)) { };
@@ -208,8 +187,6 @@ void NNetAppMenu::Notify(bool const bImmediately)
     m_upOnOffPerfMonMode ->enableOnOff(BaseWindow::PerfMonMode());
 
     delSigGenMenuEntries();
-    addSigGenMenuEntries();
-
     DrawMenuBar(m_hwndApp);
 }
 

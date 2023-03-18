@@ -105,17 +105,8 @@ private:
 	void  centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool  connectionAllowed();
 	void  select(NobId const);
-	void  DrawInputCables(D2D_DrawContext&);
-	void  DrawInputCable
-	(
-		Uniform2D<MicroMeter> const&, 
-		D2D_driver*, 
-		SigGenId const, 
-		InputLine const&, 
-		ID2D1SolidColorBrush* const
-	);
-
 	void  DoPaint() final;
+	void  drawInputCable(InputLine const &) const;
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

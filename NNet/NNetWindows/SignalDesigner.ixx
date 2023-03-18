@@ -75,7 +75,6 @@ private:
 
 	bool OnSize             (PIXEL const, PIXEL const)                     final;
 	bool OnCommand          (WPARAM const, LPARAM const, PixelPoint const) final;
-	void OnNCLButtonDblClick(WPARAM const, LPARAM const)                   final;
 	void OnScaleCommand     (WPARAM const, LPARAM const)                   final;
 
 	PixFpDimension<fMicroSecs> m_horzCoord;
