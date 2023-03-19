@@ -7,21 +7,18 @@ module;
 #include <vector>
 #include <memory>
 #include <cassert>
+#include <iostream>
 
-export module PlugIoConnectors;
+export module PlugIoConnectorsCmd;
 
-import Types;
 import NNetCommand;
-import NNetModel;
 
 using std::vector;
-using std::unique_ptr;
-using std::make_unique;
 
-export class PlugIoConnectors : public NNetCommand
+export class PlugIoConnectorsCmd : public NNetCommand
 {
 public:
-    PlugIoConnectors(NobId idAnimated, NobId idTarget)
+    PlugIoConnectorsCmd(NobId idAnimated, NobId idTarget)
     {
         IoConnector* pNobAnimated { m_pNMWI->GetNobPtr<IoConnector*>(idAnimated) };
         IoConnector* pNobTarget   { m_pNMWI->GetNobPtr<IoConnector*>(idTarget) };
@@ -73,7 +70,32 @@ public:
         }
     }
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, new Wrapper);
+    }
+
+    static void Push(NobId const nobId1, NobId const nobId2)
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
+        m_pStack->PushCommand(make_unique<PlugIoConnectorsCmd>(nobId1, nobId2));
+    }
+
 private:
+
+    inline static const wstring NAME { L"PlugIoConnectors" };
+
+    class Wrapper : public ScriptFunctor
+    {
+    public:
+        void operator() (Script& script) const final
+        {
+            NobId const id1 { ScrReadNobId(script) };
+            NobId const id2 { ScrReadNobId(script) };
+            PlugIoConnectorsCmd::Push(id1, id2);
+        }
+    };
 
     size_t m_size;
 

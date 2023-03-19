@@ -93,10 +93,10 @@
     <ClCompile Include="NNetCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlugIoConnectors.ixx">
+    <ClCompile Include="PlugIoConnectorsCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlugIoLines.ixx">
+    <ClCompile Include="PlugIoLinesCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenameSigGenCmd.ixx">

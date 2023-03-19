@@ -28,8 +28,8 @@ import NNetModel;
 import NNetCommandStack;
 import NNetModelCommands;
 import NNetModelIO;
-import PlugIoConnectors;
-import PlugIoLines;
+import PlugIoConnectorsCmd;
+import PlugIoLinesCmd;
 import SelectionCommand;
 import SetActiveSigGenCmd;
 import SetNobCommand;
@@ -123,34 +123,28 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 { 
 	using enum ConnectionType;
 
-	unique_ptr<Command> upCmd;
 	ConnectionType connType { m_pNMWI->ConnectionResult(idSrc, idDst) };
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() 
-		              << idSrc.GetValue() << L' ' << idDst.GetValue()
-		              << L" type " << static_cast<int>(connType) << endl;
 	switch (connType)
 	{
-		case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);          // case 1 
-			return;
+		case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);  // case 1 
+			break;
 		case ct_synapse:	 
-			upCmd = make_unique<ConnectCreateSynapseCmd>(idSrc, idDst);  // case 2
+			ConnectCreateSynapseCmd::Push(idSrc, idDst);  // case 2
 			break;
 		case ct_neuron:
-			upCmd = make_unique<Connect2NeuronCommand>(idSrc, idDst);    // case 3
+			Connect2NeuronCommand::Push(idSrc, idDst);    // case 3
 			break;  
 		case ct_knot:		 
-			upCmd = make_unique<PlugIoLines>(idSrc, idDst);              // case 4/5
+			PlugIoLinesCmd::Push(idSrc, idDst);              // case 4/5
 			break;
 		case ct_connector:
-			upCmd = make_unique<ConnAnimationCommand>(idSrc, idDst);     // case 12/13
+			ConnAnimationCommand::Push(idSrc, idDst);     // case 12/13
 			break;
 		case ct_plugConnectors:
-			upCmd = make_unique<PlugIoConnectors>(idSrc, idDst);         // case 6
+			PlugIoConnectorsCmd::Push(idSrc, idDst);         // case 6
 			break;
 		default: assert(false);
 	}
-	m_pCmdStack->PushCommand(move(upCmd));
 	m_pSound->Play(L"SNAP_IN_SOUND");
 }
 

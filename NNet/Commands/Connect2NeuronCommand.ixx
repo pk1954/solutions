@@ -6,15 +6,11 @@ module;
 
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 export module Connect2NeuronCommand;  
 
-import Types;
 import NNetCommand;
-import NNetModel;
-
-using std::unique_ptr;
-using std::make_unique;
 
 export class Connect2NeuronCommand : public NNetCommand
 {
@@ -50,7 +46,32 @@ public:
 		m_pNMWI->Restore2Model(move(m_upOutputLineSrc));
 	}
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(NobId const nobId1, NobId const nobId2)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
+		m_pStack->PushCommand(make_unique<Connect2NeuronCommand>(nobId1, nobId2));
+	}
+
 private:
+
+	inline static const wstring NAME { L"Connect2Neuron" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			NobId const id1 { ScrReadNobId(script) };
+			NobId const id2 { ScrReadNobId(script) };
+			Connect2NeuronCommand::Push(id1, id2);
+		}
+	};
 
 	OutputLine & m_outputLineSrc;  // reference to original OutputLine
 	Neuron     & m_neuronDst;      // reference to original Neuron

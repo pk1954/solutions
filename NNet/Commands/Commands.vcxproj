@@ -134,8 +134,8 @@
     <ClCompile Include="NNetCommandStack.ixx" />
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetModelCommands.ixx" />
-    <ClCompile Include="PlugIoConnectors.ixx" />
-    <ClCompile Include="PlugIoLines.ixx" />
+    <ClCompile Include="PlugIoConnectorsCmd.ixx" />
+    <ClCompile Include="PlugIoLinesCmd.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
     <ClCompile Include="ResetModelCmd.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />

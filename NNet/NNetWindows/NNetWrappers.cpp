@@ -28,6 +28,7 @@ import AddSigGen2MonitorCmd;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
 import ConnAnimationCommand;
+import Connect2NeuronCommand;
 import ConnectCreateForkCmd;
 import ConnectCreateSynapseCmd;
 import CreateForkCommand;
@@ -52,6 +53,8 @@ import MoveSensorCmd;
 import MoveSignalCmd;
 import NewIoLinePairCmd;
 import NewSigGenCmd;
+import PlugIoConnectorsCmd;
+import PlugIoLinesCmd;
 import RenameSigGenCmd;
 import ResetModelCmd;
 import RotateModelCommand;
@@ -74,32 +77,32 @@ static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;
 static NNetModelIO              * m_pModelIO;
 
-class WrapConnect: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        NobId          const idSrc { ScrReadNobId(script) };
-        NobId          const idDst { ScrReadNobId(script) };
-        ConnectionType const ctype { m_pNMRI->ConnectionResult(idSrc, idDst) };
-        if (ctype != ConnectionType::ct_none)
-        {
-            m_pCommands->Connect(idSrc, idDst);
-        }
-        else
-        {
-            script.SetExpectedToken(L"");
-            wstring wstrMsg
-            {
-                L"Invalid: Connect " + 
-                m_pNMRI->GetTypeName(idSrc) + 
-                L" to " + 
-                m_pNMRI->GetTypeName(idDst)
-            };
-            throw ScriptErrorHandler::ScriptException(999, wstrMsg);
-        }
-    }
-};
+//class WrapConnect: public ScriptFunctor
+//{
+//public:
+//    void operator() (Script & script) const final
+//    {
+//        NobId          const idSrc { ScrReadNobId(script) };
+//        NobId          const idDst { ScrReadNobId(script) };
+//        ConnectionType const ctype { m_pNMRI->ConnectionResult(idSrc, idDst) };
+//        if (ctype != ConnectionType::ct_none)
+//        {
+//            m_pCommands->Connect(idSrc, idDst);
+//        }
+//        else
+//        {
+//            script.SetExpectedToken(L"");
+//            wstring wstrMsg
+//            {
+//                L"Invalid: Connect " + 
+//                m_pNMRI->GetTypeName(idSrc) + 
+//                L" to " + 
+//                m_pNMRI->GetTypeName(idDst)
+//            };
+//            throw ScriptErrorHandler::ScriptException(999, wstrMsg);
+//        }
+//    }
+//};
 
 class WrapAddModel: public ScriptFunctor
 {
@@ -162,6 +165,7 @@ void InitializeNNetWrappers
     AttachSigGen2ConCmd::Register();
     AttachSigGen2LineCmd::Register();
     ConnAnimationCommand::Register();
+    Connect2NeuronCommand::Register();
     ConnectCreateForkCmd::Register();
     ConnectCreateSynapseCmd::Register();
     CreateForkCommand::Register();
@@ -186,6 +190,8 @@ void InitializeNNetWrappers
     MoveSignalCmd::Register();
     NewIoLinePairCmd::Register();
     NewSigGenCmd::Register();
+    PlugIoConnectorsCmd::Register();
+    PlugIoLinesCmd::Register();
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     RotateModelCommand::Register();
@@ -201,7 +207,7 @@ void InitializeNNetWrappers
     ToggleStopOnTriggerCmd::Register();
 
     SymbolTable::ScrDefConst(L"AddModel",    new WrapAddModel);
-    SymbolTable::ScrDefConst(L"Connect",     new WrapConnect );
+    //SymbolTable::ScrDefConst(L"Connect",     new WrapConnect );
     SymbolTable::ScrDefConst(L"Include",     new WrapInclude );
     SymbolTable::ScrDefConst(L"UndoCommand", new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand", new WrapRedoCommand );

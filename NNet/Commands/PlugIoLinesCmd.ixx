@@ -6,19 +6,16 @@ module;
 
 #include <cassert>
 #include <memory>
+#include <iostream>
 
-export module PlugIoLines;
+export module PlugIoLinesCmd;
 
 import NNetCommand;
-import NNetModel;
 
-using std::unique_ptr;
-using std::make_unique;
-
-export class PlugIoLines : public NNetCommand
+export class PlugIoLinesCmd : public NNetCommand
 {
 public:
-    PlugIoLines
+    PlugIoLinesCmd
     (
         NobId idAnimated,
         NobId idTarget
@@ -53,7 +50,33 @@ public:
         m_pNMWI->DeselectAllNobs();
     }
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, new Wrapper);
+    }
+
+    static void Push(NobId const nobId1, NobId const nobId2)
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
+        m_pStack->PushCommand(make_unique<PlugIoLinesCmd>(nobId1, nobId2));
+    }
+
 private:
+
+    inline static const wstring NAME { L"PlugIoLines" };
+
+    class Wrapper : public ScriptFunctor
+    {
+    public:
+        void operator() (Script& script) const final
+        {
+            NobId const id1 { ScrReadNobId(script) };
+            NobId const id2 { ScrReadNobId(script) };
+            PlugIoLinesCmd::Push(id1, id2);
+        }
+    };
+
     IoLine           & m_nobTarget;
     IoLine           & m_nobAnimated;
     unique_ptr<IoLine> m_upNobAnimated;
