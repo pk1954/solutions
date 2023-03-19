@@ -13,12 +13,10 @@ import Types;
 import ErrHndl;
 import SoundInterface;
 import UtilityWrappers;
-import Symtab;
 import DrawContext;
 import NNetModelCommands;
 import Script;
 import NNetModelIO;
-import NNetWrapperHelpers;
 import NNetModel;
 
 import AddMicroSensorCmd;
@@ -76,33 +74,6 @@ using std::wstring;
 static NNetModelReaderInterface * m_pNMRI;
 static NNetModelCommands        * m_pCommands;
 static NNetModelIO              * m_pModelIO;
-
-//class WrapConnect: public ScriptFunctor
-//{
-//public:
-//    void operator() (Script & script) const final
-//    {
-//        NobId          const idSrc { ScrReadNobId(script) };
-//        NobId          const idDst { ScrReadNobId(script) };
-//        ConnectionType const ctype { m_pNMRI->ConnectionResult(idSrc, idDst) };
-//        if (ctype != ConnectionType::ct_none)
-//        {
-//            m_pCommands->Connect(idSrc, idDst);
-//        }
-//        else
-//        {
-//            script.SetExpectedToken(L"");
-//            wstring wstrMsg
-//            {
-//                L"Invalid: Connect " + 
-//                m_pNMRI->GetTypeName(idSrc) + 
-//                L" to " + 
-//                m_pNMRI->GetTypeName(idDst)
-//            };
-//            throw ScriptErrorHandler::ScriptException(999, wstrMsg);
-//        }
-//    }
-//};
 
 class WrapAddModel: public ScriptFunctor
 {
@@ -207,7 +178,6 @@ void InitializeNNetWrappers
     ToggleStopOnTriggerCmd::Register();
 
     SymbolTable::ScrDefConst(L"AddModel",    new WrapAddModel);
-    //SymbolTable::ScrDefConst(L"Connect",     new WrapConnect );
     SymbolTable::ScrDefConst(L"Include",     new WrapInclude );
     SymbolTable::ScrDefConst(L"UndoCommand", new WrapUndoCommand );
     SymbolTable::ScrDefConst(L"RedoCommand", new WrapRedoCommand );
