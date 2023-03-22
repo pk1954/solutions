@@ -18,7 +18,6 @@ import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
 import ArrowButton;
-import EditLineBox;
 import Win32_PixelTypes;
 import Direct2D;
 import Scale;
@@ -149,14 +148,26 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 	m_pNMWI = p;
 }
 
-LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
+void SignalDesigner::AddSigGenMenu
+(
+	HMENU    const hPopupMenu,
+	SigGenId const idSigGen
+)
 {
-	if (m_pNMWI->GetSigGenSelected() != StdSigGen::Get())
+	if (IsMutable(idSigGen))
 	{
 		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
 	}
-	AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_SIG_GEN_TO_MONITOR,  L"Add to EEG monitor");
+	else if (idSigGen == ADD_SIGGEN)
+	{
+		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_SIG_GEN_TO_MONITOR, L"Add to EEG monitor");
+	}
+}
+
+LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	AddSigGenMenu(hPopupMenu, m_pNMWI->GetSigGenIdSelected());
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
@@ -213,15 +224,6 @@ void SignalDesigner::Trigger()
 	m_upStimulusButton->Enable(m_pComputeThread->IsRunning());
 }
 
-void SignalDesigner::renameSigGen()
-{
-	wstring wstrName { m_pNMWI->GetSigGenSelected()->GetName() };
-	EditLineBox dlgBox(wstrName, L"Rename SignalGenerator");
-	if (dlgBox.Show(GetWindowHandle()))
-		RenameSigGenCmd::Push(m_pNMWI->GetSigGenIdSelected(), wstrName);
-	SetCaption();
-}
-
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (auto const wId = LOWORD(wParam))
@@ -237,12 +239,11 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		return true;
 
 	case IDD_DELETE_SIGNAL_GENERATOR:
-		DeleteSigGenCmd::Push();
 		SetCaption();
 		return true;
 
 	case IDD_RENAME_SIGNAL_GENERATOR:
-		renameSigGen();
+		RenameSigGenCmd::Dialog(GetWindowHandle());
 		return true;
 
 	case IDD_ADD_SIG_GEN_TO_MONITOR:

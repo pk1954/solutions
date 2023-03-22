@@ -11,6 +11,7 @@ module;
 
 export module NNetModel:UPSigGenList;
 
+import Observable;
 import Types;
 import :SigGenId;
 import :StdSigGen;
@@ -39,11 +40,14 @@ public:
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
     SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
+    bool IsInNewSigGenButton(fPixelPoint const& fPixPnt) const { return newSigGenButtonRect().Includes(fPixPnt); }
+
     bool IsValid(SigGenId const id)           const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
     bool IsAnySigGenSelected()                const { return m_sigGenIdActive.IsNotNull(); }
     bool IsSelected(SigGenId const id)        const { return id == m_sigGenIdActive; }
     bool IsSelected(SignalGenerator const &s) const { return &s == GetSigGenSelected(); }
 
+    void     SetName(SigGenId const, wstring const&);
     SigGenId SetActive(SigGenId const);
     SigGenId PushSigGen(UPSigGen);
     UPSigGen PopSigGen();
@@ -51,6 +55,7 @@ public:
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
     void     DrawSignalGenerators(D2D_driver&) const;
+    void     DrawNewSigGenButton (D2D_driver&) const;
     void     DrawInputCable
     (
         D2D_driver&,
@@ -81,12 +86,18 @@ public:
     UPSigGen                RemoveSigGen(wstring const &);
     wstring                 GenerateUniqueName() const;
 
+    void SetActiveSigGenObservable(Observable &o) { m_pActiveSigGenObservable = &o; }
+
 private:
     inline static const fPixel GAP  { 2._fPixel };
     inline static const fPixel DIST { SignalGenerator::SIGGEN_WIDTH + GAP };
 
+    fPixel areaWidth() const { return DIST * Cast2Float(m_list.size() + 1); }
+    fPixelRect newSigGenButtonRect() const;
+
     vector<UPSigGen> m_list;  // std siggen is ** not ** in list!
     SigGenId         m_sigGenIdActive { STD_SIGGEN };
+    Observable *     m_pActiveSigGenObservable { nullptr };
 
     vector<UPSigGen>::iterator       getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;

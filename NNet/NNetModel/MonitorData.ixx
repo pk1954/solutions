@@ -51,7 +51,7 @@ public:
 	void InsertTrack(TrackNr const);
 	void DeleteTrack(TrackNr const);
 
-	void SetHighSigObservable(Observable * pObs) { m_pHighSigObservable = pObs; }
+	void SetHighSigObservable(Observable &obs) { m_pHighSigObservable = &obs; }
 
 	SignalId SetHighlightedSignal(Signal   const &);
 	SignalId SetHighlightedSignal(SignalId const);

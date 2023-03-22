@@ -41,6 +41,8 @@ using std::move;
 export class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
+    unique_ptr<Model> CreateNewModel();
+
     void  CreateInitialNobs();
     void  SelectNob          (NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
@@ -67,7 +69,10 @@ public:
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
 
+    UPSigGenList    & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList    & GetSensorList() { return m_pModel->GetSensorList(); }
+
+    void SetSigGenName(SigGenId const id, wstring const &n) { GetSigGenList().SetName(id, n); }
 
     void  Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
 

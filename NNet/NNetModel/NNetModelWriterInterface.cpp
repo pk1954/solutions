@@ -21,6 +21,13 @@ import :PosNob;
 using std::make_unique;
 using std::unique_ptr;
 
+unique_ptr<Model> NNetModelWriterInterface::CreateNewModel()
+{
+	unique_ptr<Model> upModel { make_unique<Model>() };
+	m_pModel = upModel.get();
+	return move(upModel);
+}
+
 void NNetModelWriterInterface::CreateInitialNobs()
 {
 	IoLinePair(MicroMeterPnt(400.0_MicroMeter, 500.0_MicroMeter)).Push(*this);

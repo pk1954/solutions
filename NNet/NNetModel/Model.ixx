@@ -20,7 +20,6 @@ import :UPSensorList;
 import :PosNob;
 import :DescriptionUI;
 
-using std::make_unique;
 using std::unique_ptr;
 using std::wstring;
 using std::move;
@@ -29,10 +28,7 @@ export class Model
 {
 public:
 
-	Model()
-	{
-		m_upNobs = make_unique<UPNobList>();
-	}
+	Model();
 
 	// const functions
 
@@ -103,9 +99,9 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList     const & GetSigGenList     () const { return m_sigGenList; }
-	UPSigGenList           & GetSigGenList     ()       { return m_sigGenList; }
-	UPSensorList      const& GetSensorList     () const { return m_sensorList; }
+	UPSigGenList     const & GetSigGenList     () const { return *m_upSigGenList.get(); }
+	UPSigGenList           & GetSigGenList     ()       { return *m_upSigGenList.get(); }
+	UPSensorList     const & GetSensorList     () const { return m_sensorList; }
 	UPSensorList           & GetSensorList     ()       { return m_sensorList; }
 	UPNobList        const & GetUPNobs         () const { return *m_upNobs.get(); }
 	UPNobList              & GetUPNobs         ()       { return *m_upNobs.get(); }
@@ -117,7 +113,7 @@ public:
 										  
 	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
 	{									  
-		return m_sigGenList.GetSigGen(sigGenId);
+		return m_upSigGenList->GetSigGen(sigGenId);
 	}									  
 	
 	// non const functions
@@ -129,20 +125,21 @@ public:
 	float SetParam(ParamType::Value const, float const);
 	void  Reconnect(NobId const);
 
-	void DeselectAllNobs     ()               const { m_upNobs->DeselectAllNobs(); }
-	void SetModelFilePath    (wstring const & wstr) { m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine  (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
-	void DescriptionComplete ()                     { m_description.DescriptionComplete(); }
-	void SetDescriptionUI    (DescriptionUI& i)     { m_description.SetDescriptionUI(i); }
-	void SetHighSigObservable(Observable * obs)     { m_monitorData.SetHighSigObservable(obs); }
+	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
+	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
+	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
+	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
+	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
+	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
+	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 private:
 
-	unique_ptr<UPNobList> m_upNobs;
-	UPSigGenList          m_sigGenList;
-	UPSensorList          m_sensorList;
-	ModelDescription      m_description;
-	MonitorData           m_monitorData;
-	NNetParameters        m_param;
-	wstring               m_wstrModelFilePath { L"" };
-};
+	unique_ptr<UPNobList>    m_upNobs;
+	unique_ptr<UPSigGenList> m_upSigGenList;
+	UPSensorList             m_sensorList;
+	ModelDescription         m_description;
+	MonitorData              m_monitorData;
+	NNetParameters           m_param;
+	wstring                  m_wstrModelFilePath { L"" };
+};						    

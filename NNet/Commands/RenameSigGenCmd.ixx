@@ -7,33 +7,44 @@ module;
 #include <string>
 #include <memory>
 #include <iostream>
+#include <Windows.h>
 
 export module RenameSigGenCmd;
 
+import EditLineBox;
 import NNetCommand;
 
 export class RenameSigGenCmd : public NNetCommand
 {
 public:
 	RenameSigGenCmd(SigGenId const id, wstring const& name)
-	  : m_pSigGen(m_pNMWI->GetSigGen(id)),
-		m_wstrNameOld(m_pSigGen->GetName()),
+	  : m_idSigGen(id),
+		m_wstrNameOld(m_pNMWI->GetSigGenName(id)),
 		m_wstrNameNew(name)
 	{}
 
 	void Do() final
 	{
-		m_pSigGen->SetName(m_wstrNameNew);
+		m_pNMWI->SetSigGenName(m_idSigGen, m_wstrNameNew);
 	}
 
 	void Undo() final
 	{
-		m_pSigGen->SetName(m_wstrNameOld);
+		m_pNMWI->SetSigGenName(m_idSigGen, m_wstrNameOld);
 	}
 
 	static void Register()
 	{
 		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Dialog(HWND const hwnd)
+	{
+		SigGenId const id       { m_pNMWI->GetSigGenIdSelected() };
+		wstring        wstrName { m_pNMWI->GetSigGenName(id) };
+		EditLineBox dlgBox(wstrName, L"Rename SignalGenerator");
+		if (dlgBox.Show(hwnd))
+			Push(id, wstrName);
 	}
 
 	static void Push(SigGenId const id, wstring const& name)
@@ -60,7 +71,7 @@ private:
 		}
 	};
 
-	SignalGenerator* m_pSigGen;
-	wstring           m_wstrNameOld;
-	wstring           m_wstrNameNew;
+	SigGenId m_idSigGen;
+	wstring  m_wstrNameOld;
+	wstring  m_wstrNameNew;
 };

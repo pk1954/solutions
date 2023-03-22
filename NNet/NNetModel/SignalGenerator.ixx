@@ -42,7 +42,9 @@ public:
 	void DrawSigSrc(DrawContext const&, bool const) const final {};
 	bool IsConnected()                              const final { return true; }
 
-	void DrawSigGen(D2D_driver&, fPixelRect, bool const);
+	void DrawSigGen(D2D_driver&, fPixelRect, bool const) const;
+
+	static void DrawNewSigGenButton(D2D_driver&, fPixelRect const&);
 
 	fHertz GetStimulusFrequency(fMicroSecs const) const;
 	mV     GetStimulusAmplitude(fMicroSecs const) const;
@@ -59,7 +61,7 @@ public:
 	void                    SetStaticData(SigGenStaticData const&);
 	SigGenStaticData const& GetStaticData() const;
 
-	void           SetName(wstring const& name)   { m_name = name; }
+	void           SetNewName(wstring const& name) { m_name = name; }
 	wstring const& GetName()                const { return m_name; }
 	void           WriteName(wostream& out) const { out << L"\"" << m_name << "\" "; }
 
@@ -78,11 +80,15 @@ public:
 	inline static fPixel const SIGGEN_WIDTH { 100._fPixel };
 	inline static fPixel const SIGGEN_HEIGHT { 50._fPixel };
 
+	inline static fPixel const CORNERS { 5._fPixel };
+
 private:
 
 	mV                 m_mVactual;
 	SigGenStaticData   m_statData;
 	SigGenDynamicData  m_dynData;
 	wstring            m_name;
-	IDWriteTextFormat* m_pTextFormat { nullptr };
+
+	inline static IDWriteTextFormat* m_pTextFormat     { nullptr }; //lazy definition
+	inline static IDWriteTextFormat* m_pTextFormatPlus { nullptr }; //lazy definition
 };

@@ -211,7 +211,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
-        SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)-1));
+        SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)));
         ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 

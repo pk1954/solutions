@@ -71,7 +71,7 @@ public:
 
 	PosType<LOG_UNIT> Transform2logUnitPntPos(PixelPoint const pixPoint) const
 	{ 
-		return Transform2logUnitPntSize(::Convert2fPixelPoint(pixPoint) + GetPixelOffset());
+		return Transform2logUnitPntPos(::Convert2fPixelPoint(pixPoint));
 	}
 
 	fPixelPoint Transform2fPixelPos(PosType<LOG_UNIT> const np) const

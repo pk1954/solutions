@@ -27,9 +27,20 @@ using std::ranges::for_each;
 
 SigGenId UPSigGenList::SetActive(SigGenId const id)
 {
+    assert(IsValidSigGenId(id));
     SigGenId sigGenIdOld { m_sigGenIdActive };
     m_sigGenIdActive = id;
+    if (m_pActiveSigGenObservable)
+        m_pActiveSigGenObservable->NotifyAll(false);
     return sigGenIdOld;
+}
+
+void UPSigGenList::SetName(SigGenId const id, wstring const& name)
+{
+    assert(IsValidSigGenId(id));
+    GetSigGen(id)->SetNewName(name);
+    if (m_pActiveSigGenObservable)
+        m_pActiveSigGenObservable->NotifyAll(false);
 }
 
 UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
@@ -82,7 +93,7 @@ SigGenId UPSigGenList::FindSigGen(wstring const & name) const
     if (it != m_list.end())
          return SigGenId(Cast2Int(it - m_list.begin()));
     else 
-       return INVALID_SIGGEN;
+       return NO_SIGGEN;
 }
 
 SignalGenerator const * UPSigGenList::GetSigGen(SigGenId const id) const
@@ -95,8 +106,8 @@ SignalGenerator const * UPSigGenList::GetSigGen(SigGenId const id) const
 SignalGenerator * UPSigGenList::GetSigGen(SigGenId const id)
 {
     return (id == STD_SIGGEN)
-        ? StdSigGen::Get()
-        : m_list.at(id.GetValue()).get();
+           ? StdSigGen::Get()
+           : m_list.at(id.GetValue()).get();
 }
 
 SignalGenerator * UPSigGenList::GetSigGen(wstring const & name)
@@ -190,13 +201,16 @@ SigGenId UPSigGenList::GetSigGenId(SignalGenerator const& sigGen) const
 
 SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr) const
 {
-    fPixel fPixMaxX { DIST * Cast2Float(m_list.size() + 1) - GAP };
-    if (fPixCrsr.GetX() > fPixMaxX)
-        return INVALID_SIGGEN;
     if (fPixCrsr.GetY() > SignalGenerator::SIGGEN_HEIGHT)
-        return INVALID_SIGGEN;
-    SigGenId id { Cast2Int(fPixCrsr.GetX() / SignalGenerator::SIGGEN_WIDTH) };
-    return id;
+        return NO_SIGGEN;
+
+    if (fPixCrsr.GetX() <= areaWidth() - GAP)
+        return SigGenId(Cast2Int(fPixCrsr.GetX() / SignalGenerator::SIGGEN_WIDTH) - 1);
+
+    if (newSigGenButtonRect().Includes(fPixCrsr))
+        return ADD_SIGGEN;
+
+    return NO_SIGGEN;
 }
 
 void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
@@ -210,6 +224,18 @@ void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
             fPixRect.MoveHorz(DIST);
         }
     );
+}
+
+fPixelRect UPSigGenList::newSigGenButtonRect() const
+{
+    fPixelPoint const fPixPos  { areaWidth(), 1._fPixel };
+    fPixelRect  const fPixRect { fPixPos, 20._fPixel };
+    return fPixRect;
+}
+
+void UPSigGenList::DrawNewSigGenButton(D2D_driver& graphics) const
+{
+    SignalGenerator::DrawNewSigGenButton(graphics, newSigGenButtonRect());
 }
 
 void UPSigGenList::DrawInputCable

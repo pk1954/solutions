@@ -10,11 +10,9 @@ module;
 
 export module NewSigGenCmd;
 
-import Commands;
-import SigGenCommand;
-import NNetModel;
+import NNetCommand;
 
-export class NewSigGenCmd : public SigGenCommand
+export class NewSigGenCmd : public NNetCommand
 {
 public:
 	NewSigGenCmd()
@@ -26,13 +24,13 @@ public:
 	{ 
 		m_sigGenIdNew = m_pNMWI->PushSigGen(move(m_upSigGen));
 		PostCmd2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
-		SetActiveSigGenId(m_sigGenIdNew);
+        m_pNMWI->SetSigGenActive(m_sigGenIdNew);
 	}
 
 	void Undo() final 
 	{ 
 		m_upSigGen = m_pNMWI->PopSigGen();
-		SetActiveSigGenId(m_sigGenIdOld);
+        m_pNMWI->SetSigGenActive(m_sigGenIdOld);
 	}
 
     static void Register()

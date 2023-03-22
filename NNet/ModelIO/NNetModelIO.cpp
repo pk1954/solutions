@@ -17,6 +17,7 @@ module NNetModelIO;
 
 import NNetModelStorage;
 import WrapSignalGenerator;
+import Observable;
 import ErrHndl;
 import Scanner;
 import Symtab;
@@ -262,10 +263,9 @@ bool NNetModelIO::Import
     }
 
     m_upImportUI      = move(upInputUI);
-    m_upImportedModel = make_unique<Model>(); // do not initialize here
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
-    m_upImportedNMWI->SetModel(m_upImportedModel.get());
-    m_wstrFile2Read = wstrPath;
+    m_upImportedModel = m_upImportedNMWI->CreateNewModel();
+    m_wstrFile2Read   = wstrPath;
     Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
     return true;
 }

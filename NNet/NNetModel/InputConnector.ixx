@@ -33,6 +33,8 @@ public:
 
 	~InputConnector() final = default;
 
+	void AppendMenuItems(AddMenuFunc const&) const override;
+
 	InputLine & GetElem(size_t const) const;
 
 	void SetSigGen(SignalGenerator* const);

@@ -75,13 +75,26 @@ public:
 
 	RectType
 	(
-		POS_TYPE  const & pos, 
-		SIZE_TYPE const & size 
+		POS_TYPE  const& pos,
+		SIZE_TYPE const& size
 	) :
-		m_Left  (pos.GetX()),
-		m_Top   (pos.GetY()),
-		m_Right (m_Left + size.GetX() - BASE_TYPE(1)),
-		m_Bottom(m_Top  + size.GetY() - BASE_TYPE(1))
+		m_Left(pos.GetX()),
+		m_Top(pos.GetY()),
+		m_Right(m_Left + size.GetX() - BASE_TYPE(1)),
+		m_Bottom(m_Top + size.GetY() - BASE_TYPE(1))
+	{
+		assert(m_Bottom >= m_Top);
+	}
+
+	RectType
+	(
+		POS_TYPE  const& pos,
+		BASE_TYPE const& size
+	) :
+		m_Left(pos.GetX()),
+		m_Top(pos.GetY()),
+		m_Right(m_Left + size.GetValue() - BASE_TYPE(1)),
+		m_Bottom(m_Top + size.GetValue() - BASE_TYPE(1))
 	{
 		assert(m_Bottom >= m_Top);
 	}

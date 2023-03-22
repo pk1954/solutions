@@ -8,10 +8,9 @@ module;
 
 export module SetActiveSigGenCmd;
 
-import SigGenCommand;
-import NNetModel;
+import NNetCommand;
 
-export class SetActiveSigGenCmd : public SigGenCommand
+export class SetActiveSigGenCmd : public NNetCommand
 {
 public:
 	SetActiveSigGenCmd(SigGenId const id)
@@ -21,12 +20,12 @@ public:
 
 	void Do() final
 	{
-		m_sigGenIdOld = SetActiveSigGenId(m_sigGenIdNew);
+		m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
 	}
 
 	void Undo() final
 	{
-		SetActiveSigGenId(m_sigGenIdOld);
+        m_pNMWI->SetSigGenActive(m_sigGenIdOld);
 	}
 
     static void Register()

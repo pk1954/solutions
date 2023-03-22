@@ -113,9 +113,6 @@ void NNetAppMenu::Start
     Util::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
     Util::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
 
-    m_hMenuSigGen = Util::PopupMenu(m_hMenu, L"&Signal generators");
-    Util::AddMenu(m_hMenuSigGen, MF_STRING, IDD_NEW_SIGNAL_GENERATOR, L"Create &new");
-
     HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
     {
         Util::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
@@ -156,11 +153,6 @@ void NNetAppMenu::Start
     assert(bRes);
 }
 
-void NNetAppMenu::delSigGenMenuEntries()
-{
-    while (DeleteMenu(m_hMenuSigGen, 0, MF_BYPOSITION)) { };
-}
-
 void NNetAppMenu::enable(unsigned int const id, bool const bCrit)
 {
     EnableMenuItem(m_hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
@@ -186,7 +178,6 @@ void NNetAppMenu::Notify(bool const bImmediately)
     m_upOnOffSensorPoints->enableOnOff(m_pPreferences->SensorPointsVisible());
     m_upOnOffPerfMonMode ->enableOnOff(BaseWindow::PerfMonMode());
 
-    delSigGenMenuEntries();
     DrawMenuBar(m_hwndApp);
 }
 

@@ -431,6 +431,7 @@ void Pipe::AppendMenuItems(AddMenuFunc const & add) const
 	add(IDD_INSERT_NEURON);
 	add(IDD_INSERT_KNOT);   
 	add(IDD_DELETE_NOB);
+	add(IDD_EMPHASIZE);
 }
 
 wostream & operator<< (wostream & out, Pipe const & pipe)

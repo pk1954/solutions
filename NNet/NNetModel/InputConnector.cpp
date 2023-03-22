@@ -31,6 +31,12 @@ InputConnector::InputConnector(vector<IoLine *> && src)
     ConnectIoLines();
 }
 
+void InputConnector::AppendMenuItems(AddMenuFunc const& add) const
+{
+    add(IDD_ATTACH_SIG_GEN_TO_CONN);
+    IoConnector::AppendMenuItems(add);
+}
+
 void InputConnector::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
     if (Size() > 1)

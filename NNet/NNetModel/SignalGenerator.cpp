@@ -77,12 +77,11 @@ void SignalGenerator::DrawSigGen
 	D2D_driver& graphics,
 	fPixelRect  fPixRect,
 	bool const  bSelected
-)
+) const
 {
 	if (!m_pTextFormat)
 		m_pTextFormat = graphics.NewTextFormat(12.0f);
-	static fPixel const CORNERS { 5._fPixel };
-	D2D1::ColorF  const col     { bSelected ? NNetColors::SIGGEN_ACTIVE : NNetColors::SIGGEN_NORMAL };
+	D2D1::ColorF  const col { bSelected ? NNetColors::SIGGEN_ACTIVE : NNetColors::SIGGEN_NORMAL };
 	graphics.FillRoundedRectangle(fPixRect, col, CORNERS);
 	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
 	graphics.DisplayText(fPixRect, GetName(), m_pTextFormat);
@@ -94,4 +93,15 @@ void SignalGenerator::DrawSigGen
 	fPixRect.MoveVert(15.0_fPixel);
 	mV const voltage { GetStimulusAmplitude() };
 	graphics.DisplayText(fPixRect, Format2wstring<mV>(voltage, 1), m_pTextFormat);
+}
+
+void SignalGenerator::DrawNewSigGenButton
+(
+	D2D_driver      & graphics,
+	fPixelRect const& fPixRect
+) 
+{
+	graphics.FillRoundedRectangle(fPixRect, NNetColors::SIGGEN_NORMAL, CORNERS);
+	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
+	graphics.DisplayText(fPixRect, L"+", m_pTextFormat);
 }

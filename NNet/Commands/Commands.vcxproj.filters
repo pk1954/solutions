@@ -132,9 +132,6 @@
     <ClCompile Include="SetSigGenStaticDataCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SigGenCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SingleNobAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

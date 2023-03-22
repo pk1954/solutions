@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <string>
 #include <iostream>
 
@@ -23,9 +24,16 @@ import :MonitorData;
 import :SignalGenerator;
 import :UPSigGenList;
 
+using std::make_unique;
 using std::wcout;
 using std::endl;
 using std::wstring;
+
+Model::Model()
+{
+	m_upNobs       = make_unique<UPNobList>();
+	m_upSigGenList = make_unique<UPSigGenList>();
+}
 
 //bool Model::operator==(Model const & rhs) const
 //{
@@ -108,7 +116,7 @@ void Model::ClearDynamicData()
 	SimulationTime::Set();
 	GetMonitorData().ClearDynamicData();
 	m_upNobs->Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
-	m_sigGenList.Apply2All([](auto * p){ p->ClearDynamicData(); });
+	m_upSigGenList->Apply2All([](auto * p){ p->ClearDynamicData(); });
 }
 
 bool Model::GetDescriptionLine(int const iLine, wstring & wstrLine) const
@@ -132,7 +140,7 @@ bool Model::Compute()
 {
 	bool bStop { false };
 	SimulationTime::Tick(m_param.TimeResolution());
-	m_sigGenList.Apply2All([this](SignalGenerator * p) { p->Prepare(m_param); });
+	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->Prepare(m_param); });
 	m_upNobs->Apply2AllC([]      (Nob &s) { s.CollectInput(); });
 	m_upNobs->Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;

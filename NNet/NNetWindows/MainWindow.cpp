@@ -25,6 +25,7 @@ import CreateForkCommand;
 import CreateSynapseCommand;
 import DeleteNobCommand;
 import DeleteSelectionCommand;
+import DeleteSigGenCmd;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
 import DiscIoConnectorCmd;
@@ -41,6 +42,7 @@ import MoveNobCommand;
 import MoveSelectionCommand;
 import MoveSensorCmd;
 import Observable;
+import RenameSigGenCmd;
 import RootWindow;
 import RotateModelCommand;
 import RotateNobCommand;
@@ -58,6 +60,7 @@ import Win32_Util_Resource;
 import :NNetController;
 import :MonitorWindow;
 import :Preferences;
+import :SignalDesigner;
 
 using std::unordered_map;
 using std::unique_ptr;
@@ -79,12 +82,12 @@ void MainWindow::Start
 	NNetModelCommands   & modelCommands,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,  
-	Observable          & pMoveObservable,
+	Observable          & pStaticModelObservable,
 	ActionTimer * const   pActionTimer,
 	MonitorWindow const * pMonitorWindow
 )
 {
-	m_pMoveObservable = &pMoveObservable;
+	m_pStaticModelObservable = &pStaticModelObservable;
 	NNetWindow::Start
 	(
 		hwndApp, 
@@ -190,29 +193,28 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		else
 			appendMenu(hPopupMenu, IDD_ADD_MICRO_SENSOR);
 
-		if ( m_pNMRI->IsPipe(m_nobIdHighlighted) )
-		{
-			appendMenu(hPopupMenu, IDD_EMPHASIZE);
-		}
-		else if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
+		if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
 		{
 			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobIdHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  
 		}
-		else if ( m_pNMRI->IsInputConnector(m_nobIdHighlighted) )
-		{
-			appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_CONN);  
-		}
+	}
+	else if (IsAddSigGenButton(m_idSigGenUnderCrsr))
+	{
+		// no context menu
+	}
+	else if (IsValidSigGenId(m_idSigGenUnderCrsr))
+	{
+		SignalDesigner::AddSigGenMenu(hPopupMenu, m_idSigGenUnderCrsr);
+	}
+	else if (m_pNMRI->IsAnySensorSelected())
+	{
+		appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR);
 	}
 	else  // nothing selected, cursor on background
 	{
-		if (m_pNMRI->IsAnySensorSelected())
-			appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR );
-		else
-		{
-			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
-			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
-		}
+		appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
+		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 
 	return static_cast<LPARAM>(m_nobIdHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
@@ -262,7 +264,7 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 
 bool MainWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 {
-	m_pMoveObservable->NotifyAll(false);
+	m_pStaticModelObservable->NotifyAll(false);
 	return NNetWindow::OnMove(pixPosX, pixPosY);
 };
 
@@ -286,8 +288,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (m_pCursorPosObservable)
 		m_pCursorPosObservable->NotifyAll(false);
 
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
+	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
@@ -297,6 +300,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				if (!setHighlightedSensor(umCrsrPos))
 					selectSignalHandle(umCrsrPos);
 		}
+		m_idSigGenUnderCrsr = m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr);
 		ClearPtLast();                 // make m_ptLast invalid
 		return;
 	}
@@ -370,15 +374,32 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	select(idNob);
 }
 
+SigGenId MainWindow::getSigGenId(LPARAM const lParam)
+{
+	PixelPoint  const ptCrsr   { GetCrsrPosFromLparam(lParam) };
+	fPixelPoint const fPixCrsr { Convert2fPixelPoint(ptCrsr) };
+	SigGenId    const idSigGen { m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr) };
+	return idSigGen;
+}
+
+bool MainWindow::selectSigGen(SigGenId const id)
+{
+	bool bRes { IsValidSigGenId(id) };
+	if (bRes)
+	{
+		m_idSigGenUnderCrsr = id;
+		SendCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, id.GetValue());
+	}
+	return bRes;
+}
+
 bool MainWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint   const  ptCrsr   { GetCrsrPosFromLparam(lParam) };
-	fPixelPoint  const  fPixCrsr { Convert2fPixelPoint(ptCrsr) };
-	UPSigGenList const& list     { m_pNMRI->GetSigGenList() };
-	SigGenId     const  idSigGen { list.GetSigGenId(fPixCrsr) };
-	if (idSigGen != INVALID_SIGGEN)
-		PostCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, idSigGen.GetValue());
-	SetCapture();
+	SigGenId const idSigGen { getSigGenId(lParam) };
+	if (idSigGen == ADD_SIGGEN)
+		SendCommand2Application(IDD_NEW_SIGNAL_GENERATOR, 0);
+	else if (!selectSigGen(idSigGen))
+		SetCapture();
 	return NNetWindow::OnLButtonDown(wParam, lParam);
 }
 
@@ -399,10 +420,7 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 
 bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };  // screen coordinates
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
-
-	m_umPntSelectionAnchor = umCrsrPos;
+	selectSigGen(getSigGenId(lParam));
 	SetFocus();
 	return false;
 }
@@ -529,11 +547,10 @@ void MainWindow::DoPaint()
 	DrawSensors();
 	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
+	m_pNMRI->GetSigGenList().DrawNewSigGenButton(*m_upGraphics.get());
 
 	if (m_bShowPnts && pMacroSensorSelected)
-	{
 		DrawSensorDataPoints(pMacroSensorSelected);
-	}
 
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
@@ -689,6 +706,14 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_COPY_SELECTION:
 		AddNobsCommand::Push();
 		break;
+
+	case IDD_DELETE_SIGNAL_GENERATOR:
+		DeleteSigGenCmd::Push();
+		return true;
+
+	case IDD_RENAME_SIGNAL_GENERATOR:
+		RenameSigGenCmd::Dialog(GetWindowHandle());
+		return true;
 
 	case IDD_ATTACH_SIG_GEN_TO_LINE:
 		AttachSigGen2LineCmd::Push(m_nobIdHighlighted);

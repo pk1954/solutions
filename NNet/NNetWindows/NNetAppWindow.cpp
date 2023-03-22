@@ -145,12 +145,11 @@ void NNetAppWindow::Start(MessagePump & pump)
 		&m_modelCommands
 	);
 
-	m_upModel = make_unique<Model>();
-	m_nmwi.SetModel(m_upModel.get());
-	m_pNMRI = static_cast<NNetModelReaderInterface *>(&m_nmwi);
+	m_upModel = m_nmwi.CreateNewModel();
+	m_pNMRI   = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
-
-	m_upModel->SetHighSigObservable(&m_highlightSigObservable);
+	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
+	m_upModel->SetHighSigObservable     (m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(200ms);
 	m_miniNNetWindow   .SetRefreshRate(200ms);
 	m_monitorWindow    .SetRefreshRate( 20ms);
@@ -248,6 +247,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_soundOnObservable     .RegisterObserver(m_appMenu);
 	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
 	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
+	m_activeSigGenObservable.RegisterObserver(m_mainNNetWindow);
+	m_activeSigGenObservable.RegisterObserver(m_signalDesigner);
 
 	m_appMenu.Notify(true);
 	m_undoRedoMenu.Notify(true);
@@ -627,8 +628,9 @@ void NNetAppWindow::replaceModel()
 {
 	m_computeThread.StopComputation();
 	m_mainNNetWindow.Reset();
-	m_upModel = m_modelIO.GetImportedModel();
-	m_upModel->SetHighSigObservable(&m_highlightSigObservable);
+	m_upModel = m_modelIO.GetImportedModel();	
+	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
+	m_upModel->SetHighSigObservable     (m_highlightSigObservable);
 	m_nmwi.SetModel(m_upModel.get());
 
 	setModelInterface();

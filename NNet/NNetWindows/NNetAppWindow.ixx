@@ -151,6 +151,7 @@ private:
 	Observable               m_runObservable;
 	Observable               m_performanceObservable;
 	Observable               m_coordObservable;
+	Observable               m_activeSigGenObservable;
 	ParameterDialog          m_parameterDlg;
 	PerformanceWindow        m_performanceWindow;
 	Preferences              m_preferences;

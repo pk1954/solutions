@@ -9,18 +9,16 @@ module;
 
 export module DeleteSigGenCmd;
 
-import SigGenCommand;
 import SetActiveSigGenCmd;
-import NNetModel;
+import NNetCommand;
 
 using std::vector;
 
-export class DeleteSigGenCmd : public SigGenCommand
+export class DeleteSigGenCmd : public NNetCommand
 {
 public:
 	DeleteSigGenCmd()
 	{
-		m_sigGenId = m_pNMWI->GetSigGenIdSelected();
 		m_pNMWI->Apply2All<InputLine>
 		(
 			[this](InputLine & n)
@@ -43,7 +41,7 @@ public:
 		m_pNMWI->InsertSigGen(move(m_upSigGen), m_sigGenId);
 		for (auto i : m_affectedInputLines)             // reset input lines
 			i->SetSigGen(m_pSigGenActive);
-		SetActiveSigGenId(m_sigGenId);
+		m_pNMWI->SetSigGenActive(m_sigGenId);
 	}
 
 	static void Register()
@@ -72,7 +70,7 @@ private:
 	};
 
 	SignalGenerator   * m_pSigGenActive { m_pNMWI->GetSigGenSelected() };
-	SigGenId            m_sigGenId;
+	SigGenId            m_sigGenId      { m_pNMWI->GetSigGenIdSelected() };
 	UPSigGen            m_upSigGen;
 	vector<InputLine *> m_affectedInputLines;
 };

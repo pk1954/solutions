@@ -85,10 +85,11 @@ public:
 	SignalId                FindSignalId(auto const & crit)        const { return GetMonitorDataC().FindSignalId(crit); }
 	SignalId                GetHighlightedSignalId()               const { return GetMonitorDataC().GetHighlightedSignalId(); }
 	UPSigGenList    const & GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
-	SignalGenerator const * GetSigGenSelectedC()                   const { return m_pModel->GetSigGenList().GetSigGenSelected(); }
-	SignalGenerator const * GetSigGenC(SigGenId const id)          const { return m_pModel->GetSigGenList().GetSigGen(id); }
-	SigGenId                GetSigGenIdSelected()                  const { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }
-	bool                    IsInList(wstring const & name)         const { return m_pModel->GetSigGenList().IsInList(name); }
+	SignalGenerator const * GetSigGenSelectedC()                   const { return GetSigGenList().GetSigGenSelected(); }
+	SignalGenerator const * GetSigGenC(SigGenId const id)          const { return GetSigGenList().GetSigGen(id); }
+	SigGenId                GetSigGenIdSelected()                  const { return GetSigGenList().GetSigGenIdSelected(); }
+	bool                    IsInList(wstring const & name)         const { return GetSigGenList().IsInList(name); }
+	wstring const &         GetSigGenName(SigGenId const id)       const { return GetSigGenList().GetSigGen(id)->GetName(); }
 
 	SensorId       GetSensorId   (NobId const id) const { return m_pModel->GetSensorList().FindSensor(id); }
 	bool           HasMicroSensor(NobId const id) const { return GetSensorId(id) != SensorId::NULL_VAL(); }

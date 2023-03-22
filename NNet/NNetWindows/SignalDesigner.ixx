@@ -50,6 +50,8 @@ public:
 	void    SetModelInterface(NNetModelWriterInterface * const);
 	void    RegisterAtSigGen(SigGenId const);
 
+	static void AddSigGenMenu(HMENU const, SigGenId const);
+
 private:
 
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
@@ -68,7 +70,6 @@ private:
 
 	void adjustLayout(PIXEL const, PIXEL const);
 	void adjustWindowHeight();
-	void renameSigGen();
 	void scale(BaseScale * const);
 
 	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
