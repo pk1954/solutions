@@ -2,6 +2,10 @@
 //
 // Commands
 
+module;
+
+#include <iostream>
+
 export module SetSigGenStaticDataCmd;
 
 import Types;
@@ -14,12 +18,12 @@ export class SetSigGenStaticDataCmd : public NNetCommand
 public:
 	SetSigGenStaticDataCmd
 	(
-		SignalGenerator        & sigGen,
+		SigGenId         const   id,
 		SigGenStaticData const & data
 	)
-	  : m_sigGen(sigGen),
-		m_dataNew(data),
-		m_dataOld(sigGen.GetStaticData())
+	  : m_sigGen(*m_pNMWI->GetSigGen(id)),
+		m_dataOld(m_sigGen.GetStaticData()),
+		m_dataNew(data)
 	{ }
 
 	void Do() final
@@ -43,7 +47,34 @@ public:
 		return true; 
 	};
 
+	static void Register()
+	{
+		SymbolTable::ScrDefConst(NAME, new Wrapper);
+	}
+
+	static void Push(SigGenId const id, SigGenStaticData const& data)
+	{
+		if (IsTraceOn())
+			TraceStream() << NAME << id.GetValue() << data << endl;
+		m_pStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(id, data));
+	}
+
 private:
+
+	inline static const wstring NAME { L"SetSigGenStaticData" };
+
+	class Wrapper : public ScriptFunctor
+	{
+	public:
+		void operator() (Script& script) const final
+		{
+			SigGenId          const id   { ScrReadSigGenId(script) };
+			SignalGenerator       & dst  { *m_pNMWI->GetSigGen(id) };
+			SigGenStaticData const& data { ScrReadSigGenStaticData(script) };
+			SetSigGenStaticDataCmd::Push(id, data);
+		}
+	};
+
 	SignalGenerator      & m_sigGen;
 	SigGenStaticData       m_dataNew;
 	SigGenStaticData const m_dataOld;

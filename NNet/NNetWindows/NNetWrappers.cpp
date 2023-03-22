@@ -61,6 +61,7 @@ import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SetParameterCommand;
 import SetActiveSigGenCmd;
+import SetSigGenStaticDataCmd;
 import SizeSelectionCmd;
 import SizeSensorCmd;
 import SplitNeuronCmd;
@@ -171,6 +172,7 @@ void InitializeNNetWrappers
     SelectAllConnectedCmd::Register();
     SetActiveSigGenCmd::Register();
     SetParameterCommand::Register();
+    SetSigGenStaticDataCmd::Register();
     SizeSelectionCmd::Register();
     SizeSensorCmd::Register();
     SplitNeuronCmd::Register();

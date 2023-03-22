@@ -40,11 +40,6 @@ public:
 	void AdjustUndoRedo();
 	void Notify(bool const) final;
 
-	void SetModelInterface(NNetModelReaderInterface const * p) 
-	{ 
-		m_pNMRI = p;
-	}
-
 private:
 
 	class OnOffPair;
@@ -59,7 +54,6 @@ private:
 	WinManager               const * m_pWinManager    { nullptr };
 	CommandStack             const * m_pCommandStack  { nullptr };
 	Sound                    const * m_pSound         { nullptr };
-	NNetModelReaderInterface const * m_pNMRI          { nullptr };
 
 	unique_ptr<OnOffPair> m_upOnOffScales;
 	unique_ptr<OnOffPair> m_upOnOffArrows;

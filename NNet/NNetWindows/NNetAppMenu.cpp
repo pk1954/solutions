@@ -160,8 +160,8 @@ void NNetAppMenu::enable(unsigned int const id, bool const bCrit)
 
 void NNetAppMenu::Notify(bool const bImmediately)
 {
-    enable(IDM_FORWARD, ! m_pComputeThread->IsRunning());
-    enable(IDM_RESET_DYNAMIC_DATA,   ! m_pComputeThread->IsRunning());
+    enable(IDM_FORWARD,            ! m_pComputeThread->IsRunning());
+    enable(IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
 
     enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(IDM_DESC_WINDOW   ));
     enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(IDM_CRSR_WINDOW   ));

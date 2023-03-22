@@ -41,7 +41,6 @@ public:
     void AnimateArrows(MicroMeter&, MicroMeter const);
     void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void Connect(NobId const, NobId const);
-    void SetSigGenStaticData(SignalGenerator&, SigGenStaticData const&);
     void SetNob(NobId const, MicroMeterPosDir const);
     void StartStimulus();
 

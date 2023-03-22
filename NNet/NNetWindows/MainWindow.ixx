@@ -49,7 +49,6 @@ public:
 	void NNetMove(T const& delta)
 	{
 		GetDrawContext().Move(delta);
-//		Notify(true);
 		if (m_pCoordObservable)
 			m_pCoordObservable->NotifyAll(false);
 	}

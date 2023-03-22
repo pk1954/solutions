@@ -14,6 +14,7 @@ module NNetWin32:SignalControl;
 import Types;
 import NNetModelCommands;
 import NNetModel;
+import SetSigGenStaticDataCmd;
 import :ComputeThread;
 
 using std::max;
@@ -365,7 +366,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			default:
 				break;
 			}
-			m_commands.SetSigGenStaticData(* GetSigGenSelected(), sigGenData);
+			SetSigGenStaticDataCmd::Push(GetSigGenIdSelected(), sigGenData);
 			Notify(true);
 		}
 		else  // left button not pressed: select

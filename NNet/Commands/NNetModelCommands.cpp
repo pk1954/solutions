@@ -34,7 +34,6 @@ import SelectionCommand;
 import SetActiveSigGenCmd;
 import SetNobCommand;
 import SetParameterCommand;
-import SetSigGenStaticDataCmd;
 import SoundInterface;
 import ToggleStopOnTriggerCmd;
 import Uniform2D;
@@ -154,13 +153,6 @@ SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 	SensorId const id   { list.FindSensor(umPos) };
 	list.SetActive(id);
 	return id;
-}
-
-void NNetModelCommands::SetSigGenStaticData(SignalGenerator & dst, SigGenStaticData const &data)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(dst, data));
 }
 
 void NNetModelCommands::SetNob

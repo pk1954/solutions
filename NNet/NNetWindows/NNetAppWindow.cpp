@@ -109,7 +109,6 @@ void NNetAppWindow::setModelInterface()
 	m_computeThread    .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
-	m_appMenu          .SetModelInterface(m_pNMRI);
 	m_appTitle         .SetModelInterface(m_pNMRI);
 	m_NNetController   .SetModelInterface(m_pNMRI);
 	m_mainNNetWindow   .SetModelInterface(m_pNMRI);

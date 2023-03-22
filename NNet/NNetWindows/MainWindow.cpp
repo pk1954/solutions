@@ -193,7 +193,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		else
 			appendMenu(hPopupMenu, IDD_ADD_MICRO_SENSOR);
 
-		if ( m_pNMRI->IsInputLine(m_nobIdHighlighted) )
+		if (m_pNMRI->IsInputLine(m_nobIdHighlighted))
 		{
 			if (m_pNMRI->GetSigGenSelectedC() != m_pNMRI->GetSigGenC(m_nobIdHighlighted))
 				appendMenu(hPopupMenu, IDD_ATTACH_SIG_GEN_TO_LINE);  

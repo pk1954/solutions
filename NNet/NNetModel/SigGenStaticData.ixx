@@ -5,6 +5,7 @@
 module;
 
 #include <iostream>
+#include <iomanip>
 
 export module NNetModel:SigGenStaticData;
 
@@ -12,6 +13,7 @@ import Observable;
 import Types;
 import BasePeak;
 
+using std::setw;
 using std::wcout;
 using std::wostream;
 
@@ -117,6 +119,12 @@ public:
 	fHertz GetStimulusFrequency(fMicroSecs const uSecs) const
 	{
 		return getStimulusValue<fHertz>(uSecs, m_freq);
+	}
+
+	friend wostream& operator<< (wostream& out, SigGenStaticData const& data)
+	{
+		out << setw(5) << data.m_freq << L' ' << data.m_amplit << L' ' << data.m_usPeak.GetValue() << L' ';
+		return out;
 	}
 
 private:
