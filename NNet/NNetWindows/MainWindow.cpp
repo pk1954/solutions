@@ -557,15 +557,24 @@ void MainWindow::DoPaint()
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const
 {
-	UPSigGenList          const& list      { m_pNMRI->GetSigGenList() };
-	SigGenId              const  idSigGen  { list.GetSigGenId(*inputLine.GetSigGenC()) };
+	UPSigGenList const& list      { m_pNMRI->GetSigGenList() };
+	SigGenId     const  idSigGen  { list.GetSigGenId(*inputLine.GetSigGenC()) };
+	bool         const  bActive   { list.IsSelected(idSigGen) };
+	switch (m_pPreferences->InputCablesVisibility())
+	{
+		using enum Preferences::tInputCablesVisibility;
+	case all:                                              break;
+	case nonStd: if (IsStandardSigGenId(idSigGen)) return; break;
+	case active: if (!bActive)                     return; break;
+	case none:                                	   return;
+	}
 	float                 const  fPosition { Cast2Float(idSigGen.GetValue()) + 1.5f };
 	fPixel                const  fPixPos   { SignalGenerator::SIGGEN_WIDTH * fPosition };
 	D2D_driver                 & graphics  { *m_upGraphics.get() };
 	Uniform2D<MicroMeter> const& coord     { m_context.GetCoordC() };
 	ID2D1SolidColorBrush* const  pBrush
 	{
-		(IsHighlighted(inputLine) || list.IsSelected(idSigGen))
+		(IsHighlighted(inputLine) || bActive)
 		? m_pBrushSensorSelected
 		: m_pBrushSensorNormal
 	};

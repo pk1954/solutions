@@ -45,12 +45,21 @@ public:
 	bool ArrowsVisible      () const { return m_bArrows; }
 	bool SensorPointsVisible() const { return m_bSensorPoints; }
 
+	enum class tInputCablesVisibility
+	{
+		all, nonStd, active, none
+	};
+
+	tInputCablesVisibility InputCablesVisibility() const { return m_inputCablesVisibility; }
+	void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
+
 private:
-	HWND                             m_hwndApp       { nullptr };
-	bool                             m_bScales       { false };
-	bool                             m_bArrows       { false };
-	bool                             m_bSensorPoints { false };
-	NNetModelReaderInterface const * m_pNMRI         { nullptr };
+	HWND                             m_hwndApp               { nullptr };
+	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
+	bool                             m_bScales               { false };
+	bool                             m_bArrows               { false };
+	bool                             m_bSensorPoints         { false };
+	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 	vector<unique_ptr<WrapBase>>     m_prefVector;
 	wstring                          m_wstrPreferencesFile;
 };

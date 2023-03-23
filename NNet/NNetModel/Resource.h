@@ -76,6 +76,11 @@
 #define       IDD_SENSOR_PNTS_ON             321
 #define       IDD_SENSOR_PNTS_OFF            322
 									         
+#define       IDM_INPUT_CABLES_ALL           340
+#define       IDM_INPUT_CABLES_NONSTD        341
+#define       IDM_INPUT_CABLES_ACTIVE        342
+#define       IDM_INPUT_CABLES_NONE          343
+
 #define       IDM_MONITOR_WINDOW             430
 #define       IDD_SIGNAL_TOO_HIGH            440
 #define       IDD_ADD_MICRO_SENSOR           441

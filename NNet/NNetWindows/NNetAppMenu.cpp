@@ -133,8 +133,15 @@ void NNetAppMenu::Start
             Util::AddMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
             Util::AddMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
         }
-        m_upOnOffArrows->appendOnOffMenu(hMenuView, L"&Arrows");
-        m_upOnOffScales->appendOnOffMenu(hMenuView, L"&Scales");
+        HMENU hMenuInputCables = Util::PopupMenu(hMenuView, L"&Input cables");
+        {
+            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ALL,    L"Show all");
+            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONSTD, L"Show non standard");
+            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ACTIVE, L"Show active");
+            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONE,   L"Show none");
+        }
+        m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
+        m_upOnOffScales      ->appendOnOffMenu(hMenuView, L"&Scales");
         m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&SensorPoints");
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");

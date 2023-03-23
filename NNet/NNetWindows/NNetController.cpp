@@ -194,6 +194,22 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         m_pWinManager->SetCaptions();
         break;
 
+    case IDM_INPUT_CABLES_ALL:   
+        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::all);
+        break;
+
+    case IDM_INPUT_CABLES_NONSTD:
+        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::nonStd);
+        break;
+
+    case IDM_INPUT_CABLES_ACTIVE:
+        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::active);
+        break;
+
+    case IDM_INPUT_CABLES_NONE:
+        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::none);
+        break;
+
     default:
         return false; // command has not been processed
     }

@@ -189,11 +189,11 @@ unique_ptr<NNetCommand> DeleteNobCommand::MakeCommand(NobId const id)
 			using enum NobType::Value;
 		case inputConnector:
 		case outputConnector: upCmd = make_unique<DeleteIoConnectorCmd>(nob); break;
-		case pipe:		      upCmd = make_unique<DeletePipeCommand>(nob); break;
-		case knot:            upCmd = make_unique<DeleteKnotCmd>(nob); break;
-		case fork:            upCmd = make_unique<DeleteForkCmd>(nob); break;
-		case synapse:         upCmd = make_unique<DeleteSynapseCmd>(nob); break;
-		case neuron:          upCmd = make_unique<DeleteNeuronCmd>(nob); break;
+		case pipe:		      upCmd = make_unique<DeletePipeCommand>   (nob); break;
+		case knot:            upCmd = make_unique<DeleteKnotCmd>       (nob); break;
+		case fork:            upCmd = make_unique<DeleteForkCmd>       (nob); break;
+		case synapse:         upCmd = make_unique<DeleteSynapseCmd>    (nob); break;
+		case neuron:          upCmd = make_unique<DeleteNeuronCmd>     (nob); break;
 		case outputLine:      break;  // Output line cannot be deleted. Delete Pipe!
 		case inputLine:    	  break;  // Input  line cannot be deleted. Delete Pipe!
 		default:              assert(false);

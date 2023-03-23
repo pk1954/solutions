@@ -172,26 +172,48 @@ private:
     Sound & m_sound;
 };
 
-class WrapDescWinFontSize: public WrapBase
+class WrapDescWinFontSize : public WrapBase
 {
 public:
-    explicit WrapDescWinFontSize(DescriptionWindow & descWin)
-      : WrapBase(L"DescWinFontSize"),
+    explicit WrapDescWinFontSize(DescriptionWindow& descWin)
+        : WrapBase(L"DescWinFontSize"),
         m_descWin(descWin)
     {}
 
-    void operator() (Script & script) const final
+    void operator() (Script& script) const final
     {
         m_descWin.SetFontSize(script.ScrReadInt());
     }
 
-    void Write(wostream & out) const final
+    void Write(wostream& out) const final
     {
         out << m_descWin.GetFontSize();
     }
 
 private:
-    DescriptionWindow & m_descWin;
+    DescriptionWindow& m_descWin;
+};
+
+class WrapInputCablesVisibility : public WrapBase
+{
+public:
+    explicit WrapInputCablesVisibility(Preferences & pref)
+      : WrapBase(L"InputCablesVisibility"),
+        m_pref(pref)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        m_pref.SetInputCablesVisibility(static_cast<Preferences::tInputCablesVisibility>(script.ScrReadInt()));
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << static_cast<int>(m_pref.InputCablesVisibility());
+    }
+
+private:
+    Preferences& m_pref;
 };
 
 class WrapReadModel: public WrapBase
@@ -252,6 +274,7 @@ void Preferences::Initialize
     m_prefVector.push_back(make_unique<WrapSetSound>(sound));
     m_prefVector.push_back(make_unique<WrapReadModel>(this, modelIO, hwndApp));
     m_prefVector.push_back(make_unique<WrapSetPerfMonMode>());
+    m_prefVector.push_back(make_unique<WrapInputCablesVisibility>(*this));
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON,  1L);

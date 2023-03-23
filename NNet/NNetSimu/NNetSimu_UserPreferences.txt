@@ -6,3 +6,4 @@ SetAutoOpen ON
 SetSound ON
 ReadModel "D:\SW-projects\Delivery\V4_4\BB6.mod"
 SetPerfMonMode OFF
+InputCablesVisibility 2
