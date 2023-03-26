@@ -72,11 +72,9 @@ void WrapVoltage::setPipeVoltage
     size_t const nrOfSegments { script.ScrReadUlong() };
     pipe.SetNrOfSegments(nrOfSegments);
     script.ScrReadSpecial(NR_SEPARATOR);
-    Pipe::SegNr segNr(0);
-    for (;;)
+    for (Pipe::SegNr segNr(0);;)
     {
-        mV const v {ScrReadVoltage(script)};
-        pipe.SetVoltage(segNr, v);
+        pipe.PushVoltage(ScrReadVoltage(script));
         if ((++segNr).GetValue() == nrOfSegments)
             break;
         script.ScrReadSpecial(ID_SEPARATOR);
@@ -86,7 +84,7 @@ void WrapVoltage::setPipeVoltage
 
 void WrapVoltage::writePipeVoltage(wostream & out, Pipe const & pipe) const
 {
-    Pipe::SegNr const lastSeg(pipe.GetNrOfSegments() - 1);
+    Pipe::SegNr const lastSeg(Cast2Int(pipe.GetNrOfSegments()) - 1);
     out << OPEN_BRACKET 
         << pipe.GetNrOfSegments()
         << NR_SEPARATOR;

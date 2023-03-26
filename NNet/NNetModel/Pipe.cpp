@@ -37,6 +37,7 @@ using std::ranges::find;
 using std::unique_ptr;
 using std::make_unique;
 using std::pair;
+using SEGMENT = vector<mV>::iterator;
 
 Pipe::Pipe()
   :	Nob(NobType::Value::pipe)
@@ -60,7 +61,6 @@ Pipe::Pipe(Pipe const & src) :  // copy constructor
 	Nob        (src),
     m_pNobStart(nullptr),
 	m_pNobEnd  (nullptr),
-	m_potIndex (src.m_potIndex),
 	m_segments(src.m_segments)
 { 
 }
@@ -98,7 +98,7 @@ MicroMeterPnt Pipe::GetPos() const
 void Pipe::ClearDynamicData()
 {
 	Nob::ClearDynamicData();
-	fill(m_segments, 0.0_mV);
+	m_segments.Fill(0.0_mV);
 	RecalcSegments();
 }
 
@@ -248,9 +248,8 @@ MicroMeterPnt Pipe::GetVector() const
 
 void Pipe::SetNrOfSegments(size_t const n) const
 {
-	m_segments.resize(n, 0.0_mV);
+	m_segments.Resize(n, 0.0_mV);
 	m_bSegmentsDirty = false;
-	m_potIndex = 0;
 }
 
 void Pipe::recalcSegments() const
@@ -270,7 +269,14 @@ MicroMeterPnt Pipe::getSegmentPos(SegNr const segNr, float const fPos) const
 	return GetStartPoint() + umpSegVec * fPosition;
 }
 
-vector<mV> const& Pipe::getSegments() const
+FixedPipeline<mV>& Pipe::getSegments()
+{
+	if (m_bSegmentsDirty)
+		recalcSegments();
+	return m_segments;
+}
+
+FixedPipeline<mV> const& Pipe::getSegments() const
 {
 	if (m_bSegmentsDirty)
 		recalcSegments();
@@ -364,8 +370,9 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 	{
 		Apply2AllSegments
 		(
-			[this, &context, umWidth, fPixMinWidth](SegNr const segNr)
+			[this, &context, umWidth, fPixMinWidth](vector<mV>::const_iterator &seg)
 			{
+				SegNr segNr(Cast2Int(m_segments.GetElemNr(seg)));
 				context.DrawLine
 				(
 					GetSegmentStart(segNr), 
@@ -386,41 +393,26 @@ void Pipe::CollectInput()
 
 bool Pipe::CompStep()
 {
-	m_segments[m_potIndex] = m_mVpotential;
-	if (m_potIndex == 0)
-		m_potIndex = getSegments().size() - 1;  // caution!
-	else                                      // modification if m_potIndex
-		--m_potIndex;                         // must be atomic
+	PushVoltage(m_mVpotential);
 	return false;
 }
 
 mV Pipe::GetVoltageAt(MicroMeterPnt const & point) const
 {
-	mV mVresult { 0._mV };
-	
 	if (MicroMeterPnt const umVector { GetEndPoint() - GetStartPoint() }; ! umVector.IsCloseToZero())
 	{
 		MicroMeterPnt const umSegVec      { umVector / Cast2Float(GetNrOfSegments()) };
 		MicroMeterPnt const umOrthoScaled { umVector.OrthoVector().ScaledTo(PIPE_WIDTH) };
 		MicroMeterPnt       umPoint       { GetStartPoint() };
-		size_t        const potIndex      { m_potIndex };
-		size_t              index         { potIndex }; 
-		do 
+		for (size_t index = 0; index < GetNrOfSegments(); ++index)
 		{
-			if (++index == GetNrOfSegments()) 
-				index = 0; 
-
 			MicroMeterPnt const umPoint2 { umPoint + umSegVec };
 			if (IsPointInRect2<MicroMeterPnt>(point, umPoint, umPoint2, umOrthoScaled))
-			{
-				mVresult = getSegments()[index];
-				break;
-			}
+				return getSegments().Get(index);
 			umPoint = umPoint2;
-
-		} while (index != potIndex);
+		}
 	}
-	return mVresult;
+	return 0._mV;
 }
 
 void Pipe::AppendMenuItems(AddMenuFunc const & add) const
@@ -462,10 +454,10 @@ void Pipe::Emphasize(bool const bOn)
 		static_cast<Knot *>(m_pNobEnd)->Emphasize(bOn, true);
 }
 
-size_t Pipe::segNr2index(SegNr const segNr) const
-{
-	size_t index { segNr.GetValue() + m_potIndex };
-	if (index >= GetNrOfSegments())
-		index -= GetNrOfSegments();
-	return index;
-}
+//size_t Pipe::segNr2index(SegNr const segNr) const
+//{
+//	size_t index { segNr.GetValue() + m_potIndex };
+//	if (index >= GetNrOfSegments())
+//		index -= GetNrOfSegments();
+//	return index;
+//}

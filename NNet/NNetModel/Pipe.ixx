@@ -12,6 +12,7 @@ module;
 
 export module NNetModel:Pipe;
 
+import FixedPipeline;
 import DrawContext;
 import Types;
 import SaveCast;
@@ -38,7 +39,7 @@ export using PipeCrit  = function<bool(Pipe const&)>;
 export class Pipe : public Nob
 {
 public:
-	using SegNr = NamedType<size_t, struct segNr_Parameter>;
+	using SegNr = NamedType<int, struct segNr_Parameter>;
 
 	Pipe();
 	Pipe(Nob * const, Nob * const);   //TODO: Nob --> PosNob
@@ -70,7 +71,7 @@ public:
 
 	Nob const * GetStartNobPtr () const { return m_pNobStart; }   //TODO: Nob --> PosNob
 	Nob const * GetEndNobPtr   () const { return m_pNobEnd;   }   //TODO: Nob --> PosNob
-	size_t      GetNrOfSegments() const { return getSegments().size(); }
+	size_t      GetNrOfSegments() const { return getSegments().Size(); }
 
 	void          RotateNob(MicroMeterPnt const&, Radian const) final { /* Pipe dir defined by endpoints */ }
 	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
@@ -78,7 +79,7 @@ public:
 
 	Radian        GetDir()       const final { return Vector2Radian(GetVector()); };
 	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
-	mV            GetPotential() const final { return getSegments().at(m_potIndex); }
+	mV            GetPotential() const final { return getSegments().Get(); }
 
 	MicroMeterPnt GetPos            ()                                      const final;
 	bool          IsIncludedIn      (MicroMeterRect const &)                const final;
@@ -108,23 +109,18 @@ public:
 	MicroMeter    DistPntToPipe   (MicroMeterPnt const&) const;
 	mV            GetVoltageAt    (MicroMeterPnt const&) const;
 	SegNr         GetSegNr        (float const f)        const { return SegNr(Cast2Int(round(f * Cast2Float(GetNrOfSegments() - 1)))); }
-	mV            GetVoltage      (float const f)        const { return GetVoltage(GetSegNr(f)); }
-	mV            GetVoltage      (SegNr const segNr)    const { return getSegments().at(segNr2index(segNr)); }
+	mV            GetVoltage      (SegNr const segNr)    const { return getSegments().Get(segNr.GetValue()); }
 	MicroMeterPnt GetSegmentCenter(SegNr const segNr)    const { return getSegmentPos(segNr, 0.5f); }
 	MicroMeterPnt GetSegmentStart (SegNr const segNr)    const { return getSegmentPos(segNr, 0.0f); }
 	MicroMeterPnt GetSegmentEnd   (SegNr const segNr)    const { return getSegmentPos(segNr, 1.0f); }
-	void          SetVoltage      (SegNr const segNr, mV const v) { m_segments[segNr2index(segNr)] = v; }
+	void          PushVoltage     (mV const v)                 { getSegments().Push(v); }
 	void          SetNrOfSegments(size_t const)                    const;
 	void          DrawArrows(DrawContext const&, MicroMeter const) const;
 	void          DislocateEndPoint();
 	void          DislocateStartPoint();
 	void          RecalcSegments() { m_bSegmentsDirty = true; }
 
-	void Apply2AllSegments(auto const& func) const
-	{
-		for (auto segNr = SegNr(0); segNr.GetValue() < GetNrOfSegments(); ++segNr)
-			func(segNr);
-	}
+	void Apply2AllSegments(auto const& func) const { getSegments().Apply2All(func); }
 
 	friend wostream& operator<< (wostream&, Pipe const&);
 
@@ -134,15 +130,15 @@ private:
 
 	// mutable members - lazy evaluation
 
-	mutable size_t     m_potIndex       { 0 };   // index in m_segments if SegNr 0
-	mutable vector<mV> m_segments       { };
-	mutable bool       m_bSegmentsDirty { true };
+	mutable FixedPipeline<mV> m_segments;
+	mutable bool              m_bSegmentsDirty { true };
 
-	vector<mV> const& getSegments() const;
-	MicroMeterPnt     dislocation() const;
-	size_t            segNr2index(SegNr const) const;
-	void              recalcSegments() const;
-	MicroMeterPnt     getSegmentPos(SegNr const, float const) const;
+	FixedPipeline<mV> const& getSegments() const;
+	FixedPipeline<mV>      & getSegments();
+
+	MicroMeterPnt dislocation() const;
+	void          recalcSegments() const;
+	MicroMeterPnt getSegmentPos(SegNr const, float const) const;
 };
 
 export Pipe const* Cast2Pipe(Nob const* pNob)

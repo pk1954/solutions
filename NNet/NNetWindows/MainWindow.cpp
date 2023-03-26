@@ -503,7 +503,7 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
-	PixelRect   const   pixRect { GetClPixelRect() };
+	PixelRect   const  pixRect { GetClPixelRect() };
 	DrawContext const& context { GetDrawContextC() };
 	MacroSensor const* pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensorSelectedC()) };
 
