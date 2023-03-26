@@ -17,6 +17,8 @@ import GraphicsWindow;
 import NNetModel;
 import :NNetController;
 
+using std::unique_ptr;
+
 export class NNetWindow : public GraphicsWindow
 {
 public:

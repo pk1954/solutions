@@ -12,7 +12,6 @@ module;
 module NNetModelCommands;
 
 import AddNobsCommand;
-import AddPipe2NeuronCmd;
 import ArrowAnimation;
 import Commands;
 import ConnAnimationCommand;
@@ -79,11 +78,6 @@ void NNetModelCommands::RedoCommand()
 		TraceStream() << source_location::current().function_name() << endl;
 	if (! m_pCmdStack->RedoCommand())
 		m_pSound->Warning();
-}
-
-void NNetModelCommands::PushCommand(unique_ptr<NNetCommand> upCmd)
-{
-	m_pCmdStack->PushCommand(move(upCmd));
 }
 
 void NNetModelCommands::AddModel()
