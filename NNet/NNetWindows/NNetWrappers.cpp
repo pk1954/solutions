@@ -61,6 +61,7 @@ import RotateSelectionCommand;
 import SelectAllConnectedCmd;
 import SetParameterCommand;
 import SetActiveSigGenCmd;
+import SetNobCommand;
 import SetSigGenStaticDataCmd;
 import SizeSelectionCmd;
 import SizeSensorCmd;
@@ -172,6 +173,7 @@ void InitializeNNetWrappers
     SelectAllConnectedCmd::Register();
     SetActiveSigGenCmd::Register();
     SetParameterCommand::Register();
+    SetNobCommand::Register();
     SetSigGenStaticDataCmd::Register();
     SizeSelectionCmd::Register();
     SizeSensorCmd::Register();

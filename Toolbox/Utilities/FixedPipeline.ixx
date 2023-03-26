@@ -20,6 +20,7 @@ class FixedPipeline
 public:
     FixedPipeline()
     {
+        Resize(1, T(0));
     }
 
     size_t Size() const { return m_data.size(); }

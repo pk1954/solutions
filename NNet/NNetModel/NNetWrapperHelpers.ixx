@@ -18,6 +18,7 @@ export MicroMeter            ScrReadMicroMeter         (Script &);
 export MicroMeterPnt         ScrReadMicroMeterPnt      (Script &);
 export MicroMeterCircle      ScrReadMicroMeterCircle   (Script &);
 export MicroMeterPntVector   ScrReadMicroMeterPntVector(Script &);
+export MicroMeterPosDir      ScrReadMicroMeterPosDir   (Script &);
 export unique_ptr<NobIdList> ScrReadNobIdList          (Script &);
 export NobId                 ScrReadNobId              (Script &);
 export SignalId              ScrReadSignalId           (Script &);

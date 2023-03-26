@@ -32,7 +32,6 @@ import PlugIoConnectorsCmd;
 import PlugIoLinesCmd;
 import SelectionCommand;
 import SetActiveSigGenCmd;
-import SetNobCommand;
 import SetParameterCommand;
 import SoundInterface;
 import ToggleStopOnTriggerCmd;
@@ -153,17 +152,6 @@ SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
 	SensorId const id   { list.FindSensor(umPos) };
 	list.SetActive(id);
 	return id;
-}
-
-void NNetModelCommands::SetNob
-(
-	NobId            const id,
-	MicroMeterPosDir const posDir
-)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << id.GetValue() << L" " << posDir << endl;
-	m_pCmdStack->PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(id), posDir));
 }
 
 void NNetModelCommands::StartStimulus()
