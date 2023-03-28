@@ -25,7 +25,7 @@ public:
 		neuronThreshold,  // trigger voltage for neurons
 		synapseThreshold, // blocking voltage for synapses
 		pulseSpeed,
-		spikeWidth,
+		pulseWidth,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
 		tParameterLast = timeResolution

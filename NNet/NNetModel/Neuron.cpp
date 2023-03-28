@@ -103,8 +103,8 @@ bool Neuron::CompStep()
 mV Neuron::GetPotential() const   // TODO: COmpute in CompStep?
 {
 	mV         const amplitude  { GetParam()->NeuronPeakVolt() };
-	fMicroSecs const spikeWidth { GetParam()->SpikeWidth() };
-	return Spike::GetVoltage(amplitude, spikeWidth, m_usSpikeTime);
+	fMicroSecs const pulseWidth { GetParam()->PulseWidth() };
+	return Spike::GetVoltage(amplitude, pulseWidth, m_usSpikeTime);
 }
 
 MicroMeterPnt Neuron::getAxonHillockPos() const
@@ -153,7 +153,7 @@ void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) co
 { 
 	D2D1::ColorF const color
 	{
-		(m_bTriggered && (m_usSpikeTime < GetParam()->SpikeWidth()))
+		(m_bTriggered && (m_usSpikeTime < GetParam()->PulseWidth()))
 		? NNetColors::INT_TRIGGER
 		: Nob::GetInteriorColor(type, m_mVpotential)
 	};

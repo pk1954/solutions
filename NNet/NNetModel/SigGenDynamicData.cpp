@@ -53,7 +53,7 @@ mV SigGenDynamicData::SetTime
 	mV         const amplitude   { m_stimulusActive ? statData.GetStimulusAmplitude(stimuTime) : statData.GetAmplitude().Base() };
 	fHertz     const frequency   { m_stimulusActive ? statData.GetStimulusFrequency(stimuTime) : statData.GetFrequency().Base() };
 	fMicroSecs const usSpikeTime { stimuTime - m_usSimuStartSpike };
-	mV         const mVresult    { Spike::GetVoltage(amplitude, param.SpikeWidth(), usSpikeTime) };
+	mV         const mVresult    { Spike::GetVoltage(amplitude, param.PulseWidth(), usSpikeTime) };
 
 	if (m_stimulusActive && !statData.InStimulusRange(stimuTime))
 		StopStimulus();

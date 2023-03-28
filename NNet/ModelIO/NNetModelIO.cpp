@@ -102,11 +102,8 @@ void NNetModelIO::Initialize()
         }
     );
 
-    SymbolTable::ScrDefConst
-    (
-        L"PeakVoltage",
-        static_cast<unsigned long>(ParamType::Value::neuronPeakVolt)
-    );   // legacy
+    SymbolTable::ScrDefConst(L"SpikeWidth",  static_cast<unsigned long>(ParamType::Value::pulseWidth));     // legacy
+    SymbolTable::ScrDefConst(L"PeakVoltage", static_cast<unsigned long>(ParamType::Value::neuronPeakVolt)); // legacy
 }
 
 //////////////// import ////////////////

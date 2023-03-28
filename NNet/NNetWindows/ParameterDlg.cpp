@@ -86,7 +86,7 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	resetParameter(m_hwndNeuronThreshold,  neuronThreshold);
 	resetParameter(m_hwndSynapseThreshold, synapseThreshold);
-	resetParameter(m_hwndSpikeWidth,       spikeWidth);
+	resetParameter(m_hwndPulseWidth,       pulseWidth);
 	resetParameter(m_hwndTimeResolution,   timeResolution);
 	resetParameter(m_hwndPulseSpeed,       pulseSpeed);
 }
@@ -98,7 +98,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	applyParameter(m_hwndNeuronThreshold,  neuronThreshold);
 	applyParameter(m_hwndSynapseThreshold, synapseThreshold);
-	applyParameter(m_hwndSpikeWidth,       spikeWidth);
+	applyParameter(m_hwndPulseWidth,       pulseWidth);
 	applyParameter(m_hwndTimeResolution,   timeResolution);
 	applyParameter(m_hwndPulseSpeed,       pulseSpeed);
 }
@@ -123,7 +123,7 @@ void ParameterDialog::Start
 	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt, iYpos);
 	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold, iYpos);
 	m_hwndSynapseThreshold = addParameter(hwndDlg, synapseThreshold, iYpos);
-	m_hwndSpikeWidth       = addParameter(hwndDlg, spikeWidth, iYpos);
+	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth, iYpos);
 	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos);
 	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed, iYpos);
 

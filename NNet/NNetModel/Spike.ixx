@@ -16,13 +16,13 @@ public:
     static mV GetVoltage
     (
         mV         const amplitude,
-        fMicroSecs const usSpikeWidth,
+        fMicroSecs const usPulseWidth,
         fMicroSecs const usSpikeTime
     )
     {
-        if (usSpikeTime <= usSpikeWidth)
+        if (usSpikeTime <= usPulseWidth)
         {
-            float const factorU { usSpikeTime / usSpikeWidth };
+            float const factorU { usSpikeTime / usPulseWidth };
             mV    const mVpot   { amplitude * 4.0f * factorU * (1.0f - factorU) };
             return mVpot;
         }
