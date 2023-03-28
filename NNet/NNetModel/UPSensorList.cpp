@@ -24,7 +24,10 @@ using std::unique_ptr;
 using std::make_unique;
 using std::ranges::find_if;
 
-UPSensorList::~UPSensorList() {}
+void UPSensorList::Clear()
+{
+    m_list.clear();
+}
 
 UPSensor UPSensorList::removeSensor(vector<UPSensor>::iterator it)
 {

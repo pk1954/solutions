@@ -24,6 +24,11 @@ export class MacroSensor : public Sensor
 public:
     MacroSensor(MicroMeterCircle const &, UPNobList const &);
 
+    ~MacroSensor()
+    {
+        int x = 42;
+    }
+
     void Dump()                                      const final;
     mV   GetSignalValue()                            const final;
     void WriteInfo(wostream &)                       const final;

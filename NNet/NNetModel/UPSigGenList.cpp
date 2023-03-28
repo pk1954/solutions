@@ -25,6 +25,12 @@ using std::unique_ptr;
 using std::ranges::find_if;
 using std::ranges::for_each;
 
+void UPSigGenList::Clear()
+{
+    m_list.clear();
+    m_sigGenIdActive = STD_SIGGEN;
+}
+
 SigGenId UPSigGenList::SetActive(SigGenId const id)
 {
     assert(IsValidSigGenId(id));

@@ -28,6 +28,9 @@ export using UPSigGen = unique_ptr<SignalGenerator>;
 export class UPSigGenList
 {
 public:
+
+    void Clear();
+
     size_t Size() const { return m_list.size(); }
 
     SignalGenerator const * GetSigGen(SigGenId const) const;

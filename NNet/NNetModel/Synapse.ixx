@@ -9,6 +9,7 @@ module;
 
 export module NNetModel:Synapse;
 
+import FixedPipeline;
 import DrawContext;
 import :NobId;
 import :PosNob;
@@ -92,7 +93,7 @@ private:
     inline static MicroMeter const EXTENSION { PIPE_WIDTH * 0.5f };
 
     void drawSynapse(DrawContext const&, MicroMeter const, D2D1::ColorF const) const;
-    void recalc() const;
+    void recalcPosition() const;
 
     MicroMeterCircle m_circle;  // inpipe and outpipe meet here
 
@@ -101,12 +102,13 @@ private:
     mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
     mutable MicroMeterPnt m_umPntCenter { NP_NULL };
 
-    bool       m_bOutputBlocked { false };
-    fMicroSecs m_usBlocked      { 0.0_MicroSecs };
-    mV         m_mVaddInput     { 0._mV };
-    Pipe *     m_pPipeIn;
-    Pipe *     m_pPipeOut;
-    Pipe *     m_pPipeAdd;
+    bool              m_bOutputBlocked { false };
+    fMicroSecs        m_usBlocked      { 0.0_MicroSecs };
+    mV                m_mVaddInput     { 0._mV };
+    FixedPipeline<mV> m_pulseBuffer;
+    Pipe *            m_pPipeIn;
+    Pipe *            m_pPipeOut;
+    Pipe *            m_pPipeAdd;
 
     bool isDefined() const { return m_pPipeIn && m_pPipeOut && m_pPipeAdd; }
 };

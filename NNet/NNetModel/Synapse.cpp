@@ -25,7 +25,9 @@ using std::fabs;
 Synapse::Synapse(MicroMeterPnt const &center)
   : PosNob(NobType::Value::synapse),
 	m_circle(center, KNOT_WIDTH)
-{}
+{
+	m_pulseBuffer.Resize(50, 0.0_mV);
+}
 
 Synapse::Synapse(Synapse const & rhs)
 	: PosNob(NobType::Value::synapse)
@@ -59,7 +61,7 @@ void Synapse::SetPosNoFix(MicroMeterPnt const& newPos)
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
 	m_circle.Rotate(umPntPivot, radDelta);
-	recalc();
+	recalcPosition();
 }
 
 void Synapse::SetAllIncoming(PosNob& src)
@@ -83,10 +85,10 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 	m_pPipeAdd->PosChanged();
 	m_pPipeIn ->PosChanged();
 	m_pPipeOut->PosChanged();
-	recalc();
+	recalcPosition();
 }
 
-void Synapse::recalc() const
+void Synapse::recalcPosition() const
 {
 	static float      const SQRT3       { sqrtf(3.0f) };
 	static float      const SQRT3DIV3   { SQRT3 / 3.0f };
@@ -112,7 +114,7 @@ void Synapse::recalc() const
 
 void Synapse::Recalc()
 {
-	recalc();
+	recalcPosition();
 }
 
 void Synapse::Check() const
@@ -144,7 +146,7 @@ void Synapse::Dump() const
 
 void Synapse::PosChanged()
 {
-	recalc();
+	recalcPosition();
 }
 
 void Synapse::Reconnect()
@@ -276,6 +278,7 @@ void Synapse::CollectInput()
 {
 	m_mVpotential = m_pPipeIn ->GetPotential();
 	m_mVaddInput  = m_pPipeAdd->GetPotential();
+	m_pulseBuffer.Push(m_mVaddInput);
 }
 
 bool Synapse::CompStep()
@@ -290,7 +293,7 @@ bool Synapse::CompStep()
 	}
 	else
 	{
-		m_mVpotential += m_mVaddInput;
+		m_mVpotential += m_pulseBuffer.Get();
 		if (m_mVpotential >= GetParam()->SynapseThreshold())
 		{
 			m_bOutputBlocked = true;

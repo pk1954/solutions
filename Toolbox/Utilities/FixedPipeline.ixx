@@ -23,6 +23,11 @@ public:
         Resize(1, T(0));
     }
 
+    ~FixedPipeline()
+    {
+        int x = 42;
+    }
+
     size_t Size() const { return m_data.size(); }
 
     void Resize(size_t const newSize, T const elem)
@@ -58,11 +63,12 @@ public:
     T Get(size_t const nr) const
     {
         assert(nr < m_data.size());
-        size_t index { static_cast<size_t>(m_iter - m_data.begin()) + nr };
+        typename vector<T>::iterator iter { m_iter };
+        size_t index { static_cast<size_t>(iter - m_data.begin()) + nr };
         if (index < m_data.size())
-            return *(m_iter + nr);
+            return *(iter + nr);
         else
-            return *(m_iter - (m_data.size() - nr));
+            return *(iter - (m_data.size() - nr));
     }
 
     void Apply2All(auto const& func) const

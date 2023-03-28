@@ -148,11 +148,13 @@ bool Model::Compute()
 
 void Model::ResetModel()
 {
-	m_wstrModelFilePath = L""; 
+	m_monitorData.Reset();  //caution: order of Reset/Clear commands matters!
 	m_upNobs->Clear();
-	m_monitorData.Reset();
+	m_upSigGenList->Clear();
+	m_sensorList.Clear();
 	m_description.ClearDescription();
 	SimulationTime::Set();
+	m_wstrModelFilePath = L"";
 }
 
 void Model::DumpModel

@@ -26,7 +26,9 @@ export using UPSensor = unique_ptr<Sensor>;
 export class UPSensorList
 {
 public:
-    ~UPSensorList();
+    ~UPSensorList() {};
+
+    void Clear();
 
     size_t Size() const { return m_list.size(); }
 
