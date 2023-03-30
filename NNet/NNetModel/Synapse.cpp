@@ -22,11 +22,19 @@ using std::wcout;
 using std::endl;
 using std::fabs;
 
-Synapse::Synapse(MicroMeterPnt const &center)
-  : PosNob(NobType::Value::synapse),
+Synapse::Synapse(MicroMeterPnt const& center)
+	: PosNob(NobType::Value::synapse),
 	m_circle(center, KNOT_WIDTH)
 {
-	m_pulseBuffer.Resize(50, 0.0_mV);
+	RecalcDelayBuffer();
+}
+
+void Synapse::RecalcDelayBuffer()
+{
+	fMicroSecs umDelay { GetParam()->SynapseDelay() };
+	fMicroSecs umRes   { GetParam()->TimeResolution() };
+	size_t     bufSize { static_cast<size_t>(umDelay / umRes) };
+	m_pulseBuffer.Resize(bufSize, 0.0_mV);
 }
 
 Synapse::Synapse(Synapse const & rhs)

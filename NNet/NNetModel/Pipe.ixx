@@ -80,6 +80,7 @@ public:
 	Radian        GetDir()       const final { return Vector2Radian(GetVector()); };
 	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
 	mV            GetPotential() const final { return getSegments().Get(); }
+	void          PushVoltage(mV const v) { getSegments().Push(v); }
 
 	MicroMeterPnt GetPos            ()                                      const final;
 	bool          IsIncludedIn      (MicroMeterRect const &)                const final;
@@ -110,10 +111,6 @@ public:
 	mV            GetVoltageAt    (MicroMeterPnt const&) const;
 	SegNr         GetSegNr        (float const f)        const { return SegNr(Cast2Int(round(f * Cast2Float(GetNrOfSegments() - 1)))); }
 	mV            GetVoltage      (SegNr const segNr)    const { return getSegments().Get(segNr.GetValue()); }
-	MicroMeterPnt GetSegmentCenter(SegNr const segNr)    const { return getSegmentPos(segNr, 0.5f); }
-	MicroMeterPnt GetSegmentStart (SegNr const segNr)    const { return getSegmentPos(segNr, 0.0f); }
-	MicroMeterPnt GetSegmentEnd   (SegNr const segNr)    const { return getSegmentPos(segNr, 1.0f); }
-	void          PushVoltage     (mV const v)                 { getSegments().Push(v); }
 	void          SetNrOfSegments(size_t const)                    const;
 	void          DrawArrows(DrawContext const&, MicroMeter const) const;
 	void          DislocateEndPoint();
@@ -138,7 +135,6 @@ private:
 
 	MicroMeterPnt dislocation() const;
 	void          recalcSegments() const;
-	MicroMeterPnt getSegmentPos(SegNr const, float const) const;
 };
 
 export Pipe const* Cast2Pipe(Nob const* pNob)

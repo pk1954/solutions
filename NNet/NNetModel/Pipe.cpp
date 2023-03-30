@@ -261,14 +261,6 @@ void Pipe::recalcSegments() const
 	SetNrOfSegments(max(1U, iNrOfSegments));
 }
 
-MicroMeterPnt Pipe::getSegmentPos(SegNr const segNr, float const fPos) const
-{
-	MicroMeterPnt const umVector  { GetEndPoint() - GetStartPoint() };
-	MicroMeterPnt const umpSegVec { umVector / Cast2Float(GetNrOfSegments()) };
-	float         const fPosition { (static_cast<float>(segNr.GetValue()) + fPos) };
-	return GetStartPoint() + umpSegVec * fPosition;
-}
-
 FixedPipeline<mV>& Pipe::getSegments()
 {
 	if (m_bSegmentsDirty)
@@ -368,19 +360,23 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 	}
 	else
 	{
+		MicroMeterPnt const umVector      { GetEndPoint() - GetStartPoint() };
+		MicroMeterPnt const umSegVec      { umVector / Cast2Float(GetNrOfSegments()) };
+		MicroMeterPnt       umSectorStart { GetStartPoint() };
 		Apply2AllSegments
 		(
-			[this, &context, umWidth, fPixMinWidth](vector<mV>::const_iterator &seg)
+			[this, &context, umWidth, fPixMinWidth, umSegVec, &umSectorStart](auto &seg)
 			{
-				SegNr segNr(Cast2Int(m_segments.GetElemNr(seg)));
+				MicroMeterPnt const umSectorEnd { umSectorStart + umSegVec };
 				context.DrawLine
 				(
-					GetSegmentStart(segNr), 
-					GetSegmentEnd(segNr), 
-					umWidth, 
-					GetInteriorColor(GetVoltage(segNr)), 
+					umSectorStart,
+					umSectorEnd,
+					umWidth,
+					GetInteriorColor(*seg),
 					fPixMinWidth
 				);
+				umSectorStart = umSectorEnd;
 			}
 		);
 	}

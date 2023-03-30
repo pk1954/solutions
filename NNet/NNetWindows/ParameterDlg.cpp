@@ -86,9 +86,10 @@ void ParameterDialog::resetParameters()  // refresh edit fields with data from m
 	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	resetParameter(m_hwndNeuronThreshold,  neuronThreshold);
 	resetParameter(m_hwndSynapseThreshold, synapseThreshold);
+	resetParameter(m_hwndSynapseDelay,     synapseDelay);
+	resetParameter(m_hwndPulseSpeed,       pulseSpeed);
 	resetParameter(m_hwndPulseWidth,       pulseWidth);
 	resetParameter(m_hwndTimeResolution,   timeResolution);
-	resetParameter(m_hwndPulseSpeed,       pulseSpeed);
 }
 
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
@@ -98,9 +99,10 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt);
 	applyParameter(m_hwndNeuronThreshold,  neuronThreshold);
 	applyParameter(m_hwndSynapseThreshold, synapseThreshold);
+	applyParameter(m_hwndSynapseDelay,     synapseDelay);
+	applyParameter(m_hwndPulseSpeed,       pulseSpeed);
 	applyParameter(m_hwndPulseWidth,       pulseWidth);
 	applyParameter(m_hwndTimeResolution,   timeResolution);
-	applyParameter(m_hwndPulseSpeed,       pulseSpeed);
 }
 
 void ParameterDialog::Start
@@ -119,13 +121,14 @@ void ParameterDialog::Start
 
 	int iYpos { 10 };
 	using enum ParamType::Value;
-	m_hwndPulseFreqMax     = addParameter(hwndDlg, pulseFreqMax, iYpos);
-	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt, iYpos);
-	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold, iYpos);
+	m_hwndPulseFreqMax     = addParameter(hwndDlg, pulseFreqMax,     iYpos);
+	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt,   iYpos);
+	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold,  iYpos);
 	m_hwndSynapseThreshold = addParameter(hwndDlg, synapseThreshold, iYpos);
-	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth, iYpos);
-	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution, iYpos);
-	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed, iYpos);
+	m_hwndSynapseDelay     = addParameter(hwndDlg, synapseDelay,     iYpos);
+	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,       iYpos);
+	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution,   iYpos);
+	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,       iYpos);
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET);

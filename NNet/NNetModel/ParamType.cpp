@@ -28,6 +28,7 @@ wchar_t const* ParamType::GetName(ParamType::Value const p)
 		{ neuronPeakVolt,   L"NeuronPeakVolt"   }, // peak output voltage when neuron triggers
 		{ neuronThreshold,  L"NeuronThreshold"  }, // threshold voltage for neuron triggers
 		{ synapseThreshold, L"SynapseThreshold" }, // threshold for synapse saturation blocking
+		{ synapseDelay,     L"SynapseDelay"     },
 		{ pulseSpeed,       L"PulseSpeed"       },
 		{ pulseWidth,       L"PulseWidth"       },
 		{ timeResolution,   L"TimeResolution"   }
@@ -50,6 +51,7 @@ wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 		{ neuronPeakVolt,   L"mV"    },
 		{ neuronThreshold,  L"mV"    },
 		{ synapseThreshold, L"mV"    },
+		{ synapseDelay,     L"µs"    },
 		{ pulseSpeed,       L"m/sec" },
 		{ pulseWidth,       L"µs"    },
 		{ timeResolution,   L"µs"    }

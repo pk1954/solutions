@@ -59,6 +59,8 @@ public:
     void AddIncoming(Pipe*) final;
     void AddOutgoing(Pipe*) final;
 
+    void RecalcDelayBuffer();
+
     void SetAddPipe(Pipe*);
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;

@@ -60,19 +60,10 @@ public:
 	void AddOutgoing(Pipe* pPipe) final { m_pPipeOut = pPipe; }
 	void AddIncoming(Pipe* pPipe) final { m_pPipeIn  = pPipe; }
 
-	void SetAllIncoming(PosNob&) final;
-	void SetAllOutgoing(PosNob&) final;
-
-	void Reconnect()             final;
-	void SelectAllConnected(bool const bFirst) final
-	{
-		if (!IsSelected() || bFirst)
-		{
-			Nob::Select(true);
-			m_pPipeIn ->SelectAllConnected(false);
-			m_pPipeOut->SelectAllConnected(false);
-		}
-	}
+	void SetAllIncoming(PosNob&)        final;
+	void SetAllOutgoing(PosNob&)        final;
+	void Reconnect()                    final;
+	void SelectAllConnected(bool const) final;
 
 	void Emphasize(bool const, bool const);
 

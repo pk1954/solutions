@@ -94,7 +94,6 @@ public:
 
 	// functions affecting Nob data, not model data
 
-	void RecalcAllNobs() const;
 	void ClearDynamicData();
 
 	// access functions to members 
@@ -134,7 +133,6 @@ public:
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 private:
-
 	unique_ptr<UPNobList>    m_upNobs;
 	unique_ptr<UPSigGenList> m_upSigGenList;
 	UPSensorList             m_sensorList;

@@ -35,6 +35,7 @@ private:
 	HWND m_hwndPeakVoltage      { nullptr };
 	HWND m_hwndNeuronThreshold  { nullptr };
 	HWND m_hwndSynapseThreshold { nullptr };
+	HWND m_hwndSynapseDelay     { nullptr };
 	HWND m_hwndPulseWidth       { nullptr };
 	HWND m_hwndTimeResolution   { nullptr };
 	HWND m_hwndFilterSize       { nullptr };

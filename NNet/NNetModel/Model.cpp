@@ -20,6 +20,7 @@ import :NobId;
 import :Nob;
 import :PosNob;
 import :Pipe;
+import :Synapse;
 import :MonitorData;
 import :SignalGenerator;
 import :UPSigGenList;
@@ -106,11 +107,6 @@ void Model::Reconnect(NobId const id)
 		pNod->Reconnect();
 }
 
-void Model::RecalcAllNobs() const
-{ 
-	m_upNobs->Apply2AllC([](Nob & nob) { nob.PosChanged(); });
-} 
-
 void Model::ClearDynamicData()
 { 
 	SimulationTime::Set();
@@ -132,7 +128,10 @@ float Model::SetParam
 {
 	float fOldValue { m_param.GetParameterValue(param) };
 	m_param.SetParameterValue(param, fNewValue);
-	RecalcAllNobs();
+	if (param == ParamType::Value::synapseDelay)
+		m_upNobs->Apply2All<Synapse>([](Synapse& s) { s.RecalcDelayBuffer(); });
+	else 
+		m_upNobs->Apply2AllC([](Nob& nob) { nob.PosChanged(); });
 	return fOldValue;
 }
 

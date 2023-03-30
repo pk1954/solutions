@@ -4,6 +4,6 @@ ShowSensorPoints ON
 DescWinFontSize 18
 SetAutoOpen ON
 SetSound ON
-ReadModel "D:\SW-projects\Delivery\V4_4\BB6.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
 SetPerfMonMode OFF
 InputCablesVisibility 2

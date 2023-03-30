@@ -24,6 +24,7 @@ public:
 		neuronPeakVolt,   // peak voltage for neuron output
 		neuronThreshold,  // trigger voltage for neurons
 		synapseThreshold, // blocking voltage for synapses
+		synapseDelay,     // delay of incoming pulse in synapse
 		pulseSpeed,
 		pulseWidth,
 		timeResolution,

@@ -73,15 +73,20 @@ public:
 
     void Apply2All(auto const& func) const
     {
-        for (auto it = m_iter; it < m_data.end(); ++it)
+        for (auto it = m_iter+1; it < m_data.end(); ++it)
             func(it);
-        for (auto it = m_data.begin(); it < m_iter; ++it)
+        for (auto it = m_data.begin(); it <= m_iter; ++it)
             func(it);
     }
 
     size_t GetElemNr(vector<T>::const_iterator const it)
     {
         return it - m_data.begin();
+    }
+
+    T GetElem(vector<T>::const_iterator const it) const
+    {
+        return *it;
     }
 
 private:

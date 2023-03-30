@@ -592,7 +592,8 @@ void MonitorControl::DropSignal()
 	{
 		SignalId signalId   { m_pMonitorData->GetHighlightedSignalId() };
 		TrackNr  trackNrNew { signalId.GetTrackNr() + iTrackDelta };
-		MoveSignalCmd::Push(signalId, trackNrNew);
+		if (m_pMonitorData->IsValid(trackNrNew))
+			MoveSignalCmd::Push(signalId, trackNrNew);
 	}
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLast.Set2Null();

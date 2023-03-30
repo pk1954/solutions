@@ -59,6 +59,15 @@ void Knot::Emphasize(bool const bOn, bool bDownStream)
 		m_pPipeIn->Emphasize(bOn, false);
 }
 
+void Knot::SelectAllConnected(bool const bFirst)
+{
+	if (!IsSelected() || bFirst)
+	{
+		Nob::Select(true);
+		m_pPipeIn->SelectAllConnected(false);
+		m_pPipeOut->SelectAllConnected(false);
+	}
+}
 void Knot::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 {
 	assert(pDel == m_pPipeIn);

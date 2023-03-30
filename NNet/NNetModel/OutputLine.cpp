@@ -41,6 +41,7 @@ OutputLine::OutputLine(Pipe& pipe)
 
 void OutputLine::Check() const
 {
+	assert(GetPipeC()->GetEndNobPtr() == this);
 	PosNob::Check();
 }
 

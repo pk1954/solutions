@@ -31,6 +31,7 @@ public:
 	mV          NeuronPeakVolt  () const { return m_neuronPeakVolt; }
 	mV          NeuronThreshold () const { return m_neuronThreshold; }
 	mV          SynapseThreshold() const { return m_synapseThreshold; }
+	fMicroSecs  SynapseDelay    () const { return m_synapseDelay; }
 	fMicroSecs  PulseWidth      () const { return m_pulseWidth; }
 	meterPerSec PulseSpeed      () const { return m_pulseSpeed; }
 	fMicroSecs  TimeResolution  () const { return m_usResolution; }
@@ -42,6 +43,7 @@ private:
 	mV               m_neuronPeakVolt   { 100._mV };
 	mV               m_neuronThreshold  { 20._mV };
 	mV               m_synapseThreshold { 20._mV };
+	fMicroSecs       m_synapseDelay     { 500._MicroSecs };
 	meterPerSec      m_pulseSpeed       { 120.0_meterPerSec };
 	fMicroSecs       m_pulseWidth       { 2000._MicroSecs };
 	fMicroSecs       m_usResolution     { 100._MicroSecs };
