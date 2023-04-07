@@ -100,7 +100,7 @@ bool Neuron::CompStep()
 	return m_bStopOnTrigger && bTrigger;
 }
 
-mV Neuron::GetPotential() const   // TODO: COmpute in CompStep?
+mV Neuron::GetPotential() const   // TODO: Compute in CompStep?
 {
 	mV         const amplitude  { GetParam()->NeuronPeakVolt() };
 	fMicroSecs const pulseWidth { GetParam()->PulseWidth() };

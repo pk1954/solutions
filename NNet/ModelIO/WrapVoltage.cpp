@@ -10,6 +10,7 @@ module;
 module WrapVoltage;
 
 import Types;
+import SaveCast;
 import IoConstants;
 import ErrHndl;
 import Script;

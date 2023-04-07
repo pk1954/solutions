@@ -6,4 +6,4 @@ SetAutoOpen ON
 SetSound ON
 ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
 SetPerfMonMode OFF
-InputCablesVisibility 2
+InputCablesVisibility 0

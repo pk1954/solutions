@@ -63,9 +63,9 @@ void NNetParameters::SetParameterValue
 	switch (param)
 	{
 		using enum ParamType::Value;
-	case pulseFreqMax:     m_freqMax = (static_cast<fHertz>     (fNewValue));
-		m_usPulseDistMin = PulseDuration(m_freqMax);
-		break;
+	case pulseFreqMax:     m_freqMax = (static_cast<fHertz>(fNewValue));
+                           m_usPulseDistMin = PulseDuration(m_freqMax);
+                           break;
 	case inputPeakTime:    m_sigGenData.SetPeakTime(static_cast<fMicroSecs> (fNewValue)); break;
 	case inputPeakFreq:    m_sigGenData.SetFreqPeak(static_cast<fHertz>     (fNewValue)); break;
 	case inputBaseFreq:    m_sigGenData.SetFreqBase(static_cast<fHertz>     (fNewValue)); break;

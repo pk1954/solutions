@@ -346,7 +346,7 @@ private:
 
 	inline static LOG_UNIT const MINIMUM_PIXEL_SIZE { LOG_UNIT(   0.1f) };
 	inline static LOG_UNIT const DEFAULT_PIXEL_SIZE { LOG_UNIT(   1.0f) };  
-	inline static LOG_UNIT const MAXIMUM_PIXEL_SIZE { LOG_UNIT(2000.0f) };  // 2 MilliMeter
+	inline static LOG_UNIT const MAXIMUM_PIXEL_SIZE { LOG_UNIT(2000.0f) };  // 2 Millimeter
 
 	PixFpDimension<LOG_UNIT> m_xDim;
 	PixFpDimension<LOG_UNIT> m_yDim;

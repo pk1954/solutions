@@ -9,6 +9,7 @@ module;
 
 module NNetWin32:NNetWrappers;
 
+import Symtab;
 import Types;
 import ErrHndl;
 import SoundInterface;

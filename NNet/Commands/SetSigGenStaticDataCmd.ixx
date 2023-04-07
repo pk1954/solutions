@@ -8,6 +8,7 @@ module;
 
 export module SetSigGenStaticDataCmd;
 
+import Symtab;
 import Types;
 import Commands;
 import NNetCommand;
@@ -55,7 +56,7 @@ public:
 	static void Push(SigGenId const id, SigGenStaticData const& data)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id.GetValue() << data << endl;
+			TraceStream() << NAME << id.GetValue() << /* data << */ endl;  //TODO: data causes compiler error
 		m_pStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(id, data));
 	}
 

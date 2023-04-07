@@ -294,7 +294,6 @@ bool Synapse::CompStep()
 	fMicroSecs usBlockTime = GetParam()->PulseDistMin();
 	if (m_bOutputBlocked)
 	{
-		m_mVpotential = 0.0_mV;
 		m_usBlocked += GetParam()->TimeResolution();
 		if (m_usBlocked > usBlockTime)
 			m_bOutputBlocked = false;
