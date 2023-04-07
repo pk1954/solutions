@@ -40,7 +40,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId const nobId1, NobId const nobId2)
@@ -54,16 +54,15 @@ private:
 
     inline static const wstring NAME { L"ConnAnimation" };
 
-    class Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public ScriptFunctor
     {
-    public:
         void operator() (Script& script) const final
         {
             NobId const id1 { ScrReadNobId(script) };
             NobId const id2 { ScrReadNobId(script) };
             ConnAnimationCommand::Push(id1, id2);
         }
-    };
+    } m_wrapper;
 
     NobId m_id1;
     NobId m_id2;

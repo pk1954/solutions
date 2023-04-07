@@ -44,7 +44,7 @@ public:
 
     static void Register()
     {
-        SymbolTable::ScrDefConst(NAME, new Wrapper);
+        SymbolTable::ScrDefConst(NAME, &m_wrapper);
     }
 
     static void Push(SignalId const signalId)
@@ -58,14 +58,13 @@ private:
 
     inline static const wstring NAME { L"DeleteSignal" };
 
-    class Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public ScriptFunctor
     {
-    public:
         void operator() (Script& script) const final
         {
             DeleteSignalCommand::Push(ScrReadSignalId(script));
         }
-    };
+    } m_wrapper;
 
     SensorId           m_sensorId;
     SignalId           m_signalId;

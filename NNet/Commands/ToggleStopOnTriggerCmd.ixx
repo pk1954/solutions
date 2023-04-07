@@ -31,7 +31,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId const id)
@@ -45,16 +45,14 @@ private:
 
 	inline static const wstring NAME { L"ToggleStopOnTrigger" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId const id { ScrReadNobId(script) };
 			ToggleStopOnTriggerCmd::Push(id);
 		}
-	};
+	} m_wrapper;
 
 	NobId const m_id;
 };
-

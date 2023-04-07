@@ -22,7 +22,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static unique_ptr<NNetCommand> MakeCommand(NobId const);
@@ -42,12 +42,11 @@ private:
 
 	inline static const wstring NAME { L"DeleteNob" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			DeleteNobCommand::Push(ScrReadNobId(script));
 		}
-	};
+	} m_wrapper;
 };

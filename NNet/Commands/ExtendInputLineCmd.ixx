@@ -55,7 +55,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId nobId, MicroMeterPnt const & pos)
@@ -69,7 +69,7 @@ private:
 
 	inline static const wstring NAME { L"ExtendInputLine" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
 	public:
 		void operator() (Script& script) const final
@@ -78,7 +78,7 @@ private:
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			ExtendInputLineCmd::Push(id, umPnt);
 		}
-	};
+	} m_wrapper;
 
 	InputLine           & m_inputLineOld;
 	unique_ptr<InputLine> m_upInputLineOld;

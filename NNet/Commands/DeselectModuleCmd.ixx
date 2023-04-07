@@ -25,7 +25,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push()
@@ -39,12 +39,11 @@ private:
 
 	inline static const wstring NAME { L"DeselectModule" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			DeselectModuleCmd::Push();
 		}
-	};
+	} m_wrapper;
 };

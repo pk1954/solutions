@@ -38,7 +38,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId nobId)
@@ -52,14 +52,13 @@ private:
 
 	inline static const wstring NAME { L"DiscIoConnector" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			DiscIoConnectorCmd::Push(ScrReadNobId(script));
 		}
-	};
+	} m_wrapper;
 
     IoConnector      const& m_connector;
     unique_ptr<IoConnector> m_upIoConnector {};

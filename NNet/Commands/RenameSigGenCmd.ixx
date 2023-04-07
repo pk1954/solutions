@@ -35,7 +35,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Dialog(HWND const hwnd)
@@ -58,7 +58,7 @@ private:
 
 	inline static const wstring NAME { L"RenameSigGen" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
 	public:
 		void operator() (Script& script) const final
@@ -69,7 +69,7 @@ private:
 			script.ScrReadSpecial(L'"');
 			RenameSigGenCmd::Push(id, name);
 		}
-	};
+	} m_wrapper;
 
 	SigGenId m_idSigGen;
 	wstring  m_wstrNameOld;

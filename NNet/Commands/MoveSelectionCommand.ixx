@@ -44,7 +44,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(MicroMeterPnt const& delta)
@@ -58,14 +58,13 @@ private:
 
 	inline static const wstring NAME { L"MoveSelection" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			MoveSelectionCommand::Push(ScrReadMicroMeterPnt(script));
 		}
-	};
+	} m_wrapper;
 
 	MicroMeterPnt m_delta;
 };

@@ -50,7 +50,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(SigGenId const id, SigGenStaticData const& data)
@@ -64,9 +64,8 @@ private:
 
 	inline static const wstring NAME { L"SetSigGenStaticData" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			SigGenId          const id   { ScrReadSigGenId(script) };
@@ -74,7 +73,7 @@ private:
 			SigGenStaticData const& data { ScrReadSigGenStaticData(script) };
 			SetSigGenStaticDataCmd::Push(id, data);
 		}
-	};
+	} m_wrapper;
 
 	SignalGenerator      & m_sigGen;
 	SigGenStaticData       m_dataNew;

@@ -35,7 +35,7 @@ public:
 
     static void Register()
     {
-        SymbolTable::ScrDefConst(NAME, new Wrapper);
+        SymbolTable::ScrDefConst(NAME, &m_wrapper);
     }
 
     static void Push()
@@ -49,14 +49,13 @@ private:
 
     inline static const wstring NAME { L"NewSigGen" };
 
-    class Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public ScriptFunctor
     {
-    public:
         void operator() (Script& script) const final
         {
             NewSigGenCmd::Push();
         }
-    };
+    } m_wrapper;
 
     UPSigGen m_upSigGen;
 	SigGenId m_sigGenIdNew;

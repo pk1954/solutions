@@ -48,7 +48,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(SensorId id, MicroMeterPnt const& delta)
@@ -62,16 +62,15 @@ private:
 
 	inline static const wstring NAME { L"MoveSensor" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			SensorId      const id      { script.ScrReadInt() };
 			MicroMeterPnt const umDelta { ScrReadMicroMeterPnt(script) };
 			MoveSensorCmd::Push(id, umDelta);
 		}
-	};
+	} m_wrapper;
 
 	MacroSensor * m_pMacroSensor;
 	MicroMeterPnt m_delta;

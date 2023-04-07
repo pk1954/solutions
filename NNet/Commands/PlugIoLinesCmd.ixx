@@ -52,7 +52,7 @@ public:
 
     static void Register()
     {
-        SymbolTable::ScrDefConst(NAME, new Wrapper);
+        SymbolTable::ScrDefConst(NAME, &m_wrapper);
     }
 
     static void Push(NobId const nobId1, NobId const nobId2)
@@ -66,16 +66,15 @@ private:
 
     inline static const wstring NAME { L"PlugIoLines" };
 
-    class Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public ScriptFunctor
     {
-    public:
         void operator() (Script& script) const final
         {
             NobId const id1 { ScrReadNobId(script) };
             NobId const id2 { ScrReadNobId(script) };
             PlugIoLinesCmd::Push(id1, id2);
         }
-    };
+    } m_wrapper;
 
     IoLine           & m_nobTarget;
     IoLine           & m_nobAnimated;

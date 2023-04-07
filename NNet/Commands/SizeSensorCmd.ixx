@@ -50,7 +50,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(SensorId id, float const fFactor)
@@ -64,16 +64,15 @@ private:
 
 	inline static const wstring NAME { L"SizeSensor" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			SensorId const id      { script.ScrReadInt() };
 			float    const fFactor { Cast2Float(script.ScrReadFloat()) };
 			SizeSensorCmd::Push(id, fFactor);
 		}
-	};
+	} m_wrapper;
 
 	MacroSensor * m_pSensor;
 	SensorId      m_sensorId;

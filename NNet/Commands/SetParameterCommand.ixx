@@ -37,7 +37,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push
@@ -55,16 +55,15 @@ private:
 
 	inline static const wstring NAME { L"SetParameter" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			ParamType::Value const param  { static_cast<ParamType::Value>(script.ScrReadUlong()) };
 			float            const fValue { Cast2Float(script.ScrReadFloat()) };
 			SetParameterCommand::Push(param, fValue);
 		}
-	};
+	} m_wrapper;
 
 	ParamType::Value const m_param;
 	float            const m_fOldValue;

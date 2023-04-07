@@ -32,7 +32,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push
@@ -51,9 +51,8 @@ private:
 
 	inline static const wstring NAME { L"RotateNob" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId         const idNob    { ScrReadNobId(script) };
@@ -61,7 +60,7 @@ private:
 			MicroMeterPnt const umPntNew { ScrReadMicroMeterPnt(script) };
 			RotateNobCommand::Push(idNob, umPntOld, umPntNew);
 		}
-	};
+	} m_wrapper;
 
 	Nob & m_nob;
 };

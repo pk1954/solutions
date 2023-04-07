@@ -39,7 +39,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push
@@ -57,16 +57,15 @@ private:
 
 	inline static const wstring NAME { L"AddMicroSensor" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId   const nobId   { ScrReadNobId(script) };
 			TrackNr const trackNr { ScrReadTrackNr(script) };
 			AddMicroSensorCmd::Push(nobId, trackNr);
 		}
-	};
+	} m_wrapper;
 
 	NobId    const m_nobId;
 	TrackNr  const m_trackNr;

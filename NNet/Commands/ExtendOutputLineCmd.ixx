@@ -55,7 +55,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId nobId, MicroMeterPnt const& pos)
@@ -69,16 +69,15 @@ private:
 
 	inline static const wstring NAME { L"ExtendOutputLine" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			ExtendOutputLineCmd::Push(id, umPnt);
 		}
-	};
+	} m_wrapper;
 
 	OutputLine           & m_outputLineOld;
 	unique_ptr<OutputLine> m_upOutputLineOld;

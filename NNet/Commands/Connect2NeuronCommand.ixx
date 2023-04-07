@@ -48,7 +48,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId const nobId1, NobId const nobId2)
@@ -62,16 +62,15 @@ private:
 
 	inline static const wstring NAME { L"Connect2Neuron" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId const id1 { ScrReadNobId(script) };
 			NobId const id2 { ScrReadNobId(script) };
 			Connect2NeuronCommand::Push(id1, id2);
 		}
-	};
+	} m_wrapper;
 
 	OutputLine & m_outputLineSrc;  // reference to original OutputLine
 	Neuron     & m_neuronDst;      // reference to original Neuron

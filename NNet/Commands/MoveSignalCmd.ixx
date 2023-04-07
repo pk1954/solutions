@@ -35,7 +35,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(SignalId const& id, TrackNr const trackNr)
@@ -49,16 +49,15 @@ private:
 
 	inline static const wstring NAME { L"MoveSignal" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			SignalId const id      { ScrReadSignalId(script) };
 			TrackNr  const trackNr { ScrReadTrackNr(script) };
 			MoveSignalCmd::Push(id, trackNr);
 		}
-	};
+	} m_wrapper;
 
 	SignalId const m_signalIdOld;
 	TrackNr  const m_trackNrNew;

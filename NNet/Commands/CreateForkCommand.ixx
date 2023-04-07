@@ -51,7 +51,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId const nobId, MicroMeterPnt const& pos)
@@ -65,16 +65,15 @@ private:
 
 	inline static const wstring NAME { L"CreateFork" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			CreateForkCommand::Push(id, umPnt);
 		}
-	};
+	} m_wrapper;
 
 	unique_ptr<Fork>       m_upFork;
 	unique_ptr<OutputLine> m_upOutputLine;

@@ -79,7 +79,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId nobId, MicroMeterPnt const& pos)
@@ -93,16 +93,15 @@ private:
 
 	inline static const wstring NAME { L"AddPipe2Neuron" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			AddPipe2NeuronCmd::Push(id, umPnt);
 		}
-	};
+	} m_wrapper;
 
 	Neuron              & m_neuronOld;
 	unique_ptr<Neuron>    m_upNeuronOld;

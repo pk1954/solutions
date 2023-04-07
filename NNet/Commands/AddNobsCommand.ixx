@@ -51,7 +51,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push()
@@ -65,14 +65,13 @@ private:
 
 	inline static const wstring NAME { L"AddNobs" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			AddNobsCommand::Push();
 		}
-	};
+	} m_wrapper;
 
 	unique_ptr<UPNobList> m_upNobs2Add;
 	size_t                m_nrOfNobs;

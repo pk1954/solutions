@@ -53,7 +53,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId idSrc, NobId idDst)
@@ -67,16 +67,15 @@ private:
 
 	inline static const wstring NAME { L"ConnectCreateFork" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId const idSrc { ScrReadNobId(script) };
 			NobId const idDst { ScrReadNobId(script) };
 			ConnectCreateForkCmd::Push(idSrc, idDst);
 		}
-	};
+	} m_wrapper;
 
 	NobId           const m_idIoLine;
 	InputLine     * const m_pInputLine;

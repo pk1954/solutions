@@ -34,7 +34,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(TrackNr const trackNr)
@@ -48,14 +48,14 @@ private:
 
 	inline static const wstring NAME { L"AddSigGen2Monitor" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
 	public:
 		void operator() (Script& script) const final
 		{
 			AddSigGen2MonitorCmd(ScrReadTrackNr(script));
 		}
-	};
+	} m_wrapper;
 
 	SignalGenerator const * m_pSigGen;
 	TrackNr         const   m_trackNr;

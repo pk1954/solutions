@@ -31,7 +31,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId const id)
@@ -45,14 +45,13 @@ private:
 
 	inline static const wstring NAME { L"AttachSigGen2Line" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			AttachSigGen2LineCmd::Push(ScrReadNobId(script));
 		}
-	};
+	} m_wrapper;
 
 	InputLine       & m_inputLine;
 	SignalGenerator * m_pSigGenOld;

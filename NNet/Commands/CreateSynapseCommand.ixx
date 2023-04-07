@@ -57,7 +57,7 @@ public:                    // pipe context menu: create synapse
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId nobId, MicroMeterPnt const& pos)
@@ -71,16 +71,15 @@ private:
 
 	inline static const wstring NAME { L"CreateSynapse" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			CreateSynapseCommand::Push(id, umPnt);
 		}
-	};
+	} m_wrapper;
 
 	unique_ptr<InputLine> m_upInputLine;
 	unique_ptr<Pipe>      m_upPipeAdd;

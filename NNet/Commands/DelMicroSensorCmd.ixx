@@ -40,7 +40,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push
@@ -57,14 +57,13 @@ private:
 
 	inline static const wstring NAME { L"DelMicroSensor" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			DelMicroSensorCmd::Push(ScrReadNobId(script));
 		}
-	};
+	} m_wrapper;
 
 	SensorId           m_sensorId {};
 	SignalId           m_signalId {};

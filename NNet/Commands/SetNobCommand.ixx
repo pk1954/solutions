@@ -38,7 +38,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId nobId, MicroMeterPosDir const& posDir)
@@ -52,7 +52,7 @@ private:
 
 	inline static const wstring NAME { L"SetNob" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
 	public:
 		void operator() (Script& script) const final
@@ -61,7 +61,7 @@ private:
 			MicroMeterPosDir const umPosDir { ScrReadMicroMeterPosDir(script) };
 			SetNobCommand::Push(nobId, umPosDir);
 		}
-	};
+	} m_wrapper;
 
 	MicroMeterPosDir const m_posDir;
 	Nob                  & m_nob;

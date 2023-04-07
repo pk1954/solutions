@@ -55,7 +55,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId idSrc, NobId idDst)
@@ -69,16 +69,15 @@ private:
 
 	inline static const wstring NAME { L"ConnectCreateSynapse" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			NobId const idSrc { ScrReadNobId(script) };
 			NobId const idDst { ScrReadNobId(script) };
 			ConnectCreateSynapseCmd::Push(idSrc, idDst);
 		}
-	};
+	} m_wrapper;
 
 	NobId       const m_idOutputLine;
 	OutputLine* const m_pOutputLine;

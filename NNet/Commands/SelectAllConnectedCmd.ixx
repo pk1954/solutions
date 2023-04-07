@@ -26,7 +26,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(NobId const idNob)
@@ -40,14 +40,13 @@ private:
 
 	inline static const wstring NAME { L"SelectAllConnected" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			SelectAllConnectedCmd::Push(ScrReadNobId(script));
 		}
-	};
+	} m_wrapper;
 
 	Nob& m_nobStart;
 	bool m_bOn;

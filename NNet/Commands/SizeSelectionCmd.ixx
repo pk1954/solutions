@@ -28,7 +28,7 @@ public:
 
 	static void Register()
 	{
-		SymbolTable::ScrDefConst(NAME, new Wrapper);
+		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
 	static void Push(float const fFactor)
@@ -42,14 +42,13 @@ private:
 
 	inline static const wstring NAME { L"SizeSelection" };
 
-	class Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public ScriptFunctor
 	{
-	public:
 		void operator() (Script& script) const final
 		{
 			SizeSelectionCmd::Push(Cast2Float(script.ScrReadFloat()));
 		}
-	};
+	} m_wrapper;
 
 	void sizeSelection(float const fFactor) const
 	{
