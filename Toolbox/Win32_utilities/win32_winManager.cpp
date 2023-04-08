@@ -47,17 +47,17 @@ public:
 			if (m_pWinManager->IsMoveable(uiResId))
 			{
 				HWND const hwnd = m_pWinManager->GetHWND(uiResId);
-				if (m_pWinManager->IsSizeable(uiResId))
-				{
+				//if (m_pWinManager->IsSizeable(uiResId))
+				//{
 					bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect, true); 
 					assert(bRes);
-				}
-				else
-				{
-     				bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
-					DWORD dwErr = GetLastError();
-					assert(bRes);
-				}
+				//}
+				//else
+				//{
+    // 				bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
+				//	DWORD dwErr = GetLastError();
+				//	assert(bRes);
+				//}
 			}
 		}
     }

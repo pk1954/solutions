@@ -213,10 +213,10 @@ public:
 
 	friend wostream & operator<< (wostream & out, PointType const & param)
 	{
-		out << L' '
-			<< OPEN_BRACKET
-			<< setprecision(10) << param.GetXvalue() << SEPARATOR << param.GetYvalue() 
-			<< CLOSE_BRACKET;
+		//out << L' '            // TODO: fix
+		//	<< OPEN_BRACKET
+		//	<< setprecision(10) << param.GetXvalue() << SEPARATOR << param.GetYvalue() 
+		//	<< CLOSE_BRACKET;
 		return out;
 	}
 

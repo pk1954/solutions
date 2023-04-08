@@ -12,7 +12,7 @@
     <ClCompile Include="TextBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="trace.cpp">
+    <ClCompile Include="Trace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BoolOp.ixx">

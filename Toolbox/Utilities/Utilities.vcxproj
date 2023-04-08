@@ -52,7 +52,7 @@
     <ClCompile Include="SpeedType.ixx" />
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="TextBuffer.ixx" />
-    <ClCompile Include="trace.cpp" />
+    <ClCompile Include="Trace.cpp" />
     <ClCompile Include="Trace.ixx" />
     <ClCompile Include="Types.ixx" />
     <ClCompile Include="U64Bit.ixx" />

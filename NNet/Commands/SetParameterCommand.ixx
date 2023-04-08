@@ -46,8 +46,8 @@ public:
 		float            const fNewValue
 	)
 	{
-		if (IsTraceOn())
-			TraceStream() << NAME << L' ' << ParamType::GetName(param) << L' ' << fNewValue << endl;
+		//if (IsTraceOn())        // TODO: fix
+		//	TraceStream() << NAME << L' ' << ParamType::GetName(param) << L' ' << fNewValue << endl;
 		m_pStack->PushCommand(make_unique<SetParameterCommand>(param, fNewValue));
 	}
 

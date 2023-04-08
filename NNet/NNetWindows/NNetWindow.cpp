@@ -77,8 +77,8 @@ void NNetWindow::DrawArrowsInRect
 
 SignalId NNetWindow::FindSignalHandle(MicroMeterPnt const& umPos) const
 {
-	fPixelPoint const fPixPos     { GetCoordC().Transform2fPixelPos(umPos) };
-	SignalId          sigIdResult { SignalId::NULL_VAL() };
+	fPixelPoint const fPixPos { GetCoordC().Transform2fPixelPos(umPos) };
+	SignalId          sigIdResult;
 	m_pNMRI->GetMonitorDataC().Apply2AllSignalIdsC
 	(
 		[this, &fPixPos, &sigIdResult](SignalId const& sigIdRun)
