@@ -40,24 +40,14 @@ public:
     void operator() (Script & script) const final
     {
 	    UINT uiResId = script.ScrReadUint();
-
 		if (uiResId > 0)
 		{
 			PixelRect pixRect = ScrReadPixelRect(script);
 			if (m_pWinManager->IsMoveable(uiResId))
 			{
 				HWND const hwnd = m_pWinManager->GetHWND(uiResId);
-				//if (m_pWinManager->IsSizeable(uiResId))
-				//{
-					bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect, true); 
-					assert(bRes);
-				//}
-				//else
-				//{
-    // 				bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
-				//	DWORD dwErr = GetLastError();
-				//	assert(bRes);
-				//}
+				bool const bRes = Util::MoveWindowAbsolute(hwnd, pixRect, true); 
+				assert(bRes);
 			}
 		}
     }

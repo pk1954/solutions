@@ -49,7 +49,7 @@ public:
 
 	static void Push(SigGenId const id, wstring const& name)
 	{
-		//if (IsTraceOn())  // TODO: fix
+		//if (IsTraceOn())  //TODO: fix
 		//	TraceStream() << NAME << id.GetValue() << L" \"" << name << L"\" " << endl;
 		m_pStack->PushCommand(make_unique<RenameSigGenCmd>(id, name));
 	}
