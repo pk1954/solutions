@@ -31,10 +31,7 @@ void MicroSensor::WriteInfo(wostream& out) const
     if (!m_bConnected)
         return;
 
-    out << Signal::SIGSRC_NOB;
-    out << L' ';
-    out << m_pNob->GetId().GetValue();
-    out << endl;
+    out << Signal::SIGSRC_NOB << L' ' << m_pNob->GetId().GetValue() << endl;
 }
 
 mV MicroSensor::GetSignalValue() const

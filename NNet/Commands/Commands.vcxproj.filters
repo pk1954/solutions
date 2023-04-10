@@ -42,7 +42,7 @@
     <ClCompile Include="Connect2NeuronCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoordAnimation.ixx">
+    <ClCompile Include="CoordAnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeletePipeCommand.ixx">

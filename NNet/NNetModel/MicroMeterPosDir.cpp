@@ -6,6 +6,7 @@ module;
 
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
 
 module NNetModel:MicroMeterPosDir;
 
@@ -15,6 +16,7 @@ import :NNetParameters;
 
 using std::max;
 using std::wostream;
+using std::setprecision;
 
 MicroMeterPosDir::MicroMeterPosDir()
   : m_pos(),
@@ -76,8 +78,15 @@ MicroMeterPosDir operator* (MicroMeterPosDir const a, float const f)
 
 wostream & operator<< (wostream & out, MicroMeterPosDir const & posDir)
 {
-    out << OPEN_BRACKET << posDir.m_pos 
-        << SEPARATOR    << posDir.m_dir.GetValue() 
+    out << OPEN_BRACKET
+        << OPEN_BRACKET
+        << setprecision(10)
+        << posDir.GetPos().GetXvalue()
+        << SEPARATOR
+        << posDir.GetPos().GetYvalue()
+        << CLOSE_BRACKET
+        << SEPARATOR
+        << posDir.m_dir.GetValue()
         << CLOSE_BRACKET;
     return out;
 }

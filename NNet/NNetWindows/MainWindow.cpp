@@ -23,6 +23,7 @@ import AttachSigGen2LineCmd;
 import Commands;
 import CreateForkCommand;
 import CreateSynapseCommand;
+import CoordAnimationCmd;
 import DeleteNobCommand;
 import DeleteSelectionCommand;
 import DeleteSigGenCmd;
@@ -489,7 +490,7 @@ void MainWindow::centerAndZoomRect
 		false // do not notify
 	);
 	coordTarget.NotifyAll(true);
-	m_pModelCommands->AnimateCoord(GetCoord(), coordTarget);
+	CoordAnimationCmd::Push(GetCoord(), coordTarget);
 }
 
 void MainWindow::OnPaint()

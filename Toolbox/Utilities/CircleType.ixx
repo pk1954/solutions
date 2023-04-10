@@ -99,16 +99,6 @@ public:
         return res; 
     };
 
-    friend wostream & operator<< (wostream & out, CircleType const & param)
-    {
-        out << OPEN_BRACKET 
-            << param.m_position 
-            << ID_SEPARATOR 
-            << param.m_radius.GetValue()
-            << CLOSE_BRACKET;
-        return out;
-    }
-
 private:
     POS_TYPE  m_position;
     BASE_TYPE m_radius;

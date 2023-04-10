@@ -5,14 +5,12 @@
 module;
 
 #include <cassert>
-#include <ostream>
 #include <algorithm>
 
 export module Types:RectType;
 
 import :PointType;
 
-using std::wostream;
 using std::min;
 using std::max;
 
@@ -79,9 +77,9 @@ public:
 		SIZE_TYPE const& size
 	) :
 		m_Left(pos.GetX()),
-		m_Top(pos.GetY()),
-		m_Right(m_Left + size.GetX() - BASE_TYPE(1)),
-		m_Bottom(m_Top + size.GetY() - BASE_TYPE(1))
+		m_Top (pos.GetY()),
+		m_Right(m_Left + size.GetX()),
+		m_Bottom(m_Top + size.GetY())
 	{
 		assert(m_Bottom >= m_Top);
 	}
@@ -238,12 +236,6 @@ public:
 			max(a.m_Right,  b.m_Right ), 
 			max(a.m_Bottom, b.m_Bottom)
 		};
-	}
-
-	friend wostream & operator<< (wostream & out, RectType const & rect)
-	{
-		out << rect.GetStartPoint() << rect.GetEndPoint();
-		return out;
 	}
 
 	static RectType const & ZERO_VAL() 

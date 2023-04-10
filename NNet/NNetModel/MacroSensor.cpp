@@ -6,10 +6,12 @@ module;
 
 #include <iostream> 
 #include <algorithm>
+#include <iomanip>
 
 module NNetModel:MacroSensor;
 
 import Types;
+import IoConstants;
 import DrawContext;
 import :NNetColors;
 import :UPNobList;
@@ -19,6 +21,7 @@ using std::min;
 using std::endl;
 using std::wcout;
 using std::wostream;
+using std::setprecision;
 
 MacroSensor::MacroSensor
 (
@@ -97,9 +100,18 @@ void MacroSensor::DrawDataPoints(DrawContext const & context) const
 
 void MacroSensor::WriteInfo(wostream& out) const
 {
-    out << Signal::SIGSRC_CIRCLE; 
-    out << GetCircle();
-    out << endl;
+    out << Signal::SIGSRC_CIRCLE
+        << OPEN_BRACKET 
+        << OPEN_BRACKET
+        << setprecision(10)
+        << m_circle.GetPos().GetXvalue()
+        << SEPARATOR
+        << m_circle.GetPos().GetYvalue()
+        << CLOSE_BRACKET
+        << ID_SEPARATOR
+        << m_circle.GetRadius().GetValue()
+        << CLOSE_BRACKET
+        << endl;
 }
 
 void MacroSensor::SetSensorPos

@@ -15,7 +15,6 @@ import AddNobsCommand;
 import ArrowAnimation;
 import Commands;
 import ConnAnimationCommand;
-import CoordAnimation;
 import ConnectCreateForkCmd;
 import ConnectCreateSynapseCmd;
 import Connect2NeuronCommand;
@@ -87,17 +86,6 @@ void NNetModelCommands::AddModel()
 		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
 	unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
-}
-
-void NNetModelCommands::AnimateCoord
-(
-	Uniform2D<MicroMeter>       & actual, 
-	Uniform2D<MicroMeter> const & target
-)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<CoordAnimation>(actual, target));
 }
 
 void NNetModelCommands::AnimateArrows

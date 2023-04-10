@@ -30,6 +30,7 @@ import ConnAnimationCommand;
 import Connect2NeuronCommand;
 import ConnectCreateForkCmd;
 import ConnectCreateSynapseCmd;
+import CoordAnimationCmd;
 import CreateForkCommand;
 import CreateInitialNobsCmd;
 import CreateSynapseCommand;
@@ -142,6 +143,7 @@ void InitializeNNetWrappers
     Connect2NeuronCommand::Register();
     ConnectCreateForkCmd::Register();
     ConnectCreateSynapseCmd::Register();
+    CoordAnimationCmd::Register();
     CreateForkCommand::Register();
     CreateInitialNobsCmd::Register();
     CreateSynapseCommand::Register();

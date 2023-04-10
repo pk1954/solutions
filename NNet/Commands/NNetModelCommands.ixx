@@ -38,7 +38,6 @@ public:
 
     void AddModel();
     void AnimateArrows(MicroMeter&, MicroMeter const);
-    void AnimateCoord (Uniform2D<MicroMeter>&, Uniform2D<MicroMeter> const&);
     void Connect(NobId const, NobId const);
     void StartStimulus();
 

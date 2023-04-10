@@ -1,27 +1,26 @@
-// CoordAnimation.ixx
+// CoordAnimationCmd.ixx
 //
 // Commands
 
 module;
 
 #include <memory>
+#include <iostream>
 
-export module CoordAnimation;
+export module CoordAnimationCmd;
 
 import Types;
 import Commands;
 import Uniform2D;
 import Animation;
+import NNetCommand;
 
-using std::unique_ptr;
-using std::make_unique;
-
-export class CoordAnimation : public Command
+export class CoordAnimationCmd : public NNetCommand
 {
     using ANIM_TYPE = Uniform2D<MicroMeter>;
     using ANIMATION = Animation<ANIM_TYPE>;
 public:
-    CoordAnimation
+    CoordAnimationCmd
     (
         ANIM_TYPE       & animated,
         ANIM_TYPE const & target
@@ -54,7 +53,33 @@ public:
         return true; 
     };
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, &m_wrapper);
+    }
+
+    static void Push
+    (
+        ANIM_TYPE      & animated,
+        ANIM_TYPE const& target
+    )
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << endl;
+        m_pStack->PushCommand(make_unique<CoordAnimationCmd>(animated, target));
+    }
+
 private:
+
+    inline static const wstring NAME { L"CoordAnimation" };
+
+    inline static struct Wrapper : public ScriptFunctor
+    {
+        void operator() (Script& script) const final
+        {
+//            CoordAnimationCmd::Push(ScrReadNobId(script));  //TODO
+        }
+    } m_wrapper;
 
     ANIM_TYPE           & m_animated;
     ANIM_TYPE       const m_start;

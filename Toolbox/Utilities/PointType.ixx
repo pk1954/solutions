@@ -6,9 +6,8 @@ module;
 
 #include <cassert>
 #include <algorithm>  // min/max/abs templates
-#include <iostream>
-#include <iomanip>
 #include <compare>
+#include <cmath>
 
 export module Types:PointType;
 
@@ -18,8 +17,6 @@ import :BasicTypes;
 
 using std::abs;
 using std::max;
-using std::setprecision;
-using std::wostream;
 using std::hypot;
 
 export template <typename BASE_TYPE, typename Parameter> 
@@ -209,17 +206,6 @@ public:
 		BASE_TYPE xAbs { abs(pnt.GetXvalue()) };
 		BASE_TYPE yAbs { abs(pnt.GetYvalue()) };
 		return max(xAbs, yAbs);
-	}
-
-	friend wostream & operator<< (wostream & out, PointType const & param)
-	{
-		BASE_TYPE x { param.GetXvalue() };
-		BASE_TYPE y { param.GetYvalue() };
-		out << L' ';          
-		//out << OPEN_BRACKET;
-		//out << setprecision(10) << x.GetValue() << SEPARATOR << y.GetValue();
-		//out	<< CLOSE_BRACKET;
-		return out;
 	}
 
 	void Rotate(PointType const & pntPivot, Radian const radDelta)

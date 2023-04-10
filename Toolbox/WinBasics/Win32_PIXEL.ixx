@@ -65,14 +65,14 @@ namespace Util
         }; 
     }
 
-    export inline PixelRectSize PixelRectSizeFromRECT(RECT const & rect)
-    {
-        return PixelRectSize
-        { 
-            PIXEL(rect.right  - rect.left + 1), 
-            PIXEL(rect.bottom - rect.top  + 1)
-        };
-    }
+    //export inline PixelRectSize PixelRectSizeFromRECT(RECT const & rect)
+    //{
+    //    return PixelRectSize
+    //    { 
+    //        PIXEL(rect.right  - rect.left + 1), 
+    //        PIXEL(rect.bottom - rect.top  + 1)
+    //    };
+    //}
 
     export inline bool MoveWindow(HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw)
     {
@@ -97,20 +97,28 @@ namespace Util
     export inline RECT GetClRect(HWND const hwnd) // left / top always 0
     {
         RECT rect;
-        (void)GetClientRect(hwnd, &rect);                     
+        (void)GetClientRect(hwnd, &rect);
+        return rect;
+    }
+
+    inline RECT getWindowRect(HWND const hwnd)
+    {
+        RECT rect;
+        BOOL bRes { GetWindowRect(hwnd, &rect) };
+        assert(bRes);
         return rect;
     }
 
     export inline PIXEL GetClientWindowHeight(HWND const hwnd)
     {
         RECT rect { GetClRect(hwnd) };
-        return PIXEL(PIXEL(rect.bottom - rect.top + 1));
+        return PIXEL(rect.bottom - rect.top + 1);
     }
 
     export inline PIXEL GetClientWindowWidth(HWND const hwnd)
     {
         RECT rect { GetClRect(hwnd) };
-        return PIXEL(PIXEL(rect.right - rect.left + 1));
+        return PIXEL(rect.right - rect.left + 1);
     }
 
     export inline PixelRect GetClPixelRect(HWND const hwnd) // left / top always 0
@@ -120,7 +128,13 @@ namespace Util
 
     export inline PixelRectSize GetClRectSize(HWND const hwnd)
     {
-        return PixelRectSizeFromRECT(GetClRect(hwnd));
+        RECT const rect { GetClRect(hwnd) };
+        return PixelRectSize
+        {
+            PIXEL(rect.right - rect.left + 1),
+            PIXEL(rect.bottom - rect.top + 1)
+        };
+//      return PixelRectSizeFromRECT(GetClRect(hwnd));
     }
 
     export inline PixelPoint GetClRectCenter(HWND const hwnd)
@@ -173,56 +187,49 @@ namespace Util
 
     export inline PixelRect GetWindowRect(HWND const hwnd)
     {
-        RECT rect;
-        BOOL bRes { GetWindowRect(hwnd, &rect) };
-        assert(bRes);
-        return RECT2PixelRect(rect);
+        return RECT2PixelRect(getWindowRect(hwnd));
     }
 
     export inline PixelRectSize GetWindowSize(HWND const hwnd)
     {
-        RECT rect;
-        BOOL bRes { GetWindowRect(hwnd, &rect) };
-        assert(bRes);
-        return PixelRectSizeFromRECT(rect);
+        RECT rect { getWindowRect(hwnd) };
+        return PixelRectSize
+        {
+            PIXEL(rect.right - rect.left + 1),
+            PIXEL(rect.bottom - rect.top + 1)
+        };
     }
 
     export inline PIXEL GetWindowWidth(HWND const hwnd)
     {
-        return GetWindowSize(hwnd).GetX();
+        RECT rect { getWindowRect(hwnd) };
+        return PIXEL(rect.right - rect.left + 1);
     }
 
     export inline PIXEL GetWindowHeight(HWND const hwnd)
     {
-        return GetWindowSize(hwnd).GetY();
+        RECT rect { getWindowRect(hwnd) };
+        return PIXEL(rect.bottom - rect.top + 1);
     }
 
     export inline PIXEL GetWindowBottom(HWND const hwnd)
     {
-        RECT rect;
-        (void)GetWindowRect(hwnd, &rect);
-        return PIXEL(PIXEL(rect.bottom));
+        return PIXEL(getWindowRect(hwnd).bottom);
     }
 
     export inline PIXEL GetWindowTop(HWND const hwnd)
     {
-        RECT rect;
-        (void)GetWindowRect(hwnd, &rect);
-        return PIXEL(PIXEL(rect.top));
+        return PIXEL(getWindowRect(hwnd).top);
     }
 
     export inline PIXEL GetWindowLeftPos(HWND const hwnd)
     {
-        RECT rect;
-        (void)GetWindowRect(hwnd, &rect);
-        return PIXEL(PIXEL(rect.left));
+        return PIXEL(getWindowRect(hwnd).left);
     }
 
     export inline PIXEL GetWindowRightPos(HWND const hwnd)
     {
-        RECT rect;
-        (void)GetWindowRect(hwnd, &rect);
-        return PIXEL(PIXEL(rect.right));
+        return PIXEL(getWindowRect(hwnd).right);
     }
 
     export inline void SetWindowHeight(HWND const hwnd, PIXEL const newHeight, bool const bRedraw)
