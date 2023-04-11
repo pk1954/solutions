@@ -119,10 +119,10 @@ public:
 
 	Nob * GetNob(NobId const);
 
-	bool  Compute();
-	void  ResetModel();
-	float SetParam(ParamType::Value const, float const);
-	void  Reconnect(NobId const);
+	bool Compute();
+	void ResetModel();
+	void SetParam(ParamType::Value const, float const);
+	void Reconnect(NobId const);
 
 	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
 	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }

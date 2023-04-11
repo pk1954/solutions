@@ -34,16 +34,15 @@ private:
 	HWND m_hwndPulseFreqMax     { nullptr };
 	HWND m_hwndPeakVoltage      { nullptr };
 	HWND m_hwndNeuronThreshold  { nullptr };
-	HWND m_hwndSynapseThreshold { nullptr };
 	HWND m_hwndSynapseDelay     { nullptr };
 	HWND m_hwndPulseWidth       { nullptr };
 	HWND m_hwndTimeResolution   { nullptr };
 	HWND m_hwndFilterSize       { nullptr };
 	HWND m_hwndPulseSpeed       { nullptr };
 
-	void resetParameter   (HWND const, ParamType::Value const) const;
-	void applyParameter   (HWND const, ParamType::Value const);
-	HWND addParameter     (HWND const, ParamType::Value const, int &);
+	void resetParameter(HWND const, ParamType::Value const) const;
+	void applyParameter(HWND const, ParamType::Value const);
+	HWND addParameter  (HWND const, ParamType::Value const, int &);
 	void resetParameters();
 	void applyParameters();
 

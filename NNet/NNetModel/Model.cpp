@@ -120,19 +120,20 @@ bool Model::GetDescriptionLine(int const iLine, wstring & wstrLine) const
 	return m_description.GetDescriptionLine(iLine, wstrLine);
 }
 
-float Model::SetParam
+void Model::SetParam
 (
 	ParamType::Value const param, 
 	float            const fNewValue 
 )
 {
-	float fOldValue { m_param.GetParameterValue(param) };
+	if (param == ParamType::Value::synapseThreshold)    // legacy
+		return;
+
 	m_param.SetParameterValue(param, fNewValue);
 	if (param == ParamType::Value::synapseDelay)
 		m_upNobs->Apply2All<Synapse>([](Synapse& s) { s.RecalcDelayBuffer(); });
 	else 
 		m_upNobs->Apply2AllC([](Nob& nob) { nob.PosChanged(); });
-	return fOldValue;
 }
 
 bool Model::Compute()

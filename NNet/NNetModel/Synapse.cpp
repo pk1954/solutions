@@ -300,8 +300,9 @@ bool Synapse::CompStep()
 	}
 	else
 	{
+		static const mV PULSE_THRESHOLD { 20._mV };
 		m_mVpotential += m_pulseBuffer.Get();
-		if (m_mVpotential >= GetParam()->SynapseThreshold())
+		if (m_mVpotential >= PULSE_THRESHOLD)
 		{
 			m_bOutputBlocked = true;
 			m_usBlocked = 0.0_MicroSecs;

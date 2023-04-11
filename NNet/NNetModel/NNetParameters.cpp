@@ -18,7 +18,6 @@ bool NNetParameters::operator==(NNetParameters const& rhs) const
 		(m_freqMax          == rhs.m_freqMax) &&
 		(m_neuronPeakVolt   == rhs.m_neuronPeakVolt) &&
 		(m_neuronThreshold  == rhs.m_neuronThreshold) &&
-		(m_synapseThreshold == rhs.m_synapseThreshold) &&
 		(m_synapseDelay     == rhs.m_synapseDelay) &&
 		(m_pulseSpeed       == rhs.m_pulseSpeed) &&
 		(m_pulseWidth       == rhs.m_pulseWidth) &&
@@ -30,19 +29,18 @@ float NNetParameters::GetParameterValue(ParamType::Value const param) const
 	switch (param)
 	{
 		using enum ParamType::Value;
-	case inputPeakTime:    return m_sigGenData.GetPeakTime().GetValue();
-	case inputPeakVolt:    return m_sigGenData.GetAmplitude().Peak().GetValue();
-	case inputPeakFreq:    return m_sigGenData.GetFrequency().Peak().GetValue();
-	case inputBaseFreq:    return m_sigGenData.GetFrequency().Base().GetValue();
-	case inputBaseVolt:    return m_sigGenData.GetAmplitude().Base().GetValue();
-	case pulseFreqMax:     return m_freqMax.GetValue();
-	case neuronPeakVolt:   return m_neuronPeakVolt.GetValue();
-	case neuronThreshold:  return m_neuronThreshold.GetValue();
-	case synapseThreshold: return m_synapseThreshold.GetValue();
-	case synapseDelay:     return m_synapseDelay.GetValue();
-	case pulseSpeed:	   return m_pulseSpeed.GetValue();
-	case pulseWidth:	   return m_pulseWidth.GetValue();
-	case timeResolution:   return m_usResolution.GetValue();
+	case inputPeakTime:   return m_sigGenData.GetPeakTime().GetValue();
+	case inputPeakVolt:   return m_sigGenData.GetAmplitude().Peak().GetValue();
+	case inputPeakFreq:   return m_sigGenData.GetFrequency().Peak().GetValue();
+	case inputBaseFreq:   return m_sigGenData.GetFrequency().Base().GetValue();
+	case inputBaseVolt:   return m_sigGenData.GetAmplitude().Base().GetValue();
+	case pulseFreqMax:    return m_freqMax.GetValue();
+	case neuronPeakVolt:  return m_neuronPeakVolt.GetValue();
+	case neuronThreshold: return m_neuronThreshold.GetValue();
+	case synapseDelay:    return m_synapseDelay.GetValue();
+	case pulseSpeed:	  return m_pulseSpeed.GetValue();
+	case pulseWidth:	  return m_pulseWidth.GetValue();
+	case timeResolution:  return m_usResolution.GetValue();
 	default: assert(false);
 	}
 	return 0.f;
@@ -74,7 +72,7 @@ void NNetParameters::SetParameterValue
 	case pulseSpeed:	   m_pulseSpeed       =     static_cast<meterPerSec>(fNewValue);  break;
 	case pulseWidth:	   m_pulseWidth       =     static_cast<fMicroSecs> (fNewValue);  break;
 	case neuronThreshold:  m_neuronThreshold  =     static_cast<mV>         (fNewValue);  break;
-	case synapseThreshold: m_synapseThreshold =     static_cast<mV>         (fNewValue);  break;
+	case synapseThreshold:                                                                break;
 	case synapseDelay:     m_synapseDelay     =     static_cast<fMicroSecs> (fNewValue);  break;
 	case neuronPeakVolt:   m_neuronPeakVolt   =     static_cast<mV>         (fNewValue);  break;
 	case timeResolution:   m_usResolution     =     static_cast<fMicroSecs> (fNewValue);  break;

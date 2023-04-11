@@ -38,9 +38,12 @@ public:
         (
             [this, &out](ParamType::Value const& par)
             {
-                out << L"GlobalParameter" << par << L" = "
-                    << setprecision(10) << m_modelIO.GetExportNMRI().GetParameter(par)
-                    << endl;
+                if (par != ParamType::Value::synapseThreshold)   // legacy
+                {
+                    out << L"GlobalParameter" << par << L" = "
+                        << setprecision(10) << m_modelIO.GetExportNMRI().GetParameter(par)
+                        << endl;
+                }
             }
         );
     };

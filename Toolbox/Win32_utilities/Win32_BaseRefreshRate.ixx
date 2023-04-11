@@ -10,7 +10,6 @@ module;
 
 export module BaseRefreshRate;
 
-import EditLineBox;
 import Win32_Util;
 
 using std::wstring;

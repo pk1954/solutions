@@ -12,7 +12,6 @@ module;
 module BaseRefreshRate;
 
 import Win32_Util_Resource;
-import StdDialogBox;
 import Win32_Util;
 import EditLineBox;
 
