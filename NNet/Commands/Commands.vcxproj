@@ -100,7 +100,7 @@
     <ClCompile Include="AddPipe2NeuronCmd.ixx" />
     <ClCompile Include="AddSensorCmd.ixx" />
     <ClCompile Include="AddSigGen2MonitorCmd.ixx" />
-    <ClCompile Include="ArrowAnimation.ixx" />
+    <ClCompile Include="ArrowAnimationCmd.ixx" />
     <ClCompile Include="AttachSigGen2ConCmd.ixx" />
     <ClCompile Include="AttachSigGen2LineCmd.ixx" />
     <ClCompile Include="ConnAnimationCommand.cpp" />

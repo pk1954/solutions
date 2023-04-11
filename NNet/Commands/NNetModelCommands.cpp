@@ -12,7 +12,6 @@ module;
 module NNetModelCommands;
 
 import AddNobsCommand;
-import ArrowAnimation;
 import Commands;
 import ConnAnimationCommand;
 import ConnectCreateForkCmd;
@@ -30,9 +29,6 @@ import PlugIoConnectorsCmd;
 import PlugIoLinesCmd;
 import SelectionCommand;
 import SetActiveSigGenCmd;
-import SetParameterCommand;
-import SoundInterface;
-import ToggleStopOnTriggerCmd;
 import Uniform2D;
 
 using std::wstring;
@@ -86,17 +82,6 @@ void NNetModelCommands::AddModel()
 		              << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
 	unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
-}
-
-void NNetModelCommands::AnimateArrows
-(
-	MicroMeter     & umActual, 
-	MicroMeter const umTarget
-)
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	m_pCmdStack->PushCommand(make_unique<ArrowAnimation>(umActual, umTarget));
 }
 
 void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)

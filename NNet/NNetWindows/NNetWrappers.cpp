@@ -24,6 +24,7 @@ import AddMicroSensorCmd;
 import AddNobsCommand;
 import AddSensorCmd;
 import AddSigGen2MonitorCmd;
+import ArrowAnimationCmd;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
 import ConnAnimationCommand;
@@ -139,6 +140,7 @@ void InitializeNNetWrappers
     AddSigGen2MonitorCmd::Register();
     AttachSigGen2ConCmd::Register();
     AttachSigGen2LineCmd::Register();
+//    ArrowAnimationCmd::Register();
     ConnAnimationCommand::Register();
     Connect2NeuronCommand::Register();
     ConnectCreateForkCmd::Register();

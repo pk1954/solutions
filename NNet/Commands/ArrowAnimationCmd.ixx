@@ -1,4 +1,4 @@
-// ArrowAnimation.ixx
+// ArrowAnimationCmd.ixx
 //
 // Commands
 
@@ -6,28 +6,27 @@ module;
 
 #include <functional>
 #include <memory>
+#include <iostream>
 
-export module ArrowAnimation;
+export module ArrowAnimationCmd;
 
 import Types;
 import Commands;
 import Animation;
 import NNetModel;
+import NNetCommand;
 
-using std::unique_ptr;
-using std::make_unique;
-
-export class ArrowAnimation : public Command
+export class ArrowAnimationCmd : public NNetCommand
 {
     using ANIM_TYPE = MicroMeter;
     using ANIMATION = Animation<ANIM_TYPE>;
 public:
-    ArrowAnimation
+    ArrowAnimationCmd
     (
         ANIM_TYPE       & animated,
         ANIM_TYPE const & target
     )
-        : m_animated(animated),
+      : m_animated(animated),
         m_start(animated),
         m_target(target)
     {
@@ -55,7 +54,32 @@ public:
         return true; 
     };
 
+    static void Register()
+    {
+        SymbolTable::ScrDefConst(NAME, &m_wrapper);
+    }
+
+    static void Push
+    (
+        ANIM_TYPE      & animated,
+        ANIM_TYPE const& target
+    )
+    {
+        if (IsTraceOn())
+            TraceStream() << NAME << endl;
+        m_pStack->PushCommand(make_unique<ArrowAnimationCmd>(animated, target));
+    }
+
 private:
+
+    inline static const wstring NAME { L"ArrowAnimation" };
+
+    inline static struct Wrapper : public ScriptFunctor
+    {
+        void operator() (Script& script) const final
+        {
+        }
+    } m_wrapper;
 
     ANIM_TYPE           & m_animated;
     ANIM_TYPE       const m_start;

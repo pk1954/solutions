@@ -18,6 +18,7 @@ import ActionTimer;
 import AddMicroSensorCmd;
 import AddNobsCommand;
 import AddPipe2NeuronCmd;
+import ArrowAnimationCmd;
 import AttachSigGen2ConCmd;
 import AttachSigGen2LineCmd;
 import Commands;
@@ -234,7 +235,7 @@ void MainWindow::AnimateArrows()
 	MicroMeter oldVal { m_umArrowSize };
 	MicroMeter umTarget = m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter;
 	if (umTarget != oldVal)
-		m_pModelCommands->AnimateArrows(m_umArrowSize, umTarget);
+		ArrowAnimationCmd::Push (m_umArrowSize, umTarget);
 }
 
 void MainWindow::SetSensorPoints() 

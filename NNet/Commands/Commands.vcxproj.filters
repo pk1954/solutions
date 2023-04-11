@@ -27,7 +27,7 @@
     <ClCompile Include="AddSigGen2MonitorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArrowAnimation.ixx">
+    <ClCompile Include="ArrowAnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AttachSigGen2ConCmd.ixx">

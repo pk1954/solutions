@@ -37,7 +37,6 @@ public:
     void RedoCommand();
 
     void AddModel();
-    void AnimateArrows(MicroMeter&, MicroMeter const);
     void Connect(NobId const, NobId const);
     void StartStimulus();
 
