@@ -31,12 +31,6 @@ export using MicroMeterPnt      = PosType    <MicroMeter>;
 export inline const MicroMeterPnt NP_NULL(MicroMeterPnt::NULL_VAL());   // compiler generates call!
 export inline const MicroMeterPnt NP_ZERO(MicroMeterPnt::ZERO_VAL());   // compiler generates call!
 
-export wostream& operator<< (wostream& out, MicroMeter const& um)
-{
-	out << um.GetValue();
-	return out;
-}
-
 export wostream& operator<< (wostream& out, MicroMeterPnt const& pnt)
 {
 	out << L' '

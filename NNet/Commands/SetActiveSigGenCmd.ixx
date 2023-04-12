@@ -36,7 +36,7 @@ public:
     static void Push(SigGenId const id)
     {
         if (IsTraceOn())
-            TraceStream() << NAME << L' ' << id.GetValue() << endl;
+            TraceStream() << NAME << id << endl;
         m_pStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
     }
 
