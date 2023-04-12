@@ -28,7 +28,6 @@ import AutoOpen;
 import NNetModel;
 import InsertTrackCommand;
 import AddSensorCmd;
-import DeleteSensorCmd;
 import DeleteSignalCommand;
 import DeleteTrackCommand;
 import NewSigGenCmd;
@@ -251,10 +250,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDD_ADD_EEG_SENSOR:
         AddSensorCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
         m_pMonitorWindow->Show(true);
-        break;
-
-    case IDD_DELETE_EEG_SENSOR:
-        DeleteSensorCmd::Push(m_pNMRI->GetSensorIdSelected());
         break;
 
     case IDD_DELETE_SIGNAL:

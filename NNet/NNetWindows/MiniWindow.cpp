@@ -97,8 +97,5 @@ void MiniWindow::DoPaint()
 	{
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
-		Sensor const* pSensorSelected { m_pNMRI->GetSensorSelectedC() };
-		if (pSensorSelected && pSensorSelected->IsMacroSensor())
-			DrawHighlightedSensor(static_cast<MacroSensor const*>(pSensorSelected));
 	}
 }

@@ -27,6 +27,7 @@ import CreateSynapseCommand;
 import CoordAnimationCmd;
 import DeleteNobCommand;
 import DeleteSelectionCommand;
+import DeleteSensorCmd;
 import DeleteSigGenCmd;
 import DelMicroSensorCmd;
 import DeselectModuleCmd;
@@ -209,7 +210,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	{
 		SignalDesigner::AddSigGenMenu(hPopupMenu, m_idSigGenUnderCrsr);
 	}
-	else if (m_pNMRI->IsAnySensorSelected())
+	else if (m_sensorIdSelected.IsNotNull())
 	{
 		appendMenu(hPopupMenu, IDD_DELETE_EEG_SENSOR);
 	}
@@ -338,9 +339,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
 		m_nobIdTarget = findTargetNob(umCrsrPos);
 	}
-	else if (m_pNMRI->IsAnySensorSelected())
+	else if (m_sensorIdSelected.IsNotNull())
 	{
-		MoveSensorCmd::Push(m_pNMRI->GetSensorIdSelected(), umDelta);
+		MoveSensorCmd::Push(m_sensorIdSelected, umDelta);
 	}
 	else if (m_pNMRI->IsAnySignalSelected())
 	{
@@ -444,13 +445,12 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	}
 	else
 	{
-		SensorId const sensorId    { m_pNMRI->GetSensorIdSelected() };
-		bool     const bSizeSensor { sensorId.IsNotNull() && IsUndefined(m_nobIdHighlighted) };
+		bool const bSizeSensor { m_sensorIdSelected.IsNotNull() && IsUndefined(m_nobIdHighlighted) };
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
 			if (bSizeSensor)
 			{
-				SizeSensorCmd::Push(sensorId, fFactor);
+				SizeSensorCmd::Push(m_sensorIdSelected, fFactor);
 			}
 			else
 			{
@@ -505,9 +505,9 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
-	PixelRect   const  pixRect { GetClPixelRect() };
-	DrawContext const& context { GetDrawContextC() };
-	MacroSensor const* pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensorSelectedC()) };
+	PixelRect   const  pixRect              { GetClPixelRect() };
+	DrawContext const& context              { GetDrawContextC() };
+	MacroSensor const* pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensor(m_sensorIdSelected)) };
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -554,7 +554,7 @@ void MainWindow::DoPaint()
 	if (m_bShowPnts && pMacroSensorSelected)
 		DrawSensorDataPoints(pMacroSensorSelected);
 
-	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
+	m_SelectionMenu.Show(m_sensorIdSelected.IsNotNull());
 }
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const
@@ -603,10 +603,12 @@ bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
 
 bool MainWindow::setHighlightedSensor(MicroMeterPnt const& umCrsrPos)
 {
-	SensorId const idSensorOld { m_pNMRI->GetSensorIdSelected() };
-	SensorId const idSensorNew { m_pModelCommands->SetHighlightedSensor(umCrsrPos) };
-	if (idSensorNew != idSensorOld)
+	SensorId const idSensorNew { m_pNMRI->GetSensorList().FindSensor(umCrsrPos) };
+	if (idSensorNew != m_sensorIdSelected)
+	{
+		m_sensorIdSelected = idSensorNew;
 		Notify(false);
+	}
 	return idSensorNew.IsNotNull();
 }
 
@@ -736,6 +738,10 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDD_DISC_IOCONNECTOR:
 		DiscIoConnectorCmd::Push(m_nobIdHighlighted);
+		break;
+
+	case IDD_DELETE_EEG_SENSOR:
+		DeleteSensorCmd::Push(m_sensorIdSelected);
 		break;
 
 	case IDD_SPLIT_NEURON:

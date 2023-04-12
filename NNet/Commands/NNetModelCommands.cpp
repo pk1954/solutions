@@ -17,9 +17,6 @@ import ConnAnimationCommand;
 import ConnectCreateForkCmd;
 import ConnectCreateSynapseCmd;
 import Connect2NeuronCommand;
-import CreateForkCommand;
-import DeleteSignalCommand;
-import NewIoLinePairCmd;
 import NewSigGenCmd;
 import NNetModel;
 import NNetCommandStack;
@@ -111,14 +108,6 @@ void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
 		default: assert(false);
 	}
 	m_pSound->Play(L"SNAP_IN_SOUND");
-}
-
-SensorId NNetModelCommands::SetHighlightedSensor(MicroMeterPnt const & umPos)
-{
-	UPSensorList & list { m_pNMWI->GetSensorList() };
-	SensorId const id   { list.FindSensor(umPos) };
-	list.SetActive(id);
-	return id;
 }
 
 void NNetModelCommands::StartStimulus()

@@ -64,14 +64,14 @@ public:
     SigGenId          SetSigGenActive  (SigGenId const id)             { return m_pModel->GetSigGenList().SetActive(id); }
     void              InsertSigGen     (UPSigGen u, SigGenId const i)  { return m_pModel->GetSigGenList().InsertSigGen(move(u), i); }
     SigGenId          GetSigGenIdSelected()                            { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }
-    SignalGenerator*  GetSigGenSelected()                              { return m_pModel->GetSigGenList().GetSigGenSelected(); }
+    SignalGenerator * GetSigGenSelected()                              { return m_pModel->GetSigGenList().GetSigGenSelected(); }
     SignalGenerator * GetSigGen        (SigGenId const id)       const { return m_pModel->GetSigGenList().GetSigGen(id); }
     SignalGenerator * GetSigGen        (wstring const& name)     const { return m_pModel->GetSigGenList().GetSigGen(name); }
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
 
-    UPSigGenList    & GetSigGenList() { return m_pModel->GetSigGenList(); }
-    UPSensorList    & GetSensorList() { return m_pModel->GetSensorList(); }
+    UPSigGenList & GetSigGenList() { return m_pModel->GetSigGenList(); }
+    UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 
     void SetSigGenName(SigGenId const id, wstring const &n) { GetSigGenList().SetName(id, n); }
     void Reconnect(NobId const id) const { m_pModel->Reconnect(id); }

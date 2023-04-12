@@ -36,14 +36,8 @@ public:
     Sensor       * GetSensor(SensorId const);
     SensorId       GetSensorId(Sensor const&) const;
 
-    SensorId       GetSensorIdSelected() const { return m_sensorIdSelected; }
-    Sensor const * GetSensorSelected  () const { return GetSensor(m_sensorIdSelected); }
-    Sensor       * GetSensorSelected  ()       { return GetSensor(m_sensorIdSelected); }
-
-    bool IsAnySensorSelected()      const { return m_sensorIdSelected.IsNotNull(); }
     bool IsValid(SensorId const id) const { return id.GetValue() < m_list.size(); }
 
-    SensorId SetActive(SensorId const);
     SensorId PushSensor(UPSensor);
     UPSensor PopSensor();
     UPSensor RemoveSensor(SensorId const);
@@ -66,7 +60,6 @@ public:
 private:
 
     vector<UPSensor> m_list;
-    SensorId         m_sensorIdSelected{ SensorId::NULL_VAL() };
 
     vector<UPSensor>::iterator       getSensor(SensorId const);
     vector<UPSensor>::const_iterator getSensor(SensorId const) const;

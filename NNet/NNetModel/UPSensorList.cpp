@@ -34,12 +34,7 @@ UPSensor UPSensorList::removeSensor(vector<UPSensor>::iterator it)
     if (it == m_list.end())
         return UPSensor(nullptr);
     else
-    {
-        UPSensor upSensor = move(*it);
-        if (upSensor.get() == GetSensorSelected() )
-            SetActive(SensorId(0));
-        return move(upSensor);
-    }
+        return move(*it);
 }
 
 vector<UPSensor>::iterator UPSensorList::getSensor(SensorId const id)
@@ -50,13 +45,6 @@ vector<UPSensor>::iterator UPSensorList::getSensor(SensorId const id)
 vector<UPSensor>::const_iterator UPSensorList::getSensor(SensorId const id) const
 {
     return m_list.begin() + id.GetValue();
-}
-
-SensorId UPSensorList::SetActive(SensorId const id)
-{
-    SensorId sensorIdOld { m_sensorIdSelected };
-    m_sensorIdSelected = id;
-    return sensorIdOld;
 }
 
 void UPSensorList::InsertSensor(UPSensor upSensor, SensorId const id)

@@ -40,8 +40,6 @@ public:
     void Connect(NobId const, NobId const);
     void StartStimulus();
 
-    SensorId SetHighlightedSensor(MicroMeterPnt const&);
-
 private:
 
     wostream& TraceStream() { return wcout; }
