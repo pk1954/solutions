@@ -48,22 +48,6 @@ void NNetModelCommands::SetModelInterface
 	m_pNMWI = pNMWI;
 }
 
-void NNetModelCommands::UndoCommand()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	if (! m_pCmdStack->UndoCommand())
-		m_pSound->Warning();
-}
-
-void NNetModelCommands::RedoCommand()
-{
-	if (m_bTrace)
-		TraceStream() << source_location::current().function_name() << endl;
-	if (! m_pCmdStack->RedoCommand())
-		m_pSound->Warning();
-}
-
 void NNetModelCommands::AddModel()
 {
 	if (m_bTrace)

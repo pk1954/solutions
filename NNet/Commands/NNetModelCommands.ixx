@@ -33,9 +33,6 @@ public:
     );
     void SetModelInterface(NNetModelWriterInterface* const);
 
-    void UndoCommand();
-    void RedoCommand();
-
     void AddModel();
     void Connect(NobId const, NobId const);
 

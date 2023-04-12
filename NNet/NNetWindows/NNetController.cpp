@@ -231,11 +231,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_UNDO:
-        m_pModelCommands->UndoCommand();
+        UndoCommand::Push();
         break;
 
     case IDM_REDO:
-        m_pModelCommands->RedoCommand();
+        RedoCommand::Push();
         break;
 
     case IDM_ADD_IMPORTED_MODEL:

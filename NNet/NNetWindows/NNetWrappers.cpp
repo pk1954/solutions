@@ -42,24 +42,6 @@ public:
     }
 };
 
-class WrapUndoCommand: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->UndoCommand();
-    }
-};
-
-class WrapRedoCommand: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pCommands->RedoCommand();
-    }
-};
-
 class WrapBreak : public ScriptFunctor
 {
 public:
@@ -119,6 +101,7 @@ void InitializeNNetWrappers
     NewSigGenCmd::Register();
     PlugIoConnectorsCmd::Register();
     PlugIoLinesCmd::Register();
+    RedoCommand::Register();
     RenameSigGenCmd::Register();
     ResetModelCmd::Register();
     RotateModelCommand::Register();
@@ -135,12 +118,11 @@ void InitializeNNetWrappers
     StartStimulusCmd::Register();
     ToggleEmphModeCmd::Register();
     ToggleStopOnTriggerCmd::Register();
+    UndoCommand::Register();
 
-    SymbolTable::ScrDefConst(L"AddModel",    new WrapAddModel);
-    SymbolTable::ScrDefConst(L"Include",     new WrapInclude );
-    SymbolTable::ScrDefConst(L"UndoCommand", new WrapUndoCommand );
-    SymbolTable::ScrDefConst(L"RedoCommand", new WrapRedoCommand );
-    SymbolTable::ScrDefConst(L"Break",       new WrapBreak );
+    SymbolTable::ScrDefConst(L"AddModel", new WrapAddModel);
+    SymbolTable::ScrDefConst(L"Include",  new WrapInclude );
+    SymbolTable::ScrDefConst(L"Break",    new WrapBreak );
    
     ParamType::Apply2GlobalParameters
     ( 

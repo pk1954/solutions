@@ -59,14 +59,14 @@ private:
     bool canBeCombined(Command const*) const;
 };
 
-export class Command
+export class Command  // Implementation in Win32_Command.cpp
 {
 public:
 
     virtual ~Command() = default;
 
-    virtual void Do();
-    virtual void Undo();
+    virtual void Do();       
+    virtual void Undo();     
     virtual void UpdateUI();
 
     virtual bool CombineCommands(Command const& src) { return false; };
