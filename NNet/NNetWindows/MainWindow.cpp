@@ -520,7 +520,7 @@ void MainWindow::DoPaint()
 	if (m_bShowPnts && pMacroSensorSelected)
 		DrawSensorDataPoints(pMacroSensorSelected);
 
-	m_SelectionMenu.Show(m_sensorIdSelected.IsNotNull());
+	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const
@@ -531,13 +531,13 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 	switch (m_pPreferences->InputCablesVisibility())
 	{
 		using enum Preferences::tInputCablesVisibility;
-	case all:                                              break;
-	case nonStd: if (IsStandardSigGenId(idSigGen)) return; break;
-	case active: if (!bActive)                     return; break;
-	case none:                                	   return;
+		case all:                                              break;
+		case nonStd: if (IsStandardSigGenId(idSigGen)) return; break;
+		case active: if (!bActive)                     return; break;
+		case none:                                	   return;
 	}
 	float                 const  fPosition { Cast2Float(idSigGen.GetValue()) + 1.5f };
-	fPixel                const  fPixPos   { SignalGenerator::SIGGEN_WIDTH * fPosition };
+	fPixel                const  fPixPosX  { SignalGenerator::SIGGEN_WIDTH * fPosition };
 	D2D_driver                 & graphics  { *m_upGraphics.get() };
 	Uniform2D<MicroMeter> const& coord     { m_context.GetCoordC() };
 	ID2D1SolidColorBrush* const  pBrush
@@ -550,7 +550,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 	(
 		graphics,
 		coord,
-		fPixPos,
+		fPixPosX,
 		inputLine,
 		pBrush
 	);

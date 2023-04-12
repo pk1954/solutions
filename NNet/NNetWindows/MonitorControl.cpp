@@ -325,14 +325,15 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), color);
 }
 
-PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId) const
+PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId, tHorzDir const dir) const
 {
 	Signal const* pSig { m_pMonitorData->GetConstSignalPtr(signalId) };
 	if (pSig == nullptr)
 		return PixelPoint::NULL_VAL();
 	fPixel      const fPixTrackHeight { calcTrackHeight() };
 	fPixel      const fPixVertPos     { getSignalOffset(signalId) - fPixTrackHeight * 0.5f };
-	fPixelPoint const fPixPntSignal	  { m_fPixWinWidth, fPixVertPos };
+	fPixel      const fPixHorzPos     { (dir == tHorzDir::right) ? m_fPixWinWidth : 0.0_fPixel };
+	fPixelPoint const fPixPntSignal	  { fPixHorzPos, fPixVertPos };
 	PixelPoint  const pixPntSignal    { Convert2PixelPoint(fPixPntSignal) };
 	PixelPoint  const pixPosScreen    { Client2Screen(pixPntSignal) };
 

@@ -22,6 +22,9 @@ export extern void UpperCase(wstring &);
 
 export using VisCrit = function <bool()>;
 
+export enum class tHorzDir : bool {	left, right };
+export enum class tVertDir : bool {	up, down };
+
 export enum class tOnOffAuto : long
 {
 	on,

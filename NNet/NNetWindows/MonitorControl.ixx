@@ -48,7 +48,7 @@ public:
 	void   StimulusTriggered();
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
-	PixelPoint GetTrackPosScreen(SignalId const) const;
+	PixelPoint GetTrackPosScreen(SignalId const, tHorzDir const) const;
 	void       MoveHighlightedSignal(PIXEL const);
 	void       DropSignal();
 

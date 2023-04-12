@@ -248,7 +248,7 @@ void UPSigGenList::DrawInputCable
 (
     D2D_driver                 & graphics,
     Uniform2D<MicroMeter> const& coord,
-    fPixel                const  fPixPos,
+    fPixel                const  fPixPosX,
     InputLine             const& inputLine,
     ID2D1SolidColorBrush* const  pBrush
 ) const
@@ -257,7 +257,7 @@ void UPSigGenList::DrawInputCable
     MicroMeterPnt const umCenter         { inputLine.GetPos() - umDirVector * 0.7f };
     fPixelPoint   const fPixPosInputLine { coord.Transform2fPixelPos(umCenter) };
     fPixelPoint   const fPixPosDir       { coord.Transform2fPixelSize(umDirVector) };
-    fPixelPoint   const fPixPosSigGen    { fPixPos, SignalGenerator::SIGGEN_HEIGHT };
+    fPixelPoint   const fPixPosSigGen    { fPixPosX, SignalGenerator::SIGGEN_HEIGHT };
 
     graphics.DrawBezier
     (

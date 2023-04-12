@@ -83,10 +83,10 @@ SignalId NNetWindow::FindSignalHandle(MicroMeterPnt const& umPos) const
 	(
 		[this, &fPixPos, &sigIdResult](SignalId const& sigIdRun)
 		{
-			PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(sigIdRun) };
+			PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(sigIdRun, tHorzDir::right) };
 			if (pixPosScreenSignal.IsNotNull())
 			{
-				PixelPoint  const pixPosSignal { Screen2Client(pixPosScreenSignal) };
+				PixelPoint  const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
 				fPixelPoint const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
 				if (Distance(fPixPosSignal, fPixPos) <= HRADIUS)
 					sigIdResult = sigIdRun;
@@ -134,7 +134,7 @@ void NNetWindow::drawSignalCable
 	if (!pSensor)
 		return; // is not a sensor
 
-	PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId) };
+	PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId, tHorzDir::right) };
 	if (pixPosScreenSignal.IsNull())
 		return;
 
@@ -146,7 +146,7 @@ void NNetWindow::drawSignalCable
 	MicroMeterPnt const umPosSensor   { pSensor->GetPosition() };
 	fPixelPoint   const fPixPosSensor { GetCoordC().Transform2fPixelPos(umPosSensor) };
 	fPixelPoint   const fPixDelta     { fPixPosSensor - fPixPosStart };
-	fPixel        const fPixOffset    { fPixDelta.GetX() * 0.3f };
+	fPixel        const fPixOffset    { abs(fPixDelta.GetXvalue()) * 0.3f };
 
 	m_upGraphics->DrawBezier
 	(
