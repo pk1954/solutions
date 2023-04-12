@@ -38,7 +38,6 @@ public:
 
     void AddModel();
     void Connect(NobId const, NobId const);
-    void StartStimulus();
 
 private:
 

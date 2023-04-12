@@ -225,5 +225,8 @@
     <ClCompile Include="NNetCommands.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StartStimulusCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

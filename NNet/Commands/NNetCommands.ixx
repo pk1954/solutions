@@ -63,5 +63,6 @@ export import SingleNobAnimation;
 export import SizeSelectionCmd;
 export import SizeSensorCmd;
 export import SplitNeuronCmd;
+export import StartStimulusCmd;
 export import ToggleEmphModeCmd;
 export import ToggleStopOnTriggerCmd;

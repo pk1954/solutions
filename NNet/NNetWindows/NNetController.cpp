@@ -266,7 +266,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDM_TRIGGER_STIMULUS:
         m_pMonitorWindow->StimulusTriggered();
-        m_pModelCommands->StartStimulus();
+        StartStimulusCmd::Push();
         break;
 
     default:
