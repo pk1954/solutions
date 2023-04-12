@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module SetActiveSigGenCmd;
+export module NNetCommands:SetActiveSigGenCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class SetActiveSigGenCmd : public NNetCommand
 {

@@ -14,9 +14,8 @@ import Uniform2D;
 import SoundInterface;
 import Commands;
 import NNetModelIO;
-import NNetCommand;
-import NNetCommandStack;
 import NNetModel;
+import NNetCommands;
 
 using std::wcout;
 using std::wostream;

@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module NewIoLinePairCmd;
+export module NNetCommands:NewIoLinePairCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class NewIoLinePairCmd : public NNetCommand
 {

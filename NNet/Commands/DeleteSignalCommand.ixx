@@ -7,9 +7,9 @@ module;
 #include <memory>
 #include <iostream>
 
-export module DeleteSignalCommand;
+export module NNetCommands:DeleteSignalCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class DeleteSignalCommand : public NNetCommand
 {

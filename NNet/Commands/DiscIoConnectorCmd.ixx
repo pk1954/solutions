@@ -7,9 +7,9 @@ module;
 #include <memory>
 #include <iostream>
 
-export module DiscIoConnectorCmd;
+export module NNetCommands:DiscIoConnectorCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;

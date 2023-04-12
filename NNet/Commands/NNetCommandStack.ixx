@@ -2,7 +2,7 @@
 //
 // Commands
 
-export module NNetCommandStack;
+export module NNetCommands:NNetCommandStack;
 
 import Commands;
 import NNetModel;

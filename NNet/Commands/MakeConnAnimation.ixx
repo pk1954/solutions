@@ -7,9 +7,9 @@ module;
 #include <vector>
 #include <memory>
 
-export module MakeConnAnimation;
+export module NNetCommands:MakeConnAnimation;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::vector;

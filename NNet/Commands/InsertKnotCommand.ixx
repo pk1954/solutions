@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module InsertKnotCommand;
+export module NNetCommands:InsertKnotCommand;
 
-import SplitPipeCommand;
+import :SplitPipeCommand;
 
 export class InsertKnotCommand : public SplitPipeCommand
 {

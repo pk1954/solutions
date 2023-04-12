@@ -7,9 +7,9 @@ module;
 #include <vector>
 #include <memory>
 
-export module SelectionCommand;
+export module NNetCommands:SelectionCommand;
 
-export import NNetCommand;
+export import :NNetCommand;
 
 using std::unique_ptr;
 using std::vector;

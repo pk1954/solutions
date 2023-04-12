@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module SetParameterCommand;
+export module NNetCommands:SetParameterCommand;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 import SaveCast;
 

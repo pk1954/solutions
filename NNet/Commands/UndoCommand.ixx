@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module UndoCommand;
+export module NNetCommands:UndoCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class UndoCommand : public NNetCommand
 {

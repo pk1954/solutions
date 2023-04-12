@@ -7,10 +7,10 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module ConnectCreateForkCmd;
+export module NNetCommands:ConnectCreateForkCmd;
 
 import NNetModel;
-import SplitPipeCommand;
+import :SplitPipeCommand;
 
 using std::pair;
 

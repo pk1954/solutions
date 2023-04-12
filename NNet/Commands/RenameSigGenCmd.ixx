@@ -9,10 +9,10 @@ module;
 #include <iostream>
 #include <Windows.h>
 
-export module RenameSigGenCmd;
+export module NNetCommands:RenameSigGenCmd;
 
 import EditLineBox;
-import NNetCommand;
+import :NNetCommand;
 
 export class RenameSigGenCmd : public NNetCommand
 {

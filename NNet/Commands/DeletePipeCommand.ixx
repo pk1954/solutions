@@ -8,15 +8,15 @@ module;
 #include <memory>
 #include <vector>
 
-export module DeletePipeCommand;
+export module NNetCommands:DeletePipeCommand;
 
 import Types;
 import SaveCast;
-import NNetCommand;
-import NNetCommandStack;
 import NNetModel;
-import DeleteNeuronInputCmd;
-import DeleteForkOutputCmd;
+import :NNetCommand;
+import :NNetCommandStack;
+import :DeleteNeuronInputCmd;
+import :DeleteForkOutputCmd;
 
 using std::unique_ptr;
 using std::make_unique;

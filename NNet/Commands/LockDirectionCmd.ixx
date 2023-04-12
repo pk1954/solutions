@@ -6,10 +6,10 @@ module;
 
 #include <vector>
 
-export module LockDirectionCmd;
+export module NNetCommands:LockDirectionCmd;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::vector;

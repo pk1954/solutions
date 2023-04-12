@@ -7,9 +7,9 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module DeleteTrackCommand;
+export module NNetCommands:DeleteTrackCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class DeleteTrackCommand: public NNetCommand
 {

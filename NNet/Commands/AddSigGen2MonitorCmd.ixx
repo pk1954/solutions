@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module AddSigGen2MonitorCmd;
+export module NNetCommands:AddSigGen2MonitorCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class AddSigGen2MonitorCmd : public NNetCommand

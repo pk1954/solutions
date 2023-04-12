@@ -7,7 +7,7 @@ module;
 #include <vector>
 #include <memory>
 
-export module IoLinesAnimation;
+export module NNetCommands:IoLinesAnimation;
 
 import Types;
 import Commands;

@@ -7,10 +7,10 @@ module;
 #include <memory>
 #include <iostream>
 
-export module InsertTrackCommand;
+export module NNetCommands:InsertTrackCommand;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;

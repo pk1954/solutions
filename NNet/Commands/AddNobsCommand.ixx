@@ -7,9 +7,9 @@ module;
 #include <memory>
 #include <iostream>
 
-export module AddNobsCommand;
+export module NNetCommands:AddNobsCommand;
 
-import SelectionCommand;
+import :SelectionCommand;
 import NNetModel;
 
 using std::unique_ptr;

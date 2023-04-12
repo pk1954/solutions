@@ -10,9 +10,9 @@ module;
 #include <memory>
 #include <vector>
 
-export module DeleteNeuronInputCmd;
+export module NNetCommands:DeleteNeuronInputCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;

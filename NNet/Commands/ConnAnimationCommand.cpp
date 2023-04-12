@@ -9,13 +9,13 @@ module;
 #include <memory>
 #include <vector>
 
-module ConnAnimationCommand;
+module NNetCommands:ConnAnimationCommand;
 
 import Types;
-import LockDirectionCmd;
-import IoLinesAnimation;
-import MakeConnAnimation;
 import NNetModel;
+import :LockDirectionCmd;
+import :IoLinesAnimation;
+import :MakeConnAnimation;
 
 using std::make_unique;
 using std::ranges::sort;

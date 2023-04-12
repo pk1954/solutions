@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module RedoCommand;
+export module NNetCommands:RedoCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class RedoCommand : public NNetCommand
 {

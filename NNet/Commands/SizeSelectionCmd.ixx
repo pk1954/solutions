@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module SizeSelectionCmd;
+export module NNetCommands:SizeSelectionCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import SaveCast;
 
 export class SizeSelectionCmd : public NNetCommand

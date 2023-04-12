@@ -7,9 +7,9 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module MoveNobCommand;
+export module NNetCommands:MoveNobCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class MoveNobCommand : public NNetCommand
 {

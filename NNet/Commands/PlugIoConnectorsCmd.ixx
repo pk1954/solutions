@@ -9,9 +9,9 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module PlugIoConnectorsCmd;
+export module NNetCommands:PlugIoConnectorsCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 using std::vector;
 

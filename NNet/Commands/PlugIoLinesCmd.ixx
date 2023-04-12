@@ -8,9 +8,9 @@ module;
 #include <memory>
 #include <iostream>
 
-export module PlugIoLinesCmd;
+export module NNetCommands:PlugIoLinesCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class PlugIoLinesCmd : public NNetCommand
 {

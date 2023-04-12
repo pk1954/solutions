@@ -10,9 +10,9 @@ module;
 #include <memory>
 #include <cassert>
 
-export module DeleteForkOutputCmd;
+export module NNetCommands:DeleteForkOutputCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;

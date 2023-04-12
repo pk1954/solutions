@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module SelectAllConnectedCmd;
+export module NNetCommands:SelectAllConnectedCmd;
 
-import SelectionCommand;
+import :SelectionCommand;
 import UtilityWrappers;
 
 export class SelectAllConnectedCmd : public SelectionCommand

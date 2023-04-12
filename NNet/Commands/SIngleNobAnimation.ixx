@@ -9,7 +9,7 @@ module;
 #include <functional>
 #include <memory>
 
-export module SingleNobAnimation;
+export module NNetCommands:SingleNobAnimation;
 
 import Types;
 import Commands;

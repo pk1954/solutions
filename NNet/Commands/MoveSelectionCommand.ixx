@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module MoveSelectionCommand;
+export module NNetCommands:MoveSelectionCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class MoveSelectionCommand : public NNetCommand
 {

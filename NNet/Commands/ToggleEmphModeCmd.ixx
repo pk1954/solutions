@@ -7,9 +7,9 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module ToggleEmphModeCmd;
+export module NNetCommands:ToggleEmphModeCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class ToggleEmphModeCmd : public NNetCommand

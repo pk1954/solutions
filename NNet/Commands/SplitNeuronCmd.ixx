@@ -8,10 +8,10 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module SplitNeuronCmd;
+export module NNetCommands:SplitNeuronCmd;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;

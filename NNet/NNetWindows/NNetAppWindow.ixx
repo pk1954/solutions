@@ -22,7 +22,6 @@ import WinManager;
 import ScriptFile;
 import MessagePump;
 import NNetModelCommands;
-import NNetCommandStack;
 import BaseWindow;
 import ScriptStack;
 import Commands;

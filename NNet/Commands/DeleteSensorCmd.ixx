@@ -6,10 +6,10 @@ module;
 
 #include <iostream>
 
-export module DeleteSensorCmd;
+export module NNetCommands:DeleteSensorCmd;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class DeleteSensorCmd : public NNetCommand

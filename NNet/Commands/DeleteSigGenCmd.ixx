@@ -7,10 +7,10 @@ module;
 #include <vector>
 #include <iostream>
 
-export module DeleteSigGenCmd;
+export module NNetCommands:DeleteSigGenCmd;
 
-import SetActiveSigGenCmd;
-import NNetCommand;
+import :SetActiveSigGenCmd;
+import :NNetCommand;
 
 using std::vector;
 

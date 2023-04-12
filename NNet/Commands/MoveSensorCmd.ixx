@@ -7,9 +7,9 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module MoveSensorCmd;
+export module NNetCommands:MoveSensorCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class MoveSensorCmd : public NNetCommand
 {

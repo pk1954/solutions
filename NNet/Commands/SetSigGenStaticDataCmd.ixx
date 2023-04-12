@@ -6,12 +6,12 @@ module;
 
 #include <iostream>
 
-export module SetSigGenStaticDataCmd;
+export module NNetCommands:SetSigGenStaticDataCmd;
 
 import Symtab;
 import Types;
 import Commands;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class SetSigGenStaticDataCmd : public NNetCommand

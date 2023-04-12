@@ -7,10 +7,10 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module ConnectCreateSynapseCmd;
+export module NNetCommands:ConnectCreateSynapseCmd;
 
 import NNetModel;
-import SplitPipeCommand;
+import :SplitPipeCommand;
 
 using std::unique_ptr;
 using std::make_unique;

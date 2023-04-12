@@ -7,9 +7,9 @@ module;
 #include <cassert>
 #include <iostream>
 
-export module SizeSensorCmd;
+export module NNetCommands:SizeSensorCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 import SaveCast;
 

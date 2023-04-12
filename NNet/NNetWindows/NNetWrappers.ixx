@@ -9,6 +9,7 @@ module;
 export module NNetWin32:NNetWrappers;
 
 import NNetModelCommands;
+import NNetCommands;
 import NNetModelIO;
 import NNetModel;
 

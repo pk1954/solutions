@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module AttachSigGen2ConCmd;
+export module NNetCommands:AttachSigGen2ConCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class AttachSigGen2ConCmd : public NNetCommand

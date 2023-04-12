@@ -2,11 +2,11 @@
 //
 // Commands
 
-export module RotationCommand;
+export module NNetCommands:RotationCommand;
 
 import Types;
 import Commands;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class RotationCommand : public NNetCommand

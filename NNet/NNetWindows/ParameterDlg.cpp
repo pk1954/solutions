@@ -15,7 +15,7 @@ import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;
 import BaseWindow;
-import SetParameterCommand;
+import NNetCommands;
 import NNetModel;
 
 using std::wstring;

@@ -6,10 +6,10 @@ module;
 
 #include <memory>
 
-export module SplitPipeCommand;
+export module NNetCommands:SplitPipeCommand;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::unique_ptr;

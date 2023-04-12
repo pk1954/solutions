@@ -7,13 +7,13 @@ module;
 #include <memory>
 #include <iostream>
 
-export module CoordAnimationCmd;
+export module NNetCommands:CoordAnimationCmd;
 
 import Types;
 import Commands;
 import Uniform2D;
 import Animation;
-import NNetCommand;
+import :NNetCommand;
 
 export class CoordAnimationCmd : public NNetCommand
 {

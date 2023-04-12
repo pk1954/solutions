@@ -7,14 +7,14 @@ module;
 #include <memory>
 #include <iostream>
 
-export module DeleteSelectionCommand;
+export module NNetCommands:DeleteSelectionCommand;
 
 import Types;
 import Commands;
-import DeleteNobCommand;
-import NNetCommandStack;
-import NNetCommand;
 import NNetModel;
+import :DeleteNobCommand;
+import :NNetCommandStack;
+import :NNetCommand;
 
 using std::unique_ptr;
 

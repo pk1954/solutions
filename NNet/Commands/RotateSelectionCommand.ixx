@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module RotateSelectionCommand;
+export module NNetCommands:RotateSelectionCommand;
 
-import RotationCommand;
+import :RotationCommand;
 import NNetModel;
 
 export class RotateSelectionCommand : public RotationCommand

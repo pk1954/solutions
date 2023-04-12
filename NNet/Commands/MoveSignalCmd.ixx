@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module MoveSignalCmd;
+export module NNetCommands:MoveSignalCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class MoveSignalCmd : public NNetCommand
 {

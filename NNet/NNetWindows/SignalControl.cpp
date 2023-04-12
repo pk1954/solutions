@@ -14,7 +14,7 @@ module NNetWin32:SignalControl;
 import Types;
 import NNetModelCommands;
 import NNetModel;
-import SetSigGenStaticDataCmd;
+import NNetCommands;
 import :ComputeThread;
 
 using std::max;

@@ -6,10 +6,10 @@ module;
 
 #include <iostream>
 
-export module SetNobCommand;
+export module NNetCommands:SetNobCommand;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class SetNobCommand : public NNetCommand

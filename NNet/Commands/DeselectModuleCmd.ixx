@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module DeselectModuleCmd;
+export module NNetCommands:DeselectModuleCmd;
 
-import SelectionCommand;
+import :SelectionCommand;
 import NNetModel;
 
 export class DeselectModuleCmd : public SelectionCommand

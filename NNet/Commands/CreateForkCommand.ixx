@@ -6,10 +6,10 @@ module;
 
 #include <iostream>
 
-export module CreateForkCommand;
+export module NNetCommands:CreateForkCommand;
 
 import NNetModel;
-import SplitPipeCommand;
+import :SplitPipeCommand;
 
 using std::pair;
 

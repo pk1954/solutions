@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module InsertNeuronCommand;
+export module NNetCommands:InsertNeuronCommand;
 
-import SplitPipeCommand;
+import :SplitPipeCommand;
 
 export class InsertNeuronCommand : public SplitPipeCommand
 {

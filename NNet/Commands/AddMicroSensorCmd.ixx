@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module AddMicroSensorCmd;
+export module NNetCommands:AddMicroSensorCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class AddMicroSensorCmd : public NNetCommand
 {

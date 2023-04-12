@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module ToggleStopOnTriggerCmd;
+export module NNetCommands:ToggleStopOnTriggerCmd;
 
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 export class ToggleStopOnTriggerCmd : public NNetCommand

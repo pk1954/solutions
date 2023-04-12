@@ -8,9 +8,9 @@ module;
 #include <iostream>
 #include "Resource.h"
 
-export module NewSigGenCmd;
+export module NNetCommands:NewSigGenCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class NewSigGenCmd : public NNetCommand
 {

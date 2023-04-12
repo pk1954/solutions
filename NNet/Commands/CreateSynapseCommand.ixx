@@ -7,11 +7,11 @@ module;
 #include <memory>
 #include <iostream>
 
-export module CreateSynapseCommand;
+export module NNetCommands:CreateSynapseCommand;
 
 import Types;
 import NNetModel;
-import SplitPipeCommand;
+import :SplitPipeCommand;
 
 using std::unique_ptr;
 using std::make_unique;

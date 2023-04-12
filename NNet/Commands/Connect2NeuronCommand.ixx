@@ -8,9 +8,9 @@ module;
 #include <memory>
 #include <iostream>
 
-export module Connect2NeuronCommand;  
+export module NNetCommands:Connect2NeuronCommand;  
 
-import NNetCommand;
+import :NNetCommand;
 
 export class Connect2NeuronCommand : public NNetCommand
 {

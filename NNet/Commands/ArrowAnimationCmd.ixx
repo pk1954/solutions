@@ -8,13 +8,13 @@ module;
 #include <memory>
 #include <iostream>
 
-export module ArrowAnimationCmd;
+export module NNetCommands:ArrowAnimationCmd;
 
 import Types;
 import Commands;
 import Animation;
 import NNetModel;
-import NNetCommand;
+import :NNetCommand;
 
 export class ArrowAnimationCmd : public NNetCommand
 {

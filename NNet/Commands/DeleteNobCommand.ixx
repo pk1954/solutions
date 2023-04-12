@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module DeleteNobCommand;
+export module NNetCommands:DeleteNobCommand;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class DeleteNobCommand : public NNetCommand
 {

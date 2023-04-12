@@ -8,7 +8,7 @@ module;
 #include <memory>
 #include <iostream>
 
-export module NNetCommand;
+export module NNetCommands:NNetCommand;
 
 export import SoundInterface;
 export import Types;

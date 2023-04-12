@@ -8,10 +8,10 @@ module;
 #include <memory>
 #include <iostream>
 
-export module AddPipe2NeuronCmd;
+export module NNetCommands:AddPipe2NeuronCmd;
 
 import Types;
-import NNetCommand;
+import :NNetCommand;
 import NNetModel;
 
 using std::make_unique;

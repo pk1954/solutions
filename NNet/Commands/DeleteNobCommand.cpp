@@ -7,12 +7,13 @@ module;
 #include <cassert>
 #include <memory>
 
-module DeleteNobCommand;
+module NNetCommands:DeleteNobCommand;
 
-import DeleteForkOutputCmd;
-import DeleteNeuronInputCmd;
-import DeletePipeCommand;
-import NNetCommand;
+import NNetModel;
+import :DeleteForkOutputCmd;
+import :DeleteNeuronInputCmd;
+import :DeletePipeCommand;
+import :NNetCommand;
 
 using std::move;
 

@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module StartStimulusCmd;
+export module NNetCommands:StartStimulusCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class StartStimulusCmd : public NNetCommand
 {

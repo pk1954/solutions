@@ -6,9 +6,9 @@ module;
 
 #include <iostream>
 
-export module ExtendInputLineCmd;
+export module NNetCommands:ExtendInputLineCmd;
 
-import NNetCommand;
+import :NNetCommand;
 
 export class ExtendInputLineCmd : public NNetCommand
 {
