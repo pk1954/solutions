@@ -13,19 +13,11 @@ module NNetModelCommands;
 
 import AddNobsCommand;
 import Commands;
-import ConnAnimationCommand;
-import ConnectCreateForkCmd;
-import ConnectCreateSynapseCmd;
-import Connect2NeuronCommand;
-import NewSigGenCmd;
+import NNetCommands;
 import NNetModel;
 import NNetCommandStack;
 import NNetModelCommands;
 import NNetModelIO;
-import PlugIoConnectorsCmd;
-import PlugIoLinesCmd;
-import SelectionCommand;
-import SetActiveSigGenCmd;
 import Uniform2D;
 
 using std::wstring;

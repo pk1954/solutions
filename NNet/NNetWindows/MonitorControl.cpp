@@ -14,10 +14,9 @@ module NNetWin32:MonitorControl;
 
 import Win32_Util_Resource;
 import Types;
-import NNetModelCommands;
 import SimulationTime;
 import NNetModel;
-import MoveSignalCmd;
+import NNetCommands;
 
 using std::to_wstring;
 
