@@ -51,7 +51,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << delta << endl;
-		m_pStack->PushCommand(make_unique<MoveSelectionCommand>(delta));
+		PushCommand(make_unique<MoveSelectionCommand>(delta));
 	}
 
 private:

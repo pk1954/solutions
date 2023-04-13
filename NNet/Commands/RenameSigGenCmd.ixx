@@ -51,7 +51,7 @@ public:
 	{
 		//if (IsTraceOn())  //TODO: fix
 		//	TraceStream() << NAME << id.GetValue() << L" \"" << name << L"\" " << endl;
-		m_pStack->PushCommand(make_unique<RenameSigGenCmd>(id, name));
+		PushCommand(make_unique<RenameSigGenCmd>(id, name));
 	}
 
 private:

@@ -48,7 +48,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << L" " << id.GetValue() << endl;
-        m_pStack->PushCommand(make_unique<DeleteSensorCmd>(id));
+        PushCommand(make_unique<DeleteSensorCmd>(id));
     }
 
 private:

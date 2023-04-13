@@ -62,7 +62,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << pos << endl;
-		m_pStack->PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos));
+		PushCommand(make_unique<ExtendInputLineCmd>(nobId, pos));
 	}
 
 private:

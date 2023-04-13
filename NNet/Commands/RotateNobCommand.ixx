@@ -44,7 +44,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << id.GetValue() << L' ' << umPntOld << umPntNew << endl;
-		m_pStack->PushCommand(make_unique<RotateNobCommand>(id, umPntOld, umPntNew));
+		PushCommand(make_unique<RotateNobCommand>(id, umPntOld, umPntNew));
 	}
 
 private:

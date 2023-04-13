@@ -64,7 +64,7 @@ public:                    // pipe context menu: create synapse
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << pos << endl;
-		m_pStack->PushCommand(make_unique<CreateSynapseCommand>(nobId, pos));
+		PushCommand(make_unique<CreateSynapseCommand>(nobId, pos));
 	}
 
 private:

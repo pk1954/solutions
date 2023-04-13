@@ -58,7 +58,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << pos << endl;
-		m_pStack->PushCommand(make_unique<CreateForkCommand>(nobId, pos));
+		PushCommand(make_unique<CreateForkCommand>(nobId, pos));
 	}
 
 private:

@@ -33,7 +33,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << L' ' << idNob.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<SelectAllConnectedCmd>(idNob));
+		PushCommand(make_unique<SelectAllConnectedCmd>(idNob));
 	}
 
 private:

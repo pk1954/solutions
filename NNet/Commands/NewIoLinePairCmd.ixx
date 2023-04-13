@@ -38,7 +38,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << pos << endl;
-		m_pStack->PushCommand(make_unique<NewIoLinePairCmd>(pos));
+		PushCommand(make_unique<NewIoLinePairCmd>(pos));
 	}
 
 private:

@@ -66,7 +66,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << endl;
-        m_pStack->PushCommand(make_unique<CoordAnimationCmd>(animated, target));
+        PushCommand(make_unique<CoordAnimationCmd>(animated, target));
     }
 
 private:

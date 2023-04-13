@@ -38,7 +38,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << id.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<AttachSigGen2ConCmd>(id));
+		PushCommand(make_unique<AttachSigGen2ConCmd>(id));
 	}
 
 private:

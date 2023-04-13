@@ -41,7 +41,7 @@ public:
 	{
 		//if (IsTraceOn())  // TODO: fix
 		//	TraceStream() << NAME << trackNr.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
+		PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
 	}
 
 private:

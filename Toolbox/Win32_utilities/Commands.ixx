@@ -73,32 +73,36 @@ public:
     virtual bool IsAsyncCommand() { return false; };
 
     void CallUI(bool const); // called by Animation
+    void TargetReached() { (m_targetReachedFunc)(); }
 
     static void Initialize(RootWindow* const, CommandStack* const);
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
     static void NextScriptCommand();
+    static void PushCommand(unique_ptr<Command> cmd) { m_pStack->PushCommand(move(cmd)); }
+    static bool UndoCommand() { return m_pStack->UndoCommand(); }
+    static bool RedoCommand() { return m_pStack->RedoCommand(); }
+    static void ClearStack() { m_pStack->Clear(); }
 
 protected:
 
     void AddPhase(unique_ptr<Command>);
-
-    function<void()> m_targetReachedFunc { nullptr };
 
     static bool      IsTraceOn()   { return m_bTrace; }
     static wostream& TraceStream() { return wcout; }
 
     static LRESULT PostCmd2Application(WPARAM const, LPARAM const);
 
-    inline static CommandStack * m_pStack { nullptr };
-
 private:
 
-    inline static RootWindow * m_pWin   { nullptr };
-    inline static bool         m_bTrace { true };
+    inline static RootWindow   * m_pWin   { nullptr };
+    inline static bool           m_bTrace { true };
+    inline static CommandStack * m_pStack { nullptr };
 
-    vector<unique_ptr<Command>> m_phases    { };
-    unsigned int                m_uiPhase   { 0 };
-    bool                        m_bUndoMode { false };
+    function<void()>            m_targetReachedFunc { nullptr };
+    vector<unique_ptr<Command>> m_phases            { };
+    unsigned int                m_uiPhase           { 0 };
+
+    bool m_bUndoMode { false };
 
     void doPhase();
     void undoPhase();

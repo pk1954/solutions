@@ -51,7 +51,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << umPntOld << umPntNew << endl;
-		m_pStack->PushCommand(make_unique<RotateSelectionCommand>(umPntOld, umPntNew));
+		PushCommand(make_unique<RotateSelectionCommand>(umPntOld, umPntNew));
 	}
 
 private:

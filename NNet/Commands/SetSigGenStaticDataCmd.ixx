@@ -57,7 +57,7 @@ public:
 	{
 		//if (IsTraceOn())   // TODO: fix
 		//	TraceStream() << NAME << id.GetValue() << /* data << */ endl;  //TODO: data causes compiler error
-		m_pStack->PushCommand(make_unique<SetSigGenStaticDataCmd>(id, data));
+		PushCommand(make_unique<SetSigGenStaticDataCmd>(id, data));
 	}
 
 private:

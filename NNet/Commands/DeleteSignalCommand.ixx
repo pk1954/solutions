@@ -51,7 +51,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << signalId << endl;
-        m_pStack->PushCommand(make_unique<DeleteSignalCommand>(signalId));
+        PushCommand(make_unique<DeleteSignalCommand>(signalId));
     }
 
 private:

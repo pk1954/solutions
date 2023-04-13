@@ -42,7 +42,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << trackNr.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<DeleteTrackCommand>(trackNr));
+		PushCommand(make_unique<DeleteTrackCommand>(trackNr));
 	}
 
 private:

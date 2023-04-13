@@ -45,7 +45,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << trackNr.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<InsertTrackCommand>(trackNr));
+		PushCommand(make_unique<InsertTrackCommand>(trackNr));
 	}
 
 private:

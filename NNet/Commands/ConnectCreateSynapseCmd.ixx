@@ -62,7 +62,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << idSrc.GetValue() << L' ' << idDst.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<ConnectCreateSynapseCmd>(idSrc, idDst));
+		PushCommand(make_unique<ConnectCreateSynapseCmd>(idSrc, idDst));
 	}
 
 private:

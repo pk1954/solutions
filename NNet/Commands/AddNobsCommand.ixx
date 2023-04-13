@@ -58,7 +58,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << endl;
-		m_pStack->PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs::Do(*m_pNMWI))));
+		PushCommand(make_unique<AddNobsCommand>(move(CopySelectedNobs::Do(*m_pNMWI))));
 	}
 
 private:

@@ -31,7 +31,7 @@ public:
 	{
 		for (auto& it : m_ioLines)
 			it->LockDirection();
-		(m_targetReachedFunc)();
+		TargetReached();
 	}
 
 	void Undo() final
@@ -44,7 +44,7 @@ public:
 		}
 		m_ioLineState.clear();
 		m_pIoConnector.clear();
-		(m_targetReachedFunc)();
+		TargetReached();
 	}
 
 private:

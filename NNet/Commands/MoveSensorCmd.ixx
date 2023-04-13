@@ -55,7 +55,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << id.GetValue() << L' ' << delta << endl;
-		m_pStack->PushCommand(make_unique<MoveSensorCmd>(id, delta));
+		PushCommand(make_unique<MoveSensorCmd>(id, delta));
 	}
 
 private:

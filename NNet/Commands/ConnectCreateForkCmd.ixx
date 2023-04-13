@@ -60,7 +60,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << idSrc.GetValue() << L' ' << idDst.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<ConnectCreateForkCmd>(idSrc, idDst));
+		PushCommand(make_unique<ConnectCreateForkCmd>(idSrc, idDst));
 	}
 
 private:

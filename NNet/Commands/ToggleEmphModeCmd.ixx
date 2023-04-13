@@ -40,7 +40,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << L' ' << idNob.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<ToggleEmphModeCmd>(idNob));
+		PushCommand(make_unique<ToggleEmphModeCmd>(idNob));
 	}
 
 private:

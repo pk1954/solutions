@@ -48,7 +48,7 @@ public:
 	{
 		//if (IsTraceOn())        // TODO: fix
 		//	TraceStream() << NAME << L' ' << ParamType::GetName(param) << L' ' << fNewValue << endl;
-		m_pStack->PushCommand(make_unique<SetParameterCommand>(param, fNewValue));
+		PushCommand(make_unique<SetParameterCommand>(param, fNewValue));
 	}
 
 private:

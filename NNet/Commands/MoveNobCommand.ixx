@@ -55,7 +55,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << delta << endl;
-		m_pStack->PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(nobId), delta));
+		PushCommand(make_unique<MoveNobCommand>(*m_pNMWI->GetNob(nobId), delta));
 	}
 
 private:

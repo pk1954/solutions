@@ -38,7 +38,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << id.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<ToggleStopOnTriggerCmd>(id));
+		PushCommand(make_unique<ToggleStopOnTriggerCmd>(id));
 	}
 
 private:

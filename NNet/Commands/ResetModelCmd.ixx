@@ -41,7 +41,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << endl;
 		m_pNMWI->ResetModel();
-		m_pStack->Clear();
+		ClearStack();
 	}
 
 private:

@@ -37,7 +37,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << id << endl;
-        m_pStack->PushCommand(make_unique<SetActiveSigGenCmd>(id));
+        PushCommand(make_unique<SetActiveSigGenCmd>(id));
     }
 
 private:

@@ -86,7 +86,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << pos << endl;
-		m_pStack->PushCommand(make_unique<AddPipe2NeuronCmd>(nobId, pos));
+		PushCommand(make_unique<AddPipe2NeuronCmd>(nobId, pos));
 	}
 
 private:

@@ -67,7 +67,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << endl;
-        m_pStack->PushCommand(make_unique<ArrowAnimationCmd>(animated, target));
+        PushCommand(make_unique<ArrowAnimationCmd>(animated, target));
     }
 
 private:

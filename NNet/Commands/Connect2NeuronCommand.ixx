@@ -55,7 +55,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<Connect2NeuronCommand>(nobId1, nobId2));
+		PushCommand(make_unique<Connect2NeuronCommand>(nobId1, nobId2));
 	}
 
 private:

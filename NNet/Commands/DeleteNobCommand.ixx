@@ -34,7 +34,7 @@ public:
 			if (IsTraceOn())
 				TraceStream() << NAME << id.GetValue() << endl;
 			m_pSound->Play(L"DISAPPEAR_SOUND");
-			m_pStack->PushCommand(move(upCmd));
+			PushCommand(move(upCmd));
 		}
 	}
 

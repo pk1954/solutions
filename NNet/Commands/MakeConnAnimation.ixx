@@ -32,14 +32,14 @@ public:
         m_pNMWI->DeselectAllNobs();
         m_upIoConnector->ConnectIoLines();
         m_pNMWI->Push2Model(move(m_upIoConnector));
-        (m_targetReachedFunc)();
+        TargetReached();
     }
 
     void Undo() final
     {
         m_upIoConnector = m_pNMWI->PopFromModel<IoConnector>();
         m_upIoConnector->DisconnectIoLines();
-        (m_targetReachedFunc)();
+        TargetReached();
     }
 
 private:

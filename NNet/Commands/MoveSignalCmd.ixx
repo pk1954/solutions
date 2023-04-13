@@ -42,7 +42,7 @@ public:
 	{
 		//if (IsTraceOn())          // TODO: fix
 		//	TraceStream() << NAME << id << L' ' << trackNr.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
+		PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
 	}
 
 private:

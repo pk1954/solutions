@@ -23,7 +23,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << endl;
-		if (!m_pStack->UndoCommand())
+		if (!Command::UndoCommand())
 			m_pSound->Warning();
 	}
 

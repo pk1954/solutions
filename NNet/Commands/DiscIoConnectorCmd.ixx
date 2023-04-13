@@ -45,7 +45,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<DiscIoConnectorCmd>(nobId));
+		PushCommand(make_unique<DiscIoConnectorCmd>(nobId));
 	}
 
 private:

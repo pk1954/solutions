@@ -57,7 +57,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << id.GetValue() << L" " << fFactor << endl;
-		m_pStack->PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
+		PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
 	}
 
 private:

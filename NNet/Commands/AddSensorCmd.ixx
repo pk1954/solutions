@@ -50,7 +50,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << umCircle << L' ' << trackNr.GetValue() << endl;
-		m_pStack->PushCommand(make_unique<AddSensorCmd>(umCircle, trackNr));
+		PushCommand(make_unique<AddSensorCmd>(umCircle, trackNr));
 	}
 
 private:

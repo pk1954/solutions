@@ -35,7 +35,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << fFactor << endl;
-		m_pStack->PushCommand(make_unique<SizeSelectionCmd>(fFactor));
+		PushCommand(make_unique<SizeSelectionCmd>(fFactor));
 	}
 
 private:
