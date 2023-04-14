@@ -22,7 +22,7 @@ using std::wstring;
 
 ParameterDialog::ParameterDialog() 
   : BaseDialog()
-{ }
+{}
 
 ParameterDialog::~ParameterDialog() = default;
 
@@ -117,15 +117,17 @@ void ParameterDialog::Start
 
 	m_pCommands = pCommands;
 
+	StartGraphics();
+	
 	int iYpos { 10 };
 	using enum ParamType::Value;
-	m_hwndPulseFreqMax     = addParameter(hwndDlg, pulseFreqMax,     iYpos);
-	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt,   iYpos);
-	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold,  iYpos);
-	m_hwndSynapseDelay     = addParameter(hwndDlg, synapseDelay,     iYpos);
-	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,       iYpos);
-	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution,   iYpos);
-	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,       iYpos);
+	m_hwndPulseFreqMax     = addParameter(hwndDlg, pulseFreqMax,    iYpos);
+	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt,  iYpos);
+	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold, iYpos);
+	m_hwndSynapseDelay     = addParameter(hwndDlg, synapseDelay,    iYpos);
+	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,      iYpos);
+	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution,  iYpos);
+	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,      iYpos);
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET);
@@ -163,11 +165,18 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	return BaseDialog::OnCommand(wParam, lParam);
 }
 
+void ParameterDialog::DoPaint()
+{
+	D2D_driver& graphics { GetGraphics() };
+	graphics.FillBackground(D2D1::ColorF::Red);
+	resetParameters();
+}
+
 bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
 	if (message == WM_PAINT)
 	{
-		resetParameters();
+//		resetParameters();
 		return false;
 	}
 

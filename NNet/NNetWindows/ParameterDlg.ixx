@@ -5,13 +5,17 @@
 module;
 
 #include <compare>
+#include <memory>
 #include <Windows.h>
 
 export module NNetWin32:ParameterDialog;
 
+import Direct2D;
 import BaseDialog;
 import NNetModelCommands;
 import NNetModel;
+
+using std::unique_ptr;
 
 export class ParameterDialog : public BaseDialog
 {
@@ -23,6 +27,7 @@ public:
 	void Stop();
 	void SetModelInterface(NNetModelWriterInterface * const);
 	void Notify(bool const) final;
+	void DoPaint() final;
 
 private:
 	static int const HORZ_SPACE {  8 };

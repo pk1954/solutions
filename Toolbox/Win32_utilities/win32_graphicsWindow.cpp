@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <functional>
 #include <Windows.h>
 
 module GraphicsWindow;
@@ -13,6 +14,7 @@ import Direct2D;
 import Types;
 import BaseWindow;
 
+using std::bind_front;
 using std::make_unique;
 
 HWND GraphicsWindow::Initialize
@@ -22,7 +24,6 @@ HWND GraphicsWindow::Initialize
 	DWORD   const dwWindowStyle
 )
 {
-	m_upGraphics = make_unique<D2D_driver>();
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
@@ -32,7 +33,7 @@ HWND GraphicsWindow::Initialize
 		nullptr,
 		nullptr
 	);
-	m_upGraphics->InitWindow(hwnd);
+	m_upGraphics = D2D_driver::Create(hwnd);
 	return hwnd;
 }
 
@@ -45,17 +46,7 @@ void GraphicsWindow::Stop()
 void GraphicsWindow::OnPaint()
 {
 	if (IsWindowVisible())
-	{
-		PAINTSTRUCT ps;
-		BeginPaint(&ps);
-		if (m_upGraphics->StartFrame())
-		{
-			m_upGraphics->FillBackground(D2D1::ColorF::Azure);
-			DoPaint();
-			m_upGraphics->EndFrame();
-		}
-		EndPaint(&ps);
-	}
+		m_upGraphics->Display(bind_front(&GraphicsWindow::DoPaint, this));
 }
 
 bool GraphicsWindow::OnSize(PIXEL const width, PIXEL const height)

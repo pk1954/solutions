@@ -38,5 +38,5 @@ protected:
 	fPixel GetClientHeight() const { return Convert2fPixel(GetClientWindowHeight()); }
 	fPixel GetClientWidth () const { return Convert2fPixel(GetClientWindowWidth()); }
 
-	unique_ptr<D2D_driver> m_upGraphics{ nullptr };
+	unique_ptr<D2D_driver> m_upGraphics { nullptr };
 };

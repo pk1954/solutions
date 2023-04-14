@@ -4,6 +4,9 @@
 
 module;
 
+#include <bit>
+#include <functional>
+#include <memory>
 #include <Windows.h>
 
 module BaseDialog;
@@ -11,6 +14,10 @@ module BaseDialog;
 import Win32_Util;
 import RootWindow;
 import DialogTemplate;
+
+using std::bind_front;
+using std::make_unique;
+using std::bit_cast;
 
 HWND BaseDialog::StartBaseDialog
 (
@@ -35,6 +42,11 @@ HWND BaseDialog::StartBaseDialog
 	return hwnd;
 }
 
+void BaseDialog::StartGraphics()
+{
+	m_upGraphics = D2D_driver::Create(GetWindowHandle());
+}
+
 bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
 	return RootWindow::CommonMessageHandler(message, wParam, lParam);
@@ -42,22 +54,31 @@ bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
 
 static INT_PTR CALLBACK BaseDialogProc
 (
-    HWND   const hwnd,
+    HWND   const hDlg,
     UINT   const message, 
     WPARAM const wParam, 
     LPARAM const lParam 
 )
 {
-	if (message == WM_INITDIALOG)
+	auto pDlg = bit_cast<BaseDialog*>(Util::GetUserDataPtr(hDlg));
+	switch (message)
 	{
-		Util::SetUserDataPtr(hwnd, lParam);
-		return INT_PTR(true);
-	}
-	else 
-	{
-		if (auto pBaseDialog = static_cast<BaseDialog *>(GetRootWindow(hwnd)))
-			return pBaseDialog->UserProc(message, wParam, lParam);         // normal case
+		case WM_INITDIALOG:
+			Util::SetUserDataPtr(hDlg, lParam);
+			return true;
+
+		case WM_PAINT:
+		{
+			D2D_driver* pGraphics { pDlg->m_upGraphics.get() };
+			if (pGraphics)
+				pGraphics->Display(bind_front(&BaseDialog::DoPaint, pDlg));
+		}
+		break;
+
+		default: 
+			if (auto pBaseDialog = static_cast<BaseDialog *>(GetRootWindow(hDlg)))
+				return pBaseDialog->UserProc(message, wParam, lParam);         // normal case
 	}
 
-	return INT_PTR(false);
+	return false;
 }

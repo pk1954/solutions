@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <array>
 #include <string>
 #include <cassert>
@@ -18,6 +19,8 @@ import Win32_PIXEL;
 using std::array;
 using std::wstring;
 using std::bit_cast;
+using std::unique_ptr;
+using std::make_unique;
 
 D2D_driver::~D2D_driver()
 {
@@ -66,10 +69,12 @@ void D2D_driver::discardResources()
 	SafeRelease(&m_pSink);
 }
 
-void D2D_driver::InitWindow(HWND const hwnd) 
+unique_ptr<D2D_driver> D2D_driver::Create(HWND const hwnd)
 {
-	m_hwnd = hwnd;
-	createResources();
+	unique_ptr<D2D_driver> upGraphics { make_unique<D2D_driver>() };
+	upGraphics->m_hwnd = hwnd;
+	upGraphics->createResources();
+	return move(upGraphics);
 }
 
 void D2D_driver::Resize(PIXEL const width, PIXEL const height)

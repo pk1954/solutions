@@ -4,15 +4,20 @@
 
 module;
 
+#include <functional>
+#include <memory>
 #include <string>
 #include "dwrite.h"
 #include "d2d1helper.h"
+#include <Windows.h>
 
 export module Direct2D;
 
 import Types;
 
+using std::function;
 using std::wstring;
+using std::unique_ptr;
 
 export class D2D1::ColorF;
 
@@ -36,7 +41,19 @@ public:
     D2D_driver() = default;
     virtual ~D2D_driver();
 
-    void InitWindow(HWND const);
+    static unique_ptr<D2D_driver> Create(HWND const hwnd);
+
+    void Display(function<void()> func)
+    {
+        PAINTSTRUCT ps;
+        BeginPaint(m_hwnd, &ps);
+        if (StartFrame())
+        {
+            func();
+            EndFrame();
+        }
+        EndPaint(m_hwnd, &ps);
+    }
     bool StartFrame();
     void EndFrame();
     void ShutDown();

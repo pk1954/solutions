@@ -471,6 +471,8 @@ void MainWindow::OnPaint()
 
 void MainWindow::DoPaint()
 {
+	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
+
 	PixelRect   const  pixRect              { GetClPixelRect() };
 	DrawContext const& context              { GetDrawContextC() };
 	MacroSensor const* pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensor(m_sensorIdSelected)) };
