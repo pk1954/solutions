@@ -83,7 +83,7 @@ private:
 	Observable             & m_dynamicModelObservable;
 	tPos                     m_moveMode { tPos::NONE };
 
-	void DoPaint() final;
+	void PaintGraphics() final;
 
 	void OnMouseMove  (WPARAM const, LPARAM const) final;
 	bool OnLButtonDown(WPARAM const, LPARAM const) final;

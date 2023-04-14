@@ -91,7 +91,7 @@ void MiniWindow::Notify(bool const bImmediately)
 	}
 }
 
-void MiniWindow::DoPaint()
+void MiniWindow::PaintGraphics()
 {
 	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
 	if (m_pObservedNNetWindow)

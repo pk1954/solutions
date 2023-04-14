@@ -469,7 +469,7 @@ void MainWindow::OnPaint()
 
 /////////////////////// local functions ////////////////////////////////
 
-void MainWindow::DoPaint()
+void MainWindow::PaintGraphics()
 {
 	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
 

@@ -427,7 +427,7 @@ void MonitorControl::paintStimulusMarkers() const
 	}
 }
 
-void MonitorControl::DoPaint()
+void MonitorControl::PaintGraphics()
 {
 	m_fPixMaxSignal = 0.0_fPixel;
 

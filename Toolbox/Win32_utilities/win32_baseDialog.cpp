@@ -47,9 +47,22 @@ void BaseDialog::StartGraphics()
 	m_upGraphics = D2D_driver::Create(GetWindowHandle());
 }
 
+void BaseDialog::Stop()
+{
+	RootWindow::Stop();
+	m_upGraphics->ShutDown();
+}
+
 bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
 	return RootWindow::CommonMessageHandler(message, wParam, lParam);
+}
+
+bool BaseDialog::OnSize(PIXEL const width, PIXEL const height)
+{
+	if (D2D_driver * pGraphics { GetGraphics() })
+		pGraphics->Resize();
+	return true;
 }
 
 static INT_PTR CALLBACK BaseDialogProc
@@ -71,7 +84,7 @@ static INT_PTR CALLBACK BaseDialogProc
 		{
 			D2D_driver* pGraphics { pDlg->m_upGraphics.get() };
 			if (pGraphics)
-				pGraphics->Display(bind_front(&BaseDialog::DoPaint, pDlg));
+				pGraphics->Display(bind_front(&BaseDialog::PaintGraphics, pDlg));
 		}
 		break;
 

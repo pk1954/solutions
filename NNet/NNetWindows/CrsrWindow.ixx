@@ -32,7 +32,7 @@ public:
 	void Start(HWND const, MainWindow const * const);
 	void Stop();
 	void SetModelInterface(NNetModelReaderInterface * const);
-	void DoPaint(TextBuffer &) final;
+	void PaintText(TextBuffer &) final;
 
 private:
 	MainWindow               const * m_pMainWindow { nullptr };

@@ -29,7 +29,7 @@ private:
 
 	PixFpDimension<mV> & m_vertCoord;
 
-	void DoPaint() final;
+	void PaintGraphics() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 
 	fPixel getY (fPixel const) const;

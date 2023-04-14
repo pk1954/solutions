@@ -39,7 +39,7 @@ private:
 
 	wstring GetCaption() const final { return L"Mini window"; }
 
-	void DoPaint() final;
+	void PaintGraphics() final;
 
 	MainWindow * m_pObservedNNetWindow { nullptr }; // Observed NNetWindow (or nullptr)
 };

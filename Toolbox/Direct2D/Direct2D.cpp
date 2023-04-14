@@ -4,6 +4,7 @@
 
 module;
 
+#include <functional>
 #include <memory>
 #include <array>
 #include <string>
@@ -21,6 +22,7 @@ using std::wstring;
 using std::bit_cast;
 using std::unique_ptr;
 using std::make_unique;
+using std::function;
 
 D2D_driver::~D2D_driver()
 {
@@ -59,7 +61,39 @@ void D2D_driver::createResources()
 	SetColor(m_color);
 }
 
-void D2D_driver::discardResources() 
+bool D2D_driver::startFrame()
+{
+	if (!m_pRenderTarget)
+		createResources();
+	m_pRenderTarget->BeginDraw();
+	return true;
+}
+
+// Finish rendering; page flip.
+
+void D2D_driver::endFrame()
+{
+	m_hr = m_pRenderTarget->EndDraw();
+	if (m_hr == D2DERR_RECREATE_TARGET)
+	{
+		m_hr = S_OK;
+		discardResources();
+	}
+}
+
+void D2D_driver::Display(function<void()> func)
+{
+	PAINTSTRUCT ps;
+	BeginPaint(m_hwnd, &ps);
+	if (startFrame())
+	{
+		func();
+		endFrame();
+	}
+	EndPaint(m_hwnd, &ps);
+}
+
+void D2D_driver::discardResources()
 {
 	SafeRelease(&m_pD2DFactory);
 	SafeRelease(&m_pDWriteFactory);
@@ -77,11 +111,12 @@ unique_ptr<D2D_driver> D2D_driver::Create(HWND const hwnd)
 	return move(upGraphics);
 }
 
-void D2D_driver::Resize(PIXEL const width, PIXEL const height)
+void D2D_driver::Resize()
 {
 	if (m_pRenderTarget)
 	{
-		m_pRenderTarget->Resize(D2D1::SizeU(width.GetValue(), height.GetValue()));
+		PixelRectSize const size { Util::GetClRectSize(m_hwnd) };
+		m_pRenderTarget->Resize(D2D1::SizeU(size.GetXvalue(), size.GetYvalue()));
 	}
 }
 
@@ -135,14 +170,6 @@ void D2D_driver::SetStdFontSize(float const fSize)
 
 // functions called per frame
 
-bool D2D_driver::StartFrame()
-{
-	if (! m_pRenderTarget)
-		createResources();
-	m_pRenderTarget->BeginDraw();
-	return true;
-}
-
 void D2D_driver::DisplayText
 (
 	fPixelRect         const& rect,
@@ -177,18 +204,6 @@ void D2D_driver::DisplayText
 ) const
 {
 	DisplayText(rect, wstr, *m_pBrush, pTextFormat);
-}
-
-// Finish rendering; page flip.
-
-void D2D_driver::EndFrame()
-{
-	m_hr = m_pRenderTarget->EndDraw();
-	if (m_hr == D2DERR_RECREATE_TARGET)
-	{
-		m_hr = S_OK;
-		discardResources();
-	}
 }
 
 void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel const fPixWidth) const

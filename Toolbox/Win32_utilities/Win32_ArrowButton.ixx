@@ -39,7 +39,7 @@ public:
 
 private:
 
-	void DoPaint() final
+	void PaintGraphics() final
 	{
 		fPixelRect rect { Convert2fPixelRect(GetClPixelRect()) };
 		rect = rect.ScaleRect(-2._fPixel);
@@ -50,7 +50,7 @@ private:
 
 	void OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * const pDiStruct) final
 	{
-		DoPaint();
+		PaintGraphics();
 	};
 
 	bool OnLButtonUp(WPARAM const wParam, LPARAM const lParam) final

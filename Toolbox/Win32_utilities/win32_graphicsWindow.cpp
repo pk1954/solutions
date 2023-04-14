@@ -46,11 +46,11 @@ void GraphicsWindow::Stop()
 void GraphicsWindow::OnPaint()
 {
 	if (IsWindowVisible())
-		m_upGraphics->Display(bind_front(&GraphicsWindow::DoPaint, this));
+		m_upGraphics->Display(bind_front(&GraphicsWindow::PaintGraphics, this));
 }
 
 bool GraphicsWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	m_upGraphics->Resize(width, height);
+	m_upGraphics->Resize();
 	return true;
 }

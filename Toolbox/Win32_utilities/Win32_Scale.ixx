@@ -101,7 +101,7 @@ private:
 		m_pixCoord.Move(pixDelta);
 	}
 
-	void DoPaint() final
+	void PaintGraphics() final
 	{
 		static D2D1::ColorF const colBackGround { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
 		static fPixel       const MIN_TICK_DIST { 6._fPixel };

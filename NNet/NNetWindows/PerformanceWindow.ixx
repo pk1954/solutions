@@ -31,7 +31,7 @@ public:
 
     void Stop();
     void SetModelInterface(NNetModelReaderInterface * const);
-    void DoPaint(TextBuffer &) final;
+    void PaintText(TextBuffer &) final;
 
 private:
     ComputeThread                  * m_pComputeThread   { nullptr };

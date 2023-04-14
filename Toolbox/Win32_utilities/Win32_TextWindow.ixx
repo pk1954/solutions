@@ -40,7 +40,7 @@ public:
 	);
 	void StopTextWindow();
 
-	virtual void DoPaint(TextBuffer&) = 0;
+	virtual void PaintText(TextBuffer&) = 0;
 
 	void Trigger() final;
 
@@ -84,7 +84,7 @@ public:
 	void ThreadMsgDispatcher(MSG const& msg) override
 	{
 		m_pTextBuffer->StartPainting();
-		m_textWindow.DoPaint(*m_pTextBuffer);
+		m_textWindow.PaintText(*m_pTextBuffer);
 		m_textWindow.Invalidate(false);
 	}
 

@@ -98,7 +98,7 @@ void PerformanceWindow::printFloatLine
 	textBuf.nextLine   ();
 }
 
-void PerformanceWindow::DoPaint(TextBuffer & textBuf)
+void PerformanceWindow::PaintText(TextBuffer & textBuf)
 {      
 	if (m_pDisplayTimer)
 	{

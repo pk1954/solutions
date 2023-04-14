@@ -29,7 +29,7 @@ SignalPreview::~SignalPreview()
 	m_vertCoord.UnregisterObserver(*this);
 }
 
-void SignalPreview::DoPaint()
+void SignalPreview::PaintGraphics()
 {
 	if (SignalGenerator      * const pSigGen { GetSigGenSelected() })
 	if (NNetParameters const * const pParams { GetParams() })

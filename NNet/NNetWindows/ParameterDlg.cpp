@@ -28,7 +28,7 @@ ParameterDialog::~ParameterDialog() = default;
 
 void ParameterDialog::Notify(bool const bImmediate)
 {
-	resetParameters();
+	refreshParameters();
 	BaseDialog::Notify(bImmediate);
 }
 
@@ -79,28 +79,28 @@ HWND ParameterDialog::addParameter
 	return hwndEdit;
 }
 
-void ParameterDialog::resetParameters()  // refresh edit fields with data from model
+void ParameterDialog::refreshParameters()  // refresh edit fields with data from model
 {
 	using enum ParamType::Value;
-	resetParameter(m_hwndPulseFreqMax,     pulseFreqMax);
-	resetParameter(m_hwndPeakVoltage,      neuronPeakVolt);
-	resetParameter(m_hwndNeuronThreshold,  neuronThreshold);
-	resetParameter(m_hwndSynapseDelay,     synapseDelay);
-	resetParameter(m_hwndPulseSpeed,       pulseSpeed);
-	resetParameter(m_hwndPulseWidth,       pulseWidth);
-	resetParameter(m_hwndTimeResolution,   timeResolution);
-}
-
+	resetParameter(m_hwndPulseFreqMax,    pulseFreqMax);
+	resetParameter(m_hwndPeakVoltage,     neuronPeakVolt);
+	resetParameter(m_hwndNeuronThreshold, neuronThreshold);
+	resetParameter(m_hwndSynapseDelay,    synapseDelay);
+	resetParameter(m_hwndPulseSpeed,      pulseSpeed);
+	resetParameter(m_hwndPulseWidth,      pulseWidth);
+	resetParameter(m_hwndTimeResolution,  timeResolution);
+}										  
+										  
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
-{
-	using enum ParamType::Value;
-	applyParameter(m_hwndPulseFreqMax,     pulseFreqMax);
-	applyParameter(m_hwndPeakVoltage,      neuronPeakVolt);
-	applyParameter(m_hwndNeuronThreshold,  neuronThreshold);
-	applyParameter(m_hwndSynapseDelay,     synapseDelay);
-	applyParameter(m_hwndPulseSpeed,       pulseSpeed);
-	applyParameter(m_hwndPulseWidth,       pulseWidth);
-	applyParameter(m_hwndTimeResolution,   timeResolution);
+{										  
+	using enum ParamType::Value;		  
+	applyParameter(m_hwndPulseFreqMax,    pulseFreqMax);
+	applyParameter(m_hwndPeakVoltage,     neuronPeakVolt);
+	applyParameter(m_hwndNeuronThreshold, neuronThreshold);
+	applyParameter(m_hwndSynapseDelay,    synapseDelay);
+	applyParameter(m_hwndPulseSpeed,      pulseSpeed);
+	applyParameter(m_hwndPulseWidth,      pulseWidth);
+	applyParameter(m_hwndTimeResolution,  timeResolution);
 }
 
 void ParameterDialog::Start
@@ -111,14 +111,13 @@ void ParameterDialog::Start
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
+	StartGraphics();
 	SetWindowSize(300_PIXEL, 300_PIXEL, false);
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_SYSMENU);
 
 	m_pCommands = pCommands;
 
-	StartGraphics();
-	
 	int iYpos { 10 };
 	using enum ParamType::Value;
 	m_hwndPulseFreqMax     = addParameter(hwndDlg, pulseFreqMax,    iYpos);
@@ -155,8 +154,7 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		return true;
 
 	case IDD_RESET:
-		resetParameters();
-		SendCommand2Application(IDM_RESET_DYNAMIC_DATA, 0);
+		refreshParameters();
 		return true;
 
 	default:
@@ -165,20 +163,9 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	return BaseDialog::OnCommand(wParam, lParam);
 }
 
-void ParameterDialog::DoPaint()
+void ParameterDialog::PaintGraphics()
 {
-	D2D_driver& graphics { GetGraphics() };
-	graphics.FillBackground(D2D1::ColorF::Red);
-	resetParameters();
-}
-
-bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
-{
-	if (message == WM_PAINT)
-	{
-//		resetParameters();
-		return false;
-	}
-
-	return BaseDialog::CommonMessageHandler(message, wParam, lParam);
+	if (D2D_driver * pGraphics { GetGraphics() })
+		pGraphics->FillBackground(D2D1::ColorF::Red);
+	refreshParameters();
 }

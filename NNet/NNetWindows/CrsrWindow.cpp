@@ -98,7 +98,7 @@ void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage) const
 	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::DoPaint(TextBuffer & textBuf)
+void CrsrWindow::PaintText(TextBuffer & textBuf)
 {
 	MicroMeterPnt umPntCrsr { m_pMainWindow->GetCursorPos() };
 	printPositionInfo(textBuf, umPntCrsr);

@@ -43,19 +43,7 @@ public:
 
     static unique_ptr<D2D_driver> Create(HWND const hwnd);
 
-    void Display(function<void()> func)
-    {
-        PAINTSTRUCT ps;
-        BeginPaint(m_hwnd, &ps);
-        if (StartFrame())
-        {
-            func();
-            EndFrame();
-        }
-        EndPaint(m_hwnd, &ps);
-    }
-    bool StartFrame();
-    void EndFrame();
+    void Display(function<void()>);
     void ShutDown();
     void SetStdFontSize(float const);
     void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr)  const;
@@ -83,13 +71,13 @@ public:
     void DrawEllipse         (fPixelEllipse const&,                     fPixel const)                       const;
     void FillArrow           (fPixelPoint const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const) const;
     void FillDiamond         (fPixelPoint const, fPixel const, D2D1::ColorF const) const;
-    void Resize              (PIXEL const, PIXEL const);
     void FillBackground      (D2D1::ColorF const) const;
     void DrawRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const, fPixel const) const;
     void FillRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const) const;
     void UpDownArrow         (bool  const, fPixelRect  const &, D2D1::ColorF const) const;
     void SetRotation         (float const, fPixelPoint const &) const;
     void Reset               () const;
+    void Resize              ();
 
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&,                         fPixel const) const;
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, D2D1::ColorF const,     fPixel const) const;
@@ -121,6 +109,8 @@ private:
 
     void createResources();
     void discardResources();
+    bool startFrame();
+    void endFrame();
 
     ID2D1GradientStopCollection * simpleGradientStopCollection(D2D1::ColorF const, D2D1::ColorF const) const;
 

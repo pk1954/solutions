@@ -107,7 +107,7 @@ private:
 	void     select(NobId const);
 	SigGenId getSigGenId(LPARAM const);
 	bool     selectSigGen(SigGenId const);
-	void     DoPaint() final;
+	void     PaintGraphics() final;
 	void     drawInputCable(InputLine const &) const;
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;

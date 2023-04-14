@@ -92,7 +92,7 @@ private:
 	void paintTrack(TrackNr const) const;
 	void paintNumber(fPixel const, fPixel const, int const, D2D1::ColorF const) const;
 
-	void DoPaint() final;
+	void PaintGraphics() final;
 
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };

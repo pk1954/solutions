@@ -33,10 +33,7 @@ protected:
 	void OnPaint() override;
 	bool OnSize(PIXEL const, PIXEL const) override;
 
-	virtual void DoPaint() = 0;
-
-	fPixel GetClientHeight() const { return Convert2fPixel(GetClientWindowHeight()); }
-	fPixel GetClientWidth () const { return Convert2fPixel(GetClientWindowWidth()); }
+	virtual void PaintGraphics() = 0;
 
 	unique_ptr<D2D_driver> m_upGraphics { nullptr };
 };
