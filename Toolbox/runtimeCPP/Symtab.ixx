@@ -74,4 +74,5 @@ private:
 
     inline static map <wstring, Symbol, std::less<>> m_SymbolTab  {};
     inline static map <Symbol,  wstring>             m_ReverseTab {};
+
 };

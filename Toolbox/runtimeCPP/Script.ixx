@@ -10,6 +10,7 @@ module;
 export module Script;
 
 import Scanner;
+import ErrHndl;
 
 using std::wstring;
 
@@ -41,6 +42,8 @@ public:
 	void           ScrReadString(wstring const&);
 	void           ScrReadSpecial(wchar_t const);
 	void           ScrReadSpecialString(wstring const&);
+
+	ScriptErrorHandler::ScriptException ScrReadUint(unsigned int*);
 
 	// Helper routines for error handlers 
 

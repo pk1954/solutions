@@ -15,6 +15,7 @@ import Scanner;
 
 using std::wstring;
 using std::wostream;
+using std::to_wstring;
 using std::endl;
 
 void ScriptErrorHandler::inputFileError()
@@ -114,7 +115,9 @@ void ScriptErrorHandler::PrintMarkerLine(Scanner const & scanner)
     int const iEndPos   = scanner.GetActEndPos();
     int       iRun;
 
-    for (iRun = 0; iRun < iStartPos; iRun++) 
+    *m_pScriptTrace << L" +++ ";
+
+    for (iRun = 0; iRun < iStartPos; iRun++)
         * m_pScriptTrace << L' ' ;                          // leading blanks 
 
     for (; iRun < iEndPos; iRun++) 
@@ -123,41 +126,41 @@ void ScriptErrorHandler::PrintMarkerLine(Scanner const & scanner)
     * m_pScriptTrace << L' ' << endl;
 }
 
-void ScriptErrorHandler::HandleScriptError
+void ScriptErrorHandler::Print(wstring const& text)
+{
+    *m_pScriptTrace << L" +++ " << text;
+}
+
+void ScriptErrorHandler::PrintNL(wstring const& text)
+{
+    Print(text);
+    *m_pScriptTrace << endl;
+}
+
+void ScriptErrorHandler::PrintErrorInfo
 (
     Scanner         const & scanner,
     ScriptException const & errInfo
 )
 {
-    * m_pScriptTrace << endl << L" +++ error " << errInfo.m_sErrNr;
-    printErrorMsg(scanner, errInfo.m_wstrMessage);
-}
+    PrintNL();
+    PrintNL(L"error " + to_wstring(errInfo.m_sErrNr));
+    PrintNL(L"in file " + scanner.GetActPath());
 
-void ScriptErrorHandler::printErrorMsg
-(
-    Scanner const & scanner,
-    wstring const   m_wstrMessage 
-)
-{
-    * m_pScriptTrace << L" in file " << scanner.GetActPath().c_str() << endl;
+    if (int const iLineNr = scanner.GetActLineNr() > 0)
+        PrintNL(L"line " + to_wstring(iLineNr));
 
-    int const iLineNr = scanner.GetActLineNr();
-    if (iLineNr > 0)
-        * m_pScriptTrace << L" +++ line " << iLineNr << endl;
+    if (!scanner.GetActLine().empty())
+    {
+        Print(scanner.GetActLine());
+        PrintMarkerLine(scanner);
+    }
 
-    wstring const wstrActLine = scanner.GetActLine();
-    if (! wstrActLine.empty())
-        * m_pScriptTrace << wstrActLine;
-
-    PrintMarkerLine(scanner);
-
-    if (! m_wstrMessage.empty())
-        * m_pScriptTrace << L" +++ " << m_wstrMessage << endl;
+    if (!errInfo.m_wstrMessage.empty())
+        PrintNL(errInfo.m_wstrMessage);
 
     if (!scanner.GetExpectedToken().empty())
-        * m_pScriptTrace << L" +++ expected \"" << scanner.GetExpectedToken().c_str() << L"\""<< endl;
-
-    * m_pScriptTrace << L" +++ error exit" << endl;
+        PrintNL(L"expected \"" + scanner.GetExpectedToken() + L"\"");
 
     (void)m_pScriptTrace->flush();
 }

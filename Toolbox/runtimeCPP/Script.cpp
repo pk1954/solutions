@@ -312,8 +312,23 @@ unsigned int Script::ScrReadUint(void)
 { 
    bool       fNeg  { false };
    auto const uiRes { static_cast<unsigned int>(numeric(L"unsigned int", UINT_MAX, &fNeg)) };
-   return uiRes;  
+   return uiRes;
 } 
+
+ScriptErrorHandler::ScriptException Script::ScrReadUint(unsigned int* pui)
+{
+    ScriptErrorHandler::ScriptException errInfo;
+    try
+    {
+        bool fNeg { false };
+        *pui = static_cast<unsigned int>(numeric(L"unsigned int", UINT_MAX, &fNeg));
+    }
+    catch (ScriptErrorHandler::ScriptException const& e)
+    {
+        errInfo = e;
+    }
+    return errInfo;
+}
 
 //  ScrReadShort: Try to read a short from open test script
    
@@ -448,7 +463,8 @@ bool Script::ScrOpen(wstring const & wstrPath)
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
-        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
+        ScriptErrorHandler::PrintErrorInfo(m_scanner, errInfo);
+        ScriptErrorHandler::PrintNL(L"error exit");
         return false;
     }
     return true;
@@ -466,7 +482,8 @@ bool Script::ReadNextToken()  // returns true, if token was successfully read
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
-        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
+        ScriptErrorHandler::PrintErrorInfo(m_scanner, errInfo);
+        ScriptErrorHandler::PrintNL(L"error exit");
         return false;
     }
     return true;
@@ -474,32 +491,24 @@ bool Script::ReadNextToken()  // returns true, if token was successfully read
 
 bool Script::ProcessToken()
 {
-    try 
-    {  
-        m_scanner.SetExpectedToken(L"function name");
+    m_scanner.SetExpectedToken(L"function name");
 
-        if (m_token == tTOKEN::Name)
-        {
-            wstring const & wstrName = m_scanner.GetString();
-            Symbol  const & symbol   = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
-
-            if (symbol.GetSymbolType() != tSTYPE::Function)
-                ScriptErrorHandler::typeError();    // wrong symbol type 
-
-            symbol.GetFunction()(* this);           // call wrapper function 
-        }   
-        else if (m_token == tTOKEN::End)
-            return false;                           // normal termination 
-        else if (m_token == tTOKEN::Special)
-            ScriptErrorHandler::charError();
-        else
-            ScriptErrorHandler::tokenError();
-    }
-    catch (ScriptErrorHandler::ScriptException const & errInfo)
+    if (m_token == tTOKEN::Name)
     {
-        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
-        return false;
-    }
+        wstring const & wstrName = m_scanner.GetString();
+        Symbol  const & symbol   = SymbolTable::GetSymbolFromName(wstrName); // find entry in symbol table 
+
+        if (symbol.GetSymbolType() != tSTYPE::Function)
+            ScriptErrorHandler::typeError();    // wrong symbol type 
+
+        symbol.GetFunction()(* this);           // call wrapper function 
+    }   
+    else if (m_token == tTOKEN::End)
+        return false;                           // normal termination 
+    else if (m_token == tTOKEN::Special)
+        ScriptErrorHandler::charError();
+    else
+        ScriptErrorHandler::tokenError();
 
     return true;
 }         
@@ -513,9 +522,10 @@ bool Script::ScrClose()
             (* m_pWrapHook)(* this);                // call hook function 
         wcout << Scanner::COMMENT_START << L"End of file  " << GetActPath() << endl << endl;
     }
-    catch (ScriptErrorHandler::ScriptException const & errInfo)
+    catch (ScriptErrorHandler::ScriptException const& errInfo)
     {
-        ScriptErrorHandler::HandleScriptError(m_scanner, errInfo);
+        ScriptErrorHandler::PrintErrorInfo(m_scanner, errInfo);
+        ScriptErrorHandler::PrintNL(L"error exit");
         return false;
     }
     return true;
@@ -540,8 +550,14 @@ bool Script::ScrProcess(wstring const & wstrPath)
     ScrSetNewLineHook(m_bEchoScript ? &newLineHook : nullptr);
     while (ReadNextToken() && (m_token != tTOKEN::End))
     {
-        if (!ProcessToken())   
+        try
         {
+            ProcessToken();
+        }
+        catch (ScriptErrorHandler::ScriptException const& errInfo)
+        {
+            ScriptErrorHandler::PrintErrorInfo(m_scanner, errInfo);
+            ScriptErrorHandler::PrintNL(L"error exit");
             ScrClose();
             return false;     // error in file
         }

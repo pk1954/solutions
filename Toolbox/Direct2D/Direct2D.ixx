@@ -46,9 +46,9 @@ public:
     void Display(function<void()>);
     void ShutDown();
     void SetStdFontSize(float const);
-    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr)  const;
-    void DisplayText(fPixelRect const&, wstring const&, D2D1::ColorF const,  IDWriteTextFormat* = nullptr)  const;
-    void DisplayText(fPixelRect const&, wstring const&,                      IDWriteTextFormat* = nullptr)  const;
+    void DisplayText         (fPixelRect    const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr) const;
+    void DisplayText         (fPixelRect    const&, wstring const&, D2D1::ColorF const,  IDWriteTextFormat* = nullptr) const;
+    void DisplayText         (fPixelRect    const&, wstring const&,                      IDWriteTextFormat* = nullptr) const;
     void DrawRectangle       (fPixelRect    const&, D2D1::ColorF const, fPixel const)                       const;
     void FillRectangle       (fPixelRect    const&, D2D1::ColorF const)                                     const;
     void FillGradientRect    (fPixelRect    const&, D2D1::ColorF const, D2D1::ColorF const)                 const;

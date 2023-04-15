@@ -291,7 +291,7 @@ public:
 
 	PixelPoint GetCrsrPosFromLparam(LPARAM const lParam) const
 	{
-		return PixelPoint{ CrsrXpos(lParam), CrsrYpos(lParam) };
+		return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) };
 	}
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
@@ -305,7 +305,6 @@ public:
 	void SetWindowVisibility(tOnOffAuto const);
 
 	void SetParentContextMenueMode(bool const b) { m_bParentContextMenue = b; }
-
 
 protected:
 

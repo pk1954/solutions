@@ -48,12 +48,12 @@ public:
         wstring m_wstrMessage { L"undefined" };    // error message              
     };
 
-    static void HandleScriptError(Scanner const &, ScriptException const &);
+    static void PrintErrorInfo(Scanner const &, ScriptException const &);
     static void PrintMarkerLine  (Scanner const &);
     static void ScrSetOutputStream(wostream * const);
+    static void Print(wstring const& = L"");
+    static void PrintNL(wstring const& = L"");
 
 private:
-    static void printErrorMsg(Scanner const &, wstring const );
-
     inline static wostream * m_pScriptTrace { & wcout };
 };

@@ -12,6 +12,7 @@ export module WrapGlobalParameter;
 import SaveCast;
 import NNetWrapperBase;
 import Script;
+import ErrHndl;
 import NNetModelIO;
 import NNetModel;
 
@@ -26,10 +27,19 @@ public:
 
     void operator() (Script& script) const final
     {
-        auto const param(static_cast<ParamType::Value>(script.ScrReadUint()));
+        unsigned int uiParam;
+        ScriptErrorHandler::ScriptException const errInfo { script.ScrReadUint(&uiParam) };
         script.ScrReadSpecial(L'=');
         float const fValue{ Cast2Float(script.ScrReadFloat()) };
-        m_modelIO.GetImportNMWI().SetParam(param, fValue);
+        if (errInfo.m_sErrNr)
+        {
+            ScriptErrorHandler::PrintErrorInfo(script.GetScanner(), errInfo);
+            ScriptErrorHandler::PrintNL(L"ignoring parameter");
+        }
+        else
+        {
+           m_modelIO.GetImportNMWI().SetParam(static_cast<ParamType::Value>(uiParam), fValue);
+        }
     }
 
     void Write(wostream & out) const final

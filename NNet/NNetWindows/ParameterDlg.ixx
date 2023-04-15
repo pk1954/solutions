@@ -23,15 +23,20 @@ public:
 	ParameterDialog();
 	~ParameterDialog() final;
 
-	void Start(HWND const, NNetModelCommands * const);
+	void Start(HWND const, NNetModelCommands* const);
 	void Stop();
-	void SetModelInterface(NNetModelWriterInterface * const);
+	void SetModelInterface(NNetModelWriterInterface* const);
 	void Notify(bool const) final;
 	void PaintGraphics() final;
 
 private:
-	static int const HORZ_SPACE {  8 };
-	static int const VERT_SPACE { 14 };
+	static int const HORZ_SPACE { 8 };
+	static int const VERT_SPACE { 10 };
+
+	//inline static D2D1::ColorF const D2D_COL_BACKGROUND { D2D1::ColorF::Red };
+	inline static COLORREF const COL_BACKGROUND { D2D1::ColorF::Red };
+
+	ID2D1SolidColorBrush* m_brushBackGround;
 
 	NNetModelWriterInterface * m_pNMWI     { nullptr };
 	NNetModelCommands        * m_pCommands { nullptr };
@@ -55,4 +60,5 @@ private:
 	ParameterDialog & operator= (ParameterDialog const &);  // noncopyable class 
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	bool UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

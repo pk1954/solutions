@@ -22,8 +22,7 @@ public:
 
 	HWND StartBaseDialog(HWND const, VisCrit const &);
 
-	void StartGraphics();
-
+	D2D_driver * StartGraphics();
 	D2D_driver * GetGraphics() { return m_upGraphics.get(); }
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);

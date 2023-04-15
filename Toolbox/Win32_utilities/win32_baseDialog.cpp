@@ -42,9 +42,10 @@ HWND BaseDialog::StartBaseDialog
 	return hwnd;
 }
 
-void BaseDialog::StartGraphics()
+D2D_driver * BaseDialog::StartGraphics()
 {
 	m_upGraphics = D2D_driver::Create(GetWindowHandle());
+	return m_upGraphics.get();
 }
 
 void BaseDialog::Stop()

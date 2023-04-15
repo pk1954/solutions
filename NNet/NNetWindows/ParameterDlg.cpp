@@ -68,7 +68,7 @@ HWND ParameterDialog::addParameter
 
 	int  iXpos { 10 }; 
 
-	CreateStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, NAME_WIDTH, HEIGHT);
+	HWND const hwndStatic = CreateStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, NAME_WIDTH, HEIGHT);
 	iXpos += NAME_WIDTH + HORZ_SPACE;
 	HWND const hwndEdit = CreateEditField(hwndDlg,            iXpos, iYpos, EDIT_WIDTH, HEIGHT);
 	iXpos += EDIT_WIDTH + HORZ_SPACE;
@@ -111,22 +111,30 @@ void ParameterDialog::Start
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
-	StartGraphics();
+	D2D_driver * pGraphics = StartGraphics();
+	m_brushBackGround = pGraphics->CreateBrush(COL_BACKGROUND);
 	SetWindowSize(300_PIXEL, 300_PIXEL, false);
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_SYSMENU);
 
 	m_pCommands = pCommands;
 
-	int iYpos { 10 };
+	int iYpos { 20 };
 	using enum ParamType::Value;
-	m_hwndPulseFreqMax     = addParameter(hwndDlg, pulseFreqMax,    iYpos);
-	m_hwndPeakVoltage      = addParameter(hwndDlg, neuronPeakVolt,  iYpos);
-	m_hwndNeuronThreshold  = addParameter(hwndDlg, neuronThreshold, iYpos);
-	m_hwndSynapseDelay     = addParameter(hwndDlg, synapseDelay,    iYpos);
-	m_hwndPulseWidth       = addParameter(hwndDlg, pulseWidth,      iYpos);
-	m_hwndTimeResolution   = addParameter(hwndDlg, timeResolution,  iYpos);
-	m_hwndPulseSpeed       = addParameter(hwndDlg, pulseSpeed,      iYpos);
+
+	m_hwndPeakVoltage     = addParameter(hwndDlg, neuronPeakVolt,  iYpos);
+	m_hwndPulseWidth      = addParameter(hwndDlg, pulseWidth,      iYpos);
+	m_hwndNeuronThreshold = addParameter(hwndDlg, neuronThreshold, iYpos);
+
+	iYpos += 10;
+	m_hwndSynapseDelay    = addParameter(hwndDlg, synapseDelay,    iYpos);
+
+	iYpos += 10;
+	m_hwndPulseFreqMax    = addParameter(hwndDlg, pulseFreqMax,    iYpos);
+	m_hwndTimeResolution  = addParameter(hwndDlg, timeResolution,  iYpos);
+
+	iYpos += 10;
+	m_hwndPulseSpeed      = addParameter(hwndDlg, pulseSpeed,      iYpos);
 
 	CreateButton(hwndDlg, L"Apply", 140, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 200, iYpos, 50, 20, IDD_RESET);
@@ -166,6 +174,26 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 void ParameterDialog::PaintGraphics()
 {
 	if (D2D_driver * pGraphics { GetGraphics() })
-		pGraphics->FillBackground(D2D1::ColorF::Red);
+	{
+		pGraphics->FillBackground(GetSysColor(COLOR_WINDOW));
+
+		static fPixel const CORNERS { 5._fPixel };
+		fPixelRect fPixRect { 5._fPixel, 5._fPixel, 300._fPixel, 90._fPixel, };
+		pGraphics->DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
+	}
 	refreshParameters();
+}
+
+bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
+{
+	if (message == WM_CTLCOLORSTATIC)
+	{
+		HDC hdc = (HDC)wParam;
+		HWND hwnd = (HWND)lParam;
+		SetBkColor(hdc, COL_BACKGROUND); // Set to red
+		SetDCBrushColor(hdc, COL_BACKGROUND);
+		return (INT_PTR)GetStockObject(DC_BRUSH);
+	}
+
+	return BaseDialog::CommonMessageHandler(message, wParam, lParam);
 }
