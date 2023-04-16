@@ -84,7 +84,7 @@ void Neuron::CollectInput()
 
 bool Neuron::CompStep()
 {
-	bool bTrigger { m_mVpotential >= GetParam()->NeuronThreshold() };
+	bool bTrigger { m_mVpotential >= GetParam()->Threshold() };
 
 	if (bTrigger)
 	{

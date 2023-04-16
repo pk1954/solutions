@@ -29,7 +29,7 @@ public:
 
 	fHertz      PulseFreqMax    () const { return m_freqMax; }
 	mV          NeuronPeakVolt  () const { return m_neuronPeakVolt; }
-	mV          NeuronThreshold () const { return m_neuronThreshold; }
+	mV          Threshold       () const { return m_threshold; }
 	fMicroSecs  SynapseDelay    () const { return m_synapseDelay; }
 	fMicroSecs  PulseWidth      () const { return m_pulseWidth; }
 	meterPerSec PulseSpeed      () const { return m_pulseSpeed; }
@@ -40,7 +40,7 @@ private:
 	SigGenStaticData m_sigGenData       { };
 	fHertz           m_freqMax          { 50.0_fHertz };
 	mV               m_neuronPeakVolt   { 100._mV };
-	mV               m_neuronThreshold  { 20._mV };
+	mV               m_threshold        { 20._mV };
 	fMicroSecs       m_synapseDelay     { 500._MicroSecs };
 	meterPerSec      m_pulseSpeed       { 120.0_meterPerSec };
 	fMicroSecs       m_pulseWidth       { 2000._MicroSecs };

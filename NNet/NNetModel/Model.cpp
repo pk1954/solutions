@@ -126,9 +126,6 @@ void Model::SetParam
 	float            const fNewValue 
 )
 {
-	if (param == ParamType::Value::synapseThreshold)    // legacy
-		return;
-
 	m_param.SetParameterValue(param, fNewValue);
 	if (param == ParamType::Value::synapseDelay)
 		m_upNobs->Apply2All<Synapse>([](Synapse& s) { s.RecalcDelayBuffer(); });

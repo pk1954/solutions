@@ -6,6 +6,7 @@ module;
 
 #include <compare>
 #include <memory>
+#include <string>
 #include <Windows.h>
 
 export module NNetWin32:ParameterDialog;
@@ -16,6 +17,7 @@ import NNetModelCommands;
 import NNetModel;
 
 using std::unique_ptr;
+using std::wstring;
 
 export class ParameterDialog : public BaseDialog
 {
@@ -30,31 +32,40 @@ public:
 	void PaintGraphics() final;
 
 private:
-	static int const HORZ_SPACE { 8 };
-	static int const VERT_SPACE { 10 };
+	static int const LEFT_SPACE       {  16 };
+	static int const HORZ_SPACE       {   8 };
+	static int const NAME_WIDTH       { 100 };
+	static int const EDIT_WIDTH       {  60 };
+	static int const UNIT_WIDTH       {  40 };
+	static int const VERT_SPACE       {  10 };
+	static int const VERT_BLOCK_SPACE {  30 };
+	static int const HEIGHT           {  16 };
 
-	//inline static D2D1::ColorF const D2D_COL_BACKGROUND { D2D1::ColorF::Red };
-	inline static COLORREF const COL_BACKGROUND { D2D1::ColorF::Red };
+	inline static COLORREF const COL_BACKGROUND { RGB(240, 240, 240) };
 
-	ID2D1SolidColorBrush* m_brushBackGround;
+	ID2D1SolidColorBrush * m_brushBackGround;
+	IDWriteTextFormat    * m_pTextFormatHeader;
 
 	NNetModelWriterInterface * m_pNMWI     { nullptr };
 	NNetModelCommands        * m_pCommands { nullptr };
 
-	HWND m_hwndPulseFreqMax     { nullptr };
-	HWND m_hwndPeakVoltage      { nullptr };
-	HWND m_hwndNeuronThreshold  { nullptr };
-	HWND m_hwndSynapseDelay     { nullptr };
-	HWND m_hwndPulseWidth       { nullptr };
-	HWND m_hwndTimeResolution   { nullptr };
-	HWND m_hwndFilterSize       { nullptr };
-	HWND m_hwndPulseSpeed       { nullptr };
+	fPixel m_fPixPosVert;      // helper for paintHeader
+
+	HWND m_hwndPulseFreqMax   { nullptr };
+	HWND m_hwndPeakVoltage    { nullptr };
+	HWND m_hwndThreshold      { nullptr };
+	HWND m_hwndSynapseDelay   { nullptr };
+	HWND m_hwndPulseWidth     { nullptr };
+	HWND m_hwndTimeResolution { nullptr };
+	HWND m_hwndFilterSize     { nullptr };
+	HWND m_hwndPulseSpeed     { nullptr };
 
 	void resetParameter(HWND const, ParamType::Value const) const;
 	void applyParameter(HWND const, ParamType::Value const);
 	HWND addParameter  (HWND const, ParamType::Value const, int &);
 	void refreshParameters();
 	void applyParameters();
+	void paintHeader(int const, wstring const &);
 
 	ParameterDialog             (ParameterDialog const &);  // noncopyable class 
 	ParameterDialog & operator= (ParameterDialog const &);  // noncopyable class 
