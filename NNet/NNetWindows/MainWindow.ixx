@@ -109,6 +109,7 @@ private:
 	bool     selectSigGen(SigGenId const);
 	void     PaintGraphics() final;
 	void     drawInputCable(InputLine const &) const;
+	void     connect(NobId const, NobId const);
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

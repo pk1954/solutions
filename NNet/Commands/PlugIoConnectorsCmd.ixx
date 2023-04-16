@@ -80,6 +80,7 @@ public:
         if (IsTraceOn())
             TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
         PushCommand(make_unique<PlugIoConnectorsCmd>(nobId1, nobId2));
+        m_pSound->Play(L"SNAP_IN_SOUND");
     }
 
 private:

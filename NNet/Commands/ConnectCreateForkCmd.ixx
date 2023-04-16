@@ -61,6 +61,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << idSrc.GetValue() << L' ' << idDst.GetValue() << endl;
 		PushCommand(make_unique<ConnectCreateForkCmd>(idSrc, idDst));
+		m_pSound->Play(L"SNAP_IN_SOUND");
 	}
 
 private:

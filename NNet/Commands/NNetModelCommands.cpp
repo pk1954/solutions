@@ -54,31 +54,31 @@ void NNetModelCommands::AddModel()
 	m_pCmdStack->PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
 }
 
-void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
-{ 
-	using enum ConnectionType;
-
-	ConnectionType connType { m_pNMWI->ConnectionResult(idSrc, idDst) };
-	switch (connType)
-	{
-		case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);  // case 1 
-			break;
-		case ct_synapse:	 
-			ConnectCreateSynapseCmd::Push(idSrc, idDst);  // case 2
-			break;
-		case ct_neuron:
-			Connect2NeuronCommand::Push(idSrc, idDst);    // case 3
-			break;  
-		case ct_knot:		 
-			PlugIoLinesCmd::Push(idSrc, idDst);              // case 4/5
-			break;
-		case ct_connector:
-			ConnAnimationCommand::Push(idSrc, idDst);     // case 12/13
-			break;
-		case ct_plugConnectors:
-			PlugIoConnectorsCmd::Push(idSrc, idDst);         // case 6
-			break;
-		default: assert(false);
-	}
-	m_pSound->Play(L"SNAP_IN_SOUND");
-}
+//void NNetModelCommands::Connect(NobId const idSrc, NobId const idDst)
+//{ 
+//	using enum ConnectionType;
+//
+//	ConnectionType connType { m_pNMWI->ConnectionResult(idSrc, idDst) };
+//	switch (connType)
+//	{
+//		case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);  // case 1 
+//			break;
+//		case ct_synapse:	 
+//			ConnectCreateSynapseCmd::Push(idSrc, idDst);  // case 2
+//			break;
+//		case ct_neuron:
+//			Connect2NeuronCommand::Push(idSrc, idDst);    // case 3
+//			break;  
+//		case ct_knot:		 
+//			PlugIoLinesCmd::Push(idSrc, idDst);              // case 4/5
+//			break;
+//		case ct_connector:
+//			ConnAnimationCommand::Push(idSrc, idDst);     // case 12/13
+//			break;
+//		case ct_plugConnectors:
+//			PlugIoConnectorsCmd::Push(idSrc, idDst);         // case 6
+//			break;
+//		default: assert(false);
+//	}
+//	m_pSound->Play(L"SNAP_IN_SOUND");
+//}

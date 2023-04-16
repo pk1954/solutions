@@ -33,7 +33,7 @@ public:
     void SetModelInterface(NNetModelWriterInterface* const);
 
     void AddModel();
-    void Connect(NobId const, NobId const);
+    //void Connect(NobId const, NobId const);
 
 private:
 

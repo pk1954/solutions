@@ -5,6 +5,7 @@
 module;
 
 #include <unordered_map>
+#include <cassert>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -362,6 +363,34 @@ bool MainWindow::selectSigGen(SigGenId const id)
 	return bRes;
 }
 
+void MainWindow::connect(NobId const idSrc, NobId const idDst)
+{
+	using enum ConnectionType;
+
+	ConnectionType connType { m_pNMRI->ConnectionResult(idSrc, idDst) };
+	switch (connType)
+	{
+	case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);  // case 1 
+		break;
+	case ct_synapse:
+		ConnectCreateSynapseCmd::Push(idSrc, idDst);  // case 2
+		break;
+	case ct_neuron:
+		Connect2NeuronCommand::Push(idSrc, idDst);    // case 3
+		break;
+	case ct_knot:
+		PlugIoLinesCmd::Push(idSrc, idDst);              // case 4/5
+		break;
+	case ct_connector:
+		ConnAnimationCommand::Push(idSrc, idDst);     // case 12/13
+		break;
+	case ct_plugConnectors:
+		PlugIoConnectorsCmd::Push(idSrc, idDst);         // case 6
+		break;
+	default: assert(false);
+	}
+}
+
 bool MainWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
 	SigGenId const idSigGen { getSigGenId(lParam) };
@@ -377,7 +406,7 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	ReleaseCapture();
 	if (connectionAllowed())
 	{
-		m_pModelCommands->Connect(m_nobIdHighlighted, m_nobIdTarget);
+		connect(m_nobIdHighlighted, m_nobIdTarget);
 		Reset();
 	}
 	else if (m_pNMRI->IsAnySignalSelected()) 
