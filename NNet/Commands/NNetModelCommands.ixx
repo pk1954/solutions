@@ -27,21 +27,16 @@ public:
     void Initialize
     (
         NNetModelIO      * const,
-        Sound            * const,
         NNetCommandStack * const
     );
-    void SetModelInterface(NNetModelWriterInterface* const);
 
     void AddModel();
-    //void Connect(NobId const, NobId const);
 
 private:
 
     wostream& TraceStream() { return wcout; }
 
-    bool                       m_bTrace    { true };
-    CommandStack             * m_pCmdStack { nullptr };
-    NNetModelWriterInterface * m_pNMWI     { nullptr };
-    NNetModelIO              * m_pModelIO  { nullptr };
-    Sound                    * m_pSound    { nullptr };
+    bool           m_bTrace    { true };
+    CommandStack * m_pCmdStack { nullptr };
+    NNetModelIO  * m_pModelIO  { nullptr };
 };

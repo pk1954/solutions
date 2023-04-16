@@ -73,7 +73,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	m_modelIO       .Initialize();
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
-	m_modelCommands .Initialize(&m_modelIO, &m_sound, &m_cmdStack);
+	m_modelCommands .Initialize(&m_modelIO, &m_cmdStack);
 	m_NNetController.Initialize
 	(
 		& m_WinManager,
@@ -102,7 +102,6 @@ void NNetAppWindow::setModelInterface()
 {
 	NNetCommand       ::SetModelInterface(&m_nmwi);
 	m_parameterDlg     .SetModelInterface(&m_nmwi);
-	m_modelCommands    .SetModelInterface(&m_nmwi);
 	m_cmdStack         .SetModelInterface(&m_nmwi);
 	m_computeThread    .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
