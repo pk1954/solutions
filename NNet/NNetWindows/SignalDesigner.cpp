@@ -22,7 +22,6 @@ import Win32_PixelTypes;
 import Direct2D;
 import Scale;
 import NNetCommands;
-import NNetModelCommands;
 import NNetModel;
 import :ComputeThread;
 
@@ -37,8 +36,7 @@ void SignalDesigner::Initialize
 	HWND          const   hwndParent,
 	ComputeThread const & computeThread,
 	Observable          & runObservable,
-	Observable          & dynamicModelObservable,
-	NNetModelCommands   * pCommands
+	Observable          & dynamicModelObservable
 )
 {
 	HWND hwndSigDes = StartBaseWindow
@@ -54,7 +52,6 @@ void SignalDesigner::Initialize
 	runObservable.RegisterObserver(*this);
 
 	m_pComputeThread = & computeThread;
-	m_pCommands = pCommands;
 
 	// coords
 
@@ -188,7 +185,6 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 	(
 		GetWindowHandle(),
 		computeThread,
-		*m_pCommands,
 		runObservable,
 		dynamicModelObservable,
 		&m_horzCoord 

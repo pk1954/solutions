@@ -5,42 +5,16 @@
 module;
 
 #include <string>
-#include "Resource.h"
 
 module NNetWin32:NNetWrappers;
 
 import Symtab;
-import Types;
 import ErrHndl;
-import SoundInterface;
-import UtilityWrappers;
-import DrawContext;
 import Script;
-import NNetModel;
 import NNetModelIO;
-import NNetModelCommands;
 import NNetCommands;
 
 import :NNetInputOutputUI;
-
-using std::wstring;
-
-static NNetModelReaderInterface * m_pNMRI;
-static NNetModelCommands        * m_pCommands;
-static NNetModelIO              * m_pModelIO;
-
-class WrapAddModel: public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        m_pModelIO->Import
-        (
-            script.ScrReadString(), 
-            NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
-        );
-    }
-};
 
 class WrapBreak : public ScriptFunctor
 {
@@ -51,27 +25,15 @@ public:
     }
 };
 
-void NNetWrappersSetModelInterface(NNetModelReaderInterface * const pNMRI)
+void InitializeNNetWrappers(NNetModelIO * const pModelIO)
 {
-    m_pNMRI = pNMRI;
-};
-
-void InitializeNNetWrappers
-(
-    NNetModelCommands * const pCommands,
-    NNetModelIO       * const pModelIO
-)
-{
-    m_pCommands = pCommands;
-    m_pModelIO  = pModelIO;
-
     AddMicroSensorCmd::Register();
+    AddModuleCommand::Register(pModelIO);
     AddNobsCommand::Register();
     AddSensorCmd::Register();
     AddSigGen2MonitorCmd::Register();
     AttachSigGen2ConCmd::Register();
     AttachSigGen2LineCmd::Register();
-//    ArrowAnimationCmd::Register();
     ConnAnimationCommand::Register();
     Connect2NeuronCommand::Register();
     ConnectCreateForkCmd::Register();
@@ -120,9 +82,8 @@ void InitializeNNetWrappers
     ToggleStopOnTriggerCmd::Register();
     UndoCommand::Register();
 
-    SymbolTable::ScrDefConst(L"AddModel", new WrapAddModel);
-    SymbolTable::ScrDefConst(L"Include",  new WrapInclude );
-    SymbolTable::ScrDefConst(L"Break",    new WrapBreak );
+    SymbolTable::ScrDefConst(L"Include", new WrapInclude );
+    SymbolTable::ScrDefConst(L"Break",   new WrapBreak );
    
     ParamType::Apply2GlobalParameters
     ( 

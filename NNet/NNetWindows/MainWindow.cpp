@@ -20,7 +20,6 @@ import NNetCommands;
 import DrawContext;
 import FatalError;
 import NNetModel;
-import NNetModelCommands;
 import Observable;
 import RootWindow;
 import Types;
@@ -49,7 +48,6 @@ void MainWindow::Start
 	fPixel        const   fPixBeaconLimit,
 	Preferences         & preferences,
 	NNetController      & controller,
-	NNetModelCommands   & modelCommands,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,  
 	Observable          & pStaticModelObservable,
@@ -69,7 +67,6 @@ void MainWindow::Start
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 	m_pPreferences         = & preferences;
-	m_pModelCommands       = & modelCommands;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;

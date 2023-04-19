@@ -8,15 +8,6 @@ module;
 
 export module NNetWin32:NNetWrappers;
 
-import NNetModelCommands;
-import NNetCommands;
 import NNetModelIO;
-import NNetModel;
 
-export void NNetWrappersSetModelInterface(NNetModelReaderInterface * const);
-
-export void InitializeNNetWrappers
-(
-    NNetModelCommands * const,
-    NNetModelIO       * const
-);
+export void InitializeNNetWrappers(NNetModelIO * const);

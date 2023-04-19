@@ -12,7 +12,6 @@ module;
 module NNetWin32:SignalControl;
 
 import Types;
-import NNetModelCommands;
 import NNetModel;
 import NNetCommands;
 import :ComputeThread;
@@ -25,14 +24,12 @@ SignalControl::SignalControl
 (
 	HWND                 const   hwndParent,
 	ComputeThread        const & computeThread,
-	NNetModelCommands          & commands,
 	Observable                 & runObservable,
 	Observable                 & dynamicModelObservable,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
   : TimeGraph(hwndParent, pHorzCoord),
 	m_computeThread(computeThread),
-	m_commands(commands),
 	m_runObservable(runObservable),
 	m_dynamicModelObservable(dynamicModelObservable)
 {

@@ -13,7 +13,6 @@ export module NNetWin32:ParameterDialog;
 
 import Direct2D;
 import BaseDialog;
-import NNetModelCommands;
 import NNetModel;
 
 using std::unique_ptr;
@@ -25,7 +24,7 @@ public:
 	ParameterDialog();
 	~ParameterDialog() final;
 
-	void Start(HWND const, NNetModelCommands* const);
+	void Start(HWND const);
 	void Stop();
 	void SetModelInterface(NNetModelWriterInterface* const);
 	void Notify(bool const) final;
@@ -47,7 +46,6 @@ private:
 	IDWriteTextFormat    * m_pTextFormatHeader;
 
 	NNetModelWriterInterface * m_pNMWI     { nullptr };
-	NNetModelCommands        * m_pCommands { nullptr };
 
 	fPixel m_fPixPosVert;      // helper for paintHeader
 

@@ -20,7 +20,6 @@ import Direct2D;
 import BaseWindow;
 import Scale;
 import BaseScale;
-import NNetModelCommands;
 import NNetModel;
 import :ComputeThread;
 import :SignalControl;
@@ -39,8 +38,7 @@ public:
 		HWND const, 
 		ComputeThread const &, 
 		Observable &,
-		Observable &,
-		NNetModelCommands *
+		Observable &
 	);
 
 	LPARAM  AddContextMenuEntries(HMENU const) final;
@@ -95,7 +93,6 @@ private:
 	
 	ComputeThread      const * m_pComputeThread    { nullptr };
 	NNetModelWriterInterface * m_pNMWI             { nullptr };
-	NNetModelCommands        * m_pCommands         { nullptr };
 	HMENU                      m_hMenu             { nullptr };
 	bool                       m_bIntegrated       { false };
 	bool                       m_bPreview          { false };

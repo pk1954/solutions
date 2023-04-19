@@ -24,16 +24,14 @@ MonitorControl::MonitorControl
 (
 	HWND                 const   hwndParent,
 	Sound                      & sound,
-	NNetModelCommands          & modelCommands,
 	PixFpDimension<fMicroSecs> & horzCoord,
 	PixFpDimension<mV>         & vertCoord,
 	Observable                 & observable
 )
-  : TimeGraph(hwndParent, &horzCoord),
-	m_horzCoord    (horzCoord),
-	m_vertCoord    (vertCoord),
-	m_sound        (sound),
-	m_modelCommands(modelCommands)
+  : TimeGraph  (hwndParent, &horzCoord),
+	m_horzCoord(horzCoord),
+	m_vertCoord(vertCoord),
+	m_sound    (sound)
 {
 	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
 	m_measurement.Initialize(m_upGraphics.get());

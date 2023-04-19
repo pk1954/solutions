@@ -42,7 +42,7 @@
 #define       IDM_ASK_AND_SAVE_MODEL         171
 #define       IDM_SAVE_MODEL_AS              172
 #define       IDM_OPEN_MODEL                 173
-#define       IDM_ADD_MODEL                  174
+#define       IDM_ADD_MODULE                 174
 #define       IDM_NEW_MODEL                  175
 #define       IDM_ADD_IMPORTED_MODEL         176
 

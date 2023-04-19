@@ -100,11 +100,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndTimeResolution, timeResolution);
 }
 
-void ParameterDialog::Start
-(
-	HWND                const hwndParent, 
-	NNetModelCommands * const pCommands
-)
+void ParameterDialog::Start(HWND const hwndParent)
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
@@ -117,8 +113,6 @@ void ParameterDialog::Start
 	SetWindowSize(270_PIXEL, 380_PIXEL, false);
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_SYSMENU);
-
-	m_pCommands = pCommands;
 
 	int iYpos { VERT_SPACE + 16 };
 
@@ -186,8 +180,7 @@ void ParameterDialog::paintHeader
 void ParameterDialog::Stop()
 {
 	BaseDialog::Stop();
-	m_pCommands = nullptr;
-	m_pNMWI     = nullptr;
+	m_pNMWI = nullptr;
 }
 
 void ParameterDialog::SetModelInterface(NNetModelWriterInterface * const pNMWI)

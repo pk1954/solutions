@@ -5,6 +5,7 @@
 export module NNetCommands;
 
 export import :AddMicroSensorCmd;
+export import :AddModuleCommand;
 export import :AddNobsCommand;
 export import :AddPipe2NeuronCmd;
 export import :AddSensorCmd;

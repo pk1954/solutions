@@ -15,7 +15,6 @@ import PixFpDimension;
 import SoundInterface;
 import Direct2D;
 import SimulationTime;
-import NNetModelCommands;
 import NNetModel;
 import :Measurement;
 import :TimeGraph;
@@ -27,7 +26,6 @@ public:
 	(
 		HWND const, 
 		Sound                      &,
-		NNetModelCommands          &,
 		PixFpDimension<fMicroSecs> &,
 		PixFpDimension<mV>         &,
 		Observable                 &
@@ -100,7 +98,6 @@ private:
 	PixFpDimension<fMicroSecs> & m_horzCoord;
 	PixFpDimension<mV>         & m_vertCoord;
 	Sound                      & m_sound;        
-	NNetModelCommands          & m_modelCommands;
 	MonitorData                * m_pMonitorData { nullptr };
 	IDWriteTextFormat          * m_pTextFormat  { nullptr };
 	Observable                 * m_pObservable  { nullptr };

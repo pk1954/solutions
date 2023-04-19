@@ -171,12 +171,6 @@
     <ClCompile Include="ExtendInputLineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetModelCommands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetModelCommands.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeleteNeuronInputCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -232,6 +226,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RedoCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddModuleCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

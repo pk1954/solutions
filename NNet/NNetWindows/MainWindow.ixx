@@ -12,7 +12,6 @@ export module NNetWin32:MainWindow;
 
 import Types;
 import ActionTimer;
-import NNetModelCommands;
 import NNetModel;
 import :Preferences;
 import :SelectionMenu;
@@ -32,7 +31,6 @@ public:
 		fPixel const,
 		Preferences&,
 		NNetController&,
-		NNetModelCommands&,
 		Observable&,
 		Observable&,
 		Observable&,
@@ -84,19 +82,18 @@ private:
 	inline static PIXEL      const H_SCALE_HEIGHT { 30_PIXEL };
 	inline static PIXEL      const V_SCALE_WIDTH  { 35_PIXEL };
 
-	MicroMeter         m_umArrowSize            { STD_ARROW_SIZE };
-	Preferences*       m_pPreferences           { nullptr };
-	ActionTimer*       m_pDisplayTimer          { nullptr };
-	Observable*        m_pCoordObservable       { nullptr };
-	Observable*        m_pCursorPosObservable   { nullptr };
-	Observable*        m_pStaticModelObservable { nullptr };
-	NNetModelCommands* m_pModelCommands         { nullptr };
-	bool               m_bShowPnts              { false };
-	NobId              m_nobIdHighlighted       { NO_NOB };
-	NobId              m_nobIdTarget            { NO_NOB };
-	SigGenId           m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId           m_sensorIdSelected       { SensorId::NULL_VAL() };
-	SelectionMenu      m_SelectionMenu;
+	MicroMeter    m_umArrowSize            { STD_ARROW_SIZE };
+	Preferences*  m_pPreferences           { nullptr };
+	ActionTimer*  m_pDisplayTimer          { nullptr };
+	Observable*   m_pCoordObservable       { nullptr };
+	Observable*   m_pCursorPosObservable   { nullptr };
+	Observable*   m_pStaticModelObservable { nullptr };
+	bool          m_bShowPnts              { false };
+	NobId         m_nobIdHighlighted       { NO_NOB };
+	NobId         m_nobIdTarget            { NO_NOB };
+	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
+	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
+	SelectionMenu m_SelectionMenu;
 
 	NobId    findTargetNob(MicroMeterPnt const&);
 	bool     setHighlightedNob   (MicroMeterPnt const&);

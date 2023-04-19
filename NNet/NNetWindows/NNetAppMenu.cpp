@@ -102,7 +102,7 @@ void NNetAppMenu::Start
     {
         Util::AddMenu(hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model" );
         Util::AddMenu(hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_ADD_MODEL,     L"&Add module");
+        Util::AddMenu(hMenuFile, MF_STRING, IDM_ADD_MODULE,    L"&Add module");
         Util::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
         Util::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
         Util::AddMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");

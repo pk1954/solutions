@@ -22,7 +22,6 @@ import WinManager;
 import FatalError;
 import ScriptFile;
 import Win32_Util;
-import NNetModelCommands;
 import NNetCommands;
 import Commands;
 import AutoOpen;
@@ -38,18 +37,16 @@ using std::endl;
 
 void NNetController::Initialize
 (
-    WinManager        * const pWinManager,
-    NNetModelCommands * const pModelCommands,
-    ComputeThread     * const pComputeThread,
-    SlowMotionRatio   * const pSlowMotionRatio,
-    Sound             * const pSound,
-    Preferences       * const pPreferences,
-    CommandStack      * const pCommandStack,
-    MonitorWindow     * const pMonitorWindow
+    WinManager      * const pWinManager,
+    ComputeThread   * const pComputeThread,
+    SlowMotionRatio * const pSlowMotionRatio,
+    Sound           * const pSound,
+    Preferences     * const pPreferences,
+    CommandStack    * const pCommandStack,
+    MonitorWindow   * const pMonitorWindow
 ) 
 {
     m_pWinManager      = pWinManager;
-    m_pModelCommands   = pModelCommands;
     m_pSlowMotionRatio = pSlowMotionRatio;
     m_pComputeThread   = pComputeThread;
     m_pSound           = pSound;
@@ -63,7 +60,6 @@ NNetController::~NNetController()
 {
     m_pWinManager      = nullptr;
     m_pNMRI            = nullptr;
-    m_pModelCommands   = nullptr;
     m_pSlowMotionRatio = nullptr;
     m_pComputeThread   = nullptr;
     m_hCrsrWait        = nullptr;
@@ -239,7 +235,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_ADD_IMPORTED_MODEL:
-        m_pModelCommands->AddModel();
+        AddModuleCommand::Push();
         break;
 
     case IDD_ADD_EEG_SENSOR:

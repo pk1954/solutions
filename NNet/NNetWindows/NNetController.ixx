@@ -17,7 +17,6 @@ import SoundInterface;
 import SlowMotionRatio;
 import Types;
 import WinManager;
-import NNetModelCommands;
 import Commands;
 import NNetModel;
 import :ComputeThread;
@@ -34,14 +33,13 @@ public:
 
 	void Initialize
 	(
-		WinManager        * const,
-		NNetModelCommands * const,
-		ComputeThread     * const,
-		SlowMotionRatio   * const,
-		Sound             * const,
-		Preferences       * const,
-		CommandStack      * const,
-		MonitorWindow     * const
+		WinManager      * const,
+		ComputeThread   * const,
+		SlowMotionRatio * const,
+		Sound           * const,
+		Preferences     * const,
+		CommandStack    * const,
+		MonitorWindow   * const
 	);
 
 	virtual ~NNetController();
@@ -64,7 +62,6 @@ private:
 	WinManager               * m_pWinManager            { nullptr };
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
-	NNetModelCommands        * m_pModelCommands         { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
 	Preferences              * m_pPreferences           { nullptr };
 	CommandStack             * m_pCommandStack          { nullptr };

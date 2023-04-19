@@ -12,7 +12,6 @@ export module NNetWin32:SignalControl;
 import Types;
 import PixFpDimension;
 import Direct2D;
-import NNetModelCommands;
 import NNetModel;
 import :ComputeThread;
 import :TimeGraph;
@@ -26,7 +25,6 @@ public:
 	(
 		HWND                 const, 
 		ComputeThread        const &, 
-		NNetModelCommands          &,
 		Observable                 &,
 		Observable                 &,
 		PixFpDimension<fMicroSecs> *
@@ -78,7 +76,6 @@ private:
 	PixFpDimension<fHertz> * m_pVertCoordFreq { nullptr };
 	PixFpDimension<mV>     * m_pVertCoordVolt { nullptr };
 	ComputeThread    const & m_computeThread;
-	NNetModelCommands      & m_commands;
 	Observable             & m_runObservable;
 	Observable             & m_dynamicModelObservable;
 	tPos                     m_moveMode { tPos::NONE };

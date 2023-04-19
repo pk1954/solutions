@@ -16,7 +16,6 @@ import Win32_Util_Resource;
 import Types;
 import Observable;
 import SoundInterface;
-import NNetModelCommands;
 import NNetModel;
 import :ComputeThread;
 import :MonitorControl;
@@ -33,7 +32,6 @@ void MonitorWindow::Start
 	HWND          const   hwndParent,
 	ComputeThread const & computeThread,
 	Sound               & sound,
-	NNetModelCommands   & modelCmds,
 	Observable          & observable
 )
 {
@@ -52,7 +50,6 @@ void MonitorWindow::Start
 	(
 		hwnd, 
 		sound, 
-		modelCmds, 
 		m_horzCoord, 
 		m_vertCoord,
 		observable

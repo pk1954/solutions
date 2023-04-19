@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddMicroSensorCmd.ixx" />
+    <ClCompile Include="AddModuleCommand.ixx" />
     <ClCompile Include="AddNobsCommand.ixx" />
     <ClCompile Include="CreateInitialNobsCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
@@ -133,8 +134,6 @@
     <ClCompile Include="NNetCommand.ixx" />
     <ClCompile Include="NNetCommands.ixx" />
     <ClCompile Include="NNetCommandStack.ixx" />
-    <ClCompile Include="NNetModelCommands.cpp" />
-    <ClCompile Include="NNetModelCommands.ixx" />
     <ClCompile Include="PlugIoConnectorsCmd.ixx" />
     <ClCompile Include="PlugIoLinesCmd.ixx" />
     <ClCompile Include="RedoCommand.ixx" />

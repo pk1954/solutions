@@ -16,7 +16,6 @@ import Observable;
 import PixFpDimension;
 import BaseWindow;
 import SoundInterface;
-import NNetModelCommands;
 import NNetModel;
 import :ComputeThread;
 import :MonitorControl;
@@ -32,7 +31,7 @@ public:
 	MonitorWindow();
 	~MonitorWindow() final;
 
-	void Start(HWND const, ComputeThread const &, Sound &, NNetModelCommands &, Observable &);
+	void Start(HWND const, ComputeThread const &, Sound &, Observable &);
 	void SetModelInterface(NNetModelWriterInterface* const) const;
 	void StimulusTriggered() const;
 	void ResetHorzCoord();

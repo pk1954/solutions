@@ -73,11 +73,9 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	m_modelIO       .Initialize();
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
-	m_modelCommands .Initialize(&m_modelIO, &m_cmdStack);
 	m_NNetController.Initialize
 	(
 		& m_WinManager,
-		& m_modelCommands,
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_sound,
@@ -92,7 +90,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_performanceObservable, 
 		& m_dynamicModelObservable
 	);
-	InitializeNNetWrappers(&m_modelCommands, &m_modelIO);
+	InitializeNNetWrappers(&m_modelIO);
 	NNetCommand::SetSound(&m_sound);
 };
 
@@ -113,7 +111,6 @@ void NNetAppWindow::setModelInterface()
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	m_preferences      .SetModelInterface(m_pNMRI);
-	NNetWrappersSetModelInterface        (m_pNMRI);
 	Nob::SetParams(&m_pNMRI->GetParamsC());
 }
 
@@ -137,8 +134,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_hwndApp, 
 		m_computeThread, 
 		m_runObservable, 
-		m_dynamicModelObservable, 
-		&m_modelCommands
+		m_dynamicModelObservable
 	);
 
 	m_upModel = m_nmwi.CreateNewModel();
@@ -157,9 +153,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
-	m_parameterDlg     .Start(m_hwndApp, & m_modelCommands);
+	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
-	m_monitorWindow    .Start(m_hwndApp, m_computeThread, m_sound, m_modelCommands, m_staticModelObservable);
+	m_monitorWindow    .Start(m_hwndApp, m_computeThread, m_sound, m_staticModelObservable);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
 	setModelInterface();
@@ -174,7 +170,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		30._fPixel,
 		m_preferences,
 		m_NNetController,
-		m_modelCommands,
 		m_cursorPosObservable,
 		m_coordObservable,
 		m_staticModelObservable,
@@ -489,7 +484,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			);
 			break;
 
-		case IDM_ADD_MODEL:
+		case IDM_ADD_MODULE:
 			m_modelIO.Import
 			(
 				AskModelFile(tFileMode::read), 
