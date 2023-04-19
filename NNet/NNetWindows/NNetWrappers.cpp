@@ -11,21 +11,18 @@ module NNetWin32:NNetWrappers;
 import Symtab;
 import ErrHndl;
 import Script;
+import BreakCommand;
+import IncludeCommand;
 import NNetModelIO;
 import NNetCommands;
 
 import :NNetInputOutputUI;
 
-class WrapBreak : public ScriptFunctor
-{
-public:
-    void operator() (Script & script) const final
-    {
-        int x = 42;
-    }
-};
-
-void InitializeNNetWrappers(NNetModelIO * const pModelIO)
+void InitializeNNetWrappers
+(
+    NNetModelIO   * const pModelIO,
+    ScriptFunctor * const pScriptHook
+)
 {
     AddMicroSensorCmd::Register();
     AddModuleCommand::Register(pModelIO);
@@ -34,6 +31,7 @@ void InitializeNNetWrappers(NNetModelIO * const pModelIO)
     AddSigGen2MonitorCmd::Register();
     AttachSigGen2ConCmd::Register();
     AttachSigGen2LineCmd::Register();
+    BreakCommand::Register();
     ConnAnimationCommand::Register();
     Connect2NeuronCommand::Register();
     ConnectCreateForkCmd::Register();
@@ -52,6 +50,7 @@ void InitializeNNetWrappers(NNetModelIO * const pModelIO)
     DiscIoConnectorCmd::Register();
     ExtendInputLineCmd::Register();
     ExtendOutputLineCmd::Register();
+    IncludeCommand::Register(*pScriptHook);
     InsertKnotCommand::Register();
     InsertNeuronCommand::Register();
     InsertTrackCommand::Register();
@@ -82,9 +81,6 @@ void InitializeNNetWrappers(NNetModelIO * const pModelIO)
     ToggleStopOnTriggerCmd::Register();
     UndoCommand::Register();
 
-    SymbolTable::ScrDefConst(L"Include", new WrapInclude );
-    SymbolTable::ScrDefConst(L"Break",   new WrapBreak );
-   
     ParamType::Apply2GlobalParameters
     ( 
         [](ParamType::Value const & param) 

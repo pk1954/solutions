@@ -186,5 +186,11 @@
     <ClCompile Include="Commands.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="BreakCommand.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="IncludeCommand.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 
 module;
 
+#include <string>
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -12,11 +13,16 @@ module;
 
 export module Commands;
 
+import Script;
+import Scanner;
 import Observable;
 import RootWindow;
+import ScriptStack;
 
+using std::wstring;
 using std::vector;
 using std::wcout;
+using std::endl;
 using std::wostream;
 using std::function;
 using std::unique_ptr;
@@ -110,3 +116,18 @@ private:
     void blockUI()   const;
     void unblockUI() const;
 };
+
+export void StartScript
+(
+    wstring       const& wstrFile,
+    ScriptFunctor const& scriptHook
+)
+{
+    wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
+    Script* pScript { ScriptStack::OpenScript() };
+    if (pScript && pScript->ScrOpen(wstrFile))
+    {
+        pScript->ScrSetNewLineHook(&scriptHook);
+        Command::NextScriptCommand();  // start reading script file
+    }
+}

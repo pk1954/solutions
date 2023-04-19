@@ -89,8 +89,6 @@ public:
 	NNetAppWindow(NNetAppWindow const&) = delete;  // noncopyable class 
 	NNetAppWindow& operator= (NNetAppWindow const&) = delete;  // noncopyable class 
 
-	void StartScript(wstring const&) const;
-
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;

@@ -80,10 +80,3 @@ int APIENTRY wWinMain
 	int iRetVal = pump.Run();
 	return iRetVal;
 }
-
-void WrapInclude::operator() (Script & script) const
-{
-	wstring const & wstrFile = script.ScrReadString();
-	if (!wstrFile.empty())
-		upApp->StartScript(wstrFile);
-}

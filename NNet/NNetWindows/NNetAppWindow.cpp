@@ -90,7 +90,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_performanceObservable, 
 		& m_dynamicModelObservable
 	);
-	InitializeNNetWrappers(&m_modelIO);
+	InitializeNNetWrappers(&m_modelIO, &m_ScriptHook);
 	NNetCommand::SetSound(&m_sound);
 };
 
@@ -637,22 +637,11 @@ void NNetAppWindow::replaceModel()
 	m_nmwi.GetParams().NotifyAll(false);
 }
 
-void NNetAppWindow::StartScript(wstring const & wstrFile) const
-{
-	wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-	Script * pScript { ScriptStack::OpenScript() };
-	if (pScript && pScript->ScrOpen(wstrFile))
-	{
-		pScript->ScrSetNewLineHook(& m_ScriptHook);
-		Command::NextScriptCommand();  // start reading script file
-	}
-}
-
 void NNetAppWindow::processScript() const
 {
 	wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
 	if (!wstrFile.empty())
-		StartScript(wstrFile);
+		StartScript(wstrFile, m_ScriptHook);
 	if (!ScriptStack::GetScript()->ReadNextToken())
 		ScriptStack::CloseScript();
 }

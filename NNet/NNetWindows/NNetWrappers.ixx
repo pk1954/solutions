@@ -9,5 +9,6 @@ module;
 export module NNetWin32:NNetWrappers;
 
 import NNetModelIO;
+import Script;
 
-export void InitializeNNetWrappers(NNetModelIO * const);
+export void InitializeNNetWrappers(NNetModelIO * const, ScriptFunctor* const);

@@ -1,6 +1,6 @@
 // ConnAnimationCommand.cpp
 //
-// Command
+// Commands
 
 module;
 
