@@ -193,6 +193,16 @@ public:
 		return res; 
 	};
 
+	PointType MoveHorz(BASE_TYPE const offset) const
+	{
+		return PointType(m_x + offset, m_y);
+	}
+
+	PointType MoveVert(BASE_TYPE const offset) const
+	{
+		return PointType(m_x, m_y + offset);
+	}
+
 	// makes problems! Not quite clear, but works without.
 	//friend PointType const operator/ (PointType const a, int const i) 
 	//{ 

@@ -396,7 +396,7 @@ void MonitorControl::paintTrack(TrackNr const trackNr) const
 		fPixelRect
 		(
 			fPixelPoint   (0._fPixel, fPixTrackTop),
-			fPixelRectSize(m_fPixWinWidth, fPixTrackHeight)
+			fPixelRectSize(m_fPixWinWidth+1, fPixTrackHeight)
 		), 
 		col
 	);
@@ -432,9 +432,7 @@ void MonitorControl::PaintGraphics()
 	if (m_pMonitorData->NoTracks())
 		return;
 
-	if (m_pMonitorData->GetNrOfTracks() > 1)
-		m_pMonitorData->Apply2AllTracksC([this](TrackNr const n) { paintTrack(n); });
-
+	m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const n ) { paintTrack (n); });
 	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });
 
 	if (SignalTooHigh())

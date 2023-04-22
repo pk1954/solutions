@@ -84,7 +84,7 @@ export fPixelRect Convert2fPixelRect(PixelRect const & rect)
 	(
 		Convert2fPixel(rect.GetLeft()),
 		Convert2fPixel(rect.GetTop()),
-		Convert2fPixel(rect.GetRight()),
-		Convert2fPixel(rect.GetBottom())
+		Convert2fPixel(rect.GetRight()+1),
+		Convert2fPixel(rect.GetBottom()+1)
 	);
 }
