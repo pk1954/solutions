@@ -16,6 +16,7 @@ import Win32_Util_Resource;
 import Util;
 import ObserverInterface;
 import Types;
+import SaveCast;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
@@ -51,6 +52,66 @@ public:
 	Scale& operator=      (const Scale& ) = delete;
 	Scale const& operator=(const Scale&&) = delete;
 
+	void Apply2AllTicks(auto const & func) const
+	{
+		float  const fStartTicks { m_logStart / m_logTickDist };
+		fPixel const fPixZero    { m_pixCoord.Transform2fPixelPos(LogUnits(0.0f)) };
+		int    const iTickStart  { static_cast<int>(fStartTicks) };
+		int    const iTickEnd    { static_cast<int>(m_logEnd / m_logTickDist) };
+
+		for (int iTick = iTickStart; iTick <= iTickEnd; ++iTick)
+		{
+			func(fPixZero + m_fPixTickDist * Cast2Float(iTick), iTick);
+		}
+	}
+
+	void DrawAuxLines(D2D_driver& graphics)
+	{
+		DrawAuxLines(graphics,  1, D2D1::ColorF::LightGray);  // 0xD3D3D3
+		DrawAuxLines(graphics,  5, D2D1::ColorF::DarkGray);   // 0xA9A9A9
+		DrawAuxLines(graphics, 10, D2D1::ColorF::Gray);       // 0x808080
+	}
+
+	void DrawAuxLines
+	(
+		D2D_driver       & graphics,
+		int          const iStep,
+		D2D1::ColorF const col
+	)
+	{
+		fPixelRectSize const fPixSize { graphics.GetClRectSize() };
+		if (IsVertScale())
+			Apply2AllTicks
+			(
+				[this, &graphics, &fPixSize, iStep, col](fPixel const fPix, int const iTick)
+				{
+					if (iTick % iStep == 0)
+						graphics.DrawLine
+						(
+							fPixelPoint(0._fPixel,       fPix),
+							fPixelPoint(fPixSize.GetX(), fPix),
+							1._fPixel,
+							col
+						);
+				}
+			);
+		else
+			Apply2AllTicks
+			(
+				[this, &graphics, &fPixSize, iStep, col](fPixel const fPix, int const iTick)
+				{
+					if (iTick % iStep == 0)
+						graphics.DrawLine
+						(
+							fPixelPoint(fPix, 0._fPixel),
+							fPixelPoint(fPix, fPixSize.GetY()),
+							1._fPixel,
+							col
+						);
+				}
+			);
+	}
+
 private:
 
 	PixFpDimension<LogUnits>& m_pixCoord;
@@ -60,6 +121,8 @@ private:
 	fPixelPoint m_fPixPntStart   {};
 	fPixelPoint m_fPixPntEnd     {};
 	fPixel      m_fPixTickDist   {};
+	float       m_fTickDist      {};
+	fPixelRect  m_textBox        {};
 
 	LogUnits m_logStart    {};
 	LogUnits m_logEnd      {};
@@ -141,7 +204,7 @@ private:
 		m_logEnd       = m_pixCoord.Transform2logUnitPos(fPixEnd);
 		m_logTickDist  = static_cast<LogUnits>(powf(10.0, fExp) * fFactor);
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
-		
+
 		setScaleParams();
 		renderScale(colBackGround);
 
@@ -150,18 +213,23 @@ private:
 
 	void renderScale(D2D1::ColorF const colBackGround)
 	{
-		fPixelRect textBox{};
-		setTextBox(textBox);
-
-		displayTicks(textBox);
+		setTextBox(m_textBox);
+		Apply2AllTicks
+		(
+			[this](fPixel const fPix, int const iTick)
+			{
+				displayTick(fPix, iTick);
+				if (iTick % 10 == 0)
+					displayNumber(iTick, fPix);
+			}
+		);
 		fPixelPoint fPixPos
 		{
 			IsVertScale()
 			? fPixelPoint(0._fPixel, m_fPixPntEnd.GetY() - 16._fPixel)
 			: fPixelPoint(m_fPixPntStart.GetX() + 12._fPixel, -1._fPixel)
 		};
-
-		display(textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);
+		display(m_textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);
 	}
 
 	void setScaleParams()
@@ -169,17 +237,19 @@ private:
 		float const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
 		float const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
 		int   const iSteps    { StepsOfThousand(logDist10 / fFactor) };
-		m_wstrUnit = GetUnitPrefix(iSteps);
-		m_wstrUnit += TypeAttribute<LogUnits>::unit;
+		m_wstrUnit       = GetUnitPrefix(iSteps);
+		m_wstrUnit      += TypeAttribute<LogUnits>::unit;
 		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
+		m_fTickDist      = m_logTickDist.GetValue() / m_fUnitReduction;
 	}
 
 	void displayTick
 	(
 		fPixel const fTickA,
-		fPixel const fTickExt
+		int    const iTick
 	) const
 	{
+		fPixel const fTickExt { (iTick % 5 == 0) ? LONG_TICK : (iTick % 2 == 0) ? MIDDLE_TICK : SMALL_TICK };
 		fPixel const fDir(GetTicksDir() ? -fTickExt : fTickExt);
 		if (IsVertScale())
 		{
@@ -195,16 +265,17 @@ private:
 
 	void displayNumber
 	(
-		float      const  fTick,
-		fPixel     const  fPix,
-		fPixelRect const& textBox
+		int    const iTick,
+		fPixel const fPix
 	) const
 	{
-		fPixelPoint fPos { IsVertScale()
-							? (fPixelPoint(m_fPixPntStart.GetX(), yPos(fPix)))
-							: (fPixelPoint(xPos(fPix),            m_fPixPntStart.GetY()))
-                         };
-		float const fLu { round(fTick * 1000.f) / 1000.f };
+		float       const fTick { m_fTickDist * static_cast<float>(iTick) };
+		float       const fLu   { round(fTick * 1000.f) / 1000.f };
+		fPixelPoint const fPos  { 
+			                       IsVertScale()
+							       ? (fPixelPoint(m_fPixPntStart.GetX(), yPos(fPix)))
+							       : (fPixelPoint(xPos(fPix),            m_fPixPntStart.GetY()))
+                                };
 		m_wstrBuffer.str(L"");
 		m_wstrBuffer << fixed;
 		if (fLu == floor(fLu))
@@ -212,26 +283,7 @@ private:
 		else
 			m_wstrBuffer << setprecision(1);
 		m_wstrBuffer << fLu;
-		display(textBox + fPos, m_wstrBuffer.str());
-	}
-
-	void displayTicks(fPixelRect const& textBox) const
-	{
-		float  const fStartTicks   { m_logStart / m_logTickDist };
-		float  const fUnitTickDist { m_logTickDist.GetValue() / m_fUnitReduction };
-		fPixel const fPixZero      { m_pixCoord.Transform2fPixelPos(LogUnits(0.0f)) };
-		int    const iTickStart    { static_cast<int>(fStartTicks) };
-		int    const iTickEnd      { static_cast<int>(m_logEnd / m_logTickDist) };
-
-		for (int iTick = iTickStart; iTick <= iTickEnd; ++iTick)
-		{
-			fPixel fTickExt { (iTick % 5 == 0) ? LONG_TICK : (iTick % 2 == 0) ? MIDDLE_TICK : SMALL_TICK };
-			float  fTick    { static_cast<float>(iTick) };
-			fPixel fPix     { fPixZero + m_fPixTickDist * fTick };
-			displayTick(fPix, fTickExt);
-			if (iTick % 10 == 0)
-				displayNumber(fTick * fUnitTickDist, fPix, textBox);
-		}
+		display(m_textBox + fPos, m_wstrBuffer.str());
 	}
 };
 

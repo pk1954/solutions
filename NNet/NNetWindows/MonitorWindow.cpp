@@ -59,7 +59,7 @@ void MonitorWindow::Start
 	m_horzCoord.SetPixelSize(DEFAULT_PIXEL_SIZE); 
 	m_horzCoord.SetZoomFactor(1.3f);
 
-	m_upHorzScale = make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord);
+	m_upHorzScale = make_unique<Scale<fMicroSecs>>(hwnd, false, m_horzCoord);
 	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
 	m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
 	m_upHorzScale->SetRightBorder(Convert2fPixel(RIGHT_BORDER));

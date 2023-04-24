@@ -25,7 +25,7 @@ BaseScale::BaseScale
 	HWND const hwndParent,
 	bool const bVertScale
 )
-	: m_bVertScale(bVertScale)
+  : m_bVertScale(bVertScale)
 {
 	GraphicsWindow::Initialize
 	(

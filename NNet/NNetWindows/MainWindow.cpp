@@ -70,15 +70,14 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
-	HWND hwnd = GetWindowHandle();
-	m_SelectionMenu.Start(hwnd);
+	m_SelectionMenu.Start(GetWindowHandle());
 
 	Uniform2D<MicroMeter>      & coord  { GetCoord() };
 	PixFpDimension<MicroMeter> & coordX { coord.GetXdim() };
 	PixFpDimension<MicroMeter> & coordY { coord.GetYdim() };
 
-	m_upHorzScale = make_unique<Scale<MicroMeter>>(hwnd, false, coordX);
-	m_upVertScale = make_unique<Scale<MicroMeter>>(hwnd, true,  coordY);
+	m_upHorzScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), false, coordX);
+	m_upVertScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), true,  coordY);
 
 	m_pCoordObservable->RegisterObserver(*m_upHorzScale.get());
 	m_pCoordObservable->RegisterObserver(*m_upVertScale.get());
@@ -498,6 +497,8 @@ void MainWindow::OnPaint()
 void MainWindow::PaintGraphics()
 {
 	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
+	//m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
+	//m_upVertScale->DrawAuxLines(*m_upGraphics.get());
 
 	PixelRect   const  pixRect              { GetClPixelRect() };
 	DrawContext const& context              { GetDrawContextC() };

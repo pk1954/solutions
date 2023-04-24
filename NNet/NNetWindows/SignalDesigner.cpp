@@ -41,7 +41,7 @@ void SignalDesigner::Initialize
 {
 	HWND hwndSigDes = StartBaseWindow
 	(
-		hwndParent, 
+		hwndParent,
 		CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
 		L"ClassSigDesWindow",
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE,
@@ -67,23 +67,30 @@ void SignalDesigner::Initialize
 	m_vertCoordVolt.SetPixelSize(0.2_mV); 
 	m_vertCoordVolt.SetZoomFactor(1.3f);
 
+	// controls
+
+	m_upSignalControl[0] = makeSignalControl(runObservable, dynamicModelObservable);
+	m_upSignalControl[1] = makeSignalControl(runObservable, dynamicModelObservable);
+
+	m_upSignalControl[0]->SetVertCoordFreq(&m_vertCoordFreq);
+	m_upSignalControl[1]->SetVertCoordVolt(&m_vertCoordVolt);
+	m_upSignalControl[1]->SetVertCoordFreq(nullptr);
+
+	m_upSignalPreview = make_unique<SignalPreview>(*this, m_horzCoord, m_vertCoordVolt);
+	m_upSignalPreview->SetParentContextMenueMode(true);
+
 	// scales
 
-	for (auto &it : m_upHorzScale)
-	{
-		it = make_unique<Scale<fMicroSecs>>(hwndSigDes, false, m_horzCoord);
-		it->SetTicksDir(BaseScale::TICKS_DOWN);
-		it->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
-		it->SetParentContextMenueMode(true);
-		it->Show(true);
-	}
+	m_upHorzScale[0] = makeHorzScale();
+	m_upHorzScale[1] = makeHorzScale();
+	m_upHorzScale[2] = makeHorzScale();
 
 	m_upVertScaleFreq = make_unique<Scale<fHertz>>(hwndSigDes, true, m_vertCoordFreq);
 	m_upVertScaleFreq->SetInverted(true);
+	m_upVertScaleFreq->SetParentContextMenueMode(true);
 	m_upVertScaleFreq->SetTicksDir(BaseScale::TICKS_LEFT);
 	m_upVertScaleFreq->SetOrthoOffset(Convert2fPixel(V_SCALE_WIDTH));
 	m_upVertScaleFreq->SetScaleColor(COLOR_FREQ);
-	m_upVertScaleFreq->SetParentContextMenueMode(true);
 	m_upVertScaleFreq->Show(false);
 
 	for (int i = 0; i <= 1; ++i)
@@ -95,25 +102,9 @@ void SignalDesigner::Initialize
 		m_upVertScaleVolt[i]->Show(false);
 	}
 
-	// controls
-
-	for (int i = 0; i <= 1; ++i)
-	{
-		m_upSignalControl[i] = makeSignalControl(computeThread, runObservable, dynamicModelObservable);
-		m_upSignalControl[i]->SetParentContextMenueMode(true);
-	}
-
-	m_upSignalControl[0]->SetVertCoordFreq(&m_vertCoordFreq);
-	m_upSignalControl[1]->SetVertCoordVolt(&m_vertCoordVolt);
-	m_upSignalControl[1]->SetVertCoordFreq(nullptr);
-
-	m_upSignalPreview = make_unique<SignalPreview>(*this, m_horzCoord, m_vertCoordVolt);
-	m_upSignalPreview ->SetParentContextMenueMode(true);
-
 	// buttons
 
 	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
-
 
 	for (int i = 0; i <= 1; ++i)
 	{
@@ -132,6 +123,16 @@ void SignalDesigner::Initialize
 		IDM_SIGNAL_DESIGNER_PREVIEW
 	);
 	Util::Show(m_hwndPreviewButton, false);
+}
+
+unique_ptr<Scale<fMicroSecs>> SignalDesigner::makeHorzScale()
+{
+	unique_ptr<Scale<fMicroSecs>> upScale { make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord) };
+	upScale->SetTicksDir(BaseScale::TICKS_DOWN);
+	upScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
+	upScale->SetParentContextMenueMode(true);
+	upScale->Show(true);
+	return move(upScale);
 }
 
 void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
@@ -176,21 +177,21 @@ void SignalDesigner::RegisterAtSigGen(SigGenId const id)
 
 unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 (
-	ComputeThread const & computeThread,
-	Observable          & runObservable,
-	Observable          & dynamicModelObservable
+	Observable & runObservable,
+	Observable & dynamicModelObservable
 )
 {
 	auto upSignalControl = make_unique<SignalControl>
 	(
 		GetWindowHandle(),
-		computeThread,
+		*m_pComputeThread,
 		runObservable,
 		dynamicModelObservable,
 		&m_horzCoord 
 	);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
 	upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT[0]);
+	upSignalControl->SetParentContextMenueMode(true);
 	return move(upSignalControl);
 }
 

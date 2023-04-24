@@ -70,7 +70,8 @@ private:
 	void adjustWindowHeight();
 	void scale(BaseScale * const);
 
-	unique_ptr<SignalControl> makeSignalControl(ComputeThread const &, Observable &, Observable &);
+	unique_ptr<SignalControl>     makeSignalControl(Observable &, Observable &);
+	unique_ptr<Scale<fMicroSecs>> makeHorzScale();
 
 	bool OnSize             (PIXEL const, PIXEL const)                     final;
 	bool OnCommand          (WPARAM const, LPARAM const, PixelPoint const) final;

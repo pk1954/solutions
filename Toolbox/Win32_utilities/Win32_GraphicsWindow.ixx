@@ -24,6 +24,8 @@ public:
 	GraphicsWindow() = default;
 	~GraphicsWindow() override = default;
 
+	D2D_driver* GetGraphics() { return m_upGraphics.get(); }
+
 	virtual void Stop();
 
 protected:
