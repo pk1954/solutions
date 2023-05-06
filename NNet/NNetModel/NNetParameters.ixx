@@ -27,14 +27,14 @@ public:
 
 	void SetSigGenStaticData(SigGenStaticData const&);
 
-	fHertz      PulseFreqMax    () const { return m_freqMax; }
-	mV          NeuronPeakVolt  () const { return m_neuronPeakVolt; }
-	mV          Threshold       () const { return m_threshold; }
-	fMicroSecs  SynapseDelay    () const { return m_synapseDelay; }
-	fMicroSecs  PulseWidth      () const { return m_pulseWidth; }
-	meterPerSec PulseSpeed      () const { return m_pulseSpeed; }
-	fMicroSecs  TimeResolution  () const { return m_usResolution; }
-	fMicroSecs  PulseDistMin    () const { return m_usPulseDistMin; }
+	fHertz      PulseFreqMax  () const { return m_freqMax; }
+	mV          NeuronPeakVolt() const { return m_neuronPeakVolt; }
+	mV          Threshold     () const { return m_threshold; }
+	fMicroSecs  SynapseDelay  () const { return m_synapseDelay; }
+	fMicroSecs  PulseWidth    () const { return m_pulseWidth; }
+	meterPerSec PulseSpeed    () const { return m_pulseSpeed; }
+	fMicroSecs  TimeResolution() const { return m_usResolution; }
+	fMicroSecs  PulseDistMin  () const { return m_usPulseDistMin; }
 
 private:
 	SigGenStaticData m_sigGenData       { };

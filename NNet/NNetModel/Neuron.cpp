@@ -26,13 +26,13 @@ Neuron::Neuron(MicroMeterPnt const& upCenter)
 	m_circle(upCenter, NEURON_RADIUS)
 {}
 
-Neuron::Neuron(Neuron const& rhs)
-  : PosNob(NobType::Value::neuron),
-	m_circle(rhs.m_circle)
-{
-	PosNob::operator=(rhs);
-	init(rhs);
-}
+//Neuron::Neuron(Neuron const& rhs)
+//  : PosNob(NobType::Value::neuron),
+//	m_circle(rhs.m_circle)
+//{
+//	PosNob::operator=(rhs);
+//	init(rhs);
+//}
 
 void Neuron::init(const Neuron & rhs)
 {
@@ -43,12 +43,12 @@ void Neuron::init(const Neuron & rhs)
 	m_pPipeAxon      = rhs.m_pPipeAxon;
 }
 
-Neuron & Neuron::operator=(Neuron const& rhs)
-{
-	PosNob::operator=(rhs);
-	init(rhs);
-	return * this;
-}
+//Neuron & Neuron::operator=(Neuron const& rhs)
+//{
+//	PosNob::operator=(rhs);
+//	init(rhs);
+//	return * this;
+//}
 
 void Neuron::SetPosNoFix(MicroMeterPnt const& newPos)
 {

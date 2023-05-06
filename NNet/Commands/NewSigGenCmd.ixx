@@ -24,7 +24,7 @@ public:
 	{ 
 		m_sigGenIdNew = m_pNMWI->PushSigGen(move(m_upSigGen));
 		PostCmd2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
-        m_pNMWI->SetSigGenActive(m_sigGenIdNew);
+        m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
 	}
 
 	void Undo() final 

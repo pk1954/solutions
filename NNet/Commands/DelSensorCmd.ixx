@@ -1,4 +1,4 @@
-// DeleteSensorCmd.ixx
+// DelSensorCmd.ixx
 //
 // Commands
 
@@ -6,35 +6,37 @@ module;
 
 #include <iostream>
 
-export module NNetCommands:DeleteSensorCmd;
+export module NNetCommands:DelSensorCmd;
 
 import Types;
 import :NNetCommand;
 import NNetModel;
 
-export class DeleteSensorCmd : public NNetCommand
+export class DelSensorCmd : public NNetCommand
 {
 public:
 
-    DeleteSensorCmd(SensorId const& id)
+    DelSensorCmd(SensorId const& id)
         : m_sensorId(id)
-    {}
+    {
+        Sensor const * const pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
+        m_signalId = m_pNMWI->FindSignalId
+        (
+            [this, pSensor](Signal const& s)
+            { return s.GetSignalSource() == pSensor; }
+        );
+    }
 
     void Do() final
     {
-        m_upSensor = move(m_pNMWI->GetSensorList().RemoveSensor(m_sensorId));
-        m_signalId = m_pNMWI->FindSignalId
-        (
-            [this](Signal const &s) 
-            { return s.GetSignalSource() == m_upSensor.get(); }
-        );
+        m_upSensor = move(m_pNMWI->GetSensorList ().RemoveSensor(m_sensorId));
         m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
         m_pSound->Play(L"DISAPPEAR_SOUND");
     };
 
     void Undo() final
     {
-        m_pNMWI->GetSensorList().InsertSensor(move(m_upSensor), m_sensorId);
+        m_pNMWI->GetSensorList ().InsertSensor(move(m_upSensor), m_sensorId);
         m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
         m_pSound->Play(L"SNAP_IN_SOUND");
     };
@@ -48,7 +50,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << L" " << id.GetValue() << endl;
-        PushCommand(make_unique<DeleteSensorCmd>(id));
+        PushCommand(make_unique<DelSensorCmd>(id));
     }
 
 private:
@@ -60,7 +62,7 @@ private:
         void operator() (Script& script) const final
         {
             SensorId const id { script.ScrReadInt() };
-            DeleteSensorCmd::Push(id);
+            DelSensorCmd::Push(id);
         }
     } m_wrapper;
 

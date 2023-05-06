@@ -21,7 +21,7 @@ public:
 
     explicit Fork(MicroMeterPnt const&);
 
-    Fork(Fork const&);
+    //Fork(Fork const&);
 
     void AppendMenuItems(AddMenuFunc const&) const final;
 

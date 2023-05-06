@@ -54,9 +54,6 @@
     <ClCompile Include="DeleteSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteSignalCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeleteTrackCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -180,7 +177,7 @@
     <ClCompile Include="SplitPipeCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteSensorCmd.ixx">
+    <ClCompile Include="DelSensorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectAllConnectedCmd.ixx">

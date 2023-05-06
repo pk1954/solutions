@@ -54,6 +54,7 @@ private:
 
 	bool processUIcommand   (int const, LPARAM const);
 	bool processModelCommand(int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
+	void deleteSignal       (Signal const *);
 
 	bool                       m_bTrace                 { true };
 	bool                       m_bBlockedUI             { false };

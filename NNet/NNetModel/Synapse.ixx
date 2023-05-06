@@ -23,7 +23,7 @@ export class Synapse : public PosNob
 public:
 
     Synapse(MicroMeterPnt const&);
-    Synapse(Synapse const&);
+    //Synapse(Synapse const&);
 
     static bool TypeFits(NobType const type) { return type.IsSynapseType(); }
 
@@ -104,9 +104,11 @@ private:
     mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
     mutable MicroMeterPnt m_umPntCenter { NP_NULL };
 
-    bool              m_bOutputBlocked { false };
-    fMicroSecs        m_usBlocked      { 0.0_MicroSecs };
-    mV                m_mVaddInput     { 0._mV };
+    enum class State { idle, pulse, blocked };
+
+    State             m_state       { State::idle };
+    fMicroSecs        m_usSpikeTime { 0.0_MicroSecs };
+    mV                m_mVaddInput  { 0._mV };
     FixedPipeline<mV> m_pulseBuffer;
     Pipe *            m_pPipeIn;
     Pipe *            m_pPipeOut;

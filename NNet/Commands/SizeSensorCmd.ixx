@@ -25,8 +25,8 @@ public:
 		m_fFactor(fFactor)
 	{
 		Sensor* pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
-		assert(pSensor->IsMacroSensor());
-		m_pSensor = static_cast<MacroSensor*>(pSensor);
+		assert(pSensor->IsSensor());
+		m_pSensor = static_cast<Sensor*>(pSensor);
 	}
 
 	void Do() final 
@@ -74,7 +74,7 @@ private:
 		}
 	} m_wrapper;
 
-	MacroSensor * m_pSensor;
+	Sensor * m_pSensor;
 	SensorId      m_sensorId;
 	float         m_fFactor;
 };

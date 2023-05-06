@@ -43,8 +43,7 @@ void InitializeNNetWrappers
     DeleteNobCommand::Register();
     DeleteSelectionCommand::Register();
     DeleteTrackCommand::Register();
-    DeleteSensorCmd::Register();
-    DeleteSignalCommand::Register();
+    DelSensorCmd::Register();
     DelMicroSensorCmd::Register();
     DeselectModuleCmd::Register();
     DiscIoConnectorCmd::Register();

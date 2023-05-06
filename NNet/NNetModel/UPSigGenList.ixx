@@ -90,6 +90,7 @@ public:
     wstring                 GenerateUniqueName() const;
 
     void SetActiveSigGenObservable(Observable &o) { m_pActiveSigGenObservable = &o; }
+    void SetOffset(fPixelPoint const& p) { m_fPixPntOffset = p; }
 
 private:
     inline static const fPixel GAP  { 2._fPixel };
@@ -101,6 +102,7 @@ private:
     vector<UPSigGen> m_list;  // std siggen is ** not ** in list!
     SigGenId         m_sigGenIdActive { STD_SIGGEN };
     Observable *     m_pActiveSigGenObservable { nullptr };
+    fPixelPoint      m_fPixPntOffset;
 
     vector<UPSigGen>::iterator       getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;

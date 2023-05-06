@@ -70,7 +70,7 @@ public:
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
 
-    UPSigGenList & GetSigGenList() { return m_pModel->GetSigGenList(); }
+    UPSigGenList      & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 
     void SetSigGenName(SigGenId const id, wstring const &n) { GetSigGenList().SetName(id, n); }
@@ -116,19 +116,13 @@ public:
     {
         UPNob upNob { GetUPNobs().ExtractNob(id) };
         auto  pNob  { upNob.release() };
-        if (MicroSensor * pMicroSensor { GetMicroSensor(pNob) })
-            pMicroSensor->Disconnect();
         return move(unique_ptr<OLD>(static_cast<OLD*>(pNob)));
     }
 
     void Restore2Model(UPNob up)
     {
         if (up)
-        {
-            if (MicroSensor * pMicroSensor { GetMicroSensor(up.get()) })
-                pMicroSensor->Connect();
             GetUPNobs().ReplaceNob(move(up));
-        }
     }
 
     template <Nob_t OLD>

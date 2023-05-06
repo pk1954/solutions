@@ -162,7 +162,15 @@ void NNetModelIO::importModel()
         }
         catch (NobException const& e)
         {
-            CheckImportedNobId(script, m_upImportedNMWI->GetUPNobs(), e.m_id);
+            try
+            {
+                CheckImportedNobId(script, m_upImportedNMWI->GetUPNobs(), e.m_id);
+            }
+            catch (ScriptErrorHandler::ScriptException const& errInfo)
+            {
+                ScriptErrorHandler::PrintErrorInfo(script.GetScanner(), errInfo);
+                ScriptErrorHandler::PrintNL(L"error exit");
+            }
         }
     }
     if (bSuccess)

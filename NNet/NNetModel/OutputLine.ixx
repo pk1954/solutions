@@ -27,7 +27,7 @@ public:
 
 	void Check() const final;
 	
-	bool operator==(Nob const&) const override;
+	//bool operator==(OutputLine const&) const;
 
 	static bool TypeFits(NobType const type) { return type.IsOutputLineType(); }
 

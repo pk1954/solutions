@@ -1,4 +1,4 @@
-// MacroSensor.cpp : 
+// Sensor.cpp : 
 //
 // NNetModel
 
@@ -8,7 +8,7 @@ module;
 #include <algorithm>
 #include <iomanip>
 
-module NNetModel:MacroSensor;
+module NNetModel:Sensor;
 
 import Types;
 import IoConstants;
@@ -23,7 +23,7 @@ using std::wcout;
 using std::wostream;
 using std::setprecision;
 
-MacroSensor::MacroSensor
+Sensor::Sensor
 (
     MicroMeterCircle const & circle,
     UPNobList        const & list
@@ -33,12 +33,12 @@ MacroSensor::MacroSensor
     SetSensorSize(list, circle.GetRadius());
 }
 
-void MacroSensor::Dump() const
+void Sensor::Dump() const
 {
     wcout << L"circle: " << m_circle << endl;
 }
 
-mV MacroSensor::GetSignalValue() const
+mV Sensor::GetSignalValue() const
 {
     mV mVResult { 0.0_mV };
     for (auto const & it : m_dataPoints)
@@ -46,19 +46,19 @@ mV MacroSensor::GetSignalValue() const
     return mVResult;
 }
 
-void MacroSensor::Recalc(UPNobList const & list) 
+void Sensor::Recalc(UPNobList const & list) 
 {
     m_dataPoints.clear();
     list.Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
     NotifyAll(false);
 }
 
-float MacroSensor::GetDistFactor(MicroMeterPnt const & umPnt) const
+float Sensor::GetDistFactor(MicroMeterPnt const & umPnt) const
 {
     return m_circle.DistFactor(umPnt);
 }
 
-void MacroSensor::DrawSigSrc
+void Sensor::Draw
 (
     DrawContext const & context,
     bool        const   bHighlight
@@ -72,7 +72,7 @@ void MacroSensor::DrawSigSrc
     );
 }
 
-void MacroSensor::add2list(Pipe const & pipe) 
+void Sensor::add2list(Pipe const & pipe) 
 {  
     float const DATA_PNTS { 10.0f };
     float const fIncCalc  { m_circle.GetRadius() / (pipe.GetLength() * DATA_PNTS) };
@@ -88,7 +88,7 @@ void MacroSensor::add2list(Pipe const & pipe)
     }
 } 
 
-void MacroSensor::DrawDataPoints(DrawContext const & context) const
+void Sensor::DrawDataPoints(DrawContext const & context) const
 {
     for (auto const& it : m_dataPoints)
     {
@@ -98,7 +98,7 @@ void MacroSensor::DrawDataPoints(DrawContext const & context) const
     }
 }
 
-void MacroSensor::WriteInfo(wostream& out) const
+void Sensor::WriteInfo(wostream& out) const
 {
     out << Signal::SIGSRC_CIRCLE
         << OPEN_BRACKET 
@@ -114,7 +114,7 @@ void MacroSensor::WriteInfo(wostream& out) const
         << endl;
 }
 
-void MacroSensor::SetSensorPos
+void Sensor::SetSensorPos
 (
     UPNobList     const & list,
     MicroMeterPnt const & umPos
@@ -124,7 +124,7 @@ void MacroSensor::SetSensorPos
     Recalc(list);
 }
 
-void MacroSensor::SetSensorSize
+void Sensor::SetSensorSize
 (
     UPNobList  const & list,
     MicroMeter const   umSize
@@ -134,7 +134,7 @@ void MacroSensor::SetSensorSize
     Recalc(list);
 }
 
-void MacroSensor::MoveSensor
+void Sensor::MoveSensor
 (
     UPNobList     const & list,
     MicroMeterPnt const & umDelta
@@ -143,7 +143,7 @@ void MacroSensor::MoveSensor
     SetSensorPos(list, m_circle.GetPos() + umDelta);
 }
 
-void MacroSensor::SizeSensor
+void Sensor::SizeSensor
 (
     UPNobList const & list,
     float     const   factor
@@ -152,7 +152,7 @@ void MacroSensor::SizeSensor
     SetSensorSize(list, GetRadius() * factor); 
 }
 
-void MacroSensor::RotateSensor
+void Sensor::RotateSensor
 (
     MicroMeterPnt const & umPntPivot, 
     Radian        const   radDelta

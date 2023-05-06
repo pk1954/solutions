@@ -30,15 +30,18 @@ public:
         Signal         * pSignal  { m_modelIO.GetImportNMWI().GetMonitorData().GetSignalPtr(signalId) };
         { script.ScrReadString(L"StartTime"); };
         fMicroSecs const umStartTime{ Cast2Float(script.ScrReadFloat()) };
-        pSignal->SetStartTime(umStartTime);
+        if (pSignal)
+            pSignal->SetStartTime(umStartTime);
         { script.ScrReadSpecial(LIST_OPEN_BRACKET); }
         int const iNrOfElements{ script.ScrReadInt() };
-        pSignal->Reserve(iNrOfElements);
+        if (pSignal)
+            pSignal->Reserve(iNrOfElements);
         script.ScrReadSpecial(NR_SEPARATOR);
         for (int iElem = 0; iElem < iNrOfElements; ++iElem)
         {
             mV value{ Cast2Float(script.ScrReadFloat()) };
-            pSignal->Add(value);
+            if (pSignal)
+                pSignal->Add(value);
         }
         script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     }

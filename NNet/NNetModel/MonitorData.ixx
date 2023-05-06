@@ -55,7 +55,7 @@ public:
 
 	SignalId SetHighlightedSignal(Signal   const &);
 	SignalId SetHighlightedSignal(SignalId const);
-	SignalId ResetHighlightedSignal();
+	void     ResetHighlightedSignal();
 
 	void           AddStimulus      (fMicroSecs const);
 	SignalNr       AddSignal        (TrackNr    const,   unique_ptr<Signal>);

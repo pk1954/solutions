@@ -46,6 +46,7 @@ public:
 	MicroMeter                    PixelSize()       const { return m_context.GetPixelSize(); }
 
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
+	//void DrawMicroSensorsInRect(PixelRect const&) const;
 
 	SignalId FindSignalHandle(MicroMeterPnt const&) const;
 
@@ -56,11 +57,11 @@ public:
 		CRIT      const& crit
 	) const
 	{
-		MicroMeterRect const umRect{ GetCoordC().Transform2logUnitRect(rect) };
+		MicroMeterRect const umRect { GetCoordC().Transform2logUnitRect(rect) };
 		m_pNMRI->GetUPNobsC().Apply2AllInRectC<Nob>
-		(
-			umRect,
-			[&](Nob const& s) { if (crit(s)) s.DrawInterior(m_context, tHighlight::normal); }
+			(
+				umRect,
+				[&](Nob const& s) { if (crit(s)) s.DrawInterior(m_context, tHighlight::normal); }
 		);
 	}
 
@@ -93,8 +94,6 @@ protected:
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
 	void DrawSensors() const;
-	void DrawSensorDataPoints (MacroSensor const * const) const;
-	void DrawHighlightedSensor(MacroSensor const * const) const;
 
 	NNetModelReaderInterface const* m_pNMRI          { nullptr };
 	MonitorWindow            const* m_pMonitorWindow { nullptr };
@@ -115,5 +114,5 @@ private:
 	fPixel           m_fPixRadiusLimit { };
 	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
 
-	void drawSignalCable(SignalId const&, Signal const*, ID2D1SolidColorBrush&) const;
+	void drawSignalCable(SignalId const&, MicroMeterPnt  const&, ID2D1SolidColorBrush&) const;
 };

@@ -41,7 +41,7 @@ public:
 
 	static SignalId const& NULL_VAL()
 	{
-		static SignalId const res{ SignalId(TrackNr::NULL_VAL(), SignalNr::NULL_VAL()) };
+		static SignalId res { SignalId(TrackNr::NULL_VAL(), SignalNr::NULL_VAL()) };
 		return res;
 	};
 

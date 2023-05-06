@@ -222,6 +222,7 @@ SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr) const
 void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
 {
     fPixelRect fPixRect { 1._fPixel, 1._fPixel, SignalGenerator::SIGGEN_WIDTH, SignalGenerator::SIGGEN_HEIGHT };
+    fPixRect += m_fPixPntOffset;
     Apply2AllC
     (
         [this, &fPixRect, &graphics](auto const& pSigGen)

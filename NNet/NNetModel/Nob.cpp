@@ -5,6 +5,7 @@
 module;
 
 #include <cassert> 
+#include <memory>
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
@@ -26,14 +27,21 @@ using std::setw;
 using std::move;
 using std::wcout;
 using std::wostream;
+using std::make_unique;
 
 Nob::Nob(NobType const type)
 	: m_type(type)
 {}	
 
-Nob::Nob(Nob const & src)
+Nob::Nob(Nob const & rhs)
 {
-	*this = src;
+	m_mVpotential   = rhs.m_mVpotential;
+	m_type          = rhs.m_type;
+	m_identifier    = rhs.m_identifier;
+	m_bSelected     = rhs.m_bSelected;
+	m_bEmphasized   = rhs.m_bEmphasized;
+	if (rhs.HasMicroSensor())
+		CreateMicroSensor();
 }
 
 bool Nob::operator==(Nob const & rhs) const
@@ -109,73 +117,6 @@ ColorF Nob::GetInteriorColor(tHighlight const type, mV const voltage) const
 	return NNetColors::INT_NORMAL;
 };
 
-void Nob::FillExternalCircle
-(
-	DrawContext const& context,
-	tHighlight  const  type
-) const
-{
-	MicroMeterPnt const umPos    { GetPos() };
-	MicroMeterCircle    umCircle { umPos, KNOT_WIDTH };
-	if (IsEmphasized())
-		umCircle *= 2.f;
-	switch (type)
-	{
-	case tHighlight::normal:
-		context.FillCircle(umCircle, GetExteriorColor(type));
-		break;
-	case tHighlight::highlighted:
-		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_HIGHLIGHTED);
-		break;
-	case tHighlight::targetFit:
-		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_FIT);
-		break;
-	case tHighlight::targetNoFit:
-		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_NOFIT);
-		break;
-	default:
-		assert(false);
-		break;
-	}
-}
-
-void Nob::FillInternalCircle
-(
-	DrawContext const& context,
-	tHighlight  const  type
-) const
-{
-	float  fWidth       { PIPE_INTERIOR };
-	fPixel fPixMinWidth { 1._fPixel };
-	if (IsEmphasized())
-	{
-		fWidth *= 2.f;
-		fPixMinWidth = 3.f;
-	}
-	MicroMeterCircle const umCircle { GetPos(), KNOT_WIDTH * fWidth };
-	switch (type)
-	{
-	case tHighlight::normal:
-		context.FillCircle(umCircle, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
-		break;
-	case tHighlight::highlighted:
-		context.FillCircle(umCircle, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
-		break;
-	case tHighlight::targetFit:
-		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
-		break;
-	case tHighlight::targetNoFit:
-		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
-		break;
-	case tHighlight::blocked:
-		context.FillCircle(umCircle, NNetColors::EXT_NORMAL, fPixMinWidth);
-		break;
-	default:
-		assert(false);
-		break;
-	}
-}
-
 void Nob::Check() const
 {
 #ifdef _DEBUG
@@ -199,18 +140,13 @@ wostream & operator<< (wostream & out, Nob const & nob)
 	return out;
 }
 
-MicroMeterPosDir CalcOffsetPosDir(Nob const & nob, MicroMeter const umO)
-{
-	MicroMeter    const umOff        { umO * NEURON_RADIUS.GetValue() };
-	MicroMeter    const umOffset     { (nob.GetIoMode() == NobIoMode::input) ? -umOff : umOff };
-	Radian        const radianTarget { nob.GetDir() };
-	MicroMeterPnt const umDirVector  { Normalize(Radian2Vector(radianTarget)) };
-	MicroMeterPnt const umPosOffset  { umDirVector * umOffset.GetValue() };
-	MicroMeterPnt const umPosTarget  { nob.GetPos() + umPosOffset };
-	return MicroMeterPosDir(umPosTarget, radianTarget);
-}
-
 void Nob::AppendMenuItems(AddMenuFunc const & add) const
 {
 	add(IDM_SELECT);
 }
+
+MicroSensor* Nob::CreateMicroSensor()
+{
+	m_upMicroSensor = make_unique<MicroSensor>(this);
+	return m_upMicroSensor.get();
+};

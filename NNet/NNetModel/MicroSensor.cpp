@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert> 
 #include <iostream> 
 
 module NNetModel:MicroSensor;
@@ -12,6 +13,7 @@ import Types;
 import DrawContext;
 import :NNetColors;
 import :Signal;
+import :Nob;
 
 using std::endl;
 using std::wcout;
@@ -21,6 +23,16 @@ MicroSensor::MicroSensor(Nob * const pNob)
     : m_pNob(pNob)
 {}
 
+MicroMeterPnt MicroSensor::GetPosition() const
+{ 
+    return m_pNob->GetCenter(); 
+}
+
+NobId MicroSensor::GetNobId() const 
+{ 
+    return m_pNob->GetId(); 
+}
+
 void MicroSensor::Dump() const
 {
     wcout << L"NobId: " << m_pNob->GetId().GetValue() << endl;
@@ -28,27 +40,21 @@ void MicroSensor::Dump() const
 
 void MicroSensor::WriteInfo(wostream& out) const
 {
-    if (!m_bConnected)
-        return;
-
     out << Signal::SIGSRC_NOB << L' ' << m_pNob->GetId().GetValue() << endl;
 }
 
 mV MicroSensor::GetSignalValue() const
 {
-    mV mVResult { m_bConnected ? m_pNob->GetPotential() : 0.0_mV };
-    return mVResult;
+    assert(m_pNob);
+    return m_pNob->GetPotential();
 }
 
-void MicroSensor::DrawSigSrc
+void MicroSensor::Draw
 (
     DrawContext const& context,
     bool        const  bHighlight
 ) const
 {
-    if (!m_bConnected)
-        return;
-
     static fPixel const WIDTH { 5._fPixel };
 
     MicroMeter       const umRadius { context.GetCoordC().Transform2logUnit(30._fPixel) };

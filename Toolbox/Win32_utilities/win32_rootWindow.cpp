@@ -101,8 +101,8 @@ void RootWindow::addWinMenu(HMENU const hMenuParent, wstring const & strTitle) c
 void RootWindow::adjustWinMenu(HMENU const hMenu) const
 {
 	EnableMenuItem(hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic) ? MF_GRAYED : MF_ENABLED));
-	EnableMenuItem(hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on      ) ? MF_GRAYED : MF_ENABLED));
-	EnableMenuItem(hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off     ) ? MF_GRAYED : MF_ENABLED));
+	EnableMenuItem(hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on       ) ? MF_GRAYED : MF_ENABLED));
+	EnableMenuItem(hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED));
 }
 
 void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in screen coordinates

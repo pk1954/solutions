@@ -13,7 +13,7 @@ import :TrackNr;
 import :SignalNr;
 import :NNetModelWriterInterface;
 import :MicroSensor;
-import :MacroSensor;
+import :Sensor;
 import :SignalGenerator;
 import :SignalSource;
 import :Signal;
@@ -40,7 +40,7 @@ SignalId SignalFactory::MakeSensorSignal
     NNetModelWriterInterface & nmwi
 )
 {
-    unique_ptr<MacroSensor> upSensor { make_unique<MacroSensor>(umCircle, nmwi.GetUPNobsC()) };        
+    unique_ptr<Sensor> upSensor { make_unique<Sensor>(umCircle, nmwi.GetUPNobsC()) };        
     SignalNr     const signalNr { addSignal(*upSensor.get(), trackNr, nmwi) };
     nmwi.GetSensorList().PushSensor(move(upSensor));                                         
     return SignalId(trackNr, signalNr);
@@ -64,9 +64,8 @@ SignalId SignalFactory::MakeMicroSensorSignal
     NNetModelWriterInterface& nmwi
 )
 {
-    Nob *                   pNob          { nmwi.GetNob(nobId) };
-    unique_ptr<MicroSensor> upMicroSensor { make_unique<MicroSensor>(pNob) };
-    SignalNr          const signalNr      { addSignal(*upMicroSensor.get(), trackNr, nmwi) };
-    nmwi.GetSensorList().PushSensor(move(upMicroSensor));
+    Nob          * pNob         { nmwi.GetNob(nobId) };
+    MicroSensor  * pMicroSensor { pNob->CreateMicroSensor() };
+    SignalNr const signalNr     { addSignal(*pMicroSensor, trackNr, nmwi) };
     return SignalId(trackNr, signalNr);
 }

@@ -82,9 +82,9 @@ SignalId MonitorData::SetHighlightedSignal(Signal const & sigNew)
 	return SetHighlightedSignal(FindSignalId([&sigNew](Signal const &s){ return &s == &sigNew; }));
 }
 
-SignalId MonitorData::ResetHighlightedSignal()
+void MonitorData::ResetHighlightedSignal()
 {
-	return SetHighlightedSignal(SignalId::NULL_VAL());
+	SetHighlightedSignal(SignalId::NULL_VAL());
 }
 
 SignalNr MonitorData::AddSignal

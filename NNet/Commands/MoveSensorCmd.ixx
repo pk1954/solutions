@@ -23,24 +23,24 @@ public:
 	{
 		Sensor * pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
 		assert(pSensor);
-		assert(pSensor->IsMacroSensor());
-		m_pMacroSensor = static_cast<MacroSensor *>(pSensor);
+		assert(pSensor->IsSensor());
+		m_pSensor = static_cast<Sensor *>(pSensor);
 	}
 
 	void Do() final 
 	{ 
-		m_pMacroSensor->MoveSensor(m_pNMWI->GetUPNobsC(), m_delta);
+		m_pSensor->MoveSensor(m_pNMWI->GetUPNobsC(), m_delta);
 	}
 
 	void Undo() final 
 	{ 
-		m_pMacroSensor->MoveSensor(m_pNMWI->GetUPNobsC(), -m_delta);
+		m_pSensor->MoveSensor(m_pNMWI->GetUPNobsC(), -m_delta);
 	}
 
 	bool CombineCommands(Command const & src) final
 	{ 
 		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
-		if (m_pMacroSensor != cmdSrc.m_pMacroSensor)
+		if (m_pSensor != cmdSrc.m_pSensor)
 			return false;
 		m_delta += cmdSrc.m_delta;
 		return true; 
@@ -72,6 +72,6 @@ private:
 		}
 	} m_wrapper;
 
-	MacroSensor * m_pMacroSensor;
+	Sensor * m_pSensor;
 	MicroMeterPnt m_delta;
 };

@@ -83,15 +83,6 @@ void Signal::WriteSignalData(wostream & out) const
     out << endl << LIST_CLOSE_BRACKET << endl;
 }
 
-void Signal::DrawSigSrc
-(
-    DrawContext const & context,
-    bool        const   bHighlight
-) const
-{
-    m_sigSource.DrawSigSrc(context, bHighlight);
-}
-
 SIG_INDEX Signal::time2index
 (
     NNetParameters const & param,

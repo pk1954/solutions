@@ -37,14 +37,14 @@ void Synapse::RecalcDelayBuffer()
 	m_pulseBuffer.Resize(bufSize, 0.0_mV);
 }
 
-Synapse::Synapse(Synapse const & rhs)
-	: PosNob(NobType::Value::synapse)
-{
-	PosNob::operator=(rhs);
-	m_pPipeIn  = rhs.m_pPipeIn;
-	m_pPipeOut = rhs.m_pPipeOut;
-	m_pPipeAdd = rhs.m_pPipeAdd;
-}
+//Synapse::Synapse(Synapse const & rhs)
+//	: PosNob(NobType::Value::synapse)
+//{
+//	PosNob::operator=(rhs);
+//	m_pPipeIn  = rhs.m_pPipeIn;
+//	m_pPipeOut = rhs.m_pPipeOut;
+//	m_pPipeAdd = rhs.m_pPipeAdd;
+//}
 
 void Synapse::AddIncoming(Pipe* pPipe)
 {
@@ -148,8 +148,8 @@ void Synapse::Dump() const
 	m_pPipeOut->Dump();
 	wcout << L" Add";
 	m_pPipeAdd->Dump();
-	if (m_bOutputBlocked)
-		wcout << L"blocked since " << m_usBlocked.GetValue() << L"µs" << endl;
+	//if (m_bOutputBlocked)
+	//	wcout << L"blocked since " << m_usBlocked.GetValue() << L"µs" << endl;
 }
 
 void Synapse::PosChanged()
@@ -276,7 +276,7 @@ void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) co
 { 
 	D2D1::ColorF const col { GetInteriorColor(type, m_mVaddInput) };
 	drawSynapse(context, RADIUS * PIPE_INTERIOR, col);
-	if (m_bOutputBlocked)
+	if (m_state == State::blocked)
 		FillInternalCircle(context, tHighlight::blocked);
 	else
 		FillInternalCircle(context, type);
@@ -291,23 +291,36 @@ void Synapse::CollectInput()
 
 bool Synapse::CompStep()
 {
-	fMicroSecs usBlockTime = GetParam()->PulseDistMin();
-	if (m_bOutputBlocked)
+	static const mV PULSE_THRESHOLD { 1._mV };
+	using enum State;
+
+	switch (m_state)
 	{
-		m_usBlocked += GetParam()->TimeResolution();
-		if (m_usBlocked > usBlockTime)
-			m_bOutputBlocked = false;
-	}
-	else
-	{
-		static const mV PULSE_THRESHOLD { 20._mV };
+	case idle:
 		m_mVpotential += m_pulseBuffer.Get();
 		if (m_mVpotential >= PULSE_THRESHOLD)
 		{
-			m_bOutputBlocked = true;
-			m_usBlocked = 0.0_MicroSecs;
+			m_usSpikeTime = 0.0_MicroSecs;
+			m_state = pulse;
 		}
+		break;
+
+	case pulse:
+		m_usSpikeTime += GetParam()->TimeResolution();
+		if (m_mVpotential < PULSE_THRESHOLD)
+			m_state = blocked;
+		break;
+
+	case blocked:
+		m_usSpikeTime += GetParam()->TimeResolution();
+		m_mVpotential.Set2Zero();
+		break;
+
 	}
+
+	if (m_usSpikeTime > GetParam()->PulseDistMin())
+		m_state = idle;
+
 	return false;  // no stop on trigger
 }
 

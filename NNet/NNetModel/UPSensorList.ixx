@@ -14,13 +14,13 @@ export module NNetModel:UPSensorList;
 import Types;
 import :UPNobList;
 import :Sensor;
+import :SensorId;
 
 using std::ranges::for_each;
 using std::unique_ptr;
 using std::wstring;
 using std::vector;
 
-export using SensorId = NamedType<int, struct SensorIdParam>;
 export using UPSensor = unique_ptr<Sensor>;
 
 export class UPSensorList
@@ -55,7 +55,6 @@ public:
 
     UPSensor NewSensor(MicroMeterCircle const &, UPNobList const &);
     SensorId FindSensor(MicroMeterPnt const&) const;
-    SensorId FindSensor(NobId const) const;
 
 private:
 

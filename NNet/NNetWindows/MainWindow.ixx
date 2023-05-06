@@ -92,7 +92,7 @@ private:
 	NobId         m_nobIdHighlighted       { NO_NOB };
 	NobId         m_nobIdTarget            { NO_NOB };
 	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
+	SensorId      m_sensorIdSelected  { SensorId::NULL_VAL() };
 	SelectionMenu m_SelectionMenu;
 
 	NobId    findTargetNob(MicroMeterPnt const&);

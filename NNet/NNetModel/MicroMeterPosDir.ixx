@@ -47,8 +47,7 @@ public:
     {
         static MicroMeterPosDir res
         {
-            MicroMeterPosDir(MicroMeterPnt::NULL_VAL(),
-            Radian::NULL_VAL())
+            MicroMeterPosDir(MicroMeterPnt::NULL_VAL(), Radian::NULL_VAL())
         };
         return res;
     };

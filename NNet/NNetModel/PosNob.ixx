@@ -25,7 +25,7 @@ public:
 	  : Nob(type)
 	{ }
 
-	bool operator==(Nob const&) const override;
+	bool operator==(PosNob const&) const;
 
 	void Dump() const override;
 
@@ -75,6 +75,9 @@ public:
 	void AttachOutputLine(PushFunc const&, Pipe&);
 	void AttachInputLine (PushFunc const&, Pipe&);
 	void AttachKnot      (PushFunc const&, Pipe&, Pipe&);
+
+	void FillExternalCircle(DrawContext const&, tHighlight const) const;
+	void FillInternalCircle(DrawContext const&, tHighlight const) const;
 };
 
 export PosNob const* Cast2PosNob(Nob const*);

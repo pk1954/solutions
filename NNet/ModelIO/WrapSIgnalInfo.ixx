@@ -24,10 +24,12 @@ export class WrapSignalInfo : public NNetWrapperBase
 public:
     using NNetWrapperBase::NNetWrapperBase;
 
+    inline static wstring const SOURCE { L"source" };
+
     void operator() (Script& script) const final
     {
-        SignalId   const signalId { ScrReadSignalId(script) };
-        script.ScrReadString(L"source");
+        SignalId const signalId { ScrReadSignalId(script) };
+        script.ScrReadString(SOURCE);
         unsigned long const ulSigSrc { script.ScrReadUlong() };
         if (ulSigSrc == Signal::SIGSRC_CIRCLE)
         {
@@ -37,7 +39,8 @@ public:
         else if (ulSigSrc == Signal::SIGSRC_NOB)
         {
             NobId nobId { ScrReadNobId(script) };
-            SignalFactory::MakeMicroSensorSignal(nobId, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
+            if (IsDefined(nobId))
+                SignalFactory::MakeMicroSensorSignal(nobId, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
         }
         else
         {
@@ -55,7 +58,7 @@ public:
                 if (Signal const* const pSignal{ monitorData.GetConstSignalPtr(idSignal) })
                 {
                     WriteCmdName(out);
-                    out << idSignal << L" source ";
+                    out << idSignal << L' ' << SOURCE << L' ';
                     pSignal->WriteSignalInfo(out);
                 }
             }

@@ -244,7 +244,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDD_DELETE_SIGNAL:
-        DeleteSignalCommand::Push(m_pNMRI->GetMonitorDataC().GetHighlightedSignalId());
+        deleteSignal(m_pNMRI->GetMonitorDataC().GetHighlightedSignal());
         break;
 
     case IDD_ADD_TRACK:
@@ -270,4 +270,26 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     }
 
     return true;
+}
+void NNetController::deleteSignal(Signal const* pSignal)
+{
+    SignalSource const* pSigSrc { pSignal->GetSignalSource() };
+    switch (pSigSrc->SignalSourceType())
+    {
+        using enum SignalSource::Type;
+        case macroSensor:
+        {
+            Sensor const* pSensor  { static_cast<Sensor const*>(pSigSrc) };
+            SensorId      idSensor { m_pNMRI->GetSensorList().GetSensorId(*pSensor) };
+            DelSensorCmd::Push(idSensor);
+            break;
+        }
+        case microSensor:
+        {
+            MicroSensor const * pMicroSensor { static_cast<MicroSensor const*>(pSigSrc) };
+            NobId       const   idNob        { pMicroSensor->GetNobId() };
+            DelMicroSensorCmd::Push(idNob);
+            break;
+        }
+    }
 }

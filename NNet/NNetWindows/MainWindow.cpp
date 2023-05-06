@@ -500,9 +500,9 @@ void MainWindow::PaintGraphics()
 	//m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
 	//m_upVertScale->DrawAuxLines(*m_upGraphics.get());
 
-	PixelRect   const  pixRect              { GetClPixelRect() };
-	DrawContext const& context              { GetDrawContextC() };
-	MacroSensor const* pMacroSensorSelected { Cast2MacroSensor(m_pNMRI->GetSensor(m_sensorIdSelected)) };
+	PixelRect   const  pixRect         { GetClPixelRect() };
+	DrawContext const& context         { GetDrawContextC() };
+	Sensor      const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -537,17 +537,26 @@ void MainWindow::PaintGraphics()
 	}
 	else
 	{
-		if (pMacroSensorSelected)
-			DrawHighlightedSensor(pMacroSensorSelected);
+		if (pSensorSelected)
+			pSensorSelected->Draw(m_context, true);
 	}
 
+	//DrawMicroSensorsInRect(pixRect);
 	DrawSensors();
+	//m_pNMRI->GetSigGenList().SetOffset
+	//(
+	//	fPixelPoint
+	//	(
+	//		m_pPreferences->ScalesVisible() ? m_upVertScale->GetLeftBorder() : 0._fPixel,
+	//		0._fPixel
+	//	)
+	//);
 	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
 	m_pNMRI->GetSigGenList().DrawNewSigGenButton(*m_upGraphics.get());
 
-	if (m_bShowPnts && pMacroSensorSelected)
-		DrawSensorDataPoints(pMacroSensorSelected);
+	if (m_bShowPnts && pSensorSelected)
+		pSensorSelected->DrawDataPoints(m_context);
 
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
@@ -736,7 +745,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_DELETE_EEG_SENSOR:
-		DeleteSensorCmd::Push(m_sensorIdSelected);
+		DelSensorCmd::Push(m_sensorIdSelected);
 		break;
 
 	case IDD_SPLIT_NEURON:

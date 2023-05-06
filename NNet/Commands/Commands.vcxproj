@@ -95,7 +95,7 @@
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />
     <ClCompile Include="DeleteNobCommand.cpp" />
     <ClCompile Include="DeleteNobCommand.ixx" />
-    <ClCompile Include="DeleteSensorCmd.ixx" />
+    <ClCompile Include="DelSensorCmd.ixx" />
     <ClCompile Include="DelMicroSensorCmd.ixx" />
     <ClCompile Include="ExtendOutputLineCmd.ixx" />
     <ClCompile Include="AddPipe2NeuronCmd.ixx" />
@@ -115,7 +115,6 @@
     <ClCompile Include="DeletePipeCommand.ixx" />
     <ClCompile Include="DeleteSelectionCommand.ixx" />
     <ClCompile Include="DeleteSigGenCmd.ixx" />
-    <ClCompile Include="DeleteSignalCommand.ixx" />
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />

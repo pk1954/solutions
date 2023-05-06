@@ -28,9 +28,9 @@ export class Neuron : public PosNob
 {
 public:
 	Neuron(MicroMeterPnt const&);
-	Neuron(Neuron const&);
+	//Neuron(Neuron const&);
 
-	Neuron& operator=(Neuron const&); // copy assignment operator
+	//Neuron& operator=(Neuron const&); // copy assignment operator
 
 	~Neuron() override = default;
 

@@ -147,7 +147,8 @@ void ScriptErrorHandler::PrintErrorInfo
     PrintNL(L"error " + to_wstring(errInfo.m_sErrNr));
     PrintNL(L"in file " + scanner.GetActPath());
 
-    if (int const iLineNr = scanner.GetActLineNr() > 0)
+    int const iLineNr { scanner.GetActLineNr() };
+    if (iLineNr > 0)
         PrintNL(L"line " + to_wstring(iLineNr));
 
     if (!scanner.GetActLine().empty())

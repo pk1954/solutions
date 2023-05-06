@@ -21,6 +21,7 @@ import DrawContext;
 import :NNetParameters;
 import :tHighlight;
 import :MicroMeterPosDir;
+import :MicroSensor;
 import :NobType;
 import :NobId;
 
@@ -52,13 +53,13 @@ public:
 
 	explicit Nob(NobType const);
 	Nob(Nob const&);
+
 	virtual ~Nob() = default;
 
 	virtual void Check() const;
 	virtual void Dump() const;
 
-	virtual bool operator==(Nob const & ) const;
-
+	bool operator==(Nob const &) const;
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };
 
 	virtual void SetDir(Radian const );
@@ -141,14 +142,18 @@ public:
 
 	NNetParameters const * GetParam() const { return m_pParameters; }
 
+	MicroSensor           * CreateMicroSensor();
+	MicroSensor     const * GetMicroSensor() const { return m_upMicroSensor.get(); }
+	bool                    HasMicroSensor() const { return m_upMicroSensor.get() != nullptr; }
+	unique_ptr<MicroSensor> DeleteMicroSensor()    { return move(m_upMicroSensor); }
+
+	void SetMicroSensor(unique_ptr<MicroSensor> up) { m_upMicroSensor = move(up); }
+
 protected:
 
-	mV m_mVpotential{ 0._mV };
+	mV m_mVpotential { 0._mV };
 
 	void SetType(NobType const type) { m_type = type; }
-
-	void FillExternalCircle(DrawContext const&, tHighlight const) const;
-	void FillInternalCircle(DrawContext const&, tHighlight const) const;
 
 private:
 
@@ -157,10 +162,10 @@ private:
 	bool    m_bSelected   { false };
 	bool    m_bEmphasized { false };
 
+	unique_ptr<MicroSensor> m_upMicroSensor;
+
 	inline static NNetParameters const * m_pParameters { nullptr };
 };
-
-export MicroMeterPosDir CalcOffsetPosDir(Nob const&, MicroMeter const);
 
 export template <typename T>
 concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
@@ -168,27 +173,6 @@ concept Nob_t = is_base_of<Nob, remove_pointer_t<T>>::value;
 export template <Nob_t T> bool HasType(Nob const& nob)
 {
 	return remove_pointer<T>::type::TypeFits(nob.GetNobType());
-}
-
-export template <Nob_t T>
-inline MicroMeterLine CalcMaxDistLine(vector<T*> const& list) // find two nobs with maximum distance
-{
-	MicroMeter     maxDist{ 0.0_MicroMeter };
-	MicroMeterLine lineMax{ MicroMeterLine::ZERO_VAL() };
-	for (auto it1 : list)
-		for (auto it2 : list)    //TODO: optimize
-		{
-			auto const line{ MicroMeterLine(it1->GetPos(), it2->GetPos()) };
-			auto const dist{ line.Length() };
-			if (dist > maxDist)
-			{
-				maxDist = dist;
-				lineMax = line;
-			}
-		}
-	if (lineMax.GetStartPoint().GetX() > lineMax.GetEndPoint().GetX())
-		lineMax.Normalize();
-	return lineMax;
 }
 
 export bool IsSelected(UPNob const& upNob) { return upNob && upNob->IsSelected(); }

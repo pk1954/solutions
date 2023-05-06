@@ -43,7 +43,7 @@ public:
 
 	Pipe();
 	Pipe(Nob * const, Nob * const);   //TODO: Nob --> PosNob
-	Pipe(Pipe const &);   // copy constructor
+	//Pipe(Pipe const &);   // copy constructor
 
 	~Pipe() final = default;
 

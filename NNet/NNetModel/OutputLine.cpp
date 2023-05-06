@@ -45,11 +45,11 @@ void OutputLine::Check() const
 	PosNob::Check();
 }
 
-bool OutputLine::operator==(Nob const & rhs) const
-{
-	return this->PosNob::operator== (*Cast2OutputLine(&rhs));
-}
-
+//bool OutputLine::operator==(Nob const & rhs) const
+//{
+//	return this->PosNob::operator== (*Cast2OutputLine(&rhs));
+//}
+//
 void OutputLine::Reconnect()
 {
 	GetPipe()->SetEndPnt(this);

@@ -13,6 +13,7 @@ module NNetModel:PosNob;
 import :Knot;
 import :InputLine;
 import :OutputLine;
+import :NNetColors;
 
 using std::wcout;
 using std::endl;
@@ -26,12 +27,12 @@ void PosNob::Dump() const
 	wcout << GetPos() << endl;
 }
 
-bool PosNob::operator==(Nob const& rhs) const
+bool PosNob::operator==(PosNob const& rhs) const
 {
-	PosNob const& posNobRhs { static_cast<PosNob const&>(rhs) };
+//	PosNob const& posNobRhs { static_cast<PosNob const&>(rhs) };
 	return (this->Nob::operator==(rhs)) &&
-		GetPos().IsCloseTo(posNobRhs.GetPos()) &&
-		GetExtension().IsCloseTo(posNobRhs.GetExtension());
+		GetPos().IsCloseTo(rhs.GetPos()) &&
+		GetExtension().IsCloseTo(rhs.GetExtension());
 }
 
 bool PosNob::Includes(MicroMeterPnt const& point) const
@@ -119,6 +120,73 @@ void PosNob::AttachKnot(PushFunc const& push, Pipe& pipeIn, Pipe& pipeOut)
 	pipeOut.SetStartPnt(upKnot.get());
 	pipeIn.SetEndPnt(upKnot.get());
 	push(move(upKnot));
+}
+
+void PosNob::FillExternalCircle
+(
+	DrawContext const& context,
+	tHighlight  const  type
+) const
+{
+	MicroMeterPnt const umPos { GetPos() };
+	MicroMeterCircle    umCircle { umPos, KNOT_WIDTH };
+	if (IsEmphasized())
+		umCircle *= 2.f;
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(umCircle, GetExteriorColor(type));
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_HIGHLIGHTED);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_FIT);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_NOFIT);
+		break;
+	default:
+		assert(false);
+		break;
+	}
+}
+
+void PosNob::FillInternalCircle
+(
+	DrawContext const& context,
+	tHighlight  const  type
+) const
+{
+	float  fWidth { PIPE_INTERIOR };
+	fPixel fPixMinWidth { 1._fPixel };
+	if (IsEmphasized())
+	{
+		fWidth *= 2.f;
+		fPixMinWidth = 3.f;
+	}
+	MicroMeterCircle const umCircle { GetPos(), KNOT_WIDTH * fWidth };
+	switch (type)
+	{
+	case tHighlight::normal:
+		context.FillCircle(umCircle, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
+		break;
+	case tHighlight::highlighted:
+		context.FillCircle(umCircle, GetInteriorColor(type, m_mVpotential), fPixMinWidth);
+		break;
+	case tHighlight::targetFit:
+		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	case tHighlight::targetNoFit:
+		context.FillCircle(umCircle, NNetColors::INT_NORMAL, fPixMinWidth);
+		break;
+	case tHighlight::blocked:
+		context.FillCircle(umCircle, NNetColors::EXT_NORMAL, fPixMinWidth);
+		break;
+	default:
+		assert(false);
+		break;
+	}
 }
 
 PosNob const* Cast2PosNob(Nob const* pNob)

@@ -57,13 +57,13 @@ Pipe::Pipe
 	RecalcSegments();
 }
 
-Pipe::Pipe(Pipe const & src) :  // copy constructor
-	Nob        (src),
-    m_pNobStart(nullptr),
-	m_pNobEnd  (nullptr),
-	m_segments(src.m_segments)
-{ 
-}
+//Pipe::Pipe(Pipe const & src) :  // copy constructor
+//	Nob        (src),
+//    m_pNobStart(nullptr),
+//	m_pNobEnd  (nullptr),
+//	m_segments(src.m_segments)
+//{ 
+//}
 
 void Pipe::Dump() const
 {

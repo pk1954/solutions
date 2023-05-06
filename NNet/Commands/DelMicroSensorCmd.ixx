@@ -15,25 +15,25 @@ export class DelMicroSensorCmd : public NNetCommand
 public:
 
 	DelMicroSensorCmd(NobId const nobId)
+		: m_pNob(m_pNMWI->GetNob(nobId))
 	{
-		m_sensorId = m_pNMWI->GetSensorList().FindSensor(nobId);
+		m_signalId = m_pNMWI->FindSignalId
+		(
+			[this](Signal const& s)
+			{ return s.GetSignalSource() == m_pNob->GetMicroSensor(); }
+		);
 	}
 
 	void Do() final
 	{
-		m_upSensor = move(m_pNMWI->GetSensorList().RemoveSensor(m_sensorId));
-		m_signalId = m_pNMWI->FindSignalId
-		(
-			[this](Signal const& s)
-			{ return s.GetSignalSource() == m_upSensor.get(); }
-		);
-		m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
+		m_upMicroSensor = m_pNob->DeleteMicroSensor();
+		m_upSignal      = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
 		m_pSound->Play(L"DISAPPEAR_SOUND");
 	};
 
 	void Undo() final
 	{
-		m_pNMWI->GetSensorList().InsertSensor(move(m_upSensor), m_sensorId);
+		m_pNob->SetMicroSensor(move(m_upMicroSensor));
 		m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
 		m_pSound->Play(L"SNAP_IN_SOUND");
 	};
@@ -43,10 +43,7 @@ public:
 		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
-	static void Push
-	(
-		NobId const nobId
-	)
+	static void Push(NobId const nobId)
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId.GetValue() << endl;
@@ -65,8 +62,8 @@ private:
 		}
 	} m_wrapper;
 
-	SensorId           m_sensorId {};
-	SignalId           m_signalId {};
-	unique_ptr<Sensor> m_upSensor {};
-	unique_ptr<Signal> m_upSignal {};
+	Nob                   * m_pNob     { nullptr };
+	SignalId                m_signalId {};
+	unique_ptr<Signal>      m_upSignal {};
+	unique_ptr<MicroSensor> m_upMicroSensor {};
 };

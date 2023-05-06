@@ -83,9 +83,9 @@
     <ClCompile Include="PipeList.cpp" />
     <ClCompile Include="PipeList.ixx" />
     <ClCompile Include="PosNob.ixx" />
-    <ClCompile Include="MacroSensor.cpp" />
-    <ClCompile Include="MacroSensor.ixx" />
+    <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="Sensor.ixx" />
+    <ClCompile Include="SensorId.ixx" />
     <ClCompile Include="SigGenDynamicData.cpp" />
     <ClCompile Include="SigGenDynamicData.ixx" />
     <ClCompile Include="SigGenId.ixx" />

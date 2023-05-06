@@ -42,9 +42,9 @@ public:
 
     mV        GetDataPoint   (NNetParameters const &, SIMU_TIME const)  const;
     SIMU_TIME FindNextMaximum(NNetParameters const &, SIMU_TIME const)  const;
-    void      DrawSigSrc     (DrawContext const &, bool const) const;
-    void      WriteSignalInfo(wostream &)                      const;
-    void      WriteSignalData(wostream &)                      const;
+
+    void WriteSignalInfo(wostream &) const;
+    void WriteSignalData(wostream &) const;
 
     //bool Includes(MicroMeterPnt const) const;
 
@@ -64,9 +64,8 @@ public:
 
     SignalSource const * GetSignalSource() const { return &m_sigSource; }
 
-    inline static int const SIGSRC_CIRCLE    { 101 };
-    inline static int const SIGSRC_GENERATOR { 102 };
-    inline static int const SIGSRC_NOB       { 103 };
+    inline static int const SIGSRC_CIRCLE { 101 };
+    inline static int const SIGSRC_NOB    { 103 };
 
 private:
 

@@ -36,11 +36,9 @@ public:
 
 	SignalSource::Type SignalSourceType() const final { return SignalSource::Type::generator; }
 
-	mV   GetSignalValue()                           const final { return m_mVactual; };
-	void Dump()                                     const final {};
-	void WriteInfo(wostream&)                       const final {};
-	void DrawSigSrc(DrawContext const&, bool const) const final {};
-	bool IsConnected()                              const final { return true; }
+	mV   GetSignalValue()     const final { return m_mVactual; };
+	void Dump()               const final {};
+	void WriteInfo(wostream&) const final {};
 
 	void DrawSigGen(D2D_driver&, fPixelRect, bool const) const;
 
@@ -77,7 +75,7 @@ public:
 	void Register(ObserverInterface&);
 	void Unregister(ObserverInterface const&);
 
-	inline static fPixel const SIGGEN_WIDTH { 100._fPixel };
+	inline static fPixel const SIGGEN_WIDTH  { 100._fPixel };
 	inline static fPixel const SIGGEN_HEIGHT { 50._fPixel };
 
 	inline static fPixel const CORNERS { 5._fPixel };
