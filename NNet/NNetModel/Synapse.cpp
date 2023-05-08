@@ -276,7 +276,7 @@ void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) co
 { 
 	D2D1::ColorF const col { GetInteriorColor(type, m_mVaddInput) };
 	drawSynapse(context, RADIUS * PIPE_INTERIOR, col);
-	if (m_state == State::blocked)
+	if (isBlocked())
 		FillInternalCircle(context, tHighlight::blocked);
 	else
 		FillInternalCircle(context, type);
@@ -292,35 +292,25 @@ void Synapse::CollectInput()
 bool Synapse::CompStep()
 {
 	static const mV PULSE_THRESHOLD { 1._mV };
-	using enum State;
+	
+	m_mVpotential += m_pulseBuffer.Get();
+	bool bPulse { (m_mVpotential >= PULSE_THRESHOLD) };
 
-	switch (m_state)
+	if (isBlocked())
 	{
-	case idle:
-		m_mVpotential += m_pulseBuffer.Get();
-		if (m_mVpotential >= PULSE_THRESHOLD)
+		if ((m_usBlockStartTime < GetParam()->PulseDistMin()) || bPulse)
 		{
-			m_usSpikeTime = 0.0_MicroSecs;
-			m_state = pulse;
+			m_mVpotential.Set2Zero();       // block output potential
+			m_usBlockStartTime += GetParam()->TimeResolution();
 		}
-		break;
-
-	case pulse:
-		m_usSpikeTime += GetParam()->TimeResolution();
-		if (m_mVpotential < PULSE_THRESHOLD)
-			m_state = blocked;
-		break;
-
-	case blocked:
-		m_usSpikeTime += GetParam()->TimeResolution();
-		m_mVpotential.Set2Zero();
-		break;
-
+		else
+			m_usBlockStartTime.Set2Null();  // unblock
 	}
-
-	if (m_usSpikeTime > GetParam()->PulseDistMin())
-		m_state = idle;
-
+	else if (bPulse)  
+	{
+		m_usBlockStartTime = 0.0_MicroSecs;  // start block 
+	}
+	
 	return false;  // no stop on trigger
 }
 

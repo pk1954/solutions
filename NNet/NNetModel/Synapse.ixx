@@ -104,17 +104,15 @@ private:
     mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
     mutable MicroMeterPnt m_umPntCenter { NP_NULL };
 
-    enum class State { idle, pulse, blocked };
-
-    State             m_state       { State::idle };
-    fMicroSecs        m_usSpikeTime { 0.0_MicroSecs };
-    mV                m_mVaddInput  { 0._mV };
+    fMicroSecs        m_usBlockStartTime { fMicroSecs::NULL_VAL() };  // NULL_VAL : no block
+    mV                m_mVaddInput       { 0._mV };
     FixedPipeline<mV> m_pulseBuffer;
     Pipe *            m_pPipeIn;
     Pipe *            m_pPipeOut;
     Pipe *            m_pPipeAdd;
 
     bool isDefined() const { return m_pPipeIn && m_pPipeOut && m_pPipeAdd; }
+    bool isBlocked() const { return m_usBlockStartTime.IsNotNull(); }
 };
 
 export Synapse const* Cast2Synapse(Nob const* pNob)

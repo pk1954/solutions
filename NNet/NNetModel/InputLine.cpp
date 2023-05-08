@@ -5,42 +5,25 @@
 module;
 
 #include <cassert>
-#include <chrono>
-#include <iomanip>
-#include <sstream> 
 #include "Resource.h"
 
 module NNetModel:InputLine;
 
 import Direct2D;
 import DrawContext;
-import SimulationTime;
 import :tHighlight;
-import :SignalGenerator;
-import :StdSigGen;
-import :ParamType;
-import :NNetColors;
-import :NNetParameters;
 import :NobType;
 import :Neuron;
 import :IoLine;
 import :PosNob;
 import :Knot;
 
-using std::chrono::microseconds;
-using std::wostringstream;
-using std::setprecision;
-using std::wstring;
-using std::fixed;
-
 InputLine::InputLine(MicroMeterPnt const& upCenter)
-  : IoLine(upCenter, NobType::Value::inputLine),
-	m_pSigGen(StdSigGen::Get())
+  : IoLine(upCenter, NobType::Value::inputLine)
 { }
 
 InputLine::InputLine(PosNob & posNob)
-  : IoLine(posNob.GetPos(), NobType::Value::inputLine),
-	m_pSigGen(StdSigGen::Get())
+  : IoLine(posNob.GetPos(), NobType::Value::inputLine)
 {
 	SetId(posNob.GetId());
 	if (posNob.IsKnot())

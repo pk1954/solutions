@@ -19,6 +19,7 @@ import :Neuron;
 import :IoLine;
 import :PosNob;
 import :SignalGenerator;
+import :StdSigGen;
 
 export class InputLine : public IoLine
 {
@@ -72,7 +73,7 @@ public:
 
 private:
 
-	SignalGenerator * m_pSigGen;
+	SignalGenerator* m_pSigGen { StdSigGen::Get() };
 
 	MicroMeterPnt getOffset() const;
 	MicroMeterPnt getCenter() const;
