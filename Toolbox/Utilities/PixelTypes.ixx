@@ -10,6 +10,7 @@ import :NamedType;
 import :CircleType;
 import :EllipseType;
 import :PointType;
+import :LineType;
 import :RectType;
 
 /////////////////// PIXEL ///////////////////////////////////
@@ -33,6 +34,7 @@ export constexpr PIXEL operator"" _PIXEL(unsigned long long ull)
 
 export using fPixel         = NamedType   < float, struct fPixel_Parameter >;
 export using fPixelPoint    = PosType     < fPixel >;
+export using fPixelLine     = LineType    < fPixel >;
 export using fPixelRectSize = SizeType    < fPixel >;
 export using fPixelRect     = RectType    < fPixel >;
 export using fPixelCircle   = CircleType  < fPixel >;

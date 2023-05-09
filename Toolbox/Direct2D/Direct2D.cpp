@@ -333,17 +333,33 @@ void D2D_driver::FillGradientCircle
 
 void D2D_driver::DrawLine
 (
-	fPixelPoint const & fpp1,
-	fPixelPoint const & fpp2,
+	fPixelLine const& fPixLine,
+	fPixel     const  fpixWidth,
+	ID2D1Brush const& brush
+) const
+{
+	m_pRenderTarget->DrawLine
+	(
+		convertD2D(fPixLine.GetStartPoint()),
+		convertD2D(fPixLine.GetEndPoint()),
+		const_cast<ID2D1Brush*>(&brush),
+		fpixWidth.GetValue()
+	);
+}
+
+void D2D_driver::DrawLine
+(
+	fPixelPoint const& fpp1,
+	fPixelPoint const& fpp2,
 	fPixel      const   fpixWidth,
-	ID2D1Brush  const & brush
+	ID2D1Brush  const& brush
 ) const
 {
 	m_pRenderTarget->DrawLine
 	(
 		convertD2D(fpp1),
 		convertD2D(fpp2),
-		const_cast<ID2D1Brush *>(&brush),
+		const_cast<ID2D1Brush*>(&brush),
 		fpixWidth.GetValue()
 	);
 }

@@ -32,8 +32,8 @@ public:
     void Draw(DrawContext const&, bool const) const final;
     MicroMeterPnt GetPosition()               const final;
 
-    NobId GetNobId() const;
-    Nob const* GetNob() { return m_pNob; }
+    NobId      GetNobId() const;
+    Nob const* GetNob  () const { return m_pNob; }
 
 private:
 
