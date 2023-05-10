@@ -84,7 +84,7 @@ private:
 	fMicroSecs pixel2simuTime  (fPixel     const fPix)    const { return scale2simuTime(pixel2scaleTime(fPix)); }
 	fPixel     simu2pixelTime  (fMicroSecs const usSimu)  const { return scale2pixelTime(simu2scaleTime(usSimu)); }
 
-	void paintWarningRect() const;
+	void paintWarningRect    () const;
 	void paintStimulusMarkers() const;
 	void paintSignal(SignalId const &);
 	void paintTrack(TrackNr const) const;

@@ -11,6 +11,7 @@ module;
 
 module NNetModel:Synapse;
 
+import SimulationTime;
 import DrawContext;
 import Types;
 import Util;
@@ -123,6 +124,7 @@ void Synapse::recalcPosition() const
 void Synapse::Recalc()
 {
 	recalcPosition();
+	m_usBlock.clear();
 }
 
 void Synapse::Check() const
@@ -276,7 +278,7 @@ void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) co
 { 
 	D2D1::ColorF const col { GetInteriorColor(type, m_mVaddInput) };
 	drawSynapse(context, RADIUS * PIPE_INTERIOR, col);
-	if (isBlocked())
+	if (m_bBlockActive)
 		FillInternalCircle(context, tHighlight::blocked);
 	else
 		FillInternalCircle(context, type);
@@ -293,25 +295,100 @@ bool Synapse::CompStep()
 {
 	static const mV PULSE_THRESHOLD { 1._mV };
 	
-	m_mVpotential += m_pulseBuffer.Get();
-	bool bPulse { (m_mVpotential >= PULSE_THRESHOLD) };
+	mV mVmain       = m_mVpotential;
+	mV mVfromBuffer = m_pulseBuffer.Get();
+	m_mVpotential += mVfromBuffer;
+	bool bSignal      { (m_mVpotential >= PULSE_THRESHOLD) };
+	bool bInPulseDist { m_usBlockStartTime < GetParam()->PulseDistMin() };
 
-	if (isBlocked())
+	if (bSignal)
 	{
-		if ((m_usBlockStartTime < GetParam()->PulseDistMin()) || bPulse)
+		int x = 42;
+	}
+
+	if (bInPulseDist)
+		m_usBlockStartTime += GetParam()->TimeResolution();
+
+	switch (m_state)
+	{
+		using enum tState;
+	case idle:
+		if (bSignal)
+			startLeadPulse();
+		break;
+
+	case leadPulse:
+		if (!bInPulseDist)
 		{
-			m_mVpotential.Set2Zero();       // block output potential
-			m_usBlockStartTime += GetParam()->TimeResolution();
+			m_state = idle;  // leading pulse longer than min pulse dist!
+		}
+		else if (!bSignal)
+		{
+			block();
+			m_state = blockedIdle;
+		}
+		break;
+
+	case blockedIdle:
+		if (bSignal)
+		{
+			if (bInPulseDist)
+				m_state = blockedPulse;
+			else
+				startLeadPulse();
 		}
 		else
-			m_usBlockStartTime.Set2Null();  // unblock
+		{
+			if (!bInPulseDist)    // block time over and no signal: unblock
+				unblock();
+		}
+		break;
+
+	case blockedPulse:
+		if (bSignal)
+		{
+			m_mVpotential.Set2Zero();  // block this pulse
+			if (!bInPulseDist)
+				m_state = trailPulse; 
+		}
+		else   // blocked pulse ended 
+		{
+			if (bInPulseDist)
+				m_state = blockedIdle;  
+			else            
+				unblock();   // block time over and no signal: unblock
+		}
+		break;
+
+	case trailPulse:
+		if (bSignal)
+			m_mVpotential.Set2Zero();  // block this pulse
+		else 
+			unblock();
+		break;
 	}
-	else if (bPulse)  
-	{
-		m_usBlockStartTime = 0.0_MicroSecs;  // start block 
-	}
-	
+
 	return false;  // no stop on trigger
+}
+
+void Synapse::unblock()
+{
+	m_usBlockStartTime.Set2Null();
+	m_usBlock.push_back(SimulationTime::Get());
+	m_bBlockActive = false;
+	m_state = tState::idle;
+}
+
+void Synapse::block()
+{
+	m_bBlockActive = true;
+	m_usBlock.push_back(SimulationTime::Get()); // block output
+}
+
+void Synapse::startLeadPulse()
+{
+	m_usBlockStartTime = 0.0_MicroSecs;  // start block timer, let lead pulse pass
+	m_state = tState::leadPulse;
 }
 
 void Synapse::AppendMenuItems(AddMenuFunc const& add) const

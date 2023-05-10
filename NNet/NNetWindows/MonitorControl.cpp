@@ -6,6 +6,7 @@ module;
 
 #include <string>
 #include <cassert>
+#include <vector>
 #include <Windows.h>
 #include "dwrite.h"
 #include "Resource.h"
@@ -18,6 +19,7 @@ import SimulationTime;
 import NNetModel;
 import NNetCommands;
 
+using std::vector;
 using std::to_wstring;
 
 MonitorControl::MonitorControl
@@ -321,6 +323,40 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 
 	fPixelPoint fPixPntSignalNow { getSignalPoint(*pSig, usSimuNow, fPixOffsetY) };
 	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), color);
+	
+	// paint block times
+
+	SignalSource const& sigSrc { *pSig->GetSignalSource() };
+	if (sigSrc.SignalSourceType() != SignalSource::Type::microSensor)
+		return;
+
+	MicroSensor const& microSensor { static_cast<MicroSensor const &>(sigSrc) };
+	NobId       const  idNob       { microSensor.GetNobId() };
+	Nob         const& nob         { *m_pNMWI->GetNob(idNob) };
+	if (!nob.IsSynapse())
+		return;
+
+	vector<fMicroSecs> const& list { Cast2Synapse(&nob)->GetBlockList() };
+
+	fPixel const fPixTrackHeight { calcTrackHeight() };
+
+	int index { 0 };
+	while (index < list.size())
+	{
+		fMicroSecs usBlockStart { list[index++] };
+		fMicroSecs usBlockEnd   { (index == list.size()) ? usSimuStop : list[index++] };
+		if (usBlockEnd >= usSimuStart)
+		{
+			fPixelRect rect
+			{
+				simu2pixelTime(usBlockStart),      // left
+				fPixOffsetY - fPixTrackHeight / 2, // top
+				simu2pixelTime(usBlockEnd),        // right
+				fPixOffsetY - fPixTrackHeight / 4  // bottom
+			};
+			m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
+		}
+	}
 }
 
 PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId, tHorzDir const dir) const
@@ -341,6 +377,7 @@ PixelPoint MonitorControl::GetTrackPosScreen(SignalId const signalId, tHorzDir c
 
 	return pixPosScreen;
 }
+
 bool MonitorControl::SignalTooHigh() const
 {
 	fPixel const fPixTrackHeight { calcTrackHeight() };

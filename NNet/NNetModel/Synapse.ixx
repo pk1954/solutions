@@ -6,6 +6,7 @@ module;
 
 #include <cassert>
 #include <cmath>
+#include <vector>
 
 export module NNetModel:Synapse;
 
@@ -17,6 +18,8 @@ import :NobType;
 import :Pipe;
 import :OutputLine;
 import :tHighlight;
+
+using std::vector;
 
 export class Synapse : public PosNob
 {
@@ -88,6 +91,8 @@ public:
     Pipe      * GetOutPipe()       { return m_pPipeOut; }
     Pipe const* GetOutPipe() const { return m_pPipeOut; }
 
+    vector<fMicroSecs> const& GetBlockList() const { return m_usBlock; }
+
 private:
 
     inline static MicroMeter const PIPE_HALF { PIPE_WIDTH * 0.5f };
@@ -104,6 +109,10 @@ private:
     mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
     mutable MicroMeterPnt m_umPntCenter { NP_NULL };
 
+    enum class tState { idle, leadPulse, blockedIdle, blockedPulse, trailPulse };
+    tState m_state { tState::idle };
+
+    bool              m_bBlockActive { false };
     fMicroSecs        m_usBlockStartTime { fMicroSecs::NULL_VAL() };  // NULL_VAL : no block
     mV                m_mVaddInput       { 0._mV };
     FixedPipeline<mV> m_pulseBuffer;
@@ -111,8 +120,12 @@ private:
     Pipe *            m_pPipeOut;
     Pipe *            m_pPipeAdd;
 
+    vector<fMicroSecs> m_usBlock;
+
     bool isDefined() const { return m_pPipeIn && m_pPipeOut && m_pPipeAdd; }
-    bool isBlocked() const { return m_usBlockStartTime.IsNotNull(); }
+    void block();
+    void unblock();
+    void startLeadPulse();
 };
 
 export Synapse const* Cast2Synapse(Nob const* pNob)
