@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <string>
 #include <iostream>
 
@@ -18,6 +19,7 @@ import NNetModel;
 
 using std::wostream;
 using std::wstring;
+using std::endl;
 
 export class WrapSignalInfo : public NNetWrapperBase
 {
@@ -59,7 +61,21 @@ public:
                 {
                     WriteCmdName(out);
                     out << idSignal << L' ' << SOURCE << L' ';
-                    pSignal->WriteSignalInfo(out);
+                    SignalSource const* pSigSrc { pSignal->GetSignalSource() };
+                    SignalSource::Type  type    { pSigSrc->SignalSourceType()  };
+                    if (type == SignalSource::Type::macroSensor)
+                    {
+                        static_cast<Sensor const *>(pSigSrc)->WriteInfo(out);
+                    }
+                    else if (type == SignalSource::Type::microSensor)
+                    {
+                        MicroSensor const& microSensor  { static_cast<MicroSensor const&>(*pSigSrc) };
+                        NobId       const  idNob        { microSensor.GetNobId() };
+                        NobId       const  idNobCompact { m_modelIO.GetCompactIdVal(idNob) };
+                        out << Signal::SIGSRC_NOB << L' ' << idNobCompact << endl;
+                    }
+                    else
+                        assert(false);
                 }
             }
         );

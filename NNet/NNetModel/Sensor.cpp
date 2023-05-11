@@ -23,6 +23,8 @@ using std::wcout;
 using std::wostream;
 using std::setprecision;
 
+class NNetModelIO;
+
 Sensor::Sensor
 (
     MicroMeterCircle const & circle,

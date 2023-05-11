@@ -16,6 +16,7 @@ import :NobId;
 using std::wostream;
 
 class Nob;
+class NNetModelIo;
 
 export class MicroSensor : public SignalSource
 {
@@ -27,10 +28,13 @@ public:
 
     void Dump()                               const final;
     mV   GetSignalValue()                     const final;
-    void WriteInfo(wostream&)                 const final;
-    SignalSource::Type SignalSourceType()     const final { return SignalSource::Type::microSensor; };
     void Draw(DrawContext const&, bool const) const final;
     MicroMeterPnt GetPosition()               const final;
+
+    SignalSource::Type SignalSourceType() const final 
+    { 
+        return SignalSource::Type::microSensor; 
+    };
 
     NobId      GetNobId() const;
     Nob const* GetNob  () const { return m_pNob; }

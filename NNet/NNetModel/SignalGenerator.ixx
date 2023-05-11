@@ -25,6 +25,8 @@ using std::wstring;
 using std::wostream;
 using std::unique_ptr;
 
+class NNetModelIO;
+
 export class SignalGenerator : public SignalSource
 {
 public:
@@ -36,9 +38,8 @@ public:
 
 	SignalSource::Type SignalSourceType() const final { return SignalSource::Type::generator; }
 
-	mV   GetSignalValue()     const final { return m_mVactual; };
-	void Dump()               const final {};
-	void WriteInfo(wostream&) const final {};
+	mV   GetSignalValue() const final { return m_mVactual; };
+	void Dump()           const final {};
 
 	void DrawSigGen(D2D_driver&, fPixelRect, bool const) const;
 

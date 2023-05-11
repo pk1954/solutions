@@ -38,11 +38,6 @@ void MicroSensor::Dump() const
     wcout << L"NobId: " << m_pNob->GetId().GetValue() << endl;
 }
 
-void MicroSensor::WriteInfo(wostream& out) const
-{
-    out << Signal::SIGSRC_NOB << L' ' << m_pNob->GetId().GetValue() << endl;
-}
-
 mV MicroSensor::GetSignalValue() const
 {
     assert(m_pNob);

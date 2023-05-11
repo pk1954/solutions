@@ -293,18 +293,13 @@ void Synapse::CollectInput()
 
 bool Synapse::CompStep()
 {
-	static const mV PULSE_THRESHOLD { 1._mV };
+	static const mV PULSE_THRESHOLD { 0._mV };
 	
-	mV mVmain       = m_mVpotential;
 	mV mVfromBuffer = m_pulseBuffer.Get();
 	m_mVpotential += mVfromBuffer;
-	bool bSignal      { (m_mVpotential >= PULSE_THRESHOLD) };
-	bool bInPulseDist { m_usBlockStartTime < GetParam()->PulseDistMin() };
 
-	if (bSignal)
-	{
-		int x = 42;
-	}
+	bool bSignal      { (m_mVpotential > PULSE_THRESHOLD) };
+	bool bInPulseDist { m_usBlockStartTime < GetParam()->PulseDistMin() };
 
 	if (bInPulseDist)
 		m_usBlockStartTime += GetParam()->TimeResolution();
@@ -332,6 +327,7 @@ bool Synapse::CompStep()
 	case blockedIdle:
 		if (bSignal)
 		{
+			m_mVpotential.Set2Zero();  // block this pulse
 			if (bInPulseDist)
 				m_state = blockedPulse;
 			else

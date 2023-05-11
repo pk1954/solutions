@@ -23,6 +23,8 @@ using std::vector;
 using std::wostream;
 using std::unique_ptr;
 
+class NNetModelIO;
+
 export using SIG_INDEX = long;
 export using SIMU_TIME = fMicroSecs;
 
@@ -43,7 +45,6 @@ public:
     mV        GetDataPoint   (NNetParameters const &, SIMU_TIME const)  const;
     SIMU_TIME FindNextMaximum(NNetParameters const &, SIMU_TIME const)  const;
 
-    void WriteSignalInfo(wostream &) const;
     void WriteSignalData(wostream &) const;
 
     //bool Includes(MicroMeterPnt const) const;

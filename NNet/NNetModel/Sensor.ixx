@@ -19,6 +19,8 @@ import :Pipe;
 using std::vector;
 using std::wostream;
 
+class NNetModelIO;
+
 export class Sensor : public SignalSource
 {
 public:
@@ -31,9 +33,10 @@ public:
 
     SignalSource::Type SignalSourceType() const final { return SignalSource::Type::macroSensor; };
 
-    void Dump()                const final;
-    mV   GetSignalValue()      const final;
-    void WriteInfo(wostream &) const final;
+    void Dump()           const final;
+    mV   GetSignalValue() const final;
+
+    void WriteInfo(wostream&) const;
 
     void RotateSensor(MicroMeterPnt const&, Radian const);
 

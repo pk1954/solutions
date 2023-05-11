@@ -22,6 +22,8 @@ using std::endl;
 using std::wostream;
 using std::make_unique;
 
+class NNetModelIO;
+
 Signal::Signal
 (
     Observable   & observable,
@@ -63,11 +65,6 @@ void Signal::Reset()
 //{ 
 //    return m_sigSource.Includes(p); 
 //}
-
-void Signal::WriteSignalInfo(wostream & out) const
-{
-    m_sigSource.WriteInfo(out);
-}
 
 void Signal::WriteSignalData(wostream & out) const
 {
