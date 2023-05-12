@@ -49,8 +49,8 @@ void SignalPreview::PaintGraphics()
 			}, 
 			0.0_MicroSecs,
 			getTime(xRight()),
-			STD_WIDTH,
-			D2D1::ColorF::Black
+			D2D1::ColorF::Black,
+			STD_WIDTH
 		);
 	}
 }

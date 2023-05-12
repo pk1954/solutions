@@ -36,9 +36,10 @@ public:
 		GetParams()->RegisterObserver(*this);
 	}
 
-	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
-
 protected:
+
+	fPixel const STD_WIDTH { 1.0_fPixel };
+	fPixel const HIGH_WIDTH { 3.0_fPixel };
 
 	NNetModelWriterInterface* m_pNMWI { nullptr };
 
@@ -53,8 +54,8 @@ protected:
 		auto               getPoint,
 		fMicroSecs   const timeStart0,
 		fMicroSecs   const timeEnd,
-		fPixel       const fPixWidth,
-		D2D1::ColorF const color
+		D2D1::ColorF const color,
+		fPixel       const fPixWidth
 	) const
 	{
 		return NNetTimeGraph::Paint
@@ -63,8 +64,8 @@ protected:
 			timeStart0,
 			timeEnd,
 			GetParams()->TimeResolution(),
-			fPixWidth,
-			color
+			color,
+			fPixWidth
 		);
 	}
 };

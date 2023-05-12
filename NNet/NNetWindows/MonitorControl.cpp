@@ -271,7 +271,7 @@ void MonitorControl::paintWarningRect() const
 		fPixelRect
 		(
 			fPixelPoint   (m_fPixRightLimit, 0._fPixel),
-			fPixelRectSize(m_fPixRightBorder, GetClientHeight())
+			fPixelRectSize(xRightBorder(), GetClientHeight())
 		), 
 		NNetColors::COL_WARNING
 	);
@@ -284,7 +284,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		return;
 
 	fPixel     const fPixHorzBegin { 0._fPixel };
-	fPixel     const fPixHorzEnd   { m_fPixWinWidth - m_fPixRightBorder };
+	fPixel     const fPixHorzEnd   { m_fPixWinWidth - xRightBorder() };
 
 	fMicroSecs const usSimuBegin   { pixel2simuTime(fPixHorzBegin) };
 	fMicroSecs const usSimuEnd     { pixel2simuTime(fPixHorzEnd) };
@@ -297,7 +297,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 
 	fPixel     const fPixOffsetY   { getSignalOffset(idSignal) };
 	D2D1::ColorF     color         { ColorF::Black };
-	fPixel           fPixWidth     { 1.0_fPixel };
+	fPixel           fPixWidth     { STD_WIDTH };
 
 	if (getSignalValue(*pSig, usSimuStop).IsNull())
 		return;
@@ -305,7 +305,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	if (m_pMonitorData->IsSelected(idSignal) && (m_pMonitorData->GetNrOfSignals() >1)) 
 	{
 		color     = NNetColors::EEG_SIGNAL_HIGH;  // emphasize selected signal 
-		fPixWidth = 3.0_fPixel;                         
+		fPixWidth = HIGH_WIDTH;
 	}
 
 	fPixel fPixMinSignal = PaintCurve
@@ -314,7 +314,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		{ 
 			return getSignalPoint(*pSig, t, fPixOffsetY); 
 		},
-		usSimuStart, usSimuStop, fPixWidth, color          
+		usSimuStart, usSimuStop, color, fPixWidth
 	);
 
 	fPixel fPixMaxSignal = fPixOffsetY - fPixMinSignal;
@@ -663,7 +663,7 @@ bool MonitorControl::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
 	m_fPixWinWidth   = Convert2fPixel(width);
-	m_fPixRightLimit = m_fPixWinWidth - m_fPixRightBorder;
+	m_fPixRightLimit = m_fPixWinWidth - xRightBorder();
 	m_measurement.SetClientRectSize(width, height);
 	return true;
 }

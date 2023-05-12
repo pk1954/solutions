@@ -11,6 +11,7 @@ module;
 export module TimeGraph;
 
 import Types;
+import SaveCast;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
@@ -30,24 +31,14 @@ public:
 
 protected:
 
-	fPixel const STD_WIDTH  { 1.0_fPixel };
-	fPixel const HIGH_WIDTH { 3.0_fPixel };
-
-	fPixel m_fPixRightBorder { 0.0_fPixel };
-	fPixel m_fPixRight       { 0.0_fPixel };
-	fPixel m_fPixBottom      { 0.0_fPixel };
-	fPixel m_fPixLeft        { 0.0_fPixel };
-
-	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
-
 	fPixel Paint
 	(
 		auto               getPoint,
 		fMicroSecs   const timeStart0,
 		fMicroSecs   const timeEnd,
 		fMicroSecs   const usResolution,
-		fPixel       const fPixWidth,
-		D2D1::ColorF const color          
+		D2D1::ColorF const color,
+		fPixel       const fPixWidth
 	) const
 	{
 		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
@@ -107,7 +98,19 @@ protected:
 	fMicroSecs getTime(fPixel      const  ) const;
 	fPixel     xTime  (fMicroSecs  const  ) const;
 
-	fPixel xLeft  () const { return m_fPixLeft;   }
-	fPixel xRight () const { return m_fPixRight - m_fPixRightBorder; }
-	fPixel yBottom() const { return m_fPixBottom; }
+	fPixel xLeft       () const { return m_fPixLeft;   }
+	fPixel xRight      () const { return m_fPixRight - m_fPixRightBorder; }
+	fPixel xRightBorder() const { return m_fPixRightBorder; }
+	fPixel yBottom     () const { return m_fPixBottom; }
+
+	fMicroSecs getMaxTime() const { return getTime(xRight()); }
+
+private:
+
+	PixFpDimension<fMicroSecs>* m_pHorzCoord { nullptr };
+
+	fPixel m_fPixRightBorder { 0.0_fPixel };
+	fPixel m_fPixRight       { 0.0_fPixel };
+	fPixel m_fPixBottom      { 0.0_fPixel };
+	fPixel m_fPixLeft        { 0.0_fPixel };
 };
