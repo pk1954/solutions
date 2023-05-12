@@ -112,7 +112,7 @@ private:
     enum class tState { idle, leadPulse, blockedIdle, blockedPulse, trailPulse };
     tState m_state { tState::idle };
 
-    bool              m_bBlockActive { false };
+    bool              m_bBlockActive     { false };
     fMicroSecs        m_usBlockStartTime { fMicroSecs::NULL_VAL() };  // NULL_VAL : no block
     mV                m_mVaddInput       { 0._mV };
     FixedPipeline<mV> m_pulseBuffer;

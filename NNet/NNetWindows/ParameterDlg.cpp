@@ -145,7 +145,7 @@ void ParameterDialog::PaintGraphics()
 		m_fPixPosVert = 16._fPixel;
 		paintHeader(3, L"Neuron");
 		paintHeader(1, L"Synapse");
-		paintHeader(1, L"Dendrites");
+		paintHeader(1, L"Dendrite");
 		paintHeader(2, L"General");
 	}
 	refreshParameters();

@@ -299,10 +299,7 @@ bool Synapse::CompStep()
 	m_mVpotential += mVfromBuffer;
 
 	bool bSignal      { (m_mVpotential > PULSE_THRESHOLD) };
-	bool bInPulseDist { m_usBlockStartTime < GetParam()->PulseDistMin() };
-
-	if (bInPulseDist)
-		m_usBlockStartTime += GetParam()->TimeResolution();
+	bool bInPulseDist { SimulationTime::Get() - m_usBlockStartTime < GetParam()->PulseDistMin() };
 
 	switch (m_state)
 	{
@@ -369,7 +366,6 @@ bool Synapse::CompStep()
 
 void Synapse::unblock()
 {
-	m_usBlockStartTime.Set2Null();
 	m_usBlock.push_back(SimulationTime::Get());
 	m_bBlockActive = false;
 	m_state = tState::idle;
@@ -383,7 +379,7 @@ void Synapse::block()
 
 void Synapse::startLeadPulse()
 {
-	m_usBlockStartTime = 0.0_MicroSecs;  // start block timer, let lead pulse pass
+	m_usBlockStartTime = SimulationTime::Get();
 	m_state = tState::leadPulse;
 }
 
