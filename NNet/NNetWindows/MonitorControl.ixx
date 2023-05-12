@@ -17,9 +17,9 @@ import Direct2D;
 import SimulationTime;
 import NNetModel;
 import :Measurement;
-import :TimeGraph;
+import :NNetTimeGraph;
 
-export class MonitorControl : public TimeGraph
+export class MonitorControl : public NNetTimeGraph
 {
 public:
 	MonitorControl

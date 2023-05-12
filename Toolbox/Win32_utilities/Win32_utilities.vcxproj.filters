@@ -192,5 +192,11 @@
     <ClCompile Include="IncludeCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TimeGraph.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeGraph.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

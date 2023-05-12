@@ -14,11 +14,11 @@ import PixFpDimension;
 import Direct2D;
 import NNetModel;
 import :ComputeThread;
-import :TimeGraph;
+import :NNetTimeGraph;
 
 using std::array;
 
-export class SignalControl : public TimeGraph
+export class SignalControl : public NNetTimeGraph
 {
 public:
 	SignalControl

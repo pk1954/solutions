@@ -1,6 +1,6 @@
 // TimeGraph.ixx
 //
-// NNetWindows
+// Win32_utilities
 
 module;
 
@@ -8,13 +8,12 @@ module;
 #include <math.h>
 #include <Windows.h>
 
-export module NNetWin32:TimeGraph;
+export module TimeGraph;
 
 import Types;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
-import NNetModel;
 
 export class TimeGraph : public GraphicsWindow
 {
@@ -26,8 +25,6 @@ public:
 	);
 
 	~TimeGraph() override;
-
-	virtual void SetModelInterface(NNetModelWriterInterface * const);
 
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
@@ -42,24 +39,17 @@ protected:
 	fPixel m_fPixLeft        { 0.0_fPixel };
 
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
-	NNetModelWriterInterface   * m_pNMWI      { nullptr };
 
-	SignalGenerator  const * GetSigGenSelected  () const { return m_pNMWI->GetSigGenSelected(); }
-	SignalGenerator        * GetSigGenSelected  ()       { return m_pNMWI->GetSigGenSelected(); }
-	SigGenId                 GetSigGenIdSelected() const { return m_pNMWI->GetSigGenIdSelected(); }
-	SigGenStaticData const * GetSigGenStaticData() const { return & GetSigGenSelected()->GetStaticData(); }
-	NNetParameters         * GetParams          () const { return & m_pNMWI->GetParams(); }
-
-	fPixel PaintCurve
+	fPixel Paint
 	(
 		auto               getPoint,
 		fMicroSecs   const timeStart0,
 		fMicroSecs   const timeEnd,
+		fMicroSecs   const usResolution,
 		fPixel       const fPixWidth,
 		D2D1::ColorF const color          
 	) const
 	{
-		fMicroSecs const usResolution  { GetParams()->TimeResolution() };
 		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
 		fPixel           fPixMinSignal { fPixel::MAX_VAL() };
 		fPixelPoint      prevPoint     { getPoint(timeStart) };

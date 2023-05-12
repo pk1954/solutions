@@ -28,7 +28,7 @@ SignalControl::SignalControl
 	Observable                 & dynamicModelObservable,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
-  : TimeGraph(hwndParent, pHorzCoord),
+  : NNetTimeGraph(hwndParent, pHorzCoord),
 	m_computeThread(computeThread),
 	m_runObservable(runObservable),
 	m_dynamicModelObservable(dynamicModelObservable)
@@ -373,7 +373,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			Trigger();   // cause repaint
 		}
 	}
-	TimeGraph::OnMouseMove(wParam, lParam);
+	NNetTimeGraph::OnMouseMove(wParam, lParam);
 }
 
 void SignalControl::OnMouseLeave()

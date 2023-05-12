@@ -10,10 +10,10 @@ export module NNetWin32:SignalPreview;
 
 import Types;
 import PixFpDimension;
-import :TimeGraph;
+import :NNetTimeGraph;
 import NNetModel;
 
-export class SignalPreview : public TimeGraph
+export class SignalPreview : public NNetTimeGraph
 {
 public:
 	SignalPreview

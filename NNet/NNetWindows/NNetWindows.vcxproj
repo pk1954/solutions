@@ -583,6 +583,7 @@
     <ClCompile Include="MonitorWindow.ixx" />
     <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
+    <ClCompile Include="NNetTimeGraph.ixx" />
     <ClCompile Include="NNetWin32.ixx" />
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="NNetWrappers.ixx" />
@@ -602,8 +603,6 @@
     <ClCompile Include="StimulusButton.ixx" />
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="TimeDisplay.ixx" />
-    <ClCompile Include="TimeGraph.cpp" />
-    <ClCompile Include="TimeGraph.ixx" />
     <ClCompile Include="UndoRedoMenu.ixx" />
     <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="CrsrWindow.cpp" />

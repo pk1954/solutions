@@ -1,18 +1,17 @@
 // TimeGraph.cpp 
 //
-// NNetModel
+// Win32_utilities
 
 module;
 
 #include <cassert>
 #include <Windows.h>
 
-module NNetWin32:TimeGraph;
+module TimeGraph;
 
 import Types;
 import PixFpDimension;
 import GraphicsWindow;
-import NNetModel;
 
 TimeGraph::TimeGraph
 (
@@ -34,15 +33,6 @@ TimeGraph::TimeGraph
 TimeGraph::~TimeGraph()
 {
 	m_pHorzCoord->UnregisterObserver(*this); 
-}
-
-void TimeGraph::SetModelInterface(NNetModelWriterInterface * const p)
-{
-	assert(p);
-	if (m_pNMWI)
-		GetParams()->UnregisterObserver(*this);
-	m_pNMWI = p;
-	GetParams()->RegisterObserver(*this);
 }
 
 fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 

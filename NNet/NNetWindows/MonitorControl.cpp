@@ -30,7 +30,7 @@ MonitorControl::MonitorControl
 	PixFpDimension<mV>         & vertCoord,
 	Observable                 & observable
 )
-  : TimeGraph  (hwndParent, &horzCoord),
+  : NNetTimeGraph(hwndParent, &horzCoord),
 	m_horzCoord(horzCoord),
 	m_vertCoord(vertCoord),
 	m_sound    (sound)
@@ -55,7 +55,7 @@ MonitorControl::MonitorControl
 
 void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
-	TimeGraph::SetModelInterface(pNMWI);
+	NNetTimeGraph::SetModelInterface(pNMWI);
 	m_pMonitorData = &m_pNMWI->GetMonitorData();
 }
 
@@ -673,5 +673,5 @@ void MonitorControl::Notify(bool const bImmediately)
 	if (bImmediately)
 		UpdateImmediately();
 	else
-		TimeGraph::Notify(bImmediately);
+		NNetTimeGraph::Notify(bImmediately);
 }

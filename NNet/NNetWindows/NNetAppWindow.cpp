@@ -43,7 +43,7 @@ import :UndoRedoMenu;
 import :NNetInputOutputUI;
 import :NNetWindow;
 import :NNetWrappers;
-import :TimeGraph;
+import :NNetTimeGraph;
 
 using std::endl;
 using std::wcout;

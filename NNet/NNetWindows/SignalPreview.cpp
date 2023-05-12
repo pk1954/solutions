@@ -10,7 +10,7 @@ import PixFpDimension;
 import BaseWindow;
 import GraphicsWindow;
 import NNetModel;
-import :TimeGraph;
+import :NNetTimeGraph;
 
 SignalPreview::SignalPreview
 (
@@ -18,7 +18,7 @@ SignalPreview::SignalPreview
 	PixFpDimension<fMicroSecs> & horzCoord,
 	PixFpDimension<mV>         & vertCoord
 )
-  : TimeGraph(baseWinParent.GetWindowHandle(), &horzCoord),
+  : NNetTimeGraph(baseWinParent.GetWindowHandle(), &horzCoord),
 	m_vertCoord(vertCoord)
 {
 	m_vertCoord.RegisterObserver(*this);
@@ -57,7 +57,7 @@ void SignalPreview::PaintGraphics()
 
 bool SignalPreview::OnSize(PIXEL const width, PIXEL const height)
 {
-	TimeGraph::OnSize(width, height);
+	NNetTimeGraph::OnSize(width, height);
 	Trigger();  // cause repaint
 	return true;
 }

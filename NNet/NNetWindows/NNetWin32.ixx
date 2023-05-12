@@ -36,5 +36,5 @@ export import :SlowMotionControl;
 export import :SlowMotionDisplay;
 export import :StatusBar;
 export import :StimulusButton;
-export import :TimeGraph;
+export import :NNetTimeGraph;
 export import :UndoRedoMenu;

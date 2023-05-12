@@ -84,9 +84,6 @@
     <ClCompile Include="SignalPreview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeGraph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TimeDisplay.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -156,9 +153,6 @@
     <ClCompile Include="SignalPreview.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeGraph.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -184,6 +178,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetWin32.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetTimeGraph.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
