@@ -13,6 +13,7 @@ export module NNetCommands:DeletePipeCommand;
 import Types;
 import SaveCast;
 import NNetModel;
+import IoUtil;
 import :NNetCommand;
 import :NNetCommandStack;
 import :DeleteNeuronInputCmd;

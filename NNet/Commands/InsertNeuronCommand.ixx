@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:InsertNeuronCommand;
 
+import IoUtil;
 import :SplitPipeCommand;
 
 export class InsertNeuronCommand : public SplitPipeCommand

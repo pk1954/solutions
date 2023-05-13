@@ -13,6 +13,7 @@ module;
 export module NNetCommands:DeleteForkOutputCmd;
 
 import :NNetCommand;
+import IoUtil;
 import NNetModel;
 
 using std::unique_ptr;

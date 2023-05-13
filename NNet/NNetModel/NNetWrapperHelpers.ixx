@@ -5,6 +5,8 @@
 module;
 
 #include <memory>
+#include <iostream>
+#include <iomanip>
 
 export module NNetWrapperHelpers;
 
@@ -13,10 +15,9 @@ import Script;
 import NNetModel;
 
 using std::unique_ptr;
+using std::wostream;
+using std::setprecision;
 
-export MicroMeter            ScrReadMicroMeter         (Script &);
-export MicroMeterPnt         ScrReadMicroMeterPnt      (Script &);
-export MicroMeterCircle      ScrReadMicroMeterCircle   (Script &);
 export MicroMeterPntVector   ScrReadMicroMeterPntVector(Script &);
 export MicroMeterPosDir      ScrReadMicroMeterPosDir   (Script &);
 export unique_ptr<NobIdList> ScrReadNobIdList          (Script &);

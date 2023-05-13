@@ -9,6 +9,7 @@ module;
 
 export module NNetCommands:MoveNobCommand;
 
+import IoUtil;
 import :NNetCommand;
 
 export class MoveNobCommand : public NNetCommand

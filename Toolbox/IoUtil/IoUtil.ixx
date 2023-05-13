@@ -1,18 +1,32 @@
-// UtilityWrappers.ixx
+// IoUtil.ixx
 //
-// Toolbox\Wrappers
+// Toolbox\IoUtil
 
 module;
 
 #include <compare>
+#include <iostream>
 
-export module UtilityWrappers;
+export module IoUtil;
 
-export import BoolOp; 
+export import :IoConstants;
+export import :IoBasePeak;
+export import :IoPixFpDim;
+
+import BoolOp;
 import SaveCast;
 import Types;
-import BasePeak;
 import Script;
+
+using std::wostream;
+
+export wostream& operator<< (wostream&, MicroMeterPnt    const&);
+export wostream& operator<< (wostream&, MicroMeterRect   const&);
+export wostream& operator<< (wostream&, MicroMeterCircle const&);
+
+export MicroMeter       ScrReadMicroMeter      (Script&);
+export MicroMeterPnt    ScrReadMicroMeterPnt   (Script&);
+export MicroMeterCircle ScrReadMicroMeterCircle(Script&);
 
 export tBoolOp       ScrReadBoolOp       (Script &);
 export PIXEL         ScrReadPixel        (Script &);
@@ -26,14 +40,6 @@ export template <typename T>
 T ScrRead(Script& script)
 {
     return static_cast<T>(Cast2Float(script.ScrReadFloat()));
-}
-
-export template<typename T>
-BasePeak<T> ScrReadBasePeak(Script & script)
-{
-    T const base { ScrRead<T>(script) };
-    T const peak { ScrRead<T>(script) };
-    return BasePeak<T>(base, peak);
 }
 
 export void DefineUtilityWrapperFunctions();

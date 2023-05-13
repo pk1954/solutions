@@ -225,6 +225,9 @@
     <ProjectReference Include="..\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\IoUtil\IoUtil.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\runtimeCPP\runtimeCPP.vcxproj">
       <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
     </ProjectReference>
@@ -233,9 +236,6 @@
     </ProjectReference>
     <ProjectReference Include="..\WinBasics\WinBasics.vcxproj">
       <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Wrappers\Wrappers.vcxproj">
-      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

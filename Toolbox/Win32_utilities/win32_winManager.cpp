@@ -9,7 +9,7 @@
 #include <string>
 
 import Scanner;
-import UtilityWrappers;
+import IoUtil;
 import WinManager;
 import ErrHndl;
 import Symtab;

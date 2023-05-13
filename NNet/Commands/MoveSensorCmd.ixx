@@ -9,6 +9,7 @@ module;
 
 export module NNetCommands:MoveSensorCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 export class MoveSensorCmd : public NNetCommand

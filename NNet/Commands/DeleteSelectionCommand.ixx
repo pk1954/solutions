@@ -11,6 +11,7 @@ export module NNetCommands:DeleteSelectionCommand;
 
 import Types;
 import Commands;
+import IoUtil;
 import NNetModel;
 import :DeleteNobCommand;
 import :NNetCommandStack;

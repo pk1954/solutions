@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:CreateForkCommand;
 
+import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;
 

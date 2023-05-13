@@ -8,8 +8,9 @@ module;
 
 export module NNetCommands:RotateSelectionCommand;
 
-import :RotationCommand;
+import IoUtil;
 import NNetModel;
+import :RotationCommand;
 
 export class RotateSelectionCommand : public RotationCommand
 {

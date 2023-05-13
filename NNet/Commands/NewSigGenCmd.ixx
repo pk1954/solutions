@@ -10,6 +10,7 @@ module;
 
 export module NNetCommands:NewSigGenCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 export class NewSigGenCmd : public NNetCommand

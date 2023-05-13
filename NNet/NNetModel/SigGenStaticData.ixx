@@ -12,6 +12,7 @@ export module NNetModel:SigGenStaticData;
 import Observable;
 import Types;
 import BasePeak;
+import IoUtil;
 
 using std::setw;
 using std::wcout;
@@ -123,7 +124,13 @@ public:
 
 	friend wostream& operator<< (wostream& out, SigGenStaticData const& data)
 	{
-		out << setw(5) << data.m_freq << L' ' << data.m_amplit << L' ' << data.m_usPeak.GetValue() << L' ';
+		out << setw(5) 
+			<< data.m_freq 
+			<< L' ' 
+			<< data.m_amplit 
+			<< L' ' 
+			<< data.m_usPeak.GetValue() 
+			<< L' ';
 		return out;
 	}
 

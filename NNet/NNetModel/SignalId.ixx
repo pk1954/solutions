@@ -10,7 +10,7 @@ module;
 export module NNetModel:SignalId;
 
 import Types;
-import IoConstants;
+import IoUtil;
 import :TrackNr;
 import :SignalNr;
 

@@ -13,42 +13,13 @@ module NNetWrapperHelpers;
 import SaveCast;
 import Types;
 import ErrHndl;
-import IoConstants;
-import UtilityWrappers;
+import IoUtil;
 import Script;
 import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;
 using std::wstring;
-
-MicroMeter ScrReadMicroMeter(Script & script)
-{
-	float const fValue = Cast2Float(script.ScrReadFloat());
-	if (fabs(fValue) > MAX_MICRO_METER.GetValue())
-		throw ScriptErrorHandler::ScriptException(777, L"MicroMeter value too big");
-	return MicroMeter(fValue);
-}
-
-MicroMeterPnt ScrReadMicroMeterPnt(Script & script)
-{
-	script.ScrReadSpecial(OPEN_BRACKET);
-	MicroMeter const x(ScrReadMicroMeter(script));
-	script.ScrReadSpecial(SEPARATOR);
-	MicroMeter const y(ScrReadMicroMeter(script));
-	script.ScrReadSpecial(CLOSE_BRACKET);
-	return MicroMeterPnt(x, y);
-}
-
-MicroMeterCircle ScrReadMicroMeterCircle(Script & script)
-{
-	script.ScrReadSpecial(OPEN_BRACKET);
-	MicroMeterPnt umCenter { ScrReadMicroMeterPnt(script) };
-	script.ScrReadSpecial(ID_SEPARATOR);
-	MicroMeter      umRadius { ScrReadMicroMeter(script) };
-	script.ScrReadSpecial(CLOSE_BRACKET);
-	return MicroMeterCircle(umCenter, umRadius);
-}
 
 MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
 {

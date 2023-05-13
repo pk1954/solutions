@@ -4,16 +4,12 @@
 
 module;
 
-#include <iostream>
-#include <iomanip>
 #include <algorithm>
 
 export module BasePeak;
 
 using std::min;
 using std::max;
-using std::setw;
-using std::wostream;
 
 export template <typename UNIT>
 class BasePeak
@@ -38,12 +34,6 @@ public:
 	void SetPeak(UNIT v)
 	{
 		peak = max(v, base);
-	}
-
-	friend wostream & operator<< (wostream& out, BasePeak<UNIT> const& data)
-	{
-		out << setw(5) << data.base.GetValue() << L' ' << data.peak.GetValue() << L' ';
-		return out;
 	}
 private:
 	UNIT base;

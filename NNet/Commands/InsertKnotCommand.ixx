@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:InsertKnotCommand;
 
+import IoUtil;
 import :SplitPipeCommand;
 
 export class InsertKnotCommand : public SplitPipeCommand

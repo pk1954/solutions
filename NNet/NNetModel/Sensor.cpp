@@ -11,7 +11,7 @@ module;
 module NNetModel:Sensor;
 
 import Types;
-import IoConstants;
+import IoUtil;
 import DrawContext;
 import :NNetColors;
 import :UPNobList;

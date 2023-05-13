@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:MoveSignalCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 export class MoveSignalCmd : public NNetCommand

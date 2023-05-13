@@ -1,13 +1,15 @@
-// UtilityWrappers.cpp
+// IoUtil.cpp
 //
-// Toolbox\Wrappers
+// Toolbox\IoUtil
 
 module;
 
 #include <cassert>
 #include <compare>
+#include <iostream>
+#include <iomanip>
 
-module UtilityWrappers;
+module IoUtil;
 
 import SaveCast;
 import BoolOp;
@@ -15,6 +17,66 @@ import Trace;
 import Types;
 import Symtab;
 import Script;
+import :IoConstants;
+
+using std::wostream;
+using std::setprecision;
+
+wostream& operator<< (wostream& out, MicroMeterPnt const& pnt)
+{
+    out << L' '
+        << OPEN_BRACKET
+        << setprecision(10)
+        << pnt.GetX()
+        << SEPARATOR
+        << pnt.GetY()
+        << CLOSE_BRACKET;
+    return out;
+}
+
+wostream& operator<< (wostream& out, MicroMeterRect const& rect)
+{
+    out << rect.GetStartPoint() << rect.GetEndPoint();
+    return out;
+}
+
+wostream& operator<< (wostream& out, MicroMeterCircle const& circle)
+{
+    out << OPEN_BRACKET
+        << circle.GetPos()
+        << ID_SEPARATOR
+        << circle.GetRadius()
+        << CLOSE_BRACKET;
+    return out;
+}
+
+MicroMeter ScrReadMicroMeter(Script& script)
+{
+    float const fValue = Cast2Float(script.ScrReadFloat());
+    if (fabs(fValue) > MAX_MICRO_METER.GetValue())
+        throw ScriptErrorHandler::ScriptException(777, L"MicroMeter value too big");
+    return MicroMeter(fValue);
+}
+
+MicroMeterPnt ScrReadMicroMeterPnt(Script& script)
+{
+    script.ScrReadSpecial(OPEN_BRACKET);
+    MicroMeter const x(ScrReadMicroMeter(script));
+    script.ScrReadSpecial(SEPARATOR);
+    MicroMeter const y(ScrReadMicroMeter(script));
+    script.ScrReadSpecial(CLOSE_BRACKET);
+    return MicroMeterPnt(x, y);
+}
+
+MicroMeterCircle ScrReadMicroMeterCircle(Script& script)
+{
+    script.ScrReadSpecial(OPEN_BRACKET);
+    MicroMeterPnt umCenter { ScrReadMicroMeterPnt(script) };
+    script.ScrReadSpecial(ID_SEPARATOR);
+    MicroMeter      umRadius { ScrReadMicroMeter(script) };
+    script.ScrReadSpecial(CLOSE_BRACKET);
+    return MicroMeterCircle(umCenter, umRadius);
+}
 
 PIXEL ScrReadPixel(Script & script)
 {

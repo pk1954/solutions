@@ -11,7 +11,7 @@ module WrapVoltage;
 
 import Types;
 import SaveCast;
-import IoConstants;
+import IoUtil;
 import ErrHndl;
 import Script;
 import NNetModelIO;

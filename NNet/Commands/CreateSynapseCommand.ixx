@@ -10,6 +10,7 @@ module;
 export module NNetCommands:CreateSynapseCommand;
 
 import Types;
+import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;
 

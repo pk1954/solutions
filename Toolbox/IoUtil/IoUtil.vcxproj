@@ -27,15 +27,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UtilityWrappers.cpp" />
-    <ClCompile Include="UtilityWrappers.ixx" />
+    <ClCompile Include="IoBasePeak.ixx" />
+    <ClCompile Include="IoConstants.ixx" />
+    <ClCompile Include="IoPixFpDim.ixx" />
+    <ClCompile Include="IoUniform2D.ixx" />
+    <ClCompile Include="IoUtil.cpp" />
+    <ClCompile Include="IoUtil.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</ProjectGuid>
-    <RootNamespace>Wrappers</RootNamespace>
+    <RootNamespace>IoUtil</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>IoUtil</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

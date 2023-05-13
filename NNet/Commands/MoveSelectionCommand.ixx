@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:MoveSelectionCommand;
 
+import IoUtil;
 import :NNetCommand;
 
 export class MoveSelectionCommand : public NNetCommand

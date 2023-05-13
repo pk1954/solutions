@@ -14,7 +14,7 @@ module;
 module NNetModel:IoConnector;
 
 import Types;
-import IoConstants;
+import IoUtil;
 import DrawContext;
 import :tHighlight;
 import :MicroMeterPosDir;

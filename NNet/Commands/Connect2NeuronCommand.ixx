@@ -10,6 +10,7 @@ module;
 
 export module NNetCommands:Connect2NeuronCommand;  
 
+import IoUtil;
 import :NNetCommand;
 
 export class Connect2NeuronCommand : public NNetCommand

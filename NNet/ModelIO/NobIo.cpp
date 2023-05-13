@@ -12,7 +12,7 @@ module;
 
 module NobIo;
 
-import IoConstants;
+import IoUtil;
 import NNetWrapperHelpers;
 import ErrHndl;
 
@@ -87,13 +87,13 @@ Pipe* NobIo::createPipe
 
 void NobIo::writeKnot(wostream& out, Knot const& knot) const
 {
-    out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(knot.GetIncoming()->GetId())
-        << PIPE_TO
-        << knot.GetPos()
-        << PIPE_TO
-        << m_modelIO.GetCompactIdVal(knot.GetOutgoing()->GetId())
-        << CLOSE_BRACKET;
+    out << OPEN_BRACKET;
+    out << m_modelIO.GetCompactIdVal(knot.GetIncoming()->GetId());
+    out << PIPE_TO;
+    out << knot.GetPos();
+    out << PIPE_TO;
+    out << m_modelIO.GetCompactIdVal(knot.GetOutgoing()->GetId());
+    out << CLOSE_BRACKET;
 }
 
 UPNob NobIo::createKnot(Script& script) const

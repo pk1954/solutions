@@ -207,8 +207,6 @@ private:
 
 		setScaleParams();
 		renderScale(colBackGround);
-
-		RootWindow * pParentWin { GetParentRootWindow() };
 	}
 
 	void renderScale(D2D1::ColorF const colBackGround)

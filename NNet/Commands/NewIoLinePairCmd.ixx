@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:NewIoLinePairCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 export class NewIoLinePairCmd : public NNetCommand

@@ -11,7 +11,7 @@ module NNetModel:Signal;
 import Observable;
 import Util;
 import Types;
-import IoConstants;
+import IoUtil;
 import DrawContext;
 import :NNetColors;
 import :SignalSource;

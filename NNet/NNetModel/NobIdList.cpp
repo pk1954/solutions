@@ -8,7 +8,7 @@ module;
 
 module NNetModel:NobIdList;
 
-import IoConstants;
+import IoUtil;
 import :NobId;
 import :Nob;
 

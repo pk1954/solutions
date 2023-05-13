@@ -9,7 +9,7 @@ module;
 export module NNetCommands:SelectAllConnectedCmd;
 
 import :SelectionCommand;
-import UtilityWrappers;
+import IoUtil;
 
 export class SelectAllConnectedCmd : public SelectionCommand
 {

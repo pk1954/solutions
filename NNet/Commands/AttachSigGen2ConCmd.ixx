@@ -9,6 +9,7 @@ module;
 export module NNetCommands:AttachSigGen2ConCmd;
 
 import :NNetCommand;
+import IoUtil;
 import NNetModel;
 
 export class AttachSigGen2ConCmd : public NNetCommand

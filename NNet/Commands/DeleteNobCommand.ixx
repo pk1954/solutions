@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:DeleteNobCommand;
 
+import IoUtil;
 import :NNetCommand;
 
 export class DeleteNobCommand : public NNetCommand

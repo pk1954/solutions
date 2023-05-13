@@ -9,6 +9,7 @@ module;
 export module NNetCommands:LockDirectionCmd;
 
 import Types;
+import IoUtil;
 import :NNetCommand;
 import NNetModel;
 

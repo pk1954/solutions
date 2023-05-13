@@ -13,6 +13,7 @@ import NNetWrapperBase;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
+import IoUtil;
 
 using std::wstring;
 using std::wostream;

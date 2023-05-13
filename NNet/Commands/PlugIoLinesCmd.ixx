@@ -10,6 +10,7 @@ module;
 
 export module NNetCommands:PlugIoLinesCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 export class PlugIoLinesCmd : public NNetCommand

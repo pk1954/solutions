@@ -23,7 +23,7 @@ import Trace;
 import Direct2D;
 import ObserverInterface;
 import AboutBox;
-import UtilityWrappers;
+import IoUtil;
 import FatalError;
 import MessagePump;
 import ScriptFile;

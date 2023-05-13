@@ -10,7 +10,7 @@ module;
 
 module NNetModel:PipeList;
 
-import IoConstants;
+import IoUtil;
 import :Pipe;
 
 using std::endl;

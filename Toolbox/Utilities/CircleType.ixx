@@ -9,7 +9,6 @@ module;
 export module Types:CircleType;
 
 import :PointType;
-import IoConstants;
 
 using std::wostream;
 

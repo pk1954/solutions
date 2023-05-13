@@ -12,7 +12,6 @@ module;
 export module Types:PointType;
 
 import Util;
-import IoConstants;
 import :BasicTypes;
 
 using std::abs;

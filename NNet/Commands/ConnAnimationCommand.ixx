@@ -9,6 +9,7 @@ module;
 
 export module NNetCommands:ConnAnimationCommand;
 
+import IoUtil;
 import :NNetCommand;
 
 using std::vector;

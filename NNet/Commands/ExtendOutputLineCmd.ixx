@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:ExtendOutputLineCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 export class ExtendOutputLineCmd : public NNetCommand

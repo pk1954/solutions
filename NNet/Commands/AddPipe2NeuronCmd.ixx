@@ -11,6 +11,7 @@ module;
 export module NNetCommands:AddPipe2NeuronCmd;
 
 import Types;
+import IoUtil;
 import :NNetCommand;
 import NNetModel;
 

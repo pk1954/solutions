@@ -13,7 +13,7 @@ module NNetModel:MicroMeterPntVector;
 
 import Types;
 import SaveCast;
-import IoConstants;
+import IoUtil;
 import :IoLine;
 
 using std::max;

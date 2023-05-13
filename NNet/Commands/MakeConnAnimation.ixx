@@ -9,6 +9,7 @@ module;
 
 export module NNetCommands:MakeConnAnimation;
 
+import IoUtil;
 import :NNetCommand;
 import NNetModel;
 

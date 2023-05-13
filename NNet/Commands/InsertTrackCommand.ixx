@@ -10,6 +10,7 @@ module;
 export module NNetCommands:InsertTrackCommand;
 
 import Types;
+import IoUtil;
 import :NNetCommand;
 import NNetModel;
 

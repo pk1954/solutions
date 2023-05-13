@@ -13,7 +13,7 @@ module;
 module NNetModel:Pipe;
 
 import Geometry;
-import IoConstants;
+import IoUtil;
 import Types;
 import DrawContext;
 import :tHighlight;

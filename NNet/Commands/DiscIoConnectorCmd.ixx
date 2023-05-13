@@ -9,6 +9,7 @@ module;
 
 export module NNetCommands:DiscIoConnectorCmd;
 
+import IoUtil;
 import :NNetCommand;
 import NNetModel;
 

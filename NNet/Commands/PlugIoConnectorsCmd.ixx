@@ -11,6 +11,7 @@ module;
 
 export module NNetCommands:PlugIoConnectorsCmd;
 
+import IoUtil;
 import :NNetCommand;
 
 using std::vector;
