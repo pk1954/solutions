@@ -12,6 +12,7 @@ export module IoUtil;
 export import :IoConstants;
 export import :IoBasePeak;
 export import :IoPixFpDim;
+export import :IoPixelTypes;
 
 import BoolOp;
 import SaveCast;
@@ -29,12 +30,6 @@ export MicroMeterPnt    ScrReadMicroMeterPnt   (Script&);
 export MicroMeterCircle ScrReadMicroMeterCircle(Script&);
 
 export tBoolOp       ScrReadBoolOp       (Script &);
-export PIXEL         ScrReadPixel        (Script &);
-export PixelPoint    ScrReadPixelPoint   (Script &);
-export PixelRectSize ScrReadPixelRectSize(Script &);
-export PixelRect     ScrReadPixelRect    (Script &);
-export fPixel        ScrReadfPixel       (Script &);
-export fPixelPoint   ScrReadfPixelPoint  (Script &);
 
 export template <typename T>
 T ScrRead(Script& script)

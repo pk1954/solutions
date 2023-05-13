@@ -29,6 +29,8 @@
   <ItemGroup>
     <ClCompile Include="IoBasePeak.ixx" />
     <ClCompile Include="IoConstants.ixx" />
+    <ClCompile Include="IoPixelTypes.cpp" />
+    <ClCompile Include="IoPixelTypes.ixx" />
     <ClCompile Include="IoPixFpDim.ixx" />
     <ClCompile Include="IoUniform2D.ixx" />
     <ClCompile Include="IoUtil.cpp" />

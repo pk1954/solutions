@@ -33,5 +33,11 @@
     <ClCompile Include="IoUniform2D.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IoPixelTypes.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IoPixelTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
