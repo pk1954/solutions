@@ -24,7 +24,7 @@ using std::setprecision;
 
 wostream& operator<< (wostream& out, MicroMeterPnt const& pnt)
 {
-    out << L' '
+    out << SPACE
         << OPEN_BRACKET
         << setprecision(10)
         << pnt.GetX()

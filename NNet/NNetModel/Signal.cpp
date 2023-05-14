@@ -75,7 +75,7 @@ void Signal::WriteSignalData(wostream & out) const
         if (i % 12 == 0)
             out << endl;
         out << m_data[i].GetValue();
-        out << L' ';
+        out << SPACE;
     }
     out << endl << LIST_CLOSE_BRACKET << endl;
 }

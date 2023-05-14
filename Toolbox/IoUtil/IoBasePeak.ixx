@@ -12,6 +12,7 @@ export module IoUtil:IoBasePeak;
 import Types;
 import Script;
 import BasePeak;
+import :IoConstants;
 
 using std::wostream;
 using std::setw;
@@ -29,8 +30,8 @@ wostream& operator<< (wostream& out, BasePeak<T> const& data)
 {
     out << setw(5)
         << data.Base().GetValue()
-        << L' '
+        << SPACE
         << data.Peak().GetValue()
-        << L' ';
+        << SPACE;
     return out;
 }

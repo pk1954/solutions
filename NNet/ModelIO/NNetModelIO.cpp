@@ -60,20 +60,20 @@ NNetModelIO::~NNetModelIO() = default;
 
 void NNetModelIO::Initialize()
 {
-    m_wrapVector.push_back(make_unique<WrapProtocol       >(L"Protocol",        *this));
-    m_wrapVector.push_back(make_unique<WrapDescription    >(L"Description",     *this));
-    m_wrapVector.push_back(make_unique<WrapGlobalParameter>(L"GlobalParameter", *this));
-    m_wrapVector.push_back(make_unique<WrapNrOfNobs       >(L"NrOfNobs",        *this));
-    m_wrapVector.push_back(make_unique<NobIo              >(L"CreateNob",       *this));
-    m_wrapVector.push_back(make_unique<WrapVoltage        >(L"Voltage",         *this));
-    m_wrapVector.push_back(make_unique<WrapEmphasized     >(L"Emphasized",      *this));
-    m_wrapVector.push_back(make_unique<WrapSignalGenerator>(L"SignalGenerator", *this));
-    m_wrapVector.push_back(make_unique<WrapSetSigGen      >(L"SetSigGen",       *this));
-    m_wrapVector.push_back(make_unique<WrapActiveSigGen   >(L"ActiveSigGen",    *this));
-    m_wrapVector.push_back(make_unique<WrapNrOfTracks     >(L"NrOfTracks",      *this));
-    m_wrapVector.push_back(make_unique<WrapSignalInfo     >(L"SignalInfo",      *this));
-    m_wrapVector.push_back(make_unique<WrapSignalData     >(L"SignalData",      *this));
-    m_wrapVector.push_back(make_unique<WrapSimulationTime >(L"SimulationTime",  *this));
+    Add<WrapProtocol       >(L"Protocol");
+    Add<WrapDescription    >(L"Description");
+    Add<WrapGlobalParameter>(L"GlobalParameter");
+    Add<WrapNrOfNobs       >(L"NrOfNobs");
+    Add<NobIo              >(L"CreateNob");
+    Add<WrapVoltage        >(L"Voltage");
+    Add<WrapEmphasized     >(L"Emphasized");
+    Add<WrapSignalGenerator>(L"SignalGenerator");
+    Add<WrapSetSigGen      >(L"SetSigGen");
+    Add<WrapActiveSigGen   >(L"ActiveSigGen");
+    Add<WrapNrOfTracks     >(L"NrOfTracks");
+    Add<WrapSignalInfo     >(L"SignalInfo");
+    Add<WrapSignalData     >(L"SignalData");
+    Add<WrapSimulationTime >(L"SimulationTime");
 
     NobType::Apply2All
     (

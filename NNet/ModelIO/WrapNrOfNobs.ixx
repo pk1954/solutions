@@ -13,6 +13,7 @@ import NNetWrapperBase;
 import Script;
 import NNetModelIO;
 import NNetModel;
+import IoUtil;
 
 using std::wostream;
 using std::endl;
@@ -24,7 +25,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        script.ScrReadSpecial(L'=');
+        script.ScrReadSpecial(EQUALS);
         long       lNrOfNobs { script.ScrReadLong() };
         UPNobList& list      { m_modelIO.GetImportNMWI().GetUPNobs() };
         assert(list.IsEmpty());
@@ -33,6 +34,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << L"NrOfNobs = " << m_modelIO.NrOfCompactIds() << endl;
+        WriteCmdName(out);
+        out << EQUALS << SPACE << m_modelIO.NrOfCompactIds() << endl;
     }
 };

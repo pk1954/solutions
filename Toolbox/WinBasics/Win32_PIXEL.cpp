@@ -11,6 +11,7 @@ module Win32_PIXEL;
 
 import Types;
 import Script;
+import IoUtil;
 
 using std::wostream;
 
@@ -26,7 +27,7 @@ RECT Util::ScrReadRECT(Script & script)
 
 wostream & Util::operator<< (wostream & out, RECT const & rect)
 {
-    out << rect.left << L' ' << rect.top << L' ' << rect.right << L' ' << rect.bottom;
+    out << rect.left << SPACE << rect.top << SPACE << rect.right << SPACE << rect.bottom;
     return out;
 }
 

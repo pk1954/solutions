@@ -61,7 +61,7 @@ public:
                 if (Signal const* const pSignal{ monitorData.GetConstSignalPtr(idSignal) })
                 {
                     WriteCmdName(out);
-                    out << idSignal << L' ' << SOURCE << L' ';
+                    out << idSignal << SPACE << SOURCE << SPACE;
                     SignalSource const* pSigSrc { pSignal->GetSignalSource() };
                     SignalSource::Type  type    { pSigSrc->SignalSourceType()  };
                     if (type == SignalSource::Type::macroSensor)
@@ -73,7 +73,7 @@ public:
                         MicroSensor const& microSensor  { static_cast<MicroSensor const&>(*pSigSrc) };
                         NobId       const  idNob        { microSensor.GetNobId() };
                         NobId       const  idNobCompact { m_modelIO.GetCompactIdVal(idNob) };
-                        out << Signal::SIGSRC_NOB << L' ' << idNobCompact << endl;
+                        out << Signal::SIGSRC_NOB << SPACE << idNobCompact << endl;
                     }
                     else
                         assert(false);

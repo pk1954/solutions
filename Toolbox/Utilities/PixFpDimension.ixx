@@ -51,8 +51,11 @@ public:
 
 	//////// queries ////////
 
-	LOG_UNIT GetPixelSize()   const { return m_logPixelSize; };
-	fPixel   GetPixelOffset() const { return m_fPixOffset; }
+	LOG_UNIT GetPixelSize   () const { return m_logPixelSize;    }
+	LOG_UNIT GetPixelSizeMin() const { return m_logPixelSizeMin; }
+	LOG_UNIT GetPixelSizeMax() const { return m_logPixelSizeMax; }
+	fPixel   GetPixelOffset () const { return m_fPixOffset;      }	
+	float    GetZoomFactor  () const { return m_fZoomFactor;	 }
 
 	//////// manipulation functions ////////
 
@@ -142,13 +145,13 @@ public:
 
 	bool IsValidPixelSize(LOG_UNIT const size) const
 	{
-		return (m_pixelSizeMin <= size) && (size <= m_pixelSizeMax);
+		return (m_logPixelSizeMin <= size) && (size <= m_logPixelSizeMax);
 	}
 
 	void SetPixelSizeLimits(LOG_UNIT const fMin, LOG_UNIT const fMax)
 	{
-		m_pixelSizeMin = fMin;
-		m_pixelSizeMax = fMax;
+		m_logPixelSizeMin = fMin;
+		m_logPixelSizeMax = fMax;
 		SetPixelSize(m_logPixelSize);
 	}
 
@@ -159,7 +162,7 @@ public:
 
 	void SetPixelSize(LOG_UNIT const s, bool const bNotify = true)
 	{
-		m_logPixelSize = ClipToMinMax(s, m_pixelSizeMin, m_pixelSizeMax);
+		m_logPixelSize = ClipToMinMax(s, m_logPixelSizeMin, m_logPixelSizeMax);
 		if (bNotify)
 			NotifyAll(true);
 	}
@@ -171,18 +174,13 @@ public:
 			NotifyAll(true);
 	}
 
-	float GetZoomFactor() const
-	{
-		return m_fZoomFactor;
-	};
-
 private:
 
-	fPixel   m_fPixOffset   { 0.0_fPixel };
-	LOG_UNIT m_logPixelSize {   1.0f };
-	LOG_UNIT m_pixelSizeMin {   0.2f };
-	LOG_UNIT m_pixelSizeMax { 100.0f };
-	float    m_fZoomFactor  {   1.1f };
+	fPixel   m_fPixOffset      { 0.0_fPixel };
+	LOG_UNIT m_logPixelSize    {   1.0f };
+	LOG_UNIT m_logPixelSizeMin {   0.2f };
+	LOG_UNIT m_logPixelSizeMax { 100.0f };
+	float    m_fZoomFactor     {   1.1f };
 
 	float calcFactor(bool const bDirection) const
 	{

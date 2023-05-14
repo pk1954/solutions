@@ -128,13 +128,13 @@ void Nob::Check() const
 void Nob::Dump() const
 {
 	wcout << Scanner::COMMENT_SYMBOL;
-	wcout << (IsSelected() ? L'S' : L' ');
+	wcout << (IsSelected() ? L'S' : SPACE);
 	wcout << *this;
 }
 
 wostream & operator<< (wostream & out, Nob const & nob)
 {
-	out << setw(5) << nob.m_identifier.GetValue() << L' ' << nob.m_type;
+	out << setw(5) << nob.m_identifier.GetValue() << SPACE << nob.m_type;
 	if (nob.HasParentNob())
 		out << L" (par " << nob.GetParentNob()->m_identifier.GetValue() << ")";
 	return out;

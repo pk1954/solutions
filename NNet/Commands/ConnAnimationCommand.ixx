@@ -47,7 +47,7 @@ public:
 	static void Push(NobId const nobId1, NobId const nobId2)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId1.GetValue() << L' ' << nobId2.GetValue() << endl;
+			TraceStream() << NAME << nobId1.GetValue() << SPACE << nobId2.GetValue() << endl;
 		PushCommand(make_unique<ConnAnimationCommand>(nobId1, nobId2));
         m_pSound->Play(L"SNAP_IN_SOUND");
     }

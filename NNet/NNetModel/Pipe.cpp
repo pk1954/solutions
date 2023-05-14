@@ -68,7 +68,7 @@ Pipe::Pipe
 void Pipe::Dump() const
 {
 	Nob::Dump();
-	wcout << L' ' << * this << endl;
+	wcout << SPACE << * this << endl;
 }
 
 bool Pipe::operator==(Nob const & rhs) const 

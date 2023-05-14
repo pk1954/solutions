@@ -11,6 +11,7 @@ export module NNetCommands:ToggleEmphModeCmd;
 
 import :NNetCommand;
 import NNetModel;
+import IoUtil;
 
 export class ToggleEmphModeCmd : public NNetCommand
 {
@@ -39,7 +40,7 @@ public:
 	static void Push(NobId const idNob)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << L' ' << idNob.GetValue() << endl;
+			TraceStream() << NAME << SPACE << idNob.GetValue() << endl;
 		PushCommand(make_unique<ToggleEmphModeCmd>(idNob));
 	}
 

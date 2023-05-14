@@ -44,7 +44,7 @@ public:
 	)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id.GetValue() << L' ' << umPntOld << umPntNew << endl;
+			TraceStream() << NAME << id.GetValue() << SPACE << umPntOld << umPntNew << endl;
 		PushCommand(make_unique<RotateNobCommand>(id, umPntOld, umPntNew));
 	}
 

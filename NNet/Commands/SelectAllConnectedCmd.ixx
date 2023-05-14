@@ -32,7 +32,7 @@ public:
 	static void Push(NobId const idNob)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << L' ' << idNob.GetValue() << endl;
+			TraceStream() << NAME << SPACE << idNob.GetValue() << endl;
 		PushCommand(make_unique<SelectAllConnectedCmd>(idNob));
 	}
 

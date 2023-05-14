@@ -47,7 +47,7 @@ public:
 	)
 	{
 		//if (IsTraceOn())        // TODO: fix
-		//	TraceStream() << NAME << L' ' << ParamType::GetName(param) << L' ' << fNewValue << endl;
+		//	TraceStream() << NAME << SPACE << ParamType::GetName(param) << SPACE << fNewValue << endl;
 		PushCommand(make_unique<SetParameterCommand>(param, fNewValue));
 	}
 

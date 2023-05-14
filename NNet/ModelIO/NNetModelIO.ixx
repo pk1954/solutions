@@ -17,6 +17,7 @@ import InputOutputUI;
 import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
 using std::wostream;
 using std::wstring;
 using std::vector;
@@ -48,10 +49,17 @@ public:
 
 	NNetModelReaderInterface const& GetExportNMRI() const { return *m_pExportNMRI; }
 
+	template <typename T>
+	void Add(wstring const& name)
+	{
+		m_wrapVector.push_back(make_unique<T>(name, *this));
+	}
+
 private:
 
 	unique_ptr<InputOutputUI>    m_upImportUI;
 	vector<unique_ptr<WrapBase>> m_wrapVector;
+
 	TP_TIMER* m_pTpTimer{ nullptr };
 
 	/// import ///

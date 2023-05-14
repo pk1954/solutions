@@ -14,6 +14,7 @@ import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
+import IoUtil;
 
 using std::wstring;
 using std::wostream;
@@ -60,7 +61,7 @@ public:
                 if (pSigGen != StdSigGen::Get())
                 {
                     WriteCmdName(out);
-                    out << inputLine.GetId().GetValue() << L' ';
+                    out << inputLine.GetId().GetValue() << SPACE;
                     pSigGen->WriteName(out);
                     out << endl;
                 }

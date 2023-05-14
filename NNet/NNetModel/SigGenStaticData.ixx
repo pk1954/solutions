@@ -126,11 +126,11 @@ public:
 	{
 		out << setw(5) 
 			<< data.m_freq 
-			<< L' ' 
+			<< SPACE 
 			<< data.m_amplit 
-			<< L' ' 
+			<< SPACE 
 			<< data.m_usPeak.GetValue() 
-			<< L' ';
+			<< SPACE;
 		return out;
 	}
 

@@ -6,13 +6,16 @@ module;
 
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 export module WrapProtocol;
 
 import NNetWrapperBase;
 import NNetModelStorage;
+import IoUtil;
 
 using std::endl;
+using std::wstring;
 using std::wostream;
 using std::setprecision;
 
@@ -21,9 +24,11 @@ export class WrapProtocol : public NNetWrapperBase
 public:
     using NNetWrapperBase::NNetWrapperBase;
 
+    inline static wstring const VERSION { L"version" };
+
     void operator() (Script& script) const final
     {
-        script.ScrReadString(L"version");
+        script.ScrReadString(VERSION);
         double dVersion = script.ScrReadFloat();
         if (dVersion < NNetModelStorage::PROTOCOL_VERSION)
             throw ProtocollException(dVersion);
@@ -31,7 +36,8 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << L"Protocol version " << setprecision(2) << NNetModelStorage::PROTOCOL_VERSION << endl;
+        WriteCmdName(out);
+        out << VERSION << SPACE << setprecision(2) << NNetModelStorage::PROTOCOL_VERSION << endl;
         out << endl;
     };
 };

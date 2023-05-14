@@ -42,7 +42,7 @@ public:
 	static void Push(SignalId const& id, TrackNr const trackNr)
 	{
 		//if (IsTraceOn())          // TODO: fix
-		//	TraceStream() << NAME << id << L' ' << trackNr.GetValue() << endl;
+		//	TraceStream() << NAME << id << SPACE << trackNr.GetValue() << endl;
 		PushCommand(make_unique<MoveSignalCmd>(id, trackNr));
 	}
 
