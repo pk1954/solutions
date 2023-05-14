@@ -13,22 +13,15 @@ module;
 
 module NNetWin32:Preferences;
 
-import ErrHndl;
 import SoundInterface;
-import ScriptFile;
-import BaseWindow;
 import Win32_Util;
-import Symtab;
 import AutoOpen;
 import Script;
 import NNetModelIO;
-import NNetModel;
 import :DescriptionWindow;
 import :NNetInputOutputUI;
-import :NNetAppMenu;
 import :MainWindow;
 
-using std::make_unique;
 using std::wofstream;
 using std::wostream;
 using std::wstring;
