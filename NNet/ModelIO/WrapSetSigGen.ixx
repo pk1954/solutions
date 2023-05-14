@@ -61,7 +61,7 @@ public:
                 if (pSigGen != StdSigGen::Get())
                 {
                     WriteCmdName(out);
-                    out << inputLine.GetId().GetValue() << SPACE;
+                    out << inputLine.GetId() << SPACE;
                     pSigGen->WriteName(out);
                     out << endl;
                 }

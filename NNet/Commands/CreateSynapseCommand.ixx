@@ -64,7 +64,7 @@ public:                    // pipe context menu: create synapse
 	static void Push(NobId nobId, MicroMeterPnt const& pos)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId.GetValue() << pos << endl;
+			TraceStream() << NAME << nobId << pos << endl;
 		PushCommand(make_unique<CreateSynapseCommand>(nobId, pos));
 	}
 

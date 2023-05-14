@@ -47,7 +47,7 @@ public:
 	static void Push(NobId const nobId)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId.GetValue() << endl;
+			TraceStream() << NAME << nobId << endl;
 		PushCommand(make_unique<DelMicroSensorCmd>(nobId));
 	}
 

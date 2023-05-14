@@ -134,9 +134,9 @@ void Nob::Dump() const
 
 wostream & operator<< (wostream & out, Nob const & nob)
 {
-	out << setw(5) << nob.m_identifier.GetValue() << SPACE << nob.m_type;
+	out << setw(5) << nob.m_identifier << SPACE << nob.m_type;
 	if (nob.HasParentNob())
-		out << L" (par " << nob.GetParentNob()->m_identifier.GetValue() << ")";
+		out << L" (par" << nob.GetParentNob()->m_identifier << ")";
 	return out;
 }
 

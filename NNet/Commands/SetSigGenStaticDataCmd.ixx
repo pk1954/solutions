@@ -56,7 +56,7 @@ public:
 	static void Push(SigGenId const id, SigGenStaticData const& data)
 	{
 		//if (IsTraceOn())   // TODO: fix
-		//	TraceStream() << NAME << id.GetValue() << /* data << */ endl;  //TODO: data causes compiler error
+		//	TraceStream() << NAME << id << /* data << */ endl;  //TODO: data causes compiler error
 		PushCommand(make_unique<SetSigGenStaticDataCmd>(id, data));
 	}
 

@@ -50,7 +50,7 @@ public:
 	)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId.GetValue() << SPACE << trackNr.GetValue() << endl;
+			TraceStream() << NAME << nobId << trackNr << endl;
 		PushCommand(make_unique<AddMicroSensorCmd>(nobId, trackNr));
 	}
 

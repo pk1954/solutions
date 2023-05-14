@@ -643,8 +643,8 @@ bool MainWindow::UserProc
 	{
 		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DumpModel(__FILE__, __LINE__);
-		wcout << L"highlighted = " << m_nobIdHighlighted.GetValue() << endl;
-		wcout << L"target      = " << m_nobIdTarget.GetValue() << endl;
+		wcout << L"highlighted = " << m_nobIdHighlighted << endl;
+		wcout << L"target      = " << m_nobIdTarget << endl;
 		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
 	}
 	return bRes;

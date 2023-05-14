@@ -68,7 +68,7 @@ void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um) cons
 	MicroMeter     umAbs { abs(um.GetValue()) };
 	wBuffer << fixed << setprecision(1);
 	if (umAbs < 1000.0_MicroMeter)
-		wBuffer << um.GetValue() << L"um ";
+		wBuffer << um << L"um ";
 	else if (umAbs < 1000000.0_MicroMeter)
 		wBuffer << um.GetValue() / 1000.0f << L"mm ";
 	else
@@ -79,7 +79,7 @@ void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um) cons
 void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees) const
 {
 	wostringstream wBuffer;
-	wBuffer << degrees.GetValue() << L"°";
+	wBuffer << degrees << L"°";
 	textBuf.printString(wBuffer.str());
 	textBuf.nextLine();
 }
@@ -87,14 +87,14 @@ void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees) const
 void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec) const
 {
 	wostringstream wBuffer;
-	wBuffer << msec.GetValue() << L" msec";
+	wBuffer << msec << L" msec";
 	textBuf.printString(wBuffer.str());
 }
 
 void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage) const
 {
 	wostringstream wBuffer;
-	wBuffer << voltage.GetValue() << L"mV";
+	wBuffer << voltage << L"mV";
 	textBuf.printString(wBuffer.str());
 }
 

@@ -50,7 +50,7 @@ public:
     static void Push(SensorId id)
     {
         if (IsTraceOn())
-            TraceStream() << NAME << L" " << id.GetValue() << endl;
+            TraceStream() << NAME << id << endl;
         PushCommand(make_unique<DelSensorCmd>(id));
     }
 

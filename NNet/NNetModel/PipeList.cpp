@@ -24,7 +24,7 @@ using std::ranges::replace;
 void PipeList::Dump() const
 {
 	wcout << OPEN_BRACKET;
-	for (auto it : m_list) { wcout << it->GetId().GetValue() << SPACE; }
+	for (auto it : m_list) { wcout << it->GetId(); }
 	wcout << CLOSE_BRACKET;
 }
 

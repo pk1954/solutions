@@ -44,7 +44,7 @@ public:
 	static void Push(NobId nobId, MicroMeterPosDir const& posDir)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId.GetValue() << posDir << endl;
+			TraceStream() << NAME << nobId << posDir << endl;
 		PushCommand(make_unique<SetNobCommand>(*m_pNMWI->GetNob(nobId), posDir));
 	}
 

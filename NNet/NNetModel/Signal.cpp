@@ -165,5 +165,5 @@ void Signal::CheckSignal() const
 void Signal::Dump() const
 {
     m_sigSource.Dump();
-    wcout << L"time start: " << m_timeStart.GetValue() << endl;
+    wcout << L"time start:" << m_timeStart << endl;
 }

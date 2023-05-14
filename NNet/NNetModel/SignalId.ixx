@@ -56,7 +56,7 @@ public:
 
 	friend wostream& operator<< (wostream& out, SignalId const& id)
 	{
-		out << L" (" << id.trackNr.GetValue() << SEPARATOR << id.signalNr.GetValue() << L")";
+		out << L" (" << id.trackNr << SEPARATOR << id.signalNr << L")";
 		return out;
 	}
 

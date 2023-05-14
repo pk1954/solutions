@@ -67,7 +67,7 @@ Pipe* NobIo::createPipe
     if (idStart == idEnd)
     {
         wcout << L"+++ Pipe has identical start and end point" << endl;
-        wcout << L"+++ " << L": " << idStart.GetValue() << L" -> " << idEnd.GetValue() << endl;
+        wcout << L"+++ " << L": " << idStart << SPACE << PIPE_TO << idEnd << endl;
         wcout << L"+++ Pipe ignored" << endl;
         throw ScriptErrorHandler::ScriptException(999, wstring(L"Error reading Pipe"));
         return nullptr;

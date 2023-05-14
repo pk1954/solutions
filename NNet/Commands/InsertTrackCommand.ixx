@@ -45,7 +45,7 @@ public:
 	static void Push(TrackNr const trackNr)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << trackNr.GetValue() << endl;
+			TraceStream() << NAME << trackNr << endl;
 		PushCommand(make_unique<InsertTrackCommand>(trackNr));
 	}
 

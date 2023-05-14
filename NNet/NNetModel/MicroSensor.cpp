@@ -35,7 +35,7 @@ NobId MicroSensor::GetNobId() const
 
 void MicroSensor::Dump() const
 {
-    wcout << L"NobId: " << m_pNob->GetId().GetValue() << endl;
+    wcout << L"NobId: " << m_pNob->GetId() << endl;
 }
 
 mV MicroSensor::GetSignalValue() const

@@ -52,7 +52,7 @@ private:
 	void printFrequency(TextBuffer & textBuf, Hertz const freq) const
 	{
 		wostringstream wBuffer;
-		wBuffer << fixed << setprecision(1) << freq.GetValue() << L"Hz ";
+		wBuffer << fixed << setprecision(1) << freq << L"Hz ";
 		textBuf.printString(wBuffer.str());
 		textBuf.nextLine();
 	}

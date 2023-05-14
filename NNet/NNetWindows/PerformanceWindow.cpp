@@ -60,7 +60,7 @@ void PerformanceWindow::printMicroSecLine
 ) const
 {
 	wostringstream wBuffer;
-	wBuffer << fixed << setprecision(1) << usDuration.GetValue() << L" µs";
+	wBuffer << fixed << setprecision(1) << usDuration << L" µs";
 	textBuf.printString(pwch1);
 	textBuf.printString(L"");
 	textBuf.printString(wBuffer.str());

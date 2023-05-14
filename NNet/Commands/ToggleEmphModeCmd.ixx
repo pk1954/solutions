@@ -40,7 +40,7 @@ public:
 	static void Push(NobId const idNob)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << SPACE << idNob.GetValue() << endl;
+			TraceStream() << NAME << idNob << endl;
 		PushCommand(make_unique<ToggleEmphModeCmd>(idNob));
 	}
 

@@ -151,7 +151,7 @@ void Synapse::Dump() const
 	wcout << L" Add";
 	m_pPipeAdd->Dump();
 	//if (m_bOutputBlocked)
-	//	wcout << L"blocked since " << m_usBlocked.GetValue() << L"µs" << endl;
+	//	wcout << L"blocked since " << m_usBlocked << L"µs" << endl;
 }
 
 void Synapse::PosChanged()

@@ -62,7 +62,7 @@ public:
 	static void Push(NobId idSrc, NobId idDst)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << idSrc.GetValue() << SPACE << idDst.GetValue() << endl;
+			TraceStream() << NAME << idSrc << idDst << endl;
 		PushCommand(make_unique<ConnectCreateSynapseCmd>(idSrc, idDst));
 		m_pSound->Play(L"SNAP_IN_SOUND");
 	}

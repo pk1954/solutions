@@ -60,7 +60,7 @@ public:
     static void Push(NobId nobId)
     {
         if (IsTraceOn())
-            TraceStream() << NAME << nobId.GetValue() << endl;
+            TraceStream() << NAME << nobId << endl;
         PushCommand(make_unique<SplitNeuronCmd>(nobId));
     }
 

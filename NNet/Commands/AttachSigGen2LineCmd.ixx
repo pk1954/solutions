@@ -38,7 +38,7 @@ public:
 	static void Push(NobId const id)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id.GetValue() << endl;
+			TraceStream() << NAME << id << endl;
 		PushCommand(make_unique<AttachSigGen2LineCmd>(id));
 	}
 

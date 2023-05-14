@@ -58,7 +58,7 @@ public:
 	static void Push(NobId const nobId, MicroMeterPnt const& pos)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << nobId.GetValue() << pos << endl;
+			TraceStream() << NAME << nobId << pos << endl;
 		PushCommand(make_unique<CreateForkCommand>(nobId, pos));
 	}
 

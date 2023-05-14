@@ -288,11 +288,12 @@ void WinManager::dumpWindowCoordinates() const
 			if (hwnd != nullptr)
 			{
                 ostr << L"MoveWindow "
-					 << value.m_wstr << L" "
-					 << Util::GetWindowLeftPos(hwnd).GetValue() << L" "
-					 << Util::GetWindowTop    (hwnd).GetValue() << L" "
-				     << Util::GetWindowWidth  (hwnd).GetValue() << L" "
-				     << Util::GetWindowHeight (hwnd).GetValue() << endl;
+					 << value.m_wstr 
+					 << Util::GetWindowLeftPos(hwnd)
+					 << Util::GetWindowTop    (hwnd)
+				     << Util::GetWindowWidth  (hwnd)
+				     << Util::GetWindowHeight (hwnd)
+                     << endl;
 
 				ostr << L"ShowWindow " 
 					<< value.m_wstr << L" "

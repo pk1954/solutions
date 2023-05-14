@@ -57,7 +57,7 @@ public:
                 {
                     WriteCmdName(out);
                     out << idSignal;
-                    out << L" StartTime " << pSignal->GetStartTime().GetValue() << endl;
+                    out << L" StartTime" << pSignal->GetStartTime() << endl;
                     pSignal->WriteSignalData(out);
                 }
             }

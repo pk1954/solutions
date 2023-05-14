@@ -38,7 +38,7 @@ public:
                 if (nob.IsEmphasized())
                 {
                     WriteCmdName(out);
-                    out << nob.GetId().GetValue() << endl;
+                    out << nob.GetId() << endl;
                 }
             }
         );
