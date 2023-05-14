@@ -18,7 +18,7 @@ using std::wostream;
 export class NNetWrapperBase : public WrapBase
 {
 public:
-    explicit NNetWrapperBase
+    NNetWrapperBase
     (
         wstring const & wstrName,
         NNetModelIO   & modelIO

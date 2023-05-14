@@ -21,6 +21,7 @@ import :DescriptionWindow;
 using std::wstring;
 using std::vector;
 using std::unique_ptr;
+using std::make_unique;
 
 export class Preferences
 {
@@ -33,7 +34,6 @@ public:
 		HWND const
 	);
 	void SetModelInterface(NNetModelReaderInterface const *);
-	NNetModelReaderInterface const * GetModelInterface() const { return m_pNMRI; };
 	bool ReadPreferences () const;
 	bool WritePreferences() const;
 
@@ -53,8 +53,23 @@ public:
 	tInputCablesVisibility InputCablesVisibility() const { return m_inputCablesVisibility; }
 	void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
 
+	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
+	HWND                            GetHwndApp()        const { return m_hwndApp; }
+	Sound                          &GetSound  ()              { return *m_pSound; }
+	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
+	DescriptionWindow              &GetDescWin()              { return *m_pDescWin; }
+
+	template <typename T>
+	void Add(wstring const& name)
+	{
+		m_prefVector.push_back(make_unique<T>(name, *this));
+	}
+
 private:
 	HWND                             m_hwndApp               { nullptr };
+	Sound                          * m_pSound                { nullptr };
+	NNetModelIO                    * m_pModelIO              { nullptr };
+	DescriptionWindow              * m_pDescWin              { nullptr };
 	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
 	bool                             m_bScales               { false };
 	bool                             m_bArrows               { false };

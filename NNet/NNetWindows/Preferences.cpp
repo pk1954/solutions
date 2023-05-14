@@ -40,13 +40,26 @@ using std::filesystem::path;
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
 
-class WrapShowScales : public WrapBase
+class PrefWrapBase : public WrapBase
 {
 public:
-    explicit WrapShowScales(Preferences& pref)
-      : WrapBase(L"ShowScales"),
+    PrefWrapBase
+    (
+        wstring const& wstrName, 
+        Preferences  & pref
+    )
+      : WrapBase(wstrName),
         m_pref(pref)
     {}
+
+protected:
+    Preferences& m_pref;
+};
+
+class WrapShowScales : public PrefWrapBase
+{
+public:
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -57,18 +70,12 @@ public:
     {
         out << (m_pref.ScalesVisible() ? PREF_ON : PREF_OFF);
     }
-
-private:
-    Preferences& m_pref;
 };
 
-class WrapShowArrows : public WrapBase
+class WrapShowArrows : public PrefWrapBase
 {
 public:
-    explicit WrapShowArrows(Preferences& pref)
-      : WrapBase(L"ShowArrows"),
-        m_pref(pref)
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -79,18 +86,12 @@ public:
     {
         out << (m_pref.ArrowsVisible() ? PREF_ON : PREF_OFF);
     }
-
-private:
-    Preferences& m_pref;
 };
 
-class WrapShowSensorPoints: public WrapBase
+class WrapShowSensorPoints: public PrefWrapBase
 {
 public:
-    explicit WrapShowSensorPoints(Preferences & pref)
-      : WrapBase(L"ShowSensorPoints"),
-        m_pref(pref)
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script & script) const final
     {
@@ -101,17 +102,12 @@ public:
     {
         out << (m_pref.SensorPointsVisible() ? PREF_ON : PREF_OFF);
     }
-
-private:
-    Preferences & m_pref;
 };
 
-class WrapSetAutoOpen: public WrapBase
+class WrapSetAutoOpen: public PrefWrapBase
 {
 public:
-    WrapSetAutoOpen()
-        : WrapBase(L"SetAutoOpen")
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script & script) const final
     {
@@ -128,12 +124,10 @@ public:
     }
 };
 
-class WrapSetPerfMonMode: public WrapBase
+class WrapSetPerfMonMode: public PrefWrapBase
 {
 public:
-    WrapSetPerfMonMode()
-        : WrapBase(L"SetPerfMonMode")
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script & script) const final
     {
@@ -146,61 +140,46 @@ public:
     }
 };
 
-class WrapSetSound: public WrapBase
+class WrapSetSound: public PrefWrapBase
 {
 public:
-    explicit WrapSetSound(Sound & sound)
-      : WrapBase(L"SetSound"),
-        m_sound(sound)
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script & script) const final
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if (bMode)
-            m_sound.On();
+            m_pref.GetSound().On();
         else
-            m_sound.Off();
+            m_pref.GetSound().Off();
     }
 
     void Write(wostream & out) const final
     {
-        out << (m_sound.IsOn() ? PREF_ON : PREF_OFF);
+        out << (m_pref.GetSound().IsOn() ? PREF_ON : PREF_OFF);
     }
-
-private:
-    Sound & m_sound;
 };
 
-class WrapDescWinFontSize : public WrapBase
+class WrapDescWinFontSize : public PrefWrapBase
 {
 public:
-    explicit WrapDescWinFontSize(DescriptionWindow& descWin)
-        : WrapBase(L"DescWinFontSize"),
-        m_descWin(descWin)
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script& script) const final
     {
-        m_descWin.SetFontSize(script.ScrReadInt());
+        m_pref.GetDescWin().SetFontSize(script.ScrReadInt());
     }
 
     void Write(wostream& out) const final
     {
-        out << m_descWin.GetFontSize();
+        out << m_pref.GetDescWin().GetFontSize();
     }
-
-private:
-    DescriptionWindow& m_descWin;
 };
 
-class WrapInputCablesVisibility : public WrapBase
+class WrapInputCablesVisibility : public PrefWrapBase
 {
 public:
-    explicit WrapInputCablesVisibility(Preferences & pref)
-      : WrapBase(L"InputCablesVisibility"),
-        m_pref(pref)
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -211,44 +190,26 @@ public:
     {
         out << static_cast<int>(m_pref.InputCablesVisibility());
     }
-
-private:
-    Preferences& m_pref;
 };
 
-class WrapReadModel: public WrapBase
+class WrapReadModel: public PrefWrapBase
 {
 public:
-    WrapReadModel
-    (
-        Preferences const * pPref,
-        NNetModelIO       & modelIO, 
-        HWND        const   hwndApp
-    )
-    : WrapBase(L"ReadModel"),
-      m_pPref(pPref),
-      m_modelIO(modelIO),
-      m_hwndApp(hwndApp)
-    {}
+    using PrefWrapBase::PrefWrapBase;
 
     void operator() (Script & script) const final
     {
         wstring wstrFile { script.ScrReadString() };
-        if (! m_modelIO.Import(wstrFile, NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
+        if (!m_pref.GetModelIO().Import(wstrFile, NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
         {
-            SendMessage(m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0);
+            SendMessage(m_pref.GetHwndApp(), WM_COMMAND, IDM_NEW_MODEL, 0);
         }
      }
 
     void Write(wostream & out) const final
     {
-        out << L"\"" << m_pPref->GetModelInterface()->GetModelFilePath() << L"\"";
+        out << L"\"" << m_pref.GetModelInterface()->GetModelFilePath() << L"\"";
     }
-
-private:
-    Preferences const * m_pPref;
-    NNetModelIO       & m_modelIO;
-    HWND                m_hwndApp;
 };
 
 void Preferences::Initialize
@@ -261,20 +222,23 @@ void Preferences::Initialize
 {
     static wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
-    m_hwndApp = hwndApp;
+    m_hwndApp  = hwndApp;
+    m_pSound   = &sound;
+    m_pModelIO = &modelIO;
+    m_pDescWin = &descWin;
 
     m_wstrPreferencesFile = Util::GetCurrentDir();
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    m_prefVector.push_back(make_unique<WrapShowScales>(*this));
-    m_prefVector.push_back(make_unique<WrapShowArrows>(*this));
-    m_prefVector.push_back(make_unique<WrapShowSensorPoints>(*this));
-    m_prefVector.push_back(make_unique<WrapDescWinFontSize>(descWin));
-    m_prefVector.push_back(make_unique<WrapSetAutoOpen>());
-    m_prefVector.push_back(make_unique<WrapSetSound>(sound));
-    m_prefVector.push_back(make_unique<WrapReadModel>(this, modelIO, hwndApp));
-    m_prefVector.push_back(make_unique<WrapSetPerfMonMode>());
-    m_prefVector.push_back(make_unique<WrapInputCablesVisibility>(*this));
+    Add<WrapShowScales           >(L"ShowScales");
+    Add<WrapShowArrows           >(L"ShowArrows");
+    Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
+    Add<WrapDescWinFontSize      >(L"DescWinFontSize");
+    Add<WrapSetAutoOpen          >(L"SetAutoOpen");
+    Add<WrapSetSound             >(L"SetSound");
+    Add<WrapReadModel            >(L"ReadModel");
+    Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
+    Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON,  1L);
