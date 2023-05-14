@@ -323,8 +323,12 @@ void Preferences::SetSensorPoints(bool const bOn)
 bool Preferences::WritePreferences() const
 {
     wofstream prefFile(m_wstrPreferencesFile);
-    for (auto const & it : m_prefVector)
-        it->Write2(prefFile);
+    for (auto const& it : m_prefVector)
+    {
+        it->WriteCmdName(prefFile);
+        it->Write(prefFile);
+        prefFile << endl;
+    }
     prefFile.close();
     wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;

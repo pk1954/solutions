@@ -87,9 +87,6 @@ void NNetModelIO::Initialize()
         }
     );
 
-    SymbolTable::ScrDefConst(L"circle", static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
-    SymbolTable::ScrDefConst(L"nob",    static_cast<unsigned long>(Signal::SIGSRC_NOB));
-
     ParamType::Apply2AllParameters
     (
         [](ParamType::Value const & param) 
@@ -101,9 +98,6 @@ void NNetModelIO::Initialize()
             );
         }
     );
-
-    SymbolTable::ScrDefConst(L"SpikeWidth",  static_cast<unsigned long>(ParamType::Value::pulseWidth));     // legacy
-    SymbolTable::ScrDefConst(L"PeakVoltage", static_cast<unsigned long>(ParamType::Value::neuronPeakVolt)); // legacy
 }
 
 //////////////// import ////////////////

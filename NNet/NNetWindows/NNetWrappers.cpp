@@ -4,19 +4,15 @@
 
 module;
 
-#include <string>
+#include <compare>
 
 module NNetWin32:NNetWrappers;
 
-import Symtab;
-import ErrHndl;
 import Script;
 import BreakCommand;
 import IncludeCommand;
 import NNetModelIO;
 import NNetCommands;
-
-import :NNetInputOutputUI;
 
 void InitializeNNetWrappers
 (
@@ -79,12 +75,4 @@ void InitializeNNetWrappers
     ToggleEmphModeCmd::Register();
     ToggleStopOnTriggerCmd::Register();
     UndoCommand::Register();
-
-    ParamType::Apply2GlobalParameters
-    ( 
-        [](ParamType::Value const & param) 
-        {
-            SymbolTable::ScrDefConst(ParamType::GetName(param), static_cast<unsigned long>(param));
-        }
-   );
 }

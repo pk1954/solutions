@@ -9,7 +9,7 @@ module;
 
 export module WrapDescription;
 
-import Symtab;
+import IoUtil;
 import NNetWrapperBase;
 import Script;
 import NNetModelIO;
@@ -32,12 +32,13 @@ public:
 
 	void Write(wostream & out) const final
 	{
-		wstring const& wstrCmdName{ SymbolTable::GetSymbolName(Symbol(this)) };
+		wstring const& wstrCmdName{ GetName() };
 		wstring wstrLine;
 		int iLineNr = 0;
 		while (m_modelIO.GetExportNMRI().GetDescriptionLine(iLineNr++, wstrLine))
 		{
-			out << wstrCmdName << L" \"" << wstrLine << "\"" << endl;
+			WriteCmdName(out);
+			out << DOUBLE_QUOTE << wstrLine << DOUBLE_QUOTE << endl;
 		}
 	};
 };

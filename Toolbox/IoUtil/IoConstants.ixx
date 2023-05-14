@@ -21,3 +21,4 @@ export inline wchar_t const LIST_OPEN_BRACKET  { L'{' };
 export inline wchar_t const LIST_CLOSE_BRACKET { L'}' };
 export inline wchar_t const EQUALS             { L'=' };
 export inline wchar_t const SPACE              { L' ' };
+export inline wchar_t const DOUBLE_QUOTE       { L'\"' };

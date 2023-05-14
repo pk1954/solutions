@@ -9,6 +9,7 @@ module;
 
 export module WrapGlobalParameter;
 
+import IoUtil;
 import SaveCast;
 import NNetWrapperBase;
 import Script;
@@ -49,7 +50,8 @@ public:
         (
             [this, &out](ParamType::Value const& par)
             {
-                out << L"GlobalParameter" << par << L" = "
+                WriteCmdName(out);
+                out << par << SPACE << EQUALS << SPACE
                     << setprecision(10) << m_modelIO.GetExportNMRI().GetParameter(par)
                     << endl;
             }

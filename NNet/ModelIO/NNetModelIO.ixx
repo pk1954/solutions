@@ -12,6 +12,7 @@ module;
 export module NNetModelIO;
 
 import WrapBase;
+import WrapBase;
 import Script;
 import InputOutputUI;
 import NNetModel;

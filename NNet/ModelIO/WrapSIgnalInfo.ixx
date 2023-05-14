@@ -11,8 +11,9 @@ module;
 export module WrapSignalInfo;
 
 import NNetWrapperBase;
-import ErrHndl;
 import Script;
+import Symtab;
+import ErrHndl;
 import Types;
 import IoUtil;
 import NNetWrapperHelpers;
@@ -26,6 +27,17 @@ export class WrapSignalInfo : public NNetWrapperBase
 {
 public:
     using NNetWrapperBase::NNetWrapperBase;
+
+    explicit WrapSignalInfo
+    (
+        wstring const& wstrName,
+        NNetModelIO& modelIO
+    )
+      : NNetWrapperBase(wstrName, modelIO)
+    {
+        SymbolTable::ScrDefConst(L"circle", static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
+        SymbolTable::ScrDefConst(L"nob",    static_cast<unsigned long>(Signal::SIGSRC_NOB));
+    };
 
     inline static wstring const SOURCE { L"source" };
 

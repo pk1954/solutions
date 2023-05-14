@@ -42,9 +42,6 @@
     <ClCompile Include="Symtab.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WrapBase.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="ScriptStack.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -55,6 +52,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Input.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapBase.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
