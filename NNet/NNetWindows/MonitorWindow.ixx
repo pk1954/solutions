@@ -48,8 +48,10 @@ public:
 	void MoveHighlightedSignal(PIXEL const pix) const { m_upMonitorControl->MoveHighlightedSignal(pix); }
 	void DropSignal           ()                const { m_upMonitorControl->DropSignal(); }
 
-	PixFpDimension<fMicroSecs> const& HorzCoord() const { return m_horzCoord; }
-	PixFpDimension<mV>         const& VertCoord() const { return m_vertCoord; }
+	PixFpDimension<fMicroSecs> & HorzCoord() { return m_horzCoord; }
+	PixFpDimension<mV>         & VertCoord() { return m_vertCoord; }
+	bool IsHorzScaleLocked()           const { return m_upHorzScale->IsScaleLocked(); }
+	void SetHorzScaleLocked(bool const b)    { m_upHorzScale->SetBlock2Zero(b); }
 
 private:
 	inline static PIXEL const RIGHT_BORDER   { 25_PIXEL };

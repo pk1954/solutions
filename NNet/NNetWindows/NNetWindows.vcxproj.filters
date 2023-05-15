@@ -183,5 +183,8 @@
     <ClCompile Include="NNetTimeGraph.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MonitorScrollState.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

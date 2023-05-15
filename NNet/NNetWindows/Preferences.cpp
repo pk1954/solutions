@@ -56,7 +56,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        m_pref.SetScales(static_cast<bool>(script.ScrReadUint()));
+        m_pref.SetScales(script.ScrReadBool());
     }
 
     void Write(wostream& out) const final
@@ -72,7 +72,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        m_pref.SetArrows(static_cast<bool>(script.ScrReadUint()));
+        m_pref.SetArrows(script.ScrReadBool());
     }
 
     void Write(wostream& out) const final
@@ -88,7 +88,7 @@ public:
 
     void operator() (Script & script) const final
     {
-        m_pref.SetSensorPoints(static_cast<bool>(script.ScrReadUint()));
+        m_pref.SetSensorPoints(script.ScrReadBool());
     }
 
     void Write(wostream & out) const final
@@ -104,7 +104,7 @@ public:
 
     void operator() (Script & script) const final
     {
-        bool bMode { static_cast<bool>(script.ScrReadUint()) };
+        bool bMode { script.ScrReadBool() };
         if (bMode)
             AutoOpen::On();
         else
@@ -124,7 +124,7 @@ public:
 
     void operator() (Script & script) const final
     {
-        BaseWindow::SetPerfMonMode(static_cast<bool>(script.ScrReadUint()));
+        BaseWindow::SetPerfMonMode(script.ScrReadBool());
     }
 
     void Write(wostream & out) const final
@@ -140,7 +140,7 @@ public:
 
     void operator() (Script & script) const final
     {
-        bool bMode { static_cast<bool>(script.ScrReadUint()) };
+        bool bMode { script.ScrReadBool() };
         if (bMode)
             m_pref.GetSound().On();
         else

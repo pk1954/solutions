@@ -16,6 +16,7 @@ export import :MainWindow;
 export import :Measurement;
 export import :MiniWindow;
 export import :MonitorControl;
+export import :MonitorScrollState;
 export import :MonitorWindow;
 export import :NNetAppMenu;
 export import :NNetAppWindow;

@@ -4,9 +4,6 @@
     <ClCompile Include="WrapVoltage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetModelIO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapVoltage.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,13 +52,16 @@
     <ClCompile Include="InputOutputUI.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetModelIO.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NobIo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WrapEmphasized.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetModelIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetModelIO.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -52,10 +52,11 @@ public:
 	inline static bool const TICKS_LEFT  { true };
 
 	void SetTicksDir   (bool const);
-	void SetInverted   (bool const b)    { m_bInverted      = b; }
-	void SetZoomAllowed(bool const b)    { m_bZoomAllowed   = b; }
-	void SetAllowUnlock(bool const b)    { m_bUnlockAllowed = b; }
-	void SetBlock2Zero(tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
+	void SetInverted   (bool const b)     { m_bInverted      = b; }
+	void SetZoomAllowed(bool const b)     { m_bZoomAllowed   = b; }
+	void SetAllowUnlock(bool const b)     { m_bUnlockAllowed = b; }
+	void SetBlock2Zero (bool const b)     { m_bLock2Zero     = b; }
+	void SetBlock2Zero (tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
 
 	bool IsScaleLocked() const { return m_bLock2Zero; }
 	bool IsZoomAllowed() const { return m_bZoomAllowed; }

@@ -12,7 +12,6 @@ module;
 export module NNetModelIO;
 
 import WrapBase;
-import WrapBase;
 import Script;
 import InputOutputUI;
 import NNetModel;
@@ -50,10 +49,13 @@ public:
 
 	NNetModelReaderInterface const& GetExportNMRI() const { return *m_pExportNMRI; }
 
-	template <typename T>
-	void Add(wstring const& name)
+	template <Wrap_t WRAPPER>
+	WRAPPER * Add(wstring const& name)
 	{
-		m_wrapVector.push_back(make_unique<T>(name, *this));
+		unique_ptr upWrapper { make_unique<WRAPPER>(name, *this) };
+		WRAPPER  * pWrapper { upWrapper.get() };
+		m_wrapVector.push_back(move(upWrapper));
+		return pWrapper;
 	}
 
 private:

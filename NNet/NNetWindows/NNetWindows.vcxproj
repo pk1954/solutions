@@ -580,6 +580,7 @@
     <ClCompile Include="Measurement.ixx" />
     <ClCompile Include="MonitorControl.ixx" />
     <ClCompile Include="MonitorControl.cpp" />
+    <ClCompile Include="MonitorScrollState.ixx" />
     <ClCompile Include="MonitorWindow.ixx" />
     <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />

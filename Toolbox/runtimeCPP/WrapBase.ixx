@@ -6,6 +6,7 @@ module;
 
 #include <string>
 #include <iostream>
+#include <type_traits>
 
 export module WrapBase;
 
@@ -15,6 +16,8 @@ import Script;
 using std::wostream;
 using std::wstring;
 using std::endl;
+using std::is_base_of;
+using std::remove_pointer_t;
 
 export class WrapBase : public ScriptFunctor
 {
@@ -45,3 +48,6 @@ public:
         out << endl;
     }
 };
+
+export template <typename T>
+concept Wrap_t = is_base_of<WrapBase, remove_pointer_t<T>>::value;

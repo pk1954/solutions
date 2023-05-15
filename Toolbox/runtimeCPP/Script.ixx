@@ -29,19 +29,20 @@ public:
 
 	// functions for reading from input script
 
-	double         ScrReadFloat(void);
-	long           ScrReadLong(void);
-	unsigned long  ScrReadUlong(void);
-	int            ScrReadInt(void);
-	unsigned int   ScrReadUint(void);
-	short          ScrReadShort(void);
-	unsigned short ScrReadUshort(void);
-	wchar_t        ScrReadChar(void);
-	unsigned char  ScrReadUchar(void);
-	wstring        ScrReadString(void);
+	double         ScrReadFloat();
+	long           ScrReadLong();
+	unsigned long  ScrReadUlong();
+	int            ScrReadInt();
+	unsigned int   ScrReadUint();
+	short          ScrReadShort();
+	unsigned short ScrReadUshort();
+	wchar_t        ScrReadChar();
+	unsigned char  ScrReadUchar();
+	wstring        ScrReadString();
 	void           ScrReadString(wstring const&);
 	void           ScrReadSpecial(wchar_t const);
 	void           ScrReadSpecialString(wstring const&);
+	bool           ScrReadBool() { return static_cast<bool>(ScrReadUint()); };
 
 	ScriptErrorHandler::ScriptException ScrReadUint(unsigned int*);
 
@@ -84,7 +85,7 @@ public:
 
 private:
 
-	bool          readSign(void);
+	bool          readSign();
 	unsigned long numeric(wstring const&, unsigned long, bool*);
 
 	Scanner   m_scanner;

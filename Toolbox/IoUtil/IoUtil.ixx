@@ -25,6 +25,7 @@ export wostream& operator<< (wostream&, MicroMeterPnt    const&);
 export wostream& operator<< (wostream&, MicroMeterRect   const&);
 export wostream& operator<< (wostream&, MicroMeterCircle const&);
 
+export fMicroSecs       ScrReadfMicroSecs      (Script&);
 export MicroMeter       ScrReadMicroMeter      (Script&);
 export MicroMeterPnt    ScrReadMicroMeterPnt   (Script&);
 export MicroMeterCircle ScrReadMicroMeterCircle(Script&);

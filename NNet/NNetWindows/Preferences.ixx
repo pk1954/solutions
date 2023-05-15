@@ -59,10 +59,10 @@ public:
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 	DescriptionWindow              &GetDescWin()              { return *m_pDescWin; }
 
-	template <typename T>
+	template <Wrap_t WRAPPER>
 	void Add(wstring const& name)
 	{
-		m_prefVector.push_back(make_unique<T>(name, *this));
+		m_prefVector.push_back(make_unique<WRAPPER>(name, *this));
 	}
 
 private:

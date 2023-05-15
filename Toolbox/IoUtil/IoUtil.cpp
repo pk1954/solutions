@@ -78,6 +78,11 @@ MicroMeterCircle ScrReadMicroMeterCircle(Script& script)
     return MicroMeterCircle(umCenter, umRadius);
 }
 
+fMicroSecs ScrReadfMicroSecs(Script& script)
+{
+    return fMicroSecs(Cast2Float(script.ScrReadFloat()));
+}
+
 tBoolOp ScrReadBoolOp(Script & script)
 {
     unsigned long ulBoolOp(script.ScrReadUlong());

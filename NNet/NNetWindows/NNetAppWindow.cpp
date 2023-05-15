@@ -44,6 +44,7 @@ import :NNetInputOutputUI;
 import :NNetWindow;
 import :NNetWrappers;
 import :NNetTimeGraph;
+import :MonitorScrollState;
 
 using std::endl;
 using std::wcout;
@@ -92,6 +93,9 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	);
 	InitializeNNetWrappers(&m_modelIO, &m_ScriptHook);
 	NNetCommand::SetSound(&m_sound);
+
+	MonitorScrollState* pMonitorScrollState { m_modelIO.Add<MonitorScrollState>(L"MonitorScrollState") };
+	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
 };
 
 NNetAppWindow::~NNetAppWindow() = default;
