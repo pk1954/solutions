@@ -584,14 +584,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		? m_pBrushSensorSelected
 		: m_pBrushSensorNormal
 	};
-	list.DrawInputCable
-	(
-		graphics,
-		coord,
-		fPixPosX,
-		inputLine,
-		pBrush
-	);
+	list.DrawInputCable(graphics, coord, fPixPosX, inputLine, pBrush);
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)

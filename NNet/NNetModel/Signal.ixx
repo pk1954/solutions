@@ -16,7 +16,7 @@ import ObserverInterface;
 import Types;
 import DrawContext;
 import SimulationTime;
-import :NNetParameters;
+import :SignalParameters;
 import :SignalSource;
 
 using std::vector;
@@ -42,12 +42,10 @@ public:
     // TODO
     void Reset();
 
-    mV        GetDataPoint   (NNetParameters const &, SIMU_TIME const)  const;
-    SIMU_TIME FindNextMaximum(NNetParameters const &, SIMU_TIME const)  const;
+    mV        GetDataPoint   (SignalParameters const &, SIMU_TIME const)  const;
+    SIMU_TIME FindNextMaximum(SignalParameters const &, SIMU_TIME const)  const;
 
     void WriteSignalData(wostream &) const;
-
-    //bool Includes(MicroMeterPnt const) const;
 
     SIMU_TIME GetStartTime() const { return m_timeStart; }
     void      SetStartTime(SIMU_TIME const t) { m_timeStart = t; }
@@ -65,6 +63,8 @@ public:
 
     SignalSource const * GetSignalSource() const { return &m_sigSource; }
 
+    fMicroSecs GetResolution() const { return m_usResolution; }
+
     inline static int const SIGSRC_CIRCLE { 101 };
     inline static int const SIGSRC_NOB    { 103 };
 
@@ -77,7 +77,8 @@ private:
     SIMU_TIME      m_timeStart { SimulationTime::Get() };
     vector<mV>     m_data;
     int            m_iSourceType;
+    fMicroSecs     m_usResolution { 100._MicroSecs };
 
-    SIG_INDEX time2index(NNetParameters const &, SIMU_TIME) const;
-    SIMU_TIME index2time(NNetParameters const &, SIG_INDEX const) const;
+    SIG_INDEX time2index(SignalParameters const &, SIMU_TIME) const;
+    SIMU_TIME index2time(SignalParameters const &, SIG_INDEX const) const;
 };

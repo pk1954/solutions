@@ -48,10 +48,11 @@ public:
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob             (NobId const);
 
-    UPNobList              & GetUPNobs     () { return m_pModel->GetUPNobs(); }
-    NNetParameters         & GetParams     () { return m_pModel->GetParams(); }
-    MonitorData            & GetMonitorData() { return m_pModel->GetMonitorData(); }
-    unique_ptr<vector<Nob*>> GetSelection  () { return GetUPNobs().GetAllSelected(); }
+    UPNobList              & GetUPNobs      () { return m_pModel->GetUPNobs(); }
+    NNetParameters         & GetParams      () { return m_pModel->GetParams(); }
+    SignalParameters       & GetSignalParams() { return m_pModel->GetSignalParams(); }
+    MonitorData            & GetMonitorData () { return m_pModel->GetMonitorData(); }
+    unique_ptr<vector<Nob*>> GetSelection   () { return GetUPNobs().GetAllSelected(); }
 
     void ResetModel()             { m_pModel->ResetModel(); }
     void ClearDynamicData() const { m_pModel->ClearDynamicData(); }

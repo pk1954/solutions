@@ -43,7 +43,7 @@ public:
 	void CheckId(NobId const) const;
 	void DumpModel(char const* const, int const) const;
 
-	float GetParameter(ParamType::Value const p) const { return m_param.GetParameterValue(p); }
+	float GetParameter(ParamType::Value const p) const { return m_upParam->GetParameterValue(p); }
 
 	Nob    const * GetConstNob   (NobId const) const;
 	PosNob const * GetStartNobPtr(NobId const) const;
@@ -98,18 +98,20 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList     const & GetSigGenList     () const { return *m_upSigGenList.get(); }
-	UPSigGenList           & GetSigGenList     ()       { return *m_upSigGenList.get(); }
-	UPSensorList     const & GetSensorList     () const { return m_sensorList; }
-	UPSensorList           & GetSensorList     ()       { return m_sensorList; }
-	UPNobList        const & GetUPNobs         () const { return *m_upNobs.get(); }
-	UPNobList              & GetUPNobs         ()       { return *m_upNobs.get(); }
-	unique_ptr<UPNobList>    MoveUPNobs        ()       { return move(m_upNobs); }
-	MonitorData      const & GetMonitorData    () const { return m_monitorData; }
-	MonitorData            & GetMonitorData    ()       { return m_monitorData; }
-	NNetParameters   const & GetParams         () const { return m_param; }
-	NNetParameters         & GetParams         ()       { return m_param; }
-										  
+	UPSigGenList     const & GetSigGenList  () const { return *m_upSigGenList.get(); }
+	UPSigGenList           & GetSigGenList  ()       { return *m_upSigGenList.get(); }
+	UPSensorList     const & GetSensorList  () const { return m_sensorList; }
+	UPSensorList           & GetSensorList  ()       { return m_sensorList; }
+	UPNobList        const & GetUPNobs      () const { return *m_upNobs.get(); }
+	UPNobList              & GetUPNobs      ()       { return *m_upNobs.get(); }
+	unique_ptr<UPNobList>    MoveUPNobs     ()       { return move(m_upNobs); }
+	MonitorData      const & GetMonitorData () const { return m_monitorData; }
+	MonitorData            & GetMonitorData ()       { return m_monitorData; }
+	NNetParameters   const & GetParams      () const { return *m_upParam.get(); }
+	NNetParameters         & GetParams      ()       { return *m_upParam.get(); }
+	SignalParameters const & GetSignalParams() const { return m_signalParams; }
+	SignalParameters       & GetSignalParams()       { return m_signalParams; }
+
 	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
 	{									  
 		return m_upSigGenList->GetSigGen(sigGenId);
@@ -133,11 +135,12 @@ public:
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 private:
-	unique_ptr<UPNobList>    m_upNobs;
-	unique_ptr<UPSigGenList> m_upSigGenList;
-	UPSensorList             m_sensorList;
-	ModelDescription         m_description;
-	MonitorData              m_monitorData;
-	NNetParameters           m_param;
-	wstring                  m_wstrModelFilePath { L"" };
+	unique_ptr<UPNobList>      m_upNobs;
+	unique_ptr<UPSigGenList>   m_upSigGenList;
+	unique_ptr<NNetParameters> m_upParam;
+	SignalParameters           m_signalParams;
+	UPSensorList               m_sensorList;
+	ModelDescription           m_description;
+	MonitorData                m_monitorData;
+	wstring                    m_wstrModelFilePath { L"" };
 };						    

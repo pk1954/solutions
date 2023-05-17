@@ -296,5 +296,8 @@
     <ClCompile Include="SensorId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SignalParameters.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

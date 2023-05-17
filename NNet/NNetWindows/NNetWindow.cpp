@@ -20,6 +20,8 @@ import :NNetController;
 
 using std::function;
 
+static ColorF const EEG_SIGNAL_HIGH { 1.0f, 0.5f, 0.0f, 1.0f };
+
 void NNetWindow::Start
 (
 	HWND            const hwndParent, 
@@ -41,7 +43,7 @@ void NNetWindow::Start
 	m_pMonitorWindow       = pMonitorWindow;
 	m_fPixRadiusLimit      = fPixLimit;
 	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
-	m_pBrushSensorSelected = m_upGraphics->CreateBrush(NNetColors::EEG_SIGNAL_HIGH);
+	m_pBrushSensorSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 

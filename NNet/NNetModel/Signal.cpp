@@ -13,9 +13,8 @@ import Util;
 import Types;
 import IoUtil;
 import DrawContext;
-import :NNetColors;
 import :SignalSource;
-import :NNetParameters;
+import :SignalParameters;
 
 using std::wcout;
 using std::endl;
@@ -82,8 +81,8 @@ void Signal::WriteSignalData(wostream & out) const
 
 SIG_INDEX Signal::time2index
 (
-    NNetParameters const & param,
-    SIMU_TIME    usSimu
+    SignalParameters const & param,
+    SIMU_TIME                usSimu
 ) const
 {
     if (usSimu < m_timeStart)
@@ -96,8 +95,8 @@ SIG_INDEX Signal::time2index
 
 SIMU_TIME Signal::index2time
 (
-    NNetParameters const & param,
-    SIG_INDEX      const   index
+    SignalParameters const & param,
+    SIG_INDEX       const   index
 ) const
 {
     if (index < 0)
@@ -110,8 +109,8 @@ SIMU_TIME Signal::index2time
 
 mV Signal::GetDataPoint
 (
-    NNetParameters const & param,
-    SIMU_TIME      const   usSimu
+    SignalParameters const & param,
+    SIMU_TIME        const   usSimu
 ) const
 {
     SIG_INDEX index { time2index(param, usSimu) };
@@ -137,8 +136,8 @@ void Signal::Notify(bool const bImmediate) // called by compute thread!
 
 SIMU_TIME Signal::FindNextMaximum
 (
-    NNetParameters const & param,
-    SIMU_TIME      const   usSimu
+    SignalParameters const & param,
+    SIMU_TIME        const   usSimu
 ) const
 {
     SIG_INDEX index { time2index(param, usSimu) };

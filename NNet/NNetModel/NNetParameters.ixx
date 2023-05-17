@@ -12,20 +12,19 @@ import Observable;
 import SaveCast;
 import Types;
 import :ParamType;
-import :SigGenStaticData;
+import :SignalParameters;
 
 export class NNetParameters : public Observable
 {
 public:
+	NNetParameters(SignalParameters * const pSigPars)
+		: m_pSignalParameters(pSigPars)
+	{}
 
-	bool operator==(NNetParameters const & rhs) const;
+	//bool operator==(NNetParameters const & rhs) const;
 
 	float GetParameterValue(ParamType::Value const) const;
 	void  SetParameterValue(ParamType::Value const, float const);
-
-	SigGenStaticData const & GetSigGenStaticData() const { return m_sigGenData; }
-
-	void SetSigGenStaticData(SigGenStaticData const&);
 
 	fHertz      PulseFreqMax  () const { return m_freqMax; }
 	mV          NeuronPeakVolt() const { return m_neuronPeakVolt; }
@@ -33,19 +32,19 @@ public:
 	fMicroSecs  SynapseDelay  () const { return m_synapseDelay; }
 	fMicroSecs  PulseWidth    () const { return m_pulseWidth; }
 	meterPerSec PulseSpeed    () const { return m_pulseSpeed; }
-	fMicroSecs  TimeResolution() const { return m_usResolution; }
 	fMicroSecs  PulseDistMin  () const { return m_usPulseDistMin; }
+	fMicroSecs  TimeResolution() const { return m_pSignalParameters->TimeResolution(); }
 
 private:
-	SigGenStaticData m_sigGenData       { };
-	fHertz           m_freqMax          { 50.0_fHertz };
-	mV               m_neuronPeakVolt   { 100._mV };
-	mV               m_threshold        { 20._mV };
-	fMicroSecs       m_synapseDelay     { 500._MicroSecs };
-	meterPerSec      m_pulseSpeed       { 120.0_meterPerSec };
-	fMicroSecs       m_pulseWidth       { 2000._MicroSecs };
-	fMicroSecs       m_usResolution     { 100._MicroSecs };
-	fMicroSecs       m_usPulseDistMin   { PulseDuration(m_freqMax) };
+	fHertz      m_freqMax        { 50.0_fHertz };
+	mV          m_neuronPeakVolt { 100._mV };
+	mV          m_threshold      { 20._mV };
+	fMicroSecs  m_synapseDelay   { 500._MicroSecs };
+	meterPerSec m_pulseSpeed     { 120.0_meterPerSec };
+	fMicroSecs  m_pulseWidth     { 2000._MicroSecs };
+	fMicroSecs  m_usPulseDistMin { PulseDuration(m_freqMax) };
+
+	SignalParameters* m_pSignalParameters { nullptr };
 };
 
 // geometry

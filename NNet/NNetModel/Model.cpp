@@ -34,6 +34,7 @@ Model::Model()
 {
 	m_upNobs       = make_unique<UPNobList>();
 	m_upSigGenList = make_unique<UPSigGenList>();
+	m_upParam      = make_unique<NNetParameters>(&m_signalParams);
 }
 
 //bool Model::operator==(Model const & rhs) const
@@ -126,7 +127,7 @@ void Model::SetParam
 	float            const fNewValue 
 )
 {
-	m_param.SetParameterValue(param, fNewValue);
+	m_upParam->SetParameterValue(param, fNewValue);
 	if (param == ParamType::Value::synapseDelay)
 		m_upNobs->Apply2All<Synapse>([](Synapse& s) { s.RecalcDelayBuffer(); });
 	else 
@@ -136,8 +137,8 @@ void Model::SetParam
 bool Model::Compute()
 {
 	bool bStop { false };
-	SimulationTime::Tick(m_param.TimeResolution());
-	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->Prepare(m_param); });
+	SimulationTime::Tick(m_upParam->TimeResolution());
+	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->Prepare(*m_upParam.get()); });
 	m_upNobs->Apply2AllC([]      (Nob &s) { s.CollectInput(); });
 	m_upNobs->Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	return bStop;

@@ -33,12 +33,12 @@ protected:
 
 	fPixel Paint
 	(
-		auto               getPoint,
-		fMicroSecs   const timeStart0,
-		fMicroSecs   const timeEnd,
-		fMicroSecs   const usResolution,
-		D2D1::ColorF const color,
-		fPixel       const fPixWidth
+		auto                  getPoint,
+		fMicroSecs      const timeStart0,
+		fMicroSecs      const timeEnd,
+		fMicroSecs      const usResolution,
+		ID2D1SolidColorBrush* pBrush,
+		fPixel          const fPixWidth
 	) const
 	{
 		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
@@ -46,8 +46,6 @@ protected:
 		fPixelPoint      prevPoint     { getPoint(timeStart) };
 		if (prevPoint.IsNull())
 			return fPixMinSignal;
-
-		ID2D1SolidColorBrush * pBrush { m_upGraphics->CreateBrush(color) };
 
 		if (m_pHorzCoord->Transform2fPixelSize(usResolution) >= 3._fPixel)
 		{
@@ -88,7 +86,6 @@ protected:
 				}
 			}
 		}
-		SafeRelease(& pBrush);
 		return fPixMinSignal;
 	}
 

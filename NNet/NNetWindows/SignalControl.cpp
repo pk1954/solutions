@@ -237,7 +237,7 @@ void SignalControl::PaintGraphics()
 				[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
 				0.0_MicroSecs,
 				getTime(xRight()),
-				getColor(tColor::FREQ),
+				m_upGraphics->CreateBrush(getColor(tColor::FREQ)),
 				STD_WIDTH
 			);
 		if (m_pVertCoordVolt)
@@ -246,7 +246,7 @@ void SignalControl::PaintGraphics()
 				[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
 				0.0_MicroSecs,
 				getTime(xRight()),
-				getColor(tColor::VOLT),
+				m_upGraphics->CreateBrush(getColor(tColor::VOLT)),
 				STD_WIDTH
 			);
 	}

@@ -20,6 +20,9 @@ import :ParamType;
 using std::wstring;
 using std::to_wstring;
 
+static ColorF const SIGGEN_NORMAL { 1.0f, 1.0f, 0.9f, 1.0f };
+static ColorF const SIGGEN_ACTIVE { 1.0f, 1.0f, 0.6f, 1.0f };
+
 SignalGenerator::SignalGenerator(wstring const & name)
   : m_name(name)
 {}
@@ -81,7 +84,7 @@ void SignalGenerator::DrawSigGen
 {
 	if (!m_pTextFormat)
 		m_pTextFormat = graphics.NewTextFormat(12.0f);
-	D2D1::ColorF  const col { bSelected ? NNetColors::SIGGEN_ACTIVE : NNetColors::SIGGEN_NORMAL };
+	D2D1::ColorF  const col { bSelected ? SIGGEN_ACTIVE : SIGGEN_NORMAL };
 	graphics.FillRoundedRectangle(fPixRect, col, CORNERS);
 	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
 	graphics.DisplayText(fPixRect, GetName(), m_pTextFormat);
@@ -101,7 +104,7 @@ void SignalGenerator::DrawNewSigGenButton
 	fPixelRect const& fPixRect
 ) 
 {
-	graphics.FillRoundedRectangle(fPixRect, NNetColors::SIGGEN_NORMAL, CORNERS);
+	graphics.FillRoundedRectangle(fPixRect, SIGGEN_NORMAL, CORNERS);
 	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
 	graphics.DisplayText(fPixRect, L"+", m_pTextFormat);
 }

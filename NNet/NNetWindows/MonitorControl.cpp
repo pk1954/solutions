@@ -22,6 +22,15 @@ import NNetCommands;
 using std::vector;
 using std::to_wstring;
 
+static ColorF const COL_DIAMOND       { 0.0f, 1.0f, 0.0f, 1.0f };
+static ColorF const COL_STIMULUS_LINE { 0.5f, 0.1f, 0.1f, 1.0f };
+static ColorF const COL_TRACK_EVEN    { 0.9f, 0.9f, 0.9f, 1.0f };
+static ColorF const COL_TRACK_EVEN_H  { 0.9f, 0.9f, 1.0f, 1.0f };
+static ColorF const COL_TRACK_ODD     { 0.8f, 0.8f, 0.8f, 1.0f };
+static ColorF const COL_TRACK_ODD_H   { 0.8f, 0.8f, 0.9f, 1.0f };
+static ColorF const COL_WARNING       { 0.8f, 0.0f, 0.0f, 0.3f };
+static ColorF const EEG_SIGNAL_HIGH   { 1.0f, 0.5f, 0.0f, 1.0f };
+
 MonitorControl::MonitorControl
 (
 	HWND                 const   hwndParent,
@@ -49,6 +58,9 @@ MonitorControl::MonitorControl
 
 	m_horzCoord.RegisterObserver(*this);
 	m_vertCoord.RegisterObserver(*this);
+
+	m_pBrushNormal   = m_upGraphics->CreateBrush(ColorF::Black);
+	m_pBrushSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
 
 	m_pObservable = &observable;
 }
@@ -205,7 +217,7 @@ fPixel MonitorControl::getSignalValue
 	fMicroSecs const   usSimu
 ) const
 {
-	mV const mVsignal { signal.GetDataPoint(m_pNMWI->GetParams(), usSimu) };
+	mV const mVsignal { signal.GetDataPoint(m_pNMWI->GetSignalParams(), usSimu) };
 	return (mVsignal.IsNull())
 		? fPixel::NULL_VAL()
 		: m_vertCoord.Transform2fPixelSize(mVsignal);
@@ -238,7 +250,7 @@ fPixelPoint MonitorControl::calcDiamondPos() const
 			fMicroSecs const usSimu       { pixel2simuTime(fPixCrsrX) };
 			if (usSimu >= pSig->GetStartTime())
 			{
-				fMicroSecs const usSimuMax  { pSig->FindNextMaximum(m_pNMWI->GetParams(), usSimu) };
+				fMicroSecs const usSimuMax  { pSig->FindNextMaximum(m_pNMWI->GetSignalParams(), usSimu) };
 				fPixel     const fPixMaxX   { simu2pixelTime(usSimuMax) };
 				fPixel     const fPixYoff   { getSignalOffset(idSignal) };
 				fPixel     const fPixSigVal { getSignalValue(*pSig, usSimuMax) };
@@ -273,7 +285,7 @@ void MonitorControl::paintWarningRect() const
 			fPixelPoint   (m_fPixRightLimit, 0._fPixel),
 			fPixelRectSize(xRightBorder(), GetClientHeight())
 		), 
-		NNetColors::COL_WARNING
+		COL_WARNING
 	);
 }
 
@@ -283,28 +295,28 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	if (pSig == nullptr)
 		return;
 
-	fPixel     const fPixHorzBegin { 0._fPixel };
-	fPixel     const fPixHorzEnd   { m_fPixWinWidth - xRightBorder() };
-
-	fMicroSecs const usSimuBegin   { pixel2simuTime(fPixHorzBegin) };
-	fMicroSecs const usSimuEnd     { pixel2simuTime(fPixHorzEnd) };
-
-	fMicroSecs const usSimuZero    { pSig->GetStartTime() };
-	fMicroSecs const usSimuNow     { SimulationTime::Get() };
-
-	fMicroSecs const usSimuStart   { max(usSimuBegin, usSimuZero) };
-	fMicroSecs const usSimuStop    { min(usSimuEnd  , usSimuNow) };
-
-	fPixel     const fPixOffsetY   { getSignalOffset(idSignal) };
-	D2D1::ColorF     color         { ColorF::Black };
-	fPixel           fPixWidth     { STD_WIDTH };
+	fPixel          const fPixHorzBegin { 0._fPixel };
+	fPixel          const fPixHorzEnd   { m_fPixWinWidth - xRightBorder() };
+			       
+	fMicroSecs      const usSimuBegin   { pixel2simuTime(fPixHorzBegin) };
+	fMicroSecs      const usSimuEnd     { pixel2simuTime(fPixHorzEnd) };
+			       
+	fMicroSecs      const usSimuZero    { pSig->GetStartTime() };
+	fMicroSecs      const usSimuNow     { SimulationTime::Get() };
+			       
+	fMicroSecs      const usSimuStart   { max(usSimuBegin, usSimuZero) };
+	fMicroSecs      const usSimuStop    { min(usSimuEnd  , usSimuNow) };
+			       
+	fPixel          const fPixOffsetY   { getSignalOffset(idSignal) };
+	ID2D1SolidColorBrush *pBrush        { m_pBrushNormal };
+	fPixel                fPixWidth     { STD_WIDTH };
 
 	if (getSignalValue(*pSig, usSimuStop).IsNull())
 		return;
 
 	if (m_pMonitorData->IsSelected(idSignal) && (m_pMonitorData->GetNrOfSignals() >1)) 
 	{
-		color     = NNetColors::EEG_SIGNAL_HIGH;  // emphasize selected signal 
+		pBrush = m_pBrushSelected;  // emphasize selected signal 
 		fPixWidth = HIGH_WIDTH;
 	}
 
@@ -314,7 +326,9 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		{ 
 			return getSignalPoint(*pSig, t, fPixOffsetY); 
 		},
-		usSimuStart, usSimuStop, color, fPixWidth
+		usSimuStart, usSimuStop, 
+		pBrush,
+		fPixWidth
 	);
 
 	fPixel fPixMaxSignal = fPixOffsetY - fPixMinSignal;
@@ -322,7 +336,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		m_fPixMaxSignal = fPixMaxSignal;
 
 	fPixelPoint fPixPntSignalNow { getSignalPoint(*pSig, usSimuNow, fPixOffsetY) };
-	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), color);
+	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), pBrush);
 	
 	// paint block times
 
@@ -422,8 +436,8 @@ void MonitorControl::paintTrack(TrackNr const trackNr) const
 	ColorF const col 
 	{
 		(trackNr.GetValue() % 2)
-		? ((trackNr == m_trackNrHighlighted) ? NNetColors::COL_TRACK_ODD_H  : NNetColors::COL_TRACK_ODD)
-		: ((trackNr == m_trackNrHighlighted) ? NNetColors::COL_TRACK_EVEN_H : NNetColors::COL_TRACK_EVEN)
+		? ((trackNr == m_trackNrHighlighted) ? COL_TRACK_ODD_H  : COL_TRACK_ODD)
+		: ((trackNr == m_trackNrHighlighted) ? COL_TRACK_EVEN_H : COL_TRACK_EVEN)
 	};
 	fPixel const fPixTrackHeight { calcTrackHeight() };
 	fPixel const fPixTrackTop    { fPixTrackHeight * Cast2Float(trackNr.GetValue()) };
@@ -456,8 +470,8 @@ void MonitorControl::paintStimulusMarkers() const
 		fPixel      const fPixX     { simu2pixelTime(it) };
 		fPixelPoint const fPixBegin { fPixX, 0._fPixel };
 		fPixelPoint const fPixEnd   { fPixX, fPixBottom };
-		m_upGraphics->DrawLine(fPixBegin, fPixEnd, 1._fPixel, NNetColors::COL_STIMULUS_LINE);
-		paintNumber(fPixX + 2._fPixel, 0._fPixel, iStimulusNr, NNetColors::COL_STIMULUS_LINE);
+		m_upGraphics->DrawLine(fPixBegin, fPixEnd, 1._fPixel,  COL_STIMULUS_LINE);
+		paintNumber(fPixX + 2._fPixel, 0._fPixel, iStimulusNr, COL_STIMULUS_LINE);
 		++iStimulusNr;
 	}
 }
@@ -466,7 +480,7 @@ void MonitorControl::PaintGraphics()
 {
 	if (m_pMonitorData->NoTracks())
 	{
-		m_upGraphics->FillBackground(NNetColors::COL_TRACK_EVEN);
+		m_upGraphics->FillBackground(COL_TRACK_EVEN);
 		return;
 	}
 
@@ -485,7 +499,7 @@ void MonitorControl::PaintGraphics()
 	{
 		fPixelPoint const fPixDiamondPos { calcDiamondPos() };
 		if (fPixDiamondPos.IsNotNull())
-			m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, NNetColors::COL_DIAMOND);
+			m_upGraphics->FillDiamond(fPixDiamondPos, 4.0_fPixel, COL_DIAMOND);
 	}
 }
 

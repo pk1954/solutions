@@ -98,6 +98,7 @@
     <ClCompile Include="SignalGenerator.ixx" />
     <ClCompile Include="SignalId.ixx" />
     <ClCompile Include="SignalNr.ixx" />
+    <ClCompile Include="SignalParameters.ixx" />
     <ClCompile Include="SignalSource.ixx" />
     <ClCompile Include="SimulationTime.ixx" />
     <ClCompile Include="Spike.ixx" />

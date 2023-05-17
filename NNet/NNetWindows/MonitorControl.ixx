@@ -103,10 +103,14 @@ private:
 	Observable                 * m_pObservable  { nullptr };
 	Measurement                  m_measurement;
 
+	ID2D1SolidColorBrush* m_pBrushNormal;
+	ID2D1SolidColorBrush* m_pBrushSelected;
+
 	TrackNr    m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL      m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPixel     m_fPixWinWidth       { 0.0_fPixel };
 	fPixel     m_fPixRightLimit     { 0.0_fPixel };
 	fPixel     m_fPixMaxSignal      { 0.0_fPixel };
+
 };

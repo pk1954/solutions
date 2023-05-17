@@ -38,7 +38,7 @@ public:
 
 protected:
 
-	fPixel const STD_WIDTH { 1.0_fPixel };
+	fPixel const STD_WIDTH  { 1.0_fPixel };
 	fPixel const HIGH_WIDTH { 3.0_fPixel };
 
 	NNetModelWriterInterface* m_pNMWI { nullptr };
@@ -51,11 +51,11 @@ protected:
 
 	fPixel PaintCurve
 	(
-		auto               getPoint,
-		fMicroSecs   const timeStart0,
-		fMicroSecs   const timeEnd,
-		D2D1::ColorF const color,
-		fPixel       const fPixWidth
+		auto                  getPoint,
+		fMicroSecs      const timeStart0,
+		fMicroSecs      const timeEnd,
+		ID2D1SolidColorBrush* pBrush,
+    	fPixel          const fPixWidth
 	) const
 	{
 		return NNetTimeGraph::Paint
@@ -64,7 +64,7 @@ protected:
 			timeStart0,
 			timeEnd,
 			GetParams()->TimeResolution(),
-			color,
+			pBrush,
 			fPixWidth
 		);
 	}
