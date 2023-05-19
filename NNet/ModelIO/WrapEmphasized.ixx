@@ -38,7 +38,7 @@ public:
                 if (nob.IsEmphasized())
                 {
                     WriteCmdName(out);
-                    out << nob.GetId() << endl;
+                    out << m_modelIO.GetCompactIdVal(nob.GetId()) << endl;
                 }
             }
         );
