@@ -11,8 +11,8 @@ module NNetModel:MicroSensor;
 
 import Types;
 import DrawContext;
+import Signals;
 import :NNetColors;
-import :Signal;
 import :Nob;
 
 using std::endl;

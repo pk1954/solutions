@@ -1,13 +1,13 @@
 // SigGenStaticData.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <iostream>
 #include <iomanip>
 
-export module NNetModel:SigGenStaticData;
+export module Signals:SigGenStaticData;
 
 import Observable;
 import Types;

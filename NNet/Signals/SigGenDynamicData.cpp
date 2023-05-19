@@ -1,14 +1,13 @@
 // SigGenDynamicData.cpp
 //
-// NNetModel
+// Signals
 
-module NNetModel:SigGenDynamicData;
+module Signals:SigGenDynamicData;
 
 import Types;
-import SimulationTime;
-import :SigGenStaticData;
-import :NNetParameters;
 import :Spike;
+import :SimulationTime;
+import :SigGenStaticData;
 
 void SigGenDynamicData::Reset()
 {
@@ -37,23 +36,23 @@ fMicroSecs SigGenDynamicData::GetStimulusTime() const
 mV SigGenDynamicData::SetTime
 (
 	SigGenStaticData const & statData,
-	NNetParameters   const & param
+	fMicroSecs       const   umPulseWidth
 )
 {
-	return SetTime(statData, param, GetStimulusTime());
+	return SetTime(statData, umPulseWidth, GetStimulusTime());
 }
 
 mV SigGenDynamicData::SetTime
 (
 	SigGenStaticData const & statData,
-	NNetParameters   const & param,
+	fMicroSecs       const   umPulseWidth,
 	fMicroSecs       const   stimuTime  // time since last stimulus
 )
 {
 	mV         const amplitude   { m_stimulusActive ? statData.GetStimulusAmplitude(stimuTime) : statData.GetAmplitude().Base() };
 	fHertz     const frequency   { m_stimulusActive ? statData.GetStimulusFrequency(stimuTime) : statData.GetFrequency().Base() };
 	fMicroSecs const usSpikeTime { stimuTime - m_usSimuStartSpike };
-	mV         const mVresult    { Spike::GetVoltage(amplitude, param.PulseWidth(), usSpikeTime) };
+	mV         const mVresult    { Spike::GetVoltage(amplitude, umPulseWidth, usSpikeTime) };
 
 	if (m_stimulusActive && !statData.InStimulusRange(stimuTime))
 		StopStimulus();

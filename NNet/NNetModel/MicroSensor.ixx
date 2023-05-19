@@ -10,7 +10,7 @@ export module NNetModel:MicroSensor;
 
 import Types;
 import DrawContext;
-import :SignalSource;
+import :NNetSignalSource;
 import :NobId;
 
 using std::wostream;
@@ -18,7 +18,7 @@ using std::wostream;
 class Nob;
 class NNetModelIo;
 
-export class MicroSensor : public SignalSource
+export class MicroSensor : public NNetSignalSource
 {
 public:
 
@@ -31,9 +31,9 @@ public:
     void Draw(DrawContext const&, bool const) const final;
     MicroMeterPnt GetPosition()               const final;
 
-    SignalSource::Type SignalSourceType() const final 
+    NNetSignalSource::Type SignalSourceType() const final
     { 
-        return SignalSource::Type::microSensor; 
+        return NNetSignalSource::Type::microSensor;
     };
 
     NobId      GetNobId() const;
@@ -44,14 +44,14 @@ private:
     Nob* m_pNob;
 };
 
-export MicroSensor const* Cast2MicroSensor(SignalSource const* pSource)
+export MicroSensor const* Cast2MicroSensor(NNetSignalSource const* pSource)
 {
     return pSource && pSource->IsMicroSensor()
         ? static_cast<MicroSensor const*>(pSource)
         : nullptr;
 }
 
-export MicroSensor* Cast2MicroSensor(SignalSource* pSource)
+export MicroSensor* Cast2MicroSensor(NNetSignalSource* pSource)
 {
     return pSource && pSource->IsMicroSensor()
         ? static_cast<MicroSensor*>(pSource)

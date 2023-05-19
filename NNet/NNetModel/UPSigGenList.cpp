@@ -12,7 +12,7 @@ module;
 
 module NNetModel:UPSigGenList;
 
-import :SigGenId;
+import Signals;
 import :StdSigGen;
 import :SignalGenerator;
 import :InputLine;

@@ -20,11 +20,10 @@ using std::endl;
 using std::unique_ptr;
 using std::make_unique;
 
-
 void PosNob::Dump() const
 {
 	Nob::Dump();
-	wcout << GetPos() << endl;
+	//wcout << GetPos() << endl;
 }
 
 bool PosNob::operator==(PosNob const& rhs) const

@@ -14,20 +14,19 @@ export module NNetModel:NNetModelWriterInterface;
 
 import BoolOp;
 import Types;
+import Signals;
 import :NNetModelReaderInterface;
 import :NNetParameters;
 import :ParamType;
 import :SignalGenerator;
 import :MicroMeterPosDir;
 import :UPSigGenList;
-import :SigGenId;
 import :Pipe;
 import :NobId;
 import :Nob;
 import :PosNob;
 import :MicroSensor;
 import :DescriptionUI;
-import :MonitorData;
 import :UPSensorList;
 import :UPNobList;
 

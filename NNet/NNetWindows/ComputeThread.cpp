@@ -12,7 +12,7 @@ import SlowMotionRatio;
 import Observable;
 import FatalError;
 import HiResTimer;
-import SimulationTime;
+import Signals;
 import NNetModel;
 import SaveCast;
 

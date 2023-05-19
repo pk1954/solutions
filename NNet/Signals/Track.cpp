@@ -1,6 +1,6 @@
 // Track.cpp 
 //
-// NNetModel
+// Signals
 
 module;
 
@@ -9,7 +9,7 @@ module;
 #include <vector>
 #include <memory>
 
-module NNetModel:Track;
+module Signals:Track;
 
 import SaveCast;
 import :Signal;

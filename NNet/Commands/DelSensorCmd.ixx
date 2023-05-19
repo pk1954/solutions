@@ -10,8 +10,8 @@ export module NNetCommands:DelSensorCmd;
 
 import Types;
 import IoUtil;
-import :NNetCommand;
 import NNetModel;
+import :NNetCommand;
 
 export class DelSensorCmd : public NNetCommand
 {
@@ -24,7 +24,7 @@ public:
         m_signalId = m_pNMWI->FindSignalId
         (
             [this, pSensor](Signal const& s)
-            { return s.GetSignalSource() == pSensor; }
+            { return static_cast<NNetSignal const &>(s).GetSignalSource() == pSensor; }
         );
     }
 

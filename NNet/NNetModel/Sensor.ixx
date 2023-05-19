@@ -12,7 +12,7 @@ export module NNetModel:Sensor;
 import Types;
 import DrawContext;
 import :NNetParameters;
-import :SignalSource;
+import :NNetSignalSource;
 import :UPNobList;
 import :Pipe;
 
@@ -21,7 +21,7 @@ using std::wostream;
 
 class NNetModelIO;
 
-export class Sensor : public SignalSource
+export class Sensor : public NNetSignalSource
 {
 public:
     Sensor(MicroMeterCircle const &, UPNobList const &);
@@ -31,7 +31,7 @@ public:
         int x = 42;
     }
 
-    SignalSource::Type SignalSourceType() const final { return SignalSource::Type::macroSensor; };
+    NNetSignalSource::Type SignalSourceType() const final { return NNetSignalSource::Type::macroSensor; };
 
     void Dump()           const final;
     mV   GetSignalValue() const final;
@@ -85,14 +85,14 @@ private:
     void add2list(Pipe const &);
 };
 
-export Sensor const* Cast2Sensor(SignalSource const* pSource)
+export Sensor const* Cast2Sensor(NNetSignalSource const* pSource)
 {
     return pSource && pSource->IsSensor()
         ? static_cast<Sensor const*>(pSource)
         : nullptr;
 }
 
-export Sensor* Cast2Sensor(SignalSource* pSource)
+export Sensor* Cast2Sensor(NNetSignalSource* pSource)
 {
     return pSource && pSource->IsSensor()
         ? static_cast<Sensor*>(pSource)

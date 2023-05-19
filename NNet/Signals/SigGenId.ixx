@@ -1,12 +1,12 @@
 // SigGenId.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <limits>
 
-export module NNetModel:SigGenId;
+export module Signals:SigGenId;
 
 import Types;
 

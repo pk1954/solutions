@@ -11,10 +11,10 @@ export module NNetModel:Model;
 
 import Observable;
 import Util;
+import Signals;
 import :ParamType;
 import :ModelDescription;
 import :UPNobList;
-import :MonitorData;
 import :UPSigGenList;
 import :UPSensorList;
 import :PosNob;

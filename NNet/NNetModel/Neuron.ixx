@@ -14,7 +14,6 @@ import BoolOp;
 import Types;
 import DrawContext;
 import :tHighlight;
-import :Spike;
 import :NobType;
 import :PipeList;
 import :OutputLine;

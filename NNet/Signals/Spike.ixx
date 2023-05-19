@@ -1,12 +1,12 @@
 // Spike.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <iostream>
 
-export module NNetModel:Spike;
+export module Signals:Spike;
 
 import Types;
 

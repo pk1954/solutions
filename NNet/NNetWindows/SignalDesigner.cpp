@@ -21,6 +21,7 @@ import ArrowButton;
 import Win32_PixelTypes;
 import Direct2D;
 import Scale;
+import Signals;
 import NNetCommands;
 import NNetModel;
 import :ComputeThread;

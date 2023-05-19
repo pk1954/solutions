@@ -202,14 +202,14 @@ void CrsrWindow::printSignalInfo
  	SignalId const id
 ) const
 {
-	if (Signal const * pSignal { m_pNMRI->GetMonitorDataC().GetConstSignalPtr(id) })
+	if (NNetSignal const * pSignal { static_cast<NNetSignal const *>(m_pNMRI->GetMonitorDataC().GetConstSignalPtr(id)) })
 	{
 		textBuf.nextLine();
 		textBuf.AlignRight(); 
 		textBuf.printString(L"Signal in track nr ");
 		textBuf.printNumber(id.GetTrackNr().GetValue());
 		textBuf.nextLine();
-		if (pSignal->GetSigSrcType() == Signal::SIGSRC_CIRCLE)
+		if (pSignal->GetSignalSource()->SignalSourceType() == NNetSignalSource::Type::macroSensor)
 		{
 			Sensor const * psigSrc { static_cast<Sensor const *>(pSignal->GetSignalSource()) };
 			textBuf.AlignRight(); 

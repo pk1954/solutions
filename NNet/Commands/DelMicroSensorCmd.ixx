@@ -21,7 +21,9 @@ public:
 		m_signalId = m_pNMWI->FindSignalId
 		(
 			[this](Signal const& s)
-			{ return s.GetSignalSource() == m_pNob->GetMicroSensor(); }
+			{
+				return static_cast<NNetSignal const &>(s).GetSignalSource() == m_pNob->GetMicroSensor(); 
+			}
 		);
 	}
 
@@ -63,8 +65,8 @@ private:
 		}
 	} m_wrapper;
 
-	Nob                   * m_pNob     { nullptr };
-	SignalId                m_signalId {};
-	unique_ptr<Signal>      m_upSignal {};
+	Nob                   * m_pNob          { nullptr };
+	SignalId                m_signalId      {};
+	unique_ptr<Signal>      m_upSignal      {};
 	unique_ptr<MicroSensor> m_upMicroSensor {};
 };

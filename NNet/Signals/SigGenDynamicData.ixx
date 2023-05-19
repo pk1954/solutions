@@ -1,12 +1,11 @@
 // SigGenDynamicData.ixx
 //
-// NNetModel
+// Signals
 
-export module NNetModel:SigGenDynamicData;
+export module Signals:SigGenDynamicData;
 
 import Types;
 import :SigGenStaticData;
-import :NNetParameters;
 
 export class SigGenDynamicData
 {
@@ -21,13 +20,13 @@ public:
 	mV SetTime
 	(
 		SigGenStaticData const &,
-		NNetParameters   const &
+		fMicroSecs       const
 	);
 
 	mV SetTime
 	(
 		SigGenStaticData const &,
-		NNetParameters   const &,
+		fMicroSecs       const,
 		fMicroSecs       const
 	);
 

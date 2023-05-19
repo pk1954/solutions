@@ -27,7 +27,6 @@ import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
 import :NNetController;
-import :MonitorWindow;
 import :Preferences;
 import :SignalDesigner;
 

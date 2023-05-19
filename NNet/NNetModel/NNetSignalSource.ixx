@@ -1,4 +1,4 @@
-// SignalSource.ixx
+// NNetSignalSource.ixx
 //
 // NNetModel
 
@@ -6,15 +6,16 @@ module;
 
 #include <iostream>
 
-export module NNetModel:SignalSource;
+export module NNetModel:NNetSignalSource;
 
 import Observable;
 import Types;
 import DrawContext;
+import Signals;
 
 using std::wostream;
 
-export class SignalSource : public Observable
+export class NNetSignalSource : public SignalSource
 {
 public:
     enum class Type
@@ -24,7 +25,7 @@ public:
         microSensor
     };
 
-    virtual ~SignalSource() = default;
+    virtual ~NNetSignalSource() = default;
 
     virtual void Dump()             const = 0;
     virtual mV   GetSignalValue()   const = 0;

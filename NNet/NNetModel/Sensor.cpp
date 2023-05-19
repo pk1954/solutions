@@ -13,9 +13,9 @@ module NNetModel:Sensor;
 import Types;
 import IoUtil;
 import DrawContext;
+import Signals;
 import :NNetColors;
 import :UPNobList;
-import :Signal;
 
 using std::min;
 using std::endl;

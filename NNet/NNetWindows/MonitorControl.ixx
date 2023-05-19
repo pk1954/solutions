@@ -14,7 +14,7 @@ import Types;
 import PixFpDimension;
 import SoundInterface;
 import Direct2D;
-import SimulationTime;
+import Signals;
 import NNetModel;
 import :Measurement;
 import :NNetTimeGraph;

@@ -11,7 +11,7 @@ module NNetModel:SignalGenerator;
 
 import ObserverInterface;
 import Types;
-import Signals;
+import :SigGenStaticData;
 import :UPSigGenList;
 import :NNetParameters;
 import :NNetColors;
@@ -70,9 +70,9 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	}
 }
 
-void SignalGenerator::Prepare(NNetParameters const& param)
+void SignalGenerator::Prepare(NNetParameters const & param)
 {
-	m_mVactual = m_dynData.SetTime(m_statData, param.PulseWidth());
+	m_mVactual = m_dynData.SetTime(m_statData, param);
 }
 
 void SignalGenerator::DrawSigGen

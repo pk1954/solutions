@@ -11,8 +11,8 @@ export module NNetModel:NNetParameters;
 import Observable;
 import SaveCast;
 import Types;
+import Signals;
 import :ParamType;
-import :SignalParameters;
 
 export class NNetParameters : public Observable
 {

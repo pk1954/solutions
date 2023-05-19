@@ -32,7 +32,7 @@ import Win32_Util;
 import Win32_PIXEL;
 import ScriptStack;
 import AutoOpen;
-import SimulationTime;
+import Signals;
 import Script;
 import NNetModel;
 import NNetCommands;

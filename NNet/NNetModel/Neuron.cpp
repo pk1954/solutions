@@ -13,8 +13,8 @@ module NNetModel:Neuron;
 
 import Types;
 import DrawContext;
+import Signals;
 import :NNetColors;
-import :Spike;
 import :NNetParameters;
 
 using std::fixed;

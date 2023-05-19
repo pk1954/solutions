@@ -1,13 +1,13 @@
 // SignalId.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <iostream>
 #include <functional>
 
-export module NNetModel:SignalId;
+export module Signals:SignalId;
 
 import Types;
 import IoUtil;

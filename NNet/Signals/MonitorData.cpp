@@ -1,6 +1,6 @@
 // MonitorData.cpp 
 //
-// NNetModel
+// Signals
 
 module;
 
@@ -9,10 +9,9 @@ module;
 #include <iterator>
 #include <iostream>
 
-module NNetModel:MonitorData;
+module Signals:MonitorData;
 
-import :SignalFactory;
-import :SignalId;
+import SaveCast;
 import :Signal;
 
 using std::distance;

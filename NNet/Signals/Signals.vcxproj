@@ -22,86 +22,6 @@
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AutoOpen.ixx" />
-    <ClCompile Include="CopySelectedNobs.cpp" />
-    <ClCompile Include="CopySelectedNobs.ixx" />
-    <ClCompile Include="DescriptionUI.ixx" />
-    <ClCompile Include="Fork.cpp" />
-    <ClCompile Include="Fork.ixx" />
-    <ClCompile Include="InputConnector.cpp" />
-    <ClCompile Include="InputConnector.ixx" />
-    <ClCompile Include="InputLine.cpp" />
-    <ClCompile Include="InputLine.ixx" />
-    <ClCompile Include="IoConnector.cpp" />
-    <ClCompile Include="IoConnector.ixx" />
-    <ClCompile Include="IoLine.cpp" />
-    <ClCompile Include="IoLine.ixx" />
-    <ClCompile Include="IoLinePair.cpp" />
-    <ClCompile Include="IoLinePair.ixx" />
-    <ClCompile Include="Knot.cpp" />
-    <ClCompile Include="Knot.ixx" />
-    <ClCompile Include="MicroMeterPntVector.cpp" />
-    <ClCompile Include="MicroMeterPointVector.ixx" />
-    <ClCompile Include="MicroMeterPosDir.cpp" />
-    <ClCompile Include="MicroMeterPosDir.ixx" />
-    <ClCompile Include="MicroSensor.cpp" />
-    <ClCompile Include="MicroSensor.ixx" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Model.ixx" />
-    <ClCompile Include="ModelDescription.ixx" />
-    <ClCompile Include="NNetSignal.ixx" />
-    <ClCompile Include="NNetSignalSource.ixx" />
-    <ClCompile Include="PosNob.cpp" />
-    <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="Neuron.ixx" />
-    <ClCompile Include="NNetColors.ixx" />
-    <ClCompile Include="NNetModel.ixx" />
-    <ClCompile Include="NNetModelReaderInterface.cpp" />
-    <ClCompile Include="NNetModelReaderInterface.ixx" />
-    <ClCompile Include="NNetModelWriterInterface.cpp" />
-    <ClCompile Include="NNetModelWriterInterface.ixx" />
-    <ClCompile Include="NNetParameters.cpp" />
-    <ClCompile Include="NNetParameters.ixx" />
-    <ClCompile Include="NNetWrapperHelpers.cpp" />
-    <ClCompile Include="NNetWrapperHelpers.ixx" />
-    <ClCompile Include="Nob.cpp" />
-    <ClCompile Include="Nob.ixx" />
-    <ClCompile Include="NobException.ixx" />
-    <ClCompile Include="NobId.ixx" />
-    <ClCompile Include="NobIdList.cpp" />
-    <ClCompile Include="NobIdList.ixx" />
-    <ClCompile Include="NobType.cpp" />
-    <ClCompile Include="NobType.ixx" />
-    <ClCompile Include="OutputConnector.cpp" />
-    <ClCompile Include="OutputConnector.ixx" />
-    <ClCompile Include="OutputLine.cpp" />
-    <ClCompile Include="OutputLine.ixx" />
-    <ClCompile Include="ParamType.cpp" />
-    <ClCompile Include="ParamType.ixx" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="Pipe.ixx" />
-    <ClCompile Include="PipeList.cpp" />
-    <ClCompile Include="PipeList.ixx" />
-    <ClCompile Include="PosNob.ixx" />
-    <ClCompile Include="Sensor.cpp" />
-    <ClCompile Include="Sensor.ixx" />
-    <ClCompile Include="SensorId.ixx" />
-    <ClCompile Include="SignalFactory.cpp" />
-    <ClCompile Include="SignalFactory.ixx" />
-    <ClCompile Include="SignalGenerator.cpp" />
-    <ClCompile Include="SignalGenerator.ixx" />
-    <ClCompile Include="StdSigGen.ixx" />
-    <ClCompile Include="Synapse.cpp" />
-    <ClCompile Include="Synapse.ixx" />
-    <ClCompile Include="tHighlightType.ixx" />
-    <ClCompile Include="UPNobList.cpp" />
-    <ClCompile Include="UPNobList.ixx" />
-    <ClCompile Include="UPSensorList.cpp" />
-    <ClCompile Include="UPSensorList.ixx" />
-    <ClCompile Include="UPSigGenList.cpp" />
-    <ClCompile Include="UPSigGenList.ixx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
     </ProjectReference>
@@ -114,14 +34,31 @@
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Signals\Signals.vcxproj">
-      <Project>{01f78e78-6cee-426b-adab-5c30d825201f}</Project>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MonitorData.cpp" />
+    <ClCompile Include="MonitorData.ixx" />
+    <ClCompile Include="SigGenDynamicData.cpp" />
+    <ClCompile Include="SigGenDynamicData.ixx" />
+    <ClCompile Include="SigGenId.ixx" />
+    <ClCompile Include="SigGenStaticData.ixx" />
+    <ClCompile Include="Signal.cpp" />
+    <ClCompile Include="Signal.ixx" />
+    <ClCompile Include="SignalId.ixx" />
+    <ClCompile Include="SignalNr.ixx" />
+    <ClCompile Include="SignalParameters.ixx" />
+    <ClCompile Include="Signals.ixx" />
+    <ClCompile Include="SignalSource.ixx" />
+    <ClCompile Include="SimulationTime.ixx" />
+    <ClCompile Include="Spike.ixx" />
+    <ClCompile Include="Track.cpp" />
+    <ClCompile Include="Track.ixx" />
+    <ClCompile Include="TrackNr.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{93dedccb-8be5-48af-8e14-da2a19870565}</ProjectGuid>
+    <ProjectGuid>{01F78E78-6CEE-426B-ADAB-5C30D825201F}</ProjectGuid>
     <RootNamespace>NNetModel</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>

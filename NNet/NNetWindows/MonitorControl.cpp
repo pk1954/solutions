@@ -15,8 +15,7 @@ module NNetWin32:MonitorControl;
 
 import Win32_Util_Resource;
 import Types;
-import SimulationTime;
-import NNetModel;
+import Signals;
 import NNetCommands;
 
 using std::vector;
@@ -340,8 +339,9 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	
 	// paint block times
 
-	SignalSource const& sigSrc { *pSig->GetSignalSource() };
-	if (sigSrc.SignalSourceType() != SignalSource::Type::microSensor)
+	NNetSignal       const* pNNetSig { static_cast<NNetSignal const*>(pSig) };
+	NNetSignalSource const& sigSrc   { * pNNetSig->GetSignalSource() };
+	if (sigSrc.SignalSourceType() != NNetSignalSource::Type::microSensor)
 		return;
 
 	MicroSensor const& microSensor { static_cast<MicroSensor const &>(sigSrc) };

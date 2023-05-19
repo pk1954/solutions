@@ -9,27 +9,26 @@ module;
 module NNetModel:SignalFactory;
 
 import Types;
-import :TrackNr;
-import :SignalNr;
+import Signals;
 import :NNetModelWriterInterface;
+import :NNetSignal;
 import :MicroSensor;
 import :Sensor;
 import :SignalGenerator;
-import :SignalSource;
-import :Signal;
+import :NNetSignalSource;
 
 using std::unique_ptr;
 using std::make_unique;
 
 SignalNr SignalFactory::addSignal
 (
-    SignalSource             & sigSource,
+    NNetSignalSource         & sigSource,
     TrackNr            const   trackNr,
     NNetModelWriterInterface & nmwi
 )
 {
-    unique_ptr<Signal> upSignal { make_unique<Signal>(* m_pObservable, sigSource) };   
-    SignalNr     const signalNr { nmwi.GetMonitorData().AddSignal(trackNr, move(upSignal)) };
+    unique_ptr<NNetSignal> upSignal { make_unique<NNetSignal>(* m_pObservable, sigSource) };   
+    SignalNr         const signalNr { nmwi.GetMonitorData().AddSignal(trackNr, move(upSignal)) };
     return signalNr;
 }
 

@@ -105,10 +105,11 @@ void NNetWindow::DrawSensors() const
 	(
 		[this](SignalId const& signalId) 
 		{ 
-			MonitorData  const& monData { m_pNMRI->GetMonitorDataC() };
-			Signal       const* pSignal { monData.GetConstSignalPtr(signalId) };
-			SignalSource const* pSigSrc { pSignal->GetSignalSource() };
-			if (!pSigSrc->IsGenerator())
+			MonitorData      const& monData     { m_pNMRI->GetMonitorDataC() };
+			Signal           const* pSignal     { monData.GetConstSignalPtr(signalId) };
+			NNetSignal       const* pNNetSignal { static_cast<NNetSignal const*>(pSignal) };
+			NNetSignalSource const* pSigSrc     { pNNetSignal->GetSignalSource() };
+			if (!pSigSrc->IsGenerator()) 
 			{
 				pSigSrc->Draw(m_context, false);
 				if (m_pMonitorWindow && m_pMonitorWindow->IsWindowVisible())

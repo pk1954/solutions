@@ -70,17 +70,17 @@ public:
         (
             [this, &out, &monitorData](SignalId const idSignal)
             {
-                if (Signal const* const pSignal{ monitorData.GetConstSignalPtr(idSignal) })
+                if (NNetSignal const* const pSignal{ static_cast<NNetSignal const *>(monitorData.GetConstSignalPtr(idSignal)) })
                 {
                     WriteCmdName(out);
                     out << idSignal << SPACE << SOURCE << SPACE;
-                    SignalSource const* pSigSrc { pSignal->GetSignalSource() };
-                    SignalSource::Type  type    { pSigSrc->SignalSourceType()  };
-                    if (type == SignalSource::Type::macroSensor)
+                    NNetSignalSource const* pSigSrc { pSignal->GetSignalSource() };
+                    NNetSignalSource::Type  type    { pSigSrc->SignalSourceType() };
+                    if (type == NNetSignalSource::Type::macroSensor)
                     {
                         static_cast<Sensor const *>(pSigSrc)->WriteInfo(out);
                     }
-                    else if (type == SignalSource::Type::microSensor)
+                    else if (type == NNetSignalSource::Type::microSensor)
                     {
                         MicroSensor const& microSensor  { static_cast<MicroSensor const&>(*pSigSrc) };
                         NobId       const  idNob        { microSensor.GetNobId() };

@@ -11,7 +11,7 @@ module;
 
 module NNetModel:Synapse;
 
-import SimulationTime;
+import Signals;
 import DrawContext;
 import Types;
 import Util;

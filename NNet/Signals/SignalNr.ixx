@@ -1,8 +1,8 @@
 // SignalNr.ixx
 //
-// NNetModel
+// Signals
 
-export module NNetModel:SignalNr;
+export module Signals:SignalNr;
 
 import Types;
 

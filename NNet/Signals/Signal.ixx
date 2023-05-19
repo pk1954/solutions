@@ -1,6 +1,6 @@
 // Signal.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
@@ -9,15 +9,14 @@ module;
 #include <math.h>    
 #include <memory>    
 
-export module NNetModel:Signal;
+export module Signals:Signal;
 
 import Observable;
 import ObserverInterface;
 import Types;
 import DrawContext;
-import SimulationTime;
+import :SimulationTime;
 import :SignalParameters;
-import :SignalSource;
 
 using std::vector;
 using std::wostream;
@@ -32,11 +31,11 @@ export class Signal : public ObserverInterface  // observes signal source
 {
 public:
 
-    Signal(Observable &, SignalSource &);
+    Signal(Observable &);
+
+    virtual ~Signal();
 
     // TODO: Rule of 5
-
-    ~Signal() final;
 
     //bool operator==(Signal const &) const;
     // TODO
@@ -53,15 +52,9 @@ public:
     void Reserve(size_t const);
     void Add(mV const);
 
-    void Notify(bool const) final;
-
     void Check()       const { /**/ };
     void Dump()        const;
     void CheckSignal() const;
-
-    int GetSigSrcType() const { return m_iSourceType; }
-
-    SignalSource const * GetSignalSource() const { return &m_sigSource; }
 
     fMicroSecs GetResolution() const { return m_usResolution; }
 
@@ -72,12 +65,10 @@ private:
 
     inline static SIG_INDEX INVALID_SIG_INDEX{ -1 };
 
-    Observable   & m_dynModelObservable;
-    SignalSource & m_sigSource;
-    SIMU_TIME      m_timeStart { SimulationTime::Get() };
-    vector<mV>     m_data;
-    int            m_iSourceType;
-    fMicroSecs     m_usResolution { 100._MicroSecs };
+    Observable & m_dynModelObservable;
+    SIMU_TIME    m_timeStart { SimulationTime::Get() };
+    vector<mV>   m_data;
+    fMicroSecs   m_usResolution { 100._MicroSecs };
 
     SIG_INDEX time2index(SignalParameters const &, SIMU_TIME) const;
     SIMU_TIME index2time(SignalParameters const &, SIG_INDEX const) const;

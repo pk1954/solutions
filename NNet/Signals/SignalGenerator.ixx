@@ -14,10 +14,10 @@ import ObserverInterface;
 import Direct2D;
 import Types;
 import BasePeak;
-import Signals;
-import :ParamType;
-import :NNetParameters;
-import :NNetSignalSource;
+import :SigGenStaticData;
+import :SigGenDynamicData;
+import :SignalSource;
+import :SigGenId;
 
 using std::wstring;
 using std::wostream;
@@ -25,7 +25,7 @@ using std::unique_ptr;
 
 class NNetModelIO;
 
-export class SignalGenerator : public NNetSignalSource
+export class SignalGenerator : public SignalSource
 {
 public:
 	explicit SignalGenerator(wstring const&);
@@ -34,7 +34,7 @@ public:
 
 	static SignalGenerator StdSigGen;
 
-	NNetSignalSource::Type SignalSourceType() const final { return NNetSignalSource::Type::generator; }
+	SignalSource::Type SignalSourceType() const final { return SignalSource::Type::generator; }
 
 	mV   GetSignalValue() const final { return m_mVactual; };
 	void Dump()           const final {};

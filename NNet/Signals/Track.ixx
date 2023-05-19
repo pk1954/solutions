@@ -1,13 +1,13 @@
 // Track.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <memory>
 #include <vector>
 
-export module NNetModel:Track;
+export module Signals:Track;
 
 import Observable;
 import Types;

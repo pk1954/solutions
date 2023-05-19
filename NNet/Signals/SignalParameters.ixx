@@ -1,8 +1,8 @@
 // SignalParameters.ixx
 //
-// NNetModel
+// Signals
 
-export module NNetModel:SignalParameters;
+export module Signals:SignalParameters;
 
 import Observable;
 import Types;

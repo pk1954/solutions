@@ -1,8 +1,8 @@
 // SimulationTime.ixx
 //
-// NNetModel
+// Signals
 
-export module SimulationTime;
+export module Signals:SimulationTime;
 
 import Types;
 

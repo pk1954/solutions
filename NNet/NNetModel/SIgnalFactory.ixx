@@ -10,10 +10,8 @@ export module NNetModel:SignalFactory;
 
 import Observable;
 import Types;
-import :TrackNr;
-import :SignalNr;
-import :SignalId;
-import :SignalSource;
+import Signals;
+import :NNetSignalSource;
 import :NNetModelWriterInterface;
 
 export class SignalFactory
@@ -49,7 +47,7 @@ private:
 
     static SignalNr addSignal
     (
-        SignalSource &,
+        NNetSignalSource &,
         TrackNr const,
         NNetModelWriterInterface &
     );

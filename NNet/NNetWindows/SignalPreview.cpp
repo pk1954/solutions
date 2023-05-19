@@ -36,15 +36,16 @@ void SignalPreview::PaintGraphics()
 	{
 		SigGenStaticData const & statData     { pSigGen->GetStaticData() };
 		SigGenDynamicData        dynData      { };
+		fMicroSecs       const   umPulseWidth { pParams->PulseWidth() };
 
 		m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 
 		dynData.StartStimulus();
 		PaintCurve
 		(
-			[this, &dynData, &statData, pParams](fMicroSecs const stimuTime)
+			[this, &dynData, &statData, umPulseWidth](fMicroSecs const stimuTime)
 			{
-				mV const voltage { dynData.SetTime(statData, *pParams, stimuTime) };
+				mV const voltage { dynData.SetTime(statData, umPulseWidth, stimuTime) };
 				return pixPntVolt(stimuTime, voltage); 
 			}, 
 			0.0_MicroSecs,

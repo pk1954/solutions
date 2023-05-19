@@ -11,7 +11,7 @@ module;
 module NNetModel:Model;
 
 import Types;
-import SimulationTime;
+import Signals;
 import Scanner;
 import :NobException;
 import :NobType;
@@ -21,7 +21,6 @@ import :Nob;
 import :PosNob;
 import :Pipe;
 import :Synapse;
-import :MonitorData;
 import :SignalGenerator;
 import :UPSigGenList;
 

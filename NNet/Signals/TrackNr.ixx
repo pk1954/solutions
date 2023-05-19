@@ -1,12 +1,12 @@
 // TrackNr.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <iostream>
 
-export module NNetModel:TrackNr;
+export module Signals:TrackNr;
 
 import Types;
 import Script;

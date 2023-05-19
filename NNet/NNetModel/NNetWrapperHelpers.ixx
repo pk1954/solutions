@@ -13,6 +13,7 @@ export module NNetWrapperHelpers;
 import Types;
 import Script;
 import NNetModel;
+import Signals;
 
 using std::unique_ptr;
 using std::wostream;

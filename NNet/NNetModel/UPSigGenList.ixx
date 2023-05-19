@@ -13,7 +13,7 @@ export module NNetModel:UPSigGenList;
 
 import Observable;
 import Types;
-import :SigGenId;
+import Signals;
 import :StdSigGen;
 import :SignalGenerator;
 import :InputLine;

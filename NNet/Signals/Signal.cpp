@@ -1,12 +1,12 @@
 // Signal.cpp 
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <iostream>
 
-module NNetModel:Signal;
+module Signals:Signal;
 
 import Observable;
 import Util;
@@ -23,22 +23,14 @@ using std::make_unique;
 
 class NNetModelIO;
 
-Signal::Signal
-(
-    Observable   & observable,
-    SignalSource & sigSrc
-) 
-    : m_dynModelObservable(observable),
-      m_sigSource(sigSrc)
+Signal::Signal(Observable &observable) 
+    : m_dynModelObservable(observable)
 {
-    m_iSourceType = SIGSRC_CIRCLE;
     m_dynModelObservable.RegisterObserver(*this);
-    m_sigSource         .RegisterObserver(*this);
 }
 
 Signal::~Signal()
 {
-    m_sigSource         .UnregisterObserver(*this);
     m_dynModelObservable.UnregisterObserver(*this);
 }
 
@@ -47,7 +39,6 @@ Signal::~Signal()
 //    if (&m_dynModelObservable != &rhs.m_dynModelObservable) return false;
 //    if (&m_sigSource          != &rhs.m_sigSource)          return false;
 //    if (m_timeStart           != rhs.m_timeStart)           return false;
-//    if (m_iSourceType         != rhs.m_iSourceType)         return false;
 //    if (m_data.size()         != rhs.m_data.size())         return false;
 //    if (!(m_data              == rhs.m_data))               return false;
 //    return true;
@@ -129,11 +120,6 @@ void Signal::Add(mV const val)
     m_data.push_back(val);
 }
 
-void Signal::Notify(bool const bImmediate) // called by compute thread!
-{
-    Add(m_sigSource.GetSignalValue());
-}
-
 SIMU_TIME Signal::FindNextMaximum
 (
     SignalParameters const & param,
@@ -163,6 +149,5 @@ void Signal::CheckSignal() const
 
 void Signal::Dump() const
 {
-    m_sigSource.Dump();
     wcout << L"time start:" << m_timeStart << endl;
 }

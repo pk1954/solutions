@@ -9,7 +9,7 @@ module;
 module NNetModel:NNetParameters;
 
 import Types;
-import :SignalParameters;
+import Signals;
 import :ParamType;
 
 //bool NNetParameters::operator==(NNetParameters const& rhs) const

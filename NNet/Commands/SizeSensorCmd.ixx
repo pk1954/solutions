@@ -75,6 +75,6 @@ private:
 	} m_wrapper;
 
 	Sensor * m_pSensor;
-	SensorId      m_sensorId;
-	float         m_fFactor;
+	SensorId m_sensorId;
+	float    m_fFactor;
 };

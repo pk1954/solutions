@@ -44,9 +44,6 @@
     <ClCompile Include="MicroMeterPosDir.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MonitorData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Neuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -89,21 +86,6 @@
     <ClCompile Include="Sensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SigGenDynamicData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Signal.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Track.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UPNobList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,9 +99,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tHighlightType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Spike.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MicroMeterPointVector.ixx">
@@ -137,19 +116,7 @@
     <ClCompile Include="ParamType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimulationTime.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CopySelectedNobs.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TrackNr.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalId.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SigGenId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UPSensorList.ixx">
@@ -158,16 +125,7 @@
     <ClCompile Include="NobException.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SignalNr.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NobId.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SigGenStaticData.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SigGenDynamicData.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DescriptionUI.ixx">
@@ -197,13 +155,7 @@
     <ClCompile Include="Neuron.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Track.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MicroMeterPosDir.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalFactory.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NobType.ixx">
@@ -213,9 +165,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ModelDescription.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MonitorData.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetModel.ixx">
@@ -234,15 +183,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UPNobList.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalGenerator.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalSource.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Signal.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutputConnector.ixx">
@@ -275,9 +215,6 @@
     <ClCompile Include="Fork.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StdSigGen.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Fork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -296,7 +233,25 @@
     <ClCompile Include="SensorId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SignalParameters.ixx">
+    <ClCompile Include="SignalFactory.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetSignalSource.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalGenerator.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdSigGen.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetSignal.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -13,7 +13,7 @@ module;
 
 module NNetWin32:TimeDisplay;
 
-import SimulationTime;
+import Signals;
 import :StatusBar;
 
 using std::make_unique;

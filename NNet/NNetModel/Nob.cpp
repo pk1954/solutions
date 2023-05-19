@@ -16,6 +16,7 @@ module NNetModel:Nob;
 import Debug;
 import Types;
 import Scanner;
+import IoUtil;
 import :tHighlight;
 import :NNetColors;
 import :NNetParameters;

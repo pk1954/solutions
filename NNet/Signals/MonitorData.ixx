@@ -1,21 +1,23 @@
 // MonitorData.ixx
 //
-// NNetModel
+// Signals
 
 module;
 
 #include <vector>
+#include <memory>
 #include <functional>
 #include <algorithm>
 
-export module NNetModel:MonitorData;
+export module Signals:MonitorData;
 
 import Observable;
 import Types;
-import :SignalId;
 import :Signal;
-import :TrackNr;
+import :SignalNr;
+import :SignalId;
 import :Track;
+import :TrackNr;
 
 using std::function;
 using std::vector;
@@ -57,23 +59,23 @@ public:
 	SignalId SetHighlightedSignal(SignalId const);
 	void     ResetHighlightedSignal();
 
-	void           AddStimulus      (fMicroSecs const);
-	SignalNr       AddSignal        (TrackNr    const,   unique_ptr<Signal>);
-	void           AddSignal        (SignalId   const &, unique_ptr<Signal>);
-	SignalNr       MoveSignal       (SignalId   const &, TrackNr const);
-	Signal       * GetSignalPtr     (SignalId   const &);
-	Signal const * GetConstSignalPtr(SignalId   const &) const;
+	void               AddStimulus      (fMicroSecs const);
+	SignalNr           AddSignal        (TrackNr    const,   unique_ptr<Signal>);
+	void               AddSignal        (SignalId   const &, unique_ptr<Signal>);
+	SignalNr           MoveSignal       (SignalId   const &, TrackNr const);
+	Signal           * GetSignalPtr     (SignalId   const &);
+	Signal     const * GetConstSignalPtr(SignalId   const &) const;
 
-	Signal const * GetHighlightedSignal()         const	{ return GetConstSignalPtr(m_idSigHighlighted);	}
-	bool           IsAnySignalHighlighted()       const { return m_idSigHighlighted.IsNotNull(); }
-	SignalId       GetHighlightedSignalId()       const { return m_idSigHighlighted; }
-	int            GetNrOfSignals()               const { return m_iNrOfSignals; }
-	TrackNr        GetSelectedTrackNr()           const { return m_idSigHighlighted.GetTrackNr(); }
-	bool           IsAnySignalSelected()          const { return m_idSigHighlighted.IsValid(); }
-	bool           IsSelected(SignalId const& id) const { return m_idSigHighlighted == id; }
-	size_t         GetNrOfSignals(TrackNr const)  const;
-	bool           IsEmptyTrack  (TrackNr const)  const;
-	bool           AnyEmptyTracks()               const;
+	Signal     const * GetHighlightedSignal()         const	{ return GetConstSignalPtr(m_idSigHighlighted);	}
+	bool			   IsAnySignalHighlighted()       const { return m_idSigHighlighted.IsNotNull(); }
+	SignalId		   GetHighlightedSignalId()       const { return m_idSigHighlighted; }
+	int				   GetNrOfSignals()               const { return m_iNrOfSignals; }
+	TrackNr			   GetSelectedTrackNr()           const { return m_idSigHighlighted.GetTrackNr(); }
+	bool			   IsAnySignalSelected()          const { return m_idSigHighlighted.IsValid(); }
+	bool			   IsSelected(SignalId const& id) const { return m_idSigHighlighted == id; }
+	size_t			   GetNrOfSignals(TrackNr const)  const;
+	bool			   IsEmptyTrack  (TrackNr const)  const;
+	bool			   AnyEmptyTracks()               const;
 
 	unique_ptr<Signal> DeleteSignal(SignalId const&);
 
@@ -153,8 +155,8 @@ public:
 	vector<fMicroSecs> const& GetStimulusList() const { return m_usStimulusList; }
 
 private:
-	Track            * getTrack(TrackNr const);
-	Track      const * getTrack(TrackNr const) const;
+	Track                * getTrack(TrackNr const);
+	Track          const * getTrack(TrackNr const) const;
 	unique_ptr<Signal> removeSignal(SignalId const&);
 
 	Observable              * m_pHighSigObservable { nullptr };
