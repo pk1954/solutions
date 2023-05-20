@@ -7,7 +7,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-export module NNetWin32:StimulusButton;
+export module NNetSignals:StimulusButton;
 
 import Types;
 import Win32_PIXEL;

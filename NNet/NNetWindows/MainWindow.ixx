@@ -13,10 +13,10 @@ export module NNetWin32:MainWindow;
 import Types;
 import ActionTimer;
 import NNetModel;
+import NNetSignals;
 import :Preferences;
 import :SelectionMenu;
 import :NNetWindow;
-import :MonitorWindow;
 
 using std::unique_ptr;
 

@@ -1,6 +1,6 @@
 // MonitorWindow.ixx
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -8,7 +8,7 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module NNetWin32:MonitorWindow;
+export module NNetSignals:MonitorWindow;
 
 import Types;
 import Scale;
@@ -17,7 +17,7 @@ import PixFpDimension;
 import BaseWindow;
 import SoundInterface;
 import NNetModel;
-import :ComputeThread;
+import :SimuRunning;
 import :MonitorControl;
 import :StimulusButton;
 
@@ -31,7 +31,7 @@ public:
 	MonitorWindow();
 	~MonitorWindow() final;
 
-	void Start(HWND const, ComputeThread const &, Sound &, Observable &);
+	void Start(HWND const, SimuRunning const&, Sound&, Observable&);
 	void SetModelInterface(NNetModelWriterInterface* const) const;
 	void StimulusTriggered() const;
 	void ResetHorzCoord();
@@ -68,9 +68,9 @@ private:
 
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<mV>            m_vertCoord;
-	ComputeThread         const * m_pComputeThread { nullptr };
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<MonitorControl>    m_upMonitorControl;
 	unique_ptr<StimulusButton>    m_upStimulusButton;
 	Observable                  * m_pMoveSizeObservable;
+	SimuRunning           const * m_pSimuRunning;
 };

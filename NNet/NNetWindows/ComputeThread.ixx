@@ -37,7 +37,6 @@ public:
 	void UnlockComputation();
 	void LockComputation();
 	void RunStopComputation();
-	//void RunComputation();
 	void StopComputation();
 	bool IsRunning() const { return ! m_bStopped; }
 

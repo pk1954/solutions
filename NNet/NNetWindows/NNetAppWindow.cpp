@@ -36,6 +36,7 @@ import Signals;
 import Script;
 import NNetModel;
 import NNetCommands;
+import NNetSignals;
 import :StatusBar;
 import :PerformanceWindow;
 import :Preferences;
@@ -43,8 +44,7 @@ import :UndoRedoMenu;
 import :NNetInputOutputUI;
 import :NNetWindow;
 import :NNetWrappers;
-import :NNetTimeGraph;
-import :MonitorScrollState;
+import :NNetSimuRunning;
 
 using std::endl;
 using std::wcout;
@@ -72,6 +72,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
 	Command        ::Initialize(&m_mainNNetWindow, & m_cmdStack);
 	m_modelIO       .Initialize();
+	m_simuRunning   .Initialize(&m_computeThread);
 	m_sound         .Initialize(&m_soundOnObservable);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize
@@ -136,7 +137,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_signalDesigner.Initialize
 	(
 		m_hwndApp, 
-		m_computeThread, 
+		m_simuRunning, 
 		m_runObservable, 
 		m_dynamicModelObservable
 	);
@@ -159,7 +160,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
-	m_monitorWindow    .Start(m_hwndApp, m_computeThread, m_sound, m_staticModelObservable);
+	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
 	setModelInterface();

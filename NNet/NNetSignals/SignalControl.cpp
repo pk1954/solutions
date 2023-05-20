@@ -1,6 +1,6 @@
 // SignalControl.cpp
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -9,12 +9,12 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module NNetWin32:SignalControl;
+module NNetSignals:SignalControl;
 
 import Types;
 import NNetModel;
 import NNetCommands;
-import :ComputeThread;
+import :SimuRunning;
 
 using std::max;
 
@@ -23,15 +23,15 @@ using namespace std::chrono;
 SignalControl::SignalControl
 (
 	HWND                 const   hwndParent,
-	ComputeThread        const & computeThread,
 	Observable                 & runObservable,
 	Observable                 & dynamicModelObservable,
+	SimuRunning          const & simuRunning,
 	PixFpDimension<fMicroSecs> * pHorzCoord
 )
   : NNetTimeGraph(hwndParent, pHorzCoord),
-	m_computeThread(computeThread),
 	m_runObservable(runObservable),
-	m_dynamicModelObservable(dynamicModelObservable)
+	m_dynamicModelObservable(dynamicModelObservable),
+	m_simuRunning(simuRunning)
 {
 	m_runObservable         .RegisterObserver(*this);
 	m_dynamicModelObservable.RegisterObserver(*this);
@@ -126,29 +126,6 @@ void SignalControl::paintRunControls(fMicroSecs const time) const
 	}
 }
 
-void SignalControl::calcHandles()
-{
-	m_handles[static_cast<int>(tPos::NONE)] = fPixelPoint();
-	m_handles[static_cast<int>(tPos::TIME)] = fPixelPoint(xPeak(), yBottom());
-
-	if (m_pVertCoordFreq)
-	{
-		m_handles[static_cast<int>(tPos::BASE_FREQ)] = fPixelPoint(xLeft (), yBaseFreq());
-		m_handles[static_cast<int>(tPos::PEAK_FREQ)] = fPixelPoint(xLeft (), yPeakFreq());
-		m_handles[static_cast<int>(tPos::TIME_FREQ)] = fPixelPoint(xPeak (), yPeakFreq());
-		m_handles[static_cast<int>(tPos::BASA_FREQ)] = fPixelPoint(xRight(), yBaseFreq());
-	}
-	if (m_pVertCoordVolt)
-	{
-		fPixel const dirPos  { m_pVertCoordFreq ? xRight() : xLeft () };
-		fPixel const dirPosA { m_pVertCoordFreq ? xLeft () : xRight() };
-		m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(dirPos,  yBaseAmplit());
-		m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(dirPos,  aPeakAmplit());
-		m_handles[static_cast<int>(tPos::TIME_VOLT)] = fPixelPoint(xPeak(), aPeakAmplit());
-		m_handles[static_cast<int>(tPos::BASA_VOLT)] = fPixelPoint(dirPosA, yBaseAmplit());
-	}
-}
-
 void SignalControl::highlightMovedObject() const
 {
 	switch (m_moveMode)
@@ -191,6 +168,29 @@ void SignalControl::highlightMovedObject() const
 	}
 }
 
+void SignalControl::calcHandles()
+{
+	m_handles[static_cast<int>(tPos::NONE)] = fPixelPoint();
+	m_handles[static_cast<int>(tPos::TIME)] = fPixelPoint(xPeak(), yBottom());
+
+	if (m_pVertCoordFreq)
+	{
+		m_handles[static_cast<int>(tPos::BASE_FREQ)] = fPixelPoint(xLeft(), yBaseFreq());
+		m_handles[static_cast<int>(tPos::PEAK_FREQ)] = fPixelPoint(xLeft(), yPeakFreq());
+		m_handles[static_cast<int>(tPos::TIME_FREQ)] = fPixelPoint(xPeak(), yPeakFreq());
+		m_handles[static_cast<int>(tPos::BASA_FREQ)] = fPixelPoint(xRight(), yBaseFreq());
+	}
+	if (m_pVertCoordVolt)
+	{
+		fPixel const dirPos { m_pVertCoordFreq ? xRight() : xLeft() };
+		fPixel const dirPosA { m_pVertCoordFreq ? xLeft() : xRight() };
+		m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(dirPos, yBaseAmplit());
+		m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(dirPos, aPeakAmplit());
+		m_handles[static_cast<int>(tPos::TIME_VOLT)] = fPixelPoint(xPeak(), aPeakAmplit());
+		m_handles[static_cast<int>(tPos::BASA_VOLT)] = fPixelPoint(dirPosA, yBaseAmplit());
+	}
+}
+
 void SignalControl::paintEditControls() const
 {
 	if (m_moveMode != tPos::NONE)
@@ -221,7 +221,7 @@ void SignalControl::PaintGraphics()
 	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
 	{
-		if (!m_computeThread.IsRunning())
+		if (!m_simuRunning.IsRunning())
 		{
 			calcHandles();
 			paintEditControls();

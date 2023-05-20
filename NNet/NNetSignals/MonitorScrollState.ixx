@@ -1,13 +1,13 @@
 // MonitorScrollState.ixx
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
 #include <string>
 #include <iostream>
 
-export module NNetWin32:MonitorScrollState;
+export module NNetSignals:MonitorScrollState;
 
 import IoUtil;
 import Script;

@@ -69,8 +69,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4902962c-f97d-458f-9528-15dda5b7f846}</ProjectGuid>
-    <RootNamespace>NNetWindows</RootNamespace>
+    <ProjectGuid>{552A4922-9660-4144-9220-7F0D4E95A97D}</ProjectGuid>
+    <RootNamespace>NNetSignals</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -574,59 +574,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ComputeThread.cpp" />
-    <ClCompile Include="ComputeThread.ixx" />
-    <ClCompile Include="NNetAppWindow.ixx" />
-    <ClCompile Include="NNetInputOutputUI.ixx" />
-    <ClCompile Include="NNetSimuRunning.ixx" />
-    <ClCompile Include="NNetWin32.ixx" />
-    <ClCompile Include="NNetWrappers.cpp" />
-    <ClCompile Include="NNetWrappers.ixx" />
-    <ClCompile Include="ParameterDlg.ixx" />
-    <ClCompile Include="Preferences.cpp" />
-    <ClCompile Include="Preferences.ixx" />
-    <ClCompile Include="SelectionMenu.cpp" />
-    <ClCompile Include="SelectionMenu.ixx" />
-    <ClCompile Include="SlowMotionDisplay.cpp" />
-    <ClCompile Include="SlowMotionDisplay.ixx" />
-    <ClCompile Include="TimeDisplay.cpp" />
-    <ClCompile Include="TimeDisplay.ixx" />
-    <ClCompile Include="UndoRedoMenu.ixx" />
-    <ClCompile Include="AppTitle.ixx" />
-    <ClCompile Include="CrsrWindow.cpp" />
-    <ClCompile Include="CrsrWindow.ixx" />
-    <ClCompile Include="DescriptionWindow.cpp" />
-    <ClCompile Include="DescriptionWindow.ixx" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MainWindow.ixx" />
-    <ClCompile Include="MiniWindow.cpp" />
-    <ClCompile Include="MiniWindow.ixx" />
-    <ClCompile Include="NNetAppMenu.cpp" />
-    <ClCompile Include="NNetAppMenu.ixx" />
-    <ClCompile Include="NNetAppWindow.cpp" />
-    <ClCompile Include="NNetController.cpp" />
-    <ClCompile Include="NNetController.ixx" />
-    <ClCompile Include="NNetWindow.cpp" />
-    <ClCompile Include="NNetWindow.ixx" />
-    <ClCompile Include="ParameterDlg.cpp" />
-    <ClCompile Include="PerformanceWindow.cpp" />
-    <ClCompile Include="PerformanceWindow.ixx" />
-    <ClCompile Include="ScriptHook.ixx" />
-    <ClCompile Include="SimulationControl.cpp" />
-    <ClCompile Include="SimulationControl.ixx" />
-    <ClCompile Include="SlowMotionControl.ixx" />
-    <ClCompile Include="StatusBar.cpp" />
-    <ClCompile Include="StatusBar.ixx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
       <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
-      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
@@ -643,9 +595,28 @@
     <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
       <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\NNetSignals\NNetSignals.vcxproj">
-      <Project>{552a4922-9660-4144-9220-7f0d4e95a97d}</Project>
+    <ProjectReference Include="..\Signals\Signals.vcxproj">
+      <Project>{01f78e78-6cee-426b-adab-5c30d825201f}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Measurement.cpp" />
+    <ClCompile Include="Measurement.ixx" />
+    <ClCompile Include="MonitorControl.cpp" />
+    <ClCompile Include="MonitorControl.ixx" />
+    <ClCompile Include="MonitorScrollState.ixx" />
+    <ClCompile Include="MonitorWindow.cpp" />
+    <ClCompile Include="MonitorWindow.ixx" />
+    <ClCompile Include="NNetSignals.ixx" />
+    <ClCompile Include="NNetTimeGraph.ixx" />
+    <ClCompile Include="SignalControl.cpp" />
+    <ClCompile Include="SignalControl.ixx" />
+    <ClCompile Include="SignalDesigner.cpp" />
+    <ClCompile Include="SignalDesigner.ixx" />
+    <ClCompile Include="SignalPreview.cpp" />
+    <ClCompile Include="SignalPreview.ixx" />
+    <ClCompile Include="SimuRunning.ixx" />
+    <ClCompile Include="StimulusButton.ixx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

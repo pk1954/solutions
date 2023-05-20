@@ -1,6 +1,6 @@
 // MonitorControl.ixx
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -8,7 +8,7 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module NNetWin32:MonitorControl;
+export module NNetSignals:MonitorControl;
 
 import Types;
 import PixFpDimension;

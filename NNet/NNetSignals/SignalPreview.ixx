@@ -1,17 +1,17 @@
 // SignalPreview.ixx
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
 #include <compare>
 
-export module NNetWin32:SignalPreview;
+export module NNetSignals:SignalPreview;
 
 import Types;
 import PixFpDimension;
-import :NNetTimeGraph;
 import NNetModel;
+import :NNetTimeGraph;
 
 export class SignalPreview : public NNetTimeGraph
 {

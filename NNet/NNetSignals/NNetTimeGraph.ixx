@@ -8,7 +8,7 @@ module;
 #include <math.h>
 #include <Windows.h>
 
-export module NNetWin32:NNetTimeGraph;
+export module NNetSignals:NNetTimeGraph;
 
 import Types;
 import PixFpDimension;

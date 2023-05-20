@@ -1,8 +1,8 @@
 // SignalPreview.cpp 
 //
-// NNetWindows
+// NNetSignals
 
-module NNetWin32:SignalPreview;
+module NNetSignals:SignalPreview;
 
 import Types;
 import Direct2D;

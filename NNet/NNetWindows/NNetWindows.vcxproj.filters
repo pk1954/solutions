@@ -60,37 +60,13 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MonitorWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Measurement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DescriptionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SignalDesigner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalControl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MonitorControl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalPreview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TimeDisplay.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SignalControl.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Measurement.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppTitle.ixx">
@@ -117,9 +93,6 @@
     <ClCompile Include="ScriptHook.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SignalDesigner.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Preferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,9 +108,6 @@
     <ClCompile Include="NNetController.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MonitorControl.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NNetInputOutputUI.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,9 +120,6 @@
     <ClCompile Include="NNetAppMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SignalPreview.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -160,12 +127,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetAppWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MonitorWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StimulusButton.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectionMenu.ixx">
@@ -180,10 +141,7 @@
     <ClCompile Include="NNetWin32.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetTimeGraph.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MonitorScrollState.ixx">
+    <ClCompile Include="NNetSimuRunning.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

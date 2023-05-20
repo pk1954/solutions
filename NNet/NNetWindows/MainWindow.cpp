@@ -20,6 +20,7 @@ import NNetCommands;
 import DrawContext;
 import FatalError;
 import NNetModel;
+import NNetSignals;
 import Observable;
 import RootWindow;
 import Types;
@@ -28,7 +29,6 @@ import Win32_Util;
 import Win32_Util_Resource;
 import :NNetController;
 import :Preferences;
-import :SignalDesigner;
 
 using std::unordered_map;
 using std::unique_ptr;

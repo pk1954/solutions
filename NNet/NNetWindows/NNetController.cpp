@@ -29,7 +29,6 @@ import NNetModel;
 import :ComputeThread;
 import :MainWindow;
 import :Preferences;
-import :MonitorWindow;
 
 using std::to_wstring;
 using std::wcout;

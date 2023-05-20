@@ -1,12 +1,12 @@
 // Measurement.ixx
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
 #include <dwrite.h>
 
-export module NNetWin32:Measurement;
+export module NNetSignals:Measurement;
 
 import Types;
 import Direct2D;

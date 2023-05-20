@@ -19,9 +19,9 @@ import Types;
 import WinManager;
 import Commands;
 import NNetModel;
+import NNetSignals;
 import :ComputeThread;
 import :Preferences;
-import :MonitorWindow;
 
 using std::wostream;
 using std::wcout;

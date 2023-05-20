@@ -1,6 +1,6 @@
 // SignalDesigner.cpp
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -10,7 +10,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module NNetWin32:SignalDesigner;
+module NNetSignals:SignalDesigner;
 
 import Types;
 import PixFpDimension;
@@ -24,7 +24,7 @@ import Scale;
 import Signals;
 import NNetCommands;
 import NNetModel;
-import :ComputeThread;
+import :SimuRunning;
 
 using std::wstring;
 using std::unique_ptr;
@@ -34,10 +34,10 @@ using D2D1::ColorF;
 
 void SignalDesigner::Initialize
 (
-	HWND          const   hwndParent,
-	ComputeThread const & computeThread,
-	Observable          & runObservable,
-	Observable          & dynamicModelObservable
+	HWND const         hwndParent,
+	SimuRunning const &simuRunning,
+	Observable        &runObservable,
+	Observable        &dynamicModelObservable
 )
 {
 	HWND hwndSigDes = StartBaseWindow
@@ -51,8 +51,7 @@ void SignalDesigner::Initialize
 	);
 
 	runObservable.RegisterObserver(*this);
-
-	m_pComputeThread = & computeThread;
+	m_pSimuRunning = &simuRunning;
 
 	// coords
 
@@ -185,9 +184,9 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 	auto upSignalControl = make_unique<SignalControl>
 	(
 		GetWindowHandle(),
-		*m_pComputeThread,
 		runObservable,
 		dynamicModelObservable,
+		*m_pSimuRunning,
 		&m_horzCoord 
 	);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
@@ -217,7 +216,7 @@ void SignalDesigner::Trigger()
 	if (m_bPreview)
 		m_upSignalPreview->Notify(false);
 	SetCaption();
-	m_upStimulusButton->Enable(m_pComputeThread->IsRunning());
+	m_upStimulusButton->Enable(m_pSimuRunning->IsRunning());
 }
 
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

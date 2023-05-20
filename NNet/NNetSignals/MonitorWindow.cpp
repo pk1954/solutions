@@ -1,6 +1,6 @@
 // MonitorWindow.cpp
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -10,14 +10,14 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module NNetWin32:MonitorWindow;
+module NNetSignals:MonitorWindow;
 
 import Win32_Util_Resource;
 import Types;
 import Observable;
 import SoundInterface;
 import NNetModel;
-import :ComputeThread;
+import :SimuRunning;
 import :MonitorControl;
 
 using std::find;
@@ -29,13 +29,14 @@ MonitorWindow::~MonitorWindow() = default;
 
 void MonitorWindow::Start
 (
-	HWND          const   hwndParent,
-	ComputeThread const & computeThread,
-	Sound               & sound,
-	Observable          & observable
+	HWND const         hwndParent,
+	SimuRunning const &simuRunning,
+	Sound             &sound,
+	Observable        &observable
 )
 {
 	m_pMoveSizeObservable = &observable;
+	m_pSimuRunning = &simuRunning;
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
@@ -68,7 +69,6 @@ void MonitorWindow::Start
 
 	m_upMonitorControl->SetRightBorder(Convert2fPixel(RIGHT_BORDER));
 
-	m_pComputeThread   = & computeThread;
 	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
 }
 
@@ -113,7 +113,7 @@ void MonitorWindow::OnPaint()
 {
 	m_upMonitorControl->Invalidate(false);
 	SetCaption();
-	m_upStimulusButton->Enable(m_pComputeThread->IsRunning());
+	m_upStimulusButton->Enable(m_pSimuRunning->IsRunning());
 }
 
 bool MonitorWindow::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeight)

@@ -1,6 +1,6 @@
 // Measurement.cpp
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -8,7 +8,7 @@ module;
 #include <iomanip>
 #include <dwrite.h>
 
-module NNetWin32:Measurement;
+module NNetSignals:Measurement;
 
 import Types;
 import Util;

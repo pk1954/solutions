@@ -1,6 +1,6 @@
 // MonitorControl.cpp
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -11,7 +11,7 @@ module;
 #include "dwrite.h"
 #include "Resource.h"
 
-module NNetWin32:MonitorControl;
+module NNetSignals:MonitorControl;
 
 import Win32_Util_Resource;
 import Types;

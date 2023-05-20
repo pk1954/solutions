@@ -1,6 +1,6 @@
 // SignalDesigner.ixx
 //
-// NNetWindows
+// NNetSignals
 
 module;
 
@@ -10,7 +10,7 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module NNetWin32:SignalDesigner;
+export module NNetSignals:SignalDesigner;
 
 import Types;
 import Observable;
@@ -21,7 +21,7 @@ import BaseWindow;
 import Scale;
 import BaseScale;
 import NNetModel;
-import :ComputeThread;
+import :SimuRunning;
 import :SignalControl;
 import :SignalPreview;
 import :StimulusButton;
@@ -36,7 +36,7 @@ public:
 	void Initialize
 	(
 		HWND const, 
-		ComputeThread const &, 
+		SimuRunning const&,
 		Observable &,
 		Observable &
 	);
@@ -92,10 +92,10 @@ private:
 	HWND                              m_hwndPreviewButton;
 	unique_ptr<StimulusButton>        m_upStimulusButton;
 	
-	ComputeThread      const * m_pComputeThread    { nullptr };
-	NNetModelWriterInterface * m_pNMWI             { nullptr };
-	HMENU                      m_hMenu             { nullptr };
-	bool                       m_bIntegrated       { false };
-	bool                       m_bPreview          { false };
-	int                        m_iNrOfTiles        { 2 };
+	SimuRunning        const * m_pSimuRunning { nullptr };
+	NNetModelWriterInterface * m_pNMWI        { nullptr };
+	HMENU                      m_hMenu        { nullptr };
+	bool                       m_bIntegrated  { false };
+	bool                       m_bPreview     { false };
+	int                        m_iNrOfTiles   { 2 };
 };

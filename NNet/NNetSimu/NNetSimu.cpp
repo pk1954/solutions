@@ -57,7 +57,7 @@ int APIENTRY wWinMain
 
 	SwitchWcoutTo(L"main_trace.out");
 
-	wstring const wstrProdName { L"NNetSimu 4.7" };
+	wstring const wstrProdName { L"NNetSimu 4.8" };
 
 	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
 	wcout << Scanner::COMMENT_START << L"Version:       "       << wstrProdName << endl;

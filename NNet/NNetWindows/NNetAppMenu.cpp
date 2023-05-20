@@ -21,7 +21,6 @@ import AutoOpen;
 import NNetModel;
 import :ComputeThread;
 import :Preferences;
-import :SignalDesigner;
 
 using std::make_unique;
 

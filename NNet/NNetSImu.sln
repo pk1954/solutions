@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IoUtil", "..\Toolbox\IoUtil
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Signals", "Signals\Signals.vcxproj", "{01F78E78-6CEE-426B-ADAB-5C30D825201F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NNetSignals", "NNetSignals\NNetSignals.vcxproj", "{552A4922-9660-4144-9220-7F0D4E95A97D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -153,6 +155,14 @@ Global
 		{01F78E78-6CEE-426B-ADAB-5C30D825201F}.Release|x64.Build.0 = Release|x64
 		{01F78E78-6CEE-426B-ADAB-5C30D825201F}.Release|x86.ActiveCfg = Release|Win32
 		{01F78E78-6CEE-426B-ADAB-5C30D825201F}.Release|x86.Build.0 = Release|Win32
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Debug|x64.ActiveCfg = Debug|x64
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Debug|x64.Build.0 = Debug|x64
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Debug|x86.ActiveCfg = Debug|Win32
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Debug|x86.Build.0 = Debug|Win32
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Release|x64.ActiveCfg = Release|x64
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Release|x64.Build.0 = Release|x64
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Release|x86.ActiveCfg = Release|Win32
+		{552A4922-9660-4144-9220-7F0D4E95A97D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
