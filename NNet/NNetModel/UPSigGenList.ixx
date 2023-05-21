@@ -45,7 +45,7 @@ public:
 
     bool IsInNewSigGenButton(fPixelPoint const& fPixPnt) const { return newSigGenButtonRect().Includes(fPixPnt); }
 
-    bool IsValid(SigGenId const id)           const { return (STD_SIGGEN == id) || (id.GetValue() < m_list.size()); }
+    bool IsValid(SigGenId const id)           const { return (STD_SIGGEN == id) || (id.GetValue() < Size()); }
     bool IsAnySigGenSelected()                const { return m_sigGenIdActive.IsNotNull(); }
     bool IsSelected(SigGenId const id)        const { return id == m_sigGenIdActive; }
     bool IsSelected(SignalGenerator const &s) const { return &s == GetSigGenSelected(); }
@@ -63,7 +63,7 @@ public:
     (
         D2D_driver&,
         Uniform2D<MicroMeter> const&,
-        fPixel const,
+        SigGenId const,
         InputLine const&,
         ID2D1SolidColorBrush* const
     ) const;
@@ -90,19 +90,19 @@ public:
     wstring                 GenerateUniqueName() const;
 
     void SetActiveSigGenObservable(Observable &o) { m_pActiveSigGenObservable = &o; }
-    void SetOffset(fPixelPoint const& p) { m_fPixPntOffset = p; }
+    void SetSigGenOrigin(fPixelPoint const& p) { m_fPixPntOffset = p; }
 
 private:
     inline static const fPixel GAP  { 2._fPixel };
     inline static const fPixel DIST { SignalGenerator::SIGGEN_WIDTH + GAP };
 
-    fPixel areaWidth() const { return DIST * Cast2Float(m_list.size() + 1); }
+    fPixel areaWidth() const { return DIST * Cast2Float(Size() + 1) + m_fPixPntOffset.GetX(); }
     fPixelRect newSigGenButtonRect() const;
 
     vector<UPSigGen> m_list;  // std siggen is ** not ** in list!
-    SigGenId         m_sigGenIdActive { STD_SIGGEN };
+    SigGenId         m_sigGenIdActive          { STD_SIGGEN };
     Observable *     m_pActiveSigGenObservable { nullptr };
-    fPixelPoint      m_fPixPntOffset;
+    fPixelPoint      m_fPixPntOffset           { fPP_NULL };
 
     vector<UPSigGen>::iterator       getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;

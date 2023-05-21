@@ -542,14 +542,6 @@ void MainWindow::PaintGraphics()
 
 	//DrawMicroSensorsInRect(pixRect);
 	DrawSensors();
-	//m_pNMRI->GetSigGenList().SetOffset
-	//(
-	//	fPixelPoint
-	//	(
-	//		m_pPreferences->ScalesVisible() ? m_upVertScale->GetLeftBorder() : 0._fPixel,
-	//		0._fPixel
-	//	)
-	//);
 	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
 	m_pNMRI->GetSigGenList().DrawNewSigGenButton(*m_upGraphics.get());
@@ -573,8 +565,6 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		case active: if (!bActive)                     return; break;
 		case none:                                	   return;
 	}
-	float                 const  fPosition { Cast2Float(idSigGen.GetValue()) + 1.5f };
-	fPixel                const  fPixPosX  { SignalGenerator::SIGGEN_WIDTH * fPosition };
 	D2D_driver                 & graphics  { *m_upGraphics.get() };
 	Uniform2D<MicroMeter> const& coord     { m_context.GetCoordC() };
 	ID2D1SolidColorBrush* const  pBrush
@@ -583,7 +573,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		? m_pBrushSensorSelected
 		: m_pBrushSensorNormal
 	};
-	list.DrawInputCable(graphics, coord, fPixPosX, inputLine, pBrush);
+	list.DrawInputCable(graphics, coord, idSigGen, inputLine, pBrush);
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
@@ -771,6 +761,14 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_SCALES:
 		m_upHorzScale->Show(m_pPreferences->ScalesVisible());
 		m_upVertScale->Show(m_pPreferences->ScalesVisible());
+		SetSigGenOriginCmd::Push
+		(
+			fPixelPoint
+			(
+				m_pPreferences->ScalesVisible() ? m_upVertScale->GetOrthoOffset() : 0._fPixel,
+				0._fPixel
+			)
+		);
 		return true;
 
 	default:

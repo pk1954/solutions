@@ -149,7 +149,7 @@ UPSigGen UPSigGenList::NewSigGen(wstring const & name)
 SigGenId UPSigGenList::PushSigGen(UPSigGen upSigGen)
 {
     m_list.push_back(move(upSigGen));
-    return SigGenId(Cast2Int(m_list.size()-1));
+    return SigGenId(Cast2Int(Size()-1));
 }
 
 UPSigGen UPSigGenList::PopSigGen()
@@ -219,6 +219,18 @@ SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr) const
     return NO_SIGGEN;
 }
 
+fPixelRect UPSigGenList::newSigGenButtonRect() const
+{
+    fPixelPoint const fPixPos  { areaWidth(), 1._fPixel };
+    fPixelRect  const fPixRect { fPixPos, 20._fPixel };
+    return fPixRect;
+}
+
+void UPSigGenList::DrawNewSigGenButton(D2D_driver& graphics) const
+{
+    SignalGenerator::DrawNewSigGenButton(graphics, newSigGenButtonRect());
+}
+
 void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
 {
     fPixelRect fPixRect { 1._fPixel, 1._fPixel, SignalGenerator::SIGGEN_WIDTH, SignalGenerator::SIGGEN_HEIGHT };
@@ -233,23 +245,11 @@ void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
     );
 }
 
-fPixelRect UPSigGenList::newSigGenButtonRect() const
-{
-    fPixelPoint const fPixPos  { areaWidth(), 1._fPixel };
-    fPixelRect  const fPixRect { fPixPos, 20._fPixel };
-    return fPixRect;
-}
-
-void UPSigGenList::DrawNewSigGenButton(D2D_driver& graphics) const
-{
-    SignalGenerator::DrawNewSigGenButton(graphics, newSigGenButtonRect());
-}
-
 void UPSigGenList::DrawInputCable
 (
     D2D_driver                 & graphics,
     Uniform2D<MicroMeter> const& coord,
-    fPixel                const  fPixPosX,
+    SigGenId              const  idSigGen,
     InputLine             const& inputLine,
     ID2D1SolidColorBrush* const  pBrush
 ) const
@@ -258,7 +258,11 @@ void UPSigGenList::DrawInputCable
     MicroMeterPnt const umCenter         { inputLine.GetPos() - umDirVector * 0.7f };
     fPixelPoint   const fPixPosInputLine { coord.Transform2fPixelPos(umCenter) };
     fPixelPoint   const fPixPosDir       { coord.Transform2fPixelSize(umDirVector) };
-    fPixelPoint   const fPixPosSigGen    { fPixPosX, SignalGenerator::SIGGEN_HEIGHT };
+    float         const fPosition        { Cast2Float(idSigGen.GetValue()) + 1.5f };
+    fPixel        const fPixPosX         { SignalGenerator::SIGGEN_WIDTH * fPosition };
+    fPixelPoint         fPixPosSigGen    { fPixPosX, SignalGenerator::SIGGEN_HEIGHT };
+
+    fPixPosSigGen += m_fPixPntOffset;
 
     graphics.DrawBezier
     (
