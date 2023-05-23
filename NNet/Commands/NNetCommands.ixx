@@ -2,6 +2,10 @@
 //
 // Commands
 
+module;
+
+#include <compare>
+
 export module NNetCommands;
 
 export import :AddMicroSensorCmd;
