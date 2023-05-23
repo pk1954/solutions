@@ -13,10 +13,9 @@ module;
 module NNetWin32:ParameterDialog;
 
 import Win32_Util_Resource;
-import StdDialogBox;
 import Win32_Controls;
 import Win32_Util;
-import BaseWindow;
+import BaseDialog;
 import NNetCommands;
 import NNetModel;
 
@@ -110,9 +109,8 @@ void ParameterDialog::Start(HWND const hwndParent)
 	m_pTextFormatHeader = pGraphics->NewTextFormat(16.f);
 	m_pTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
-	SetWindowSize(270_PIXEL, 380_PIXEL, false);
 	SetWindowText(L"Global parameters");
-	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_SYSMENU);
+	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);
 
 	int iYpos { VERT_SPACE + 16 };
 
@@ -135,6 +133,8 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 180, iYpos, 50, 20, IDD_RESET);
+
+	SetWindowSize(270_PIXEL, 380_PIXEL, false);
 }
 
 void ParameterDialog::PaintGraphics()
