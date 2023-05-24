@@ -107,6 +107,12 @@ private:
 	void     PaintGraphics() final;
 	void     drawInputCable(InputLine const &) const;
 	void     connect(NobId const, NobId const);
+	fPixel   sigGenOffset() const
+	{ 
+		return m_pPreferences->ScalesVisible()
+			? m_upVertScale->GetOrthoOffset()
+			: 0._fPixel;
+	}
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

@@ -228,8 +228,5 @@
     <ClCompile Include="AddModuleCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetSigGenOrigin.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

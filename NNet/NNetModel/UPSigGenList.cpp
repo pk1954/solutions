@@ -205,36 +205,31 @@ SigGenId UPSigGenList::GetSigGenId(SignalGenerator const& sigGen) const
     return sigGenFound;
 }
 
-SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr) const
+SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr, fPixel const fPixOffX) const
 {
     if (fPixCrsr.GetY() > SignalGenerator::SIGGEN_HEIGHT)
         return NO_SIGGEN;
 
-    if (fPixCrsr.GetX() <= areaWidth() - GAP)
+    if (fPixCrsr.GetX() <= areaWidth(fPixOffX) - GAP)
         return SigGenId(Cast2Int(fPixCrsr.GetX() / SignalGenerator::SIGGEN_WIDTH) - 1);
 
-    if (newSigGenButtonRect().Includes(fPixCrsr))
+    if (newSigGenButtonRect(fPixOffX).Includes(fPixCrsr))
         return ADD_SIGGEN;
 
     return NO_SIGGEN;
 }
 
-fPixelRect UPSigGenList::newSigGenButtonRect() const
+fPixelRect UPSigGenList::newSigGenButtonRect(fPixel const fPixOffX) const
 {
-    fPixelPoint const fPixPos  { areaWidth(), 1._fPixel };
+    fPixelPoint const fPixPos  { areaWidth(fPixOffX), 1._fPixel };
     fPixelRect  const fPixRect { fPixPos, 20._fPixel };
     return fPixRect;
 }
 
-void UPSigGenList::DrawNewSigGenButton(D2D_driver& graphics) const
-{
-    SignalGenerator::DrawNewSigGenButton(graphics, newSigGenButtonRect());
-}
-
-void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
+void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics, fPixel const fPixOffX) const
 {
     fPixelRect fPixRect { 1._fPixel, 1._fPixel, SignalGenerator::SIGGEN_WIDTH, SignalGenerator::SIGGEN_HEIGHT };
-    fPixRect += m_fPixPntOffset;
+    fPixRect.MoveHorz(fPixOffX);
     Apply2AllC
     (
         [this, &fPixRect, &graphics](auto const& pSigGen)
@@ -243,12 +238,14 @@ void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics) const
             fPixRect.MoveHorz(DIST);
         }
     );
+    SignalGenerator::DrawNewSigGenButton(graphics, newSigGenButtonRect(fPixOffX));
 }
 
 void UPSigGenList::DrawInputCable
 (
     D2D_driver                 & graphics,
     Uniform2D<MicroMeter> const& coord,
+    fPixel                const  fPixOffX,
     SigGenId              const  idSigGen,
     InputLine             const& inputLine,
     ID2D1SolidColorBrush* const  pBrush
@@ -259,10 +256,8 @@ void UPSigGenList::DrawInputCable
     fPixelPoint   const fPixPosInputLine { coord.Transform2fPixelPos(umCenter) };
     fPixelPoint   const fPixPosDir       { coord.Transform2fPixelSize(umDirVector) };
     float         const fPosition        { Cast2Float(idSigGen.GetValue()) + 1.5f };
-    fPixel        const fPixPosX         { SignalGenerator::SIGGEN_WIDTH * fPosition };
+    fPixel        const fPixPosX         { SignalGenerator::SIGGEN_WIDTH * fPosition + fPixOffX};
     fPixelPoint         fPixPosSigGen    { fPixPosX, SignalGenerator::SIGGEN_HEIGHT };
-
-    fPixPosSigGen += m_fPixPntOffset;
 
     graphics.DrawBezier
     (

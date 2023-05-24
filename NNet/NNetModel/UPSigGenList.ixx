@@ -37,13 +37,17 @@ public:
     SignalGenerator       * GetSigGen(SigGenId const);
 
     SigGenId                GetSigGenId(SignalGenerator const&) const;
-    SigGenId                GetSigGenId(fPixelPoint     const&) const;
+    SigGenId                GetSigGenId(fPixelPoint const&, fPixel const) const;
 
     SigGenId                GetSigGenIdSelected() const { return m_sigGenIdActive; }
     SignalGenerator const * GetSigGenSelected  () const { return GetSigGen(m_sigGenIdActive); }
     SignalGenerator       * GetSigGenSelected  ()       { return GetSigGen(m_sigGenIdActive); }
 
-    bool IsInNewSigGenButton(fPixelPoint const& fPixPnt) const { return newSigGenButtonRect().Includes(fPixPnt); }
+    bool IsInNewSigGenButton
+    (
+        fPixelPoint const& fPixPnt,
+        fPixel      const  fPixOffX
+    ) const { return newSigGenButtonRect(fPixOffX).Includes(fPixPnt); }
 
     bool IsValid(SigGenId const id)           const { return (STD_SIGGEN == id) || (id.GetValue() < Size()); }
     bool IsAnySigGenSelected()                const { return m_sigGenIdActive.IsNotNull(); }
@@ -57,12 +61,12 @@ public:
     UPSigGen RemoveSigGen(SigGenId const);
     UPSigGen RemoveSigGen();
     void     InsertSigGen(UPSigGen, SigGenId const);
-    void     DrawSignalGenerators(D2D_driver&) const;
-    void     DrawNewSigGenButton (D2D_driver&) const;
+    void     DrawSignalGenerators(D2D_driver&, fPixel const) const;
     void     DrawInputCable
     (
         D2D_driver&,
         Uniform2D<MicroMeter> const&,
+        fPixel const,
         SigGenId const,
         InputLine const&,
         ID2D1SolidColorBrush* const
@@ -90,19 +94,17 @@ public:
     wstring                 GenerateUniqueName() const;
 
     void SetActiveSigGenObservable(Observable &o) { m_pActiveSigGenObservable = &o; }
-    void SetSigGenOrigin(fPixelPoint const& p) { m_fPixPntOffset = p; }
 
 private:
     inline static const fPixel GAP  { 2._fPixel };
     inline static const fPixel DIST { SignalGenerator::SIGGEN_WIDTH + GAP };
 
-    fPixel areaWidth() const { return DIST * Cast2Float(Size() + 1) + m_fPixPntOffset.GetX(); }
-    fPixelRect newSigGenButtonRect() const;
+    fPixel areaWidth(fPixel const fPixOffX) const { return DIST * Cast2Float(Size() + 1) + fPixOffX; }
+    fPixelRect newSigGenButtonRect(fPixel const) const;
 
     vector<UPSigGen> m_list;  // std siggen is ** not ** in list!
     SigGenId         m_sigGenIdActive          { STD_SIGGEN };
     Observable *     m_pActiveSigGenObservable { nullptr };
-    fPixelPoint      m_fPixPntOffset           { fPP_NULL };
 
     vector<UPSigGen>::iterator       getSigGen(wstring const &);
     vector<UPSigGen>::const_iterator getSigGen(wstring const &) const;

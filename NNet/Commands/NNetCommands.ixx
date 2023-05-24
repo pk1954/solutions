@@ -64,7 +64,6 @@ export import :SelectAllConnectedCmd;
 export import :SetActiveSigGenCmd;
 export import :SetNobCommand;
 export import :SetParameterCommand;
-export import :SetSigGenOriginCmd;
 export import :SetSigGenStaticDataCmd;
 export import :SingleNobAnimation;
 export import :SizeSelectionCmd;

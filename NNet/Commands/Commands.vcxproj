@@ -148,7 +148,6 @@
     <ClCompile Include="SetActiveSigGenCmd.ixx" />
     <ClCompile Include="SetNobCommand.ixx" />
     <ClCompile Include="SetParameterCommand.ixx" />
-    <ClCompile Include="SetSigGenOrigin.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
     <ClCompile Include="SingleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />

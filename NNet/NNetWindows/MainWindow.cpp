@@ -250,12 +250,12 @@ NobId MainWindow::findTargetNob(MicroMeterPnt const& umCrsrPos)
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_pCursorPosObservable)
-		m_pCursorPosObservable->NotifyAll(false);
-
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
+	PixelPoint const ptCrsr { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
+
+	if (m_pCursorPosObservable)
+		m_pCursorPosObservable->NotifyAll(false);
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
@@ -265,7 +265,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 				if (!setHighlightedSensor(umCrsrPos))
 					selectSignalHandle(umCrsrPos);
 		}
-		m_idSigGenUnderCrsr = m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr);
+		m_idSigGenUnderCrsr = getSigGenId(lParam);
 		ClearPtLast();                 // make m_ptLast invalid
 		return;
 	}
@@ -343,7 +343,7 @@ SigGenId MainWindow::getSigGenId(LPARAM const lParam)
 {
 	PixelPoint  const ptCrsr   { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint const fPixCrsr { Convert2fPixelPoint(ptCrsr) };
-	SigGenId    const idSigGen { m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr) };
+	SigGenId    const idSigGen { m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr, sigGenOffset()) };
 	return idSigGen;
 }
 
@@ -542,9 +542,8 @@ void MainWindow::PaintGraphics()
 
 	//DrawMicroSensorsInRect(pixRect);
 	DrawSensors();
-	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get());
+	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get(), sigGenOffset());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
-	m_pNMRI->GetSigGenList().DrawNewSigGenButton(*m_upGraphics.get());
 
 	if (m_bShowPnts && pSensorSelected)
 		pSensorSelected->DrawDataPoints(m_context);
@@ -573,7 +572,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		? m_pBrushSensorSelected
 		: m_pBrushSensorNormal
 	};
-	list.DrawInputCable(graphics, coord, idSigGen, inputLine, pBrush);
+	list.DrawInputCable(graphics, coord, sigGenOffset(), idSigGen, inputLine, pBrush);
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
@@ -761,14 +760,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_SCALES:
 		m_upHorzScale->Show(m_pPreferences->ScalesVisible());
 		m_upVertScale->Show(m_pPreferences->ScalesVisible());
-		SetSigGenOriginCmd::Push
-		(
-			fPixelPoint
-			(
-				m_pPreferences->ScalesVisible() ? m_upVertScale->GetOrthoOffset() : 0._fPixel,
-				0._fPixel
-			)
-		);
 		return true;
 
 	default:
