@@ -71,7 +71,7 @@ public:
 
 	void Notify(bool const) override;
 
-	inline static D2D1::ColorF const COL_NORMAL      { D2D1::ColorF::Azure };
+	inline static D2D1::ColorF const COL_NORMAL      { D2D1::ColorF::AliceBlue };
 	inline static D2D1::ColorF const COL_HIGHLIGHTED { D2D1::ColorF::Aquamarine };
 
 protected:

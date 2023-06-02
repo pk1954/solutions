@@ -168,14 +168,14 @@ private:
 
 	void PaintGraphics() final
 	{
-		static D2D1::ColorF const colBackGround { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
-		static fPixel       const MIN_TICK_DIST { 6._fPixel };
+		static fPixel const MIN_TICK_DIST { 6._fPixel };
 
-		LogUnits const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
-		float    const log10          { log10f(logMinTickDist.GetValue()) };
-		float    const fExp           { floor(log10) };
-		float    const fFractPart     { log10 - fExp };
-		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
+		D2D1::ColorF const colBackGround  { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
+		LogUnits     const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
+		float        const log10          { log10f(logMinTickDist.GetValue()) };
+		float        const fExp           { floor(log10) };
+		float        const fFractPart     { log10 - fExp };
+		float        const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
 
 		fPixel fPixStart;
 		fPixel fPixEnd;

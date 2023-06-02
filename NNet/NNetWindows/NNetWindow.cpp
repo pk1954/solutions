@@ -178,6 +178,11 @@ void NNetWindow::drawSignalCable
 	);
 }
 
+void NNetWindow::PaintGraphics()
+{
+	m_upGraphics->FillBackground(D2D1::ColorF::Ivory);
+}
+
 bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);

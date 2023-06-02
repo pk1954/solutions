@@ -90,8 +90,9 @@ protected:
 
 	D2D_DrawContext m_context { };
 
-	bool OnSize    (PIXEL const, PIXEL  const) override;
+	bool OnSize   (PIXEL  const, PIXEL  const)                   override;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
+	void PaintGraphics()                                         override;
 
 	void DrawSensors() const;
 

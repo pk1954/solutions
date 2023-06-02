@@ -93,7 +93,7 @@ void MiniWindow::Notify(bool const bImmediately)
 
 void MiniWindow::PaintGraphics()
 {
-	m_upGraphics->FillBackground(D2D1::ColorF::Azure);
+	NNetWindow::PaintGraphics();
 	if (m_pObservedNNetWindow)
 	{
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
