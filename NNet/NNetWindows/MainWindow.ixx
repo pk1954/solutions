@@ -59,7 +59,6 @@ public:
 
 	void CenterModel();
 	void CenterSelection();
-	void AnimateScales();
 	void SetSensorPoints();
 	bool SensorsPointsVisible() const { return m_bShowPnts; }
 
@@ -83,7 +82,7 @@ private:
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
 	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
 
-	fPixelPoint   m_fPixScaleSize          { 35._fPixel, 30._fPixel };
+	fPixelPoint   m_fPixScaleSize          { fPP_ZERO };
 	MicroMeter    m_umArrowSize            { 0._MicroMeter };
 	Preferences*  m_pPreferences           { nullptr };
 	ActionTimer*  m_pDisplayTimer          { nullptr };

@@ -56,7 +56,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        m_pref.SetScales(script.ScrReadBool());
+        m_pref.SetScales(script.ScrReadBool(), false);
     }
 
     void Write(wostream& out) const final
@@ -265,10 +265,10 @@ void Preferences::SetArrows(bool const bOn, bool const bAnimation)
     SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, bAnimation);
 }
 
-void Preferences::SetScales(bool const bOn)
+void Preferences::SetScales(bool const bOn, bool const bAnimation)
 {
     m_bScales = bOn;
-    SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, 0);
+    SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, bAnimation);
 }
 
 void Preferences::SetSensorPoints(bool const bOn)

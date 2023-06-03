@@ -22,6 +22,18 @@ import :IoConstants;
 using std::wostream;
 using std::setprecision;
 
+wostream& operator<< (wostream& out, fPixelPoint const& pnt)
+{
+    out << SPACE
+        << OPEN_BRACKET
+        << setprecision(10)
+        << pnt.GetX()
+        << SEPARATOR
+        << pnt.GetY()
+        << CLOSE_BRACKET;
+    return out;
+}
+
 wostream& operator<< (wostream& out, MicroMeterPnt const& pnt)
 {
     out << SPACE

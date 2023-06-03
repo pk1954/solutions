@@ -21,6 +21,8 @@ import Script;
 
 using std::wostream;
 
+export wostream& operator<< (wostream&, fPixelPoint const&);
+
 export wostream& operator<< (wostream&, MicroMeterPnt    const&);
 export wostream& operator<< (wostream&, MicroMeterRect   const&);
 export wostream& operator<< (wostream&, MicroMeterCircle const&);

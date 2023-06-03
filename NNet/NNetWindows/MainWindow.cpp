@@ -189,14 +189,6 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::AnimateScales()
-{
-	fPixelPoint oldVal   { m_fPixScaleSize };
-	fPixelPoint umTarget { m_pPreferences->ScalesVisible() ? fPixelPoint(35._fPixel, 30._fPixel) : fPP_NULL};
-	if (umTarget != oldVal)
-		ScalesAnimationCmd::Push(m_fPixScaleSize, umTarget);
-}
-
 void MainWindow::SetSensorPoints()
 {
 	m_bShowPnts = m_pPreferences->SensorPointsVisible();
@@ -764,12 +756,12 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);
 		break;
 
-	case IDD_SCALES:
-		AnimateScales();
-		return true;
-
 	case IDD_ADJUST_SCALES:
 		adjustScales();
+		return true;
+
+	case IDD_SCALES:
+		ScalesAnimationCmd::Push(m_fPixScaleSize, m_pPreferences->ScalesVisible(), lParam);
 		return true;
 
 	case IDD_ARROWS:

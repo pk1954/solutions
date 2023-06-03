@@ -134,15 +134,19 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_SCALES_OFF:
-        m_pPreferences->SetScales(false);
+        m_pPreferences->SetScales(false, true);
         break;
 
     case IDD_SCALES_ON:
-        m_pPreferences->SetScales(true);
+        m_pPreferences->SetScales(true, true);
         break;
 
     case IDD_SCALES:  //Sent by Preferences
-        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, 0);
+        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, lParam);
+        break;
+
+    case IDD_ARROWS:  //Sent by Preferences
+        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, lParam);
         break;
 
     case IDD_ARROWS_ON:

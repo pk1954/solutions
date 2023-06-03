@@ -38,7 +38,7 @@ public:
 	bool WritePreferences() const;
 
 	void SetArrows      (bool const, bool const);
-	void SetScales      (bool const);
+	void SetScales      (bool const, bool const);
 	void SetSensorPoints(bool const);
 
 	bool ScalesVisible      () const { return m_bScales; }
