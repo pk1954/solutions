@@ -2,7 +2,7 @@ SetAutoOpen ON
 ReadModel "D:\SW-projects\Solutions\NNet\Tests\simple.mod"
 SetPerfMonMode OFF
 InputCablesVisibility 0
-ShowScales ON
+ShowScales OFF
 ShowArrows ON
 ShowSensorPoints ON
 SetSound ON

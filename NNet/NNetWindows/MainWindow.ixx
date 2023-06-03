@@ -59,8 +59,6 @@ public:
 
 	void CenterModel();
 	void CenterSelection();
-	void SetSensorPoints();
-	bool SensorsPointsVisible() const { return m_bShowPnts; }
 
 	void OnPaint()                                                       final;
 	void OnChar           (WPARAM const, LPARAM const)                   final;
@@ -89,7 +87,6 @@ private:
 	Observable*   m_pCoordObservable       { nullptr };
 	Observable*   m_pCursorPosObservable   { nullptr };
 	Observable*   m_pStaticModelObservable { nullptr };
-	bool          m_bShowPnts              { false };
 	NobId         m_nobIdHighlighted       { NO_NOB };
 	NobId         m_nobIdTarget            { NO_NOB };
 	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };

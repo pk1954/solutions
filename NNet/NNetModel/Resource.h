@@ -73,7 +73,6 @@
 #define       IDD_AUTO_OPEN_ON               310
 #define       IDD_AUTO_OPEN_OFF              311
 									         
-#define       IDD_SENSOR_PNTS                320
 #define       IDD_SENSOR_PNTS_ON             321
 #define       IDD_SENSOR_PNTS_OFF            322
 									         

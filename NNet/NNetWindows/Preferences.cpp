@@ -274,7 +274,6 @@ void Preferences::SetScales(bool const bOn, bool const bAnimation)
 void Preferences::SetSensorPoints(bool const bOn)
 {
     m_bSensorPoints = bOn;
-    SendMessage(m_hwndApp, WM_COMMAND, IDD_SENSOR_PNTS, 0);
 }
 
 bool Preferences::WritePreferences() const

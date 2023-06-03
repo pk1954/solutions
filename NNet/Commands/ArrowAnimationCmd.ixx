@@ -10,20 +10,16 @@ export module NNetCommands:ArrowAnimationCmd;
 
 import :AnimationCmd;
 
-export class ArrowAnimationCmd : public AnimationCmd<MicroMeter>
+using MicroMeterAnimationCmd = AnimationCmd<MicroMeter>;
+
+export class ArrowAnimationCmd : public MicroMeterAnimationCmd
 {
 public:
-    ArrowAnimationCmd
-    (
-        MicroMeter       & animated,
-        MicroMeter const & target
-    )
-      : AnimationCmd<MicroMeter>(animated, target)
-    {}
+    using MicroMeterAnimationCmd::MicroMeterAnimationCmd;
 
     virtual void UpdateUI()
     {
-        AnimationCmd<MicroMeter>::UpdateUI();
+        MicroMeterAnimationCmd::UpdateUI();
         Command::UpdateUI();
     }
 

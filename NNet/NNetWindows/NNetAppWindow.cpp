@@ -501,14 +501,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_mainNNetWindow.CenterModel();
 			break;
 
-		case IDD_SENSOR_PNTS:
-			m_mainNNetWindow.SetSensorPoints();
-			break;
-
-		case IDD_ARROWS:
-			m_mainNNetWindow.PostCommand(wmId, lParam);
-			break;
-
 		case IDX_READ_PROGRESS_REPORT:  //no user command, only internal usage
 			m_statusBar.ReadProgressReport(m_statusMessagePart, bit_cast<Script *>(lParam));
 			break;

@@ -9,23 +9,18 @@ module;
 
 export module NNetCommands:ScalesAnimationCmd;
 
-import IoUtil;
 import :AnimationCmd;
 
-export class ScalesAnimationCmd : public AnimationCmd<fPixelPoint>
+using fPixelPointAnimationCmd = AnimationCmd<fPixelPoint>;
+
+export class ScalesAnimationCmd : public fPixelPointAnimationCmd
 {
 public:
-    ScalesAnimationCmd
-    (
-        fPixelPoint& animated,
-        fPixelPoint const& target
-    )
-      : AnimationCmd<fPixelPoint>(animated, target)
-    {}
+    using fPixelPointAnimationCmd::fPixelPointAnimationCmd;
 
     virtual void UpdateUI()
     {
-        AnimationCmd<fPixelPoint>::UpdateUI();
+        fPixelPointAnimationCmd::UpdateUI();
         PostCmd2MainWin(IDD_ADJUST_SCALES, 0);
     }
 

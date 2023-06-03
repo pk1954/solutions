@@ -189,12 +189,6 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::SetSensorPoints()
-{
-	m_bShowPnts = m_pPreferences->SensorPointsVisible();
-	Notify(false);
-}
-
 //void MainWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
 //{
 //	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
@@ -544,7 +538,7 @@ void MainWindow::PaintGraphics()
 	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get(), sigGenOffset());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
 
-	if (m_bShowPnts && pSensorSelected)
+	if (m_pPreferences->SensorPointsVisible() && pSensorSelected)
 		pSensorSelected->DrawDataPoints(m_context);
 
 	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
