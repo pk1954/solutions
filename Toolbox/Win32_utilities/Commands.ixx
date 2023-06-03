@@ -97,6 +97,9 @@ protected:
     static wostream& TraceStream() { return wcout; }
 
     static LRESULT PostCmd2Application(WPARAM const, LPARAM const);
+    static LRESULT SendCmd2Application(WPARAM const, LPARAM const);
+    static LRESULT PostCmd2MainWin    (WPARAM const, LPARAM const);
+    static LRESULT SendCmd2MainWin    (WPARAM const, LPARAM const);
 
 private:
 

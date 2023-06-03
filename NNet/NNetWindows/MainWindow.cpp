@@ -191,13 +191,21 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 
 void MainWindow::AnimateArrows()
 {
-	MicroMeter oldVal { m_umArrowSize };
-	MicroMeter umTarget = m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter;
+	MicroMeter oldVal   { m_umArrowSize };
+	MicroMeter umTarget { m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter };
 	if (umTarget != oldVal)
-		ArrowAnimationCmd::Push (m_umArrowSize, umTarget);
+		ArrowAnimationCmd::Push(m_umArrowSize, umTarget);
 }
 
-void MainWindow::SetSensorPoints() 
+void MainWindow::AnimateScales()
+{
+	fPixelPoint oldVal   { m_fPixScaleSize };
+	fPixelPoint umTarget { m_pPreferences->ScalesVisible() ? fPixelPoint(35._fPixel, 30._fPixel) : fPP_NULL};
+	if (umTarget != oldVal)
+		ScalesAnimationCmd::Push(m_fPixScaleSize, umTarget);
+}
+
+void MainWindow::SetSensorPoints()
 {
 	m_bShowPnts = m_pPreferences->SensorPointsVisible();
 	Notify(false);
@@ -210,21 +218,26 @@ void MainWindow::SetSensorPoints()
 //	SetCursor(hCrsr);
 //}
 
+void MainWindow::adjustScales()
+{
+	m_upHorzScale->SetOrthoOffset (m_fPixScaleSize.GetY());
+	m_upHorzScale->SetBottomBorder(m_fPixScaleSize.GetY());
+
+	m_upHorzScale->SetLeftBorder (m_fPixScaleSize.GetX());
+	m_upVertScale->SetOrthoOffset(m_fPixScaleSize.GetX());
+
+	PixelRectSize const pixRectSize  { GetClRectSize() };
+	PixelPoint    const pixScaleSize { Convert2PixelPoint(m_fPixScaleSize) };
+	PIXEL         const pixHeight    { pixRectSize.GetY() - pixScaleSize.GetY() };
+
+	m_upHorzScale->Move(0_PIXEL, pixHeight, pixRectSize.GetX(),  pixScaleSize.GetY(), true);
+	m_upVertScale->Move(0_PIXEL, 0_PIXEL,   pixScaleSize.GetX(), pixHeight,           true);
+}
+
 bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
-
-	PIXEL const pixHeight { height - H_SCALE_HEIGHT };
-
-	m_upHorzScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
-	m_upHorzScale->SetBottomBorder(Convert2fPixel(H_SCALE_HEIGHT));
-
-	m_upHorzScale->SetLeftBorder(Convert2fPixel(V_SCALE_WIDTH));
-	m_upVertScale->SetOrthoOffset(Convert2fPixel(V_SCALE_WIDTH));
-
-	m_upHorzScale->Move(0_PIXEL, pixHeight, width, H_SCALE_HEIGHT, true);
-	m_upVertScale->Move(0_PIXEL, 0_PIXEL, V_SCALE_WIDTH, pixHeight, true);
-
+	adjustScales();
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
@@ -252,7 +265,7 @@ NobId MainWindow::findTargetNob(MicroMeterPnt const& umCrsrPos)
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint const ptCrsr { GetCrsrPosFromLparam(lParam) };
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
 
@@ -760,8 +773,11 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDD_SCALES:
-		m_upHorzScale->Show(m_pPreferences->ScalesVisible());
-		m_upVertScale->Show(m_pPreferences->ScalesVisible());
+		AnimateScales();
+		return true;
+
+	case IDD_ADJUST_SCALES:
+		adjustScales();
 		return true;
 
 	default:

@@ -60,6 +60,7 @@ export import :ResetModelCmd;
 export import :RotateModelCommand;
 export import :RotateNobCommand;
 export import :RotateSelectionCommand;
+export import :ScalesAnimationCmd;
 export import :SelectAllConnectedCmd;
 export import :SetActiveSigGenCmd;
 export import :SetNobCommand;

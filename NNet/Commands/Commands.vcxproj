@@ -143,6 +143,7 @@
     <ClCompile Include="RotateSelectionCommand.ixx" />
     <ClCompile Include="RotationCommand.ixx" />
     <ClCompile Include="DeselectModuleCmd.ixx" />
+    <ClCompile Include="ScalesAnimationCmd.ixx" />
     <ClCompile Include="SelectAllConnectedCmd.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SetActiveSigGenCmd.ixx" />

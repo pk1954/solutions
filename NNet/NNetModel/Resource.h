@@ -49,6 +49,7 @@
 #define       IDD_SCALES                     260
 #define       IDD_SCALES_ON                  261
 #define       IDD_SCALES_OFF                 262
+#define       IDD_ADJUST_SCALES              263
 
 #define       IDD_ARROWS                     270
 #define       IDD_ARROWS_ON                  271

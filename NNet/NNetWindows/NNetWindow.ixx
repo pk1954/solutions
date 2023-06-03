@@ -59,9 +59,13 @@ public:
 	{
 		MicroMeterRect const umRect { GetCoordC().Transform2logUnitRect(rect) };
 		m_pNMRI->GetUPNobsC().Apply2AllInRectC<Nob>
-			(
-				umRect,
-				[&](Nob const& s) { if (crit(s)) s.DrawInterior(m_context, tHighlight::normal); }
+		(
+			umRect,
+			[&](Nob const& s) 
+			{ 
+				if (crit(s)) 
+					s.DrawInterior(m_context, tHighlight::normal); 
+			}
 		);
 	}
 
@@ -76,14 +80,15 @@ public:
 		m_pNMRI->GetUPNobsC().Apply2AllInRectC<Nob>
 		(
 			umRect,
-			[&](Nob const& s) { if (crit(s)) s.DrawExterior(m_context, tHighlight::normal); }
+			[&](Nob const& s) 
+			{ 
+				if (crit(s)) 
+					s.DrawExterior(m_context, tHighlight::normal); 
+			}
 		);
 	}
 
 protected:
-
-	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
-	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
 
 	ID2D1SolidColorBrush* m_pBrushSensorNormal   { nullptr };
 	ID2D1SolidColorBrush* m_pBrushSensorSelected { nullptr };

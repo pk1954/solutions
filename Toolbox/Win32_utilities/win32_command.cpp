@@ -124,3 +124,18 @@ LRESULT Command::PostCmd2Application(WPARAM const wParam, LPARAM const lParam)
 {
     return m_pWin->PostCommand2Application(wParam, lParam);
 }
+
+LRESULT Command::SendCmd2Application(WPARAM const wParam, LPARAM const lParam)
+{
+    return m_pWin->SendCommand2Application(wParam, lParam);
+}
+
+LRESULT Command::PostCmd2MainWin(WPARAM const wParam, LPARAM const lParam)
+{
+    return m_pWin->PostCommand(wParam, lParam);
+}
+
+LRESULT Command::SendCmd2MainWin(WPARAM const wParam, LPARAM const lParam)
+{
+    return m_pWin->SendCommand(wParam, lParam);
+}

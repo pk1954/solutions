@@ -31,7 +31,7 @@ BaseScale::BaseScale
 	(
 		hwndParent, 
 		L"ClassScale", 
-		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN
+		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
 }
