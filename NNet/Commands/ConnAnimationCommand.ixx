@@ -49,7 +49,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId1 << nobId2 << endl;
 		PushCommand(make_unique<ConnAnimationCommand>(nobId1, nobId2));
-        m_pSound->Play(L"SNAP_IN_SOUND");
+        PlaySound(L"SNAP_IN_SOUND");
     }
 
 private:

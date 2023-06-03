@@ -24,7 +24,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << endl;
 		if (!Command::UndoCommand())
-			m_pSound->Warning();
+			PlayWarningSound();
 	}
 
 private:

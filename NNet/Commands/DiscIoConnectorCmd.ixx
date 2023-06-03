@@ -27,14 +27,14 @@ public:
     {
         m_upIoConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_connector);
         m_upIoConnector->DisconnectIoLines();
-		m_pSound->Play(L"UNLOCK_SOUND");
+		PlaySound(L"UNLOCK_SOUND");
 	}
 
     void Undo() final
     {
         m_upIoConnector->ConnectIoLines();
         m_pNMWI->Restore2Model(move(m_upIoConnector));
-		m_pSound->Play(L"SNAP_IN_SOUND");
+		PlaySound(L"SNAP_IN_SOUND");
 	}
 
 	static void Register()

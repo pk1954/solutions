@@ -31,14 +31,14 @@ public:
 	{
 		m_upMicroSensor = m_pNob->DeleteMicroSensor();
 		m_upSignal      = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
-		m_pSound->Play(L"DISAPPEAR_SOUND");
+		PlaySound(L"DISAPPEAR_SOUND");
 	};
 
 	void Undo() final
 	{
 		m_pNob->SetMicroSensor(move(m_upMicroSensor));
 		m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
-		m_pSound->Play(L"SNAP_IN_SOUND");
+		PlaySound(L"SNAP_IN_SOUND");
 	};
 
 	static void Register()

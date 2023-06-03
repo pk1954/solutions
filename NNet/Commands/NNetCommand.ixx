@@ -45,6 +45,19 @@ public:
 
 protected:
 
+    static void PlaySound(wstring const& sound)
+    {
+        m_pSound->Play(sound);
+    }
+
+    static void PlayWarningSound()
+    {
+        m_pSound->Warning();
+    }
+
     inline static NNetModelWriterInterface * m_pNMWI  { nullptr };
-    inline static Sound *                    m_pSound { nullptr };
+
+private:
+
+    inline static Sound* m_pSound { nullptr };
 };

@@ -34,7 +34,7 @@ public:
 		{
 			if (IsTraceOn())
 				TraceStream() << NAME << id << endl;
-			m_pSound->Play(L"DISAPPEAR_SOUND");
+			PlaySound(L"DISAPPEAR_SOUND");
 			PushCommand(move(upCmd));
 		}
 	}

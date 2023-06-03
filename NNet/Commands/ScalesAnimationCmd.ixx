@@ -25,7 +25,7 @@ export class ScalesAnimationCmd : public NNetCommand
 public:
     ScalesAnimationCmd
     (
-        ANIM_TYPE& animated,
+        ANIM_TYPE      & animated,
         ANIM_TYPE const& target
     )
       : m_animated(animated),

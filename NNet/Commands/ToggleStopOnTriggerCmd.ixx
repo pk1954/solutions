@@ -21,7 +21,7 @@ public:
 	void Do() final
 	{
 		m_pNMWI->ToggleStopOnTrigger(m_id);
-		m_pSound->Play(L"SNAP_IN_SOUND");
+		PlaySound(L"SNAP_IN_SOUND");
 	}
 
 	void Undo() final
