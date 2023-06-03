@@ -93,7 +93,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_dynamicModelObservable
 	);
 	InitializeNNetWrappers(&m_modelIO, &m_ScriptHook);
-	NNetCommand::SetSound(&m_sound);
+	NNetCommand::Initialize(&m_sound);
 
 	MonitorScrollState* pMonitorScrollState { m_modelIO.Add<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
@@ -506,7 +506,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDD_ARROWS:
-			m_mainNNetWindow.AnimateArrows();
+			m_mainNNetWindow.PostCommand(wmId, lParam);
 			break;
 
 		case IDX_READ_PROGRESS_REPORT:  //no user command, only internal usage

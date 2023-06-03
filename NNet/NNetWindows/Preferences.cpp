@@ -72,7 +72,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        m_pref.SetArrows(script.ScrReadBool());
+        m_pref.SetArrows(script.ScrReadBool(), false);
     }
 
     void Write(wostream& out) const final
@@ -223,15 +223,15 @@ void Preferences::Initialize
     m_wstrPreferencesFile = Util::GetCurrentDir();
     m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
     
-    Add<WrapShowScales           >(L"ShowScales");
-    Add<WrapShowArrows           >(L"ShowArrows");
-    Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
-    Add<WrapDescWinFontSize      >(L"DescWinFontSize");
     Add<WrapSetAutoOpen          >(L"SetAutoOpen");
-    Add<WrapSetSound             >(L"SetSound");
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
     Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
+    Add<WrapShowScales           >(L"ShowScales");
+    Add<WrapShowArrows           >(L"ShowArrows");
+    Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
+    Add<WrapSetSound             >(L"SetSound");
+    Add<WrapDescWinFontSize      >(L"DescWinFontSize");
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON,  1L);
@@ -259,10 +259,10 @@ void Preferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
     m_pNMRI = pNMRI;
 }
 
-void Preferences::SetArrows(bool const bOn)
+void Preferences::SetArrows(bool const bOn, bool const bAnimation)
 {
     m_bArrows = bOn;
-    SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, 0);
+    SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, bAnimation);
 }
 
 void Preferences::SetScales(bool const bOn)

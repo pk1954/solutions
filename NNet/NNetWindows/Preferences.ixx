@@ -37,7 +37,7 @@ public:
 	bool ReadPreferences () const;
 	bool WritePreferences() const;
 
-	void SetArrows      (bool const);
+	void SetArrows      (bool const, bool const);
 	void SetScales      (bool const);
 	void SetSensorPoints(bool const);
 

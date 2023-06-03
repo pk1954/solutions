@@ -14,6 +14,7 @@ export import :AddNobsCommand;
 export import :AddPipe2NeuronCmd;
 export import :AddSensorCmd;
 export import :AddSigGen2MonitorCmd;
+export import :AnimationCmd;
 export import :ArrowAnimationCmd;
 export import :AttachSigGen2ConCmd;
 export import :AttachSigGen2LineCmd;

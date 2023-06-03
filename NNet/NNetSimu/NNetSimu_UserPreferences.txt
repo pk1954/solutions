@@ -1,9 +1,9 @@
-ShowScales ON
-ShowArrows ON
-ShowSensorPoints ON
-DescWinFontSize 18
 SetAutoOpen ON
-SetSound ON
 ReadModel "D:\SW-projects\Solutions\NNet\Tests\simple.mod"
 SetPerfMonMode OFF
 InputCablesVisibility 0
+ShowScales ON
+ShowArrows ON
+ShowSensorPoints ON
+SetSound ON
+DescWinFontSize 18

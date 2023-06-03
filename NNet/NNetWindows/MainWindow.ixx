@@ -59,7 +59,6 @@ public:
 
 	void CenterModel();
 	void CenterSelection();
-	void AnimateArrows();
 	void AnimateScales();
 	void SetSensorPoints();
 	bool SensorsPointsVisible() const { return m_bShowPnts; }
@@ -78,15 +77,14 @@ public:
 
 private:
 
-	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
-	inline static PIXEL      const H_SCALE_HEIGHT { 30_PIXEL };
-	inline static PIXEL      const V_SCALE_WIDTH  { 35_PIXEL };
+	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
+	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
 	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
 
 	fPixelPoint   m_fPixScaleSize          { 35._fPixel, 30._fPixel };
-	MicroMeter    m_umArrowSize            { STD_ARROW_SIZE };
+	MicroMeter    m_umArrowSize            { 0._MicroMeter };
 	Preferences*  m_pPreferences           { nullptr };
 	ActionTimer*  m_pDisplayTimer          { nullptr };
 	Observable*   m_pCoordObservable       { nullptr };

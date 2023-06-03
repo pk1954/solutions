@@ -146,11 +146,11 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_ARROWS_ON:
-        m_pPreferences->SetArrows(true);
+        m_pPreferences->SetArrows(true, true);
         break;
 
     case IDD_ARROWS_OFF:
-        m_pPreferences->SetArrows(false);
+        m_pPreferences->SetArrows(false, true);
         break;
 
     case IDD_SENSOR_PNTS_ON:

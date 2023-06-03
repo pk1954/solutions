@@ -4,56 +4,28 @@
 
 module;
 
-#include <functional>
-#include <memory>
 #include <iostream>
 
 export module NNetCommands:ArrowAnimationCmd;
 
-import Types;
-import IoUtil;
-import Commands;
-import Animation;
-import NNetModel;
-import :NNetCommand;
+import :AnimationCmd;
 
-export class ArrowAnimationCmd : public NNetCommand
+export class ArrowAnimationCmd : public AnimationCmd<MicroMeter>
 {
-    using ANIM_TYPE = MicroMeter;
-    using ANIMATION = Animation<ANIM_TYPE>;
 public:
     ArrowAnimationCmd
     (
-        ANIM_TYPE       & animated,
-        ANIM_TYPE const & target
+        MicroMeter       & animated,
+        MicroMeter const & target
     )
-      : m_animated(animated),
-        m_start(animated),
-        m_target(target)
-    {
-        m_upAnimation = make_unique<ANIMATION>(this);
-    }
-
-    void Do() final
-    {
-        m_upAnimation->Start(m_animated, m_target);
-    }
-
-    void Undo() final
-    {
-        m_upAnimation->Start(m_animated, m_start);
-    }
+      : AnimationCmd<MicroMeter>(animated, target)
+    {}
 
     virtual void UpdateUI()
     {
-        m_animated = m_upAnimation->GetActual();
+        AnimationCmd<MicroMeter>::UpdateUI();
         Command::UpdateUI();
     }
-
-    virtual bool IsAsyncCommand() 
-    { 
-        return true; 
-    };
 
     static void Register()
     {
@@ -62,13 +34,23 @@ public:
 
     static void Push
     (
-        ANIM_TYPE      & animated,
-        ANIM_TYPE const& target
+        MicroMeter & umAnimated,
+        bool const   bOn,
+        bool const   bAnimation
     )
     {
+        MicroMeter const umTarget { bOn ? 30.0_MicroMeter : 0._MicroMeter };
+
+        if (umTarget == umAnimated)
+            return;
+
         if (IsTraceOn())
-            TraceStream() << NAME << endl;
-        PushCommand(make_unique<ArrowAnimationCmd>(animated, target));
+            TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
+
+        if (bAnimation)
+            PushCommand(make_unique<ArrowAnimationCmd>(umAnimated, umTarget));
+        else
+            umAnimated = umTarget;
     }
 
 private:
@@ -79,11 +61,9 @@ private:
     {
         void operator() (Script& script) const final
         {
+            MicroMeter animated { ScrReadMicroMeter(script) };
+            bool       bOn      { script.ScrReadBool() };
+            ArrowAnimationCmd::Push(animated, bOn, false);
         }
     } m_wrapper;
-
-    ANIM_TYPE           & m_animated;
-    ANIM_TYPE       const m_start;
-    ANIM_TYPE       const m_target;
-    unique_ptr<ANIMATION> m_upAnimation;
 };

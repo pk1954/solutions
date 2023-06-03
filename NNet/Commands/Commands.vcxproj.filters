@@ -231,5 +231,8 @@
     <ClCompile Include="ScalesAnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -189,14 +189,6 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 		: NP_NULL;
 }
 
-void MainWindow::AnimateArrows()
-{
-	MicroMeter oldVal   { m_umArrowSize };
-	MicroMeter umTarget { m_pPreferences->ArrowsVisible() ? STD_ARROW_SIZE : 0._MicroMeter };
-	if (umTarget != oldVal)
-		ArrowAnimationCmd::Push(m_umArrowSize, umTarget);
-}
-
 void MainWindow::AnimateScales()
 {
 	fPixelPoint oldVal   { m_fPixScaleSize };
@@ -778,6 +770,10 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDD_ADJUST_SCALES:
 		adjustScales();
+		return true;
+
+	case IDD_ARROWS:
+		ArrowAnimationCmd::Push(m_umArrowSize, m_pPreferences->ArrowsVisible(), lParam);
 		return true;
 
 	default:

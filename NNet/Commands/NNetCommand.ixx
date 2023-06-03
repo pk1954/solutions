@@ -33,7 +33,7 @@ public:
         m_pNMWI = pNMWI;
     }
 
-    static void SetSound(Sound * pSound)
+    static void Initialize(Sound * pSound)
     {
         m_pSound = pSound;
     }
