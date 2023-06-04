@@ -373,7 +373,7 @@ void Pipe::DrawInterior(DrawContext const & context, tHighlight const type) cons
 					umSectorStart,
 					umSectorEnd,
 					umWidth,
-					GetInteriorColor(*seg),
+					GetInteriorColor(seg),
 					fPixMinWidth
 				);
 				umSectorStart = umSectorEnd;

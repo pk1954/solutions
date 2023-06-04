@@ -34,7 +34,7 @@ public:
     {
         assert(newSize > 0);
         m_data.resize(newSize, elem);
-        m_iter = m_data.begin();
+        m_index = 0;
     }
 
     void Fill(T const elem)
@@ -46,50 +46,38 @@ public:
 
     void Push(T const& elem)
     {
-        assert(m_iter < m_data.end());
-        *m_iter = elem;
-        if (m_iter == m_data.begin())
-            m_iter = m_data.end() - 1;
+        assert(m_index < m_data.size());
+        m_data[m_index] = elem;
+        if (m_index == 0)
+            m_index = m_data.size() - 1;
         else
-            --m_iter;
-        assert(m_iter < m_data.end());
+            --m_index;
+        assert(m_index < m_data.size());
     }
 
     T Get() const
     {
-        return *m_iter;
+        return m_data[m_index];
     }
 
     T Get(size_t const nr) const
     {
         assert(nr < m_data.size());
-        typename vector<T>::iterator iter { m_iter };
-        size_t index { static_cast<size_t>(iter - m_data.begin()) + nr };
-        if (index < m_data.size())
-            return *(iter + nr);
-        else
-            return *(iter - (m_data.size() - nr));
+        size_t index { m_index + nr };
+        if (index >= m_data.size())
+            index -= m_data.size();
+        return m_data[index];
     }
 
     void Apply2All(auto const& func) const
     {
-        for (auto it = m_iter+1; it < m_data.end(); ++it)
-            func(it);
-        for (auto it = m_data.begin(); it <= m_iter; ++it)
-            func(it);
-    }
-
-    size_t GetElemNr(vector<T>::const_iterator const it)
-    {
-        return it - m_data.begin();
-    }
-
-    T GetElem(vector<T>::const_iterator const it) const
-    {
-        return *it;
+        for (auto i = m_index+1; i < m_data.size(); ++i)
+            func(m_data[i]);
+        for (auto i = 0; i <= m_index; ++i)
+            func(m_data[i]);
     }
 
 private:
-             vector<T>           m_data;
-    typename vector<T>::iterator m_iter;
+    vector<T> m_data;
+    size_t    m_index;
 };
