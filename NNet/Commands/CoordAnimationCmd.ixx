@@ -4,55 +4,25 @@
 
 module;
 
-#include <memory>
 #include <iostream>
 
 export module NNetCommands:CoordAnimationCmd;
 
-import Types;
-import IoUtil;
-import Commands;
-import Uniform2D;
-import Animation;
-import :NNetCommand;
+import :AnimationCmd;
 
-export class CoordAnimationCmd : public NNetCommand
+using U2DAnimationCmd = AnimationCmd<Uniform2D<MicroMeter>>;
+
+export class CoordAnimationCmd : public U2DAnimationCmd
 {
-    using ANIM_TYPE = Uniform2D<MicroMeter>;
-    using ANIMATION = Animation<ANIM_TYPE>;
 public:
-    CoordAnimationCmd
-    (
-        ANIM_TYPE       & animated,
-        ANIM_TYPE const & target
-    )
-      : m_animated(animated),
-        m_start(animated),
-        m_target(target)
-    {
-        m_upAnimation = make_unique<ANIMATION>(this);
-    }
 
-    void Do() final
-    {
-        m_upAnimation->Start(m_animated, m_target);
-    }
-
-    void Undo() final
-    {
-        m_upAnimation->Start(m_animated, m_start);
-    }
+    using U2DAnimationCmd::U2DAnimationCmd;
 
     void UpdateUI() final
     {
-        m_animated = m_upAnimation->GetActual();
+        U2DAnimationCmd::UpdateUI();
         Command::UpdateUI();
     }
-
-    virtual bool IsAsyncCommand() 
-    { 
-        return true; 
-    };
 
     static void Register()
     {
@@ -61,8 +31,8 @@ public:
 
     static void Push
     (
-        ANIM_TYPE      & animated,
-        ANIM_TYPE const& target
+        Uniform2D<MicroMeter>      & animated,
+        Uniform2D<MicroMeter> const& target
     )
     {
         if (IsTraceOn())
@@ -77,13 +47,6 @@ private:
     inline static struct Wrapper : public ScriptFunctor
     {
         void operator() (Script& script) const final
-        {
-//            CoordAnimationCmd::Push(ScrReadNobId(script));  //TODO
-        }
+        {}
     } m_wrapper;
-
-    ANIM_TYPE           & m_animated;
-    ANIM_TYPE       const m_start;
-    ANIM_TYPE       const m_target;
-    unique_ptr<ANIMATION> m_upAnimation;
 };
