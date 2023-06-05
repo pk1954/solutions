@@ -20,11 +20,11 @@ void IoLine::Check() const
 	PosNob::Check();
 	if (HasParentNob())
 	{
-		assert(m_radDirection.IsNull());  // connected to IoConnector
+		assert(m_posDir.GetDir().IsNull());  // connected to IoConnector
 	}
 	else
 	{
-		if (m_radDirection.IsNull())
+		if (m_posDir.GetDir().IsNull())
 		{
 			// standard case, direction is pipe vector
 		}
@@ -49,14 +49,14 @@ MicroMeterPnt IoLine::GetDirVector() const
 
 Radian IoLine::GetDir() const 
 { 
-	return m_radDirection.IsNull()
+	return m_posDir.GetDir().IsNull()
 		   ? getDirection()
-		   : m_radDirection;
+		   : m_posDir.GetDir();
 };
 
 void IoLine::MoveNob(MicroMeterPnt const& delta)
 {
-	SetPos(GetPos() + delta);
+	m_posDir.SetPos(GetPos() + delta);
 }
 
 void IoLine::Link(Nob const& nobSrc, Nob2NobFunc const& f)
@@ -67,14 +67,16 @@ void IoLine::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 
 void IoLine::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-	m_umPosition.Rotate(umPntPivot, radDelta);
+	MicroMeterPnt umPos { GetPos() };
+	umPos.Rotate(umPntPivot, radDelta);
+	m_posDir.SetPos(umPos);
 	if (m_pIoConnector)
 		static_cast<IoConnector*>(m_pIoConnector)->DirectionDirty();
 }
 
 void IoLine::SetPosNoFix(MicroMeterPnt const& pos)
 {
-	m_umPosition = pos;
+	m_posDir.SetPos(pos);
 }
 
 void IoLine::Recalc()
@@ -86,7 +88,7 @@ void IoLine::Recalc()
 
 void IoLine::SetDir(Radian const r)
 { 
-	m_radDirection = r;
+	m_posDir.SetDir(r);
 	m_pIoConnector = nullptr;
 }
 
