@@ -65,30 +65,3 @@ private:
     ANIM_TYPE       const m_target;
     unique_ptr<ANIMATION> m_upAnimation;
 };
-
-//module;
-//
-//#include <vector>
-//#include <memory>
-//
-//export module NNetCommands:IoLinesAnimation;
-//
-//import NNetModel;
-//import :AnimationCmd;
-//
-//using MMPVecAnimationCmd = AnimationCmd<MicroMeterPntVector>;
-//
-//export class IoLinesAnimation : public MMPVecAnimationCmd
-//{
-//public:
-//
-//    using MMPVecAnimationCmd::MMPVecAnimationCmd;
-//
-//    void UpdateUI() final
-//    {
-//        MMPVecAnimationCmd::UpdateUI();
-//        //for (size_t i = 0; i < m_animated.size(); ++i)
-//        //    m_animated.at(i)->SetPosDir(m_upAnimation->GetActual().GetPosDir(i));
-//        Command::UpdateUI();
-//    }
-//};

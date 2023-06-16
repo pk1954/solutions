@@ -21,9 +21,10 @@ public:
 	)
       :	m_outputLineOld(*m_pNMWI->GetNobPtr<OutputLine*>(id))
 	{
+		MicroMeterPnt const& posOld { m_outputLineOld.GetPos() };
 		m_upPipe          = make_unique<Pipe>();
-		m_upKnotNew       = make_unique<Knot>(m_outputLineOld.GetPos());
-		m_upOutputLineNew = make_unique<OutputLine>(pos);
+		m_upKnotNew       = make_unique<Knot>(posOld);
+		m_upOutputLineNew = make_unique<OutputLine>(posOld);
 
 		m_upPipe->SetStartPnt(m_upKnotNew.get());
 		m_upPipe->SetEndPnt  (m_upOutputLineNew.get());
@@ -32,6 +33,8 @@ public:
 		m_upOutputLineNew->SetPipe(m_upPipe.get());
 		m_upKnotNew->AddOutgoing(m_upPipe.get());
 		m_upKnotNew->AddIncoming(m_outputLineOld.GetPipe());
+
+		m_upOutputLineNew->SetPos(pos);
 	}
 
 	~ExtendOutputLineCmd() final = default;

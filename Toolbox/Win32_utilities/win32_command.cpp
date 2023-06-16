@@ -57,16 +57,19 @@ void Command::DoCall(WPARAM const wParam, LPARAM const lParam) // runs in UI thr
 
 void Command::doPhase() // runs in UI thread
 {
-    if (m_uiPhase == 0)
-        blockUI();
-    if (m_uiPhase < m_phases.size())
+    if (!m_phases.empty())
     {
-        Command * const pAnimCmd { m_phases[m_uiPhase++].get() };
-        pAnimCmd->m_targetReachedFunc = [&](){ doPhase(); };
-        pAnimCmd->Do();
+        if (m_uiPhase == 0)
+            blockUI();
+        if (m_uiPhase < m_phases.size())
+        {
+            Command* const pAnimCmd { m_phases[m_uiPhase++].get() };
+            pAnimCmd->m_targetReachedFunc = [&]() { doPhase(); };
+            pAnimCmd->Do();
+        }
+        else
+            unblockUI();
     }
-    else
-        unblockUI();
     UpdateUI();
 }
 

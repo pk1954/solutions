@@ -20,7 +20,7 @@ public:
 
 	void Do() final
 	{
-		SelectionCommand::Do();
+		SelectionCommand::Do();    // not needed?
 		m_nobStart.SelectAllConnected(true);
 	}
 

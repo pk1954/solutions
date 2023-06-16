@@ -81,7 +81,6 @@ private:
     TP_TIMER     * m_pTpTimer       { nullptr };
     unsigned int   m_uiMsPeriod     { 50 };
     unsigned int   m_uiNrOfSteps    { 20 };
-    HWND           m_hwnd           { nullptr };
     bool           m_bTargetReached { false };
 
     void setActual(ANIM_PAR const newVal)

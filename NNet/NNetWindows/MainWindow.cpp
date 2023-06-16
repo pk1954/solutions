@@ -645,9 +645,13 @@ void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 			MicroMeterPnt const umPoint  { pNob->GetPos() };
 			MicroMeterPnt const umPntVec { Radian2Vector(pNob->GetDir()).ScaledTo(MICRO_OFFSET) };
 			if (pNob->IsInputLine())
+			{
 				ExtendInputLineCmd::Push(m_nobIdHighlighted, umPoint - umPntVec);
+			}
 			else
+			{
 				ExtendOutputLineCmd::Push(m_nobIdHighlighted, umPoint + umPntVec);
+			}
 			setHighlightedNob(umPoint);
 		}
 	}
@@ -658,10 +662,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
 	switch (int const wmId { LOWORD(wParam) } )
 	{
-
-	case IDD_EMPHASIZE:
-		ToggleEmphModeCmd::Push(m_nobIdHighlighted);
-		break;
 
 	case IDM_DELETE:   // keyboard delete key
 		if (IsDefined(m_nobIdHighlighted))
@@ -684,9 +684,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_ESCAPE:
 		m_nobIdTarget = NO_NOB;
 		m_nobIdHighlighted = NO_NOB;
-
-	case IDM_DESELECT:
-		DeselectModuleCmd::Push();
 		break;
 
 	case IDM_DELETE_SELECTION:
@@ -694,77 +691,40 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		m_nobIdTarget = NO_NOB;
 		break;
 
-	case IDM_COPY_SELECTION:
-		AddNobsCommand::Push();
+	case IDD_RENAME_SIGNAL_GENERATOR:		
+		RenameSigGenCmd::Dialog(GetWindowHandle());		
 		break;
 
-	case IDD_DELETE_SIGNAL_GENERATOR:
-		DeleteSigGenCmd::Push();
-		return true;
-
-	case IDD_RENAME_SIGNAL_GENERATOR:
-		RenameSigGenCmd::Dialog(GetWindowHandle());
-		return true;
-
-	case IDD_ATTACH_SIG_GEN_TO_LINE:
-		AttachSigGen2LineCmd::Push(m_nobIdHighlighted);
-		break;
-
-	case IDD_ATTACH_SIG_GEN_TO_CONN:
-		AttachSigGen2ConCmd::Push(m_nobIdHighlighted);
-		break;
-
-	case IDD_DISC_IOCONNECTOR:
-		DiscIoConnectorCmd::Push(m_nobIdHighlighted);
-		break;
-
-	case IDD_DELETE_EEG_SENSOR:
-		DelSensorCmd::Push(m_sensorIdSelected);
-		break;
-
-	case IDD_SPLIT_NEURON:
-		SplitNeuronCmd::Push(m_nobIdHighlighted);
-		break;
-
-	case IDD_INSERT_KNOT:
-		InsertKnotCommand::Push(m_nobIdHighlighted, umPoint);
-		break;
-
-	case IDD_INSERT_NEURON:
-		InsertNeuronCommand::Push(m_nobIdHighlighted, umPoint);
-		break;
-
-	case IDD_NEW_IO_LINE_PAIR:
-		NewIoLinePairCmd::Push(umPoint);
-		break;
-
-	case IDD_ADD_MICRO_SENSOR:    AddMicroSensorCmd   ::Push(m_nobIdHighlighted, TrackNr(0));	        break;
-	case IDD_DEL_MICRO_SENSOR:    DelMicroSensorCmd   ::Push(m_nobIdHighlighted);	                    break;
-	case IDD_CREATE_FORK:         CreateForkCommand   ::Push(m_nobIdHighlighted, umPoint);	            break; // case 7
-	case IDD_CREATE_SYNAPSE:      CreateSynapseCommand::Push(m_nobIdHighlighted, umPoint);      	    break; // case 8 
-	case IDD_ADD_INCOMING2NEURON: AddPipe2NeuronCmd   ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
-	case IDD_EXTEND_INPUTLINE:    ExtendInputLineCmd  ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 10
-	case IDD_EXTEND_OUTPUTLINE:   ExtendOutputLineCmd ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
-
-	case IDD_STOP_ON_TRIGGER:
-		ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);
-		break;
+	case IDD_DELETE_SIGNAL_GENERATOR: DeleteSigGenCmd       ::Push();	                                      break;
+	case IDM_DESELECT:		          DeselectModuleCmd     ::Push();	                                      break;
+	case IDM_COPY_SELECTION:		  AddNobsCommand        ::Push();		                                  break;
+	case IDD_EMPHASIZE:		          ToggleEmphModeCmd     ::Push(m_nobIdHighlighted);		                  break;
+	case IDD_ATTACH_SIG_GEN_TO_LINE:  AttachSigGen2LineCmd  ::Push(m_nobIdHighlighted);		                  break;
+	case IDD_ATTACH_SIG_GEN_TO_CONN:  AttachSigGen2ConCmd   ::Push(m_nobIdHighlighted);		                  break;
+	case IDD_DISC_IOCONNECTOR:		  DiscIoConnectorCmd    ::Push(m_nobIdHighlighted);	                      break;
+	case IDD_DELETE_EEG_SENSOR:       DelSensorCmd          ::Push(m_sensorIdSelected);		                  break;
+	case IDD_SPLIT_NEURON:            SplitNeuronCmd        ::Push(m_nobIdHighlighted);	                      break;
+	case IDD_INSERT_KNOT:             InsertKnotCommand     ::Push(m_nobIdHighlighted, umPoint);		      break;
+	case IDD_INSERT_NEURON:           InsertNeuronCommand   ::Push(m_nobIdHighlighted, umPoint);              break;
+	case IDD_NEW_IO_LINE_PAIR:        NewIoLinePairCmd      ::Push(umPoint);                                  break;
+	case IDD_ADD_MICRO_SENSOR:        AddMicroSensorCmd     ::Push(m_nobIdHighlighted, TrackNr(0));	          break;
+	case IDD_DEL_MICRO_SENSOR:        DelMicroSensorCmd     ::Push(m_nobIdHighlighted);	                      break;
+	case IDD_CREATE_FORK:             CreateForkCommand     ::Push(m_nobIdHighlighted, umPoint);	          break; // case 7
+	case IDD_CREATE_SYNAPSE:          CreateSynapseCommand  ::Push(m_nobIdHighlighted, umPoint);              break; // case 8 
+	case IDD_ADD_INCOMING2NEURON:     AddPipe2NeuronCmd     ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 9
+	case IDD_EXTEND_INPUTLINE:        ExtendInputLineCmd    ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 10
+	case IDD_EXTEND_OUTPUTLINE:       ExtendOutputLineCmd   ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
+	case IDD_STOP_ON_TRIGGER:         ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);           		      break;
+	case IDD_SCALES:                  ScalesAnimationCmd    ::Push(m_fPixScaleSize, m_pPreferences->ScalesVisible(), lParam); break;
+	case IDD_ARROWS:                  ArrowAnimationCmd     ::Push(m_umArrowSize,   m_pPreferences->ArrowsVisible(), lParam); break;
 
 	case IDD_ADJUST_SCALES:
 		adjustScales();
 		return true;
 
-	case IDD_SCALES:
-		ScalesAnimationCmd::Push(m_fPixScaleSize, m_pPreferences->ScalesVisible(), lParam);
-		return true;
-
-	case IDD_ARROWS:
-		ArrowAnimationCmd::Push(m_umArrowSize, m_pPreferences->ArrowsVisible(), lParam);
-		return true;
-
 	default:
-		break;
+		return NNetWindow::OnCommand(wParam, lParam, pixPoint);
 	}
 
-	return NNetWindow::OnCommand(wParam, lParam, pixPoint);
+	return true;
 }

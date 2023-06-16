@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <ranges>
 #include <functional>
 
 module Commands;
@@ -148,12 +149,16 @@ bool CommandStack::RedoCommand()
 
 void CommandStack::DoAll()
 {
+    //for (auto & it : m_CommandStack)
+    //    it->Do();
     for (size_t i = 0; i < m_CommandStack.size(); ++i)
         m_CommandStack[i]->Do();
 }
 
 void CommandStack::UndoAll()
 {
+    //for (auto & it : m_CommandStack | std::ranges::views::reverse)
+    //    it->Undo();
     for (size_t i = m_CommandStack.size(); i --> 0;)
         m_CommandStack[i]->Undo();
 }

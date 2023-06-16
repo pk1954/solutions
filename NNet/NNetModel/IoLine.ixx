@@ -5,6 +5,7 @@
 module;
 
 #include <vector>
+#include <type_traits>   
 
 export module NNetModel:IoLine;
 
@@ -14,6 +15,9 @@ import :MicroMeterPosDir;
 import :NobType;
 import :PosNob;
 import :Nob;
+
+using std::is_base_of;
+using std::remove_pointer_t;
 
 export class IoLine : public PosNob
 {
@@ -126,3 +130,6 @@ private:
 	Nob            * m_pIoConnector { nullptr };
 	MicroMeterPosDir m_posDir;
 };
+
+export template <typename T>
+concept IoLine_t = is_base_of<IoLine, remove_pointer_t<T>>::value;

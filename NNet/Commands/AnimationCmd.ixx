@@ -47,7 +47,7 @@ public:
         m_upAnimation->Start(m_animated, m_start);
     }
 
-    virtual bool IsAsyncCommand()
+    bool IsAsyncCommand() final
     {
         return true;
     };
