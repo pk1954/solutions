@@ -112,5 +112,4 @@ private:
 	fPixel     m_fPixWinWidth       { 0.0_fPixel };
 	fPixel     m_fPixRightLimit     { 0.0_fPixel };
 	fPixel     m_fPixMaxSignal      { 0.0_fPixel };
-
 };

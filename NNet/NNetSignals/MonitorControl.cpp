@@ -51,7 +51,7 @@ MonitorControl::MonitorControl
 	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);
 
-	m_vertCoord.SetPixelSizeLimits(0.001_mV, 100._mV);   
+	m_vertCoord.SetPixelSizeLimits(0.001_mV, 1000._mV);   
 	m_vertCoord.SetPixelSize(0.2_mV);
 	m_vertCoord.SetZoomFactor(1.3f);
 

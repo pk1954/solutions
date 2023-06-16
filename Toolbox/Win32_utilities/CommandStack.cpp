@@ -19,6 +19,7 @@ using std::wcout;
 using std::endl;
 using std::function;
 using std::unique_ptr;
+using std::ranges::views::reverse;
 
 void CommandStack::Initialize(Observable * const pStaticModelObservable)
 {
@@ -149,16 +150,12 @@ bool CommandStack::RedoCommand()
 
 void CommandStack::DoAll()
 {
-    //for (auto & it : m_CommandStack)
-    //    it->Do();
-    for (size_t i = 0; i < m_CommandStack.size(); ++i)
-        m_CommandStack[i]->Do();
+    for (auto & it : m_CommandStack)
+        it->Do();
 }
 
 void CommandStack::UndoAll()
 {
-    //for (auto & it : m_CommandStack | std::ranges::views::reverse)
-    //    it->Undo();
-    for (size_t i = m_CommandStack.size(); i --> 0;)
-        m_CommandStack[i]->Undo();
+    for (auto & it : m_CommandStack|reverse)
+        it->Undo();
 }
