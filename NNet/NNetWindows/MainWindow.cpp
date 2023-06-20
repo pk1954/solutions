@@ -272,8 +272,8 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		return;
 
 	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
-	MicroMeterPnt       umDelta   { umCrsrPos - umLastPos };
-	if (umDelta.IsZero())
+	m_umDelta = umCrsrPos - umLastPos;
+	if (m_umDelta.IsZero())
 		return;
 
 	if (wParam & MK_CONTROL)   // rotate
@@ -287,16 +287,24 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (m_pNMRI->AnyNobsSelected())
 	{
-		MoveSelectionCommand::Push(umDelta);
+		MoveSelectionCommand::Push(m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
-		MoveNobCommand::Push(m_nobIdHighlighted, umDelta);
+		PixelRect rect    { GetClPixelRect() };
+		PIXEL     pixDist { rect.DistFromRect(ptCrsr) };
+		if (pixDist > 0_PIXEL)
+		{
+			// if timer not already running,
+			// start timer, posting IDX_MOVE_BOOST every 100 ms
+			//PostCommand(IDX_MOVE_BOOST, lParam);
+		}
+		MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
 		m_nobIdTarget = findTargetNob(umCrsrPos);
 	}
 	else if (m_sensorIdSelected.IsNotNull())
 	{
-		MoveSensorCmd::Push(m_sensorIdSelected, umDelta);
+		MoveSensorCmd::Push(m_sensorIdSelected, m_umDelta);
 	}
 	else if (m_pNMRI->IsAnySignalSelected())
 	{
@@ -693,6 +701,13 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDD_RENAME_SIGNAL_GENERATOR:		
 		RenameSigGenCmd::Dialog(GetWindowHandle());		
+		break;
+
+	case IDX_MOVE_BOOST:
+		// if still outside of client rect
+		//     MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
+		// else
+		//     stop timer
 		break;
 
 	case IDD_DELETE_SIGNAL_GENERATOR: DeleteSigGenCmd       ::Push();	                                      break;

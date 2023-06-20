@@ -80,6 +80,7 @@ private:
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
 	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
 
+	MicroMeterPnt m_umDelta                { NP_ZERO };
 	fPixelPoint   m_fPixScaleSize          { fPP_ZERO };
 	MicroMeter    m_umArrowSize            { 0._MicroMeter };
 	Preferences*  m_pPreferences           { nullptr };

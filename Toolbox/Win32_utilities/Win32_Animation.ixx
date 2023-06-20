@@ -12,10 +12,10 @@ export module Animation;
 
 import Commands;
 import SmoothMoveFp;
+import ThreadPoolTimer;
 
 using std::bit_cast;
 using std::move;
-using std::wcout;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
@@ -41,12 +41,15 @@ public:
         m_bTargetReached = false;
         setActual(m_start);
         m_smoothMove.Start(m_uiNrOfSteps);
-        if (m_pTpTimer)
-        {
-            int x = 42;
-        }
-       // wcout << L"Start: origin = " << origin << L" target = " << target << std::endl;
-        startTimer();
+        m_timer.StartTimer
+        (
+            m_uiMsPeriod, 
+            [](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
+            {
+                bit_cast<Animation<ANIM_PAR>*>(pContext)->next();
+            },
+            this
+        );
     }
 
     ANIM_PAR GetActual()
@@ -78,10 +81,11 @@ private:
     Command      * m_pCmd           { nullptr };
     DWORD    const m_dwFlags        { 0 };
     SRWLOCK        m_srwlData       { SRWLOCK_INIT };
-    TP_TIMER     * m_pTpTimer       { nullptr };
     unsigned int   m_uiMsPeriod     { 50 };
     unsigned int   m_uiNrOfSteps    { 20 };
     bool           m_bTargetReached { false };
+
+    ThreadPoolTimer m_timer;
 
     void setActual(ANIM_PAR const newVal)
     {
@@ -106,7 +110,7 @@ private:
                 else
                 {
                     m_pCmd->CallUI(true);
-                    stopTimer();
+                    m_timer.StopTimer();
                 }
             }
             else
@@ -114,35 +118,5 @@ private:
                 m_pCmd->CallUI(false);
             }
         }
-    }
-
-    void startTimer()  // runs in UI thread
-    {
-        std::wcout << L"startTimer" << std::endl;
-        FILETIME fileTime { m_uiMsPeriod, 0 };
-        m_pTpTimer = CreateThreadpoolTimer(timerProc, this, nullptr);
-        SetThreadpoolTimer(m_pTpTimer, &fileTime, m_uiMsPeriod, 50L);
-    }
-
-    void stopTimer()  // runs in animation thread
-    { 
-        std::wcout << L"stopTimer" << std::endl;
-        if (m_pTpTimer)
-        {
-            SetThreadpoolTimer(m_pTpTimer, NULL, 0, 0);
-            WaitForThreadpoolTimerCallbacks(m_pTpTimer, TRUE);
-            CloseThreadpoolTimer(m_pTpTimer);
-        }
-        m_pTpTimer = nullptr;
-    } 
-
-    static void CALLBACK timerProc
-    (
-        PTP_CALLBACK_INSTANCE, 
-        PVOID pContext, 
-        PTP_TIMER
-    )
-    {
-        bit_cast<Animation<ANIM_PAR> *>(pContext)->next();
     }
 };

@@ -1,6 +1,6 @@
 // Win32_ActionTimer.ixx
 //
-// win32_utilities
+// Win32_utilities
 
 module;
 

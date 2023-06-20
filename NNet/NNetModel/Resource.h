@@ -37,7 +37,8 @@
 #define       IDX_REPLACE_MODEL              162
 #define       IDX_FILE_NOT_FOUND             163
 #define       IDX_ERROR_IN_FILE              164
-							   	         
+#define       IDX_MOVE_BOOST                 165
+
 #define       IDM_SAVE_MODEL                 170
 #define       IDM_ASK_AND_SAVE_MODEL         171
 #define       IDM_SAVE_MODEL_AS              172

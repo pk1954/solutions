@@ -43,6 +43,7 @@ import WrapSetSigGen;
 import InputOutputUI;
 import NNetWrapperHelpers;
 import NNetModel;
+import ThreadPoolTimer;
 
 using std::filesystem::exists;
 using std::wofstream;
@@ -108,28 +109,23 @@ struct IO_STRUCT  // IO thread -> timerProc
     Script        * pScript;
 };
 
-static void CALLBACK timerProc
-(
-    PTP_CALLBACK_INSTANCE, 
-    PVOID pContext, 
-    PTP_TIMER
-)
-{
-    IO_STRUCT * pIoStruct { bit_cast<IO_STRUCT *>(pContext) };
-    pIoStruct->pUI->ReadProgressReport(pIoStruct->pScript);
-}
-
 void NNetModelIO::importModel() 
 {
     InputOutputUI::Result res;
     Script                script;
     bool                  bSuccess { false };
 
-    unsigned int m_uiMsPeriod { 200 };
-    FILETIME     fileTime     { m_uiMsPeriod, 0 };
-    IO_STRUCT    uiStruct     { m_upImportUI.get(), &script };
-    m_pTpTimer = CreateThreadpoolTimer(timerProc, &uiStruct, nullptr);
-    SetThreadpoolTimer(m_pTpTimer, &fileTime, m_uiMsPeriod, m_uiMsPeriod);
+    IO_STRUCT uiStruct { m_upImportUI.get(), &script };
+    m_timer.StartTimer
+    (
+        200, // period in ms
+        [](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
+        {
+            IO_STRUCT* pIoStruct { bit_cast<IO_STRUCT*>(pContext) };
+            pIoStruct->pUI->ReadProgressReport(pIoStruct->pScript);
+        },
+        & uiStruct
+    );
 
     if (! m_wstrFile2Read.empty())
     {
@@ -182,8 +178,7 @@ void NNetModelIO::importModel()
         res = InputOutputUI::Result::errorInFile;
     }
 
-    if (m_pTpTimer)
-        CloseThreadpoolTimer(m_pTpTimer);
+    m_timer.StopTimer();
     m_upImportUI->JobFinished(res, m_wstrFile2Read);
 }
 

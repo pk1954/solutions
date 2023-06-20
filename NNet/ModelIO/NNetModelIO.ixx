@@ -15,6 +15,7 @@ import WrapBase;
 import Script;
 import InputOutputUI;
 import NNetModel;
+import ThreadPoolTimer;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -63,7 +64,7 @@ private:
 	unique_ptr<InputOutputUI>    m_upImportUI;
 	vector<unique_ptr<WrapBase>> m_wrapVector;
 
-	TP_TIMER* m_pTpTimer{ nullptr };
+	ThreadPoolTimer m_timer;
 
 	/// import ///
 

@@ -198,5 +198,8 @@
     <ClCompile Include="TimeGraph.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadPoolTimer.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
