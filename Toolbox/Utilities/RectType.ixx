@@ -213,7 +213,7 @@ public:
 		* this = ZERO_VAL();
 	}
 
-	BASE_TYPE DistFromRect(POS_TYPE const &pnt)
+	BASE_TYPE DistFromRect(POS_TYPE const& pnt) const
 	{
 		BASE_TYPE res  { BASE_TYPE(0) };
 		BASE_TYPE dist { BASE_TYPE(0) };
@@ -226,6 +226,20 @@ public:
 		if ((dist = pnt.GetY() - m_Bottom) > res)
 			res = dist;
 		return res;
+	}
+
+	POS_TYPE DistFromRect2(POS_TYPE const& pnt) const
+	{
+		BASE_TYPE dist;
+		if ((dist = m_Left - pnt.GetX()) > BASE_TYPE::ZERO_VAL())
+			return POS_TYPE(-dist, BASE_TYPE::ZERO_VAL());
+		if ((dist = pnt.GetX() - m_Right) > BASE_TYPE::ZERO_VAL())
+			return POS_TYPE(dist, BASE_TYPE::ZERO_VAL());
+		if ((dist = m_Top - pnt.GetY()) > BASE_TYPE::ZERO_VAL())
+			return POS_TYPE(BASE_TYPE::ZERO_VAL(), -dist);
+		if ((dist = pnt.GetY() - m_Bottom) > BASE_TYPE::ZERO_VAL())
+			return POS_TYPE(BASE_TYPE::ZERO_VAL(), dist);
+		return POS_TYPE::ZERO_VAL();
 	}
 
 	friend RectType operator+ (RectType const a, POS_TYPE const b)

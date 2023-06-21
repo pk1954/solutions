@@ -175,14 +175,11 @@ void RootWindow::Notify(bool const bImmediately)
 	m_upRefreshRate->Notify(bImmediately);
 }
 
-void RootWindow::SetTrackBarPos(INT const idTrackbar, LONG const lPos) const
+bool RootWindow::IsOutOfClientRect(PixelPoint const &pnt) const
 {
-	SendDlgItemMessage
-	(  
-		idTrackbar, TBM_SETPOS, 
-		static_cast<WPARAM>(true),  // redraw flag 
-		static_cast<LPARAM>(lPos)
-	); 
+	PixelRect rect    { GetClPixelRect() };
+	PIXEL     pixDist { rect.DistFromRect(pnt) };
+	return pixDist > 0_PIXEL;
 }
 
 void RootWindow::SetTrackBarRange(INT const idTrackbar, LONG const lMin, LONG const lMax) const

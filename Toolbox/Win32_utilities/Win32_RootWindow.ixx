@@ -59,6 +59,7 @@ public:
 	bool          CrsrInClientRect()        const { return Util::CrsrInClientRect(m_hwnd); }
 	PixelPoint    GetRelativeCrsrPosition() const { return Util::GetRelativeCrsrPosition(m_hwnd); }
 	PixelPoint    GetClRectCenter()         const { return Util::GetClRectCenter(m_hwnd); }
+	bool          CrsrOutOfClientRect()     const { return IsOutOfClientRect(GetRelativeCrsrPosition()); }
 
 	PixelPoint    Client2Screen(PixelPoint  const& p) const { return Util::Client2Screen(m_hwnd, p); }
 	PixelPoint    Screen2Client(PixelPoint  const& p) const { return Util::Screen2Client(m_hwnd, p); }
@@ -84,6 +85,8 @@ public:
 	HWND GetDlgItem(int const i) const { return ::GetDlgItem(m_hwnd, i); }
 	bool IsCaptured()            const { return ::GetCapture() == m_hwnd; }
 	int	 GetWindowTextLength()   const { return ::GetWindowTextLength(m_hwnd); }
+
+	bool IsOutOfClientRect(PixelPoint const&) const;
 
 	wstring GetWindowText() const;
 

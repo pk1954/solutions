@@ -11,6 +11,10 @@ export module ThreadPoolTimer;
 export class ThreadPoolTimer
 {
 public:
+    ThreadPoolTimer()
+    : m_pTpTimer(nullptr)
+    {}
+
     void StartTimer  // runs in UI thread
     (
         unsigned int uiMsPeriod,
@@ -34,7 +38,12 @@ public:
         }
     }
 
+    bool IsRunning()
+    {
+        return m_pTpTimer && IsThreadpoolTimerSet(m_pTpTimer);
+    }
+
 private:
 
-    PTP_TIMER m_pTpTimer { nullptr };
+    PTP_TIMER m_pTpTimer;
 };

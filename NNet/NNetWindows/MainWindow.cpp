@@ -4,6 +4,7 @@
 
 module;
 
+#include "bit"
 #include <unordered_map>
 #include <cassert>
 #include <iostream>
@@ -30,6 +31,7 @@ import Win32_Util_Resource;
 import :NNetController;
 import :Preferences;
 
+using std::bit_cast;
 using std::unordered_map;
 using std::unique_ptr;
 using std::make_unique;
@@ -88,6 +90,8 @@ void MainWindow::Start
 	m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
 	m_upVertScale->SetAllowUnlock(true);
 	m_upVertScale->SetZoomAllowed(false);
+
+	m_upTimer = make_unique<ThreadPoolTimer>();
 }
 
 void MainWindow::Stop()
@@ -285,20 +289,24 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		else 
 			RotateModelCommand::Push(umLastPos, umCrsrPos);
 	}
-	else if (m_pNMRI->AnyNobsSelected())
+	else if (m_pNMRI->AnyNobsSelected() && (wParam & MK_SHIFT))
 	{
+		//if (IsOutOfClientRect(ptCrsr) && !m_upTimer->IsRunning())
+		//{
+		//	m_upTimer->StartTimer
+		//	(
+		//		300,  //milliseconds
+		//		[](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
+		//		{
+		//			bit_cast<MainWindow*>(pContext)->PostCommand(IDX_MOVE_BOOST, 0);
+		//		},
+		//		this
+		//	);
+		//}
 		MoveSelectionCommand::Push(m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
-		PixelRect rect    { GetClPixelRect() };
-		PIXEL     pixDist { rect.DistFromRect(ptCrsr) };
-		if (pixDist > 0_PIXEL)
-		{
-			// if timer not already running,
-			// start timer, posting IDX_MOVE_BOOST every 100 ms
-			//PostCommand(IDX_MOVE_BOOST, lParam);
-		}
 		MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
 		m_nobIdTarget = findTargetNob(umCrsrPos);
 	}
@@ -427,7 +435,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	bool  const bDirection { iDelta > 0 };
 	float const fFactor    { bDirection ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
 
-	if (m_pNMRI->AnyNobsSelected())     // operate on selection
+	if (m_pNMRI->AnyNobsSelected() && (wParam & MK_SHIFT))     // operate on selection
 	{
 		for (int iSteps = abs(iDelta); iSteps > 0; --iSteps)
 		{
@@ -703,12 +711,20 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		RenameSigGenCmd::Dialog(GetWindowHandle());		
 		break;
 
-	case IDX_MOVE_BOOST:
-		// if still outside of client rect
-		//     MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
-		// else
-		//     stop timer
-		break;
+	//case IDX_MOVE_BOOST:
+	//	if (CrsrOutOfClientRect())
+	//	{
+	//		wcout << L"IDX_MOVE_BOOST" << endl;
+	//		PixelRect     const rect      { GetClPixelRect() };
+	//		PixelPoint    const pixCrsr   { GetRelativeCrsrPosition() };
+	//		PixelPoint    const pixDist   { rect.DistFromRect2(pixCrsr) };
+	//		fPixelPoint   const fPixDist  { Convert2fPixelPoint(pixDist) };
+	//		MicroMeterPnt const umPntDist { GetCoordC().Transform2logUnitPntSize(fPixDist) };
+	//		MoveSelectionCommand::Push(umPntDist);
+	//	}
+	//	else
+	//		m_upTimer->StopTimer();
+	//	break;
 
 	case IDD_DELETE_SIGNAL_GENERATOR: DeleteSigGenCmd       ::Push();	                                      break;
 	case IDM_DESELECT:		          DeselectModuleCmd     ::Push();	                                      break;
